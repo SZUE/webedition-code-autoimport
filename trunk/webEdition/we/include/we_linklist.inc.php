@@ -523,7 +523,7 @@ class we_linklist{
 				if($this->show == -1 || ($this->show > $this->length())){
 					echo "<br/>" . we_button::create_button(
 						"image:btn_add_link", "javascript:setScrollTo();_EditorFrame.setEditorIsHot(1);we_cmd('add_link_to_linklist','" . $this->attribs["name"] . "')", true, 100, 22, "", "", $disabled);
-					echo '<input type="hidden" name="we_' . $this->docName . '_linklist[' . $this->attribs["name"] . ']" value="' . htmlspecialchars(
+					echo '<input type="hidden" name="we_' . $this->docName . '_linklist[' . $this->attribs["name"] . ']" value="' . oldHtmlspecialchars(
 						$this->getString()) . '" />' . ($this->length() ? '' : $plusbut);
 				}
 			} else{
@@ -695,7 +695,7 @@ class we_linklist{
 		if($editmode && ($this->show == -1 || ($this->show > $this->length()))){
 			echo "<br/>" . we_button::create_button(
 				"image:btn_add_link", "javascript:setScrollTo();_EditorFrame.setEditorIsHot(1);we_cmd('add_link_to_linklist','" . $this->attribs["name"] . "')", true, 100, 22, "", "", false);
-			echo '<input type="hidden" name="we_' . $this->docName . '_linklist[' . $this->attribs["name"] . ']" value="' . htmlspecialchars(
+			echo '<input type="hidden" name="we_' . $this->docName . '_linklist[' . $this->attribs["name"] . ']" value="' . oldHtmlspecialchars(
 				$this->getString()) . '" />';
 		}
 	}

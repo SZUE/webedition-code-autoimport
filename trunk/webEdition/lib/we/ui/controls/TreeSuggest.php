@@ -97,7 +97,7 @@ if(isset($sessionName) && $sessionName !== '' && isset($id) && $id !== ''){
 			$m = 0;
 			foreach($nodes as $k => $v){
 				$m++;
-				$response .= '"' . htmlspecialchars($v['Text']) . '"';
+				$response .= '"' . oldHtmlspecialchars($v['Text']) . '"';
 				if($m < $nodesCount)
 					$response .= ',';
 			}

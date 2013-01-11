@@ -434,7 +434,7 @@ if(!$GLOBALS['we_editmode']){
 			}
 
 			return
-				'<input type="hidden" name="we_' . $we_doc->Name . '_txt[data]" value="' . htmlspecialchars($code) . '" />' .
+				'<input type="hidden" name="we_' . $we_doc->Name . '_txt[data]" value="' . oldHtmlspecialchars($code) . '" />' .
 				we_html_element::htmlApplet(array(
 					'id' => 'weEditorApplet',
 					'style' => 'position:relative;left:-4000px;',
@@ -985,7 +985,7 @@ if(!$GLOBALS['we_editmode']){
 				$maineditor .= we_getJavaEditorCode($code);
 			} else{
 				$maineditor .= '<textarea id="editarea" style="width: 100%; height: ' . (($_SESSION["prefs"]["editorHeight"] != 0) ? $_SESSION["prefs"]["editorHeight"] : "320") . 'px;' . (($_SESSION["prefs"]["editorFont"] == 1) ? " font-family: " . $_SESSION["prefs"]["editorFontname"] . "; font-size: " . $_SESSION["prefs"]["editorFontsize"] . "px;" : "") . '" id="data" name="we_' . $we_doc->Name . '_txt[data]" wrap="' . $wrap . '" ' . ((!we_base_browserDetect::isGecko() && (!isset($_SESSION["we_wrapcheck"]) || !$_SESSION["we_wrapcheck"] )) ? '' : ' rows="20" cols="80"') . ' onChange="_EditorFrame.setEditorIsHot(true);" ' . (we_base_browserDetect::isIE()||we_base_browserDetect::isOpera() ? 'onkeydown="return wedoKeyDown(this,event.keyCode);"' : 'onkeypress="return wedoKeyDown(this,event.keyCode);"') . '>'
-					. htmlspecialchars($code) . '</textarea>';
+					. oldHtmlspecialchars($code) . '</textarea>';
 				if($_SESSION['prefs']['editorMode'] == 'codemirror' || $_SESSION['prefs']['editorMode'] == 'codemirror2'){ //Syntax-Highlighting
 					$vers = ($_SESSION['prefs']['editorMode'] == 'codemirror' ? '' : 2);
 					$maineditor .= ($vers == 2 ? we_getCodeMirror2Code($code) : we_getCodeMirrorCode($code));

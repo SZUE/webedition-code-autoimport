@@ -239,8 +239,8 @@ function we_tag_a($attribs, $content){
 
 	if($button){ //	show button
 		$attribs['type'] = 'button';
-		$attribs['value'] = htmlspecialchars($content);
-		$attribs['onclick'] = ($target ? ("var wind=window.open('','$target');wind") : 'self') . ".document.location='$url" . htmlspecialchars(
+		$attribs['value'] = oldHtmlspecialchars($content);
+		$attribs['onclick'] = ($target ? ("var wind=window.open('','$target');wind") : 'self') . ".document.location='$url" . oldHtmlspecialchars(
 				$urladd) . "';";
 
 		$attribs = removeAttribs($attribs, array('target')); //	not html - valid
@@ -252,7 +252,7 @@ function we_tag_a($attribs, $content){
 		}
 		return getHtmlTag('input', $attribs);
 	} else{ //	show normal link
-		$attribs['href'] = $url . ($urladd ? htmlspecialchars($urladd) : '');
+		$attribs['href'] = $url . ($urladd ? oldHtmlspecialchars($urladd) : '');
 
 		if($confirm){
 			$attribs['onclick'] = 'if(confirm(\'' . $confirm . '\')){return true;}else{return false;}';

@@ -69,7 +69,7 @@ class weBannerView extends weBannerBase{
 	}
 
 	function htmlHidden($name, $value = "", $id = ""){
-		return '<input type="hidden" name="' . trim($name) . '" value="' . htmlspecialchars($value) . '"' . (empty($id) ? "" : ' id="' . $id . '"') . ' />';
+		return '<input type="hidden" name="' . trim($name) . '" value="' . oldHtmlspecialchars($value) . '"' . (empty($id) ? "" : ' id="' . $id . '"') . ' />';
 	}
 
 	function getProperties(){

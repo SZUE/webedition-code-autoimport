@@ -28,32 +28,32 @@ function we_tag_var($attribs){
 	$docAttr = weTag_getAttribute('doc', $attribs);
 	//$_name_orig=weTag_getAttribute("_name_orig", $attribs);
 	$type = weTag_getAttribute("type", $attribs);
-	$htmlspecialchars = weTag_getAttribute("htmlspecialchars", $attribs, false, true); // #3771
+	$oldHtmlspecialchars = weTag_getAttribute("oldHtmlspecialchars", $attribs, false, true); // #3771
 	$doc = we_getDocForTag($docAttr, false);
 
 	switch($type){
 		case "session" :
 			$name = weTag_getAttribute("_name_orig", $attribs);
 			$return = (isset($_SESSION[$name])) ? $_SESSION[$name] : "";
-			return $htmlspecialchars ? htmlspecialchars($return) : $return;
+			return $oldHtmlspecialchars ? oldHtmlspecialchars($return) : $return;
 		case "request" :
 			$name = weTag_getAttribute("_name_orig", $attribs);
 			$return = we_util::rmPhp(isset($_REQUEST[$name]) ? $_REQUEST[$name] : "");
-			return $htmlspecialchars ? htmlspecialchars($return) : $return;
+			return $oldHtmlspecialchars ? oldHtmlspecialchars($return) : $return;
 		case "post" :
 			$name = weTag_getAttribute("_name_orig", $attribs);
 			$return = we_util::rmPhp(isset($_POST[$name]) ? $_POST[$name] : "");
-			return $htmlspecialchars ? htmlspecialchars($return) : $return;
+			return $oldHtmlspecialchars ? oldHtmlspecialchars($return) : $return;
 		case "get" :
 			$name = weTag_getAttribute("_name_orig", $attribs);
 			$return = we_util::rmPhp(isset($_GET[$name]) ? $_GET[$name] : "");
-			return $htmlspecialchars ? htmlspecialchars($return) : $return;
+			return $oldHtmlspecialchars ? oldHtmlspecialchars($return) : $return;
 		case "global" :
 			$name = weTag_getAttribute("name", $attribs);
 			$name_orig = weTag_getAttribute("_name_orig", $attribs);
 
 			$return = (isset($GLOBALS[$name])) ? $GLOBALS[$name] : 	((isset($GLOBALS[$name_orig])) ? $GLOBALS[$name_orig]:'');
-			return $htmlspecialchars ? htmlspecialchars($return) : $return;
+			return $oldHtmlspecialchars ? oldHtmlspecialchars($return) : $return;
 		case 'multiobject' :
 			$data = unserialize($doc->getField($attribs, $type, true));
 			if(isset($data['objects']) && !empty($data['objects'])){

@@ -83,7 +83,7 @@ if($cmd == "ok"){
 						$wf_select = '<select name="wf_select" size="1">';
 						$wfs = we_workflow_utility::getAllWorkflows(we_workflow_workflow::STATE_ACTIVE,$we_doc->Table);
 						foreach($wfs as $wID=>$wfname) {
-							$wf_select .= '<option value="'.$wID.'"'.(($wID == $wfID) ? ' selected' : '').'>'.htmlspecialchars($wfname)."</option>\n";
+							$wf_select .= '<option value="'.$wID.'"'.(($wID == $wfID) ? ' selected' : '').'>'.oldHtmlspecialchars($wfname)."</option>\n";
 						}
 						$wf_select .= '</select>';
 

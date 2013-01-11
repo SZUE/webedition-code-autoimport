@@ -134,9 +134,9 @@ class weGlossaryCache{
 				$Title = utf8_decode($Title);
 			}
 
-			$Text = weGlossary::escapeChars(htmlspecialchars($Text, ENT_NOQUOTES));
+			$Text = weGlossary::escapeChars(oldHtmlspecialchars($Text, ENT_NOQUOTES));
 
-			$Title = htmlspecialchars($Title, ENT_QUOTES);
+			$Title = oldHtmlspecialchars($Title, ENT_QUOTES);
 
 			if(trim($Title) != ''){
 				$temp['title'] = trim($Title);

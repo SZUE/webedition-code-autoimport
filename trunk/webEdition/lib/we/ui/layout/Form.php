@@ -182,10 +182,10 @@ class we_ui_layout_Form extends we_ui_abstract_AbstractFormElement
 		$attributs = "";
 		if (isset($attribs) && is_array($attribs)) {
 			foreach ($attribs as $key => $val) {
-				$attributs .= $key . '="' . htmlspecialchars($val) . '" ';
+				$attributs .= $key . '="' . oldHtmlspecialchars($val) . '" ';
 			}
 		}
-		return '<input type="hidden" name="' . htmlspecialchars($name) . '" value="' . htmlspecialchars($value) . '" ' . $attributs . ' />';
+		return '<input type="hidden" name="' . oldHtmlspecialchars($name) . '" value="' . oldHtmlspecialchars($value) . '" ' . $attributs . ' />';
 	}
 
 }

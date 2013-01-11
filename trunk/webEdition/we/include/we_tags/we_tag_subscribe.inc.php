@@ -56,9 +56,9 @@ function we_tag_subscribe($attribs){
 				$vals = makeArrayFromCSV($values);
 				foreach($vals as $i => $v){
 					if((isset($_REQUEST["we_subscribe_list__"]) && in_array($i, $_REQUEST["we_subscribe_list__"]))){
-						$options .= getHtmlTag('option', array('value' => $i, 'selected' => 'selected'), htmlspecialchars($v));
+						$options .= getHtmlTag('option', array('value' => $i, 'selected' => 'selected'), oldHtmlspecialchars($v));
 					} else{
-						$options .= getHtmlTag('option', array('value' => $i), htmlspecialchars($v));
+						$options .= getHtmlTag('option', array('value' => $i), oldHtmlspecialchars($v));
 					}
 				}
 				return getHtmlTag('input', array('type' => 'hidden', 'name' => 'we_use_lists__', 'value' => 1, 'xml' => $xml)) .
@@ -92,11 +92,11 @@ function we_tag_subscribe($attribs){
 			}
 
 			if($ishtml){
-				$options = getHtmlTag('option', array('value' => 0), htmlspecialchars($values[0])) . "\n";
-				$options .= getHtmlTag('option', array('value' => 1, 'selected' => 'selected'), htmlspecialchars($values[1])) . "\n";
+				$options = getHtmlTag('option', array('value' => 0), oldHtmlspecialchars($values[0])) . "\n";
+				$options .= getHtmlTag('option', array('value' => 1, 'selected' => 'selected'), oldHtmlspecialchars($values[1])) . "\n";
 			} else{
-				$options = getHtmlTag('option', array('value' => 0, 'selected' => 'selected'), htmlspecialchars($values[0])) . "\n";
-				$options .= getHtmlTag('option', array('value' => 1), htmlspecialchars($values[1])) . "\n";
+				$options = getHtmlTag('option', array('value' => 0, 'selected' => 'selected'), oldHtmlspecialchars($values[0])) . "\n";
+				$options .= getHtmlTag('option', array('value' => 1), oldHtmlspecialchars($values[1])) . "\n";
 			}
 			return getHtmlTag('select', $newAttribs, $options, true);
 
@@ -107,9 +107,9 @@ function we_tag_subscribe($attribs){
 			$newAttribs['name'] = 'we_subscribe_firstname__';
 
 			if(isset($_REQUEST["we_subscribe_firstname__"])){
-				$newAttribs['value'] = htmlspecialchars($_REQUEST["we_subscribe_firstname__"]);
+				$newAttribs['value'] = oldHtmlspecialchars($_REQUEST["we_subscribe_firstname__"]);
 			} else{
-				$newAttribs['value'] = htmlspecialchars($value);
+				$newAttribs['value'] = oldHtmlspecialchars($value);
 			}
 			return getHtmlTag('input', $newAttribs);
 
@@ -126,9 +126,9 @@ function we_tag_subscribe($attribs){
 				$newAttribs['type'] = 'text';
 
 				if(isset($_REQUEST["we_subscribe_salutation__"])){
-					$newAttribs['value'] = htmlspecialchars($_REQUEST["we_subscribe_salutation__"]);
+					$newAttribs['value'] = oldHtmlspecialchars($_REQUEST["we_subscribe_salutation__"]);
 				} else{
-					$newAttribs['value'] = htmlspecialchars($value);
+					$newAttribs['value'] = oldHtmlspecialchars($value);
 				}
 				return getHtmlTag('input', $newAttribs);
 			}
@@ -145,11 +145,11 @@ function we_tag_subscribe($attribs){
 				$newAttribs['type'] = 'text';
 
 				if(isset($_REQUEST["we_subscribe_title__"])){
-					$newAttribs['value'] = htmlspecialchars($_REQUEST["we_subscribe_title__"]);
+					$newAttribs['value'] = oldHtmlspecialchars($_REQUEST["we_subscribe_title__"]);
 				} else{
-					$newAttribs['value'] = htmlspecialchars($value);
+					$newAttribs['value'] = oldHtmlspecialchars($value);
 				}
-				return getHtmlTag('input', $newAttribs); // '<input type="text" name="we_subscribe_title__"'.($attr ? " $attr" : "").($value ? ' value="'.htmlspecialchars($value).'"' : '').($xml ? ' /' : '').' />';
+				return getHtmlTag('input', $newAttribs); // '<input type="text" name="we_subscribe_title__"'.($attr ? " $attr" : "").($value ? ' value="'.oldHtmlspecialchars($value).'"' : '').($xml ? ' /' : '').' />';
 			}
 
 		case "lastname":
@@ -159,9 +159,9 @@ function we_tag_subscribe($attribs){
 			$newAttribs['name'] = 'we_subscribe_lastname__';
 
 			if(isset($_REQUEST["we_subscribe_lastname__"])){
-				$newAttribs['value'] = htmlspecialchars($_REQUEST["we_subscribe_lastname__"]);
+				$newAttribs['value'] = oldHtmlspecialchars($_REQUEST["we_subscribe_lastname__"]);
 			} else{
-				$newAttribs['value'] = htmlspecialchars($value);
+				$newAttribs['value'] = oldHtmlspecialchars($value);
 			}
 			return getHtmlTag('input', $newAttribs);
 
@@ -173,11 +173,11 @@ function we_tag_subscribe($attribs){
 			$newAttribs['name'] = 'we_subscribe_email__';
 
 			if(isset($_REQUEST["we_subscribe_email__"])){
-				$newAttribs['value'] = htmlspecialchars($_REQUEST["we_subscribe_email__"]);
+				$newAttribs['value'] = oldHtmlspecialchars($_REQUEST["we_subscribe_email__"]);
 			} else{
-				$newAttribs['value'] = htmlspecialchars($value);
+				$newAttribs['value'] = oldHtmlspecialchars($value);
 			}
-			return getHtmlTag('input', $newAttribs); // '<input type="text" name="we_subscribe_email__"'.($attr ? " $attr" : "").($value ? ' value="'.htmlspecialchars($value).'"' : '').($xml ? ' /' : '').' />';
+			return getHtmlTag('input', $newAttribs); // '<input type="text" name="we_subscribe_email__"'.($attr ? " $attr" : "").($value ? ' value="'.oldHtmlspecialchars($value).'"' : '').($xml ? ' /' : '').' />';
 	}
 
 	return '';

@@ -356,13 +356,13 @@ if(!empty($newDocElements)){
 			$contentDiff .= '<td colspan="2" style="' . $mark . '">' . $pre . $text . '</pre></td>';
 		} else{
 			if($newVal != we_html_tools::getPixel(1, 1) && $k != 'weInternVariantElement'){
-				$newVal = htmlspecialchars($newVal);
+				$newVal = oldHtmlspecialchars($newVal);
 			}
 
 			$contentDiff .= '<td width="33%" style="' . $mark . '">' . $div . $pre . $newVal . ($pre == '' ? '' : '</pre>') . ($div == '' ? '' : '</div>') . '</td>';
 			if($oldVersion){
 				if($oldVal != we_html_tools::getPixel(1, 1) && $k != 'weInternVariantElement'){
-					$oldVal = htmlspecialchars($oldVal);
+					$oldVal = oldHtmlspecialchars($oldVal);
 				}
 				$contentDiff .= '<td width="33%" style="' . $mark . 'border-left:1px solid #B8B8B7;">' . $div . $pre . $oldVal . ($pre == '' ? '' : '</pre>') . ($div == '' ? '' : '</div>') . '</td>';
 			}

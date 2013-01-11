@@ -1700,7 +1700,7 @@ setTimeout("reloadFrame()", ' . $_execute . ');');
 				$out = g_l('browser', '[save_link_as_DEFAULT]');
 		}
 
-		return nl2br(htmlspecialchars(preg_replace('#<br\s*/?\s*>#i', "\n", $out)));
+		return nl2br(oldHtmlspecialchars(preg_replace('#<br\s*/?\s*>#i', "\n", $out)));
 	}
 
 }

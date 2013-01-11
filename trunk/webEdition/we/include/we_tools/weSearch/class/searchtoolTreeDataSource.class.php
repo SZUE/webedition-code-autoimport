@@ -118,7 +118,7 @@ class searchtoolTreeDataSource extends weToolTreeDataSource{
 						$fields[strtolower($k)] = $v;
 				}
 
-				$_text = htmlspecialchars(searchtool::getLangText($db->f('Path'), $db->f('Text')));
+				$_text = oldHtmlspecialchars(searchtool::getLangText($db->f('Path'), $db->f('Text')));
 
 				$typ['text'] = $_text;
 

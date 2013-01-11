@@ -380,7 +380,7 @@ class weSiteImport{
 			$i = 0;
 			foreach($fields as $name => $type){
 				$row = array();
-				$row[0]['dat'] = htmlspecialchars($name) . '<input type="hidden" name="fields[' . $i . '][name]" value="' . htmlspecialchars(
+				$row[0]['dat'] = oldHtmlspecialchars($name) . '<input type="hidden" name="fields[' . $i . '][name]" value="' . oldHtmlspecialchars(
 						$name) . '" />';
 				$index = $this->_getIndexOfValues($values, $name);
 				if($index > -1){
@@ -390,9 +390,9 @@ class weSiteImport{
 					$valpre = "";
 					$valpost = "";
 				}
-				$row[1]["dat"] = '<textarea name="fields[' . $i . '][pre]" style="width:160px;height:80px" wrap="off">' . htmlspecialchars(
+				$row[1]["dat"] = '<textarea name="fields[' . $i . '][pre]" style="width:160px;height:80px" wrap="off">' . oldHtmlspecialchars(
 						$valpre) . '</textarea>';
-				$row[2]["dat"] = '<textarea name="fields[' . $i . '][post]" style="width:160px;height:80px" wrap="off">' . htmlspecialchars(
+				$row[2]["dat"] = '<textarea name="fields[' . $i . '][post]" style="width:160px;height:80px" wrap="off">' . oldHtmlspecialchars(
 						$valpost) . '</textarea>';
 				array_push($content, $row);
 				$i++;
@@ -450,7 +450,7 @@ class weSiteImport{
 			"gmt" => g_l('import', '[gts]'),
 			"own" => g_l('import', '[fts]')
 		);
-		$_dateFormatHTML = '<div id="dateFormatDiv" style="display:' . ($hasDateFields ? 'block' : 'none') . ';margin-bottom:10px;"><table style="margin:10px 0 10px 0" border="0" cellpadding="0" cellspacing="0"><tr><td style="padding-right:10px" class="defaultfont">' . htmlspecialchars(
+		$_dateFormatHTML = '<div id="dateFormatDiv" style="display:' . ($hasDateFields ? 'block' : 'none') . ';margin-bottom:10px;"><table style="margin:10px 0 10px 0" border="0" cellpadding="0" cellspacing="0"><tr><td style="padding-right:10px" class="defaultfont">' . oldHtmlspecialchars(
 				g_l('siteimport', "[dateFormat]"), ENT_QUOTES) . ':</td><td>' . we_html_tools::htmlSelect(
 				"dateFormat", $dateformatvals, 1, $_valueDateFormat, false, 'onchange="dateFormatChanged(this);"') . '</td><td id="ownValueInput" style="padding-left:10px;display:' . (($_valueDateFormat == "own") ? 'block' : 'none') . '">' . we_html_tools::htmlTextInput(
 				"dateformatField", 20, $_valueDateFormatField) . '</td><td id="ownValueInputHelp" style="padding-bottom:1px;padding-left:10px;display:' . (($_valueDateFormat == "own") ? 'block' : 'none') . '">' . $date_help_button . '</td></tr></table></div>';
@@ -459,15 +459,15 @@ class weSiteImport{
 				$_templateFields, $_valueFieldValues) . '</div></div>';
 
 		$_regExCheckbox = we_forms::checkboxWithHidden(
-				$_valueUseRegex, "useRegEx", htmlspecialchars(g_l('siteimport', "[useRegEx]"), ENT_QUOTES));
+				$_valueUseRegex, "useRegEx", oldHtmlspecialchars(g_l('siteimport', "[useRegEx]"), ENT_QUOTES));
 		$specifyHTML = $this->_getTemplateSelectHTML($_valueTemplateId) . '<div id="specifyParam" style="padding-top:10px;display:' . ($_valueTemplateId ? 'block' : 'none') . '">' . $_dateFormatHTML . $_regExCheckbox . $table . '</div>';
 
 		$vals = array(
-			"auto" => htmlspecialchars(g_l('siteimport', "[cresteAutoTemplate]"), ENT_QUOTES),
-			"specify" => htmlspecialchars(g_l('siteimport', "[useSpecifiedTemplate]"), ENT_QUOTES)
+			"auto" => oldHtmlspecialchars(g_l('siteimport', "[cresteAutoTemplate]"), ENT_QUOTES),
+			"specify" => oldHtmlspecialchars(g_l('siteimport', "[useSpecifiedTemplate]"), ENT_QUOTES)
 		);
 
-		$_html = '<table style="margin-bottom:10px" border="0" cellpadding="0" cellspacing="0"><tr><td style="padding-right:10px" class="defaultfont">' . htmlspecialchars(
+		$_html = '<table style="margin-bottom:10px" border="0" cellpadding="0" cellspacing="0"><tr><td style="padding-right:10px" class="defaultfont">' . oldHtmlspecialchars(
 				g_l('siteimport', "[importKind]"), ENT_QUOTES) . ':</td><td>' . we_html_tools::htmlSelect(
 				"createType", $vals, 1, $_valueCreateType, false, 'onchange="createTypeChanged(this);"') . '</td></tr></table><div id="ctauto" style="display:' . (($_valueCreateType == "auto") ? 'block' : 'none') . '">' . we_html_tools::htmlAlertAttentionBox(
 				g_l('siteimport', "[autoExpl]"), 2, 450) . self::_formPathHTML($_valueTemplateName, $_valueTemplateParentID) . '</div><div id="ctspecify" style="display:' . (($_valueCreateType == "specify") ? 'block' : 'none') . '"><div style="height:4px;"></div>' . $specifyHTML . '</div>';
@@ -614,7 +614,7 @@ class weSiteImport{
 
 		$foo = we_html_tools::htmlTextInput($textname, 30, $path, "", ' readonly', "text", 320, 0);
 		return we_html_tools::htmlFormElementTable(
-				$foo, htmlspecialchars(g_l('siteimport', "[template]"), ENT_QUOTES), "left", "defaultfont", we_getHiddenField($idname, $tid), we_html_tools::getPixel(20, 4), $button);
+				$foo, oldHtmlspecialchars(g_l('siteimport', "[template]"), ENT_QUOTES), "left", "defaultfont", we_getHiddenField($idname, $tid), we_html_tools::getPixel(20, 4), $button);
 	}
 
 	/**
