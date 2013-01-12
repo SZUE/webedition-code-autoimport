@@ -199,6 +199,7 @@ function weTag_getParserAttribute($name, $attribs, $default = '', $isFlag = fals
  */
 function weTag_getAttribute($name, $attribs, $default = '', $isFlag = false, $useGlobal = true){
 	$value = isset($attribs[$name]) ? $attribs[$name] : '';
+	$regs = array();
 	if($useGlobal && !is_array($value) && preg_match('|^\\\\?\$(.+)$|', $value, $regs)){
 		$value = isset($GLOBALS[$regs[1]]) ? $GLOBALS[$regs[1]] : '';
 	}
@@ -372,7 +373,7 @@ function we_getInputRadioField($name, $value, $itsValue, $atts){
 	//  This function replaced fnc: we_getRadioField
 	$atts['type'] = 'radio';
 	$atts['name'] = $name;
-	$atts['value'] = htmlspecialchars($itsValue);
+	$atts['value'] = oldHtmlspecialchars($itsValue);
 	if($value == $itsValue){
 		$atts['checked'] = 'checked';
 	}
@@ -384,13 +385,13 @@ function we_getTextareaField($name, $value, $atts){
 	$atts['rows'] = isset($atts['rows']) ? $atts['rows'] : 5;
 	$atts['cols'] = isset($atts['cols']) ? $atts['cols'] : 20;
 
-	return getHtmlTag('textarea', $atts, htmlspecialchars($value), true);
+	return getHtmlTag('textarea', $atts, oldHtmlspecialchars($value), true);
 }
 
 function we_getInputTextInputField($name, $value, $atts){
 	$atts['type'] = 'text';
 	$atts['name'] = $name;
-	$atts['value'] = htmlspecialchars($value);
+	$atts['value'] = oldHtmlspecialchars($value);
 
 	return getHtmlTag('input', $atts);
 }
@@ -398,13 +399,13 @@ function we_getInputTextInputField($name, $value, $atts){
 function we_getInputPasswordField($name, $value, $atts){
 	$atts['type'] = 'password';
 	$atts['name'] = $name;
-	$atts['value'] = htmlspecialchars($value);
+	$atts['value'] = oldHtmlspecialchars($value);
 
 	return getHtmlTag('input', $atts);
 }
 
 function we_getHiddenField($name, $value, $xml = false){
-	return '<input type="hidden" name="' . $name . '" value="' . htmlspecialchars($value) . '" ' . ($xml ? ' /' : '') . '>';
+	return '<input type="hidden" name="' . $name . '" value="' . oldHtmlspecialchars($value) . '" ' . ($xml ? ' /' : '') . '>';
 }
 
 //function we_getInputChoiceField($name, $value, $values, $atts, $mode, $valuesIsHash = false){}
@@ -429,7 +430,7 @@ function we_getInputCheckboxField($name, $value, $attr){
 	}
 	$_attsHidden['type'] = 'hidden';
 	$_attsHidden['name'] = $name;
-	$_attsHidden['value'] = htmlspecialchars($value);
+	$_attsHidden['value'] = oldHtmlspecialchars($value);
 
 	return getHtmlTag('input', $attr) . getHtmlTag('input', $_attsHidden);
 }
@@ -450,8 +451,8 @@ function we_getSelectField($name, $value, $values, $attribs = array(), $addMissi
 	}
 	if((!$isin) && $addMissing && $value != ''){
 		$content .= getHtmlTag('option', array(
-			'value' => htmlspecialchars($value), 'selected' => 'selected'
-			), htmlspecialchars($value), true);
+			'value' => oldHtmlspecialchars($value), 'selected' => 'selected'
+			), oldHtmlspecialchars($value), true);
 	}
 	return getHtmlTag('select', $attribs, $content, true);
 }

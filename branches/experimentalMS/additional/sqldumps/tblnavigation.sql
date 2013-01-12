@@ -1,23 +1,23 @@
+
+
+
+
 CREATE TABLE tblnavigation (
   ID bigint  NOT NULL IDENTITY(1,1),
   ParentID bigint  NOT NULL default '0',
   "Path" varchar(900) NOT NULL default '',/*   War 2000 */
-  Published int  NOT NULL DEFAULT '1',
+  Published tinyint  NOT NULL DEFAULT '1',
   "Text" varchar(800) NOT NULL default '',
   Display varchar(800) NOT NULL default '',
-
   ContentType varchar(25) CHECK(ContentType IN('weNavigation')) NOT NULL default 'weNavigation',
   Icon varchar(25) CHECK(Icon IN('folder.gif','link.gif')) NOT NULL,
-  
   IsFolder tinyint  NOT NULL default '0',
   TitleField varchar(255) NOT NULL default '',
   IconID bigint  NOT NULL default '0',
-  
   Selection varchar(25) CHECK(Selection IN ('dynamic','nodynamic','static')) NOT NULL,
   LinkID bigint  NOT NULL default '0',
   CurrentOnUrlPar tinyint  NOT NULL DEFAULT '0',
   CurrentOnAnker tinyint  NOT NULL DEFAULT '0',
-  
   SelectionType varchar(25) CHECK(SelectionType IN('urlLink','category','catLink','classname','objLink','docLink','doctype')) NOT NULL default 'docLink',
   FolderID bigint  NOT NULL default '0',
   DocTypeID tinyint  NOT NULL,

@@ -256,7 +256,7 @@ class we_search{
 		$loc = array("CONTAIN", "IS", "START", "END", "<", "<=", ">=", ">");
 		foreach($loc as $l){
 			$opts .= '<option value="' . $l . '" ' . (($select == $l) ? "selected" : "") . '>'
-				. htmlspecialchars((( isset($sprach[$l]) && $sprach[$l] ) ? $sprach[$l] : $l))
+				. oldHtmlspecialchars((( isset($sprach[$l]) && $sprach[$l] ) ? $sprach[$l] : $l))
 				. '</option>';
 		}
 
@@ -269,7 +269,7 @@ class we_search{
 		$loc = array("IS", "<", "<=", ">=", ">");
 		foreach($loc as $l){
 			$opts .= '<option value="' . $l . '" ' . (($select == $l) ? "selected" : "") . '>'
-				. htmlspecialchars((( isset($sprach[$l]) && $sprach[$l] ) ? $sprach[$l] : $l))
+				. oldHtmlspecialchars((( isset($sprach[$l]) && $sprach[$l] ) ? $sprach[$l] : $l))
 				. '</option>';
 		}
 
@@ -282,7 +282,7 @@ class we_search{
 		$loc = array("IS");
 		foreach($loc as $l){
 			$opts .= '<option value="' . $l . '" ' . (($select == $l) ? "selected" : "") . '>'
-				. htmlspecialchars((( isset($sprach[$l]) && $sprach[$l] ) ? $sprach[$l] : $l))
+				. oldHtmlspecialchars((( isset($sprach[$l]) && $sprach[$l] ) ? $sprach[$l] : $l))
 				. '</option>';
 		}
 

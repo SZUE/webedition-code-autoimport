@@ -51,7 +51,7 @@ class weCustomerView{
 	//----------- Utility functions ------------------
 
 	function htmlHidden($name, $value = ''){
-		return we_html_element::htmlHidden(array('name' => trim($name), 'value' => htmlspecialchars($value)));
+		return we_html_element::htmlHidden(array('name' => trim($name), 'value' => oldHtmlspecialchars($value)));
 	}
 
 	function setFramesetName($frameset){
@@ -1236,7 +1236,7 @@ class weCustomerView{
 
 		$result = array();
 		while($this->db->next_record()) {
-			$result[$this->db->f('ID')] = htmlspecialchars($this->db->f('user'));
+			$result[$this->db->f('ID')] = oldHtmlspecialchars($this->db->f('user'));
 		}
 
 		return $result;

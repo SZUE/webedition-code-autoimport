@@ -22,8 +22,8 @@
  * @package    webEdition_class
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-/** the parent class of storagable webEdition classes */
 
+/** the parent class of storagable webEdition classes */
 abstract class we_class{
 	//constants for retrieving data from DB
 
@@ -54,7 +54,7 @@ abstract class we_class{
 
 	/* Database Object */
 	protected $DB_WE;
-	
+
 	/* optional ID for being able to manipulate the ID for DB inserts, requires a getter and setter */
 	protected $insertID = 0;
 
@@ -90,13 +90,15 @@ abstract class we_class{
 	function init(){
 		$this->we_new();
 	}
-	
+
 	/* set the protected variable insertID */
+
 	function setInsertID($insertID){
 		$this->insertID = $insertID;
 	}
-	
+
 	/* get the protected variable insertID */
+
 	function getInsertID(){
 		return $this->insertID;
 	}
@@ -115,7 +117,7 @@ abstract class we_class{
 
 	/* must be overwritten by child */
 
-	function saveInSession(/*&$save*/){
+	function saveInSession(/* &$save */){
 
 	}
 
@@ -247,8 +249,8 @@ abstract class we_class{
 	}
 
 	function htmlHidden($name, $value = '', $params = null){
-		//we_html_element::htmlHidden(array('name'=>trim($name),value=>htmlspecialchars($value)));
-		return '<input type="hidden" name="' . trim($name) . '" value="' . htmlspecialchars($value) . '" ' . $params . ' />';
+		//we_html_element::htmlHidden(array('name'=>trim($name),value=>oldHtmlspecialchars($value)));
+		return '<input type="hidden" name="' . trim($name) . '" value="' . oldHtmlspecialchars($value) . '" ' . $params . ' />';
 	}
 
 	function htmlPasswordInput($name, $size = 24, $value = '', $maxlength = '', $attribs = ''){
@@ -256,7 +258,7 @@ abstract class we_class{
 	}
 
 	function htmlTextArea($name, $rows = 10, $cols = 30, $value = '', $attribs = ''){
-		return '<textarea class="defaultfont" name="' . trim($name) . '" rows="' . abs($rows) . '" cols="' . abs($cols) . '"' . ($attribs ? " $attribs" : '') . '>' . ($value ? (htmlspecialchars($value)) : '') . '</textarea>';
+		return '<textarea class="defaultfont" name="' . trim($name) . '" rows="' . abs($rows) . '" cols="' . abs($cols) . '"' . ($attribs ? " $attribs" : '') . '>' . ($value ? (oldHtmlspecialchars($value)) : '') . '</textarea>';
 	}
 
 	function htmlRadioButton($name, $value, $checked = false, $attribs = '', $text = '', $textalign = 'left', $textclass = 'defaultfont', $type = 'radio', $width = ''){
@@ -313,11 +315,11 @@ abstract class we_class{
 					$ret .= '</optgroup>';
 				}
 				$optgroup = true;
-				$ret .= '<optgroup label="' . htmlspecialchars($value) . '">';
+				$ret .= '<optgroup label="' . oldHtmlspecialchars($value) . '">';
 				continue;
 			}
 
-			$ret .= '<option value="' . htmlspecialchars($value) . '"' . (in_array((($compare == 'value') ? $value : $text), $selIndex) ? ' selected="selected"' : '') . '>' . $text . '</option>';
+			$ret .= '<option value="' . oldHtmlspecialchars($value) . '"' . (in_array((($compare == 'value') ? $value : $text), $selIndex) ? ' selected="selected"' : '') . '>' . $text . '</option>';
 		}
 		$ret .= '</select>';
 		return $ret;
@@ -328,7 +330,7 @@ abstract class we_class{
 		reset($values);
 		$ret = '<select id="' . trim($name) . '" class="weSelect defaultfont" name="' . trim($name) . '" size="' . abs($size) . '"' . ($multiple ? " multiple" : "") . ($attribs ? " $attribs" : "") . ($width ? ' style="width: ' . $width . 'px"' : '') . '>';
 		while(list($value, $text) = each($values)) {
-			$ret .= '<option value="' . htmlspecialchars($value) . '"' . (($selectedIndex == (($compare == 'value') ? $value : $text)) ? ' selected="selected"' : '') . '>' . $text . '</option>';
+			$ret .= '<option value="' . oldHtmlspecialchars($value) . '"' . (($selectedIndex == (($compare == 'value') ? $value : $text)) ? ' selected="selected"' : '') . '>' . $text . '</option>';
 		}
 		$ret .= '</select>';
 		return $ret;
@@ -532,7 +534,7 @@ abstract class we_class{
 		$feldArr = $felder ? makeArrayFromCSV($felder) : $this->persistent_slots;
 		$fields = array();
 		if(!$this->wasUpdate && $this->insertID){
-			if((bool) getHash('SELECT ID FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ID=' . intval($this->insertID), $this->DB_WE)){
+			if(f('SELECT 1 AS a FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ID=' . intval($this->insertID), 'a', $this->DB_WE)){
 				return false;
 			}
 		}
@@ -549,7 +551,8 @@ abstract class we_class{
 					$fields[$fieldName] = $val;
 				}
 				if(!$this->wasUpdate && $this->insertID && $fieldName == 'ID'){//for Apps to be able to manipulate Insert-ID
-					$fields['ID'] = $this->insertID;$this->insertID=0;
+					$fields['ID'] = $this->insertID;
+					$this->insertID = 0;
 				}
 			}
 		}

@@ -23,6 +23,26 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 //NOTE: there is no need to add any variables to we_conf_global.inc.php.default anymore.
+$GLOBALS['tabs'] = array(
+	'ui' => '',
+	'extensions' => 'EDIT_SETTINGS_DEF_EXT',
+	'editor' => '',
+	'proxy' => 'ADMINISTRATOR',
+	'defaultAttribs' => 'ADMINISTRATOR',
+	'advanced' => 'ADMINISTRATOR',
+	'system' => 'ADMINISTRATOR',
+	'seolinks' => 'ADMINISTRATOR',
+	'modules' => 'ADMINISTRATOR',
+	'language' => 'ADMINISTRATOR',
+	'countries' => 'ADMINISTRATOR',
+	'error_handling' => 'ADMINISTRATOR',
+	'backup' => 'ADMINISTRATOR',
+	'validation' => 'ADMINISTRATOR',
+	'email' => 'ADMINISTRATOR',
+	'message_reporting' => '',
+	'recipients' => 'FORMMAIL',
+	'versions' => 'ADMINISTRATOR',
+);
 
 $GLOBALS['configs'] = array(
 // Create array for needed configuration variables
@@ -60,6 +80,9 @@ $GLOBALS['configs'] = array(
 		'EXECUTE_HOOKS' => array('Default setting for hook execution', false),
 // php local scope == global scope
 		'PHPLOCALSCOPE' => array('Default setting for assuming php local scope == global scope ', false),
+		'BASE_IMG'=>array('url used prior all internal we:img tags',''),
+		'BASE_CSS'=>array('url used prior all we:css tags',''),
+		'BASE_JS'=>array('url used prio all we:js tags',''),
 // xhtml
 		'XHTML_DEFAULT' => array('Default setting for xml attribute', false),
 		'XHTML_DEBUG' => array('Enable XHTML debug', false),
@@ -121,6 +144,7 @@ $GLOBALS['configs'] = array(
 		'WE_COUNTRIES_TOP' => array('top countries', "DE,AT,CH"),
 		'WE_COUNTRIES_SHOWN' => array('other shown countries', "BE,DK,FI,FR,GR,IE,IT,LU,NL,PT,SE,ES,GB,EE,LT,MT,PL,SK,SI,CZ,HU,CY"),
 		'WE_COUNTRIES_DEFAULT' => array('shown if no coutry was choosen', ""),
+//versions
 		'VERSIONING_IMAGE' => array('Versioning status for ContentType image', 0),
 		'VERSIONING_TEXT_HTML' => array('Versioning status for ContentType text/html', 0),
 		'VERSIONING_TEXT_WEBEDITION' => array('Versioning status for ContentType text/webedition', 1),
@@ -144,6 +168,7 @@ $GLOBALS['configs'] = array(
 		'VERSIONS_TIME_WEEKS_TMPL' => array('Versioning Number of Weeks', -1),
 		'VERSIONS_TIME_YEARS_TMPL' => array('Versioning Number of Years', -1),
 		'VERSIONS_ANZAHL_TMPL' => array('Versioning Number of Versions', 5),
+//internal
 		'CONF_SAVED_VERSION' => array('config file version', WE_VERSION),
 	),
 	'user' => array(//FIXME: most defaults (currently null) are handled by remember_value! change this!

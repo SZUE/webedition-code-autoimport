@@ -165,7 +165,7 @@ class toolfactory_ui_controls_Tree extends we_ui_controls_Tree{
 		$page = we_ui_layout_HTMLPage::getInstance();
 		$page->addInlineJS($js);
 
-		return '<div class="yui-skin-sam"><div id="' . htmlspecialchars($this->_id) . '"></div></div>';
+		return '<div class="yui-skin-sam"><div id="' . oldHtmlspecialchars($this->_id) . '"></div></div>';
 	}
 
 }

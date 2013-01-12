@@ -518,7 +518,7 @@ $form = '<form name="we_form" method="post">' . we_html_tools::hidden('sel', '')
 
 print '</head><body class="weTreeHeader">
 <div style="width:380px;">
-<h1 class="big" style="padding:0px;margin:0px;">' . htmlspecialchars(g_l('newFile', "[title_delete]")) . '</h1>
+<h1 class="big" style="padding:0px;margin:0px;">' . oldHtmlspecialchars(g_l('newFile', "[title_delete]")) . '</h1>
 <p class="small">' . $content . '</p>
 <div>' . $_buttons . '</div></div>' . $form . '
 </body>

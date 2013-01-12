@@ -73,7 +73,7 @@ function getAllowedClasses($db = ''){
 				$out[] = $db->f('ID');
 			} else{
 
-				// object Workspace check (New since Version 4.x)
+// object Workspace check (New since Version 4.x)
 				foreach($ofWsArray as $w){
 					if($w == $db->f('Path') || (strlen($w) >= strlen($path2) && substr($w, 0, strlen($path2)) == ($path2))){
 						$out[] = $db->f('ID');
@@ -143,7 +143,7 @@ function we_getCatsFromIDs($catIDs, $tokken = ',', $showpath = false, $db = '', 
 	if(!$catIDs){
 		return '';
 	}
-	//$foo = makeArrayFromCSV($catIDs);
+//$foo = makeArrayFromCSV($catIDs);
 	$cats = array();
 	$field = $catfield ? $catfield : ($showpath ? 'Path' : 'Category');
 	$showpath &=!$catfield;
@@ -219,7 +219,7 @@ function getCurlHttp($server, $path, $files = array(), $header = false, $timeout
 	$_pathA = explode('?', $path);
 	$_url = $protocol . $parsedurl['host'] . $port . $_pathA[0];
 	if(strlen($_url . $_pathA[1]) < 2000){
-		//it is safe to have uri's lower than 2k chars - so no need to do a post which servers (e.g. twitter) do not accept.
+//it is safe to have uri's lower than 2k chars - so no need to do a post which servers (e.g. twitter) do not accept.
 		$_url.='?' . $_pathA[1];
 		unset($_pathA[1]);
 	}
@@ -296,7 +296,7 @@ function getCurlHttp($server, $path, $files = array(), $header = false, $timeout
 }
 
 function getHTTP($server, $url, $port = '', $username = '', $password = ''){
-	//FIXME: add code for proxy, see weXMLBrowser
+//FIXME: add code for proxy, see weXMLBrowser
 	$_opt = getHttpOption();
 	if(strpos($server, '://') === FALSE){
 		if(!$port){
@@ -329,14 +329,14 @@ function getHTTP($server, $url, $port = '', $username = '', $password = ''){
 
 function std_numberformat($content){
 	if(preg_match('#.*,[0-9]*$#', $content)){
-		// Deutsche Schreibweise
+// Deutsche Schreibweise
 		$umschreib = preg_replace('#(.*),([0-9]*)$#', '\1.\2', $content);
 		$pos = strrpos($content, ',');
 		$vor = str_replace('.', '', substr($umschreib, 0, $pos));
 		$content = $vor . substr($umschreib, $pos, strlen($umschreib) - $pos);
 	} else
 	if(preg_match('#.*\.[0-9]*$#', $content)){
-		// Englische Schreibweise
+// Englische Schreibweise
 		$pos = strrpos($content, '.');
 		$vor = substr($content, 0, $pos);
 		$vor = str_replace(',', '', str_replace('.', '', $vor));
@@ -461,7 +461,7 @@ function cleanTempFiles($cleanSessFiles = false){
 	}
 	$d->close();
 
-	// when a fragment task was stopped by the user, the tmp file will not be deleted! So we have to clean up
+// when a fragment task was stopped by the user, the tmp file will not be deleted! So we have to clean up
 	$d = dir(rtrim(WE_FRAGMENT_PATH, '/'));
 	while(false !== ($entry = $d->read())) {
 		if($entry != '.' && $entry != '..' && $entry != '.svn'){ /* msconnect */
@@ -516,15 +516,15 @@ function getTemplAndDocIDsOfTemplate($id, $staticOnly = true, $publishedOnly = f
 
 	getTemplatesOfTemplate($id, $returnIDs['templateIDs']);
 
-	// first we need to check if template is included within other templates
-	//$GLOBALS['DB_WE']->query("SELECT ID FROM ".TEMPLATES_TABLE." WHERE MasterTemplateID=".intval($id)." OR IncludedTemplates LIKE '%,".intval($id).",%'");
-	//while ($GLOBALS['DB_WE']->next_record()) {
-	//	array_push($returnIDs["templateIDs"], $GLOBALS['DB_WE']->f("ID"));
-	//}
+// first we need to check if template is included within other templates
+//$GLOBALS['DB_WE']->query("SELECT ID FROM ".TEMPLATES_TABLE." WHERE MasterTemplateID=".intval($id)." OR IncludedTemplates LIKE '%,".intval($id).",%'");
+//while ($GLOBALS['DB_WE']->next_record()) {
+//	array_push($returnIDs["templateIDs"], $GLOBALS['DB_WE']->f("ID"));
+//}
 
 	$id = intval($id);
 
-	// Bug Fix 6615
+// Bug Fix 6615
 	$tmpArray = $returnIDs['templateIDs'];
 	$tmpArray[] = $id;
 	$tmp = implode(',', array_filter($tmpArray));
@@ -555,6 +555,12 @@ function ObjectUsedByObjectFile($id){
 	}
 }
 
+//FIXME: remove this & decide where to use old version of htmlspecialchars
+function oldHtmlspecialchars($string, $flags = -1, $encoding = 'ISO-8859-1', $double_encode = true){
+	$flags = ($flags == -1 ? ENT_COMPAT | (defined('ENT_HTML401') ? ENT_HTML401 : 0) : $flags);
+	return htmlspecialchars($string, $flags, $encoding, $double_encode);
+}
+
 function we_makeHiddenFields($filter = ''){
 	$filterArr = explode(',', $filter);
 	$hidden = '';
@@ -563,10 +569,10 @@ function we_makeHiddenFields($filter = ''){
 			if(!in_array($key, $filterArr)){
 				if(is_array($val)){
 					foreach($val as $v){
-						$hidden .= '<input type="hidden" name="' . $key . '" value="' . htmlspecialchars($v) . '" />';
+						$hidden .= '<input type="hidden" name="' . $key . '" value="' . oldHtmlspecialchars($v) . '" />';
 					}
 				} else{
-					$hidden .= '<input type="hidden" name="' . $key . '" value="' . htmlspecialchars($val) . '" />';
+					$hidden .= '<input type="hidden" name="' . $key . '" value="' . oldHtmlspecialchars($val) . '" />';
 				}
 			}
 		}
@@ -623,7 +629,7 @@ function we_userCanEditModule($modName){
 			}
 			$set_str = implode(' || ', $set);
 			$condition_str = implode(' || ', $or);
-			//FIXME: remove eval
+//FIXME: remove eval
 			eval('if ((' . $set_str . ')&&(' . $condition_str . ')) { $enable=1; } else { $enable=0; }');
 			return $enable;
 		}
@@ -1095,13 +1101,13 @@ function getArrayKey($needle, $haystack){
 /**
  * This function is equivalent to print_r, except that it adds addtional "pre"-headers
  * @param * $val the variable to print
- * @param bool html (default: true) whether to apply htmlspecialchars
+ * @param bool html (default: true) whether to apply oldHtmlspecialchars
  * @param bool useTA (default: false) whether output is formated as textarea
  */
 function p_r($val, $html = true, $useTA = false){
 	print ($useTA ? '<textarea style="width:100%" rows="20">' : '<pre>');
 	$val = print_r($val, true);
-	echo ($html ? htmlspecialchars($val) : $val);
+	echo ($html ? oldHtmlspecialchars($val) : $val);
 	print ($useTA ? '</textarea>' : '</pre>');
 }
 
@@ -1163,17 +1169,17 @@ function getHrefForObject($id, $pid, $path = '', $DB_WE = '', $hidedirindex = fa
 	}
 	$DB_WE = ($DB_WE ? $DB_WE : new DB_WE());
 
+	$foo = getHash('SELECT Published,Workspaces, ExtraWorkspacesSelected,TriggerID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($id), $DB_WE);
+	if(empty($foo)){
+		return '';
+	}
 
-	// check if object is published.
-	if(!$GLOBALS['we_doc']->InWebEdition && !f('SELECT Published FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($id), 'Published', $DB_WE)){
+// check if object is published.
+	if(!$GLOBALS['we_doc']->InWebEdition && !$foo['Published']){
 		$GLOBALS['we_link_not_published'] = 1;
 		return '';
 	}
 
-	$foo = getHash('SELECT Workspaces, ExtraWorkspacesSelected,TriggerID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($id), $DB_WE);
-	if(empty($foo)){
-		return '';
-	}
 	$showLink = false;
 
 	if($foo['Workspaces']){
@@ -1222,20 +1228,18 @@ function getHrefForObject($id, $pid, $path = '', $DB_WE = '', $hidedirindex = fa
 			$pidstr = '?pid=' . intval($pid);
 		}
 		if($objectseourls && $objecturl != ''){
-
-			if($hidedirindex && show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES != '' && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
-				return ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . $objecturl . $pidstr;
-			} else{
-				return ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . $path_parts['filename'] . '/' . $objecturl . $pidstr;
-			}
+			return ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' .
+				($hidedirindex && show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES != '' && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))) ?
+					'' :
+					$path_parts['filename'] . '/' ) .
+				$objecturl . $pidstr;
 		} else{
 			return $path . '?we_objectID=' . intval($id) . str_replace('?', '&amp;', $pidstr);
 		}
 	} else{
 		if($foo['Workspaces']){
 			$fooArr = makeArrayFromCSV($foo['Workspaces']);
-			$path = id_to_path($fooArr[0], FILE_TABLE, $DB_WE);
-			$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE Published > 0 AND ContentType="text/webedition" AND IsDynamic=1 AND Path LIKE "' . $DB_WE->escape($path) . '%"', 'Path', $DB_WE);
+			$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE Published > 0 AND ContentType="text/webedition" AND IsDynamic=1 AND Path LIKE "' . $DB_WE->escape(id_to_path($fooArr[0], FILE_TABLE, $DB_WE)) . '%"', 'Path', $DB_WE);
 			return ($path ? $path . '?we_objectID=' . intval($id) . '&pid=' . intval($pid) : '');
 		}
 	}
@@ -1266,24 +1270,24 @@ function getNextDynDoc($path, $pid, $ws1, $ws2, $DB_WE = ''){
 	return '';
 }
 
-function parseInternalLinks(&$text, $pid, $path = ''){
+function parseInternalLinks(&$text, $pid, $path = '', $doBaseReplace = true){
 	$DB_WE = new DB_WE();
 	$regs = array();
 	if(preg_match_all('/(href|src)="document:(\\d+)(&amp;|&)?("|[^"]+")/i', $text, $regs, PREG_SET_ORDER)){
 		foreach($regs as $reg){
 
-			$_path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($reg[2]) . (isset($GLOBALS['we_doc']->InWebEdition) && $GLOBALS['we_doc']->InWebEdition ? '' : ' AND Published > 0'), 'Path', $DB_WE);
+			$foo = getHash('SELECT Path,(ContentType="image/*") AS isImage  FROM ' . FILE_TABLE . ' WHERE ID=' . intval($reg[2]) . (isset($GLOBALS['we_doc']->InWebEdition) && $GLOBALS['we_doc']->InWebEdition ? '' : ' AND Published > 0'), $DB_WE);
 
-			if($_path){
-				$path_parts = pathinfo($_path);
+			if(!empty($foo) && $foo['Path']){
+				$path_parts = pathinfo($foo['Path']);
 				if(show_SeoLinks() && WYSIWYGLINKS_DIRECTORYINDEX_HIDE && NAVIGATION_DIRECTORYINDEX_NAMES != '' && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
-					$_path = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/';
+					$foo['Path'] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/';
 				}
-				$text = str_replace($reg[1] . '="document:' . $reg[2] . $reg[3] . $reg[4], $reg[1] . '="' . $_path . ($reg[3] ? '?' : '') . $reg[4], $text);
+				$text = str_replace($reg[1] . '="document:' . $reg[2] . $reg[3] . $reg[4], $reg[1] . '="' . ($doBaseReplace && $foo['isImage'] ? BASE_IMG : '') . $foo['Path'] . ($reg[3] ? '?' : '') . $reg[4], $text);
 			} else{
-				$text = preg_replace('|<a [^>]*href="document:' . $reg[2] . '"[^>]*>(.*)</a>|Ui', '\1', $text);
-				$text = preg_replace('|<a [^>]*href="document:' . $reg[2] . '"[^>]*>|Ui', '', $text);
-				$text = preg_replace('|<img [^>]*src="document:' . $reg[2] . '"[^>]*>|Ui', '', $text);
+				$text = preg_replace(array(
+					'|<a [^>]*href="document:' . $reg[2] . '"[^>]*>(.*)</a>|Ui', '|<a [^>]*href="document:' . $reg[2] . '"[^>]*>|Ui', '|<img [^>]*src="document:' . $reg[2] . '"[^>]*>|Ui'), array(
+					'\1', '', ''), $text);
 			}
 		}
 	}
@@ -1292,7 +1296,7 @@ function parseInternalLinks(&$text, $pid, $path = ''){
 			list($imgID, $thumbID) = explode(',', $reg[1]);
 			$thumbObj = new we_thumbnail();
 			if($thumbObj->initByImageIDAndThumbID($imgID, $thumbID)){
-				$text = str_replace('src="thumbnail:' . $reg[1] . '"', 'src="' . $thumbObj->getOutputPath() . '"', $text);
+				$text = str_replace('src="thumbnail:' . $reg[1] . '"', 'src="' . ($doBaseReplace ? BASE_IMG : '') . $thumbObj->getOutputPath() . '"', $text);
 			} else{
 				$text = preg_replace('|<img[^>]+src="thumbnail:' . $reg[1] . '[^>]+>|Ui', '', $text);
 			}
@@ -1444,10 +1448,10 @@ function we_convertIniSizes($in){
 
 function we_getDocumentByID($id, $includepath = '', $we_getDocumentByIDdb = '', &$charset = ''){
 	$we_getDocumentByIDdb = $we_getDocumentByIDdb ? $we_getDocumentByIDdb : new DB_WE();
-	// look what document it is and get the className
+// look what document it is and get the className
 	$clNm = f('SELECT ClassName FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), 'ClassName', $we_getDocumentByIDdb);
 
-	// init Document
+// init Document
 	if(isset($GLOBALS['we_doc'])){
 		$backupdoc = $GLOBALS['we_doc'];
 	}
@@ -1545,14 +1549,14 @@ function number2System($value, $chars = array(), $str = ''){
 	}
 	$base = count($chars);
 
-	//	get some information about the numbers:
+//	get some information about the numbers:
 	$_rest = $value % $base;
 	$_result = ($value - $_rest) / $base;
 
-	//	1. Deal with the rest
+//	1. Deal with the rest
 	$str = $chars[$_rest] . $str;
 
-	//	2. Deal with remaining result
+//	2. Deal with remaining result
 	return ($_result > 0 ? number2System($_result, $chars, $str) : $str);
 }
 
@@ -1655,16 +1659,16 @@ function clearPath($path){
  */
 function getHtmlTag($element, $attribs = array(), $content = '', $forceEndTag = false, $onlyStartTag = false){
 	include_once (WE_INCLUDES_PATH . 'we_tag.inc.php');
-	//	default at the moment is xhtml-style
+//	default at the moment is xhtml-style
 	$_xmlClose = false;
 
-	//	take values given from the tag - later from preferences.
+//	take values given from the tag - later from preferences.
 	$xhtml = weTag_getAttribute('xml', $attribs, XHTML_DEFAULT, true);
 
-	// at the moment only transitional is supported
+// at the moment only transitional is supported
 	$xhtmlType = weTag_getAttribute('xmltype', $attribs, 'transitional');
 
-	//	remove x(ht)ml-attributs
+//	remove x(ht)ml-attributs
 	$attribs = removeAttribs($attribs, array('xml', 'xmltype', 'to', 'nameto', '_name_orig'));
 
 	if($element == 'img' && defined('HIDENAMEATTRIBINWEIMG_DEFAULT') && HIDENAMEATTRIBINWEIMG_DEFAULT && (!isset($GLOBALS['WE_MAIN_DOC']) || !$GLOBALS['WE_MAIN_DOC']->InWebEdition)){
@@ -1944,13 +1948,13 @@ function g_l_encodeArray($tmp){
  */
 function g_l($name, $specific, $omitErrors = false){
 	$charset = (isset($_SESSION['user']) && isset($_SESSION['user']['isWeSession']) ?
-			//inside we
+//inside we
 			(isset($GLOBALS['we']['PageCharset']) ? $GLOBALS['we']['PageCharset'] : $GLOBALS['WE_BACKENDCHARSET']) :
-			//front-end
+//front-end
 			(isset($GLOBALS['CHARSET']) && $GLOBALS['CHARSET'] ? $GLOBALS['CHARSET'] : DEFAULT_CHARSET) );
-	//cache last accessed lang var
+//cache last accessed lang var
 	static $cache = array();
-	//echo $name.$specific;
+//echo $name.$specific;
 	if(isset($cache["l_$name"])){
 		$tmp = getVarArray($cache["l_$name"], $specific);
 		if(!($tmp === false)){
@@ -1966,7 +1970,7 @@ function g_l($name, $specific, $omitErrors = false){
 	if(file_exists($file)){
 		include($file);
 		$tmp = (isset(${'l_' . $name}) ? getVarArray(${'l_' . $name}, $specific) : false);
-		//get local variable
+//get local variable
 		if($tmp !== false){
 			$cache['l_' . $name] = ${'l_' . $name};
 			return ($charset != 'UTF-8' ?
@@ -2010,7 +2014,7 @@ function we_templateInit(){
 		if(!isset($GLOBALS['WE_MAIN_EDITMODE'])){
 			$GLOBALS['WE_MAIN_EDITMODE'] = isset($GLOBALS['we_editmode']) ? $GLOBALS['we_editmode'] : 0;
 		}
-		//check for Trigger
+//check for Trigger
 		if(defined('SCHEDULE_TABLE') && (!$GLOBALS['WE_MAIN_DOC']->InWebEdition) &&
 			(SCHEDULER_TRIGGER == SCHEDULER_TRIGGER_PREDOC) &&
 			(!isset($GLOBALS['we']['backVars']) || (isset($GLOBALS['we']['backVars']) && count($GLOBALS['we']['backVars']) == 0)) //on first call this variable is unset, so we're not inside an include
@@ -2028,7 +2032,7 @@ function we_templateInit(){
 		$GLOBALS['KEYWORDS'] = $GLOBALS['we_doc']->getElement('Keywords');
 		$GLOBALS['DESCRIPTION'] = $GLOBALS['we_doc']->getElement('Description');
 		$GLOBALS['CHARSET'] = $GLOBALS['we_doc']->getElement('Charset');
-		//check if CHARSET is valid
+//check if CHARSET is valid
 		if(!in_array($GLOBALS['CHARSET'], charsetHandler::getAvailCharsets())){
 			$GLOBALS['CHARSET'] = DEFAULT_CHARSET;
 		}
@@ -2064,7 +2068,7 @@ function we_templatePost(){
 	if(defined('DEBUG_MEM')){
 		weMemDebug();
 	}
-	//check for Trigger
+//check for Trigger
 	if(defined('SCHEDULE_TABLE') && (!$GLOBALS['WE_MAIN_DOC']->InWebEdition) &&
 		(SCHEDULER_TRIGGER == SCHEDULER_TRIGGER_POSTDOC) &&
 		(!isset($GLOBALS['we']['backVars']) || (isset($GLOBALS['we']['backVars']) && count($GLOBALS['we']['backVars']) == 0))//not inside an included Doc
@@ -2082,11 +2086,11 @@ function show_SeoLinks(){
 
 function we_TemplateExit($param = 0){
 	if(isset($_SESSION) && isset($_SESSION['user']) && isset($_SESSION['user']['isWeSession']) && $_SESSION['user']['isWeSession']){
-		//we are inside we, we don't terminate here
+//we are inside we, we don't terminate here
 		if($param){
 			echo $param;
 		}
-		//FIXME: use g_l
+//FIXME: use g_l
 		t_e('template forces document to exit, see Backtrace for template name. Message of statement', $param);
 	} else{
 		exit($param);
@@ -2115,7 +2119,7 @@ function cleanWEZendCache(){
 	if(file_exists(ZENDCACHE_PATH . 'clean')){
 		$cache = getWEZendCache();
 		$cache->clean(Zend_Cache::CLEANING_MODE_ALL);
-		//remove file
+//remove file
 		unlink(ZENDCACHE_PATH . 'clean');
 	}
 }

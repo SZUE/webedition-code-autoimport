@@ -597,22 +597,24 @@ class we_template extends we_document{
 		@eval('$att = array(' . $attribs . ');');
 		return $att;
 	}
-	
-	/* setter for runtime variable doUpdateCode which allows save a class without rebuilding everything -> for later rebuild */
-	/* do not access this variable directly, in later WE Versions, it will be protected */
-	function setDoUpdateCode($doUpdateCode = true){
+
+	/* setter for runtime variable doUpdateCode which allows save a class without rebuilding everything -> for later rebuild
+	  do not access this variable directly, in later WE Versions, it will be protected */
+
+	public function setDoUpdateCode($doUpdateCode = true){
 		$this->doUpdateCode = $doUpdateCode;
 	}
-	/* getter for runtime variable doUpdateCode which allows save a class without rebuilding everything -> for later rebuild */
-	/* do not access this variable directly, in later WE Versions, it will be protected */
-	function getDoUpdateCode(){
+
+	/* getter for runtime variable doUpdateCode which allows save a class without rebuilding everything -> for later rebuild
+	  do not access this variable directly, in later WE Versions, it will be protected */
+
+	public function getDoUpdateCode(){
 		return $this->doUpdateCode;
 	}
 
 	static function getUsedTemplatesOfTemplate($id, &$arr){
-		$_hash = getHash('SELECT IncludedTemplates, MasterTemplateID FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . intval($id), $GLOBALS['DB_WE']);
-		$_tmplCSV = isset($_hash['IncludedTemplates']) ? $_hash['IncludedTemplates'] : '';
-		$_masterTemplateID = isset($_hash['MasterTemplateID']) ? $_hash['MasterTemplateID'] : 0;
+		$hash = getHash('SELECT IncludedTemplates, MasterTemplateID FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . intval($id), $GLOBALS['DB_WE']);
+		list($_tmplCSV, $_masterTemplateID) = (empty($hash) ? array('', 0) : $hash);
 
 		$_tmpArr = makeArrayFromCSV($_tmplCSV);
 		foreach($_tmpArr as $_tid){
@@ -687,7 +689,6 @@ class we_template extends we_document{
 					$name = isset($attribs["name"]) ? $attribs["name"] : "";
 					if($name){
 						$we_masterTagCode = isset($masterTags[$name]["content"]) ? $masterTags[$name]["content"] : "";
-
 						$masterTemplateCode = str_replace($all, $we_masterTagCode, $masterTemplateCode);
 					} else{
 						$masterTemplateCode = str_replace($all, $code, $masterTemplateCode);
@@ -697,7 +698,7 @@ class we_template extends we_document{
 				$code = str_replace('</we:content>', '', $masterTemplateCode);
 			}
 		}
-		$this->IncludedTemplates = "";
+		$this->IncludedTemplates = '';
 		// look for included templates (<we:include type="template" id="99">)
 		$tp = new we_tag_tagParser($code, $this->getPath());
 		$tags = $tp->getAllTags();
@@ -711,10 +712,9 @@ class we_template extends we_document{
 				$foo = array();
 				$attribs = '';
 				preg_match_all('/([^=]+)= *("[^"]*")/', $attributes, $foo, PREG_SET_ORDER);
-				for($i = 0; $i < sizeof($foo); $i++){
-					$attribs .= '"' . trim($foo[$i][1]) . '"=>' . trim($foo[$i][2]) . ',';
+				foreach($foo as $f){
+					$attribs .= '"' . trim($f[1]) . '"=>' . trim($f[2]) . ',';
 				}
-				$att = array();
 				@eval('$att = array(' . $attribs . ');');
 				// if type-attribute is equal to "template"
 				if(isset($att["type"]) && $att["type"] == "template"){
@@ -729,7 +729,7 @@ class we_template extends we_document{
 					}
 
 					// if id attribute is set and greater 0
-					if(isset($att["id"]) && abs($att["id"]) > 0){
+					if(isset($att["id"]) && intval($att["id"]) != 0){
 						$_templates = array();
 						self::getUsedTemplatesOfTemplate($att["id"], $_templates);
 						if(in_array($this->ID, $_templates)){
@@ -742,14 +742,14 @@ class we_template extends we_document{
 							$includedTemplateCode = $templObj->getTemplateCode($completeCode);
 							// replace include tag with template code
 							$code = str_replace($tag, $includedTemplateCode, $code);
-							$this->IncludedTemplates .= "," . intval($att["id"]);
+							$this->IncludedTemplates .= ',' . intval($att["id"]);
 						}
 					}
 				}
 			}
 		}
 		if(strlen($this->IncludedTemplates) > 0){
-			$this->IncludedTemplates .= ",";
+			$this->IncludedTemplates .= ',';
 		}
 		$this->setElement("completeData", $code);
 	}

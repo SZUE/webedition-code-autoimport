@@ -98,7 +98,7 @@ class we_ui_dialog_OkCancelDialog extends we_ui_layout_Dialog{
 			$this->_bodyHTML = '<div class ="we_ui_dialog_Headline">' . nl2br($this->_headline) . "</div>" . $this->_bodyHTML;
 		}
 
-		$table->addHTML('<div>' . nl2br($this->_encodeMessage ? htmlspecialchars($this->_message) : $this->_message) . '</div>');
+		$table->addHTML('<div>' . nl2br($this->_encodeMessage ? oldHtmlspecialchars($this->_message) : $this->_message) . '</div>');
 		$this->addElement($table);
 
 		// TODO localize buttons

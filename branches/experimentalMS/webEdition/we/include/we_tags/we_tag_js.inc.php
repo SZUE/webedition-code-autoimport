@@ -23,26 +23,23 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_js($attribs){
-
-	$foo = attributFehltError($attribs, "id", __FUNCTION__);
-	if($foo)
+	if(($foo = attributFehltError($attribs, 'id', __FUNCTION__))){
 		return $foo;
-	$id = weTag_getAttribute("id", $attribs);
-	$row = getHash("SELECT Path,IsFolder,IsDynamic FROM " . FILE_TABLE . " WHERE ID=" . intval($id), new DB_WE());
+	}
+	$id = weTag_getAttribute('id', $attribs);
+	$row = getHash('SELECT Path,IsFolder,IsDynamic FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), new DB_WE());
 
 	if(!empty($row)){
 
-		$url = $row["Path"] . ($row["IsFolder"] ? "/" : "");
+		$url = $row['Path'] . ($row['IsFolder'] ? '/' : '');
 
-		$attribs["type"] = "text/javascript";
-		$attribs["src"] = $url;
+		$attribs['type'] = 'text/javascript';
+		$attribs['src'] = BASE_JS . $url;
 
-		$attribs = removeAttribs($attribs, array(
-			"id"
-			));
+		$attribs = removeAttribs($attribs, array('id'));
 
 		//	prepare $attribs for output:
-		return getHtmlTag("script", $attribs, "", true) . "\n";
+		return getHtmlTag('script', $attribs, '', true) . "\n";
 	}
 	return '';
 }

@@ -199,7 +199,7 @@ function we_tag_formfield($attribs){
 
 		$tagName = '';
 		$tagAtts = array(
-			'xml' => $xml, 'name' => htmlspecialchars($GLOBALS['we_doc']->getElement($attribs["name"], 'ffname'))
+			'xml' => $xml, 'name' => oldHtmlspecialchars($GLOBALS['we_doc']->getElement($attribs["name"], 'ffname'))
 		);
 		$tagContent = '';
 
@@ -219,7 +219,7 @@ function we_tag_formfield($attribs){
 
 				$val = $GLOBALS['we_doc']->getElement($name, 'ff_' . $type_sel . '_' . $f);
 				if($val){
-					$tagAtts[$f] = htmlspecialchars($val);
+					$tagAtts[$f] = oldHtmlspecialchars($val);
 				}
 			}
 		}
@@ -237,7 +237,7 @@ function we_tag_formfield($attribs){
 			case 'textarea':
 				$tagEndTag = true;
 				if(isset($ff['value'])){
-					$tagContent = htmlspecialchars($ff['value']['value']);
+					$tagContent = oldHtmlspecialchars($ff['value']['value']);
 				}
 				if(!array_key_exists('cols', $tagAtts)){
 					$tagAtts['cols'] = 20;
@@ -255,12 +255,12 @@ function we_tag_formfield($attribs){
 				$foo = explode("<_BR_>", $foo);
 				foreach($foo as $v){
 					$_atts = array(
-						'value' => htmlspecialchars($v)
+						'value' => oldHtmlspecialchars($v)
 					);
 					if($selected == $v){
 						$_atts['selected'] = 'selected';
 					}
-					$tagContent .= getHtmlTag('option', $_atts, htmlspecialchars($v));
+					$tagContent .= getHtmlTag('option', $_atts, oldHtmlspecialchars($v));
 				}
 				break;
 			case 'country':
@@ -354,7 +354,7 @@ function we_tag_formfield($attribs){
 					'input', array(
 					'type' => 'hidden',
 					'name' => 'MAX_FILE_SIZE',
-					'value' => htmlspecialchars(
+					'value' => oldHtmlspecialchars(
 						$GLOBALS['we_doc']->getElement($name, 'ffmaxfilesize')),
 					'xml' => $xml
 					));

@@ -139,7 +139,7 @@ print we_html_element::jsElement('
 
 // get some preferences!
 $feldnamen = explode('|', f('SELECT strFelder from ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname = "shop_pref"', 'strFelder', $DB_WE));
-$waehr = "&nbsp;" . htmlspecialchars($feldnamen[0]);
+$waehr = "&nbsp;" . oldHtmlspecialchars($feldnamen[0]);
 $numberformat = $feldnamen[2];
 $classid = (isset($feldnamen[3]) ? $feldnamen[3] : '');
 $defaultVat = !empty($feldnamen[1]) ? ($feldnamen[1]) : 0;

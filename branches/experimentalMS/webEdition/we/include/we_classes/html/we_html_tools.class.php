@@ -127,7 +127,7 @@ abstract class we_html_tools{
 		}
 
 		if($value){
-			$_inputs["value"] = htmlspecialchars($value);
+			$_inputs["value"] = oldHtmlspecialchars($value);
 		}
 
 		if($onChange){
@@ -153,7 +153,7 @@ abstract class we_html_tools{
 			($height ? ('height: ' . $height . (is_numeric($height) ? 'px' : '') . ';') : '') . '"') : '';
 		return '<input' . ($markHot ? ' onchange="if(_EditorFrame){_EditorFrame.setEditorIsHot(true);}' . $markHot . '.hot=1;"' : '') .
 			(strstr($attribs, "class=") ? "" : ' class="wetextinput"') . ' type="' . trim($type) . '" name="' . trim($name) .
-			'" size="' . abs($size) . '" value="' . htmlspecialchars($value) . '"' . ($maxlength ? (' maxlength="' . abs($maxlength) . '"') : '') . ($attribs ? " $attribs" : '') . $style . ' onblur="this.className=\'wetextinput\';" onfocus="this.className=\'wetextinputselected\'"' . ($disabled ? (' disabled="true"') : '') . ' />';
+			'" size="' . abs($size) . '" value="' . oldHtmlspecialchars($value) . '"' . ($maxlength ? (' maxlength="' . abs($maxlength) . '"') : '') . ($attribs ? " $attribs" : '') . $style . ' onblur="this.className=\'wetextinput\';" onfocus="this.className=\'wetextinputselected\'"' . ($disabled ? (' disabled="true"') : '') . ' />';
 	}
 
 	static function htmlMessageBox($w, $h, $content, $headline = "", $buttons = ""){
@@ -264,7 +264,7 @@ abstract class we_html_tools{
 		$out = '<select class="weSelect" name="' . $name . '" size="' . $size . '"' . ($onchange ? ' onchange="' . $onchange . '"' : '') . ">\n";
 		reset($vals);
 		foreach($vals as $v => $t){
-			$out .= '<option value="' . htmlspecialchars($v) . '"' . (($v == $value) ? ' selected' : '') . '>' . $t . '</option>';
+			$out .= '<option value="' . oldHtmlspecialchars($v) . '"' . (($v == $value) ? ' selected' : '') . '>' . $t . '</option>';
 		}
 		return $out . '</select>';
 	}
@@ -273,15 +273,15 @@ abstract class we_html_tools{
 		//  This function replaced we_getChoiceField
 		//  we need input="text" and select-box
 		//  First input='text'
-		$textField = getHtmlTag('input', array_merge($atts, array('type' => 'text', 'name' => $name, 'value' => htmlspecialchars($value))));
+		$textField = getHtmlTag('input', array_merge($atts, array('type' => 'text', 'name' => $name, 'value' => oldHtmlspecialchars($value))));
 
 		$opts = getHtmlTag('option', array('value' => ''), '', true) . "\n";
 		$attsOpts = array();
 
 		if($valuesIsHash){
 			foreach($values as $_val => $_text){
-				$attsOpts['value'] = htmlspecialchars($_val);
-				$opts .= getHtmlTag('option', $attsOpts, htmlspecialchars($_text)) . "\n";
+				$attsOpts['value'] = oldHtmlspecialchars($_val);
+				$opts .= getHtmlTag('option', $attsOpts, oldHtmlspecialchars($_text)) . "\n";
 			}
 		} else{
 			// options of select Menu
@@ -291,8 +291,8 @@ abstract class we_html_tools{
 			}
 
 			foreach($options as $option){
-				$attsOpts['value'] = htmlspecialchars($option);
-				$opts .= getHtmlTag('option', $attsOpts, htmlspecialchars($option)) . "\n";
+				$attsOpts['value'] = oldHtmlspecialchars($option);
+				$opts .= getHtmlTag('option', $attsOpts, oldHtmlspecialchars($option)) . "\n";
 			}
 		}
 
@@ -727,7 +727,7 @@ abstract class we_html_tools{
 		return $tmp;
 	}
 
-	static function htmlSelect($name, $values, $size = 1, $selectedIndex = "", $multiple = false, $attribs = "", $compare = "value", $width = "", $cls = "defaultfont", $htmlspecialchars = true){
+	static function htmlSelect($name, $values, $size = 1, $selectedIndex = "", $multiple = false, $attribs = "", $compare = "value", $width = "", $cls = "defaultfont", $oldHtmlspecialchars = true){
 		$ret = '<select class="weSelect ' . $cls . '" name="' . trim($name) . '" size="' . abs($size) . '"' . ($multiple ? ' multiple="multiple"' : '') . ($attribs ? " $attribs" : "") . ($width ? ' style="width: ' . $width . 'px"' : '') . '>' . "\n";
 		$selIndex = makeArrayFromCSV($selectedIndex);
 		$optgroup = false;
@@ -737,11 +737,11 @@ abstract class we_html_tools{
 					$ret .= '</optgroup>';
 				}
 				$optgroup = true;
-				$ret .= '<optgroup label="' . ($htmlspecialchars ? htmlspecialchars($value) : $value) . '">';
+				$ret .= '<optgroup label="' . ($oldHtmlspecialchars ? oldHtmlspecialchars($value) : $value) . '">';
 				continue;
 			}
-			$ret .= '<option value="' . ($htmlspecialchars ? htmlspecialchars($value) : $value) . '"' . (in_array(
-					(($compare == "value") ? $value : $text), $selIndex) ? " selected" : "") . '>' . ($htmlspecialchars ? htmlspecialchars($text) : $text) . '</option>';
+			$ret .= '<option value="' . ($oldHtmlspecialchars ? oldHtmlspecialchars($value) : $value) . '"' . (in_array(
+					(($compare == "value") ? $value : $text), $selIndex) ? " selected" : "") . '>' . ($oldHtmlspecialchars ? oldHtmlspecialchars($text) : $text) . '</option>';
 		}
 		$ret .= ($optgroup ? '</optgroup>' : '') . '</select>';
 		return $ret;
@@ -773,7 +773,7 @@ abstract class we_html_tools{
 				$icon = "";
 		}
 
-		$text = ($useHtmlSpecialChars) ? htmlspecialchars($text, ENT_COMPAT, 'ISO-8859-1', false) : $text;
+		$text = ($useHtmlSpecialChars) ? oldHtmlspecialchars($text, ENT_COMPAT, 'ISO-8859-1', false) : $text;
 		$js = '';
 
 		if($clip > 0){

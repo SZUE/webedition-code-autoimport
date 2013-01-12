@@ -24,7 +24,7 @@
  */
 abstract class we_rebuild{
 
-	function rebuild($data, $printIt = false){
+	public static function rebuild($data, $printIt = false){
 		if($printIt){
 			$_newLine = count($_SERVER['argv']) ? "\n" : "<br>\n";
 		}
@@ -93,25 +93,22 @@ abstract class we_rebuild{
 			default:
 				switch($data['type']){
 					case 'document':
-						if(file_exists(WE_INCLUDES_PATH . 'we_classes/' . $data['cn'] . '.inc.php')){
-
-						} else{ // it has to be an object
+						if(!file_exists(WE_INCLUDES_PATH . 'we_classes/' . $data['cn'] . '.inc.php')){
+							// it has to be an object
 							return false;
 						}
 						$table = FILE_TABLE;
 						break;
 					case 'template':
-						if(file_exists(WE_INCLUDES_PATH . 'we_classes/' . $data['cn'] . '.inc.php')){
-
-						} else{ // it has to be an object
+						if(!file_exists(WE_INCLUDES_PATH . 'we_classes/' . $data['cn'] . '.inc.php')){
+							// it has to be an object
 							return false;
 						}
 						$table = TEMPLATES_TABLE;
 						break;
 					case 'object':
-						if(file_exists(WE_MODULES_PATH . 'object/' . $data['cn'] . '.inc.php')){
-
-						} else{ // it has to be an object
+						if(!file_exists(WE_MODULES_PATH . 'object/' . $data['cn'] . '.inc.php')){
+							// it has to be an object
 							return false;
 						}
 						$table = OBJECT_FILES_TABLE;
@@ -179,7 +176,7 @@ abstract class we_rebuild{
 	 * @param boolean $tmptable if the tmp table should be rebuilded
 	 * @param int $templateID ID of a template (All documents of this template should be rebuilded)
 	 */
-	function getDocuments($btype = 'rebuild_all', $categories = '', $catAnd = false, $doctypes = '', $folders = '', $maintable = false, $tmptable = false, $templateID = 0){
+	public static function getDocuments($btype = 'rebuild_all', $categories = '', $catAnd = false, $doctypes = '', $folders = '', $maintable = false, $tmptable = false, $templateID = 0){
 		switch($btype){
 			case 'rebuild_all':
 				return self::getAllDocuments($maintable, $tmptable);
@@ -197,63 +194,55 @@ abstract class we_rebuild{
 	 * @param boolean $maintable if the main table should be rebuilded
 	 * @param boolean $tmptable if the tmp table should be rebuilded
 	 */
-	function getAllDocuments($maintable, $tmptable){
-		$data = array();
-		if(we_hasPerm('REBUILD_ALL')){
-			$GLOBALS['DB_WE']->query('SELECT ID,ClassName,Path FROM ' . TEMPLATES_TABLE . ' ORDER BY ID');
-			while($GLOBALS['DB_WE']->next_record()) {
-				$data[] = array(
-					'id' => $GLOBALS['DB_WE']->f('ID'),
-					'type' => 'template',
-					'cn' => $GLOBALS['DB_WE']->f('ClassName'),
-					'mt' => $maintable,
-					'tt' => $tmptable,
-					'path' => $GLOBALS['DB_WE']->f('Path'),
-					'it' => 0);
-			}
-			$GLOBALS['DB_WE']->query('SELECT ID,ClassName,Path FROM ' . FILE_TABLE . ' WHERE IsFolder=1 OR Published > 0 ORDER BY ID');
-			while($GLOBALS['DB_WE']->next_record()) {
-				$data[] = array(
-					'id' => $GLOBALS['DB_WE']->f('ID'),
-					'type' => 'document',
-					'cn' => $GLOBALS['DB_WE']->f('ClassName'),
-					'mt' => $maintable,
-					'tt' => $tmptable,
-					'path' => $GLOBALS['DB_WE']->f('Path'),
-					'it' => 0);
-			}
-			$GLOBALS['DB_WE']->query('SELECT ID,ClassName,Path FROM ' . FILE_TABLE . ' WHERE IsDynamic=0 AND Published > 0 AND ContentType="text/webedition" ORDER BY ID');
-			while($GLOBALS['DB_WE']->next_record()) {
-				$data[] = array(
-					'id' => $GLOBALS['DB_WE']->f('ID'),
-					'type' => 'document',
-					'cn' => $GLOBALS['DB_WE']->f('ClassName'),
-					'mt' => $maintable,
-					'tt' => $tmptable,
-					'path' => $GLOBALS['DB_WE']->f('Path'),
-					'it' => 0);
-			}
-			$GLOBALS['DB_WE']->query('SELECT ID,Path FROM ' . NAVIGATION_TABLE . ' WHERE IsFolder=0 ORDER BY ID');
-			while($GLOBALS['DB_WE']->next_record()) {
-				$data[] = array(
-					'id' => $GLOBALS['DB_WE']->f('ID'),
-					'type' => 'navigation',
-					'cn' => 'weNavigation',
-					'mt' => $maintable,
-					'tt' => $tmptable,
-					'path' => $GLOBALS['DB_WE']->f('Path'),
-					'it' => 0);
-			}
+	public static function getAllDocuments($maintable, $tmptable){
+		if(!we_hasPerm('REBUILD_ALL')){
+			return array();
+		}
+		$data = self::getTemplates(true, $maintable, $tmptable);
+
+		$GLOBALS['DB_WE']->query('SELECT ID,ClassName,Path FROM ' . FILE_TABLE . ' WHERE IsFolder=1 OR Published > 0 ORDER BY ID');
+		while($GLOBALS['DB_WE']->next_record()) {
 			$data[] = array(
-				'id' => 0,
+				'id' => $GLOBALS['DB_WE']->f('ID'),
+				'type' => 'document',
+				'cn' => $GLOBALS['DB_WE']->f('ClassName'),
+				'mt' => $maintable,
+				'tt' => $tmptable,
+				'path' => $GLOBALS['DB_WE']->f('Path'),
+				'it' => 0);
+		}
+		$GLOBALS['DB_WE']->query('SELECT ID,ClassName,Path FROM ' . FILE_TABLE . ' WHERE IsDynamic=0 AND Published > 0 AND ContentType="text/webedition" ORDER BY ID');
+		while($GLOBALS['DB_WE']->next_record()) {
+			$data[] = array(
+				'id' => $GLOBALS['DB_WE']->f('ID'),
+				'type' => 'document',
+				'cn' => $GLOBALS['DB_WE']->f('ClassName'),
+				'mt' => $maintable,
+				'tt' => $tmptable,
+				'path' => $GLOBALS['DB_WE']->f('Path'),
+				'it' => 0);
+		}
+		$GLOBALS['DB_WE']->query('SELECT ID,Path FROM ' . NAVIGATION_TABLE . ' WHERE IsFolder=0 ORDER BY ID');
+		while($GLOBALS['DB_WE']->next_record()) {
+			$data[] = array(
+				'id' => $GLOBALS['DB_WE']->f('ID'),
 				'type' => 'navigation',
 				'cn' => 'weNavigation',
 				'mt' => $maintable,
 				'tt' => $tmptable,
 				'path' => $GLOBALS['DB_WE']->f('Path'),
-				'it' => 0
-			);
+				'it' => 0);
 		}
+		$data[] = array(
+			'id' => 0,
+			'type' => 'navigation',
+			'cn' => 'weNavigation',
+			'mt' => $maintable,
+			'tt' => $tmptable,
+			'path' => $GLOBALS['DB_WE']->f('Path'),
+			'it' => 0
+		);
+
 		return $data;
 	}
 
@@ -265,7 +254,7 @@ abstract class we_rebuild{
 	 * @param boolean $onlyEmpty if this is true, only empty fields will be imported
 	 * @param array $metaFolders array with folder Ids
 	 */
-	function getMetadata($metaFields, $onlyEmpty, $metaFolders){
+	public static function getMetadata($metaFields, $onlyEmpty, $metaFolders){
 
 		if(!is_array($metaFolders)){
 			$metaFolders = makeArrayFromCSV($metaFolders);
@@ -287,25 +276,73 @@ abstract class we_rebuild{
 		return $data;
 	}
 
+	private static function insertTemplatesInArray(array $all, array &$data, $mt, $tt){
+		foreach($all as $cur){
+			$data[] = array(
+				'id' => $cur['ID'],
+				'type' => 'template',
+				'cn' => $cur['ClassName'],
+				'mt' => $mt,
+				'tt' => $tt,
+				'path' => $cur['Path'],
+				'it' => 0
+			);
+		}
+	}
+
 	/**
 	 * Create and returns data Array with IDs and other information for the fragmment class for rebuilding all documents and templates (Called from getDocuments())
 	 *
 	 * @return array
 	 */
-	function getTemplates(){
-		$data = array();
-		if(we_hasPerm('REBUILD_TEMPLATES')){
-			$GLOBALS['DB_WE']->query('SELECT ID,ClassName,Path FROM ' . TEMPLATES_TABLE . ' ORDER BY ID');
-			while($GLOBALS['DB_WE']->next_record()) {
-				$data[] = array('id' => $GLOBALS['DB_WE']->f('ID'),
-					'type' => 'template',
-					'cn' => $GLOBALS['DB_WE']->f('ClassName'),
-					'mt' => 0,
-					'tt' => 0,
-					'path' => $GLOBALS['DB_WE']->f('Path'),
-					'it' => 0);
-			}
+	private static function getTemplates($all = false, $mt = 0, $tt = 0){
+		if(!($all || we_hasPerm('REBUILD_TEMPLATES'))){
+			return array();
 		}
+		$data = array();
+		$db = $GLOBALS['DB_WE'];
+		//get all folders + easy templates
+		$db->query('(SELECT ID,ClassName,Path FROM ' . TEMPLATES_TABLE . ' WHERE IsFolder=1 ORDER BY ID) UNION
+			(SELECT ID,ClassName,Path FROM ' . TEMPLATES_TABLE . ' WHERE IsFolder=0 AND MasterTemplateID=0 AND IncludedTemplates="" ORDER BY LENGTH(Path)) UNION
+			(SELECT ID,ClassName,Path FROM ' . TEMPLATES_TABLE . ' WHERE IsFolder=0 AND MasterTemplateID IN (SELECT ID FROM ' . TEMPLATES_TABLE . ' WHERE IsFolder=0 AND MasterTemplateID=0 AND IncludedTemplates="") AND IncludedTemplates="" ORDER BY LENGTH(Path))', true);
+		self::insertTemplatesInArray($db->getAll(), $data, $mt, $tt);
+
+		//make a done list with id's
+		$db->query('SELECT ID FROM ' . TEMPLATES_TABLE . ' WHERE IsFolder=0 AND MasterTemplateID=0 AND IncludedTemplates="" UNION
+		(SELECT ID FROM ' . TEMPLATES_TABLE . ' WHERE IsFolder=0 AND MasterTemplateID IN (SELECT ID FROM ' . TEMPLATES_TABLE . ' WHERE IsFolder=0 AND MasterTemplateID=0 AND IncludedTemplates="") AND IncludedTemplates="" ORDER BY LENGTH(Path))', true);
+		$done = $db->getAll(true);
+
+		//get other, these have to be processed in php
+		$db->query('SELECT ID,ClassName,Path,MasterTemplateID,IncludedTemplates FROM ' . TEMPLATES_TABLE . ' WHERE IsFolder=0 AND ID NOT IN (' . implode(',', $done) . ') ORDER BY (`IncludedTemplates` = "") DESC');
+
+		$todo = array();
+		while($db->next_record(MYSQL_ASSOC)) {
+			$rec = $db->getRecord();
+			$tmp = trim($rec['IncludedTemplates'], ',');
+			$rec['IncludedTemplates'] = (empty($tmp) ? array() : array_diff(explode(',', $tmp), $done));
+			$todo[] = $rec;
+		}
+
+		$round = 0;
+		while(!empty($todo) && ++$round < 100) {
+			$preDone = array();
+			foreach($todo as $key => &$rec){
+				$rec['IncludedTemplates'] = array_diff($rec['IncludedTemplates'], $done);
+				if(empty($rec['IncludedTemplates']) && ($rec['MasterTemplateID'] == 0 || array_search($rec['MasterTemplateID'], $done))){
+					$preDone[] = $rec;
+					$done[] = $rec['ID'];
+					unset($todo[$key]);
+				}
+			}
+			self::insertTemplatesInArray($preDone, $data, $mt, $tt);
+		}
+		if(!empty($todo)){
+			//we have conflicts
+			t_e('conflicting templates in rebuild', $todo);
+			//add them even if rebuild will not succeed
+			self::insertTemplatesInArray($todo, $data, $mt, $tt);
+		}
+
 		return $data;
 	}
 
@@ -319,7 +356,7 @@ abstract class we_rebuild{
 	 * @param string $folders csv value of directory IDs
 	 * @param int $templateID ID of a template (All documents of this template should be rebuilded)
 	 */
-	function getFilteredDocuments($categories, $catAnd, $doctypes, $folders, $templateID){
+	private static function getFilteredDocuments($categories, $catAnd, $doctypes, $folders, $templateID){
 		if(!we_hasPerm('REBUILD_FILTERD')){
 			return array();
 		}
@@ -412,7 +449,7 @@ abstract class we_rebuild{
 	 *
 	 * @return array
 	 */
-	function getObjects(){
+	public static function getObjects(){
 		$updater = new we_updater();
 		$updater->updateObjectFilesX();
 		$data = array();
@@ -448,7 +485,7 @@ abstract class we_rebuild{
 	 *
 	 * @return array
 	 */
-	function getNavigation(){
+	public static function getNavigation(){
 		$data = array();
 		if(we_hasPerm('REBUILD_NAVIGATION')){
 			$GLOBALS['DB_WE']->query('SELECT ID,Path FROM ' . NAVIGATION_TABLE . ' WHERE IsFolder=0 ORDER BY ID');
@@ -486,7 +523,7 @@ abstract class we_rebuild{
 	 *
 	 * @return array
 	 */
-	function getIndex(){
+	public static function getIndex(){
 		if(!we_hasPerm('REBUILD_INDEX')){
 			return array();
 		}
@@ -526,7 +563,7 @@ abstract class we_rebuild{
 	 * @param string $thumbs csv value of IDs which thumbs to create
 	 * @param string $thumbsFolders csv value of directory IDs => Create Thumbs for images in these directories.
 	 */
-	function getThumbnails($thumbs = '', $thumbsFolders = ''){
+	public static function getThumbnails($thumbs = '', $thumbsFolders = ''){
 		if(we_hasPerm('REBUILD_THUMBS')){
 			return array();
 		}

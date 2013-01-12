@@ -289,7 +289,7 @@ we_html_tools::htmlTop();
 	_EditorFrame.initEditorFrameData(
 	{
 		"EditorType":"model",
-		"EditorDocumentText":"<?php print htmlspecialchars($we_doc->Text); ?>",
+		"EditorDocumentText":"<?php print oldHtmlspecialchars($we_doc->Text); ?>",
 		"EditorDocumentPath":"<?php print $we_doc->Path; ?>",
 		"EditorEditorTable":"<?php print $we_doc->Table; ?>",
 		"EditorDocumentId":"<?php print $we_doc->ID; ?>",

@@ -113,7 +113,7 @@ $compose->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"])
 							<td class="defaultgray">
 								' . g_l('modules_messaging', '[subject]') . ':</td>
 							<td class="defaultfont">
-								' . htmlspecialchars($compose->get_subject()) . '</td>
+								' . oldHtmlspecialchars($compose->get_subject()) . '</td>
 						</tr>
 					</table>
 					<table cellpadding="6">';

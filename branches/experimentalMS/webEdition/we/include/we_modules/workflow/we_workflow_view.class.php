@@ -445,7 +445,7 @@ class we_workflow_view extends we_workflow_base{
 	}
 
 	function htmlHidden($name, $value = ''){
-		return '<input type="hidden" name="' . trim($name) . '" value="' . htmlspecialchars($value) . '" />';
+		return '<input type="hidden" name="' . trim($name) . '" value="' . oldHtmlspecialchars($value) . '" />';
 	}
 
 	/* creates the DirectoryChoooser field with the "browse"-Button. Clicking on the Button opens the fileselector */
@@ -1011,7 +1011,7 @@ class we_workflow_view extends we_workflow_base{
 								print 'top.content.updateEntry(' . $this->workflowDef->ID . ',0,"' . $this->workflowDef->Text . '","' . $this->workflowDef->Status . '");';
 							}
 							print $childs;
-							print 'top.content.resize.right.editor.edheader.document.getElementById("headrow").innerHTML="' . we_html_element::htmlB(g_l('modules_workflow', '[workflow]') . ': ' . htmlspecialchars($this->workflowDef->Text)) . '";';
+							print 'top.content.resize.right.editor.edheader.document.getElementById("headrow").innerHTML="' . we_html_element::htmlB(g_l('modules_workflow', '[workflow]') . ': ' . oldHtmlspecialchars($this->workflowDef->Text)) . '";';
 							print we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[save_ok]'), we_message_reporting::WE_MESSAGE_NOTICE);
 							print '//--></script>';
 						}

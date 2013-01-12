@@ -38,7 +38,7 @@ abstract class importFunctions{
 	 * @param boolean $IsSearchable
 	 * @desc imports a document into webedition
 	 */
-	static function importDocument($parentID, $templateID, $fields, $doctypeID=0, $categories="", $filename="", $isDynamic=true, $extension=".php", $publish=true, $IsSearchable=true, $conflict='rename'){
+	static function importDocument($parentID, $templateID, $fields, $doctypeID = 0, $categories = "", $filename = "", $isDynamic = true, $extension = ".php", $publish = true, $IsSearchable = true, $conflict = 'rename'){
 
 		// erzeugen eines neuen webEdition-Dokument-Objekts
 		$GLOBALS['we_doc'] = new we_webEditionDocument();
@@ -107,7 +107,7 @@ abstract class importFunctions{
 	 * @param boolean $publish
 	 * @desc imports an object into webEdition
 	 */
-	static function importObject($classID, $fields, $categories="", $filename="", $publish=true, $conflict='rename'){
+	static function importObject($classID, $fields, $categories = "", $filename = "", $publish = true, $conflict = 'rename'){
 
 		// INIT OBJECT
 		$object = new we_objectFile();
@@ -167,13 +167,13 @@ abstract class importFunctions{
 	 * @param string $filename
 	 * @desc corrects the filename if it contains invalid chars
 	 */
-	static function correctFilename($filename,$allowPath=false){
+	static function correctFilename($filename, $allowPath = false){
 		$filename = str_replace(array(' ', 'ä', 'ö', 'ü', 'Ä', 'Ö', 'Ü', 'ß'), array('-', 'ae', 'oe', 'ue', 'Ae', 'Oe', 'Ue', 'ss'), $filename);
-		$filename = preg_replace('%[^a-z0-9\._+-'.($allowPath?'/':'').']%i', '', $filename);
+		$filename = preg_replace('%[^a-z0-9\._+-' . ($allowPath ? '/' : '') . ']%i', '', $filename);
 		if(strlen($filename) > 100){
 			$filename = substr($filename, 0, 100);
 		}
-		return strlen($filename) ? $filename : "newfile";
+		return strlen($filename) ? trim($filename, '/') : "newfile";
 	}
 
 	/**
@@ -182,7 +182,7 @@ abstract class importFunctions{
 	 * @param string $format
 	 * @desc converts a $datestring which represent a date to an unix timestamp with the given $format. If $format is empty, $datestring has to be a valid English date format
 	 */
-	static function date2Timestamp($datestring, $format=""){
+	static function date2Timestamp($datestring, $format = ""){
 		if(!$format){
 			return strtotime($datestring);
 		}

@@ -132,7 +132,7 @@ function importFile(){
 
 	<tr>
 		<td colspan="2"><textarea id="we_dialog_args[htmltxt]" name="we_dialog_args[htmltxt]" cols="59" rows="15" style="width:550px">' .
-					(isset($rtf2html) ? htmlspecialchars($rtf2html->htmlOut) : "") . '</textarea>
+					(isset($rtf2html) ? oldHtmlspecialchars($rtf2html->htmlOut) : "") . '</textarea>
 		</td>
 	</tr>
 	<tr>

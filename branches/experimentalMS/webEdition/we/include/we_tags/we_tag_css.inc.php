@@ -24,26 +24,25 @@
  */
 function we_tag_css($attribs){
 
-	if(($foo = attributFehltError($attribs, "id", __FUNCTION__)))
+	if(($foo = attributFehltError($attribs, 'id', __FUNCTION__))){
 		return $foo;
-	$id = weTag_getAttribute("id", $attribs);
-	$rel = weTag_getAttribute("rel", $attribs, "stylesheet");
+	}
+	$id = weTag_getAttribute('id', $attribs);
+	$rel = weTag_getAttribute('rel', $attribs, 'stylesheet');
 
-	$row = getHash("SELECT Path,IsFolder,IsDynamic FROM " . FILE_TABLE . " WHERE ID=" . intval($id), new DB_WE());
+	$row = getHash('SELECT Path,IsFolder,IsDynamic FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), new DB_WE());
 	if(!empty($row)){
-		$url = $row["Path"] . ($row["IsFolder"] ? "/" : "");
+		$url = $row['Path'] . ($row['IsFolder'] ? '/' : '');
 
 		//	remove not needed elements
-		$attribs = removeAttribs($attribs, array(
-			"id", "rel"
-			));
+		$attribs = removeAttribs($attribs, array('id', 'rel'));
 
-		$attribs["rel"] = $rel;
-		$attribs["type"] = "text/css";
-		$attribs["href"] = $url;
+		$attribs['rel'] = $rel;
+		$attribs['type'] = 'text/css';
+		$attribs['href'] = BASE_CSS . $url;
 
 
-		return getHtmlTag("link", $attribs). "\n";
+		return getHtmlTag('link', $attribs) . "\n";
 	}
-	return "";
+	return '';
 }

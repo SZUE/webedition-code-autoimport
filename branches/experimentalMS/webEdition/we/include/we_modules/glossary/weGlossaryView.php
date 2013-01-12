@@ -144,7 +144,7 @@ class weGlossaryView{
 
 		$hidden = array(
 			'name' => trim($name),
-			'value' => htmlspecialchars($value),
+			'value' => oldHtmlspecialchars($value),
 		);
 		return we_html_element::htmlHidden($hidden);
 	}

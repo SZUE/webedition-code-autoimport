@@ -89,7 +89,7 @@ function we_tag_userInput($attribs, $content){
 	if(!$editable && !$hidden && $type !== "img" && $type !== "binary" && $type !== "flashmovie" && $type !== "quicktime"){
 		$_hidden = getHtmlTag(
 			'input', array(
-			'type' => 'hidden', 'name' => $fieldname, 'value' => htmlspecialchars($orgVal), 'xml' => $xml
+			'type' => 'hidden', 'name' => $fieldname, 'value' => oldHtmlspecialchars($orgVal), 'xml' => $xml
 			));
 		return (($type != "hidden") ? $content : "") . $_hidden;
 	} else{
@@ -732,7 +732,7 @@ function we_tag_userInput($attribs, $content){
 				$attsHidden = array(
 					'type' => 'hidden',
 					'name' => $fieldname,
-					'value' => htmlspecialchars($content),
+					'value' => oldHtmlspecialchars($content),
 					'xml' => $xml,
 				);
 				return getHtmlTag('input', $attsHidden);

@@ -27,9 +27,9 @@ function we_parse_tag_description($attribs, $content){
 }
 
 function we_tag_description($attribs, $content){
-	$htmlspecialchars = weTag_getAttribute("htmlspecialchars", $attribs, false, true);
+	$oldHtmlspecialchars = weTag_getAttribute("oldHtmlspecialchars", $attribs, false, true);
 	$attribs = removeAttribs($attribs, array(
-		'htmlspecialchars'
+		'oldHtmlspecialchars'
 		));
 
 	if($GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_PROPERTIES && $GLOBALS['we_doc']->InWebEdition){ //	normally meta tags are edited on property page
@@ -39,7 +39,7 @@ function we_tag_description($attribs, $content){
 		$descr = $GLOBALS['DESCRIPTION'] ? $GLOBALS['DESCRIPTION'] : $content;
 
 		$attribs["name"] = "description";
-		$attribs["content"] = $htmlspecialchars ? htmlspecialchars(strip_tags($descr)) : strip_tags($descr);
+		$attribs["content"] = $oldHtmlspecialchars ? oldHtmlspecialchars(strip_tags($descr)) : strip_tags($descr);
 
 		return getHtmlTag("meta", $attribs) . "\n";
 	}

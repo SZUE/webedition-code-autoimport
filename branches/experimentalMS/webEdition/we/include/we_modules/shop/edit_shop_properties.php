@@ -120,7 +120,7 @@ function numfom2($result){
 // config
 $feldnamen = explode('|', f('SELECT strFelder FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname = "shop_pref"', 'strFelder', $GLOBALS['DB_WE']));
 
-$waehr = "&nbsp;" . htmlspecialchars($feldnamen[0]);
+$waehr = "&nbsp;" . oldHtmlspecialchars($feldnamen[0]);
 $dbTitlename = "shoptitle";
 $dbPreisname = "price";
 $numberformat = $feldnamen[2];

@@ -131,9 +131,9 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js');
 			}
 
 			$_html = '<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('weEditorInfo', "[local_path]") . '</div>' .
-				'<div style="margin-bottom:10px;">' . ($GLOBALS['we_doc']->ID == 0 || !$published ? '-' : '<span title="' . htmlspecialchars($rp) . '">' . htmlspecialchars(shortenPath($rp, 74)) . '</span>') . '</div>';
+				'<div style="margin-bottom:10px;">' . ($GLOBALS['we_doc']->ID == 0 || !$published ? '-' : '<span title="' . oldHtmlspecialchars($rp) . '">' . oldHtmlspecialchars(shortenPath($rp, 74)) . '</span>') . '</div>';
 			$_html .= '<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('weEditorInfo', "[http_path]") . '</div>' .
-				'<div style="margin-bottom:10px;">' . ($GLOBALS['we_doc']->ID == 0 || !$published ? '-' : ($showlink ? '<a href="' . $http . '" target="_blank" title="' . htmlspecialchars($http) . '">' : '') . shortenPath($http, 74) . ($showlink ? '</a>' : '')) . '</div>';
+				'<div style="margin-bottom:10px;">' . ($GLOBALS['we_doc']->ID == 0 || !$published ? '-' : ($showlink ? '<a href="' . $http . '" target="_blank" title="' . oldHtmlspecialchars($http) . '">' : '') . shortenPath($http, 74) . ($showlink ? '</a>' : '')) . '</div>';
 
 			$parts[]= array("headline" => "",
 				"html" => $_html,
@@ -169,7 +169,7 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js');
 ';
 			if(isset($_metaData["exif"])){
 				foreach($_metaData["exif"] as $_key => $_val){
-					$_metaDataTable .= '<tr><td style="padding:0px 5px 5px 0px;" class="defaultfont">' . htmlspecialchars($_key) . ':</td><td style="padding:0px 5px 5px 0px;" class="defaultfont">' . htmlspecialchars($_val) . '</td></tr>
+					$_metaDataTable .= '<tr><td style="padding:0px 5px 5px 0px;" class="defaultfont">' . oldHtmlspecialchars($_key) . ':</td><td style="padding:0px 5px 5px 0px;" class="defaultfont">' . oldHtmlspecialchars($_val) . '</td></tr>
 ';
 				}
 			}
@@ -182,7 +182,7 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js');
 ';
 			if(isset($_metaData["iptc"])){
 				foreach($_metaData["iptc"] as $_key => $_val){
-					$_metaDataTable .= '<tr><td style="padding:0px 5px 5px 0px;" class="defaultfont">' . htmlspecialchars($_key) . ':</td><td style="padding:0px 5px 5px 0px;" class="defaultfont">' . htmlspecialchars($_val) . '</td></tr>
+					$_metaDataTable .= '<tr><td style="padding:0px 5px 5px 0px;" class="defaultfont">' . oldHtmlspecialchars($_key) . ':</td><td style="padding:0px 5px 5px 0px;" class="defaultfont">' . oldHtmlspecialchars($_val) . '</td></tr>
 ';
 				}
 			}

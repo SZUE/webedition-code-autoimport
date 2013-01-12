@@ -84,7 +84,7 @@ function we_tag_shopField($attribs){
 			$atts['name'] = $tmpname;
 			$atts['type'] = 'checkbox';
 			$atts['value'] = $value;
-			$atts['onclick'] = 'this.form.elements[\'' . $fieldname . '\'].value=(this.checked) ? \'' . htmlspecialchars($value) . '\' : \'\''; //#6544
+			$atts['onclick'] = 'this.form.elements[\'' . $fieldname . '\'].value=(this.checked) ? \'' . oldHtmlspecialchars($value) . '\' : \'\''; //#6544
 			if(($savedVal == $value) || (!$isFieldForCheckBox) && $checked){
 				$atts['checked'] = 'checked';
 			}

@@ -83,7 +83,7 @@ class we_ui_dialog_YesNoCancelDialog extends we_ui_layout_Dialog{
 		$table = new we_ui_layout_Table(array('cellPadding' => 10));
 		$table->addHTML('<img src="' . IMAGE_DIR . 'alert.gif" alt="" />');
 		$table->nextColumn();
-		$table->addHTML('<div>' . nl2br($this->_encodeMessage ? htmlspecialchars($this->_message) : $this->_message) . '</div>');
+		$table->addHTML('<div>' . nl2br($this->_encodeMessage ? oldHtmlspecialchars($this->_message) : $this->_message) . '</div>');
 		$this->addElement($table);
 
 		// TODO localize buttons
