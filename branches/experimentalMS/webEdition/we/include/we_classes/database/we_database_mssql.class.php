@@ -110,10 +110,16 @@ class DB_WE extends we_database_base{
 		$this->Link_ID = 0;
 	}
 
-	protected function fetch_array($resultType){
-		//return @mssql_fetch_row($this->Query_ID);
-		return @mssql_fetch_array($this->Query_ID, $resultType);
-		//return @mssql_fetch_assoc($this->Query_ID);
+	protected function fetch_array($resultType){ 
+		$zw = @mssql_fetch_array($this->Query_ID, $resultType);
+		if(is_array($zw)){
+			foreach ($zw as $key => &$value){
+				if(empty($value) || $value==' '){
+					$value='';
+				}
+			}
+		}
+		return $zw;
 	}
 
 	/* public: position in result set */

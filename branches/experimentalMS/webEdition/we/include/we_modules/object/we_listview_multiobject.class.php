@@ -201,9 +201,11 @@ if($pid_tail=='1'){$pid_tail='1=1';}
 					}
 				}
 			}
-
-			$this->DB_WE->query("SELECT " . $sqlParts["fields"] . $calendar_select . " FROM " . $sqlParts["tables"] . " WHERE  " . (!empty($this->objects) ? OBJECT_X_TABLE . $this->classID . ".OF_ID IN (" . implode(",", $this->objects) . ") AND " : '') . ($this->searchable ? " " . OBJECT_X_TABLE . $this->classID . ".OF_IsSearchable=1 AND" : "") . " " . $pid_tail . $where_lang . " AND " . OBJECT_X_TABLE . $this->classID . ".OF_ID != 0 " . ($join ? " AND ($join) " : "") . $cat_tail . $weDocumentCustomerFilter_tail . " " . ($sqlParts["publ_cond"] ? (" AND " . $sqlParts["publ_cond"]) : "") . " " . ($sqlParts["cond"] ? (" AND (" . $sqlParts["cond"] . ") ") : "") . $calendar_where . $sqlParts['groupBy'] . $sqlParts["order"] . (($rows > 0 && $this->order != '') ? (' LIMIT ' . $this->start . "," . $this->rows) : ""));
-
+			if(DB_CONNECT=='msconnect'){
+				$this->DB_WE->query("SELECT " . $sqlParts["fields"] . $calendar_select . " FROM " . $sqlParts["tables"] . " WHERE  " . (!empty($this->objects) ? OBJECT_X_TABLE . $this->classID . ".OF_ID IN (" . implode(",", $this->objects) . ") AND " : '') . ($this->searchable ? " " . OBJECT_X_TABLE . $this->classID . ".OF_IsSearchable=1 AND" : "") . " " . $pid_tail . $where_lang . " AND " . OBJECT_X_TABLE . $this->classID . ".OF_ID != 0 " . ($join ? " AND ($join) " : "") . $cat_tail . $weDocumentCustomerFilter_tail . " " . ($sqlParts["publ_cond"] ? (" AND " . $sqlParts["publ_cond"]) : "") . " " . ($sqlParts["cond"] ? (" AND (" . $sqlParts["cond"] . ") ") : "") . $calendar_where . $sqlParts['groupBy'] . $sqlParts["order"] );				
+			} else {
+				$this->DB_WE->query("SELECT " . $sqlParts["fields"] . $calendar_select . " FROM " . $sqlParts["tables"] . " WHERE  " . (!empty($this->objects) ? OBJECT_X_TABLE . $this->classID . ".OF_ID IN (" . implode(",", $this->objects) . ") AND " : '') . ($this->searchable ? " " . OBJECT_X_TABLE . $this->classID . ".OF_IsSearchable=1 AND" : "") . " " . $pid_tail . $where_lang . " AND " . OBJECT_X_TABLE . $this->classID . ".OF_ID != 0 " . ($join ? " AND ($join) " : "") . $cat_tail . $weDocumentCustomerFilter_tail . " " . ($sqlParts["publ_cond"] ? (" AND " . $sqlParts["publ_cond"]) : "") . " " . ($sqlParts["cond"] ? (" AND (" . $sqlParts["cond"] . ") ") : "") . $calendar_where . $sqlParts['groupBy'] . $sqlParts["order"] . (($rows > 0 && $this->order != '') ? (' LIMIT ' . $this->start . "," . $this->rows) : ""));
+			}
 			$mapping = array(); // KEY = ID -> VALUE = ROWID
 			$i = 0;
 			while($this->DB_WE->next_record()) {
@@ -373,7 +375,11 @@ if($pid_tail=='1'){$pid_tail='1=1';}
 		}
 		$out["order"] = $order;
 		$out["tables"] = makeCSVFromArray($tb);
-		$out["groupBy"] = (count($tb) > 1) ? ' GROUP BY ' . OBJECT_X_TABLE . $classID . ".ID " : '';
+		if(DB_CONNECT=='msconnect'){
+			$out["groupBy"] = '';
+		} else {
+			$out["groupBy"] = (count($tb) > 1) ? ' GROUP BY ' . OBJECT_X_TABLE . $classID . ".ID " : '';
+		}
 		$out["publ_cond"] = array();
 		foreach($tb as $t){
 			$out["publ_cond"] [] = "( $t.OF_Published > 0 OR $t.OF_ID = 0)";

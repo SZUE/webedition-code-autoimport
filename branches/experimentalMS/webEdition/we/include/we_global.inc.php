@@ -112,9 +112,17 @@ function makePIDTail($pid, $cid, $db = '', $table = FILE_TABLE){
 	$foo = f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . $cid, 'DefaultValues', $db);
 	$fooArr = unserialize($foo);
 	$flag = (isset($fooArr['WorkspaceFlag']) ? $fooArr['WorkspaceFlag'] : 1);
-	$pid_tail = ($flag ? OBJECT_X_TABLE . $cid . '.OF_Workspaces="" OR ' : '');
+	if(DB_CONNECT=='msconnect'){
+		$pid_tail = ($flag ? OBJECT_X_TABLE . $cid . ".OF_Workspaces='' OR " : '');
+	} else {
+		$pid_tail = ($flag ? OBJECT_X_TABLE . $cid . '.OF_Workspaces="" OR ' : '');
+	}
 	foreach($parentIDs as $pid){
-		$pid_tail .= ' ' . OBJECT_X_TABLE . $cid . '.OF_Workspaces LIKE "%,' . $pid . ',%" OR ' . OBJECT_X_TABLE . $cid . '.OF_ExtraWorkspacesSelected LIKE "%,' . $pid . ',%" OR ';
+		if(DB_CONNECT=='msconnect'){
+			$pid_tail .= ' ' . OBJECT_X_TABLE . $cid . ".OF_Workspaces LIKE '%," . $pid . ",%' OR " . OBJECT_X_TABLE . $cid . ".OF_ExtraWorkspacesSelected LIKE '%," . $pid . ",%' OR ";
+		} else {
+			$pid_tail .= ' ' . OBJECT_X_TABLE . $cid . '.OF_Workspaces LIKE "%,' . $pid . ',%" OR ' . OBJECT_X_TABLE . $cid . '.OF_ExtraWorkspacesSelected LIKE "%,' . $pid . ',%" OR ';
+		}
 	}
 	$pid_tail = trim(preg_replace('/^(.*)OR /', '\1', $pid_tail));
 	if($pid_tail == ''){

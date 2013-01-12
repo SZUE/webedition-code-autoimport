@@ -184,7 +184,11 @@ if($pid_tail=='1'){$pid_tail='1=1';}
 						}
 					}
 				}
-				$q = 'SELECT ' . $sqlParts["fields"] . $calendar_select . ' FROM ' . $sqlParts['tables'] . ' WHERE ' . ($this->searchable ? ' ' . $_obxTable . '.OF_IsSearchable=1 AND' : '') . ' ' . $pid_tail . ' AND ' . $_obxTable . ".OF_ID != 0 " . $where_lang . ($join ? " AND ($join) " : "") . $cat_tail . " " . ($sqlParts["publ_cond"] ? (' AND ' . $sqlParts["publ_cond"]) : '') . ' ' . ($sqlParts["cond"] ? (' AND (' . $sqlParts['cond'] . ') ') : '') . $calendar_where . $ws_tail . $weDocumentCustomerFilter_tail . $webUserID_tail . $_idTail . $sqlParts['groupBy'] . $sqlParts["order"] . (($this->maxItemsPerPage > 0) ? (' LIMIT ' . $this->start . ',' . $this->maxItemsPerPage) : '');
+				if(DB_CONNECT=='msconnect'){
+					$q = 'SELECT ' . $sqlParts["fields"] . $calendar_select . ' FROM ' . $sqlParts['tables'] . ' WHERE ' . ($this->searchable ? ' ' . $_obxTable . '.OF_IsSearchable=1 AND' : '') . ' ' . $pid_tail . ' AND ' . $_obxTable . ".OF_ID != 0 " . $where_lang . ($join ? " AND ($join) " : "") . $cat_tail . " " . ($sqlParts["publ_cond"] ? (' AND ' . $sqlParts["publ_cond"]) : '') . ' ' . ($sqlParts["cond"] ? (' AND (' . $sqlParts['cond'] . ') ') : '') . $calendar_where . $ws_tail . $weDocumentCustomerFilter_tail . $webUserID_tail . $_idTail . $sqlParts['groupBy'] . $sqlParts["order"] . (($this->maxItemsPerPage > 0) ? (' LIMIT ' . $this->start . ',' . $this->maxItemsPerPage) : '');			
+				} else {
+					$q = 'SELECT ' . $sqlParts["fields"] . $calendar_select . ' FROM ' . $sqlParts['tables'] . ' WHERE ' . ($this->searchable ? ' ' . $_obxTable . '.OF_IsSearchable=1 AND' : '') . ' ' . $pid_tail . ' AND ' . $_obxTable . ".OF_ID != 0 " . $where_lang . ($join ? " AND ($join) " : "") . $cat_tail . " " . ($sqlParts["publ_cond"] ? (' AND ' . $sqlParts["publ_cond"]) : '') . ' ' . ($sqlParts["cond"] ? (' AND (' . $sqlParts['cond'] . ') ') : '') . $calendar_where . $ws_tail . $weDocumentCustomerFilter_tail . $webUserID_tail . $_idTail . $sqlParts['groupBy'] . $sqlParts["order"] . (($this->maxItemsPerPage > 0) ? (' LIMIT ' . $this->start . ',' . $this->maxItemsPerPage) : '');
+				}
 			}
 			$this->DB_WE->query($q);
 			$this->anz = $this->DB_WE->num_rows();
@@ -380,15 +384,25 @@ if($pid_tail=='1'){$pid_tail='1=1';}
 		foreach($tb as $t){
 			$publ_cond [] = "( $t.OF_Published > 0 OR $t.OF_ID = 0)";
 		}
-
-		return array(
+		if(DB_CONNECT=='msconnect'){
+			return array(
+			"fields" => rtrim($f, ',') . ($order == ' ORDER BY RANDOM ' ? ', RAND() AS RANDOM ' : ''),
+			"order" => $order,
+			"tables" => makeCSVFromArray($tb),
+			"groupBy" =>  '',
+			"publ_cond" => empty($publ_cond) ? '' : ' ( ' . implode(' AND ', $publ_cond) . ' ) ',
+			"cond" => trim($cond)
+			);
+		} else {
+			return array(
 			"fields" => rtrim($f, ',') . ($order == ' ORDER BY RANDOM ' ? ', RAND() AS RANDOM ' : ''),
 			"order" => $order,
 			"tables" => makeCSVFromArray($tb),
 			"groupBy" => (count($tb) > 1) ? ' GROUP BY ' . OBJECT_X_TABLE . $classID . ".ID " : '',
 			"publ_cond" => empty($publ_cond) ? '' : ' ( ' . implode(' AND ', $publ_cond) . ' ) ',
 			"cond" => trim($cond)
-		);
+			);
+		}
 	}
 
 	function next_record(){
@@ -407,7 +421,6 @@ if($pid_tail=='1'){$pid_tail='1=1';}
 
 		if($this->calendar_struct["calendar"] == "" || $fetch){
 			$ret = $this->DB_WE->next_record();
-
 			if($ret){
 				$paramName = $this->docID ? "we_oid" : "we_objectID";
 				$this->DB_WE->Record["we_wedoc_Path"] = $this->Path . "?$paramName=" . $this->DB_WE->Record["OF_ID"];

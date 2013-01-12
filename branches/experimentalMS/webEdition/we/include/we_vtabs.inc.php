@@ -24,6 +24,7 @@
 $_treewidth = isset($_COOKIE["treewidth_main"]) && ($_COOKIE["treewidth_main"] >= weTree::MinWidth) ? $_COOKIE["treewidth_main"] : weTree::DefaultWidth;
 
 $useSvg = we_base_browserDetect::isIE() ? we_base_browserDetect::getIEVersion() > 8 : true;
+$useSvg = false;//msconnect
 $svgPre = '<defs>
     <linearGradient id="gradAct#ID#" x1="0%" y1="0%" x2="50%" y2="0%">
       <stop style="stop-color:white;stop-opacity:1;" offset="0%" />
@@ -73,9 +74,10 @@ $vtab = array(
 		'desc' => g_l('javaMenu_object', '[classes]'),
 	)
 );
+
 foreach($vtab as $key => &$val){
 	if(defined($key)){
-		if(file_exists(WE_INCLUDES_PATH . $val['file'] . '_normal.gif')){
+			if(file_exists(WE_INCLUDES_PATH . $val['file'] . '_normal.gif')){
 			$val['size'] = getimagesize(WE_INCLUDES_PATH . $val['file'] . '_normal.gif');
 		}
 	} else{
@@ -120,7 +122,7 @@ foreach($vtab as $tab => $val){
 		$tmp[] = 'new we_tab("#","' . $file . '_normal.gif", "' . $file . '_active.gif", "' . $file . '_disabled.gif", ' . $val['size'][0] . ',' . $val['size'][1] . ' ,' . ($val['show'] ? 'TAB_ACTIVE' : 'TAB_DISABLED') . ', "if(top.deleteMode){we_cmd(\'exit_delete\', \'' . constant($tab) . '\');};treeOut();we_cmd(\'loadVTab\', \'' . constant($tab) . '\' ,0);")';
 	}
 }
-print implode(',', $tmp);
+print implode(',', $tmp);t_e($tmp);
 ?>
 );
 

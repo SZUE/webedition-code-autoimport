@@ -298,14 +298,13 @@ function deleteEntry($id, $table, $delR = true, $skipHook = 0, $DB_WE = ''){
 	}
 	if($id){
 		$row = getHash('SELECT Path,IsFolder,ContentType FROM ' . $DB_WE->escape($table) . ' WHERE ID=' . intval($id), $DB_WE);
-		//msconnect
-		/*
+		
 		$ct = weVersions::getContentTypesVersioning();
 		//no need to init doc, if no version is needed or hook is executed
 		if(in_array($row['ContentType'], $ct) || $skipHook == 0){
 			$object = weContentProvider::getInstance($row['ContentType'], $id, $table);
 		}
-		*/
+		
 		//msconnect
 		/*
 		if(in_array($row['ContentType'], $ct)){

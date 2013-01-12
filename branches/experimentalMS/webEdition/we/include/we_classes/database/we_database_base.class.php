@@ -727,7 +727,7 @@ abstract class we_database_base{
 		}
 		$col = trim($col, '`');
 		if(DB_CONNECT=='msconnect'){
-			return f("SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '".$tab."' AND COLUMN_Name='".$col."';");
+			return (bool) f("SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '".$tab."' AND COLUMN_Name='".$col."';", 'COLUMN_Name',$this);
 		} else {
 			return (bool) count(getHash('SHOW COLUMNS FROM ' . $this->escape($tab) . ' LIKE "' . $col . '"', $this));
 		}
