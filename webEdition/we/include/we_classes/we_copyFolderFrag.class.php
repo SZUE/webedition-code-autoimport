@@ -414,14 +414,11 @@ class copyFolderFrag extends taskFragment{
 					foreach($includedTemplates as $incTempl){
 						if(!empty($incTempl) && $incTempl > 0){
 							if(isset($_SESSION['weS']['WE_CREATE_TEMPLATE'][trim($incTempl)])){
-								$templID = str_replace(
-									$incTempl, $_SESSION['weS']['WE_CREATE_TEMPLATE'][trim($incTempl)], $templ->IncludedTemplates);
+								$templID = str_replace($incTempl, $_SESSION['weS']['WE_CREATE_TEMPLATE'][trim($incTempl)], $templ->IncludedTemplates);
 								$newTemplId = $_SESSION['weS']['WE_CREATE_TEMPLATE'][trim($incTempl)];
 							} else{
-								$createdIncVars = $this->copyTemplate(
-									trim($incTempl), $parentID, $CreateMasterTemplate, $CreateIncludedTemplate, $counter);
-								$templID = str_replace(
-									$incTempl, $createdIncVars['newID'], $templ->IncludedTemplates);
+								$createdIncVars = $this->copyTemplate(trim($incTempl), $parentID, $CreateMasterTemplate, $CreateIncludedTemplate, $counter);
+								$templID = str_replace($incTempl, $createdIncVars['newID'], $templ->IncludedTemplates);
 								$newTemplId = $createdIncVars['newID'];
 							}
 							$tp = new we_tag_tagParser($code);
