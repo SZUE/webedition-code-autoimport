@@ -609,7 +609,7 @@ class weExportFrames extends weModuleFrames{
 										' . $this->editorBodyFrame . '.addLog("' . addslashes(we_html_tools::getPixel(20, 5)) . we_html_element::htmlB(g_l('export', '[export]')) . '<br>");
 									}
 								');
-							weFile::save($this->View->export->ExportFilename, $xmlExIm->getHeader(), "wb");
+							weFile::save($this->View->export->ExportFilename, weXMLExIm::getHeader(), "wb");
 							if($this->View->export->HandleOwners){
 								weFile::save($this->View->export->ExportFilename, weXMLExport::exportInfoMap($xmlExIm->RefTable->Users), "ab");
 							}
@@ -723,7 +723,7 @@ class weExportFrames extends weModuleFrames{
 							);
 						} else{
 							if(is_writable($this->View->export->ExportFilename)){
-								weFile::save($this->View->export->ExportFilename, $xmlExIm->getFooter(), "ab");
+								weFile::save($this->View->export->ExportFilename, weXMLExIm::getFooter(), "ab");
 							}
 							$_progress_update .= "\n" .
 								we_html_element::jsElement('

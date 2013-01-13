@@ -28,13 +28,10 @@ class weBackupImport{
 
 	static function import($filename, &$offset, $lines = 1, $iscompressed = 0, $encoding = 'ISO-8859-1', $log = 0){
 
-		include_once(WE_INCLUDES_PATH . 'we_exim/weXMLExImConf.inc.php');
-		if(isset($_SESSION['weS']['weBackupVars']['options']['convert_charset']) && $_SESSION['weS']['weBackupVars']['options']['convert_charset']){
-			$data = '<?xml version="1.0" encoding="' . $_SESSION['weS']['weBackupVars']['encoding'] . '" standalone="yes"?>' . $GLOBALS['weXmlExImNewLine'] .
-				'<webEdition version="' . WE_VERSION . '" xmlns:we="we-namespace">' . $GLOBALS['weXmlExImNewLine'];
-		} else{
-			$data = $GLOBALS['weXmlExImHeader'];
-		}
+		$data = (isset($_SESSION['weS']['weBackupVars']['options']['convert_charset']) && $_SESSION['weS']['weBackupVars']['options']['convert_charset'] ?
+				weXMLExIm::getHeader($_SESSION['weS']['weBackupVars']['encoding']) :
+				weXMLExIm::getHeader());
+
 //		self::$mem = memory_get_usage(true);
 		weBackupUtil::addLog(sprintf('Reading offset %s', $offset));
 
@@ -42,7 +39,7 @@ class weBackupImport{
 			return false;
 		}
 //		weBackupUtil::addLog('XX read: ' . ((memory_get_usage(true) - self::$mem) / 1048576) . ' ' . $locLines);
-		$data .= $GLOBALS['weXmlExImFooter'];
+		$data .= weBackup::weXmlExImFooter;
 
 		self::transfer($data, $encoding, $log);
 		return true;

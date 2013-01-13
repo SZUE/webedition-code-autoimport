@@ -22,7 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once(WE_INCLUDES_PATH . 'we_exim/weXMLExImConf.inc.php');
 
 class weXMLExport extends weXMLExIm{
 
@@ -70,10 +69,8 @@ class weXMLExport extends weXMLExIm{
 		}
 
 		if($classname == "weTable"){
-			if(defined("OBJECT_X_TABLE") && strtolower(substr($doc->table, 0, 10)) == strtolower(stripTblPrefix(OBJECT_X_TABLE))){
-				$doc->getColumns();
-			}
-			if(defined("CUSTOMER_TABLE")){
+			if((defined("OBJECT_X_TABLE") && strtolower(substr($doc->table, 0, 10)) == strtolower(stripTblPrefix(OBJECT_X_TABLE))) ||
+				defined("CUSTOMER_TABLE")){
 				$doc->getColumns();
 			}
 		}
@@ -112,45 +109,45 @@ class weXMLExport extends weXMLExIm{
 				$selObjs = defined("OBJECT_FILES_TABLE") ? array_unique($this->getIDs($selObjs, OBJECT_FILES_TABLE, false)) : "";
 				$selClasses = defined("OBJECT_FILES_TABLE") ? array_unique($this->getIDs($selClasses, OBJECT_TABLE, false)) : "";
 			} else{
-				if($art == "docs")
-					$selDocs = $this->getIDs($selDocs, FILE_TABLE);
-				else if($art == "objects")
-					$selObjs = defined("OBJECT_FILES_TABLE") ? $this->getIDs($selObjs, OBJECT_FILES_TABLE) : "";
+				switch($art){
+					case "docs":
+						$selDocs = $this->getIDs($selDocs, FILE_TABLE);
+						break;
+					case "objects":
+						$selObjs = defined("OBJECT_FILES_TABLE") ? $this->getIDs($selObjs, OBJECT_FILES_TABLE) : "";
+						break;
+				}
 			}
-		} else{
-			if($type == "doctype"){
-				if($categories){
-					$catids = makeCSVFromArray(makeArrayFromCSV($categories));
-					$this->db->query('SELECT Path FROM ' . CATEGORY_TABLE . ' WHERE ID IN (' . $catids . ')');
-					while($this->db->next_record()) {
-						$cats[] = $this->db->f("Path");
-					}
-					$catss = makeCSVFromArray($cats);
-				} else{
-					$catss = '';
-				}
-
-				$cat_sql = ($this->cats ? we_category::getCatSQLTail($catss, FILE_TABLE, true, $this->db) : '');
-				$ws_where = '';
-				if($dir != 0){
-					$workspace = id_to_path($dir, FILE_TABLE, $this->db);
-					$ws_where = ' AND (' . FILE_TABLE . ".Path LIKE '" . $this->db->escape($workspace) . "/%' OR " . FILE_TABLE . ".Path='" . $this->db->escape($workspace) . "')";
-				}
-
-				$this->db->query('SELECT distinct ID FROM ' . FILE_TABLE . ' WHERE 1 ' . $ws_where . '  AND ' . FILE_TABLE . '.IsFolder=0 AND ' . FILE_TABLE . '.DocType="' . $this->db->escape($doctype) . '"' . $cat_sql);
+		} elseif($type == "doctype"){
+			if($categories){
+				$catids = makeCSVFromArray(makeArrayFromCSV($categories));
+				$this->db->query('SELECT Path FROM ' . CATEGORY_TABLE . ' WHERE ID IN (' . $catids . ')');
 				while($this->db->next_record()) {
-					$selDocs[] = $this->db->f("ID");
+					$cats[] = $this->db->f("Path");
 				}
+				$catss = makeCSVFromArray($cats);
 			} else{
-				if(defined("OBJECT_FILES_TABLE")){
-					$where = $this->queryForAllowed(OBJECT_FILES_TABLE);
+				$catss = '';
+			}
 
-					$this->db->query('SELECT ID FROM ' . OBJECT_FILES_TABLE . " WHERE IsFolder=0 AND TableID='" . $this->db->escape($classname) . "'" . ($categories != '' ? ' AND Category IN (' . $categories . ')' : '') . $where);
-					$selObjs = array();
-					while($this->db->next_record()) {
-						$selObjs[] = $this->db->f("ID");
-					}
-				}
+			$cat_sql = ($this->cats ? we_category::getCatSQLTail($catss, FILE_TABLE, true, $this->db) : '');
+			$ws_where = '';
+			if($dir != 0){
+				$workspace = id_to_path($dir, FILE_TABLE, $this->db);
+				$ws_where = ' AND (' . FILE_TABLE . ".Path LIKE '" . $this->db->escape($workspace) . "/%' OR " . FILE_TABLE . ".Path='" . $this->db->escape($workspace) . "')";
+			}
+
+			$this->db->query('SELECT distinct ID FROM ' . FILE_TABLE . ' WHERE 1 ' . $ws_where . '  AND ' . FILE_TABLE . '.IsFolder=0 AND ' . FILE_TABLE . '.DocType="' . $this->db->escape($doctype) . '"' . $cat_sql);
+			while($this->db->next_record()) {
+				$selDocs[] = $this->db->f("ID");
+			}
+		} elseif(defined("OBJECT_FILES_TABLE")){
+			$where = $this->queryForAllowed(OBJECT_FILES_TABLE);
+
+			$this->db->query('SELECT ID FROM ' . OBJECT_FILES_TABLE . " WHERE IsFolder=0 AND TableID='" . $this->db->escape($classname) . "'" . ($categories != '' ? ' AND Category IN (' . $categories . ')' : '') . $where);
+			$selObjs = array();
+			while($this->db->next_record()) {
+				$selObjs[] = $this->db->f("ID");
 			}
 		}
 
@@ -257,24 +254,16 @@ class weXMLExport extends weXMLExIm{
 		$_preparer->prepareExport();
 	}
 
-	function getHeader($encoding = ''){
-		return $GLOBALS['weXmlExImHeader'];
-	}
-
-	function getFooter(){
-		return $GLOBALS['weXmlExImFooter'];
-	}
-
 	function exportInfoMap($info){
-		$out = "<we:info>";
+		$out = '<we:info>';
 		foreach($info as $inf){
 			$out.='<we:map';
 			foreach($inf as $key => $value){
 				$out.=' ' . $key . '="' . $value . '"';
 			}
-			$out.="></we:map>";
+			$out.='></we:map>';
 		}
-		$out.="</we:info>" .
+		$out.='</we:info>' .
 			weBackup::backupMarker . "\n";
 		return $out;
 	}
