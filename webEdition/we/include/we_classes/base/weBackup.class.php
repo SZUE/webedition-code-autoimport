@@ -31,7 +31,9 @@
 class weBackup extends we_backup{
 
 	const backupSteps = "1,5,7,10,15,20,30,40,50,80,100,500,1000";
-	const backupMarker='<!-- webackup -->';
+	const backupMarker = '<!-- webackup -->';
+	const weXmlExImFooter = '</webEdition>';
+	const weXmlExImProtectCode = '<?php exit();?>';
 
 	var $header;
 	var $footer;

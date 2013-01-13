@@ -161,8 +161,6 @@ if(isset($_REQUEST['cmd'])){
 				flush();
 			} else{
 
-				include_once(WE_INCLUDES_PATH . 'we_exim/weXMLExImConf.inc.php');
-
 				$_files = array();
 // export spellchecker files
 				if(defined('SPELLCHECKER') && $_SESSION['weS']['weBackupVars']['handle_options']['spellchecker']){
@@ -192,7 +190,7 @@ if(isset($_REQUEST['cmd'])){
 				weBackupUtil::writeLog();
 
 
-				weFile::save($_SESSION['weS']['weBackupVars']['backup_file'], $GLOBALS['weXmlExImFooter'], 'ab');
+				weFile::save($_SESSION['weS']['weBackupVars']['backup_file'], weBackup::weXmlExImFooter, 'ab');
 
 //compress file
 				if(!empty($_SESSION['weS']['weBackupVars']['options']['compress']) && !isset($_SESSION['weS']['weBackupVars']['compression_done'])){
@@ -200,7 +198,7 @@ if(isset($_REQUEST['cmd'])){
 					weBackupUtil::addLog('Compressing...');
 
 					if($_SESSION['weS']['weBackupVars']['protect']){
-						weFile::save($_SESSION['weS']['weBackupVars']['backup_file'] . '.gz', $GLOBALS['weXmlExImProtectCode']);
+						weFile::save($_SESSION['weS']['weBackupVars']['backup_file'] . '.gz', weBackup::weXmlExImProtectCode);
 					}
 
 					$_SESSION['weS']['weBackupVars']['backup_file'] = weFile::compress($_SESSION['weS']['weBackupVars']['backup_file'], 'gzip', '', true, 'ab');
