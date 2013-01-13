@@ -62,20 +62,20 @@ class weCustomerFrames extends weModuleFrames{
 	}
 
 	function getHTMLBranchSelect($with_common = true, $with_other = true){
-		$branches_names = array();
 		$branches_names = $this->View->customer->getBranchesNames();
 
 		$select = new we_html_select(array("name" => "branch"));
 
-		if($with_common)
+		if($with_common){
 			$select->addOption(g_l('modules_customer', '[common]'), g_l('modules_customer', '[common]'));
-		if($with_other)
+		}
+		if($with_other){
 			$select->addOption(g_l('modules_customer', '[other]'), g_l('modules_customer', '[other]'));
+		}
 
 		foreach($branches_names as $branch){
 			$select->addOption($branch, $branch);
 		}
-
 
 		return $select;
 	}
@@ -110,10 +110,9 @@ class weCustomerFrames extends weModuleFrames{
 		if($include_no_sort)
 			$sort->addOption(g_l('modules_customer', '[no_sort]'), g_l('modules_customer', '[no_sort]'));
 
-		foreach($sort_names as $k => $v){
+		foreach($sort_names as $v){
 			$sort->addOption(oldHtmlspecialchars($v), oldHtmlspecialchars($v));
 		}
-
 
 		return $sort;
 	}
@@ -305,7 +304,6 @@ class weCustomerFrames extends weModuleFrames{
 
 		$tabs = new we_tabs();
 
-		$branches_names = array();
 		$branches_names = $this->View->customer->getBranchesNames();
 
 		$tabs->addTab(new we_tab('#', g_l('modules_customer', '[common]'), 'TAB_NORMAL', "setTab('" . g_l('modules_customer', '[common]') . "');", array("id" => "common")));
@@ -345,7 +343,6 @@ class weCustomerFrames extends weModuleFrames{
 		$tabsHead = $tabs->getHeader();
 		$tabsBody = $tabs->getJS();
 		$tabsHead .= $js;
-//		$js.= $tabsHead;
 
 
 		$table = new we_html_table(array("width" => "3000", "cellpadding" => "0", "cellspacing" => "0", "border" => "0"), 3, 1);
@@ -428,8 +425,6 @@ class weCustomerFrames extends weModuleFrames{
 	function getHTMLProperties($preselect = ''){
 		$parts = array();
 
-		$out = '';
-		$entry = '';
 		$branches = array();
 		$common = array();
 		$other = array();
@@ -489,10 +484,10 @@ class weCustomerFrames extends weModuleFrames{
 					$c = 0;
 			}
 
-			array_push($parts, array(
+			$parts[] = array(
 				"headline" => ($preselect == g_l('modules_customer', '[all]') ? g_l('modules_customer', '[common]') : g_l('modules_customer', '[data]')),
 				"html" => $table->getHtml(),
-				"space" => 120)
+				"space" => 120
 			);
 		}
 		if($preselect == g_l('modules_customer', '[orderTab]')){
@@ -944,9 +939,7 @@ WHERE ' . FILE_TABLE . '.ID=' . LINK_TABLE . '.DID AND ' . LINK_TABLE . '.CID=' 
 				document.getElementsByName('value_'+i)[0].value = fieldDate.dateToTimestemp(document.getElementById('value_date_'+i).value);
 			}
 		}
-	}
-	"
-					) .
+	}") .
 					we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
 						we_html_tools::htmlDialogLayout(
 							$table->getHtml(), g_l('modules_customer', '[search]'), we_button::position_yes_no_cancel(null, we_button::create_button("close", "javascript:self.close();")), "100%", "30", "558"
@@ -1090,27 +1083,26 @@ WHERE ' . FILE_TABLE . '.ID=' . LINK_TABLE . '.DID AND ' . LINK_TABLE . '.CID=' 
 
 		$retVal = '<table cellpadding=0 cellspacing=0 border=0>';
 		if($daySelect || $monthSelect || $yearSelect){
-			$retVal .= '<tr><td>
-		' . ($daySelect ? $daySelect . "&nbsp;" : we_html_tools::hidden(sprintf($name, "_day"), $day)) .
+			$retVal .= '<tr><td>' .
+				($daySelect ? $daySelect . "&nbsp;" : we_html_tools::hidden(sprintf($name, "_day"), $day)) .
 				($monthSelect ? $monthSelect . "&nbsp;" : we_html_tools::hidden(sprintf($name, "_month"), $month)) .
-				($yearSelect ? $yearSelect . "&nbsp;" : we_html_tools::hidden(sprintf($name, "_year"), $year)) . '
-	</td></tr>';
+				($yearSelect ? $yearSelect . "&nbsp;" : we_html_tools::hidden(sprintf($name, "_year"), $year)) .
+				'</td></tr>';
 		} else{
 			$retVal .= we_html_tools::hidden(sprintf($name, "_day"), $day) .
 				we_html_tools::hidden(sprintf($name, "_month"), $month) .
 				we_html_tools::hidden(sprintf($name, "_year"), $year);
 		}
 		if($hourSelect || $minSelect){
-			$retVal .= '<tr><td>
-		' . ($hourSelect ? $hourSelect . "&nbsp;" : we_html_tools::hidden(sprintf($name, "_hour"), $hour)) .
-				($minSelect ? $minSelect . "&nbsp;" : we_html_tools::hidden(sprintf($name, "_minute"), $minute)) . '
-	</td></tr>';
+			$retVal .= '<tr><td>' .
+				($hourSelect ? $hourSelect . "&nbsp;" : we_html_tools::hidden(sprintf($name, "_hour"), $hour)) .
+				($minSelect ? $minSelect . "&nbsp;" : we_html_tools::hidden(sprintf($name, "_minute"), $minute)) .
+				'</td></tr>';
 		} else{
 			$retVal .= we_html_tools::hidden(sprintf($name, "_hour"), (isset($hour) ? $hour : 0)) .
 				we_html_tools::hidden(sprintf($name, "_minute"), (isset($minute) ? $minute : 0));
 		}
-		$retVal .= '</table>';
-		return $retVal;
+		return $retVal . '</table>';
 	}
 
 }
