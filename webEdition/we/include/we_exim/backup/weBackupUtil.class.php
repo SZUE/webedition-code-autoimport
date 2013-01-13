@@ -83,7 +83,7 @@ abstract class weBackupUtil{
 			case TEMPLATES_TABLE:
 				return g_l('backup', '[' . $prefix . '_templates]');
 			case TEMPORARY_DOC_TABLE:
-				return g_l('backup', '[' . $prefix . '_temporary_data]');
+				return g_l('backup', '[' . $prefix . '][temporary_data]');
 			case HISTORY_TABLE:
 				return g_l('backup', '[' . $prefix . '][history_data]');
 			case INDEX_TABLE:
@@ -256,7 +256,6 @@ abstract class weBackupUtil{
 	}
 
 	static function getXMLImportType($file, $iscompr = 0, $end_off = 0){
-
 		$_found = 'unknown';
 		$_try = 0;
 		$_count = 30;
@@ -271,28 +270,28 @@ abstract class weBackupUtil{
 
 		$_part = weFile::loadPart($file, 0, $_part_len, $iscompr);
 
-		if(stripos($_part, '<webEdition') !== false){
-
-			$_hasbinary = false;
-			while($_found == 'unknown' && $_try < $_count) {
-				if(preg_match('/.*<webEdition.*type="backup".*>/', $_part)){
-					return 'backup';
-				} elseif(preg_match('/<we:(document|template|class|object|info|navigation)/i', $_part)){
-					return  'weimport';
-				} elseif(stripos($_part, '<we:table') !== false){
-					return 'backup';
-				} elseif(stripos($_part, '<we:binary') !== false){
-					$_hasbinary = true;
-				} elseif(stripos($_part, '<customer') !== false){
-					return 'customer';
-				}
-
-				$_part = weFile::loadPart($file, $_start, $_part_len, $iscompr);
-
-				$_start = $_start - $_part_skip_len;
-
-				$_try++;
+		if(stripos($_part, '<webEdition') === false){
+			return 'unknown';
+		}
+		$_hasbinary = false;
+		while($_found == 'unknown' && $_try < $_count) {
+			if(preg_match('/.*<webEdition.*type="backup".*>/', $_part)){
+				return 'backup';
+			} elseif(preg_match('/<we:(document|template|class|object|info|navigation)/i', $_part)){
+				return 'weimport';
+			} elseif(stripos($_part, '<we:table') !== false){
+				return 'backup';
+			} elseif(stripos($_part, '<we:binary') !== false){
+				$_hasbinary = true;
+			} elseif(stripos($_part, '<customer') !== false){
+				return 'customer';
 			}
+
+			$_part = weFile::loadPart($file, $_start, $_part_len, $iscompr);
+
+			$_start = $_start - $_part_skip_len;
+
+			$_try++;
 		}
 
 		if($_found == 'unknown' && $_hasbinary){

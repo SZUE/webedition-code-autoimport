@@ -102,7 +102,9 @@ class we_base_preferences{
 				// Add needed variable
 				$content = self::changeSourceCode('add', $content, $define, $value[1], true, $value[0]);
 				//define it in running session
-				define($define, $value[1]);
+				if(!defined($define)){
+					define($define, $value[1]);
+				}
 			}
 		}
 		if($updateVersion){

@@ -2827,10 +2827,14 @@ if(window.onload) {
 			$tmp = we_forms::checkbox(1, get_value('FAST_BACKUP'), 'setXhtml_show_wrong_js', 'new fast Backup', false, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[FAST_BACKUP]\');') .
 				we_html_tools::hidden('newconf[FAST_BACKUP]', get_value('FAST_BACKUP'));
 
+			$tmp2 = we_forms::checkbox(1, get_value('FAST_RESTORE'), 'setXhtml_show_wrong_js', 'new fast Restore', false, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[FAST_RESTORE]\');') .
+				we_html_tools::hidden('newconf[FAST_RESTORE]', get_value('FAST_RESTORE'));
+
 			$_settings = array(
 				array("headline" => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[performance]'), 2, 450), "html" => "", "space" => 200),
 				array("headline" => '', "html" => $perf->getHtml(), "space" => 15),
-				array("headline" => 'Fast Backup (testing)', 'html' => $tmp, 'space' => 50, 'noline' => 1),
+				array("headline" => 'Fast Backup', 'html' => $tmp, 'space' => 50, 'noline' => 1),
+				array("headline" => 'Fast Restore (testing)', 'html' => $tmp2, 'space' => 50, 'noline' => 1),
 			);
 
 			$_settings_cookie = weGetCookieVariable("but_settings_predefined");
