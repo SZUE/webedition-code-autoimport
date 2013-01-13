@@ -24,7 +24,7 @@
  */
 class weBackupImport{
 
-	private static $mem = 0;
+//	private static $mem = 0;
 
 	static function import($filename, &$offset, $lines = 1, $iscompressed = 0, $encoding = 'ISO-8859-1', $log = 0){
 
@@ -35,15 +35,14 @@ class weBackupImport{
 		} else{
 			$data = $GLOBALS['weXmlExImHeader'];
 		}
-//		self::$mem = memory_get_usage();
+//		self::$mem = memory_get_usage(true);
 		weBackupUtil::addLog(sprintf('Reading offset %s', $offset));
 
 		if(!weBackupFileReader::readLine($filename, $data, $offset, $lines, 0, $iscompressed)){
 			return false;
 		}
-
+//		weBackupUtil::addLog('XX read: ' . ((memory_get_usage(true) - self::$mem) / 1048576) . ' ' . $locLines);
 		$data .= $GLOBALS['weXmlExImFooter'];
-	//	weBackupUtil::addLog('read: ' . memory_get_usage() - self::$mem);
 
 		self::transfer($data, $encoding, $log);
 		return true;
@@ -64,10 +63,10 @@ class weBackupImport{
 		} else{
 			$parser->parse($data);
 		}
-		//weBackupUtil::addLog('+parser: ' . memory_get_usage() - self::$mem, memory_get_usage());
+//		weBackupUtil::addLog('XX + parser: ' . ((memory_get_usage(true) - self::$mem) / 1048576) . ' ' . (memory_get_usage(true) / 1048576) . ' ' . ((memory_get_usage(false) - self::$mem) / 1048576));
 		// free some memory
 		unset($data);
-		//weBackupUtil::addLog('+parser-data: ' . memory_get_usage() - self::$mem);
+//		weBackupUtil::addLog('XX + parser-data: ' . ((memory_get_usage(true) - self::$mem) / 1048576) . ' ' . ((memory_get_usage(false) - self::$mem) / 1048576));
 
 		if($parser === false){
 			p_r($parser->parseError);
@@ -78,8 +77,7 @@ class weBackupImport{
 
 
 		$parser->normalize();
-		//weBackupUtil::addLog('normalize: ' . memory_get_usage() - self::$mem);
-
+//		weBackupUtil::addLog('XX normalize: ' . ((memory_get_usage(true) - self::$mem) / 1048576));
 		// set parser on the first child node
 		$parser->seek(1);
 
@@ -127,7 +125,6 @@ class weBackupImport{
 								case weContentProvider::CODING_SERIALIZE:
 									$object->$name = unserialize($parser->getNodeData());
 									break;
-								case 'enocde':
 								case weContentProvider::CODING_NONE:
 								default:
 									$object->$name = $parser->getNodeData();
@@ -184,19 +181,20 @@ class weBackupImport{
 					$object->convertCharsetEncoding($_SESSION['weS']['weBackupVars']['encoding'], DEFAULT_CHARSET);
 				}
 				if(isset($object->Path) && $object->Path == WE_INCLUDES_DIR . 'conf/we_conf_global.inc.php'){
-					weBackupImport::handlePrefs($object);
+					self::handlePrefs($object);
 				} else if(defined('SPELLCHECKER') && isset($object->Path) && (strpos($object->Path, WE_MODULES_DIR . 'spellchecker/') === 0) && !$_SESSION['weS']['weBackupVars']['handle_options']['spellchecker']){
 					// do nothing
 				} else{
 					$object->save(true);
 				}
 
-				//speedup for some tables
-				$_SESSION['weS']['weBackupVars']['backup_steps'] =
-					(isset($object->table) && ($object->table == LINK_TABLE || $object->table == CONTENT_TABLE) ?
-						BACKUP_STEPS * $nFactor :
-						BACKUP_STEPS);
-
+				if(!FAST_RESTORE){
+					//speedup for some tables
+					$_SESSION['weS']['weBackupVars']['backup_steps'] =
+						(isset($object->table) && ($object->table == LINK_TABLE || $object->table == CONTENT_TABLE) ?
+							BACKUP_STEPS * $nFactor :
+							BACKUP_STEPS);
+				}
 				$parser->gotoMark('first');
 			}
 
@@ -253,7 +251,7 @@ class weBackupImport{
 		}
 	}
 
-	function handlePrefs(&$object){
+	private static function handlePrefs(&$object){
 		$file = TEMP_DIR . 'we_conf_global.inc.php';
 		$object->Path = $file;
 		$object->save(true);

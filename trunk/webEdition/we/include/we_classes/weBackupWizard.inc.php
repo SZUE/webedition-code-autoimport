@@ -775,6 +775,7 @@ function stopBusy() {
 	/*if(top.opener.top.header)
 		top.opener.top.header.document.location.reload();*/
 }
+top.cmd.location ="about:blank";
 self.focus();');
 
 		$body = we_html_element::htmlBody(array("class" => "weDialogBody", "onload" => "stopBusy()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "enctype" => "multipart/form-data"), we_multiIconBox::getHTML("backup_options", "100%", $parts, 34, "", -1, "", "", false, g_l('backup', "[step3]"))
@@ -1661,7 +1662,7 @@ top.busy.location = "' . $this->frameset . '?pnt=busy&operation_mode=busy&curren
 
 		$cmd = ($this->mode == self::RECOVER ? 'import' : 'export');
 
-		$_retry = ($this->mode == self::RECOVER || !FAST_BACKUP ? 5 : 2);
+		$_retry = ($this->mode == self::RECOVER || !FAST_BACKUP || !FAST_RESTORE ? 5 : 2);
 
 		return we_html_element::jsElement('
 function setLocation(loc){
