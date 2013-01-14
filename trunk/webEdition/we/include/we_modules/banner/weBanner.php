@@ -140,7 +140,7 @@ class weBanner extends weBannerBase{
 		}
 		parent::load();
 		$ppath = id_to_path($this->ParentID, BANNER_TABLE);
-		$this->Path = ($ppath == "/") ? $ppath . $this->Text : $ppath . "/" . $this->Text;
+		$this->Path = ($ppath == '/') ? $ppath . $this->Text : $ppath . '/' . $this->Text;
 		return true;
 	}
 
@@ -149,7 +149,7 @@ class weBanner extends weBannerBase{
 	 */
 	function getAllBanners(){
 		//FIXME: check for e.g. group by, having, ..
-		$this->db->query("SELECT ID,abs(text) as Nr, (text REGEXP '^[0-9]') as isNr FROM " . $this->table . " ORDER BY isNr DESC,Nr,Text");
+		$this->db->query('SELECT ID,abs(text) AS Nr, (text REGEXP "^[0-9]") AS isNr FROM ' . $this->table . ' ORDER BY isNr DESC,Nr,Text');
 
 		$out = array();
 		while($this->db->next_record()) {
@@ -180,7 +180,7 @@ class weBanner extends weBannerBase{
 		$this->db->query('DELETE FROM ' . BANNER_CLICKS_TABLE . ' WHERE ID=' . intval($this->ID));
 		if($this->IsFolder){
 			$path = (substr($this->Path, -1) == "/") ? $this->Path : $this->Path . "/";
-			$this->db->query('SELECT ID FROM ' . BANNER_TABLE . " WHERE Path LIKE '" . $this->db->escape($path) . "%'");
+			$this->db->query('SELECT ID FROM ' . BANNER_TABLE . ' WHERE Path LIKE "' . $this->db->escape($path) . '%"');
 			$ids = array();
 			while($this->db->next_record()) {
 				$ids[] = $this->db->f("ID");
@@ -202,36 +202,36 @@ class weBanner extends weBannerBase{
 
 		we_readParents($did, $parents, FILE_TABLE);
 
-		$where = "IsActive=1 AND IsFolder=0 AND ( FileIDs LIKE '%," . intval($did) . ",%' OR FileIDs='' )";
+		$where = 'IsActive=1 AND IsFolder=0 AND ( FileIDs LIKE "%,' . intval($did) . ',%" OR FileIDs="" )';
 		$foo = '';
 		foreach($parents as $p){
-			$foo .= " FolderIDs LIKE '%," . intval($p) . ",%' OR ";
+			$foo .= ' FolderIDs LIKE "%,' . intval($p) . ',%" OR ';
 		}
-		$where .= " AND (  $foo  FolderIDs='' ) ";
+		$where .= ' AND (' . $foo . ' FolderIDs="" ) ';
 
 		$dtArr = makeArrayFromCSV($dt);
 
-		$foo = "";
+		$foo = '';
 		foreach($dtArr as $d){
-			$foo .= " DoctypeIDs LIKE '%," . intval($d) . ",%' OR ";
+			$foo .= ' DoctypeIDs LIKE "%,' . intval($d) . ',%" OR ';
 		}
-		$where .= " AND (  $foo  DoctypeIDs='' ) ";
+		$where .= ' AND (' . $foo . ' DoctypeIDs="" ) ';
 
 		$catArr = makeArrayFromCSV($cats);
 
-		$foo = "";
+		$foo = '';
 		foreach($catArr as $c){
-			$foo .= " CategoryIDs LIKE '%," . intval($c) . ",%' OR ";
+			$foo .= ' CategoryIDs LIKE "%,' . intval($c) . ',%" OR ';
 		}
-		$where .= " AND (  $foo  CategoryIDs='' ) ";
+		$where .= ' AND (' . $foo . ' CategoryIDs="" ) ';
 
 		if($paths){
+			$foo=array();
 			$pathsArray = makeArrayFromCsv($paths);
 			foreach($pathsArray as $p){
-				$foo .= " Path LIKE '" . $db->escape($p) . "/%' OR Path = '" . $db->escape($p) . "' OR ";
+				$foo []= 'Path LIKE "' . $db->escape($p) . '/%" OR Path = "' . $db->escape($p) . '"';
 			}
-			$foo = rtrim($foo, 'OR ');
-			$where .= " AND ( $foo ) ";
+			$where .= ' AND ('. implode(' OR ',$foo) .') ';
 		}
 
 		$where .= ' AND ( (StartOk=0 OR StartDate <= UNIX_TIMESTAMP() ) AND (EndOk=0 OR EndDate > UNIX_TIMESTAMP()) ) AND (maxShow=0 OR views<maxShow) AND (maxClicks=0 OR clicks<=maxClicks) ';
@@ -267,7 +267,7 @@ class weBanner extends weBannerBase{
 	private static function getImageInfos($fileID){
 		$imgAttr = array();
 		$db = new DB_WE();
-		$db->query("SELECT l.Name AS Name, c.Dat AS Dat FROM " . LINK_TABLE . ' l LEFT JOIN ' . CONTENT_TABLE . "AS c ON l.CID=c.ID WHERE l.Type='attrib' AND l.DID=" . intval($fileID));
+		$db->query('SELECT l.Name AS Name, c.Dat AS Dat FROM ' . LINK_TABLE . ' l LEFT JOIN ' . CONTENT_TABLE . ' AS c ON l.CID=c.ID WHERE l.Type="attrib" AND l.DID=' . intval($fileID));
 		while($db->next_record(MYSQL_ASSOC)) {
 			$imgAttr[$db->f('Name')] = $db->f("Dat");
 		}
@@ -296,9 +296,9 @@ class weBanner extends weBannerBase{
 			}
 			$bannerlink = $bannerclick . "?" . ($nocount ? 'nocount=' . $nocount . '&amp;' : '') . "u=$uniq&amp;bannername=" . rawurlencode($bannername) . "&amp;id=" . $bannerData["ID"] . "&amp;did=" . $did . "&amp;page=" . rawurlencode($page);
 		} else{
-			$id = f("SELECT pref_value FROM " . BANNER_PREFS_TABLE . " WHERE pref_name='DefaultBannerID'", "pref_value", $db);
+			$id = f('SELECT pref_value FROM ' . BANNER_PREFS_TABLE . ' WHERE pref_name="DefaultBannerID"', 'pref_value', $db);
 
-			$bannerID = f("SELECT bannerID FROM " . BANNER_TABLE . " WHERE ID=" . intval($id), "bannerID", $db);
+			$bannerID = f('SELECT bannerID FROM ' . BANNER_TABLE . ' WHERE ID=' . intval($id), "bannerID", $db);
 			if($bannerID){
 				$bannersrc = getServerUrl() . id_to_path($bannerID);
 				$attsImage = array_merge($attsImage, self::getImageInfos($bannerID));

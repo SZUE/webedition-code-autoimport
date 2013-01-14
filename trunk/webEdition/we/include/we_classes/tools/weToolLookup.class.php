@@ -75,7 +75,9 @@ abstract class weToolLookup{
 					$langStr = '';
 					if(isset($metaInfo['name'])){
 						$translate = we_core_Local::addTranslation('default.xml', $metaInfo['name']);
-						$langStr = $translate->_($metaInfo['name']);
+						if(is_object($translate)){
+							$langStr = $translate->_($metaInfo['name']);
+						}
 					}
 					$metaInfo['text'] = oldHtmlspecialchars($langStr);
 					if(!$includeDisabled && isset($metaInfo['appdisabled']) && $metaInfo['appdisabled']){
