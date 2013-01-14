@@ -27,9 +27,9 @@ function we_parse_tag_description($attribs, $content){
 }
 
 function we_tag_description($attribs, $content){
-	$oldHtmlspecialchars = weTag_getAttribute("oldHtmlspecialchars", $attribs, false, true);
+	$oldHtmlspecialchars = weTag_getAttribute('htmlspecialchars', $attribs, false, true);
 	$attribs = removeAttribs($attribs, array(
-		'oldHtmlspecialchars'
+		'htmlspecialchars'
 		));
 
 	if($GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_PROPERTIES && $GLOBALS['we_doc']->InWebEdition){ //	normally meta tags are edited on property page
