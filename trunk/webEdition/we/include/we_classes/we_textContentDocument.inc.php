@@ -386,18 +386,13 @@ abstract class we_textContentDocument extends we_textDocument{
 	}
 
 	public function we_unpublish($skipHook = 0){
-		if(!$this->ID)
+		if(!$this->ID){
 			return false;
-		if($this->i_isMoved()){
-			if(!we_util_File::deleteLocalFile($this->getRealPath())){
-				return false;
-			}
-		} else{
-			if(!we_util_File::deleteLocalFile($this->getRealPath(true))){
-				return false;
-			}
 		}
-		if(!$this->DB_WE->query("UPDATE " . $this->DB_WE->escape($this->Table) . " SET Published='0' WHERE ID=" . intval($this->ID))){
+		if(file_exists($this->getRealPath(true)) && !we_util_File::deleteLocalFile($this->getRealPath(!$this->i_isMoved()))){
+			return false;
+		}
+		if(!$this->DB_WE->query('UPDATE ' . $this->DB_WE->escape($this->Table) . ' SET Published=0 WHERE ID=' . intval($this->ID))){
 			return false;
 		}
 		$this->Published = 0;
@@ -405,9 +400,9 @@ abstract class we_textContentDocument extends we_textDocument{
 		$this->rewriteNavigation();
 
 		/* version */
-		if(($this->ContentType == "text/webedition" && defined('VERSIONING_TEXT_WEBEDITION') && VERSIONING_TEXT_WEBEDITION) || ($this->ContentType == "text/html" && defined('VERSIONING_TEXT_HTML') && VERSIONING_TEXT_HTML)){
+		if((VERSIONING_TEXT_WEBEDITION && $this->ContentType == 'text/webedition' ) || (VERSIONING_TEXT_HTML && $this->ContentType == 'text/html')){
 			$version = new weVersions();
-			$version->save($this, "unpublished");
+			$version->save($this, 'unpublished');
 		}
 		/* hook */
 		if($skipHook == 0){
@@ -420,11 +415,9 @@ abstract class we_textContentDocument extends we_textDocument{
 			}
 		}
 
-		$this->DB_WE->query('SELECT DID FROM ' . INDEX_TABLE . ' WHERE DID=' . intval($this->ID));
-		if($this->DB_WE->next_record()){
-			return $this->DB_WE->query("DELETE FROM " . INDEX_TABLE . " WHERE DID=" . intval($this->ID));
+		if(f('SELECT 1 AS a FROM ' . INDEX_TABLE . ' WHERE DID=' . intval($this->ID), 'a', $this->DB_WE) == 1){
+			return $this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE DID=' . intval($this->ID));
 		}
-
 
 		return true;
 	}
