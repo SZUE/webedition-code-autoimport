@@ -138,7 +138,7 @@ class we_schedpro{
 	public static function getMainJS($doc){
 		return we_html_element::jsElement('
 function checkFooter(){
-	var button=parent.editFooter.document.getElementById("publish_'.$doc->ID.'")
+	var button=parent.editFooter.document.getElementById("publish_' . $doc->ID . '")
 	var aEl=this.document.getElementsByClassName("we_schedule_active");
 	var active=false;
 	if(button != undefined){
@@ -155,13 +155,13 @@ function checkFooter(){
 
 	var textBtn=button.getElementsByClassName("weBtnMiddle")[0];
 	if(active){
-		button.title="'.g_l('button', '[saveInScheduler][alt]').'";
-		button.style.width="'.g_l('button', '[saveInScheduler][width]').'px";
-		textBtn.innerHTML="'.g_l('button', '[saveInScheduler][value]').'";
+		button.title="' . g_l('button', '[saveInScheduler][alt]') . '";
+		button.style.width="' . g_l('button', '[saveInScheduler][width]') . 'px";
+		textBtn.innerHTML="' . g_l('button', '[saveInScheduler][value]') . '";
 	}else{
-		button.title="'.g_l('button', '[publish][alt]').'";
-		button.style.width="'.g_l('button', '[publish][width]').'px";
-		textBtn.innerHTML="'.g_l('button', '[publish][value]').'";
+		button.title="' . g_l('button', '[publish][alt]') . '";
+		button.style.width="' . g_l('button', '[publish][width]') . 'px";
+		textBtn.innerHTML="' . g_l('button', '[publish][value]') . '";
 	}
 }
 //we_schedule_task
@@ -448,7 +448,7 @@ function checkFooter(){
 					$GLOBALS['we_doc']->we_unpublish());
 
 			if(!$pub){
-				t_e('while scheduled publish/unpublish of document');
+				t_e('Error while scheduled publish/unpublish of document', $GLOBALS['we_doc']->errMsg, $GLOBALS['we_doc']);
 			}
 		}
 
