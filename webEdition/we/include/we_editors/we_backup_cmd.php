@@ -286,11 +286,16 @@ if(isset($_REQUEST['cmd'])){
 				$description = g_l('backup', '[working]');
 			} else if(isset($_SESSION['weS']['weBackupVars']['files_to_delete']) && !empty($_SESSION['weS']['weBackupVars']['files_to_delete'])){
 				$description = g_l('backup', '[delete_old_files]');
+				print we_html_element::jsElement(weBackupUtil::getProgressJS(0, $description));
+				flush();
 				$oldPercent = 0;
 				if(FAST_RESTORE){
 					do{
 						$start = microtime(true);
-						for($i = 0; $i < 50 && !empty($_SESSION['weS']['weBackupVars']['files_to_delete']); ++$i){
+						for($i = 0; $i < 50; ++$i){
+							if(empty($_SESSION['weS']['weBackupVars']['files_to_delete'])){
+								break;
+							}
 							weFile::delete(array_pop($_SESSION['weS']['weBackupVars']['files_to_delete']));
 						}
 						$percent = weBackupUtil::getImportPercent();
@@ -310,6 +315,10 @@ if(isset($_REQUEST['cmd'])){
 				if($_SESSION['weS']['weBackupVars']['options']['format'] == 'xml'){
 					if(FAST_RESTORE){
 						$oldPercent = 0;
+						$percent = weBackupUtil::getImportPercent();
+						$description = weBackupUtil::getDescription($_SESSION['weS']['weBackupVars']['current_table'], 'import');
+						print we_html_element::jsElement(weBackupUtil::getProgressJS($percent, $description));
+						flush();
 						do{
 							$start = microtime(true);
 							$count = ($_SESSION['weS']['weBackupVars']['current_table'] == LINK_TABLE || $_SESSION['weS']['weBackupVars']['current_table'] == CONTENT_TABLE ? 150 : 10);
