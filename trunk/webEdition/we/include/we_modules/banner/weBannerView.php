@@ -459,9 +459,9 @@ class weBannerView extends weBannerBase{
 				case "delete_stat":
 					$this->banner->views = 0;
 					$this->banner->clicks = 0;
-					$this->db->query("UPDATE " . BANNER_TABLE . " SET views=0,clicks=0 WHERE ID='" . $this->banner->ID . "'");
-					$this->db->query("DELETE FROM " . BANNER_CLICKS_TABLE . " WHERE ID='" . $this->banner->ID . "'");
-					$this->db->query("DELETE FROM " . BANNER_VIEWS_TABLE . " WHERE ID='" . $this->banner->ID . "'");
+					$this->db->query('UPDATE ' . BANNER_TABLE . ' SET views=0,clicks=0 WHERE ID=' . intval($this->banner->ID));
+					$this->db->query('DELETE FROM ' . BANNER_CLICKS_TABLE . ' WHERE ID=' . intval($this->banner->ID));
+					$this->db->query('DELETE FROM ' . BANNER_VIEWS_TABLE . ' WHERE ID=' . intval($this->banner->ID));
 					break;
 				case "new_banner":
 					$this->page = 0;

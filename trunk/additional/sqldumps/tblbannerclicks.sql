@@ -6,5 +6,6 @@ CREATE TABLE ###TBLPREFIX###tblbannerclicks (
   Referer varchar(255) NOT NULL default '',
   DID bigint(20) unsigned NOT NULL default '0',
   Page varchar(255) NOT NULL default '',
-  PRIMARY KEY (`clickid`)
+  PRIMARY KEY (`clickid`),
+	KEY ID (ID,Page,`Timestamp`)
 ) ENGINE=MyISAM;

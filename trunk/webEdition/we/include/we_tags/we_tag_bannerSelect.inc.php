@@ -24,9 +24,9 @@
  */
 function we_tag_bannerSelect($attribs){
 	global $DB_WE;
-	$foo = attributFehltError($attribs, "name", __FUNCTION__);
-	if($foo)
+	if(($foo = attributFehltError($attribs, "name", __FUNCTION__))){
 		return $foo;
+	}
 
 	$name = weTag_getAttribute("name", $attribs);
 	$customer = weTag_getAttribute("customer", $attribs, false, true);
@@ -45,19 +45,17 @@ function we_tag_bannerSelect($attribs){
 	$options = '';
 	if($firstentry){
 		$options = getHtmlTag('option', array('value' => ''), $firstentry, true);
-		$select .= '<option value="">' . $firstentry . "</option>\n";
+		$select .= '<option value="">' . $firstentry . '</option>';
 	}
-	$DB_WE->query("SELECT ID,Text,Path,Customers FROM " . BANNER_TABLE . " $where ORDER BY Path");
+	$DB_WE->query('SELECT ID,Text,Path,Customers FROM ' . BANNER_TABLE . ' ' . $where . ' ORDER BY Path');
 	while($DB_WE->next_record()) {
 		if((!defined("CUSTOMER_TABLE")) || (!$customer) || ($customer && defined("CUSTOMER_TABLE") && weBanner::customerOwnsBanner($_SESSION["webuser"]["ID"], $DB_WE->f("ID")))){
 			if(!isset($_REQUEST[$name])){
 				$_REQUEST[$name] = $DB_WE->f("Path");
 			}
-			if($_REQUEST[$name] == $DB_WE->f("Path")){
-				$options .= getHtmlTag('option', array('value' => $DB_WE->f("Path"), 'selected' => 'selected'), $showpath ? $DB_WE->f("Path") : $DB_WE->f("Text")) . "\n";
-			} else{
-				$options .= getHtmlTag('option', array('value' => $DB_WE->f("Path")), $showpath ? $DB_WE->f("Path") : $DB_WE->f("Text")) . "\n";
-			}
+			$options .= ($_REQUEST[$name] == $DB_WE->f("Path") ?
+					getHtmlTag('option', array('value' => $DB_WE->f("Path"), 'selected' => 'selected'), $showpath ? $DB_WE->f("Path") : $DB_WE->f("Text")) :
+					getHtmlTag('option', array('value' => $DB_WE->f("Path")), $showpath ? $DB_WE->f("Path") : $DB_WE->f("Text")));
 		}
 	}
 
