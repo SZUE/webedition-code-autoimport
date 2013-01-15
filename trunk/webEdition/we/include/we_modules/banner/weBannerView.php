@@ -605,7 +605,7 @@ class weBannerView extends weBannerBase{
 					break;
 				case "save_banner":
 					if(isset($_REQUEST["bid"])){
-						$newone (!$this->banner->ID);
+						$newone = ($this->banner->ID == 0);
 						$exist = false;
 						$double = f('SELECT COUNT(1) AS Count FROM ' . BANNER_TABLE . " WHERE Text='" . $this->db->escape($this->banner->Text) . "' AND ParentID=" . intval($this->banner->ParentID) . ($newone ? '' : ' AND ID!=' . intval($this->banner->ID)), 'Count', $this->db);
 						$acQuery = new weSelectorQuery();

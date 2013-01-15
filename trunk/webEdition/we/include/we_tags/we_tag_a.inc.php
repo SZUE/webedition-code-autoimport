@@ -171,8 +171,9 @@ function we_tag_a($attribs, $content){
 				$urladd = ($urladd ? $urladd . '&' : '?') . 'del_shop_artikelid=' . $idd . '&type=' . $type . '&t=' . time() . $variant . $customReq . $ifShopname;
 			} else
 			if($delshop){ // emptyshop
-				if(($foo = attributFehltError($attribs, 'shopname', __FUNCTION__)))
+				if(($foo = attributFehltError($attribs, 'shopname', __FUNCTION__))){
 					return $foo;
+				}
 				$urladd = ($urladd ? $urladd . '&' : '?') . 'deleteshop=1' . $ifShopname . '&t=' . time();
 			} else{ // increase/decrease amount of articles
 				$urladd = ($urladd ? $urladd . '&' : '?') . 'shop_artikelid=' . $idd . '&shop_anzahl=' . $amount . '&type=' . $type . '&t=' . time() . $variant . ($customReq ? $customReq : '') . $ifShopname;
