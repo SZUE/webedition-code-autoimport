@@ -314,7 +314,7 @@ class weBanner extends weBannerBase{
 			$db->query('INSERT INTO ' . BANNER_VIEWS_TABLE . ' SET ' . we_database_base::arraySetter(array(
 					'ID' => intval($id),
 					'Timestamp' => 'UNIX_TIMESTAMP()',
-					'IP' => $_SERVER["REMOTE_ADDR"],
+					'IP' => $_SERVER['REMOTE_ADDR'],
 					'Referer' => $referer ? $referer : (isset($_SERVER["HTTP_REFERER"]) ? $_SERVER["HTTP_REFERER"] : ""),
 					'DID' => intval($did),
 					'Page' => $page
