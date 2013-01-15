@@ -32,5 +32,9 @@ CREATE TABLE ###TBLPREFIX###tblbanner (
   Customers varchar(255) NOT NULL default '',
   TagName varchar(255) NOT NULL default '',
   weight tinyint(2) unsigned NOT NULL default '0',
-  PRIMARY KEY  (ID)
+  PRIMARY KEY  (ID),
+	KEY weight (weight),
+	KEY run (StartOk,EndOk,StartDate,EndDate,maxShow,maxClicks,TagName),
+	KEY ParentID (ParentID),
+	KEY Path (Path)
 ) ENGINE=MyISAM;
