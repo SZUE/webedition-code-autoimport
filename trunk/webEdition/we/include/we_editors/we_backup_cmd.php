@@ -311,7 +311,7 @@ if(isset($_REQUEST['cmd'])){
 						weFile::delete($file_to_delete);
 					}
 				}
-			} else{
+			} elseif(($_SESSION['weS']['weBackupVars']['offset'] < $_SESSION['weS']['weBackupVars']['offset_end'])){
 				if($_SESSION['weS']['weBackupVars']['options']['format'] == 'xml'){
 					if(FAST_RESTORE){
 						$oldPercent = 0;
@@ -352,14 +352,18 @@ if(isset($_REQUEST['cmd'])){
 						}
 					}
 					weBackupFileReader::closeFile();
+
 				} else{
 					weBackupImportSql::import($_SESSION['weS']['weBackupVars']['backup_file'], $_SESSION['weS']['weBackupVars']['offset'], $_SESSION['weS']['weBackupVars']['backup_steps'], $_SESSION['weS']['weBackupVars']['options']['compress'], $_SESSION['weS']['weBackupVars']['encoding'], $_SESSION['weS']['weBackupVars']['backup_log']);
 				}
 
 				$description = weBackupUtil::getDescription($_SESSION['weS']['weBackupVars']['current_table'], 'import');
+			}else{
+				//make sure we_update is run on next request
+				++$_SESSION['weS']['weBackupVars']['offset'];
 			}
 
-			if(($_SESSION['weS']['weBackupVars']['offset'] < $_SESSION['weS']['weBackupVars']['offset_end']) ||
+			if(($_SESSION['weS']['weBackupVars']['offset'] <= $_SESSION['weS']['weBackupVars']['offset_end']) ||
 				(isset($_SESSION['weS']['weBackupVars']['files_to_delete']) && !empty($_SESSION['weS']['weBackupVars']['files_to_delete']))
 			){
 

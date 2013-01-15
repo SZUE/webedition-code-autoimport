@@ -182,35 +182,31 @@ $table = '<table border="0" cellpadding="0" cellspacing="0">
 		<td>' . we_html_tools::getPixel(60, 1) . '</td>
 		<td>' . we_html_tools::getPixel(140, 1) . '</td>
 		<td>' . we_html_tools::getPixel(60, 1) . '</td>
-	</tr>'
-	. '</table>';
+	</tr>
+</table>';
 
-array_push($parts, array(
+$parts[] = array(
 	"headline" => "",
 	"html" => $table,
 	"space" => 0,
-	)
 );
 
 
 // CLASSES
-$table = '<table border="0" cellpadding="0" cellspacing="0">'
-	. '<tr>'
-	. '	<td class="defaultfont" valign="top" align="right">classes&nbsp;</td><td colspan="5">'
-	. we_class::htmlTextArea("cssClasses", 3, 30, oldHtmlspecialchars((isset($we_doc->elements[$name . "cssClasses"]["dat"]) ? $we_doc->elements[$name . "cssClasses"]["dat"] : "")), 'style="width:415px;height:50px"')
-	. '</td>'
-	. '</tr>'
-	. '<tr>'
-	. '	<td>' . we_html_tools::getPixel(70, 1) . '</td>'
-	. '	<td>' . we_html_tools::getPixel(415, 1) . '</td>'
-	. '</tr>'
-	. '</table>';
+$table = '<table border="0" cellpadding="0" cellspacing="0">
+	<tr>
+		<td class="defaultfont" valign="top" align="right">classes&nbsp;</td><td colspan="5">' . we_class::htmlTextArea("cssClasses", 3, 30, oldHtmlspecialchars((isset($we_doc->elements[$name . "cssClasses"]["dat"]) ? $we_doc->elements[$name . "cssClasses"]["dat"] : "")), 'style="width:415px;height:50px"') . '</td>
+	</tr>
+	<tr>
+		<td>' . we_html_tools::getPixel(70, 1) . '</td>
+		<td>' . we_html_tools::getPixel(415, 1) . '</td>
+	</tr>
+</table>';
 
-array_push($parts, array(
+$parts[] = array(
 	"headline" => "",
 	"html" => $table,
 	"space" => 0,
-	)
 );
 
 // COMMANDS
@@ -218,17 +214,15 @@ $vals = makeArrayFromCSV(",," . WE_WYSIWYG_COMMANDS);
 sort($vals);
 $select = we_html_tools::htmlSelect("tmp_commands", $vals, 1, "", false, 'onchange="var elem=document.getElementById(\'commands\'); var txt = this.options[this.selectedIndex].text; if(elem.value.indexOf(txt)==-1){elem.value=(elem.value) ? (elem.value + \',\' + txt) : txt;}this.selectedIndex=-1"');
 
-$table = '<table border="0" cellpadding="0" cellspacing="0">'
-	. '<tr>'
-	. '	<td class="defaultfont" valign="top" align="right">commands&nbsp;</td><td colspan="5">' . $select . '<br>'
-	. we_class::htmlTextArea("commands", 3, 30, oldHtmlspecialchars((isset($we_doc->elements[$name . "commands"]["dat"]) ? $we_doc->elements[$name . "commands"]["dat"] : "")), 'id="commands" style="width:415px;height:50px"')
-	. '</td>'
-	. '</tr>'
-	. '<tr>'
-	. '	<td>' . we_html_tools::getPixel(70, 1) . '</td>'
-	. '	<td>' . we_html_tools::getPixel(415, 1) . '</td>'
-	. '</tr>'
-	. '</table>';
+$table = '<table border="0" cellpadding="0" cellspacing="0">
+	<tr>
+		<td class="defaultfont" valign="top" align="right">commands&nbsp;</td><td colspan="5">' . $select . '<br>' . we_class::htmlTextArea("commands", 3, 30, oldHtmlspecialchars((isset($we_doc->elements[$name . "commands"]["dat"]) ? $we_doc->elements[$name . "commands"]["dat"] : "")), 'id="commands" style="width:415px;height:50px"') . '</td>
+	</tr>
+	<tr>
+		<td>' . we_html_tools::getPixel(70, 1) . '</td>
+		<td>' . we_html_tools::getPixel(415, 1) . '</td>
+	</tr>
+</table>';
 
 $parts[] = array(
 	"headline" => "",
@@ -239,7 +233,7 @@ $parts[] = array(
 $cancel_button = we_button::create_button("cancel", "javascript:top.close()");
 $okbut = we_button::create_button("ok", "javascript:okFn();");
 $buttons = we_button::position_yes_no_cancel($okbut, null, $cancel_button);
-$out .= we_multiIconBox::getHTML("", "100%", $parts, 30, $buttons, -1, "", "", "", g_l('modules_object', '[textarea_field]') . ' "' . $we_doc->elements[$name]['dat'] . '" - ' . g_l('modules_object', '[attributes]'));
-$out .= '</form></body></html>';
+$out .= we_multiIconBox::getHTML("", "100%", $parts, 30, $buttons, -1, "", "", "", g_l('modules_object', '[textarea_field]') . ' "' . $we_doc->elements[$name]['dat'] . '" - ' . g_l('modules_object', '[attributes]')) .
+	'</form></body></html>';
 
 print $out;
