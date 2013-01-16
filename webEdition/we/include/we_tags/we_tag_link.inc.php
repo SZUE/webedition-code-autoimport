@@ -39,10 +39,10 @@ function we_tag_link($attribs, $content){
 	$id = weTag_getAttribute("id", $attribs);
 
 	// check if target document exists (Bug #7167)
-	if($id != 0 && (f('SELECT 1 AS tmp FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), 'tmp', new DB_WE()) != '1')){
+	if($id != 0 && (f('SELECT 1 AS tmp FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), 'tmp', $GLOBALS['DB_WE']) != '1')){
 		$id = 0;
 	}
-	if($imageid != 0 && (f('SELECT 1 AS tmp FROM ' . FILE_TABLE . ' WHERE ID=' . intval($imageid), 'tmp', new DB_WE()) != '1')){
+	if($imageid != 0 && (f('SELECT 1 AS tmp FROM ' . FILE_TABLE . ' WHERE ID=' . intval($imageid), 'tmp', $GLOBALS['DB_WE']) != '1')){
 		$imageid = 0;
 		if(isset($id)){
 			$id = 0;

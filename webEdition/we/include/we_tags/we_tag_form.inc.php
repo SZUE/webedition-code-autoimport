@@ -36,8 +36,7 @@ function we_tag_form($attribs){
 	$type = weTag_getAttribute('type', $attribs);
 	$tid = weTag_getAttribute('tid', $attribs);
 	$categories = weTag_getAttribute('categories', $attribs);
-	$onsubmit = weTag_getAttribute('onsubmit', $attribs);
-	$onsubmit = weTag_getAttribute('onSubmit', $attribs, $onsubmit);
+	$onsubmit = weTag_getAttribute('onSubmit', $attribs, weTag_getAttribute('onsubmit', $attribs));
 	$onsuccess = weTag_getAttribute('onsuccess', $attribs);
 	$onerror = weTag_getAttribute('onerror', $attribs);
 	$onmailerror = weTag_getAttribute('onmailerror', $attribs);
@@ -81,6 +80,7 @@ function we_tag_form($attribs){
 		$GLOBALS['we_form_action'] = ($action ? $action : $_SERVER['SCRIPT_NAME']);
 	}
 	if($type != 'search'){
+		$regs = array();
 		if(preg_match('/^(.*)return (.+)$/i', $onsubmit, $regs)){
 			$onsubmit = $regs[1] . ';if(self.weWysiwygSetHiddenText){weWysiwygSetHiddenText();};return ' . $regs[2];
 		} else{
@@ -104,8 +104,17 @@ function we_tag_form($attribs){
 						'xml' => $xml,
 						'type' => 'hidden',
 						'name' => 'shop_artikelid',
-						'value' => (isset($GLOBALS['lv']->classID) || isset($GLOBALS['we_doc']->ClassID) || isset($GLOBALS['we_doc']->ObjectID) ? ((isset($GLOBALS['lv']) && $GLOBALS['lv']->DB_WE->Record['OF_ID'] != '') ? $GLOBALS['lv']->DB_WE->Record['OF_ID'] : (isset($GLOBALS['we_doc']->DB_WE->Record['OF_ID']) ? $GLOBALS['we_doc']->DB_WE->Record['OF_ID'] : (isset($GLOBALS['we_doc']->OF_ID) ? $GLOBALS['we_doc']->OF_ID : $GLOBALS['we_doc']->ID))) : ((isset($GLOBALS['lv']) && isset($GLOBALS['lv']->IDs[$GLOBALS['lv']->count - 1]) && $GLOBALS['lv']->IDs[$GLOBALS['lv']->count - 1] != '') ? $GLOBALS['lv']->IDs[$GLOBALS['lv']->count - 1] : $GLOBALS['we_doc']->ID)
-						),
+						'value' => (isset($GLOBALS['lv']->classID) || isset($GLOBALS['we_doc']->ClassID) || isset($GLOBALS['we_doc']->ObjectID) ?
+							((isset($GLOBALS['lv']) && $GLOBALS['lv']->getDBf('OF_ID') != '') ?
+								$GLOBALS['lv']->getDBf('OF_ID') :
+								($GLOBALS['we_doc']->getDBf('OF_ID') ?
+									$GLOBALS['we_doc']->getDBf('OF_ID') :
+									(isset($GLOBALS['we_doc']->OF_ID) ?
+										$GLOBALS['we_doc']->OF_ID :
+										$GLOBALS['we_doc']->ID))) :
+							((isset($GLOBALS['lv']) && isset($GLOBALS['lv']->IDs[$GLOBALS['lv']->count - 1]) && $GLOBALS['lv']->IDs[$GLOBALS['lv']->count - 1] != '') ?
+								$GLOBALS['lv']->IDs[$GLOBALS['lv']->count - 1] :
+								$GLOBALS['we_doc']->ID) ),
 					)) . getHtmlTag(
 						'input', array(
 						'xml' => $xml,

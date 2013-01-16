@@ -173,7 +173,6 @@ function doClick(id,ct){
 
 			selectFile(id);' .
 				($this->multiple ? '
-
 			}else{
 				if (isFileSelected(id)) {
 					unselectFile(id);

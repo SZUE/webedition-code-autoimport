@@ -124,7 +124,7 @@ function we_tag_write($attribs){
 					$wsArr = makeArrayFromCSV($workspaces);
 					$tmplArray = array();
 					foreach($wsArr as $wsId){
-						array_push($tmplArray, $GLOBALS['we_' . $type][$name]->getTemplateFromWs($wsId));
+						$tmplArray[] = $GLOBALS['we_' . $type][$name]->getTemplateFromWs($wsId);
 					}
 					$GLOBALS['we_' . $type][$name]->Workspaces = makeCSVFromArray($wsArr, true);
 					$GLOBALS['we_' . $type][$name]->Templates = makeCSVFromArray($tmplArray, true);

@@ -59,12 +59,12 @@ function we_isFieldNotEmpty($attribs){
 		case 'multiobject' :
 			if(isset($GLOBALS['lv'])){
 				if(isset($GLOBALS['lv']->object)){
-					$data = unserialize($GLOBALS['lv']->object->DB_WE->Record['we_' . $orig_match]);
+					$data = unserialize($GLOBALS['lv']->object->getDBf('we_' . $orig_match));
 				} else{
 					if($GLOBALS['lv']->ClassName == 'we_listview_shoppingCart'){//Bug #4827
 						$data = unserialize($GLOBALS['lv']->f($match));
 					} else{
-						$data = unserialize($GLOBALS['lv']->DB_WE->Record['we_' . $orig_match]);
+						$data = unserialize($GLOBALS['lv']->getDBf('we_' . $orig_match));
 					}
 				}
 			} else{
@@ -79,9 +79,8 @@ function we_isFieldNotEmpty($attribs){
 			if($GLOBALS['lv']->ClassName == 'we_listview'){ // listview/document with objects included using we:object
 				return (bool) $GLOBALS['lv']->f($match);
 			}
-			$objectdb = new DB_WE();
 			$match = strpos($orig_match, '/') === false ? $orig_match : substr(strrchr($orig_match, '/'), 1);
-			$objectid = f('SELECT ID FROM ' . OBJECT_TABLE . " WHERE Text='" . $match . "'", 'ID', $objectdb);
+			$objectid = f('SELECT ID FROM ' . OBJECT_TABLE . " WHERE Text='" . $match . "'", 'ID', $GLOBALS['DB_WE']);
 			return (bool) $GLOBALS['lv']->f('we_object_' . $objectid);
 		case 'checkbox' :
 		case 'binary' :

@@ -30,7 +30,7 @@ function we_tag_css($attribs){
 	$id = weTag_getAttribute('id', $attribs);
 	$rel = weTag_getAttribute('rel', $attribs, 'stylesheet');
 
-	$row = getHash('SELECT Path,IsFolder,IsDynamic FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), new DB_WE());
+	$row = getHash('SELECT Path,IsFolder,IsDynamic FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), $GLOBALS['DB_WE']);
 	if(!empty($row)){
 		$url = $row['Path'] . ($row['IsFolder'] ? '/' : '');
 
