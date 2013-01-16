@@ -659,10 +659,10 @@ class we_document extends we_root{
 		}
 
 
-		if( ($this->ContentType == 'application/x-shockwave-flash' && defined('VERSIONING_FLASH') && VERSIONING_FLASH) || ($this->ContentType == 'image/*' && defined('VERSIONING_IMAGE') && VERSIONING_IMAGE)|| ($this->ContentType == 'text/weTmpl' && defined('VERSIONING_TEXT_WETMPL') && VERSIONING_TEXT_WETMPL)//#4120 hinzugef�gt
+		if(($this->ContentType == 'application/x-shockwave-flash' && defined('VERSIONING_FLASH') && VERSIONING_FLASH) || ($this->ContentType == 'image/*' && defined('VERSIONING_IMAGE') && VERSIONING_IMAGE) || ($this->ContentType == 'text/weTmpl' && defined('VERSIONING_TEXT_WETMPL') && VERSIONING_TEXT_WETMPL)//#4120 hinzugef�gt
 			|| ($this->ContentType == 'video/quicktime' && defined('VERSIONING_QUICKTIME') && VERSIONING_QUICKTIME)
-			|| ($this->ContentType == 'text/js'  && defined('VERSIONING_TEXT_JS') && VERSIONING_TEXT_JS) || ($this->ContentType == 'text/css'  && defined('VERSIONING_TEXT_CSS') && VERSIONING_TEXT_CSS )
-			|| ($this->ContentType == 'text/plain'  && defined('VERSIONING_TEXT_PLAIN') && VERSIONING_TEXT_PLAIN) || ($this->ContentType == 'text/xml'  && defined('VERSIONING_TEXT_XML') && VERSIONING_TEXT_XML) || ($this->ContentType == 'application/*'  && defined('VERSIONING_SONSTIGE') && VERSIONING_SONSTIGE) ){
+			|| ($this->ContentType == 'text/js' && defined('VERSIONING_TEXT_JS') && VERSIONING_TEXT_JS) || ($this->ContentType == 'text/css' && defined('VERSIONING_TEXT_CSS') && VERSIONING_TEXT_CSS )
+			|| ($this->ContentType == 'text/plain' && defined('VERSIONING_TEXT_PLAIN') && VERSIONING_TEXT_PLAIN) || ($this->ContentType == 'text/xml' && defined('VERSIONING_TEXT_XML') && VERSIONING_TEXT_XML) || ($this->ContentType == 'application/*' && defined('VERSIONING_SONSTIGE') && VERSIONING_SONSTIGE)){
 
 			$version->save($this);
 		}
@@ -832,7 +832,7 @@ class we_document extends we_root{
 		if(isset($attribs['_name_orig'])){
 			unset($attribs['_name_orig']);
 		}
-			$db = $db?$db:new DB_WE();
+		$db = $db ? $db : new DB_WE();
 		if((!$attribs) || (!is_array($attribs))){
 			$attribs = array();
 		}
@@ -1027,8 +1027,8 @@ class we_document extends we_root{
 						}
 					}
 				}
-				$f=__FUNCTION__;
-				return $this->{$f}($val, 'text', $attribs, $pathOnly, $parentID, $path, $db, $classID, $fn );
+				$f = __FUNCTION__;
+				return $this->{$f}($val, 'text', $attribs, $pathOnly, $parentID, $path, $db, $classID, $fn);
 			case 'href':
 				return self::getHref($attribs, $db, $fn);
 			default:

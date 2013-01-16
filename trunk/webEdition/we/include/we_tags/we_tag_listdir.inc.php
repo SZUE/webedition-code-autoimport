@@ -47,41 +47,35 @@ function we_tag_listdir($attribs, $content){
 		$sortfield = $namefield = '';
 
 		if($db->f("IsFolder")){
-			$id = f("SELECT ID FROM " . FILE_TABLE . " WHERE ParentID=" . intval($db->f("ID")) . " AND IsFolder = 0 AND ($q) AND (Published > 0 AND IsSearchable = 1)", 'ID', $db2);
+			$id = f('SELECT ID FROM ' . FILE_TABLE . ' WHERE ParentID=' . intval($db->f("ID")) . ' AND IsFolder = 0 AND (' . $q . ') AND (Published > 0 AND IsSearchable = 1)', 'ID', $db2);
 			if($id){
 				if($sort){
-					$dat = f(
-						"SELECT " . CONTENT_TABLE . ".Dat as Dat FROM " . LINK_TABLE . "," . CONTENT_TABLE . " WHERE " . LINK_TABLE . ".DID='" . $id
+					$dat = f('SELECT ' . CONTENT_TABLE . '.Dat as Dat FROM ' . LINK_TABLE . "," . CONTENT_TABLE . " WHERE " . LINK_TABLE . ".DID='" . $id
 						. "' AND " . LINK_TABLE . ".Name='" . $db->escape($sort) . "' AND " . CONTENT_TABLE . ".ID = " . LINK_TABLE . ".CID", 'Dat', $db2);
 					$sortfield = $dat ? $dat : $db->f("Text");
 				} else{
 					$sortfield = $db->f("Text");
 				}
 				if($dirfield){
-					$dat = f(
-						"SELECT " . CONTENT_TABLE . ".Dat as Dat FROM " . LINK_TABLE . "," . CONTENT_TABLE . " WHERE " . LINK_TABLE . ".DID='" . $id
+					$dat = f('SELECT ' . CONTENT_TABLE . '.Dat as Dat FROM ' . LINK_TABLE . "," . CONTENT_TABLE . " WHERE " . LINK_TABLE . ".DID='" . $id
 						. "' AND " . LINK_TABLE . ".Name='" . $db->escape($dirfield) . "' AND " . CONTENT_TABLE . ".ID = " . LINK_TABLE . ".CID", 'Dat', $db2);
 					$namefield = $dat ? $dat : $db->f("Text");
 				} else{
 					$namefield = $db->f("Text");
 				}
-				array_push(
-					$files, array(
-					"properties" => $db->Record, "sort" => $sortfield, "name" => $namefield
-				));
+
+				$files[] = array("properties" => $db->Record, "sort" => $sortfield, "name" => $namefield);
 			}
 		} else{
 			if($sort){
-				$dat = f(
-					"SELECT " . CONTENT_TABLE . ".Dat as Dat FROM " . LINK_TABLE . "," . CONTENT_TABLE . " WHERE " . LINK_TABLE . ".DID=" . intval($db->f(
+				$dat = f('SELECT ' . CONTENT_TABLE . ".Dat as Dat FROM " . LINK_TABLE . "," . CONTENT_TABLE . " WHERE " . LINK_TABLE . ".DID=" . intval($db->f(
 							"ID")) . " AND " . LINK_TABLE . ".Name='" . $db2->escape($sort) . "' AND " . CONTENT_TABLE . ".ID = " . LINK_TABLE . ".CID", 'Dat', $db2);
 				$sortfield = $dat ? $dat : $db->f("Text");
 			} else{
 				$sortfield = $db->f("Text");
 			}
 			if($name){
-				$dat = f(
-					"SELECT " . CONTENT_TABLE . ".Dat as Dat FROM " . LINK_TABLE . "," . CONTENT_TABLE . " WHERE " . LINK_TABLE . ".DID=" . intval($db->f(
+				$dat = f("SELECT " . CONTENT_TABLE . ".Dat as Dat FROM " . LINK_TABLE . "," . CONTENT_TABLE . " WHERE " . LINK_TABLE . ".DID=" . intval($db->f(
 							"ID")) . " AND " . LINK_TABLE . ".Name='" . $db2->escape($name) . "' AND " . CONTENT_TABLE . ".ID = " . LINK_TABLE . ".CID", 'Dat', $db2);
 				$namefield = $dat ? $dat : $db->f("Text");
 			} else{
@@ -103,13 +97,20 @@ function we_tag_listdir($attribs, $content){
 		$field = $v["name"];
 		$id = $v["properties"]["ID"];
 		$path = $v["properties"]["Path"];
-		$foo = $content;
-		$foo = preg_replace('|we_tag\(\'field\',array\(\.*\)\)|s', '\'' . $field . '\'', $foo);
-		$foo = preg_replace('|we_tag\(\'id\',array\(\.*\)\)|s', '\'' . $id . '\'', $foo);
-		$foo = preg_replace('|we_tag\(\'path\',array\(\.*\)\)|s', '\'' . $path . '\'', $foo);
-		$foo = preg_replace('|(we_tag\(\'a\',array\()(\.*\).*\))|s', '\1id=>' . $id . ',\2', $foo);
-		$foo = preg_replace('|(we_tag\(\'ifSelf\',array\()(\.*\).*\))|s', '\1id=>' . $id . ',\2', $foo);
-		$foo = preg_replace('|(we_tag\(\'ifNotSelf\',array\()(\.*\).*\))|s', '\1id=>' . $id . ',\2', $foo);
+		$foo = preg_replace(array(
+			'|we_tag\(\'field\',array\(\.*\)\)|s',
+			'|we_tag\(\'id\',array\(\.*\)\)|s',
+			'|(we_tag\(\'a\',array\()(\.*\).*\))|s',
+			'|(we_tag\(\'ifSelf\',array\()(\.*\).*\))|s',
+			'|(we_tag\(\'ifNotSelf\',array\()(\.*\).*\))|s',
+			), array(
+			'\'' . $field . '\'',
+			'\'' . $id . '\'',
+			'\'' . $path . '\'',
+			'\1id=>' . $id . ',\2',
+			'\1id=>' . $id . ',\2',
+			'\1id=>' . $id . ',\2',
+			), $content);
 
 		//	parse we:ifPosition
 		if(strpos($foo, 'setVar') || strpos($foo, 'position') || strpos($foo, 'ifPosition') || strpos(

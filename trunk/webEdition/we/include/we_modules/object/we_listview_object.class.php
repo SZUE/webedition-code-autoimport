@@ -150,8 +150,7 @@ class we_listview_object extends listviewBase{
 		if(!empty($sqlParts["tables"]) || $we_predefinedSQL != ''){
 
 			if($we_predefinedSQL != ""){
-				$q = $we_predefinedSQL;
-				$this->DB_WE->query($q);
+				$this->DB_WE->query($we_predefinedSQL);
 				$this->anz_all = $this->DB_WE->num_rows();
 				$q = $we_predefinedSQL . (($this->maxItemsPerPage > 0) ? (' LIMIT ' . $this->start . ',' . $this->maxItemsPerPage) : '');
 			} else{

@@ -25,10 +25,10 @@
 class we_customertag{
 
 	var $DB_WE;
-	var $class = "";
+	var $class = '';
 	var $id = 0;
 	var $ClassName = __CLASS__;
-	var $object = "";
+	var $object = '';
 	var $avail = false;
 	var $hidedirindex = false;
 
@@ -47,11 +47,7 @@ class we_customertag{
 	}
 
 	function f($key){
-		if($this->id){
-			return $this->object->f($key);
-		} else{
-			return "";
-		}
+		return ($this->id ? $this->object->f($key) : '');
 	}
 
 }

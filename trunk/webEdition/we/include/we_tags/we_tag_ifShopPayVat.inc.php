@@ -28,16 +28,11 @@ function we_tag_ifShopPayVat($attribs){
 	if(we_tag('ifRegisteredUser', array(), '')){
 		$customer = $_SESSION['webuser'];
 	} else{
-
 		if(isset($GLOBALS[$namefrom]) && $GLOBALS[$namefrom]){
 			$cus = new we_customertag($GLOBALS[$namefrom]);
-			$customerarray = $cus->object->DB_WE->Record;
+			$customerarray = $cus->object->getDBRecord();
 			unset($cus);
-			if($customerarray){
-				$customer = $customerarray;
-			} else{
-				$customer = false;
-			}
+			$customer = ($customerarray ? $customerarray : false);
 		} else{
 			$customer = false;
 		}

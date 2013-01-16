@@ -35,7 +35,7 @@ function we_tag_registeredUser($attribs){
 			$id = $doc->getElement($field);
 	}
 	if($id){
-		$h = getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . intval($id), new DB_WE());
+		$h = getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . intval($id), $GLOBALS['DB_WE']);
 		unset($h['Password']);
 		if($show){
 			$foo = array();

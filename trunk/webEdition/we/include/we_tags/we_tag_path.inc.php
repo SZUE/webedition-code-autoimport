@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_path($attribs){
-	$db = new DB_WE();
+	$db = $GLOBALS['DB_WE'];
 	$field = weTag_getAttribute("field", $attribs);
 	$dirfield = weTag_getAttribute("dirfield", $attribs, $field);
 	$index = weTag_getAttribute("index", $attribs);
