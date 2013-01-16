@@ -332,7 +332,7 @@ class weSelectorQuery{
 	 * @return string
 	 */
 	function getUserExtraQuery($table){
-		if($table == NAVIGATION_TABLE){
+		if((defined('NAVIGATION_TABLE') && $table == NAVIGATION_TABLE) || (defined('BANNER_TABLE') && $table == BANNER_TABLE)){
 			return '';
 		}
 		$userExtraSQL = ' AND((1 ' . makeOwnersSql(false) . ') ';
