@@ -92,6 +92,7 @@ class we_bannerDirSelector extends we_dirSelector{
 			'</td>';
 	}
 
+
 	function printFramesetJSFunctioWriteBody(){
 		?><script type="text/javascript"><!--
 					function writeBody(d){
@@ -131,7 +132,7 @@ top.unselectAllFiles();') . '
 #				}else{
 	<input type="hidden" name="what" value="' . self::CREATEFOLDER . '" />
 #				}
-<input type="hidden" name="order" value="' + top . order + '" />
+<input type="hidden" name="order" value="#\' + top.order + #\'" />
 <input type="hidden" name="rootDirID" value="' . $this->rootDirID . '" />
 <input type="hidden" name="table" value="' . $this->table . '" />
 <input type="hidden" name="id" value="#\'+top.currentDir+#\'" />
