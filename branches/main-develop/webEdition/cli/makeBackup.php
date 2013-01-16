@@ -377,7 +377,7 @@ if(!isset($_SESSION['weS']['weBackupVars']) || empty($_SESSION['weS']['weBackupV
 			}
 		}
 		fclose($_fh);
-		
+
 		if($_SESSION['weS']['weBackupVars']['handle_options']['settings']){
 			$fh = fopen($_SESSION['weS']['weBackupVars']['backup_file'], 'ab');
 			if($fh){
@@ -386,7 +386,7 @@ if(!isset($_SESSION['weS']['weBackupVars']) || empty($_SESSION['weS']['weBackupV
 				fclose($fh);
 			}
 		}
-		weFile::save($_SESSION['weS']['weBackupVars']['backup_file'], $GLOBALS['weXmlExImFooter'], 'ab');
+		weFile::save($_SESSION['weS']['weBackupVars']['backup_file'], weBackup::weXmlExImFooter, 'ab');
 
 		if(!empty($_SESSION['weS']['weBackupVars']['options']['compress'])){
 			if($_REQUEST['verbose']){

@@ -51,8 +51,7 @@ class we_listview_banner extends listviewBase{
 	 * @param   FilterDateEnd integer - Unix Timestamp
 	 *
 	 */
-	function __construct($name="0", $rows=999999, $order="views DESC", $bannerID="", $UseFilter=false, $FilterDate=0, $FilterDateEnd=0){
-
+	function __construct($name = "0", $rows = 999999, $order = "views DESC", $bannerID = "", $UseFilter = false, $FilterDate = 0, $FilterDateEnd = 0){
 		parent::__construct($name, $rows, 0, $order);
 
 		$this->bannerID = $bannerID;
@@ -61,123 +60,82 @@ class we_listview_banner extends listviewBase{
 		$this->FilterDateEnd = $FilterDateEnd;
 		$this->allviews = 0;
 		$this->allclicks = 0;
-
 		$this->count = $this->start;
-
 		$this->docs = array();
 
 		$tempArray = array();
-		;
 		$tempArray2 = array();
-		;
+
 
 		$ord = stripos($this->order, "views") === 0 ? "ORDER BY " . $this->order : "";
-		$this->DB_WE->query("
-
-SELECT DID, COUNT( ID )  AS views
-FROM " . BANNER_VIEWS_TABLE . " WHERE DID != 0 AND (Page='' OR page='0') AND ID=" . intval($this->bannerID) . " " . ($this->UseFilter ? " AND (Timestamp>='" . $this->FilterDate . "' AND Timestamp<'" . ($this->FilterDateEnd) . "')" : "") . "
-GROUP  BY DID
-");
+		$this->DB_WE->query('SELECT DID, COUNT( ID )  AS views FROM ' . BANNER_VIEWS_TABLE . " WHERE DID != 0 AND (Page='' OR page='0') AND ID=" . intval($this->bannerID) . " " . ($this->UseFilter ? " AND (Timestamp>='" . $this->FilterDate . "' AND Timestamp<'" . ($this->FilterDateEnd) . "')" : "") . " GROUP  BY DID");
 		while($this->DB_WE->next_record()) {
-
-			$tempArray[$this->DB_WE->f("DID")] = array();
-			$tempArray[$this->DB_WE->f("DID")]["views"] = $this->DB_WE->f("views");
-			$this->allviews += abs($this->DB_WE->f("views"));
+			$tempArray[$this->DB_WE->f("DID")] = array(
+				"views" => $this->DB_WE->f("views")
+			);
+			$this->allviews += intval($this->DB_WE->f("views"));
 		}
 
-		$this->DB_WE->query("
-
-SELECT DID, COUNT( ID )  AS clicks
-FROM " . BANNER_CLICKS_TABLE . " WHERE DID != 0 AND (Page='' OR page='0') AND ID=" . intval($this->bannerID) . " " . ($this->UseFilter ? " AND (Timestamp>='" . $this->FilterDate . "' AND Timestamp<'" . ($this->FilterDateEnd) . "')" : "") . "
-GROUP  BY DID
-");
+		$this->DB_WE->query('SELECT DID, COUNT( ID )  AS clicks FROM ' . BANNER_CLICKS_TABLE . " WHERE DID != 0 AND (Page='' OR page='0') AND ID=" . intval($this->bannerID) . ' ' . ($this->UseFilter ? " AND (Timestamp>='" . $this->FilterDate . "' AND Timestamp<'" . ($this->FilterDateEnd) . "')" : "") . " GROUP  BY DID");
 		while($this->DB_WE->next_record()) {
 			$tempArray[$this->DB_WE->f("DID")]["clicks"] = $this->DB_WE->f("clicks");
-			$this->allclicks += abs($this->DB_WE->f("clicks"));
+			$this->allclicks += intval($this->DB_WE->f("clicks"));
 		}
 
-
-
-		$this->DB_WE->query("
-SELECT Page, COUNT( ID )  AS views
-FROM " . BANNER_VIEWS_TABLE . " WHERE  Page != '' AND Page != '0' AND ID=" . intval($this->bannerID) . " " . ($this->UseFilter ? " AND (Timestamp>='" . $this->FilterDate . "' AND Timestamp<'" . ($this->FilterDateEnd) . "')" : "") . "
-GROUP  BY Page
-");
+		$this->DB_WE->query('SELECT Page, COUNT( ID )  AS views FROM ' . BANNER_VIEWS_TABLE . " WHERE  Page != '' AND Page != '0' AND ID=" . intval($this->bannerID) . " " . ($this->UseFilter ? " AND (Timestamp>='" . $this->FilterDate . "' AND Timestamp<'" . ($this->FilterDateEnd) . "')" : "") . " GROUP  BY Page");
 		while($this->DB_WE->next_record()) {
 
-			$tempArray2[$this->DB_WE->f("Page")] = array();
-			$tempArray2[$this->DB_WE->f("Page")]["views"] = $this->DB_WE->f("views");
-			$this->allviews += abs($this->DB_WE->f("views"));
+			$tempArray2[$this->DB_WE->f("Page")] = array(
+				"views" => $this->DB_WE->f("views")
+			);
+			$this->allviews += intval($this->DB_WE->f("views"));
 		}
-		$this->DB_WE->query("
-
-SELECT Page, COUNT( ID )  AS clicks
-FROM " . BANNER_CLICKS_TABLE . " WHERE  Page != '' AND Page != '0' AND ID=" . intval($this->bannerID) . " " . ($this->UseFilter ? " AND (Timestamp>='" . $this->FilterDate . "' AND Timestamp<'" . ($this->FilterDateEnd) . "')" : "") . "
-GROUP  BY Page
-");
+		$this->DB_WE->query('SELECT Page, COUNT( ID )  AS clicks FROM ' . BANNER_CLICKS_TABLE . " WHERE  Page != '' AND Page != '0' AND ID=" . intval($this->bannerID) . " " . ($this->UseFilter ? " AND (Timestamp>='" . $this->FilterDate . "' AND Timestamp<'" . ($this->FilterDateEnd) . "')" : "") . " GROUP  BY Page");
 		while($this->DB_WE->next_record()) {
 			$tempArray2[$this->DB_WE->f("Page")]["clicks"] = $this->DB_WE->f("clicks");
-			$this->allclicks += abs($this->DB_WE->f("clicks"));
+			$this->allclicks += intval($this->DB_WE->f("clicks"));
 		}
 
 		// correct views entry on main banner table
-		$allviews = f("SELECT COUNT(ID) AS views FROM " . BANNER_VIEWS_TABLE . " WHERE ID=" . intval($this->bannerID), "views", $this->DB_WE);
-		$this->DB_WE->query("UPDATE " . BANNER_TABLE . " SET views=" . $allviews . " WHERE ID=" . intval($this->bannerID));
+		$allviews = f('SELECT COUNT(ID) AS views FROM ' . BANNER_VIEWS_TABLE . ' WHERE ID=' . intval($this->bannerID), "views", $this->DB_WE);
+		$this->DB_WE->query('UPDATE ' . BANNER_TABLE . ' SET views=' . $allviews . ' WHERE ID=' . intval($this->bannerID));
 
 
 		foreach($tempArray as $did => $vals){
-			array_push($this->docs, array("did" => $did, "views" => (isset($vals["views"]) ? $vals["views"] : 0), "clicks" => (isset($vals["clicks"]) ? $vals["clicks"] : 0), "page" => ""));
+			$this->docs[] = array("did" => $did, "views" => (isset($vals["views"]) ? $vals["views"] : 0), "clicks" => (isset($vals["clicks"]) ? $vals["clicks"] : 0), "page" => "");
 		}
 
 		foreach($tempArray2 as $page => $vals){
-			array_push($this->docs, array("did" => 0, "views" => isset($vals["views"]) ? $vals["views"] : 0, "clicks" => isset($vals["clicks"]) ? $vals["clicks"] : 0, "page" => $page));
+			$this->docs[] = array("did" => 0, "views" => isset($vals["views"]) ? $vals["views"] : 0, "clicks" => isset($vals["clicks"]) ? $vals["clicks"] : 0, "page" => $page);
 		}
 
-
 		if(stripos("path", $this->order) === 0){
-			if(preg_match("|^path +desc|i", $this->order)){
-				usort($this->docs, "we_sort_banners_path_desc");
-			} else{
-				usort($this->docs, "we_sort_banners_path");
-			}
+			usort($this->docs, (preg_match("|^path +desc|i", $this->order) ? "we_sort_banners_path_desc" : "we_sort_banners_path"));
 		} else if(stripos("clicks", $this->order) === 0){
-			if(preg_match("|^clicks +desc|i", $this->order)){
-				usort($this->docs, "we_sort_banners_clicks_desc");
-			} else{
-				usort($this->docs, "we_sort_banners_clicks");
-			}
+			usort($this->docs, (preg_match("|^clicks +desc|i", $this->order) ? "we_sort_banners_clicks_desc" : "we_sort_banners_clicks"));
 		} else if(stripos("views", $this->order) === 0){
-			if(preg_match("|^views +desc|i", $this->order)){
-				usort($this->docs, "we_sort_banners_views_desc");
-			} else{
-				usort($this->docs, "we_sort_banners_views");
-			}
+			usort($this->docs, (preg_match("|^views +desc|i", $this->order) ? "we_sort_banners_views_desc" : "we_sort_banners_views"));
 		} else if(stripos("rate", $this->order) === 0){
-			if(preg_match("|^rate +desc|i", $this->order)){
-				usort($this->docs, "we_sort_banners_rate_desc");
-			} else{
-				usort($this->docs, "we_sort_banners_rate");
-			}
+			usort($this->docs, (preg_match("|^rate +desc|i", $this->order) ? "we_sort_banners_rate_desc" : "we_sort_banners_rate"));
 		}
 		$this->anz_all = count($this->docs);
 		$this->anz = min($this->rows, $this->anz_all - $this->start);
 	}
 
 	function next_record(){
-		if($this->count < min($this->start + $this->rows, $this->anz_all)){
-			$keys = array_keys($this->docs);
-			$id = abs($this->docs[$this->count]["did"]);
-			$path = $id ? id_to_path($id, FILE_TABLE) : $this->docs[$this->count]["page"];
-			$this->Record["WE_PATH"] = $this->Record["path"] = $path;
-			$this->Record["WE_ID"] = $this->Record["id"] = $id;
-			$this->Record["views"] = abs($this->docs[$this->count]["views"]);
-			$this->Record["page"] = $this->docs[$this->count]["page"];
-			$this->Record["clicks"] = abs($this->docs[$this->count]["clicks"]);
-			$this->Record["rate"] = round($this->Record["views"] ? (100 * ($this->Record["clicks"] / $this->Record["views"])) : 0, 1);
-			$this->count++;
-			return true;
+		if($this->count >= min($this->start + $this->rows, $this->anz_all)){
+			return false;
 		}
-		return false;
+		$id = intval($this->docs[$this->count]["did"]);
+		$path = $id ? id_to_path($id, FILE_TABLE) : $this->docs[$this->count]["page"];
+		$this->Record["WE_PATH"] = $this->Record["path"] = $path;
+		$this->Record["WE_ID"] = $this->Record["id"] = $id;
+		$this->Record["views"] = abs($this->docs[$this->count]["views"]);
+		$this->Record["page"] = $this->docs[$this->count]["page"];
+		$this->Record["clicks"] = abs($this->docs[$this->count]["clicks"]);
+		$this->Record["rate"] = round($this->Record["views"] ? (100 * ($this->Record["clicks"] / $this->Record["views"])) : 0, 1);
+		$this->count++;
+		return true;
 	}
 
 	function f($key){
@@ -185,11 +143,11 @@ GROUP  BY Page
 	}
 
 	function getAllviews(){
-		return abs($this->allviews);
+		return intval($this->allviews);
 	}
 
 	function getAllclicks(){
-		return abs($this->allclicks);
+		return intval($this->allclicks);
 	}
 
 	function getAllrate(){
@@ -205,48 +163,40 @@ function we_sort_banners_path($a, $b){
 }
 
 function we_sort_banners_path_desc($a, $b){
-	$aa = $a["did"] ? id_to_path($a["did"], FILE_TABLE) : $a["page"];
-	$bb = $b["did"] ? id_to_path($b["did"], FILE_TABLE) : $b["page"];
-
-	return strcmp($aa, $bb) * -1;
+	return we_sort_banners_path($a, $b) * -1;
 }
 
 function we_sort_banners_clicks($a, $b){
-	if(abs($a["clicks"]) == abs($b["clicks"]))
+	if(intval($a["clicks"]) == intval($b["clicks"])){
 		return 0;
-	return (abs($a["clicks"]) > abs($b["clicks"])) ? 1 : -1;
+	}
+	return (intval($a["clicks"]) > intval($b["clicks"])) ? 1 : -1;
 }
 
 function we_sort_banners_clicks_desc($a, $b){
-	if(abs($a["clicks"]) == abs($b["clicks"]))
-		return 0;
-	return (abs($a["clicks"]) > abs($b["clicks"])) ? -1 : 1;
+	return we_sort_banners_clicks($a, $b) * -1;
 }
 
 function we_sort_banners_views($a, $b){
-	if(abs($a["views"]) == abs($b["views"]))
+	if(intval($a["views"]) == intval($b["views"])){
 		return 0;
-	return (abs($a["views"]) > abs($b["views"])) ? 1 : -1;
+	}
+	return (intval($a["views"]) > intval($b["views"])) ? 1 : -1;
 }
 
 function we_sort_banners_views_desc($a, $b){
-	if(abs($a["views"]) == abs($b["views"]))
-		return 0;
-	return (abs($a["views"]) > abs($b["views"])) ? -1 : 1;
+	return we_sort_banners_views($a, $b) * -1;
 }
 
 function we_sort_banners_rate($a, $b){
 	$rate_a = round($a["views"] ? (100 * ($a["clicks"] / $a["views"])) : 0, 1);
 	$rate_b = round($b["views"] ? (100 * ($b["clicks"] / $b["views"])) : 0, 1);
-	if($rate_a == $rate_b)
+	if($rate_a == $rate_b){
 		return 0;
+	}
 	return ($rate_a > $rate_b) ? 1 : -1;
 }
 
 function we_sort_banners_rate_desc($a, $b){
-	$rate_a = round($a["views"] ? (100 * ($a["clicks"] / $a["views"])) : 0, 1);
-	$rate_b = round($b["views"] ? (100 * ($b["clicks"] / $b["views"])) : 0, 1);
-	if($rate_a == $rate_b)
-		return 0;
-	return ($rate_a > $rate_b) ? -1 : 1;
+	return we_sort_banners_rate($a, $b) * -1;
 }

@@ -105,10 +105,9 @@ class weCustomerFrames extends weModuleFrames{
 		if($include_no_sort)
 			$sort->addOption(g_l('modules_customer', '[no_sort]'), g_l('modules_customer', '[no_sort]'));
 
-		foreach($sort_names as $k => $v){
+		foreach($sort_names as $v){
 			$sort->addOption(oldHtmlspecialchars($v), oldHtmlspecialchars($v));
 		}
-
 
 		return $sort;
 	}
@@ -299,7 +298,6 @@ class weCustomerFrames extends weModuleFrames{
 
 		$tabs = new we_tabs();
 
-		$branches_names = array();
 		$branches_names = $this->View->customer->getBranchesNames();
 
 		$tabs->addTab(new we_tab('#', g_l('modules_customer', '[common]'), 'TAB_NORMAL', "setTab('" . g_l('modules_customer', '[common]') . "');", array("id" => "common")));
@@ -935,13 +933,14 @@ class weCustomerFrames extends weModuleFrames{
 			}
 		}
 	}") .
-				we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
-					we_html_tools::htmlDialogLayout(
-						$table->getHtml(), g_l('modules_customer', '[search]'), we_button::position_yes_no_cancel(null, we_button::create_button("close", "javascript:self.close();")), "100%", "30", "558"
-					)
-				) .
-				((isset($_REQUEST['mode']) && $_REQUEST['mode']) ? we_html_element::jsElement("setTimeout('lookForDateFields()', 1);") : "")
-		));
+					we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
+						we_html_tools::htmlDialogLayout(
+							$table->getHtml(), g_l('modules_customer', '[search]'), we_button::position_yes_no_cancel(null, we_button::create_button("close", "javascript:self.close();")), "100%", "30", "558"
+						)
+					) .
+					((isset($_REQUEST['mode']) && $_REQUEST['mode']) ? we_html_element::jsElement("setTimeout('lookForDateFields()', 1);") : "")
+				)
+		);
 	}
 
 	function getHTMLSettings(){
@@ -1077,27 +1076,26 @@ class weCustomerFrames extends weModuleFrames{
 
 		$retVal = '<table cellpadding=0 cellspacing=0 border=0>';
 		if($daySelect || $monthSelect || $yearSelect){
-			$retVal .= '<tr><td>
-		' . ($daySelect ? $daySelect . "&nbsp;" : we_html_tools::hidden(sprintf($name, "_day"), $day)) .
+			$retVal .= '<tr><td>' .
+				($daySelect ? $daySelect . "&nbsp;" : we_html_tools::hidden(sprintf($name, "_day"), $day)) .
 				($monthSelect ? $monthSelect . "&nbsp;" : we_html_tools::hidden(sprintf($name, "_month"), $month)) .
-				($yearSelect ? $yearSelect . "&nbsp;" : we_html_tools::hidden(sprintf($name, "_year"), $year)) . '
-	</td></tr>';
+				($yearSelect ? $yearSelect . "&nbsp;" : we_html_tools::hidden(sprintf($name, "_year"), $year)) .
+				'</td></tr>';
 		} else{
 			$retVal .= we_html_tools::hidden(sprintf($name, "_day"), $day) .
 				we_html_tools::hidden(sprintf($name, "_month"), $month) .
 				we_html_tools::hidden(sprintf($name, "_year"), $year);
 		}
 		if($hourSelect || $minSelect){
-			$retVal .= '<tr><td>
-		' . ($hourSelect ? $hourSelect . "&nbsp;" : we_html_tools::hidden(sprintf($name, "_hour"), $hour)) .
-				($minSelect ? $minSelect . "&nbsp;" : we_html_tools::hidden(sprintf($name, "_minute"), $minute)) . '
-	</td></tr>';
+			$retVal .= '<tr><td>' .
+				($hourSelect ? $hourSelect . "&nbsp;" : we_html_tools::hidden(sprintf($name, "_hour"), $hour)) .
+				($minSelect ? $minSelect . "&nbsp;" : we_html_tools::hidden(sprintf($name, "_minute"), $minute)) .
+				'</td></tr>';
 		} else{
 			$retVal .= we_html_tools::hidden(sprintf($name, "_hour"), (isset($hour) ? $hour : 0)) .
 				we_html_tools::hidden(sprintf($name, "_minute"), (isset($minute) ? $minute : 0));
 		}
-		$retVal .= '</table>';
-		return $retVal;
+		return $retVal . '</table>';
 	}
 
 }

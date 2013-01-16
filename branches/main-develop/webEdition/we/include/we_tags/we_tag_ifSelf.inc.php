@@ -41,10 +41,10 @@ function we_tag_ifSelf($attribs){
 	switch($type){
 		case 'listview' :
 			if($GLOBALS['lv']->ClassName == 'we_listview_object'){
-				return in_array($GLOBALS['lv']->DB_WE->f('OF_ID'), $ids);
+				return in_array($GLOBALS['lv']->getDBf('OF_ID'), $ids);
 			} else
 			if($GLOBALS['lv']->ClassName == 'we_search_listview'){
-				return in_array($GLOBALS['lv']->DB_WE->f('WE_ID'), $ids);
+				return in_array($GLOBALS['lv']->getDBf('WE_ID'), $ids);
 			} else
 			if($GLOBALS['lv']->ClassName == 'we_shop_listviewShopVariants'){
 				reset($GLOBALS['lv']->Record);

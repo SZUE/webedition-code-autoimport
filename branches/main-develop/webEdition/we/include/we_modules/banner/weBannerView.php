@@ -459,9 +459,9 @@ class weBannerView extends weBannerBase{
 				case "delete_stat":
 					$this->banner->views = 0;
 					$this->banner->clicks = 0;
-					$this->db->query("UPDATE " . BANNER_TABLE . " SET views=0,clicks=0 WHERE ID='" . $this->banner->ID . "'");
-					$this->db->query("DELETE FROM " . BANNER_CLICKS_TABLE . " WHERE ID='" . $this->banner->ID . "'");
-					$this->db->query("DELETE FROM " . BANNER_VIEWS_TABLE . " WHERE ID='" . $this->banner->ID . "'");
+					$this->db->query('UPDATE ' . BANNER_TABLE . ' SET views=0,clicks=0 WHERE ID=' . intval($this->banner->ID));
+					$this->db->query('DELETE FROM ' . BANNER_CLICKS_TABLE . ' WHERE ID=' . intval($this->banner->ID));
+					$this->db->query('DELETE FROM ' . BANNER_VIEWS_TABLE . ' WHERE ID=' . intval($this->banner->ID));
 					break;
 				case "new_banner":
 					$this->page = 0;
@@ -605,7 +605,7 @@ class weBannerView extends weBannerBase{
 					break;
 				case "save_banner":
 					if(isset($_REQUEST["bid"])){
-						$newone (!$this->banner->ID);
+						$newone = ($this->banner->ID == 0);
 						$exist = false;
 						$double = f('SELECT COUNT(1) AS Count FROM ' . BANNER_TABLE . " WHERE Text='" . $this->db->escape($this->banner->Text) . "' AND ParentID=" . intval($this->banner->ParentID) . ($newone ? '' : ' AND ID!=' . intval($this->banner->ID)), 'Count', $this->db);
 						$acQuery = new weSelectorQuery();

@@ -61,7 +61,7 @@ function we_tag_linkToSeeMode($attribs){
 			$_REQUEST["we_transaction"])){
 		if($permission == "" || isset($_SESSION["webuser"][$permission]) && $_SESSION["webuser"][$permission]){ // Has webUser the right permissions??
 			//	check if the customer is a user, too.
-			$tmpDB = new DB_WE();
+			$tmpDB = $GLOBALS['DB_WE'];
 
 			$q = getHash('SELECT UseSalt, passwd FROM ' . USER_TABLE . ' WHERE IsFolder=0 AND LoginDenied=0 AND username="' . $tmpDB->escape($_SESSION["webuser"]["Username"]) . '"', $tmpDB);
 

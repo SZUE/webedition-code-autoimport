@@ -30,8 +30,7 @@ function we_tag_author($attribs){
 
 	$doc = we_getDocForTag($docAttr, true);
 
-	$foo = getHash(
-		"SELECT Username,First,Second FROM " . USER_TABLE . " WHERE ID=" . intval($creator ? $doc->CreatorID : $doc->ModifierID), new DB_WE());
+	$foo = getHash('SELECT Username,First,Second FROM ' . USER_TABLE . ' WHERE ID=' . intval($creator ? $doc->CreatorID : $doc->ModifierID), $GLOBALS['DB_WE']);
 
 	switch($type){
 		case "name" :

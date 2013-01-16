@@ -327,8 +327,8 @@ function we_tag_field($attribs){
 			// wird in den eingebundenen Objekten ueberprueft ob das Feld existiert
 
 			if($type == 'select' && $normVal == ''){
-				$dbRecord = $GLOBALS['lv']->ClassName == 'we_objecttag' ? $GLOBALS['lv']->object->DB_WE->Record : $GLOBALS['lv']->DB_WE->Record; // bugfix #6399
-				foreach($dbRecord as $_glob_key => $_val){
+				$dbRecord = array_keys($GLOBALS['lv']->ClassName == 'we_objecttag' ? $GLOBALS['lv']->object->getDBRecord() : $GLOBALS['lv']->getDBRecord()); // bugfix #6399
+				foreach($dbRecord as $_glob_key){
 					if(substr($_glob_key, 0, 13) == 'we_we_object_'){
 						$normVal = we_document::getFieldByVal($GLOBALS['lv']->f($name), ($usekey ? 'text' : 'select'), $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], substr($_glob_key, 13), 'listview'); // war '$GLOBALS['lv']->getElement', getElemet gibt es aber nicht in LVs, gefunden bei #4648
 					}

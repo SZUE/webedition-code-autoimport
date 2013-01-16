@@ -93,19 +93,13 @@ abstract class weXMLFileReader{
 			//  check condition
 			if($size > 0){
 				if(empty($_buffer)){
-					$_condition = false && !$eof($file['fp']);
+					$_condition = false;
 				} else{
 					$i = strlen($_buffer);
-					$_condition = ($i < $size ?
-							true && !$eof($file['fp']) :
-							false && !$eof($file['fp'])
-						);
+					$_condition = ($i < $size ? !$eof($file['fp']) : false );
 				}
 			} else if($lines > 0){
-				$_condition = ($i < $lines ?
-						true && !$eof($file['fp']) :
-						false
-					);
+				$_condition = ($i < $lines ? !$eof($file['fp']) : false );
 				$i++;
 			}
 

@@ -607,4 +607,12 @@ abstract class listviewBase{
 		return $_close;
 	}
 
+	public function getDBRecord(){
+		return $this->DB_WE->getRecord();
+	}
+
+	public function getDBf($field){
+		return $this->DB_WE->f($field);
+	}
+
 }

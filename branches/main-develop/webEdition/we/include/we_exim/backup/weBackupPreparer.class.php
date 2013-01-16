@@ -48,25 +48,26 @@ class weBackupPreparer{
 		$_SESSION['weS']['weBackupVars'] = array(
 			'options' => array(),
 			'handle_options' => array(),
+			'offset' => 0,
+			'current_table' => '',
+			'backup_steps' => getPref('BACKUP_STEPS'),
+			'backup_log' => (isset($_REQUEST['backup_log']) && $_REQUEST['backup_log']) ? $_REQUEST['backup_log'] : 0,
+			'backup_log_data' => '',
+			'backup_log_file' => $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'data/lastlog.php',
+			'limits' => array(
+				'mem' => we_convertIniSizes(ini_get('memory_limit')),
+				'exec' => ini_get('max_execution_time'),
+			),
 		);
 
 		weBackupPreparer::getOptions($_SESSION['weS']['weBackupVars']['options'], $_SESSION['weS']['weBackupVars']['handle_options']);
-
-		$_SESSION['weS']['weBackupVars']['offset'] = 0;
-
 		$_SESSION['weS']['weBackupVars']['tables'] = weBackupPreparer::getTables($_SESSION['weS']['weBackupVars']['handle_options']);
-		$_SESSION['weS']['weBackupVars']['current_table'] = '';
 
-		$_SESSION['weS']['weBackupVars']['backup_steps'] = getPref('BACKUP_STEPS');
 		if($_SESSION['weS']['weBackupVars']['backup_steps'] == 0){
 			$_SESSION['weS']['weBackupVars']['backup_steps'] = weBackupWizard::getAutoSteps();
 		}
 
-		$_SESSION['weS']['weBackupVars']['backup_log'] = (isset($_REQUEST['backup_log']) && $_REQUEST['backup_log']) ? $_REQUEST['backup_log'] : 0;
-
 		if($_SESSION['weS']['weBackupVars']['backup_log']){
-			$_SESSION['weS']['weBackupVars']['backup_log_data'] = '';
-			$_SESSION['weS']['weBackupVars']['backup_log_file'] = $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'data/lastlog.php';
 			weFile::save($_SESSION['weS']['weBackupVars']['backup_log_file'], "<?php exit();?>\r\n");
 		}
 
@@ -113,8 +114,7 @@ class weBackupPreparer{
 			}
 		}
 
-		include_once(WE_INCLUDES_PATH . 'we_exim/weXMLExImConf.inc.php');
-		weFile::save($_SESSION['weS']['weBackupVars']['backup_file'], ($_SESSION['weS']['weBackupVars']['protect'] && !$_SESSION['weS']['weBackupVars']['options']['compress'] ? $GLOBALS['weXmlExImProtectCode'] : '') . $GLOBALS['weXmlExImHeader']);
+		weFile::save($_SESSION['weS']['weBackupVars']['backup_file'], ($_SESSION['weS']['weBackupVars']['protect'] && !$_SESSION['weS']['weBackupVars']['options']['compress'] ? weBackup::weXmlExImProtectCode : '') . weXMLExIm::getHeader());
 
 		return true;
 	}
@@ -130,10 +130,8 @@ class weBackupPreparer{
 			return false;
 		}
 
-		include_once(WE_INCLUDES_PATH . 'we_exim/weXMLExImConf.inc.php');
-
-		$_offset = strlen($GLOBALS['weXmlExImProtectCode']);
-		$_SESSION['weS']['weBackupVars']['offset'] = (weFile::loadLine($_SESSION['weS']['weBackupVars']['backup_file'], 0, ($_offset + 1)) == $GLOBALS['weXmlExImProtectCode']) ? $_offset : 0;
+		$_offset = strlen(weBackup::weXmlExImProtectCode);
+		$_SESSION['weS']['weBackupVars']['offset'] = (weFile::loadLine($_SESSION['weS']['weBackupVars']['backup_file'], 0, ($_offset + 1)) == weBackup::weXmlExImProtectCode) ? $_offset : 0;
 
 		$_SESSION['weS']['weBackupVars']['options']['compress'] = weFile::isCompressed($_SESSION['weS']['weBackupVars']['backup_file'], $_SESSION['weS']['weBackupVars']['offset']) ? 1 : 0;
 		if($_SESSION['weS']['weBackupVars']['options']['compress']){

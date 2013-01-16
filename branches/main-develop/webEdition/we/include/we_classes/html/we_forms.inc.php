@@ -148,7 +148,7 @@ abstract class we_forms{
 		$id = weTag_getAttribute('id', $attribs);
 		$inlineedit = weTag_getAttribute('inlineedit', $attribs, defined('INLINEEDIT_DEFAULT') ? INLINEEDIT_DEFAULT : true, true);
 		$tabindex = weTag_getAttribute('tabindex', $attribs);
-		$oldHtmlspecialchars = weTag_getAttribute('oldHtmlspecialchars', $attribs, false, true);
+		$oldHtmlspecialchars = weTag_getAttribute('htmlspecialchars', $attribs, false, true);
 
 		$buttonpos = weTag_getAttribute('buttonpos', $attribs);
 

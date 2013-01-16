@@ -80,11 +80,8 @@ function we_tag_saferpay($attribs){
 			return;
 		}
 		/*		 * ***** get the currency ******* */
-		$DB_WE = !isset($DB_WE) ? new DB_WE : $DB_WE;
-		$DB_WE->query("SELECT strFelder from " . ANZEIGE_PREFS_TABLE . " where strDateiname = 'shop_pref'");
-		$DB_WE->next_record();
-		$feldnamen = explode("|", $DB_WE->f("strFelder"));
-		if(isset($feldnamen[0])){	// determine the currency
+		$feldnamen = explode("|", f("SELECT strFelder from " . ANZEIGE_PREFS_TABLE . " where strDateiname = 'shop_pref'", "strFelder", $GLOBALS['DB_WE']));
+		if(isset($feldnamen[0])){ // determine the currency
 			if($feldnamen[0] == "$" || $feldnamen[0] == "USD"){
 				$currency = "USD";
 			} elseif($feldnamen[0] == "�" || $feldnamen[0] == "GBP"){
@@ -104,41 +101,39 @@ function we_tag_saferpay($attribs){
 		/*		 * ***** get the currency ******* */
 
 		/*		 * **** get the preferences ***** */
-		$DB_WE->query("SELECT strFelder from " . ANZEIGE_PREFS_TABLE . " where strDateiname = 'payment_details'");
-		$DB_WE->next_record();
-		$formField = explode("|", $DB_WE->f("strFelder"));
+		$formField = explode("|", f("SELECT strFelder from " . ANZEIGE_PREFS_TABLE . " where strDateiname = 'payment_details'", 'strFelder', $GLOBALS['DB_WE']));
 		if($languagecode == ''){
-			if(isset($formField[8])){	// determine the language
+			if(isset($formField[8])){ // determine the language
 				$langID = $formField[8];
 			}
 		} else{
 			$langID = $languagecode;
 		}
-		if(isset($formField[9])){	// determine the Notify-Email
+		if(isset($formField[9])){ // determine the Notify-Email
 			$accountID = $formField[9];
 		}
-		if(isset($formField[10])){	// determine the Notify-Email
+		if(isset($formField[10])){ // determine the Notify-Email
 			$notifyAddr = $formField[10];
 		}
-		if(isset($formField[11])){	// determine the  notify-Email
+		if(isset($formField[11])){ // determine the  notify-Email
 			$allowColl = $formField[11];
 		}
-		if(isset($formField[12])){	// determine the delivery if yes or no
+		if(isset($formField[12])){ // determine the delivery if yes or no
 			$delivery = $formField[12];
 		}
-		if(isset($formField[13])){	// determine the user notify if yes or no
+		if(isset($formField[13])){ // determine the user notify if yes or no
 			$userNotify = $formField[13];
 		}
-		if(isset($formField[14])){	// determine the providerset
+		if(isset($formField[14])){ // determine the providerset
 			$providerset = $formField[14];
 		}
-		if(isset($formField[15])){	// determine the cmd path
+		if(isset($formField[15])){ // determine the cmd path
 			$execPath = $formField[15];
 		}
-		if(isset($formField[16])){	// determine the conf path
+		if(isset($formField[16])){ // determine the conf path
 			$confPath = $formField[16];
 		}
-		if(isset($formField[17])){	// determine the conf path
+		if(isset($formField[17])){ // determine the conf path
 			$desc = $formField[17];
 		}
 		/*		 * **** get the preferences ***** */
@@ -192,11 +187,9 @@ function we_tag_saferpay($attribs){
 
 		$weShippingControl = weShippingControl::getShippingControl();
 
-		if(we_tag('ifRegisteredUser')){ // check if user is registered
-			$customer = $_SESSION['webuser'];
-		} else{
-			$customer = false;
-		}
+		$customer = (we_tag('ifRegisteredUser') ? // check if user is registered
+				$_SESSION['webuser'] : false);
+
 		if($shipping == ''){
 			$cartField[WE_SHOP_SHIPPING] = array(
 				'costs' => $weShippingControl->getShippingCostByOrderValue($summit, $customer),
@@ -223,9 +216,7 @@ function we_tag_saferpay($attribs){
 		// to be reserved in minor currency unit e.g. EUR 1.35 must be passed as 135
 		$strAmount = str_replace("-", "", number_format($totalSum, 2, '-', ''));
 
-########################################################################
 ########################### submit starts here #########################
-########################################################################
 
 		$attributes = array("-a", "AMOUNT", (int) $strAmount,
 			"-a", "CURRENCY", $currency,
@@ -288,14 +279,12 @@ function we_tag_saferpay($attribs){
 
 			/* get the payinit URL */
 			$fp = popen($command, "r");
-			$payinit_url = str_replace("\n", "", fread($fp, 4096));
-			$payinit_url = str_replace("\r", "", $payinit_url);
+			$payinit_url = str_replace(array("\n", "\r"), '', fread($fp, 4096));
 		}
 
 		if($payinit_url){
-			print $processOK;
-
-			echo we_html_element::jsElement('	OpenSaferpayWindowJScript(\'' . $payinit_url . '\');');
+			print $processOK .
+				we_html_element::jsElement('	OpenSaferpayWindowJScript(\'' . $payinit_url . '\');');
 		} else{
 			print $processError;
 		}

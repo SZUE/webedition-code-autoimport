@@ -21,19 +21,19 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
- 
- 
+
+
 function we_parse_tag_title($attribs, $content){
 	return '<?php printElement('.we_tag_tagParser::printTag('title',$attribs,$content,true).');?>';
-} 
+}
 
 function we_tag_title($attribs, $content){
-	$oldHtmlspecialchars = weTag_getAttribute('oldHtmlspecialchars', $attribs, false, true);
+	$oldHtmlspecialchars = weTag_getAttribute('htmlspecialchars', $attribs, false, true);
 	$prefix=weTag_getAttribute('prefix', $attribs);
 	$suffix=weTag_getAttribute('suffix', $attribs);
 	$delimiter=weTag_getAttribute('delimiter', $attribs);
 
-	$attribs = removeAttribs($attribs, array('oldHtmlspecialchars','prefix','suffix','delimiter'));
+	$attribs = removeAttribs($attribs, array('htmlspecialchars','prefix','suffix','delimiter'));
 	if ($GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_PROPERTIES && $GLOBALS['we_doc']->InWebEdition) { //	normally meta tags are edited on property page
 		return '<?php	$GLOBALS["meta"]["Title"]["default"] = "' . str_replace('"', '\"', $content) . '"; ?>';
 	} else {

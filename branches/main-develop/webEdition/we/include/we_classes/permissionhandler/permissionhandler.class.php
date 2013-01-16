@@ -67,14 +67,17 @@ abstract class permissionhandler{
 		  action: another_action with another_para - needed right can be: Right1 OR Right2 AND Right3
 
 		 */
-		$knownActions = array();
 		//	The first entries are no we_cmd[0], but sometimes needed.
-		$knownActions["switch_edit_page"]["WE_EDITPAGE_PROPERTIES"] = array("CAN_SEE_PROPERTIES");
-		$knownActions["switch_edit_page"][0] = array("CAN_SEE_PROPERTIES");
-		$knownActions["switch_edit_page"]["WE_EDITPAGE_INFO"] = array("CAN_SEE_INFO");
-		$knownActions["switch_edit_page"][2] = array("CAN_SEE_INFO");
-		$knownActions["switch_edit_page"]["WE_EDITPAGE_VALIDATION"] = array("CAN_SEE_VALIDATION");
-		$knownActions["switch_edit_page"][10] = array("CAN_SEE_VALIDATION");
+		$knownActions = array(
+			"switch_edit_page" => array(
+				"WE_EDITPAGE_PROPERTIES" => array("CAN_SEE_PROPERTIES"),
+				0 => array("CAN_SEE_PROPERTIES"),
+				"WE_EDITPAGE_INFO" => array("CAN_SEE_INFO"),
+				2 => array("CAN_SEE_INFO"),
+				"WE_EDITPAGE_VALIDATION" => array("CAN_SEE_VALIDATION"),
+				10 => array("CAN_SEE_VALIDATION"),
+			)
+		);
 
 		//	Is user allowed to work in normal mode or only in SEEM
 		$knownActions["work_mode"]["normal"] = array("CAN_WORK_NORMAL_MODE");
@@ -102,12 +105,9 @@ abstract class permissionhandler{
 	 * @return  boolean
 	 */
 	static function isUserAllowedForAction($requestedAction, $parameter){
-
 		$neededPerm = permissionhandler::getPermissionsForAction($requestedAction, $parameter);
-
 		//  An array is returned, check the rights.
 		if(is_array($neededPerm)){
-
 			foreach($neededPerm as $key => $val){
 				$allowed = true;
 				$perms = explode(',', $val);

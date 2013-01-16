@@ -29,7 +29,6 @@ function we_tag_sendMail($attribs, $content){
 
 	if(!$GLOBALS['we_doc']->InWebEdition){
 
-		$GLOBALS['DB_WE'] = !isset($GLOBALS['DB_WE']) ? new DB_WE() : $GLOBALS['DB_WE'];
 		$id = weTag_getAttribute("id", $attribs, ( isset($_REQUEST["ID"]) ? $_REQUEST["ID"] : ''));
 		$from = weTag_getAttribute("from", $attribs);
 		$reply = weTag_getAttribute("reply", $attribs);

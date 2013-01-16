@@ -23,47 +23,48 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_var($attribs){
-	if(($foo = attributFehltError($attribs, "name", __FUNCTION__)))
+	if(($foo = attributFehltError($attribs, 'name', __FUNCTION__))){
 		return $foo;
+	}
 	$docAttr = weTag_getAttribute('doc', $attribs);
 	//$_name_orig=weTag_getAttribute("_name_orig", $attribs);
-	$type = weTag_getAttribute("type", $attribs);
-	$oldHtmlspecialchars = weTag_getAttribute("oldHtmlspecialchars", $attribs, false, true); // #3771
+	$type = weTag_getAttribute('type', $attribs);
+	$oldHtmlspecialchars = weTag_getAttribute('htmlspecialchars', $attribs, false, true); // #3771
 	$doc = we_getDocForTag($docAttr, false);
 
 	switch($type){
-		case "session" :
-			$name = weTag_getAttribute("_name_orig", $attribs);
-			$return = (isset($_SESSION[$name])) ? $_SESSION[$name] : "";
+		case 'session' :
+			$name = weTag_getAttribute('_name_orig', $attribs);
+			$return = (isset($_SESSION[$name])) ? $_SESSION[$name] : '';
 			return $oldHtmlspecialchars ? oldHtmlspecialchars($return) : $return;
-		case "request" :
-			$name = weTag_getAttribute("_name_orig", $attribs);
-			$return = we_util::rmPhp(isset($_REQUEST[$name]) ? $_REQUEST[$name] : "");
+		case 'request' :
+			$name = weTag_getAttribute('_name_orig', $attribs);
+			$return = we_util::rmPhp(isset($_REQUEST[$name]) ? $_REQUEST[$name] : '');
 			return $oldHtmlspecialchars ? oldHtmlspecialchars($return) : $return;
-		case "post" :
-			$name = weTag_getAttribute("_name_orig", $attribs);
-			$return = we_util::rmPhp(isset($_POST[$name]) ? $_POST[$name] : "");
+		case 'post' :
+			$name = weTag_getAttribute('_name_orig', $attribs);
+			$return = we_util::rmPhp(isset($_POST[$name]) ? $_POST[$name] : '');
 			return $oldHtmlspecialchars ? oldHtmlspecialchars($return) : $return;
-		case "get" :
-			$name = weTag_getAttribute("_name_orig", $attribs);
-			$return = we_util::rmPhp(isset($_GET[$name]) ? $_GET[$name] : "");
+		case 'get' :
+			$name = weTag_getAttribute('_name_orig', $attribs);
+			$return = we_util::rmPhp(isset($_GET[$name]) ? $_GET[$name] : '');
 			return $oldHtmlspecialchars ? oldHtmlspecialchars($return) : $return;
-		case "global" :
-			$name = weTag_getAttribute("name", $attribs);
-			$name_orig = weTag_getAttribute("_name_orig", $attribs);
+		case 'global' :
+			$name = weTag_getAttribute('name', $attribs);
+			$name_orig = weTag_getAttribute('_name_orig', $attribs);
 
-			$return = (isset($GLOBALS[$name])) ? $GLOBALS[$name] : 	((isset($GLOBALS[$name_orig])) ? $GLOBALS[$name_orig]:'');
+			$return = (isset($GLOBALS[$name])) ? $GLOBALS[$name] : ((isset($GLOBALS[$name_orig])) ? $GLOBALS[$name_orig] : '');
 			return $oldHtmlspecialchars ? oldHtmlspecialchars($return) : $return;
 		case 'multiobject' :
 			$data = unserialize($doc->getField($attribs, $type, true));
 			if(isset($data['objects']) && !empty($data['objects'])){
-				return implode(",", $data['objects']);
+				return implode(',', $data['objects']);
 			} else{
 				return '';
 			}
 
-		case "property" :
-			$name = weTag_getAttribute("_name_orig", $attribs);
+		case 'property' :
+			$name = weTag_getAttribute('_name_orig', $attribs);
 
 			if(isset($GLOBALS['we_obj'])){
 				return $GLOBALS['we_obj']->$name;
@@ -85,30 +86,17 @@ function we_tag_var($attribs){
 			// bugfix 7557
 			// wenn die Abfrage im Aktuellen Objekt kein Erg?bnis liefert
 			// wird in den eingebundenen Objekten ?berpr?ft ob das Feld existiert
-			if($type == "select" && $normVal == ""){
-				if(isset($doc->DefArray) && is_array($doc->DefArray)){
-					foreach($doc->DefArray as $_glob_key => $_val){
+			$name = ($type == 'select' && $normVal == '' ? weTag_getAttribute('_name_orig', $attribs) : $name);
 
-						if(substr($_glob_key, 0, 7) == "object_"){
-							$name = weTag_getAttribute("_name_orig", $attribs);
-
-							$normVal = we_document::getFieldByVal($doc->getElement($name), $type, $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], substr($_glob_key, 7));
-						}
-
-						if($normVal != "")
-							break;
+			if(isset($doc->DefArray) && is_array($doc->DefArray)){
+				$keys = array_keys($doc->DefArray);
+				foreach($keys as $_glob_key){
+					if((substr($_glob_key, 0, 7) == 'object_' && ($rest = substr($_glob_key, 7))) || (substr($_glob_key, 0, 10) == 'we_object_' && ($rest = substr($_glob_key, 7)))){
+						$normVal = we_document::getFieldByVal($doc->getElement($name), $type, $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], $rest);
 					}
-				} else{
 
-					if(isset($doc->elements) && is_array($doc->elements)){
-						foreach($doc->elements as $_glob_key => $_val){
-
-							if(substr($_glob_key, 0, 10) == "we_object_"){
-								$normVal = we_document::getFieldByVal($doc->getElement($name), $type, $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], substr($_glob_key, 10));
-							}
-							if($normVal != "")
-								break;
-						}
+					if($normVal != ''){
+						return $normVal;
 					}
 				}
 			}

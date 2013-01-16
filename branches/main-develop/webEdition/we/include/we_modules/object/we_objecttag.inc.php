@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,47 +22,45 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
 class we_objecttag{
 
 	var $DB_WE;
-	var $class = "";
+	var $class = '';
 	var $id = 0;
 	var $triggerID = 0;
 	var $ClassName = __CLASS__;
 	var $object = "";
 	var $avail = false;
 	var $hidedirindex = false;
-	var $objectseourls=false;
+	var $objectseourls = false;
 
-	function __construct($class="", $id=0, $triggerID=0, $searchable=true, $condition="",$hidedirindex=false,$objectseourls=false){
-		$this->DB_WE = new DB_WE;
+	function __construct($class = "", $id = 0, $triggerID = 0, $searchable = true, $condition = "", $hidedirindex = false, $objectseourls = false){
+		$this->DB_WE = new DB_WE();
 		$this->id = $id;
 		if(!$this->id && isset($_REQUEST['we_objectID']) && $_REQUEST['we_objectID']){
-			!$this->id=$_REQUEST['we_objectID'];
+			!$this->id = $_REQUEST['we_objectID'];
 		}
 		$this->class = $class;
 		$this->hidedirindex = $hidedirindex;
 		$this->objectseourls = $objectseourls;
 
 		$this->triggerID = $triggerID;
-		$unique = md5(uniqid(__FUNCTION__,true));
+		$unique = md5(uniqid(__FUNCTION__, true));
 
 		if($this->id){
-			$foo = getHash("SELECT TableID,ObjectID FROM ".OBJECT_FILES_TABLE." WHERE ID=".intval($this->id),$this->DB_WE);
+			$foo = getHash('SELECT TableID,ObjectID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($this->id), $this->DB_WE);
 			if(!empty($foo)){
-				$this->object = new we_listview_object($unique,1,0,"",0,$foo["TableID"],"","","(" . OBJECT_X_TABLE.$foo["TableID"].".ID=".intval($foo["ObjectID"]).")" .  ($condition ? " AND $condition" : ""),$this->triggerID,"","",$searchable,"", "", "", "", '', '', '', 0,"", "", "",'',$hidedirindex,$objectseourls);
+				$this->object = new we_listview_object($unique, 1, 0, '', 0, $foo["TableID"], '', '', "(" . OBJECT_X_TABLE . $foo["TableID"] . ".ID=" . intval($foo["ObjectID"]) . ")" . ($condition ? " AND $condition" : ""), $this->triggerID, '', "", $searchable, "", "", "", "", '', '', '', 0, "", "", "", '', $hidedirindex, $objectseourls);
 				if($this->object->next_record()){
 					$this->avail = true;
 				}
 			}
 		}
- 	}
+	}
 
 	function f($key){
-		return ($this->id?
-			$this->object->f($key):'');
+		return ($this->id ?
+				$this->object->f($key) : '');
 	}
 
 }
