@@ -1395,8 +1395,8 @@ top.close();');
 						$_SESSION['weS']['exportVars']["RefTable"] = $xmlExIm->RefTable->RefTable2Array();
 						$all = count($xmlExIm->RefTable);
 						$exports = 0;
-						$_SESSION['weS']['exportVars']["filename"] = ($export_local ? TEMP_PATH . "/" . $filename : $_SERVER['DOCUMENT_ROOT'] . $path . $filename);
-						$ret = weFile::save($_SESSION['weS']['exportVars']["filename"], $xmlExIm->getHeader(), "wb");
+						$_SESSION['weS']['exportVars']["filename"] = ($export_local ? TEMP_PATH . '/' . $filename : $_SERVER['DOCUMENT_ROOT'] . $path . $filename);
+						$ret = weFile::save($_SESSION['weS']['exportVars']["filename"], weXMLExIm::getHeader(), "wb");
 					} else{
 						$xmlExIm->RefTable->Array2RefTable($this->exportVars["RefTable"]);
 						$xmlExIm->RefTable->current = $this->exportVars["CurrentRef"];
@@ -1408,9 +1408,9 @@ top.close();');
 					}
 
 					$percent = 0;
-					if($all != 0)
+					if($all != 0){
 						$percent = (int) (($exports / $all) * 100);
-
+					}
 					if($percent < 0){
 						$percent = 0;
 					} else if($percent > 100){
@@ -1419,7 +1419,7 @@ top.close();');
 					$_progress_update = "\n" .
 						we_html_element::jsElement('
 								if (top.footer.setProgress) top.footer.setProgress(' . $percent . ');
-					') . "\n";
+					');
 					$_SESSION['weS']['exportVars']["CurrentRef"] = $xmlExIm->RefTable->current;
 
 					$hiddens = we_html_element::htmlHidden(array("name" => "pnt", "value" => "load")) .
@@ -1436,7 +1436,7 @@ top.close();');
 						);
 					} else{
 						if(is_writable($filename))
-							weFile::save($filename, $xmlExIm->getFooter(), "ab");
+							weFile::save($filename, weXMLExIm::getFooter(), "ab");
 						$_progress_update =
 							we_html_element::jsElement('if (top.footer.setProgress) top.footer.setProgress(100);');
 						$out = we_html_element::htmlDocType() . we_html_element::htmlHtml(

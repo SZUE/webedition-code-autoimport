@@ -26,10 +26,10 @@ function we_tag_objectLanguage($attribs){
 	$type = weTag_getAttribute("type", $attribs, "complete");
 	$case = weTag_getAttribute("case", $attribs, "unchanged");
 
-	if(isset($GLOBALS['lv']) && isset($GLOBALS['lv']->object->DB_WE->Record['OF_Language'])){
-		$lang = $GLOBALS['lv']->object->DB_WE->Record['OF_Language'];
-	} elseif(isset($GLOBALS['lv']) && isset($GLOBALS['lv']->DB_WE->Record['OF_Language'])){
-		$lang = $GLOBALS['lv']->DB_WE->Record['OF_Language'];
+	if(isset($GLOBALS['lv']) && isset($GLOBALS['lv']->object)){
+		$lang = $GLOBALS['lv']->object->getDBf('OF_Language');
+	} elseif(isset($GLOBALS['lv'])){
+		$lang = $GLOBALS['lv']->getDBf('OF_Language');
 	} else{
 		$lang = '';
 	}

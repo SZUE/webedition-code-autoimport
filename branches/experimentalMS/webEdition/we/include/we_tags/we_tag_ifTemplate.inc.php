@@ -37,14 +37,14 @@ function we_tag_ifTemplate($attribs){
 			} else{ // in templates
 				$curTempPath = $GLOBALS['we_doc']->Path;
 			}
-			$path = f("SELECT DISTINCT Path FROM " . TEMPLATES_TABLE . " WHERE ID=" . intval($workspaceID) . " LIMIT 1", 'Path', new DB_WE());
+			$path = f('SELECT DISTINCT Path FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . intval($workspaceID) . ' LIMIT 1', 'Path', $GLOBALS['DB_WE']);
 			return (($path != '') && strpos($curTempPath, $path) !== false && strpos($curTempPath, $path) == 0);
 		} else{
 			if($path === ''){
 				return true;
 			}
 			if(isset($GLOBALS['we_doc']->TemplatePath)){
-				$pathReg = "|^" . str_replace("\\*", ".*", preg_quote($path, "|")) . "\$|";
+				$pathReg = "|^" . str_replace("\\*", '.*', preg_quote($path, '|')) . "\$|";
 				return preg_match($pathReg, $GLOBALS['we_doc']->TemplatePath);
 			}
 		}

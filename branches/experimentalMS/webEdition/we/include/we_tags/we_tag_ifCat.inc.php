@@ -35,11 +35,10 @@ function we_tag_ifCat($attribs){
 	}
 
 	$parent = weTag_getAttribute("parent", $attribs, false, true);
-
 	$docAttr = weTag_getAttribute("doc", $attribs, "self");
 
 	$match = $categories ? $categories : $category;
-	$db = new DB_WE();
+	$db = $GLOBALS['DB_WE'];
 	$matchArray = makeArrayFromCSV($match);
 
 	if($docAttr == 'listview' && isset($GLOBALS['lv'])){

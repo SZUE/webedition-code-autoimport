@@ -244,16 +244,16 @@ class weXMLExIm{
 		}
 	}
 
-	function getHeader($encoding = '', $type = ''){
+	static function getHeader($encoding = '', $type = ''){
 		if($encoding == ''){
 			$encoding = $GLOBALS['WE_BACKENDCHARSET'];
 		}
 		return '<?xml version="1.0" encoding="' . $encoding . '" standalone="yes"?>' . "\n" .
-			'<webEdition version="' . WE_VERSION . '" type="' . '" xmlns:we="we-namespace">' . "\n";
+			'<webEdition version="' . WE_VERSION . '" type="" xmlns:we="we-namespace">' . "\n";
 	}
 
-	function getFooter(){
-		return '</webEdition>';
+	static function getFooter(){
+		return weBackup::weXmlExImFooter;
 	}
 
 	function isCompressed($file){

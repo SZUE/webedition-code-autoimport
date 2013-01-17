@@ -70,6 +70,7 @@ $GLOBALS['configs'] = array(
 // Backup variable
 		'BACKUP_STEPS' => array('Number of entries per batch', 100),
 		'FAST_BACKUP' => array('New Test for a faster Backup', 0),
+		'FAST_RESTORE' => array('New Test for a faster Restore', 0),
 // inlineedit default value
 		'INLINEEDIT_DEFAULT' => array('Default setting for inlineedit attribute', true),
 		'WE_PHP_DEFAULT' => array('Default setting for php attribute', false),
@@ -80,9 +81,9 @@ $GLOBALS['configs'] = array(
 		'EXECUTE_HOOKS' => array('Default setting for hook execution', false),
 // php local scope == global scope
 		'PHPLOCALSCOPE' => array('Default setting for assuming php local scope == global scope ', false),
-		'BASE_IMG'=>array('url used prior all internal we:img tags',''),
-		'BASE_CSS'=>array('url used prior all we:css tags',''),
-		'BASE_JS'=>array('url used prio all we:js tags',''),
+		'BASE_IMG' => array('url used prior all internal we:img tags', ''),
+		'BASE_CSS' => array('url used prior all we:css tags', ''),
+		'BASE_JS' => array('url used prio all we:js tags', ''),
 // xhtml
 		'XHTML_DEFAULT' => array('Default setting for xml attribute', false),
 		'XHTML_DEBUG' => array('Enable XHTML debug', false),

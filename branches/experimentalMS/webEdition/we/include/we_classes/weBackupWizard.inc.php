@@ -418,7 +418,7 @@ self.focus();
 
 		$maxsize = getUploadMaxFilesize();
 
-		if(isset($_REQUEST["import_from"]) && $_REQUEST["import_from"] == "import_upload"){
+		if(isset($_REQUEST["import_from"]) && $_REQUEST["import_from"] == 'import_upload'){
 			if($maxsize){
 				$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', "[charset_warning]"), 1, 600, false), "space" => 0, "noline" => 1);
 				if(!(DEFAULT_CHARSET != '')){
@@ -442,22 +442,16 @@ extra_files_desc=new Array();';
 			$files = array();
 			$extra_files = array();
 			for($i = 0; $i <= 1; $i++){
-				if($i == 0){
-					$dstr = $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR;
-					$adddatadir = '';
-				} else{
-					$dstr = $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'data/';
-					$adddatadir = 'data/';
-				}
+				$adddatadir = ($i == 0 ? '' : 'data/');
+				$dstr = $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . $adddatadir;
 				$d = dir($dstr);
-				while($entry = $d->read()) {
-					if($entry != "." && $entry != ".." && $entry != "CVS" && $entry != "download" && $entry != "tmp" && $entry != "lastlog.php" && $entry != ".htaccess" && !@is_dir($dstr . $entry)){
+				while(($entry = $d->read())) {
+					if($entry != '.' && $entry != '..' && $entry != 'CVS' && $entry != 'download' && $entry != 'tmp' && $entry != 'lastlog.php' && $entry != '.htaccess' && !@is_dir($dstr . $entry)){
 						$filename = $dstr . $entry;
 						$filesize = round(filesize($filename) / 1024, 2);
 						$filedate = date("d.m.Y H:i:s.", filemtime($filename));
 						if(strpos($entry, 'weBackup_') === 0){
-							$ts = preg_replace('|^weBackup_|', '', $entry);
-							$ts = str_replace(array('.php', '.xml', '.gz', '.bz', '.zip'), '', $ts);
+							$ts = str_replace(array('.php', '.xml', '.gz', '.bz', '.zip'), '', preg_replace('|^weBackup_|', '', $entry));
 
 							if(is_numeric($ts) || (substr_count($ts, '_') == 6)){
 								if(!($ts < 1004569200)){
@@ -775,6 +769,7 @@ function stopBusy() {
 	/*if(top.opener.top.header)
 		top.opener.top.header.document.location.reload();*/
 }
+top.cmd.location ="about:blank";
 self.focus();');
 
 		$body = we_html_element::htmlBody(array("class" => "weDialogBody", "onload" => "stopBusy()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "enctype" => "multipart/form-data"), we_multiIconBox::getHTML("backup_options", "100%", $parts, 34, "", -1, "", "", false, g_l('backup', "[step3]"))
@@ -1661,7 +1656,7 @@ top.busy.location = "' . $this->frameset . '?pnt=busy&operation_mode=busy&curren
 
 		$cmd = ($this->mode == self::RECOVER ? 'import' : 'export');
 
-		$_retry = ($this->mode == self::RECOVER || !FAST_BACKUP ? 5 : 2);
+		$_retry = ($this->mode == self::RECOVER || !FAST_BACKUP || !FAST_RESTORE ? 5 : 2);
 
 		return we_html_element::jsElement('
 function setLocation(loc){

@@ -237,21 +237,25 @@ if(isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] == "closeFolder"){
 
 		getItems($parentFolder, $offset, $Tree->default_segment);
 
-		$js = we_html_element::jsElement(
-				'if(!' . $Tree->topFrame . '.treeData) {' .
-				we_message_reporting::getShowMessageCall("A fatal error occured", we_message_reporting::WE_MESSAGE_ERROR) .
-				'}' .
+		$js = we_html_element::jsElement('
+function loadTreeData(){
+	if(!' . $Tree->topFrame . '.treeData) {
+		window.setTimeout("loadTreeData()",500);
+		return;
+	}' .
 				($parentFolder ? '' :
 					$Tree->topFrame . '.treeData.clear();' .
 					$Tree->topFrame . '.treeData.add(new ' . $Tree->topFrame . '.rootEntry(\'' . $parentFolder . '\',\'root\',\'root\',\'' . $offset . '\'));'
 				) .
-				$Tree->getJSLoadTree($treeItems) .
-				'first=' . $Tree->topFrame . '.firstLoad;
-		if(top.firstLoad){
-			' . $Tree->topFrame . '.toggleBusy(0);
-		}else{
-			' . $Tree->topFrame . '.firstLoad = true;
-		}');
+				$Tree->getJSLoadTree($treeItems) .'
+	first=' . $Tree->topFrame . '.firstLoad;
+	if(top.firstLoad){
+		' . $Tree->topFrame . '.toggleBusy(0);
+	}else{
+		' . $Tree->topFrame . '.firstLoad = true;
+	}
+}
+loadTreeData();');
 	}
 
 	print we_html_element::htmlDocType() . we_html_element::htmlHtml(we_html_element::htmlHead(

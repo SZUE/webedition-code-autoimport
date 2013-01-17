@@ -23,11 +23,11 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_path($attribs){
-	$db = new DB_WE();
+	$db = $GLOBALS['DB_WE'];
 	$field = weTag_getAttribute("field", $attribs);
 	$dirfield = weTag_getAttribute("dirfield", $attribs, $field);
 	$index = weTag_getAttribute("index", $attribs);
-	$oldHtmlspecialchars = weTag_getAttribute("oldHtmlspecialchars", $attribs, false, true);
+	$oldHtmlspecialchars = weTag_getAttribute('htmlspecialchars', $attribs, false, true);
 	$fieldforfolder = weTag_getAttribute("fieldforfolder", $attribs, false, true);
 	$docAttr = weTag_getAttribute("doc", $attribs);
 	$sep = weTag_getAttribute("separator", $attribs, "/");
@@ -83,7 +83,7 @@ function we_tag_path($attribs){
 		$pID = f('SELECT ParentID FROM ' . FILE_TABLE . ' WHERE ID=' . intval($pID), "ParentID", $db);
 		$path = (!$pID && $hidehome ? '' : $sep) . $link_pre . ($oldHtmlspecialchars ? oldHtmlspecialchars($show) : $show) . $link_post . $path;
 	}
-	
+
 	if($hidehome){
 		return $path;
 	}

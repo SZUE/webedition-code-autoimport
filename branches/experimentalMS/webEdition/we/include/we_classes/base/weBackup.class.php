@@ -31,7 +31,9 @@
 class weBackup extends we_backup{
 
 	const backupSteps = "1,5,7,10,15,20,30,40,50,80,100,500,1000";
-	const backupMarker='<!-- webackup -->';
+	const backupMarker = '<!-- webackup -->';
+	const weXmlExImFooter = '</webEdition>';
+	const weXmlExImProtectCode = '<?php exit();?>';
 
 	var $header;
 	var $footer;
@@ -197,6 +199,12 @@ class weBackup extends we_backup{
 		return $num + 1;
 	}
 
+	/**
+	 *
+	 * @param type $table
+	 * @param type $execTime
+	 * @return boolean true, if still time left
+	 */
 	public static function limitsReached($table, $execTime){
 		if(!isset($_SERVER['REQUEST_TIME'])){
 			$_SERVER['REQUEST_TIME'] = time();
@@ -204,7 +212,7 @@ class weBackup extends we_backup{
 		if($table){
 			//check if at least 10 avg rows
 			$rowSz = $_SESSION['weS']['weBackupVars']['avgLen'][strtolower(stripTblPrefix($table))];
-			if(memory_get_usage() + 10 * $rowSz > $_SESSION['weS']['weBackupVars']['limits']['mem']){
+			if(memory_get_usage(true) + 10 * $rowSz > $_SESSION['weS']['weBackupVars']['limits']['mem']){
 				return false;
 			}
 		}
@@ -733,7 +741,7 @@ $this->file_list=' . var_export($this->file_list, true) . ';';
 			$this->description["import"][strtolower(ANZEIGE_PREFS_TABLE)] = g_l('backup', "[import_prefs]");
 		}
 		$this->description["import"][strtolower(TEMPLATES_TABLE)] = g_l('backup', "[import_templates]");
-		$this->description["import"][strtolower(TEMPORARY_DOC_TABLE)] = g_l('backup', "[import_temporary_data]");
+		$this->description["import"][strtolower(TEMPORARY_DOC_TABLE)] = g_l('backup', "[import][temporary_data]");
 		$this->description["import"][strtolower(BACKUP_TABLE)] = g_l('backup', "[external_backup]");
 		$this->description["import"][strtolower(LINK_TABLE)] = g_l('backup', "[import_links]");
 		$this->description["import"][strtolower(INDEX_TABLE)] = g_l('backup', "[import_indexes]");

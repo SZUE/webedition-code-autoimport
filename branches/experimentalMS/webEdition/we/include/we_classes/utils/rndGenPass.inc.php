@@ -39,6 +39,7 @@ class rndConditionPass{
 		$this->minLen = $this->condition['caps'] + $this->condition['small'] + $this->condition['nums'] + $this->condition['specs'];
 		// Compute the Total Password Length and Store it to the Global Variable
 		$this->PasswordLength = max($this->minLen, $passLen);
+		$this->all=$this->caps.$this->small.$this->nums.$this->specs;
 	}
 
 	function PassGen(){ // Function to Generate Random Passowrd

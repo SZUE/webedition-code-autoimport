@@ -926,4 +926,8 @@ abstract class we_class{
 		return ($this->errMsg != '' ? '\n' . str_replace("\n", '\n', $this->errMsg) : '');
 	}
 
+	//FIXME: this is temporary
+	public function getDBf($field){
+		return $this->DB_WE->f($field);
+	}
 }

@@ -661,10 +661,10 @@ class we_document extends we_root{
 
 		//msconnect
 		/*
-		if( ($this->ContentType == 'application/x-shockwave-flash' && defined('VERSIONING_FLASH') && VERSIONING_FLASH) || ($this->ContentType == 'image/*' && defined('VERSIONING_IMAGE') && VERSIONING_IMAGE)|| ($this->ContentType == 'text/weTmpl' && defined('VERSIONING_TEXT_WETMPL') && VERSIONING_TEXT_WETMPL)//#4120 hinzugef�gt
-			|| ($this->ContentType == 'video/quicktime' && defined('VERSIONING_QUICKTIME') && VERSIONING_QUICKTIME) 
-			|| ($this->ContentType == 'text/js'  && defined('VERSIONING_TEXT_JS') && VERSIONING_TEXT_JS) || ($this->ContentType == 'text/css'  && defined('VERSIONING_TEXT_CSS') && VERSIONING_TEXT_CSS )
-			|| ($this->ContentType == 'text/plain'  && defined('VERSIONING_TEXT_PLAIN') && VERSIONING_TEXT_PLAIN) || ($this->ContentType == 'text/xml'  && defined('VERSIONING_TEXT_XML') && VERSIONING_TEXT_XML) || ($this->ContentType == 'application/*'  && defined('VERSIONING_SONSTIGE') && VERSIONING_SONSTIGE) ){
+		if(($this->ContentType == 'application/x-shockwave-flash' && defined('VERSIONING_FLASH') && VERSIONING_FLASH) || ($this->ContentType == 'image/*' && defined('VERSIONING_IMAGE') && VERSIONING_IMAGE) || ($this->ContentType == 'text/weTmpl' && defined('VERSIONING_TEXT_WETMPL') && VERSIONING_TEXT_WETMPL)//#4120 hinzugef�gt
+			|| ($this->ContentType == 'video/quicktime' && defined('VERSIONING_QUICKTIME') && VERSIONING_QUICKTIME)
+			|| ($this->ContentType == 'text/js' && defined('VERSIONING_TEXT_JS') && VERSIONING_TEXT_JS) || ($this->ContentType == 'text/css' && defined('VERSIONING_TEXT_CSS') && VERSIONING_TEXT_CSS )
+			|| ($this->ContentType == 'text/plain' && defined('VERSIONING_TEXT_PLAIN') && VERSIONING_TEXT_PLAIN) || ($this->ContentType == 'text/xml' && defined('VERSIONING_TEXT_XML') && VERSIONING_TEXT_XML) || ($this->ContentType == 'application/*' && defined('VERSIONING_SONSTIGE') && VERSIONING_SONSTIGE)){
 
 			$version->save($this);
 		}
@@ -834,10 +834,10 @@ class we_document extends we_root{
 		if(isset($attribs['_name_orig'])){
 			unset($attribs['_name_orig']);
 		}
-		if(!$db)
-			$db = new DB_WE();
-		if((!$attribs) || (!is_array($attribs)))
+		$db = $db ? $db : new DB_WE();
+		if((!$attribs) || (!is_array($attribs))){
 			$attribs = array();
+		}
 		switch($type){
 			case 'img':
 				$img = new we_imageDocument();
@@ -960,7 +960,7 @@ class we_document extends we_root{
 					}
 
 					$xml = weTag_getAttribute('xml', $attribs, (XHTML_DEFAULT), true, false);
-					$oldHtmlspecialchars = weTag_getAttribute('oldHtmlspecialchars', $attribs, true, true);
+					$oldHtmlspecialchars = weTag_getAttribute('htmlspecialchars', $attribs, true, true);
 					if($only){
 						if($only == 'content'){
 							return self::getLinkContent($link, $parentID, $path, $db, $img, $xml, $_useName, $oldHtmlspecialchars, $hidedirindex, $objectseourls);
@@ -1018,17 +1018,19 @@ class we_document extends we_root{
 				return $zwdate;
 			case 'select':
 				if(defined('OBJECT_TABLE')){
-					if(strlen($val) == 0)
+					if(strlen($val) == 0){
 						return '';
+					}
 					if($classID){
-						$defVals = f('SELECT DefaultValues FROM ' . OBJECT_TABLE . " WHERE ID=" . intval($classID), 'DefaultValues', $db);
+						$defVals = f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($classID), 'DefaultValues', $db);
 						if($defVals){
 							$arr = unserialize($defVals);
 							return isset($arr['meta_' . $attribs['name']]['meta'][$val]) ? $arr['meta_' . $attribs['name']]['meta'][$val] : '';
 						}
 					}
 				}
-				return '';
+				$f = __FUNCTION__;
+				return $this->{$f}($val, 'text', $attribs, $pathOnly, $parentID, $path, $db, $classID, $fn);
 			case 'href':
 				return self::getHref($attribs, $db, $fn);
 			default:
@@ -1039,7 +1041,7 @@ class we_document extends we_root{
 					$retval = strip_tags($retval, '<br>,<p>');
 				}
 
-				$_htmlspecialchars = isset($attribs['oldHtmlspecialchars']) && ($attribs['oldHtmlspecialchars'] == 'on' || $attribs['oldHtmlspecialchars'] == 'true' || $attribs['oldHtmlspecialchars'] == 'oldHtmlspecialchars');
+				$_htmlspecialchars = isset($attribs['htmlspecialchars']) && ($attribs['htmlspecialchars'] == 'on' || $attribs['htmlspecialchars'] == 'true' || $attribs['htmlspecialchars'] == 'htmlspecialchars');
 				$_wysiwyg = isset($attribs['wysiwyg']) && ($attribs['wysiwyg'] == 'on' || $attribs['wysiwyg'] == 'true' || $attribs['wysiwyg'] == 'wysiwyg');
 
 				if($_htmlspecialchars && (!$_wysiwyg)){
