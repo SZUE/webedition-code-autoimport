@@ -430,7 +430,7 @@ if((($_REQUEST['we_cmd'][0] != 'save_document' && $_REQUEST['we_cmd'][0] != 'pub
 
 ####TEMPLATE_SAVE_CODE2_START###
 					$TEMPLATE_SAVE_CODE2 = true;
-					$arr = getTemplAndDocIDsOfTemplate($we_doc->ID, true, true);
+					$arr = we_rebuild::getTemplAndDocIDsOfTemplate($we_doc->ID, true, true);
 					$nrDocsUsedByThisTemplate = count($arr['documentIDs']);
 					$nrTemplatesUsedByThisTemplate = count($arr['templateIDs']);
 					$somethingNeedsToBeResaved = ($nrDocsUsedByThisTemplate + $nrTemplatesUsedByThisTemplate) > 0;

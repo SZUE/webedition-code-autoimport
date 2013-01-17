@@ -290,28 +290,7 @@ abstract class we_rebuild{
 		}
 	}
 
-	/**
-	 * Create and returns data Array with IDs and other information for the fragmment class for rebuilding all documents and templates (Called from getDocuments())
-	 *
-	 * @return array
-	 */
-	private static function getTemplates($all = false, $mt = 0, $tt = 0){
-		if(!($all || we_hasPerm('REBUILD_TEMPLATES'))){
-			return array();
-		}
-		$data = array();
-		$db = $GLOBALS['DB_WE'];
-		//get all folders + easy templates
-		$db->query('(SELECT ID,ClassName,Path FROM ' . TEMPLATES_TABLE . ' WHERE IsFolder=1 ORDER BY ID) UNION
-			(SELECT ID,ClassName,Path FROM ' . TEMPLATES_TABLE . ' WHERE IsFolder=0 AND MasterTemplateID=0 AND IncludedTemplates="" ORDER BY LENGTH(Path)) UNION
-			(SELECT ID,ClassName,Path FROM ' . TEMPLATES_TABLE . ' WHERE IsFolder=0 AND MasterTemplateID IN (SELECT ID FROM ' . TEMPLATES_TABLE . ' WHERE IsFolder=0 AND MasterTemplateID=0 AND IncludedTemplates="") AND IncludedTemplates="" ORDER BY LENGTH(Path))', true);
-		self::insertTemplatesInArray($db->getAll(), $data, $mt, $tt);
-
-		//make a done list with id's
-		$db->query('SELECT ID FROM ' . TEMPLATES_TABLE . ' WHERE IsFolder=0 AND MasterTemplateID=0 AND IncludedTemplates="" UNION
-		(SELECT ID FROM ' . TEMPLATES_TABLE . ' WHERE IsFolder=0 AND MasterTemplateID IN (SELECT ID FROM ' . TEMPLATES_TABLE . ' WHERE IsFolder=0 AND MasterTemplateID=0 AND IncludedTemplates="") AND IncludedTemplates="" ORDER BY LENGTH(Path))', true);
-		$done = $db->getAll(true);
-
+	private static function getDependendTemplates($db, array $done, array &$data, $mt, $tt){
 		//get other, these have to be processed in php
 		$db->query('SELECT ID,ClassName,Path,MasterTemplateID,IncludedTemplates FROM ' . TEMPLATES_TABLE . ' WHERE IsFolder=0 AND ID NOT IN (' . implode(',', $done) . ') ORDER BY (`IncludedTemplates` = "") DESC');
 
@@ -342,7 +321,31 @@ abstract class we_rebuild{
 			//add them even if rebuild will not succeed
 			self::insertTemplatesInArray($todo, $data, $mt, $tt);
 		}
+	}
 
+	/**
+	 * Create and returns data Array with IDs and other information for the fragmment class for rebuilding all documents and templates (Called from getDocuments())
+	 *
+	 * @return array
+	 */
+	private static function getTemplates($all = false, $mt = 0, $tt = 0){
+		if(!($all || we_hasPerm('REBUILD_TEMPLATES'))){
+			return array();
+		}
+		$data = array();
+		$db = $GLOBALS['DB_WE'];
+		//get all folders + easy templates
+		$db->query('(SELECT ID,ClassName,Path FROM ' . TEMPLATES_TABLE . ' WHERE IsFolder=1 ORDER BY ID) UNION
+			(SELECT ID,ClassName,Path FROM ' . TEMPLATES_TABLE . ' WHERE IsFolder=0 AND MasterTemplateID=0 AND IncludedTemplates="" ORDER BY LENGTH(Path)) UNION
+			(SELECT ID,ClassName,Path FROM ' . TEMPLATES_TABLE . ' WHERE IsFolder=0 AND MasterTemplateID IN (SELECT ID FROM ' . TEMPLATES_TABLE . ' WHERE IsFolder=0 AND MasterTemplateID=0 AND IncludedTemplates="") AND IncludedTemplates="" ORDER BY LENGTH(Path))', true);
+		self::insertTemplatesInArray($db->getAll(), $data, $mt, $tt);
+
+		//make a done list with id's
+		$db->query('SELECT ID FROM ' . TEMPLATES_TABLE . ' WHERE IsFolder=0 AND MasterTemplateID=0 AND IncludedTemplates="" UNION
+		(SELECT ID FROM ' . TEMPLATES_TABLE . ' WHERE IsFolder=0 AND MasterTemplateID IN (SELECT ID FROM ' . TEMPLATES_TABLE . ' WHERE IsFolder=0 AND MasterTemplateID=0 AND IncludedTemplates="") AND IncludedTemplates="" ORDER BY LENGTH(Path))', true);
+		$done = $db->getAll(true);
+
+		self::getDependendTemplates($db, $done, $data, $mt, $tt);
 		return $data;
 	}
 
@@ -392,34 +395,21 @@ abstract class we_rebuild{
 		}
 
 		if($templateID){
+			$arr = self::getTemplAndDocIDsOfTemplate($templateID);
 
-			$arr = getTemplAndDocIDsOfTemplate($templateID);
+			if(!empty($arr['templateIDs'])){
 
-			if(count($arr['templateIDs'])){
-				$where = array();
-				foreach($arr['templateIDs'] as $tid){
-					$where[] = ' ID=' . intval($tid);
-				}
-				$where = '(' . implode(' OR ', $where) . ')';
+				//$GLOBALS['DB_WE']->query('SELECT ID,ClassName,Path FROM ' . TEMPLATES_TABLE . ' WHERE ' . $where . ' ORDER BY ID');
+				//get other, these have to be processed in php
 
-				$GLOBALS['DB_WE']->query('SELECT ID,ClassName,Path FROM ' . TEMPLATES_TABLE . ' WHERE ' . $where . ' ORDER BY ID');
-				while($GLOBALS['DB_WE']->next_record()) {
-					$data[] = array(
-						'id' => $GLOBALS['DB_WE']->f('ID'),
-						'type' => 'template',
-						'cn' => $GLOBALS['DB_WE']->f('ClassName'),
-						'mt' => 0,
-						'tt' => 0,
-						'path' => $GLOBALS['DB_WE']->f('Path'),
-						'it' => 0);
-				}
+				$GLOBALS['DB_WE']->query('SELECT ID FROM ' . TEMPLATES_TABLE . ' WHERE IsFolder=0 AND ID NOT IN (' . implode(',', $arr['templateIDs']) . ')');
+				$done = $GLOBALS['DB_WE']->getAll(true);
 
-				$_template_query = array(' TemplateID=' . $templateID);
-				foreach($arr['templateIDs'] as $tid){
-					$_template_query[] = ' TemplateID=' . intval($tid);
-				}
-				// remove last OR
-				$_template_query = '(' . implode(' OR ', $_template_query) . ')';
+				self::getDependendTemplates($GLOBALS['DB_WE'], $done, $data, 0, 0);
+
+				$tmp = $arr['templateIDs'];
+				$tmp[] = $templateID;
+				$_template_query = '( TemplateID IN (' . implode(',', $tmp) . '))';
 			} else{
 				$_template_query = '( TemplateID=' . intval($templateID) . ')';
 			}
@@ -592,6 +582,64 @@ abstract class we_rebuild{
 				'it' => 0);
 		}
 		return $data;
+	}
+
+	private static function getTemplatesOfTemplate($id, &$arr){
+		$GLOBALS['DB_WE']->query('SELECT ID FROM ' . TEMPLATES_TABLE . ' WHERE MasterTemplateID=' . intval($id) . " OR IncludedTemplates LIKE '%," . intval($id) . ",%' " . (empty($arr) ? '' : 'AND ID NOT IN (' . implode($arr) . ')'));
+		$foo = $GLOBALS['DB_WE']->getAll(true);
+
+		if(empty($foo)){
+			return;
+		}
+
+		$arr = array_merge($arr, $foo);
+		if(in_array($id, $arr)){
+			return;
+		}
+
+		foreach($foo as $check){
+			self::getTemplatesOfTemplate($check, $arr);
+		}
+	}
+
+	static function getTemplAndDocIDsOfTemplate($id, $staticOnly = true, $publishedOnly = false, $PublishedAndTemp = false){
+		if(!$id){
+			return 0;
+		}
+
+		$returnIDs = array(
+			'templateIDs' => array(),
+			'documentIDs' => array(),
+		);
+
+		self::getTemplatesOfTemplate($id, $returnIDs['templateIDs']);
+
+// first we need to check if template is included within other templates
+//$GLOBALS['DB_WE']->query("SELECT ID FROM ".TEMPLATES_TABLE." WHERE MasterTemplateID=".intval($id)." OR IncludedTemplates LIKE '%,".intval($id).",%'");
+//while ($GLOBALS['DB_WE']->next_record()) {
+//	array_push($returnIDs["templateIDs"], $GLOBALS['DB_WE']->f("ID"));
+//}
+
+		$id = intval($id);
+
+// Bug Fix 6615
+		$tmpArray = $returnIDs['templateIDs'];
+		$tmpArray[] = $id;
+		$tmp = implode(',', array_filter($tmpArray));
+		unset($tmpArray);
+		$where = ' (' .
+			($PublishedAndTemp ? 'temp_template_id IN (' . $tmp . ') OR ' : '') .
+			' TemplateID IN (' . $tmp . ')' .
+			')' .
+			($staticOnly ? ' AND IsDynamic=0' : '') .
+			($publishedOnly ? ' AND Published>0' : '');
+
+		$GLOBALS['DB_WE']->query('SELECT ID FROM ' . FILE_TABLE . ' WHERE ' . $where);
+
+		while($GLOBALS['DB_WE']->next_record()) {
+			$returnIDs['documentIDs'][] = $GLOBALS['DB_WE']->f('ID');
+		}
+		return $returnIDs;
 	}
 
 }

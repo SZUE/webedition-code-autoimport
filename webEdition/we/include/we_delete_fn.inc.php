@@ -67,7 +67,7 @@ function checkDeleteFile($id, $table){
 		case (defined('OBJECT_TABLE') ? OBJECT_TABLE : 'OBJECT_TABLE'):
 			return !(ObjectUsedByObjectFile($id, false));
 		case TEMPLATES_TABLE:
-			$arr = getTemplAndDocIDsOfTemplate($id, false, false, true);
+			$arr = we_rebuild::getTemplAndDocIDsOfTemplate($id, false, false, true);
 			return (count($arr['documentIDs']) == 0);
 	}
 	return true;
