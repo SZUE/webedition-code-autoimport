@@ -106,7 +106,7 @@ class weShippingControl{
 	function save(){
 		$DB_WE = $GLOBALS['DB_WE'];
 
-		return $DB_WE->query('REPLACE INTO ' . ANZEIGE_PREFS_TABLE .
+		return $DB_WE->query('REPLACE INTO ' . ANZEIGE_PREFS_TABLE . ' SET '.
 				we_database_base::arraySetter(array(
 					'strDateiname' => 'weShippingControl',
 					'strFelder' => serialize($this)
