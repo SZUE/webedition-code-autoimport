@@ -899,7 +899,7 @@ function get_ws($table = FILE_TABLE, $prePostKomma = false){
 		if($_SESSION['perms']['ADMINISTRATOR']){
 			return '';
 		}
-		if($_SESSION['user']['workSpace'] && $_SESSION['user']['workSpace'][$table] != ''){
+		if($_SESSION['user']['workSpace'] && isset($_SESSION['user']['workSpace'][$table]) && $_SESSION['user']['workSpace'][$table] != ''){
 			return makeCSVFromArray($_SESSION['user']['workSpace'][$table], $prePostKomma);
 		}
 	}
