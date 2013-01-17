@@ -200,7 +200,7 @@ abstract class we_rebuild{
 		}
 		$data = self::getTemplates(true, $maintable, $tmptable);
 
-		$GLOBALS['DB_WE']->query('SELECT ID,ClassName,Path FROM ' . FILE_TABLE . ' WHERE IsFolder=1 OR Published > 0 ORDER BY ID');
+		$GLOBALS['DB_WE']->query('SELECT ID,ClassName,Path FROM ' . FILE_TABLE . ' WHERE IsFolder=1 OR Published > 0 ORDER BY IsFolder DESC, LENGTH(Path)');
 		while($GLOBALS['DB_WE']->next_record()) {
 			$data[] = array(
 				'id' => $GLOBALS['DB_WE']->f('ID'),
@@ -430,7 +430,7 @@ abstract class we_rebuild{
 			($_folders_query ? ' AND ' . $_folders_query . ' ' : '') .
 			($_template_query ? ' AND ' . $_template_query . ' ' : '');
 
-		$GLOBALS['DB_WE']->query('SELECT ID,ClassName,Path FROM ' . FILE_TABLE . ' WHERE IsDynamic=0 AND Published > 0 AND ContentType="text/webedition" ' . $query . ' ORDER BY ID');
+		$GLOBALS['DB_WE']->query('SELECT ID,ClassName,Path FROM ' . FILE_TABLE . ' WHERE IsDynamic=0 AND Published > 0 AND ContentType="text/webedition" ' . $query . ' ORDER BY LENGTH(Path)');
 		while($GLOBALS['DB_WE']->next_record()) {
 			$data[] = array(
 				'id' => $GLOBALS['DB_WE']->f('ID'),
