@@ -59,7 +59,7 @@ require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_defines.inc
 require_once ($_SERVER['DOCUMENT_ROOT'] . LIB_DIR . 'we/core/autoload.php');
 
 // Activate the webEdition error handler
-include_once (WE_INCLUDES_PATH . 'we_error_handler.inc.php');
+require_once (WE_INCLUDES_PATH . 'we_error_handler.inc.php');
 if(!defined('WE_ERROR_HANDLER_SET')){
 	we_error_handler();
 }
@@ -74,6 +74,12 @@ include_once (WE_INCLUDES_PATH . 'conf/we_active_integrated_modules.inc.php');
 // use the following arrays:
 // we_available_modules - modules and informations about integrated and none integrated modules
 // we_active_integrated_modules - all active integrated modules
+//if file corrupted try to load defaults
+if(empty($GLOBALS['_we_active_integrated_modules'])||!in_array('users',$GLOBALS['_we_active_integrated_modules'])){
+	include_once (WE_INCLUDES_PATH . 'conf/we_active_integrated_modules.inc.php.default');
+}
+//make sure we always load users
+$GLOBALS['_we_active_integrated_modules'][]='users';
 
 foreach($GLOBALS['_we_active_integrated_modules'] as $active){
 	if(file_exists(WE_MODULES_PATH . $active . '/we_conf_' . $active . '.inc.php')){
