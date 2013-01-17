@@ -302,18 +302,45 @@ abstract class we_rebuild{
 		$data = array();
 		$db = $GLOBALS['DB_WE'];
 		//get all folders + easy templates
-		$db->query('(SELECT ID,ClassName,Path FROM ' . TEMPLATES_TABLE . ' WHERE IsFolder=1 ORDER BY ID) UNION
+		if(DB_CONNECT=='msconnect'){ //msconnectFIX order by entfernt
+			$db->query('(SELECT ID,ClassName,Path FROM ' . TEMPLATES_TABLE . ' WHERE IsFolder=1 ) UNION
+			(SELECT ID,ClassName,Path FROM ' . TEMPLATES_TABLE . " WHERE IsFolder=0 AND MasterTemplateID=0 AND IncludedTemplates='' ) UNION
+			(SELECT ID,ClassName,Path FROM " . TEMPLATES_TABLE . ' WHERE IsFolder=0 AND MasterTemplateID IN (SELECT ID FROM ' . TEMPLATES_TABLE . " WHERE IsFolder=0 AND MasterTemplateID=0 AND IncludedTemplates='') AND IncludedTemplates='')", true);
+	
+		} else {
+			$db->query('(SELECT ID,ClassName,Path FROM ' . TEMPLATES_TABLE . ' WHERE IsFolder=1 ORDER BY ID) UNION
 			(SELECT ID,ClassName,Path FROM ' . TEMPLATES_TABLE . ' WHERE IsFolder=0 AND MasterTemplateID=0 AND IncludedTemplates="" ORDER BY LENGTH(Path)) UNION
 			(SELECT ID,ClassName,Path FROM ' . TEMPLATES_TABLE . ' WHERE IsFolder=0 AND MasterTemplateID IN (SELECT ID FROM ' . TEMPLATES_TABLE . ' WHERE IsFolder=0 AND MasterTemplateID=0 AND IncludedTemplates="") AND IncludedTemplates="" ORDER BY LENGTH(Path))', true);
+		}
 		self::insertTemplatesInArray($db->getAll(), $data, $mt, $tt);
 
 		//make a done list with id's
-		$db->query('SELECT ID FROM ' . TEMPLATES_TABLE . ' WHERE IsFolder=0 AND MasterTemplateID=0 AND IncludedTemplates="" UNION
-		(SELECT ID FROM ' . TEMPLATES_TABLE . ' WHERE IsFolder=0 AND MasterTemplateID IN (SELECT ID FROM ' . TEMPLATES_TABLE . ' WHERE IsFolder=0 AND MasterTemplateID=0 AND IncludedTemplates="") AND IncludedTemplates="" ORDER BY LENGTH(Path))', true);
-		$done = $db->getAll(true);
-
+		if(DB_CONNECT=='msconnect'){//msconnectFIX order by entfernt
+			$db->query('SELECT ID FROM ' . TEMPLATES_TABLE . " WHERE IsFolder=0 AND MasterTemplateID=0 AND IncludedTemplates='' UNION
+			(SELECT ID FROM " . TEMPLATES_TABLE . ' WHERE IsFolder=0 AND MasterTemplateID IN (SELECT ID FROM ' . TEMPLATES_TABLE . " WHERE IsFolder=0 AND MasterTemplateID=0 AND IncludedTemplates='') AND IncludedTemplates='' )", true);
+	t_e('SELECT ID FROM ' . TEMPLATES_TABLE . " WHERE IsFolder=0 AND MasterTemplateID=0 AND IncludedTemplates='' UNION
+			(SELECT ID FROM " . TEMPLATES_TABLE . ' WHERE IsFolder=0 AND MasterTemplateID IN (SELECT ID FROM ' . TEMPLATES_TABLE . " WHERE IsFolder=0 AND MasterTemplateID=0 AND IncludedTemplates='') AND IncludedTemplates='' )");
+		} else {
+			$db->query('SELECT ID FROM ' . TEMPLATES_TABLE . ' WHERE IsFolder=0 AND MasterTemplateID=0 AND IncludedTemplates="" UNION
+			(SELECT ID FROM ' . TEMPLATES_TABLE . ' WHERE IsFolder=0 AND MasterTemplateID IN (SELECT ID FROM ' . TEMPLATES_TABLE . ' WHERE IsFolder=0 AND MasterTemplateID=0 AND IncludedTemplates="") AND IncludedTemplates="" ORDER BY LENGTH(Path))', true);
+		}
+		//msconnect
+		$doneZW = $db->getAll();
+		foreach($doneZW as $doneVal){
+			$done[]=$doneVal['ID'];
+		}
+		
+		if(DB_CONNECT=='msconnect'){
+			if(!empty($done)){
+				$db->query('SELECT ID,ClassName,Path,MasterTemplateID,IncludedTemplates FROM ' . TEMPLATES_TABLE . ' WHERE IsFolder=0 AND ID NOT IN (' . implode(',', $done) . ") ORDER BY (IncludedTemplates ) DESC");
+			} else {
+				$db->query('SELECT ID,ClassName,Path,MasterTemplateID,IncludedTemplates FROM ' . TEMPLATES_TABLE . " WHERE IsFolder=0 ORDER BY (IncludedTemplates = '') DESC");
+			}
+			
+		} else {
 		//get other, these have to be processed in php
-		$db->query('SELECT ID,ClassName,Path,MasterTemplateID,IncludedTemplates FROM ' . TEMPLATES_TABLE . ' WHERE IsFolder=0 AND ID NOT IN (' . implode(',', $done) . ') ORDER BY (`IncludedTemplates` = "") DESC');
+			$db->query('SELECT ID,ClassName,Path,MasterTemplateID,IncludedTemplates FROM ' . TEMPLATES_TABLE . ' WHERE IsFolder=0 AND ID NOT IN (' . implode(',', $done) . ') ORDER BY (`IncludedTemplates` = "") DESC');
+		}
 
 		$todo = array();
 		while($db->next_record(MYSQL_ASSOC)) {

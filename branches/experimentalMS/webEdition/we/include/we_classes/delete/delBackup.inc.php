@@ -33,13 +33,21 @@ class delBackup extends taskFragment{
 
 	function init(){
 		if(isset($_SESSION['weS']['backup_delete']) && $_SESSION['weS']['backup_delete']){
+			if(DB_CONNECT=='msconnect'){
+				$this->db->query("SELECT Icon,Path, LEN(Path) as Plen FROM " . FILE_TABLE . " ORDER BY IsFolder, Plen DESC;");
 
-			$this->db->query("SELECT Icon,Path, CHAR_LENGTH(Path) as Plen FROM " . FILE_TABLE . " ORDER BY IsFolder, Plen DESC;");
+			} else {
+				$this->db->query("SELECT Icon,Path, CHAR_LENGTH(Path) as Plen FROM " . FILE_TABLE . " ORDER BY IsFolder, Plen DESC;");
+			}
 			while($this->db->next_record()) {
 				$this->alldata[] = $_SERVER['DOCUMENT_ROOT'] . $this->db->f("Path") . "," . $this->db->f("Icon");
 				$this->alldata[] = $_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $this->db->f("Path") . "," . $this->db->f("Icon");
 			}
-			$this->db->query("SELECT Icon,Path, CHAR_LENGTH(Path) as Plen FROM " . TEMPLATES_TABLE . " ORDER BY IsFolder, Plen DESC;");
+			if(DB_CONNECT=='msconnect'){
+				$this->db->query("SELECT Icon,Path, LEN(Path) as Plen FROM " . TEMPLATES_TABLE . " ORDER BY IsFolder, Plen DESC;");
+			} else {	
+				$this->db->query("SELECT Icon,Path, CHAR_LENGTH(Path) as Plen FROM " . TEMPLATES_TABLE . " ORDER BY IsFolder, Plen DESC;");
+			}
 			while($this->db->next_record()) {
 				$this->alldata[] = TEMPLATES_PATH . '/' . preg_replace('/\.tmpl$/i', '.php', $this->db->f("Path")) . "," . $this->db->f("Icon");
 			}

@@ -590,7 +590,7 @@ t_e('$_navigation',$_navigation);
 		}
 
 		if(count($_ids)){
-			array_unique($_ids);
+		array_unique($_ids);//t_e($_ids);
 
 			$_db->query('SELECT ID,Path FROM ' . FILE_TABLE . ' WHERE ID IN(' . implode(',', $_ids) . ') ORDER BY ID');
 			while($_db->next_record()) {

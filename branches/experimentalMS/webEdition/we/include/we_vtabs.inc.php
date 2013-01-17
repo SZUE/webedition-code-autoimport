@@ -122,7 +122,7 @@ foreach($vtab as $tab => $val){
 		$tmp[] = 'new we_tab("#","' . $file . '_normal.gif", "' . $file . '_active.gif", "' . $file . '_disabled.gif", ' . $val['size'][0] . ',' . $val['size'][1] . ' ,' . ($val['show'] ? 'TAB_ACTIVE' : 'TAB_DISABLED') . ', "if(top.deleteMode){we_cmd(\'exit_delete\', \'' . constant($tab) . '\');};treeOut();we_cmd(\'loadVTab\', \'' . constant($tab) . '\' ,0);")';
 	}
 }
-print implode(',', $tmp);t_e($tmp);
+print implode(',', $tmp);
 ?>
 );
 
