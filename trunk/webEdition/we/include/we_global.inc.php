@@ -437,64 +437,6 @@ function cleanTempFiles($cleanSessFiles = false){
 	$d->close();
 }
 
-function getTemplatesOfTemplate($id, &$arr){
-	$foo = f('SELECT GROUP_CONCAT(ID) AS IDS FROM ' . TEMPLATES_TABLE . ' WHERE MasterTemplateID=' . intval($id) . " OR IncludedTemplates LIKE '%," . intval($id) . ",%'", 'IDS', $GLOBALS['DB_WE']);
-
-	if(!$foo){
-		return;
-	}
-
-	$foo = explode(',', $foo);
-	$arr = array_merge($arr, $foo);
-	if(in_array($id, $arr)){
-		return;
-	}
-
-	foreach($foo as $check){
-		getTemplatesOfTemplate($check, $arr);
-	}
-}
-
-function getTemplAndDocIDsOfTemplate($id, $staticOnly = true, $publishedOnly = false, $PublishedAndTemp = false){
-	if(!$id){
-		return 0;
-	}
-
-	$returnIDs = array(
-		'templateIDs' => array(),
-		'documentIDs' => array(),
-	);
-
-	getTemplatesOfTemplate($id, $returnIDs['templateIDs']);
-
-// first we need to check if template is included within other templates
-//$GLOBALS['DB_WE']->query("SELECT ID FROM ".TEMPLATES_TABLE." WHERE MasterTemplateID=".intval($id)." OR IncludedTemplates LIKE '%,".intval($id).",%'");
-//while ($GLOBALS['DB_WE']->next_record()) {
-//	array_push($returnIDs["templateIDs"], $GLOBALS['DB_WE']->f("ID"));
-//}
-
-	$id = intval($id);
-
-// Bug Fix 6615
-	$tmpArray = $returnIDs['templateIDs'];
-	$tmpArray[] = $id;
-	$tmp = implode(',', array_filter($tmpArray));
-	unset($tmpArray);
-	$where = ' (' .
-		($PublishedAndTemp ? 'temp_template_id IN (' . $tmp . ') OR ' : '') .
-		' TemplateID IN (' . $tmp . ')' .
-		')' .
-		($staticOnly ? ' AND IsDynamic=0' : '') .
-		($publishedOnly ? ' AND Published>0' : '');
-
-	$GLOBALS['DB_WE']->query('SELECT ID FROM ' . FILE_TABLE . ' WHERE ' . $where);
-
-	while($GLOBALS['DB_WE']->next_record()) {
-		$returnIDs['documentIDs'][] = $GLOBALS['DB_WE']->f('ID');
-	}
-	return $returnIDs;
-}
-
 function ObjectUsedByObjectFile($id){
 	if(!$id){
 		return false;
