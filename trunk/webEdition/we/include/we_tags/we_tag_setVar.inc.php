@@ -117,7 +117,7 @@ function we_tag_setVar($attribs){
 					));
 				break;
 			case "block" :
-				$nameFrom=we_tag_getPostName($nameFrom);
+				$nameFrom = we_tag_getPostName($nameFrom);
 				if($typeFrom == "href"){
 
 					if($GLOBALS['we_doc']->elements[$nameFrom . "_we_jkhdsf_int"]["dat"]){
@@ -161,11 +161,10 @@ function we_tag_setVar($attribs){
 			}
 			break;
 		case "block" :
-			$nameTo=$we_tag_getPostName($nameTo);
+			$nameTo = we_tag_getPostName($nameTo);
 		case "self" :
 			if($propertyTo){
 				$GLOBALS['we_doc']->$nameTo = $valueFrom;
-				;
 			} else{
 				$GLOBALS['we_doc']->setElement($nameTo, $valueFrom);
 			}
@@ -173,11 +172,11 @@ function we_tag_setVar($attribs){
 		case "object" :
 		case "document" :
 			if($propertyTo){
-				if(isset($GLOBALS["we_$to"][$formnameTo]))
+				if(isset($GLOBALS['we_' . $to][$formnameTo]))
 					$GLOBALS['we_' . $to][$formnameTo]->$nameTo = $valueFrom;
 			} else{
-				if(isset($GLOBALS["we_$to"][$formnameTo]))
-					$GLOBALS["we_$to"][$formnameTo]->setElement($nameTo, $valueFrom);
+				if(isset($GLOBALS['we_' . $to][$formnameTo]))
+					$GLOBALS['we_' . $to][$formnameTo]->setElement($nameTo, $valueFrom);
 			}
 			break;
 		case "sessionfield" :
