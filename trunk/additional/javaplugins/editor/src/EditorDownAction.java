@@ -15,7 +15,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 import java.awt.event.ActionEvent;
-
 import javax.swing.UIManager;
 import javax.swing.text.DefaultEditorKit;
 import javax.swing.text.JTextComponent;
@@ -49,7 +48,6 @@ class EditorDownAction extends TextAction {
 
 		if ((!target.isEditable()) || (!target.isEnabled())) {
 			UIManager.getLookAndFeel().provideErrorFeedback(target);
-			return;
 		}
 
 	}
