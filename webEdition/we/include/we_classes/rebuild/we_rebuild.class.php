@@ -542,7 +542,7 @@ abstract class we_rebuild{
 					'it' => 1);
 			}
 		}
-		$GLOBALS['DB_WE']->query('DELETE FROM ' . INDEX_TABLE);
+		$GLOBALS['DB_WE']->query('TRUNCATE ' . INDEX_TABLE);
 		return $data;
 	}
 

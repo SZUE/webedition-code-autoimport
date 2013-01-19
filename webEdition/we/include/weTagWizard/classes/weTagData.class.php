@@ -60,7 +60,7 @@ class weTagData{
 	private $Groups = array();
 	private $Deprecated = false;
 	private $noDocuLink = false;
-	
+
 	private function __construct($tagName){
 		$this->Name = $tagName;
 		// include the selected tag, its either normal, or custom tag
@@ -235,6 +235,18 @@ class weTagData{
 		return null;
 	}
 
+	function getAttributesForCM(){
+		$attr = array();
+
+		foreach($this->UsedAttributes as $attribute){
+			$class = get_class($attribute);
+			if(!$attribute->IsDeprecated() && $attribute->useAttribute() && $class != 'weTagData_linkAttribute' && $class != 'weTagData_cmdAttribute'){
+				$attr[] = $attribute->getName();
+			}
+		}
+		return $attr;;
+	}
+
 	/**
 	 * @return string
 	 */
@@ -244,7 +256,7 @@ class weTagData{
 
 		$typeAttrib = $this->getTypeAttribute();
 
-		if(sizeof($this->UsedAttributes) > 1 || (sizeof($this->UsedAttributes) && !$typeAttrib)){
+		if(count($this->UsedAttributes) > 1 || (count($this->UsedAttributes) && !$typeAttrib)){
 
 			$ret = '<ul>';
 			foreach($this->UsedAttributes as $attribute){
