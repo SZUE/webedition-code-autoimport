@@ -97,17 +97,14 @@ abstract class we_textContentDocument extends we_textDocument{
 					}
 				} else if(!is_array($_dat)){
 					if(isset($v["type"]) && $v["type"] == "txt" && ($k != "Charset")){
-						$text .= " " . (isset($v["dat"]) ? $v["dat"] : "");
+						$text .= ' ' . (isset($v["dat"]) ? $v["dat"] : "");
 					}
 				}
 			}
 		}
-		$text = trim(strip_tags($text));
 
 		$maxDB = min(1000000, getMaxAllowedPacket($this->DB_WE) - 1024);
-		if(strlen($text) > $maxDB){
-			$text = substr($text, 0, $maxDB);
-		}
+		$text = substr(preg_replace(array("/\n+/",'/  +/'), ' ', trim(strip_tags($text))), 0, $maxDB);
 
 		$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE DID=' . intval($this->ID));
 		if($this->IsSearchable && $this->Published){
