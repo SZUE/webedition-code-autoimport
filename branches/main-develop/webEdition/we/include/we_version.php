@@ -5,3 +5,4 @@ define('WE_ZFVERSION','1.11.11'); // recommended version of the Zend Framework (
 define('WE_SVNREV','');
 define('WE_VERSION_SUPP_VERSION','0');
 define('WE_VERSION_BRANCH','main-develop');
+

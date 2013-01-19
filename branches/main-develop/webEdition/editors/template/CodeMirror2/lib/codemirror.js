@@ -94,7 +94,7 @@ window.CodeMirror = (function() {
     d.scrollbarFiller = elt("div", null, "CodeMirror-scrollbar-filler");
     // DIVs containing the selection and the actual code
     d.lineDiv = elt("div");
-    d.selectionDiv = elt("div", null, null, "position: relative; z-index: 1");
+    d.selectionDiv = elt("div", null, null, "position: relative; z-index: 0");
     // Blinky cursor, and element used to ensure cursor fits at the end of a line
     d.cursor = elt("pre", "\u00a0", "CodeMirror-cursor");
     // Secondary cursor, shown when on a 'jump' in bi-directional text

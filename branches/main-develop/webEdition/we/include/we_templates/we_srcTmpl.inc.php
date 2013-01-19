@@ -379,7 +379,7 @@ switch($_SESSION['prefs']['editorMode']){
 		unmark();
 		if (!text) return;
 		for (var cursor = editor.getSearchCursor(text); cursor.findNext();)
-			marked.push(editor.markText(cursor.from(), cursor.to(), "searched"));
+			marked.push(editor.markText(cursor.from(), cursor.to(), {className:"searched"}));
 
 		if (lastQuery != text) lastPos = null;
 		var cursor = editor.getSearchCursor(text, lastPos || editor.getCursor());
