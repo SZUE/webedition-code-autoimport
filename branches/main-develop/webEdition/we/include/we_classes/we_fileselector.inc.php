@@ -89,8 +89,11 @@ class we_fileselector{
 			if($this->db->next_record()){
 				$this->values = $this->db->Record;
 
-				$this->dir = ($this->values["IsFolder"] ? $id : $this->values["ParentID"]);
-				$this->path = $this->values["Path"];
+				$this->dir = ($this->values['IsFolder'] ?
+						$id :
+						$this->values['ParentID']);
+
+				$this->path = $this->values['Path'];
 			} else{
 				$this->setDefaultDirAndID(false);
 			}
@@ -106,14 +109,14 @@ class we_fileselector{
 		$this->path = '';
 
 		$this->values = array(
-			"ParentID" => 0,
-			"Text" => '/',
-			"Path" => '/',
-			"IsFolder" => 1
+			'ParentID' => 0,
+			'Text' => '/',
+			'Path' => '/',
+			'IsFolder' => 1
 		);
 	}
 
-	function isIDInFolder($ID, $folderID, $db = ""){
+	function isIDInFolder($ID, $folderID, $db = ''){
 		if($folderID == $ID){
 			return true;
 		}
@@ -130,7 +133,7 @@ class we_fileselector{
 
 	function query(){
 		$this->db->query('SELECT ' . $this->fields . ' FROM ' . $this->db->escape($this->table) . ' WHERE ParentID=' . intval($this->dir) . ' ' .
-			( ($this->filter != '' ? ($this->table == CATEGORY_TABLE ? "AND IsFolder = '" . $this->db->escape($this->filter) . "' " : "AND ContentType = '" . $this->db->escape($this->filter) . "' ") : '' ) ) .
+			( ($this->filter != '' ? ($this->table == CATEGORY_TABLE ? 'AND IsFolder = "' . $this->db->escape($this->filter) . '" ' : 'AND ContentType = "' . $this->db->escape($this->filter) . '" ') : '' ) ) .
 			($this->order ? (' ORDER BY ' . $this->order) : ''));
 		$_SESSION['weS']['we_fs_lastDir'][$this->table] = $this->dir;
 	}
@@ -208,9 +211,9 @@ function closeOnEscape() {
 	function printFramesetHTML(){
 		we_html_tools::htmlTop($this->title);
 		print implodeJS(
-				we_html_element::jsScript(JS_DIR . "keyListener.js") .
+				we_html_element::jsScript(JS_DIR . 'keyListener.js') .
 				$this->getFramesetJavaScriptIncludes() .
-				we_html_element::jsElement("var weSelectorWindow = true;") .
+				we_html_element::jsElement('var weSelectorWindow = true;') .
 				$this->getFramesetJavaScriptDef() .
 				$this->getJS_keyListenerFunctions() .
 				$this->getExitClose() .
@@ -421,14 +424,13 @@ function queryString(what,id,o){
 
 	function printFramesetJSFunctioWriteBody(){
 		?><script type="text/javascript"><!--
-					function writeBody(d){
-						d.open();
+			function writeBody(d){
+				d.open();
 		<?php
 		echo self::makeWriteDoc(we_html_tools::getHtmlTop('', '', '4Trans', true) . STYLESHEET_SCRIPT . '
 </head>
 <body bgcolor="white" LINK="#000000" ALINK="#000000" VLINK="#000000" leftmargin="0" marginwidth="0" topmargin="0" marginheight="0">
 <table border="0" cellpadding="0" cellspacing="0">');
-
 		?>
 				for(i=0;i < entries.length; i++){
 					d.writeln('<tr>');

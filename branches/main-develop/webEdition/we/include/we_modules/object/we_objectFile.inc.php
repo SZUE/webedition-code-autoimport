@@ -1974,8 +1974,9 @@ class we_objectFile extends we_document{
 	}
 
 	function insertAtIndex(){
-		if(!$this->DB_WE->query("DELETE FROM " . INDEX_TABLE . " WHERE OID=" . $this->ID))
+		if(!$this->DB_WE->query("DELETE FROM " . INDEX_TABLE . " WHERE OID=" . $this->ID)){
 			return false;
+		}
 		if(!$this->IsSearchable){
 			return true;
 		}
@@ -1983,7 +1984,7 @@ class we_objectFile extends we_document{
 		$this->setTitleAndDescription();
 		$this->resetElements();
 		$text = "";
-		while(list($k, $v) = $this->nextElement("")) {
+		while((list($k, $v) = $this->nextElement(""))) {
 			if(isset($v["dat"])){
 				$text .= ' ' . $v["dat"];
 			}
@@ -1992,26 +1993,26 @@ class we_objectFile extends we_document{
 		$ws = makeArrayFromCSV($this->Workspaces);
 		$ws2 = makeArrayFromCSV($this->ExtraWorkspacesSelected);
 		foreach($ws2 as $w){
-			array_push($ws, $w);
+			$ws[] = $w;
 		}
 		$ws = array_unique($ws);
 		$wsPath = '';
 		$w = '';
-		$q = 'INSERT INTO ' . INDEX_TABLE . ' SET ' . we_database_base::arraySetter(array(
-				'OID' => $this->ID,
-				'Text' => $text,
-				'BText' => $text,
-				'Workspace' => $wsPath,
-				'WorkspaceID' => $w,
-				'Category' => $this->Category,
-				'ClassID' => $this->TableID,
-				'Title' => $this->getElement("Title"),
-				'Description' => $this->getElement("Description"),
-				'Path' => $this->Text,
-				'Language' => $this->Language
-			));
 
-		if(empty($ws) && ($this->DB_WE->query($q))){
+		if(empty($ws) && ($this->DB_WE->query(
+				'INSERT INTO ' . INDEX_TABLE . ' SET ' . we_database_base::arraySetter(array(
+					'OID' => $this->ID,
+					'Text' => $text,
+					'BText' => $text,
+					'Workspace' => $wsPath,
+					'WorkspaceID' => $w,
+					'Category' => $this->Category,
+					'ClassID' => $this->TableID,
+					'Title' => $this->getElement("Title"),
+					'Description' => $this->getElement("Description"),
+					'Path' => $this->Text,
+					'Language' => $this->Language
+				))))){
 			return true;
 		}
 
@@ -2021,20 +2022,20 @@ class we_objectFile extends we_document{
 				if($w == '0'){
 					$wsPath = '/';
 				}
-				$q = 'INSERT INTO ' . INDEX_TABLE . ' SET ' . we_database_base::arraySetter(array(
-						'OID' => $this->ID,
-						'Text' => $text,
-						'BText' => $text,
-						'Workspace' => $wsPath,
-						'WorkspaceID' => $w,
-						'Category' => $this->Category,
-						'ClassID' => $this->TableID,
-						'Title' => $this->getElement("Title"),
-						'Description' => $this->getElement("Description"),
-						'Path' => $this->Text,
-						'Language' => $this->Language
-					));
-				if(!$this->DB_WE->query($q)){
+				if(!$this->DB_WE->query(
+						'INSERT INTO ' . INDEX_TABLE . ' SET ' . we_database_base::arraySetter(array(
+							'OID' => $this->ID,
+							'Text' => $text,
+							'BText' => $text,
+							'Workspace' => $wsPath,
+							'WorkspaceID' => $w,
+							'Category' => $this->Category,
+							'ClassID' => $this->TableID,
+							'Title' => $this->getElement("Title"),
+							'Description' => $this->getElement("Description"),
+							'Path' => $this->Text,
+							'Language' => $this->Language
+						)))){
 					return false;
 				}
 			}

@@ -126,7 +126,11 @@ print STYLESHEET;
 		$services[] = $selectedService;
 	}
 
+<<<<<<< .working
 	if(count($services)){
+=======
+	if(!empty($services)){
+>>>>>>> .merge-rechts.r5594
 		foreach($services as $service){
 
 			$selectArr[$service->getName()] = htmlentities($service->name);

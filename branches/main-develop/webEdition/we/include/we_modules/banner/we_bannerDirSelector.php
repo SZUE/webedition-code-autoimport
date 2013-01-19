@@ -24,10 +24,10 @@
  */
 class we_bannerDirSelector extends we_dirSelector{
 
-	var $fields = "ID,ParentID,Text,Path,IsFolder,Icon";
+	var $fields = 'ID,ParentID,Text,Path,IsFolder,Icon';
 
-	function __construct($id, $JSIDName = "", $JSTextName = "", $JSCommand = "", $order = "", $we_editDirID = "", $FolderText = ""){
-		parent::__construct($id, BANNER_TABLE, $JSIDName, $JSTextName, $JSCommand, $order, "", $we_editDirID, $FolderText);
+	function __construct($id, $JSIDName = '', $JSTextName = '', $JSCommand = '', $order = '', $we_editDirID = '', $FolderText = ''){
+		parent::__construct($id, BANNER_TABLE, $JSIDName, $JSTextName, $JSCommand, $order, '', $we_editDirID, $FolderText);
 		$this->title = g_l('fileselector', '[bannerDirSelector][title]');
 		$this->userCanMakeNewFolder = true;
 	}

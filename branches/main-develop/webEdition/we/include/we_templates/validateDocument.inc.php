@@ -203,7 +203,7 @@ $parts = array(
 		'</td><td>' . we_html_tools::getPixel(20, 5) . '</td><td>' .
 		we_button::create_button('edit', 'javascript:we_cmd(\'customValidationService\')', true, 100, 22, "", "", !we_hasPerm("CAN_EDIT_VALIDATION"))
 		. '</td><td>' . we_html_tools::getPixel(20, 5) . '</td><td>' .
-		we_button::create_button('ok', 'javascript:we_cmd(\'checkDocument\')', true, 100, 22, '', '', (empty($services) > 0))
+		we_button::create_button('ok', 'javascript:we_cmd(\'checkDocument\')', true, 100, 22, '', '', (empty($services)))
 		. '</td></tr></table>'
 		, 'space' => 95),
 	array('html' => g_l('validation', '[result]'), 'noline' => 1, 'space' => 0),

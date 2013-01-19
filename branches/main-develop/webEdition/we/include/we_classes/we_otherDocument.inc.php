@@ -121,7 +121,7 @@ class we_otherDocument extends we_binaryDocument{
 		$text.= ' ' . trim($content);
 
 		$maxDB = min(1000000, getMaxAllowedPacket($this->DB_WE) - 1024);
-		$text = substr(preg_replace('/  +/', ' ', $text), 0, $maxDB);
+		$text = substr(preg_replace(array("/\n+/", '/  +/'), ' ', $text), 0, $maxDB);
 
 		if($this->IsSearchable && $this->Published){
 			$set = array(

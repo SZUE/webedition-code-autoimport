@@ -28,6 +28,7 @@ include_once(WE_INCLUDES_PATH . 'we_editors/we_preferences_config.inc.php');
 //NOTE: only add "newConf" to entries set in $GLOBALS['configs']. All "temporary" entries should remain in main-Request-Scope
 
 we_html_tools::protect();
+
 $yuiSuggest = &weSuggest::getInstance();
 
 define('secondsDay', 86400);
@@ -81,6 +82,8 @@ function getColorInput($name, $value, $disabled = false, $width = 20, $height = 
  * @return         unknown
  */
 function get_value($settingname){
+	$all = explode('-', $settingname);
+	$settingname = $all[0];
 	switch($settingname){
 		case 'use_jupload':
 		case 'specify_jeditor_colors':
@@ -112,7 +115,13 @@ function get_value($settingname){
 
 		default:
 			if(isset($GLOBALS['configs']['user'][$settingname])){
-				return (isset($_SESSION['prefs'][$settingname]) ? $_SESSION['prefs'][$settingname] : $GLOBALS['configs']['user'][$settingname][0]);
+				if(isset($all[1])){
+					//handle subkey
+					$tmp = @unserialize(isset($_SESSION['prefs'][$settingname]) ? $_SESSION['prefs'][$settingname] : $GLOBALS['configs']['user'][$settingname][0]);
+					return isset($tmp[$all[1]]) ? $tmp[$all[1]] : 0;
+				} else{
+					return (isset($_SESSION['prefs'][$settingname]) ? $_SESSION['prefs'][$settingname] : $GLOBALS['configs']['user'][$settingname][0]);
+				}
 			}
 
 			//if not found in global_config or other config - simply return '' - this should not happen - should we return something more error-specific?
@@ -236,6 +245,9 @@ function remember_value($settingvalue, $settingname, $comment = ''){
 			}
 			return;
 
+		case 'editorCodecompletion':
+			$_SESSION['prefs'][$settingname] = is_array($settingvalue) ? serialize($settingvalue) : '';
+			return;
 		case 'editorFontname':
 		case 'editorFontsize':
 			if($_SESSION['prefs']['editorFont'] == 1){
@@ -1563,84 +1575,14 @@ function setColorChooserDisabled(id, disabled) {
 }
 
 function displayEditorOptions(editor) {
-	switch(editor) {
-		case "java":
-			document.getElementById("div_settings_editor_predefined_2").style.display="none"; //JavaScript-Editor-Notice
-			document.getElementById("div_settings_editor_predefined_2").previousSibling.style.display="none";
+	tmp=document.getElementsByClassName("editor");
+	for( var k=0; k<tmp .length; k++ ) {
+		tmp[k].style.display="none";
+	}
 
-			document.getElementById("div_settings_editor_predefined_3").style.display="none"; //Font
-			document.getElementById("div_settings_editor_predefined_3").previousSibling.style.display="none";
-
-			document.getElementById("div_settings_editor_predefined_4").style.display="block"; //Java Colors
-			document.getElementById("div_settings_editor_predefined_4").previousSibling.style.display="block";
-
-			document.getElementById("div_settings_editor_predefined_5").style.display="none"; //Line numbers
-			document.getElementById("div_settings_editor_predefined_5").previousSibling.style.display="none";
-
-			document.getElementById("div_settings_editor_predefined_6").style.display="none"; //Code Completion
-			document.getElementById("div_settings_editor_predefined_6").previousSibling.style.display="none";
-
-			document.getElementById("div_settings_editor_predefined_7").style.display="none"; //Tooltips
-			document.getElementById("div_settings_editor_predefined_7").previousSibling.style.display="none";
-
-			document.getElementById("div_settings_editor_predefined_8").style.display="none"; //Docu on dblclick
-			document.getElementById("div_settings_editor_predefined_8").previousSibling.style.display="none";
-
-			setJavaEditorDisabled(false); //enabling Java-Colors-Checkbox
-
-			break;
-
-case "codemirror2":
-			document.getElementById("div_settings_editor_predefined_2").style.display="none"; //JavaScript-Editor-Notice
-			document.getElementById("div_settings_editor_predefined_2").previousSibling.style.display="none";
-
-			document.getElementById("div_settings_editor_predefined_3").style.display="block"; //Font
-			document.getElementById("div_settings_editor_predefined_3").previousSibling.style.display="block";
-
-			document.getElementById("div_settings_editor_predefined_4").style.display="none"; //Java Colors
-			document.getElementById("div_settings_editor_predefined_4").previousSibling.style.display="none";
-
-			document.getElementById("div_settings_editor_predefined_5").style.display="block"; //Line numbers
-			document.getElementById("div_settings_editor_predefined_5").previousSibling.style.display="block";
-
-			document.getElementById("div_settings_editor_predefined_6").style.display="none";
-			document.getElementById("div_settings_editor_predefined_6").previousSibling.style.display="none";
-
-			document.getElementById("div_settings_editor_predefined_7").style.display="block"; //Tooltips
-			document.getElementById("div_settings_editor_predefined_7").previousSibling.style.display="block";
-
-			document.getElementById("div_settings_editor_predefined_8").style.display="none";
-			document.getElementById("div_settings_editor_predefined_8").previousSibling.style.display="none";
-
-			setJavaEditorDisabled(true); //disabling Java-Colors-Checkbox
-
-			break;
-		case "textarea":
-		default:
-
-			document.getElementById("div_settings_editor_predefined_2").style.display="none"; //JavaScript-Editor-Notice
-			document.getElementById("div_settings_editor_predefined_2").previousSibling.style.display="none";
-
-			document.getElementById("div_settings_editor_predefined_3").style.display="block"; //Font
-			document.getElementById("div_settings_editor_predefined_3").previousSibling.style.display="block";
-
-			document.getElementById("div_settings_editor_predefined_4").style.display="none"; //Java Colors
-			document.getElementById("div_settings_editor_predefined_4").previousSibling.style.display="none";
-
-			document.getElementById("div_settings_editor_predefined_5").style.display="none"; //Line numbers
-			document.getElementById("div_settings_editor_predefined_5").previousSibling.style.display="none";
-
-			document.getElementById("div_settings_editor_predefined_6").style.display="none"; //Code Completion
-			document.getElementById("div_settings_editor_predefined_6").previousSibling.style.display="none";
-
-			document.getElementById("div_settings_editor_predefined_7").style.display="none"; //Tooltips
-			document.getElementById("div_settings_editor_predefined_7").previousSibling.style.display="none";
-
-			document.getElementById("div_settings_editor_predefined_8").style.display="none"; //Docu on dblclick
-			document.getElementById("div_settings_editor_predefined_8").previousSibling.style.display="none";
-			setJavaEditorDisabled(true); //disabling Java-Colors-Checkbox
-
-			break;
+	tmp=document.getElementsByClassName("editor_"+editor);
+	for( var k=0; k<tmp .length; k++ ) {
+		tmp[k].style.display="block";
 	}
 }
 
@@ -1713,7 +1655,7 @@ if(window.onload) {
 	<tr><td' . $_attr . '>' . g_l('prefs', '[editor_fontsize]') . '</td><td>' . $_template_editor_font_sizes_select_box->getHtml() . '</td></tr>
 </table>';
 
-			$_template_editor_font_color_checkbox = we_forms::checkboxWithHidden(get_value('specify_jeditor_colors'), "newconf[specify_jeditor_colors]", g_l('prefs', '[editor_font_colors]'), false, "defaultfont", "setEditorColorsDisabled(!this.checked);", !(get_value('editorMode') == 'java'));
+			$_template_editor_font_color_checkbox = we_forms::checkboxWithHidden(get_value('specify_jeditor_colors'), "newconf[specify_jeditor_colors]", g_l('prefs', '[editor_font_colors]'), false, "defaultfont", "setEditorColorsDisabled(!this.checked);");
 			$attr = ($_colorsDisabled ? $_attr_dis : $_attr);
 			$_template_editor_font_color_table = '<table id="editorColorTable" style="margin: 10px 0 0 50px;" border="0" cellpadding="0" cellspacing="0">
 	<tr><td id="label_editorFontcolor" ' . $attr . '>' . g_l('prefs', '[editor_normal_font_color]') . '</td><td>' . $_template_editor_fontcolor_selector . '</td></tr>
@@ -1729,8 +1671,25 @@ if(window.onload) {
 			//Build activation of line numbers
 			$_template_editor_linenumbers_code = we_forms::checkbox(1, get_value('editorLinenumbers'), 'newconf[editorLinenumbers]', g_l('prefs', '[editor_enable]'), true, 'defaultfont', '');
 
+			$tmp2 = we_forms::checkbox(1, get_value('FAST_RESTORE'), 'setXhtml_show_wrong_js', 'new fast Restore', false, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[FAST_RESTORE]\');') .
+				we_html_tools::hidden('newconf[FAST_RESTORE]', get_value('FAST_RESTORE'));
+
 			//Build activation of code completion
-			$_template_editor_codecompletion_code = we_forms::checkbox(1, get_value('editorCodecompletion'), 'newconf[editorCodecompletion]', g_l('prefs', '[editor_enable]'), true, 'defaultfont', '');
+			$_template_editor_codecompletion_code =
+				we_forms::checkbox(1, get_value('editorCodecompletion-WE'), 'editorCodecompletion0', 'WE-Tags', true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[editorCodecompletion][WE]\');') .
+				we_html_tools::hidden('newconf[editorCodecompletion][WE]', get_value('editorCodecompletion-WE')) .
+				we_forms::checkbox(1, get_value('editorCodecompletion-htmlTag'), 'editorCodecompletion1', 'HTML-Tags', true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[editorCodecompletion][htmlTag]\');') .
+				we_html_tools::hidden('newconf[editorCodecompletion][htmlTag]', get_value('editorCodecompletion-htmlTag')) .
+				we_forms::checkbox(1, get_value('editorCodecompletion-htmlDefAttr'), 'editorCodecompletion2', 'HTML-Default-Attribs', true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[editorCodecompletion][htmlDefAttr]\');') .
+				we_html_tools::hidden('newconf[editorCodecompletion][htmlDefAttr]', get_value('editorCodecompletion-htmlDefAttr')) .
+				we_forms::checkbox(1, get_value('editorCodecompletion-htmlAttr'), 'editorCodecompletion3', 'HTML-Attribs', true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[editorCodecompletion][htmlAttr]\');') .
+				we_html_tools::hidden('newconf[editorCodecompletion][htmlAttr]', get_value('editorCodecompletion-htmlAttr')) .
+				we_forms::checkbox(1, get_value('editorCodecompletion-htmlJSAttr'), 'editorCodecompletion4', 'HTML-JS-Attribs', true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[editorCodecompletion][htmlJSAttr]\');') .
+				we_html_tools::hidden('newconf[editorCodecompletion][htmlJSAttr]', get_value('editorCodecompletion-htmlJSAttr')) .
+				we_forms::checkbox(1, get_value('editorCodecompletion-html5Tag'), 'editorCodecompletion5', 'HTML5-Tags', true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[editorCodecompletion][html5Tag]\');') .
+				we_html_tools::hidden('newconf[editorCodecompletion][html5Tag]', get_value('editorCodecompletion-html5Tag')) .
+				we_forms::checkbox(1, get_value('editorCodecompletion-html5Attr'), 'editorCodecompletion6', 'HTML5-Attribs', true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[editorCodecompletion][html5Attr]\');') .
+				we_html_tools::hidden('newconf[editorCodecompletion][html5Attr]', get_value('editorCodecompletion-html5Attr'));
 
 			//Build activation of tooltips
 			$_template_editor_tooltips_code = we_forms::checkbox(1, get_value('editorTooltips'), 'newconf[editorTooltips]', g_l('prefs', '[editor_enable]'), true, 'defaultfont', '');
@@ -1748,7 +1707,7 @@ if(window.onload) {
 			}
 			$_template_editor_tooltip_font_select_box->selectOption($_template_editor_tooltip_font_specify ? get_value('editorTooltipFontname') : 'Tahoma');
 
-			$_template_editor_tooltip_font_sizes_select_box = new we_html_select(array('class' => 'weSelect', 'name' => 'newconf[editorTooltipFontsize]', 'size' => '1', 'style' => 'width: 135px;', ($_template_editor_tooltip_font_size_specify ? 'enabled' : 'disabled') => ($_template_editor_tooltip_font_size_specify ? 'enabled' : 'disabled')));
+			$_template_editor_tooltip_font_sizes_select_box = new we_html_select(array('class' => 'weSelect editor editor_codemirror2', 'name' => 'newconf[editorTooltipFontsize]', 'size' => '1', 'style' => 'width: 135px;', ($_template_editor_tooltip_font_size_specify ? 'enabled' : 'disabled') => ($_template_editor_tooltip_font_size_specify ? 'enabled' : 'disabled')));
 
 			foreach($_template_font_sizes as $sz){
 				$_template_editor_tooltip_font_sizes_select_box->addOption($sz, $sz);
@@ -1760,19 +1719,19 @@ if(window.onload) {
 			</table>';
 
 			//Build activation of integration of documentation
-			$_template_editor_docuintegration_code = we_forms::checkbox(1, get_value('editorDocuintegration'), 'newconf[editorDocuintegration]', g_l('prefs', '[editor_enable]'), true, 'defaultfont', '');
+			$_template_editor_autoClose = we_forms::checkbox(1, get_value('editorDocuintegration'), 'newconf[editorDocuintegration]', g_l('prefs', '[editor_enable]'), true, 'defaultfont', '');
 
 			//FIXME:remove editor_javascript_information
 			$_settings = array(
 				array('headline' => '', 'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[editor_information]'), 2, 480, false), 'space' => 0),
 				array('headline' => g_l('prefs', '[editor_mode]'), 'html' => $_template_editor_mode->getHtml(), 'space' => 150),
-				array('headline' => '', 'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[editor_javascript_information]'), 2, 480, false), 'space' => 0),
-				array('headline' => g_l('prefs', '[editor_font]'), 'html' => $_template_editor_font_specify_code . $_template_editor_font_specify_table, 'space' => 150),
-				array('headline' => g_l('prefs', '[editor_highlight_colors]'), 'html' => $_template_editor_font_color_checkbox . $_template_editor_font_color_table, 'space' => 150),
-				array('headline' => g_l('prefs', '[editor_linenumbers]'), 'html' => $_template_editor_linenumbers_code, 'space' => 150),
-				array('headline' => g_l('prefs', '[editor_completion]'), 'html' => $_template_editor_codecompletion_code, 'space' => 150),
-				array('headline' => g_l('prefs', '[editor_tooltips]'), 'html' => $_template_editor_tooltips_code . $_template_editor_tooltip_font_specify_code . $_template_editor_tooltip_font_specify_table, 'space' => 150),
-				array('headline' => g_l('prefs', '[editor_docuclick]'), 'html' => $_template_editor_docuintegration_code, 'space' => 150),
+				array('class' => 'editor editor_codemirror2 editor_textarea', 'headline' => g_l('prefs', '[editor_font]'), 'html' => $_template_editor_font_specify_code . $_template_editor_font_specify_table, 'space' => 150),
+				array('class' => 'editor editor_java', 'headline' => g_l('prefs', '[editor_highlight_colors]'), 'html' => $_template_editor_font_color_checkbox . $_template_editor_font_color_table, 'space' => 150),
+				array('class' => 'editor editor_codemirror2', 'headline' => g_l('prefs', '[editor_linenumbers]'), 'html' => $_template_editor_linenumbers_code, 'space' => 150),
+				array('class' => 'editor editor_codemirror2', 'headline' => g_l('prefs', '[editor_completion]'), 'html' => $_template_editor_codecompletion_code, 'space' => 150),
+				array('class' => 'editor editor_codemirror2', 'headline' => g_l('prefs', '[editor_tooltips]'), 'html' => $_template_editor_tooltips_code . $_template_editor_tooltip_font_specify_code . $_template_editor_tooltip_font_specify_table, 'space' => 150),
+				array('class' => 'editor editor_codemirror2', 'headline' => 'Autoclose Tags'/* g_l('prefs', '[editor_docuclick]') */, 'html' => $_template_editor_autoClose, 'space' => 150),
+				//array('class'=>'editor editor_codemirror2','headline' => g_l('prefs', '[editor_docuclick]'), 'html' => $_template_editor_docuintegration_code, 'space' => 150),
 			);
 
 			$_settings_cookie = weGetCookieVariable("but_settings_editor_predefined");
@@ -3270,9 +3229,8 @@ function setColorField(name) {
 }' . ($acError ? we_message_reporting::getShowMessageCall(g_l('alert', '[field_in_tab_notvalid_pre]') . "\\n\\n" . $acErrorMsg . "\\n" . g_l('alert', '[field_in_tab_notvalid_post]'), we_message_reporting::WE_MESSAGE_ERROR) : ""));
 
 
-
-
-	print STYLESHEET . $_we_cmd_js . we_html_element::jsScript(JS_DIR . 'windows.js') . $yuiSuggest->getYuiCssFiles() . $yuiSuggest->getYuiJsFiles() . '</head>' .
+	print STYLESHEET .
+		$_we_cmd_js . we_html_element::jsScript(JS_DIR . 'windows.js') . $yuiSuggest->getYuiCssFiles() . $yuiSuggest->getYuiJsFiles() . '</head>' .
 		we_html_element::htmlBody(array("class" => "weDialogBody"), $_form) .
 		$yuiSuggest->getYuiCss() .
 		$yuiSuggest->getYuiJs() .

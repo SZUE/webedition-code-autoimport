@@ -45,32 +45,31 @@ abstract class we_multiIconBox{
 			we_multiIconBox::_getBoxStart($width, $uniqname);
 
 		foreach($content as $i => $c){
+			$out.=(isset($c['class']) ? '<div class="' . $c['class'] . '">' : '');
+
 			if($i == $foldAtNr && $foldAtNr < count($content)){ // only if the folded items contain stuff.
-				$but = we_multiIconBox::_getButton($uniqname, ($delegate ? $delegate : "" ) . ";weToggleBox('$uniqname','" . addslashes($foldDown) . "','" . addslashes($foldRight) . "')", ($displayAtStartup ? "down" : "right"), g_l('global', "[openCloseBox]"));
-				$out .= we_button::create_button_table(
-						array(
-						$but,
+				$out .= we_button::create_button_table(array(
+						we_multiIconBox::_getButton($uniqname, ($delegate ? $delegate : "" ) . ";weToggleBox('$uniqname','" . addslashes($foldDown) . "','" . addslashes($foldRight) . "')", ($displayAtStartup ? "down" : "right"), g_l('global', "[openCloseBox]")),
 						'<span style="cursor: pointer;" class="defaultfont" id="text_' . $uniqname . '" onClick="' . ($delegate ? $delegate : "" ) . ';weToggleBox(\'' . $uniqname . '\',\'' . addslashes($foldDown) . '\',\'' . addslashes($foldRight) . '\');">' . ($displayAtStartup ? $foldDown : $foldRight) . '</span>'
 						), 10, array('style' => 'margin-left:' . $marginLeft . 'px;')
-				);
-				$out .= '<br/><table id="table_' . $uniqname . '" width="100%" cellpadding="0" cellspacing="0" border="0" style="' . ($displayAtStartup ? '' : 'display:none') . '"><tr><td>';
+					) .
+					'<br/><table id="table_' . $uniqname . '" width="100%" cellpadding="0" cellspacing="0" border="0" style="' . ($displayAtStartup ? '' : 'display:none') . '"><tr><td>';
 			}
 
 			$_forceRightHeadline = (isset($c["forceRightHeadline"]) && $c["forceRightHeadline"]);
 
-			$icon = (isset($c["icon"]) && $c["icon"]) ?
-				('<img src="' . IMAGE_DIR . 'icons/' . $c["icon"] . '" alt="" style="margin-left:20px;" />') :
-				'';
-			$headline = (isset($c["headline"]) && $c["headline"]) ?
-				('<div  id="headline_' . $uniqname . '_' . $i . '" class="weMultiIconBoxHeadline" style="margin-bottom:10px;">' . $c["headline"] . '</div>') :
-				'';
+			$icon = (isset($c["icon"]) && $c["icon"] ?
+					'<img src="' . IMAGE_DIR . 'icons/' . $c["icon"] . '" alt="" style="margin-left:20px;" />' :
+					'');
+			$headline = (isset($c["headline"]) && $c["headline"] ?
+					'<div id="headline_' . $uniqname . '_' . $i . '" class="weMultiIconBoxHeadline" style="margin-bottom:10px;">' . $c["headline"] . '</div>' :
+					'');
 
-
-			$mainContent = (isset($c["html"]) && $c["html"]) ? $c["html"] : "";
+			$mainContent = (isset($c["html"]) && $c["html"]) ? $c["html"] : '';
 
 			$leftWidth = (isset($c["space"]) && $c["space"]) ? abs($c["space"]) : 0;
 
-			$leftContent = $icon ? $icon : (($leftWidth && (!$_forceRightHeadline)) ? $headline : "");
+			$leftContent = $icon ? $icon : (($leftWidth && (!$_forceRightHeadline)) ? $headline : '');
 
 			$rightContent = '<div ' . ($mainContent == $leftContent && $leftContent == '' ? '' : 'style="float:left;"') . ' class="defaultfont">' . ((($icon && $headline) || ($leftContent === "") || $_forceRightHeadline) ? ($headline . '<div>' . $mainContent . '</div>') : '<div>' . $mainContent . '</div>') . '</div>';
 
@@ -84,11 +83,12 @@ abstract class we_multiIconBox{
 			}
 
 			$out .= $rightContent .
-				'<br style="clear:both;"/>' .
-				'</div>' . (we_base_browserDetect::isIE() ? '<br/>' : '') .
+				'<br style="clear:both;"/>
+					</div>' . (we_base_browserDetect::isIE() ? '<br/>' : '') .
 				($i < (count($content) - 1) && (!isset($c["noline"])) ?
 					'<div style="border-top: 1px solid #AFB0AF;margin:10px 0 10px 0;clear:both;"></div>' :
-					'<div style="margin:10px 0;clear:both;"></div>');
+					'<div style="margin:10px 0;clear:both;"></div>').
+				(isset($c['class'])?'</div>':'');
 		}
 
 		if($foldAtNr >= 0 && $foldAtNr < count($content)){
@@ -98,9 +98,9 @@ abstract class we_multiIconBox{
 		$boxHTML = $out . we_multiIconBox::_getBoxEnd($width);
 
 		if($buttons){
-			$buttonsHTML = '<div style="left:0px;height:40px;background-image: url(' . IMAGE_DIR . 'edit/editfooterback.gif);position:absolute;bottom:0px;width:100%"><div style="padding: 10px 10px 0 0;">' . $buttons . '</div></div>';
 			//ignore height, replace by bottom:
-			return '<div style="overflow:' . $overflow . ';position:absolute;width:100%;' . ($height ? 'height:' . $height . 'px;' : 'bottom:40px;') . 'top:0px;left:0px;">' . $boxHTML . '</div>' . $buttonsHTML;
+			return '<div style="overflow:' . $overflow . ';position:absolute;width:100%;' . ($height ? 'height:' . $height . 'px;' : 'bottom:40px;') . 'top:0px;left:0px;">' . $boxHTML . '</div>
+				<div style="left:0px;height:40px;background-image: url(' . IMAGE_DIR . 'edit/editfooterback.gif);position:absolute;bottom:0px;width:100%"><div style="padding: 10px 10px 0 0;">' . $buttons . '</div></div>';
 		} else{
 			return $boxHTML;
 		}
