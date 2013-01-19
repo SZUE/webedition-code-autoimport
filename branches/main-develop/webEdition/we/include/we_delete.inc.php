@@ -243,17 +243,17 @@ if($_REQUEST['we_cmd'][0] == "do_delete" || $_REQUEST['we_cmd'][0] == "delete_si
 				break;
 			case -5: //	not allowed to delete workspace
 				$script .= 'top.toggleBusy(0);';
-				$objList = "";
+				$objList = '';
 				foreach($objects as $val){
-					$objList .= "- " . $val . "\\n";
+					$objList .= '- ' . $val . '\n';
 				}
 				$script .= we_message_reporting::getShowMessageCall(sprintf(g_l('alert', '[delete_workspace_object_r]'), id_to_path($selectedItem, $table), $objList), we_message_reporting::WE_MESSAGE_ERROR);
 				break;
 			case -4: //	not allowed to delete workspace
 				$script .= 'top.toggleBusy(0);';
-				$usrList = "";
+				$usrList = '';
 				foreach($users as $val){
-					$usrList .= "- " . $val . "\\n";
+					$usrList .= '- ' . $val . '\n';
 				}
 				$script .= we_message_reporting::getShowMessageCall(sprintf(g_l('alert', '[delete_workspace_user_r]'), id_to_path($selectedItem, $table), $usrList), we_message_reporting::WE_MESSAGE_ERROR);
 				break;
@@ -261,15 +261,15 @@ if($_REQUEST['we_cmd'][0] == "do_delete" || $_REQUEST['we_cmd'][0] == "delete_si
 				$script .= 'top.toggleBusy(0);';
 				$objList = '';
 				foreach($objects as $val){
-					$objList .= "- " . $val . "\\n";
+					$objList .= "- " . $val . '\n';
 				}
 				$script .= we_message_reporting::getShowMessageCall(sprintf(g_l('alert', '[delete_workspace_object]'), id_to_path($selectedItem, $table), $objList), we_message_reporting::WE_MESSAGE_ERROR);
 				break;
 			case -2: //	not allowed to delete workspace
 				$script .= 'top.toggleBusy(0);';
-				$usrList = "";
+				$usrList = '';
 				foreach($users as $val){
-					$usrList .= "- " . $val . "\\n";
+					$usrList .= '- ' . $val . '\n';
 				}
 				$script .= we_message_reporting::getShowMessageCall(sprintf(g_l('alert', '[delete_workspace_user]'), id_to_path($selectedItem, $table), $usrList), we_message_reporting::WE_MESSAGE_ERROR);
 				break;
@@ -355,40 +355,35 @@ if($_REQUEST['we_cmd'][0] == "do_delete" || $_REQUEST['we_cmd'][0] == "delete_si
 
 					$script .= 'top.toggleBusy(0);';
 
-					if($_SESSION['weS']['we_mode'] == "normal"){ //	different messages in normal or seeMode
-				if(!empty($GLOBALS["we_folder_not_del"])){
+					if($_SESSION['weS']['we_mode'] == 'normal'){ //	different messages in normal or seeMode
+						if(!empty($GLOBALS['we_folder_not_del'])){
 							$_SESSION['weS']['delete_files_nok'] = array();
-							$_SESSION["delete_files_info"] = str_replace("\\n", "", sprintf(g_l('alert', "[folder_not_empty]"), ""));
+							$_SESSION['delete_files_info'] = str_replace('\n', '', sprintf(g_l('alert', '[folder_not_empty]'), ''));
 							foreach($GLOBALS["we_folder_not_del"] as $datafile){
-								$_SESSION['weS']['delete_files_nok'][] = array("icon" => we_base_ContentTypes::FOLDER_ICON, "path" => $datafile);
+								$_SESSION['weS']['delete_files_nok'][] = array('icon' => we_base_ContentTypes::FOLDER_ICON, "path" => $datafile);
 							}
-							$script .= 'new jsWindow("' . WEBEDITION_DIR . 'delInfo.php","we_delinfo",-1,-1,550,550,true,true,true);' . "\n";
+							$script .= 'new jsWindow("' . WEBEDITION_DIR . 'delInfo.php","we_delinfo",-1,-1,550,550,true,true,true);';
 						} else{
-
-							/* if (defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE . "_cache" || defined(
-							  "FILE_TABLE") && $table == FILE_TABLE . "_cache") {
-							  $delete_ok = g_l('alert',"[delete_cache_ok]");
-
-							  } else */{
-								$delete_ok = g_l('alert', "[delete_ok]");
-							}
-
+							$delete_ok = g_l('alert', '[delete_ok]');
 							$script .= we_message_reporting::getShowMessageCall($delete_ok, we_message_reporting::WE_MESSAGE_NOTICE);
 						}
 					}
 				} else{
 					$script .= 'top.toggleBusy(0);';
-					if($table == TEMPLATES_TABLE){
-						$script .= we_message_reporting::getShowMessageCall(g_l('alert', "[deleteTempl_notok_used]"), we_message_reporting::WE_MESSAGE_ERROR);
-					} elseif($table == OBJECT_TABLE){
-						$script .= we_message_reporting::getShowMessageCall(g_l('alert', "[deleteClass_notok_used]"), we_message_reporting::WE_MESSAGE_ERROR);
-					} else{
-						$script .= we_message_reporting::getShowMessageCall(g_l('alert', "[delete_notok]"), we_message_reporting::WE_MESSAGE_ERROR);
+					switch($table){
+						case TEMPLATES_TABLE:
+							$script .= we_message_reporting::getShowMessageCall(g_l('alert', "[deleteTempl_notok_used]"), we_message_reporting::WE_MESSAGE_ERROR);
+							break;
+						case OBJECT_TABLE:
+							$script .= we_message_reporting::getShowMessageCall(g_l('alert', "[deleteClass_notok_used]"), we_message_reporting::WE_MESSAGE_ERROR);
+							break;
+						default:
+							$script .= we_message_reporting::getShowMessageCall(g_l('alert', "[delete_notok]"), we_message_reporting::WE_MESSAGE_ERROR);
 					}
 				}
 		}
 	} else{
-		$script .= "top.toggleBusy(0);\n" . we_message_reporting::getShowMessageCall(g_l('alert', "[nothing_to_delete]"), we_message_reporting::WE_MESSAGE_WARNING) . "\n";
+		$script .= 'top.toggleBusy(0);' . we_message_reporting::getShowMessageCall(g_l('alert', "[nothing_to_delete]"), we_message_reporting::WE_MESSAGE_WARNING);
 	}
 	print we_html_element::jsScript(JS_DIR . 'windows.js') .
 		we_html_element::jsElement($script);
@@ -400,12 +395,11 @@ if($_REQUEST['we_cmd'][0] == "do_delete" || $_REQUEST['we_cmd'][0] == "delete_si
 
 
 if($_SESSION['weS']['we_mode'] == "seem"){
-	if($retVal){ //	document deleted -> go to seeMode startPage
-		$_js = we_message_reporting::getShowMessageCall(g_l('alert', '[delete_single][return_to_start]'), we_message_reporting::WE_MESSAGE_NOTICE) . "top.we_cmd('start_multi_editor');";
-	} else{
-		$_js = we_message_reporting::getShowMessageCall(g_l('alert', '[delete_single][no_delete]'), we_message_reporting::WE_MESSAGE_ERROR);
-	}
-	print we_html_element::htmlDocType() . we_html_element::htmlHtml(we_html_element::htmlHead(we_html_element::jsElement($_js)));
+	print we_html_element::htmlDocType() . we_html_element::htmlHtml(we_html_element::htmlHead(we_html_element::jsElement(
+					($retVal ? //	document deleted -> go to seeMode startPage
+						we_message_reporting::getShowMessageCall(g_l('alert', '[delete_single][return_to_start]'), we_message_reporting::WE_MESSAGE_NOTICE) . "top.we_cmd('start_multi_editor');" :
+						we_message_reporting::getShowMessageCall(g_l('alert', '[delete_single][no_delete]'), we_message_reporting::WE_MESSAGE_ERROR))
+				)));
 	exit();
 }
 ?>

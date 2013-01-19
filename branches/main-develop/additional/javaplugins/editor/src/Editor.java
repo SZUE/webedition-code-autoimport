@@ -14,7 +14,11 @@
  * @license http://www.gnu.org/copyleft/gpl.html GPL
  */
 import java.awt.BorderLayout;
+import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.KeyEventDispatcher;
+import java.awt.KeyboardFocusManager;
+import java.awt.event.KeyEvent;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -25,8 +29,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JApplet;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -38,7 +40,7 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 //
-public class Editor extends JApplet {
+public class Editor extends JApplet implements KeyEventDispatcher {
 
 	private static final long serialVersionUID = 1L;
 	private EditorPanel editor;
@@ -59,7 +61,6 @@ public class Editor extends JApplet {
 		super.init();
 		System.out.println("init");
 		System.out.flush();
-		String url;
 
 		serverUrl = getParameter("serverUrl");
 		editorPath = getParameter("editorPath");
@@ -129,6 +130,33 @@ public class Editor extends JApplet {
 		this.setVisible(false);
 		editor = new EditorPanel(this);
 		searchAndReplace = new SearchAndReplace(new javax.swing.JFrame(), false, this);
+
+		Container topParent = null;
+		Container parent = this;
+		// The natural thing would be to call getParent() until it returns
+		//   null, but then you would be looping for a long time, since
+		//   PluginEmbeddedFrame's getParent() returns itself.
+		for (int k = 0; k < 10; k++) {
+			topParent = parent;
+			parent = parent.getParent();
+			if (parent == null) {
+				break;
+			}
+		}
+
+		// If topParent isn't a KeyEventDispatcher then we must be in some
+		//   Plugin version that doesn't need the workaround.
+		KeyboardFocusManager kfm = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+		try {
+			KeyEventDispatcher ked = (KeyEventDispatcher) topParent;
+
+			// You have to remove it twice, otherwise the problem isn't fixed
+			kfm.removeKeyEventDispatcher(ked);
+			kfm.removeKeyEventDispatcher(ked);
+		} catch (ClassCastException e) {
+			e.printStackTrace();
+		}
+		kfm.addKeyEventDispatcher(this);
 	}
 
 
@@ -145,23 +173,23 @@ public class Editor extends JApplet {
 		getContentPane().add(this.editor, BorderLayout.CENTER);
 		this.setVisible(true);
 		/*new Thread(new Runnable() {
-			public void run() {
-				while (true) {
-					Map<Thread, StackTraceElement[]> m = Thread.getAllStackTraces();
-					int i = 0;
-					for (Thread t : m.keySet()) {
-						System.out.println(++i);
-						for (StackTraceElement s : m.get(t)) {
-							System.out.println(s.toString());
-						}
-					}
-					try {
-						Thread.sleep(1000);
-					} catch (InterruptedException ex) {
-					}
-				}
-			}
-		}).start();*/
+		 public void run() {
+		 while (true) {
+		 Map<Thread, StackTraceElement[]> m = Thread.getAllStackTraces();
+		 int i = 0;
+		 for (Thread t : m.keySet()) {
+		 System.out.println(++i);
+		 for (StackTraceElement s : m.get(t)) {
+		 System.out.println(s.toString());
+		 }
+		 }
+		 try {
+		 Thread.sleep(1000);
+		 } catch (InterruptedException ex) {
+		 }
+		 }
+		 }
+		 }).start();*/
 	}
 
 	@Override
@@ -394,5 +422,10 @@ public class Editor extends JApplet {
 		if (hot) {
 			setHot(true);
 		}
+	}
+
+	@Override
+	public boolean dispatchKeyEvent(KeyEvent ke) {
+		return false;
 	}
 }

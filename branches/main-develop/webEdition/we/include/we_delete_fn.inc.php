@@ -67,7 +67,7 @@ function checkDeleteFile($id, $table){
 		case (defined('OBJECT_TABLE') ? OBJECT_TABLE : 'OBJECT_TABLE'):
 			return !(ObjectUsedByObjectFile($id, false));
 		case TEMPLATES_TABLE:
-			$arr = getTemplAndDocIDsOfTemplate($id, false, false, true);
+			$arr = we_rebuild::getTemplAndDocIDsOfTemplate($id, false, false, true);
 			return (empty($arr["documentIDs"]));
 	}
 	return true;
@@ -85,13 +85,12 @@ function deleteFolder($id, $table, $path = '', $delR = true, $DB_WE = ''){
 
 	if($delR){ // recursive delete
 		$DB_WE->query('SELECT ID FROM ' . $DB_WE->escape($table) . ' WHERE ParentID=' . intval($id));
-		$toDeleteArray=array();
+		$toDeleteArray = array();
 		while($DB_WE->next_record()) {
-			//	deleteEntry($DB_WE->f('ID'), $table, true, 0, $DB_WE);// aus 5172, das aber nicht, man ist in der schleife, nach dem ersten gelöschen ist schluss
-			$toDeleteArray[]=$DB_WE->f('ID');
+			$toDeleteArray[] = $DB_WE->f('ID');
 		}
-		foreach ($toDeleteArray as $toDelete){
-			deleteEntry($toDelete, $table, true, 0,$DB_WE);
+		foreach($toDeleteArray as $toDelete){
+			deleteEntry($toDelete, $table, true, 0, $DB_WE);
 		}
 	}
 
@@ -292,6 +291,10 @@ function deleteEntry($id, $table, $delR = true, $skipHook = 0, $DB_WE = ''){
 	}
 	if($id){
 		$row = getHash('SELECT Path,IsFolder,ContentType FROM ' . $DB_WE->escape($table) . ' WHERE ID=' . intval($id), $DB_WE);
+		if(empty($row)){
+			$GLOBALS['deletedItems'][] = $id;
+			return;
+		}
 		$ct = weVersions::getContentTypesVersioning();
 		//no need to init doc, if no version is needed or hook is executed
 		if(in_array($row['ContentType'], $ct) || $skipHook == 0){
