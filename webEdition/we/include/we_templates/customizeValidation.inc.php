@@ -165,11 +165,6 @@ print STYLESHEET;
 		array('headline' => g_l('validation', '[available_services]'), 'html' => $_table, 'space' => 150)
 	);
 
-<<<<<<< .working
-	$parts = array(
-		array('headline' => g_l('validation', '[available_services]'), 'html' => $_table, 'space' => 150)
-	);
-
 	if(!empty($services)){
 		$parts[] = array('headline' => g_l('validation', '[category]'), 'html' => we_html_tools::htmlSelect('category', validation::getAllCategories(), 1, $selectedService->category), 'space' => 150, 'noline' => 1);
 		$parts[] = array('headline' => g_l('validation', '[service_name]'), 'html' => we_html_tools::htmlTextInput('name', 50, $selectedService->name), 'space' => 150, 'noline' => 1);
