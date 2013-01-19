@@ -67,19 +67,19 @@ class weTagWizard{
 		}
 		//add applicationTags
 		$apptags = weTagWizard::getApplicationTags();
-		if(sizeof($apptags)){
+		if(!empty($apptags)){
 			$taggroups['apptags'] = $apptags;
 			$taggroups['alltags'] = array_merge($taggroups['alltags'], $taggroups['apptags']);
 		}
 
 
 		// 2nd add some taggroups to this array
-		if(!sizeof($allTags)){
+		if(empty($allTags)){
 			$allTags = weTagWizard::getExistingWeTags();
 		}
 		foreach($GLOBALS['tag_groups'] as $key => $tags){
 
-			for($i = 0; $i < sizeof($tags); $i++){
+			for($i = 0; $i < count($tags); $i++){
 				if(in_array($tags[$i], $allTags)){
 					$taggroups[$key][] = $tags[$i];
 				}
@@ -88,7 +88,7 @@ class weTagWizard{
 
 		// at last add custom tags.
 		$customTags = weTagWizard::getCustomTags();
-		if(sizeof($customTags)){
+		if(!empty($customTags)){
 			$taggroups['custom'] = $customTags;
 			$taggroups['alltags'] = array_merge($taggroups['alltags'], $taggroups['custom']);
 		}

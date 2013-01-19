@@ -7,12 +7,31 @@
 // Ctrl-G.
 
 (function() {
+  function searchOverlay(query) {
+    if (typeof query == "string") return {token: function(stream) {
+      if (stream.match(query)) return "searching";
+      stream.next();
+      stream.skipTo(query.charAt(0)) || stream.skipToEnd();
+    }};
+    return {token: function(stream) {
+      if (stream.match(query)) return "searching";
+      while (!stream.eol()) {
+        stream.next();
+        if (stream.match(query, false)) break;
+      }
+    }};
+  }
+
   function SearchState() {
     this.posFrom = this.posTo = this.query = null;
-    this.marked = [];
+    this.overlay = null;
   }
   function getSearchState(cm) {
     return cm._searchState || (cm._searchState = new SearchState());
+  }
+  function getSearchCursor(cm, query, pos) {
+    // Heuristic: if the query string is all lowercase, do a case insensitive search.
+    return cm.getSearchCursor(query, pos, typeof query == "string" && query == query.toLowerCase());
   }
   function dialog(cm, text, shortText, f) {
     if (cm.openDialog) cm.openDialog(text, f);
@@ -23,11 +42,11 @@
     else if (confirm(shortText)) fs[0]();
   }
   function parseQuery(query) {
-    var isRE = query.match(/^\/(.*)\/$/);
-    return isRE ? new RegExp(isRE[1]) : query;
+    var isRE = query.match(/^\/(.*)\/([a-z]*)$/);
+    return isRE ? new RegExp(isRE[1], isRE[2].indexOf("i") == -1 ? "" : "i") : query;
   }
   var queryDialog =
-    'Search: <input type="text" style="width: 10em"> <span style="color: #888">(Use /re/ syntax for regexp search)</span>';
+    'Search: <input type="text" style="width: 10em"/> <span style="color: #888">(Use /re/ syntax for regexp search)</span>';
   function doSearch(cm, rev) {
     var state = getSearchState(cm);
     if (state.query) return findNext(cm, rev);
@@ -35,10 +54,9 @@
       cm.operation(function() {
         if (!query || state.query) return;
         state.query = parseQuery(query);
-        if (cm.lineCount() < 2000) { // This is too expensive on big documents.
-          for (var cursor = cm.getSearchCursor(query); cursor.findNext();)
-            state.marked.push(cm.markText(cursor.from(), cursor.to(), "CodeMirror-searching"));
-        }
+        cm.removeOverlay(state.overlay);
+        state.overlay = searchOverlay(query);
+        cm.addOverlay(state.overlay);
         state.posFrom = state.posTo = cm.getCursor();
         findNext(cm, rev);
       });
@@ -46,25 +64,24 @@
   }
   function findNext(cm, rev) {cm.operation(function() {
     var state = getSearchState(cm);
-    var cursor = cm.getSearchCursor(state.query, rev ? state.posFrom : state.posTo);
+    var cursor = getSearchCursor(cm, state.query, rev ? state.posFrom : state.posTo);
     if (!cursor.find(rev)) {
-      cursor = cm.getSearchCursor(state.query, rev ? {line: cm.lineCount() - 1} : {line: 0, ch: 0});
+      cursor = getSearchCursor(cm, state.query, rev ? {line: cm.lineCount() - 1} : {line: 0, ch: 0});
       if (!cursor.find(rev)) return;
     }
     cm.setSelection(cursor.from(), cursor.to());
     state.posFrom = cursor.from(); state.posTo = cursor.to();
-  })}
+  });}
   function clearSearch(cm) {cm.operation(function() {
     var state = getSearchState(cm);
     if (!state.query) return;
     state.query = null;
-    for (var i = 0; i < state.marked.length; ++i) state.marked[i].clear();
-    state.marked.length = 0;
-  })}
+    cm.removeOverlay(state.overlay);
+  });}
 
   var replaceQueryDialog =
-    'Replace: <input type="text" style="width: 10em"> <span style="color: #888">(Use /re/ syntax for regexp search)</span>';
-  var replacementQueryDialog = 'With: <input type="text" style="width: 10em">';
+    'Replace: <input type="text" style="width: 10em"/> <span style="color: #888">(Use /re/ syntax for regexp search)</span>';
+  var replacementQueryDialog = 'With: <input type="text" style="width: 10em"/>';
   var doReplaceConfirm = "Replace? <button>Yes</button> <button>No</button> <button>Stop</button>";
   function replace(cm, all) {
     dialog(cm, replaceQueryDialog, "Replace:", function(query) {
@@ -73,22 +90,22 @@
       dialog(cm, replacementQueryDialog, "Replace with:", function(text) {
         if (all) {
           cm.operation(function() {
-            for (var cursor = cm.getSearchCursor(query); cursor.findNext();) {
+            for (var cursor = getSearchCursor(cm, query); cursor.findNext();) {
               if (typeof query != "string") {
                 var match = cm.getRange(cursor.from(), cursor.to()).match(query);
-                cursor.replace(text.replace(/\$(\d)/, function(w, i) {return match[i];}));
+                cursor.replace(text.replace(/\$(\d)/, function(_, i) {return match[i];}));
               } else cursor.replace(text);
             }
           });
         } else {
           clearSearch(cm);
-          var cursor = cm.getSearchCursor(query, cm.getCursor());
+          var cursor = getSearchCursor(cm, query, cm.getCursor());
           function advance() {
             var start = cursor.from(), match;
             if (!(match = cursor.findNext())) {
-              cursor = cm.getSearchCursor(query);
+              cursor = getSearchCursor(cm, query);
               if (!(match = cursor.findNext()) ||
-                  (cursor.from().line == start.line && cursor.from().ch == start.ch)) return;
+                  (start && cursor.from().line == start.line && cursor.from().ch == start.ch)) return;
             }
             cm.setSelection(cursor.from(), cursor.to());
             confirmDialog(cm, doReplaceConfirm, "Replace?",
@@ -96,7 +113,7 @@
           }
           function doReplace(match) {
             cursor.replace(typeof query == "string" ? text :
-                           text.replace(/\$(\d)/, function(w, i) {return match[i];}));
+                           text.replace(/\$(\d)/, function(_, i) {return match[i];}));
             advance();
           }
           advance();

@@ -50,7 +50,7 @@ if($we_doc->Table == FILE_TABLE || (defined('OBJECT_FILES_TABLE') && $we_doc->Ta
 	}
 }
 
-if(sizeof($parts) == 1){
+if(count($parts) == 1){
 	$znr = -1;
 }
 

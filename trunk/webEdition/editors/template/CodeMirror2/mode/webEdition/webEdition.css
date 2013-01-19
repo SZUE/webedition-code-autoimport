@@ -15,16 +15,15 @@
  * @category   webEdition
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
- */
+*/
 
 .weTag, .cm-weTag{ font-weight:bold;color:#ff8a00;}
 .weTagAttribute, .cm-weTagAttribute{color:grey;}
 .weSelfClose:hover:after, .cm-weSelfClose:hover:after, .weOpenTag:hover:after, .cm-weOpenTag:hover:after, .weTagAttribute:hover:after, .cm-weTagAttribute:hover:after {
-	cursor: pointer;
 	position: absolute;
-	z-index: 1000;
+	z-index: 10;
 	white-space: normal;
-	max-width: 20em;
+	max-width: 40em;
 	background: rgba(0, 0, 0, 0.85);
 	padding: 3px 7px;
 	color: #FFF;
@@ -33,15 +32,41 @@
 	margin-top: -3px;
 }
 
-.CodeMirror-scroll{
-	position: absolute;
-	height: auto;
-	top: 0px;
-	bottom: 0px;
-	left: 0px;
-	right: 0px;
-}
-
 .CodeMirror{
 	position: relative;
+	color: black;
+	background: white;
+	padding: 5px 8px;
+	z-index: 5;
+	border: outset 1px;
+	box-shadow: 0 2px 2px rgba(0,0,0,0.3);
+	border-radius: 3px;
+}
+
+.CodeMirror pre {
+		z-index: auto;
+}
+
+.activeline {
+	background: #dee4ec !important;
+	z-index: -1;
+}
+
+.searched {
+	background: yellow;
+}
+
+span.c-like-keyword {
+	color: #000;
+	font-weight: bold;
+}
+
+.CodeMirror-selected {
+	background: #b0c5e3;
+}
+
+.cm-tab {
+	background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAMCAYAAAAkuj5RAAAAAXNSR0IArs4c6QAAAGFJREFUSMft1LsRQFAQheHPowAKoACx3IgEKtaEHujDjORSgWTH/ZOdnZOcM/sgk/kFFWY0qV8foQwS4MKBCS3qR6ixBJvElOobYAtivseIE120FaowJPN75GMu8j/LfMwNjh4HUpwg4LUAAAAASUVORK5CYII=);
+	background-position: right;
+	background-repeat: no-repeat;
 }

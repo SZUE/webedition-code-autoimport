@@ -126,7 +126,7 @@ print STYLESHEET;
 		$services[] = $selectedService;
 	}
 
-	if(sizeof($services) > 0){
+	if(!empty($services)){
 		foreach($services as $service){
 
 			$selectArr[$service->getName()] = htmlentities($service->name);
@@ -155,18 +155,22 @@ print STYLESHEET;
         <td>' . we_html_tools::getPixel(10, 2) . '</td>
         <td valign="top">' . we_button::create_button('new_service', 'javascript:we_cmd(\'customValidationService\',\'newService\');')
 		. '<div style="height:10px;"></div>'
-		. we_button::create_button('delete', 'javascript:we_cmd(\'customValidationService\',\'deleteService\');', true, 100, 22, '', '', !(sizeof($services) > 0)) . '
+		. we_button::create_button('delete', 'javascript:we_cmd(\'customValidationService\',\'deleteService\');', true, 100, 22, '', '', (empty($services))) . '
         </td>
     </tr>
-    </table>';
-
-	$_table .= $hiddenFields;
+    </table>'.
+		$hiddenFields;
 
 	$parts = array(
 		array('headline' => g_l('validation', '[available_services]'), 'html' => $_table, 'space' => 150)
 	);
 
-	if(sizeof($services) > 0){
+<<<<<<< .working
+	$parts = array(
+		array('headline' => g_l('validation', '[available_services]'), 'html' => $_table, 'space' => 150)
+	);
+
+	if(!empty($services)){
 		$parts[] = array('headline' => g_l('validation', '[category]'), 'html' => we_html_tools::htmlSelect('category', validation::getAllCategories(), 1, $selectedService->category), 'space' => 150, 'noline' => 1);
 		$parts[] = array('headline' => g_l('validation', '[service_name]'), 'html' => we_html_tools::htmlTextInput('name', 50, $selectedService->name), 'space' => 150, 'noline' => 1);
 		$parts[] = array('headline' => g_l('validation', '[host]'), 'html' => we_html_tools::htmlTextInput('host', 50, $selectedService->host), 'space' => 150, 'noline' => 1);
@@ -180,12 +184,6 @@ print STYLESHEET;
 		$parts[] = array('headline' => g_l('validation', '[active]'), 'html' => we_html_tools::htmlSelect('active', array(0 => 'false', 1 => 'true'), 1, $selectedService->active) . '<br /><span class="small">' . g_l('validation', '[desc][active]') . '</span>', 'space' => 150);
 	}
 
-	$body = '<form name="we_form" onsubmit="return false;">' . we_multiIconBox::getHTML('weDocValidation', '100%', $parts, 30, we_button::position_yes_no_cancel(we_button::create_button('save', 'javascript:we_cmd(\'customValidationService\',\'saveService\');', true, 100, 22, '', '', !(sizeof($services) > 0)), we_button::create_button('cancel', 'javascript:we_cmd(\'close\');')), -1, '', '', false, g_l('validation', '[adjust_service]'))
-		. '</form>';
-
-	print $body;
-	print '</body></html>';
-
-
-
-
+	print '<form name="we_form" onsubmit="return false;">' . we_multiIconBox::getHTML('weDocValidation', '100%', $parts, 30, we_button::position_yes_no_cancel(we_button::create_button('save', 'javascript:we_cmd(\'customValidationService\',\'saveService\');', true, 100, 22, '', '', (empty($services))), we_button::create_button('cancel', 'javascript:we_cmd(\'close\');')), -1, '', '', false, g_l('validation', '[adjust_service]'))
+		. '</form>' .
+		'</body></html>';

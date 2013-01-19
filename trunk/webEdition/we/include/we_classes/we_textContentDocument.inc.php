@@ -104,11 +104,9 @@ abstract class we_textContentDocument extends we_textDocument{
 		}
 
 		$maxDB = min(1000000, getMaxAllowedPacket($this->DB_WE) - 1024);
-		$text = substr(preg_replace(array("/\n+/",'/  +/'), ' ', trim(strip_tags($text))), 0, $maxDB);
+		$text = substr(preg_replace(array("/\n+/", '/  +/'), ' ', trim(strip_tags($text))), 0, $maxDB);
 
-		$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE DID=' . intval($this->ID));
 		if($this->IsSearchable && $this->Published){
-
 			$set = array('DID' => intval($this->ID),
 				'Text' => $text,
 				'BText' => $text,
@@ -120,8 +118,9 @@ abstract class we_textContentDocument extends we_textDocument{
 				'Description' => $this->getElement("Description"),
 				'Path' => $this->Path,
 				'Language' => $this->Language);
-			return $this->DB_WE->query('INSERT INTO ' . INDEX_TABLE . ' SET ' . we_database_base::arraySetter($set));
+			return $this->DB_WE->query('REPLACE INTO ' . INDEX_TABLE . ' SET ' . we_database_base::arraySetter($set));
 		}
+		$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE DID=' . intval($this->ID));
 		return true;
 	}
 
@@ -412,9 +411,7 @@ abstract class we_textContentDocument extends we_textDocument{
 			}
 		}
 
-		if(f('SELECT 1 AS a FROM ' . INDEX_TABLE . ' WHERE DID=' . intval($this->ID), 'a', $this->DB_WE) == 1){
-			return $this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE DID=' . intval($this->ID));
-		}
+		$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE DID=' . intval($this->ID));
 
 		return true;
 	}
@@ -423,7 +420,7 @@ abstract class we_textContentDocument extends we_textDocument{
 		if($this->Published){
 			return $this->we_publish(true, $rebuildMain);
 		} else{
-			return $this->DB_WE->query("DELETE FROM " . INDEX_TABLE . " WHERE DID=" . intval($this->ID));
+			return $this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE DID=' . intval($this->ID));
 		}
 	}
 
