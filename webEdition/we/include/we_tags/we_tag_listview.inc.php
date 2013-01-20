@@ -305,5 +305,5 @@ function we_tag_listview($attribs){
 		$GLOBALS['we_lv_array'] = array();
 	}
 
-	array_push($GLOBALS['we_lv_array'], clone($GLOBALS['lv']));
+	$GLOBALS['we_lv_array'][] = clone($GLOBALS['lv']);
 }
