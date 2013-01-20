@@ -111,11 +111,7 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js');
 				<td></td>
 				<td class="defaultfont">
 					<b><?php
-			if($_REQUEST["filter"] == "folder"){
 				print g_l('fileselector', "[name]");
-			} else{
-				print g_l('fileselector', "[name]");
-			}
 			?></b>
 				</td>
 				<td></td>
