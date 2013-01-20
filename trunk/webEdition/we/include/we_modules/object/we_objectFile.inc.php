@@ -241,11 +241,13 @@ class we_objectFile extends we_document{
 			$db->query('SELECT ID,Path FROM ' . OBJECT_FILES_TABLE . ' WHERE IsFolder=1 AND (Path="' . $db->escape($classDir) . '" OR Path LIKE "' . $db->escape($classDir) . '/%")');
 			while($db->next_record()) {
 				$all[$db->f('Path')] = $db->f('ID');
-				if(!$ws || in_workspace($db->f('ID'), $ws, OBJECT_FILES_TABLE, '', true)){
-					if(($tmp = substr_count($db->f('Path'), '/')) <= $slash){
+				if(($tmp = substr_count($db->f('Path'), '/')) <= $slash){
+					if(!$ws || in_workspace($db->f('ID'), $ws, OBJECT_FILES_TABLE, '', true)){
 						$rootId = $db->f('ID');
 						$cnt = ($tmp == $slash ? $cnt : 0) + 1;
-						$path = $db->f('Path');
+						if($cnt == 1){
+							$path = substr($db->f('Path'), 0, strrpos($db->f('Path'), '/'));
+						}
 						$slash = $tmp;
 					}
 				}
