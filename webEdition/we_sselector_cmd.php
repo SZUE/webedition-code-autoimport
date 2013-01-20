@@ -27,7 +27,7 @@ we_html_tools::protect();
 
 we_html_tools::htmlTop();
 
-print STYLESHEET . "\n";
+print STYLESHEET;
 
 if(isset($_REQUEST["cmd"]) && $_REQUEST["cmd"] == "save_last"){
 	$_SESSION["user"]["LastDir"] = $last;
@@ -181,7 +181,7 @@ if(!isset($_REQUEST["cmd"]) || (isset($_REQUEST["cmd"]) && $_REQUEST["cmd"] != "
 	}
 
 	if(isset($_REQUEST["cmd"]) && $_REQUEST["cmd"] == "new_folder"){
-		print "drawDir(top.currentDir);\n";
+		print 'drawDir(top.currentDir);';
 		if($_REQUEST["txt"] == ""){
 			print we_message_reporting::getShowMessageCall(g_l('alert', "[we_filename_empty]"), we_message_reporting::WE_MESSAGE_ERROR);
 		} else if(preg_match('|[\'"<>/]|', $_REQUEST["txt"])){
@@ -208,11 +208,11 @@ if(!isset($_REQUEST["cmd"]) || (isset($_REQUEST["cmd"]) && $_REQUEST["cmd"] != "
 
 	if(isset($_REQUEST["cmd"]) && $_REQUEST["cmd"] == "rename_folder"){
 		if($_REQUEST["txt"] == ""){
-			print we_message_reporting::getShowMessageCall(g_l('alert', "[we_filename_empty]"), we_message_reporting::WE_MESSAGE_ERROR);
-			print "drawDir(top.currentDir);\n";
+			print we_message_reporting::getShowMessageCall(g_l('alert', "[we_filename_empty]"), we_message_reporting::WE_MESSAGE_ERROR).
+				"drawDir(top.currentDir);\n";
 		} else if(preg_match('|[\'"<>/]|', $_REQUEST["txt"])){
-			print we_message_reporting::getShowMessageCall(g_l('alert', "[name_nok]"), we_message_reporting::WE_MESSAGE_ERROR);
-			print "drawDir(top.currentDir);\n";
+			print we_message_reporting::getShowMessageCall(g_l('alert', "[name_nok]"), we_message_reporting::WE_MESSAGE_ERROR).
+				"drawDir(top.currentDir);\n";
 		} else{
 			$old = str_replace('//', '/', $_SERVER['DOCUMENT_ROOT'] . $_REQUEST["pat"] . "/" . $_REQUEST["sid"]);
 			$new = str_replace('//', '/', $_SERVER['DOCUMENT_ROOT'] . $_REQUEST["pat"] . "/" . $_REQUEST["txt"]);
@@ -232,11 +232,11 @@ if(!isset($_REQUEST["cmd"]) || (isset($_REQUEST["cmd"]) && $_REQUEST["cmd"] != "
 		}
 	} else if(isset($_REQUEST["cmd"]) && $_REQUEST["cmd"] == "rename_file"){
 		if($_REQUEST["txt"] == ""){
-			print we_message_reporting::getShowMessageCall(g_l('alert', "[we_filename_empty]"), we_message_reporting::WE_MESSAGE_ERROR);
-			print "drawDir(top.currentDir);\n";
+			print we_message_reporting::getShowMessageCall(g_l('alert', "[we_filename_empty]"), we_message_reporting::WE_MESSAGE_ERROR).
+				"drawDir(top.currentDir);\n";
 		} else if(preg_match('|[\'"<>/]|', $_REQUEST["txt"])){
-			print we_message_reporting::getShowMessageCall(g_l('alert', "[name_nok]"), we_message_reporting::WE_MESSAGE_ERROR);
-			print "drawDir(top.currentDir);\n";
+			print we_message_reporting::getShowMessageCall(g_l('alert', "[name_nok]"), we_message_reporting::WE_MESSAGE_ERROR).
+				"drawDir(top.currentDir);\n";
 		} else{
 			$old = str_replace('//', '/', $_SERVER['DOCUMENT_ROOT'] . $_REQUEST["pat"] . '/' . $_REQUEST["sid"]);
 			$new = str_replace('//', '/', $_SERVER['DOCUMENT_ROOT'] . $_REQUEST["pat"] . '/' . $_REQUEST["txt"]);
@@ -261,15 +261,15 @@ if(!isset($_REQUEST["cmd"]) || (isset($_REQUEST["cmd"]) && $_REQUEST["cmd"] != "
 				print we_message_reporting::getShowMessageCall(g_l('alert', "[access_denied]"), we_message_reporting::WE_MESSAGE_ERROR);
 			} else{
 				if(is_dir($_REQUEST["fid"]) && ($_REQUEST["ask"])){
-					print "if (confirm(\"" . g_l('alert', "[delete_folder]") . "\")) delFile(0);\n";
+					print "if (confirm(\"" . g_l('alert', "[delete_folder]") . "\")){delFile(0);}";
 				} else if(is_file($_REQUEST["fid"]) && ($_REQUEST["ask"])){
-					print "if (confirm(\"" . g_l('alert', "[delete]") . "\")) delFile(0);\n";
+					print "if (confirm(\"" . g_l('alert', "[delete]") . "\")){delFile(0);}";
 				} else if(is_dir($_REQUEST["fid"])){
 					delDir($_REQUEST["fid"]);
 				} else if(!@unlink($_REQUEST["fid"])){
 					print we_message_reporting::getShowMessageCall(sprintf(g_l('alert', "[delete_nok_error]"), $_REQUEST["fid"]), we_message_reporting::WE_MESSAGE_ERROR);
 				}
-				print "selectFile('');drawDir(top.currentDir);\n";
+				print "selectFile('');drawDir(top.currentDir);";
 			}
 		}
 	}
@@ -281,5 +281,4 @@ if(!isset($_REQUEST["cmd"]) || (isset($_REQUEST["cmd"]) && $_REQUEST["cmd"] != "
 
 <body>
 </body>
-
 </html>
