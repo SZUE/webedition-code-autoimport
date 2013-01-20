@@ -140,9 +140,10 @@ class charsetHandler{
 	 * @desc returns array (national, international, charset, when charset is known)
 	 */
 	function getCharsetArrByCharset($charset){
+		$charset=strtolower($charset);
 		foreach($this->charsets as $key => $val){
 
-			if(strtolower($val['charset']) == strtolower($charset)){
+			if(strtolower($val['charset']) == $charset){
 				return $this->charsets[$key];
 			}
 		}
@@ -156,7 +157,7 @@ class charsetHandler{
 	 */
 	function getCharsetsByArray($availableChars){
 		$tmpCharArray = array();
-		$retArray = array();
+		$retArr = array();
 
 		foreach($availableChars as $char){
 			$tmpCharArray[] = (($charset = $this->getCharsetArrByCharset($char)) ? $charset : array('charset' => $char));

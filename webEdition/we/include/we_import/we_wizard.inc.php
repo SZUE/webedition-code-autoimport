@@ -381,7 +381,7 @@ HTS;
 									$encl = '';
 									break;
 							}
-							$cp = new CSVImport;
+							$cp = new we_import_CSV;
 							$cp->setFile($_SERVER['DOCUMENT_ROOT'] . $v["import_from"]);
 							$del = ($v["csv_seperator"] != "\\t") ? (($v["csv_seperator"] != "") ? $v["csv_seperator"] : " ") : "	";
 							$cp->setDelim($del);
@@ -673,7 +673,7 @@ HTS;
 							case "none": $encl = "";
 								break;
 						}
-						$cp = new CSVImport;
+						$cp = new we_import_CSV;
 						$cp->setFile($v["uniquePath"] . "/temp_" . $v["cid"] . ".csv");
 						$cp->setDelim($v["csv_seperator"]);
 						$cp->setEnclosure($encl);

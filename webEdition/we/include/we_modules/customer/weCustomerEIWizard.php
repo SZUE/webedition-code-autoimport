@@ -668,31 +668,51 @@ class weCustomerEIWizard{
 		$parts = array();
 		if(is_file($filesource) && is_readable($filesource)){
 			if($type == "csv"){
+				$line = weFile::loadLine($filesource, 0, 80960);
+				$charsets = array('UTF-8', 'ISO-8859-15','ISO-8859-1'); //charsetHandler::getAvailCharsets();
+				$charset = mb_detect_encoding($line, $charsets, true);
+				$charCount = count_chars($line, 0);
 
-				$csv_input_size = 3;
-
-				$csv_delimiter = isset($_REQUEST["csv_delimiter"]) ? $_REQUEST["csv_delimiter"] : CSV_DELIMITER;
-				$csv_enclose = isset($_REQUEST["csv_enclose"]) ? $_REQUEST["csv_enclose"] : CSV_ENCLOSE;
-				$csv_lineend = isset($_REQUEST["csv_lineend"]) ? $_REQUEST["csv_lineend"] : CSV_LINEEND;
-				$csv_fieldnames = isset($_REQUEST["csv_fieldnames"]) ? $_REQUEST["csv_fieldnames"] : CSV_FIELDS;
+				$csv_delimiters = array(';' => g_l('modules_customer', '[semicolon]'), ',' => g_l('modules_customer', '[comma]'), ':' => g_l('modules_customer', '[colon]'), '\t' => g_l('modules_customer', '[tab]'), ' ' => g_l('modules_customer', '[space]'));
+				$csv_encloses = array('"' => g_l('modules_customer', '[double_quote]'), '\'' => g_l('modules_customer', '[single_quote]'));
+				$max = 0;
+				$csv_delimiter = '';
+				foreach(array_keys($csv_delimiters) as $char){
+					$ord = ord($char);
+					if($charCount[$ord] > $max){
+						$csv_delimiter = $char;
+						$max = $charCount[$ord];
+					}
+				}
+				//leave max
+				$csv_enclose = '';
+				foreach(array_keys($csv_encloses) as $char){
+					$ord = ord($char);
+					if($charCount[$ord] > $max){
+						$csv_enclose = $char;
+						$max = $charCount[$ord];
+					}
+				}
+				$r = $charCount[ord("\r")];
+				$n = $charCount[ord("\n")];
+				$csv_lineend = ($r > 0 && $r == $n ? 'windows' : $r > 0 ? 'mac' : 'unix');
+				$csv_fieldnames = (strpos($line, 'Username') !== false);
 
 				$fileformattable = new we_html_table(array("cellpadding" => 2, "cellspacing" => 2, "border" => 0), 6, 1);
 
 				$_file_encoding = new we_html_select(array("name" => "csv_lineend", "size" => "1", "class" => "defaultfont", "style" => "width: 254px;"));
-				$_file_encoding->addOption("windows", g_l('modules_customer', '[windows]'));
-				$_file_encoding->addOption("unix", g_l('modules_customer', '[unix]'));
-				$_file_encoding->addOption("mac", g_l('modules_customer', '[mac]'));
+				$_file_encoding->addOption('windows', g_l('modules_customer', '[windows]'));
+				$_file_encoding->addOption('unix', g_l('modules_customer', '[unix]'));
+				$_file_encoding->addOption('mac', g_l('modules_customer', '[mac]'));
 				$_file_encoding->selectOption($csv_lineend);
 
 				$_charsetHandler = new charsetHandler();
 				$_charsets = $_charsetHandler->getCharsetsForTagWizzard();
-				$charset = $GLOBALS['WE_BACKENDCHARSET'];
+				//$charset = $GLOBALS['WE_BACKENDCHARSET'];
 				//$GLOBALS['weDefaultCharset'] = get_value("default_charset");
-				$_importCharset = we_html_tools::htmlTextInput('the_charset', 8, DEFAULT_CHARSET, 255, "", "text", 100);
-				$_importCharsetChooser = we_html_tools::htmlSelect("ImportCharsetSelect", $_charsets, 1, DEFAULT_CHARSET, false, "onChange=\"document.forms[0].elements['the_charset'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;\"", "value", 160, "defaultfont", false);
+				$_importCharset = we_html_tools::htmlTextInput('the_charset', 8, ($charset == 'ASCII' ? 'ISO8859-1' : $charset), 255, '', 'text', 100);
+				$_importCharsetChooser = we_html_tools::htmlSelect("ImportCharsetSelect", $_charsets, 1, ($charset == 'ASCII' ? 'ISO8859-1' : $charset), false, "onChange=\"document.forms[0].elements['the_charset'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;\"", "value", 160, "defaultfont", false);
 				$import_Charset = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' . $_importCharset . '</td><td>' . $_importCharsetChooser . '</td></tr></table>';
-
-
 
 
 				$fileformattable->setCol(0, 0, array("class" => "defaultfont"), we_html_tools::getPixel(10, 10));
@@ -700,12 +720,12 @@ class weCustomerEIWizard{
 				$fileformattable->setCol(2, 0, array("class" => "defaultfont"), g_l('modules_customer', '[import_charset]') . we_html_element::htmlBr() . $import_Charset);
 				//$fileformattable->setCol(2, 0, array("class" => "defaultfont"), "abc");
 
-				$fileformattable->setColContent(3, 0, $this->getHTMLChooser("csv_delimiter", $csv_delimiter, array(";" => g_l('modules_customer', '[semicolon]'), "," => g_l('modules_customer', '[comma]'), ":" => g_l('modules_customer', '[colon]'), "\\t" => g_l('modules_customer', '[tab]'), " " => g_l('modules_customer', '[space]')), g_l('modules_customer', '[csv_delimiter]')));
-				$fileformattable->setColContent(4, 0, $this->getHTMLChooser("csv_enclose", $csv_enclose, array("\"" => g_l('modules_customer', '[double_quote]'), "'" => g_l('modules_customer', '[single_quote]')), g_l('modules_customer', '[csv_enclose]')));
+				$fileformattable->setColContent(3, 0, $this->getHTMLChooser("csv_delimiter", $csv_delimiter, $csv_delimiters, g_l('modules_customer', '[csv_delimiter]')));
+				$fileformattable->setColContent(4, 0, $this->getHTMLChooser("csv_enclose", $csv_enclose, $csv_encloses, g_l('modules_customer', '[csv_enclose]')));
 
 				$fileformattable->setColContent(5, 0, we_forms::checkbox($csv_fieldnames, ($csv_fieldnames == 1), "csv_fieldnames", g_l('modules_customer', '[csv_fieldnames]')));
 
-				array_push($parts, array("headline" => g_l('modules_customer', '[csv_params]'), "html" => $fileformattable->getHtml(), "space" => 150));
+				$parts = array(array("headline" => g_l('modules_customer', '[csv_params]'), "html" => $fileformattable->getHtml(), "space" => 150));
 			} else{
 				//invoke parser
 				$xp = new we_xml_parser($filesource);
@@ -765,10 +785,9 @@ class weCustomerEIWizard{
 					$tblFrame->setCol(2, 1, array(), $tblSelect->getHtml());
 
 					$_REQUEST["dataset"] = $firstItem;
-					array_push($parts, array("html" => $tblFrame->getHtml(), "space" => 0, "noline" => 1));
-				}
-				else{
-					array_push($parts, array("html" => we_html_tools::htmlAlertAttentionBox((!$xmlWellFormed) ? g_l('modules_customer', '[not_well_formed]') : g_l('modules_customer', '[missing_child_node]'), 1, "570"), "space" => 0, "noline" => 1));
+					$parts = array(array("html" => $tblFrame->getHtml(), "space" => 0, "noline" => 1));
+				}else{
+					$parts = array(array("html" => we_html_tools::htmlAlertAttentionBox((!$xmlWellFormed) ? g_l('modules_customer', '[not_well_formed]') : g_l('modules_customer', '[missing_child_node]'), 1, "570"), "space" => 0, "noline" => 1));
 					$js = we_html_element::jsElement('
 						' . $this->footerFrame . '.location="' . $this->frameset . '?pnt=eifooter&art=import&step=99";
 					');
