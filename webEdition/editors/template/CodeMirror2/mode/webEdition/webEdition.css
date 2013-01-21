@@ -62,7 +62,7 @@ span.c-like-keyword {
 }
 
 .CodeMirror-selected {
-	background: #b0c5e3;
+	background: blue;
 }
 
 .cm-tab {

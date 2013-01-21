@@ -591,7 +591,7 @@ echo (we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 9
 					}
 
 					$tmp = @unserialize($_SESSION['prefs']['editorCodecompletion']);
-					$hasCompletion = array_sum($tmp);
+					$hasCompletion = is_array($tmp) ? array_sum($tmp) : false;
 					$maineditor.=we_html_element::cssElement(($toolTip ? we_getCodeMirror2Tags(true) : '') . '
 .weSelfClose:hover:after, .cm-weSelfClose:hover:after, .weOpenTag:hover:after, .cm-weOpenTag:hover:after, .weTagAttribute:hover:after, .cm-weTagAttribute:hover:after {
 	font-family: ' . ($_SESSION['prefs']['editorTooltipFont'] && $_SESSION['prefs']['editorTooltipFontname'] ? $_SESSION['prefs']['editorTooltipFontname'] : 'sans-serif') . ';
