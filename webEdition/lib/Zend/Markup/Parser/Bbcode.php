@@ -15,9 +15,9 @@
  * @category   Zend
  * @package    Zend_Markup
  * @subpackage Parser
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Bbcode.php 23775 2011-03-01 17:25:24Z ralph $
+ * @version    $Id: Bbcode.php 24593 2012-01-05 20:35:02Z matthew $
  */
 
 /**
@@ -34,7 +34,7 @@ require_once 'Zend/Markup/Parser/ParserInterface.php';
  * @category   Zend
  * @package    Zend_Markup
  * @subpackage Parser
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Markup_Parser_Bbcode implements Zend_Markup_Parser_ParserInterface
@@ -214,7 +214,7 @@ class Zend_Markup_Parser_Bbcode implements Zend_Markup_Parser_ParserInterface
             switch ($this->_state) {
                 case self::STATE_SCAN:
                     $matches = array();
-                    $regex   = '#\G(?P<text>[^\[]*)(?P<open>\[(?P<name>[' . self::NAME_CHARSET . ']+)?)?#';
+                    $regex   = '#\G(?<text>[^\[]*)(?<open>\[(?<name>[' . self::NAME_CHARSET . ']+)?)?#';
                     preg_match($regex, $this->_value, $matches, null, $this->_pointer);
 
                     $this->_pointer += strlen($matches[0]);
@@ -256,7 +256,7 @@ class Zend_Markup_Parser_Bbcode implements Zend_Markup_Parser_ParserInterface
                     break;
                 case self::STATE_SCANATTRS:
                     $matches = array();
-                    $regex   = '#\G((?P<end>\s*\])|\s+(?P<attribute>[' . self::NAME_CHARSET . ']+)(?P<eq>=?))#';
+                    $regex   = '#\G((?<end>\s*\])|\s+(?<attribute>[' . self::NAME_CHARSET . ']+)(?<eq>=?))#';
                     if (!preg_match($regex, $this->_value, $matches, null, $this->_pointer)) {
                         break 2;
                     }
@@ -295,7 +295,7 @@ class Zend_Markup_Parser_Bbcode implements Zend_Markup_Parser_ParserInterface
                     break;
                 case self::STATE_PARSEVALUE:
                     $matches = array();
-                    $regex   = '#\G((?P<quote>"|\')(?P<valuequote>.*?)\\2|(?P<value>[^\]\s]+))#';
+                    $regex   = '#\G((?<quote>"|\')(?<valuequote>.*?)\\2|(?<value>[^\]\s]+))#';
                     if (!preg_match($regex, $this->_value, $matches, null, $this->_pointer)) {
                         $this->_state = self::STATE_SCANATTRS;
                         break;
