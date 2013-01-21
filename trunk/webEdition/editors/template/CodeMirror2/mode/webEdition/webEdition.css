@@ -48,7 +48,7 @@
 }
 
 .activeline {
-	background: #dee4ec !important;
+	background: lightyellow !important;
 	z-index: -1;
 }
 
@@ -62,7 +62,7 @@ span.c-like-keyword {
 }
 
 .CodeMirror-selected {
-	background: blue;
+	background: #b0c5e3;
 }
 
 .cm-tab {
