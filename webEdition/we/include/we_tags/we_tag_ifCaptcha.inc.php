@@ -28,12 +28,12 @@ function we_tag_ifCaptcha($attribs){
 
 	if(isset($_REQUEST[$name])){
 		if(!empty($formname) && isset($_REQUEST['we_ui_' . $formname][$name])){
-			return Captcha::check($_REQUEST['we_ui_' . $formname][$name]);
+			return Captcha::check(filterXss($_REQUEST['we_ui_' . $formname][$name]));
 		} else{
 			if(isset($_REQUEST['we_ui_we_global_form'][$name])){
-				return Captcha::check($_REQUEST['we_ui_we_global_form'][$name]);
+				return Captcha::check(filterXss($_REQUEST['we_ui_we_global_form'][$name]));
 			}
-			return Captcha::check($_REQUEST[$name]);
+			return Captcha::check(filterXss($_REQUEST[$name]));
 		}
 	}
 	return false;

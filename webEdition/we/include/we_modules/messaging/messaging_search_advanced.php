@@ -41,8 +41,8 @@ if(isset($_REQUEST['save']) && $_REQUEST['save'] == 1){
 	$messaging->set_search_settings($_REQUEST['search_fields'], (isset($_REQUEST['search_folders']) && is_array($_REQUEST['search_folders'])) ? $_REQUEST['search_folders'] : array());
 	$messaging->saveInSession($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
 	?>
-		self.close();
-		//-->
+			self.close();
+			//-->
 	</script>
 	</head>
 	<body>
@@ -60,7 +60,7 @@ if(isset($_REQUEST['save']) && $_REQUEST['save'] == 1){
 
 	<body class="weDialogBody">
 		<form action="<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_search_advanced.php" name="search_adv" >
-			<input type="hidden" name="we_transaction" value="<?php echo oldHtmlspecialchars(strip_tags($_REQUEST['we_transaction'])) ?>" />
+			<input type="hidden" name="we_transaction" value="<?php echo filterXss($_REQUEST['we_transaction']) ?>" />
 			<input type="hidden" name="save" value="1" />
 
 			<?php

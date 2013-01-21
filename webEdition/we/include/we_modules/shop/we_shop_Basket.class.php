@@ -176,15 +176,13 @@ class we_shop_Basket{
 	 */
 	function getserial($id, $type, $variant = false, $customFields = array()){
 		$DB_WE = new DB_WE;
-
 		$Record = array();
 
 		switch($type){
-			case "w":
-
+			case 'w':
 				// unfortunately this is not made with initDocById,
 				// but its much faster -> so we use it
-				$DB_WE->query("SELECT " . CONTENT_TABLE . ".BDID as BDID, " . CONTENT_TABLE . ".Dat as Dat, " . LINK_TABLE . ".Name as Name FROM " . LINK_TABLE . "," . CONTENT_TABLE . " WHERE " . LINK_TABLE . '.DID=' . intval($id) . ' AND ' . LINK_TABLE . '.CID=' . CONTENT_TABLE . '.ID AND ' . LINK_TABLE . '.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"');
+				$DB_WE->query('SELECT ' . CONTENT_TABLE . '.BDID as BDID, ' . CONTENT_TABLE . '.Dat as Dat, ' . LINK_TABLE . '.Name as Name FROM ' . LINK_TABLE . "," . CONTENT_TABLE . " WHERE " . LINK_TABLE . '.DID=' . intval($id) . ' AND ' . LINK_TABLE . '.CID=' . CONTENT_TABLE . '.ID AND ' . LINK_TABLE . '.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"');
 				while($DB_WE->next_record()) {
 					$tmp = ($DB_WE->f("BDID"));
 					$Record[$DB_WE->f("Name")] = $tmp ? $tmp : $DB_WE->f("Dat");
@@ -197,14 +195,14 @@ class we_shop_Basket{
 				$DB_WE->query('SELECT * FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id));
 				if($DB_WE->next_record()){
 					foreach($DB_WE->Record as $key => $val){
-						$Record["wedoc_$key"] = $val;
+						$Record['wedoc_' . $key] = $val;
 					}
 				}
 
-				$Record["WE_PATH"] = f("SELECT Path FROM " . FILE_TABLE . " WHERE ID=" . intval($id), "Path", $DB_WE) . ($variant ? '?' . WE_SHOP_VARIANT_REQUEST . '=' . $variant : '');
-				$Record["WE_TEXT"] = f("SELECT Text FROM " . INDEX_TABLE . " WHERE DID=" . intval($id), "Text", $DB_WE);
-				$Record["WE_VARIANT"] = $variant;
-				$Record["WE_ID"] = $id;
+				$Record['WE_PATH'] = f('SELECT Path FROM ' . FILE_TABLE . " WHERE ID=" . intval($id), "Path", $DB_WE) . ($variant ? '?' . WE_SHOP_VARIANT_REQUEST . '=' . $variant : '');
+				$Record['WE_TEXT'] = f('SELECT Text FROM ' . INDEX_TABLE . " WHERE DID=" . intval($id), "Text", $DB_WE);
+				$Record['WE_VARIANT'] = $variant;
+				$Record['WE_ID'] = intval($id);
 
 				// at last add custom fields to record and to path
 				if(!empty($customFields)){
@@ -212,7 +210,7 @@ class we_shop_Basket{
 
 					foreach($customFields as $name => $value){
 						$Record[$name] = $value;
-						$Record['WE_PATH'] .= WE_SHOP_ARTICLE_CUSTOM_FIELD . "[$name]=$value&amp;";
+						$Record['WE_PATH'] .= WE_SHOP_ARTICLE_CUSTOM_FIELD . '[' . $name . ']=' . $value . '&amp;';
 					}
 				}
 				break;
@@ -225,7 +223,6 @@ class we_shop_Basket{
 				$Record = $olv->DB_WE->Record;
 
 				if($variant){
-
 					// init model to detect variants
 					// :TODO: change this to match above version
 					$obj = new we_objectFile();

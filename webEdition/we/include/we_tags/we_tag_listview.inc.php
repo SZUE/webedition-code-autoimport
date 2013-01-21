@@ -72,14 +72,15 @@ function we_tag_listview($attribs){
 	$name = weTag_getAttribute('name', $attribs, 0);
 	$doctype = weTag_getAttribute('doctype', $attribs);
 	$class = weTag_getAttribute('classid', $attribs, 0);
-	$we_lv_cats = isset($_REQUEST['we_lv_cats_' . $name]) ? $_REQUEST['we_lv_cats_' . $name] : weTag_getAttribute('categories', $attribs);
+	$we_lv_cats = isset($_REQUEST['we_lv_cats_' . $name]) ? filterXss($_REQUEST['we_lv_cats_' . $name]) : weTag_getAttribute('categories', $attribs);
 	$categoryids = weTag_getAttribute('categoryids', $attribs);
-	$we_lv_categoryids = isset($_REQUEST['we_lv_categoryids_' . $name]) ? $_REQUEST['we_lv_categoryids_' . $name] : $categoryids;
+	$we_lv_categoryids = isset($_REQUEST['we_lv_categoryids_' . $name]) ? filterXss($_REQUEST['we_lv_categoryids_' . $name]) : $categoryids;
 	$we_lv_catOr = (isset($_REQUEST['we_lv_catOr_' . $name]) ? $_REQUEST['we_lv_catOr_' . $name] : weTag_getAttribute('catOr', $attribs, false, true) ) ? true : false;
 
 	$rows = weTag_getAttribute('rows', $attribs, 100000000);
 	$order = weTag_getAttribute('order', $attribs);
-	$we_lv_order = isset($_REQUEST['we_lv_order_' . $name]) ? $_REQUEST['we_lv_order_' . $name] : $order;
+	//FIXME: XSS
+	$we_lv_order = isset($_REQUEST['we_lv_order_' . $name]) ? filterXss($_REQUEST['we_lv_order_' . $name]) : $order;
 
 	$we_lv_numorder = (isset($_REQUEST['we_lv_numorder_' . $name]) ? $_REQUEST['we_lv_numorder_' . $name] : weTag_getAttribute('numorder', $attribs, false, true) ) ? true : false;
 
@@ -93,7 +94,7 @@ function we_tag_listview($attribs){
 	$offset = weTag_getAttribute('offset', $attribs);
 	$workspaceID = weTag_getAttribute('workspaceID', $attribs);
 	$workspaceID = $workspaceID ? $workspaceID : weTag_getAttribute('workspaceid', $attribs);
-	$we_lv_ws = isset($_REQUEST['we_lv_ws_' . $name]) ? $_REQUEST['we_lv_ws_' . $name] : $workspaceID;
+	$we_lv_ws = isset($_REQUEST['we_lv_ws_' . $name]) ? filterIntVals($_REQUEST['we_lv_ws_' . $name]) : $workspaceID;
 
 	$orderid = weTag_getAttribute('orderid', $attribs, 0);
 
@@ -103,7 +104,7 @@ function we_tag_listview($attribs){
 
 	$triggerid = weTag_getAttribute('triggerid', $attribs, 0);
 	$docid = weTag_getAttribute('docid', $attribs, 0);
-	$customers = weTag_getAttribute('customers', $attribs); // csv value of Ids
+	$customers = filterIntVals(weTag_getAttribute('customers', $attribs)); // csv value of Ids
 	$casesensitive = weTag_getAttribute('casesensitive', $attribs, false, true);
 	$customer = weTag_getAttribute('customer', $attribs, false, true);
 	$we_lv_ct = isset($_REQUEST['we_lv_ct_' . $name]) ? $_REQUEST['we_lv_ct_' . $name] : weTag_getAttribute('contenttypes', $attribs);
@@ -143,6 +144,7 @@ function we_tag_listview($attribs){
 		$we_lv_languages = $we_lv_langguagesdoc->Language;
 		unset($we_lv_langguagesdoc);
 	}
+	//FIXME: XSS -> what type is we_lv_calendar....
 	$we_lv_calendar = isset($_REQUEST['we_lv_calendar_' . $name]) ? $_REQUEST['we_lv_calendar_' . $name] : $calendar;
 	$we_lv_datefield = isset($_REQUEST['we_lv_datefield_' . $name]) ? $_REQUEST['we_lv_datefield_' . $name] : $datefield;
 	$we_lv_date = isset($_REQUEST['we_lv_date_' . $name]) ? $_REQUEST['we_lv_date_' . $name] : ($date != '' ? $date : date('Y-m-d'));
@@ -152,9 +154,8 @@ function we_tag_listview($attribs){
 		$we_lv_cats = we_getCatsFromDoc($GLOBALS['we_doc'], ',', true, $GLOBALS['DB_WE']);
 	}
 	$we_predefinedSQL = $predefinedSQL;
-	$we_offset = $offset;
-	$we_offset = $we_offset ? abs($we_offset) : 0;
-	$we_rows = abs($rows);
+	$we_offset = intval($offset);
+	$we_rows = intval($rows);
 
 
 	if($type == 'document' || $type == 'search'){
