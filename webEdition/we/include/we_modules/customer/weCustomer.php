@@ -239,7 +239,22 @@ class weCustomer extends weModelBase{
 		$ret = array();
 		$this->db->query('SHOW COLUMNS FROM ' . $this->db->escape($this->table));
 		while($this->db->next_record()) {
-			$ret[$this->db->f("Field")] = $this->db->Record;
+			$record=$this->db->Record;
+			switch($record['Type']){
+				case 'int(11)':
+					if(empty($record['Default'])){$record['Default']='0';}
+					break;
+				case 'bigint(20)':
+					if(empty($record['Default'])){$record['Default']='0';}
+					break;
+				case 'date': 
+					if(empty($record['Default'])){$record['Default']='0000-00-00';}
+					break;
+				case 'datetime': 
+					if(empty($record['Default'])){$record['Default']='0000-00-00 00:00:00';}
+					break;					
+			}
+			$ret[$this->db->f("Field")] = $record;
 		}
 
 		return $ret;
