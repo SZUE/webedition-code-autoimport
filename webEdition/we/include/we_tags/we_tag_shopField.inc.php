@@ -40,6 +40,10 @@ function we_tag_shopField($attribs){
 
 	$type = weTag_getAttribute("type", $attribs);
 
+	if($type=='checkbox' && ($missingAttrib = attributFehltError($attribs, 'value', __FUNCTION__))){
+		print $missingAttrib;
+	}
+
 	$values = weTag_getAttribute("values", $attribs); // select, choice
 	$value = weTag_getAttribute("value", $attribs); // checkbox
 	$checked = weTag_getAttribute("checked", $attribs, false, true); // checkbox
@@ -77,7 +81,6 @@ function we_tag_shopField($attribs){
 	switch($type){
 		case "checkbox":
 			$atts = removeAttribs($atts, array('size'));
-
 			//$atts['name'] = $fieldname; changed to $tnpname because of new hidden field #6544
 			//we_getInputCheckboxField() not possible because sessionField type="checkbox" has a mandatory value
 			$tmpname = md5(uniqid(__FUNCTION__, true)); // #6590, changed from: uniqid(time())
