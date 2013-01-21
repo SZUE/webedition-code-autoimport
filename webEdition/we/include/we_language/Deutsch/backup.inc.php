@@ -16,7 +16,8 @@ $l_backup=array(
 	'charset_warning'=>'Sollte es Probleme beim Wiederherstellen eines Backups geben, achten Sie bitte darauf, dass <strong>im Zielsystem derselbe Zeichensatz (Charset) wie im Quellsystem verwendet</strong> wird. Dies gilt sowohl für den Zeichensatz der Datenbank (collation) als auch für den Zeichensatz der verwendeten Oberflächensprache!',
 	'compress'=>'Komprimieren',
 	'compress_file'=>'Datei komprimieren',
-	'convert_charset'=>'Achtung! Beim Nutzung dieser Option in einer bestehenden Site besteht die Gefahr des totalen Datenverlustes. Bitte beachten Sie die Hinweise unter http://documentation.webedition.org/de/webedition/administration/charset-conversion-of-legacy-sites',
+	'convert_charset'=>'Achtung! Beim Nutzung dieser Option in einer bestehenden Site besteht die Gefahr des totalen Datenverlustes. Bitte beachten Sie die Hinweise unter http://documentation.webedition.org/de/webedition/administration/charset-conversion-of-legacy-sites.<br/>
+Voraussetzung für eine erfolgreiche Umstellung ist, das alle Inhalte im selben Zeichensatz hinterlegt sind und keine Mischung zwischen verschiedenen ISO Zeichensätzen vorliegt (z.B. ISO-8859-1 und ISO-8859-15) und das der korrekte ISO Zeichensatz im Kopf der XML-Datei hinterlegt ist.',
 	'convert_charset_data'=>'Beim Einspielen des Backups Umstellung der Installation von ISO auf UTF-8',
 	'core_info'=>'Alle Vorlagen und Dokumente.',
 	'customer_import_file_found'=>'Hier handelt es sich um eine Import-Datei aus der Kundenverwaltung. Nutzen Sie bitte die Option "Import/Export" aus der Kundenverwaltung (PRO) um die Datei zu importieren.',
