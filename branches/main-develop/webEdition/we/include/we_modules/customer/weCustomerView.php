@@ -1133,7 +1133,7 @@ class weCustomerView{
 				$banche = '';
 				$fieldname = $this->customer->transFieldName($k, $banche);
 				if($banche == $old_branch && $fieldname != ''){
-					$this->db->query('ALTER TABLE ' . $this->customer->table . ' CHANGE ' . $k . ' ' . $new_branch . '_' . $fieldname . ' ' . $v['Type'] . " DEFAULT '" . $v["Default"] . "' NOT NULL;");
+					$this->db->query('ALTER TABLE ' . $this->customer->table . ' CHANGE ' . $k . ' ' . $new_branch . '_' . $fieldname . ' ' . $v['Type'] . (!empty($v["Default"])? " DEFAULT '" . $v["Default"]."'" :''). " NOT NULL;");
 				}
 			}
 		}

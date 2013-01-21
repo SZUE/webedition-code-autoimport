@@ -648,6 +648,9 @@ function in_parentID($id, $pid, $table = FILE_TABLE, $db = ''){
 }
 
 function in_workspace($IDs, $wsIDs, $table = FILE_TABLE, $db = '', $objcheck = false){
+	if(empty($wsIDs) || empty($IDs)){
+		return true;
+	}
 	$db = ($db ? $db : new DB_WE());
 
 	if(!is_array($IDs)){

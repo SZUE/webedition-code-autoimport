@@ -154,16 +154,16 @@ function _cutText($text, $l){
 			if($dir_obj){
 				while(false !== ($entry = $dir_obj->read())) {
 					if($entry != '.' && $entry != '..'){
-						if(is_dir($dir . "/" . $entry)){
-							array_push($arDir, $entry);
+						if(is_dir($dir . '/' . $entry)){
+							$arDir[] = $entry;
 							switch($_REQUEST["ord"]){
 								case 10:
 								case 11:
-									array_push($ordDir, $entry);
+									$ordDir[] = $entry;
 									break;
 								case 20:
 								case 21:
-									array_push($ordDir, getDataType($dir . "/" . $entry));
+									array_push($ordDir, getDataType($dir . '/' . $entry));
 									break;
 								case 30:
 								case 31:
@@ -241,7 +241,7 @@ var i = 0;
 			if(isset($_REQUEST["nf"]) && $_REQUEST["nf"] == "new_folder"){
 				?>
 				<tr style="background-color:#DFE9F5;">
-					<td align="center" width="25"><img src="<?php print ICON_DIR.we_base_ContentTypes::FOLDER_ICON; ?>" width="16" height="18" border="0"></td>
+					<td align="center" width="25"><img src="<?php print ICON_DIR . we_base_ContentTypes::FOLDER_ICON; ?>" width="16" height="18" border="0"></td>
 					<td class="selector" width="200"><?php print we_html_tools::htmlTextInput("txt", 20, g_l('fileselector', "[new_folder_name]"), "", 'id="txt" onblur="setScrollTo();we_form.submit();" onkeypress="keypressed(event)"', "text", "100%"); ?></td>
 					<td class="selector" width="150"><?php print g_l('fileselector', "[folder]") ?></td>
 					<td class="selector"><?php print date("d-m-Y H:i:s") ?></td>
@@ -341,13 +341,13 @@ var i = 0;
 		</table>
 		<?php if(( isset($_REQUEST["nf"]) && $_REQUEST["nf"] == "new_folder") || (( isset($_REQUEST["nf"]) && ($_REQUEST["nf"] == "rename_folder" || $_REQUEST["nf"] == "rename_file")) && ($set_rename))){ ?>
 			<input type="hidden" name="cmd" value="<?php print $_REQUEST["nf"]; ?>" />
-	<?php if($_REQUEST["nf"] == "rename_folder" || $_REQUEST["nf"] == "rename_file"){ ?><input type="hidden" name="sid" value="<?php print $_REQUEST["sid"] ?>" />
+			<?php if($_REQUEST["nf"] == "rename_folder" || $_REQUEST["nf"] == "rename_file"){ ?><input type="hidden" name="sid" value="<?php print $_REQUEST["sid"] ?>" />
 				<input type="hidden" name="oldtxt" value="" /><?php } ?>
 			<input type="hidden" name="pat" value="<?php print isset($_REQUEST["pat"]) ? $_REQUEST["pat"] : ""  ?>" />
-<?php } ?>
+		<?php } ?>
 	</form>
 
-<?php if(( isset($_REQUEST["nf"]) && $_REQUEST["nf"] == "new_folder") || (( isset($_REQUEST["nf"]) && ($_REQUEST["nf"] == "rename_folder" || $_REQUEST["nf"] == "rename_file")) && ($set_rename))){ ?>
+	<?php if(( isset($_REQUEST["nf"]) && $_REQUEST["nf"] == "new_folder") || (( isset($_REQUEST["nf"]) && ($_REQUEST["nf"] == "rename_folder" || $_REQUEST["nf"] == "rename_file")) && ($set_rename))){ ?>
 		<script  type="text/javascript">
 			document.forms["we_form"].elements["txt"].focus();
 			document.forms["we_form"].elements["txt"].select();

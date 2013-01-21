@@ -1636,70 +1636,67 @@ HTS;
 		global $DB_WE;
 		$v = $_REQUEST["v"];
 
-
 		$functions = we_button::create_state_changer(false) . "
-			function we_cmd() {
-				var args = '';
-				var url = '" . WEBEDITION_DIR . "we_cmd.php?';
-				for(var i = 0; i < arguments.length; i++) {
-					url += 'we_cmd['+i+']='+escape(arguments[i]);
-					if(i < (arguments.length - 1)) {
-						url += '&';
-					}
-				}
-				switch (arguments[0]) {
-					default:
-						for (var i=0; i < arguments.length; i++) {
-							args += 'arguments['+i+']' + ((i < (arguments.length-1))? ',' : '');
-						}
-						eval('parent.we_cmd('+args+')');
-				}
+function we_cmd() {
+	var args = '';
+	var url = '" . WEBEDITION_DIR . "we_cmd.php?';
+	for(var i = 0; i < arguments.length; i++) {
+		url += 'we_cmd['+i+']='+escape(arguments[i]);
+		if(i < (arguments.length - 1)) {
+			url += '&';
+		}
+	}
+	switch (arguments[0]) {
+		default:
+			for (var i=0; i < arguments.length; i++) {
+				args += 'arguments['+i+']' + ((i < (arguments.length-1))? ',' : '');
 			}
-			function set_button_state() {
-				top.wizbusy.back_enabled = top.wizbusy.switch_button_state('back', 'back_enabled', 'enabled');
-				top.wizbusy.next_enabled = top.wizbusy.switch_button_state('next', 'next_enabled', 'enabled');
+			eval('parent.we_cmd('+args+')');
+	}
+}
+function set_button_state() {
+	top.frames['wizbusy'].back_enabled = top.frames['wizbusy'].switch_button_state('back', 'back_enabled', 'enabled');
+	top.frames['wizbusy'].next_enabled = top.frames['wizbusy'].switch_button_state('next', 'next_enabled', 'enabled');
+}
+function we_submit_form(f, target, url) {
+	f.target = target;
+	f.action = url;
+	f.method = 'post';
+	f.submit();
+}
+function handle_event(evt) {
+	var f = self.document.forms['we_form'];
+	switch(evt) {
+		case 'previous':
+			f.step.value = 0;
+			top.location.href='" . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=import&we_cmd[1]=CSVImport';
+			break;
+		case 'next':
+			var fvalid = true;
+			var fs = f.elements['v[fserver]'].value;
+			var fl = f.elements['uploaded_csv_file'].value;
+			var ext = '';
+			if ((f.elements['v[rdofloc]'][0].checked==true) && fs!='/') {
+				if (fs.match(/\.\./)=='..') { " . we_message_reporting::getShowMessageCall(g_l('import', "[invalid_path]"), we_message_reporting::WE_MESSAGE_ERROR) . "break; }
+				ext = fs.substr(fs.length-4,4);
+				f.elements['v[import_from]'].value = fs;
+			}else if (f.elements['v[rdofloc]'][1].checked==true && fl!='') {
+				ext = fl.substr(fl.length-4,4);
+				f.elements['v[import_from]'].value = fl;
+			}else if (fs=='/' || fl=='') {" .
+					(we_message_reporting::getShowMessageCall(g_l('import', "[select_source_file]"), we_message_reporting::WE_MESSAGE_ERROR)) . "break;
 			}
-			function we_submit_form(f, target, url) {
-				f.target = target;
-				f.action = url;
-				f.method = 'post';
-				f.submit();
+			if (fvalid && f.elements['v[csv_seperator]'].value=='') { fvalid=false; " . we_message_reporting::getShowMessageCall(g_l('import', "[select_seperator]"), we_message_reporting::WE_MESSAGE_ERROR) . "}
+			if (fvalid) {
+				f.step.value = 2;
+				we_submit_form(f, 'wizbody', '" . $this->path . "');
 			}
-			function handle_event(evt) {
-				var f = self.document.forms['we_form'];
-				switch(evt) {
-					case 'previous':
-						f.step.value = 0;
-						top.location.href='" . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=import&we_cmd[1]=CSVImport';
-						break;
-					case 'next':
-						var fvalid = true;
-						var fs = f.elements['v[fserver]'].value;
-						var fl = f.elements['uploaded_csv_file'].value;
-						var ext = '';
-						if ((f.elements['v[rdofloc]'][0].checked==true) && fs!='/') {
-							if (fs.match(/\.\./)=='..') { " . we_message_reporting::getShowMessageCall(g_l('import', "[invalid_path]"), we_message_reporting::WE_MESSAGE_ERROR) . "break; }
-							ext = fs.substr(fs.length-4,4);
-							f.elements['v[import_from]'].value = fs;
-						}
-						else if (f.elements['v[rdofloc]'][1].checked==true && fl!='') {
-							ext = fl.substr(fl.length-4,4);
-							f.elements['v[import_from]'].value = fl;
-						}
-						else if (fs=='/' || fl=='') {
-							" . (we_message_reporting::getShowMessageCall(g_l('import', "[select_source_file]"), we_message_reporting::WE_MESSAGE_ERROR)) . "break;
-						}
-						if (fvalid && f.elements['v[csv_seperator]'].value=='') { fvalid=false; " . we_message_reporting::getShowMessageCall(g_l('import', "[select_seperator]"), we_message_reporting::WE_MESSAGE_ERROR) . "}
-						if (fvalid) {
-							f.step.value = 2;
-							we_submit_form(f, 'wizbody', '" . $this->path . "');
-						}
-						break;
-					case 'cancel':
-						top.close();
-						break;
-				}
-			}";
+			break;
+		case 'cancel':
+			top.close();
+			break;
+	}
+}";
 
 		$v["import_type"] = isset($v["import_type"]) ? $v["import_type"] : "documents";
 		/*		 * *************************************************************************************************************** */
@@ -2307,7 +2304,7 @@ function handle_event(evt) {
 					break;
 			}
 
-			$cp = new CSVImport;
+			$cp = new we_import_CSV;
 
 			$_data = weFile::loadPart($csvFile);
 

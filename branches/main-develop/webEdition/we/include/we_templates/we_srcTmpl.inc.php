@@ -480,7 +480,7 @@ echo (we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 9
 					return $ret;
 				}
 
-				inlclude($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_templates/htmlTags.inc.php');
+				include($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_templates/htmlTags.inc.php');
 				$allTags = array_merge($allTags, ($setting['htmlTag'] ? $html : array()), ($setting['html5Tag'] ? $html5 : array()));
 				if(empty($allTags)){
 					return '';

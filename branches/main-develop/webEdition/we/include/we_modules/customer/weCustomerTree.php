@@ -211,9 +211,9 @@ function startTree(){
 
 		$js = 'var attribs=new Array();';
 		foreach($treeItems as $item){
-			$js.='if(' . $this->topFrame . ".indexOfEntry('" . $item["id"] . "')<0){";
+			$js.='if(' . $this->topFrame . '.indexOfEntry(\'' . str_replace(array("\n","\r",'\''), '', $item["id"]) . '\')<0){';
 			foreach($item as $k => $v){
-				if($k == "text"){
+				if($k == 'text'){
 					if(in_array($v, array_keys($days))){
 						$v = g_l('date', '[day][long][' . $days[$v] . ']');
 					}
@@ -221,7 +221,7 @@ function startTree(){
 						$v = g_l('date', '[month][long][' . $months[$v] . ']');
 					}
 				}
-				$js.='attribs["' . strtolower($k) . '"]=\'' . addslashes(stripslashes($v)) . '\';';
+				$js.='attribs["' . strtolower($k) . '"]=\'' . addslashes(stripslashes(str_replace(array("\n","\r",'\''), '', $v))) . '\';';
 			}
 			$js.=$this->topFrame . '.treeData.add(new ' . $this->topFrame . '.node(attribs));
 				}';

@@ -43,17 +43,25 @@ class we_base_ContentTypes{
 				'IsWebEditionFile' => true,
 				'Icon' => self::IMAGE_ICON,
 			),
+			'text/xml' => array(//this entry must stay before text/html, text/we because filetypes are not distinct
+				'Extension' => '.xml',
+				'Permission' => 'NEW_TEXT',
+				'DefaultCode' => '<?xml version="1.0" encoding="' . $charset . '" ?>',
+				'IsRealFile' => true,
+				'IsWebEditionFile' => true,
+				'Icon' => self::LINK_ICON,
+			),
 			'text/html' => array(
 				'Extension' => array('.html', '.htm', '.shtm', '.shtml', '.stm', '.php', '.jsp', '.asp', '.pl', '.cgi', '.xml', '.xsl'),
 				'Permission' => 'NEW_HTML',
-				'DefaultCode' => '<html>' . "\n\t" .
-				'<head>' . "\n\t\t" .
-				'<title></title>' . "\n\t\t" .
-				'<meta http-equiv="Content-Type" content="text/html; charset="' . $charset . '">' . "\n\t" .
-				'</head>' . "\n\t" .
-				'<body>' . "\n\t" .
-				'</body>' . "\n" .
-				'</html>',
+				'DefaultCode' => '<html>
+	<head>
+		<title></title>
+		<meta http-equiv="Content-Type" content="text/html; charset="' . $charset . '">
+	</head>
+	<body>
+	</body>
+</html>',
 				'IsWebEditionFile' => true,
 				'IsRealFile' => true,
 				'Icon' => 'html.gif',
@@ -160,14 +168,6 @@ class we_base_ContentTypes{
 				'Extension' => array('.doc', '.xls', '.ppt', '.zip', '.sit', '.bin', '.hqx', '.exe'),
 				'Permission' => 'NEW_SONSTIGE',
 				'DefaultCode' => '',
-				'IsRealFile' => true,
-				'IsWebEditionFile' => true,
-				'Icon' => self::LINK_ICON,
-			),
-			'text/xml' => array(
-				'Extension' => '.xml',
-				'Permission' => 'NEW_TEXT',
-				'DefaultCode' => '<?xml version="1.0" encoding="' . $charset . '" ?>',
 				'IsRealFile' => true,
 				'IsWebEditionFile' => true,
 				'Icon' => self::LINK_ICON,

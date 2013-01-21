@@ -518,7 +518,8 @@ if(!$seeMode){
 	);
 
 	$we_menu['1220000'] = array(
-		'parent' => '1000000'
+		'parent' => '1000000',
+		'perm' => 'BROWSE_SERVER || ADMINISTRATOR',
 	); // separator
 }
 // File > Quit

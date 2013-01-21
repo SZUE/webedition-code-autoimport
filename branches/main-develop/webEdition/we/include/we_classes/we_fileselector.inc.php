@@ -561,10 +561,10 @@ function selectIt(){
 			$c++;
 			$this->db->query('SELECT ID,Text,ParentID FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($pid));
 			if($this->db->next_record()){
-				$out = '<option value="' . $this->db->f("ID") . '"' . (($z == 0) ? ' selected' : '') . '>' . $this->db->f("Text") . '</options>' . $out;
+				$out = '<option value="' . $this->db->f('ID') . '"' . (($z == 0) ? ' selected="selected"' : '') . '>' . $this->db->f('Text') . '</option>' . $out;
 				$z++;
 			}
-			$pid = $this->db->f("ParentID");
+			$pid = $this->db->f('ParentID');
 			if($c > 500){
 				$pid = 0;
 			}
