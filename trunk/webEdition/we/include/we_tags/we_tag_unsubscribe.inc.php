@@ -27,11 +27,7 @@ function we_tag_unsubscribe($attribs){
 	$attribs['type'] = 'text';
 	$attribs['name'] = 'we_unsubscribe_email__';
 
-	if(isset($_REQUEST["we_unsubscribe_email__"])){
-		$attribs['value'] = oldHtmlspecialchars($_REQUEST["we_unsubscribe_email__"]);
-	} else{
-		$attribs['value'] = "";
-	}
+	$attribs['value'] = (isset($_REQUEST["we_unsubscribe_email__"]) ? filterXss($_REQUEST["we_unsubscribe_email__"]) : '');
 
 	return getHtmlTag('input', $attribs);
 }

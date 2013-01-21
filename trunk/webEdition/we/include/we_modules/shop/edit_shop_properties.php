@@ -107,7 +107,7 @@ function numfom($result){
 		case 'english':
 			return number_format($result, 2, '.', '');
 		case 'swiss':
-			return number_format($result, 2, ',', "'");
+			return number_format($result, 2, ',', '\'');
 	}
 	return $result;
 }
@@ -138,7 +138,7 @@ $datetimeform = "00.00.0000 00:00";
 if(isset($_REQUEST['we_cmd'][0])){
 	switch($_REQUEST['we_cmd'][0]){
 		case 'add_article':
-			if($_REQUEST["anzahl"] > 0){
+			if(intval($_REQUEST["anzahl"]) > 0){
 
 				// add complete article / object here - inclusive request fields
 				$_strSerialOrder = getFieldFromOrder($_REQUEST["bid"], 'strSerialOrder');
@@ -168,7 +168,8 @@ if(isset($_REQUEST['we_cmd'][0])){
 					unset($fields);
 				}
 
-				$serialDoc = we_shop_Basket::getserial($id, ($isObj ? 'o' : 'w'), $_REQUEST['we_variant'], $customFieldsTmp);
+				$variant = strip_tags($_REQUEST[WE_SHOP_VARIANT_REQUEST]);
+				$serialDoc = we_shop_Basket::getserial($id, ($isObj ? 'o' : 'w'), $variant, $customFieldsTmp);
 
 				unset($customFieldsTmp);
 
@@ -181,14 +182,12 @@ if(isset($_REQUEST['we_cmd'][0])){
 
 				if(isset($shopVat) && $shopVat){
 					$serialDoc[WE_SHOP_VAT_FIELD_NAME] = $shopVat->vat;
-				} else{
-					if($standardVat){
-						$serialDoc[WE_SHOP_VAT_FIELD_NAME] = $standardVat->vat;
-					}
+				} elseif($standardVat){
+					$serialDoc[WE_SHOP_VAT_FIELD_NAME] = $standardVat->vat;
 				}
 
 				// now insert article to order:
-				$row = getHash("SELECT IntOrderID, IntCustomerID, DateOrder, DateShipping, Datepayment,IntPayment_Type FROM " . SHOP_TABLE . " WHERE IntOrderID = " . intval($_REQUEST["bid"]), $GLOBALS['DB_WE']);
+				$row = getHash('SELECT IntOrderID, IntCustomerID, DateOrder, DateShipping, Datepayment,IntPayment_Type FROM ' . SHOP_TABLE . ' WHERE IntOrderID = ' . intval($_REQUEST['bid']), $GLOBALS['DB_WE']);
 				$GLOBALS['DB_WE']->query('INSERT INTO ' . SHOP_TABLE . ' SET ' .
 					we_database_base::arraySetter((array(
 						'IntArticleID' => $id,
@@ -394,7 +393,7 @@ if(isset($_REQUEST['we_cmd'][0])){
 				$parts[] = array(
 					'headline' => g_l('modules_shop', '[variant]'),
 					'space' => 100,
-					'html' => we_class::htmlSelect('we_variant', $variantOptions, 1, '', false, '', 'value', 380),
+					'html' => we_class::htmlSelect(WE_SHOP_VARIANT_REQUEST, $variantOptions, 1, '', false, '', 'value', 380),
 					'noline' => 1
 				);
 

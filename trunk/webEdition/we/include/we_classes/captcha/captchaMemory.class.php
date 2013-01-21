@@ -79,7 +79,7 @@ class CaptchaMemory{
 		}
 
 		// delete old items
-		if(sizeof($items) > 0){
+		if(!empty($items)){
 			foreach($items as $code => $item){
 				if(time() > $item['time']
 					|| ($_SERVER['REMOTE_ADDR'] == $item['ip']

@@ -81,11 +81,7 @@ function we_tag_conditionAdd($attribs){
 	if(strlen($field) && isset($GLOBALS['we_lv_conditionName']) && isset($GLOBALS[$GLOBALS['we_lv_conditionName']])){
 		$GLOBALS[$GLOBALS['we_lv_conditionName']] .= '(' . $field . ' ' . $compare . ' "' . $GLOBALS['DB_WE']->escape($value) . '") ';
 	} else{
-		if(preg_match('/^(.*)AND ?$/', $GLOBALS[$GLOBALS['we_lv_conditionName']])){
-			$GLOBALS[$GLOBALS['we_lv_conditionName']] .= '1 ';
-		} else{
-			$GLOBALS[$GLOBALS['we_lv_conditionName']] .= '0 ';
-		}
+		$GLOBALS[$GLOBALS['we_lv_conditionName']] .= (preg_match('/^(.*)AND ?$/', $GLOBALS[$GLOBALS['we_lv_conditionName']]) ? '1 ' : '0 ');
 	}
 	return '';
 }

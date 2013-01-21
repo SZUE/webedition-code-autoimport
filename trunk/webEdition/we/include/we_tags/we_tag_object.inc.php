@@ -92,7 +92,7 @@ function we_tag_object($attribs){
 		}
 	} else{
 
-		$we_oid = $we_oid ? $we_oid : (isset($_REQUEST['we_oid']) ? $_REQUEST['we_oid'] : 0);
+		$we_oid = $we_oid ? $we_oid : (isset($_REQUEST['we_oid']) ? intval($_REQUEST['we_oid']) : 0);
 	}
 	$GLOBALS['lv'] = new we_objecttag($classid, $we_oid, $triggerid, (empty($searchable) ? false : $searchable), $condition, $hidedirindex, $objectseourls);
 	if(is_array($GLOBALS['we_lv_array'])){

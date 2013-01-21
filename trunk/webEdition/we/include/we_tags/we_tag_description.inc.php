@@ -27,7 +27,7 @@ function we_parse_tag_description($attribs, $content){
 }
 
 function we_tag_description($attribs, $content){
-	$oldHtmlspecialchars = weTag_getAttribute('htmlspecialchars', $attribs, false, true);
+	$htmlspecialchars = weTag_getAttribute('htmlspecialchars', $attribs, false, true);
 	$attribs = removeAttribs($attribs, array(
 		'htmlspecialchars'
 		));
@@ -39,7 +39,7 @@ function we_tag_description($attribs, $content){
 		$descr = $GLOBALS['DESCRIPTION'] ? $GLOBALS['DESCRIPTION'] : $content;
 
 		$attribs["name"] = "description";
-		$attribs["content"] = $oldHtmlspecialchars ? oldHtmlspecialchars(strip_tags($descr)) : strip_tags($descr);
+		$attribs["content"] = $htmlspecialchars ? oldHtmlspecialchars(strip_tags($descr)) : strip_tags($descr);
 
 		return getHtmlTag("meta", $attribs) . "\n";
 	}

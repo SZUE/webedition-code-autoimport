@@ -22,11 +22,11 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-define("SHOP_TABLE", TBL_PREFIX . "tblOrders");
-define("ANZEIGE_PREFS_TABLE", TBL_PREFIX . "tblAnzeigePrefs");
+define('SHOP_TABLE', TBL_PREFIX . 'tblOrders');
+define('ANZEIGE_PREFS_TABLE', TBL_PREFIX . 'tblAnzeigePrefs');
 define('WE_SHOP_VAT_TABLE', TBL_PREFIX . 'tblshopvats');
-define("WE_SHOP_MODULE_DIR", WE_MODULES_DIR . "shop/");
-define("WE_SHOP_MODULE_PATH", WE_MODULES_PATH . "shop/");
+define('WE_SHOP_MODULE_DIR', WE_MODULES_DIR . 'shop/');
+define('WE_SHOP_MODULE_PATH', WE_MODULES_PATH . 'shop/');
 
 define('WE_SHOP_VARIANTS_PREFIX', 'we__intern_variant___');
 define('WE_SHOP_VARIANTS_ELEMENT_NAME', 'weInternVariantElement');

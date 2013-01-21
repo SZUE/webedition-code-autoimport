@@ -29,8 +29,7 @@ function we_isUserInputNotEmpty($attribs){
 }
 
 function we_tag_ifUserInputEmpty($attribs){
-	$foo = attributFehltError($attribs, 'match', __FUNCTION__);
-	if($foo){
+	if(($foo = attributFehltError($attribs, 'match', __FUNCTION__))){
 		print($foo);
 		return '';
 	}

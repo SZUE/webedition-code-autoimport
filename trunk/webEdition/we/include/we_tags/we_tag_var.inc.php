@@ -39,7 +39,7 @@ function we_tag_var($attribs){
 			return $oldHtmlspecialchars ? oldHtmlspecialchars($return) : $return;
 		case 'request' :
 			$name = weTag_getAttribute('_name_orig', $attribs);
-			$return = we_util::rmPhp(isset($_REQUEST[$name]) ? $_REQUEST[$name] : '');
+			$return = filterXss(we_util::rmPhp(isset($_REQUEST[$name]) ? $_REQUEST[$name] : ''));
 			return $oldHtmlspecialchars ? oldHtmlspecialchars($return) : $return;
 		case 'post' :
 			$name = weTag_getAttribute('_name_orig', $attribs);

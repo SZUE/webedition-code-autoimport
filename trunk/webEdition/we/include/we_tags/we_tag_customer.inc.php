@@ -62,8 +62,8 @@ function we_tag_customer($attribs){
 		$we_doc = $GLOBALS["we_doc"];
 		$we_cid = $we_doc->getElement($name) ? $we_doc->getElement($name) : $we_cid;
 
-		$we_cid = $we_cid ? $we_cid : (isset($_REQUEST["we_cid"]) ? $_REQUEST["we_cid"] : 0);
-		$path = f("SELECT Path FROM " . CUSTOMER_TABLE . " WHERE ID=" . intval($we_cid), "Path", $GLOBALS["DB_WE"]);
+		$we_cid = $we_cid ? $we_cid : (isset($_REQUEST["we_cid"]) ? intval($_REQUEST["we_cid"]) : 0);
+		$path = f('SELECT Path FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . intval($we_cid), 'Path', $GLOBALS["DB_WE"]);
 		$textname = 'we_' . $we_doc->Name . '_txt[' . $name . '_path]';
 		$idname = 'we_' . $we_doc->Name . '_txt[' . $name . ']';
 		$table = CUSTOMER_TABLE;

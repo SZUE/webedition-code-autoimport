@@ -55,31 +55,31 @@ function we_tag_addDelNewsletterEmail($attribs){
 				$abos[0] = $fieldGroup . "_Ok";
 			} else{// #6100
 				foreach($tmpAbos as $abo){
-					$abos[]= $fieldGroup . "_" . $abo;
+					$abos[] = $fieldGroup . "_" . $abo;
 				}
 			}
 		} else{
 			if(!$emailonly){
 				$paths = makeArrayFromCSV(weTag_getAttribute("path", $attribs));
 				if(empty($paths) || (strlen($paths[0]) == 0)){
-					$paths[0] = "newsletter.txt";
+					$paths[0] = 'newsletter.txt';
 				}
 			}
 		}
 	} else{
-		if(isset($_REQUEST["we_subscribe_list__"]) && is_array($_REQUEST["we_subscribe_list__"])){
+		if(isset($_REQUEST['we_subscribe_list__']) && is_array($_REQUEST['we_subscribe_list__'])){
 			if($customer){
-				$tmpAbos = makeArrayFromCSV(weTag_getAttribute("mailingList", $attribs));
-				foreach($_REQUEST["we_subscribe_list__"] as $nr){
-					array_push($abos, $fieldGroup . "_" . $tmpAbos[$nr]);
+				$tmpAbos = makeArrayFromCSV(weTag_getAttribute('mailingList', $attribs));
+				foreach($_REQUEST['we_subscribe_list__'] as $nr){
+					$abos[] = $fieldGroup . '_' . $tmpAbos[intval($nr)];
 				}
 			} else{
-				$tmpPaths = makeArrayFromCSV(weTag_getAttribute("path", $attribs));
-				foreach($_REQUEST["we_subscribe_list__"] as $nr){
-					$paths[] = $tmpPaths[$nr];
+				$tmpPaths = makeArrayFromCSV(weTag_getAttribute('path', $attribs));
+				foreach($_REQUEST['we_subscribe_list__'] as $nr){
+					$paths[] = $tmpPaths[intval($nr)];
 				}
 			}
-			if(empty($abos)&& empty($paths)){
+			if(empty($abos) && empty($paths)){
 				$GLOBALS["WE_MAILING_LIST_EMPTY"] = 1;
 				$GLOBALS[($isSubscribe ? 'WE_WRITENEWSLETTER_STATUS' : 'WE_REMOVENEWSLETTER_STATUS')] = weNewsletterBase::STATUS_ERROR;
 				return;
@@ -273,12 +273,18 @@ function we_tag_addDelNewsletterEmail($attribs){
 				foreach($toCC as $cc){
 					if(strpos($cc, '@') === false){
 						if(isset($_SESSION["webuser"]["registered"]) && $_SESSION["webuser"]["registered"] && isset($_SESSION["webuser"][$cc]) && strpos($_SESSION["webuser"][$cc], '@') !== false){ //wenn man registrierten Usern was senden moechte
-							$we_recipientCC[] = $_SESSION["webuser"][$cc];
+							if(we_check_email($_SESSION["webuser"][$cc])){
+								$we_recipientCC[] = $_SESSION["webuser"][$cc];
+							}
 						} else if(isset($_REQUEST[$cc]) && strpos($_REQUEST[$cc], '@') !== false){ //email to friend test
-							$we_recipientCC[] = $_REQUEST[$cc];
+							if(we_check_email($_REQUEST[$cc])){
+								$we_recipientCC[] = $_REQUEST[$cc];
+							}
 						}
 					} else{
-						$we_recipientCC[] = $cc;
+						if(we_check_email($cc)){
+							$we_recipientCC[] = $cc;
+						}
 					}
 				}
 				$toBCC = explode(',', $recipientBCC);
@@ -286,12 +292,18 @@ function we_tag_addDelNewsletterEmail($attribs){
 				foreach($toBCC as $bcc){
 					if(strpos($bcc, '@') === false){
 						if(isset($_SESSION["webuser"]["registered"]) && $_SESSION["webuser"]["registered"] && isset($_SESSION["webuser"][$bcc]) && strpos("@", $_SESSION["webuser"][$bcc]) !== false){ //wenn man registrierte Usern was senden moechte
-							$we_recipientBCC[] = $_SESSION["webuser"][$bcc];
+							if(we_check_email($_SESSION["webuser"][$bcc])){
+								$we_recipientBCC[] = $_SESSION["webuser"][$bcc];
+							}
 						} else if(isset($_REQUEST[$bcc]) && strpos("@", $_REQUEST[$bcc]) !== false){ //email to friend test
-							$we_recipientBCC[] = $_REQUEST[$bcc];
+							if(we_check_email($_REQUEST[$bcc])){
+								$we_recipientBCC[] = $_REQUEST[$bcc];
+							}
 						}
 					} else{
-						$we_recipientBCC[] = $bcc;
+						if(we_check_email($bcc)){
+							$we_recipientBCC[] = $bcc;
+						}
 					}
 				}
 				$phpmail = new we_util_Mailer($f["subscribe_mail"], $subject, $from, $from);
@@ -454,12 +466,14 @@ function we_tag_addDelNewsletterEmail($attribs){
 					$adminmailtextHTML = ($adminmailid > 0) && weFileExists($adminmailid, FILE_TABLE, $db) ? we_getDocumentByID($adminmailid, '', $db, $charset) : '';
 					$phpmail->setCharSet($charset);
 
-					$adminmailtextHTML = str_replace('###MAIL###', $f["subscribe_mail"], $adminmailtextHTML);
-					$adminmailtextHTML = str_replace('###SALUTATION###', $f["subscribe_salutation"], $adminmailtextHTML);
-					$adminmailtextHTML = str_replace('###TITLE###', $f["subscribe_title"], $adminmailtextHTML);
-					$adminmailtextHTML = str_replace('###FIRSTNAME###', $f["subscribe_firstname"], $adminmailtextHTML);
-					$adminmailtextHTML = str_replace('###LASTNAME###', $f["subscribe_lastname"], $adminmailtextHTML);
-					$adminmailtextHTML = str_replace('###HTML###', $f["subscribe_html"], $adminmailtextHTML);
+					$adminmailtextHTML = strtr($adminmailtextHTML, array(
+						'###MAIL###' => $f["subscribe_mail"],
+						'###SALUTATION###' => $f["subscribe_salutation"],
+						'###TITLE###' => $f["subscribe_title"],
+						'###FIRSTNAME###' => $f["subscribe_firstname"],
+						'###LASTNAME###' => $f["subscribe_lastname"],
+						'###HTML###' => $f["subscribe_html"],
+						));
 					$includeimages = weTag_getAttribute("includeimages", $attribs, false, true);
 					$phpmail->addHTMLPart($adminmailtextHTML);
 					if(isset($includeimages)){
@@ -474,9 +488,7 @@ function we_tag_addDelNewsletterEmail($attribs){
 		}
 	}
 
-	/*	 * ******************************************************************************* */
-	/*	 * *                         NEWSLETTER UNSUBSCTIPTION                          ** */
-	/*	 * ******************************************************************************* */
+	//NEWSLETTER UNSUBSCTIPTION
 	if($isUnsubscribe){
 		if(!we_unsubscribeNL($db, $customer, $_customerFieldPrefs, $abos, $paths)){
 			return;
@@ -609,17 +621,12 @@ function getNewsletterFields($request, $confirmid, &$errorcode, $mail = ""){
 		return array();
 	}
 
-	$subscribe_html = (isset($request["we_subscribe_html__"]) ? $request["we_subscribe_html__"] : 0);
-	$subscribe_salutation = (isset($request["we_subscribe_salutation__"]) ? preg_replace("|[\r\n,]|", "", $request["we_subscribe_salutation__"]) : '');
-	$subscribe_title = (isset($request["we_subscribe_title__"]) ? preg_replace("|[\r\n,]|", "", $request["we_subscribe_title__"]) : '');
-	$subscribe_firstname = (isset($request["we_subscribe_firstname__"]) ? preg_replace("|[\r\n,]|", "", $request["we_subscribe_firstname__"]) : '');
-	$subscribe_lastname = (isset($request["we_subscribe_lastname__"]) ? preg_replace("|[\r\n,]|", "", $request["we_subscribe_lastname__"]) : '');
-
-	return array("subscribe_mail" => trim($subscribe_mail),
-		"subscribe_html" => trim($subscribe_html),
-		"subscribe_salutation" => trim($subscribe_salutation),
-		"subscribe_title" => trim($subscribe_title),
-		"subscribe_firstname" => trim($subscribe_firstname),
-		"subscribe_lastname" => trim($subscribe_lastname)
+	return array(
+		"subscribe_mail" => trim($subscribe_mail),
+		"subscribe_html" => trim((isset($request["we_subscribe_html__"]) ? filterXss($request["we_subscribe_html__"]) : 0)),
+		"subscribe_salutation" => trim((isset($request["we_subscribe_salutation__"]) ? preg_replace("|[\r\n,]|", "", filterXss($request["we_subscribe_salutation__"])) : '')),
+		"subscribe_title" => trim((isset($request["we_subscribe_title__"]) ? preg_replace("|[\r\n,]|", "", filterXss($request["we_subscribe_title__"])) : '')),
+		"subscribe_firstname" => trim((isset($request["we_subscribe_firstname__"]) ? preg_replace("|[\r\n,]|", "", filterXss($request["we_subscribe_firstname__"])) : '')),
+		"subscribe_lastname" => trim((isset($request["we_subscribe_lastname__"]) ? preg_replace("|[\r\n,]|", "", filterXss($request["we_subscribe_lastname__"])) : ''))
 	);
 }

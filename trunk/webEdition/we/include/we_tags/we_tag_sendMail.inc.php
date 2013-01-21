@@ -29,7 +29,7 @@ function we_tag_sendMail($attribs, $content){
 
 	if(!$GLOBALS['we_doc']->InWebEdition){
 
-		$id = weTag_getAttribute("id", $attribs, ( isset($_REQUEST["ID"]) ? $_REQUEST["ID"] : ''));
+		$id = weTag_getAttribute("id", $attribs, ( isset($_REQUEST["ID"]) ? intval($_REQUEST["ID"]) : ''));
 		$from = weTag_getAttribute("from", $attribs);
 		$reply = weTag_getAttribute("reply", $attribs);
 		$recipient = weTag_getAttribute("recipient", $attribs);
@@ -63,12 +63,18 @@ function we_tag_sendMail($attribs, $content){
 
 				if(strpos($to[$l], '@') === false){
 					if(isset($_SESSION["webuser"]["registered"]) && $_SESSION["webuser"]["registered"] && isset($_SESSION["webuser"][$to[$l]]) && strpos($_SESSION["webuser"][$to[$l]], '@') !== false){ //wenn man registireten Usern was senden moechte
-						$we_recipient[] = $_SESSION["webuser"][$to[$l]];
+						if(we_check_email($_SESSION["webuser"][$to[$l]])){
+							$we_recipient[] = $_SESSION["webuser"][$to[$l]];
+						}
 					} else if(isset($_REQUEST[$to[$l]]) && strpos($_REQUEST[$to[$l]], '@') !== false){ //email to friend test
-						$we_recipient[] = $_REQUEST[$to[$l]];
+						if(we_check_email($_REQUEST[$to[$l]])){
+							$we_recipient[] = $_REQUEST[$to[$l]];
+						}
 					}
 				} else{
-					$we_recipient[] = $to[$l];
+					if(we_check_email($to[$l])){
+						$we_recipient[] = $to[$l];
+					}
 				}
 			}
 
@@ -76,28 +82,39 @@ function we_tag_sendMail($attribs, $content){
 			$we_recipientCC = array();
 			for($l = 0; $l < count($toCC); $l++){
 
-				if(strpos($toCC[$l],'@') === false){
-					if(isset($_SESSION["webuser"]["registered"]) && $_SESSION["webuser"]["registered"] && isset($_SESSION["webuser"][$toCC[$l]]) && strpos($_SESSION["webuser"][$toCC[$l]],'@') !== false){ //wenn man registrierten Usern was senden moechte
-						$we_recipientCC[] = $_SESSION["webuser"][$toCC[$l]];
-					} else if(isset($_REQUEST[$toCC[$l]]) && strpos($_REQUEST[$toCC[$l]],'@') !== false){ //email to friend test
-						$we_recipientCC[] = $_REQUEST[$toCC[$l]];
+				if(strpos($toCC[$l], '@') === false){
+					if(isset($_SESSION["webuser"]["registered"]) && $_SESSION["webuser"]["registered"] && isset($_SESSION["webuser"][$toCC[$l]]) && strpos($_SESSION["webuser"][$toCC[$l]], '@') !== false){ //wenn man registrierten Usern was senden moechte
+						if(we_check_email($_SESSION["webuser"][$toCC[$l]])){
+							$we_recipientCC[] = $_SESSION["webuser"][$toCC[$l]];
+						}
+					} else if(isset($_REQUEST[$toCC[$l]]) && strpos($_REQUEST[$toCC[$l]], '@') !== false){ //email to friend test
+						if(we_check_email($_REQUEST[$toCC[$l]])){
+							$we_recipientCC[] = $_REQUEST[$toCC[$l]];
+						}
 					}
 				} else{
-					$we_recipientCC[] = $toCC[$l];
+					if(we_check_email($toCC[$l])){
+						$we_recipientCC[] = $toCC[$l];
+					}
 				}
 			}
 			$toBCC = explode(",", $recipientBCC);
 			$we_recipientBCC = array();
 			for($l = 0; $l < count($toBCC); $l++){
-
 				if(strpos($toBCC[$l], '@') === false){
 					if(isset($_SESSION["webuser"]["registered"]) && $_SESSION["webuser"]["registered"] && isset($_SESSION["webuser"][$toBCC[$l]]) && strpos($_SESSION["webuser"][$toBCC[$l]], '@') !== false){ //wenn man registrierte Usern was senden moechte
-						$we_recipientBCC[] = $_SESSION["webuser"][$toBCC[$l]];
+						if(we_check_email($_SESSION["webuser"][$toBCC[$l]])){
+							$we_recipientBCC[] = $_SESSION["webuser"][$toBCC[$l]];
+						}
 					} else if(isset($_REQUEST[$toBCC[$l]]) && strpos($_REQUEST[$toBCC[$l]], '@') !== false){ //email to friend test
-						$we_recipientBCC[] = $_REQUEST[$toBCC[$l]];
+						if(we_check_email($_REQUEST[$toBCC[$l]])){
+							$we_recipientBCC[] = $_REQUEST[$toBCC[$l]];
+						}
 					}
 				} else{
-					$we_recipientBCC[] = $toBCC[$l];
+					if(we_check_email($toBCC[$l])){
+						$we_recipientBCC[] = $toBCC[$l];
+					}
 				}
 			}
 
@@ -153,7 +170,7 @@ function we_tag_sendMail($attribs, $content){
 					'</html>';
 
 				exit;
-			}else{
+			} else{
 				if(!isset($_SESSION)){
 					@session_start();
 				}
@@ -161,7 +178,7 @@ function we_tag_sendMail($attribs, $content){
 				$codes = ($id > 0) && weFileExists($id, FILE_TABLE, $GLOBALS['DB_WE']) ? we_getDocumentByID($id) : '';
 				unset($_SESSION['WE_SendMail']);
 				if(!$codes){
-					t_e('Document to send via we:sendMail is empty ID: '.$id);
+					t_e('Document to send via we:sendMail is empty ID: ' . $id);
 				}
 				$phpmail = new we_util_Mailer($we_recipient, $subject, $from, $reply, $includeimages);
 				if(isset($includeimages)){
