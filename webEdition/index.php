@@ -38,7 +38,7 @@ if(!file_exists($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/conf/we_conf
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 //FIXME: implement resave of config files
-if(!defined('CONF_SAVED_VERSION') || (defined('CONF_SAVED_VERSION') && version_compare(WE_VERSION, CONF_SAVED_VERSION) != 0)){
+if(!defined('CONF_SAVED_VERSION') || (defined('CONF_SAVED_VERSION') && (WE_SVNREV > CONF_SAVED_VERSION))){
 	//resave config file(s)
 	we_base_preferences::check_global_config(true);
 }

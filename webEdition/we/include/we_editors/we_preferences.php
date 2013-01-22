@@ -578,7 +578,7 @@ $GLOBALS[\'_we_active_integrated_modules\'] = array(
 function save_all_values(){
 	we_base_preferences::loadConfigs();
 	//set config to latest version
-	$_REQUEST['newconf']['CONF_SAVED_VERSION'] = WE_VERSION;
+	$_REQUEST['newconf']['CONF_SAVED_VERSION'] = WE_SVNREV;
 	// Second, change sourcecodes of the configfiles
 	foreach($GLOBALS['configs'] as $name => $conf){
 		foreach($conf as $key => $default){
