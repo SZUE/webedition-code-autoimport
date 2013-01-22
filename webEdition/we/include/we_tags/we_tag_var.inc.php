@@ -57,27 +57,21 @@ function we_tag_var($attribs){
 			return $oldHtmlspecialchars ? oldHtmlspecialchars($return) : $return;
 		case 'multiobject' :
 			$data = unserialize($doc->getField($attribs, $type, true));
-			if(isset($data['objects']) && !empty($data['objects'])){
-				return implode(',', $data['objects']);
-			} else{
-				return '';
-			}
+			return (isset($data['objects']) && !empty($data['objects']) ? implode(',', $data['objects']) : '');
 
 		case 'property' :
 			$name = weTag_getAttribute('_name_orig', $attribs);
 
-			if(isset($GLOBALS['we_obj'])){
-				return $GLOBALS['we_obj']->$name;
-			} else{
-				return $doc->$name;
-			}
+			return (isset($GLOBALS['we_obj']) ?
+					$GLOBALS['we_obj']->$name :
+					$doc->$name);
+
 		case 'shopVat' :
 			if(defined('SHOP_TABLE')){
-
 				$vatId = $doc->getElement(WE_SHOP_VAT_FIELD_NAME);
 				return weShopVats::getVatRateForSite($vatId);
 			}
-			break;
+			return '';
 		case 'link' :
 			return $doc->getField($attribs, $type, false);
 		// bugfix #3634
@@ -105,5 +99,4 @@ function we_tag_var($attribs){
 
 			return $normVal;
 	}
-	return $var;
 }

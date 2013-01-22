@@ -1976,22 +1976,59 @@ class we_objectFile extends we_document{
 	}
 
 	function insertAtIndex(){
-		if(!$this->DB_WE->query("DELETE FROM " . INDEX_TABLE . " WHERE OID=" . $this->ID)){
-			return false;
-		}
+		$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE OID=' . $this->ID);
 		if(!$this->IsSearchable){
 			return true;
 		}
 
 		$this->setTitleAndDescription();
 		$this->resetElements();
-		$text = "";
+		$text = '';
 		while((list($k, $v) = $this->nextElement(""))) {
-			if(isset($v["dat"])){
-				$text .= ' ' . $v["dat"];
+			if(isset($v["dat"]) && !empty($v["dat"])){
+				switch(isset($v['type']) ? $v['type'] : ''){
+					default:
+					case 'object':
+					case 'multiobject':
+					case 'language':
+					case 'href':
+						//not handled
+						break;
+					case 'date':
+						$text .= ' ' . date(g_l('date', '[format][default]'), $v["dat"]);
+						break;
+					case 'int':
+						$text.=' ' . intval($v["dat"]);
+						break;
+					case 'float':
+						$text.=' ' . floatval($v["dat"]);
+						break;
+
+					case 'meta'://FIXME: meta returns the key not the value
+					case 'input':
+					case 'txt':
+					case 'text':
+						if(strpos($v["dat"], 'a:') === 0){
+							//link/href
+							$tmp = @unserialize($v["dat"]);
+							if($tmp&&isset($tmp['text'])){
+								$text .= ' ' . $tmp['text'];
+							}
+						} else{
+							$text .= ' ' . $v["dat"];
+						}
+						break;
+				}
 			}
 		}
-		$text = $this->DB_WE->escape(trim(strip_tags($text)));
+		$maxDB = min(1000000, getMaxAllowedPacket($this->DB_WE) - 1024);
+		$text = substr(preg_replace(array("/\n+/", '/  +/'), ' ', trim(strip_tags($text))), 0, $maxDB);
+
+		if(empty($text)){
+			//no need to keep an entry without relevant data in the index
+			return true;
+		}
+
 		$ws = makeArrayFromCSV($this->Workspaces);
 		$ws2 = makeArrayFromCSV($this->ExtraWorkspacesSelected);
 		foreach($ws2 as $w){

@@ -230,11 +230,11 @@ class we_imageDocument extends we_binaryDocument{
 			return '';
 		}
 		if(!$src){
-			$src = (we_isHttps()?'':BASE_IMG) . $this->Path;
+			$src = (we_isHttps() ? '' : BASE_IMG) . $this->Path;
 		}
 
 		if(!$src_over){
-			$src_over = (we_isHttps()?'':BASE_IMG) . f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID = ' . intval($this->getElement('RollOverID')), 'Path', $this->DB_WE);
+			$src_over = (we_isHttps() ? '' : BASE_IMG) . f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID = ' . intval($this->getElement('RollOverID')), 'Path', $this->DB_WE);
 		}
 
 		if(!$this->getElement('name')){
@@ -404,7 +404,7 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 				WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=show_binaryDoc&we_cmd[1]=' .
 				$this->ContentType . '&we_cmd[2]=' .
 				$GLOBALS['we_transaction'] . '&rand=' . $randval :
-				($this->getElement('LinkType') == 'int' ? (we_isHttps()?'':BASE_IMG) : '') .
+				($this->getElement('LinkType') == 'int' ? (we_isHttps() ? '' : BASE_IMG) : '') .
 				$img_path;
 
 
