@@ -1187,6 +1187,17 @@ class we_document extends we_root{
 		// Bug Fix 8170&& 8166
 		if(isset($link['href']) && strlen($link['href']) >= 7 && substr($link['href'], 0, 7) == 'mailto:'){
 			$link['type'] = 'mail';
+                        
+                         //added for #7269
+                        if(isset($link['subject']) && $link['subject']!=''){
+                            $link['href']=$link['href']."?subject=".$link['subject'];
+                        }
+                        if(isset($link['cc']) && $link['cc']!=''){
+                            $link['href']=$link['href']."&cc=".$link['cc'];
+                        }
+                        if(isset($link['bcc']) && $link['bcc']!=''){
+                            $link['href']=$link['href']."&bcc=".$link['bcc'];
+                        }
 		}
 
 		if(isset($link['type']) && ($link['type'] == 'int')){
