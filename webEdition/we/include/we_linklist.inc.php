@@ -369,6 +369,22 @@ class we_linklist{
 		return serialize($this->listArray);
 	}
 
+        //added for #7269
+        function getBcc($nr = -1){
+		$cur = $nr != -1 ? $this->listArray[$nr] : current($this->listArray);
+		return isset($cur['bcc']) ? $cur['bcc'] : '';
+	}
+        
+        function getCc($nr = -1){
+		$cur = $nr != -1 ? $this->listArray[$nr] : current($this->listArray);
+		return isset($cur['cc']) ? $cur['cc'] : '';
+	}
+        
+        function getSubject($nr = -1){
+		$cur = $nr != -1 ? $this->listArray[$nr] : current($this->listArray);
+		return isset($cur['subject']) ? $cur['subject'] : '';
+	}
+        
 	function setID($nr, $val){
 		if($nr == "0" || $nr){
 			$this->listArray[$nr]["id"] = $val;
@@ -495,6 +511,22 @@ class we_linklist{
 		}
 	}
 
+         //added for #7269
+        function setBcc($nr, $key, $val){
+		if($nr == "0" || $nr){
+			$this->listArray[$nr]["bcc"][$key] = $val;
+		}
+	}
+        function setCc($nr, $key, $val){
+		if($nr == "0" || $nr){
+			$this->listArray[$nr]["cc"][$key] = $val;
+		}
+	}
+        function setSubject($nr, $key, $val){
+		if($nr == "0" || $nr){
+			$this->listArray[$nr]["subject"][$key] = $val;
+		}
+	}
 	function next(){
 		if($this->pos != -1){
 			++$this->cnt;
