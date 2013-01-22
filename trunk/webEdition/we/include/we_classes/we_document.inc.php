@@ -874,11 +874,10 @@ class we_document extends we_root{
 
 				//	when width or height are given, then let the browser adjust the image
 				if(isset($attribs['width']) || isset($attribs['width'])){
-
 					unset($img->elements['height']);
 					unset($img->elements['width']);
 				}
-				if(sizeof($attribs)){
+				if(!empty($attribs)){
 					$attribs = removeAttribs($attribs, array('hyperlink', 'target'));
 					$img->initByAttribs($attribs);
 				}
@@ -1187,7 +1186,7 @@ class we_document extends we_root{
 		// Bug Fix 8170&& 8166
 		if(isset($link['href']) && strlen($link['href']) >= 7 && substr($link['href'], 0, 7) == 'mailto:'){
 			$link['type'] = 'mail';
-                        
+
                          //added for #7269
                         if(isset($link['subject']) && $link['subject']!=''){
                             $link['href']=$link['href']."?subject=".$link['subject'];
