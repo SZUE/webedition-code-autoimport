@@ -1,3 +1,6 @@
+###UPDATEONLY###UPDATE ###TBLPREFIX###tblPrefs SET cockpit_rss_feed_url='http://www.webedition.org/de/feeds/aktuelles.xml' WHERE cockpit_rss_feed_url LIKE "%www.webedition.de/presse/%"
+/* query separator */
+
 CREATE TABLE ###TBLPREFIX###tblPrefs (
   userID bigint(20) unsigned NOT NULL default '0',
   FileFilter int(11) unsigned NOT NULL default '0',
