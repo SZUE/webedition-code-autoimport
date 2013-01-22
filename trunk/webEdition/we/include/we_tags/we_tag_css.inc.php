@@ -39,7 +39,7 @@ function we_tag_css($attribs){
 
 		$attribs['rel'] = $rel;
 		$attribs['type'] = 'text/css';
-		$attribs['href'] = BASE_CSS . $url;
+		$attribs['href'] = (we_isHttps() ? '' : BASE_CSS) . $url;
 
 
 		return getHtmlTag('link', $attribs) . "\n";
