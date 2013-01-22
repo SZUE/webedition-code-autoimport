@@ -55,16 +55,21 @@ if(isset($_SESSION['weS']['SEEM']["startId"])){ // logout from webEdition opened
 	$_path = WEBEDITION_DIR;
 }
 
+if(isset($_SESSION)){
+	unset($_SESSION['weS']);
+}
+
 //FIXME: this should be removed if all variables are located inside weS; fix other!!
 if(isset($_SESSION)){
-	while(list($name, $val) = each($_SESSION)) {
+	unset($_SESSION['weS']);
+	while((list($name, $val) = each($_SESSION))) {
 		unset($_SESSION[$name]);
 	}
 }
 $_SESSION = array();
 
-if(!isset($isIncluded) || !$isIncluded){
-echo we_html_element::jsElement('
+if(!isset($GLOBALS['isIncluded']) || !$GLOBALS['isIncluded']){
+	echo we_html_element::jsElement('
 	for(i=0;i<top.jsWindow_count;i++){
 		eval("var obj=top.jsWindow"+i+"Object");
 		try{
@@ -78,13 +83,13 @@ echo we_html_element::jsElement('
 			tinyDialog.close();
 		}catch(err){}
 	}
-	
+
 	if(typeof(top.tinyMceSecondaryDialog) !== "undefinded" && top.tinyMceSecondaryDialog !== null){
 		var tinyDialog = top.tinyMceSecondaryDialog;
 		try{
 			tinyDialog.close();
 		}catch(err){}
-	} 
+	}
 
 	if(top.opener){ // we was opened in popup
 		top.opener.location.replace("' . $_path . '");
