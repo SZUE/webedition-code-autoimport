@@ -1185,6 +1185,7 @@ function getNextDynDoc($path, $pid, $ws1, $ws2, $DB_WE = ''){
 }
 
 function parseInternalLinks(&$text, $pid, $path = '', $doBaseReplace = true){
+	$doBaseReplace&=we_isHttps();
 	$DB_WE = new DB_WE();
 	$regs = array();
 	if(preg_match_all('/(href|src)="document:(\\d+)(&amp;|&)?("|[^"]+")/i', $text, $regs, PREG_SET_ORDER)){
