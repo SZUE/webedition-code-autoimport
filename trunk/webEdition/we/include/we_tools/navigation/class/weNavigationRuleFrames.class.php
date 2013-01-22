@@ -62,46 +62,44 @@ class weNavigationRuleFrames{
 	function getHTMLContent(){
 		// content contains textarea with all so far existing rules
 		$yuiSuggest = & weSuggest::getInstance();
-		$parts = array();
 
 		$allRules = weNavigationRuleControl::getAllNavigationRules();
 
 		$_rules = array();
 
 		foreach($allRules as $_navigationRule){
-
 			$_rules["$_navigationRule->ID"] = $_navigationRule->NavigationName;
 		}
 		asort($_rules);
 		$yuiSuggest = & weSuggest::getInstance();
-		array_push(
-			$parts, array(
-			'headline' => g_l('navigation', '[rules][available_rules]'),
-			'space' => 200,
-			'html' => $yuiSuggest->getYuiJsFiles() . '<table border="0" cellpadding="0" cellspacing="0">
+		$parts = array(
+			array(
+				'headline' => g_l('navigation', '[rules][available_rules]'),
+				'space' => 200,
+				'html' => $yuiSuggest->getYuiJsFiles() . '<table border="0" cellpadding="0" cellspacing="0">
 										<tr><td>' . we_html_tools::htmlSelect(
-				'navigationRules', $_rules, 8, '', false, ' style="width: 275px;" onclick="we_cmd(\'edit_navigation_rule\', this.value)"') . '</td>
+					'navigationRules', $_rules, 8, '', false, ' style="width: 275px;" onclick="we_cmd(\'edit_navigation_rule\', this.value)"') . '</td>
 											<td>' . we_html_tools::getPixel(10, 1) . '</td>
 											<td valign="top">
 												' . we_button::create_button(
-				'new_entry', 'javascript:we_cmd("new_navigation_rule")') . '<div style="height:10px;"></div>
+					'new_entry', 'javascript:we_cmd("new_navigation_rule")') . '<div style="height:10px;"></div>
 												' . we_button::create_button(
-				'delete', 'javascript:we_cmd("delete_navigation_rule")') . '
+					'delete', 'javascript:we_cmd("delete_navigation_rule")') . '
 											</td>
 										</tr>
 										</table>'
-		));
+			),
+			// build the formular
 
-		// build the formular
 
 
-		array_push(
-			$parts, array(
-			'headline' => g_l('navigation', '[rules][rule_name]'),
-			'space' => 200,
-			'html' => we_html_tools::htmlTextInput('NavigationName', 24, '', '', 'style="width: 275px;"'),
-			'noline' => 1
-		));
+			array(
+				'headline' => g_l('navigation', '[rules][rule_name]'),
+				'space' => 200,
+				'html' => we_html_tools::htmlTextInput('NavigationName', 24, '', '', 'style="width: 275px;"'),
+				'noline' => 1
+			)
+		);
 
 		$yuiSuggest->setAcId("NavigationIDPath");
 		$yuiSuggest->setContentType("folder,weNavigation");
