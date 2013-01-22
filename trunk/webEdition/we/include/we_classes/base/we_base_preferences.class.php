@@ -108,7 +108,7 @@ class we_base_preferences{
 			}
 		}
 		if($updateVersion){
-			$content = self::changeSourceCode('define', $content, 'CONF_SAVED_VERSION', WE_VERSION, true);
+			$content = self::changeSourceCode('define', $content, 'CONF_SAVED_VERSION', WE_SVNREV, true);
 		}
 		// Check if we need to rewrite the config file
 		if($content != $oldContent){
