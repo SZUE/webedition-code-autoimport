@@ -475,7 +475,7 @@ echo (we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 9
 						if($css){
 							$ret.='.cm-weTag_' . $tagName . ':hover:after {content: "' . str_replace('"', '\'', html_entity_decode($weTag->getDescription(), null, $GLOBALS['WE_BACKENDCHARSET'])) . '";}';
 						} else{
-							$allTags['we:' . $tagName] = array('norm' => $weTag->getAttributesForCM());
+							$allTags['we:' . $tagName] = array('we' => $weTag->getAttributesForCM());
 						}
 					}
 				}
@@ -493,6 +493,9 @@ echo (we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 9
 					$attribs = array();
 					foreach($cur as $type => $attribList){
 						switch($type){
+							case 'we':
+								$ok = true;
+								break;
 							case 'default':
 								$ok = ($setting['htmlDefAttr']);
 								break;
@@ -508,20 +511,22 @@ echo (we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 9
 							case 'html5':
 								$ok = ($setting['html5Tag'] && $setting['html5Attr']);
 								break;
+							default:
+								$ok = false;
 						}
 						if($ok){
 							foreach($attribList as $attr){
 								$attribs[] = '\'' . $attr . (strstr($attr, '"') === false ? '=""' : '') . '\'';
 							}
-
-							if(!empty($attribs)){
-								sort($attribs);
-								$ret.='CodeMirror.weHints["<' . $tagName . ' "] = [' . implode(',', array_unique($attribs)) . '];' . "\n";
-							}
 						}
 					}
-					return $ret;
+					if(!empty($attribs)){
+						$attribs = array_unique($attribs);
+						sort($attribs);
+						$ret.='CodeMirror.weHints["<' . $tagName . ' "] = [' . implode(',', $attribs) . '];' . "\n";
+					}
 				}
+				return $ret;
 			}
 
 			function we_getCodeMirror2Code($code){
