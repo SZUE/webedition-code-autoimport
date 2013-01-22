@@ -47,7 +47,7 @@ if(!$id){
 if($id && is_numeric($id) && $did > 0){
 	$url = weBanner::getBannerURL($id);
 	if(!$nocount){
-		$db->query('INSERT INTO ' . BANNER_CLICKS_TABLE . ' '.we_database_base::arraySetter(array(
+		$db->query('INSERT INTO ' . BANNER_CLICKS_TABLE . ' SET '.we_database_base::arraySetter(array(
 			'ID'=>intval($id),
 			'Timestamp'=>'UNIX_TIMESTAMP()',
 			'IP'=>$_SERVER["REMOTE_ADDR"],
