@@ -24,8 +24,6 @@
  */
 class weXMLExIm{
 
-	//var $perserves_file=array();
-
 	var $destination = array();
 	var $RefTable;
 	var $chunk_count;
@@ -268,12 +266,12 @@ class weXMLExIm{
 		$allow = $this->queryForAllowed($table);
 		foreach($selIDs as $v){
 			if($v){
-				$isfolder = f('SELECT IsFolder FROM ' . $table . ' WHERE ID=' . intval($v), "IsFolder", $db);
-				if($isfolder){
+				if(f('SELECT IsFolder FROM ' . $table . ' WHERE ID=' . intval($v), "IsFolder", $db)){
 					we_readChilds($v, $tmp, $table, false, $allow);
-					if($with_dirs)
+					if($with_dirs){
 						$tmp[] = $v;
-				}else{
+					}
+				} else{
 					$tmp[] = $v;
 				}
 			}
@@ -291,12 +289,12 @@ class weXMLExIm{
 	}
 
 	function getQueryParents($path){
-		$out = '';
+		$out = array();
 		while($path != '/' && $path) {
-			$out .= "Path='$path' OR ";
+			$out [] = 'Path="' . $path . '"';
 			$path = dirname($path);
 		}
-		return ($out ? substr($out, 0, strlen($out) - 3) : '');
+		return (empty($out) ? '' : implode(' OR ', $out));
 	}
 
 	function queryForAllowed($table){
@@ -320,67 +318,45 @@ class weXMLExIm{
 			}
 		}
 
-		return makeOwnersSql() . ( $wsQuery ? 'AND (' . implode(' OR ', $wsQuery) . ')' : '');
+		return makeOwnersSql() . ( $wsQuery ? 'OR (' . implode(' OR ', $wsQuery) . ')' : '');
 	}
 
 	function getSelectedItems($selection, $extype, $art, $type, $doctype, $classname, $categories, $dir, &$selDocs, &$selTempl, &$selObjs, &$selClasses){
-		$this->db = new DB_WE();
-		if($selection == "manual"){
+		$db = new DB_WE();
+		if($selection == 'manual'){
 			if($extype == "wxml"){
 				$selDocs = $this->getIDs($selDocs, FILE_TABLE, false);
 				$selTempl = $this->getIDs($selTempl, TEMPLATES_TABLE, false);
-				$selObjs = defined("OBJECT_FILES_TABLE") ? $this->getIDs($selObjs, OBJECT_FILES_TABLE, false) : "";
-				$selClasses = defined("OBJECT_FILES_TABLE") ? $this->getIDs($selClasses, OBJECT_TABLE, false) : "";
+				$selObjs = defined("OBJECT_FILES_TABLE") ? $this->getIDs($selObjs, OBJECT_FILES_TABLE, false) : '';
+				$selClasses = defined("OBJECT_FILES_TABLE") ? $this->getIDs($selClasses, OBJECT_TABLE, false) : '';
 			} else{
-				if($art == "docs")
-					$selDocs = $this->getIDs($selDocs, FILE_TABLE);
-				else if($art == "objects")
-					$selObjs = defined("OBJECT_FILES_TABLE") ? $this->getIDs($selObjs, OBJECT_FILES_TABLE) : "";
+				switch($art){
+					case "docs":
+						$selDocs = $this->getIDs($selDocs, FILE_TABLE);
+						break;
+					case "objects":
+						$selObjs = defined("OBJECT_FILES_TABLE") ? $this->getIDs($selObjs, OBJECT_FILES_TABLE) : "";
+						break;
+				}
 			}
-		}
-		else{
+		} else{
 			if($type == "doctype"){
-				$catss = "";
-				if($categories){
-					$catids = makeCSVFromArray(makeArrayFromCSV($categories));
-					$this->db->query("SELECT Path FROM " . CATEGORY_TABLE . " WHERE ID IN (" . $catids . ");");
-					while($this->db->next_record()) {
-						$cats[] = $this->db->f("Path");
-					}
-					$catss = makeCSVFromArray($cats);
-				}
-
-				$cat_sql = ($this->cats ? we_category::getCatSQLTail($catss, FILE_TABLE, true, $this->db) : '');
-				$ws_where = "";
+				$cat_sql = ($categories ? we_category::getCatSQLTail('', FILE_TABLE, true, $db, 'Category', true, $categories) : '');
 				if($dir != 0){
-					$workspace = id_to_path($dir, FILE_TABLE, $this->db);
-					$ws_where = " AND (" . FILE_TABLE . ".Path LIKE '" . $this->db->escape($workspace) . "/%' OR " . FILE_TABLE . ".Path='" . $this->db->escape($workspace) . "') ";
+					$workspace = id_to_path($dir, FILE_TABLE, $db);
+					$ws_where = ' AND (' . FILE_TABLE . ".Path LIKE '" . $db->escape($workspace) . "/%' OR " . FILE_TABLE . ".Path='" . $db->escape($workspace) . "') ";
+				} else{
+					$ws_where = '';
 				}
 
-				$query = 'SELECT DISTINCT ID FROM ' . FILE_TABLE . ' WHERE 1 ' . $ws_where . '  AND tblFile.IsFolder=0 AND tblFile.DocType="' . $this->db->escape($doctype) . '"' . $cat_sql;
+				$db->query('SELECT DISTINCT ID FROM ' . FILE_TABLE . ' WHERE 1 ' . $ws_where . '  AND tblFile.IsFolder=0 AND tblFile.DocType="' . $db->escape($doctype) . '"' . $cat_sql);
+				$selDocs = $db->getAll(true);
+			} elseif(defined('OBJECT_FILES_TABLE')){
+				$cat_sql = ' ' . ($categories ? we_category::getCatSQLTail('', OBJECT_FILES_TABLE, true, $db, 'Category', true, $categories) : '');
+				$where = $this->queryForAllowed(OBJECT_FILES_TABLE);
 
-				$this->db->query($query);
-				while($this->db->next_record()) {
-					$selDocs[] = $this->db->f("ID");
-				}
-			} else{
-				if(defined("OBJECT_FILES_TABLE")){
-
-					$catss = "";
-
-					if($categories){
-						$catss = $categories;
-					}
-
-					$where = $this->queryForAllowed(OBJECT_FILES_TABLE);
-
-					$q = "SELECT ID FROM " . OBJECT_FILES_TABLE . " WHERE IsFolder=0 AND TableID='" . $this->db->escape($classname) . "'" . ($catss != "" ? " AND Category IN (" . $catss . ");" : '') . $where . ';';
-					$this->db->query($q);
-					$selObjs = array();
-					while($this->db->next_record()) {
-						$selObjs[] = $this->db->f("ID");
-					}
-				}
+				$db->query('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE IsFolder=0 AND TableID=' . intval($classname) . $cat_sql . $where);
+				$selObjs = $db->getAll(true);
 			}
 		}
 	}

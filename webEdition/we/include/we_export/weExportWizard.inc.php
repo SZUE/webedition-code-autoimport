@@ -24,11 +24,6 @@
  */
 define("EXPORT_PATH", WE_INCLUDES_DIR . "we_export/");
 
-define("CSV_DELIMITER", ";");
-define("CSV_ENCLOSE", "\"");
-define("CSV_LINEEND", "\\n");
-define("CSV_FIELDS", "0");
-
 $yuiSuggest = & weSuggest::getInstance();
 
 class weExportWizard{
@@ -41,7 +36,7 @@ class weExportWizard{
 	var $loadFrame = "top.load";
 	var $bodyFrame = "top.body";
 	var $footerFrame = "top.footer";
-	var $exportVars = array();
+	var $exportVars;
 
 	function __construct($frameset = ""){
 		$this->setFrameset($frameset);
@@ -66,11 +61,11 @@ class weExportWizard{
 			"export_to" => "local",
 			"path" => "",
 			"filename" => "",
-			"csv_delimiter" => CSV_DELIMITER,
-			"csv_enclose" => CSV_ENCLOSE,
+			"csv_delimiter" => ';',
+			"csv_enclose" => '"',
 			"csv_lineend" => "windows",
 			"csv_fieldnames" => "",
-			"csv_fields" => CSV_FIELDS,
+			"csv_fields" => '0',
 			"cdata" => "true",
 			"RefTable" => array(),
 			"CurrentRef" => 0,
@@ -608,51 +603,48 @@ top.close();');
 
 		//set variables in top frame
 		$js = we_html_element::jsElement('
+function setLabelState(l,disable){
+	if(disable) document.getElementById(l).style.color = "grey";
+	else document.getElementById(l).style.color = "black";
+}
 
-			function setLabelState(l,disable){
-				if(disable) document.getElementById(l).style.color = "grey";
-				else document.getElementById(l).style.color = "black";
+function setState(a) {
+		if (document.getElementsByName(a)[0].checked == true) {
+			_new_state = false;
+		} else {
+			_new_state = true;
+		}
+		if(a=="_handle_templates"){
+			if(_new_state==true){
+				document.getElementsByName("handle_document_linked")[0].value = 0;
+				document.getElementsByName("handle_object_linked")[0].value = 0;
+
+				document.getElementsByName("_handle_document_linked")[0].checked = false;
+				document.getElementsByName("_handle_object_linked")[0].checked = false;
 			}
 
-			function setState(a) {
-					if (document.getElementsByName(a)[0].checked == true) {
-						_new_state = false;
-					} else {
-						_new_state = true;
-					}
-					if(a=="_handle_templates"){
-						if(_new_state==true){
-							document.getElementsByName("handle_document_linked")[0].value = 0;
-							document.getElementsByName("handle_object_linked")[0].value = 0;
+			document.getElementsByName("_handle_document_linked")[0].disabled = _new_state;
+			setLabelState("label__handle_document_linked",_new_state);
 
-							document.getElementsByName("_handle_document_linked")[0].checked = false;
-							document.getElementsByName("_handle_object_linked")[0].checked = false;
-						}
-
-						document.getElementsByName("_handle_document_linked")[0].disabled = _new_state;
-						setLabelState("label__handle_document_linked",_new_state);
-
-						document.getElementsByName("_handle_object_linked")[0].disabled = _new_state;
-						setLabelState("label__handle_object_linked",_new_state);
-					}
-					if(a=="_handle_classesfff"){
-						if(_new_state==true){
-							document.getElementsByName("handle_object_includes")[0].value = 0;
-							document.getElementsByName("_handle_object_includes")[0].checked = false;
-						}
-						document.getElementsByName("_handle_object_includes")[0].disabled = _new_state;
-						setLabelState("label__handle_object_includes",_new_state);
-
-						document.getElementsByName("link_object_depth")[0].disabled = _new_state;
-						setLabelState("label_link_object_depth",_new_state);
-
-
-					}
+			document.getElementsByName("_handle_object_linked")[0].disabled = _new_state;
+			setLabelState("label__handle_object_linked",_new_state);
+		}
+		if(a=="_handle_classesfff"){
+			if(_new_state==true){
+				document.getElementsByName("handle_object_includes")[0].value = 0;
+				document.getElementsByName("_handle_object_includes")[0].checked = false;
 			}
+			document.getElementsByName("_handle_object_includes")[0].disabled = _new_state;
+			setLabelState("label__handle_object_includes",_new_state);
 
-			' . $this->headerFrame . '.location="' . $this->frameset . '?pnt=header&step=4";
-			' . $this->footerFrame . '.location="' . $this->frameset . '?pnt=footer&step=4";
-		');
+			document.getElementsByName("link_object_depth")[0].disabled = _new_state;
+			setLabelState("label_link_object_depth",_new_state);
+
+
+		}
+}
+' . $this->headerFrame . '.location="' . $this->frameset . '?pnt=header&step=4";
+' . $this->footerFrame . '.location="' . $this->frameset . '?pnt=footer&step=4";');
 
 
 		$formattable = new we_html_table(array("cellpadding" => 2, "cellspacing" => 2, "border" => 0), 4, 1);
@@ -661,22 +653,22 @@ top.close();');
 		$formattable->setCol(2, 0, null, we_forms::checkboxWithHidden(($handle_object_includes ? true : false), "handle_object_includes", g_l('export', "[handle_object_includes]")));
 		$formattable->setCol(3, 0, null, we_forms::checkboxWithHidden(($handle_document_linked ? true : false), "handle_document_linked", g_l('export', "[handle_document_linked]")));
 
-		array_push($parts, array("headline" => g_l('export', "[handle_document_options]") . we_html_element::htmlBr() . g_l('export', "[handle_template_options]"), "html" => $formattable->getHtml(), "space" => $_space));
+		$parts[] = array("headline" => g_l('export', "[handle_document_options]") . we_html_element::htmlBr() . g_l('export', "[handle_template_options]"), "html" => $formattable->getHtml(), "space" => $_space);
 
 		$formattable = new we_html_table(array("cellpadding" => 2, "cellspacing" => 2, "border" => 0), 3, 1);
 		$formattable->setCol(0, 0, array("colspan" => "2"), we_forms::checkboxWithHidden(($handle_def_classes ? true : false), "handle_def_classes", g_l('export', "[handle_def_classes]")));
 		$formattable->setCol(1, 0, null, we_forms::checkboxWithHidden(($handle_object_embeds ? true : false), "handle_object_embeds", g_l('export', "[handle_object_embeds]")));
 		//$formattable->setCol(2,0,null,we_forms::checkboxWithHidden(($handle_class_defs ? true : false),"handle_class_defs",g_l('export',"[handle_class_defs]")));
 
-		array_push($parts, array("headline" => g_l('export', "[handle_object_options]") . we_html_element::htmlBr() . g_l('export', "[handle_classes_options]"), "html" => $formattable->getHtml(), "space" => $_space));
+		$parts[] = array("headline" => g_l('export', "[handle_object_options]") . we_html_element::htmlBr() . g_l('export', "[handle_classes_options]"), "html" => $formattable->getHtml(), "space" => $_space);
 
 		$formattable = new we_html_table(array("cellpadding" => 2, "cellspacing" => 2, "border" => 0), 2, 1);
 		$formattable->setCol(0, 0, null, we_forms::checkboxWithHidden(($handle_doctypes ? true : false), "handle_doctypes", g_l('export', "[handle_doctypes]")));
 		$formattable->setCol(1, 0, null, we_forms::checkboxWithHidden(($handle_categorys ? true : false), "handle_categorys", g_l('export', "[handle_categorys]")));
 
-		array_push($parts, array("headline" => g_l('export', "[handle_doctype_options]"), "html" => $formattable->getHtml(), "space" => $_space));
+		$parts[] = array("headline" => g_l('export', "[handle_doctype_options]"), "html" => $formattable->getHtml(), "space" => $_space);
 
-		array_push($parts, array("headline" => g_l('export', "[export_depth]"), "html" => we_html_element::htmlLabel(null, g_l('export', "[to_level]")) . we_html_tools::getPixel(5, 5) . we_html_tools::htmlTextInput("export_depth", 10, $export_depth, "", "", "text", 50), "space" => $_space));
+		$parts[] = array("headline" => g_l('export', "[export_depth]"), "html" => we_html_element::htmlLabel(null, g_l('export', "[to_level]")) . we_html_tools::getPixel(5, 5) . we_html_tools::htmlTextInput("export_depth", 10, $export_depth, "", "", "text", 50), "space" => $_space);
 
 		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				we_html_element::htmlHead(STYLESHEET . $js) .
@@ -706,46 +698,48 @@ top.close();');
 		$csv_lineend = $this->exportVars["csv_lineend"];
 		$csv_fields = $this->exportVars["csv_fields"];
 
-		if($filename == "")
-			$filename = "weExport_" . time() . ($extype == "gxml" ? ".xml" : ".csv");
-
-		//set variables in top frame
-		$js = we_html_element::jsElement('
-			' . $this->headerFrame . '.location="' . $this->frameset . '?pnt=header&step=7";
-			' . $this->footerFrame . '.location="' . $this->frameset . '?pnt=footer&step=7";
-		');
-
-		array_push($parts, array("headline" => g_l('export', "[filename]"), "html" => we_html_tools::getPixel(5, 5) . we_html_tools::htmlTextInput("filename", $_input_size, $filename, "", "", "text", 260), "space" => $_space));
-
-		//	Filetype
-		if($extype == "csv"){
-			$csv_input_size = 3;
-
-			$fileformattable = new we_html_table(array("cellpadding" => 2, "cellspacing" => 2, "border" => 0), 4, 1);
-
-			$_file_encoding = new we_html_select(array("name" => "csv_lineend", "size" => "1", "class" => "weSelect", "style" => "width: 254px"));
-			$_file_encoding->addOption("windows", g_l('export', "[windows]"));
-			$_file_encoding->addOption("unix", g_l('export', "[unix]"));
-			$_file_encoding->addOption("mac", g_l('export', "[mac]"));
-			$_file_encoding->selectOption($csv_lineend);
-
-			$fileformattable->setCol(0, 0, array("class" => "defaultfont"), g_l('export', "[csv_lineend]") . "<br>" . $_file_encoding->getHtml());
-			$fileformattable->setColContent(1, 0, $this->getHTMLChooser("csv_delimiter", $csv_delimiter, array(";" => g_l('export', "[semicolon]"), "," => g_l('export', "[comma]"), ":" => g_l('export', "[colon]"), "\\t" => g_l('export', "[tab]"), " " => g_l('export', "[space]")), g_l('export', "[csv_delimiter]")));
-			$fileformattable->setColContent(2, 0, $this->getHTMLChooser("csv_enclose", $csv_enclose, array("\"" => g_l('export', "[double_quote]"), "'" => g_l('export', "[single_quote]")), g_l('export', "[csv_enclose]")));
-
-			$fileformattable->setColContent(3, 0, we_forms::checkbox(1, true, "csv_fieldnames", g_l('export', "[csv_fieldnames]")));
-
-			array_push($parts, array("headline" => g_l('export', "[csv_params]"), "html" => $fileformattable->getHtml(), "space" => $_space));
+		if($filename == ""){
+			$filename = "weExport_" . date('d_m_Y_H_i') . ($extype == "gxml" ? ".xml" : ".csv");
 		}
 
-		if($extype == "gxml"){
-			$table = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 3, 1);
+		//set variables in top frame
+		$js = we_html_element::jsElement(
+				$this->headerFrame . '.location="' . $this->frameset . '?pnt=header&step=7";' .
+				$this->footerFrame . '.location="' . $this->frameset . '?pnt=footer&step=7";');
 
-			$table->setColContent(1, 0, we_html_tools::getPixel(1, 10));
-			$table->setColContent(0, 0, we_forms::radiobutton("true", ($cdata == "true"), "cdata", g_l('export', "[export_xml_cdata]"), true, "defaultfont", $this->topFrame . ".cdata='true'"));
-			$table->setColContent(2, 0, we_forms::radiobutton("false", ($cdata == "false"), "cdata", g_l('export', "[export_xml_entities]"), true, "defaultfont", $this->topFrame . ".cdata='false'"));
+		$parts[] = array("headline" => g_l('export', "[filename]"), "html" => we_html_tools::getPixel(5, 5) . we_html_tools::htmlTextInput("filename", $_input_size, $filename, "", "", "text", 260), "space" => $_space);
 
-			$parts[] = array("headline" => g_l('export', "[cdata]"), "html" => $table->getHtml(), "space" => $_space);
+		//	Filetype
+		switch($extype){
+			case "csv":
+				$csv_input_size = 3;
+
+				$fileformattable = new we_html_table(array("cellpadding" => 2, "cellspacing" => 2, "border" => 0), 4, 1);
+
+				$_file_encoding = new we_html_select(array("name" => "csv_lineend", "size" => "1", "class" => "weSelect", "style" => "width: 254px"));
+				$_file_encoding->addOption("windows", g_l('export', "[windows]"));
+				$_file_encoding->addOption("unix", g_l('export', "[unix]"));
+				$_file_encoding->addOption("mac", g_l('export', "[mac]"));
+				$_file_encoding->selectOption($csv_lineend);
+
+				$fileformattable->setCol(0, 0, array("class" => "defaultfont"), g_l('export', "[csv_lineend]") . "<br>" . $_file_encoding->getHtml());
+				$fileformattable->setColContent(1, 0, $this->getHTMLChooser("csv_delimiter", $csv_delimiter, array(";" => g_l('export', "[semicolon]"), "," => g_l('export', "[comma]"), ":" => g_l('export', "[colon]"), "\\t" => g_l('export', "[tab]"), " " => g_l('export', "[space]")), g_l('export', "[csv_delimiter]")));
+				$fileformattable->setColContent(2, 0, $this->getHTMLChooser("csv_enclose", $csv_enclose, array("\"" => g_l('export', "[double_quote]"), "'" => g_l('export', "[single_quote]")), g_l('export', "[csv_enclose]")));
+
+				$fileformattable->setColContent(3, 0, we_forms::checkbox(1, true, "csv_fieldnames", g_l('export', "[csv_fieldnames]")));
+
+				$parts[] = array("headline" => g_l('export', "[csv_params]"), "html" => $fileformattable->getHtml(), "space" => $_space);
+				break;
+
+			case "gxml":
+				$table = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 3, 1);
+
+				$table->setColContent(1, 0, we_html_tools::getPixel(1, 10));
+				$table->setColContent(0, 0, we_forms::radiobutton("true", ($cdata == "true"), "cdata", g_l('export', "[export_xml_cdata]"), true, "defaultfont", $this->topFrame . ".cdata='true'"));
+				$table->setColContent(2, 0, we_forms::radiobutton("false", ($cdata == "false"), "cdata", g_l('export', "[export_xml_entities]"), true, "defaultfont", $this->topFrame . ".cdata='false'"));
+
+				$parts[] = array("headline" => g_l('export', "[cdata]"), "html" => $table->getHtml(), "space" => $_space);
+				break;
 		}
 
 		$table = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 3, 1);
@@ -1091,10 +1085,6 @@ top.close();');
 					break;
 				case "export":
 					$xmlExIm = new weXMLExIm();
-					$finalDocs = array();
-					$finalTempl = array();
-					$finalObjs = array();
-					$finalClasses = array();
 
 					$file_format = isset($_REQUEST["file_format"]) ? $_REQUEST["file_format"] : "";
 					$file_name = isset($_REQUEST["filename"]) ? $_REQUEST["filename"] : "";
@@ -1116,14 +1106,12 @@ top.close();');
 					$csv_fieldnames = $this->exportVars["csv_fieldnames"];
 					$cdata = $this->exportVars["cdata"];
 
-
 					$finalDocs = makeArrayFromCSV($this->exportVars["selDocs"]);
 					$finalTempl = makeArrayFromCSV($this->exportVars["selTempl"]);
 					$finalObjs = makeArrayFromCSV($this->exportVars["selObjs"]);
 					$finalClasses = makeArrayFromCSV($this->exportVars["selClasses"]);
 
-					$xmlExIm->getSelectedItems($this->exportVars["selection"], $extype, $this->exportVars["art"], $this->exportVars["type"], $this->exportVars["doctype"], $this->exportVars["classname"], $this->exportVars["categories"], $this->exportVars["dir"], $finalDocs, $finalTempl, $finalObjs, $finalClasses
-					);
+					$xmlExIm->getSelectedItems($this->exportVars["selection"], $extype, $this->exportVars["art"], $this->exportVars["type"], $this->exportVars["doctype"], $this->exportVars["classname"], $this->exportVars["categories"], $this->exportVars["dir"], $finalDocs, $finalTempl, $finalObjs, $finalClasses);
 
 
 

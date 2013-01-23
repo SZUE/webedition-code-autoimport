@@ -26,15 +26,17 @@ class weXMLImport extends weXMLExIm{
 
 	var $nodehierarchy = array();
 
-	function weXMLImport(){
+	function __construct(){
 		$this->RefTable = new RefTable();
 		$this->destination[strtolower(FILE_TABLE)] = 0;
 		$this->destination[strtolower(TEMPLATES_TABLE)] = 0;
 		$this->destination[strtolower(DOC_TYPES_TABLE)] = 0;
-		if(defined("OBJECT_TABLE"))
+		if(defined("OBJECT_TABLE")){
 			$this->destination[strtolower(OBJECT_TABLE)] = 0;
-		if(defined("OBJECT_FILES_TABLE"))
+		}
+		if(defined("OBJECT_FILES_TABLE")){
 			$this->destination[strtolower(OBJECT_FILES_TABLE)] = 0;
+		}
 	}
 
 	function import($chunk_file){
