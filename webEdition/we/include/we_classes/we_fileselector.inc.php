@@ -431,8 +431,8 @@ function queryString(what,id,o){
 
 	function printFramesetJSFunctioWriteBody(){
 		?><script type="text/javascript"><!--
-			function writeBody(d){
-				d.open();
+					function writeBody(d){
+						d.open();
 		<?php
 		echo self::makeWriteDoc(we_html_tools::getHtmlTop('', '', '4Trans', true) . STYLESHEET_SCRIPT . '
 </head>
@@ -492,7 +492,7 @@ function clearEntries(){
 	function printFramesetJSFunctionAddEntries(){
 		$ret = '';
 		while($this->next_record()) {
-			$ret.= 'addEntry(' . $this->f("ID") . ',"' . $this->f("Icon") . '","' . $this->f("Text") . '",' . ($this->f("IsFolder") | 0) . ',"' . $this->f("Path") . '");';
+			$ret.= 'addEntry(' . $this->f("ID") . ',"' . $this->f("Icon") . '","' . addcslashes($this->f("Text"), '"') . '",' . ($this->f("IsFolder") | 0) . ',"' . addcslashes($this->f("Path"), '"') . '");';
 		}
 		return we_html_element::jsElement($ret);
 	}

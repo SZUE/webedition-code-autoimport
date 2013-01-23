@@ -206,9 +206,7 @@ class weCustomerTreeLoader{
 			$_order = '';
 		}
 
-		$query = "SELECT $_formatFields ID,ParentID,Path,Text,Icon,IsFolder,Forename,Surname" . (count($select) ? "," . implode(",", $select) : "") . " FROM " . $table . " GROUP BY " . $grp . (count($grouparr) ? ($level != 0 ? ",ID" : "") : "ID") . (count($havingarr) ? " HAVING " . implode(" AND ", $havingarr) : "") . " ORDER BY " . implode(",", $orderarr) . (!empty($_order) ? (',' . $_order) : '' ) . (($level == $levelcount && $segment) ? " LIMIT $offset,$segment;" : ";");
-
-		$db->query($query);
+		$db->query("SELECT $_formatFields ID,ParentID,Path,Text,Icon,IsFolder,Forename,Surname" . (count($select) ? "," . implode(",", $select) : "") . " FROM " . $table . " GROUP BY " . $grp . (count($grouparr) ? ($level != 0 ? ",ID" : "") : "ID") . (count($havingarr) ? " HAVING " . implode(" AND ", $havingarr) : "") . " ORDER BY " . implode(",", $orderarr) . (!empty($_order) ? (',' . $_order) : '' ) . (($level == $levelcount && $segment) ? " LIMIT $offset,$segment" : ''));
 
 		$sortarr = array();
 		$foo = array();

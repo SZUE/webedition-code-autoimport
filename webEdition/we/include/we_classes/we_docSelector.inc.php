@@ -317,7 +317,7 @@ function entry(ID,icon,text,isFolder,path,modDate,contentType,published,title) {
 				$title = strip_tags(str_replace(array('\\', '"', "\n",), array('\\\\', '\"', ' '), $title));
 				$title = $title == '&nbsp;' ? '-' : oldHtmlspecialchars($title);
 				$published = ($this->table == FILE_TABLE || (defined("OBJECT_FILES_TABLE") && $this->table == OBJECT_FILES_TABLE) ? $this->f("Published") : 1);
-				$ret.= 'addEntry(' . $this->f("ID") . ',"' . $this->f("Icon") . '","' . $this->f("Text") . '",' . $this->f("IsFolder") . ',"' . $this->f("Path") . '","' . date(g_l('date', '[format][default]'), $this->f("ModDate")) . '","' . $this->f("ContentType") . '","' . $published . '","' . $title . '");';
+				$ret.= 'addEntry(' . $this->f("ID") . ',"' . $this->f("Icon") . '","' . addcslashes($this->f("Text"),'"') . '",' . $this->f("IsFolder") . ',"' . addcslashes($this->f("Path"),'"') . '","' . date(g_l('date', '[format][default]'), $this->f("ModDate")) . '","' . $this->f("ContentType") . '","' . $published . '","' . addcslashes($title,'"') . '");';
 			}
 		}
 		return we_html_element::jsElement($ret);
