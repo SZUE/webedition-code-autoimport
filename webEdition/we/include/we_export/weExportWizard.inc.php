@@ -402,17 +402,16 @@ top.close();');
 	function getHTMLStep2b(){
 		$_space = 10;
 		$art = $this->exportVars["art"];
-		$js = we_html_element::jsElement('
-					' . $this->headerFrame . '.location="' . $this->frameset . '?pnt=header&step=2";
-					' . $this->footerFrame . '.location="' . $this->frameset . '?pnt=footer&step=2";
-		');
+		$js = we_html_element::jsElement(
+				$this->headerFrame . '.location="' . $this->frameset . '?pnt=header&step=2";' .
+				$this->footerFrame . '.location="' . $this->frameset . '?pnt=footer&step=2";');
 
-		$parts = array();
-		array_push($parts, array("headline" => "", "html" => we_forms::radiobutton("docs", ($art == "docs" ? true : ($art != "objects" ? true : false)), "art", g_l('export', "[documents]"), true, "defaultfont", $this->topFrame . ".art='docs'"), "space" => $_space, "noline" => "1"));
+		$parts = array(
+			array("headline" => "", "html" => we_forms::radiobutton("docs", ($art == "docs" ? true : ($art != "objects" ? true : false)), "art", g_l('export', "[documents]"), true, "defaultfont", $this->topFrame . ".art='docs'"), "space" => $_space, "noline" => "1")
+		);
 		if(defined("OBJECT_FILES_TABLE")){
-			array_push($parts, array("headline" => "", "html" => we_forms::radiobutton("objects", ($art == "objects" ? true : ($art != "docs" ? true : false)), "art", g_l('export', "[objects]"), true, "defaultfont", $this->topFrame . ".art='objects'"), "space" => $_space, "noline" => "1"));
+			$parts[] = array("headline" => "", "html" => we_forms::radiobutton("objects", ($art == "objects" ? true : ($art != "docs" ? true : false)), "art", g_l('export', "[objects]"), true, "defaultfont", $this->topFrame . ".art='objects'"), "space" => $_space, "noline" => "1");
 		}
-
 
 		$hiddens = we_html_element::htmlHidden(array("name" => "pnt", "value" => "body")) .
 			we_html_element::htmlHidden(array("name" => "selection", "value" => "manual")) .
@@ -429,21 +428,18 @@ top.close();');
 	}
 
 	function getHTMLStep3(){
-		$js = "";
 		$art = $this->exportVars["art"];
 
-		if($art == "objects" && defined("OBJECT_FILES_TABLE")){
-			$js = we_html_element::jsElement('
-					' . $this->topFrame . '.table="' . OBJECT_FILES_TABLE . '";
-				');
-		} else if($art == "docs"){
-			$js = we_html_element::jsElement('
-					' . $this->topFrame . '.table="' . FILE_TABLE . '";
-				');
-		}
+		$js = ($art == "objects" && defined("OBJECT_FILES_TABLE") ?
+				we_html_element::jsElement($this->topFrame . '.table="' . OBJECT_FILES_TABLE . '";') :
+				($art == "docs" ?
+					we_html_element::jsElement($this->topFrame . '.table="' . FILE_TABLE . '";') :
+					'')
+			);
 
-		$js.=we_html_element::jsElement('
-				' . $this->footerFrame . '.location="' . $this->frameset . '?pnt=footer&step=3";
+
+		$js.=we_html_element::jsElement(
+				$this->footerFrame . '.location="' . $this->frameset . '?pnt=footer&step=3";
 				setTimeout("' . $this->topFrame . '.startTree()",100);
 
 			function populate(id,table){
@@ -485,40 +481,31 @@ top.close();');
 
 				setTimeout("' . $this->topFrame . '.startTree()",100);
 				document.getElementById("' . FILE_TABLE . '").style.backgroundColor=c0;
-				document.getElementById("' . TEMPLATES_TABLE . '").style.backgroundColor=c1;
-				' . (defined("OBJECT_FILES_TABLE") ? 'document.getElementById("' . OBJECT_FILES_TABLE . '").style.backgroundColor=c2;' : '' ) . '
-				' . (defined("OBJECT_TABLE") ? 'document.getElementById("' . OBJECT_TABLE . '").style.backgroundColor=c3;' : '') . '
+				document.getElementById("' . TEMPLATES_TABLE . '").style.backgroundColor=c1;' .
+				(defined("OBJECT_FILES_TABLE") ? 'document.getElementById("' . OBJECT_FILES_TABLE . '").style.backgroundColor=c2;' : '' ) .
+				(defined("OBJECT_TABLE") ? 'document.getElementById("' . OBJECT_TABLE . '").style.backgroundColor=c3;' : '') . '
 
 				document.getElementById("' . FILE_TABLE . '").style.fontWeight=fw0;
-				document.getElementById("' . TEMPLATES_TABLE . '").style.fontWeight=fw1;
-				' . (defined("OBJECT_FILES_TABLE") ? 'document.getElementById("' . OBJECT_FILES_TABLE . '").style.fontWeight=fw2;' : '' ) . '
-				' . (defined("OBJECT_TABLE") ? 'document.getElementById("' . OBJECT_TABLE . '").style.fontWeight=fw3;' : '') . '
+				document.getElementById("' . TEMPLATES_TABLE . '").style.fontWeight=fw1;' .
+				(defined("OBJECT_FILES_TABLE") ? 'document.getElementById("' . OBJECT_FILES_TABLE . '").style.fontWeight=fw2;' : '' ) .
+				(defined("OBJECT_TABLE") ? 'document.getElementById("' . OBJECT_TABLE . '").style.fontWeight=fw3;' : '') . '
 			}
 
 			function we_submit(){
 				document.we_form.selDocs.value=' . $this->topFrame . '.SelectedItems["' . FILE_TABLE . '"].join(",");
-				document.we_form.selTempl.value=' . $this->topFrame . '.SelectedItems["' . TEMPLATES_TABLE . '"].join(",");
-				' . (defined("OBJECT_FILES_TABLE") ? 'document.we_form.selObjs.value=' . $this->topFrame . '.SelectedItems["' . OBJECT_FILES_TABLE . '"].join(",");' : '') . '
-				' . (defined("OBJECT_TABLE") ? 'document.we_form.selClasses.value=' . $this->topFrame . '.SelectedItems["' . OBJECT_TABLE . '"].join(",");' : '') . '
+				document.we_form.selTempl.value=' . $this->topFrame . '.SelectedItems["' . TEMPLATES_TABLE . '"].join(",");' .
+				(defined("OBJECT_FILES_TABLE") ? 'document.we_form.selObjs.value=' . $this->topFrame . '.SelectedItems["' . OBJECT_FILES_TABLE . '"].join(",");' : '') .
+				(defined("OBJECT_TABLE") ? 'document.we_form.selClasses.value=' . $this->topFrame . '.SelectedItems["' . OBJECT_TABLE . '"].join(",");' : '') . '
 				document.we_form.submit();
-			}
+			}');
 
-		');
-
-		$parts = array();
 
 		$style_code = "";
-		if(isset($this->Tree->styles))
-			foreach($this->Tree->styles as $st)
+		if(isset($this->Tree->styles)){
+			foreach($this->Tree->styles as $st){
 				$style_code.=$st . "\n";
-
-		array_push($parts, array(
-			"headline" => "",
-			"html" => we_html_tools::htmlAlertAttentionBox(g_l('export', "[select_export]"), 2, 540),
-			"space" => 0,
-			"noline" => 1
-			)
-		);
+			}
+		}
 
 		$header = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => "0"), 2, 9);
 		/* 		if($this->exportVars["extype"]=="wxml"){
@@ -537,10 +524,17 @@ top.close();');
 		  $header->setCol(1,7,array("id"=>OBJECT_TABLE,"class"=>"header_small","bgcolor"=>"#DDDDDD","onclick"=>"setHead(3);","style"=>"{cursor: pointer;}"),we_html_tools::getPixel(5,2).g_l('export',"[classes]").we_html_tools::getPixel(5,2));
 		  $header->setCol(1,8,array("bgcolor"=>"grey"),we_html_tools::getPixel(2,20));
 		  } */
-		array_push($parts, array(
-			"headline" => "",
-			"html" => $header->getHtml() . we_html_element::htmlDiv(array("id" => "treetable", "class" => "blockwrapper", "style" => "width: 540px; height: 250px; border:1px #dce6f2 solid;"), ""),
-			"space" => 0
+		$parts = array(
+			array(
+				"headline" => "",
+				"html" => we_html_tools::htmlAlertAttentionBox(g_l('export', "[select_export]"), 2, 540),
+				"space" => 0,
+				"noline" => 1
+			),
+			array(
+				"headline" => "",
+				"html" => $header->getHtml() . we_html_element::htmlDiv(array("id" => "treetable", "class" => "blockwrapper", "style" => "width: 540px; height: 250px; border:1px #dce6f2 solid;"), ""),
+				"space" => 0
 			)
 		);
 
