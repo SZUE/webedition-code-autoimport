@@ -22,7 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 class weXMLExport extends weXMLExIm{
 
 	var $db;
@@ -86,14 +85,12 @@ class weXMLExport extends weXMLExIm{
 
 		fwrite($fh, weBackup::backupMarker . "\n");
 
-		if($classname == "weTableItem" && $export_binary){
-			if(strtolower($doc->table) == strtolower(FILE_TABLE)){
-				if($doc->ContentType == "image/*" || stripos($doc->ContentType, "application/") !== false){
-					$bin = weContentProvider::getInstance("weBinary", $doc->ID);
-					$attribute = (isset($bin->attribute_slots) ? $bin->attribute_slots : array());
-					weContentProvider::binary2file($bin, $fh);
-				}
-			}
+		if($classname == "weTableItem" && $export_binary &&
+			strtolower($doc->table) == strtolower(FILE_TABLE) &&
+			($doc->ContentType == "image/*" || stripos($doc->ContentType, "application/") !== false)){
+			$bin = weContentProvider::getInstance("weBinary", $doc->ID);
+			$attribute = (isset($bin->attribute_slots) ? $bin->attribute_slots : array());
+			weContentProvider::binary2file($bin, $fh);
 		}
 
 		fclose($fh);
@@ -119,36 +116,22 @@ class weXMLExport extends weXMLExIm{
 				}
 			}
 		} elseif($type == "doctype"){
-			if($categories){
-				$catids = makeCSVFromArray(makeArrayFromCSV($categories));
-				$this->db->query('SELECT Path FROM ' . CATEGORY_TABLE . ' WHERE ID IN (' . $catids . ')');
-				while($this->db->next_record()) {
-					$cats[] = $this->db->f("Path");
-				}
-				$catss = makeCSVFromArray($cats);
-			} else{
-				$catss = '';
-			}
-
-			$cat_sql = ($this->cats ? we_category::getCatSQLTail($catss, FILE_TABLE, true, $this->db) : '');
-			$ws_where = '';
+			$cat_sql = ($categories ? we_category::getCatSQLTail('', FILE_TABLE, true, $this->db, 'Category', true, $categories) : '');
 			if($dir != 0){
 				$workspace = id_to_path($dir, FILE_TABLE, $this->db);
 				$ws_where = ' AND (' . FILE_TABLE . ".Path LIKE '" . $this->db->escape($workspace) . "/%' OR " . FILE_TABLE . ".Path='" . $this->db->escape($workspace) . "')";
+			} else{
+				$ws_where = '';
 			}
 
 			$this->db->query('SELECT distinct ID FROM ' . FILE_TABLE . ' WHERE 1 ' . $ws_where . '  AND ' . FILE_TABLE . '.IsFolder=0 AND ' . FILE_TABLE . '.DocType="' . $this->db->escape($doctype) . '"' . $cat_sql);
-			while($this->db->next_record()) {
-				$selDocs[] = $this->db->f("ID");
-			}
+			$selDocs = $this->db->getAll(true);
 		} elseif(defined("OBJECT_FILES_TABLE")){
 			$where = $this->queryForAllowed(OBJECT_FILES_TABLE);
+			$cat_sql = ' ' . ($categories ? we_category::getCatSQLTail('', OBJECT_FILES_TABLE, true, $db, 'Category', true, $categories) : '');
 
-			$this->db->query('SELECT ID FROM ' . OBJECT_FILES_TABLE . " WHERE IsFolder=0 AND TableID='" . $this->db->escape($classname) . "'" . ($categories != '' ? ' AND Category IN (' . $categories . ')' : '') . $where);
-			$selObjs = array();
-			while($this->db->next_record()) {
-				$selObjs[] = $this->db->f("ID");
-			}
+			$this->db->query('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE IsFolder=0 AND TableID=' . intval($classname) . $cat_sql . $where);
+			$selObjs = $this->db->getAll(true);
 		}
 
 		foreach($selDocs as $k => $v){
@@ -215,7 +198,7 @@ class weXMLExport extends weXMLExIm{
 			}
 		}
 
-		return makeOwnersSql() . ( $wsQuery ? 'AND (' . $wsQuery . ')' : '');
+		return makeOwnersSql() . ( $wsQuery ? 'OR (' . $wsQuery . ')' : '');
 	}
 
 	function getIDs($selIDs, $table, $with_dirs = false){
