@@ -78,7 +78,7 @@ $openFolders = (isset($_REQUEST['we_cmd'][3]) ? explode(",", $_REQUEST['we_cmd']
 function getQueryParents($path){
 
 	$out = array();
-	while($path != "/" && $path) {
+	while($path != '/' && $path) {
 		$out[] = 'Path="' . $path . '"';
 		$path = dirname($path);
 	}
@@ -86,7 +86,7 @@ function getQueryParents($path){
 }
 
 function getItems($ParentID){
-	if($GLOBALS['table'] == ""){
+	if($GLOBALS['table'] == ''){
 		$GLOBALS['table'] = isset($_REQUEST['we_cmd'][1]) ? $_REQUEST['we_cmd'][1] : FILE_TABLE;
 	}
 
@@ -101,12 +101,12 @@ function getItems($ParentID){
 				return 0;
 			}
 			break;
-		case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : -1):
+		case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
 			if(!we_hasPerm("CAN_SEE_OBJECTFILES")){
 				return 0;
 			}
 			break;
-		case (defined('OBJECT_TABLE') ? OBJECT_TABLE : -2):
+		case (defined('OBJECT_TABLE') ? OBJECT_TABLE : 'OBJECT_TABLE'):
 			if(!we_hasPerm("CAN_SEE_OBJECTS")){
 				return 0;
 			}
