@@ -475,7 +475,6 @@ if(isset($_REQUEST['we_cmd'][0])){
 			$saveBut = we_button::create_button('save', "javascript:we_submit();");
 			$cancelBut = we_button::create_button('cancel', "javascript:self.close();");
 
-			$parts = array();
 
 			$val = '';
 
@@ -492,21 +491,23 @@ if(isset($_REQUEST['we_cmd'][0])){
 			}
 
 			// make input field, for name or textfield
-			$parts[] = array(
-				'headline' => g_l('modules_shop', '[field_name]'),
-				'html' => $fieldHtml,
-				'space' => 120,
-				'noline' => 1
-			);
-			$parts[] = array(
-				'headline' => g_l('modules_shop', '[field_value]'),
-				'html' => '<textarea name="cartfieldvalue" style="width: 350; height: 150">' . $val . '</textarea>',
-				'space' => 120
+			$parts = array(
+				array(
+					'headline' => g_l('modules_shop', '[field_name]'),
+					'html' => $fieldHtml,
+					'space' => 120,
+					'noline' => 1
+				),
+				array(
+					'headline' => g_l('modules_shop', '[field_value]'),
+					'html' => '<textarea name="cartfieldvalue" style="width: 350; height: 150">' . $val . '</textarea>',
+					'space' => 120
+				)
 			);
 
-			print we_multiIconBox::getHTML("", "100%", $parts, 30, we_button::position_yes_no_cancel($saveBut, '', $cancelBut), -1, "", "", false, g_l('modules_shop', '[add_shop_field]'));
+			print we_multiIconBox::getHTML('', '100%', $parts, 30, we_button::position_yes_no_cancel($saveBut, '', $cancelBut), -1, '', '', false, g_l('modules_shop', '[add_shop_field]'));
 			unset($saveBut);
-			unset($canelBut);
+			unset($cancelBut);
 			unset($parts);
 			unset($val);
 			unset($fieldHtml);
@@ -514,7 +515,6 @@ if(isset($_REQUEST['we_cmd'][0])){
 				</form></body>
 </html>';
 			exit;
-			break;
 
 		case 'save_shop_cart_custom_field':
 
@@ -549,7 +549,6 @@ if(isset($_REQUEST['we_cmd'][0])){
 			unset($serialOrder);
 			unset($strSerialOrder);
 			exit;
-			break;
 
 		case 'edit_shipping_cost':
 			$shopVats = weShopVats::getAllShopVATs();
@@ -885,7 +884,6 @@ if(isset($_REQUEST["article"])){
 		$GLOBALS['DB_WE']->query('SELECT strSerial FROM ' . SHOP_TABLE . ' WHERE IntID = ' . $GLOBALS['DB_WE']->escape($_REQUEST["article"]));
 
 		if($GLOBALS['DB_WE']->num_rows() == 1){
-
 			$GLOBALS['DB_WE']->next_record();
 
 			$strSerial = $GLOBALS['DB_WE']->f('strSerial');
@@ -935,8 +933,8 @@ if(!isset($letzerartikel)){ // order has still articles - get them all
 		$Price[] = str_replace(',', '.', $GLOBALS['DB_WE']->f("Price")); // replace , by . for float values
 	}
 	if(!isset($ArticleId)){
-		echo we_html_element::jsElement('parent.parent.frames.shop_header_icons.location.reload();') .
-		'</head>
+		echo we_html_element::jsElement('parent.parent.frames.shop_header_icons.location.reload();') .'
+	</head>
 	<body class="weEditorBody" onunload="doUnload()">
 	<table border="0" cellpadding="0" cellspacing="2" width="300">
       <tr>
@@ -956,7 +954,6 @@ if(!isset($letzerartikel)){ // order has still articles - get them all
 
 		// first unserialize order-data
 		if(!empty($SerialOrder[0])){
-
 			$orderData = @unserialize($SerialOrder[0]);
 			$customCartFields = isset($orderData[WE_SHOP_CART_CUSTOM_FIELD]) ? $orderData[WE_SHOP_CART_CUSTOM_FIELD] : array();
 		} else{
@@ -979,29 +976,26 @@ if(!isset($letzerartikel)){ // order has still articles - get them all
 	$customerFieldTable = '';
 
 	// determine all fields for order head
-
-
 	$fl = 0;
-
 
 	// first show fields Forename and surname
 	if(isset($_customer['Forename'])){
-		$customerFieldTable .=
-			'	<tr height="25">
-											<td class="defaultfont" width="86" valign="top" height="25">' . g_l('modules_customer', '[Forname]') . ':</td>
-											<td class="defaultfont" valign="top" width="40" height="25"></td>
-											<td width="20" height="25"></td>
-											<td class="defaultfont" valign="top" colspan="6" height="25">' . $_customer['Forename'] . '</td>
-				</tr>';
+		$customerFieldTable .='
+<tr height="25">
+	<td class="defaultfont" width="86" valign="top" height="25">' . g_l('modules_customer', '[Forname]') . ':</td>
+	<td class="defaultfont" valign="top" width="40" height="25"></td>
+	<td width="20" height="25"></td>
+	<td class="defaultfont" valign="top" colspan="6" height="25">' . $_customer['Forename'] . '</td>
+</tr>';
 	}
 	if(isset($_customer['Surname'])){
-		$customerFieldTable .=
-			'	<tr height="25">
-											<td class="defaultfont" width="86" valign="top" height="25">' . g_l('modules_customer', '[Surname]') . ':</td>
-											<td class="defaultfont" valign="top" width="40" height="25"></td>
-											<td width="20" height="25"></td>
-											<td class="defaultfont" valign="top" colspan="6" height="25">' . $_customer['Surname'] . '</td>
-				</tr>';
+		$customerFieldTable .='
+<tr height="25">
+	<td class="defaultfont" width="86" valign="top" height="25">' . g_l('modules_customer', '[Surname]') . ':</td>
+	<td class="defaultfont" valign="top" width="40" height="25"></td>
+	<td width="20" height="25"></td>
+	<td class="defaultfont" valign="top" colspan="6" height="25">' . $_customer['Surname'] . '</td>
+</tr>';
 	}
 
 	foreach($_customer as $key => $value){
@@ -1013,72 +1007,73 @@ if(!isset($letzerartikel)){ // order has still articles - get them all
 			if($key == $CLFields['languageField'] && $CLFields['languageFieldIsISO']){
 				$value = g_l('countries', '[' . $value . ']');
 			}
-			$customerFieldTable .=
-				'	<tr height="25">
-											<td class="defaultfont" width="86" valign="top" height="25">' . $key . ':</td>
-											<td class="defaultfont" valign="top" width="40" height="25"></td>
-											<td width="20" height="25"></td>
-											<td class="defaultfont" valign="top" colspan="6" height="25">' . $value . '</td>
-				</tr>
-											';
+			$customerFieldTable .='
+<tr height="25">
+	<td class="defaultfont" width="86" valign="top" height="25">' . $key . ':</td>
+	<td class="defaultfont" valign="top" width="40" height="25"></td>
+	<td width="20" height="25"></td>
+	<td class="defaultfont" valign="top" colspan="6" height="25">' . $value . '</td>
+</tr>';
 		}
 	}
 
 
 
-	$orderDataTable = '<table cellpadding="0" cellspacing="0" border="0" width="99%" class="defaultfont">';
+	$orderDataTable = '
+<table cellpadding="0" cellspacing="0" border="0" width="99%" class="defaultfont">';
 	foreach(weShopStatusMails::$StatusFields as $field){
 		if(!$weShopStatusMails->FieldsHidden[$field]){
 			$EMailhandler = $weShopStatusMails->getEMailHandlerCode(substr($field, 4), $_REQUEST[$field]);
-			$orderDataTable .= '<tr height="25">
-			<td class="defaultfont" width="86" valign="top" height="25">' . ($field == 'DateOrder' ? g_l('modules_shop', '[bestellnr]') : '') . '</td>
-			<td class="defaultfont" valign="top" width="40" height="25"><b>' . ($field == 'DateOrder' ? $_REQUEST['bid'] : '') . '</b></td>
-			<td width="20" height="25">' . we_html_tools::getPixel(34, 15) . '</td>
-			<td width="98" class="defaultfont" height="25">' . $weShopStatusMails->FieldsText[$field] . '</td>
-			<td height="25">' . we_html_tools::getPixel(14, 15) . '</td>
-			<td width="14" class="defaultfont" align="right" height="25">
-				<div id="div_Calendar_' . $field . '">' . (($_REQUEST[$field] == $dateform) ? '-' : $_REQUEST[$field]) . '</div>
-				<input type="hidden" name="' . $field . '" id="hidden_Calendar_' . $field . '" value="' . (($_REQUEST[$field] == $dateform) ? '-' : $_REQUEST[$field]) . '" />
-			</td>
-			<td height="25">' . we_html_tools::getPixel(10, 15) . '</td>
-			<td width="102" valign="top" height="25">' . we_button::create_button("image:date_picker", "javascript:", null, null, null, null, null, null, false, 'button_Calendar_' . $field) . '</td>
-			<td width="300" height="25"  class="defaultfont">' . $EMailhandler . '</td>
-		</tr>';
+			$orderDataTable .= '
+	<tr height="25">
+		<td class="defaultfont" width="86" valign="top" height="25">' . ($field == 'DateOrder' ? g_l('modules_shop', '[bestellnr]') : '') . '</td>
+		<td class="defaultfont" valign="top" width="40" height="25"><b>' . ($field == 'DateOrder' ? $_REQUEST['bid'] : '') . '</b></td>
+		<td width="20" height="25">' . we_html_tools::getPixel(34, 15) . '</td>
+		<td width="98" class="defaultfont" height="25">' . $weShopStatusMails->FieldsText[$field] . '</td>
+		<td height="25">' . we_html_tools::getPixel(14, 15) . '</td>
+		<td width="14" class="defaultfont" align="right" height="25">
+			<div id="div_Calendar_' . $field . '">' . (($_REQUEST[$field] == $dateform) ? '-' : $_REQUEST[$field]) . '</div>
+			<input type="hidden" name="' . $field . '" id="hidden_Calendar_' . $field . '" value="' . (($_REQUEST[$field] == $dateform) ? '-' : $_REQUEST[$field]) . '" />
+		</td>
+		<td height="25">' . we_html_tools::getPixel(10, 15) . '</td>
+		<td width="102" valign="top" height="25">' . we_button::create_button("image:date_picker", "javascript:", null, null, null, null, null, null, false, 'button_Calendar_' . $field) . '</td>
+		<td width="300" height="25"  class="defaultfont">' . $EMailhandler . '</td>
+	</tr>';
 		}
 	}
-	$orderDataTable .= '<tr height="5">
-			<td class="defaultfont" width="86" valign="top" height="5"></td>
-			<td class="defaultfont" valign="top" height="5" width="40"></td>
-			<td height="5" width="20"></td>
-			<td width="98" class="defaultfont" valign="top" height="5"></td>
-			<td height="5"></td>
-			<td width="14" class="defaultfont" align="right" valign="top" height="5"></td>
-			<td height="5"></td>
-			<td width="102" valign="top" height="5"></td>
-			<td width="30" height="5">' . we_html_tools::getPixel(30, 5) . '</td>
-		</tr>
-		<tr height="1">
-			<td class="defaultfont" valign="top" colspan="9" bgcolor="grey" height="1">' . we_html_tools::getPixel(14, 1) . '</td>
-
-		</tr>
-		<tr>
-			<td class="defaultfont" width="86" valign="top"></td>
-			<td class="defaultfont" valign="top" width="40"></td>
-			<td width="20"></td>
-			<td width="98" class="defaultfont" valign="top"></td>
-			<td></td>
-			<td width="14" class="defaultfont" align="right" valign="top"></td>
-			<td></td>
-			<td width="102" valign="top"></td>
-			<td width="30">' . we_html_tools::getPixel(30, 5) . '</td>
-		</tr>' . $customerFieldTable . '
-		<tr>
-			<td colspan="9"><a href="javascript:we_cmd(\'edit_order_customer\');">' . g_l('modules_shop', '[order][edit_order_customer]') . '</a></td>
-		</tr>
-		<tr>
-			<td colspan="9">' . (we_hasPerm("EDIT_CUSTOMER") ? '<a href="javascript:we_cmd(\'edit_customer\');">' . g_l('modules_shop', '[order][open_customer]') . '</a>' : '') . ' </td>
-		</tr>
-	</table>';
+	$orderDataTable .= '
+	<tr height="5">
+		<td class="defaultfont" width="86" valign="top" height="5"></td>
+		<td class="defaultfont" valign="top" height="5" width="40"></td>
+		<td height="5" width="20"></td>
+		<td width="98" class="defaultfont" valign="top" height="5"></td>
+		<td height="5"></td>
+		<td width="14" class="defaultfont" align="right" valign="top" height="5"></td>
+		<td height="5"></td>
+		<td width="102" valign="top" height="5"></td>
+		<td width="30" height="5">' . we_html_tools::getPixel(30, 5) . '</td>
+	</tr>
+	<tr height="1">
+		<td class="defaultfont" valign="top" colspan="9" bgcolor="grey" height="1">' . we_html_tools::getPixel(14, 1) . '</td>
+	</tr>
+	<tr>
+		<td class="defaultfont" width="86" valign="top"></td>
+		<td class="defaultfont" valign="top" width="40"></td>
+		<td width="20"></td>
+		<td width="98" class="defaultfont" valign="top"></td>
+		<td></td>
+		<td width="14" class="defaultfont" align="right" valign="top"></td>
+		<td></td>
+		<td width="102" valign="top"></td>
+		<td width="30">' . we_html_tools::getPixel(30, 5) . '</td>
+	</tr>' . $customerFieldTable . '
+	<tr>
+		<td colspan="9"><a href="javascript:we_cmd(\'edit_order_customer\');">' . g_l('modules_shop', '[order][edit_order_customer]') . '</a></td>
+	</tr>
+	<tr>
+		<td colspan="9">' . (we_hasPerm("EDIT_CUSTOMER") ? '<a href="javascript:we_cmd(\'edit_customer\');">' . g_l('modules_shop', '[order][open_customer]') . '</a>' : '') . ' </td>
+	</tr>
+</table>';
 	//
 	// end of "Building table with customer fields"
 	// ********************************************************************************
@@ -1088,7 +1083,8 @@ if(!isset($letzerartikel)){ // order has still articles - get them all
 
 	// headline here - these fields are fix.
 	$pixelImg = we_html_tools::getPixel(14, 15);
-	$orderTable = '<table border="0" cellpadding="0" cellspacing="0" width="99%" class="defaultfont">
+	$orderTable = '
+<table border="0" cellpadding="0" cellspacing="0" width="99%" class="defaultfont">
 	<tr>
 		<th class="defaultgray" height="25">' . g_l('modules_shop', '[anzahl]') . '</th>
 		<td>' . $pixelImg . '</td>
@@ -1134,8 +1130,7 @@ if(!isset($letzerartikel)){ // order has still articles - get them all
 				if(!isset($articleVatArray[$articleVat])){ // avoid notices
 					$articleVatArray[$articleVat] = 0;
 				}
-
-				$articleVatArray[$articleVat] += ($articlePrice * $articleVat / 100 + ($pricesAreNet ? 0 : $articleVat));
+				$articleVatArray[$articleVat] += ($articlePrice * $articleVat / (100 + ($pricesAreNet ? 0 : $articleVat)));
 			}
 		}
 
