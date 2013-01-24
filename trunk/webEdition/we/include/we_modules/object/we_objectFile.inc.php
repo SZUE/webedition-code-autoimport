@@ -2013,7 +2013,7 @@ class we_objectFile extends we_document{
 						if(strpos($v["dat"], 'a:') === 0){
 							//link/href
 							$tmp = @unserialize($v["dat"]);
-							if($tmp&&isset($tmp['text'])){
+							if($tmp && isset($tmp['text'])){
 								$text .= ' ' . $tmp['text'];
 							}
 						} else{
@@ -2802,9 +2802,13 @@ class we_objectFile extends we_document{
 				$hrefs = array();
 				$realName = $key = '';
 				while((list($k, $v) = $this->nextElement('href'))) {
+					if(strstr($k, '_we_jkhdsf_') === FALSE){
+						continue;
+					}
 					list($realName, $key) = explode('_we_jkhdsf_', $k);
-					if(!isset($hrefs[$realName]))
+					if(!isset($hrefs[$realName])){
 						$hrefs[$realName] = array();
+					}
 					$hrefs[$realName][$key] = $v['dat'];
 				}
 				foreach($hrefs as $k => $v){
