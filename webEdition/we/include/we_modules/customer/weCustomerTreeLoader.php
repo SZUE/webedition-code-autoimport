@@ -153,14 +153,14 @@ class weCustomerTreeLoader{
 		$orderarr = array();
 
 		foreach($sort_defs as $sortdef){
-			if($sortdef["function"]){
+			if(isset($sortdef["function"]) && $sortdef["function"]){
 				$select[] = ($settings->customer->isInfoDate($sortdef["field"]) ?
 						sprintf($settings->FunctionTable[$sortdef["function"]], "FROM_UNIXTIME(" . $sortdef["field"] . ")") . " AS " . $sortdef["field"] . "_" . $sortdef["function"] :
 						sprintf($settings->FunctionTable[$sortdef["function"]], $sortdef["field"]) . " AS " . $sortdef["field"] . "_" . $sortdef["function"]);
 
-				$grouparr[] = $sortdef["field"] . "_" . $sortdef["function"];
-				$orderarr[] = $sortdef["field"] . "_" . $sortdef["function"] . " " . $sortdef["order"];
-				$orderarr[] = $sortdef["field"] . " " . $sortdef["order"];
+				$grouparr[] = $sortdef["field"] . '_' . $sortdef["function"];
+				$orderarr[] = $sortdef["field"] . '_' . $sortdef["function"] . " " . $sortdef["order"];
+				$orderarr[] = $sortdef["field"] . ' ' . $sortdef["order"];
 				if(isset($pidarr[$c])){
 					$havingarr[] = ($pidarr[$c] == g_l('modules_customer', '[no_value]') ?
 							"(" . $sortdef["field"] . "_" . $sortdef["function"] . "='' OR " . $sortdef["field"] . "_" . $sortdef["function"] . " IS NULL)" :
@@ -301,7 +301,7 @@ class weCustomerTreeLoader{
 		}
 
 		if($level == $levelcount){
-			$total = f("SELECT COUNT(ID) as total " . (count($select) ? "," . implode(",", $select) : "") . " FROM " . $db->escape($table) . " GROUP BY " . $grp . (count($grouparr) ? ($level != 0 ? ",ID" : "") : "ID") . (count($havingarr) ? " HAVING " . implode(" AND ", $havingarr) : "") . " ORDER BY " . implode(",", $orderarr),'total',$db);
+			$total = f("SELECT COUNT(ID) as total " . (count($select) ? "," . implode(",", $select) : "") . " FROM " . $db->escape($table) . " GROUP BY " . $grp . (count($grouparr) ? ($level != 0 ? ",ID" : "") : "ID") . (count($havingarr) ? " HAVING " . implode(" AND ", $havingarr) : "") . " ORDER BY " . implode(",", $orderarr), 'total', $db);
 
 			$nextoffset = $offset + $segment;
 			if($segment && ($total > $nextoffset)){
