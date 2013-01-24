@@ -59,7 +59,7 @@ class we_objecttag{
 	}
 
 	public function getDBf($key){
-		return $this->f($key);
+		return $this->DB_WE->f($key);
 	}
 
 	function f($key){
