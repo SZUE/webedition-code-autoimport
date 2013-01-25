@@ -375,35 +375,46 @@ switch($_SESSION['prefs']['editorMode']){
 	}
 	var lastPos = null, lastQuery = null, marked = [];
 	function unmark() {
-		for (var i = 0; i < marked.length; ++i) marked[i].clear();
+		for (var i = 0; i < marked.length; ++i){
+			marked[i].clear();
+		}
 		marked.length = 0;
 	}
-	function search(text) {
+	function search(text,caseIns) {
 		unmark();
-		if (!text) return;
-		for (var cursor = editor.getSearchCursor(text); cursor.findNext();)
+		if (!text){
+			return;
+		}
+		for (var cursor = editor.getSearchCursor(text,0,caseIns); cursor.findNext();){
 			marked.push(editor.markText(cursor.from(), cursor.to(), {className:"searched"}));
-
-		if (lastQuery != text) lastPos = null;
+		}
+		if (lastQuery != text){
+			lastPos = null;
+		}
 		var cursor = editor.getSearchCursor(text, lastPos || editor.getCursor());
 		if (!cursor.findNext()) {
 			cursor = editor.getSearchCursor(text);
-			if (!cursor.findNext()) return;
+			if (!cursor.findNext()){
+				return;
+			}
 		}
 		editor.setSelection(cursor.from(), cursor.to());
-		lastQuery = text; lastPos = cursor.to();
+		lastQuery = text;
+		lastPos = cursor.to();
 	}
 
-	function myReplace(text, replaceby) {
-		if(!text|| !replaceby) return;
+	function myReplace(text, replaceby, caseIns) {
+		if(!text|| !replaceby){
+			return;
+		}
 		if(editor.getSelection()!=text){
-			search(text);
+			search(text,caseIns);
 		}
 		if(editor.getSelection()!=text){
 			return;
 		}
 		editor.replaceSelection(replaceby);
-		search(text);
+		search(text, caseIns);
 	}
 	//-->
 </script>
@@ -665,9 +676,12 @@ window.orignalTemplateContent=document.getElementById("editarea").value.replace(
             <td align="left">' .
 				we_html_tools::getPixel(2, 10) . '<br><table cellpadding="0" cellspacing="0" border="0" width="100%">
 	    <tr>
-<td align="left" class="defaultfont">
-<input type="text" style="width: 10em;float:left;" id="query"/><div style="float:left;">' . we_button::create_button("search", 'javascript:search(document.getElementById("query").value);') . '</div>
-<input type="text" style="margin-left:2em;width: 10em;float:left;" id="replace"/><div style="float:left;">' . we_button::create_button("replace", 'javascript:myReplace(document.getElementById("query").value,document.getElementById("replace").value);') . '</div>
+<td align="left" class="defaultfont">' .
+				(substr($_SESSION['prefs']['editorMode'], 0, 10) == 'codemirror' ? '
+<input type="text" style="width: 10em;float:left;" id="query"/><div style="float:left;">' . we_button::create_button("search", 'javascript:search(document.getElementById("query").value,!document.getElementById("caseSens").checked);') . '</div>
+<input type="text" style="margin-left:2em;width: 10em;float:left;" id="replace"/><div style="float:left;">' . we_button::create_button("replace", 'javascript:myReplace(document.getElementById("query").value,document.getElementById("replace").value,!document.getElementById("caseSens").checked);') . '</div>
+<input type="checkbox" style="margin-left:2em;float:left;" id="caseSens"/><div style="float:left;">'.g_l('weClass','[caseSensitive]').'</div>' : ''
+				) . '
 					</td>
 					<td align="right" class="defaultfont">' .
 				(substr($_SESSION['prefs']['editorMode'], 0, 10) == 'codemirror' ? '
