@@ -63,7 +63,6 @@ function getOrderCustomerData($orderId, $orderData = false, $customerId = false,
 
 	// get Customer
 	$customerDb = getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . intval($customerId), $GLOBALS['DB_WE']);
-
 	$customerOrder = (isset($orderData[WE_SHOP_CART_CUSTOMER_FIELD]) ? $orderData[WE_SHOP_CART_CUSTOMER_FIELD] : array());
 
 	// default values are fields saved with order
@@ -933,7 +932,7 @@ if(!isset($letzerartikel)){ // order has still articles - get them all
 		$Price[] = str_replace(',', '.', $GLOBALS['DB_WE']->f("Price")); // replace , by . for float values
 	}
 	if(!isset($ArticleId)){
-		echo we_html_element::jsElement('parent.parent.frames.shop_header_icons.location.reload();') .'
+		echo we_html_element::jsElement('parent.parent.frames.shop_header_icons.location.reload();') . '
 	</head>
 	<body class="weEditorBody" onunload="doUnload()">
 	<table border="0" cellpadding="0" cellspacing="2" width="300">
@@ -1113,18 +1112,20 @@ if(!isset($letzerartikel)){ // order has still articles - get them all
 				// output if $Serial[$i] is not empty. This is when a user ordered an article online
 				$shopArticleObject = @unserialize($Serial[$i]));
 
+		// now determine VAT
+		$articleVat = (isset($shopArticleObject[WE_SHOP_VAT_FIELD_NAME]) ?
+				$shopArticleObject[WE_SHOP_VAT_FIELD_NAME] :
+				((isset($mwst)) ?
+					$mwst :
+					0));
+
 		// determine taxes - correct price, etc.
+		$Price[$i]/=($pricesAreNet||$calcVat ? 1 : (100 + $articleVat)/100);
 		$articlePrice = $Price[$i] * $Quantity[$i];
 		$totalPrice += $articlePrice;
 
 		// calculate individual vat for each article
 		if($calcVat){
-			// now determine VAT
-			$articleVat = (isset($shopArticleObject[WE_SHOP_VAT_FIELD_NAME]) ?
-					$shopArticleObject[WE_SHOP_VAT_FIELD_NAME] :
-					((isset($mwst)) ?
-						$mwst :
-						0));
 
 			if($articleVat > 0){
 				if(!isset($articleVatArray[$articleVat])){ // avoid notices
