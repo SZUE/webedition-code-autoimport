@@ -1373,7 +1373,7 @@ class we_objectFile extends we_document{
 					'<span class="weObjectPreviewHeadline">' . $name . ($this->DefArray["text_" . $name]["required"] ? "*" : "") . "</span>" . ( isset($this->DefArray["text_" . $name]['editdescription']) && $this->DefArray["text_" . $name]['editdescription'] ? '<div class="objectDescription">' . $this->DefArray["text_" . $name]['editdescription'] . '</div>' : we_html_element::htmlBr())
 				) . $textarea;
 		} else{
-			return $this->getPreviewView($name, $this->getFieldByVal($this->getElement($name), "txt", $attribs));
+			return $this->getPreviewView($name, we_document::getFieldByVal($this->getElement($name), "txt", $attribs));
 		}
 	}
 

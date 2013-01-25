@@ -30,25 +30,25 @@ function we_tag_var($attribs){
 	$name = weTag_getAttribute('name', $attribs);
 	$name_orig = weTag_getAttribute('_name_orig', $attribs);
 	$type = weTag_getAttribute('type', $attribs);
-	$oldHtmlspecialchars = weTag_getAttribute('htmlspecialchars', $attribs, false, true); // #3771
+	$htmlspecialchars = weTag_getAttribute('htmlspecialchars', $attribs, false, true); // #3771
 	$doc = we_getDocForTag($docAttr, false);
 
 	switch($type){
 		case 'session' :
 			$return = (isset($_SESSION[$name_orig])) ? $_SESSION[$name_orig] : '';
-			return $oldHtmlspecialchars ? oldHtmlspecialchars($return) : $return;
+			return $htmlspecialchars ? oldHtmlspecialchars($return) : $return;
 		case 'request' :
 			$return = filterXss(we_util::rmPhp(isset($_REQUEST[$name_orig]) ? $_REQUEST[$name_orig] : ''));
-			return $oldHtmlspecialchars ? oldHtmlspecialchars($return) : $return;
+			return $htmlspecialchars ? oldHtmlspecialchars($return) : $return;
 		case 'post' :
 			$return = we_util::rmPhp(isset($_POST[$name_orig]) ? $_POST[$name_orig] : '');
-			return $oldHtmlspecialchars ? oldHtmlspecialchars($return) : $return;
+			return $htmlspecialchars ? oldHtmlspecialchars($return) : $return;
 		case 'get' :
 			$return = we_util::rmPhp(isset($_GET[$name_orig]) ? $_GET[$name_orig] : '');
-			return $oldHtmlspecialchars ? oldHtmlspecialchars($return) : $return;
+			return $htmlspecialchars ? oldHtmlspecialchars($return) : $return;
 		case 'global' :
 			$return = (isset($GLOBALS[$name])) ? $GLOBALS[$name] : ((isset($GLOBALS[$name_orig])) ? $GLOBALS[$name_orig] : '');
-			return $oldHtmlspecialchars ? oldHtmlspecialchars($return) : $return;
+			return $htmlspecialchars ? oldHtmlspecialchars($return) : $return;
 		case 'multiobject' :
 			$data = unserialize($doc->getField($attribs, $type, true));
 			return (isset($data['objects']) && !empty($data['objects']) ? implode(',', $data['objects']) : '');
@@ -73,6 +73,10 @@ function we_tag_var($attribs){
 			// wenn die Abfrage im Aktuellen Objekt kein Erg?bnis liefert
 			// wird in den eingebundenen Objekten ?berpr?ft ob das Feld existiert
 			$name = ($type == 'select' && $normVal == '' ? $name_orig : $name);
+			$selectKey = weTag_getAttribute('key', $attribs, false, true);
+			if($type == 'select' && $selectKey){
+				return $htmlspecialchars ? oldHtmlspecialchars($doc->getElement($name)) : $doc->getElement($name);
+			}
 
 			if(isset($doc->DefArray) && is_array($doc->DefArray)){
 				$keys = array_keys($doc->DefArray);
@@ -82,7 +86,7 @@ function we_tag_var($attribs){
 					}
 
 					if($normVal != ''){
-						return $normVal;
+						return $htmlspecialchars ? oldHtmlspecialchars($normVal) : $normVal;
 					}
 				}
 			}
