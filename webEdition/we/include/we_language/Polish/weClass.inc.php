@@ -12,6 +12,7 @@ $l_weClass=array(
 	'availableAfterSave'=>'The feature is only available after saving the entry.',
 	'bgcolor'=>'Kolor tła',
 	'border'=>'Margines',
+	'caseSensitive'=>'case sensitive',
 	'category'=>'Kategoria',
 	'ChangePark'=>'Tą właściwość można zmienić tylko gdy wycofano dokument!',
 	'change_compression'=>'Zmień stopień kompresji',

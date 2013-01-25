@@ -12,6 +12,7 @@ $l_weClass=array(
 	'availableAfterSave'=>'The feature is only available after saving the entry.',
 	'bgcolor'=>'Achtergrond kleur',
 	'border'=>'Rand',
+	'caseSensitive'=>'case sensitive',
 	'category'=>'Categorie',
 	'ChangePark'=>'U kunt dit attribuut alleen wijzigen als het document niet is gepubliceerd!',
 	'change_compression'=>'Wijzig compressie',
