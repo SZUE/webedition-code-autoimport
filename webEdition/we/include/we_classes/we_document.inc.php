@@ -826,7 +826,7 @@ class we_document extends we_root{
 		return f('SELECT ID FROM ' . escape_sql_query($this->Table) . " WHERE ParentID=" . intval($this->ParentID) . " AND Filename='" . escape_sql_query($this->Filename) . "' AND Extension='" . escape_sql_query($this->Extension) . "' AND ID != " . intval($this->ID), "ID", $this->DB_WE);
 	}
 
-	function getFieldByVal($val, $type, $attribs = '', $pathOnly = false, $parentID = 0, $path = '', $db = '', $classID = '', $fn = 'this'){
+	public static function getFieldByVal($val, $type, $attribs = '', $pathOnly = false, $parentID = 0, $path = '', $db = '', $classID = '', $fn = 'this'){
 
 		$attribs = is_array($attribs) ? $attribs : array();
 		if(isset($attribs['_name_orig'])){
