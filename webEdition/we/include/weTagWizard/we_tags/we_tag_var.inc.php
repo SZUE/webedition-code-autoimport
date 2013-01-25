@@ -10,6 +10,7 @@ $name = new weTagData_textAttribute('name', true, '');
 $doc = new weTagData_selectAttribute('doc', array(new weTagDataOption('self', false, ''), new weTagDataOption('top', false, '')), false, '');
 $win2iso = new weTagData_selectAttribute('win2iso', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
 $htmlspecialchars = new weTagData_selectAttribute('htmlspecialchars', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
+$key=new weTagData_selectAttribute('key', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
 $to = new weTagData_selectAttribute('to', array(new weTagDataOption('screen', false, ''),new weTagDataOption('request', false, ''), new weTagDataOption('post', false, ''), new weTagDataOption('get', false, ''), new weTagDataOption('global', false, ''), new weTagDataOption('session', false, ''), new weTagDataOption('top', false, ''), new weTagDataOption('self', false, ''), new weTagDataOption('sessionfield', false, '')), false, '');
 $nameto = new weTagData_textAttribute('nameto', false, '');
 
@@ -29,4 +30,4 @@ $this->TypeAttribute = new weTagData_typeAttribute('type', array(
 	new weTagDataOption('session', false, '', array($name,$htmlspecialchars), array($name)),
 	new weTagDataOption('shopVat', false, '', array($doc), array())), true, '');
 
-$this->Attributes=array($name,$doc,$win2iso,$htmlspecialchars,$to,$nameto);
+$this->Attributes=array($name,$doc,$win2iso,$htmlspecialchars,$key,$to,$nameto);
