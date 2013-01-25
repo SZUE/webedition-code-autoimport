@@ -27,32 +27,26 @@ function we_tag_var($attribs){
 		return $foo;
 	}
 	$docAttr = weTag_getAttribute('doc', $attribs);
-	//$_name_orig=weTag_getAttribute("_name_orig", $attribs);
+	$name = weTag_getAttribute('name', $attribs);
+	$name_orig = weTag_getAttribute('_name_orig', $attribs);
 	$type = weTag_getAttribute('type', $attribs);
 	$oldHtmlspecialchars = weTag_getAttribute('htmlspecialchars', $attribs, false, true); // #3771
 	$doc = we_getDocForTag($docAttr, false);
 
 	switch($type){
 		case 'session' :
-			$name = weTag_getAttribute('_name_orig', $attribs);
-			$return = (isset($_SESSION[$name])) ? $_SESSION[$name] : '';
+			$return = (isset($_SESSION[$name_orig])) ? $_SESSION[$name_orig] : '';
 			return $oldHtmlspecialchars ? oldHtmlspecialchars($return) : $return;
 		case 'request' :
-			$name = weTag_getAttribute('_name_orig', $attribs);
-			$return = filterXss(we_util::rmPhp(isset($_REQUEST[$name]) ? $_REQUEST[$name] : ''));
+			$return = filterXss(we_util::rmPhp(isset($_REQUEST[$name_orig]) ? $_REQUEST[$name_orig] : ''));
 			return $oldHtmlspecialchars ? oldHtmlspecialchars($return) : $return;
 		case 'post' :
-			$name = weTag_getAttribute('_name_orig', $attribs);
-			$return = we_util::rmPhp(isset($_POST[$name]) ? $_POST[$name] : '');
+			$return = we_util::rmPhp(isset($_POST[$name_orig]) ? $_POST[$name_orig] : '');
 			return $oldHtmlspecialchars ? oldHtmlspecialchars($return) : $return;
 		case 'get' :
-			$name = weTag_getAttribute('_name_orig', $attribs);
-			$return = we_util::rmPhp(isset($_GET[$name]) ? $_GET[$name] : '');
+			$return = we_util::rmPhp(isset($_GET[$name_orig]) ? $_GET[$name_orig] : '');
 			return $oldHtmlspecialchars ? oldHtmlspecialchars($return) : $return;
 		case 'global' :
-			$name = weTag_getAttribute('name', $attribs);
-			$name_orig = weTag_getAttribute('_name_orig', $attribs);
-
 			$return = (isset($GLOBALS[$name])) ? $GLOBALS[$name] : ((isset($GLOBALS[$name_orig])) ? $GLOBALS[$name_orig] : '');
 			return $oldHtmlspecialchars ? oldHtmlspecialchars($return) : $return;
 		case 'multiobject' :
@@ -60,11 +54,9 @@ function we_tag_var($attribs){
 			return (isset($data['objects']) && !empty($data['objects']) ? implode(',', $data['objects']) : '');
 
 		case 'property' :
-			$name = weTag_getAttribute('_name_orig', $attribs);
-
 			return (isset($GLOBALS['we_obj']) ?
-					$GLOBALS['we_obj']->$name :
-					$doc->$name);
+					$GLOBALS['we_obj']->$name_orig :
+					$doc->$name_orig);
 
 		case 'shopVat' :
 			if(defined('SHOP_TABLE')){
@@ -80,7 +72,7 @@ function we_tag_var($attribs){
 			// bugfix 7557
 			// wenn die Abfrage im Aktuellen Objekt kein Erg?bnis liefert
 			// wird in den eingebundenen Objekten ?berpr?ft ob das Feld existiert
-			$name = ($type == 'select' && $normVal == '' ? weTag_getAttribute('_name_orig', $attribs) : $name);
+			$name = ($type == 'select' && $normVal == '' ? $name_orig : $name);
 
 			if(isset($doc->DefArray) && is_array($doc->DefArray)){
 				$keys = array_keys($doc->DefArray);
