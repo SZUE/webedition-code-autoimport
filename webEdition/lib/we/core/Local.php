@@ -124,6 +124,9 @@ class we_core_Local{
 			self::$_lang = WE_WEBUSER_LANGUAGE;
 		} else{
 			if(!isset($_SESSION)){
+				if(!isset($_SERVER['TMP'])){
+					$_SERVER['TMP'] = $GLOBALS['__WE_BASE_PATH__'] . DIRECTORY_SEPARATOR . 'we' . DIRECTORY_SEPARATOR . 'zendcache';
+				}
 				Zend_Session::start();
 			}
 
