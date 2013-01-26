@@ -597,7 +597,7 @@ abstract class exportFunctions{
 								}
 							} else if(substr($we_doc->elements[$k]["dat"], 0, 2) == "a:" && is_array(unserialize($we_doc->elements[$k]["dat"]))){ // is a we:link field
 								$_tag_name = exportFunctions::correctTagname($k, "link", $_tag_counter);
-								$_file .= exportFunctions::formatOutput($_tag_name, exportFunctions::formatOutput("", we_document::getFieldByVal($we_doc->elements[$k]["dat"], "link"), "cdata"), $format, 2, $cdata);
+								$_file .= exportFunctions::formatOutput($_tag_name, exportFunctions::formatOutput("", $we_doc->getFieldByVal($we_doc->elements[$k]["dat"], "link"), "cdata"), $format, 2, $cdata);
 
 								// Remove tagname from array
 								if(isset($_records)){

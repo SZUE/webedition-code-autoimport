@@ -549,7 +549,7 @@ class we_class_folder extends we_folder{
 							break;
 						case "link":
 							$text = $this->searchclass->f($type[$i + 5] . "_" . $head[$i + 5]["dat"]);
-							$content[$f][$i + 5]["dat"] = we_document::getFieldByVal($text, "link");
+							$content[$f][$i + 5]["dat"] = $GLOBALS['we_doc']->getFieldByVal($text, "link");
 							break;
 						case "href":
 							$text = $this->searchclass->f($type[$i + 5] . "_" . $head[$i + 5]["dat"]);
@@ -557,7 +557,7 @@ class we_class_folder extends we_folder{
 							if(!is_array($hrefArr))
 								$hrefArr = array();
 
-							$content[$f][$i + 5]["dat"] = we_document::getHrefByArray($hrefArr);
+							$content[$f][$i + 5]["dat"] = $GLOBALS['we_doc']->getHrefByArray($hrefArr);
 							//$text = $DefaultValues[$type[$i+3]."_".$head[$i+3]["dat"]]["meta"][$this->searchclass->f($type[$i+3]."_".$head[$i+3]["dat"])];
 							//$content[$f][$i+3]["dat"] = "TEST";
 							break;

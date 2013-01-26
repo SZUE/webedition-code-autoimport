@@ -82,7 +82,7 @@ function we_tag_var($attribs){
 				$keys = array_keys($doc->DefArray);
 				foreach($keys as $_glob_key){
 					if((substr($_glob_key, 0, 7) == 'object_' && ($rest = substr($_glob_key, 7))) || (substr($_glob_key, 0, 10) == 'we_object_' && ($rest = substr($_glob_key, 7)))){
-						$normVal = we_document::getFieldByVal($doc->getElement($name), $type, $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], $rest);
+						$normVal = $doc->getFieldByVal($doc->getElement($name), $type, $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], $rest);
 					}
 
 					if($normVal != ''){
