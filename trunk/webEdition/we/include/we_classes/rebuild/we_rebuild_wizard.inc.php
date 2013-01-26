@@ -511,7 +511,7 @@ abstract class we_rebuild_wizard{
 
 		$thumbsFolders = isset($_REQUEST["thumbsFolders"]) ? $_REQUEST["thumbsFolders"] : "";
 		$metaFolders = isset($_REQUEST["metaFolders"]) ? $_REQUEST["metaFolders"] : "";
-		$metaFields = isset($_REQUEST["_field"]) ? $_REQUEST["_field"] : array();
+		$metaFields = isset($_REQUEST["_field"]) ? $_REQUEST["_field"] : '';
 		$thumbs = (isset($_REQUEST["thumbs"]) && is_array($_REQUEST["thumbs"])) ? makeCSVFromArray($_REQUEST["thumbs"], true) : "";
 		$type = isset($_REQUEST["type"]) ? $_REQUEST["type"] : "rebuild_documents";
 		$btype = isset($_REQUEST["btype"]) ? $_REQUEST["btype"] : "rebuild_all";
