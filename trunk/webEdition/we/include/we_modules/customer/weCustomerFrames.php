@@ -267,7 +267,7 @@ class weCustomerFrames extends weModuleFrames{
 				return we_html_tools::htmlTextInput($field, 32, $value, 32, 'onchange="top.content.setHot();" style="width:240px;" autocomplete="off" ', 'password');
 			case 'img':
 				$imgId = intval($value);
-				$out = we_document::getFieldByVal($imgId, 'img');
+				$out = $GLOBALS['we_doc']->getFieldByVal($imgId, 'img');
 
 				$out = '
 					<table border="0" cellpadding="2" cellspacing="2" background="' . IMAGE_DIR . 'backgrounds/aquaBackground.gif" style="border: solid #006DB8 1px;">

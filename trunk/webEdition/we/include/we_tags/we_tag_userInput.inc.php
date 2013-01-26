@@ -76,15 +76,16 @@ function we_tag_userInput($attribs, $content){
 		$object_pid = $objekt->ParentID;
 		$object_path = $objekt->Path;
 		$object_tableID = isset($objekt->TableID) ? $objekt->TableID : "";
+		$content = $objekt->getFieldByVal($orgVal, $type, $attribs, true, $object_pid, $object_path, $GLOBALS['DB_WE'], $object_tableID);
 	} else{
 		$orgVal = $value;
 		$object_pid = 0;
 		$object_path = "";
 		$object_tableID = "";
 		$isset = false;
+		$content = '';
 	}
 
-	$content = we_document::getFieldByVal($orgVal, $type, $attribs, true, $object_pid, $object_path, $GLOBALS['DB_WE'], $object_tableID);
 
 	if(!$editable && !$hidden && $type !== "img" && $type !== "binary" && $type !== "flashmovie" && $type !== "quicktime"){
 		$_hidden = getHtmlTag(
