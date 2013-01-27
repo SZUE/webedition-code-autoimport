@@ -281,7 +281,7 @@ class we_app_Model extends we_core_AbstractModel{
 	 *
 	 * @return void
 	 */
-	public function delete(){
+	public function delete($skipHook = 0){
 		$translate = we_core_Local::addTranslation('apps.xml');
 		$message = $translate->_('This entry cannot be deleted. Probably there is no appropriate data record in the data base or the data base does not exist. In this case you must implement the data retention.');
 
@@ -293,7 +293,7 @@ class we_app_Model extends we_core_AbstractModel{
 			$this->deleteChilds();
 		}
 
-		parent::delete();
+		parent::delete($skipHook);
 	}
 
 	/**
