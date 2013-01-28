@@ -47,6 +47,10 @@ function we_tag_shopField($attribs){
 	$values = weTag_getAttribute("values", $attribs); // select, choice
 	$value = weTag_getAttribute("value", $attribs); // checkbox
 	$checked = weTag_getAttribute("checked", $attribs, false, true); // checkbox
+
+	if($checked && ($foo = attributFehltError($attribs, "value", __FUNCTION__))){
+		return $foo;
+	}
 	$mode = weTag_getAttribute("mode", $attribs);
 
 	$xml = weTag_getAttribute("xml", $attribs);
