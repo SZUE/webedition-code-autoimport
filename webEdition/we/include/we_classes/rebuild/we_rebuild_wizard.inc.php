@@ -568,8 +568,10 @@ abstract class we_rebuild_wizard{
 			$thumbsHidden .= we_html_element::htmlHidden(array("name" => "thumbs[$i]", "value" => $thumbsArray[$i]));
 		}
 		$metaFieldsHidden = "";
-		foreach($metaFields as $_key => $_val){
-			$metaFieldsHidden .= we_html_element::htmlHidden(array("name" => "_field[$_key]", "value" => $_val));
+		if(is_array($metaFields)){
+			foreach($metaFields as $_key => $_val){
+				$metaFieldsHidden .= we_html_element::htmlHidden(array("name" => "_field[$_key]", "value" => $_val));
+			}
 		}
 		return array(we_rebuild_wizard::getPage2Js(), we_multiIconBox::getHTML("", "100%", $parts, 40, "", -1, "", "", false, g_l('rebuild', "[rebuild_documents]")) .
 			$thumbsHidden .
