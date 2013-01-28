@@ -528,26 +528,11 @@ abstract class we_rebuild_wizard{
 		if($ws && strpos($ws, (",0,")) !== true && ($folders == "" || $folders == "0")){
 			$folders = get_def_ws(FILE_TABLE);
 		}
-		$parts = array();
 
-		if($_SESSION["perms"]["ADMINISTRATOR"]){
-			$all_content = we_forms::checkbox("1", $maintable, "maintable", g_l('rebuild', "[rebuild_maintable]"), false, "defaultfont", "document.we_form.btype[0].checked=true;");
-			$all_content .= we_forms::checkbox("1", $tmptable, "tmptable", g_l('rebuild', "[rebuild_tmptable]"), false, "defaultfont", "document.we_form.btype[0].checked=true;");
-		} else{
-			$all_content = "";
-		}
-
-		array_push($parts, array(
-			"headline" => "",
-			"html" => we_forms::radiobutton("rebuild_all", ($btype == "rebuild_all" && we_hasPerm("REBUILD_ALL")), "btype", g_l('rebuild', "[rebuild_all]"), true, "defaultfont", "", (!we_hasPerm("REBUILD_ALL")), g_l('rebuild', "[txt_rebuild_all]"), 0, 495, "", $all_content),
-			"space" => 0)
-		);
-
-		array_push($parts, array(
-			"headline" => "",
-			"html" => we_forms::radiobutton("rebuild_templates", ($btype == "rebuild_templates" && we_hasPerm("REBUILD_TEMPLATES")), "btype", g_l('rebuild', "[rebuild_templates]"), true, "defaultfont", "", (!we_hasPerm("REBUILD_TEMPLATES")), g_l('rebuild', "[txt_rebuild_templates]"), 0, 495),
-			"space" => 0)
-		);
+		$all_content = ($_SESSION["perms"]["ADMINISTRATOR"] ?
+				we_forms::checkbox("1", $maintable, "maintable", g_l('rebuild', "[rebuild_maintable]"), false, "defaultfont", "document.we_form.btype[0].checked=true;") .
+				we_forms::checkbox("1", $tmptable, "tmptable", g_l('rebuild', "[rebuild_tmptable]"), false, "defaultfont", "document.we_form.btype[0].checked=true;") :
+				'');
 
 		$filter_content = we_rebuild_wizard::formCategory($categories, $catAnd) . '<br>' . we_html_tools::getPixel(2, 5) . "<br>" .
 			we_rebuild_wizard::formDoctypes($doctypes) . '<br>' . we_html_tools::getPixel(2, 10) . "<br>" .
@@ -556,21 +541,34 @@ abstract class we_rebuild_wizard{
 		$filter_content = we_forms::radiobutton("rebuild_filter", ($btype == "rebuild_filter" && we_hasPerm("REBUILD_FILTERD") || ($btype == "rebuild_all" && (!we_hasPerm("REBUILD_ALL")) && we_hasPerm("REBUILD_FILTERD"))), "btype", g_l('rebuild', "[rebuild_filter]"), true, "defaultfont", "", (!we_hasPerm("REBUILD_FILTERD")), g_l('rebuild', "[txt_rebuild_filter]"), 0, 495, "", $filter_content);
 
 
-		array_push($parts, array(
-			"headline" => "",
-			"html" => $filter_content,
-			"space" => 0)
+		$parts = array(
+			array(
+				"headline" => "",
+				"html" => we_forms::radiobutton("rebuild_all", ($btype == "rebuild_all" && we_hasPerm("REBUILD_ALL")), "btype", g_l('rebuild', "[rebuild_all]"), true, "defaultfont", "", (!we_hasPerm("REBUILD_ALL")), g_l('rebuild', "[txt_rebuild_all]"), 0, 495, "", $all_content),
+				"space" => 0
+			),
+			array(
+				"headline" => "",
+				"html" => we_forms::radiobutton("rebuild_templates", ($btype == "rebuild_templates" && we_hasPerm("REBUILD_TEMPLATES")), "btype", g_l('rebuild', "[rebuild_templates]"), true, "defaultfont", "", (!we_hasPerm("REBUILD_TEMPLATES")), g_l('rebuild', "[txt_rebuild_templates]"), 0, 495),
+				"space" => 0
+			),
+			array(
+				"headline" => "",
+				"html" => $filter_content,
+				"space" => 0
+			)
 		);
 
-		$thumbsHidden = "";
+		$thumbsHidden = '';
 		$thumbsArray = makeArrayFromCSV($thumbs);
-		for($i = 0; $i < sizeof($thumbsArray); $i++){
-			$thumbsHidden .= we_html_element::htmlHidden(array("name" => "thumbs[$i]", "value" => $thumbsArray[$i]));
+		foreach($thumbsArray as $i => $cur){
+			$thumbsHidden .= we_html_element::htmlHidden(array("name" => 'thumbs[' . $i . ']', "value" => $cur));
 		}
-		$metaFieldsHidden = "";
-		if(is_array($metaFields)){
+		
+		$metaFieldsHidden = '';
+		if(!empty($metaFields)){
 			foreach($metaFields as $_key => $_val){
-				$metaFieldsHidden .= we_html_element::htmlHidden(array("name" => "_field[$_key]", "value" => $_val));
+				$metaFieldsHidden .= we_html_element::htmlHidden(array("name" => '_field[' . $_key . ']', "value" => $_val));
 			}
 		}
 		return array(we_rebuild_wizard::getPage2Js(), we_multiIconBox::getHTML("", "100%", $parts, 40, "", -1, "", "", false, g_l('rebuild', "[rebuild_documents]")) .
