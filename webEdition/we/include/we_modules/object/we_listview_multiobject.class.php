@@ -201,7 +201,7 @@ class we_listview_multiobject extends listviewBase{
 				}
 			}
 
-			$this->DB_WE->query("SELECT " . $sqlParts["fields"] . $calendar_select . " FROM " . $sqlParts["tables"] . " WHERE  " . (!empty($this->objects) ? OBJECT_X_TABLE . $this->classID . ".OF_ID IN (" . implode(",", $this->objects) . ") AND " : '') . ($this->searchable ? " " . OBJECT_X_TABLE . $this->classID . ".OF_IsSearchable=1 AND" : "") . " " . $pid_tail . $where_lang . " AND " . OBJECT_X_TABLE . $this->classID . ".OF_ID != 0 " . ($join ? " AND ($join) " : "") . $cat_tail . $weDocumentCustomerFilter_tail . " " . ($sqlParts["publ_cond"] ? (" AND " . $sqlParts["publ_cond"]) : "") . " " . ($sqlParts["cond"] ? (" AND (" . $sqlParts["cond"] . ") ") : "") . $calendar_where . $sqlParts['groupBy'] . $sqlParts["order"] . (($rows > 0 && $this->order != '') ? (' LIMIT ' . $this->start . "," . $this->rows) : ""));
+			$this->DB_WE->query('SELECT ' . $sqlParts["fields"] . $calendar_select . ' FROM ' . $sqlParts["tables"] . ' WHERE  ' . (!empty($this->objects) ? OBJECT_X_TABLE . $this->classID . ".OF_ID IN (" . implode(",", $this->objects) . ") AND " : '') . ($this->searchable ? " " . OBJECT_X_TABLE . $this->classID . ".OF_IsSearchable=1 AND" : "") . " " . $pid_tail . $where_lang . " AND " . OBJECT_X_TABLE . $this->classID . ".OF_ID != 0 " . ($join ? " AND ($join) " : "") . $cat_tail . $weDocumentCustomerFilter_tail . " " . ($sqlParts["publ_cond"] ? (" AND " . $sqlParts["publ_cond"]) : "") . " " . ($sqlParts["cond"] ? (" AND (" . $sqlParts["cond"] . ") ") : "") . $calendar_where . $sqlParts['groupBy'] . $sqlParts["order"] . (($rows > 0 && $this->order != '') ? (' LIMIT ' . $this->start . "," . $this->rows) : ""));
 
 			$mapping = array(); // KEY = ID -> VALUE = ROWID
 			$i = 0;
@@ -278,23 +278,18 @@ class we_listview_multiobject extends listviewBase{
 
 	function makeSQLParts($matrix, $classID, $order, $cond){
 		//FIXME: order ist totaler nonsense - das geht deutlich einfacher
-		$out = array();
 		$from = array();
 		$orderArr = array();
 		$descArr = array();
 		$ordertmp = array();
 
-		$cond = str_replace('&gt;', '>', $cond);
-		$cond = str_replace('&lt;', '<', $cond);
-
-		$cond = " " . preg_replace("/'([^']*)'/e", "we_listview_object::encodeEregString('\\1')", $cond) . " ";
-
+		$cond = ' ' . preg_replace("/'([^']*)'/e", "we_listview_object::encodeEregString('\\1')", strtr($cond, array('&gt;' => '>', '&lt;' => '<'))) . ' ';
 
 		if($order && ($order != 'random()')){
 			$foo = makeArrayFromCSV($order);
 			foreach($foo as $f){
-				$g = explode(" ", trim($f));
-				array_push($orderArr, $g[0]);
+				$g = explode(' ', trim($f));
+				$orderArr[] = $g[0];
 				$descArr[] = intval(isset($g[1]) && strtolower(trim($g[1])) == 'desc');
 			}
 		}
@@ -304,36 +299,37 @@ class we_listview_multiobject extends listviewBase{
 		$_fieldnames = getHash('SELECT DefaultDesc,DefaultTitle,DefaultKeywords,CreationDate,ModDate FROM ' . OBJECT_TABLE . ' WHERE ID=' . $classID, $this->DB_WE);
 		$_selFields = '';
 		foreach($_fieldnames as $_key => $_val){
-			if(empty($_val) || $_val == '_') // bug #4657
+			if(empty($_val) || $_val == '_'){ // bug #4657
 				continue;
+			}
 			if(!is_numeric($_key) && $_val){
 				switch($_key){
 					case 'DefaultDesc':
-						$_selFields .= OBJECT_X_TABLE . $classID . '.' . $_val . ' as we_Description,';
+						$_selFields .= OBJECT_X_TABLE . $classID . '.`' . $_val . '` AS we_Description,';
 						break;
 					case 'DefaultTitle':
-						$_selFields .= OBJECT_X_TABLE . $classID . '.' . $_val . ' as we_Title,';
+						$_selFields .= OBJECT_X_TABLE . $classID . '.`' . $_val . '` AS we_Title,';
 						break;
 					case 'DefaultKeywords':
-						$_selFields .= OBJECT_X_TABLE . $classID . '.' . $_val . ' as we_Keywords,';
+						$_selFields .= OBJECT_X_TABLE . $classID . '.`' . $_val . '` AS we_Keywords,';
 						break;
 				}
 			}
 		}
-		$_selFields .= OBJECT_X_TABLE . $classID . '.OF_Published' . ' as we_wedoc_Published,';
+		$_selFields .= OBJECT_X_TABLE . $classID . '.OF_Published' . ' AS we_wedoc_Published,';
 		$f = OBJECT_X_TABLE . $classID . '.ID as ID,' . OBJECT_X_TABLE . $classID . '.OF_Templates as OF_Templates,' . OBJECT_X_TABLE . $classID . ".OF_ID as OF_ID," . OBJECT_X_TABLE . $classID . ".OF_Category as OF_Category," . OBJECT_X_TABLE . $classID . ".OF_Text as OF_Text," . OBJECT_X_TABLE . $classID . ".OF_Url as OF_Url," . OBJECT_X_TABLE . $classID . ".OF_TriggerID as OF_TriggerID," . OBJECT_X_TABLE . $classID . ".OF_WebUserID as OF_WebUserID," . OBJECT_X_TABLE . $classID . ".OF_Language as OF_Language," . $_selFields;
 		foreach($matrix as $n => $p){
 			$n2 = $n;
 			if(substr($n, 0, 10) == 'we_object_'){
 				$n = substr($n, 10);
 			}
-			$f .= $p['table'] . '.' . $p['type'] . '_' . $n . ' as we_' . $n2 . ',';
-			array_push($from, $p["table"]);
+			$f .= $p['table'] . '.`' . $p['type'] . '_' . $n . '` AS we_' . $n2 . ',';
+			$from[] = $p['table'];
 			if(in_array($n, $orderArr)){
 				$pos = getArrayKey($n, $orderArr);
-				$ordertmp[$pos] = $p["table"] . "." . $p["type"] . "_" . $n . ($descArr[$pos] ? ' DESC' : '');
+				$ordertmp[$pos] = $p['table'] . '.`' . $p['type'] . '_' . $n .'`'. ($descArr[$pos] ? ' DESC' : '');
 			}
-			$cond = preg_replace("/([\!\=%&\(\*\+\.\/<>|~ ])$n([\!\=%&\)\*\+\.\/<>|~ ])/", "$1" . $p["table"] . "." . $p["type"] . "_" . $n . "$2", $cond);
+			$cond = preg_replace("/([\!\=%&\(\*\+\.\/<>|~ ])$n([\!\=%&\)\*\+\.\/<>|~ ])/", '$1' . $p["table"] . '.' . $p['type'] . '_' . $n . '$2', $cond);
 		}
 
 		$cond = preg_replace("/'([^']*)'/e", "we_listview_object::decodeEregString('\\1')", $cond);
@@ -366,14 +362,17 @@ class we_listview_multiobject extends listviewBase{
 			$tb[] = $val;
 		}
 
-		$out["fields"] = rtrim($f, ',');
+		$out = array(
+			"order" => $order,
+			"tables" => makeCSVFromArray($tb),
+			"groupBy" => (count($tb) > 1) ? ' GROUP BY ' . OBJECT_X_TABLE . $classID . ".ID " : '',
+			"cond" => trim($cond),
+			"fields" => rtrim($f, ','),
+			"publ_cond" => array(),
+		);
 		if($order == ' ORDER BY RANDOM '){
 			$out['fields'] .= ', RAND() as RANDOM ';
 		}
-		$out["order"] = $order;
-		$out["tables"] = makeCSVFromArray($tb);
-		$out["groupBy"] = (count($tb) > 1) ? ' GROUP BY ' . OBJECT_X_TABLE . $classID . ".ID " : '';
-		$out["publ_cond"] = array();
 		foreach($tb as $t){
 			$out["publ_cond"] [] = "( $t.OF_Published > 0 OR $t.OF_ID = 0)";
 		}
@@ -381,7 +380,6 @@ class we_listview_multiobject extends listviewBase{
 		if($out["publ_cond"]){
 			$out["publ_cond"] = " ( " . $out["publ_cond"] . " ) ";
 		}
-		$out["cond"] = trim($cond);
 		return $out;
 	}
 
