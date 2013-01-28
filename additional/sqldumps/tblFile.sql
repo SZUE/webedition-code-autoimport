@@ -1,3 +1,6 @@
+###UPDATEONLY### UPDATE ###TBLPREFIX###tblFile SET Path=REPLACE(Path,"//","/"), WHERE Path LIKE "%//%"
+/* query separator */
+
 CREATE TABLE ###TBLPREFIX###tblFile (
   ID int(11) unsigned NOT NULL auto_increment,
   ParentID int(11) unsigned NOT NULL default '0',
