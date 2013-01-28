@@ -2911,7 +2911,7 @@ class we_objectFile extends we_document{
 	}
 
 	public function initByID($we_ID, $we_Table = OBJECT_FILES_TABLE, $from = we_class::LOAD_MAID_DB){
-		parent::initByID($we_ID, $we_Table, $from);
+		parent::initByID(intval($we_ID), $we_Table, $from);
 		if(isset($this->elements['Charset'])){
 			$this->Charset = $this->elements['Charset']['dat'];
 			unset($this->elements['Charset']);
