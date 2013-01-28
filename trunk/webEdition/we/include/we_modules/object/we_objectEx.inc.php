@@ -520,16 +520,25 @@ class we_objectEx extends we_object{
 		$metadata = $this->DB_WE->metadata($ctable, true);
 		$metas= array_keys($metadata['meta']);
 		$consider=array_diff($metas,$this->_ObjectBaseElements);
-		$consider=array_combine(explode(',',$this->strOrder),$consider);
-		$isOK=true;
-		foreach($fields as $field){
-			if(!in_array($field,$consider)){
-				t_e('warning', 'we_ObjectEx::checkFields: '.$ctable.' ('.$this->Text.')  Field '.$field.' not found');
-				$isOK=false;
+		$theKeys=explode(',',$this->strOrder);
+		if(count($theKeys)!= count($consider)){
+			$this->resetOrder();
+			$theKeys=explode(',',$this->strOrder);
+		}
+		if(count($theKeys)== count($consider)){
+			$consider=array_combine($theKeys,$consider);
+			$isOK=true;
+			foreach($fields as $field){
+				if(!in_array($field,$consider)){
+					t_e('warning', 'we_ObjectEx::checkFields: '.$ctable.' ('.$this->Text.')  Field '.$field.' not found');
+					$isOK=false;
+				}
 			}
+			return $isOK;
+		} else{
+			t_e('warning', 'we_ObjectEx::checkFields: '.$ctable.' ('.$this->Text.') different field count - not recoverable bei resetOrder strOrder' );
 		}
 		
-		return $isOK;
 	}
 	
 	/* setter for runtime variable isAddFieldNoSave which allows to construct Classes from within Apps */
