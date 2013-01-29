@@ -14,6 +14,7 @@ $l_metadata=array(
 	'import_metadata_at_upload'=>'Vorhandene Metadaten importieren',
 	'info_exif_data'=>'Exif Daten',
 	'info_iptc_data'=>'IPTC Daten',
+	'info_pdf_data'=>'PDF Daten',
 	'meta_field_wrong_chars_messsage'=>'Der Feldname `%s1` ist nicht gültig! Er darf nur aus Buchstaben (groß oder klein, aber ohne Umlaute und Sonderzeichen), Zahlen (a-z, A-Z, 0-9) und Unterstrichen bestehen!',
 	'meta_field_wrong_name_messsage'=>'Der Feldname `%s1` ist nicht gültig, da er von webEdition intern benutzt wird! Folgende Namen sind nicht zulässig:%s2',
 	'none'=>'keine',
