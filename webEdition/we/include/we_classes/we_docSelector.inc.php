@@ -457,7 +457,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 	<tr>
 		<td colspan="5">' . we_html_tools::getPixel(5, 5) . '</td>
 	</tr>';
-		if($this->filter == ""){
+		if($this->filter == ''){
 			$ret.= '
 	<tr>
 		<td></td>
