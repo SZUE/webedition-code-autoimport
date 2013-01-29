@@ -92,8 +92,7 @@ function we_tag_listview($attribs){
 
 	$predefinedSQL = weTag_getAttribute('predefinedSQL', $attribs);
 	$offset = weTag_getAttribute('offset', $attribs);
-	$workspaceID = weTag_getAttribute('workspaceID', $attribs);
-	$workspaceID = $workspaceID ? $workspaceID : weTag_getAttribute('workspaceid', $attribs);
+	$workspaceID = weTag_getAttribute('workspaceID', $attribs, weTag_getAttribute('workspaceid', $attribs));
 	$we_lv_ws = isset($_REQUEST['we_lv_ws_' . $name]) ? filterIntVals($_REQUEST['we_lv_ws_' . $name]) : $workspaceID;
 
 	$orderid = weTag_getAttribute('orderid', $attribs, 0);
@@ -160,10 +159,8 @@ function we_tag_listview($attribs){
 
 	if($type == 'document' || $type == 'search'){
 		$we_lv_doctype = $doctype;
-		if($we_lv_doctype == 'we_doc'){
-			if($GLOBALS['we_doc']->DocType){
-				$we_lv_doctype = f('SELECT DocType FROM ' . DOC_TYPES_TABLE . ' WHERE ID="' . $GLOBALS['we_doc']->DocType . '"', 'DocType', $GLOBALS['DB_WE']);
-			}
+		if($we_lv_doctype == 'we_doc' && $GLOBALS['we_doc']->DocType){
+			$we_lv_doctype = f('SELECT DocType FROM ' . DOC_TYPES_TABLE . ' WHERE ID="' . $GLOBALS['we_doc']->DocType . '"', 'DocType', $GLOBALS['DB_WE']);
 		}
 	}
 
