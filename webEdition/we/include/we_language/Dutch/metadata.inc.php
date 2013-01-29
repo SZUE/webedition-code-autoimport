@@ -14,6 +14,7 @@ $l_metadata=array(
 	'import_metadata_at_upload'=>'Importeer metagegevens uit bestand',
 	'info_exif_data'=>'Exif gegevens',
 	'info_iptc_data'=>'IPTC gegevens',
+	'info_pdf_data'=>'PDF data',
 	'meta_field_wrong_chars_messsage'=>'De veldnaam `%s1` is niet geldig! Geldige karakters zijn alfa-numeriek, hoofd- en kleine letters (a-z, A-Z, 0-9) en underscore.',
 	'meta_field_wrong_name_messsage'=>'De veldnaam `%s1` is niet geldig! Deze naam wordt intern gebruikt in webEdition! De volgende namen zijn niet geldig en kunnen niet gebruikt worden: %s2',
 	'none'=>'geen',
