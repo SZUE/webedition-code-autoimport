@@ -165,7 +165,7 @@ class we_base_ContentTypes{
 				'Icon' => 'quicktime.gif',
 			),
 			'application/*' => array(
-				'Extension' => array('.doc', '.xls', '.ppt', '.zip', '.sit', '.bin', '.hqx', '.exe'),
+				'Extension' => array('.doc', '.xls', '.ppt', '.zip', '.sit', '.bin', '.hqx', '.exe', '.pdf'),
 				'Permission' => 'NEW_SONSTIGE',
 				'DefaultCode' => '',
 				'IsRealFile' => true,
