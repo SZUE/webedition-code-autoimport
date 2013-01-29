@@ -253,13 +253,14 @@ class we_document extends we_root{
 	}
 
 	function formMetaInfos(){
-		return '<table border="0" cellpadding="0" cellspacing="0">' .
-			'<tr><td colspan="2">' . $this->formInputField("txt", "Title", g_l('weClass', "[Title]"), 40, 508, "", "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td></tr>' .
-			'<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>' .
-			'<tr><td colspan="2">' . $this->formInputField("txt", "Description", g_l('weClass', "[Description]"), 40, 508, "", "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td></tr>' .
-			'<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>' .
-			'<tr><td colspan="2">' . $this->formInputField("txt", "Keywords", g_l('weClass', "[Keywords]"), 40, 508, "", "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td></tr>' .
-			'</table>' .
+		return '
+<table border="0" cellpadding="0" cellspacing="0">
+	<tr><td colspan="2">' . $this->formInputField("txt", "Title", g_l('weClass', "[Title]"), 40, 508, "", "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td></tr>
+	<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
+	<tr><td colspan="2">' . $this->formInputField("txt", "Description", g_l('weClass', "[Description]"), 40, 508, "", "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td></tr>
+	<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
+	<tr><td colspan="2">' . $this->formInputField("txt", "Keywords", g_l('weClass', "[Keywords]"), 40, 508, "", "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td></tr>
+</table>' .
 			($this->ContentType == 'image/*' ? $this->formCharset(true) : '');
 	}
 

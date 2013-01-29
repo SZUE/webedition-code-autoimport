@@ -33,6 +33,13 @@ class we_helpers_pdf2text{
 	const READPORTION = 512000;
 	const NL = "\n";
 	const SPACE = ' ';
+	const FILTER_GZ = '/FlateDecode';
+	const OBJ = 'obj';
+	const ENDOBJ = 'endobj';
+	const TRIM_STRING = ' ()';
+	const TRIM_LIST = ' []';
+	const TRIM_REF = ' R';
+	const TRIM_NAME = ' /';
 	const DEFLATE_ALL = false;
 
 	private static $space = 0;
@@ -48,7 +55,11 @@ class we_helpers_pdf2text{
 	private $file = '';
 
 	public function __construct($file){
-		$this->file = $file;
+		if(!file_exists($file)){
+			t_e('file not found', $file);
+		} else{
+			$this->file = $file;
+		}
 	}
 
 	public function processText(){
@@ -62,7 +73,7 @@ class we_helpers_pdf2text{
 		}
 		$this->setFontTables();
 		defined('DEBUG') && $this->mem();
-		$this->getAllPageObjects(trim($this->data[$this->root]['Pages'], ' []'));
+		$this->getAllPageObjects(trim($this->data[$this->root]['Pages'], self::TRIM_LIST));
 		defined('DEBUG') && $this->mem();
 		$this->unsetElem();
 		$this->getText();
@@ -92,7 +103,7 @@ class we_helpers_pdf2text{
 				}
 			}
 			for($data = $this->readPortion($this->file); !empty($data); $data = $this->readPortion()){
-				if(preg_match('#[\r\n ]+(' . $info . ' obj.*endobj)#Us', $data, $match)){
+				if(preg_match('#[\r\n ]+(' . $info . ' ' . self::OBJ . '.*' . self::ENDOBJ . ')#Us', $data, $match)){
 					$this->readPortion(-1);
 					$this->parsePDF($match[0]);
 					break;
@@ -101,7 +112,7 @@ class we_helpers_pdf2text{
 			$info = $this->data[$info];
 			$this->data = array();
 			foreach($info as $key => &$cur){
-				$cur = trim($cur, '() ');
+				$cur = self::getStringContent($cur);
 				if(strstr($key, 'Date')){
 					if(($cur = DateTime::createFromFormat('YmdHis', substr($cur, 2, 14)))){
 						$cur = $cur->format(g_l('date', '[format][default]'));
@@ -113,21 +124,37 @@ class we_helpers_pdf2text{
 		return array();
 	}
 
+	private static function getStringContent($str){
+		$str = trim($str);
+		switch(substr($str, 0, 1)){
+			case '('://string
+				return CheckAndConvertISOfrontend(trim($str, self::TRIM_STRING));
+			case '<'://hex
+				$str = trim($str, '<>');
+				$str = str_split($str, 2);
+				$out = '';
+				foreach($str as $cur){
+					$out.=chr(hexdec($cur));
+				}
+				return CheckAndConvertISOfrontend(mb_convert_encoding($out, 'UTF-8','UTF-16'));
+		}
+	}
+
 	private function setFontTables(){
 		foreach($this->fonts as $cur){
 			$elem = &$this->data[$cur];
 			$elem['charMap'] = array();
 			$encoding = (isset($elem['Encoding']) ? $elem['Encoding'] : '');
 			if(substr($encoding, -1) == 'R'){
-				$id = rtrim($encoding, 'R ');
-				$this->unset[] = rtrim($encoding, 'R ');
+				$id = rtrim($encoding, self::TRIM_REF);
+				$this->unset[] = rtrim($encoding, self::TRIM_REF);
 				$this->processFontDictionary($this->data[$id], $elem);
 			} else{
 				$this->setDefaultFontTable($encoding, $elem);
 			}
 
 			if(isset($elem['ToUnicode'])){
-				$id = rtrim($elem['ToUnicode'], ' R');
+				$id = rtrim($elem['ToUnicode'], self::TRIM_REF);
 				$this->unset[] = $id;
 
 				self::applyToUnicode(self::getStream($this->data[$id]), $elem['charMap']);
@@ -187,7 +214,7 @@ class we_helpers_pdf2text{
 		if(!isset($elem['stream'])){
 			print_r($elem);
 		}
-		return (!self::DEFLATE_ALL && $elem['Filter'] == '/FlateDecode' ?
+		return (!self::DEFLATE_ALL && $elem['Filter'] == self::FILTER_GZ ?
 				@gzuncompress($elem['stream']) :
 				$elem['stream']);
 	}
@@ -303,16 +330,16 @@ class we_helpers_pdf2text{
 		$data = '';
 		while(($read = fread($file, self::READPORTION))) {
 			$data.=$read;
-			if(strrpos($read, 'endobj') !== FALSE){
+			if(strrpos($read, self::ENDOBJ) !== FALSE){
 				break;
 			}
 		}
-		if(!$data || (strlen($data) < self::READPORTION && (strrpos($data, 'endobj') === FALSE))){
+		if(!$data || (strlen($data) < self::READPORTION && (strrpos($data, self::ENDOBJ) === FALSE))){
 			fclose($file);
 			return '';
 		}
 
-		$pos = (strrpos($data, 'endobj') + 7) - strlen($data);
+		$pos = (strrpos($data, self::ENDOBJ) + 7) - strlen($data);
 		fseek($file, $pos, SEEK_CUR);
 		$lastPos+=strlen($data) + $pos;
 		return substr($data, 0, $pos);
@@ -338,7 +365,7 @@ class we_helpers_pdf2text{
 			defined('DEBUG') && $this->mem();
 			unset($m[2]);
 			if(isset($matches2[2])){
-				preg_match_all('#/(\w+)[ \r\n]{0,2}(\d+ \d+ R|/\w+|\[[^\]]*\]|\([^)]*\))[\r\n]*#s', $matches2[2], $matches3, PREG_SET_ORDER);
+				preg_match_all('#/(\w+)[ \r\n]{0,2}(\d+ \d+ R|/\w+|\[[^\]]*\]|\([^)]*\)|<[a-fA-F\d]*>)[\r\n]*#s', $matches2[2], $matches3, PREG_SET_ORDER);
 				defined('DEBUG') && $this->mem();
 				foreach($matches3 as $cur){
 					$values[$cur[1]] = $cur[2];
@@ -348,7 +375,7 @@ class we_helpers_pdf2text{
 						case '/FontDescriptor':
 							$set = isset($values['FontFile']) ? $values['FontFile'] : (isset($values['FontFile2']) ? $values['FontFile2'] : (isset($values['FontFile3']) ? $values['FontFile3'] : ''));
 							if($set){
-								$this->unset[] = rtrim($set, ' R');
+								$this->unset[] = rtrim($set, self::TRIM_REF);
 							}
 							continue 2;
 						case '/Catalog':
@@ -380,7 +407,7 @@ class we_helpers_pdf2text{
 				$values['value'] = $matches2[1];
 			}
 			if(isset($matches2[3])){
-				$values['stream'] = (self::DEFLATE_ALL && isset($values['Filter']) && $values['Filter'] == '/FlateDecode' ? @gzuncompress($matches2[3]) : $matches2[3]);
+				$values['stream'] = (self::DEFLATE_ALL && isset($values['Filter']) && $values['Filter'] == self::FILTER_GZ ? @gzuncompress($matches2[3]) : $matches2[3]);
 			}
 			/* if(isset($values['Filter'])&&!isset($values['stream'])){
 			  print_r($matches2);
@@ -392,7 +419,7 @@ class we_helpers_pdf2text{
 	}
 
 	private function getAllPageObjects($id){
-		$id = array_map('trim', array_filter(explode(' R', $id)));
+		$id = array_map('trim', array_filter(explode(self::TRIM_REF, $id)));
 		foreach($id as $cur){
 			if(empty($cur)){
 				continue;
@@ -401,7 +428,7 @@ class we_helpers_pdf2text{
 			switch($elem['Type']){
 				case '/Pages':
 					$this->unset[] = $cur;
-					$this->getAllPageObjects(trim($elem['Kids'], ' []'));
+					$this->getAllPageObjects(trim($elem['Kids'], self::TRIM_LIST));
 					break;
 				case '/Page':
 					if(defined('DEBUG') && strstr(DEBUG, 'page')){
@@ -410,17 +437,17 @@ class we_helpers_pdf2text{
 					$fonts = array();
 					$this->getPageFonts($fonts, $elem);
 					if(isset($elem['Font'])){
-						$this->getPageFonts($fonts, $this->data[rtrim($elem['Font'], ' R')]);
+						$this->getPageFonts($fonts, $this->data[rtrim($elem['Font'], self::TRIM_REF)]);
 					}
 					if(isset($elem['Resources'])){
-						$this->getPageFonts($fonts, $this->data[rtrim($elem['Resources'], ' R')]);
+						$this->getPageFonts($fonts, $this->data[rtrim($elem['Resources'], self::TRIM_REF)]);
 					}
 					if(!empty($fonts)){
 						$fonts['Type'] = '/FontRessource';
 						$this->data[$cur] = $fonts;
 						$this->objects[] = $cur;
 					}
-					$x = array_filter(explode(' R', trim($elem['Contents'], ' []')));
+					$x = array_filter(explode(self::TRIM_REF, trim($elem['Contents'], self::TRIM_LIST)));
 					$x = array_map('trim', $x);
 					$this->objects = array_merge($this->objects, $x);
 			}
@@ -432,7 +459,7 @@ class we_helpers_pdf2text{
 			if($key == 'stream'){
 				continue;
 			}
-			$cur = rtrim($cur, ' R');
+			$cur = rtrim($cur, self::TRIM_REF);
 			if(in_array($cur, $this->fonts)){
 				$fonts[$key] = $this->data[$cur]['charMap'];
 			}
@@ -480,7 +507,7 @@ class we_helpers_pdf2text{
 					$hasData = false;
 					list($selectedFont, $fs) = explode(' ', trim($line[1], ' '));
 					$fs = floatval($fs);
-					$selectedFont = trim($selectedFont, ' /');
+					$selectedFont = trim($selectedFont, self::TRIM_NAME);
 					break;
 				case 'T*'://newline
 					$tmpText .= self::NL;

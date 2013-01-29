@@ -55,7 +55,7 @@ if(!isset($_SESSION['weS']['we_data'][$we_transaction])){
 	}
 
 	if(isset($_FILES["we_File"]) && $_FILES["we_File"]["name"] != "" && $_FILES['we_File']["type"] && (($allowedContentTypes == "") || (!(strpos($allowedContentTypes, $_FILES['we_File']["type"]) === false)))){
-		$we_File = TEMP_PATH . "/" . weFile::getUniqueId();
+		$we_File = TEMP_PATH . '/' . weFile::getUniqueId();
 		move_uploaded_file($_FILES["we_File"]["tmp_name"], $we_File);
 		if((!$we_doc->Filename) || (!$we_doc->ID)){
 			// Bug Fix #6284
@@ -65,14 +65,7 @@ if(!isset($_SESSION['weS']['we_data'][$we_transaction])){
 
 		$foo = explode("/", $_FILES["we_File"]["type"]);
 		$we_doc->setElement("data", $we_File, $foo[0]);
-		if($we_doc->ContentType == "image/*"){
-			$we_size = $we_doc->getimagesize($we_File);
-			$we_doc->setElement("width", $we_size[0], "attrib");
-			$we_doc->setElement("height", $we_size[1], "attrib");
-			$we_doc->setElement("origwidth", $we_size[0]);
-			$we_doc->setElement("origheight", $we_size[1]);
-		}
-		if($we_doc->ContentType == "application/x-shockwave-flash"){
+		if($we_doc->ContentType == "image/*" || $we_doc->ContentType == "application/x-shockwave-flash"){
 			$we_size = $we_doc->getimagesize($we_File);
 			$we_doc->setElement("width", $we_size[0], "attrib");
 			$we_doc->setElement("height", $we_size[1], "attrib");
@@ -83,6 +76,10 @@ if(!isset($_SESSION['weS']['we_data'][$we_transaction])){
 		$we_doc->Text = $we_doc->Filename . $we_doc->Extension;
 		$we_doc->Path = $we_doc->getPath();
 		$we_doc->DocChanged = true;
+
+		if($we_doc->Extension == '.pdf'){
+			$we_doc->setMetaDataFromFile($we_File);
+		}
 
 		$_SESSION['weS']['we_data']["tmpName"] = $we_File;
 		if(isset($_REQUEST["import_metadata"]) && !empty($_REQUEST["import_metadata"])){
