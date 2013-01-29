@@ -200,7 +200,7 @@ class we_binaryDocument extends we_document{
 	 * create instance of weMetaData to access metadata functionality:
 	 */
 	protected function getMetaDataReader($force = false){
-		if($force || $this->Extension == '.pdf'){
+		if($force){
 			if(!$this->metaDataReader){
 				$source = $this->getElement('data');
 				if(file_exists($source)){

@@ -68,6 +68,15 @@ class we_otherDocument extends we_binaryDocument{
 		return parent::we_save($resave);
 	}
 
+	/**
+	 * create instance of weMetaData to access metadata functionality:
+	 */
+	protected function getMetaDataReader($force = false){
+		return ($this->Extension == '.pdf' ?
+				parent::getMetaDataReader(true) :
+				false);
+	}
+
 	function insertAtIndex(){
 		$text = '';
 		$this->resetElements();
