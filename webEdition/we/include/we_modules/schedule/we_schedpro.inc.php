@@ -377,10 +377,6 @@ function checkFooter(){
 		$_SESSION['weS']['versions']['fromScheduler'] = true;
 
 		foreach($schedFile["value"] as $s){
-
-			//	shall the in webEdition edited doc be changed.
-			//$_scheduleEditedDoc = (isset($GLOBALS['we_doc']) && $schedFile["table"] == $GLOBALS['we_doc']->Table); //	in webEdition bearbeitetes Dokument wird gescheduled
-
 			switch($s['task']){
 				case self::DELETE:
 					$GLOBALS["NOT_PROTECT"] = true;
@@ -392,40 +388,30 @@ function checkFooter(){
 
 				case self::SCHEDULE_FROM:
 					$GLOBALS['we_doc']->Published = $now;
-					/* 		if($_scheduleEditedDoc){
-					  $GLOBALS['we_doc']->Published = $now;
-					  } */
 					break;
 				case self::SCHEDULE_TO:
 					$GLOBALS['we_doc']->Published = 0;
-					/* if($_scheduleEditedDoc){
-					  $GLOBALS['we_doc']->Published = 0;
-					  } */
 					break;
 				case self::DOCTYPE:
+					$publSave = $GLOBALS['we_doc']->Published;
 					if($GLOBALS['we_doc']->Published){
-						$publSave = $GLOBALS['we_doc']->Published;
 						$GLOBALS['we_doc']->we_unpublish();
-						$GLOBALS['we_doc']->DocType = $s["DoctypeID"];
-						if($s["doctypeAll"]){
-							$GLOBALS['we_doc']->changeDoctype($s["DoctypeID"], true);
-						}
-						$changeTmpDoc = true;
-						$GLOBALS['we_doc']->Published = $publSave;
 					}
+					$GLOBALS['we_doc']->DocType = $s['DoctypeID'];
+					if($s['doctypeAll']){
+						$GLOBALS['we_doc']->changeDoctype($s['DoctypeID'], true);
+					}
+					$changeTmpDoc = true;
+					$GLOBALS['we_doc']->Published = $publSave;
 					break;
 				case self::CATEGORY:
-					if($GLOBALS['we_doc']->Published){
-						$GLOBALS['we_doc']->Category = $s["CategoryIDs"];
-						$changeTmpDoc = true;
-					}
+					$GLOBALS['we_doc']->Category = $s["CategoryIDs"];
+					$changeTmpDoc = true;
 					break;
 				case self::DIR:
-					if($GLOBALS['we_doc']->Published){
-						$GLOBALS['we_doc']->setParentID($s["ParentID"]);
-						$GLOBALS['we_doc']->Path = $GLOBALS['we_doc']->getPath();
-						$changeTmpDoc = true;
-					}
+					$GLOBALS['we_doc']->setParentID($s["ParentID"]);
+					$GLOBALS['we_doc']->Path = $GLOBALS['we_doc']->getPath();
+					$changeTmpDoc = true;
 					break;
 			}
 
