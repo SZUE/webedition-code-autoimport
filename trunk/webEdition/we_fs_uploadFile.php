@@ -97,10 +97,10 @@ if((!$we_alerttext) && isset($_FILES['we_uploadedFile']) && $_FILES['we_uploaded
 
 	$we_doc->setElement("type", $we_ContentType, "attrib");
 
-	$foo = explode("/", $_FILES["we_uploadedFile"]["type"]);
+	$foo = explode('/', $_FILES["we_uploadedFile"]["type"]);
 	$we_doc->setElement("data", $tempName, $foo[0]);
 
-	if($we_ContentType == "image/*"){
+	if($we_ContentType == "image/*" || $we_ContentType == "application/x-shockwave-flash"){
 		$we_size = $we_doc->getimagesize($tempName);
 		$we_doc->setElement("width", $we_size[0], "attrib");
 		$we_doc->setElement("height", $we_size[1], "attrib");
@@ -110,13 +110,11 @@ if((!$we_alerttext) && isset($_FILES['we_uploadedFile']) && $_FILES['we_uploaded
 			$we_doc->importMetaData();
 		}
 	}
-	if($we_ContentType == "application/x-shockwave-flash"){
-		$we_size = $we_doc->getimagesize($tempName);
-		$we_doc->setElement("width", $we_size[0], "attrib");
-		$we_doc->setElement("height", $we_size[1], "attrib");
-		$we_doc->setElement("origwidth", $we_size[0]);
-		$we_doc->setElement("origheight", $we_size[1]);
+	if($we_doc->Extension == '.pdf'){
+		$we_doc->setMetaDataFromFile($tempName);
 	}
+
+
 
 	$we_doc->setElement("filesize", $_FILES['we_uploadedFile']["size"], "attrib");
 	if(isset($_REQUEST["img_title"])){
@@ -137,11 +135,9 @@ if((!$we_alerttext) && isset($_FILES['we_uploadedFile']) && $_FILES['we_uploaded
 	$we_doc->we_save();
 	$id = $we_doc->ID;
 } else if(isset($_FILES['we_uploadedFile'])){
-	if(we_filenameNotValid($_FILES['we_uploadedFile']['name'])){
-		$we_alerttext = g_l('alert', "[we_filename_notValid]");
-	} else{
-		$we_alerttext = g_l('alert', "[wrong_file][" . $we_ContentType . ']');
-	}
+	$we_alerttext = (we_filenameNotValid($_FILES['we_uploadedFile']['name']) ?
+			g_l('alert', "[we_filename_notValid]") :
+			g_l('alert', "[wrong_file][" . $we_ContentType . ']'));
 }
 
 // find out the smallest possible upload size
