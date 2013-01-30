@@ -9,6 +9,11 @@
 *
  * VERSION HISTORY:
  * 
+ * 2.8.0.0
+ * 2013-01-07
+ * - Installer works with PHP 5.4.
+ 
+ 
  * 2.5.0.0
  * 2010-02-23
  * - Various bugsfixes regarding all parts and steps of the online installation process

@@ -3,7 +3,7 @@ class Welcome extends leStep {
 
 	var $EnabledButtons = array("next");
 
-	function execute(&$Template) {
+	function execute(&$Template = '') {
 
 		$PostContent = "";
 		$AvailableLanguages = leOnlineInstaller::getAvailableLanguages();

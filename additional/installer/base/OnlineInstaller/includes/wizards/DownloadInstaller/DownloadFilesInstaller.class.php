@@ -6,7 +6,7 @@ class DownloadFilesInstaller extends leStep {
 	var $ProgressBarVisible = true;
 
 
-	function execute(&$Template) {
+	function execute(&$Template = '') {
 
 		$this->liveUpdateHttpResponse = $this->getLiveUpdateHttpResponse();
 
