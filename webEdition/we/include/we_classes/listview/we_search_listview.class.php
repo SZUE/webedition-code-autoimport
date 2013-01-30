@@ -132,7 +132,6 @@ class we_search_listview extends listviewBase{
 		$this->class = $class;
 		$this->casesensitive = $casesensitive;
 
-		$searchfield = $this->casesensitive ? "BText" : "Text";
 
 		$cat_tail = ($this->cats ? we_category::getCatSQLTail($this->cats, INDEX_TABLE, $this->catOr, $this->DB_WE) : '');
 
@@ -154,7 +153,7 @@ class we_search_listview extends listviewBase{
 
 		$bedingungen = preg_split('/ +/', $this->search);
 		$ranking = "0";
-		$spalten = array(INDEX_TABLE . '.' . $searchfield);
+		$spalten = array(($this->casesensitive?'BINARY ':'').INDEX_TABLE . '.Text');
 		foreach($bedingungen as $v1){
 			if(preg_match('|^[-\+]|', $v1)){
 				$not = (preg_match('|^-|', $v1)) ? 'NOT ' : '';
