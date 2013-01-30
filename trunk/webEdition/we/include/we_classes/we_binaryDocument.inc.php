@@ -177,7 +177,6 @@ class we_binaryDocument extends we_document{
 			}
 			$set = array('DID' => intval($this->ID),
 				'Text' => $text,
-				'BText' => $text,
 				'Workspace' => $this->ParentPath,
 				'WorkspaceID' => intval($this->ParentID),
 				'Category' => $this->Category,

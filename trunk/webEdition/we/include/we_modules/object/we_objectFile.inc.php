@@ -2044,7 +2044,6 @@ class we_objectFile extends we_document{
 				'INSERT INTO ' . INDEX_TABLE . ' SET ' . we_database_base::arraySetter(array(
 					'OID' => $this->ID,
 					'Text' => $text,
-					'BText' => $text,
 					'Workspace' => $wsPath,
 					'WorkspaceID' => $w,
 					'Category' => $this->Category,
@@ -2067,7 +2066,6 @@ class we_objectFile extends we_document{
 						'INSERT INTO ' . INDEX_TABLE . ' SET ' . we_database_base::arraySetter(array(
 							'OID' => $this->ID,
 							'Text' => $text,
-							'BText' => $text,
 							'Workspace' => $wsPath,
 							'WorkspaceID' => $w,
 							'Category' => $this->Category,
