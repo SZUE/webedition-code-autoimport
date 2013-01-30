@@ -3,7 +3,7 @@
 
 class leCheckbox {
 
-	function get($name, $value, $attribs, $text, $checked = false, $type = "checkbox"){
+	static function get($name, $value, $attribs, $text, $checked = false, $type = "checkbox"){
 
 		$_attribs = "";
 

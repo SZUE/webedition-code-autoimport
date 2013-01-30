@@ -1,7 +1,7 @@
 <?php
 class leProgressBar {
 
-	function get($Id) {
+	static function get($Id) {
 
 		return '<table id="' . $Id . '" cellpadding="0" cellspacing="0" border="0">
 <tr>

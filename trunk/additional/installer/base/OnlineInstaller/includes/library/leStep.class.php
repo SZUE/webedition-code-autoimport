@@ -94,16 +94,6 @@ class leStep {
 
 
 	/**
-	 * PHP4 Constructor
-	 *
-	 */
-	function leStep($Name, $WizardObj, $Language = array()) {
-		$this->__construct($Name, $WizardObj, $Language);
-
-	}
-
-
-	/**
 	 * PHP5 Constructor
 	 *
 	 */
@@ -111,7 +101,6 @@ class leStep {
 		$this->Name = $Name;
 		$this->Wizard = $WizardObj;
 		$this->Language = $Language;
-
 	}
 
 
@@ -120,9 +109,8 @@ class leStep {
 	 *
 	 * @param string $Headline
 	 */
-	function setHeadline($Headline) {
+	function setHeadline($Headline = '') {
 		$this->Headline = $Headline;
-
 	}
 
 
@@ -131,9 +119,8 @@ class leStep {
 	 *
 	 * @param string $Content
 	 */
-	function setContent($Content) {
+	function setContent($Content = '') {
 		$this->Content = $Content;
-
 	}
 
 
@@ -144,7 +131,6 @@ class leStep {
 	 */
 	function getName() {
 		return $this->Name;
-
 	}
 
 
@@ -155,7 +141,6 @@ class leStep {
 	 */
 	function getWizardName() {
 		return $this->Wizard->getName();
-
 	}
 
 
@@ -167,12 +152,10 @@ class leStep {
 	function getUrl() {
 
 		$additional = "";
-		if(isset($_REQUEST['debug'])) {
+		if(isset($_REQUEST['debug'])){
 			$additional .= "&debug=" . $_REQUEST['debug'];
-
 		}
 		return LE_INSTALLER_ADAPTER_URL . "?leWizard=" . $this->getWizardName() . "&leStep=" . $this->Name . $additional;
-
 	}
 
 
@@ -183,13 +166,11 @@ class leStep {
 	 */
 	function prepare() {
 		return true;
-
 	}
 
 
-	function execute(&$Template) {
+	function execute(&$Template = '') {
 		return LE_STEP_NEXT;
-
 	}
 
 
@@ -201,41 +182,31 @@ class leStep {
 	 * @param string $UpdateCmdDetail
 	 * @return integer
 	 */
-	function executeOnline(&$Template, $UpdateCmd = "", $UpdateCmdDetail = "") {
+	function executeOnline(&$Template = '', $UpdateCmd = '', $UpdateCmdDetail = '') {
 
-		if($UpdateCmd != "") {
+		if($UpdateCmd != ""){
 			$_REQUEST['update_cmd'] = $UpdateCmd;
-
-		} else {
+		} else{
 			$_REQUEST['update_cmd'] = $this->Wizard->Name;
-
 		}
 
-		if($UpdateCmdDetail != "") {
+		if($UpdateCmdDetail != ""){
 			$_REQUEST['detail'] = $UpdateCmdDetail;
-
-		} else {
+		} else{
 			$_REQUEST['detail'] = $this->Name;
-
 		}
 
 		$this->liveUpdateHttpResponse = $this->getLiveUpdateHttpResponse();
 
-		if($this->liveUpdateHttpResponse) {
-
-			if($this->liveUpdateHttpResponse->Type == "executeOnline") {
-
+		if($this->liveUpdateHttpResponse){
+			if($this->liveUpdateHttpResponse->Type == "executeOnline"){
 				$code = $this->liveUpdateHttpResponse->Code;
 				$this->liveUpdateHttpResponse = null;
-
 				return eval('?>' . $code);
-
 			}
-
 		}
 
 		return LE_STEP_NEXT;
-
 	}
 
 
@@ -244,9 +215,8 @@ class leStep {
 	 *
 	 * @return boolean
 	 */
-	function check(&$Template) {
+	function check(&$Template = '') {
 		return true;
-
 	}
 
 	/**
@@ -257,10 +227,8 @@ class leStep {
 		global $LU_IgnoreRequestParameters, $LU_ParameterNames,$leApplicationList;
 
 		$parameters = array();
-
-		foreach ($LU_ParameterNames as $parameterName) {
-
-			if (isset($_REQUEST[$parameterName])) {
+		foreach($LU_ParameterNames as $parameterName){
+			if(isset($_REQUEST[$parameterName])){
 				$parameters[$parameterName] = $_REQUEST[$parameterName];
 			}
 		}
@@ -271,8 +239,8 @@ class leStep {
 
 		// add all other request parameters to the request
 		$reqVars = array();
-		foreach ($_REQUEST as $key => $value) {
-			if (!isset($parameters[$key]) && !in_array($key, $LU_IgnoreRequestParameters) && !array_key_exists($key,$_COOKIE) ) {
+		foreach($_REQUEST as $key => $value){
+			if(!isset($parameters[$key]) && !in_array($key, $LU_IgnoreRequestParameters) && !array_key_exists($key,$_COOKIE) ){
 				$reqVars[$key] = $value;
 			}
 		}
@@ -280,7 +248,6 @@ class leStep {
 		$parameters['reqArray'] = base64_encode(serialize($reqVars));
 		$response = liveUpdateHttp::getHttpResponse($GLOBALS['leApplicationList'][$_SESSION['leApplication']]['UpdateServer'], $GLOBALS['leApplicationList'][$_SESSION['leApplication']]['UpdateScript'], $parameters);
 		$liveUpdateResponse = new liveUpdateResponse();
-
 		$liveUpdateResponse->initByHttpResponse($response);
 
 		return $liveUpdateResponse;

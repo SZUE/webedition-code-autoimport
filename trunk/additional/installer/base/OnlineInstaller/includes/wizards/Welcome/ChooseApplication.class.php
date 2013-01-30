@@ -4,7 +4,7 @@ class ChooseApplication extends leStep {
 	var $EnabledButtons = array('next', 'back');
 
 
-	function execute(&$Template) {
+	function execute(&$Template = '') {
 
 		$Options = array();
 		$JSString = 'var information = new Array();' . "\n";
@@ -67,7 +67,7 @@ EOF;
 	}
 
 
-	function check() {
+	function check(&$Template = '') {
 
 		if(isset($_REQUEST['changeApplication']) && array_key_exists($_REQUEST['changeApplication'], $GLOBALS['leApplicationList'])) {
 			$_SESSION['leApplication'] = $_REQUEST['changeApplication'];

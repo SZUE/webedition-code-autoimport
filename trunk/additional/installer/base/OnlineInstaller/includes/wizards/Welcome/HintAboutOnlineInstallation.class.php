@@ -4,7 +4,7 @@ class HintAboutOnlineInstallation extends leStep {
 	var $EnabledButtons = array('back');
 
 
-	function execute(&$Template) {
+	function execute(&$Template = '') {
 		
 		// If binary installer
 		if(		file_exists(LE_INSTALLER_PATH . "/OnlineInstaller.log.php")

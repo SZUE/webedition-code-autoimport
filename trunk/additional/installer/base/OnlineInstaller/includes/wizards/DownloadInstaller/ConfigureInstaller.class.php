@@ -6,7 +6,7 @@ class ConfigureInstaller extends leStep {
 	var $EnabledButtons = array('next');
 
 
-	function execute(&$Template) {
+	function execute(&$Template = '') {
 
 		// update the steps on the left side.
 		// ulInstallerSteps
