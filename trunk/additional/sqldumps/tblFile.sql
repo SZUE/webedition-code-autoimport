@@ -1,4 +1,4 @@
-###UPDATEONLY### UPDATE ###TBLPREFIX###tblFile SET Path=REPLACE(Path,"//","/"), WHERE Path LIKE "%//%"
+###UPDATEONLY### UPDATE ###TBLPREFIX###tblFile SET Path=REPLACE(Path,"//","/") WHERE Path LIKE "%//%"
 /* query separator */
 
 CREATE TABLE ###TBLPREFIX###tblFile (
