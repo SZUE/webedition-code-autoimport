@@ -539,25 +539,27 @@ class we_class_folder extends we_folder{
 							$content[$f][$i + 5]["dat"] = ($text == "1" ? g_l('global', "[yes]") : g_l('global', "[no]") );
 							break;
 						case "meta":
-							if($this->searchclass->f($type[$i + 5] . "_" . $head[$i + 5]["dat"]) != ""
-								&& isset($DefaultValues[$type[$i + 5] . "_" . $head[$i + 5]["dat"]]["meta"][$this->searchclass->f($type[$i + 5] . "_" . $head[$i + 5]["dat"])])){
-								$text = $DefaultValues[$type[$i + 5] . "_" . $head[$i + 5]["dat"]]["meta"][$this->searchclass->f($type[$i + 5] . "_" . $head[$i + 5]["dat"])];
+							if($this->searchclass->f($type[$i + 5] . '_' . $head[$i + 5]["dat"]) != ''
+								&& isset($DefaultValues[$type[$i + 5] . '_' . $head[$i + 5]["dat"]]["meta"][$this->searchclass->f($type[$i + 5] . "_" . $head[$i + 5]["dat"])])){
+								$text = $DefaultValues[$type[$i + 5] . '_' . $head[$i + 5]["dat"]]["meta"][$this->searchclass->f($type[$i + 5] . "_" . $head[$i + 5]["dat"])];
 								$content[$f][$i + 5]["dat"] = (strlen($text) > $strlen) ? substr($text, 0, $strlen) . " ..." : $text;
 							} else{
-								$content[$f][$i + 5]["dat"] = "&nbsp;";
+								$content[$f][$i + 5]["dat"] = '&nbsp;';
 							}
 							break;
-						case "link":
+						case 'link':
 							$text = $this->searchclass->f($type[$i + 5] . "_" . $head[$i + 5]["dat"]);
-							$content[$f][$i + 5]["dat"] = $GLOBALS['we_doc']->getFieldByVal($text, "link");
+							//FIXME: this is not php compliant getFieldByVal is a dynamic method - and must be
+							$content[$f][$i + 5]["dat"] = we_document::getFieldByVal($text, "link");
 							break;
-						case "href":
+						case 'href':
 							$text = $this->searchclass->f($type[$i + 5] . "_" . $head[$i + 5]["dat"]);
 							$hrefArr = $text ? unserialize($text) : array();
 							if(!is_array($hrefArr))
 								$hrefArr = array();
 
-							$content[$f][$i + 5]["dat"] = $GLOBALS['we_doc']->getHrefByArray($hrefArr);
+							//FIXME: this is not php compliant getHrefByArray is a dynamic method - and must be
+							$content[$f][$i + 5]["dat"] = we_document::getHrefByArray($hrefArr);
 							//$text = $DefaultValues[$type[$i+3]."_".$head[$i+3]["dat"]]["meta"][$this->searchclass->f($type[$i+3]."_".$head[$i+3]["dat"])];
 							//$content[$f][$i+3]["dat"] = "TEST";
 							break;
@@ -1010,15 +1012,15 @@ EOF;
 		$deletedItems = array();
 
 		// get Class
-		$classArray = getHash("SELECT * FROM " . OBJECT_TABLE . " WHERE Path='" . $DB_WE->escape($this->ClassPath) . "'", $DB_WE);
+		$classArray = getHash('SELECT * FROM ' . OBJECT_TABLE . ' WHERE Path="' . $DB_WE->escape($this->ClassPath) . '"', $DB_WE);
 		foreach(array_keys($_REQUEST) as $f){
 			if(substr($f, 0, 3) == "weg"){
-				//$this->query("");
-				$ofid = f("SELECT OF_ID FROM " . OBJECT_X_TABLE . intval($classArray["ID"]) . " WHERE ID=" . intval(substr($f, 3), 'OF_ID', $DB_WE));
+				$tid=intval(substr($f, 3));
+				$ofid = f('SELECT OF_ID FROM ' . OBJECT_X_TABLE . intval($classArray['ID']) . ' WHERE ID=' .$tid , 'OF_ID', $DB_WE);
 				if(checkIfRestrictUserIsAllowed($ofid, OBJECT_FILES_TABLE)){
-					$DB_WE->query("DELETE FROM " . OBJECT_X_TABLE . intval($classArray["ID"]) . " WHERE ID=" . intval(substr($f, 3)));
-					$DB_WE->query("DELETE FROM " . INDEX_TABLE . " WHERE OID=" . intval($ofid));
-					$DB_WE->query("DELETE FROM " . OBJECT_FILES_TABLE . " WHERE ID=" . intval($ofid));
+					$DB_WE->query('DELETE FROM ' . OBJECT_X_TABLE . intval($classArray['ID']) . ' WHERE ID=' . $tid);
+					$DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE OID=' . intval($ofid));
+					$DB_WE->query('DELETE FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($ofid));
 
 					$obj = new we_objectFile();
 					$obj->initByID($ofid, OBJECT_FILES_TABLE);
