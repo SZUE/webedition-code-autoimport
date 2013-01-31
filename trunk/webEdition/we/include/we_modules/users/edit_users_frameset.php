@@ -509,7 +509,7 @@ if($_SESSION["perms"]["NEW_USER"] || $_SESSION["perms"]["NEW_GROUP"] || $_SESSIO
 			print "  menuDaten.add(new dirEntry('folder','" . $DB_WE->f("ID") . "','" . $DB_WE->f("ParentID") . "','" . addslashes($DB_WE->f("Text")) . "',false,'group','" . USER_TABLE . "',1));";
 		} else{
 			$p = unserialize($DB_WE->f("Permissions"));
-			print "  menuDaten.add(new urlEntry('" . ($DB_WE->f("Type") == 2 ? 'user_alias.gif' : 'user.gif') . "','" . $DB_WE->f("ID") . "','" . $DB_WE->f("ParentID") . "','" . addslashes($DB_WE->f("Text")) . "','" . ($DB_WE->f("Type") == 2 ? 'alias' : 'user') . "','" . USER_TABLE . "','" . $p["ADMINISTRATOR"] . "','" . $DB_WE->f("LoginDenied") . "'));";
+			print "  menuDaten.add(new urlEntry('" . ($DB_WE->f("Type") == 2 ? 'user_alias.gif' : 'user.gif') . "','" . $DB_WE->f("ID") . "','" . $DB_WE->f("ParentID") . "','" . addslashes($DB_WE->f("Text")) . "','" . ($DB_WE->f("Type") == 2 ? 'alias' : 'user') . "','" . USER_TABLE . "','" . (isset($p["ADMINISTRATOR"]) && $p["ADMINISTRATOR"]) . "','" . $DB_WE->f("LoginDenied") . "'));";
 		}
 	}
 }

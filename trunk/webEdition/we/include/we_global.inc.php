@@ -130,10 +130,10 @@ function we_getCatsFromDoc($doc, $tokken = ',', $showpath = false, $db = '', $ro
 			'');
 }
 
-function we_getCatsFromIDs($catIDs, $tokken = ',', $showpath = false, $db = '', $rootdir = '/', $catfield = '', $onlyindir = ''){
+function we_getCatsFromIDs($catIDs, $tokken = ',', $showpath = false, $db = '', $rootdir = '/', $catfield = '', $onlyindir = '', $asArray = false){
 	$db = ($db ? $db : new DB_WE());
 	if(!$catIDs){
-		return '';
+		return $asArray ? array() : '';
 	}
 //$foo = makeArrayFromCSV($catIDs);
 	$cats = array();
@@ -151,12 +151,11 @@ function we_getCatsFromIDs($catIDs, $tokken = ',', $showpath = false, $db = '', 
 			} elseif(empty($onlyindir) || strpos($data['Path'], $onlyindir) === 0){
 				$cats[] = '';
 			}
-		} else{
-			if(empty($onlyindir) || strpos($data['Path'], $onlyindir) === 0){
-				$cats[] = $data[$field];
-			}
+		} elseif(empty($onlyindir) || strpos($data['Path'], $onlyindir) === 0){
+			$cats[] = $data[$field];
 		}
 	}
+	t_e($cats, $catIDs);
 	if(($showpath || $catfield == 'Path') && strlen($rootdir)){
 		foreach($cats as &$cat){
 			if(substr($cat, 0, strlen($rootdir)) == $rootdir){
@@ -164,7 +163,7 @@ function we_getCatsFromIDs($catIDs, $tokken = ',', $showpath = false, $db = '', 
 			}
 		}
 	}
-	return makeCSVFromArray($cats, false, $tokken);
+	return $asArray ? $cats : makeCSVFromArray($cats, false, $tokken);
 }
 
 function makeIDsFromPathCVS($paths, $table = FILE_TABLE, $prePostKomma = true){
