@@ -123,7 +123,7 @@ if(isset($fieldName) && isset($_REQUEST["we_okpressed"]) && $_REQUEST["we_okpres
 			  15 = charset
 			  16 = cssClasses
 			  17 = Language
-
+			  18 = documentCss
 			 */
 
 			$e = new we_wysiwyg(
@@ -143,7 +143,13 @@ if(isset($fieldName) && isset($_REQUEST["we_okpressed"]) && $_REQUEST["we_okpres
 					$_REQUEST['we_cmd'][14],
 					$_REQUEST['we_cmd'][15],
 					$_REQUEST['we_cmd'][16],
-					$_REQUEST['we_cmd'][17]);
+					$_REQUEST['we_cmd'][17],
+					'',
+					true,
+					false,
+					'top',
+					true,
+					we_cmd_dec(18));
 
 			print we_wysiwyg::getHeaderHTML() . $e->getHTML() .
 				'<div style="height:8px"></div>' . we_button::position_yes_no_cancel($okBut, $cancelBut);

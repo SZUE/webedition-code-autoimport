@@ -11,7 +11,7 @@ h6 {font-size: .75em}
 a.mceItemAnchor {display:inline-block; width:11px !important; height:11px  !important; background:url(../default/img/items.gif) no-repeat 0 0;}
 span.mceItemNbsp {background: #DDD}
 td.mceSelected, th.mceSelected {background-color:#3399ff !important}
-img {border:0;}
+/* img {border:0;} */
 table {cursor:default}
 table td, table th {cursor:text}
 ins {border-bottom:1px solid green; text-decoration: none; color:green}
