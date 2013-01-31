@@ -270,10 +270,9 @@ if($_userID != 0 && $_userID != $_SESSION['user']['ID'] && $we_doc->ID){ // docu
 		include_once(WE_USERS_MODULE_PATH . 'we_users_lockmessage.inc.php');
 		exit;
 	}
-} else{ // lock document, if in seeMode and EditMode !!, don't lock when already locked
-	if($_userID != $_SESSION['user']['ID'] && $_SESSION['weS']['we_mode'] == 'seem' && $we_doc->EditPageNr != WE_EDITPAGE_PREVIEW){
-		$we_doc->lockDocument();
-	}
+} elseif($_userID != $_SESSION['user']['ID'] && $_SESSION['weS']['we_mode'] == 'seem' && $we_doc->EditPageNr != WE_EDITPAGE_PREVIEW){
+	// lock document, if in seeMode and EditMode !!, don't lock when already locked
+	$we_doc->lockDocument();
 }
 
 
@@ -447,7 +446,11 @@ if((($_REQUEST['we_cmd'][0] != 'save_document' && $_REQUEST['we_cmd'][0] != 'pub
 						exit();
 					} else{
 						//this happens when we_cmd[3] is set and not we_cmd[2]
+						$oldID = $we_doc->ID;
 						if($we_doc->we_save()){
+							if($oldID == 0){
+								$we_doc->lockDocument();
+							}
 							$wasSaved = true;
 							$wasNew = (intval($we_doc->ID) == 0) ? true : false;
 							$we_JavaScript .= "_EditorFrame.getDocumentReference().frames[0].we_setPath('" . $we_doc->Path . "', '" . $we_doc->Text . "', '" . $we_doc->ID . "');" .
@@ -502,8 +505,11 @@ if((($_REQUEST['we_cmd'][0] != 'save_document' && $_REQUEST['we_cmd'][0] != 'pub
 							exit();
 						}
 
-
+						$oldID = $we_doc->ID;
 						if($we_doc->we_save()){
+							if($oldID == 0){
+								$we_doc->lockDocument();
+							}
 							$wasSaved = true;
 							if($we_doc->ContentType == 'object'){
 								//FIXME: removed: top.header.document.location.reload(); - what should be reloaded?!
@@ -571,10 +577,8 @@ if((($_REQUEST['we_cmd'][0] != 'save_document' && $_REQUEST['we_cmd'][0] != 'pub
 							$we_JavaScript .= $we_doc->getUpdateTreeScript(!$_REQUEST['we_cmd'][4]);
 
 							if($wasNew || (!$wasPubl)){
-								if($we_doc->ContentType == "folder"){
-									$we_JavaScript .= 'top.we_cmd("switch_edit_page","' . $we_doc->EditPageNr . '","' . $we_transaction . '");';
-								}
-								$we_JavaScript .= "_EditorFrame.getDocumentReference().frames[3].location.reload();";
+								$we_JavaScript .= ($we_doc->ContentType == "folder" ? 'top.we_cmd("switch_edit_page","' . $we_doc->EditPageNr . '","' . $we_transaction . '");' : '') .
+									'_EditorFrame.getDocumentReference().frames[3].location.reload();';
 							}
 							$we_JavaScript .= "_EditorFrame.getDocumentReference().frames[0].we_setPath('" . $we_doc->Path . "','" . $we_doc->Text . "', '" . $we_doc->ID . "');";
 
