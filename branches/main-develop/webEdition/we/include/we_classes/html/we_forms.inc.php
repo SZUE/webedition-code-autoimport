@@ -129,7 +129,6 @@ abstract class we_forms{
 				$charset = $GLOBALS['we_doc']->getElement('Charset');
 			}
 		}
-
 		$out = '';
 		$dhtmledit = weTag_getAttribute('dhtmledit', $attribs, false, true); //4614
 		$wysiwyg = $dhtmledit || weTag_getAttribute('wysiwyg', $attribs, false, true);
@@ -149,13 +148,18 @@ abstract class we_forms{
 		$inlineedit = weTag_getAttribute('inlineedit', $attribs, defined('INLINEEDIT_DEFAULT') ? INLINEEDIT_DEFAULT : true, true);
 		$tabindex = weTag_getAttribute('tabindex', $attribs);
 		$oldHtmlspecialchars = weTag_getAttribute('htmlspecialchars', $attribs, false, true);
-
+		$ignoredocumentcss = weTag_getAttribute('ignoredocumentcss', $attribs, false, true);
 		$buttonpos = weTag_getAttribute('buttonpos', $attribs);
-
 		$cssClasses = weTag_getAttribute('classes', $attribs);
-
 		$buttonTop = false;
 		$buttonBottom = false;
+		
+		//first prepare stylesheets from textarea-attribute editorcss (templates) or class-css (classes): csv of ids. then (if document) get document-css, defined by we:css
+		$contentCss = (isset($GLOBALS['we_doc']) && ($GLOBALS['we_doc']->ClassName == 'we_objectFile' || $GLOBALS['we_doc']->ClassName == 'we_object')) ? $GLOBALS['we_doc']->CSS :
+				((isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->ClassName == 'we_webEditionDocument') ? weTag_getAttribute('editorcss', $attribs) : '');
+		$contentCss = !empty($contentCss) ? implode('?' . time() . ',', id_to_path(trim($contentCss,', '), FILE_TABLE, '', false, true)) . '?' . time() : '';
+		$contentCss = (isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->ClassName == 'we_webEditionDocument' && !$ignoredocumentcss) ? trim($GLOBALS['we_doc']->getDocumentCss() . ',' . $contentCss, ',') : 
+				$contentCss;
 
 		if($buttonpos){
 			$foo = makeArrayFromCSV($buttonpos);
@@ -212,10 +216,10 @@ abstract class we_forms{
 
 			$buttonpos = $buttonpos ? $buttonpos : 'top';
 			if($inlineedit){
-				$e = new we_wysiwyg($name, $width, $height, $value, $commands, $bgcolor, '', $class, $fontnames, (!$inwebedition), $xml, $removeFirstParagraph, $inlineedit, '', $charset, $cssClasses, $_lang, '', $showSpell, $isFrontendEdit, $buttonpos, $oldHtmlspecialchars);
+				$e = new we_wysiwyg($name, $width, $height, $value, $commands, $bgcolor, '', $class, $fontnames, (!$inwebedition), $xml, $removeFirstParagraph, $inlineedit, '', $charset, $cssClasses, $_lang, '', $showSpell, $isFrontendEdit, $buttonpos, $oldHtmlspecialchars, $contentCss);
 				$out .= $e->getHTML();
 			} else{
-				$e = new we_wysiwyg($name, $width, $height, '', $commands, $bgcolor, '', $class, $fontnames, (!$inwebedition), $xml, $removeFirstParagraph, $inlineedit, '', $charset, $cssClasses, $_lang, '', $showSpell, $isFrontendEdit, $buttonpos, $oldHtmlspecialchars);
+				$e = new we_wysiwyg($name, $width, $height, '', $commands, $bgcolor, '', $class, $fontnames, (!$inwebedition), $xml, $removeFirstParagraph, $inlineedit, '', $charset, $cssClasses, $_lang, '', $showSpell, $isFrontendEdit, $buttonpos, $oldHtmlspecialchars, $contentCss);
 
 				//$fieldName = preg_replace('#^.+_txt\[(.+)\]$#', '\1', $name);
 				// Bugfix => Workarround Bug # 7445

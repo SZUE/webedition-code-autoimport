@@ -1357,7 +1357,7 @@ class we_objectFile extends we_document{
 			$attribs["height"] = isset($attribs["height"]) ? $attribs["height"] : 200;
 			$attribs["rows"] = 10;
 			$attribs["cols"] = 60;
-			$attribs["bgcolor"] = "white";
+			$attribs['bgcolor'] = isset($attribs["bgcolor"]) ? $attribs["bgcolor"] : (WYSIWYG_TYPE == 'tinyMCE' ? '' : 'white');
 			if(isset($attribs["cssClasses"])){
 				$attribs["classes"] = $attribs["cssClasses"];
 			}

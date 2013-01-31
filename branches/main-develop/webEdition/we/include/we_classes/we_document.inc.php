@@ -1614,5 +1614,12 @@ class we_document extends we_root{
 		$this->DB_WE->query('DELETE FROM ' . NAVIGATION_TABLE . ' WHERE ' . weNavigation::getNavCondition($this->ID, $this->Table));
 		return true;
 	}
+	
+	/**
+	 * @return '': this method is overwritten in we_webEditionDocument
+	 */
+	public function getDocumentCss(){
+		return '';
+	}
 
 }

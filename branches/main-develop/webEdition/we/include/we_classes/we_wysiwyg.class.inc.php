@@ -57,12 +57,13 @@ class we_wysiwyg{
 	private $showSpell = true;
 	private $isFrontendEdit = false;
 	private $htmlSpecialchars = true; // in wysiwyg default was "true" (although Tag-Hilfe says "false")
+	private $contentCss = '';
 	public static $editorType = WYSIWYG_TYPE; //FIXME: remove after old editor is removed
 
-	function __construct($name, $width, $height, $value = '', $propstring = '', $bgcol = 'white', $fullscreen = '', $className = '', $fontnames = '', $outsideWE = false, $xml = false, $removeFirstParagraph = true, $inlineedit = true, $baseHref = '', $charset = '', $cssClasses = '', $Language = '', $test = '', $spell = true, $isFrontendEdit = false, $buttonpos = 'top', $oldHtmlspecialchars = true){
+	function __construct($name, $width, $height, $value = '', $propstring = '', $bgcol = '', $fullscreen = '', $className = '', $fontnames = '', $outsideWE = false, $xml = false, $removeFirstParagraph = true, $inlineedit = true, $baseHref = '', $charset = '', $cssClasses = '', $Language = '', $test = '', $spell = true, $isFrontendEdit = false, $buttonpos = 'top', $oldHtmlspecialchars = true, $contentCss = ''){
 		$this->propstring = $propstring ? ',' . $propstring . ',' : '';
 		$this->name = $name;
-		$this->bgcol = $bgcol;
+		$this->bgcol = (self::$editorType != 'tinyMCE' && empty($bgcol)) ? 'white' : $bgcol;
 		$this->xml = $xml;
 		if(self::$editorType == 'tinyMCE'){
 			$this->xml = $this->xml ? "xhtml" : "html";
@@ -113,6 +114,7 @@ class we_wysiwyg{
 			$this->cssClasses = rtrim($tf, ';');
 			$this->cssClassesJS = rtrim($jsCl, ',');
 		}
+		$this->contentCss = $contentCss;
 
 		$this->Language = $Language;
 		$this->showSpell = $spell;
@@ -1090,7 +1092,7 @@ function tinyMCECallRegisterDialog(win,action){
 		foreach($this->fontnames as $fn){
 			$fns .= str_replace(",", ";", $fn) . ",";
 		}
-		return we_button::create_button("image:btn_edit_edit", "javascript:we_cmd('open_wysiwyg_window', '" . $this->name . "', '" . max(220, $this->width) . "', '" . $this->height . "','" . $GLOBALS["we_transaction"] . "','" . $this->propstring . "','" . $this->className . "','" . rtrim($fns, ',') . "','" . $this->outsideWE . "','" . $tbwidth . "','" . $tbheight . "','" . $this->xml . "','" . $this->removeFirstParagraph . "','" . $this->bgcol . "','" . $this->baseHref . "','" . $this->charset . "','" . $this->cssClassesCSV . "','" . $this->Language . "');", true, 25);
+		return we_button::create_button("image:btn_edit_edit", "javascript:we_cmd('open_wysiwyg_window', '" . $this->name . "', '" . max(220, $this->width) . "', '" . $this->height . "','" . $GLOBALS["we_transaction"] . "','" . $this->propstring . "','" . $this->className . "','" . rtrim($fns, ',') . "','" . $this->outsideWE . "','" . $tbwidth . "','" . $tbheight . "','" . $this->xml . "','" . $this->removeFirstParagraph . "','" . $this->bgcol . "','" . $this->baseHref . "','" . $this->charset . "','" . $this->cssClassesCSV . "','" . $this->Language . "','" . we_cmd_enc($this->contentCss) . "');", true, 25);
 	}
 
 	function getHTML(){
@@ -1293,7 +1295,7 @@ function tinyMCECallRegisterDialog(win,action){
 				if(preg_match('/^#[a-f0-9]{6}$/i', $this->bgcol)){
 					$this->bgcol = substr($this->bgcol, 1);
 				} else if(!preg_match('/^[a-f0-9]{6}$/i', $this->bgcol) && !preg_match('/^[a-z]*$/i', $this->bgcol)){
-					$this->bgcol = 'white';
+					$this->bgcol = '';
 				}
 
 				$wefullscreenVars = array(
@@ -1301,6 +1303,8 @@ function tinyMCECallRegisterDialog(win,action){
 					'xml' => $this->xml ? "1" : "",
 					'removeFirstParagraph' => $this->removeFirstParagraph ? "1" : "",
 				);
+				
+				$contentCss = empty($this->contentCss) ? '' : $this->contentCss . ',';
 
 				return we_html_element::jsElement('
 					var weclassNames_tinyMce = new Array (' . $this->cssClassesJS . ');
@@ -1319,6 +1323,7 @@ function tinyMCECallRegisterDialog(win,action){
 					wefullscreenVars["screenHeight"] = screen.availHeight - 70;
 					wefullscreenVars["className"] = "' . $this->className . '";
 					wefullscreenVars["propString"] = "' . urlencode($this->propstring) . '";
+					wefullscreenVars["contentCss"] = "' . urlencode($this->contentCss) . '";
 
 					tinyMCE.init({
 						language : "' . $lang . '",
@@ -1362,8 +1367,8 @@ function tinyMCECallRegisterDialog(win,action){
 						theme_advanced_disable : "",
 						//paste_text_use_dialog: true,
 						//fullscreen_new_window: true,
-						content_css : "' . WEBEDITION_DIR . 'editors/content/tinymce/we_tinymce/contentCss.php?tinyMceBackgroundColor=' . $this->bgcol . '",
-						popup_css_add : "' . WEBEDITION_DIR . 'editors/content/tinymce/we_tinymce/tinyDialogCss.php",
+						content_css : "' . WEBEDITION_DIR . 'editors/content/tinymce/we_tinymce/contentCssFirst.php?' . time() . '=,' . $contentCss . WEBEDITION_DIR . 'editors/content/tinymce/we_tinymce/contentCssLast.php?' . time() . '=&tinyMceBackgroundColor=' . $this->bgcol . '",
+						popup_css_add : "' . WEBEDITION_DIR . 'editors/content/tinymce/we_tinymce/tinyDialogCssLast.php",
 
 						// Skin options
 						skin : "o2k7",

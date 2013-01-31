@@ -35,6 +35,8 @@ class we_webEditionDocument extends we_textContentDocument{
 	// Path from the template
 	var $TemplatePath = '';
 	var $hasVariants = null;
+	// Paths to stylesheets from we:css-tags that are user by tinyMCE
+	private $DocumentCss = '';
 
 	/**
 	 * @var weDocumentCustomerFilter
@@ -1179,4 +1181,11 @@ if (!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 		$db->query('DELETE FROM ' . LANGLINK_TABLE . ' WHERE DID=' . $id . ' AND DocumentTable="' . $type . '" AND DLocale!="' . $lang . '"');
 	}
 
+	public function addDocumentCss($stylesheet){
+		$this->DocumentCss .= empty($this->DocumentCss) ? $stylesheet : ',' . $stylesheet;
+	}
+
+	public function getDocumentCss(){
+		return $this->DocumentCss;
+	}
 }

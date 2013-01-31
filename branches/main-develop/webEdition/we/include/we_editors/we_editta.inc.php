@@ -44,6 +44,7 @@ if(isset($_REQUEST["ok"])){
 	$we_doc->elements[$name . "commands"]["dat"] = isset($_REQUEST["commands"]) ? $_REQUEST["commands"] : "";
 	$we_doc->elements[$name . "height"]["dat"] = isset($_REQUEST["height"]) ? $_REQUEST["height"] : 50;
 	$we_doc->elements[$name . "width"]["dat"] = isset($_REQUEST["width"]) ? $_REQUEST["width"] : 200;
+	$we_doc->elements[$name . "bgcolor"]["dat"] = isset($_REQUEST["bgcolor"]) ? $_REQUEST["bgcolor"] : '';
 	$we_doc->elements[$name . "cssClasses"]["dat"] = isset($_REQUEST["cssClasses"]) ? $_REQUEST["cssClasses"] : "";
 	$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
 }
@@ -168,11 +169,12 @@ $parts[] = array(
 );
 
 
-// WIDTH & HEIGHT
+// WIDTH & HEIGHT & BGCOLOR
 $table = '<table border="0" cellpadding="0" cellspacing="0">
 	<tr>
 		<td class="defaultfont" align="right">width&nbsp;</td><td>' . we_html_tools::htmlTextInput('width', 24, $we_doc->elements[$name . "width"]["dat"], 5, '', 'number', 60, 0) . '</td>
 		<td class="defaultfont" align="right">height&nbsp;</td><td>' . we_html_tools::htmlTextInput('height', 24, $we_doc->elements[$name . "height"]["dat"], 5, '', 'number', 60, 0) . '</td>
+		<td class="defaultfont" align="right">bgcolor&nbsp;</td><td>' . we_html_tools::htmlTextInput('bgcolor', 24, $we_doc->elements[$name . "bgcolor"]["dat"], 20, '', 'text', 60, 0) . '</td>
 		<td class="defaultfont" align="right"></td><td></td>
 	</tr>
 	<tr>
