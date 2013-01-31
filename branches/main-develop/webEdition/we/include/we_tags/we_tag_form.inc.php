@@ -169,7 +169,7 @@ function we_tag_form($attribs){
 							'input', array(
 							'type' => 'hidden',
 							'name' => 'we_edit' . $typetmp . '_ID',
-							'value' => isset($_REQUEST['we_edit' . $typetmp . '_ID']) ? ($_REQUEST['we_edit' . $typetmp . '_ID']) : 0,
+							'value' => isset($_REQUEST['we_edit' . $typetmp . '_ID']) ? intval($_REQUEST['we_edit' . $typetmp . '_ID']) : 0,
 							'xml' => $xml
 						));
 				}

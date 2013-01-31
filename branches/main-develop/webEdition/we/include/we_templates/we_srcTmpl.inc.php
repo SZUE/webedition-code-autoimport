@@ -372,35 +372,46 @@ switch($_SESSION['prefs']['editorMode']){
 	}
 	var lastPos = null, lastQuery = null, marked = [];
 	function unmark() {
-		for (var i = 0; i < marked.length; ++i) marked[i].clear();
+		for (var i = 0; i < marked.length; ++i){
+			marked[i].clear();
+		}
 		marked.length = 0;
 	}
-	function search(text) {
+	function search(text,caseIns) {
 		unmark();
-		if (!text) return;
-		for (var cursor = editor.getSearchCursor(text); cursor.findNext();)
+		if (!text){
+			return;
+		}
+		for (var cursor = editor.getSearchCursor(text,0,caseIns); cursor.findNext();){
 			marked.push(editor.markText(cursor.from(), cursor.to(), {className:"searched"}));
-
-		if (lastQuery != text) lastPos = null;
+		}
+		if (lastQuery != text){
+			lastPos = null;
+		}
 		var cursor = editor.getSearchCursor(text, lastPos || editor.getCursor());
 		if (!cursor.findNext()) {
 			cursor = editor.getSearchCursor(text);
-			if (!cursor.findNext()) return;
+			if (!cursor.findNext()){
+				return;
+			}
 		}
 		editor.setSelection(cursor.from(), cursor.to());
-		lastQuery = text; lastPos = cursor.to();
+		lastQuery = text;
+		lastPos = cursor.to();
 	}
 
-	function myReplace(text, replaceby) {
-		if(!text|| !replaceby) return;
+	function myReplace(text, replaceby, caseIns) {
+		if(!text|| !replaceby){
+			return;
+		}
 		if(editor.getSelection()!=text){
-			search(text);
+			search(text,caseIns);
 		}
 		if(editor.getSelection()!=text){
 			return;
 		}
 		editor.replaceSelection(replaceby);
-		search(text);
+		search(text, caseIns);
 	}
 	//-->
 </script>
@@ -472,7 +483,7 @@ echo (we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 9
 						if($css){
 							$ret.='.cm-weTag_' . $tagName . ':hover:after {content: "' . str_replace('"', '\'', html_entity_decode($weTag->getDescription(), null, $GLOBALS['WE_BACKENDCHARSET'])) . '";}';
 						} else{
-							$allTags['we:' . $tagName] = array('norm' => $weTag->getAttributesForCM());
+							$allTags['we:' . $tagName] = array('we' => $weTag->getAttributesForCM());
 						}
 					}
 				}
@@ -490,6 +501,9 @@ echo (we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 9
 					$attribs = array();
 					foreach($cur as $type => $attribList){
 						switch($type){
+							case 'we':
+								$ok = true;
+								break;
 							case 'default':
 								$ok = ($setting['htmlDefAttr']);
 								break;
@@ -505,20 +519,22 @@ echo (we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 9
 							case 'html5':
 								$ok = ($setting['html5Tag'] && $setting['html5Attr']);
 								break;
+							default:
+								$ok = false;
 						}
 						if($ok){
 							foreach($attribList as $attr){
 								$attribs[] = '\'' . $attr . (strstr($attr, '"') === false ? '=""' : '') . '\'';
 							}
-
-							if(!empty($attribs)){
-								sort($attribs);
-								$ret.='CodeMirror.weHints["<' . $tagName . ' "] = [' . implode(',', array_unique($attribs)) . '];' . "\n";
-							}
 						}
 					}
-					return $ret;
+					if(!empty($attribs)){
+						$attribs = array_unique($attribs);
+						sort($attribs);
+						$ret.='CodeMirror.weHints["<' . $tagName . ' "] = [' . implode(',', $attribs) . '];' . "\n";
+					}
 				}
+				return $ret;
 			}
 
 			function we_getCodeMirror2Code($code){
@@ -588,7 +604,7 @@ echo (we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 9
 					}
 
 					$tmp = @unserialize($_SESSION['prefs']['editorCodecompletion']);
-					$hasCompletion = array_sum($tmp);
+					$hasCompletion = is_array($tmp) ? array_sum($tmp) : false;
 					$maineditor.=we_html_element::cssElement(($toolTip ? we_getCodeMirror2Tags(true) : '') . '
 .weSelfClose:hover:after, .cm-weSelfClose:hover:after, .weOpenTag:hover:after, .cm-weOpenTag:hover:after, .weTagAttribute:hover:after, .cm-weTagAttribute:hover:after {
 	font-family: ' . ($_SESSION['prefs']['editorTooltipFont'] && $_SESSION['prefs']['editorTooltipFontname'] ? $_SESSION['prefs']['editorTooltipFontname'] : 'sans-serif') . ';
@@ -657,9 +673,12 @@ window.orignalTemplateContent=document.getElementById("editarea").value.replace(
             <td align="left">' .
 				we_html_tools::getPixel(2, 10) . '<br><table cellpadding="0" cellspacing="0" border="0" width="100%">
 	    <tr>
-<td align="left" class="defaultfont">
-<input type="text" style="width: 10em;float:left;" id="query"/><div style="float:left;">' . we_button::create_button("search", 'javascript:search(document.getElementById("query").value);') . '</div>
-<input type="text" style="margin-left:2em;width: 10em;float:left;" id="replace"/><div style="float:left;">' . we_button::create_button("replace", 'javascript:myReplace(document.getElementById("query").value,document.getElementById("replace").value);') . '</div>
+<td align="left" class="defaultfont">' .
+				(substr($_SESSION['prefs']['editorMode'], 0, 10) == 'codemirror' ? '
+<input type="text" style="width: 10em;float:left;" id="query"/><div style="float:left;">' . we_button::create_button("search", 'javascript:search(document.getElementById("query").value,!document.getElementById("caseSens").checked);') . '</div>
+<input type="text" style="margin-left:2em;width: 10em;float:left;" id="replace"/><div style="float:left;">' . we_button::create_button("replace", 'javascript:myReplace(document.getElementById("query").value,document.getElementById("replace").value,!document.getElementById("caseSens").checked);') . '</div>
+<input type="checkbox" style="margin-left:2em;float:left;" id="caseSens"/><div style="float:left;">'.g_l('weClass','[caseSensitive]').'</div>' : ''
+				) . '
 					</td>
 					<td align="right" class="defaultfont">' .
 				(substr($_SESSION['prefs']['editorMode'], 0, 10) == 'codemirror' ? '

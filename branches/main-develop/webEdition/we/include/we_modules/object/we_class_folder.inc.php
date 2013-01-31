@@ -291,59 +291,55 @@ class we_class_folder extends we_folder{
 		$javascriptAll = "";
 		if($foundItems){
 
-			$f = 0;
 			while($this->searchclass->next_record()) {
-
-				$content[$f][1]["align"] = "center";
-				$content[$f][1]["height"] = 35;
-				$content[$f][0]["align"] = "center";
-
-				$content[$f][0]["dat"] = ((we_hasPerm("DELETE_OBJECTFILE") || we_hasPerm("NEW_OBJECTFILE")) && checkIfRestrictUserIsAllowed($this->searchclass->f("OF_ID"), OBJECT_FILES_TABLE) ?
-						'<input type="checkbox" name="weg' . $this->searchclass->f("ID") . '" />' :
-						'<img src="' . TREE_IMAGE_DIR . 'check0_disabled.gif" />');
+				$content[] = array(
+					array(
+						"align" => "center",
+						"dat" => ((we_hasPerm("DELETE_OBJECTFILE") || we_hasPerm("NEW_OBJECTFILE")) && checkIfRestrictUserIsAllowed($this->searchclass->f("OF_ID"), OBJECT_FILES_TABLE) ?
+							'<input type="checkbox" name="weg' . $this->searchclass->f("ID") . '" />' :
+							'<img src="' . TREE_IMAGE_DIR . 'check0_disabled.gif" />')),
+					array(
+						"align" => "center",
+						"height" => 35,
+						"dat" => ($this->searchclass->f("OF_Published") && (((in_workspace($this->WorkspaceID, $this->searchclass->f("OF_Workspaces")) && $this->searchclass->f("OF_Workspaces") != "") || (in_workspace($this->WorkspaceID, $this->searchclass->f("OF_ExtraWorkspacesSelected")) && $this->searchclass->f("OF_ExtraWorkspacesSelected") != "" ) ) || ($this->searchclass->f("OF_Workspaces") == "" && $ok)) ?
+							'<img src="' . IMAGE_DIR . 'we_boebbel_blau.gif" width="16" height="18" />' :
+							'<img src="' . IMAGE_DIR . 'we_boebbel_grau.gif" width="16" height="18" />')),
+					array("dat" => ($this->searchclass->f("OF_IsSearchable") ?
+							'<img src="' . IMAGE_DIR . 'we_boebbel_blau.gif" width="16" height="18" title="' . g_l('modules_objectClassfoldersearch', '[issearchable]') . '" />' :
+							'<img src="' . IMAGE_DIR . 'we_boebbel_grau.gif" width="16" height="18" title="' . g_l('modules_objectClassfoldersearch', '[isnotsearchable]') . '" />')),
+					array("dat" => '<a href="javascript:top.weEditorFrameController.openDocument(\'' . OBJECT_FILES_TABLE . '\',' . $this->searchclass->f("OF_ID") . ',\'objectFile\');" style="text-decoration:none" class="middlefont" title="' . $this->searchclass->f("OF_Path") . '">' . $this->searchclass->f("OF_ID") . '</a>'),
+					array("dat" => '<a href="javascript:top.weEditorFrameController.openDocument(\'' . OBJECT_FILES_TABLE . '\',' . $this->searchclass->f("OF_ID") . ',\'objectFile\');" style="text-decoration:none" class="middlefont" title="' . $this->searchclass->f("OF_Path") . '">' . shortenPath($this->searchclass->f("OF_Text"), $we_obectPathLength) . '</a>'),
+					array("dat" => $this->searchclass->getWorkspaces(makeArrayFromCSV($this->searchclass->f("OF_Workspaces")), $we_wsLength)),
+					array("dat" => $this->searchclass->getExtraWorkspace(makeArrayFromCSV($this->searchclass->f("OF_ExtraWorkspaces")), $we_extraWsLength, $classArray["ID"], $userWSArray)),
+					array("dat" => '<nobr>' . ($this->searchclass->f("OF_Published") ? date(g_l('date', '[format][default]'), $this->searchclass->f("OF_Published")) : "-") . '</nobr>'),
+					array("dat" => '<nobr>' . ($this->searchclass->f("ModDate") ? date(g_l('date', '[format][default]'), $this->searchclass->f("ModDate")) : "-") . '</nobr>'),
+					array("dat" => $this->searchclass->f("OF_Url")),
+					array("dat" => $this->searchclass->f("OF_TriggerID") ? id_to_path($this->searchclass->f("OF_TriggerID")) : ''),
+					array("dat" => $this->searchclass->f("OF_Charset")),
+					array("dat" => $this->searchclass->f("OF_Language")),
+				);
 
 				$javascriptAll .= "var flo=document.we_form.elements['weg" . $this->searchclass->f("ID") . "'].checked=true;";
-
-				$content[$f][1]["dat"] = ($this->searchclass->f("OF_Published") && (((in_workspace($this->WorkspaceID, $this->searchclass->f("OF_Workspaces")) && $this->searchclass->f("OF_Workspaces") != "") || (in_workspace($this->WorkspaceID, $this->searchclass->f("OF_ExtraWorkspacesSelected")) && $this->searchclass->f("OF_ExtraWorkspacesSelected") != "" ) ) || ($this->searchclass->f("OF_Workspaces") == "" && $ok)) ?
-						'<img src="' . IMAGE_DIR . 'we_boebbel_blau.gif" width="16" height="18" />' :
-						'<img src="' . IMAGE_DIR . 'we_boebbel_grau.gif" width="16" height="18" />');
-
-				$content[$f][2]["dat"] = ($this->searchclass->f("OF_IsSearchable") ?
-						'<img src="' . IMAGE_DIR . 'we_boebbel_blau.gif" width="16" height="18" title="' . g_l('modules_objectClassfoldersearch', '[issearchable]') . '" />' :
-						'<img src="' . IMAGE_DIR . 'we_boebbel_grau.gif" width="16" height="18" title="' . g_l('modules_objectClassfoldersearch', '[isnotsearchable]') . '" />');
-
-				$content[$f][3]["dat"] = '<a href="javascript:top.weEditorFrameController.openDocument(\'' . OBJECT_FILES_TABLE . '\',' . $this->searchclass->f("OF_ID") . ',\'objectFile\');" style="text-decoration:none" class="middlefont" title="' . $this->searchclass->f("OF_Path") . '">' . $this->searchclass->f("OF_ID") . '</a>';
-				$content[$f][4]["dat"] = '<a href="javascript:top.weEditorFrameController.openDocument(\'' . OBJECT_FILES_TABLE . '\',' . $this->searchclass->f("OF_ID") . ',\'objectFile\');" style="text-decoration:none" class="middlefont" title="' . $this->searchclass->f("OF_Path") . '">' . shortenPath($this->searchclass->f("OF_Text"), $we_obectPathLength) . '</a>';
-				$content[$f][5]["dat"] = $this->searchclass->getWorkspaces(makeArrayFromCSV($this->searchclass->f("OF_Workspaces")), $we_wsLength);
-				$content[$f][6]["dat"] = $this->searchclass->getExtraWorkspace(makeArrayFromCSV($this->searchclass->f("OF_ExtraWorkspaces")), $we_extraWsLength, $classArray["ID"], $userWSArray);
-				$content[$f][7]["dat"] = '<nobr>' . ($this->searchclass->f("OF_Published") ? date(g_l('date', '[format][default]'), $this->searchclass->f("OF_Published")) : "-") . '</nobr>';
-				$content[$f][8]["dat"] = '<nobr>' . ($this->searchclass->f("ModDate") ? date(g_l('date', '[format][default]'), $this->searchclass->f("ModDate")) : "-") . '</nobr>';
-				$content[$f][9]["dat"] = $this->searchclass->f("OF_Url");
-				$content[$f][10]["dat"] = $this->searchclass->f("OF_TriggerID") ? id_to_path($this->searchclass->f("OF_TriggerID")) : '';
-				$content[$f][11]["dat"] = $this->searchclass->f("OF_Charset");
-				$content[$f][12]["dat"] = $this->searchclass->f("OF_Language");
-
-
-				$f++;
 			}
 		} else{
 			//echo "Leider nichts gefunden!";
 		}
 
-		$headline[0]["dat"] = "";
-		$headline[1]["dat"] = g_l('modules_objectClassfoldersearch', '[zeige]');
-		$headline[2]["dat"] = "";
-		$headline[3]["dat"] = '<a href="javascript:setOrder(\'OF_ID\');">' . g_l('modules_objectClassfoldersearch', '[ID]') . '</a> ' . $this->getSortImage('OF_ID');
-		$headline[4]["dat"] = '<a href="javascript:setOrder(\'OF_Path\');">' . g_l('modules_objectClassfoldersearch', '[Objekt]') . '</a> ' . $this->getSortImage('OF_Path');
-		$headline[5]["dat"] = g_l('modules_objectClassfoldersearch', '[Arbeitsbereiche]');
-		$headline[6]["dat"] = g_l('modules_objectClassfoldersearch', '[xtraArbeitsbereiche]');
-		$headline[7]["dat"] = '<a href="javascript:setOrder(\'OF_Published\');">' . g_l('modules_objectClassfoldersearch', '[Veroeffentlicht]') . '</a> ' . $this->getSortImage('OF_Published');
-		$headline[8]["dat"] = '<a href="javascript:setOrder(\'ModDate\');">' . g_l('modules_objectClassfoldersearch', '[geaendert]') . '</a> ' . $this->getSortImage('ModDate');
-		$headline[9]["dat"] = '<a href="javascript:setOrder(\'OF_Url\');">' . g_l('modules_objectClassfoldersearch', '[url]') . '</a> ' . $this->getSortImage('OF_Url');
-		$headline[10]["dat"] = '<a href="javascript:setOrder(\'OF_TriggerID\');">' . g_l('modules_objectClassfoldersearch', '[triggerid]') . '</a> ' . $this->getSortImage('OF_TriggerID');
-		$headline[11]["dat"] = g_l('modules_objectClassfoldersearch', '[charset]');
-		$headline[12]["dat"] = g_l('modules_objectClassfoldersearch', '[language]');
-
+		$headline = array(
+			array("dat" => ""),
+			array("dat" => g_l('modules_objectClassfoldersearch', '[zeige]')),
+			array("dat" => ""),
+			array("dat" => '<a href="javascript:setOrder(\'OF_ID\');">' . g_l('modules_objectClassfoldersearch', '[ID]') . '</a> ' . $this->getSortImage('OF_ID')),
+			array("dat" => '<a href="javascript:setOrder(\'OF_Path\');">' . g_l('modules_objectClassfoldersearch', '[Objekt]') . '</a> ' . $this->getSortImage('OF_Path')),
+			array("dat" => g_l('modules_objectClassfoldersearch', '[Arbeitsbereiche]')),
+			array("dat" => g_l('modules_objectClassfoldersearch', '[xtraArbeitsbereiche]')),
+			array("dat" => '<a href="javascript:setOrder(\'OF_Published\');">' . g_l('modules_objectClassfoldersearch', '[Veroeffentlicht]') . '</a> ' . $this->getSortImage('OF_Published')),
+			array("dat" => '<a href="javascript:setOrder(\'ModDate\');">' . g_l('modules_objectClassfoldersearch', '[geaendert]') . '</a> ' . $this->getSortImage('ModDate')),
+			array("dat" => '<a href="javascript:setOrder(\'OF_Url\');">' . g_l('modules_objectClassfoldersearch', '[url]') . '</a> ' . $this->getSortImage('OF_Url')),
+			array("dat" => '<a href="javascript:setOrder(\'OF_TriggerID\');">' . g_l('modules_objectClassfoldersearch', '[triggerid]') . '</a> ' . $this->getSortImage('OF_TriggerID')),
+			array("dat" => g_l('modules_objectClassfoldersearch', '[charset]')),
+			array("dat" => g_l('modules_objectClassfoldersearch', '[language]')),
+		);
 
 		return $this->getSearchresult($content, $headline, $foundItems, $javascriptAll);
 	}
@@ -539,24 +535,26 @@ class we_class_folder extends we_folder{
 							$content[$f][$i + 5]["dat"] = ($text == "1" ? g_l('global', "[yes]") : g_l('global', "[no]") );
 							break;
 						case "meta":
-							if($this->searchclass->f($type[$i + 5] . "_" . $head[$i + 5]["dat"]) != ""
-								&& isset($DefaultValues[$type[$i + 5] . "_" . $head[$i + 5]["dat"]]["meta"][$this->searchclass->f($type[$i + 5] . "_" . $head[$i + 5]["dat"])])){
-								$text = $DefaultValues[$type[$i + 5] . "_" . $head[$i + 5]["dat"]]["meta"][$this->searchclass->f($type[$i + 5] . "_" . $head[$i + 5]["dat"])];
+							if($this->searchclass->f($type[$i + 5] . '_' . $head[$i + 5]["dat"]) != ''
+								&& isset($DefaultValues[$type[$i + 5] . '_' . $head[$i + 5]["dat"]]["meta"][$this->searchclass->f($type[$i + 5] . "_" . $head[$i + 5]["dat"])])){
+								$text = $DefaultValues[$type[$i + 5] . '_' . $head[$i + 5]["dat"]]["meta"][$this->searchclass->f($type[$i + 5] . "_" . $head[$i + 5]["dat"])];
 								$content[$f][$i + 5]["dat"] = (strlen($text) > $strlen) ? substr($text, 0, $strlen) . " ..." : $text;
 							} else{
-								$content[$f][$i + 5]["dat"] = "&nbsp;";
+								$content[$f][$i + 5]["dat"] = '&nbsp;';
 							}
 							break;
-						case "link":
+						case 'link':
 							$text = $this->searchclass->f($type[$i + 5] . "_" . $head[$i + 5]["dat"]);
+							//FIXME: this is not php compliant getFieldByVal is a dynamic method - and must be
 							$content[$f][$i + 5]["dat"] = we_document::getFieldByVal($text, "link");
 							break;
-						case "href":
+						case 'href':
 							$text = $this->searchclass->f($type[$i + 5] . "_" . $head[$i + 5]["dat"]);
 							$hrefArr = $text ? unserialize($text) : array();
 							if(!is_array($hrefArr))
 								$hrefArr = array();
 
+							//FIXME: this is not php compliant getHrefByArray is a dynamic method - and must be
 							$content[$f][$i + 5]["dat"] = we_document::getHrefByArray($hrefArr);
 							//$text = $DefaultValues[$type[$i+3]."_".$head[$i+3]["dat"]]["meta"][$this->searchclass->f($type[$i+3]."_".$head[$i+3]["dat"])];
 							//$content[$f][$i+3]["dat"] = "TEST";
@@ -1010,21 +1008,21 @@ EOF;
 		$deletedItems = array();
 
 		// get Class
-		$classArray = getHash("SELECT * FROM " . OBJECT_TABLE . " WHERE Path='" . $DB_WE->escape($this->ClassPath) . "'", $DB_WE);
+		$classArray = getHash('SELECT * FROM ' . OBJECT_TABLE . ' WHERE Path="' . $DB_WE->escape($this->ClassPath) . '"', $DB_WE);
 		foreach(array_keys($_REQUEST) as $f){
-			if(substr($f, 0, 3) == "weg"){
-				//$this->query("");
-				$ofid = f("SELECT OF_ID FROM " . OBJECT_X_TABLE . intval($classArray["ID"]) . " WHERE ID=" . intval(substr($f, 3), 'OF_ID', $DB_WE));
+			if(substr($f, 0, 3) == 'weg'){
+				$tid = intval(substr($f, 3));
+				$ofid = f('SELECT OF_ID FROM ' . OBJECT_X_TABLE . intval($classArray['ID']) . ' WHERE ID=' . $tid, 'OF_ID', $DB_WE);
 				if(checkIfRestrictUserIsAllowed($ofid, OBJECT_FILES_TABLE)){
-					$DB_WE->query("DELETE FROM " . OBJECT_X_TABLE . intval($classArray["ID"]) . " WHERE ID=" . intval(substr($f, 3)));
-					$DB_WE->query("DELETE FROM " . INDEX_TABLE . " WHERE OID=" . intval($ofid));
-					$DB_WE->query("DELETE FROM " . OBJECT_FILES_TABLE . " WHERE ID=" . intval($ofid));
+					$DB_WE->query('DELETE FROM ' . OBJECT_X_TABLE . intval($classArray['ID']) . ' WHERE ID=' . $tid);
+					$DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE OID=' . intval($ofid));
+					$DB_WE->query('DELETE FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($ofid));
 
 					$obj = new we_objectFile();
 					$obj->initByID($ofid, OBJECT_FILES_TABLE);
 
 					we_temporaryDocument::delete($ofid, OBJECT_FILES_TABLE, $DB_WE);
-					$javascript .= 'top.deleteEntry(' . $obj->ID . ');' . "\n";
+					$javascript .= 'top.deleteEntry(' . $obj->ID . ');';
 
 					$deletedItems[] = $obj->ID;
 				}

@@ -1,7 +1,7 @@
 <?php
 class leSelect {
 
-	function get($name, $options, $selected, $attribs = array()){
+	static function get($name, $options, $selected, $attribs = array()){
 
 		$_attribs = "";
 		$_options = "";

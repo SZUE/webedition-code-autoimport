@@ -86,26 +86,14 @@ class weNavigationRuleControl{
 					$this->NavigationRule = new weNavigationRule();
 					$this->NavigationRule->initByID($_REQUEST['ID']);
 
-					$FolderIDPath = '';
-					if($this->NavigationRule->FolderID){
-						$FolderIDPath = id_to_path($this->NavigationRule->FolderID, FILE_TABLE);
-					}
-
-					$ClassIDPath = '';
-					if(defined('OBJECT_TABLE') && $this->NavigationRule->ClassID){
-						$ClassIDPath = id_to_path($this->NavigationRule->ClassID, OBJECT_TABLE);
-					}
-
-					$NavigationIDPath = '';
-					if($this->NavigationRule->NavigationID){
-						$NavigationIDPath = id_to_path($this->NavigationRule->NavigationID, NAVIGATION_TABLE);
-					}
+					$FolderIDPath = ($this->NavigationRule->FolderID ? id_to_path($this->NavigationRule->FolderID, FILE_TABLE) : '');
+					$ClassIDPath = (defined('OBJECT_TABLE') && $this->NavigationRule->ClassID ? id_to_path($this->NavigationRule->ClassID, OBJECT_TABLE) : '');
+					$NavigationIDPath = htmlspecialchars_decode($this->NavigationRule->NavigationID ? id_to_path($this->NavigationRule->NavigationID, NAVIGATION_TABLE) : '', ENT_NOQUOTES);
 
 					// workspaces:
 					$_workspaceList = 'optionList.push({"text":"' . g_l('navigation', '[no_entry]') . '","value":"0"});';
 					$_selectWorkspace = '';
 					if(defined('OBJECT_TABLE') && $this->NavigationRule->ClassID){
-
 						$_workspaces = $this->getWorkspacesByClassID($this->NavigationRule->ClassID);
 
 						foreach($_workspaces as $key => $value){

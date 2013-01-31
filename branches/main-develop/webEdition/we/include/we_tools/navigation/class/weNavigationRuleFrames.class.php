@@ -61,8 +61,8 @@ return we_html_tools::htmlTop(g_l('navigation', '[menu_highlight_rules]')) . STY
 	}
 
 	function getHTMLContent(){
-// content contains textarea with all so far existing rules
-		$yuiSuggest = &weSuggest::getInstance();
+		// content contains textarea with all so far existing rules
+		$yuiSuggest = & weSuggest::getInstance();
 
 		$allRules = weNavigationRuleControl::getAllNavigationRules();
 
@@ -95,7 +95,8 @@ return we_html_tools::htmlTop(g_l('navigation', '[menu_highlight_rules]')) . STY
 				'headline' => g_l('navigation', '[rules][rule_name]'),
 				'space' => 200,
 				'html' => we_html_tools::htmlTextInput('NavigationName', 24, '', '', 'style="width: 275px;"'),
-				'noline' => 1),
+				'noline' => 1
+			),
 		);
 
 		$yuiSuggest->setAcId("NavigationIDPath");

@@ -44,6 +44,7 @@ class we_object extends we_document{
 		$this->Icon = 'object.gif';
 		$this->Table = OBJECT_TABLE;
 		$this->Published = 1;
+		$this->ClassName = 'we_object';//for we_objectEx, otherwise ist will save its own classname, or needs its own constructor
 	}
 	
 	/* setter for runtime variable isInApp which allows to construct Classes from within Apps */

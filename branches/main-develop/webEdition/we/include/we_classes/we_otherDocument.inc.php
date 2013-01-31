@@ -68,6 +68,15 @@ class we_otherDocument extends we_binaryDocument{
 		return parent::we_save($resave);
 	}
 
+	/**
+	 * create instance of weMetaData to access metadata functionality:
+	 */
+	protected function getMetaDataReader($force = false){
+		return ($this->Extension == '.pdf' ?
+				parent::getMetaDataReader(true) :
+				false);
+	}
+
 	function insertAtIndex(){
 		$text = '';
 		$this->resetElements();
@@ -110,6 +119,12 @@ class we_otherDocument extends we_binaryDocument{
 				$content = '';
 				break;
 			case '.pdf':
+				$name = $this->elements['data']['dat'];
+				if(file_exists($name) && (filesize($name) * 2 < we_convertIniSizes(ini_get('memory_limit')))){
+					$pdf = new we_helpers_pdf2text($name);
+					$content = CheckAndConvertISOfrontend($pdf->processText());
+					break;
+				}
 			default:
 				$content = '';
 		}
@@ -127,7 +142,6 @@ class we_otherDocument extends we_binaryDocument{
 			$set = array(
 				'DID' => intval($this->ID),
 				'Text' => $text,
-				'BText' => $text,
 				'Workspace' => $this->ParentPath,
 				'WorkspaceID' => intval($this->ParentID),
 				'Category' => $this->Category,
@@ -149,45 +163,23 @@ class we_otherDocument extends we_binaryDocument{
 		return false;
 	}
 
-	/*
-	  function nextline(){
-	  $pos = strpos($this->_buffer, "\r");
-	  if($pos === false){
-	  return false;
-	  }
-	  $line = substr($this->_buffer, 0, $pos);
-	  $this->_buffer = substr($this->_buffer, $pos + 1);
-	  if($line == "stream"){
-	  $endpos = strpos($this->_buffer, "endstream");
-	  $stream = substr($this->_buffer, 1, $endpos - 1);
-	  $stream = gzuncompress($stream);
-	  $this->_buffer = $stream . substr($this->_buffer, $endpos + 9);
-	  }
-	  return $line;
-	  }
-
-	  function txtline(){
-	  $line = $this->nextline();
-	  if($line === false){
-	  return false;
-	  }
-	  $match = array();
-	  if(preg_match('/[^\\\\]\\((.+)[^\\\\]\\)/', $line, $match)){
-	  $line = preg_replace("/\\\\(\d+)/e", "chr(0\\1);", $match[1]);
-	  return stripslashes($line);
-	  }
-	  return $this->txtline();
-	  }
-
-	  function getPDFText($str){
-	  $out = '';
-	  $this->_buffer = $str;
-	  while(($line = $this->txtline()) !== false) {
-	  $out .= $line;
-	  }
-	  return $out;
-	  }
-	 */
+	public function setMetaDataFromFile($file){
+		if($this->Extension == '.pdf' && file_exists($file)){
+			$pdf = new we_helpers_pdf2text($file);
+			$metaData = $pdf->getInfo();
+			if(!empty($metaData)){
+				if(isset($metaData['Title'])){
+					$this->setElement('Title', $metaData['Title']);
+				}
+				if(isset($metaData['Keywords'])){
+					$this->setElement('Keywords', $metaData['Keywords']);
+				}
+				if(isset($metaData['Subject'])){
+					$this->setElement('Description', $metaData['Subject']);
+				}
+			}
+		}
+	}
 
 	static function checkAndPrepare($formname, $key = 'we_document'){
 		// check to see if there is an image to create or to change

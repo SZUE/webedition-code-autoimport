@@ -1264,6 +1264,11 @@ class weVersions{
 												$newData = $document["elements"];
 												foreach($newData as $k => $vl){
 													if(isset($lastEntryField[$k]) && is_array($lastEntryField[$k]) && is_array($vl)){
+														//Notice in array_diff_assoc entry OK??
+														if( isset($vl['dat']) && !is_array($vl['dat']) && isset($lastEntryField[$k]['dat']) && is_array($lastEntryField[$k]['dat'])){
+															$lastEntryField[$k]['dat']= serialize($lastEntryField[$k]);
+														}
+														// serialized entry OK??
 														$_diff = array_diff_assoc($vl, $lastEntryField[$k]);
 														if(!empty($_diff) && isset($_diff['dat'])){
 															$diff[] = $_diff;
@@ -1397,8 +1402,15 @@ class weVersions{
 		if(empty($newArr) && empty($oldArr)){
 
 		} elseif(!empty($newArr) && !empty($oldArr)){
-
-			$_diff = array_diff_assoc($newArr, $oldArr);
+			$newTestArr=$newArr;// bug #7191
+			$oldTestArr=$oldArr;
+			foreach($newTestArr as $tk => $tv){
+				if(is_array($tv)){
+					unset($newTestArr[$tk]);
+					unset($oldTestArr[$tk]);
+				}
+			}
+			$_diff = array_diff_assoc($newTestArr, $oldTestArr);
 			if(isset($_diff['Published'])){
 				unset($_diff['Published']);
 			}
@@ -1447,9 +1459,24 @@ class weVersions{
 					} elseif($k == 'elements'){
 						foreach($v as $key => $val){
 							if(isset($oldArr['elements'][$key]) && is_array($oldArr['elements'][$key]) && is_array($val)){
-								$_diff = array_diff_assoc($val, $oldArr['elements'][$key]);
-								if(!empty($_diff) && isset($_diff['dat'])){
-									$diff['elements'][$key] = $_diff;
+								if(count($val)== count($oldArr['elements'][$key])){
+									if(isset($val['dat']) && is_array($val['dat'])){
+										$_diff = array_diff_assoc($val['dat'], $oldArr['elements'][$key]['dat']);
+										unset($val['dat']);unset($oldArr['elements'][$key]['dat']);
+										$diff['elements'][$key] = $_diff;									
+									} 
+									$_diff = array_diff_assoc($val, $oldArr['elements'][$key]);
+									if(!empty($_diff) && isset($_diff['dat'])){
+										$diff['elements'][$key] = $_diff;
+									}
+								} else {
+									if( isset($val['dat']) && !is_array($val['dat']) && isset($oldArr['elements'][$key]['dat']) && is_array($oldArr['elements'][$key]['dat'])){
+										$oldArr['elements'][$key]['dat']= serialize($oldArr['elements'][$key]['dat']);
+									}
+									$_diff = array_diff_assoc($val, $oldArr['elements'][$key]);
+									if(!empty($_diff) && isset($_diff['dat'])){
+										$diff['elements'][$key] = $_diff;
+									}
 								}
 							}
 						}
@@ -1461,10 +1488,11 @@ class weVersions{
 							}
 						}
 					}
+				} else {
+					
 				}
 			}
 		}
-
 		return $diff;
 	}
 

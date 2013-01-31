@@ -58,6 +58,10 @@ class we_objecttag{
 		}
 	}
 
+	public function getDBf($key){
+		return $this->DB_WE->f($key);
+	}
+
 	function f($key){
 		return ($this->id ?
 				$this->object->f($key) : '');

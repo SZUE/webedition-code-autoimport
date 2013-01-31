@@ -450,6 +450,32 @@ function oldHtmlspecialchars($string, $flags = -1, $encoding = 'ISO-8859-1', $do
 	return htmlspecialchars($string, $flags, $encoding, $double_encode);
 }
 
+/**
+ * filter all bad Xss attacks from var. Arrays can be used.
+ * @param mixed $var
+ * @return mixed
+ */
+function filterXss($var){
+	if(!is_array($var)){
+		return oldHtmlspecialchars(strip_tags($var));
+	}
+	$ret = array();
+	foreach($var as $key => $val){
+		$ret[oldHtmlspecialchars(strip_tags($key))] = filterXss($val);
+	}
+	return $ret;
+}
+
+/**
+ * makes sure a give array/list of values has only ints
+ * @param mixed $val
+ * @return mixed
+ */
+function filterIntVals($val){
+	$vals = array_map('intval', is_array($val) ? $val : explode(',', $val));
+	return is_array($val) ? $vals : implode(',', $vals);
+}
+
 function we_makeHiddenFields($filter = ''){
 	$filterArr = explode(',', $filter);
 	$hidden = '';
@@ -1122,6 +1148,7 @@ function getNextDynDoc($path, $pid, $ws1, $ws2, $DB_WE = ''){
 }
 
 function parseInternalLinks(&$text, $pid, $path = '', $doBaseReplace = true){
+	$doBaseReplace&=we_isHttps();
 	$DB_WE = new DB_WE();
 	$regs = array();
 	if(preg_match_all('/(href|src)="document:(\\d+)(&amp;|&)?("|[^"]+")/i', $text, $regs, PREG_SET_ORDER)){

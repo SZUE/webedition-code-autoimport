@@ -306,18 +306,18 @@ abstract class we_rebuild{
 		while(!empty($todo) && ++$round < 100) {
 			$preDone = array();
 			foreach($todo as $key => &$rec){
-				$rec['IncludedTemplates'] = array_diff($rec['IncludedTemplates'], $done);
-				if(empty($rec['IncludedTemplates']) && ($rec['MasterTemplateID'] == 0 || array_search($rec['MasterTemplateID'], $done))){
+				$rec['IncludedTemplates'] = empty($rec['IncludedTemplates']) ? $rec['IncludedTemplates'] : array_diff($rec['IncludedTemplates'], $done);
+				if(empty($rec['IncludedTemplates']) && ($rec['MasterTemplateID'] == 0 || (array_search($rec['MasterTemplateID'], $done) !== FALSE))){
 					$preDone[] = $rec;
 					$done[] = $rec['ID'];
 					unset($todo[$key]);
-				}
+				} 
 			}
 			self::insertTemplatesInArray($preDone, $data, $mt, $tt);
 		}
 		if(!empty($todo)){
 			//we have conflicts
-			t_e('conflicting templates in rebuild', $todo);
+			t_e('conflicting templates in rebuild', $todo, $done);
 			//add them even if rebuild will not succeed
 			self::insertTemplatesInArray($todo, $data, $mt, $tt);
 		}

@@ -152,29 +152,24 @@ if($nrOfPage == "default"){
 	$nrOfPage = 20;
 }
 
-$parts = array();
+$parts = array(
 // get header of total revenue of a year
-
-array_push($parts, array(
-	'headline' => '<label for="ViewYear">' . g_l('modules_shop', '[selectYear]') . '</label>',
-	'html' => yearSelect("ViewYear"),
-	'space' => 150,
-	'noline' => 1
-	)
-);
-array_push($parts, array(
-	'headline' => '<label for="ViewMonth">' . g_l('modules_shop', '[selectMonth]') . '</label>',
-	'html' => monthSelect("ViewMonth"),
-	'space' => 150,
-	'noline' => 1
-	)
-);
-
-
-array_push($parts, array(
-	'headline' => we_button::create_button('select', "javascript:we_submitDateform();"),
-	'html' => '',
-	'space' => 150
+	array(
+		'headline' => '<label for="ViewYear">' . g_l('modules_shop', '[selectYear]') . '</label>',
+		'html' => yearSelect("ViewYear"),
+		'space' => 150,
+		'noline' => 1
+	),
+	array(
+		'headline' => '<label for="ViewMonth">' . g_l('modules_shop', '[selectMonth]') . '</label>',
+		'html' => monthSelect("ViewMonth"),
+		'space' => 150,
+		'noline' => 1
+	),
+	array(
+		'headline' => we_button::create_button('select', "javascript:we_submitDateform();"),
+		'html' => '',
+		'space' => 150
 	)
 );
 
@@ -185,12 +180,7 @@ if($selectedMonth != '0'){
 	$queryCondtion .= ' AND date_format(DateOrder,"%c") = "' . $selectedMonth . '"';
 }
 
-$queryRevenue = '
-		SELECT *,DATE_FORMAT(DateOrder, "%d.%m.%Y") as formatDateOrder, DATE_FORMAT(DatePayment, "%d.%m.%Y") as formatDatePayment
-		FROM ' . SHOP_TABLE . '
-		WHERE ' . $queryCondtion . '
-		ORDER BY IntOrderID
-		';
+$queryRevenue = 'SELECT *,DATE_FORMAT(DateOrder, "%d.%m.%Y") AS formatDateOrder, DATE_FORMAT(DatePayment, "%d.%m.%Y") AS formatDatePayment FROM ' . SHOP_TABLE . '	WHERE ' . $queryCondtion . ' ORDER BY IntOrderID';
 unset($monthCondition);
 $DB_WE->query($queryRevenue);
 
@@ -236,11 +226,9 @@ if($DB_WE->num_rows()){
 		// first unserialize order-data
 		if($DB_WE->f('strSerialOrder')){
 			$orderRows[$nr]['orderArray'] = @unserialize($DB_WE->f('strSerialOrder'));
-
 			$customCartFields = isset($orderRows[$nr]['serialOrder'][WE_SHOP_CART_CUSTOM_FIELD]) ? $orderRows[$nr]['serialOrder'][WE_SHOP_CART_CUSTOM_FIELD] : array();
 		} else{
 			$orderRows[$nr]['orderArray'] = array();
-
 			$customCartFields = array();
 		}
 
@@ -253,16 +241,11 @@ if($DB_WE->num_rows()){
 		// - pay VAT?
 		// - prices are net?
 		// prices are net?
-		$pricesAreNet = true;
-		if(isset($orderData[WE_SHOP_PRICE_IS_NET_NAME])){
-			$pricesAreNet = $orderData[WE_SHOP_PRICE_IS_NET_NAME];
-		}
+		$pricesAreNet = (isset($orderData[WE_SHOP_PRICE_IS_NET_NAME]) ? $orderData[WE_SHOP_PRICE_IS_NET_NAME] : true);
 
 		// must calculate vat?
-		$calcVat = true;
-		if(isset($orderData[WE_SHOP_CALC_VAT])){
-			$calcVat = $orderData[WE_SHOP_CALC_VAT];
-		}
+		$calcVat = (isset($orderData[WE_SHOP_CALC_VAT]) ? $orderData[WE_SHOP_CALC_VAT] : true);
+
 		//
 		// no get information about complete order
 		// ********************************************************************************
@@ -271,16 +254,12 @@ if($DB_WE->num_rows()){
 		// now calculate vats to prices !!!
 		if($calcVat){ // vat must be payed for this order
 			// now determine VAT
-			if(isset($shopArticleObject[WE_SHOP_VAT_FIELD_NAME])){
-				$articleVat = $shopArticleObject[WE_SHOP_VAT_FIELD_NAME];
-			} else if(isset($defaultVat)){
-				$articleVat = $defaultVat;
-			} else{
-				$articleVat = 0;
-			}
+			$articleVat = (isset($shopArticleObject[WE_SHOP_VAT_FIELD_NAME]) ?
+					$shopArticleObject[WE_SHOP_VAT_FIELD_NAME] :
+					(isset($defaultVat) ? $defaultVat : 0)
+				);
 
 			if($articleVat > 0){
-
 				if(!isset($articleVatArray[$articleVat])){ // avoid notices
 					$articleVatArray[$articleVat] = 0;
 				}
@@ -294,12 +273,10 @@ if($DB_WE->num_rows()){
 				}
 			}
 		}
-
 		$total += $actPrice;
 
 
 		if($DB_WE->f('DatePayment') != 0){
-
 			if($actOrder != $DB_WE->f('IntOrderID')){
 				$payedOrders++;
 			}
@@ -322,8 +299,7 @@ if($DB_WE->num_rows()){
 			$actOrder = $DB_WE->f('IntOrderID');
 			$amountOrders++;
 		}
-
-		$nr++;
+		++$nr;
 	}
 
 	// generate vat table
@@ -347,7 +323,7 @@ if($DB_WE->num_rows()){
 		}
 	}
 
-	array_push($parts, array(
+	$parts[] = array(
 		'html' => '
 <table class="defaultfont" width="680" cellpadding="2">
 <tr>
@@ -371,7 +347,6 @@ if($DB_WE->num_rows()){
 ' . $vatTable . '
 </table>',
 		'space' => 0
-		)
 	);
 
 	$headline[0]["dat"] = getTitleLink(g_l('modules_shop', '[bestellung]'), 'IntOrderID');
@@ -415,26 +390,23 @@ if($DB_WE->num_rows()){
 		$content[$nr][5]['dat'] = ($orderRows[$i]['DatePayment'] != 0 ? $orderRows[$i]['formatDatePayment'] : '<span class="npshopContentfontR">' . g_l('modules_shop', '[artNPay]') . '</span>');
 	}
 
-	array_push($parts, array(
+	$parts[] = array(
 		'html' => we_html_tools::htmlDialogBorder3(670, 100, $content, $headline),
 		'space' => 0,
 		'noline' => true
-		)
 	);
 
 
 	$pager = blaettern::getStandardPagerHTML(getPagerLink(), $actPage, $nrOfPage, count($orderRows));
 
-	array_push($parts, array(
+	$parts[] = array(
 		'html' => $pager,
 		'space' => 0
-		)
 	);
 } else{
-	array_push($parts, array(
+	$parts[] = array(
 		'html' => g_l('modules_shop', '[NoRevenue]'),
 		'space' => 0
-		)
 	);
 }
 

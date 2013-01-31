@@ -35,21 +35,6 @@ class we_imageDocument extends we_binaryDocument{
 	var $Thumbs = -1;
 
 	/**
-	 * @var object instance of metadata reader for accessing metadata functionality
-	 */
-	var $metaDataReader = null;
-
-	/**
-	 * @var array for metadata read via $metaDataReader
-	 */
-	var $metaData = array();
-
-	/**
-	 * @var array of valid metadata formats for current image
-	 */
-	var $metaDataTypes = null;
-
-	/**
 	 * Constructor of we_imageDocument
 	 *
 	 * @return we_imageDocument
@@ -230,11 +215,11 @@ class we_imageDocument extends we_binaryDocument{
 			return '';
 		}
 		if(!$src){
-			$src = BASE_IMG . $this->Path;
+			$src = (we_isHttps() ? '' : BASE_IMG) . $this->Path;
 		}
 
 		if(!$src_over){
-			$src_over = BASE_IMG . f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID = ' . intval($this->getElement('RollOverID')), 'Path', $this->DB_WE);
+			$src_over = (we_isHttps() ? '' : BASE_IMG) . f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID = ' . intval($this->getElement('RollOverID')), 'Path', $this->DB_WE);
 		}
 
 		if(!$this->getElement('name')){
@@ -404,7 +389,7 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 				WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=show_binaryDoc&we_cmd[1]=' .
 				$this->ContentType . '&we_cmd[2]=' .
 				$GLOBALS['we_transaction'] . '&rand=' . $randval :
-				($this->getElement('LinkType') == 'int' ? BASE_IMG : '') .
+				($this->getElement('LinkType') == 'int' ? (we_isHttps() ? '' : BASE_IMG) : '') .
 				$img_path;
 
 
@@ -686,31 +671,8 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 		}
 	}
 
-	/**
-	 * create instance of weMetaData to access metadata functionality:
-	 */
-	function getMetaDataReader(){
-		if(!$this->metaDataReader){
-			$source = $this->getElement('data');
-			if(file_exists($source)){
-				$this->metaDataReader = new weMetaData($source);
-			}
-		}
-		return $this->metaDataReader;
-	}
-
-	/**
-	 * @abstract tries to read ebmedded metadata from file
-	 * @return bool false if either no metadata is available or something went wrong
-	 */
-	function getMetaData(){
-		$_reader = $this->getMetaDataReader();
-		if($_reader){
-			$this->metaData = $_reader->getMetaData();
-			if(!is_array($this->metaData))
-				return false;
-		}
-		return $this->metaData;
+	protected function getMetaDataReader($force=false){
+		return parent::getMetaDataReader(true);
 	}
 
 	function importMetaData($fieldsToImport = null, $importOnlyEmptyFields = false){

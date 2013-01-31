@@ -1,7 +1,7 @@
 <?php
 class leInput {
 
-	function get($name, $value, $attribs, $type = "text"){
+	static function get($name, $value, $attribs, $type = "text"){
 
 		$_attribs = "";
 

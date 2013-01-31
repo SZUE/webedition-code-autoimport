@@ -1,7 +1,7 @@
 <?php
 class ConnectionCheck extends leStep {
 
-	function execute(&$Template) {
+	function execute(&$Template = '') {
 
 		/*
 		 * For command checkConnection, it is not needed to create a session on the

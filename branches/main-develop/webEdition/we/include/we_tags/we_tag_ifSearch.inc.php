@@ -29,8 +29,7 @@ function we_tag_ifSearch($attribs){
 	if($set){
 		return isset($_REQUEST['we_lv_search_' . $name]);
 	} else{
-		return isset($_REQUEST['we_lv_search_' . $name]) && strlen(
-				str_replace(array('"' . '\\"'), '', (isset($_REQUEST['we_lv_search_' . $name]) ? trim($_REQUEST['we_lv_search_' . $name]) : ''))
-		);
+		return isset($_REQUEST['we_lv_search_' . $name]) &&
+			strlen(str_replace(array('\\"', '"'), '', trim($_REQUEST['we_lv_search_' . $name])));
 	}
 }

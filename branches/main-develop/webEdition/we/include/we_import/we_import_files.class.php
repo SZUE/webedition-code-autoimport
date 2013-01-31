@@ -729,7 +729,7 @@ function next() {
 			}
 			// now change the category
 			$we_doc->Category = $this->categories;
-			if($we_ContentType == "image/*"){
+			if($we_ContentType == "image/*" || $we_ContentType == "application/x-shockwave-flash"){
 				$we_size = $we_doc->getimagesize($tempName);
 				if(is_array($we_size) && count($we_size) >= 2){
 					$we_doc->setElement("width", $we_size[0], "attrib");
@@ -738,15 +738,10 @@ function next() {
 					$we_doc->setElement("origheight", $we_size[1]);
 				}
 			}
-			if($we_ContentType == "application/x-shockwave-flash"){
-				$we_size = $we_doc->getimagesize($tempName);
-				if(is_array($we_size) && count($we_size) >= 2){
-					$we_doc->setElement("width", $we_size[0], "attrib");
-					$we_doc->setElement("height", $we_size[1], "attrib");
-					$we_doc->setElement("origwidth", $we_size[0]);
-					$we_doc->setElement("origheight", $we_size[1]);
-				}
+			if($we_doc->Extension == '.pdf'){
+				$we_doc->setMetaDataFromFile($tempName);
 			}
+
 			$we_doc->setElement("type", $we_ContentType, "attrib");
 			$fh = @fopen($tempName, "rb");
 			if($_FILES['we_File']["size"] <= 0){

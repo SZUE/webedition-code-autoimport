@@ -454,17 +454,13 @@ class weShopVariants{
 	}
 
 	static function useVariant(&$model, $name){
-
 		$variantDatArray = $model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'];
 
 		$model->Variant = $name;
 
-		for($i = 0; $i < count($variantDatArray); $i++){
-
-			$variant = $variantDatArray[$i];
+		foreach($variantDatArray as $variant){
 			if(is_array($variant)){
 				foreach($variant as $variantName => $variantData){
-
 					if($variantName == $name){
 						foreach($variantData as $elementName => $elementData){
 							$model->elements[$elementName] = $elementData;
@@ -512,15 +508,13 @@ class weShopVariants{
 		if(isset($model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME])){
 			$variantDatArray = $model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'];
 
-			for($i = 0; $i < count($variantDatArray); $i++){
-				$variant = $variantDatArray[$i];
 
+			foreach($variantDatArray as $variant){
 				foreach($variant as $variantName => $variantData){
 					if($variantName == $name){
-
 						foreach($variantData as $elementName => $elementData){
 							// fields have the prefix we_
-							$record["we_$elementName"] = ($elementData['type'] == 'img' ? (isset($elementData['bdid']) ? $elementData['bdid'] : '') : (isset($elementData['dat']) ? $elementData['dat'] : ''));
+							$record['we_' . $elementName] = ($elementData['type'] == 'img' ? (isset($elementData['bdid']) ? $elementData['bdid'] : '') : (isset($elementData['dat']) ? $elementData['dat'] : ''));
 						}
 					}
 				}

@@ -19,11 +19,8 @@
 	};
 
 	var getHint = function(cm) {
-
 		var cursor = cm.getCursor();
-
 		if (cursor.ch > 0) {
-
 			var text = cm.getRange({
 				line: 0,
 				ch: 0
@@ -34,8 +31,7 @@
 				if(text[i] == ' ' || text[i] == '<') {
 					simbol = text[i];
 					break;
-				}
-				else {
+				}	else {
 					typed = text[i] + typed;
 				}
 			}
@@ -43,16 +39,18 @@
 			text = text.slice(0, text.length - typed.length);
 
 			var path = getOpenTag(text)+simbol;
-
 			var hints = CodeMirror.weHints[path];
 
-			if(typeof hints === 'undefined')
+			//console.log(path+" "+hints);
+
+			if(typeof hints === 'undefined'){
 				hints = [''];
-			else {
+			}else {
 				hints = hints.slice(0);
 				for (var i = hints.length - 1; i >= 0; i--) {
-					if(hints[i].indexOf(typed) != 0)
+					if(hints[i].indexOf(typed) != 0){
 						hints.splice(i, 1);
+					}
 				}
 			}
 
@@ -73,21 +71,20 @@
 		var open = text.lastIndexOf('<');
 		var close = text.lastIndexOf('>');
 
-		if (close < open)
-		{
+		if (close < open){
 			text = text.slice(open);
 
 			if(text != '<') {
-
 				var space = text.indexOf(' ');
-				if(space < 0)
+				if(space < 0){
 					space = text.indexOf('\t');
-				if(space < 0)
+				}
+				if(space < 0){
 					space = text.indexOf('\n');
-
-				if (space < 0)
+				}
+				if (space < 0){
 					space = text.length;
-
+				}
 				return text.slice(0, space);
 			}
 		}

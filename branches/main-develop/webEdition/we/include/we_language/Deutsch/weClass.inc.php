@@ -12,6 +12,7 @@ $l_weClass=array(
 	'availableAfterSave'=>'Die Funktion steht erst nach dem Speichern des Eintrags zur Verfügung.',
 	'bgcolor'=>'Hintergrundfarbe',
 	'border'=>'Rand',
+	'caseSensitive'=>'Exakt',
 	'category'=>'Kategorie',
 	'ChangePark'=>'Diese Eigenschaft darf nur verändert werden, wenn das Dokument geparkt ist!',
 	'change_compression'=>'Komprimierung ändern',

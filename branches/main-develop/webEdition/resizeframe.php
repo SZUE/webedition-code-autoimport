@@ -87,7 +87,7 @@ function startSEEMMode(){
 	$_sidebarwidth = getSidebarWidth();
 	?>
 	<div style="position:absolute;top:0px;bottom:0px;left:0px;right:0px;border: 0px;">
-		<div style="position:absolute;top:0px;bottom:0px;left:0px;width:0px;border-right:1px solid black;" id="bframeDiv">
+		<div style="position:absolute;top:0px;bottom:0px;left:0px;display:none;border-right:1px solid black;" id="bframeDiv">
 			<?php include(WE_INCLUDES_PATH . 'baumFrame.inc.php'); ?>
 		</div>
 		<div style="position:absolute;top:0px;bottom:0px;right:<?php echo $_sidebarwidth; ?>px;left:0px;border-left:1px solid black;overflow: hidden;" id="bm_content_frameDiv">

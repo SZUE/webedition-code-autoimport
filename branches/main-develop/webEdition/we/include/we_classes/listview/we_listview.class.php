@@ -205,10 +205,9 @@ class we_listview extends listviewBase{
 				$ws_where = ' AND (' . implode(' OR ', $cond) . ')';
 			}
 			$bedingungen = preg_split('/ +/', $this->search);
-			$searchfield = $this->casesensitive ? 'BText' : 'Text';
 
 			$ranking = '0';
-			$spalten = array(INDEX_TABLE . '.' . $searchfield);
+			$spalten = array(($this->casesensitive ?'BINARY ':'').INDEX_TABLE . '.Text');
 			reset($bedingungen);
 			foreach($bedingungen as $v1){
 				if(preg_match('|^[-\+]|', $v1)){

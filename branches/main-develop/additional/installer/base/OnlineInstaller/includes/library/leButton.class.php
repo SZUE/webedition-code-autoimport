@@ -2,7 +2,7 @@
 
 class leButton {
 
-	function get($name = "", $text = "", $href = "", $width = 100, $height = 22, $on_click = "", $disabled = false, $uniqid = true){
+	static function get($name = "", $text = "", $href = "", $width = 100, $height = 22, $on_click = "", $disabled = false, $uniqid = true){
 
 	 	//	Size of button
 	 	$width_left  = 11;

@@ -12,6 +12,7 @@ $l_weClass=array(
 	'availableAfterSave'=>'Toiminnallisuus on saatavilla vasta tallentamisen jälkeen.',
 	'bgcolor'=>'Taustan väri',
 	'border'=>'Reunus',
+	'caseSensitive'=>'case sensitive',
 	'category'=>'Kategoria',
 	'ChangePark'=>'Voit muuttaa tätä määrettä vain jos dokumentti ei ole julkaistu!',
 	'change_compression'=>'Muuta pakkausta',

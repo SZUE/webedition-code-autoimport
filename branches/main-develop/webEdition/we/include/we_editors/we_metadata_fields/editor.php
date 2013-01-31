@@ -27,7 +27,8 @@
  * *************************************************************************** */
 
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-include_once(WE_INCLUDES_PATH . 'we_delete_fn.inc.php');
+require_once(WE_INCLUDES_PATH . 'we_delete_fn.inc.php');
+
 
 we_html_tools::protect();
 
@@ -46,19 +47,13 @@ we_html_tools::protect();
  * @return         string
  */
 function create_dialog($name, $title, $content, $expand = -1, $show_text = "", $hide_text = "", $cookie = false, $JS = ""){
-	$_output = "";
 
 	// Check, if we need to write some JavaScripts
-	if($JS != ""){
-		$_output .= $JS;
-	}
-
-	if($expand != -1){
-		$_output .= we_multiIconBox::getJS();
-	}
-
-	// Return HTML code of dialog
-	return $_output . we_multiIconBox::getHTML($name, "100%", $content, 30, "", $expand, $show_text, $hide_text, $cookie != false ? ($cookie == "down") : $cookie, $title);
+	return
+		($JS == '' ? '' : $JS ) .
+		($expand != -1 ? we_multiIconBox::getJS() : '') .
+		// Return HTML code of dialog
+		we_multiIconBox::getHTML($name, "100%", $content, 30, "", $expand, $show_text, $hide_text, $cookie != false ? ($cookie == "down") : $cookie, $title);
 }
 
 /**
@@ -148,128 +143,115 @@ function build_dialog($selected_setting = "ui"){
 
 			foreach($_defined_fields as $key => $value){
 				$_adv_row .= '
-				<tr id="metadataRow_' . $key . '">
-					<td width="210" style="padding-right:5px;">
-						' . we_html_tools::htmlTextInput('metadataTag[' . $key . ']', 24, $value['tag'], 255, "", "text", 205) . '
-					</td>
-					<td width="200">
-						' .
-					we_html_tools::htmlSelect('metadataType[' . $key . ']', $_metadata_types, 1, $value['type'], false, 'class="defaultfont" ')
-					. '
-					</td>
-					<td align="right" width="30">
-						' .
-					we_button::create_button("image:btn_function_trash", "javascript:delRow(" . $_i . ")")
-					. '
-					</td>
-				</tr>
-				<tr id="metadataRow2_' . $key . '">
-					<td style="padding-bottom:10px;padding-right:5px;">
-						<div class="small">' . oldHtmlspecialchars(g_l('metadata', "[import_from]")) . '</div>' . we_html_tools::htmlTextInput('metadataImportFrom[' . $key . ']', 24, $value['importFrom'], 255, "", "text", 205) . '
-					</td>
-					<td colspan="2" style="padding-bottom:10px;">
-						<div class="small">' . oldHtmlspecialchars(g_l('metadata', "[fields]")) . '</div>' .
-					we_html_tools::htmlSelect('add_' . $key, $_metadata_fields, 1, "", false, 'class="defaultfont" style="width:100%" onchange="addFieldToInput(this,' . $key . ')"')
-					. '
-					</td>
-				</tr>
-				';
+<tr id="metadataRow_' . $key . '">
+	<td width="210" style="padding-right:5px;">' . we_html_tools::htmlTextInput('metadataTag[' . $key . ']', 24, $value['tag'], 255, "", "text", 205) . '</td>
+	<td width="200">' . we_html_tools::htmlSelect('metadataType[' . $key . ']', $_metadata_types, 1, $value['type'], false, 'class="defaultfont" ') . '</td>
+	<td align="right" width="30">' . we_button::create_button("image:btn_function_trash", "javascript:delRow(" . $_i . ")") . '</td>
+</tr>
+<tr id="metadataRow2_' . $key . '">
+	<td style="padding-bottom:10px;padding-right:5px;">
+		<div class="small">' . oldHtmlspecialchars(g_l('metadata', "[import_from]")) . '</div>' . we_html_tools::htmlTextInput('metadataImportFrom[' . $key . ']', 24, $value['importFrom'], 255, "", "text", 205) . '
+	</td>
+	<td colspan="2" style="padding-bottom:10px;">
+		<div class="small">' . oldHtmlspecialchars(g_l('metadata', "[fields]")) . '</div>' .
+					we_html_tools::htmlSelect('add_' . $key, $_metadata_fields, 1, "", false, 'class="defaultfont" style="width:100%" onchange="addFieldToInput(this,' . $key . ')"') . '
+	</td>
+</tr>';
 				$_i++;
 			}
 
 			$_metadataTable = '
-			<table border="0" cellpadding="0" cellspacing="0" width="440">
-				<tbody id="metadataTable">
-					<tr>
-						<td class="defaultfont" style="width:210px;"><strong>' . g_l('metadata', "[tagname]") . '</strong></td>
-						<td class="defaultfont" style="width:110px;" colspan="2"><strong>' . g_l('metadata', "[type]") . '</strong></td>
-					</tr>
-					' . $_adv_row . '
-				</tbody>
-			</table>';
+<table border="0" cellpadding="0" cellspacing="0" width="440">
+	<tbody id="metadataTable">
+		<tr>
+			<td class="defaultfont" style="width:210px;"><strong>' . g_l('metadata', "[tagname]") . '</strong></td>
+			<td class="defaultfont" style="width:110px;" colspan="2"><strong>' . g_l('metadata', "[type]") . '</strong></td>
+		</tr>
+		' . $_adv_row . '
+	</tbody>
+</table>';
 
 			$js = we_html_element::jsElement('
+	function addRow() {
 
-				function addRow() {
+		var tagInp = "' . addslashes(we_html_tools::htmlTextInput('metadataTag[__we_new_id__]', 24, "", 255, "", "text", 210)) . '";
+		var importInp = "' . addslashes(we_html_tools::htmlTextInput('metadataImportFrom[__we_new_id__]', 24, "", 255, "", "text", 210)) . '";
+		var typeSel = "' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('metadataType[__we_new_id__]', $_metadata_types, 1, "textfield", false, 'class="defaultfont"'))) . '";
+		var fieldSel = "' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('metadataType[__we_new_id__]', $_metadata_fields, 1, "", false, 'class="defaultfont" style="width:100%"  onchange="addFieldToInput(this,__we_new_id__)"'))) . '";
 
-					var tagInp = "' . addslashes(we_html_tools::htmlTextInput('metadataTag[__we_new_id__]', 24, "", 255, "", "text", 210)) . '";
-					var importInp = "' . addslashes(we_html_tools::htmlTextInput('metadataImportFrom[__we_new_id__]', 24, "", 255, "", "text", 210)) . '";
-					var typeSel = "' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('metadataType[__we_new_id__]', $_metadata_types, 1, "textfield", false, 'class="defaultfont"'))) . '";
-					var fieldSel = "' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('metadataType[__we_new_id__]', $_metadata_fields, 1, "", false, 'class="defaultfont" style="width:100%"  onchange="addFieldToInput(this,__we_new_id__)"'))) . '";
+		var elem = document.getElementById("metadataTable");
+		newID = (elem.rows.length-1) / 2;
+		if(elem){
 
-					var elem = document.getElementById("metadataTable");
-					newID = (elem.rows.length-1) / 2;
-					if(elem){
+			var newRow = document.createElement("TR");
+					newRow.setAttribute("id", "metadataRow_" + newID);
 
-						var newRow = document.createElement("TR");
-	        			newRow.setAttribute("id", "metadataRow_" + newID);
+			cell = document.createElement("TD");
+					cell.innerHTML=tagInp.replace(/__we_new_id__/,newID);
+					cell.width="210";
+					newRow.appendChild(cell);
 
-						cell = document.createElement("TD");
-	        			cell.innerHTML=tagInp.replace(/__we_new_id__/,newID);
-	        			cell.width="210";
-	        			newRow.appendChild(cell);
+					cell = document.createElement("TD");
+					cell.innerHTML=typeSel.replace(/__we_new_id__/,newID);
+					cell.width="200";
+					newRow.appendChild(cell);
 
-	        			cell = document.createElement("TD");
-	        			cell.innerHTML=typeSel.replace(/__we_new_id__/,newID);
-	        			cell.width="200";
-	        			newRow.appendChild(cell);
+					cell = document.createElement("TD");
+					cell.width="30";
+					cell.align="right"
+					cell.innerHTML=\'' . we_button::create_button("image:btn_function_trash", "javascript:delRow('+newID+')") . '\';
+					newRow.appendChild(cell);
 
-	        			cell = document.createElement("TD");
-	        			cell.width="30";
-	        			cell.align="right"
-	        			cell.innerHTML=\'' . we_button::create_button("image:btn_function_trash", "javascript:delRow('+newID+')") . '\';
-	        			newRow.appendChild(cell);
+					elem.appendChild(newRow);
 
-	        			elem.appendChild(newRow);
+					newRow = document.createElement("TR");
+					newRow.setAttribute("id", "metadataRow2_" + newID);
 
-	        			newRow = document.createElement("TR");
-	        			newRow.setAttribute("id", "metadataRow2_" + newID);
+			cell = document.createElement("TD");
+			cell.style.paddingBottom="10px";
+					cell.innerHTML=\'<div class="small">' . oldHtmlspecialchars(g_l('metadata', "[import_from]")) . '</div>\'+importInp.replace(/__we_new_id__/,newID);
+					newRow.appendChild(cell);
+			cell = document.createElement("TD");
+			cell.setAttribute("colspan",2);
+			cell.style.paddingBottom="10px";
+					cell.innerHTML=\'<div class="small">' . oldHtmlspecialchars(g_l('metadata', "[fields]")) . '</div>\'+fieldSel.replace(/__we_new_id__/g,newID);
+					newRow.appendChild(cell);
+					elem.appendChild(newRow);
+		}
+	}
 
-						cell = document.createElement("TD");
-						cell.style.paddingBottom="10px";
-	        			cell.innerHTML=\'<div class="small">' . oldHtmlspecialchars(g_l('metadata', "[import_from]")) . '</div>\'+importInp.replace(/__we_new_id__/,newID);
-	        			newRow.appendChild(cell);
-						cell = document.createElement("TD");
-						cell.setAttribute("colspan",2);
-						cell.style.paddingBottom="10px";
-	        			cell.innerHTML=\'<div class="small">' . oldHtmlspecialchars(g_l('metadata', "[fields]")) . '</div>\'+fieldSel.replace(/__we_new_id__/g,newID);
-	        			newRow.appendChild(cell);
-	        			elem.appendChild(newRow);
+	function delRow(id) {
+		var elem = document.getElementById("metadataTable");
+		if(elem){
+			var trows = elem.rows;
+			var rowID = "metadataRow_" + id;
+			var rowID2 = "metadataRow2_" + id;
+
+					for (i=trows.length-1;i>=0;i--) {
+						if(rowID == trows[i].id || rowID2 == trows[i].id) {
+							elem.deleteRow(i);
+						}
 					}
-				}
 
-				function delRow(id) {
-					var elem = document.getElementById("metadataTable");
-					if(elem){
-						var trows = elem.rows;
-						var rowID = "metadataRow_" + id;
-						var rowID2 = "metadataRow2_" + id;
+		}
+	}
+	function init() {
+		self.focus();
+	}
 
-			        	for (i=trows.length-1;i>=0;i--) {
-			        		if(rowID == trows[i].id || rowID2 == trows[i].id) {
-			        			elem.deleteRow(i);
-			        		}
-			        	}
-
-					}
-				}
-				function init() {
-					self.focus();
-				}
-
-				function addFieldToInput(sel, inpNr) {
-					if (sel && sel.selectedIndex >= 0 && sel.options[sel.selectedIndex].parentNode.nodeName.toLowerCase() == "optgroup") {
-						var _inpElem = document.forms[0].elements["metadataImportFrom["+inpNr+"]"];
-						var _metaType = sel.options[sel.selectedIndex].parentNode.label.toLowerCase();
-						var _str = _metaType + "/" + sel.options[sel.selectedIndex].value;
-						_inpElem.value = _inpElem.value ? _inpElem.value + (","+_str) : _str;
-					}
-					sel.selectedIndex = 0;
-				}
-
-			');
+	function addFieldToInput(sel, inpNr) {
+		if (sel && sel.selectedIndex >= 0 && sel.options[sel.selectedIndex].parentNode.nodeName.toLowerCase() == "optgroup") {
+			var _inpElem = document.forms[0].elements["metadataImportFrom["+inpNr+"]"];
+			var _metaType = sel.options[sel.selectedIndex].parentNode.label.toLowerCase();
+			var _str = _metaType + "/" + sel.options[sel.selectedIndex].value;
+			_inpElem.value = _inpElem.value ? _inpElem.value + (","+_str) : _str;
+		}
+		sel.selectedIndex = 0;
+	}');
 
 			$_hint = we_html_tools::htmlAlertAttentionBox(g_l('metadata', '[fields_hint]'), 1, 440, false);
+
+			$_metadata = new we_html_table(array('border' => '1', 'cellpadding' => '0', 'cellspacing' => '2', 'width' => '440', 'height' => '50'), 4, 3);
 
 			$_content = $_hint . '<div style="height:20px"></div>' . $_metadataTable . we_button::create_button("image:btn_function_plus", "javascript:addRow()");
 
@@ -314,11 +296,16 @@ if(isset($_REQUEST["save_metadatafields"]) && $_REQUEST["save_metadatafields"] =
 				'top.close();');
 	}
 
-	print STYLESHEET . $save_javascript . '</head>' .
-		we_html_element::htmlBody(array("class" => "weDialogBody"), build_dialog("saved")) . '</html>';
+	print
+		STYLESHEET .
+		$save_javascript .
+		"</head>" .
+		we_html_element::htmlBody(array("class" => "weDialogBody"), build_dialog("saved")) . "</html>";
 } else{
-	$_form = we_html_element::htmlForm(array("name" => "we_form", "method" => "get", "action" => $_SERVER["SCRIPT_NAME"]), we_html_element::htmlHidden(array("name" => "save_metadatafields", "value" => "false")) . render_dialog());
-
-	print STYLESHEET . '</head>' .
-		we_html_element::htmlBody(array("class" => "weDialogBody", "onload" => "init()"), $_form) . "</html>";
+	print
+		STYLESHEET .
+		"</head>" .
+		we_html_element::htmlBody(array("class" => "weDialogBody", "onload" => "init()"), we_html_element::htmlForm(
+				array("name" => "we_form", "method" => "get", "action" => $_SERVER["SCRIPT_NAME"]), we_html_element::htmlHidden(array("name" => "save_metadatafields", "value" => "false")) . render_dialog())
+		) . "</html>";
 }

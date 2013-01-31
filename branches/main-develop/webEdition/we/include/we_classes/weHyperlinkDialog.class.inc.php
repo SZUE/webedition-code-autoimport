@@ -317,7 +317,17 @@ class weHyperlinkDialog extends weDialog{
 			$wecmdenc1 = we_cmd_enc("document.we_form.elements['we_dialog_args[extHref]'].value");
 			$_external_select_button = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_button::create_button("select", "javascript:we_cmd('browse_server', '" . $wecmdenc1 . "', '', document.we_form.elements['we_dialog_args[extHref]'].value, '')") : "";
 
-			$_external_link = "<div style='margin-top:1px'>" . we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[extHref]", 30, $extHref ? $extHref : "http://", "", 'onchange="if(this.value==\'\'){this.value=\'http://\'}"', "url", 300), "", "left", "defaultfont", we_html_tools::getPixel(10, 1), $_external_select_button, "", "", "", 0) . "</div>";
+			$_external_link = "<div style='margin-top:1px'>" . we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[extHref]", 30, $extHref ? $extHref : "http://", "", 'onchange="if(this.value==\'\'){
+					this.value=\'http://\';
+}else{
+	var x=this.value.match(/(.*:\/\/[^#?]*)(\?([^?#]*))?(#([^?#]*))?/);
+	this.value=x[1];
+	if(x[3]!=undefined){
+		document.getElementsByName(\'we_dialog_args[param]\')[0].value=x[5];
+	}
+	if(x[5]!=undefined){
+		document.getElementsByName(\'we_dialog_args[anchor]\')[0].value=x[3];
+	}}"', "url", 300), "", "left", "defaultfont", we_html_tools::getPixel(10, 1), $_external_select_button, '', '', '', 0) . '</div>';
 
 
 			// INTERNAL LINK
@@ -611,7 +621,7 @@ class weHyperlinkDialog extends weDialog{
 				(isset($this->args["cssClasses"]) && $this->args["cssClasses"] ?
 					'					var classCSV = "' . $this->args["cssClasses"] . '";
 									classNames = classCSV.split(/,/);' : ($this->args["editor"] == "tinyMce" ? 'classNames = top.opener.weclassNames_tinyMce;' :
-					'					classNames = top.opener.we_classNames;')) . '
+						'					classNames = top.opener.we_classNames;')) . '
 					document.writeln(\'<select class="defaultfont" style="width:300px" name="\'+name+\'" id="\'+name+\'" size="1"\'+(onCh ? \' onChange="\'+onCh+\'"\' : \'\')+\'>\');
 					document.writeln(\'<option value="">' . g_l('wysiwyg', "[none]") . '\');
 					if(typeof(classNames) != "undefined"){

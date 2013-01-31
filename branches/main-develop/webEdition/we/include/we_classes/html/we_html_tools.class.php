@@ -437,11 +437,12 @@ abstract class we_html_tools{
 			$hour = $time->format('G');
 			$minute = $time->format('i');
 		} else if($time){
-			$day = abs(date("j", $time));
-			$month = abs(date("n", $time));
-			$year = abs(date("Y", $time));
-			$hour = abs(date("G", $time));
-			$minute = abs(date("i", $time));
+			$time = intval($time);
+			$day = intval(date("j", $time));
+			$month = intval(date("n", $time));
+			$year = intval(date("Y", $time));
+			$hour = intval(date("G", $time));
+			$minute = intval(date("i", $time));
 		}
 
 		$_dayPos = self::we_getDayPos($format);

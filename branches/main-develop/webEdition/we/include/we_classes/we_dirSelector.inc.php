@@ -267,7 +267,7 @@ function addEntry(ID,icon,text,isFolder,path,modDate){
 	function printFramesetJSFunctionAddEntries(){
 		$ret = '';
 		while($this->next_record()) {
-			$ret.='addEntry(' . $this->f("ID") . ',"' . $this->f("Icon") . '","' . $this->f("Text") . '",' . $this->f("IsFolder") . ',"' . $this->f("Path") . '","' . date(g_l('date', '[format][default]'), (is_numeric($this->f("ModDate")) ? $this->f("ModDate") : 0)) . '");';
+			$ret.='addEntry(' . $this->f("ID") . ',"' . $this->f("Icon") . '","' . addcslashes($this->f("Text"), '"') . '",' . $this->f("IsFolder") . ',"' . addcslashes($this->f("Path"), '"') . '","' . date(g_l('date', '[format][default]'), (is_numeric($this->f("ModDate")) ? $this->f("ModDate") : 0)) . '");';
 		}
 		return we_html_element::jsElement($ret);
 	}
@@ -462,7 +462,7 @@ top.fsheader.selectIt();';
 			++$c;
 			$data = getHash('SELECT ID,Text,ParentID FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($pid), $this->db);
 			if(!empty($data)){
-				$out= '<option value="' . $data['ID'] . '"' . (($z == 0) ? ' selected="selected"' : '') . '>' . $data['Text'] . '</option>' . $out;
+				$out = '<option value="' . $data['ID'] . '"' . (($z == 0) ? ' selected="selected"' : '') . '>' . $data['Text'] . '</option>' . $out;
 				$z++;
 			}
 			$pid = $data['ParentID'];

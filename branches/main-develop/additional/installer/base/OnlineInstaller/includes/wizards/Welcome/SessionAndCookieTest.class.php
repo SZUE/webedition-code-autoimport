@@ -39,7 +39,7 @@ class SessionAndCookieTest extends leStep {
 	}
 
 
-	function execute(&$Template) {
+	function execute(&$Template = '') {
 
 		$Success = true;
 

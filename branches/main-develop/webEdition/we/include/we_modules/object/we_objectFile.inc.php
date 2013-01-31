@@ -1224,16 +1224,17 @@ class we_objectFile extends we_document{
 			Zend_Locale::setCache(getWEZendCache());
 		}
 
+		$lang = explode('_', $GLOBALS['WE_LANGUAGE']);
+		$langcode = array_search($lang[0], $GLOBALS['WE_LANGS']);
+
 		if(!$editable){
 			return '<div class="weObjectPreviewHeadline">' . $name . '</div>' .
 				($this->getElement($name) != '--' || $this->getElement($name) != '' ? '<div class="defaultfont">' . CheckAndConvertISObackend(Zend_Locale::getTranslation($this->getElement($name), 'territory', $langcode)) . '</div>' :
 					'');
 		}
 
-		$lang = explode('_', $GLOBALS['WE_LANGUAGE']);
-		$langcode = array_search($lang[0], $GLOBALS['WE_LANGS']);
 		$countrycode = array_search($langcode, $GLOBALS['WE_LANGS_COUNTRIES']);
-		$countryselect = new we_html_select(array("name" => "we_" . $this->Name . "_language[$name]", "size" => "1", "style" => "{width:620;}", "class" => "wetextinput", "onChange" => "_EditorFrame.setEditorIsHot(true);"));
+		$countryselect = new we_html_select(array("name" => "we_" . $this->Name . "_language[$name]", "size" => 1, "style" => "width:620;", "class" => "wetextinput", "onChange" => "_EditorFrame.setEditorIsHot(true);"));
 
 		$topCountries = array_flip(explode(',', WE_COUNTRIES_TOP));
 
@@ -1278,8 +1279,9 @@ class we_objectFile extends we_document{
 
 	function getLanguageFieldHTML($name, $attribs, $editable = true, $variant = false){
 		if(!$editable){
+//FIXME: getTranslation is wrong
 			return '<div class="weObjectPreviewHeadline">' . $name . '</div>' .
-				($this->getElement($name) != '--' || $this->getElement($name) != '' ? '<div class="defaultfont">' . CheckAndConvertISObackend(Zend_Locale::getTranslation($this->getElement($name), 'language', $lccode)) . '</div>' :
+				($this->getElement($name) != '--' || $this->getElement($name) != '' ? '<div class="defaultfont">' . CheckAndConvertISObackend(Zend_Locale::getTranslation($this->getElement($name), 'language', '')) . '</div>' :
 					'');
 		}
 		$frontendL = $GLOBALS["weFrontendLanguages"];
@@ -1287,7 +1289,7 @@ class we_objectFile extends we_document{
 			$lccode = explode('_', $lcvalue);
 			$lcvalue = $lccode[0];
 		}
-		$languageselect = new we_html_select(array("name" => "we_" . $this->Name . "_language[$name]", "size" => "1", "style" => "{width:620;}", "class" => "wetextinput", "onChange" => "_EditorFrame.setEditorIsHot(true);"));
+		$languageselect = new we_html_select(array("name" => "we_" . $this->Name . "_language[$name]", "size" => 1, "style" => "width:620;", "class" => "wetextinput", "onChange" => "_EditorFrame.setEditorIsHot(true);"));
 		if(!$this->DefArray["language_" . $name]["required"]){
 			$languageselect->addOption('--', '');
 		}
@@ -1976,22 +1978,59 @@ class we_objectFile extends we_document{
 	}
 
 	function insertAtIndex(){
-		if(!$this->DB_WE->query("DELETE FROM " . INDEX_TABLE . " WHERE OID=" . $this->ID)){
-			return false;
-		}
+		$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE OID=' . $this->ID);
 		if(!$this->IsSearchable){
 			return true;
 		}
 
 		$this->setTitleAndDescription();
 		$this->resetElements();
-		$text = "";
+		$text = '';
 		while((list($k, $v) = $this->nextElement(""))) {
-			if(isset($v["dat"])){
-				$text .= ' ' . $v["dat"];
+			if(isset($v["dat"]) && !empty($v["dat"])){
+				switch(isset($v['type']) ? $v['type'] : ''){
+					default:
+					case 'object':
+					case 'multiobject':
+					case 'language':
+					case 'href':
+						//not handled
+						break;
+					case 'date':
+						$text .= ' ' . date(g_l('date', '[format][default]'), $v["dat"]);
+						break;
+					case 'int':
+						$text.=' ' . intval($v["dat"]);
+						break;
+					case 'float':
+						$text.=' ' . floatval($v["dat"]);
+						break;
+
+					case 'meta'://FIXME: meta returns the key not the value
+					case 'input':
+					case 'txt':
+					case 'text':
+						if(strpos($v["dat"], 'a:') === 0){
+							//link/href
+							$tmp = @unserialize($v["dat"]);
+							if($tmp && isset($tmp['text'])){
+								$text .= ' ' . $tmp['text'];
+							}
+						} else{
+							$text .= ' ' . $v["dat"];
+						}
+						break;
+				}
 			}
 		}
-		$text = $this->DB_WE->escape(trim(strip_tags($text)));
+		$maxDB = min(1000000, getMaxAllowedPacket($this->DB_WE) - 1024);
+		$text = substr(preg_replace(array("/\n+/", '/  +/'), ' ', trim(strip_tags($text))), 0, $maxDB);
+
+		if(empty($text)){
+			//no need to keep an entry without relevant data in the index
+			return true;
+		}
+
 		$ws = makeArrayFromCSV($this->Workspaces);
 		$ws2 = makeArrayFromCSV($this->ExtraWorkspacesSelected);
 		foreach($ws2 as $w){
@@ -2005,7 +2044,6 @@ class we_objectFile extends we_document{
 				'INSERT INTO ' . INDEX_TABLE . ' SET ' . we_database_base::arraySetter(array(
 					'OID' => $this->ID,
 					'Text' => $text,
-					'BText' => $text,
 					'Workspace' => $wsPath,
 					'WorkspaceID' => $w,
 					'Category' => $this->Category,
@@ -2028,7 +2066,6 @@ class we_objectFile extends we_document{
 						'INSERT INTO ' . INDEX_TABLE . ' SET ' . we_database_base::arraySetter(array(
 							'OID' => $this->ID,
 							'Text' => $text,
-							'BText' => $text,
 							'Workspace' => $wsPath,
 							'WorkspaceID' => $w,
 							'Category' => $this->Category,
@@ -2763,9 +2800,13 @@ class we_objectFile extends we_document{
 				$hrefs = array();
 				$realName = $key = '';
 				while((list($k, $v) = $this->nextElement('href'))) {
+					if(strstr($k, '_we_jkhdsf_') === FALSE){
+						continue;
+					}
 					list($realName, $key) = explode('_we_jkhdsf_', $k);
-					if(!isset($hrefs[$realName]))
+					if(!isset($hrefs[$realName])){
 						$hrefs[$realName] = array();
+					}
 					$hrefs[$realName][$key] = $v['dat'];
 				}
 				foreach($hrefs as $k => $v){
@@ -2868,7 +2909,7 @@ class we_objectFile extends we_document{
 	}
 
 	public function initByID($we_ID, $we_Table = OBJECT_FILES_TABLE, $from = we_class::LOAD_MAID_DB){
-		parent::initByID($we_ID, $we_Table, $from);
+		parent::initByID(intval($we_ID), $we_Table, $from);
 		if(isset($this->elements['Charset'])){
 			$this->Charset = $this->elements['Charset']['dat'];
 			unset($this->elements['Charset']);

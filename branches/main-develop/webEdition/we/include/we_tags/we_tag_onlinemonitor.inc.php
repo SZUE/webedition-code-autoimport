@@ -41,7 +41,7 @@ function we_tag_onlinemonitor($attribs){
 		$GLOBALS["we_lv_array"] = array();
 	}
 
-	$we_omid = $we_omid ? $we_omid : (isset($_REQUEST["we_omid"]) ? $_REQUEST["we_omid"] : 0);
+	$we_omid = $we_omid ? $we_omid : (isset($_REQUEST["we_omid"]) ? intval($_REQUEST["we_omid"]) : 0);
 
 	$GLOBALS["lv"] = new we_onlinemonitortag($we_omid, "' . $condition . '");
 	if(is_array($GLOBALS["we_lv_array"])){

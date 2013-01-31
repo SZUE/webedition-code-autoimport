@@ -277,7 +277,7 @@ if(isset($_SESSION["user_session_data"]))
 					}
 					fr.write("<IMG SRC=<?php print ICON_DIR; ?>"+nf[ai].icon+" WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 alt=\"<?php print g_l('tree', "[edit_statustext]"); ?>\">");
 					fr.write("</a>");
-					fr.write("&nbsp;<a name='_"+nf[ai].name+"' href=\"javascript://\" onClick=\"doClick("+nf[ai].name+",'"+nf[ai].contentType+"','"+nf[ai].table+"');return true;\"><font color=\""+((nf[ai].contentType=="alias") ? "#006DB8" : "black") +"\">"+(parseInt(nf[ai].published) ? "<b>" : "") + "<label title='"+nf[ai].name+"'>" + nf[ai].text + "</label>" +(parseInt(nf[ai].published) ? "</b>" : "")+ "</font></A>&nbsp;&nbsp;<BR>\n");
+					fr.write("&nbsp;<a name='_"+nf[ai].name+"' href=\"javascript://\" onClick=\"doClick("+nf[ai].name+",'"+nf[ai].contentType+"','"+nf[ai].table+"');return true;\"><font color=\""+((nf[ai].contentType=="alias") ? "#006DB8" : (parseInt(nf[ai].denied)?"red":"black")) +"\">"+(parseInt(nf[ai].published) ? "<b>" : "") + "<label title='"+nf[ai].name+"'>" + nf[ai].text + "</label>" +(parseInt(nf[ai].published) ? "</b>" : "")+ "</font></A>&nbsp;&nbsp;<BR>\n");
 				}
 				else {
 					var newAst = zweigEintrag;
@@ -309,18 +309,18 @@ if(isset($_SESSION["user_session_data"]))
 			}
 		}
 
-		function makeNewEntry(icon,id,pid,txt,offen,ct,tab,pub) {
+		function makeNewEntry(icon,id,pid,txt,offen,ct,tab,pub,denied) {
 			if(table == tab) {
 				if(ct=="folder"){
 					menuDaten.addSort(new dirEntry(icon,id,pid,txt,offen,ct,tab));
 				}else{
-					menuDaten.addSort(new urlEntry(icon,id,pid,txt,ct,tab,pub));
+					menuDaten.addSort(new urlEntry(icon,id,pid,txt,ct,tab,pub,denied));
 				}
 				drawEintraege();
 			}
 		}
 
-		function updateEntry(id,pid,text,pub) {
+		function updateEntry(id,pid,text,pub,denied) {
 			var ai = 1;
 			while (ai <= menuDaten.laenge) {
 				if ((menuDaten[ai].typ=='folder') || (menuDaten[ai].typ=='user'))
@@ -328,6 +328,7 @@ if(isset($_SESSION["user_session_data"]))
 						menuDaten[ai].vorfahr=pid;
 						menuDaten[ai].text=text;
 						menuDaten[ai].published=pub;
+						menuDaten[ai].denied=denied;
 					}
 				ai++;
 			}
@@ -449,7 +450,7 @@ if(isset($_SESSION["user_session_data"]))
 			return this;
 		}
 
-		function urlEntry(icon,name,vorfahr,text,contentType,table,published) {
+		function urlEntry(icon,name,vorfahr,text,contentType,table,published,denied) {
 			this.icon=icon;
 			this.name = name;
 			this.vorfahr = vorfahr;
@@ -459,6 +460,7 @@ if(isset($_SESSION["user_session_data"]))
 			this.contentType = contentType;
 			this.table = table;
 			this.published = published;
+			this.denied = denied;
 			return this;
 		}
 
@@ -497,10 +499,10 @@ if($_SESSION["perms"]["NEW_USER"] || $_SESSION["perms"]["NEW_GROUP"] || $_SESSIO
 
 	while($DB_WE->next_record()) {
 		if($DB_WE->f("Type") == 1){
-			print "menuDaten.add(new dirEntry('folder','" . $DB_WE->f("ID") . "','" . $DB_WE->f("ParentID") . "','" . addslashes($DB_WE->f("Text")) . "',false,'group','" . USER_TABLE . "',1));";
+			print "  menuDaten.add(new dirEntry('folder','" . $DB_WE->f("ID") . "','" . $DB_WE->f("ParentID") . "','" . addslashes($DB_WE->f("Text")) . "',false,'group','" . USER_TABLE . "',1));";
 		} else{
 			$p = unserialize($DB_WE->f("Permissions"));
-			print "menuDaten.add(new urlEntry('" . ($DB_WE->f("Type") == 2 ? 'user_alias.gif' : 'user.gif') . "','" . $DB_WE->f("ID") . "','" . $DB_WE->f("ParentID") . "','" . addslashes($DB_WE->f("Text")) . "','" . ($DB_WE->f("Type") == 2 ? 'alias' : 'user') . "','" . USER_TABLE . "','" . $p["ADMINISTRATOR"] . "'));";
+			print "  menuDaten.add(new urlEntry('" . ($DB_WE->f("Type") == 2 ? 'user_alias.gif' : 'user.gif') . "','" . $DB_WE->f("ID") . "','" . $DB_WE->f("ParentID") . "','" . addslashes($DB_WE->f("Text")) . "','" . ($DB_WE->f("Type") == 2 ? 'alias' : 'user') . "','" . USER_TABLE . "','" . $p["ADMINISTRATOR"] . "','" . $DB_WE->f("LoginDenied") . "'));";
 		}
 	}
 }

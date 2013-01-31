@@ -40,13 +40,17 @@ function we_tag_shopField($attribs){
 
 	$type = weTag_getAttribute("type", $attribs);
 
-	if($type=='checkbox' && ($missingAttrib = attributFehltError($attribs, 'value', __FUNCTION__))){
+	if($type == 'checkbox' && ($missingAttrib = attributFehltError($attribs, 'value', __FUNCTION__))){
 		print $missingAttrib;
 	}
 
 	$values = weTag_getAttribute("values", $attribs); // select, choice
 	$value = weTag_getAttribute("value", $attribs); // checkbox
 	$checked = weTag_getAttribute("checked", $attribs, false, true); // checkbox
+
+	if($checked && ($foo = attributFehltError($attribs, "value", __FUNCTION__))){
+		return $foo;
+	}
 	$mode = weTag_getAttribute("mode", $attribs);
 
 	$xml = weTag_getAttribute("xml", $attribs);
@@ -56,7 +60,7 @@ function we_tag_shopField($attribs){
 	$isFieldForCheckBox = false;
 
 	if($reference == 'article'){ // name depends on value
-		$savedVal = (!$shopname) && isset($_REQUEST[WE_SHOP_ARTICLE_CUSTOM_FIELD][$name]) ? $_REQUEST[WE_SHOP_ARTICLE_CUSTOM_FIELD][$name] : '';
+		$savedVal = (!$shopname) && isset($_REQUEST[WE_SHOP_ARTICLE_CUSTOM_FIELD][$name]) ? filterXss($_REQUEST[WE_SHOP_ARTICLE_CUSTOM_FIELD][$name]) : '';
 		// does not exist here - we are only in article - custom fields are not stored on documents
 
 		if(isset($GLOBALS['lv']) && ($tmpVal = we_tag('field', array('name' => $name)))){

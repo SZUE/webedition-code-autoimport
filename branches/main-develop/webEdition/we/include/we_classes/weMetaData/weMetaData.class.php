@@ -32,7 +32,7 @@ class weMetaData{
 	/**
 	 * @var array specifies possible access methods to metadata handled by this implementation class (i.e. exif: readonly)
 	 */
-	var $accesstypes = array('read,write');
+	protected $accesstypes = array('read,write');
 
 	/**
 	 * @var array mapping of datatypes and their metadata models
@@ -81,7 +81,7 @@ class weMetaData{
 	 * @param string filetype filetype of the file whose metadata has to be read  (i.e. 'mp3')
 	 * @return bool returns false if no spezialisation for the given filetype is available
 	 */
-	function __construct($source = ''){
+	public function __construct($source = ''){
 		if(empty($source)){
 			$this->_valid = false;
 			return false;
@@ -177,7 +177,7 @@ class weMetaData{
 	 * @param string datasource id of webEdition document
 	 * @return bool returns false if datasource is not valid
 	 */
-	function _setDatasource($datasource = ''){
+	protected function _setDatasource($datasource = ''){
 		// determines if given datasource is valid. will be assignet to instances later:
 		if(!$this->_valid){
 			return false;
@@ -211,7 +211,7 @@ class weMetaData{
 	/**
 	 * @abstract internal (private) function for obtaining path/name of the media file from database (tblFile)
 	 */
-	function _getDatasourceFromDatabase(){
+	protected function _getDatasourceFromDatabase(){
 		$this->_valid = false;
 		return false;
 	}
@@ -219,19 +219,16 @@ class weMetaData{
 	/**
 	 * @abstract method for detecting type of current file needed, for identifying correct metadata implementation class
 	 */
-	function _setDatatype(){
+	protected function _setDatatype(){
 		/*
 		 * detecting filetype in this order:
 		 * 1. exif_imagetype()
 		 * 2. file extension
 		 */
-		if(!$this->_valid)
+		if(!$this->_valid){
 			return false;
-		if(is_callable('exif_imagetype')){
-			$_filetype = @exif_imagetype($this->datasource);
-		} else{
-			$_filetype = '';
 		}
+		$_filetype = (is_callable('exif_imagetype') ? @exif_imagetype($this->datasource) : '');
 		// if $_filetype is a numeric value, filetype should first be identified by
 		// Get fype for image-type returned by getimagesize, exif_read_data, exif_thumbnail, exif_imagetype
 		if(!empty($_filetype) && is_numeric($_filetype)){
@@ -268,7 +265,7 @@ class weMetaData{
 	 * @return object instance of the metadata implementation class
 	 * @return bool returns false if no or invalid datatype specified
 	 */
-	function _getInstance($value = ''){
+	protected function _getInstance($value = ''){
 		if(!$this->_valid)
 			return false;
 		if(is_readable(WE_INCLUDES_PATH . 'we_classes/weMetaData/classes/' . $value . '.class.php')){
@@ -293,7 +290,7 @@ class weMetaData{
 	 * 			a selection is specified as an array of metadata tags/fields
 	 * @return array metadata according to $selection
 	 */
-	function _getMetaData($selection = ''){
+	protected function _getMetaData($selection = ''){
 		// override!
 		return $this->metadata;
 	}
@@ -304,7 +301,7 @@ class weMetaData{
 	 * 			a selection is specified as an array of metadata tags/fields
 	 * @return array metadata according to $selection
 	 */
-	function _setMetaData($data = '', $datatype = ''){
+	protected function _setMetaData($data = '', $datatype = ''){
 		return true;
 		// override!
 	}
@@ -314,7 +311,7 @@ class weMetaData{
 	 * 			(i.e. if needed libraries, php extensions or classes are available)
 	 * @return bool returns true if all dependencies are met and false if not
 	 */
-	function _checkDependencies(){
+	protected function _checkDependencies(){
 		// override!
 		return true;
 	}

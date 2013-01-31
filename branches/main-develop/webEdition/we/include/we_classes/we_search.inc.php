@@ -134,17 +134,17 @@ class we_search{
 			foreach($foo as $f){
 				$tmp = str_replace('.', '`.', $f);
 				if($tmp == $f){
-					$tmp.='`';
+					$tmp = '`' . $tmp;
 				}
-				$q [] = '`' . $tmp . '` ' . $searchlocation;
+				$q [] = $tmp . '` ' . $searchlocation;
 			}
 			return ' ' . $concat . ' ( ' . implode(' OR ', $q) . ' ) ';
 		} else{
 			$tmp = str_replace('.', '`.', $we_SearchField);
 			if($tmp == $we_SearchField){
-				$tmp.='`';
+				$tmp='`'.$tmp;
 			}
-			return ' ' . $concat . ' `' . $tmp . ' ' . $searchlocation . ' ';
+			return ' ' . $concat . ' ' . $tmp . '` ' . $searchlocation . ' ';
 		}
 	}
 

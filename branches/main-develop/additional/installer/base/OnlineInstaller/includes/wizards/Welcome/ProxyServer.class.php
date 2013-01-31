@@ -1,7 +1,7 @@
 <?php
 class ProxyServer extends leStep {
 
-	function execute(&$Template) {
+	function execute(&$Template = '') {
 
 		// UseProxy
 		$Name = 'le_proxy_use';
@@ -98,7 +98,7 @@ EOF;
 	}
 
 
-	function check(&$Template) {
+	function check(&$Template = '') {
 
 		if(isset($_REQUEST["le_proxy_use"]) && $_REQUEST["le_proxy_use"] == 1) {
 			

@@ -49,8 +49,8 @@ function we_setBackVar($we_unique){
 			'postTagName' => isset($GLOBALS['postTagName']) ? $GLOBALS['postTagName'] : '',
 		),
 		'REQUEST' => array(
-			'pv_id' => isset($_REQUEST['pv_id']) ? $_REQUEST['pv_id'] : '',
-			'pv_tid' => isset($_REQUEST['pv_tid']) ? $_REQUEST['pv_tid'] : '',
+			'pv_id' => isset($_REQUEST['pv_id']) ? intval($_REQUEST['pv_id']) : '',
+			'pv_tid' => isset($_REQUEST['pv_tid']) ? intval($_REQUEST['pv_tid']) : '',
 			'we_cmd' => isset($_REQUEST['we_cmd']) ? $_REQUEST['we_cmd'] : '',
 		));
 

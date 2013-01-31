@@ -252,13 +252,14 @@ class we_document extends we_root{
 	}
 
 	function formMetaInfos(){
-		return '<table border="0" cellpadding="0" cellspacing="0">' .
-			'<tr><td colspan="2">' . $this->formInputField("txt", "Title", g_l('weClass', "[Title]"), 40, 508, "", "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td></tr>' .
-			'<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>' .
-			'<tr><td colspan="2">' . $this->formInputField("txt", "Description", g_l('weClass', "[Description]"), 40, 508, "", "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td></tr>' .
-			'<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>' .
-			'<tr><td colspan="2">' . $this->formInputField("txt", "Keywords", g_l('weClass', "[Keywords]"), 40, 508, "", "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td></tr>' .
-			'</table>' .
+		return '
+<table border="0" cellpadding="0" cellspacing="0">
+	<tr><td colspan="2">' . $this->formInputField("txt", "Title", g_l('weClass', "[Title]"), 40, 508, "", "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td></tr>
+	<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
+	<tr><td colspan="2">' . $this->formInputField("txt", "Description", g_l('weClass', "[Description]"), 40, 508, "", "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td></tr>
+	<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
+	<tr><td colspan="2">' . $this->formInputField("txt", "Keywords", g_l('weClass', "[Keywords]"), 40, 508, "", "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td></tr>
+</table>' .
 			($this->ContentType == 'image/*' ? $this->formCharset(true) : '');
 	}
 
@@ -825,7 +826,7 @@ class we_document extends we_root{
 		return f('SELECT ID FROM ' . escape_sql_query($this->Table) . " WHERE ParentID=" . intval($this->ParentID) . " AND Filename='" . escape_sql_query($this->Filename) . "' AND Extension='" . escape_sql_query($this->Extension) . "' AND ID != " . intval($this->ID), "ID", $this->DB_WE);
 	}
 
-	function getFieldByVal($val, $type, $attribs = '', $pathOnly = false, $parentID = 0, $path = '', $db = '', $classID = '', $fn = 'this'){
+	public function getFieldByVal($val, $type, $attribs = '', $pathOnly = false, $parentID = 0, $path = '', $db = '', $classID = '', $fn = 'this'){
 
 		$attribs = is_array($attribs) ? $attribs : array();
 		if(isset($attribs['_name_orig'])){
@@ -873,7 +874,6 @@ class we_document extends we_root{
 
 				//	when width or height are given, then let the browser adjust the image
 				if(isset($attribs['width']) || isset($attribs['width'])){
-
 					unset($img->elements['height']);
 					unset($img->elements['width']);
 				}
@@ -1029,7 +1029,7 @@ class we_document extends we_root{
 				$f = __FUNCTION__;
 				return $this->{$f}($val, 'text', $attribs, $pathOnly, $parentID, $path, $db, $classID, $fn);
 			case 'href':
-				return self::getHref($attribs, $db, $fn);
+				return $this->getHref($attribs, $db, $fn);
 			default:
 				parseInternalLinks($val, $parentID);
 				$retval = preg_replace('/<\?xml[^>]+>/i', '', $val);
@@ -1143,7 +1143,7 @@ class we_document extends we_root{
 			return self::getHrefByArray($hrefArr);
 		}
 
-		return self::getFieldByVal($val, $type, $attribs, $pathOnly, isset($GLOBALS['WE_MAIN_DOC']) ? $GLOBALS['WE_MAIN_DOC']->ParentID : $this->ParentID, isset($GLOBALS['WE_MAIN_DOC']) ? $GLOBALS['WE_MAIN_DOC']->Path : $this->Path, $this->DB_WE, (isset($attribs['classid']) && isset($attribs['type']) && $attribs['type'] == 'select') ? $attribs['classid'] : (isset($this->TableID) ? $this->TableID : ''));
+		return $this->getFieldByVal($val, $type, $attribs, $pathOnly, isset($GLOBALS['WE_MAIN_DOC']) ? $GLOBALS['WE_MAIN_DOC']->ParentID : $this->ParentID, isset($GLOBALS['WE_MAIN_DOC']) ? $GLOBALS['WE_MAIN_DOC']->Path : $this->Path, $this->DB_WE, (isset($attribs['classid']) && isset($attribs['type']) && $attribs['type'] == 'select') ? $attribs['classid'] : (isset($this->TableID) ? $this->TableID : ''));
 	}
 
 	private function getValFromSrc($fn, $name){
@@ -1186,6 +1186,17 @@ class we_document extends we_root{
 		// Bug Fix 8170&& 8166
 		if(isset($link['href']) && strlen($link['href']) >= 7 && substr($link['href'], 0, 7) == 'mailto:'){
 			$link['type'] = 'mail';
+
+                         //added for #7269
+                        if(isset($link['subject']) && $link['subject']!=''){
+                            $link['href']=$link['href']."?subject=".$link['subject'];
+                        }
+                        if(isset($link['cc']) && $link['cc']!=''){
+                            $link['href']=$link['href']."&cc=".$link['cc'];
+                        }
+                        if(isset($link['bcc']) && $link['bcc']!=''){
+                            $link['href']=$link['href']."&bcc=".$link['bcc'];
+                        }
 		}
 
 		if(isset($link['type']) && ($link['type'] == 'int')){

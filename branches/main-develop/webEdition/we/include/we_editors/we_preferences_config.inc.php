@@ -170,7 +170,7 @@ $GLOBALS['configs'] = array(
 		'VERSIONS_TIME_YEARS_TMPL' => array('Versioning Number of Years', -1),
 		'VERSIONS_ANZAHL_TMPL' => array('Versioning Number of Versions', 5),
 //internal
-		'CONF_SAVED_VERSION' => array('config file version', WE_VERSION),
+		'CONF_SAVED_VERSION' => array('config file version', WE_SVNREV),
 	),
 	'user' => array(//FIXME: most defaults (currently null) are handled by remember_value! change this!
 //key => default-val, permission. default true

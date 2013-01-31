@@ -33,12 +33,12 @@
  */
 class we_search_listview extends listviewBase{
 
-	var $docType = ""; /* doctype string */
+	var $docType = ''; /* doctype string */
 	var $class = 0; /* ID of a class. Search only in Objects of this class */
 	var $triggerID = 0; /* ID of a document which to use for displaying thr detail page */
 	var $casesensitive = false; /* set to true when a search should be case sensitive */
 	var $ClassName = __CLASS__;
-	var $languages = ""; //string of Languages, separated by ,
+	var $languages = ''; //string of Languages, separated by ,
 	var $objectseourls = false;
 	var $hidedirindex = false;
 
@@ -60,15 +60,15 @@ class we_search_listview extends listviewBase{
 	 * @param   cols   		  integer - to display a table this is the number of cols
 	 *
 	 */
-	function __construct($name = "0", $rows = 99999999, $offset = 0, $order = "", $desc = false, $docType = "", $class = 0, $cats = "", $catOr = false, $casesensitive = false, $workspaceID = "", $triggerID = "", $cols = "", $customerFilterType = 'off', $languages = '', $hidedirindex = false, $objectseourls = false){
-
+	function __construct($name = '0', $rows = 99999999, $offset = 0, $order = '', $desc = false, $docType = '', $class = 0, $cats = '', $catOr = false, $casesensitive = false, $workspaceID = 0, $triggerID = 0, $cols = '', $customerFilterType = 'off', $languages = '', $hidedirindex = false, $objectseourls = false){
 		parent::__construct($name, $rows, $offset, $order, $desc, $cats, $catOr, $workspaceID, $cols);
+
 		$this->customerFilterType = $customerFilterType;
-
 		$this->triggerID = $triggerID;
+		$this->objectseourls = $objectseourls;
+		$this->hidedirindex = $hidedirindex;
+		$this->languages = $languages ? $languages : (isset($GLOBALS["we_lv_languages"]) ? $GLOBALS["we_lv_languages"] : "");
 
-		$this->languages = $languages;
-		$this->languages = $this->languages ? $this->languages : (isset($GLOBALS["we_lv_languages"]) ? $GLOBALS["we_lv_languages"] : "");
 		if($this->languages != ''){
 			$where_lang = ' AND (';
 			$langArray = makeArrayFromCSV($this->languages);
@@ -81,16 +81,14 @@ class we_search_listview extends listviewBase{
 		} else{
 			$where_lang = '';
 		}
-		$this->objectseourls = $objectseourls;
-		$this->hidedirindex = $hidedirindex;
 
 		// correct order
 		$orderArr = array();
 		$random = false;
 		if($this->order){
-			if($this->order == "we_id" || $this->order == "we_creationdate" || $this->order == "we_filename"){
+			if($this->order == "we_id" || $this->order == "we_creationdate" || $this->order == 'we_filename'){
 
-				$ord = str_replace('we_id', INDEX_TABLE . ".DID" . ($this->desc ? " DESC" : "") . "," . INDEX_TABLE . ".OID" . ($this->desc ? " DESC" : ""), $this->order);
+				$ord = str_replace('we_id', INDEX_TABLE . ".DID" . ($this->desc ? " DESC" : "") . ',' . INDEX_TABLE . ".OID" . ($this->desc ? " DESC" : ""), $this->order);
 				//$ord = str_replace("we_creationdate",FILE_TABLE . ".CreationDate",$ord); // NOTE: this won't work, cause Indextable doesn't know this field & filetable is not used in this query
 				$ord = str_replace('we_creationdate', '');
 				$this->order = str_replace("we_filename", INDEX_TABLE . ".Path", $ord);
@@ -109,16 +107,16 @@ class we_search_listview extends listviewBase{
 					}
 					$this->order = "";
 					foreach($orderArr as $o){
-						if($o["oname"] == "Title" ||
-							$o["oname"] == "Path" ||
-							$o["oname"] == "Text" ||
-							$o["oname"] == "OID" ||
-							$o["oname"] == "DID" ||
-							$o["oname"] == "ID" ||
-							$o["oname"] == "Workspace" ||
-							$o["oname"] == "Description"){
-
-							$this->order .= $o["oname"] . ((trim(strtolower($o["otype"])) == "desc") ? " DESC" : "") . ",";
+						switch($o["oname"]){
+							case "Title":
+							case "Path":
+							case "Text":
+							case "OID":
+							case "DID":
+							case "ID":
+							case "Workspace":
+							case "Description":
+								$this->order .= $o["oname"] . ((trim(strtolower($o["otype"])) == "desc") ? " DESC" : "") . ",";
 						}
 					}
 					$this->order = rtrim($this->order, ',');
@@ -127,16 +125,15 @@ class we_search_listview extends listviewBase{
 		}
 
 		if($this->order && $this->desc && (!preg_match('|.+ desc$|i', $this->order))){
-			$this->order .= " DESC";
+			$this->order .= ' DESC';
 		}
 
 		$this->docType = trim($docType);
 		$this->class = $class;
 		$this->casesensitive = $casesensitive;
 
-		$searchfield = $this->casesensitive ? "BText" : "Text";
 
-		$cat_tail = ($this->cats? we_category::getCatSQLTail($this->cats, INDEX_TABLE, $this->catOr, $this->DB_WE):'');
+		$cat_tail = ($this->cats ? we_category::getCatSQLTail($this->cats, INDEX_TABLE, $this->catOr, $this->DB_WE) : '');
 
 		$dt = ($this->docType) ? f('SELECT ID FROM ' . DOC_TYPES_TABLE . " WHERE DocType LIKE '" . $this->DB_WE->escape($this->docType) . "'", "ID", $this->DB_WE) : '';
 
@@ -156,7 +153,7 @@ class we_search_listview extends listviewBase{
 
 		$bedingungen = preg_split('/ +/', $this->search);
 		$ranking = "0";
-		$spalten = array(INDEX_TABLE . '.' . $searchfield);
+		$spalten = array(($this->casesensitive?'BINARY ':'').INDEX_TABLE . '.Text');
 		foreach($bedingungen as $v1){
 			if(preg_match('|^[-\+]|', $v1)){
 				$not = (preg_match('|^-|', $v1)) ? 'NOT ' : '';
