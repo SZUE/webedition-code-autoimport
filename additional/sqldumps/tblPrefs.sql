@@ -30,7 +30,6 @@ CREATE TABLE ###TBLPREFIX###tblPrefs (
   editorFontname varchar(255) NOT NULL default '',
   editorFontsize tinyint(2) NOT NULL default '0',
   editorFont tinyint(1) unsigned NOT NULL default '0',
-  editorCodemirror text NOT NULL,
 	default_tree_count smallint unsigned NOT NULL default '0',
   xhtml_show_wrong tinyint(1) unsigned NOT NULL default '0',
   xhtml_show_wrong_text tinyint(2) unsigned NOT NULL default '0',
