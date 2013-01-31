@@ -10,5 +10,9 @@ if(defined("FILE_TABLE")) { $this->Attributes[] = new weTagData_selectorAttribut
 $this->Attributes[] = new weTagData_selectAttribute('rel', array(new weTagDataOption('stylesheet', false, ''), new weTagDataOption('alternate stylesheet', false, '')), false, '');
 $this->Attributes[] = new weTagData_textAttribute('title', false, '');
 $this->Attributes[] = new weTagData_choiceAttribute('media', array(new weTagDataOption('all', false, ''), new weTagDataOption('braille', false, ''), new weTagDataOption('embossed', false, ''), new weTagDataOption('handheld', false, ''), new weTagDataOption('print', false, ''), new weTagDataOption('projection', false, ''), new weTagDataOption('screen', false, ''), new weTagDataOption('speech', false, ''), new weTagDataOption('tty', false, ''), new weTagDataOption('tv', false, '')), false,false, '');
+$this->Attributes[] = new weTagData_selectAttribute('visibility', array(new weTagDataOption('editmode', false, ''), new weTagDataOption('noteditmode', false, ''), 
+new weTagDataOption('both', false, '')),false, '');
+$this->Attributes[] = new weTagData_selectAttribute('ifeditmode', array(new weTagDataOption('onlytiny', false, ''), new weTagDataOption('notintiny', false, ''), 
+new weTagDataOption('both', false, '')),false, '');
 $this->Attributes[] = new weTagData_selectAttribute('xml', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
 //$this->Attributes[] = new weTagData_textAttribute('cachelifetime', false, '');

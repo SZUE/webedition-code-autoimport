@@ -36,10 +36,10 @@ class weFullscreenEditDialog extends weDialog{
 
 	function getDialogContentHTML(){
 		$js = we_html_element::jsElement('isFullScreen = true;');
-		$e = new we_wysiwyg("we_dialog_args[src]", $this->args["screenWidth"] - 90, $this->args["screenHeight"] - 200, '', $this->args["propString"], $this->args["bgcolor"], $this->args["editname"], $this->args["className"], $this->args["outsideWE"], $this->args["outsideWE"], $this->args["xml"], $this->args["removeFirstParagraph"], true, $this->args["baseHref"], $this->args["charset"], $this->args["cssClasses"], $this->args['language']);
+		$e = new we_wysiwyg("we_dialog_args[src]", $this->args["screenWidth"] - 90, $this->args["screenHeight"] - 200, '', $this->args["propString"], $this->args["bgcolor"], $this->args["editname"], $this->args["className"], $this->args["outsideWE"], $this->args["outsideWE"], $this->args["xml"], $this->args["removeFirstParagraph"], true, $this->args["baseHref"], $this->args["charset"], $this->args["cssClasses"], $this->args['language'], '', true, false, 'top', true, $this->args["contentCss"]);
 		return we_wysiwyg::getHeaderHTML() . $js . $e->getHTML();
 	}
-	
+
 	function getTinyMceJS(){
 		return parent::getTinyMceJS() .
 			we_html_element::jsScript(TINYMCE_JS_DIR . 'plugins/wefullscreen/js/fullscreen_init.js');
