@@ -25,23 +25,20 @@
 function we_tag_category($attribs){
 
 	// initialize possible Attributes
-	$delimiter = weTag_getAttribute('delimiter', $attribs,weTag_getAttribute('tokken', $attribs, ','));
+	$delimiter = weTag_getAttribute('delimiter', $attribs, weTag_getAttribute('tokken', $attribs, ','));
 
 	$rootdir = weTag_getAttribute('rootdir', $attribs);
 	$showpath = weTag_getAttribute('showpath', $attribs, false, true);
 	$docAttr = weTag_getAttribute('doc', $attribs);
 	$field = weTag_getAttribute('field', $attribs);
-	$id = intval(weTag_getAttribute('id', $attribs));
+	$id = weTag_getAttribute('id', $attribs);
 	$separator = weTag_getAttribute('separator', $attribs, '/');
 	$onlyindir = weTag_getAttribute('onlyindir', $attribs);
 
 	// end initialize possible Attributes
 	if($id){
-		$category = str_replace('\\,', ',', we_getCatsFromIDs($id, $delimiter, $showpath, $GLOBALS['DB_WE'], $rootdir, $field, $onlyindir));
-		return str_replace('/', $separator, $category);
-	}
-
-	if(isset($GLOBALS["lv"]) && (!$docAttr)){
+		$catIDs = $id;
+	} elseif(isset($GLOBALS["lv"]) && (!$docAttr)){
 		// get cats from listview object
 		switch($GLOBALS["lv"]->ClassName){
 			case "we_listview_object" :
@@ -57,7 +54,15 @@ function we_tag_category($attribs){
 		$doc = we_getDocForTag($docAttr, false);
 		$catIDs = $doc->Category;
 	}
+	$catIDs = implode(',', array_map('intval', explode(',', $catIDs)));
+	$category = array_filter(we_getCatsFromIDs($catIDs, $delimiter, $showpath, $GLOBALS['DB_WE'], $rootdir, $field, $onlyindir, true));
 
-	return $catIDs ? str_replace(array('\\,', '/'), array(',', $separator), we_getCatsFromIDs($catIDs, $delimiter, $showpath, $GLOBALS['DB_WE'], $rootdir, $field, $onlyindir)) :
-		'';
+	if(empty($category)){
+		return '';
+	}
+
+	foreach($category as &$cat){
+		$cat = str_replace('/', $separator, $cat);
+	}
+	return implode($delimiter, $category);
 }
