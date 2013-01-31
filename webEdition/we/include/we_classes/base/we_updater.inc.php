@@ -76,6 +76,9 @@ class we_updater{
 
 		$GLOBALS['DB_WE']->addCol(INDEX_TABLE, 'Language', "varchar(5) default NULL");
 		$GLOBALS['DB_WE']->changeColType(INDEX_TABLE, "Workspace", " varchar(1000) NOT NULL default '' ");
+		if($GLOBALS['DB_WE']->isColExist(INDEX_TABLE,'BText')){
+			$GLOBALS['DB_WE']->delCol(INDEX_TABLE,'BText');
+		}
 
 
 		$GLOBALS['DB_WE']->addCol(FILE_TABLE, "Owners", "VARCHAR(255)  DEFAULT ''");
