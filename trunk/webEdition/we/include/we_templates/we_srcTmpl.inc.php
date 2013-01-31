@@ -38,9 +38,6 @@ include_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 print STYLESHEET;
 
 $_useJavaEditor = ($_SESSION['prefs']['editorMode'] == 'java');
-
-/* $codemirrorOptions = ($_SESSION['prefs']['editorMode'] == 'codemirror2' ?
-  unserialize($_SESSION['prefs']['editorCodemirror']) : ''); */
 ?>
 <script  type="text/javascript"><!--
 	var weIsTextEditor = true;
