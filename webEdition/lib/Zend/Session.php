@@ -475,7 +475,7 @@ class Zend_Session extends Zend_Session_Abstract
             }
 
 			$startedCleanly = @session_start(); //WE-Patch
-			$startedCleanly = $startedCleanly ? session_start() : $startedCleanly;
+			$startedCleanly = !$startedCleanly ? session_start() : $startedCleanly;
 
             if (self::$_throwStartupExceptions) {
                 restore_error_handler();
