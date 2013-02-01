@@ -474,8 +474,15 @@ class Zend_Session extends Zend_Session_Abstract
                 set_error_handler(array('Zend_Session_Exception', 'handleSessionStartError'), $errorLevel);
             }
 
-			$startedCleanly = @session_start(); //WE-Patch
+			/* WE-Patch */
+			//$startedCleanly = session_start();
+			$startedCleanly = @session_start();
+			$we_c = 0;
+			while(!$startedCleanly && $we_c++ < 10){
+				$startedCleanly = @session_start();
+			}
 			$startedCleanly = !$startedCleanly ? session_start() : $startedCleanly;
+			/* End WE-Patch */
 
             if (self::$_throwStartupExceptions) {
                 restore_error_handler();
