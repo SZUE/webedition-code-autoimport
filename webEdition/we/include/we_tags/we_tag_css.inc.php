@@ -40,8 +40,8 @@ function we_tag_css($attribs){
 		$attribs['rel'] = $rel;
 		$attribs['type'] = 'text/css';
 		$attribs['href'] = (we_isHttps() ? '' : BASE_CSS) . $url;
-t_e("x", weTag_getAttribute('visibility', $attribs), $GLOBALS["we_editmode"]);
-		if($GLOBALS["we_editmode"] && weTag_getAttribute('visibility', $attribs) != 'noteditmode'){t_e("drin");
+
+		if($GLOBALS["we_editmode"] && weTag_getAttribute('visibility', $attribs) != 'noteditmode'){
 			$nolink = false;
 			switch(weTag_getAttribute('ifeditmode', $attribs, '')){
 				case 'onlytiny' : 
