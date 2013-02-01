@@ -41,24 +41,22 @@ function we_tag_css($attribs){
 		$attribs['type'] = 'text/css';
 		$attribs['href'] = (we_isHttps() ? '' : BASE_CSS) . $url;
 
-		if($GLOBALS["we_editmode"] && weTag_getAttribute('visibility', $attribs) != 'noteditmode'){
-			$nolink = false;
+		$nolink = false;
+		if($GLOBALS["we_editmode"]){
 			switch(weTag_getAttribute('ifeditmode', $attribs, '')){
+				case 'notintiny' :
+					break;
 				case 'onlytiny' : 
 					$nolink = true;
-				case 'both' :
+				default : 
 					$media = weTag_getAttribute('media', $attribs);
 					if($media == "" || $media == "screen" || $media == "all"){
 						$GLOBALS['we_doc']->addDocumentCss($attribs['href'] . "?" . time());
 					}
 					break;
-				default : 
-					break;
 			}
-			return $nolink ? '' : getHtmlTag('link', $attribs) . "\n";
-		} else if(!$GLOBALS["we_editmode"] && weTag_getAttribute('visibility', $attribs) != 'editmode'){
-			return getHtmlTag('link', $attribs) . "\n";
 		}
+		return $nolink ? '' : getHtmlTag('link', $attribs) . "\n";
 	}
 	return '';
 }
