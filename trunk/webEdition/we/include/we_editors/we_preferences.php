@@ -1695,8 +1695,8 @@ if(window.onload) {
 			$_template_editor_tabstop_code=
 				we_forms::checkbox(1, get_value('editorShowTab'), 'editorShowTab', g_l('prefs','[show]'), true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[editorShowTab]\');') .
 				we_html_tools::hidden('newconf[editorShowTab]', get_value('editorShowTab')) .
-						'<table style="margin:0 0 20px 50px;" border="0" cellpadding="0" cellspacing="0">
-				<tr><td' . $_attr . '>' . g_l('prefs', '[editor_tabSize]') . '</td><td>' . we_html_tools::htmlTextInput("newconf[editorTabSize]", 2, get_value("editorTabSize"), "", "", "int", 135) . '</td></tr>
+						'<table border="0" cellpadding="0" cellspacing="0">
+				<tr><td class="defaultfont" style="width:200px;">' . g_l('prefs', '[editor_tabSize]') . '</td><td>' . we_html_tools::htmlTextInput("newconf[editorTabSize]", 2, get_value("editorTabSize"), "", "", "int", 135) . '</td></tr>
 			</table>';
 
 //Build activation of tooltips
