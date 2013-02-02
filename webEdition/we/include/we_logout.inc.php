@@ -35,7 +35,7 @@ cleanTempFiles(true);
 
 //FIXME: is there any need for this?
 if(isset($_SESSION["prefs"]["userID"])){ //	bugfix 2585, only update prefs, when userId is available
-	doUpdateQuery($DB_WE, PREFS_TABLE, $_SESSION["prefs"], ' WHERE userID=' . intval($_SESSION["prefs"]["userID"]));
+we_user::writePrefs($_SESSION["prefs"]["userID"], $GLOBALS['DB_WE']);
 }
 
 //	getJSCommand

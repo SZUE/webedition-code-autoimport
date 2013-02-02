@@ -78,13 +78,9 @@ function transmit(){
 
 	//added to fix bug #6538
 	case 'reset_home':
-
+		$id = intval($_SESSION['user']['ID']);
 		//delete user's cockpit preferences from db
-		$GLOBALS['DB_WE']->query('UPDATE ' . PREFS_TABLE . ' SET ' . we_database_base::arraySetter(
-			array(
-				'cockpit_dat' => '',
-				'cockpit_amount_columns' => '',
-			)) . ' WHERE userID=' . intval($_SESSION['user']['ID']));
+		$GLOBALS['DB_WE']->query('REPLACE INTO ' . PREFS_TABLE . ' (`userID`,`key`,`value`) VALUES (' . $id . ',"cockpit_dat",""),(' . $id . ',"cockpit_amount_columns","")');
 		include(WE_INCLUDES_PATH . 'home.inc.php');
 		break;
 }

@@ -107,7 +107,7 @@ if(isset($_POST['username']) && isset($_POST['password'])){
 					while($pid) { //	For each group
 						$_userGroups[] = $pid;
 
-						$row=getHash('SELECT ' . $fields . ' FROM ' . USER_TABLE . ' WHERE ID=' . intval($pid),$db_tmp);
+						$row = getHash('SELECT ' . $fields . ' FROM ' . USER_TABLE . ' WHERE ID=' . intval($pid), $db_tmp);
 						if(!empty($row)){
 							$pid = $row['ParentID'];
 							foreach($workspaces as &$cur){
@@ -133,14 +133,7 @@ if(isset($_POST['username']) && isset($_POST['password'])){
 					$_SESSION['user']['workSpace'][$key] = array_unique(array_filter($cur['value']));
 				}
 
-				$exprefs = getHash('SELECT * FROM ' . PREFS_TABLE . ' WHERE userID=' . intval($_userdata['ID']), $DB_WE, MYSQL_ASSOC);
-				if(is_array($exprefs) && (isset($exprefs['userID']) && $exprefs['userID'] != 0) && sizeof($exprefs) > 0){
-					$_SESSION['prefs'] = $exprefs;
-				} else{
-					$_SESSION['prefs']['userID'] = $_userdata['ID'];
-					doInsertQuery($DB_WE, PREFS_TABLE, $_SESSION['prefs']);
-					$_SESSION['prefs'] = getHash('SELECT * FROM ' . PREFS_TABLE . ' WHERE userID=' . intval($_userdata['ID']), $DB_WE, MYSQL_ASSOC);
-				}
+				$_SESSION['prefs'] = we_user::readPrefs($_userdata['ID'], $DB_WE, true);
 
 				if(isset($_SESSION['user']['Username']) && isset($_SESSION['user']['ID']) && $_SESSION['user']['Username'] && $_SESSION['user']['ID']){
 					$foo = new we_user();

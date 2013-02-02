@@ -376,7 +376,7 @@ function cleanTempFiles($cleanSessFiles = false){
 		if(file_exists($p)){
 			we_util_File::deleteLocalFile($GLOBALS['DB_WE']->f('Path'));
 		}
-		$db2->query('DELETE LOW_PRIORITY FROM ' . CLEAN_UP_TABLE . ' WHERE DATE=' . intval($GLOBALS['DB_WE']->f('Date')) . ' AND Path="' . $GLOBALS['DB_WE']->f('Path') . '"');
+		$db2->query('DELETE FROM ' . CLEAN_UP_TABLE . ' WHERE DATE=' . intval($GLOBALS['DB_WE']->f('Date')) . ' AND Path="' . $GLOBALS['DB_WE']->f('Path') . '"');
 	}
 	if($cleanSessFiles){
 		$seesID = session_id();
@@ -386,7 +386,7 @@ function cleanTempFiles($cleanSessFiles = false){
 			if(file_exists($p)){
 				we_util_File::deleteLocalFile($GLOBALS['DB_WE']->f('Path'));
 			}
-			$db2->query('DELETE LOW_PRIORITY FROM ' . CLEAN_UP_TABLE . " WHERE Path LIKE '%" . $GLOBALS['DB_WE']->escape($seesID) . "%'");
+			$db2->query('DELETE FROM ' . CLEAN_UP_TABLE . " WHERE Path LIKE '%" . $GLOBALS['DB_WE']->escape($seesID) . "%'");
 		}
 	}
 	$d = dir(TEMP_PATH);
@@ -1497,7 +1497,8 @@ function getPref($name){
 function setUserPref($name, $value){
 	if(isset($_SESSION['prefs'][$name]) && isset($_SESSION['prefs']['userID']) && $_SESSION['prefs']['userID']){
 		$_SESSION['prefs'][$name] = $value;
-		return doUpdateQuery(new DB_WE(), PREFS_TABLE, array($name => $value), (' WHERE userID=' . intval($_SESSION['prefs']['userID'])));
+		we_user::writePrefs($_SESSION['prefs']['userID'], new DB_WE());
+		return true;
 	}
 	return false;
 }

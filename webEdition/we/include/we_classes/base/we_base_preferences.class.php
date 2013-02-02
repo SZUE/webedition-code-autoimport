@@ -132,7 +132,7 @@ class we_base_preferences{
 
 		$tmp = array_diff_assoc($_SESSION['prefs'], $GLOBALS['config_files']['oldPrefs']);
 		if(!empty($tmp)){
-			doUpdateQuery($GLOBALS['DB_WE'], PREFS_TABLE, $tmp, (' WHERE userID=' . intval($_SESSION['prefs']['userID'])));
+			we_user::writePrefs($_SESSION['prefs']['userID'], $GLOBALS['DB_WE']);
 		}
 		unset($GLOBALS['config_files']);
 	}
