@@ -107,12 +107,8 @@ class we_updater{
 			$DB_WE->query('INSERT INTO ' . PREFS_TABLE . '_old SELECT * FROM ' . PREFS_TABLE);
 
 			$DB_WE->query('DELETE FROM ' . PREFS_TABLE . ' WHERE userID=0');
-			$DB_WE->query('SELECT * FROM ' . PREFS_TABLE);
+			$DB_WE->query('SELECT * FROM ' . PREFS_TABLE. ' LIMIT 1');
 			$queries = $DB_WE->getAll();
-			$GLOBALS['DB_WE']->addCol(PREFS_TABLE, "key", " varchar(100) NOT NULL default ''", ' AFTER userID ');
-			$GLOBALS['DB_WE']->addCol(PREFS_TABLE, "value", " text NOT NULL", ' AFTER `key` ');
-			$GLOBALS['DB_WE']->delKey(PREFS_TABLE, 'PRIMARY');
-			$GLOBALS['DB_WE']->addKey(PREFS_TABLE, 'PRIMARY KEY (`userID`,`key`)');
 			$keys = array_keys($queries[0]);
 			foreach($keys as $key){
 				switch($key){
@@ -124,6 +120,11 @@ class we_updater{
 						$GLOBALS['DB_WE']->delCol(PREFS_TABLE, $key);
 				}
 			}
+			$GLOBALS['DB_WE']->addCol(PREFS_TABLE, "key", " varchar(100) NOT NULL default ''", ' AFTER userID ');
+			$GLOBALS['DB_WE']->addCol(PREFS_TABLE, "value", " text NOT NULL", ' AFTER `key` ');
+			$GLOBALS['DB_WE']->delKey(PREFS_TABLE, 'PRIMARY');
+			$GLOBALS['DB_WE']->addKey(PREFS_TABLE, 'PRIMARY KEY (`userID`,`key`)');
+
 			$GLOBALS['DB_WE']->query('DELETE FROM ' . PREFS_TABLE . ' WHERE `key`=""');
 			foreach($queries as $q){
 				we_user::writePrefs($q['userID'], $GLOBALS['DB_WE'], $q);
