@@ -473,8 +473,8 @@ class we_document extends we_root{
 			$new_nr = $this->getMaxListArrayNr($listarray) + 1;
 			// clear value
 			$names = $this->getNamesFromContent($content);
-			for($i = 0; $i < sizeof($names); $i++){
-				$this->setElement($names[$i] . '_' . $new_nr, '');
+			foreach($names as $cur){
+				$this->setElement($cur . '_' . $new_nr, '');
 			}
 
 			for($i = count($listarray); $i > $nr; $i--){
@@ -610,13 +610,13 @@ class we_document extends we_root{
 	public function we_new(){
 		parent::we_new();
 		$this->i_setExtensions();
-		if(is_array($this->Extensions) && sizeof($this->Extensions)){
+		if(is_array($this->Extensions) && !empty($this->Extensions)){
 			$this->Extension = $this->Extensions[0];
 		}
 		if(!isset($GLOBALS['WE_IS_DYN']) && ($this->Table == FILE_TABLE || $this->Table == TEMPLATES_TABLE)){
 			if(($ws = get_ws($this->Table))){
 				$foo = makeArrayFromCSV($ws);
-				if(sizeof($foo)){
+				if(!empty($foo)){
 					$this->setParentID(intval($foo[0]));
 				}
 			}
@@ -833,7 +833,7 @@ class we_document extends we_root{
 		if(isset($attribs['_name_orig'])){
 			unset($attribs['_name_orig']);
 		}
-		$db = $db ? $db : new DB_WE();
+		$db = ($db ? $db : new DB_WE());
 		if((!$attribs) || (!is_array($attribs))){
 			$attribs = array();
 		}
@@ -910,7 +910,7 @@ class we_document extends we_root{
 					$val = $attribs['id'];
 				}
 				$fl->initByID($val, FILE_TABLE);
-				if(sizeof($attribs)){
+				if(!empty($attribs)){
 					$fl->initByAttribs($attribs);
 				}
 				return $pathOnly ? $fl->Path : $fl->getHtml();
@@ -923,7 +923,7 @@ class we_document extends we_root{
 					$val = $attribs['id'];
 				}
 				$fl->initByID($val, FILE_TABLE);
-				if(sizeof($attribs)){
+				if(!empty($attribs)){
 					$fl->initByAttribs($attribs);
 				}
 				return $pathOnly ? $fl->Path : $fl->getHtml();

@@ -47,7 +47,7 @@ foreach($_FILES as $_index => $_file){
 
 		$error = $import_files->importFile();
 
-		if(count($error)){
+		if(!empty($error)){
 			if(!isset($_SESSION['weS']['WE_IMPORT_FILES_ERRORs'])){
 				$_SESSION['weS']['WE_IMPORT_FILES_ERRORs'] = array();
 			}

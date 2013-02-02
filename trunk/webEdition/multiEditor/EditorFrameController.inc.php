@@ -1054,10 +1054,6 @@ print we_message_reporting::getShowMessageCall(g_l('multiEditor', "[no_editor_le
 
 		}
 
-		//----------------------------------------
-		// getters
-		//----------------------------------------
-
 		this.getEditorFrameWindow = function () {
 			return this.EditorFrameWindow;
 

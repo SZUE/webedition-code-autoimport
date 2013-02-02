@@ -525,7 +525,7 @@ abstract class listviewBase{
 				$calendar_select = ',' . FILE_TABLE . '.Published AS Calendar ';
 				$calendar_where = ' AND (' . FILE_TABLE . '.Published>=' . $start_date . ' AND ' . FILE_TABLE . '.Published<=' . $end_date . ') ';
 			} else{
-				$field = (count($matrix) && in_array($this->calendar_struct['datefield'], array_keys($matrix))) ?
+				$field = (!empty($matrix) && in_array($this->calendar_struct['datefield'], array_keys($matrix))) ?
 					$matrix[$this->calendar_struct['datefield']]['table'] . '.' . $matrix[$this->calendar_struct['datefield']]['type'] . '_' . $this->calendar_struct['datefield'] :
 					CONTENT_TABLE . '.Dat';
 

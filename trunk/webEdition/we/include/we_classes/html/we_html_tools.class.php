@@ -176,7 +176,7 @@ abstract class we_html_tools{
 	}
 
 	static function htmlDialogBorder3($w, $h, $content, $headline, $class = "middlefont", $bgColor = "", $buttons = "", $id = "", $style = ""){ //content && headline are arrays
-		$anz = sizeof($headline);
+		$anz = count($headline);
 		$out = '<table' . ($id ? ' id="' . $id . '"' : '') . ($style ? ' style="' . $style . '"' : '') . ' border="0" cellpadding="0" cellspacing="0" width="' . $w . '">
 		<tr>
 		<td width="8" style="background-image:url(' . IMAGE_DIR . 'box/box_header_ol2.gif);">' . we_html_tools::getPixel(8, 21) . '</td>';

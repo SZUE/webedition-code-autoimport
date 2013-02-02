@@ -297,7 +297,7 @@ abstract class we_util_File{
 			$parent = str_replace("\\", "/", dirname($parent));
 		}
 
-		for($i = (sizeof($cf) - 1); $i >= 0; $i--){
+		for($i = (count($cf) - 1); $i >= 0; $i--){
 			$oldumask = @umask(0000);
 
 			$mod = octdec(intval(WE_NEW_FOLDER_MOD));

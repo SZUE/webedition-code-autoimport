@@ -67,7 +67,7 @@ class we_imageDocument extends we_binaryDocument{
 			if($docChanged){
 				we_thumbnail::deleteByImageID($this->ID);
 			}
-			if(count($thumbs)){
+			if(!empty($thumbs)){
 				foreach($thumbs as $thumbID){
 					$thumbObj = new we_thumbnail();
 					$thumbObj->initByThumbID($thumbID, $this->ID, $this->Filename, $this->Path, $this->Extension, $this->getElement('origwidth'), $this->getElement('origheight'), $this->getDocument());
@@ -877,7 +877,7 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 
 	function hasMetaField($name){
 		$_defined_fields = weMetaData::getDefinedMetaDataFields();
-		$_fieldcount = sizeof($_defined_fields);
+		$_fieldcount = count($_defined_fields);
 		for($i = 0; $i < $_fieldcount; $i++){
 			if($_defined_fields[$i]['tag'] === $name){
 				return true;
@@ -933,7 +933,7 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 
 								$we_size = we_thumbnail::getimagesize($_SESSION[$_imgDataId]['serverPath']);
 
-								if(count($we_size) == 0){
+								if(empty($we_size)){
 									unset($_SESSION[$_imgDataId]);
 									return;
 								}

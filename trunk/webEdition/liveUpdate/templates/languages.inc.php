@@ -50,13 +50,13 @@ foreach($languages as $lng){
 $deletedLngs = $this->getData('deletedLngs');
 $notDeletedLngs = $this->getData('notDeletedLngs');
 $jsAlert = '';
-if(sizeof($deletedLngs)){
+if(!empty($deletedLngs)){
 	$jsAlert .= g_l('liveUpdate', '[languages][languagesDeleted]') . '\n';
 	foreach($deletedLngs as $lng){
 		$jsAlert .= $lng . '\n';
 	}
 }
-if(sizeof($notDeletedLngs)){
+if(!empty($notDeletedLngs)){
 	$jsAlert .= g_l('liveUpdate', '[languages][languagesNotDeleted]') . '\n';
 	foreach($notDeletedLngs as $lng){
 		$jsAlert .= $lng . '\n';

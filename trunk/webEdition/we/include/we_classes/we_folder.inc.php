@@ -149,7 +149,7 @@ class we_folder extends we_root{
 			$spl = explode('/', $path);
 			$folderName = array_pop($spl);
 			$p = array();
-			$anz = sizeof($spl);
+			$anz = count($spl);
 			$last_pid = 0;
 			for($i = 0; $i < $anz; $i++){
 				array_push($p, array_shift($spl));

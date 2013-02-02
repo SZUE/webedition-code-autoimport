@@ -41,16 +41,16 @@ class weTree{
 	var $frameset = "";
 	var $styles = array();
 	var $tree_states = array(
-		"edit" => "0",
-		"select" => "1",
-		"selectitem" => "2",
-		"selectgroup" => "3",
+		"edit" => 0,
+		"select" => 1,
+		"selectitem" => 2,
+		"selectgroup" => 3,
 	);
 	var $tree_layouts = array(
-		"0" => "tree",
-		"1" => "tree",
-		"2" => "tree",
-		"3" => "tree"
+		0 => "tree",
+		1 => "tree",
+		2 => "tree",
+		3 => "tree"
 	);
 	var $node_layouts = array(
 		"item" => "tree",
@@ -66,8 +66,9 @@ class weTree{
 		$this->db = new DB_WE();
 		$this->setTreeImageDir(TREE_IMAGE_DIR);
 		$this->setTreeIconDir(ICON_DIR);
-		if($frameset != "" && $topFrame != "" && $treeFrame != "" && $cmdFrame != "")
+		if($frameset != "" && $topFrame != "" && $treeFrame != "" && $cmdFrame != ""){
 			$this->init($frameset, $topFrame, $treeFrame, $cmdFrame);
+		}
 
 		$this->setStyles(array(
 			'.item {color: black; font-size: ' . (((we_base_browserDetect::isUNIX()) ? "11px" : "9px")) . '; font-family: ' . g_l('css', '[font_family]') . ';}',
@@ -183,7 +184,7 @@ class weTree{
  			self.focus();
 		';
 
-		return $withTag ? we_html_element::jsScript(JS_DIR . "images.js") . we_html_element::jsElement($js) : $js;
+		return ($withTag ? we_html_element::jsScript(JS_DIR . "images.js") . we_html_element::jsElement($js) : $js);
 	}
 
 	function getJSAddSortFunction(){
@@ -452,17 +453,17 @@ class weTree{
 	function getJSContainer(){
 		$ts = 'this.tree_states=new Array();';
 		foreach($this->tree_states as $k => $v){
-			$ts.='this.tree_states["' . $k . '"]="' . $v . '";' . "\n";
+			$ts.='this.tree_states["' . $k . '"]="' . $v . '";';
 		}
 
 		$tl = 'this.tree_layouts=new Array();';
 		foreach($this->tree_layouts as $k => $v){
-			$tl.='this.tree_layouts["' . $k . '"]="' . $v . '";' . "\n";
+			$tl.='this.tree_layouts["' . $k . '"]="' . $v . '";';
 		}
 
 		$nl = 'this.node_layouts=new Array();';
 		foreach($this->node_layouts as $k => $v){
-			$nl.='this.node_layouts["' . $k . '"]="' . $v . '";' . "\n";
+			$nl.='this.node_layouts["' . $k . '"]="' . $v . '";';
 		}
 
 		return '
