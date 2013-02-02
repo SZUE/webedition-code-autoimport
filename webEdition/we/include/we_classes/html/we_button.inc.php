@@ -349,13 +349,13 @@ class we_button{
 		$_order = (we_base_browserDetect::isMAC() ? array("no_button", "cancel_button", "yes_button") : array("yes_button", "no_button", "cancel_button"));
 
 		//	Existing buttons are added to array
-		for($_i = 0; $_i < sizeof($_order); $_i++){
+		for($_i = 0; $_i < count($_order); $_i++){
 			if(isset($$_order[$_i]) && $$_order[$_i] != ""){
-				array_push($_buttons, $$_order[$_i]);
+				$_buttons[]= $$_order[$_i];
 			}
 		}
 
-		$_cols = (sizeof($_buttons) * 2) - 1;
+		$_cols = (count($_buttons) * 2) - 1;
 
 		//	Create_table
 		$_button_table = new we_html_table($attr, 1, ((($aligngap > 0) && ($attr["align"] == "left")) ? $_cols + 1 : $_cols));

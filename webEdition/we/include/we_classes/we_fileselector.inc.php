@@ -118,8 +118,9 @@ class we_fileselector{
 	}
 
 	function isIDInFolder($ID, $folderID, $db = ''){
-		if($folderID == $ID)
+		if($folderID == $ID){
 			return true;
+		}
 		$db = ($db ? $db : new DB_WE());
 		$pid = f('SELECT ParentID FROM ' . $db->escape($this->table) . ' WHERE ID=' . intval($ID), 'ParentID', $db);
 		if($pid == $folderID){
@@ -324,8 +325,8 @@ var currentType="' . (isset($this->filter) ? $this->filter : "") . '";
 var startPath="' . $startPath . '";
 
 var parentID=' . intval(($this->dir ?
-						f('SELECT ParentID FROM ' . $this->table . ' WHERE ID=' . intval($this->dir), 'ParentID', $this->db) :
-						0)) . ';
+					f('SELECT ParentID FROM '.$this->db->escape($this->table).' WHERE ID=' . intval($this->dir), 'ParentID', $this->db) :
+					0)) . ';
 var table="' . $this->table . '";
 var order="' . $this->order . '";
 

@@ -73,7 +73,7 @@ if ( $this->Data['allEntries'] ) { // entries exist
 <br />
 ';
 
-	if (sizeof($this->Data['logEntries'])) { // entries match filter
+	if (!empty($this->Data['logEntries'])) { // entries match filter
 
 		$content .= '
 <table width="100%" class="defaultfont updateContent" id="updateLogTable">

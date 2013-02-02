@@ -223,7 +223,7 @@ class liveUpdateFunctions{
 		$pathArray = explode('/', $dir);
 		$path = $preDir;
 
-		for($i = 0; $i < sizeof($pathArray); $i++){
+		for($i = 0; $i < count($pathArray); $i++){
 			$path .= $pathArray[$i];
 			if($pathArray[$i] != "" && !is_dir($path)){
 				if(!(file_exists($path) || mkdir($path, $mod))){
@@ -673,10 +673,10 @@ class liveUpdateFunctions{
 						$alterQueries = array();
 
 						// get all queries to change existing fields
-						if(count($changeFields)){
+						if(!empty($changeFields)){
 							$alterQueries = array_merge($alterQueries, $this->getAlterTableForFields($changeFields, $tableName));
 						}
-						if(count($addFields)){
+						if(!empty($addFields)){
 							$alterQueries = array_merge($alterQueries, $this->getAlterTableForFields($addFields, $tableName, true));
 						}
 
@@ -704,11 +704,11 @@ class liveUpdateFunctions{
 						}
 
 						// get all queries to change existing keys
-						if(count($addKeys)){
+						if(!empty($addKeys)){
 							$alterQueries = array_merge($alterQueries, $this->getAlterTableForKeys($addKeys, $tableName, true));
 						}
 
-						if(count($changedKeys)){
+						if(!empty($changedKeys)){
 							$alterQueries = array_merge($alterQueries, $this->getAlterTableForKeys($changedKeys, $tableName, false));
 						}
 
@@ -717,7 +717,7 @@ class liveUpdateFunctions{
 							$alterQueries = array_merge(array('ALTER TABLE `' . $tableName . '` DROP INDEX _temp'), $alterQueries);
 						}
 
-						if(count($alterQueries)){
+						if(!empty($alterQueries)){
 							// execute all queries
 							$success = true;
 							$duplicate = false;

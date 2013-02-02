@@ -85,7 +85,7 @@ weSidebar.close = function() {
 
 
 weSidebar.resize = function(width) {
-	top.rframe.document.getElementById("bm_content_frameDiv").style.right=width+"px";
+	top.rframe.document.getElementById("bm_content_frameDiv").style.right = width + "px";
 	top.rframe.document.getElementById("sidebarDiv").style.width = width + "px";
 
 }

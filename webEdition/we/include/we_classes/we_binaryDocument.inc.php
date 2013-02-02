@@ -257,7 +257,7 @@ class we_binaryDocument extends we_document{
 
 		// second we build all input fields for them and take
 		// the elements of this imageDocument as values:
-		$_fieldcount = sizeof($_defined_fields);
+		$_fieldcount = count($_defined_fields);
 		$_fieldcounter = (int) 0; // needed for numbering the table rows
 		$_content = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0, "style" => "margin-top:4px;"), ($_fieldcount * 2), 5);
 		$_mdcontent = "";

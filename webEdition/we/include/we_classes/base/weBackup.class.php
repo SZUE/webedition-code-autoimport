@@ -667,7 +667,7 @@ class weBackup extends we_backup{
 			array_shift($this->file_list);
 		}
 
-		if(!count($this->file_list)){
+		if(empty($this->file_list)){
 			$this->backup_phase = 1;
 		}
 		return true;

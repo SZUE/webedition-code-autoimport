@@ -681,7 +681,7 @@ abstract class we_database_base{
 	}
 
 	public function addTable($tab, $cols, $keys = array()){
-		if(!is_array($cols) || !count($cols)){
+		if(!is_array($cols) || empty($cols)){
 			return;
 		}
 		$cols_sql = array();

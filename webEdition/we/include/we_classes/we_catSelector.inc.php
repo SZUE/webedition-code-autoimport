@@ -126,11 +126,7 @@ class we_catSelector extends we_multiSelector{
 	}
 
 	function userCanChangeCat(){
-		if(!$this->userCanEditCat())
-			return false;
-		if($this->id == 0)
-			return false;
-		return true;
+		return (!$this->userCanEditCat() || $this->id == 0) ? false : true;
 	}
 
 	function printHeaderJSDef(){
@@ -404,8 +400,7 @@ if(top.currentID){
 			'top.makeNewFolder = 0;
 top.selectFile(top.currentID);
 //-->
-</script>
-';
+</script>';
 		print '</head><body></body></html>';
 	}
 
@@ -426,10 +421,10 @@ top.selectFile(top.currentID);
 	function printDoRenameEntryHTML(){
 		we_html_tools::htmlTop();
 		we_html_tools::protect();
-		$foo = getHash("SELECT IsFolder,Text FROM " . $this->db->escape($this->table) . " WHERE ID=" . intval($this->we_editCatID), $this->db);
+		$foo = getHash('SELECT IsFolder,Text FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->we_editCatID), $this->db);
 		$IsDir = $foo["IsFolder"];
 		$oldname = $foo["Text"];
-		$what = f("SELECT IsFolder FROM " . CATEGORY_TABLE . " WHERE ID=" . intval($this->we_editCatID), 'IsFolder', $this->db);
+		$what = f('SELECT IsFolder FROM ' . CATEGORY_TABLE . ' WHERE ID=' . intval($this->we_editCatID), 'IsFolder', $this->db);
 		print '<script type="text/javascript"><!--
 top.clearEntries();
 ';
@@ -487,10 +482,7 @@ if(top.currentID){
 			'top.fsfooter.document.we_form.fname.value = "";
 top.selectFile(' . $this->we_editCatID . ');top.makeNewFolder = 0;
 //-->
-</script>
-';
-//	}
-		print '</head><body></body></html>';
+</script></head><body></body></html>';
 	}
 
 	function printFramesetJSDoClickFn(){

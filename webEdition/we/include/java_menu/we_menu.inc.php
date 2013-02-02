@@ -839,7 +839,7 @@ $we_menu['4183000'] = array(
 $_activeIntModules = weModuleInfo::getIntegratedModules(true);
 weModuleInfo::orderModuleArray($_activeIntModules);
 
-if(sizeof($_activeIntModules)){
+if(!empty($_activeIntModules)){
 
 	$z = 100;
 

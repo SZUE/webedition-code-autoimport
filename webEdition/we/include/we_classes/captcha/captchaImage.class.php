@@ -178,7 +178,7 @@ class CaptchaImage{
 		// set the font families
 		$families = explode(",", $family);
 		$this->font['family'] = array();
-		if(sizeof($families) > 1){
+		if(count($families) > 1){
 			foreach($families as $idx => $family){
 				$this->font['family'][] = $family;
 			}
@@ -189,7 +189,7 @@ class CaptchaImage{
 		// set the font size
 		$sizes = explode(",", $size);
 		$this->font['size'] = array();
-		if(sizeof($sizes) > 1){
+		if(count($sizes) > 1){
 			if($sizes[0] < $sizes[1]){
 				$this->font['size']['min'] = $sizes[0];
 				$this->font['size']['max'] = $sizes[1];
@@ -205,7 +205,7 @@ class CaptchaImage{
 		// set the font colors
 		$colors = explode(",", $color);
 		$this->font['color'] = array();
-		if(sizeof($colors) > 1){
+		if(count($colors) > 1){
 			foreach($colors as $idx => $color){
 				$this->font['color'][] = $this->_hex2rgb($color);
 			}
@@ -267,7 +267,7 @@ class CaptchaImage{
 		}
 		$skips = explode(",", $skip);
 		$this->skip = array();
-		if(sizeof($skips)){
+		if(!empty($skips)){
 			foreach($skips as $idx => $skip){
 				array_push($this->skip, ord($skip));
 			}
@@ -285,7 +285,7 @@ class CaptchaImage{
 	function setAngleRange($angle = "0"){
 		$angles = explode(",", $angle);
 		$this->angle = array();
-		if(sizeof($angles) > 1){
+		if(count($angles) > 1){
 			$this->angle['left'] = (-1) * $angles[0];
 			$this->angle['right'] = $angles[1];
 		} else{
@@ -315,7 +315,7 @@ class CaptchaImage{
 		);
 
 		$styles = explode(",", $style);
-		if(sizeof($styles) > 0){
+		if(!empty($styles)){
 			if(in_array("strikeout", $styles)){
 				$this->style['strikeout'] = true;
 			}
@@ -332,7 +332,7 @@ class CaptchaImage{
 				$this->style['outlinerectangle'] = true;
 			}
 			$colors = explode(",", $color);
-			if(sizeof($colors) > 1){
+			if(count($colors) > 1){
 				foreach($colors as $idx => $color){
 					$this->style['color'][] = $this->_hex2rgb($color);
 				}
@@ -340,7 +340,7 @@ class CaptchaImage{
 				$this->style['color'][] = $this->_hex2rgb($color);
 			}
 			$numbers = explode(",", $number);
-			if(sizeof($numbers) > 1){
+			if(count($numbers) > 1){
 				if($numbers[0] < $numbers[1]){
 					$this->style['number']['min'] = $numbers[0];
 					$this->style['number']['max'] = $numbers[1];
@@ -481,14 +481,14 @@ class CaptchaImage{
 
 			for($i = 0; $i < $counter; $i++){
 
-				$do = $random[rand(0, sizeof($random) - 1)];
+				$do = $random[rand(0, count($random) - 1)];
 
 				if($do == 'fullcircle'){
 					$cx = rand(0, $this->width);
 					$cy = rand(0, $this->height);
 					$w = rand(0, $this->width / 2);
 					$h = rand(0, $this->height / 2);
-					$color = $this->style['color'][rand(0, sizeof($this->style['color']) - 1)];
+					$color = $this->style['color'][rand(0, count($this->style['color']) - 1)];
 
 					imagefilledarc(
 						$image, $cx, $cy, $w, $h, 0, 360, imagecolorallocate($image, $color[0], $color[1], $color[1]), IMG_ARC_PIE
@@ -498,7 +498,7 @@ class CaptchaImage{
 					$y1 = rand(0, $this->height);
 					$x2 = rand(0, $this->width / 2);
 					$y2 = rand(0, $this->height / 2);
-					$color = $this->style['color'][rand(0, sizeof($this->style['color']) - 1)];
+					$color = $this->style['color'][rand(0, count($this->style['color']) - 1)];
 
 					imagefilledrectangle(
 						$image, $x1, $y1, $x2, $y2, imagecolorallocate($image, $color[0], $color[1], $color[1])
@@ -508,7 +508,7 @@ class CaptchaImage{
 					$cy = rand(0, $this->height);
 					$w = rand(0, $this->width / 2);
 					$h = rand(0, $this->height / 2);
-					$color = $this->style['color'][rand(0, sizeof($this->style['color']) - 1)];
+					$color = $this->style['color'][rand(0, count($this->style['color']) - 1)];
 
 					imagearc(
 						$image, $cx, $cy, $w, $h, 0, 360, imagecolorallocate($image, $color[0], $color[1], $color[1])
@@ -518,7 +518,7 @@ class CaptchaImage{
 					$y1 = rand(0, $this->height);
 					$x2 = rand(0, $this->width / 2);
 					$y2 = rand(0, $this->height / 2);
-					$color = $this->style['color'][rand(0, sizeof($this->style['color']) - 1)];
+					$color = $this->style['color'][rand(0, count($this->style['color']) - 1)];
 
 					imagerectangle(
 						$image, $x1, $y1, $x2, $y2, imagecolorallocate($image, $color[0], $color[1], $color[1])
@@ -538,12 +538,12 @@ class CaptchaImage{
 
 			// Sign
 			$j = 0;
-			$idx1 = rand(0, sizeof($this->charactersubset) - 1);
+			$idx1 = rand(0, count($this->charactersubset) - 1);
 			$sign = rand($this->charactersubset[$idx1][0], $this->charactersubset[$idx1][1]);
-			if(sizeof($this->skip) > 0){
+			if(!empty($this->skip)){
 				while(in_array($sign, $this->skip) || $j < 100) {
 					$j++;
-					$idx1 = rand(0, sizeof($this->charactersubset) - 1);
+					$idx1 = rand(0, count($this->charactersubset) - 1);
 					$sign = rand($this->charactersubset[$idx1][0], $this->charactersubset[$idx1][1]);
 				}
 			}
@@ -553,10 +553,10 @@ class CaptchaImage{
 			$size = rand($this->font['size']['min'], $this->font['size']['max']);
 
 			// Color
-			$color = $this->font['color'][rand(0, sizeof($this->font['color']) - 1)];
+			$color = $this->font['color'][rand(0, count($this->font['color']) - 1)];
 
 			// Family
-			$family = $this->font['family'][rand(0, sizeof($this->font['family']) - 1)];
+			$family = $this->font['family'][rand(0, count($this->font['family']) - 1)];
 
 			$isWindows = (stristr(php_uname(), 'wind') == true) ? true : false;
 
@@ -761,7 +761,7 @@ class CaptchaImage{
 			$x1 = 0;
 			$x2 = $this->width;
 
-			$color = $this->font['color'][rand(0, sizeof($this->font['color']) - 1)];
+			$color = $this->font['color'][rand(0, count($this->font['color']) - 1)];
 
 			imageline(
 				$image, $x1, $y1, $x2, $y2, imagecolorallocate($image, $color[0], $color[1], $color[2])

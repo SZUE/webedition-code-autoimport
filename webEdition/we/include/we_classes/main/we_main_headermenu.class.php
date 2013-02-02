@@ -136,7 +136,7 @@ top.weSidebar = weSidebar;
 			</div>
 			<div style="position:relative;bottom:0px;border:0px;padding-left: 10px;float:left;" >
 				<?php
-				if(count($navigationButtons)){
+				if(!empty($navigationButtons)){
 					foreach($navigationButtons as $button){
 						print '<div style = "float:left;margin-top:5px;" class = "navigation_normal" onclick = "' . $button['onclick'] . '" onmouseover = "this.className=\'navigation_hover\'" onmouseout = "this.className=\'navigation_normal\'"><img border = "0" hspace = "2" src = "' . IMAGE_DIR . $button['imagepath'] . '" width = "17" height = "18" alt = "' . $button['text'] . '" title = "' . $button['text'] . '"></div>';
 					}

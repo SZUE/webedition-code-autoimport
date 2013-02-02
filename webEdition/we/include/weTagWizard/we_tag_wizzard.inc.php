@@ -26,11 +26,7 @@ $openAtCursor = $_REQUEST['we_cmd'][2] === "1" ? true : false;
 $GLOBALS['TagRefURLName'] = strtolower($tagName);
 
 
-if(function_exists('protect')){
-	we_html_tools::protect();
-} else{
-	exit();
-}
+we_html_tools::protect();
 
 // include wetag depending on we_cmd[1]
 $weTag = weTagData::getTagData($tagName);
@@ -43,13 +39,7 @@ if(!$weTag){
 // needed javascript for the individual tags
 // #1 - all attributes of this we:tag (ids of attributes)
 $_attributes = $weTag->getAllAttributes(true);
-if(sizeof($_attributes)){
-	$jsAllAttributes = 'var allAttributes = new Array("' .
-		implode('", "', $_attributes) .
-		'");';
-} else{
-	$jsAllAttributes = 'var allAttributes = new Array();';
-}
+$jsAllAttributes = 'var allAttributes = new Array(' . (empty($_attributes) ? '' : '"' . implode('", "', $_attributes) . '"') . ');';
 
 // #2 all required attributes
 $_reqAttributes = $weTag->getRequiredAttributes();
@@ -130,8 +120,7 @@ function applyOnEnter(evt) {
 		_elemName = "srcElement";
 	}
 
-	if (	!( evt[_elemName].tagName == "SELECT")
-		) {
+	if (	!( evt[_elemName].tagName == "SELECT")) {
 		we_cmd("saveTag");
 		return true;
 	}
@@ -139,9 +128,8 @@ function applyOnEnter(evt) {
 
 }
 
-' . $jsAllAttributes . '
-
-' . $jsReqAttributes . '
+' . $jsAllAttributes .
+		$jsReqAttributes . '
 
 weTagWizard = new weTagWizard("' . $weTag->getName() . '");
 weTagWizard.allAttributes = allAttributes;
@@ -162,9 +150,7 @@ function we_cmd(){
 
 		case "saveTag":
 
-			if (strWeTag = weTagWizard.getWeTag()) {
-
-				' .
+			if (strWeTag = weTagWizard.getWeTag()) {' .
 		( $openAtCursor ? '
 				var contentEditor = opener.top.weEditorFrameController.getVisibleEditorFrame();
 				contentEditor.window.addCursorPosition( strWeTag );
@@ -216,9 +202,8 @@ function we_cmd(){
 			}
 			eval("opener.top.we_cmd("+args+")");
 			break;
-	    }
-    }
-') . '
+	 }
+}') . '
 </head>
 <body onload="window.focus();" class="defaultfont">
 <form name="we_form" onsubmit="we_cmd(\'saveTag\'); return false;">';
@@ -279,5 +264,4 @@ $_buttons = we_button::position_yes_no_cancel(
 <input type="submit" style="width:1px; height:1px; padding:0px; margin:0px; color:#fff; background-color:#fff; border:0px;" />
 
 
-<?php
-print '</form></body></html>';
+</form></body></html>

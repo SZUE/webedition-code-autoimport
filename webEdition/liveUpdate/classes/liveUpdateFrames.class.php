@@ -181,7 +181,7 @@ class liveUpdateFrames{
 		$deletedLngs = array();
 		$notDeletedLngs = array();
 
-		if(isset($_REQUEST['deleteLanguages']) && sizeof($_REQUEST['deleteLanguages'])){
+		if(isset($_REQUEST['deleteLanguages']) && !empty($_REQUEST['deleteLanguages'])){
 
 			// update prefs_table
 			$cond = '';

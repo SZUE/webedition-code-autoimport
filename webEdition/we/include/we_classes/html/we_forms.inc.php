@@ -43,7 +43,7 @@ abstract class we_forms{
 	 *
 	 * @return     string
 	 */
-	static function checkbox($value, $checked, $name, $text, $uniqid = false, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0, $html = ""){
+	static function checkbox($value, $checked, $name, $text, $uniqid = false, $class = 'defaultfont', $onClick = '', $disabled = false, $description = '', $type = 0, $width = 0, $html = ''){
 		// Check if we have to create a uniqe id
 		$_id = ($uniqid ? $name . '_' . md5(uniqid(__FUNCTION__, true)) : $name);
 
@@ -92,7 +92,7 @@ abstract class we_forms{
 		$_id = $name . ($uniqid ? '_' . md5(uniqid(__FUNCTION__, true)) : '');
 
 		// Create HTML tags
-		$foo = '
+		return '
 			<table cellpadding="0" border="0" cellspacing="0">
 				<tr>
 					<td class="weEditmodeStyle"' . ($description ? ' valign="top"' : '') . '>
@@ -103,8 +103,6 @@ abstract class we_forms{
 			($extra_content ? (we_html_element::htmlBr() . we_html_tools::getPixel(1, 3) . we_html_element::htmlBr() . $extra_content) : "") . '</td>
 				</tr>
 			</table>';
-		// Return generated tags
-		return $foo;
 	}
 
 	/**

@@ -143,7 +143,7 @@ class CSV{
 	function isOK($error_output = TRUE){
 		if($error_output)
 			$this->echoCSVError();
-		return ((count($this->CSVError) > 0) ? FALSE : TRUE);
+		return ((!empty($this->CSVError)) ? FALSE : TRUE);
 	}
 
 	function array_merge_better($a1, $a2){

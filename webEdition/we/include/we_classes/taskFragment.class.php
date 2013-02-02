@@ -112,7 +112,7 @@ class taskFragment{
 				exit("Could not write: " . $filename);
 			}
 		}
-		$this->numberOfTasks = sizeof($this->alldata);
+		$this->numberOfTasks = count($this->alldata);
 		$this->printHeader();
 		$this->printBodyTag($bodyAttributes);
 		for($i = 0; $i < $this->taskPerFragment; $i++){

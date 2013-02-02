@@ -53,7 +53,7 @@ class rpcChangeDocTypeCmd extends rpcCmd {
 					$categories = $this->getCategories("doc",$values["Category"],'v[docCategories]');
 				}
 				$categories = strtr($categories, array("\r" => "","\n"=>""));
-				if (count($ids_arr)) {
+				if (!empty($ids_arr)) {
 					$_docTypeLayerDisplay="block";
 					$_noDocTypeLayerDisplay="none";
 				} else {
