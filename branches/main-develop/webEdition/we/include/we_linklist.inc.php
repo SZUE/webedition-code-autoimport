@@ -512,19 +512,19 @@ class we_linklist{
 	}
 
          //added for #7269
-        function setBcc($nr, $key, $val){
+        function setBcc($nr, $val){
 		if($nr == "0" || $nr){
-			$this->listArray[$nr]["bcc"][$key] = $val;
+			$this->listArray[$nr]["bcc"] = $val;
 		}
 	}
-        function setCc($nr, $key, $val){
+        function setCc($nr,$val){
 		if($nr == "0" || $nr){
-			$this->listArray[$nr]["cc"][$key] = $val;
+			$this->listArray[$nr]["cc"] = $val;
 		}
 	}
-        function setSubject($nr, $key, $val){
+        function setSubject($nr, $val){
 		if($nr == "0" || $nr){
-			$this->listArray[$nr]["subject"][$key] = $val;
+			$this->listArray[$nr]["subject"] = $val;
 		}
 	}
 	function next(){

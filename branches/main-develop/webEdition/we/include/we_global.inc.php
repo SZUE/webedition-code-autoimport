@@ -130,10 +130,10 @@ function we_getCatsFromDoc($doc, $tokken = ',', $showpath = false, $db = '', $ro
 			'');
 }
 
-function we_getCatsFromIDs($catIDs, $tokken = ',', $showpath = false, $db = '', $rootdir = '/', $catfield = '', $onlyindir = ''){
+function we_getCatsFromIDs($catIDs, $tokken = ',', $showpath = false, $db = '', $rootdir = '/', $catfield = '', $onlyindir = '', $asArray = false){
 	$db = ($db ? $db : new DB_WE());
 	if(!$catIDs){
-		return '';
+		return $asArray ? array() : '';
 	}
 //$foo = makeArrayFromCSV($catIDs);
 	$cats = array();
@@ -151,12 +151,11 @@ function we_getCatsFromIDs($catIDs, $tokken = ',', $showpath = false, $db = '', 
 			} elseif(empty($onlyindir) || strpos($data['Path'], $onlyindir) === 0){
 				$cats[] = '';
 			}
-		} else{
-			if(empty($onlyindir) || strpos($data['Path'], $onlyindir) === 0){
-				$cats[] = $data[$field];
-			}
+		} elseif(empty($onlyindir) || strpos($data['Path'], $onlyindir) === 0){
+			$cats[] = $data[$field];
 		}
 	}
+	t_e($cats, $catIDs);
 	if(($showpath || $catfield == 'Path') && strlen($rootdir)){
 		foreach($cats as &$cat){
 			if(substr($cat, 0, strlen($rootdir)) == $rootdir){
@@ -164,7 +163,7 @@ function we_getCatsFromIDs($catIDs, $tokken = ',', $showpath = false, $db = '', 
 			}
 		}
 	}
-	return makeCSVFromArray($cats, false, $tokken);
+	return $asArray ? $cats : makeCSVFromArray($cats, false, $tokken);
 }
 
 function makeIDsFromPathCVS($paths, $table = FILE_TABLE, $prePostKomma = true){
@@ -377,7 +376,7 @@ function cleanTempFiles($cleanSessFiles = false){
 		if(file_exists($p)){
 			we_util_File::deleteLocalFile($GLOBALS['DB_WE']->f('Path'));
 		}
-		$db2->query('DELETE LOW_PRIORITY FROM ' . CLEAN_UP_TABLE . ' WHERE DATE=' . intval($GLOBALS['DB_WE']->f('Date')) . ' AND Path="' . $GLOBALS['DB_WE']->f('Path') . '"');
+		$db2->query('DELETE FROM ' . CLEAN_UP_TABLE . ' WHERE DATE=' . intval($GLOBALS['DB_WE']->f('Date')) . ' AND Path="' . $GLOBALS['DB_WE']->f('Path') . '"');
 	}
 	if($cleanSessFiles){
 		$seesID = session_id();
@@ -387,7 +386,7 @@ function cleanTempFiles($cleanSessFiles = false){
 			if(file_exists($p)){
 				we_util_File::deleteLocalFile($GLOBALS['DB_WE']->f('Path'));
 			}
-			$db2->query('DELETE LOW_PRIORITY FROM ' . CLEAN_UP_TABLE . " WHERE Path LIKE '%" . $GLOBALS['DB_WE']->escape($seesID) . "%'");
+			$db2->query('DELETE FROM ' . CLEAN_UP_TABLE . " WHERE Path LIKE '%" . $GLOBALS['DB_WE']->escape($seesID) . "%'");
 		}
 	}
 	$d = dir(TEMP_PATH);
@@ -1461,7 +1460,8 @@ function getPref($name){
 function setUserPref($name, $value){
 	if(isset($_SESSION['prefs'][$name]) && isset($_SESSION['prefs']['userID']) && $_SESSION['prefs']['userID']){
 		$_SESSION['prefs'][$name] = $value;
-		return doUpdateQuery(new DB_WE(), PREFS_TABLE, array($name => $value), (' WHERE userID=' . intval($_SESSION['prefs']['userID'])));
+		we_user::writePrefs($_SESSION['prefs']['userID'], new DB_WE());
+		return true;
 	}
 	return false;
 }

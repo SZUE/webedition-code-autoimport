@@ -116,11 +116,10 @@ class rpcCmd{
 
 	function checkParameters(){
 
-		$_count = count($this->Parameters);
 
-		for($i = 0; $i < $_count; $i++){
+		foreach($this->Parameters as $par){
 
-			if(!isset($_REQUEST[$this->Parameters[$i]])){
+			if(!isset($_REQUEST[$par])){
 				$this->Status = self::STATUS_REQUEST_MALFORMED;
 				return false;
 			}

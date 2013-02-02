@@ -286,7 +286,8 @@ top.content.user_resize.user_right.user_editor.user_edfooter.location="' . WE_US
 							//	Speichere seem_start_file aus SESSION
 							$seem_start_file = $_SESSION["save_user_seem_start_file"][$_REQUEST["uid"]];
 						}
-						$tmp->query('UPDATE ' . PREFS_TABLE . " SET seem_start_file='" . $tmp->escape($seem_start_file) . "' WHERE userID=" . intval($_REQUEST["uid"]));
+
+						$tmp->query('REPLACE INTO ' . PREFS_TABLE . ' SET userID=' . intval($_REQUEST['uid']).',`key`="seem_start_file",`value`="' . $tmp->escape($seem_start_file).'"');
 						unset($tmp);
 						unset($seem_start_file);
 						if(isset($_SESSION["save_user_seem_start_file"][$_REQUEST["uid"]])){

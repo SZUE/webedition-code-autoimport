@@ -742,9 +742,9 @@ abstract class we_SEEM{
 		preg_match_all('/([^&]*=[^&]*)&/U', $paraStr, $parameters);
 
 		//  now get the single attributes and remember path
-		for($j = 0; $j < count($parameters[1]); $j++){
+		foreach($parameters[1] as $par){
 
-			list($key, $value) = explode('=', $parameters[1][$j]);
+			list($key, $value) = explode('=', $par);
 			if(substr($key, 0, strlen($ignor)) != $ignor){
 				$attribs[$key] = $value;
 			}

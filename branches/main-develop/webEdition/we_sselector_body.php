@@ -78,14 +78,27 @@ function _cutText($text, $l){
 	}
 
 	function doSelectFolder(entry,indb){
-		if(top.filter == "folder" || top.filter =="filefolder" || (top.filter =="all_Types" && top.browseServer)) {
-			if(!indb) top.fscmd.selectFile(entry);
+		switch(top.filter){
+		case "all_Types":
+			if(!top.browseServer){
+				break;
+			}
+			//no break;
+		case "folder":
+		case "filefolder":
+			if(!indb){
+				top.fscmd.selectFile(entry);
+			}
 			top.dirsel=1;
 		}
 	}
 
 	function clickEdit(dir){
-		if(top.filter != "folder" && top.filter !="filefolder") {
+		switch(top.filter){
+		case "folder":
+		case "filefolder":
+			break;
+		default:
 			setScrollTo();
 			top.fscmd.drawDir(top.currentDir,"rename_folder",dir);
 		}
@@ -104,7 +117,7 @@ function _cutText($text, $l){
 	}
 
 	function setScrollTo(){
-		parent.scrollToVal=<?php if(we_base_browserDetect::isIE()){ ?>document.body.scrollTop;<?php } else{ ?>pageYOffset;<?php } ?>
+		parent.scrollToVal=<?php if(we_base_browserDetect::isIE()){?>document.body.scrollTop;<?php } else{ ?>pageYOffset;<?php } ?>
 	}
 
 	function keypressed(e) {
@@ -163,35 +176,35 @@ function _cutText($text, $l){
 									break;
 								case 20:
 								case 21:
-									array_push($ordDir, getDataType($dir . '/' . $entry));
+									$ordDir[]= getDataType($dir . '/' . $entry);
 									break;
 								case 30:
 								case 31:
-									array_push($ordDir, filectime($dir . "/" . $entry));
+									$ordDir[]= filectime($dir . "/" . $entry);
 									break;
 								case 40:
 								case 41:
-									array_push($ordDir, filesize($dir . "/" . $entry));
+									$ordDir[]= filesize($dir . "/" . $entry);
 									break;
 							}
 						} else{
-							array_push($arFile, $entry);
+							$arFile[]= $entry;
 							switch($_REQUEST["ord"]){
 								case 10:
 								case 11:
-									array_push($ordFile, $entry);
+									$ordFile[]= $entry;
 									break;
 								case 20:
 								case 21:
-									array_push($ordFile, getDataType($dir . "/" . $entry));
+									$ordFile[]= getDataType($dir . "/" . $entry);
 									break;
 								case 30:
 								case 31:
-									array_push($ordFile, filectime($dir . "/" . $entry));
+									$ordFile[]= filectime($dir . "/" . $entry);
 									break;
 								case 40:
 								case 41:
-									array_push($ordFile, filesize($dir . "/" . $entry));
+									$ordFile[]= filesize($dir . "/" . $entry);
 									break;
 							}
 						}
@@ -265,7 +278,7 @@ var i = 0;
 				if($supportDebugging){
 					$indb = false;
 				}
-				$show = ($entry != ".") && ($entry != "..") && (($_REQUEST["fil"] == g_l('contentTypes', '[all_Types]')) || ($type == g_l('contentTypes', '[folder]')) || ($type == $_REQUEST["fil"] || $_REQUEST["fil"] == ""));
+				$show = ($entry != ".") && ($entry != "..") && (($_REQUEST["file"] == g_l('contentTypes', '[all_Types]')) || ($type == g_l('contentTypes', '[folder]')) || ($type == $_REQUEST["file"] || $_REQUEST["file"] == ""));
 				$bgcol = ($_REQUEST["curID"] == ($dir . "/" . $entry) && (!( isset($_REQUEST["nf"]) && $_REQUEST["nf"] == "new_folder"))) ? "#DFE9F5" : "white";
 				$onclick = "";
 				$ondblclick = "";

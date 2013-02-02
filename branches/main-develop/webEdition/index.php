@@ -152,11 +152,11 @@ weNavigationCache::clean();
 we_updater::fixInconsistentTables();
 
 //clean Error-Log-Table
-$GLOBALS['DB_WE']->query('DELETE LOW_PRIORITY FROM ' . ERROR_LOG_TABLE . ' WHERE `Date` < DATE_SUB(NOW(), INTERVAL ' . ERROR_LOG_HOLDTIME . ' DAY)');
+$GLOBALS['DB_WE']->query('DELETE FROM ' . ERROR_LOG_TABLE . ' WHERE `Date` < DATE_SUB(NOW(), INTERVAL ' . ERROR_LOG_HOLDTIME . ' DAY)');
 $cnt = f('SELECT COUNT(1) AS a FROM ' . ERROR_LOG_TABLE, 'a', $GLOBALS['DB_WE']);
 
 if($cnt > ERROR_LOG_MAX_ITEM_COUNT){
-	$GLOBALS['DB_WE']->query('DELETE LOW_PRIORITY FROM ' . ERROR_LOG_TABLE . ' WHERE 1 ORDER BY Date LIMIT ' . ($cnt - ERROR_LOG_MAX_ITEM_THRESH));
+	$GLOBALS['DB_WE']->query('DELETE  FROM ' . ERROR_LOG_TABLE . ' WHERE 1 ORDER BY Date LIMIT ' . ($cnt - ERROR_LOG_MAX_ITEM_THRESH));
 }
 
 

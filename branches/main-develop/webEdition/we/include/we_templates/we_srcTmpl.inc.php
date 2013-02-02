@@ -41,8 +41,7 @@ $_useJavaEditor = ($_SESSION['prefs']['editorMode'] == 'java');
 ?>
 <script  type="text/javascript"><!--
 	var weIsTextEditor = true;
-	top.we_setEditorWasLoaded(false);
-	var countJEditorInitAttempts = 0;
+	top.we_setEditorWasLoaded(false);	var countJEditorInitAttempts = 0;
 	var wizardHeight={
 		"open" : 305,
 		"closed" : 140
@@ -616,8 +615,15 @@ echo (we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 9
 	font-family: ' . ($_SESSION['prefs']['editorFont'] && $_SESSION['prefs']['editorFontname'] ? $_SESSION['prefs']['editorFontname'] : 'monospace') . ';
 	font-size: ' . ($_SESSION['prefs']['editorFont'] && $_SESSION['prefs']['editorFontsize'] ? $_SESSION['prefs']['editorFontsize'] : '12') . 'px;
 	line-height: ' . ($_SESSION['prefs']['editorTooltipFont'] && $_SESSION['prefs']['editorTooltipFontsize'] ? $_SESSION['prefs']['editorTooltipFontsize'] * 1.5 : '18') . 'px;
-}') .
-						we_html_element::jsElement('
+}
+
+' . ($_SESSION['prefs']['editorShowTab'] ? '
+.cm-tab {
+	background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAMCAYAAAAkuj5RAAAAAXNSR0IArs4c6QAAAGFJREFUSMft1LsRQFAQheHPowAKoACx3IgEKtaEHujDjORSgWTH/ZOdnZOcM/sgk/kFFWY0qV8foQwS4MKBCS3qR6ixBJvElOobYAtivseIE120FaowJPN75GMu8j/LfMwNjh4HUpwg4LUAAAAASUVORK5CYII=);
+	background-position: right;
+	background-repeat: no-repeat;
+}' : '')
+						) .we_html_element::jsElement('
 var CMoptions = { //these are the CodeMirror options
 	mode: "' . $mode . '",
 	enterMode: "indent",
@@ -626,8 +632,8 @@ var CMoptions = { //these are the CodeMirror options
 	lineNumbers: ' . ($_SESSION['prefs']['editorLinenumbers'] ? 'true' : 'false') . ',
 	gutter: true,
 	indentWithTabs: true,
-	tabSize: 2,
-	indentUnit: 2,
+	tabSize: ' . intval($_SESSION['prefs']['editorTabSize']) . ',
+	indentUnit: ' . intval($_SESSION['prefs']['editorTabSize']) . ',
 	matchBrackets: true,
 	workTime: 300,
 	workDelay: 800,
@@ -677,7 +683,7 @@ window.orignalTemplateContent=document.getElementById("editarea").value.replace(
 				(substr($_SESSION['prefs']['editorMode'], 0, 10) == 'codemirror' ? '
 <input type="text" style="width: 10em;float:left;" id="query"/><div style="float:left;">' . we_button::create_button("search", 'javascript:search(document.getElementById("query").value,!document.getElementById("caseSens").checked);') . '</div>
 <input type="text" style="margin-left:2em;width: 10em;float:left;" id="replace"/><div style="float:left;">' . we_button::create_button("replace", 'javascript:myReplace(document.getElementById("query").value,document.getElementById("replace").value,!document.getElementById("caseSens").checked);') . '</div>
-<input type="checkbox" style="margin-left:2em;float:left;" id="caseSens"/><div style="float:left;">'.g_l('weClass','[caseSensitive]').'</div>' : ''
+<input type="checkbox" style="margin-left:2em;float:left;" id="caseSens"/><div style="float:left;">' . g_l('weClass', '[caseSensitive]') . '</div>' : ''
 				) . '
 					</td>
 					<td align="right" class="defaultfont">' .

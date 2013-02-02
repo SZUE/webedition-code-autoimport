@@ -26,6 +26,8 @@ $openAtCursor = $_REQUEST['we_cmd'][2] === "1" ? true : false;
 
 we_html_tools::protect();
 
+we_html_tools::protect();
+
 // include wetag depending on we_cmd[1]
 $weTag = weTagData::getTagData($tagName);
 if(!$weTag){
@@ -106,6 +108,7 @@ function applyOnEnter(evt) {
 
 ' . $jsAllAttributes .
 		$jsReqAttributes . '
+
 weTagWizard = new weTagWizard("' . $weTag->getName() . '");
 weTagWizard.allAttributes = allAttributes;
 weTagWizard.reqAttributes = reqAttributes;
@@ -123,6 +126,7 @@ function we_cmd(){
 		break;
 
 		case "saveTag":
+
 			if (strWeTag = weTagWizard.getWeTag()) {' .
 		( $openAtCursor ? '
 				var contentEditor = opener.top.weEditorFrameController.getVisibleEditorFrame();

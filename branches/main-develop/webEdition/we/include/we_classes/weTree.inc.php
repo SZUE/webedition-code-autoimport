@@ -183,6 +183,8 @@ class weTree{
 			var treeHTML;
  			self.focus();
 		';
+
+
 		return ($withTag ? we_html_element::jsScript(JS_DIR . "images.js") . we_html_element::jsElement($js) : $js);
 	}
 

@@ -1222,7 +1222,7 @@ abstract class we_root extends we_class{
 	}
 
 	function lockDocument(){
-		if($_SESSION['user']['ID']){ // only if user->id != 0
+		if($_SESSION['user']['ID'] && $this->ID){ // only if user->id != 0
 			//if lock is used by other user and time is up, update table
 			$this->DB_WE->query('INSERT INTO ' . LOCK_TABLE . ' SET ID=' . intval($this->ID) . ',UserID=' . intval($_SESSION['user']['ID']) . ',tbl="' . $this->DB_WE->escape(stripTblPrefix($this->Table)) . '",sessionID="' . session_id() . '",lockTime=NOW()+INTERVAL ' . (PING_TIME + PING_TOLERANZ) . ' SECOND
 				ON DUPLICATE KEY UPDATE UserID=' . intval($_SESSION['user']['ID']) . ',sessionID="' . session_id() . '",lockTime= NOW() + INTERVAL ' . (PING_TIME + PING_TOLERANZ) . ' SECOND');
@@ -1249,30 +1249,17 @@ abstract class we_root extends we_class{
 		switch($this->Table){
 			case FILE_TABLE:
 				if(isset($this->DocType)){
-					$where = '((Selection="dynamic") AND (DocTypeID="' . $this->DB_WE->escape($this->DocType) . '" OR FolderID=' . intval($this->ParentID) . ')) OR ';
-					$where .= '(((Selection="static" AND SelectionType="docLink") OR (IsFolder=1 AND FolderSelection="docLink")) AND LinkID=' . intval($this->ID) . ')';
-					$query = 'SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ' . $where;
+					$query = 'SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ((Selection="' . weNavigation::SELECTION_DYNAMIC . '") AND (DocTypeID="' . $this->DB_WE->escape($this->DocType) . '" OR FolderID=' . intval($this->ParentID) . ')) OR
+						(((Selection="' . weNavigation::SELECTION_STATIC . '" AND SelectionType="' . weNavigation::STPYE_DOCLINK . '") OR (IsFolder=1 AND FolderSelection="' . weNavigation::STPYE_DOCLINK . '")) AND LinkID=' . intval($this->ID) . ')';
 					$this->DB_WE->query($query);
-					$return = array();
-					while($this->DB_WE->next_record()) {
-						$return[] = $this->DB_WE->f('ParentID');
-					}
-					return $return;
+					return $this->DB_WE->getAll(true);
 				} else{
-					$this->DB_WE->query('SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ((Selection="static" AND SelectionType="docLink") OR (IsFolder=1 AND FolderSelection="docLink")) AND LinkID=' . intval($this->ID));
-					$return = array();
-					while($this->DB_WE->next_record()) {
-						$return[] = $this->DB_WE->f('ParentID');
-					}
-					return $return;
+					$this->DB_WE->query('SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ((Selection="static" AND SelectionType="' . weNavigation::STPYE_DOCLINK . '") OR (IsFolder=1 AND FolderSelection="' . weNavigation::STPYE_DOCLINK . '")) AND LinkID=' . intval($this->ID));
+					return $this->DB_WE->getAll(true);
 				}
 			case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
-				$this->DB_WE->query('SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ((Selection="static" AND SelectionType="objLink") OR (IsFolder=1 AND FolderSelection="objLink")) AND LinkID=' . intval($this->ID));
-				$return = array();
-				while($this->DB_WE->next_record()) {
-					$return[] = $this->DB_WE->f('ParentID');
-				}
-				return $return;
+				$this->DB_WE->query('SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ((Selection="' . weNavigation::SELECTION_STATIC . '" AND SelectionType="' . weNavigation::STPYE_OBJLINK . '") OR (IsFolder=1 AND FolderSelection="' . weNavigation::STPYE_OBJLINK . '")) AND LinkID=' . intval($this->ID));
+				return $this->DB_WE->getAll(true);
 			default:
 				return array();
 		}

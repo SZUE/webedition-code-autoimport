@@ -390,11 +390,7 @@ if(isset($_REQUEST['cmd'])){
 				}
 
 // reload user prefs
-				$_SESSION['prefs'] = getHash('SELECT * FROM ' . PREFS_TABLE, $DB_WE);
-				$exprefs = getHash('SELECT * FROM ' . PREFS_TABLE . ' WHERE userID = ' . intval($_SESSION['user']['ID']), $DB_WE);
-				if(is_array($exprefs) && (isset($exprefs['userID']) && $exprefs['userID'] != 0) && !empty($exprefs)){
-					$_SESSION['prefs'] = $exprefs;
-				}
+				$_SESSION['prefs'] = we_user::readPrefs($_SESSION['user']['ID'],$DB_WE);
 
 				print we_html_element::jsElement('
 						top.checker.location = "' . HTML_DIR . 'white.html";

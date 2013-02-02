@@ -135,9 +135,9 @@ if(isset($_REQUEST["ok"]) && isset($_REQUEST["linklist"]) && $_REQUEST["ok"] && 
 	$ll->setTitle($_REQUEST["nr"], $_REQUEST["title"]);
 
         //added for #7269
-        $ll->setBcc($_REQUEST["bcc"], $_REQUEST["bcc"]);
-        $ll->setCc($_REQUEST["cc"], $_REQUEST["cc"]);
-        $ll->setSubject($_REQUEST["subject"], $_REQUEST["subject"]);
+        $ll->setBcc($_REQUEST["nr"], $_REQUEST["bcc"]);
+        $ll->setCc($_REQUEST["nr"], $_REQUEST["cc"]);
+        $ll->setSubject($_REQUEST["nr"], $_REQUEST["subject"]);
         
 	$ll->setJsWinAttrib($_REQUEST["nr"], "jswin", (isset($_REQUEST["jswin"]) && $_REQUEST["jswin"]) ? $_REQUEST["jswin"] : null );
 	$ll->setJsWinAttrib($_REQUEST["nr"], "jscenter", isset($_REQUEST["jscenter"]) && $_REQUEST["jscenter"] ? $_REQUEST["jscenter"] : null);

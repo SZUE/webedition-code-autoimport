@@ -1602,6 +1602,8 @@ if(window.onload) {
 	};
 }');
 
+			$_attr = ' class="defaultfont" style="width:150px;"';
+			$_attr_dis = ' class="defaultfont" style="width:150px;color:grey;"';
 
 			$_template_editor_mode = new we_html_select(array('class' => 'weSelect', 'name' => 'newconf[editorMode]', 'size' => '1', 'onchange' => 'displayEditorOptions(this.options[this.options.selectedIndex].value);'));
 			$_template_editor_mode->addOption('textarea', g_l('prefs', '[editor_plaintext]'));
@@ -1647,8 +1649,6 @@ if(window.onload) {
 
 			$_template_editor_font_sizes_select_box->selectOption(get_value('editorFontsize'));
 
-			$_attr = ' class="defaultfont" style="width:150px;"';
-			$_attr_dis = ' class="defaultfont" style="width:150px;color:grey;"';
 
 			$_template_editor_font_specify_table = '<table style="margin:0 0 20px 50px;" border="0" cellpadding="0" cellspacing="0">
 	<tr><td' . $_attr . '>' . g_l('prefs', '[editor_fontname]') . '</td><td>' . $_template_editor_font_select_box->getHtml() . '</td></tr>
@@ -1691,7 +1691,15 @@ if(window.onload) {
 				we_forms::checkbox(1, get_value('editorCodecompletion-html5Attr'), 'editorCodecompletion6', 'HTML5-Attribs', true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[editorCodecompletion][html5Attr]\');') .
 				we_html_tools::hidden('newconf[editorCodecompletion][html5Attr]', get_value('editorCodecompletion-html5Attr'));
 
-			//Build activation of tooltips
+
+			$_template_editor_tabstop_code=
+				we_forms::checkbox(1, get_value('editorShowTab'), 'editorShowTab', g_l('prefs','[show]'), true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[editorShowTab]\');') .
+				we_html_tools::hidden('newconf[editorShowTab]', get_value('editorShowTab')) .
+						'<table border="0" cellpadding="0" cellspacing="0">
+				<tr><td class="defaultfont" style="width:200px;">' . g_l('prefs', '[editor_tabSize]') . '</td><td>' . we_html_tools::htmlTextInput("newconf[editorTabSize]", 2, get_value("editorTabSize"), "", "", "int", 135) . '</td></tr>
+			</table>';
+
+//Build activation of tooltips
 			$_template_editor_tooltips_code = we_forms::checkbox(1, get_value('editorTooltips'), 'newconf[editorTooltips]', g_l('prefs', '[editor_enable]'), true, 'defaultfont', '');
 
 			$_template_editor_tooltip_font_specify = (get_value('editorTooltipFontname') != '' && get_value('editorTooltipFontname') != 'none');
@@ -1728,6 +1736,7 @@ if(window.onload) {
 				array('class' => 'editor editor_codemirror2 editor_textarea', 'headline' => g_l('prefs', '[editor_font]'), 'html' => $_template_editor_font_specify_code . $_template_editor_font_specify_table, 'space' => 150),
 				array('class' => 'editor editor_java', 'headline' => g_l('prefs', '[editor_highlight_colors]'), 'html' => $_template_editor_font_color_checkbox . $_template_editor_font_color_table, 'space' => 150),
 				array('class' => 'editor editor_codemirror2', 'headline' => g_l('prefs', '[editor_linenumbers]'), 'html' => $_template_editor_linenumbers_code, 'space' => 150),
+				array('class' => 'editor editor_codemirror2', 'headline' => g_l('prefs', '[editor_tabstop]'), 'html' => $_template_editor_tabstop_code, 'space' => 150),
 				array('class' => 'editor editor_codemirror2', 'headline' => g_l('prefs', '[editor_completion]'), 'html' => $_template_editor_codecompletion_code, 'space' => 150),
 				array('class' => 'editor editor_codemirror2', 'headline' => g_l('prefs', '[editor_tooltips]'), 'html' => $_template_editor_tooltips_code . $_template_editor_tooltip_font_specify_code . $_template_editor_tooltip_font_specify_table, 'space' => 150),
 				array('class' => 'editor editor_codemirror2', 'headline' => 'Autoclose Tags'/* g_l('prefs', '[editor_docuclick]') */, 'html' => $_template_editor_autoClose, 'space' => 150),

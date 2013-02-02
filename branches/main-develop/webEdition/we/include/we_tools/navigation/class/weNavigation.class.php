@@ -742,6 +742,7 @@ class weNavigation extends weModelBase{
 							}
 						} else{
 							$_param = 'we_objectID=' . $_id . (!empty($_param) ? '&' : '') . $_param;
+							$objecttriggerid = '';
 						}
 						$_id = ($objecttriggerid ? $objecttriggerid : weDynList::getFirstDynDocument($this->WorkspaceID));
 					}

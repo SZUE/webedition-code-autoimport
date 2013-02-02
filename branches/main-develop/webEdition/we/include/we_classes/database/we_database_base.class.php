@@ -514,7 +514,7 @@ abstract class we_database_base{
 
 			if($escape){
 				$tmp = explode('(', $val);
-				switch($tmp){
+				switch(strtoupper($tmp[0])){
 					case 'NOW':
 					case 'UNIX_TIMESTAMP':
 					case 'CURDATE':

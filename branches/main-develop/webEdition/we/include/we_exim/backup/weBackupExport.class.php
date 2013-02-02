@@ -64,6 +64,7 @@ abstract class weBackupExport{
 				case HISTORY_TABLE:
 				case LINK_TABLE:
 				case CONTENT_TABLE:
+				case PREFS_TABLE:
 				case (defined('BANNER_CLICKS_TABLE') ? BANNER_CLICKS_TABLE : 'BANNER_CLICKS_TABLE'):
 					$lines = intval($lines) * 5;
 					break;
