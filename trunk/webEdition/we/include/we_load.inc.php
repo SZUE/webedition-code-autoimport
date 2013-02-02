@@ -255,4 +255,4 @@ loadTreeData();');
 			) . we_html_element::htmlBody(array("bgcolor" => "white"))
 		);
 }
-doUpdateQuery($GLOBALS['DB_WE'], PREFS_TABLE, $_SESSION["prefs"], ' WHERE userID=' . intval($_SESSION["prefs"]["userID"]));
+we_user::writePrefs($_SESSION["prefs"]["userID"], $GLOBALS['DB_WE']);

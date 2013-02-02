@@ -76,8 +76,8 @@ class we_updater{
 
 		$GLOBALS['DB_WE']->addCol(INDEX_TABLE, 'Language', "varchar(5) default NULL");
 		$GLOBALS['DB_WE']->changeColType(INDEX_TABLE, "Workspace", " varchar(1000) NOT NULL default '' ");
-		if($GLOBALS['DB_WE']->isColExist(INDEX_TABLE,'BText')){
-			$GLOBALS['DB_WE']->delCol(INDEX_TABLE,'BText');
+		if($GLOBALS['DB_WE']->isColExist(INDEX_TABLE, 'BText')){
+			$GLOBALS['DB_WE']->delCol(INDEX_TABLE, 'BText');
 		}
 
 
@@ -101,32 +101,29 @@ class we_updater{
 		$DB_WE->query('UPDATE ' . CATEGORY_TABLE . ' SET Text=Category WHERE Text=""');
 		$DB_WE->query('UPDATE ' . CATEGORY_TABLE . ' SET Path=CONCAT("/",Category) WHERE Path=""');
 
-		$GLOBALS['DB_WE']->addCol(PREFS_TABLE, "seem_start_file", "INT");
-		$GLOBALS['DB_WE']->addCol(PREFS_TABLE, "seem_start_type", "VARCHAR(10) DEFAULT ''");
-		$GLOBALS['DB_WE']->addCol(PREFS_TABLE, "seem_start_weapp", "VARCHAR(255) DEFAULT ''", ' AFTER seem_start_type ');
-		$GLOBALS['DB_WE']->addCol(PREFS_TABLE, "phpOnOff", "TINYINT(1) DEFAULT '0' NOT NULL");
-		$GLOBALS['DB_WE']->addCol(PREFS_TABLE, "editorSizeOpt", "TINYINT( 1 ) DEFAULT '0' NOT NULL");
-		$GLOBALS['DB_WE']->addCol(PREFS_TABLE, "editorWidth", "INT( 11 ) DEFAULT '0' NOT NULL");
-		$GLOBALS['DB_WE']->addCol(PREFS_TABLE, "editorHeight", "INT( 11 ) DEFAULT '0' NOT NULL");
-		$GLOBALS['DB_WE']->addCol(PREFS_TABLE, "debug_normal", "TINYINT( 1 ) DEFAULT '0' NOT NULL");
-		$GLOBALS['DB_WE']->addCol(PREFS_TABLE, "debug_seem", "TINYINT( 1 ) DEFAULT '0' NOT NULL");
+		if(count(getHash('SELECT * FROM ' . PREFS_TABLE . ' LIMIT 1', $GLOBALS['DB_WE'])) > 3){
+			//make a backup
+			$DB_WE->query('CREATE TABLE IF NOT EXISTS ' . PREFS_TABLE . '_old LIKE ' . PREFS_TABLE);
+			$DB_WE->query('INSERT INTO ' . PREFS_TABLE . '_old SELECT * FROM ' . PREFS_TABLE);
 
-		$GLOBALS['DB_WE']->addCol(PREFS_TABLE, "xhtml_show_wrong", "TINYINT(1) DEFAULT '0' NOT NULL");
-		$GLOBALS['DB_WE']->addCol(PREFS_TABLE, "xhtml_show_wrong_text", "TINYINT(2) DEFAULT '0' NOT NULL");
-		$GLOBALS['DB_WE']->addCol(PREFS_TABLE, "xhtml_show_wrong_js", "TINYINT(2) DEFAULT '0' NOT NULL");
-		$GLOBALS['DB_WE']->addCol(PREFS_TABLE, "xhtml_show_wrong_error_log", "TINYINT(2) DEFAULT '0' NOT NULL");
-		$GLOBALS['DB_WE']->addCol(PREFS_TABLE, "default_tree_count", "smallint unsigned DEFAULT '0' NOT NULL");
-
-		$GLOBALS['DB_WE']->addCol(PREFS_TABLE, "editorMode", "  varchar(64) NOT NULL DEFAULT 'textarea'", ' AFTER  specify_jeditor_colors ');
-		$GLOBALS['DB_WE']->addCol(PREFS_TABLE, "editorLinenumbers", " tinyint(1) NOT NULL default '1'", ' AFTER editorMode ');
-		$GLOBALS['DB_WE']->addCol(PREFS_TABLE, "editorCodecompletion", " tinyint(1) NOT NULL default '0'", ' AFTER editorLinenumbers ');
-		$GLOBALS['DB_WE']->addCol(PREFS_TABLE, "editorTooltips", " tinyint(1) NOT NULL default '1'", ' AFTER editorCodecompletion ');
-		$GLOBALS['DB_WE']->addCol(PREFS_TABLE, "editorTooltipFont", " tinyint(1) NOT NULL default '0'", ' AFTER editorTooltips ');
-		$GLOBALS['DB_WE']->addCol(PREFS_TABLE, "editorTooltipFontname", "  varchar(255) NOT NULL default 'none'", ' AFTER editorTooltipFont ');
-		$GLOBALS['DB_WE']->addCol(PREFS_TABLE, "editorTooltipFontsize", " int(2) NOT NULL default '-1'", ' AFTER editorTooltipFontname ');
-		$GLOBALS['DB_WE']->addCol(PREFS_TABLE, "editorDocuintegration", " tinyint(1) NOT NULL default '1'", ' AFTER editorTooltipFontsize ');
-		$GLOBALS['DB_WE']->addCol(PREFS_TABLE, "BackendCharset", " varchar(22) NOT NULL default ''", ' AFTER Language ');
-		$GLOBALS['DB_WE']->addCol(PREFS_TABLE, "juploadPath", " text ", ' AFTER use_jupload ');
+			$DB_WE->query('DELETE FROM ' . PREFS_TABLE . ' WHERE userID=0');
+			$DB_WE->query('SELECT * FROM ' . PREFS_TABLE);
+			$queries = $DB_WE->getAll();
+			$GLOBALS['DB_WE']->addCol(PREFS_TABLE, "key", " varchar(100) NOT NULL default ''", ' AFTER userID ');
+			$GLOBALS['DB_WE']->addCol(PREFS_TABLE, "value", " text NOT NULL", ' AFTER `key` ');
+			$GLOBALS['DB_WE']->delKey(PREFS_TABLE, 'PRIMARY');
+			$GLOBALS['DB_WE']->addKey(PREFS_TABLE, 'PRIMARY KEY (`userID`,`key`)');
+			$keys = array_keys($queries[0]);
+			foreach($keys as $key){
+				if($key != 'userID'){
+					$GLOBALS['DB_WE']->delCol(PREFS_TABLE, $key);
+				}
+			}
+			$GLOBALS['DB_WE']->query('DELETE FROM ' . PREFS_TABLE . ' WHERE `key`=""');
+			foreach($queries as $q){
+				we_user::writePrefs($q['userID'], $GLOBALS['DB_WE'], $q);
+			}
+		}
 
 		if($GLOBALS['DB_WE']->isColExist(DOC_TYPES_TABLE, "DocType"))
 			$GLOBALS['DB_WE']->changeColType(DOC_TYPES_TABLE, "DocType", " varchar(64) NOT NULL default '' ");
@@ -298,11 +295,23 @@ class we_updater{
 				$db123->query("UPDATE " . USER_TABLE . " SET IsFolder=1 WHERE ID=" . intval($DB_WE->f("ID")));
 		}
 		self::fix_icon();
-
-		$GLOBALS['DB_WE']->query('UPDATE ' . PREFS_TABLE . ' SET BackendCharset="ISO-8859-1" WHERE (Language NOT LIKE "%_UTF-8%" AND Language!="") AND BackendCharset=""');
-		$GLOBALS['DB_WE']->query('UPDATE ' . PREFS_TABLE . ' SET BackendCharset="UTF-8",Language=REPLACE(Language,"_UTF-8","") WHERE (Language LIKE "%_UTF-8%") AND BackendCharset=""');
-		$GLOBALS['DB_WE']->query('UPDATE ' . PREFS_TABLE . ' SET BackendCharset="UTF-8",Language="Deutsch" WHERE Language="" AND BackendCharset=""');
-
+		$GLOBALS['DB_WE']->query('SELECT userID FROM ' . PREFS_TABLE . ' WHERE `key`="Language" AND (value NOT LIKE "%_UTF-8%" OR value!="") AND userID IN (SELECT userID FROM ' . PREFS_TABLE . ' WHERE `key`="BackendCharset" AND value="")');
+		$users = $GLOBALS['DB_WE']->getAll(true);
+		if(!empty($users)){
+			$GLOBALS['DB_WE']->query('UPDATE ' . PREFS_TABLE . ' SET value="ISO-8859-1" WHERE `key`="BackendCharset" AND userID IN (' . implode(',', $users) . ')');
+		}
+		$GLOBALS['DB_WE']->query('SELECT userID FROM ' . PREFS_TABLE . ' WHERE `key`="Language" AND (value LIKE "%_UTF-8%") AND userID IN (SELECT userID FROM ' . PREFS_TABLE . ' WHERE `key`="BackendCharset" AND value="")');
+		$users = $GLOBALS['DB_WE']->getAll(true);
+		if(!empty($users)){
+			$GLOBALS['DB_WE']->query('UPDATE ' . PREFS_TABLE . ' SET value="UTF-8" WHERE `key`="BackendCharset" AND userID IN (' . implode(',', $users) . ')');
+			$GLOBALS['DB_WE']->query('UPDATE ' . PREFS_TABLE . ' SET value=REPLACE(value,"_UTF-8","") WHERE `key`="Language" AND userID IN (' . implode(',', $users) . ')');
+		}
+		$GLOBALS['DB_WE']->query('SELECT userID FROM ' . PREFS_TABLE . ' WHERE `key`="Language" AND value="" AND userID IN (SELECT userID FROM ' . PREFS_TABLE . ' WHERE `key`="BackendCharset" AND value="")');
+		$users = $GLOBALS['DB_WE']->getAll(true);
+		if(!empty($users)){
+			$GLOBALS['DB_WE']->query('UPDATE ' . PREFS_TABLE . ' SET value="UTF-8" WHERE `key`="BackendCharset" AND userID IN (' . implode(',', $users) . ')');
+			$GLOBALS['DB_WE']->query('UPDATE ' . PREFS_TABLE . ' SET value="Deutsch" WHERE `key`="Language" AND userID IN (' . implode(',', $users) . ')');
+		}
 
 		return true;
 	}

@@ -351,7 +351,7 @@ class weSiteImport{
 		// update session
 		$_SESSION['prefs']['siteImportPrefs'] = serialize($data);
 		// update DB
-		$GLOBALS['DB_WE']->query('UPDATE ' . PREFS_TABLE . " SET siteImportPrefs='" . $GLOBALS['DB_WE']->escape($_SESSION["prefs"]["siteImportPrefs"]) . "' WHERE userID=" . intval($_SESSION["user"]["ID"]));
+		$GLOBALS['DB_WE']->query('REPLACE INTO ' . PREFS_TABLE . ' SET userID=' . intval($_SESSION["user"]["ID"]) . ',`key`="siteImportPrefs",`value`="' . $GLOBALS['DB_WE']->escape($_SESSION["prefs"]["siteImportPrefs"]) . '"');
 		return $this->_getHtmlPage('', we_html_element::jsElement('parent.close();'));
 	}
 

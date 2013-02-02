@@ -223,8 +223,8 @@ class we_webEditionDocument extends we_textContentDocument{
 					$out.='if(confirm("' . g_l('weClass', "[confirm_ext_change]") . '")){' . "\n";
 				$DefaultDynamicExt = DEFAULT_DYNAMIC_EXT;
 				$DefaultStaticExt = DEFAULT_STATIC_EXT;
-				$out.='if(a["we_' . $this->Name . '_IsDynamic"].value==1) var changeto="' . $DefaultDynamicExt . '"; else var changeto="' . $DefaultStaticExt . '";' . "\n";
-				$out .= 'a["we_' . $this->Name . '_Extension"].value=changeto;' . "\n";
+				$out.='if(a["we_' . $this->Name . '_IsDynamic"].value==1) var changeto="' . $DefaultDynamicExt . '"; else var changeto="' . $DefaultStaticExt . '";';
+				$out .= 'a["we_' . $this->Name . '_Extension"].value=changeto;';
 				if($this->ID)
 					$out.='}' . "\n";
 			}

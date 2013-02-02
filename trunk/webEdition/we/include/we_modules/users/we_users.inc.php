@@ -580,7 +580,8 @@ class we_user{
 	}
 
 	function getPreferenceSlotsFromDB(){
-		$this->Preferences = getHash('SELECT ' . implode(',', $this->preference_slots) . ' FROM ' . PREFS_TABLE . ' WHERE userID=' . intval($this->ID), $this->DB_WE);
+		$tmp = self::readPrefs($this->ID, $this->DB_WE);
+		$this->Preferences = array_intersect_assoc($tmp, $this->preference_slots);
 	}
 
 	function setPreference($name, $value){
@@ -595,30 +596,26 @@ class we_user{
 		}
 
 		$this->ModDate = time();
-		$tableInfo = $this->DB_WE->metadata(PREFS_TABLE);
-		$updt = array();
-		foreach($tableInfo as $ti){
-			$fieldName = $ti['name'];
-			if(in_array($fieldName, $this->preference_slots) && $fieldName != 'userID'){
-				if($fieldName == 'editorFontsize' && $this->Preferences['editorFont'] != '1'){
-					$this->Preferences[$fieldName] = '-1';
-				} elseif($fieldName == 'editorFontname' && $this->Preferences['editorFont'] != '1'){
-					$this->Preferences[$fieldName] = 'none';
-				}
-				$updt[$fieldName] = $this->Preferences[$fieldName];
+		$updt = array('userID' => intval($this->ID));
+		foreach($this->preference_slots as $fieldName){
+			switch($fieldName){
+				case 'editorFontsize':
+				case 'editorFontname':
+					if($this->Preferences['editorFont'] != '1'){
+						$this->Preferences[$fieldName] = '-1';
+					}
+				default:
+					$updt[$fieldName] = $this->Preferences[$fieldName];
 			}
 		}
-
-		if(!$isnew){
-			$this->DB_WE->query('UPDATE ' . PREFS_TABLE . ' SET ' . we_database_base::arraySetter($updt) . ' WHERE userID=' . intval($this->ID));
-		} else{
+		if($isnew){
 			$updt['userID'] = intval($this->ID);
 			$updt['FileFilter'] = '0';
 			$updt['openFolders_tblFile'] = '';
 			$updt['openFolders_tblTemplates'] = '';
 			$updt['DefaultTemplateID'] = '0';
-			$this->DB_WE->query('INSERT INTO ' . PREFS_TABLE . ' SET ' . we_database_base::arraySetter($updt));
 		}
+		self::writePrefs(intval($this->ID), $this->DB_WE, $updt);
 	}
 
 	function rememberPreference($settingvalue, $settingname){
@@ -2460,6 +2457,47 @@ $this->Preferences=' . var_export($this->Preferences, true) . ';
 		} else{
 			$useSalt = 1;
 			return md5($passwd . md5($username));
+		}
+	}
+
+	static function readPrefs($id, $db, $login = false){
+//set defaults
+		$ret = array('userID' => $id);
+		include_once(WE_INCLUDES_PATH . 'we_editors/we_preferences_config.inc.php');
+		foreach($GLOBALS['configs']['user'] as $key => $vals){
+			$ret[$key] = $vals[0];
+		}
+		if($login){
+			$db->query('DELETE FROM ' . PREFS_TABLE . ' WHERE `key` NOT IN("' . implode('","', array_keys($GLOBALS['configs']['user'])) . '")');
+		}
+		$db->query('SELECT `key`,`value` FROM ' . PREFS_TABLE . ' WHERE userID=' . intval($id));
+		//read db
+		while($db->next_record(MYSQL_ASSOC)) {
+			$ret[$db->f('key')] = $db->f('val');
+		}
+		return $ret;
+	}
+
+	static function writePrefs($id, $db, $data = ''){
+		$id = intval($id);
+		if($data){
+			$old = array('userID' => $id);
+			include_once(WE_INCLUDES_PATH . 'we_editors/we_preferences_config.inc.php');
+			foreach($GLOBALS['configs']['user'] as $key => $vals){
+				$old[$key] = $vals[0];
+			}
+		} else{
+			$old = self::readPrefs($id, $db);
+			$data = $_SESSION['prefs'];
+		}
+		$upd = array();
+		foreach($data as $key => $val){
+			if((isset($old[$key]) && $old[$key] != $val)){
+				$upd[] = '(' . $id . ',"' . $db->escape($key) . '","' . $db->escape($val) . '")';
+			}
+		}
+		if(!empty($upd)){
+			$db->query('REPLACE INTO ' . PREFS_TABLE . ' (`userID`,`key`,`value`) VALUES ' . implode(',', $upd));
 		}
 	}
 
