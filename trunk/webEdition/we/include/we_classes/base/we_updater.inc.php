@@ -115,8 +115,13 @@ class we_updater{
 			$GLOBALS['DB_WE']->addKey(PREFS_TABLE, 'PRIMARY KEY (`userID`,`key`)');
 			$keys = array_keys($queries[0]);
 			foreach($keys as $key){
-				if($key != 'userID'){
-					$GLOBALS['DB_WE']->delCol(PREFS_TABLE, $key);
+				switch($key){
+					case 'userID':
+					case 'key':
+					case 'value':
+						continue;
+					default:
+						$GLOBALS['DB_WE']->delCol(PREFS_TABLE, $key);
 				}
 			}
 			$GLOBALS['DB_WE']->query('DELETE FROM ' . PREFS_TABLE . ' WHERE `key`=""');
