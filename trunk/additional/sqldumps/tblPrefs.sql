@@ -1,6 +1,3 @@
-###UPDATEONLY###UPDATE ###TBLPREFIX###tblPrefs SET cockpit_rss_feed_url='http://www.webedition.org/de/feeds/aktuelles.xml' WHERE cockpit_rss_feed_url LIKE "%www.webedition.de/presse/%"
-/* query separator */
-
 CREATE TABLE ###TBLPREFIX###tblPrefs (
   userID bigint(20) unsigned NOT NULL default '0',
   `key` varchar(100) NOT NULL default '',
@@ -8,3 +5,5 @@ CREATE TABLE ###TBLPREFIX###tblPrefs (
   PRIMARY KEY (`userID`,`key`)
 ) ENGINE=MyISAM;
 
+/* query separator */
+###UPDATEONLY###UPDATE ###TBLPREFIX###tblPrefs SET value='http://www.webedition.org/de/feeds/aktuelles.xml' WHERE `key`="cockpit_rss_feed_url" AND value LIKE "%www.webedition.de/presse/%"
