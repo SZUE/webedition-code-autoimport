@@ -2473,7 +2473,7 @@ $this->Preferences=' . var_export($this->Preferences, true) . ';
 		$db->query('SELECT `key`,`value` FROM ' . PREFS_TABLE . ' WHERE userID=' . intval($id));
 		//read db
 		while($db->next_record(MYSQL_ASSOC)) {
-			$ret[$db->f('key')] = $db->f('val');
+			$ret[$db->f('key')] = $db->f('value');
 		}
 		return $ret;
 	}
@@ -2491,9 +2491,9 @@ $this->Preferences=' . var_export($this->Preferences, true) . ';
 			$data = $_SESSION['prefs'];
 		}
 		$upd = array();
-		foreach($data as $key => $val){
-			if((isset($old[$key]) && $old[$key] != $val)){
-				$upd[] = '(' . $id . ',"' . $db->escape($key) . '","' . $db->escape($val) . '")';
+		foreach($old as $key => $val){
+			if($key != 'userID' && $data[$key] != $val){
+				$upd[] = '(' . $id . ',"' . $db->escape($key) . '","' . $db->escape($data[$key]) . '")';
 			}
 		}
 		if(!empty($upd)){
