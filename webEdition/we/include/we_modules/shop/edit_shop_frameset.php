@@ -429,7 +429,7 @@ echo "top.yearshop = '$year';";
 
 </head>
 <?php if(we_base_browserDetect::isGecko()){ ?>
-	<frameset rows="28,38,*,<?php print ($_SESSION["prefs"]["debug_normal"] != 0) ? 100 : 0; ?>" border="0" frameborder="1" onLoad="start();">
+	<frameset rows="28,38,*,0" border="0" frameborder="1" onLoad="start();">
 		<frame src="<?php print WE_SHOP_MODULE_DIR; ?>edit_shop_header.php" name="shop_header" scrolling=no noresize/>
 		<frame src="<?php print WE_SHOP_MODULE_DIR; ?>edit_shop_iconbarHeader.php" name="shop_header_icons" scrolling=no noresize/>
 
@@ -449,7 +449,7 @@ echo "top.yearshop = '$year';";
 		<frame src="<?php print WE_SHOP_MODULE_DIR; ?>edit_shop_cmd.php" name="shop_cmd" scrolling=no noresize/>
 	</frameset>
 <?php } else{ ?>
-	<frameset rows="28,38,*,<?php print ($_SESSION["prefs"]["debug_normal"] != 0) ? 100 : 0; ?>" framespacing="0" border="0" frameborder="NO" onLoad="start();">
+	<frameset rows="28,38,*,0" framespacing="0" border="0" frameborder="NO" onLoad="start();">
 		<frame src="<?php print WE_SHOP_MODULE_DIR; ?>edit_shop_header.php" name="shop_header" scrolling=no noresize/>
 		<frame src="<?php print WE_SHOP_MODULE_DIR; ?>edit_shop_iconbarHeader.php" name="shop_header" scrolling=no noresize/>
 
