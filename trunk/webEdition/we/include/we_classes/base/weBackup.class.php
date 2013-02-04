@@ -783,8 +783,7 @@ $this->file_list=' . var_export($this->file_list, true) . ';';
 	}
 
 	function getBackupQuery($table, $keys){
-		//$keys=weTableItem::getTableKey($table);
-		return 'SELECT ' . implode(",", $keys) . ' FROM ' . escape_sql_query($table) . ' LIMIT ' . intval($this->backup_step) . ',' . intval($this->backup_steps);
+		return 'SELECT `' . implode('`,`', $keys) . '` FROM ' . escape_sql_query($table) . ' LIMIT ' . intval($this->backup_step) . ',' . intval($this->backup_steps);
 	}
 
 	function delOldTables(){

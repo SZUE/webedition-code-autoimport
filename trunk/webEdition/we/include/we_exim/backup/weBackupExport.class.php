@@ -77,7 +77,7 @@ abstract class weBackupExport{
 		// export table item
 
 		$_keys = weTableItem::getTableKey($_table);
-		$_keys_str = implode(',', $_keys);
+		$_keys_str = '`'.implode('`,`', $_keys).'`';
 
 		$_db->query('SELECT ' . $_db->escape($_keys_str) . ' FROM  ' . $_db->escape($_table) . ' ORDER BY ' . $_keys_str . ' LIMIT ' . intval($offset) . ' ,' . intval($lines), true);
 		$_def_table = weBackupUtil::getDefaultTableName($_table);
