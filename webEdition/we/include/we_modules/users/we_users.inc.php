@@ -2492,8 +2492,8 @@ $this->Preferences=' . var_export($this->Preferences, true) . ';
 		}
 		$upd = array();
 		foreach($old as $key => $val){
-			if($key != 'userID' && $data[$key] != $val){
-				$upd[] = '(' . $id . ',"' . $db->escape($key) . '","' . $db->escape($data[$key]) . '")';
+			if($key != 'userID' && (!isset($data[$key])||$data[$key] != $val)){
+				$upd[] = '(' . $id . ',"' . $db->escape($key) . '","' . $db->escape((isset($data[$key])?$data[$key]:$val)) . '")';
 			}
 		}
 		if(!empty($upd)){
