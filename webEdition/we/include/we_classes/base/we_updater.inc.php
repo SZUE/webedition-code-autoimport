@@ -95,7 +95,8 @@ class we_updater{
 
 		if(count(getHash('SELECT * FROM ' . PREFS_TABLE . ' LIMIT 1', $GLOBALS['DB_WE'])) > 3){
 			//make a backup
-			$DB_WE->query('CREATE TABLE IF NOT EXISTS ' . PREFS_TABLE . '_old LIKE ' . PREFS_TABLE);
+			$DB_WE->query('DROP TABLE IF EXISTS ' . PREFS_TABLE . '_old');
+			$DB_WE->query('CREATE TABLE ' . PREFS_TABLE . '_old LIKE ' . PREFS_TABLE);
 			$DB_WE->query('INSERT INTO ' . PREFS_TABLE . '_old SELECT * FROM ' . PREFS_TABLE);
 
 			$DB_WE->query('DELETE FROM ' . PREFS_TABLE . ' WHERE userID=0');
