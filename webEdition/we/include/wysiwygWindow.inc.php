@@ -149,7 +149,8 @@ if(isset($fieldName) && isset($_REQUEST["we_okpressed"]) && $_REQUEST["we_okpres
 					false,
 					'top',
 					true,
-					we_cmd_dec(18));
+					we_cmd_dec(18),
+					we_cmd_dec(19));
 
 			print we_wysiwyg::getHeaderHTML() . $e->getHTML() .
 				'<div style="height:8px"></div>' . we_button::position_yes_no_cancel($okBut, $cancelBut);
