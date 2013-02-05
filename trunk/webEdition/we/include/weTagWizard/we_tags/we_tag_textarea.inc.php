@@ -14,6 +14,7 @@ $importrtf = new weTagData_selectAttribute('importrtf', array(new weTagDataOptio
 $width = new weTagData_textAttribute('width', false, '');
 $height = new weTagData_textAttribute('height', false, '');
 $bgcolor = new weTagData_textAttribute('bgcolor', false, '');
+$class = new weTagData_textAttribute('class', false, '');
 if(defined("FILE_TABLE")) { $editorcss = new weTagData_selectorAttribute('editorcss',FILE_TABLE, 'text/css', false, ''); }
 $ignoredocumentcss = new weTagData_selectAttribute('ignoredocumentcss', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
 $html = new weTagData_selectAttribute('html', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
@@ -32,8 +33,8 @@ $spellcheck = new weTagData_selectAttribute('spellcheck', array(new weTagDataOpt
 //$this->Attributes[] = new weTagData_textAttribute('cachelifetime', false, '');
 
 $this->TypeAttribute = new weTagData_typeAttribute('wysiwyg', array(
-	new weTagDataOption('true', false, '', array($name,$cols,$rows,$autobr,$importrtf,$width,$height,$bgcolor,$editorcss,$ignoredocumentcss,$htmlspecialchars,$commands,$fontnames,$abbr,$removefirstparagraph,$inlineedit,$buttonpos,$win2iso,$classes,$spellcheck), array($name)),
-	new weTagDataOption('false', false, '', array($name,$cols,$rows,$autobr,$html,$htmlspecialchars,$php,$abbr,$spellcheck), array($name))), false, '');
+	new weTagDataOption('true', false, '', array($name,$cols,$rows,$autobr,$importrtf,$width,$height,$class,$bgcolor,$editorcss,$ignoredocumentcss,$htmlspecialchars,$commands,$fontnames,$abbr,$removefirstparagraph,$inlineedit,$buttonpos,$win2iso,$classes,$spellcheck), array($name)),
+	new weTagDataOption('false', false, '', array($name,$cols,$rows,$class,$autobr,$html,$htmlspecialchars,$php,$abbr,$spellcheck), array($name))), false, '');
 
-$this->Attributes=array($name,$cols,$rows,$autobr,$importrtf,$width,$height,$bgcolor,$editorcss,$ignoredocumentcss,$html,$htmlspecialchars,$php,$commands,$fontnames,$xml,$abbr,
+$this->Attributes=array($name,$cols,$rows,$class,$autobr,$importrtf,$width,$height,$bgcolor,$editorcss,$ignoredocumentcss,$html,$htmlspecialchars,$php,$commands,$fontnames,$xml,$abbr,
 	$removefirstparagraph,$inlineedit,$buttonpos,$win2iso,$classes,$spellcheck);

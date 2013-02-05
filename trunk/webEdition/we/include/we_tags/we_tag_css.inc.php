@@ -43,10 +43,11 @@ function we_tag_css($attribs){
 
 		$nolink = false;
 		if($GLOBALS["we_editmode"]){
-			switch(weTag_getAttribute('ifeditmode', $attribs, '')){
-				case 'notintiny' :
+			switch(weTag_getAttribute('only', $attribs, '')){
+				case 'around-wysiwyg' :
+				case 'around' :
 					break;
-				case 'onlytiny' : 
+				case 'wysiwyg' : 
 					$nolink = true;
 				default : 
 					$media = weTag_getAttribute('media', $attribs);

@@ -17,7 +17,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-function we_textarea(name,value,cols,rows,width,height,autobr,autobrName,showAutobr,showRTF,language,classname,style,wrap,changehandler,xml,id,showSpell){
+function we_textarea(name,value,cols,rows,width,height,autobr,autobrName,showAutobr,showRTF,language,classname,style,wrap,changehandler,xml,id,showSpell,origName){
 	this.TAName = name;
 	this.name = "weTextarea"+(weTextarea_count++);
 	this.obj = this.name+"Object";
@@ -112,7 +112,7 @@ function we_textarea(name,value,cols,rows,width,height,autobr,autobrName,showAut
 	out += '<tr><td><textarea name="areatmp_';
 	out += name;
 	out += '"';
-	out += classname ? ' class="'+classname+'"' : '';
+	out += 'class="' + (classname ? classname + ' ' : '') + 'wetextarea wetextarea-' + origName + '"';
 	out += cols ? ' cols="'+cols+'"' : '';
 	out += wrap ? ' wrap="'+wrap+'"' : '';
 	out += rows ? ' rows="'+rows+'"' : '';
