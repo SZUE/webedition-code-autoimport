@@ -147,7 +147,7 @@ if(isset($_POST['username']) && isset($_POST['password'])){
 				$_SESSION['user']['groups'] = $_userGroups; //	order: first is folder with user himself (deepest in tree)
 				$_SESSION['user']['workSpace'] = array();
 				foreach($workspaces as $key => $cur){
-					$_SESSION['user']['workSpace'][$key] = $cur['value'];
+					$_SESSION['user']['workSpace'][$key] = array_unique(array_filter($cur['value']));
 				}
 
 				if(isset($_SESSION['user']['Username']) && isset($_SESSION['user']['ID']) && $_SESSION['user']['Username'] && $_SESSION['user']['ID']){
