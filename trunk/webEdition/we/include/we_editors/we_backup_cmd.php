@@ -57,7 +57,7 @@ if(isset($_REQUEST['cmd'])){
 					exit();
 				}
 			}
-		} elseif(!FAST_BACKUP){
+		} elseif(false&&!FAST_BACKUP){
 			$_pref = getPref('BACKUP_STEPS');
 			if($_SESSION['weS']['weBackupVars']['backup_steps'] < $_pref){
 				$_key = array_search($_SESSION['weS']['weBackupVars']['backup_steps'], $_steps);
@@ -81,7 +81,7 @@ if(isset($_REQUEST['cmd'])){
 					weBackupUtil::addLog('File name: ' . $_SESSION['weS']['weBackupVars']['backup_file']);
 					weBackupUtil::addLog('Use compression: ' . ($_SESSION['weS']['weBackupVars']['options']['compress'] ? 'yes (' . $_SESSION['weS']['weBackupVars']['options']['compress'] . ')' : 'no'));
 					weBackupUtil::addLog('Export external files: ' . ($_SESSION['weS']['weBackupVars']['options']['backup_extern'] ? 'yes' : 'no'));
-					weBackupUtil::addLog('Backup steps: ' . (FAST_BACKUP ? 'FAST_BACKUP' : $_SESSION['weS']['weBackupVars']['backup_steps']));
+					weBackupUtil::addLog('Backup steps: ' . (true||FAST_BACKUP ? 'FAST_BACKUP' : $_SESSION['weS']['weBackupVars']['backup_steps']));
 					weBackupUtil::writeLog();
 				} else{
 					weBackupUtil::writeLog();
@@ -91,7 +91,7 @@ if(isset($_REQUEST['cmd'])){
 				$description = g_l('backup', '[working]');
 			} elseif(isset($_SESSION['weS']['weBackupVars']['extern_files']) && count($_SESSION['weS']['weBackupVars']['extern_files']) > 0){
 				if(($fh = fopen($_SESSION['weS']['weBackupVars']['backup_file'], 'ab'))){
-					if(FAST_BACKUP){
+					if(true||FAST_BACKUP){
 						$_SESSION['weS']['weBackupVars']['backup_steps'] = 2;
 					}
 					$description = g_l('backup', '[external_backup]');
@@ -117,11 +117,11 @@ if(isset($_REQUEST['cmd'])){
 							$oldPercent = $percent;
 						}
 						weBackupUtil::writeLog();
-					} while(FAST_BACKUP ? !empty($_SESSION['weS']['weBackupVars']['extern_files']) && weBackup::limitsReached('', microtime(true) - $start) : false);
+					} while((true||FAST_BACKUP) ? !empty($_SESSION['weS']['weBackupVars']['extern_files']) && weBackup::limitsReached('', microtime(true) - $start) : false);
 					fclose($fh);
 				}
 			} else{
-				if(FAST_BACKUP){
+				if(true||FAST_BACKUP){
 					$_SESSION['weS']['weBackupVars']['backup_steps'] = 10;
 				}
 				$oldPercent = 0;
@@ -145,7 +145,7 @@ if(isset($_REQUEST['cmd'])){
 						}
 					}
 					weBackupUtil::writeLog();
-				} while(FAST_BACKUP ? weBackup::limitsReached(weBackupUtil::getCurrentTable(), microtime(true) - $start) : false);
+				} while((true||FAST_BACKUP) ? weBackup::limitsReached(weBackupUtil::getCurrentTable(), microtime(true) - $start) : false);
 				fclose($_fh);
 			}
 			if(($_SESSION['weS']['weBackupVars']['row_counter'] < $_SESSION['weS']['weBackupVars']['row_count']) || (isset($_SESSION['weS']['weBackupVars']['extern_files']) && count($_SESSION['weS']['weBackupVars']['extern_files']) > 0) || weBackupUtil::hasNextTable()){
