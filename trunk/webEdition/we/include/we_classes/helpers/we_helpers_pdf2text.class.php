@@ -114,7 +114,7 @@ class we_helpers_pdf2text{
 			$this->data = array();
 			foreach($info as $key => &$cur){
 				$cur = self::getStringContent($cur);
-				if(strstr($key, 'Date')){
+				if(strstr($key, 'Date')&&method_exists('DateTime','createFromFormat')){
 					if(($cur = DateTime::createFromFormat('YmdHis', substr($cur, 2, 14)))){
 						$cur = $cur->format(g_l('date', '[format][default]'));
 					}
