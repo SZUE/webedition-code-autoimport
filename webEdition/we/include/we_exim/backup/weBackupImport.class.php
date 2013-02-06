@@ -114,7 +114,7 @@ class weBackupImport{
 						$parser->gotoMark('second');
 					} else{
 						$attr = $parser->getNodeAttributes();
-						if(version_compare($_SESSION['weS']['weBackupVars']['weVersion'], '6.3.3.0', '>')){
+						if(version_compare($_SESSION['weS']['weBackupVars']['weVersion'], '6.3.3.1', '>')){
 							switch(($attr && isset($attr[weContentProvider::CODING_ATTRIBUTE]) ? $attr[weContentProvider::CODING_ATTRIBUTE] : null)){
 								case weContentProvider::CODING_ENCODE:
 									$object->$name = weContentProvider::decode($parser->getNodeData());
