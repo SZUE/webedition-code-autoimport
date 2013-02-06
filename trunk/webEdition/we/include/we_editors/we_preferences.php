@@ -557,14 +557,6 @@ $GLOBALS[\'_we_active_integrated_modules\'] = array(
 			}
 			return;
 
-		case 'DISABLE_TEMPLATE_CODE_CHECK':
-			$_file = &$GLOBALS['config_files']['conf_global']['content'];
-
-			if($settingvalue != constant($settingname)){
-				$_file = we_base_preferences::changeSourceCode('define', $_file, $settingname, $settingvalue, true, $comment);
-			}
-
-			return;
 	}
 }
 
@@ -2572,14 +2564,20 @@ if(window.onload) {
 
 			// Create checkboxes
 			$_template_error_handling_table = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0"), 8, 1);
-			$_template_error_handling_table->setCol(0, 0, null, we_forms::checkbox(1, get_value("DISABLE_TEMPLATE_CODE_CHECK"), "newconf[DISABLE_TEMPLATE_CODE_CHECK]", g_l('prefs', '[disable_template_code_check]')));
+			$_template_error_handling_table->setCol(0, 0, null,
+				we_forms::checkbox(1, get_value('DISABLE_TEMPLATE_CODE_CHECK'), 'DISABLE_TEMPLATE_CODE_CHECK', g_l('prefs', '[disable_template_code_check]'), true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[DISABLE_TEMPLATE_CODE_CHECK]\');') .
+				we_html_tools::hidden('newconf[DISABLE_TEMPLATE_CODE_CHECK]', get_value('DISABLE_TEMPLATE_CODE_CHECK')));
+
+			$_template_error_handling_table->setCol(1, 0, null,
+				we_forms::checkbox(1, get_value('DISABLE_TEMPLATE_PARSER'), 'DISABLE_TEMPLATE_PARSER', g_l('prefs', '[disable_template_parser]'), true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[DISABLE_TEMPLATE_PARSER]\');') .
+				we_html_tools::hidden('newconf[DISABLE_TEMPLATE_PARSER]', get_value('DISABLE_TEMPLATE_PARSER')));
+
+
 
 			// Create checkboxes
 			$_we_error_handler = we_forms::checkbox(1, get_value("WE_ERROR_HANDLER"), "newconf[WE_ERROR_HANDLER]", g_l('prefs', '[error_use_handler]'), false, "defaultfont", "set_state_error_handler();");
 
-			/**
-			 * Error types
-			 */
+			 // Error types
 			// Create checkboxes
 			$_error_handling_table = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0"), 8, 1);
 
