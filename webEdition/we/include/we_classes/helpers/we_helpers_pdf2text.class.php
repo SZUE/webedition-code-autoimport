@@ -842,7 +842,7 @@ class we_helpers_pdf2text{
 		}
 		$tmp = implode('', $parts[1]);
 
-		return preg_replace_callback('#\\\\(\d{3})#', 'self::setOctChar', $tmp);
+		return preg_replace_callback('#\\\\(\d{3})#', 'we_helpers_pdf2text::setOctChar', $tmp);
 	}
 
 	private static function lower($val){
