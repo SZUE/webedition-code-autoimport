@@ -61,7 +61,7 @@ $l_weEditor=array(
 		'we_filename_notValid'=>'Der eingegebene Dateiname ist nicht gültig!\nErlaubte Zeichen sind Buchstaben von a bis z (Groß- oder Kleinschreibung), Zahlen, Unterstrich (_), Minus (-) und Punkt (.).',
 	),
 	'objectFile'=>array(
-		'autoschedule'=>'Das Objekt am %s automatisch veröffentlicht!',
+		'autoschedule'=>'Das Objekt wird am %s automatisch veröffentlicht!',
 		'filename_empty'=>'Sie haben noch keinen Namen für das Objekt eingegeben!',
 		'response_not_published'=>'Das Objekt `%s` ist nicht veröffentlicht!',
 		'response_path_exists'=>'Das Objekt `%s` konnte nicht gespeichert werden, da es bereits ein anderes Objekt oder Verzeichnis an dieser Stelle gibt!',
