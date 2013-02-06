@@ -19,8 +19,13 @@ echo "Creating phar for Zend Framework located at ".$zfLocation."\n";
 if (file_exists('zf.phar')) {
     Phar::unlinkArchive('zf.phar');
 }
+if (file_exists('zf.phar.gz')) {
+    Phar::unlinkArchive('zf.phar.gz');
+}
+if (file_exists('zf.phar.bz2')) {
+    Phar::unlinkArchive('zf.phar.bz2');
+}
 $p = new Phar('zf.phar', 0, 'zf.phar');
-$p->compressFiles(Phar::GZ);
 $p->setSignatureAlgorithm (Phar::SHA1);
 $files = array();
 $files['stub.php']='stub.php';
@@ -39,5 +44,4 @@ $p->buildFromIterator(new ArrayIterator($files));
 $p->stopBuffering();
 
 $p->setStub($p->createDefaultStub('stub.php'));
-$p = null;
-
+$p->compress(Phar::BZ2);
