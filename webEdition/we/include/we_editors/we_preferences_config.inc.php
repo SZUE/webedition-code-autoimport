@@ -67,6 +67,7 @@ $GLOBALS['configs'] = array(
 		'WE_ERROR_MAIL_ADDRESS' => array('E-Mail address to which to mail errors', "mail@www.example"),
 		'ERROR_DOCUMENT_NO_OBJECTFILE' => array('Document to open when trying to open non-existing object', 0),
 		'DISABLE_TEMPLATE_CODE_CHECK' => array('Disable the check for php-errors in templates', 0),
+		'DISABLE_TEMPLATE_PARSER' => array('Disable run of parser - only report errors', 0),
 // Backup variable
 		'BACKUP_STEPS' => array('Number of entries per batch', 100),
 		'FAST_BACKUP' => array('New Test for a faster Backup', 0),
