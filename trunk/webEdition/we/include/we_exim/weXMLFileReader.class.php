@@ -45,9 +45,9 @@ abstract class weXMLFileReader{
 			self::$file = array(
 				'fp' => $_fp,
 				'offset' => 0,
-				'maxOffset' => $seek(self::$file['fp'], SEEK_END)
+				'maxOffset' => $seek($fp, SEEK_END)
 			);
-			$seek(self::$file['fp'], 0);
+			$seek($fp, 0);
 		}
 
 
