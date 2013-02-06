@@ -836,7 +836,7 @@ class we_helpers_pdf2text{
 		preg_match_all('#\(((?:\\\\.|[^\\\\\\)])+)\)(-?\d+\.\d{1,7})?#', $string, $parts);
 
 		//add spaces only if size is bigger than a certain amount
-		$parts[2] = array_filter($parts[2], 'self::lower');
+		$parts[2] = array_filter($parts[2], 'we_helpers_pdf2text::lower');
 		foreach(array_keys($parts[2]) as $key){
 			$parts[1][$key].=self::SPACE;
 		}
