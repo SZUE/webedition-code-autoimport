@@ -1656,7 +1656,7 @@ top.busy.location = "' . $this->frameset . '?pnt=busy&operation_mode=busy&curren
 
 		$cmd = ($this->mode == self::RECOVER ? 'import' : 'export');
 
-		$_retry = ($this->mode == self::RECOVER || !FAST_BACKUP || !FAST_RESTORE ? 5 : 2);
+		$_retry = ($this->mode == self::RECOVER || false &&!FAST_BACKUP || !FAST_RESTORE ? 5 : 2);
 
 		return we_html_element::jsElement('
 function setLocation(loc){

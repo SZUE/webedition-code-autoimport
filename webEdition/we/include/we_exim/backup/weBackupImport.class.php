@@ -27,19 +27,19 @@ class weBackupImport{
 //	private static $mem = 0;
 
 	static function import($filename, &$offset, $lines = 1, $iscompressed = 0, $encoding = 'ISO-8859-1', $log = 0){
-
-		$data = (isset($_SESSION['weS']['weBackupVars']['options']['convert_charset']) && $_SESSION['weS']['weBackupVars']['options']['convert_charset'] ?
-				weXMLExIm::getHeader($_SESSION['weS']['weBackupVars']['encoding']) :
-				weXMLExIm::getHeader());
-
 //		self::$mem = memory_get_usage(true);
 		weBackupUtil::addLog(sprintf('Reading offset %s', $offset));
-
-		if(!weBackupFileReader::readLine($filename, $data, $offset, $lines, 0, $iscompressed)){
+		$data = weBackupFileReader::readLine($filename, $offset, $lines, 0, $iscompressed);
+		if(empty($data)){
 			return false;
 		}
 //		weBackupUtil::addLog('XX read: ' . ((memory_get_usage(true) - self::$mem) / 1048576) . ' ' . $locLines);
-		$data .= weBackup::weXmlExImFooter;
+		$data =
+			(isset($_SESSION['weS']['weBackupVars']['options']['convert_charset']) && $_SESSION['weS']['weBackupVars']['options']['convert_charset'] ?
+				weXMLExIm::getHeader($_SESSION['weS']['weBackupVars']['encoding']) :
+				weXMLExIm::getHeader()) .
+			$data .
+			weBackup::weXmlExImFooter;
 
 		self::transfer($data, $encoding, $log);
 		return true;

@@ -455,7 +455,7 @@ class weBackup extends we_backup{
 							$xmlExport->exportChunk(implode(",", $keyvalue), "weTableItem", $this->dumpfilename, $table, $this->backup_binary);
 							++$this->backup_step;
 						}
-					} while(FAST_BACKUP ? self::limitsReached($table, microtime(true) - $start) : false);
+					} while((true||FAST_BACKUP) ? self::limitsReached($table, microtime(true) - $start) : false);
 				}
 				$i++;
 				if($this->backup_step < $this->table_end && $this->backup_db->num_rows() != 0){

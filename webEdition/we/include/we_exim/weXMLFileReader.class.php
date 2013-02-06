@@ -26,7 +26,8 @@ abstract class weXMLFileReader{
 
 	static $file = array();
 
-	static function readLine($filename, &$data, &$offset, $lines = 1, $size = 0, $iscompressed = 0){
+	static function readLine($filename, &$offset, $lines = 1, $size = 0, $iscompressed = 0){
+		$data='';
 		$prefix = $iscompressed == 0 ? 'f' : weFile::getComPrefix('gzip');
 		$open = $prefix . 'open';
 		$seek = $prefix . 'seek';
@@ -41,13 +42,16 @@ abstract class weXMLFileReader{
 			if(!($_fp = $open($filename, 'rb'))){
 				return false;
 			}
-			$file = array(
+			self::$file = array(
 				'fp' => $_fp,
-				'offset' => 0);
+				'offset' => 0,
+				'maxOffset' => $seek(self::$file['fp'], SEEK_END)
+			);
+			$seek(self::$file['fp'], 0);
 		}
 
 
-		if(($file['offset'] != $offset) && ($seek($file['fp'], $offset, SEEK_SET) != 0)){
+		if(self::$file['offset'] === self::$file['maxOffset'] || (self::$file['offset'] != $offset) && ($seek(self::$file['fp'], $offset, SEEK_SET) != 0)){
 			self::closeFile();
 			return false;
 		}
@@ -61,12 +65,12 @@ abstract class weXMLFileReader{
 			$_rsize = 8192; // read 8KB
 			do{
 
-				$_buffer .= $gets($file['fp'], $_rsize);
+				$_buffer .= $gets(self::$file['fp'], $_rsize);
 
 				$_first = substr($_buffer, 0, 256);
 				$_end = substr($_buffer, -20, 20);
 
-				// chek if line is complite
+				// chek if line is complete
 				$_iswestart = stripos($_first, '<webEdition') !== false;
 				$_isweend = stripos($_end, '</webEdition>') !== false;
 				$_isxml = preg_match('|<\?xml|i', $_first);
@@ -75,12 +79,12 @@ abstract class weXMLFileReader{
 
 				if($_isend && self::preParse($_first)){
 					$_buffer = '';
-					$_isend = $eof($file['fp']);
+					$_isend = $eof(self::$file['fp']);
 				}
 
 				if($_iswestart || $_isweend || $_isxml){
 					$_buffer = '';
-					$_isend = $eof($file['fp']);
+					$_isend = $eof(self::$file['fp']);
 				}
 				// -----------------------------------------------------
 				// avoid endless loop
@@ -96,10 +100,10 @@ abstract class weXMLFileReader{
 					$_condition = false;
 				} else{
 					$i = strlen($_buffer);
-					$_condition = ($i < $size ? !$eof($file['fp']) : false );
+					$_condition = ($i < $size ? !$eof(self::$file['fp']) : false );
 				}
 			} else if($lines > 0){
-				$_condition = ($i < $lines ? !$eof($file['fp']) : false );
+				$_condition = ($i < $lines ? !$eof(self::$file['fp']) : false );
 				$i++;
 			}
 
@@ -108,10 +112,9 @@ abstract class weXMLFileReader{
 
 		unset($_buffer);
 
-		$offset = $tell($file['fp']);
-		$file['offset'] = $offset;
+		self::$file['offset'] = $offset = $tell(self::$file['fp']);
 
-		return (!empty($data));
+		return $data;
 	}
 
 	public static function closeFile(){
