@@ -35,7 +35,7 @@ class weFullscreenEditDialog extends weDialog{
 	}
 
 	function getDialogContentHTML(){
-		$e = new we_wysiwyg("we_dialog_args[src]", $this->args["screenWidth"] - 90, $this->args["screenHeight"] - 200, '', $this->args["propString"], $this->args["bgcolor"], $this->args["editname"], $this->args["className"], $this->args["outsideWE"], $this->args["outsideWE"], $this->args["xml"], $this->args["removeFirstParagraph"], true, $this->args["baseHref"], $this->args["charset"], $this->args["cssClasses"], $this->args['language'], '', true, false, 'top', true, $this->args["contentCss"]);
+		$e = new we_wysiwyg("we_dialog_args[src]", $this->args["screenWidth"] - 90, $this->args["screenHeight"] - 200, '', $this->args["propString"], $this->args["bgcolor"], $this->args["editname"], $this->args["className"], $this->args["outsideWE"], $this->args["outsideWE"], $this->args["xml"], $this->args["removeFirstParagraph"], true, $this->args["baseHref"], $this->args["charset"], $this->args["cssClasses"], $this->args['language'], '', true, false, 'top', true, $this->args["contentCss"], $this->args["origName"]);
 		return we_wysiwyg::getHeaderHTML() . we_html_element::jsElement('isFullScreen = true;') . $e->getHTML();
 	}
 

@@ -123,7 +123,7 @@ abstract class we_forms{
 	 * @param string $charset
 	 *
 	 */
-	static function weTextarea($name, $value, $attribs, $autobr, $autobrName, $showAutobr = true, $path = "", $hidestylemenu = false, $forceinwebedition = false, $xml = false, $removeFirstParagraph = true, $charset = "", $showSpell = true, $isFrontendEdit = false){
+	static function weTextarea($name, $value, $attribs, $autobr, $autobrName, $showAutobr = true, $path = "", $hidestylemenu = false, $forceinwebedition = false, $xml = false, $removeFirstParagraph = true, $charset = "", $showSpell = true, $isFrontendEdit = false, $origName = ""){
 		if($charset == ''){
 			if(isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->getElement('Charset')){
 				$charset = $GLOBALS['we_doc']->getElement('Charset');
@@ -216,10 +216,10 @@ abstract class we_forms{
 
 			$buttonpos = $buttonpos ? $buttonpos : 'top';
 			if($inlineedit){
-				$e = new we_wysiwyg($name, $width, $height, $value, $commands, $bgcolor, '', $class, $fontnames, (!$inwebedition), $xml, $removeFirstParagraph, $inlineedit, '', $charset, $cssClasses, $_lang, '', $showSpell, $isFrontendEdit, $buttonpos, $oldHtmlspecialchars, $contentCss);
+				$e = new we_wysiwyg($name, $width, $height, $value, $commands, $bgcolor, '', $class, $fontnames, (!$inwebedition), $xml, $removeFirstParagraph, $inlineedit, '', $charset, $cssClasses, $_lang, '', $showSpell, $isFrontendEdit, $buttonpos, $oldHtmlspecialchars, $contentCss, $origName);
 				$out .= $e->getHTML();
 			} else{
-				$e = new we_wysiwyg($name, $width, $height, '', $commands, $bgcolor, '', $class, $fontnames, (!$inwebedition), $xml, $removeFirstParagraph, $inlineedit, '', $charset, $cssClasses, $_lang, '', $showSpell, $isFrontendEdit, $buttonpos, $oldHtmlspecialchars, $contentCss);
+				$e = new we_wysiwyg($name, $width, $height, '', $commands, $bgcolor, '', $class, $fontnames, (!$inwebedition), $xml, $removeFirstParagraph, $inlineedit, '', $charset, $cssClasses, $_lang, '', $showSpell, $isFrontendEdit, $buttonpos, $oldHtmlspecialchars, $contentCss, $origName);
 
 				//$fieldName = preg_replace('#^.+_txt\[(.+)\]$#', '\1', $name);
 				// Bugfix => Workarround Bug # 7445
@@ -232,7 +232,7 @@ abstract class we_forms{
 
 				// Ende Bugfix
 
-				$out .= ($buttonTop ? '<div class="tbButtonWysiwygBorder" style="width:25px;border-bottom:0px;background-image: url(' . IMAGE_DIR . 'backgrounds/aquaBackground.gif);">' . $e->getHTML() . '</div>' : '') . '<div class="tbButtonWysiwygBorder" id="div_wysiwyg_' . $name . '">' . $value . '</div>' . ($buttonBottom ? '<div class="tbButtonWysiwygBorder" style="width:25px;border-top:0px;background-image: url(' . IMAGE_DIR . 'backgrounds/aquaBackground.gif);">' . $e->getHTML() . '</div>' : '');
+				$out .= ($buttonTop ? '<div class="tbButtonWysiwygBorder" style="width:25px;border-bottom:0px;background-image: url(' . IMAGE_DIR . 'backgrounds/aquaBackground.gif);">' . $e->getHTML() . '</div>' : '') . '<div class="tbButtonWysiwygBorder ' . (empty($class) ? "" : $class . " ") . 'wetextarea tiny-wetextarea wetextarea-' . $origName . '" id="div_wysiwyg_' . $name . '">' . $value . '</div>' . ($buttonBottom ? '<div class="tbButtonWysiwygBorder" style="width:25px;border-top:0px;background-image: url(' . IMAGE_DIR . 'backgrounds/aquaBackground.gif);">' . $e->getHTML() . '</div>' : '');
 			}
 		} else{
 			if($width){
@@ -245,10 +245,10 @@ abstract class we_forms{
 			if($showAutobr || $showSpell){
 				$clearval = $value;
 				$value = str_replace(array('<?', '<script', '</script', '\\', "\n", "\r", '"'), array('##|lt;?##', '<##scr#ipt##', '</##scr#ipt##', '\\\\', '\n', '\r', '\\"'), $value);
-				$out .= we_html_element::jsElement('new we_textarea("' . $name . '","' . $value . '","' . $cols . '","' . $rows . '","' . $width . '","' . $height . '","' . $autobr . '","' . $autobrName . '",' . ($showAutobr ? ($hideautobr ? "false" : "true") : "false") . ',' . ($importrtf ? "true" : "false") . ',"' . $GLOBALS["WE_LANGUAGE"] . '","' . $class . '","' . implode(';', $style) . '","' . $wrap . '","onkeydown","' . ($xml ? "true" : "false") . '","' . $id . '",' . ((defined('SPELLCHECKER') && $showSpell) ? "true" : "false") . ');') .
-					'<noscript><textarea name="' . $name . '"' . ($tabindex ? ' tabindex="' . $tabindex . '"' : '') . ($cols ? ' cols="' . $cols . '"' : '') . ($rows ? ' rows="' . $rows . '"' : '') . (!empty($style) ? ' style="' . implode(';',$style) . '"' : '') . ($class ? ' class="' . $class . '"' : '') . ($id ? ' id="' . $id . '"' : '') . '>' . oldHtmlspecialchars($clearval) . '</textarea></noscript>';
+				$out .= we_html_element::jsElement('new we_textarea("' . $name . '","' . $value . '","' . $cols . '","' . $rows . '","' . $width . '","' . $height . '","' . $autobr . '","' . $autobrName . '",' . ($showAutobr ? ($hideautobr ? "false" : "true") : "false") . ',' . ($importrtf ? "true" : "false") . ',"' . $GLOBALS["WE_LANGUAGE"] . '","' . $class . '","' . implode(';', $style) . '","' . $wrap . '","onkeydown","' . ($xml ? "true" : "false") . '","' . $id . '",' . ((defined('SPELLCHECKER') && $showSpell) ? "true" : "false") . ',"' . $origName . '");') .
+					'<noscript><textarea name="' . $name . '"' . ($tabindex ? ' tabindex="' . $tabindex . '"' : '') . ($cols ? ' cols="' . $cols . '"' : '') . ($rows ? ' rows="' . $rows . '"' : '') . (!empty($style) ? ' style="' . implode(';',$style) . '"' : '') . ' class="' . ($class ? $class . " " : "") . 'wetextarea wetextarea-' . $origName . '"' . ($id ? ' id="' . $id . '"' : '') . '>' . oldHtmlspecialchars($clearval) . '</textarea></noscript>';
 			} else{
-				$out .= '<textarea name="' . $name . '"' . ($tabindex ? ' tabindex="' . $tabindex . '"' : '') . ($cols ? ' cols="' . $cols . '"' : '') . ($rows ? ' rows="' . $rows . '"' : '') . (!empty($style) ? ' style="' . implode(';',$style) . '"' : '') . ($class ? ' class="' . $class . '"' : '') . ($id ? ' id="' . $id . '"' : '') . '>' . oldHtmlspecialchars($value) . '</textarea>';
+				$out .= '<textarea name="' . $name . '"' . ($tabindex ? ' tabindex="' . $tabindex . '"' : '') . ($cols ? ' cols="' . $cols . '"' : '') . ($rows ? ' rows="' . $rows . '"' : '') . (!empty($style) ? ' style="' . implode(';',$style) . '"' : '') . ' class="' . ($class ? $class . " " : "") . 'wetextarea wetextarea-' . $origName . '"' . ($id ? ' id="' . $id . '"' : '') . '>' . oldHtmlspecialchars($value) . '</textarea>';
 			}
 		}
 		return $out;

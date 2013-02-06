@@ -1671,7 +1671,7 @@ if(window.onload) {
 			//Build activation of line numbers
 			$_template_editor_linenumbers_code = we_forms::checkbox(1, get_value('editorLinenumbers'), 'newconf[editorLinenumbers]', g_l('prefs', '[editor_enable]'), true, 'defaultfont', '');
 
-			$tmp2 = we_forms::checkbox(1, get_value('FAST_RESTORE'), 'setXhtml_show_wrong_js', 'new fast Restore', false, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[FAST_RESTORE]\');') .
+			$tmp2 = we_forms::checkbox(1, get_value('FAST_RESTORE'), 'FAST_RESTORE', 'new fast Restore', false, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[FAST_RESTORE]\');') .
 				we_html_tools::hidden('newconf[FAST_RESTORE]', get_value('FAST_RESTORE'));
 
 			//Build activation of code completion
@@ -2790,7 +2790,7 @@ if(window.onload) {
 				g_l('prefs', '[backup_auto]');
 			$perf->setCol(2, 0, array("class" => "header_small", "colspan" => 3), $steps_code);
 
-			$tmp = we_forms::checkbox(1, get_value('FAST_BACKUP'), 'setXhtml_show_wrong_js', 'new fast Backup', false, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[FAST_BACKUP]\');') .
+			$tmp = we_forms::checkbox(1, get_value('FAST_BACKUP'), 'FAST_BACKUP', 'new fast Backup', false, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[FAST_BACKUP]\');') .
 				we_html_tools::hidden('newconf[FAST_BACKUP]', get_value('FAST_BACKUP'));
 
 			$tmp2 = we_forms::checkbox(1, get_value('FAST_RESTORE'), 'setXhtml_show_wrong_js', 'new fast Restore', false, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[FAST_RESTORE]\');') .

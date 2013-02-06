@@ -26,7 +26,8 @@ abstract class weXMLFileReader{
 
 	static $file = array();
 
-	static function readLine($filename, &$data, &$offset, $lines = 1, $size = 0, $iscompressed = 0){
+	static function readLine($filename, &$offset, $lines = 1, $size = 0, $iscompressed = 0){
+		$data='';
 		$prefix = $iscompressed == 0 ? 'f' : weFile::getComPrefix('gzip');
 		$open = $prefix . 'open';
 		$seek = $prefix . 'seek';
@@ -38,80 +39,82 @@ abstract class weXMLFileReader{
 			if($filename == '' || !is_readable($filename)){
 				return false;
 			}
-			if(!($_fp = $open($filename, 'rb'))){
+			if(!($fp = $open($filename, 'rb'))){
 				return false;
 			}
-			$file = array(
-				'fp' => $_fp,
-				'offset' => 0);
+			self::$file = array(
+				'fp' => $fp,
+				'offset' => 0,
+				'maxOffset' => $seek($fp, SEEK_END)
+			);
+			$seek($fp, 0);
 		}
 
 
-		if(($file['offset'] != $offset) && ($seek($file['fp'], $offset, SEEK_SET) != 0)){
+		if(self::$file['offset'] === self::$file['maxOffset'] || (self::$file['offset'] != $offset) && ($seek(self::$file['fp'], $offset, SEEK_SET) != 0)){
 			self::closeFile();
 			return false;
 		}
 
 		$i = 0;
-		$_condition = false;
+		$condition = false;
 
 		do{
-			$_buffer = '';
-			$_count = 0;
-			$_rsize = 8192; // read 8KB
+			$buffer = '';
+			$count = 0;
+			$rsize = 8192; // read 8KB
 			do{
 
-				$_buffer .= $gets($file['fp'], $_rsize);
+				$buffer .= $gets(self::$file['fp'], $rsize);
 
-				$_first = substr($_buffer, 0, 256);
-				$_end = substr($_buffer, -20, 20);
+				$first = substr($buffer, 0, 256);
+				$end = substr($buffer, -20, 20);
 
-				// chek if line is complite
-				$_iswestart = stripos($_first, '<webEdition') !== false;
-				$_isweend = stripos($_end, '</webEdition>') !== false;
-				$_isxml = preg_match('|<\?xml|i', $_first);
+				// chek if line is complete
+				$iswestart = stripos($first, '<webEdition') !== false;
+				$isweend = stripos($end, '</webEdition>') !== false;
+				$isxml = preg_match('|<\?xml|i', $first);
 
-				$_isend = preg_match("|<!-- *webackup *-->|", $_buffer) || empty($_buffer);
+				$isend = preg_match("|<!-- *webackup *-->|", $buffer) || empty($buffer);
 
-				if($_isend && self::preParse($_first)){
-					$_buffer = '';
-					$_isend = $eof($file['fp']);
+				if($isend && self::preParse($first)){
+					$buffer = '';
+					$isend = $eof(self::$file['fp']);
 				}
 
-				if($_iswestart || $_isweend || $_isxml){
-					$_buffer = '';
-					$_isend = $eof($file['fp']);
+				if($iswestart || $isweend || $isxml){
+					$buffer = '';
+					$isend = $eof(self::$file['fp']);
 				}
 				// -----------------------------------------------------
 				// avoid endless loop
-				$_count++;
-				if($_count > 100000){
+				$count++;
+				if($count > 100000){
 					break;
 				}
-			} while(!$_isend);
+			} while(!$isend);
 
 			//  check condition
 			if($size > 0){
-				if(empty($_buffer)){
-					$_condition = false;
+				if(empty($buffer)){
+					$condition = false;
 				} else{
-					$i = strlen($_buffer);
-					$_condition = ($i < $size ? !$eof($file['fp']) : false );
+					$i = strlen($buffer);
+					$condition = ($i < $size ? !$eof(self::$file['fp']) : false );
 				}
 			} else if($lines > 0){
-				$_condition = ($i < $lines ? !$eof($file['fp']) : false );
+				$condition = ($i < $lines ? !$eof(self::$file['fp']) : false );
 				$i++;
 			}
 
-			$data .= $_buffer;
-		} while($_condition);
+			$data .= $buffer;
+		} while($condition);
 
-		unset($_buffer);
+		unset($buffer);
 
-		$offset = $tell($file['fp']);
-		$file['offset'] = $offset;
+		self::$file['offset'] = $offset = $tell(self::$file['fp']);
 
-		return (!empty($data));
+		return $data;
 	}
 
 	public static function closeFile(){

@@ -913,7 +913,7 @@ function getWsQueryForSelector($tab, $includingFolders = true){
 	}
 
 	if(!($ws = makeArrayFromCSV(get_ws($tab)))){
-		return ' OR RestrictOwners=0 ';
+		return ($tab == NAVIGATION_TABLE ? '' : ' OR RestrictOwners=0 ');
 	}
 	$paths = id_to_path($ws, $tab, '', false, true);
 	$wsQuery = array();

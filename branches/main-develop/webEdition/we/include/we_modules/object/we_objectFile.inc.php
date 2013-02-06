@@ -1367,7 +1367,7 @@ class we_objectFile extends we_document{
 
 			$autobr = $this->getElement($name, "autobr") ? $this->getElement($name, "autobr") : (isset($attribs["autobr"]) ? $attribs["autobr"] : "");
 			$autobrName = 'we_' . $this->Name . '_text[' . $name . '#autobr]';
-			$textarea = we_forms::weTextarea('we_' . $this->Name . '_text[' . $name . ']', $value, $attribs, $autobr, $autobrName, true, "", (isset($attribs["classes"]) && $attribs["classes"]) ? false : true, false, $xml, $removefirstparagraph, $charset);
+			$textarea = we_forms::weTextarea('we_' . $this->Name . '_text[' . $name . ']', $value, $attribs, $autobr, $autobrName, true, "", (isset($attribs["classes"]) && $attribs["classes"]) ? false : true, false, $xml, $removefirstparagraph, $charset, true, false, $name);
 
 			return ($variant ? '' :
 					'<span class="weObjectPreviewHeadline">' . $name . ($this->DefArray["text_" . $name]["required"] ? "*" : "") . "</span>" . ( isset($this->DefArray["text_" . $name]['editdescription']) && $this->DefArray["text_" . $name]['editdescription'] ? '<div class="objectDescription">' . $this->DefArray["text_" . $name]['editdescription'] . '</div>' : we_html_element::htmlBr())

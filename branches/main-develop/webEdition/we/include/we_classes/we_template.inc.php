@@ -263,10 +263,6 @@ class we_template extends we_document{
 			}
 			$GLOBALS['we']['errorhandler']['shutdown'] = 'we';
 		}
-		/* $tags = self::removeDoppel($tags);
-		  for($i=0;$i<sizeof($tags);$i++){
-		  $tp->parseTag($tags[$i],$code);
-		  } */
 
 
 		// Code must be executed every time a template is included,

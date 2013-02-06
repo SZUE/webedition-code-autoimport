@@ -639,24 +639,24 @@ print we_message_reporting::getShowMessageCall(g_l('multiEditor', "[no_editor_le
 				for (frameId in this.EditorFrames) {
 
 					if (first) {
-						//_colStr += "*";
 						this.getEditorFrame(frameId).setEmptyEditor();
-						this.getEditorFrame(frameId).EditorFrameReference.style.display="inline";
+						//this.getEditorFrame(frameId).EditorFrameReference.style.display="inline";
+						this.getEditorFrame(frameId).EditorFrameReference.style.width="100%";
+						this.getEditorFrame(frameId).EditorFrameReference.style.height="100%";
 						first=false;
 					} else {
-						this.getEditorFrame(frameId).EditorFrameReference.style.display="none";
-						//_colStr += ",0";
+						//this.getEditorFrame(frameId).EditorFrameReference.style.display="none";
+						this.getEditorFrame(frameId).EditorFrameReference.style.height="0px";
+						this.getEditorFrame(frameId).EditorFrameReference.style.witdh="0px";
 					}
 				}
 
 			} else {
 				for (frameId in this.EditorFrames) {
-					/*			if (_colStr != "") {
-					_colStr += ",";
-				}*/
 					if (this.ActiveEditorFrameId == frameId) {
-						//_colStr += "*";
-						this.getEditorFrame(frameId).EditorFrameReference.style.display="inline";
+//						this.getEditorFrame(frameId).EditorFrameReference.style.display="inline";
+						this.getEditorFrame(frameId).EditorFrameReference.style.width="100%";
+						this.getEditorFrame(frameId).EditorFrameReference.style.height="100%";
 					} else {
 						if ( this.getEditorFrame(frameId).getEditorIsInUse() && this.getEditorFrame(frameId).EditorType != "none_webedition" && this.EditorFrames[frameId].getDocumentReference().closeAllModalWindows){
 							this.EditorFrames[frameId].getDocumentReference().closeAllModalWindows();
@@ -665,9 +665,9 @@ print we_message_reporting::getShowMessageCall(g_l('multiEditor', "[no_editor_le
 							this.getEditorFrame(frameId).EditorExitDocQuestionDialog.close();
 							this.getEditorFrame(frameId).EditorExitDocQuestionDialog = false;
 						}
-						//				_colStr += "0";
-						this.getEditorFrame(frameId).EditorFrameReference.style.display="none";
-
+						this.getEditorFrame(frameId).EditorFrameReference.style.height="0px";
+						this.getEditorFrame(frameId).EditorFrameReference.style.witdh="0px";
+	//					this.getEditorFrame(frameId).EditorFrameReference.style.display="none";
 					}
 				}
 			}

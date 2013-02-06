@@ -49,12 +49,9 @@ class we_updater{
 				break;
 			}
 		}
-		if(!$GLOBALS['DB_WE']->isColExist(FILE_TABLE, "CreatorID"))
-			$GLOBALS['DB_WE']->addCol(FILE_TABLE, "CreatorID", "BIGINT DEFAULT '0' NOT NULL");
-		if(!$GLOBALS['DB_WE']->isColExist(FILE_TABLE, "ModifierID"))
-			$GLOBALS['DB_WE']->addCol(FILE_TABLE, "ModifierID", "BIGINT DEFAULT '0' NOT NULL");
-		if(!$GLOBALS['DB_WE']->isColExist(FILE_TABLE, "WebUserID"))
-			$GLOBALS['DB_WE']->addCol(FILE_TABLE, "WebUserID", "BIGINT DEFAULT '0' NOT NULL");
+		$GLOBALS['DB_WE']->addCol(FILE_TABLE, "CreatorID", "BIGINT DEFAULT '0' NOT NULL");
+		$GLOBALS['DB_WE']->addCol(FILE_TABLE, "ModifierID", "BIGINT DEFAULT '0' NOT NULL");
+		$GLOBALS['DB_WE']->addCol(FILE_TABLE, "WebUserID", "BIGINT DEFAULT '0' NOT NULL");
 		if($hasOwnertable){
 			$DB_WE->query('SELECT * FROM ' . TBL_PREFIX . 'tblOwner');
 			while($DB_WE->next_record()) {
@@ -76,21 +73,16 @@ class we_updater{
 
 		$GLOBALS['DB_WE']->addCol(INDEX_TABLE, 'Language', "varchar(5) default NULL");
 		$GLOBALS['DB_WE']->changeColType(INDEX_TABLE, "Workspace", " varchar(1000) NOT NULL default '' ");
-		if($GLOBALS['DB_WE']->isColExist(INDEX_TABLE, 'BText')){
-			$GLOBALS['DB_WE']->delCol(INDEX_TABLE, 'BText');
-		}
+		$GLOBALS['DB_WE']->delCol(INDEX_TABLE, 'BText');
 
 
 		$GLOBALS['DB_WE']->addCol(FILE_TABLE, "Owners", "VARCHAR(255)  DEFAULT ''");
 		$GLOBALS['DB_WE']->addCol(FILE_TABLE, "RestrictOwners", "TINYINT(1)  DEFAULT ''");
 		$GLOBALS['DB_WE']->addCol(FILE_TABLE, "OwnersReadOnly", "TEXT DEFAULT ''");
 
-		if($GLOBALS['DB_WE']->isColExist(FILE_TABLE, "IsFolder"))
-			$GLOBALS['DB_WE']->changeColType(FILE_TABLE, "IsFolder", "tinyint(1) NOT NULL default '0'");
-		if($GLOBALS['DB_WE']->isColExist(FILE_TABLE, "IsDynamic"))
-			$GLOBALS['DB_WE']->changeColType(FILE_TABLE, "IsDynamic", "tinyint(1) NOT NULL default '0'");
-		if($GLOBALS['DB_WE']->isColExist(FILE_TABLE, "DocType"))
-			$GLOBALS['DB_WE']->changeColType(FILE_TABLE, "IsFolder", "varchar(64) NOT NULL default ''");
+		$GLOBALS['DB_WE']->changeColType(FILE_TABLE, "IsFolder", "tinyint(1) NOT NULL default '0'");
+		$GLOBALS['DB_WE']->changeColType(FILE_TABLE, "IsDynamic", "tinyint(1) NOT NULL default '0'");
+		$GLOBALS['DB_WE']->changeColType(FILE_TABLE, "IsFolder", "varchar(64) NOT NULL default ''");
 
 		$GLOBALS['DB_WE']->addCol(CATEGORY_TABLE, "IsFolder", "TINYINT(1) DEFAULT 0");
 		$GLOBALS['DB_WE']->addCol(CATEGORY_TABLE, "ParentID", "BIGINT(20) DEFAULT 0");
@@ -104,11 +96,12 @@ class we_updater{
 
 		if(count(getHash('SELECT * FROM ' . PREFS_TABLE . ' LIMIT 1', $GLOBALS['DB_WE'])) > 3){
 			//make a backup
-			$DB_WE->query('CREATE TABLE IF NOT EXISTS ' . PREFS_TABLE . '_old LIKE ' . PREFS_TABLE);
+			$DB_WE->query('DROP TABLE IF EXISTS ' . PREFS_TABLE . '_old');
+			$DB_WE->query('CREATE TABLE ' . PREFS_TABLE . '_old LIKE ' . PREFS_TABLE);
 			$DB_WE->query('INSERT INTO ' . PREFS_TABLE . '_old SELECT * FROM ' . PREFS_TABLE);
 
 			$DB_WE->query('DELETE FROM ' . PREFS_TABLE . ' WHERE userID=0');
-			$DB_WE->query('SELECT * FROM ' . PREFS_TABLE. ' LIMIT 1');
+			$DB_WE->query('SELECT * FROM ' . PREFS_TABLE . ' LIMIT 1');
 			$queries = $DB_WE->getAll();
 			$keys = array_keys($queries[0]);
 			foreach($keys as $key){
@@ -132,8 +125,7 @@ class we_updater{
 			}
 		}
 
-		if($GLOBALS['DB_WE']->isColExist(DOC_TYPES_TABLE, "DocType"))
-			$GLOBALS['DB_WE']->changeColType(DOC_TYPES_TABLE, "DocType", " varchar(64) NOT NULL default '' ");
+		$GLOBALS['DB_WE']->changeColType(DOC_TYPES_TABLE, "DocType", " varchar(64) NOT NULL default '' ");
 
 		$GLOBALS['DB_WE']->changeColType(ERROR_LOG_TABLE, "ID", "int(11) NOT NULL auto_increment");
 		$GLOBALS['DB_WE']->addCol(ERROR_LOG_TABLE, "Type", " enum('Error','Warning','Parse error','Notice','Core error','Core warning','Compile error','Compile warning','User error','User warning','User notice','Deprecated notice','User deprecated notice','unknown Error') NOT NULL ", ' AFTER ID ');
@@ -143,15 +135,11 @@ class we_updater{
 		$GLOBALS['DB_WE']->addCol(ERROR_LOG_TABLE, "Backtrace", "text NOT NULL", ' AFTER Text ');
 		$GLOBALS['DB_WE']->changeColType(ERROR_LOG_TABLE, "Date", "timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP");
 
-		if($GLOBALS['DB_WE']->isColExist(FAILED_LOGINS_TABLE, "ID"))
-			$GLOBALS['DB_WE']->changeColType(FAILED_LOGINS_TABLE, "ID", "bigint(20) NOT NULL AUTO_INCREMENT");
-		if($GLOBALS['DB_WE']->isColExist(FAILED_LOGINS_TABLE, "IP"))
-			$GLOBALS['DB_WE']->changeColType(FAILED_LOGINS_TABLE, "IP", " varchar(40) NOT NULL");
-		if($GLOBALS['DB_WE']->isColExist(FAILED_LOGINS_TABLE, "LoginDate"))
-			$GLOBALS['DB_WE']->changeColType(FAILED_LOGINS_TABLE, "LoginDate", " timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP");
+		$GLOBALS['DB_WE']->changeColType(FAILED_LOGINS_TABLE, "ID", "bigint(20) NOT NULL AUTO_INCREMENT");
+		$GLOBALS['DB_WE']->changeColType(FAILED_LOGINS_TABLE, "IP", " varchar(40) NOT NULL");
+		$GLOBALS['DB_WE']->changeColType(FAILED_LOGINS_TABLE, "LoginDate", " timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP");
 
-		if($GLOBALS['DB_WE']->isColExist(LINK_TABLE, "DocumentTable"))
-			$GLOBALS['DB_WE']->changeColType(LINK_TABLE, "DocumentTable", " enum('tblFile','tblTemplates') NOT NULL ");
+		$GLOBALS['DB_WE']->changeColType(LINK_TABLE, "DocumentTable", " enum('tblFile','tblTemplates') NOT NULL ");
 
 		if(defined('GLOSSARY_TABLE')){
 			$GLOBALS['DB_WE']->changeColType(GLOSSARY_TABLE, "`Type`", " enum('abbreviation','acronym','foreignword','link','textreplacement') NOT NULL default 'abbreviation'");
@@ -376,15 +364,17 @@ class we_updater{
 				$GLOBALS['DB_WE']->changeColType(CUSTOMER_TABLE, "MemberSince", "int(10) NOT NULL default 0");
 			}
 
-			if(!$GLOBALS['DB_WE']->isColExist(CUSTOMER_TABLE, "LastLogin"))
+			if(!$GLOBALS['DB_WE']->isColExist(CUSTOMER_TABLE, "LastLogin")){
 				$GLOBALS['DB_WE']->addCol(CUSTOMER_TABLE, "LastLogin", "int(10) NOT NULL default 0", ' AFTER MemberSince ');
-			else
+			} else{
 				$GLOBALS['DB_WE']->changeColType(CUSTOMER_TABLE, "LastLogin", "int(10) NOT NULL default 0");
+			}
 
-			if(!$GLOBALS['DB_WE']->isColExist(CUSTOMER_TABLE, "LastAccess"))
+			if(!$GLOBALS['DB_WE']->isColExist(CUSTOMER_TABLE, "LastAccess")){
 				$GLOBALS['DB_WE']->addCol(CUSTOMER_TABLE, "LastAccess", "int(10) NOT NULL default 0", ' AFTER LastLogin ');
-			else
+			} else{
 				$GLOBALS['DB_WE']->changeColType(CUSTOMER_TABLE, "LastAccess", "int(10) NOT NULL default 0");
+			}
 
 			$GLOBALS['DB_WE']->addCol(CUSTOMER_TABLE, "AutoLoginDenied", "tinyint(1) NOT NULL default '0'", " AFTER LastAccess ");
 			$GLOBALS['DB_WE']->addCol(CUSTOMER_TABLE, "AutoLogin", "tinyint(1) NOT NULL default '0'", " AFTER AutoLoginDenied ");
