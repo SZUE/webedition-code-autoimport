@@ -20,4 +20,4 @@ CREATE TABLE ###TBLPREFIX###tblDocTypes (
   Category varchar(255) default NULL,
   Language varchar(5) default NULL,
   PRIMARY KEY  (ID)
-) ENGINE=MyISAM; 
+) ENGINE=MyISAM;
