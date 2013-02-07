@@ -175,8 +175,8 @@ $GLOBALS['configs'] = array(
 	),
 	'user' => array(//FIXME: most defaults (currently null) are handled by remember_value! change this!
 //key => default-val, permission. default true
-		'Language' => array(''),
-		'BackendCharset' => array(''),
+		'Language' => array('Deutsch'),
+		'BackendCharset' => array('UTF-8'),
 		'default_tree_count' => array(0),
 		'sizeOpt' => array(null),
 		'weWidth' => array(0),
