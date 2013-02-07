@@ -128,26 +128,26 @@ if(!isset($_REQUEST["cmd"]) || (isset($_REQUEST["cmd"]) && $_REQUEST["cmd"] != "
 			}
 
 			function reorderDir(dir,order) {
-				setTimeout('top.fsbody.location="we_sselector_body.php?dir='+dir+'&ord='+order+'&fil='+top.currentFilter+'&curID='+escape(top.currentID)+'"',100);
+				setTimeout('top.fsbody.location="we_sselector_body.php?dir='+dir+'&ord='+order+'&file='+top.currentFilter+'&curID='+escape(top.currentID)+'"',100);
 			}
 
 			function drawDir(dir) {
 				switch(arguments[1]){
 					case "new_folder":
-						top.fsbody.location="we_sselector_body.php?dir="+escape(top.rootDir+dir)+"&nf=new_folder&fil="+top.currentFilter+"&curID="+escape(top.currentID);
+						top.fsbody.location="we_sselector_body.php?dir="+escape(top.rootDir+dir)+"&nf=new_folder&file="+top.currentFilter+"&curID="+escape(top.currentID);
 						break;
 					case "rename_folder":
 						if(arguments[2]) {
-							top.fsbody.location="we_sselector_body.php?dir="+escape(top.rootDir+dir)+"&nf=rename_folder&sid="+escape(arguments[2])+"&fil="+top.currentFilter+"&curID="+escape(top.currentID);
+							top.fsbody.location="we_sselector_body.php?dir="+escape(top.rootDir+dir)+"&nf=rename_folder&sid="+escape(arguments[2])+"&file="+top.currentFilter+"&curID="+escape(top.currentID);
 						}
 						break;
 					case "rename_file":
 						if(arguments[2]) {
-							top.fsbody.location="we_sselector_body.php?dir="+escape(top.rootDir+dir)+"&nf=rename_file&sid="+escape(arguments[2])+"&fil="+top.currentFilter+"&curID="+escape(top.currentID);
+							top.fsbody.location="we_sselector_body.php?dir="+escape(top.rootDir+dir)+"&nf=rename_file&sid="+escape(arguments[2])+"&file="+top.currentFilter+"&curID="+escape(top.currentID);
 						}
 						break;
 					default:
-						setTimeout('top.fsbody.location="we_sselector_body.php?dir='+escape(top.rootDir+dir)+'&fil='+top.currentFilter+'&curID='+escape(top.currentID)+'"',100);
+						setTimeout('top.fsbody.location="we_sselector_body.php?dir='+escape(top.rootDir+dir)+'&file='+top.currentFilter+'&curID='+escape(top.currentID)+'"',100);
 				}
 			}
 

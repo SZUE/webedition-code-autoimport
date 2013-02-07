@@ -49,7 +49,6 @@ class weNavigationRuleFrames{
 	}
 
 	function getHTMLFrameset(){
-
 return we_html_tools::htmlTop(g_l('navigation', '[menu_highlight_rules]')) . STYLESHEET . '</head>' .
 			we_html_element::htmlBody(array('style' => 'background-image: url(' . IMAGE_DIR . 'backgrounds/aquaBackground.gif);margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;')
 				, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
@@ -57,7 +56,6 @@ return we_html_tools::htmlTop(g_l('navigation', '[menu_highlight_rules]')) . STY
 					we_html_element::htmlIFrame('cmdFrame', HTML_DIR . "white.html", 'position:absolute;bottom:0px;height:0px;left:0px;right:0px;overflow: hidden;')
 				)) .
 			'</html>';
-
 	}
 
 	function getHTMLContent(){

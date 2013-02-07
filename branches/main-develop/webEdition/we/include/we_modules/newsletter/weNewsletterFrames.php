@@ -2210,7 +2210,7 @@ class weNewsletterFrames extends weModuleFrames{
 		$frameset->addFrame(array("src" => $this->frameset . "?pnt=send_cmd", "name" => "send_cmd", "scrolling" => "no"));
 		$frameset->addFrame(array("src" => $this->frameset . "?pnt=send_control&nid=$nid&test=$test&blockcache=" . $ret["blockcache"] . "&emailcache=" . $ret["emailcache"] . "&ecount=" . $ret["ecount"] . "&gcount=" . $ret["gcount"], "name" => "send_control", "scrolling" => "no"));
 
-		$body = $frameset->getHtml() . "\n" . $noframeset->getHTML();
+		$body = $frameset->getHtml() . $noframeset->getHTML();
 
 		return $this->getHTMLDocument($body, $head);
 	}

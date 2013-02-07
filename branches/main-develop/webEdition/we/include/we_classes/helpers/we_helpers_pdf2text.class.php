@@ -114,7 +114,7 @@ class we_helpers_pdf2text{
 			$this->data = array();
 			foreach($info as $key => &$cur){
 				$cur = self::getStringContent($cur);
-				if(strstr($key, 'Date')){
+				if(strstr($key, 'Date')&&method_exists('DateTime','createFromFormat')){
 					if(($cur = DateTime::createFromFormat('YmdHis', substr($cur, 2, 14)))){
 						$cur = $cur->format(g_l('date', '[format][default]'));
 					}
@@ -826,7 +826,7 @@ class we_helpers_pdf2text{
 		}
 	}
 
-	private function setOctChar($char){
+	private static function setOctChar($char){
 		return chr(octdec($char[1]));
 	}
 
@@ -836,13 +836,13 @@ class we_helpers_pdf2text{
 		preg_match_all('#\(((?:\\\\.|[^\\\\\\)])+)\)(-?\d+\.\d{1,7})?#', $string, $parts);
 
 		//add spaces only if size is bigger than a certain amount
-		$parts[2] = array_filter($parts[2], 'self::lower');
+		$parts[2] = array_filter($parts[2], 'we_helpers_pdf2text::lower');
 		foreach(array_keys($parts[2]) as $key){
 			$parts[1][$key].=self::SPACE;
 		}
 		$tmp = implode('', $parts[1]);
 
-		return preg_replace_callback('#\\\\(\d{3})#', 'self::setOctChar', $tmp);
+		return preg_replace_callback('#\\\\(\d{3})#', 'we_helpers_pdf2text::setOctChar', $tmp);
 	}
 
 	private static function lower($val){

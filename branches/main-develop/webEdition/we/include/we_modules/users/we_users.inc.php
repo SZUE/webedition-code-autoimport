@@ -2474,7 +2474,12 @@ $this->Preferences=' . var_export($this->Preferences, true) . ';
 		return $ret;
 	}
 
-	static function writePrefs($id, $db, $data = ''){
+	/** write settings for a user, all default values are applied before data is written
+	 * @id int user id to write settings for
+	 * @db socket database connection
+	 * @data array optional if empty settings of current session are used.
+	 */
+	static function writePrefs($id, $db, array $data = array()){
 		$id = intval($id);
 		if($data){
 			$old = array('userID' => $id);

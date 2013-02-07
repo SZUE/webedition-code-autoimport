@@ -557,14 +557,6 @@ $GLOBALS[\'_we_active_integrated_modules\'] = array(
 			}
 			return;
 
-		case 'DISABLE_TEMPLATE_CODE_CHECK':
-			$_file = &$GLOBALS['config_files']['conf_global']['content'];
-
-			if($settingvalue != constant($settingname)){
-				$_file = we_base_preferences::changeSourceCode('define', $_file, $settingname, $settingvalue, true, $comment);
-			}
-
-			return;
 	}
 }
 
@@ -2572,14 +2564,20 @@ if(window.onload) {
 
 			// Create checkboxes
 			$_template_error_handling_table = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0"), 8, 1);
-			$_template_error_handling_table->setCol(0, 0, null, we_forms::checkbox(1, get_value("DISABLE_TEMPLATE_CODE_CHECK"), "newconf[DISABLE_TEMPLATE_CODE_CHECK]", g_l('prefs', '[disable_template_code_check]')));
+			$_template_error_handling_table->setCol(0, 0, null,
+				we_forms::checkbox(1, get_value('DISABLE_TEMPLATE_CODE_CHECK'), 'DISABLE_TEMPLATE_CODE_CHECK', g_l('prefs', '[disable_template_code_check]'), true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[DISABLE_TEMPLATE_CODE_CHECK]\');') .
+				we_html_tools::hidden('newconf[DISABLE_TEMPLATE_CODE_CHECK]', get_value('DISABLE_TEMPLATE_CODE_CHECK')));
+
+			$_template_error_handling_table->setCol(1, 0, null,
+				we_forms::checkbox(1, get_value('DISABLE_TEMPLATE_PARSER'), 'DISABLE_TEMPLATE_PARSER', g_l('prefs', '[disable_template_parser]'), true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[DISABLE_TEMPLATE_PARSER]\');') .
+				we_html_tools::hidden('newconf[DISABLE_TEMPLATE_PARSER]', get_value('DISABLE_TEMPLATE_PARSER')));
+
+
 
 			// Create checkboxes
 			$_we_error_handler = we_forms::checkbox(1, get_value("WE_ERROR_HANDLER"), "newconf[WE_ERROR_HANDLER]", g_l('prefs', '[error_use_handler]'), false, "defaultfont", "set_state_error_handler();");
 
-			/**
-			 * Error types
-			 */
+			 // Error types
 			// Create checkboxes
 			$_error_handling_table = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0"), 8, 1);
 
@@ -2620,29 +2618,6 @@ if(window.onload) {
 				array("headline" => g_l('prefs', '[error_displaying]'), "html" => $_error_display_table->getHtml(), "space" => 200),
 			);
 
-			/*
-			  // Create checkboxes
-			  $_debug_table = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0"), 3, 1);
-
-			  $_debug_table->setCol(0, 0, null, we_forms::checkbox(1, get_value("debug_normal"), "debug_normal", g_l('prefs', '[debug_normal]') . "*"));
-			  $_debug_table->setCol(1, 0, null, we_html_tools::getPixel(1, 5));
-			  $_debug_table->setCol(2, 0, null, we_forms::checkbox(1, get_value("debug_seem"), "debug_seem", g_l('prefs', '[debug_seem]') . "*"));
-
-			  // Build dialog if user has permission
-			  if(we_hasPerm("ADMINISTRATOR")){
-			  $_settings[] = array("headline" => g_l('prefs', '[show_debug_frame]'), "html" => $_debug_table->getHtml(), "space" => 200, "noline" => 1);
-			  }
-
-			  // Create notice
-			  $_debug_notice = we_html_tools::getPixel(6, 6) . "<span class=\"small\">* " . g_l('prefs', '[debug_restart]') . "</span>";
-
-			  // Build notice dialog if user has permission
-			  if(we_hasPerm("ADMINISTRATOR")){
-			  $_settings[] = array("headline" => "", "html" => $_debug_notice, "space" => 200);
-			  }
-
-
-			 */
 			$_settings_cookie = weGetCookieVariable("but_settings_error_expert");
 
 			return create_dialog("settings_error_expert", g_l('prefs', '[tab][error_handling]'), $_settings, $_foldAt, g_l('prefs', '[show_expert]'), g_l('prefs', '[hide_expert]'), $_settings_cookie, $_needed_JavaScript);

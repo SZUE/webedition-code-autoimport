@@ -155,7 +155,6 @@ function we_getCatsFromIDs($catIDs, $tokken = ',', $showpath = false, $db = '', 
 			$cats[] = $data[$field];
 		}
 	}
-	t_e($cats, $catIDs);
 	if(($showpath || $catfield == 'Path') && strlen($rootdir)){
 		foreach($cats as &$cat){
 			if(substr($cat, 0, strlen($rootdir)) == $rootdir){

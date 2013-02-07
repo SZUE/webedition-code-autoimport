@@ -44,14 +44,12 @@ abstract class weXMLFileReader{
 			}
 			self::$file = array(
 				'fp' => $fp,
-				'offset' => 0,
-				'maxOffset' => $seek($fp, SEEK_END)
+				'offset' => $offset,
 			);
-			$seek($fp, 0);
+			$seek($fp, $offset);
 		}
 
-
-		if(self::$file['offset'] === self::$file['maxOffset'] || (self::$file['offset'] != $offset) && ($seek(self::$file['fp'], $offset, SEEK_SET) != 0)){
+		if((self::$file['offset'] != $offset) && ($seek(self::$file['fp'], $offset, SEEK_SET) != 0)){
 			self::closeFile();
 			return false;
 		}
