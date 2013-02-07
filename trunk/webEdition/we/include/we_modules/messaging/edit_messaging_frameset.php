@@ -758,7 +758,7 @@ foreach($messaging->available_folders as $folder){
 </script>
 </head>
 
-<frameset rows="32,40,*,<?php print ($_SESSION["prefs"]["debug_normal"] != 0) ? 100 : 0; ?>" framespacing="0" border="0" frameborder="NO">
+<frameset rows="32,40,*,0" framespacing="0" border="0" frameborder="NO">
 	<frame src="<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_header.php" name="messaging_header" scrolling="no" noresize>
 		<frame src="<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_iconbar.php?we_transaction=<?php echo $we_transaction ?>" name="messaging_iconbar" scrolling="no" noresize>
 			<frame src="<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_main.php?we_transaction=<?php echo $we_transaction ?>" name="messaging_main" scrolling="no" noresize>

@@ -2618,29 +2618,6 @@ if(window.onload) {
 				array("headline" => g_l('prefs', '[error_displaying]'), "html" => $_error_display_table->getHtml(), "space" => 200),
 			);
 
-			/*
-			  // Create checkboxes
-			  $_debug_table = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0"), 3, 1);
-
-			  $_debug_table->setCol(0, 0, null, we_forms::checkbox(1, get_value("debug_normal"), "debug_normal", g_l('prefs', '[debug_normal]') . "*"));
-			  $_debug_table->setCol(1, 0, null, we_html_tools::getPixel(1, 5));
-			  $_debug_table->setCol(2, 0, null, we_forms::checkbox(1, get_value("debug_seem"), "debug_seem", g_l('prefs', '[debug_seem]') . "*"));
-
-			  // Build dialog if user has permission
-			  if(we_hasPerm("ADMINISTRATOR")){
-			  $_settings[] = array("headline" => g_l('prefs', '[show_debug_frame]'), "html" => $_debug_table->getHtml(), "space" => 200, "noline" => 1);
-			  }
-
-			  // Create notice
-			  $_debug_notice = we_html_tools::getPixel(6, 6) . "<span class=\"small\">* " . g_l('prefs', '[debug_restart]') . "</span>";
-
-			  // Build notice dialog if user has permission
-			  if(we_hasPerm("ADMINISTRATOR")){
-			  $_settings[] = array("headline" => "", "html" => $_debug_notice, "space" => 200);
-			  }
-
-
-			 */
 			$_settings_cookie = weGetCookieVariable("but_settings_error_expert");
 
 			return create_dialog("settings_error_expert", g_l('prefs', '[tab][error_handling]'), $_settings, $_foldAt, g_l('prefs', '[show_expert]'), g_l('prefs', '[hide_expert]'), $_settings_cookie, $_needed_JavaScript);
