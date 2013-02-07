@@ -13,4 +13,4 @@ CREATE TABLE ###TBLPREFIX###tblErrorLog (
   `Date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (ID),
   KEY `Date` (`Date`)
-) ENGINE=MyISAM; 
+) ENGINE=MyISAM;
