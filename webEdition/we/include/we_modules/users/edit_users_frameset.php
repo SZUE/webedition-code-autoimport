@@ -528,7 +528,7 @@ if($_SESSION["perms"]["NEW_USER"] || $_SESSION["perms"]["NEW_GROUP"] || $_SESSIO
 </script>
 </head>
 
-<frameset rows="32,*,<?php print ($_SESSION["prefs"]["debug_normal"] != 0) ? 100 : 0; ?>" framespacing="0" border="0" frameborder="NO" onLoad="start();">
+<frameset rows="32,*,0" framespacing="0" border="0" frameborder="NO" onLoad="start();">
 	<frame src="<?php print WE_USERS_MODULE_DIR; ?>edit_users_header.php" name="user_header" scrolling=no noresize/>
 	<frame src="<?php print WE_USERS_MODULE_DIR; ?>edit_users_resize.php" name="user_resize" scrolling=no/>
 	<frame src="<?php print WE_USERS_MODULE_DIR; ?>edit_users_cmd.php" name="user_cmd" scrolling=no noresize/>
