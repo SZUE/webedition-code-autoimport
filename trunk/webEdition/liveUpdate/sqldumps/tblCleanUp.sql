@@ -5,4 +5,4 @@ CREATE TABLE ###TBLPREFIX###tblCleanUp (
   PRIMARY KEY  (ID),
   UNIQUE KEY Path (Path),
   KEY `Date` (`Date`)
-) ENGINE=MyISAM;
+) ENGINE=MyISAM; 
