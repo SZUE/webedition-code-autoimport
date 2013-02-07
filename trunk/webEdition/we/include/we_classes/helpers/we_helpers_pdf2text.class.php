@@ -826,7 +826,7 @@ class we_helpers_pdf2text{
 		}
 	}
 
-	private function setOctChar($char){
+	private static function setOctChar($char){
 		return chr(octdec($char[1]));
 	}
 
