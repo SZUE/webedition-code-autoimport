@@ -60,29 +60,37 @@ function up6300_updateActiveModules(){
 }
 
 function up6300_updateConf(){
-	$filename = $_SERVER["DOCUMENT_ROOT"] . '/webEdition/we/include/conf/we_conf.inc.php';
-	$conf = file_get_contents($filename);
-	$changes = false;
+	$filename= $_SERVER["DOCUMENT_ROOT"].'/webEdition/we/include/conf/we_conf.inc.php';
+	$conf=file_get_contents($filename);
+
+	$conf = str_replace(array('include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."db_mysql.inc.php")', '?>'), '', $conf);
+
 	if(strpos($conf, '_UTF-8') !== false){
 		$conf = str_replace('_UTF-8', '', $conf);
 		$settingvalue = 'UTF-8';
-		$changes = true;
-	} else{
+	} else {
 		$settingvalue = 'ISO-8859-1';
 	}
-	if(strpos($conf, 'define("WE_BACKENDCHARSET"') === false){
+
+	if(strpos($conf, 'define("WE_BACKENDCHARSET"' ) === false){
 		$insert = "// Original backend charset of this version of webEdition, used for login-screen\ndefine(\"WE_BACKENDCHARSET\", '" . $settingvalue . "');\n
-if (!isset(\$GLOBALS[\"WE_LANGUAGE\"])) {
+if(!isset(\$GLOBALS[\"WE_LANGUAGE\"])){
 	\$GLOBALS[\"WE_LANGUAGE\"] = WE_LANGUAGE;
 }\n
-if (!isset(\$GLOBALS[\"WE_BACKENDCHARSET\"])) {
+if(!isset(\$GLOBALS[\"WE_BACKENDCHARSET\"])){
 	\$GLOBALS[\"WE_BACKENDCHARSET\"] = WE_BACKENDCHARSET;
 }\n\n";
-		$conf = str_replace(array('include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."db_mysql.inc.php")', '?>'), '', $conf);
-		$conf .= $insert;
-		$changes = true;
+
+		$pos1 = strpos($conf, 'if (!isset($GLOBALS["WE_LANGUAGE');
+		$pos2 = strpos($conf, '// PHP 5.3 date init');
+		$conf = ($pos1 !== false && $pos2 !== false) ? substr($conf, 0, $pos1) . $insert . substr($conf, $pos2) : $conf . $insert;
+	} else{
+		$conf = str_replace('if (!isset($GLOBALS["WE_LANGUAGE"])) {
+	$GLOBALS["WE_BACKENDCHARSET"]', 'if(!isset($GLOBALS["WE_BACKENDCHARSET"])){
+	$GLOBALS["WE_BACKENDCHARSET"]', $conf);
 	}
-	return $changes ? file_put_contents($filename, $conf) : true;
+
+	return file_put_contents($filename, $conf);
 }
 
 function up6300_removeFiles(){
