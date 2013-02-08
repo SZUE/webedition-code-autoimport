@@ -132,7 +132,7 @@ class we_search{
 			$foo = makeArrayFromCSV($we_SearchField);
 			$q = array();
 			foreach($foo as $f){
-				$tmp = str_replace('.', '`.', $f);
+				$tmp = str_replace('.', '.`', $f);
 				if($tmp == $f){
 					$tmp = '`' . $tmp;
 				}
@@ -140,7 +140,7 @@ class we_search{
 			}
 			return ' ' . $concat . ' ( ' . implode(' OR ', $q) . ' ) ';
 		} else{
-			$tmp = str_replace('.', '`.', $we_SearchField);
+			$tmp = str_replace('.', '.`', $we_SearchField);
 			if($tmp == $we_SearchField){
 				$tmp='`'.$tmp;
 			}

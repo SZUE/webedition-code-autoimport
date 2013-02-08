@@ -482,26 +482,30 @@ class we_class_folder extends we_folder{
 				}
 
 				$javascriptAll .= "var flo=document.we_form.elements['weg" . $this->searchclass->f("ID") . "'].checked=true;";
-				$content[$f][0]["height"] = 35;
-				$content[$f][0]["align"] = "center";
-				$content[$f][0]["dat"] = (we_hasPerm("DELETE_OBJECTFILE") ?
-						'<input type="checkbox" name="weg' . $this->searchclass->f("ID") . '" />' :
-						'<img src="' . TREE_IMAGE_DIR . 'check0_disabled.gif" />'
-					);
-
-				$content[$f][1]["align"] = "center";
-				$content[$f][1]["dat"] = '<img src="' . IMAGE_DIR . ($this->searchclass->f("OF_Published") && (((in_workspace($this->WorkspaceID, $this->searchclass->f("OF_Workspaces")) && $this->searchclass->f("OF_Workspaces") != "") || (in_workspace($this->WorkspaceID, $this->searchclass->f("OF_ExtraWorkspacesSelected")) && $this->searchclass->f("OF_ExtraWorkspacesSelected") != "" ) ) || ($this->searchclass->f("OF_Workspaces") == "" && $ok)) ?
-						'we_boebbel_blau.gif' :
-						'we_boebbel_grau.gif'
-					) . '" width="16" height="18" />';
-				$content[$f][2]["dat"] = ($this->searchclass->f("OF_IsSearchable") ?
-						'<img src="' . IMAGE_DIR . 'we_boebbel_blau.gif" width="16" height="18" title="' . g_l('modules_objectClassfoldersearch', '[issearchable]') . '" />' :
-						'<img src="' . IMAGE_DIR . 'we_boebbel_grau.gif" width="16" height="18" title="' . g_l('modules_objectClassfoldersearch', '[isnotsearchable]') . '" />'
-					);
-				$content[$f][3]["dat"] = '<a href="javascript:top.weEditorFrameController.openDocument(\'' . OBJECT_FILES_TABLE . '\',' . $this->searchclass->f("OF_ID") . ',\'objectFile\');" style="text-decoration:none" class="middlefont" title="' . $this->searchclass->f("OF_Path") . '">' . $this->searchclass->f("OF_ID") . '</a>';
-
-				$content[$f][4]["dat"] = '<a href="javascript:top.weEditorFrameController.openDocument(\'' . OBJECT_FILES_TABLE . '\',' . $this->searchclass->f("OF_ID") . ',\'objectFile\');" style="text-decoration:none" class="defaultfont" title="' . $this->searchclass->f("OF_Path") . '">' . shortenPath($this->searchclass->f("OF_Text"), $we_obectPathLength) . '</a>';
-
+				$content[$f] =
+					array(
+						array(
+							"height" => 35,
+							"align" => "center",
+							"dat" => (we_hasPerm("DELETE_OBJECTFILE") ?
+								'<input type="checkbox" name="weg' . $this->searchclass->f("ID") . '" />' :
+								'<img src="' . TREE_IMAGE_DIR . 'check0_disabled.gif" />'
+							)),
+						array(
+							"align" => "center",
+							"dat" => '<img src="' . IMAGE_DIR . ($this->searchclass->f("OF_Published") && (((in_workspace($this->WorkspaceID, $this->searchclass->f("OF_Workspaces")) && $this->searchclass->f("OF_Workspaces") != "") || (in_workspace($this->WorkspaceID, $this->searchclass->f("OF_ExtraWorkspacesSelected")) && $this->searchclass->f("OF_ExtraWorkspacesSelected") != "" ) ) || ($this->searchclass->f("OF_Workspaces") == "" && $ok)) ?
+								'we_boebbel_blau.gif' :
+								'we_boebbel_grau.gif'
+							) . '" width="16" height="18" />'
+						),
+						array(
+							"dat" => ($this->searchclass->f("OF_IsSearchable") ?
+								'<img src="' . IMAGE_DIR . 'we_boebbel_blau.gif" width="16" height="18" title="' . g_l('modules_objectClassfoldersearch', '[issearchable]') . '" />' :
+								'<img src="' . IMAGE_DIR . 'we_boebbel_grau.gif" width="16" height="18" title="' . g_l('modules_objectClassfoldersearch', '[isnotsearchable]') . '" />'
+							)),
+						array("dat" => '<a href="javascript:top.weEditorFrameController.openDocument(\'' . OBJECT_FILES_TABLE . '\',' . $this->searchclass->f("OF_ID") . ',\'objectFile\');" style="text-decoration:none" class="middlefont" title="' . $this->searchclass->f("OF_Path") . '">' . $this->searchclass->f("OF_ID") . '</a>'),
+						array("dat" => '<a href="javascript:top.weEditorFrameController.openDocument(\'' . OBJECT_FILES_TABLE . '\',' . $this->searchclass->f("OF_ID") . ',\'objectFile\');" style="text-decoration:none" class="defaultfont" title="' . $this->searchclass->f("OF_Path") . '">' . shortenPath($this->searchclass->f("OF_Text"), $we_obectPathLength) . '</a>'),
+				);
 				for($i = 0; $i < $count; $i++){
 					switch($type[$i + 5]){
 						case "date":
@@ -568,7 +572,7 @@ class we_class_folder extends we_folder{
 
 				$f++;
 			}
-		} else{
+			//} else{
 			//$out .= "Leider nichts gefunden!";
 		}
 		return $this->getSearchresult($content, $headline, $foundItems, $javascriptAll);
@@ -608,18 +612,18 @@ class we_class_folder extends we_folder{
 					);
 
 				$out .= '
-				<tr>
-					<td class="defaultfont">' . g_l('global', "[search]") . '</td>
-					<td width="50">' . we_html_tools::getPixel(5, 2) . '</td>'
+<tr>
+	<td class="defaultfont">' . g_l('global', "[search]") . '</td>
+	<td width="50">' . we_html_tools::getPixel(5, 2) . '</td>'
 					//<td>'.$this->searchclass->getFields("objsearchField[".$i."]",1,$this->searchclass->objsearchField[$i],$this->Path).'</td> #4076 orig
 					. '<td>' . $this->searchclass->getFields("objsearchField[" . $i . "]", 1, $this->searchclass->objsearchField[$i], $this->ClassPath) . '</td>
-					<td>' . we_html_tools::getPixel(10, 2) . '</td>
-					<td width="50">' . $this->searchclass->getLocationMeta("objlocation[" . $i . "]", (isset($this->searchclass->objlocation[$i]) ? $this->searchclass->objlocation[$i] : '')) . '</td>
-					<td>' . we_html_tools::getPixel(10, 2) . '</td>
-					<td>' . we_html_tools::htmlSelect('objsearch[' . $i . ']', $values, 1, $this->searchclass->objsearch[$i], false, '', 'value') . '</td>
-					<td>' . we_html_tools::getPixel(10, 2) . '</td>
-					<td align="right">' . $button . '</td>
-				</tr>';
+	<td>' . we_html_tools::getPixel(10, 2) . '</td>
+	<td width="50">' . $this->searchclass->getLocationMeta("objlocation[" . $i . "]", (isset($this->searchclass->objlocation[$i]) ? $this->searchclass->objlocation[$i] : '')) . '</td>
+	<td>' . we_html_tools::getPixel(10, 2) . '</td>
+	<td>' . we_html_tools::htmlSelect('objsearch[' . $i . ']', $values, 1, $this->searchclass->objsearch[$i], false, '', 'value') . '</td>
+	<td>' . we_html_tools::getPixel(10, 2) . '</td>
+	<td align="right">' . $button . '</td>
+</tr>';
 			} elseif(isset($this->searchclass->objsearchField) && is_array($this->searchclass->objsearchField) && isset($this->searchclass->objsearchField[$i]) && substr($this->searchclass->objsearchField[$i], 0, 4) == "date"){
 				$DefaultValues = unserialize(f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->ClassID), 'DefaultValues', $DB_WE));
 
@@ -644,51 +648,50 @@ class we_class_folder extends we_folder{
 				}
 
 				$out .= '
-				<tr>
-					<td class="defaultfont">' . g_l('global', "[search]") . '</td>
-					<td>' . we_html_tools::getPixel(5, 2) . '</td>'
-					//<td>'.$this->searchclass->getFields("objsearchField[".$i."]",1,$this->searchclass->objsearchField[$i],$this->Path).'</td> #4076 orig
-					. '<td>' . $this->searchclass->getFields("objsearchField[" . $i . "]", 1, $this->searchclass->objsearchField[$i], $this->ClassPath) . '</td>
-					<td>' . we_html_tools::getPixel(10, 2) . '</td>
-					<td>' . $this->searchclass->getLocationDate("objlocation[" . $i . "]", (isset($this->searchclass->objlocation[$i]) ? $this->searchclass->objlocation[$i] : '')) . '</td>
-					<td>' . we_html_tools::getPixel(10, 2) . '</td>
-					<td>
-						' . we_html_tools::htmlTextInput('objsearch[' . $i . '][year]', 4, (isset($this->searchclass->objsearch) && is_array($this->searchclass->objsearch) && isset($this->searchclass->objsearch[$i]['year']) ? $this->searchclass->objsearch[$i]['year'] : date("Y")), 4) . ' -
-						' . we_html_tools::htmlSelect('objsearch[' . $i . '][month]', $month, 1, (isset($this->searchclass->objsearch) && is_array($this->searchclass->objsearch) && isset($this->searchclass->objsearch[$i]['month']) ? $this->searchclass->objsearch[$i]['month'] : date("m"))) . ' -
-						' . we_html_tools::htmlSelect('objsearch[' . $i . '][day]', $day, 1, (isset($this->searchclass->objsearch) && is_array($this->searchclass->objsearch) && isset($this->searchclass->objsearch[$i]['day']) ? $this->searchclass->objsearch[$i]['day'] : date("d"))) . ' &nbsp;
-						' . we_html_tools::htmlSelect('objsearch[' . $i . '][hour]', $hour, 1, (isset($this->searchclass->objsearch) && is_array($this->searchclass->objsearch) && isset($this->searchclass->objsearch[$i]['hour']) ? $this->searchclass->objsearch[$i]['hour'] : date("H"))) . ' :
-						' . we_html_tools::htmlSelect('objsearch[' . $i . '][minute]', $minute, 1, (isset($this->searchclass->objsearch) && is_array($this->searchclass->objsearch) && isset($this->searchclass->objsearch[$i]['minute']) ? $this->searchclass->objsearch[$i]['minute'] : date("i"))) . '
-					</td>
-					<td>' . we_html_tools::getPixel(10, 2) . '</td>
-					<td align="right">' . $button . '</td>
-				</tr>';
+<tr>
+	<td class="defaultfont">' . g_l('global', "[search]") . '</td>
+	<td>' . we_html_tools::getPixel(5, 2) . '</td>
+	<td>' . $this->searchclass->getFields("objsearchField[" . $i . "]", 1, $this->searchclass->objsearchField[$i], $this->ClassPath) . '</td>
+	<td>' . we_html_tools::getPixel(10, 2) . '</td>
+	<td>' . $this->searchclass->getLocationDate("objlocation[" . $i . "]", (isset($this->searchclass->objlocation[$i]) ? $this->searchclass->objlocation[$i] : '')) . '</td>
+	<td>' . we_html_tools::getPixel(10, 2) . '</td>
+	<td>
+		' . we_html_tools::htmlTextInput('objsearch[' . $i . '][year]', 4, (isset($this->searchclass->objsearch) && is_array($this->searchclass->objsearch) && isset($this->searchclass->objsearch[$i]['year']) ? $this->searchclass->objsearch[$i]['year'] : date("Y")), 4) . ' -
+		' . we_html_tools::htmlSelect('objsearch[' . $i . '][month]', $month, 1, (isset($this->searchclass->objsearch) && is_array($this->searchclass->objsearch) && isset($this->searchclass->objsearch[$i]['month']) ? $this->searchclass->objsearch[$i]['month'] : date("m"))) . ' -
+		' . we_html_tools::htmlSelect('objsearch[' . $i . '][day]', $day, 1, (isset($this->searchclass->objsearch) && is_array($this->searchclass->objsearch) && isset($this->searchclass->objsearch[$i]['day']) ? $this->searchclass->objsearch[$i]['day'] : date("d"))) . ' &nbsp;
+		' . we_html_tools::htmlSelect('objsearch[' . $i . '][hour]', $hour, 1, (isset($this->searchclass->objsearch) && is_array($this->searchclass->objsearch) && isset($this->searchclass->objsearch[$i]['hour']) ? $this->searchclass->objsearch[$i]['hour'] : date("H"))) . ' :
+		' . we_html_tools::htmlSelect('objsearch[' . $i . '][minute]', $minute, 1, (isset($this->searchclass->objsearch) && is_array($this->searchclass->objsearch) && isset($this->searchclass->objsearch[$i]['minute']) ? $this->searchclass->objsearch[$i]['minute'] : date("i"))) . '
+	</td>
+	<td>' . we_html_tools::getPixel(10, 2) . '</td>
+	<td align="right">' . $button . '</td>
+</tr>';
 			} else{
 				$out .= '
-				<tr>
-					<td class="defaultfont">' . g_l('global', "[search]") . '</td>
-					<td>' . we_html_tools::getPixel(1, 2) . '</td>'
-					//<td>'.$this->searchclass->getFields("objsearchField[".$i."]",1, (isset($this->searchclass->objsearchField) && is_array($this->searchclass->objsearchField) && isset($this->searchclass->objsearchField[$i]) ? $this->searchclass->objsearchField[$i] : "" ),$this->Path).'</td> #4076 orig
-					. '<td>' . $this->searchclass->getFields("objsearchField[" . $i . "]", 1, (isset($this->searchclass->objsearchField) && is_array($this->searchclass->objsearchField) && isset($this->searchclass->objsearchField[$i]) ? $this->searchclass->objsearchField[$i] : ""), $this->ClassPath) . '</td>
-					<td>' . we_html_tools::getPixel(1, 2) . '</td>
-					<td>' . $this->searchclass->getLocation("objlocation[" . $i . "]", (isset($this->searchclass->objlocation[$i]) ? $this->searchclass->objlocation[$i] : '')) . '</td>
-					<td>' . we_html_tools::getPixel(1, 2) . '</td>
-					<td>' . we_html_tools::htmlTextInput("objsearch[" . $i . "]", 30, (isset($this->searchclass->objsearch) && is_array($this->searchclass->objsearch) && isset($this->searchclass->objsearch[$i]) ? $this->searchclass->objsearch[$i] : ''), "", "", "text", 200) . '</td>
-					<td>' . we_html_tools::getPixel(1, 2) . '</td>
-					<td align="right">' . $button . '</td>
-				</tr>';
+<tr>
+	<td class="defaultfont">' . g_l('global', "[search]") . '</td>
+	<td>' . we_html_tools::getPixel(1, 2) . '</td>
+	<td>' . $this->searchclass->getFields("objsearchField[" . $i . "]", 1, (isset($this->searchclass->objsearchField) && is_array($this->searchclass->objsearchField) && isset($this->searchclass->objsearchField[$i]) ? $this->searchclass->objsearchField[$i] : ""), $this->ClassPath) . '</td>
+	<td>' . we_html_tools::getPixel(1, 2) . '</td>
+	<td>' . $this->searchclass->getLocation("objlocation[" . $i . "]", (isset($this->searchclass->objlocation[$i]) ? $this->searchclass->objlocation[$i] : '')) . '</td>
+	<td>' . we_html_tools::getPixel(1, 2) . '</td>
+	<td>' . we_html_tools::htmlTextInput("objsearch[" . $i . "]", 30, (isset($this->searchclass->objsearch) && is_array($this->searchclass->objsearch) && isset($this->searchclass->objsearch[$i]) ? $this->searchclass->objsearch[$i] : ''), "", "", "text", 200) . '</td>
+	<td>' . we_html_tools::getPixel(1, 2) . '</td>
+	<td align="right">' . $button . '</td>
+</tr>';
 			}
 		}
 
-		$out .= '<tr>
-					<td colspan="9"><br></td>
-				</tr>
-				<tr>
-					<td colspan="2"></td>
-					<td colspan="3">' . we_button::create_button("add", "javascript:newinput();") . '</td>
-					<td colspan="4" align="right">' . we_button::create_button("search", "javascript:sub();") . '</td>
-				</tr>
-				</form>
-				</table>';
+		$out .= '
+<tr>
+	<td colspan="9"><br></td>
+</tr>
+<tr>
+	<td colspan="2"></td>
+	<td colspan="3">' . we_button::create_button("add", "javascript:newinput();") . '</td>
+	<td colspan="4" align="right">' . we_button::create_button("search", "javascript:sub();") . '</td>
+</tr>
+</form>
+</table>';
 
 		return $out;
 	}
