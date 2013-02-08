@@ -750,6 +750,7 @@ clone.style.display="inline";
 					case "rss":
 						_cmdName = "GetRss";
 						break;
+//FIXME: what about all other tools?!
 				}
 				top.YAHOO.util.Connect.asyncRequest( 'GET', '<?php echo WEBEDITION_DIR; ?>rpc/rpc.php?cmd=' + _cmdName + '&cns=widgets' + args + '&weSessionId=<?php print session_id(); ?>' , ajaxCallback );
 
