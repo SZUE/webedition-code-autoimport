@@ -42,20 +42,18 @@ function we_tag_css($attribs){
 		$attribs['href'] = (we_isHttps() ? '' : BASE_CSS) . $url;
 
 		$nolink = false;
-		if($GLOBALS["we_editmode"]){
-			switch(weTag_getAttribute('only', $attribs, '')){
-				case 'around-wysiwyg' :
-				case 'around' :
-					break;
-				case 'wysiwyg' : 
-					$nolink = true;
-				default : 
-					$media = weTag_getAttribute('media', $attribs);
-					if($media == "" || $media == "screen" || $media == "all"){
-						$GLOBALS['we_doc']->addDocumentCss($attribs['href'] . "?" . time());
-					}
-					break;
-			}
+		switch(weTag_getAttribute('only', $attribs, '')){
+			case 'around-wysiwyg' :
+			case 'around' :
+				break;
+			case 'wysiwyg' : 
+				$nolink = true;
+			default : 
+				$media = weTag_getAttribute('media', $attribs);
+				if($media == "" || $media == "screen" || $media == "all"){
+					$GLOBALS['we_doc']->addDocumentCss($attribs['href'] . "?" . time());
+				}
+				break;
 		}
 		return $nolink ? '' : getHtmlTag('link', $attribs) . "\n";
 	}

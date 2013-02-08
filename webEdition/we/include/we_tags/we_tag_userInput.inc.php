@@ -499,7 +499,11 @@ function we_tag_userInput($attribs, $content){
 						'width',
 						'height',
 						'fontnames',
-						'bgcolor'
+						'bgcolor',
+						'editorcss',
+						'ignoredocumentcss',
+						'buttonpos'
+						
 						));
 					return we_getTextareaField($fieldname, $content, $atts);
 				} else{
@@ -508,10 +512,11 @@ function we_tag_userInput($attribs, $content){
 					$autobr = $autobrAttr ? "on" : "off";
 					$showAutobr = isset($attribs["autobr"]);
 					$charset = weTag_getAttribute("charset", $attribs, "iso-8859-1");
-					//FIXME: currently use old editor
+					//FIXME: currently we use a separate preference-option for frontend editor (where tinyMCE is labelled beta)
 					$tmp = we_wysiwyg::$editorType;
-					we_wysiwyg::$editorType = 'default';
-					$ret = we_forms::weTextarea($fieldname, $content, $attribs, $autobr, "autobr", $showAutobr, $GLOBALS['we_doc']->getHttpPath(), false, false, $xml, $removeFirstParagraph, $charset, false, true);
+					we_wysiwyg::$editorType = WYSIWYG_TYPE_FRONTEND == tinyMCE ? 'tinyMCE' : 'default';
+					$ret = we_forms::weTextarea($fieldname, $content, $attribs, $autobr, "autobr", $showAutobr, $GLOBALS['we_doc']->getHttpPath(), 
+						false, false, $xml, $removeFirstParagraph, $charset, false, true);
 					we_wysiwyg::$editorType = $tmp;
 					return $ret;
 				}
