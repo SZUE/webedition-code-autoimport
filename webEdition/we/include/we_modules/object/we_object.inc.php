@@ -1365,6 +1365,7 @@ class we_object extends we_document{
 			"height" => 52, //isset($this->elements[$name."height"]["dat"]) ? $this->elements[$name."height"]["dat"] : 200,
 			"rows" => 3,
 			"bgcolor" => isset($this->elements[$name . "bgcolor"]["dat"]) ? $this->elements[$name . "bgcolor"]["dat"] : (WYSIWYG_TYPE == 'tinyMCE' ? '' : 'white'),
+			"class" => isset($this->elements[$name . "class"]["dat"]) ? $this->elements[$name . "class"]["dat"] : "",
 			"cols" => 30,
 			"inlineedit" => isset($this->elements[$name . "inlineedit"]["dat"]) ? $this->elements[$name . "inlineedit"]["dat"] : "",
 			"stylesheets" => $this->CSS,
