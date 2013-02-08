@@ -356,6 +356,7 @@ $l_prefs=array(
 	'wysiwyglinks_directoryindex_hide'=>'in links from the WYSIWYG editor',
 	'wysiwyglinks_objectseourls'=>'in links from the WYSIWYG editor',
 	'wysiwyg_type'=>'Préférences standard pour l`editeur de <em>textarea</em>',
+	'wysiwyg_type_frontend'=>'Select editor for textareas in frontend',
 	'xhtml_debug_explanation'=>'Le Débogage-XHTML vous aide à créer des site-web valide. Optionel chaque édition d`un we:Tag peut être vérifié sur sa validité 	et si besoin sur des attributs défectueux. Considérez s`il vous plaît que ce processus nécessite du temps et il considerable d`effectuer cette option seulement quand vous créez un nouveau site.',
 	'xhtml_debug_headline'=>'Débogage-XHTML',
 	'xhtml_debug_html'=>'Activer le Débogage-XHTML',
