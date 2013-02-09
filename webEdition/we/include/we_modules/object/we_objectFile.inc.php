@@ -1279,9 +1279,8 @@ class we_objectFile extends we_document{
 
 	function getLanguageFieldHTML($name, $attribs, $editable = true, $variant = false){
 		if(!$editable){
-//FIXME: getTranslation is wrong
 			return '<div class="weObjectPreviewHeadline">' . $name . '</div>' .
-				($this->getElement($name) != '--' || $this->getElement($name) != '' ? '<div class="defaultfont">' . CheckAndConvertISObackend(Zend_Locale::getTranslation($this->getElement($name), 'language', '')) . '</div>' :
+				($this->getElement($name) != '--' || $this->getElement($name) != '' ? '<div class="defaultfont">' . CheckAndConvertISObackend(Zend_Locale::getTranslation($this->getElement($name), 'language', we_core_Local::weLangToLocale($GLOBALS['WE_LANGUAGE']))) . '</div>' :
 					'');
 		}
 		$frontendL = $GLOBALS["weFrontendLanguages"];
