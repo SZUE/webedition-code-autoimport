@@ -100,7 +100,6 @@ $GLOBALS['configs'] = array(
 		'DB_SET_CHARSET' => array('connection charset to db', 'utf8'),
 		'WYSIWYG_TYPE' => array('define used wysiwyg editor', 'default'),
 		'WYSIWYG_TYPE_FRONTEND' => array('define used wysiwyg editor in frontend', 'default'),
-		'SAFARI_WYSIWYG' => array('Flag if beta wysiwyg for safari should be used', false),
 		'WE_MAILER' => array('mailer type; possible values are php and smtp', 'php'),
 		'SMTP_SERVER' => array('SMTP_SERVER', 'localhost'),
 		'SMTP_PORT' => array('SMTP server port', 25),

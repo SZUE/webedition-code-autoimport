@@ -2185,16 +2185,6 @@ if(window.onload) {
 			$WYSIWYG_TYPE_FRONTEND->selectOption(get_value("WYSIWYG_TYPE_FRONTEND"));
 			$_settings[] = array("headline" => "Editor für textareas im Frontend", "html" => $WYSIWYG_TYPE_FRONTEND->getHtml(), "space" => 200);
 
-			// Build select box
-			$SAFARI_WYSIWYG = new we_html_select(array("name" => "newconf[SAFARI_WYSIWYG]", "class" => "weSelect"));
-			$SAFARI_WYSIWYG->addOption(0, "false");
-			$SAFARI_WYSIWYG->addOption(1, "true");
-			$SAFARI_WYSIWYG->selectOption(get_value("SAFARI_WYSIWYG") ? 1 : 0);
-			$_settings[] = array("headline" => g_l('prefs', '[safari_wysiwyg]'), "html" => $SAFARI_WYSIWYG->getHtml(), "space" => 200);
-
-
-			// Build select box
-
 			$_we_doctype_workspace_behavior = abs(get_value("WE_DOCTYPE_WORKSPACE_BEHAVIOR"));
 			$_we_doctype_workspace_behavior_table = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' .
 				we_forms::radiobutton("0", ($_we_doctype_workspace_behavior == "0"), "newconf[WE_DOCTYPE_WORKSPACE_BEHAVIOR]", g_l('prefs', '[we_doctype_workspace_behavior_0]'), true, "defaultfont", "", false, g_l('prefs', '[we_doctype_workspace_behavior_hint0]'), 0, 430) .
