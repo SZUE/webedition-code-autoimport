@@ -196,6 +196,8 @@ if(isset($_REQUEST['we_cmd'][0])){
 						'strSerial' => serialize($serialDoc),
 						'strSerialOrder' => $_strSerialOrder
 					))));
+			}else{
+				echo we_html_element::jsElement(we_message_reporting::getShowMessageCall("'" . g_l('modules_shop', '[keinezahl]') . "'", we_message_reporting::WE_MESSAGE_ERROR, true));
 			}
 
 			break;
@@ -380,7 +382,7 @@ if(isset($_REQUEST['we_cmd'][0])){
 				$parts[] = array(
 					'headline' => g_l('modules_shop', '[anzahl]'),
 					'space' => 100,
-					'html' => we_class::htmlTextInput('anzahl', 24, '', '', '', 'text', 380),
+					'html' => we_class::htmlTextInput('anzahl', 24, '', '', 'min="1"', 'number', 380),
 					'noline' => 1
 				);
 

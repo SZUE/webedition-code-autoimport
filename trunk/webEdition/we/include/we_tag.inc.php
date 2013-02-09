@@ -466,7 +466,7 @@ function we_tag_ifSidebar(){
 }
 
 function we_tag_ifNotSidebar(){
-	return !we_tag('ifSidebar');
+	return !we_tag_ifSidebar();
 }
 
 function we_tag_ifDemo(){
