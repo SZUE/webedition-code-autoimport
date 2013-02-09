@@ -196,7 +196,8 @@ if(!$seeMode){
 	);
 
 	$we_menu['1010600'] = array(
-		'parent' => '1010000'
+		'parent' => '1010000',
+		'perm' => 'NEW_TEMPLATE || ADMINISTRATOR',
 	); // separator
 // File > New > Directory
 	$we_menu['1011000'] = array(
@@ -698,7 +699,6 @@ foreach($GLOBALS['_we_available_modules'] as $key => $val){
 	//}
 }
 //$_SESSION['we_module_list'] = rtrim($moduleList, '|');
-
 // Modules > pagelogger
 if(WE_TRACKER_DIR){
 	$we_menu['3020000'] = array(
@@ -976,7 +976,8 @@ $we_menu['5020000'] = array(
 );
 
 $we_menu['5040000'] = array(
-	'parent' => '5000000'
+	'parent' => '5000000',
+	'perm' => 'ADMINISTRATOR',
 ); // separator
 
 $we_menu['5050000'] = array(
@@ -1016,7 +1017,7 @@ $we_menu['5100000'] = array(
 );
 
 reset($GLOBALS['_we_available_modules']);
-while(list($key, $val) = each($GLOBALS['_we_available_modules'])) {
+while((list($key, $val) = each($GLOBALS['_we_available_modules']))) {
 
 	if(!isset($val['integrated']) || ( in_array($val['name'], $GLOBALS['_we_active_integrated_modules']) )){
 
