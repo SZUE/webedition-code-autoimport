@@ -57,8 +57,10 @@ function startNormalMode(){
 			<iframe frameBorder="0" src="<?php print WEBEDITION_DIR; ?>multiContentFrame.php" name="bm_content_frame" style="border:0px;width:100%;height:100%;overflow: hidden;"></iframe>
 		</div>
 		<?php if(!(SIDEBAR_DISABLED == 1)){ ?>
-			<div style="position:absolute;top:0px;bottom:0px;right:0px;width:<?php echo $_sidebarwidth; ?>px;" id="sidebarDiv">
-				<iframe frameBorder="0" src="<?php print WEBEDITION_DIR; ?>sideBarFrame.php" name="sidebar" style="border:0;border-left:1px solid black;width:100%;height:100%;overflow: hidden;"></iframe>
+			<div style="position:absolute;top:0px;bottom:0px;right:0px;width:<?php echo $_sidebarwidth; ?>px;border-left:1px solid black;" id="sidebarDiv">
+<?php
+$weFrame = new weSideBarFrames();
+$weFrame->getHTML('');?>
 			</div>
 		<?php } ?>
 	</div>
@@ -94,8 +96,11 @@ function startSEEMMode(){
 			<iframe frameBorder="0" src="<?php print WEBEDITION_DIR; ?>multiContentFrame.php" name="bm_content_frame" style="border:0px;width:100%;height:100%;overflow: hidden;"></iframe>
 		</div>
 		<?php if($_sidebarwidth > 0){ ?>
-			<div style="position:absolute;top:0px;bottom:0px;right:0px;width:<?php echo $_sidebarwidth; ?>px;" id="sidebarDiv">
-				<iframe frameBorder="0" src="<?php print WEBEDITION_DIR; ?>sideBarFrame.php" name="sidebar" style="border:0px;width:100%;height:100%;overflow: hidden;"></iframe>
+			<div style="position:absolute;top:0px;bottom:0px;right:0px;width:<?php echo $_sidebarwidth; ?>px;border-left:1px solid black;" id="sidebarDiv">
+<?php
+$weFrame = new weSideBarFrames();
+$weFrame->getHTML('');?>
+
 			</div>
 		<?php } ?>
 	</div>

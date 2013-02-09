@@ -56,6 +56,9 @@ class we_document extends we_root{
 		parent::__construct();
 		array_push($this->persistent_slots, 'Extension', 'IsDynamic', 'Published', 'Category', 'IsSearchable', 'InGlossar', 'Language', 'schedArr');
 		$this->Table = FILE_TABLE;
+		if(defined('WE_SIDEBAR')){
+			$this->InWebEdition = 1;
+		}
 	}
 
 	function copyDoc($id){

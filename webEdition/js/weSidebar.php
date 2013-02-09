@@ -91,23 +91,12 @@ weSidebar.resize = function(width) {
 }
 
 
-weSidebar.reloadHeader = function() {
-	top.frames["rframe"].frames["sidebar"].frames["weSidebarHeader"].location.reload();
-
-}
-
 
 weSidebar.reload = function() {
-	top.frames["rframe"].frames["sidebar"].frames["weSidebarContent"].location.reload();
+	top.rframe.sidebar.weSidebarContent.location.reload();
 
 }
 
-
-weSidebar.reloadFooter = function() {
-	top.frames["rframe"].frames["sidebar"].frames["weSidebarFooter"].location.reload();
-	//top.frames["rframe"].frames["sidebar"].frames["weSidebarFooter"].location.replace(top.frames["rframe"].frames["sidebar"].frames["weSidebarFooter"].location);
-
-}
 
 
 //
