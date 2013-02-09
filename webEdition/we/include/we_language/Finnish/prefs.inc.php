@@ -241,7 +241,6 @@ $l_prefs=array(
 	'proxy_information'=>'Jos palvelimesi käyttää Proxy-palvelinta, määrittele sen asetukset täällä.',
 	'question_change_to_seem_start'=>'Haluatko siirtyä valittuun dokumenttiin?',
 	'removefirstparagraph_default'=>'Default value for the<br/><em>removefirstparagraph</em> attribute in<br/>&lt;we:textarea&gt;',
-	'safari_wysiwyg'=>'Käytä Safari Wysiwyg<br/>editoria (beta versio)',
 	'saved'=>'Asetukset on tallennettu.',
 	'saved_successfully'=>'Asetukset tallennettu',
 	'save'=>'Tallennetaan asetuksia, hetkinen ...',

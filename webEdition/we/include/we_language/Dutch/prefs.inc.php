@@ -241,7 +241,6 @@ $l_prefs=array(
 	'proxy_information'=>'Specificeer hier uw Proxy instellingen voor uw server, indien uw server een proxy gebruikt voor verbinding met het internet.',
 	'question_change_to_seem_start'=>'Wilt u het geselecteerde document wijzigen?',
 	'removefirstparagraph_default'=>'Default value for the<br/><em>removefirstparagraph</em> attribute in<br/>&lt;we:textarea&gt;',
-	'safari_wysiwyg'=>'Gebruik Safari Wysiwyg<br/>editor (beta versie)',
 	'saved'=>'Voorkeuren zijn succesvol bewaard.',
 	'saved_successfully'=>'Voorkeuren zijn bewaard',
 	'save'=>'Bezig met bewaren van voorkeuren, even geduld a.u.b. ...',
