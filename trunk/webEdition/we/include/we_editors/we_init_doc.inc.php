@@ -26,7 +26,9 @@
 if(str_replace(dirname($_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME']) == str_replace(dirname(__FILE__), '', __FILE__)){
 	exit();
 }
-$we_ContentType = $GLOBALS['we_ContentType'];
+if(isset($GLOBALS['we_ContentType']) && !isset($we_ContentType)){
+	$we_ContentType = $GLOBALS['we_ContentType'];
+}
 if((!isset($we_ContentType)) && ((!isset($we_dt)) || (!is_array($we_dt)) || (!$we_dt[0]['ClassName'])) && isset($we_ID) && $we_ID && isset($we_Table) && $we_Table){
 	$we_ContentType = f('SELECT ContentType FROM ' . $GLOBALS['DB_WE']->escape($we_Table) . ' WHERE ID=' . intval($we_ID), 'ContentType', $GLOBALS['DB_WE']);
 }
