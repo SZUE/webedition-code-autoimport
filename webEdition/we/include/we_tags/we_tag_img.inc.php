@@ -127,16 +127,15 @@ function we_tag_img($attribs){
 	}
 
 	if($showcontrol && $GLOBALS['we_editmode']){
-		$out = "
-			<table border=\"0\" cellpadding=\"2\" cellspacing=\"2\" background=\"" . IMAGE_DIR . "backgrounds/aquaBackground.gif\" style=\"border: solid #006DB8 1px;\">
-				<tr>
-					<td class=\"weEditmodeStyle\" colspan=\"2\" align=\"center\">$out
-						<input onchange=\"_EditorFrame.setEditorIsHot(true);\" type=\"hidden\" name=\"$fname\" value=\"$id\" />
-					</td>
-				</tr>";
-		if($showinputs){ //  only when wanted
-			$out .= "
-		        <tr>
+		$out = '
+<table border="0" cellpadding="2" cellspacing="2" background="' . IMAGE_DIR . 'backgrounds/aquaBackground.gif" style="border: solid #006DB8 1px;">
+	<tr>
+		<td class="weEditmodeStyle" colspan="2" align="center">' . $out . '
+			<input onchange="_EditorFrame.setEditorIsHot(true);" type="hidden" name="' . $fname . '" value="' . $id . '" />
+		</td>
+	</tr>' .
+			($showinputs ? //  only when wanted
+				"<tr>
 		            <td class=\"weEditmodeStyle\" align=\"center\" colspan=\"2\" style=\"width: 180px;\">
 		            <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\">
                     <tr>
@@ -152,34 +151,35 @@ function we_tag_img($attribs){
 		                <td class=\"weEditmodeStyle\">" . we_html_tools::htmlTextInput($titlename, 16, $title, '', 'onchange="_EditorFrame.setEditorIsHot(true);"') . "</td>
                     </tr>
 		            </table>
-                </tr>";
-		}
+                </tr>" : ''
+			);
+
 		if($showThumb){ //  only when wanted
 			$db = new DB_WE();
 			$db->query('SELECT ID,Name FROM ' . THUMBNAILS_TABLE . ' ORDER BY Name');
 			if($db->num_rows()){
-				$thumbnails = '<select name="' . $thumbname . '" size="1" onchange="top.we_cmd(\'reload_editpage\'); _EditorFrame.setEditorIsHot(true);">' . "\n";
-				$thumbnails .= '<option value=""' . (($thumbattr == '') ? (' selected="selected"') : "") . '></option>' . "\n";
+				$thumbnails = '<select name="' . $thumbname . '" size="1" onchange="top.we_cmd(\'reload_editpage\'); _EditorFrame.setEditorIsHot(true);">' .
+					'<option value=""' . (($thumbattr == '') ? (' selected="selected"') : "") . '></option>';
 				while($db->next_record()) {
-					$thumbnails .= '<option value="' . $db->f("Name") . '"' . (($thumbattr == $db->f("Name")) ? (' selected="selected"') : "") . '>' . $db->f("Name") . '</option>' . "\n";
+					$thumbnails .= '<option value="' . $db->f("Name") . '"' . (($thumbattr == $db->f("Name")) ? (' selected="selected"') : "") . '>' . $db->f("Name") . '</option>';
 				}
 				$thumbnails .= '</select>';
 				$out .= "
-		        		<tr>
-		            	<td class=\"weEditmodeStyle\" align=\"center\" colspan=\"2\" style=\"width: 180px;\">
-							<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\">
-                    		<tr>
-                        		<td class=\"weEditmodeStyle\" style=\"color: black; font-size: 12px; font-family: " . g_l('css', '[font_family]') . ";\">" . g_l('weClass', "[thumbnails]") . ":&nbsp;</td>
-                        		<td class=\"weEditmodeStyle\">" . $thumbnails . "</td>
-                    		</tr>
-							</table>
-						</td>
-                		</tr>";
+	<tr>
+		<td class=\"weEditmodeStyle\" align=\"center\" colspan=\"2\" style=\"width: 180px;\">
+			<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\">
+								<tr>
+										<td class=\"weEditmodeStyle\" style=\"color: black; font-size: 12px; font-family: " . g_l('css', '[font_family]') . ";\">" . g_l('weClass', "[thumbnails]") . ":&nbsp;</td>
+										<td class=\"weEditmodeStyle\">" . $thumbnails . "</td>
+								</tr>
+			</table>
+		</td>
+	</tr>";
 			}
 		}
-		$out .= "
-				<tr>
-					<td class=\"weEditmodeStyle\" colspan=\"2\" align=\"center\">";
+		$out .= '
+	<tr>
+		<td class="weEditmodeStyle" colspan="2" align="center">';
 
 		if($id == ""){ // disable edit_image_button
 			$_editButton = we_button::create_button("image:btn_edit_image", "#", false, 100, 20, "", "", true);
@@ -198,7 +198,7 @@ function we_tag_img($attribs){
 					"image:btn_select_image", "javascript:we_cmd('openDocselector', '" . ($id != "" ? $id : $startid) . "', '" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','" . session_id() . "'," . $parentid . ",'image/*', " . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")", true),
 				we_button::create_button(
 					"image:btn_function_trash", "javascript:we_cmd('remove_image', '" . $name . "')", true)
-				), 5) . "</td></tr></table>";
+				), 5) . '</td></tr></table>';
 	}
 	return $out;
 }
