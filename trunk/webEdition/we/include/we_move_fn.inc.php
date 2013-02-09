@@ -63,7 +63,7 @@ function checkMoveItem($targetDirectoryID, $id, $table, &$items2move){
 	$DB_WE = new DB_WE();
 	// check if entry is a folder
 	$row = getHash('SELECT Path, Text, IsFolder FROM ' . $DB_WE->escape($table) . ' WHERE  ID=' . intval($id), $DB_WE);
-	if(sizeof($row) == 0 || $row["IsFolder"]){
+	if(empty($row) || $row["IsFolder"]){
 		return -1;
 	}
 
@@ -187,7 +187,7 @@ function moveItem($targetDirectoryID, $id, $table, &$notMovedItems){
 			$isFolder = ($row["IsFolder"] == 1 ? true : false);
 			$icon = $row['Icon'];
 			$item = array('ID' => $id, 'Text' => $fileName, 'Path' => $oldPath, 'Icon' => $icon);
-			if(count($row) == 0 || $isFolder){
+			if(empty($row)|| $isFolder){
 				$notMovedItems[] = $item;
 				return false;
 			}
