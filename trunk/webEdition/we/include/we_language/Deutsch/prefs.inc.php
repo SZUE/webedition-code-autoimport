@@ -242,7 +242,6 @@ Zur Umstellung auf den Standard "nein" ersetzen Sie in allen Vorlagen einfach in
 	'proxy_information'=>'Hier nehmen Sie die Einstellungen für den Proxy Server vor, falls Ihr Server einen Proxy für die Verbindung mit dem Internet verwendet.',
 	'question_change_to_seem_start'=>'Möchten Sie zum ausgewählten Dokument wechseln?',
 	'removefirstparagraph_default'=>'Standard Einstellung für<br/><em>removefirstparagraph</em>-Attribut in<br/>&lt;we:textarea&gt;',
-	'safari_wysiwyg'=>'Safari Wysiwyg Editor<br/>(Betaversion) benutzen',
 	'saved'=>'Die Einstellungen wurden erfolgreich gespeichert.',
 	'saved_successfully'=>'Einstellungen gespeichert',
 	'save'=>'Einstellungen werden gespeichert, einen Moment ...',

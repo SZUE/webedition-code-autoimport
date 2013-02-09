@@ -241,7 +241,6 @@ $l_prefs=array(
 	'proxy_information'=>'Specify your Proxy settings for your server here, if your server uses a proxy for the connection with the Internet.',
 	'question_change_to_seem_start'=>'Desea Ud cambiar el documento seleccionado?',
 	'removefirstparagraph_default'=>'Default value for the<br/><em>removefirstparagraph</em> attribute in<br/>&lt;we:textarea&gt;',
-	'safari_wysiwyg'=>'Use el Wysiwyg editor<br/>de Safari (versión beta)',
 	'saved'=>'Las preferencias han sido salvadas exitosamente.',
 	'saved_successfully'=>'Preferencias salvadas',
 	'save'=>'Salvando preferencias, un momento ...',
