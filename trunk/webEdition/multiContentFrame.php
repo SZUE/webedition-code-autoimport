@@ -37,12 +37,12 @@ if(isset($_REQUEST['SEEM_edit_include']) && $_REQUEST['SEEM_edit_include']){
 we_html_tools::htmlTop();
 ?>
 <script type="text/javascript"><!--
-	function we_cmd(){
+	function we_cmd() {
 		var args = "";
-		for(var i = 0; i < arguments.length; i++){
-			args += 'arguments['+i+']' + ( (i < (arguments.length-1)) ? ',' : '');
+		for (var i = 0; i < arguments.length; i++) {
+			args += 'arguments[' + i + ']' + ((i < (arguments.length - 1)) ? ',' : '');
 		}
-		eval('parent.we_cmd('+args+')');
+		eval('parent.we_cmd(' + args + ')');
 	}
 
 	function startMultiEditor() {
