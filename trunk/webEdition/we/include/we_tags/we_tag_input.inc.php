@@ -99,7 +99,6 @@ function we_tag_input($attribs, $content){
 				unset($countryvalue2);
 
 				return getHtmlTag('select', $newAtts, $content, true);
-			//return '<input onclick="_EditorFrame.setEditorIsHot(true);this.form.elements[\'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']\'].value=(this.checked ? 1 : \'\');' . ($reload ? (';setScrollTo();top.we_cmd(\'reload_editpage\');') : '') . '" type="checkbox" name="we_' . $GLOBALS['we_doc']->Name . '_attrib_' . $name . '" value="1"' . ($attr ? " $attr" : "") . ($val ? " checked" : "") . ' /><input type="hidden" name="we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']" value="' . $val . '" />';
 			case 'language':
 				$newAtts = removeAttribs($attribs, array('checked', 'type', 'options', 'selected', 'onchange', 'onChange', 'name', 'value', 'values', 'onclick', 'onClick', 'mode', 'choice', 'pure', 'rows', 'cols', 'maxlength', 'wysiwyg'));
 				$newAtts['name'] = 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']';
@@ -108,11 +107,8 @@ function we_tag_input($attribs, $content){
 				$doc = we_getDocForTag($docAttr);
 				$lang = $doc->Language;
 				$langcode = substr($lang, 0, 2);
-				if($lang != ''){
-					$langcode = substr($lang, 0, 2);
-				} else{
-					$langcode = we_core_Local::weLangToLocale($GLOBALS["WE_LANGUAGE"]);
-				}
+				$langcode = ($lang != '' ? substr($lang, 0, 2) : we_core_Local::weLangToLocale($GLOBALS["WE_LANGUAGE"]));
+
 				$frontendL = $GLOBALS['weFrontendLanguages'];
 				foreach($frontendL as &$lcvalue){
 					$lccode = explode('_', $lcvalue);

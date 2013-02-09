@@ -108,7 +108,8 @@ function we_tag_shopField($attribs){
 			break;
 
 		case 'hidden':
-			return we_html_tools::hidden($fieldname, $savedVal);
+			$atts = removeAttribs($atts, array('reference'));
+			return we_html_tools::hidden($fieldname, $savedVal, $atts);
 			break;
 
 		case 'print':
