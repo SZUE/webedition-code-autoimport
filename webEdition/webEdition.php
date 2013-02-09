@@ -40,7 +40,6 @@ if(!isset($SEEM_edit_include) || !$SEEM_edit_include){
 
 	if(defined("SCHEDULE_TABLE")){
 		// convert old schedule data to new format
-		we_schedpro::check_and_convert_to_sched_pro();
 		we_schedpro::trigger_schedule();
 	}
 	// make the we_backup dir writable for all, so users can copy backupfiles with ftp in it

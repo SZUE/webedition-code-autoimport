@@ -322,7 +322,7 @@ function cutText($text, $max = 0){
 	}
 
 //close open tags
-	while(count($tags)) {
+	while(!empty($tags)) {
 		$ret.='</' . array_pop($tags) . '>';
 	}
 
