@@ -114,7 +114,7 @@ class we_helpers_pdf2text{
 			$this->data = array();
 			foreach($info as $key => &$cur){
 				$cur = self::getStringContent($cur);
-				if(strstr($key, 'Date')&&method_exists('DateTime','createFromFormat')){
+				if(strstr($key, 'Date') && method_exists('DateTime', 'createFromFormat')){
 					if(($cur = DateTime::createFromFormat('YmdHis', substr($cur, 2, 14)))){
 						$cur = $cur->format(g_l('date', '[format][default]'));
 					}
@@ -129,7 +129,7 @@ class we_helpers_pdf2text{
 		$str = trim($str);
 		switch(substr($str, 0, 1)){
 			case '('://string
-				return CheckAndConvertISOfrontend(trim($str, self::TRIM_STRING));
+				return CheckAndConvertISOfrontend(preg_replace_callback('#\\\\(\d{3})#', 'we_helpers_pdf2text::setOctChar', trim($str, self::TRIM_STRING)));
 			case '<'://hex
 				$str = trim($str, '<>');
 				$str = str_split($str, 2);
@@ -137,7 +137,7 @@ class we_helpers_pdf2text{
 				foreach($str as $cur){
 					$out.=chr(hexdec($cur));
 				}
-				return CheckAndConvertISOfrontend(mb_convert_encoding($out, 'UTF-8', 'UTF-16'));
+				return CheckAndConvertISOfrontend(mb_convert_encoding(preg_replace_callback('#\\\\(\d{3})#', 'we_helpers_pdf2text::setOctChar', $out), 'UTF-8', 'UTF-16'));
 		}
 	}
 
@@ -699,7 +699,10 @@ class we_helpers_pdf2text{
 					$fonts = array();
 					$this->getPageFonts($fonts, $elem);
 					if(isset($elem['Font'])){
-						$this->getPageFonts($fonts, $this->data[rtrim($elem['Font'], self::TRIM_REF)]);
+						$data = $this->data[rtrim($elem['Font'], self::TRIM_REF)];
+						if(!empty($data)){
+							$this->getPageFonts($fonts, $data);
+						}
 					}
 					if(isset($elem['Resources'])){
 						$this->getPageFonts($fonts, $this->data[rtrim($elem['Resources'], self::TRIM_REF)]);

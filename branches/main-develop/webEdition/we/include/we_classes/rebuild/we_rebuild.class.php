@@ -554,7 +554,7 @@ abstract class we_rebuild{
 		} else{
 			$_folders_query = '';
 		}
-		$GLOBALS['DB_WE']->query('SELECT ID,ClassName,Path,Extension FROM ' . FILE_TABLE . ' WHERE ContentType="image/*"' . ($_folders_query ? " AND $_folders_query " : '') . ' ORDER BY ID');
+		$GLOBALS['DB_WE']->query('SELECT ID,ClassName,Path,Extension FROM ' . FILE_TABLE . ' WHERE ContentType="image/*"' . ($_folders_query ? ' AND ' . $_folders_query : '') . ' ORDER BY ID');
 		while($GLOBALS['DB_WE']->next_record()) {
 			$data[] = array(
 				'id' => $GLOBALS['DB_WE']->f('ID'),

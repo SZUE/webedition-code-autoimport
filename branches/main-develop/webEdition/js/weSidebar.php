@@ -91,22 +91,12 @@ weSidebar.resize = function(width) {
 }
 
 
-weSidebar.reloadHeader = function() {
-	top.rframe.sidebar.weSidebarHeader.location.reload();
-
-}
-
 
 weSidebar.reload = function() {
 	top.rframe.sidebar.weSidebarContent.location.reload();
 
 }
 
-
-weSidebar.reloadFooter = function() {
-	top.rframe.sidebar.weSidebarFooter.location.reload();
-
-}
 
 
 //

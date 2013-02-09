@@ -133,7 +133,6 @@ abstract class we_forms{
 		$dhtmledit = weTag_getAttribute('dhtmledit', $attribs, false, true); //4614
 		$wysiwyg = $dhtmledit || weTag_getAttribute('wysiwyg', $attribs, false, true);
 
-		//$wysiwyg &= (we_base_browserDetect::isIE() || we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera() || (defined('SAFARI_WYSIWYG') && we_base_browserDetect::isSafari()));
 		$cols = weTag_getAttribute('cols', $attribs);
 		$rows = weTag_getAttribute('rows', $attribs);
 		$width = weTag_getAttribute('width', $attribs);
@@ -153,12 +152,12 @@ abstract class we_forms{
 		$cssClasses = weTag_getAttribute('classes', $attribs);
 		$buttonTop = false;
 		$buttonBottom = false;
-		
+
 		//first prepare stylesheets from textarea-attribute editorcss (templates) or class-css (classes): csv of ids. then (if document) get document-css, defined by we:css
 		$contentCss = (isset($GLOBALS['we_doc']) && ($GLOBALS['we_doc']->ClassName == 'we_objectFile' || $GLOBALS['we_doc']->ClassName == 'we_object')) ? $GLOBALS['we_doc']->CSS :
 				((isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->ClassName == 'we_webEditionDocument') ? weTag_getAttribute('editorcss', $attribs) : '');
 		$contentCss = !empty($contentCss) ? implode('?' . time() . ',', id_to_path(trim($contentCss,', '), FILE_TABLE, '', false, true)) . '?' . time() : '';
-		$contentCss = (isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->ClassName == 'we_webEditionDocument' && !$ignoredocumentcss) ? trim($GLOBALS['we_doc']->getDocumentCss() . ',' . $contentCss, ',') : 
+		$contentCss = (isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->ClassName == 'we_webEditionDocument' && !$ignoredocumentcss) ? trim($GLOBALS['we_doc']->getDocumentCss() . ',' . $contentCss, ',') :
 				$contentCss;
 
 		if($buttonpos){

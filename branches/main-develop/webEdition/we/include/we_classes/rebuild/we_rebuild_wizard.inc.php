@@ -364,25 +364,25 @@ abstract class we_rebuild_wizard{
 			set_button_state();';
 		if(!(file_exists($taskFilename) && $currentTask)){
 			switch($type){
-				case "rebuild_documents":
+				case 'rebuild_documents':
 					$data = we_rebuild::getDocuments($btype, $categories, $catAnd, $doctypes, $folders, $maintable, $tmptable, $templateID);
 					break;
-				case "rebuild_thumbnails":
+				case 'rebuild_thumbnails':
 					if(!$thumbs){
 						return array($js . ';top.wizbusy.showPrevNextButton();' . we_message_reporting::getShowMessageCall(g_l('rebuild', "[no_thumbs_selected]"), we_message_reporting::WE_MESSAGE_WARNING), "");
 					}
 					$data = we_rebuild::getThumbnails($thumbs, $thumbsFolders);
 					break;
-				case "rebuild_index":
+				case 'rebuild_index':
 					$data = we_rebuild::getIndex();
 					break;
-				case "rebuild_objects":
+				case 'rebuild_objects':
 					$data = we_rebuild::getObjects();
 					break;
-				case "rebuild_navigation":
+				case 'rebuild_navigation':
 					$data = we_rebuild::getNavigation();
 					break;
-				case "rebuild_metadata":
+				case 'rebuild_metadata':
 					$data = we_rebuild::getMetadata($metaFields, $onlyEmpty, $metaFolders);
 					break;
 			}
@@ -565,7 +565,7 @@ abstract class we_rebuild_wizard{
 		foreach($thumbsArray as $i => $cur){
 			$thumbsHidden .= we_html_element::htmlHidden(array("name" => 'thumbs[' . $i . ']', "value" => $cur));
 		}
-		
+
 		$metaFieldsHidden = '';
 		if(!empty($metaFields)){
 			foreach($metaFields as $_key => $_val){

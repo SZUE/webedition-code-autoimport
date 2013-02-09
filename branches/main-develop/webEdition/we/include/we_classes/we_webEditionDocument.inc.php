@@ -185,7 +185,7 @@ class we_webEditionDocument extends we_textContentDocument{
 				return 'we_templates/we_editor_properties.inc.php';
 			case WE_EDITPAGE_INFO:
 				$GLOBALS["WE_MAIN_DOC"]->InWebEdition = true; //Bug 3417
-				return "we_templates/we_editor_info.inc.php";
+				return 'we_templates/we_editor_info.inc.php';
 
 			case WE_EDITPAGE_CONTENT:
 				$GLOBALS["we_editmode"] = true;
@@ -194,11 +194,11 @@ class we_webEditionDocument extends we_textContentDocument{
 				$GLOBALS["we_editmode"] = false;
 				break;
 			case WE_EDITPAGE_VALIDATION:
-				return "we_templates/validateDocument.inc.php";
+				return 'we_templates/validateDocument.inc.php';
 			case WE_EDITPAGE_VARIANTS:
 				return 'we_templates/we_editor_variants.inc.php';
 			case WE_EDITPAGE_WEBUSER:
-				return "we_modules/customer/editor_weDocumentCustomerFilter.inc.php";
+				return 'we_modules/customer/editor_weDocumentCustomerFilter.inc.php';
 			default:
 				return parent::editor($baseHref);
 		}
@@ -210,30 +210,24 @@ class we_webEditionDocument extends we_textContentDocument{
 	 */
 
 	function formIsDynamic($leftwidth = 100, $disabled = false){
-		$n = "";
-		$out = "";
+		$n = '';
 		if(!$disabled){
-			$isDyn = $this->IsDynamic ? 1 : 0;
 			$n = "we_" . $this->Name . "_IsDynamic";
 			$v = $this->IsDynamic;
-			$out = "\nfunction switchExt() {\n";
-			if(!$this->Published){
-				$out.='var a=document.we_form.elements;' . "\n";
-				if($this->ID)
-					$out.='if(confirm("' . g_l('weClass', "[confirm_ext_change]") . '")){' . "\n";
-				$DefaultDynamicExt = DEFAULT_DYNAMIC_EXT;
-				$DefaultStaticExt = DEFAULT_STATIC_EXT;
-				$out.='if(a["we_' . $this->Name . '_IsDynamic"].value==1) var changeto="' . $DefaultDynamicExt . '"; else var changeto="' . $DefaultStaticExt . '";';
-				$out .= 'a["we_' . $this->Name . '_Extension"].value=changeto;';
-				if($this->ID)
-					$out.='}' . "\n";
-			}
-			$out.="}\n";
-			$out = we_html_element::jsElement($out);
+			$out = we_html_element::jsElement(
+					'function switchExt() {' .
+					(!$this->Published ?
+						'var a=document.we_form.elements;' .
+						($this->ID ? 'if(confirm("' . g_l('weClass', "[confirm_ext_change]") . '")){' : '') . '
+					if(a["we_' . $this->Name . '_IsDynamic"].value==1){ var changeto="' . DEFAULT_DYNAMIC_EXT . '"; }else{ var changeto="' . DEFAULT_STATIC_EXT . '";}
+					a["we_' . $this->Name . '_Extension"].value=changeto;' .
+						($this->ID ? '}' : '') : '') .
+					'}'
+			);
 			return we_forms::checkboxWithHidden($v ? true : false, $n, g_l('weClass', "[IsDynamic]"), false, "defaultfont", "_EditorFrame.setEditorIsHot(true);switchExt();") . $out;
 		} else{
 			$v = $this->IsDynamic;
-			return we_forms::checkboxWithHidden($v ? true : false, $n, g_l('weClass', "[IsDynamic]"), false, "defaultfont", "", true) . $out;
+			return we_forms::checkboxWithHidden($v ? true : false, $n, g_l('weClass', "[IsDynamic]"), false, "defaultfont", "", true);
 		}
 	}
 
@@ -242,38 +236,38 @@ class we_webEditionDocument extends we_textContentDocument{
 				(($this->ContentType == "text/html" || $this->ContentType == "text/webedition") && $this->Published) :
 				true);
 
-		return
-			'<table border="0" cellpadding="0" cellspacing="0">
+		return '
+<table border="0" cellpadding="0" cellspacing="0">
+	<tr>
+		<td colspan="3" class="defaultfont" align="left">
+			' . $this->formDocType2(388, ($this->Published > 0)) . '</td>
+	</tr>
+	<tr>
+		<td>' . we_html_tools::getPixel(20, 4) . '</td>
+		<td>' . we_html_tools::getPixel(20, 2) . '</td>
+		<td>' . we_html_tools::getPixel(100, 2) . '</td>
+	</tr>
+	<tr>
+		<td colspan="3" class="defaultfont" align="left">' . $this->formTemplatePopup(388, ($this->Published > 0)) . '</td>
+	</tr>
+	<tr>
+		<td>' . we_html_tools::getPixel(20, 4) . '</td>
+		<td>' . we_html_tools::getPixel(20, 2) . '</td>
+		<td>' . we_html_tools::getPixel(100, 2) . '</td>
+	</tr>
+	<tr>
+		<td colspan="3">
+			<table border="0" cellpadding="0" cellspacing="0">
 				<tr>
-					<td colspan="3" class="defaultfont" align="left">
-						' . $this->formDocType2(388, ($this->Published > 0)) . '</td>
+					<td>' . $this->formIsDynamic(100, $disable) . '</td>
+					<td class="defaultfont">&nbsp;</td>
+					<td>' . $this->formIsSearchable() . '</td>
 				</tr>
 				<tr>
-					<td>' . we_html_tools::getPixel(20, 4) . '</td>
-					<td>' . we_html_tools::getPixel(20, 2) . '</td>
-					<td>' . we_html_tools::getPixel(100, 2) . '</td>
+					<td>' . $this->formInGlossar(100) . '</td>
 				</tr>
-				<tr>
-					<td colspan="3" class="defaultfont" align="left">' . $this->formTemplatePopup(388, ($this->Published > 0)) . '</td>
-				</tr>
-				<tr>
-					<td>' . we_html_tools::getPixel(20, 4) . '</td>
-					<td>' . we_html_tools::getPixel(20, 2) . '</td>
-					<td>' . we_html_tools::getPixel(100, 2) . '</td>
-				</tr>
-				<tr>
-					<td colspan="3">
-						<table border="0" cellpadding="0" cellspacing="0">
-							<tr>
-								<td>' . $this->formIsDynamic(100, $disable) . '</td>
-								<td class="defaultfont">&nbsp;</td>
-								<td>' . $this->formIsSearchable() . '</td>
-							</tr>
-							<tr>
-								<td>' . $this->formInGlossar(100) . '</td>
-							</tr>
-						</table></td>
-				</tr></table>';
+			</table></td>
+	</tr></table>';
 	}
 
 	function formTemplateWindow(){
@@ -321,48 +315,34 @@ class we_webEditionDocument extends we_textContentDocument{
 
 	// creates the Template PopupMenue
 	function formTemplatePopup($leftsize, $disable){
+		if($this->DocType){
+			$this->DB_WE->query('SELECT Templates FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . intval($this->DocType));
+			$templateFromDoctype = $this->DB_WE->getAll(true);
+		}
 		if($disable){
 			$myid = intval($this->TemplateID ? $this->TemplateID : 0);
 			$path = ($myid ? f('SELECT Path FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . $myid, 'Path', $this->DB_WE) : '');
 
-			if(we_hasPerm("CAN_SEE_TEMPLATES") && $_SESSION['weS']["we_mode"] == "normal"){
-				$ueberschrift = '<a href="javascript:goTemplate(' . $myid . ')">' . g_l('weClass', '[template]') . '</a>';
-			} else{
-				$ueberschrift = g_l('weClass', '[template]');
-			}
+			$ueberschrift = (we_hasPerm("CAN_SEE_TEMPLATES") && $_SESSION['weS']["we_mode"] == "normal" ?
+					'<a href="javascript:goTemplate(' . $myid . ')">' . g_l('weClass', '[template]') . '</a>' :
+					g_l('weClass', '[template]'));
+
 			if($this->DocType){
-				$sql = "SELECT Templates FROM " . DOC_TYPES_TABLE . " WHERE ID = " . intval($this->DocType);
-				$this->DB_WE->query($sql);
-				$templateFromDoctype = false;
-				while($this->DB_WE->next_record()) {
-					$templateFromDoctype = $this->DB_WE->f("Templates");
-				}
-				if($templateFromDoctype){
-					return $this->xformTemplatePopup(388);
-				} else{
-					return $ueberschrift . '<br/>' . $path;
-				}
+				return (empty($templateFromDoctype) ?
+						$ueberschrift . '<br/>' . $path :
+						$this->xformTemplatePopup(388));
 			}
 			return $ueberschrift . '<br/>' . $path;
 		}
 
 		if($this->DocType){
-			$sql = "SELECT Templates FROM " . DOC_TYPES_TABLE . " WHERE ID = " . intval($this->DocType);
-			$this->DB_WE->query($sql);
-			$templateFromDoctype = false;
-			while($this->DB_WE->next_record()) {
-				$templateFromDoctype = $this->DB_WE->f("Templates");
-			}
 
 			// if a Doctype is set and this Doctype has defined some templates, just show a select box
-			if($templateFromDoctype){
-				return $this->xformTemplatePopup(388);
-			} else{
-				return $this->formTemplateWindow();
-			}
-		} else{
-			return $this->formTemplateWindow();
+			return (empty($templateFromDoctype) ?
+					$this->formTemplateWindow() :
+					$this->xformTemplatePopup(388));
 		}
+		return $this->formTemplateWindow();
 	}
 
 	function xformTemplatePopup($width = 50){
@@ -370,22 +350,18 @@ class we_webEditionDocument extends we_textContentDocument{
 
 		$fieldname = 'we_' . $this->Name . '_TemplateID';
 
-		$Templates = "";
-		$foo = getHash("SELECT TemplateID,Templates FROM " . DOC_TYPES_TABLE . " WHERE ID =" . intval($this->DocType), $this->DB_WE);
-		$TID = $foo["TemplateID"];
-		$Templates = $foo["Templates"];
-		$tlist = "";
-		if($TID != "")
+		list($TID, $Templates) = getHash("SELECT TemplateID,Templates FROM " . DOC_TYPES_TABLE . " WHERE ID =" . intval($this->DocType), $this->DB_WE);
+		$tlist = '';
+		if($TID != '')
 			$tlist = $TID;
-		if($Templates != "")
-			$tlist.="," . $Templates;
+		if($Templates != '')
+			$tlist.=',' . $Templates;
 		if($tlist){
-			$temps = explode(",", $tlist);
+			$temps = explode(',', $tlist);
 			if(in_array($this->TemplateID, $temps))
 				$TID = $this->TemplateID;
 			$tlist = implode(",", array_unique($temps));
-		}
-		else{
+		} else{
 			$foo = array();
 			$wsArray = makeArrayFromCSV($ws);
 			foreach($wsArray as $wid){
@@ -398,20 +374,19 @@ class we_webEditionDocument extends we_textContentDocument{
 			//if($TID == "")
 			$TID = $this->TemplateID;
 		}
-		if(we_hasPerm("CAN_SEE_TEMPLATES") && $_SESSION['weS']["we_mode"] == "normal"){
-			$ueberschrift = '<a href="javascript:goTemplate(document.we_form.elements[\'' . $fieldname . '\'].options[document.we_form.elements[\'' . $fieldname . '\'].selectedIndex].value)">' . g_l('weClass', "[template]") . '</a>';
-		} else{
-			$ueberschrift = g_l('weClass', "[template]");
-		}
+		$ueberschrift = (we_hasPerm("CAN_SEE_TEMPLATES") && $_SESSION['weS']["we_mode"] == "normal" ?
+				'<a href="javascript:goTemplate(document.we_form.elements[\'' . $fieldname . '\'].options[document.we_form.elements[\'' . $fieldname . '\'].selectedIndex].value)">' . g_l('weClass', "[template]") . '</a>' :
+				g_l('weClass', "[template]"));
+
 		if($tlist != ""){
 			$foo = array();
 			$arr = makeArrayFromCSV($tlist);
 			foreach($arr as $tid){
 				if(($tid == $this->TemplateID) || in_workspace($tid, $ws, TEMPLATES_TABLE)){
-					array_push($foo, $tid);
+					$foo[] = $tid;
 				}
 			}
-			$tlist = makeCSVFromArray($foo);
+			$tlist = makeCSVFsromArray($foo);
 			$tlist = $tlist ? $tlist : -1;
 			return $this->formSelect4("", $width, "TemplateID", TEMPLATES_TABLE, "ID", "Path", $ueberschrift, " WHERE ID IN ($tlist) AND IsFolder=0 ORDER BY Path", 1, $TID, false, "we_cmd('template_changed');_EditorFrame.setEditorIsHot(true);", "", "left", "defaultfont", "", "", array(0, ""));
 		} else{
@@ -440,28 +415,26 @@ class we_webEditionDocument extends we_textContentDocument{
 		}
 
 		//	if a meta-tag is set all information are in array $GLOBALS["meta"]
-		return
-			'<table border="0" cellpadding="0" cellspacing="0">
-				<tr>
-					<td colspan="2">
-						' . $this->formInputField("txt", "Title", g_l('weClass', "[Title]"), 40, 508, "", "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
-				</tr>
-				<tr>
-					<td>
-						' . we_html_tools::getPixel(2, 4) . '</td>
-				</tr>
-				<tr>
-					<td colspan="2">
-						' . $this->formInputField("txt", "Description", g_l('weClass', "[Description]"), 40, 508, "", "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
-				</tr>
-				<tr>
-					<td>
-						' . we_html_tools::getPixel(2, 4) . '</td>
-				</tr>
-				<tr>
-					<td colspan="2">
-						' . $this->formInputField("txt", "Keywords", g_l('weClass', "[Keywords]"), 40, 508, "", "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
-				</tr>' .
+		return '
+<table border="0" cellpadding="0" cellspacing="0">
+	<tr>
+		<td colspan="2">
+			' . $this->formInputField("txt", "Title", g_l('weClass', "[Title]"), 40, 508, "", "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
+	</tr>
+	<tr>
+		<td>' . we_html_tools::getPixel(2, 4) . '</td>
+	</tr>
+	<tr>
+		<td colspan="2">' .
+			$this->formInputField("txt", "Description", g_l('weClass', "[Description]"), 40, 508, "", "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
+	</tr>
+	<tr>
+		<td>' . we_html_tools::getPixel(2, 4) . '</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			' . $this->formInputField("txt", "Keywords", g_l('weClass', "[Keywords]"), 40, 508, "", "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
+	</tr>' .
 			$this->getCharsetSelect() .
 			$this->formLanguage(true) .
 			'</table>';
@@ -493,8 +466,6 @@ class we_webEditionDocument extends we_textContentDocument{
 			}
 
 			$retInput = $this->htmlTextInput($inputName, 40, $value, '', ' readonly ', 'text', 254);
-
-
 
 			//	menu for all possible charsets
 
@@ -785,8 +756,9 @@ class we_webEditionDocument extends we_textContentDocument{
 	function i_getDocument($includepath = ''){
 		$glob = array();
 		foreach($GLOBALS as $k => $v){
-			if((!preg_match('|^[0-9]|', $k)) && (!preg_match('|[^a-z0-9_]|i', $k)) && $k != '_SESSION' && $k != '_GET' && $k != '_POST' && $k != '_REQUEST' && $k != '_SERVER' && $k != '_FILES' && $k != '_SESSION' && $k != '_ENV' && $k != '_COOKIE')
+			if((!preg_match('|^[0-9]|', $k)) && (!preg_match('|[^a-z0-9_]|i', $k)) && $k != '_SESSION' && $k != '_GET' && $k != '_POST' && $k != '_REQUEST' && $k != '_SERVER' && $k != '_FILES' && $k != '_SESSION' && $k != '_ENV' && $k != '_COOKIE'){
 				$glob[] = '$' . $k;
+			}
 		}
 		eval('global ' . implode(',', $glob) . ';'); // globalen Namensraum herstellen.
 		$editpageSave = $this->EditPageNr;
@@ -1161,8 +1133,9 @@ if (!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 	}
 
 	function getVariantFields(){
-		if($this->TemplateID == 0)
+		if($this->TemplateID == 0){
 			return array();
+		}
 		$template = new we_template();
 		$template->initByID($this->TemplateID, TEMPLATES_TABLE);
 		return $template->getVariantFields();
@@ -1188,4 +1161,5 @@ if (!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 	public function getDocumentCss(){
 		return $this->DocumentCss;
 	}
+
 }

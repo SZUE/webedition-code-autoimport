@@ -265,7 +265,7 @@ function cutText(text,l){
 				$this->printFramesetUnselectAllFilesHTML() .
 				$this->printFramesetJSFunctions() .
 				we_html_element::jsElement('self.focus();')
-			);
+		);
 		?>
 		</head>
 		<?php
@@ -305,7 +305,9 @@ function selectFile(id){
 		$startPathQuery = new DB_WE();
 		$startPathQuery->query('SELECT Path FROM ' . $startPathQuery->escape($this->table) . ' WHERE ID=' . intval($this->dir));
 		$startPath = $startPathQuery->next_record() ? $startPathQuery->f('Path') : '/';
-
+		if($this->id == 0){
+			$this->path = '/';
+		}
 		return we_html_element::jsElement('
 var currentID="' . $this->id . '";
 var currentDir="' . $this->dir . '";
@@ -317,8 +319,8 @@ var startPath="' . $startPath . '";
 
 
 var parentID=' . intval(($this->dir ?
-					f('SELECT ParentID FROM '.$this->db->escape($this->table).' WHERE ID=' . intval($this->dir), 'ParentID', $this->db) :
-					0)) . ';
+						f('SELECT ParentID FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->dir), 'ParentID', $this->db) :
+						0)) . ';
 var table="' . $this->table . '";
 var order="' . $this->order . '";
 
@@ -424,7 +426,7 @@ function queryString(what,id,o){
 
 	function printFramesetJSFunctioWriteBody(){
 		?><script type="text/javascript"><!--
-					function writeBody(d){
+					function writeBody(d) {
 						d.open();
 		<?php
 		echo self::makeWriteDoc(we_html_tools::getHtmlTop('', '', '4Trans', true) . STYLESHEET_SCRIPT . '
@@ -432,27 +434,27 @@ function queryString(what,id,o){
 <body bgcolor="white" LINK="#000000" ALINK="#000000" VLINK="#000000" leftmargin="0" marginwidth="0" topmargin="0" marginheight="0">
 <table border="0" cellpadding="0" cellspacing="0">');
 		?>
-				for(i=0;i < entries.length; i++){
-					d.writeln('<tr>');
-					d.writeln('<td class="selector" align="center">');
-					var link = '<a title="'+entries[i].text+'" href="javascript://"';
-					if(entries[i].isFolder){
-						link += ' onDblClick="this.blur();top.wasdblclick=1;clearTimeout(tout);top.doClick('+entries[i].ID+',1);return true;"';
+						for (i = 0; i < entries.length; i++) {
+							d.writeln('<tr>');
+							d.writeln('<td class="selector" align="center">');
+							var link = '<a title="' + entries[i].text + '" href="javascript://"';
+							if (entries[i].isFolder) {
+								link += ' onDblClick="this.blur();top.wasdblclick=1;clearTimeout(tout);top.doClick(' + entries[i].ID + ',1);return true;"';
+							}
+							link += ' onClick="this.blur();tout=setTimeout(\'if(top.wasdblclick==0){top.doClick(' + entries[i].ID + ',0);}else{top.wasdblclick=0;}\',300);return true">' + "\n";
+							d.writeln(link + '<img src="<?php print ICON_DIR; ?>' + entries[i].icon + '" width="16" height="18" border="0"></a>');
+							d.writeln('</td>');
+							d.writeln('<td class="selector" title="' + entries[i].text + '">');
+							d.writeln(link + cutText(entries[i].text, 70) + '</a>');
+							d.writeln('</td></tr>');
+							d.writeln('<tr>');
+							d.writeln('<td width="25"><?php print we_html_tools::getPixel(25, 2) ?></td>');
+							d.writeln('<td><?php print we_html_tools::getPixel(200, 2) ?></td></tr>');
+						}
+						d.writeln('</table></body>');
+						d.close();
 					}
-					link += ' onClick="this.blur();tout=setTimeout(\'if(top.wasdblclick==0){top.doClick('+entries[i].ID+',0);}else{top.wasdblclick=0;}\',300);return true">'+"\n";
-					d.writeln(link+'<img src="<?php print ICON_DIR; ?>'+entries[i].icon+'" width="16" height="18" border="0"></a>');
-					d.writeln('</td>');
-					d.writeln('<td class="selector" title="'+entries[i].text+'">');
-					d.writeln(link+cutText(entries[i].text,70)+'</a>');
-					d.writeln('</td></tr>');
-					d.writeln('<tr>');
-					d.writeln('<td width="25"><?php print we_html_tools::getPixel(25, 2) ?></td>');
-					d.writeln('<td><?php print we_html_tools::getPixel(200, 2) ?></td></tr>');
-				}
-				d.writeln('</table></body>');
-				d.close();
-			}
-			//-->
+					//-->
 		</script>
 		<?php
 	}

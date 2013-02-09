@@ -32,19 +32,11 @@ class weSideBarFrames{
 
 	function getHTML($what){
 		switch($what){
-			case 'header':
-				print $this->getHTMLHeader();
-				break;
 
 			case 'content':
 				print $this->getHTMLContent();
 				break;
 
-			case 'footer':
-				print $this->getHTMLFooter();
-				break;
-
-			case 'frameset':
 			default:
 				print $this->getHTMLFrameset();
 				break;
@@ -52,30 +44,8 @@ class weSideBarFrames{
 	}
 
 	function getHTMLFrameset(){
-		return '</head>' .
-			we_html_element::htmlBody(array('style' => 'background-color:grey;margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;')
-				, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
-					, we_html_element::htmlIFrame('weSidebarHeader', $this->_frameset . '?pnt=header', 'position:absolute;top:0px;height:22px;left:0px;right:0px;overflow: hidden;') .
-					we_html_element::htmlIFrame('weSidebarContent', $this->_frameset . '?pnt=content', 'position:absolute;top:22px;bottom:40px;left:0px;right:0px;overflow: auto;') .
-					we_html_element::htmlIFrame('weSidebarFooter', $this->_frameset . '?pnt=footer', 'position:absolute;height:40px;bottom:0px;left:0px;right:0px;overflow: hidden;')
-				))
-			. '</html>';
-	}
-
-	function getHTMLHeader(){
 		?>
 		<style type="text/css">
-			body {
-				margin			: 0px;
-				padding			: 0px;
-				border			: 0px;
-				border-top		: 1px solid #000000;
-				font-family		: Verdana, Arial, sans-serif;
-				font-size		: 10px;
-				color			: #000000;
-				background-color: silver;
-				background-image: url('<?php echo IMAGE_DIR; ?>/backgrounds/multitabBG.gif');
-			}
 			#Headline {
 				padding-left	: 5px;
 				line-height		: 20px;
@@ -90,24 +60,20 @@ class weSideBarFrames{
 			}
 		</style>
 		</head>
-		<body>
-			<div id="Headline">
-				<?php echo g_l('sidebar', '[headline]'); ?>
+		<body style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px;overflow:hidden;">
+			<div id="weSidebarHeader" name="weSidebarHeader" style="overflow: hidden;position:absolute;top:0px;left:0px;right:0px;height:22px;background-color: silver;	background-image: url('<?php echo IMAGE_DIR; ?>/backgrounds/multitabBG.gif');font-family: Verdana, Arial, sans-serif;font-size: 10px;">
+				<div id="Headline">
+					<?php echo g_l('sidebar', '[headline]'); ?>
+				</div>
+				<div id="CloseButton">
+					<img src="<?php echo IMAGE_DIR; ?>/multiTabs/close.gif" border="0" vspace="0" hspace="0" onclick="top.weSidebar.close();" onmouseover="this.src='<?php echo IMAGE_DIR; ?>/multiTabs/closeOver.gif'" onmouseout="this.src='<?php echo IMAGE_DIR; ?>/multiTabs/close.gif'" />
+				</div>
 			</div>
-			<div id="CloseButton">
-				<img src="<?php echo IMAGE_DIR; ?>/multiTabs/close.gif" border="0" vspace="0" hspace="0" onclick="top.weSidebar.close();" onmouseover="this.src='<?php echo IMAGE_DIR; ?>/multiTabs/closeOver.gif'" onmouseout="this.src='<?php echo IMAGE_DIR; ?>/multiTabs/close.gif'" />
+			<div style="position:absolute;top:22px;left:0px;right:0px;bottom:40px;border-bottom: 1px solid black;border-top: 1px solid black;">
+				<iframe src="<?php print $this->_frameset; ?>?pnt=content" style="border: 0px;background-color:white;width:100%;height:100%;overflow: auto;" name="weSidebarContent"></iframe>
 			</div>
-
-		</body>
-
-		</html>
-		<?php
-	}
-
-	function getHTMLFooter(){
-		?>
-		</head>
-		<body bgcolor="#f0f0f0"  background="<?php echo IMAGE_DIR; ?>edit/editfooterback.gif" marginwidth="0" marginheight="10" leftmargin="0" topmargin="10">
+			<div name="weSidebarFooter" id="weSidebarFooter" style="overflow: hidden;position:absolute;bottom:0px;left:0px;right:0px;height:40px;background-color:#f0f0f0;background-image: url('<?php echo IMAGE_DIR; ?>edit/editfooterback.gif'); ">
+			</div>
 		</body>
 
 		</html>
@@ -117,7 +83,7 @@ class weSideBarFrames{
 	function getHTMLContent(){
 		$file = isset($_REQUEST['we_cmd'][1]) ? $_REQUEST['we_cmd'][1] : '';
 		$params = isset($_REQUEST['we_cmd'][2]) ? $_REQUEST['we_cmd'][2] : '';
-		define("WE_SIDEBAR", true);
+		define('WE_SIDEBAR', true);
 
 		if(stripos($file, "http://") === 0 || stripos($file, "https://") === 0){
 			//not implemented

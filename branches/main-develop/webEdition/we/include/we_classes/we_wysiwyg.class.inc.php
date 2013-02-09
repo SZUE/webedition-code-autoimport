@@ -350,7 +350,7 @@ function tinyMCECallRegisterDialog(win,action){
 					var weNodeList = new Array();
 					var weWysiwygFolderPath = "' . WEBEDITION_DIR . 'editors/content/wysiwyg/";
 					var weWysiwygImagesFolderPath = "' . IMAGE_DIR . 'wysiwyg/";
-					var weWysiwygBgGifPath = "' . IMAGE_DIR . 'bacskgrounds/aquaBackground.gif";
+					var weWysiwygBgGifPath = "' . IMAGE_DIR . 'backgrounds/aquaBackground.gif";
 					var weWysiwygIsIntialized = false;
 
 					var wePopupMenuArray = new Array();

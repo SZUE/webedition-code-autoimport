@@ -347,6 +347,9 @@ abstract class we_database_base{
 						$this->retry = false;
 						return $tmp;
 					}
+				case 0:
+					//don't know why, but ignore this
+					return true;
 				default:
 					trigger_error('MYSQL-ERROR' . "\nFehler: " . $this->Errno . "\nDetail: " . $this->Error . "\nInfo:" . $this->info() . "\nQuery: " . $Query_String, E_USER_WARNING);
 					if(defined('WE_SQL_DEBUG') && WE_SQL_DEBUG == 1){
@@ -355,7 +358,6 @@ abstract class we_database_base{
 			}
 		}
 
-# Will return nada if it fails. That's fine.
 //(bool) entfernt um Kompatibilität mit alten weDevEdge Beispiel herzustellen
 		return $this->Query_ID;
 	}

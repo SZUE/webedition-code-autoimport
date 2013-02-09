@@ -604,7 +604,7 @@ echo (we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 9
 
 					$tmp = @unserialize($_SESSION['prefs']['editorCodecompletion']);
 					$hasCompletion = is_array($tmp) ? array_sum($tmp) : false;
-					$maineditor.=we_html_element::cssElement(($toolTip ? we_getCodeMirror2Tags(true) : '') . '
+					$maineditor.=we_html_element::cssElement(($toolTip && $GLOBALS['we_doc']->ContentType == 'text/weTmpl' ? we_getCodeMirror2Tags(true) : '') . '
 .weSelfClose:hover:after, .cm-weSelfClose:hover:after, .weOpenTag:hover:after, .cm-weOpenTag:hover:after, .weTagAttribute:hover:after, .cm-weTagAttribute:hover:after {
 	font-family: ' . ($_SESSION['prefs']['editorTooltipFont'] && $_SESSION['prefs']['editorTooltipFontname'] ? $_SESSION['prefs']['editorTooltipFontname'] : 'sans-serif') . ';
 	font-size: ' . ($_SESSION['prefs']['editorTooltipFont'] && $_SESSION['prefs']['editorTooltipFontsize'] ? $_SESSION['prefs']['editorTooltipFontsize'] : '12') . 'px;
@@ -623,7 +623,7 @@ echo (we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 9
 	background-position: right;
 	background-repeat: no-repeat;
 }' : '')
-						) .we_html_element::jsElement('
+						) . we_html_element::jsElement('
 var CMoptions = { //these are the CodeMirror options
 	mode: "' . $mode . '",
 	enterMode: "indent",
@@ -647,7 +647,7 @@ var CMoptions = { //these are the CodeMirror options
 							  "Ctrl-Space": function(cm) { CodeMirror.weHint(cm, \'\'); }' : ''
 							) . '
 	}
-};' . ($hasCompletion ? we_getCodeMirror2Tags(false) : '') . '
+};' . ($hasCompletion && $GLOBALS['we_doc']->ContentType == 'text/weTmpl' ? we_getCodeMirror2Tags(false) : '') . '
 window.orignalTemplateContent=document.getElementById("editarea").value.replace(/\r/g,""); //this is our reference of the original content to compare with current content
 ');
 				}

@@ -55,6 +55,9 @@ class we_document extends we_root{
 		parent::__construct();
 		array_push($this->persistent_slots, 'Extension', 'IsDynamic', 'Published', 'Category', 'IsSearchable', 'InGlossar', 'Language', 'schedArr');
 		$this->Table = FILE_TABLE;
+		if(defined('WE_SIDEBAR')){
+			$this->InWebEdition = 1;
+		}
 	}
 
 	function copyDoc($id){
@@ -1187,23 +1190,26 @@ class we_document extends we_root{
 		if(isset($link['href']) && strlen($link['href']) >= 7 && substr($link['href'], 0, 7) == 'mailto:'){
 			$link['type'] = 'mail';
 
-                         //added for #7269
-                        if(isset($link['subject']) && $link['subject']!=''){
-                            $link['href']=$link['href']."?subject=".$link['subject'];
-                        }
-                        if(isset($link['cc']) && $link['cc']!=''){
-                            $link['href']=$link['href']."&cc=".$link['cc'];
-                        }
-                        if(isset($link['bcc']) && $link['bcc']!=''){
-                            $link['href']=$link['href']."&bcc=".$link['bcc'];
-                        }
+			//added for #7269
+			if(isset($link['subject']) && $link['subject'] != ''){
+				$link['href'] = $link['href'] . "?subject=" . $link['subject'];
+			}
+			if(isset($link['cc']) && $link['cc'] != ''){
+				$link['href'] = $link['href'] . "&cc=" . $link['cc'];
+			}
+			if(isset($link['bcc']) && $link['bcc'] != ''){
+				$link['href'] = $link['href'] . "&bcc=" . $link['bcc'];
+			}
 		}
-
-		if(isset($link['type']) && ($link['type'] == 'int')){
-			$id = $link['id'];
-			if($id == ''){
-				return '';
-			} else{
+		if(!isset($link['type'])){
+			return '';
+		}
+		switch($link['type']){
+			case 'int':
+				$id = $link['id'];
+				if($id == ''){
+					return '';
+				}
 				$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), 'Path', $db);
 				$path_parts = pathinfo($path);
 				if($hidedirindex && show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES != ''
@@ -1212,25 +1218,21 @@ class we_document extends we_root{
 				}
 				if(isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->InWebEdition){
 					return $path;
-				} else{
-					if(f('SELECT Published FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), 'Published', $db)){
-						return $path;
-					} else{
-						$GLOBALS['we_link_not_published'] = 1;
-						return '';
-					}
 				}
-			}
-		} else if(isset($link['type']) && ($link['type'] == 'obj')){
-			return getHrefForObject($link['obj_id'], $parentID, $path, $db, $hidedirindex, $objectseourls);
-		} else if(isset($link['type'])){
+				if(f('SELECT Published FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), 'Published', $db)){
+					return $path;
+				}
+				$GLOBALS['we_link_not_published'] = 1;
+				return '';
 
-			if($link['href'] == 'http://'){
-				$link['href'] = '';
-			}
-			return $link['href'];
-		} else{
-			return '';
+			case 'obj':
+				return getHrefForObject($link['obj_id'], $parentID, $path, $db, $hidedirindex, $objectseourls);
+			default:
+
+				if($link['href'] == 'http://'){
+					$link['href'] = '';
+				}
+				return $link['href'];
 		}
 	}
 
@@ -1614,7 +1616,7 @@ class we_document extends we_root{
 		$this->DB_WE->query('DELETE FROM ' . NAVIGATION_TABLE . ' WHERE ' . weNavigation::getNavCondition($this->ID, $this->Table));
 		return true;
 	}
-	
+
 	/**
 	 * @return '': this method is overwritten in we_webEditionDocument
 	 */

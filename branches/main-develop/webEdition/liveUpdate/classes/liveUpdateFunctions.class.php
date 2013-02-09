@@ -29,14 +29,23 @@
  */
 class liveUpdateFunctions{
 
-	var $QueryLog = array();
+	private $QueryLog = array(
+		'success' => array(),
+		'tableChanged' => array(),
+		'error' => array(),
+		'entryExists' => array(),
+	);
 
 	/*
 	 * Functions for updatelog
 	 */
 
 	function insertUpdateLogEntry($action, $version, $errorCode){
-		$GLOBALS['DB_WE']->query("INSERT INTO " . UPDATE_LOG_TABLE . " (datum, aktion, versionsnummer, error)	VALUES (NOW(), \"" . $GLOBALS['DB_WE']->escape($action) . "\", \"$version\", $errorCode)");
+		$GLOBALS['DB_WE']->query('INSERT INTO ' . UPDATE_LOG_TABLE . we_database_base::arraySetter(array(
+				'aktion' => $action,
+				'versionsnummer' => $version,
+				'error' => $errorCode
+		)));
 	}
 
 	/**
@@ -46,11 +55,9 @@ class liveUpdateFunctions{
 	 * @param string $version
 	 */
 	function insertQueryLogEntries($type, $premessage = '', $errorCode, $version){
-
 		// insert notices first
-		$message = $premessage;
-
 		if(isset($this->QueryLog[$type])){
+			$message = $premessage;
 
 			foreach($this->QueryLog[$type] as $noticeMessage){
 				$message .= "<br />$noticeMessage\n";
@@ -66,7 +73,6 @@ class liveUpdateFunctions{
 	 * @return string
 	 */
 	function decodeCode($string){
-
 		return base64_decode($string);
 	}
 
@@ -78,7 +84,6 @@ class liveUpdateFunctions{
 	 * @return string
 	 */
 	function preparePhpCode($content, $needle, $replace){
-
 		$content = $this->replaceExtensionInContent($content, $needle, $replace);
 		return $this->checkReplaceDocRoot($content);
 	}
@@ -92,7 +97,6 @@ class liveUpdateFunctions{
 	 * @return unknown
 	 */
 	function replaceExtensionInContent($content, $needle, $replace){
-
 		$content = str_replace($needle, $replace, $content);
 		return $content;
 	}
@@ -110,17 +114,15 @@ class liveUpdateFunctions{
 	 */
 	function checkReplaceDocRoot($content){
 		if(!(isset($_SERVER['DOCUMENT_ROOT']) && $_SERVER['DOCUMENT_ROOT'] == LIVEUPDATE_SOFTWARE_DIR)){
-			$content = str_replace('$_SERVER[\'DOCUMENT_ROOT\']', '"' . LIVEUPDATE_SOFTWARE_DIR . '"', $content);
-			$content = str_replace('$_SERVER["DOCUMENT_ROOT"]', '"' . LIVEUPDATE_SOFTWARE_DIR . '"', $content);
-			$content = str_replace('$GLOBALS[\'DOCUMENT_ROOT\']', '"' . LIVEUPDATE_SOFTWARE_DIR . '"', $content);
-			$content = str_replace('$GLOBALS["DOCUMENT_ROOT"]', '"' . LIVEUPDATE_SOFTWARE_DIR . '"', $content);
+			$content = str_replace(array(
+				'$_SERVER[\'DOCUMENT_ROOT\']',
+				'$_SERVER["DOCUMENT_ROOT"]',
+				'$GLOBALS[\'DOCUMENT_ROOT\']',
+				'$GLOBALS["DOCUMENT_ROOT"]',
+				), '"' . LIVEUPDATE_SOFTWARE_DIR . '"', $content);
 		}
 		return $content;
 	}
-
-	/*
-	 * Functions for manipulating files
-	 */
 
 	/**
 	 * fills given array with all files in given dir
@@ -152,7 +154,6 @@ class liveUpdateFunctions{
 	 * @param string $dir
 	 */
 	function deleteDir($dir){
-
 		if(strpos($dir, './') !== false){
 			return true;
 		}
@@ -227,9 +228,12 @@ class liveUpdateFunctions{
 	 */
 	function checkMakeDir($dirPath, $mod = 0755){
 		// open_base_dir - seperate document-root from rest
-		if(strpos($dirPath, LIVEUPDATE_SOFTWARE_DIR) === 0){
-			$preDir = LIVEUPDATE_SOFTWARE_DIR;
-			$dir = substr($dirPath, strlen(LIVEUPDATE_SOFTWARE_DIR));
+		$dirPath = rtrim(str_replace(array('///', '//'), '/', $dirPath), '/');
+
+		$dir = (defined('LIVEUPDATE_SOFTWARE_DIR') ? LIVEUPDATE_SOFTWARE_DIR : WEBEDITION_PATH);
+		if(strpos($dirPath, $dir) === 0){
+			$preDir = $dir;
+			$dir = substr($dirPath, strlen($dir));
 		} else{
 			$preDir = '';
 			$dir = $dirPath;
@@ -238,14 +242,14 @@ class liveUpdateFunctions{
 		$pathArray = explode('/', $dir);
 		$path = $preDir;
 
-		for($i = 0; $i < count($pathArray); $i++){
-			$path .= $pathArray[$i];
-			if($pathArray[$i] != "" && !is_dir($path)){
+		foreach($pathArray as $subPath){
+			$path .= $subPath;
+			if($subPath != "" && !is_dir($path)){
 				if(!(file_exists($path) || mkdir($path, $mod))){
 					return false;
 				}
 			}
-			$path .= "/";
+			$path .= '/';
 		}
 
 		if(!is_writable($dirPath)){
@@ -280,14 +284,19 @@ class liveUpdateFunctions{
 		if($source == $destination){
 			return true;
 		}
-		if(!isset($_SESSION['moveOk'])){
-			$_SESSION['moveOk'] = true;
-		}
 
 		if($this->checkMakeDir(dirname($destination))){
 			if($this->deleteFile($destination)){
+				if(!isset($_SESSION['weS']['moveOk'])){
+					touch($source . 'x');
+					$_SESSION['weS']['moveOk'] = rename($source . 'x', $destination . 'x');
+					$this->deleteFile($destination . 'x');
+				}
+
+				if($_SESSION['weS']['moveOk']){
+					return rename($source, $destination);
+				}
 				//rename seems to have problems - we do it old school way: copy, on success delete
-				//return rename($source, $destination);
 				if(copy($source, $destination)){
 					$this->deleteFile($source);
 					//should we handle file deletion?
@@ -393,12 +402,9 @@ class liveUpdateFunctions{
 	 * @param string $tableName
 	 * @return array
 	 */
-	function getFieldsOfTable($tableName){
-
-		$db = new DB_WE();
+	function getFieldsOfTable($tableName, $db){
 
 		$fieldsOfTable = array();
-
 		$db->query('DESCRIBE ' . $db->escape($tableName));
 
 		while($db->next_record()) {
@@ -427,7 +433,7 @@ class liveUpdateFunctions{
 		while($db->next_record()) {
 			if($db->f('Key_name') == 'PRIMARY'){
 				$indexType = 'PRIMARY';
-			} else if($db->f('Comment') == 'FULLTEXT' || $db->f('Index_type') == 'FULLTEXT'){// this also depends from mysqlVersion
+			} else if($db->f('Comment') == 'FULLTEXT' || $db->f('Index_type') == 'FULLTEXT'){// this also depends on mysqlVersion
 				$indexType = 'FULLTEXT';
 			} else if($db->f('Non_unique') == '0'){
 				$indexType = 'UNIQUE';
@@ -454,12 +460,10 @@ class liveUpdateFunctions{
 	 * @return unknown
 	 */
 	function getAlterTableForFields($fields, $tableName, $isNew = false){
-
 		$queries = array();
 
 		foreach($fields as $fieldName => $fieldInfo){
 
-			$extra = '';
 			$default = '';
 
 			$null = (strtoupper($fieldInfo['Null']) == "YES" ? ' NULL' : ' NOT NULL');
@@ -556,23 +560,23 @@ class liveUpdateFunctions{
 	 * @return boolean
 	 */
 	function executeQueriesInFiles($path){
+		$db = new DB_WE();
 		if($this->isInsertQueriesFile($path)){
 			$success = true;
 			$queryArray = file($path);
 			if($queryArray){
 				foreach($queryArray as $query){
 					if(trim($query)){
-						$success &= $this->executeUpdateQuery($query);
+						$success &= $this->executeUpdateQuery($query, $db);
 					}
 				}
 			}
 		} else{
 			$content = $this->getFileContent($path);
 			$queries = explode("/* query separator */", $content);
-			//$success = $this->executeUpdateQuery($content);
 			$success = true;
 			foreach($queries as $query){
-				$success &= $this->executeUpdateQuery($query);
+				$success &= $this->executeUpdateQuery($query, $db);
 			}
 		}
 		return $success;
@@ -589,14 +593,12 @@ class liveUpdateFunctions{
 		// when executing a create statement, try to create table,
 		// change fields when needed.
 
-		$query = trim($query);
 
 		if(strpos($query, '###INSTALLONLY###') !== false){// potenzielles Sicherheitsproblem, nur im LiveUpdate nicht ausf�hren
 			return true;
 		}
 
-		$query = str_replace('###TBLPREFIX###', LIVEUPDATE_TABLE_PREFIX, $query);
-		$query = str_replace('###UPDATEONLY###', '', $query);
+		$query = str_replace(array('###TBLPREFIX###', '###UPDATEONLY###'), array(LIVEUPDATE_TABLE_PREFIX, ''), trim($query));
 		$matches = array();
 		if(preg_match('/###UPDATEDROPCOL\((.*),(.*)\)###/', $query, $matches)){
 			$db->query('SHOW COLUMNS FROM ' . $db->escape($matches[2]) . ' WHERE Field="' . $matches[1] . '"');
@@ -665,8 +667,8 @@ class liveUpdateFunctions{
 						$db->query(trim($tmpQuery));
 
 						// get information from existing and new table
-						$origTable = $this->getFieldsOfTable($tableName);
-						$newTable = $this->getFieldsOfTable($tmpName);
+						$origTable = $this->getFieldsOfTable($tableName, $db);
+						$newTable = $this->getFieldsOfTable($tmpName, $db);
 
 						// get keys from existing and new table
 						$origTableKeys = $this->getKeysFromTable($tableName);
@@ -800,20 +802,18 @@ class liveUpdateFunctions{
 	 * returns log array for db-queries
 	 * @return array
 	 */
-	function getQueryLog(){
-		return $this->QueryLog;
+	function getQueryLog($specific = ''){
+		return ($specific ? $this->QueryLog[$specific] : $this->QueryLog);
 	}
 
 	/**
 	 * resets query log, this is done after each query file.
 	 */
 	function clearQueryLog(){
-		$this->QueryLog = array();
+		foreach($this->QueryLog as &$cur){
+			$cur = array();
+		}
 	}
-
-	/*
-	 * Functions for error handler, etc
-	 */
 
 	/**
 	 * returns array with all installed languages

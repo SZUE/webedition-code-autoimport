@@ -233,11 +233,8 @@ class weSelectorQuery{
 				$useCreatorID = true;
 		}
 
-		if(!defined('BANNER_TABLE') || $table != BANNER_TABLE){
-			$userExtraSQL = $useExtraSQL ? $this->getUserExtraQuery($table, $useCreatorID) : '';
-		} else{
-			$userExtraSQL = '';
-		}
+		$userExtraSQL = (!defined('BANNER_TABLE') || $table != BANNER_TABLE ?
+				($useExtraSQL ? $this->getUserExtraQuery($table, $useCreatorID) : '') : '');
 
 		$this->addQueryField("Text");
 		$this->addQueryField("ParentID");
@@ -332,7 +329,7 @@ class weSelectorQuery{
 	 * @return string
 	 */
 	function getUserExtraQuery($table){
-		if((defined('NAVIGATION_TABLE') && $table == NAVIGATION_TABLE) || (defined('BANNER_TABLE') && $table == BANNER_TABLE)||$table == CATEGORY_TABLE){
+		if((defined('NAVIGATION_TABLE') && $table == NAVIGATION_TABLE) || (defined('BANNER_TABLE') && $table == BANNER_TABLE) || $table == CATEGORY_TABLE){
 			return '';
 		}
 		$userExtraSQL = ' AND((1 ' . makeOwnersSql(false) . ') ';
