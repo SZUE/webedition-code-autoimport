@@ -284,14 +284,19 @@ class liveUpdateFunctions{
 		if($source == $destination){
 			return true;
 		}
-		if(!isset($_SESSION['weS']['moveOk'])){
-			$_SESSION['weS']['moveOk'] = true;
-		}
 
 		if($this->checkMakeDir(dirname($destination))){
 			if($this->deleteFile($destination)){
+				if(!isset($_SESSION['weS']['moveOk'])){
+					touch($source . 'x');
+					$_SESSION['weS']['moveOk'] = rename($source . 'x', $destination . 'x');
+					$this->deleteFile($destination . 'x');
+				}
+
+				if($_SESSION['weS']['moveOk']){
+					return rename($source, $destination);
+				}
 				//rename seems to have problems - we do it old school way: copy, on success delete
-				//return rename($source, $destination);
 				if(copy($source, $destination)){
 					$this->deleteFile($source);
 					//should we handle file deletion?
