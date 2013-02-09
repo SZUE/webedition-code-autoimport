@@ -1,7 +1,7 @@
 CREATE TABLE ###TBLPREFIX###tblUpdateLog (
   ID int(11) unsigned NOT NULL auto_increment,
   dortigeID int(11) unsigned NOT NULL default '0',
-  datum datetime default NULL,
+  datum timestamp default CURRENT_TIMESTAMP, 
   aktion text NOT NULL,
   versionsnummer varchar(10) NOT NULL default '',
   module text NOT NULL,
