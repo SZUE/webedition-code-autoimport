@@ -24,27 +24,17 @@
  */
 // Define needed JS
 //$acErrorMsg = we_message_reporting::getShowMessageCall(g_l('alert', '[save_error_fields_value_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR);
+include_once(WE_INCLUDES_PATH . 'we_editors/we_preferences_config.inc.php');
 
 function getPreferencesFooterJS(){
+	$tmp='';
+	foreach(array_keys($GLOBALS['tabs']) as $key){
+		$tmp.="document.getElementById('content').contentDocument.getElementById('setting_".$key."').style.display = 'none';";
+	}
 	$_javascript = <<< END_OF_SCRIPT
 var countSaveTrys = 0;
 function we_save() {
-
-	document.getElementById('content').contentDocument.getElementById('setting_ui').style.display = 'none';
-	document.getElementById('content').contentDocument.getElementById('setting_extensions').style.display = 'none';
-	document.getElementById('content').contentDocument.getElementById('setting_editor').style.display = 'none';
-	document.getElementById('content').contentDocument.getElementById('setting_recipients').style.display = 'none';
-	document.getElementById('content').contentDocument.getElementById('setting_proxy').style.display = 'none';
-	document.getElementById('content').contentDocument.getElementById('setting_advanced').style.display = 'none';
-	document.getElementById('content').contentDocument.getElementById('setting_system').style.display = 'none';
-	document.getElementById('content').contentDocument.getElementById('setting_seolinks').style.display = 'none';
-	document.getElementById('content').contentDocument.getElementById('setting_error_handling').style.display = 'none';
-	document.getElementById('content').contentDocument.getElementById('setting_backup').style.display = 'none';
-	document.getElementById('content').contentDocument.getElementById('setting_validation').style.display = 'none';
-	document.getElementById('content').contentDocument.getElementById('setting_language').style.display = 'none';
-	document.getElementById('content').contentDocument.getElementById('setting_message_reporting').style.display = 'none';
-	//document.getElementById('content').contentDocument.getElementById('setting_modules').style.display = 'none';
-
+		$tmp
 	// update setting for message_reporting
 	top.opener.top.messageSettings = document.getElementById('content').contentDocument.getElementById("message_reporting").value;
 
@@ -58,7 +48,6 @@ function we_save() {
 //		}
 	}
 
-	document.getElementById('content').contentDocument.getElementById('setting_email').style.display = 'none';
 	document.getElementById('content').contentDocument.getElementById('setting_save').style.display = '';
 	document.getElementById('content').contentDocument.we_form.save_settings.value = 'true';
 

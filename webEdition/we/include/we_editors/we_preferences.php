@@ -2734,6 +2734,7 @@ if(window.onload) {
 		 * BACKUP
 		 * ******************************************************************* */
 		case "backup":
+			return;
 			if(!we_hasPerm("ADMINISTRATOR")){
 				break;
 			}

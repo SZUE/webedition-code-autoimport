@@ -32,6 +32,8 @@ function we_tag_href($attribs){
 	$include = weTag_getAttribute('include', $attribs, false, true);
 	$reload = weTag_getAttribute('reload', $attribs, false, true);
 	$rootdir = weTag_getAttribute('rootdir', $attribs, '/');
+	$seeMode = weTag_getAttribute((isset($attribs['seem']) ? 'seem' : 'seeMode'), $attribs, true, true);
+
 	if(substr($rootdir, 0, 1) != '/'){
 		$rootdirid = $rootdir;
 		$rootdir = id_to_path($rootdir, FILE_TABLE);
