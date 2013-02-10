@@ -74,7 +74,7 @@ function transmit(){
 					we_html_element::htmlSpan(array("id" => "prefix"), $aLang[0]) .
 					we_html_element::htmlSpan(array("id" => "postfix"), $aLang[1]) .
 					we_html_element::htmlSpan(array("id" => "csv"), (isset($aProps[3]) ? $aProps[3] : ""))));
-
+		break;
 
 	//added to fix bug #6538
 	case 'reset_home':
