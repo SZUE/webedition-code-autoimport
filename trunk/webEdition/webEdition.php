@@ -511,7 +511,7 @@ if(!empty($_jsincludes)){
 				break;
 
 			case "loadSidebarDocument":
-				top.rframe.sidebar.weSidebarContent.location.href = url;
+				top.rframe.weSidebarContent.location.href = url;
 				break;
 
 			case "versions_preview":
