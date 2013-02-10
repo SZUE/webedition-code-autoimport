@@ -122,6 +122,7 @@ function we_tag_sessionStart($attribs){
 						'WebUserDescription' => $WebUserDescription,
 						'Browser' => $Browser,
 						'Referrer' => $Referrer,
+						'LastLogin' => 'NOW()',
 						'PageID' => $PageID,
 						'ObjectID' => $ObjectID,
 						'SessionAutologin' => $SessionAutologin
