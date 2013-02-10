@@ -185,7 +185,7 @@ class weBackupImport{
 					$object->save(true);
 				}
 
-				if(!FAST_RESTORE){
+				if(false&&!FAST_RESTORE){
 					//speedup for some tables
 					$_SESSION['weS']['weBackupVars']['backup_steps'] =
 						(isset($object->table) && ($object->table == LINK_TABLE || $object->table == CONTENT_TABLE) ?

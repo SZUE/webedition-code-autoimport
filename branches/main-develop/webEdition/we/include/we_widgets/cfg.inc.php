@@ -25,9 +25,9 @@
 include_once (WE_INCLUDES_PATH . 'we_language/' . $GLOBALS["WE_LANGUAGE"] . "/topFeeds.inc.php");
 
 $iDefCols = 2;
-$small = '202';
-$large = '432';
-$iDlgWidth = '480';
+$small = 202;
+$large = 432;
+$iDlgWidth = 480;
 
 $sc1 = array();
 $sc2 = array();
@@ -80,7 +80,7 @@ if(we_hasPerm('EDIT_SETTINGS')){
 
 $aPrefs['sct'] = array(
 	'width' => $small,
-	'height' => '210',
+	'height' => 210,
 	'res' => 0,
 	'cls' => 'red',
 	'csv' => implode(',', $sc1) . ';' . implode(',', $sc2),
@@ -89,70 +89,70 @@ $aPrefs['sct'] = array(
 );
 $aPrefs['rss'] = array(
 	'width' => $small,
-	'height' => '307',
+	'height' => 307,
 	'res' => 0,
 	'cls' => 'yellow',
 	'csv' => base64_encode('http://www.webedition.org/de/feeds/aktuelles.xml') . ',111000,0,110000,1',
-	'dlgHeight' => '480',
+	'dlgHeight' => 480,
 	'isResizable' => 1
 );
 $aPrefs['mfd'] = array(
 	'width' => $small,
-	'height' => '210',
+	'height' => 210,
 	'res' => 0,
 	'cls' => 'lightCyan',
 	'csv' => $shortCutsDocs . $shortCutsTemplates . $shortCutsObjects . $shortCutsClasses . ';0;5;00;',
-	'dlgHeight' => '435',
+	'dlgHeight' => 435,
 	'isResizable' => 1
 );
 $aPrefs['msg'] = array(
 	'width' => $small,
-	'height' => '100',
+	'height' => 100,
 	'res' => 0,
 	'cls' => 'lightCyan',
 	'csv' => '',
-	'dlgHeight' => '140',
+	'dlgHeight' => 140,
 	'isResizable' => 1
 );
 $aPrefs['usr'] = array(
 	'width' => $small,
-	'height' => '210',
+	'height' => 210,
 	'res' => 0,
 	'cls' => 'lightCyan',
 	'csv' => '',
-	'dlgHeight' => '140',
+	'dlgHeight' => 140,
 	'isResizable' => 1
 );
 $aPrefs['upb'] = array(
 	'width' => $small,
-	'height' => '210',
+	'height' => 210,
 	'res' => 0,
 	'cls' => 'lightCyan',
 	'csv' => $shortCutsDocs . $shortCutsObjects,
-	'dlgHeight' => '190',
+	'dlgHeight' => 190,
 	'isResizable' => 1
 );
 $aPrefs['mdc'] = array(
 	'width' => $small,
-	'height' => '307',
+	'height' => 307,
 	'res' => 0,
 	'cls' => 'white',
 	'csv' => ';10;',
-	'dlgHeight' => '450',
+	'dlgHeight' => 450,
 	'isResizable' => 1
 );
 $aPrefs['pad'] = array(
 	'width' => $large,
-	'height' => '307',
+	'height' => 307,
 	'res' => 1,
 	'cls' => 'blue',
 	'csv' => base64_encode(g_l('cockpit', '[notepad_defaultTitle_DO_NOT_TOUCH]')) . ',30020',
-	'dlgHeight' => '560',
+	'dlgHeight' => 560,
 	'isResizable' => 0
 );
 $aPrefs['plg'] = array(
 	'width' => $large,
-	'height' => '210',
+	'height' => 210,
 	'res' => 1,
 	'cls' => 'white',
 	'csv' => '00000000000;',
@@ -191,7 +191,7 @@ for($i = 0; $i < count($aTopRssFeeds); $i++){
 		$aTopRssFeeds[$i][$k] = base64_encode($v);
 	}
 }
-array_push($aCfgProps, $aTopRssFeeds);
+$aCfgProps[]= $aTopRssFeeds;
 
 $jsPrefs = "
 function weConf(){
@@ -202,7 +202,7 @@ function weConf(){
 ";
 
 foreach($aPrefs as $type => $_prefs){
-	$jsPrefs .= "this." . $type . "_props_={'width':" . $_prefs["width"] . ",'height':" . $_prefs["height"] . ",'res':" . $_prefs["res"] . ",'cls':'" . $_prefs["cls"] . "','iDlgHeight':" . $_prefs["dlgHeight"] . "};\n";
+	$jsPrefs .= "this." . $type . "_props_={'width':" . $_prefs["width"] . ",'height':" . $_prefs["height"] . ",'res':" . $_prefs["res"] . ",'cls':'" . $_prefs["cls"] . "','iDlgHeight':" . $_prefs["dlgHeight"] . "};";
 }
 $jsPrefs .= "this.blend_={'fadeIn':1,'fadeOut':1,'v':400};
 };

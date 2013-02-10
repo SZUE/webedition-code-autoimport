@@ -93,7 +93,7 @@ weSidebar.resize = function(width) {
 
 
 weSidebar.reload = function() {
-	top.rframe.sidebar.weSidebarContent.location.reload();
+	top.rframe.weSidebarContent.location.reload();
 
 }
 

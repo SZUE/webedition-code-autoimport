@@ -572,7 +572,7 @@ function makeOwnersSql($useCreatorID = true){
 	foreach($groups as $id){
 		$q[] = "Owners LIKE '%," . intval($id) . ",%'";
 	}
-	return ' AND ( RestrictOwners=1 AND (' . implode(' OR ', $q) . ')) ';
+	return ' AND ( RestrictOwners=0 OR (RestrictOwners=1 AND (' . implode(' OR ', $q) . '))) ';
 }
 
 function we_getParentIDs($table, $id, &$ids, $db = ''){

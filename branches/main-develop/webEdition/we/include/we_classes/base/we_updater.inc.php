@@ -167,7 +167,7 @@ class we_updater{
 		self::fix_text();
 		self::fix_icon();
 
-		$DB_WE->query("UPDATE " . USER_TABLE . " SET IsFolder=1 WHERE Type=" . we_user::TYPE_USER_GROUP);
+		$DB_WE->query('UPDATE ' . USER_TABLE . " SET IsFolder=1 WHERE Type=" . we_user::TYPE_USER_GROUP);
 
 		self::fix_icon();
 		$GLOBALS['DB_WE']->query('SELECT userID FROM ' . PREFS_TABLE . ' WHERE `key`="Language" AND (value NOT LIKE "%_UTF-8%" OR value!="") AND userID IN (SELECT userID FROM ' . PREFS_TABLE . ' WHERE `key`="BackendCharset" AND value="")');
@@ -186,6 +186,7 @@ class we_updater{
 		if(!empty($users)){
 			$GLOBALS['DB_WE']->query('UPDATE ' . PREFS_TABLE . ' SET value="UTF-8" WHERE `key`="BackendCharset" AND userID IN (' . implode(',', $users) . ')');
 			$GLOBALS['DB_WE']->query('UPDATE ' . PREFS_TABLE . ' SET value="Deutsch" WHERE `key`="Language" AND userID IN (' . implode(',', $users) . ')');
+			$_SESSION['prefs'] = we_user::readPrefs($_SESSION['user']['ID'], $GLOBALS['DB_WE']);
 		}
 
 
@@ -238,8 +239,8 @@ class we_updater{
 
 			$_table = OBJECT_FILES_TABLE;
 
-			$_db->query('SHOW TABLES LIKE "'.OBJECT_X_TABLE.'%"');
-			$allTab=$_db->getAll(true);
+			$_db->query('SHOW TABLES LIKE "' . OBJECT_X_TABLE . '%"');
+			$allTab = $_db->getAll(true);
 			foreach($allTab as $_table){
 				if($GLOBALS['DB_WE']->isColExist($_table, 'OF_Url')){
 					$GLOBALS['DB_WE']->changeColType($_table, 'OF_Url', 'VARCHAR(255) NOT NULL');

@@ -97,83 +97,85 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 	}
 	?>
 	<script type="text/javascript"><!--
-		top.cockpitFrame=top.cockpitFrame=top.weEditorFrameController.getActiveDocumentReference();
+		top.cockpitFrame = top.cockpitFrame = top.weEditorFrameController.getActiveDocumentReference();
 		var _EditorFrame = top.weEditorFrameController.getEditorFrame(window.name);
 		_EditorFrame.initEditorFrameData(
-		{
-			"EditorType":"cockpit",
-			"EditorDocumentText":"<?php echo g_l('cockpit', '[cockpit]'); ?>",
-			"EditorDocumentPath":"Cockpit",
-			"EditorContentType":"cockpit",
-			"EditorEditCmd":"open_cockpit"
-		}
-	);
+						{
+							"EditorType": "cockpit",
+							"EditorDocumentText": "<?php
+	echo g_l('cockpit', '[cockpit]');
+	?>",
+							"EditorDocumentPath": "Cockpit",
+							"EditorContentType": "cockpit",
+							"EditorEditCmd": "open_cockpit"
+						}
+		);
 
-		var quickstart=true;
+		var quickstart = true;
 		var _iInitCols=_iLayoutCols=<?php echo intval($iLayoutCols); ?>;
-		var _bDgSave=false;
-		var bInitDrag=false;
-		var oTblWidgets=null;
+		var _bDgSave = false;
+		var bInitDrag = false;
+		var oTblWidgets = null;
 	<?php
 	echo $jsPrefs;
 	?>
 
-		function gel(id_){
+		function gel(id_) {
 			return document.getElementById ? document.getElementById(id_) : null;
 		}
 
-		jsCss='<style type="text/css">';
-		for(var _cls_ in oCfg.color_scheme_){
-			jsCss+='.bgc_'+_cls_+'{background-color:'+oCfg.color_scheme_[_cls_]+';}';
+		jsCss = '<style type="text/css">';
+		for (var _cls_ in oCfg.color_scheme_) {
+			jsCss += '.bgc_' + _cls_ + '{background-color:' + oCfg.color_scheme_[_cls_] + ';}';
 		}
-		jsCss+='.wildcard{position:relative;width:1px;height:1px;}'+
-			'.le_widget{margin-bottom:10px;background-color:'+oCfg.color_scheme_['white']+';}'+
-			'.label{font-family:'+oCfg.label_['font-family']+';font-size:'+oCfg.label_['font-size']+'px;color:'+oCfg.label_['color']+';font-weight:'+oCfg.label_['font-weight']+';}'+
-			'#widgets{position:absolute;top:27px;left:45px;z-index:3;}'+
-			'#le_tblWidgets{table-layout:fixed;}';
-		for(i=1;i<=10;i++){
-			jsCss+='.cls_'+i+'_collapse{width:'+oCfg.general_['cls_collapse']+'px;vertical-align:top;}'+
-				'.cls_'+i+'_expand{width:'+oCfg.general_['cls_expand']+'px;vertical-align:top;}';
+		jsCss += '.wildcard{position:relative;width:1px;height:1px;}' +
+						'.le_widget{margin-bottom:10px;background-color:' + oCfg.color_scheme_['white'] + ';}' +
+						'.label{font-family:' + oCfg.label_['font-family'] + ';font-size:' + oCfg.label_['font-size'] + 'px;color:' + oCfg.label_['color'] + ';font-weight:' + oCfg.label_['font-weight'] + ';}' +
+						'#widgets{position:absolute;top:27px;left:45px;z-index:3;}' +
+						'#le_tblWidgets{table-layout:fixed;}';
+		for (i = 1; i <= 10; i++) {
+			jsCss += '.cls_' + i + '_collapse{width:' + oCfg.general_['cls_collapse'] + 'px;vertical-align:top;}' +
+							'.cls_' + i + '_expand{width:' + oCfg.general_['cls_expand'] + 'px;vertical-align:top;}';
 		}
-		jsCss+='</style>';
+		jsCss += '</style>';
 		document.write(jsCss);
 
-		function getColumnAsoc(id){
-			var oNode=gel(id);
-			var iNodeLen=oNode.childNodes.length;
-			var aNodeSet=new Array();
-			var k=0;
-			for(var i=0;i<iNodeLen;i++){
-				var oChild=oNode.childNodes[i];
-				if(oChild.tagName=='DIV'&&oChild.className=='le_widget'){
-					var sAttrId=oChild.getAttribute('id');
-					aNodeSet[k]={'type':gel(sAttrId+'_type').value,'cls':gel(sAttrId+'_cls').value,
-						'res':gel(sAttrId+'_res').value,'csv':gel(sAttrId+'_csv').value,'id':sAttrId}
+		function getColumnAsoc(id) {
+			var oNode = gel(id);
+			var iNodeLen = oNode.childNodes.length;
+			var aNodeSet = new Array();
+			var k = 0;
+			for (var i = 0; i < iNodeLen; i++) {
+				var oChild = oNode.childNodes[i];
+				if (oChild.tagName == 'DIV' && oChild.className == 'le_widget') {
+					var sAttrId = oChild.getAttribute('id');
+					aNodeSet[k] = {'type': gel(sAttrId + '_type').value, 'cls': gel(sAttrId + '_cls').value,
+						'res': gel(sAttrId + '_res').value, 'csv': gel(sAttrId + '_csv').value, 'id': sAttrId}
 					k++;
 				}
 			}
 			return aNodeSet;
 		}
 
-		function getWidgetProps(p){
-			var oProps=new Object();
-			for(i=1;i<=_iLayoutCols;i++){
-				var node=gel('c_'+i);
-				for(var j=0;j<node.childNodes.length;j++){
-					var child=node.childNodes[j];
-					if(child.tagName=='DIV'&&child.className=='le_widget'){
-						var attr_id=child.getAttribute('id');
-						oProps[attr_id]=gel(attr_id+'_'+p).value;
+		function getWidgetProps(p) {
+			var oProps = new Object();
+			for (i = 1; i <= _iLayoutCols; i++) {
+				var node = gel('c_' + i);
+				for (var j = 0; j < node.childNodes.length; j++) {
+					var child = node.childNodes[j];
+					if (child.tagName == 'DIV' && child.className == 'le_widget') {
+						var attr_id = child.getAttribute('id');
+						oProps[attr_id] = gel(attr_id + '_' + p).value;
 					}
 				}
 			}
 			return oProps;
 		}
 
-		function isHot(){
-			var ix=['type','cls','res','csv'];
-			var ix_len=ix.length;
-			var dat=[
+		function isHot() {
+			var ix = ['type', 'cls', 'res', 'csv'];
+			var ix_len = ix.length;
+			var dat = [
 	<?php
 	$j = 0;
 	$count_j = $iDatLen;
@@ -192,81 +194,82 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 	?>
 			];
 			try{
-				if(_iInitCols!=_iLayoutCols)return true;
-				for(var i=0;i<_iLayoutCols;i++){
-					var asoc=getColumnAsoc('c_'+(i+1));
-					var asoc_len=asoc.length;
-					if((typeof(dat[i])=='undefined'&&!!asoc_len)||(typeof(dat[i])!='undefined'&&asoc_len!=dat[i].length)){
-						return true;
-					}
-					for(var k=0;k<asoc_len;k++){
-						for(var j=0;j<ix_len;j++){
-							if(typeof(dat[i][k][ix[j]])=='undefined'||asoc[k][ix[j]]!=dat[i][k][ix[j]]){
-								return true;
-							}
+			if (_iInitCols != _iLayoutCols)
+				return true;
+			for (var i = 0; i < _iLayoutCols; i++) {
+				var asoc = getColumnAsoc('c_' + (i + 1));
+				var asoc_len = asoc.length;
+				if ((typeof(dat[i]) == 'undefined' && !!asoc_len) || (typeof(dat[i]) != 'undefined' && asoc_len != dat[i].length)) {
+					return true;
+				}
+				for (var k = 0; k < asoc_len; k++) {
+					for (var j = 0; j < ix_len; j++) {
+						if (typeof(dat[i][k][ix[j]]) == 'undefined' || asoc[k][ix[j]] != dat[i][k][ix[j]]) {
+							return true;
 						}
 					}
 				}
+}
 			}catch(e){
 				//console.log("err init1");
 			}
-			if(_isHotTrf){
+			if (_isHotTrf) {
 				return true;
 			}
 			return false;
 		}
 
-		function modifyLayoutCols(iCols){
-			if(iCols>_iLayoutCols){
-				var iAppendCols=iCols-_iLayoutCols;
-				var oTbl=gel('le_tblWidgets');
-				var oRow=gel('rowWidgets');
-				for(var i=1;i<=iAppendCols;i++){
-					var oSpacer=document.createElement('TD');
-					oSpacer.setAttribute('id','spacer_'+(_iLayoutCols+(i-1)));
+		function modifyLayoutCols(iCols) {
+			if (iCols > _iLayoutCols) {
+				var iAppendCols = iCols - _iLayoutCols;
+				var oTbl = gel('le_tblWidgets');
+				var oRow = gel('rowWidgets');
+				for (var i = 1; i <= iAppendCols; i++) {
+					var oSpacer = document.createElement('TD');
+					oSpacer.setAttribute('id', 'spacer_' + (_iLayoutCols + (i - 1)));
 					oSpacer.setAttribute('style', 'width:5px;');
-					oSpacerTxt=document.createTextNode(' ');
-					var oCell=document.createElement('TD');
-					oCell.setAttribute('id','c_'+(_iLayoutCols+i));
-					oCell.setAttribute('class','cls_'+(_iLayoutCols+i)+'_collapse');
-					var oWildcard=document.createElement('DIV');
-					oWildcard.setAttribute('class','wildcard');
+					oSpacerTxt = document.createTextNode(' ');
+					var oCell = document.createElement('TD');
+					oCell.setAttribute('id', 'c_' + (_iLayoutCols + i));
+					oCell.setAttribute('class', 'cls_' + (_iLayoutCols + i) + '_collapse');
+					var oWildcard = document.createElement('DIV');
+					oWildcard.setAttribute('class', 'wildcard');
 					oCell.appendChild(oWildcard);
 					oSpacer.appendChild(oSpacerTxt);
 					oRow.appendChild(oSpacer);
 					oRow.appendChild(oCell);
-					gel( 'spacer_'+(_iLayoutCols+(i-1)) ).style.width="5px";
+					gel('spacer_' + (_iLayoutCols + (i - 1))).style.width = "5px";
 				}
-				_iLayoutCols+=iAppendCols;
+				_iLayoutCols += iAppendCols;
 				le_dragInit(oTbl);
-			}else{
-				var iRemoveCols=_iLayoutCols-iCols;
-				var k=parseInt(iCols)+1;
-				while(k<=_iLayoutCols){
-					var aSoc=getColumnAsoc('c_'+k);
-					var aSocLen=aSoc.length;
-					for(var i=0;i<aSocLen;i++){
-						createWidget(aSoc[i]['type'],0,iCols);
+			} else {
+				var iRemoveCols = _iLayoutCols - iCols;
+				var k = parseInt(iCols) + 1;
+				while (k <= _iLayoutCols) {
+					var aSoc = getColumnAsoc('c_' + k);
+					var aSocLen = aSoc.length;
+					for (var i = 0; i < aSocLen; i++) {
+						createWidget(aSoc[i]['type'], 0, iCols);
 					}
 					k++;
 				}
-				for(var i=_iLayoutCols;i>iCols;i--){
-					var asoc=getColumnAsoc('c_'+i);
-					for(var j=0;j<asoc.length;j++){
+				for (var i = _iLayoutCols; i > iCols; i--) {
+					var asoc = getColumnAsoc('c_' + i);
+					for (var j = 0; j < asoc.length; j++) {
 						gel(asoc[j]['id']).parentNode.removeChild(gel(asoc[j]['id']));
 					}
-					var oRemoveCol=gel('c_'+i);
+					var oRemoveCol = gel('c_' + i);
 					oRemoveCol.parentNode.removeChild(oRemoveCol);
-					var oSpacer=gel('spacer_'+(i-1));
+					var oSpacer = gel('spacer_' + (i - 1));
 					oSpacer.parentNode.removeChild(oSpacer);
 				}
-				_iLayoutCols-=iRemoveCols;
+				_iLayoutCols -= iRemoveCols;
 				le_dragInit(gel('le_tblWidgets'));
 			}
 		}
 
-		function setPrefs(_pid,sBit,sTitleEnc){
-			var iframeEl = document.getElementById(_pid+"_inline");
+		function setPrefs(_pid, sBit, sTitleEnc) {
+			var iframeEl = document.getElementById(_pid + "_inline");
 
 			var iframeWin;
 
@@ -278,376 +281,382 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 				iframeWin = frames.we_wysiwyg_lng_frame;
 			}
 
-			iframeWin._sInitProps=sBit;
-			iframeWin._ttlB64Esc=sTitleEnc;
+			iframeWin._sInitProps = sBit;
+			iframeWin._ttlB64Esc = sTitleEnc;
 		}
 
-		function saveSettings(){
-			var aDat=new Array();
-			for(var i=0;i<_iLayoutCols;i++){
-				var aSoc=getColumnAsoc('c_'+(i+1));
-				aDat[i]=new Array();
-				for(var iPos in aSoc){
-					aDat[i][iPos]=new Array();
-					var aRef=['type','cls','res','csv'];
-					for(var tp in aSoc[iPos]){
-						var idx=findInArray(aRef,tp);
-						if(idx>-1){
-							aDat[i][iPos][idx]=aSoc[iPos][tp];
+		function saveSettings() {
+			var aDat = new Array();
+			for (var i = 0; i < _iLayoutCols; i++) {
+				var aSoc = getColumnAsoc('c_' + (i + 1));
+				aDat[i] = new Array();
+				for (var iPos in aSoc) {
+					aDat[i][iPos] = new Array();
+					var aRef = ['type', 'cls', 'res', 'csv'];
+					for (var tp in aSoc[iPos]) {
+						var idx = findInArray(aRef, tp);
+						if (idx > -1) {
+							aDat[i][iPos][idx] = aSoc[iPos][tp];
 						}
 					}
 				}
 			}
-			aDat[_iLayoutCols]=new Array();
-			var topRssFeedsLen=_trf.length;
-			for(var i=0;i<topRssFeedsLen;i++){
-				aDat[_iLayoutCols][i]=[_trf[i][0],_trf[i][1]];
+			aDat[_iLayoutCols] = new Array();
+			var topRssFeedsLen = _trf.length;
+			for (var i = 0; i < topRssFeedsLen; i++) {
+				aDat[_iLayoutCols][i] = [_trf[i][0], _trf[i][1]];
 			}
-			if(_bDgSave){
-				var sDg='';
-				for(var i=0;i<aDat.length;i++){
-					sDg+=i+":\n";
-					for(var j=0;j<aDat[i].length;j++){
-						sDg+="\t"+aDat[i][j]+"\n";
+			if (_bDgSave) {
+				var sDg = '';
+				for (var i = 0; i < aDat.length; i++) {
+					sDg += i + ":\n";
+					for (var j = 0; j < aDat[i].length; j++) {
+						sDg += "\t" + aDat[i][j] + "\n";
 					}
 				}
 				// interne Meldung - debug
 				alert(sDg);
 			}
 
-			fo=self.document.forms['we_form'];
+			fo = self.document.forms['we_form'];
 			fo.elements['we_cmd[1]'].value = serialize(aDat);
 			top.YAHOO.util.Connect.setForm(fo);
 			var cObj = top.YAHOO.util.Connect.asyncRequest('POST', '<?php echo WE_INCLUDES_DIR; ?>we_widgets/cmd.php', top.weDummy);
 		}
 
-		function resizeIdx(a,id){
-			var res=gel(id+'_res').value;
-			switch(a){
+		function resizeIdx(a, id) {
+			var res = gel(id + '_res').value;
+			switch (a) {
 				case 'swap':
-					gel(id+'_res').value=(res==0)?1:0;
-					gel(id+'_icon_resize').title=(res==0)?'<?php echo g_l('cockpit', "[reduce_size]") ?>' : '<?php echo g_l('cockpit', "[increase_size]"); ?>';
+					gel(id + '_res').value = (res == 0) ? 1 : 0;
+					gel(id + '_icon_resize').title = (res == 0) ? '<?php echo g_l('cockpit', "[reduce_size]") ?>' : '<?php echo g_l('cockpit', "[increase_size]"); ?>';
 					break;
 				case 'get':
 					return res;
-				}
 			}
+		}
 
-			function hasExpandedWidget(node){
-				for(var i=0;i<node.childNodes.length;i++){
-					var currentChild=node.childNodes[i];
-					if(currentChild.tagName=='DIV' && currentChild.className=='le_widget'){
-						if(gel(currentChild.getAttribute('id')+'_res').value==1){
-							return true;
-						}
-					}
-				}
-				return false;
-			}
-
-			function jsStyleCls(evt,obj,cls1,cls2){
-				switch(evt){
-					case 'swap':
-						obj.className=!jsStyleCls('verify',obj,cls1)?obj.className.replace(cls2,cls1):obj.className.replace(cls1,cls2);
-						break;
-					case 'add':
-						if(!jsStyleCls('verify',obj,cls1)){
-							obj.className+=obj.className?' '+cls1:cls1;
-						}
-						break;
-					case 'remove':
-						var rem=obj.className.match(' '+cls1)?' '+cls1:cls1;
-						obj.className=obj.className.replace(rem,'');
-						break;
-					case 'verify':
-						return new RegExp('\\b'+cls1+'\\b').test(obj.className)
-						break;
-				}
-			}
-
-			function updateJsStyleCls(){
-				for(var i=1;i<=_iLayoutCols;i++){
-					var oCol=gel('c_'+i);
-					if(hasExpandedWidget(oCol)){
-						cls1='cls_'+i+'_expand';
-						cls2='cls_'+i+'_collapse';
-					} else{
-						cls1='cls_'+i+'_collapse';
-						cls2='cls_'+i+'_expand';
-					}
-					if(!jsStyleCls('verify',oCol,cls1)){
-						if(jsStyleCls('verify',oCol,cls2)){
-							jsStyleCls('swap',oCol,cls2,cls1);
-						} else{
-							jsStyleCls('add',oCol,cls1);
-						}
+		function hasExpandedWidget(node) {
+			for (var i = 0; i < node.childNodes.length; i++) {
+				var currentChild = node.childNodes[i];
+				if (currentChild.tagName == 'DIV' && currentChild.className == 'le_widget') {
+					if (gel(currentChild.getAttribute('id') + '_res').value == 1) {
+						return true;
 					}
 				}
 			}
+			return false;
+		}
 
-			function getLabel(id){
-				return strip_tags(gel(id+'_prefix').value+gel(id+'_postfix').value);
+		function jsStyleCls(evt, obj, cls1, cls2) {
+			switch (evt) {
+				case 'swap':
+					obj.className = !jsStyleCls('verify', obj, cls1) ? obj.className.replace(cls2, cls1) : obj.className.replace(cls1, cls2);
+					break;
+				case 'add':
+					if (!jsStyleCls('verify', obj, cls1)) {
+						obj.className += obj.className ? ' ' + cls1 : cls1;
+					}
+					break;
+				case 'remove':
+					var rem = obj.className.match(' ' + cls1) ? ' ' + cls1 : cls1;
+					obj.className = obj.className.replace(rem, '');
+					break;
+				case 'verify':
+					return new RegExp('\\b' + cls1 + '\\b').test(obj.className)
+					break;
 			}
+		}
 
-			function setLabel(id,prefix,postfix){
-				var el_label=gel(id+'_lbl');
-				var w=parseInt(el_label.style.width);
-				var suspensionPts='';
-				if(typeof(prefix)=='undefined'||typeof(postfix)=='undefined'){
-					label=getLabel(id);
-				} else{
-					label=strip_tags(prefix+postfix);
-					label = label.replace(/\[\[/g,"<");
-					label = label.replace(/\]\]/g,">");
+		function updateJsStyleCls() {
+			for (var i = 1; i <= _iLayoutCols; i++) {
+				var oCol = gel('c_' + i);
+				if (hasExpandedWidget(oCol)) {
+					cls1 = 'cls_' + i + '_expand';
+					cls2 = 'cls_' + i + '_collapse';
+				} else {
+					cls1 = 'cls_' + i + '_collapse';
+					cls2 = 'cls_' + i + '_expand';
 				}
-				if (label.indexOf("<span") == -1) {
-					while(getDimension(label+suspensionPts,'label').width+10>w){
-						label=label.substring(0,label.length-1);
-						suspensionPts='...';
+				if (!jsStyleCls('verify', oCol, cls1)) {
+					if (jsStyleCls('verify', oCol, cls2)) {
+						jsStyleCls('swap', oCol, cls2, cls1);
+					} else {
+						jsStyleCls('add', oCol, cls1);
 					}
 				}
-				el_label.innerHTML=label+suspensionPts;
 			}
+		}
 
-			function setWidth(id,w){
-				gel(id).style.width=w+'px';
+		function getLabel(id) {
+			return strip_tags(gel(id + '_prefix').value + gel(id + '_postfix').value);
+		}
+
+		function setLabel(id, prefix, postfix) {
+			var el_label = gel(id + '_lbl');
+			var w = parseInt(el_label.style.width);
+			var suspensionPts = '';
+			if (typeof(prefix) == 'undefined' || typeof(postfix) == 'undefined') {
+				label = getLabel(id);
+			} else {
+				label = strip_tags(prefix + postfix);
+				label = label.replace(/\[\[/g, "<");
+				label = label.replace(/\]\]/g, ">");
 			}
-
-			function setWidgetWidth(id,w){
-				var rudebox={'_inline':w,'_bx':w+(2*oCfg.general_['wh_edge']),'_tb':w+(2*oCfg.general_['wh_edge']),
-					'_h':w-oCfg.general_['w_icon_bar'],'_lbl':w-(2*oCfg.general_['w_icon_bar'])};
-				for(var v in rudebox){
-					setWidth(id+v,rudebox[v]);
+			if (label.indexOf("<span") == -1) {
+				while (getDimension(label + suspensionPts, 'label').width + 10 > w) {
+					label = label.substring(0, label.length - 1);
+					suspensionPts = '...';
 				}
 			}
+			el_label.innerHTML = label + suspensionPts;
+		}
 
-			function resizeWidget(id){
+		function setWidth(id, w) {
+			gel(id).style.width = w + 'px';
+		}
 
-				var _type=gel(id+'_type').value;
-				var w=(resizeIdx('get',id)==0)?oCfg.general_['w_expand']:oCfg.general_['w_collapse'];
-				resizeIdx('swap',id);
-				setWidgetWidth(id,w)
-				gel(id+'_lbl').innerHTML='';
-				setLabel(id);
+		function setWidgetWidth(id, w) {
+			var rudebox = {'_inline': w, '_bx': w + (2 * oCfg.general_['wh_edge']), '_tb': w + (2 * oCfg.general_['wh_edge']),
+				'_h': w - oCfg.general_['w_icon_bar'], '_lbl': w - (2 * oCfg.general_['w_icon_bar'])};
+			for (var v in rudebox) {
+				setWidth(id + v, rudebox[v]);
+			}
+		}
+
+		function resizeWidget(id) {
+
+			var _type = gel(id + '_type').value;
+			var w = (resizeIdx('get', id) == 0) ? oCfg.general_['w_expand'] : oCfg.general_['w_collapse'];
+			resizeIdx('swap', id);
+			setWidgetWidth(id, w)
+			gel(id + '_lbl').innerHTML = '';
+			setLabel(id);
+			updateJsStyleCls();
+
+			initWidget(id); // resize widget, etc.
+
+		}
+
+		function initWidget(_id) {
+
+			if (gel(_id + '_type').value == "sct") {
+
+				var _width = "100%";
+				if (resizeIdx('get', _id) == 1) {
+					_width = "48%";
+				}
+
+				var _elem = gel(_id);
+				var _inlineDivs = _elem.getElementsByTagName('div');
+
+				for (i = 0; i < _inlineDivs.length; i++) {
+					if (_inlineDivs[i].className == "sct_row") {
+						_inlineDivs[i].style.width = _width;
+					}
+				}
+			}
+		}
+
+		function setTheme(wizId, wizTheme) {
+			var objs = [gel(wizId + '_wrapper'), gel(wizId + '_vll'), gel(wizId + '_vlr'), gel(wizId + '_bottom'),
+				gel(wizId + '_img_cl'), gel(wizId + '_img_cr')];
+			var clsElement = gel(wizId + '_cls');
+			var replaceClsName = clsElement.value;
+			clsElement.value = wizTheme;
+			for (var o in objs) {
+				if (!objs[o].src) {
+					jsStyleCls('swap', objs[o], objs[o].className, 'bgc_' + wizTheme);
+				} else {
+					var _source = objs[o].src;
+					objs[o].src = _source.replace(replaceClsName, wizTheme);
+				}
+			}
+			var _bgObjs = [gel(wizId + '_lbl_mgnl'), gel(wizId + '_lbl'), gel(wizId + '_lbl_mgnr')];
+			for (var o in _bgObjs) {
+				_bgObjs[o].style.background = 'url(<?php echo IMAGE_DIR; ?>pd/header_' + wizTheme + '.gif)';
+			}
+		}
+
+		function setOpacity(sId, degree) {
+			var obj = gel(sId);
+			obj.style.opacity = (degree / 100);
+			obj.style.MozOpacity = (degree / 100);
+			obj.style.KhtmlOpacity = (degree / 100);
+			obj.style.filter = 'alpha(opacity=' + degree + ')';
+		}
+
+		function fadeTrans(wizId, start, end, ms) {
+			var v = Math.round(ms / 100);
+			var t = 0;
+			if (start > end) {
+				for (i = start; i >= end; i--) {
+					var obj = gel(wizId);
+					setTimeout('setOpacity("' + wizId + '",' + i + ')', (t * v));
+					t++;
+				}
+			} else if (start < end) {
+				for (i = start; i <= end; i++) {
+					setTimeout('setOpacity("' + wizId + '",' + i + ')', (t * v));
+					t++;
+				}
+			}
+		}
+
+		function toggle(wizId, wizType, prefix, postfix) {
+			var defH = eval('oCfg.' + wizType + '_props_["height"]');
+			var defRes = eval('oCfg.' + wizType + '_props_["res"]');
+			var defW = (!!defRes) ? oCfg.general_['w_expand'] : oCfg.general_['w_collapse'];
+			var asoc = {'width': {'_inline': defW, '_bx': defW + (2 * oCfg.general_['wh_edge']), '_tb': defW + (2 * oCfg.general_['wh_edge']),
+					'_h': defW - oCfg.general_['w_icon_bar'], '_lbl': defW - (2 * oCfg.general_['w_icon_bar'])},
+				'height': {'_bx': defH + (2 * oCfg.general_['wh_edge']), '_vline_l': defH, '_vline_r': defH}};
+			var props = {'prefix': prefix, 'postfix': postfix, 'type': wizType, 'res': defRes};
+			for (var att_name in asoc) {
+				for (var v in asoc[att_name]) {
+					eval('gel(wizId+v).style.' + att_name + '=asoc[att_name][v]+"px"');
+				}
+			}
+			for (var p in props) {
+				gel(wizId + '_' + p).value = props[p];
+			}
+			if (defRes == 1 && !jsStyleCls('verify', gel('c_1'), 'cls_1_expand')) {
 				updateJsStyleCls();
-
-				initWidget(id); // resize widget, etc.
-
 			}
+		}
 
-			function initWidget( _id ) {
-
-				if (gel(_id+'_type').value == "sct") {
-
-					var _width = "100%";
-					if ( resizeIdx('get', _id) == 1 ) {
-						_width = "48%";
-					}
-
-					var _elem = gel(_id);
-					var _inlineDivs = _elem.getElementsByTagName('div');
-
-					for (i=0;i<_inlineDivs.length;i++) {
-						if (_inlineDivs[i].className == "sct_row") {
-							_inlineDivs[i].style.width = _width;
-						}
-					}
-				}
+		function pushContent(wizType, wizId, cNode, prefix, postfix, sCsv) {
+			var cNodeReceptor = gel(wizId + '_content');
+			var wizTheme = eval("oCfg." + wizType + "_props_['cls']");
+			cNodeReceptor.innerHTML = cNode;
+			gel(wizId + '_csv').value = sCsv;
+			toggle(wizId, wizType, prefix, postfix);
+			setLabel(wizId);
+			if (wizTheme != 'white') {
+				setTheme(wizId, wizTheme);
 			}
+			gel(wizId).style.display = 'block';
+			if (!!oCfg.blend_['fadeIn']) {
+				fadeTrans(wizId, 0, 100, oCfg.blend_['v']);
+			}
+		}
 
-			function setTheme(wizId,wizTheme){
-				var objs=[gel(wizId+'_wrapper'),gel(wizId+'_vll'),gel(wizId+'_vlr'),gel(wizId+'_bottom'),
-					gel(wizId+'_img_cl'),gel(wizId+'_img_cr')];
-				var clsElement=gel(wizId+'_cls');
-				var replaceClsName=clsElement.value;
-				clsElement.value=wizTheme;
-				for(var o in objs){
-					if(!objs[o].src){
-						jsStyleCls('swap',objs[o],objs[o].className,'bgc_'+wizTheme);
-					}else{
-						var _source=objs[o].src;
-						objs[o].src=_source.replace(replaceClsName,wizTheme);
-					}
-				}
-				var _bgObjs=[gel(wizId+'_lbl_mgnl'),gel(wizId+'_lbl'),gel(wizId+'_lbl_mgnr')];
-				for(var o in _bgObjs){
-					_bgObjs[o].style.background='url(<?php echo IMAGE_DIR; ?>pd/header_'+wizTheme+'.gif)';
+		function createWidget(typ, row, col) {
+			// for IE
+			if (typ == 'pad') {
+				document.getElementById('c_' + col).className = 'cls_' + col + '_expand';
+			}
+			//EOF for IE
+			var domNode = gel('c_' + col);
+			var asoc = getColumnAsoc('c_' + col);
+			var properties = getWidgetProps('type');
+			var numWidgets = sizeof(properties);
+			var idx = numWidgets + 1;
+			while (!!gel('m_' + idx)) {
+				idx++;
+			}
+			var new_id = 'm_' + idx;
+			var cloneSampleId = 'divClone';
+			for (var currentId in properties) {
+				if (properties[currentId] == typ) {
+					cloneSampleId = currentId;
+					break;
 				}
 			}
-
-			function setOpacity(sId,degree){
-				var obj=gel(sId);
-				obj.style.opacity=(degree/100);
-				obj.style.MozOpacity=(degree/100);
-				obj.style.KhtmlOpacity=(degree/100);
-				obj.style.filter='alpha(opacity='+degree+')';
+			var nodeToClone = gel(cloneSampleId);
+			var regex = cloneSampleId;
+			var re = new RegExp(((cloneSampleId == 'divClone') ? new_id + '|clone' : cloneSampleId), 'g');
+			var sClonedNode = nodeToClone.innerHTML.replace(re, new_id);
+			if (cloneSampleId == 'divClone') {
+				sClonedNode = sClonedNode.replace(/_reCloneType_/g, typ);
 			}
-
-			function fadeTrans(wizId,start,end,ms){
-				var v=Math.round(ms/100);
-				var t=0;
-				if(start>end){
-					for(i=start;i>=end;i--){
-						var obj=gel(wizId);
-						setTimeout('setOpacity("'+wizId+'",'+i+')',(t*v));
-						t++;
-					}
-				}else if(start<end){
-					for(i=start;i<=end;i++){
-						setTimeout('setOpacity("'+wizId+'",'+i+')',(t*v));
-						t++;
-					}
-				}
+			var divClone = document.createElement('DIV');
+			divClone.setAttribute('id', new_id);
+			divClone.setAttribute('class', 'le_widget');
+			divClone.className = 'le_widget'; // for IE
+			divClone.setAttribute('style', 'position:relative');
+			divClone.innerHTML = sClonedNode;
+			if (!!oCfg.blend_['fadeIn']) {
+				divClone.style.display = 'none';
 			}
+			if (asoc.length && row) {
+				domNode.insertBefore(divClone, gel(asoc[row - 1]['id']));
 
-			function toggle(wizId,wizType,prefix,postfix){
-				var defH=eval('oCfg.'+wizType+'_props_["height"]');
-				var defRes=eval('oCfg.'+wizType+'_props_["res"]');
-				var defW=(!!defRes)?oCfg.general_['w_expand']:oCfg.general_['w_collapse'];
-				var asoc={'width':{'_inline':defW,'_bx':defW+(2*oCfg.general_['wh_edge']),'_tb':defW+(2*oCfg.general_['wh_edge']),
-						'_h':defW-oCfg.general_['w_icon_bar'],'_lbl':defW-(2*oCfg.general_['w_icon_bar'])},
-					'height':{'_bx':defH+(2*oCfg.general_['wh_edge']),'_vline_l':defH,'_vline_r':defH}};
-				var props={'prefix':prefix,'postfix':postfix,'type':wizType,'res':defRes};
-				for(var att_name in asoc){
-					for(var v in asoc[att_name]){
-						eval('gel(wizId+v).style.'+att_name+'=asoc[att_name][v]+"px"');
-					}
+			} else { // add to empty col - before wildcard!!
+				var _td = gel("c_" + col);
+				_td.insertBefore(
+								divClone,
+								_td.childNodes[0]
+								);
+			}
+			if (findInArray(_noResizeTypes, typ) > -1) {
+				var oPrc = gel(new_id + '_ico_prc');
+				var oPc = gel(new_id + '_ico_pc');
+				if (oPrc) {
+					oPrc.parentNode.removeChild(oPrc);
 				}
-				for(var p in props){
-					gel(wizId+'_'+p).value=props[p];
-				}
-				if(defRes==1&&!jsStyleCls('verify',gel('c_1'),'cls_1_expand')){
-					updateJsStyleCls();
+				if (oPc) {
+					oPc.style.display = 'block';
 				}
 			}
-
-			function pushContent(wizType,wizId,cNode,prefix,postfix,sCsv){
-				var cNodeReceptor=gel(wizId+'_content');
-				var wizTheme=eval("oCfg."+wizType+"_props_['cls']");
-				cNodeReceptor.innerHTML=cNode;
-				gel(wizId+'_csv').value=sCsv;
-				toggle(wizId,wizType,prefix,postfix);
-				setLabel(wizId);
-				if(wizTheme!='white'){
-					setTheme(wizId,wizTheme);
+			if (!!oCfg.blend_['fadeIn']) {
+				setOpacity(divClone.id, 0);
+			}
+			if (cloneSampleId != 'divClone') {
+				divClone.style.display = 'block';
+				if (!!oCfg.blend_['fadeIn']) {
+					fadeTrans(new_id, 0, 100, oCfg.blend_['v']);
 				}
-				gel(wizId).style.display='block';
-				if(!!oCfg.blend_['fadeIn']){
-					fadeTrans(wizId,0,100,oCfg.blend_['v']);
+			} else {
+				top.we_cmd('edit_home', 'add', typ, new_id);
+			}
+			tableNode = gel('le_tblWidgets');
+			le_dragInit(tableNode);
+			saveSettings();
+		}
+
+		function removeWidget(wizId) {
+			var remove = confirm('<?php echo g_l('cockpit', "[pre_remove]"); ?>"' + getLabel(wizId) + '"<?php echo g_l('cockpit', "[post_remove]"); ?>');
+			if (remove == true) {
+				gel(wizId).parentNode.removeChild(gel(wizId));
+				updateJsStyleCls();
+			}
+			saveSettings();
+		}
+
+		function implode(arr, delimeter, enclosure) {
+			if (typeof(delimeter) == 'undefined') {
+				delimeter = ',';
+			}
+			if (typeof(enclosure) == 'undefined') {
+				enclosure = "'";
+			}
+			var out = '';
+			for (var i = 0; i < arr.length; i++) {
+				if (i != 0) {
+					out += delimeter;
+				}
+				out += enclosure + escape(arr[i]) + enclosure;
+			}
+			return out;
+		}
+
+		function composeUri(args) {
+			var uri = '<?php echo WE_INCLUDES_DIR; ?>we_widgets/dlg/' + args[0] + '.php?';
+			for (var i = 1; i < args.length; i++) {
+				uri += 'we_cmd[' + (i - 1) + ']=' + args[i];
+				if (i < (args.length - 1)) {
+					uri += '&';
 				}
 			}
+			return uri;
+		}
 
-			function createWidget(typ,row,col){
-				// for IE
-				if(typ=='pad') {
-					document.getElementById('c_'+col).className = 'cls_'+col+'_expand';
-				}
-				//EOF for IE
-				var domNode=gel('c_'+col);
-				var asoc=getColumnAsoc('c_'+col);
-				var properties=getWidgetProps('type');
-				var numWidgets=sizeof(properties);
-				var idx=numWidgets+1;
-				while(!!gel('m_'+idx)){
-					idx++;
-				}
-				var new_id='m_'+idx;
-				var cloneSampleId='divClone';
-				for(var currentId in properties){
-					if(properties[currentId]==typ){
-						cloneSampleId=currentId;
-						break;
-					}
-				}
-				var nodeToClone=gel(cloneSampleId);
-				var regex=cloneSampleId;
-				var re=new RegExp(((cloneSampleId=='divClone')?new_id+'|clone':cloneSampleId),'g');
-				var sClonedNode = nodeToClone.innerHTML.replace(re,new_id);
-				if(cloneSampleId=='divClone'){
-					sClonedNode=sClonedNode.replace(/_reCloneType_/g,typ);
-				}
-				var divClone=document.createElement('DIV');
-				divClone.setAttribute('id',new_id);
-				divClone.setAttribute('class','le_widget');
-				divClone.className = 'le_widget'; // for IE
-				divClone.setAttribute('style','position:relative');
-				divClone.innerHTML=sClonedNode;
-				if(!!oCfg.blend_['fadeIn']){
-					divClone.style.display='none';
-				}
-				if(asoc.length && row){
-					domNode.insertBefore(divClone,gel(asoc[row-1]['id']));
+		/** Enable disable the spinning wheel ... **/
 
-				}else{ // add to empty col - before wildcard!!
-					var _td = gel("c_" + col);
-					_td.insertBefore(
-					divClone,
-					_td.childNodes[0]
-				);
-				}
-				if(findInArray(_noResizeTypes,typ)>-1){
-					var oPrc=gel(new_id+'_ico_prc');
-					var oPc=gel(new_id+'_ico_pc');
-					if (oPrc) {
-						oPrc.parentNode.removeChild(oPrc);
-					}
-					if (oPc) {
-						oPc.style.display='block';
-					}
-				}
-				if(!!oCfg.blend_['fadeIn']){
-					setOpacity(divClone.id,0);
-				}
-				if(cloneSampleId!='divClone'){
-					divClone.style.display='block';
-					if(!!oCfg.blend_['fadeIn']){
-						fadeTrans(new_id,0,100,oCfg.blend_['v']);
-					}
-				}else{
-					top.we_cmd('edit_home','add',typ,new_id);
-				}
-				tableNode=gel('le_tblWidgets');
-				le_dragInit(tableNode);
-				saveSettings();
-			}
-
-			function removeWidget(wizId){
-				var remove=confirm('<?php echo g_l('cockpit', "[pre_remove]"); ?>"'+getLabel(wizId)+'"<?php echo g_l('cockpit', "[post_remove]"); ?>');
-				if(remove==true){
-					gel(wizId).parentNode.removeChild(gel(wizId));
-					updateJsStyleCls();
-				}
-				saveSettings();
-			}
-
-			function implode(arr,delimeter,enclosure){
-				if(typeof(delimeter)=='undefined'){delimeter=',';}
-				if(typeof(enclosure)=='undefined'){enclosure="'";}
-				var out='';
-				for(var i=0;i<arr.length;i++){
-					if(i!=0){out+=delimeter;}
-					out+=enclosure+escape(arr[i])+enclosure;
-				}
-				return out;
-			}
-
-			function composeUri(args){
-				var uri='<?php echo WE_INCLUDES_DIR; ?>we_widgets/dlg/'+args[0]+'.php?';
-				for(var i=1;i<args.length;i++){
-					uri+='we_cmd['+(i-1)+']='+args[i];
-					if(i<(args.length-1)){
-						uri+='&';
-					}
-				}
-				return uri;
-			}
-
-			/** Enable disable the spinning wheel ... **/
-
-			/**
-			 * show the spinning wheel for a widget
-			 */
-			function showLoadingSymbol(elementId) {
+		/**
+		 * show the spinning wheel for a widget
+		 */
+		function showLoadingSymbol(elementId) {
 	<?php
 	if(!we_base_browserDetect::isSafari()){
 		echo '
@@ -666,211 +675,214 @@ clone.style.display="inline";
 }';
 	}
 	?>
+		}
+
+
+		/**
+		 * hide the spinning wheel for a widget
+		 */
+		function hideLoadingSymbol(elementId) {
+			var saf = <?php echo (we_base_browserDetect::isSafari() ? 'true' : 'false'); ?>;
+
+			if (!saf && gel('rpcBusyClone_' + elementId)) {
+				var oWrapper = gel(elementId + '_wrapper');
+				oWrapper.style.textAlign = 'left';
+				oWrapper.style.verticalAlign = 'top';
+				gel('rpcBusyClone_' + elementId).parentNode.removeChild(gel('rpcBusyClone_' + elementId));
 			}
 
+		}
 
-			/**
-			 * hide the spinning wheel for a widget
-			 */
-			function hideLoadingSymbol( elementId ) {
-				var saf = <?php echo (we_base_browserDetect::isSafari() ? 'true' : 'false'); ?>;
+		/** async REQUEST for preview **/
 
-				if(!saf && gel('rpcBusyClone_' + elementId)){
-					var oWrapper=gel(elementId+'_wrapper');
-					oWrapper.style.textAlign='left';
-					oWrapper.style.verticalAlign='top';
-					gel('rpcBusyClone_' + elementId).parentNode.removeChild(gel('rpcBusyClone_' + elementId));
-				}
+		function updateWidgetContent(widgetType, widgetId, contentData, titel) {
 
+			var docIFrm, iFrmScr;
+			var oInline = gel(widgetId + '_inline'); // object-inline
+
+			var saf = <?php echo (we_base_browserDetect::isSafari() ? 'true' : 'false'); ?>;
+			if (!saf) {
+				oInline.style.display = 'block';
 			}
-
-			/** async REQUEST for preview **/
-
-			function updateWidgetContent(widgetType, widgetId, contentData, titel) {
-
-				var docIFrm,iFrmScr;
-				var oInline = gel(widgetId+'_inline'); // object-inline
-
-				var saf = <?php echo (we_base_browserDetect::isSafari() ? 'true' : 'false'); ?>;
-				if(!saf) {
-					oInline.style.display='block';
-				}
-				if(widgetType=='pad'){
-					if(oInline.contentDocument){
-						docIFrm=oInline.contentDocument;
-						iFrmScr=oInline.contentWindow;
-					}else if(oInline.contentWindow){
-						docIFrm=oInline.contentWindow.document;
-						iFrmScr=oInline.contentWindow;
-					}else if(oInline.document){
-						docIFrm=oInline.document;
-						iFrmScr=oInline;
-					}else{
-						return true;
-					}
-				}
-
-				var oContent=gel(widgetId+'_content');
-				oContent.style.display='block';
-				hideLoadingSymbol(widgetId);
-
-				eval(((widgetType=='pad')?'docIFrm.getElementById(widgetType)':'oInline')+ '.innerHTML=contentData;');
-				if(widgetType=='pad')iFrmScr.calendarSetup();
-				setLabel(widgetId,titel,'');
-				initWidget( widgetId );
-
-			}
-
-			/**
-			 * executes a real AJAX command, instead of using an iframe
-			 * the received ajax-response will use the function "updateWidgetContent" to replace the content of the widget
-			 * @param param_1 string: individual foreach widget
-			 * @param initCfg string: configuration (position, etc)
-			 * @param param_3 string:
-			 * @param param_4 string:
-			 * @param titel string: titel of the widget
-			 * @param widgetId string: id fo widget
-			 *
-			 */
-			function executeAjaxRequest( param_1, initCfg, param_3, param_4, titel, widgetId ) {
-
-				// determine type of the widget
-				var widgetType = gel( widgetId + '_type').value;
-
-				showLoadingSymbol( arguments[5] );
-
-				var args = '';
-				for(var i = 0; i < arguments.length; i++) {
-					args += '&we_cmd['+i+']='+escape(arguments[i]);
-				}
-
-				var _cmdName = null;
-
-				switch ( widgetType ) {
-					case "rss":
-						_cmdName = "GetRss";
-						break;
-//FIXME: what about all other tools?!
-				}
-				top.YAHOO.util.Connect.asyncRequest( 'GET', '<?php echo WEBEDITION_DIR; ?>rpc/rpc.php?cmd=' + _cmdName + '&cns=widgets' + args + '&weSessionId=<?php print session_id(); ?>' , ajaxCallback );
-
-			}
-
-			var ajaxCallback = {
-				success: function(o) {
-					if(typeof(o.responseText) != 'undefined' && o.responseText != '') {
-						var weResponse = false;
-						try {
-							eval( o.responseText );
-							if ( weResponse ) {
-								updateWidgetContent( weResponse.widgetType, weResponse.widgetId, weResponse.data, weResponse.titel );
-
-							}
-						} catch (exc){
-							alert("Could not complete the ajax request");
-						}
-					}
-				},
-				failure: function(o) {
-					alert("Could not complete the ajax request");
-
-				}
-			}
-
-			/**
-			 * Old ajax functions using an iframe
-			 */
-			function rpc(){
-
-				if(!document.createElement){
+			if (widgetType == 'pad') {
+				if (oInline.contentDocument) {
+					docIFrm = oInline.contentDocument;
+					iFrmScr = oInline.contentWindow;
+				} else if (oInline.contentWindow) {
+					docIFrm = oInline.contentWindow.document;
+					iFrmScr = oInline.contentWindow;
+				} else if (oInline.document) {
+					docIFrm = oInline.document;
+					iFrmScr = oInline;
+				} else {
 					return true;
 				}
-				var docIFrm;
-				var sType=gel(arguments[5]+'_type').value;
-				showLoadingSymbol( arguments[5] );
-
-				// temporaryliy add a form submit the form and save all !!
-				// start bugfix #1145
-				var _tmpForm = document.createElement("form");
-				document.getElementsByTagName("body")[0].appendChild(_tmpForm);
-				var path=(sType!='rss'&&sType!='pad'&&sType!='plg'&&sType!='sct')?'dlg/'+arguments[6]:'mod/'+sType;
-				_tmpForm.id = "_tmpSubmitForm";
-				_tmpForm.method = "POST";
-				_tmpForm.action = '<?php echo WE_INCLUDES_DIR; ?>we_widgets/'+path+'.php';
-				_tmpForm.target = "RSIFrame";
-				for(var i=0;i<arguments.length;i++){
-					var _tmpField = document.createElement('input');
-					_tmpForm.appendChild(_tmpField);
-
-					_tmpField.name = "we_cmd[" + i + "]";
-					_tmpField.value = unescape(arguments[i]);
-					_tmpField.style.display = "none";
-				}
-				_tmpForm.submit();
-				// remove form after submitting everything
-				document.getElementsByTagName("body")[0].removeChild( document.getElementById("_tmpSubmitForm") );
-
-				return false;
-				// end bugfix #1145
 			}
 
+			var oContent = gel(widgetId + '_content');
+			oContent.style.display = 'block';
+			hideLoadingSymbol(widgetId);
 
-			function rpcHandleResponse(sType,sObjId,oDoc,sCsvLabel){
+			eval(((widgetType == 'pad') ? 'docIFrm.getElementById(widgetType)' : 'oInline') + '.innerHTML=contentData;');
+			if (widgetType == 'pad')
+				iFrmScr.calendarSetup();
+			setLabel(widgetId, titel, '');
+			initWidget(widgetId);
 
+		}
 
-				var docIFrm,iFrmScr;
-				var oInline=gel(sObjId+'_inline');
+		/**
+		 * executes a real AJAX command, instead of using an iframe
+		 * the received ajax-response will use the function "updateWidgetContent" to replace the content of the widget
+		 * @param param_1 string: individual foreach widget
+		 * @param initCfg string: configuration (position, etc)
+		 * @param param_3 string:
+		 * @param param_4 string:
+		 * @param titel string: titel of the widget
+		 * @param widgetId string: id fo widget
+		 *
+		 */
+		function executeAjaxRequest(param_1, initCfg, param_3, param_4, titel, widgetId) {
 
-				var saf = <?php echo (we_base_browserDetect::isSafari() ? 'true' : 'false'); ?>;
-				if(!saf) {
-					oInline.style.display='block';
-				}
+			// determine type of the widget
+			var widgetType = gel(widgetId + '_type').value;
 
-				if(sType=='rss'||sType=='pad'){
-					if(oInline.contentDocument){
-						docIFrm=oInline.contentDocument;
-						iFrmScr=oInline.contentWindow;
-					}else if(oInline.contentWindow){
-						docIFrm=oInline.contentWindow.document;
-						iFrmScr=oInline.contentWindow;
-					}else if(oInline.document){
-						docIFrm=oInline.document;
-						iFrmScr=oInline;
-					}else{
-						return true;
+			showLoadingSymbol(arguments[5]);
+
+			var args = '';
+			for (var i = 0; i < arguments.length; i++) {
+				args += '&we_cmd[' + i + ']=' + escape(arguments[i]);
+			}
+
+			var _cmdName = null;
+
+			switch (widgetType) {
+				case "rss":
+					_cmdName = "GetRss";
+					break;
+	//FIXME: what about all other tools?!
+			}
+			if (_cmdName) {
+				top.YAHOO.util.Connect.asyncRequest('GET', '<?php echo WEBEDITION_DIR; ?>rpc/rpc.php?cmd=' + _cmdName + '&cns=widgets' + args + '&weSessionId=<?php print session_id(); ?>', ajaxCallback);
+			}
+		}
+
+		var ajaxCallback = {
+			success: function(o) {
+				if (typeof(o.responseText) != 'undefined' && o.responseText != '') {
+					var weResponse = false;
+					try {
+						eval(o.responseText);
+						if (weResponse) {
+							updateWidgetContent(weResponse.widgetType, weResponse.widgetId, weResponse.data, weResponse.titel);
+
+						}
+					} catch (exc) {
+						alert("Could not complete the ajax request");
 					}
 				}
-				var oContent=gel(sObjId+'_content');
-				oContent.style.display='block';
+			},
+			failure: function(o) {
+				alert("Could not complete the ajax request");
 
-				hideLoadingSymbol(sObjId);
+			}
+		}
 
-				eval(((sType=='rss'||sType=='pad')?'docIFrm.getElementById(sType)':'oInline')+ '.innerHTML=oDoc.innerHTML;');
-				if(sType=='pad')iFrmScr.calendarSetup();
-				setLabel(sObjId,sCsvLabel,'');
+		/**
+		 * Old ajax functions using an iframe
+		 */
+		function rpc() {
 
-				initWidget( sObjId );
+			if (!document.createElement) {
+				return true;
+			}
+			var docIFrm;
+			var sType = gel(arguments[5] + '_type').value;
+			showLoadingSymbol(arguments[5]);
+
+			// temporaryliy add a form submit the form and save all !!
+			// start bugfix #1145
+			var _tmpForm = document.createElement("form");
+			document.getElementsByTagName("body")[0].appendChild(_tmpForm);
+			var path = (sType != 'rss' && sType != 'pad' && sType != 'plg' && sType != 'sct') ? 'dlg/' + arguments[6] : 'mod/' + sType;
+			_tmpForm.id = "_tmpSubmitForm";
+			_tmpForm.method = "POST";
+			_tmpForm.action = '<?php echo WE_INCLUDES_DIR; ?>we_widgets/' + path + '.php';
+			_tmpForm.target = "RSIFrame";
+			for (var i = 0; i < arguments.length; i++) {
+				var _tmpField = document.createElement('input');
+				_tmpForm.appendChild(_tmpField);
+
+				_tmpField.name = "we_cmd[" + i + "]";
+				_tmpField.value = unescape(arguments[i]);
+				_tmpField.style.display = "none";
+			}
+			_tmpForm.submit();
+			// remove form after submitting everything
+			document.getElementsByTagName("body")[0].removeChild(document.getElementById("_tmpSubmitForm"));
+
+			return false;
+			// end bugfix #1145
+		}
+
+
+		function rpcHandleResponse(sType, sObjId, oDoc, sCsvLabel) {
+
+
+			var docIFrm, iFrmScr;
+			var oInline = gel(sObjId + '_inline');
+
+			var saf = <?php echo (we_base_browserDetect::isSafari() ? 'true' : 'false'); ?>;
+			if (!saf) {
+				oInline.style.display = 'block';
 			}
 
-			var _propsDlg=new Array();
-			function propsWidget(){
-				eval('var iHeight=oCfg.'+arguments[0]+'_props_["iDlgHeight"]');
-				var uri=composeUri(arguments);
-				eval('_propsDlg["'+arguments[1]+'"]=window.open(uri,arguments[1],"location=0,status=1,scrollbars=0,width='+oCfg.general_['iDlgWidth']+'px,height='+iHeight+'px")');
-			}
-
-			function closeAllModalWindows() {
-				try{
-					for (dialog in _propsDlg) {
-						_propsDlg[dialog].close();
-					}
-				} catch(e){
-
+			if (sType == 'rss' || sType == 'pad') {
+				if (oInline.contentDocument) {
+					docIFrm = oInline.contentDocument;
+					iFrmScr = oInline.contentWindow;
+				} else if (oInline.contentWindow) {
+					docIFrm = oInline.contentWindow.document;
+					iFrmScr = oInline.contentWindow;
+				} else if (oInline.document) {
+					docIFrm = oInline.document;
+					iFrmScr = oInline;
+				} else {
+					return true;
 				}
 			}
+			var oContent = gel(sObjId + '_content');
+			oContent.style.display = 'block';
 
-			_isHotTrf=false;
-			var _trf=new Array();
+			hideLoadingSymbol(sObjId);
+
+			eval(((sType == 'rss' || sType == 'pad') ? 'docIFrm.getElementById(sType)' : 'oInline') + '.innerHTML=oDoc.innerHTML;');
+			if (sType == 'pad')
+				iFrmScr.calendarSetup();
+			setLabel(sObjId, sCsvLabel, '');
+
+			initWidget(sObjId);
+		}
+
+		var _propsDlg = new Array();
+		function propsWidget() {
+			eval('var iHeight=oCfg.' + arguments[0] + '_props_["iDlgHeight"]');
+			var uri = composeUri(arguments);
+			eval('_propsDlg["' + arguments[1] + '"]=window.open(uri,arguments[1],"location=0,status=1,scrollbars=0,width=' + oCfg.general_['iDlgWidth'] + 'px,height=' + iHeight + 'px")');
+		}
+
+		function closeAllModalWindows() {
+			try {
+				for (dialog in _propsDlg) {
+					_propsDlg[dialog].close();
+				}
+			} catch (e) {
+
+			}
+		}
+
+		_isHotTrf = false;
+		var _trf = new Array();
 	<?php
 	$iCurrRssFeed = 0;
 	foreach($aTrf as $aRssFeed){
@@ -884,47 +896,48 @@ clone.style.display="inline";
 	) . "}";
 	?>
 
-			function setMsgCount(num){
-				if(gel('msg_count')){
-					gel('msg_count').innerHTML='<b>'+num+'</b>';
-				}
+		function setMsgCount(num) {
+			if (gel('msg_count')) {
+				gel('msg_count').innerHTML = '<b>' + num + '</b>';
 			}
+		}
 
-			function setTaskCount(num){
-				if(gel('task_count')){
-					gel('task_count').innerHTML='<b>'+num+'</b>';
-				}
+		function setTaskCount(num) {
+			if (gel('task_count')) {
+				gel('task_count').innerHTML = '<b>' + num + '</b>';
 			}
+		}
 	<?php
 	if(in_array_recursive('usr', $aDat) && defined("USER_TABLE")){
 		?>
 
-					function setUsersOnline(num){
-						if(gel('num_users')){
-							gel('num_users').innerHTML=num;
-						}
-					}
+			function setUsersOnline(num) {
+				if (gel('num_users')) {
+					gel('num_users').innerHTML = num;
+				}
+			}
 
-					function setUsersListOnline(users){
-						if(gel('users_online')){
-							gel('users_online').innerHTML=users;
-						}
-					}
+			function setUsersListOnline(users) {
+				if (gel('users_online')) {
+					gel('users_online').innerHTML = users;
+				}
+			}
 		<?php
 	}
 	?>
 
 
-			function getUser(){
-				var url = '<?php echo WEBEDITION_DIR; ?>we_cmd.php?';
-				for(var i = 0; i < arguments.length; i++) {
-					url += 'we_cmd['+i+']='+escape(arguments[i]);
-					if(i < (arguments.length - 1)) url += '&';
-				}
-
-				new jsWindow(url,'browse_users',-1,-1,500,300,true,false,true);
+		function getUser() {
+			var url = '<?php echo WEBEDITION_DIR; ?>we_cmd.php?';
+			for (var i = 0; i < arguments.length; i++) {
+				url += 'we_cmd[' + i + ']=' + escape(arguments[i]);
+				if (i < (arguments.length - 1))
+					url += '&';
 			}
-			//-->
+
+			new jsWindow(url, 'browse_users', -1, -1, 500, 300, true, false, true);
+		}
+		//-->
 	</script>
 	</head>
 	<?php
@@ -992,8 +1005,8 @@ clone.style.display="inline";
 	}
 
 	$oTblWidgets = new we_html_table(array(
-			"cellpadding" => "0", "cellspacing" => "0", "border" => "0", "height" => "98%"
-			), 1, 1);
+		"cellpadding" => "0", "cellspacing" => "0", "border" => "0", "height" => "98%"
+		), 1, 1);
 	$oTblWidgets->setCol(
 		0, 0, array(
 		"valign" => "top", "width" => "100%", "align" => "left"
@@ -1023,7 +1036,7 @@ clone.style.display="inline";
 					"name" => "we_cmd[1]", "value" => ""
 				)) . we_html_element::htmlHidden(array(
 					"name" => "we_cmd[2]", "value" => ""
-				))) . we_html_element::htmlDiv(
+			))) . we_html_element::htmlDiv(
 				array(
 				"id" => "rpcBusy", "style" => "display:none;"
 				), we_html_element::htmlImg(
@@ -1033,7 +1046,7 @@ clone.style.display="inline";
 						"height" => '32px',
 						"border" => '0px',
 						"style" => "margin-left:10px;"
-				))) . we_html_element::htmlDiv(array(
+			))) . we_html_element::htmlDiv(array(
 				"id" => "widgets"
 				), "") . $oTblWidgets->getHtml() . we_html_element::jsElement(
 				"oTblWidgets=gel('le_tblWidgets');initDragWidgets();") . we_html_element::htmlDiv(

@@ -36,7 +36,7 @@ $GLOBALS['tabs'] = array(
 	'language' => 'ADMINISTRATOR',
 	'countries' => 'ADMINISTRATOR',
 	'error_handling' => 'ADMINISTRATOR',
-	'backup' => 'ADMINISTRATOR',
+//	'backup' => 'ADMINISTRATOR',
 	'validation' => 'ADMINISTRATOR',
 	'email' => 'ADMINISTRATOR',
 	'message_reporting' => '',
@@ -69,9 +69,9 @@ $GLOBALS['configs'] = array(
 		'DISABLE_TEMPLATE_CODE_CHECK' => array('Disable the check for php-errors in templates', 0),
 		'DISABLE_TEMPLATE_PARSER' => array('Disable run of parser - only report errors', 0),
 // Backup variable
-		'BACKUP_STEPS' => array('Number of entries per batch', 100),
+/*		'BACKUP_STEPS' => array('Number of entries per batch', 100),
 		'FAST_BACKUP' => array('New Test for a faster Backup', 0),
-		'FAST_RESTORE' => array('New Test for a faster Restore', 0),
+		'FAST_RESTORE' => array('New Test for a faster Restore', 0),*/
 // inlineedit default value
 		'INLINEEDIT_DEFAULT' => array('Default setting for inlineedit attribute', true),
 		'WE_PHP_DEFAULT' => array('Default setting for php attribute', false),

@@ -279,13 +279,8 @@ class weXMLExIm{
 		if($with_dirs){
 			return $tmp;
 		}
-		foreach($tmp as $v){
-			$isfolder = f("SELECT IsFolder FROM " . $db->escape($table) . " WHERE ID=" . intval($v), "IsFolder", $db);
-			if(!$isfolder){
-				$ret[] = $v;
-			}
-		}
-		return $ret;
+		$db->query('SELECT ID FROM ' . $db->escape($table) . ' WHERE IsFolder=0 AND ID IN(' . implode(',', $tmp) . ')');
+		return $db->getAll(true);
 	}
 
 	function getQueryParents($path){
@@ -318,7 +313,7 @@ class weXMLExIm{
 			}
 		}
 
-		return makeOwnersSql() . ( $wsQuery ? 'OR (' . implode(' OR ', $wsQuery) . ')' : '');
+		return 'AND (1 '.makeOwnersSql() . ( $wsQuery ? 'OR (' . implode(' OR ', $wsQuery) . ')' : '').')';
 	}
 
 	function getSelectedItems($selection, $extype, $art, $type, $doctype, $classname, $categories, $dir, &$selDocs, &$selTempl, &$selObjs, &$selClasses){
@@ -339,8 +334,10 @@ class weXMLExIm{
 						break;
 				}
 			}
-		} else{
-			if($type == "doctype"){
+			return;
+		}
+		switch($type){
+			case "doctype":
 				$cat_sql = ($categories ? we_category::getCatSQLTail('', FILE_TABLE, true, $db, 'Category', true, $categories) : '');
 				if($dir != 0){
 					$workspace = id_to_path($dir, FILE_TABLE, $db);
@@ -351,13 +348,15 @@ class weXMLExIm{
 
 				$db->query('SELECT DISTINCT ID FROM ' . FILE_TABLE . ' WHERE 1 ' . $ws_where . '  AND tblFile.IsFolder=0 AND tblFile.DocType="' . $db->escape($doctype) . '"' . $cat_sql);
 				$selDocs = $db->getAll(true);
-			} elseif(defined('OBJECT_FILES_TABLE')){
-				$cat_sql = ' ' . ($categories ? we_category::getCatSQLTail('', OBJECT_FILES_TABLE, true, $db, 'Category', true, $categories) : '');
-				$where = $this->queryForAllowed(OBJECT_FILES_TABLE);
+				return;
+			default:
+				if(defined('OBJECT_FILES_TABLE')){
+					$cat_sql = ' ' . ($categories ? we_category::getCatSQLTail('', OBJECT_FILES_TABLE, true, $db, 'Category', true, $categories) : '');
+					$where = $this->queryForAllowed(OBJECT_FILES_TABLE);
 
-				$db->query('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE IsFolder=0 AND TableID=' . intval($classname) . $cat_sql . $where);
-				$selObjs = $db->getAll(true);
-			}
+					$db->query('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE IsFolder=0 AND TableID=' . intval($classname) . $cat_sql . $where);
+					$selObjs = $db->getAll(true);
+				}
 		}
 	}
 
