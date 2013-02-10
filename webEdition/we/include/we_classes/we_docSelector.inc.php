@@ -89,26 +89,29 @@ class we_docSelector extends we_dirSelector{
 			($this->order ? (' ORDER BY ' . $this->order) : '')
 		);
 
-		if($this->table == FILE_TABLE){
-			$titleQuery = new DB_WE();
-			$titleQuery->query("SELECT a.ID, c.Dat FROM (" . FILE_TABLE . " a LEFT JOIN " . LINK_TABLE . " b ON (a.ID=b.DID)) LEFT JOIN " . CONTENT_TABLE . " c ON (b.CID=c.ID) WHERE a.ParentID=" . intval($this->dir) . " AND b.Name='Title'");
-			while($titleQuery->next_record()) {
-				$this->titles[$titleQuery->f('ID')] = $titleQuery->f('Dat');
-			}
-		} else if(defined('OBJECT_FILES_TABLE') && $this->table == OBJECT_FILES_TABLE){
-			$_path = $this->path;
-			while($_path !== "" && dirname($_path) != "\\" && dirname($_path) != "/") {
-				$_path = dirname($_path);
-			}
-			$_db = new DB_WE();
-			$_cid = f('SELECT ID FROM ' . OBJECT_TABLE . " WHERE Path='" . $_db->escape($_path) . "'", "ID", $_db);
-			$this->titleName = f("SELECT DefaultTitle FROM " . OBJECT_TABLE . " WHERE ID=" . intval($_cid), "DefaultTitle", $_db);
-			if($this->titleName && strpos($this->titleName, '_')){
-				$_db->query("SELECT OF_ID, $this->titleName FROM " . OBJECT_X_TABLE . $_cid . " WHERE OF_ParentID=" . intval($this->dir));
+		$_db = new DB_WE();
+		switch($this->table){
+			case FILE_TABLE:
+
+				$_db->query('SELECT a.ID, c.Dat FROM (' . FILE_TABLE . ' a LEFT JOIN ' . LINK_TABLE . ' b ON (a.ID=b.DID)) LEFT JOIN ' . CONTENT_TABLE . ' c ON (b.CID=c.ID) WHERE a.ParentID=' . intval($this->dir) . ' AND b.Name="Title"');
 				while($_db->next_record()) {
-					$this->titles[$_db->f('OF_ID')] = $_db->f($this->titleName);
+					$this->titles[$_db->f('ID')] = $_db->f('Dat');
 				}
-			}
+				break;
+			case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
+				$_path = $this->path;
+				while($_path !== "" && dirname($_path) != "\\" && dirname($_path) != "/") {
+					$_path = dirname($_path);
+				}
+				$_cid = f('SELECT ID FROM ' . OBJECT_TABLE . " WHERE Path='" . $_db->escape($_path) . "'", "ID", $_db);
+				$this->titleName = f('SELECT DefaultTitle FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($_cid), 'DefaultTitle', $_db);
+				if($this->titleName && strpos($this->titleName, '_')){
+					$_db->query('SELECT OF_ID, ' . $this->titleName . ' FROM ' . OBJECT_X_TABLE . $_cid . ' WHERE OF_ParentID=' . intval($this->dir));
+					while($_db->next_record()) {
+						$this->titles[$_db->f('OF_ID')] = $_db->f($this->titleName);
+					}
+				}
+				break;
 		}
 	}
 
@@ -317,7 +320,7 @@ function entry(ID,icon,text,isFolder,path,modDate,contentType,published,title) {
 				$title = strip_tags(str_replace(array('\\', '"', "\n",), array('\\\\', '\"', ' '), $title));
 				$title = $title == '&nbsp;' ? '-' : oldHtmlspecialchars($title);
 				$published = ($this->table == FILE_TABLE || (defined("OBJECT_FILES_TABLE") && $this->table == OBJECT_FILES_TABLE) ? $this->f("Published") : 1);
-				$ret.= 'addEntry(' . $this->f("ID") . ',"' . $this->f("Icon") . '","' . addcslashes($this->f("Text"),'"') . '",' . $this->f("IsFolder") . ',"' . addcslashes($this->f("Path"),'"') . '","' . date(g_l('date', '[format][default]'), $this->f("ModDate")) . '","' . $this->f("ContentType") . '","' . $published . '","' . addcslashes($title,'"') . '");';
+				$ret.= 'addEntry(' . $this->f("ID") . ',"' . $this->f("Icon") . '","' . addcslashes($this->f("Text"), '"') . '",' . $this->f("IsFolder") . ',"' . addcslashes($this->f("Path"), '"') . '","' . date(g_l('date', '[format][default]'), $this->f("ModDate")) . '","' . $this->f("ContentType") . '","' . $published . '","' . addcslashes($title, '"') . '");';
 			}
 		}
 		return we_html_element::jsElement($ret);
@@ -592,40 +595,50 @@ top.parentID = "' . $this->values["ParentID"] . '";
 <body bgcolor="white" class="defaultfont" onresize="setInfoSize()" onload="setTimeout(\'setInfoSize()\',50)">
 					';
 		if(isset($result['ContentType']) && !empty($result['ContentType'])){
-			if($this->table == FILE_TABLE && $result['ContentType'] != "folder"){
-				$query = $this->db->query("SELECT a.Name, b.Dat FROM " . LINK_TABLE . " a LEFT JOIN " . CONTENT_TABLE . " b on (a.CID = b.ID) WHERE a.DID=" . intval($this->id) . " AND NOT a.DocumentTable='tblTemplates'");
-				while($this->db->next_record()) {
-					$metainfos[$this->db->f('Name')] = $this->db->f('Dat');
-				}
-			} else if(defined("OBJECT_FILES_TABLE") && $this->table == OBJECT_FILES_TABLE && $result['ContentType'] != "folder"){
-				$_fieldnames = getHash("SELECT DefaultDesc,DefaultTitle,DefaultKeywords FROM " . OBJECT_TABLE . " WHERE ID=" . intval($result["TableID"]), $this->db);
-				$_selFields = "";
-				foreach($_fieldnames as $_key => $_val){
-					if(empty($_val) || $_val == '_') // bug #4657
-						continue;
-					if(!is_numeric($_key)){
-						if($_val == "_"){
-							$_val = "";
-						}
-						if($_val && $_key == "DefaultDesc"){
-							$_selFields .= $_val . " as Description,";
-						} else if($_key == "DefaultTitle"){
-							$_selFields .= $_val . " as Title,";
-						} else if($_val && $_key == "DefaultKeywords"){
-							$_selFields .= $_val . " as Keywords,";
-						}
-					}
-				}
-				if($_selFields){
-					$_selFields = substr($_selFields, 0, strlen($_selFields) - 1);
-					$metainfos = getHash("SELECT " . $_selFields . " FROM " . OBJECT_X_TABLE . $result["TableID"] . " WHERE OF_ID=" . intval($result["ID"]), $this->db);
-				}
-			} elseif($result['ContentType'] == "folder"){
+			if($result['ContentType'] != "folder"){
 				$this->db->query("SELECT ID, Text, IsFolder FROM " . $this->db->escape($this->table) . " WHERE ParentID=" . intval($this->id));
 				$folderFolders = array();
 				$folderFiles = array();
 				while($this->db->next_record()) {
 					$this->db->f('IsFolder') ? $folderFolders[$this->db->f('ID')] = $this->db->f('Text') : $folderFiles[$this->db->f('ID')] = $this->db->f('Text');
+				}
+			} else{
+				switch($this->table){
+					case FILE_TABLE:
+						$this->db->query('SELECT a.Name, b.Dat FROM ' . LINK_TABLE . ' a LEFT JOIN ' . CONTENT_TABLE . ' b on (a.CID = b.ID) WHERE a.DID=' . intval($this->id) . " AND NOT a.DocumentTable='tblTemplates'");
+						while($this->db->next_record()) {
+							$metainfos[$this->db->f('Name')] = $this->db->f('Dat');
+						}
+						break;
+					case (defined("OBJECT_FILES_TABLE") ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
+						$_fieldnames = getHash('SELECT DefaultDesc,DefaultTitle,DefaultKeywords FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($result["TableID"]), $this->db);
+						$_selFields = "";
+						foreach($_fieldnames as $_key => $_val){
+							if(empty($_val) || $_val == '_') // bug #4657
+								continue;
+							if(!is_numeric($_key)){
+								if($_val == '_'){
+									$_val = '';
+								}
+								if($_val){
+									switch($_key){
+										case "DefaultDesc":
+											$_selFields .= $_val . " as Description,";
+											break;
+										case "DefaultTitle":
+											$_selFields .= $_val . " as Title,";
+											break;
+										case "DefaultKeywords":
+											$_selFields .= $_val . " as Keywords,";
+											break;
+									}
+								}
+							}
+						}
+						if($_selFields){
+							$_selFields = substr($_selFields, 0, strlen($_selFields) - 1);
+							$metainfos = getHash("SELECT " . $_selFields . " FROM " . OBJECT_X_TABLE . $result["TableID"] . " WHERE OF_ID=" . intval($result["ID"]), $this->db);
+						}
 				}
 			}
 			switch($result['ContentType']){
@@ -666,8 +679,6 @@ top.parentID = "' . $this->values["ParentID"] . '";
 				"files" => array("headline" => g_l('fileselector', "[files]"), "data" => array()),
 				"masterTemplate" => array("headline" => g_l('weClass', "[master_template]"), "data" => array())
 			);
-
-
 
 			$_previewFields["properies"]["data"][] = array(
 				"caption" => g_l('fileselector', "[name]"),
