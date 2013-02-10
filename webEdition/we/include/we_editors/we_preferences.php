@@ -556,7 +556,6 @@ $GLOBALS[\'_we_active_integrated_modules\'] = array(
 				$_file = we_base_preferences::changeSourceCode('define', $_file, $settingname, $settingvalue, true, $comment);
 			}
 			return;
-
 	}
 }
 
@@ -634,13 +633,13 @@ function build_dialog($selected_setting = 'ui'){
 		case 'save':
 
 			return create_dialog('', g_l('prefs', '[save_wait]'), array(
-					array('headline' => '', 'html' => g_l('prefs', '[save]'), 'space' => 0)
-				));
+				array('headline' => '', 'html' => g_l('prefs', '[save]'), 'space' => 0)
+			));
 
 		case 'saved'://SAVED SUCCESSFULLY DIALOG
 			return create_dialog('', g_l('prefs', '[saved_successfully]'), array(
-					array('headline' => '', 'html' => g_l('prefs', '[saved]'), 'space' => 0)
-				));
+				array('headline' => '', 'html' => g_l('prefs', '[saved]'), 'space' => 0)
+			));
 
 		case 'ui':
 			//LANGUAGE
@@ -722,23 +721,6 @@ function build_dialog($selected_setting = 'ui'){
 			}
 			$cockpit_amount_columns->selectOption(get_value('cockpit_amount_columns'));
 			$_settings[] = array('headline' => g_l('prefs', '[cockpit_amount_columns]'), 'html' => $cockpit_amount_columns->getHtml(), 'space' => 200);
-
-
-			/*			 * ***************************************************************
-			 * Login
-			 * *************************************************************** */
-			if(we_hasPerm("ADMINISTRATOR")){
-				$_loginWEst_disabler = we_forms::checkbox(1, get_value('WE_LOGIN_HIDEWESTATUS') == 1 ? 1 : 0, 'newconf[WE_LOGIN_HIDEWESTATUS]', g_l('prefs', '[login][deactivateWEstatus]'));
-
-				$_we_windowtypes = array('0' => g_l('prefs', '[login][windowtypeboth]'), '1' => g_l('prefs', '[login][windowtypepopup]'), '2' => g_l('prefs', '[login][windowtypesame]'));
-				$_we_windowtypeselect = new we_html_select(array('name' => 'newconf[WE_LOGIN_WEWINDOW]', 'class' => 'weSelect'));
-				foreach($_we_windowtypes as $key => $value){
-					$_we_windowtypeselect->addOption($key, $value);
-				}
-				$_we_windowtypeselect->selectOption(get_value('WE_LOGIN_WEWINDOW'));
-				// Build dialog if user has permission
-				$_settings[] = array('headline' => g_l('prefs', '[login][login]'), 'html' => $_loginWEst_disabler . we_html_element::htmlBr() . g_l('prefs', '[login][windowtypes]') . we_html_element::htmlBr() . $_we_windowtypeselect->getHtml(), 'space' => 200);
-			}
 
 			/*			 * ***************************************************************
 			 * SEEM
@@ -1684,10 +1666,10 @@ if(window.onload) {
 				we_html_tools::hidden('newconf[editorCodecompletion][html5Attr]', get_value('editorCodecompletion-html5Attr'));
 
 
-			$_template_editor_tabstop_code=
-				we_forms::checkbox(1, get_value('editorShowTab'), 'editorShowTab', g_l('prefs','[show]'), true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[editorShowTab]\');') .
+			$_template_editor_tabstop_code =
+				we_forms::checkbox(1, get_value('editorShowTab'), 'editorShowTab', g_l('prefs', '[show]'), true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[editorShowTab]\');') .
 				we_html_tools::hidden('newconf[editorShowTab]', get_value('editorShowTab')) .
-						'<table border="0" cellpadding="0" cellspacing="0">
+				'<table border="0" cellpadding="0" cellspacing="0">
 				<tr><td class="defaultfont" style="width:200px;">' . g_l('prefs', '[editor_tabSize]') . '</td><td>' . we_html_tools::htmlTextInput("newconf[editorTabSize]", 2, get_value("editorTabSize"), "", "", "int", 135) . '</td></tr>
 			</table>';
 
@@ -2194,6 +2176,19 @@ if(window.onload) {
 
 			$_settings[] = array("headline" => g_l('prefs', '[we_doctype_workspace_behavior]'), "html" => $_we_doctype_workspace_behavior_table, "space" => 200);
 
+			if(we_base_preferences::userIsAllowed('WE_LOGIN_HIDEWESTATUS')){
+				$_loginWEst_disabler = we_forms::checkbox(1, get_value('WE_LOGIN_HIDEWESTATUS') == 1 ? 1 : 0, 'newconf[WE_LOGIN_HIDEWESTATUS]', g_l('prefs', '[login][deactivateWEstatus]'));
+
+				$_we_windowtypes = array('0' => g_l('prefs', '[login][windowtypeboth]'), '1' => g_l('prefs', '[login][windowtypepopup]'), '2' => g_l('prefs', '[login][windowtypesame]'));
+				$_we_windowtypeselect = new we_html_select(array('name' => 'newconf[WE_LOGIN_WEWINDOW]', 'class' => 'weSelect'));
+				foreach($_we_windowtypes as $key => $value){
+					$_we_windowtypeselect->addOption($key, $value);
+				}
+				$_we_windowtypeselect->selectOption(get_value('WE_LOGIN_WEWINDOW'));
+				// Build dialog if user has permission
+				$_settings[] = array('headline' => g_l('prefs', '[login][login]'), 'html' => $_loginWEst_disabler . we_html_element::htmlBr() . g_l('prefs', '[login][windowtypes]') . we_html_element::htmlBr() . $_we_windowtypeselect->getHtml(), 'space' => 200);
+			}
+
 			if(defined('SCHEDULE_TABLE')){
 				$_Schedtrigger_setting = new we_html_select(array("name" => "newconf[SCHEDULER_TRIGGER]", "class" => "weSelect"));
 				$_Schedtrigger_setting->addOption(SCHEDULER_TRIGGER_PREDOC, g_l('prefs', '[we_scheduler_trigger][preDoc]')); //pre
@@ -2560,12 +2555,10 @@ if(window.onload) {
 
 			// Create checkboxes
 			$_template_error_handling_table = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0"), 8, 1);
-			$_template_error_handling_table->setCol(0, 0, null,
-				we_forms::checkbox(1, get_value('DISABLE_TEMPLATE_CODE_CHECK'), 'DISABLE_TEMPLATE_CODE_CHECK', g_l('prefs', '[disable_template_code_check]'), true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[DISABLE_TEMPLATE_CODE_CHECK]\');') .
+			$_template_error_handling_table->setCol(0, 0, null, we_forms::checkbox(1, get_value('DISABLE_TEMPLATE_CODE_CHECK'), 'DISABLE_TEMPLATE_CODE_CHECK', g_l('prefs', '[disable_template_code_check]'), true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[DISABLE_TEMPLATE_CODE_CHECK]\');') .
 				we_html_tools::hidden('newconf[DISABLE_TEMPLATE_CODE_CHECK]', get_value('DISABLE_TEMPLATE_CODE_CHECK')));
 
-			$_template_error_handling_table->setCol(1, 0, null,
-				we_forms::checkbox(1, get_value('DISABLE_TEMPLATE_PARSER'), 'DISABLE_TEMPLATE_PARSER', g_l('prefs', '[disable_template_parser]'), true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[DISABLE_TEMPLATE_PARSER]\');') .
+			$_template_error_handling_table->setCol(1, 0, null, we_forms::checkbox(1, get_value('DISABLE_TEMPLATE_PARSER'), 'DISABLE_TEMPLATE_PARSER', g_l('prefs', '[disable_template_parser]'), true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[DISABLE_TEMPLATE_PARSER]\');') .
 				we_html_tools::hidden('newconf[DISABLE_TEMPLATE_PARSER]', get_value('DISABLE_TEMPLATE_PARSER')));
 
 
@@ -2573,7 +2566,7 @@ if(window.onload) {
 			// Create checkboxes
 			$_we_error_handler = we_forms::checkbox(1, get_value("WE_ERROR_HANDLER"), "newconf[WE_ERROR_HANDLER]", g_l('prefs', '[error_use_handler]'), false, "defaultfont", "set_state_error_handler();");
 
-			 // Error types
+			// Error types
 			// Create checkboxes
 			$_error_handling_table = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0"), 8, 1);
 
@@ -2897,10 +2890,10 @@ function openVersionWizard() {
 			}
 
 			$_versions_time_days = new we_html_select(array(
-					"name" => "newconf[VERSIONS_TIME_DAYS]",
-					"style" => "",
-					"class" => "weSelect"
-					)
+				"name" => "newconf[VERSIONS_TIME_DAYS]",
+				"style" => "",
+				"class" => "weSelect"
+				)
 			);
 
 			$_versions_time_days->addOption(-1, "");
@@ -2912,9 +2905,9 @@ function openVersionWizard() {
 
 
 			$_versions_time_weeks = new we_html_select(array(
-					"name" => "newconf[VERSIONS_TIME_WEEKS]",
-					"style" => "",
-					"class" => "weSelect")
+				"name" => "newconf[VERSIONS_TIME_WEEKS]",
+				"style" => "",
+				"class" => "weSelect")
 			);
 			$_versions_time_weeks->addOption(-1, "");
 			$_versions_time_weeks->addOption(secondsWeek, g_l('prefs', '[1_week]'));
@@ -2925,10 +2918,10 @@ function openVersionWizard() {
 
 
 			$_versions_time_years = new we_html_select(array(
-					"name" => "newconf[VERSIONS_TIME_YEARS]",
-					"style" => "",
-					"class" => "weSelect"
-					)
+				"name" => "newconf[VERSIONS_TIME_YEARS]",
+				"style" => "",
+				"class" => "weSelect"
+				)
 			);
 			$_versions_time_years->addOption(-1, "");
 			$_versions_time_years->addOption(secondsYear, g_l('prefs', '[1_year]'));
@@ -2942,10 +2935,10 @@ function openVersionWizard() {
 			$_versions_create_always = we_forms::radiobutton("0", (get_value("VERSIONS_CREATE") == 0), "newconf[VERSIONS_CREATE]", g_l('prefs', '[versions_create_always]'), true, "defaultfont", "", false, "");
 
 			$_versions_time_days_tmpl = new we_html_select(array(
-					"name" => "newconf[VERSIONS_TIME_DAYS_TMPL]",
-					"style" => "",
-					"class" => "weSelect"
-					)
+				"name" => "newconf[VERSIONS_TIME_DAYS_TMPL]",
+				"style" => "",
+				"class" => "weSelect"
+				)
 			);
 
 			$_versions_time_days_tmpl->addOption(-1, '');
@@ -2957,9 +2950,9 @@ function openVersionWizard() {
 
 
 			$_versions_time_weeks_tmpl = new we_html_select(array(
-					"name" => "newconf[VERSIONS_TIME_WEEKS_TMPL]",
-					"style" => "",
-					"class" => "weSelect")
+				"name" => "newconf[VERSIONS_TIME_WEEKS_TMPL]",
+				"style" => "",
+				"class" => "weSelect")
 			);
 			$_versions_time_weeks_tmpl->addOption(-1, "");
 			$_versions_time_weeks_tmpl->addOption(secondsWeek, g_l('prefs', '[1_week]'));
@@ -2969,10 +2962,10 @@ function openVersionWizard() {
 			$_versions_time_weeks_tmpl->selectOption(get_value("VERSIONS_TIME_WEEKS_TMPL"));
 
 			$_versions_time_years_tmpl = new we_html_select(array(
-					"name" => "newconf[VERSIONS_TIME_YEARS_TMPL]",
-					"style" => "",
-					"class" => "weSelect"
-					)
+				"name" => "newconf[VERSIONS_TIME_YEARS_TMPL]",
+				"style" => "",
+				"class" => "weSelect"
+				)
 			);
 			$_versions_time_years_tmpl->addOption(-1, "");
 			$_versions_time_years_tmpl->addOption(secondsYear, g_l('prefs', '[1_year]'));

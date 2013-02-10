@@ -9,5 +9,5 @@ CREATE TABLE ###TBLPREFIX###tblFailedLogins (
   Script varchar(150) NOT NULL,
   PRIMARY KEY (`ID`),
   KEY IP (LoginDate,UserTable,IP),
-  KEY user (LoginDate,Username)
+  KEY user (UserTable,Username,LoginDate)
 ) ENGINE=MyISAM;
