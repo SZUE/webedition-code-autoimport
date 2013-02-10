@@ -289,7 +289,7 @@ if(isset($_REQUEST['cmd'])){
 				print we_html_element::jsElement(weBackupUtil::getProgressJS(0, $description));
 				flush();
 				$oldPercent = 0;
-				if(FAST_RESTORE){
+				if(true||FAST_RESTORE){
 					do{
 						$start = microtime(true);
 						for($i = 0; $i < 50; ++$i){
@@ -313,7 +313,7 @@ if(isset($_REQUEST['cmd'])){
 				}
 			} elseif(($_SESSION['weS']['weBackupVars']['offset'] < $_SESSION['weS']['weBackupVars']['offset_end'])){
 				if($_SESSION['weS']['weBackupVars']['options']['format'] == 'xml'){
-					if(FAST_RESTORE){
+					if(true||FAST_RESTORE){
 						$oldPercent = 0;
 						$percent = weBackupUtil::getImportPercent();
 						$description = weBackupUtil::getDescription($_SESSION['weS']['weBackupVars']['current_table'], 'import');
