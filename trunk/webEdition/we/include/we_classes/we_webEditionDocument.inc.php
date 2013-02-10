@@ -386,7 +386,7 @@ class we_webEditionDocument extends we_textContentDocument{
 					$foo[] = $tid;
 				}
 			}
-			$tlist = makeCSVFsromArray($foo);
+			$tlist = makeCSVFromArray($foo);
 			$tlist = $tlist ? $tlist : -1;
 			return $this->formSelect4("", $width, "TemplateID", TEMPLATES_TABLE, "ID", "Path", $ueberschrift, " WHERE ID IN ($tlist) AND IsFolder=0 ORDER BY Path", 1, $TID, false, "we_cmd('template_changed');_EditorFrame.setEditorIsHot(true);", "", "left", "defaultfont", "", "", array(0, ""));
 		} else{
