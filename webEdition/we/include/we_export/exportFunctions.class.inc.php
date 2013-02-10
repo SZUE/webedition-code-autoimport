@@ -53,10 +53,7 @@ abstract class exportFunctions{
 
 				// Check if can create the file now
 				if(!$_continue === false){
-					$_text = '<?xml version="1.0" encoding="' . DEFAULT_CHARSET . "\"?>\n" .
-						"<webEdition>\n";
-
-					weFile::save($_file_name, $_text);
+					weFile::save($_file_name, '<?xml version="1.0" encoding="' . DEFAULT_CHARSET . "\"?>\n<webEdition>\n");
 				}
 
 				break;
@@ -72,9 +69,7 @@ abstract class exportFunctions{
 
 				// Check if can create the file now
 				if($_continue){
-					$_text = "";
-
-					weFile::save($_file_name, $_text);
+					weFile::save($_file_name, "");
 				}
 
 				break;
@@ -97,10 +92,8 @@ abstract class exportFunctions{
 	 */
 	static function fileComplete($format = "gxml", $filename){
 		switch($format){
-			case "gxml":
-				$text = "</webEdition>";
-
-				weFile::save($filename, $text, "ab");
+			case 'gxml':
+				weFile::save($filename, weBackup::weXmlExImFooter, "ab");
 
 				break;
 		}
@@ -120,29 +113,29 @@ abstract class exportFunctions{
 	 *
 	 * @return     array
 	 */
-	static function fileInit($format = "gxml", $filename, $path, $doctype = null, $tableid = null){
+	static function fileInit($format, $filename, $path, $doctype = null, $tableid = null){
 		switch($format){
 			case "gxml":
 				$_file = "";
 
 				// Get a matching doctype or classname
 				if(($doctype != null) && ($doctype != "") && ($doctype != 0)){
-					$_doctype = f("SELECT DocType FROM " . DOC_TYPES_TABLE . " WHERE ID = " . intval($doctype), "DocType", new DB_WE());
+					$_doctype = f('SELECT DocType FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . intval($doctype), "DocType", new DB_WE());
 				} else if(($tableid != null) && ($tableid != "") && ($tableid != 0)){
-					$_tableid = f("SELECT Text FROM " . OBJECT_TABLE . " WHERE ID = " . intval($tableid), "Text", new DB_WE());
+					$tableid = f('SELECT Text FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($tableid), "Text", new DB_WE());
 				}
 
 				if($doctype != null){
-					$_doctype = exportFunctions::correctTagname((isset($_doctype) ? $_doctype : $doctype), "document");
-				} else if($tableid != null){
-					$_tableid = exportFunctions::correctTagname($_tableid, "object");
+					$_doctype = self::correctTagname((isset($_doctype) ? $_doctype : $doctype), "document");
+				} else if($tableid){
+					$tableid = self::correctTagname($tableid, "object");
 				}
 
 				// Open document tag
 				if($doctype != null){
 					$_file .= "\t<" . $_doctype . ">\n";
 				} else if($tableid != null){
-					$_file .= "\t<" . $_tableid . ">\n";
+					$_file .= "\t<" . $tableid . ">\n";
 				}
 
 				break;
@@ -150,18 +143,15 @@ abstract class exportFunctions{
 				$_file = "";
 
 				// Get a matching classname
-				if(($tableid != null) && ($tableid != "") && ($tableid != 0)){
-					$_tableid = f("SELECT Text FROM " . OBJECT_TABLE . " WHERE ID = " . intval($tableid), "Text", new DB_WE());
-				}
-
-				if($tableid != null){
-					$_tableid = exportFunctions::correctTagname($_tableid, "object");
+				if(intval($tableid) != 0){
+					$tableid = f('SELECT Text FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($tableid), "Text", new DB_WE());
+					$tableid = self::correctTagname($tableid, "object");
 				}
 
 				break;
 		}
 
-		return array("file" => $_file, "filename" => ($_SERVER['DOCUMENT_ROOT'] . ($path == "###temp###" ? TEMP_DIR : $path) . $filename), "doctype" => ((isset($doctype) && $doctype != null) ? $_doctype : ""), "tableid" => (($tableid != null) ? $_tableid : ""));
+		return array("file" => $_file, "filename" => ($_SERVER['DOCUMENT_ROOT'] . ($path == "###temp###" ? TEMP_DIR : $path) . $filename), "doctype" => ((isset($doctype) && $doctype != null) ? $_doctype : ""), "tableid" => ($tableid ? $tableid : ""));
 	}
 
 	/**
@@ -177,34 +167,29 @@ abstract class exportFunctions{
 	 *
 	 * @return     void
 	 */
-	static function fileFinish($format = "gxml", $text, $doctype, $filename, $csv_lineend = "\\n"){
+	static function fileFinish($format, $text, $doctype, $filename, $csv_lineend = "\\n"){
 		switch($format){
 			case "gxml":
 				// Close document tag
 				$text .= "\t</" . $doctype . ">\n";
-
 				weFile::save($filename, $text, "ab");
 
 				break;
 			case "csv":
 				// New linebreak
 				switch($csv_lineend){
-					case "windows":
+					case 'windows':
 						$text .= "\r\n";
-
 						break;
-					case "unix":
+					case 'unix':
 						$text .= "\n";
-
 						break;
-					case "mac":
+					case 'mac':
 						$text .= "\r";
-
 						break;
 				}
 
-				weFile::save($filename, $text, "ab");
-
+				weFile::save($filename, $text, 'ab');
 				break;
 		}
 	}
@@ -221,20 +206,15 @@ abstract class exportFunctions{
 	 * @return     string
 	 */
 	static function correctTagname($tagname, $alternative_name, $alternative_number = -1){
-		if($tagname != ""){
-			// Remove spaces
-			$tagname = preg_replace("/\40+/", "_", $tagname);
-
-			// Remove special characters
-			$tagname = preg_replace("/[^a-zA-Z0-9_]+/", "", $tagname);
+		if($tagname != ''){
+			// Remove spaces + special characters
+			$tagname = preg_replace(array('/\40+/', '/[^a-zA-Z0-9_]+/'), array("_", ''), $tagname);
 		}
 
 		// Set alternative name if no name is now present present
-		if($tagname == ""){
-			$tagname = ($alternative_number != -1) ? $alternative_name . $alternative_number : $alternative_name;
-		}
-
-		return $tagname;
+		return ($tagname == "" ?
+				(($alternative_number != -1) ? $alternative_name . $alternative_number : $alternative_name) :
+				$tagname);
 	}
 
 	/**
@@ -268,15 +248,13 @@ abstract class exportFunctions{
 				break;
 		}
 
-		$_encloser_needed = false;
-
-		for($i = 0; $i < count($_check); $i++){
-			if(strpos($content, $_check[$i]) !== false){
-				$_encloser_needed = true;
+		foreach($_check as $cur){
+			if(strpos($content, $cur) !== false){
+				return true;
 			}
 		}
 
-		return $_encloser_needed;
+		return false;
 	}
 
 	/**
@@ -323,26 +301,13 @@ abstract class exportFunctions{
 	static function correctLineend($content, $csv_lineend = "windows"){
 		switch($csv_lineend){
 			case "windows":
-			default:
-				$_corrected_content = str_replace("\n", "\\r\\n", $content);
-				$_corrected_content = str_replace("\r", "\\r\\n", $content);
-
-				break;
+				return str_replace(array("\n", "\r"), "\\r\\n", $content);
 			case "unix":
 			default:
-				$_corrected_content = str_replace("\r\n", "\\n", $content);
-				$_corrected_content = str_replace("\r", "\\n", $content);
-
-				break;
+				return str_replace(array("\r\n", "\r"), "\\n", $content);
 			case "mac":
-			default:
-				$_corrected_content = str_replace("\r\n", "\\r", $content);
-				$_corrected_content = str_replace("\n", "\\r", $content);
-
-				break;
+				return str_replace(array("\r\n", "\n"), "\\r", $content);
 		}
-
-		return $_corrected_content;
 	}
 
 	/**
@@ -362,31 +327,29 @@ abstract class exportFunctions{
 		$_lineend_corrected = false;
 
 		// Escape
-		if(exportFunctions::checkCompatibility($content, $csv_delimiter, $csv_enclose, "escape")){
-			$_corrected_content = exportFunctions::correctEscape($content);
-		} else{
-			$_corrected_content = $content;
-		}
+		$_corrected_content = (self::checkCompatibility($content, $csv_delimiter, $csv_enclose, "escape") ?
+				self::correctEscape($content) : $content);
+
 
 		// Enclose
-		if(exportFunctions::checkCompatibility($_corrected_content, $csv_delimiter, $csv_enclose, "enclose")){
+		if(self::checkCompatibility($_corrected_content, $csv_delimiter, $csv_enclose, "enclose")){
 			$_encloser_corrected = true;
 
-			$_corrected_content = exportFunctions::correctEnclose($_corrected_content, $csv_enclose);
+			$_corrected_content = self::correctEnclose($_corrected_content, $csv_enclose);
 		} else{
 			$_corrected_content = $content;
 		}
 
 		// Delimiter
-		if(exportFunctions::checkCompatibility($_corrected_content, $csv_delimiter, $csv_enclose, "delimiter")){
+		if(self::checkCompatibility($_corrected_content, $csv_delimiter, $csv_enclose, "delimiter")){
 			$_delimiter_corrected = true;
 		}
 
 		// Lineend
-		if(exportFunctions::checkCompatibility($_corrected_content, $csv_delimiter, $csv_enclose, "lineend")){
+		if(self::checkCompatibility($_corrected_content, $csv_delimiter, $csv_enclose, "lineend")){
 			$_lineend_corrected = true;
 
-			$_corrected_content = exportFunctions::correctLineend($_corrected_content, $csv_lineend);
+			$_corrected_content = self::correctLineend($_corrected_content, $csv_lineend);
 		} else{
 			$_corrected_content = $_corrected_content;
 		}
@@ -418,43 +381,24 @@ abstract class exportFunctions{
 		switch($format){
 			case "gxml":
 				// Generate intending tabs
+				$_tabs = '';
 				for($i = 0; $i < $tabs; $i++){
-					if(!isset($_tabs)){
-						$_tabs = "\t";
-					} else{
-						$_tabs .= "\t";
-					}
+					$_tabs .= "\t";
 				}
 
 				// Generate XML output if content is given
-				if($content != ""){
-					$_output = (isset($_tabs) ? $_tabs : "") . "<" . $tagname . ">" . ($fix_content ? ($cdata ? ("<![CDATA[" . $content . "]]>") : oldHtmlspecialchars($content, ENT_QUOTES)) : $content) . "</" . $tagname . ">\n";
-				} else{
-					$_output = (isset($_tabs) ? $_tabs : "") . "<" . $tagname . "/>\n";
-				}
+				return $_tabs . "<" . $tagname . ($content != "" ?
+						'>' . ($fix_content ? ($cdata ? ('<![CDATA[' . $content . "]]>") : oldHtmlspecialchars($content, ENT_QUOTES)) : $content) . "</" . $tagname . ">\n" :
+						"/>\n");
 
-				break;
 			case "csv":
 				// Generate XML output if content is given
-				if($content != ""){
-					$_output = exportFunctions::correctCSV($content, $csv_delimiter, $csv_enclose, $csv_lineend) . $csv_delimiter;
-				} else{
-					$_output = $csv_delimiter;
-				}
-
-				break;
+				return ($content != "" ?
+						self::correctCSV($content, $csv_delimiter, $csv_enclose, $csv_lineend) . $csv_delimiter : $csv_delimiter);
 			case "cdata":
 				// Generate CDATA XML output if content is given
-				if($content != ""){
-					$_output = "<![CDATA[" . $content . "]]>";
-				} else{
-					$_output = "";
-				}
-
-				break;
+				return ($content != "" ? '<![CDATA[' . $content . ']]>' : '');
 		}
-
-		return $_output;
 	}
 
 	/**
@@ -469,10 +413,8 @@ abstract class exportFunctions{
 	 */
 	static function remove_from_check_array($check_array, $tagname){
 		for($i = 0; $i < count($check_array); $i++){
-			if(isset($check_array[$i])){
-				if($check_array[$i] == $tagname){
-					array_splice($check_array, $i, 1);
-				}
+			if(isset($check_array[$i]) && $check_array[$i] == $tagname){
+				array_splice($check_array, $i, 1);
 			}
 		}
 
@@ -511,16 +453,13 @@ abstract class exportFunctions{
 		$we_doc->initByID($ID);
 
 		if($file_create){
-			exportFunctions::fileCreate($format, $filename, $path);
+			self::fileCreate($format, $filename, $path);
 		}
 		// Read content
 		if($we_doc->ContentType == "text/webedition"){
 			$DB_WE = new DB_WE();
 
-			$_sql_select = "SELECT " . CONTENT_TABLE . ".Dat as Dat FROM " . CONTENT_TABLE . "," . LINK_TABLE . " WHERE " . LINK_TABLE . ".CID=" . CONTENT_TABLE . ".ID AND " .
-				LINK_TABLE . ".DocumentTable='" . stripTblPrefix(TEMPLATES_TABLE) . "' AND " . LINK_TABLE . ".DID=" . intval($we_doc->TemplateID) . " AND " . LINK_TABLE . ".Name='completeData'";
-
-			$_template_code = f($_sql_select, "Dat", $DB_WE);
+			$_template_code = f('SELECT ' . CONTENT_TABLE . '.Dat as Dat FROM ' . CONTENT_TABLE . ',' . LINK_TABLE . ' WHERE ' . LINK_TABLE . '.CID=' . CONTENT_TABLE . '.ID AND ' . LINK_TABLE . ".DocumentTable='" . stripTblPrefix(TEMPLATES_TABLE) . "' AND " . LINK_TABLE . ".DID=" . intval($we_doc->TemplateID) . ' AND ' . LINK_TABLE . ".Name='completeData'", 'Dat', $DB_WE);
 			$_tag_parser = new we_tag_tagParser($_template_code);
 			$_tags = $_tag_parser->getAllTags();
 			$_records = array();
@@ -545,7 +484,7 @@ abstract class exportFunctions{
 
 			$hrefs = array();
 
-			$_file_values = exportFunctions::fileInit($format, $filename, $path, ((isset($we_doc->DocType) && ($we_doc->DocType != "") && ($we_doc->DocType != 0)) ? $we_doc->DocType : "document"));
+			$_file_values = self::fileInit($format, $filename, $path, ((isset($we_doc->DocType) && ($we_doc->DocType != "") && ($we_doc->DocType != 0)) ? $we_doc->DocType : "document"));
 
 			$_file = $_file_values["file"];
 			$_file_name = $_file_values["filename"];
@@ -559,57 +498,57 @@ abstract class exportFunctions{
 				if(isset($v["type"])){
 					switch($v["type"]){
 						case "date": // is a date field
-							$_tag_name = exportFunctions::correctTagname($k, "date", $_tag_counter);
-							$_file .= exportFunctions::formatOutput($_tag_name, abs($we_doc->elements[$k]["dat"]), $format, 2, $cdata);
+							$_tag_name = self::correctTagname($k, "date", $_tag_counter);
+							$_file .= self::formatOutput($_tag_name, abs($we_doc->elements[$k]["dat"]), $format, 2, $cdata);
 
 							// Remove tagname from array
 							if(isset($_records)){
-								$_records = exportFunctions::remove_from_check_array($_records, $_tag_name);
+								$_records = self::remove_from_check_array($_records, $_tag_name);
 							}
 
 							break;
 						case "txt":
 							if(preg_match('|(.+)_we_jkhdsf_(.+)|', $k, $regs)){ // is a we:href field
 								if(!in_array($regs[1], $hrefs)){
-									array_push($hrefs, $regs[1]);
+									$hrefs[] = $regs[1];
 
 									$_int = ((!isset($we_doc->elements[$regs[1] . "_we_jkhdsf_int"]["dat"])) || $we_doc->elements[$regs[1] . "_we_jkhdsf_int"]["dat"] == "") ? 0 : $we_doc->elements[$regs[1] . "_we_jkhdsf_int"]["dat"];
 
 									if($_int){
 										$_intID = $we_doc->elements[$regs[1] . "_we_jkhdsf_intID"]["dat"];
 
-										$_tag_name = exportFunctions::correctTagname($k, "link", $_tag_counter);
-										$_file .= exportFunctions::formatOutput($_tag_name, id_to_path($_intID, FILE_TABLE, $DB_WE), $format, 2, $cdata);
+										$_tag_name = self::correctTagname($k, "link", $_tag_counter);
+										$_file .= self::formatOutput($_tag_name, id_to_path($_intID, FILE_TABLE, $DB_WE), $format, 2, $cdata);
 
 										// Remove tagname from array
 										if(isset($_records)){
-											$_records = exportFunctions::remove_from_check_array($_records, $_tag_name);
+											$_records = self::remove_from_check_array($_records, $_tag_name);
 										}
 									} else{
-										$_tag_name = exportFunctions::correctTagname($k, "link", $_tag_counter);
-										$_file .= exportFunctions::formatOutput($_tag_name, $we_doc->elements[$regs[1]]["dat"], $format, 2, $cdata);
+										$_tag_name = self::correctTagname($k, "link", $_tag_counter);
+										$_file .= self::formatOutput($_tag_name, $we_doc->elements[$regs[1]]["dat"], $format, 2, $cdata);
 
 										// Remove tagname from array
 										if(isset($_records)){
-											$_records = exportFunctions::remove_from_check_array($_records, $_tag_name);
+											$_records = self::remove_from_check_array($_records, $_tag_name);
 										}
 									}
 								}
 							} else if(substr($we_doc->elements[$k]["dat"], 0, 2) == "a:" && is_array(unserialize($we_doc->elements[$k]["dat"]))){ // is a we:link field
-								$_tag_name = exportFunctions::correctTagname($k, "link", $_tag_counter);
-								$_file .= exportFunctions::formatOutput($_tag_name, exportFunctions::formatOutput("", $we_doc->getFieldByVal($we_doc->elements[$k]["dat"], "link"), "cdata"), $format, 2, $cdata);
+								$_tag_name = self::correctTagname($k, "link", $_tag_counter);
+								$_file .= self::formatOutput($_tag_name, self::formatOutput("", $we_doc->getFieldByVal($we_doc->elements[$k]["dat"], "link"), "cdata"), $format, 2, $cdata);
 
 								// Remove tagname from array
 								if(isset($_records)){
-									$_records = exportFunctions::remove_from_check_array($_records, $_tag_name);
+									$_records = self::remove_from_check_array($_records, $_tag_name);
 								}
 							} else{ // is a normal text field
-								$_tag_name = exportFunctions::correctTagname($k, "text", $_tag_counter);
-								$_file .= exportFunctions::formatOutput($_tag_name, parseInternalLinks($we_doc->elements[$k]["dat"], $we_doc->ParentID, '', false), $format, 2, $cdata, $format == "gxml");
+								$_tag_name = self::correctTagname($k, 'text', $_tag_counter);
+								$_file .= self::formatOutput($_tag_name, parseInternalLinks($we_doc->elements[$k]["dat"], $we_doc->ParentID, '', false), $format, 2, $cdata, $format == "gxml");
 
 								// Remove tagname from array
 								if(isset($_records)){
-									$_records = exportFunctions::remove_from_check_array($_records, $_tag_name);
+									$_records = self::remove_from_check_array($_records, $_tag_name);
 								}
 							}
 
@@ -619,19 +558,17 @@ abstract class exportFunctions{
 			}
 
 			if(isset($_records) && is_array($_records)){
-				for($i = 0; $i < count($_records); $i++){
-					if(isset($_records[$i])){
-						$_file .= exportFunctions::formatOutput($_records[$i], "", $format, 2, $cdata);
-					}
+				foreach($_records as $cur){
+					$_file .= self::formatOutput($cur, '', $format, 2, $cdata);
 				}
 			}
 
-			exportFunctions::fileFinish($format, $_file, $_doctype, $_file_name);
+			self::fileFinish($format, $_file, $_doctype, $_file_name);
 		}
 		$_tmp_file_name = $_SERVER['DOCUMENT_ROOT'] . ($path == "###temp###" ? TEMP_DIR : $path) . $filename;
 
 		if($file_complete){
-			exportFunctions::fileComplete($format, $_tmp_file_name);
+			self::fileComplete($format, $_tmp_file_name);
 		}
 
 		// Return success of export
@@ -660,14 +597,10 @@ abstract class exportFunctions{
 	 *
 	 * @return     bool
 	 */
-	static function exportObject($ID, $format = "gxml", $filename, $path, $file_create = false, $file_complete = false, $cdata = false, $csv_delimiter = ",", $csv_enclose = "'", $csv_lineend = "\\n", $csv_fieldnames = false){
+	static function exportObject($ID, $format, $filename, $path, $file_create = false, $file_complete = false, $cdata = false, $csv_delimiter = ",", $csv_enclose = "'", $csv_lineend = "\\n", $csv_fieldnames = false){
 		$_export_success = false;
 
-		//if ($csv_fieldnames) {
-		//	exportFunctions::exportObjectFieldNames($ID, $filename, $path, $file_create, $csv_delimiter, $csv_enclose, $csv_lineend);
-		//}
-
-		if($csv_delimiter == "\\t"){
+		if($csv_delimiter == '\t'){
 			$csv_delimiter = "\t";
 		}
 
@@ -678,62 +611,66 @@ abstract class exportFunctions{
 
 		$DB_WE = new DB_WE();
 
-		$foo = getHash("SELECT strOrder, DefaultValues FROM " . OBJECT_TABLE . " WHERE ID=" . intval($we_obj->TableID), $DB_WE);
-
-		$dv = $foo["DefaultValues"] ? unserialize($foo["DefaultValues"]) : array();
-
+		$dv = f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($we_obj->TableID), 'DefaultValues', $DB_WE);
+		$dv = $dv ? unserialize($dv) : array();
 		if(!is_array($dv)){
 			$dv = array();
 		}
 
 		$tableInfo_sorted = $we_obj->getSortedTableInfo($we_obj->TableID, true, $DB_WE);
 
-		$fields = array();
-
-		for($i = 0; $i < sizeof($tableInfo_sorted); $i++){
+		$fields = $regs = array();
+		foreach($tableInfo_sorted as $cur){
 			// bugfix 8141
-			$regs = array();
-			if(preg_match('/(.+?)_(.*)/', $tableInfo_sorted[$i]["name"], $regs)){
-				array_push($fields, array("name" => $regs[2], "type" => $regs[1]));
+			if(preg_match('/(.+?)_(.*)/', $cur["name"], $regs)){
+				$fields[] = array("name" => $regs[2], "type" => $regs[1]);
 			}
 		}
 
 		if($file_create && !$csv_fieldnames){
-			exportFunctions::fileCreate($format, $filename, $path);
+			self::fileCreate($format, $filename, $path);
 		}
 
-		$_file_values = exportFunctions::fileInit($format, $filename, $path, null, $we_obj->TableID);
+		$_file_values = self::fileInit($format, $filename, $path, null, $we_obj->TableID);
+
+		if($csv_fieldnames){
+			self::exportObjectFieldNames($fields, $_file_values, $csv_delimiter, $csv_enclose, $csv_lineend);
+		}
 
 		$_file = $_file_values["file"];
 		$_file_name = $_file_values["filename"];
 		$_tableid = $_file_values["tableid"];
 
-		for($i = 0; $i < sizeof($fields); $i++){
-			if(($fields[$i]["type"] != "object") &&
-				($fields[$i]["type"] != "img") &&
-				($fields[$i]["type"] != "binary")){
-				$realName = $fields[$i]["type"] . "_" . $fields[$i]["name"];
 
-				switch($format){
-					case "gxml":
-						$_tag_name = exportFunctions::correctTagname($fields[$i]["name"], "value", $i);
-						$_content = $we_obj->getElementByType($fields[$i]["name"], $fields[$i]["type"], $dv[$realName]);
-						$_file .= exportFunctions::formatOutput($_tag_name, parseInternalLinks($_content, 0, '', false), $format, 2, $cdata, (($format == "gxml") && ($fields[$i]["type"] != "date") && ($fields[$i]["type"] != "int") && ($fields[$i]["type"] != "float")));
+		foreach($fields as $field){
+			switch($field["type"]){
+				case 'object':
+				case 'img':
+				case 'binary':
+					continue;
+				default:
+					$realName = $field["type"] . "_" . $field["name"];
 
-						break;
-					case "csv":
-						$_content = $we_obj->getElementByType($fields[$i]["name"], $fields[$i]["type"], $dv[$realName]);
-						$_file .= exportFunctions::formatOutput("", parseInternalLinks($_content, 0, '', false), $format, 2, false, (($format == "gxml") && ($fields[$i]["type"] != "date") && ($fields[$i]["type"] != "int") && ($fields[$i]["type"] != "float")), $csv_delimiter, $csv_enclose, $csv_lineend);
+					switch($format){
+						case "gxml":
+							$_tag_name = self::correctTagname($field["name"], "value", $i);
+							$_content = $we_obj->getElementByType($field["name"], $field["type"], $dv[$realName]);
+							$_file .= self::formatOutput($_tag_name, parseInternalLinks($_content, 0, '', false), $format, 2, $cdata, (($format == "gxml") && ($field["type"] != "date") && ($field["type"] != "int") && ($field["type"] != "float")));
 
-						break;
-				}
+							break;
+						case "csv":
+							$_content = $we_obj->getElementByType($field["name"], $field["type"], $dv[$realName]);
+							$_file .= self::formatOutput("", parseInternalLinks($_content, 0, '', false), $format, 2, false, (($format == "gxml") && ($field["type"] != "date") && ($field["type"] != "int") && ($field["type"] != "float")), $csv_delimiter, $csv_enclose, $csv_lineend);
+
+							break;
+					}
 			}
 		}
 
-		exportFunctions::fileFinish($format, $_file, $_tableid, $_file_name, ($format == "csv" ? $csv_lineend : ""));
+		self::fileFinish($format, $_file, $_tableid, $_file_name, ($format == "csv" ? $csv_lineend : ""));
 
 		if($file_complete){
-			exportFunctions::fileComplete($format, $_file_name);
+			self::fileComplete($format, $_file_name);
 		}
 
 		// Return success of export
@@ -762,61 +699,29 @@ abstract class exportFunctions{
 	 *
 	 * @return     bool
 	 */
-	static function exportObjectFieldNames($ID, $filename, $path, $file_create = false, $csv_delimiter = ",", $csv_enclose = "'", $csv_lineend = "windows"){
+	private static function exportObjectFieldNames($fields, $_file_values, $csv_delimiter, $csv_enclose, $csv_lineend){
 		$_export_success = false;
 
-		if($csv_delimiter == "\\t"){
-			$csv_delimiter = "\t";
-		}
-
-		// Create a new webEdition object object
-		$we_obj = new we_objectFile();
-
-		$we_obj->initByID($ID, OBJECT_FILES_TABLE);
-
-		$DB_WE = new DB_WE();
-
-		$foo = getHash("SELECT strOrder, DefaultValues FROM " . OBJECT_TABLE . " WHERE ID=" . intval($we_obj->TableID), $DB_WE);
-
-		$dv = $foo["DefaultValues"] ? unserialize($foo["DefaultValues"]) : array();
-
-		if(!is_array($dv)){
-			$dv = array();
-		}
-
-		$tableInfo_sorted = $we_obj->getSortedTableInfo($we_obj->TableID, true, $DB_WE);
-
-		$fields = array();
-
-		for($i = 0; $i < sizeof($tableInfo_sorted); $i++){
-			// bugfix 8141
-			if(preg_match('/(.+?)_(.*)/', $tableInfo_sorted[$i]["name"], $regs)){
-				array_push($fields, array("name" => $regs[2], "type" => $regs[1]));
-			}
-		}
-
-		if($file_create){
-			exportFunctions::fileCreate("csv", $filename, $path);
-		}
-
-		$_file_values = exportFunctions::fileInit("csv", $filename, $path, null, $we_obj->TableID);
 
 		$_file = $_file_values["file"];
 		$_file_name = $_file_values["filename"];
-		$_tableid = $_file_values["tableid"];
+		$pos = 0;
 
-		for($i = 0; $i < sizeof($fields); $i++){
-			if(($fields[$i]["type"] != "object") &&
-				($fields[$i]["type"] != "img") &&
-				($fields[$i]["type"] != "binary")){
-				$realName = $fields[$i]["type"] . "_" . $fields[$i]["name"];
+		foreach($fields as $field){
+			switch($field['type']){
+				case 'object':
+				case 'img':
+				case 'binary':
+					continue;
+				default:
+					$realName = $field["type"] . '_' . $field["name"];
 
-				$_tag_name = exportFunctions::correctTagname($fields[$i]["name"], "value", $i);
-				$_file .= exportFunctions::formatOutput("", $_tag_name, "csv", 2, false, false, $csv_delimiter, $csv_enclose, $csv_lineend);
+					$_tag_name = self::correctTagname($field["name"], "value", ++$pos);
+					$_file .= self::formatOutput('', $_tag_name, "csv", 2, false, false, $csv_delimiter, $csv_enclose, $csv_lineend);
 			}
 		}
 
-		exportFunctions::fileFinish("csv", $_file, $_tableid, $_file_name, $csv_lineend);
+		self::fileFinish('csv', $_file, '', $_file_name, $csv_lineend);
 
 		// Return success of export
 		return $_export_success;

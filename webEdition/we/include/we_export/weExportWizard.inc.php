@@ -108,8 +108,9 @@ class weExportWizard{
 	}
 
 	function getExportVars(){
-		if(isset($_SESSION['weS']['exportVars']))
+		if(isset($_SESSION['weS']['exportVars'])){
 			$this->exportVars = $_SESSION['weS']['exportVars'];
+		}
 		foreach($this->exportVars as $k => $v){
 			$var = isset($_REQUEST[$k]) ? $_REQUEST[$k] : null;
 			if($var !== null){
@@ -977,57 +978,67 @@ function setState(a) {
 
 				break;
 		}
+		switch($step){
+			case 0:
+				$buttons = we_button::position_yes_no_cancel(
+						we_button::create_button_table(array(
+							we_button::create_button("back", "", false, 100, 22, "", "", true),
+							we_button::create_button("next", "javascript:" . $this->bodyFrame . ".document.we_form.submit();"))), we_button::create_button("cancel", "javascript:top.close();")
+				);
+				break;
+			case 1:
+				$buttons = we_button::position_yes_no_cancel(
+						we_button::create_button_table(array(
+							we_button::create_button("back", "javascript:" . $this->bodyFrame . ".document.we_form.step.value=0;" . $this->bodyFrame . ".document.we_form.submit();"),
+							we_button::create_button("next", "javascript:" . $this->bodyFrame . ".we_submit();"))), we_button::create_button("cancel", "javascript:top.close();")
+				);
+				break;
+			case 2:
+				$buttons = we_button::position_yes_no_cancel(
+						we_button::create_button_table(array(
+							we_button::create_button("back", "javascript:" . $this->bodyFrame . ".document.we_form.step.value=1;" . $this->bodyFrame . ".document.we_form.submit();"),
+							we_button::create_button("next", "javascript:" . $this->bodyFrame . ".document.we_form.step.value=" . ($this->exportVars["selection"] == "auto" ? "7" : "3") . ";" . $this->bodyFrame . ".document.we_form.submit();"))), we_button::create_button("cancel", "javascript:top.close();")
+				);
+				break;
+			case 3:
+				$buttons = we_button::position_yes_no_cancel(
+						we_button::create_button_table(array(
+							we_button::create_button("back", "javascript:" . $this->bodyFrame . ".document.we_form.step.value=2;" . $this->bodyFrame . ".we_submit();"),
+							we_button::create_button("next", "javascript:" . $this->bodyFrame . ".document.we_form.step.value=7;" . $this->bodyFrame . ".we_submit();"))), we_button::create_button("cancel", "javascript:top.close();")
+				);
+				break;
+			case 4:
+				$buttons = we_button::position_yes_no_cancel(
+						we_button::create_button_table(array(
+							we_button::create_button("back", "javascript:" . $this->bodyFrame . ".document.we_form.target='body';" . $this->bodyFrame . ".document.we_form.pnt.value='body';" . $this->bodyFrame . ".document.we_form.step.value=" . ($this->exportVars["selection"] == "auto" ? "2" : "3") . ";" . $this->bodyFrame . ".document.we_form.submit();"),
+							we_button::create_button("next", "javascript:" . $this->bodyFrame . ".document.we_form.submit();"))), we_button::create_button("cancel", "javascript:top.close();")
+				);
+				break;
+			case 7:
+				$buttons = we_button::position_yes_no_cancel(
+						we_button::create_button_table(array(
+							we_button::create_button("back", "javascript:" . $this->bodyFrame . ".document.we_form.target='body';" . $this->bodyFrame . ".document.we_form.pnt.value='body';" . $this->bodyFrame . ".document.we_form.step.value=" . ($this->exportVars["selection"] == "auto" ? "2" : "3") . ";" . $this->bodyFrame . ".document.we_form.submit();"),
+							we_button::create_button("next", "javascript:" . $this->bodyFrame . ".document.we_form.target='load';;" . $this->bodyFrame . ".document.we_form.pnt.value='load';" . $this->bodyFrame . ".document.we_form.submit();"))), we_button::create_button("cancel", "javascript:top.close();")
+				);
+				break;
+			case 10:
 
-		if($step == 0){
-			$buttons = we_button::position_yes_no_cancel(
-					we_button::create_button_table(array(
-						we_button::create_button("back", "", false, 100, 22, "", "", true),
-						we_button::create_button("next", "javascript:" . $this->bodyFrame . ".document.we_form.submit();"))), we_button::create_button("cancel", "javascript:top.close();")
-			);
-		} else if($step == 1){
-			$buttons = we_button::position_yes_no_cancel(
-					we_button::create_button_table(array(
-						we_button::create_button("back", "javascript:" . $this->bodyFrame . ".document.we_form.step.value=0;" . $this->bodyFrame . ".document.we_form.submit();"),
-						we_button::create_button("next", "javascript:" . $this->bodyFrame . ".we_submit();"))), we_button::create_button("cancel", "javascript:top.close();")
-			);
-		} else if($step == 2){
-			$buttons = we_button::position_yes_no_cancel(
-					we_button::create_button_table(array(
-						we_button::create_button("back", "javascript:" . $this->bodyFrame . ".document.we_form.step.value=1;" . $this->bodyFrame . ".document.we_form.submit();"),
-						we_button::create_button("next", "javascript:" . $this->bodyFrame . ".document.we_form.step.value=" . ($this->exportVars["selection"] == "auto" ? "7" : "3") . ";" . $this->bodyFrame . ".document.we_form.submit();"))), we_button::create_button("cancel", "javascript:top.close();")
-			);
-		} else if($step == 3){
-			$buttons = we_button::position_yes_no_cancel(
-					we_button::create_button_table(array(
-						we_button::create_button("back", "javascript:" . $this->bodyFrame . ".document.we_form.step.value=2;" . $this->bodyFrame . ".we_submit();"),
-						we_button::create_button("next", "javascript:" . $this->bodyFrame . ".document.we_form.step.value=7;" . $this->bodyFrame . ".we_submit();"))), we_button::create_button("cancel", "javascript:top.close();")
-			);
-		} else if($step == 4){
-			$buttons = we_button::position_yes_no_cancel(
-					we_button::create_button_table(array(
-						we_button::create_button("back", "javascript:" . $this->bodyFrame . ".document.we_form.target='body';" . $this->bodyFrame . ".document.we_form.pnt.value='body';" . $this->bodyFrame . ".document.we_form.step.value=" . ($this->exportVars["selection"] == "auto" ? "2" : "3") . ";" . $this->bodyFrame . ".document.we_form.submit();"),
-						we_button::create_button("next", "javascript:" . $this->bodyFrame . ".document.we_form.submit();"))), we_button::create_button("cancel", "javascript:top.close();")
-			);
-		} else if($step == 7){
-			$buttons = we_button::position_yes_no_cancel(
-					we_button::create_button_table(array(
-						we_button::create_button("back", "javascript:" . $this->bodyFrame . ".document.we_form.target='body';" . $this->bodyFrame . ".document.we_form.pnt.value='body';" . $this->bodyFrame . ".document.we_form.step.value=" . ($this->exportVars["selection"] == "auto" ? "2" : "3") . ";" . $this->bodyFrame . ".document.we_form.submit();"),
-						we_button::create_button("next", "javascript:" . $this->bodyFrame . ".document.we_form.target='load';;" . $this->bodyFrame . ".document.we_form.pnt.value='load';" . $this->bodyFrame . ".document.we_form.submit();"))), we_button::create_button("cancel", "javascript:top.close();")
-			);
-		} else if($step == 10 || ($step == 99 && !$show_controls)){
-			$buttons = we_button::create_button("close", "javascript:top.close();");
-		} else if($step == 99 && $show_controls){
-			$buttons = we_button::position_yes_no_cancel(
-					we_button::create_button_table(array(
-						we_button::create_button("back", "javascript:" . $this->bodyFrame . ".location='" . $this->frameset . "?pnt=body&step=0';" . $this->footerFrame . ".location='" . $this->frameset . "?pnt=footer&step=0';"),
-						we_button::create_button("next", "", false, 100, 22, "", "", true))), we_button::create_button("cancel", "javascript:top.close();")
-			);
-		} else{
-			$buttons = we_button::position_yes_no_cancel(
-					we_button::create_button_table(array(
-						we_button::create_button("back", "javascript:" . $this->loadFrame . ".location='" . $this->frameset . "?pnt=load&cmd=back&step=" . $step . "';"),
-						we_button::create_button("next", "javascript:" . $this->loadFrame . ".location='" . $this->frameset . "?pnt=load&cmd=next&step=" . $step . "';"))), we_button::create_button("cancel", "javascript:top.close();")
-			);
+				if($step == 10 || ($step == 99 && !$show_controls)){
+					$buttons = we_button::create_button("close", "javascript:top.close();");
+				} else if($step == 99 && $show_controls){
+					$buttons = we_button::position_yes_no_cancel(
+							we_button::create_button_table(array(
+								we_button::create_button("back", "javascript:" . $this->bodyFrame . ".location='" . $this->frameset . "?pnt=body&step=0';" . $this->footerFrame . ".location='" . $this->frameset . "?pnt=footer&step=0';"),
+								we_button::create_button("next", "", false, 100, 22, "", "", true))), we_button::create_button("cancel", "javascript:top.close();")
+					);
+				}
+				break;
+			default:
+				$buttons = we_button::position_yes_no_cancel(
+						we_button::create_button_table(array(
+							we_button::create_button("back", "javascript:" . $this->loadFrame . ".location='" . $this->frameset . "?pnt=load&cmd=back&step=" . $step . "';"),
+							we_button::create_button("next", "javascript:" . $this->loadFrame . ".location='" . $this->frameset . "?pnt=load&cmd=next&step=" . $step . "';"))), we_button::create_button("cancel", "javascript:top.close();")
+				);
 		}
 
 		if(isset($_REQUEST["mode"]) && $_REQUEST["mode"] == "progress"){
@@ -1074,14 +1085,14 @@ function setState(a) {
 			switch($_REQUEST["cmd"]){
 				case "load":
 					if(isset($_REQUEST["pid"])){
-						$out = we_html_element::jsElement("self.location='" . EXPORT_PATH . "exportLoadTree.php?we_cmd[1]=" . $_REQUEST["tab"] . "&we_cmd[2]=" . $_REQUEST["pid"] . "&we_cmd[3]=" . (isset($_REQUEST["openFolders"]) ? $_REQUEST["openFolders"] : "") . "'");
+						return we_html_element::jsElement("self.location='" . EXPORT_PATH . "exportLoadTree.php?we_cmd[1]=" . $_REQUEST["tab"] . "&we_cmd[2]=" . $_REQUEST["pid"] . "&we_cmd[3]=" . (isset($_REQUEST["openFolders"]) ? $_REQUEST["openFolders"] : "") . "'");
 					}
 					break;
 				case "export":
 					$xmlExIm = new weXMLExIm();
 
 					$file_format = isset($_REQUEST["file_format"]) ? $_REQUEST["file_format"] : "";
-					$file_name = isset($_REQUEST["filename"]) ? $_REQUEST["filename"] : "";
+					//$file_name = isset($_REQUEST["filename"]) ? $_REQUEST["filename"] : "";
 					$export_to = isset($_REQUEST["export_to"]) ? $_REQUEST["export_to"] : "";
 					$path = isset($_REQUEST["path"]) ? $_REQUEST["path"] . "/" : "/";
 					$csv_delimiter = isset($_REQUEST["csv_delimiter"]) ? $_REQUEST["csv_delimiter"] : "";
@@ -1106,7 +1117,6 @@ function setState(a) {
 					$finalClasses = makeArrayFromCSV($this->exportVars["selClasses"]);
 
 					$xmlExIm->getSelectedItems($this->exportVars["selection"], $extype, $this->exportVars["art"], $this->exportVars["type"], $this->exportVars["doctype"], $this->exportVars["classname"], $this->exportVars["categories"], $this->exportVars["dir"], $finalDocs, $finalTempl, $finalObjs, $finalClasses);
-
 
 
 					/* if ($this->exportVars["selection"]=="manual"){
@@ -1181,45 +1191,38 @@ function setState(a) {
 					//  $cdata - non-empty if xml file has been specified - coding of file
 
 					$start_export = false;
-					$csv_export = false;
 
 					$hiddens = we_html_element::htmlHidden(array("name" => "pnt", "value" => "load"));
 
-					if(count($finalDocs) > 0){
+					if(!empty($finalDocs)){
 						$start_export = true;
 						$hiddens .= we_html_element::htmlHidden(array("name" => "all", "value" => count($finalDocs)));
-					} else if(count($finalObjs) > 0){
+					} else if(!empty($finalObjs)){
 						$start_export = true;
 						$hiddens .= we_html_element::htmlHidden(array("name" => "all", "value" => count($finalObjs)));
 
 						/* } else if ((count($finalTempl) > 0 && $extype=="wxml") || (count($finalClasses) > 0  && $extype=="wxml")) {
 						  $start_export = true; */
 					} else{
-						if(defined("OBJECT_TABLE")){
-							$export_error = "nothing_selected_objs";
-						} else{
-							$export_error = "nothing_selected_docs";
-						}
+						$export_error = (defined("OBJECT_TABLE") ? "nothing_selected_objs" : "nothing_selected_docs");
 					}
 
 					if($start_export){
 						$hiddens .= we_html_element::htmlHidden(array("name" => "cmd", "value" => "do_export"));
 
-						$out .= "\n" .
+						$out .=
 							we_html_element::jsElement('
 								if (top.footer.setProgressText) top.footer.setProgressText("current_description","Exportiere ...");
 								if (top.footer.setProgress) top.footer.setProgress(0);
-							') . "\n";
+							');
 					}
 
-					$head = we_html_tools::getHtmlInnerHead(g_l('import', '[title]')) . STYLESHEET;
-
-					$out = we_html_element::htmlDocType() . we_html_element::htmlHtml(
-							we_html_element::htmlHead($head) .
+					return we_html_element::htmlDocType() . we_html_element::htmlHtml(
+							we_html_element::htmlHead(we_html_tools::getHtmlInnerHead(g_l('import', '[title]')) . STYLESHEET) .
 							we_html_element::htmlBody(array("bgcolor" => "#ffffff", "marginwidth" => "5", "marginheight" => "5", "leftmargin" => "5", "topmargin" => "5", "onLoad" => ($start_export ? ($this->footerFrame . ".location='" . $this->frameset . "?pnt=footer&mode=progress&step=4';document.we_form.submit()") : ($this->bodyFrame . ".location='" . $this->frameset . "?pnt=body&step=99&error=" . $export_error . "';" . $this->footerFrame . ".location='" . $this->frameset . "?pnt=footer&step=99';"))), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "load", "action" => $this->frameset), $hiddens)
 							)
 					);
-					break;
+
 				case "do_export":
 					$this->getExportVars();
 
@@ -1242,27 +1245,16 @@ function setState(a) {
 					$all = (isset($_REQUEST["all"]) && $_REQUEST["all"] > 0) ? $_REQUEST["all"] : 0;
 					$exports = 0;
 
-					if(isset($remaining_docs) && count($remaining_docs) > 0){
+					if(isset($remaining_docs) && !empty($remaining_docs)){
 						$exports = count($remaining_docs);
-						if($exports == $all){
-							$file_create = true;
-						} else{
-							$file_create = false;
-						}
-						if($exports == "1"){
-							$file_complete = true;
-						} else{
-							$file_complete = false;
-						}
+						$file_create = ($exports == $all);
+						$file_complete = ($exports == "1");
 
 						exportFunctions::exportDocument($remaining_docs[0], $file_format, $filename, ($export_local ? "###temp###" : $path), $file_create, $file_complete, $cdata);
-					} else if(isset($remaining_objs) && count($remaining_objs) > 0){
+					} else if(isset($remaining_objs) && !empty($remaining_objs)){
 						if(defined("OBJECT_FILES_TABLE")){
 							$exports = count($remaining_objs);
-							if($all == count($remaining_objs) && !empty($csv_fieldnames)){
-								exportFunctions::exportObjectFieldNames($remaining_objs[0], $filename, ($export_local ? "###temp###" : $path), $exports == $all, $csv_delimiter, $csv_enclose, $csv_lineend);
-							}
-							exportFunctions::exportObject($remaining_objs[0], $file_format, $filename, ($export_local ? "###temp###" : $path), $exports == $all, $exports == 1, $cdata, $csv_delimiter, $csv_enclose, $csv_lineend, $csv_fieldnames == 1);
+							exportFunctions::exportObject($remaining_objs[0], $file_format, $filename, ($export_local ? "###temp###" : $path), ($exports == $all), $exports == 1, $cdata, $csv_delimiter, $csv_enclose, $csv_lineend, ($csv_fieldnames == 1) && ($all == $exports));
 						}
 					}
 
@@ -1274,10 +1266,10 @@ function setState(a) {
 						$percent = 100;
 					}
 
-					$_progress_update = "\n" .
+					$_progress_update =
 						we_html_element::jsElement('
 							if (top.footer.setProgress) top.footer.setProgress(' . $percent . ');
-						') . "\n";
+						');
 
 					if(count($remaining_docs) > 0){
 						$cut = array_shift($remaining_docs);
@@ -1293,29 +1285,30 @@ function setState(a) {
 					if((count($remaining_docs) > 0) || (count($remaining_objs) > 0)){
 						$head = we_html_tools::getHtmlInnerHead(g_l('import', '[title]')) . STYLESHEET;
 
-						$out = we_html_element::htmlDocType() . we_html_element::htmlHtml(
+						return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 								we_html_element::htmlHead($head) .
 								we_html_element::htmlBody(array("bgcolor" => "#ffffff", "marginwidth" => "5", "marginheight" => "5", "leftmargin" => "5", "topmargin" => "5", "onLoad" => "document.we_form.submit()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "load", "action" => $this->frameset), $hiddens) . $_progress_update
 								)
 						);
-					} else{
-						if(!$export_local)
-							unset($_SESSION['weS']['exportVars']);
-						$head = we_html_tools::getHtmlInnerHead(g_l('import', '[title]')) . STYLESHEET;
-						$out = we_html_element::htmlDocType() . we_html_element::htmlHtml(
-								we_html_element::htmlHead($head) .
-								we_html_element::htmlBody(
-									array(
-										"bgcolor" => "#ffffff",
-										"marginwidth" => "5",
-										"marginheight" => "5",
-										"leftmargin" => "5",
-										"topmargin" => "5",
-										"onLoad" => oldHtmlspecialchars($export_local ? ($this->bodyFrame . ".location='" . $this->frameset . "?pnt=body&step=10&file_name=" . urlencode($filename) . "';" . $this->footerFrame . ".location='" . $this->frameset . "?pnt=footer&step=10';") : (we_message_reporting::getShowMessageCall(g_l('export', "[server_finished]"), we_message_reporting::WE_MESSAGE_NOTICE) . "top.close();")))), null
-						);
 					}
+					if(!$export_local){
+						unset($_SESSION['weS']['exportVars']);
+					}
+					$head = we_html_tools::getHtmlInnerHead(g_l('import', '[title]')) . STYLESHEET;
+					return we_html_element::htmlDocType() . we_html_element::htmlHtml(
+							we_html_element::htmlHead($head) .
+							we_html_element::htmlBody(
+								array(
+									"bgcolor" => "#ffffff",
+									"marginwidth" => "5",
+									"marginheight" => "5",
+									"leftmargin" => "5",
+									"topmargin" => "5",
+									"onLoad" => oldHtmlspecialchars($export_local ? ($this->bodyFrame . ".location='" . $this->frameset . "?pnt=body&step=10&file_name=" . urlencode($filename) . "';" . $this->footerFrame . ".location='" . $this->frameset . "?pnt=footer&step=10';") : (we_message_reporting::getShowMessageCall(g_l('export', "[server_finished]"), we_message_reporting::WE_MESSAGE_NOTICE) . "top.close();")))), null
+					);
 
-					break;
+
+
 				case "do_wexport":
 					$this->getExportVars();
 
@@ -1398,7 +1391,7 @@ function setState(a) {
 					} else if($percent > 100){
 						$percent = 100;
 					}
-					$_progress_update = "\n" .
+					$_progress_update =
 						we_html_element::jsElement('
 								if (top.footer.setProgress) top.footer.setProgress(' . $percent . ');
 					');
@@ -1411,30 +1404,28 @@ function setState(a) {
 					$head = we_html_tools::getHtmlInnerHead(g_l('import', '[title]')) . STYLESHEET;
 
 					if($all > $exports){
-						$out = we_html_element::htmlDocType() . we_html_element::htmlHtml(
+						return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 								we_html_element::htmlHead($head) .
 								we_html_element::htmlBody(array("bgcolor" => "#ffffff", "marginwidth" => "5", "marginheight" => "5", "leftmargin" => "5", "topmargin" => "5", "onLoad" => "document.we_form.submit()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "load", "action" => $this->frameset), $hiddens) . $_progress_update
 								)
 						);
-					} else{
-						if(is_writable($filename))
-							weFile::save($filename, weXMLExIm::getFooter(), "ab");
-						$_progress_update =
-							we_html_element::jsElement('if (top.footer.setProgress) top.footer.setProgress(100);');
-						$out = we_html_element::htmlDocType() . we_html_element::htmlHtml(
-								we_html_element::htmlHead($head . $_progress_update) .
-								we_html_element::htmlBody(
-									array(
-										"bgcolor" => "#ffffff",
-										"marginwidth" => "5",
-										"marginheight" => "5",
-										"leftmargin" => "5",
-										"topmargin" => "5",
-										"onLoad" => oldHtmlspecialchars($export_local ? ($this->bodyFrame . ".location='" . $this->frameset . "?pnt=body&step=10&file_name=" . urlencode($filename) . "';" . $this->footerFrame . ".location='" . $this->frameset . "?pnt=footer&step=10';") : ( we_message_reporting::getShowMessageCall(g_l('export', "[server_finished]"), we_message_reporting::WE_MESSAGE_NOTICE) . ";top.close();")))), null
-						);
 					}
-
-					break;
+					if(is_writable($filename)){
+						weFile::save($filename, weXMLExIm::getFooter(), "ab");
+					}
+					$_progress_update =
+						we_html_element::jsElement('if (top.footer.setProgress) top.footer.setProgress(100);');
+					return we_html_element::htmlDocType() . we_html_element::htmlHtml(
+							we_html_element::htmlHead($head . $_progress_update) .
+							we_html_element::htmlBody(
+								array(
+									"bgcolor" => "#ffffff",
+									"marginwidth" => "5",
+									"marginheight" => "5",
+									"leftmargin" => "5",
+									"topmargin" => "5",
+									"onLoad" => oldHtmlspecialchars($export_local ? ($this->bodyFrame . ".location='" . $this->frameset . "?pnt=body&step=10&file_name=" . urlencode($filename) . "';" . $this->footerFrame . ".location='" . $this->frameset . "?pnt=footer&step=10';") : ( we_message_reporting::getShowMessageCall(g_l('export', "[server_finished]"), we_message_reporting::WE_MESSAGE_NOTICE) . ";top.close();")))), null
+					);
 			}
 		}
 
