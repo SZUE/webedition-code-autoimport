@@ -6,5 +6,3 @@ CREATE TABLE ###TBLPREFIX###tblPrefs (
 	KEY lookup (`key`)
 ) ENGINE=MyISAM;
 
-/* query separator */
-###UPDATEONLY###UPDATE ###TBLPREFIX###tblPrefs SET value='http://www.webedition.org/de/feeds/aktuelles.xml' WHERE `key`="cockpit_rss_feed_url" AND value LIKE "%www.webedition.de/presse/%"
