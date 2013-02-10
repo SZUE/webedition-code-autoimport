@@ -67,7 +67,7 @@ class weCustomer extends weModelBase{
 		}
 	}
 
-	function loadPresistents(){
+	public function loadPresistents(){
 		$this->persistent_slots = array();
 		$tableInfo = $this->db->metadata($this->table);
 		foreach($tableInfo as $t){
@@ -247,12 +247,12 @@ class weCustomer extends weModelBase{
 				case 'bigint(20)':
 					if(empty($record['Default'])){$record['Default']='0';}
 					break;
-				case 'date': 
+				case 'date':
 					if(empty($record['Default'])){$record['Default']='0000-00-00';}
 					break;
-				case 'datetime': 
+				case 'datetime':
 					if(empty($record['Default'])){$record['Default']='0000-00-00 00:00:00';}
-					break;					
+					break;
 			}
 			$ret[$this->db->f("Field")] = $record;
 		}

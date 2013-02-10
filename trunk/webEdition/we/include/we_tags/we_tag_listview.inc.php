@@ -228,12 +228,12 @@ function we_tag_listview($attribs){
 			$GLOBALS['lv'] = new we_listview_customer($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $cond, $cols, $docid, $hidedirindex);
 			break;
 		case 'onlinemonitor':
-			if(!defined('CUSTOMER_SESSION_TABLE')){
-				print modulFehltError('Customer', __FUNCTION__ . ' type="onlinemonitor"');
-				return;
+			if(defined('CUSTOMER_SESSION_TABLE')){
+				$GLOBALS['lv'] = new we_listview_onlinemonitor($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $cond, $cols, $docid, $lastaccesslimit, $lastloginlimit, $hidedirindex);
+				break;
 			}
-			$GLOBALS['lv'] = new we_listview_onlinemonitor($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $cond, $cols, $docid, $lastaccesslimit, $lastloginlimit, $hidedirindex);
-			break;
+			print modulFehltError('Customer', __FUNCTION__ . ' type="onlinemonitor"');
+			return;
 		case 'order':
 			if(!defined('SHOP_TABLE')){
 				print modulFehltError('Shop', __FUNCTION__ . ' type="order"');
