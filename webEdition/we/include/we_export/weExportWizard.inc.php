@@ -1022,7 +1022,7 @@ function setState(a) {
 				);
 				break;
 			case 10:
-
+			case 99:
 				if($step == 10 || ($step == 99 && !$show_controls)){
 					$buttons = we_button::create_button("close", "javascript:top.close();");
 				} else if($step == 99 && $show_controls){
