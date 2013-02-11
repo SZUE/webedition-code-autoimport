@@ -1154,7 +1154,7 @@ if (!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 		$db->query('DELETE FROM ' . LANGLINK_TABLE . ' WHERE DID=' . $id . ' AND DocumentTable="' . $type . '" AND DLocale!="' . $lang . '"');
 	}
 
-	public function addDocumentCss($stylesheet){
+	public function addDocumentCss($stylesheet = ''){
 		$this->DocumentCss .= empty($this->DocumentCss) ? $stylesheet : ',' . $stylesheet;
 	}
 
