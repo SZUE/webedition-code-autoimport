@@ -1390,8 +1390,9 @@ function tinyMCECallRegisterDialog(win,action){
 						. (!$this->removeFirstParagraph ? '' : '
 							ed.onPostProcess.add(function(ed, o) {
 								o.content = o.content.replace(/<p [^>]*>|<p>/, "").replace(/<\/p>/, "");
-							});') . '
+							});') . 
 
+							($this->isFrontendEdit ? '' : '
 							/* set EditorFrame.setEditorIsHot(true) */
 
 							// we look for editorLevel and weEditorFrameController just once at editor init
@@ -1402,7 +1403,7 @@ function tinyMCECallRegisterDialog(win,action){
 								editorLevel = "inline";
 								weEditorFrame = _EditorFrame;
 							} else {
-								if(typeof(top.opener.top.weEditorFrameController) != "undefined" && typeof(top.isWeDialog) == "undefined"){
+								if(top.opener != null && typeof(top.opener.top.weEditorFrameController) != "undefined" && typeof(top.isWeDialog) == "undefined"){
 									editorLevel = "popup";
 									weEditorFrame = top.opener.top.weEditorFrameController;
 								} else {
@@ -1453,8 +1454,8 @@ function tinyMCECallRegisterDialog(win,action){
 								if(editorLevel == "popup" && ed.isDirty()){
 									weEditorFrame.setEditorIsHot(true);
 								}
-
 							});
+							') . '
 						}
 					});') .
 					'
