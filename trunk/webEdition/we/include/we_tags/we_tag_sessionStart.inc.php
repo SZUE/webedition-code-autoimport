@@ -106,13 +106,6 @@ function we_tag_sessionStart($attribs){
 			}
 			$WebUserDescription = '';
 
-			$GLOBALS['DB_WE']->query('UPDATE ' . CUSTOMER_SESSION_TABLE . ' SET ' . we_database_base::arraySetter(array(
-					'PageID' => $PageID,
-					'WebUserID' => intval($WebUserID),
-					'WebUserGroup' => $WebUserGroup,
-					'WebUserDescription' => $WebUserDescription,
-				)) . 'WHERE SessionID="' . $SessionID . '"');
-			if($GLOBALS['DB_WE']->affected_rows() == 0){
 				$GLOBALS['DB_WE']->query('INSERT INTO ' . CUSTOMER_SESSION_TABLE . ' SET ' .
 					we_database_base::arraySetter(array(
 						'SessionID' => $SessionID,
@@ -126,8 +119,12 @@ function we_tag_sessionStart($attribs){
 						'PageID' => $PageID,
 						'ObjectID' => $ObjectID,
 						'SessionAutologin' => $SessionAutologin
-				)));
-			}
+					)).' ON DUPLICATE KEY UPDATE '.we_database_base::arraySetter(array(
+						'PageID' => $PageID,
+						'WebUserID' => intval($WebUserID),
+						'WebUserGroup' => $WebUserGroup,
+						'WebUserDescription' => $WebUserDescription,
+					)));
 		}
 		return '';
 	}
