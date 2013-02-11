@@ -1413,14 +1413,19 @@ function tinyMCECallRegisterDialog(win,action){
 							}
 
 							// if editorLevel = "inline" we use a local copy of weEditorFrame.EditorIsHot
-							var weEditorFrameIsHot = editorLevel == "inline" ? weEditorFrame.EditorIsHot : false;
+							var weEditorFrameIsHot = false;
+							try{
+								weEditorFrameIsHot = editorLevel == "inline" ? weEditorFrame.EditorIsHot : false;
+							}catch(e){}
 
 							// listeners for editorLevel = "inline"
 							//could be rather CPU-intensive. But weEditorFrameIsHot is nearly allways true, so we could try
 							/*
 							ed.onKeyDown.add(function(ed) {
 								if(!weEditorFrameIsHot && editorLevel == "inline" && ed.isDirty()){
-									weEditorFrame.setEditorIsHot(true);
+									try{
+										weEditorFrame.setEditorIsHot(true);
+									} catch(e) {}
 									weEditorFrameIsHot = true;
 								}
 							});
@@ -1428,21 +1433,27 @@ function tinyMCECallRegisterDialog(win,action){
 
 							ed.onChange.add(function(ed) {
 								if(!weEditorFrameIsHot && editorLevel == "inline" && ed.isDirty()){
-									weEditorFrame.setEditorIsHot(true);
+									try{
+										weEditorFrame.setEditorIsHot(true);
+									} catch(e) {}
 									weEditorFrameIsHot = true;
 								}
 							});
 
 							ed.onClick.add(function(ed) {
 								if(!weEditorFrameIsHot && editorLevel == "inline" && ed.isDirty()){
-									weEditorFrame.setEditorIsHot(true);
+									try{
+										weEditorFrame.setEditorIsHot(true);
+									} catch(e) {}
 									weEditorFrameIsHot = true;
 								}
 							});
 
 							ed.onPaste.add(function(ed) {
 								if(!weEditorFrameIsHot && editorLevel == "inline" && ed.isDirty()){
-									weEditorFrame.setEditorIsHot(true);
+									try{
+										weEditorFrame.setEditorIsHot(true);
+									} catch(e) {}
 									weEditorFrameIsHot = true;
 								}
 							});
@@ -1452,7 +1463,9 @@ function tinyMCECallRegisterDialog(win,action){
 								weEditorFrameIsHot = false;
 								// if is popup and we click on ok
 								if(editorLevel == "popup" && ed.isDirty()){
-									weEditorFrame.setEditorIsHot(true);
+									try{
+										weEditorFrame.setEditorIsHot(true);
+									} catch(e) {}
 								}
 							});
 							') . '
