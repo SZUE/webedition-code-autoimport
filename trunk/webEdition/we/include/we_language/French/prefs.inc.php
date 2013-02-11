@@ -296,6 +296,7 @@ $l_prefs=array(
 		'modules'=>'Modules',
 		'proxy'=>'Server-Proxy',
 		'recipients'=>'Formmail',
+		'security'=>'Security',
 		'seolinks'=>'Liens SEO',
 		'system'=>'Système',
 		'ui'=>'Surface',
