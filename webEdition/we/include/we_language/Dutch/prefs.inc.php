@@ -296,6 +296,7 @@ $l_prefs=array(
 		'modules'=>'Modules',
 		'proxy'=>'Proxy-Server',
 		'recipients'=>'Mailformulier',
+		'security'=>'Security',
 		'seolinks'=>'SEO links',
 		'system'=>'Systeem',
 		'ui'=>'Gebruikers-interface',

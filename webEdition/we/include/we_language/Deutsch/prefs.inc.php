@@ -297,6 +297,7 @@ Zur Umstellung auf den Standard "nein" ersetzen Sie in allen Vorlagen einfach in
 		'modules'=>'Module',
 		'proxy'=>'Proxy Server',
 		'recipients'=>'Formmail',
+		'security'=>'Sicherheit',
 		'seolinks'=>'SEO-Links',
 		'system'=>'System',
 		'ui'=>'Oberfläche',
