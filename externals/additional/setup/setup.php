@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -13,6 +17,9 @@
  * A copy is found in the textfile
  * webEdition/licenses/webEditionCMS/License.txt
  *
+ * @category   webEdition
+ * @license    http://www.gnu.org/copyleft/gpl.html  GPL
+ *
  * webEdition configuration script
  *
  * optional URL parameters:
@@ -21,8 +28,6 @@
  * - phpinfo	show phpinfo() instead of the setup screen
  * example:		http://yourdomain/setup.php?debug
  * 				http://yourdomain/setup.php?phpinfo
- *
- * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
 // some utility features:
