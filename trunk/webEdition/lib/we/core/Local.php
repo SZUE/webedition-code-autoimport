@@ -144,7 +144,7 @@ class we_core_Local{
 			}
 		}
 		if(self::$_lang === ''){
-			self::$_lang = 'English_UTF-8';
+			self::$_lang = 'English';
 		}
 		return self::$_lang;
 	}
