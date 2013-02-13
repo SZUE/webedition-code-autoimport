@@ -891,6 +891,7 @@ function step_installation() {
 		$we_config = preg_replace('/(define\(\'WE_LANGUAGE\', ?\')(\w*)(\'\);)/i','${1}'.str_replace('\'', '\\\'', $_SESSION["we_language"]).'${3}',$we_config);
 
 		$we_config_global = preg_replace('/(define\(\'DB_SET_CHARSET\', ?")(\w*)("\);)/i','${1}'.str_replace('"', '\\"', $_SESSION["we_db_charset"]).'${3}',$we_config_global);
+		$we_config_global = str_replace('\'DEFAULT_CHARSET\', "UTF-8"', '\'DEFAULT_CHARSET\', "UTF8"', $we_config_global);
 		$we_config_global = preg_replace('/(define\(\'DEFAULT_CHARSET\', ?")(\w*)("\);)/i','${1}'.str_replace('"', '\\"', $_SESSION["we_charset"]).'${3}',$we_config_global);
 
 		$output .= tpl_ok("Changed the system's default language to ".$_SESSION["we_charset"]);
