@@ -404,7 +404,10 @@ class weXMLImport extends weXMLExIm{
 		}
 
 		if(!empty($object)){
-
+			//FIXME: export is broken, quick hack not to acess protected property
+			if(isset($node_data['DefaultInit'])){
+				unset($node_data['DefaultInit']);
+			}
 			weContentProvider::populateInstance($object, $node_data);
 
 			foreach($node_data as $k => $v){
