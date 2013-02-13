@@ -40,11 +40,15 @@ if(version_compare(PHP_VERSION,"5.2.4","<")) {
 // first some includes:
 if(
 	!is_readable('./webEdition/we/include/we_version.php') ||
-	!is_readable('./webEdition/we/include/conf/we_conf.inc.php') ||
+	!is_readable('./webEdition/we/include/conf/we_conf.inc.php.default') ||
 	!is_dir('./webEdition') ||
 	!is_dir('./webEdition/lib/we')) {
 	die("No webEdition installation found. This script has to be placed in your DOCUMENT_ROOT besides your webEdition folder!");
 }
+if(!is_readable('./webEdition/we/include/conf/we_conf.inc.php')){
+	copy('./webEdition/we/include/conf/we_conf.inc.php.default', './webEdition/we/include/conf/we_conf.inc.php');
+}
+
 include_once './webEdition/we/include/we_version.php';
 include_once './webEdition/lib/we/core/autoload.php';
 @session_start();
@@ -62,7 +66,6 @@ if(get_magic_quotes_gpc()) {
 $header = "";
 // boolean for error state (for disabling the next button if any errors occured)
 $errors = false;
-
 $steps = array(
 	array(
 		"id" => "1",
@@ -353,27 +356,27 @@ function step_filesystem() {
 	}
 
 	// check if directory exists
-        if (!is_dir('./webEdition/we/tmp')) {
-            mkdir('./webEdition/we/tmp');
-        }
+	if(!is_dir('./webEdition/we/tmp')) {
+		mkdir('./webEdition/we/tmp');
+	}
 	if(!is_writable('./webEdition/we/tmp')) {
 		$output .= tpl_error("The webEdition temporary directory webEdition/we/tmp could not be created or is not writable!");
 		$errors = true;
-	} else {
+	} else{
 		$output .= tpl_ok("./webEdition/we/tmp");
 	}
-       if (!is_dir('./webEdition/liveUpdate/tmp')) {
-           mkdir('./webEdition/liveUpdate/tmp');
-       }
+	if(!is_dir('./webEdition/liveUpdate/tmp')) {
+		mkdir('./webEdition/liveUpdate/tmp');
+	}
 
 	if(!is_writable('./webEdition/liveUpdate/tmp')) {
 		$output .= tpl_warning("The webEdition liveUpdate temporary directory webEdition/liveUpdate/tmp could not be created or is not writable! You will not be able to use this feature.");
-	} else {
+	} else{
 		$output .= tpl_ok("./webEdition/liveUpdate/tmp");
 	}
 
 	$output .= "</ul>";
-	if($errors === true) {
+	if($errors === true){
 		$output .= tpl_errorbox("There were some errors regarding file access privileges. Please fix these issues (i.e. via ftp) and try again.<br/> We do not recommend to try to make these files and directories writeble on an individual base because there are additional files and directories which ahve to be writeble and which are not testet here.<br/> You should use your ftp programm to set the rights to 755 to the /webEdition and all included directories and files recursively (good ftp programms allow to set the rights in a singel step)");
 	} else {
 		$output .= "All these directories seem to be writable by the webserver.<br /><br />";
@@ -612,11 +615,10 @@ function step_language() {
 	}
 	$langdirs = scandir('./webEdition/we/include/we_language/');
 	//$output .= print_r($langdirs,true);
+	$_language = array();
 	foreach($langdirs as $lang) {
 		if(substr($lang,0,1) != "." && strtoupper($lang) != "CVS" && strtoupper($lang) != "SVN") {
-			if(is_readable('./webEdition/we/include/we_language/'.$lang.'/translation.inc.php')) {
-				include_once('./webEdition/we/include/we_language/'.$lang.'/translation.inc.php');
-			}
+			$_language["translation"][$lang] = $lang;
 		}
 	}
 	asort($_language["translation"]);
@@ -750,19 +752,26 @@ function step_summary() {
 function step_installation() {
 	global $errors;
 	$output = "<b>Installation of database tables:</b><br /><br />";
+	
 	// read and parse database dump:
-	if(!is_readable("./database.sql") && !is_readable("./additional/sqldumps/dump/complete.sql")) {
-		$output .= tpl_error("Could not read database dump file.");
+	if(!is_readable("./webEdition/liveUpdate/sqldumps") || !is_dir("./webEdition/liveUpdate/sqldumps")) {
+		$output .= tpl_error("Could not read database dumps directory.");
 		$errors = true;
 		return $output;
 	}
-	if(is_readable("./database.sql")) {
-		$dbdata = file_get_contents("./database.sql");
-	} else {
-		$dbdata = file_get_contents("./additional/sqldumps/dump/complete.sql");
+
+	$sqldumps = scandir('./webEdition/liveUpdate/sqldumps');
+	$dbqueries = array();
+	foreach($sqldumps as $sqldump) {
+		if(substr($sqldump,0,1) != "." && substr($sqldump,0,3) == 'tbl'){
+			$dumpcontent = file_get_contents("./webEdition/liveUpdate/sqldumps/".$sqldump); 
+			$dumpsarr = explode("/* query separator */",$dumpcontent);
+			foreach($dumpsarr as $dbquery){$j++;
+				$dbqueries[] = $dbquery;
+			}
+		}
 	}
-	// $dbdata = str_replace("`","",$dbdata);
-	$dbqueries = explode("/* query separator */",$dbdata);
+
 	echo sizeof($dbqueries).' queries found.';
 	$conn = @mysql_connect($_SESSION["db_host"],$_SESSION["db_username"],$_SESSION["db_password"]);
 	if(!$conn) {
@@ -812,6 +821,7 @@ function step_installation() {
 			$dbquery='';
 		}else if(strpos($dbquery,'###UPDATEDROPCOL')!==false){
 			$dbquery='';
+
 		}
 		if(!empty($dbquery)) {
 			if(!@mysql_query($dbquery,$conn)) {
@@ -826,9 +836,9 @@ function step_installation() {
 			}
 		}
 	}
-        if ($queryErrors === true) {
+	if ($queryErrors === true) {
 		$output .= tpl_error("There were some errors while executing the database queries.");
-                $errors = true;
+		$errors = true;
 	} else {
 		$output .= tpl_ok("Executed all queries successfully to the selected database.");
 	}
@@ -836,8 +846,10 @@ function step_installation() {
 	$output .= "<br /><b>Writing webEdition configuration:</b><br /><br />";
 
 	//$output .= "<li><i>under construction ...</i></li>";
-	// set the language of the default user
-	if(!@mysql_query('UPDATE '.$_SESSION["db_tableprefix"].'tblPrefs set Language = "'.mysql_real_escape_string($_SESSION["we_language"]).'" where userID="1"',$conn)) {
+	
+	// set the language and backendcharset of the default user
+	if(!@mysql_query('INSERT INTO '.$_SESSION["db_tableprefix"].'tblPrefs (`userID`,`key`,`value`) VALUES("1","Language","' . $_SESSION["we_language"] . '")',$conn)
+			|| !@mysql_query('INSERT INTO '.$_SESSION["db_tableprefix"].'tblPrefs (`userID`,`key`,`value`) VALUES("1","BackendCharset","' . $_SESSION["we_charset"] . '")',$conn)) {
 		$output .= tpl_warning("Could not change the default user's language settings. Message from server: ".mysql_error());
 		print("<pre>".$dbquery."</pre><hr />");
 		$queryErrors = true;
@@ -847,17 +859,17 @@ function step_installation() {
 	}
 	@mysql_close($conn);
 
-	//move .default files to their "new" location.
+	//create conf files for productive use
 	if(is_writable('./webEdition/we/include/conf/')){
 		$dir='./webEdition/we/include/conf/';
 		$files = scandir($dir);
 		foreach($files as $file){
 			if(substr($file,-8)=='.default'){
-				$new=$dir.substr($file,0,-8);
-				rename($dir.$file, $new);
+				copy($dir.$file, $dir.substr($file,0,-8));
 			}
 		}
 	}
+
 	// write database connection data to we_conf.inc.php
 	if(!is_writable('./webEdition/we/include/conf/we_conf.inc.php') || !is_writable('./webEdition/we/include/conf/we_conf_global.inc.php')) {
 		tpl_error("Could not open webEdition configuration files for writing.");
@@ -866,59 +878,30 @@ function step_installation() {
 		$we_config = file_get_contents('./webEdition/we/include/conf/we_conf.inc.php.default');
 		$we_config_global = file_get_contents('./webEdition/we/include/conf/we_conf_global.inc.php.default');
 		$we_active_modules = file_get_contents('./webEdition/we/include/conf/we_active_integrated_modules.inc.php.default');
-		//$we_config = str_replace('define("WE_LANGUAGE","English_UTF-8");','define("WE_LANGUAGE","'.$_SESSION["we_language"].'");',$we_config);
-		//$we_config = preg_replace('/(define\("WE_LANGUAGE",")(\s*)+("\);)/i','$1'.$_SESSION["we_language"].'$3',$we_config);
-		//str_replace('define("TBL_PREFIX","");','define("TBL_PREFIX","'.$_SESSION["db_tableprefix"].'"',$we_config);
 
-		//$we_config = preg_replace('/(define\("DB_HOST",")(\w*)("\);)/i','$1'.$_SESSION["db_host"].'$3',$we_config);
-		//$we_config = preg_replace('/(define\("DB_DATABASE",")(\w*)("\);)/i','$1'.$_SESSION["db_database"].'$3',$we_config);
-		//$we_config = preg_replace('/(define\("DB_USER",")(\w*)("\);)/i','$1'.$_SESSION["db_username"].'$3',$we_config);
-		//$we_config = preg_replace('/(define\("DB_PASSWORD",")(\w*)("\);)/i','$1'.$_SESSION["db_password"].'$3',$we_config);
-		//$we_config = preg_replace('/(define\("TBL_PREFIX",")(\w*)("\);)/i','$1'.$_SESSION["db_tableprefix"].'$3',$we_config);
-		//$we_config = preg_replace('/(define\("WE_LANGUAGE",")(\w*)(\055?)(\w*)("\);)/i','$1'.$_SESSION["we_language"].'$5',$we_config);
+		$we_config = preg_replace('/(define\(\'DB_CHARSET\', ?\')(\w*)(\'\);)/i','${1}'.str_replace('\'', '\\\'', $_SESSION["we_db_charset"]).'${3}',$we_config);
+		$we_config = preg_replace('/(define\(\'DB_COLLATION\', ?\')(\w*)(\'\);)/i','${1}'.str_replace('\'', '\\\'', $_SESSION["we_db_collation"]).'${3}',$we_config);
+		$we_config = preg_replace('/(define\(\'DB_HOST\', ?\')(\w*)(\'\);)/i','${1}'.str_replace('\'','\\\'',$_SESSION["db_host"]).'${3}',$we_config);
+		$we_config = preg_replace('/(define\(\'DB_DATABASE\', ?\')(\w*)(\'\);)/i','${1}'.str_replace('\'', '\\\'', $_SESSION["db_database"]).'${3}',$we_config);
+		$we_config = preg_replace('/(define\(\'DB_USER\', ?\')(\w*)(\'\);)/i','${1}'.str_replace('\'', '\\\'', $_SESSION["db_username"]).'${3}',$we_config);
+		$we_config = preg_replace('/(define\(\'DB_PASSWORD\', ?\')(\w*)(\'\);)/i','${1}'.str_replace('\'', '\\\'', $_SESSION["db_password"]).'${3}',$we_config);
+		$we_config = preg_replace('/(define\(\'TBL_PREFIX\', ?\')(\w*)(\'\);)/i','${1}'.str_replace('\'', '\\\'', $_SESSION["db_tableprefix"]).'${3}',$we_config);
+		$we_config = str_replace('\'WE_BACKENDCHARSET\', \'UTF-8\'', '\'WE_BACKENDCHARSET\', \'UTF8\'', $we_config);
+		$we_config = preg_replace('/(define\(\'WE_BACKENDCHARSET\', ?\')(\w*)(\'\);)/i','${1}'.str_replace('\'', '\\\'', $_SESSION["we_charset"]).'${3}',$we_config);
+		$we_config = preg_replace('/(define\(\'WE_LANGUAGE\', ?\')(\w*)(\'\);)/i','${1}'.str_replace('\'', '\\\'', $_SESSION["we_language"]).'${3}',$we_config);
 
-		$we_config = preg_replace('/(define\("DB_CHARSET",")(\w*)("\);)/i','${1}'.str_replace('"', '\\"', $_SESSION["we_db_charset"]).'${3}',$we_config);
-		$we_config = preg_replace('/(define\("DB_COLLATION",")(\w*)("\);)/i','${1}'.str_replace('"', '\\"', $_SESSION["we_db_collation"]).'${3}',$we_config);
+		$we_config_global = preg_replace('/(define\(\'DB_SET_CHARSET\', ?")(\w*)("\);)/i','${1}'.str_replace('"', '\\"', $_SESSION["we_db_charset"]).'${3}',$we_config_global);
+		$we_config_global = preg_replace('/(define\(\'DEFAULT_CHARSET\', ?")(\w*)("\);)/i','${1}'.str_replace('"', '\\"', $_SESSION["we_charset"]).'${3}',$we_config_global);
 
-		$we_config_global = preg_replace('/(define\("DB_SET_CHARSET",")(\w*)("\);)/i','${1}'.str_replace('"', '\\"', $_SESSION["we_db_charset"]).'${3}',$we_config_global);
-
-		//$we_config_global = preg_replace('/(define\("DEFAULT_CHARSET",")(\w*)("\);)/i','${1}'.str_replace('"', '\\"', $_SESSION["we_charset"]).'${3}',$we_config_global); Das klappt irgendwie nicht, ersatz:
-		$we_config_global = str_replace('define("DEFAULT_CHARSET","UTF-8")','define("DEFAULT_CHARSET","'.str_replace('"', '\\"', $_SESSION["we_charset"]).'")',$we_config_global);
-		
-		//$we_config = preg_replace('/(define\("DB_HOST",")(\w*)("\);)/i','${1}'.str_replace('"', '\\"', $_SESSION["db_host"]).'${3}',$we_config);
-		$we_config = preg_replace('/(define\(\'DB_HOST\',\')(\w*)(\'\);)/i','${1}'.str_replace('\'','\\\'',$_SESSION["db_host"]).'${3}',$we_config);
-		//$we_config = preg_replace('/(define\("DB_DATABASE",")(\w*)("\);)/i','${1}'.str_replace('"', '\\"', $_SESSION["db_database"]).'${3}',$we_config);
-		$we_config = preg_replace('/(define\(\'DB_DATABASE\',\')(\w*)(\'\);)/i','${1}'.str_replace('\'', '\\\'', $_SESSION["db_database"]).'${3}',$we_config);
-		//$we_config = preg_replace('/(define\("DB_USER",")(\w*)("\);)/i','${1}'.str_replace('"', '\\"', $_SESSION["db_username"]).'${3}',$we_config);
-		$we_config = preg_replace('/(define\(\'DB_USER\',\')(\w*)(\'\);)/i','${1}'.str_replace('\'', '\\\'', $_SESSION["db_username"]).'${3}',$we_config);
-		//$we_config = preg_replace('/(define\("DB_PASSWORD",")(\w*)("\);)/i','${1}'.str_replace('"', '\\"', $_SESSION["db_password"]).'${3}',$we_config);
-		$we_config = preg_replace('/(define\(\'DB_PASSWORD\',\')(\w*)(\'\);)/i','${1}'.str_replace('\'', '\\\'', $_SESSION["db_password"]).'${3}',$we_config);
-		//$we_config = preg_replace('/(define\("TBL_PREFIX",")(\w*)("\);)/i','${1}'.str_replace('"', '\\"', $_SESSION["db_tableprefix"]).'${3}',$we_config);
-		$we_config = preg_replace('/(define\(\'TBL_PREFIX\',\')(\w*)(\'\);)/i','${1}'.str_replace('\'', '\\\'', $_SESSION["db_tableprefix"]).'${3}',$we_config);
-
-		//$we_config = preg_replace('/(define\(\'TBL_PREFIX\',\')(\w*)(\'\);)/i','${1}'.str_replace('"', '\\\'', $_SESSION["db_tableprefix"]).'${3}',$we_config);
-		
-		
-		$we_config = preg_replace('/(define\("WE_LANGUAGE",")(\w*)(\055?)(\w*)("\);)/i','${1}'.str_replace('"', '\\"', $_SESSION["we_language"]).'${5}',$we_config);
-
-		$output .= tpl_ok("Changed the system's default language to ".$_SESSION["we_language"]);
+		$output .= tpl_ok("Changed the system's default language to ".$_SESSION["we_charset"]);
 		$output .= tpl_ok("Saved database configuration.");
-		if(! (file_put_contents('./webEdition/we/include/conf/we_conf.inc.php',$we_config) && file_put_contents('./webEdition/we/include/conf/we_conf_global.inc.php',$we_config_global) && file_put_contents('./webEdition/we/include/conf/we_active_integrated_modules.inc.php',$we_active_modules) )) {
+
+		if(! (file_put_contents('./webEdition/we/include/conf/we_conf.inc.php',$we_config) && file_put_contents('./webEdition/we/include/conf/we_conf_global.inc.php',$we_config_global) && file_put_contents('./webEdition/we/include/conf/we_active_integrated_modules.inc.php',$we_active_modules) )){
 			$output .= tpl_error("Could not write webEdition configuration files.");
 			$errors = true;
 		} else {
 			$output .= tpl_ok("webEdition configuration files written.");
 		}
-		//error_log($we_config);
-		/*
-		define("DB_HOST","localhost");
-		define("DB_DATABASE","wedev_svn");
-		define("DB_USER","root");
-		define("DB_PASSWORD","root");
-		define("TBL_PREFIX","");
-		define("DB_CHARSET","");
-		define("WE_LANGUAGE","English_UTF-8");
-		*/
 	}
 	return $output;
 }
