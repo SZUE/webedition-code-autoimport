@@ -29,7 +29,7 @@ class rpcGetUpdateDocumentCustomerFilterQuestionCmd extends rpcCmd{
 
 		$resp = new rpcResponse();
 
-		// compare filter of document with fitler of folder...
+		// compare filter of document with fitler of folder
 		$_filterOfFolder = $this->getFilterOfFolder($_REQUEST["folderId"], $_REQUEST["table"]);
 
 		if(isset($_REQUEST["we_transaction"])){

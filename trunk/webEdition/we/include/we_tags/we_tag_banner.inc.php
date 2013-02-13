@@ -53,7 +53,7 @@ function we_tag_banner($attribs, $content){
 
 	$uniq = md5(uniqid(__FUNCTION__, true));
 
-	// building noscript ...
+	// building noscript
 	// here build image with link(opt)
 	$imgAtts['src'] = $getbanner . '?c=1&amp;bannername=' . rawurlencode($bannername) . '&amp;cats=' . rawurlencode(isset($GLOBALS["WE_MAIN_DOC"]->Category) ? $GLOBALS["WE_MAIN_DOC"]->Category : "") . '&amp;dt=' . rawurlencode(isset($GLOBALS["WE_MAIN_DOC"]->DocType) ? $GLOBALS["WE_MAIN_DOC"]->DocType : "") . '&amp;paths=' . rawurlencode($paths) . ($page ? ('&amp;page=' . rawurlencode($page)) : ('&amp;did=' . $GLOBALS["WE_MAIN_DOC"]->ID)) . '&amp;bannerclick=' . rawurlencode($bannerclick) . '&amp;xml=' . ($xml ? "1" : "0");
 	$imgAtts['alt'] = '';
@@ -79,7 +79,7 @@ function we_tag_banner($attribs, $content){
 
 	if($type == "iframe"){
 
-		// stuff for iframe ... and ilayer ...
+		// stuff for iframe  and ilayer 
 		$newAttribs = removeAttribs($attribs, array('name', 'paths', 'type', 'target', 'link', 'clickscript', 'getscript', 'page'));
 		$newAttribs['xml'] = $xml ? "true" : "false";
 		$newAttribs['width'] = $width ? $width : 468;

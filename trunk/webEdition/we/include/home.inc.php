@@ -404,7 +404,7 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 			if (label.indexOf("<span") == -1) {
 				while (getDimension(label + suspensionPts, 'label').width + 10 > w) {
 					label = label.substring(0, label.length - 1);
-					suspensionPts = '...';
+					suspensionPts = '&hellip;';
 				}
 			}
 			el_label.innerHTML = label + suspensionPts;
@@ -649,7 +649,7 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 			return uri;
 		}
 
-		/** Enable disable the spinning wheel ... **/
+		/** Enable disable the spinning wheel  **/
 
 		/**
 		 * show the spinning wheel for a widget

@@ -114,5 +114,5 @@ if(isset($_REQUEST['we_transaction'])){ //  initialise Document
 		print $http_request->errno . ": " . $http_request->errstr . "<br>";
 	}
 } else{
-	print ' ... ';
+	print ' &hellip; ';
 }

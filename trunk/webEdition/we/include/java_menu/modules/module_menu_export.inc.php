@@ -76,13 +76,13 @@ $we_menu_export = array(
 		'enabled' => '1',
 	),
 	array(
-		'text' => g_l('export', '[help]') . '...',
+		'text' => g_l('export', '[help]') . '&hellip;',
 		'parent' => '004000',
 		'cmd' => 'help_modules',
 		'enabled' => '1',
 	),
 	array(
-		'text' => g_l('export', '[info]') . '...',
+		'text' => g_l('export', '[info]') . '&hellip;',
 		'parent' => '004000',
 		'cmd' => 'info_modules',
 		'enabled' => '1',

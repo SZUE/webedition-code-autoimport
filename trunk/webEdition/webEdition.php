@@ -1371,7 +1371,7 @@ pWebEdition_JSwe_cmds();
 										we_repl(_nextContent,url,arguments[0]);
 
 										// activate tab
-										top.weMultiTabs.addTab( nextWindow.getFrameId(), " ... ", " ... ");
+										top.weMultiTabs.addTab( nextWindow.getFrameId(), ' &hellip; ', ' &hellip; ');
 
 										// set Window Active and show it
 										top.weEditorFrameController.setActiveEditorFrame(nextWindow.FrameId);

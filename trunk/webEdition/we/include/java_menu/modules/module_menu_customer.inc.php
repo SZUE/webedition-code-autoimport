@@ -57,27 +57,27 @@ $we_menu_customer = array(
 		'enabled' => '0',
 	),
 	'000810' => array(
-		'text' => g_l('modules_customer', '[field_admin]') . '...',
+		'text' => g_l('modules_customer', '[field_admin]') . '&hellip;',
 		'parent' => '000800',
 		'cmd' => 'show_admin',
 		'perm' => 'SHOW_CUSTOMER_ADMIN || ADMINISTRATOR',
 		'enabled' => '1',),
 	'000820' => array(
-		'text' => g_l('modules_customer', '[sort_admin]') . '...',
+		'text' => g_l('modules_customer', '[sort_admin]') . '&hellip;',
 		'parent' => '000800',
 		'cmd' => 'show_sort_admin',
 		'perm' => 'SHOW_CUSTOMER_ADMIN || ADMINISTRATOR',
 		'enabled' => '1',),
 	'000850' => array('parent' => '000100',), // separator
 	'000860' => array(
-		'text' => g_l('modules_customer', '[import]') . '...',
+		'text' => g_l('modules_customer', '[import]') . '&hellip;',
 		'parent' => '000100',
 		'cmd' => 'import_customer',
 		'perm' => 'SHOW_CUSTOMER_ADMIN || ADMINISTRATOR',
 		'enabled' => '1',
 	),
 	'000870' => array(
-		'text' => g_l('modules_customer', '[export]') . '...',
+		'text' => g_l('modules_customer', '[export]') . '&hellip;',
 		'parent' => '000100',
 		'cmd' => 'export_customer',
 		'perm' => 'SHOW_CUSTOMER_ADMIN || ADMINISTRATOR',
@@ -85,14 +85,14 @@ $we_menu_customer = array(
 	),
 	'000900' => array('parent' => '000100',), // separator
 	'000910' => array(
-		'text' => g_l('modules_customer', '[search]') . '...',
+		'text' => g_l('modules_customer', '[search]') . '&hellip;',
 		'parent' => '000100',
 		'cmd' => 'show_search',
 		'perm' => '',
 		'enabled' => '1',
 	),
 	'000920' => array(
-		'text' => g_l('modules_customer', '[settings]') . '...',
+		'text' => g_l('modules_customer', '[settings]') . '&hellip;',
 		'parent' => '000100',
 		'cmd' => 'show_customer_settings',
 		'perm' => '',
@@ -113,14 +113,14 @@ $we_menu_customer = array(
 		'enabled' => '1',
 	),
 	'001200' => array(
-		'text' => g_l('modules_customer', '[menu_help]') . '...',
+		'text' => g_l('modules_customer', '[menu_help]') . '&hellip;',
 		'parent' => '001100',
 		'cmd' => 'help_modules',
 		'perm' => '',
 		'enabled' => '1',
 	),
 	'001300' => array(
-		'text' => g_l('modules_customer', '[menu_info]') . '...',
+		'text' => g_l('modules_customer', '[menu_info]') . '&hellip;',
 		'parent' => '001100',
 		'cmd' => 'info_modules',
 		'perm' => '',

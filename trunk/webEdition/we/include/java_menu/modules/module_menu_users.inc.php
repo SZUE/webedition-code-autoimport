@@ -69,13 +69,13 @@ $we_menu_users = array(
 		'enabled' => '1',
 	),
 	array(
-		'text' => g_l('javaMenu_users', '[menu_help]') . '...',
+		'text' => g_l('javaMenu_users', '[menu_help]') . '&hellip;',
 		'parent' => '001500',
 		'cmd' => 'help_modules',
 		'enabled' => '1',
 	),
 	array(
-		'text' => g_l('javaMenu_users', '[menu_info]') . '...',
+		'text' => g_l('javaMenu_users', '[menu_info]') . '&hellip;',
 		'parent' => '001500',
 		'cmd' => 'info_modules',
 		'enabled' => '1',

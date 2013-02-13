@@ -241,7 +241,7 @@ class we_button{
 			}
 		}
 
-		$value = (strpos($name, self::WE_IMAGE_BUTTON_IDENTIFY) === false) ? g_l('button', '[' . $name . '][value]') . ($opensDialog ? "..." : "") :
+		$value = (strpos($name, self::WE_IMAGE_BUTTON_IDENTIFY) === false) ? g_l('button', '[' . $name . '][value]') . ($opensDialog ? "&hellip;" : "") :
 			'<img src="' . BUTTONS_DIR . 'icons/' . str_replace("btn_", "", $_button_pure_name) . '.gif" class="weBtnImage" />';
 
 		$title = "";

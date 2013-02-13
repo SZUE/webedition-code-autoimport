@@ -10,7 +10,7 @@
  *
  * The GNU Lesser General Public License can be found at
  * http://www.gnu.org/licenses/lgpl-3.0.html.
- * A copy is found in the textfile 
+ * A copy is found in the textfile
  * webEdition/licenses/webEditionSDK/License.txt
  *
  *
@@ -21,7 +21,7 @@
 
 /**
  * Class to get informations about the system environment
- * 
+ *
  * @category   we
  * @package    we_util
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
@@ -34,7 +34,7 @@ class we_util_Sys
 	 * @param string $version version number compared with the reference version number
 	 * @param string $reference reference version number to compare with
 	 * @param string operator
-	 * 			possible values for $rel: <, lt, <=, le, >, gt, >=, ge, ==, =, eq, !=, <>, ne  
+	 * 			possible values for $rel: <, lt, <=, le, >, gt, >=, ge, ==, =, eq, !=, <>, ne
 	 * @return if no operator is used: -1 (if older), 0 (if equal) or 1 (if newer)
 	 * @return bool with operator
 	 * @link http://php.net/manual/en/function.version-compare.php documentation of version_compare()
@@ -61,7 +61,7 @@ class we_util_Sys
 			return version_compare($version,$reference);
 		}
 	}
-	
+
 }
 
 // example usage of sys classes:
@@ -88,9 +88,9 @@ if(we_util_Sys_Php::extension("customer")) {}
 
 // db checks use webEdition config in webEdition/we/include/conf/we_conf.inc.php
 if(we_util_Sys_Db::available()) {} // check if server is up and running and the webedition config is correct
-if(we_util_Sys_Db_Mysql::permission("alter")) {} // Benutzer-Berechtigungen: �berpr�ft, ob der MySQL-Benutzer aus der we_conf.inc.php ein best. Recht besitzt 
-if(we_util_Sys_Db_Mysql::status("Open_tables")) {} // MySQL Laufzeit-Informationen von "SHOW STATUS LIKE ...;"
-if(we_util_Sys_Db_Mysql::variable("have_innodb")) {} // MySQL Servervariablen und -einstellungen von "SHOW VARIABLES LIKE ...;"
+if(we_util_Sys_Db_Mysql::permission("alter")) {} // Benutzer-Berechtigungen: �berpr�ft, ob der MySQL-Benutzer aus der we_conf.inc.php ein best. Recht besitzt
+if(we_util_Sys_Db_Mysql::status("Open_tables")) {} // MySQL Laufzeit-Informationen von "SHOW STATUS LIKE ;"
+if(we_util_Sys_Db_Mysql::variable("have_innodb")) {} // MySQL Servervariablen und -einstellungen von "SHOW VARIABLES LIKE ;"
 if(we_util_Sys_Db_Mysql::plugin("innodb")) {} // �berpr�ft, ob ein MySQL plugin verf�gbar ist (SHOW PLUGIN)
 if(we_util_Sys_Db_Mysql::table("tblvoting")) {} // �berr�ft, ob eine Tabelle in der webEdition Datenbank existiert (SHOW TABLES)
 

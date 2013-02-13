@@ -76,14 +76,14 @@ $we_menu_toolfactory = array(
 		'enabled' => '1',
 	),
 	array(
-		'text' => $translate->_('Help') . '...',
+		'text' => $translate->_('Help') . '&hellip;',
 		'parent' => '003000',
 		'cmd' => 'app_' . $appName . '_help',
 		'perm' => '',
 		'enabled' => '1',
 	),
 	array(
-		'text' => $translate->_('Info') . '...',
+		'text' => $translate->_('Info') . '&hellip;',
 		'parent' => '003000',
 		'cmd' => 'app_' . $appName . '_info',
 		'perm' => '',

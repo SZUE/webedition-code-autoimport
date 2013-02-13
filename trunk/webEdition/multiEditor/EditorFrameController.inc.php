@@ -944,7 +944,7 @@ print we_message_reporting::getShowMessageCall(g_l('multiEditor', "[no_editor_le
 		this.EditorDidSetHiddenText = false;
 
 		// information for tabs
-		this.EditorDocumentText = " ... ";
+		this.EditorDocumentText = " &hellip; ";
 		this.EditorDocumentPath = null;
 		this.EditorContentType = ""; // is set
 
@@ -991,7 +991,7 @@ print we_message_reporting::getShowMessageCall(g_l('multiEditor', "[no_editor_le
 			this.EditorDidSetHiddenText = false;
 
 			// information for tabs
-			this.EditorDocumentText = " ... ";
+			this.EditorDocumentText = " &hellip; ";
 			this.EditorDocumentPath = null;
 			this.EditorContentType = "";
 
