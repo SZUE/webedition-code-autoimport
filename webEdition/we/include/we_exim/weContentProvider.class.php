@@ -361,10 +361,10 @@ class weContentProvider{
 			case 'we_object':
 				$tableInfo = self::objectMetadata(OBJECT_X_TABLE . $object->ID);
 				$defvalues = unserialize($object->DefaultValues);
-				for($i = 0; $i < count($tableInfo); $i++){
-					$fieldname = $tableInfo[$i]['name'];
+				foreach($tableInfo as $cur){
+					$fieldname = $cur['name'];
 					if(isset($defvalues[$fieldname])){
-						$defvalues[$fieldname]['length'] = ($tableInfo[$i]['len'] > 255) ? 255 : $tableInfo[$i]['len'];
+						$defvalues[$fieldname]['length'] = ($cur['len'] > 255) ? 255 : $cur['len'];
 					}
 				}
 				$object->DefaultValues = serialize($defvalues);
