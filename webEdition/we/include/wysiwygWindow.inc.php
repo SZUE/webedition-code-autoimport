@@ -61,7 +61,7 @@ if(preg_match('|^.+_input\[.+\]$|i', $_REQUEST['we_cmd'][1])){
 	$fieldName = preg_replace('/^.+_input\[(.+)\]$/', '\1', $_REQUEST['we_cmd'][1]);
 }
 
-we_html_tools::htmlTop(sprintf(g_l('wysiwyg', '[window_title]'), $fieldName), ($_REQUEST['we_cmd'][15] ? $_REQUEST['we_cmd'][15] : $defaultCharset));
+we_html_tools::htmlTop(sprintf("sali", $fieldName), ($_REQUEST['we_cmd'][15] ? $_REQUEST['we_cmd'][15] : $defaultCharset));
 
 if(isset($fieldName) && isset($_REQUEST["we_okpressed"]) && $_REQUEST["we_okpressed"]){
 	if(preg_match('%^(.+_te?xt)\[.+\]$%i', $_REQUEST['we_cmd'][1])){
