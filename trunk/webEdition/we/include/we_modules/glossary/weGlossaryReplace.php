@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weGlossaryReplace{
+abstract class weGlossaryReplace{
 
 	const configFile = 'we_conf_glossary_settings.inc.php';
 
@@ -30,7 +30,7 @@ class weGlossaryReplace{
 	 * defines the start of the content which have to be replaced
 	 *
 	 */
-	function start(){
+	public static function start(){
 		$configFile = WE_GLOSSARY_MODULE_PATH . self::configFile;
 		if(!file_exists($configFile) || !is_file($configFile)){
 			weGlossarySettingControl::saveSettings(true);
@@ -47,13 +47,13 @@ class weGlossaryReplace{
 	 *
 	 * @param unknown_type $language
 	 */
-	function end($language){
+	public static function end($language){
 		include_once(WE_GLOSSARY_MODULE_PATH . self::configFile);
 
 		if(isset($GLOBALS['weGlossaryAutomaticReplacement']) && $GLOBALS['weGlossaryAutomaticReplacement']){
 			$content = ob_get_contents();
 			ob_end_clean();
-			echo weGlossaryReplace::doReplace($content, $language);
+			echo self::doReplace($content, $language);
 		}
 	}
 
@@ -63,7 +63,7 @@ class weGlossaryReplace{
 	 * @param unknown_type $content
 	 * @param unknown_type $language
 	 */
-	function replace($content, $language){
+	public static function replace($content, $language){
 		$configFile = WE_GLOSSARY_MODULE_PATH . self::configFile;
 		if(!file_exists($configFile) || !is_file($configFile)){
 			weGlossarySettingControl::saveSettings(true);
@@ -71,7 +71,7 @@ class weGlossaryReplace{
 		include_once($configFile);
 
 		if(isset($GLOBALS['weGlossaryAutomaticReplacement']) && $GLOBALS['weGlossaryAutomaticReplacement']){
-			return weGlossaryReplace::doReplace($content, $language);
+			return self::doReplace($content, $language);
 		}
 		return $content;
 	}
@@ -84,7 +84,7 @@ class weGlossaryReplace{
 	 * @param string $language
 	 * @return string
 	 */
-	function doReplace($src, $language){
+	private static function doReplace($src, $language){
 		if($language == ''){
 			we_loadLanguageConfig();
 			$language = $GLOBALS['weDefaultFrontendLanguage'];
@@ -132,7 +132,7 @@ class weGlossaryReplace{
 				//this will generate invalid code: $piece = str_replace('&quot;', '"', $piece);
 				foreach($replace as $tag => $words){
 					if($tag == '' || stripos($before, $tag) === FALSE){
-						$piece = weGlossaryReplace::doReplaceWords($piece, $words);
+						$piece = self::doReplaceWords($piece, $words);
 					}
 				}
 			}
@@ -155,7 +155,7 @@ class weGlossaryReplace{
 	 * @param array $replacements
 	 * @return string
 	 */
-	function doReplaceWords($src, $replacements){
+	private static function doReplaceWords($src, $replacements){
 		if($src === '' || count($replacements) == 0){
 			return $src;
 		}
