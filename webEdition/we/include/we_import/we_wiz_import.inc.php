@@ -1325,44 +1325,43 @@ HTS;
 				array_push($parts, array("html" => we_html_tools::htmlAlertAttentionBox(g_l('import', "[file_readable]"), 1, "530"), "space" => 0, "noline" => 1));
 		}
 
-		$functions = "\n" .
-			"function set_button_state() {\n" .
-			"	top.frames['wizbusy'].back_enabled=top.frames['wizbusy'].switch_button_state('back','back_enabled','enabled');\n" .
-			"	top.frames['wizbusy'].next_enabled=top.frames['wizbusy'].switch_button_state('next','next_enabled','" . (($xmlWellFormed && $hasChildNode) ? "enabled" : "disabled") . "');\n" .
-			"}\n" .
-			"function we_submit_form(f, target, url) {\n" .
-			"	f.target = target;\n" .
-			"	f.action = url;\n" .
-			"	f.method = 'post';\n" .
-			"	f.submit();\n" .
-			"}\n" .
-			"function handle_event(evt) {\n" .
-			"	var f = self.document.forms['we_form'];\n" .
-			"	switch(evt) {\n" .
-			"		case 'previous':\n" .
-			"			f.step.value = 1;\n" .
-			"			we_submit_form(f, 'wizbody', '" . $this->path . "');\n" .
-			"			break;\n" .
-			"		case 'next':\n" .
-			"			f.elements['v[from_elem]'].value = f.elements['v[from_iElem]'].value;\n" .
-			"			f.elements['v[to_elem]'].value = f.elements['v[to_iElem]'].value;\n" .
-			"			iStart = isNaN(parseInt(f.elements['v[from_iElem]'].value))? 0 : f.elements['v[from_iElem]'].value;\n" .
-			"			iEnd = isNaN(parseInt(f.elements['v[to_iElem]'].value))? 0 : f.elements['v[to_iElem]'].value;\n" .
-			"			iElements = parseInt(f.elements['we_select'].options[f.elements['we_select'].selectedIndex].value);\n" .
-			"			if ((iStart < 1) || (iStart > iElements) || (iEnd < 1) || (iEnd > iElements)) { \n" .
-			"				msg = \"" . g_l('import', "[num_elements]") . "\" +iElements;" .
-			"				" . we_message_reporting::getShowMessageCall("msg", we_message_reporting::WE_MESSAGE_ERROR, true) . "\n" .
-			"			} else {\n" .
-			"				f.elements['v[rcd]'].value = f.we_select.options[f.we_select.selectedIndex].text;\n" .
-			"				f.step.value = 3;\n" .
-			"				we_submit_form(f, 'wizbody', '" . $this->path . "');\n" .
-			"			}\n" .
-			"			break;\n" .
-			"		case 'cancel':\n" .
-			"			top.close();\n" .
-			"			break;\n" .
-			"	}\n" .
-			"}\n";
+		$functions = "
+function set_button_state() {
+	top.frames['wizbusy'].back_enabled=top.frames['wizbusy'].switch_button_state('back','back_enabled','enabled');
+	top.frames['wizbusy'].next_enabled=top.frames['wizbusy'].switch_button_state('next','next_enabled','" . (($xmlWellFormed && $hasChildNode) ? "enabled" : "disabled") . "');
+}
+function we_submit_form(f, target, url) {
+	f.target = target;
+	f.action = url;
+	f.method = 'post';
+	f.submit();
+}
+function handle_event(evt) {
+	var f = self.document.forms['we_form'];
+	switch(evt) {
+	case 'previous':
+		f.step.value = 1;
+		we_submit_form(f, 'wizbody', '" . $this->path . "');
+		break;
+	case 'next':
+		f.elements['v[from_elem]'].value = f.elements['v[from_iElem]'].value;
+		f.elements['v[to_elem]'].value = f.elements['v[to_iElem]'].value;
+		iStart = isNaN(parseInt(f.elements['v[from_iElem]'].value))? 0 : f.elements['v[from_iElem]'].value;
+		iEnd = isNaN(parseInt(f.elements['v[to_iElem]'].value))? 0 : f.elements['v[to_iElem]'].value;
+		iElements = parseInt(f.elements['we_select'].options[f.elements['we_select'].selectedIndex].value);
+		if ((iStart < 1) || (iStart > iElements) || (iEnd < 1) || (iEnd > iElements)) {
+			msg = \"" . g_l('import', "[num_elements]") . "\" +iElements;" .we_message_reporting::getShowMessageCall("msg", we_message_reporting::WE_MESSAGE_ERROR, true) . "
+		} else {
+			f.elements['v[rcd]'].value = f.we_select.options[f.we_select.selectedIndex].text;
+			f.step.value = 3;
+			we_submit_form(f, 'wizbody', '" . $this->path . "');
+		}
+		break;
+	case 'cancel':
+		top.close();
+		break;
+	}
+}";
 
 		$wepos = weGetCookieVariable("but_xml");
 		$znr = -1;
@@ -1906,7 +1905,7 @@ function handle_event(evt) {
 		case 'next':
 			if(f.elements['v[import_type]']== 'documents'){
 					if(!f.elements['v[we_TemplateID]'].value ) f.elements['v[we_TemplateID]'].value =f.elements['DocTypeTemplateId'].value;
-					}" - (defined("OBJECT_TABLE") ?
+					}" . (defined("OBJECT_TABLE") ?
 				"			if(f.elements['v[import_from]'].value != '/' && ((f.elements['v[import_type]'][0].checked == true && f.elements['v[we_TemplateID]'].value != 0) || (f.elements['v[import_type]'][1].checked == true)))" :
 				"			if(f.elements['v[import_from]'].value != '/' && f.elements['v[we_TemplateID]'].value != 0)") . "
 				{
