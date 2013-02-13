@@ -160,7 +160,7 @@ class weGlossaryReplace{
 			return $src;
 		}
 		@set_time_limit(0);
-		$src2 = preg_replace(array_keys($replacements), $replacements, ' ' . $src . ' ');
+		$src2 = preg_replace(array_keys($replacements), $replacements, ' ' . $src . ' ', 1);
 
 		if(trim($src, ' ') != trim($src2, ' ') && trim($src2, ' ') != ''){
 			$len = strlen($src);
@@ -174,7 +174,7 @@ class weGlossaryReplace{
 			}
 
 			// add spaces before and after and replace the words
-			$src = preg_replace(array_keys($replacements), $replacements, ' ' . $src . ' ');
+			$src = preg_replace(array_keys($replacements), $replacements, ' ' . $src . ' ', 1);
 			// remove added spaces
 			//$return = (preg_replace('/^ (.+) $/', '$1', $src));
 			$return = substr($src, 1, -1);
