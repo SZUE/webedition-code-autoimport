@@ -62,7 +62,7 @@ class delBackup extends taskFragment{
 		$percent = round((100 / count($this->alldata)) * (1 + $this->currentTask));
 		$text = str_replace($_SERVER['DOCUMENT_ROOT'], "", clearPath($item[0]));
 		if(strlen($text) > 75){
-			$text = addslashes(substr($text, 0, 65) . '...' . substr($text, -10));
+			$text = addslashes(substr($text, 0, 65) . '&hellip;' . substr($text, -10));
 		}
 		print we_html_element::jsElement('
 			parent.delmain.setProgressText("pb1","' . sprintf(g_l('backup', "[delete_entry]"), $text) . '");

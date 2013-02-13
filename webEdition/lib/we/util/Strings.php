@@ -122,7 +122,7 @@ class we_util_Strings{
 		if(strlen($path) <= $len || strlen($path) < 10)
 			return $path;
 		$l = ($len / 2) - 2;
-		return substr($path, 0, $l) . "...." . substr($path, $l * -1);
+		return substr($path, 0, $l) . '&hellip;' . substr($path, $l * -1);
 	}
 
 	/**

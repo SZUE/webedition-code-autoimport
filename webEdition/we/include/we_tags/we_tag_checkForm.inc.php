@@ -37,7 +37,6 @@ function we_parse_tag_checkForm($attribs, $content){
  * @return string
  * @param array $attribs
  * @param string $content
- * @desc Beschreibung eingeben...
  */
 function we_tag_checkForm($attribs, $content){
 	//  dont make this in editMode

@@ -42,7 +42,7 @@ print STYLESHEET;
 
 function _cutText($text, $l){
 	if(strlen($text) > $l){
-		return substr($text, 0, $l - 8) . '...' . substr($text, strlen($text) - 5, 5);
+		return substr($text, 0, $l - 8) . '&hellip;' . substr($text, strlen($text) - 5, 5);
 	} else{
 		return $text;
 	}

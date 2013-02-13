@@ -178,7 +178,7 @@ class we_net_Community{
 	 * 			- server malfunction (registration temporarily down)
 	 * 			- data incomplete (values x, y and z are missing)
 	 * 			- data not valid (i.e. invalid email address)
-	 * 			- ...
+	 * 			-
 	 * @param $data array associative array with account data
 	 * @return bool true/false
 	 */

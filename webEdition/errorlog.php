@@ -22,7 +22,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect(array('ADMINISTRATOR'));
 
 function getInfoTable($_infoArr){
-	//recode data - this data might be different than the rest...
+	//recode data - this data might be different than the rest
 	foreach($_infoArr as &$tmp){
 		if(!mb_check_encoding($tmp, $GLOBALS['WE_BACKENDCHARSET'])){
 			$tmp = mb_convert_encoding($tmp, $GLOBALS['WE_BACKENDCHARSET'], 'UTF-8,ISO-8859-15,ISO-8859-1');

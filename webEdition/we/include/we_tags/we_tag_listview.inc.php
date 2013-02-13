@@ -143,7 +143,7 @@ function we_tag_listview($attribs){
 		$we_lv_languages = $we_lv_langguagesdoc->Language;
 		unset($we_lv_langguagesdoc);
 	}
-	//FIXME: XSS -> what type is we_lv_calendar....
+	//FIXME: XSS -> what type is we_lv_calendar
 	$we_lv_calendar = isset($_REQUEST['we_lv_calendar_' . $name]) ? $_REQUEST['we_lv_calendar_' . $name] : $calendar;
 	$we_lv_datefield = isset($_REQUEST['we_lv_datefield_' . $name]) ? $_REQUEST['we_lv_datefield_' . $name] : $datefield;
 	$we_lv_date = isset($_REQUEST['we_lv_date_' . $name]) ? $_REQUEST['we_lv_date_' . $name] : ($date != '' ? $date : date('Y-m-d'));

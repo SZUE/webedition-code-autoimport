@@ -140,7 +140,7 @@ class rpcGetRssCmd extends rpcCmd{
 		// title
 		$_title = implode(' - ', $aTb);
 		if(strlen($_title) > 50){
-			$_title = substr($_title, 0, 50) . '...';
+			$_title = substr($_title, 0, 50) . '&hellip;';
 		}
 		$resp->setData('titel', $_title);
 		$resp->setData('widgetType', "rss");

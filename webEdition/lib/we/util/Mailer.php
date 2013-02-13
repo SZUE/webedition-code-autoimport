@@ -42,7 +42,6 @@ class we_util_Mailer extends Zend_Mail{
 	protected $isEmbedImages = false;
 
 	/**
-	 * Enter description here...
 	 *
 	 * @var String
 	 */
@@ -77,14 +76,12 @@ class we_util_Mailer extends Zend_Mail{
 	protected $messageBuilt = false;
 
 	/**
-	 * Enter description here...
 	 *
 	 * @var array
 	 */
 	protected $embedImages = array('gif', 'jpg', 'jpeg', 'jpe', 'bmp', 'png', 'tif', 'tiff', 'swf', 'GIF', 'JPG', 'JPEG', 'JPE', 'BMP', 'PNG', 'TIF', 'TIFF', 'SWF');
 
 	/**
-	 * Enter description here...
 	 *
 	 * @var array
 	 */
@@ -98,7 +95,6 @@ class we_util_Mailer extends Zend_Mail{
 	protected $internal_subject = '';
 
 	/**
-	 * Enter description here...
 	 *
 	 * @param String || Array $to use Array for a list of users
 	 * @param String $subject

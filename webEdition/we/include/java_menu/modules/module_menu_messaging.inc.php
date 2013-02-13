@@ -34,13 +34,13 @@ $we_menu_messaging = array(
 		'enabled' => '1',
 	),
 	array(
-		'text' => g_l('javaMenu_messaging', '[message]') . '...',
+		'text' => g_l('javaMenu_messaging', '[message]') . '&hellip;',
 		'cmd' => 'messaging_new_message',
 		'parent' => '000110',
 		'enabled' => '1',
 	),
 	array(
-		'text' => g_l('javaMenu_messaging', '[todo]') . '...',
+		'text' => g_l('javaMenu_messaging', '[todo]') . '&hellip;',
 		'cmd' => 'messaging_new_todo',
 		'parent' => '000110',
 		'enabled' => '1',
@@ -80,7 +80,7 @@ $we_menu_messaging = array(
 		'enabled' => '1',
 	),
 	array(
-		'text' => g_l('javaMenu_messaging', '[settings]') . '...',
+		'text' => g_l('javaMenu_messaging', '[settings]') . '&hellip;',
 		'cmd' => 'messaging_settings',
 		'parent' => '000200',
 		'enabled' => '1',
@@ -109,13 +109,13 @@ $we_menu_messaging = array(
 		'enabled' => '1',
 	),
 	array(
-		'text' => g_l('javaMenu_messaging', '[help]') . '...',
+		'text' => g_l('javaMenu_messaging', '[help]') . '&hellip;',
 		'parent' => '000300',
 		'cmd' => 'help_modules',
 		'enabled' => '1',
 	),
 	array(
-		'text' => g_l('javaMenu_messaging', '[info]') . '...',
+		'text' => g_l('javaMenu_messaging', '[info]') . '&hellip;',
 		'parent' => '000300',
 		'cmd' => 'info_modules',
 		'enabled' => '1',

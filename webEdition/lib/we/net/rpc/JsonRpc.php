@@ -192,9 +192,9 @@ class we_net_rpc_JsonRpc {
 
 				$rpcSession = new Zend_Session_Namespace("we_net_rpc_JsonRpc");
 
-				/* If no referer domain has yet been saved in the session... */
+				/* If no referer domain has yet been saved in the session */
 				if (! isset($rpcSession->referer_domain)) {
-					/* ... then set it now using this referer domain. */
+					/*  then set it now using this referer domain. */
 					$rpcSession->referer_domain = $refererDomain;
 				}
 			break;

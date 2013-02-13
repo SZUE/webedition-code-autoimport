@@ -154,7 +154,7 @@ abstract class we_database_base{
 	 */
 	abstract public function close();
 
-	/** get the no of rows that were affected by update/delete/replace ...
+	/** get the no of rows that were affected by update/delete/replace
 	 * @return int count of rows
 	 */
 	abstract public function affected_rows();
@@ -560,7 +560,7 @@ abstract class we_database_base{
 		 *   [0]["flags"]  field flags
 		 *   ["meta"][field name]  index of field named "field name"
 		 *   The last one is used, if you have a field name, but no index.
-		 *   Test:  if (isset($result['meta']['myfield'])) { ...
+		 *   Test:  if (isset($result['meta']['myfield'])) {
 		 */
 
 // if no $table specified, assume that we are working with a query
