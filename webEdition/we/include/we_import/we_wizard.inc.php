@@ -27,7 +27,7 @@ class we_wizard{
 	var $path = "";
 
 	function __construct(){
-		$this->path = WE_INCLUDES_DIR. "we_import/we_wiz_frameset.php";
+		$this->path = WE_INCLUDES_DIR . "we_import/we_wiz_frameset.php";
 	}
 
 	function getWizFrameset(){
@@ -37,11 +37,11 @@ class we_wizard{
 		}
 
 		$fst = new we_html_frameset(array(
-				"rows" => (isset($_SESSION["prefs"]["debug_normal"]) && $_SESSION["prefs"]["debug_normal"] != 0) ? "*,40,60" : "*,40,0",
-				"framespacing" => 0,
-				"border" => 0,
-				"frameborder" => "no",
-				"onload" => "wiz_next('wizbody', '" . $this->path . "?" . $args . "');")
+			"rows" => (isset($_SESSION["prefs"]["debug_normal"]) && $_SESSION["prefs"]["debug_normal"] != 0) ? "*,40,60" : "*,40,0",
+			"framespacing" => 0,
+			"border" => 0,
+			"frameborder" => "no",
+			"onload" => "wiz_next('wizbody', '" . $this->path . "?" . $args . "');")
 		);
 
 		$fst->addFrame(array("src" => HTML_DIR . "white.html", "name" => "wizbody"));
@@ -197,7 +197,7 @@ HTS;
 								eval('top.opener.top.we_cmd('+args+')');
 						}
 					}" . $ajaxJS
-					)) .
+				)) .
 				$fst->getHtml()
 		);
 	}
@@ -236,7 +236,7 @@ HTS;
 
 	function getWizBusy(){
 		$pb = $js = "";
-		if($this->getPostGetVar("mode", 0) == 1){
+		if(isset($_REQUEST["mode"]) && $_REQUEST["mode"] == 1){
 			$WE_PB = new we_progressBar(0, 0, true);
 			$WE_PB->setStudLen(200);
 			$WE_PB->addText($text = g_l('import', "[import_progress]"), 0, "pb1");
@@ -288,19 +288,19 @@ HTS;
 					"onload" => "top.frames['wizbody'].set_button_state();"
 					), $content->getHtml() . $js
 				)
-			);
+		);
 	}
 
 	function getWizCmd($type = 'normal'){
 		@set_time_limit(0);
 		$out = '';
-		$mode = $this->getPostGetVar('mode', 0);
+		$mode = isset($_REQUEST['mode']) ? $_REQUEST['mode'] : 0;
 		if($mode == ''){
 			$mode = 0;
 		}
-		$numFiles = $this->getPostGetVar("numFiles", -1);
-		$uniquePath = $this->getPostGetVar("uniquePath", "");
-		$currFileId = $this->getPostGetVar("currFileId", -1);
+		$numFiles = isset($_REQUEST['numFiles']) ? $_REQUEST['numFiles'] : -1;
+		$uniquePath = isset($_REQUEST['uniquePath']) ? $_REQUEST['uniquePath'] : '';
+		$currFileId = isset($_REQUEST['currFileId']) ? $_REQUEST['currFileId'] : -1;
 
 		if(isset($_REQUEST["v"])){
 			$v = $_REQUEST["v"];
@@ -312,8 +312,8 @@ HTS;
 		if(isset($v["mode"]) && $v["mode"] == 1){
 			$records = isset($_REQUEST["records"]) ? $_REQUEST["records"] : array();
 			$we_flds = isset($_REQUEST["we_flds"]) ? $_REQUEST["we_flds"] : array();
-			$attrs = $this->getPostGetVar("attrs", array());
-			$attributes = $this->getPostGetVar("attributes", array());
+			$attrs = isset($_REQUEST['attrs']) ? $_REQUEST['attrs'] : array();
+			$attributes = isset($_REQUEST['attributes']) ? $_REQUEST['attributes'] : array();
 
 			switch($v["cid"]){
 				case -2:
@@ -451,7 +451,6 @@ HTS;
 
 						$ref = false;
 						if($v["cid"] >= $v["numFiles"] - 1){ // finish import
-							//$this->denyTMPaccess();
 							$xmlExIm = new weImportUpdater();
 							$xmlExIm->loadPerserves();
 							$xmlExIm->setOptions(array(
@@ -808,7 +807,7 @@ HTS;
 							we_form.method = 'post';
 							we_form.submit();
 						}"
-					)) .
+				)) .
 				we_html_element::htmlBody(array(), $out));
 	}
 
@@ -845,26 +844,6 @@ HTS;
 		}
 
 		return we_html_element::jsElement($JScript);
-	}
-
-	function getPostGetVar($var, $def){
-		if(isset($_POST[$var])){
-			$ret = $_POST[$var];
-		} else if(isset($_GET[$var])){
-			$ret = $_GET[$var];
-		} else{
-			$ret = $def;
-		}
-		return $ret;
-	}
-
-	function denyTMPaccess(){
-		if(file_exists($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . 'we/include/htaccessbase.txt')){
-			$htaccessdata = file_get_contents($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . 'we/include/htaccessbase.txt');
-			if(!file_exists(TEMP_PATH . '.htaccess')){
-				file_put_contents(TEMP_PATH . '.htaccess', $htaccessdata);
-			}
-		}
 	}
 
 }
