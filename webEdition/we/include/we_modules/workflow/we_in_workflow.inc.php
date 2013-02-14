@@ -62,11 +62,9 @@ print STYLESHEET;
 	<center>
 		<?php
 		if($cmd != "ok"){
-			if($we_doc->Table == FILE_TABLE){
-				$wfDoc = we_workflow_utility::getWorkflowDocumentForDoc($we_doc->DocType, $we_doc->Category, $we_doc->ParentID);
-			} else{
-				$wfDoc = we_workflow_utility::getWorkflowDocumentForObject($we_doc->TableID, $we_doc->Category, $we_doc->ParentID);
-			}
+			$wfDoc = ($we_doc->Table == FILE_TABLE ?
+					we_workflow_utility::getWorkflowDocumentForDoc($we_doc->DocType, $we_doc->Category, $we_doc->ParentID) :
+					we_workflow_utility::getWorkflowDocumentForObject($we_doc->TableID, $we_doc->Category, $we_doc->ParentID));
 			$wfID = $wfDoc->workflowID;
 			if($wfID){
 				?>
@@ -85,7 +83,7 @@ print STYLESHEET;
 					$content = '<table border="0" cellpadding="0" cellspacing="0">';
 
 					if(we_hasPerm("PUBLISH")){
-						$wf_textarea = '<textarea name="wf_text" rows="5" cols="50" style="width:360px;height:150px"></textarea>';
+						$wf_textarea = '<textarea name="wf_text" rows="5" cols="50" style="left:10px;right:10px;height:150px;"></textarea>';
 						$content .= '
 <tr>
 	<td class="defaultfont">' . g_l('modules_workflow', '[workflow]') . '</td>
@@ -97,7 +95,7 @@ print STYLESHEET;
 	<td>' . we_html_tools::getPixel(2, 5) . '</td>
 </tr>';
 					} else{
-						$wf_textarea = '<textarea name="wf_text" rows="7" cols="50" style="width:360px;height:190px"></textarea>';
+						$wf_textarea = '<textarea name="wf_text" rows="7" cols="50" style="left:10px;right:10px;height:190px"></textarea>';
 						$content .= '<input type="hidden" name="wf_select" value="' . $wfID . '" />';
 					}
 					$content .= '
@@ -110,12 +108,7 @@ print STYLESHEET;
 </tr>
 </table>';
 
-					$_buttons = we_button::position_yes_no_cancel($okbut, "", $cancelbut);
-
-
-					$frame = we_html_tools::htmlDialogLayout($content, g_l('modules_workflow', '[in_workflow]'), $_buttons);
-
-					print $frame . '
+					print we_html_tools::htmlDialogLayout($content, g_l('modules_workflow', '[in_workflow]'), we_button::position_yes_no_cancel($okbut, '', $cancelbut)) . '
 <input type="hidden" name="cmd" value="ok" />
 <input type="hidden" name="we_cmd[0]" value="' . $_REQUEST['we_cmd'][0] . '" />
 <input type="hidden" name="we_cmd[1]" value="' . $we_transaction . '" />
@@ -128,7 +121,8 @@ print STYLESHEET;
 		top.close();
 		//-->
 				</script>
-			<?php }
+				<?php
+			}
 		}
 		?>
 	</center>
