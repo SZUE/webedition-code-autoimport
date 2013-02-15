@@ -245,6 +245,15 @@ $l_prefs=array(
 	'saved_successfully'=>'Voorkeuren zijn bewaard',
 	'save'=>'Bezig met bewaren van voorkeuren, even geduld a.u.b. ...',
 	'save_wait'=>'Bezig met bewaren van voorkeuren',
+	
+	'security'=>array(
+		'customer'=>array(
+			'disableLogins'=>'limit login attemps',
+			'errorPage'=>'Error page',
+			'sameIP'=>'from same IP',
+			'sameUser'=>'with same customer name',
+			'slowDownLogin'=>'slow down login attemps',
+	),),
 	'seem'=>'seeModus',
 	'seem_deactivate'=>'Deactiveer seeMode',
 	'seem_startdocument'=>'seeMode startdocument',

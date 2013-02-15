@@ -245,6 +245,15 @@ $l_prefs=array(
 	'saved_successfully'=>'Preferencias salvadas',
 	'save'=>'Salvando preferencias, un momento ...',
 	'save_wait'=>'Salvando preferencias',
+	
+	'security'=>array(
+		'customer'=>array(
+			'disableLogins'=>'limit login attemps',
+			'errorPage'=>'Error page',
+			'sameIP'=>'from same IP',
+			'sameUser'=>'with same customer name',
+			'slowDownLogin'=>'slow down login attemps',
+	),),
 	'seem'=>'seeMode',
 	'seem_deactivate'=>'Desactivar seeMode',
 	'seem_startdocument'=>'Documento inicio de seeMode',

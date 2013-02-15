@@ -245,6 +245,15 @@ $l_prefs=array(
 	'saved_successfully'=>'Asetukset tallennettu',
 	'save'=>'Tallennetaan asetuksia, hetkinen ...',
 	'save_wait'=>'Tallennetaan asetuksia',
+	
+	'security'=>array(
+		'customer'=>array(
+			'disableLogins'=>'limit login attemps',
+			'errorPage'=>'Error page',
+			'sameIP'=>'from same IP',
+			'sameUser'=>'with same customer name',
+			'slowDownLogin'=>'slow down login attemps',
+	),),
 	'seem'=>'Helppokäyttötila',
 	'seem_deactivate'=>'Disabloi helppokäyttötila',
 	'seem_startdocument'=>'Helppokäyttötilan aloitussivu',
