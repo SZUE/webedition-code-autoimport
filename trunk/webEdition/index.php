@@ -42,7 +42,7 @@ if(!defined('CONF_SAVED_VERSION') || (defined('CONF_SAVED_VERSION') && (intval(W
 	//resave config file(s)
 	we_base_preferences::check_global_config(true);
 }
-we_util_File::checkAndMakeFolder(WE_THUMBNAIL_DIRECTORY);
+we_util_File::checkAndMakeFolder($_SERVER['DOCUMENT_ROOT'].WE_THUMBNAIL_DIRECTORY);
 
 define('LOGIN_DENIED', 4);
 define('LOGIN_OK', 2);
