@@ -2776,27 +2776,30 @@ if(window.onload) {
 			if(!we_hasPerm('ADMINISTRATOR')){
 				return;
 			}
-			$customer_table = new we_html_table(array('border' => '0', 'cellpadding' => '0', 'cellspacing' => '0', 'id' => 'customer_table', 'width' => 400), 9, 6);
-			$customer_table->setCol(0, 0, array('class' => 'defaultfont'), 'fehlerhafte Logins '/* g_l('prefs', '[smtp_server]') */);
-			$customer_table->setCol(0, 1, array('class' => 'defaultfont'), 'gleiche IP');
-			$customer_table->setCol(0, 2, array('align' => 'right'), we_html_tools::htmlTextInput('newconf[SECURITY_LIMIT_CUSTOMER_IP]', 3, get_value('SECURITY_LIMIT_CUSTOMER_IP'), 3, '', 'number', 50));
-			$customer_table->setCol(0, 3, array('class' => 'defaultfont'), we_html_tools::getPixel(10, 5) . '/' . we_html_tools::getPixel(10, 5));
-			$customer_table->setCol(0, 4, array('align' => 'right'), we_html_tools::htmlTextInput('newconf[SECURITY_LIMIT_CUSTOMER_IP_HOURS]', 3, get_value('SECURITY_LIMIT_CUSTOMER_IP_HOURS'), 3, '', 'number', 50));
-			$customer_table->setCol(0, 5, array('class' => 'defaultfont'), we_html_tools::getPixel(10, 5) . 'h');
+			$customer_table = new we_html_table(array('border' => '0', 'cellpadding' => '0', 'cellspacing' => '0', 'id' => 'customer_table'), 9, 10);
+			$customer_table->setCol(0, 0, array('class' => 'defaultfont', 'width' => '20px'), '');
+			$customer_table->setCol(0, 1, array('class' => 'defaultfont', 'colspan' => 5), g_l('prefs', '[security][customer][disableLogins]') . ':');
+			$customer_table->setCol(0, 6, array('width' => 300));
+			$customer_table->setCol(1, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][sameIP]'));
+			$customer_table->setCol(1, 2, array('width' => '20px'));
+			$customer_table->setCol(1, 3, array(), we_html_tools::htmlTextInput('newconf[SECURITY_LIMIT_CUSTOMER_IP]', 3, get_value('SECURITY_LIMIT_CUSTOMER_IP'), 3, '', 'number', 50));
+			$customer_table->setCol(1, 4, array('class' => 'defaultfont', 'style' => 'width:2em;text-align:center'), '/');
+			$customer_table->setCol(1, 5, array(), we_html_tools::htmlTextInput('newconf[SECURITY_LIMIT_CUSTOMER_IP_HOURS]', 3, get_value('SECURITY_LIMIT_CUSTOMER_IP_HOURS'), 3, '', 'number', 50));
+			$customer_table->setCol(1, 6, array('class' => 'defaultfont'), 'h');
 
-			$customer_table->setCol(1, 1, array('class' => 'defaultfont'), 'gleicher Benutzer');
-			$customer_table->setCol(1, 2, array('align' => 'right'), we_html_tools::htmlTextInput('newconf[SECURITY_LIMIT_CUSTOMER_NAME]', 3, get_value('SECURITY_LIMIT_CUSTOMER_NAME'), 3, '', 'number', 50));
-			$customer_table->setCol(1, 3, array('class' => 'defaultfont'), we_html_tools::getPixel(10, 5) . '/' . we_html_tools::getPixel(10, 5));
-			$customer_table->setCol(1, 4, array('align' => 'right'), we_html_tools::htmlTextInput('newconf[SECURITY_LIMIT_CUSTOMER_NAME_HOURS]', 3, get_value('SECURITY_LIMIT_CUSTOMER_NAME_HOURS'), 3, '', 'number', 50));
-			$customer_table->setCol(1, 5, array('class' => 'defaultfont'), we_html_tools::getPixel(10, 5) . 'h');
+			$customer_table->setCol(2, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][sameUser]'));
+			$customer_table->setCol(2, 3, array(), we_html_tools::htmlTextInput('newconf[SECURITY_LIMIT_CUSTOMER_NAME]', 3, get_value('SECURITY_LIMIT_CUSTOMER_NAME'), 3, '', 'number', 50));
+			$customer_table->setCol(2, 4, array('class' => 'defaultfont', 'style' => 'text-align:center;'), '/');
+			$customer_table->setCol(2, 5, array(), we_html_tools::htmlTextInput('newconf[SECURITY_LIMIT_CUSTOMER_NAME_HOURS]', 3, get_value('SECURITY_LIMIT_CUSTOMER_NAME_HOURS'), 3, '', 'number', 50));
+			$customer_table->setCol(2, 6, array('class' => 'defaultfont'), 'h');
 
-			$customer_table->setCol(2, 1, array('class' => 'defaultfont'), 'Fehlerseite');
+			$customer_table->setCol(4, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][errorPage]'));
 
 			$wecmdenc1 = we_cmd_enc("document.forms[0].elements['newconf[SECURITY_LIMIT_CUSTOMER_REDIRECT]'].value");
 			$wecmdenc2 = we_cmd_enc("document.forms[0].elements['SECURITY_LIMIT_CUSTOMER_REDIRECT_text'].value");
 
 			$yuiSuggest->setAcId("SECURITY_LIMIT_CUSTOMER_REDIRECT_doc");
-			$yuiSuggest->setContentType("folder,text/webEdition,text/html");
+			$yuiSuggest->setContentType('folder,text/webEdition,text/html');
 			$yuiSuggest->setInput('SECURITY_LIMIT_CUSTOMER_REDIRECT_text', (SECURITY_LIMIT_CUSTOMER_REDIRECT ? id_to_path(SECURITY_LIMIT_CUSTOMER_REDIRECT) : ''));
 			$yuiSuggest->setMaxResults(20);
 			$yuiSuggest->setMayBeEmpty(true);
@@ -2806,19 +2809,20 @@ if(window.onload) {
 			$yuiSuggest->setSelectButton(we_button::create_button('select', "javascript:we_cmd('openDocselector', document.forms[0].elements['newconf[SECURITY_LIMIT_CUSTOMER_REDIRECT]'].value, '" . FILE_TABLE . "', '" . $wecmdenc1 . "','" . $wecmdenc2 . "','','" . session_id() . "','', 'text/webEdition,text/html', 1)"), 10);
 			$yuiSuggest->setTrashButton(we_button::create_button('image:btn_function_trash', 'javascript:document.forms[0].elements[\'newconf[SECURITY_LIMIT_CUSTOMER_REDIRECT]\'].value = 0;document.forms[0].elements[\'SECURITY_LIMIT_CUSTOMER_REDIRECT_text\'].value = \'\''), 4);
 
-			$customer_table->setCol(2, 2, array('class' => 'defaultfont', 'colspan' => 3), $yuiSuggest->getHTML());
+			$customer_table->setCol(4, 3, array('class' => 'defaultfont', 'colspan' => 5), $yuiSuggest->getHTML());
 
 
 
-			$customer_table->setCol(3, 1, array('class' => 'defaultfont'), 'fehlerhaftes Login verzögern');
-			$customer_table->setCol(3, 2, array('align' => 'right'), we_html_tools::htmlTextInput('newconf[SECURITY_DELAY_FAILED_LOGIN]', 3, get_value('SECURITY_DELAY_FAILED_LOGIN'), 3, '', 'number', 50));
+			$customer_table->setCol(5, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][slowDownLogin]'));
+			$customer_table->setCol(5, 3, array(), we_html_tools::htmlTextInput('newconf[SECURITY_DELAY_FAILED_LOGIN]', 3, get_value('SECURITY_DELAY_FAILED_LOGIN'), 3, '', 'number', 50));
+			$customer_table->setCol(5, 4, array(), 's');
 
 
 			$settings = array(
 				array('headline' => g_l('perms_customer', '[perm_group_title]'), 'html' => $customer_table->getHtml(), 'space' => 120, 'noline' => 1),
 				//array('headline' => '', 'html' => '', 'space' => 120, 'noline' => 1),
 			);
-			return create_dialog('settings_security', 'Sicherheit'/* g_l('prefs', '[tab][security]') */, $settings);
+			return create_dialog('settings_security', g_l('prefs', '[tab][security]'), $settings);
 
 		case 'email':
 			/**
