@@ -33,7 +33,7 @@ $_leftPart = $_middlePart - $_logoPart;
 
 $_credits = '<br /><span style="line-height:160%">' .
 	g_l('global', '[developed_further_by]') . ': <a href="http://www.webedition.org/" target="_blank" ><strong>webEdition e.V.</strong></a><br/>' .
-	g_l('global', '[with]') . ' <b><a href="http://credits.webedition.org/?language=' . $GLOBALS["WE_LANGUAGE"] . '" target="_blank" >' . g_l('global', '[credits_team]') . '</a></b></span><br/>';
+	g_l('global', '[with]') . ' <b><a href="http://www.webedition.org/credits/index.php" target="_blank" >' . g_l('global', '[credits_team]') . '</a></b></span><br/>';
 
 $we_version = '';
 if(!isset($GLOBALS['loginpage'])){
