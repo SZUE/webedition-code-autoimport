@@ -121,17 +121,40 @@ abstract class weAbstractCustomerFilter{
 			case self::NONE:
 				return !self::customerIsLogedIn();
 			case self::SPECIFIC:
-				if(!self::customerIsLogedIn()){
-					return false;
-				}
-				return in_array($_SESSION["webuser"]["ID"], $this->_specificCustomers);
+				return self::customerIsLogedIn() && in_array($_SESSION["webuser"]["ID"], $this->_specificCustomers);
 			case self::FILTER:
-				if(!( isset($_SESSION) && isset($_SESSION["webuser"]) && isset($_SESSION["webuser"]["ID"]) )){
-					return false;
-				}
-				return self::customerHasFilterAccess();
+				return self::customerIsLogedIn() && self::customerHasFilterAccess();
+			default:
+				return false;
 		}
-		return false;
+	}
+
+	private static function evalSingleFilter($op, $key, $value){
+		switch($op){
+			case self::OP_EQ:
+				return $_SESSION['webuser'][$key] == $value;
+			case self::OP_NEQ:
+				return $_SESSION['webuser'][$key] != $value;
+			case self::OP_LESS:
+				return $_SESSION['webuser'][$key] < $value;
+			case self::OP_LEQ:
+				return $_SESSION['webuser'][$key] <= $value;
+			case self::OP_GREATER:
+				return $_SESSION['webuser'][$key] > $value;
+			case self::OP_GEQ:
+				return $_SESSION['webuser'][$key] >= $value;
+			case self::OP_STARTS_WITH:
+				return (strpos($_SESSION['webuser'][$key], $value) === 0);
+			case self::OP_ENDS_WITH:
+				return self::endsWith($_SESSION['webuser'][$key], $value);
+			case self::OP_CONTAINS:
+				return self::contains($_SESSION['webuser'][$key], $value);
+			case self::OP_IN:
+				return self::in($_SESSION['webuser'][$key], $value);
+			default:
+				t_e('invalid customer filter op: ' . $op);
+				return false;
+		}
 	}
 
 	/**
@@ -140,47 +163,33 @@ abstract class weAbstractCustomerFilter{
 	 * @return boolean
 	 */
 	private function customerHasFilterAccess(){
-
-		if(in_array($_SESSION["webuser"]["ID"], $this->_blackList)){
+		if(in_array($_SESSION['webuser']['ID'], $this->_blackList)){
 			return false;
-		} else if(in_array($_SESSION["webuser"]["ID"], $this->_whiteList)){
+		} else if(in_array($_SESSION['webuser']['ID'], $this->_whiteList)){
 			return true;
 		}
 
-		$_filter_op = array(
-			self::OP_EQ => '%s==%s',
-			self::OP_NEQ => '%s<>%s',
-			self::OP_LESS => '%s<%s',
-			self::OP_LEQ => '%s<=%s',
-			self::OP_GREATER => '%s>%s',
-			self::OP_GEQ => '%s>=%s',
-			self::OP_STARTS_WITH => 'self::startsWith(%s,%s)',
-			self::OP_ENDS_WITH => 'self::endsWith(%s,%s)',
-			self::OP_CONTAINS => 'self::contains(%s,%s)',
-			self::OP_IN => 'self::in(%s,%s)'
-		);
-
-		$_conditions = array();
-
-		$_flag = false;
+		$hasPermission = false;
+		$flag = false;
 		$invalidFields = array();
 		foreach($this->_filter as $_filter){
-			if(!isset($_SESSION["webuser"][$_filter["field"]])){
-				$invalidFields[] = $_filter["field"];
+			if(!isset($_SESSION['webuser'][$_filter['field']])){
+				$invalidFields[] = $_filter['field'];
 				continue;
 			}
-			$_conditions[] = (($_filter["logic"] && $_flag) ? ($_filter["logic"] == 'AND' ? ' && ' : ' || ') : '') .
-				sprintf($_filter_op[$_filter["operation"]], self::quote4Eval($_SESSION["webuser"][$_filter["field"]]), self::quote4Eval($_filter["value"]));
-			$_flag = true;
+			if($flag && $_filter['logic'] == 'AND'){
+				$hasPermission&=self::evalSingleFilter($_filter['operation'], $_filter['field'], $_filter['value']);
+			} else{
+				$hasPermission|=self::evalSingleFilter($_filter['operation'], $_filter['field'], $_filter['value']);
+			}
+			$flag = true;
 		}
 
 		if(!empty($invalidFields)){
 			t_e('Customerfilter on document ? has invalid Parameters, maybe deleted Customer fields: ' . implode(',', $invalidFields));
 		}
-		$_hasPermission = false;
-		eval('if (' . implode('', $_conditions) . ') { $_hasPermission = true; }');
 
-		return $_hasPermission;
+		return $hasPermission;
 	}
 
 	/**
@@ -193,22 +202,15 @@ abstract class weAbstractCustomerFilter{
 		$_filter = array();
 
 		if(isset($_REQUEST['filterSelect_0'])){
-
-
 			$_parse = true;
 			$_count = 0;
 
 			while($_parse) {
 				if(isset($_REQUEST['filterSelect_' . $_count])){
 
-					if(isset($_REQUEST['filterLogic_' . $_count]) && $_REQUEST['filterLogic_' . $_count] == 'OR'){
-						$_logic = 'OR';
-					} else{
-						$_logic = 'AND';
-					}
 					if(isset($_REQUEST['filterValue_' . $_count]) && trim($_REQUEST['filterValue_' . $_count]) <> ''){
 						$_filter[] = array(
-							'logic' => $_logic,
+							'logic' => (isset($_REQUEST['filterLogic_' . $_count]) && $_REQUEST['filterLogic_' . $_count] == 'OR' ? 'OR' : 'AND'),
 							'field' => $_REQUEST['filterSelect_' . $_count],
 							'operation' => $_REQUEST['filterOperation_' . $_count],
 							'value' => $_REQUEST['filterValue_' . $_count]
@@ -293,18 +295,6 @@ abstract class weAbstractCustomerFilter{
 	}
 
 	/**
-	 * Checks if $haystack starts with $needle. If so, returns true, otherwise false
-	 *
-	 * @param string $haystack
-	 * @param string $needle
-	 * @static
-	 * @return boolean
-	 */
-	static function startsWith($haystack, $needle){
-		return (strpos($haystack, $needle) === 0);
-	}
-
-	/**
 	 * Checks if $haystack ends with $needle. If so, returns true, otherwise false
 	 *
 	 * @param string $haystack
@@ -352,28 +342,9 @@ abstract class weAbstractCustomerFilter{
 	 *
 	 * @return boolean
 	 */
-	static function customerIsLogedIn(){
-		return isset($_SESSION) && isset($_SESSION["webuser"]) && isset($_SESSION["webuser"]["ID"]) && $_SESSION["webuser"]["ID"];
+	public static function customerIsLogedIn(){
+		return isset($_SESSION) && isset($_SESSION['webuser']) && isset($_SESSION['webuser']['ID']) && $_SESSION['webuser']['ID'];
 	}
-
-	/**
-	 * Quotes strings for use in eval statements
-	 *
-	 * @param string $in
-	 * @static
-	 * @return string
-	 */
-	static function quote4Eval($in){
-		if(is_numeric($in)){
-			return $in;
-		} else{
-			return '"' . str_replace("\\'", "'", addslashes($in)) . '"';
-		}
-	}
-
-	/* #########################################################################################
-	  ############################### mutator and accessor methods ##############################
-	  ######################################################################################### */
 
 	/**
 	 * mutator method for $this->_mode
