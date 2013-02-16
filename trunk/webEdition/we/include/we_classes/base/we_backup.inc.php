@@ -1280,7 +1280,7 @@ $this->dummy=' . var_export($this->dummy, true) . ';
 			we_util_File::insertIntoCleanUp($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . "download/" . $download_filename, time());
 			return $download_filename;
 		} else{
-			return "";
+			return '';
 		}
 	}
 
