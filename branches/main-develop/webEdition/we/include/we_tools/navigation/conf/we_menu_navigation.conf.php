@@ -128,7 +128,7 @@ $we_menu_navigation['003000'] = array(
 );
 
 $we_menu_navigation['003100'] = array(
-	'text' => g_l('navigation', '[menu_help]') . '...',
+	'text' => g_l('navigation', '[menu_help]') . '&hellip;',
 	'parent' => '003000',
 	'cmd' => 'help_tools',
 	'perm' => '',
@@ -136,7 +136,7 @@ $we_menu_navigation['003100'] = array(
 );
 
 $we_menu_navigation['003200'] = array(
-	'text' => g_l('navigation', '[menu_info]') . '...',
+	'text' => g_l('navigation', '[menu_info]') . '&hellip;',
 	'parent' => '003000',
 	'cmd' => 'info_tools',
 	'perm' => '',

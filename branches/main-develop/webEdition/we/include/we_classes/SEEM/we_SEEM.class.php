@@ -490,7 +490,7 @@ abstract class we_SEEM{
 					$destCode = str_replace($linkArray[0][$i], "<" . $linkArray[1][$i] . "javascript://" . $linkArray[4][$i] . $javascriptCode . ">", $destCode);
 				} else{ //  Target is on the same Web-Server - open doc with webEdition.
 					if(strpos($linkArray[5][$i], WEBEDITION_DIR . 'we_cmd.php') === 0){ //  it is a command link - use open_document_with_parameters
-						//  Work with the parameters ...
+						//  Work with the parameters
 						$theParameters = "";
 
 						if($linkArray[3][$i] != ""){
@@ -507,7 +507,7 @@ abstract class we_SEEM{
 						//	This is a javascript:history link, to get back to the last document.
 						$javascriptCode = (strpos($linkArray[2][$i], "javascript") === 0 && strpos($linkArray[2][$i], "history") ?
 								' onclick="' . we_message_reporting::getShowMessageCall(g_l('SEEM', '[link_does_not_work]'), we_message_reporting::WE_MESSAGE_FRONTEND) . "\" onMouseOver=\"top.info('" . g_l('SEEM', "[info_link_does_not_work]") . "')\" onMouseOut=\"top.info('');\"" :
-								//  Check, if the current document was changed ...
+								//  Check, if the current document was changed
 								" onclick=\"if(confirm('" . g_l('SEEM', "[ext_doc_selected]") . "')){top.doExtClick('" . $linkArray[5][$i] . $linkArray[3][$i] . "');top.info(' ');} else { return false; };\" onMouseOver=\"top.info('" . g_l('SEEM', "[info_ext_doc]") . "');\" onMouseOut=\"top.info(' ')\" ");
 
 						$destCode = str_replace($linkArray[0][$i], "<" . $linkArray[1][$i] . "javascript://\"" . $linkArray[4][$i] . $javascriptCode . ">", $destCode);
@@ -941,7 +941,7 @@ abstract class we_SEEM{
 
 				if(strpos($linkArray[5][$i], WEBEDITION_DIR . 'we_cmd.php') === 0){
 
-					//  Work with the parameters ...
+					//  Work with the parameters
 					$theParameters = "";
 
 					if($linkArray[3][$i] != ""){

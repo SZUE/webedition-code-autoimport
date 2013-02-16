@@ -246,6 +246,15 @@ Zur Umstellung auf den Standard "nein" ersetzen Sie in allen Vorlagen einfach in
 	'saved_successfully'=>'Einstellungen gespeichert',
 	'save'=>'Einstellungen werden gespeichert, einen Moment ...',
 	'save_wait'=>'Speichere Einstellungen',
+	
+	'security'=>array(
+		'customer'=>array(
+			'disableLogins'=>'Loginversuche limitieren',
+			'errorPage'=>'Fehlerseite',
+			'sameIP'=>'von gleicher IP',
+			'sameUser'=>'mit gleichem Benutzernamen',
+			'slowDownLogin'=>'fehlerhaftes Login verzögern',
+	),),
 	'seem'=>'SEE-Mode',
 	'seem_deactivate'=>'deaktivieren',
 	'seem_startdocument'=>'Startseite',
@@ -297,6 +306,7 @@ Zur Umstellung auf den Standard "nein" ersetzen Sie in allen Vorlagen einfach in
 		'modules'=>'Module',
 		'proxy'=>'Proxy Server',
 		'recipients'=>'Formmail',
+		'security'=>'Sicherheit',
 		'seolinks'=>'SEO-Links',
 		'system'=>'System',
 		'ui'=>'Oberfläche',

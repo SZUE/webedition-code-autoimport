@@ -459,7 +459,7 @@ class we_app_Common{
 		}
 		if(is_readable($source)){
 			//error_log("readable source file");
-			// seems to be a file ...
+			// seems to be a file
 			$filename = $source;
 		} else{
 			// seems to be an app name:
@@ -488,7 +488,7 @@ class we_app_Common{
 		}
 		if(is_readable($source)){
 			//error_log("readable source file");
-			// seems to be a file ...
+			// seems to be a file
 			$filename = $source;
 		} else{
 			// seems to be an app name:

@@ -160,7 +160,7 @@ function getOK($message, $value){
 $_install_dir = $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR;
 
 if(strlen($_install_dir) > 35){
-	$_install_dir = substr($_install_dir, 0, 25) . '<acronym title="' . $_install_dir . '">...</acronym>' . substr($_install_dir, -10);
+	$_install_dir = substr($_install_dir, 0, 25) . '<acronym title="' . $_install_dir . '">&hellip;</acronym>' . substr($_install_dir, -10);
 }
 
 $weVersion = WE_VERSION;
@@ -298,7 +298,7 @@ foreach($_info as $_k => $_v){
 
 $_parts[] = array(
 	'headline' => '',
-	'html' => '<a href="javascript:showPhpInfo();">' . g_l('sysinfo', '[more_info]') . '...</a>',
+	'html' => '<a href="javascript:showPhpInfo();">' . g_l('sysinfo', '[more_info]') . '&hellip;</a>',
 	'space' => 10
 );
 we_html_tools::htmlTop(g_l('sysinfo', '[sysinfo]'));
@@ -339,7 +339,7 @@ print STYLESHEET;
 		$_parts = array(
 			array(
 				'headline' => '',
-				'html' => '<iframe id="phpinfo" style="width:1280px;height:530px;">' . g_l('sysinfo', '[more_info]') . '...</iframe>',
+				'html' => '<iframe id="phpinfo" style="width:1280px;height:530px;">' . g_l('sysinfo', '[more_info]') . ' &hellip;</iframe>',
 				'space' => $_space_size
 			),
 			array(

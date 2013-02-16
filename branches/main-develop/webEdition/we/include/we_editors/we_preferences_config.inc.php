@@ -31,6 +31,7 @@ $GLOBALS['tabs'] = array(
 	'defaultAttribs' => 'ADMINISTRATOR',
 	'advanced' => 'ADMINISTRATOR',
 	'system' => 'ADMINISTRATOR',
+	'security' => 'ADMINISTRATOR',
 	'seolinks' => 'ADMINISTRATOR',
 	'modules' => 'ADMINISTRATOR',
 	'language' => 'ADMINISTRATOR',
@@ -69,9 +70,9 @@ $GLOBALS['configs'] = array(
 		'DISABLE_TEMPLATE_CODE_CHECK' => array('Disable the check for php-errors in templates', 0),
 		'DISABLE_TEMPLATE_PARSER' => array('Disable run of parser - only report errors', 0),
 // Backup variable
-/*		'BACKUP_STEPS' => array('Number of entries per batch', 100),
-		'FAST_BACKUP' => array('New Test for a faster Backup', 0),
-		'FAST_RESTORE' => array('New Test for a faster Restore', 0),*/
+		/* 		'BACKUP_STEPS' => array('Number of entries per batch', 100),
+		  'FAST_BACKUP' => array('New Test for a faster Backup', 0),
+		  'FAST_RESTORE' => array('New Test for a faster Restore', 0), */
 // inlineedit default value
 		'INLINEEDIT_DEFAULT' => array('Default setting for inlineedit attribute', true),
 		'WE_PHP_DEFAULT' => array('Default setting for php attribute', false),
@@ -170,6 +171,13 @@ $GLOBALS['configs'] = array(
 		'VERSIONS_TIME_WEEKS_TMPL' => array('Versioning Number of Weeks', -1),
 		'VERSIONS_TIME_YEARS_TMPL' => array('Versioning Number of Years', -1),
 		'VERSIONS_ANZAHL_TMPL' => array('Versioning Number of Versions', 5),
+//security
+		'SECURITY_LIMIT_CUSTOMER_IP' => array('Limit # of failed logins comming from the same IP', 10),
+		'SECURITY_LIMIT_CUSTOMER_IP_HOURS' => array('Limit failed logins comming from same IP connections per # hours', 3),
+		'SECURITY_LIMIT_CUSTOMER_NAME' => array('Limit # of failed logins with same username', 4),
+		'SECURITY_LIMIT_CUSTOMER_NAME_HOURS' => array('Limit failed logins with same usernames per # hours', 1),
+		'SECURITY_LIMIT_CUSTOMER_REDIRECT' => array('If limit reached, redirect to page', ''),
+		'SECURITY_DELAY_FAILED_LOGIN' => array('Delay a failed login by # seconds', 3),
 //internal
 		'CONF_SAVED_VERSION' => array('config file version', WE_SVNREV),
 	),

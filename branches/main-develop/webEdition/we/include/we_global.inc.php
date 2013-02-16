@@ -941,7 +941,7 @@ function getWsQueryForSelector($tab, $includingFolders = true){
 		$wsQuery[] = 'Path LIKE "' . $GLOBALS['DB_WE']->escape($path) . '/%"';
 	}
 
-	return ' OR (' . implode(' OR ', $wsQuery) . ')';
+	return ' AND (' . implode(' OR ', $wsQuery) . ')';
 }
 
 function get_def_ws($table = FILE_TABLE, $prePostKomma = false){

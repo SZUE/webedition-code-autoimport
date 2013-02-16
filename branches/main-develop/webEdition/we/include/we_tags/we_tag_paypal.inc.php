@@ -176,7 +176,7 @@ function we_tag_paypal($attribs){
 
 		switch($_GET['action']){
 
-			case 'process': // Process and order...
+			case 'process': // Process and order
 				// There should be no output at this point.  To process the POST data,
 				// the submit_paypal_post() function will output all the HTML tags which
 				// contains a FORM which is submited instantaneously using the BODY onload
@@ -333,7 +333,7 @@ function we_tag_paypal($attribs){
 				$p->submit_paypal_post($formTagOnly, $messageRedirectAuto, $messageRedirectMan); // submit the fields to paypal
 				break;
 
-			case 'success': // Order was successful...
+			case 'success': // Order was successful
 				// This is where you would probably want to thank the user for their order
 				// or what have you.  The order information at this point is in POST
 				// variables.  However, you don't want to "process" the order until you
@@ -351,14 +351,14 @@ function we_tag_paypal($attribs){
 
 				break;
 
-			case 'cancel': // Order was canceled...
+			case 'cancel': // Order was canceled
 				// The order was canceled before being completed.
 
 
 
 				break;
 
-			case 'ipn': // Paypal is calling page for IPN validation...
+			case 'ipn': // Paypal is calling page for IPN validation
 				// It's important to remember that paypal calling this script.  There
 				// is no output here.  This is where you validate the IPN data and if it's
 				// valid, update your database to signify that the user has payed.  If

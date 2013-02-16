@@ -227,7 +227,7 @@ HTS;
 
 	function getWizBusy(){
 		$pb = $js = "";
-		if($this->getPostGetVar("mode", 0) == 1){
+		if(isset($_REQUEST["mode"]) && $_REQUEST["mode"] == 1){
 			$WE_PB = new we_progressBar(0, 0, true);
 			$WE_PB->setStudLen(200);
 			$WE_PB->addText($text = g_l('import', "[import_progress]"), 0, "pb1");
@@ -280,19 +280,19 @@ HTS;
 					'style' => 'overflow:hidden;'
 					), $content->getHtml() . $js
 				)
-			);
+		);
 	}
 
 	function getWizCmd($type = 'normal'){
 		@set_time_limit(0);
 		$out = '';
-		$mode = $this->getPostGetVar('mode', 0);
+		$mode = isset($_REQUEST['mode']) ? $_REQUEST['mode'] : 0;
 		if($mode == ''){
 			$mode = 0;
 		}
-		$numFiles = $this->getPostGetVar("numFiles", -1);
-		$uniquePath = $this->getPostGetVar("uniquePath", "");
-		$currFileId = $this->getPostGetVar("currFileId", -1);
+		$numFiles = isset($_REQUEST['numFiles']) ? $_REQUEST['numFiles'] : -1;
+		$uniquePath = isset($_REQUEST['uniquePath']) ? $_REQUEST['uniquePath'] : '';
+		$currFileId = isset($_REQUEST['currFileId']) ? $_REQUEST['currFileId'] : -1;
 
 		if(isset($_REQUEST["v"])){
 			$v = $_REQUEST["v"];
@@ -304,8 +304,8 @@ HTS;
 		if(isset($v["mode"]) && $v["mode"] == 1){
 			$records = isset($_REQUEST["records"]) ? $_REQUEST["records"] : array();
 			$we_flds = isset($_REQUEST["we_flds"]) ? $_REQUEST["we_flds"] : array();
-			$attrs = $this->getPostGetVar("attrs", array());
-			$attributes = $this->getPostGetVar("attributes", array());
+			$attrs = isset($_REQUEST['attrs']) ? $_REQUEST['attrs'] : array();
+			$attributes = isset($_REQUEST['attributes']) ? $_REQUEST['attributes'] : array();
 
 			switch($v["cid"]){
 				case -2:
@@ -799,7 +799,7 @@ HTS;
 							we_form.method = 'post';
 							we_form.submit();
 						}"
-					)) .
+				)) .
 				we_html_element::htmlBody(array('style' => 'overflow:hidden;'), $out));
 	}
 
@@ -835,13 +835,6 @@ HTS;
 		}
 
 		return we_html_element::jsElement($JScript);
-	}
-
-	function getPostGetVar($var, $def){
-		return(isset($_POST[$var]) ?
-				$_POST[$var] :
-				(isset($_GET[$var]) ?
-					$_GET[$var] : $def));
 	}
 
 }

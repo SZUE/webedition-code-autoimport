@@ -2463,7 +2463,7 @@ if(window.onload) {
 
 			$yuiSuggest->setAcId("doc2");
 			$yuiSuggest->setContentType("folder,text/webEdition,text/html");
-			$yuiSuggest->setInput('error_document_no_objectfile_text', ( (defined('ERROR_DOCUMENT_NO_OBJECTFILE') && ERROR_DOCUMENT_NO_OBJECTFILE) ? id_to_path(ERROR_DOCUMENT_NO_OBJECTFILE) : ''));
+			$yuiSuggest->setInput('error_document_no_objectfile_text', ( ERROR_DOCUMENT_NO_OBJECTFILE ? id_to_path(ERROR_DOCUMENT_NO_OBJECTFILE) : ''));
 			$yuiSuggest->setMaxResults(20);
 			$yuiSuggest->setMayBeEmpty(true);
 			$yuiSuggest->setResult('newconf[ERROR_DOCUMENT_NO_OBJECTFILE]', ( ERROR_DOCUMENT_NO_OBJECTFILE ? ERROR_DOCUMENT_NO_OBJECTFILE : 0));
@@ -2558,9 +2558,9 @@ if(window.onload) {
 			$_template_error_handling_table->setCol(0, 0, null, we_forms::checkbox(1, get_value('DISABLE_TEMPLATE_CODE_CHECK'), 'DISABLE_TEMPLATE_CODE_CHECK', g_l('prefs', '[disable_template_code_check]'), true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[DISABLE_TEMPLATE_CODE_CHECK]\');') .
 				we_html_tools::hidden('newconf[DISABLE_TEMPLATE_CODE_CHECK]', get_value('DISABLE_TEMPLATE_CODE_CHECK')));
 
-			$_template_error_handling_table->setCol(1, 0, null, we_forms::checkbox(1, get_value('DISABLE_TEMPLATE_PARSER'), 'DISABLE_TEMPLATE_PARSER', g_l('prefs', '[disable_template_parser]'), true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[DISABLE_TEMPLATE_PARSER]\');') .
-				we_html_tools::hidden('newconf[DISABLE_TEMPLATE_PARSER]', get_value('DISABLE_TEMPLATE_PARSER')));
-
+			/* $_template_error_handling_table->setCol(1, 0, null, we_forms::checkbox(1, get_value('DISABLE_TEMPLATE_PARSER'), 'DISABLE_TEMPLATE_PARSER', g_l('prefs', '[disable_template_parser]'), true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[DISABLE_TEMPLATE_PARSER]\');') .
+			  we_html_tools::hidden('newconf[DISABLE_TEMPLATE_PARSER]', get_value('DISABLE_TEMPLATE_PARSER')));
+			 */
 
 
 			// Create checkboxes
@@ -2728,56 +2728,108 @@ if(window.onload) {
 		 * ******************************************************************* */
 		case "backup":
 			return;
-			if(!we_hasPerm("ADMINISTRATOR")){
-				break;
+		/* if(!we_hasPerm("ADMINISTRATOR")){
+		  break;
+		  }
+		  $perf = new we_html_table(array("width" => "420", "border" => "0", "cellpadding" => "2", "cellspacing" => "0"), 3, 5);
+		  $perf->setCol(0, 0, array("class" => "header_small"), g_l('prefs', '[backup_slow]'));
+		  $perf->setCol(0, 1, array(), we_html_tools::getPixel(5, 2));
+		  $perf->setCol(0, 2, array("class" => "header_small", "align" => "right"), g_l('prefs', '[backup_fast]'));
+
+
+
+		  $steps = explode(',', weBackup::backupSteps);
+		  $backup_steps = get_value("BACKUP_STEPS");
+		  $steps_code = '<table border="0" cellpadding="0" cellspacing="0" width="100%" style="margin-bottom:10px;"><tr>';
+		  foreach($steps as $step){
+		  $steps_code.=($step == $backup_steps ?
+		  '<td>' . we_html_element::htmlInput(array("type" => "radio", "value" => "$step", "name" => "newconf[BACKUP_STEPS]", "checked" => true)) . '</td>' :
+		  '<td>' . we_html_element::htmlInput(array("type" => "radio", "value" => "$step", "name" => "newconf[BACKUP_STEPS]")) . '</td>');
+		  }
+		  $steps_code.= '</tr></table>';
+		  $perf->setCol(1, 0, array("class" => "defaultfont", "colspan" => 3), $steps_code);
+
+		  $steps_code = ($backup_steps == 0 ?
+		  we_html_element::htmlInput(array("type" => "radio", "value" => "0", "name" => "newconf[BACKUP_STEPS]", "checked" => true)) :
+		  we_html_element::htmlInput(array("type" => "radio", "value" => "0", "name" => "newconf[BACKUP_STEPS]"))) .
+		  g_l('prefs', '[backup_auto]');
+		  $perf->setCol(2, 0, array("class" => "header_small", "colspan" => 3), $steps_code);
+
+		  $tmp = we_forms::checkbox(1, get_value('FAST_BACKUP'), 'FAST_BACKUP', 'new fast Backup', false, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[FAST_BACKUP]\');') .
+		  we_html_tools::hidden('newconf[FAST_BACKUP]', get_value('FAST_BACKUP'));
+
+		  $tmp2 = we_forms::checkbox(1, get_value('FAST_RESTORE'), 'setXhtml_show_wrong_js', 'new fast Restore', false, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[FAST_RESTORE]\');') .
+		  we_html_tools::hidden('newconf[FAST_RESTORE]', get_value('FAST_RESTORE'));
+
+		  $_settings = array(
+		  array("headline" => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[performance]'), 2, 450), "html" => "", "space" => 200),
+		  array("headline" => '', "html" => $perf->getHtml(), "space" => 15),
+		  array("headline" => 'Fast Backup', 'html' => $tmp, 'space' => 50, 'noline' => 1),
+		  array("headline" => 'Fast Restore (testing)', 'html' => $tmp2, 'space' => 50, 'noline' => 1),
+		  );
+
+		  $_settings_cookie = weGetCookieVariable("but_settings_predefined");
+
+		  return create_dialog("settings_backup", g_l('prefs', '[tab][backup]'), $_settings);
+		 */
+		case 'security':
+			if(!we_hasPerm('ADMINISTRATOR')){
+				return;
 			}
-			$perf = new we_html_table(array("width" => "420", "border" => "0", "cellpadding" => "2", "cellspacing" => "0"), 3, 5);
-			$perf->setCol(0, 0, array("class" => "header_small"), g_l('prefs', '[backup_slow]'));
-			$perf->setCol(0, 1, array(), we_html_tools::getPixel(5, 2));
-			$perf->setCol(0, 2, array("class" => "header_small", "align" => "right"), g_l('prefs', '[backup_fast]'));
+			$customer_table = new we_html_table(array('border' => '0', 'cellpadding' => '0', 'cellspacing' => '0', 'id' => 'customer_table'), 9, 10);
+			$customer_table->setCol(0, 0, array('class' => 'defaultfont', 'width' => '20px'), '');
+			$customer_table->setCol(0, 1, array('class' => 'defaultfont', 'colspan' => 5), g_l('prefs', '[security][customer][disableLogins]') . ':');
+			$customer_table->setCol(0, 6, array('width' => 300));
+			$customer_table->setCol(1, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][sameIP]'));
+			$customer_table->setCol(1, 2, array('width' => '20px'));
+			$customer_table->setCol(1, 3, array(), we_html_tools::htmlTextInput('newconf[SECURITY_LIMIT_CUSTOMER_IP]', 3, get_value('SECURITY_LIMIT_CUSTOMER_IP'), 3, '', 'number', 50));
+			$customer_table->setCol(1, 4, array('class' => 'defaultfont', 'style' => 'width:2em;text-align:center'), '/');
+			$customer_table->setCol(1, 5, array(), we_html_tools::htmlTextInput('newconf[SECURITY_LIMIT_CUSTOMER_IP_HOURS]', 3, get_value('SECURITY_LIMIT_CUSTOMER_IP_HOURS'), 3, '', 'number', 50));
+			$customer_table->setCol(1, 6, array('class' => 'defaultfont'), 'h');
+
+			$customer_table->setCol(2, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][sameUser]'));
+			$customer_table->setCol(2, 3, array(), we_html_tools::htmlTextInput('newconf[SECURITY_LIMIT_CUSTOMER_NAME]', 3, get_value('SECURITY_LIMIT_CUSTOMER_NAME'), 3, '', 'number', 50));
+			$customer_table->setCol(2, 4, array('class' => 'defaultfont', 'style' => 'text-align:center;'), '/');
+			$customer_table->setCol(2, 5, array(), we_html_tools::htmlTextInput('newconf[SECURITY_LIMIT_CUSTOMER_NAME_HOURS]', 3, get_value('SECURITY_LIMIT_CUSTOMER_NAME_HOURS'), 3, '', 'number', 50));
+			$customer_table->setCol(2, 6, array('class' => 'defaultfont'), 'h');
+
+			$customer_table->setCol(4, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][errorPage]'));
+
+			$wecmdenc1 = we_cmd_enc("document.forms[0].elements['newconf[SECURITY_LIMIT_CUSTOMER_REDIRECT]'].value");
+			$wecmdenc2 = we_cmd_enc("document.forms[0].elements['SECURITY_LIMIT_CUSTOMER_REDIRECT_text'].value");
+
+			$yuiSuggest->setAcId("SECURITY_LIMIT_CUSTOMER_REDIRECT_doc");
+			$yuiSuggest->setContentType('folder,text/webEdition,text/html');
+			$yuiSuggest->setInput('SECURITY_LIMIT_CUSTOMER_REDIRECT_text', (SECURITY_LIMIT_CUSTOMER_REDIRECT ? id_to_path(SECURITY_LIMIT_CUSTOMER_REDIRECT) : ''));
+			$yuiSuggest->setMaxResults(20);
+			$yuiSuggest->setMayBeEmpty(true);
+			$yuiSuggest->setResult('newconf[SECURITY_LIMIT_CUSTOMER_REDIRECT]', ( SECURITY_LIMIT_CUSTOMER_REDIRECT ? SECURITY_LIMIT_CUSTOMER_REDIRECT : 0));
+			$yuiSuggest->setSelector('Docselector');
+			$yuiSuggest->setWidth(300);
+			$yuiSuggest->setSelectButton(we_button::create_button('select', "javascript:we_cmd('openDocselector', document.forms[0].elements['newconf[SECURITY_LIMIT_CUSTOMER_REDIRECT]'].value, '" . FILE_TABLE . "', '" . $wecmdenc1 . "','" . $wecmdenc2 . "','','" . session_id() . "','', 'text/webEdition,text/html', 1)"), 10);
+			$yuiSuggest->setTrashButton(we_button::create_button('image:btn_function_trash', 'javascript:document.forms[0].elements[\'newconf[SECURITY_LIMIT_CUSTOMER_REDIRECT]\'].value = 0;document.forms[0].elements[\'SECURITY_LIMIT_CUSTOMER_REDIRECT_text\'].value = \'\''), 4);
+
+			$customer_table->setCol(4, 3, array('class' => 'defaultfont', 'colspan' => 5), $yuiSuggest->getHTML());
 
 
 
-			$steps = explode(',', weBackup::backupSteps);
-			$backup_steps = get_value("BACKUP_STEPS");
-			$steps_code = '<table border="0" cellpadding="0" cellspacing="0" width="100%" style="margin-bottom:10px;"><tr>';
-			foreach($steps as $step){
-				$steps_code.=($step == $backup_steps ?
-						'<td>' . we_html_element::htmlInput(array("type" => "radio", "value" => "$step", "name" => "newconf[BACKUP_STEPS]", "checked" => true)) . '</td>' :
-						'<td>' . we_html_element::htmlInput(array("type" => "radio", "value" => "$step", "name" => "newconf[BACKUP_STEPS]")) . '</td>');
-			}
-			$steps_code.= '</tr></table>';
-			$perf->setCol(1, 0, array("class" => "defaultfont", "colspan" => 3), $steps_code);
+			$customer_table->setCol(5, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][slowDownLogin]'));
+			$customer_table->setCol(5, 3, array(), we_html_tools::htmlTextInput('newconf[SECURITY_DELAY_FAILED_LOGIN]', 3, get_value('SECURITY_DELAY_FAILED_LOGIN'), 3, '', 'number', 50));
+			$customer_table->setCol(5, 4, array(), 's');
 
-			$steps_code = ($backup_steps == 0 ?
-					we_html_element::htmlInput(array("type" => "radio", "value" => "0", "name" => "newconf[BACKUP_STEPS]", "checked" => true)) :
-					we_html_element::htmlInput(array("type" => "radio", "value" => "0", "name" => "newconf[BACKUP_STEPS]"))) .
-				g_l('prefs', '[backup_auto]');
-			$perf->setCol(2, 0, array("class" => "header_small", "colspan" => 3), $steps_code);
 
-			$tmp = we_forms::checkbox(1, get_value('FAST_BACKUP'), 'FAST_BACKUP', 'new fast Backup', false, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[FAST_BACKUP]\');') .
-				we_html_tools::hidden('newconf[FAST_BACKUP]', get_value('FAST_BACKUP'));
-
-			$tmp2 = we_forms::checkbox(1, get_value('FAST_RESTORE'), 'setXhtml_show_wrong_js', 'new fast Restore', false, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[FAST_RESTORE]\');') .
-				we_html_tools::hidden('newconf[FAST_RESTORE]', get_value('FAST_RESTORE'));
-
-			$_settings = array(
-				array("headline" => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[performance]'), 2, 450), "html" => "", "space" => 200),
-				array("headline" => '', "html" => $perf->getHtml(), "space" => 15),
-				array("headline" => 'Fast Backup', 'html' => $tmp, 'space' => 50, 'noline' => 1),
-				array("headline" => 'Fast Restore (testing)', 'html' => $tmp2, 'space' => 50, 'noline' => 1),
+			$settings = array(
+				array('headline' => g_l('perms_customer', '[perm_group_title]'), 'html' => $customer_table->getHtml(), 'space' => 120, 'noline' => 1),
+				//array('headline' => '', 'html' => '', 'space' => 120, 'noline' => 1),
 			);
+			return create_dialog('settings_security', g_l('prefs', '[tab][security]'), $settings);
 
-			$_settings_cookie = weGetCookieVariable("but_settings_predefined");
-
-			return create_dialog("settings_backup", g_l('prefs', '[tab][backup]'), $_settings);
-
-		case "email":
+		case 'email':
 			/**
 			 * Information
 			 */
 			$_settings = array(
-				array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[mailer_information]'), 2, 450, false), "space" => 0)
+				array('headline' => '', 'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[mailer_information]'), 2, 450, false), "space" => 0)
 			);
 
 			if(we_hasPerm('ADMINISTRATOR')){

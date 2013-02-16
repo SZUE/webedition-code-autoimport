@@ -245,6 +245,15 @@ $l_prefs=array(
 	'saved_successfully'=>'Настройки сохранены',
 	'save'=>'Сохраняются настройки, подождите, пожалуйста',
 	'save_wait'=>'Сохранение настроек',
+	
+	'security'=>array(
+		'customer'=>array(
+			'disableLogins'=>'limit login attemps',
+			'errorPage'=>'Error page',
+			'sameIP'=>'from same IP',
+			'sameUser'=>'with same customer name',
+			'slowDownLogin'=>'slow down login attemps',
+	),),
 	'seem'=>'Суперлегкий режим',
 	'seem_deactivate'=>'Деактивировать режим',
 	'seem_startdocument'=>'Стартовый документ режима',
@@ -296,6 +305,7 @@ $l_prefs=array(
 		'modules'=>'Модули',
 		'proxy'=>'Proxy-сервер',
 		'recipients'=>'Formmail',
+		'security'=>'Security',
 		'seolinks'=>'SEO links',
 		'system'=>'Система',
 		'ui'=>'Пользовательский интерфейс',

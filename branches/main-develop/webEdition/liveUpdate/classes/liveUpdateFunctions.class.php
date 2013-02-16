@@ -541,7 +541,6 @@ class liveUpdateFunctions{
 	}
 
 	/**
-	 * Enter description here...
 	 *
 	 * @param string $path
 	 * @return boolean
@@ -641,7 +640,7 @@ class liveUpdateFunctions{
 
 				case '1050': // this table already exists
 					// the table already exists,
-					// make tmptable and check these tables ...
+					// make tmptable and check these tables
 					$namePattern = '/CREATE TABLE (\w+) \(/';
 					preg_match($namePattern, $query, $matches);
 
@@ -823,9 +822,9 @@ class liveUpdateFunctions{
 	function getInstalledLanguages(){
 		clearstatcache();
 
-		//	Get all installed Languages ...
+		//	Get all installed Languages
 		$_installedLanguages = array();
-		//	Look which languages are installed ...
+		//	Look which languages are installed 
 		$_language_directory = dir($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_language");
 
 		while(false !== ($entry = $_language_directory->read())) {

@@ -359,7 +359,7 @@ class toolfactory_models_Default extends we_app_Model{
 				if(($_sqlFile === $_newname || $_dirSelectorFile === $_newname || $_dirSelectorClass === $_newname) && !$this->makeTable){
 
 				} else{
-					//print "Saving file " . $_newname . "...<br>";
+					//print "Saving file " . $_newname . "<br>";
 					if(stripos($_newname, '_UTF-8.inc.php') === false){
 						//$_content = utf8_encode($_content);
 					}
@@ -373,7 +373,7 @@ class toolfactory_models_Default extends we_app_Model{
 			$_sqlDump = file($_sqlDumpFile);
 			$_db = we_io_DB::sharedAdapter();
 			foreach($_sqlDump as $_sql){
-				//print "Execute query " . $_sql . "...<br>";
+				//print "Execute query " . $_sql . "<br>";
 				$_sql = str_replace('###TBLPREFIX###', TBL_PREFIX, $_sql);
 				$_db->query($_sql);
 			}

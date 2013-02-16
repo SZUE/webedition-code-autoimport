@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-//make sure this is included - but is it really needed? Isn't it done by we_show...
+//make sure this is included - but is it really needed? Isn't it done by we_show
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 function we_include_tag_file($name){
@@ -266,7 +266,7 @@ function cutText($text, $max = 0){
 	}
 	//no tags, simple cut off
 	if(strstr($text, '<') == FALSE){
-		return cutSimpleText($text, $max) . '...';
+		return cutSimpleText($text, $max) . ' &hellip;';
 	}
 
 	$ret = '';
@@ -288,7 +288,7 @@ function cutText($text, $max = 0){
 					$ret.=($len > $max ? cutSimpleText($cur[0], $max) : $cur[0]);
 					$max-=$len;
 					if($max <= 0){
-						$ret.='...';
+						$ret.=' &hellip;';
 					}
 				}
 				break;

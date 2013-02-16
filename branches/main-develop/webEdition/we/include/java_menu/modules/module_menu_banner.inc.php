@@ -76,14 +76,14 @@ $we_menu_banner = array(
 		'enabled' => '1',
 	),
 	array(
-		'text' => g_l('modules_banner', '[defaultbanner]') . '...',
+		'text' => g_l('modules_banner', '[defaultbanner]') . '&hellip;',
 		'parent' => '002000',
 		'cmd' => 'default_banner',
 		'perm' => 'EDIT_BANNER || ADMINISTRATOR',
 		'enabled' => '0',
 	),
 	array(
-		'text' => g_l('modules_banner', '[bannercode]') . '...',
+		'text' => g_l('modules_banner', '[bannercode]') . '&hellip;',
 		'parent' => '002000',
 		'cmd' => 'banner_code',
 		'perm' => 'EDIT_BANNER || ADMINISTRATOR',
@@ -95,13 +95,13 @@ $we_menu_banner = array(
 		'enabled' => '1',
 	),
 	array(
-		'text' => g_l('modules_banner', '[help]') . '...',
+		'text' => g_l('modules_banner', '[help]') . '&hellip;',
 		'parent' => '004000',
 		'cmd' => 'help_modules',
 		'enabled' => '1',
 	),
 	array(
-		'text' => g_l('modules_banner', '[info]') . '...',
+		'text' => g_l('modules_banner', '[info]') . '&hellip;',
 		'parent' => '004000',
 		'cmd' => 'info_modules',
 		'enabled' => '1',

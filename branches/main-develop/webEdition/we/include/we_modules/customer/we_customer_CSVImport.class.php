@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_customer_CSVImport extends CSVImport{
+class we_customer_CSVImport extends we_import_CSV{
 
 	var $hasHeader = 0;
 

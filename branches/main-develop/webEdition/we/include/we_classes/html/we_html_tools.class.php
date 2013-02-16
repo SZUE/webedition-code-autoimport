@@ -668,7 +668,6 @@ abstract class we_html_tools{
 	}
 
 	/**
-	 * Enter description here...
 	 *
 	 * @param string $text
 	 * @param string $img

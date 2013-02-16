@@ -163,8 +163,7 @@ function we_setPath(path, text, id) {
 			var div = document.getElementById('h_id');
 			div.innerHTML = id;
 		}
-	}
-	else if(document.all) {
+	}else if(document.all) {
 		var div = document.all['h_path'];
 		div.innerHTML = path;
 		if(id>0){
@@ -175,8 +174,8 @@ function we_setPath(path, text, id) {
 }";
 
 $_js_we_cmd =
-	"function we_cmd() {
-" . ($GLOBALS['we_doc']->ContentType != "text/weTmpl" ? "parent.openedWithWE = 1;" : "") . "
+	'function we_cmd() {
+' . ($GLOBALS['we_doc']->ContentType != 'text/weTmpl' ? 'parent.openedWithWE = 1;' : '') . "
 
 	var args = '';
 	var url = '" . WEBEDITION_DIR . "we_cmd.php?';
@@ -200,27 +199,23 @@ $_js_we_cmd =
 
 }";
 
-$_js_code =
-	"var _EditorFrame = top.weEditorFrameController.getEditorFrame(parent.name);
-_EditorFrame.setEditorEditPageNr(" . $we_doc->EditPageNr . ");" .
-	$_js_we_setPath .
-	$_js_we_cmd;
-print we_html_element::jsElement($_js_code);
-
+print we_html_element::jsElement(
+		'var _EditorFrame = top.weEditorFrameController.getEditorFrame(parent.name);
+_EditorFrame.setEditorEditPageNr(' . $we_doc->EditPageNr . ');' .
+		$_js_we_setPath .
+		$_js_we_cmd) .
 //	Stylesheet and image prepader for buttons
-print STYLESHEET;
+	STYLESHEET;
 ?>
 </head>
 <body id="eHeaderBody" bgcolor="white" background="<?php print IMAGE_DIR; ?>backgrounds/header.gif" marginwidth="0" marginheight="0" leftmargin="0" topmargin="0" onLoad="setFrameSize()" onResize="setFrameSize()">
 	<div id="main" ><?php
-print we_html_tools::getPixel(100, 3) . '<div style="margin:0px;" id="headrow">&nbsp;' . we_html_element::htmlB(str_replace(" ", "&nbsp;", g_l('contentTypes', '[' . $we_doc->ContentType . ']'))) . ': ' .
-	($we_doc->Table == FILE_TABLE && $we_doc->ID ? '<a href="javascript:top.wasdblclick=1;top.doClick(\'' . $we_doc->ID . '\');">' : '') .
-	'<span id="h_path"></span>' . ($we_doc->Table == FILE_TABLE && $we_doc->ID ? '</a>' : '') . ' (ID: <span id="h_id"></span>)</div>' . we_html_tools::getPixel(100, 3);
-
-if($_SESSION['weS']['we_mode'] != 'seem'){
-	print $we_tabs->getHTML();
-}
-?></div>
+		print '<div style="margin:3px 0px 3px 5px;" id="headrow">&nbsp;' . we_html_element::htmlB(str_replace(' ', '&nbsp;', g_l('contentTypes', '[' . $we_doc->ContentType . ']'))) . ': ' .
+			($we_doc->Table == FILE_TABLE && $we_doc->ID ? '<a href="javascript:top.wasdblclick=1;top.doClick(\'' . $we_doc->ID . '\');">' : '') .
+			'<span id="h_path"></span>' . ($we_doc->Table == FILE_TABLE && $we_doc->ID ? '</a>' : '') . ' (ID: <span id="h_id"></span>)</div>' .
+			($_SESSION['weS']['we_mode'] != 'seem' ?
+				$we_tabs->getHTML() : '');
+		?></div>
 </body>
 </html>
 <?php

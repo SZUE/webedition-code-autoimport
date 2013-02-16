@@ -1623,5 +1623,9 @@ class we_document extends we_root{
 	public function getDocumentCss(){
 		return '';
 	}
+	
+	public function addDocumentCss($stylesheet = ''){
+		// this method is overwritten in we_webEditionDocument
+	}
 
 }

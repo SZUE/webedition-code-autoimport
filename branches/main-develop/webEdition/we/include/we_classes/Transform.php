@@ -87,7 +87,7 @@ class Image_Transform
     var $image = '';
 
     /**
-     * Type of the image file (eg. jpg, gif png ...)
+     * Type of the image file (eg. jpg, gif png)
      * @var string
      */
     var $type = '';
@@ -540,7 +540,7 @@ class Image_Transform
     /**
      * Returns the matching IMAGETYPE_* constant for a given image type
      *
-     * @param  mixed $type String (GIF, JPG,...)
+     * @param  mixed $type String (GIF, JPG,)
      * @return mixed string or integer or input on error
      * @access protected
      * @see PHP_Compat::image_type_to_mime_type()
@@ -836,7 +836,7 @@ class Image_Transform
     /**
      * Returns if the driver supports a given image type
      *
-     * @param  string $type Image type (GIF, PNG, JPEG...)
+     * @param  string $type Image type (GIF, PNG, JPEG)
      * @param  string $mode 'r' for read, 'w' for write, 'rw' for both
      * @return TRUE if type (and mode) is supported FALSE otherwise
      * @access public

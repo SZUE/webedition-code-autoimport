@@ -400,8 +400,6 @@ class we_webEditionDocument extends we_textContentDocument{
 	 */
 	function formMetaInfos(){
 		//	Collect data from meta-tags
-		//debug2($this);
-
 		$_code = $this->getTemplateCode();
 		$_tp = new we_tag_tagParser();
 
@@ -445,7 +443,6 @@ class we_webEditionDocument extends we_textContentDocument{
 	 * @return string
 	 */
 	function getCharsetSelect(){
-
 		$_charsetHandler = new charsetHandler();
 
 		if(isset($GLOBALS["meta"]["Charset"])){ //	charset-tag available
@@ -457,13 +454,11 @@ class we_webEditionDocument extends we_textContentDocument{
 			$chars = explode(',', $GLOBALS["meta"]["Charset"]["defined"]);
 
 			//	input field - check value
-			if($this->getElement($name) != ''){
-				$value = $this->getElement($name);
-			} else if(isset($GLOBALS["meta"][$name])){
-				$value = $GLOBALS["meta"][$name]["default"];
-			} else{
-				$value = '';
-			}
+			$value = ($this->getElement($name) != '' ?
+					$this->getElement($name) :
+					(isset($GLOBALS["meta"][$name]) ?
+						$GLOBALS["meta"][$name]["default"] :
+						''));
 
 			$retInput = $this->htmlTextInput($inputName, 40, $value, '', ' readonly ', 'text', 254);
 
@@ -1154,7 +1149,7 @@ if (!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 		$db->query('DELETE FROM ' . LANGLINK_TABLE . ' WHERE DID=' . $id . ' AND DocumentTable="' . $type . '" AND DLocale!="' . $lang . '"');
 	}
 
-	public function addDocumentCss($stylesheet){
+	public function addDocumentCss($stylesheet = ''){
 		$this->DocumentCss .= empty($this->DocumentCss) ? $stylesheet : ',' . $stylesheet;
 	}
 

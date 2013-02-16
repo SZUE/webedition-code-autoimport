@@ -54,7 +54,7 @@ function we_tag_img($attribs){
 	if(f('SELECT 1 AS a FROM ' . FILE_TABLE . ' WHERE ContentType="image/*" AND ID=' . intval($id), 'a', $GLOBALS['DB_WE']) !== '1'){
 		$id = 0;
 	}
-	// images can now have custom attribs ...
+	// images can now have custom attribs
 	$alt = '';
 	$title = '';
 
@@ -78,7 +78,7 @@ function we_tag_img($attribs){
 		}
 	}
 
-	// images can now have custom attribs ...
+	// images can now have custom attribs
 	if(!(isset($_REQUEST['we_cmd'][0]) &&
 		$_REQUEST['we_cmd'][0] == 'reload_editpage' &&
 		(isset($_REQUEST['we_cmd'][1]) && $name == $_REQUEST['we_cmd'][1]) &&
@@ -184,7 +184,7 @@ function we_tag_img($attribs){
 		if($id == ""){ // disable edit_image_button
 			$_editButton = we_button::create_button("image:btn_edit_image", "#", false, 100, 20, "", "", true);
 		} else{ //	show edit_image_button
-			//	we use hardcoded Content-Type - because it must be an image -> <we:img ... >
+			//	we use hardcoded Content-Type - because it must be an image -> <we:img  >
 			$_editButton = we_button::create_button(
 					"image:btn_edit_image", "javascript:top.doClickDirect($id,'image/*', '" . FILE_TABLE . "'  )");
 		}

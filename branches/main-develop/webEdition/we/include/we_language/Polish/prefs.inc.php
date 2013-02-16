@@ -245,6 +245,15 @@ $l_prefs=array(
 	'saved_successfully'=>'Zapisano ustawienia',
 	'save'=>'Zapisano ustawienia, zaczekaj chwilę ...',
 	'save_wait'=>'Zapisuję ustawienia',
+	
+	'security'=>array(
+		'customer'=>array(
+			'disableLogins'=>'limit login attemps',
+			'errorPage'=>'Error page',
+			'sameIP'=>'from same IP',
+			'sameUser'=>'with same customer name',
+			'slowDownLogin'=>'slow down login attemps',
+	),),
 	'seem'=>'seeMode',
 	'seem_deactivate'=>'Wyłącz seeMode',
 	'seem_startdocument'=>'Dokument startowy - seeMode',
@@ -296,6 +305,7 @@ $l_prefs=array(
 		'modules'=>'Moduły',
 		'proxy'=>'Serwer Proxy',
 		'recipients'=>'Formmail',
+		'security'=>'Security',
 		'seolinks'=>'SEO links',
 		'system'=>'System',
 		'ui'=>'Interfejs',

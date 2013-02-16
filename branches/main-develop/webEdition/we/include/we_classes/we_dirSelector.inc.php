@@ -327,11 +327,7 @@ function enableNewFolderBut(){
 				return false;
 			}
 		}
-		if(!userIsOwnerCreatorOfParentDir($this->dir, $this->table)){
-			return false;
-		}
-
-		return true;
+		return userIsOwnerCreatorOfParentDir($this->dir, $this->table);
 	}
 
 	function userCanRenameFolder(){
@@ -754,7 +750,7 @@ top.clearEntries();';
 					$we_responseText = sprintf(g_l('weEditor', "[folder][we_filename_notValid]"), $folder->Path);
 					print we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
 				} else if(in_workspace($this->we_editDirID, get_ws($this->table), $this->table, $this->db)){
-					if(f("SELECT Text FROM " . $this->db->escape($this->table) . " WHERE ID=" . intval($this->we_editDirID), "Text", $this->db) != $txt){
+					if(f('SELECT Text FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->we_editDirID), "Text", $this->db) != $txt){
 						$folder->we_save();
 						print 'var ref;
 if(top.opener.top.makeNewEntry) ref = top.opener.top;
