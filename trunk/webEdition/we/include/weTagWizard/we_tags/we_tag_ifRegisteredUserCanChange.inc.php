@@ -8,4 +8,3 @@ $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
 $this->Attributes[] = new weTagData_selectAttribute('protected', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
 $this->Attributes[] = new weTagData_textAttribute('admin', false, '');
-$this->Attributes[] = new weTagData_textAttribute('userid', true, '');
