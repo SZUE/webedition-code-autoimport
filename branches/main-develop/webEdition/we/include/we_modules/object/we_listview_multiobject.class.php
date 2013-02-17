@@ -187,7 +187,7 @@ class we_listview_multiobject extends listviewBase{
 				}
 			}
 
-			if($this->order == ""){
+			if($this->order == ''){
 				$this->anz_all = count($this->objects);
 			} else{
 				$this->anz_all = 0;

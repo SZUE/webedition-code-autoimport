@@ -59,9 +59,9 @@ class we_template extends we_document{
 		$temp->InitByID($id, TEMPLATES_TABLE);
 		$parentIDMerk = $this->ParentID;
 		if($this->ID == 0){
-			for($i = 0; $i < count($this->persistent_slots); $i++){
-				if($this->persistent_slots[$i] != "elements")
-					$this->{$this->persistent_slots[$i]} = $temp->{$this->persistent_slots[$i]};
+			foreach($this->persistent_slots as $cur){
+				if($cur != "elements")
+					$this->{$cur} = $temp->{$cur};
 			}
 			$this->CreationDate = time();
 			$this->ID = 0;
@@ -459,8 +459,8 @@ class we_template extends we_document{
 					$foo = array();
 					$attribs = '';
 					preg_match_all('/([^=]+)= *("[^"]*")/', $attributes, $foo, PREG_SET_ORDER);
-					for($i = 0; $i < count($foo); $i++){
-						$attribs .= '"' . trim($foo[$i][1]) . '"=>' . trim($foo[$i][2]) . ',';
+					foreach($foo as $cur){
+						$attribs .= '"' . trim($cur[1]) . '"=>' . trim($cur[2]) . ',';
 					}
 					$att = array();
 					@eval('$att = array(' . $attribs . ');');
@@ -502,8 +502,9 @@ class we_template extends we_document{
 					case "block":
 					case "list":
 					case "linklist":
-						if(!empty($blocks))
+						if(!empty($blocks)){
 							array_pop($blocks);
+						}
 						break;
 				}
 			}

@@ -32,8 +32,8 @@ $perm_values[$perm_group_name] = array("ADMINISTRATOR");
 //	$perm_titles[$perm_group_name]["NAME OF PERMISSION"] = g_l('perms_'.$perm_group_name,'['."NAME OF PERMISSION".']')
 $perm_titles[$perm_group_name] = array();
 
-for($i = 0; $i < count($perm_values[$perm_group_name]); $i++){
-	$perm_titles[$perm_group_name][$perm_values[$perm_group_name][$i]] = g_l('perms_' . $perm_group_name, '[' . $perm_values[$perm_group_name][$i] . ']');
+foreach($perm_values[$perm_group_name] as $cur){
+	$perm_titles[$perm_group_name][$cur] = g_l('perms_' . $perm_group_name, '[' . $cur . ']');
 }
 
 $perm_defaults[$perm_group_name] = array("ADMINISTRATOR" => 0);

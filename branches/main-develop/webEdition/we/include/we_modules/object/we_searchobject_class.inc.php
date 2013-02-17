@@ -154,23 +154,22 @@ class objectsearch extends we_search{
 	}
 
 	function getWorkspaces($foo, $we_wsLength){
-		if(!empty($foo)){
-			$out = '<table border="0" cellpadding="0" cellspacing="0">';
-			for($i = 0; $i < count($foo); $i++){
-				if($foo[$i] != ""){
-					$p = id_to_path($foo[$i]);
-					$pl = strlen($p);
-					$out .= '
-						<tr>
-							<td class="middlefont">
-								&nbsp;<a href="javascript:setWs(\'' . $p . '\',\'' . $foo[$i] . '\')" style="text-decoration:none" class="middlefont" title="' . $p . '">' . shortenPath($p, $we_wsLength) . '</a><td>
-						</tr>';
-				}
-			}
-			$out .= '</table>';
-		} else{
-			$out = "-";
+		if(empty($foo)){
+			return '-';
 		}
+		$out = '<table border="0" cellpadding="0" cellspacing="0">';
+		foreach($foo as $cur){
+			if($cur != ""){
+				$p = id_to_path($cur);
+//				$pl = strlen($p);
+				$out .= '
+<tr>
+	<td class="middlefont">
+		&nbsp;<a href="javascript:setWs(\'' . $p . '\',\'' . $cur . '\')" style="text-decoration:none" class="middlefont" title="' . $p . '">' . shortenPath($p, $we_wsLength) . '</a><td>
+</tr>';
+			}
+		}
+		$out .= '</table>';
 		return $out;
 	}
 

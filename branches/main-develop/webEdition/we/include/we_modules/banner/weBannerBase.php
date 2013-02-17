@@ -43,8 +43,8 @@ abstract class weBannerBase{
 		$tableInfo = $this->db->metadata($this->table);
 		$this->db->query('SELECT * FROM ' . $this->table . ' WHERE ID=' . intval($this->ID));
 		if($this->db->next_record())
-			for($i = 0; $i < count($tableInfo); $i++){
-				$fieldName = $tableInfo[$i]["name"];
+			foreach($tableInfo as $cur){
+				$fieldName = $cur["name"];
 				if(in_array($fieldName, $this->persistents)){
 					$foo = $this->db->f($fieldName);
 					$this->{$fieldName} = $foo;

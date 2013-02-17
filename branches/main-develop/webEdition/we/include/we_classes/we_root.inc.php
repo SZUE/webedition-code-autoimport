@@ -111,14 +111,20 @@ abstract class we_root extends we_class{
 
 	function equals($obj){
 		foreach($this->persistent_slots as $cur){
-			if($cur != 'Name' && $cur != 'elements' && $cur != 'EditPageNr' && $cur != 'wasUpdate'){
-				if($this->$cur != $obj->$cur){
-					return false;
-				}
+			switch($cur){
+				case 'Name':
+				case 'elements':
+				case 'EditPageNr':
+				case 'wasUpdate':
+					continue;
+				default:
+					if($this->{$cur} != $obj->{$cur}){
+						return false;
+					}
 			}
 		}
 		foreach($this->elements as $key => $val){
-			if($this->elements[$key]['dat'] != $obj->elements[$key]['dat'] || $this->elements[$key]['bdid'] != $obj->elements[$key]['bdid']){
+			if($val['dat'] != $obj->elements[$key]['dat'] || $val['bdid'] != $obj->elements[$key]['bdid']){
 				return false;
 			}
 		}
@@ -196,7 +202,7 @@ abstract class we_root extends we_class{
 			$arr = unserialize($str);
 			foreach($this->persistent_slots as $cur){
 				if(isset($arr[0][$cur])){
-					$this->$cur = $arr[0][$cur];
+					$this->{$cur} = $arr[0][$cur];
 				}
 			}
 			if(isset($arr[1])){
@@ -773,7 +779,7 @@ abstract class we_root extends we_class{
 		if(is_array($sessDat)){
 			foreach($this->persistent_slots as $cur){
 				if(isset($sessDat[0][$cur])){
-					$this->$cur = $sessDat[0][$cur];
+					$this->{$cur} = $sessDat[0][$cur];
 				}
 			}
 			if(isset($sessDat[1])){
@@ -788,9 +794,9 @@ abstract class we_root extends we_class{
 			$this->Name = md5(uniqid(__FUNCTION__, true));
 			return false;
 		}
-		for($i = 0; $i < sizeof($this->persistent_slots); $i++){
-			if(isset($sessDat[0][$this->persistent_slots[$i]])){
-				$this->{$this->persistent_slots[$i]} = $sessDat[0][$this->persistent_slots[$i]];
+		foreach($this->persistent_slots as $cur){
+			if(isset($sessDat[0][$cur])){
+				$this->{$cur} = $sessDat[0][$cur];
 			}
 		}
 		if(isset($sessDat[1])){
@@ -847,8 +853,7 @@ abstract class we_root extends we_class{
 
 		// do not set REQUEST VARS into the document
 		if(isset($_REQUEST['we_cmd'][0])){
-			if(($_REQUEST['we_cmd'][0] == 'switch_edit_page' && isset($_REQUEST['we_cmd'][3]))
-				|| ($_REQUEST['we_cmd'][0] == 'save_document' && isset($_REQUEST['we_cmd'][7]) && $_REQUEST['we_cmd'][7] == 'save_document')){
+			if(($_REQUEST['we_cmd'][0] == 'switch_edit_page' && isset($_REQUEST['we_cmd'][3])) || ($_REQUEST['we_cmd'][0] == 'save_document' && isset($_REQUEST['we_cmd'][7]) && $_REQUEST['we_cmd'][7] == 'save_document')){
 				return true;
 			}
 		}
@@ -1031,10 +1036,8 @@ abstract class we_root extends we_class{
 	}
 
 	function i_filenameNotAllowed(){
-		if($this->Table == FILE_TABLE && $this->ParentID == 0){
-			if(strtolower($this->Filename . (isset($this->Extension) ? $this->Extension : '')) == 'webedition'){
-				return true;
-			}
+		if($this->Table == FILE_TABLE && $this->ParentID == 0 && strtolower($this->Filename . (isset($this->Extension) ? $this->Extension : '')) == 'webedition'){
+			return true;
 		}
 		if(substr(strtolower($this->Filename . (isset($this->Extension) ? $this->Extension : '')), -1) == '.'){
 			return true;
@@ -1044,19 +1047,13 @@ abstract class we_root extends we_class{
 
 	function i_fileExtensionNotValid(){
 		if(isset($this->Extension)){
-			if(substr($this->Extension, 0, 1) == '.'){
-				$ext = substr($this->Extension, 1);
-			} else{
-				$ext = $this->Extension;
-			}
-			if(preg_match('/^[a-zA-Z0-9]+$/iD', $ext) || $ext == ''){
-				return false;
-			} else{
-				return true;
-			}
-		} else{
-			return false;
+			$ext = (substr($this->Extension, 0, 1) == '.' ?
+					substr($this->Extension, 1) :
+					$this->Extension);
+
+			return !(preg_match('/^[a-zA-Z0-9]+$/iD', $ext) || $ext == '');
 		}
+		return false;
 	}
 
 	function i_filenameDouble(){
@@ -1231,12 +1228,8 @@ abstract class we_root extends we_class{
 
 	function i_loadNavigationItems(){
 		if($this->Table == FILE_TABLE && $this->ID && $this->InWebEdition){
-			$_items = array();
 			$this->DB_WE->query('SELECT Path FROM ' . NAVIGATION_TABLE . ' WHERE ((Selection="static" AND SelectionType="docLink") OR (IsFolder=1)) AND LinkID=' . intval($this->ID));
-			while($this->DB_WE->next_record()) {
-				$_items[] = $this->DB_WE->f('Path');
-			}
-			$this->NavigationItems = makeCSVFromArray($_items, true);
+			$this->NavigationItems = makeCSVFromArray($this->DB_WE->getAll(true), true);
 		}
 	}
 
@@ -1249,9 +1242,8 @@ abstract class we_root extends we_class{
 		switch($this->Table){
 			case FILE_TABLE:
 				if(isset($this->DocType)){
-					$query = 'SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ((Selection="' . weNavigation::SELECTION_DYNAMIC . '") AND (DocTypeID="' . $this->DB_WE->escape($this->DocType) . '" OR FolderID=' . intval($this->ParentID) . ')) OR
-						(((Selection="' . weNavigation::SELECTION_STATIC . '" AND SelectionType="' . weNavigation::STPYE_DOCLINK . '") OR (IsFolder=1 AND FolderSelection="' . weNavigation::STPYE_DOCLINK . '")) AND LinkID=' . intval($this->ID) . ')';
-					$this->DB_WE->query($query);
+					$this->DB_WE->query('SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ((Selection="' . weNavigation::SELECTION_DYNAMIC . '") AND (DocTypeID="' . $this->DB_WE->escape($this->DocType) . '" OR FolderID=' . intval($this->ParentID) . ')) OR
+						(((Selection="' . weNavigation::SELECTION_STATIC . '" AND SelectionType="' . weNavigation::STPYE_DOCLINK . '") OR (IsFolder=1 AND FolderSelection="' . weNavigation::STPYE_DOCLINK . '")) AND LinkID=' . intval($this->ID) . ')');
 					return $this->DB_WE->getAll(true);
 				} else{
 					$this->DB_WE->query('SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ((Selection="static" AND SelectionType="' . weNavigation::STPYE_DOCLINK . '") OR (IsFolder=1 AND FolderSelection="' . weNavigation::STPYE_DOCLINK . '")) AND LinkID=' . intval($this->ID));

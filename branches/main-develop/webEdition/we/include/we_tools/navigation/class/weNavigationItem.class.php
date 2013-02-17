@@ -222,7 +222,7 @@ class weNavigationItem{
 		}
 	}
 
-	function isVisible(){
+	private function isVisible(){
 		if($this->visible == 'false'){
 			return false;
 		}
@@ -241,7 +241,7 @@ class weNavigationItem{
 			return '';
 		}
 		if(!$this->isVisible()){
-			return false;
+			return '';
 		}
 		$template = $weNavigationItems->getTemplate($this);
 

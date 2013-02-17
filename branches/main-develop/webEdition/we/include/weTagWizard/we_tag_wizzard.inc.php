@@ -65,8 +65,14 @@ var typeAttributeRequires = new Object();';
 		foreach($_typeOptions as $option){
 			$_allowedAttribs = $option->getAllowedAttributes();
 			$_reqAttribs = $option->getRequiredAttributes($_attributes);
-			$typeAttributeJs .= 'typeAttributeAllows["' . $option->getName() . '"] = new Array(' . (empty($_allowedAttribs) ? '' : '"' . implode('","', $_allowedAttribs) . '"') . ');';
-			$typeAttributeJs .= 'typeAttributeRequires["' . $option->getName() . '"] = new Array(' . (empty($_reqAttribs) ? '' : '"' . implode('","', $_reqAttribs) . '"') . ');';
+			if(!empty($_reqAttribs)){
+				$typeAttributeJs .= "typeAttributeRequires[\"" . $option->getName() . "\"] = new Array(\"";
+
+				$typeAttributeJs .= implode('","', $_reqAttribs);
+				$typeAttributeJs .= "\");";
+			} else{
+				$typeAttributeJs .= "typeAttributeRequires[\"" . $option->getName() . "\"] = new Array();";
+			}
 		}
 
 		$typeAttributeJs .= '

@@ -44,16 +44,19 @@ class we_object extends we_document{
 		$this->Icon = 'object.gif';
 		$this->Table = OBJECT_TABLE;
 		$this->Published = 1;
-		$this->ClassName = 'we_object';//for we_objectEx, otherwise ist will save its own classname, or needs its own constructor
+		$this->ClassName = 'we_object'; //for we_objectEx, otherwise ist will save its own classname, or needs its own constructor
 	}
-	
+
 	/* setter for runtime variable isInApp which allows to construct Classes from within Apps */
 	/* do not access this variable directly, in later WE Versions, it will be protected */
+
 	function setIsInApp($isInApp){
-		$this->isInApp=$isInApp;
+		$this->isInApp = $isInApp;
 	}
+
 	/* getter for runtime variable isInApp which allows to construct Classes from within Apps */
 	/* do not access this variable directly, in later WE Versions, it will be protected */
+
 	function getIsInApp(){
 		return $this->isInApp;
 	}
@@ -1843,8 +1846,8 @@ class we_object extends we_document{
 			$doc = new we_object();
 			$doc->InitByID($id, $this->Table, we_class::LOAD_TEMP_DB);
 			if($this->ID == 0){
-				for($i = 0; $i < count($this->persistent_slots); $i++){
-					$this->{$this->persistent_slots[$i]} = isset($doc->{$this->persistent_slots[$i]}) ? $doc->{$this->persistent_slots[$i]} : '';
+				foreach($this->persistent_slots as $cur){
+					$this->{$cur} = isset($doc->{$cur}) ? $doc->{$cur} : '';
 				}
 				$this->ObjectID = 0;
 				$this->CreationDate = time();
@@ -2056,7 +2059,8 @@ class we_object extends we_document{
 			$this->$name = $value;
 		} elseif($name == "Templates_0"){
 			$this->Templates = "";
-			for($i = 0; $i < count(makeArrayFromCSV($this->Workspaces)); $i++){
+			$cnt = count(makeArrayFromCSV($this->Workspaces));
+			for($i = 0; $i < $cnt; $i++){
 				$this->Templates .= $_REQUEST["we_" . $this->Name . "_Templates_" . $i] . ",";
 			}
 			if($this->Templates){

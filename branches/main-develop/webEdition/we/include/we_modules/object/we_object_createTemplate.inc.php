@@ -49,9 +49,9 @@ class we_makenewtemplate extends we_template{
 function getObjectTags($id, $isField = false){
 	$tableInfo = we_objectFile::getSortedTableInfo($id, true);
 	$content = '<table cellpadding="2" cellspacing="0" border="1" width="400">';
-
-	for($i = 0; $i < count($tableInfo); $i++){
-		if(preg_match('/(.+?)_(.*)/', $tableInfo[$i]["name"], $regs)){
+	$regs = array();
+	foreach($tableInfo as $cur){
+		if(preg_match('/(.+?)_(.*)/', $cur["name"], $regs)){
 			$content .= getTmplTableRow($regs[1], $regs[2], $isField);
 		}
 	}

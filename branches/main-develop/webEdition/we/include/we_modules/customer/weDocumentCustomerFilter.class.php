@@ -120,18 +120,7 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter{
 	function getFilterByDbHash(&$hash){
 		$_f = @unserialize($hash['filter']);
 		return new self(
-				intval($hash['id']),
-				intval($hash['modelId']),
-				$hash['modelType'],
-				$hash['modelTable'],
-				intval($hash['accessControlOnTemplate']),
-				intval($hash['errorDocNoLogin']),
-				intval($hash['errorDocNoAccess']),
-				intval($hash['mode']),
-				makeArrayFromCSV($hash['specificCustomers']),
-				$_f,
-				makeArrayFromCSV($hash['whiteList']),
-				makeArrayFromCSV($hash['blackList'])
+			intval($hash['id']), intval($hash['modelId']), $hash['modelType'], $hash['modelTable'], intval($hash['accessControlOnTemplate']), intval($hash['errorDocNoLogin']), intval($hash['errorDocNoAccess']), intval($hash['mode']), makeArrayFromCSV($hash['specificCustomers']), $_f, makeArrayFromCSV($hash['whiteList']), makeArrayFromCSV($hash['blackList'])
 		);
 	}
 
@@ -154,18 +143,7 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter{
 
 
 			return new self(
-					intval($_REQUEST["weDocumentCustomerFilter_id"]),
-					intval($model->ID),
-					$model->ContentType,
-					$model->Table,
-					($_REQUEST["wecf_accessControlOnTemplate"] == "onTemplate") ? 1 : 0,
-					intval($_REQUEST["wecf_noLoginId"]),
-					intval($_REQUEST["wecf_noAccessId"]),
-					intval($_REQUEST["wecf_mode"]),
-					$_specificCustomers,
-					$_filter,
-					$_whiteList,
-					$_blackList
+				intval($_REQUEST["weDocumentCustomerFilter_id"]), intval($model->ID), $model->ContentType, $model->Table, ($_REQUEST["wecf_accessControlOnTemplate"] == "onTemplate") ? 1 : 0, intval($_REQUEST["wecf_noLoginId"]), intval($_REQUEST["wecf_noAccessId"]), intval($_REQUEST["wecf_mode"]), $_specificCustomers, $_filter, $_whiteList, $_blackList
 			);
 		}
 	}
@@ -219,7 +197,6 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter{
 				if(in_array($ct, $_allowedCTs)){
 
 					$_idField = ($ct == "text/webedition" ? "DID" : "OID");
-
 					if(!empty($_fileArray)){
 						$_queryTail .= " AND $_idField NOT IN(" . implode(", ", $_fileArray) . ")";
 					}
@@ -276,13 +253,11 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter{
 
 		$checkFields = array('modelTable', 'accessControlOnTemplate', 'errorDocNoLogin', 'errorDocNoAccess', 'mode', 'specificCustomers', 'filter', 'whiteList', 'blackList');
 		if(!$applyCheck){
-			array_push($checkFields, "modelId");
-			array_push($checkFields, "modelType");
+			$checkFields[] = "modelId";
+			$checkFields[] = "modelType";
 		}
-		$_length = count($checkFields);
 
-		for($i = 0; $i < $_length; $i++){
-
+		for($i = 0; $i < count($checkFields); $i++){
 			$_fn = "get" . ucfirst($checkFields[$i]);
 			if($filter1->$_fn($i) != $filter2->$_fn($i)){
 				return false;
@@ -352,7 +327,7 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter{
 						'filter' => $_filter,
 						'whiteList' => $_whiteList,
 						'blackList' => $_blackList
-					));
+				));
 
 
 				$_db = new DB_WE();

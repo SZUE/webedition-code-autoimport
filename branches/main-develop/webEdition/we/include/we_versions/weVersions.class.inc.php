@@ -78,6 +78,45 @@ class weVersions{
 	public $modFields = array();
 
 	/**
+	 *  Constructor for class 'weVersions'
+	 */
+	public function __construct(){
+		$this->contentTypes = self::getContentTypesVersioning();
+
+		/**
+		 * fields from tblFile and tblObjectFiles which can be modified
+		 */
+		$this->modFields = array(
+			'status' => 1,
+			'ParentID' => 2,
+			'Text' => 3,
+			'IsSearchable' => 4,
+			'Category' => 5,
+			'CreatorID' => 6,
+			'RestrictOwners' => 7,
+			'Owners' => 8,
+			'OwnersReadOnly' => 9,
+			'Language' => 10,
+			'WebUserID' => 11,
+			'documentElements' => 12,
+			'documentScheduler' => 13,
+			'documentCustomFilter' => 14,
+			'TemplateID' => 15,
+			'Filename' => 16,
+			'Extension' => 17,
+			'IsDynamic' => 18,
+			'DocType' => 19,
+			'Workspaces' => 20,
+			'ExtraWorkspaces' => 21,
+			'ExtraWorkspacesSelected' => 22,
+			'Templates' => 23,
+			'ExtraTemplates' => 24,
+			'Charset' => 25,
+			'InGlossar' => 26
+		);
+	}
+
+	/**
 	 * @return unknown
 	 */
 	public function getActive(){
@@ -752,46 +791,6 @@ class weVersions{
 	}
 
 	/**
-	 *  Constructor for class 'weVersions'
-	 */
-	public function __construct(){
-
-		$this->contentTypes = self::getContentTypesVersioning();
-
-		/**
-		 * fields from tblFile and tblObjectFiles which can be modified
-		 */
-		$this->modFields = array(
-			'status' => 1,
-			'ParentID' => 2,
-			'Text' => 3,
-			'IsSearchable' => 4,
-			'Category' => 5,
-			'CreatorID' => 6,
-			'RestrictOwners' => 7,
-			'Owners' => 8,
-			'OwnersReadOnly' => 9,
-			'Language' => 10,
-			'WebUserID' => 11,
-			'documentElements' => 12,
-			'documentScheduler' => 13,
-			'documentCustomFilter' => 14,
-			'TemplateID' => 15,
-			'Filename' => 16,
-			'Extension' => 17,
-			'IsDynamic' => 18,
-			'DocType' => 19,
-			'Workspaces' => 20,
-			'ExtraWorkspaces' => 21,
-			'ExtraWorkspacesSelected' => 22,
-			'Templates' => 23,
-			'ExtraTemplates' => 24,
-			'Charset' => 25,
-			'InGlossar' => 26
-		);
-	}
-
-	/**
 	 * ContentTypes which apply for versioning
 	 * all except classes, templates and folders
 	 */
@@ -889,7 +888,7 @@ class weVersions{
 	 * 2. there exists no version-record of a document but in tblfile oder tblobjectsfile (document/object was not created new)
 	 * 3. if document / object is saved, published or unpublished
 	 */
-	function save($docObj, $status = "saved"){
+	public function save($docObj, $status = "saved"){
 
 		if(isset($_SESSION["user"]["ID"])){
 			$_SESSION['weS']['versions']['fromImport'] = 0;
@@ -914,10 +913,7 @@ class weVersions{
 				$_SESSION['weS']['versions']['fromImport'] = 1;
 				$this->saveVersion($docObj);
 			} else{
-				if((isset($_SESSION['weS']['versions']['fromScheduler']) && $_SESSION['weS']['versions']['fromScheduler']) || (isset($_REQUEST['we_cmd'][0]) && ($_REQUEST['we_cmd'][0] == "save_document" || $_REQUEST['we_cmd'][0] == "unpublish" || $_REQUEST['we_cmd'][0] == "revert_published"))
-					|| (isset($_REQUEST["cmd"]) && ($_REQUEST["cmd"] == "ResetVersion" || $_REQUEST["cmd"] == "PublishDocs" || $_REQUEST["cmd"] == "ResetVersionsWizard"))
-					|| (isset($_REQUEST["type"]) && $_REQUEST["type"] == "reset_versions")
-					|| (isset($_SESSION['weS']['versions']['initialVersions']) && $_SESSION['weS']['versions']['initialVersions'])){
+				if((isset($_SESSION['weS']['versions']['fromScheduler']) && $_SESSION['weS']['versions']['fromScheduler']) || (isset($_REQUEST['we_cmd'][0]) && ($_REQUEST['we_cmd'][0] == "save_document" || $_REQUEST['we_cmd'][0] == "unpublish" || $_REQUEST['we_cmd'][0] == "revert_published")) || (isset($_REQUEST["cmd"]) && ($_REQUEST["cmd"] == "ResetVersion" || $_REQUEST["cmd"] == "PublishDocs" || $_REQUEST["cmd"] == "ResetVersionsWizard")) || (isset($_REQUEST["type"]) && $_REQUEST["type"] == "reset_versions") || (isset($_SESSION['weS']['versions']['initialVersions']) && $_SESSION['weS']['versions']['initialVersions'])){
 					if(isset($_SESSION['weS']['versions']['initialVersions'])){
 						unset($_SESSION['weS']['versions']['initialVersions']);
 					}
@@ -1265,8 +1261,8 @@ class weVersions{
 												foreach($newData as $k => $vl){
 													if(isset($lastEntryField[$k]) && is_array($lastEntryField[$k]) && is_array($vl)){
 														//Notice in array_diff_assoc entry OK??
-														if( isset($vl['dat']) && !is_array($vl['dat']) && isset($lastEntryField[$k]['dat']) && is_array($lastEntryField[$k]['dat'])){
-															$lastEntryField[$k]['dat']= serialize($lastEntryField[$k]);
+														if(isset($vl['dat']) && !is_array($vl['dat']) && isset($lastEntryField[$k]['dat']) && is_array($lastEntryField[$k]['dat'])){
+															$lastEntryField[$k]['dat'] = serialize($lastEntryField[$k]);
 														}
 														// serialized entry OK??
 														$_diff = array_diff_assoc($vl, $lastEntryField[$k]);
@@ -1402,8 +1398,8 @@ class weVersions{
 		if(empty($newArr) && empty($oldArr)){
 
 		} elseif(!empty($newArr) && !empty($oldArr)){
-			$newTestArr=$newArr;// bug #7191
-			$oldTestArr=$oldArr;
+			$newTestArr = $newArr; // bug #7191
+			$oldTestArr = $oldArr;
 			foreach($newTestArr as $tk => $tv){
 				if(is_array($tv)){
 					unset($newTestArr[$tk]);
@@ -1459,19 +1455,20 @@ class weVersions{
 					} elseif($k == 'elements'){
 						foreach($v as $key => $val){
 							if(isset($oldArr['elements'][$key]) && is_array($oldArr['elements'][$key]) && is_array($val)){
-								if(count($val)== count($oldArr['elements'][$key])){
+								if(count($val) == count($oldArr['elements'][$key])){
 									if(isset($val['dat']) && is_array($val['dat'])){
 										$_diff = array_diff_assoc($val['dat'], $oldArr['elements'][$key]['dat']);
-										unset($val['dat']);unset($oldArr['elements'][$key]['dat']);
-										$diff['elements'][$key] = $_diff;									
-									} 
+										unset($val['dat']);
+										unset($oldArr['elements'][$key]['dat']);
+										$diff['elements'][$key] = $_diff;
+									}
 									$_diff = array_diff_assoc($val, $oldArr['elements'][$key]);
 									if(!empty($_diff) && isset($_diff['dat'])){
 										$diff['elements'][$key] = $_diff;
 									}
-								} else {
-									if( isset($val['dat']) && !is_array($val['dat']) && isset($oldArr['elements'][$key]['dat']) && is_array($oldArr['elements'][$key]['dat'])){
-										$oldArr['elements'][$key]['dat']= serialize($oldArr['elements'][$key]['dat']);
+								} else{
+									if(isset($val['dat']) && !is_array($val['dat']) && isset($oldArr['elements'][$key]['dat']) && is_array($oldArr['elements'][$key]['dat'])){
+										$oldArr['elements'][$key]['dat'] = serialize($oldArr['elements'][$key]['dat']);
 									}
 									$_diff = array_diff_assoc($val, $oldArr['elements'][$key]);
 									if(!empty($_diff) && isset($_diff['dat'])){
@@ -1488,8 +1485,8 @@ class weVersions{
 							}
 						}
 					}
-				} else {
-					
+				} else{
+
 				}
 			}
 		}
@@ -1695,19 +1692,15 @@ class weVersions{
 			$tblFields = array();
 			$tableInfo = $db->metadata(VERSIONS_TABLE);
 
-			if(isset($_REQUEST["we_transaction"])){
-				$we_transaction = (preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction']) ? $_REQUEST['we_transaction'] : 0);
-			} else{
-				$we_transaction = $GLOBALS["we_transaction"];
+			$we_transaction = (isset($_REQUEST["we_transaction"]) ?
+					(preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction']) ? $_REQUEST['we_transaction'] : 0) :
+					$GLOBALS["we_transaction"]);
+
+			foreach($tableInfo as $cur){
+				$tblFields[] = $cur["name"];
 			}
 
-
-			for($i = 0; $i < count($tableInfo); $i++){
-				$tblFields[] = $tableInfo[$i]["name"];
-			}
-
-
-			$db->query("SELECT * FROM " . VERSIONS_TABLE . " WHERE ID=" . intval($ID));
+			$db->query('SELECT * FROM ' . VERSIONS_TABLE . ' WHERE ID=' . intval($ID));
 
 			if($db->next_record()){
 				foreach($tblFields as $k => $v){
@@ -2216,8 +2209,8 @@ class weVersions{
 		$db = new DB_WE();
 
 		$tableInfo = $db->metadata($table);
-		for($i = 0; $i < count($tableInfo); $i++){
-			$fieldNames[] = $tableInfo[$i]["name"];
+		foreach($tableInfo as $cur){
+			$fieldNames[] = $cur["name"];
 		}
 
 		return $fieldNames;

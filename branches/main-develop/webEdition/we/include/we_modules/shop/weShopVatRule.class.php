@@ -110,11 +110,9 @@ class weShopVatRule{
 	}
 
 	function makeArrayFromConditionField($req){
-
 		$retArr = array();
 
 		for($i = 0; $i < count($req['conditionalStates']); $i++){
-
 			$retArr[] = array(
 				'states' => weShopVatRule::makeArrayFromReq($req['conditionalStates'][$i]),
 				'customerField' => $req['conditionalCustomerField'][$i],

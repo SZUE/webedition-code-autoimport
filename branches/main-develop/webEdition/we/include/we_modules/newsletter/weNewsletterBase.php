@@ -65,8 +65,8 @@ class weNewsletterBase{
 		$tableInfo = $this->db->metadata($this->table);
 		$this->db->query("SELECT * FROM " . $this->db->escape($this->table) . " WHERE ID='" . $this->ID . "'");
 		if($this->db->next_record())
-			for($i = 0; $i < count($tableInfo); $i++){
-				$fieldName = $tableInfo[$i]["name"];
+			foreach($tableInfo as $cur){
+				$fieldName = $cur["name"];
 				if(in_array($fieldName, $this->persistents)){
 					$this->$fieldName = $this->db->f($fieldName);
 				}

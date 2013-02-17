@@ -103,11 +103,11 @@ class XML_Export{
 		$foo = array();
 
 		preg_match_all("|(</?we:[^><]+[<>])|U", $code, $foo, PREG_SET_ORDER);
-		for($i = 0; $i < count($foo); $i++){
-			if(substr($foo[$i][1], -1) == "<"){
-				$foo[$i][1] = substr($foo[$i][1], 0, strlen($foo[$i][1]) - 1);
+		foreach($foo as $cur){
+			if(substr($cur[1], -1) == "<"){
+				$cur[1] = substr($cur[1], 0, strlen($cur[1]) - 1);
 			}
-			array_push($we_tags, $foo[$i][1]);
+			$we_tags[] = $cur[1];
 		}
 
 		return $we_tags;
@@ -116,9 +116,9 @@ class XML_Export{
 	function array_mergeunique($base, $extra){
 		if(is_array($base) && is_array($extra)){
 			$ext_arr = (is_array($extra)) ? $extra : array($extra);
-			for($i = 0; $i < sizeOf($ext_arr); $i++){
-				if(!in_array($ext_arr[$i], $base) && !in_array($ext_arr[$i], $this->docs_exported)){
-					$base[] = $ext_arr[$i];
+			foreach($ext_arr as $cur){
+				if(!in_array($cur, $base) && !in_array($cur, $this->docs_exported)){
+					$base[] = $cur;
 				}
 			}
 		}
@@ -145,12 +145,10 @@ class XML_Export{
 						$dat = $db_tmp->f($field["name"]);
 
 						$we_tags = $this->get_we_tags($dat);
-						if(sizeOf($we_tags) > 0){
-							foreach($we_tags as $we_tag){
-								$entity = $this->parse_we_tag($we_tag, $id);
-								if($entity != -1){
-									$out[1][] = $entity;
-								}
+						foreach($we_tags as $we_tag){
+							$entity = $this->parse_we_tag($we_tag, $id);
+							if($entity != -1){
+								$out[1][] = $entity;
 							}
 						}
 
@@ -192,18 +190,17 @@ class XML_Export{
 		$document_id = 0;
 		$document_node = "";
 		$template_node = "";
-		$where = "";
 
-		$where = "WHERE ";
+		$where = 'WHERE ';
 		if(is_array($pid)){
-			for($i = 0; $i < sizeOf($pid); $i++){
-				$where .= "ID=" . intval(trim($pid[$i]));
-				if($i != sizeOf($pid) - 1)
-					$where .= " OR ";
+			$ids = array();
+			foreach($pid as $cur){
+				$ids[] = intval(trim($cur));
 			}
+			$where .= 'ID IN(' . implode(',', $ids) . ')';
+		} else{
+			$where.= 'ID=' . intval(trim($pid));
 		}
-		else
-			$where.= "ID=" . intval(trim($pid));
 
 		$db_main = new DB_WE();
 		$db_main->query("SELECT ID FROM " . FILE_TABLE . " " . $where);
@@ -254,7 +251,7 @@ class XML_Export{
 			return false;
 
 		while($this->allow_entities) {
-			for($i = 0; $i < sizeOf($base); $i++){
+			for($i = 0; $i < count($base); $i++){
 				if(in_array($base[$i], $this->docs_exported)){
 					$e = array_splice($base, $i, 1);
 					continue 2;
@@ -264,7 +261,7 @@ class XML_Export{
 		}
 
 		$ext_arr = (is_array($extra)) ? $extra : array($extra);
-		for($i = 0; $i < sizeOf($ext_arr); $i++){
+		for($i = 0; $i < count($ext_arr); $i++){
 
 			// prevent double export of entities
 			if(!in_array($ext_arr[$i], $base) && !in_array($ext_arr[$i], $this->docs_exported)){
@@ -308,7 +305,7 @@ class XML_Export{
 		while($this->allow_entities) {
 			$entities = $this->update_entities($entities, $arr[1]);
 
-			while(sizeOf($entities) > 1) {
+			while(count($entities) > 1) {
 				$nodes = $this->export_nodes($entities);
 				$xml_out.= $nodes[0];
 				continue 2;

@@ -774,8 +774,8 @@ class weBannerView extends weBannerBase{
 		$foo = array();
 		while($this->db->next_record()) {
 			preg_match_all("|(<we:banner [^>]+>)|U", $this->db->f('templateCode'), $foo, PREG_SET_ORDER);
-			for($i = 0; $i < count($foo); $i++){
-				$wholeTag = $foo[$i][1];
+			foreach($foo as $cur){
+				$wholeTag = $cur[1];
 				$name = preg_replace('|.+name="([^"]+)".*|i', '\1', $wholeTag);
 				if($name && (!in_array($name, $tagnames))){
 					$tagnames[] = $name;

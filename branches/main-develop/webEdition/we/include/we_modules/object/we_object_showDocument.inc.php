@@ -84,9 +84,9 @@ if(($_userID != 0 && $_userID != $_SESSION['user']['ID']) || (isset($_REQUEST['w
 
 			if(!empty($workspaces)){ // get the correct template
 				//	Select a matching workspace.
-				for($i = 0; $i < count($workspaces); $i++){
+				foreach($workspaces as $workspace){
 
-					$workspace = id_to_path($workspaces[$i], FILE_TABLE, $tmpDB);
+					$workspace = id_to_path($workspace, FILE_TABLE, $tmpDB);
 
 					if($workspace != '' && strpos($_lastDoc['Path'], $workspace) === 0 && $tids[$i] != ''){
 

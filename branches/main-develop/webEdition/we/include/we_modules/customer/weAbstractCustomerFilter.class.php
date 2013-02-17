@@ -112,7 +112,7 @@ abstract class weAbstractCustomerFilter{
 	 *
 	 * @return boolean
 	 */
-	function customerHasAccess(){
+	public function customerHasAccess(){
 		switch($this->_mode){
 			case self::OFF:
 				return true;
@@ -180,7 +180,10 @@ abstract class weAbstractCustomerFilter{
 			if($flag && $_filter['logic'] == 'AND'){
 				$hasPermission&=self::evalSingleFilter($_filter['operation'], $_filter['field'], $_filter['value']);
 			} else{
-				$hasPermission|=self::evalSingleFilter($_filter['operation'], $_filter['field'], $_filter['value']);
+				if($hasPermission){
+					break;
+				}
+				$hasPermission = self::evalSingleFilter($_filter['operation'], $_filter['field'], $_filter['value']);
 			}
 			$flag = true;
 		}

@@ -623,7 +623,7 @@ HTS;
 						$hiddens = $this->getHdns("v", $v) . $this->getHdns("records", $records) . $this->getHdns("we_flds", $we_flds) . $this->getHdns("attributes", $attributes);
 						$xp = new we_xml_parser($v["uniquePath"] . "/temp_" . $v["cid"] . ".xml");
 
-						for($c = 0; $c < sizeOf($records); $c++){
+						for($c = 0; $c < count($records); $c++){
 							$nodeSet = $xp->evaluate($xp->root . "/" . $we_flds[$records[$c]]);
 							$xPath = "";
 							$loop = 0;

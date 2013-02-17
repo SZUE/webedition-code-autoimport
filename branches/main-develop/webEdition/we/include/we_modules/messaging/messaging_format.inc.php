@@ -103,9 +103,9 @@ class we_format extends we_class{
 
 	function initSessionDat($sessDat){
 		if($sessDat){
-			for($i = 0; $i < count($this->persistent_slots); $i++){
-				if(isset($sessDat[0][$this->persistent_slots[$i]])){
-					$this->{$this->persistent_slots[$i]} = $sessDat[0][$this->persistent_slots[$i]];
+			foreach($this->persistent_slots as $cur){
+				if(isset($sessDat[0][$cur])){
+					$this->{$cur} = $sessDat[0][$cur];
 				}
 			}
 
@@ -116,12 +116,13 @@ class we_format extends we_class{
 	}
 
 	function saveInSession(&$save){
-		$save = array();
-		$save[0] = array();
-		for($i = 0; $i < count($this->persistent_slots); $i++){
-			$save[0][$this->persistent_slots[$i]] = $this->{$this->persistent_slots[$i]};
+		$save = array(
+			array(),
+			$this->elements
+		);
+		foreach($this->persistent_slots as $cur){
+			$save[0][$cur] = $this->{$cur};
 		}
-		$save[1] = $this->elements;
 	}
 
 	function userid_to_username($id){

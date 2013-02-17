@@ -364,8 +364,9 @@ class we_linklist{
 	}
 
 	function getString(){
-		if(empty($this->listArray))
+		if(empty($this->listArray)){
 			return "";
+		}
 		return serialize($this->listArray);
 	}
 
@@ -374,17 +375,17 @@ class we_linklist{
 		$cur = $nr != -1 ? $this->listArray[$nr] : current($this->listArray);
 		return isset($cur['bcc']) ? $cur['bcc'] : '';
 	}
-        
+
         function getCc($nr = -1){
 		$cur = $nr != -1 ? $this->listArray[$nr] : current($this->listArray);
 		return isset($cur['cc']) ? $cur['cc'] : '';
 	}
-        
+
         function getSubject($nr = -1){
 		$cur = $nr != -1 ? $this->listArray[$nr] : current($this->listArray);
 		return isset($cur['subject']) ? $cur['subject'] : '';
 	}
-        
+
 	function setID($nr, $val){
 		if($nr == "0" || $nr){
 			$this->listArray[$nr]["id"] = $val;
