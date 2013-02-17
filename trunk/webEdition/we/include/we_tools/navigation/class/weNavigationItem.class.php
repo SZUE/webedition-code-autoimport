@@ -134,7 +134,7 @@ class weNavigationItem{
 		$item->parentid = $this->id;
 		$item->level = $this->level + 1;
 		$this->items['id' . $item->id] = &$item;
-		$item->position = sizeof($this->items);
+		$item->position = count($this->items);
 	}
 
 	function setCurrent(&$weNavigationItems, $self = true){
@@ -241,7 +241,7 @@ class weNavigationItem{
 			return '';
 		}
 		if(!$this->isVisible()){
-			return false;
+			return '';
 		}
 		$template = $weNavigationItems->getTemplate($this);
 

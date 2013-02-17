@@ -1996,17 +1996,12 @@ class we_xml_parser{
 		$args = explode(',', $args);
 
 		// Evaluate each argument.
-		for($i = 0; $i < sizeof($args); $i++){
-			// Trim each argument.
-			$args[$i] = trim($args[$i]);
-
-			// Evaluate the predicate.
-			$args[$i] = $this->evaluatePredicate($node, $args[$i]);
+		foreach($args as &$cur){
+			// Trim each argument + Evaluate the predicate.
+			$cur = $this->evaluatePredicate($node, trim($cur));
 		}
-		$args = implode('', $args);
-
 		// Return the concatenation of all arguments.
-		return $args;
+		return implode('', $args);
 	}
 
 	/**
@@ -2124,12 +2119,9 @@ class we_xml_parser{
 		$args = explode(',', $args);
 
 		// Run through all arguments.
-		for($i = 0; $i < sizeof($args); $i++){
-			// Trim the string.
-			$args[$i] = trim($args[$i]);
-
-			// Evaluate each argument.
-			$args[$i] = $this->evaluatePredicate($node, $args[$i]);
+		foreach($args as &$cur){
+			// Trim the string. + Evaluate each argument.
+			$cur = $this->evaluatePredicate($node, trim($cur));
 		}
 
 		// Check if a third argument is given.
@@ -2212,12 +2204,9 @@ class we_xml_parser{
 		$args = explode(',', $args);
 
 		// Run through all arguments.
-		for($i = 0; $i < sizeof($args); $i++){
-			// Trim the argument.
-			$args[$i] = trim($args[$i]);
-
-			// Evaluate the argument.
-			$args[$i] = $this->evaluatePredicate($node, $args[$i]);
+		foreach($args as &$cur){
+			// Trim the argument. + Evaluate the argument.
+			$cur = $this->evaluatePredicate($node, trim($cur));
 		}
 
 		return strtr($args[0], $args[1], $args[2]);
@@ -2497,7 +2486,7 @@ class we_xml_parser{
 			$str = "\$errtxt = sprintf(\$errtxt";
 
 			// run through the array of arguments
-			for($i = 1; $i < sizeof($args); $i++){
+			for($i = 1; $i < count($args); $i++){
 				// add arguments to the format string
 				$str .= ", \$args[" . $i . "]";
 			}

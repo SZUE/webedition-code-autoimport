@@ -237,7 +237,7 @@ class we_shop_Basket{
 				$Record['we_obj'] = $id;
 
 				// at last add custom fields to record and to path
-				if(sizeof($customFields)){
+				if(!empty($customFields)){
 					foreach($customFields as $name => $value){
 						$Record[$name] = $value;
 						$Record['we_WE_PATH'] .= '&amp;' . WE_SHOP_ARTICLE_CUSTOM_FIELD . "[$name]=$value";

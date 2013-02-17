@@ -1072,8 +1072,8 @@ function tinyMCECallRegisterDialog(win,action){
 				$lastSep = ($elem->classname == "we_wysiwyg_ToolbarSeparator");
 			}
 		}
-		if(sizeof($this->filteredElements)){
-			if($this->filteredElements[sizeof($this->filteredElements) - 1]->classname == "we_wysiwyg_ToolbarSeparator"){
+		if(!empty($this->filteredElements)){
+			if($this->filteredElements[count($this->filteredElements) - 1]->classname == "we_wysiwyg_ToolbarSeparator"){
 				array_pop($this->filteredElements);
 			}
 		}
@@ -1107,13 +1107,13 @@ function tinyMCECallRegisterDialog(win,action){
 		$rownr = 0;
 		$rows[$rownr] = array();
 		$rowwidth = 0;
-		while(sizeof($tmpElements)) {
+		while(!empty($tmpElements)) {
 			if(!$this->hasSep($rows[$rownr]) || $rowwidth <= max($this->width, $this->maxGroupWidth)){
 				array_push($rows[$rownr], array_shift($tmpElements));
-				$rowwidth += $rows[$rownr][sizeof($rows[$rownr]) - 1]->width;
+				$rowwidth += $rows[$rownr][count($rows[$rownr]) - 1]->width;
 			} else{
-				if(sizeof($rows[$rownr])){
-					if($rows[$rownr][sizeof($rows[$rownr]) - 1]->classname == "we_wysiwyg_ToolbarSeparator"){
+				if(!empty($rows[$rownr])){
+					if($rows[$rownr][count($rows[$rownr]) - 1]->classname == "we_wysiwyg_ToolbarSeparator"){
 						array_pop($rows[$rownr]);
 						$rownr++;
 						$rowwidth = 0;
@@ -1139,11 +1139,11 @@ function tinyMCECallRegisterDialog(win,action){
 		$toolbarheight = 0;
 		$min_w = 0;
 		$row_w = 0;
-		for($r = 0; $r < sizeof($rows); $r++){
+		foreach($rows as $curRow){
 			$rowheight = 0;
-			for($s = 0; $s < sizeof($rows[$r]); $s++){
-				$rowheight = max($rowheight, $rows[$r][$s]->height);
-				$row_w += $rows[$r][$s]->width;
+			foreach($curRow as $curCol){
+				$rowheight = max($rowheight, $curCol->height);
+				$row_w += $curCol->width;
 			}
 			$toolbarheight += ($rowheight + 2);
 			$min_w = max($min_w, $row_w);
@@ -1305,7 +1305,7 @@ function tinyMCECallRegisterDialog(win,action){
 					'xml' => $this->xml ? "1" : "",
 					'removeFirstParagraph' => $this->removeFirstParagraph ? "1" : "",
 				);
-				
+
 				$contentCss = empty($this->contentCss) ? '' : $this->contentCss . ',';
 
 				return we_html_element::jsElement('
@@ -1327,7 +1327,7 @@ function tinyMCECallRegisterDialog(win,action){
 							"className" : "' . $this->className . '",
 							"propString" : "' . urlencode($this->propstring) . '",
 							"contentCss" : "' . urlencode($this->contentCss) . '",
-							"origName" : "' . urlencode($this->origName) . '"	
+							"origName" : "' . urlencode($this->origName) . '"
 						},
 						weClassNames_urlEncoded : "' . urlencode($this->cssClassesCSV) . '",
 
@@ -1390,7 +1390,7 @@ function tinyMCECallRegisterDialog(win,action){
 						. (!$this->removeFirstParagraph ? '' : '
 							ed.onPostProcess.add(function(ed, o) {
 								o.content = o.content.replace(/<p [^>]*>|<p>/, "").replace(/<\/p>/, "");
-							});') . 
+							});') .
 
 							($this->isFrontendEdit ? '' : '
 							/* set EditorFrame.setEditorIsHot(true) */
@@ -1483,15 +1483,15 @@ function tinyMCECallRegisterDialog(win,action){
 				$pixelrow = '<tr><td background="' . IMAGE_DIR . 'backgrounds/aquaBackground.gif" class="tbButtonWysiwygDefaultStyle tbButtonWysiwygBackground">' . we_html_tools::getPixel($this->width, 2) . '</td></tr>';
 				$linerow = '<tr><td ><div class="tbButtonsHR" class="tbButtonWysiwygDefaultStyle"></div></td></tr>';
 				$out = we_html_element::jsElement('var weLastPopupMenu = null; var wefoo = "' . $this->ref . 'edit"; wePopupMenuArray[wefoo] = new Array();') . '<table id="' . $this->ref . 'edit_table" border="0" cellpadding="0" cellspacing="0" width="' . $this->width . '" class="tbButtonWysiwygDefaultStyle"><tr><td  background="' . IMAGE_DIR . 'backgrounds/aquaBackground.gif" class="tbButtonWysiwygDefaultStyle tbButtonWysiwygBackground">';
-				for($r = 0; $r < sizeof($rows); $r++){
+				foreach($rows as $r=>$curRow){
 					$out .= '<table border="0" cellpadding="0" cellspacing="0" class="tbButtonWysiwygDefaultStyle"><tr>';
-					for($s = 0; $s < sizeof($rows[$r]); $s++){
-						$out .= '<td class="tbButtonWysiwygDefaultStyle">' . $rows[$r][$s]->getHTML() . '</td>';
-						$row_w += $rows[$r][$s]->width;
+					foreach($curRow as $curCol){
+						$out .= '<td class="tbButtonWysiwygDefaultStyle">' . $curCol->getHTML() . '</td>';
+						$row_w += $curCol->width;
 					}
 					$min_w = max($min_w, $row_w);
 					$row_w = 0;
-					$out .= '</tr></table></td></tr>' . (($r < sizeof($rows) - 1) ? $linerow : $pixelrow) . '<tr><td ' . (($r < (sizeof($rows) - 1)) ? (' bgcolor="white"  background="' . IMAGE_DIR . 'backgrounds/aquaBackground.gif"') : '') . ' class="tbButtonWysiwygDefaultStyle' . (($r < (sizeof($rows) - 1)) ? ' tbButtonWysiwygBackground' : '') . '">';
+					$out .= '</tr></table></td></tr>' . (($r < count($rows) - 1) ? $linerow : $pixelrow) . '<tr><td ' . (($r < (count($rows) - 1)) ? (' bgcolor="white"  background="' . IMAGE_DIR . 'backgrounds/aquaBackground.gif"') : '') . ' class="tbButtonWysiwygDefaultStyle' . (($r < (count($rows) - 1)) ? ' tbButtonWysiwygBackground' : '') . '">';
 				}
 
 				$realWidth = max($min_w, $this->width);

@@ -51,7 +51,7 @@
 
 			$Cache = new weGlossaryCache($Language);
 
-			if(isset($_REQUEST['do']) && isset($_REQUEST['ID']) && sizeof($_REQUEST['ID'])>0) {
+			if(isset($_REQUEST['do']) && isset($_REQUEST['ID']) && !empty($_REQUEST['ID'])) {
 
 				switch($_REQUEST['do']) {
 

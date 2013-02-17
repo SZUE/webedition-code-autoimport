@@ -48,7 +48,7 @@ function array_hash_construct($arr_hash, $keys, $map=""){
 		$tmp_hash = array();
 
 		foreach($keys as $key){
-			if(is_array($map) && sizeof($map)){
+			if(is_array($map) && !empty($map)){
 				if(isset($map[$key])){
 					foreach($map[$key] as $k => $v){
 						if(strtolower($k) == strtolower($arr_hash[$i][$key])){

@@ -70,8 +70,8 @@ class we_listview_multiobject extends listviewBase{
 		parent::__construct($name, $rows, $offset, $order, $desc, $cats, $catOr, 0, $cols, $calendar, $datefield, $date, $weekstart, $categoryids, $customerFilterType);
 
 		$data = 0;
-		if(isset($GLOBALS['we_lv_array']) && sizeof($GLOBALS['we_lv_array']) > 1){
-			$parent_lv = $GLOBALS['we_lv_array'][(sizeof($GLOBALS['we_lv_array']) - 1)];
+		if(isset($GLOBALS['we_lv_array']) && count($GLOBALS['we_lv_array']) > 1){
+			$parent_lv = $GLOBALS['we_lv_array'][(count($GLOBALS['we_lv_array']) - 1)];
 			if(isset($parent_lv->DB_WE->Record['we_' . $name]) && $parent_lv->DB_WE->Record['we_' . $name]){
 				$data = unserialize($parent_lv->DB_WE->Record['we_' . $name]);
 			}
@@ -187,8 +187,8 @@ class we_listview_multiobject extends listviewBase{
 				}
 			}
 
-			if($this->order == ""){
-				$this->anz_all = sizeof($this->objects);
+			if($this->order == ''){
+				$this->anz_all = count($this->objects);
 			} else{
 				$this->anz_all = 0;
 				$count = array_count_values($this->objects);
@@ -224,7 +224,7 @@ class we_listview_multiobject extends listviewBase{
 					}
 				}
 			}
-			$this->anz = sizeof($this->Record);
+			$this->anz = count($this->Record);
 		} else{
 			$this->anz_all = 0;
 			$this->anz = 0;
@@ -397,7 +397,7 @@ class we_listview_multiobject extends listviewBase{
 
 		if($this->calendar_struct["calendar"] == "" || $fetch){
 
-			if($this->count < sizeof($this->Record)){
+			if($this->count < count($this->Record)){
 				$paramName = "we_objectID";
 				$this->DB_WE->Record($this->Record[$this->count]);
 				$this->DB_WE->Record["we_wedoc_Path"] = $this->Path . "?$paramName=" . $this->DB_WE->Record["OF_ID"];

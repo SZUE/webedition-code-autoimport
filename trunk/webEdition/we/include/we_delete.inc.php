@@ -300,11 +300,11 @@ if($_REQUEST['we_cmd'][0] == "do_delete" || $_REQUEST['we_cmd'][0] == "delete_si
 							$_deletedItems = array();
 
 							// if its deleted and not selected, it must be an object
-							for($i = 0; $i < sizeof($deletedItems); $i++){
-								if(in_array($deletedItems[$i], $selectedItems)){
-									$_deletedItems[] = $deletedItems[$i];
+							foreach($deletedItems as $cur){
+								if(in_array($cur, $selectedItems)){
+									$_deletedItems[] = $cur;
 								} else{
-									$deleted_objects[] = $deletedItems[$i]; // deleted objects when classes are deleted
+									$deleted_objects[] = $cur; // deleted objects when classes are deleted
 								}
 							}
 							$deletedItems = $_deletedItems;
@@ -315,7 +315,7 @@ if($_REQUEST['we_cmd'][0] == "do_delete" || $_REQUEST['we_cmd'][0] == "delete_si
 							weDocumentCustomerFilter::deleteModel(
 								$deletedItems, $table);
 							if(defined("OBJECT_FILES_TABLE") && $table == OBJECT_TABLE){
-								if(sizeof($deleted_objects)){
+								if(!empty($deleted_objects)){
 									weDocumentCustomerFilter::deleteModel(
 										$deleted_objects, OBJECT_FILES_TABLE);
 								}
@@ -325,7 +325,7 @@ if($_REQUEST['we_cmd'][0] == "do_delete" || $_REQUEST['we_cmd'][0] == "delete_si
 						we_history::deleteFromHistory(
 							$deletedItems, $table);
 						if(defined("OBJECT_FILES_TABLE") && $table == OBJECT_TABLE){
-							if(sizeof($deleted_objects)){
+							if(!empty($deleted_objects)){
 								we_history::deleteFromHistory(
 									$deleted_objects, OBJECT_FILES_TABLE);
 							}

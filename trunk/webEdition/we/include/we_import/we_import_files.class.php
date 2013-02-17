@@ -225,7 +225,7 @@ function checkButtons(){
 		// create Start Screen ##############################################################################
 
 		$wsA = makeArrayFromCSV(get_def_ws());
-		$ws = sizeof($wsA) ? $wsA[0] : 0;
+		$ws = empty($wsA) ? 0 : $wsA[0];
 		$store_id = $this->importToID ? $this->importToID : $ws;
 
 		$path = id_to_path($store_id);
@@ -252,7 +252,7 @@ function checkButtons(){
 				"headline" => g_l('importFiles', "[destination_dir]"),
 				"html" => $content,
 				"space" => 150
-			));
+		));
 
 		$content = we_html_tools::htmlAlertAttentionBox(g_l('importFiles', "[sameName_expl]"), 2, 380) .
 			we_html_tools::getPixel(200, 10) .
@@ -405,7 +405,7 @@ function checkButtons(){
 					"style" => "display: none;cursor:pointer;",
 					"id" => "trash_WEFORMNUM",
 					"onclick" => "wedelRow(WEFORMNUM + 1,this)"
-			));
+		));
 		$but = str_replace("\n", " ", str_replace("\r", " ", $but));
 
 		$maxsize = getUploadMaxFilesize(false, $GLOBALS['DB_WE']);
@@ -657,8 +657,8 @@ function next() {
 		$prevNextButtons = $prevButton ? we_button::create_button_table(array($prevButton, $nextButton)) : null;
 
 		$table = new we_html_table(array(
-				"border" => "0", "cellpadding" => "0", "cellspacing" => "0", "width" => "100%"
-				), 1, 2);
+			"border" => "0", "cellpadding" => "0", "cellspacing" => "0", "width" => "100%"
+			), 1, 2);
 		$table->setCol(0, 0, null, $progressbar);
 		$table->setCol(0, 1, array(
 			"align" => "right"
@@ -881,7 +881,7 @@ function next() {
 					'src' => BUTTONS_DIR . 'btn_function_trash.gif',
 					'onclick' => 'javascript:#####placeHolder#####;',
 					'style' => 'cursor: pointer; width: 27px;'
-			)));
+		)));
 
 		$js = we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js');
 
@@ -903,15 +903,13 @@ categories_edit.setItem(0,(categories_edit.itemCount-1),"' . id_to_path($cat, CA
 		$js .= we_html_element::jsElement($variant_js);
 
 		$table = new we_html_table(
-				array(
-					'id' => 'CategoriesBlock',
-					'style' => 'display: block;',
-					'cellpadding' => 0,
-					'cellspacing' => 0,
-					'border' => 0
-				),
-				4,
-				1);
+			array(
+			'id' => 'CategoriesBlock',
+			'style' => 'display: block;',
+			'cellpadding' => 0,
+			'cellspacing' => 0,
+			'border' => 0
+			), 4, 1);
 
 		$table->setColContent(0, 0, we_html_tools::getPixel(5, 5));
 		$table->setColContent(
@@ -920,7 +918,7 @@ categories_edit.setItem(0,(categories_edit.itemCount-1),"' . id_to_path($cat, CA
 					'id' => 'categoriesDiv',
 					'class' => 'blockWrapper',
 					'style' => 'width: ' . ($_width_size) . 'px; height: 60px; border: #AAAAAA solid 1px;'
-			)));
+		)));
 		$table->setColContent(2, 0, we_html_tools::getPixel(5, 5));
 		$table->setCol(
 			3, 0, array(
@@ -928,7 +926,7 @@ categories_edit.setItem(0,(categories_edit.itemCount-1),"' . id_to_path($cat, CA
 			), we_button::create_button_table(
 				array(
 					we_button::create_button("delete_all", "javascript:removeAllCats()"), $addbut
-			)));
+		)));
 
 		return $table->getHtml() . $js . we_html_element::jsElement('
 function removeAllCats(){

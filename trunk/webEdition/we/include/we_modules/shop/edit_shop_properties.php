@@ -153,7 +153,7 @@ if(isset($_REQUEST['we_cmd'][0])){
 
 							$fieldData = explode('=', $field);
 
-							if(is_array($fieldData) && sizeof($fieldData) == 2){
+							if(is_array($fieldData) && count($fieldData) == 2){
 								$customFieldsTmp[trim($fieldData[0])] = trim($fieldData[1]);
 							}
 							unset($fieldData);
@@ -195,8 +195,8 @@ if(isset($_REQUEST['we_cmd'][0])){
 						'IntPayment_Type' => $row["IntPayment_Type"],
 						'strSerial' => serialize($serialDoc),
 						'strSerialOrder' => $_strSerialOrder
-					))));
-			}else{
+				))));
+			} else{
 				echo we_html_element::jsElement(we_message_reporting::getShowMessageCall("'" . g_l('modules_shop', '[keinezahl]') . "'", we_message_reporting::WE_MESSAGE_ERROR, true));
 			}
 
@@ -1122,7 +1122,7 @@ if(!isset($letzerartikel)){ // order has still articles - get them all
 					0));
 
 		// determine taxes - correct price, etc.
-		$Price[$i]/=($pricesAreNet||$calcVat ? 1 : (100 + $articleVat)/100);
+		$Price[$i]/=($pricesAreNet || $calcVat ? 1 : (100 + $articleVat) / 100);
 		$articlePrice = $Price[$i] * $Quantity[$i];
 		$totalPrice += $articlePrice;
 
@@ -1166,7 +1166,7 @@ if(!isset($letzerartikel)){ // order has still articles - get them all
 	</tr>';
 		}
 		// add custom fields
-		if(isset($shopArticleObject[WE_SHOP_ARTICLE_CUSTOM_FIELD]) && is_array($shopArticleObject[WE_SHOP_ARTICLE_CUSTOM_FIELD]) && sizeof($shopArticleObject[WE_SHOP_ARTICLE_CUSTOM_FIELD])){
+		if(isset($shopArticleObject[WE_SHOP_ARTICLE_CUSTOM_FIELD]) && is_array($shopArticleObject[WE_SHOP_ARTICLE_CUSTOM_FIELD]) && count($shopArticleObject[WE_SHOP_ARTICLE_CUSTOM_FIELD])){
 
 			$caField = '';
 			foreach($shopArticleObject[WE_SHOP_ARTICLE_CUSTOM_FIELD] as $key => $value){
@@ -1346,10 +1346,8 @@ if(!isset($letzerartikel)){ // order has still articles - get them all
 				<td height="10"></td>
 			</tr>';
 
-	if(sizeof($customCartFields)){
-
-		foreach($customCartFields as $key => $value){
-			$customCartFieldsTable .= '<tr>
+	foreach($customCartFields as $key => $value){
+		$customCartFieldsTable .= '<tr>
 				<td class="defaultfont" valign="top"><b>' . $key . ':</b></td>
 				<td>' . $pixelImg . '</td>
 				<td class="defaultfont" valign="top">' . nl2br($value) . '</td>
@@ -1361,7 +1359,6 @@ if(!isset($letzerartikel)){ // order has still articles - get them all
 			<tr>
 				<td height="10"></td>
 			</tr>';
-		}
 	}
 	$customCartFieldsTable .= '<tr>
 				<td>' . we_button::create_button('image:btn_function_plus', "javascript:we_cmd('edit_shop_cart_custom_field');") . '</td>
@@ -1387,8 +1384,8 @@ echo we_html_element::jsScript(JS_DIR . "jscalendar/calendar.js") .
 	?>
 
 	<script type="text/javascript">
-		function SendMail(was){
-			document.location = "<?php print $_SERVER['SCRIPT_NAME'] . "?bid=" . $_REQUEST["bid"]; ?>&SendMail=" + was ;
+		function SendMail(was) {
+			document.location = "<?php print $_SERVER['SCRIPT_NAME'] . "?bid=" . $_REQUEST["bid"]; ?>&SendMail=" + was;
 		}
 		function doUnload() {
 			if (!!jsWindow_count) {
@@ -1398,14 +1395,14 @@ echo we_html_element::jsScript(JS_DIR . "jscalendar/calendar.js") .
 			}
 		}
 
-		function we_cmd(){
+		function we_cmd() {
 
 			var args = "";
 			var url = "<?php print $_SERVER['SCRIPT_NAME']; ?>?";
 
-			for(var i = 0; i < arguments.length; i++){
-				url += "we_cmd["+i+"]="+escape(arguments[i]);
-				if(i < (arguments.length - 1)){
+			for (var i = 0; i < arguments.length; i++) {
+				url += "we_cmd[" + i + "]=" + escape(arguments[i]);
+				if (i < (arguments.length - 1)) {
 					url += "&";
 				}
 			}
@@ -1413,35 +1410,35 @@ echo we_html_element::jsScript(JS_DIR . "jscalendar/calendar.js") .
 			switch (arguments[0]) {
 
 				case "edit_shipping_cost":
-					var wind = new jsWindow(url + "&bid=<?php echo $_REQUEST["bid"]; ?>","edit_shipping_cost",-1,-1,545,205,true,true,true,false);
+					var wind = new jsWindow(url + "&bid=<?php echo $_REQUEST["bid"]; ?>", "edit_shipping_cost", -1, -1, 545, 205, true, true, true, false);
 					break;
 
 				case "edit_shop_cart_custom_field":
-					var wind = new jsWindow(url + "&bid=<?php echo $_REQUEST["bid"]; ?>&cartfieldname="+ (arguments[1] ? arguments[1] : ''),"edit_shop_cart_custom_field",-1,-1,545,300,true,true,true,false);
+					var wind = new jsWindow(url + "&bid=<?php echo $_REQUEST["bid"]; ?>&cartfieldname=" + (arguments[1] ? arguments[1] : ''), "edit_shop_cart_custom_field", -1, -1, 545, 300, true, true, true, false);
 					break;
 
 				case "edit_order_customer":
-					var wind = new jsWindow(url + "&bid=<?php echo $_REQUEST["bid"]; ?>","edit_order_customer",-1,-1,545,600,true,true,true,false);
+					var wind = new jsWindow(url + "&bid=<?php echo $_REQUEST["bid"]; ?>", "edit_order_customer", -1, -1, 545, 600, true, true, true, false);
 					break;
 				case "edit_customer":
 					top.document.location = '<?php print WE_MODULES_DIR; ?>show_frameset.php?mod=customer&sid=<?php print $_REQUEST["cid"]; ?>';
 					break;
 				case "add_new_article":
-					var wind = new jsWindow(url + "&bid=<?php echo $_REQUEST["bid"]; ?>","add_new_article",-1,-1,650,600,true,false,true,false);
+					var wind = new jsWindow(url + "&bid=<?php echo $_REQUEST["bid"]; ?>", "add_new_article", -1, -1, 650, 600, true, false, true, false);
 					break;
-				}
 			}
+		}
 
-			function neuerartikel(){
-				we_cmd("add_new_article");
-			}
+		function neuerartikel() {
+			we_cmd("add_new_article");
+		}
 
-			function deleteorder(){
-				top.content.shop_properties.location="<?php print WE_SHOP_MODULE_DIR; ?>edit_shop_properties.php?deletethisorder=1&bid=<?php echo $_REQUEST["bid"]; ?>";
-				top.content.deleteEntry(<?php echo $_REQUEST["bid"]; ?>);
-			}
+		function deleteorder() {
+			top.content.shop_properties.location = "<?php print WE_SHOP_MODULE_DIR; ?>edit_shop_properties.php?deletethisorder=1&bid=<?php echo $_REQUEST["bid"]; ?>";
+			top.content.deleteEntry(<?php echo $_REQUEST["bid"]; ?>);
+		}
 
-			hot = 1;
+		hot = 1;
 	<?php
 	if(isset($alertMessage)){
 		print we_message_reporting::getShowMessageCall($alertMessage, $alertType);

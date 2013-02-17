@@ -261,12 +261,12 @@ class we_workflow_utility{
 
 		foreach($wids as $id){
 			if(!in_array($id, $ids)){
-				if(is_array($ws) && sizeof($ws)){
+				if(is_array($ws) && !empty($ws)){
 					if(in_workspace($id, $ws, $table, $db)){
-						array_push($ids, $id);
+						$ids[]= $id;
 					}
 				} else{
-					array_push($ids, $id);
+					$ids[]= $id;
 				}
 			}
 		}

@@ -403,7 +403,7 @@ class Image_IPTC
         foreach($this->_aIPTC as $sTagID => $aTag) {
 
             $sTag = str_replace('2#', null, $sTagID);
-            for($ci = 0; $ci < sizeof($aTag); $ci++) {
+            for($ci = 0; $ci < count($aTag); $ci++) {
 
                 $nLen = strlen($aTag[$ci]);
 

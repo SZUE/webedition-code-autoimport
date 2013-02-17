@@ -63,7 +63,7 @@ class weSiteImport{
 	 */
 	public function __construct(){
 		$wsa = makeArrayFromCSV(get_def_ws());
-		$ws = (sizeof($wsa) ? $wsa[0] : 0);
+		$ws = (empty($wsa) ? 0 : $wsa[0]);
 		$this->from = isset($_REQUEST['from']) ? $_REQUEST['from'] : ((isset($_SESSION['prefs']['import_from']) && $_SESSION['prefs']['import_from']) ? $_SESSION['prefs']['import_from'] : $this->from);
 		$_SESSION['prefs']['import_from'] = $this->from;
 		$this->to = isset($_REQUEST['to']) ? $_REQUEST['to'] : (strlen($this->to) ? $this->to : $ws);
@@ -319,7 +319,7 @@ class weSiteImport{
 		tableDivObj.innerHTML = "' .
 					str_replace(array("\r", "\n"), array("\\r", "\\n"), addslashes($this->_getSiteImportTableHTML($_templateFields, $values))) . '"
 		parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFields ? "block" : "none") . '";'
-				));
+		));
 	}
 
 	/**
@@ -477,7 +477,7 @@ class weSiteImport{
 		$parts = array(
 			array(
 				"headline" => "", "html" => $_html, "space" => 0
-			));
+		));
 
 		$bodyhtml = '<body class="weDialogBody">
 					<iframe style="position:absolute;top:-2000px;" src="about:blank" id="iloadframe" name="iloadframe" width="400" height="200"></iframe>
@@ -754,7 +754,7 @@ class weSiteImport{
 				"headline" => g_l('siteimport', "[dirs_headline]"),
 				"html" => $_importFrom . we_html_tools::getPixel(20, 5) . $_importTo,
 				"space" => 120
-			));
+		));
 
 		/* Create Main Table */
 		$_attr = array(
@@ -995,8 +995,8 @@ class weSiteImport{
 		print $pb->getJS();
 
 		$table = new we_html_table(array(
-				"border" => "0", "cellpadding" => "0", "cellspacing" => "0", "width" => "100%"
-				), 1, 2);
+			"border" => "0", "cellpadding" => "0", "cellspacing" => "0", "width" => "100%"
+			), 1, 2);
 		$table->setCol(0, 0, null, '<div id="progressBarDiv" style="display:none;">' . $pb->getHTML() . '</div>');
 		$table->setCol(0, 1, array(
 			"align" => "right"
@@ -2037,8 +2037,8 @@ sh' && $contentType != 'movie/quicktime'){
 	private function _getFrameset(){
 
 		$frameset = new we_html_frameset(array(
-				"framespacing" => "0", "border" => "0", "frameborder" => "no"
-			));
+			"framespacing" => "0", "border" => "0", "frameborder" => "no"
+		));
 		$noframeset = new we_baseElement("noframes");
 
 		$frameset->setAttributes(array(

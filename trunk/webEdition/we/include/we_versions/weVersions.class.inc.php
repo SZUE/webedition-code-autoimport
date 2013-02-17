@@ -1692,19 +1692,15 @@ class weVersions{
 			$tblFields = array();
 			$tableInfo = $db->metadata(VERSIONS_TABLE);
 
-			if(isset($_REQUEST["we_transaction"])){
-				$we_transaction = (preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction']) ? $_REQUEST['we_transaction'] : 0);
-			} else{
-				$we_transaction = $GLOBALS["we_transaction"];
+			$we_transaction = (isset($_REQUEST["we_transaction"]) ?
+					(preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction']) ? $_REQUEST['we_transaction'] : 0) :
+					$GLOBALS["we_transaction"]);
+
+			foreach($tableInfo as $cur){
+				$tblFields[] = $cur["name"];
 			}
 
-
-			for($i = 0; $i < sizeof($tableInfo); $i++){
-				$tblFields[] = $tableInfo[$i]["name"];
-			}
-
-
-			$db->query("SELECT * FROM " . VERSIONS_TABLE . " WHERE ID=" . intval($ID));
+			$db->query('SELECT * FROM ' . VERSIONS_TABLE . ' WHERE ID=' . intval($ID));
 
 			if($db->next_record()){
 				foreach($tblFields as $k => $v){
@@ -2213,8 +2209,8 @@ class weVersions{
 		$db = new DB_WE();
 
 		$tableInfo = $db->metadata($table);
-		for($i = 0; $i < sizeof($tableInfo); $i++){
-			$fieldNames[] = $tableInfo[$i]["name"];
+		foreach($tableInfo as $cur){
+			$fieldNames[] = $cur["name"];
 		}
 
 		return $fieldNames;

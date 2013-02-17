@@ -127,19 +127,19 @@ function convertToMb($value){
 
 function getConnectionTypes(){
 	$_connectionTypes = array();
-	if(ini_get("allow_url_fopen") == "1"){
+	if(ini_get('allow_url_fopen') == "1"){
 		$_connectionTypes[] = "fopen";
 		$_connectionTypeUsed = "fopen";
 	}
 	if(is_callable("curl_exec")){
 		$_connectionTypes[] = "curl";
-		if(sizeof($_connectionTypes) == "1"){
+		if(count($_connectionTypes) == 1){
 			$_connectionTypeUsed = "curl";
 		}
 	}
-	for($i = 0; $i < sizeof($_connectionTypes); $i++){
-		if($_connectionTypes[$i] == $_connectionTypeUsed){
-			$_connectionTypes[$i] = "<u>" . $_connectionTypes[$i] . "</u>";
+	foreach($_connectionTypes as &$con){
+		if($con == $_connectionTypeUsed){
+			$con = "<u>" . $con . "</u>";
 		}
 	}
 	return $_connectionTypes;
@@ -309,14 +309,14 @@ we_html_tools::htmlTop(g_l('sysinfo', '[sysinfo]'));
 	}
 
 	function showPhpInfo() {
-		document.getElementById("info").style.display="none";
-		document.getElementById("more").style.display="block";
+		document.getElementById("info").style.display = "none";
+		document.getElementById("more").style.display = "block";
 		document.getElementById("phpinfo").src = "phpinfo.php";
 	}
 
 	function showInfoTable() {
-		document.getElementById("info").style.display="block";
-		document.getElementById("more").style.display="none";
+		document.getElementById("info").style.display = "block";
+		document.getElementById("more").style.display = "none";
 	}
 	//-->
 </script>

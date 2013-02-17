@@ -58,9 +58,9 @@ class weImageDialog extends weDialog{
 			$tokkens = explode("?", $src);
 			$id = "";
 			$thumb = 0;
-			if(sizeof($tokkens) == 2){
+			if(count($tokkens) == 2){
 				$foo = explode("=", $tokkens[1]);
-				if(sizeof($foo) == 2){
+				if(count($foo) == 2){
 					if($foo[0] == "id"){
 						$id = $foo[1];
 					} else if($foo[0] == "thumb"){
@@ -93,9 +93,9 @@ class weImageDialog extends weDialog{
 	function initAttributes($width = 0, $height = 0, $hspace = 0, $vspace = 0, $border = 0, $alt = "", $align = "", $name = "", $class = "", $title = "", $longdesc = ""){
 		$tokkens = explode("?", $longdesc);
 		$longdescid = "";
-		if(sizeof($tokkens) == 2){
+		if(count($tokkens) == 2){
 			$foo = explode("=", $tokkens[1]);
-			if(sizeof($foo) == 2){
+			if(count($foo) == 2){
 				if($foo[0] == "id"){
 					$longdescid = $foo[1];
 				}

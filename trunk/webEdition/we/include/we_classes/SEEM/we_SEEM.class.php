@@ -340,7 +340,7 @@ abstract class we_SEEM{
 		$mode = (isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_CONTENT ? "edit" : "preview");
 
 		$_REQUEST['we_transaction'] = (preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction']) ? $_REQUEST['we_transaction'] : 0);
-		for($i = 0; $i < sizeof($SEEM_LinkArray[0]); $i++){
+		for($i = 0; $i < count($SEEM_LinkArray[0]); $i++){
 
 			if(isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == "seem" && $GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_CONTENT){ //	in Super-Easy-Edit-Mode only in Editmode !!!
 				switch($SEEM_LinkArray[2][$i]){

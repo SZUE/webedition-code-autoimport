@@ -364,8 +364,9 @@ class we_linklist{
 	}
 
 	function getString(){
-		if(sizeof($this->listArray) == 0)
+		if(empty($this->listArray)){
 			return "";
+		}
 		return serialize($this->listArray);
 	}
 
@@ -374,17 +375,17 @@ class we_linklist{
 		$cur = $nr != -1 ? $this->listArray[$nr] : current($this->listArray);
 		return isset($cur['bcc']) ? $cur['bcc'] : '';
 	}
-        
+
         function getCc($nr = -1){
 		$cur = $nr != -1 ? $this->listArray[$nr] : current($this->listArray);
 		return isset($cur['cc']) ? $cur['cc'] : '';
 	}
-        
+
         function getSubject($nr = -1){
 		$cur = $nr != -1 ? $this->listArray[$nr] : current($this->listArray);
 		return isset($cur['subject']) ? $cur['subject'] : '';
 	}
-        
+
 	function setID($nr, $val){
 		if($nr == "0" || $nr){
 			$this->listArray[$nr]["id"] = $val;
@@ -532,7 +533,7 @@ class we_linklist{
 			++$this->cnt;
 		}
 		$ret = ($this->show == -1 || $this->show > ($this->cnt));
-		$GLOBALS['we_position']['linklist'][$this->name] = array('size' => sizeof($this->listArray), 'position' => $this->cnt);
+		$GLOBALS['we_position']['linklist'][$this->name] = array('size' => count($this->listArray), 'position' => $this->cnt);
 		if($this->pos++ == -1){
 			reset($this->listArray);
 			return $ret & ($this->length() > 0);
@@ -564,7 +565,7 @@ class we_linklist{
 				$upbut = we_button::create_button(
 						"image:btn_direction_up", "javascript:setScrollTo();_EditorFrame.setEditorIsHot(1);we_cmd('up_link_at_list','" . $this->attribs["name"] . "','" . key($this->listArray) . "')", true, -1, -1, "", "", !($this->cnt > 0));
 				$downbut = we_button::create_button(
-						"image:btn_direction_down", "javascript:setScrollTo();_EditorFrame.setEditorIsHot(1);we_cmd('down_link_at_list','" . $this->attribs["name"] . "','" . key($this->listArray) . "')", true, -1, -1, "", "", !($this->cnt < (sizeof($this->listArray) - 1)));
+						"image:btn_direction_down", "javascript:setScrollTo();_EditorFrame.setEditorIsHot(1);we_cmd('down_link_at_list','" . $this->attribs["name"] . "','" . key($this->listArray) . "')", true, -1, -1, "", "", !($this->cnt < (count($this->listArray) - 1)));
 				$editbut = we_button::create_button(
 						"image:btn_edit_link", "javascript:setScrollTo();_EditorFrame.setEditorIsHot(1);we_cmd('edit_linklist','" . $this->attribs["name"] . "','" . key($this->listArray) . "')", true);
 				$trashbut = we_button::create_button(
@@ -627,13 +628,13 @@ class we_linklist{
 
 	function insertLink($nr){
 		$l = $this->getRawLink();
-		for($i = 0; $i < sizeof($this->listArray); $i++){
+		for($i = 0; $i < count($this->listArray); $i++){
 			$lnr = $this->listArray[$i]["nr"];
 			if(!isset($this->listArray[$i]["nr"])){
 				$this->listArray[$i]["nr"] = $i;
 			}
 		}
-		for($i = sizeof($this->listArray); $i > $nr; $i--){
+		for($i = count($this->listArray); $i > $nr; $i--){
 			$this->listArray[$i] = $this->listArray[$i - 1];
 		}
 		$this->listArray[$nr] = $l;
@@ -661,7 +662,7 @@ class we_linklist{
 	function getMaxListNrID(){
 		$n = 0;
 		$out = 0;
-		for($i = 0; $i < sizeof($this->listArray); $i++){
+		for($i = 0; $i < count($this->listArray); $i++){
 			if($this->listArray[$i]["nr"] > $n){
 				$n = $this->listArray[$i]["nr"];
 				$out = $i;

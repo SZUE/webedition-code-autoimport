@@ -60,10 +60,11 @@ class we_wizard_import extends we_wizard{
 			$dv = array();
 		$tableInfo_sorted = we_objectFile::getSortedTableInfo($classID, true, $db);
 		$fields = array();
-		for($i = 0; $i < sizeof($tableInfo_sorted); $i++){
+		$regs = array();
+		foreach($tableInfo_sorted as $cur){
 			// bugfix 8141
-			if(preg_match('/(.+?)_(.*)/', $tableInfo_sorted[$i]["name"], $regs)){
-				array_push($fields, array("name" => $regs[2], "type" => $regs[1]));
+			if(preg_match('/(.+?)_(.*)/', $cur["name"], $regs)){
+				$fields[] = array("name" => $regs[2], "type" => $regs[1]);
 			}
 		}
 		return $fields;
@@ -136,10 +137,11 @@ class we_wizard_import extends we_wizard{
 	 * @desc returns array of attributes
 	 */
 	function parseAttributes($attr){
+		//FIXME: use tagParser
 		$attribs = "";
 		preg_match_all('/([^=]+)= *("[^"]*")/', $attr, $foo, PREG_SET_ORDER);
-		for($i = 0; $i < sizeof($foo); $i++){
-			$attribs .= '"' . trim($foo[$i][1]) . '"=>' . trim($foo[$i][2]) . ',';
+		foreach($foo as $cur){
+			$attribs .= '"' . trim($cur[1]) . '"=>' . trim($cur[2]) . ',';
 		}
 		$arrstr = "array(" . rtrim($attribs, ',') . ")";
 		eval('$arr = ' . $arrstr . ';');
