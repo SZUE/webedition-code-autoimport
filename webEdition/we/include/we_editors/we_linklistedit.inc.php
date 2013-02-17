@@ -138,7 +138,7 @@ if(isset($_REQUEST["ok"]) && isset($_REQUEST["linklist"]) && $_REQUEST["ok"] && 
         $ll->setBcc($_REQUEST["nr"], $_REQUEST["bcc"]);
         $ll->setCc($_REQUEST["nr"], $_REQUEST["cc"]);
         $ll->setSubject($_REQUEST["nr"], $_REQUEST["subject"]);
-        
+
 	$ll->setJsWinAttrib($_REQUEST["nr"], "jswin", (isset($_REQUEST["jswin"]) && $_REQUEST["jswin"]) ? $_REQUEST["jswin"] : null );
 	$ll->setJsWinAttrib($_REQUEST["nr"], "jscenter", isset($_REQUEST["jscenter"]) && $_REQUEST["jscenter"] ? $_REQUEST["jscenter"] : null);
 	$ll->setJsWinAttrib($_REQUEST["nr"], "jsposx", $_REQUEST["jsposx"]);
@@ -186,7 +186,7 @@ if(isset($_REQUEST["ok"]) && isset($_REQUEST["linklist"]) && $_REQUEST["ok"] && 
         $ln["bcc"] = $_REQUEST["bcc"];
         $ln["cc"] = $_REQUEST["cc"];
         $ln["subject"] = $_REQUEST["subject"];
-        
+
 	if($_REQUEST["type"] == "mail"){
 		$ln["href"] = "mailto:" . str_replace('mailto:', '', $_REQUEST["emaillink"]);
 	} else{
@@ -267,7 +267,7 @@ if(isset($_REQUEST["ok"]) && isset($_REQUEST["linklist"]) && $_REQUEST["ok"] && 
 		$bcc = $ll->getBcc($nr);
 		$cc = $ll->getCc($nr);
 		$subject = $ll->getSubject($nr);
-                
+
 		$id = $ll->getID($nr);
 		if(defined("OBJECT_TABLE")){
 			$obj_id = $ll->getObjID($nr);
@@ -288,7 +288,7 @@ if(isset($_REQUEST["ok"]) && isset($_REQUEST["linklist"]) && $_REQUEST["ok"] && 
 		$ctype = $ll->getCType($nr);
 	} else{
 		$ln = $we_doc->getElement($name) ? unserialize($we_doc->getElement($name)) : array();
-		if(!sizeof($ln)){
+		if(empty($ln)){
 			$ln = array("ctype" => "text", "type" => "int", "href" => "http://", "text" => g_l('global', "[new_link]"));
 		}
 		$href = isset($ln["href"]) ? $ln["href"] : "";
@@ -317,7 +317,7 @@ if(isset($_REQUEST["ok"]) && isset($_REQUEST["linklist"]) && $_REQUEST["ok"] && 
 		$bcc = isset($ln["bcc"]) ? $ln["bcc"] : "";
 		$cc = isset($ln["cc"]) ? $ln["cc"] : "";
 		$subject = isset($ln["subject"]) ? $ln["subject"] : "";
-                
+
 		$jswin = isset($ln["jswin"]) && $ln["jswin"] ? $ln["jswin"] : "";
 		$jscenter = isset($ln["jscenter"]) ? $ln["jscenter"] : "";
 		$jsposx = isset($ln["jsposx"]) ? $ln["jsposx"] : "";
@@ -396,8 +396,8 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js');
                 var emailTable=document.getElementById("emailOptions");
                 if(s.value=="mail"){
                     emailTable.style.display="block";
-                }else{ 
-                    emailTable.style.display="none";} 
+                }else{
+                    emailTable.style.display="none";}
 	}
 	function changeCTypeSelect(s){
 		for(var i=0; i< s.options.length; i++){
@@ -586,12 +586,12 @@ if(isset($_REQUEST["ok"]) && $_REQUEST["ok"] && $_REQUEST['we_cmd'][0] == "edit_
 
 			$objLink = $yuiSuggest->getHTML();
 		}
-                
+
                 //added for #7269
                 $bcc = we_html_tools::htmlTextInput("bcc", 30, $bcc, "", "", "text", 300);
                 $cc = we_html_tools::htmlTextInput("cc", 30, $cc, "", "", "text", 300);
                 $subject = we_html_tools::htmlTextInput("subject", 30, $subject, "", "", "text", 300);
-                
+
 		$anchor = we_html_tools::htmlTextInput("anchor", 30, $anchor, "", "", "text", 300);
 		$accesskey = we_html_tools::htmlTextInput("accesskey", 30, $accesskey, "", "", "text", 140);
 		$tabindex = we_html_tools::htmlTextInput("tabindex", 30, $tabindex, "", "", "text", 140);

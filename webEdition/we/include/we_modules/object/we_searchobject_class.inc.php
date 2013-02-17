@@ -34,7 +34,7 @@ class objectsearch extends we_search{
 	function __construct(){
 		parent::__construct();
 		if(isset($sessDat) && is_array($sessDat)){
-			for($i = 0; $i <= sizeof($sessDat); $i++){
+			for($i = 0; $i <= count($sessDat); $i++){
 				if(isset($sessDat[$i])){
 					$v = $sessDat[$i];
 					$v = (get_magic_quotes_gpc() == 1) ? stripslashes($v) : $v;
@@ -45,7 +45,7 @@ class objectsearch extends we_search{
 	}
 
 	function init($sessDat = ""){
-		for($i = 0; $i <= sizeof($sessDat); $i++){
+		for($i = 0; $i <= count($sessDat); $i++){
 			if(isset($sessDat[$i])){
 				$v = $sessDat[$i];
 				$v = (get_magic_quotes_gpc() == 1) ? stripslashes($v) : $v;
@@ -60,7 +60,7 @@ class objectsearch extends we_search{
 		$opts = '';
 		$tableInfo = $GLOBALS['DB_WE']->metadata(OBJECT_X_TABLE . $objID);
 		$all = "";
-		for($i = 0; $i < sizeof($tableInfo); $i++){
+		for($i = 0; $i < count($tableInfo); $i++){
 			if($tableInfo[$i]["name"] != "ID" && substr($tableInfo[$i]["name"], 0, 3) != "OF_" && stripos($tableInfo[$i]["name"], "multiobject") !== 0 && stripos($tableInfo[$i]["name"], "object") !== 0){
 				$regs = explode('_', $tableInfo[$i]["name"], 2);
 				if(count($regs) == 2){
@@ -120,9 +120,9 @@ class objectsearch extends we_search{
 	}
 
 	function getExtraWorkspace($exws, $we_extraWsLength, $id, $userWSArray){
-		if(sizeof($exws)){
+		if(!empty($exws)){
 			$out = '<table border="0" cellpadding="0" cellspacing="0">';
-			for($i = 0; $i < sizeof($exws); $i++){
+			for($i = 0; $i < count($exws); $i++){
 				if($exws[$i] != ""){
 					if($_SESSION["perms"]["ADMINISTRATOR"]){
 						$foo = true;
@@ -154,23 +154,22 @@ class objectsearch extends we_search{
 	}
 
 	function getWorkspaces($foo, $we_wsLength){
-		if(sizeof($foo)){
-			$out = '<table border="0" cellpadding="0" cellspacing="0">';
-			for($i = 0; $i < sizeof($foo); $i++){
-				if($foo[$i] != ""){
-					$p = id_to_path($foo[$i]);
-					$pl = strlen($p);
-					$out .= '
-						<tr>
-							<td class="middlefont">
-								&nbsp;<a href="javascript:setWs(\'' . $p . '\',\'' . $foo[$i] . '\')" style="text-decoration:none" class="middlefont" title="' . $p . '">' . shortenPath($p, $we_wsLength) . '</a><td>
-						</tr>';
-				}
-			}
-			$out .= '</table>';
-		} else{
-			$out = "-";
+		if(empty($foo)){
+			return '-';
 		}
+		$out = '<table border="0" cellpadding="0" cellspacing="0">';
+		foreach($foo as $cur){
+			if($cur != ""){
+				$p = id_to_path($cur);
+//				$pl = strlen($p);
+				$out .= '
+<tr>
+	<td class="middlefont">
+		&nbsp;<a href="javascript:setWs(\'' . $p . '\',\'' . $cur . '\')" style="text-decoration:none" class="middlefont" title="' . $p . '">' . shortenPath($p, $we_wsLength) . '</a><td>
+</tr>';
+			}
+		}
+		$out .= '</table>';
 		return $out;
 	}
 

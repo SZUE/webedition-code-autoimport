@@ -47,7 +47,7 @@ class MultiFileChooser extends MultiDirChooser{
 		$ids = (substr($this->ids, 0, 1) == ",") ? substr($this->ids, 1, strlen($this->ids) - 2) : $this->ids;
 		$idArr = makeArrayFromCSV($this->ids);
 		$c = 1;
-		if(sizeof($idArr)){
+		if(!empty($idArr)){
 			foreach($idArr as $id){
 				$table->addRow();
 

@@ -82,7 +82,7 @@ if(($typeAttribute = $weTag->getTypeAttribute())){
 		foreach($_typeOptions as $option){
 
 			$_reqAttribs = $option->getRequiredAttributes($_attributes);
-			if(sizeof($_reqAttribs)){
+			if(!empty($_reqAttribs)){
 				$typeAttributeJs .= "typeAttributeRequires[\"" . $option->getName() . "\"] = new Array(\"";
 
 				$typeAttributeJs .= implode('","', $_reqAttribs);

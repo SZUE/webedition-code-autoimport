@@ -44,11 +44,11 @@ class we_search{
 	}
 
 	function init($sessDat = ""){
-		for($i = 0; $i <= sizeof($sessDat); $i++){
-			if(isset($GLOBALS["we_" . $this->Name . "_" . $sessDat[$i]])){
-				$v = $GLOBALS["we_" . $this->Name . "_" . $sessDat[$i]];
+		foreach($sessDat as $cur){
+			if(isset($GLOBALS["we_" . $this->Name . "_" . $cur])){
+				$v = $GLOBALS["we_" . $this->Name . "_" . $cur];
 				$v = (get_magic_quotes_gpc() == 1) ? stripslashes($v) : $v;
-				$this->$sessDat[$i] = $v;
+				$this->$cur = $v;
 			}
 		}
 	}

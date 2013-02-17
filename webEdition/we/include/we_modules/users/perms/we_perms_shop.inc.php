@@ -40,7 +40,7 @@ $perm_values[$perm_group_name] = array(
 //	Here the array of the permission-titles is set.
 $perm_titles[$perm_group_name] = array();
 
-for($i = 0; $i < sizeof($perm_values[$perm_group_name]); $i++){
+for($i = 0; $i < count($perm_values[$perm_group_name]); $i++){
 
 	$perm_titles[$perm_group_name][$perm_values[$perm_group_name][$i]] = g_l('perms_'.$perm_group_name,'['.$perm_values[$perm_group_name][$i].']');
 }

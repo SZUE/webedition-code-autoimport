@@ -985,8 +985,8 @@ abstract class we_rebuild_wizard{
 	 * @param array first element (array[0]) must be a javascript, second element (array[1]) must be the Body HTML
 	 */
 	static function getPage($contents){
-		if(!sizeof($contents)){
-			return "";
+		if(empty($contents)){
+			return '';
 		}
 		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				we_html_element::htmlHead(

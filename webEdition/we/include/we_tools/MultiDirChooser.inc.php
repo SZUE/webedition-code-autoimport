@@ -112,22 +112,20 @@ class MultiDirChooser{
 		$this->nr = 0;
 		$idArr = makeArrayFromCSV($this->ids);
 
-		if(sizeof($idArr)){
-			foreach($idArr as $id){
-				$this->db->query("SELECT ID," . $this->fields . " FROM " . $this->db->escape($this->table) . " WHERE ID =" . intval($id));
-				if($this->db->next_record()){
-					for($i = 0; $i < $this->lines; $i++){
-						$out .= $this->getLine($i);
-					}
-				} else if(!$id){
-					for($i = 0; $i < $this->lines; $i++){
-						$out .= $this->getRootLine($i);
-					}
+		foreach($idArr as $id){
+			$this->db->query("SELECT ID," . $this->fields . " FROM " . $this->db->escape($this->table) . " WHERE ID =" . intval($id));
+			if($this->db->next_record()){
+				for($i = 0; $i < $this->lines; $i++){
+					$out .= $this->getLine($i);
 				}
-				$this->nr++;
+			} else if(!$id){
+				for($i = 0; $i < $this->lines; $i++){
+					$out .= $this->getRootLine($i);
+				}
 			}
+			$this->nr++;
 		}
-		$out .= '	<tr><td>' . we_html_tools::getPixel(20, sizeof($idArr) ? 2 : 12) . '</td><td>' . we_html_tools::getPixel($this->width - 66, 2) . '</td><td>' . we_html_tools::getPixel(26, 2) . '</td></tr>
+		$out .= '	<tr><td>' . we_html_tools::getPixel(20, count($idArr) ? 2 : 12) . '</td><td>' . we_html_tools::getPixel($this->width - 66, 2) . '</td><td>' . we_html_tools::getPixel(26, 2) . '</td></tr>
 </table>
 ';
 

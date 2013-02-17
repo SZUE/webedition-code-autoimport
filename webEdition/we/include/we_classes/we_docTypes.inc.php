@@ -24,6 +24,7 @@
  */
 class we_docTypes extends we_class{
 	/* The Text that will be shown in the tree-menue */
+
 	var $DocType = 'New DocType';
 	var $Extension = DEFAULT_STATIC_EXT;
 	var $ParentID = "0";
@@ -42,7 +43,6 @@ class we_docTypes extends we_class{
 	var $Category = "";
 	var $Language = "";
 
-
 	function __construct(){
 		parent::__construct();
 		array_push($this->persistent_slots, "Category", "DocType", "Extension", "ParentID", "ParentPath", "TemplateID", "ContentTable", "IsDynamic", "IsSearchable", "Notify", "NotifyTemplateID", "NotifySubject", "NotifyOnChange", "SubDir", "Templates", "Language");
@@ -52,12 +52,10 @@ class we_docTypes extends we_class{
 	public function we_save($resave = 0){
 		$idArr = makeArrayFromCSV($this->Templates);
 		$newIdArr = array();
-		if(sizeof($idArr)){
-			foreach($idArr as $id){
-				$path = id_to_path($id, TEMPLATES_TABLE);
-				if($id && $path){
-					array_push($newIdArr, $id);
-				}
+		foreach($idArr as $id){
+			$path = id_to_path($id, TEMPLATES_TABLE);
+			if($id && $path){
+				array_push($newIdArr, $id);
 			}
 		}
 		$this->Templates = makeCSVFromArray($newIdArr);
@@ -80,17 +78,17 @@ class we_docTypes extends we_class{
 
 	function saveInSession(&$save){
 		$save = array(array());
-		for($i = 0; $i < sizeof($this->persistent_slots); $i++){
-			$save[0][$this->persistent_slots[$i]] = $this->{$this->persistent_slots[$i]};
+		foreach($this->persistent_slots as $cur){
+			$save[0][$cur] = $this->{$cur};
 		}
 	}
 
 	function we_initSessDat($sessDat){
 		we_class::we_initSessDat($sessDat);
 		if(is_array($sessDat)){
-			for($i = 0; $i < sizeof($this->persistent_slots); $i++){
-				if(isset($sessDat[0][$this->persistent_slots[$i]])){
-					$this->{$this->persistent_slots[$i]} = $sessDat[0][$this->persistent_slots[$i]];
+			foreach($this->persistent_slots as $cur){
+				if(isset($sessDat[0][$cur])){
+					$this->{$cur} = $sessDat[0][$cur];
 				}
 			}
 		}
@@ -371,8 +369,8 @@ function switchExt(){
 
 	function formSubDir($width = 100){
 		$vals = array();
-		for($i = 0; $i < sizeof(g_l('weClass', "[subdir]")); $i++){
-			$vals[(string) $i] = g_l('weClass', "[subdir][" . $i . ']');
+		for($i = 0; $i < count(g_l('weClass', "[subdir]")); $i++){
+			$vals[] = g_l('weClass', "[subdir][" . $i . ']');
 		}
 		return $this->htmlFormElementTable($this->htmlSelect('we_' . $this->Name . '_SubDir', $vals, $size = 1, $this->SubDir, false, "", "value", $width), g_l('weClass', "[subdirectory]"));
 	}

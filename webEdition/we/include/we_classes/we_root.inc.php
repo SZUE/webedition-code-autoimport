@@ -110,17 +110,21 @@ abstract class we_root extends we_class{
 	}
 
 	function equals($obj){
-		for($i = 0; $i < sizeof($this->persistent_slots); $i++){
-			if($this->persistent_slots[$i] != 'Name' && $this->persistent_slots[$i] != 'elements' && $this->persistent_slots[$i] != 'EditPageNr' && $this->persistent_slots[$i] != 'wasUpdate'){
-				$foo1 = $this->{$this->persistent_slots[$i]};
-				$foo2 = $obj->{$this->persistent_slots[$i]};
-				if($foo1 != $foo2){
-					return false;
-				}
+		foreach($this->persistent_slots as $cur){
+			switch($cur){
+				case 'Name':
+				case 'elements':
+				case 'EditPageNr':
+				case 'wasUpdate':
+					continue;
+				default:
+					if($this->{$cur} != $obj->{$cur}){
+						return false;
+					}
 			}
 		}
 		foreach($this->elements as $key => $val){
-			if($this->elements[$key]['dat'] != $obj->elements[$key]['dat'] || $this->elements[$key]['bdid'] != $obj->elements[$key]['bdid']){
+			if($val['dat'] != $obj->elements[$key]['dat'] || $val['bdid'] != $obj->elements[$key]['bdid']){
 				return false;
 			}
 		}
@@ -196,9 +200,9 @@ abstract class we_root extends we_class{
 		$str = weFile::load($filename);
 		if($str){
 			$arr = unserialize($str);
-			for($i = 0; $i < sizeof($this->persistent_slots); $i++){
-				if(isset($arr[0][$this->persistent_slots[$i]])){
-					$this->{$this->persistent_slots[$i]} = $arr[0][$this->persistent_slots[$i]];
+			foreach($this->persistent_slots as $cur){
+				if(isset($arr[0][$cur])){
+					$this->{$cur} = $arr[0][$cur];
 				}
 			}
 			if(isset($arr[1])){
@@ -773,9 +777,9 @@ abstract class we_root extends we_class{
 	function we_initSessDat($sessDat){
 		we_class::we_initSessDat($sessDat);
 		if(is_array($sessDat)){
-			for($i = 0; $i < sizeof($this->persistent_slots); $i++){
-				if(isset($sessDat[0][$this->persistent_slots[$i]])){
-					$this->{$this->persistent_slots[$i]} = $sessDat[0][$this->persistent_slots[$i]];
+			foreach($this->persistent_slots as $cur){
+				if(isset($sessDat[0][$cur])){
+					$this->{$cur} = $sessDat[0][$cur];
 				}
 			}
 			if(isset($sessDat[1])){
@@ -790,9 +794,9 @@ abstract class we_root extends we_class{
 			$this->Name = md5(uniqid(__FUNCTION__, true));
 			return false;
 		}
-		for($i = 0; $i < sizeof($this->persistent_slots); $i++){
-			if(isset($sessDat[0][$this->persistent_slots[$i]])){
-				$this->{$this->persistent_slots[$i]} = $sessDat[0][$this->persistent_slots[$i]];
+		foreach($this->persistent_slots as $cur){
+			if(isset($sessDat[0][$cur])){
+				$this->{$cur} = $sessDat[0][$cur];
 			}
 		}
 		if(isset($sessDat[1])){

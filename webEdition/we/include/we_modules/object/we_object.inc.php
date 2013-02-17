@@ -44,16 +44,19 @@ class we_object extends we_document{
 		$this->Icon = 'object.gif';
 		$this->Table = OBJECT_TABLE;
 		$this->Published = 1;
-		$this->ClassName = 'we_object';//for we_objectEx, otherwise ist will save its own classname, or needs its own constructor
+		$this->ClassName = 'we_object'; //for we_objectEx, otherwise ist will save its own classname, or needs its own constructor
 	}
-	
+
 	/* setter for runtime variable isInApp which allows to construct Classes from within Apps */
 	/* do not access this variable directly, in later WE Versions, it will be protected */
+
 	function setIsInApp($isInApp){
-		$this->isInApp=$isInApp;
+		$this->isInApp = $isInApp;
 	}
+
 	/* getter for runtime variable isInApp which allows to construct Classes from within Apps */
 	/* do not access this variable directly, in later WE Versions, it will be protected */
+
 	function getIsInApp(){
 		return $this->isInApp;
 	}
@@ -609,7 +612,7 @@ class we_object extends we_document{
 		$i = 0;
 		$position = count($sort);
 		foreach($sort as $ident => $identpos){
-			if($ident == $identifier && $i < sizeof($sort) - 1){
+			if($ident == $identifier && $i < count($sort) - 1){
 				$position = $i;
 			}
 			if($i == $position + 1){
@@ -728,7 +731,7 @@ class we_object extends we_document{
 				$sort[$ident]--;
 			}
 		}
-		$this->elements["Sortgesamt"]["dat"] = sizeof($sort);
+		$this->elements["Sortgesamt"]["dat"] = count($sort);
 		### end move elements ####
 
 		$this->setElement("we_sort", (count($sort) > 0 ? $sort : array()));
@@ -1411,7 +1414,7 @@ class we_object extends we_document{
 
 		$textname = "we_" . $this->Name . "_input[" . $name . "usertext]";
 		$idname = "we_" . $this->Name . "_input[" . $name . "userid]";
-		$delallbut = we_button::create_button("delete_all", "javascript:we_cmd('del_all_users','" . $GLOBALS['we_transaction'] . "','$nr','$name')", true, -1, -1, "", "", sizeof($users) ? false : true);
+		$delallbut = we_button::create_button("delete_all", "javascript:we_cmd('del_all_users','" . $GLOBALS['we_transaction'] . "','$nr','$name')", true, -1, -1, "", "", count($users) ? false : true);
 		$addbut = $this->htmlHidden($idname, "0") . $this->htmlHidden($textname, "") . we_button::create_button("add", "javascript:we_cmd('browse_users','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','',document.forms['we_form'].elements['" . $idname . "'].value,'fillIDs();opener.we_cmd(\\'add_user_to_field\\',\\'" . $GLOBALS['we_transaction'] . "\\',\\'" . $nr . "\\', top.allIDs,\\'" . $name . "\\')','','',1)");
 
 		return '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' .
@@ -1843,8 +1846,8 @@ class we_object extends we_document{
 			$doc = new we_object();
 			$doc->InitByID($id, $this->Table, we_class::LOAD_TEMP_DB);
 			if($this->ID == 0){
-				for($i = 0; $i < sizeof($this->persistent_slots); $i++){
-					$this->{$this->persistent_slots[$i]} = isset($doc->{$this->persistent_slots[$i]}) ? $doc->{$this->persistent_slots[$i]} : '';
+				foreach($this->persistent_slots as $cur){
+					$this->{$cur} = isset($doc->{$cur}) ? $doc->{$cur} : '';
 				}
 				$this->ObjectID = 0;
 				$this->CreationDate = time();
@@ -1962,11 +1965,11 @@ class we_object extends we_document{
 					$this->CSS = $vals[$name];
 				}
 				if(isset($vals[$name]) && is_array($vals[$name])){
-					$this->elements[$name . "count"]["dat"] = (( isset($vals[$name]["meta"]) && sizeof($vals[$name]["meta"]) > 0 ) ? (sizeof($vals[$name]["meta"]) - 1) : "0");
+					$this->elements[$name . "count"]["dat"] = (( isset($vals[$name]["meta"]) && !empty($vals[$name]["meta"])) ? (count($vals[$name]["meta"]) - 1) : "0");
 					if(isset($vals[$name]["meta"]) && is_array($vals[$name]["meta"])){
 						$keynames = array_keys($vals[$name]["meta"]);
 
-						for($ll = 0; $ll <= sizeof($vals[$name]["meta"]); $ll++){
+						for($ll = 0; $ll <= count($vals[$name]["meta"]); $ll++){
 							$this->elements[$name . "defaultkey" . $ll]["dat"] = isset($keynames[$ll]) ? $keynames[$ll] : "";
 							$this->elements[$name . "defaultvalue" . $ll]["dat"] = isset($keynames[$ll]) ? $vals[$name]["meta"][$keynames[$ll]] : "";
 						}
@@ -2056,7 +2059,8 @@ class we_object extends we_document{
 			$this->$name = $value;
 		} elseif($name == "Templates_0"){
 			$this->Templates = "";
-			for($i = 0; $i < sizeof(makeArrayFromCSV($this->Workspaces)); $i++){
+			$cnt = count(makeArrayFromCSV($this->Workspaces));
+			for($i = 0; $i < $cnt; $i++){
 				$this->Templates .= $_REQUEST["we_" . $this->Name . "_Templates_" . $i] . ",";
 			}
 			if($this->Templates){
@@ -2064,7 +2068,7 @@ class we_object extends we_document{
 			}
 			$this->DefaultWorkspaces = '';
 			$wsp = makeArrayFromCSV($this->Workspaces);
-			for($i = 0; $i < sizeof($wsp); $i++){
+			for($i = 0; $i < count($wsp); $i++){
 				if(isset($_REQUEST["we_" . $this->Name . "_DefaultWorkspaces_" . $i])){
 					$this->DefaultWorkspaces .= $wsp[$i] . ',';
 				}

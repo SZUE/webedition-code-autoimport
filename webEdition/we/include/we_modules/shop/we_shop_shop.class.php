@@ -78,7 +78,7 @@ class we_shop_shop{
 				}
 			}
 			$this->count++;
-			$GLOBALS["we_lv_array"][(sizeof($GLOBALS["we_lv_array"]) - 1)] = clone($GLOBALS["lv"]);
+			$GLOBALS["we_lv_array"][(count($GLOBALS["we_lv_array"]) - 1)] = clone($GLOBALS["lv"]);
 			return true;
 		}
 		return false;

@@ -1000,7 +1000,7 @@ class weNewsletterFrames extends weModuleFrames{
 			$plus = we_button::create_button("image:btn_function_plus", "javascript:we_cmd('addBlock','" . $counter . "')");
 			$trash = we_button::create_button("image:btn_function_trash", "javascript:we_cmd('delBlock','" . $counter . "')");
 
-			$buttons.=(sizeof($this->View->newsletter->blocks) > 1 ?
+			$buttons.=(count($this->View->newsletter->blocks) > 1 ?
 					we_button::position_yes_no_cancel($plus, $trash) :
 					we_button::position_yes_no_cancel($plus)
 				);

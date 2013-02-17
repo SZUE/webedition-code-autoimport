@@ -419,9 +419,9 @@ class we_messaging extends we_class{
 
 	function initSessionDat($sessDat){
 		if($sessDat){
-			for($i = 0; $i < sizeof($this->persistent_slots); $i++){
-				if(isset($sessDat[0][$this->persistent_slots[$i]])){
-					$this->{$this->persistent_slots[$i]} = $sessDat[0][$this->persistent_slots[$i]];
+			foreach($this->persistent_slots as $cur){
+				if(isset($sessDat[0][$cur])){
+					$this->{$cur} = $sessDat[0][$cur];
 				}
 			}
 
@@ -432,14 +432,16 @@ class we_messaging extends we_class{
 	}
 
 	function saveInSession(&$save){
-		$save = array('we_messaging' => array());
-		$save['we_messaging'][0] = array();
+		$save = array(
+			'we_messaging' => array(
+				array(),
+				isset($this->elements) ? $this->elements : array()
+			)
+		);
 
-		for($i = 0; $i < sizeof($this->persistent_slots); $i++){
-			$save["we_messaging"][0][$this->persistent_slots[$i]] = $this->{$this->persistent_slots[$i]};
+		foreach($this->persistent_slots as $cur){
+			$save["we_messaging"][0][$cur] = $this->{$cur};
 		}
-
-		$save['we_messaging'][1] = isset($this->elements) ? $this->elements : array();
 
 		/* save the used message objects */
 		foreach($this->used_msgobjs as $key => $val){

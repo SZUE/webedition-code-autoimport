@@ -211,7 +211,7 @@ $vatJavaScript = '
 	var allVats = new Object();
 	allVats["vat_0"] = {"id":"0","text":"' . g_l('modules_shop', '[vat][new_vat_name]') . '","vat":"19","standard":"0"};';
 
-if(sizeof($allVats) > 0){
+if(!empty($allVats)){
 
 	$vatTable = '
 	<table class="defaultfont" width="400">

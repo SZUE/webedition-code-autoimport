@@ -56,16 +56,16 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 		$aDat = (!empty($aDatTblPref)) ? @unserialize($aDatTblPref) : $aCfgProps; //
 		$aDat = $aDat ? $aDat : $aCfgProps;
 		$aTrf = array_pop($aDat);
-		if(sizeof($aDat) > $iLayoutCols){
-			while(sizeof($aDat) > $iLayoutCols) {
+		if(count($aDat) > $iLayoutCols){
+			while(count($aDat) > $iLayoutCols) {
 				$aDelCol = array_pop($aDat);
 				foreach($aDelCol as $aShiftWidget){
-					$aDat[sizeof($aDat) - 1][] = $aShiftWidget;
+					$aDat[count($aDat) - 1][] = $aShiftWidget;
 				}
 			}
 			setUserPref("cockpit_dat", serialize($aDat));
 		}
-		$iDatLen = sizeof($aDat);
+		$iDatLen = count($aDat);
 	} else{
 
 		$iLayoutCols = $iDefCols;
@@ -75,7 +75,7 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 		setUserPref("cockpit_dat", serialize($aCfgProps));
 		$aDat = $aCfgProps;
 		$aTrf = array_pop($aDat);
-		$iDatLen = sizeof($aDat);
+		$iDatLen = count($aDat);
 	}
 
 	function in_array_recursive($value, $array){
@@ -183,7 +183,7 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 	$count_j = $iDatLen;
 	foreach($aDat as $d){
 		$i = 0;
-		$count_i = sizeof($d);
+		$count_i = count($d);
 		echo "\t\t[";
 		reset($d);
 		while((list(, $v) = each($d))) {

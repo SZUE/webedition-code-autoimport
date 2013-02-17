@@ -355,7 +355,7 @@ if(isset($daten)){
 				$content = array();
 			}
 
-			for($nr = 0, $i = ($actPage * $nrOfPage); $i < sizeof($orderRows) && $i < ($actPage * $nrOfPage + $nrOfPage); $i++, $nr++){
+			for($nr = 0, $i = ($actPage * $nrOfPage); $i < count($orderRows) && $i < ($actPage * $nrOfPage + $nrOfPage); $i++, $nr++){
 				$isPublished = $orderRows[$i]['cPub'] > 0 ? true : false;
 				$publishedStylePre = $isPublished ? "" : '<span style="color: red">';
 				$publishedStylePost = $isPublished ? "" : "</span>";
@@ -472,7 +472,7 @@ if(isset($daten)){
 				usort($orderRows, 'orderBy');
 			}
 
-			for($nr = 0, $i = ($actPage * $nrOfPage); $i < sizeof($orderRows) && $i < ($actPage * $nrOfPage + $nrOfPage); $i++, $nr++){
+			for($nr = 0, $i = ($actPage * $nrOfPage); $i < count($orderRows) && $i < ($actPage * $nrOfPage + $nrOfPage); $i++, $nr++){
 
 				$isPublished = $orderRows[$i]['dPub'] > 0 ? true : false;
 				$publishedStylePre = $isPublished ? "" : '<span style="color: red">';

@@ -195,7 +195,7 @@ class we_class_folder extends we_folder{
 	function getUserDefaultWsPath(){
 		$userWSArray = makeArrayFromCSV(get_ws());
 
-		$userDefaultWsID = sizeof($userWSArray) ? $userWSArray[0] : 0;
+		$userDefaultWsID = empty($userWSArray) ? 0:$userWSArray[0];
 		return (intval($userDefaultWsID) != 0 ?
 				id_to_path($userDefaultWsID, FILE_TABLE, $GLOBALS['DB_WE']) :
 				'/');
@@ -523,7 +523,7 @@ class we_class_folder extends we_folder{
 							break;
 						case "multiobject":
 							$temp = unserialize($this->searchclass->f($type[$i + 5] . "_" . $head[$i + 5]["dat"]));
-							if(is_array($temp['objects']) && sizeof($temp['objects']) > 0){
+							if(is_array($temp['objects']) && !empty($temp['objects'])){
 								$objects = $temp['objects'];
 								$class = $temp['class'];
 								$content[$f][$i + 5]["dat"] = "";
@@ -926,7 +926,8 @@ EOF;
 		if($objID){
 			$tableInfo = $DB_WE->metadata(OBJECT_X_TABLE . $objID);
 
-			for($i = 0; $i < sizeof($tableInfo); $i++){
+			for($i = 0; $i < count($tableInfo); $i++){
+//fixme: explode?
 				if(substr($tableInfo[$i]["name"], 0, 5) == "meta_"){
 
 					$ret.= "

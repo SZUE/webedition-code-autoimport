@@ -89,12 +89,12 @@ function is_valid_email($email){
 function contains_bad_str($str_to_test){
 	$str_to_test = trim($str_to_test);
 	$bad_strings = array(
-		'content-type:'
-		, 'mime-version:'
-		, 'Content-Transfer-Encoding:'
-		, 'bcc:'
-		, 'cc:'
-		, 'to:'
+		'content-type:',
+		'mime-version:',
+		'Content-Transfer-Encoding:',
+		'bcc:',
+		'cc:',
+		'to:',
 	);
 
 	foreach($bad_strings as $bad_string){
@@ -110,13 +110,13 @@ function contains_bad_str($str_to_test){
 function replace_bad_str($str_to_test){
 	$out = $str_to_test;
 	$bad_strings = array(
-		'(content-type)(:)'
-		, '(mime-version)(:)'
-		, '(multipart/mixed)'
-		, '(Content-Transfer-Encoding)(:)'
-		, '(bcc)(:)'
-		, '(cc)(:)'
-		, '(to)(:)'
+		'(content-type)(:)',
+		'(mime-version)(:)',
+		'(multipart/mixed)',
+		'(Content-Transfer-Encoding)(:)',
+		'(bcc)(:)',
+		'(cc)(:)',
+		'(to)(:)',
 	);
 
 
@@ -135,8 +135,7 @@ function contains_newlines($str_to_test){
 function print_error($errortext){
 
 	$headline = 'Fehler / Error';
-	$content = g_l('global', '[formmailerror]') . getHtmlTag('br')
-		. '&#8226; ' . $errortext;
+	$content = g_l('global', '[formmailerror]') . getHtmlTag('br') . '&#8226; ' . $errortext;
 
 	$css = array(
 		'media' => 'screen',
@@ -145,12 +144,12 @@ function print_error($errortext){
 		'href' => WEBEDITION_DIR . 'css/global.php',
 	);
 
-	print we_html_tools::htmlTop();
-	print getHtmlTag('link', $css);
-	print '</head>';
-	print getHtmlTag('body', array('class' => 'weEditorBody'), '', false, true);
-	print we_html_tools::htmlDialogLayout(getHtmlTag('div', array('class' => 'defaultgray'), $content), $headline);
-	print '</body></html>';
+	print we_html_tools::htmlTop() .
+		getHtmlTag('link', $css) .
+		'</head>' .
+		getHtmlTag('body', array('class' => 'weEditorBody'), '', false, true) .
+		we_html_tools::htmlDialogLayout(getHtmlTag('div', array('class' => 'defaultgray'), $content), $headline) .
+		'</body></html>';
 
 	exit;
 }
@@ -244,8 +243,7 @@ if(isset($_REQUEST['we_remove'])){
 }
 
 $we_txt = '';
-$we_html = '<table>
-';
+$we_html = '<table>';
 
 $_order = isset($_REQUEST['order']) ? $_REQUEST['order'] : '';
 $we_orderarray = array();
@@ -293,17 +291,14 @@ foreach($output as $n => $v){
 		$foo = replace_bad_str($foo);
 		$we_txt .= "$n: $foo\n" . ($foo ? '' : "\n");
 		if($n == 'email'){
-			$we_html .= '<tr><td align="right"><b>' . $n . ':</b></td><td><a href="mailto:' . $foo . '">' . $foo . '</a></td></tr>
-';
+			$we_html .= '<tr><td align="right"><b>' . $n . ':</b></td><td><a href="mailto:' . $foo . '">' . $foo . '</a></td></tr>';
 		} else{
-			$we_html .= '<tr><td align="right"><b>' . $n . ':</b></td><td>' . $foo . '</td></tr>
-';
+			$we_html .= '<tr><td align="right"><b>' . $n . ':</b></td><td>' . $foo . '</td></tr>';
 		}
 	}
 }
 
-$we_html .= '</table>
-';
+$we_html .= '</table>';
 
 
 $we_html_confirm = '';
@@ -353,11 +348,8 @@ $mimetype = (isset($_REQUEST['mimetype']) && $_REQUEST['mimetype']) ? $_REQUEST[
 $wasSent = false;
 
 if($recipient){
-	if(isset($_REQUEST['forcefrom']) && $_REQUEST['forcefrom'] == 'true'){
-		$fromMail = $from;
-	} else{
-		$fromMail = $email;
-	}
+	$fromMail = (isset($_REQUEST['forcefrom']) && $_REQUEST['forcefrom'] == 'true' ? $from : $email);
+
 	$subject = preg_replace("/(\\n+|\\r+)/", "", $subject);
 	$charset = preg_replace("/(\\n+|\\r+)/", "", $charset);
 	$fromMail = preg_replace("/(\\n+|\\r+)/", "", $fromMail);
@@ -377,11 +369,9 @@ if($recipient){
 	$recipients = makeArrayFromCSV($recipient);
 	$senderForename = isset($_REQUEST['forename']) && $_REQUEST['forename'] != '' ? $_REQUEST['forename'] : '';
 	$senderSurname = isset($_REQUEST['surname']) && $_REQUEST['surname'] != '' ? $_REQUEST['surname'] : '';
-	if($senderForename != '' || $senderSurname != ''){
-		$sender = "$senderForename $senderSurname<$fromMail>";
-	} else{
-		$sender = $fromMail;
-	}
+	$sender = ($senderForename != '' || $senderSurname != '' ?
+			$senderForename . ' ' . $senderSurname . '<' . $fromMail . '>' :
+			$fromMail);
 
 	$phpmail = new we_util_Mailer('', $subject, $sender);
 	$phpmail->setCharSet($charset);
@@ -390,12 +380,11 @@ if($recipient){
 
 	foreach($recipients as $recipientID){
 
-		if(is_numeric($recipientID)){
-			$recipient = f('SELECT Email FROM ' . RECIPIENTS_TABLE . ' WHERE ID=' . intval($recipientID), 'Email', $GLOBALS['DB_WE']);
-		} else{
-			// backward compatible
-			$recipient = $recipientID;
-		}
+		$recipient = (is_numeric($recipientID) ?
+				f('SELECT Email FROM ' . RECIPIENTS_TABLE . ' WHERE ID=' . intval($recipientID), 'Email', $GLOBALS['DB_WE']) :
+				// backward compatible
+				$recipientID);
+
 		if(!$recipient){
 			print_error(g_l('global', '[email_no_recipient]'));
 		}
@@ -413,13 +402,11 @@ if($recipient){
 	}
 
 	if(count($recipientsList) > 0){
-		if(sizeof($_FILES)){
-			foreach($_FILES as $name => $file){
-				if(isset($file['tmp_name']) && $file['tmp_name']){
-					$tempName = TEMP_PATH . '/' . $file['name'];
-					move_uploaded_file($file['tmp_name'], $tempName);
-					$phpmail->doaddAttachment($tempName);
-				}
+		foreach($_FILES as $name => $file){
+			if(isset($file['tmp_name']) && $file['tmp_name']){
+				$tempName = TEMP_PATH . '/' . $file['name'];
+				move_uploaded_file($file['tmp_name'], $tempName);
+				$phpmail->doaddAttachment($tempName);
 			}
 		}
 		$phpmail->addAddressList($recipientsList);

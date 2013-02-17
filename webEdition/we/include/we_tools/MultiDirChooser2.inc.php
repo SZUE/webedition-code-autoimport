@@ -45,7 +45,7 @@ class MultiDirChooser2 extends MultiDirChooser{
 	var $rowPrefix = "";
 	var $catField = "";
 
-	function __construct($width="", $ids="", $cmd_del="", $addbut="", $ws="", $fields="Icon,Path", $table=FILE_TABLE, $css="defaultfont", $thirdDelPar="", $extraDelFn=""){
+	function __construct($width = "", $ids = "", $cmd_del = "", $addbut = "", $ws = "", $fields = "Icon,Path", $table = FILE_TABLE, $css = "defaultfont", $thirdDelPar = "", $extraDelFn = ""){
 
 		$this->db = new DB_WE();
 		$this->db2 = new DB_WE();
@@ -87,7 +87,7 @@ class MultiDirChooser2 extends MultiDirChooser{
 		switch($lineNr){
 			case 0:
 				return '<tr>
-	<td><img src="' . ICON_DIR .we_base_ContentTypes::FOLDER_ICON. '" width="16" height="18" /></td>
+	<td><img src="' . ICON_DIR . we_base_ContentTypes::FOLDER_ICON . '" width="16" height="18" /></td>
 	<td class="' . $this->css . '">/</td>
 	<td>' . ((($this->isEditable() && $this->cmd_del) || $this->CanDelete) ?
 						we_button::create_button("image:btn_function_trash", "javascript:if(typeof(_EditorFrame)!='undefined'){_EditorFrame.setEditorIsHot(true);}" . ($this->extraDelFn ? $this->extraDelFn : "") . ";we_cmd('" . $this->cmd_del . "','0');", true, 26) :
@@ -102,28 +102,26 @@ class MultiDirChooser2 extends MultiDirChooser{
 		$this->nr = 0;
 		$idArr = makeArrayFromCSV($this->ids);
 
-		if(sizeof($idArr)){
-			foreach($idArr as $id){
-				$this->db->query("SELECT ID," . $this->fields . " FROM " . $this->db->escape($this->table) . " WHERE ID =" . intval($id));
-				if($this->db->next_record()){
-					for($i = 0; $i < $this->lines; $i++){
-						$out .= $this->getLine($i);
-					}
-				} else if(!$id){
-					for($i = 0; $i < $this->lines; $i++){
-						$out .= $this->getRootLine($i);
-					}
+		foreach($idArr as $id){
+			$this->db->query("SELECT ID," . $this->fields . " FROM " . $this->db->escape($this->table) . " WHERE ID =" . intval($id));
+			if($this->db->next_record()){
+				for($i = 0; $i < $this->lines; $i++){
+					$out .= $this->getLine($i);
 				}
-				$this->nr++;
+			} else if(!$id){
+				for($i = 0; $i < $this->lines; $i++){
+					$out .= $this->getRootLine($i);
+				}
 			}
+			$this->nr++;
 		}
-		$out .= '	<tr><td width="20">' . we_html_tools::getPixel(20, sizeof($idArr) ? 2 : 12) . '</td><td>' . we_html_tools::getPixel(50, 2) . '</td><td width="26">' . we_html_tools::getPixel(26, 2) . '</td></tr>';
+		$out .= '	<tr><td width="20">' . we_html_tools::getPixel(20, count($idArr) ? 2 : 12) . '</td><td>' . we_html_tools::getPixel(50, 2) . '</td><td width="26">' . we_html_tools::getPixel(26, 2) . '</td></tr>';
 		return $out;
 	}
 
 	function get(){
-		$out = '<table border="0" cellpadding="0" height="18" cellspacing="0" width="' . abs($this->width - 10) . '" id="' . $this->rowPrefix . 'CatTable">'.
-		$this->getTableRows().
+		$out = '<table border="0" cellpadding="0" height="18" cellspacing="0" width="' . abs($this->width - 10) . '" id="' . $this->rowPrefix . 'CatTable">' .
+			$this->getTableRows() .
 			'</table>';
 
 		return '<table border="0" cellpadding="0" cellspacing="0" width="' . $this->width . '">

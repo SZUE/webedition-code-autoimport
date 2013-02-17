@@ -227,7 +227,7 @@ abstract class importFunctions{
 		if(preg_match_all('/' . $eregformat . '/', $datestring, $matches, PREG_SET_ORDER)){
 
 			if(isset($matches[0]) && is_array($matches[0])){
-				for($i = 1; $i < sizeof($matches[0]); $i++){
+				for($i = 1; $i < count($matches[0]); $i++){
 					if(isset($replaceorder[$i - 1])){
 						switch($replaceorder[$i - 1]){
 							case "y":
