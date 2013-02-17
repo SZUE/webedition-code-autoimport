@@ -22,12 +22,9 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+$perm_group_name = "customer";
 
-
-
-$perm_group_name="customer";
-
-$perm_group_title[$perm_group_name] = g_l('perms_customer',"[perm_group_title]");
+$perm_group_title[$perm_group_name] = g_l('perms_customer', "[perm_group_title]");
 
 $perm_values[$perm_group_name] = array(
 	'NEW_CUSTOMER',
@@ -42,17 +39,16 @@ $perm_values[$perm_group_name] = array(
 //	Here the array of the permission-titles is set.
 $perm_titles[$perm_group_name] = array();
 
-for($i = 0; $i < count($perm_values[$perm_group_name]); $i++){
-
-	$perm_titles[$perm_group_name][$perm_values[$perm_group_name][$i]] = g_l('perms_'.$perm_group_name,'['.$perm_values[$perm_group_name][$i].']');
+foreach($perm_values[$perm_group_name] as $cur){
+	$perm_titles[$perm_group_name][$cur] = g_l('perms_' . $perm_group_name, '[' . $cur . ']');
 }
 
 $perm_defaults[$perm_group_name] = array(
 	'NEW_CUSTOMER' => 0,
- 	'DELETE_CUSTOMER' => 0,
- 	'EDIT_CUSTOMER' => 0,
- 	'SHOW_CUSTOMER_ADMIN' => 0,
- 	'CUSTOMER_PASSWORD_VISIBLE' => 0,
+	'DELETE_CUSTOMER' => 0,
+	'EDIT_CUSTOMER' => 0,
+	'SHOW_CUSTOMER_ADMIN' => 0,
+	'CUSTOMER_PASSWORD_VISIBLE' => 0,
 	'CUSTOMER_AUTOLOGINID_VISIBLE' => 0,
- 	'CAN_EDIT_CUSTOMERFILTER' => 1,
- 	'CAN_CHANGE_DOCS_CUSTOMER' => 1);
+	'CAN_EDIT_CUSTOMERFILTER' => 1,
+	'CAN_CHANGE_DOCS_CUSTOMER' => 1);

@@ -22,28 +22,25 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+$perm_group_name = "banner";
+$perm_group_title[$perm_group_name] = g_l('perms_banner', "[perm_group_title]");
 
 
-$perm_group_name="banner";
-$perm_group_title[$perm_group_name] = g_l('perms_banner',"[perm_group_title]");
-
-
- $perm_values[$perm_group_name]=array(
- 		"NEW_BANNER",
- 		"DELETE_BANNER",
-  		"EDIT_BANNER");
+$perm_values[$perm_group_name] = array(
+	"NEW_BANNER",
+	"DELETE_BANNER",
+	"EDIT_BANNER");
 
 //	Here the array of the permission-titles is set.
 $perm_titles[$perm_group_name] = array();
 
-for($i = 0; $i < count($perm_values[$perm_group_name]); $i++){
-
-	$perm_titles[$perm_group_name][$perm_values[$perm_group_name][$i]] = g_l('perms_'.$perm_group_name,'['.$perm_values[$perm_group_name][$i].']');
+foreach($perm_values[$perm_group_name] as $cur){
+	$perm_titles[$perm_group_name][$cur] = g_l('perms_' . $perm_group_name, '[' . $cur . ']');
 }
 
 
-$perm_defaults[$perm_group_name]=array(
- 		"NEW_BANNER" => 1,
- 		"DELETE_BANNER" => 0,
- 		"EDIT_BANNER" => 0);
+$perm_defaults[$perm_group_name] = array(
+	"NEW_BANNER" => 1,
+	"DELETE_BANNER" => 0,
+	"EDIT_BANNER" => 0);
 
