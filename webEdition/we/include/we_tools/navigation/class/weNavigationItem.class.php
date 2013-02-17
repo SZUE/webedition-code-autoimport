@@ -222,7 +222,7 @@ class weNavigationItem{
 		}
 	}
 
-	function isVisible(){
+	private function isVisible(){
 		if($this->visible == 'false'){
 			return false;
 		}

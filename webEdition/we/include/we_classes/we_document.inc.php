@@ -42,7 +42,7 @@ class we_document extends we_root{
 
 	/* Categories of the document */
 	var $Category = '';
-	var $IsSearchable = '';
+	var $IsSearchable = 0;
 	var $InGlossar = 0;
 	var $NavigationItems = '';
 	private $DocStream = '';
@@ -69,10 +69,8 @@ class we_document extends we_root{
 			$parentIDMerk = $doc->ParentID;
 			if($this->ID == 0){
 				foreach($this->persistent_slots as $name){
-					if($name != 'elements'){
-						if(in_array($name, array_keys(get_object_vars($doc)))){
-							$this->{$name} = $doc->{$name};
-						}
+					if($name != 'elements' && in_array($name, array_keys(get_object_vars($doc)))){
+						$this->{$name} = $doc->{$name};
 					}
 				}
 				$this->Published = 0;
@@ -633,6 +631,30 @@ class we_document extends we_root{
 		}
 	}
 
+	private function isVersioned(){
+		switch($this->ContentType){
+			case 'application/x-shockwave-flash':
+				return VERSIONING_FLASH;
+			case 'image/*':
+				return VERSIONING_IMAGE;
+			case 'text/weTmpl':
+				return VERSIONING_TEXT_WETMPL;
+			case 'video/quicktime':
+				return VERSIONING_QUICKTIME;
+			case 'text/js':
+				return VERSIONING_TEXT_JS;
+			case 'text/css':
+				return VERSIONING_TEXT_CSS;
+			case 'text/plain':
+				return VERSIONING_TEXT_PLAIN;
+			case 'text/xml':
+				return VERSIONING_TEXT_XML;
+			default:
+			case 'application/*':
+				return VERSIONING_SONSTIGE;
+		}
+	}
+
 	public function we_save($resave = 0, $skipHook = 0){
 		$this->errMsg = '';
 		$this->i_setText();
@@ -646,8 +668,6 @@ class we_document extends we_root{
 				return false;
 			}
 		}
-		/* version */
-		$version = new weVersions();
 
 		if(!parent::we_save($resave)){
 			return false;
@@ -662,12 +682,8 @@ class we_document extends we_root{
 			$this->resaveWeDocumentCustomerFilter();
 		}
 
-
-		if(($this->ContentType == 'application/x-shockwave-flash' && defined('VERSIONING_FLASH') && VERSIONING_FLASH) || ($this->ContentType == 'image/*' && defined('VERSIONING_IMAGE') && VERSIONING_IMAGE) || ($this->ContentType == 'text/weTmpl' && defined('VERSIONING_TEXT_WETMPL') && VERSIONING_TEXT_WETMPL)//#4120 hinzugef�gt
-			|| ($this->ContentType == 'video/quicktime' && defined('VERSIONING_QUICKTIME') && VERSIONING_QUICKTIME)
-			|| ($this->ContentType == 'text/js' && defined('VERSIONING_TEXT_JS') && VERSIONING_TEXT_JS) || ($this->ContentType == 'text/css' && defined('VERSIONING_TEXT_CSS') && VERSIONING_TEXT_CSS )
-			|| ($this->ContentType == 'text/plain' && defined('VERSIONING_TEXT_PLAIN') && VERSIONING_TEXT_PLAIN) || ($this->ContentType == 'text/xml' && defined('VERSIONING_TEXT_XML') && VERSIONING_TEXT_XML) || ($this->ContentType == 'application/*' && defined('VERSIONING_SONSTIGE') && VERSIONING_SONSTIGE)){
-
+		if($this->isVersioned()){
+			$version = new weVersions();
 			$version->save($this);
 		}
 
@@ -685,7 +701,6 @@ class we_document extends we_root{
 	}
 
 	function resaveWeDocumentCustomerFilter(){
-
 		if(isset($this->documentCustomerFilter) && $this->documentCustomerFilter){
 			weDocumentCustomerFilter::saveForModel($this);
 		}
@@ -717,20 +732,12 @@ class we_document extends we_root{
 		parent::we_initSessDat($sessDat);
 		if(defined('SCHEDULE_TABLE')){
 			if(
-				isset($_REQUEST['we_' . $this->Name . '_From_day'])
-				&& isset($_REQUEST['we_' . $this->Name . '_From_month'])
-				&& isset($_REQUEST['we_' . $this->Name . '_From_year'])
-				&& isset($_REQUEST['we_' . $this->Name . '_From_hour'])
-				&& isset($_REQUEST['we_' . $this->Name . '_From_minute'])){
+				isset($_REQUEST['we_' . $this->Name . '_From_day']) && isset($_REQUEST['we_' . $this->Name . '_From_month']) && isset($_REQUEST['we_' . $this->Name . '_From_year']) && isset($_REQUEST['we_' . $this->Name . '_From_hour']) && isset($_REQUEST['we_' . $this->Name . '_From_minute'])){
 				$this->From = mktime(
 					$_REQUEST['we_' . $this->Name . '_From_hour'], $_REQUEST['we_' . $this->Name . '_From_minute'], 0, $_REQUEST['we_' . $this->Name . '_From_month'], $_REQUEST['we_' . $this->Name . '_From_day'], $_REQUEST['we_' . $this->Name . '_From_year']);
 			}
 			if(
-				isset($_REQUEST['we_' . $this->Name . '_To_day'])
-				&& isset($_REQUEST['we_' . $this->Name . '_To_month'])
-				&& isset($_REQUEST['we_' . $this->Name . '_To_year'])
-				&& isset($_REQUEST['we_' . $this->Name . '_To_hour'])
-				&& isset($_REQUEST['we_' . $this->Name . '_To_minute'])){
+				isset($_REQUEST['we_' . $this->Name . '_To_day']) && isset($_REQUEST['we_' . $this->Name . '_To_month']) && isset($_REQUEST['we_' . $this->Name . '_To_year']) && isset($_REQUEST['we_' . $this->Name . '_To_hour']) && isset($_REQUEST['we_' . $this->Name . '_To_minute'])){
 				$this->To = mktime(
 					$_REQUEST['we_' . $this->Name . '_To_hour'], $_REQUEST['we_' . $this->Name . '_To_minute'], 0, $_REQUEST['we_' . $this->Name . '_To_month'], $_REQUEST['we_' . $this->Name . '_To_day'], $_REQUEST['we_' . $this->Name . '_To_year']);
 			}
@@ -1213,8 +1220,7 @@ class we_document extends we_root{
 				}
 				$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), 'Path', $db);
 				$path_parts = pathinfo($path);
-				if($hidedirindex && show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES != ''
-					&& in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
+				if($hidedirindex && show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES != '' && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
 					$path = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/';
 				}
 				if(isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->InWebEdition){
@@ -1624,7 +1630,7 @@ class we_document extends we_root{
 	public function getDocumentCss(){
 		return '';
 	}
-	
+
 	public function addDocumentCss($stylesheet = ''){
 		// this method is overwritten in we_webEditionDocument
 	}

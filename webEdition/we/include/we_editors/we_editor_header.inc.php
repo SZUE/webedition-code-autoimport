@@ -40,10 +40,8 @@ if($_SESSION['weS']['we_mode'] != 'seem'){ //	No tabs in Super-Easy-Edit_mode
 			$we_tabs->addTab(new we_tab("#", g_l('weClass', "[preview]"), (($we_doc->EditPageNr == WE_EDITPAGE_PREVIEW) ? "TAB_ACTIVE" : "TAB_NORMAL"), "we_cmd('switch_edit_page'," . WE_EDITPAGE_PREVIEW . ",'" . $we_transaction . "');", array("id" => "tab_" . WE_EDITPAGE_PREVIEW)));
 		}
 	} else{ //	show tabs according to permissions
-		if(in_array(WE_EDITPAGE_PROPERTIES, $we_doc->EditPageNrs)){
-			if(we_hasPerm("CAN_SEE_PROPERTIES")){
-				$we_tabs->addTab(new we_tab("#", g_l('weClass', "[tab_properties]"), (($we_doc->EditPageNr == WE_EDITPAGE_PROPERTIES) ? "TAB_ACTIVE" : "TAB_NORMAL"), "we_cmd('switch_edit_page'," . WE_EDITPAGE_PROPERTIES . ",'" . $we_transaction . "');", array("id" => "tab_" . WE_EDITPAGE_PROPERTIES)));
-			}
+		if(in_array(WE_EDITPAGE_PROPERTIES, $we_doc->EditPageNrs) && we_hasPerm("CAN_SEE_PROPERTIES")){
+			$we_tabs->addTab(new we_tab("#", g_l('weClass', "[tab_properties]"), (($we_doc->EditPageNr == WE_EDITPAGE_PROPERTIES) ? "TAB_ACTIVE" : "TAB_NORMAL"), "we_cmd('switch_edit_page'," . WE_EDITPAGE_PROPERTIES . ",'" . $we_transaction . "');", array("id" => "tab_" . WE_EDITPAGE_PROPERTIES)));
 		}
 		if(in_array(WE_EDITPAGE_CONTENT, $we_doc->EditPageNrs)){
 			$we_tabs->addTab(new we_tab("#", g_l('weClass', "[edit]"), (($we_doc->EditPageNr == WE_EDITPAGE_CONTENT) ? "TAB_ACTIVE" : "TAB_NORMAL"), "we_cmd('switch_edit_page'," . WE_EDITPAGE_CONTENT . ",'" . $we_transaction . "');", array("id" => "tab_" . WE_EDITPAGE_CONTENT)));
@@ -66,14 +64,11 @@ if($_SESSION['weS']['we_mode'] != 'seem'){ //	No tabs in Super-Easy-Edit_mode
 			$we_tabs->addTab(new we_tab("#", g_l('weClass', "[workspace]"), (($we_doc->EditPageNr == WE_EDITPAGE_CFWORKSPACE) ? "TAB_ACTIVE" : "TAB_NORMAL"), "we_cmd('switch_edit_page'," . WE_EDITPAGE_CFWORKSPACE . ",'" . $we_transaction . "');", array("id" => "tab_" . WE_EDITPAGE_CFWORKSPACE)));
 		}
 
-		if(in_array(WE_EDITPAGE_INFO, $we_doc->EditPageNrs)){
-			if(we_hasPerm("CAN_SEE_INFO")){
-				$we_tabs->addTab(new we_tab("#", g_l('weClass', "[information]"), (($we_doc->EditPageNr == WE_EDITPAGE_INFO) ? "TAB_ACTIVE" : "TAB_NORMAL"), "we_cmd('switch_edit_page'," . WE_EDITPAGE_INFO . ",'" . $we_transaction . "');", array("id" => "tab_" . WE_EDITPAGE_INFO)));
-			}
+		if(in_array(WE_EDITPAGE_INFO, $we_doc->EditPageNrs) && we_hasPerm("CAN_SEE_INFO")){
+			$we_tabs->addTab(new we_tab("#", g_l('weClass', "[information]"), (($we_doc->EditPageNr == WE_EDITPAGE_INFO) ? "TAB_ACTIVE" : "TAB_NORMAL"), "we_cmd('switch_edit_page'," . WE_EDITPAGE_INFO . ",'" . $we_transaction . "');", array("id" => "tab_" . WE_EDITPAGE_INFO)));
 		}
 
 		if(in_array(WE_EDITPAGE_PREVIEW, $we_doc->EditPageNrs)){
-
 			$we_tabs->addTab(new we_tab("#", ($we_doc->ContentType == "text/weTmpl" ? g_l('weClass', "[previeweditmode]") : g_l('weClass', "[preview]")), (($we_doc->EditPageNr == WE_EDITPAGE_PREVIEW) ? "TAB_ACTIVE" : "TAB_NORMAL"), "we_cmd('switch_edit_page'," . WE_EDITPAGE_PREVIEW . ",'" . $we_transaction . "');", array("id" => "tab_" . WE_EDITPAGE_PREVIEW)));
 		}
 
@@ -104,28 +99,22 @@ if($_SESSION['weS']['we_mode'] != 'seem'){ //	No tabs in Super-Easy-Edit_mode
 		if(we_hasPerm("CAN_SEE_SCHEDULER") && weModuleInfo::isActive("schedule") && in_array(WE_EDITPAGE_SCHEDULER, $we_doc->EditPageNrs) && $we_doc->ContentType != "folder"){
 			$we_tabs->addTab(new we_tab("#", g_l('weClass', "[scheduler]"), (($we_doc->EditPageNr == WE_EDITPAGE_SCHEDULER) ? "TAB_ACTIVE" : "TAB_NORMAL"), "we_cmd('switch_edit_page'," . WE_EDITPAGE_SCHEDULER . ",'" . $we_transaction . "');", array("id" => "tab_" . WE_EDITPAGE_SCHEDULER)));
 		}
-		if(in_array(WE_EDITPAGE_VALIDATION, $we_doc->EditPageNrs) && ($we_doc->ContentType == 'text/webedition' || $we_doc->ContentType == 'text/css' || $we_doc->ContentType == 'text/html' )){
-			if(we_hasPerm("CAN_SEE_VALIDATION")){
-				$we_tabs->addTab(new we_tab("#", g_l('weClass', "[validation]"), (($we_doc->EditPageNr == WE_EDITPAGE_VALIDATION) ? "TAB_ACTIVE" : "TAB_NORMAL"), "we_cmd('switch_edit_page'," . WE_EDITPAGE_VALIDATION . ",'" . $we_transaction . "');", array("id" => "tab_" . WE_EDITPAGE_VALIDATION)));
-			}
+		if((in_array(WE_EDITPAGE_VALIDATION, $we_doc->EditPageNrs) && ($we_doc->ContentType == 'text/webedition' || $we_doc->ContentType == 'text/css' || $we_doc->ContentType == 'text/html' )) && we_hasPerm("CAN_SEE_VALIDATION")){
+			$we_tabs->addTab(new we_tab("#", g_l('weClass', "[validation]"), (($we_doc->EditPageNr == WE_EDITPAGE_VALIDATION) ? "TAB_ACTIVE" : "TAB_NORMAL"), "we_cmd('switch_edit_page'," . WE_EDITPAGE_VALIDATION . ",'" . $we_transaction . "');", array("id" => "tab_" . WE_EDITPAGE_VALIDATION)));
 		}
 
 		if(in_array(WE_EDITPAGE_WEBUSER, $we_doc->EditPageNrs) && (we_hasPerm("CAN_EDIT_CUSTOMERFILTER") || we_hasPerm("CAN_CHANGE_DOCS_CUSTOMER"))){
 			$we_tabs->addTab(new we_tab("#", g_l('weClass', "[webUser]"), (($we_doc->EditPageNr == WE_EDITPAGE_WEBUSER) ? "TAB_ACTIVE" : "TAB_NORMAL"), "we_cmd('switch_edit_page'," . WE_EDITPAGE_WEBUSER . ",'" . $we_transaction . "');", array("id" => "tab_" . WE_EDITPAGE_WEBUSER)));
 		}
 
-		if(we_hasPerm("ADMINISTRATOR") || we_hasPerm("SEE_VERSIONS")){
-			if(in_array(WE_EDITPAGE_VERSIONS, $we_doc->EditPageNrs)){
-				$we_tabs->addTab(new we_tab("#", g_l('weClass', "[version]"), (($we_doc->EditPageNr == WE_EDITPAGE_VERSIONS) ? "TAB_ACTIVE" : "TAB_NORMAL"), "we_cmd('switch_edit_page'," . WE_EDITPAGE_VERSIONS . ",'" . $we_transaction . "');", array("id" => "tab_" . WE_EDITPAGE_VERSIONS)));
-			}
+		if((we_hasPerm("ADMINISTRATOR") || we_hasPerm("SEE_VERSIONS")) && in_array(WE_EDITPAGE_VERSIONS, $we_doc->EditPageNrs)){
+			$we_tabs->addTab(new we_tab("#", g_l('weClass', "[version]"), (($we_doc->EditPageNr == WE_EDITPAGE_VERSIONS) ? "TAB_ACTIVE" : "TAB_NORMAL"), "we_cmd('switch_edit_page'," . WE_EDITPAGE_VERSIONS . ",'" . $we_transaction . "');", array("id" => "tab_" . WE_EDITPAGE_VERSIONS)));
 		}
 
 		$we_doc->we_initSessDat($we_dt);
 
-		if(in_array(WE_EDITPAGE_VARIANTS, $we_doc->EditPageNrs) && ($we_doc->canHaveVariants(($we_doc->ContentType == 'text/webedition' || $we_doc->ContentType == 'objectFile')) )){
-			if(we_hasPerm("CAN_EDIT_VARIANTS")){
-				$we_tabs->addTab(new we_tab("#", g_l('weClass', "[variants]"), (($we_doc->EditPageNr == WE_EDITPAGE_VARIANTS) ? "TAB_ACTIVE" : "TAB_NORMAL"), "we_cmd('switch_edit_page'," . WE_EDITPAGE_VARIANTS . ",'" . $we_transaction . "');", array("id" => "tab_" . WE_EDITPAGE_VARIANTS)));
-			}
+		if((in_array(WE_EDITPAGE_VARIANTS, $we_doc->EditPageNrs) && ($we_doc->canHaveVariants(($we_doc->ContentType == 'text/webedition' || $we_doc->ContentType == 'objectFile')) )) && we_hasPerm("CAN_EDIT_VARIANTS")){
+			$we_tabs->addTab(new we_tab("#", g_l('weClass', "[variants]"), (($we_doc->EditPageNr == WE_EDITPAGE_VARIANTS) ? "TAB_ACTIVE" : "TAB_NORMAL"), "we_cmd('switch_edit_page'," . WE_EDITPAGE_VARIANTS . ",'" . $we_transaction . "');", array("id" => "tab_" . WE_EDITPAGE_VARIANTS)));
 		}
 
 		if(in_array(WE_EDITPAGE_DOCLIST, $we_doc->EditPageNrs)){
