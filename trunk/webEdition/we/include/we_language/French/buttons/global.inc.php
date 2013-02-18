@@ -585,6 +585,11 @@ $l_buttons_global=array(
 		'value'=>'Recherche',
 		'width'=>100,
 	),
+	'selectAllObjects'=>array(
+		'alt'=>'Select all Objects',
+		'value'=>'Select all',
+		'width'=>110,
+	),
 	'selectAll'=>array(
 		'alt'=>'Choisir tous',
 		'value'=>'Tout selectionner',

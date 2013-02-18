@@ -585,6 +585,11 @@ $l_buttons_global=array(
 		'value'=>'Hae',
 		'width'=>100,
 	),
+	'selectAllObjects'=>array(
+		'alt'=>'Select all Objects',
+		'value'=>'Select all',
+		'width'=>110,
+	),
 	'selectAll'=>array(
 		'alt'=>'Valitse kaikki',
 		'value'=>'Valitse kaikki',
