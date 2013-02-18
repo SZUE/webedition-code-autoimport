@@ -127,7 +127,17 @@ class we_core_Local{
 				if(!isset($_SERVER['TMP'])){
 					$_SERVER['TMP'] = $GLOBALS['__WE_BASE_PATH__'] . DIRECTORY_SEPARATOR . 'we' . DIRECTORY_SEPARATOR . 'zendcache';
 				}
-				Zend_Session::start();
+				for($i=0;$i<1000;++$i){
+					try {
+						Zend_Session::start();
+						break;
+                	} catch(Zend_Session_Exception $e) {
+                	}
+				}
+				if(!isset($_SESSION)){
+                	t_e('Zend_Session start failed');
+                	
+				}
 			}
 
 			if(isset($_SESSION['prefs']['Language']) && $_SESSION['prefs']['Language'] !== ''){
