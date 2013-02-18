@@ -28,12 +28,13 @@ header("Expires: " . gmdate("D, d M Y H:i:s", time() + 86400) . " GMT", true);
 header("Last-Modified: " . gmdate("D, d M Y H:i:s", filemtime(__FILE__)) . " GMT", true);
 header("Cache-Control: max-age=86400, must-revalidate", true);
 header("Pragma: ", true);
+define(FACTOR,1.8);
 ?>
 .weSelect {
 border: #AAAAAA solid 1px;
 color: black;
 box-sizing: border-box;
-font-size: <?php print (we_base_browserDetect::isMAC()) ? "11px" : ((we_base_browserDetect::isUNIX()) ? "13px" : "12px"); ?>;
+font-size: <?php print (we_base_browserDetect::isMAC()) ? 11 : ((we_base_browserDetect::isUNIX()) ? 13 : 12); ?>px;
 font-family: <?php print g_l('css', '[font_family]'); ?>;
 }
 
@@ -43,7 +44,7 @@ border: #AAAAAA solid 1px;
 box-sizing: border-box;
 height: 20px;
 <?php print (we_base_browserDetect::isIE()) ? "" : "line-height: 18px;"; ?>
-font-size: <?php print (we_base_browserDetect::isMAC()) ? "11px" : ((we_base_browserDetect::isUNIX()) ? "13px" : "12px"); ?>;
+font-size: <?php print (we_base_browserDetect::isMAC()) ? 11 : ((we_base_browserDetect::isUNIX()) ? 13 : 12); ?>px;
 font-family: <?php print g_l('css', '[font_family]'); ?>;
 }
 
@@ -60,7 +61,7 @@ background-color: #dce6f2;
 box-sizing: border-box;
 height: 20px;
 <?php print (we_base_browserDetect::isIE()) ? "" : "line-height: 18px;"; ?>
-font-size: <?php print (we_base_browserDetect::isMAC()) ? "11px" : ((we_base_browserDetect::isUNIX()) ? "13px" : "12px"); ?>;
+font-size: <?php print (we_base_browserDetect::isMAC()) ? 11 : ((we_base_browserDetect::isUNIX()) ? 13 : 12); ?>px;
 font-family: <?php print g_l('css', '[font_family]'); ?>;
 }
 
@@ -70,7 +71,7 @@ color: black;
 border: #AAAAAA solid 1px;
 height: 80px;
 <?php print (we_base_browserDetect::isIE()) ? "" : "line-height: 18px;"; ?>
-font-size: <?php print (we_base_browserDetect::isMAC()) ? "11px" : ((we_base_browserDetect::isUNIX()) ? "13px" : "12px"); ?>;
+font-size: <?php print (we_base_browserDetect::isMAC()) ? 11 : ((we_base_browserDetect::isUNIX()) ? 13 : 12); ?>px;
 font-family: <?php print g_l('css', '[font_family]'); ?>;
 }
 
@@ -79,8 +80,8 @@ color: black;
 border: #888888 solid 1px;
 background-color: #dce6f2;
 height: 80px;
-<?php print (we_base_browserDetect::isIE()) ? "" : "line-height: 18px;"; ?>
-font-size: <?php print (we_base_browserDetect::isMAC()) ? "11px" : ((we_base_browserDetect::isUNIX()) ? "13px" : "12px"); ?>;
+<?php print (we_base_browserDetect::isIE()) ? '' : "line-height: 18px;"; ?>
+font-size: <?php print (we_base_browserDetect::isMAC()) ? 11 : ((we_base_browserDetect::isUNIX()) ? 13 : 12); ?>px;
 font-family: <?php print g_l('css', '[font_family]'); ?>;
 }
 
@@ -109,7 +110,7 @@ margin:0px 0px 0px 0px;
 
 .defaultfont {
 color: black;
-font-size: <?php print (we_base_browserDetect::isMAC()) ? "11px" : ((we_base_browserDetect::isUNIX()) ? "13px" : "12px"); ?>;
+font-size: <?php print (we_base_browserDetect::isMAC()) ? 11 : ((we_base_browserDetect::isUNIX()) ? 13 : 12); ?>px;
 font-family: <?php print g_l('css', '[font_family]'); ?>;
 }
 
@@ -131,13 +132,13 @@ padding: 4px 0 4px 0;
 
 .npdefaultfont {
 color: red;
-font-size: <?php print (we_base_browserDetect::isMAC()) ? "11px" : ((we_base_browserDetect::isUNIX()) ? "13px" : "12px"); ?>;
+font-size: <?php print (we_base_browserDetect::isMAC()) ? 11 : ((we_base_browserDetect::isUNIX()) ? 13 : 12); ?>px;
 font-family: <?php print g_l('css', '[font_family]'); ?>;
 }
 
 .changeddefaultfont {
 color: blue;
-font-size: <?php print (we_base_browserDetect::isMAC()) ? "11px" : ((we_base_browserDetect::isUNIX()) ? "13px" : "12px"); ?>;
+font-size: <?php print (we_base_browserDetect::isMAC()) ? 11 : ((we_base_browserDetect::isUNIX()) ? 13 : 12); ?>px;
 font-family: <?php print g_l('css', '[font_family]'); ?>;
 }
 
@@ -156,25 +157,25 @@ color: #006DB8;
 .shopContentfont {
 vertical-align: top;
 color: black;
-font-size: <?php print (we_base_browserDetect::isMAC()) ? "11px" : ((we_base_browserDetect::isUNIX()) ? "13px" : "12px"); ?>;
+font-size: <?php print (we_base_browserDetect::isMAC()) ? 11 : ((we_base_browserDetect::isUNIX()) ? 13 : 12); ?>px;
 font-family: <?php print g_l('css', '[font_family]'); ?>;
 text-align:center;
 }
 .shopContentfontSmall {
 color: black;
-font-size: <?php print (we_base_browserDetect::isMAC()) ? "9px" : ((we_base_browserDetect::isUNIX()) ? "11px" : "10px"); ?>;
+font-size: <?php print (we_base_browserDetect::isMAC()) ? 9 : ((we_base_browserDetect::isUNIX()) ? 11 : 10); ?>px;
 font-family: <?php print g_l('css', '[font_family]'); ?>;
 text-align:center;
 }
 .shopContentfontAlert {
 color: #800000;
-font-size: <?php print (we_base_browserDetect::isMAC()) ? "11px" : ((we_base_browserDetect::isUNIX()) ? "13px" : "12px"); ?>;
+font-size: <?php print (we_base_browserDetect::isMAC()) ? 11 : ((we_base_browserDetect::isUNIX()) ? 13 : 12); ?>px;
 font-family: <?php print g_l('css', '[font_family]'); ?>;
 text-align:left;
 }
 .shopContentfontGreySmall {
 color: #666666;
-font-size: <?php print (we_base_browserDetect::isMAC()) ? "9px" : ((we_base_browserDetect::isUNIX()) ? "11px" : "10px"); ?>;
+font-size: <?php print (we_base_browserDetect::isMAC()) ? 9 : ((we_base_browserDetect::isUNIX()) ? 11 : 10); ?>px;
 font-family: <?php print g_l('css', '[font_family]'); ?>;
 text-align:left;
 
@@ -182,13 +183,13 @@ text-align:left;
 .shopContentfontR {
 vertical-align: top;
 color: black;
-font-size: <?php print (we_base_browserDetect::isMAC()) ? "11px" : ((we_base_browserDetect::isUNIX()) ? "13px" : "12px"); ?>;
+font-size: <?php print (we_base_browserDetect::isMAC()) ? 11 : ((we_base_browserDetect::isUNIX()) ? 13 : 12); ?>px;
 font-family: <?php print g_l('css', '[font_family]'); ?>;
 text-align:right;
 }
 .shopContentfontGR {
 color: #666666;
-font-size: <?php print (we_base_browserDetect::isMAC()) ? "11px" : ((we_base_browserDetect::isUNIX()) ? "13px" : "12px"); ?>;
+font-size: <?php print (we_base_browserDetect::isMAC()) ? 11 : ((we_base_browserDetect::isUNIX()) ? 13 : 12); ?>px;
 font-family: <?php print g_l('css', '[font_family]'); ?>;
 text-align:right;
 }
@@ -197,7 +198,7 @@ color: red;
 }
 .npshopContentfont {
 color: red;
-font-size: <?php print (we_base_browserDetect::isMAC()) ? "11px" : ((we_base_browserDetect::isUNIX()) ? "13px" : "12px"); ?>;
+font-size: <?php print (we_base_browserDetect::isMAC()) ? 11 : ((we_base_browserDetect::isUNIX()) ? 13 : 12); ?>px;
 font-family: <?php print g_l('css', '[font_family]'); ?>;
 text-align:center;
 }
@@ -214,14 +215,14 @@ color: #006DB8;
 }
 .pshopContentfontR {
 color: green;
-font-size: <?php print (we_base_browserDetect::isMAC()) ? "11px" : ((we_base_browserDetect::isUNIX()) ? "13px" : "12px"); ?>;
+font-size: <?php print (we_base_browserDetect::isMAC()) ? 11 : ((we_base_browserDetect::isUNIX()) ? 13 : 12); ?>px;
 font-family: <?php print g_l('css', '[font_family]'); ?>;
 text-align:right;
 
 }
 .pshopContentfont {
 color: green;
-font-size: <?php print (we_base_browserDetect::isMAC()) ? "11px" : ((we_base_browserDetect::isUNIX()) ? "13px" : "12px"); ?>;
+font-size: <?php print (we_base_browserDetect::isMAC()) ? 11 : ((we_base_browserDetect::isUNIX()) ? 13 : 12); ?>px;
 font-family: <?php print g_l('css', '[font_family]'); ?>;
 text-align:center;
 
@@ -242,7 +243,7 @@ color: #006DB8;
 }
 .pdefaultfont {
 color: green;
-font-size: <?php print (we_base_browserDetect::isMAC()) ? "11px" : ((we_base_browserDetect::isUNIX()) ? "13px" : "12px"); ?>;
+font-size: <?php print (we_base_browserDetect::isMAC()) ? 11 : ((we_base_browserDetect::isUNIX()) ? 13 : 12); ?>px;
 font-family: <?php print g_l('css', '[font_family]'); ?>;
 
 }
@@ -269,7 +270,7 @@ color: #006DB8;
 
 .middlefont {
 color: black;
-font-size: <?php print (we_base_browserDetect::isMAC()) ? "10px" : ((we_base_browserDetect::isUNIX()) ? "12px" : "11px"); ?>;
+font-size: <?php print (we_base_browserDetect::isMAC()) ? 10 : ((we_base_browserDetect::isUNIX()) ? 12 : 11); ?>px;
 font-family: <?php print g_l('css', '[font_family]'); ?>;
 
 }
@@ -290,7 +291,7 @@ color: #006DB8;
 
 .middlefontgray {
 color: #666666;
-font-size: <?php print (we_base_browserDetect::isMAC()) ? "10px" : ((we_base_browserDetect::isUNIX()) ? "12px" : "11px"); ?>;
+font-size: <?php print (we_base_browserDetect::isMAC()) ? 10 : ((we_base_browserDetect::isUNIX()) ? 12 : 11); ?>px;
 font-family: <?php print g_l('css', '[font_family]'); ?>;
 
 }
@@ -311,7 +312,7 @@ color: #006DB8;
 
 .middlefontred {
 color: red;
-font-size: <?php print (we_base_browserDetect::isMAC()) ? "10px" : ((we_base_browserDetect::isUNIX()) ? "12px" : "11px"); ?>;
+font-size: <?php print (we_base_browserDetect::isMAC()) ? 10 : ((we_base_browserDetect::isUNIX()) ? 12 : 11); ?>px;
 font-family: <?php print g_l('css', '[font_family]'); ?>;
 }
 
@@ -331,7 +332,7 @@ color: #006DB8;
 
 .defaultgray {
 color: #666666;
-font-size: <?php print (we_base_browserDetect::isMAC()) ? "11px" : ((we_base_browserDetect::isUNIX()) ? "13px" : "12px"); ?>;
+font-size: <?php print (we_base_browserDetect::isMAC()) ? 11 : ((we_base_browserDetect::isUNIX()) ? 13 : 12); ?>px;
 font-family: <?php print g_l('css', '[font_family]'); ?>;
 }
 
@@ -351,13 +352,13 @@ color: #006DB8;
 
 .small {
 color: black;
-font-size: <?php print (we_base_browserDetect::isGecko() && we_base_browserDetect::isWin() ? "9px" : ((we_base_browserDetect::isUNIX()) ? "11px" : "9px")); ?>;
+font-size: <?php print (we_base_browserDetect::isGecko() && we_base_browserDetect::isWin() ? 9 : ((we_base_browserDetect::isUNIX()) ? 11 : 9)); ?>px;
 font-family: <?php print g_l('css', '[font_family]'); ?>;
 }
 
 .header_small {
 color: #006699;
-font-size: <?php print (we_base_browserDetect::isGecko() && we_base_browserDetect::isWin() ? "11px" : ((we_base_browserDetect::isUNIX()) ? "10px" : "10px")); ?>;
+font-size: <?php print (we_base_browserDetect::isGecko() && we_base_browserDetect::isWin() ? 11 : ((we_base_browserDetect::isUNIX()) ? 10 : 10)); ?>px;
 font-family: <?php print g_l('css', '[font_family]'); ?>;
 }
 
@@ -390,7 +391,7 @@ font-family: <?php print g_l('css', '[font_family]'); ?>;
 .big {
 color: black;
 text-align: left;
-font-size: <?php print (we_base_browserDetect::isGecko() && we_base_browserDetect::isWin() ? "14px" : ((we_base_browserDetect::isUNIX()) ? "15px" : "13px")); ?>;
+font-size: <?php print (we_base_browserDetect::isGecko() && we_base_browserDetect::isWin() ? 14 : ((we_base_browserDetect::isUNIX()) ? 15 : 13)); ?>px;
 font-family: <?php print g_l('css', '[font_family]'); ?>;
 
 }
@@ -408,7 +409,7 @@ font-family: <?php print g_l('css', '[font_family]'); ?>;
 
 .tree {
 color: black;
-font-size: <?php print (we_base_browserDetect::isGecko() && we_base_browserDetect::isWin() ? "10px" : ((we_base_browserDetect::isUNIX()) ? "11px" : "9px")); ?>;
+font-size: <?php print (we_base_browserDetect::isGecko() && we_base_browserDetect::isWin() ? 10 : ((we_base_browserDetect::isUNIX()) ? 11 : 9)); ?>px;
 font-family: <?php print g_l('css', '[font_family]'); ?>;
 border-width: 0px;
 border-collapse: collapse;
@@ -427,7 +428,7 @@ vertical-align: middle;
 
 .selector {
 color: black;
-font-size: <?php print (we_base_browserDetect::isMAC()) ? "11px" : ((we_base_browserDetect::isUNIX()) ? "13px" : "12px"); ?>;
+font-size: <?php print (we_base_browserDetect::isMAC()) ? 11 : ((we_base_browserDetect::isUNIX()) ? 13 : 12); ?>px;
 font-family: <?php print g_l('css', '[font_family]'); ?>;
 }
 
@@ -440,7 +441,7 @@ text-decoration:none;
 .tableHeader {
 color: #ffffff;
 font-weight: bold;
-font-size: <?php print (we_base_browserDetect::isMAC()) ? "11px" : ((we_base_browserDetect::isUNIX()) ? "13px" : "12px"); ?>;
+font-size: <?php print (we_base_browserDetect::isMAC()) ? 11 : ((we_base_browserDetect::isUNIX()) ? 13 : 12); ?>px;
 font-family: <?php print g_l('css', '[font_family]'); ?>;
 }
 
@@ -467,7 +468,7 @@ color: #006DB8;
 
 .defaultfontred {
 color: #6CBFF9;
-font-size: <?php print (we_base_browserDetect::isMAC()) ? "11px" : ((we_base_browserDetect::isUNIX()) ? "13px" : "12px"); ?>;
+font-size: <?php print (we_base_browserDetect::isMAC()) ? 11 : ((we_base_browserDetect::isUNIX()) ? 13 : 12); ?>px;
 font-family: <?php print g_l('css', '[font_family]'); ?>;
 }
 
@@ -485,7 +486,7 @@ background-image: url(<?php echo IMAGE_DIR; ?>pixel.gif);
 border: 0px;
 color: #000000;
 cursor: default;
-font-size: <?php print (we_base_browserDetect::isMAC()) ? "11px" : ((we_base_browserDetect::isUNIX()) ? "13px" : "12px"); ?>;
+font-size: <?php print (we_base_browserDetect::isMAC()) ? 11 : ((we_base_browserDetect::isUNIX()) ? 13 : 12); ?>px;
 font-family: <?php print g_l('css', '[font_family]'); ?>;
 font-weight: normal;
 margin: 0px;
@@ -529,7 +530,7 @@ display:none;
 
 .weDialogHeadline {
 color: #000000;
-font-size: <?php print (we_base_browserDetect::isMAC()) ? "11px" : ((we_base_browserDetect::isUNIX()) ? "13px" : "12px"); ?>;
+font-size: <?php print (we_base_browserDetect::isMAC()) ? 11 : ((we_base_browserDetect::isUNIX()) ? 13 : 12); ?>px;
 font-family: <?php print g_l('css', '[font_family]'); ?>;
 font-weight: bold;
 }
@@ -537,14 +538,14 @@ font-weight: bold;
 
 .weMultiIconBoxHeadline {
 color: #6078A2;
-font-size: <?php print (we_base_browserDetect::isMAC()) ? "11px" : ((we_base_browserDetect::isUNIX()) ? "13px" : "12px"); ?>;
+font-size: <?php print (we_base_browserDetect::isMAC()) ? 11 : ((we_base_browserDetect::isUNIX()) ? 13 : 12); ?>px;
 font-family: <?php print g_l('css', '[font_family]'); ?>;
 font-weight: bold;
 }
 
 .weMultiIconBoxHeadlineThin {
 color: #6078A2;
-font-size: <?php print (we_base_browserDetect::isMAC()) ? "11px" : ((we_base_browserDetect::isUNIX()) ? "13px" : "12px"); ?>;
+font-size: <?php print (we_base_browserDetect::isMAC()) ? 11 : ((we_base_browserDetect::isUNIX()) ? 13 : 12); ?>px;
 font-family: <?php print g_l('css', '[font_family]'); ?>;
 font-weight: normal;
 }
@@ -591,7 +592,7 @@ height:139px;
 
 .weObjectPreviewHeadline {
 color: #6078A2;
-font-size: <?php print (we_base_browserDetect::isMAC()) ? "11px" : ((we_base_browserDetect::isUNIX()) ? "13px" : "12px"); ?>;
+font-size: <?php print (we_base_browserDetect::isMAC()) ? 11 : ((we_base_browserDetect::isUNIX()) ? 13 : 12); ?>px;
 font-family: <?php print g_l('css', '[font_family]'); ?>;
 font-weight: bold;
 margin-bottom:3px;
@@ -605,14 +606,14 @@ padding		: 0px;
 
 .weDocListSearchHeadline {
 color: #6078A2;
-font-size: <?php print (we_base_browserDetect::isMAC()) ? "13px" : ((we_base_browserDetect::isUNIX()) ? "15px" : "14px"); ?>;
+font-size: <?php print (we_base_browserDetect::isMAC()) ? 13 : ((we_base_browserDetect::isUNIX()) ? 15 : 14); ?>px;
 font-family: <?php print g_l('css', '[font_family]'); ?>;
 font-weight: bold;
 margin-top:6px;
 }
 .weDocListSearchHeadlineDivs {
 color: #6078A2;
-font-size: <?php print (we_base_browserDetect::isMAC()) ? "13px" : ((we_base_browserDetect::isUNIX()) ? "15px" : "14px"); ?>;
+font-size: <?php print (we_base_browserDetect::isMAC()) ? 13 : ((we_base_browserDetect::isUNIX()) ? 15 : 14); ?>px;
 font-family: <?php print g_l('css', '[font_family]'); ?>;
 font-weight: bold;
 }
