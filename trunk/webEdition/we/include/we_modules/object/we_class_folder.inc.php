@@ -748,7 +748,7 @@ class we_class_folder extends we_folder{
 			<td>' . we_html_tools::getPixel(460, 12) . '</td>
 		</tr>
 		<tr>
-			<td>' . we_html_tools::getPixel(5, 1) . (we_hasPerm("DELETE_OBJECTFILE") || we_hasPerm("NEW_OBJECTFILE") ? we_button::create_button("selectAll", "javascript: " . $javascriptAll) : "") . '</td>
+			<td>' . we_html_tools::getPixel(5, 1) . (we_hasPerm("DELETE_OBJECTFILE") || we_hasPerm("NEW_OBJECTFILE") ? we_button::create_button("selectAllObjects", "javascript: " . $javascriptAll) : "") . '</td>
 			<td align="right">' . $this->searchclass->getNextPrev($foundItems) . '</td>
 		</tr>
 		<tr>
