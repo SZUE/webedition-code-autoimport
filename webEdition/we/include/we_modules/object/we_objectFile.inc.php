@@ -97,13 +97,10 @@ class we_objectFile extends we_document{
 				$parentfolder = new we_class_folder();
 				$parentfolder->initByID($parentid, OBJECT_FILES_TABLE);
 
-				if($parentfolder){
-
-					if(($GLOBALS['we_object'][$formname]->ParentPath == $parentfolder->Path) ||
-						strpos($parentfolder->Path . '/', $GLOBALS['we_object'][$formname]->ParentPath) === 0){
-						$GLOBALS['we_object'][$formname]->ParentID = $parentfolder->ID;
-						$GLOBALS['we_object'][$formname]->Path = $parentfolder->Path . '/' . $GLOBALS['we_object'][$formname]->Filename;
-					}
+				if(($GLOBALS['we_object'][$formname]->ParentPath == $parentfolder->Path) ||
+					strpos($parentfolder->Path . '/', $GLOBALS['we_object'][$formname]->ParentPath) === 0){
+					$GLOBALS['we_object'][$formname]->ParentID = $parentfolder->ID;
+					$GLOBALS['we_object'][$formname]->Path = $parentfolder->Path . '/' . $GLOBALS['we_object'][$formname]->Filename;
 				}
 			}
 
@@ -2037,23 +2034,20 @@ class we_objectFile extends we_document{
 			$ws[] = $w;
 		}
 		$ws = array_unique($ws);
-		$wsPath = '';
-		$w = '';
 
-		if(empty($ws) && ($this->DB_WE->query(
-				'INSERT INTO ' . INDEX_TABLE . ' SET ' . we_database_base::arraySetter(array(
-					'OID' => $this->ID,
-					'Text' => $text,
-					'Workspace' => $wsPath,
-					'WorkspaceID' => $w,
-					'Category' => $this->Category,
-					'ClassID' => $this->TableID,
-					'Title' => $this->getElement("Title"),
-					'Description' => $this->getElement("Description"),
-					'Path' => $this->Text,
-					'Language' => $this->Language
-				))))){
-			return true;
+		if(empty($ws)){
+			return $this->DB_WE->query('INSERT INTO ' . INDEX_TABLE . ' SET ' . we_database_base::arraySetter(array(
+						'OID' => $this->ID,
+						'Text' => $text,
+						'Workspace' => '',
+						'WorkspaceID' => 0,
+						'Category' => $this->Category,
+						'ClassID' => $this->TableID,
+						'Title' => $this->getElement("Title"),
+						'Description' => $this->getElement("Description"),
+						'Path' => $this->Text,
+						'Language' => $this->Language
+			)));
 		}
 
 		foreach($ws as $w){
@@ -2074,7 +2068,7 @@ class we_objectFile extends we_document{
 							'Description' => $this->getElement("Description"),
 							'Path' => $this->Text,
 							'Language' => $this->Language
-						)))){
+					)))){
 					return false;
 				}
 			}
