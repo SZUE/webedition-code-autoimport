@@ -172,7 +172,7 @@ class weTree{
 
  			function search(eintrag){var nf = new container();var ai = 1;while (ai <= treeData.len) {if (treeData[ai].parentid == eintrag) nf.add(treeData[ai]);ai++;}return nf;}
 
- 			function add(object){this.len++;this[this.len] = object;}
+ 			function add(object){this[++this.len] = object;}
 
  			function containerClear(){this.len =0;}
 
@@ -637,15 +637,12 @@ function drawTree(){
 	}
 
 	function getJSDraw(){
-		$draw_code = "";
 		$custom_draw = $this->getJSCustomDraw();
+		$draw_code = empty($custom_draw)?'':'switch(nf[ai].typ){';
 		foreach($custom_draw as $ck => $cv){
-			if($draw_code != ''){
-				$draw_code.=' else ';
-			}
-			$draw_code.=' if(nf[ai].typ == "' . $ck . '"){' . $cv . '}';
+			$draw_code.=' case "' . $ck . '":' . $cv . ' break;';
 		}
-
+		$draw_code .= empty($custom_draw)?'':'}';
 		return'
 function draw(startEntry,zweigEintrag){
 	var nf = search(startEntry);
@@ -686,7 +683,7 @@ if(treeData.state==treeData.tree_states["select"] && nf[ai].disabled!=1) {
 	}
 }
 
-row+="<img src="+treeData.tree_icon_dir+nf[ai].icon+" width=16 height=18 align=absmiddle border=0 alt=\"\">";
+row+="<img src="+treeData.tree_icon_dir+nf[ai].icon+" align=absmiddle border=0 alt=\"\">";
 
 if(nf[ai].disabled!=1){
 	row+="</a>";
@@ -766,7 +763,7 @@ if (nf[ai].open==1){
 		$out["threedots"] = '
 row+="&nbsp;&nbsp;<img src=' . $this->tree_image_dir . '"+(ai == nf.len?"kreuzungend.gif":"kreuzung.gif")+" width=\"19\" height=\"18\" align=\"absmiddle\" border=\"0\">";
 row+="<a name=\'_"+nf[ai].id+"\' href=\"javascript://\"  onClick=\"' . $this->topFrame . '.setSegment(\'"+nf[ai].id+"\');return true;\">";
-row+="<img src=\"' . $this->tree_image_dir . '/"+nf[ai].icon+"\" width=\"100\" height=\"7\" align=\"absmiddle\" border=\"0\" alt=\"\">";
+row+="<img src=\"' . $this->tree_image_dir . '/"+nf[ai].icon+"\" style=\"width:100px;height:7px\" alt=\"\">";
 row+="</a>";
 row+="&nbsp;&nbsp;<br/>";
 		';
