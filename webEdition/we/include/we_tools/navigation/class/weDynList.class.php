@@ -172,7 +172,8 @@ abstract class weDynList{
 		$categories = is_array($categories) ? $categories : array();
 		$_cats = array();
 		foreach($categories as $cat){
-			$_cats[] = '(OF_Category LIKE "%,' . is_numeric($cat) ? $cat : $_db->escape(path_to_id($cat, CATEGORY_TABLE)) . ',%")';//bug #6729
+			$cat = is_numeric($cat) ? $cat : $_db->escape(path_to_id($cat, CATEGORY_TABLE));
+			$_cats[] = '(OF_Category LIKE "%,' . $cat . ',%")';//bug #6729
 		}
 
 		$_where = array();
