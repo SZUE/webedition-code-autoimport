@@ -2052,7 +2052,7 @@ class we_objectFile extends we_document{
 
 		foreach($ws as $w){
 			$wsPath = id_to_path($w, FILE_TABLE, $this->DB_WE);
-			if((strlen($wsPath) > 0) || ($w == '0')){
+			if((strlen($wsPath) > 0) || (intval($w) == 0)){
 				if($w == '0'){
 					$wsPath = '/';
 				}
