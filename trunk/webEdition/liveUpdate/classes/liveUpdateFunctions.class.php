@@ -101,8 +101,8 @@ class liveUpdateFunctions{
 		return $content;
 	}
 
-	function replaceDocRootNeeded(){
-		return (!(isset($_SERVER['DOCUMENT_ROOT']) && $_SERVER['DOCUMENT_ROOT'] == LIVEUPDATE_SOFTWARE_DIR));
+	static function replaceDocRootNeeded(){
+		return (!(isset($_SERVER['DOCUMENT' . '_ROOT']) && $_SERVER['DOCUMENT' . '_ROOT'] == LIVEUPDATE_SOFTWARE_DIR));
 	}
 
 	/**
@@ -112,13 +112,13 @@ class liveUpdateFunctions{
 	 * @param string $content
 	 * @return string
 	 */
-	function checkReplaceDocRoot($content){
-		if(!(isset($_SERVER['DOCUMENT_ROOT']) && $_SERVER['DOCUMENT_ROOT'] == LIVEUPDATE_SOFTWARE_DIR)){
+	static function checkReplaceDocRoot($content){
+		if(self::replaceDocRootNeeded){
 			$content = str_replace(array(
 				'$_SERVER[\'DOCUMENT_ROOT\']',
-				'$_SERVER["DOCUMENT_ROOT"]',
+				"\$_SERVER[\"DOCUMENT_ROOT\"]",
 				'$GLOBALS[\'DOCUMENT_ROOT\']',
-				'$GLOBALS["DOCUMENT_ROOT"]',
+				"\$GLOBALS[\"DOCUMENT_ROOT\]",
 				), '"' . LIVEUPDATE_SOFTWARE_DIR . '"', $content);
 		}
 		return $content;
