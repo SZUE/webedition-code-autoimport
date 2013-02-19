@@ -733,13 +733,11 @@ class we_document extends we_root{
 		if(defined('SCHEDULE_TABLE')){
 			if(
 				isset($_REQUEST['we_' . $this->Name . '_From_day']) && isset($_REQUEST['we_' . $this->Name . '_From_month']) && isset($_REQUEST['we_' . $this->Name . '_From_year']) && isset($_REQUEST['we_' . $this->Name . '_From_hour']) && isset($_REQUEST['we_' . $this->Name . '_From_minute'])){
-				$this->From = mktime(
-					$_REQUEST['we_' . $this->Name . '_From_hour'], $_REQUEST['we_' . $this->Name . '_From_minute'], 0, $_REQUEST['we_' . $this->Name . '_From_month'], $_REQUEST['we_' . $this->Name . '_From_day'], $_REQUEST['we_' . $this->Name . '_From_year']);
+				$this->From = mktime($_REQUEST['we_' . $this->Name . '_From_hour'], $_REQUEST['we_' . $this->Name . '_From_minute'], 0, $_REQUEST['we_' . $this->Name . '_From_month'], $_REQUEST['we_' . $this->Name . '_From_day'], $_REQUEST['we_' . $this->Name . '_From_year']);
 			}
 			if(
 				isset($_REQUEST['we_' . $this->Name . '_To_day']) && isset($_REQUEST['we_' . $this->Name . '_To_month']) && isset($_REQUEST['we_' . $this->Name . '_To_year']) && isset($_REQUEST['we_' . $this->Name . '_To_hour']) && isset($_REQUEST['we_' . $this->Name . '_To_minute'])){
-				$this->To = mktime(
-					$_REQUEST['we_' . $this->Name . '_To_hour'], $_REQUEST['we_' . $this->Name . '_To_minute'], 0, $_REQUEST['we_' . $this->Name . '_To_month'], $_REQUEST['we_' . $this->Name . '_To_day'], $_REQUEST['we_' . $this->Name . '_To_year']);
+				$this->To = mktime($_REQUEST['we_' . $this->Name . '_To_hour'], $_REQUEST['we_' . $this->Name . '_To_minute'], 0, $_REQUEST['we_' . $this->Name . '_To_month'], $_REQUEST['we_' . $this->Name . '_To_day'], $_REQUEST['we_' . $this->Name . '_To_year']);
 			}
 		}
 		if(isset($sessDat[2])){
@@ -970,11 +968,9 @@ class we_document extends we_root{
 					$xml = weTag_getAttribute('xml', $attribs, (XHTML_DEFAULT), true, false);
 					$oldHtmlspecialchars = weTag_getAttribute('htmlspecialchars', $attribs, true, true);
 					if($only){
-						if($only == 'content'){
-							return self::getLinkContent($link, $parentID, $path, $db, $img, $xml, $_useName, $oldHtmlspecialchars, $hidedirindex, $objectseourls);
-						} else{
-							return isset($link[$only]) ? $link[$only] : ''; // #3636
-						}
+						return ($only == 'content' ?
+								self::getLinkContent($link, $parentID, $path, $db, $img, $xml, $_useName, $oldHtmlspecialchars, $hidedirindex, $objectseourls) :
+								isset($link[$only]) ? $link[$only] : ''); // #3636
 					} else{
 
 						if(($content = self::getLinkContent($link, $parentID, $path, $db, $img, $xml, $_useName, $oldHtmlspecialchars, $hidedirindex, $objectseourls))){
