@@ -29,7 +29,7 @@ class we_template extends we_document{
 	var $MasterTemplateID = 0;
 	var $TagWizardCode; // bugfix 1502
 	var $TagWizardSelection; // bugfix 1502
-	var $IncludedTemplates = "";
+	var $IncludedTemplates = '';
 	var $doUpdateCode = true; // will be protected in later WE Versions
 
 	const TemplateHead = '<?php we_templateHead();?>';
@@ -65,8 +65,8 @@ class we_template extends we_document{
 			}
 			$this->CreationDate = time();
 			$this->ID = 0;
-			$this->OldPath = "";
-			$this->Filename .= "_copy";
+			$this->OldPath = '';
+			$this->Filename .= '_copy';
 			$this->Text = $this->Filename . $this->Extension;
 			$this->setParentID($parentIDMerk);
 			$this->Path = $this->ParentPath . $this->Text;
@@ -74,8 +74,8 @@ class we_template extends we_document{
 		}
 		$temp->resetElements();
 		$k = $v = '';
-		while(list($k, $v) = $temp->nextElement("txt")) {
-			$this->setElement($k, $temp->getElement($k), "txt");
+		while((list($k, $v) = $temp->nextElement('txt'))) {
+			$this->setElement($k, $temp->getElement($k), 'txt');
 		}
 		$this->EditPageNr = 0;
 	}
