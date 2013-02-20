@@ -11,7 +11,7 @@
 			<tuv xml:lang="de"><seg>Der Benutzer darf die Anwendungsverwaltung nutzen</seg></tuv>
 		</tu>
 		<tu tuid="The user is allowed to create new items in toolfactory">
-			<tuv xml:lang="de"><seg>Der Benutzer darf Anwendungungen erstellen</seg></tuv>
+			<tuv xml:lang="de"><seg>Der Benutzer darf Anwendungen erstellen</seg></tuv>
 		</tu>
 		<tu tuid="The user is allowed to delete items from toolfactory">
 			<tuv xml:lang="de"><seg>Der Benutzer darf Anwendungen löschen</seg></tuv>
