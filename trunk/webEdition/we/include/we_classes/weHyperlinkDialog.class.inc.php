@@ -549,7 +549,7 @@ class weHyperlinkDialog extends weDialog{
 
 	function getTinyMceJS(){
 		return parent::getTinyMceJS() .
-			we_html_element::jsScript(TINYMCE_JS_DIR . 'plugins/advlink/js/advlink_init.js');
+			we_html_element::jsScript(TINYMCE_JS_DIR . 'plugins/welink/js/welink_init.js');
 	}
 
 	function getJs(){

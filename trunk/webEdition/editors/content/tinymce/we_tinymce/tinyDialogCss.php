@@ -136,12 +136,12 @@ font-size: 11px;
 height: 18px;
 line-height: 18px;
 }
-
+/*
 #colorpicker #preview{
 margin-right:10px;
 height:19px;
 }
-
+*/
 .mceActionPanel{
 display:block;
 background-color:transparent;
@@ -190,24 +190,50 @@ right: 230px;
 
 
 .mceActionPanel #preview{
-padding-right:10px;
-<?php print (we_base_browserDetect::isMAC()) ? "
+/* padding-right:0px; */
+<?php
+/*
+print (we_base_browserDetect::isMAC()) ? "
 position:absolute;
 right: 125px;
-" : "" ?>
+" : ""
+*/
+?>
 }
 
-#previewblock{
-margin-right:0;
-<?php print (we_base_browserDetect::isMAC()) ? "
+#colorpicker #previewblock{
+margin-right:0; 
+<?php 
+/*
+print (we_base_browserDetect::isMAC()) ? "
 position:absolute;
 right: 205px;
-" : "" ?>
+" : "" 
+*/
+?>
+}
+
+#colorpicker #preview_wrapper{
+display:block;
+position:absolute;
+bottom:6px;
+left:0px;
+}
+
+#colorpicker #preview_wrapper span{
+margin-top:3px;
+margin-bottom:-2px;
+height:18px;
+width:20px;
 }
 
 .mceActionPanel div {
 display: inline;
 margin-right:20px;
+}
+
+.panel_toggle_insert_span{
+margin: 20px 0px 0 14px;
 }
 
 /* Some dialogs do not work not with webEDition-Footer in IE: they do not have attribute role="application" in body tag */
