@@ -69,13 +69,13 @@ function we_tag_form($attribs){
 		'order', 'required', 'onsuccess', 'onerror', 'type', 'recipient', 'mimetype',
 		'subject', 'onmailerror', 'preconfirm', 'postconfirm', 'from', 'confirmmail',
 		'classid', 'doctype', 'remove', 'onrecipienterror', 'tid', 'forcefrom', 'categories'
-		));
+	));
 
 	$formAttribs['xml'] = $xml;
 	$formAttribs['method'] = $method;
 
 	if($id){
-		$GLOBALS['we_form_action'] = ($id == 'self' ? $_SERVER['SCRIPT_NAME'] : f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), 'Path', $GLOBALS['DB_WE']));
+		$GLOBALS['we_form_action'] = ($id == 'self' ? (defined('WE_REDIRECTED_SEO') ? WE_REDIRECTED_SEO : $_SERVER['SCRIPT_NAME']) : f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), 'Path', $GLOBALS['DB_WE']));
 	} else{
 		$GLOBALS['we_form_action'] = ($action ? $action : $_SERVER['SCRIPT_NAME']);
 	}
@@ -127,7 +127,7 @@ function we_tag_form($attribs){
 						'type' => 'hidden',
 						'name' => 't',
 						'value' => time(),
-					));
+				));
 			}
 			break;
 		case 'object' :
@@ -171,7 +171,7 @@ function we_tag_form($attribs){
 							'name' => 'we_edit' . $typetmp . '_ID',
 							'value' => isset($_REQUEST['we_edit' . $typetmp . '_ID']) ? intval($_REQUEST['we_edit' . $typetmp . '_ID']) : 0,
 							'xml' => $xml
-						));
+					));
 				}
 			} else{
 				if(!isset($GLOBALS['we_editmode']) || !$GLOBALS['we_editmode']){
