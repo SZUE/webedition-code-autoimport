@@ -28,7 +28,6 @@ header("Expires: " . gmdate("D, d M Y H:i:s", time() + 86400) . " GMT", true);
 header("Last-Modified: " . gmdate("D, d M Y H:i:s", filemtime(__FILE__)) . " GMT", true);
 header("Cache-Control: max-age=86400, must-revalidate", true);
 header("Pragma: ", true);
-define(FACTOR,1.8);
 ?>
 .weSelect {
 border: #AAAAAA solid 1px;

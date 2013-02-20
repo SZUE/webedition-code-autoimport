@@ -328,6 +328,7 @@ abstract class weFile{
 
 	static function compress($file, $compression = 'gzip', $destination = '', $remove = true, $writemode = 'wb'){
 		if(!self::hasCompression($compression)){
+			t_e('compression not available',$compression);
 			return false;
 		}
 		if($destination == ''){
