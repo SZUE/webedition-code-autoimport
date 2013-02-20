@@ -957,9 +957,11 @@ class we_objectFile extends we_document{
 			$content = $this->htmlFormElementTable('', $text);
 
 			for($f = 0; $f < $show; $f++){
-				$myid = $objects[$f];
+				if(!($myid = intval($objects[$f]))){
+					continue;
+				}
 
-				$classPath = f('SELECT Path FROM ' . OBJECT_TABLE . ' WHERE ID=' . (int) $classid, 'Path', $db);
+				$classPath = f('SELECT Path FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($classid), 'Path', $db);
 
 				$textname = 'we_' . $this->Name . '_txt[' . $name . '_path' . $f . ']';
 				$idname = 'we_' . $this->Name . '_multiobject[' . $name . '_default' . $f . ']';
@@ -2902,7 +2904,7 @@ class we_objectFile extends we_document{
 
 	function initVariantDataFromDb(){
 		if(defined('WE_SHOP_VARIANTS_ELEMENT_NAME') && isset($this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME])){
-			if(!isset($this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat']) || !is_array($this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'])){
+			if(isset($this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]) && $this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'] && !is_array($this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'])){
 // unserialize the variant data when loading the model
 				$this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'] = unserialize($this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat']);
 			}
