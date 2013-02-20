@@ -10,5 +10,5 @@ $this->Attributes[] = new weTagData_textAttribute('pricename', true, '');
 $this->Attributes[] = new weTagData_selectAttribute('netprices', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
 $this->Attributes[] = new weTagData_selectAttribute('usevat', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
 $this->Attributes[] = new weTagData_textAttribute('shipping', false, '');
-$this->Attributes[] = new weTagData_textAttribute('shippingisnet', false, '');
+$this->Attributes[] = new weTagData_selectAttribute('shippingisnet', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
 $this->Attributes[] = new weTagData_textAttribute('shippingvatrate', false, '');
