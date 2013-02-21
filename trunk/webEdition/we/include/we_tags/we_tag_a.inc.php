@@ -31,7 +31,7 @@ function we_tag_a($attribs, $content){
 	// get attributes
 
 	$id = weTag_getAttribute('id', $attribs);
-	if($id == 'self'){
+	if($id == 'self' && !defined('WE_REDIRECTED_SEO')){
 		$id = $GLOBALS['WE_MAIN_DOC']->ID;
 	}
 	$confirm = weTag_getAttribute('confirm', $attribs);
@@ -61,7 +61,7 @@ function we_tag_a($attribs, $content){
 		$listview = isset($GLOBALS['lv']);
 	}
 
-	if(defined('WE_REDIRECTED_SEO')){
+	if($id == 'self' && defined('WE_REDIRECTED_SEO')){
 		$url = WE_REDIRECTED_SEO;
 	} else{
 		// init variables
