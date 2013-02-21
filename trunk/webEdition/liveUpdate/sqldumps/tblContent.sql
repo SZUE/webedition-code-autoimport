@@ -3,7 +3,7 @@ CREATE TABLE ###TBLPREFIX###tblContent (
   BDID int(11) unsigned NOT NULL default '0',
   Dat longtext,
   IsBinary tinyint(1) unsigned NOT NULL default '0',
-  AutoBR char(3) NOT NULL default '',
+  AutoBR enum('on','off') NOT NULL default 'off',
   LanguageID int(11) unsigned NOT NULL default '0',
   PRIMARY KEY  (ID),
   KEY BDID (BDID)
