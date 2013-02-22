@@ -581,7 +581,7 @@ class we_user{
 
 	function getPreferenceSlotsFromDB(){
 		$tmp = self::readPrefs($this->ID, $this->DB_WE);
-		$this->Preferences = array_intersect_assoc($tmp, $this->preference_slots);
+		$this->Preferences = array_intersect_key($tmp, array_flip($this->preference_slots));
 	}
 
 	function setPreference($name, $value){
@@ -2178,10 +2178,9 @@ $this->Preferences=' . var_export($this->Preferences, true) . ';
 		//Editor Mode
 		$_template_editor_mode = new we_html_select(array("class" => "weSelect", "name" => $this->Name . "_Preference_editorMode", "size" => "1", "onchange" => "displayEditorOptions(this.options[this.options.selectedIndex].value);"));
 		$_template_editor_mode->addOption('textarea', 'Textarea');
-		$_template_editor_mode->addOption('java', 'webEdition Java Editor');
-		$_template_editor_mode->addOption('codemirror', 'CodeMirror');
 		$_template_editor_mode->addOption('codemirror2', 'CodeMirror2');
-		$_template_editor_mode->selectOption($this->Preferences["editorMode"]);
+		$_template_editor_mode->addOption('java', 'webEdition Java Editor');
+		$_template_editor_mode->selectOption($this->Preferences['editorMode']);
 		$_settings = array(
 			array("headline" => g_l('prefs', '[editor_mode]'), "html" => $_template_editor_mode->getHtml(), "space" => 150)
 		);
