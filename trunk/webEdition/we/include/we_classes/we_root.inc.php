@@ -827,6 +827,10 @@ abstract class we_root extends we_class{
 				$v = intval($v);
 				break;
 			case 'text':
+				if($this->DefArray[$type . '_' . $k]['dhtmledit'] == 'on'){
+					$v = we_util::rmPhp($v);
+					break;
+				}
 			case 'input':
 				if($this->DefArray[$type . '_' . $k]['forbidphp'] == 'on'){
 					$v = we_util::rmPhp($v);
