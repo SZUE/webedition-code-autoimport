@@ -107,7 +107,6 @@ class we_objectFile extends we_document{
 			if($session){
 				$GLOBALS['we_object'][$formname]->saveInSession($_SESSION['we_object_session_' . $formname]);
 			}
-			$GLOBALS['we_object'][$formname]->DefArray = $GLOBALS['we_object'][$formname]->getDefaultValueArray();
 		} else{
 			if(isset($_REQUEST['we_editObject_ID']) && $_REQUEST['we_editObject_ID']){
 				$GLOBALS['we_object'][$formname]->initByID(intval($_REQUEST['we_editObject_ID']), OBJECT_FILES_TABLE);
@@ -124,6 +123,10 @@ class we_objectFile extends we_document{
 				$GLOBALS['we_object'][$formname]->Category = $categories;
 			}
 		}
+
+		$GLOBALS['we_object'][$formname]->DefArray = empty($GLOBALS['we_object'][$formname]->DefArray) ? $GLOBALS['we_object'][$formname]->getDefaultValueArray() :
+				$GLOBALS['we_object'][$formname]->DefArray();//bug #7426
+
 		if(isset($_REQUEST['we_returnpage'])){
 			$GLOBALS['we_object'][$formname]->setElement('we_returnpage', $_REQUEST['we_returnpage']);
 		}
