@@ -31,7 +31,7 @@ function we_tag_a($attribs, $content){
 	// get attributes
 
 	$id = weTag_getAttribute('id', $attribs);
-	if($id == 'self'){
+	if($id == 'self' && !defined('WE_REDIRECTED_SEO')){
 		$id = $GLOBALS['WE_MAIN_DOC']->ID;
 	}
 	$confirm = weTag_getAttribute('confirm', $attribs);
@@ -60,39 +60,33 @@ function we_tag_a($attribs, $content){
 		$editself = weTag_getAttribute('editself', $attribs, false, true);
 		$listview = isset($GLOBALS['lv']);
 	}
-	// init variables
-	$db = new DB_WE();
-	$row = getHash('SELECT Path,IsFolder,IsDynamic FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), $db);
-	$url = (isset($row['Path']) ? $row['Path'] : '') . ((isset($row['IsFolder']) && $row['IsFolder']) ? '/' : '');
-	$path_parts = pathinfo($url);
-	if($hidedirindex && show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES != '' && TAGLINKS_DIRECTORYINDEX_HIDE && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
-		$url = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/';
+
+	if($id == 'self' && defined('WE_REDIRECTED_SEO')){
+		$url = WE_REDIRECTED_SEO;
+	} else{
+		// init variables
+		$db = new DB_WE();
+		$row = getHash('SELECT Path,IsFolder,IsDynamic FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), $db);
+		$url = (isset($row['Path']) ? $row['Path'] : '') . ((isset($row['IsFolder']) && $row['IsFolder']) ? '/' : '');
+		$path_parts = pathinfo($url);
+		if($hidedirindex && show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES != '' && TAGLINKS_DIRECTORYINDEX_HIDE && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
+			$url = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/';
+		}
 	}
 
 	if((!$url) && ($GLOBALS['WE_MAIN_DOC']->ClassName != 'we_template')){
-		if($GLOBALS['we_editmode']){
-			return parseError('in we:a attribute id not exists!');
-		} else{
-			return '';
-		}
+		return ($GLOBALS['we_editmode'] ? parseError('in we:a attribute id not exists!') : '');
 	}
 
 	switch($edit){
 		case 'shop':
-
 			$amount = weTag_getAttribute('amount', $attribs, 1);
 
-			if(isset($GLOBALS['lv']) && $GLOBALS['lv']->ClassName != 'we_listview_multiobject'){
-				$foo = $GLOBALS['lv']->count - 1;
-			} else{
-				$foo = -1;
-			}
-
+			$foo = (isset($GLOBALS['lv']) && $GLOBALS['lv']->ClassName != 'we_listview_multiobject' ? $GLOBALS['lv']->count - 1 : -1);
 
 			// get ID of element
 			$customReq = '';
 			if(isset($GLOBALS['lv']) && get_class($GLOBALS['lv']) == 'we_shop_shop'){
-
 				$idd = $GLOBALS['lv']->ActItem['id'];
 				$type = $GLOBALS['lv']->ActItem['type'];
 				$customReq = $GLOBALS['lv']->getCustomFieldsAsRequest();
@@ -100,11 +94,7 @@ function we_tag_a($attribs, $content){
 				//Zwei Faelle werden abgedeckt, bei denen die Objekt-ID nicht gefunden wird: (a) bei einer listview ueber shop-objekte, darin eine listview über shop-varianten, hierin der we:a-link und (b) Objekt wird ueber den objekt-tag geladen #3538
 				if((isset($GLOBALS['lv']) && get_class($GLOBALS['lv']) == 'we_shop_listviewShopVariants' && isset($GLOBALS['lv']->Model) && $GLOBALS['lv']->Model->ClassName == 'we_objectFile') || isset($GLOBALS['lv']) && get_class($GLOBALS['lv']) == 'we_objecttag'){
 					$type = 'o';
-					if(get_class($GLOBALS['lv']) == 'we_shop_listviewShopVariants'){
-						$idd = $GLOBALS['lv']->Id;
-					} else{
-						$idd = $GLOBALS['lv']->id;
-					}
+					$idd = (get_class($GLOBALS['lv']) == 'we_shop_listviewShopVariants' ? $GLOBALS['lv']->Id : $GLOBALS['lv']->id);
 				} else{
 
 					$idd = ((isset($GLOBALS['lv']) && isset($GLOBALS['lv']->IDs[$foo])) && $GLOBALS['lv']->IDs[$foo] != '') ?
@@ -251,7 +241,7 @@ function we_tag_a($attribs, $content){
 		'editself',
 		'delete',
 		'params'
-		));
+	));
 
 	if($button){ //	show button
 		$attribs['type'] = 'button';

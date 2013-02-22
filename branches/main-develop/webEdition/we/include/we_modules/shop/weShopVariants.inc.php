@@ -147,7 +147,9 @@ abstract class weShopVariants{
 			}
 
 			$variations = $elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'];
-
+			if(empty($variations) || !is_array($variations)){
+				return;
+			}
 			foreach($variations as $i => $variation){
 				if(is_array($variation)){
 
@@ -480,7 +482,7 @@ abstract class weShopVariants{
 		if(isset($record[WE_SHOP_VARIANTS_ELEMENT_NAME])){
 			$variantDatArray = unserialize($record[WE_SHOP_VARIANTS_ELEMENT_NAME]);
 
-			foreach($variantDatArray as $i=>$variant){
+			foreach($variantDatArray as $i => $variant){
 				foreach($variant as $variantName => $variantData){
 					if($variantName == $name){
 						foreach($variantData as $elementName => $elementData){

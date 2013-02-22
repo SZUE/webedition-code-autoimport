@@ -195,8 +195,8 @@ class we_object extends we_document{
 							'xml' => isset($this->elements[$cur . 'xml']['dat']) ? $this->elements[$cur . 'xml']['dat'] : '',
 							'removefirstparagraph' => isset($this->elements[$cur . 'removefirstparagraph']['dat']) ? $this->elements[$cur . 'removefirstparagraph']['dat'] : '',
 							'showmenus' => isset($this->elements[$cur . 'showmenus']['dat']) ? $this->elements[$cur . 'showmenus']['dat'] : 'off',
-							'forbidhtml' => isset($this->elements[$cur . 'forbidhtml']['dat']) ? $this->elements[$cur . 'forbidhtml']['dat'] : '',
-							'forbidphp' => isset($this->elements[$cur . 'forbidphp']['dat']) ? $this->elements[$cur . 'forbidphp']['dat'] : '',
+							'forbidhtml' => isset($this->elements[$cur . 'forbidhtml']['dat']) ? $this->elements[$cur . 'forbidhtml']['dat'] : 'off',
+							'forbidphp' => isset($this->elements[$cur . 'forbidphp']['dat']) ? $this->elements[$cur . 'forbidphp']['dat'] : 'off',
 							'inlineedit' => isset($this->elements[$cur . 'inlineedit']['dat']) ? $this->elements[$cur . 'inlineedit']['dat'] : '',
 							'users' => isset($this->elements[$cur . 'users']['dat']) ? $this->elements[$cur . 'users']['dat'] : '',
 							'required' => isset($this->elements[$cur . 'required']['dat']) ? $this->elements[$cur . 'required']['dat'] : '',
@@ -2018,8 +2018,8 @@ class we_object extends we_document{
 				'cssClasses' => '',
 				'xml' => '',
 				'removefirstparagraph' => '',
-				'forbidhtml' => '',
-				'forbidphp' => '',
+				'forbidhtml' => 'off',
+				'forbidphp' => 'off',
 				'inlineedit' => '',
 				'users' => '',
 				'required' => '',
@@ -2241,7 +2241,7 @@ class we_object extends we_document{
 	 * @param	$field - the name of the field
 	 */
 	function isVariantField($field){
-		$types = array('input', 'link', 'text', 'img', 'int', 'float', 'meta', 'date'); // #6924
+		$types = array('input', 'link', 'text', 'img', 'int', 'float', 'meta', 'date', 'href'); // #6924
 		$type = ($this->getElement($field . 'dtype', 'dat') != '') ? $this->getElement($field . 'dtype', 'dat') : '';
 		return in_array($type, $types);
 	}

@@ -1187,7 +1187,7 @@ function tinyMCECallRegisterDialog(win,action){
 					'backcolor' => 'backcolor',
 					'bold' => 'bold',
 					'copy' => 'copy',
-					'createlink' => 'link',
+					'createlink' => 'welink',
 					'cut' => 'cut',
 					'decreasecolspan' => 'split_cells',
 					'deletecol' => 'delete_col',
@@ -1353,7 +1353,7 @@ function tinyMCECallRegisterDialog(win,action){
 						//file_browser_callback : "openWeFileBrowser",
 						//onchange_callback : "tinyMCEchanged",
 
-						plugins : "style,table,advhr,weimage,advlink,emotions,insertdatetime,preview,searchreplace,contextmenu,paste,directionality,nonbreaking,xhtmlxtras,weabbr,weacronym,welang,wevisualaid,weinsertbreak,wespellchecker,layer,autolink,wefullscreen",
+						plugins : "style,table,advhr,weimage,welink,emotions,insertdatetime,preview,searchreplace,contextmenu,paste,directionality,nonbreaking,xhtmlxtras,weabbr,weacronym,welang,wevisualaid,weinsertbreak,wespellchecker,layer,autolink,wefullscreen,lists,autolink,advlist",
 
 						// Theme options
 						' . $tinyRows . '
@@ -1374,7 +1374,7 @@ function tinyMCECallRegisterDialog(win,action){
 						//paste_text_use_dialog: true,
 						//fullscreen_new_window: true,
 						content_css : "' . WEBEDITION_DIR . 'editors/content/tinymce/we_tinymce/contentCssFirst.php?' . time() . '=,' . $contentCss . WEBEDITION_DIR . 'editors/content/tinymce/we_tinymce/contentCssLast.php?' . time() . '=&tinyMceBackgroundColor=' . $this->bgcol . '",
-						popup_css_add : "' . WEBEDITION_DIR . 'editors/content/tinymce/we_tinymce/tinyDialogCssLast.php",
+						popup_css_add : "' . WEBEDITION_DIR . 'editors/content/tinymce/we_tinymce/tinyDialogCss.php",
 
 						// Skin options
 						skin : "o2k7",

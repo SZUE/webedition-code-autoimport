@@ -63,7 +63,7 @@ top.close();
 		}
 
 		return weDialog::getTinyMceJS() .
-			we_html_element::jsScript(TINYMCE_JS_DIR . 'plugins/advlink/js/advlink_insert.js') .
+			we_html_element::jsScript(TINYMCE_JS_DIR . 'plugins/welink/js/welink_insert.js') .
 			'<form name="tiny_form">
 			<input type="hidden" name="href" value="' . $href . '">
 			<input type="hidden" name="target" value="' . $args["target"] . '">

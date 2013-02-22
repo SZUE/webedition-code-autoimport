@@ -150,7 +150,7 @@ if(weWindow.treeData){
 	weWindow.treeData.selection="' . $doc->ID . '";' :
 				'weWindow.treeData.unselectnode();') . '
 	if(weWindow.treeData.table == "' . $doc->Table . '"){
-		if(weWindow.treeData[top.indexOfEntry("' . $doc->ParentID . '")]){
+		if(weWindow.treeData[top.indexOfEntry(' . $doc->ParentID . ')]){
 				var attribs=new Array();
 				attribs["id"]=\'' . $doc->ID . '\';
 				attribs["parentid"]=\'' . $doc->ParentID . '\';
@@ -158,8 +158,8 @@ if(weWindow.treeData){
 				attribs["published"]=\'' . $published . '\';
 				attribs["table"]=\'' . $doc->Table . '\';
 
-				if(' . $this->topFrame . '.indexOfEntry("' . $doc->ParentID . '")!=-1){
-					var visible=' . $this->topFrame . '.treeData[' . $this->topFrame . '.indexOfEntry("' . $doc->ParentID . '")].open;
+				if(' . $this->topFrame . '.indexOfEntry(' . $doc->ParentID . ')!=-1){
+					var visible=' . $this->topFrame . '.treeData[' . $this->topFrame . '.indexOfEntry(' . $doc->ParentID . ')].open;
 				}else{
 					var visible=0
 				}
@@ -300,7 +300,7 @@ treeData.table="' . FILE_TABLE . '";' .
 	function getJSLoadTree($treeItems){
 		$js = 'var attribs=new Array();';
 
-		
+
 		if(is_array($treeItems)){
 			foreach($treeItems as $item){
 				$buff = 'if(' . $this->topFrame . ".indexOfEntry('" . $item["id"] . "')<0){";

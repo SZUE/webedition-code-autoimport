@@ -98,25 +98,25 @@ function we_tag_sessionStart($attribs){
 			}
 			$WebUserDescription = '';
 
-				$GLOBALS['DB_WE']->query('INSERT INTO ' . CUSTOMER_SESSION_TABLE . ' SET ' .
-					we_database_base::arraySetter(array(
-						'SessionID' => $SessionID,
-						'SessionIp' => $SessionIp,
-						'WebUserID' => $WebUserID,
-						'WebUserGroup' => $WebUserGroup,
-						'WebUserDescription' => $WebUserDescription,
-						'Browser' => $Browser,
-						'Referrer' => $Referrer,
-						'LastLogin' => 'NOW()',
-						'PageID' => $PageID,
-						'ObjectID' => $ObjectID,
-						'SessionAutologin' => $SessionAutologin
-					)).' ON DUPLICATE KEY UPDATE '.we_database_base::arraySetter(array(
-						'PageID' => $PageID,
-						'WebUserID' => intval($WebUserID),
-						'WebUserGroup' => $WebUserGroup,
-						'WebUserDescription' => $WebUserDescription,
-					)));
+			$GLOBALS['DB_WE']->query('INSERT INTO ' . CUSTOMER_SESSION_TABLE . ' SET ' .
+				we_database_base::arraySetter(array(
+					'SessionID' => $SessionID,
+					'SessionIp' => $SessionIp,
+					'WebUserID' => $WebUserID,
+					'WebUserGroup' => $WebUserGroup,
+					'WebUserDescription' => $WebUserDescription,
+					'Browser' => $Browser,
+					'Referrer' => $Referrer,
+					'LastLogin' => 'NOW()',
+					'PageID' => $PageID,
+					'ObjectID' => $ObjectID,
+					'SessionAutologin' => $SessionAutologin
+				)) . ' ON DUPLICATE KEY UPDATE ' . we_database_base::arraySetter(array(
+					'PageID' => $PageID,
+					'WebUserID' => intval($WebUserID),
+					'WebUserGroup' => $WebUserGroup,
+					'WebUserDescription' => $WebUserDescription,
+			)));
 		}
 		return '';
 	}
@@ -137,8 +137,8 @@ function wetagsessionHandleFailedLogin(){
 		if(SECURITY_LIMIT_CUSTOMER_REDIRECT){
 			@include($_SERVER['DOCUMENT_ROOT'] . id_to_path(SECURITY_LIMIT_CUSTOMER_REDIRECT, FILE_TABLE));
 		} else{
-			echo 'Dear customer, our service is currently not available. Please try again later. Thank you.<br/>'.
-			'Sehr geehrter Kunde, aus Sicherheitsgründen ist ein Login derzeit nicht möglich! Bitte probieren Sie es später noch ein mal. Vielen Dank';
+			echo CheckAndConvertISOfrontend('Dear customer, our service is currently not available. Please try again later. Thank you.<br/>' .
+				'Sehr geehrter Kunde, aus Sicherheitsgründen ist ein Login derzeit nicht möglich! Bitte probieren Sie es später noch ein mal. Vielen Dank');
 		}
 		exit();
 	}
@@ -146,6 +146,12 @@ function wetagsessionHandleFailedLogin(){
 
 function wetagsessionStartdoLogin($persistentlogins, &$SessionAutologin){
 	if($_REQUEST['s']['Username'] != ''){
+		if(
+			intval(f('SELECT count(1) AS a FROM `tblFailedLogins` WHERE UserTable="tblWebUser" AND Username="' . $GLOBALS['DB_WE']->escape($_REQUEST['s']['Username']) . '" AND LoginDate >DATE_SUB(NOW(), INTERVAL ' . intval(SECURITY_LIMIT_CUSTOMER_NAME_HOURS) . ' hour)', 'a', $GLOBALS['DB_WE'])) >= intval(SECURITY_LIMIT_CUSTOMER_NAME) ||
+			intval(f('SELECT count(1) AS a FROM `tblFailedLogins` WHERE UserTable="tblWebUser" AND IP="' . $_SERVER['REMOTE_ADDR'] . '" AND LoginDate >DATE_SUB(NOW(), INTERVAL ' . intval(SECURITY_LIMIT_CUSTOMER_IP_HOURS) . ' hour)', 'a', $GLOBALS['DB_WE'])) >= intval(SECURITY_LIMIT_CUSTOMER_IP)
+		){
+			return false;
+		}
 		$u = getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE Password!="" AND LoginDenied=0 AND Username="' . $GLOBALS['DB_WE']->escape(strtolower($_REQUEST['s']['Username'])) . '"', $GLOBALS['DB_WE']);
 		if(!empty($u) && $_REQUEST['s']['Password'] == $u['Password']){
 			$_SESSION['webuser'] = $u;
@@ -189,7 +195,6 @@ function wetagsessionStartdoAutoLogin(){
 			}
 		}
 	}
-
 
 	return false;
 }

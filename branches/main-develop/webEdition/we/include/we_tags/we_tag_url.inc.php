@@ -51,9 +51,8 @@ function we_tag_url($attribs){
 					if($objectseourls && $GLOBALS['WE_MAIN_DOC']->Url != '' && show_SeoLinks()){
 						$url = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' .
 							(show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES != '' && $hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))) ?
-								'' :
-								$path_parts['filename'] . '/'
-							) . $GLOBALS['WE_MAIN_DOC']->Url;
+								'' : $path_parts['filename'] . '/') .
+							$GLOBALS['WE_MAIN_DOC']->Url;
 					} else{
 						$url = (show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES != '' && $hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))) ?
 								($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/?we_objectID=' . $GLOBALS['WE_MAIN_DOC']->OF_ID :
@@ -82,9 +81,8 @@ function we_tag_url($attribs){
 				if($objectseourls && $row['Url'] != '' && show_SeoLinks()){
 					$url = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' .
 						(show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES != '' && $hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))) ?
-							'' :
-							$path_parts['filename'] . '/'
-						) . $row['Url'];
+							'' : $path_parts['filename'] . '/' ) .
+						$row['Url'];
 				} else{
 					$url = (show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES != '' && $hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))) ?
 							($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/?we_objectID=' . $row['ID'] :

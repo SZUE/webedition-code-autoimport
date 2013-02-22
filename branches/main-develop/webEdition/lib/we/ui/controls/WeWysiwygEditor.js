@@ -71,16 +71,16 @@ we_ui_controls_WeWysiwygEditor.openWeWysiwyg = function()
 	var url = "/webEdition/editors/content/wysiwyg/WeWysiwygEditorWindow.php?"; 
 	url += "we_cmd[0]="+escape(arguments[0])+"&";
 	url += "we_cmd[1]="+escape(arguments[1])+"&";
-	url += "we_cmd[2]="+escape(arguments[2]-25)+"&";
-	url += "we_cmd[3]="+escape(arguments[3]-130)+"&";
+	url += "we_cmd[2]="+escape(arguments[2]-50)+"&";
+	url += "we_cmd[3]="+escape(arguments[3]-100)+"&";
 	url += "we_cmd[4]=&";
 	url += "we_cmd[5]="+escape(arguments[5])+"&";
 	url += "we_cmd[6]=&";
 	url += "we_cmd[7]="+escape(arguments[7])+"&"
-	url += "we_cmd[8]=&we_cmd[9]=537&we_cmd[10]=94&we_cmd[11]=1&we_cmd[12]=1&we_cmd[13]=&we_cmd[14]=&we_cmd[15]=UTF-8&";
+	url += "we_cmd[8]=&we_cmd[9]=337&we_cmd[10]=94&we_cmd[11]=1&we_cmd[12]=1&we_cmd[13]=&we_cmd[14]=&we_cmd[15]=UTF-8&";
 	url += "we_cmd[16]="+escape(arguments[6])+"&";
 	url += "we_cmd[17]=";
-	new jsWindow(url,"we_"+arguments[4]+"_wysiwyg",-1,-1,arguments[2],arguments[3],true,true,true);
+	new jsWindow(url,"we_"+arguments[4]+"_wysiwyg",-1,-1,arguments[2]-30,arguments[3]+70,true,true,true);
 }
 
 
