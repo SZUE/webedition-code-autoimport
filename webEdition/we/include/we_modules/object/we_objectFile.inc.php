@@ -125,7 +125,7 @@ class we_objectFile extends we_document{
 		}
 
 		$GLOBALS['we_object'][$formname]->DefArray = empty($GLOBALS['we_object'][$formname]->DefArray) ? $GLOBALS['we_object'][$formname]->getDefaultValueArray() :
-				$GLOBALS['we_object'][$formname]->DefArray();//bug #7426
+				$GLOBALS['we_object'][$formname]->DefArray;//bug #7426
 
 		if(isset($_REQUEST['we_returnpage'])){
 			$GLOBALS['we_object'][$formname]->setElement('we_returnpage', $_REQUEST['we_returnpage']);
