@@ -162,6 +162,7 @@ $l_alert=array(
 	'thumbnail_exists'=>'Данная иконка уже существует!',
 	'thumbnail_hochkomma'=>'Недопустимое имя иконки! Такие символы как апостроф ` и запятая , являются недействительными!',
 	'thumbnail_not_exists'=>'Данная иконка отсутствует!',
+	'upload_notallowed'=>'You are not allowed to add new files on this server.',
 	'warning'=>'Warning',
 	'we_backup_import_upload_err'=>'Ошибка при загрузке резервного файла! Максимально допустимый размер файла для загрузки составляет %s. Если размер Вашего резервного файла превышает этот предел, загрузите его в директорию webEdition/we_Backup при помощи FTP и выберите `GL(backup[import_from_server])`',
 	'we_filename_empty'=>'Не введено имя для этого документа или директории!',
@@ -171,6 +172,7 @@ $l_alert=array(
 	'wrong_file'=>array(
 		'application/x-shockwave-flash'=>'Невозможно сохранить файл.  Он либо не относится к Flash фильмам, либо недостаточно места на диске!',
 		'image/*'=>'Невозможно сохранить файл. Он либо не относится к графическим файлам, либо недостаточно пространства в сети!',
+		'other'=>'The file could not be stored. Either your file format doesn`t match the type, you are not allowed to `store other` files or your disk space is exhausted!',
 		'text/css'=>'The file could not be stored. Either it is not a CSS file or your disk space is exhausted!',
 		'video/quicktime'=>'Невозможно сохранить файл. Он либо не относится к фильмам Quicktime, либо не хватает места на диске!',
 ));

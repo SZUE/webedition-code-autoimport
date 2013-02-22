@@ -162,6 +162,7 @@ $l_alert=array(
 	'thumbnail_exists'=>'Esikatselukuva on jo olemassa!',
 	'thumbnail_hochkomma'=>'Virheellinen nimi! Virheellisiä merkkejä ovat ` (heittomerkki) and , (pilkku)!',
 	'thumbnail_not_exists'=>'Esikatselukuvaa ei ole olemassa!',
+	'upload_notallowed'=>'You are not allowed to add new files on this server.',
 	'warning'=>'Varoitus',
 	'we_backup_import_upload_err'=>'Varmuuskopiotiedostoa ladattaessa tapahtui virha! Ladattavien tiedostojen maksimikoko on %s. Jos varmuuskopiotiedoston koko ylittää rajan, lataa tiedosto hakemistoon webEdition/we_backup käyttäen FTP -tiedostonsiirtoa ja valitse `GL(backup[import_from_server])`',
 	'we_filename_empty'=>'Hakemistolle tai tiedostolle ei ole annettu nimeä!',
@@ -171,6 +172,7 @@ $l_alert=array(
 	'wrong_file'=>array(
 		'application/x-shockwave-flash'=>'Valitsemasi tiedosto ei ole Flash -tiedosto!',
 		'image/*'=>'Valitsemasi tiedosto ei ole kuva!',
+		'other'=>'The file could not be stored. Either your file format doesn`t match the type, you are not allowed to `store other` files or your disk space is exhausted!',
 		'text/css'=>'Tiedostoa ei saatu tallennettua. Joko se ei ole CSS-tiedosto tai levytila on loppu!',
 		'video/quicktime'=>'Valitsemasi tiedosto ei ole Quicktime -tiedosto!',
 ));

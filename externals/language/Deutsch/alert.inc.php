@@ -162,6 +162,7 @@ $l_alert=array(
 	'thumbnail_exists'=>'Diese Miniaturansicht ist bereits vorhanden!',
 	'thumbnail_hochkomma'=>'Der Name einer Miniaturansicht darf kein ` (Hochkomma) und kein , (Komma) enthalten!',
 	'thumbnail_not_exists'=>'Diese Miniaturansicht ist nicht vorhanden!',
+	'upload_notallowed'=>'Sie besitzen nicht das Recht Dateien auf den Server hochzuladen.',
 	'warning'=>'Warnung',
 	'we_backup_import_upload_err'=>'Es gab einen Fehler beim Hochladen der Backup-Datei! Die maximal erlaubte Dateigrösse für Uploads beträgt %s. Wenn Ihre Backup-Datei grösser ist, dann kopieren Sie diese per FTP in das Verzeichnis webEdition/we_backup und wählen `GL(backup[import_from_server])`!',
 	'we_filename_empty'=>'Sie haben noch keinen Dateinamen für dieses Dokument bzw. Verzeichnis eingegeben!',
@@ -171,6 +172,7 @@ $l_alert=array(
 	'wrong_file'=>array(
 		'application/x-shockwave-flash'=>'Die Datei konnte nicht angelegt werden. Entweder handelt es sich um keinen Flash-Datei oder ihr Speicherplatz (Festplatte) ist erschöpft!',
 		'image/*'=>'Die Datei konnte nicht angelegt werden. Entweder handelt es sich nicht um eine Grafik, das Format ist nicht gültig für die Veröffentlichung im Internet (kein bmp, tif), oder es steht nicht ausreichend Speicherplatz (Webspace) zur Verfügung!',
+		'other'=>'Die Datei konnte nicht angelegt werden. Entweder stimmt das Format der Datei nicht mit dem Inhalt überein, Sie sind nicht berechtigt den Typ `Sonstige Dateien` anzulegen, oder es steht nicht ausreichend Speicherplatz (Webspace) zur Verfügung!',
 		'text/css'=>'Die Datei konnte nicht angelegt werden. Entweder handelt es sich um keine CSS-Datei oder ihr Speicherplatz (Festplatte) ist erschöpft!',
 		'video/quicktime'=>'Die Datei konnte nicht angelegt werden. Entweder handelt es sich um keinen Quicktime-Datei oder ihr Speicherplatz (Festplatte) ist erschöpft!',
 ));

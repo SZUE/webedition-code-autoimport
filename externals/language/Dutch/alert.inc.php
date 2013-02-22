@@ -162,6 +162,7 @@ $l_alert=array(
 	'thumbnail_exists'=>'Deze thumbnail bestaat al!',
 	'thumbnail_hochkomma'=>'Ongeldige naam! Ongeldige karakters zijn de ` (apostrof) en de , (komma)!',
 	'thumbnail_not_exists'=>'Deze thumbnail bestaat niet!',
+	'upload_notallowed'=>'You are not allowed to add new files on this server.',
 	'warning'=>'Waarschuwing',
 	'we_backup_import_upload_err'=>'Er is een fout opgetreden tijdens het uploaden van het backup bestand! De maximale bestandsgrootte voor uploads is %s. Als uw backup bestand de limiet overschrijdt, upload het dan a.u.b. in de directory webEdition/we_Backup via FTP en kies `GL(backup[import_from_server])`',
 	'we_filename_empty'=>'Er is geen naam ingevoerd voor dit document of directory!',
@@ -171,6 +172,7 @@ $l_alert=array(
 	'wrong_file'=>array(
 		'application/x-shockwave-flash'=>'Het bestand kon niet opgeslagen worden. Of het is geen Flash film of uw schijf is vol!',
 		'image/*'=>'Het bestand kon niet opgeslagen worden. Of het is geen afbeelding of uw server is vol!',
+		'other'=>'The file could not be stored. Either your file format doesn`t match the type, you are not allowed to `store other` files or your disk space is exhausted!',
 		'text/css'=>'The file could not be stored. Either it is not a CSS file or your disk space is exhausted!',
 		'video/quicktime'=>'Het bestand kon niet opgeslagen worden. Of het is geen Quicktime film of uw schijf is vol!',
 ));

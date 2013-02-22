@@ -162,6 +162,7 @@ $l_alert=array(
 	'thumbnail_exists'=>'Esta imagen en miniatura ya existe!',
 	'thumbnail_hochkomma'=>'Nombre inválido! Los carácteres inválidos son ` (apostrofe) y , (coma)!',
 	'thumbnail_not_exists'=>'Esta imagen en miniatura no existe!',
+	'upload_notallowed'=>'You are not allowed to add new files on this server.',
 	'warning'=>'Warning',
 	'we_backup_import_upload_err'=>'Un error ocurrio mientras se cargaba el archivo de reserva! El tamaño maximo del archivo para cargar es %s. Si su archivo de reserva excede este limite, por favor, cargarlo en el directorio webEdition/we_Backup vía FTP y escoger `GL(backup[import_from_server])`',
 	'we_filename_empty'=>'Ningún nombre ha sido entrado para este documento o directorio!',
@@ -171,6 +172,7 @@ $l_alert=array(
 	'wrong_file'=>array(
 		'application/x-shockwave-flash'=>'El archivo no pudo ser guardado. Este archivo no es una película Flash o no hay espacio suficiente en su disco duro!',
 		'image/*'=>'El archivo no pudo ser guardado. Este archivo no es una imagen o su espacio web está agotado!',
+		'other'=>'The file could not be stored. Either your file format doesn`t match the type, you are not allowed to `store other` files or your disk space is exhausted!',
 		'text/css'=>'The file could not be stored. Either it is not a CSS file or your disk space is exhausted!',
 		'video/quicktime'=>'El archivo no pudo ser guardado. Este archivo no es una película Quicktime o no hay espacio suficiente en su disco duro!',
 ));

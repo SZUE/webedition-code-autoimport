@@ -162,6 +162,7 @@ $l_alert=array(
 	'thumbnail_exists'=>'Cette imagette existe déjà!',
 	'thumbnail_hochkomma'=>'Le nom d`une imagettes ne doit pas contenir de  ` (apostroph) et pas de , (virgule)!',
 	'thumbnail_not_exists'=>'Cette imagette n`existe pas!',
+	'upload_notallowed'=>'You are not allowed to add new files on this server.',
 	'warning'=>'Avertissement',
 	'we_backup_import_upload_err'=>'Erreur en téléchargant le fichier de sauvegarde! La taille de fichier maximale pour le téléchargement est %s. Si votre fichier de sauvegardes est plus grand, copier-le par FTP dans le répértoire webEdition/we_backup/ et choisissez `GL(backup[import_from_server])`!',
 	'we_filename_empty'=>'Vous n`avez pas encore saisi un nom pour ce fichier ou bien répertoire!',
@@ -171,6 +172,7 @@ $l_alert=array(
 	'wrong_file'=>array(
 		'application/x-shockwave-flash'=>'Le fichier ne pouvait pas être créé. Ou ce n`est pas un vidéo flash ou votre espace web est plein!',
 		'image/*'=>'Le fichier ne pouvait pas être créé. Ou ce n`est pas une graphique ou votre espace web est plein !',
+		'other'=>'The file could not be stored. Either your file format doesn`t match the type, you are not allowed to `store other` files or your disk space is exhausted!',
 		'text/css'=>'The file could not be stored. Either it is not a CSS file or your disk space is exhausted!',
 		'video/quicktime'=>'Le fichier ne pouvait pas être créé. Ou ce n`est pas un fichier quicktime ou votre espace web est plein !',
 ));

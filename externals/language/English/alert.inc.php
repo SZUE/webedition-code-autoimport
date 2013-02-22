@@ -162,6 +162,7 @@ $l_alert=array(
 	'thumbnail_exists'=>'This thumbnail already exists!',
 	'thumbnail_hochkomma'=>'Invalid name! Invalid characters are ` (apostrophe) and , (comma)!',
 	'thumbnail_not_exists'=>'This thumbnail does not exist!',
+	'upload_notallowed'=>'You are not allowed to add new files on this server.',
 	'warning'=>'Warning',
 	'we_backup_import_upload_err'=>'An error occured while uploading the backup file! The maximum file size for uploads is %s. If your backup file exceeds this limit, please upload it into the directory webEdition/we_Backup via FTP and choose `GL(backup[import_from_server])`',
 	'we_filename_empty'=>'No name has been entered for this document or directory!',
@@ -171,6 +172,7 @@ $l_alert=array(
 	'wrong_file'=>array(
 		'application/x-shockwave-flash'=>'The file could not be stored. Either it is not a Flash movie or your disk space is exhausted!',
 		'image/*'=>'The file could not be stored. Either it is not an image, the format is not compatible for publishing in the internet (no bmp, tif) or your webspace is exhausted!',
+		'other'=>'The file could not be stored. Either your file format doesn`t match the type, you are not allowed to `store other` files or your disk space is exhausted!',
 		'text/css'=>'The file could not be stored. Either it is not a CSS file or your disk space is exhausted!',
 		'video/quicktime'=>'The file could not be stored. Either it is not a Quicktime movie or your disk space is exhausted!',
 ));

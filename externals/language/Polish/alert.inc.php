@@ -162,6 +162,7 @@ $l_alert=array(
 	'thumbnail_exists'=>'Widok miniatur już istnieje!',
 	'thumbnail_hochkomma'=>'Nazwa widoku miniatur nie może zawierać ` (apostrofu) ani , (przecinka)!',
 	'thumbnail_not_exists'=>'Widok miniatur nie istnieje!',
+	'upload_notallowed'=>'You are not allowed to add new files on this server.',
 	'warning'=>'Warning',
 	'we_backup_import_upload_err'=>'Wystąpił błąd przy ładowaniu pliku kopii zapasowej! /Maksymalna dozwolona wielkość pliku do załadowania wynosi %s. Jeżeli twój plik kopii zapasowej jest większy, skopiuj go na serwer za pomocą FTP do katalogu webEdition/we_backup a następnie wybierz `GL(backup[import_from_server])`!',
 	'we_filename_empty'=>'Nie wprowadzono nazwy pliku dla tego dokumentu bądź katalogu!',
@@ -171,6 +172,7 @@ $l_alert=array(
 	'wrong_file'=>array(
 		'application/x-shockwave-flash'=>'The file could not be stored. Either it is not a Flash movie or your disk space is exhausted!',
 		'image/*'=>'The file could not be stored. Either it is not an image, the format is not compatible for publishing in the internet (no bmp, tif) or your webspace is exhausted!',
+		'other'=>'The file could not be stored. Either your file format doesn`t match the type, you are not allowed to `store other` files or your disk space is exhausted!',
 		'text/css'=>'The file could not be stored. Either it is not a CSS file or your disk space is exhausted!',
 		'video/quicktime'=>'The file could not be stored. Either it is not a Quicktime movie or your disk space is exhausted!',
 ));
