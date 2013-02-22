@@ -1619,7 +1619,7 @@ if(window.onload) {
 			foreach($_template_font_sizes as $sz){
 				$_template_editor_font_sizes_select_box->addOption($sz, $sz);
 			}
-			$_template_editor_font_sizes_select_box->selectOption($_template_editor_font_specify ? $_template_font_sizes[$i] : 11);
+			$_template_editor_font_sizes_select_box->selectOption($_template_editor_font_specify ? $_template_font_sizes[$sz] : 11);
 
 			$_template_editor_font_sizes_select_box->selectOption(get_value('editorFontsize'));
 
