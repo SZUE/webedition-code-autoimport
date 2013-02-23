@@ -715,14 +715,10 @@ class searchtoolsearch extends we_search{
 		}
 	}
 
-	function getTableType(){
-		return(getMysqlVer() < 4100 ? "MYISAM" : "MEMORY");
-	}
-
 	function createTempTable(){
 		$this->db->query('DROP TABLE IF EXISTS SEARCH_TEMP_TABLE');
 
-		$tableType = searchtoolsearch::getTableType();
+		$tableType = "MEMORY";
 
 		$charset_collation = "";
 		if(defined("DB_CHARSET") && DB_CHARSET != "" && defined("DB_COLLATION") && DB_COLLATION != ""){
@@ -952,7 +948,7 @@ class searchtoolsearch extends we_search{
 
 	static function checkRightTempTable(){
 		$db = new DB_WE();
-		$tableType = searchtoolsearch::getTableType();
+		$tableType = "MEMORY";
 		$charset_collation = "";
 		if(defined("DB_CHARSET") && DB_CHARSET != "" && defined("DB_COLLATION") && DB_COLLATION != ""){
 			$Charset = DB_CHARSET;
@@ -986,7 +982,7 @@ class searchtoolsearch extends we_search{
 			$charset_collation = ' CHARACTER SET ' . $Charset . " COLLATE " . $Collation;
 		}
 
-		$tableType = searchtoolsearch::getTableType();
+		$tableType = "MEMORY";
 
 
 		$db->query('CREATE TABLE IF NOT EXISTS test_SEARCH_TEMP_TABLE (

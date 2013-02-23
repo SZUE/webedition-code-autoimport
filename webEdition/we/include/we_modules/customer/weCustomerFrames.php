@@ -292,7 +292,7 @@ class weCustomerFrames extends weModuleFrames{
 	}
 
 	function getHTMLEditorHeader(){
-		$extraJS = "var aTabs=new Array;\n";
+		$extraJS = "var aTabs=new Array;";
 
 
 		if(isset($_REQUEST['home'])){

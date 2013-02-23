@@ -1063,22 +1063,7 @@ class we_document extends we_root{
 					$precision = isset($attribs['precision']) ? abs($attribs['precision']) : 2;
 
 					if(isset($attribs['num_format'])){
-						$retval = we_util::std_numberformat($retval);
-						switch($attribs['num_format']){
-							default:
-							case 'german':
-								$retval = number_format($retval, $precision, ',', '.');
-								break;
-							case 'french':
-								$retval = number_format($retval, $precision, ',', ' ');
-								break;
-							case 'english':
-								$retval = number_format($retval, $precision, '.', '');
-								break;
-							case 'swiss':
-								$retval = number_format($retval, $precision, '.', '\'');
-								break;
-						}
+						$retval = we_util_Strings::formatNumber(we_util::std_numberformat($retval),$attribs['num_format'],$precision);
 					}
 				}
 				if(weTag_getAttribute('win2iso', $attribs, false, true)){

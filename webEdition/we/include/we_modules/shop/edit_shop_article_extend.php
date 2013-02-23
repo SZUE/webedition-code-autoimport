@@ -191,21 +191,6 @@ if(isset($daten)){
 		$_REQUEST['sort'] = "";
 	}
 
-	function numfom($result){
-		$result = we_util::std_numberformat($result);
-		switch($GLOBALS['numberformat']){
-			case 'german':
-				return number_format($result, 2, ",", ".");
-			case 'french':
-				return number_format($result, 2, ",", "&nbsp;");
-			case 'english':
-				return number_format($result, 2, ".", "");
-			case 'swiss':
-				return number_format($result, 2, ",", "'");
-		}
-		return $result;
-	}
-
 
 	/*	 * ************ selectbox function ************** */
 

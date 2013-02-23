@@ -854,7 +854,6 @@ abstract class we_root extends we_class{
 	}
 
 	protected function i_setElementsFromHTTP(){
-
 		// do not set REQUEST VARS into the document
 		if(isset($_REQUEST['we_cmd'][0])){
 			if(($_REQUEST['we_cmd'][0] == 'switch_edit_page' && isset($_REQUEST['we_cmd'][3])) || ($_REQUEST['we_cmd'][0] == 'save_document' && isset($_REQUEST['we_cmd'][7]) && $_REQUEST['we_cmd'][7] == 'save_document')){
@@ -876,9 +875,9 @@ abstract class we_root extends we_class{
 								$dates[$name][$what] = $v2;
 							} else{
 								$name = $n2;
-								if(preg_match('/(.+)#(.+)/', $name, $regs2)){
-									$this->elements[$regs2[1]]['type'] = $type;
-									$this->elements[$regs2[1]][$regs2[2]] = $v2;
+								if(preg_match('/(.+)#(.+)/', $name, $regs)){
+									$this->elements[$regs[1]]['type'] = $type;
+									$this->elements[$regs[1]][$regs[2]] = $v2;
 								} else{
 									$this->elements[$name]['type'] = $type;
 									//FIXME: check if we can apply the correct type
