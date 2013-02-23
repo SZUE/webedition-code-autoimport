@@ -42,7 +42,7 @@ if($strFelder !== ''){
 	$CLFields['languageFieldIsISO'] = 0;
 }
 
-function getFieldFromShoparticle($array, $name, $length = 0){
+function getFieldFromShoparticle(array $array, $name, $length = 0){
 	$val = ( isset($array['we_' . $name]) ? $array['we_' . $name] : (isset($array[$name]) ? $array[$name] : '' ) );
 
 	return ($length && ($length < strlen($val)) ?
@@ -121,10 +121,10 @@ if(isset($_REQUEST['we_cmd'][0])){
 				// add complete article / object here - inclusive request fields
 				$_strSerialOrder = getFieldFromOrder($_REQUEST["bid"], 'strSerialOrder');
 
-				$tmp = explode('_', $_REQUEST["add_article"]);
-				$isObj = ($tmp[1] == "o");
+				$tmp = explode('_', $_REQUEST['add_article']);
+				$isObj = ($tmp[1] == 'o');
 
-				$id = $tmp[0];
+				$id = intval($tmp[0]);
 
 				// check for variant or customfields
 				$customFieldsTmp = array();
@@ -162,19 +162,22 @@ if(isset($_REQUEST['we_cmd'][0])){
 					$serialDoc[WE_SHOP_VAT_FIELD_NAME] = $standardVat->vat;
 				}
 
+				//need pricefield:
+				$orderArray=  unserialize($_strSerialOrder);
+				$pricename = (isset($orderArray[WE_SHOP_PRICENAME]) ? $orderArray[WE_SHOP_PRICENAME] : 'shopprice');
 				// now insert article to order:
-				$row = getHash('SELECT IntOrderID, IntCustomerID, DateOrder, DateShipping, Datepayment,IntPayment_Type FROM ' . SHOP_TABLE . ' WHERE IntOrderID = ' . intval($_REQUEST['bid']), $GLOBALS['DB_WE']);
+				$row = getHash('SELECT IntOrderID, IntCustomerID, DateOrder, DateShipping, Datepayment, IntPayment_Type FROM ' . SHOP_TABLE . ' WHERE IntOrderID=' . intval($_REQUEST['bid']), $GLOBALS['DB_WE']);
 				$GLOBALS['DB_WE']->query('INSERT INTO ' . SHOP_TABLE . ' SET ' .
 					we_database_base::arraySetter((array(
 						'IntArticleID' => $id,
 						'IntQuantity' => $_REQUEST["anzahl"],
-						'Price' => getFieldFromShoparticle($serialDoc, 'shopprice'),
-						'IntOrderID' => $row["IntOrderID"],
-						'IntCustomerID' => $row["IntCustomerID"],
-						'DateOrder' => $row["DateOrder"],
-						'DateShipping' => $row["DateShipping"],
-						'Datepayment' => $row["Datepayment"],
-						'IntPayment_Type' => $row["IntPayment_Type"],
+						'Price' => we_util::std_numberformat(getFieldFromShoparticle($serialDoc, $pricename)),
+						'IntOrderID' => $row['IntOrderID'],
+						'IntCustomerID' => $row['IntCustomerID'],
+						'DateOrder' => $row['DateOrder'],
+						'DateShipping' => $row['DateShipping'],
+						'Datepayment' => $row['Datepayment'],
+						'IntPayment_Type' => $row['IntPayment_Type'],
 						'strSerial' => serialize($serialDoc),
 						'strSerialOrder' => $_strSerialOrder
 				))));
@@ -188,8 +191,8 @@ if(isset($_REQUEST['we_cmd'][0])){
 			$shopArticles = array();
 
 			$saveBut = '';
-			$cancelBut = we_button::create_button('cancel', "javascript:window.close();");
-			$searchBut = we_button::create_button('search', "javascript:searchArticles();");
+			$cancelBut = we_button::create_button('cancel', 'javascript:window.close();');
+			$searchBut = we_button::create_button('search', 'javascript:searchArticles();');
 
 			// first get all shop documents
 			$GLOBALS['DB_WE']->query('SELECT ' . CONTENT_TABLE . '.dat AS shopTitle, ' . LINK_TABLE . '.DID AS documentId FROM ' . CONTENT_TABLE . ', ' . LINK_TABLE . ', ' . FILE_TABLE .
@@ -276,16 +279,17 @@ function searchArticles() {
 					array(
 					'headline' => g_l('modules_shop', '[Artikel]'),
 					'space' => 100,
-					'html' => '<form name="we_intern_form">' . we_html_tools::hidden('bid', $_REQUEST['bid']) . we_html_tools::hidden("we_cmd[]", 'add_new_article') . '
-					<table border="0" cellpadding="0" cellspacing="0">
-					<tr><td>' . we_class::htmlSelect("add_article", $shopArticlesSelect, 15, (isset($_REQUEST['add_article']) ? $_REQUEST['add_article'] : ''), false, 'onchange="selectArticle(this.options[this.selectedIndex].value);"', 'value', '380') . '</td>
-					<td>' . we_html_tools::getPixel(10, 1) . '</td>
-					<td valign="top">' . $backBut . '<div style="margin:5px 0"></div>' . $nextBut . '</td>
-					</tr>
-					<tr>
-						<td class="small">' . sprintf(g_l('modules_shop', '[add_article][entry_x_to_y_from_z]'), $start_entry, $end_entry, $AMOUNT_ARTICLES) . '</td>
-					</tr>
-					</table>',
+					'html' => '
+<form name="we_intern_form">' . we_html_tools::hidden('bid', $_REQUEST['bid']) . we_html_tools::hidden("we_cmd[]", 'add_new_article') . '
+	<table border="0" cellpadding="0" cellspacing="0">
+	<tr><td>' . we_class::htmlSelect("add_article", $shopArticlesSelect, 15, (isset($_REQUEST['add_article']) ? $_REQUEST['add_article'] : ''), false, 'onchange="selectArticle(this.options[this.selectedIndex].value);"', 'value', '380') . '</td>
+	<td>' . we_html_tools::getPixel(10, 1) . '</td>
+	<td valign="top">' . $backBut . '<div style="margin:5px 0"></div>' . $nextBut . '</td>
+	</tr>
+	<tr>
+		<td class="small">' . sprintf(g_l('modules_shop', '[add_article][entry_x_to_y_from_z]'), $start_entry, $end_entry, $AMOUNT_ARTICLES) . '</td>
+	</tr>
+	</table>',
 					'noline' => 1
 					) :
 					array(
@@ -300,13 +304,14 @@ function searchArticles() {
 				$parts[] = array(
 					'headline' => g_l('global', '[search]'),
 					'space' => 100,
-					'html' => '<table border="0" cellpadding="0" cellspacing="0">
-					<tr><td>' . we_class::htmlTextInput('searchArticle', 24, ( isset($_REQUEST['searchArticle']) ? $_REQUEST['searchArticle'] : ''), '', 'id="searchArticle"', 'text', 380) . '</td>
-					<td>' . we_html_tools::getPixel(10, 1) . '</td>
-					<td>' . $searchBut . '</td>
-					</tr>
-					</table>
-					</form>'
+					'html' => '
+	<table border="0" cellpadding="0" cellspacing="0">
+		<tr><td>' . we_class::htmlTextInput('searchArticle', 24, ( isset($_REQUEST['searchArticle']) ? $_REQUEST['searchArticle'] : ''), '', 'id="searchArticle"', 'text', 380) . '</td>
+			<td>' . we_html_tools::getPixel(10, 1) . '</td>
+			<td>' . $searchBut . '</td>
+		</tr>
+	</table>
+</form>'
 				);
 			}
 
@@ -1127,7 +1132,7 @@ if(!isset($letzerartikel)){ // order has still articles - get them all
 	' . ($calcVat ? '
 		<td></td>
 		<td class="shopContentfontR small">(' . "<a href=\"javascript:var vat = prompt('" . g_l('modules_shop', '[keinezahl]') . "','" . $articleVat . "'); if(vat != null ){if(vat.search(/\d.*/)==-1){" . we_message_reporting::getShowMessageCall("'" . g_l('modules_shop', '[keinezahl]') . "'", we_message_reporting::WE_MESSAGE_ERROR, true) . ";}else{document.location='" . $_SERVER['SCRIPT_NAME'] . "?bid=" . $_REQUEST["bid"] . "&article=$tblOrdersId[$i]&vat=' + vat; } }\">" . we_util_Strings::formatNumber($articleVat) . "</a>" . '%)</td>' :
-			'') . '
+				'') . '
 	<td>' . $pixelImg . '</td>
 	<td>' . we_button::create_button("image:btn_function_trash", "javascript:check=confirm('" . g_l('modules_shop', '[jsloeschen]') . "'); if (check){document.location.href='" . $_SERVER['SCRIPT_NAME'] . "?bid=" . $_REQUEST["bid"] . "&deleteaartikle=" . $tblOrdersId[$i] . "';}", true, 100, 22, "", "", !we_hasPerm("DELETE_SHOP_ARTICLE")) . '</td>
 </tr>';
@@ -1197,7 +1202,7 @@ if(!isset($letzerartikel)){ // order has still articles - get them all
 			if(isset($orderData[WE_SHOP_SHIPPING]) && isset($shippingCostsNet)){
 
 				$totalPriceAndVat += $shippingCostsNet;
-				$orderTable .=					'
+				$orderTable .= '
 <tr>
 	<td colspan="5" class="shopContentfontR">' . g_l('modules_shop', '[shipping][shipping_package]') . ':</td>
 	<td colspan="4" class="shopContentfontR"><strong><a href="javascript:we_cmd(\'edit_shipping_cost\');">' . we_util_Strings::formatNumber($shippingCostsNet) . $waehr . '</a></strong></td>
