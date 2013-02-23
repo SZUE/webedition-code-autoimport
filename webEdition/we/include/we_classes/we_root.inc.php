@@ -866,15 +866,14 @@ abstract class we_root extends we_class{
 			foreach($_REQUEST as $n => $v){
 				if(preg_match('/^we_' . preg_quote($this->Name) . '_([^\[]+)$/', $n, $regs)){
 					if(is_array($v)){
-						foreach($v as $n2 => $v2){
+						$type = $regs[1];
+						foreach($v as $name => $v2){
 							$v2 = we_util::cleanNewLine($v2);
-							$type = $regs[1];
 							if($type == 'date'){
-								$name = preg_replace('/^(.+)_[^_]+$/', '\1', $n2);
-								$what = preg_replace('/^.+_([^_]+)$/', '\1', $n2);
+								$name = preg_replace('/^(.+)_[^_]+$/', '\1', $name);
+								$what = preg_replace('/^.+_([^_]+)$/', '\1', $name);
 								$dates[$name][$what] = $v2;
 							} else{
-								$name = $n2;
 								if(preg_match('/(.+)#(.+)/', $name, $regs)){
 									$this->elements[$regs[1]]['type'] = $type;
 									$this->elements[$regs[1]][$regs[2]] = $v2;
@@ -891,8 +890,6 @@ abstract class we_root extends we_class{
 					}
 				} else if($n == 'we_owners_read_only'){
 					$this->OwnersReadOnly = serialize($v);
-				} else if($n == 'we_users_read_only'){
-					$this->UsersReadOnly = serialize($v);
 				}
 			}
 			foreach($dates as $k => $v){

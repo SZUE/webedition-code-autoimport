@@ -125,7 +125,7 @@ class we_objectFile extends we_document{
 		}
 
 		$GLOBALS['we_object'][$formname]->DefArray = empty($GLOBALS['we_object'][$formname]->DefArray) ? $GLOBALS['we_object'][$formname]->getDefaultValueArray() :
-				$GLOBALS['we_object'][$formname]->DefArray;//bug #7426
+			$GLOBALS['we_object'][$formname]->DefArray; //bug #7426
 
 		if(isset($_REQUEST['we_returnpage'])){
 			$GLOBALS['we_object'][$formname]->setElement('we_returnpage', $_REQUEST['we_returnpage']);
@@ -960,19 +960,15 @@ class we_objectFile extends we_document{
 			$content = $this->htmlFormElementTable('', $text);
 
 			for($f = 0; $f < $show; $f++){
-				if(!($myid = intval($objects[$f]))){
-					continue;
-				}
-
-				$classPath = f('SELECT Path FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($classid), 'Path', $db);
-
 				$textname = 'we_' . $this->Name . '_txt[' . $name . '_path' . $f . ']';
 				$idname = 'we_' . $this->Name . '_multiobject[' . $name . '_default' . $f . ']';
 
-				$path = $this->getElement('we_object_' . $name . '_path');
-				$path = $path ? $path : f('SELECT Path FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . $myid, 'Path', $db);
+				$classPath = f('SELECT Path FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($classid), 'Path', $db);
 				$rootDir = f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE Path="' . $classPath . '"', 'ID', $db);
-
+				$path = $this->getElement('we_object_' . $name . '_path');
+				if(($myid = intval($objects[$f]))){
+					$path = $path ? $path : f('SELECT Path FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . $myid, 'Path', $db);
+				}
 
 				if(isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == 'seem'){
 
@@ -2763,15 +2759,13 @@ class we_objectFile extends we_document{
 	protected function i_setElementsFromHTTP(){
 		parent::i_setElementsFromHTTP();
 		if(count($_REQUEST)){
-
+			$regs = array();
 			$hrefFields = false;
+			$multiobjectFields = false;
 
-			foreach($_REQUEST as $n => $v){
-				if(preg_match('/^we_' . $this->Name . '_([^\[]+)$/', $n, $regs)){
-					if($regs[1] == 'href'){
-						$hrefFields = true;
-						break;
-					}
+			foreach(array_keys($_REQUEST) as $n){
+				if(preg_match('/^we_' . $this->Name . '_(href|multiobject)$/', $n, $regs)){
+					${$regs[1] . 'Fields'}|=true;
 				}
 			}
 
@@ -2794,25 +2788,15 @@ class we_objectFile extends we_document{
 				}
 			}
 
-			$multiobjectFields = false;
-
-			foreach($_REQUEST as $n => $v){
-				if(preg_match('/^we_' . $this->Name . '_([^\[]+)$/', $n, $regs)){
-					if($regs[1] == 'multiobject'){
-						$multiobjectFields = true;
-						break;
-					}
-				}
-			}
-
 			if($multiobjectFields){
 				$this->resetElements();
 				$multiobjects = array();
 				while((list($k, $v) = $this->nextElement('multiobject'))) {
 					$realName = preg_replace('/^(.+)_default.+$/', '\1', $k);
 					$key = preg_replace('/^.+_default(.+)$/', '\1', $k);
-					if(!isset($multiobjects[$realName]))
+					if(!isset($multiobjects[$realName])){
 						$multiobjects[$realName] = array();
+					}
 					if(isset($_REQUEST['we_' . $this->Name . '_multiobject'][$k])){
 						$multiobjects[$realName][$key] = $_REQUEST['we_' . $this->Name . '_multiobject'][$k];
 					}
