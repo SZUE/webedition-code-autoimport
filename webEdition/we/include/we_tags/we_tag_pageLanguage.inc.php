@@ -39,6 +39,14 @@ function we_tag_pageLanguage($attribs){
 		case "country":
 			$out = substr($lang, 3, 2);
 			break;
+		//#7279 start
+		case "language_name":
+			$out = Zend_Locale::getTranslation(substr($lang, 0, 2), 'language',substr($lang, 0, 2));
+			break;
+		case "country_name":
+			$out = Zend_Locale::getTranslation(substr($lang, 3, 2), 'country',substr($lang, 3, 2));
+			break;
+		//#7279 end
 		default:
 			$out = $lang;
 	}
