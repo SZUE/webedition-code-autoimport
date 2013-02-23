@@ -95,22 +95,6 @@ function updateFieldFromOrder($orderId, $fieldname, $value){
 	return (bool) $GLOBALS['DB_WE']->query('UPDATE ' . SHOP_TABLE . ' SET ' . $GLOBALS['DB_WE']->escape($fieldname) . '="' . $GLOBALS['DB_WE']->escape($value) . '" WHERE IntOrderID=' . intval($orderId));
 }
 
-// determine the number format
-function numfom($result){
-	$result = doubleval(we_util::std_numberformat($result));
-	switch($GLOBALS['numberformat']){
-		case 'german':
-			return number_format($result, 2, ',', '.');
-		case 'french':
-			return number_format($result, 2, ',', '&nbsp;');
-		case 'english':
-			return number_format($result, 2, '.', '');
-		case 'swiss':
-			return number_format($result, 2, ',', '\'');
-	}
-	return $result;
-}
-
 // config
 $feldnamen = explode('|', f('SELECT strFelder FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname = "shop_pref"', 'strFelder', $GLOBALS['DB_WE']));
 
@@ -150,9 +134,7 @@ if(isset($_REQUEST['we_cmd'][0])){
 
 					if(is_array($fields)){
 						foreach($fields as $field){
-
 							$fieldData = explode('=', $field);
-
 							if(is_array($fieldData) && count($fieldData) == 2){
 								$customFieldsTmp[trim($fieldData[0])] = trim($fieldData[1]);
 							}
@@ -244,8 +226,6 @@ if(isset($_REQUEST['we_cmd'][0])){
 				unset($_classId);
 			}
 
-			unset($query);
-
 			// <<< determine which articles should be shown ...
 
 			asort($shopArticles);
@@ -274,26 +254,21 @@ if(isset($_REQUEST['we_cmd'][0])){
 			// determine which articles should be shown >>>
 
 
-			print we_html_element::jsElement(
-					'self.focus();
+			print we_html_element::jsElement('
+self.focus();
 
-		function selectArticle(articleInfo) {
+function selectArticle(articleInfo) {
+	document.location = "?we_cmd[0]=' . $_REQUEST['we_cmd'][0] . '&bid=' . $_REQUEST['bid'] . '&page=' . $page . (isset($_REQUEST['searchArticle']) ? '&searchArticle=' . $_REQUEST['searchArticle'] : '') . '&add_article=" + articleInfo;
+}
 
-			document.location = "?we_cmd[0]=' . $_REQUEST['we_cmd'][0] . '&bid=' . $_REQUEST['bid'] . '&page=' . $page . (isset($_REQUEST['searchArticle']) ? '&searchArticle=' . $_REQUEST['searchArticle'] : '') . '&add_article=" + articleInfo;
-		}
+function switchEntriesPage(pageNum) {
+	document.location = "?we_cmd[0]=' . $_REQUEST['we_cmd'][0] . '&bid=' . $_REQUEST['bid'] . (isset($_REQUEST['searchArticle']) ? '&searchArticle=' . $_REQUEST['searchArticle'] : '') . '&page=" + pageNum;
+}
 
-		function switchEntriesPage(pageNum) {
-
-			document.location = "?we_cmd[0]=' . $_REQUEST['we_cmd'][0] . '&bid=' . $_REQUEST['bid'] . (isset($_REQUEST['searchArticle']) ? '&searchArticle=' . $_REQUEST['searchArticle'] : '') . '&page=" + pageNum;
-		}
-
-		function searchArticles() {
-
-			field = document.getElementById("searchArticle");
-			document.location = "?we_cmd[0]=' . $_REQUEST['we_cmd'][0] . '&bid=' . $_REQUEST['bid'] . '&searchArticle=" + field.value;
-		}
-
-	') . '
+function searchArticles() {
+	field = document.getElementById("searchArticle");
+	document.location = "?we_cmd[0]=' . $_REQUEST['we_cmd'][0] . '&bid=' . $_REQUEST['bid'] . '&searchArticle=" + field.value;
+}') . '
 </head>
 <body class="weDialogBody">';
 
@@ -790,7 +765,6 @@ if(isset($_REQUEST['we_cmd'][0])){
 				$alertType = we_message_reporting::WE_MESSAGE_ERROR;
 			}
 
-			unset($query);
 			unset($upQuery);
 			unset($_customer);
 			unset($_orderData);
@@ -1138,32 +1112,34 @@ if(!isset($letzerartikel)){ // order has still articles - get them all
 		}
 
 		// table row of one article
-		$orderTable .= '<tr><td height="1" colspan="11"><hr size="1" style="color: black" noshade /></td></tr>
-	<tr>
-		<td class="shopContentfontR">' . "<a href=\"javascript:var anzahl=prompt('" . g_l('modules_shop', '[jsanz]') . "','" . $Quantity[$i] . "'); if(anzahl != null){if(anzahl.search(/\d.*/)==-1){" . we_message_reporting::getShowMessageCall("'" . g_l('modules_shop', '[keinezahl]') . "'", we_message_reporting::WE_MESSAGE_ERROR, true) . ";}else{document.location='" . $_SERVER['SCRIPT_NAME'] . "?bid=" . $_REQUEST["bid"] . "&article=$tblOrdersId[$i]&anzahl='+anzahl;}}\">" . $Quantity[$i] . "</a>" . '</td>
+		$orderTable .= '
+<tr><td height="1" colspan="11"><hr size="1" style="color: black" noshade /></td></tr>
+<tr>
+	<td class="shopContentfontR">' . "<a href=\"javascript:var anzahl=prompt('" . g_l('modules_shop', '[jsanz]') . "','" . $Quantity[$i] . "'); if(anzahl != null){if(anzahl.search(/\d.*/)==-1){" . we_message_reporting::getShowMessageCall("'" . g_l('modules_shop', '[keinezahl]') . "'", we_message_reporting::WE_MESSAGE_ERROR, true) . ";}else{document.location='" . $_SERVER['SCRIPT_NAME'] . "?bid=" . $_REQUEST["bid"] . "&article=$tblOrdersId[$i]&anzahl='+anzahl;}}\">" . $Quantity[$i] . "</a>" . '</td>
+	<td></td>
+	<td>' . getFieldFromShoparticle($shopArticleObject, 'shoptitle', 35) . '</td>
+	<td></td>
+	<td>' . getFieldFromShoparticle($shopArticleObject, 'shopdescription', 45) . '</td>
+	<td></td>
+	<td class="shopContentfontR">' . "<a href=\"javascript:var preis = prompt('" . g_l('modules_shop', '[jsbetrag]') . "','" . $Price[$i] . "'); if(preis != null ){if(preis.search(/\d.*/)==-1){" . we_message_reporting::getShowMessageCall("'" . g_l('modules_shop', '[keinezahl]') . "'", we_message_reporting::WE_MESSAGE_ERROR, true) . "}else{document.location='" . $_SERVER['SCRIPT_NAME'] . "?bid=" . $_REQUEST["bid"] . "&article=$tblOrdersId[$i]&preis=' + preis; } }\">" . we_util_Strings::formatNumber($Price[$i]) . "</a>" . $waehr . '</td>
+	<td></td>
+	<td class="shopContentfontR">' . we_util_Strings::formatNumber($articlePrice) . $waehr . '</td>
+	' . ($calcVat ? '
 		<td></td>
-		<td>' . getFieldFromShoparticle($shopArticleObject, 'shoptitle', 35) . '</td>
-		<td></td>
-		<td>' . getFieldFromShoparticle($shopArticleObject, 'shopdescription', 45) . '</td>
-		<td></td>
-		<td class="shopContentfontR">' . "<a href=\"javascript:var preis = prompt('" . g_l('modules_shop', '[jsbetrag]') . "','" . $Price[$i] . "'); if(preis != null ){if(preis.search(/\d.*/)==-1){" . we_message_reporting::getShowMessageCall("'" . g_l('modules_shop', '[keinezahl]') . "'", we_message_reporting::WE_MESSAGE_ERROR, true) . "}else{document.location='" . $_SERVER['SCRIPT_NAME'] . "?bid=" . $_REQUEST["bid"] . "&article=$tblOrdersId[$i]&preis=' + preis; } }\">" . numfom($Price[$i]) . "</a>" . $waehr . '</td>
-		<td></td>
-		<td class="shopContentfontR">' . numfom($articlePrice) . $waehr . '</td>
-		' . ($calcVat ? '
-			<td></td>
-			<td class="shopContentfontR small">(' . "<a href=\"javascript:var vat = prompt('" . g_l('modules_shop', '[keinezahl]') . "','" . $articleVat . "'); if(vat != null ){if(vat.search(/\d.*/)==-1){" . we_message_reporting::getShowMessageCall("'" . g_l('modules_shop', '[keinezahl]') . "'", we_message_reporting::WE_MESSAGE_ERROR, true) . ";}else{document.location='" . $_SERVER['SCRIPT_NAME'] . "?bid=" . $_REQUEST["bid"] . "&article=$tblOrdersId[$i]&vat=' + vat; } }\">" . numfom($articleVat) . "</a>" . '%)</td>' :
-				'') . '
-		<td>' . $pixelImg . '</td>
-		<td>' . we_button::create_button("image:btn_function_trash", "javascript:check=confirm('" . g_l('modules_shop', '[jsloeschen]') . "'); if (check){document.location.href='" . $_SERVER['SCRIPT_NAME'] . "?bid=" . $_REQUEST["bid"] . "&deleteaartikle=" . $tblOrdersId[$i] . "';}", true, 100, 22, "", "", !we_hasPerm("DELETE_SHOP_ARTICLE")) . '</td>
-	</tr>';
+		<td class="shopContentfontR small">(' . "<a href=\"javascript:var vat = prompt('" . g_l('modules_shop', '[keinezahl]') . "','" . $articleVat . "'); if(vat != null ){if(vat.search(/\d.*/)==-1){" . we_message_reporting::getShowMessageCall("'" . g_l('modules_shop', '[keinezahl]') . "'", we_message_reporting::WE_MESSAGE_ERROR, true) . ";}else{document.location='" . $_SERVER['SCRIPT_NAME'] . "?bid=" . $_REQUEST["bid"] . "&article=$tblOrdersId[$i]&vat=' + vat; } }\">" . we_util_Strings::formatNumber($articleVat) . "</a>" . '%)</td>' :
+			'') . '
+	<td>' . $pixelImg . '</td>
+	<td>' . we_button::create_button("image:btn_function_trash", "javascript:check=confirm('" . g_l('modules_shop', '[jsloeschen]') . "'); if (check){document.location.href='" . $_SERVER['SCRIPT_NAME'] . "?bid=" . $_REQUEST["bid"] . "&deleteaartikle=" . $tblOrdersId[$i] . "';}", true, 100, 22, "", "", !we_hasPerm("DELETE_SHOP_ARTICLE")) . '</td>
+</tr>';
 		// if this article has custom fields or is a variant - we show them in a extra rows
 		// add variant.
 		if(isset($shopArticleObject['WE_VARIANT']) && $shopArticleObject['WE_VARIANT']){
 
-			$orderTable .='<tr>
-		<td colspan="4"></td>
-		<td class="small" colspan="6">' . g_l('modules_shop', '[variant]') . ': ' . $shopArticleObject['WE_VARIANT'] . '</td>
-	</tr>';
+			$orderTable .='
+<tr>
+	<td colspan="4"></td>
+	<td class="small" colspan="6">' . g_l('modules_shop', '[variant]') . ': ' . $shopArticleObject['WE_VARIANT'] . '</td>
+</tr>';
 		}
 		// add custom fields
 		if(isset($shopArticleObject[WE_SHOP_ARTICLE_CUSTOM_FIELD]) && is_array($shopArticleObject[WE_SHOP_ARTICLE_CUSTOM_FIELD]) && count($shopArticleObject[WE_SHOP_ARTICLE_CUSTOM_FIELD])){
@@ -1173,10 +1149,11 @@ if(!isset($letzerartikel)){ // order has still articles - get them all
 				$caField .= "$key: $value; ";
 			}
 
-			$orderTable .='<tr>
-		<td colspan="4"></td>
-		<td class="small" colspan="6">' . $caField . '</td>
-	</tr>';
+			$orderTable .='
+<tr>
+	<td colspan="4"></td>
+	<td class="small" colspan="6">' . $caField . '</td>
+</tr>';
 		}
 	}
 
@@ -1194,25 +1171,22 @@ if(!isset($letzerartikel)){ // order has still articles - get them all
 			$shippingCostsNet = $orderData[WE_SHOP_SHIPPING]['costs'];
 			$shippingCostsVat = $orderData[WE_SHOP_SHIPPING]['costs'] * $orderData[WE_SHOP_SHIPPING]['vatRate'] / 100;
 			$shippingCostsGros = $shippingCostsNet + $shippingCostsVat;
-
-			$articleVatArray[$orderData[WE_SHOP_SHIPPING]['vatRate']] += $shippingCostsVat;
 		} else{
-
 			$shippingCostsGros = $orderData[WE_SHOP_SHIPPING]['costs'];
 			$shippingCostsVat = $orderData[WE_SHOP_SHIPPING]['costs'] / ($orderData[WE_SHOP_SHIPPING]['vatRate'] + 100) * $orderData[WE_SHOP_SHIPPING]['vatRate'];
 			$shippingCostsNet = $orderData[WE_SHOP_SHIPPING]['costs'] / ($orderData[WE_SHOP_SHIPPING]['vatRate'] + 100) * 100;
-
-			$articleVatArray[$orderData[WE_SHOP_SHIPPING]['vatRate']] += $shippingCostsVat;
 		}
+		$articleVatArray[$orderData[WE_SHOP_SHIPPING]['vatRate']] += $shippingCostsVat;
 	}
 
-	$orderTable .= '<tr>
-		<td height="1" colspan="11"><hr size="2" style="color: black" noshade /></td>
-	</tr>
-	<tr>
-		<td colspan="5" class="shopContentfontR">' . g_l('modules_shop', '[Preis]') . ':</td>
-		<td colspan="4" class="shopContentfontR"><strong>' . numfom($totalPrice) . $waehr . '</strong></td>
-	</tr>';
+	$orderTable .= '
+<tr>
+	<td height="1" colspan="11"><hr size="2" style="color: black" noshade /></td>
+</tr>
+<tr>
+	<td colspan="5" class="shopContentfontR">' . g_l('modules_shop', '[Preis]') . ':</td>
+	<td colspan="4" class="shopContentfontR"><strong>' . we_util_Strings::formatNumber($totalPrice) . $waehr . '</strong></td>
+</tr>';
 
 	if($calcVat){ // add Vat to price
 		$totalPriceAndVat = $totalPrice;
@@ -1223,68 +1197,78 @@ if(!isset($letzerartikel)){ // order has still articles - get them all
 			if(isset($orderData[WE_SHOP_SHIPPING]) && isset($shippingCostsNet)){
 
 				$totalPriceAndVat += $shippingCostsNet;
-				$orderTable .=
-					'<tr>
-						<td colspan="5" class="shopContentfontR">' . g_l('modules_shop', '[shipping][shipping_package]') . ':</td>
-						<td colspan="4" class="shopContentfontR"><strong><a href="javascript:we_cmd(\'edit_shipping_cost\');">' . numfom($shippingCostsNet) . $waehr . '</a></strong></td>
-					</tr>
-					<tr>
-						<td height="1" colspan="11"><hr size="1" style="color: black" noshade /></td>
-					</tr>';
+				$orderTable .=					'
+<tr>
+	<td colspan="5" class="shopContentfontR">' . g_l('modules_shop', '[shipping][shipping_package]') . ':</td>
+	<td colspan="4" class="shopContentfontR"><strong><a href="javascript:we_cmd(\'edit_shipping_cost\');">' . we_util_Strings::formatNumber($shippingCostsNet) . $waehr . '</a></strong></td>
+	<td></td>
+	<td class="shopContentfontR small">(' . we_util_Strings::formatNumber($orderData[WE_SHOP_SHIPPING]['vatRate']) . '%)</td>
+</tr>
+<tr>
+	<td height="1" colspan="11"><hr size="1" style="color: black" noshade /></td>
+</tr>';
 			}
-			$orderTable .= '<tr>
-		<td colspan="5" class="shopContentfontR"><label style="cursor: pointer" for="checkBoxCalcVat">' . g_l('modules_shop', '[plusVat]') . '</label>:</td>
-		<td colspan="7"></td>
-		<td colspan="1"><input id="checkBoxCalcVat" onclick="document.location=\'' . $_SERVER['SCRIPT_NAME'] . '?bid=' . $_REQUEST['bid'] . '&we_cmd[0]=payVat&pay=0\';" type="checkbox" name="calculateVat" value="1" checked="checked" /></td>
-	</tr>';
+			$orderTable .= '
+<tr>
+	<td colspan="5" class="shopContentfontR"><label style="cursor: pointer" for="checkBoxCalcVat">' . g_l('modules_shop', '[plusVat]') . '</label>:</td>
+	<td colspan="7"></td>
+	<td colspan="1"><input id="checkBoxCalcVat" onclick="document.location=\'' . $_SERVER['SCRIPT_NAME'] . '?bid=' . $_REQUEST['bid'] . '&we_cmd[0]=payVat&pay=0\';" type="checkbox" name="calculateVat" value="1" checked="checked" /></td>
+</tr>';
 			foreach($articleVatArray as $vatRate => $sum){
 				if($vatRate){
 					$totalPriceAndVat += $sum;
-					$orderTable .= '<tr>
-		<td colspan="5" class="shopContentfontR">' . $vatRate . ' %:</td>
-		<td colspan="4" class="shopContentfontR">' . numfom($sum) . $waehr . '</td>
-	</tr>';
+					$orderTable .= '
+<tr>
+	<td colspan="5" class="shopContentfontR">' . $vatRate . ' %:</td>
+	<td colspan="4" class="shopContentfontR">' . we_util_Strings::formatNumber($sum) . $waehr . '</td>
+</tr>';
 				}
 			}
-			$orderTable .= '<tr>
-		<td height="1" colspan="11"><hr size="2" style="color: black" noshade /></td>
-	</tr>
-	<tr>
-		<td colspan="5" class="shopContentfontR">' . g_l('modules_shop', '[gesamtpreis]') . ':</td>
-		<td colspan="4" class="shopContentfontR"><strong>' . numfom($totalPriceAndVat) . $waehr . '</strong></td>
-	</tr>';
+			$orderTable .= '
+<tr>
+	<td height="1" colspan="11"><hr size="2" style="color: black" noshade /></td>
+</tr>
+<tr>
+	<td colspan="5" class="shopContentfontR">' . g_l('modules_shop', '[gesamtpreis]') . ':</td>
+	<td colspan="4" class="shopContentfontR"><strong>' . we_util_Strings::formatNumber($totalPriceAndVat) . $waehr . '</strong></td>
+</tr>';
 		} else{ // prices are gros
 			$orderTable .= '<tr><td height="1" colspan="11"><hr size="2" style="color: black" noshade /></td></tr>';
 
 			if(isset($orderData[WE_SHOP_SHIPPING]) && isset($shippingCostsGros)){
 				$totalPrice += $shippingCostsGros;
-				$orderTable .= '<tr>
-						<td colspan="5" class="shopContentfontR">' . g_l('modules_shop', '[shipping][shipping_package]') . ':</td>
-						<td colspan="4" class="shopContentfontR"><a href="javascript:we_cmd(\'edit_shipping_cost\');">' . numfom($shippingCostsGros) . $waehr . '</a></td>
-					</tr>
-					<tr>
-						<td height="1" colspan="11"><hr size="1" style="color: black" noshade /></td>
-					</tr>
-					<tr>
-						<td colspan="5" class="shopContentfontR">' . g_l('modules_shop', '[gesamtpreis]') . ':</td>
-						<td colspan="4" class="shopContentfontR"><strong>' . numfom($totalPrice) . $waehr . '</strong></td>
-					</tr>
-					<tr>
-						<td height="1" colspan="11"><hr size="2" style="color: black" noshade /></td>
-					</tr>';
+				$orderTable .= '
+<tr>
+	<td colspan="5" class="shopContentfontR">' . g_l('modules_shop', '[shipping][shipping_package]') . ':</td>
+	<td colspan="4" class="shopContentfontR"><a href="javascript:we_cmd(\'edit_shipping_cost\');">' . we_util_Strings::formatNumber($shippingCostsGros) . $waehr . '</a></td>
+	<td></td>
+	<td class="shopContentfontR small">(' . we_util_Strings::formatNumber($orderData[WE_SHOP_SHIPPING]['vatRate']) . '%)</td>
+</tr>
+<tr>
+	<td height="1" colspan="11"><hr size="1" style="color: black" noshade /></td>
+</tr>
+<tr>
+	<td colspan="5" class="shopContentfontR">' . g_l('modules_shop', '[gesamtpreis]') . ':</td>
+	<td colspan="4" class="shopContentfontR"><strong>' . we_util_Strings::formatNumber($totalPrice) . $waehr . '</strong></td>
+</tr>
+<tr>
+	<td height="1" colspan="11"><hr size="2" style="color: black" noshade /></td>
+</tr>';
 			}
 
-			$orderTable .= '<tr>
-		<td colspan="5" class="shopContentfontR"><label style="cursor: pointer" for="checkBoxCalcVat">' . g_l('modules_shop', '[includedVat]') . '</label>:</td>
-		<td colspan="7"></td>
-		<td colspan="1"><input id="checkBoxCalcVat" onclick="document.location=\'' . $_SERVER['SCRIPT_NAME'] . '?bid=' . $_REQUEST['bid'] . '&we_cmd[0]=payVat&pay=0\';" type="checkbox" name="calculateVat" value="1" checked="checked" /></td>
-	</tr>';
+			$orderTable .= '
+<tr>
+	<td colspan="5" class="shopContentfontR"><label style="cursor: pointer" for="checkBoxCalcVat">' . g_l('modules_shop', '[includedVat]') . '</label>:</td>
+	<td colspan="7"></td>
+	<td colspan="1"><input id="checkBoxCalcVat" onclick="document.location=\'' . $_SERVER['SCRIPT_NAME'] . '?bid=' . $_REQUEST['bid'] . '&we_cmd[0]=payVat&pay=0\';" type="checkbox" name="calculateVat" value="1" checked="checked" /></td>
+</tr>';
 			foreach($articleVatArray as $vatRate => $sum){
 				if($vatRate){
-					$orderTable .= '<tr>
-		<td colspan="5" class="shopContentfontR">' . $vatRate . ' %:</td>
-		<td colspan="4" class="shopContentfontR">' . numfom($sum) . $waehr . '</td>
-	</tr>';
+					$orderTable .= '
+<tr>
+	<td colspan="5" class="shopContentfontR">' . $vatRate . ' %:</td>
+	<td colspan="4" class="shopContentfontR">' . we_util_Strings::formatNumber($sum) . $waehr . '</td>
+</tr>';
 				}
 			}
 		}
@@ -1293,38 +1277,40 @@ if(!isset($letzerartikel)){ // order has still articles - get them all
 		if(isset($shippingCostsNet)){
 			$totalPrice += $shippingCostsNet;
 
-			$orderTable .= '<tr>
-		<td height="1" colspan="11"><hr size="1" style="color: black" noshade /></td>
-	</tr>
-	<tr>
-		<td colspan="5" class="shopContentfontR">' . g_l('modules_shop', '[shipping][shipping_package]') . ':</td>
-		<td colspan="4" class="shopContentfontR"><a href="javascript:we_cmd(\'edit_shipping_cost\')">' . numfom($shippingCostsNet) . $waehr . '</a></td>
-	</tr>
-	<tr>
-		<td height="1" colspan="11"><hr size="1" style="color: black" noshade /></td>
-	</tr>
-	<tr>
-		<td colspan="5" class="shopContentfontR"><label style="cursor: pointer" for="checkBoxCalcVat">' . g_l('modules_shop', '[edit_order][calculate_vat]') . '</label></td>
-		<td colspan="7"></td>
-		<td colspan="1"><input id="checkBoxCalcVat" onclick="document.location=\'' . $_SERVER['SCRIPT_NAME'] . '?bid=' . $_REQUEST['bid'] . '&we_cmd[0]=payVat&pay=1\';" type="checkbox" name="calculateVat" value="1" /></td>
-	</tr>
-	<tr>
-		<td height="1" colspan="11"><hr size="2" style="color: black" noshade /></td>
-	</tr>
-	<tr>
-		<td colspan="5" class="shopContentfontR">' . g_l('modules_shop', '[gesamtpreis]') . ':</td>
-		<td colspan="4" class="shopContentfontR"><strong>' . numfom($totalPrice) . $waehr . '</strong></td>
-	</tr>
-	<tr>
-		<td height="1" colspan="11"><hr size="2" style="color: black" noshade /></td>
-	</tr>';
+			$orderTable .= '
+<tr>
+	<td height="1" colspan="11"><hr size="1" style="color: black" noshade /></td>
+</tr>
+<tr>
+	<td colspan="5" class="shopContentfontR">' . g_l('modules_shop', '[shipping][shipping_package]') . ':</td>
+	<td colspan="4" class="shopContentfontR"><a href="javascript:we_cmd(\'edit_shipping_cost\')">' . we_util_Strings::formatNumber($shippingCostsNet) . $waehr . '</a></td>
+</tr>
+<tr>
+	<td height="1" colspan="11"><hr size="1" style="color: black" noshade /></td>
+</tr>
+<tr>
+	<td colspan="5" class="shopContentfontR"><label style="cursor: pointer" for="checkBoxCalcVat">' . g_l('modules_shop', '[edit_order][calculate_vat]') . '</label></td>
+	<td colspan="7"></td>
+	<td colspan="1"><input id="checkBoxCalcVat" onclick="document.location=\'' . $_SERVER['SCRIPT_NAME'] . '?bid=' . $_REQUEST['bid'] . '&we_cmd[0]=payVat&pay=1\';" type="checkbox" name="calculateVat" value="1" /></td>
+</tr>
+<tr>
+	<td height="1" colspan="11"><hr size="2" style="color: black" noshade /></td>
+</tr>
+<tr>
+	<td colspan="5" class="shopContentfontR">' . g_l('modules_shop', '[gesamtpreis]') . ':</td>
+	<td colspan="4" class="shopContentfontR"><strong>' . we_util_Strings::formatNumber($totalPrice) . $waehr . '</strong></td>
+</tr>
+<tr>
+	<td height="1" colspan="11"><hr size="2" style="color: black" noshade /></td>
+</tr>';
 		} else{
 
-			$orderTable .= '<tr>
-		<td colspan="5" class="shopContentfontR"><label style="cursor: pointer" for="checkBoxCalcVat">' . g_l('modules_shop', '[edit_order][calculate_vat]') . '</label></td>
-		<td colspan="7"></td>
-		<td colspan="1"><input id="checkBoxCalcVat" onclick="document.location=\'' . $_SERVER['SCRIPT_NAME'] . '?bid=' . $_REQUEST['bid'] . '&we_cmd[0]=payVat&pay=1\';" type="checkbox" name="calculateVat" value="1" /></td>
-	</tr>';
+			$orderTable .= '
+<tr>
+	<td colspan="5" class="shopContentfontR"><label style="cursor: pointer" for="checkBoxCalcVat">' . g_l('modules_shop', '[edit_order][calculate_vat]') . '</label></td>
+	<td colspan="7"></td>
+	<td colspan="1"><input id="checkBoxCalcVat" onclick="document.location=\'' . $_SERVER['SCRIPT_NAME'] . '?bid=' . $_REQUEST['bid'] . '&we_cmd[0]=payVat&pay=1\';" type="checkbox" name="calculateVat" value="1" /></td>
+</tr>';
 		}
 	}
 	$orderTable .= '</table>';

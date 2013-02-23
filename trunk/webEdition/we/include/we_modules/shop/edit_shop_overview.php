@@ -73,23 +73,9 @@ while($DB_WE->next_record()) {
 	$orderid = $DB_WE->f("IntOrderID");
 }
 
-function numfom($result){
-	switch($GLOBALS['numberformat']){
-		case 'german':
-			return number_format($result, 2, ",", ".");
-		case 'french':
-			return number_format($result, 2, ",", " ");
-		case 'swiss':
-			return number_format($result, 2, ".", "'");
-		case 'english':
-			return number_format($result, 2, ".", "");
-	}
-	return $result;
-}
-
 $mwst = (!empty($mwst)) ? $mwst : 1;
 $info = g_l('modules_shop', '[anzahl]') . ": <b>" . ($f + $r) . "</b><br>" . g_l('modules_shop', '[unbearb]') . ": " . (($f) ? $f : "0");
-$stat = g_l('modules_shop', '[umsatzgesamt]') . ": <b>" . numfom(($bezahlt + $unbezahlt) * $mwst) . " $waehr </b><br><br>" . g_l('modules_shop', '[schonbezahlt]') . ": " . numfom($bezahlt * $mwst) . " $waehr <br>" . g_l('modules_shop', '[unbezahlt]') . ": " . numfom($unbezahlt * $mwst) . " $waehr";
+$stat = g_l('modules_shop', '[umsatzgesamt]') . ": <b>" . we_util_Strings::formatNumber(($bezahlt + $unbezahlt) * $mwst) . " $waehr </b><br><br>" . g_l('modules_shop', '[schonbezahlt]') . ": " . we_util_Strings::formatNumber($bezahlt * $mwst) . " $waehr <br>" . g_l('modules_shop', '[unbezahlt]') . ": " . we_util_Strings::formatNumber($unbezahlt * $mwst) . " $waehr";
 echo we_html_element::jsScript(JS_DIR . 'images.js') . we_html_element::jsScript(JS_DIR . 'windows.js');
 ?>
 </head>

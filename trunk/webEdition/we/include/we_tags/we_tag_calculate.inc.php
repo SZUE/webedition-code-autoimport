@@ -57,7 +57,7 @@ function we_tag_calculate($attribs, $content){
 				$GLOBALS["summe"][$sum] += $result;
 			}
 			if($num_format){//bug 6437 gibt immer deutsch zurück (das ist der default von formatnaumber), was das verhalten ändert
-				return ($print ? we_util_Strings::formatnumber($result, $num_format) : '');
+				return ($print ? we_util_Strings::formatNumber($result, $num_format) : '');
 			} else {
 				return ($print ? $result : '');
 			}

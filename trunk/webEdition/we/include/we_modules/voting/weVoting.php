@@ -36,8 +36,6 @@ class weVoting extends weModelBase{
 	const ERROR_ACTIVE = 4;
 	const ERROR_BLACKIP = 5;
 	const ERROR_REQUIRED = 6;
-//number precision
-	const PRECISION = 2;
 
 	//properties
 	var $ID;
@@ -329,24 +327,9 @@ class weVoting extends weModelBase{
 		}
 
 		if(!empty($num_format)){
-			$result = $this->formatNumber($result, $num_format, $precision);
+			$result = we_util_Strings::formatNumber($result, $num_format, $precision);
 		}
 		return $result;
-	}
-
-	function formatNumber($number, $format, $precision = self::PRECISION){
-		switch($format){
-			case 'german':
-			case 'deutsch':
-				return number_format($number, $precision, ',', '.');
-			case 'french':
-				return number_format($number, $precision, ',', ' ');
-			case 'swiss':
-				return number_format($number, $precision, ',', "'");
-			case 'english':
-			default:
-				return number_format($number, $precision, '.', '');
-		}
 	}
 
 	function isLastSet(){

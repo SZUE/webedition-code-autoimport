@@ -208,7 +208,7 @@ function getCurlHttp($server, $path, $files = array(), $header = false, $timeout
 	$port = (isset($parsedurl['port']) ? ':' . $parsedurl['port'] : '');
 	$_pathA = explode('?', $path);
 	$_url = $protocol . $parsedurl['host'] . $port . $_pathA[0];
-	if(isset($_pathA[1])&&strlen($_url . $_pathA[1]) < 2000){
+	if(isset($_pathA[1]) && strlen($_url . $_pathA[1]) < 2000){
 //it is safe to have uri's lower than 2k chars - so no need to do a post which servers (e.g. twitter) do not accept.
 		$_url.='?' . $_pathA[1];
 		unset($_pathA[1]);
@@ -331,7 +331,8 @@ function std_numberformat($content){
 		$vor = substr($content, 0, $pos);
 		$vor = str_replace(',', '', str_replace('.', '', $vor));
 		$content = $vor . substr($content, $pos, strlen($content) - $pos);
-	} else
+	}
+	else
 		$content = str_replace(',', '', str_replace('.', '', $content));
 	return $content;
 }
@@ -995,7 +996,8 @@ function get_def_ws($table = FILE_TABLE, $prePostKomma = false){
 	if($ws == ''){
 		$wsA = makeArrayFromCSV(get_ws($table, $prePostKomma));
 		return (!empty($wsA) ? $wsA[0] : '');
-	} else
+	}
+	else
 		return $ws;
 }
 
@@ -1238,8 +1240,7 @@ function parseInternalLinks(&$text, $pid, $path = '', $doBaseReplace = true){
 }
 
 function removeHTML($val){
-	$val = preg_replace('%<br ?/?>%i', '###BR###', str_replace(array('<?', '?>'), array('###?###', '###/?###'), $val));
-	$val = preg_replace('/<[^><]+>/', '', $val);
+	$val = preg_replace(array('%<br ?/?>%i', '/<[^><]+>/'), array('###BR###', ''), str_replace(array('<?', '?>'), array('###?###', '###/?###'), $val));
 	return str_replace(array('###BR###', '###?###', '###/?###'), array('<br/>', '<?', '?>'), $val);
 }
 
@@ -1532,7 +1533,7 @@ function makePath($path, $table, &$pathids, $owner = 0){
 				$new->Owners = ',' . $owner . ',';
 				$new->OwnersReadOnly = serialize(array(
 					$owner => 0
-					));
+				));
 				$new->we_save();
 				$id = $new->ID;
 				$pathids[] = $id;
@@ -2042,7 +2043,7 @@ function we_log_loginFailed($table, $user){
 			'Servername' => $_SERVER['SERVER_NAME'],
 			'Port' => $_SERVER['SERVER_PORT'],
 			'Script' => $_SERVER['SCRIPT_NAME']
-		)));
+	)));
 }
 
 /**
