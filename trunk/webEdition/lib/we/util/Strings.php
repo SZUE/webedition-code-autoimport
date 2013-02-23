@@ -130,7 +130,7 @@ abstract class we_util_Strings{
 	 * @param string format
 	 * @return string
 	 */
-	static	function formatNumber($number, $format, $precision = self::PRECISION){
+	static	function formatNumber($number, $format='', $precision = self::PRECISION){
 		switch($format){
 			case 'german':
 			case 'deutsch':
