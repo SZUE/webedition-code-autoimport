@@ -559,7 +559,7 @@ abstract class weShopVariants{
 				unset($modelelemets[$key]);
 			}
 		}
-		if($newPos > 0){ //Fix #6883 - not sure if this has an impact
+		if($newPos > 0 && !empty($elements)){ //Fix #6883 - not sure if this has an impact
 			foreach($elements as $name => &$varArr){//now add the elements
 				foreach($varArr as $key => &$fieldArr){
 					$fieldArr = array_merge($modelelemets, $fieldArr);
