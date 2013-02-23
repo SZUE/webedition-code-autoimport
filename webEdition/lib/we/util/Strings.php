@@ -134,14 +134,14 @@ abstract class we_util_Strings{
 		switch($format){
 			case 'german':
 			case 'deutsch':
-				return number_format($number, $precision, ',', '.');
+				return number_format(floatval($number), $precision, ',', '.');
 			case 'french':
-				return number_format($number, $precision, ',', ' ');
+				return number_format(floatval($number), $precision, ',', ' ');
 			case 'swiss':
-				return number_format($number, $precision, ',', "'");
+				return number_format(floatval($number), $precision, ',', "'");
 			case 'english':
 			default:
-				return number_format($number, $precision, '.', '');
+				return number_format(floatval($number), $precision, '.', '');
 		}
 	}
 

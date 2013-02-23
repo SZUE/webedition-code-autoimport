@@ -92,21 +92,21 @@ class weNavigationItem{
 
 		$this->limitaccess = $limitaccess;
 		$this->customers = $customers;
-
+		$db = new DB_WE();
 		switch($this->table){
 			case FILE_TABLE:
 				list($__path) = explode((strpos($this->href, '#') !== false && strpos($this->href, '?') === false ? '#' : '?'), $this->href);
 
 				$__id = path_to_id($__path, FILE_TABLE);
 				if($__id){
-					$_v = f('SELECT ID FROM ' . FILE_TABLE . ' WHERE ID=' . intval($__id) . ' AND Published>0', 'ID', new DB_WE());
+					$_v = f('SELECT ID FROM ' . FILE_TABLE . ' WHERE ID=' . intval($__id) . ' AND Published>0', 'ID', $db);
 					$this->visible = !empty($_v) ? 'true' : 'false';
 				}
 				if(NAVIGATION_DIRECTORYINDEX_HIDE && NAVIGATION_DIRECTORYINDEX_NAMES != ''){
 					$mypath = id_to_path($this->docid, FILE_TABLE);
 					$mypath_parts = pathinfo($mypath);
 					if(in_array($mypath_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
-						$_v = f('SELECT ID FROM ' . FILE_TABLE . ' WHERE ID=' . intval($this->docid) . ' AND Published>0', 'ID', new DB_WE());
+						$_v = f('SELECT ID FROM ' . FILE_TABLE . ' WHERE ID=' . intval($this->docid) . ' AND Published>0', 'ID', $db);
 						$this->visible = !empty($_v) ? 'true' : 'false';
 					}
 				}
@@ -115,14 +115,14 @@ class weNavigationItem{
 			// #6916
 			case OBJECT_FILES_TABLE:
 				$__id = $this->docid;
-				$_v = f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($__id) . ' AND Published>0', 'ID', new DB_WE());
+				$_v = f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($__id) . ' AND Published>0', 'ID', $db);
 				$this->visible = !empty($_v) ? 'true' : 'false';
 
 				if(NAVIGATION_DIRECTORYINDEX_HIDE && NAVIGATION_DIRECTORYINDEX_NAMES != ''){
 					$mypath = id_to_path($this->docid, OBJECT_FILES_TABLE);
 					$mypath_parts = pathinfo($mypath);
 					if(in_array($mypath_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
-						$_v = f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($this->docid) . ' AND Published>0', 'ID', new DB_WE());
+						$_v = f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($this->docid) . ' AND Published>0', 'ID', $db);
 						$this->visible = !empty($_v) ? 'true' : 'false';
 					}
 				}
@@ -417,7 +417,7 @@ class weNavigationItem{
 
 		$attributes = removeAttribs($attributes, array(
 			'name', 'target', 'href', 'onClick', 'onclick'
-			));
+		));
 
 		$attributes['target'] = 'we_ll_' . $this->id;
 		$attributes['onclick'] = $js;

@@ -30,20 +30,7 @@ $typeDoc = isset($_REQUEST['type']) ? $_REQUEST['type'] : 'document';
 $actPage = isset($_REQUEST['actPage']) ? $_REQUEST['actPage'] : '0';
 
 function orderBy($a, $b){
-
-	$true = true;
-	$false = false;
-
-	if(isset($_REQUEST['orderDesc'])){ // turn order!
-		$true = false;
-		$false = true;
-	}
-
-	if($a[$_REQUEST['orderBy']] >= $b[$_REQUEST['orderBy']]){
-		return $true;
-	} else{
-		return $false;
-	}
+	return ($a[$_REQUEST['orderBy']] >= $b[$_REQUEST['orderBy']] ? (isset($_REQUEST['orderDesc']) ? false : true) : (isset($_REQUEST['orderDesc']) ? true : false));
 }
 
 function getTitleLinkObj($text, $orderKey){
@@ -55,19 +42,7 @@ function getTitleLinkObj($text, $orderKey){
 		'&actPage=' . $GLOBALS['actPage'] .
 		( ($GLOBALS['orderBy'] == $orderKey && !isset($_REQUEST['orderDesc'])) ? '&orderDesc=true' : '' );
 
-	$arrow = '';
-
-	if($GLOBALS['orderBy'] == $orderKey){
-
-		if(isset($_REQUEST['orderDesc'])){
-			$arrow = ' <img src="' . IMAGE_DIR . 'arrow_sort_desc.gif" />';
-		} else{
-			$arrow = ' &darr; ';
-			$arrow = ' <img src="' . IMAGE_DIR . 'arrow_sort_asc.gif" />';
-		}
-	}
-
-	return '<a href="' . $_href . '">' . $text . '</a>' . $arrow;
+	return '<a href="' . $_href . '">' . $text . '</a>' . ($GLOBALS['orderBy'] == $orderKey ? ' <img src="' . IMAGE_DIR . 'arrow_sort_' . (isset($_REQUEST['orderDesc']) ? 'desc' : 'asc') . '.gif" />' : '');
 }
 
 function getPagerLinkObj(){
@@ -121,7 +96,7 @@ we_html_tools::protect();
 we_html_tools::htmlTop();
 
 
-print STYLESHEET.
+print STYLESHEET .
 	we_html_element::jsElement('
 	function we_submitDateform() {
 		elem = document.forms[0];
@@ -145,7 +120,7 @@ print STYLESHEET.
 
 
 /* * ************ some config  ************** */
-$feldnamen = explode("|", f("SELECT strFelder from " . ANZEIGE_PREFS_TABLE . " WHERE strDateiname = 'shop_pref'","strFelder",$DB_WE));
+$feldnamen = explode("|", f("SELECT strFelder from " . ANZEIGE_PREFS_TABLE . " WHERE strDateiname = 'shop_pref'", "strFelder", $DB_WE));
 $waehr = "&nbsp;" . oldHtmlspecialchars($feldnamen[0]);
 $dbTitlename = "shoptitle";
 $dbPreisname = "Preis";

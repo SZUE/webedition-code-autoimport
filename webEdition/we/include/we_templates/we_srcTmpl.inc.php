@@ -41,7 +41,12 @@ $_useJavaEditor = ($_SESSION['prefs']['editorMode'] == 'java');
 ?>
 <script  type="text/javascript"><!--
 	var weIsTextEditor = true;
-	top.we_setEditorWasLoaded(false);	var countJEditorInitAttempts = 0;
+	try{
+		top.we_setEditorWasLoaded(false);
+	}catch(e){
+		;
+	}
+	var countJEditorInitAttempts = 0;
 	var wizardHeight={
 		"open" : 305,
 		"closed" : 140
