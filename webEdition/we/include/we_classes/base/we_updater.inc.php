@@ -239,9 +239,12 @@ class we_updater{
 
 			$_table = OBJECT_FILES_TABLE;
 
-			$_db->query('SHOW TABLES LIKE "' . ltrim(OBJECT_X_TABLE, '_') . '\_%"');	 //note: _% ignores _, so escaping _ with \_ does the job
+			$_db->query('SHOW TABLES LIKE "' . OBJECT_X_TABLE . '%"');	 //note: _% ignores _, so escaping _ with \_ does the job
 			$allTab = $_db->getAll(true);
 			foreach($allTab as $_table){
+				if($_table==OBJECT_FILES_TABLE){
+					continue;
+				}
 				if($GLOBALS['DB_WE']->isColExist($_table, 'OF_Url')){
 					$GLOBALS['DB_WE']->changeColType($_table, 'OF_Url', 'VARCHAR(255) NOT NULL');
 				} else{

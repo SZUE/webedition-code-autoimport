@@ -504,7 +504,7 @@ abstract class we_database_base{
 	 * is a handy setter, for executing `a`="\"b\"" set from an assoc array
 	 * @param type $arr
 	 */
-	static function arraySetter(array $arr){
+	static function arraySetter(array $arr,$imp=','){
 		$ret = array();
 		foreach($arr as $key => $val){
 			if(is_object($val) || is_array($val)){
@@ -529,7 +529,7 @@ abstract class we_database_base{
 			}
 			$ret[] = '`' . $key . '`=' . ($escape ? '"' . escape_sql_query($val) . '"' : $val);
 		}
-		return implode(',', $ret);
+		return implode($imp, $ret);
 	}
 
 	/* public: return table metadata */
