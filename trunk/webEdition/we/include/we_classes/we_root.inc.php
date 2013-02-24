@@ -870,8 +870,8 @@ abstract class we_root extends we_class{
 						foreach($v as $name => $v2){
 							$v2 = we_util::cleanNewLine($v2);
 							if($type == 'date'){
-								$name = preg_replace('/^(.+)_[^_]+$/', '\1', $name);
-								$what = preg_replace('/^.+_([^_]+)$/', '\1', $name);
+								preg_match('|(.*)_(.*)|', $name, $regs);
+								list(, $name, $what) = $regs;
 								$dates[$name][$what] = $v2;
 							} else{
 								if(preg_match('/(.+)#(.+)/', $name, $regs)){

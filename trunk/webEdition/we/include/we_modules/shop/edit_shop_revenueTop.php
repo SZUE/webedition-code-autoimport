@@ -74,7 +74,6 @@ function monthSelect($select_name){
 }
 
 we_html_tools::protect();
-
 we_html_tools::htmlTop();
 
 print STYLESHEET .
