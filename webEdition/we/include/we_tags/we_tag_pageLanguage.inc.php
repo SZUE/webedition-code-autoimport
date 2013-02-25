@@ -23,9 +23,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_pageLanguage($attribs){
-
 	$docAttr = weTag_getAttribute('doc', $attribs, 'self');
-	$type = weTag_getAttribute('type', $attribss);
+	$type = weTag_getAttribute('type', $attribs);
 	$case = weTag_getAttribute('case', $attribs);
 	$doc = we_getDocForTag($docAttr);
 
@@ -50,7 +49,6 @@ function we_tag_pageLanguage($attribs){
 			}
 			$out = Zend_Locale::getTranslation($lang[1], 'country', $lang[1]);
 			break;
-		//#7279 end
 		default:
 			$out = $doc->Language;
 	}
