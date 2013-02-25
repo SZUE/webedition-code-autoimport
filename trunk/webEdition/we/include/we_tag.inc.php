@@ -547,6 +547,7 @@ function we_tag_ifNotEmpty($attribs){
 }
 
 function we_tag_ifNotEqual($attribs){
+	$attribs['name']=$attribs['_name_orig'];
 	return !we_tag('ifEqual', $attribs);
 }
 
@@ -623,10 +624,12 @@ function we_tag_ifNotTemplate($attribs){
 }
 
 function we_tag_ifNotVar($attribs){
+	$attribs['name']=$attribs['_name_orig'];
 	return !we_tag('ifVar', $attribs);
 }
 
 function we_tag_ifNotVarSet($attribs){
+	$attribs['name']=$attribs['_name_orig'];
 	return !we_tag('ifVarSet', $attribs);
 }
 
@@ -667,6 +670,7 @@ function we_tag_ifUserInputNotEmpty($attribs){
 }
 
 function we_tag_ifVarNotEmpty($attribs){
+	$attribs['name']=$attribs['_name_orig'];
 	return !we_tag('ifVarEmpty', $attribs);
 }
 
