@@ -122,11 +122,13 @@ function we_tag_sessionStart($attribs){
 	}
 }
 
-function wetagsessionHandleFailedLogin(){
+function wetagsessionHandleFailedLogin($locked=false){
 	$_SESSION['webuser'] = array(
 		'registered' => false, 'loginfailed' => true
 	);
-	we_log_loginFailed('tblWebUser', $_REQUEST['s']['Username']);
+	if(!isset($GLOBALS['WE_LOGIN_DENIED'])){
+		we_log_loginFailed('tblWebUser', $_REQUEST['s']['Username']);
+	}
 	sleep(SECURITY_DELAY_FAILED_LOGIN);
 
 	if(
@@ -150,6 +152,7 @@ function wetagsessionStartdoLogin($persistentlogins, &$SessionAutologin){
 			intval(f('SELECT count(1) AS a FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTable="tblWebUser" AND Username="' . $GLOBALS['DB_WE']->escape($_REQUEST['s']['Username']) . '" AND LoginDate >DATE_SUB(NOW(), INTERVAL ' . intval(SECURITY_LIMIT_CUSTOMER_NAME_HOURS) . ' hour)', 'a', $GLOBALS['DB_WE'])) >= intval(SECURITY_LIMIT_CUSTOMER_NAME) ||
 			intval(f('SELECT count(1) AS a FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTable="tblWebUser" AND IP="' . $_SERVER['REMOTE_ADDR'] . '" AND LoginDate >DATE_SUB(NOW(), INTERVAL ' . intval(SECURITY_LIMIT_CUSTOMER_IP_HOURS) . ' hour)', 'a', $GLOBALS['DB_WE'])) >= intval(SECURITY_LIMIT_CUSTOMER_IP)
 		){
+			$GLOBALS['WE_LOGIN_DENIED']=true;
 			return false;
 		}
 		$u = getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE Password!="" AND LoginDenied=0 AND Username="' . $GLOBALS['DB_WE']->escape(strtolower($_REQUEST['s']['Username'])) . '"', $GLOBALS['DB_WE']);
