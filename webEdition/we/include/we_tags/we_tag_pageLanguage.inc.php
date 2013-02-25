@@ -24,41 +24,43 @@
  */
 function we_tag_pageLanguage($attribs){
 
-	$docAttr = weTag_getAttribute("doc", $attribs, "self");
-	$type = weTag_getAttribute("type", $attribs, "complete");
-	$case = weTag_getAttribute("case", $attribs, "unchanged");
+	$docAttr = weTag_getAttribute('doc', $attribs, 'self');
+	$type = weTag_getAttribute('type', $attribss);
+	$case = weTag_getAttribute('case', $attribs);
 	$doc = we_getDocForTag($docAttr);
 
-	$lang = $doc->Language;
-	$out = "";
+	$lang = explode('_', $doc->Language);
 
 	switch($type){
-		case "language":
-			$out = substr($lang, 0, 2);
+		case 'language':
+			$out = $lang[0];
 			break;
-		case "country":
-			$out = substr($lang, 3, 2);
+		case 'country':
+			$out = $lang[1];
 			break;
-		//#7279 start
-		case "language_name":
-			$out = Zend_Locale::getTranslation(substr($lang, 0, 2), 'language',substr($lang, 0, 2));
+		case 'language_name':
+			if(!Zend_Locale::hasCache()){
+				Zend_Locale::setCache(getWEZendCache());
+			}
+			$out = Zend_Locale::getTranslation($lang[0], 'language', $lang[0]);
 			break;
-		case "country_name":
-			$out = Zend_Locale::getTranslation(substr($lang, 3, 2), 'country',substr($lang, 3, 2));
+		case 'country_name':
+			if(!Zend_Locale::hasCache()){
+				Zend_Locale::setCache(getWEZendCache());
+			}
+			$out = Zend_Locale::getTranslation($lang[1], 'country', $lang[1]);
 			break;
 		//#7279 end
 		default:
-			$out = $lang;
+			$out = $doc->Language;
 	}
+
 	switch($case){
-		case "uppercase":
-			$out = strtoupper($out);
-			break;
-		case "lowercase":
-			$out = strtolower($out);
-			break;
+		case 'uppercase':
+			return strtoupper($out);
+		case 'lowercase':
+			return strtolower($out);
 		default:
-			$out = $out;
+			return $out;
 	}
-	return $out;
 }
