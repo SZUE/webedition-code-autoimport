@@ -490,38 +490,38 @@ class we_object extends we_document{
 	}
 
 	function switchtypes($name){
-		$def = $this->getElement($name . "default", "dat");
+		$def = $this->getElement($name . 'default', 'dat');
 		switch($this->getElement($name . 'dtype', 'dat')){
 			case 'meta':
-				return ' VARCHAR(' . (($this->getElement($name . "length", "dat") > 0 && ($this->getElement($name . "length", "dat") < 255)) ? $this->getElement($name . "length", "dat") : 255) . ") NOT NULL ";
+				return ' VARCHAR(' . (($this->getElement($name . 'length', 'dat') > 0 && ($this->getElement($name . 'length', 'dat') < 255)) ? $this->getElement($name . 'length', 'dat') : 255) . ') NOT NULL ';
 			case 'date':
 				return ' INT(11) NOT NULL ';
 			case 'input':
-				return ' VARCHAR(' . (($this->getElement($name . "length", "dat") > 0 && ($this->getElement($name . "length", "dat") < 4096)) ? $this->getElement($name . "length", "dat") : 255) . ') NOT NULL ';
-			case "country":
-			case "language":
-				return " VARCHAR(2) NOT NULL ";
-			case "link":
-			case "href":
-				return " TEXT NOT NULL ";
-			case "text":
+				return ' VARCHAR(' . (($this->getElement($name . 'length', 'dat') > 0 && ($this->getElement($name . 'length', 'dat') < 4096)) ? $this->getElement($name . 'length', 'dat') : 255) . ') NOT NULL ';
+			case 'country':
+			case 'language':
+				return ' VARCHAR(2) NOT NULL ';
+			case 'link':
+			case 'href':
+				return ' TEXT NOT NULL ';
+			case 'text':
 				return ' LONGTEXT NOT NULL ';
 				break;
-			case "img":
-			case "flashmovie":
-			case "quicktime":
-			case "binary":
-				return " INT(11) DEFAULT '0' NOT NULL ";
-			case "checkbox":
-				return " INT(1) DEFAULT '" . ($this->getElement($name . "default", "dat") == 1 ? "1" : "0") . "' NOT NULL ";
-			case "int":
-				return " INT(" . (($this->getElement($name . "length", "dat") > 0 && ($this->getElement($name . "length", "dat") < 256)) ? $this->getElement($name . "length", "dat") : "11") . ") DEFAULT NULL ";
-			case "float":
+			case 'img':
+			case 'flashmovie':
+			case 'quicktime':
+			case 'binary':
+				return ' INT(11) DEFAULT "0" NOT NULL ';
+			case 'checkbox':
+				return ' INT(1) DEFAULT "' . ($this->getElement($name . 'default', 'dat') == 1 ? '1' : '0') . '" NOT NULL ';
+			case 'int':
+				return ' INT(' . (($this->getElement($name . 'length', 'dat') > 0 && ($this->getElement($name . 'length', 'dat') < 256)) ? $this->getElement($name . 'length', 'dat') : '11') . ') DEFAULT NULL ';
+			case 'float':
 				return ' DOUBLE DEFAULT NULL ';
-			case "object":
-				return " BIGINT(20) DEFAULT '0' NOT NULL ";
-			case "multiobject":
-				return " TEXT NOT NULL ";
+			case 'object':
+				return ' BIGINT(20) DEFAULT "0" NOT NULL ';
+			case 'multiobject':
+				return ' TEXT NOT NULL ';
 			case 'shopVat':
 				return ' TEXT NOT NULL';
 			default:
