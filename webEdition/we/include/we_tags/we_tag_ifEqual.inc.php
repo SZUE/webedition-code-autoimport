@@ -43,8 +43,9 @@ function we_tag_ifEqual($attribs){
 		print($foo);
 		return false;
 	}
-	if($GLOBALS['we_doc']->getElement($name) && $GLOBALS["WE_MAIN_DOC"]->getElement($eqname)){
-		return ($GLOBALS['we_doc']->getElement($name) == $GLOBALS["WE_MAIN_DOC"]->getElement($eqname));
+	$blockeq=we_tag_getPostName($eqname);
+	if($GLOBALS['we_doc']->getElement($name) && $GLOBALS["WE_MAIN_DOC"]->getElement($blockeq)){
+		return ($GLOBALS['we_doc']->getElement($name) == $GLOBALS["WE_MAIN_DOC"]->getElement($blockeq));
 	} else{
 		return (isset($GLOBALS[$eqname])) && ($GLOBALS[$eqname] == $GLOBALS['we_doc']->getElement($name));
 	}
