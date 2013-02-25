@@ -621,13 +621,11 @@ class we_user{
 			$updt['DefaultTemplateID'] = '0';
 		}
 		self::writePrefs(intval($this->ID), $this->DB_WE, $updt);
-		$_SESSION["prefs"] = $_SESSION["prefs"]["userID"] == intval($this->ID) ? self::readPrefs(intval($this->ID), $this->DB_WE) : $_SESSION["prefs"];
+		$_SESSION["prefs"] = ($_SESSION["prefs"]["userID"] == intval($this->ID) ? self::readPrefs(intval($this->ID), $this->DB_WE) : $_SESSION["prefs"]);
 	}
 
 	function rememberPreference($settingvalue, $settingname){
-
 		$save_javascript = '';
-
 		if(isset($settingvalue) && ($settingvalue != null)){
 			switch($settingname){
 				case 'Language':
