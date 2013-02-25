@@ -379,7 +379,7 @@ class we_user{
 				default:
 					$save_javascript .=
 						$this->rememberPreference(isset($this->Preferences['seem_start_document']) ? $this->Preferences['seem_start_document'] : 0, 'seem_start_file') .
-						$this->rememberPreference('cockpit', 'seem_start_type') .
+						$this->rememberPreference('document', 'seem_start_type') .
 						$this->rememberPreference('', 'seem_start_weapp');
 			}
 		}
@@ -621,6 +621,7 @@ class we_user{
 			$updt['DefaultTemplateID'] = '0';
 		}
 		self::writePrefs(intval($this->ID), $this->DB_WE, $updt);
+		$_SESSION["prefs"] = $_SESSION["prefs"]["userID"] == intval($this->ID) ? self::readPrefs(intval($this->ID), $this->DB_WE) : $_SESSION["prefs"];
 	}
 
 	function rememberPreference($settingvalue, $settingname){
@@ -2167,16 +2168,15 @@ function delElement(elvalues,elem) {
 
 		//Editor Mode
 		$_template_editor_mode = new we_html_select(array("class" => "weSelect", "name" => $this->Name . "_Preference_editorMode", "size" => "1", "onchange" => "displayEditorOptions(this.options[this.options.selectedIndex].value);"));
-		$_template_editor_mode->addOption('textarea', 'Textarea');
-		$_template_editor_mode->addOption('codemirror2', 'CodeMirror2');
-		$_template_editor_mode->addOption('java', 'webEdition Java Editor');
+		$_template_editor_mode->addOption('textarea', g_l('prefs', '[editor_plaintext]'));
+		$_template_editor_mode->addOption('codemirror2', g_l('prefs', '[editor_javascript2]'));
+		$_template_editor_mode->addOption('java', g_l('prefs', '[editor_java]'));
 		$_template_editor_mode->selectOption($this->Preferences['editorMode']);
 		$_settings = array(
 			array("headline" => g_l('prefs', '[editor_mode]'), "html" => $_template_editor_mode->getHtml(), "space" => 150)
 		);
 
-
-		$_template_fonts = array("Courier New", "Courier", "mono", "Verdana", "Arial", "Helvetica", "sans-serif", "none");
+		$_template_fonts = array('Arial', 'Courier', 'Courier New', 'Helvetica', 'Monaco', 'Mono', 'Tahoma', 'Verdana', 'serif', 'sans-serif', 'none');
 		$_template_font_sizes = array(8, 9, 10, 11, 12, 14, 16, 18, 24, 32, 48, 72, -1);
 
 		$_template_editor_font_specify = false;
