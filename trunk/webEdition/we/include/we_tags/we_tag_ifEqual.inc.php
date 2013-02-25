@@ -43,11 +43,14 @@ function we_tag_ifEqual($attribs){
 		print($foo);
 		return false;
 	}
+	$elem=$GLOBALS['we_doc']->getElement($name);
 	$blockeq=we_tag_getPostName($eqname);
-	if($GLOBALS['we_doc']->getElement($name) && $GLOBALS["WE_MAIN_DOC"]->getElement($blockeq)){
-		return ($GLOBALS['we_doc']->getElement($name) == $GLOBALS["WE_MAIN_DOC"]->getElement($blockeq));
-	} else{
-		return (isset($GLOBALS[$eqname])) && ($GLOBALS[$eqname] == $GLOBALS['we_doc']->getElement($name));
+	if($GLOBALS["WE_MAIN_DOC"]->getElement($blockeq)){//check if eqname is present in block
+		return ($elem == $GLOBALS["WE_MAIN_DOC"]->getElement($blockeq));
+	} elseif($GLOBALS["WE_MAIN_DOC"]->getElement($eqname){//check if eqname is present in document
+		return ($elem == $GLOBALS["WE_MAIN_DOC"]->getElement($eqname));
+	}else{//check if eqname is present in GLOBALS
+		return (isset($GLOBALS[$eqname])) && ($GLOBALS[$eqname] == $elem);
 	}
 	return false;
 }
