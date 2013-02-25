@@ -835,8 +835,8 @@ class we_document extends we_root{
 		return f('SELECT ID FROM ' . escape_sql_query($this->Table) . " WHERE ParentID=" . intval($this->ParentID) . " AND Filename='" . escape_sql_query($this->Filename) . "' AND Extension='" . escape_sql_query($this->Extension) . "' AND ID != " . intval($this->ID), "ID", $this->DB_WE);
 	}
 
+//FIXME: parameter $attribt should be: array $attribs=array()
 	public function getFieldByVal($val, $type, $attribs = '', $pathOnly = false, $parentID = 0, $path = '', $db = '', $classID = '', $fn = 'this'){
-
 		$attribs = is_array($attribs) ? $attribs : array();
 		if(isset($attribs['_name_orig'])){
 			unset($attribs['_name_orig']);
@@ -1063,7 +1063,7 @@ class we_document extends we_root{
 					$precision = isset($attribs['precision']) ? abs($attribs['precision']) : 2;
 
 					if(isset($attribs['num_format'])){
-						$retval = we_util_Strings::formatNumber(we_util::std_numberformat($retval),$attribs['num_format'],$precision);
+						$retval = we_util_Strings::formatNumber(we_util::std_numberformat($retval), $attribs['num_format'], $precision);
 					}
 				}
 				if(weTag_getAttribute('win2iso', $attribs, false, true)){

@@ -219,8 +219,8 @@ function we_tag_field($attribs){
 		case 'float' :
 		case 'checkbox' :
 			$idd = ($isImageDoc && $type == 'img' ) ? $GLOBALS['lv']->Record['wedoc_ID'] : $GLOBALS['lv']->f($name);
-			$out = ($idd == 0 ? '' : $GLOBALS['we_doc']->getFieldByVal($idd, $type, $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], $classid, 'listview'));
-			if($type == 'img'&&empty($out)){
+			$out = ($idd == 0 ? '' : $GLOBALS['we_doc']->getFieldByVal($idd, $type, $attribs, ($only == 'src'), $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], $classid, 'listview'));
+			if($type == 'img' && empty($out)){
 				return '';
 			}
 			break;
