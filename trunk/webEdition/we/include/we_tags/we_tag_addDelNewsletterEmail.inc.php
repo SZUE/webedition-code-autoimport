@@ -26,6 +26,9 @@
  * @param       string  $mailingList    Erwartet den Namen der Mailing-Liste OHNE Feldgruppe (Bereich) aus der webEdition KV; Default: "Ok"; Nur bei $type == customer
  */
 function we_tag_addDelNewsletterEmail($attribs){
+	if(($foo = attributFehltError($attribs, 'type', __FUNCTION__))){
+		return $foo;
+	}
 	$useListsArray = isset($_REQUEST["we_use_lists__"]);
 
 	$isSubscribe = isset($_REQUEST["we_subscribe_email__"]) || isset($_REQUEST["confirmID"]);
@@ -35,8 +38,9 @@ function we_tag_addDelNewsletterEmail($attribs){
 	if($forcedoubleoptin){
 		$doubleoptin = 1;
 	}
-	$customer = weTag_getAttribute("type", $attribs) == "customer";
-	$emailonly = weTag_getAttribute("type", $attribs) == "emailonly";
+	$type = weTag_getAttribute('type', $attribs);
+	$customer = ($type == 'customer');
+	$emailonly = ($type == 'emailonly');
 	$adminmailid = intval(weTag_getAttribute("adminmailid", $attribs, 0));
 	$adminsubject = weTag_getAttribute("adminsubject", $attribs);
 	$adminemail = weTag_getAttribute("adminemail", $attribs);
