@@ -37,6 +37,20 @@ if(!file_exists($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/conf/we_conf
 
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
+//Check some critical PHP Setings #7243
+//FIXME: implement class sysinfo.class, for not analysing the same php settings twice (here and in sysinfo.php)
+if(isset($_SESSION['perms']['ADMINISTRATOR']) && $_SESSION['perms']['ADMINISTRATOR']){
+	$suhosinMsg = (in_array('suhosin', get_loaded_extensions()) 
+			&& !in_array(ini_get('suhosin.simulation'), array('1', 'on', 'yes', 'true', true))) ? 'suhosin=on\n' : '';
+
+	$maxInputMsg = ini_get('max_input_vars') < 5000 ? "max_input_vars < 5000\n" : "";
+
+	$criticalPhpMsg = $maxInputMsg . $suhosinMsg;
+	if($criticalPhpMsg){
+		t_e('Critical PHP Settings found', $criticalPhpMsg);
+	}
+}
+
 //FIXME: implement resave of config files
 if(!defined('CONF_SAVED_VERSION') || (defined('CONF_SAVED_VERSION') && (intval(WE_SVNREV) > intval(CONF_SAVED_VERSION)))){
 	//resave config file(s)
