@@ -65,18 +65,32 @@ class SessionAndCookieTest extends leStep {
 			$Success = false;
 			$SessionImage = leLayout::getRequirementStateImage(false);
 			$Template->addError($this->Language['sessionFailed']);
-
 		}
 
 		$CookieImage = leLayout::getRequirementStateImage();
-		
 		if ( !(isset($_COOKIE["le_testCookie"]) && $_COOKIE["le_testCookie"] == "test-cookie") ) {
 			$Success = false;
 			$CookieImage = leLayout::getRequirementStateImage(false);
 			$Template->addError($this->Language["cookieFailed"]);
-
 		}
 		
+		$MaxInputVarsImage = leLayout::getRequirementStateImage();
+		$MaxInputVarsText = $this->Language['max_input_vars_ok'];
+		$MaxInputVarsWarning = '';
+		if (ini_get('max_input_vars') < 2000){
+			if (ini_get('max_input_vars') < 500){
+				$Success = false;
+				$MaxInputVarsImage = leLayout::getRequirementStateImage(false);
+				$MaxInputVarsText = $this->Language['max_input_vars'];
+				$Template->addError($this->Language["max_input_vars_failed"]);
+				
+			} else{
+				$MaxInputVarsImage = leLayout::getWarningStateImage(false);
+				$MaxInputVarsText = $this->Language['max_input_vars'];
+				$MaxInputVarsWarning = $this->Language['max_input_vars_warning'];
+			}
+		}
+
 		$SafeModeImage = leLayout::getWarningStateImage();
 		$SafeModeText = $this->Language['safe_mode_OK'];
 		$SafeModeWarning = '';	
@@ -128,6 +142,13 @@ class SessionAndCookieTest extends leStep {
 <tr>
 	<td>&middot; {$this->Language['session']}</td>
 	<td align="right">{$SessionImage}</td>
+</tr>
+<tr>
+	<td>&middot; {$MaxInputVarsText}</td>
+	<td align="right">{$MaxInputVarsImage}</td>
+</tr>
+<tr>
+	<td colspan="2">{$MaxInputVarsWarning}</td>
 </tr>
 <tr>
 	<td>&middot; {$SafeModeText}</td>

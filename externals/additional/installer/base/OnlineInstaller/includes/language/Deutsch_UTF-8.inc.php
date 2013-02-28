@@ -146,8 +146,13 @@ $lang["Step"]["SessionAndCookieTest"]["sessionFailed"] = "Es konnte keine Sessio
 $lang["Step"]["SessionAndCookieTest"]["php"] = "PHP-Version %s";
 $lang["Step"]["SessionAndCookieTest"]["phpFailed"] = "Die verwendete PHP-Version <b>%s</b> ist zu alt. Es wird mindestens PHP in der Version 5.2.4 benötigt";
 
+$lang["Step"]["SessionAndCookieTest"]["max_input_vars"] = "PHP max_input_vars";
+$lang["Step"]["SessionAndCookieTest"]["max_input_vars_ok"] = "PHP max_input_vars >= 2000";
+$lang["Step"]["SessionAndCookieTest"]["max_input_vars_warning"] = "Die PHP-Variable max_input_vars ist auf einen Wert < 2000 gesetzt. Empfohlen wird ein Wert >= 2000.";
+$lang["Step"]["SessionAndCookieTest"]["max_input_vars_failed"] = "Die PHP-Variable max_input_vars<br />darf nicht < 500 sein.<br />Empfohlen wird ein Wert >= 2000.";
+
 $lang["Step"]["SessionAndCookieTest"]["safe_mode"] = "PHP Safe Mode";
-$lang["Step"]["SessionAndCookieTest"]["safe_mode_OK"] = "PHP Safe Mode nicht aktiviert";
+$lang["Step"]["SessionAndCookieTest"]["safe_mode_OK"] = "Safe Mode nicht aktiviert";
 $lang["Step"]["SessionAndCookieTest"]["safe_mode_warning"] = "PHP Safe Mode ist aktiviert.<br />Die Anwendungen laufen  mit aktiviertem <a href=\"http://www.php.net/manual/de/features.safe-mode.php\" target=\"_blank\">PHP Safe Mode</a>, aber wir empfehlen dies nicht, da dies seit PHP Version 5.3 als DEPRECATED (veraltet) gilt und wir nicht garantieren können, dass alle Features der Anwendungen problemlos funktionieren werden.";
 
 $lang["Step"]["SessionAndCookieTest"]["register_globals"] = "Register Globals";
