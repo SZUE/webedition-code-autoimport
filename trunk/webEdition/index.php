@@ -43,7 +43,7 @@ if(isset($_SESSION['perms']['ADMINISTRATOR']) && $_SESSION['perms']['ADMINISTRAT
 	$suhosinMsg = (in_array('suhosin', get_loaded_extensions()) 
 			&& !in_array(ini_get('suhosin.simulation'), array('1', 'on', 'yes', 'true', true))) ? 'suhosin=on\n' : '';
 
-	$maxInputMsg = ini_get('max_input_vars') < 5000 ? "max_input_vars < 5000\n" : "";
+	$maxInputMsg = ini_get('max_input_vars') < 2000 ? "max_input_vars = " . ini_get('max_input_vars') : "";
 
 	$criticalPhpMsg = $maxInputMsg . $suhosinMsg;
 	if($criticalPhpMsg){
