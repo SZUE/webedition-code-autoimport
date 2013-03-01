@@ -69,8 +69,10 @@ class SessionAndCookieTest extends leStep {
 		$MaxInputVarsImage = leLayout::getRequirementStateImage();
 		$MaxInputVarsText = $this->Language['max_input_vars_ok'];
 		$MaxInputVarsWarning = '';
-		if (ini_get('max_input_vars') < 2000){
-			if (ini_get('max_input_vars') < 500){
+		
+		$maxInputVarsValue = ini_get('max_input_vars') ? ini_get('max_input_vars') : 1000;
+		if ($maxInputVarsValue < 2000){
+			if ($maxInputVarsValue < 500){
 				$Success = false;
 				$MaxInputVarsImage = leLayout::getRequirementStateImage(false);
 				$MaxInputVarsText = $this->Language['max_input_vars'];
