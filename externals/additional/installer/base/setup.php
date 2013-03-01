@@ -55,6 +55,7 @@
 
 	session_cache_limiter('leOnlineInstaller');
 	session_start();
+	@setcookie("le_testCookie", "test-cookie", time() + 3600);
 	require("./OnlineInstaller/includes/constants.inc.php");
 	require(LE_ONLINE_INSTALLER_PATH . "/includes/library.inc.php");
 

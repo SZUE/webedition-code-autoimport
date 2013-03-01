@@ -25,17 +25,9 @@ class SessionAndCookieTest extends leStep {
 
 	function prepare() {
 		$_SESSION["le_testSession"] = "test-session";
-		@setcookie("le_testCookie", "test-cookie", time() + 3600);
+		//@setcookie("le_testCookie", "test-cookie", time() + 3600);
+		//test-cookie is now set in setup.php, where session_start() is called
 		$_SESSION["le_testPHP"] = phpversion();
-		
-		/*
-		if(!headers_sent()) {
-			setcookie("le_testCookie", "test-cookie", time() + 3600);
-		}
-		//$_COOKIE["le_testCookie"] = time() + 3600;
-		error_log(print_r($_COOKIE),1);
-		error_log(print_r($_SESSION),1);
-		*/
 	}
 
 
