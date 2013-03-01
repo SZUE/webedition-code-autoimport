@@ -42,7 +42,7 @@ function we_tag_css($attribs){
 		$attribs['href'] = (we_isHttps() ? '' : BASE_CSS) . $url;
 
 		$nolink = false;
-		$applyto = weTag_getAttribute('applyto', $attribs) != '' ? weTag_getAttribute('applyto', $attribs) : 'around'; //FIXME: set default value from prefs here
+		$applyto = weTag_getAttribute("applyto", $attribs, defined("CSSAPPLYTO_DEFAULT") ? CSSAPPLYTO_DEFAULT : "around");
 		switch($applyto){
 			case 'around' :
 				break;
