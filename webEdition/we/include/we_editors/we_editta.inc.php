@@ -47,6 +47,7 @@ if(isset($_REQUEST["ok"])){
 	$we_doc->elements[$name . "bgcolor"]["dat"] = isset($_REQUEST["bgcolor"]) ? $_REQUEST["bgcolor"] : '';
 	$we_doc->elements[$name . "class"]["dat"] = isset($_REQUEST["class"]) ? $_REQUEST["class"] : '';
 	$we_doc->elements[$name . "cssClasses"]["dat"] = isset($_REQUEST["cssClasses"]) ? $_REQUEST["cssClasses"] : "";
+	$we_doc->elements[$name . "tinyparams"]["dat"] = isset($_REQUEST["tinyparams"]) ? $_REQUEST["tinyparams"] : '';
 	$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
 }
 
@@ -232,6 +233,23 @@ $select = we_html_tools::htmlSelect("tmp_commands", $vals, 1, "", false, 'onchan
 $table = '<table border="0" cellpadding="0" cellspacing="0">
 	<tr>
 		<td class="defaultfont" valign="top" align="right">commands&nbsp;</td><td colspan="5">' . $select . '<br>' . we_class::htmlTextArea("commands", 3, 30, oldHtmlspecialchars((isset($we_doc->elements[$name . "commands"]["dat"]) ? $we_doc->elements[$name . "commands"]["dat"] : "")), 'id="commands" style="width:415px;height:50px"') . '</td>
+	</tr>
+	<tr>
+		<td>' . we_html_tools::getPixel(70, 1) . '</td>
+		<td>' . we_html_tools::getPixel(415, 1) . '</td>
+	</tr>
+</table>';
+
+$parts[] = array(
+	"headline" => "",
+	"html" => $table,
+	"space" => 0,
+);
+
+// TINYPARAMS
+$table = '<table border="0" cellpadding="0" cellspacing="0">
+	<tr>
+		<td class="defaultfont" valign="top" align="right">tinyparams&nbsp;</td><td colspan="5">' . we_html_tools::htmlTextInput('tinyparams', 24, $we_doc->elements[$name . "tinyparams"]["dat"], 1024, '', 'text', 350, 0) . '</td>
 	</tr>
 	<tr>
 		<td>' . we_html_tools::getPixel(70, 1) . '</td>
