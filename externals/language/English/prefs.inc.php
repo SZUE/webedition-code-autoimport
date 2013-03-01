@@ -64,6 +64,7 @@ $l_prefs=array(
 	'countries_noshow'=>'no display',
 	'countries_show'=>'display',
 	'countries_top'=>'top list',
+	'cssapplyto_default'=>'Default value for the<br/><em>applyto</em> attribute in<br/>&lt;we:css&gt;',
 	'db_connect'=>'Type of database<br/>connections',
 	'db_set_charset'=>'Connection charset',
 	'db_set_charset_information'=>'The connection charset is used for the communication between webEdition and datase server.<br/>If no value is specified, the standard connection charset set in PHP is used.<br/>In the ideal case, the webEdition language (i.e. English_UTF-8), the database collation (i.e. utf8_general_ci), the connection charset (i.e. utf8) and the settings of external tools such as phpMyAdmin (i.e. utf-8) are identical. In this case, one can edit database entries with these external tools without problems.',
