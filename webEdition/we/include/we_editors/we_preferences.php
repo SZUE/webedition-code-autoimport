@@ -1154,19 +1154,21 @@ function build_dialog($selected_setting = 'ui'){
 			$SHOWINPUTS_DEFAULT->addOption(1, "true");
 			$SHOWINPUTS_DEFAULT->selectOption(get_value("SHOWINPUTS_DEFAULT") ? 1 : 0);
 
-
 			$HIDENAMEATTRIBINWEIMG_DEFAULT = new we_html_select(array("name" => "newconf[HIDENAMEATTRIBINWEIMG_DEFAULT]", "class" => "weSelect"));
 			$HIDENAMEATTRIBINWEIMG_DEFAULT->addOption(0, g_l('prefs', '[no]'));
 			$HIDENAMEATTRIBINWEIMG_DEFAULT->addOption(1, g_l('prefs', '[yes]'));
-
-			// Set selected setting
 			$HIDENAMEATTRIBINWEIMG_DEFAULT->selectOption(get_value("HIDENAMEATTRIBINWEIMG_DEFAULT") ? 1 : 0);
 
 			$HIDENAMEATTRIBINWEFORM_DEFAULT = new we_html_select(array("name" => "newconf[HIDENAMEATTRIBINWEFORM_DEFAULT]", "class" => "weSelect"));
 			$HIDENAMEATTRIBINWEFORM_DEFAULT->addOption(0, g_l('prefs', '[no]'));
 			$HIDENAMEATTRIBINWEFORM_DEFAULT->addOption(1, g_l('prefs', '[yes]'));
-
 			$HIDENAMEATTRIBINWEFORM_DEFAULT->selectOption(get_value("HIDENAMEATTRIBINWEFORM_DEFAULT") ? 1 : 0);
+
+			$CSSAPPLYTO_DEFAULT = new we_html_select(array("name" => "newconf[CSSAPPLYTO_DEFAULT]", "class" => "weSelect"));
+			$CSSAPPLYTO_DEFAULT->addOption("all", "all");
+			$CSSAPPLYTO_DEFAULT->addOption("around", "around");
+			$CSSAPPLYTO_DEFAULT->addOption("wysiwyg", "wysiwyg");
+			$CSSAPPLYTO_DEFAULT->selectOption(get_value("CSSAPPLYTO_DEFAULT") ? get_value("CSSAPPLYTO_DEFAULT") : "around");
 
 			$BASE_IMG = we_html_tools::htmlTextInput("newconf[BASE_IMG]", 22, get_value('BASE_IMG'), "", 'placeholder="http://example.org"', "url", 225, 0, "");
 			$BASE_CSS = we_html_tools::htmlTextInput("newconf[BASE_CSS]", 22, get_value('BASE_CSS'), "", 'placeholder="http://example.org"', "url", 225, 0, "");
@@ -1179,6 +1181,7 @@ function build_dialog($selected_setting = 'ui'){
 				array("headline" => g_l('prefs', '[showinputs_default]'), "html" => $SHOWINPUTS_DEFAULT->getHtml(), "space" => 200),
 				array("headline" => g_l('prefs', '[hidenameattribinweimg_default]'), "html" => $HIDENAMEATTRIBINWEIMG_DEFAULT->getHtml(), "space" => 200),
 				array("headline" => g_l('prefs', '[hidenameattribinweform_default]'), "html" => $HIDENAMEATTRIBINWEFORM_DEFAULT->getHtml(), "space" => 200),
+				array("headline" => g_l('prefs', '[cssapplyto_default]'), "html" => $CSSAPPLYTO_DEFAULT->getHtml(), "space" => 200),
 				array("headline" => g_l('prefs', '[base][img]'), "html" => $BASE_IMG, "space" => 200, "noline" => 1),
 				array("headline" => g_l('prefs', '[base][css]'), "html" => $BASE_CSS, "space" => 200, "noline" => 1),
 				array("headline" => g_l('prefs', '[base][js]'), "html" => $BASE_JS, "space" => 200),
