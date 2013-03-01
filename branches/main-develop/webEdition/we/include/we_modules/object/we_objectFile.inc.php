@@ -520,12 +520,11 @@ class we_objectFile extends we_document{
 		}
 		$variationFields = weShopVariants::getAllVariationFields($this);
 
-			if(!empty($variationFields)){
-				$i = 0;
-				while(isset($this->elements[WE_SHOP_VARIANTS_PREFIX . $i])) {
-					if(!trim($this->elements[WE_SHOP_VARIANTS_PREFIX . $i++]['dat'])){
-						return false;
-					}
+		if(!empty($variationFields)){
+			$i = 0;
+			while(isset($this->elements[WE_SHOP_VARIANTS_PREFIX . $i])) {
+				if(!trim($this->elements[WE_SHOP_VARIANTS_PREFIX . $i++]['dat'])){
+					return false;
 				}
 			}
 		}
