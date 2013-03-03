@@ -40,7 +40,7 @@ class we_tabs{
 
 	function __construct(){
 		$this->containerStart = '<div id="tabContainer" name="tabContainer">';
-		$this->containerEnd = "</div>\n";
+		$this->containerEnd = '</div>';
 
 		switch(we_base_browserDetect::inst()->getBrowser()){
 			case we_base_browserDetect::SAFARI:
