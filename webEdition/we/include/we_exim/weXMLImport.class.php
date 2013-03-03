@@ -201,17 +201,17 @@ class weXMLImport extends weXMLExIm{
 							if(!$this->RefTable->exists(array("ID" => $pid, "ContentType" => "folder"))){
 								$this->RefTable->add2(
 									array_merge(array(
-										"ID" => $pid,
-										"ParentID" => $h["ParentID"],
-										"Path" => $h["Path"],
-										"Table" => $object->Table,
-										"ContentType" => "folder"
+									"ID" => $pid,
+									"ParentID" => $h["ParentID"],
+									"Path" => $h["Path"],
+									"Table" => $object->Table,
+									"ContentType" => "folder"
 										), array(
-										"OldID" => ($pid == $object->ParentID) ? $_old_pid : null,
-										"OldParentID" => null,
-										"OldPath" => null,
-										"OldTemplatePath" => null,
-										"Eximed" => 0,
+									"OldID" => ($pid == $object->ParentID) ? $_old_pid : null,
+									"OldParentID" => null,
+									"OldPath" => null,
+									"OldTemplatePath" => null,
+									"Eximed" => 0,
 										)
 									)
 								);
@@ -404,6 +404,8 @@ class weXMLImport extends weXMLExIm{
 		}
 
 		if(!empty($object)){
+			$node_data = array_intersect_key($node_data, get_class_vars(get_class($object)));
+
 			weContentProvider::populateInstance($object, $node_data);
 
 			foreach($node_data as $k => $v){
@@ -603,7 +605,7 @@ class weXMLImport extends weXMLExIm{
 						$write = false;
 						if($marker_size){
 							$write = ((substr($buff, (0 - ($marker_size + 1))) == $marker . "\n") || (substr($buff, (0 - ($marker_size + 2))) == $marker . "\r\n") || (substr($buff, (0 - ($marker2_size + 1))) == $marker2 . "\n") || (substr($buff, (0 - ($marker2_size + 2))) == $marker2 . "\r\n" ));
-						}else{
+						} else{
 							$write = true;
 						}
 
