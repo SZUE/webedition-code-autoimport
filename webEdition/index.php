@@ -45,9 +45,9 @@ if(isset($_SESSION['perms']['ADMINISTRATOR']) && $_SESSION['perms']['ADMINISTRAT
 
 	$maxInputMsg = !ini_get('max_input_vars') ? 'max_input_vars = 1000 (PHP default value)' :
 		(ini_get('max_input_vars') < 2000 ? 'max_input_vars = ' . ini_get('max_input_vars') : '');
-	$maxInputMsg .= ': >= 2000 is recommended';
+	$maxInputMsg .= $maxInputMsg ? ': >= 2000 is recommended' : $maxInputMsg;
 
-	$criticalPhpMsg = $maxInputMsg . $suhosinMsg;
+	$criticalPhpMsg = trim($maxInputMsg . $suhosinMsg);
 	if($criticalPhpMsg){
 		t_e('Critical PHP Settings found', $criticalPhpMsg);
 	}
