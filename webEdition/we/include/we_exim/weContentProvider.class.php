@@ -117,6 +117,8 @@ class weContentProvider{
 		if(!isset($object)){
 			return;
 		}
+		$content = array_intersect_key($content, get_class_vars(get_class($object)));
+
 		foreach($content as $k => $v){
 			$object->$k = $v;
 		}
