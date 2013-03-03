@@ -57,10 +57,10 @@ class we_template extends we_document{
 		}
 		$temp = new we_template();
 		$temp->InitByID($id, TEMPLATES_TABLE);
-		$parentIDMerk = $this->ParentID;
+		//$parentIDMerk = $this->ParentID;
 		if($this->ID == 0){
 			foreach($this->persistent_slots as $cur){
-				if($cur != "elements")
+				if($cur != 'elements')
 					$this->{$cur} = $temp->{$cur};
 			}
 			$this->CreationDate = time();
@@ -68,7 +68,7 @@ class we_template extends we_document{
 			$this->OldPath = '';
 			$this->Filename .= '_copy';
 			$this->Text = $this->Filename . $this->Extension;
-			$this->setParentID($parentIDMerk);
+			//$this->setParentID($parentIDMerk);
 			$this->Path = $this->ParentPath . $this->Text;
 			$this->OldPath = $this->Path;
 		}
@@ -79,8 +79,6 @@ class we_template extends we_document{
 		}
 		$this->EditPageNr = 0;
 	}
-
-	//##################################################################### EDITOR FUNCTION ######################################################################
 
 	/* must be called from the editor-script. Returns a filename which has to be included from the global-Script */
 	function editor(){
