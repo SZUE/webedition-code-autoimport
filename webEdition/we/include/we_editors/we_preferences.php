@@ -514,7 +514,6 @@ $GLOBALS[\'_we_active_integrated_modules\'] = array(
 
 			if($settingvalue == 0 && WE_ERROR_MAIL == 1){
 				$_file = we_base_preferences::changeSourceCode('define', $_file, "WE_ERROR_MAIL", 0, true, $comment);
-				$_file = we_base_preferences::changeSourceCode('define', $_file, "WE_ERROR_MAIL_ADDRESS", "mail@www.example");
 			} else if($settingvalue == 1 && WE_ERROR_MAIL == 0){
 				$_file = we_base_preferences::changeSourceCode('define', $_file, "WE_ERROR_MAIL", 1, true, $comment);
 			}
@@ -523,30 +522,10 @@ $GLOBALS[\'_we_active_integrated_modules\'] = array(
 
 		case 'WE_ERROR_MAIL_ADDRESS':
 			$_file = &$GLOBALS['config_files']['conf_global']['content'];
-
-			if(isset($_REQUEST['newconf']["WE_ERROR_MAIL"]) && $_REQUEST['newconf']["WE_ERROR_MAIL"] == 1){
-				if($settingvalue != ""){
-					if(we_check_email($settingvalue)){
-						if(WE_ERROR_MAIL_ADDRESS != $settingvalue){
-							$_file = we_base_preferences::changeSourceCode('define', $_file, "WE_ERROR_MAIL_ADDRESS", $settingvalue, true, $comment);
-						}
-					} else{
-						$_file = we_base_preferences::changeSourceCode('define', $_file, "WE_ERROR_MAIL_ADDRESS", "mail@www.example", true, $comment);
-						$_file = we_base_preferences::changeSourceCode('define', $_file, "WE_ERROR_MAIL", 0);
-
-						$email_saved = false;
-					}
-				} else{
-					$_file = we_base_preferences::changeSourceCode('define', $_file, "WE_ERROR_MAIL_ADDRESS", "mail@www.example");
-					$_file = we_base_preferences::changeSourceCode('define', $_file, "WE_ERROR_MAIL", 0);
-
-					$email_saved = false;
-				}
-			} else{
-				$_file = we_base_preferences::changeSourceCode('define', $_file, "WE_ERROR_MAIL_ADDRESS", "mail@www.example");
+			
+			if(WE_ERROR_MAIL_ADDRESS != $settingvalue){
+				$_file = we_base_preferences::changeSourceCode('define', $_file, "WE_ERROR_MAIL_ADDRESS", $settingvalue, true, $comment);
 			}
-
-			$_file = &$GLOBALS['config_files']['conf_global']['content'];
 
 			return;
 
@@ -2494,20 +2473,6 @@ if(window.onload) {
 
 			// Generate needed JS
 			$_needed_JavaScript = we_html_element::jsElement("
-							function set_state_mail() {
-								if (document.getElementsByName('newconf[WE_ERROR_MAIL]')[0].checked == true) {
-									if (document.getElementsByName('newconf[WE_ERROR_MAIL]')[0].disabled == false) {
-										_new_state = false;
-									} else {
-										_new_state = true;
-									}
-								} else {
-									_new_state = true;
-								}
-
-								document.getElementsByName('newconf[WE_ERROR_MAIL_ADDRESS]')[0].disabled = _new_state;
-							}
-
 							function set_state_error_handler() {
 								if (document.getElementsByName('newconf[WE_ERROR_HANDLER]')[0].checked == true) {
 									_new_state = false;
@@ -2545,9 +2510,6 @@ if(window.onload) {
 								document.getElementById('label_newconf[WE_ERROR_SHOW]').style.cursor = _new_cursor;
 								document.getElementById('label_newconf[WE_ERROR_LOG]').style.cursor = _new_cursor;
 								document.getElementById('label_newconf[WE_ERROR_MAIL]').style.cursor = _new_cursor;
-
-
-								set_state_mail();
 							}");
 
 			/**
@@ -2589,15 +2551,15 @@ if(window.onload) {
 			$_error_display_table->setCol(2, 0, null, we_html_tools::getPixel(1, 5));
 			$_error_display_table->setCol(3, 0, null, we_forms::checkbox(1, get_value("WE_ERROR_LOG"), "newconf[WE_ERROR_LOG]", g_l('prefs', '[error_log]'), false, "defaultfont", "", !get_value("WE_ERROR_HANDLER")));
 			$_error_display_table->setCol(4, 0, null, we_html_tools::getPixel(1, 5));
-			$_error_display_table->setCol(5, 0, null, we_forms::checkbox(1, get_value("WE_ERROR_MAIL"), "newconf[WE_ERROR_MAIL]", g_l('prefs', '[error_mail]'), false, "defaultfont", "set_state_mail();", !get_value("WE_ERROR_HANDLER")));
+			$_error_display_table->setCol(5, 0, null, we_forms::checkbox(1, get_value("WE_ERROR_MAIL"), "newconf[WE_ERROR_MAIL]", g_l('prefs', '[error_mail]'), false, "defaultfont", "", !get_value("WE_ERROR_HANDLER")));
 
 			// Create specify mail address input
 			$_error_mail_specify_table = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0"), 1, 4);
 
-			$_error_mail_specify_table->setCol(0, 0, null, we_html_tools::getPixel(50, 1));
+			$_error_mail_specify_table->setCol(0, 0, null, we_html_tools::getPixel(25, 1));
 			$_error_mail_specify_table->setCol(0, 1, array("class" => "defaultfont"), g_l('prefs', '[error_mail_address]') . ":");
-			$_error_mail_specify_table->setCol(0, 2, null, we_html_tools::getPixel(10, 1));
-			$_error_mail_specify_table->setCol(0, 3, array("align" => "left"), we_html_tools::htmlTextInput("newconf[WE_ERROR_MAIL_ADDRESS]", 6, (get_value("WE_ERROR_MAIL") != 0 ? get_value("WE_ERROR_MAIL_ADDRESS") : ""), 100, ((!get_value("WE_ERROR_MAIL") || !get_value("WE_ERROR_HANDLER")) ? "disabled=\"disabled\"" : ""), "text", 105));
+			$_error_mail_specify_table->setCol(0, 2, null, we_html_tools::getPixel(6, 1));
+			$_error_mail_specify_table->setCol(0, 3, array("align" => "left"), we_html_tools::htmlTextInput("newconf[WE_ERROR_MAIL_ADDRESS]", 6, (get_value("WE_ERROR_MAIL_ADDRESS")), 100, "", "text", 195));
 
 			$_error_display_table->setCol(6, 0, null, we_html_tools::getPixel(1, 10));
 			$_error_display_table->setCol(7, 0, null, $_error_mail_specify_table->getHtml());
