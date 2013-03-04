@@ -2141,7 +2141,7 @@ if(window.onload) {
 			$_settings[] = array("headline" => g_l('prefs', '[wysiwyg_type]'), "html" => $WYSIWYG_TYPE->getHtml(), "space" => 200);
 
 			$WYSIWYG_TYPE_FRONTEND = new we_html_select(array("name" => "newconf[WYSIWYG_TYPE_FRONTEND]", "class" => "weSelect"));
-			$_options = array('tinyMCE' => 'tinyMCE (beta)', 'default' => 'webEdition Editor (deprecated))');
+			$_options = array('tinyMCE' => 'tinyMCE', 'default' => 'webEdition Editor (deprecated))');
 			foreach($_options as $key => $val){
 				$WYSIWYG_TYPE_FRONTEND->addOption($key, $val);
 			}
