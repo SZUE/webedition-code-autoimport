@@ -66,9 +66,9 @@ class we_updater{
 		$DB_WE->query('UPDATE ' . CATEGORY_TABLE . ' SET Text=Category WHERE Text=""');
 		$DB_WE->query('UPDATE ' . CATEGORY_TABLE . ' SET Path=CONCAT("/",Category) WHERE Path=""');
 
+		$DB_WE->query('DROP TABLE IF EXISTS ' . PREFS_TABLE . '_old');
 		if(count(getHash('SELECT * FROM ' . PREFS_TABLE . ' LIMIT 1', $GLOBALS['DB_WE'])) > 3){
 			//make a backup
-			$DB_WE->query('DROP TABLE IF EXISTS ' . PREFS_TABLE . '_old');
 			$DB_WE->query('CREATE TABLE ' . PREFS_TABLE . '_old LIKE ' . PREFS_TABLE);
 			$DB_WE->query('INSERT INTO ' . PREFS_TABLE . '_old SELECT * FROM ' . PREFS_TABLE);
 
@@ -239,9 +239,12 @@ class we_updater{
 
 			$_table = OBJECT_FILES_TABLE;
 
-			$_db->query('SHOW TABLES LIKE "' . ltrim(OBJECT_X_TABLE, '_') . '\_%"');	 //note: _% ignores _, so escaping _ with \_ does the job
+			$_db->query('SHOW TABLES LIKE "' . OBJECT_X_TABLE . '%"');	//note: _% ignores _, so escaping _ with \_ does the job
 			$allTab = $_db->getAll(true);
 			foreach($allTab as $_table){
+				if($_table == OBJECT_FILES_TABLE){
+					continue;
+				}
 				if($GLOBALS['DB_WE']->isColExist($_table, 'OF_Url')){
 					$GLOBALS['DB_WE']->changeColType($_table, 'OF_Url', 'VARCHAR(255) NOT NULL');
 				} else{

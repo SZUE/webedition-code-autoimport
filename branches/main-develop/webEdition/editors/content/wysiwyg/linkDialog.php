@@ -28,38 +28,38 @@ if(!(isset($_REQUEST['we_dialog_args']) && isset($_REQUEST['we_dialog_args']['ou
 }
 $dialog = new weHyperlinkDialog();
 $dialog->initByHttp();
-$dialog->registerCmdFn("weDoLinkCmd");
+$dialog->registerCmdFn('weDoLinkCmd');
 print $dialog->getHTML();
 
 function weDoLinkCmd($args){
-	if((!isset($args["href"])) || $args["href"] == "http://"){
-		$args["href"] = '';
+	if((!isset($args['href'])) || $args['href'] == 'http://'){
+		$args['href'] = '';
 	}
-	$param = trim($args["param"], '?& ');
-	$anchor = trim($args["anchor"], '# ');
+	$param = trim($args['param'], '?& ');
+	$anchor = trim($args['anchor'], '# ');
 	if(!empty($param)){
 		$tmp = array();
 		parse_str($param, $tmp);
 		$param = '?' . http_build_query($tmp, null, '&');
 	}
 
-	// TODO: $args["href"] comes from weHyperlinkDialog with params and anchor: strip these elements there, not here!
-	$href = (strpos($args["href"], '?') !== false ? substr($args["href"], 0, strpos($args["href"], '?')) :
-			(strpos($args["href"], '#') === false ? $args["href"] : substr($args["href"], 0, strpos($args["href"], '#')))) . $param . ($anchor ? '#' . $anchor : '');
+	// TODO: $args['href'] comes from weHyperlinkDialog with params and anchor: strip these elements there, not here!
+	$href = (strpos($args['href'], '?') !== false ? substr($args['href'], 0, strpos($args['href'], '?')) :
+			(strpos($args['href'], '#') === false ? $args['href'] : substr($args['href'], 0, strpos($args['href'], '#')))) . $param . ($anchor ? '#' . $anchor : '');
 
-	if(!(isset($_REQUEST['we_dialog_args']['editor']) && $_REQUEST['we_dialog_args']['editor'] == "tinyMce")){
+	if(!(isset($_REQUEST['we_dialog_args']['editor']) && $_REQUEST['we_dialog_args']['editor'] == 'tinyMce')){
 		return we_html_element::jsElement(
-				'top.opener.weWysiwygObject_' . $args["editname"] . '.createLink("' . $href . '","' . $args["target"] . '","' . $args["class"] . '","' . $args["lang"] . '","' . $args["hreflang"] . '","' . $args["title"] . '","' . $args["accesskey"] . '","' . $args["tabindex"] . '","' . $args["rel"] . '","' . $args["rev"] . '");
+				'top.opener.weWysiwygObject_' . $args['editname'] . '.createLink("' . $href . '","' . $args['target'] . '","' . $args['class'] . '","' . $args['lang'] . '","' . $args['hreflang'] . '","' . $args['title'] . '","' . $args['accesskey'] . '","' . $args['tabindex'] . '","' . $args['rel'] . '","' . $args['rev'] . '");
 top.close();
 ');
 	} else{
 		if(strpos($href, 'mailto:') === 0){
-			$href = $args["href"];
-			$tmpClass = $args["class"];
+			$href = $args['href'] . (empty($param) ? '' : $param);
+			$tmpClass = $args['class'];
 			foreach($args as &$val){
 				$val = '';
 			}
-			$args["class"] = $tmpClass;
+			$args['class'] = $tmpClass;
 		}
 
 		return weDialog::getTinyMceJS() .

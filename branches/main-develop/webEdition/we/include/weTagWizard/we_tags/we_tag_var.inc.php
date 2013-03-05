@@ -15,19 +15,19 @@ $to = new weTagData_selectAttribute('to', array(new weTagDataOption('screen', fa
 $nameto = new weTagData_textAttribute('nameto', false, '');
 
 $this->TypeAttribute = new weTagData_typeAttribute('type', array(
-	new weTagDataOption('document', false, '', array($name,$doc,$htmlspecialchars), array($name)),
-	new weTagDataOption('property', false, '', array($name,$doc,), array($name)),
-	new weTagDataOption('global', false, '', array($name,$htmlspecialchars), array($name)),
-	new weTagDataOption('img', false, '', array($name,$doc,$htmlspecialchars,), array($name)),
-	new weTagDataOption('href', false, '', array($name,$doc,$htmlspecialchars,), array($name)),
-	new weTagDataOption('date', false, '', array($name,$doc,$htmlspecialchars,), array($name)),
-	new weTagDataOption('link', false, '', array($name,$doc,$htmlspecialchars,), array($name)),
-	new weTagDataOption('multiobject', false, '', array($name,$doc), array($name)),
-	new weTagDataOption('request', false, '', array($name,$htmlspecialchars,), array($name)),
-	new weTagDataOption('post', false, '', array($name,$htmlspecialchars,), array($name)),
-	new weTagDataOption('get', false, '', array($name,$htmlspecialchars,), array($name)),
-	new weTagDataOption('select', false, '', array($name,$doc,$htmlspecialchars,), array($name)),
-	new weTagDataOption('session', false, '', array($name,$htmlspecialchars), array($name)),
-	new weTagDataOption('shopVat', false, '', array($doc), array())), true, '');
+	new weTagDataOption('document', false, '', array($name,$doc,$htmlspecialchars,$to,$nameto), array($name)),
+	new weTagDataOption('property', false, '', array($name,$doc,$to,$nameto), array($name)),
+	new weTagDataOption('global', false, '', array($name,$htmlspecialchars,$to,$nameto), array($name)),
+	new weTagDataOption('img', false, '', array($name,$doc,$htmlspecialchars,$to,$nameto), array($name)),
+	new weTagDataOption('href', false, '', array($name,$doc,$htmlspecialchars,$to,$nameto), array($name)),
+	new weTagDataOption('date', false, '', array($name,$doc,$htmlspecialchars,$to,$nameto), array($name)),
+	new weTagDataOption('link', false, '', array($name,$doc,$htmlspecialchars,$to,$nameto), array($name)),
+	new weTagDataOption('multiobject', false, '', array($name,$doc,$to,$nameto), array($name)),
+	new weTagDataOption('request', false, '', array($name,$htmlspecialchars,$to,$nameto), array($name)),
+	new weTagDataOption('post', false, '', array($name,$htmlspecialchars,$to,$nameto), array($name)),
+	new weTagDataOption('get', false, '', array($name,$htmlspecialchars,$to,$nameto), array($name)),
+	new weTagDataOption('select', false, '', array($name,$doc,$htmlspecialchars,$key,$to,$nameto), array($name)),
+	new weTagDataOption('session', false, '', array($name,$htmlspecialchars,$to,$nameto), array($name)),
+	new weTagDataOption('shopVat', false, '', array($doc,$to,$nameto), array())), true, '');
 
 $this->Attributes=array($name,$doc,$win2iso,$htmlspecialchars,$key,$to,$nameto);

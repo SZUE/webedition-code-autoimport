@@ -827,6 +827,10 @@ abstract class we_root extends we_class{
 				$v = intval($v);
 				break;
 			case 'text':
+				if($this->DefArray[$type . '_' . $k]['dhtmledit'] == 'on'){
+					$v = we_util::rmPhp($v);
+					break;
+				}
 			case 'input':
 				if($this->DefArray[$type . '_' . $k]['forbidphp'] == 'on'){
 					$v = we_util::rmPhp($v);
@@ -850,7 +854,6 @@ abstract class we_root extends we_class{
 	}
 
 	protected function i_setElementsFromHTTP(){
-
 		// do not set REQUEST VARS into the document
 		if(isset($_REQUEST['we_cmd'][0])){
 			if(($_REQUEST['we_cmd'][0] == 'switch_edit_page' && isset($_REQUEST['we_cmd'][3])) || ($_REQUEST['we_cmd'][0] == 'save_document' && isset($_REQUEST['we_cmd'][7]) && $_REQUEST['we_cmd'][7] == 'save_document')){
@@ -863,18 +866,17 @@ abstract class we_root extends we_class{
 			foreach($_REQUEST as $n => $v){
 				if(preg_match('/^we_' . preg_quote($this->Name) . '_([^\[]+)$/', $n, $regs)){
 					if(is_array($v)){
-						foreach($v as $n2 => $v2){
+						$type = $regs[1];
+						foreach($v as $name => $v2){
 							$v2 = we_util::cleanNewLine($v2);
-							$type = $regs[1];
 							if($type == 'date'){
-								$name = preg_replace('/^(.+)_[^_]+$/', '\1', $n2);
-								$what = preg_replace('/^.+_([^_]+)$/', '\1', $n2);
+								preg_match('|(.*)_(.*)|', $name, $regs);
+								list(, $name, $what) = $regs;
 								$dates[$name][$what] = $v2;
 							} else{
-								$name = $n2;
-								if(preg_match('/(.+)#(.+)/', $name, $regs2)){
-									$this->elements[$regs2[1]]['type'] = $type;
-									$this->elements[$regs2[1]][$regs2[2]] = $v2;
+								if(preg_match('/(.+)#(.+)/', $name, $regs)){
+									$this->elements[$regs[1]]['type'] = $type;
+									$this->elements[$regs[1]][$regs[2]] = $v2;
 								} else{
 									$this->elements[$name]['type'] = $type;
 									//FIXME: check if we can apply the correct type
@@ -888,8 +890,6 @@ abstract class we_root extends we_class{
 					}
 				} else if($n == 'we_owners_read_only'){
 					$this->OwnersReadOnly = serialize($v);
-				} else if($n == 'we_users_read_only'){
-					$this->UsersReadOnly = serialize($v);
 				}
 			}
 			foreach($dates as $k => $v){

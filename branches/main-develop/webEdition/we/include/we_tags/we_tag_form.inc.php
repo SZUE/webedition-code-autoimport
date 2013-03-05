@@ -152,7 +152,6 @@ function we_tag_form($attribs){
 				$GLOBALS['WE_FORM'] = $formname;
 				if(!$GLOBALS['we_doc']->InWebEdition){
 					if($type == 'object'){
-
 						we_objectFile::initObject($classid, $formname, $categories, $parentid);
 					} else{
 						we_webEditionDocument::initDocument($formname, $tid, $doctype, $categories);

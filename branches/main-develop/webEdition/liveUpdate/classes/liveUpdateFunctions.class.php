@@ -517,7 +517,7 @@ class liveUpdateFunctions{
 
 		foreach($fields as $key => $indexes){
 			//escape all index fields
-			array_walk($indexes, 'addslashes');
+			$indexes = array_map('addslashes', $indexes);
 
 			$type = $indexes['index'];
 			$mysl = '`';
@@ -824,7 +824,7 @@ class liveUpdateFunctions{
 
 		//	Get all installed Languages
 		$_installedLanguages = array();
-		//	Look which languages are installed 
+		//	Look which languages are installed
 		$_language_directory = dir($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_language");
 
 		while(false !== ($entry = $_language_directory->read())) {

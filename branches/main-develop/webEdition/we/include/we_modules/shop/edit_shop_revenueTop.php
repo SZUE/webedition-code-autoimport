@@ -36,7 +36,6 @@ function orderBy($a, $b){
 }
 
 function getTitleLink($text, $orderKey){
-
 	$_href = $_SERVER['SCRIPT_NAME'] .
 		'?ViewYear=' . $GLOBALS['selectedYear'] .
 		'&ViewMonth=' . $GLOBALS['selectedMonth'] .
@@ -44,19 +43,7 @@ function getTitleLink($text, $orderKey){
 		'&actPage=' . $GLOBALS['actPage'] .
 		( ($GLOBALS['orderBy'] == $orderKey && !isset($_REQUEST['orderDesc'])) ? '&orderDesc=true' : '' );
 
-	$arrow = '';
-
-	if($GLOBALS['orderBy'] == $orderKey){
-
-		if(isset($_REQUEST['orderDesc'])){
-			$arrow = ' <img src="' . IMAGE_DIR . 'arrow_sort_desc.gif" />';
-		} else{
-			$arrow = ' &darr; ';
-			$arrow = ' <img src="' . IMAGE_DIR . 'arrow_sort_asc.gif" />';
-		}
-	}
-
-	return '<a href="' . $_href . '">' . $text . '</a>' . $arrow;
+	return '<a href="' . $_href . '">' . $text . '</a>' . ($GLOBALS['orderBy'] == $orderKey ? ' <img src="' . IMAGE_DIR . 'arrow_sort_' . (isset($_REQUEST['orderDesc']) ? 'desc' : 'asc') . '.gif" />' : '');
 }
 
 function getPagerLink(){
@@ -65,10 +52,6 @@ function getPagerLink(){
 		'&ViewMonth=' . $GLOBALS['selectedMonth'] .
 		'&orderBy=' . $GLOBALS['orderBy'] .
 		(isset($_REQUEST['orderdesc']) ? '&orderDesc=true' : '' );
-}
-
-function numfom($result){
-	return we_util_Strings::formatnumber($result, $GLOBALS['numberformat']);
 }
 
 function yearSelect($select_name){
@@ -91,13 +74,10 @@ function monthSelect($select_name){
 }
 
 we_html_tools::protect();
-
 we_html_tools::htmlTop();
 
-print STYLESHEET;
-
-
-print we_html_element::jsElement('
+print STYLESHEET .
+	we_html_element::jsElement('
 	function we_submitDateform() {
 		elem = document.forms[0];
 		elem.submit();
@@ -180,12 +160,9 @@ if($selectedMonth != '0'){
 	$queryCondtion .= ' AND date_format(DateOrder,"%c") = "' . $selectedMonth . '"';
 }
 
-$queryRevenue = 'SELECT *,DATE_FORMAT(DateOrder, "%d.%m.%Y") AS formatDateOrder, DATE_FORMAT(DatePayment, "%d.%m.%Y") AS formatDatePayment FROM ' . SHOP_TABLE . '	WHERE ' . $queryCondtion . ' ORDER BY IntOrderID';
-unset($monthCondition);
-$DB_WE->query($queryRevenue);
+$DB_WE->query('SELECT *,DATE_FORMAT(DateOrder, "%d.%m.%Y") AS formatDateOrder, DATE_FORMAT(DatePayment, "%d.%m.%Y") AS formatDatePayment FROM ' . SHOP_TABLE . '	WHERE ' . $queryCondtion . ' ORDER BY ' . (isset($_REQUEST['orderBy']) && $_REQUEST['orderBy'] ? $_REQUEST['orderBy'] : 'IntOrderID'));
 
-
-if($DB_WE->num_rows()){
+if(($maxRows = $DB_WE->num_rows())){
 
 	$actOrder = 0;
 	$amountOrders = 0;
@@ -201,40 +178,36 @@ if($DB_WE->num_rows()){
 
 	$nr = 0;
 	$orderRows = array();
-
 	while($DB_WE->next_record()) {
 
 		// for the articlelist, we need also all these article, so sve them in array
-
-		$orderRows[$nr]['articleArray'] = @unserialize($DB_WE->f('strSerial'));
-
 		// initialize all data saved for an article
-		$shopArticleObject = $orderRows[$nr]['articleArray'];
+		$shopArticleObject = @unserialize($DB_WE->f('strSerial'));
+		$serialOrder = $DB_WE->f('strSerialOrder');
+		$orderData = ($serialOrder ? @unserialize($serialOrder) : array());
 
-		// save all data in array
-		$orderRows[$nr]['IntOrderID'] = $DB_WE->f('IntOrderID'); // also for ordering
-		$orderRows[$nr]['IntCustomerID'] = $DB_WE->f('IntCustomerID');
-		$orderRows[$nr]['IntArticleID'] = $DB_WE->f('IntArticleID'); // also for ordering
-		$orderRows[$nr]['IntQuantity'] = $DB_WE->f('IntQuantity');
-		$orderRows[$nr]['DatePayment'] = $DB_WE->f('DatePayment');
-		$orderRows[$nr]['DateOrder'] = $DB_WE->f('DateOrder');
-		$orderRows[$nr]['formatDateOrder'] = $DB_WE->f('formatDateOrder'); // also for ordering
-		$orderRows[$nr]['formatDatePayment'] = $DB_WE->f('formatDatePayment'); // also for ordering
-		$orderRows[$nr]['Price'] = $DB_WE->f('Price'); // also for ordering
-		$orderRows[$nr]['shoptitle'] = (isset($shopArticleObject['shoptitle']) ? $shopArticleObject['shoptitle'] : $shopArticleObject['we_shoptitle']); // also for ordering
+		if(($nr >= ($actPage * $nrOfPage)) && ($nr < $maxRows) && ($nr < ($actPage * $nrOfPage + $nrOfPage))){
+			$orderRows[$nr] = array(
+				'articleArray' => $shopArticleObject,
+				// save all data in array
+				'IntOrderID' => $DB_WE->f('IntOrderID'), // also for ordering
+				'IntCustomerID' => $DB_WE->f('IntCustomerID'),
+				'IntArticleID' => $DB_WE->f('IntArticleID'), // also for ordering
+				'IntQuantity' => $DB_WE->f('IntQuantity'),
+				'DatePayment' => $DB_WE->f('DatePayment'),
+				'DateOrder' => $DB_WE->f('DateOrder'),
+				'formatDateOrder' => $DB_WE->f('formatDateOrder'), // also for ordering
+				'formatDatePayment' => $DB_WE->f('formatDatePayment'), // also for ordering
+				'Price' => $DB_WE->f('Price'), // also for ordering
+				'shoptitle' => (isset($shopArticleObject['shoptitle']) ? $shopArticleObject['shoptitle'] : $shopArticleObject['we_shoptitle']), // also for ordering
+				'orderArray' => $orderData,
+			);
+		}
 		// all data from strSerialOrder
 		// first unserialize order-data
-		if($DB_WE->f('strSerialOrder')){
-			$orderRows[$nr]['orderArray'] = @unserialize($DB_WE->f('strSerialOrder'));
-			$customCartFields = isset($orderRows[$nr]['serialOrder'][WE_SHOP_CART_CUSTOM_FIELD]) ? $orderRows[$nr]['serialOrder'][WE_SHOP_CART_CUSTOM_FIELD] : array();
-		} else{
-			$orderRows[$nr]['orderArray'] = array();
-			$customCartFields = array();
-		}
 
 		$actPrice = 0;
 
-		$orderData = $orderRows[$nr]['orderArray'];
 
 		// ********************************************************************************
 		// now get information about complete order
@@ -310,14 +283,13 @@ if($DB_WE->num_rows()){
 	<td>' . we_html_tools::getPixel(1, 10) . '</td>
 <tr>
 	<td colspan="6" class="shopContentfontR">' . g_l('modules_shop', '[includedVat]') . ':</td>
-</tr>
-';
+</tr>';
 		foreach($articleVatArray as $_vat => $_amount){
 			$vatTable .= '
 <tr>
 	<td colspan="5"></td>
 	<td class="shopContentfontR">' . $_vat . '&nbsp;%</td>
-	<td class="shopContentfontR">' . numfom($_amount) . $waehr . '</td>
+	<td class="shopContentfontR">' . we_util_Strings::formatNumber($_amount) . $waehr . '</td>
 </tr>
 				';
 		}
@@ -340,29 +312,32 @@ if($DB_WE->num_rows()){
 	<td>' . ($selectedMonth ? $selectedMonth : '' ) . '</td>
 	<td>' . $amountOrders . '</td>
 	<td class="npshopContentfontR">' . ($amountOrders - $editedOrders) . '</td>
-	<td>' . numfom($payed) . $waehr . '</td>
-	<td class="npshopContentfontR">' . numfom($unpayed) . $waehr . '</td>
-	<td class="shopContentfontR">' . numfom($total) . $waehr . '</td>
-</tr>
-' . $vatTable . '
+	<td>' . we_util_Strings::formatNumber($payed) . $waehr . '</td>
+	<td class="npshopContentfontR">' . we_util_Strings::formatNumber($unpayed) . $waehr . '</td>
+	<td class="shopContentfontR">' . we_util_Strings::formatNumber($total) . $waehr . '</td>
+</tr>' .
+		$vatTable . '
 </table>',
 		'space' => 0
 	);
 
-	$headline[0]["dat"] = getTitleLink(g_l('modules_shop', '[bestellung]'), 'IntOrderID');
-	$headline[1]["dat"] = getTitleLink(g_l('modules_shop', '[ArtName]'), 'shoptitle');
-	$headline[2]["dat"] = getTitleLink(g_l('modules_shop', '[artPrice]'), 'Price');
-	$headline[3]["dat"] = getTitleLink(g_l('modules_shop', '[artOrdD]'), 'DateOrder');
-	$headline[4]["dat"] = getTitleLink(g_l('modules_shop', '[ArtID]'), 'IntArticleID');
-	$headline[5]["dat"] = getTitleLink(g_l('modules_shop', '[artPay]'), 'DatePayment');
+	$headline = array(
+		array("dat" => getTitleLink(g_l('modules_shop', '[bestellung]'), 'IntOrderID')),
+		array("dat" => g_l('modules_shop', '[ArtName]')), // 'shoptitle'
+		array("dat" => getTitleLink(g_l('modules_shop', '[artPrice]'), 'Price')),
+		array("dat" => getTitleLink(g_l('modules_shop', '[artOrdD]'), 'DateOrder')),
+		array("dat" => getTitleLink(g_l('modules_shop', '[ArtID]'), 'IntArticleID')),
+		array("dat" => getTitleLink(g_l('modules_shop', '[artPay]'), 'DatePayment')),
+	);
+	$content = array();
 
 	// we need functionalitty to order these
 
-	if(isset($_REQUEST['orderBy']) && $_REQUEST['orderBy']){
-		usort($orderRows, 'orderBy');
-	}
+	/* if(isset($_REQUEST['orderBy']) && $_REQUEST['orderBy']){
+	  usort($orderRows, 'orderBy');
+	  } */
 
-	for($nr = 0, $i = ($actPage * $nrOfPage); $i < count($orderRows) && $i < ($actPage * $nrOfPage + $nrOfPage); $i++, $nr++){
+	for($i = ($actPage * $nrOfPage); $i < $maxRows && $i < ($actPage * $nrOfPage + $nrOfPage); $i++){
 
 		$orderData = $orderRows[$i]['orderArray'];
 		$articleData = $orderRows[$i]['articleArray'];
@@ -374,20 +349,20 @@ if($DB_WE->num_rows()){
 
 		$customFields = '';
 		if(isset($articleData[WE_SHOP_ARTICLE_CUSTOM_FIELD]) && $articleData[WE_SHOP_ARTICLE_CUSTOM_FIELD]){
-			$customFields = '<br />
-					';
+			$customFields = we_html_element::htmlBr();
 			foreach($articleData[WE_SHOP_ARTICLE_CUSTOM_FIELD] as $key => $val){
-				$customFields .= "$key=$val<br />
-					";
+				$customFields .= $key . '=' . $val . we_html_element::htmlBr();
 			}
 		}
 
-		$content[$nr][0]['dat'] = $orderRows[$i]['IntOrderID'];
-		$content[$nr][1]['dat'] = $orderRows[$i]['shoptitle'] . '<span class="small">' . $variantStr . ' ' . $customFields . '</span>';
-		$content[$nr][2]['dat'] = numfom($orderRows[$i]['Price']) . $waehr;
-		$content[$nr][3]['dat'] = $orderRows[$i]['formatDateOrder'];
-		$content[$nr][4]['dat'] = $orderRows[$i]['IntArticleID'];
-		$content[$nr][5]['dat'] = ($orderRows[$i]['DatePayment'] != 0 ? $orderRows[$i]['formatDatePayment'] : '<span class="npshopContentfontR">' . g_l('modules_shop', '[artNPay]') . '</span>');
+		$content[] = array(
+			array('dat' => $orderRows[$i]['IntOrderID']),
+			array('dat' => $orderRows[$i]['shoptitle'] . '<span class="small">' . $variantStr . ' ' . $customFields . '</span>'),
+			array('dat' => we_util_Strings::formatNumber($orderRows[$i]['Price']) . $waehr),
+			array('dat' => $orderRows[$i]['formatDateOrder']),
+			array('dat' => $orderRows[$i]['IntArticleID']),
+			array('dat' => ($orderRows[$i]['DatePayment'] != 0 ? $orderRows[$i]['formatDatePayment'] : '<span class="npshopContentfontR">' . g_l('modules_shop', '[artNPay]') . '</span>')),
+		);
 	}
 
 	$parts[] = array(
@@ -396,11 +371,8 @@ if($DB_WE->num_rows()){
 		'noline' => true
 	);
 
-
-	$pager = blaettern::getStandardPagerHTML(getPagerLink(), $actPage, $nrOfPage, count($orderRows));
-
 	$parts[] = array(
-		'html' => $pager,
+		'html' => blaettern::getStandardPagerHTML(getPagerLink(), $actPage, $nrOfPage, $maxRows),
 		'space' => 0
 	);
 } else{
@@ -410,7 +382,7 @@ if($DB_WE->num_rows()){
 	);
 }
 
-print we_multiIconBox::getHTML("revenues", "100%", $parts, 30, "", -1, "", "", false, sprintf(g_l('tabs', '[module][revenueTotal]'), $selectedYear));
+print we_multiIconBox::getHTML('revenues', '100%', $parts, 30, '', -1, '', '', false, sprintf(g_l('tabs', '[module][revenueTotal]'), $selectedYear));
 ?>
 </form>
 </body>

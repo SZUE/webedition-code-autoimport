@@ -30,11 +30,12 @@ $buttonpos = new weTagData_choiceAttribute('buttonpos', array(new weTagDataOptio
 $win2iso = new weTagData_selectAttribute('win2iso', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
 $classes = new weTagData_textAttribute('classes', false, '');
 $spellcheck = new weTagData_selectAttribute('spellcheck', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, 'spellchecker');
+$tinyparams = new weTagData_textAttribute('tinyparams', false, '');
 //$this->Attributes[] = new weTagData_textAttribute('cachelifetime', false, '');
 
 $this->TypeAttribute = new weTagData_typeAttribute('wysiwyg', array(
-	new weTagDataOption('true', false, '', array($name,$cols,$rows,$autobr,$width,$height,$class,$bgcolor,$editorcss,$ignoredocumentcss,$htmlspecialchars,$commands,$fontnames,$abbr,$removefirstparagraph,$inlineedit,$buttonpos,$win2iso,$classes,$spellcheck), array($name)),
+	new weTagDataOption('true', false, '', array($name,$cols,$rows,$autobr,$width,$height,$class,$bgcolor,$editorcss,$ignoredocumentcss,$htmlspecialchars,$commands,$fontnames,$abbr,$removefirstparagraph,$inlineedit,$buttonpos,$win2iso,$classes,$spellcheck,$tinyparams), array($name)),
 	new weTagDataOption('false', false, '', array($name,$cols,$rows,$class,$autobr,$html,$htmlspecialchars,$php,$abbr,$spellcheck), array($name))), false, '');
 
 $this->Attributes=array($name,$cols,$rows,$class,$autobr,$importrtf,$width,$height,$bgcolor,$editorcss,$ignoredocumentcss,$html,$htmlspecialchars,$php,$commands,$fontnames,$xml,$abbr,
-	$removefirstparagraph,$inlineedit,$buttonpos,$win2iso,$classes,$spellcheck);
+	$removefirstparagraph,$inlineedit,$buttonpos,$win2iso,$classes,$spellcheck,$tinyparams);

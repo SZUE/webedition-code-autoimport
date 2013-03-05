@@ -514,7 +514,6 @@ $GLOBALS[\'_we_active_integrated_modules\'] = array(
 
 			if($settingvalue == 0 && WE_ERROR_MAIL == 1){
 				$_file = we_base_preferences::changeSourceCode('define', $_file, "WE_ERROR_MAIL", 0, true, $comment);
-				$_file = we_base_preferences::changeSourceCode('define', $_file, "WE_ERROR_MAIL_ADDRESS", "mail@www.example");
 			} else if($settingvalue == 1 && WE_ERROR_MAIL == 0){
 				$_file = we_base_preferences::changeSourceCode('define', $_file, "WE_ERROR_MAIL", 1, true, $comment);
 			}
@@ -523,30 +522,10 @@ $GLOBALS[\'_we_active_integrated_modules\'] = array(
 
 		case 'WE_ERROR_MAIL_ADDRESS':
 			$_file = &$GLOBALS['config_files']['conf_global']['content'];
-
-			if(isset($_REQUEST['newconf']["WE_ERROR_MAIL"]) && $_REQUEST['newconf']["WE_ERROR_MAIL"] == 1){
-				if($settingvalue != ""){
-					if(we_check_email($settingvalue)){
-						if(WE_ERROR_MAIL_ADDRESS != $settingvalue){
-							$_file = we_base_preferences::changeSourceCode('define', $_file, "WE_ERROR_MAIL_ADDRESS", $settingvalue, true, $comment);
-						}
-					} else{
-						$_file = we_base_preferences::changeSourceCode('define', $_file, "WE_ERROR_MAIL_ADDRESS", "mail@www.example", true, $comment);
-						$_file = we_base_preferences::changeSourceCode('define', $_file, "WE_ERROR_MAIL", 0);
-
-						$email_saved = false;
-					}
-				} else{
-					$_file = we_base_preferences::changeSourceCode('define', $_file, "WE_ERROR_MAIL_ADDRESS", "mail@www.example");
-					$_file = we_base_preferences::changeSourceCode('define', $_file, "WE_ERROR_MAIL", 0);
-
-					$email_saved = false;
-				}
-			} else{
-				$_file = we_base_preferences::changeSourceCode('define', $_file, "WE_ERROR_MAIL_ADDRESS", "mail@www.example");
+			
+			if(WE_ERROR_MAIL_ADDRESS != $settingvalue){
+				$_file = we_base_preferences::changeSourceCode('define', $_file, "WE_ERROR_MAIL_ADDRESS", $settingvalue, true, $comment);
 			}
-
-			$_file = &$GLOBALS['config_files']['conf_global']['content'];
 
 			return;
 
@@ -1154,19 +1133,21 @@ function build_dialog($selected_setting = 'ui'){
 			$SHOWINPUTS_DEFAULT->addOption(1, "true");
 			$SHOWINPUTS_DEFAULT->selectOption(get_value("SHOWINPUTS_DEFAULT") ? 1 : 0);
 
-
 			$HIDENAMEATTRIBINWEIMG_DEFAULT = new we_html_select(array("name" => "newconf[HIDENAMEATTRIBINWEIMG_DEFAULT]", "class" => "weSelect"));
 			$HIDENAMEATTRIBINWEIMG_DEFAULT->addOption(0, g_l('prefs', '[no]'));
 			$HIDENAMEATTRIBINWEIMG_DEFAULT->addOption(1, g_l('prefs', '[yes]'));
-
-			// Set selected setting
 			$HIDENAMEATTRIBINWEIMG_DEFAULT->selectOption(get_value("HIDENAMEATTRIBINWEIMG_DEFAULT") ? 1 : 0);
 
 			$HIDENAMEATTRIBINWEFORM_DEFAULT = new we_html_select(array("name" => "newconf[HIDENAMEATTRIBINWEFORM_DEFAULT]", "class" => "weSelect"));
 			$HIDENAMEATTRIBINWEFORM_DEFAULT->addOption(0, g_l('prefs', '[no]'));
 			$HIDENAMEATTRIBINWEFORM_DEFAULT->addOption(1, g_l('prefs', '[yes]'));
-
 			$HIDENAMEATTRIBINWEFORM_DEFAULT->selectOption(get_value("HIDENAMEATTRIBINWEFORM_DEFAULT") ? 1 : 0);
+
+			$CSSAPPLYTO_DEFAULT = new we_html_select(array("name" => "newconf[CSSAPPLYTO_DEFAULT]", "class" => "weSelect"));
+			$CSSAPPLYTO_DEFAULT->addOption("all", "all");
+			$CSSAPPLYTO_DEFAULT->addOption("around", "around");
+			$CSSAPPLYTO_DEFAULT->addOption("wysiwyg", "wysiwyg");
+			$CSSAPPLYTO_DEFAULT->selectOption(get_value("CSSAPPLYTO_DEFAULT") ? get_value("CSSAPPLYTO_DEFAULT") : "around");
 
 			$BASE_IMG = we_html_tools::htmlTextInput("newconf[BASE_IMG]", 22, get_value('BASE_IMG'), "", 'placeholder="http://example.org"', "url", 225, 0, "");
 			$BASE_CSS = we_html_tools::htmlTextInput("newconf[BASE_CSS]", 22, get_value('BASE_CSS'), "", 'placeholder="http://example.org"', "url", 225, 0, "");
@@ -1179,6 +1160,7 @@ function build_dialog($selected_setting = 'ui'){
 				array("headline" => g_l('prefs', '[showinputs_default]'), "html" => $SHOWINPUTS_DEFAULT->getHtml(), "space" => 200),
 				array("headline" => g_l('prefs', '[hidenameattribinweimg_default]'), "html" => $HIDENAMEATTRIBINWEIMG_DEFAULT->getHtml(), "space" => 200),
 				array("headline" => g_l('prefs', '[hidenameattribinweform_default]'), "html" => $HIDENAMEATTRIBINWEFORM_DEFAULT->getHtml(), "space" => 200),
+				array("headline" => g_l('prefs', '[cssapplyto_default]'), "html" => $CSSAPPLYTO_DEFAULT->getHtml(), "space" => 200),
 				array("headline" => g_l('prefs', '[base][img]'), "html" => $BASE_IMG, "space" => 200, "noline" => 1),
 				array("headline" => g_l('prefs', '[base][css]'), "html" => $BASE_CSS, "space" => 200, "noline" => 1),
 				array("headline" => g_l('prefs', '[base][js]'), "html" => $BASE_JS, "space" => 200),
@@ -1615,11 +1597,10 @@ if(window.onload) {
 			$_template_editor_font_select_box->selectOption($_template_editor_font_specify ? get_value('editorFontname') : 'Courier New');
 
 			$_template_editor_font_sizes_select_box = new we_html_select(array('class' => 'weSelect', 'name' => 'newconf[editorFontsize]', 'size' => '1', 'style' => 'width: 135px;', ($_template_editor_font_size_specify ? 'enabled' : 'disabled') => ($_template_editor_font_size_specify ? 'enabled' : 'disabled')));
-
-			foreach($_template_font_sizes as $sz){
+			foreach($_template_font_sizes as $key => $sz){
 				$_template_editor_font_sizes_select_box->addOption($sz, $sz);
 			}
-			$_template_editor_font_sizes_select_box->selectOption($_template_editor_font_specify ? $_template_font_sizes[$i] : 11);
+			$_template_editor_font_sizes_select_box->selectOption($_template_editor_font_specify ? $_template_font_sizes[$key] : 11);
 
 			$_template_editor_font_sizes_select_box->selectOption(get_value('editorFontsize'));
 
@@ -2160,7 +2141,7 @@ if(window.onload) {
 			$_settings[] = array("headline" => g_l('prefs', '[wysiwyg_type]'), "html" => $WYSIWYG_TYPE->getHtml(), "space" => 200);
 
 			$WYSIWYG_TYPE_FRONTEND = new we_html_select(array("name" => "newconf[WYSIWYG_TYPE_FRONTEND]", "class" => "weSelect"));
-			$_options = array('tinyMCE' => 'tinyMCE (beta)', 'default' => 'webEdition Editor (deprecated))');
+			$_options = array('tinyMCE' => 'tinyMCE', 'default' => 'webEdition Editor (deprecated))');
 			foreach($_options as $key => $val){
 				$WYSIWYG_TYPE_FRONTEND->addOption($key, $val);
 			}
@@ -2492,20 +2473,6 @@ if(window.onload) {
 
 			// Generate needed JS
 			$_needed_JavaScript = we_html_element::jsElement("
-							function set_state_mail() {
-								if (document.getElementsByName('newconf[WE_ERROR_MAIL]')[0].checked == true) {
-									if (document.getElementsByName('newconf[WE_ERROR_MAIL]')[0].disabled == false) {
-										_new_state = false;
-									} else {
-										_new_state = true;
-									}
-								} else {
-									_new_state = true;
-								}
-
-								document.getElementsByName('newconf[WE_ERROR_MAIL_ADDRESS]')[0].disabled = _new_state;
-							}
-
 							function set_state_error_handler() {
 								if (document.getElementsByName('newconf[WE_ERROR_HANDLER]')[0].checked == true) {
 									_new_state = false;
@@ -2543,9 +2510,6 @@ if(window.onload) {
 								document.getElementById('label_newconf[WE_ERROR_SHOW]').style.cursor = _new_cursor;
 								document.getElementById('label_newconf[WE_ERROR_LOG]').style.cursor = _new_cursor;
 								document.getElementById('label_newconf[WE_ERROR_MAIL]').style.cursor = _new_cursor;
-
-
-								set_state_mail();
 							}");
 
 			/**
@@ -2587,15 +2551,15 @@ if(window.onload) {
 			$_error_display_table->setCol(2, 0, null, we_html_tools::getPixel(1, 5));
 			$_error_display_table->setCol(3, 0, null, we_forms::checkbox(1, get_value("WE_ERROR_LOG"), "newconf[WE_ERROR_LOG]", g_l('prefs', '[error_log]'), false, "defaultfont", "", !get_value("WE_ERROR_HANDLER")));
 			$_error_display_table->setCol(4, 0, null, we_html_tools::getPixel(1, 5));
-			$_error_display_table->setCol(5, 0, null, we_forms::checkbox(1, get_value("WE_ERROR_MAIL"), "newconf[WE_ERROR_MAIL]", g_l('prefs', '[error_mail]'), false, "defaultfont", "set_state_mail();", !get_value("WE_ERROR_HANDLER")));
+			$_error_display_table->setCol(5, 0, null, we_forms::checkbox(1, get_value("WE_ERROR_MAIL"), "newconf[WE_ERROR_MAIL]", g_l('prefs', '[error_mail]'), false, "defaultfont", "", !get_value("WE_ERROR_HANDLER")));
 
 			// Create specify mail address input
 			$_error_mail_specify_table = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0"), 1, 4);
 
-			$_error_mail_specify_table->setCol(0, 0, null, we_html_tools::getPixel(50, 1));
+			$_error_mail_specify_table->setCol(0, 0, null, we_html_tools::getPixel(25, 1));
 			$_error_mail_specify_table->setCol(0, 1, array("class" => "defaultfont"), g_l('prefs', '[error_mail_address]') . ":");
-			$_error_mail_specify_table->setCol(0, 2, null, we_html_tools::getPixel(10, 1));
-			$_error_mail_specify_table->setCol(0, 3, array("align" => "left"), we_html_tools::htmlTextInput("newconf[WE_ERROR_MAIL_ADDRESS]", 6, (get_value("WE_ERROR_MAIL") != 0 ? get_value("WE_ERROR_MAIL_ADDRESS") : ""), 100, ((!get_value("WE_ERROR_MAIL") || !get_value("WE_ERROR_HANDLER")) ? "disabled=\"disabled\"" : ""), "text", 105));
+			$_error_mail_specify_table->setCol(0, 2, null, we_html_tools::getPixel(6, 1));
+			$_error_mail_specify_table->setCol(0, 3, array("align" => "left"), we_html_tools::htmlTextInput("newconf[WE_ERROR_MAIL_ADDRESS]", 6, (get_value("WE_ERROR_MAIL_ADDRESS")), 100, "", "text", 195));
 
 			$_error_display_table->setCol(6, 0, null, we_html_tools::getPixel(1, 10));
 			$_error_display_table->setCol(7, 0, null, $_error_mail_specify_table->getHtml());

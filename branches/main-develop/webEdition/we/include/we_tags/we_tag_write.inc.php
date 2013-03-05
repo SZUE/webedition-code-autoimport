@@ -32,7 +32,6 @@ function we_tag_write($attribs){
 			}
 			break;
 		default:
-		case document:
 			$type = 'document'; //make sure type is known!
 			if(($foo = attributFehltError($attribs, 'doctype', __FUNCTION__))){
 				return $foo;

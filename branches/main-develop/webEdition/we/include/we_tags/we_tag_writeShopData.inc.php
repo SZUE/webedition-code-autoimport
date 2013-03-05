@@ -75,7 +75,7 @@ function we_tag_writeShopData($attribs){
 		$DB_WE = $GLOBALS['DB_WE'];
 
 		$DB_WE->lock(array(SHOP_TABLE => 'write', ERROR_LOG_TABLE => 'write', WE_SHOP_VAT_TABLE => 'read'));
-		$orderID = intval(f("SELECT MAX(IntOrderID) AS max FROM " . SHOP_TABLE, 'max', $DB_WE)) + 1;
+		$orderID = intval(f('SELECT MAX(IntOrderID) AS max FROM ' . SHOP_TABLE, 'max', $DB_WE)) + 1;
 
 		$totPrice = 0;
 
@@ -84,23 +84,14 @@ function we_tag_writeShopData($attribs){
 			$GLOBALS['weEconda'] = array('emosBilling' => "");
 		}
 		$articleCount = 0;
-		$cartField = array();
 
 		foreach($shoppingItems as $shoppingItem){
-
-			$preis = ((isset($shoppingItem['serial']["we_" . $pricename])) ? $shoppingItem['serial']["we_" . $pricename] : $shoppingItem['serial'][$pricename]);
+			$preis = ((isset($shoppingItem['serial']['we_' . $pricename])) ? $shoppingItem['serial']['we_' . $pricename] : $shoppingItem['serial'][$pricename]);
 
 			$preis = we_util::std_numberformat($preis);
 
 			$totPrice += $preis * $shoppingItem['quantity'];
 
-			// add shopcartfields to table
-			$cartField[WE_SHOP_CART_CUSTOM_FIELD] = $cartFields; // add custom cart fields to article
-			$cartField[WE_SHOP_PRICE_IS_NET_NAME] = $netprices; // add netprice flag to article
-
-			if($useVat){
-				$cartField[WE_SHOP_CALC_VAT] = $calcVat; // add flag to shop, if vats shall be used
-			}
 
 			// foreach article we must determine the correct tax-rate
 			$vatId = isset($shoppingItem['serial'][WE_SHOP_VAT_FIELD_NAME]) ? $shoppingItem['serial'][WE_SHOP_VAT_FIELD_NAME] : 0;
@@ -119,16 +110,14 @@ function we_tag_writeShopData($attribs){
 						'IntQuantity' => abs($shoppingItem['quantity']),
 						'Price' => $preis,
 						'IntOrderID' => $orderID,
-						'IntCustomerID' => intval($_SESSION["webuser"]["ID"]),
+						'IntCustomerID' => intval($_SESSION['webuser']['ID']),
 						'DateOrder' => 'now()',
 						'DateShipping' => 0,
 						'Datepayment' => 0,
-						//'IntPayment_Type' => ,
 						'strSerial' => serialize($shoppingItem['serial']),
-						//'strSerialOrder' =>
-					))))){
+				))))){
 
-				echo "Data Insert Failed";
+				echo 'Data Insert Failed';
 				return;
 			}
 
@@ -154,25 +143,26 @@ function we_tag_writeShopData($attribs){
 		// second part: add cart fields to table order.
 		//{
 		// add shopcartfields to table
-		$cartField[WE_SHOP_CART_CUSTOM_FIELD] = $cartFields; // add custom cart fields to article
-		$cartField[WE_SHOP_PRICE_IS_NET_NAME] = $netprices; // add netprice flag to article
-		$cartField[WE_SHOP_CART_CUSTOMER_FIELD] = $_customer; // add netprice flag to article
-
 		$weShippingControl = weShippingControl::getShippingControl();
 
-		if($shipping == ''){
-			$cartField[WE_SHOP_SHIPPING] = array(
+		$cartField = array(
+			WE_SHOP_CART_CUSTOM_FIELD => $cartFields, // add custom cart fields to article
+			WE_SHOP_PRICE_IS_NET_NAME => $netprices, // add netprice flag to article
+			WE_SHOP_CART_CUSTOMER_FIELD => $_customer, // add netprice flag to article
+			WE_SHOP_PRICENAME => $pricename,
+			WE_SHOP_SHIPPING => ($shipping == '' ?
+				array(
 				'costs' => $weShippingControl->getShippingCostByOrderValue($totPrice, $_customer),
 				'isNet' => $weShippingControl->isNet,
 				'vatRate' => $weShippingControl->vatRate
-			);
-		} else{
-			$cartField[WE_SHOP_SHIPPING] = array(
+				) :
+				array(
 				'costs' => $shipping,
 				'isNet' => $shippingIsNet,
 				'vatRate' => $shippingVatRate
-			);
-		}
+				)),
+		);
+
 
 		if($useVat){
 			$cartField[WE_SHOP_CALC_VAT] = $calcVat; // add flag to shop, if vats shall be used

@@ -42,13 +42,13 @@ function we_tag_css($attribs){
 		$attribs['href'] = (we_isHttps() ? '' : BASE_CSS) . $url;
 
 		$nolink = false;
-		switch(weTag_getAttribute('only', $attribs, '')){
-			case 'around-wysiwyg' :
+		$applyto = weTag_getAttribute("applyto", $attribs, defined("CSSAPPLYTO_DEFAULT") ? CSSAPPLYTO_DEFAULT : "around");
+		switch($applyto){
 			case 'around' :
 				break;
 			case 'wysiwyg' : 
 				$nolink = true;
-			default : 
+			case 'all' : 
 				$media = weTag_getAttribute('media', $attribs);
 				if($media == "" || $media == "screen" || $media == "all"){
 					$GLOBALS['we_doc']->addDocumentCss($attribs['href'] . "?" . time());

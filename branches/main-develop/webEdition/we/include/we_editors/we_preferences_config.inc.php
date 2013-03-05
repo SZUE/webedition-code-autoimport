@@ -79,6 +79,8 @@ $GLOBALS['configs'] = array(
 		'REMOVEFIRSTPARAGRAPH_DEFAULT' => array('Default setting for removeparagraph attribute', false),
 		'HIDENAMEATTRIBINWEIMG_DEFAULT' => array('Default setting for hide name attribute in weimg output', false),
 		'HIDENAMEATTRIBINWEFORM_DEFAULT' => array('Default setting for hide name attribute in weform output', false),
+// we_css
+		'CSSAPPLYTO_DEFAULT' => array('Default setting for we:css attribute applyto', 'around'),
 // hooks
 		'EXECUTE_HOOKS' => array('Default setting for hook execution', false),
 // php local scope == global scope

@@ -182,25 +182,25 @@ class we_shop_Basket{
 			case 'w':
 				// unfortunately this is not made with initDocById,
 				// but its much faster -> so we use it
-				$DB_WE->query('SELECT ' . CONTENT_TABLE . '.BDID as BDID, ' . CONTENT_TABLE . '.Dat as Dat, ' . LINK_TABLE . '.Name as Name FROM ' . LINK_TABLE . "," . CONTENT_TABLE . " WHERE " . LINK_TABLE . '.DID=' . intval($id) . ' AND ' . LINK_TABLE . '.CID=' . CONTENT_TABLE . '.ID AND ' . LINK_TABLE . '.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"');
+				$DB_WE->query('SELECT ' . CONTENT_TABLE . '.BDID as BDID, ' . CONTENT_TABLE . '.Dat as Dat, ' . LINK_TABLE . '.Name as Name FROM ' . LINK_TABLE . ',' . CONTENT_TABLE . ' WHERE ' . LINK_TABLE . '.DID=' . intval($id) . ' AND ' . LINK_TABLE . '.CID=' . CONTENT_TABLE . '.ID AND ' . LINK_TABLE . '.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"');
 				while($DB_WE->next_record()) {
-					$tmp = ($DB_WE->f("BDID"));
-					$Record[$DB_WE->f("Name")] = $tmp ? $tmp : $DB_WE->f("Dat");
+					$tmp = ($DB_WE->f('BDID'));
+					$Record[$DB_WE->f('Name')] = $tmp ? $tmp : $DB_WE->f('Dat');
 				}
 
 				if($variant){
 					weShopVariants::useVariantForShop($Record, $variant);
 				}
 
-				$DB_WE->query('SELECT * FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id));
-				if($DB_WE->next_record()){
-					foreach($DB_WE->Record as $key => $val){
+				$hash = getHash('SELECT * FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), $DB_WE);
+				if(!empty($hash)){
+					foreach($hash as $key => $val){
 						$Record['wedoc_' . $key] = $val;
 					}
 				}
 
-				$Record['WE_PATH'] = f('SELECT Path FROM ' . FILE_TABLE . " WHERE ID=" . intval($id), "Path", $DB_WE) . ($variant ? '?' . WE_SHOP_VARIANT_REQUEST . '=' . $variant : '');
-				$Record['WE_TEXT'] = f('SELECT Text FROM ' . INDEX_TABLE . " WHERE DID=" . intval($id), "Text", $DB_WE);
+				$Record['WE_PATH'] = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), 'Path', $DB_WE) . ($variant ? '?' . WE_SHOP_VARIANT_REQUEST . '=' . $variant : '');
+				$Record['WE_TEXT'] = f('SELECT Text FROM ' . INDEX_TABLE . ' WHERE DID=' . intval($id), 'Text', $DB_WE);
 				$Record['WE_VARIANT'] = $variant;
 				$Record['WE_ID'] = intval($id);
 
@@ -214,10 +214,10 @@ class we_shop_Basket{
 					}
 				}
 				break;
-			case "o":
+			case 'o':
 				$classArray = getHash('SELECT * FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($id), $DB_WE);
 
-				$olv = new we_listview_object("0", 1, 0, "", 0, $classArray["TableID"], "", "", " " . OBJECT_X_TABLE . $classArray["TableID"] . ".ID=" . $classArray["ObjectID"]);
+				$olv = new we_listview_object('0', 1, 0, '', 0, $classArray['TableID'], '', '', ' ' . OBJECT_X_TABLE . $classArray["TableID"] . '.ID=' . $classArray['ObjectID']);
 				$olv->next_record();
 
 				$Record = $olv->DB_WE->Record;

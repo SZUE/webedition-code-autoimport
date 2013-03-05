@@ -157,6 +157,8 @@ class we_user{
 
 	// Constructor
 	function __construct(){
+		$GLOBALS['editor_reloaded'] = false;
+
 		$this->Name = 'user_' . md5(uniqid(__FILE__, true));
 
 		$this->DB_WE = new DB_WE();
@@ -344,7 +346,6 @@ class we_user{
 	}
 
 	function saveToSession(){
-
 		if($this->ID != $_SESSION['user']['ID']){
 			return '';
 		}
@@ -378,7 +379,7 @@ class we_user{
 				default:
 					$save_javascript .=
 						$this->rememberPreference(isset($this->Preferences['seem_start_document']) ? $this->Preferences['seem_start_document'] : 0, 'seem_start_file') .
-						$this->rememberPreference('cockpit', 'seem_start_type') .
+						$this->rememberPreference('document', 'seem_start_type') .
 						$this->rememberPreference('', 'seem_start_weapp');
 			}
 		}
@@ -425,13 +426,16 @@ class we_user{
 			include($entry);
 			if(!($perm_group_name == 'administrator' && $this->Type != self::TYPE_USER)){
 				if($perm_group_name){
-					if(!isset($this->permissions_main_titles[$perm_group_name]))
+					if(!isset($this->permissions_main_titles[$perm_group_name])){
 						$this->permissions_main_titles[$perm_group_name] = '';
-					if(!isset($this->permissions_slots[$perm_group_name]))
+					}
+					if(!isset($this->permissions_slots[$perm_group_name])){
 						$this->permissions_slots[$perm_group_name] = array();
-					if(!isset($this->permissions_titles[$perm_group_name]))
+					}
+					if(!isset($this->permissions_titles[$perm_group_name])){
 						$this->permissions_titles[$perm_group_name] = '';
-					if(is_array($perm_values[$perm_group_name]))
+					}
+					if(is_array($perm_values[$perm_group_name])){
 						foreach($perm_values[$perm_group_name] as $k => $v){
 							$set = false;
 							if(is_array($permissions)){
@@ -446,6 +450,7 @@ class we_user{
 								$this->permissions_slots[$perm_group_name][$v] = (is_array($perm_defaults[$perm_group_name]) ? $perm_defaults[$perm_group_name][$v] : 0);
 							}
 						}
+					}
 
 					$this->permissions_main_titles[$perm_group_name] = $perm_group_title[$perm_group_name];
 
@@ -460,7 +465,7 @@ class we_user{
 	}
 
 	function setPermissions(){
-		foreach($this->perm_branches as $key => $val){
+		foreach($this->perm_branches as $val){
 			foreach($val as $k => $v){
 				$this->Permissions[$k] = $this->permissions_slots[$v];
 			}
@@ -583,7 +588,7 @@ class we_user{
 
 	function getPreferenceSlotsFromDB(){
 		$tmp = self::readPrefs($this->ID, $this->DB_WE);
-		$this->Preferences = array_intersect_assoc($tmp, $this->preference_slots);
+		$this->Preferences = array_intersect_key($tmp, array_flip($this->preference_slots));
 	}
 
 	function setPreference($name, $value){
@@ -618,12 +623,11 @@ class we_user{
 			$updt['DefaultTemplateID'] = '0';
 		}
 		self::writePrefs(intval($this->ID), $this->DB_WE, $updt);
+		$_SESSION["prefs"] = ($_SESSION["prefs"]["userID"] == intval($this->ID) ? self::readPrefs(intval($this->ID), $this->DB_WE) : $_SESSION["prefs"]);
 	}
 
 	function rememberPreference($settingvalue, $settingname){
-
 		$save_javascript = '';
-
 		if(isset($settingvalue) && ($settingvalue != null)){
 			switch($settingname){
 				case 'Language':
@@ -679,47 +683,46 @@ class we_user{
 
 					if($settingvalue != $GLOBALS['WE_BACKENDCHARSET']){
 						$save_javascript .= "
-							if (top.frames[0]) {
-								top.frames[0].location.reload();
-							}
+if (top.frames[0]) {
+	top.frames[0].location.reload();
+}
 
-							if (parent.frames[0]) {
-								parent.frames[0].location.reload();
-							}
+if (parent.frames[0]) {
+	parent.frames[0].location.reload();
+}
 
-							// Tabs Module User
-							if (top.content.user_resize.user_right.user_editor.user_edheader) {
-								top.content.user_resize.user_right.user_editor.user_edheader.location = top.content.user_resize.user_right.user_editor.user_edheader.location +'?tab='+top.content.user_resize.user_right.user_editor.user_edheader.activeTab;
-							}
+// Tabs Module User
+if (top.content.user_resize.user_right.user_editor.user_edheader) {
+	top.content.user_resize.user_right.user_editor.user_edheader.location = top.content.user_resize.user_right.user_editor.user_edheader.location +'?tab='+top.content.user_resize.user_right.user_editor.user_edheader.activeTab;
+}
 
-							// Editor Module User
-							if (top.content.user_resize.user_right.user_editor.user_properties) {
-								top.content.user_resize.user_right.user_editor.user_properties.location = top.content.user_resize.user_right.user_editor.user_properties.location +'?tab=" . abs($_REQUEST['tab']) . "&perm_branch='+top.content.user_resize.user_right.user_editor.user_properties.opened_group;
-							}
+// Editor Module User
+if (top.content.user_resize.user_right.user_editor.user_properties) {
+	top.content.user_resize.user_right.user_editor.user_properties.location = top.content.user_resize.user_right.user_editor.user_properties.location +'?tab=" . abs($_REQUEST['tab']) . "&perm_branch='+top.content.user_resize.user_right.user_editor.user_properties.opened_group;
+}
 
-							// Save Module User
-							if (top.content.user_resize.user_right.user_editor.user_edfooter) {
-								top.content.user_resize.user_right.user_editor.user_edfooter.location.reload();
-							}
-							if (top.opener.top.header) {
-								top.opener.top.header.location.reload();
-							}
+// Save Module User
+if (top.content.user_resize.user_right.user_editor.user_edfooter) {
+	top.content.user_resize.user_right.user_editor.user_edfooter.location.reload();
+}
+if (top.opener.top.header) {
+	top.opener.top.header.location.reload();
+}
 
-							// reload all frames of an editor
-							// reload current document => reload all open Editors on demand
-							var _usedEditors =  top.opener.weEditorFrameController.getEditorsInUse();
-							for (frameId in _usedEditors) {
+// reload all frames of an editor
+// reload current document => reload all open Editors on demand
+var _usedEditors =  top.opener.weEditorFrameController.getEditorsInUse();
+for (frameId in _usedEditors) {
 
-								if ( _usedEditors[frameId].getEditorIsActive() ) { // reload active editor
-									_usedEditors[frameId].setEditorReloadAllNeeded(true);
-									_usedEditors[frameId].setEditorIsActive(true);
+	if ( _usedEditors[frameId].getEditorIsActive() ) { // reload active editor
+		_usedEditors[frameId].setEditorReloadAllNeeded(true);
+		_usedEditors[frameId].setEditorIsActive(true);
 
-								} else {
-									_usedEditors[frameId].setEditorReloadAllNeeded(true);
-								}
-							}
-							_multiEditorreload = true;
-							";
+	} else {
+		_usedEditors[frameId].setEditorReloadAllNeeded(true);
+	}
+}
+_multiEditorreload = true;";
 					}
 					break;
 
@@ -795,25 +798,24 @@ class we_user{
 					}
 
 					$save_javascript .= "
-					if ( !_multiEditorreload ) {
-						var _usedEditors =  top.opener.top.weEditorFrameController.getEditorsInUse();
+if ( !_multiEditorreload ) {
+	var _usedEditors =  top.opener.top.weEditorFrameController.getEditorsInUse();
 
-							for (frameId in _usedEditors) {
+		for (frameId in _usedEditors) {
 
-								if ( (_usedEditors[frameId].getEditorEditorTable() == \"" . TEMPLATES_TABLE . "\" || " . (defined("OBJECT_TABLE") ? " _usedEditors[frameId].getEditorEditorTable() == \"" . OBJECT_FILES_TABLE . "\" || " : "") . " _usedEditors[frameId].getEditorEditorTable() == \"" . FILE_TABLE . "\") &&
-									_usedEditors[frameId].getEditorEditPageNr() == " . WE_EDITPAGE_CONTENT . " ) {
+			if ( (_usedEditors[frameId].getEditorEditorTable() == \"" . TEMPLATES_TABLE . "\" || " . (defined("OBJECT_TABLE") ? " _usedEditors[frameId].getEditorEditorTable() == \"" . OBJECT_FILES_TABLE . "\" || " : "") . " _usedEditors[frameId].getEditorEditorTable() == \"" . FILE_TABLE . "\") &&
+				_usedEditors[frameId].getEditorEditPageNr() == " . WE_EDITPAGE_CONTENT . " ) {
 
-									if ( _usedEditors[frameId].getEditorIsActive() ) { // reload active editor
-										_usedEditors[frameId].setEditorReloadNeeded(true);
-										_usedEditors[frameId].setEditorIsActive(true);
-									} else {
-										_usedEditors[frameId].setEditorReloadNeeded(true);
-									}
-								}
-							}
-					}
-					_multiEditorreload = true;
-					";
+				if ( _usedEditors[frameId].getEditorIsActive() ) { // reload active editor
+					_usedEditors[frameId].setEditorReloadNeeded(true);
+					_usedEditors[frameId].setEditorIsActive(true);
+				} else {
+					_usedEditors[frameId].setEditorReloadNeeded(true);
+				}
+			}
+		}
+}
+_multiEditorreload = true;";
 					break;
 
 				case 'editorFontname':
@@ -841,25 +843,24 @@ class we_user{
 						$GLOBALS['editor_reloaded'] = true;
 
 						$save_javascript .= "
-					if ( !_multiEditorreload ) {
-						var _usedEditors =  top.opener.top.weEditorFrameController.getEditorsInUse();
+if ( !_multiEditorreload ) {
+	var _usedEditors =  top.opener.top.weEditorFrameController.getEditorsInUse();
 
-							for (frameId in _usedEditors) {
+		for (frameId in _usedEditors) {
 
-								if ( (_usedEditors[frameId].getEditorEditorTable() == \"" . TEMPLATES_TABLE . "\" || " . (defined("OBJECT_TABLE") ? " _usedEditors[frameId].getEditorEditorTable() == \"" . OBJECT_FILES_TABLE . "\" || " : "") . " _usedEditors[frameId].getEditorEditorTable() == \"" . FILE_TABLE . "\") &&
-									_usedEditors[frameId].getEditorEditPageNr() == " . WE_EDITPAGE_CONTENT . " ) {
+			if ( (_usedEditors[frameId].getEditorEditorTable() == \"" . TEMPLATES_TABLE . "\" || " . (defined("OBJECT_TABLE") ? " _usedEditors[frameId].getEditorEditorTable() == \"" . OBJECT_FILES_TABLE . "\" || " : "") . " _usedEditors[frameId].getEditorEditorTable() == \"" . FILE_TABLE . "\") &&
+				_usedEditors[frameId].getEditorEditPageNr() == " . WE_EDITPAGE_CONTENT . " ) {
 
-									if ( _usedEditors[frameId].getEditorIsActive() ) { // reload active editor
-										_usedEditors[frameId].setEditorReloadNeeded(true);
-										_usedEditors[frameId].setEditorIsActive(true);
-									} else {
-										_usedEditors[frameId].setEditorReloadNeeded(true);
-									}
-								}
-							}
-					}
-					_multiEditorreload = true;
-					";
+				if ( _usedEditors[frameId].getEditorIsActive() ) { // reload active editor
+					_usedEditors[frameId].setEditorReloadNeeded(true);
+					_usedEditors[frameId].setEditorIsActive(true);
+				} else {
+					_usedEditors[frameId].setEditorReloadNeeded(true);
+				}
+			}
+		}
+}
+_multiEditorreload = true;";
 					}
 					break;
 
@@ -904,25 +905,24 @@ class we_user{
 					$_SESSION['prefs']['editorFont'] = 0;
 
 					$save_javascript .= "
-					if ( !_multiEditorreload ) {
-						var _usedEditors =  top.opener.top.weEditorFrameController.getEditorsInUse();
+if ( !_multiEditorreload ) {
+	var _usedEditors =  top.opener.top.weEditorFrameController.getEditorsInUse();
 
-							for (frameId in _usedEditors) {
+		for (frameId in _usedEditors) {
 
-								if ( (_usedEditors[frameId].getEditorEditorTable() == \"" . TEMPLATES_TABLE . "\" || " . (defined("OBJECT_TABLE") ? " _usedEditors[frameId].getEditorEditorTable() == \"" . OBJECT_FILES_TABLE . "\" || " : "") . " _usedEditors[frameId].getEditorEditorTable() == \"" . FILE_TABLE . "\") &&
-									_usedEditors[frameId].getEditorEditPageNr() == " . WE_EDITPAGE_CONTENT . " ) {
+			if ( (_usedEditors[frameId].getEditorEditorTable() == \"" . TEMPLATES_TABLE . "\" || " . (defined("OBJECT_TABLE") ? " _usedEditors[frameId].getEditorEditorTable() == \"" . OBJECT_FILES_TABLE . "\" || " : "") . " _usedEditors[frameId].getEditorEditorTable() == \"" . FILE_TABLE . "\") &&
+				_usedEditors[frameId].getEditorEditPageNr() == " . WE_EDITPAGE_CONTENT . " ) {
 
-									if ( _usedEditors[frameId].getEditorIsActive() ) { // reload active editor
-										_usedEditors[frameId].setEditorReloadNeeded(true);
-										_usedEditors[frameId].setEditorIsActive(true);
-									} else {
-										_usedEditors[frameId].setEditorReloadNeeded(true);
-									}
-								}
-							}
-					}
-					_multiEditorreload = true;
-					";
+				if ( _usedEditors[frameId].getEditorIsActive() ) { // reload active editor
+					_usedEditors[frameId].setEditorReloadNeeded(true);
+					_usedEditors[frameId].setEditorIsActive(true);
+				} else {
+					_usedEditors[frameId].setEditorReloadNeeded(true);
+				}
+			}
+		}
+}
+_multiEditorreload = true;";
 					break;
 
 				case 'force_glossary_check':
@@ -1093,9 +1093,8 @@ class we_user{
 		if($exist){
 			return false;
 		} else{
-			$id = intval(f('SELECT ID FROM ' . USER_TABLE . " WHERE Permissions LIKE ('%\"ADMINISTRATOR\";s:1:\"1\";%') AND ID!=" . $this->ID, 'ID', $this->DB_WE));
-			if($id){
-				print $id . '<br>';
+			if(($id = intval(f('SELECT ID FROM ' . USER_TABLE . " WHERE Permissions LIKE ('%\"ADMINISTRATOR\";s:1:\"1\";%') AND ID!=" . $this->ID, 'ID', $this->DB_WE)))){
+				print $id . we_html_element::htmlBr();
 				return false;
 			}
 		}
@@ -1429,16 +1428,12 @@ $this->Preferences=' . var_export($this->Preferences, true) . ';
 
 
 		$javascript = '
-				function rebuildCheckboxClicked() {
-					toggleRebuildPerm(false);
-				}
+function rebuildCheckboxClicked() {
+	toggleRebuildPerm(false);
+}
 
-				function toggleRebuildPerm(disabledOnly) {
-
-				';
+function toggleRebuildPerm(disabledOnly) {';
 		if(isset($this->permissions_slots['rebuildpermissions']) && is_array($this->permissions_slots['rebuildpermissions'])){
-
-
 
 			foreach($this->permissions_slots['rebuildpermissions'] as $pname => $pvalue){
 				if($pname != 'REBUILD'){
@@ -1464,8 +1459,7 @@ $this->Preferences=' . var_export($this->Preferences, true) . ';
 					} else {
 						document.we_form." . $this->Name . "_Permission_" . $pname . ".onclick = top.content.setHot();
 					}
-					toggleRebuildPerm(true);
-					";
+					toggleRebuildPerm(true);";
 				}
 			}
 		}
@@ -1507,10 +1501,10 @@ $this->Preferences=' . var_export($this->Preferences, true) . ';
 		if(is_array($this->permissions_slots['administrator']) && we_hasPerm('ADMINISTRATOR') && $this->Type == self::TYPE_USER){
 			foreach($this->permissions_slots['administrator'] as $k => $v){
 				$content = '
-					<table cellpadding="0" cellspacing="0" border="0" width="500">
-						<tr><td>' . we_html_tools::getPixel(1, 5) . '</td></tr>
-						<tr><td>' . we_forms::checkbox(($v ? $v : '0'), ($v ? true : false), $this->Name . '_Permission_' . $k, $this->permissions_titles['administrator'][$k], false, 'defaultfont', ($k == 'REBUILD' ? 'setRebuidPerms();top.content.setHot();' : 'top.content.setHot();')) . '</td></tr>
-					</table>';
+<table cellpadding="0" cellspacing="0" border="0" width="500">
+	<tr><td>' . we_html_tools::getPixel(1, 5) . '</td></tr>
+	<tr><td>' . we_forms::checkbox(($v ? $v : '0'), ($v ? true : false), $this->Name . "_Permission_" . $k, $this->permissions_titles['administrator'][$k], false, 'defaultfont', ($k == 'REBUILD' ? 'setRebuidPerms();top.content.setHot();' : 'top.content.setHot();')) . '</td></tr>
+</table>';
 			}
 			$parts[] = array(
 				'headline' => '',
@@ -1531,73 +1525,69 @@ $this->Preferences=' . var_export($this->Preferences, true) . ';
 
 		$parts = array();
 		$content = we_html_element::jsElement('
-				function addElement(elvalues) {
-					if(elvalues.value=="") {
-						elvalues.value="0";
-					}
-					else {
-						elvalues.value=elvalues.value+",0";
-					}
-					switchPage(2);
-				}
+function addElement(elvalues) {
+	elvalues.value=(elvalues.value==""?"0":elvalues.value+",0");
+	switchPage(2);
+}
 
-				function setValues(section) {
-					if(section==2) {
-						table="' . TEMPLATES_TABLE . '";
-					}' . (defined("OBJECT_TABLE") ? '
-					else if(section==3) {
-						table="' . OBJECT_FILES_TABLE . '";
-					}' : '') . (defined('NEWSLETTER_TABLE') ? '
-					else if(section==5) {
-						table="' . NEWSLETTER_TABLE . '";
-					}' : '') . '
-					else if(section==4) {
-						table="' . NAVIGATION_TABLE . '";
-					}
-					else {
-						table="' . FILE_TABLE . '";
-					}
-					eval(\'fillValues(document.we_form.' . $this->Name . '_Workspace_\'+table+\'_Values,"' . $this->Name . '_Workspace_\'+table+\'")\');
-				}
+function setValues(section) {
+	switch(section){
+	case 2:
+		table="' . TEMPLATES_TABLE . '";
+		break;' . (defined("OBJECT_TABLE") ? '
+	case 3:
+		table="' . OBJECT_FILES_TABLE . '";
+		break;' : '') . (defined('NEWSLETTER_TABLE') ? '
+	case 5:
+		table="' . NEWSLETTER_TABLE . '";
+		break;' : '') . '
+	case 4:
+		table="' . NAVIGATION_TABLE . '";
+		break;
+	default:
+		table="' . FILE_TABLE . '";
+	}
+	eval(\'fillValues(document.we_form.' . $this->Name . '_Workspace_\'+table+\'_Values,"' . $this->Name . '_Workspace_\'+table+\'")\');
+}
 
-				function fillValues(elvalues,names) {
-					var stack=elvalues.value.split(",");
-					elcount=stack.length;
-					for(i=0;i<elcount;i++) {
-						eval("if(document.we_form."+names+"_"+i+") stack[i]=document.we_form."+names+"_"+i+".value");
-					}
-					elvalues.value=stack.join();
-				}
+function fillValues(elvalues,names) {
+	var stack=elvalues.value.split(",");
+	elcount=stack.length;
+	for(i=0;i<elcount;i++) {
+		eval("if(document.we_form."+names+"_"+i+") stack[i]=document.we_form."+names+"_"+i+".value");
+	}
+	elvalues.value=stack.join();
+}
 
-				function fillDef(elvalues,elvalues2,names,names2) {
-					var stack=elvalues2.value.split(",");
-					elcount=stack.length;
-					for(i=0;i<elcount;i++) {
-						if(document.we_form.elements[names+"_"+i]){
-							if(document.we_form.elements[names+"_"+i].checked){
-								stack[i]=document.we_form.elements[names2+"_"+i].value;
-							} else{
-								 stack[i]=0;
-							}
-						}
-					}
-					elvalues.value=stack.join();
-				}
+function fillDef(elvalues,elvalues2,names,names2) {
+	var stack=elvalues2.value.split(",");
+	elcount=stack.length;
+	for(i=0;i<elcount;i++) {
+		if(document.we_form.elements[names+"_"+i]){
+			if(document.we_form.elements[names+"_"+i].checked){
+				stack[i]=document.we_form.elements[names2+"_"+i].value;
+			} else{
+				 stack[i]=0;
+			}
+		}
+	}
+	elvalues.value=stack.join();
+}
 
-				function delElement(elvalues,elem) {
-					var stack=elvalues.value.split(",");
-					var res=new Array();
-					var c=-1;
+function delElement(elvalues,elem) {
+	var stack=elvalues.value.split(",");
+	var res=new Array();
+	var c=-1;
 
-					for(i=0;i<stack.length;i++) {
-						if(i!=elem) {
-							c++;
-							res[c]=stack[i];
-						}
-					}
-					elvalues.value=res.join();
-					top.content.setHot();
-				}');
+	for(i=0;i<stack.length;i++) {
+		if(i!=elem) {
+			c++;
+			res[c]=stack[i];
+		}
+	}
+	elvalues.value=res.join();
+	top.content.setHot();
+}');
 		$content1 = '';
 
 		foreach($this->workspaces as $k => $v){
@@ -1721,22 +1711,23 @@ $this->Preferences=' . var_export($this->Preferences, true) . ';
 
 				$weAcSelector = $yuiSuggest->getHTML();
 
-				$content1.='<tr><td colspan="2">' . $weAcSelector . '</td>
-						<td><div style="position:relative; top:-1px">' . we_button::create_button("image:btn_function_trash", "javascript:fillValues(document.we_form." . $obj_values . ",'" . $obj_names . "');fillDef(document.we_form." . $obj_def_values . ",document.we_form." . $obj_values . ",'" . $obj_def_names . "','" . $obj_names . "');delElement(document.we_form." . $obj_values . "," . $key . ");delElement(document.we_form." . $obj_def_values . "," . $key . ");switchPage(2);", true) . '</td></div>' .
+				$content1.='
+<tr><td colspan="2">' . $weAcSelector . '</td>
+	<td><div style="position:relative; top:-1px">' . we_button::create_button("image:btn_function_trash", "javascript:fillValues(document.we_form." . $obj_values . ",'" . $obj_names . "');fillDef(document.we_form." . $obj_def_values . ",document.we_form." . $obj_values . ",'" . $obj_def_names . "','" . $obj_names . "');delElement(document.we_form." . $obj_values . "," . $key . ");delElement(document.we_form." . $obj_def_values . "," . $key . ");switchPage(2);", true) . '</td></div>' .
 					($k == FILE_TABLE ?
 						'<td class="defaultfont">' . we_forms::checkbox("1", $default, $obj_def_names . "_$key", g_l('modules_users', "[make_def_ws]"), true, "defaultfont", 'top.content.setHot();fillDef(document.we_form.' . $obj_def_values . ',document.we_form.' . $obj_values . ',\'' . $obj_def_names . '\',\'' . $obj_names . '\');') . '</td>' :
-						'<td>' . we_html_tools::getPixel(5, 5) . '</td>') .
-					'</tr>';
+						'<td>' . we_html_tools::getPixel(5, 5) . '</td>') . '
+</tr>';
 			}
-			$content1.=
-				'<tr>
-						<td>' . we_html_tools::getPixel(300, 3) . '</td>
-						<td>' . we_html_tools::getPixel(110, 3) . '</td>
-						<td>' . we_html_tools::getPixel(40, 3) . '</td>
-						<td>' . we_html_tools::getPixel(90, 3) . '</td>
-					</tr>
-					<tr><td colspan="4">' . we_button::create_button("image:btn_function_plus", "javascript:top.content.setHot();fillValues(document.we_form." . $obj_values . ",'" . $obj_names . "');fillDef(document.we_form." . $obj_def_values . ",document.we_form." . $obj_values . ",'" . $obj_def_names . "','" . $obj_names . "');addElement(document.we_form." . $obj_values . ");addElement(document.we_form." . $obj_def_values . ");", true) . '</td></tr>
-				</table>';
+			$content1.= '
+	<tr>
+		<td>' . we_html_tools::getPixel(300, 3) . '</td>
+		<td>' . we_html_tools::getPixel(110, 3) . '</td>
+		<td>' . we_html_tools::getPixel(40, 3) . '</td>
+		<td>' . we_html_tools::getPixel(90, 3) . '</td>
+	</tr>
+	<tr><td colspan="4">' . we_button::create_button("image:btn_function_plus", "javascript:top.content.setHot();fillValues(document.we_form." . $obj_values . ",'" . $obj_names . "');fillDef(document.we_form." . $obj_def_values . ",document.we_form." . $obj_values . ",'" . $obj_def_names . "','" . $obj_names . "');addElement(document.we_form." . $obj_values . ");addElement(document.we_form." . $obj_def_values . ");", true) . '</td></tr>
+</table>';
 			$parts[] = array(
 				'headline' => $title,
 				'html' => $content1,
@@ -1874,7 +1865,6 @@ $this->Preferences=' . var_export($this->Preferences, true) . ';
 		);
 
 
-
 		/*		 * ***************************************************************
 		 * SEEM
 		 * *************************************************************** */
@@ -1989,7 +1979,7 @@ $this->Preferences=' . var_export($this->Preferences, true) . ';
 		//weapp
 		$_start_weapp = new we_html_select(array('name' => 'seem_start_weapp', 'class' => 'weSelect', 'id' => 'seem_start_weapp', 'onchange' => 'top.content.setHot();'));
 		$_tools = weToolLookup::getAllTools(true, false);
-		foreach($_tools as $_k => $_tool){
+		foreach($_tools as $_tool){
 			if(!$_tool['appdisabled'] && isset($this->permissions_slots[$_tool['name']][$_tool['startpermission']]) && $this->permissions_slots[$_tool['name']][$_tool['startpermission']]){
 				$_start_weapp->addOption($_tool['name'], $_tool['text']);
 			}
@@ -2048,11 +2038,10 @@ $this->Preferences=' . var_export($this->Preferences, true) . ';
 		$_seem_html->setCol(1, 0, null, $_seem_document_chooser . $_seem_object_chooser . $_seem_weapp_chooser);
 
 		if(we_hasPerm('CHANGE_START_DOCUMENT')){
-			array_push($_settings, array(
+			$_settings[] = array(
 				'headline' => g_l('prefs', '[seem_startdocument]'),
 				'html' => $js . $_seem_html->getHtml() . we_html_element::jsElement('show_seem_chooser("' . $_seem_start_type . '");'),
 				'space' => 200
-				)
 			);
 		}
 
@@ -2151,7 +2140,7 @@ $this->Preferences=' . var_export($this->Preferences, true) . ';
 		$_window_html->setCol(4, 0, null, $_window_current_dimension_table->getHtml());
 
 		// Build dialog
-		array_push($_settings, array("headline" => g_l('prefs', '[dimension]'), "html" => $_window_html->getHtml(), "space" => 200));
+		$_settings[] = array("headline" => g_l('prefs', '[dimension]'), "html" => $_window_html->getHtml(), "space" => 200);
 
 		// Create predefined window dimension buttons
 		$_window_predefined_table = new we_html_table(array("border" => "0", "align" => "right", "cellpadding" => "1", "cellspacing" => "0"), 3, 1);
@@ -2162,7 +2151,7 @@ $this->Preferences=' . var_export($this->Preferences, true) . ';
 		$_window_predefined_table->setCol(1, 0, null, we_html_tools::getPixel(1, 10));
 
 		// Build dialog
-		array_push($_settings, array("headline" => g_l('prefs', '[predefined]'), "html" => $_window_predefined_table->getHtml(), "space" => 200));
+		$_settings[] = array("headline" => g_l('prefs', '[predefined]'), "html" => $_window_predefined_table->getHtml(), "space" => 200);
 
 		$_settings_cookie = weGetCookieVariable("but_settings_predefined");
 
@@ -2176,16 +2165,15 @@ $this->Preferences=' . var_export($this->Preferences, true) . ';
 
 		//Editor Mode
 		$_template_editor_mode = new we_html_select(array("class" => "weSelect", "name" => $this->Name . "_Preference_editorMode", "size" => "1", "onchange" => "displayEditorOptions(this.options[this.options.selectedIndex].value);"));
-		$_template_editor_mode->addOption('textarea', 'Textarea');
-		$_template_editor_mode->addOption('java', 'webEdition Java Editor');
-		$_template_editor_mode->addOption('codemirror2', 'CodeMirror2');
-		$_template_editor_mode->selectOption($this->Preferences["editorMode"]);
+		$_template_editor_mode->addOption('textarea', g_l('prefs', '[editor_plaintext]'));
+		$_template_editor_mode->addOption('codemirror2', g_l('prefs', '[editor_javascript2]'));
+		$_template_editor_mode->addOption('java', g_l('prefs', '[editor_java]'));
+		$_template_editor_mode->selectOption($this->Preferences['editorMode']);
 		$_settings = array(
 			array("headline" => g_l('prefs', '[editor_mode]'), "html" => $_template_editor_mode->getHtml(), "space" => 150)
 		);
 
-
-		$_template_fonts = array("Courier New", "Courier", "mono", "Verdana", "Arial", "Helvetica", "sans-serif", "none");
+		$_template_fonts = array('Arial', 'Courier', 'Courier New', 'Helvetica', 'Monaco', 'Mono', 'Tahoma', 'Verdana', 'serif', 'sans-serif', 'none');
 		$_template_font_sizes = array(8, 9, 10, 11, 12, 14, 16, 18, 24, 32, 48, 72, -1);
 
 		$_template_editor_font_specify = false;
@@ -2252,7 +2240,7 @@ $this->Preferences=' . var_export($this->Preferences, true) . ';
 		$_template_editor_font_specify_table->setCol(3, 3, null, $_template_editor_font_sizes_select_box->getHtml());
 
 		// Build dialog
-		array_push($_settings, array("headline" => g_l('prefs', '[editor_font]'), "html" => $_template_editor_font_specify_code . $_template_editor_font_specify_table->getHtml(), "space" => 200));
+		$_settings[] = array("headline" => g_l('prefs', '[editor_font]'), "html" => $_template_editor_font_specify_code . $_template_editor_font_specify_table->getHtml(), "space" => 200);
 
 		$_settings_cookie = weGetCookieVariable("but_settings_editor_predefined");
 
@@ -2292,21 +2280,20 @@ $this->Preferences=' . var_export($this->Preferences, true) . ';
 
 		$content = '
 			<table cellpadding="0" cellspacing="0" border="0" width="530">
+			<colgroup><col style="width:170px;"/><col style="width:330px;"/></colgroup>
 				<tr>
 					<td class="defaultfont">' . g_l('modules_users', "[user]") . ':</td>
 					<td>' . $weAcSelectorName . '</td>
 				</tr>
 				<tr>
-					<td>' . we_html_tools::getPixel(170, 5) . '</td>
-					<td>' . we_html_tools::getPixel(330, 5) . '</td>
+					<td colspan="2" style="height:5px;"></td>
 				</tr>
 				<tr>
 					<td class="defaultfont">' . g_l('modules_users', "[group_member]") . ':</td>
 					<td>' . $weAcSelectorGroup . '</td>
 				</tr>
 				<tr>
-					<td>' . we_html_tools::getPixel(170, 1) . '</td>
-					<td>' . we_html_tools::getPixel(330, 1) . '</td>
+					<td colspan="2" style="height:1px;"></td>
 				</tr>
 			</table>';
 
@@ -2329,7 +2316,7 @@ $this->Preferences=' . var_export($this->Preferences, true) . ';
 			"space" => 120
 		);
 
-		return we_multiIconBox::getHTML("", "100%", $parts, 30);
+		return we_multiIconBox::getHTML('', '100%', $parts, 30);
 	}
 
 	function formInherits($name, $value, $title){
@@ -2348,15 +2335,15 @@ $this->Preferences=' . var_export($this->Preferences, true) . ';
 		$we_tabs = new we_tabs();
 
 		if($this->Type == self::TYPE_ALIAS){
-			$we_tabs->addTab(new we_tab("#", g_l('tabs', "[module][data]"), "TAB_ACTIVE", "setTab(0);"));
+			$we_tabs->addTab(new we_tab('#', g_l('tabs', '[module][data]'), 'TAB_ACTIVE', 'setTab(0);'));
 		} else{
-			$we_tabs->addTab(new we_tab("#", g_l('tabs', "[module][data]"), ($tab == 0 ? "TAB_ACTIVE" : "TAB_NORMAL"), "self.setTab(0);"));
+			$we_tabs->addTab(new we_tab('#', g_l('tabs', '[module][data]'), ($tab == 0 ? 'TAB_ACTIVE' : 'TAB_NORMAL'), 'self.setTab(0);'));
 
-			$we_tabs->addTab(new we_tab("#", g_l('tabs', "[module][permissions]"), ($tab == 1 ? "TAB_ACTIVE" : "TAB_NORMAL"), "self.setTab(1);"));
-			$we_tabs->addTab(new we_tab("#", g_l('tabs', "[module][workspace]"), ($tab == 2 ? "TAB_ACTIVE" : "TAB_NORMAL"), "self.setTab(2);"));
+			$we_tabs->addTab(new we_tab('#', g_l('tabs', '[module][permissions]'), ($tab == 1 ? 'TAB_ACTIVE' : 'TAB_NORMAL'), 'self.setTab(1);'));
+			$we_tabs->addTab(new we_tab('#', g_l('tabs', '[module][workspace]'), ($tab == 2 ? 'TAB_ACTIVE' : 'TAB_NORMAL'), 'self.setTab(2);'));
 
 			if($this->Type == self::TYPE_USER){
-				$we_tabs->addTab(new we_tab("#", g_l('tabs', "[module][preferences]"), ($tab == 3 ? "TAB_ACTIVE" : "TAB_NORMAL"), "self.setTab(3);"));
+				$we_tabs->addTab(new we_tab('#', g_l('tabs', '[module][preferences]'), ($tab == 3 ? 'TAB_ACTIVE' : 'TAB_NORMAL'), 'self.setTab(3);'));
 			}
 		}
 
@@ -2376,41 +2363,40 @@ $this->Preferences=' . var_export($this->Preferences, true) . ';
 		}
 
 		return we_html_element::jsElement('
-				var activeTab = 0;
-				function setTab(tab) {
-					switch(tab) {
-						case 0:
-							top.content.user_resize.user_right.user_editor.user_properties.switchPage(0);
-							activeTab = 0;
-							break;
-						case 1:
-							if(top.content.user_resize.user_right.user_editor.user_properties.switchPage(1)==false){
-								setTimeout("resetTabs()",50);
-							}
-							activeTab = 1;
-							break;
-						case 2:
-							if(top.content.user_resize.user_right.user_editor.user_properties.switchPage(2)==false) {
-								setTimeout("resetTabs()",50);
-							}
-							activeTab = 2;
-							break;
-						case 3:
-							if(top.content.user_resize.user_right.user_editor.user_properties.switchPage(3)==false) {
-								setTimeout("resetTabs()",50);
-							}
-							activeTab = 3;
-							break;
-					}
-				}
+var activeTab = 0;
+function setTab(tab) {
+	switch(tab) {
+		case 0:
+			top.content.user_resize.user_right.user_editor.user_properties.switchPage(0);
+			activeTab = 0;
+			break;
+		case 1:
+			if(top.content.user_resize.user_right.user_editor.user_properties.switchPage(1)==false){
+				setTimeout("resetTabs()",50);
+			}
+			activeTab = 1;
+			break;
+		case 2:
+			if(top.content.user_resize.user_right.user_editor.user_properties.switchPage(2)==false) {
+				setTimeout("resetTabs()",50);
+			}
+			activeTab = 2;
+			break;
+		case 3:
+			if(top.content.user_resize.user_right.user_editor.user_properties.switchPage(3)==false) {
+				setTimeout("resetTabs()",50);
+			}
+			activeTab = 3;
+			break;
+	}
+}
 
-				function resetTabs(){
-						top.content.user_resize.user_right.user_editor.user_properties.document.we_form.tab.value = 0;
-						top.content.user_resize.user_right.user_editor.user_edheader.tabCtrl.setActiveTab(0);
-				}
+function resetTabs(){
+		top.content.user_resize.user_right.user_editor.user_properties.document.we_form.tab.value = 0;
+		top.content.user_resize.user_right.user_editor.user_edheader.tabCtrl.setActiveTab(0);
+}
 
-				top.content.hloaded=1;
-			') .
+top.content.hloaded=1;') .
 			$tab_header.
 			'<div id="main" >' . we_html_tools::getPixel(100, 3) . '<div style="margin:0px;padding-left:10px;" id="headrow"><nobr><b>' . str_replace(" ", "&nbsp;", $headline1) . '&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">' . str_replace(" ", "&nbsp;", (empty($this->Path) ? $this->getPath($this->ParentID) : $this->Path)) . '</b></span></nobr></div>' . we_html_tools::getPixel(100, 3) . $we_tabs->getHTML() . '</div>' .
 			$tab_body;
@@ -2459,7 +2445,7 @@ $this->Preferences=' . var_export($this->Preferences, true) . ';
 	static function readPrefs($id, $db, $login = false){
 //set defaults
 		$ret = array('userID' => $id);
-		include_once(WE_INCLUDES_PATH . 'we_editors/we_preferences_config.inc.php');
+		require_once(WE_INCLUDES_PATH . 'we_editors/we_preferences_config.inc.php');
 		foreach($GLOBALS['configs']['user'] as $key => $vals){
 			$ret[$key] = $vals[0];
 		}
@@ -2483,7 +2469,7 @@ $this->Preferences=' . var_export($this->Preferences, true) . ';
 		$id = intval($id);
 		if($data){
 			$old = array('userID' => $id);
-			include_once(WE_INCLUDES_PATH . 'we_editors/we_preferences_config.inc.php');
+			require_once(WE_INCLUDES_PATH . 'we_editors/we_preferences_config.inc.php');
 			foreach($GLOBALS['configs']['user'] as $key => $vals){
 				$old[$key] = $vals[0];
 			}
@@ -2493,8 +2479,8 @@ $this->Preferences=' . var_export($this->Preferences, true) . ';
 		}
 		$upd = array();
 		foreach($old as $key => $val){
-			if($key != 'userID' && (!isset($data[$key])||$data[$key] != $val)){
-				$upd[] = '(' . $id . ',"' . $db->escape($key) . '","' . $db->escape((isset($data[$key])?$data[$key]:$val)) . '")';
+			if($key != 'userID' && (!isset($data[$key]) || $data[$key] != $val)){
+				$upd[] = '(' . $id . ',"' . $db->escape($key) . '","' . $db->escape((isset($data[$key]) ? $data[$key] : $val)) . '")';
 			}
 		}
 		if(!empty($upd)){

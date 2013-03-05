@@ -36,6 +36,7 @@ class we_wysiwyg{
 	var $value = '';
 	private $filteredElements = array();
 	private $bgcol = '';
+	private $tinyParams = '';
 	private $fullscreen = '';
 	private $className = '';
 	private $fontnamesCSV = '';
@@ -61,11 +62,12 @@ class we_wysiwyg{
 	private $contentCss = '';
 	public static $editorType = WYSIWYG_TYPE; //FIXME: remove after old editor is removed
 
-	function __construct($name, $width, $height, $value = '', $propstring = '', $bgcol = '', $fullscreen = '', $className = '', $fontnames = '', $outsideWE = false, $xml = false, $removeFirstParagraph = true, $inlineedit = true, $baseHref = '', $charset = '', $cssClasses = '', $Language = '', $test = '', $spell = true, $isFrontendEdit = false, $buttonpos = 'top', $oldHtmlspecialchars = true, $contentCss = '', $origName = ''){
+	function __construct($name, $width, $height, $value = '', $propstring = '', $bgcol = '', $fullscreen = '', $className = '', $fontnames = '', $outsideWE = false, $xml = false, $removeFirstParagraph = true, $inlineedit = true, $baseHref = '', $charset = '', $cssClasses = '', $Language = '', $test = '', $spell = true, $isFrontendEdit = false, $buttonpos = 'top', $oldHtmlspecialchars = true, $contentCss = '', $origName = '', $tinyParams = ''){
 		$this->propstring = $propstring ? ',' . $propstring . ',' : '';
 		$this->name = $name;
 		$this->origName = $origName;
 		$this->bgcol = (self::$editorType != 'tinyMCE' && empty($bgcol)) ? 'white' : $bgcol;
+		$this->tinyParams = str_replace('\'', '"', trim($tinyParams, ' ,'));
 		$this->xml = $xml;
 		if(self::$editorType == 'tinyMCE'){
 			$this->xml = $this->xml ? "xhtml" : "html";
@@ -1094,7 +1096,7 @@ function tinyMCECallRegisterDialog(win,action){
 		foreach($this->fontnames as $fn){
 			$fns .= str_replace(",", ";", $fn) . ",";
 		}
-		return we_button::create_button("image:btn_edit_edit", "javascript:we_cmd('open_wysiwyg_window', '" . $this->name . "', '" . max(220, $this->width) . "', '" . $this->height . "','" . $GLOBALS["we_transaction"] . "','" . $this->propstring . "','" . $this->className . "','" . rtrim($fns, ',') . "','" . $this->outsideWE . "','" . $tbwidth . "','" . $tbheight . "','" . $this->xml . "','" . $this->removeFirstParagraph . "','" . $this->bgcol . "','" . $this->baseHref . "','" . $this->charset . "','" . $this->cssClassesCSV . "','" . $this->Language . "','" . we_cmd_enc($this->contentCss) . "','" . $this->origName . "');", true, 25);
+		return we_button::create_button("image:btn_edit_edit", "javascript:we_cmd('open_wysiwyg_window', '" . $this->name . "', '" . max(220, $this->width) . "', '" . $this->height . "','" . $GLOBALS["we_transaction"] . "','" . $this->propstring . "','" . $this->className . "','" . rtrim($fns, ',') . "','" . $this->outsideWE . "','" . $tbwidth . "','" . $tbheight . "','" . $this->xml . "','" . $this->removeFirstParagraph . "','" . $this->bgcol . "','" . $this->baseHref . "','" . $this->charset . "','" . $this->cssClassesCSV . "','" . $this->Language . "','" . we_cmd_enc($this->contentCss) . "','" . $this->origName . "','" . we_cmd_enc($this->tinyParams) . "');", true, 25);
 	}
 
 	function getHTML(){
@@ -1327,7 +1329,8 @@ function tinyMCECallRegisterDialog(win,action){
 							"className" : "' . $this->className . '",
 							"propString" : "' . urlencode($this->propstring) . '",
 							"contentCss" : "' . urlencode($this->contentCss) . '",
-							"origName" : "' . urlencode($this->origName) . '"
+							"origName" : "' . urlencode($this->origName) . '",
+							"tinyParams" : "' . urlencode($this->tinyParams) . '"
 						},
 						weClassNames_urlEncoded : "' . urlencode($this->cssClassesCSV) . '",
 
@@ -1379,6 +1382,9 @@ function tinyMCECallRegisterDialog(win,action){
 						// Skin options
 						skin : "o2k7",
 						skin_variant : "silver",
+
+						' . ($this->tinyParams != '' ? '//paramas from attribute tinyparams
+						' . $this->tinyParams . ',' : '') . '
 
 						setup : function(ed){
 							ed.onInit.add(function(ed){

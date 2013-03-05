@@ -192,6 +192,7 @@ class we_object extends we_document{
 							'class' => isset($this->elements[$cur . 'class']['dat']) ? $this->elements[$cur . 'class']['dat'] : '',
 							'max' => isset($this->elements[$cur . 'max']['dat']) ? $this->elements[$cur . 'max']['dat'] : '',
 							'cssClasses' => isset($this->elements[$cur . 'cssClasses']['dat']) ? $this->elements[$cur . 'cssClasses']['dat'] : '',
+							'tinyparams' => isset($this->elements[$cur . 'tinyparams']['dat']) ? $this->elements[$cur . 'tinyparams']['dat'] : '',
 							'xml' => isset($this->elements[$cur . 'xml']['dat']) ? $this->elements[$cur . 'xml']['dat'] : '',
 							'removefirstparagraph' => isset($this->elements[$cur . 'removefirstparagraph']['dat']) ? $this->elements[$cur . 'removefirstparagraph']['dat'] : '',
 							'showmenus' => isset($this->elements[$cur . 'showmenus']['dat']) ? $this->elements[$cur . 'showmenus']['dat'] : 'off',
@@ -324,6 +325,7 @@ class we_object extends we_document{
 								'class' => $this->elements[$info['name'] . 'class']['dat'],
 								'max' => $this->elements[$info['name'] . 'max']['dat'],
 								'cssClasses' => $this->elements[$info['name'] . 'cssClasses']['dat'],
+								'tinyparams' => $this->elements[$info['name'] . 'tinyparams']['dat'],
 								'xml' => $this->elements[$info['name'] . 'xml']['dat'],
 								'removefirstparagraph' => $this->elements[$info['name'] . 'removefirstparagraph']['dat'],
 								'forbidhtml' => $this->elements[$info['name'] . 'forbidhtml']['dat'],
@@ -386,6 +388,7 @@ class we_object extends we_document{
 						'class' => isset($this->elements[$cur . 'class']['dat']) ? $this->elements[$cur . 'class']['dat'] : '',
 						'max' => isset($this->elements[$cur . 'max']['dat']) ? $this->elements[$cur . 'max']['dat'] : '',
 						'cssClasses' => isset($this->elements[$cur . 'cssClasses']['dat']) ? $this->elements[$cur . 'cssClasses']['dat'] : '',
+						'tinyparams' => isset($this->elements[$cur . 'tinyparams']['dat']) ? $this->elements[$cur . 'tinyparams']['dat'] : '',
 						'xml' => isset($this->elements[$cur . 'xml']['dat']) ? $this->elements[$cur . 'xml']['dat'] : '',
 						'removefirstparagraph' => isset($this->elements[$cur . 'removefirstparagraph']['dat']) ? $this->elements[$cur . 'removefirstparagraph']['dat'] : '',
 						'forbidhtml' => isset($this->elements[$cur . 'forbidhtml']['dat']) ? $this->elements[$cur . 'forbidhtml']['dat'] : '',
@@ -490,38 +493,38 @@ class we_object extends we_document{
 	}
 
 	function switchtypes($name){
-		$def = $this->getElement($name . "default", "dat");
+		$def = $this->getElement($name . 'default', 'dat');
 		switch($this->getElement($name . 'dtype', 'dat')){
 			case 'meta':
-				return ' VARCHAR(' . (($this->getElement($name . "length", "dat") > 0 && ($this->getElement($name . "length", "dat") < 255)) ? $this->getElement($name . "length", "dat") : 255) . ") NOT NULL ";
+				return ' VARCHAR(' . (($this->getElement($name . 'length', 'dat') > 0 && ($this->getElement($name . 'length', 'dat') < 255)) ? $this->getElement($name . 'length', 'dat') : 255) . ') NOT NULL ';
 			case 'date':
 				return ' INT(11) NOT NULL ';
 			case 'input':
-				return ' VARCHAR(' . (($this->getElement($name . "length", "dat") > 0 && ($this->getElement($name . "length", "dat") < 4096)) ? $this->getElement($name . "length", "dat") : 255) . ') NOT NULL ';
-			case "country":
-			case "language":
-				return " VARCHAR(2) NOT NULL ";
-			case "link":
-			case "href":
-				return " TEXT NOT NULL ";
-			case "text":
+				return ' VARCHAR(' . (($this->getElement($name . 'length', 'dat') > 0 && ($this->getElement($name . 'length', 'dat') < 4096)) ? $this->getElement($name . 'length', 'dat') : 255) . ') NOT NULL ';
+			case 'country':
+			case 'language':
+				return ' VARCHAR(2) NOT NULL ';
+			case 'link':
+			case 'href':
+				return ' TEXT NOT NULL ';
+			case 'text':
 				return ' LONGTEXT NOT NULL ';
 				break;
-			case "img":
-			case "flashmovie":
-			case "quicktime":
-			case "binary":
-				return " INT(11) DEFAULT '0' NOT NULL ";
-			case "checkbox":
-				return " INT(1) DEFAULT '" . ($this->getElement($name . "default", "dat") == 1 ? "1" : "0") . "' NOT NULL ";
-			case "int":
-				return " INT(" . (($this->getElement($name . "length", "dat") > 0 && ($this->getElement($name . "length", "dat") < 256)) ? $this->getElement($name . "length", "dat") : "11") . ") DEFAULT NULL ";
-			case "float":
+			case 'img':
+			case 'flashmovie':
+			case 'quicktime':
+			case 'binary':
+				return ' INT(11) DEFAULT "0" NOT NULL ';
+			case 'checkbox':
+				return ' INT(1) DEFAULT "' . ($this->getElement($name . 'default', 'dat') == 1 ? '1' : '0') . '" NOT NULL ';
+			case 'int':
+				return ' INT(' . (($this->getElement($name . 'length', 'dat') > 0 && ($this->getElement($name . 'length', 'dat') < 256)) ? $this->getElement($name . 'length', 'dat') : '11') . ') DEFAULT NULL ';
+			case 'float':
 				return ' DOUBLE DEFAULT NULL ';
-			case "object":
-				return " BIGINT(20) DEFAULT '0' NOT NULL ";
-			case "multiobject":
-				return " TEXT NOT NULL ";
+			case 'object':
+				return ' BIGINT(20) DEFAULT "0" NOT NULL ';
+			case 'multiobject':
+				return ' TEXT NOT NULL ';
 			case 'shopVat':
 				return ' TEXT NOT NULL';
 			default:
@@ -1368,6 +1371,7 @@ class we_object extends we_document{
 			"height" => 52, //isset($this->elements[$name."height"]["dat"]) ? $this->elements[$name."height"]["dat"] : 200,
 			"rows" => 3,
 			"bgcolor" => isset($this->elements[$name . "bgcolor"]["dat"]) ? $this->elements[$name . "bgcolor"]["dat"] : (WYSIWYG_TYPE == 'tinyMCE' ? '' : 'white'),
+			"tinyparams" => isset($this->elements[$name . "tinyparams"]["dat"]) ? $this->elements[$name . "tinyparams"]["dat"] : "",
 			"class" => isset($this->elements[$name . "class"]["dat"]) ? $this->elements[$name . "class"]["dat"] : "",
 			"cols" => 30,
 			"inlineedit" => isset($this->elements[$name . "inlineedit"]["dat"]) ? $this->elements[$name . "inlineedit"]["dat"] : "",
@@ -2016,6 +2020,7 @@ class we_object extends we_document{
 				'bgcolor' => '',
 				'class' => '',
 				'cssClasses' => '',
+				'tinyparams' => '',
 				'xml' => '',
 				'removefirstparagraph' => '',
 				'forbidhtml' => 'off',
