@@ -162,9 +162,7 @@ class we_listview_multiobject extends listviewBase{
 		}
 		$sqlParts = $this->makeSQLParts($matrix, $this->classID, $this->order, $this->condition);
 
-		$pid_tail = (isset($GLOBALS['we_doc']) ?
-				makePIDTail($GLOBALS['we_doc']->ParentID, $this->classID, $this->DB_WE, $GLOBALS['we_doc']->Table) :
-				'1');
+		$pid_tail = 1;
 
 		$cat_tail = ($this->cats || $this->categoryids ? we_category::getCatSQLTail($this->cats, $_obxTable, $this->catOr, $this->DB_WE, "OF_Category", true, $this->categoryids) : '');
 
@@ -173,9 +171,7 @@ class we_listview_multiobject extends listviewBase{
 				'');
 
 		if($sqlParts["tables"]){
-			$q = "SELECT " . $_obxTable . ".ID as ID $calendar_select FROM " . $sqlParts["tables"] . " WHERE " . (!empty($this->objects) ? OBJECT_X_TABLE . $this->classID . ".OF_ID IN (" . implode(",", $this->objects) . ") AND " : '') . ($this->searchable ? " " . OBJECT_X_TABLE . $this->classID . ".OF_IsSearchable=1 AND" : "") . " " . $pid_tail . $where_lang . " AND " . OBJECT_X_TABLE . $this->classID . ".OF_ID != 0 " . ($join ? " AND ($join) " : "") . $cat_tail . " " . ($sqlParts["publ_cond"] ? (" AND " . $sqlParts["publ_cond"]) : "") . " " . ($sqlParts["cond"] ? (" AND (" . $sqlParts["cond"] . ") ") : "") . $calendar_where . $weDocumentCustomerFilter_tail . $sqlParts['groupBy'];
-			$this->DB_WE->query($q);
-
+			$this->DB_WE->query('SELECT ' . $_obxTable . '.ID as ID ' . $calendar_select . ' FROM ' . $sqlParts['tables'] . ' WHERE ' . (!empty($this->objects) ? OBJECT_X_TABLE . $this->classID . ".OF_ID IN (" . implode(",", $this->objects) . ") AND " : '') . ($this->searchable ? " " . OBJECT_X_TABLE . $this->classID . ".OF_IsSearchable=1 AND" : "") . " " . $pid_tail . $where_lang . " AND " . OBJECT_X_TABLE . $this->classID . ".OF_ID != 0 " . ($join ? " AND ($join) " : "") . $cat_tail . " " . ($sqlParts["publ_cond"] ? (" AND " . $sqlParts["publ_cond"]) : "") . " " . ($sqlParts["cond"] ? (" AND (" . $sqlParts["cond"] . ") ") : "") . $calendar_where . $weDocumentCustomerFilter_tail . $sqlParts['groupBy']);
 			$mapping = array(); // KEY = ID -> VALUE = ROWID
 			$i = 0;
 			while($this->DB_WE->next_record()) {
