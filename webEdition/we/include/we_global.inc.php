@@ -112,16 +112,18 @@ function makePIDTail($pid, $cid, $db = '', $table = FILE_TABLE){
 	$foo = f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . $cid, 'DefaultValues', $db);
 	$fooArr = unserialize($foo);
 	$flag = (isset($fooArr['WorkspaceFlag']) ? $fooArr['WorkspaceFlag'] : 1);
-	$pid_tail = ($flag ? OBJECT_X_TABLE . $cid . '.OF_Workspaces="" OR ' : '');
-	foreach($parentIDs as $pid){
-		$pid_tail .= ' ' . OBJECT_X_TABLE . $cid . '.OF_Workspaces LIKE "%,' . $pid . ',%" OR ' . OBJECT_X_TABLE . $cid . '.OF_ExtraWorkspacesSelected LIKE "%,' . $pid . ',%" OR ';
+	$pid_tail = array();
+	if($flag){
+		$pid_tail[] = OBJECT_X_TABLE . $cid . '.OF_Workspaces=""';
 	}
-	$pid_tail = trim(preg_replace('/^(.*)OR /', '\1', $pid_tail));
-	if($pid_tail == ''){
+	foreach($parentIDs as $pid){
+		$pid_tail[] = ' ' . OBJECT_X_TABLE . $cid . '.OF_Workspaces LIKE "%,' . $pid . ',%" OR ' . OBJECT_X_TABLE . $cid . '.OF_ExtraWorkspacesSelected LIKE "%,' . $pid . ',%"';
+	}
+	if(empty($pid_tail)){
 		return '1';
 	}
 
-	return ' (' . $pid_tail . ') ';
+	return ' (' . implode(' OR ', $pid_tail) . ') ';
 }
 
 function we_getCatsFromDoc($doc, $tokken = ',', $showpath = false, $db = '', $rootdir = '/', $catfield = '', $onlyindir = ''){
