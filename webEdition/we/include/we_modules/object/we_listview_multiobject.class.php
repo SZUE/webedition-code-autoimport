@@ -319,7 +319,7 @@ class we_listview_multiobject extends listviewBase{
 			if(substr($n, 0, 10) == 'we_object_'){
 				$n = substr($n, 10);
 			}
-			$f .= $p['table'] . '.`' . $p['type'] . '_' . $n . '` AS we_' . $n2 . ',';
+			$f .= $p['table'] . '.`' . $p['type'] . '_' . $n . '` AS `we_' . $n2 . '`,';
 			$from[] = $p['table'];
 			if(in_array($n, $orderArr)){
 				$pos = getArrayKey($n, $orderArr);
