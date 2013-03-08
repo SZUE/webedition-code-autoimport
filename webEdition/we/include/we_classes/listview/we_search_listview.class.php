@@ -90,7 +90,7 @@ class we_search_listview extends listviewBase{
 
 				$ord = str_replace('we_id', INDEX_TABLE . ".DID" . ($this->desc ? " DESC" : "") . ',' . INDEX_TABLE . ".OID" . ($this->desc ? " DESC" : ""), $this->order);
 				//$ord = str_replace("we_creationdate",FILE_TABLE . ".CreationDate",$ord); // NOTE: this won't work, cause Indextable doesn't know this field & filetable is not used in this query
-				$ord = str_replace('we_creationdate', '');
+				$ord = str_replace('we_creationdate', '',$ord);
 				$this->order = str_replace("we_filename", INDEX_TABLE . ".Path", $ord);
 			} else{
 				$orderArr1 = makeArrayFromCSV($this->order);
@@ -250,7 +250,7 @@ class we_search_listview extends listviewBase{
 					}
 				}
 				$this->DB_WE->Record["wedoc_Path"] = $this->DB_WE->Record["WE_PATH"];
-				$this->DB_WE->Record["we_WE_URL"] = $$objectdaten['Url'];
+				$this->DB_WE->Record["we_WE_URL"] = $objectdaten['Url'];
 				if($this->triggerID){
 					$this->DB_WE->Record["we_WE_TRIGGERID"] = $this->triggerID;
 				} else{
