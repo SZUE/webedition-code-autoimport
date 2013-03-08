@@ -90,7 +90,7 @@ class we_search_listview extends listviewBase{
 
 				$ord = str_replace('we_id', INDEX_TABLE . ".DID" . ($this->desc ? " DESC" : "") . ',' . INDEX_TABLE . ".OID" . ($this->desc ? " DESC" : ""), $this->order);
 				//$ord = str_replace("we_creationdate",FILE_TABLE . ".CreationDate",$ord); // NOTE: this won't work, cause Indextable doesn't know this field & filetable is not used in this query
-				$ord = str_replace('we_creationdate', '',$ord);
+				$ord = str_replace('we_creationdate', '', $ord);
 				$this->order = str_replace("we_filename", INDEX_TABLE . ".Path", $ord);
 			} else{
 				$orderArr1 = makeArrayFromCSV($this->order);
@@ -153,7 +153,7 @@ class we_search_listview extends listviewBase{
 
 		$bedingungen = preg_split('/ +/', $this->search);
 		$ranking = "0";
-		$spalten = array(($this->casesensitive?'BINARY ':'').INDEX_TABLE . '.Text');
+		$spalten = array(($this->casesensitive ? 'BINARY ' : '') . INDEX_TABLE . '.Text');
 		foreach($bedingungen as $v1){
 			if(preg_match('|^[-\+]|', $v1)){
 				$not = (preg_match('|^-|', $v1)) ? 'NOT ' : '';
@@ -225,37 +225,26 @@ class we_search_listview extends listviewBase{
 				$path_parts = pathinfo($_SERVER["SCRIPT_NAME"]);
 				$objectdaten = getHash("SELECT  Url,TriggerID FROM " . OBJECT_FILES_TABLE . " WHERE ID=" . intval($this->DB_WE->Record["OID"]) . " LIMIT 1", $db);
 				$objecturl = $objectdaten['Url'];
-				$objecttriggerid = $objectdaten['TriggerID'];
-				if($this->triggerID){
-					$objecttriggerid = $this->triggerID;
-				}
+				$objecttriggerid = ($this->triggerID ? $this->triggerID : $objectdaten['TriggerID']);
+
 				if($objecttriggerid){
 					$path_parts = pathinfo(id_to_path($objecttriggerid));
 				}
-				$pidstr = '';
-				if($this->DB_WE->Record["WorkspaceID"]){
-					$pidstr = '?pid=' . intval($this->DB_WE->Record["WorkspaceID"]);
-				}
+				$pidstr = ($this->DB_WE->Record["WorkspaceID"] ? '?pid=' . intval($this->DB_WE->Record["WorkspaceID"]) : '');
+
 				if(NAVIGATION_DIRECTORYINDEX_NAMES != '' && $this->hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
-					if($objecturl != ''){
-						$this->DB_WE->Record["WE_PATH"] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . $objecturl . $pidstr;
-					} else{
-						$this->DB_WE->Record["WE_PATH"] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/?we_objectID=' . $this->DB_WE->Record["OID"] . str_replace('?', '&amp;', $pidstr);
-					}
+					$this->DB_WE->Record["WE_PATH"] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') .
+						($objecturl != '' ?
+							'/' . $objecturl . $pidstr :
+							'/?we_objectID=' . $this->DB_WE->Record["OID"] . str_replace('?', '&amp;', $pidstr));
 				} else{
-					if($objecturl != ''){
-						$this->DB_WE->Record["WE_PATH"] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . $path_parts['filename'] . '/' . $objecturl . $pidstr;
-					} else{
-						$this->DB_WE->Record["WE_PATH"] = $_SERVER["SCRIPT_NAME"] . '?we_objectID=' . $this->DB_WE->Record["OID"] . str_replace('?', '&amp;', $pidstr);
-					}
+					$this->DB_WE->Record["WE_PATH"] = ($objecturl != '' ?
+							($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . $path_parts['filename'] . '/' . $objecturl . $pidstr :
+							$_SERVER["SCRIPT_NAME"] . '?we_objectID=' . $this->DB_WE->Record["OID"] . str_replace('?', '&amp;', $pidstr));
 				}
 				$this->DB_WE->Record["wedoc_Path"] = $this->DB_WE->Record["WE_PATH"];
 				$this->DB_WE->Record["we_WE_URL"] = $objectdaten['Url'];
-				if($this->triggerID){
-					$this->DB_WE->Record["we_WE_TRIGGERID"] = $this->triggerID;
-				} else{
-					$this->DB_WE->Record["we_WE_TRIGGERID"] = $objectdaten['TriggerID'];
-				}
+				$this->DB_WE->Record["we_WE_TRIGGERID"] = ($this->triggerID ? $this->triggerID : $objectdaten['TriggerID']);
 			} else{
 				$this->DB_WE->Record["wedoc_Path"] = $this->DB_WE->Record["Path"];
 				$this->DB_WE->Record["WE_PATH"] = $this->DB_WE->Record["Path"];
@@ -269,11 +258,12 @@ class we_search_listview extends listviewBase{
 		} else{
 			$this->stop_next_row = $this->shouldPrintEndTR();
 			if($this->cols && ($this->count <= $this->maxItemsPerPage) && !$this->stop_next_row){
-				$this->DB_WE->Record = array();
-				$this->DB_WE->Record["WE_LANGUAGE"] = '';
-				$this->DB_WE->Record["WE_PATH"] = '';
-				$this->DB_WE->Record["WE_TEXT"] = '';
-				$this->DB_WE->Record["WE_ID"] = '';
+				$this->DB_WE->Record = array(
+					"WE_LANGUAGE" => '',
+					"WE_PATH" => '',
+					"WE_TEXT" => '',
+					"WE_ID" => '',
+				);
 				$this->count++;
 				return true;
 			}
