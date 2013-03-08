@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_objectEx extends we_object{
-	
+
 	private $_ObjectBaseElements = array(
 				'ID','OF_ID','OF_ParentID','OF_Text','OF_Path','OF_Url','OF_TriggerID','OF_Workspaces','OF_ExtraWorkspaces','OF_ExtraWorkspacesSelected',
             	'OF_Templates','OF_ExtraTemplates','OF_Category','OF_Published','OF_IsSearchable','OF_Charset','OF_WebUserID','OF_Language','variant_weInternVariantElement'
@@ -459,7 +459,7 @@ class we_objectEx extends we_object{
 			}
 		}
 		if(is_array($order) && !$writeToDB){
-			
+
 			$metas= array_keys($metadata['meta']);
 			$consider=array_diff($metas,$this->_ObjectBaseElements);
 			$consider=array_combine(range(0,count($consider)-1),$consider);
@@ -471,7 +471,7 @@ class we_objectEx extends we_object{
 				} else {
 					t_e('warning', 'we_ObjectEx::setOrder: '.$ctable.' ('.$this->Text.')  No Field-Prefix found in for '.$oval);
 				}
-			}	
+			}
 			if(count($neworder)!= count($consider)){
 				if(count($neworder)> count($consider)){
 					$thedifference= array_diff($neworder,$consider);
@@ -479,7 +479,7 @@ class we_objectEx extends we_object{
 				} else {
 					$thedifference= array_diff($consider,$neworder);
 					t_e('warning', 'we_ObjectEx::setOrder: '.$ctable.' ('.$this->Text.')  Order-Array ('.count($neworder).') has smaller length than generated Fields Array ('.count($consider).'), Missing: ('.implode(',',$thedifference).') Order-Array:('.implode(',',$neworder).') Fields-Array:('.implode(',',$consider).') ');
-	
+
 				}
 			} else {
 				$neworder=array_flip($neworder);
@@ -493,6 +493,7 @@ class we_objectEx extends we_object{
 			}
 		}
 	}
+	
 	function getFieldsOrdered($withoutPrefix=false){
 		$ctable = OBJECT_X_TABLE . intval($this->ID);
 		$metadata = $this->DB_WE->metadata($ctable, true);
@@ -502,7 +503,7 @@ class we_objectEx extends we_object{
 			foreach($consider as &$value){
 				$zw=explode('_',$value,2);
 				$value=$zw[1];
-			}	
+			}
 		}
 		if(!empty($consider)){
 			$consider=array_values($consider);
@@ -538,9 +539,9 @@ class we_objectEx extends we_object{
 		} else{
 			t_e('warning', 'we_ObjectEx::checkFields: '.$ctable.' ('.$this->Text.') different field count - not recoverable bei resetOrder strOrder' );
 		}
-		
+
 	}
-	
+
 	/* setter for runtime variable isAddFieldNoSave which allows to construct Classes from within Apps */
 	/* do not access this variable directly, in later WE Versions, it will be protected */
 	function setIsAddFieldNoSave($isAddFieldNoSave){
