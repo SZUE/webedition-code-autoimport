@@ -24,7 +24,6 @@
  */
 
 /**
- * class    we_listview_object
  * @desc    class for tag <we:listview type="shopVariants">
  *
  */

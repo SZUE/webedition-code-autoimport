@@ -34,10 +34,10 @@ class we_langlink_listview extends listviewBase{
 	var $IDs = array(); /* array of ids with pages which are found */
 	var $foundlinks = array();
 	var $ClassName = __CLASS__;
-	var $linkType = "";
+	var $linkType = '';
 	var $searchable = true;
-	var $condition = ""; /* condition string (like SQL) */
-	var $defaultCondition = "";
+	var $condition = ''; /* condition string (like SQL) */
+	var $defaultCondition = '';
 	var $customerFilterType = 'off'; // shall we control customer-filter?
 	var $subfolders = true; // regard subfolders
 	var $customers = "";
@@ -170,7 +170,6 @@ class we_langlink_listview extends listviewBase{
 			}
 			$this->foundlinks = $tmpFoundlinks;
 
-
 			$this->anz_all = count($this->foundlinks);
 			$this->anz = $this->anz_all;
 			$this->count = 0;
@@ -187,9 +186,9 @@ class we_langlink_listview extends listviewBase{
 
 		if($pid){
 			//FIXME: this query is identical - what should that be good for?!
-			$q = ($this->linkType == 'tblFile'?
-				"SELECT " . LANGLINK_TABLE . ".DID as DID, " . LANGLINK_TABLE . ".DLocale as DLocale, " . LANGLINK_TABLE . ".LDID as LDID, " . LANGLINK_TABLE . ".Locale as Locale, " . LANGLINK_TABLE . ".IsFolder as IsFolder, " . LANGLINK_TABLE . ".IsObject as IsObject, " . LANGLINK_TABLE . ".DocumentTable as DocumentTable, " . FILE_TABLE . ".Path as Path, " . FILE_TABLE . ".ParentID as ParentID  FROM " . LANGLINK_TABLE . "," . FILE_TABLE . " WHERE " . LANGLINK_TABLE . ".Locale='" . $langkey . "' AND " . LANGLINK_TABLE . ".LDID = " . FILE_TABLE . ".ID AND " . FILE_TABLE . ".Published >0 AND " . LANGLINK_TABLE . ".DocumentTable='tblFile' AND " . LANGLINK_TABLE . ".DID='" . $pid . "'":
-				"SELECT " . LANGLINK_TABLE . ".DID as DID, " . LANGLINK_TABLE . ".DLocale as DLocale, " . LANGLINK_TABLE . ".LDID as LDID, " . LANGLINK_TABLE . ".Locale as Locale, " . LANGLINK_TABLE . ".IsFolder as IsFolder, " . LANGLINK_TABLE . ".IsObject as IsObject, " . LANGLINK_TABLE . ".DocumentTable as DocumentTable, " . FILE_TABLE . ".Path as Path, " . FILE_TABLE . ".ParentID as ParentID  FROM " . LANGLINK_TABLE . "," . FILE_TABLE . " WHERE " . LANGLINK_TABLE . ".Locale='" . $langkey . "' AND " . LANGLINK_TABLE . ".LDID = " . FILE_TABLE . ".ID AND " . FILE_TABLE . ".Published >0 AND " . LANGLINK_TABLE . ".DocumentTable='tblFile' AND " . LANGLINK_TABLE . ".DID='" . $pid . "'");
+			$q = ($this->linkType == 'tblFile' ?
+					"SELECT " . LANGLINK_TABLE . ".DID as DID, " . LANGLINK_TABLE . ".DLocale as DLocale, " . LANGLINK_TABLE . ".LDID as LDID, " . LANGLINK_TABLE . ".Locale as Locale, " . LANGLINK_TABLE . ".IsFolder as IsFolder, " . LANGLINK_TABLE . ".IsObject as IsObject, " . LANGLINK_TABLE . ".DocumentTable as DocumentTable, " . FILE_TABLE . ".Path as Path, " . FILE_TABLE . ".ParentID as ParentID  FROM " . LANGLINK_TABLE . "," . FILE_TABLE . " WHERE " . LANGLINK_TABLE . ".Locale='" . $langkey . "' AND " . LANGLINK_TABLE . ".LDID = " . FILE_TABLE . ".ID AND " . FILE_TABLE . ".Published >0 AND " . LANGLINK_TABLE . ".DocumentTable='tblFile' AND " . LANGLINK_TABLE . ".DID='" . $pid . "'" :
+					"SELECT " . LANGLINK_TABLE . ".DID as DID, " . LANGLINK_TABLE . ".DLocale as DLocale, " . LANGLINK_TABLE . ".LDID as LDID, " . LANGLINK_TABLE . ".Locale as Locale, " . LANGLINK_TABLE . ".IsFolder as IsFolder, " . LANGLINK_TABLE . ".IsObject as IsObject, " . LANGLINK_TABLE . ".DocumentTable as DocumentTable, " . FILE_TABLE . ".Path as Path, " . FILE_TABLE . ".ParentID as ParentID  FROM " . LANGLINK_TABLE . "," . FILE_TABLE . " WHERE " . LANGLINK_TABLE . ".Locale='" . $langkey . "' AND " . LANGLINK_TABLE . ".LDID = " . FILE_TABLE . ".ID AND " . FILE_TABLE . ".Published >0 AND " . LANGLINK_TABLE . ".DocumentTable='tblFile' AND " . LANGLINK_TABLE . ".DID='" . $pid . "'");
 
 			$this->DB_WE->query($q);
 			$found = $this->DB_WE->num_rows();
@@ -224,16 +223,14 @@ class we_langlink_listview extends listviewBase{
 				$this->Record["WE_PATH"] = $this->foundlinks[$count]["Path"];
 			} else{
 
-				if(isset($this->foundlinks[$count]['TriggerID']) && $this->foundlinks[$count]['TriggerID']){
-					$path_parts = pathinfo(id_to_path($this->foundlinks[$count]['TriggerID']));
-				} else{
-					$path_parts = pathinfo($_SERVER['SCRIPT_NAME']);
-				}
+				$path_parts = pathinfo(
+					(isset($this->foundlinks[$count]['TriggerID']) && $this->foundlinks[$count]['TriggerID'] ?
+						id_to_path($this->foundlinks[$count]['TriggerID']) : $_SERVER['SCRIPT_NAME'])
+				);
+
 				$paramName = "we_object_ID";
 
 				if($this->objectseourls && $this->foundlinks[$count]['Url'] != '' && show_SeoLinks()){
-
-
 					if(show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES != '' && $this->hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
 						$this->Record["WE_PATH"] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . $this->foundlinks[$count]['Url'];
 					} else{

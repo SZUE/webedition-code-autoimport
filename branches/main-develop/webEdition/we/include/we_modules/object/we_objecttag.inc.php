@@ -34,7 +34,7 @@ class we_objecttag{
 	var $hidedirindex = false;
 	var $objectseourls = false;
 
-	function __construct($class = "", $id = 0, $triggerID = 0, $searchable = true, $condition = "", $hidedirindex = false, $objectseourls = false){
+	function __construct($class = '', $id = 0, $triggerID = 0, $searchable = true, $condition = '', $hidedirindex = false, $objectseourls = false){
 		$this->DB_WE = new DB_WE();
 		$this->id = $id;
 		if(!$this->id && isset($_REQUEST['we_objectID']) && $_REQUEST['we_objectID']){
@@ -50,7 +50,9 @@ class we_objecttag{
 		if($this->id){
 			$foo = getHash('SELECT TableID,ObjectID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($this->id), $this->DB_WE);
 			if(!empty($foo)){
-				$this->object = new we_listview_object($unique, 1, 0, '', 0, $foo["TableID"], '', '', "(" . OBJECT_X_TABLE . $foo["TableID"] . ".ID=" . intval($foo["ObjectID"]) . ")" . ($condition ? " AND $condition" : ""), $this->triggerID, '', "", $searchable, "", "", "", "", '', '', '', 0, "", "", "", '', $hidedirindex, $objectseourls);
+				//FIXME: fix regex in listview_object and listview_multiobject, then restore type int for ID
+				//$this->object = new we_listview_object($unique, 1, 0, '', 0, $foo['TableID'], '', '', '(' . OBJECT_X_TABLE . $foo['TableID'] . '.ID=' . intval($foo['ObjectID']) . ')' . ($condition ? ' AND '.$condition : ''), $this->triggerID, '', '', $searchable, '', '', '', '', '', '', '', 0, '', '', '', '', $hidedirindex, $objectseourls);
+				$this->object = new we_listview_object($unique, 1, 0, '', 0, $foo['TableID'], '', '', '(' . OBJECT_X_TABLE . $foo['TableID'] . '.ID="' . intval($foo['ObjectID']) . '")' . ($condition ? ' AND '.$condition : ''), $this->triggerID, '', '', $searchable, '', '', '', '', '', '', '', 0, '', '', '', '', $hidedirindex, $objectseourls);
 				if($this->object->next_record()){
 					$this->avail = true;
 				}

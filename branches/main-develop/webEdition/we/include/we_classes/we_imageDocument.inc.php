@@ -116,9 +116,9 @@ class we_imageDocument extends we_binaryDocument{
 		$thumbs = array();
 		if($this->Thumbs == -1){
 			$this->DB_WE->query('SELECT * FROM ' . THUMBNAILS_TABLE);
+			$thumbObj = new we_thumbnail();
 
 			while($this->DB_WE->next_record()) {
-				$thumbObj = new we_thumbnail();
 				$thumbObj->init($this->DB_WE->f('ID'), $this->DB_WE->f('Width'), $this->DB_WE->f('Height'), $this->DB_WE->f('Ratio'), $this->DB_WE->f('Maxsize'), $this->DB_WE->f('Interlace'), false, $this->DB_WE->f('Format'), $this->DB_WE->f('Name'), $this->ID, $this->Filename, $this->Path, $this->Extension, $this->getElement('origwidth'), $this->getElement('origheight'), $this->DB_WE->f('Quality'));
 
 				if(file_exists($_SERVER['DOCUMENT_ROOT'] . $thumbObj->getOutputPath()) && $thumbObj->getOutputPath() != $this->Path){
@@ -175,7 +175,6 @@ class we_imageDocument extends we_binaryDocument{
 	 * @param int $thumbnailID
 	 */
 	function del_thumbnails($thumbnailID){
-
 		$thumbsArray = ($this->Thumbs == -1) ? array() : makeArrayFromCSV($this->Thumbs);
 		$newArray = array();
 
@@ -261,24 +260,23 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 	function resizeImage($width, $height, $quality = 8, $ratio = false){
 		if(!is_numeric($quality)){
 			return false;
-		} else{
-			$quality = ($quality > 10 ? 10 : ($quality < 0 ? 0 : $quality)) * 10;
-			$dataPath = TEMP_PATH . '/' . weFile::getUniqueId();
-			$_resized_image = we_image_edit::edit_image($this->getElement('data'), $this->getGDType(), $dataPath, $quality, $width, $height, $ratio);
-			if($_resized_image[0]){
-				$this->setElement('data', $dataPath);
-
-				$this->setElement('width', $_resized_image[1], 'attrib');
-				$this->setElement('origwidth', $_resized_image[1], 'attrib');
-
-				$this->setElement('height', $_resized_image[2], 'attrib');
-				$this->setElement('origheight', $_resized_image[2], 'attrib');
-
-				$this->DocChanged = true;
-				return true;
-			}
 		}
-		return false;
+		$quality = ($quality > 10 ? 10 : ($quality < 0 ? 0 : $quality)) * 10;
+		$dataPath = TEMP_PATH . '/' . weFile::getUniqueId();
+		$_resized_image = we_image_edit::edit_image($this->getElement('data'), $this->getGDType(), $dataPath, $quality, $width, $height, $ratio);
+		if(!$_resized_image[0]){
+			return false;
+		}
+		$this->setElement('data', $dataPath);
+
+		$this->setElement('width', $_resized_image[1], 'attrib');
+		$this->setElement('origwidth', $_resized_image[1], 'attrib');
+
+		$this->setElement('height', $_resized_image[2], 'attrib');
+		$this->setElement('origheight', $_resized_image[2], 'attrib');
+
+		$this->DocChanged = true;
+		return true;
 	}
 
 	/**
@@ -293,26 +291,25 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 	function rotateImage($width, $height, $rotation, $quality = 8){
 		if(!is_numeric($quality)){
 			return false;
-		} else{
-			$quality = ($quality > 10 ? 10 : ($quality < 0 ? 0 : $quality)) * 10;
-
-			$dataPath = TEMP_PATH . '/' . weFile::getUniqueId();
-			$_resized_image = we_image_edit::edit_image($this->getElement('data'), $this->getGDType(), $dataPath, $quality, $width, $height, false, true, 0, 0, -1, -1, $rotation);
-
-			if($_resized_image[0]){
-				$this->setElement('data', $dataPath);
-
-				$this->setElement('width', $_resized_image[1]);
-				$this->setElement('origwidth', $_resized_image[1], 'attrib');
-
-				$this->setElement('height', $_resized_image[2]);
-				$this->setElement('origheight', $_resized_image[2], 'attrib');
-
-				$this->DocChanged = true;
-				return true;
-			}
 		}
-		return false;
+		$quality = max(min($quality, 10), 0) * 10;
+
+		$dataPath = TEMP_PATH . '/' . weFile::getUniqueId();
+		$_resized_image = we_image_edit::edit_image($this->getElement('data'), $this->getGDType(), $dataPath, $quality, $width, $height, false, true, 0, 0, -1, -1, $rotation);
+
+		if(!$_resized_image[0]){
+			return false;
+		}
+		$this->setElement('data', $dataPath);
+
+		$this->setElement('width', $_resized_image[1]);
+		$this->setElement('origwidth', $_resized_image[1], 'attrib');
+
+		$this->setElement('height', $_resized_image[2]);
+		$this->setElement('origheight', $_resized_image[2], 'attrib');
+
+		$this->DocChanged = true;
+		return true;
 	}
 
 	/**
@@ -324,7 +321,7 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 	 * @param boolean $dyn
 	 * @param string $inc_href
 	 */
-	function getHtml($dyn = false, $inc_href = true){
+	function getHtml($dyn = false, $inc_href = true, $pathOnly=false){
 		$_data = $this->getElement('data');
 		if($this->ID || ($_data && !is_dir($_data) && is_readable($_data))){
 			switch($this->getElement('LinkType')){
@@ -341,7 +338,6 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 					} else{
 						$pidCvs = f('SELECT Workspaces FROM ' . OBJECT_FILES_TABLE . ' WHERE ID = ' . intval($id), 'Workspaces', $this->DB_WE);
 						$foo = makeArrayFromCSV($pidCvs);
-
 						$pid = (empty($foo) ? 0 : $foo[0]);
 					}
 
@@ -355,7 +351,6 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 
 			$img_path = $this->Path;
 
-			$create = true;
 
 			// we need to create a thumbnail - check if image exists
 			if(($thumbname = $this->getElement('thumbnail')) && ($img_path && file_exists($_SERVER['DOCUMENT_ROOT'] . $img_path))){
@@ -364,14 +359,12 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 					$img_path = $thumbObj->getOutputPath();
 
 					if($thumbObj->isOriginal()){
-						$create = false;
+//						$create = false;
 					} elseif((!$thumbObj->isOriginal()) && file_exists($_SERVER['DOCUMENT_ROOT'] . $img_path) &&
 						// open a file
 						intval(filectime($_SERVER['DOCUMENT_ROOT'] . $img_path)) > intval($thumbObj->getDate())){
-						$create = false;
-					}
-
-					if($create){
+//						$create = false;
+					} else{
 						$thumbObj->createThumb();
 					}
 
@@ -379,6 +372,10 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 					$this->setElement('width', $thumbObj->getOutputWidth(), 'attrib');
 					$this->setElement('height', $thumbObj->getOutputHeight(), 'attrib');
 				}
+			}
+
+			if($pathOnly){
+				return $img_path;
 			}
 
 			$target = $this->getElement('LinkTarget');
@@ -391,8 +388,6 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 				$GLOBALS['we_transaction'] . '&rand=' . $randval :
 				($this->getElement('LinkType') == 'int' ? (we_isHttps() ? '' : BASE_IMG) : '') .
 				$img_path;
-
-
 
 			if(isset($this->elements['sizingrel'])){
 				$this->setElement('width', round($this->elements['width']['dat'] * $this->elements['sizingrel']['dat']), 'attrib');
@@ -423,7 +418,6 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 				unset($this->elements['width']);
 				unset($this->elements['height']);
 			}
-
 
 			$this->resetElements();
 
@@ -589,12 +583,7 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 		$longdesc_id_name = 'we_' . $this->Name . '_attrib[longdescid]';
 		$longdesc_text_name = 'tmp_longdesc';
 		$longdesc_id = $this->getElement('longdescid');
-		if($longdesc_id){
-			$longdescPath = id_to_path($longdesc_id);
-		} else{
-			$longdescPath = '';
-		}
-
+		$longdescPath = ($longdesc_id ? id_to_path($longdesc_id) : '');
 
 		$yuiSuggest = & weSuggest::getInstance();
 		$yuiSuggest->setAcId('LonDesc');
@@ -641,103 +630,79 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 	function convert($type, $quality = 8){
 		if(!is_numeric($quality)){
 			return false;
-		} else{
-			list($width, $height) = $this->getOrigSize();
-			if($quality > 10){
-				$quality = 10;
-			} else if($quality < 0){
-				$quality = 0;
-			}
-
-			$quality = $quality * 10;
-
-			$dataPath = TEMP_PATH . '/' . weFile::getUniqueId();
-			$_converted_image = we_image_edit::edit_image($this->getElement('data'), $type, $dataPath, $quality, $width, $height, false);
-
-			$this->setElement('data', $dataPath);
-			$this->Extension = '.' . $type;
-			$this->Text = $this->Filename . $this->Extension;
-			$this->Path = $this->getParentPath() . $this->Text;
-
-			$this->DocChanged = true;
 		}
+		list($width, $height) = $this->getOrigSize();
+		$quality = max(min($quality, 10), 0) * 10;
+
+		$dataPath = TEMP_PATH . '/' . weFile::getUniqueId();
+		we_image_edit::edit_image($this->getElement('data'), $type, $dataPath, $quality, $width, $height, false);
+
+		$this->setElement('data', $dataPath);
+		$this->Extension = '.' . $type;
+		$this->Text = $this->Filename . $this->Extension;
+		$this->Path = $this->getParentPath() . $this->Text;
+
+		$this->DocChanged = true;
 	}
 
 	function getThumbnail(){
-		if($this->getElement('data') && is_readable($this->getElement('data'))){
-			return '<img src="' . WEBEDITION_DIR . 'thumbnail.php?id=' . $this->ID . '&size=150&path=' . str_replace($_SERVER['DOCUMENT_ROOT'], '', $this->getElement('data')) . '&extension=' . $this->Extension . '&size2=200" border="0" /></a>';
-		} else{
-			return $this->getHtml();
-		}
+		return ($this->getElement('data') && is_readable($this->getElement('data')) ?
+				'<img src="' . WEBEDITION_DIR . 'thumbnail.php?id=' . $this->ID . '&size=150&path=' . str_replace($_SERVER['DOCUMENT_ROOT'], '', $this->getElement('data')) . '&extension=' . $this->Extension . '&size2=200" border="0" /></a>' :
+				$this->getHtml());
 	}
 
-	protected function getMetaDataReader($force=false){
+	protected function getMetaDataReader($force = false){
 		return parent::getMetaDataReader(true);
 	}
 
 	function importMetaData($fieldsToImport = null, $importOnlyEmptyFields = false){
 		$this->getMetaData();
+		if(!isset($this->metaData) || !is_array($this->metaData)){
+			return;
+		}
 
+		$_fields = array();
 
-		if(isset($this->metaData) && is_array($this->metaData)){
-			$_fields = array();
+		// first we fetch all defined metadata fields from tblMetadata:
+		$GLOBALS['DB_WE']->query('SELECT tag,type,importFrom FROM ' . METADATA_TABLE);
+		while($GLOBALS['DB_WE']->next_record()) {
+			list($_fieldName, $_fieldType, $_importFrom) = $GLOBALS['DB_WE']->getRecord();
+			$_fieldType = $_fieldType ? $_fieldType : 'textfield';
 
-			// first we fetch all defined metadata fields from tblMetadata:
-			$_defined_fields = array();
-			$GLOBALS['DB_WE']->query('SELECT * FROM ' . METADATA_TABLE);
-			while($GLOBALS['DB_WE']->next_record()) {
-				$_fieldName = $GLOBALS['DB_WE']->f('tag');
-				$_fieldType = $GLOBALS['DB_WE']->f('type') ? $GLOBALS['DB_WE']->f('type') : 'textfield';
-				$_importFrom = $GLOBALS['DB_WE']->f('importFrom');
-
-				$_parts = explode(',', $_importFrom);
-				foreach($_parts as $_part){
-					$_part = trim($_part);
-					$_fieldParts = explode('/', $_part);
-					if(count($_fieldParts) > 1){
-						$_tagType = strtolower(trim($_fieldParts[0]));
-						$_tagName = trim($_fieldParts[1]);
-						if(!(isset($_fields[$_fieldName]) && is_array($_fields[$_fieldName]))){
-							$_fields[$_fieldName] = array();
-						}
-						$_fields[$_fieldName][] = array($_tagType, $_tagName, $_fieldType);
+			$_parts = explode(',', $_importFrom);
+			foreach($_parts as $_part){
+				$_part = trim($_part);
+				$_fieldParts = explode('/', $_part);
+				if(count($_fieldParts) > 1){
+					$_tagType = strtolower(trim($_fieldParts[0]));
+					$_tagName = trim($_fieldParts[1]);
+					if(!(isset($_fields[$_fieldName]) && is_array($_fields[$_fieldName]))){
+						$_fields[$_fieldName] = array();
 					}
-				}
-			}
-
-			$_typeMap = array('textfield' => 'txt', 'wysiwyg' => 'txt', 'textarea' => 'txt', 'date' => 'date');
-
-			foreach($_fields as $fieldName => $_arr){
-
-				$_fieldVal = $this->getElement($fieldName);
-
-				if((is_null($fieldsToImport) || in_array($fieldName, array_keys($fieldsToImport))) && ($importOnlyEmptyFields == false || $_fieldVal === '')){
-					foreach($_arr as $_impFr){
-						if(isset($this->metaData[$_impFr[0]][$_impFr[1]]) && !empty($this->metaData[$_impFr[0]][$_impFr[1]])){
-							$_val = $this->metaData[$_impFr[0]][$_impFr[1]];
-							if($_impFr[2] == 'date'){
-								// here we need to parse the date
-								if(preg_match('|^(\d{4}):(\d{2}):(\d{2}) (\d{2}):(\d{2}):(\d{2})$|', $_val, $regs)){
-									$_val = sprintf('%016d', mktime($regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1]));
-								}
-							}
-							$this->setElement($fieldName, trim($_val), $_typeMap[$_impFr[2]]);
-							break;
-						}
-					}
+					$_fields[$_fieldName][] = array($_tagType, $_tagName, $_fieldType);
 				}
 			}
 		}
-	}
 
-	function parseImportFrom($inString){
-		$_parts = explode(',', $inString);
-		foreach($_parts as $_part){
-			$_part = trim($_part);
-			$_fieldParts = explode('/', $_part);
-			if(count($_fieldParts) > 1){
-				$_tagType = strtolower(trim($_fieldParts[0]));
-				$_tagName = trim($_fieldParts[1]);
+		$_typeMap = array('textfield' => 'txt', 'wysiwyg' => 'txt', 'textarea' => 'txt', 'date' => 'date');
+
+		foreach($_fields as $fieldName => $_arr){
+			$_fieldVal = $this->getElement($fieldName);
+
+			if((is_null($fieldsToImport) || in_array($fieldName, array_keys($fieldsToImport))) && ($importOnlyEmptyFields == false || $_fieldVal === '')){
+				foreach($_arr as $_impFr){
+					if(isset($this->metaData[$_impFr[0]][$_impFr[1]]) && !empty($this->metaData[$_impFr[0]][$_impFr[1]])){
+						$_val = $this->metaData[$_impFr[0]][$_impFr[1]];
+						if($_impFr[2] == 'date'){
+							// here we need to parse the date
+							if(preg_match('|^(\d{4}):(\d{2}):(\d{2}) (\d{2}):(\d{2}):(\d{2})$|', $_val, $regs)){
+								$_val = sprintf('%016d', mktime($regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1]));
+							}
+						}
+						$this->setElement($fieldName, trim($_val), $_typeMap[$_impFr[2]]);
+						break;
+					}
+				}
 			}
 		}
 	}
@@ -748,7 +713,6 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 	 * @return string
 	 */
 	function formLink(){
-
 		$textname = 'we_' . $this->Name . '_txt[LinkPath]';
 		$idname = 'we_' . $this->Name . '_txt[LinkID]';
 		$extname = 'we_' . $this->Name . '_txt[LinkHref]';
@@ -877,9 +841,8 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 
 	function hasMetaField($name){
 		$_defined_fields = weMetaData::getDefinedMetaDataFields();
-		$_fieldcount = count($_defined_fields);
-		for($i = 0; $i < $_fieldcount; $i++){
-			if($_defined_fields[$i]['tag'] === $name){
+		foreach($_defined_fields as $field){
+			if($field['tag'] === $name){
 				return true;
 			}
 		}
@@ -907,21 +870,16 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 		// check to see if there is an image to create or to change
 		if(isset($_FILES['we_ui_' . $formname]) && is_array($_FILES['we_ui_' . $formname])){
 
-			$webuserId = isset($_SESSION['webuser']['ID']) ? $_SESSION['webuser']['ID'] : 0;
-
 			if(isset($_FILES['we_ui_' . $formname]['name']) && is_array($_FILES['we_ui_' . $formname]['name'])){
 				foreach($_FILES['we_ui_' . $formname]['name'] as $imgName => $filename){
-
 					$_imgDataId = isset($_REQUEST['WE_UI_IMG_DATA_ID_' . $imgName]) ? $_REQUEST['WE_UI_IMG_DATA_ID_' . $imgName] : false;
 
 					if($_imgDataId !== false && isset($_SESSION[$_imgDataId])){
-
 						$_SESSION[$_imgDataId]['doDelete'] = false;
 
 						if(isset($_REQUEST['WE_UI_DEL_CHECKBOX_' . $imgName]) && $_REQUEST['WE_UI_DEL_CHECKBOX_' . $imgName] == 1){
 							$_SESSION[$_imgDataId]['doDelete'] = true;
-						} else
-						if($filename){
+						} elseif($filename){
 							// file is selected, check to see if it is an image
 							$ct = getContentTypeFromFile($filename);
 							if($ct == 'image/*'){

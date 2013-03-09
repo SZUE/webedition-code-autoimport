@@ -39,7 +39,6 @@ class we_listview_banner extends listviewBase{
 	var $docs;
 
 	/**
-	 * we_listview_object()
 	 * @desc    constructor of class
 	 *
 	 * @param   name          string - name of listview

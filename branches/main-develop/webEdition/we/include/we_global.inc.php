@@ -117,7 +117,7 @@ function makePIDTail($pid, $cid, $db = '', $table = FILE_TABLE){
 		$pid_tail[] = OBJECT_X_TABLE . $cid . '.OF_Workspaces=""';
 	}
 	foreach($parentIDs as $pid){
-		$pid_tail [] = OBJECT_X_TABLE . $cid . '.OF_Workspaces LIKE "%,' . $pid . ',%" OR ' . OBJECT_X_TABLE . $cid . '.OF_ExtraWorkspacesSelected LIKE "%,' . $pid . ',%"';
+		$pid_tail[] = OBJECT_X_TABLE . $cid . '.OF_Workspaces LIKE "%,' . $pid . ',%" OR ' . OBJECT_X_TABLE . $cid . '.OF_ExtraWorkspacesSelected LIKE "%,' . $pid . ',%"';
 	}
 	return (empty($pid_tail) ? 1 :
 			' (' . implode(' OR ', $pid_tail) . ') '

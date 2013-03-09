@@ -897,7 +897,7 @@ class we_document extends we_root{
 						$img->setElement('name', $img->getElement('name'), 'attrib');
 					}
 				}
-				return $pathOnly ? $img->Path : $img->getHtml();
+				return $img->getHtml(false, true, $pathOnly);
 			case 'binary':
 				$bin = new we_otherDocument();
 				if(isset($attribs['name'])){

@@ -37,7 +37,6 @@ class we_shop_listviewOrder extends listviewBase{
 	var $hidedirindex = false;
 
 	/**
-	 * we_listview_object()
 	 * @desc    constructor of class
 	 *
 	 * @param   $name          string - name of listview
