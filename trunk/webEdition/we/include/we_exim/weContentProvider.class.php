@@ -28,6 +28,7 @@ class weContentProvider{
 	const CODING_SERIALIZE = 'serial';
 	const CODING_ATTRIBUTE = 'coding';
 	const CODING_NONE = null;
+	const CODING_OLD = 'WE_OLD_CODING';
 
 	static function getInstance($we_ContentType, $ID = '', $table = ''){
 		$we_doc = '';
@@ -117,7 +118,11 @@ class weContentProvider{
 		if(!isset($object)){
 			return;
 		}
-		$content = array_intersect_key($content, get_class_vars(get_class($object)));
+		$reflect = new ReflectionClass($object);
+		$props = $reflect->getProperties(ReflectionProperty::IS_PRIVATE | ReflectionProperty::IS_PROTECTED);
+		foreach($props as $prop){
+			unset($content[$prop->getName()]);
+		}
 
 		foreach($content as $k => $v){
 			$object->$k = $v;
@@ -160,10 +165,15 @@ class weContentProvider{
 		}
 	}
 
-	static function needCoding($classname, $prop){
+	static function needCoding($classname, $prop, $data){
 		if($prop == 'schedArr'){
 			return true;
 		}
+
+		if($data != self::CODING_OLD){
+			return preg_match('!^[^a-zA-Z0-9]+$!', $data);
+		}
+
 		$encoded = array(
 			'we_element' => array('Dat', 'dat'),
 			'weTableItem' => array('Dat', 'strFelder', 'strSerial', 'DocumentObject',
@@ -249,7 +259,7 @@ class weContentProvider{
 				if(isset($object->$v)){
 					$content = $object->$v;
 				}
-				if(self::needCoding($object->ClassName, $v)){
+				if(self::needCoding($object->ClassName, $v, $content)){
 					$content = self::getCDATA(self::encode($content));
 					$coding = array(self::CODING_ATTRIBUTE => self::CODING_ENCODE);
 				} else if(self::needCdata($object->ClassName, $v, $content)){
@@ -294,7 +304,7 @@ class weContentProvider{
 					$content = $object->$v;
 				}
 				$coding = self::CODING_NONE;
-				if(self::needCoding($object->ClassName, $v)){
+				if(self::needCoding($object->ClassName, $v, $content)){
 					$content = self::getCDATA(self::encode($content));
 					$coding = array(self::CODING_ATTRIBUTE => self::CODING_ENCODE);
 				} else if(self::needCdata($object->ClassName, $v, $content)){
@@ -383,27 +393,28 @@ class weContentProvider{
 		}
 
 
-		foreach($object->persistent_slots as $k => $v){
-			if($v != 'elements'){
-				$content = (isset($object->$v) ? $object->$v : '');
-				$coding = self::CODING_NONE;
-
-				if(self::needSerialize($object, $classname, $v)){
-					$content = serialize($content);
-					$coding = array(self::CODING_ATTRIBUTE => self::CODING_SERIALIZE);
-				}
-
-
-				if(self::needCoding($classname, $v)){
-					if(!is_array($content)){
-						$content = self::encode($content);
-						$coding = array(self::CODING_ATTRIBUTE => self::CODING_ENCODE);
-					}
-				} else if(self::needCdata($classname, $v, $content)){
-					$content = self::getCDATA($content);
-				}
-				$write.=weXMLComposer::we_xmlElement($v, $content, $coding);
+		foreach($object->persistent_slots as $v){
+			if($v == 'elements'){
+				continue;
 			}
+			$content = (isset($object->$v) ? $object->$v : '');
+			$coding = self::CODING_NONE;
+
+			if(self::needSerialize($object, $classname, $v)){
+				$content = serialize($content);
+				$coding = array(self::CODING_ATTRIBUTE => self::CODING_SERIALIZE);
+			}
+
+
+			if(self::needCoding($classname, $v, $content)){
+				if(!is_array($content)){
+					$content = self::encode($content);
+					$coding = array(self::CODING_ATTRIBUTE => self::CODING_ENCODE);
+				}
+			} else if(self::needCdata($classname, $v, $content)){
+				$content = self::getCDATA($content);
+			}
+			$write.=weXMLComposer::we_xmlElement($v, $content, $coding);
 		}
 		fwrite($file, $write);
 
@@ -498,6 +509,18 @@ class weContentProvider{
 				return 'we_docTypes';
 			default:
 				return $contenttype;
+		}
+	}
+
+	public static function getDecodedData($type, $data){
+		switch($type){
+			case self::CODING_ENCODE:
+				return self::decode($data);
+			case self::CODING_SERIALIZE:
+				return unserialize($data);
+			case self::CODING_NONE:
+			default:
+				return $data;
 		}
 	}
 

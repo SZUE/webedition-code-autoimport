@@ -115,20 +115,10 @@ class weBackupImport{
 					} else{
 						$attr = $parser->getNodeAttributes();
 						if(version_compare($_SESSION['weS']['weBackupVars']['weVersion'], '6.3.3.1', '>')){
-							switch(($attr && isset($attr[weContentProvider::CODING_ATTRIBUTE]) ? $attr[weContentProvider::CODING_ATTRIBUTE] : null)){
-								case weContentProvider::CODING_ENCODE:
-									$object->$name = weContentProvider::decode($parser->getNodeData());
-									break;
-								case weContentProvider::CODING_SERIALIZE:
-									$object->$name = unserialize($parser->getNodeData());
-									break;
-								case weContentProvider::CODING_NONE:
-								default:
-									$object->$name = $parser->getNodeData();
-							}
+							$object->$name = weContentProvider::getDecodedData(($attr && isset($attr[weContentProvider::CODING_ATTRIBUTE]) ? $attr[weContentProvider::CODING_ATTRIBUTE] : weContentProvider::CODING_NONE), $parser->getNodeData());
 						} else{
 							// import field
-							$object->$name = (weContentProvider::needCoding($classname, $name) ?
+							$object->$name = (weContentProvider::needCoding($classname, $name,  weContentProvider::CODING_OLD) ?
 									weContentProvider::decode($parser->getNodeData()) :
 									$parser->getNodeData()); //original mit Bug #3412 aber diese Version l�st 4092
 						}
@@ -185,7 +175,7 @@ class weBackupImport{
 					$object->save(true);
 				}
 
-				if(false&&!FAST_RESTORE){
+				if(false && !FAST_RESTORE){
 					//speedup for some tables
 					$_SESSION['weS']['weBackupVars']['backup_steps'] =
 						(isset($object->table) && ($object->table == LINK_TABLE || $object->table == CONTENT_TABLE) ?
