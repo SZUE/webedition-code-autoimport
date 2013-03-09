@@ -266,7 +266,7 @@ class weBackup extends we_backup{
 
 		foreach($node_set2 as $nsv){
 			$index = $xmlBrowser->nodeName($nsv);
-			$content[$index] = (weContentProvider::needCoding($classname, $index) ?
+			$content[$index] = (weContentProvider::needCoding($classname, $index,$nsv) ?
 					weContentProvider::decode($xmlBrowser->getData($nsv)) :
 					$xmlBrowser->getData($nsv));
 		}
@@ -289,7 +289,7 @@ class weBackup extends we_backup{
 		$classname = weContentProvider::getContentTypeHandler("weBinary");
 		foreach($node_set2 as $nsv){
 			$index = $xmlBrowser->nodeName($nsv);
-			$content[$index] = (weContentProvider::needCoding($classname, $index) ?
+			$content[$index] = (weContentProvider::needCoding($classname, $index,$nsv) ?
 					weContentProvider::decode($xmlBrowser->getData($nsv)) :
 					$xmlBrowser->getData($nsv));
 		}

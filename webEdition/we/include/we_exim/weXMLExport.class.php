@@ -39,7 +39,10 @@ class weXMLExport extends weXMLExIm{
 		@set_time_limit(0);
 		$doc = weContentProvider::getInstance($ct, $id, $table);
 		// add binary data separately to stay compatible with the new binary feature in v5.1
-		if(isset($doc->ContentType) && (strpos($doc->ContentType, "image/") === 0 || strpos($doc->ContentType, "application/") === 0 || strpos($doc->ContentType, "video/") === 0)){
+		if(isset($doc->ContentType) && (
+			strpos($doc->ContentType, "image/") === 0 ||
+			strpos($doc->ContentType, "application/") === 0 ||
+			strpos($doc->ContentType, "video/") === 0)){
 			$doc->setElement("data", weFile::load($_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $doc->Path));
 		}
 
@@ -67,19 +70,21 @@ class weXMLExport extends weXMLExIm{
 			$doc->ID = 0;
 		}
 
-		if($classname == "weTable"){
-			if((defined("OBJECT_X_TABLE") && strtolower(substr($doc->table, 0, 10)) == strtolower(stripTblPrefix(OBJECT_X_TABLE))) ||
-				defined("CUSTOMER_TABLE")){
-				$doc->getColumns();
-			}
-		}
-
 		$attribute = (isset($doc->attribute_slots) ? $doc->attribute_slots : array());
 
+		switch($classname){
+			case "weTable":
+				if((defined("OBJECT_X_TABLE") && strtolower(substr($doc->table, 0, 10)) == strtolower(stripTblPrefix(OBJECT_X_TABLE))) ||
+					defined("CUSTOMER_TABLE")){
+					$doc->getColumns();
+				}
+				break;
+			case "weBinary":
+				weContentProvider::binary2file($doc, $fh);
+				break;
+		}
 
-		if($classname == "weBinary"){
-			weContentProvider::binary2file($doc, $fh);
-		} else{
+		if($classname != "weBinary"){
 			weContentProvider::object2xml($doc, $fh, $attribute);
 		}
 
