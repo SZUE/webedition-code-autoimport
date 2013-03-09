@@ -31,6 +31,7 @@ $LU_Variables = array(
 	// always needed variables
 	'clientVersion' => WE_VERSION,
 	'clientSubVersion' => WE_SVNREV,
+	'clientVersionName' => (defined("WE_VERSION_NAME")) ? WE_VERSION_NAME : '',
 	'clientVersionSupp' => (defined("WE_VERSION_SUPP")) ? WE_VERSION_SUPP : '',
 	'clientVersionSuppVersion' => (defined("WE_VERSION_SUPP_VERSION")) ? WE_VERSION_SUPP_VERSION : '',
 	'clientVersionBranch' => (defined("WE_VERSION_BRANCH")) ? WE_VERSION_BRANCH : '',
