@@ -289,16 +289,21 @@ function we_tag_field($attribs){
 			break;
 		case 'href' ://#6329: fixed for lv type=document. check later for other types! #6421: field type=href in we:block
 			if(isset($GLOBALS['lv'])){
-				if($GLOBALS['lv']->ClassName == 'we_listview'){
-					$hrefArr = array();
-					$hrefArr['int'] = $GLOBALS['lv']->f($name . '_we_jkhdsf_int') ? $GLOBALS['lv']->f($name . '_we_jkhdsf_int') : $GLOBALS['lv']->f(we_tag_getPostName($name) . '_we_jkhdsf_int');
-					$hrefArr['intID'] = $GLOBALS['lv']->f($name . '_we_jkhdsf_intID') ? $GLOBALS['lv']->f($name . '_we_jkhdsf_intID') : $GLOBALS['lv']->f(we_tag_getPostName($name) . '_we_jkhdsf_intID');
-					$hrefArr['extPath'] = $GLOBALS['lv']->f($name);
-				} else if($GLOBALS['lv']->ClassName == 'we_listview_multiobject' || $GLOBALS['lv']->ClassName == 'we_listview_object' || $GLOBALS['lv']->ClassName == 'we_objecttag'){
-					$hrefArr = $GLOBALS['lv']->f($name) ? unserialize($GLOBALS['lv']->f($name)) : array();
-					if(!is_array($hrefArr)){
+				switch($GLOBALS['lv']->ClassName){
+					case 'we_listview':
 						$hrefArr = array();
-					}
+						$hrefArr['int'] = $GLOBALS['lv']->f($name . '_we_jkhdsf_int') ? $GLOBALS['lv']->f($name . '_we_jkhdsf_int') : $GLOBALS['lv']->f(we_tag_getPostName($name) . '_we_jkhdsf_int');
+						$hrefArr['intID'] = $GLOBALS['lv']->f($name . '_we_jkhdsf_intID') ? $GLOBALS['lv']->f($name . '_we_jkhdsf_intID') : $GLOBALS['lv']->f(we_tag_getPostName($name) . '_we_jkhdsf_intID');
+						$hrefArr['extPath'] = $GLOBALS['lv']->f($name);
+						break;
+					case 'we_listview_multiobject':
+					case 'we_listview_object':
+					case 'we_objecttag':
+						$hrefArr = $GLOBALS['lv']->f($name) ? unserialize($GLOBALS['lv']->f($name)) : array();
+						if(!is_array($hrefArr)){
+							$hrefArr = array();
+						}
+						break;
 				}
 				$out = !empty($hrefArr) ? we_document::getHrefByArray($hrefArr) : '';
 				break;
