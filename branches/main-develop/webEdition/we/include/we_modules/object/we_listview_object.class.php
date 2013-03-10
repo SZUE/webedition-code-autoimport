@@ -228,6 +228,7 @@ class we_listview_object extends listviewBase{
 		$db = ($db ? $db : new DB_WE());
 		$table = OBJECT_X_TABLE . $classID;
 		$joinWhere = array();
+		$regs = array();
 		$tableInfo = we_objectFile::getSortedTableInfo($classID, true, $db, true);
 		foreach($tableInfo as $fieldInfo){
 			if(preg_match('/(.+?)_(.*)/', $fieldInfo["name"], $regs)){
@@ -317,7 +318,7 @@ class we_listview_object extends listviewBase{
 		foreach($matrix as $n => $p){
 			$n2 = $n;
 			if(substr($n, 0, 10) == 'we_object_'){
-				$n = substr($n, 10);
+				$n = substr($n, 3);
 			}
 			$f .= '`' . $p['table'] . '`.`' . $p['type'] . '_' . $n . '` AS `we_' . $n2 . '`,';
 			$from[] = $p["table"];

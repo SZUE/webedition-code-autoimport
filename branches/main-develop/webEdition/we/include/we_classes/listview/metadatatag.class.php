@@ -24,9 +24,9 @@
  */
 class metadatatag{
 
-	var $DB_WE;
+	private $DB_WE;
 	var $ClassName = __CLASS__;
-	var $object = '';
+	private $object;
 	var $avail = false;
 	var $id = 0;
 
@@ -52,16 +52,19 @@ class metadatatag{
 				// is this possible
 				//TODO: check if this can happen
 			}
-			if($this->id){
-				$this->object = new we_listview($unique, 1, 0, "", false, "", "", false, false, 0, "", "", false, "", "", "", "", "", "", "off", true, "", $this->id);
-				if($this->object->next_record()){
-					$this->avail = true;
-				}
+			if(!$this->id){
+				return;
 			}
+			$this->object = new we_listview($unique, 1, 0, "", false, "", "", false, false, 0, "", "", false, "", "", "", "", "", "", "off", true, "", $this->id);
+			$this->avail = ($this->object->next_record());
 		}
 	}
 
-	function f($key){
+	public function getDBf($key){
+		return ($this->id ? $this->object->getDBf($key) : '');
+	}
+
+	public function f($key){
 		return ($this->id ? $this->object->f($key) : '');
 	}
 

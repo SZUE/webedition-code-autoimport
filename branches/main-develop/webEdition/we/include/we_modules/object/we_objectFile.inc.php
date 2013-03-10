@@ -429,10 +429,9 @@ class we_objectFile extends we_document{
 				if(strpos($text, '%ID%') !== false){
 //FIXME: this is NOT safe!!! Insert entry, and update afterwards
 					$id = 1 + intval(f('SELECT max(ID) as ID FROM ' . OBJECT_FILES_TABLE, 'ID', $this->DB_WE));
-					$text = str_replace('%ID%', '' . $id, $text);
+					$text = str_replace('%ID%', $id, $text);
 				}
-				$text = str_replace(array('%d%', '%j%', '%m%', '%y%', '%Y%', '%n%', '%h%', '%H%', '%g%', '%G%',), array(date('d'), date('j'), date('m'), date('y'), date('Y'), date('n'), date('h'), date('H'), date('g'), date('G'),), $text);
-				$this->Text = $text;
+				$this->Text = str_replace(array('%d%', '%j%', '%m%', '%y%', '%Y%', '%n%', '%h%', '%H%', '%g%', '%G%',), array(date('d'), date('j'), date('m'), date('y'), date('Y'), date('n'), date('h'), date('H'), date('g'), date('G'),), $text);
 			}
 
 			if($hash['DefaultValues']){
@@ -657,10 +656,10 @@ class we_objectFile extends we_document{
 		$order = makeArrayFromCSV(f('SELECT strOrder FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($tableID), 'strOrder', $db));
 		$ctable = OBJECT_X_TABLE . $tableID;
 		$tableInfo = $db->metadata($ctable);
-		$fields = array();
+		$fields = $regs = array();
 		foreach($tableInfo as $info){
 			if(preg_match('/(.+?)_(.*)/', $info["name"], $regs)){
-				if($regs[1] != "OF" && $regs[1] != "variant"){
+				if($regs[1] != 'OF' && $regs[1] != 'variant'){
 					$fields[] = array("name" => $regs[2], "type" => $regs[1], "length" => $info["len"]);
 				}
 			}
@@ -682,24 +681,25 @@ class we_objectFile extends we_document{
 		}
 		$db = ($db ? $db : new DB_WE());
 
-		$ctable = OBJECT_X_TABLE . $tableID;
-		$tableInfo = $db->metadata($ctable);
+		$tableInfo = $db->metadata(OBJECT_X_TABLE . $tableID);
 		$tableInfo2 = array();
 		foreach($tableInfo as $arr){
-			if($arr['name'] != 'input_' &&
-				$arr['name'] != 'text_' &&
-				$arr['name'] != 'int_' &&
-				$arr['name'] != 'float_' &&
-				$arr['name'] != 'date_' &&
-				$arr['name'] != 'img_' &&
-				$arr['name'] != 'object_' &&
-				$arr['name'] != 'multiobject_' &&
-				$arr['name'] != 'meta_' &&
-				(!defined('WE_SHOP_VARIANTS_ELEMENT_NAME') || $arr['name'] != 'variant_' . WE_SHOP_VARIANTS_ELEMENT_NAME )
-			){
-				$tableInfo2[] = $arr;
-			} elseif(defined('WE_SHOP_VARIANTS_ELEMENT_NAME') && $checkVariants && $arr['name'] == 'variant_' . WE_SHOP_VARIANTS_ELEMENT_NAME){
-				$variantdata = $arr;
+			switch($arr['name']){
+				case 'input_':
+				case 'text_':
+				case 'int_':
+				case 'float_':
+				case 'date_':
+				case 'img_':
+				case 'object_':
+				case 'multiobject_':
+				case 'meta_':
+					break;
+				case (defined('WE_SHOP_VARIANTS_ELEMENT_NAME') && $checkVariants ? 'variant_' . WE_SHOP_VARIANTS_ELEMENT_NAME : '-1'):
+					$variantdata = $arr;
+					break;
+				default:
+					$tableInfo2[] = $arr;
 			}
 		}
 		if($contentOnly == false){
@@ -708,7 +708,7 @@ class we_objectFile extends we_document{
 		$tableInfo_sorted = array();
 
 		$order = self::getSortArray(intval($tableID), $db);
-		$start = we_objectFile::getFirstTableInfoEntry($tableInfo2);
+		$start = self::getFirstTableInfoEntry($tableInfo2);
 		foreach($order as $o){
 			$tableInfo_sorted[] = $tableInfo2[$start + $o];
 		}

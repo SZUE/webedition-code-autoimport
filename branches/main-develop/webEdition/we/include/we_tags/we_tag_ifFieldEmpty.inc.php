@@ -24,9 +24,8 @@
  */
 function we_isFieldNotEmpty($attribs){
 	$type = weTag_getAttribute('type', $attribs);
-	$match = weTag_getAttribute('match', $attribs);
-	$orig_match = $match;
-	$match = ($GLOBALS['lv']->f($match) ? $match : we_tag_getPostName($match));
+	$orig_match= weTag_getAttribute('match', $attribs);
+	$match = ($GLOBALS['lv']->f($orig_match) ? $orig_match : we_tag_getPostName($orig_match));
 
 	switch($type){
 		case 'calendar' :
@@ -59,7 +58,7 @@ function we_isFieldNotEmpty($attribs){
 		case 'multiobject' :
 			if(isset($GLOBALS['lv'])){
 				if(isset($GLOBALS['lv']->object)){
-					$data = unserialize($GLOBALS['lv']->object->getDBf('we_' . $orig_match));
+					$data = unserialize($GLOBALS['lv']->f($orig_match));
 				} else{
 					if($GLOBALS['lv']->ClassName == 'we_listview_shoppingCart'){//Bug #4827
 						$data = unserialize($GLOBALS['lv']->f($match));
