@@ -434,7 +434,9 @@ function imageChanged(wasThumbnailChange){
 	if(wasThumbnailChange != null && wasThumbnailChange){
 		document.we_form.wasThumbnailChange.value="1";
 	}
-	top.opener.tinyMCECallRegisterDialog(null,"block");
+	if(top.opener.tinyMCECallRegisterDialog) {
+		top.opener.tinyMCECallRegisterDialog(null,"block");
+	}
 	document.we_form.target="we_weImageDialog_edit_area";
 	document.we_form.we_what.value="dialog";
 	document.we_form.imgChangedCmd.value="1";
