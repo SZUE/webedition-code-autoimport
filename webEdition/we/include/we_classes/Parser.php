@@ -161,7 +161,6 @@ class XML_Parser extends PEAR{
 	 */
 	var $_handlerObj;
 
-	
 	/**
 	 * PHP5 constructor
 	 *
