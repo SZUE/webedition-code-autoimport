@@ -488,6 +488,10 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 					getHtmlTag('img', $attribs);
 			}
 		} else{
+			if($pathOnly){
+				//be compatible
+				return '';
+			}
 			$xml = isset($attribs) ? weTag_getAttribute('xml', $attribs, false, true) : true; //rest is done in getHtmlTag
 			$attribs = array('style' => 'margin:8px 18px;border-style:none;width:64px;height:64px;',
 				'src' => IMAGE_DIR . 'icons/no_image.gif',
