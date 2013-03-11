@@ -549,25 +549,25 @@ echo (we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 9
 				switch($GLOBALS['we_doc']->ContentType){ // Depending on content type we use different parsers and css files
 					case 'text/css':
 						$parser_js[] = 'mode/css/css.js';
-						$parser_js[] = 'lib/util/foldcode.js';
-						$parser_js[] = 'lib/util/matchbrackets.js';
+						$parser_js[] = 'addon/fold/foldcode.js';
+						$parser_js[] = 'addon/edit/matchbrackets.js';
 						$mode = 'text/css';
 						break;
 					case 'text/js':
 						$parser_js[] = 'mode/javascript/javascript.js';
-						$parser_js[] = 'lib/util/foldcode.js';
-						$parser_js[] = 'lib/util/matchbrackets.js';
+						$parser_js[] = 'addon/fold/foldcode.js';
+						$parser_js[] = 'addon/edit/matchbrackets.js';
 						$mode = 'text/javascript';
 						break;
 					case 'text/weTmpl':
-						$parser_js[] = 'lib/util/overlay.js';
+						$parser_js[] = 'addon/mode/overlay.js';
 						$parser_js[] = 'mode/webEdition/webEdition.js';
-						$parser_js[] = 'lib/util/closetag.js';
-						$parser_js[] = 'lib/util/foldcode.js';
-						$parser_js[] = 'lib/util/matchbrackets.js';
+						$parser_js[] = 'addon/edit/closetag.js';
+						$parser_js[] = 'addon/fold/foldcode.js';
+						$parser_js[] = 'addon/edit/matchbrackets.js';
 						if(true || $_SESSION['prefs']['editorCodecompletion']){
-							$parser_js[] = 'lib/util/simple-hint.js';
-							$parser_js[] = 'lib/util/we-hint.js';
+							$parser_js[] = 'addon/hint/simple-hint.js';
+							$parser_js[] = 'addon/we/we-hint.js';
 						}
 						$parser_css[] = 'lib/util/simple-hint.css';
 						$toolTip = $_SESSION['prefs']['editorTooltips'];
@@ -579,15 +579,15 @@ echo (we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 9
 						$parser_js[] = 'mode/htmlmixed/htmlmixed.js';
 						$parser_js[] = 'mode/clike/clike.js';
 						$parser_js[] = 'mode/php/php.js';
-						$parser_js[] = 'lib/util/closetag.js';
-						$parser_js[] = 'lib/util/foldcode.js';
-						$parser_js[] = 'lib/util/matchbrackets.js';
+						$parser_js[] = 'addon/edit/closetag.js';
+						$parser_js[] = 'addon/fold/foldcode.js';
+						$parser_js[] = 'addon/edit/matchbrackets.js';
 						$mode = (isset($mode) ? $mode : 'application/x-httpd-php');
 						break;
 					case 'text/xml':
 						$parser_js[] = 'mode/xml/xml.js';
+						$parser_js[] = 'addon/edit/matchbrackets.js';
 						$mode = 'application/xml';
-						$parser_js[] = 'lib/util/matchbrackets.js';
 						break;
 					default:
 						//don't use CodeMirror
@@ -597,7 +597,7 @@ echo (we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 9
 				$parser_css[] = 'mode/webEdition/webEdition.css';
 
 				if(!empty($parser_js)){ // CodeMirror will be used
-					$parser_js[] = 'lib/util/searchcursor.js';
+					$parser_js[] = 'addon/search/searchcursor.js';
 					$maineditor = we_html_element::cssLink(WEBEDITION_DIR . 'editors/template/CodeMirror2/lib/codemirror.css') .
 						we_html_element::jsScript(WEBEDITION_DIR . 'editors/template/CodeMirror2/lib/codemirror.js');
 					foreach($parser_css as $css){
