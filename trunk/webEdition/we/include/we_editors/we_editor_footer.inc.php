@@ -445,12 +445,15 @@ function showEditFooterForNormalMode(){
 
 		if(!$_ctrlElem || !$_ctrlElem['hide']){
 
+			$text = defined('SCHEDULE_TABLE') && we_schedpro::saveInScheduler($GLOBALS['we_doc']) ? 'saveInScheduler' : 'publish';
 			$_normalTable->addCol(2);
-			$_normalTable->setColContent(0, $_pos++, we_button::create_button("publish", "javascript:_EditorFrame.setEditorPublishWhenSave(true);we_save_document();"));
+			$_normalTable->setColAttributes(0, $_pos, array('id' => 'publish_' . $GLOBALS['we_doc']->ID));
+			$_normalTable->setColContent(0, $_pos++, we_button::create_button($text, "javascript:_EditorFrame.setEditorPublishWhenSave(true);we_save_document();"));
 			$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
 		}
 	}
 
+	
 	if($we_doc->IsTextContentDoc && $haspermNew){
 
 		$_ctrlElem = getControlElement('checkbox', 'makeSameDoc');
