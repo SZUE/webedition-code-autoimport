@@ -44,10 +44,10 @@
 }
 
 .CodeMirror pre {
-		z-index: auto;
+		/*z-index: auto;*/
 }
 
-.activeline {
+.activeline,.CodeMirror-linebackground {
 	background: lightyellow !important;
 	z-index: -1;
 }

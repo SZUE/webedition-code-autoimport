@@ -1,4 +1,6 @@
 (function () {
+  var Pos = CodeMirror.Pos;
+
   function forEach(arr, f) {
     for (var i = 0, e = arr.length; i < e; ++i) f(arr[i]);
   }
@@ -26,30 +28,30 @@
     }
     // If it is a property, find out what it is a property of.
     while (tprop.type == "property") {
-      tprop = getToken(editor, {line: cur.line, ch: tprop.start});
+      tprop = getToken(editor, Pos(cur.line, tprop.start));
       if (tprop.string != ".") return;
-      tprop = getToken(editor, {line: cur.line, ch: tprop.start});
+      tprop = getToken(editor, Pos(cur.line, tprop.start));
       if (tprop.string == ')') {
         var level = 1;
         do {
-          tprop = getToken(editor, {line: cur.line, ch: tprop.start});
+          tprop = getToken(editor, Pos(cur.line, tprop.start));
           switch (tprop.string) {
           case ')': level++; break;
           case '(': level--; break;
           default: break;
           }
         } while (level > 0);
-        tprop = getToken(editor, {line: cur.line, ch: tprop.start});
-	if (tprop.type == 'variable')
-	  tprop.type = 'function';
+        tprop = getToken(editor, Pos(cur.line, tprop.start));
+	if (tprop.type.indexOf("variable") === 0)
+	  tprop.type = "function";
 	else return; // no clue
       }
       if (!context) var context = [];
       context.push(tprop);
     }
     return {list: getCompletions(token, context, keywords, options),
-            from: {line: cur.line, ch: token.start},
-            to: {line: cur.line, ch: token.end}};
+            from: Pos(cur.line, token.start),
+            to: Pos(cur.line, token.end)};
   }
 
   CodeMirror.javascriptHint = function(editor, options) {
@@ -106,7 +108,7 @@
       // If this is a property, see if it belongs to some object we can
       // find in the current environment.
       var obj = context.pop(), base;
-      if (obj.type == "variable") {
+      if (obj.type.indexOf("variable") === 0) {
         if (options && options.additionalContext)
           base = options.additionalContext[obj.string];
         base = base || window[obj.string];
