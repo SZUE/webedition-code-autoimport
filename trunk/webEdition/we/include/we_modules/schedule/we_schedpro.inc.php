@@ -449,10 +449,13 @@ function checkFooter(){
 		//FIXME: do we want to limit this query, if not called by cron?
 		$DB_WE = new DB_WE();
 		$now = time();
+		$hasLock = $DB_WE->hasLock();
 
-		while(($DB_WE->lock(array(SCHEDULE_TABLE, ERROR_LOG_TABLE)) && ($rec = getHash('SELECT * FROM ' . SCHEDULE_TABLE . ' WHERE Wann<=UNIX_TIMESTAMP() AND lockedUntil<NOW() AND Active=1 ORDER BY Wann LIMIT 1', $DB_WE)))) {
+		while((!$hasLock || ($DB_WE->lock(array(SCHEDULE_TABLE, ERROR_LOG_TABLE))) && ($rec = getHash('SELECT * FROM ' . SCHEDULE_TABLE . ' WHERE Wann<=UNIX_TIMESTAMP() AND lockedUntil<NOW() AND Active=1 ORDER BY Wann LIMIT 1', $DB_WE)))) {
 			$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET lockedUntil=lockedUntil+INTERVAL 1 minute WHERE DID=' . $rec['DID'] . ' AND Active=1 AND ClassName="' . $rec['ClassName'] . '" AND Type="' . $rec["Type"] . '" AND Was="' . $rec["Was"] . '" AND Wann=' . $rec['Wann']);
-			$DB_WE->unlock();
+			if($hasLock){
+				$DB_WE->unlock();
+			}
 			$s = unserialize($rec["Schedpro"]);
 			if(is_array($s)){
 				$s["lasttime"] = self::getPrevTimestamp($s, $now);
@@ -714,7 +717,7 @@ function checkFooter(){
 						'Schedpro' => serialize($s),
 						'Type' => $s["type"],
 						'Active' => $s["active"]
-					)))){
+				)))){
 				return false;
 			}
 		}
