@@ -217,8 +217,9 @@ class weBackup extends we_backup{
 				return false;
 			}
 		}
+		$execTime = ($execTime == 0 ? 1 : $execTime);
 
-		$maxTime = $_SESSION['weS']['weBackupVars']['limits']['exec'] > 32 ? 30 : $_SESSION['weS']['weBackupVars']['limits']['exec'] - 2;
+		$maxTime = $_SESSION['weS']['weBackupVars']['limits']['exec'] > 33 ? 30 : $_SESSION['weS']['weBackupVars']['limits']['exec'] - 2;
 		if(time() - intval($_SERVER['REQUEST_TIME']) + 2 * $execTime > $maxTime){
 			return false;
 		}
