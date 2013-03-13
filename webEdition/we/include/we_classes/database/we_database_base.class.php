@@ -598,13 +598,14 @@ abstract class we_database_base{
 		return $res;
 	}
 
-	/**checks if this DB connection with this user is allowed to lock a table*/
+	/*	 * checks if this DB connection with this user is allowed to lock a table */
+
 	public function hasLock(){
 //lock table
 		$this->lock(VALIDATION_SERVICES_TABLE, 'read');
 //select from an not locked table - must fail
-		$this->query('SELECT 1 FROM ' . FILE_TABLE);
-		$ret = ($this->Errno > 0);
+		$this->_query('SELECT 1 FROM ' . FILE_TABLE);
+		$ret = ($this->errno() > 0);
 		$this->unlock();
 		return $ret;
 	}
