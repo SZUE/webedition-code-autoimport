@@ -504,7 +504,7 @@ abstract class we_database_base{
 	 * is a handy setter, for executing `a`="\"b\"" set from an assoc array
 	 * @param type $arr
 	 */
-	static function arraySetter(array $arr,$imp=','){
+	static function arraySetter(array $arr, $imp = ','){
 		$ret = array();
 		foreach($arr as $key => $val){
 			if(is_object($val) || is_array($val)){
@@ -598,12 +598,23 @@ abstract class we_database_base{
 		return $res;
 	}
 
+	/**checks if this DB connection with this user is allowed to lock a table*/
+	public function hasLock(){
+//lock table
+		$this->lock(VALIDATION_SERVICES_TABLE, 'read');
+//select from an not locked table - must fail
+		$this->query('SELECT 1 FROM ' . FILE_TABLE);
+		$ret = ($this->Errno > 0);
+		$this->unlock();
+		return $ret;
+	}
+
 	/**
 	 * @param $table string,array specify the tables to lock; use numeric array to lock all tables with mode; use named array with [table]=mode to lock specific modes
 	 * @param $mode string name the locking mode
 	 * @return bool true, on success
 	 */
-	function lock($table, $mode = 'write'){
+	public function lock($table, $mode = 'write'){
 		if(!$this->_connect()){
 			return false;
 		}

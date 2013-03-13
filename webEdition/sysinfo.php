@@ -34,11 +34,7 @@ function getInfoTable($_infoArr, $name){
 
 	foreach($_infoArr as $_k => $_v){
 
-		if($_i % 2){
-			$_style = "";
-		} else{
-			$_style = "background: #D4DBFA;";
-		}
+		$_style = ($_i % 2 ? '' : "background: #D4DBFA;");
 
 		$_table->addRow(1);
 		$_table->setRow($_i, array("class" => "defaultfont", "style" => $_style . "height:20px;"));
@@ -224,6 +220,10 @@ if(in_array('suhosin', get_loaded_extensions())){
 } else{
 	$SuhosinText = getOK('', ini_get_message('suhosin'));
 }
+
+$lockTables = $GLOBALS['DB_WE']->hasLock();
+$allowTempTables = searchtoolsearch::checkRightTempTable() == '0';
+
 $_info = array(
 	'webEdition' => array(
 		g_l('sysinfo', '[we_version]') => $weVersion,
@@ -255,6 +255,8 @@ $_info = array(
 	'MySql' => array(
 		g_l('sysinfo', '[mysql_version]') => (version_compare("5.0.0", getMysqlVer(false)) > 1) ? getWarning(sprintf(g_l('sysinfo', "[dbversion warning]"), getMysqlVer(false)), getMysqlVer(false)) : getOK('', getMysqlVer(false)),
 		'max_allowed_packet' => getMaxAllowedPacket(),
+		'lock tables' => ($lockTables ? getOK('', g_l('sysinfo', '[available]')) : getWarning('', '-')),
+		'create temporary tables' => ($allowTempTables ? getOK('', g_l('sysinfo', '[available]')) : getWarning('', '-')),
 		'Info' => $GLOBALS['DB_WE']->getInfo(),
 	),
 	'System' => array(
