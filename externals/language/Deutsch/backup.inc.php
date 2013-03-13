@@ -20,7 +20,7 @@ $l_backup=array(
 Voraussetzung für eine erfolgreiche Umstellung ist, das alle Inhalte im selben Zeichensatz hinterlegt sind und keine Mischung zwischen verschiedenen ISO Zeichensätzen vorliegt (z.B. ISO-8859-1 und ISO-8859-15) und das der korrekte ISO Zeichensatz im Kopf der XML-Datei hinterlegt ist.',
 	'convert_charset_data'=>'Beim Einspielen des Backups Umstellung der Installation von ISO auf UTF-8',
 	'core_info'=>'Alle Vorlagen und Dokumente.',
-	'customer_import_file_found'=>'Hier handelt es sich um eine Import-Datei aus der Kundenverwaltung. Nutzen Sie bitte die Option "Import/Export" aus der Kundenverwaltung (PRO) um die Datei zu importieren.',
+	'customer_import_file_found'=>'Hier handelt es sich um eine Import-Datei aus der Kundenverwaltung. Nutzen Sie bitte die Option "Import/Export" aus der Kundenverwaltung um die Datei zu importieren.',
 	'customer_info'=>'Kunden und Zugangsdaten der Kundenverwaltung.',
 	'decompress'=>'Dekomprimieren',
 	'defaultcharset_warning'=>'<span style="color:ff0000">Achtung! Es ist keinen Standard-Zeichensatz definiert.</span> Dies kann bei bestimmten Server-Konfigurationen zu Problemen beim Wiederherstellen des Backups führen!',

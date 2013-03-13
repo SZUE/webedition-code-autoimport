@@ -19,7 +19,7 @@ $l_backup=array(
 	'convert_charset'=>'Attention! Using this option in an existing site can lead to total loss of all data, please follow the instruction in http://documentation.webedition.org/de/webedition/administration/charset-conversion-of-legacy-sites',
 	'convert_charset_data'=>'While importing the backup, convert the site from ISO to UTF-8',
 	'core_info'=>'All documents and templates.',
-	'customer_import_file_found'=>'The file looks like import file with customer`s data. Please use the "Import/Export" option from the customer module (PRO) to import the data.',
+	'customer_import_file_found'=>'The file looks like import file with customer`s data. Please use the "Import/Export" option from the customer module to import the data.',
 	'customer_info'=>'Customers and accounts data from the customer module.',
 	'decompress'=>'Decompress',
 	'defaultcharset_warning'=>'<span style="color:ff0000">Attention! The standard charset is not defined.</span> For some server configurations, this can lead to problems while importing backups.!',
