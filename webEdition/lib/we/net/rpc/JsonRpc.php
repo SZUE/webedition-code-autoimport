@@ -170,43 +170,41 @@ class we_net_rpc_JsonRpc {
 			case self::kAccessibilityDomain:
 				/* Determine the protocol used for the request */
 				$requestUriDomain = getServerUrl(true);
+/*
 
-
-				/* Get the Referer, up through the domain part */
+				/* Get the Referer, up through the domain part /
 				if (!preg_match("@(https?://[^/]*)@", $_SERVER["HTTP_REFERER"], $regs)) {
-					/* unrecognized referer */
+					/* unrecognized referer /
 					$error->SetError(we_net_rpc_JsonRpcError::kErrorPermissionDenied, "Permission Denied ['Accessibility Domain']");
 					return $error->getError();
-					/* never gets here */
+					/* never gets here /
 				}
 
-				/* Retrieve the referer component */
+				/* Retrieve the referer component /
 				$refererDomain = $regs[1];
-				/* Is the method accessible? */
+				/* Is the method accessible? /
 				if ($refererDomain != $requestUriDomain) {
-					/* Nope. */
+					/* Nope. /
 					$error->SetError(we_net_rpc_JsonRpcError::kErrorPermissionDenied, "Permission Denied ['Accessibility Domain']");
 					return $error->getError();
-					/* never gets here */
 				}
-
+*/
 				$rpcSession = new Zend_Session_Namespace("we_net_rpc_JsonRpc");
 
 				/* If no referer domain has yet been saved in the session */
 				if (! isset($rpcSession->referer_domain)) {
 					/*  then set it now using this referer domain. */
-					$rpcSession->referer_domain = $refererDomain;
+					$rpcSession->referer_domain = $requestUriDomain;
 				}
 			break;
 
 			case self::kAccessibilitySession:
 				/* Get the Referer, up through the domain part */
-				if (!preg_match("@(https?://[^/]*)@", $_SERVER["HTTP_REFERER"], $regs)) {
-					/* unrecognized referer */
+/*				if (!preg_match("@(https?://[^/]*)@", $_SERVER["HTTP_REFERER"], $regs)) {
+					/* unrecognized referer /
 					$error->SetError(we_net_rpc_JsonRpcError::kErrorPermissionDenied, "Permission Denied ['Accessibility Session']");
 					return $error->getError();
-					/* never gets here */
-				}
+				}*/
 
 				/* Retrieve the referer component */
 				$refererDomain = $regs[1];
@@ -214,14 +212,13 @@ class we_net_rpc_JsonRpc {
 				$rpcSession = new Zend_Session_Namespace("we_net_rpc_JsonRpc");
 
 				/* Is the method accessible? */
-				if (isset($rpcSession->referer_domain) && $refererDomain != $rpcSession->referer_domain) {
-					/* Nope. */
+				/*if (isset($rpcSession->referer_domain) && $refererDomain != $rpcSession->referer_domain) {
+					/* Nope. /
 					$error->SetError(we_net_rpc_JsonRpcError::kErrorPermissionDenied, "Permission Denied ['Accessibility Session']");
 					return $error->getError();
-					/* never gets here */
-				} else if (!isset($rpcSession->referer_domain)) {
+				} else */if (!isset($rpcSession->referer_domain)) {
 					/* No referer domain is yet saved in the session.  Save it. */
-					$rpcSession->referer_domain = $refererDomain;
+					$rpcSession->referer_domain = getServerUrl(true);
 				}
 
 			break;
