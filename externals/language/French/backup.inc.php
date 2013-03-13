@@ -36,7 +36,7 @@ $l_backup=array(
 	'error'=>'Erreur',
 	'error_compressing_backup'=>'An error occured while compressing the backup, so the backup could not be finished!',
 	'error_delete'=>'Le fichier de sauvegarde n`a pas pu être supprimé! Essayez de le supprimer par FTP du répertoire /webEdition/we_backup.',
-	'error_timeout'=>'An timeout occured while creating the backup, so the backup could not be finished!',
+	'error_timeout'=>'An timeout occured while creating/restoring the backup, so the operation could not be finished!',
 	
 	'export'=>array(
 		'history_data'=>'Save data of the widget last worked on',

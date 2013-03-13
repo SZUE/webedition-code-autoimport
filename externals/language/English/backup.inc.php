@@ -37,7 +37,7 @@ All files managed by webEdition are deleted! Documents and templates will be kep
 	'error'=>'Error',
 	'error_compressing_backup'=>'An error occured while compressing the backup, so the backup could not be finished!',
 	'error_delete'=>'The backup file can not be deleted! You should try to delete it over FTP from the /webEdition/we_backup folder.',
-	'error_timeout'=>'An timeout occured while creating the backup, so the backup could not be finished!',
+	'error_timeout'=>'An timeout occured while creating/restoring the backup, so the operation could not be finished!',
 	
 	'export'=>array(
 		'history_data'=>'Save data of the widget last worked on',

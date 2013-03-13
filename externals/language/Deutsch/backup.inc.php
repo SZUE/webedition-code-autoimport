@@ -38,7 +38,7 @@ Es werden alle Dateien, die mit webEdition verwaltet werden gelöscht! Dokumente
 	'error'=>'Fehler',
 	'error_compressing_backup'=>'Bei der Komprimierung ist ein Fehler aufgetreten, das Backup konnte nicht abgeschlossen werden!',
 	'error_delete'=>'Backup-Datei konnte nicht gelöscht werden. Bitte löschen Sie die Datei über Ihr FTP-Programm aus dem Ordner /webEdition/we_backup',
-	'error_timeout'=>'Bei der Erstellung des Backup ist ein timeout aufgetreten, das Backup konnte nicht abgeschlossen werden!',
+	'error_timeout'=>'Bei der Erstellung/Wiedherstellung des Backup ist ein timeout aufgetreten, das Der Vorgang konnte nicht abgeschlossen werden!',
 	
 	'export'=>array(
 		'history_data'=>'Verlaufsdaten sichern',
