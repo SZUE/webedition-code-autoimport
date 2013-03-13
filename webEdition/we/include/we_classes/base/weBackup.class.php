@@ -207,7 +207,8 @@ class weBackup extends we_backup{
 	 */
 	public static function limitsReached($table, $execTime){
 		if(!isset($_SERVER['REQUEST_TIME'])){
-			$_SERVER['REQUEST_TIME'] = time();
+			//we don't have the time of the request, assume some time is already spent.
+			$_SERVER['REQUEST_TIME'] = time() + 3;
 		}
 		if($table){
 			//check if at least 10 avg rows
@@ -250,8 +251,7 @@ class weBackup extends we_backup{
 
 			if(
 				((defined("OBJECT_TABLE") && $object->table == OBJECT_TABLE) ||
-				(defined("OBJECT_FILES_TABLE") && $object->table == OBJECT_FILES_TABLE))
-				&& $this->old_objects_deleted == 0){
+				(defined("OBJECT_FILES_TABLE") && $object->table == OBJECT_FILES_TABLE)) && $this->old_objects_deleted == 0){
 				$this->delOldTables();
 				$this->old_objects_deleted = 1;
 			}
@@ -266,7 +266,7 @@ class weBackup extends we_backup{
 
 		foreach($node_set2 as $nsv){
 			$index = $xmlBrowser->nodeName($nsv);
-			$content[$index] = (weContentProvider::needCoding($classname, $index,$nsv) ?
+			$content[$index] = (weContentProvider::needCoding($classname, $index, $nsv) ?
 					weContentProvider::decode($xmlBrowser->getData($nsv)) :
 					$xmlBrowser->getData($nsv));
 		}
@@ -289,7 +289,7 @@ class weBackup extends we_backup{
 		$classname = weContentProvider::getContentTypeHandler("weBinary");
 		foreach($node_set2 as $nsv){
 			$index = $xmlBrowser->nodeName($nsv);
-			$content[$index] = (weContentProvider::needCoding($classname, $index,$nsv) ?
+			$content[$index] = (weContentProvider::needCoding($classname, $index, $nsv) ?
 					weContentProvider::decode($xmlBrowser->getData($nsv)) :
 					$xmlBrowser->getData($nsv));
 		}
@@ -455,7 +455,7 @@ class weBackup extends we_backup{
 							$xmlExport->exportChunk(implode(",", $keyvalue), "weTableItem", $this->dumpfilename, $table, $this->backup_binary);
 							++$this->backup_step;
 						}
-					} while((true||FAST_BACKUP) ? self::limitsReached($table, microtime(true) - $start) : false);
+					} while((true || FAST_BACKUP) ? self::limitsReached($table, microtime(true) - $start) : false);
 				}
 				$i++;
 				if($this->backup_step < $this->table_end && $this->backup_db->num_rows() != 0){

@@ -540,16 +540,16 @@ class we_wizard_import extends we_wizard{
 				if(we_hasPerm('IMPORT')){
 					$_return[1] = we_html_element::jsElement('
 							' . $functions . '
-							if(confirm("' . g_l('import', '[backup_file_found]') . ' \n\n' . g_l('import', '[backup_file_found_question]') . '")){
+							if(confirm("' . str_replace('"', '\'', g_l('import', '[backup_file_found]') . ' \n\n' . g_l('import', '[backup_file_found_question]')) . '")){
 								top.opener.top.we_cmd("recover_backup");
 								top.close();
 							}
 							handle_event("previous");');
 				} else{
-					$_return[1] = we_html_element::jsElement('
-							' . $functions . '
-							' . we_message_reporting::getShowMessageCall(g_l('import', '[backup_file_found]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-							handle_event("previous");');
+					$_return[1] = we_html_element::jsElement(
+							$functions .
+							we_message_reporting::getShowMessageCall(g_l('import', '[backup_file_found]'), we_message_reporting::WE_MESSAGE_ERROR) .
+							'handle_event("previous");');
 				}
 				return $_return;
 			} else if($_xml_type == 'customer'){
