@@ -34,17 +34,18 @@ if(defined('WE_VERSION_SUPP') && WE_VERSION_SUPP!='release'){
 }
 require_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
 $searchButton = we_button::create_button('search', $_SERVER['SCRIPT_NAME'] . '?section=update&update_cmd=update&detail=lookForUpdate'.$alsoBeta);
-if(isset($GLOBALS['LU_Variables']['clientSubVersion']) && $GLOBALS['LU_Variables']['clientSubVersion'] != '0000'){
-	$clientSubVersion = ' (SVN-Revision: ' . $GLOBALS['LU_Variables']['clientSubVersion'] . ')';
-} else{
-	$clientSubVersion = '';
-}
+$clientSubVersion = (isset($GLOBALS['LU_Variables']['clientSubVersion']) && $GLOBALS['LU_Variables']['clientSubVersion'] != '0000') ? 
+	', SVN-Revision: ' . $GLOBALS['LU_Variables']['clientSubVersion'] : '';
+
+$clientVersionName = (isset($GLOBALS['LU_Variables']['clientVersionName']) && $GLOBALS['LU_Variables']['clientVersionName'] != '') ? 
+	$GLOBALS['LU_Variables']['clientVersionName'] : $GLOBALS['LU_Variables']['clientVersion'];
+
 
 $content = '
 <table class="defaultfont" width="100%">
 <tr>
 	<td>' . g_l('liveUpdate', '[update][actualVersion]') . '</td>
-	<td>' . $GLOBALS['LU_Variables']['clientVersion'] . $clientSubVersion . '</td>
+	<td>' . $clientVersionName . ' ('. $GLOBALS['LU_Variables']['clientVersion'] . $clientSubVersion . ')</td>
 </tr>
 <tr>
 	<td>' . g_l('liveUpdate', '[update][lastUpdate]') . '</td>
