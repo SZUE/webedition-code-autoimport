@@ -52,24 +52,8 @@ function we_tag_saveRegisteredUser($attribs){
 					$hook = new weHook('customer_preSave', '', array('customer' => &$_REQUEST['s'], 'from' => 'tag', 'type' => 'new', 'tagname' => 'saveRegisteredUser'));
 					$ret = $hook->executeHook();
 
-					// skip protected Fields
-					if(!empty($protected)){
-						foreach($_REQUEST['s'] as $name => $val){
-							if(in_array($name, $protected)){
-								unset($_REQUEST['s'][$name]);
-							}
-						}
-					}
-					if(!empty($allowed)){
-						foreach($_REQUEST['s'] as $name => $val){
-							if(!in_array($name, $allowed)){
-								unset($_REQUEST['s'][$name]);
-							}
-						}
-					}
-
 					we_saveCustomerImages();
-					$set = we_tag_saveRegisteredUser_processRequest();
+					$set = we_tag_saveRegisteredUser_processRequest($protected, $allowed);
 
 					if(!empty($set)){
 						// User in DB speichern
@@ -132,17 +116,8 @@ function we_tag_saveRegisteredUser($attribs){
 					$hook = new weHook('customer_preSave', '', array('customer' => &$_REQUEST['s'], 'from' => 'tag', 'type' => 'modify', 'tagname' => 'saveRegisteredUser'));
 					$ret = $hook->executeHook();
 
-					// skip protected Fields
-					if(!empty($protected)){
-						foreach($_REQUEST['s'] as $name => $val){
-							if(in_array($name, $protected)){
-								unset($_REQUEST['s'][$name]);
-							}
-						}
-					}
-
 					we_saveCustomerImages();
-					$set_a = we_tag_saveRegisteredUser_processRequest();
+					$set_a = we_tag_saveRegisteredUser_processRequest($protected, $allowed);
 
 					if(isset($_REQUEST['s']['Password']) && $_REQUEST['s']['Password'] != $_SESSION['webuser']['Password']){//bei Password�nderungen m�ssen die Autologins des Users gel�scht werden
 						$GLOBALS['DB_WE']->query('DELETE FROM ' . CUSTOMER_AUTOLOGIN_TABLE . ' WHERE WebUserID=' . intval($_REQUEST['s']['ID']));
@@ -295,7 +270,7 @@ function we_tag_saveRegisteredUser_keepInput(){
 	}
 }
 
-function we_tag_saveRegisteredUser_processRequest(){
+function we_tag_saveRegisteredUser_processRequest($protected, $allowed){
 	$set = array();
 
 	foreach($_REQUEST['s'] as $name => $val){
@@ -312,6 +287,10 @@ function we_tag_saveRegisteredUser_processRequest(){
 			case 'ID':
 				break;
 			default:
+				if((!empty($protected) && in_array($name, $protected))||
+					(!empty($allowed) && !in_array($name, $allowed))){
+					continue;
+				}
 				$set[$name] = $val;
 				break;
 		}
