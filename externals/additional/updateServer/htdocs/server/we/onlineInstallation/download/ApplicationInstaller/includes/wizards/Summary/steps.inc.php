@@ -1,0 +1,8 @@
+<?php
+
+	$leInstallerSteps = array(
+		'Summary',
+
+	);
+
+?>
