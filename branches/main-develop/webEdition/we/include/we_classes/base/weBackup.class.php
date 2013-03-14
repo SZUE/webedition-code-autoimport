@@ -206,9 +206,17 @@ class weBackup extends we_backup{
 	 * @return boolean true, if still time left
 	 */
 	public static function limitsReached($table, $execTime){
-		if(!isset($_SERVER['REQUEST_TIME'])){
-			$_SERVER['REQUEST_TIME'] = time();
+		if(!isset($GLOBALS['we']['REQUEST_TIME'])){
+			$GLOBALS['we']['REQUEST_TIME'] = (isset($_SERVER['REQUEST_TIME']) ? $_SERVER['REQUEST_TIME'] :
+					//we don't have the time of the request, assume some time is already spent.
+					time() + 3);
+			$diff = time() - $GLOBALS['we']['REQUEST_TIME'];
+			if($diff > 5 || $diff < 0){
+				t_e('Request time & time differ too much', $diff, $GLOBALS['we']['REQUEST_TIME'], time());
+				$GLOBALS['we']['REQUEST_TIME'] = time() + 5;
+			}
 		}
+
 		if($table){
 			//check if at least 10 avg rows
 			$rowSz = $_SESSION['weS']['weBackupVars']['avgLen'][strtolower(stripTblPrefix($table))];
@@ -217,7 +225,12 @@ class weBackup extends we_backup{
 			}
 		}
 
-		$maxTime = $_SESSION['weS']['weBackupVars']['limits']['exec'] > 32 ? 30 : $_SESSION['weS']['weBackupVars']['limits']['exec'] - 2;
+		if($execTime == 0){
+			t_e('execTime was 0 - this should never happen - assume microtime is not working correct', $execTime);
+			$execTime = 1;
+		}
+
+		$maxTime = $_SESSION['weS']['weBackupVars']['limits']['exec'] > 33 ? 30 : $_SESSION['weS']['weBackupVars']['limits']['exec'] - 2;
 		if(time() - intval($_SERVER['REQUEST_TIME']) + 2 * $execTime > $maxTime){
 			return false;
 		}
@@ -250,8 +263,7 @@ class weBackup extends we_backup{
 
 			if(
 				((defined("OBJECT_TABLE") && $object->table == OBJECT_TABLE) ||
-				(defined("OBJECT_FILES_TABLE") && $object->table == OBJECT_FILES_TABLE))
-				&& $this->old_objects_deleted == 0){
+				(defined("OBJECT_FILES_TABLE") && $object->table == OBJECT_FILES_TABLE)) && $this->old_objects_deleted == 0){
 				$this->delOldTables();
 				$this->old_objects_deleted = 1;
 			}
@@ -266,7 +278,7 @@ class weBackup extends we_backup{
 
 		foreach($node_set2 as $nsv){
 			$index = $xmlBrowser->nodeName($nsv);
-			$content[$index] = (weContentProvider::needCoding($classname, $index,$nsv) ?
+			$content[$index] = (weContentProvider::needCoding($classname, $index, $nsv) ?
 					weContentProvider::decode($xmlBrowser->getData($nsv)) :
 					$xmlBrowser->getData($nsv));
 		}
@@ -289,7 +301,7 @@ class weBackup extends we_backup{
 		$classname = weContentProvider::getContentTypeHandler("weBinary");
 		foreach($node_set2 as $nsv){
 			$index = $xmlBrowser->nodeName($nsv);
-			$content[$index] = (weContentProvider::needCoding($classname, $index,$nsv) ?
+			$content[$index] = (weContentProvider::needCoding($classname, $index, $nsv) ?
 					weContentProvider::decode($xmlBrowser->getData($nsv)) :
 					$xmlBrowser->getData($nsv));
 		}
@@ -455,7 +467,7 @@ class weBackup extends we_backup{
 							$xmlExport->exportChunk(implode(",", $keyvalue), "weTableItem", $this->dumpfilename, $table, $this->backup_binary);
 							++$this->backup_step;
 						}
-					} while((true||FAST_BACKUP) ? self::limitsReached($table, microtime(true) - $start) : false);
+					} while((true || FAST_BACKUP) ? self::limitsReached($table, microtime(true) - $start) : false);
 				}
 				$i++;
 				if($this->backup_step < $this->table_end && $this->backup_db->num_rows() != 0){

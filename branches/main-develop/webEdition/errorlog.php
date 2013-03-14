@@ -144,12 +144,12 @@ if($size){
 	);
 } else{
 	$_parts[] = array(
-		'html' => 'No entries found',
+		'html' => g_l('global','[no_entries]'),
 		'space' => 10,
 	);
 }
 
-we_html_tools::htmlTop('Errorlog');
+we_html_tools::htmlTop(g_l('javaMenu_global','[showerrorlog]'));
 echo we_html_element::jsScript(JS_DIR . 'keyListener.js') .
  we_html_element::jsElement('function closeOnEscape() {
 		return true;

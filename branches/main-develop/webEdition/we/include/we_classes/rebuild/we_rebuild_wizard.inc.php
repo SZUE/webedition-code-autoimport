@@ -369,7 +369,7 @@ abstract class we_rebuild_wizard{
 					break;
 				case 'rebuild_thumbnails':
 					if(!$thumbs){
-						return array($js . ';top.wizbusy.showPrevNextButton();' . we_message_reporting::getShowMessageCall(g_l('rebuild', "[no_thumbs_selected]"), we_message_reporting::WE_MESSAGE_WARNING), "");
+						return array($js . ';top.wizbusy.showPrevNextButton();' . we_message_reporting::getShowMessageCall(g_l('rebuild', '[no_thumbs_selected]'), we_message_reporting::WE_MESSAGE_ERROR), '');
 					}
 					$data = we_rebuild::getThumbnails($thumbs, $thumbsFolders);
 					break;
@@ -391,7 +391,7 @@ abstract class we_rebuild_wizard{
 
 				return array();
 			} else{
-				return array($js . we_message_reporting::getShowMessageCall(g_l('rebuild', "[nothing_to_rebuild]"), 1) . 'top.wizbusy.showPrevNextButton();', "");
+				return array($js . we_message_reporting::getShowMessageCall(g_l('rebuild', "[nothing_to_rebuild]"), we_message_reporting::WE_MESSAGE_ERROR) . 'top.wizbusy.showPrevNextButton();', "");
 			}
 		} else{
 			$fr = new rebuildFragment($taskname, 1, 0, array());
