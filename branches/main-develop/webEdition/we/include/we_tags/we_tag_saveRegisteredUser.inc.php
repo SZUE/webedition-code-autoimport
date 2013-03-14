@@ -26,6 +26,7 @@ function we_tag_saveRegisteredUser($attribs){
 	$default_register = f('SELECT Value FROM ' . CUSTOMER_ADMIN_TABLE . ' WHERE Name="default_saveRegisteredUser_register"', 'Value', $GLOBALS['DB_WE']) == 'true';
 	$registerallowed = (isset($attribs['register']) ? weTag_getAttribute('register', $attribs, $default_register, true) : $default_register);
 	$protected = makeArrayFromCSV(weTag_getAttribute('protected', $attribs));
+	$allowed = makeArrayFromCSV(weTag_getAttribute('allowed', $attribs));
 	$GLOBALS['we_customer_writen'] = false;
 	$GLOBALS['we_customer_written'] = false;
 	if(defined('CUSTOMER_TABLE') && isset($_REQUEST['s'])){
@@ -59,6 +60,14 @@ function we_tag_saveRegisteredUser($attribs){
 							}
 						}
 					}
+					if(!empty($allowed)){
+						foreach($_REQUEST['s'] as $name => $val){
+							if(!in_array($name, $allowed)){
+								unset($_REQUEST['s'][$name]);
+							}
+						}
+					}
+
 					we_saveCustomerImages();
 					$set = we_tag_saveRegisteredUser_processRequest();
 
