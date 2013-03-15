@@ -609,7 +609,8 @@ class weExportFrames extends weModuleFrames{
 										' . $this->editorBodyFrame . '.addLog("' . addslashes(we_html_tools::getPixel(20, 5)) . we_html_element::htmlB(g_l('export', '[export]')) . '<br>");
 									}
 								');
-							weFile::save($this->View->export->ExportFilename, weXMLExIm::getHeader(), "wb");
+						//FIXME: set export type in getHeader
+						weFile::save($this->View->export->ExportFilename, weXMLExIm::getHeader(), "wb");
 							if($this->View->export->HandleOwners){
 								weFile::save($this->View->export->ExportFilename, weXMLExport::exportInfoMap($xmlExIm->RefTable->Users), "ab");
 							}
