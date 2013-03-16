@@ -11,7 +11,7 @@
  *
  * The GNU Lesser General Public License can be found at
  * http://www.gnu.org/licenses/lgpl-3.0.html.
- * A copy is found in the textfile 
+ * A copy is found in the textfile
  * webEdition/licenses/webEditionSDK/License.txt
  *
  *
@@ -19,16 +19,15 @@
  * @package    we_io
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
- 
+
 /**
  * Base class for data base
- * 
+ *
  * @category   we
  * @package    we_io
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-class we_io_DB
-{
+class we_io_DB{
 
 	/**
 	 * dbInstance attribute
@@ -42,27 +41,26 @@ class we_io_DB
 	 *
 	 * @return object
 	 */
-	static function newAdapter()
-	{
+	static function newAdapter(){
 		$DBpar = array('username' => DB_USER, 'password' => DB_PASSWORD, 'dbname' => DB_DATABASE);
-		if(stripos(DB_HOST,':') !== false){
-			list($host,$port) = explode(':',DB_HOST);
+		if(stripos(DB_HOST, ':') !== false){
+			list($host, $port) = explode(':', DB_HOST);
 			$DBpar['host'] = $host;
 			$DBpar['port'] = $port;
-		} else {
-			$DBpar['host'] =  DB_HOST;
+		} else{
+			$DBpar['host'] = DB_HOST;
 		}
-		if (defined('DB_CHARSET') && DB_CHARSET !='' ){
-			if (strpos(strtolower(DB_CHARSET), 'utf') !== false){// es gibt alte sites, da steht UTF-8 drin, was aber falsch ist
+		$charset = we_database_base::getCharset();
+		if($charset != ''){
+			if(strpos(strtolower($charset), 'utf') !== false){// es gibt alte sites, da steht UTF-8 drin, was aber falsch ist
 				$DBpar['charset'] = 'utf8';
-			} else {
-				$DBpar['charset'] = DB_CHARSET;
+			} else{
+				$DBpar['charset'] = $charset;
 			}
-			
-		} else {
+		} else{
 			$DBpar['charset'] = 'utf8';
 		}
-		
+
 		$db = Zend_Db::factory('Pdo_Mysql', $DBpar);
 		return $db;
 	}
@@ -72,9 +70,8 @@ class we_io_DB
 	 *
 	 * @return object
 	 */
-	static function sharedAdapter()
-	{
-		if (self::$dbInstance === NULL) {
+	static function sharedAdapter(){
+		if(self::$dbInstance === NULL){
 			self::$dbInstance = self::newAdapter();
 		}
 		return self::$dbInstance;
@@ -86,12 +83,12 @@ class we_io_DB
 	 * @param string $tab
 	 * @return boolean
 	 */
-	static function tableExists($tab)
-	{
+	static function tableExists($tab){
 		$_db = we_io_DB::sharedAdapter();
-		if ($_db->fetchAll("SHOW TABLES LIKE '$tab';"))
+		if($_db->fetchAll("SHOW TABLES LIKE '$tab';"))
 			return true;
 		else
 			return false;
 	}
+
 }

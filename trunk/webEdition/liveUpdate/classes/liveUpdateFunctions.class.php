@@ -618,10 +618,10 @@ class liveUpdateFunctions{
 		  } */
 
 		// second, we need to check if there is a collation
-		if(defined("DB_CHARSET") && DB_CHARSET != "" && defined("DB_COLLATION") && DB_COLLATION != ""){
+		$Charset = we_database_base::getCharset();
+		$Collation = we_database_base::getCollation();
+		if($Charset != '' && $Collation != ''){
 			if(stripos($query, "CREATE TABLE ") === 0){
-				$Charset = DB_CHARSET;
-				$Collation = DB_COLLATION;
 				if(strtoupper($Charset) == 'UTF-8'){//#4661
 					$Charset = 'utf8';
 				}

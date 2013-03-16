@@ -718,15 +718,6 @@ class searchtoolsearch extends we_search{
 	function createTempTable(){
 		$this->db->query('DROP TABLE IF EXISTS SEARCH_TEMP_TABLE');
 
-		$tableType = "MEMORY";
-
-		$charset_collation = "";
-		if(defined("DB_CHARSET") && DB_CHARSET != "" && defined("DB_COLLATION") && DB_COLLATION != ""){
-			$Charset = DB_CHARSET;
-			$Collation = DB_COLLATION;
-			$charset_collation = " CHARACTER SET " . $Charset . " COLLATE " . $Collation;
-		}
-
 		$tempTableTrue = (self::checkRightTempTable() == '0') ? 'TEMPORARY' : '';
 
 		if(!(self::checkRightDropTable() == '1' && $tempTableTrue == '')){
@@ -749,7 +740,7 @@ class searchtoolsearch extends we_search{
 				Extension VARCHAR( 16 ) NOT NULL ,
 				TableID INT( 11 ) NOT NULL,
 				VersionID BIGINT( 20 ) NOT NULL
-				) ENGINE = ' . $tableType . $charset_collation);
+				) ENGINE = MEMORY' . we_database_base::getCharsetCollation());
 		}
 	}
 
@@ -948,16 +939,9 @@ class searchtoolsearch extends we_search{
 
 	static function checkRightTempTable(){
 		$db = new DB_WE();
-		$tableType = "MEMORY";
-		$charset_collation = "";
-		if(defined("DB_CHARSET") && DB_CHARSET != "" && defined("DB_COLLATION") && DB_COLLATION != ""){
-			$Charset = DB_CHARSET;
-			$Collation = DB_COLLATION;
-			$charset_collation = " CHARACTER SET " . $Charset . " COLLATE " . $Collation;
-		}
 		$db->query('CREATE TEMPORARY TABLE test_SEARCH_TEMP_TABLE (
 				`test` VARCHAR( 1 ) NOT NULL
-				) ENGINE=' . $tableType . $charset_collation);
+				) ENGINE=MEMORY' . we_database_base::getCharsetCollation());
 
 		$db->next_record();
 
@@ -975,19 +959,9 @@ class searchtoolsearch extends we_search{
 	static function checkRightDropTable(){
 		$db = new DB_WE();
 
-		$charset_collation = '';
-		if(defined('DB_CHARSET') && DB_CHARSET != '' && defined('DB_COLLATION') && DB_COLLATION != ''){
-			$Charset = DB_CHARSET;
-			$Collation = DB_COLLATION;
-			$charset_collation = ' CHARACTER SET ' . $Charset . " COLLATE " . $Collation;
-		}
-
-		$tableType = "MEMORY";
-
-
 		$db->query('CREATE TABLE IF NOT EXISTS test_SEARCH_TEMP_TABLE (
 				`test` VARCHAR( 1 ) NOT NULL
-				) ENGINE=' . $tableType . $charset_collation);
+				) ENGINE=MEMORY' . we_database_base::getCharsetCollation());
 		$db->next_record();
 
 		$db->query('DROP TABLE IF EXISTS test_SEARCH_TEMP_TABLE');
