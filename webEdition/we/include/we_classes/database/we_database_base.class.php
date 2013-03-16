@@ -708,15 +708,7 @@ abstract class we_database_base{
 			}
 		}
 
-		// Charset and Collation
-		$charset_collation = "";
-		if(defined('DB_CHARSET') && DB_CHARSET != '' && defined('DB_COLLATION') && DB_COLLATION != ''){
-			$Charset = DB_CHARSET;
-			$Collation = DB_COLLATION;
-			$charset_collation = ' CHARACTER SET ' . $Charset . ' COLLATE ' . $Collation;
-		}
-
-		return $this->query('CREATE TABLE ' . $this->escape($tab) . ' (' . implode(',', $cols_sql) . ') ENGINE = MYISAM ' . $charset_collation . ';');
+		return $this->query('CREATE TABLE ' . $this->escape($tab) . ' (' . implode(',', $cols_sql) . ') ENGINE = MYISAM ' . we_database_base::getCharsetCollation() . ';');
 	}
 
 	public function delTable($tab){
@@ -868,6 +860,20 @@ abstract class we_database_base{
 			return $this->query('ALTER TABLE ' . $tab . ' MODIFY ' . $found . ' ' . ($newPos == 'FIRST' ? 'FIRST' : 'AFTER `' . trim($newPos, '`') . '`'));
 		}
 		return false;
+	}
+
+	public static function getCharset(){
+		return defined('DB_CHARSET') ? DB_CHARSET : '';
+	}
+
+	public static function getCollation(){
+		return defined('DB_COLLATION') ? DB_COLLATION : '';
+	}
+
+	public static function getCharsetCollation(){
+		$Charset = self::getCharset();
+		$Collation = self::getCollation();
+		return ($Charset != '' && $Collation != '' ? ' CHARACTER SET ' . $Charset . ' COLLATE ' . $Collation : '');
 	}
 
 	public function t_e_query($cnt = 1){
