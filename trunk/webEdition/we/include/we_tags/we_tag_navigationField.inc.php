@@ -28,4 +28,5 @@ function we_tag_navigationField($attribs){
 		$element = $GLOBALS['weNavigationItemArray'][(count($GLOBALS['weNavigationItemArray']) - 1)];
 		return $element->getNavigationField($attribs);
 	}
+	return '';
 }

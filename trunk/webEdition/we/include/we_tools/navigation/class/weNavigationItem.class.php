@@ -237,10 +237,7 @@ class weNavigationItem{
 	}
 
 	function writeItem(&$weNavigationItems, $depth = false){
-		if(!($depth === false || $this->level <= $depth)){
-			return '';
-		}
-		if(!$this->isVisible()){
+		if(!($depth === false || $this->level <= $depth) || !$this->isVisible()){
 			return '';
 		}
 		$template = $weNavigationItems->getTemplate($this);
@@ -267,8 +264,7 @@ class weNavigationItem{
 				return ($fieldname == 'title' ?
 						oldHtmlspecialchars($this->$fieldname) :
 						$this->$fieldname);
-			} else
-			if(isset($this->attributes[$fieldname]) && $this->attributes[$fieldname] != ''){
+			} elseif(isset($this->attributes[$fieldname]) && $this->attributes[$fieldname] != ''){
 				return ($fieldname == 'title' ?
 						oldHtmlspecialchars($this->attributes[$fieldname]) :
 						$this->attributes[$fieldname]);
@@ -284,11 +280,9 @@ class weNavigationItem{
 				unset($attribs['complete']);
 				$attribs['attributes'] = $_compl;
 				$attribs = $this->getNavigationFieldAttributes($attribs);
-				if($_compl == 'image'){
-					return getHtmlTag('img', $attribs);
-				} else{
-					return (isset($attribs['href']) && !empty($attribs['href']) ? getHtmlTag('a', $attribs, $this->text) : $this->text);
-				}
+				return ($_compl == 'image' ?
+						getHtmlTag('img', $attribs) :
+						(isset($attribs['href']) && !empty($attribs['href']) ? getHtmlTag('a', $attribs, $this->text) : $this->text));
 			}
 			return '';
 		}
@@ -424,3 +418,4 @@ class weNavigationItem{
 	}
 
 }
+
