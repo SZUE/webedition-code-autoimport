@@ -26,7 +26,6 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 
 
-$_margin_top = 5;
 $_space_size = 100;
 $_input_size = 440;
 

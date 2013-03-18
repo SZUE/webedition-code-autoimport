@@ -22,14 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-
 $createVoting = we_button::create_button("new_voting", "javascript:top.opener.top.we_cmd('new_voting');", true, -1, -1, "", "", !we_hasPerm("NEW_VOTING"));
 $createVotingGroup = we_button::create_button("new_voting_group", "javascript:top.opener.top.we_cmd('new_voting_group');", true, -1, -1, "", "", !we_hasPerm("NEW_VOTING"));
-
-
-$content = $createVoting  . we_html_tools::getPixel(2,14) . $createVotingGroup;
-
+$content = $createVoting . we_html_tools::getPixel(2, 14) . $createVotingGroup;
 $modimage = "voting.gif";
-

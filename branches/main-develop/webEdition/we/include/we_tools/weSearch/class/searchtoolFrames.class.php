@@ -44,38 +44,29 @@ class searchtoolFrames extends weToolFrames{
 	}
 
 	function getHTMLCmd(){
-		$out = "";
-
-		if(isset($_REQUEST["pid"])){
-			$pid = $_REQUEST["pid"];
-		} else
+		if(!isset($_REQUEST["pid"])){
 			exit();
+		}
+		$pid = $_REQUEST["pid"];
 
-		if(isset($_REQUEST["offset"])){
-			$offset = $_REQUEST["offset"];
-		} else
-			$offset = 0;
+		$offset = (isset($_REQUEST["offset"]) ? $_REQUEST["offset"] : 0);
 
 		$_class = $this->toolClassName . 'TreeDataSource';
 		include_once ($this->toolDir . 'class/' . $_class . '.class.php');
 
 		$_loader = new $_class($this->TreeSource);
 
-		$rootjs = '';
-		if(!$pid){
-			$rootjs .= '
-      ' . $this->Tree->topFrame . '.treeData.clear();
-      ' . $this->Tree->topFrame . '.treeData.add(new ' . $this->Tree->topFrame . '.rootEntry(\'' . $pid . '\',\'root\',\'root\'));
-      ';
-		}
+		$rootjs = (!$pid ?
+				$this->Tree->topFrame . '.treeData.clear();' .
+				$this->Tree->topFrame . '.treeData.add(new ' . $this->Tree->topFrame . '.rootEntry(\'' . $pid . '\',\'root\',\'root\'));' :
+				'');
 
-		$hiddens = we_html_element::htmlHidden(array(
-				'name' => 'pnt', 'value' => 'cmd'
-			)) . we_html_element::htmlHidden(array(
-				'name' => 'cmd', 'value' => 'no_cmd'
-			));
 
-		$out .= we_html_element::htmlBody(
+		$hiddens =
+			we_html_element::htmlHidden(array('name' => 'pnt', 'value' => 'cmd')) .
+			we_html_element::htmlHidden(array('name' => 'cmd', 'value' => 'no_cmd'));
+
+		$out = we_html_element::htmlBody(
 				array(
 				'bgcolor' => 'white',
 				'marginwidth' => '10',
@@ -113,47 +104,27 @@ class searchtoolFrames extends weToolFrames{
 
 		//tabs for entries
 		if(we_hasPerm('CAN_SEE_DOCUMENTS')){
-			$we_tabs->addTab(
-				new we_tab(
-					'#',
-					g_l('searchtool', '[documents]'),
-					'((' . $this->topFrame . '.activ_tab==1) ? TAB_ACTIVE : TAB_NORMAL)',
-					"setTab('1');",
-					array(
-						"id" => "tab_1", "style" => "display:$displayEntry"
-				)));
+			$we_tabs->addTab(new we_tab(
+				'#', g_l('searchtool', '[documents]'), '((' . $this->topFrame . '.activ_tab==1) ? TAB_ACTIVE : TAB_NORMAL)', "setTab('1');", array(
+				"id" => "tab_1", "style" => "display:$displayEntry"
+			)));
 		}
 		if($_SESSION['weS']['we_mode'] != "seem" && we_hasPerm('CAN_SEE_TEMPLATES')){
-			$we_tabs->addTab(
-				new we_tab(
-					'#',
-					g_l('searchtool', '[templates]'),
-					'((' . $this->topFrame . '.activ_tab==2) ? TAB_ACTIVE : TAB_NORMAL)',
-					"setTab('2');",
-					array(
-						"id" => "tab_2", "style" => "display:$displayEntry"
-				)));
-		}
-		$we_tabs->addTab(
-			new we_tab(
-				'#',
-				g_l('searchtool', '[advSearch]'),
-				'((' . $this->topFrame . '.activ_tab==3) ? TAB_ACTIVE : TAB_NORMAL)',
-				"setTab('3');",
-				array(
-					"id" => "tab_3", "style" => "display:$displayEntry"
+			$we_tabs->addTab(new we_tab(
+				'#', g_l('searchtool', '[templates]'), '((' . $this->topFrame . '.activ_tab==2) ? TAB_ACTIVE : TAB_NORMAL)', "setTab('2');", array(
+				"id" => "tab_2", "style" => "display:$displayEntry"
 			)));
+		}
+		$we_tabs->addTab(new we_tab(
+			'#', g_l('searchtool', '[advSearch]'), '((' . $this->topFrame . '.activ_tab==3) ? TAB_ACTIVE : TAB_NORMAL)', "setTab('3');", array(
+			"id" => "tab_3", "style" => "display:$displayEntry"
+		)));
 
 		//tabs for folders
-		$we_tabs->addTab(
-			new we_tab(
-				'#',
-				g_l('searchtool', '[properties]'),
-				'((' . $this->topFrame . '.activ_tab==4) ? TAB_ACTIVE : TAB_NORMAL)',
-				"setTab('4');",
-				array(
-					"id" => "tab_4", "style" => "display:$displayFolder"
-			)));
+		$we_tabs->addTab(new we_tab(
+			'#', g_l('searchtool', '[properties]'), '((' . $this->topFrame . '.activ_tab==4) ? TAB_ACTIVE : TAB_NORMAL)', "setTab('4');", array(
+			"id" => "tab_4", "style" => "display:$displayFolder"
+		)));
 
 		$we_tabs->onResize();
 
@@ -223,7 +194,7 @@ class searchtoolFrames extends weToolFrames{
 					)) . we_html_element::htmlHidden(
 						array(
 							'name' => 'savedSearchName', 'value' => $this->Model->Text
-					))));
+		))));
 
 		$whichSearch = "DocSearch";
 
@@ -256,68 +227,22 @@ class searchtoolFrames extends weToolFrames{
 				$body, $head . STYLESHEET . $this->View->getJSProperty() . $this->View->getSearchJS($whichSearch));
 	}
 
-	//	function getTab()
-	//      {
-	//          $cmdid = isset($_REQUEST['cmdid']) ? ($_REQUEST['cmdid']) : "";
-	//
-	//          if (isset($_REQUEST["tab"]) && $_REQUEST["tab"] != "") {
-	//              $tabNr = $_REQUEST["tab"];
-	//          } else {
-	//              $tabNr = isset($_REQUEST['tabnr']) ? ($_REQUEST['tabnr']) : 1;
-	//          }
-	//          if (($cmdid > 0 && $cmdid < 8)) {
-	//              $tabNr = 3;
-	//          } elseif ($cmdid > 8) {
-	//              $tabNr = 1;
-	//          }
-	//          if (!we_hasPerm('CAN_SEE_DOCUMENTS') && ($_SESSION['weS']['we_mode'] == "seem" || !we_hasPerm('CAN_SEE_TEMPLATES'))) {
-	//              $tabNr = 3;
-	//          }
-	//
-	//          if ($this->Model->IsFolder == 1) {
-	//              $tabNr = 4;
-	//          }
-	//
-	//          return $tabNr;
-	//      }
-
-
 	function getTab(){
 		$cmdid = isset($_REQUEST['cmdid']) ? ($_REQUEST['cmdid']) : "";
-		if($cmdid != "")
+		if($cmdid != ""){
 			$_REQUEST["searchstartAdvSearch"] = 0;
-		if(isset($_REQUEST["tab"]) && $_REQUEST["tab"] != ""){
-			$tabNr = $_REQUEST["tab"];
-		} elseif($cmdid != ""){
-			$tabNr = $this->Model->activTab;
-		} else{
-			$tabNr = isset($_REQUEST['tabnr']) ? ($_REQUEST['tabnr']) : 1;
 		}
-		//		if (($cmdid > 0 && $cmdid < 8)) {
-		//			$tabNr = 3;
-		//		} elseif ($cmdid > 8) {
-		//			$tabNr = 1;
-		//		}
-		//		if (! we_hasPerm ( 'CAN_SEE_DOCUMENTS' ) && ($_SESSION['weS']["we_mode"] == "seem" || ! we_hasPerm ( 'CAN_SEE_TEMPLATES' ))) {
-		//			$tabNr = 3;
-		//		}
-		//
-		//		if ($this->Model->IsFolder == 1) {
-		//			$tabNr = 4;
-		//		}
-
-
-		return $tabNr;
+		if(isset($_REQUEST["tab"]) && $_REQUEST["tab"] != ""){
+			return $_REQUEST["tab"];
+		} elseif($cmdid != ""){
+			return $this->Model->activTab;
+		}
+		return isset($_REQUEST['tabnr']) ? ($_REQUEST['tabnr']) : 1;
 	}
 
 	function getHTMLEditorFooter(){
 
-		$table1 = new we_html_table(
-				array(
-					"border" => "0", "cellpadding" => "0", "cellspacing" => "0", "width" => "3000"
-				),
-				1,
-				1);
+		$table1 = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0", "width" => "3000"), 1, 1);
 		$table1->setCol(0, 0, array(
 			"nowrap" => null, "valign" => "top"
 			), we_html_tools::getPixel(1600, 10));
@@ -328,7 +253,7 @@ class searchtoolFrames extends weToolFrames{
 					"save", "javascript:we_save();", true, 100, 22, '', '', (!we_hasPerm('EDIT_NAVIGATION')))
 				), 10, array(
 				'style' => 'margin-left: 15px'
-			));
+		));
 
 		return $this->getHTMLDocument(
 				we_html_element::jsScript(JS_DIR . "attachKeyListener.js") .
@@ -348,9 +273,6 @@ class searchtoolFrames extends weToolFrames{
 	}
 
 	function getHTMLProperties($preselect = ''){
-
-		$out = '';
-
 		$tabNr = $this->getTab();
 
 		$hiddens = array(
@@ -361,30 +283,22 @@ class searchtoolFrames extends weToolFrames{
 			'delayParam' => (isset($_REQUEST['delayParam']) ? $_REQUEST['delayParam'] : '')
 		);
 
-		$out .= $this->View->getCommonHiddens($hiddens);
-		$out .= we_html_element::htmlHidden(array(
+		return $this->View->getCommonHiddens($hiddens) .
+			we_html_element::htmlHidden(array(
 				'name' => 'newone', 'value' => ($this->Model->ID == 0 ? 1 : 0)
-			));
-
-		$out .= we_html_element::htmlDiv(
-				array(
+			)) .
+			we_html_element::htmlDiv(array(
 				'id' => 'tab1', 'style' => ($tabNr == 1 ? 'display: block;' : 'display: none')
-				), $this->getHTMLSearchtool($this->getHTMLTabDocuments()));
-		$out .= we_html_element::htmlDiv(
-				array(
+				), $this->getHTMLSearchtool($this->getHTMLTabDocuments())) .
+			we_html_element::htmlDiv(array(
 				'id' => 'tab2', 'style' => ($tabNr == 2 ? 'display: block;' : 'display: none')
-				), $this->getHTMLSearchtool($this->getHTMLTabTemplates()));
-		$out .= we_html_element::htmlDiv(
-				array(
+				), $this->getHTMLSearchtool($this->getHTMLTabTemplates())) .
+			we_html_element::htmlDiv(array(
 				'id' => 'tab3', 'style' => ($tabNr == 3 ? 'display: block;' : 'display: none')
-				), $this->getHTMLSearchtool($this->getHTMLTabAdvanced()));
-
-		$out .= we_html_element::htmlDiv(
-				array(
+				), $this->getHTMLSearchtool($this->getHTMLTabAdvanced())) .
+			we_html_element::htmlDiv(array(
 				'id' => 'tab4', 'style' => ($tabNr == 4 ? 'display: block;' : 'display: none')
 				), $this->getHTMLSearchtool($this->getHTMLGeneral()));
-
-		return $out;
 	}
 
 	function getHTMLGeneral(){
@@ -400,7 +314,7 @@ class searchtoolFrames extends weToolFrames{
 						'Text', '', $this->Model->Text, '', 'style="width: ' . $this->_width_size . '" );"', '', '', '', '', $disabled), g_l('searchtool', '[dir]')),
 				'space' => $this->_space_size,
 				'noline' => 1
-			));
+		));
 	}
 
 	function getHTMLTabDocuments(){
@@ -439,7 +353,7 @@ class searchtoolFrames extends weToolFrames{
 			),
 			array(
 				'headline' => '', 'html' => $_searchResult_block, 'space' => $this->_space_size
-			));
+		));
 	}
 
 	function getHTMLTabTemplates(){
@@ -453,8 +367,8 @@ class searchtoolFrames extends weToolFrames{
 		$foundItems = $_SESSION['weS']['weSearch']['foundItems' . $innerSearch . ''];
 
 		$_searchResult_block = '<div>
-      <div id=\'parametersTop_' . $innerSearch . '\'>' . $this->View->getSearchParameterTop(
-				$foundItems, $innerSearch) . '</div>' . $this->View->tblList($content, $headline, $innerSearch) . '<div id=\'parametersBottom_' . $innerSearch . '\'>' . $this->View->getSearchParameterBottom(
+      <div id="parametersTop_' . $innerSearch . '">' . $this->View->getSearchParameterTop(
+				$foundItems, $innerSearch) . '</div>' . $this->View->tblList($content, $headline, $innerSearch) . '<div id="parametersBottom_' . $innerSearch . '">' . $this->View->getSearchParameterBottom(
 				$foundItems, $innerSearch) . '</div>
       </div>';
 
@@ -476,7 +390,7 @@ class searchtoolFrames extends weToolFrames{
 			),
 			array(
 				'headline' => '', 'html' => $_searchResult_block, 'space' => $this->_space_size
-			));
+		));
 	}
 
 	function getHTMLTabAdvanced(){
@@ -506,24 +420,19 @@ class searchtoolFrames extends weToolFrames{
 			),
 			array(
 				'headline' => '', 'html' => $_searchResult_block, 'space' => $this->_space_size
-			));
+		));
 	}
 
 	function getHTMLSearchtool($content){
-		$out = "";
+		$out = '';
 
 		foreach($content as $i => $c){
 			$_forceRightHeadline = (isset($c["forceRightHeadline"]) && $c["forceRightHeadline"]);
-
 			$icon = (isset($c["icon"]) && $c["icon"]) ? ('<img src="' . IMAGE_DIR . 'icons/' . $c["icon"] . '" width="64" height="64" alt="" style="margin-left:20px;" />') : "";
 			$headline = (isset($c["headline"]) && $c["headline"]) ? ('<div  class="weMultiIconBoxHeadline" style="margin-bottom:10px;margin-left:30px;">' . $c["headline"] . '</div>') : "";
-
 			$mainContent = (isset($c["html"]) && $c["html"]) ? $c["html"] : "";
-
 			$leftWidth = (isset($c["space"]) && $c["space"]) ? abs($c["space"]) : 0;
-
 			$leftContent = $icon ? $icon : (($leftWidth && (!$_forceRightHeadline)) ? $headline : "");
-
 			$rightContent = '<div class="defaultfont">' . ((($icon && $headline) || ($leftContent === "") || $_forceRightHeadline) ? ($headline . '<div>' . $mainContent . '</div>') : '<div>' . $mainContent . '</div>') . '</div>';
 
 			if($leftContent || $leftWidth && $leftContent != ""){

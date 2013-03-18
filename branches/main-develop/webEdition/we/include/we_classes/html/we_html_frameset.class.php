@@ -30,6 +30,7 @@
  *
  * Description: Provides functions for creating html tags used in forms.
  */
+//FIXME:remove
 class we_html_frameset extends we_baseCollection{
 
 	/**

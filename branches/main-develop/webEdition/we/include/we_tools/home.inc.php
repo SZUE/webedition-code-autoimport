@@ -33,11 +33,9 @@ $we_body_insert = isset($GLOBALS["we_body_insert"]) ? $GLOBALS["we_body_insert"]
 
 $_row = 0;
 $_starttable = new we_html_table(array("border" => "0",
-		"cellpadding" => "7",
-		"cellspacing" => "0",
-		"width" => "228"),
-		3,
-		1);
+	"cellpadding" => "7",
+	"cellspacing" => "0",
+	"width" => "228"), 3, 1);
 $_starttable->setCol($_row++, 0, array("class" => "defaultfont",
 	"colspan" => 3,
 	"align" => "center"), "<strong>" .
@@ -71,14 +69,12 @@ $_y_we3 = $_y_table_back + 116;
 </head>
 
 <?php
-if($tool == 'weSearch' || $tool == 'navigation'){
-	$tooldir = WE_INCLUDES_DIR . 'we_tools/';
-} else{
-	$tooldir = WE_APPS_DIR;
-}
+$tooldir = ($tool == 'weSearch' || $tool == 'navigation' ?
+		WE_INCLUDES_DIR . 'we_tools/' :
+		WE_APPS_DIR);
 ?>
 
-<body bgcolor="#F0EFF0" onLoad="loaded=1;">
+<body bgcolor="#F0EFF0" onLoad="loaded = 1;">
 	<div id="tabelle"><?php print $_starttable->getHtml(); ?></div>
 	<div id="hintergrund"><img src="<?php print IMAGE_DIR . "startscreen/we_startbox_modul.gif" ?>" width="251" height="220" /></div>
 	<div id="modimage"><img src="<?php print $tooldir . $tool . '/layout/home.gif'; ?>" width="335" height="329" /></div>

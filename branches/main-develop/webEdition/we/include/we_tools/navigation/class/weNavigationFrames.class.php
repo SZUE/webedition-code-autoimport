@@ -188,7 +188,7 @@ class weNavigationFrames extends weToolFrames{
 			'cellpadding' => '0',
 			'cellspacing' => '0',
 			'width' => '300',
-			'style' => 'margin-top:' . $this->_margin_top . ';'
+			'style' => 'margin-top: 5px;'
 			), 1, 3);
 
 		$_table->setCol(0, 0, array(
@@ -285,11 +285,10 @@ class weNavigationFrames extends weToolFrames{
 			}
 			$_seltype[weNavigation::STPYE_CATLINK] = g_l('navigation', '[catLink]');
 		}
-		if(defined("OBJECT_TABLE")){
-			$_onCahngeJS = "if(document.we_form.Selection.value=='" . weNavigation::SELECTION_STATIC . "'){YAHOO.autocoml.modifySetById('yuiAcInputLinkPath','table',(this.value=='" . weNavigation::STPYE_DOCLINK . "'?'" . FILE_TABLE . "':(this.value=='" . weNavigation::STPYE_OBJLINK . "'?'" . OBJECT_TABLE . "':'" . CATEGORY_TABLE . "')));}else{};";
-		} else{
-			$_onCahngeJS = "if(document.we_form.Selection.value=='" . weNavigation::SELECTION_STATIC . "'){YAHOO.autocoml.modifySetById('yuiAcInputLinkPath','table',(this.value=='" . weNavigation::STPYE_DOCLINK . "'?'" . FILE_TABLE . "':'" . CATEGORY_TABLE . "'));}else{};";
-		}
+		$_onCahngeJS = (defined("OBJECT_TABLE") ?
+				"if(document.we_form.Selection.value=='" . weNavigation::SELECTION_STATIC . "'){YAHOO.autocoml.modifySetById('yuiAcInputLinkPath','table',(this.value=='" . weNavigation::STPYE_DOCLINK . "'?'" . FILE_TABLE . "':(this.value=='" . weNavigation::STPYE_OBJLINK . "'?'" . OBJECT_TABLE . "':'" . CATEGORY_TABLE . "')));}else{};" :
+				"if(document.we_form.Selection.value=='" . weNavigation::SELECTION_STATIC . "'){YAHOO.autocoml.modifySetById('yuiAcInputLinkPath','table',(this.value=='" . weNavigation::STPYE_DOCLINK . "'?'" . FILE_TABLE . "':'" . CATEGORY_TABLE . "'));}else{};");
+
 		$_selection_block = $this->Model->Depended == 1 ? $this->getHTMLDependedProfile() : $this->View->htmlHidden(
 				'CategoriesControl', (isset($_REQUEST['CategoriesCount']) ? $_REQUEST['CategoriesCount'] : 0)) . $this->View->htmlHidden(
 				'SortControl', (isset($_REQUEST['SortCount']) ? $_REQUEST['SortCount'] : 0)) . $this->View->htmlHidden(
@@ -301,7 +300,7 @@ class weNavigationFrames extends weToolFrames{
 				weNavigation::SELECTION_DYNAMIC => g_l('navigation', '[dyn_selection]'),
 				weNavigation::SELECTION_STATIC => g_l('navigation', '[stat_selection]')
 				), 1, $this->Model->Selection, false, 'onChange="closeAllSelection();toggle(this.value);setPresentation(this.value);setWorkspaces(\'\');' . $this->topFrame . '.mark();setCustomerFilter(this);"', 'value', $this->_width_size) . '<br />' . we_html_tools::htmlSelect(
-				'SelectionType', $_seltype, 1, $this->Model->SelectionType, false, 'onChange="onSelectionTypeChangeJS(this); closeAllType();clearFields();closeAllStats();toggle(this.value);setWorkspaces(this.value);setStaticSelection(this.value);' . $this->topFrame . '.mark();" style="width: ' . $this->_width_size . 'px; margin-top: ' . $this->_margin_top . ';"', 'value', $this->_width_size) .
+				'SelectionType', $_seltype, 1, $this->Model->SelectionType, false, 'onChange="onSelectionTypeChangeJS(this); closeAllType();clearFields();closeAllStats();toggle(this.value);setWorkspaces(this.value);setStaticSelection(this.value);' . $this->topFrame . '.mark();" style="width: ' . $this->_width_size . 'px; margin-top: 5px;"', 'value', $this->_width_size) .
 			'
 			<div id="dynamic" style="' . ($this->Model->Selection == weNavigation::SELECTION_DYNAMIC ? 'display: block;' : 'display: none;') . '">
 				' . $this->getHTMLDynamic() . '
@@ -311,10 +310,10 @@ class weNavigationFrames extends weToolFrames{
 				<div id="staticSelect" style="' . ($this->Model->SelectionType != weNavigation::STYPE_URLLINK ? 'display: block;' : 'display: none;') . '">
 				' . $this->getHTMLStatic() . '
 				</div>
-				<div id="staticUrl" style="' . (($this->Model->SelectionType == weNavigation::STPYE_CATLINK || $this->Model->SelectionType == weNavigation::STYPE_URLLINK) ? 'display: block;' : 'display: none;') . ';margin-top:' . $this->_margin_top . ';">
+				<div id="staticUrl" style="' . (($this->Model->SelectionType == weNavigation::STPYE_CATLINK || $this->Model->SelectionType == weNavigation::STYPE_URLLINK) ? 'display: block;' : 'display: none;') . ';margin-top:5px;">
 				' . $this->getHTMLLink() . '
 				</div>
-				<div style="margin-top:' . $this->_margin_top . ';">
+				<div style="margin-top:5px;">
 				' . we_html_tools::htmlFormElementTable(
 				we_html_tools::htmlTextInput(
 					'Parameter', 58, $this->Model->Parameter, '', 'onchange="' . $this->topFrame . '.mark();"', 'text', $this->_width_size, 0), g_l('navigation', '[parameter]')) . '
@@ -382,12 +381,12 @@ class weNavigationFrames extends weToolFrames{
 		$_selection = '
 		<div style="display: block;">
 		' . we_html_tools::htmlSelect(
-				'FolderSelection', $_seltype, 1, $this->Model->FolderSelection, false, 'onChange="onFolderSelectionChangeJS(this);setFolderSelection(this.value);' . $this->topFrame . '.mark();" style="width: ' . $this->_width_size . 'px; margin-top: ' . $this->_margin_top . ';"', 'value', $this->_width_size) . '
+				'FolderSelection', $_seltype, 1, $this->Model->FolderSelection, false, 'onChange="onFolderSelectionChangeJS(this);setFolderSelection(this.value);' . $this->topFrame . '.mark();" style="width: ' . $this->_width_size . 'px; margin-top: 5px;"', 'value', $this->_width_size) . '
 
-		<div id="folderSelectionDiv" style="display: ' . ($this->Model->FolderSelection != weNavigation::STYPE_URLLINK ? 'block' : 'none') . ';margin-top:' . $this->_margin_top . '">' . $weAcSelector . '</div>
+		<div id="folderSelectionDiv" style="display: ' . ($this->Model->FolderSelection != weNavigation::STYPE_URLLINK ? 'block' : 'none') . ';margin-top: 5px;">' . $weAcSelector . '</div>
 
 		</div>
-		<div id="folderUrlDiv" style="display: ' . ($this->Model->FolderSelection == weNavigation::STYPE_URLLINK ? 'block' : 'none') . '; margin-top:' . $this->_margin_top . '">
+		<div id="folderUrlDiv" style="display: ' . ($this->Model->FolderSelection == weNavigation::STYPE_URLLINK ? 'block' : 'none') . '; margin-top: 5px;">
 			' . we_html_tools::htmlTextInput(
 				'FolderUrl', 58, $this->Model->FolderUrl, '', 'onchange="' . $this->topFrame . '.mark();"', 'text', $this->_width_size, 0) . '
 		</div>
@@ -474,12 +473,9 @@ class weNavigationFrames extends weToolFrames{
 
 		$_table->setColContent(0, 0, g_l('navigation', '[stat_selection]'));
 
-		$_table->setColContent(
-			1, 0, ($this->Model->SelectionType == weNavigation::STPYE_CATLINK ? g_l('navigation', '[catLink]') : ($this->Model->SelectionType == weNavigation::STPYE_DOCLINK ? g_l('navigation', '[docLink]') : g_l('navigation', '[objLink]'))) . ':');
+		$_table->setColContent(1, 0, ($this->Model->SelectionType == weNavigation::STPYE_CATLINK ? g_l('navigation', '[catLink]') : ($this->Model->SelectionType == weNavigation::STPYE_DOCLINK ? g_l('navigation', '[docLink]') : g_l('navigation', '[objLink]'))) . ':');
 
-		$_table->setColContent(
-			1, 1, id_to_path(
-				$this->Model->LinkID, ($this->Model->SelectionType == weNavigation::STPYE_CATLINK ? CATEGORY_TABLE : ($this->Model->SelectionType == weNavigation::STPYE_DOCLINK ? FILE_TABLE : OBJECT_FILES_TABLE))));
+		$_table->setColContent(1, 1, id_to_path($this->Model->LinkID, ($this->Model->SelectionType == weNavigation::STPYE_CATLINK ? CATEGORY_TABLE : ($this->Model->SelectionType == weNavigation::STPYE_DOCLINK ? FILE_TABLE : OBJECT_FILES_TABLE))));
 
 		if(!empty($this->Model->Url) && $this->Model->Url != 'http://'){
 			$_table->setColContent(2, 0, g_l('navigation', '[linkSelection]') . ':');
@@ -496,17 +492,16 @@ class weNavigationFrames extends weToolFrames{
 
 		if(!empty($this->Model->Parameter)){
 			$_table->setColContent(4, 0, g_l('navigation', '[parameter]') . ':');
-
 			$_table->setColContent(4, 1, $this->Model->Parameter);
 		}
 
 		return $_table->getHtml();
 
-		return '
-<div style="display: block;">' . g_l('navigation', '[stat_selection]') . '<br />' . ($this->Model->SelectionType == weNavigation::STPYE_CATLINK ? g_l('navigation', '[catLink]') : ($this->Model->SelectionType == weNavigation::STPYE_DOCLINK ? g_l('navigation', '[docLink]') : g_l('navigation', '[objLink]'))) . ':' . id_to_path(
-				$this->Model->LinkID, ($this->Model->SelectionType == weNavigation::STPYE_CATLINK ? CATEGORY_TABLE : ($this->Model->SelectionType == weNavigation::STPYE_DOCLINK ? FILE_TABLE : OBJECT_FILES_TABLE))) . '
-</div>
-<div>' .$this->Model->Parameter . '</div>';
+		/* 		return '
+		  <div style="display: block;">' . g_l('navigation', '[stat_selection]') . '<br />' . ($this->Model->SelectionType == weNavigation::STPYE_CATLINK ? g_l('navigation', '[catLink]') : ($this->Model->SelectionType == weNavigation::STPYE_DOCLINK ? g_l('navigation', '[docLink]') : g_l('navigation', '[objLink]'))) . ':' . id_to_path(
+		  $this->Model->LinkID, ($this->Model->SelectionType == weNavigation::STPYE_CATLINK ? CATEGORY_TABLE : ($this->Model->SelectionType == weNavigation::STPYE_DOCLINK ? FILE_TABLE : OBJECT_FILES_TABLE))) . '
+		  </div>
+		  <div>' . $this->Model->Parameter . '</div>'; */
 	}
 
 	function getHTMLDynamic(){
@@ -556,17 +551,17 @@ class weNavigationFrames extends weToolFrames{
 objectDirs = {' . implode(',', $objectDirs) . '};
 objectPaths = {' . implode(',', $objectPaths) . '};') . '
 <div style="display: block;">
-	<div id="doctype" style="' . ($this->Model->SelectionType == weNavigation::STPYE_DOCTYPE ? 'display: block' : 'display: none') . '; width: ' . $this->_width_size . ';margin-top:' . $this->_margin_top . '">' .
+	<div id="doctype" style="' . ($this->Model->SelectionType == weNavigation::STPYE_DOCTYPE ? 'display: block' : 'display: none') . '; width: ' . $this->_width_size . ';margin-top:5px;">' .
 			we_html_tools::htmlFormElementTable(
 				we_html_tools::htmlSelect(
 					'DocTypeID', $docTypes, 1, $this->Model->DocTypeID, false, 'onChange="clearFields();' . $this->topFrame . '.mark();"', 'value', $this->_width_size), g_l('navigation', '[doctype]')) . '
 	</div>
-	<div id="classname" style="' . ($this->Model->SelectionType == weNavigation::STPYE_CLASS ? 'display: block' : 'display: none') . '; width: ' . $this->_width_size . ';margin-top:' . $this->_margin_top . ';">' .
+	<div id="classname" style="' . ($this->Model->SelectionType == weNavigation::STPYE_CLASS ? 'display: block' : 'display: none') . '; width: ' . $this->_width_size . ';margin-top:5px;">' .
 			(defined('OBJECT_TABLE') ? we_html_tools::htmlFormElementTable(
 					we_html_tools::htmlSelect(
 						'ClassID', $classNames, 1, $this->Model->ClassID, false, 'onChange="clearFields();document.we_form.elements[\'FolderID\'].value=objectDirs[document.we_form.elements[\'ClassID\'].options[document.we_form.elements[\'ClassID\'].selectedIndex].value];document.we_form.elements[\'FolderPath\'].value=objectPaths[document.we_form.elements[\'ClassID\'].options[document.we_form.elements[\'ClassID\'].selectedIndex].value];' . $this->topFrame . '.we_cmd(\'populateWorkspaces\');' . $this->topFrame . '.mark();"', 'value', $this->_width_size), g_l('navigation', '[class]')) . $this->getHTMLWorkspace('class', $_firstClass) : '') . '
 	</div>
-	<div id="fieldChooser" style="' . ($this->Model->SelectionType != weNavigation::STPYE_CATEGORY ? 'display: block' : 'display: none') . '; width: ' . $this->_width_size . ';margin-top: ' . $this->_margin_top . ';">' .
+	<div id="fieldChooser" style="' . ($this->Model->SelectionType != weNavigation::STPYE_CATEGORY ? 'display: block' : 'display: none') . '; width: ' . $this->_width_size . ';margin-top: 5px;">' .
 			$this->getHTMLFieldChooser(g_l('navigation', '[title_field]'), 'TitleField', $this->Model->TitleField, 'putTitleField', $this->Model->SelectionType, ($this->Model->SelectionType == weNavigation::STPYE_CLASS ? $this->Model->ClassID : $this->Model->DocTypeID)) . '
 	</div>' .
 			$this->getHTMLDirSelector() . '
@@ -577,7 +572,7 @@ objectPaths = {' . implode(',', $objectPaths) . '};') . '
 	<div id="dynUrl" style="' . ($this->Model->SelectionType == weNavigation::STPYE_CATEGORY ? 'display: block' : 'display: none') . '; width: ' . $this->_width_size . ';">' .
 			$this->getHTMLLink('dynamic_') . '
 	</div>
-	<div style="width: ' . $this->_width_size . ';margin-top: ' . $this->_margin_top . ';">' .
+	<div style="width: ' . $this->_width_size . ';margin-top: 5px;">' .
 			we_html_tools::htmlFormElementTable(
 				we_html_tools::htmlTextInput('dynamic_Parameter', 58, $this->Model->Parameter, '', 'onchange="' . $this->topFrame . '.mark();"', 'text', $this->_width_size, 0), g_l('navigation', '[parameter]')) . '
 	</div>' .
@@ -643,7 +638,7 @@ objectPaths = {' . implode(',', $objectPaths) . '};') . '
 		$yuiSuggest->setWidth($this->_width_size - 120);
 		$yuiSuggest->setSelectButton($_buttons);
 
-		return '<div style="margin-top:' . $this->_margin_top . '">' . $yuiSuggest->getHTML() . '</div>' . $this->getHTMLWorkspace();
+		return '<div style="margin-top:5px">' . $yuiSuggest->getHTML() . '</div>' . $this->getHTMLWorkspace();
 	}
 
 	function getHTMLTab2(){
@@ -677,7 +672,7 @@ objectPaths = {' . implode(',', $objectPaths) . '};') . '
 				weNavigation::SELECTION_DYNAMIC => g_l('navigation', '[dyn_content]')
 				), 1, $this->Model->Selection, false, 'style="width: ' . $this->_width_size . 'px;" onChange="toggle(\'dynamic\');setPresentation(\'dynamic\');setWorkspaces(\'\');' . $this->topFrame . '.mark();setCustomerFilter(this);"', 'value', $this->_width_size) . '
 				</div>
-				<div id="dynamic" style="' . ($this->Model->Selection == weNavigation::SELECTION_DYNAMIC ? 'display: block;' : 'display: none;') . ';margin-top:' . $this->_margin_top . '">
+				<div id="dynamic" style="' . ($this->Model->Selection == weNavigation::SELECTION_DYNAMIC ? 'display: block;' : 'display: none;') . ';margin-top:5px">
 				' . we_html_tools::htmlSelect(
 				'SelectionType', $_seltype, 1, $this->Model->SelectionType, false, 'onChange="onSelectionTypeChangeJS(this); closeAllType();clearFields();toggle(this.value);setWorkspaces(this.value);setStaticSelection(this.value);' . $this->topFrame . '.mark();"', 'value', $this->_width_size) . $this->getHTMLDynamic() . '</div>
 			</div>';
@@ -799,7 +794,7 @@ objectPaths = {' . implode(',', $objectPaths) . '};') . '
 		return array(
 			array(
 				'headline' => g_l('navigation', '[entries]'),
-				'html' => we_html_tools::htmlSelect('dynContent', $this->View->getItems($this->Model->ID), 20, '', false, 'style="width: ' . $this->_width_size . 'px; height: 200px;  margin: 0 0 ' . $this->_margin_bottom . ' 0;"'),
+				'html' => we_html_tools::htmlSelect('dynContent', $this->View->getItems($this->Model->ID), 20, '', false, 'style="width: ' . $this->_width_size . 'px; height: 200px;  margin: 0px 0px 5px 0px;"'),
 				'space' => $this->_space_size,
 				'noline' => 0
 			),
@@ -1064,14 +1059,13 @@ function onFolderSelectionChangeJS(elem) {
 		$yuiSuggest->setSelectButton($_button);
 
 		$weAcSelector = $yuiSuggest->getHTML();
-		if(isset($weAcSelector)){
-			return $weAcSelector;
-		} else{
-			return we_html_tools::htmlFormElementTable(
+		return (isset($weAcSelector) ?
+				$weAcSelector :
+				we_html_tools::htmlFormElementTable(
 					we_html_tools::htmlTextInput($PathName, 58, $_path, '', 'readonly', 'text', ($this->_width_size - $_width), 0), $title, 'left', 'defaultfont', we_html_element::htmlHidden(array(
 						'name' => $IDName, 'value' => $IDValue
-					)), we_html_tools::getPixel(20, 4), $_button);
-		}
+					)), we_html_tools::getPixel(20, 4), $_button)
+			);
 	}
 
 	function getHTMLCategory(){
@@ -1227,7 +1221,7 @@ function selectItem() {
 			array(
 				'headline' => '',
 				'html' => we_html_tools::htmlSelect(
-					'fields', $__fields, 20, '', ($_multi ? true : false), 'style="width: 300px; height: 200px; margin: ' . $this->_margin_bottom . ' 0px ' . $this->_margin_bottom . ' 0px;" onClick="setTimeout(\'selectItem();\',100);"'),
+					'fields', $__fields, 20, '', ($_multi ? true : false), 'style="width: 300px; height: 200px; margin: 5px 0px 5px 0px;" onClick="setTimeout(\'selectItem();\',100);"'),
 				'space' => 0
 			)
 		);
@@ -1253,7 +1247,7 @@ function selectItem() {
 	}
 
 	function getHTMLCount(){
-		return '<div style="width: ' . $this->_width_size . '; margin-top: ' . $this->_margin_top . '">' . we_html_tools::htmlFormElementTable(
+		return '<div style="width: ' . $this->_width_size . '; margin-top: 5px">' . we_html_tools::htmlFormElementTable(
 				we_html_tools::htmlTextInput(
 					'ShowCount', 30, $this->Model->ShowCount, '', 'onBlur="var r=parseInt(this.value);if(isNaN(r)) this.value=' . $this->Model->ShowCount . '; else{ this.value=r; ' . $this->topFrame . '.mark();}"', 'text', $this->_width_size, 0), g_l('navigation', '[show_count]')) . '</div>';
 	}
@@ -1305,7 +1299,7 @@ function selectItem() {
 		$weAcSelector = $yuiSuggest->getHTML();
 
 		return we_html_element::htmlDiv(array(
-				'style' => 'margin-top:' . $this->_margin_top . ';'
+				'style' => 'margin-top:5px;'
 				), $weAcSelector);
 	}
 
@@ -1313,7 +1307,7 @@ function selectItem() {
 		$_select = new we_html_select(
 			array(
 			'size' => '20',
-			'style' => 'width: 420px; height: 200; margin: ' . $this->_margin_bottom . ' 0 ' . $this->_margin_bottom . ' 0;'
+			'style' => 'width: 420px; height: 200; margin: 5px 0px 5px 0px;'
 		));
 
 		$_items = $this->Model->getDynamicEntries();
@@ -1366,7 +1360,7 @@ function selectItem() {
 				$_wsid = weDynList::getWorkspacesForClass($defClassID);
 			}
 
-			return '<div id="objLinkWorkspaceClass" style="display: ' . (($this->Model->Selection == weNavigation::SELECTION_DYNAMIC) ? 'block' : 'none') . ';margin-top: ' . $this->_margin_top . ';">' . we_html_tools::htmlFormElementTable(
+			return '<div id="objLinkWorkspaceClass" style="display: ' . (($this->Model->Selection == weNavigation::SELECTION_DYNAMIC) ? 'block' : 'none') . ';margin-top: 5px;">' . we_html_tools::htmlFormElementTable(
 					we_html_tools::htmlSelect(
 						'WorkspaceIDClass', $_wsid, 1, $this->Model->WorkspaceID, false, 'style="width: ' . $this->_width_size . 'px;" onChange="' . $this->topFrame . '.mark();"', 'value'), g_l('navigation', '[workspace]')) . '</div>';
 		} else{
@@ -1376,7 +1370,7 @@ function selectItem() {
 					$_wsid = weDynList::getWorkspacesForObject($this->Model->LinkID);
 				}
 
-				return '<div id="objLinkWorkspace" style="display: ' . (($this->Model->SelectionType == weNavigation::STPYE_OBJLINK && ($this->Model->WorkspaceID > -1)) ? 'block' : 'none') . ';margin-top: ' . $this->_margin_top . ';">' . we_html_tools::htmlFormElementTable(
+				return '<div id="objLinkWorkspace" style="display: ' . (($this->Model->SelectionType == weNavigation::STPYE_OBJLINK && ($this->Model->WorkspaceID > -1)) ? 'block' : 'none') . ';margin-top: 5px;">' . we_html_tools::htmlFormElementTable(
 						we_html_tools::htmlSelect(
 							'WorkspaceID', $_wsid, 1, $this->Model->WorkspaceID, false, 'style="width: ' . $this->_width_size . 'px;" onChange="' . $this->topFrame . '.mark();"', 'value'), g_l('navigation', '[workspace]')) . '</div>';
 			} else{
@@ -1384,7 +1378,7 @@ function selectItem() {
 					$_wsid = weDynList::getWorkspacesForObject($this->Model->LinkID);
 				}
 
-				return '<div id="objLinkFolderWorkspace" style="display: ' . (($this->Model->FolderSelection == weNavigation::STPYE_OBJLINK && ($this->Model->FolderWsID > -1)) ? 'block' : 'none') . ';margin-top: ' . $this->_margin_top . ';">' . we_html_tools::htmlFormElementTable(
+				return '<div id="objLinkFolderWorkspace" style="display: ' . (($this->Model->FolderSelection == weNavigation::STPYE_OBJLINK && ($this->Model->FolderWsID > -1)) ? 'block' : 'none') . ';margin-top: 5px;">' . we_html_tools::htmlFormElementTable(
 						we_html_tools::htmlSelect(
 							'FolderWsID', $_wsid, 1, $this->Model->FolderWsID, false, 'style="width: ' . $this->_width_size . 'px;" onChange="' . $this->topFrame . '.mark();"', 'value'), g_l('navigation', '[workspace]')) . '</div>';
 			}
@@ -1427,18 +1421,18 @@ function selectItem() {
 						}
 
 					}
-				') . '<div id="' . $prefix . 'LinkSelectionDiv" style="display: ' . (($this->Model->SelectionType == weNavigation::STPYE_CATLINK || $this->Model->SelectionType == weNavigation::STPYE_CATEGORY) ? 'block' : 'none') . ';margin-top: ' . $this->_margin_top . ';">' . we_html_tools::htmlFormElementTable(
+				') . '<div id="' . $prefix . 'LinkSelectionDiv" style="display: ' . (($this->Model->SelectionType == weNavigation::STPYE_CATLINK || $this->Model->SelectionType == weNavigation::STPYE_CATEGORY) ? 'block' : 'none') . ';margin-top: 5px;">' . we_html_tools::htmlFormElementTable(
 				we_html_tools::htmlSelect(
 					$prefix . 'LinkSelection', array(
 					'intern' => g_l('navigation', '[intern]'),
 					'extern' => g_l('navigation', '[extern]')
 					), 1, $this->Model->LinkSelection, false, 'style="width: ' . $this->_width_size . 'px;" onChange="' . $prefix . 'setLinkSelection(this.value);' . $this->topFrame . '.mark();"', 'value'), g_l('navigation', '[linkSelection]')) . '</div>
-				<div id="' . $prefix . 'intern" style="display: ' . (($this->Model->LinkSelection == 'intern' && $this->Model->SelectionType != weNavigation::STYPE_URLLINK) ? 'block' : 'none') . ';margin-top: ' . $this->_margin_top . ';">
+				<div id="' . $prefix . 'intern" style="display: ' . (($this->Model->LinkSelection == 'intern' && $this->Model->SelectionType != weNavigation::STYPE_URLLINK) ? 'block' : 'none') . ';margin-top: 5px;">
 				' . $weAcSelector . '
 				</div>
-				<div id="' . $prefix . 'extern" style="display: ' . (($this->Model->LinkSelection == 'extern' || $this->Model->SelectionType == weNavigation::STYPE_URLLINK) ? 'block' : 'none') . ';margin-top: ' . $this->_margin_top . ';">' . we_html_tools::htmlTextInput(
+				<div id="' . $prefix . 'extern" style="display: ' . (($this->Model->LinkSelection == 'extern' || $this->Model->SelectionType == weNavigation::STYPE_URLLINK) ? 'block' : 'none') . ';margin-top: 5px;">' . we_html_tools::htmlTextInput(
 				$prefix . 'Url', 58, $this->Model->Url, '', 'onchange="' . $this->topFrame . '.mark();"', 'text', $this->_width_size) . '</div>
-				<div style="margin-top: ' . $this->_margin_top . ';">' . we_html_tools::htmlFormElementTable(
+				<div style="margin-top: 5px;">' . we_html_tools::htmlFormElementTable(
 				we_html_tools::htmlTextInput(
 					$prefix . 'CatParameter', 58, $this->Model->CatParameter, '', 'onchange="' . $this->topFrame . '.mark();"', 'text', $this->_width_size), g_l('navigation', '[catParameter]')) . '</div>';
 	}
@@ -1482,8 +1476,7 @@ function selectItem() {
 	}
 
 	function getRevRelSelect($type, $value, $title){
-		$input = we_html_tools::htmlTextInput(
-				"Attributes[$type]", 15, $value, "", 'onchange=' . $this->topFrame . '.mark(); ', "text", $this->_width_size - 100);
+		$input = we_html_tools::htmlTextInput("Attributes[$type]", 15, $value, "", 'onchange=' . $this->topFrame . '.mark(); ', "text", $this->_width_size - 100);
 		$select = '<select name="' . $type . '_sel" class="weSelect" size="1" style="width:100px;" onchange="' . $this->topFrame . '.mark(); this.form.elements[\'Attributes[' . $type . ']\'].value=this.options[this.selectedIndex].text;this.selectedIndex=0;">
 	<option></option>
 	<option>contents</option>
@@ -1512,7 +1505,7 @@ function selectItem() {
 				'html' => we_html_tools::htmlAlertAttentionBox(g_l('navigation', '[linkprops_desc]'), 2, $this->_width_size),
 				'space' => $this->_space_size,
 				'noline' => 1
-			));
+		));
 
 		$_title = we_html_tools::htmlFormElementTable(
 				we_html_tools::htmlTextInput(
@@ -1578,20 +1571,14 @@ function selectItem() {
 
 		$_popup = new we_html_table(array('cellpadding' => '5', 'cellspacing' => '0'), 4, 4);
 
-		$_popup->setCol(0, 0, array('colspan' => '2'), we_forms::checkboxWithHidden(
-				$this->Model->getAttribute('popup_open'), 'Attributes[popup_open]', g_l('navigation', '[popup_open]'), false, "defaultfont", $this->topFrame . '.mark();"'));
-		$_popup->setCol(0, 2, array('colspan' => '2'), we_forms::checkboxWithHidden(
-				$this->Model->getAttribute('popup_center'), 'Attributes[popup_center]', g_l('navigation', '[popup_center]'), false, "defaultfont", $this->topFrame . '.mark();"'));
+		$_popup->setCol(0, 0, array('colspan' => '2'), we_forms::checkboxWithHidden($this->Model->getAttribute('popup_open'), 'Attributes[popup_open]', g_l('navigation', '[popup_open]'), false, "defaultfont", $this->topFrame . '.mark();"'));
+		$_popup->setCol(0, 2, array('colspan' => '2'), we_forms::checkboxWithHidden($this->Model->getAttribute('popup_center'), 'Attributes[popup_center]', g_l('navigation', '[popup_center]'), false, "defaultfont", $this->topFrame . '.mark();"'));
 
-		$_popup->setCol(1, 0, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput(
-					'Attributes[popup_xposition]', 5, $this->Model->getAttribute('popup_xposition'), '', 'onchange="' . $this->topFrame . '.mark();"', 'text', $_input_width), g_l('navigation', '[popup_x]')));
-		$_popup->setCol(1, 1, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput(
-					'Attributes[popup_yposition]', 5, $this->Model->getAttribute('popup_yposition'), '', 'onchange="' . $this->topFrame . '.mark();"', 'text', $_input_width), g_l('navigation', '[popup_y]')));
-		$_popup->setCol(1, 2, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput(
-					'Attributes[popup_width]', 5, $this->Model->getAttribute('popup_width'), '', 'onchange="' . $this->topFrame . '.mark();"', 'text', $_input_width), g_l('navigation', '[popup_width]')));
+		$_popup->setCol(1, 0, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('Attributes[popup_xposition]', 5, $this->Model->getAttribute('popup_xposition'), '', 'onchange="' . $this->topFrame . '.mark();"', 'text', $_input_width), g_l('navigation', '[popup_x]')));
+		$_popup->setCol(1, 1, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('Attributes[popup_yposition]', 5, $this->Model->getAttribute('popup_yposition'), '', 'onchange="' . $this->topFrame . '.mark();"', 'text', $_input_width), g_l('navigation', '[popup_y]')));
+		$_popup->setCol(1, 2, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('Attributes[popup_width]', 5, $this->Model->getAttribute('popup_width'), '', 'onchange="' . $this->topFrame . '.mark();"', 'text', $_input_width), g_l('navigation', '[popup_width]')));
 
-		$_popup->setCol(1, 3, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput(
-					'Attributes[popup_height]', 5, $this->Model->getAttribute('popup_height'), '', 'onchange="' . $this->topFrame . '.mark();"', 'text', $_input_width), g_l('navigation', '[popup_height]')));
+		$_popup->setCol(1, 3, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('Attributes[popup_height]', 5, $this->Model->getAttribute('popup_height'), '', 'onchange="' . $this->topFrame . '.mark();"', 'text', $_input_width), g_l('navigation', '[popup_height]')));
 
 		$_popup->setCol(2, 0, array(), we_forms::checkboxWithHidden($this->Model->getAttribute('popup_status'), 'Attributes[popup_status]', g_l('navigation', '[popup_status]'), false, "defaultfont", $this->topFrame . '.mark();"'));
 		$_popup->setCol(2, 1, array(), we_forms::checkboxWithHidden($this->Model->getAttribute('popup_scrollbars'), 'Attributes[popup_scrollbars]', g_l('navigation', '[popup_scrollbars]'), false, "defaultfont", $this->topFrame . '.mark();"'));
@@ -1615,32 +1602,24 @@ function selectItem() {
 
 	function getHTMLImageAttributes(){
 		$_input_width = 70;
-		$_img_props = new we_html_table(array(
-			'cellpadding' => '5', 'cellspacing' => '0', 'border' => '0'
-			), 4, 5);
+		$_img_props = new we_html_table(array('cellpadding' => '5', 'cellspacing' => '0', 'border' => '0'), 4, 5);
 
-		$_img_props->setCol(
-			0, 0, array(), we_html_tools::htmlFormElementTable(
+		$_img_props->setCol(0, 0, array(), we_html_tools::htmlFormElementTable(
 				we_html_tools::htmlTextInput(
 					'Attributes[icon_width]', 5, $this->Model->getAttribute('icon_width'), '', 'onchange="' . $this->topFrame . '.mark();"', 'text', $_input_width), g_l('navigation', '[icon_width]')));
-		$_img_props->setCol(
-			0, 1, array(), we_html_tools::htmlFormElementTable(
+		$_img_props->setCol(0, 1, array(), we_html_tools::htmlFormElementTable(
 				we_html_tools::htmlTextInput(
 					'Attributes[icon_height]', 5, $this->Model->getAttribute('icon_height'), '', 'onchange="' . $this->topFrame . '.mark();"', 'text', $_input_width), g_l('navigation', '[icon_height]')));
-		$_img_props->setCol(
-			0, 2, array(), we_html_tools::htmlFormElementTable(
+		$_img_props->setCol(0, 2, array(), we_html_tools::htmlFormElementTable(
 				we_html_tools::htmlTextInput(
 					'Attributes[icon_border]', 5, $this->Model->getAttribute('icon_border'), '', 'onchange="' . $this->topFrame . '.mark();"', 'text', $_input_width), g_l('navigation', '[icon_border]')));
-		$_img_props->setCol(
-			0, 3, array(), we_html_tools::htmlFormElementTable(
+		$_img_props->setCol(0, 3, array(), we_html_tools::htmlFormElementTable(
 				we_html_tools::htmlTextInput(
 					'Attributes[icon_hspace]', 5, $this->Model->getAttribute('icon_hspace'), '', 'onchange="' . $this->topFrame . '.mark();"', 'text', $_input_width), g_l('navigation', '[icon_hspace]')));
-		$_img_props->setCol(
-			0, 4, array(), we_html_tools::htmlFormElementTable(
+		$_img_props->setCol(0, 4, array(), we_html_tools::htmlFormElementTable(
 				we_html_tools::htmlTextInput(
 					'Attributes[icon_vspace]', 5, $this->Model->getAttribute('icon_vspace'), '', 'onchange="' . $this->topFrame . '.mark();"', 'text', $_input_width), g_l('navigation', '[icon_vspace]')));
-		$_img_props->setCol(
-			1, 0, array(
+		$_img_props->setCol(1, 0, array(
 			'colspan' => '5'
 			), we_html_tools::htmlFormElementTable(
 				we_html_tools::htmlSelect(
@@ -1656,14 +1635,12 @@ function selectItem() {
 					'baseline' => 'Baseline',
 					'absbottom' => 'Abs Bottom'
 					), 1, $this->Model->getAttribute('icon_align'), false, 'style="width: ' . ($this->_width_size - 50) . 'px;"'), g_l('navigation', '[icon_align]')));
-		$_img_props->setCol(
-			2, 0, array(
+		$_img_props->setCol(2, 0, array(
 			'colspan' => '5'
 			), we_html_tools::htmlFormElementTable(
 				we_html_tools::htmlTextInput(
 					'Attributes[icon_alt]', 5, $this->Model->getAttribute('icon_alt'), '', 'onchange="' . $this->topFrame . '.mark();"', 'text', ($this->_width_size - 50)), g_l('navigation', '[icon_alt]')));
-		$_img_props->setCol(
-			3, 0, array(
+		$_img_props->setCol(3, 0, array(
 			'colspan' => '5'
 			), we_html_tools::htmlFormElementTable(
 				we_html_tools::htmlTextInput(
@@ -1705,11 +1682,8 @@ function selectItem() {
 			"nowrap" => null, "valign" => "top"
 			), we_html_tools::getPixel(1600, 10));
 
-		$table2 = new we_html_table(array(
-			"border" => "0", "cellpadding" => "0", "cellspacing" => "0", "width" => "400"
-			), 1, 2);
-		$table2->setColContent(
-			0, 0, we_button::create_button_table(
+		$table2 = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0", "width" => "400"), 1, 2);
+		$table2->setColContent(0, 0, we_button::create_button_table(
 				array(
 				we_button::create_button(
 					"save", "javascript:we_save();", true, 100, 22, '', '', (!we_hasPerm('EDIT_NAVIGATION')))
@@ -1717,9 +1691,7 @@ function selectItem() {
 				'style' => 'margin-left: 15px'
 		)));
 
-		$table2->setColContent(
-			0, 1, we_forms::checkbox(
-				"makeNewDoc", false, "makeNewDoc", ($this->View->Model->IsFolder ? g_l('global', "[we_new_folder_after_save]") : g_l('global', "[we_new_entry_after_save]")), false, "defaultfont", ""));
+		$table2->setColContent(0, 1, we_forms::checkbox("makeNewDoc", false, "makeNewDoc", ($this->View->Model->IsFolder ? g_l('global', "[we_new_folder_after_save]") : g_l('global', "[we_new_entry_after_save]")), false, "defaultfont", ""));
 
 		return $this->getHTMLDocument(
 				we_html_element::jsScript(JS_DIR . "attachKeyListener.js") .

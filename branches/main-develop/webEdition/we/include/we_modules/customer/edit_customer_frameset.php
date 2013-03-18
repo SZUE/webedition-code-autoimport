@@ -50,9 +50,6 @@ switch($what){
 	case 'header':
 		print $weFrame->getHTMLHeader();
 		break;
-	case 'resize':
-		print $weFrame->getHTMLResize();
-		break;
 	case 'left':
 		print $weFrame->getHTMLLeft();
 		break;

@@ -25,14 +25,10 @@ we_html_tools::protect();
 if(!(isset($GLOBALS["we_print_not_htmltop"]) && $GLOBALS["we_print_not_htmltop"])){
 	we_html_tools::htmlTop();
 }
-print STYLESHEET;
-print we_html_element::jsScript(JS_DIR . "attachKeyListener.js");
+print STYLESHEET .
+	we_html_element::jsScript(JS_DIR . "attachKeyListener.js");
 
-$mod = isset($_REQUEST["mod"]) ? $_REQUEST["mod"] : (isset($GLOBALS["mod"]) ? $GLOBALS["mod"] : "");
-
-$mod = str_replace(".", "", $mod);
-$mod = str_replace("/", "", $mod);
-$mod = str_replace("\\", "", $mod);
+$mod = str_replace(array('.', '/', '\\'), '', (isset($_REQUEST["mod"]) ? $_REQUEST["mod"] : (isset($GLOBALS["mod"]) ? $GLOBALS["mod"] : "")));
 
 $we_head_insert = isset($GLOBALS["we_head_insert"]) ? $GLOBALS["we_head_insert"] : "";
 $we_body_insert = isset($GLOBALS["we_body_insert"]) ? $GLOBALS["we_body_insert"] : "";
@@ -49,13 +45,13 @@ foreach($GLOBALS["_we_available_modules"] as $modData){
 
 
 $_row = 0;
-$_starttable = new we_html_table(array("border" => "0",
-		"cellpadding" => "7",
-		"cellspacing" => "0",
-		"width" => "228"),
-		3,
-		1);
-$_starttable->setCol($_row++, 0, array("class" => "defaultfont",
+$_starttable = new we_html_table(array(
+	"border" => "0",
+	"cellpadding" => "7",
+	"cellspacing" => "0",
+	"width" => "228"), 3, 1);
+$_starttable->setCol($_row++, 0, array(
+	"class" => "defaultfont",
 	"colspan" => 3,
 	"align" => "center"), "<strong>" .
 	$title . "</strong>");
@@ -65,7 +61,7 @@ $_starttable->setCol($_row++, 0, array("class" => "defaultfont",
 
 
 
-include(WE_MODULES_PATH . $mod . "/mod_home.inc.php");	// $content should be defined in mod_home.inc.php
+include(WE_MODULES_PATH . $mod . "/mod_home.inc.php"); // $content should be defined in mod_home.inc.php
 
 $_starttable->setCol($_row++, 0, array("align" => "center"), $content);
 ?>
@@ -89,13 +85,10 @@ $_y_we3 = $_y_table_back + 116;
 <?php print $we_head_insert; ?>
 </head>
 
-<body bgcolor="#F0EFF0" onLoad="loaded=1;">
+<body bgcolor="#F0EFF0" onLoad="loaded = 1;">
 	<div id="tabelle"><?php print $_starttable->getHtml(); ?></div>
 	<div id="hintergrund"><img src="<?php print IMAGE_DIR . "startscreen/we_startbox_modul.gif" ?>" width="251" height="220" /></div>
 	<div id="modimage"><img src="<?php print IMAGE_DIR . "startscreen/" . $modimage; ?>" width="335" height="329" /></div>
-
-<?php print $we_body_insert . we_html_element::jsElement('var we_is_home = 1;'); ?>
-
+	<?php print $we_body_insert . we_html_element::jsElement('var we_is_home = 1;'); ?>
 </body>
-
 </html>

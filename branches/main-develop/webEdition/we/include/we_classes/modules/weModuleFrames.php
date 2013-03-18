@@ -101,6 +101,7 @@ class weModuleFrames{
 			we_html_element::htmlDiv(array('style' => 'background-color:#efefef;background-image: url(' . IMAGE_DIR . 'java_menu/background.gif); background-repeat:repeat;margin:0px;'), $table->getHtml());
 	}
 
+	//FIXME: remove
 	function getHTMLResize(){
 
 		if(we_base_browserDetect::isGecko()){
@@ -115,10 +116,8 @@ class weModuleFrames{
 		}
 		$frameset->addFrame(array("src" => $this->frameset . "?pnt=right" . (isset($_REQUEST['sid']) ? '&sid=' . $_REQUEST['sid'] : ''), "name" => "right"));
 
-		$noframeset = new we_baseElement("noframes");
-
 		// set and return html code
-		$body = $frameset->getHtml() . $noframeset->getHTML();
+		$body = $frameset->getHtml();
 
 		return $this->getHTMLDocument($body);
 	}
@@ -153,7 +152,6 @@ class weModuleFrames{
 	function getHTMLEditor(){
 
 		$frameset = new we_html_frameset(array("framespacing" => "0", "border" => "0", "frameborder" => "no"));
-		$noframeset = new we_baseElement("noframes");
 
 		$frameset->setAttributes(array("rows" => "40,*,40"));
 		$frameset->addFrame(array('src' => $this->frameset . (isset($_REQUEST['sid']) ? '?sid=' . $_REQUEST['sid'] : '?home=1') . '&pnt=edheader', 'name' => 'edheader', 'noresize' => null, 'scrolling' => 'no'));
@@ -161,7 +159,7 @@ class weModuleFrames{
 		$frameset->addFrame(array('src' => $this->frameset . (isset($_REQUEST['sid']) ? '?sid=' . $_REQUEST['sid'] : '?home=1') . '&pnt=edfooter', 'name' => 'edfooter', 'scrolling' => 'no'));
 
 		// set and return html code
-		$body = $frameset->getHtml() . $noframeset->getHTML();
+		$body = $frameset->getHtml();
 
 		return $this->getHTMLDocument($body);
 	}
