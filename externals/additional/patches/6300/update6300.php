@@ -4,7 +4,7 @@
   Attempt to update
  */
 // only execute on liveUpdate:
-//aber meiner Meinung nach nicht notwendig, patches werden nicht ausgeführt
+//aber meiner Meinung nach nicht notwendig, patches werden nicht ausgefÃ¼hrt
 if(!is_readable("../../we/include/conf/we_conf.inc.php")){
 	//return true;
 }
@@ -20,6 +20,7 @@ function up6300_updatePrefs(){
 		$db->query('UPDATE ' . PREFS_TABLE . ' SET BackendCharset="ISO-8859-1" WHERE (Language NOT LIKE "%_UTF-8%" AND Language!="") AND BackendCharset=""');
 		$db->query('UPDATE ' . PREFS_TABLE . ' SET BackendCharset="UTF-8",Language=REPLACE(Language,"_UTF-8","") WHERE (Language LIKE "%_UTF-8%") AND BackendCharset=""');
 		$db->query('UPDATE ' . PREFS_TABLE . ' SET BackendCharset="UTF-8",Language="Deutsch" WHERE Language="" AND BackendCharset=""');
+		$db->query('UPDATE ' . PREFS_TABLE . ' SET Language="Deutsch" WHERE Language=""');
 		$_SESSION["prefs"] = getHash("SELECT * FROM " . PREFS_TABLE . " WHERE userID=" . intval($_SESSION["prefs"]["userID"]), $db);
 	}
 	return true;
@@ -76,6 +77,7 @@ function up6300_updateConf(){
 		$settingvalue = 'ISO-8859-1';
 	}
 
+	$conf = str_replace('define(\'WE_BACKENDCHARSET\'', 'define("WE_BACKENDCHARSET"', $conf);
 	if(strpos($conf, 'define("WE_BACKENDCHARSET"' ) === false){
 		$insert = "// Original backend charset of this version of webEdition, used for login-screen\ndefine(\"WE_BACKENDCHARSET\", '" . $settingvalue . "');\n
 if(!isset(\$GLOBALS[\"WE_LANGUAGE\"])){
