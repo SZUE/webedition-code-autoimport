@@ -113,12 +113,13 @@ foreach($vtab as $tab => $val){
 $tmp = array();
 $id=0;
 foreach($vtab as $tab => $val){
+	if($val['show']){
 	if($useSvg){
 		$tmp[] = 'new we_tab("#",\'' . str_replace(array('REPLACE', '#ID#',"\n"), array($val['desc'], ++$id,''), $svg['normal']) . '\', \'' . str_replace(array('REPLACE','#ID#', "\n"), array($val['desc'],++$id, ''), $svg['active']) . '\', \'' . str_replace(array('REPLACE', '#ID#',"\n"), array($val['desc'], ++$id,''), $svg['disabled']) . '\', ' . $val['size'][0] . ',' . $val['size'][1] . ' ,' . ($val['show'] ? 'TAB_NORMAL' : 'TAB_DISABLED') . ', "if(top.deleteMode){we_cmd(\'exit_delete\', \'' . constant($tab) . '\');};treeOut();we_cmd(\'loadVTab\', \'' . constant($tab) . '\' ,0);",true)';
 	} else{
 		$file = WE_INCLUDES_DIR . $val['file'];
 		$tmp[] = 'new we_tab("#","' . $file . '_normal.gif", "' . $file . '_active.gif", "' . $file . '_disabled.gif", ' . $val['size'][0] . ',' . $val['size'][1] . ' ,' . ($val['show'] ? 'TAB_ACTIVE' : 'TAB_DISABLED') . ', "if(top.deleteMode){we_cmd(\'exit_delete\', \'' . constant($tab) . '\');};treeOut();we_cmd(\'loadVTab\', \'' . constant($tab) . '\' ,0);")';
-	}
+	}}
 }
 print implode(',', $tmp);
 ?>
