@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_navigationField($attribs){
-	if(isset($GLOBALS['weNavigationItemArray']) && is_array($GLOBALS['weNavigationItemArray'])){
+	if(isset($GLOBALS['weNavigationItemArray']) && is_array($GLOBALS['weNavigationItemArray']) && !empty($GLOBALS['weNavigationItemArray'])){
 
 		$element = $GLOBALS['weNavigationItemArray'][(count($GLOBALS['weNavigationItemArray']) - 1)];
 		return $element->getNavigationField($attribs);
