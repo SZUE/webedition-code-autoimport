@@ -463,6 +463,7 @@ if(!$seeMode){
 	$we_menu['1160000'] = array(
 		'text' => g_l('javaMenu_global', '[backup]'),
 		'parent' => '1000000',
+		'perm' => 'BACKUPLOG ||IMPORT ||EXPORT || EXPORTNODOWNLOAD || ADMINISTRATOR',
 		'enabled' => 1,
 	);
 }
@@ -495,7 +496,7 @@ $we_menu['1160300'] = array(
 	'enabled' => 1,
 );
 
-// File > Backup > rebuild
+// File > rebuild
 $we_menu['1180000'] = array(
 	'text' => g_l('javaMenu_global', '[rebuild]') . '&hellip;',
 	'parent' => '1000000',
