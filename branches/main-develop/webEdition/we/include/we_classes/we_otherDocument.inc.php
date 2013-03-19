@@ -34,6 +34,8 @@ class we_otherDocument extends we_binaryDocument{
 				break;
 		}
 		$this->EditPageNrs[] = WE_EDITPAGE_PREVIEW;
+		$pos = array_search(WE_EDITPAGE_WEBUSER, $this->EditPageNrs);
+		unset($this->EditPageNrs[$pos]);
 		$this->ContentType = 'application/*';
 	}
 
@@ -168,13 +170,13 @@ class we_otherDocument extends we_binaryDocument{
 			$pdf = new we_helpers_pdf2text($file);
 			$metaData = $pdf->getInfo();
 			if(!empty($metaData)){
-				if(isset($metaData['Title'])&& ($this->getElement('Title')=='')){
+				if(isset($metaData['Title']) && ($this->getElement('Title') == '')){
 					$this->setElement('Title', $metaData['Title']);
 				}
-				if(isset($metaData['Keywords'])&& ($this->getElement('Keywords')=='')){
+				if(isset($metaData['Keywords']) && ($this->getElement('Keywords') == '')){
 					$this->setElement('Keywords', $metaData['Keywords']);
 				}
-				if(isset($metaData['Subject'])&&($this->getElement('Description')=='')){
+				if(isset($metaData['Subject']) && ($this->getElement('Description') == '')){
 					$this->setElement('Description', $metaData['Subject']);
 				}
 			}

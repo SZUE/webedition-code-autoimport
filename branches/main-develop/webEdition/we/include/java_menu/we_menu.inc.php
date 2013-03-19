@@ -99,6 +99,7 @@ $we_menu['1010300'] = array(
 	'text' => g_l('javaMenu_global', '[other]'),
 	'parent' => '1010000',
 	'enabled' => 1,
+	'perm' => 'ADMINISTRATOR || NEW_HTML || NEW_FLASH || NEW_QUICKTIME || NEW_JS || NEW_CSS || NEW_TEXT || NEW_HTACCESS || NEW_SONSTIGE',
 );
 
 // File > New > Other > html
@@ -185,6 +186,7 @@ $we_menu['1010309'] = array(
 if(!$seeMode){
 	$we_menu['1010400'] = array(
 		'parent' => '1010000',
+		'perm' => 'NEW_TEMPLATE || ADMINISTRATOR',
 	); // separator
 // File > New > Template
 	$we_menu['1010500'] = array(
@@ -463,6 +465,7 @@ if(!$seeMode){
 	$we_menu['1160000'] = array(
 		'text' => g_l('javaMenu_global', '[backup]'),
 		'parent' => '1000000',
+		'perm' => 'BACKUPLOG ||IMPORT ||EXPORT || EXPORTNODOWNLOAD || ADMINISTRATOR',
 		'enabled' => 1,
 	);
 }
@@ -495,7 +498,7 @@ $we_menu['1160300'] = array(
 	'enabled' => 1,
 );
 
-// File > Backup > rebuild
+// File > rebuild
 $we_menu['1180000'] = array(
 	'text' => g_l('javaMenu_global', '[rebuild]') . '&hellip;',
 	'parent' => '1000000',

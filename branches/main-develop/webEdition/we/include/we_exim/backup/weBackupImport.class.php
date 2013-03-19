@@ -36,8 +36,8 @@ class weBackupImport{
 //		weBackupUtil::addLog('XX read: ' . ((memory_get_usage(true) - self::$mem) / 1048576) . ' ' . $locLines);
 		$data =
 			(isset($_SESSION['weS']['weBackupVars']['options']['convert_charset']) && $_SESSION['weS']['weBackupVars']['options']['convert_charset'] ?
-				weXMLExIm::getHeader($_SESSION['weS']['weBackupVars']['encoding']) :
-				weXMLExIm::getHeader()) .
+				weXMLExIm::getHeader($_SESSION['weS']['weBackupVars']['encoding'],'backup') :
+				weXMLExIm::getHeader('','backup')) .
 			$data .
 			weBackup::weXmlExImFooter;
 

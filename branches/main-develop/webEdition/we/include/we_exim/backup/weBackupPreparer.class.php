@@ -114,7 +114,7 @@ class weBackupPreparer{
 			}
 		}
 
-		weFile::save($_SESSION['weS']['weBackupVars']['backup_file'], ($_SESSION['weS']['weBackupVars']['protect'] && !$_SESSION['weS']['weBackupVars']['options']['compress'] ? weBackup::weXmlExImProtectCode : '') . weXMLExIm::getHeader());
+		weFile::save($_SESSION['weS']['weBackupVars']['backup_file'], ($_SESSION['weS']['weBackupVars']['protect'] && !$_SESSION['weS']['weBackupVars']['options']['compress'] ? weBackup::weXmlExImProtectCode : '') . weXMLExIm::getHeader('','backup'));
 
 		return true;
 	}

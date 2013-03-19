@@ -264,12 +264,7 @@ class we_object extends we_document{
 			$ctable = OBJECT_X_TABLE . ($this->ID);
 
 			// Charset and Collation
-			$charset_collation = '';
-			if(defined('DB_CHARSET') && DB_CHARSET != '' && defined('DB_COLLATION') && DB_COLLATION != ''){
-				$Charset = DB_CHARSET;
-				$Collation = DB_COLLATION;
-				$charset_collation = ' CHARACTER SET ' . $Charset . ' COLLATE ' . $Collation;
-			}
+			$charset_collation = we_database_base::getCharsetCollation();
 
 			$this->DB_WE->delTable($ctable);
 			$this->DB_WE->query('CREATE TABLE ' . $ctable . ' (' . implode(',', $q) . ', ' . implode(',', $indexe) . ') ENGINE = MYISAM ' . $charset_collation);

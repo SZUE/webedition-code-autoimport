@@ -92,7 +92,6 @@ if(defined('OBJECT_TABLE')){
 
 			$we_menu['1010' . $nr] = array(
 				'text' => $foo,
-				'text' => $foo,
 				'parent' => '1010800',
 				'cmd' => 'new_ClObjectFile' . $GLOBALS['DB_WE']->f('ID'),
 				'perm' => 'NEW_OBJECTFILE || ADMINISTRATOR',

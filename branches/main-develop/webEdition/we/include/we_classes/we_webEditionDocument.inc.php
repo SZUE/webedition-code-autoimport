@@ -184,7 +184,9 @@ class we_webEditionDocument extends we_textContentDocument{
 			case WE_EDITPAGE_PROPERTIES:
 				return 'we_templates/we_editor_properties.inc.php';
 			case WE_EDITPAGE_INFO:
-				$GLOBALS["WE_MAIN_DOC"]->InWebEdition = true; //Bug 3417
+				if(isset($GLOBALS["WE_MAIN_DOC"])){
+					$GLOBALS["WE_MAIN_DOC"]->InWebEdition = true; //Bug 3417
+				}
 				return 'we_templates/we_editor_info.inc.php';
 
 			case WE_EDITPAGE_CONTENT:

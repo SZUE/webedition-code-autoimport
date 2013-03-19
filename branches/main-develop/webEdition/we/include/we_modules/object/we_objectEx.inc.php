@@ -25,9 +25,9 @@
 class we_objectEx extends we_object{
 
 	private $_ObjectBaseElements = array(
-				'ID','OF_ID','OF_ParentID','OF_Text','OF_Path','OF_Url','OF_TriggerID','OF_Workspaces','OF_ExtraWorkspaces','OF_ExtraWorkspacesSelected',
-            	'OF_Templates','OF_ExtraTemplates','OF_Category','OF_Published','OF_IsSearchable','OF_Charset','OF_WebUserID','OF_Language','variant_weInternVariantElement'
-			);
+		'ID', 'OF_ID', 'OF_ParentID', 'OF_Text', 'OF_Path', 'OF_Url', 'OF_TriggerID', 'OF_Workspaces', 'OF_ExtraWorkspaces', 'OF_ExtraWorkspacesSelected',
+		'OF_Templates', 'OF_ExtraTemplates', 'OF_Category', 'OF_Published', 'OF_IsSearchable', 'OF_Charset', 'OF_WebUserID', 'OF_Language', 'variant_weInternVariantElement'
+	);
 
 	function saveToDB(){
 		$this->wasUpdate = $this->ID ? true : false;
@@ -83,16 +83,8 @@ class we_objectEx extends we_object{
 
 			$q = implode(',', $qarr);
 
-			// Charset and Collation
-			$charset_collation = '';
-			if(defined("DB_CHARSET") && DB_CHARSET != '' && defined("DB_COLLATION") && DB_COLLATION != ''){
-				$Charset = DB_CHARSET;
-				$Collation = DB_COLLATION;
-				$charset_collation = ' CHARACTER SET ' . $Charset . " COLLATE " . $Collation;
-			}
-
 			$this->DB_WE->query('DROP TABLE IF EXISTS ' . $ctable);
-			$this->DB_WE->query('CREATE TABLE ' . $ctable . ' (' . $q . ',' . implode(',', $indexe) . ') ENGINE = MYISAM ' . $charset_collation);
+			$this->DB_WE->query('CREATE TABLE ' . $ctable . ' (' . $q . ',' . implode(',', $indexe) . ') ENGINE = MYISAM ' . we_database_base::getCharsetCollation());
 
 			//dummy eintrag schreiben
 			$this->DB_WE->query('INSERT INTO ' . $ctable . ' (OF_ID) VALUES (0)');
@@ -434,7 +426,7 @@ class we_objectEx extends we_object{
 		$this->we_save();
 	}
 
-	function setOrder($order,$writeToDB=false){
+	function setOrder($order, $writeToDB = false){
 		$ctable = OBJECT_X_TABLE . intval($this->ID);
 		$metadata = $this->DB_WE->metadata($ctable, true);
 		if(is_array($order) && $writeToDB){
@@ -454,121 +446,131 @@ class we_objectEx extends we_object{
 					$this->DB_WE->query('ALTER TABLE ' . $ctable . ' MODIFY COLUMN ' . $ovalname . ' ' . $type . ' AFTER ' . $last);
 					$last = $ovalname;
 				} else{
-					t_e('warning', 'we_ObjectEx::setOrder '.$ctable.' ('.$this->Text.') Field not found: Field: ' . $ovalname);
+					t_e('warning', 'we_ObjectEx::setOrder ' . $ctable . ' (' . $this->Text . ') Field not found: Field: ' . $ovalname);
 				}
 			}
 		}
 		if(is_array($order) && !$writeToDB){
 
-			$metas= array_keys($metadata['meta']);
-			$consider=array_diff($metas,$this->_ObjectBaseElements);
-			$consider=array_combine(range(0,count($consider)-1),$consider);
-			$neworder=array();
+			$metas = array_keys($metadata['meta']);
+			$consider = array_diff($metas, $this->_ObjectBaseElements);
+			$consider = array_combine(range(0, count($consider) - 1), $consider);
+			$neworder = array();
 			foreach($order as $oval){
-				$zw=  $this->getFieldPrefix($oval) . '_' . $oval;
+				$zw = $this->getFieldPrefix($oval) . '_' . $oval;
 				if($zw){
 					$neworder[] = $zw;
-				} else {
-					t_e('warning', 'we_ObjectEx::setOrder: '.$ctable.' ('.$this->Text.')  No Field-Prefix found in for '.$oval);
+				} else{
+					t_e('warning', 'we_ObjectEx::setOrder: ' . $ctable . ' (' . $this->Text . ')  No Field-Prefix found in for ' . $oval);
 				}
 			}
-			if(count($neworder)!= count($consider)){
-				if(count($neworder)> count($consider)){
-					$thedifference= array_diff($neworder,$consider);
-					t_e('warning', 'we_ObjectEx::setOrder: '.$ctable.' ('.$this->Text.')  Order-Array ('.count($neworder).') has larger length than generated Fields Array ('.count($consider).'), Missing: ('.implode(',',$thedifference).') Order-Array:('.implode(',',$neworder).') Fields-Array:('.implode(',',$consider).') ');
-				} else {
-					$thedifference= array_diff($consider,$neworder);
-					t_e('warning', 'we_ObjectEx::setOrder: '.$ctable.' ('.$this->Text.')  Order-Array ('.count($neworder).') has smaller length than generated Fields Array ('.count($consider).'), Missing: ('.implode(',',$thedifference).') Order-Array:('.implode(',',$neworder).') Fields-Array:('.implode(',',$consider).') ');
-
+			if(count($neworder) != count($consider)){
+				if(count($neworder) > count($consider)){
+					$thedifference = array_diff($neworder, $consider);
+					t_e('warning', 'we_ObjectEx::setOrder: ' . $ctable . ' (' . $this->Text . ')  Order-Array (' . count($neworder) . ') has larger length than generated Fields Array (' . count($consider) . '), Missing: (' . implode(',', $thedifference) . ') Order-Array:(' . implode(',', $neworder) . ') Fields-Array:(' . implode(',', $consider) . ') ');
+				} else{
+					$thedifference = array_diff($consider, $neworder);
+					t_e('warning', 'we_ObjectEx::setOrder: ' . $ctable . ' (' . $this->Text . ')  Order-Array (' . count($neworder) . ') has smaller length than generated Fields Array (' . count($consider) . '), Missing: (' . implode(',', $thedifference) . ') Order-Array:(' . implode(',', $neworder) . ') Fields-Array:(' . implode(',', $consider) . ') ');
 				}
-			} else {
-				$neworder=array_flip($neworder);
-				$theorder=array();
+			} else{
+				$neworder = array_flip($neworder);
+				$theorder = array();
 				foreach($consider as $ck => $cv){
-					$theorder[str_replace('.', '', uniqid(__FUNCTION__, true))]=$neworder[$cv];
+					$theorder[str_replace('.', '', uniqid(__FUNCTION__, true))] = $neworder[$cv];
 				}
 				$this->setElement("we_sort", $theorder);
-				$this->strOrder=implode(',',$theorder);
+				$this->strOrder = implode(',', $theorder);
 				$this->saveToDB();
 			}
 		}
 	}
-	
-	function getFieldsOrdered($withoutPrefix=false){
+
+	function getFieldsOrdered($withoutPrefix = false){
 		$ctable = OBJECT_X_TABLE . intval($this->ID);
 		$metadata = $this->DB_WE->metadata($ctable, true);
-		$metas= array_keys($metadata['meta']);
-		$consider=array_diff($metas,$this->_ObjectBaseElements);
+		$metas = array_keys($metadata['meta']);
+		$consider = array_diff($metas, $this->_ObjectBaseElements);
 		if($withoutPrefix){
 			foreach($consider as &$value){
-				$zw=explode('_',$value,2);
-				$value=$zw[1];
+				$zw = explode('_', $value, 2);
+				$value = $zw[1];
 			}
 		}
 		if(!empty($consider)){
-			$consider=array_values($consider);
-			$akeys=explode(',',$this->strOrder);
-			$order=array();
+			$consider = array_values($consider);
+			$akeys = explode(',', $this->strOrder);
+			$order = array();
 			foreach($akeys as $k => $v){
-				$order[]=$consider[$v];
+				$order[] = $consider[$v];
 			}
 			return $order;
 		}
 		return false;
 	}
+
 	function checkFields($fields){
 		$ctable = OBJECT_X_TABLE . intval($this->ID);
 		$metadata = $this->DB_WE->metadata($ctable, true);
-		$metas= array_keys($metadata['meta']);
-		$consider=array_diff($metas,$this->_ObjectBaseElements);
-		$theKeys=explode(',',$this->strOrder);
-		if(count($theKeys)!= count($consider)){
+		$metas = array_keys($metadata['meta']);
+		$consider = array_diff($metas, $this->_ObjectBaseElements);
+		$theKeys = explode(',', $this->strOrder);
+		if(count($theKeys) != count($consider)){
 			$this->resetOrder();
-			$theKeys=explode(',',$this->strOrder);
+			$theKeys = explode(',', $this->strOrder);
 		}
-		if(count($theKeys)== count($consider)){
-			$consider=array_combine($theKeys,$consider);
-			$isOK=true;
+		if(count($theKeys) == count($consider)){
+			$consider = array_combine($theKeys, $consider);
+			$isOK = true;
 			foreach($fields as $field){
-				if(!in_array($field,$consider)){
-					t_e('warning', 'we_ObjectEx::checkFields: '.$ctable.' ('.$this->Text.')  Field '.$field.' not found');
-					$isOK=false;
+				if(!in_array($field, $consider)){
+					t_e('warning', 'we_ObjectEx::checkFields: ' . $ctable . ' (' . $this->Text . ')  Field ' . $field . ' not found');
+					$isOK = false;
 				}
 			}
 			return $isOK;
 		} else{
-			t_e('warning', 'we_ObjectEx::checkFields: '.$ctable.' ('.$this->Text.') different field count - not recoverable bei resetOrder strOrder' );
+			t_e('warning', 'we_ObjectEx::checkFields: ' . $ctable . ' (' . $this->Text . ') different field count - not recoverable bei resetOrder strOrder');
 		}
-
 	}
 
 	/* setter for runtime variable isAddFieldNoSave which allows to construct Classes from within Apps */
 	/* do not access this variable directly, in later WE Versions, it will be protected */
+
 	function setIsAddFieldNoSave($isAddFieldNoSave){
-		$this->isAddFieldNoSave=$isAddFieldNoSave;
+		$this->isAddFieldNoSave = $isAddFieldNoSave;
 	}
+
 	/* getter for runtime variable isAddFieldNoSave which allows to construct Classes from within Apps */
 	/* do not access this variable directly, in later WE Versions, it will be protected */
+
 	function getIsAddFieldNoSave(){
 		return $this->isAddFieldNoSave;
 	}
+
 	/* setter for runtime variable isModifyFieldNoSave which allows to construct Classes from within Apps */
 	/* do not access this variable directly, in later WE Versions, it will be protected */
+
 	function setIsModifyFieldNoSave($isModifyFieldNoSave){
-		$this->isModifyFieldNoSave=$isModifyFieldNoSave;
+		$this->isModifyFieldNoSave = $isModifyFieldNoSave;
 	}
+
 	/* getter for runtime variable isModifyFieldNoSave which allows to construct Classes from within Apps */
 	/* do not access this variable directly, in later WE Versions, it will be protected */
+
 	function getIsModifyFieldNoSave(){
 		return $this->isModifyFieldNoSave;
 	}
+
 	/* setter for runtime variable isDropFieldNoSave which allows to construct Classes from within Apps */
 	/* do not access this variable directly, in later WE Versions, it will be protected */
+
 	function setIsDropFieldNoSave($isDropFieldNoSave){
-		$this->isDropFieldNoSave=$isDropFieldNoSave;
+		$this->isDropFieldNoSave = $isDropFieldNoSave;
 	}
+
 	/* getter for runtime variable isDropFieldNoSave which allows to construct Classes from within Apps */
 	/* do not access this variable directly, in later WE Versions, it will be protected */
+
 	function getIsDropFieldNoSave(){
 		return $this->isDropFieldNoSave;
 	}
