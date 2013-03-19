@@ -1089,7 +1089,6 @@ class weVersions{
 				$set = array();
 
 				foreach($tblversionsFields as $fieldName){
-
 					if($fieldName != 'ID'){
 						if(isset($document[$fieldName])){
 							$set[$fieldName] = $document[$fieldName];
@@ -1226,6 +1225,7 @@ class weVersions{
 							if(isset($document[$val])){
 								if($document[$val] == ""){
 									switch($val){
+										case 'DocType':
 										case 'IsSearchable':
 										case 'WebUserID':
 										case 'TemplateID':
@@ -1256,15 +1256,17 @@ class weVersions{
 									}
 									switch($val){
 										case "documentElements":
+											//TODO: imi: check if we need next-level information from nested arrays
 											if(!empty($document["elements"])){
 												$newData = $document["elements"];
 												foreach($newData as $k => $vl){
 													if(isset($lastEntryField[$k]) && is_array($lastEntryField[$k]) && is_array($vl)){
-														//Notice in array_diff_assoc entry OK??
-														if(isset($vl['dat']) && !is_array($vl['dat']) && isset($lastEntryField[$k]['dat']) && is_array($lastEntryField[$k]['dat'])){
-															$lastEntryField[$k]['dat'] = serialize($lastEntryField[$k]);
+														if(isset($vl['dat'])){
+															$vl['dat'] = is_array($vl['dat']) ? serialize($vl['dat']) : $vl['dat'];
 														}
-														// serialized entry OK??
+														if(isset($lastEntryField[$k]['dat'])){
+															$lastEntryField[$k]['dat'] = is_array($lastEntryField[$k]['dat']) ? serialize($lastEntryField[$k]['dat']) : $lastEntryField[$k]['dat'];
+														}
 														$_diff = array_diff_assoc($vl, $lastEntryField[$k]);
 														if(!empty($_diff) && isset($_diff['dat'])){
 															$diff[] = $_diff;
@@ -1274,34 +1276,41 @@ class weVersions{
 											}
 											break;
 										case "documentScheduler":
-											if(empty($document["schedArr"]) && !empty($lastEntryField)){
+											//TODO: imi: check if count() is ok (do we allways have two arrays?)
+											if(count($document["schedArr"]) != count($lastEntryField)){
 												$diff['schedArr'] = true;
-											} elseif(!empty($document["schedArr"]) && empty($lastEntryField)){
-												$diff['schedArr'] = true;
-											}
-											if(!empty($document["schedArr"])){
+											} elseif(!empty($document["schedArr"])){
 												$newData = $document["schedArr"];
 												foreach($newData as $k => $vl){
 													if(isset($lastEntryField[$k]) && is_array($lastEntryField[$k]) && is_array($vl)){
-														$_diff = array_diff_assoc($vl, $lastEntryField[$k]);
+														$_tmpArr1 = array();
+														$_tmpArr2 = array();
+														foreach($vl as $_k => $_v){
+															$_tmpArr1[$_k] = is_array($_v) ? serialize($_v) : $_v;
+														}
+														foreach($lastEntryField[$k] as $_k => $_v){
+															$_tmpArr2[$_k] = is_array($_v) ? serialize($_v) : $_v;
+														}
+														$_diff = array_diff_assoc($_tmpArr1, $_tmpArr2);
 														if(!empty($_diff)){
 															$diff = $_diff;
-														}
-														foreach($vl as $_k => $_v){
-															if(isset($lastEntryField[$k][$_k]) && is_array($lastEntryField[$k][$_k]) && is_array($_v)){
-																$_diff2 = array_diff_assoc($_v, $lastEntryField[$k][$_k]);
-																if(!empty($_diff2)){
-																	$diff = $_diff2;
-																}
-															}
 														}
 													}
 												}
 											}
 											break;
 										case "documentCustomFilter":
+											//TODO: imi: check if we need both foreach
 											if(isset($document["documentCustomerFilter"]) && is_array($document["documentCustomerFilter"]) && is_array($lastEntryField)){
-												$_diff = array_diff_assoc($document["documentCustomerFilter"], $lastEntryField);
+												$_tmpArr1 = array();
+												$_tmpArr2 = array();
+												foreach($document["documentCustomerFilter"] as $_k => $_v){
+													$_tmpArr1[$_k] = is_array($_v) ? serialize($_v) : $_v;
+												}
+												foreach($lastEntryField as $_k => $_v){
+													$_tmpArr2[$_k] = is_array($_v) ? serialize($_v) : $_v;
+												}
+												$_diff = array_diff_assoc($_tmpArr1, $_tmpArr2);
 												if(!empty($_diff)){
 													$diff['documentCustomerFilter'] = $_diff;
 												}
@@ -1402,10 +1411,18 @@ class weVersions{
 			$oldTestArr = $oldArr;
 			foreach($newTestArr as $tk => $tv){
 				if(is_array($tv)){
+					//TODO: imi: maybe we should serialize instead of unset: to prevent loss of information
 					unset($newTestArr[$tk]);
 					unset($oldTestArr[$tk]);
 				}
 			}
+			foreach($oldTestArr as $tk => $tv){
+				if(is_array($tv)){
+					unset($newTestArr[$tk]);
+					unset($oldTestArr[$tk]);
+				}
+			}
+
 			$_diff = array_diff_assoc($newTestArr, $oldTestArr);
 			if(isset($_diff['Published'])){
 				unset($_diff['Published']);
@@ -1429,57 +1446,79 @@ class weVersions{
 			foreach($newArr as $k => $v){
 				if(is_array($v)){
 					if($k == 'schedArr'){
-						if(empty($v) && !empty($oldArr['schedArr'])){
-							$diff['schedArr'] = true;
-						} elseif(!empty($v) && empty($oldArr['schedArr'])){
+						//TODO: imi: check if count() is ok (do we allways have two arrays?)
+						if(count($v) != count($oldArr['schedArr'])){
 							$diff['schedArr'] = true;
 						} else{
 							foreach($v as $key => $val){
 								if(isset($oldArr['schedArr'][$key]) && is_array($oldArr['schedArr'][$key]) && is_array($val)){
-
-									$_diff = array_diff_assoc($val, $oldArr['schedArr'][$key]);
+									$_tmpArr1 = array();
+									$_tmpArr2 = array();
+									foreach($val as $_k => $_v){
+										$_tmpArr1[$_k] = is_array($_v) ? serialize($_v) : $_v;
+									}
+									foreach($oldArr['schedArr'][$key] as $_k => $_v){
+										$_tmpArr2[$_k] = is_array($_v) ? serialize($_v) : $_v;
+									}
+									$_diff = array_diff_assoc($_tmpArr1, $_tmpArr2);
 									if(!empty($_diff)){
 										$diff['schedArr'][$key] = $_diff;
-									}
-									foreach($val as $_k => $_v){
-										if(isset($oldArr['schedArr'][$key][$_k]) && is_array($oldArr['schedArr'][$key][$_k]) && is_array($_v)){
-											$_diff2 = array_diff_assoc($_v, $oldArr['schedArr'][$key][$_k]);
-											if(!empty($_diff2)){
-												$diff['schedArr'][$key][$_k] = $_diff2;
-											}
-										}
 									}
 								}
 							}
 						}
 					} elseif($k == 'elements'){
 						foreach($v as $key => $val){
+							//TODO: imi: should we serialize inside the foreachs instead of simulating the array to string conversion?
 							if(isset($oldArr['elements'][$key]) && is_array($oldArr['elements'][$key]) && is_array($val)){
-								if(count($val) == count($oldArr['elements'][$key])){
-									if(isset($val['dat']) && is_array($val['dat'])){
-										$_diff = array_diff_assoc($val['dat'], $oldArr['elements'][$key]['dat']);
-										unset($val['dat']);
-										unset($oldArr['elements'][$key]['dat']);
-										$diff['elements'][$key] = $_diff;
+								if(isset($val['dat']) && is_array($val['dat']) && isset($oldArr['elements'][$key]['dat']) && is_array($oldArr['elements'][$key]['dat'])){
+									$_tmpArr1 = array();
+									$_tmpArr2 = array();
+
+									foreach($val['dat'] as $_k => $_v){
+										//$valDat[$index] = is_array($value) ? serialize($value) : $value;
+										$_tmpArr1[$_k] = is_array($_v) ? 'Array' : $_v;
 									}
-									$_diff = array_diff_assoc($val, $oldArr['elements'][$key]);
-									if(!empty($_diff) && isset($_diff['dat'])){
-										$diff['elements'][$key] = $_diff;
+
+									foreach($oldArr['elements'][$key]['dat'] as $_k => $_v){
+										//$oldArrDat[$index] = is_array($value) ? serialize($value) : $value;
+										$_tmpArr2[$_k] = is_array($_v) ? 'Array' : $_v;
 									}
+
+									$_diff = array_diff_assoc($_tmpArr1, $_tmpArr2);
+									unset($val['dat']);
+									unset($oldArr['elements'][$key]['dat']);
+									$diff['elements'][$key] = $_diff; 
 								} else{
-									if(isset($val['dat']) && !is_array($val['dat']) && isset($oldArr['elements'][$key]['dat']) && is_array($oldArr['elements'][$key]['dat'])){
+									if(isset($val['dat']) && is_array($val['dat'])){
+										$val['dat'] = serialize($val['dat']);
+									}
+									if(isset($oldArr['elements'][$key]['dat']) && is_array($oldArr['elements'][$key]['dat'])){
 										$oldArr['elements'][$key]['dat'] = serialize($oldArr['elements'][$key]['dat']);
 									}
-									$_diff = array_diff_assoc($val, $oldArr['elements'][$key]);
-									if(!empty($_diff) && isset($_diff['dat'])){
-										$diff['elements'][$key] = $_diff;
-									}
+								}
+
+								$_diff = array_diff_assoc($val, $oldArr['elements'][$key]);
+								if(!empty($_diff) && isset($_diff['dat'])){
+									$diff['elements'][$key] = $_diff;
 								}
 							}
 						}
 					} elseif($k == 'documentCustomerFilter'){
+						//TODO: imi: check if we need the information of serialized arrays instead of array to string = Array
 						if(is_array($v) && isset($oldArr['documentCustomerFilter']) && is_array($oldArr['documentCustomerFilter'])){
-							$_diff = array_diff_assoc($v, $oldArr['documentCustomerFilter']);
+							
+							$_tmpArr1 = array();
+							$_tmpArr2 = array();
+							foreach($v as $_k => $_v){
+								$_tmpArr1[$_k] = is_array($_v) ? serialize($_v) : $_v;
+								//$vContent[$index] = is_array($value) ? 'Array' : $value;
+							}
+							foreach($oldArr['documentCustomerFilter'] as $_k => $_v){
+								$_tmpArr2[$_k] = is_array($_v) ? serialize($_v) : $_v;
+								//$oldArrContent[$index] = is_array($value) ? 'Array' : $value;
+							}
+							$_diff = array_diff_assoc($_tmpArr1, $_tmpArr2);
 							if(!empty($_diff)){
 								$diff['documentCustomerFilter'] = $_diff;
 							}
