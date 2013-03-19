@@ -25,7 +25,7 @@
 function we_tag_ifHasCurrentEntry(){
 	if(isset($GLOBALS['weNavigationItemArray']) && is_array($GLOBALS['weNavigationItemArray'])){
 
-		$element = $GLOBALS['weNavigationItemArray'][(count($GLOBALS['weNavigationItemArray']) - 1)];
+		$element = end($GLOBALS['weNavigationItemArray']);
 
 		if(!empty($element->items)){
 			foreach($element->items as $key => $value){
