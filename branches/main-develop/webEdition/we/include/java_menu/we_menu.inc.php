@@ -42,17 +42,15 @@ $we_menu = array(
 		'parent' => '1010000',
 		'perm' => 'NEW_WEBEDITIONSITE || ADMINISTRATOR',
 		'enabled' => 1,
-	)
-);
+	),
 // File > New > webEdition Document > empty page
-if(we_hasPerm('NO_DOCTYPE')){
-	$we_menu['1010101'] = array(
+	'1010101' => array(
 		'text' => g_l('javaMenu_global', '[empty_page]'),
 		'parent' => '1010100',
 		'cmd' => 'new_webEditionPage',
-		'perm' => 'NEW_WEBEDITIONSITE || ADMINISTRATOR',
-	);
-}
+		'perm' => 'NO_DOCTYPE || NEW_WEBEDITIONSITE || ADMINISTRATOR',
+	)
+);
 
 $GLOBALS['DB_WE']->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' ' . getDoctypeQuery($GLOBALS['DB_WE']));
 if($GLOBALS['DB_WE']->num_rows() && we_hasPerm('NO_DOCTYPE')){
@@ -445,9 +443,7 @@ $we_menu['1150100'] = array(
 	'text' => g_l('javaMenu_global', '[import]') . '&hellip;',
 	'cmd' => 'import',
 	'parent' => '1150000',
-	'perm' => (we_hasPerm('FILE_IMPORT') || we_hasPerm('SITE_IMPORT') || we_hasPerm('GENERICXML_IMPORT') || we_hasPerm('CSV_IMPORT') || we_hasPerm('WXML_IMPORT') ?
-		'NEW_GRAFIK || NEW_WEBEDITIONSITE || NEW_HTML || NEW_FLASH || NEW_QUICKTIME || NEW_JS || NEW_CSS || NEW_TEXT || NEW_HTACCESS || NEW_SONSTIGE || ADMINISTRATOR' :
-		'ADMINISTRATOR'),
+	'perm' => 'FILE_IMPORT || SITE_IMPORT || GENERICXML_IMPORT || CSV_IMPORT || WXML_IMPORT || NEW_GRAFIK || NEW_WEBEDITIONSITE || NEW_HTML || NEW_FLASH || NEW_QUICKTIME || NEW_JS || NEW_CSS || NEW_TEXT || NEW_HTACCESS || NEW_SONSTIGE || ADMINISTRATOR',
 	'enabled' => 1,
 );
 
@@ -790,25 +786,24 @@ $we_menu['4160000'] = array(
 	'enabled' => 1,
 );
 
-if(we_hasPerm('ADMINISTRATOR')){
-	// Extras > versioning
-	$we_menu['4161000'] = array(
-		'text' => g_l('javaMenu_global', '[versioning]') . '&hellip;',
-		'parent' => '4000000',
-		'cmd' => 'versions_wizard',
-		'perm' => 'ADMINISTRATOR',
-		'enabled' => 1,
-	);
+// Extras > versioning
+$we_menu['4161000'] = array(
+	'text' => g_l('javaMenu_global', '[versioning]') . '&hellip;',
+	'parent' => '4000000',
+	'cmd' => 'versions_wizard',
+	'perm' => 'ADMINISTRATOR',
+	'enabled' => 1,
+);
 
-	// Extras > versioning-log
-	$we_menu['4162000'] = array(
-		'text' => g_l('javaMenu_global', '[versioning_log]') . '&hellip;',
-		'parent' => '4000000',
-		'cmd' => 'versioning_log',
-		'perm' => 'ADMINISTRATOR',
-		'enabled' => 1,
-	);
-}
+// Extras > versioning-log
+$we_menu['4162000'] = array(
+	'text' => g_l('javaMenu_global', '[versioning_log]') . '&hellip;',
+	'parent' => '4000000',
+	'cmd' => 'versioning_log',
+	'perm' => 'ADMINISTRATOR',
+	'enabled' => 1,
+);
+
 
 $we_menu['4170000'] = array(
 	'parent' => '4000000',
