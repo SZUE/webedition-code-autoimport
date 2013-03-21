@@ -582,7 +582,7 @@ class weXMLImport extends weXMLExIm{
 					}
 				}
 
-				if($open_new && !empty($line) && trim($line) != "</webEdition>"){
+				if($open_new && !empty($line) && trim($line) != weBackup::weXmlExImFooter){
 					$num++;
 					$filename_tmp = sprintf($path . $pattern, $num);
 					$fh_temp = fopen($filename_tmp, "wb");
@@ -593,7 +593,7 @@ class weXMLImport extends weXMLExIm{
 				}
 
 				if(isset($fh_temp) && $fh_temp){
-					if((substr($line, 0, 2) != "<?") && (substr($line, 0, 11) != "<webEdition") && (substr($line, 0, 12) != "</webEdition")){
+					if((substr($line, 0, 2) != "<?") && (substr($line, 0, 11) != weBackup::weXmlExImHead) && (substr($line, 0, 12) != weBackup::weXmlExImFooter)){
 
 						$buff.=$line;
 						$write = false;
@@ -619,7 +619,7 @@ class weXMLImport extends weXMLExIm{
 							$buff = "";
 						}
 					} else{
-						if(((substr($line, 0, 2) == "<?") || (substr($line, 0, 11) == "<webEdition")) && $num == 0){
+						if(((substr($line, 0, 2) == "<?") || (substr($line, 0, 11) == weBackup::weXmlExImHead)) && $num == 0){
 							$header.=$line;
 						}
 					}
@@ -630,7 +630,7 @@ class weXMLImport extends weXMLExIm{
 		} else{
 			return -1;
 		}
-		if($fh_temp && trim($line) != "</webEdition>"){
+		if($fh_temp && trim($line) != weBackup::weXmlExImFooter){
 			if($buff){
 				@fwrite($fh_temp, $buff);
 			}

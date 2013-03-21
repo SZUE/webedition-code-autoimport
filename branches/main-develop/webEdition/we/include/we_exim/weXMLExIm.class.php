@@ -247,7 +247,7 @@ class weXMLExIm{
 			$encoding = $GLOBALS['WE_BACKENDCHARSET'];
 		}
 		return '<?xml version="1.0" encoding="' . $encoding . '" standalone="yes"?>' . "\n" .
-			'<webEdition version="' . WE_VERSION . '" type="'.$type.'" xmlns:we="we-namespace">' . "\n";
+			weBackup::weXmlExImHead.' version="' . WE_VERSION . '" type="'.$type.'" xmlns:we="we-namespace">' . "\n";
 	}
 
 	static function getFooter(){

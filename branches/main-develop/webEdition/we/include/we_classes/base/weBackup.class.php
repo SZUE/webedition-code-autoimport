@@ -32,6 +32,7 @@ class weBackup extends we_backup{
 
 	const backupSteps = "1,5,7,10,15,20,30,40,50,80,100,500,1000";
 	const backupMarker = '<!-- webackup -->';
+	const weXmlExImHead = '<webEdition';
 	const weXmlExImFooter = '</webEdition>';
 	const weXmlExImProtectCode = '<?php exit();?>';
 
@@ -54,8 +55,8 @@ class weBackup extends we_backup{
 
 	function __construct($handle_options = array()){
 		$this->header = '<?xml version="1.0" encoding="' . $GLOBALS['WE_BACKENDCHARSET'] . '" standalone="yes"?>' . $this->nl .
-			'<webEdition version="' . WE_VERSION . '" type="backup" xmlns:we="we-namespace">' . $this->nl;
-		$this->footer = $this->nl . '</webEdition>';
+			self::weXmlExImHead.' version="' . WE_VERSION . '" type="backup" xmlns:we="we-namespace">' . $this->nl;
+		$this->footer = $this->nl . self::weXmlExImFooter;
 
 		$this->properties[] = 'mode';
 		$this->properties[] = 'filename';
@@ -145,7 +146,7 @@ class weBackup extends we_backup{
 				}
 
 				if($fh_temp){
-					if((substr($line, 0, 2) != "<?") && (substr($line, 0, 11) != "<webEdition") && (substr($line, 0, 12) != "</webEdition")){
+					if((substr($line, 0, 2) != "<?") && (substr($line, 0, 11) != self::weXmlExImHead) && (substr($line, 0, 12) != self::weXmlExImFooter)){
 
 						$buff.=$line;
 						if($marker_size){
@@ -172,7 +173,7 @@ class weBackup extends we_backup{
 							$buff = "";
 						}
 					} else{
-						if(((substr($line, 0, 2) == "<?") || (substr($line, 0, 11) == "<webEdition")) && $num == 0){
+						if(((substr($line, 0, 2) == "<?") || (substr($line, 0, 11) == self::weXmlExImHead)) && $num == 0){
 							$header.=$line;
 						}
 					}

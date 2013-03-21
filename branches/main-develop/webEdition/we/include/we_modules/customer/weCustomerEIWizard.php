@@ -1328,7 +1328,7 @@ class weCustomerEIWizard{
 					);
 
 					break;
-				case "end_export":
+				case 'end_export':
 					$export_to = (isset($_REQUEST["export_to"]) && $_REQUEST["export_to"] != "") ? $_REQUEST["export_to"] : "server";
 					$file_format = (isset($_REQUEST["file_format"]) && $_REQUEST["file_format"] != "") ? $_REQUEST["file_format"] : null;
 					$filename = (isset($_REQUEST["filename"]) && $_REQUEST["filename"] != "") ? $_REQUEST["filename"] : null;
@@ -1336,8 +1336,8 @@ class weCustomerEIWizard{
 
 					if($file_format == "gxml"){
 
-						$file_name = $_SERVER['DOCUMENT_ROOT'] . $path . "/" . $filename;
-						weCustomerEI::save2File($file_name, "</webEdition>");
+						$file_name = $_SERVER['DOCUMENT_ROOT'] . $path . '/' . $filename;
+						weCustomerEI::save2File($file_name, weBackup::weXmlExImFooter);
 					}
 
 					$head = we_html_tools::getHtmlInnerHead(g_l('modules_customer', '[export_title]')) . STYLESHEET;

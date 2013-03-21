@@ -53,7 +53,7 @@ abstract class exportFunctions{
 
 				// Check if can create the file now
 				if(!$_continue === false){
-					weFile::save($_file_name, '<?xml version="1.0" encoding="' . DEFAULT_CHARSET . "\"?>\n<webEdition>\n");
+					weFile::save($_file_name, '<?xml version="1.0" encoding="' . DEFAULT_CHARSET . "\"?>\n".weBackup::weXmlExImHead.">\n");
 				}
 
 				break;

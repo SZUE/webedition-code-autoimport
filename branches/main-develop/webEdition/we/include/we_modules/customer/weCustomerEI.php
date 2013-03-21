@@ -62,12 +62,9 @@ abstract class weCustomerEI{
 			$customer = new weCustomer();
 			$fields = $customer->getFieldsDbProperties();
 
-			if(isset($options['firstexec']) && $options['firstexec'] == -999){
-				$xml_out = '<?xml version="1.0" encoding="' . $GLOBALS['WE_BACKENDCHARSET'] . '" standalone="yes" ?>' . "\n";
-				$xml_out.='<webEdition>' . "\n";
-			} else{
-				$xml_out = '';
-			}
+			$xml_out = (isset($options['firstexec']) && $options['firstexec'] == -999 ?
+					'<?xml version="1.0" encoding="' . $GLOBALS['WE_BACKENDCHARSET'] . '" standalone="yes" ?>' . "\n" . weBackup::weXmlExImHead . ">\n" :
+					'');
 
 			foreach($options['customers'] as $cid){
 				if($cid){
