@@ -435,6 +435,10 @@ abstract class we_autoloader{
 		'' => array(
 			'we_linklist' => 'we_linklist.inc.php',
 		),
+		LIB_DIR => array(
+			'Horde_Text_Diff' => '',
+			'Horde_Text_Diff_Renderer_Inline' => '',
+		)
 	);
 
 	/**
@@ -459,7 +463,8 @@ abstract class we_autoloader{
 
 		foreach(self::$classes as $path => $array){
 			if(array_key_exists($class_name, $array)){
-				include(WE_INCLUDES_PATH . $path . '/' . $array[$class_name]);
+				$path = (substr($path, 0, 1) == '/' ? $path : WE_INCLUDES_PATH . $path . '/');
+				include($path . $array[$class_name]);
 				break;
 			}
 		}

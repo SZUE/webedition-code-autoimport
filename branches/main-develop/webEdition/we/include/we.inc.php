@@ -134,11 +134,9 @@ if(isset($_SESSION['prefs']['Language']) && $_SESSION['prefs']['Language'] != ''
 } else{
 	$GLOBALS['WE_LANGUAGE'] = WE_LANGUAGE;
 }
-if(isset($_SESSION['prefs']['BackendCharset']) && $_SESSION['prefs']['BackendCharset'] != ''){
-	$GLOBALS['WE_BACKENDCHARSET'] = $_SESSION['prefs']['BackendCharset'];
-} else{
-	$GLOBALS['WE_BACKENDCHARSET'] = 'UTF-8';
-}
+$GLOBALS['WE_BACKENDCHARSET'] = (isset($_SESSION['prefs']['BackendCharset']) && $_SESSION['prefs']['BackendCharset'] != '' ?
+		$_SESSION['prefs']['BackendCharset'] : 'UTF-8');
+
 if(in_array('shop', $GLOBALS['_we_active_integrated_modules'])){
 	$MNEMONIC_EDITPAGES[WE_EDITPAGE_VARIANTS] = 'variants';
 }

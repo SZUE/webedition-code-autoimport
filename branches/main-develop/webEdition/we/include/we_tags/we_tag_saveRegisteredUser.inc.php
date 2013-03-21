@@ -112,7 +112,6 @@ function we_tag_saveRegisteredUser($attribs){
 			if(f('SELECT 1 AS a FROM ' . CUSTOMER_TABLE . ' WHERE Username="' . $GLOBALS["DB_WE"]->escape($Username) . '" AND ID!=' . intval($_REQUEST['s']['ID']), 'a', $GLOBALS['DB_WE']) != '1'){ // es existiert kein anderer User mit den neuen Username oder username hat sich nicht geaendert
 				if(isset($_REQUEST['s'])){
 
-
 					$hook = new weHook('customer_preSave', '', array('customer' => &$_REQUEST['s'], 'from' => 'tag', 'type' => 'modify', 'tagname' => 'saveRegisteredUser'));
 					$ret = $hook->executeHook();
 

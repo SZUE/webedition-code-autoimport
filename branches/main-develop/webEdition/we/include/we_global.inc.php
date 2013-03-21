@@ -1570,9 +1570,9 @@ function getHtmlTag($element, $attribs = array(), $content = '', $forceEndTag = 
 	$_tag = '<' . $element;
 
 	foreach($attribs as $k => $v){
-		$_tag .= ($k == 'link_attribute' ? // Bug #3741
-				' ' . $v :
-				' ' . str_replace('pass_', '', $k) . '="' . $v . '"');
+		$_tag .= ' ' . ($k == 'link_attribute' ? // Bug #3741
+				$v :
+				str_replace('pass_', '', $k) . '="' . $v . '"');
 	}
 	if($content != '' || $forceEndTag){ //	use endtag
 		$_tag .= '>' . $content . '</' . $element . '>';

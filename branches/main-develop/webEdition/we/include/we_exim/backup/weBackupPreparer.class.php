@@ -164,10 +164,7 @@ class weBackupPreparer{
 			$_SESSION['weS']['weBackupVars']['files_to_delete_count'] = count($_SESSION['weS']['weBackupVars']['files_to_delete']);
 		}
 
-		if($_SESSION['weS']['weBackupVars']['handle_options']['versions']
-			|| $_SESSION['weS']['weBackupVars']['handle_options']['core']
-			|| $_SESSION['weS']['weBackupVars']['handle_options']['object']
-			|| $_SESSION['weS']['weBackupVars']['handle_options']['versions_binarys']
+		if($_SESSION['weS']['weBackupVars']['handle_options']['versions'] || $_SESSION['weS']['weBackupVars']['handle_options']['core'] || $_SESSION['weS']['weBackupVars']['handle_options']['object'] || $_SESSION['weS']['weBackupVars']['handle_options']['versions_binarys']
 		){
 			weBackupPreparer::clearVersionData();
 		}
@@ -386,8 +383,7 @@ class weBackupPreparer{
 	function isPathExist($path){
 		global $DB_WE;
 
-		return ((f('SELECT 1 AS a FROM ' . FILE_TABLE . " WHERE Path='" . $DB_WE->escape($path) . "'", 'a', $DB_WE) == '1')
-			|| (f('SELECT 1 AS a FROM ' . TEMPLATES_TABLE . " WHERE Path='" . $DB_WE->escape($path) . "'", 'a', $DB_WE) == '1'));
+		return ((f('SELECT 1 AS a FROM ' . FILE_TABLE . " WHERE Path='" . $DB_WE->escape($path) . "'", 'a', $DB_WE) == '1') || (f('SELECT 1 AS a FROM ' . TEMPLATES_TABLE . " WHERE Path='" . $DB_WE->escape($path) . "'", 'a', $DB_WE) == '1'));
 	}
 
 	static function getEncoding($file, $iscompressed){
@@ -429,22 +425,22 @@ class weBackupPreparer{
 			case 'weimport':
 				if(we_hasPerm('WXML_IMPORT')){
 					return we_html_element::jsElement('
-							if(confirm("' . str_replace('"','\'',g_l('backup', '[import_file_found]') . ' \n\n' . g_l('backup', '[import_file_found_question]')) . '")){
+							if(confirm("' . str_replace('"', '\'', g_l('backup', '[import_file_found]') . ' \n\n' . g_l('backup', '[import_file_found_question]')) . '")){
 								top.opener.top.we_cmd("import");
 								top.close();
 							} else {
 								top.body.location = "' . WE_INCLUDES_DIR . 'we_editors/we_recover_backup.php?pnt=body&step=2";
 							}');
 				} else{
-					return we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('backup', '[import_file_found]'), we_message_reporting::WE_MESSAGE_WARNING) . '
-							top.body.location = "' . WE_INCLUDES_DIR . 'we_editors/we_recover_backup.php?pnt=body&step=2";');
+					return we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('backup', '[import_file_found]'), we_message_reporting::WE_MESSAGE_WARNING) .
+							'top.body.location = "' . WE_INCLUDES_DIR . 'we_editors/we_recover_backup.php?pnt=body&step=2";');
 				}
 			case 'customer':
-				return we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('backup', '[customer_import_file_found]'), we_message_reporting::WE_MESSAGE_WARNING) . '
-						top.body.location = "' . WE_INCLUDES_DIR . 'we_editors/we_recover_backup.php?pnt=body&step=2";');
+				return we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('backup', '[customer_import_file_found]'), we_message_reporting::WE_MESSAGE_WARNING) .
+						'top.body.location = "' . WE_INCLUDES_DIR . 'we_editors/we_recover_backup.php?pnt=body&step=2";');
 			default:
-				return we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('backup', '[format_unknown]'), we_message_reporting::WE_MESSAGE_WARNING) . '
-						top.body.location = "' . WE_INCLUDES_DIR . 'we_editors/we_recover_backup.php?pnt=body&step=2";');
+				return we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('backup', '[format_unknown]'), we_message_reporting::WE_MESSAGE_WARNING) .
+						'top.body.location = "' . WE_INCLUDES_DIR . 'we_editors/we_recover_backup.php?pnt=body&step=2";');
 		}
 	}
 

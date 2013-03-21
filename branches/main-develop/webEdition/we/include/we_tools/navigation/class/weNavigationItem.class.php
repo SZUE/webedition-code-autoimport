@@ -288,12 +288,11 @@ class weNavigationItem{
 		}
 
 		// attributes
-		$_attributes = array();
 		$code = '';
 		if(isset($attribs['attributes'])){
 			$_attributes = $this->getNavigationFieldAttributes($attribs);
-			foreach($_attributes as $_key => $_value){
-				$code .= ' ' . $_key . '="' . $_value . '"';
+			foreach($_attributes as $key => $value){
+				$code .= ' ' . ($key == 'link_attribute' ? $value : $key . '="' . $value . '"');
 			}
 		}
 		return $code;
@@ -319,15 +318,15 @@ class weNavigationItem{
 							'accesskey',
 							'tabindex',
 							'rel',
-							'rev', 'link_attribute'
+							'rev',
+							'link_attribute'
 						);
 						foreach($useFields as $field){
 							if(isset($this->$field) && $this->$field != ''){
 								$attribs[$field] = ($field == 'title' ?
 										oldHtmlspecialchars($this->$field) :
 										$this->$field);
-							} else
-							if(isset($this->attributes[$field]) && $this->attributes[$field] != ''){
+							} elseif(isset($this->attributes[$field]) && $this->attributes[$field] != ''){
 								$attribs[$field] = ($field == 'link_attribute' ? // Bug #3741
 										$this->attributes[$field] :
 										oldHtmlspecialchars($this->attributes[$field]));
@@ -351,10 +350,7 @@ class weNavigationItem{
 							$_imgObj = new we_imageDocument();
 							$_imgObj->initByID($_iconid);
 
-							$_js = $_imgObj->getRollOverScript('', '', false);
-							$_js = preg_replace("|<[^>]+><!--|", "", $_js);
-							$_js = preg_replace("|//--><[^>]+>|", "", $_js);
-							$_js = str_replace(array("\r\n", "\n"), '', $_js);
+							$_js = preg_replace(array('|<[^>]+><!--|', '|//--><[^>]+>|', '-(\r\n|\n)-'), '', $_imgObj->getRollOverScript('', '', false));
 
 							$_arr = $_imgObj->getRollOverAttribsArr();
 							if(!empty($_arr)){
