@@ -37,7 +37,7 @@ function we_tag_description($attribs, $content){
 		return '<?php	$GLOBALS["meta"]["Description"]["default"] = "' . str_replace('"', '\"', $content) . '"; ?>';
 	} else{
 
-		$descr = $GLOBALS['DESCRIPTION'] ? $GLOBALS['DESCRIPTION'] : $content;
+		$descr = isset($GLOBALS['DESCRIPTION']) && $GLOBALS['DESCRIPTION'] ? $GLOBALS['DESCRIPTION'] : $content;
 
 		$attribs["name"] = "description";
 		$descr = $htmlspecialchars ? oldHtmlspecialchars(strip_tags($descr)) : strip_tags($descr);
