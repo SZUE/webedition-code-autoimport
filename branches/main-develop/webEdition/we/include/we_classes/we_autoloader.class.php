@@ -435,10 +435,6 @@ abstract class we_autoloader{
 		'' => array(
 			'we_linklist' => 'we_linklist.inc.php',
 		),
-		LIB_DIR => array(
-			'Horde_Text_Diff' => '',
-			'Horde_Text_Diff_Renderer_Inline' => '',
-		)
 	);
 
 	/**

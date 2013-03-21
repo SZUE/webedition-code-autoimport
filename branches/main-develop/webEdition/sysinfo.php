@@ -267,7 +267,6 @@ $_info = array(
 		g_l('sysinfo', '[pcre]') => ((defined("PCRE_VERSION")) ? ( (substr(PCRE_VERSION, 0, 1) < 7) ? getWarning(g_l('sysinfo', "[pcre warning]"), g_l('sysinfo', '[version]') . ' ' . PCRE_VERSION) : g_l('sysinfo', '[version]') . ' ' . PCRE_VERSION ) : getWarning(g_l('sysinfo', '[available]'), g_l('sysinfo', "[pcre_unkown]"))),
 		g_l('sysinfo', '[sdk_db]') => $phpextensionsSDK_DB,
 		g_l('sysinfo', '[phpext]') => (!empty($phpextensionsMissing) ? getWarning(g_l('sysinfo', "[phpext warning2]"), g_l('sysinfo', "[phpext warning]") . implode(', ', $phpextensionsMissing)) : ($phpExtensionsDetectable ? g_l('sysinfo', '[available]') : g_l('sysinfo', '[detectable warning]')) ),
-		'pear Text_Diff' => class_exists('Text_Diff', false) ? getOk('http://pear.php.net/package/Text_Diff/redirected', g_l('sysinfo', '[available]')) : getWarning('http://pear.php.net/package/Text_Diff/redirected', '-'),
 	),
 	'Deprecated' => array(
 		g_l('prefs', '[backwardcompatibility_tagloading]') => (defined('INCLUDE_ALL_WE_TAGS') && INCLUDE_ALL_WE_TAGS) ? getWarning('Deprecated', '1') : getOk('', '0'),

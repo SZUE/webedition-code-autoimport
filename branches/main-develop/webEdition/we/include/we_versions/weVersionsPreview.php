@@ -170,11 +170,11 @@ if(!empty($oldDoc) && $isTempl){
 	$contentOld = '<textarea style="width:99%;height:99%">' . $oDocElements['data']['dat'] . '</textarea>';
 }
 $_versions_time_days = new we_html_select(array(
-		'name' => 'versions_time_days',
-		'style' => '',
-		'class' => 'weSelect',
-		'onchange' => 'previewVersion(' . $ID . ', this.value);'
-		)
+	'name' => 'versions_time_days',
+	'style' => '',
+	'class' => 'weSelect',
+	'onchange' => 'previewVersion(' . $ID . ', this.value);'
+	)
 );
 
 $versionOld = '';
@@ -332,7 +332,7 @@ if(!empty($newDocElements)){
 		//if one of them contains newlines, format it as pre-block
 		if(true || $isTempl){
 			if(preg_match("/(%0A|%0D|\\n+|\\r+)/i", $newVal) || preg_match("/(%0A|%0D|\\n+|\\r+)/i", $oldVal)){
-				$pre = '<pre style="font-size:0.9em;' . (class_exists('Text_Diff') ? '' : 'width:400px;') . 'overflow:auto;">';
+				$pre = '<pre style="font-size:0.9em;overflow:auto;">';
 				$div = '';
 			} else{
 				$pre = '';
@@ -344,12 +344,15 @@ if(!empty($newDocElements)){
 
 		$contentDiff .= '<tr>
 <td width="33%" style="' . $mark . '"><strong>' . $name . '</strong></td>';
-		if(class_exists('Text_Diff', false) && $pre != ''){
+		if($pre != ''){
+			require_once(LIB_DIR . 'Horde/Text/Diff.php');
+			require_once(LIB_DIR . 'Horde/Text/Diff/Renderer.php');
+			require_once(LIB_DIR . 'Horde/Text/Diff/Renderer/Inline.php');
 			$oldVal = explode("\n", str_replace("\r", "\n", str_replace("\r\n", "\n", $oldVal)));
 			$newVal = explode("\n", str_replace("\r", "\n", str_replace("\r\n", "\n", $newVal)));
-			$diff = new Text_Diff('native', array(($oldVersion ? $oldVal : array()), is_array($newVal) ? $newVal : array()));
-			$renderer = new Text_Diff_Renderer_inline(array('ins_prefix' => '###INS_START###', 'ins_suffix' => '###INS_END###',
-					'del_prefix' => '###DEL_START###', 'del_suffix' => '###DEL_END###',));
+			$diff = new Horde_Text_Diff('native', array(($oldVersion ? $oldVal : array()), is_array($newVal) ? $newVal : array()));
+			$renderer = new Horde_Text_Diff_Renderer_Inline(array('ins_prefix' => '###INS_START###', 'ins_suffix' => '###INS_END###',
+				'del_prefix' => '###DEL_START###', 'del_suffix' => '###DEL_END###',));
 
 			$text = str_replace('###INS_START###', '<span style="color:blue;">+<span style="font-weight:bold;text-decoration:underline;">', str_replace('###INS_END###', '</span>+</span>', str_replace('###DEL_END###', '</span>-</span>', str_replace('###DEL_START###', '<span style="color:red;">-<span style="font-weight:bold;text-decoration: line-through;">-', $renderer->render($diff)))));
 
@@ -601,10 +604,12 @@ print STYLESHEET;
 	<!--
 	var activ_tab = <?php print $activTab; ?>;
 
-	function toggle(id){
+	function toggle(id) {
 		var elem = document.getElementById(id);
-		if(elem.style.display == "none") elem.style.display = "block";
-		else elem.style.display = "none";
+		if (elem.style.display == "none")
+			elem.style.display = "block";
+		else
+			elem.style.display = "none";
 	}
 
 	function previewVersion(ID, newID) {
@@ -636,17 +641,17 @@ print STYLESHEET;
 
 <body>
 	<div id="mytabs">
-<?php print $tabsBody; ?>
+		<?php print $tabsBody; ?>
 	</div>
 	<div id="content" style="position:absolute;margin: 0px; top:30px;bottom:40px;left:0px;right:0px;overflow:auto;">
 		<div id="tab1" style="display:block;">
-<?php print $_tab_1 ?>
+			<?php print $_tab_1 ?>
 		</div>
 		<div id="tab2" style="display:none;height:100%;width:100%">
-<?php print $_tab_2 ?>
+			<?php print $_tab_2 ?>
 		</div>
 		<div id="tab3" style="display:none;height:100%;width:100%">
-<?php print $_tab_3 ?>
+			<?php print $_tab_3 ?>
 		</div>
 	</div>
 
