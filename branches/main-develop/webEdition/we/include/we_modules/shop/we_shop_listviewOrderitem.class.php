@@ -127,14 +127,19 @@ class we_shop_listviewOrderitem extends listviewBase{
 				if(isset($strSerial['OF_ID'])){//Object based Article
 					$this->DB_WE->Record['articleIsObject'] = 1;
 					foreach($strSerial as $key => &$value){
-						if($key != 'we_sacf' && $key != 'WE_VARIANT' && (strpos($key, 'we_') !== false) && (strpos($key, 'we_wedoc') === false) && (strpos($key, 'we_WE') === false)){
-							if(substr($value, 0, 2) == 'a:' && $val = @unserialize($value)){
-								$this->DB_WE->Record[substr($key, 3)] = $val;
-							} else{
-								$this->DB_WE->Record[substr($key, 3)] = $value;
-							}
+						if($key == 'we_sacf' || $key == 'WE_VARIANT'){
+							continue;
+						}
+						if(strpos($key, 'we_') === 0){
+							$key = substr($key, 3);
+						}
+						if(substr($value, 0, 2) == 'a:' && $val = @unserialize($value)){
+							$this->DB_WE->Record[$key] = $val;
+						} else{
+							$this->DB_WE->Record[$key] = $value;
 						}
 					}
+
 					unset($value);
 				} else{//Document based Article
 					$this->DB_WE->Record['articleIsObject'] = 0;
@@ -160,7 +165,7 @@ class we_shop_listviewOrderitem extends listviewBase{
 
 			$this->DB_WE->Record['WE_PATH'] = $this->Path . '?we_orderid=' . $this->DB_WE->Record["OrderID"] . '&we_orderitemid=' . $this->DB_WE->Record["ID"];
 			$this->DB_WE->Record['wedoc_Path'] = $this->DB_WE->Record['WE_PATH'];
-			$this->DB_WE->Record['WE_ID'] = $this->DB_WE->Record["ID"];
+			$this->DB_WE->Record['WE_ID'] = $this->DB_WE->Record['ID'];
 			$this->DB_WE->Record['WE_TEXT'] = $this->DB_WE->Record['WE_ID'];
 			$this->DB_WE->Record['we_wedoc_lastPath'] = $this->LastDocPath . "?we_orderid=" . $this->DB_WE->Record["OrderID"] . "&we_orderitemid=" . $this->DB_WE->Record["ID"];
 			$this->count++;
