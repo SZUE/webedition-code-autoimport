@@ -444,22 +444,28 @@ abstract class we_autoloader{
 	static public function autoload($class_name){
 		//no we-class
 		//FIXME: this should be expected in future
-		if(substr($class_name, 0, 3) === 'we_'){
-			@list(, $domain) = explode('_', $class_name);
-			if(!isset(self::$domains[$domain])){
-				//				t_e('Error class domain not set in autoloader!');
-			} else{
-				if(file_exists(WE_INCLUDES_PATH . self::$domains[$domain] . '/' . $class_name . '.class.php')){
-					include(WE_INCLUDES_PATH . self::$domains[$domain] . '/' . $class_name . '.class.php');
-					return;
+		@list($where, $domain) = explode('_', $class_name, 3);
+		switch($where){
+			case 'we':
+				@list(, $domain) = explode('_', $class_name);
+				if(!isset(self::$domains[$domain])){
+					//				t_e('Error class domain not set in autoloader!');
+				} else{
+					if(file_exists(WE_INCLUDES_PATH . self::$domains[$domain] . '/' . $class_name . '.class.php')){
+						include(WE_INCLUDES_PATH . self::$domains[$domain] . '/' . $class_name . '.class.php');
+						return;
+					}
 				}
-			}
+				break;
+			case 'Horde':
+				include(WE_LIB_PATH . 'additional/' . str_replace('_', '/', $class_name) . '.php');
+				break;
 //			return;
 		}
 
 		foreach(self::$classes as $path => $array){
 			if(array_key_exists($class_name, $array)){
-				$path = (substr($path, 0, 1) == '/' ? $path : WE_INCLUDES_PATH . $path . '/');
+				$path = (substr($path, 0, 1) == '/' ? $_SERVER['DOCUMENT_ROOT'] . $path : WE_INCLUDES_PATH . $path . '/');
 				include($path . $array[$class_name]);
 				break;
 			}

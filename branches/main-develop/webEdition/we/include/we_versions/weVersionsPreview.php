@@ -345,12 +345,9 @@ if(!empty($newDocElements)){
 		$contentDiff .= '<tr>
 <td width="33%" style="' . $mark . '"><strong>' . $name . '</strong></td>';
 		if($pre != ''){
-			require_once(LIB_DIR . 'Horde/Text/Diff.php');
-			require_once(LIB_DIR . 'Horde/Text/Diff/Renderer.php');
-			require_once(LIB_DIR . 'Horde/Text/Diff/Renderer/Inline.php');
 			$oldVal = explode("\n", str_replace("\r", "\n", str_replace("\r\n", "\n", $oldVal)));
 			$newVal = explode("\n", str_replace("\r", "\n", str_replace("\r\n", "\n", $newVal)));
-			$diff = new Horde_Text_Diff('native', array(($oldVersion ? $oldVal : array()), is_array($newVal) ? $newVal : array()));
+			$diff = new Horde_Text_Diff('Native', array(($oldVersion ? $oldVal : array()), is_array($newVal) ? $newVal : array()));
 			$renderer = new Horde_Text_Diff_Renderer_Inline(array('ins_prefix' => '###INS_START###', 'ins_suffix' => '###INS_END###',
 				'del_prefix' => '###DEL_START###', 'del_suffix' => '###DEL_END###',));
 

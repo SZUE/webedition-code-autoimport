@@ -35,11 +35,6 @@ class Horde_Text_Diff
      */
     public function __construct($engine, $params)
     {
-        if ($engine == 'auto') {
-            $engine = extension_loaded('xdiff') ? 'Xdiff' : 'Native';
-        } else {
-            $engine = Horde_String::ucfirst(basename($engine));
-        }
 
         $class = 'Horde_Text_Diff_Engine_' . $engine;
         $diff_engine = new $class();
