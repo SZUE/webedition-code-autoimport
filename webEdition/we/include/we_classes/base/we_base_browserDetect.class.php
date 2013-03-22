@@ -62,7 +62,7 @@ class we_base_browserDetect{
 			self::$sys = self::UNKNOWN;
 		}
 		self::$detected = true;
-		self::$ua = $ua ? $ua : $_SERVER['HTTP_USER_AGENT'];
+		self::$ua = $ua ? $ua : (isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '');
 		$regs = array();
 		if(preg_match('/^([^ ]+) ([^(]*)(\([^)]+\))(.*)$/', self::$ua, $regs)){
 			$pre = $regs[1];
