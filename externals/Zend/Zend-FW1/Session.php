@@ -478,7 +478,7 @@ class Zend_Session extends Zend_Session_Abstract
 			//$startedCleanly = session_start();
 			$startedCleanly = @session_start();
 			$we_c = 0;
-			while(!$startedCleanly && $we_c++ < 10){
+			while(!$startedCleanly && $we_c++ < 1000){
 				$startedCleanly = @session_start();
 			}
 			$startedCleanly = !$startedCleanly ? session_start() : $startedCleanly;
