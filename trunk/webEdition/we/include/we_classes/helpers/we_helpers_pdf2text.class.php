@@ -201,7 +201,9 @@ class we_helpers_pdf2text{
 					return;
 				} else{
 					//print_r($this->encodings);
-					echo 'not found:' . $encoding;
+			if(defined('DEBUG') && strstr(DEBUG, 'fontout')){
+				echo 'not found:' . $encoding;
+			}
 				}
 			case '':
 			case '/Identity':
@@ -826,7 +828,9 @@ class we_helpers_pdf2text{
 			}
 			$this->text.=$tmp;
 		} else{
-			echo 'Error-text: ' . $selectedFont;
+			if(defined('DEBUG') && strstr(DEBUG, 'fontout')){
+				echo 'Error-text: ' . $selectedFont;
+			}
 		}
 	}
 
