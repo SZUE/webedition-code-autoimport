@@ -239,7 +239,6 @@ function we_tag_paypal($attribs){
 					//so we have to calculate the correct net article price
 					//bug #5701
 					if(!$useVat && !$netprices){
-						require_once(WE_SHOP_MODULE_DIR . 'weShopVats.class.php');
 						$vatId = isset($item['serial'][WE_SHOP_VAT_FIELD_NAME]) ? $item['serial'][WE_SHOP_VAT_FIELD_NAME] : 0;
 						$shopVat = weShopVats::getVatRateForSite($vatId, true, false);
 						$shopVat = (1 + ($shopVat / 100));
