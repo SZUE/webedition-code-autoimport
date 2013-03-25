@@ -59,6 +59,8 @@ class we_<?php print $TOOLNAME; ?>DirSelector extends we_dirSelector{
 	function printFramesetJSFunctioWriteBody(){
 		$html = we_html_tools::getHtmlTop('', '', '', true) . STYLESHEET_SCRIPT;
 		?>
+		<script type="text/javascript">
+		<!--
 		function writeBody(d){
 		d.open();
 		<?php
@@ -145,27 +147,31 @@ class we_<?php print $TOOLNAME; ?>DirSelector extends we_dirSelector{
 	d.writeln('</body>');
 	d.close();
 }
-
+-->
+</script>
 <?php print '<?php';?>
 
 	}
 
 	function printFramesetJSFunctionQueryString(){
 ?>
-
+<script type="text/javascript">
+<!--
 function queryString(what,id,o,we_editDirID){
 	if(!o) o=top.order;
 	if(!we_editDirID) we_editDirID="";
 	return '<?php print '<?php print $_SERVER["SCRIPT_NAME"]; ?>';?>?what='+what+'&rootDirID=<?php print '<?php print $this->rootDirID;  if(isset($this->open_doc)){print "&open_doc=".$this->open_doc;} ?>';?>&table=<?php print '<?php print $this->table; ?>';?>&id='+id+(o ? ("&order="+o) : "")+(we_editDirID ? ("&we_editDirID="+we_editDirID) : "");
 }
-
+-->
+</script>
 <?php print '<?php';?>
 
 	}
 
 	function printFramesetJSFunctionEntry(){
 <?php print '?>';?>
-
+<script type="text/javascript">
+<!--
 function entry(ID,icon,text,isFolder,path){
 	this.ID=ID;
 	this.icon=icon;
@@ -173,29 +179,32 @@ function entry(ID,icon,text,isFolder,path){
 	this.isFolder=isFolder;
 	this.path=path;
 }
-
+-->
+</script>
 <?php print '<?php';?>
 
 	}
 
 	function printFramesetJSFunctionAddEntry(){
-?>
 
+return we_html_element::jsElement('
 function addEntry(ID,icon,text,isFolder,path){
 	entries[entries.length] = new entry(ID,icon,text,isFolder,path);
 }
+');
 
-<?php print '<?php';?>
 
 	}
 
 	function printFramesetJSFunctionAddEntries(){
+		$ret = '';
 		while($this->next_record()){
 			$_text = $this->f('Text');
 			$_charset = $this->f('Charset');
 
-			print 'addEntry('.$this->f('ID').',"'.we_ui_layout_Image::getIconClass($this->f('ContentType')).'.gif","'.$_text.'",'.$this->f('IsFolder').',"'.$this->f('Path').'");'."\n";
+			$ret .=  'addEntry('.$this->f('ID').',"'.we_ui_layout_Image::getIconClass($this->f('ContentType')).'.gif","'.$_text.'",'.$this->f('IsFolder').',"'.$this->f('Path').'");'."\n";
 		}
+		return we_html_element::jsElement($ret);
 	}
 
 	function printCmdAddEntriesHTML(){
@@ -212,7 +221,9 @@ function addEntry(ID,icon,text,isFolder,path){
 		we_html_tools::htmlTop();
 		we_html_tools::protect();
 
-		print '<script type="text/javascript"><!-- top.clearEntries();';
+		print '<script type="text/javascript">
+		<!-- 
+		top.clearEntries();';
 		$this->FolderText = rawurldecode($this->FolderText);
 		$txt = '';
 		if(isset($_REQUEST['we_FolderText_tmp'])){
@@ -335,8 +346,10 @@ top.selectFile(top.currentID);
 
 
 	function printFramesetSelectFileHTML(){
+		
 ?>
-
+<script type="text/javascript">
+<!--
 function selectFile(id){
 	if(id){
 		e = getEntry(id);
@@ -366,7 +379,8 @@ function selectFile(id){
 		we_editDirID = 0;
 	}
 }
-
+-->
+</script>
 <?php print '<?php';?>
 	}
 

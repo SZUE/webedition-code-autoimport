@@ -127,12 +127,10 @@ class we_core_Local{
 				if(!isset($_SERVER['TMP'])){
 					$_SERVER['TMP'] = $GLOBALS['__WE_BASE_PATH__'] . DIRECTORY_SEPARATOR . 'we' . DIRECTORY_SEPARATOR . 'zendcache';
 				}
-				for($i=0;$i<1000;++$i){
-					try {
-						Zend_Session::start();
-						break;
-                	} catch(Zend_Session_Exception $e) {
-                	}
+				try {
+					Zend_Session::start();
+                } catch(Zend_Session_Exception $e) {
+					t_e('Zend_Session start failed',$e);	
 				}
 				if(!isset($_SESSION)){
                 	t_e('Zend_Session start failed');

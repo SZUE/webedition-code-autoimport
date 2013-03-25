@@ -187,7 +187,7 @@ class toolfactory_service_Cmd extends we_app_service_AbstractCmd{
 				'ID not set (first argument) at delete cmd!',
 				we_service_ErrorCodes::kModelIdNotSet);
 		}
-
+		we_app_Common::rebuildAppTOC();
 		$IdToDel = $args[0];
 		$controller = Zend_Controller_Front::getInstance();
 		$appName = $controller->getParam('appName');
@@ -215,7 +215,6 @@ class toolfactory_service_Cmd extends we_app_service_AbstractCmd{
 		}
 		//delete the directoy
 		we_util_File::rmdirr($GLOBALS['__WE_APP_PATH__'] . DIRECTORY_SEPARATOR . $model->classname);
-
 		we_app_Common::rebuildAppTOC();
 		//return deleted model
 		return array(

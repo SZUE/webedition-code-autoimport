@@ -175,17 +175,18 @@ class weNavigationItem{
 		if($this->CurrentOnAnker || $this->CurrentOnUrlPar){ // jetzt kann man nicht mehr mit der id - weiter unten - arbeiten
 			$thishref = str_replace(array(strstr($thishref, '#'), '&amp;'), array('', '&'), $thishref);
 		}
-		if(isset($_SERVER['REQUEST_URI']) && $_SERVER['REQUEST_URI'] == $thishref){
-			// fastest way
-			$this->setCurrent($weNavigationItems);
-			return true;
-		}
-		if(isset($_SERVER['REQUEST_URI'])){ //#3698
+		if(isset($_SERVER['REQUEST_URI'])){
+			if($_SERVER['REQUEST_URI'] == $thishref){
+				// fastest way
+				$this->setCurrent($weNavigationItems);
+				return true;
+			}
+			//#3698
 			$uri = parse_url($_SERVER['REQUEST_URI']);
 			$ref = parse_url($thishref);
-			if((isset($uri['path']) && isset($ref['path']) && $uri['path'] == $ref['path']) && isset($uri['query']) && isset($ref['query'])){
-				$uriarrq = explode('&', $uri['query']);
-				$refarrq = explode('&', $ref['query']);
+			if((isset($uri['path']) && isset($ref['path']) && $uri['path'] == $ref['path'])){
+				$uriarrq = isset($uri['query']) ? explode('&', $uri['query']) : array();
+				$refarrq = isset($ref['query']) ? explode('&', $ref['query']) : array();
 				$allfound = true;
 				foreach($refarrq as $refa){
 					if(!in_array($refa, $uriarrq)){
@@ -206,20 +207,19 @@ class weNavigationItem{
 				}
 				break;
 			case FILE_TABLE:
-				if(isset($GLOBALS["WE_MAIN_DOC"]) && (!isset($GLOBALS["WE_MAIN_DOC"]->TableID))){
-					$id = $GLOBALS["WE_MAIN_DOC"]->ID;
+				if(isset($GLOBALS['WE_MAIN_DOC']) && (!isset($GLOBALS['WE_MAIN_DOC']->TableID))){
+					$id = $GLOBALS['WE_MAIN_DOC']->ID;
 				}
 				break;
 		}
 		if(isset($id) && ($this->docid == $id) && !($this->CurrentOnUrlPar || $this->CurrentOnAnker)){
 			$this->setCurrent($weNavigationItems);
 			return true;
-		} else{
-			if($this->current == 'true'){
-				$this->unsetCurrent($weNavigationItems);
-			}
-			return false;
 		}
+		if($this->current == 'true'){
+			$this->unsetCurrent($weNavigationItems);
+		}
+		return false;
 	}
 
 	private function isVisible(){

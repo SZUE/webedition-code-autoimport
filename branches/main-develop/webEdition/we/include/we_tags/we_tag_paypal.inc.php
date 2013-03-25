@@ -22,7 +22,6 @@
  * @package	 webEdition_base
  * @license	 http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once(WE_MODULES_PATH . 'shop/we_conf_shop.inc.php');
 
 /**
  * This function writes the shop data (order) to the database and send values to paypal
@@ -38,8 +37,7 @@ function we_tag_paypal($attribs){
 		return $foo;
 	}
 
-	$shopname = weTag_getAttribute('shopname', $attribs);
-	$shopname = $shopname ? $shopname : $name;
+	$shopname = weTag_getAttribute('shopname', $attribs, $name);
 	$pricename = weTag_getAttribute('pricename', $attribs);
 
 	$countrycode = weTag_getAttribute('countrycode', $attribs);
@@ -239,7 +237,6 @@ function we_tag_paypal($attribs){
 					//so we have to calculate the correct net article price
 					//bug #5701
 					if(!$useVat && !$netprices){
-						require_once(WE_SHOP_MODULE_DIR . 'weShopVats.class.php');
 						$vatId = isset($item['serial'][WE_SHOP_VAT_FIELD_NAME]) ? $item['serial'][WE_SHOP_VAT_FIELD_NAME] : 0;
 						$shopVat = weShopVats::getVatRateForSite($vatId, true, false);
 						$shopVat = (1 + ($shopVat / 100));

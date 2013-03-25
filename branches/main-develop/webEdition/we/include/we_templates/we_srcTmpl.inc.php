@@ -688,7 +688,7 @@ window.orignalTemplateContent=document.getElementById("editarea").value.replace(
 				(substr($_SESSION['prefs']['editorMode'], 0, 10) == 'codemirror' ? '
 <input type="text" style="width: 10em;float:left;" id="query"/><div style="float:left;">' . we_button::create_button("search", 'javascript:search(document.getElementById("query").value,!document.getElementById("caseSens").checked);') . '</div>
 <input type="text" style="margin-left:2em;width: 10em;float:left;" id="replace"/><div style="float:left;">' . we_button::create_button("replace", 'javascript:myReplace(document.getElementById("query").value,document.getElementById("replace").value,!document.getElementById("caseSens").checked);') . '</div>
-<input type="checkbox" style="margin-left:2em;float:left;" id="caseSens"/><div style="float:left;">' . g_l('weClass', '[caseSensitive]') . '</div>' : ''
+<input type="checkbox" style="margin-left:2em;float:left;" value="1" id="caseSens"/><div style="float:left;">' . g_l('weClass', '[caseSensitive]') . '</div>' : ''
 				) . '
 					</td>
 					<td align="right" class="defaultfont">' .
