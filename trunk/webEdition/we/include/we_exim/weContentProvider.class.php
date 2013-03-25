@@ -259,7 +259,7 @@ class weContentProvider{
 				if(isset($object->$v)){
 					$content = $object->$v;
 				}
-				if(self::needCoding($object->ClassName, $v, $content)){
+				if(self::needCoding($object->ClassName, $v, $content)||self::needCdata($object->ClassName, $v, $content)){//fix for faulty parser
 					$content = self::getCDATA(self::encode($content));
 					$coding = array(self::CODING_ATTRIBUTE => self::CODING_ENCODE);
 				} else if(self::needCdata($object->ClassName, $v, $content)){
@@ -304,7 +304,7 @@ class weContentProvider{
 					$content = $object->$v;
 				}
 				$coding = self::CODING_NONE;
-				if(self::needCoding($object->ClassName, $v, $content)){
+				if(self::needCoding($object->ClassName, $v, $content)||self::needCdata($object->ClassName, $v, $content)){//fix for faulty parser
 					$content = self::getCDATA(self::encode($content));
 					$coding = array(self::CODING_ATTRIBUTE => self::CODING_ENCODE);
 				} else if(self::needCdata($object->ClassName, $v, $content)){
@@ -406,7 +406,7 @@ class weContentProvider{
 			}
 
 
-			if(self::needCoding($classname, $v, $content)){
+			if(self::needCoding($classname, $v, $content)||self::needCdata($classname, $v, $content)){//fix for faulty parser
 				if(!is_array($content)){
 					$content = self::encode($content);
 					$coding = array(self::CODING_ATTRIBUTE => self::CODING_ENCODE);
