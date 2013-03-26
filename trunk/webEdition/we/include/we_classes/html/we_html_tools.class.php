@@ -830,6 +830,10 @@ abstract class we_html_tools{
 				header('HTTP/1.1 ' . $status . ' Forbidden', true, $status);
 				header('Status: ' . $status . ' Forbidden', true, $status);
 				break;
+			case 404:
+				header('HTTP/1.1 ' . $status . ' Not Found', true, $status);
+				header('Status: ' . $status . ' Not Found', true, $status);
+				break;
 			case 408:
 				header('HTTP/1.1 ' . $status . ' Request Time-out', true, $status);
 				header('Status: ' . $status . ' Request Time-out', true, $status);
