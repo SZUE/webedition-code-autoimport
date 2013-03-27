@@ -12,6 +12,7 @@ class updateBase {
 		if ($versionnumber >= 6201) $zf_version= "1.11.7";
 		if ($versionnumber >= 6261) $zf_version= "1.11.11";
 		if ($versionnumber >= 6351) $zf_version= "1.12.1";
+		if ($versionnumber >= 6360) $zf_version= "1.12.3";
 		return $zf_version;
 	}
 
