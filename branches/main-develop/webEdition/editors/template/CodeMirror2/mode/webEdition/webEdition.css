@@ -49,11 +49,6 @@
 	border: 1px solid black;
 }
 
-span.c-like-keyword {
-	color: black;
-	font-weight: bold;
-}
-
 .weSelfClose:hover:after, .cm-weSelfClose:hover:after, .weOpenTag:hover:after, .cm-weOpenTag:hover:after, .weTagAttribute:hover:after, .cm-weTagAttribute:hover:after {
 	position: absolute;
 	z-index: 10;
