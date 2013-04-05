@@ -394,9 +394,9 @@ switch($_SESSION['prefs']['editorMode']){
 		if (lastQuery != text) {
 			lastPos = null;
 		}
-		var cursor = editor.getSearchCursor(text, lastPos || editor.getCursor());
+		var cursor = editor.getSearchCursor(text, lastPos || editor.getCursor(), caseIns);
 		if (!cursor.findNext()) {
-			cursor = editor.getSearchCursor(text);
+			cursor = editor.getSearchCursor(text, 0, caseIns);
 			if (!cursor.findNext()) {
 				return;
 			}
