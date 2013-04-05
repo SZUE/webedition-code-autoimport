@@ -1829,19 +1829,17 @@ class searchtoolView extends weToolView{
 					$_tables[0] = FILE_TABLE;
 					$folderID = $_REQUEST['we_cmd']['folderIDDoc'];
 					foreach($_REQUEST['we_cmd'] as $k => $v){
-						if(stristr($k, 'searchForTextDocSearch') && $k{0} != "_"){
-							if($v == 1){
-								$_REQUEST['we_cmd']['searchFields' . $whichSearch][] = 'Text';
-							}
-						}
-						if(stristr($k, 'searchForTitleDocSearch') && $k{0} != "_"){
-							if($v == 1){
-								$_REQUEST['we_cmd']['searchFields' . $whichSearch][] = 'Title';
-							}
-						}
-						if(stristr($k, 'searchForContentDocSearch') && $k{0} != "_"){
-							if($v == 1){
-								$_REQUEST['we_cmd']['searchFields' . $whichSearch][] = 'Content';
+						if(is_string($v) && $v == 1){
+							switch($k){
+								case 'searchForTextDocSearch':
+									$_REQUEST['we_cmd']['searchFields' . $whichSearch][] = 'Text';
+									break;
+								case 'searchForTitleDocSearch':
+									$_REQUEST['we_cmd']['searchFields' . $whichSearch][] = 'Title';
+									break;
+								case 'searchForContentDocSearch':
+									$_REQUEST['we_cmd']['searchFields' . $whichSearch][] = 'Content';
+									break;
 							}
 						}
 					}
@@ -1850,14 +1848,14 @@ class searchtoolView extends weToolView{
 					$_tables[0] = TEMPLATES_TABLE;
 					$folderID = $_REQUEST['we_cmd']['folderIDTmpl'];
 					foreach($_REQUEST['we_cmd'] as $k => $v){
-						if(stristr($k, 'searchForTextTmplSearch') && $k{0} != "_"){
-							if($v == 1){
-								$_REQUEST['we_cmd']['searchFields' . $whichSearch][] = 'Text';
-							}
-						}
-						if(stristr($k, 'searchForContentTmplSearch') && $k{0} != "_"){
-							if($v == 1){
-								$_REQUEST['we_cmd']['searchFields' . $whichSearch][] = 'Content';
+						if(is_string($v) && $v == 1){
+							switch($k){
+								case 'searchForTextTmplSearch':
+									$_REQUEST['we_cmd']['searchFields' . $whichSearch][] = 'Text';
+									break;
+								case 'searchForContentTmplSearch':
+									$_REQUEST['we_cmd']['searchFields' . $whichSearch][] = 'Content';
+									break;
 							}
 						}
 					}
@@ -1975,6 +1973,7 @@ class searchtoolView extends weToolView{
 		foreach($searchText as &$cur){
 			$cur = trim($cur);
 		}
+		unset($cur);
 		$tab = (isset($_REQUEST['tab']) ? $_REQUEST['tab'] : (isset($_REQUEST['tabnr']) ? $_REQUEST['tabnr'] : 1));
 
 		if(isset($searchText[0]) && substr($searchText[0], 0, 4) == 'exp:'){
@@ -2031,9 +2030,17 @@ class searchtoolView extends weToolView{
 								$searchString = str_replace(array('\\', '_', '%'), array('\\\\', '\_', '\%'), $searchString);
 							}
 
-							if(( ($whichSearch == "AdvSearch" && $searchFields[$i] != "Content" && $searchFields[$i] != "Status" && $searchFields[$i] != "Speicherart" && $searchFields[$i] != "CreatorName" && $searchFields[$i] != "WebUserName" && $searchFields[$i] != "temp_category"))){
-								if(isset($searchFields[$i]) && isset($location[$i])){
-									$where .= $thisObj->searchclass->searchfor($searchString, $searchFields[$i], $location[$i], $_table);
+							if($whichSearch == "AdvSearch" && isset($location[$i])){
+								switch($searchFields[$i]){
+									case "Content":
+									case "Status":
+									case "Speicherart":
+									case "CreatorName":
+									case "WebUserName":
+									case "temp_category":
+										break;
+									default:
+										$where .= $thisObj->searchclass->searchfor($searchString, $searchFields[$i], $location[$i], $_table);
 								}
 							}
 							switch($searchFields[$i]){
@@ -2107,6 +2114,10 @@ class searchtoolView extends weToolView{
 									$w = $thisObj->searchclass->searchCategory($searchString, $_table, $searchFields[$i]);
 									$where .= $w;
 									break;
+								default:
+									if($whichSearch != "AdvSearch"){
+										$where .= $thisObj->searchclass->searchfor($searchString, $searchFields[$i], $location[$i], $_table);
+									}
 							}
 						}
 					}
@@ -2228,32 +2239,31 @@ class searchtoolView extends weToolView{
 			}
 		}
 
-		if($_SESSION['weS']['weSearch']['foundItems' . $whichSearch] > 0){
-
-			foreach($_result as $k => $v){
-				$_result[$k]["Description"] = '';
-				if($_result[$k]['docTable'] == FILE_TABLE && $_result[$k]['Published'] >= $_result[$k]['ModDate'] && $_result[$k]['Published'] != 0){
-					$DB_WE->query('SELECT a.ID, c.Dat FROM (' . FILE_TABLE . ' a LEFT JOIN ' . LINK_TABLE . ' b ON (a.ID=b.DID)) LEFT JOIN ' . CONTENT_TABLE . ' c ON (b.CID=c.ID) WHERE a.ID=' . intval($_result[$k]["docID"]) . ' AND b.Name="Description" AND b.DocumentTable="' . FILE_TABLE . '"');
-					while($DB_WE->next_record()) {
-						$_result[$k]["Description"] = $DB_WE->f('Dat');
-					}
-				} elseif($_result[$k]['docTable'] == FILE_TABLE){
-					$tempDoc = f('SELECT DocumentObject  FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentID =' . intval($_result[$k]["docID"]) . ' AND DocTable = "tblFile" AND Active = 1', 'DocumentObject', $DB_WE);
-					if(!empty($tempDoc)){
-						$tempDoc = unserialize($tempDoc);
-						if(isset($tempDoc[0]['elements']['Description']) && $tempDoc[0]['elements']['Description']['dat'] != ''){
-							$_result[$k]["Description"] = $tempDoc[0]['elements']['Description']['dat'];
-						}
-					}
-				} else{
-					$_result[$k]['Description'] = '';
-				}
-			}
-
-			return $thisObj->makeContent($_result, $_view, $whichSearch);
+		if($_SESSION['weS']['weSearch']['foundItems' . $whichSearch] == 0){
+			return array();
 		}
 
-		return array();
+		foreach($_result as $k => $v){
+			$_result[$k]["Description"] = '';
+			if($_result[$k]['docTable'] == FILE_TABLE && $_result[$k]['Published'] >= $_result[$k]['ModDate'] && $_result[$k]['Published'] != 0){
+				$DB_WE->query('SELECT a.ID, c.Dat FROM (' . FILE_TABLE . ' a LEFT JOIN ' . LINK_TABLE . ' b ON (a.ID=b.DID)) LEFT JOIN ' . CONTENT_TABLE . ' c ON (b.CID=c.ID) WHERE a.ID=' . intval($_result[$k]["docID"]) . ' AND b.Name="Description" AND b.DocumentTable="' . FILE_TABLE . '"');
+				while($DB_WE->next_record()) {
+					$_result[$k]["Description"] = $DB_WE->f('Dat');
+				}
+			} elseif($_result[$k]['docTable'] == FILE_TABLE){
+				$tempDoc = f('SELECT DocumentObject  FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentID =' . intval($_result[$k]["docID"]) . ' AND DocTable = "tblFile" AND Active = 1', 'DocumentObject', $DB_WE);
+				if(!empty($tempDoc)){
+					$tempDoc = unserialize($tempDoc);
+					if(isset($tempDoc[0]['elements']['Description']) && $tempDoc[0]['elements']['Description']['dat'] != ''){
+						$_result[$k]["Description"] = $tempDoc[0]['elements']['Description']['dat'];
+					}
+				}
+			} else{
+				$_result[$k]['Description'] = '';
+			}
+		}
+
+		return $thisObj->makeContent($_result, $_view, $whichSearch);
 	}
 
 	function makeHeadLines($whichSearch){
