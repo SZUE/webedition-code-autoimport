@@ -1395,7 +1395,7 @@ function tinyMCECallRegisterDialog(win,action){
 							'
 						. (!$this->removeFirstParagraph ? '' : '
 							ed.onPostProcess.add(function(ed, o) {
-								o.content = o.content.replace(/<p [^>]*>|<p>/, "").replace(/<\/p>/, "");
+								o.content = o.content.replace(/<p [^>]*>|<p>/, "").replace(/<\/p>/, "").replace(/^&nbsp;$/, "");
 							});') .
 
 							($this->isFrontendEdit ? '' : '
