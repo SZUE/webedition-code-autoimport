@@ -16,6 +16,7 @@
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -38,8 +39,13 @@ import javax.swing.text.DefaultEditorKit;
 import javax.swing.text.DefaultStyledDocument;
 import javax.swing.text.Document;
 import javax.swing.text.EditorKit;
+import javax.swing.text.PlainDocument;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
 import javax.swing.text.StyledEditorKit;
+import javax.swing.text.TabSet;
+import javax.swing.text.TabStop;
 import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
 import javax.swing.undo.UndoManager;
@@ -278,7 +284,6 @@ public final class EditorPanel extends JPanel {
 
 	public void setTabs(JTextPane textPane, int charactersPerTab) {
 
-		/* this doesn't work anymore!
 		 FontMetrics fm = textPane.getFontMetrics(textPane.getFont());
 		 int charWidth = fm.charWidth('w');
 		 int tabWidth = charWidth * charactersPerTab;
@@ -295,7 +300,7 @@ public final class EditorPanel extends JPanel {
 		 StyleConstants.setTabSet(attributes, tabSet);
 		 int length = textPane.getDocument().getLength();
 		 textPane.getStyledDocument().setParagraphAttributes(0, length, attributes, false);
-		 */
+
 	}
 
 	@Override
