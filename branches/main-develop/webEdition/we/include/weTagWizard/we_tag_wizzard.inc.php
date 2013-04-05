@@ -26,8 +26,6 @@ $openAtCursor = $_REQUEST['we_cmd'][2] === "1" ? true : false;
 
 we_html_tools::protect();
 
-we_html_tools::protect();
-
 // include wetag depending on we_cmd[1]
 $weTag = weTagData::getTagData($tagName);
 if(!$weTag){

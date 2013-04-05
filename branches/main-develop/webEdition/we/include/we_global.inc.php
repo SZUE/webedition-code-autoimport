@@ -27,7 +27,6 @@ if(isset($_SERVER['SCRIPT_NAME']) && str_replace(dirname($_SERVER['SCRIPT_NAME']
 }
 
 function we_getModuleNameByContentType($ctype){
-	$_moduleDir = '';
 	foreach($GLOBALS['_we_active_integrated_modules'] as $mod){
 		if(strstr($ctype, $mod)){
 			return $mod;

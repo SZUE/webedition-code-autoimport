@@ -118,27 +118,55 @@ function we_tag($name, $attribs = array(), $content = ''){
 
 ### tag utility functions ###
 
+function we_setVarArray(&$arr, $string, $value){
+	if(strpos($string, '[') === false){
+		$arr[$string] = $value;
+		return;
+	}
+	$current = &$arr;
+
+	$arr_matches = array();
+	preg_match('/[^\[\]]+/', $string, $arr_matches);
+	$first = $arr_matches[0];
+	preg_match_all('/\[([^\]]*)\]/', $string, $arr_matches, PREG_PATTERN_ORDER);
+	$arr_matches = $arr_matches[1];
+	array_unshift($arr_matches, $first);
+	$last = count($arr_matches) - 1;
+	foreach($arr_matches as $pos => $dimension){
+		if(empty($dimension)){
+			$dimension = count($current);
+		}
+		if($pos == $last){
+			$current[$dimension] = $value;
+			return;
+		}
+		if(!isset($current[$dimension])){
+			$current[$dimension] = array();
+		}
+		$current = &$current[$dimension];
+	}
+}
 function we_redirect_tagoutput($returnvalue, $nameTo, $to = 'screen'){
 	if(isset($GLOBALS['calculate'])){
 		$to = 'calculate';
 	}
 	switch($to){
-		case 'request' :
-			$_REQUEST[$nameTo] = $returnvalue;
+		case 'request':
+			we_setVarArray($_REQUEST, $nameTo, $returnvalue);
 			return null;
-		case 'post' :
-			$_POST[$nameTo] = $returnvalue;
+		case 'post':
+			we_setVarArray($_POST, $nameTo, $returnvalue);
 			return null;
-		case 'get' :
-			$_GET[$nameTo] = $returnvalue;
+		case 'get':
+			we_setVarArray($_GET, $nameTo, $returnvalue);
 			return null;
-		case 'global' :
-			$GLOBALS[$nameTo] = $returnvalue;
+		case 'global':
+			we_setVarArray($GLOBALS, $nameTo, $returnvalue);
 			return null;
-		case 'session' :
-			$_SESSION[$nameTo] = $returnvalue;
+		case 'session':
+			we_setVarArray($_SESSION, $nameTo, $returnvalue);
 			return null;
-		case 'top' :
+		case 'top':
 			$GLOBALS['WE_MAIN_DOC_REF']->setElement($nameTo, $returnvalue);
 			return null;
 		case 'block' :

@@ -510,15 +510,15 @@ function setTab(tab) {
 
 		if(defined('OBJECT_TABLE')){
 			$_firstClass = 0;
-			$this->db->query('SELECT DISTINCT  ' . OBJECT_TABLE . ".ID," . OBJECT_TABLE . ".Text," . OBJECT_FILES_TABLE . ".ParentID FROM " . OBJECT_TABLE . " LEFT JOIN " . OBJECT_FILES_TABLE . " ON (" . OBJECT_TABLE . ".ID=" . OBJECT_FILES_TABLE . ".TableID)");
+			$this->db->query('SELECT DISTINCT ' . OBJECT_TABLE . '.ID,' . OBJECT_TABLE . '.Text,' . OBJECT_TABLE . '.Path,' . OBJECT_FILES_TABLE . '.ID AS classDirID FROM ' . OBJECT_TABLE . ' LEFT JOIN ' . OBJECT_FILES_TABLE . ' ON (' . OBJECT_TABLE . '.Path=' . OBJECT_FILES_TABLE . '.Path)');
 			while($this->db->next_record()) {
 				if(in_array($this->db->f('ID'), $allowedClasses)){
 					if(!$_firstClass){
 						$_firstClass = $this->db->f('ID');
 					}
 					$classNames[$this->db->f('ID')] = $this->db->f('Text');
-					$objectDirs[] = $this->db->f('ID') . ':' . intval($this->db->f('ParentID'));
-					$objectPaths[] = $this->db->f('ID') . ':"' . f('SELECT * FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($this->db->f('ParentID')), 'Path', new DB_WE()) . '"';
+					$objectDirs[] = $this->db->f('ID') . ':' . $this->db->f('classDirID');
+					$objectPaths[] = $this->db->f('ID') . ':"' . $this->db->f('Path'). '"';
 				}
 			}
 		}

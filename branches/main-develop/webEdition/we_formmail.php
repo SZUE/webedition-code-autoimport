@@ -327,21 +327,10 @@ $email = (isset($_REQUEST['email']) && $_REQUEST['email']) ?
 		$_REQUEST['from'] :
 		WE_DEFAULT_EMAIL);
 
-$subject = (isset($_REQUEST['subject']) && $_REQUEST['subject']) ?
-	$_REQUEST['subject'] :
-	WE_DEFAULT_SUBJECT;
-
-$subject = strip_tags($subject);
-
-$charset = (isset($_REQUEST['charset']) && $_REQUEST['charset']) ?
-	str_replace("\n", "", str_replace("\r", "", $_REQUEST['charset'])) :
-	$GLOBALS['WE_BACKENDCHARSET'];
-$recipient = (isset($_REQUEST['recipient']) && $_REQUEST['recipient']) ?
-	$_REQUEST['recipient'] :
-	'';
-$from = (isset($_REQUEST['from']) && $_REQUEST['from']) ?
-	$_REQUEST['from'] :
-	WE_DEFAULT_EMAIL;
+$subject = strip_tags((isset($_REQUEST['subject']) && $_REQUEST['subject']) ? $_REQUEST['subject'] : WE_DEFAULT_SUBJECT);
+$charset = (isset($_REQUEST['charset']) && $_REQUEST['charset']) ? str_replace(array("\n", "\r"), '', $_REQUEST['charset']) : $GLOBALS['WE_BACKENDCHARSET'];
+$recipient = (isset($_REQUEST['recipient']) && $_REQUEST['recipient']) ? $_REQUEST['recipient'] : '';
+$from = (isset($_REQUEST['from']) && $_REQUEST['from']) ? $_REQUEST['from'] : WE_DEFAULT_EMAIL;
 
 $mimetype = (isset($_REQUEST['mimetype']) && $_REQUEST['mimetype']) ? $_REQUEST['mimetype'] : '';
 
@@ -350,11 +339,11 @@ $wasSent = false;
 if($recipient){
 	$fromMail = (isset($_REQUEST['forcefrom']) && $_REQUEST['forcefrom'] == 'true' ? $from : $email);
 
-	$subject = preg_replace("/(\\n+|\\r+)/", "", $subject);
-	$charset = preg_replace("/(\\n+|\\r+)/", "", $charset);
-	$fromMail = preg_replace("/(\\n+|\\r+)/", "", $fromMail);
-	$email = preg_replace("/(\\n+|\\r+)/", "", $email);
-	$from = preg_replace("/(\\n+|\\r+)/", "", $from);
+	$subject = preg_replace("/(\\n+|\\r+)/", '', $subject);
+	$charset = preg_replace("/(\\n+|\\r+)/", '', $charset);
+	$fromMail = preg_replace("/(\\n+|\\r+)/", '', $fromMail);
+	$email = preg_replace("/(\\n+|\\r+)/", '', $email);
+	$from = preg_replace("/(\\n+|\\r+)/", '', $from);
 
 	contains_bad_str($email);
 	contains_bad_str($from);
@@ -369,9 +358,7 @@ if($recipient){
 	$recipients = makeArrayFromCSV($recipient);
 	$senderForename = isset($_REQUEST['forename']) && $_REQUEST['forename'] != '' ? $_REQUEST['forename'] : '';
 	$senderSurname = isset($_REQUEST['surname']) && $_REQUEST['surname'] != '' ? $_REQUEST['surname'] : '';
-	$sender = ($senderForename != '' || $senderSurname != '' ?
-			$senderForename . ' ' . $senderSurname . '<' . $fromMail . '>' :
-			$fromMail);
+	$sender = ($senderForename != '' || $senderSurname != '' ? $senderForename . ' ' . $senderSurname . '<' . $fromMail . '>' : $fromMail);
 
 	$phpmail = new we_util_Mailer('', $subject, $sender);
 	$phpmail->setCharSet($charset);
@@ -392,7 +379,7 @@ if($recipient){
 			print_error(g_l('global', '[email_invalid]'));
 		}
 
-		$recipient = preg_replace("/(\\n+|\\r+)/", "", $recipient);
+		$recipient = preg_replace("/(\\n+|\\r+)/", '', $recipient);
 
 		if(we_check_email($recipient) && check_recipient($recipient)){
 			$recipientsList[] = $recipient;
@@ -402,7 +389,7 @@ if($recipient){
 	}
 
 	if(!empty($recipientsList)){
-		foreach($_FILES as $name => $file){
+		foreach($_FILES as $file){
 			if(isset($file['tmp_name']) && $file['tmp_name']){
 				$tempName = TEMP_PATH . '/' . $file['name'];
 				move_uploaded_file($file['tmp_name'], $tempName);
