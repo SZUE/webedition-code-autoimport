@@ -22,7 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 function we_include_tag_file($name){
 	$fn = 'we_tag_' . $name;
 
@@ -146,6 +145,7 @@ function we_setVarArray(&$arr, $string, $value){
 		$current = &$current[$dimension];
 	}
 }
+
 function we_redirect_tagoutput($returnvalue, $nameTo, $to = 'screen'){
 	if(isset($GLOBALS['calculate'])){
 		$to = 'calculate';
@@ -342,20 +342,15 @@ function cutText($text, $max = 0){
 }
 
 function we_getDocForTag($docAttr, $maindefault = false){
-	if($maindefault){
-		switch($docAttr){
-			case 'self' :
-				return $GLOBALS['we_doc'];
-			default :
-				return $GLOBALS['WE_MAIN_DOC'];
-		}
-	} else{
-		switch($docAttr){
-			case 'top' :
-				return $GLOBALS['WE_MAIN_DOC'];
-			default :
-				return $GLOBALS['we_doc'];
-		}
+	switch($docAttr){
+		case 'self' :
+			return $GLOBALS['we_doc'];
+		case 'top' :
+			return $GLOBALS['WE_MAIN_DOC'];
+		default :
+			return ($maindefault ?
+					$GLOBALS['WE_MAIN_DOC'] :
+					$GLOBALS['we_doc']);
 	}
 }
 
@@ -559,7 +554,9 @@ function we_tag_ifNotEmpty($attribs){
 }
 
 function we_tag_ifNotEqual($attribs){
-	if(isset($attribs['_name_orig'])){$attribs['name']=$attribs['_name_orig'];}
+	if(isset($attribs['_name_orig'])){
+		$attribs['name'] = $attribs['_name_orig'];
+	}
 	return !we_tag('ifEqual', $attribs);
 }
 
@@ -636,12 +633,16 @@ function we_tag_ifNotTemplate($attribs){
 }
 
 function we_tag_ifNotVar($attribs){
-	if(isset($attribs['_name_orig'])){$attribs['name']=$attribs['_name_orig'];}
+	if(isset($attribs['_name_orig'])){
+		$attribs['name'] = $attribs['_name_orig'];
+	}
 	return !we_tag('ifVar', $attribs);
 }
 
 function we_tag_ifNotVarSet($attribs){
-	if(isset($attribs['_name_orig'])){$attribs['name']=$attribs['_name_orig'];}
+	if(isset($attribs['_name_orig'])){
+		$attribs['name'] = $attribs['_name_orig'];
+	}
 	return !we_tag('ifVarSet', $attribs);
 }
 
@@ -682,7 +683,9 @@ function we_tag_ifUserInputNotEmpty($attribs){
 }
 
 function we_tag_ifVarNotEmpty($attribs){
-	if(isset($attribs['_name_orig'])){$attribs['name']=$attribs['_name_orig'];}
+	if(isset($attribs['_name_orig'])){
+		$attribs['name'] = $attribs['_name_orig'];
+	}
 	return !we_tag('ifVarEmpty', $attribs);
 }
 

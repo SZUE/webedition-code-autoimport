@@ -24,7 +24,7 @@
 	z-index: 10;
 	white-space: normal;
 	max-width: 40em;
-	background: rgba(0, 0, 0, 0.85);
+	background-color: rgba(0, 0, 0, 0.85);
 	padding: 3px 7px;
 	color: #FFF;
 	border-radius: 3px;
@@ -35,7 +35,7 @@
 .CodeMirror{
 	position: relative;
 	color: black;
-	background: white;
+	background-color: white;
 	padding: 5px 8px;
 	z-index: 5;
 	border: outset 1px;
@@ -48,12 +48,12 @@
 }
 
 .activeline,.CodeMirror-linebackground {
-	background: lightyellow !important;
+	background-color: lightyellow !important;
 	z-index: -1;
 }
 
 .searched {
-	background: yellow;
+	background-color: yellow;
 }
 
 span.c-like-keyword {
@@ -62,5 +62,5 @@ span.c-like-keyword {
 }
 
 .CodeMirror-selected {
-	background: #b0c5e3;
+	background-color: #b0c5e3;
 }

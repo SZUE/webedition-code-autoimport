@@ -1622,6 +1622,12 @@ if(window.onload) {
 	<tr><td id="label_editorCommentFontcolor"' . $attr . '>' . g_l('prefs', '[editor_comment_font_color]') . '</td><td>' . $_template_editor_comment_fontcolor_selector . '</td></tr>
 </table>';
 
+			$_template_editor_theme = new we_html_select(array('class' => 'weSelect', 'name' => 'newconf[editorTheme]', 'size' => '1'));
+			foreach(glob(WEBEDITION_PATH . 'editors/template/CodeMirror2/theme/*.css') as $filename){
+				$theme = str_replace(array('.css', WEBEDITION_PATH . 'editors/template/CodeMirror2/theme/'), '', $filename);
+				$_template_editor_theme->addOption($theme, $theme);
+			}
+			$_template_editor_theme->selectOption(get_value('editorTheme'));
 
 			//Build activation of line numbers
 			$_template_editor_linenumbers_code = we_forms::checkbox(1, get_value('editorLinenumbers'), 'newconf[editorLinenumbers]', g_l('prefs', '[editor_enable]'), true, 'defaultfont', '');
@@ -1689,12 +1695,13 @@ if(window.onload) {
 				array('headline' => '', 'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[editor_information]'), 2, 480, false), 'space' => 0),
 				array('headline' => g_l('prefs', '[editor_mode]'), 'html' => $_template_editor_mode->getHtml(), 'space' => 150),
 				array('class' => 'editor editor_codemirror2 editor_textarea', 'headline' => g_l('prefs', '[editor_font]'), 'html' => $_template_editor_font_specify_code . $_template_editor_font_specify_table, 'space' => 150),
+				array('class' => 'editor editor_codemirror2', 'headline' => g_l('prefs', '[editor_theme]'), 'html' => $_template_editor_theme->getHtml(), 'space' => 150),
 				array('class' => 'editor editor_java', 'headline' => g_l('prefs', '[editor_highlight_colors]'), 'html' => $_template_editor_font_color_checkbox . $_template_editor_font_color_table, 'space' => 150),
 				array('class' => 'editor editor_codemirror2', 'headline' => g_l('prefs', '[editor_linenumbers]'), 'html' => $_template_editor_linenumbers_code, 'space' => 150),
 				array('class' => 'editor editor_codemirror2', 'headline' => g_l('prefs', '[editor_tabstop]'), 'html' => $_template_editor_tabstop_code, 'space' => 150),
 				array('class' => 'editor editor_codemirror2', 'headline' => g_l('prefs', '[editor_completion]'), 'html' => $_template_editor_codecompletion_code, 'space' => 150),
 				array('class' => 'editor editor_codemirror2', 'headline' => g_l('prefs', '[editor_tooltips]'), 'html' => $_template_editor_tooltips_code . $_template_editor_tooltip_font_specify_code . $_template_editor_tooltip_font_specify_table, 'space' => 150),
-				array('class' => 'editor editor_codemirror2', 'headline' => 'Autoclose Tags'/* g_l('prefs', '[editor_docuclick]') */, 'html' => $_template_editor_autoClose, 'space' => 150),
+				array('class' => 'editor editor_codemirror2', 'headline' => g_l('prefs', '[editor_autoCloseTags]'), 'html' => $_template_editor_autoClose, 'space' => 150),
 				//array('class'=>'editor editor_codemirror2','headline' => g_l('prefs', '[editor_docuclick]'), 'html' => $_template_editor_docuintegration_code, 'space' => 150),
 			);
 

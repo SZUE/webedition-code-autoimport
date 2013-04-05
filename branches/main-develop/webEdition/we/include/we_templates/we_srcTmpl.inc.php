@@ -544,7 +544,7 @@ echo (we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 9
 			function we_getCodeMirror2Code($code){
 				$maineditor = '';
 				$parser_js = array();
-				$parser_css = array('theme/elegant.css', 'theme/cobalt.css');
+				$parser_css = array('theme/' . $_SESSION['prefs']['editorTheme'] . '.css');
 				$toolTip = false;
 				switch($GLOBALS['we_doc']->ContentType){ // Depending on content type we use different parsers and css files
 					case 'text/css':
@@ -633,7 +633,7 @@ var CMoptions = { //these are the CodeMirror options
 	mode: "' . $mode . '",
 	enterMode: "indent",
 	electricChars: true,
-	theme: "elegant",
+	theme: "' . $_SESSION['prefs']['editorTheme'] . '",
 	lineNumbers: ' . ($_SESSION['prefs']['editorLinenumbers'] ? 'true' : 'false') . ',
 	gutter: true,
 	indentWithTabs: true,
