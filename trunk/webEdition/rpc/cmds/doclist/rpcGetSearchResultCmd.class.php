@@ -32,20 +32,20 @@ class rpcGetSearchResultCmd extends rpcCmd{
 
 		$setView = $_REQUEST['we_cmd']['setView'];
 
-		if(isset($_REQUEST["we_transaction"])){
-			$we_dt = isset($_SESSION['weS']['we_data'][$_REQUEST["we_transaction"]]) ? $_SESSION['weS']['we_data'][$_REQUEST["we_transaction"]] : "";
+		if(isset($_REQUEST['we_transaction'])){
+			$we_dt = isset($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]) ? $_SESSION['weS']['we_data'][$_REQUEST['we_transaction']] : '';
 		}
 
-		$_document = new $_REQUEST["classname"];
+		$_document = new $_REQUEST['classname'];
 		$_document->we_initSessDat($we_dt);
 
 		$_REQUEST['we_cmd']['obj'] = $_document;
 
 		$content = doclistView::searchProperties();
 
-		$code = searchtoolView::tabListContent($setView, $content, $class = "middlefont", "doclist");
+		$code = searchtoolView::tabListContent($setView, $content, $class = 'middlefont', 'doclist');
 
-		$resp->setData("data", $code);
+		$resp->setData('data', $code);
 
 		return $resp;
 	}
