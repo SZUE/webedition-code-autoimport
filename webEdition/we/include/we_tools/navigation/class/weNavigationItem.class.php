@@ -172,31 +172,39 @@ class weNavigationItem{
 
 	function isCurrent($weNavigationItems){
 		$thishref = $this->href;
-		if($this->CurrentOnAnker || $this->CurrentOnUrlPar){ // jetzt kann man nicht mehr mit der id - weiter unten - arbeiten
-			$thishref = str_replace(array(strstr($thishref, '#'), '&amp;'), array('', '&'), $thishref);
-		}
-		if(isset($_SERVER['REQUEST_URI'])){
-			if($_SERVER['REQUEST_URI'] == $thishref){
-				// fastest way
-				$this->setCurrent($weNavigationItems);
-				return true;
-			}
-			//#3698
-			$uri = parse_url($_SERVER['REQUEST_URI']);
-			$ref = parse_url($thishref);
-			if((isset($uri['path']) && isset($ref['path']) && $uri['path'] == $ref['path'])){
-				$uriarrq = isset($uri['query']) ? explode('&', $uri['query']) : array();
-				$refarrq = isset($ref['query']) ? explode('&', $ref['query']) : array();
+		if(isset($_SERVER['REQUEST_URI']) && ($this->CurrentOnAnker || $this->CurrentOnUrlPar)){
+			$uri = parse_url(str_replace('&amp;', '&', $_SERVER['REQUEST_URI']));
+			$ref = parse_url(str_replace('&amp;', '&', $thishref));
+			if($uri['path'] == $ref['path']){
 				$allfound = true;
-				foreach($refarrq as $refa){
-					if(!in_array($refa, $uriarrq)){
-						$allfound = false;
+				if($this->CurrentOnAnker || $this->CurrentOnUrlPar){
+					if(isset($uri['query'])){
+						parse_str($uri['query'], $uriarrq);
+					} else{
+						$uriarrq = array();
+					}
+					if(isset($ref['query'])){
+						parse_str($ref['query'], $refarrq);
+					} else{
+						$refarrq = array();
+					}
+					if($this->CurrentOnAnker && !$this->CurrentOnUrlPar){
+						//remove other par's & compare only "anchors"
+						$uriarrq = array('we_anchor' => isset($uriarrq['we_anchor']) ? $uriarrq['we_anchor'] : '#');
+						$refarrq = array('we_anchor' => isset($refarrq['we_anchor']) ? $refarrq['we_anchor'] : '#');
+					}
+					if(($allfound &= (count($uriarrq) == count($refarrq)))){
+						foreach($refarrq as $key => $val){
+							$allfound &= isset($uriarrq[$key]) && $uriarrq[$key] == $val;
+						}
 					}
 				}
 				if($allfound){
 					$this->setCurrent($weNavigationItems);
-					return true;
+				} elseif($this->current == 'true'){
+					$this->unsetCurrent($weNavigationItems);
 				}
+				return $allfound;
 			}
 		}
 

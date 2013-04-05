@@ -763,8 +763,9 @@ class weNavigation extends weModelBase{
 			$this->Attributes = @unserialize($this->Attributes);
 		}
 
-		$_path .= ($_param != '' ? ((strpos($_path, '?') === false ? '?' : '&amp;') . $_param) : '') .
-			(($this->CurrentOnAnker && isset($this->Attributes['anchor']) && !empty($this->Attributes['anchor'])) ? ( (strpos($_path, '?') === false ? '?' : '&amp;') . 'we_anchor=' . $this->Attributes['anchor']) : '') .
+		$_path .= ($_param != '' ? ((strpos($_path, '?') === false ? '?' : '&amp;') . $_param) : '');
+		//leave this, because of strpos
+		$_path .= (($this->CurrentOnAnker && isset($this->Attributes['anchor']) && !empty($this->Attributes['anchor'])) ? ( (strpos($_path, '?') === false ? '?' : '&amp;') . 'we_anchor=' . $this->Attributes['anchor']) : '') .
 			((isset($this->Attributes['anchor']) && !empty($this->Attributes['anchor'])) ? ('#' . $this->Attributes['anchor']) : '');
 
 		$_path = str_replace(array('&amp;', '&'), array('&', '&amp;'), $_path);
@@ -861,14 +862,14 @@ class weNavigation extends weModelBase{
 			), $string);
 
 		return str_replace(array(
-				$open,
-				$close,
-				$amp,
-				), array(
-				'<',
-				'>',
-				'&',
-				), oldHtmlspecialchars($string));
+			$open,
+			$close,
+			$amp,
+			), array(
+			'<',
+			'>',
+			'&',
+			), oldHtmlspecialchars($string));
 	}
 
 	static public function getNavCondition($id, $table){
