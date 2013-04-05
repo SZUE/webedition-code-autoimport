@@ -35,12 +35,11 @@ class rpcGetSearchResultCmd extends rpcCmd{
 
 		$content = searchtoolView::searchProperties($whichsearch);
 
-		$code = searchtoolView::tabListContent($setView, $content, $class = "middlefont", $whichsearch);
+		$code = searchtoolView::tabListContent($setView, $content, $class = 'middlefont', $whichsearch);
 
-		$resp->setData("data", $code);
+		$resp->setData('data', $code);
 
 		return $resp;
 	}
 
 }
-
