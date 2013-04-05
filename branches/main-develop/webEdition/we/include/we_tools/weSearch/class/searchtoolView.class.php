@@ -275,7 +275,7 @@ class searchtoolView extends weToolView{
 							we_html_element::jsElement($this->topFrame . '.deleteEntry("' . $this->Model->ID . '");
         setTimeout(\'' . we_message_reporting::getShowMessageCall(
 									($this->Model->IsFolder == 1 ? g_l('tools', '[group_deleted]') : g_l('tools', '[item_deleted]')), we_message_reporting::WE_MESSAGE_NOTICE) . '\',500);'
-							);
+						);
 						$this->Model = new searchtool();
 						//$_REQUEST['home'] = '0';
 						$_REQUEST['pnt'] = 'edbody';
@@ -461,7 +461,8 @@ class searchtoolView extends weToolView{
     else {
      setTimeout(\'sizeScrollContent();\', 1000);
     }';
-		} else
+		}
+		else
 			$scrollContentFunction = "";
 
 
@@ -1503,15 +1504,13 @@ class searchtoolView extends weToolView{
 	function getSearchDialogCheckboxes($whichSearch){
 
 		$_table = new we_html_table(
-				array(
-					'border' => '0',
-					'cellpadding' => '2',
-					'cellspacing' => '0',
-					'width' => '500',
-					'height' => '50'
-				),
-				4,
-				2);
+			array(
+			'border' => '0',
+			'cellpadding' => '2',
+			'cellspacing' => '0',
+			'width' => '500',
+			'height' => '50'
+			), 4, 2);
 
 		switch($whichSearch){
 			case "DocSearch" :
@@ -1649,15 +1648,13 @@ class searchtoolView extends weToolView{
 		}
 
 		$_table = new we_html_table(
-				array(
-					'border' => '0',
-					'cellpadding' => '2',
-					'cellspacing' => '0',
-					'width' => '550',
-					'height' => '50'
-				),
-				4,
-				3);
+			array(
+			'border' => '0',
+			'cellpadding' => '2',
+			'cellspacing' => '0',
+			'width' => '550',
+			'height' => '50'
+			), 4, 3);
 
 		if(we_hasPerm('CAN_SEE_DOCUMENTS')){
 			$_table->setCol(
@@ -1723,8 +1720,7 @@ class searchtoolView extends weToolView{
 					$this->Model->searchFieldsDocSearch[] = "Content";
 				}
 
-				if((isset($_SESSION['weS']['weSearch']["keyword"]) && $_SESSION['weS']['weSearch']["keyword"] != "") && (isset(
-						$_REQUEST["tab"]) && $_REQUEST["tab"] == 1)){
+				if((isset($_SESSION['weS']['weSearch']["keyword"]) && $_SESSION['weS']['weSearch']["keyword"] != "") && (isset($_REQUEST["tab"]) && $_REQUEST["tab"] == 1)){
 					$this->Model->searchDocSearch[0] = ($_SESSION['weS']['weSearch']["keyword"]);
 					if($GLOBALS['WE_BACKENDCHARSET'] == "UTF-8"){
 						$this->Model->searchDocSearch[0] = utf8_encode($this->Model->searchDocSearch[0]);
@@ -2831,11 +2827,11 @@ class searchtoolView extends weToolView{
 		$btnDatePicker = we_button::create_button(
 				"image:date_picker", "javascript:", null, null, null, null, null, null, false, $_btn);
 		$oSelector = new we_html_table(array(
-				"cellpadding" => "0",
-				"cellspacing" => "0",
-				"border" => "0",
-				"id" => $_name . "_cell"
-				), 1, 5);
+			"cellpadding" => "0",
+			"cellspacing" => "0",
+			"border" => "0",
+			"id" => $_name . "_cell"
+			), 1, 5);
 		$oSelector->setCol(0, 2, null, we_html_tools::htmlTextInput($name = $_name, $size = 55, $value, $maxlength = 10, $attribs = 'id="' . $_name . '" class="wetextinput" readonly="1"', $type = "text", $width = 100));
 		$oSelector->setCol(0, 3, null, "&nbsp;");
 		$oSelector->setCol(0, 4, null, we_html_element::htmlA(array(

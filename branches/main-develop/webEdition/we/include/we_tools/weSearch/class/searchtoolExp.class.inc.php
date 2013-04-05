@@ -63,8 +63,7 @@ class searchtoolExp extends we_search{
 	function evaluateExp($keyword, $options, $res_num = 0){
 
 		$keyword = $this->normalize($keyword);
-		$_tokens = $this->tokenize($keyword);
-		$_tokens = $this->translateOperators($_tokens);
+		$_tokens = $this->translateOperators($this->tokenize($keyword));
 		$_tables = $options;
 		$_condition = $this->constructCondition($_tokens);
 

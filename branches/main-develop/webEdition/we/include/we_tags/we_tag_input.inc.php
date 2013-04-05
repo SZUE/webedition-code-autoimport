@@ -58,11 +58,8 @@ function we_tag_input($attribs, $content){
 				$docAttr = weTag_getAttribute('doc', $attribs, 'self');
 				$doc = we_getDocForTag($docAttr);
 				$lang = $doc->Language;
-				if($lang != ''){
-					$langcode = substr($lang, 0, 2);
-				} else{
-					$langcode = we_core_Local::weLangToLocale($GLOBALS["WE_LANGUAGE"]);
-				}
+				$langcode = ($lang != '' ? substr($lang, 0, 2) : we_core_Local::weLangToLocale($GLOBALS["WE_LANGUAGE"]));
+
 				$orgVal = $GLOBALS['we_doc']->getElement($name);
 				if(!Zend_Locale::hasCache()){
 					Zend_Locale::setCache(getWEZendCache());
@@ -106,7 +103,6 @@ function we_tag_input($attribs, $content){
 				$docAttr = weTag_getAttribute('doc', $attribs, 'self');
 				$doc = we_getDocForTag($docAttr);
 				$lang = $doc->Language;
-				$langcode = substr($lang, 0, 2);
 				$langcode = ($lang != '' ? substr($lang, 0, 2) : we_core_Local::weLangToLocale($GLOBALS["WE_LANGUAGE"]));
 
 				$frontendL = $GLOBALS['weFrontendLanguages'];
@@ -138,22 +134,19 @@ function we_tag_input($attribs, $content){
 					$tagname = 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']';
 					$vals = explode($seperator, $values);
 
-					if($mode == 'add'){
-						$onChange = "this.form.elements['$tagname'].value += ((this.form.elements['$tagname'].value ? ' ' : '')+this.options[this.selectedIndex].text);";
-					} else{
-						$onChange = "this.form.elements['$tagname'].value = this.options[this.selectedIndex].text;";
-					}
-					if($reload){
-						$onChange .= 'setScrollTo();top.we_cmd(\'reload_editpage\');';
-					}
+					$onChange = ($mode == 'add' ?
+							"this.form.elements['$tagname'].value += ((this.form.elements['$tagname'].value ? ' ' : '')+this.options[this.selectedIndex].text);" :
+							"this.form.elements['$tagname'].value = this.options[this.selectedIndex].text;") .
+						($reload ? 'setScrollTo();top.we_cmd(\'reload_editpage\');' : '');
+
 					$sel = '<select  class="defaultfont" name="we_choice_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']" size="1" onchange="' . $onChange . ';this.selectedIndex=0;_EditorFrame.setEditorIsHot(true);"><option></option>' .
 						(!empty($vals) ? '<option>' . implode("</option>\n<option>", $vals) . "</option>\n" : '') .
 						'</select>';
 				}
 				$attr = we_make_attribs($attribs, 'name,value,type,onchange,mode,values,_name_orig');
 
-				return '<input onchange="_EditorFrame.setEditorIsHot(true);" type="text" name="we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']" value="' . $val . '"' . ($attr ? " $attr" : "") . ' />' . "&nbsp;" . (isset(
-						$sel) ? $sel : '');
+				return '<input onchange="_EditorFrame.setEditorIsHot(true);" type="text" name="we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']" value="' . $val . '"' . ($attr ? " $attr" : "") . ' />' . "&nbsp;" .
+					(isset($sel) ? $sel : '');
 			case 'select':
 				//NOTE: this tag is for objects only
 				return $GLOBALS['we_doc']->getField($attribs, 'select');

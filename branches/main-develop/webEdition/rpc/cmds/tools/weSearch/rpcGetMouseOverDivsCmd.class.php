@@ -37,9 +37,7 @@ class rpcGetMouseOverDivsCmd extends rpcCmd{
 
 		$_REQUEST['we_cmd']['obj'] = unserialize($_SESSION['weSearch_session']);
 
-		$code = "";
 		if($setView == 1){
-
 			$content = searchtoolView::searchProperties($whichsearch);
 
 			$x = $searchstart + $anzahl;
@@ -47,6 +45,8 @@ class rpcGetMouseOverDivsCmd extends rpcCmd{
 				$x = $x - ($x - count($content));
 			}
 			$code = searchtoolView::makeMouseOverDivs($x, $content, $whichsearch);
+		} else{
+			$code = "";
 		}
 
 		$resp->setData("data", $code);
