@@ -17,50 +17,53 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
 */
 
-.weTag, .cm-weTag{ font-weight:bold;color:#ff8a00;}
-.weTagAttribute, .cm-weTagAttribute{color:grey;}
+.weTag, .cm-weTag {
+	font-weight: bold;
+	color: #4d7dbc;
+}
+
+.weTagAttribute, .cm-weTagAttribute {}
+
+.CodeMirror {
+	position: relative;
+	z-index: 5;
+	color: black;
+	background: white;
+	border: solid 1px #afb0af;
+}
+
+.activeline, .CodeMirror-linebackground {
+	background: #f8f8f8;
+}
+
+.CodeMirror-selected {
+	background: #dce7f1 !important;
+}
+
+.searched {
+	background: yellow;
+}
+
+.searchedHighlight {
+	background: yellow;
+	border: 1px solid black;
+}
+
+span.c-like-keyword {
+	color: black;
+	font-weight: bold;
+}
+
 .weSelfClose:hover:after, .cm-weSelfClose:hover:after, .weOpenTag:hover:after, .cm-weOpenTag:hover:after, .weTagAttribute:hover:after, .cm-weTagAttribute:hover:after {
 	position: absolute;
 	z-index: 10;
 	white-space: normal;
 	max-width: 40em;
-	background-color: rgba(0, 0, 0, 0.85);
+	background: rgba(0, 0, 0, 0.85);
 	padding: 3px 7px;
-	color: #FFF;
+	color: white;
+	font-weight: normal;
 	border-radius: 3px;
 	margin-left: 7px;
 	margin-top: -3px;
-}
-
-.CodeMirror{
-	position: relative;
-	color: black;
-	background-color: white;
-	padding: 5px 8px;
-	z-index: 5;
-	border: outset 1px;
-	box-shadow: 0 2px 2px rgba(0,0,0,0.3);
-	border-radius: 3px;
-}
-
-.CodeMirror pre {
-		/*z-index: auto;*/
-}
-
-.activeline,.CodeMirror-linebackground {
-	background-color: lightyellow !important;
-	z-index: -1;
-}
-
-.searched {
-	background-color: yellow;
-}
-
-span.c-like-keyword {
-	color: #000;
-	font-weight: bold;
-}
-
-.CodeMirror-selected {
-	background-color: #b0c5e3;
 }
