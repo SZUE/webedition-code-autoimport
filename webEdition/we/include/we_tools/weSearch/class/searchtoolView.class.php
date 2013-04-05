@@ -275,7 +275,7 @@ class searchtoolView extends weToolView{
 							we_html_element::jsElement($this->topFrame . '.deleteEntry("' . $this->Model->ID . '");
         setTimeout(\'' . we_message_reporting::getShowMessageCall(
 									($this->Model->IsFolder == 1 ? g_l('tools', '[group_deleted]') : g_l('tools', '[item_deleted]')), we_message_reporting::WE_MESSAGE_NOTICE) . '\',500);'
-							);
+						);
 						$this->Model = new searchtool();
 						//$_REQUEST['home'] = '0';
 						$_REQUEST['pnt'] = 'edbody';
@@ -461,7 +461,8 @@ class searchtoolView extends weToolView{
     else {
      setTimeout(\'sizeScrollContent();\', 1000);
     }';
-		} else
+		}
+		else
 			$scrollContentFunction = "";
 
 
@@ -1503,15 +1504,13 @@ class searchtoolView extends weToolView{
 	function getSearchDialogCheckboxes($whichSearch){
 
 		$_table = new we_html_table(
-				array(
-					'border' => '0',
-					'cellpadding' => '2',
-					'cellspacing' => '0',
-					'width' => '500',
-					'height' => '50'
-				),
-				4,
-				2);
+			array(
+			'border' => '0',
+			'cellpadding' => '2',
+			'cellspacing' => '0',
+			'width' => '500',
+			'height' => '50'
+			), 4, 2);
 
 		switch($whichSearch){
 			case "DocSearch" :
@@ -1649,15 +1648,13 @@ class searchtoolView extends weToolView{
 		}
 
 		$_table = new we_html_table(
-				array(
-					'border' => '0',
-					'cellpadding' => '2',
-					'cellspacing' => '0',
-					'width' => '550',
-					'height' => '50'
-				),
-				4,
-				3);
+			array(
+			'border' => '0',
+			'cellpadding' => '2',
+			'cellspacing' => '0',
+			'width' => '550',
+			'height' => '50'
+			), 4, 3);
 
 		if(we_hasPerm('CAN_SEE_DOCUMENTS')){
 			$_table->setCol(
@@ -1833,19 +1830,17 @@ class searchtoolView extends weToolView{
 					$_tables[0] = FILE_TABLE;
 					$folderID = $_REQUEST['we_cmd']['folderIDDoc'];
 					foreach($_REQUEST['we_cmd'] as $k => $v){
-						if(stristr($k, 'searchForTextDocSearch') && $k{0} != "_"){
-							if($v == 1){
-								$_REQUEST['we_cmd']['searchFields' . $whichSearch][] = 'Text';
-							}
-						}
-						if(stristr($k, 'searchForTitleDocSearch') && $k{0} != "_"){
-							if($v == 1){
-								$_REQUEST['we_cmd']['searchFields' . $whichSearch][] = 'Title';
-							}
-						}
-						if(stristr($k, 'searchForContentDocSearch') && $k{0} != "_"){
-							if($v == 1){
-								$_REQUEST['we_cmd']['searchFields' . $whichSearch][] = 'Content';
+						if(is_string($v) && $v == 1){
+							switch($k){
+								case 'searchForTextDocSearch':
+									$_REQUEST['we_cmd']['searchFields' . $whichSearch][] = 'Text';
+									break;
+								case 'searchForTitleDocSearch':
+									$_REQUEST['we_cmd']['searchFields' . $whichSearch][] = 'Title';
+									break;
+								case 'searchForContentDocSearch':
+									$_REQUEST['we_cmd']['searchFields' . $whichSearch][] = 'Content';
+									break;
 							}
 						}
 					}
@@ -1854,14 +1849,14 @@ class searchtoolView extends weToolView{
 					$_tables[0] = TEMPLATES_TABLE;
 					$folderID = $_REQUEST['we_cmd']['folderIDTmpl'];
 					foreach($_REQUEST['we_cmd'] as $k => $v){
-						if(stristr($k, 'searchForTextTmplSearch') && $k{0} != "_"){
-							if($v == 1){
-								$_REQUEST['we_cmd']['searchFields' . $whichSearch][] = 'Text';
-							}
-						}
-						if(stristr($k, 'searchForContentTmplSearch') && $k{0} != "_"){
-							if($v == 1){
-								$_REQUEST['we_cmd']['searchFields' . $whichSearch][] = 'Content';
+						if(is_string($v) && $v == 1){
+							switch($k){
+								case 'searchForTextTmplSearch':
+									$_REQUEST['we_cmd']['searchFields' . $whichSearch][] = 'Text';
+									break;
+								case 'searchForContentTmplSearch':
+									$_REQUEST['we_cmd']['searchFields' . $whichSearch][] = 'Content';
+									break;
 							}
 						}
 					}
@@ -1979,6 +1974,7 @@ class searchtoolView extends weToolView{
 		foreach($searchText as &$cur){
 			$cur = trim($cur);
 		}
+		unset($cur);
 		$tab = (isset($_REQUEST['tab']) ? $_REQUEST['tab'] : (isset($_REQUEST['tabnr']) ? $_REQUEST['tabnr'] : 1));
 
 		if(isset($searchText[0]) && substr($searchText[0], 0, 4) == 'exp:'){
@@ -2035,9 +2031,17 @@ class searchtoolView extends weToolView{
 								$searchString = str_replace(array('\\', '_', '%'), array('\\\\', '\_', '\%'), $searchString);
 							}
 
-							if(( ($whichSearch == "AdvSearch" && $searchFields[$i] != "Content" && $searchFields[$i] != "Status" && $searchFields[$i] != "Speicherart" && $searchFields[$i] != "CreatorName" && $searchFields[$i] != "WebUserName" && $searchFields[$i] != "temp_category"))){
-								if(isset($searchFields[$i]) && isset($location[$i])){
-									$where .= $thisObj->searchclass->searchfor($searchString, $searchFields[$i], $location[$i], $_table);
+							if($whichSearch == "AdvSearch" && isset($location[$i])){
+								switch($searchFields[$i]){
+									case "Content":
+									case "Status":
+									case "Speicherart":
+									case "CreatorName":
+									case "WebUserName":
+									case "temp_category":
+										break;
+									default:
+										$where .= $thisObj->searchclass->searchfor($searchString, $searchFields[$i], $location[$i], $_table);
 								}
 							}
 							switch($searchFields[$i]){
@@ -2111,6 +2115,10 @@ class searchtoolView extends weToolView{
 									$w = $thisObj->searchclass->searchCategory($searchString, $_table, $searchFields[$i]);
 									$where .= $w;
 									break;
+								default:
+									if($whichSearch != "AdvSearch"){
+										$where .= $thisObj->searchclass->searchfor($searchString, $searchFields[$i], $location[$i], $_table);
+									}
 							}
 						}
 					}
@@ -2232,32 +2240,31 @@ class searchtoolView extends weToolView{
 			}
 		}
 
-		if($_SESSION['weS']['weSearch']['foundItems' . $whichSearch] > 0){
-
-			foreach($_result as $k => $v){
-				$_result[$k]["Description"] = '';
-				if($_result[$k]['docTable'] == FILE_TABLE && $_result[$k]['Published'] >= $_result[$k]['ModDate'] && $_result[$k]['Published'] != 0){
-					$DB_WE->query('SELECT a.ID, c.Dat FROM (' . FILE_TABLE . ' a LEFT JOIN ' . LINK_TABLE . ' b ON (a.ID=b.DID)) LEFT JOIN ' . CONTENT_TABLE . ' c ON (b.CID=c.ID) WHERE a.ID=' . intval($_result[$k]["docID"]) . ' AND b.Name="Description" AND b.DocumentTable="' . FILE_TABLE . '"');
-					while($DB_WE->next_record()) {
-						$_result[$k]["Description"] = $DB_WE->f('Dat');
-					}
-				} elseif($_result[$k]['docTable'] == FILE_TABLE){
-					$tempDoc = f('SELECT DocumentObject  FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentID =' . intval($_result[$k]["docID"]) . ' AND DocTable = "tblFile" AND Active = 1', 'DocumentObject', $DB_WE);
-					if(!empty($tempDoc)){
-						$tempDoc = unserialize($tempDoc);
-						if(isset($tempDoc[0]['elements']['Description']) && $tempDoc[0]['elements']['Description']['dat'] != ''){
-							$_result[$k]["Description"] = $tempDoc[0]['elements']['Description']['dat'];
-						}
-					}
-				} else{
-					$_result[$k]['Description'] = '';
-				}
-			}
-
-			return $thisObj->makeContent($_result, $_view, $whichSearch);
+		if($_SESSION['weS']['weSearch']['foundItems' . $whichSearch] == 0){
+			return array();
 		}
 
-		return array();
+		foreach($_result as $k => $v){
+			$_result[$k]["Description"] = '';
+			if($_result[$k]['docTable'] == FILE_TABLE && $_result[$k]['Published'] >= $_result[$k]['ModDate'] && $_result[$k]['Published'] != 0){
+				$DB_WE->query('SELECT a.ID, c.Dat FROM (' . FILE_TABLE . ' a LEFT JOIN ' . LINK_TABLE . ' b ON (a.ID=b.DID)) LEFT JOIN ' . CONTENT_TABLE . ' c ON (b.CID=c.ID) WHERE a.ID=' . intval($_result[$k]["docID"]) . ' AND b.Name="Description" AND b.DocumentTable="' . FILE_TABLE . '"');
+				while($DB_WE->next_record()) {
+					$_result[$k]["Description"] = $DB_WE->f('Dat');
+				}
+			} elseif($_result[$k]['docTable'] == FILE_TABLE){
+				$tempDoc = f('SELECT DocumentObject  FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentID =' . intval($_result[$k]["docID"]) . ' AND DocTable = "tblFile" AND Active = 1', 'DocumentObject', $DB_WE);
+				if(!empty($tempDoc)){
+					$tempDoc = unserialize($tempDoc);
+					if(isset($tempDoc[0]['elements']['Description']) && $tempDoc[0]['elements']['Description']['dat'] != ''){
+						$_result[$k]["Description"] = $tempDoc[0]['elements']['Description']['dat'];
+					}
+				}
+			} else{
+				$_result[$k]['Description'] = '';
+			}
+		}
+
+		return $thisObj->makeContent($_result, $_view, $whichSearch);
 	}
 
 	function makeHeadLines($whichSearch){
@@ -2831,11 +2838,11 @@ class searchtoolView extends weToolView{
 		$btnDatePicker = we_button::create_button(
 				"image:date_picker", "javascript:", null, null, null, null, null, null, false, $_btn);
 		$oSelector = new we_html_table(array(
-				"cellpadding" => "0",
-				"cellspacing" => "0",
-				"border" => "0",
-				"id" => $_name . "_cell"
-				), 1, 5);
+			"cellpadding" => "0",
+			"cellspacing" => "0",
+			"border" => "0",
+			"id" => $_name . "_cell"
+			), 1, 5);
 		$oSelector->setCol(0, 2, null, we_html_tools::htmlTextInput($name = $_name, $size = 55, $value, $maxlength = 10, $attribs = 'id="' . $_name . '" class="wetextinput" readonly="1"', $type = "text", $width = 100));
 		$oSelector->setCol(0, 3, null, "&nbsp;");
 		$oSelector->setCol(0, 4, null, we_html_element::htmlA(array(

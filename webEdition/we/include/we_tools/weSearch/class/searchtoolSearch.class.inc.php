@@ -33,7 +33,7 @@ class searchtoolsearch extends we_search{
 	/**
 	 * @var string: default order of the result columns
 	 */
-	var $order = "Text";
+	var $order = 'Text';
 
 	/**
 	 * @var string: default number of rows of the result columns
@@ -72,43 +72,43 @@ class searchtoolsearch extends we_search{
 		if(isset($GLOBALS['we_doc'])){
 			$obj = $GLOBALS['we_doc'];
 
-			if(isset($_REQUEST["searchstart"])){
-				$obj->searchclassFolder->searchstart = ($_REQUEST["searchstart"]);
+			if(isset($_REQUEST['searchstart'])){
+				$obj->searchclassFolder->searchstart = ($_REQUEST['searchstart']);
 			}
-			if(isset($_REQUEST["setView"])){
-				$this->db->query("UPDATE " . FILE_TABLE . " SET listview=" . intval($_REQUEST['setView']) . " WHERE ID=" . intval($obj->ID));
-				$obj->searchclassFolder->setView = ($_REQUEST["setView"]);
+			if(isset($_REQUEST['setView'])){
+				$this->db->query('UPDATE ' . FILE_TABLE . ' SET listview=' . intval($_REQUEST['setView']) . ' WHERE ID=' . intval($obj->ID));
+				$obj->searchclassFolder->setView = ($_REQUEST['setView']);
 			} else{
-				$obj->searchclassFolder->setView = f("SELECT listview FROM " . FILE_TABLE . " WHERE ID=" . intval($obj->ID), "listview", $GLOBALS['DB_WE']);
+				$obj->searchclassFolder->setView = f('SELECT listview FROM ' . FILE_TABLE . ' WHERE ID=' . intval($obj->ID), 'listview', $GLOBALS['DB_WE']);
 			}
-			if(isset($_REQUEST["mode"])){
-				$obj->searchclassFolder->mode = ($_REQUEST["mode"]);
+			if(isset($_REQUEST['mode'])){
+				$obj->searchclassFolder->mode = ($_REQUEST['mode']);
 			}
-			if(isset($_REQUEST["order"])){
-				$obj->searchclassFolder->order = ($_REQUEST["order"]);
+			if(isset($_REQUEST['order'])){
+				$obj->searchclassFolder->order = ($_REQUEST['order']);
 			}
-			if(isset($_REQUEST["anzahl"])){
-				$obj->searchclassFolder->anzahl = ($_REQUEST["anzahl"]);
+			if(isset($_REQUEST['anzahl'])){
+				$obj->searchclassFolder->anzahl = ($_REQUEST['anzahl']);
 			}
-			if(isset($_REQUEST["searchFields"])){
-				$obj->searchclassFolder->searchFields = ($_REQUEST["searchFields"]);
-				$obj->searchclassFolder->height = count($_REQUEST["searchFields"]);
-			} elseif(!isset($_REQUEST["searchFields"]) && isset($_REQUEST["searchstart"])){
+			if(isset($_REQUEST['searchFields'])){
+				$obj->searchclassFolder->searchFields = ($_REQUEST['searchFields']);
+				$obj->searchclassFolder->height = count($_REQUEST['searchFields']);
+			} elseif(!isset($_REQUEST['searchFields']) && isset($_REQUEST['searchstart'])){
 				$obj->searchclassFolder->height = 0;
-			} elseif(!isset($_REQUEST["searchFields"]) && !isset($_REQUEST["searchstart"])){
+			} elseif(!isset($_REQUEST['searchFields']) && !isset($_REQUEST['searchstart'])){
 				$obj->searchclassFolder->height = 1;
 			} else{
 				$obj->searchclassFolder->height = 1;
 			}
-			if(isset($_REQUEST["location"])){
-				$obj->searchclassFolder->location = ($_REQUEST["location"]);
+			if(isset($_REQUEST['location'])){
+				$obj->searchclassFolder->location = ($_REQUEST['location']);
 			}
-			if(isset($_REQUEST["search"])){
-				$obj->searchclassFolder->search = ($_REQUEST["search"]);
+			if(isset($_REQUEST['search'])){
+				$obj->searchclassFolder->search = ($_REQUEST['search']);
 			}
 		} else{
-			if(isset($_REQUEST['we_cmd']["setView"]) && isset($_REQUEST["id"])){
-				$this->db->query("UPDATE " . FILE_TABLE . " SET listview=" . intval($_REQUEST['we_cmd']["setView"]) . " WHERE ID=" . intval($_REQUEST["id"]));
+			if(isset($_REQUEST['we_cmd']['setView']) && isset($_REQUEST['id'])){
+				$this->db->query('UPDATE ' . FILE_TABLE . ' SET listview=' . intval($_REQUEST['we_cmd']['setView']) . ' WHERE ID=' . intval($_REQUEST['id']));
 			}
 		}
 	}
@@ -117,7 +117,7 @@ class searchtoolsearch extends we_search{
 		$modFields = array();
 		$versions = new weVersions();
 		foreach($versions->modFields as $k => $v){
-			if($k != "status"){
+			if($k != 'status'){
 				$modFields[$k] = $k;
 			}
 		}
@@ -132,15 +132,15 @@ class searchtoolsearch extends we_search{
 
 		$_db->query('SELECT ID, Text FROM ' . USER_TABLE);
 		while($_db->next_record()) {
-			$v = $_db->f("ID");
-			$t = $_db->f("Text");
+			$v = $_db->f('ID');
+			$t = $_db->f('Text');
 			$vals[$v] = $t;
 		}
 
 		return $vals;
 	}
 
-	function getFields($row, $whichSearch = ""){
+	function getFields($row, $whichSearch = ''){
 
 		$tableFields = array(
 			'ID' => g_l('searchtool', '[ID]'),
@@ -169,34 +169,34 @@ class searchtoolsearch extends we_search{
 		);
 
 
-		if($whichSearch == "doclist"){
-			unset($tableFields["Path"]);
-			unset($tableFields["ParentIDDoc"]);
-			unset($tableFields["ParentIDObj"]);
-			unset($tableFields["ParentIDTmpl"]);
-			unset($tableFields["MasterTemplateID"]);
+		if($whichSearch == 'doclist'){
+			unset($tableFields['Path']);
+			unset($tableFields['ParentIDDoc']);
+			unset($tableFields['ParentIDObj']);
+			unset($tableFields['ParentIDTmpl']);
+			unset($tableFields['MasterTemplateID']);
 		}
 
 		if(!we_hasPerm('CAN_SEE_DOCUMENTS')){
-			unset($tableFields["ParentIDDoc"]);
+			unset($tableFields['ParentIDDoc']);
 		}
 
 		if(!defined('OBJECT_FILES_TABLE')){
-			unset($tableFields["ParentIDObj"]);
+			unset($tableFields['ParentIDObj']);
 		}
 
 		if(!we_hasPerm('CAN_SEE_OBJECTFILES')){
-			unset($tableFields["ParentIDObj"]);
+			unset($tableFields['ParentIDObj']);
 		}
 
-		if($_SESSION['weS']['we_mode'] == "seem"){
-			unset($tableFields["ParentIDTmpl"]);
+		if($_SESSION['weS']['we_mode'] == 'seem'){
+			unset($tableFields['ParentIDTmpl']);
 		}
 
 		if(!we_hasPerm('CAN_SEE_TEMPLATES')){
-			unset($tableFields["ParentIDTmpl"]);
-			unset($tableFields["temp_template_id"]);
-			unset($tableFields["MasterTemplateID"]);
+			unset($tableFields['ParentIDTmpl']);
+			unset($tableFields['temp_template_id']);
+			unset($tableFields['MasterTemplateID']);
 		}
 
 		return $tableFields;
@@ -225,7 +225,7 @@ class searchtoolsearch extends we_search{
 		);
 	}
 
-	function getLocation($whichField = ""){
+	function getLocation($whichField = ''){
 		$locations = array(
 			'CONTAIN' => g_l('searchtool', '[CONTAIN]'),
 			'IS' => g_l('searchtool', '[IS]'),
@@ -237,10 +237,10 @@ class searchtoolsearch extends we_search{
 			'>' => g_l('searchtool', '[>]')
 		);
 
-		if($whichField == "date"){
-			unset($locations["CONTAIN"]);
-			unset($locations["START"]);
-			unset($locations["END"]);
+		if($whichField == 'date'){
+			unset($locations['CONTAIN']);
+			unset($locations['START']);
+			unset($locations['END']);
 		}
 
 		return $locations;
@@ -252,11 +252,9 @@ class searchtoolsearch extends we_search{
 		$q = getDoctypeQuery($_db);
 		$vals = array();
 
-		$_db->query('SELECT * FROM ' . DOC_TYPES_TABLE . ' ' . $q);
+		$_db->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' ' . $q);
 		while($_db->next_record()) {
-			$v = $_db->f("ID");
-			$t = $_db->f("DocType");
-			$vals[$v] = $t;
+			$vals[$_db->f('ID')] = $_db->f('DocType');
 		}
 
 		return $vals;
@@ -771,32 +769,32 @@ class searchtoolsearch extends we_search{
 		for($y = 0; $y < count($tableInfo); $y++){
 			if($tablename == VERSIONS_TABLE){
 				switch($searchfield){
-					case "ID" :
-						$tableInfo[$y]["name"] = "documentID";
-						$searchfield = "documentID";
+					case 'ID' :
+						$tableInfo[$y]['name'] = 'documentID';
+						$searchfield = 'documentID';
 						break;
-					case "temp_template_id" :
-						$searchfield = "TemplateID";
+					case 'temp_template_id' :
+						$searchfield = 'TemplateID';
 						break;
-					case "temp_doc_type" :
-						$searchfield = "DocType";
+					case 'temp_doc_type' :
+						$searchfield = 'DocType';
 						break;
-					case "ModDate" :
-						$searchfield = "timestamp";
+					case 'ModDate' :
+						$searchfield = 'timestamp';
 						break;
 				}
 			}
 
-			if($searchfield == $tableInfo[$y]["name"]){
-				$searchfield = $tablename . '.' . $tableInfo[$y]["name"];
+			if($searchfield == $tableInfo[$y]['name']){
+				$searchfield = $tablename . '.' . $tableInfo[$y]['name'];
 
-				if(isset($searchname) && $searchname != "")
-					if(($whatParentID == "ParentIDDoc" && ($this->table == FILE_TABLE || $this->table == VERSIONS_TABLE)) || ($whatParentID == "ParentIDObj" && ($this->table == OBJECT_FILES_TABLE || $this->table == VERSIONS_TABLE)) || ($whatParentID == "ParentIDTmpl" && $this->table == TEMPLATES_TABLE)){
+				if(isset($searchname) && $searchname != '')
+					if(($whatParentID == 'ParentIDDoc' && ($this->table == FILE_TABLE || $this->table == VERSIONS_TABLE)) || ($whatParentID == 'ParentIDObj' && ($this->table == OBJECT_FILES_TABLE || $this->table == VERSIONS_TABLE)) || ($whatParentID == 'ParentIDTmpl' && $this->table == TEMPLATES_TABLE)){
 						if($this->table == VERSIONS_TABLE){
-							if($whatParentID == "ParentIDDoc"){
+							if($whatParentID == 'ParentIDDoc'){
 								$this->table = FILE_TABLE;
 							}
-							if(defined("OBJECT_FILES_TABLE") && $whatParentID == 'ParentIDObj'){
+							if(defined('OBJECT_FILES_TABLE') && $whatParentID == 'ParentIDObj'){
 								$this->table = OBJECT_FILES_TABLE;
 							}
 						}
@@ -807,13 +805,13 @@ class searchtoolsearch extends we_search{
 						$searchname = path_to_id($searchname, TEMPLATES_TABLE);
 						$searching = " = '" . escape_sql_query($searchname) . "' ";
 
-						if(($searchfield == "temp_template_id" && $this->table == FILE_TABLE) || ($searchfield == "TemplateID" && $this->table == VERSIONS_TABLE)){
+						if(($searchfield == 'temp_template_id' && $this->table == FILE_TABLE) || ($searchfield == 'TemplateID' && $this->table == VERSIONS_TABLE)){
 							if($this->table == FILE_TABLE){
-								$sql .= $this->sqlwhere($tablename . ".TemplateID", $searching, $operator . "( (Published >= ModDate AND Published !=0 AND ") .
-									$this->sqlwhere($searchfield, $searching, " ) OR (Published < ModDate AND ") .
+								$sql .= $this->sqlwhere($tablename . '.TemplateID', $searching, $operator . '( (Published >= ModDate AND Published !=0 AND ') .
+									$this->sqlwhere($searchfield, $searching, ' ) OR (Published < ModDate AND ') .
 									'))';
 							} elseif($this->table == VERSIONS_TABLE){
-								$sql .= $this->sqlwhere($tablename . ".TemplateID", $searching, $operator . " ");
+								$sql .= $this->sqlwhere($tablename . '.TemplateID', $searching, $operator . ' ');
 							}
 						} else{
 							$sql .= $this->sqlwhere($searchfield, $searching, $operator);
@@ -824,9 +822,9 @@ class searchtoolsearch extends we_search{
 						$sql .= $this->sqlwhere($tablename . '.DocType', $searching, $operator . '( (Published >= ModDate AND Published !=0 AND ') .
 							$this->sqlwhere($searchfield, $searching, ' ) OR (Published < ModDate AND ') .
 							'))';
-					} elseif(stristr($searchfield, ".Published") || stristr($searchfield, ".CreationDate") || stristr($searchfield, ".ModDate")){
-						if((stristr($searchfield, ".Published") && $this->table == FILE_TABLE || $this->table == OBJECT_FILES_TABLE) || !stristr($searchfield, ".Published")){
-							if($this->table == VERSIONS_TABLE && (stristr($searchfield, ".CreationDate") || stristr($searchfield, ".ModDate"))){
+					} elseif(stristr($searchfield, '.Published') || stristr($searchfield, '.CreationDate') || stristr($searchfield, '.ModDate')){
+						if((stristr($searchfield, '.Published') && $this->table == FILE_TABLE || $this->table == OBJECT_FILES_TABLE) || !stristr($searchfield, '.Published')){
+							if($this->table == VERSIONS_TABLE && (stristr($searchfield, '.CreationDate') || stristr($searchfield, '.ModDate'))){
 								$searchfield = $this->table . '.timestamp';
 							}
 							$date = explode('.', $searchname);
@@ -921,16 +919,16 @@ class searchtoolsearch extends we_search{
 
 		$DB_WE->query('SELECT ID FROM ' . $DB_WE->escape($table) . ' WHERE ParentID=' . intval($folderID) . ' AND IsFolder=1');
 		while($DB_WE->next_record()) {
-			$_SESSION['weS']['weSearch']["countChilds"][] = $DB_WE->f("ID");
-			$this->getChildsOfParentId($DB_WE->f("ID"), $table);
+			$_SESSION['weS']['weSearch']['countChilds'][] = $DB_WE->f('ID');
+			$this->getChildsOfParentId($DB_WE->f('ID'), $table);
 		}
 
-		$_SESSION['weS']['weSearch']["countChilds"][] = $folderID;
+		$_SESSION['weS']['weSearch']['countChilds'][] = $folderID;
 		// doppelte Eintr�ge aus array entfernen
-		$_SESSION['weS']['weSearch']["countChilds"] = array_values(
-			array_unique($_SESSION['weS']['weSearch']["countChilds"]));
+		$_SESSION['weS']['weSearch']['countChilds'] = array_values(
+			array_unique($_SESSION['weS']['weSearch']['countChilds']));
 
-		return $_SESSION['weS']['weSearch']["countChilds"];
+		return $_SESSION['weS']['weSearch']['countChilds'];
 	}
 
 	function ofFolderOnly($folderID){

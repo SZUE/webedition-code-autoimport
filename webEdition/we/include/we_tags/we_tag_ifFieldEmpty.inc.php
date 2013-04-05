@@ -25,6 +25,11 @@
 function we_isFieldNotEmpty($attribs){
 	$type = weTag_getAttribute('type', $attribs);
 	$match = weTag_getAttribute('match', $attribs);
+	if(!isset($GLOBALS['lv'])){
+		echo parseError(g_l('parser', '[field_not_in_lv]'));
+		return false;
+	}
+
 	$orig_match = $match;
 	$match = ($GLOBALS['lv']->f($match) ? $match : we_tag_getPostName($match));
 
@@ -60,12 +65,10 @@ function we_isFieldNotEmpty($attribs){
 			if(isset($GLOBALS['lv'])){
 				if(isset($GLOBALS['lv']->object)){
 					$data = unserialize($GLOBALS['lv']->object->getDBf('we_' . $orig_match));
+				} elseif($GLOBALS['lv']->ClassName == 'we_listview_shoppingCart'){//Bug #4827
+					$data = unserialize($GLOBALS['lv']->f($match));
 				} else{
-					if($GLOBALS['lv']->ClassName == 'we_listview_shoppingCart'){//Bug #4827
-						$data = unserialize($GLOBALS['lv']->f($match));
-					} else{
-						$data = unserialize($GLOBALS['lv']->getDBf('we_' . $orig_match));
-					}
+					$data = unserialize($GLOBALS['lv']->getDBf('we_' . $orig_match));
 				}
 			} else{
 				$data = unserialize($GLOBALS['we_doc']->getElement($orig_match));
@@ -80,7 +83,7 @@ function we_isFieldNotEmpty($attribs){
 				return (bool) $GLOBALS['lv']->f($match);
 			}
 			$match = strpos($orig_match, '/') === false ? $orig_match : substr(strrchr($orig_match, '/'), 1);
-			$objectid = f('SELECT ID FROM ' . OBJECT_TABLE . " WHERE Text='" . $match . "'", 'ID', $GLOBALS['DB_WE']);
+			$objectid = f('SELECT ID FROM ' . OBJECT_TABLE . ' WHERE Text="' . $GLOBALS['DB_WE']->escape($match) . '"', 'ID', $GLOBALS['DB_WE']);
 			return (bool) $GLOBALS['lv']->f('we_object_' . $objectid);
 		case 'checkbox' :
 		case 'binary' :

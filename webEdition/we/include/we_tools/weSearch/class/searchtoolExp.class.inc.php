@@ -61,19 +61,15 @@ class searchtoolExp extends we_search{
 	}
 
 	function evaluateExp($keyword, $options, $res_num = 0){
-
 		$keyword = $this->normalize($keyword);
-		$_tokens = $this->tokenize($keyword);
-		$_tokens = $this->translateOperators($_tokens);
+		$_tokens = $this->translateOperators($this->tokenize($keyword));
 		$_tables = $options;
 		$_condition = $this->constructCondition($_tokens);
 
 		$_result = array();
 
 		foreach($_tables as $_table){
-
-			$_query = 'SELECT * FROM ' . $_table . ' ' . $_condition;
-			$this->db->query($_query);
+			$this->db->query('SELECT * FROM ' . $_table . ' ' . $_condition);
 
 			while($this->next_record()) {
 				$_result[] = array_merge(array(
