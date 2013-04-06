@@ -215,11 +215,9 @@ if($defaultValueCode){
 
 $code = '<fieldset>
 		<div class="legend"><strong>' . g_l('taged', '[description]') . '</strong></div>' .
-	($weTag->isDeprecated() ? we_html_tools::htmlAlertAttentionBox(g_l('taged', '[deprecated][description]'), we_html_tools::TYPE_ALERT, '100%') : '') . $weTag->getDescription() .
+	($weTag->isDeprecated() ? we_html_tools::htmlAlertAttentionBox(g_l('taged', '[deprecated][description]'), we_html_tools::TYPE_ALERT, '98%') : '') . $weTag->getDescription() .
 	'</fieldset>' . $typeAttribCode . ' ' . $attributesCode . ' ' .
 	$defaultValueCode;
-
-
 
 $_buttons = we_button::position_yes_no_cancel(
 		we_button::create_button('ok', "javascript:we_cmd('saveTag');"), null, we_button::create_button('cancel', "javascript:self.close();")
