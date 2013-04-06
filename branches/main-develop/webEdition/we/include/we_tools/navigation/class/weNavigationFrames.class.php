@@ -401,7 +401,7 @@ function setTab(tab) {
 		if(function_exists('mb_convert_encoding')){
 			$parts[] = array(
 				'headline' => g_l('navigation', '[charset]'),
-				'html' => we_html_tools::htmlAlertAttentionBox(g_l('navigation', '[charset_desc]'), 2, $this->_width_size) . $this->getHTMLCharsetTable(),
+				'html' => we_html_tools::htmlAlertAttentionBox(g_l('navigation', '[charset_desc]'), we_html_tools::TYPE_INFO, $this->_width_size) . $this->getHTMLCharsetTable(),
 				'space' => $this->_space_size,
 				'noline' => 1
 			);
@@ -427,7 +427,7 @@ function setTab(tab) {
 			'headline' => g_l('weClass', "[copyFolder]"),
 			'html' => we_html_element::jsElement("var selfNaviPath ='" . addslashes(
 					$this->Model->Path) . "';\nvar selfNaviId = '" . $this->Model->ID . "';") . "<div style='float:left; margin-right:20px'>" . we_html_tools::htmlAlertAttentionBox(
-				g_l('weClass', "[copy_owners_expl]") . $_disabledNote, 2, ($this->_width_size - 120), true, 0) . "</div>" . "<div style='padding-top:{$_padding}px'>" . $_button_copyFolder . "</div>" . we_html_element::htmlHidden(
+				g_l('weClass', "[copy_owners_expl]") . $_disabledNote, we_html_tools::TYPE_INFO, ($this->_width_size - 120), true, 0) . "</div>" . "<div style='padding-top:{$_padding}px'>" . $_button_copyFolder . "</div>" . we_html_element::htmlHidden(
 				array(
 					'name' => 'CopyFolderID', "value" => ''
 			)) . we_html_element::htmlHidden(array(
@@ -1498,7 +1498,7 @@ function ' . $prefix . 'setLinkSelection(value){
 		$_parts = array(
 			array(
 				'headline' => '',
-				'html' => we_html_tools::htmlAlertAttentionBox(g_l('navigation', '[linkprops_desc]'), 2, $this->_width_size),
+				'html' => we_html_tools::htmlAlertAttentionBox(g_l('navigation', '[linkprops_desc]'), we_html_tools::TYPE_INFO, $this->_width_size),
 				'space' => $this->_space_size,
 				'noline' => 1
 			),

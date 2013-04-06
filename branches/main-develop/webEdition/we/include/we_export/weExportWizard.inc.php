@@ -501,7 +501,7 @@ top.close();');
 		$parts = array(
 			array(
 				"headline" => "",
-				"html" => we_html_tools::htmlAlertAttentionBox(g_l('export', "[select_export]"), 2, 540),
+				"html" => we_html_tools::htmlAlertAttentionBox(g_l('export', "[select_export]"), we_html_tools::TYPE_INFO, 540),
 				"space" => 0,
 				"noline" => 1
 			),

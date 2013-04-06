@@ -600,7 +600,7 @@ class weCustomerEIWizard{
 		//upload table
 		$maxsize = getUploadMaxFilesize(true);
 		if($maxsize){
-			$tmptable->setCol(0, 0, array(), we_html_tools::htmlAlertAttentionBox(sprintf(g_l('newFile', "[max_possible_size]"), round($maxsize / (1024 * 1024), 3) . "MB"), 1, "430"));
+			$tmptable->setCol(0, 0, array(), we_html_tools::htmlAlertAttentionBox(sprintf(g_l('newFile', "[max_possible_size]"), round($maxsize / (1024 * 1024), 3) . "MB"), we_html_tools::TYPE_ALERT, 430));
 			$tmptable->setCol(1, 0, array(), we_html_tools::getPixel(2, 5));
 		} else{
 			$tmptable->setCol(0, 0, array(), we_html_tools::getPixel(2, 5));
@@ -774,15 +774,15 @@ class weCustomerEIWizard{
 					$tblSelect->setCol(0, 6, array(), we_html_tools::htmlTextInput("xml_to", 4, $firstOptVal, 5, "align=right", "text", 30, "", "", ($isSingleNode && ($firstOptVal == 1)) ? 1 : 0));
 
 					$tblFrame = new we_html_table(array(), 3, 2);
-					$tblFrame->setCol(0, 0, array("colspan" => "2", "class" => "defaultfont"), ($isSingleNode) ? we_html_tools::htmlAlertAttentionBox(g_l('modules_customer', '[well_formed]') . " " . g_l('modules_customer', '[select_elements]'), 2, "570") :
-							we_html_tools::htmlAlertAttentionBox(g_l('modules_customer', '[xml_valid_1]') . " $optid " . g_l('modules_customer', '[xml_valid_m2]'), 2, "570"));
+					$tblFrame->setCol(0, 0, array("colspan" => "2", "class" => "defaultfont"), ($isSingleNode) ? we_html_tools::htmlAlertAttentionBox(g_l('modules_customer', '[well_formed]') . " " . g_l('modules_customer', '[select_elements]'), we_html_tools::TYPE_INFO, 570) :
+							we_html_tools::htmlAlertAttentionBox(g_l('modules_customer', '[xml_valid_1]') . " $optid " . g_l('modules_customer', '[xml_valid_m2]'), we_html_tools::TYPE_INFO, 570));
 					$tblFrame->setCol(1, 0, array("colspan" => "2"));
 					$tblFrame->setCol(2, 1, array(), $tblSelect->getHtml());
 
 					$_REQUEST["dataset"] = $firstItem;
 					$parts = array(array("html" => $tblFrame->getHtml(), "space" => 0, "noline" => 1));
 				}else{
-					$parts = array(array("html" => we_html_tools::htmlAlertAttentionBox((!$xmlWellFormed) ? g_l('modules_customer', '[not_well_formed]') : g_l('modules_customer', '[missing_child_node]'), 1, "570"), "space" => 0, "noline" => 1));
+					$parts = array(array("html" => we_html_tools::htmlAlertAttentionBox((!$xmlWellFormed) ? g_l('modules_customer', '[not_well_formed]') : g_l('modules_customer', '[missing_child_node]'), we_html_tools::TYPE_ALERT, 570), "space" => 0, "noline" => 1));
 					$js = we_html_element::jsElement('
 						' . $this->footerFrame . '.location="' . $this->frameset . '?pnt=eifooter&art=import&step=99";
 					');
@@ -792,7 +792,7 @@ class weCustomerEIWizard{
 			$js = we_html_element::jsElement('
 					' . $this->footerFrame . '.location="' . $this->frameset . '?pnt=eifooter&art=import&step=99";
 			');
-			array_push($parts, array("html" => we_html_tools::htmlAlertAttentionBox(g_l('modules_customer', '[missing_filesource]'), 1, "570"), "space" => 0, "noline" => 1));
+			array_push($parts, array("html" => we_html_tools::htmlAlertAttentionBox(g_l('modules_customer', '[missing_filesource]'), we_html_tools::TYPE_ALERT, 570), "space" => 0, "noline" => 1));
 		}
 
 		$_REQUEST["filename"] = $filename;
@@ -927,7 +927,7 @@ class weCustomerEIWizard{
 			$log = weFile::load(TEMP_PATH . "/$tmpdir/$tmpdir.log", 'rb');
 			if($log){
 
-				$table->setColContent(1, 0, we_html_tools::htmlAlertAttentionBox(g_l('modules_customer', '[show_log]'), 1, "550"));
+				$table->setColContent(1, 0, we_html_tools::htmlAlertAttentionBox(g_l('modules_customer', '[show_log]'), we_html_tools::TYPE_ALERT, 550));
 				$table->setColContent(2, 0, we_html_element::htmlTextArea(array("name" => "log", "rows" => "15", "cols" => "15", "style" => "width: 550px; height: 200px;"), oldHtmlspecialchars($log)));
 				unlink(TEMP_PATH . "/$tmpdir/$tmpdir.log");
 			}

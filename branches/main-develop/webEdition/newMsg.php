@@ -38,7 +38,7 @@ $text =
 	($todo > 0 ? sprintf(g_l('modules_messaging', '[newHeaderTodo]'), '<a href="' . $todo_cmd . '">' . $todo, '</a>').'<br/>' : '');
 $parts = array(
 	array(
-		"headline" => we_html_tools::htmlAlertAttentionBox($text, 2, 500, false),
+		"headline" => we_html_tools::htmlAlertAttentionBox($text, we_html_tools::TYPE_INFO, 500, false),
 		"html" => '',
 		"space" => 10,
 		"noline" => 1),

@@ -356,11 +356,11 @@ class weExportFrames extends weModuleFrames{
 		$table = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 4, 1);
 		$table->setColContent(0, 0, we_html_tools::htmlSelect('Selection', array('auto' => g_l('export', "[auto_selection]"), "manual" => g_l('export', "[manual_selection]")), 1, $this->View->export->Selection, false, 'onChange="closeAllSelection();toggle(this.value);closeAllType();toggle(\'doctype\');' . $this->topFrame . '.hot=1;"', 'value', $this->_width_size));
 		$table->setColContent(1, 0, we_html_tools::getPixel(5, 5));
-		$table->setCol(2, 0, array("id" => "auto", "style" => ($this->View->export->Selection == 'auto' ? 'display: ""' : 'display: none')), we_html_tools::htmlAlertAttentionBox(g_l('export', "[txt_auto_selection]"), 2, $this->_width_size) .
+		$table->setCol(2, 0, array("id" => "auto", "style" => ($this->View->export->Selection == 'auto' ? 'display: ""' : 'display: none')), we_html_tools::htmlAlertAttentionBox(g_l('export', "[txt_auto_selection]"), we_html_tools::TYPE_INFO, $this->_width_size) .
 			$selectionTypeHtml
 		);
 
-		$table->setCol(3, 0, array("id" => "manual", "style" => ($this->View->export->Selection == "manual" ? "display: ''" : "display: none")), we_html_tools::htmlAlertAttentionBox(g_l('export', "[txt_manual_selection]") . " " . g_l('export', "[select_export]"), 2, $this->_width_size) .
+		$table->setCol(3, 0, array("id" => "manual", "style" => ($this->View->export->Selection == "manual" ? "display: ''" : "display: none")), we_html_tools::htmlAlertAttentionBox(g_l('export', "[txt_manual_selection]") . " " . g_l('export', "[select_export]"), we_html_tools::TYPE_INFO, $this->_width_size) .
 			$this->SelectionTree->getHTMLMultiExplorer($this->_width_size, 200)
 		);
 
@@ -385,7 +385,7 @@ class weExportFrames extends weModuleFrames{
 
 		array_push($parts, array(
 			"headline" => g_l('export', "[handle_document_options]") . we_html_element::htmlBr() . g_l('export', "[handle_template_options]"),
-			"html" => we_html_tools::htmlAlertAttentionBox(g_l('export', '[txt_document_options]'), 2, $this->_width_size, true, 70) . $formattable->getHtml(),
+			"html" => we_html_tools::htmlAlertAttentionBox(g_l('export', '[txt_document_options]'), we_html_tools::TYPE_INFO, $this->_width_size, true, 70) . $formattable->getHtml(),
 			"space" => $this->_space_size)
 		);
 
@@ -395,7 +395,7 @@ class weExportFrames extends weModuleFrames{
 			$formattable->setCol(1, 0, null, we_forms::checkboxWithHidden(($this->View->export->HandleObjEmbeds ? true : false), "HandleObjEmbeds", g_l('export', "[handle_object_embeds]"), false, 'defaultfont', $this->topFrame . '.hot=1;'));
 			array_push($parts, array(
 				"headline" => g_l('export', "[handle_object_options]") . we_html_element::htmlBr() . g_l('export', "[handle_classes_options]"),
-				"html" => we_html_tools::htmlAlertAttentionBox(g_l('export', '[txt_object_options]'), 2, $this->_width_size, true, 70) . $formattable->getHtml(),
+				"html" => we_html_tools::htmlAlertAttentionBox(g_l('export', '[txt_object_options]'), we_html_tools::TYPE_INFO, $this->_width_size, true, 70) . $formattable->getHtml(),
 				"space" => $this->_space_size)
 			);
 		}
@@ -413,7 +413,7 @@ class weExportFrames extends weModuleFrames{
 
 		array_push($parts, array(
 			"headline" => g_l('export', "[export_depth]"),
-			"html" => we_html_tools::htmlAlertAttentionBox(g_l('export', '[txt_exportdeep_options]'), 2, $this->_width_size) . '<br>' . we_html_element::htmlLabel(null, g_l('export', "[to_level]")) . we_html_tools::getPixel(5, 5) . we_html_tools::htmlTextInput("ExportDepth", 10, $this->View->export->ExportDepth, "", "onBlur=\"var r=parseInt(this.value);if(isNaN(r)) this.value=" . $this->View->export->ExportDepth . "; else{ this.value=r; " . $this->topFrame . ".hot=1;}\"", "text", 50),
+			"html" => we_html_tools::htmlAlertAttentionBox(g_l('export', '[txt_exportdeep_options]'), we_html_tools::TYPE_INFO, $this->_width_size) . '<br>' . we_html_element::htmlLabel(null, g_l('export', "[to_level]")) . we_html_tools::getPixel(5, 5) . we_html_tools::htmlTextInput("ExportDepth", 10, $this->View->export->ExportDepth, "", "onBlur=\"var r=parseInt(this.value);if(isNaN(r)) this.value=" . $this->View->export->ExportDepth . "; else{ this.value=r; " . $this->topFrame . ".hot=1;}\"", "text", 50),
 			"space" => $this->_space_size)
 		);
 
@@ -422,7 +422,7 @@ class weExportFrames extends weModuleFrames{
 
 		array_push($parts, array(
 			"headline" => g_l('export', "[handle_owners_option]"),
-			"html" => we_html_tools::htmlAlertAttentionBox(g_l('export', '[txt_owners]'), 2, $this->_width_size) . $formattable->getHtml(),
+			"html" => we_html_tools::htmlAlertAttentionBox(g_l('export', '[txt_owners]'), we_html_tools::TYPE_INFO, $this->_width_size) . $formattable->getHtml(),
 			"space" => $this->_space_size)
 		);
 

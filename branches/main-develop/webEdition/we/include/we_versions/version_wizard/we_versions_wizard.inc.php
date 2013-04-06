@@ -293,7 +293,7 @@ set_button_state(false);';
 		}
 		$parts = array(
 			array(
-				'html' => we_html_tools::htmlAlertAttentionBox(g_l('versions', '[ct_delete_text]'), 2, 520),
+				'html' => we_html_tools::htmlAlertAttentionBox(g_l('versions', '[ct_delete_text]'), we_html_tools::TYPE_INFO, 520),
 				'noline' => 1,
 				'space' => 0
 			),
@@ -366,7 +366,7 @@ set_button_state(false);';
 		$reset_seconds->selectOption($version_delete_seconds);
 
 		$parts[] = array(
-			'html' => we_html_tools::htmlAlertAttentionBox(g_l('versions', '[date_delete_text]'), 2, 520),
+			'html' => we_html_tools::htmlAlertAttentionBox(g_l('versions', '[date_delete_text]'), we_html_tools::TYPE_INFO, 520),
 			'noline' => 1,
 			'space' => 0
 		);
@@ -526,7 +526,7 @@ set_button_state(false);';
 
 		$parts = array(
 			array(
-				'html' => we_html_tools::htmlAlertAttentionBox(g_l('versions', '[ct_reset_text]'), 2, 520),
+				'html' => we_html_tools::htmlAlertAttentionBox(g_l('versions', '[ct_reset_text]'), we_html_tools::TYPE_INFO, 520),
 				'noline' => 1,
 				'space' => 0
 			),
@@ -537,7 +537,7 @@ set_button_state(false);';
 				'noline' => 1
 			),
 			array(
-				'html' => we_html_tools::htmlAlertAttentionBox(g_l('versions', '[doPublish_text]'), 2, 520),
+				'html' => we_html_tools::htmlAlertAttentionBox(g_l('versions', '[doPublish_text]'), we_html_tools::TYPE_INFO, 520),
 				'noline' => 1,
 				'space' => 0
 			),
@@ -604,7 +604,7 @@ set_button_state(false);';
 		$reset_seconds->selectOption($version_reset_seconds);
 
 		$parts[] = array(
-			'html' => we_html_tools::htmlAlertAttentionBox(g_l('versions', '[date_reset_text]'), 2, 520),
+			'html' => we_html_tools::htmlAlertAttentionBox(g_l('versions', '[date_reset_text]'), we_html_tools::TYPE_INFO, 520),
 			'noline' => 1,
 			'space' => 0
 		);

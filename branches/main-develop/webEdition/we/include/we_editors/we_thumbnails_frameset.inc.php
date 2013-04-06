@@ -67,7 +67,7 @@ if(we_image_edit::gd_version() > 0){
 	$parts = array(
 		array(
 			'headline' => '',
-			'html' => we_html_tools::htmlAlertAttentionBox(g_l('importFiles', '[add_description_nogdlib]'), 2, 440),
+			'html' => we_html_tools::htmlAlertAttentionBox(g_l('importFiles', '[add_description_nogdlib]'), we_html_tools::TYPE_INFO, 440),
 			'space' => 0
 		)
 	);

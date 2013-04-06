@@ -1102,7 +1102,7 @@ clone.style.display="inline";
 				"class" => "defaultfont errorMessage", "style" => "width: 400px;"
 				), (we_hasPerm("CHANGE_START_DOCUMENT") && we_hasPerm("EDIT_SETTINGS") ? we_html_tools::htmlAlertAttentionBox(
 						"<strong>" . g_l('SEEM', "[question_change_startdocument]") . "</strong><br /><br />" . we_button::create_button(
-							"preferences", "javascript:top.we_cmd('openPreferences');"), 1, 0, false) : we_html_tools::htmlAlertAttentionBox(
-						"<strong>" . g_l('SEEM', "[start_with_SEEM_no_startdocument]") . "</strong>", 1, 0, false))));
+							"preferences", "javascript:top.we_cmd('openPreferences');"), we_html_tools::TYPE_ALERT, 0, false) : we_html_tools::htmlAlertAttentionBox(
+						"<strong>" . g_l('SEEM', "[start_with_SEEM_no_startdocument]") . "</strong>", we_html_tools::TYPE_ALERT, 0, false))));
 }
 echo '<iframe id="RSIFrame" name="RSIFrame" style="border:0px;width:1px;height:1px; visibility:hidden"></iframe></html>';

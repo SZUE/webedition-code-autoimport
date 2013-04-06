@@ -25,6 +25,10 @@
 abstract class we_html_tools{
 
 	const OPTGROUP = '<!--we_optgroup-->';
+	const TYPE_NONE = 0;
+	const TYPE_ALERT = 1;
+	const TYPE_INFO = 2;
+	const TYPE_QUESTION = 3;
 
 	###### protect #################################################################
 ### we_html_tools::protect()
@@ -110,8 +114,8 @@ abstract class we_html_tools{
 		));
 
 		$_table = new we_html_table(array(
-				"cellpadding" => 0, "cellspacing" => 0, "border" => 0
-				), 1, 3);
+			"cellpadding" => 0, "cellspacing" => 0, "border" => 0
+			), 1, 3);
 
 		$_inputs = array(
 			"name" => $name,
@@ -466,17 +470,17 @@ abstract class we_html_tools{
 			}
 			$daySelect = getHtmlTag(
 					'select', array_merge($_attsSelect, array(
-						'name' => sprintf($name, "_day"), 'id' => sprintf($name, "_day")
+					'name' => sprintf($name, "_day"), 'id' => sprintf($name, "_day")
 					)), $days, true) . '&nbsp;';
 		} else{
 			$daySelect = getHtmlTag(
 				'input', array_merge(
 					$_attsHidden, array(
-					'type' => 'hidden',
-					'name' => sprintf($name, "_day"),
-					'id' => sprintf($name, "_day"),
-					'value' => $day
-				)));
+				'type' => 'hidden',
+				'name' => sprintf($name, "_day"),
+				'id' => sprintf($name, "_day"),
+				'value' => $day
+			)));
 			$_showDay = false;
 		}
 
@@ -489,17 +493,17 @@ abstract class we_html_tools{
 			}
 			$monthSelect = getHtmlTag(
 					'select', array_merge($_attsSelect, array(
-						'name' => sprintf($name, "_month"), 'id' => sprintf($name, "_month")
+					'name' => sprintf($name, "_month"), 'id' => sprintf($name, "_month")
 					)), $months, true) . '&nbsp;';
 		} else{
 			$monthSelect = getHtmlTag(
 				'input', array_merge(
 					$_attsHidden, array(
-					'type' => 'hidden',
-					'name' => sprintf($name, "_month"),
-					'id' => sprintf($name, "_month"),
-					'value' => $month
-				)));
+				'type' => 'hidden',
+				'name' => sprintf($name, "_month"),
+				'id' => sprintf($name, "_month"),
+				'value' => $month
+			)));
 			$_showMonth = false;
 		}
 		if(($format == "") || $_yearPos > -1){
@@ -516,17 +520,17 @@ abstract class we_html_tools{
 			}
 			$yearSelect = getHtmlTag(
 					'select', array_merge($_attsSelect, array(
-						'name' => sprintf($name, "_year"), 'id' => sprintf($name, "_year")
+					'name' => sprintf($name, "_year"), 'id' => sprintf($name, "_year")
 					)), $years, true) . '&nbsp;';
 		} else{
 			$yearSelect = getHtmlTag(
 				'input', array_merge(
 					$_attsHidden, array(
-					'type' => 'hidden',
-					'name' => sprintf($name, "_year"),
-					'id' => sprintf($name, "_year"),
-					'value' => $year
-				)));
+				'type' => 'hidden',
+				'name' => sprintf($name, "_year"),
+				'id' => sprintf($name, "_year"),
+				'value' => $year
+			)));
 			$_showYear = false;
 		}
 
@@ -538,17 +542,17 @@ abstract class we_html_tools{
 			}
 			$hourSelect = getHtmlTag(
 					'select', array_merge($_attsSelect, array(
-						'name' => sprintf($name, "_hour"), 'id' => sprintf($name, "_hour")
+					'name' => sprintf($name, "_hour"), 'id' => sprintf($name, "_hour")
 					)), $hours, true) . '&nbsp;';
 		} else{
 			$hourSelect = getHtmlTag(
 				'input', array_merge(
 					$_attsHidden, array(
-					'type' => 'hidden',
-					'name' => sprintf($name, "_hour"),
-					'id' => sprintf($name, "_hour"),
-					'value' => $hour
-				)));
+				'type' => 'hidden',
+				'name' => sprintf($name, "_hour"),
+				'id' => sprintf($name, "_hour"),
+				'value' => $hour
+			)));
 			$_showHour = false;
 		}
 
@@ -560,17 +564,17 @@ abstract class we_html_tools{
 			}
 			$minSelect = getHtmlTag(
 					'select', array_merge($_attsSelect, array(
-						'name' => sprintf($name, "_minute"), 'id' => sprintf($name, "_minute")
+					'name' => sprintf($name, "_minute"), 'id' => sprintf($name, "_minute")
 					)), $minutes, true) . '&nbsp;';
 		} else{
 			$minSelect = getHtmlTag(
 				'input', array_merge(
 					$_attsHidden, array(
-					'type' => 'hidden',
-					'name' => sprintf($name, "_minute"),
-					'id' => sprintf($name, "_minute"),
-					'value' => $minute
-				)));
+				'type' => 'hidden',
+				'name' => sprintf($name, "_minute"),
+				'id' => sprintf($name, "_minute"),
+				'value' => $minute
+			)));
 			$_showMinute = false;
 		}
 
@@ -659,7 +663,7 @@ abstract class we_html_tools{
 		return we_html_element::htmlMeta(array(
 				"http-equiv" => "content-type",
 				"content" => $content . '; charset=' . $charset
-			));
+		));
 	}
 
 	static function headerCtCharset($content, $charset){
@@ -687,8 +691,8 @@ abstract class we_html_tools{
 
 
 		$content = new we_html_table(array(
-				"cellpadding" => 10, "cellspacing" => 0, "border" => 0
-				), 1, ($img != "" ? 2 : 1));
+			"cellpadding" => 10, "cellspacing" => 0, "border" => 0
+			), 1, ($img != "" ? 2 : 1));
 
 		if($img != "" && file_exists($_SERVER['DOCUMENT_ROOT'] . $img)){
 			$size = getimagesize($_SERVER['DOCUMENT_ROOT'] . $img);
@@ -698,7 +702,7 @@ abstract class we_html_tools{
 				), we_html_element::htmlImg(
 					array(
 						"src" => $img, "border" => 0, "width" => $size[0], "height" => $size[1]
-				)));
+			)));
 		}
 
 		$content->setCol(0, ($img != "" ? 1 : 0), array(
@@ -758,15 +762,15 @@ abstract class we_html_tools{
 	  $useHtmlSpecialChars: true or false
 	 */
 
-	static function htmlAlertAttentionBox($text, $type = 0, $width = 0, $useHtmlSpecialChars = true, $clip = 0){
+	static function htmlAlertAttentionBox($text, $type = self::TYPE_NONE, $width = 0, $useHtmlSpecialChars = true, $clip = 0){
 		switch($type){
-			case 1 :
+			case self::TYPE_ALERT:
 				$icon = "alert";
 				break;
-			case 2 :
+			case self::TYPE_INFO:
 				$icon = "info";
 				break;
-			case 3 :
+			case self::TYPE_QUESTION:
 				$icon = "question";
 				break;
 			default :

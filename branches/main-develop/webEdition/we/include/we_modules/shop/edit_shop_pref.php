@@ -130,7 +130,7 @@ $_htmlTable->setCol($_row, 0, array('class' => 'defaultfont', 'valign' => 'top')
 $_htmlTable->setColContent($_row, 1, we_html_tools::getPixel(10, 5));
 $_htmlTable->setCol($_row++, 2, array('class' => 'defaultfont'), we_html_tools::htmlTextInput("mwst", 6, $feldnamen[1], "", "", "text", 50) . '&nbsp;');
 $_htmlTable->setCol($_row++, 0, array('colspan' => 3), we_html_tools::getPixel(5, 5));
-$_htmlTable->setCol($_row++, 0, array('colspan' => 3, 'class' => 'small'), we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[mwst_expl]'), 2, "100%", false, 100));
+$_htmlTable->setCol($_row++, 0, array('colspan' => 3, 'class' => 'small'), we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[mwst_expl]'), we_html_tools::TYPE_INFO, "100%", false, 100));
 $_htmlTable->setCol($_row++, 0, array('colspan' => 3), we_html_tools::getPixel(20, 15));
 
 $list = array("german" => "german", "english" => "english", "french" => "french", "swiss" => "swiss");

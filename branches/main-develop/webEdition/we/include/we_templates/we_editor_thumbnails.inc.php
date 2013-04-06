@@ -41,7 +41,7 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js');
 
 				if(!$_doc){
 					$parts[] = array("headline" => "",
-						"html" => we_html_tools::htmlAlertAttentionBox(g_l('thumbnails', '[no_image_uploaded]'), 2, 700),
+						"html" => we_html_tools::htmlAlertAttentionBox(g_l('thumbnails', '[no_image_uploaded]'), we_html_tools::TYPE_INFO, 700),
 						"space" => 0
 					);
 				} else if(we_image_edit::is_imagetype_read_supported($imgType)){
@@ -86,18 +86,18 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js');
 						);
 					}
 					$parts[] = array("headline" => "",
-						"html" => we_html_tools::htmlAlertAttentionBox(g_l('thumbnails', "[add_descriptiontext]"), 2, "700") . '<br><br>' . we_button::create_button("image:btn_add_thumbnail", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('add_thumbnail','" . $we_transaction . "');"),
+						"html" => we_html_tools::htmlAlertAttentionBox(g_l('thumbnails', "[add_descriptiontext]"), we_html_tools::TYPE_INFO, 700) . '<br><br>' . we_button::create_button("image:btn_add_thumbnail", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('add_thumbnail','" . $we_transaction . "');"),
 						"space" => 0
 					);
 				} else{
 					$parts[] = array("headline" => "",
-						"html" => we_html_tools::htmlAlertAttentionBox(g_l('thumbnails', "[format_not_supported]"), 2, "700"),
+						"html" => we_html_tools::htmlAlertAttentionBox(g_l('thumbnails', "[format_not_supported]"), we_html_tools::TYPE_INFO, 700),
 						"space" => 0
 					);
 				}
 			} else{
 				$parts[] = array("headline" => "",
-					"html" => we_html_tools::htmlAlertAttentionBox(g_l('thumbnails', "[add_description_nogdlib]"), 2, "700"),
+					"html" => we_html_tools::htmlAlertAttentionBox(g_l('thumbnails', "[add_description_nogdlib]"), we_html_tools::TYPE_INFO, 700),
 					"space" => 0
 				);
 			}

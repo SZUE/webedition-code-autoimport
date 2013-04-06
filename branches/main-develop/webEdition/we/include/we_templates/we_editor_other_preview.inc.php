@@ -26,12 +26,12 @@ if(isset($_REQUEST['we_cmd'][3]) && $_REQUEST['we_cmd'][3] == "download"){
 	$_filename = $we_doc->Filename . $we_doc->Extension;
 	//$_size = filesize($_SERVER['DOCUMENT_ROOT'] . $we_doc->Path);
 
-	if(we_isHttps()){		 // Additional headers to make downloads work using IE in HTTPS mode.
+	if(we_isHttps()){	 // Additional headers to make downloads work using IE in HTTPS mode.
 		header("Pragma: ");
 		header("Cache-Control: ");
 		header("Expires: " . gmdate("D, d M Y H:i:s") . " GMT");
 		header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
-		header("Cache-Control: no-store, no-cache, must-revalidate");	 // HTTP 1.1
+		header("Cache-Control: no-store, no-cache, must-revalidate");	// HTTP 1.1
 		header('Cache-Control: post-check=0, pre-check=0', false);
 	} else{
 		header("Cache-control: private, max-age=0, must-revalidate");
@@ -80,9 +80,9 @@ print STYLESHEET;
 			<iframe name="preview" src="<?php echo $we_doc->Path; ?>" width="100%" height="95%" frameborder="no" border="0"></iframe>
 			<?php
 		} else{
-			$parts = array();
-
-			array_push($parts, array("headline" => g_l('weClass', "[preview]"), "html" => we_html_tools::htmlAlertAttentionBox(g_l('weClass', "[no_preview_available]"), 1), "space" => 120));
+			$parts = array(
+				array("headline" => g_l('weClass', "[preview]"), "html" => we_html_tools::htmlAlertAttentionBox(g_l('weClass', "[no_preview_available]"), we_html_tools::TYPE_ALERT), "space" => 120)
+			);
 
 			if($we_doc->ID){
 				$_we_transaction = (preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction']) ? $_REQUEST['we_transaction'] : 0);

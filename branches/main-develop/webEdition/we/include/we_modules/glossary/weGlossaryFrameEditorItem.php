@@ -966,7 +966,7 @@ class weGlossaryFrameEditorItem extends weGlossaryFrameEditor{
 
 		$_parts[] = array(
 			'headline' => '',
-			'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_glossary', '[linkprops_desc]'), 2, 520),
+			'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_glossary', '[linkprops_desc]'), we_html_tools::TYPE_INFO, 520),
 			'space' => 120,
 			'noline' => 1
 		);

@@ -391,12 +391,12 @@ class we_wizard_import extends we_wizard{
 		$importLocs->setCol(2, 0, array(), we_html_tools::getPixel(1, 4));
 		$importLocs->setCol(3, 0, array(), $rdoLLocal);
 		$maxsize = getUploadMaxFilesize(false);
-		$importLocs->setCol(4, 0, array(), we_html_tools::htmlAlertAttentionBox(sprintf(g_l('import', "[filesize_local]"), round($maxsize / (1024 * 1024), 3) . "MB"), 1, "410"));
+		$importLocs->setCol(4, 0, array(), we_html_tools::htmlAlertAttentionBox(sprintf(g_l('import', "[filesize_local]"), round($maxsize / (1024 * 1024), 3) . "MB"), we_html_tools::TYPE_ALERT, 410));
 		$importLocs->setCol(5, 0, array(), we_html_tools::getPixel(1, 2));
 		$importLocs->setCol(6, 0, array(), $importFromLocal);
 
 		$fn_colsn = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 7, 1);
-		$fn_colsn->setCol(0, 0, array(), we_html_tools::htmlAlertAttentionBox(g_l('import', "[collision_txt]"), 1, "410"));
+		$fn_colsn->setCol(0, 0, array(), we_html_tools::htmlAlertAttentionBox(g_l('import', "[collision_txt]"), we_html_tools::TYPE_ALERT, 410));
 		$fn_colsn->setCol(1, 0, array(), we_html_tools::getPixel(0, 4));
 		$fn_colsn->setCol(2, 0, array(), we_forms::radiobutton("replace", (isset($v["collision"])) ? ($v["collision"] == "replace") : true, "v[collision]", g_l('import', "[replace]"), true, "defaultfont", "", false, g_l('import', "[replace_txt]"), 0, 384));
 		$fn_colsn->setCol(3, 0, array(), we_html_tools::getPixel(0, 4));
@@ -599,7 +599,7 @@ class we_wizard_import extends we_wizard{
 				$dir_table->setStyle('display', 'none');
 			}
 			$dir_table->setCol(0, 0, null, we_html_tools::getPixel(20, 1));
-			$dir_table->setCol(0, 1, null, we_html_tools::htmlAlertAttentionBox(g_l('import', "[documents_desc]"), 1, "390", true, 50));
+			$dir_table->setCol(0, 1, null, we_html_tools::htmlAlertAttentionBox(g_l('import', "[documents_desc]"), we_html_tools::TYPE_ALERT, 390, true, 50));
 			$dir_table->setCol(1, 1, null, $docPath);
 			$dir_table->setCol(2, 1, null, we_forms::checkboxWithHidden((isset($v["restore_doc_path"]) && $v["restore_doc_path"]) ? true : false, "v[restore_doc_path]", g_l('import', "[maintain_paths]"), false, "defaultfont", "self.document.forms['we_form'].elements['v[doc_dir]'].value='/';"));
 
@@ -632,7 +632,7 @@ class we_wizard_import extends we_wizard{
 			if((isset($v["import_templ"]) && !$v["import_templ"]))
 				$dir_table->setStyle('display', 'none');
 			$dir_table->setAttribute("id", "tpl_table");
-			$dir_table->setCol(0, 1, null, we_html_tools::htmlAlertAttentionBox(g_l('import', "[templates_desc]"), 1, "390", true, 50));
+			$dir_table->setCol(0, 1, null, we_html_tools::htmlAlertAttentionBox(g_l('import', "[templates_desc]"), we_html_tools::TYPE_ALERT, 390, true, 50));
 			$dir_table->setCol(1, 1, null, $docPath);
 			$dir_table->setCol(2, 1, null, we_forms::checkboxWithHidden((isset($v["restore_tpl_path"]) && $v["restore_tpl_path"]) ? true : false, "v[restore_tpl_path]", g_l('import', "[maintain_paths]"), false, "defaultfont", "self.document.forms['we_form'].elements['v[tpl_dir]'].value='/';"));
 
@@ -693,7 +693,7 @@ class we_wizard_import extends we_wizard{
 			if((isset($v["import_navigation"]) && !$v["import_navigation"]))
 				$dir_table->setStyle('display', 'none');
 			$dir_table->setCol(0, 0, null, we_html_tools::getPixel(20, 1));
-			$dir_table->setCol(0, 1, null, we_html_tools::htmlAlertAttentionBox(g_l('import', "[navigation_desc]"), 1, "390"));
+			$dir_table->setCol(0, 1, null, we_html_tools::htmlAlertAttentionBox(g_l('import', "[navigation_desc]"), we_html_tools::TYPE_ALERT, 390));
 			$dir_table->setCol(1, 1, null, $docPath);
 
 			$tbl_extra->setCol(3, 0, null, $dir_table->getHtml());
@@ -749,7 +749,7 @@ class we_wizard_import extends we_wizard{
 				$parts = array(
 					array(
 						"headline" => '',
-						"html" => we_html_tools::htmlAlertAttentionBox(g_l('import', '[invalid_path]'), 1, "530"),
+						"html" => we_html_tools::htmlAlertAttentionBox(g_l('import', '[invalid_path]'), we_html_tools::TYPE_ALERT, 530),
 						"space" => 0)
 				);
 				$content = $hdns . we_multiIconBox::getHTML("wxml", "100%", $parts, 30, '', -1, '', '', false, g_l('import', '[warning]'));
@@ -769,7 +769,7 @@ class we_wizard_import extends we_wizard{
 
 				array_push($parts, array(
 					"headline" => g_l('import', '[handle_owners_option]'),
-					"html" => we_html_tools::htmlAlertAttentionBox(g_l('import', "[notexist_overwrite]"), 1, "530") . $tbl_extra->getHTML() . $tbl_extra2->getHTML(),
+					"html" => we_html_tools::htmlAlertAttentionBox(g_l('import', "[notexist_overwrite]"), we_html_tools::TYPE_ALERT, 530) . $tbl_extra->getHTML() . $tbl_extra2->getHTML(),
 					"space" => 120
 					)
 				);
@@ -781,7 +781,7 @@ class we_wizard_import extends we_wizard{
 		} else{
 			$parts[] = array(
 				"headline" => g_l('import', "[xml_file]"),
-				"html" => we_html_tools::htmlAlertAttentionBox(g_l('import', "[invalid_wxml]"), 1, "530"),
+				"html" => we_html_tools::htmlAlertAttentionBox(g_l('import', "[invalid_wxml]"), we_html_tools::TYPE_ALERT, 530),
 				"space" => 120
 			);
 		}
@@ -1024,7 +1024,7 @@ HTS;
 		$importLocs->setCol($_tblRow++, 0, array(), we_html_tools::getPixel(1, 4));
 		$importLocs->setCol($_tblRow++, 0, array(), $rdoLLocal);
 		$maxsize = getUploadMaxFilesize(false);
-		$importLocs->setCol($_tblRow++, 0, array(), we_html_tools::htmlAlertAttentionBox(sprintf(g_l('import', "[filesize_local]"), round($maxsize / (1024 * 1024), 3) . "MB"), 1, "410"));
+		$importLocs->setCol($_tblRow++, 0, array(), we_html_tools::htmlAlertAttentionBox(sprintf(g_l('import', "[filesize_local]"), round($maxsize / (1024 * 1024), 3) . "MB"), we_html_tools::TYPE_ALERT, 410));
 		$importLocs->setCol($_tblRow++, 0, array(), we_html_tools::getPixel(1, 2));
 		$importLocs->setCol($_tblRow++, 0, array(), $importFromLocal);
 
@@ -1304,22 +1304,22 @@ HTS;
 				$tblSelect->setCol(0, 6, array(), we_html_tools::htmlTextInput("v[to_iElem]", 4, $firstOptVal, 5, "align=right", "text", 30, "", "", ($isSingleNode && ($firstOptVal == 1)) ? 1 : 0));
 
 				$tblFrame = new we_html_table(array(), 3, 2);
-				$tblFrame->setCol(0, 0, array("colspan" => "2", "class" => "defaultfont"), ($isSingleNode) ? we_html_tools::htmlAlertAttentionBox(g_l('import', "[well_formed]") . " " . g_l('import', "[select_elements]"), 2, "530") :
-						we_html_tools::htmlAlertAttentionBox(g_l('import', "[xml_valid_1]") . " $optid " . g_l('import', "[xml_valid_m2]"), 2, "530"));
+				$tblFrame->setCol(0, 0, array("colspan" => "2", "class" => "defaultfont"), ($isSingleNode) ? we_html_tools::htmlAlertAttentionBox(g_l('import', "[well_formed]") . " " . g_l('import', "[select_elements]"), we_html_tools::TYPE_INFO, 530) :
+						we_html_tools::htmlAlertAttentionBox(g_l('import', "[xml_valid_1]") . " $optid " . g_l('import', "[xml_valid_m2]"), we_html_tools::TYPE_INFO, 530));
 				$tblFrame->setCol(1, 0, array("colspan" => "2"));
 				$tblFrame->setCol(2, 1, array(), $tblSelect->getHtml());
 
 				array_push($parts, array("html" => $tblFrame->getHtml(), "space" => 0, "noline" => 1));
 			}
 			else
-				array_push($parts, array("html" => we_html_tools::htmlAlertAttentionBox((!$xmlWellFormed) ? g_l('import', "[not_well_formed]") : g_l('import', "[missing_child_node]"), 1, "530"), "space" => 0, "noline" => 1));
+				array_push($parts, array("html" => we_html_tools::htmlAlertAttentionBox((!$xmlWellFormed) ? g_l('import', "[not_well_formed]") : g_l('import', "[missing_child_node]"), we_html_tools::TYPE_ALERT, 530), "space" => 0, "noline" => 1));
 		}
 		else{
 			$xmlWellFormed = $hasChildNode = false;
 			if(!file_exists($_SERVER['DOCUMENT_ROOT'] . $v["import_from"]))
-				$parts[] = array("html" => we_html_tools::htmlAlertAttentionBox(g_l('import', "[file_exists]") . $_SERVER['DOCUMENT_ROOT'] . $v["import_from"], 1, "530"), "space" => 0, "noline" => 1);
+				$parts[] = array("html" => we_html_tools::htmlAlertAttentionBox(g_l('import', "[file_exists]") . $_SERVER['DOCUMENT_ROOT'] . $v["import_from"], we_html_tools::TYPE_ALERT, 530), "space" => 0, "noline" => 1);
 			else if(!is_readable($_SERVER['DOCUMENT_ROOT'] . $v["import_from"]))
-				$parts[] = array("html" => we_html_tools::htmlAlertAttentionBox(g_l('import', "[file_readable]"), 1, "530"), "space" => 0, "noline" => 1);
+				$parts[] = array("html" => we_html_tools::htmlAlertAttentionBox(g_l('import', "[file_readable]"), we_html_tools::TYPE_ALERT, 530), "space" => 0, "noline" => 1);
 		}
 
 		$functions = "
@@ -1723,7 +1723,7 @@ function handle_event(evt) {
 		$importLocs->setCol($_tblRow++, 0, array(), we_html_tools::getPixel(1, 4));
 		$importLocs->setCol($_tblRow++, 0, array(), $rdoLLocal);
 		$maxsize = getUploadMaxFilesize(false);
-		$importLocs->setCol($_tblRow++, 0, array(), we_html_tools::htmlAlertAttentionBox(sprintf(g_l('import', "[filesize_local]"), round($maxsize / (1024 * 1024), 3) . "MB"), 1, "410"));
+		$importLocs->setCol($_tblRow++, 0, array(), we_html_tools::htmlAlertAttentionBox(sprintf(g_l('import', "[filesize_local]"), round($maxsize / (1024 * 1024), 3) . "MB"), we_html_tools::TYPE_ALERT, 410));
 		$importLocs->setCol($_tblRow++, 0, array(), we_html_tools::getPixel(1, 2));
 		$importLocs->setCol($_tblRow++, 0, array(), $importFromLocal);
 		/*		 * *************************************************************************************************************** */
@@ -2177,9 +2177,9 @@ HTS;
 			}
 		} else{
 			if(!file_exists($_SERVER['DOCUMENT_ROOT'] . $v["import_from"])){
-				$parts[] = array("html" => we_html_tools::htmlAlertAttentionBox(g_l('import', "[file_exists]") . $_SERVER['DOCUMENT_ROOT'] . $v["import_from"], 1, "530"), "space" => 0, "noline" => 1);
+				$parts[] = array("html" => we_html_tools::htmlAlertAttentionBox(g_l('import', "[file_exists]") . $_SERVER['DOCUMENT_ROOT'] . $v["import_from"], we_html_tools::TYPE_ALERT, 530), "space" => 0, "noline" => 1);
 			} else if(!is_readable($_SERVER['DOCUMENT_ROOT'] . $v["import_from"])){
-				$parts[] = array("html" => we_html_tools::htmlAlertAttentionBox(g_l('import', "[file_readable]"), 1, "530"), "space" => 0, "noline" => 1);
+				$parts[] = array("html" => we_html_tools::htmlAlertAttentionBox(g_l('import', "[file_readable]"), we_html_tools::TYPE_ALERT, 530), "space" => 0, "noline" => 1);
 			}
 		}
 

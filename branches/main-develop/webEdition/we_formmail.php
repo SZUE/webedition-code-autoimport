@@ -27,7 +27,6 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 define('WE_DEFAULT_EMAIL', 'mailserver@' . $_SERVER['SERVER_NAME']);
 define('WE_DEFAULT_SUBJECT', 'webEdition mailform');
 
-
 $_blocked = false;
 
 
@@ -133,7 +132,6 @@ function contains_newlines($str_to_test){
 }
 
 function print_error($errortext){
-
 	$headline = 'Fehler / Error';
 	$content = g_l('global', '[formmailerror]') . getHtmlTag('br') . '&#8226; ' . $errortext;
 
@@ -184,7 +182,7 @@ function ok_page($_subject = ''){
 			redirect($ok_page);
 		}
 	} else{
-		print 'Vielen Dank, Ihre Formulardaten sind bei uns angekommen! / Thank you, we received your form data!';
+		echo 'Vielen Dank, Ihre Formulardaten sind bei uns angekommen! / Thank you, we received your form data!';
 		if(defined('WE_ECONDA_STAT') && WE_ECONDA_STAT){
 			print "<a name='emos_name' title='scontact' rel='$_subject' rev=''></a>\n";
 		}
@@ -206,12 +204,7 @@ function check_recipient($email){
 
 function check_captcha(){
 	$name = $_REQUEST['captchaname'];
-
-	if(isset($_REQUEST[$name]) && !empty($_REQUEST[$name])){
-		return Captcha::check($_REQUEST[$name]);
-	} else{
-		return false;
-	}
+	return(isset($_REQUEST[$name]) && !empty($_REQUEST[$name]) ? Captcha::check($_REQUEST[$name]) : false);
 }
 
 $_req = isset($_REQUEST['required']) ? $_REQUEST['required'] : '';
@@ -238,7 +231,7 @@ $we_reserved = array('from', 'we_remove', 'captchaname', 'we_mode', 'charset', '
 if(isset($_REQUEST['we_remove'])){
 	$removeArr = makeArrayFromCSV($_REQUEST['we_remove']);
 	foreach($removeArr as $val){
-		array_push($we_reserved, $val);
+		$we_reserved[] = $val;
 	}
 }
 
@@ -276,25 +269,20 @@ foreach($output as $n => $v){
 	if(is_array($v)){
 		foreach($v as $n2 => $v2){
 			if(!is_array($v2)){
-				$foo = (get_magic_quotes_gpc() == 1) ? stripslashes($v2) : $v2;
+				$foo = replace_bad_str((get_magic_quotes_gpc() == 1) ? stripslashes($v2) : $v2);
 				$n = replace_bad_str($n);
 				$n2 = replace_bad_str($n2);
-				$foo = replace_bad_str($foo);
 				$we_txt .= $n . '[' . $n2 . "]: $foo\n" . ($foo ? '' : "\n");
-				$we_html .= '<tr><td align="right"><b>' . $n . '[' . $n2 . ']:</b></td><td>' . $foo . '</td></tr>
-';
+				$we_html .= '<tr><td align="right"><b>' . $n . '[' . $n2 . ']:</b></td><td>' . $foo . '</td></tr>';
 			}
 		}
 	} else{
-		$foo = (get_magic_quotes_gpc() == 1) ? stripslashes($v) : $v;
+		$foo = replace_bad_str((get_magic_quotes_gpc() == 1) ? stripslashes($v) : $v);
 		$n = replace_bad_str($n);
-		$foo = replace_bad_str($foo);
 		$we_txt .= "$n: $foo\n" . ($foo ? '' : "\n");
-		if($n == 'email'){
-			$we_html .= '<tr><td align="right"><b>' . $n . ':</b></td><td><a href="mailto:' . $foo . '">' . $foo . '</a></td></tr>';
-		} else{
-			$we_html .= '<tr><td align="right"><b>' . $n . ':</b></td><td>' . $foo . '</td></tr>';
-		}
+		$we_html .= ($n == 'email' ?
+				'<tr><td align="right"><b>' . $n . ':</b></td><td><a href="mailto:' . $foo . '">' . $foo . '</a></td></tr>' :
+				'<tr><td align="right"><b>' . $n . ':</b></td><td>' . $foo . '</td></tr>');
 	}
 }
 
@@ -337,11 +325,9 @@ $mimetype = (isset($_REQUEST['mimetype']) && $_REQUEST['mimetype']) ? $_REQUEST[
 $wasSent = false;
 
 if($recipient){
-	$fromMail = (isset($_REQUEST['forcefrom']) && $_REQUEST['forcefrom'] == 'true' ? $from : $email);
-
 	$subject = preg_replace("/(\\n+|\\r+)/", '', $subject);
 	$charset = preg_replace("/(\\n+|\\r+)/", '', $charset);
-	$fromMail = preg_replace("/(\\n+|\\r+)/", '', $fromMail);
+	$fromMail = preg_replace("/(\\n+|\\r+)/", '', (isset($_REQUEST['forcefrom']) && $_REQUEST['forcefrom'] == 'true' ? $from : $email));
 	$email = preg_replace("/(\\n+|\\r+)/", '', $email);
 	$from = preg_replace("/(\\n+|\\r+)/", '', $from);
 
@@ -367,10 +353,11 @@ if($recipient){
 
 	foreach($recipients as $recipientID){
 
-		$recipient = (is_numeric($recipientID) ?
+		$recipient = preg_replace("/(\\n+|\\r+)/", '', (is_numeric($recipientID) ?
 				f('SELECT Email FROM ' . RECIPIENTS_TABLE . ' WHERE ID=' . intval($recipientID), 'Email', $GLOBALS['DB_WE']) :
 				// backward compatible
-				$recipientID);
+				$recipientID)
+		);
 
 		if(!$recipient){
 			print_error(g_l('global', '[email_no_recipient]'));
@@ -378,8 +365,6 @@ if($recipient){
 		if(!is_valid_email($recipient)){
 			print_error(g_l('global', '[email_invalid]'));
 		}
-
-		$recipient = preg_replace("/(\\n+|\\r+)/", '', $recipient);
 
 		if(we_check_email($recipient) && check_recipient($recipient)){
 			$recipientsList[] = $recipient;
@@ -407,8 +392,6 @@ if($recipient){
 			$wasSent = true;
 		}
 	}
-
-
 
 	if((isset($_REQUEST['confirm_mail']) && $_REQUEST['confirm_mail']) && FORMMAIL_CONFIRM){
 		if($wasSent){

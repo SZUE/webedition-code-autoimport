@@ -249,7 +249,7 @@ function build_dialog($selected_setting = "ui"){
 		sel.selectedIndex = 0;
 	}');
 
-			$_hint = we_html_tools::htmlAlertAttentionBox(g_l('metadata', '[fields_hint]'), 1, 440, false);
+			$_hint = we_html_tools::htmlAlertAttentionBox(g_l('metadata', '[fields_hint]'), we_html_tools::TYPE_ALERT, 440, false);
 
 			$_metadata = new we_html_table(array('border' => '1', 'cellpadding' => '0', 'cellspacing' => '2', 'width' => '440', 'height' => '50'), 4, 3);
 

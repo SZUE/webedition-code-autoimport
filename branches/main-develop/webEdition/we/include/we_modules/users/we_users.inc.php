@@ -2086,7 +2086,7 @@ function delElement(elvalues,elem) {
 			$_file_tree_count->selectOption($_tree_count);
 		}
 
-		$_settings[] = array('headline' => g_l('prefs', '[tree_title]'), 'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[tree_count_description]'), 2) . '<br>' . $_file_tree_count->getHtml(), 'space' => 200);
+		$_settings[] = array('headline' => g_l('prefs', '[tree_title]'), 'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[tree_count_description]'), we_html_tools::TYPE_INFO) . '<br>' . $_file_tree_count->getHtml(), 'space' => 200);
 
 
 		/*		 * ***************************************************************

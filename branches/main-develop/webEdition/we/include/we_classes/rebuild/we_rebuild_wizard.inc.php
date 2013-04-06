@@ -477,7 +477,7 @@ abstract class we_rebuild_wizard{
 		$metaDataFields = weMetaData::getDefinedMetaDataFields();
 
 		$_html = we_html_element::jsElement('document._errorMessage=' . (!empty($metaFields) ? '""' : '"' . addslashes(g_l('rebuild', "[noFieldsChecked]")) . '"'));
-		$_html .= we_html_tools::htmlAlertAttentionBox(g_l('rebuild', "[expl_rebuild_metadata]"), 2, 520);
+		$_html .= we_html_tools::htmlAlertAttentionBox(g_l('rebuild', "[expl_rebuild_metadata]"), we_html_tools::TYPE_INFO, 520);
 		$_html .= '<div class="defaultfont" style="margin:10px 0 5px 0;">' . g_l('rebuild', "[metadata]") . ':</div>' . "\n";
 
 		$selAllBut = we_button::create_button("selectAll", "javascript:we_cmd('select_all_fields');");

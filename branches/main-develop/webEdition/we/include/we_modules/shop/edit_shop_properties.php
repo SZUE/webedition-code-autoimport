@@ -639,7 +639,7 @@ function searchArticles() {
 
 			$parts = array(
 				array(
-					'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[preferences][explanation_customer_odercustomer]'), 2, 470),
+					'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[preferences][explanation_customer_odercustomer]'), we_html_tools::TYPE_INFO, 470),
 					'space' => 0
 				),
 				array(

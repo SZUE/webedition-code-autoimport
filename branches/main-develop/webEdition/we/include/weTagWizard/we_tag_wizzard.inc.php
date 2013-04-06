@@ -214,9 +214,9 @@ if($defaultValueCode){
 }
 
 $code = '<fieldset>
-		<div class="legend"><strong>' . g_l('taged', '[description]') . '</strong></div>
-		' . ($weTag->isDeprecated() ? '<b>Deprecated:</b> ' : '') . $weTag->getDescription() . '
-	</fieldset>' . $typeAttribCode . ' ' . $attributesCode . ' ' .
+		<div class="legend"><strong>' . g_l('taged', '[description]') . '</strong></div>' .
+	($weTag->isDeprecated() ? we_html_tools::htmlAlertAttentionBox(g_l('taged', '[deprecated][description]'), we_html_tools::TYPE_ALERT, '100%') : '') . $weTag->getDescription() .
+	'</fieldset>' . $typeAttribCode . ' ' . $attributesCode . ' ' .
 	$defaultValueCode;
 
 
@@ -226,7 +226,7 @@ $_buttons = we_button::position_yes_no_cancel(
 );
 ?>
 <div id="divTagName">
-	<h1>&lt;we:<?php print $weTag->getName() . '&gt;' . ($weTag->isDeprecated() ? ' (Deprecated)' : ''); ?></h1>
+	<h1>&lt;we:<?php print $weTag->getName() . '&gt;' . ($weTag->isDeprecated() ? ' (' . g_l('taged', '[deprecated][title]') . ')' : ''); ?></h1>
 </div>
 <div id="divContent">
 	<?php print $code; ?>

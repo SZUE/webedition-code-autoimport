@@ -90,7 +90,7 @@ class weGlossaryFrameEditorException extends weGlossaryFrameEditor{
 		$content = '<table border="0" cellpadding="0" cellspacing="0">
 					<tr>
 						<td>
-							' . we_html_tools::htmlAlertAttentionBox(g_l('modules_glossary', '[hint_exception]'), 2, 520, true, 0) . '</td>
+							' . we_html_tools::htmlAlertAttentionBox(g_l('modules_glossary', '[hint_exception]'), we_html_tools::TYPE_INFO, 520, true, 0) . '</td>
 					</tr>
 					<tr>
 						<td>

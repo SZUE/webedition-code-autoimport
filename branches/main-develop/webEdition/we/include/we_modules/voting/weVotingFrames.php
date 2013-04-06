@@ -438,7 +438,7 @@ class weVotingFrames extends weModuleFrames{
 
 			array_push($parts, array(
 				"headline" => g_l('modules_voting', '[export]'),
-				"html" => we_html_tools::htmlAlertAttentionBox(g_l('modules_voting', '[export_txt]'), 2, $this->_width_size) .
+				"html" => we_html_tools::htmlAlertAttentionBox(g_l('modules_voting', '[export_txt]'), we_html_tools::TYPE_INFO, $this->_width_size) .
 				$export_box->getHtml(),
 				"space" => $this->_space_size)
 			);
@@ -453,7 +453,7 @@ class weVotingFrames extends weModuleFrames{
 		$activeTime->selectOption($this->View->voting->ActiveTime);
 
 		$table = new we_html_table(array('cellpadding' => 2, 'cellspacing' => 2, "border" => 0), 4, 2);
-		$table->setCol(0, 0, array('colspan' => '2'), we_html_tools::htmlAlertAttentionBox(g_l('modules_voting', '[valid_txt]'), 2, $this->_width_size, false, 133));
+		$table->setCol(0, 0, array('colspan' => '2'), we_html_tools::htmlAlertAttentionBox(g_l('modules_voting', '[valid_txt]'), we_html_tools::TYPE_INFO, $this->_width_size, false, 133));
 		$table->setCol(1, 0, array('colspan' => '2'), we_forms::checkboxWithHidden($this->View->voting->Active ? true : false, 'Active', g_l('modules_voting', '[active_till]'), false, 'defaultfont', 'toggle(\'activetime\');if(!this.checked) setVisible(\'valid\',false); else if(document.we_form.ActiveTime.value==1) setVisible(\'valid\',true); else setVisible(\'valid\',false);'));
 
 		$table->setColContent(2, 1, we_html_element::htmlDiv(array('id' => 'activetime', 'style' => 'display: ' . ($this->View->voting->Active ? 'block' : 'none') . ';'), $activeTime->getHtml()
@@ -563,7 +563,7 @@ class weVotingFrames extends weModuleFrames{
 				we_html_element::htmlB(g_l('modules_voting', '[cookie_method]')) . we_html_element::htmlBr() .
 				g_l('modules_voting', '[cookie_method_help]') .
 				we_html_element::htmlBr() . we_html_element::htmlB(g_l('modules_voting', '[ip_method]')) . we_html_element::htmlBr() .
-				g_l('modules_voting', '[ip_method_help]'), 2, ($this->_width_size - 3), false, 100
+				g_l('modules_voting', '[ip_method_help]'), we_html_tools::TYPE_INFO, ($this->_width_size - 3), false, 100
 			)
 		);
 
@@ -581,7 +581,7 @@ class weVotingFrames extends weModuleFrames{
 
 		$table->setColContent(6, 1, we_forms::checkboxWithHidden($this->View->voting->UserAgent ? true : false, 'UserAgent', g_l('modules_voting', '[save_user_agent]'), false, "defaultfont", "top.content.setHot();"));
 
-		$table->setCol(7, 1, array('id' => 'delete_ip_data', 'style' => 'display: ' . ($datasize > 0 ? 'block' : 'none')), we_html_tools::htmlAlertAttentionBox(sprintf(g_l('modules_voting', '[delete_ipdata_text]'), we_html_element::htmlSpan(array('id' => 'ip_mem_size'), $datasize)), 2, ($this->_width_size - 20), false, 100) .
+		$table->setCol(7, 1, array('id' => 'delete_ip_data', 'style' => 'display: ' . ($datasize > 0 ? 'block' : 'none')), we_html_tools::htmlAlertAttentionBox(sprintf(g_l('modules_voting', '[delete_ipdata_text]'), we_html_element::htmlSpan(array('id' => 'ip_mem_size'), $datasize)), we_html_tools::TYPE_INFO, ($this->_width_size - 20), false, 100) .
 			we_button::create_button('delete', 'javascript:we_cmd(\'reset_ipdata\')')
 		);
 		$table->setColContent(8, 0, we_html_tools::getPixel(10, 5));
@@ -590,7 +590,7 @@ class weVotingFrames extends weModuleFrames{
 
 		array_push($parts, array(
 			'headline' => g_l('modules_voting', '[headline_revote]'),
-			'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_voting', '[time_after_voting_again_help]'), 2, $this->_width_size, false, 100) .
+			'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_voting', '[time_after_voting_again_help]'), we_html_tools::TYPE_INFO, $this->_width_size, false, 100) .
 			we_html_element::htmlBr() .
 			we_html_tools::htmlFormElementTable($selectTime->getHtml(), g_l('modules_voting', '[time_after_voting_again]')) .
 			we_html_element::htmlBr() .
@@ -815,7 +815,7 @@ class weVotingFrames extends weModuleFrames{
 
 		array_push($parts, array(
 			"headline" => g_l('modules_voting', '[export]'),
-			"html" => we_html_tools::htmlAlertAttentionBox(g_l('modules_voting', '[export_txt]'), 2, $this->_width_size) .
+			"html" => we_html_tools::htmlAlertAttentionBox(g_l('modules_voting', '[export_txt]'), we_html_tools::TYPE_INFO, $this->_width_size) .
 			$export_box->getHtml(),
 			"space" => $this->_space_size)
 		);

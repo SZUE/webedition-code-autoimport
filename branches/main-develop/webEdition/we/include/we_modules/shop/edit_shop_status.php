@@ -149,7 +149,7 @@ $parts[] = array(
 	'noline' => 1
 );
 $parts[] = array(
-	'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[statusmails][hintEMailDaten]'), 2, 650, false),
+	'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[statusmails][hintEMailDaten]'), we_html_tools::TYPE_INFO, 650, false),
 	'space' => 0,
 	'noline' => 1
 );
@@ -170,7 +170,7 @@ $parts[] = array(
 );
 $parts[] = array(
 	'space' => 0,
-	'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[statusmails][hintSprache]'), 2, 650, false),
+	'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[statusmails][hintSprache]'), we_html_tools::TYPE_INFO, 650, false),
 	'noline' => 1
 );
 $parts[] = array(
@@ -179,7 +179,7 @@ $parts[] = array(
 	'noline' => 1
 );
 $parts[] = array(
-	'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[statusmails][hintISO]'), 2, 650, false),
+	'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[statusmails][hintISO]'), we_html_tools::TYPE_INFO, 650, false),
 	'space' => 0
 );
 $tabDokumente = new we_html_table(array("border" => "0", "cellpadding" => "2", "cellspacing" => "4"), $rows_num = 2, $cols_num = 17);
@@ -218,7 +218,7 @@ $parts[] = array(
 );
 $parts[] = array(
 	'space' => 0,
-	'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[statusmails][hintDokumente]'), 2, 650, false),
+	'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[statusmails][hintDokumente]'), we_html_tools::TYPE_INFO, 650, false),
 	'noline' => 1
 );
 $parts[] = array(

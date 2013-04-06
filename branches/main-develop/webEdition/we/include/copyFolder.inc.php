@@ -136,7 +136,7 @@ if(isset($_REQUEST['we_cmd'][3]) && $_REQUEST['we_cmd'][3]){
 		$content = g_l('copyFolder', "[object_copy]") . '<br/>' .
 			we_forms::checkbox("1", 0, "DoNotCopyFolders", g_l('copyFolder', "[object_copy_no_folders]")) .
 			'&nbsp;<br/>' . g_l('copyFolder', "[sameName_headline]") . '<br/>' .
-			we_html_tools::htmlAlertAttentionBox(g_l('copyFolder', "[sameName_expl]"), 2, 380) .
+			we_html_tools::htmlAlertAttentionBox(g_l('copyFolder', "[sameName_expl]"), we_html_tools::TYPE_INFO, 380) .
 			we_html_tools::getPixel(200, 10) .
 			we_forms::radiobutton("overwrite", 0, "OverwriteObjects", g_l('copyFolder', "[sameName_overwrite]")) .
 			we_forms::radiobutton("rename", 0, "OverwriteObjects", g_l('copyFolder', "[sameName_rename]")) .

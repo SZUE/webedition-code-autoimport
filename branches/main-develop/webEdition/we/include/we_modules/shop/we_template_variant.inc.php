@@ -58,7 +58,7 @@ print STYLESHEET;
 		$parts = array(
 			array(
 				'headline' => '',
-				'html' => we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[variant_info]'), 2, 620, false),
+				'html' => we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[variant_info]'), we_html_tools::TYPE_INFO, 620, false),
 				'space' => 0,
 				'noline' => 1
 			),

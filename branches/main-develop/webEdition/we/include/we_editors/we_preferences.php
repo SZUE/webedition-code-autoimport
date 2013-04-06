@@ -1043,7 +1043,7 @@ function build_dialog($selected_setting = 'ui'){
 				$_file_tree_count->selectOption($_tree_count);
 			}
 
-			$_settings[] = array('headline' => g_l('prefs', '[tree_title]'), 'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[tree_count_description]'), 2, 200) . '<br>' . $_file_tree_count->getHtml(), 'space' => 200);
+			$_settings[] = array('headline' => g_l('prefs', '[tree_title]'), 'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[tree_count_description]'), we_html_tools::TYPE_INFO, 200) . '<br>' . $_file_tree_count->getHtml(), 'space' => 200);
 
 
 			//WINDOW DIMENSIONS
@@ -1205,7 +1205,7 @@ function build_dialog($selected_setting = 'ui'){
 			}
 
 			$_settings = array(
-				array('headline' => g_l('prefs', '[countries_headline]'), 'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[countries_information]'), 2, 450, false), 'space' => 0, 'noline' => 1),
+				array('headline' => g_l('prefs', '[countries_headline]'), 'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[countries_information]'), we_html_tools::TYPE_INFO, 450, false), 'space' => 0, 'noline' => 1),
 				array('headline' => g_l('prefs', '[countries_default]'), 'html' => $_countries_default, 'space' => 200, 'noline' => 1),
 				array('headline' => '', 'html' => $tabC->getHtml(), 'space' => 0, 'noline' => 1),
 			);
@@ -1446,12 +1446,12 @@ function build_dialog($selected_setting = 'ui'){
 
 			//Todo: remove: g_l('prefs', '[langlink_support_backlinks_information]'), g_l('prefs', '[langlink_support_backlinks]'),g_l('prefs', '[langlink_support_recursive_information]'),g_l('prefs', '[langlink_support_recursive]')
 			$_settings = array(
-				array('headline' => '', 'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[locale_information]'), 2, 450, false), 'space' => 0),
+				array('headline' => '', 'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[locale_information]'), we_html_tools::TYPE_INFO, 450, false), 'space' => 0),
 				array('headline' => '', 'html' => $_editlist_table->getHtml(), 'space' => 0),
 				array('headline' => g_l('prefs', '[locale_add]'), 'html' => $_add_html, 'space' => 200),
-				array('headline' => g_l('prefs', '[langlink_headline]'), 'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[langlink_information]'), 2, 450, false), 'space' => 0, 'noline' => 1),
+				array('headline' => g_l('prefs', '[langlink_headline]'), 'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[langlink_information]'), we_html_tools::TYPE_INFO, 450, false), 'space' => 0, 'noline' => 1),
 				array('headline' => g_l('prefs', '[langlink_support]'), 'html' => $LANGLINK_SUPPORT->getHtml(), 'space' => 200, 'noline' => 1),
-				array('headline' => '', 'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[langlink_abandoned_options]'), 2, 450, false), 'space' => 0, 'noline' => 1),
+				array('headline' => '', 'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[langlink_abandoned_options]'), we_html_tools::TYPE_INFO, 450, false), 'space' => 0, 'noline' => 1),
 			);
 
 			return $preJs . create_dialog('', g_l('prefs', '[tab][language]'), $_settings) . $postJs;
@@ -1490,7 +1490,7 @@ function build_dialog($selected_setting = 'ui'){
 			$_html_extensions_html = g_l('prefs', '[html]') . '<br>' . $_static_html_extensions->getHtml();
 
 			$_settings = array(
-				array('headline' => '', 'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[extensions_information]'), 2, 450, false), 'space' => 0),
+				array('headline' => '', 'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[extensions_information]'), we_html_tools::TYPE_INFO, 450, false), 'space' => 0),
 				array('headline' => g_l('prefs', '[we_extensions]'), 'html' => $_we_extensions_html, 'space' => 200),
 				array('headline' => g_l('prefs', '[html_extensions]'), 'html' => $_html_extensions_html, 'space' => 200, 'noline' => 1)
 			);
@@ -1692,7 +1692,7 @@ if(window.onload) {
 
 			//FIXME:remove editor_javascript_information
 			$_settings = array(
-				array('headline' => '', 'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[editor_information]'), 2, 480, false), 'space' => 0),
+				array('headline' => '', 'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[editor_information]'), we_html_tools::TYPE_INFO, 480, false), 'space' => 0),
 				array('headline' => g_l('prefs', '[editor_mode]'), 'html' => $_template_editor_mode->getHtml(), 'space' => 150),
 				array('class' => 'editor editor_codemirror2 editor_textarea', 'headline' => g_l('prefs', '[editor_font]'), 'html' => $_template_editor_font_specify_code . $_template_editor_font_specify_table, 'space' => 150),
 				array('class' => 'editor editor_codemirror2', 'headline' => g_l('prefs', '[editor_theme]'), 'html' => $_template_editor_theme->getHtml(), 'space' => 150),
@@ -1888,7 +1888,7 @@ if(window.onload) {
 							}");
 
 				// Build dialog if user has permission
-				$_settings[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[formmail_information]'), 2, 450, false), "space" => 0);
+				$_settings[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[formmail_information]'), we_html_tools::TYPE_INFO, 450, false), "space" => 0);
 
 				/**
 				 * Recipients list
@@ -2077,7 +2077,7 @@ if(window.onload) {
 			}
 
 			$_settings = array(
-				array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[module_activation][information]'), 2, 450, false), "space" => 0),
+				array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[module_activation][information]'), we_html_tools::TYPE_INFO, 450, false), "space" => 0),
 				array("headline" => g_l('prefs', '[module_activation][headline]'), "html" => $_html, "space" => 200)
 			);
 
@@ -2118,7 +2118,7 @@ if(window.onload) {
 			// Build dialog if user has permission
 
 			$_settings = array(
-				array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[proxy_information]'), 2, 450, false), "space" => 0),
+				array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[proxy_information]'), we_html_tools::TYPE_INFO, 450, false), "space" => 0),
 				array("headline" => g_l('prefs', '[tab][proxy]'), "html" => $_use_proxy, "space" => 200),
 				array("headline" => g_l('prefs', '[proxyaddr]'), "html" => $_proxyaddr, "space" => 200, "noline" => 1),
 				array("headline" => g_l('prefs', '[proxyport]'), "html" => $_proxyport, "space" => 200, "noline" => 1),
@@ -2183,7 +2183,7 @@ if(window.onload) {
 				$_Schedtrigger_setting->addOption(SCHEDULER_TRIGGER_POSTDOC, g_l('prefs', '[we_scheduler_trigger][postDoc]')); //post
 				$_Schedtrigger_setting->addOption(SCHEDULER_TRIGGER_CRON, g_l('prefs', '[we_scheduler_trigger][cron]')); //cron
 				$_Schedtrigger_setting->selectOption(get_value("SCHEDULER_TRIGGER"));
-				$tmp = '<div>' . $_Schedtrigger_setting->getHtml() . '<br/>' . we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[we_scheduler_trigger][description]'), 2, 430, false) . '</div>';
+				$tmp = '<div>' . $_Schedtrigger_setting->getHtml() . '<br/>' . we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[we_scheduler_trigger][description]'), we_html_tools::TYPE_INFO, 430, false) . '</div>';
 				$_settings[] = array("headline" => g_l('prefs', '[we_scheduler_trigger][head]'), "html" => $tmp, "space" => 200);
 			}
 
@@ -2230,8 +2230,8 @@ if(window.onload) {
 			$_db_connect->selectOption(DB_CONNECT);
 
 			// Build db charset select box
-			$html_db_charset_information = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[db_set_charset_information]'), 2, 240, false, 40) . "<br/>";
-			$html_db_charset_warning = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[db_set_charset_warning]'), 1, 240, false, 40) . "<br/>";
+			$html_db_charset_information = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[db_set_charset_information]'), we_html_tools::TYPE_INFO, 240, false, 40) . "<br/>";
+			$html_db_charset_warning = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[db_set_charset_warning]'), we_html_tools::TYPE_ALERT, 240, false, 40) . "<br/>";
 
 			$_db_set_charset = new we_html_select(array("name" => "newconf[DB_SET_CHARSET]", "class" => "weSelect"));
 
@@ -2329,7 +2329,7 @@ if(window.onload) {
 
 			$EXECUTE_HOOKS->selectOption(get_value("EXECUTE_HOOKS") ? 1 : 0);
 
-			$hooksHtml = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[hooks_information]'), 2, 240, false) . "<br/>" .
+			$hooksHtml = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[hooks_information]'), we_html_tools::TYPE_INFO, 240, false) . "<br/>" .
 				$EXECUTE_HOOKS->getHtml();
 
 			//  select how php is parsed
@@ -2339,7 +2339,7 @@ if(window.onload) {
 
 			$PHPLOCALSCOPE->selectOption(get_value("PHPLOCALSCOPE") ? 1 : 0);
 
-			$phpLocalScopeHtml = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[phpLocalScope_information]'), 2, 240, false) . "<br/>" .
+			$phpLocalScopeHtml = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[phpLocalScope_information]'), we_html_tools::TYPE_INFO, 240, false) . "<br/>" .
 				$PHPLOCALSCOPE->getHtml();
 
 
@@ -2373,7 +2373,7 @@ if(window.onload) {
 
 			$_settings = array(
 				array("headline" => g_l('prefs', '[general_directoryindex_hide]'), "html" => "", "space" => 480, "noline" => 1),
-				array("html" => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[navigation_directoryindex_description]'), 2, 480), "noline" => 1),
+				array("html" => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[navigation_directoryindex_description]'), we_html_tools::TYPE_INFO, 480), "noline" => 1),
 			);
 
 			$NAVIGATION_DIRECTORYINDEX_HIDE = new we_html_select(array("name" => "newconf[NAVIGATION_DIRECTORYINDEX_HIDE]", "class" => "weSelect"));
@@ -2391,7 +2391,7 @@ if(window.onload) {
 			$_navigation_directoryindex_names = we_html_tools::htmlTextInput("newconf[NAVIGATION_DIRECTORYINDEX_NAMES]", 22, get_value("NAVIGATION_DIRECTORYINDEX_NAMES"), "", "", "text", 225);
 			$_settings[] = array("headline" => g_l('prefs', '[navigation_directoryindex_names]'), "html" => $_navigation_directoryindex_names, "space" => 200, "noline" => 1);
 
-			$_settings[] = array("html" => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[general_directoryindex_hide_description]'), 2, 480), "noline" => 1);
+			$_settings[] = array("html" => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[general_directoryindex_hide_description]'), we_html_tools::TYPE_INFO, 480), "noline" => 1);
 
 			$TAGLINKS_DIRECTORYINDEX_HIDE = new we_html_select(array("name" => "newconf[TAGLINKS_DIRECTORYINDEX_HIDE]", "class" => "weSelect"));
 			$TAGLINKS_DIRECTORYINDEX_HIDE->addOption(0, "false");
@@ -2414,7 +2414,7 @@ if(window.onload) {
 			$WYSIWYGLINKS_OBJECTSEOURLS->selectOption(get_value("WYSIWYGLINKS_OBJECTSEOURLS"));
 
 			$_settings[] = array("headline" => g_l('prefs', '[wysiwyglinks_objectseourls]'), "html" => $WYSIWYGLINKS_OBJECTSEOURLS->getHtml(), "space" => 200, "noline" => 1);
-			$_settings[] = array("html" => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[general_objectseourls_description]'), 2, 480), "noline" => 1);
+			$_settings[] = array("html" => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[general_objectseourls_description]'), we_html_tools::TYPE_INFO, 480), "noline" => 1);
 
 			$TAGLINKS_OBJECTSEOURLS = new we_html_select(array("name" => "newconf[TAGLINKS_OBJECTSEOURLS]", "class" => "weSelect"));
 			$TAGLINKS_OBJECTSEOURLS->addOption(0, "false");
@@ -2430,7 +2430,7 @@ if(window.onload) {
 
 			$_settings[] = array("headline" => g_l('prefs', '[urlencode_objectseourls]'), "html" => $URLENCODE_OBJECTSEOURLS->getHtml(), "space" => 200);
 			$_settings[] = array("headline" => g_l('prefs', '[general_seoinside]'), "noline" => 1);
-			$_settings[] = array("html" => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[general_seoinside_description]'), 2, 480), "noline" => 1);
+			$_settings[] = array("html" => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[general_seoinside_description]'), we_html_tools::TYPE_INFO, 480), "noline" => 1);
 
 			$SEOINSIDE_HIDEINEDITMODE = new we_html_select(array("name" => "newconf[SEOINSIDE_HIDEINEDITMODE]", "class" => "weSelect"));
 			$SEOINSIDE_HIDEINEDITMODE->addOption(0, "false");
@@ -2552,7 +2552,7 @@ if(window.onload) {
 
 			// Create checkboxes
 			$_error_display_table = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0"), 8, 1);
-			$_error_display_table->setCol(0, 0, array('class' => 'defaultfont', 'style' => 'padding-left: 25px;'), we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[error_notices_warning]'), 1, 260));
+			$_error_display_table->setCol(0, 0, array('class' => 'defaultfont', 'style' => 'padding-left: 25px;'), we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[error_notices_warning]'), we_html_tools::TYPE_ALERT, 260));
 
 			$_error_display_table->setCol(1, 0, null, we_forms::checkbox(1, get_value("WE_ERROR_SHOW"), "newconf[WE_ERROR_SHOW]", g_l('prefs', '[error_display]'), false, "defaultfont", "", !get_value("WE_ERROR_HANDLER")));
 			$_error_display_table->setCol(2, 0, null, we_html_tools::getPixel(1, 5));
@@ -2610,7 +2610,7 @@ if(window.onload) {
 				we_forms::checkbox(we_message_reporting::WE_MESSAGE_NOTICE, $_val & we_message_reporting::WE_MESSAGE_NOTICE, "message_reporting_notices", g_l('prefs', '[message_reporting][show_notices]'), false, "defaultfont", "handle_message_reporting_click();");
 
 			$_settings = array(
-				array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[message_reporting][information]'), 2, 450, false), "space" => 0),
+				array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[message_reporting][information]'), we_html_tools::TYPE_INFO, 450, false), "space" => 0),
 				array("headline" => g_l('prefs', '[message_reporting][headline]'), "html" => $_html, "space" => 200),
 			);
 
@@ -2682,7 +2682,7 @@ if(window.onload) {
 			$_settings = array(
 				array('html' => g_l('prefs', '[xhtml_default]'), 'space' => 0, 'noline' => 1),
 				array('html' => $_xhtml_setting->getHtml(), "space" => 200),
-				array('html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[xhtml_debug_explanation]'), 2, 450), 'space' => 0, 'noline' => 1),
+				array('html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[xhtml_debug_explanation]'), we_html_tools::TYPE_INFO, 450), 'space' => 0, 'noline' => 1),
 				array('headline' => g_l('prefs', '[xhtml_debug_headline]'), 'html' => $_xhtml_debug, 'space' => 200, 'noline' => 1),
 				array('html' => $_xhtml_remove_wrong, 'space' => 200),
 				array('headline' => g_l('prefs', '[xhtml_show_wrong_headline]'), 'html' => '', 'space' => 400, 'noline' => 1),
@@ -2751,7 +2751,7 @@ if(window.onload) {
 			 * Information
 			 */
 			$_settings = array(
-				array('headline' => '', 'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[mailer_information]'), 2, 450, false), "space" => 0)
+				array('headline' => '', 'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[mailer_information]'), we_html_tools::TYPE_INFO, 450, false), "space" => 0)
 			);
 
 			if(we_hasPerm('ADMINISTRATOR')){
@@ -2955,7 +2955,7 @@ function openVersionWizard() {
 
 			$_settings = array(
 				array(
-					'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[versioning_activate_text]'), 2, 470),
+					'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[versioning_activate_text]'), we_html_tools::TYPE_INFO, 470),
 					'noline' => 1,
 					'space' => 0
 				),
@@ -2965,7 +2965,7 @@ function openVersionWizard() {
 					'html' => $checkboxes
 				),
 				array(
-					'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[versioning_time_text]'), 2, 470),
+					'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[versioning_time_text]'), we_html_tools::TYPE_INFO, 470),
 					'noline' => 1,
 					'space' => 0
 				),
@@ -2975,7 +2975,7 @@ function openVersionWizard() {
 					"headline" => g_l('prefs', '[versioning_time]')
 				),
 				array(
-					'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[versioning_anzahl_text]'), 2, 470),
+					'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[versioning_anzahl_text]'), we_html_tools::TYPE_INFO, 470),
 					'noline' => 1,
 					'space' => 0
 				),
@@ -2985,7 +2985,7 @@ function openVersionWizard() {
 					'space' => 170
 				),
 				array(
-					'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[versioning_create_text]'), 2, 470, false),
+					'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[versioning_create_text]'), we_html_tools::TYPE_INFO, 470, false),
 					'noline' => 1,
 					'space' => 0
 				),
@@ -2995,7 +2995,7 @@ function openVersionWizard() {
 					'space' => 170
 				),
 				array(
-					'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[versioning_templates_text]'), 2, 470, false),
+					'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[versioning_templates_text]'), we_html_tools::TYPE_INFO, 470, false),
 					'noline' => 0,
 					'space' => 0
 				),
@@ -3017,7 +3017,7 @@ function openVersionWizard() {
 					'space' => 170
 				),
 				array(
-					'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[versioning_wizard_text]'), 2, 470),
+					'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[versioning_wizard_text]'), we_html_tools::TYPE_INFO, 470),
 					'noline' => 1,
 					'space' => 0
 				),
