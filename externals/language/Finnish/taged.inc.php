@@ -3,6 +3,11 @@
 $l_taged=array(
 	'attributes'=>'Attribuutit',
 	'defaultvalue'=>'Oletusarvo',
+	
+	'deprecated'=>array(
+		'description'=>'This tag is marked deprecated. Please use another tag for new templates.',
+		'title'=>'Deprecated',
+	),
 	'description'=>'Kuvaus',
 	'fill_required_fields'=>'Seuraavat vaaditut kentät on täytettävä.',
 	'no_attributes_for_type'=>'Tämän tyyppisille arvoille ei ole attribuutteja.',

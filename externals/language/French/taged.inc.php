@@ -3,6 +3,11 @@
 $l_taged=array(
 	'attributes'=>'Attributes',
 	'defaultvalue'=>'Defaultvalue',
+	
+	'deprecated'=>array(
+		'description'=>'This tag is marked deprecated. Please use another tag for new templates.',
+		'title'=>'Deprecated',
+	),
 	'description'=>'Description',
 	'fill_required_fields'=>'The following required fields need to be filled.',
 	'no_attributes_for_type'=>'Il n`y a pas d`attributes pour ce type.',

@@ -3,6 +3,11 @@
 $l_taged=array(
 	'attributes'=>'Attribute',
 	'defaultvalue'=>'Standardwert',
+	
+	'deprecated'=>array(
+		'description'=>'Dieses Tag ist veraltet und wird nicht mehr weiterentwickelt. Bitte verwenden Sie in neuen Vorlagen ein anderes Tag.',
+		'title'=>'Veraltet',
+	),
 	'description'=>'Beschreibung',
 	'fill_required_fields'=>'Die folgenden Pflichtfelder müssen ausgefüllt werden',
 	'no_attributes_for_type'=>'Für diesen Typ gibt es keine Attribute.',
