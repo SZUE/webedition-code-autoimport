@@ -3156,8 +3156,18 @@ if($doSave && !$acError){
 								var _multiEditorreload = false;
 							   ' . $save_javascript .
 			(!$email_saved ? we_message_reporting::getShowMessageCall(g_l('prefs', '[error_mail_not_saved]'), we_message_reporting::WE_MESSAGE_ERROR) : we_message_reporting::getShowMessageCall(g_l('prefs', '[saved]'), we_message_reporting::WE_MESSAGE_NOTICE)) . '
-							   //top.opener.top.frames[0].location.reload();
-							   top.close();
+var childs=top.document.getElementById("tabContainer").children;
+childs[0].className="tabActive";
+for(i=1;i<childs.length;++i){
+	childs[i].className="tabNormal";
+}
+
+this.location = "' . WE_INCLUDES_DIR . 'we_editors/we_preferences.php";
+setTimeout(function(){
+	top.document.getElementById("tabContainer").children[0].click();
+}, 1000);
+
+
 							}
 					   ') .
 		'</head>' .
