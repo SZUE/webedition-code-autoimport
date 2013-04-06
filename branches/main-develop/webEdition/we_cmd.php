@@ -360,7 +360,7 @@ if($INCLUDE){
 		define('NO_SESS', 1);
 	}
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-	include(WEBEDITION_PATH . $INCLUDE);
+	include(WE_INCLUDES_PATH . $INCLUDE);
 	//  This statement prevents the page from being reloaded
 	if(!in_array($_REQUEST['we_cmd'][0], $cmds_no_js)){
 		print we_html_element::jsElement('parent.openedWithWE = 1;');
