@@ -1623,7 +1623,7 @@ if(window.onload) {
 			$_template_editor_font_specify_table = '<table style="margin:0 0 20px 50px;" border="0" cellpadding="0" cellspacing="0">
 	<tr><td' . $_attr . '>' . g_l('prefs', '[editor_fontname]') . '</td><td>' . $_template_editor_font_select_box->getHtml() . '</td></tr>
 	<tr><td' . $_attr . '>' . g_l('prefs', '[editor_fontsize]') . '</td><td>' . $_template_editor_font_sizes_select_box->getHtml() . '</td></tr>
-</table>'.we_html_element::jsScript(LIB_DIR.'additional/fontdetect/fontdetect.js').
+</table>' . we_html_element::jsScript(LIB_DIR . 'additional/fontdetect/fontdetect.js') .
 				we_html_element::jsElement('
 var detective = new Detector();
 var elements=document.getElementsByName("newconf[editorFontname]")[0].children;
@@ -1631,9 +1631,7 @@ for(i=0;i<elements.length; ++i){
 	if(!detective.detect(elements[i].value)){
 		elements[i].disabled="disabled";
 	}
-}
-
-');
+}');
 
 			$_template_editor_font_color_checkbox = we_forms::checkboxWithHidden(get_value('specify_jeditor_colors'), "newconf[specify_jeditor_colors]", g_l('prefs', '[editor_font_colors]'), false, "defaultfont", "setEditorColorsDisabled(!this.checked);");
 			$attr = ($_colorsDisabled ? $_attr_dis : $_attr);
