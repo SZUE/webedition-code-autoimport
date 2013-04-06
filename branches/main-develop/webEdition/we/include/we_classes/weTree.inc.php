@@ -38,23 +38,23 @@ class weTree{
 	var $cmdFrame;
 	var $initialized = 0;
 	var $treeItems = array();
-	var $frameset = "";
+	var $frameset = '';
 	var $styles = array();
 	var $tree_states = array(
-		"edit" => 0,
-		"select" => 1,
-		"selectitem" => 2,
-		"selectgroup" => 3,
+		'edit' => 0,
+		'select' => 1,
+		'selectitem' => 2,
+		'selectgroup' => 3,
 	);
 	var $tree_layouts = array(
-		0 => "tree",
-		1 => "tree",
-		2 => "tree",
-		3 => "tree"
+		0 => 'tree',
+		1 => 'tree',
+		2 => 'tree',
+		3 => 'tree'
 	);
 	var $node_layouts = array(
-		"item" => "tree",
-		"group" => "group"
+		'item' => 'tree',
+		'group' => 'group'
 	);
 	var $tree_image_dir;
 	var $tree_icon_dir;
@@ -62,26 +62,26 @@ class weTree{
 
 //Initialization
 
-	function __construct($frameset = "", $topFrame = "", $treeFrame = "", $cmdFrame = ""){
+	function __construct($frameset = '', $topFrame = '', $treeFrame = '', $cmdFrame = ''){
 		$this->db = new DB_WE();
 		$this->setTreeImageDir(TREE_IMAGE_DIR);
 		$this->setTreeIconDir(ICON_DIR);
-		if($frameset != "" && $topFrame != "" && $treeFrame != "" && $cmdFrame != ""){
+		if($frameset != '' && $topFrame != '' && $treeFrame != '' && $cmdFrame != ''){
 			$this->init($frameset, $topFrame, $treeFrame, $cmdFrame);
 		}
 
 		$this->setStyles(array(
-			'.item {color: black; font-size: ' . (((we_base_browserDetect::isUNIX()) ? "11px" : "9px")) . '; font-family: ' . g_l('css', '[font_family]') . ';}',
+			'.item {color: black; font-size: ' . (((we_base_browserDetect::isUNIX()) ? 11 : 9)) . 'px; font-family: ' . g_l('css', '[font_family]') . ';}',
 			'.item a { text-decoration:none;}',
-			'.group {color: black; font-weight: bold; font-size: ' . (((we_base_browserDetect::isUNIX()) ? "11px" : "9px")) . '; font-family: ' . g_l('css', '[font_family]') . ';}',
+			'.group {color: black; font-weight: bold; font-size: ' . (((we_base_browserDetect::isUNIX()) ? 11 : 9)) . 'px; font-family: ' . g_l('css', '[font_family]') . ';}',
 			'.group a { text-decoration:none;}',
-			'.selected_item {color: black; font-size: ' . (((we_base_browserDetect::isUNIX()) ? "11px" : "9px")) . '; font-family: ' . g_l('css', '[font_family]') . '; background-color: #6070B6; cursor: pointer;}',
+			'.selected_item {color: black; font-size: ' . (((we_base_browserDetect::isUNIX()) ? 11 : 9)) . 'px; font-family: ' . g_l('css', '[font_family]') . '; background-color: #6070B6; cursor: pointer;}',
 			'.selected_item a { text-decoration:none;}',
-			'.selected_group {color: black; font-weight: bold; font-size: ' . (((we_base_browserDetect::isUNIX()) ? "11px" : "9px")) . '; font-family: ' . g_l('css', '[font_family]') . '; background-color: #6070B6; cursor: pointer;}',
+			'.selected_group {color: black; font-weight: bold; font-size: ' . (((we_base_browserDetect::isUNIX()) ? 11 : 9)) . 'px; font-family: ' . g_l('css', '[font_family]') . '; background-color: #6070B6; cursor: pointer;}',
 			'.selected_group a { text-decoration:none;}',
 		));
 
-		$this->setItemsCount(getPref("default_tree_count"));
+		$this->setItemsCount(getPref('default_tree_count'));
 	}
 
 	function init($frameset, $topFrame, $treeFrame, $cmdFrame){
@@ -194,7 +194,7 @@ self.focus();
 		';
 
 
-		return ($withTag ? we_html_element::jsScript(JS_DIR . "images.js") . we_html_element::jsElement($js) : $js);
+		return ($withTag ? we_html_element::jsScript(JS_DIR . 'images.js') . we_html_element::jsElement($js) : $js);
 	}
 
 	function getJSAddSortFunction(){
@@ -202,7 +202,7 @@ self.focus();
 function addSort(object){
 		this.len++;
 		for(var i=this.len; i>0; i--){
-			if(i > 1 && (this[i-1].text.toLowerCase() > object.text.toLowerCase()' . (!we_base_browserDetect::isMAC() ? " || (this[i-1].typ>object.typ)" : "" ) . ')){
+			if(i > 1 && (this[i-1].text.toLowerCase() > object.text.toLowerCase()' . (!we_base_browserDetect::isMAC() ? ' || (this[i-1].typ>object.typ)' : '' ) . ')){
 				this[i] = this[i-1];
 			}else{
 				this[i] = object;
@@ -336,123 +336,116 @@ function setTreeState(){
 
 	function getJSRootAdd(){
 		return '
-		function rootEntry(id,text,rootstat,offset){
-			this.id = id;
-			this.text = text;
-			this.open=1;
-			this.loaded=1;
-			this.typ = "root";
-			this.offset = offset;
-			this.rootstat = rootstat;
-			this.showsegment=showSegment;
-			this.clear=clearItems;
+function rootEntry(id,text,rootstat,offset){
+	this.id = id;
+	this.text = text;
+	this.open=1;
+	this.loaded=1;
+	this.typ = "root";
+	this.offset = offset;
+	this.rootstat = rootstat;
+	this.showsegment=showSegment;
+	this.clear=clearItems;
 
-			return this;
-		}
-	';
+	return this;
+}';
 	}
 
 	function getJSAddNode(){
 		return '
-		function node(attribs){
+function node(attribs){
 
-			for(aname in attribs){
-				var val=""+attribs[aname];
-				this[aname] = val;
-			}
+	for(aname in attribs){
+		var val=""+attribs[aname];
+		this[aname] = val;
+	}
 
-			this.getlayout=getLayout;
-			this.applylayout=applyLayout;
-			this.showsegment=showSegment;
-			this.clear=clearItems;
-			return this;
-		}
-	';
+	this.getlayout=getLayout;
+	this.applylayout=applyLayout;
+	this.showsegment=showSegment;
+	this.clear=clearItems;
+	return this;
+}';
 	}
 
 	function getJSSelectNode(){
 		return '
-		function selectNode(){
-				if(arguments[0]){
-        			var ind;
-					if(treeData.selection!="" && treeData.selection_table==treeData.table){
-						ind=indexOfEntry(treeData.selection);
-						if(ind!=-1){
-							var oldnode=get(treeData.selection);
-							oldnode.selected=0;
-							oldnode.applylayout();
-						}
-					}
-					ind=indexOfEntry(arguments[0]);
-					if(ind!=-1){
-						var newnode=get(arguments[0]);
-						newnode.selected=1;
-						newnode.applylayout();
-					}
-					treeData.selection=arguments[0];
-					treeData.selection_table=treeData.table;
+function selectNode(){
+		if(arguments[0]){
+					var ind;
+			if(treeData.selection!="" && treeData.selection_table==treeData.table){
+				ind=indexOfEntry(treeData.selection);
+				if(ind!=-1){
+					var oldnode=get(treeData.selection);
+					oldnode.selected=0;
+					oldnode.applylayout();
 				}
+			}
+			ind=indexOfEntry(arguments[0]);
+			if(ind!=-1){
+				var newnode=get(arguments[0]);
+				newnode.selected=1;
+				newnode.applylayout();
+			}
+			treeData.selection=arguments[0];
+			treeData.selection_table=treeData.table;
 		}
-
-	';
+}';
 	}
 
 	function getJSUnselectNode(){
 		return '
- 		function unselectNode(){
-			if(treeData.selection!="" && treeData.table==treeData.selection_table){
-				var ind=indexOfEntry(treeData.selection);
-				if(ind!=-1){
-					var node=get(treeData.selection);
-					node.selected=0;
-					if(node.applylayout) node.applylayout();
-				}
-				treeData.selection="";
-			}
+function unselectNode(){
+	if(treeData.selection!="" && treeData.table==treeData.selection_table){
+		var ind=indexOfEntry(treeData.selection);
+		if(ind!=-1){
+			var node=get(treeData.selection);
+			node.selected=0;
+			if(node.applylayout) node.applylayout();
 		}
-	';
+		treeData.selection="";
+	}
+}';
 	}
 
 	function getJSShowSegment(){
 		return '
- 		function showSegment(){
-			parentnode=' . $this->topFrame . '.get(this.parentid);
-			parentnode.clear();
-			we_cmd("loadFolder",treeData.table,parentnode.id,"","","",this.offset);
-			toggleBusy(1);
-		}
-	';
+function showSegment(){
+	parentnode=' . $this->topFrame . '.get(this.parentid);
+	parentnode.clear();
+	we_cmd("loadFolder",treeData.table,parentnode.id,"","","",this.offset);
+	toggleBusy(1);
+}';
 	}
 
 	function getJSClearItems(){
 		return '
- 		function clearItems(){
-			var ai = 1;
-			var delid = 1;
-			var deleted = 0;
+function clearItems(){
+	var ai = 1;
+	var delid = 1;
+	var deleted = 0;
 
-			while (ai <= treeData.len) {
-				if (treeData[ai].parentid == this.id){
-					if(treeData[ai].contenttype=="group") deleted+=treeData[ai].clear();
-					else{
-						ind=ai;
-                		while (ind <= treeData.len-1) {
-                        		treeData[ind]=treeData[ind+1];
-		                        ind++;
-                		}
-                		treeData.len[treeData.len]=null;
-                		treeData.len--;
-					}
-					deleted++;
-				}
-				else{
-					ai++;
-				}
+	while (ai <= treeData.len) {
+		if (treeData[ai].parentid == this.id){
+			if(treeData[ai].contenttype=="group") deleted+=treeData[ai].clear();
+			else{
+				ind=ai;
+								while (ind <= treeData.len-1) {
+												treeData[ind]=treeData[ind+1];
+												ind++;
+								}
+								treeData.len[treeData.len]=null;
+								treeData.len--;
 			}
-			drawTree();
-			return deleted;
+			deleted++;
 		}
-	';
+		else{
+			ai++;
+		}
+	}
+	drawTree();
+	return deleted;
+}';
 	}
 
 	function getJSContainer(){
@@ -473,40 +466,40 @@ function setTreeState(){
 
 		return '
 function container(){
-			this.len = 0;
-			this.state=0;
-			this.startloc=0;
-			this.clear=containerClear;
-			this.add = add;
-			this.addSort = addSort;
+	this.len = 0;
+	this.state=0;
+	this.startloc=0;
+	this.clear=containerClear;
+	this.add = add;
+	this.addSort = addSort;
 
-			this.table="";
+	this.table="";
 
-			this.selection="";
-			this.selection_table="";
-			this.selectnode=selectNode;
-			this.unselectnode=unselectNode;
+	this.selection="";
+	this.selection_table="";
+	this.selectnode=selectNode;
+	this.unselectnode=unselectNode;
 
-			this.setstate=setTreeState;
-			this.getlayout=getTreeLayout;
+	this.setstate=setTreeState;
+	this.getlayout=getTreeLayout;
 
-			this.tree_image_dir="' . $this->tree_image_dir . '";
-			this.tree_icon_dir="' . $this->tree_icon_dir . '";
-			this.topFrame="' . $this->topFrame . '";
-			this.treeFrame="' . $this->treeFrame . '";
+	this.tree_image_dir="' . $this->tree_image_dir . '";
+	this.tree_icon_dir="' . $this->tree_icon_dir . '";
+	this.topFrame="' . $this->topFrame . '";
+	this.treeFrame="' . $this->treeFrame . '";
 
-			' . $ts . '
-			' . $tl . '
-			' . (isset($ns) ? $ns : "") . '
-			' . $nl . '
+	' . $ts . '
+	' . $tl . '
+	' . (isset($ns) ? $ns : "") . '
+	' . $nl . '
 
-			this.check0_img=new Image();
-			this.check0_img.src="' . $this->tree_image_dir . 'check0.gif";
+	this.check0_img=new Image();
+	this.check0_img.src="' . $this->tree_image_dir . 'check0.gif";
 
-			this.check1_img=new Image();
-			this.check1_img.src="' . $this->tree_image_dir . 'check1.gif";
+	this.check1_img=new Image();
+	this.check1_img.src="' . $this->tree_image_dir . 'check1.gif";
 
-			return this;
+	return this;
 }';
 	}
 
@@ -565,9 +558,9 @@ function makeFoldersOpenString() {
 
 	function getJSClearTree(){
 		return '
-		function clearTree(){
-			treeData.clear();
-		}';
+function clearTree(){
+	treeData.clear();
+}';
 	}
 
 	// Function which control how tree contenet will be displayed
@@ -631,8 +624,14 @@ function setUnCheckNode(imgName){
 		return '
 
 function drawTree(){
-	if (typeof(' . $this->treeFrame . ') != "undefined") {
-	} else {
+	try{
+		var type=typeof(' . $this->treeFrame . ');
+	}catch(e){
+		console.log("Frame not found '.$this->treeFrame.'");
+		var type="undefined";
+	}
+
+	if (type == "undefined") {
 		window.setTimeout("drawTree()", 500);
 		return;
 	}

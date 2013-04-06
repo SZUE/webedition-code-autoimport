@@ -109,7 +109,10 @@ switch($what){
 	case 'eiload':
 		print $ExImport->getHTMLLoad();
 		break;
+	case 'resize':
+		print $weFrame->getHTMLResize();
+		break;
 
 	default:
-		error_log(__FILE__ . ' unknown reference: ' . $what);
+		t_e(__FILE__ . ' unknown reference: ' . $what);
 }
