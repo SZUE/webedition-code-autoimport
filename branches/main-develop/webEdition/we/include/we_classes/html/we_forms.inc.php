@@ -43,13 +43,13 @@ abstract class we_forms{
 	 *
 	 * @return     string
 	 */
-	static function checkbox($value, $checked, $name, $text, $uniqid = false, $class = 'defaultfont', $onClick = '', $disabled = false, $description = '', $type = 0, $width = 0, $html = ''){
+	static function checkbox($value, $checked, $name, $text, $uniqid = false, $class = 'defaultfont', $onClick = '', $disabled = false, $description = '', $type = 0, $width = 0, $html = '', $style = ''){
 		// Check if we have to create a uniqe id
 		$_id = ($uniqid ? $name . '_' . md5(uniqid(__FUNCTION__, true)) : $name);
 
 		// Create HTML tags
 		return '
-			<table cellpadding="0" border="0" cellspacing="0">
+			<table cellpadding="0" border="0" cellspacing="0"' . ($style ? 'style="' . $style . '"' : '') . '>
 				<tr>
 					<td' . ($description ? ' valign="top"' : '') . '>
 						<input type="checkbox" name="' . $name . '" id="' . $_id . '" value="' . $value . '" style="cursor: pointer; outline: 0px;" ' . ($checked ? " checked=\"checked\"" : "") . ($onClick ? " onclick=\"$onClick\"" : "") . ($disabled ? " disabled=\"disabled\"" : "") . ' /></td>
@@ -155,10 +155,10 @@ abstract class we_forms{
 
 		//first prepare stylesheets from textarea-attribute editorcss (templates) or class-css (classes): csv of ids. then (if document) get document-css, defined by we:css
 		$contentCss = (isset($GLOBALS['we_doc']) && ($GLOBALS['we_doc']->ClassName == 'we_objectFile' || $GLOBALS['we_doc']->ClassName == 'we_object')) ? $GLOBALS['we_doc']->CSS :
-				((isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->ClassName == 'we_webEditionDocument') ? weTag_getAttribute('editorcss', $attribs) : '');
-		$contentCss = !empty($contentCss) ? implode('?' . time() . ',', id_to_path(trim($contentCss,', '), FILE_TABLE, '', false, true)) . '?' . time() : '';
+			((isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->ClassName == 'we_webEditionDocument') ? weTag_getAttribute('editorcss', $attribs) : '');
+		$contentCss = !empty($contentCss) ? implode('?' . time() . ',', id_to_path(trim($contentCss, ', '), FILE_TABLE, '', false, true)) . '?' . time() : '';
 		$contentCss = (isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->ClassName == 'we_webEditionDocument' && !$ignoredocumentcss) ? trim($GLOBALS['we_doc']->getDocumentCss() . ',' . $contentCss, ',') :
-				$contentCss;
+			$contentCss;
 
 		if($buttonpos){
 			$foo = makeArrayFromCSV($buttonpos);
@@ -214,7 +214,7 @@ abstract class we_forms{
 			$_lang = (isset($GLOBALS['we_doc']) && isset($GLOBALS['we_doc']->Language)) ? $GLOBALS['we_doc']->Language : WE_LANGUAGE;
 			$buttonpos = $buttonpos ? $buttonpos : 'top';
 			$tinyParams = weTag_getAttribute('tinyparams', $attribs);
-			
+
 			if($inlineedit){
 				$e = new we_wysiwyg($name, $width, $height, $value, $commands, $bgcolor, '', $class, $fontnames, (!$inwebedition), $xml, $removeFirstParagraph, $inlineedit, '', $charset, $cssClasses, $_lang, '', $showSpell, $isFrontendEdit, $buttonpos, $oldHtmlspecialchars, $contentCss, $origName, $tinyParams);
 				$out .= $e->getHTML();
@@ -246,9 +246,9 @@ abstract class we_forms{
 				$clearval = $value;
 				$value = str_replace(array('<?', '<script', '</script', '\\', "\n", "\r", '"'), array('##|lt;?##', '<##scr#ipt##', '</##scr#ipt##', '\\\\', '\n', '\r', '\\"'), $value);
 				$out .= we_html_element::jsElement('new we_textarea("' . $name . '","' . $value . '","' . $cols . '","' . $rows . '","' . $width . '","' . $height . '","' . $autobr . '","' . $autobrName . '",' . ($showAutobr ? ($hideautobr ? "false" : "true") : "false") . ',' . ($importrtf ? "true" : "false") . ',"' . $GLOBALS["WE_LANGUAGE"] . '","' . $class . '","' . implode(';', $style) . '","' . $wrap . '","onkeydown","' . ($xml ? "true" : "false") . '","' . $id . '",' . ((defined('SPELLCHECKER') && $showSpell) ? "true" : "false") . ',"' . $origName . '");') .
-					'<noscript><textarea name="' . $name . '"' . ($tabindex ? ' tabindex="' . $tabindex . '"' : '') . ($cols ? ' cols="' . $cols . '"' : '') . ($rows ? ' rows="' . $rows . '"' : '') . (!empty($style) ? ' style="' . implode(';',$style) . '"' : '') . ' class="' . ($class ? $class . " " : "") . 'wetextarea wetextarea-' . $origName . '"' . ($id ? ' id="' . $id . '"' : '') . '>' . oldHtmlspecialchars($clearval) . '</textarea></noscript>';
+					'<noscript><textarea name="' . $name . '"' . ($tabindex ? ' tabindex="' . $tabindex . '"' : '') . ($cols ? ' cols="' . $cols . '"' : '') . ($rows ? ' rows="' . $rows . '"' : '') . (!empty($style) ? ' style="' . implode(';', $style) . '"' : '') . ' class="' . ($class ? $class . " " : "") . 'wetextarea wetextarea-' . $origName . '"' . ($id ? ' id="' . $id . '"' : '') . '>' . oldHtmlspecialchars($clearval) . '</textarea></noscript>';
 			} else{
-				$out .= '<textarea name="' . $name . '"' . ($tabindex ? ' tabindex="' . $tabindex . '"' : '') . ($cols ? ' cols="' . $cols . '"' : '') . ($rows ? ' rows="' . $rows . '"' : '') . (!empty($style) ? ' style="' . implode(';',$style) . '"' : '') . ' class="' . ($class ? $class . " " : "") . 'wetextarea wetextarea-' . $origName . '"' . ($id ? ' id="' . $id . '"' : '') . '>' . oldHtmlspecialchars($value) . '</textarea>';
+				$out .= '<textarea name="' . $name . '"' . ($tabindex ? ' tabindex="' . $tabindex . '"' : '') . ($cols ? ' cols="' . $cols . '"' : '') . ($rows ? ' rows="' . $rows . '"' : '') . (!empty($style) ? ' style="' . implode(';', $style) . '"' : '') . ' class="' . ($class ? $class . " " : "") . 'wetextarea wetextarea-' . $origName . '"' . ($id ? ' id="' . $id . '"' : '') . '>' . oldHtmlspecialchars($value) . '</textarea>';
 			}
 		}
 		return $out;
@@ -292,6 +292,5 @@ abstract class we_forms{
 
 		return $text;
 	}
-
 
 }

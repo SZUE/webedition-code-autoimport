@@ -427,8 +427,8 @@ switch($_SESSION['prefs']['editorMode']){
 		parent.editorScrollPosTop = getScrollPosTop();
 		parent.editorScrollPosLeft = getScrollPosLeft();" <?php
 //FIXME: no resize for IE!
-		echo (we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 9 ? '' : 'onResize="sizeEditor();"');
-		?>>
+			echo (we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 9 ? '' : 'onResize="sizeEditor();"');
+			?>>
 	<form name="we_form" method="post" onsubmit="return false;" style="margin:0px;"><?php
 		echo we_class::hiddenTrans();
 
@@ -692,14 +692,15 @@ window.orignalTemplateContent=document.getElementById("editarea").value.replace(
 <td align="left" class="defaultfont">' .
 			(substr($_SESSION['prefs']['editorMode'], 0, 10) == 'codemirror' ? '
 <input type="text" style="width: 10em;float:left;" id="query"/><div style="float:left;">' . we_button::create_button("search", 'javascript:search(document.getElementById("query").value,!document.getElementById("caseSens").checked);') . '</div>
-<input type="text" style="margin-left:2em;width: 10em;float:left;" id="replace"/><div style="float:left;">' . we_button::create_button("replace", 'javascript:myReplace(document.getElementById("query").value,document.getElementById("replace").value,!document.getElementById("caseSens").checked);') . '</div>
-<input type="checkbox" style="margin-left:2em;float:left;" value="1" id="caseSens"/><div style="float:left;">' . g_l('weClass', '[caseSensitive]') . '</div>' : ''
+<input type="text" style="margin-left:2em;width: 10em;float:left;" id="replace"/><div style="float:left;">' . we_button::create_button("replace", 'javascript:myReplace(document.getElementById("query").value,document.getElementById("replace").value,!document.getElementById("caseSens").checked);') . '</div>' .
+				we_forms::checkbox(1, 0, 'caseSens', g_l('weClass', '[caseSensitive]'), false, "defaultfont", '', false, '', 0, 0, '', 'display:inline-block;margin-left:2em;') .
+				'</div>' : ''
 			) . '
 					</td>
 					<td align="right" class="defaultfont">' .
-			(substr($_SESSION['prefs']['editorMode'], 0, 10) == 'codemirror' ? '
-<div id="reindentButton" style="float:right;margin-left:10px;margin-top:-3px;">' . we_button::create_button("reindent", 'javascript:reindent();') . '</div>' : '') .
-			($_useJavaEditor ? "" : we_forms::checkbox("1", ( isset($_SESSION["we_wrapcheck"]) && $_SESSION["we_wrapcheck"] == "1"), "we_wrapcheck_tmp", g_l('global', '[wrapcheck]'), false, "defaultfont", "we_cmd('wrap_on_off',this.checked)")) . '</td>	</tr>
+			($_useJavaEditor ? '' : we_forms::checkbox(1, (isset($_SESSION["we_wrapcheck"]) && $_SESSION["we_wrapcheck"] == 1), 'we_wrapcheck_tmp', g_l('global', '[wrapcheck]'), false, "defaultfont", "we_cmd('wrap_on_off',this.checked)", false, '', 0, 0, '', 'display:inline-block;')) .
+			(substr($_SESSION['prefs']['editorMode'], 0, 10) == 'codemirror' ? '<div id="reindentButton" style="display:inline-block;margin-left:10px;margin-top:-3px;">' . we_button::create_button("reindent", 'javascript:reindent();') . '</div>' : '') .
+			'</td>	</tr>
         </table></td></tr></table>';
 		$znr = -1;
 		$wepos = "";
