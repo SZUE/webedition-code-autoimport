@@ -1570,7 +1570,22 @@ if(window.onload) {
 			/**
 			 * Editor font settings
 			 */
-			$_template_fonts = array('Arial', 'Courier', 'Courier New', 'Helvetica', 'Monaco', 'Mono', 'Tahoma', 'Verdana', 'serif', 'sans-serif', 'none');
+			$_template_fonts = array(
+				'Andale Mono',
+				'Consolas',
+				'Courier New',
+				'DejaVu Sans Mono',
+				'Droid Sans Mono',
+				'Helvetica',
+				'Inconsolata',
+				'Letter Gothic',
+				'Menlo',
+				'Monaco',
+				'Mono',
+				'Tahoma',
+				'Verdana',
+				'serif',
+				'sans-serif');
 			$_template_font_sizes = array(8, 9, 10, 11, 12, 14, 16, 18, 24, 32, 48, 72, -1);
 
 			$_template_editor_font_specify = (get_value('editorFontname') != '' && get_value('editorFontname') != 'none');
