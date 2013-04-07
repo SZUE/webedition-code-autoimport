@@ -618,13 +618,11 @@ switch($_SESSION['prefs']['editorMode']){
 .weSelfClose:hover:after, .cm-weSelfClose:hover:after, .weOpenTag:hover:after, .cm-weOpenTag:hover:after, .weTagAttribute:hover:after, .cm-weTagAttribute:hover:after {
 	font-family: ' . ($_SESSION['prefs']['editorTooltipFont'] && $_SESSION['prefs']['editorTooltipFontname'] ? $_SESSION['prefs']['editorTooltipFontname'] : 'sans-serif') . ';
 	font-size: ' . ($_SESSION['prefs']['editorTooltipFont'] && $_SESSION['prefs']['editorTooltipFontsize'] ? $_SESSION['prefs']['editorTooltipFontsize'] : '12') . 'px;
-	line-height: ' . ($_SESSION['prefs']['editorTooltipFont'] && $_SESSION['prefs']['editorTooltipFontsize'] ? $_SESSION['prefs']['editorTooltipFontsize'] * 1.5 : '18') . 'px;
 }
 
-.CodeMirror{
-	font-family: ' . ($_SESSION['prefs']['editorFont'] && $_SESSION['prefs']['editorFontname'] ? $_SESSION['prefs']['editorFontname'] : 'monospace') . ';
-	font-size: ' . ($_SESSION['prefs']['editorFont'] && $_SESSION['prefs']['editorFontsize'] ? $_SESSION['prefs']['editorFontsize'] : '12') . 'px;
-	line-height: ' . ($_SESSION['prefs']['editorTooltipFont'] && $_SESSION['prefs']['editorTooltipFontsize'] ? $_SESSION['prefs']['editorTooltipFontsize'] * 1.5 : '18') . 'px;
+.CodeMirror, .CodeMirror.cm-s-ambiance, .CodeMirror.cm-s-solarized {
+	font-family: ' . ($_SESSION['prefs']['editorFont'] && $_SESSION['prefs']['editorFontname'] ? $_SESSION['prefs']['editorFontname'] : 'monospace') . ' !important;
+	font-size: ' . ($_SESSION['prefs']['editorFont'] && $_SESSION['prefs']['editorFontsize'] ? $_SESSION['prefs']['editorFontsize'] : '12') . 'px !important;
 }
 
 ' . ($_SESSION['prefs']['editorShowTab'] ? '
@@ -637,7 +635,7 @@ switch($_SESSION['prefs']['editorMode']){
 var CMoptions = { //these are the CodeMirror options
 	mode: "' . $mode . '",
 	enterMode: "indent",
-	electricChars: true,
+	electricChars: false,
 	theme: "' . $_SESSION['prefs']['editorTheme'] . '",
 	lineNumbers: ' . ($_SESSION['prefs']['editorLinenumbers'] ? 'true' : 'false') . ',
 	gutter: true,

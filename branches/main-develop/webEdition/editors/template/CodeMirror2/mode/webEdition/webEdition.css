@@ -17,48 +17,112 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
 */
 
-.weTag, .cm-weTag {
+
+
+/* Editorfenster */
+.CodeMirror {
+	position: relative;
+	border: solid 1px #afb0af;
+	background-color: white;
+	color: black;
+	line-height: 1.4em !important;
+}
+
+/* we:tags */
+.CodeMirror .weTag,
+.CodeMirror .cm-weTag {
 	font-weight: bold;
 	color: #4d7dbc;
 }
 
-.weTagAttribute, .cm-weTagAttribute {}
-
-.CodeMirror {
-	position: relative;
-	z-index: 5;
-	color: black;
-	background: white;
-	border: solid 1px #afb0af;
+/* Suchbegriffe */
+.CodeMirror .searched {
+	background-color: #859900;
+	color: white !important;
 }
 
-.activeline, .CodeMirror-linebackground {
-	background: #f8f8f8;
+/* Aktiver Suchbegriff */
+.CodeMirror .searchedHighlight {
+	background-color: #d33682 ;
+	color: white !important;
 }
 
-.CodeMirror-selected {
-	background: #dce7f1 !important;
-}
-
-.searched {
-	background: yellow;
-}
-
-.searchedHighlight {
-	background: yellow;
-	border: 1px solid black;
-}
-
-.weSelfClose:hover:after, .cm-weSelfClose:hover:after, .weOpenTag:hover:after, .cm-weOpenTag:hover:after, .weTagAttribute:hover:after, .cm-weTagAttribute:hover:after {
+/* Tooltips */
+.CodeMirror .weSelfClose:hover:after,
+.CodeMirror .cm-weSelfClose:hover:after,
+.CodeMirror .weOpenTag:hover:after,
+.CodeMirror .cm-weOpenTag:hover:after,
+.CodeMirror .weTagAttribute:hover:after,
+.CodeMirror .cm-weTagAttribute:hover:after {
 	position: absolute;
-	z-index: 10;
+	margin-top: -6px;
+	padding: 5px 10px;
+	max-width: 30em;
+	background-color: rgba(0, 0, 0, 0.8);
+	border-radius: 5px;
 	white-space: normal;
-	max-width: 40em;
-	background: rgba(0, 0, 0, 0.85);
-	padding: 3px 7px;
-	color: white;
+	line-height: 1.3em;
 	font-weight: normal;
-	border-radius: 3px;
-	margin-left: 7px;
-	margin-top: -3px;
+	color: white;
+}
+
+/* Zeilenhöhe von .CodeMirror erben */
+.CodeMirror span.cm-keyword,
+.CodeMirror span.cm-comment,
+.CodeMirror span.cm-meta,
+.CodeMirror span.cm-builtin,
+.CodeMirror span.cm-special {
+	line-height: inherit !important;
+}
+
+/* Aktive Zeile in hellen Themes */
+.CodeMirror.cm-s-default   div.activeline,
+.CodeMirror.cm-s-eclipse   div.activeline,
+.CodeMirror.cm-s-elegant   div.activeline,
+.CodeMirror.cm-s-neat      div.activeline,
+.CodeMirror.cm-s-solarized div.activeline,
+.CodeMirror.cm-s-xq-light  div.activeline {
+	background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* Aktive Zeile in dunklen Themes */
+.CodeMirror.cm-s-ambiance    div.activeline,
+.CodeMirror.cm-s-blackboard  div.activeline,
+.CodeMirror.cm-s-cobalt      div.activeline,
+.CodeMirror.cm-s-erlang-dark div.activeline,
+.CodeMirror.cm-s-lesser-dark div.activeline,
+.CodeMirror.cm-s-midnight    div.activeline,
+.CodeMirror.cm-s-monokai     div.activeline,
+.CodeMirror.cm-s-night       div.activeline,
+.CodeMirror.cm-s-rubyblue    div.activeline,
+.CodeMirror.cm-s-twilight    div.activeline,
+.CodeMirror.cm-s-vibrant-ink div.activeline,
+.CodeMirror.cm-s-xq-dark     div.activeline {
+	background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Markierter Text in hellen Themes */
+.CodeMirror.cm-s-default   div.CodeMirror-selected,
+.CodeMirror.cm-s-eclipse   div.CodeMirror-selected,
+.CodeMirror.cm-s-elegant   div.CodeMirror-selected,
+.CodeMirror.cm-s-neat      div.CodeMirror-selected,
+.CodeMirror.cm-s-solarized div.CodeMirror-selected,
+.CodeMirror.cm-s-xq-light  div.CodeMirror-selected {
+	background-color: #d2dde7;
+}
+
+/* Anpassungen für solarized.css */
+.CodeMirror.cm-s-solarized {
+	background-color: #fdf6e3;
+	color: #657b83;
+	box-shadow: none;
+}
+.CodeMirror.cm-s-solarized div.CodeMirror-gutters {
+	padding: 0px 10px 30px 0px;
+	background-color: #eee8d5;
+	border-color: #afb0af;
+	box-shadow: none;
+}
+.CodeMirror.cm-s-solarized span.cm-tab:before {
+	content: none;
 }
