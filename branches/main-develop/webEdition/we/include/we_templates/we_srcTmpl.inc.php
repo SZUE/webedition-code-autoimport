@@ -172,15 +172,17 @@ switch($_SESSION['prefs']['editorMode']){
 					document.getElementById("bodydiv").style.display = "block";
 					editor = CodeMirror.fromTextArea(document.getElementById("editarea"), CMoptions);
 					sizeEditor();
-					//highlight current line
-					hlLine = editor.addLineClass(0, "background", "activeline");
-					editor.on("cursorActivity", function() {
-						var cur = editor.getLineHandle(editor.getCursor().line);
-						if (cur != hlLine) {
-							editor.removeLineClass(hlLine, "background", "activeline");
-							hlLine = editor.addLineClass(cur, "background", "activeline");
-						}
-					});
+		<?php if($_SESSION['prefs']['editorHighlightCurrentLine']){ ?>
+						//highlight current line
+						hlLine = editor.addLineClass(0, "background", "activeline");
+						editor.on("cursorActivity", function() {
+							var cur = editor.getLineHandle(editor.getCursor().line);
+							if (cur != hlLine) {
+								editor.removeLineClass(hlLine, "background", "activeline");
+								hlLine = editor.addLineClass(cur, "background", "activeline");
+							}
+						});
+		<?php } ?>
 					editor.on("change", function() {
 						//this wil save content from CodeMirror2 to our original <textarea>.
 						var currentTemplateCode = editor.getValue().replace(/\r/g, "\n");

@@ -149,10 +149,13 @@
 	box-shadow: none;
 }
 .CodeMirror.cm-s-solarized div.CodeMirror-gutters {
-	padding: 0px 10px 30px 0px;
+	padding: 0px 1px 30px 0px;
 	background-color: #eee8d5;
 	border-color: #afb0af;
 	box-shadow: none;
+}
+.CodeMirror.cm-s-solarized div.CodeMirror-lines {
+	padding-left: 0px;
 }
 .CodeMirror.cm-s-solarized span.cm-tab:before {
 	content: none;

@@ -76,7 +76,7 @@
 }
 
 .cm-s-solarized-dark .CodeMirror-gutters {
-  padding: 0px 10px 30px 0px;
+  padding: 0px 1px 30px 0px;
   border-right: 1px solid;
   background-color: #073642;
   border-color: #00232c;
@@ -91,7 +91,7 @@
 }
 
 .cm-s-solarized-dark .CodeMirror-lines {
-  padding-left: 5px;
+  padding-left: 0px;
 }
 
 .cm-s-solarized-dark .CodeMirror-lines .CodeMirror-cursor {
