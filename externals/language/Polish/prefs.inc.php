@@ -93,6 +93,7 @@ $l_prefs=array(
 	'editor_fontsize'=>'Wielkość',
 	'editor_font'=>'Czcionka w edytorze',
 	'editor_font_colors'=>'Specify font colors',
+	'editor_highlightLine'=>'highlight current line',
 	'editor_highlight_colors'=>'Highlighting colors',
 	'editor_html_attribute_font_color'=>'HTML attributes',
 	'editor_html_tag_font_color'=>'HTML tags',

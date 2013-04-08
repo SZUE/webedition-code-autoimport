@@ -93,6 +93,7 @@ $l_prefs=array(
 	'editor_fontsize'=>'Größe',
 	'editor_font'=>'Schrift im Editor',
 	'editor_font_colors'=>'Schriftfarben spezifizieren',
+	'editor_highlightLine'=>'aktuelle Zeile hervorheben',
 	'editor_highlight_colors'=>'Highlighting-Farben',
 	'editor_html_attribute_font_color'=>'HTML-Attribute',
 	'editor_html_tag_font_color'=>'HTML-Tags',

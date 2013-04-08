@@ -93,6 +93,7 @@ $l_prefs=array(
 	'editor_fontsize'=>'Taille',
 	'editor_font'=>'Police dans l`editeur',
 	'editor_font_colors'=>'Définir les couleurs des polices',
+	'editor_highlightLine'=>'highlight current line',
 	'editor_highlight_colors'=>'Highlighting colors',
 	'editor_html_attribute_font_color'=>'Attributs HTML',
 	'editor_html_tag_font_color'=>'Tags HTML',

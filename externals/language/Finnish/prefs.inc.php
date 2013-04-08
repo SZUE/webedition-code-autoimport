@@ -93,6 +93,7 @@ $l_prefs=array(
 	'editor_fontsize'=>'Koko',
 	'editor_font'=>'Editorin kirjasin',
 	'editor_font_colors'=>'Määrittele fontin värit',
+	'editor_highlightLine'=>'highlight current line',
 	'editor_highlight_colors'=>'Highlighting colors',
 	'editor_html_attribute_font_color'=>'HTML määreet',
 	'editor_html_tag_font_color'=>'HTML tagit',
