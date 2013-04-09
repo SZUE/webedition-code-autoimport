@@ -148,9 +148,9 @@ for($_i = 0; $_i < count($_replacement); $_i++){
 }
 
 $_applet_code = we_html_element::htmlApplet(array(
-		'name' => "spellchecker",
-		'code' => "com/livinge/spellchecker/swing/DictEditor.class",
-		'archive' => "lespellchecker.jar",
+		'name' => 'spellchecker',
+		'code' => 'com/livinge/spellchecker/swing/DictEditor.class',
+		'archive' => 'lespellchecker.jar',
 		'codebase' => getServerUrl() . WE_SPELLCHECKER_MODULE_DIR,
 		'width' => 400,
 		'height' => 220,
@@ -245,7 +245,7 @@ $_applet_code2 = we_html_element::htmlApplet(array(
 
 	function setAppletCode() {
 		if(!appletActiv) {
-			document.getElementById('appletPanel').innerHTML = '<?php print addslashes($_applet_code) ?>';
+			document.getElementById('appletPanel').innerHTML = '<?php echo addcslashes(str_replace("\n", '', $_applet_code),'\''); ?>';
 		}
 		appletActiv = true;
 		setTimeout("checkApplet()",2000);
@@ -256,7 +256,7 @@ $_applet_code2 = we_html_element::htmlApplet(array(
 
 		setVisible("updateBut_"+dict,false);
 		setVisible("updateIcon_"+dict,true);
-		document.getElementById('appletPanel2').innerHTML = '<?php print addslashes($_applet_code2) ?>';
+		document.getElementById('appletPanel2').innerHTML = '<?php echo addcslashes(str_replace("\n", '', $_applet_code2),'\''); ?>';
 		setTimeout("selectDict(\""+dict+"\")",1000);
 	}
 
@@ -264,7 +264,7 @@ $_applet_code2 = we_html_element::htmlApplet(array(
 
 		setVisible("updateBut_"+dict,false);
 		setVisible("updateIcon_"+dict,true);
-		document.getElementById('appletPanel2').innerHTML = '<?php print addslashes($_applet_code2) ?>';
+		document.getElementById('appletPanel2').innerHTML = '<?php echo addcslashes(str_replace("\n", '', $_applet_code2),'\'');  ?>';
 		setTimeout("selectDict(\""+dict+"\")",1000);
 	}
 
@@ -348,9 +348,9 @@ $_applet_code2 = we_html_element::htmlApplet(array(
 	<div style="left:0px;height:40px;background-image: url(<?php echo IMAGE_DIR; ?>edit/editfooterback.gif);position:absolute;bottom:0px;width:100%"><div align="right" style="padding: 10px 10px 0 0;"><?php echo $_button; ?></div></div>
 
 
-	<iframe name="hiddenCmd" id="hiddenCmd" style="position: absolute; left:0px; top:800px; display: block; border: 0px; width: 0px; height 0px;" src="<?php print WE_SPELLCHECKER_MODULE_DIR . 'weSpellcheckerCmd.php'; ?>"></iframe>
+	<iframe name="hiddenCmd" id="hiddenCmd" style="position: absolute; left:0px; top:800px; display: block; border: 0px; width: 0px; height: 0px;" src="<?php print WE_SPELLCHECKER_MODULE_DIR . 'weSpellcheckerCmd.php'; ?>"></iframe>
 
-	<div id="appletPanel2" style="position: absolute; left:0px; top:900px; display: block; border: 0px; width: 0px; height 0px;">
+	<div id="appletPanel2" style="position: absolute; left:0px; top:900px; display: block; border: 0px; width: 0px; height: 0px;">
 	</div>
 
 </body>
