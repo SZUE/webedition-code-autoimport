@@ -113,7 +113,7 @@ class weNavigationItem{
 				break;
 
 			// #6916
-			case OBJECT_FILES_TABLE:
+			case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
 				$__id = $this->docid;
 				$_v = f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($__id) . ' AND Published>0', 'ID', $db);
 				$this->visible = !empty($_v) ? 'true' : 'false';
@@ -209,7 +209,7 @@ class weNavigationItem{
 		}
 
 		switch($this->table){
-			case OBJECT_FILES_TABLE:
+			case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
 				if(isset($GLOBALS['we_obj'])){
 					$id = $GLOBALS['we_obj']->ID;
 				}
