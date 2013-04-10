@@ -1693,8 +1693,8 @@ if(window.onload) {
 			$_template_editor_tooltip_font_select_box->selectOption($_template_editor_tooltip_font_specify ? get_value('editorTooltipFontname') : 'Tahoma');
 
 			$_template_editor_tooltip_font_sizes_select_box = new we_html_select(array('class' => 'weSelect editor editor_codemirror2', 'name' => 'newconf[editorTooltipFontsize]', 'size' => 1, 'style' => 'width: 135px;', ($_template_editor_tooltip_font_size_specify ? 'enabled' : 'disabled') => ($_template_editor_tooltip_font_size_specify ? 'enabled' : 'disabled')));
-
-			foreach($_template_font_sizes as $sz){
+			$template_toolfont_sizes = array(10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 - 1);
+			foreach($template_toolfont_sizes as $sz){
 				$_template_editor_tooltip_font_sizes_select_box->addOption($sz, $sz);
 			}
 			$_template_editor_tooltip_font_sizes_select_box->selectOption($_template_editor_tooltip_font_specify ? get_value("editor_tooltip_font_size") : 11);
@@ -1710,7 +1710,7 @@ if(window.onload) {
 				we_html_element::jsElement('
 var detective = new Detector();
 var elements=document.getElementsByName("newconf[editorFontname]")[0].children;
-var elements2=document.getElementsByName("newconf[editorTooltipFontsize]")[0].children;
+var elements2=document.getElementsByName("newconf[editorTooltipFontname]")[0].children;
 for(i=0;i<elements.length; ++i){
 	if(!detective.detect(elements[i].value)){
 		elements[i].disabled="disabled";
