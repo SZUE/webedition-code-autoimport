@@ -1,6 +1,12 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_weTag=array(
+	'DID'=>array(
+		'description'=>'Deze tag stuurt het ID terug van een webEdition document.',
+	),
+	'a'=>array(
+		'description'=>'De we:a tag creeert een HTML link tag die refereert aan een intern webEdition document met onderstaand ID. De tag koppelt alle content tussen de start tag en de eind tag.',
+	),
 	'addDelNewsletterEmail'=>array(
 		'description'=>'Deze tag wordt gebuikt om een e-mail adres toe te voegen of te verwijderen uit een nieuwsbrief lijst. In het attribuut &quot;path&quot moet het complete pad naar de nieuwsbrief lijst gegeven worden. Wanneer het pad begint zonder &quot;/&quot; zal het pad voortkomen uit de DOCUMENT_ROOT. Wanneer u meerdere lijsten gerbuikt, kunt u meerdere paden opgeven, gescheiden door een komma',
 	),
@@ -15,9 +21,6 @@ $l_weTag=array(
 	),
 	'author'=>array(
 		'description'=>'De we:author tag toont de maker van het document. Wanneer het attribuut `type` niet ingevuld is, wordt de gebruikersnaam getoont. Wanneer type=&quot;name&quot;, worden de voor- en achter naam van de gebruiker getoont. Wanneer `type=&quot;initials&quot;, worden de initialen van de gebruiker getoond. Indien er geen voor- of achter naam is ingevoerd, wordt de gebruikersnaam getoond.',
-	),
-	'a'=>array(
-		'description'=>'De we:a tag creeert een HTML link tag die refereert aan een intern webEdition document met onderstaand ID. De tag koppelt alle content tussen de start tag en de eind tag.',
 	),
 	'back'=>array(
 		'description'=>'De we:back tag creeert een HTML link tag die refereert aan de vorige we:listview pagina. De tag koppelt alle content tussen de start tag en de eind tag.',
@@ -103,9 +106,6 @@ $l_weTag=array(
 	'description'=>array(
 		'description'=>'De we:description tag genereert de HTML meta tag `omschrijving`. Als het omschrijvingsveld in het Eigenschappen venster leeg is, dan zal de inhoud tussen de begin en eind tag worden gebruikt als standaard omschrijving.',
 	),
-	'DID'=>array(
-		'description'=>'Deze tag stuurt het ID terug van een webEdition document.',
-	),
 	'docType'=>array(
 		'description'=>'Deze tag stuurt het document type terug van een webEdition document.',
 	),
@@ -118,14 +118,14 @@ $l_weTag=array(
 	'flashmovie'=>array(
 		'description'=>'Met de we:flashmovie tag is het mogelijk een Flash film in een document in te voegen. Documenten die gebaseerd zijn op dit sjabloon, bevatten in de wijzig modus een wijzig knop. Wanneer u op deze knop drukt zal er een venster openen, waarbinnen u een Flash film kan kiezen die zich reeds binnen webEdition bevindt.',
 	),
+	'form'=>array(
+		'description'=>'De we:form tag wordt gebruikt voor zoek en e-mail formulieren. Het werkt hetzelfde als de normale HTML formulier tag, maar geeft de parser de mogelijkheid om extra verborgen velden toe te voegen.',
+	),
 	'formfield'=>array(
 		'description'=>'De we:formfield tag wordt gebruikt om een veld te generen aan de voorkant van de site.',
 	),
 	'formmail'=>array(
 		'description'=>'With activated Setting Call Formmail via webEdition document, the integration of the formmail script is realized with a webEdition document. For this, the (currently without attributes) we-Tag formmail will be used. <br/>Indien de Captcha-controle gebruitk wordt, bevind &lt;we:formmail/&gt; zich binnen de we-Tag ifCaptcha.',
-	),
-	'form'=>array(
-		'description'=>'De we:form tag wordt gebruikt voor zoek en e-mail formulieren. Het werkt hetzelfde als de normale HTML formulier tag, maar geeft de parser de mogelijkheid om extra verborgen velden toe te voegen.',
 	),
 	'hidden'=>array(
 		'description'=>'De we:hidden tag creëert een verborgen input tag die de globale PHP variabelen met dezelfde naam bevat. Gebruik deze tag als u inkomende variabelen wilt doorsturen.',
@@ -142,9 +142,6 @@ $l_weTag=array(
 	'ifBack'=>array(
 		'description'=>'De we:if_back tag wordt gebruikt tussen de begin en de eind tags van &lt;we:listview&gt;. Alles binnen de begin en de eind tags van deze tag wordt getoond als er een `vorige` pagina is. Bijv. U kunt de tag gebruiken op de tweede pagina van een listview met 20 onderdelen, en bijv. 5 onderdelen per pagina.',
 	),
-	'ifbannerexists'=>array(
-		'description'=>'Executes the enclosed code only, if the banner module is not deaktivated (settings dialog).',
-	),
 	'ifCaptcha'=>array(
 		'description'=>'Content omsloten door deze tag wordt alleen weergegeven indien de juiste code is ingevoerd door de gebruiker.',
 	),
@@ -159,9 +156,6 @@ $l_weTag=array(
 	),
 	'ifCurrentDate'=>array(
 		'description'=>'Deze tag belicht de huidige dag binnen een kalender listview.',
-	),
-	'ifcustomerexists'=>array(
-		'description'=>'Executes the enclosed code only, if the customer module is not deaktivated (settings dialog).',
 	),
 	'ifDeleted'=>array(
 		'description'=>'Content binnen de begin tag en de eind tag wordt alleen getoond als een specifiek document of object verwijderd is met gebruik van &lt;we:delete/&gt;',
@@ -244,17 +238,14 @@ $l_weTag=array(
 	'ifMale'=>array(
 		'description'=>'Content omsloten door deze tag wordt alleen getoond indien de gebruiker mannelijk is. Deze tag wordt gebruikt voor de aanhef in nieuwsbrieven.',
 	),
-	'ifnewsletterexists'=>array(
-		'description'=>'Executes the enclosed code only, if the newsletter module is not deaktivated (settings dialog).',
+	'ifNew'=>array(
+		'description'=>'omsloten door deze tag wordt alleen getoond in een nieuw webEdition document of object.',
 	),
 	'ifNewsletterSalutationEmpty'=>array(
 		'description'=>'Content enclosed by this tag is only displayed within a newsletter, if the salutation field defined in type is empty.',
 	),
 	'ifNewsletterSalutationNotEmpty'=>array(
 		'description'=>'Content enclosed by this tag is only displayed within a newsletter, if the salutation field defined in type is not empty.',
-	),
-	'ifNew'=>array(
-		'description'=>'omsloten door deze tag wordt alleen getoond in een nieuw webEdition document of object.',
 	),
 	'ifNext'=>array(
 		'description'=>'Content omsloten door deze tag wordt alleen getoond indien er een volgende pagina met items beschikbaar is in een &lt;we:listview&gt;',
@@ -304,11 +295,11 @@ $l_weTag=array(
 	'ifNotHtmlMail'=>array(
 		'description'=>'Content omsloten door deze tag wordt alleen getoond in een HTML nieuwsbrief document.',
 	),
-	'ifNotNewsletterSalutation'=>array(
-		'description'=>'Content enclosed by this tag is only displayed within a newsletter, if the salutation field defined in type is not equal to match.',
-	),
 	'ifNotNew'=>array(
 		'description'=>'Content omsloten door deze tag wordt alleen getoond in een oud webEdition document of object.',
+	),
+	'ifNotNewsletterSalutation'=>array(
+		'description'=>'Content enclosed by this tag is only displayed within a newsletter, if the salutation field defined in type is not equal to match.',
 	),
 	'ifNotObjectLanguage'=>array(
 		'description'=>'The tag we:ifNotObjectLanguage tests on the language setting in the properties tab of the object, several values can be separated by comma (OR relation). The possible values are taken from the general properties dialog, tab languages',
@@ -394,9 +385,6 @@ $l_weTag=array(
 	'ifObject'=>array(
 		'description'=>'Content omsloten door deze tag wordt alleen getoond als de individuele invoer gevonden door &lt;we:listview type="search"&gt; een object is.',
 	),
-	'ifobjektexists'=>array(
-		'description'=>'Executes the enclosed code only, if the object module is not deaktivated (settings dialog).',
-	),
 	'ifPageLanguage'=>array(
 		'description'=>'The tag we:ifPageLanguage tests on the language setting in the properties tab of the document, several values can be separated by comma (OR relation). The possible values are taken from the general properties dialog, tab languages',
 	),
@@ -426,9 +414,6 @@ $l_weTag=array(
 	),
 	'ifShopEmpty'=>array(
 		'description'=>'Alles tussen de begin- en eind tag wordt getoond als de winkelmand leeg is.',
-	),
-	'ifshopexists'=>array(
-		'description'=>'Executes the enclosed code only, if the shop module is not deaktivated (settings dialog).',
 	),
 	'ifShopFieldEmpty'=>array(
 		'description'=>'Content enclosed by this tag is only displayed if the shopField named in attribute "name" is empty.',
@@ -496,9 +481,6 @@ $l_weTag=array(
 	'ifVote'=>array(
 		'description'=>'Alles tussen de begin- en eind tag wordt alleen getoond indien de peiling succesvol is bewaard.',
 	),
-	'ifvotingexists'=>array(
-		'description'=>'Executes the enclosed code only, if the voting module is not deaktivated (settings dialog).',
-	),
 	'ifVotingFieldEmpty'=>array(
 		'description'=>'Checks if a votingField is empty, the attribute combinations of name and type are the same as in the we:votingField tag',
 	),
@@ -520,6 +502,24 @@ $l_weTag=array(
 	'ifWritten'=>array(
 		'description'=>'Content omsloten door deze tag is alleen beschikbaar indien het schrijf proces van een webEdition document of object succesvol was. Zie &lt;we:write&gt;.',
 	),
+	'ifbannerexists'=>array(
+		'description'=>'Executes the enclosed code only, if the banner module is not deaktivated (settings dialog).',
+	),
+	'ifcustomerexists'=>array(
+		'description'=>'Executes the enclosed code only, if the customer module is not deaktivated (settings dialog).',
+	),
+	'ifnewsletterexists'=>array(
+		'description'=>'Executes the enclosed code only, if the newsletter module is not deaktivated (settings dialog).',
+	),
+	'ifobjektexists'=>array(
+		'description'=>'Executes the enclosed code only, if the object module is not deaktivated (settings dialog).',
+	),
+	'ifshopexists'=>array(
+		'description'=>'Executes the enclosed code only, if the shop module is not deaktivated (settings dialog).',
+	),
+	'ifvotingexists'=>array(
+		'description'=>'Executes the enclosed code only, if the voting module is not deaktivated (settings dialog).',
+	),
 	'img'=>array(
 		'description'=>'De we:img tag is vereist om een afbeelding te plaatsen in de content van de pagina. In de Wijzig modus is een wijzig knop zichtbaar. Wanneer u op de knop drukt opent de bestandsmanager, waarmee u een afbeelding kunt selecteren binnen webEdition. Als de attributen `width`, `height`, `border`, `hspace`, `vspace`, `alt`, of `align` zijn ingesteld, worden deze gebruikt voor de afbeelding. Anders zijn de opgegeven instellingen van kracht. Als het attribuut ID is ingesteld, wordt de afbeelding gebruikt met dit ID, indien er geen andere afbeelding is geselecteerd. Het attribuut `showimage` geeft de mogelijkheid om de afbeelding te verbergen in de Wijzig modus, slechts de aanpas knoppen zijn zichtbaar. Met `showinputs` kunnen de invoer velden voor `alt` en `titel` gedeactiveerd worden.',
 	),
@@ -535,14 +535,17 @@ $l_weTag=array(
 	'keywords'=>array(
 		'description'=>'De we:keywords tag genereert een keywords meta teg. Als het keywords veld in de &quot;Eigenschappen&quot; weergave leeg is, wordt de content tussen de begin tag en de eind tag gebruikt als standaard keywords. Anders worden de keywords van de Eigenschappen weergave ingevoerd.',
 	),
-	'linklist'=>array(
-		'description'=>'De we:linklist tag wordt gebruikt om koppeling lijsten aan te maken. Een `plus` knop is zichtbaar in de Wijzig modus. Wanneer u op de knop drukt komt er een nieuwe link bij in de lijst. De uitstraling van de link list wordt bepaald door de gebruikte HTML in de link list en het gebruik van `we:prelink` en `we:postlink`  tussen  <we:link> en </we:link>. Alle koppelingen kunnen worden verwijderd met een verwijder knop en gewijzigd worden met  wijzig knop.',
-	),
 	'linkToSeeMode'=>array(
 		'description'=>'Deze tag genereert een koppeling die het geselecteerde document opent in de seeMode.',
 	),
 	'link'=>array(
 		'description'=>'De we:link tag creeert een enkele koppeling welke gewijzigd kan worden door middel van de `wijzig` knop. De `name` attribuut mag niet gespecificeerd worden tussen de we:linklist begin tag en eind tag. De `name` attribuut moet gespecificeerd worden buiten de we:linklist tags. `only` geeft de mogelijkheid om één enkel attribuut (only=`attribuut naam`) van de koppeling of alleen de content (only=`content`) van de koppeling op te vragen.',
+	),
+	'linklist'=>array(
+		'description'=>'De we:linklist tag wordt gebruikt om koppeling lijsten aan te maken. Een `plus` knop is zichtbaar in de Wijzig modus. Wanneer u op de knop drukt komt er een nieuwe link bij in de lijst. De uitstraling van de link list wordt bepaald door de gebruikte HTML in de link list en het gebruik van `we:prelink` en `we:postlink`  tussen  <we:link> en </we:link>. Alle koppelingen kunnen worden verwijderd met een verwijder knop en gewijzigd worden met  wijzig knop.',
+	),
+	'list'=>array(
+		'description'=>'De we:list tag geeft u de mogelijkheid om expandable lists te maken. Alles binnen de begin tag en de eind tag wordt ingevoerd (alle HTML en bijna alle we:tags) als u op de `plus` knop drukt in de Wijzig modus.',
 	),
 	'listdir'=>array(
 		'description'=>'De we:listdir tag creëert  een nieuwe lijst die alle bestanden in dezelfde directory toont. In het attribuut `field` kunt u bepalen welk veld getoond moet worden. Als het veld leeg is of niet bestaat, wordt de bestandsnaam gebruikt. Directories worden doorzocht op index bestanden; indien er een index bestand is, wordt deze getoond. Welk veld er gebruikt moet worden om directories te tonen kunt u bepalen in het attribuut `dirfield`. Als het veld leeg is of niet bestaat, wordt de invoer van `field` respectief tot de naam van het bestand gebruikt. Als het attribuut `id` ingesteld is worden de bestanden of de directory met het aangegeven ID getoond.',
@@ -564,9 +567,6 @@ $l_weTag=array(
 	),
 	'listview'=>array(
 		'description'=>'De we:listview tag is de begin tag en de eind tag van automatisch gegenereerde lijsten (nieuwspagina overzichten etc.).',
-	),
-	'list'=>array(
-		'description'=>'De we:list tag geeft u de mogelijkheid om expandable lists te maken. Alles binnen de begin tag en de eind tag wordt ingevoerd (alle HTML en bijna alle we:tags) als u op de `plus` knop drukt in de Wijzig modus.',
 	),
 	'master'=>array(
 		'description'=>'Used inside a template which has a master template. The content between start and endtag is inserted in the master template where we:content is defined. The link between master and content is made via the name attribute.<br/><br/>Content which is not encapsulated in a master tag is inserted in the master-template where we:conent is defined without a name.',
@@ -614,11 +614,11 @@ $l_weTag=array(
 	'object'=>array(
 		'description'=>'De we:object tag wordt gebruikt om objecten te tonen. De velden van een object kunnen getoond worden met de we:field tags binnen de begin tag en de eind tag. Als slechts het attribuut `name` is ingevoerd voor een object, of als deze een waarde heeft, wordt de object kiezer getoond in de Wijzig modus, en heeft de editor de keuze alle objecten te selecteren uit alle classen. Waneer ook het attribuut `classid` een waarde heeft, wordt de selectie in de object kiezer beperkt tot alle objecten gerelateerd aan de in `classid` gedefinieerde class. Met het attribuut `id` kunt u een voorselectie definiëren van een specifiek object gedefinieerd door `classid` en `id`. Het attribuut `triggerid` wordt gebruikt om dynamische pagina`s  te tonen in een statische object listview.',
 	),
-	'orderitem'=>array(
-		'description'=>'Using this tag, one can display a single item on an order on a webEdition page. Similar to the Listview or the <we:object> tag, the fields are displayed with the <we:field> tag.',
-	),
 	'order'=>array(
 		'description'=>'Using this tag, one can display an order on a webEdition page. Similar to the Listview or the <we:object> tag, the fields are displayed with the <we:field> tag.',
+	),
+	'orderitem'=>array(
+		'description'=>'Using this tag, one can display a single item on an order on a webEdition page. Similar to the Listview or the <we:object> tag, the fields are displayed with the <we:field> tag.',
 	),
 	'pageLanguage'=>array(
 		'description'=>'Shows the language of the document',
@@ -650,11 +650,11 @@ $l_weTag=array(
 	'quicktime'=>array(
 		'description'=>'De we:quicktime tag geeft de mogelijkheid een QuickTime film in te voegen in de content van een document. Documenten gebasseerd op dit sjabloon bevatten een Wijzig knop in de Wijzig modus. Wanneer u op deze knop drukt, opent u de Bestands manager waarmee u een QuickTime film kunt selecteren binnen webEdition. Er bestaat nog geen xhtml-valid output die werkt in gebruikelijke browsers (IE, Mozilla). Daarom staat xml altijd op `false`',
 	),
-	'registeredUser'=>array(
-		'description'=>'De we:registeredUser tag wordt gebruikt om klant data, opgeslagen in de klant module, te printen.',
-	),
 	'registerSwitch'=>array(
 		'description'=>'Deze tag genereert een switch waarmee u kan schakelen tussen de status van een geregistreerde en een ongeregistreerde gebruiker in de edit-mode. Indien u de &lt;we:ifRegisteredUser&gt; en &lt;we:ifNotRgisteredUser&gt; tags gebruikt, deze tag geeft de mogelijkheid veschillende weergaven te zien en controle te houden over de lay-out.',
+	),
+	'registeredUser'=>array(
+		'description'=>'De we:registeredUser tag wordt gebruikt om klant data, opgeslagen in de klant module, te printen.',
 	),
 	'repeatShopItem'=>array(
 		'description'=>'Deze tag toont alle artikelen in de winkelmand.',
@@ -732,11 +732,11 @@ $l_weTag=array(
 	'url'=>array(
 		'description'=>'De we:url tag creëert een interne webEdition URL die refereert aan het document met onderstaand ID.',
 	),
-	'userInput'=>array(
-		'description'=>'De we:userInput tag creërt invoervelden voor gebruik met we:form type=&quot;document&quot; of type=&quot;object&quot; om documenten of objecten aan te kunnen maken.',
-	),
 	'useShopVariant'=>array(
 		'description'=>'De we:shopVariant tag gebruikt de gegevens van een artikel variant a.d.h.v. de opgegeven naam van de variant. Indien er geen variant bestaat met de opgegeven naam wordt het standaard artikel getoond.',
+	),
+	'userInput'=>array(
+		'description'=>'De we:userInput tag creërt invoervelden voor gebruik met we:form type=&quot;document&quot; of type=&quot;object&quot; om documenten of objecten aan te kunnen maken.',
 	),
 	'var'=>array(
 		'description'=>'De we:var tag toont de inhoud van een globaal PHP variable respectief tot de inhoud van een documentveld met onderstaande naam.',

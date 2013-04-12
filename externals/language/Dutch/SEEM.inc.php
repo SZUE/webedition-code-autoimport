@@ -8,11 +8,11 @@ $l_SEEM=array(
 	'confirm'=>array(
 		'change_to_preview'=>'Wilt u terugkeren naar de voorvertoning?',
 	),
-	'ext_document_on_other_server_selected'=>'U heeft een koppeling gekozen welke verwijst naar een document op een andere Web server.\nDeze opent in een nieuw browser venster. Doorgaan?',
 	'ext_doc'=>'Het huidige document: <b>%s</b> is <u>niet</u> aanpasbaar met webEdition.',
 	'ext_doc_not_found'=>'Kon de geselecteerde pagina <b>%s niet vinden</b>.',
 	'ext_doc_selected'=>'U heeft een koppeling geselecteerd naar een document wat niet beheerd wordt door webEdition. Doorgaan?',
 	'ext_doc_tmp'=>'Dit document was niet correct geopend door webEdition. Gebruik a.u.b. de normale website navigatie om het gewenste document te bereiken.',
+	'ext_document_on_other_server_selected'=>'U heeft een koppeling gekozen welke verwijst naar een document op een andere Web server.\nDeze opent in een nieuw browser venster. Doorgaan?',
 	'ext_form_target_other_server'=>'U staat op het punt een formulier te verzenden naar een andere Web server.\nDeze opent in een nieuw venster. Doorgaan?',
 	'ext_form_target_we_server'=>'Het formulier zal data versturen naar een document dat niet beheerd wordt door webEdition.\nDoorgaan?',
 	'info_doc_with_parameter'=>'Koppeling met parameter',

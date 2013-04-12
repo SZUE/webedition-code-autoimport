@@ -1,8 +1,8 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_thumbnails=array(
-	'add_descriptiontext'=>'Paina plus -painiketta lisätäksesi uusia esikatselukuvia.',
 	'add_description_nogdlib'=>'Käyttääksesi esikatselukuva toimintoja gd -kirjasto on asennettava palvelimella. Ota yhteyttä järjestelmän ylläpitäjään asenuspyyntöä varten.',
+	'add_descriptiontext'=>'Paina plus -painiketta lisätäksesi uusia esikatselukuvia.',
 	'create_thumbnails'=>'Luo esikatselukuvia',
 	'delete_prompt'=>'Poista esikatselukuva `%s`! Oletko varma?',
 	'format'=>'Tallennustyyppi',
@@ -22,10 +22,10 @@ $l_thumbnails=array(
 	'properties'=>'Ominaisuudet',
 	'quality'=>'Laatu',
 	'ratio'=>'Säilytä kuvasuhde',
-	'saved'=>'Asetukset on tallennettu.',
-	'saved_successfully'=>'Asetukset tallennettu',
 	'save'=>'Tallennetaan asetuksia, hetkinen ...',
 	'save_wait'=>'Tallennetaan asetuksia',
+	'saved'=>'Asetukset on tallennettu.',
+	'saved_successfully'=>'Asetukset tallennettu',
 	'thumbnails'=>'Esikatselukuvat',
 	'width'=>'Leveys',
 );

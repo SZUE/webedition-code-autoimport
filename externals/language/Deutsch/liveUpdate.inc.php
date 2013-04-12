@@ -55,9 +55,16 @@ $l_liveUpdate=array(
 		'modules'=>'Modulinstallation',
 		'nextVersion'=>'Nächste Version',
 		'register'=>'Registrieren',
-		'updatelog'=>'Protokoll',
 		'update'=>'Update',
+		'updatelog'=>'Protokoll',
 		'upgrade'=>'Update webEdition 7',
+	),
+	'update'=>array(
+		'actualVersion'=>'Installierte Version',
+		'headline'=>'Suche nach neuer Version',
+		'lastUpdate'=>'Letzte Installation',
+		'lookForUpdate'=>'Nach neuer Version suchen',
+		'neverUpdated'=>'-',
 	),
 	'updatelog'=>array(
 		'action'=>'Aktion',
@@ -72,13 +79,6 @@ $l_liveUpdate=array(
 		'noEntriesMatchFilter'=>'Mit diesen Einstellungen konnten keine Einträge gefunden werden.',
 		'page'=>'Seite',
 		'version'=>'Version',
-	),
-	'update'=>array(
-		'actualVersion'=>'Installierte Version',
-		'headline'=>'Suche nach neuer Version',
-		'lastUpdate'=>'Letzte Installation',
-		'lookForUpdate'=>'Nach neuer Version suchen',
-		'neverUpdated'=>'-',
 	),
 	'upgrade'=>array(
 		'actualVersion'=>'Installierte Version',

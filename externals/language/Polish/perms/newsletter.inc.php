@@ -6,7 +6,7 @@ $l_perms_newsletter=array(
 	'NEWSLETTER_FILES'=>'Użytkownik może wybierać pliki',
 	'NEWSLETTER_SETTINGS'=>'Użytkownik może edytować ustawienia newsletter',
 	'NEW_NEWSLETTER'=>'Użytkownik może tworzyć newsletters',
-	'perm_group_title'=>'Moduł newsletter',
 	'SEND_NEWSLETTER'=>'Użytkownik może wysyłać newsletters',
 	'SEND_TEST_EMAIL'=>'Użytkownik może wysyłać e-maile testowe',
+	'perm_group_title'=>'Moduł newsletter',
 );

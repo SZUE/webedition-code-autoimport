@@ -1,8 +1,8 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_thumbnails=array(
-	'add_descriptiontext'=>'Klik a.u.b. op de plus knop om thumbnails toe te voegen.',
 	'add_description_nogdlib'=>'The gd bibliotheek has to be installed on your server to use the thumbnail functions. Please contact your server administrator for information on this library.',
+	'add_descriptiontext'=>'Klik a.u.b. op de plus knop om thumbnails toe te voegen.',
 	'create_thumbnails'=>'Maak thumbnails aan',
 	'delete_prompt'=>'Verwijder thumbnail `%s`! Weet u het zeker?',
 	'format'=>'Uitvoer formaat',
@@ -22,10 +22,10 @@ $l_thumbnails=array(
 	'properties'=>'Eigenschappen',
 	'quality'=>'Quality',
 	'ratio'=>'Behoud aspect ratio',
-	'saved'=>'Voorkeuren zijn succesvol bewaard.',
-	'saved_successfully'=>'Voorkeuren bewaard',
 	'save'=>'Bezig met bewaren van voorkeuren, even geduld a.u.b. ...',
 	'save_wait'=>'Bezig met bewaren van voorkeuren',
+	'saved'=>'Voorkeuren zijn succesvol bewaard.',
+	'saved_successfully'=>'Voorkeuren bewaard',
 	'thumbnails'=>'Thumbnails',
 	'width'=>'Breedte',
 );

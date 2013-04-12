@@ -14,7 +14,7 @@ $l_taged=array(
 	'no_type_selected'=>'Selecteer a.u.b. eerst een type.',
 	'required'=>'Alle velden gemarkeerd met een * zijn verplicht!',
 	'select_type'=>'-- Selecteer type--',
-	'tagreference_linktext'=>'to the tag reference',
 	'tag_not_found'=>'Het vereiste bestand voor de tag-wizard is niet gevonden. Indien u gebruik maakt van een custom we:tag, zorg er dan voor dat u het bijbehorende tag-wizard bestand in de juiste map bewaard (/webEdition/we/include/we_tags/custom_tags/).',
+	'tagreference_linktext'=>'to the tag reference',
 	'type_attribute'=>'Type - Attribuut',
 );

@@ -55,9 +55,16 @@ $l_liveUpdate=array(
 		'modules'=>'Modules',
 		'nextVersion'=>'Volgende versie',
 		'register'=>'Registratie',
-		'updatelog'=>'Log',
 		'update'=>'Bijwerken',
+		'updatelog'=>'Log',
 		'upgrade'=>'webEdition 4',
+	),
+	'update'=>array(
+		'actualVersion'=>'Huidige versie',
+		'headline'=>'Zoek naar nieuwe versie',
+		'lastUpdate'=>'Laatste installatie',
+		'lookForUpdate'=>'Zoek naar update',
+		'neverUpdated'=>'-',
 	),
 	'updatelog'=>array(
 		'action'=>'Actie',
@@ -72,13 +79,6 @@ $l_liveUpdate=array(
 		'noEntriesMatchFilter'=>'Er zijn geen invoeren gevonden die passen bij het geselecteerde filter.',
 		'page'=>'pagina',
 		'version'=>'Versie',
-	),
-	'update'=>array(
-		'actualVersion'=>'Huidige versie',
-		'headline'=>'Zoek naar nieuwe versie',
-		'lastUpdate'=>'Laatste installatie',
-		'lookForUpdate'=>'Zoek naar update',
-		'neverUpdated'=>'-',
 	),
 	'upgrade'=>array(
 		'actualVersion'=>'Huidige versie',

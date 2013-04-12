@@ -8,8 +8,8 @@ $l_perms_controlpermissions=array(
 	'EDIT_SETTINGS_DEF_EXT'=>'Käyttäjä voi muuttaa tiedostojen oletuspäätteitä.',
 	'NEW_GROUP'=>'Käyttäjä voi luoda uusia ryhmiä.',
 	'NEW_USER'=>'Käyttäjä voi luoda uusia käyttäjiä.',
-	'perm_group_title'=>'Hallintaoikeudet',
 	'PUBLISH'=>'Käyttäjä voi julkaista tiedostoja.',
 	'SAVE_GROUP'=>'Käyttäjä voi tallentaa ryhmiä.',
 	'SAVE_USER'=>'Käyttäjä voi tallentaa käyttäjiä.',
+	'perm_group_title'=>'Hallintaoikeudet',
 );

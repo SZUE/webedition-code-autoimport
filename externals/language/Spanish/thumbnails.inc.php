@@ -1,8 +1,8 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_thumbnails=array(
-	'add_descriptiontext'=>'Por favor, clic en el botón + para adicionar nuevas imágenes en miniatura',
 	'add_description_nogdlib'=>'Damit Ihnen die Funktionen für Miniaturansichten zur Verfügung stehen, muß die GD Libraray auf Ihrem Server installiert sein!',
+	'add_descriptiontext'=>'Por favor, clic en el botón + para adicionar nuevas imágenes en miniatura',
 	'create_thumbnails'=>'Crear imágenes en miniatura',
 	'delete_prompt'=>'Borrar imagen en miniatura `%s`! Está Ud seguro?',
 	'format'=>'Formato de salida',
@@ -22,10 +22,10 @@ $l_thumbnails=array(
 	'properties'=>'Propiedades',
 	'quality'=>'Quality',
 	'ratio'=>'Mantener proporción de aspecto',
-	'saved'=>'Las preferencias han sido salvadas exitosamente.',
-	'saved_successfully'=>'Preferencias salvadas',
 	'save'=>'Salvando preferencias, un momento ...',
 	'save_wait'=>'Salvando preferencias',
+	'saved'=>'Las preferencias han sido salvadas exitosamente.',
+	'saved_successfully'=>'Preferencias salvadas',
 	'thumbnails'=>'Imágenes en miniatura',
 	'width'=>'Ancho',
 );

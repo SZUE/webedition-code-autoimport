@@ -55,9 +55,16 @@ $l_liveUpdate=array(
 		'modules'=>'Moduulit',
 		'nextVersion'=>'Seuraava versio',
 		'register'=>'Rekisteröinti',
-		'updatelog'=>'Loki',
 		'update'=>'Päivitä',
+		'updatelog'=>'Loki',
 		'upgrade'=>'Päivitä webEdition 5',
+	),
+	'update'=>array(
+		'actualVersion'=>'Nykyinen versio',
+		'headline'=>'Etsi uutta versiota',
+		'lastUpdate'=>'Edellinen asennus',
+		'lookForUpdate'=>'Etsi päivitystä',
+		'neverUpdated'=>'-',
 	),
 	'updatelog'=>array(
 		'action'=>'Toiminto',
@@ -72,13 +79,6 @@ $l_liveUpdate=array(
 		'noEntriesMatchFilter'=>'Suodatuksen ehtoihin sopivia merkintöjä ei ole.',
 		'page'=>'sivu',
 		'version'=>'Versio',
-	),
-	'update'=>array(
-		'actualVersion'=>'Nykyinen versio',
-		'headline'=>'Etsi uutta versiota',
-		'lastUpdate'=>'Edellinen asennus',
-		'lookForUpdate'=>'Etsi päivitystä',
-		'neverUpdated'=>'-',
 	),
 	'upgrade'=>array(
 		'actualVersion'=>'Nykyinen versio',

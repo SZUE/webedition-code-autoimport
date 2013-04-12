@@ -1,6 +1,7 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_logging=array(
+	'ID'=>'ID',
 	'activated'=>'aktivoitu',
 	'all'=>'näytä kaikki',
 	'anzahlVersions'=>'Versiomäärä',
@@ -12,7 +13,6 @@ $l_logging=array(
 	'defaultView'=>'Oletusnäkymä',
 	'deleted'=>'poistettu',
 	'details'=>'Yksityiskohdat',
-	'ID'=>'ID',
 	'logEntry'=>'Logimerkintä',
 	'name'=>'Nimi',
 	'next'=>'seuraava',
@@ -22,8 +22,8 @@ $l_logging=array(
 	'prefsVersionChanged'=>'Version asetukset tallennettu',
 	'reset'=>'nollaa',
 	'user'=>'Käyttäjä',
-	'versions'=>'Versiot',
 	'version'=>'Versio',
+	'versions'=>'Versiot',
 	'weeks'=>'Viikkoja',
 	'years'=>'Vuosia',
 	'zeitraum'=>'aika',

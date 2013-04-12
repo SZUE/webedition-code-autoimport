@@ -14,7 +14,7 @@ $l_taged=array(
 	'no_type_selected'=>'Choisissez d`abord un attribut type.',
 	'required'=>'Tous les champs, qui sont marqués avec *, doivent être rempli!',
 	'select_type'=>'-- Selectionner type --',
-	'tagreference_linktext'=>'vers la référence des tags',
 	'tag_not_found'=>'The required file for the tag-wizard was not found. If you use a custom we:tag, make sure to save the relating tag-wizard file in the correct folder (/webEdition/we/include/we_tags/custom_tags/).',
+	'tagreference_linktext'=>'vers la référence des tags',
 	'type_attribute'=>'Attribut Type',
 );

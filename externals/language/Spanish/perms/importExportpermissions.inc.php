@@ -10,7 +10,7 @@ $l_perms_importExportpermissions=array(
 	'GENERICXML_IMPORT'=>'El usuario puede importar archivos genéricos XML',
 	'MAKE_EXPORT'=>'The user is allowed to export webEdition XML files',
 	'NEW_EXPORT'=>'The user is allowed to make new webEdition XML exports',
-	'perm_group_title'=>'Import-/Export permissions',
 	'SITE_IMPORT'=>'El usuario puede importar archivos desde el servidor',
 	'WXML_IMPORT'=>'El usuario puede importar archivos XML de webEdition.',
+	'perm_group_title'=>'Import-/Export permissions',
 );

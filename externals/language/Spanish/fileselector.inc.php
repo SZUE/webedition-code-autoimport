@@ -10,26 +10,27 @@ $l_fileselector=array(
 	'bannerSelector'=>array(
 		'title'=>'Select banner',
 	),
-	'cancel'=>'Cancelar',
 	'can_not_overwrite_we_file'=>'Un archivo webEdition no puede ser sobrescrito!',
-	'catname'=>'Categoría',
+	'cancel'=>'Cancelar',
 	
 	'catSelector'=>array(
 		'title'=>'Select category',
 	),
 	'cat_in_use'=>'Las siguientes categorías están en uso y no pueden ser borradas:',
 	'cat_in_use_rename'=>'La categoría está en uso y no puede ser cambiada!',
+	'catname'=>'Categoría',
 	'close'=>'Cerrar',
-	'created'=>'Date of creation',
 	'create_folder_nok'=>'El directorio no puede ser creado!',
+	'created'=>'Date of creation',
 	'data'=>'Archivo',
-	'deleteQuestion'=>'Borrar entradas seleccionadas! Está UD seguro?',
-	'delete'=>'Borrar archivo',
-	'delete_entry'=>'Borrar entrada',
 	
 	'delSelector'=>array(
 		'title'=>'Select items to delete',
 	),
+	'deleteQuestion'=>'Borrar entradas seleccionadas! Está UD seguro?',
+	'delete'=>'Borrar archivo',
+	'delete_entry'=>'Borrar entrada',
+	
 	'dirSelector'=>array(
 		'title'=>'Select directory',
 	),
@@ -44,11 +45,11 @@ $l_fileselector=array(
 		'title'=>'Select directory to export',
 	),
 	'filename'=>'Nombre de archivo',
-	'filesize'=>'Tamaño del archivo',
 	'files'=>'Files',
+	'filesize'=>'Tamaño del archivo',
+	'folder'=>'Carpeta',
 	'foldername'=>'Directorio',
 	'folders'=>'Directories',
-	'folder'=>'Carpeta',
 	'groupname'=>'Nombre de grupo',
 	'image_not_uploaded'=>'No image has been uploaded.',
 	'lookin'=>'Mirar en',
@@ -79,11 +80,12 @@ $l_fileselector=array(
 	'title'=>'Title',
 	'type'=>'Tipo de archivo',
 	'up_folder'=>'Una carpeta arriba',
-	'username'=>'User name',
 	
 	'userSelector'=>array(
 		'title'=>'Select users',
 	),
+	'username'=>'User name',
+	
 	'votingDirSelector'=>array(
 		'title'=>'Select voting directory',
 ));

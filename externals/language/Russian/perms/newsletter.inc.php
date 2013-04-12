@@ -6,7 +6,7 @@ $l_perms_newsletter=array(
 	'NEWSLETTER_FILES'=>'Право выбора файлов',
 	'NEWSLETTER_SETTINGS'=>'Право на изменение настроек листа рассылки',
 	'NEW_NEWSLETTER'=>'Право на создание листа рассылки',
-	'perm_group_title'=>'Лист рассылки',
 	'SEND_NEWSLETTER'=>'Право на рассылку листа рассылки',
 	'SEND_TEST_EMAIL'=>'Право на рассылку тестового письма',
+	'perm_group_title'=>'Лист рассылки',
 );

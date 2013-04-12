@@ -1,6 +1,12 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_weTag=array(
+	'DID'=>array(
+		'description'=>'Dieses Tag gibt die ID eines webEdition-Dokuments zurück.',
+	),
+	'a'=>array(
+		'description'=>'Das we:a-Tag erzeugt ein HTML-Link-Tag, das auf ein webEdition-internes Dokument mit der unten angegebenen ID verweist. Der gesamte Inhalt zwischen Start- und Endtag wird verlinkt.',
+	),
 	'addDelNewsletterEmail'=>array(
 		'description'=>'Dieses Tag erzeugt, schreibt oder entfernt eine Email aus der Newsletter-Empfänger-Liste. Die Empfänger-Listen werden als CSV-Datei gespeichert und können dann beim Versand im Newslettermodul verwendet werden.',
 	),
@@ -15,9 +21,6 @@ $l_weTag=array(
 	),
 	'author'=>array(
 		'description'=>'Das we:author-Tag dient dazu, um den Autor der Seite anzuzeigen. Ist das Attribut `type` nicht gesetzt, wird der Benutzername angezeigt. Wenn type="name" ist, dann wird der Vor- und Nachname des Benutzers angezeigt. Ist `type="initials", dann werden die Initialen des Benutzers angezeigt. Ist kein Vor- und Nachname eingetragen, wird immer der Benutzername angezeigt.',
-	),
-	'a'=>array(
-		'description'=>'Das we:a-Tag erzeugt ein HTML-Link-Tag, das auf ein webEdition-internes Dokument mit der unten angegebenen ID verweist. Der gesamte Inhalt zwischen Start- und Endtag wird verlinkt.',
 	),
 	'back'=>array(
 		'description'=>'Das we:back-Tag erzeugt ein HTML-Link-Tag, das auf die vorherige we:listview-Seite verweist. Der gesamte Inhalt zwischen Start- und Endtag wird verlinkt.',
@@ -103,9 +106,6 @@ $l_weTag=array(
 	'description'=>array(
 		'description'=>'Das we:description-Tag erzeugt ein description Meta-Tag. Falls das Beschreibungsfeld in der Ansicht "Eigenschaften" leer ist, wird der Inhalt zwischen Start- und Endtag als Standardbeschreibung eingetragen.',
 	),
-	'DID'=>array(
-		'description'=>'Dieses Tag gibt die ID eines webEdition-Dokuments zurück.',
-	),
 	'docType'=>array(
 		'description'=>'Dieses Tag gibt den Dokumenttyp eines webEdition-Dokuments zurück.',
 	),
@@ -118,14 +118,14 @@ $l_weTag=array(
 	'flashmovie'=>array(
 		'description'=>'Das we:flashmovie-Tag dient dazu, einen Flash Movie in den Inhalt des Dokumentes einzubauen. Im Bearbeitungsmodus eines Dokumentes, das diese Vorlage zugrunde liegen hat, ist ein Button "bearbeiten" sichtbar. Durch Anklicken dieses Buttons öffnet sich ein Dateimanager, in dem man einen Flash Movie, der zuvor in webEdition angelegt wurde, auswählen kann.',
 	),
+	'form'=>array(
+		'description'=>'Das we:form Tag wird für Such- und Mailformulare eingesetzt. Es funktioniert wie das normale HTML-Form-Tag, jedoch werden zusätzliche Hidden-Fields vom Parser eingefügt.',
+	),
 	'formfield'=>array(
 		'description'=>'Dieses Tag dient zum Anlegen und Bearbeiten von Formularfeldern.',
 	),
 	'formmail'=>array(
 		'description'=>'Bei eingeschalteter Einstellung Formmail über webEdition-Dokument aufrufen, erfolgt die Einbindung des Formmail-Scripts über ein webEdition-Dokument. Hierfür wird der neue (derzeit noch parameterlose) we-Tag formmail verwendet.<br/>Wird die Captcha-Prüfung eingesetzt, steht &lt;we:formmail/&gt; innerhalb des we-Tags ifCaptcha.',
-	),
-	'form'=>array(
-		'description'=>'Das we:form Tag wird für Such- und Mailformulare eingesetzt. Es funktioniert wie das normale HTML-Form-Tag, jedoch werden zusätzliche Hidden-Fields vom Parser eingefügt.',
 	),
 	'hidden'=>array(
 		'description'=>'Das we:hidden-Tag erzeugt ein hidden-input-Tag, mit den Inhalt der  gleichnamigen globalen PHP-Variablen. Dieses Tag wird normalerweise gebraucht, um eingehende Variablen weiterzuleiten.',
@@ -142,9 +142,6 @@ $l_weTag=array(
 	'ifBack'=>array(
 		'description'=>'Dieses Tag dient dazu, den umschlossenen Inhalt nur dann anzuzeigen, wenn es bei einer Listview auch eine vorherige Seite gibt. Gibt es keine vorherige Seite f?r die Listview, dann wird der umschlossene Inhalt nicht angezeigt.',
 	),
-	'ifbannerexists'=>array(
-		'description'=>'Führt den eingeschlossenen Code nur aus, wenn das Banner-Modul nicht deaktiviert wurde (Einstellungsdialog).',
-	),
 	'ifCaptcha'=>array(
 		'description'=>'Dieses Tag dient dazu, den umschlossenen Inhalt nur dann anzuzeigen bzw. auszuführen, wenn der vom User eingegebene Code gültig ist.',
 	),
@@ -159,9 +156,6 @@ $l_weTag=array(
 	),
 	'ifCurrentDate'=>array(
 		'description'=>'Dieses Tag highlighted den aktuellen Tag innerhalb einer Calendar-listview.',
-	),
-	'ifcustomerexists'=>array(
-		'description'=>'Führt den eingeschlossenen Code nur aus, wenn das Kundenverwaltungs-Modul nicht deaktiviert wurde (Einstellungsdialog).',
 	),
 	'ifDeleted'=>array(
 		'description'=>'Dieses Tag dient dazu, um webEdition-Dokumente bzw. Objekte die über &lt;we:a edit="true" delete="true"&gt; aufgerufen wurden zu löschen.<br/><br/><strong>ACHTUNG: Dieses Tag sollte nur in Verbindung mit der Kundenverwaltung und den Attributen admin bzw. userid und/oder mit den Attributen doctype, pid und classid benutzt werden. Ansonsten ist es theoretisch möglich, dass Unbefugte mit Aufruf des entsprechenden URL webEdition-Dokumente bzw. Objekte löschen können.</strong>',
@@ -244,17 +238,14 @@ $l_weTag=array(
 	'ifMale'=>array(
 		'description'=>'Dieses Tag dient dazu, den umschlossenen Inhalt innerhalb eines Newsletters nur dann anzuzeigen, wenn die männliche Anrede angezeigt werden soll.',
 	),
-	'ifnewsletterexists'=>array(
-		'description'=>'Führt den eingeschlossenen Code nur aus, wenn das Newsletter-Modul nicht deaktiviert wurde (Einstellungsdialog).',
+	'ifNew'=>array(
+		'description'=>'Alles was sich zwischen Start- und Endtag befindet, wird nur angezeigt, wenn das zu bearbeitende Dokument/Objekt neu ist. Mit dem Attribut type wird bestimmt, ob es sich um ein Dokument oder Objekt handelt.',
 	),
 	'ifNewsletterSalutationEmpty'=>array(
 		'description'=>'Dieses Tag dient dazu, den umschlossenen Inhalt innerhalb eines Newsletters nur dann anzuzeigen, wenn das in type definierte Anredefeld leer ist.',
 	),
 	'ifNewsletterSalutationNotEmpty'=>array(
 		'description'=>'Dieses Tag dient dazu, den umschlossenen Inhalt innerhalb eines Newsletters nur dann anzuzeigen, wenn das in type definierte Anredefeld nicht leer ist.',
-	),
-	'ifNew'=>array(
-		'description'=>'Alles was sich zwischen Start- und Endtag befindet, wird nur angezeigt, wenn das zu bearbeitende Dokument/Objekt neu ist. Mit dem Attribut type wird bestimmt, ob es sich um ein Dokument oder Objekt handelt.',
 	),
 	'ifNext'=>array(
 		'description'=>'Dieses Tag dient dazu, den umschlossenen Inhalt nur dann anzuzeigen, wenn es bei einer Listview auch eine nächste Seite gibt. Gibt es keine nächste Seite, dann wird der umschlossene Inhalt nicht angezeigt.',
@@ -304,11 +295,11 @@ $l_weTag=array(
 	'ifNotHtmlMail'=>array(
 		'description'=>'Dieses Tag dient dazu, den umschlossenen Inhalt nur dann anzuzeigen, wenn es sich nicht um Inhalt für einen Newsletter im HTML-Format handelt.',
 	),
-	'ifNotNewsletterSalutation'=>array(
-		'description'=>'Dieses Tag dient dazu, den umschlossenen Inhalt innerhalb eines Newsletters nur dann anzuzeigen, wenn das in type definierte Anredefeld dem Wert in match nicht entspricht.',
-	),
 	'ifNotNew'=>array(
 		'description'=>'Alles was sich zwischen Start- und Endtag befindet, wird nur angezeigt, wenn das zu bearbeitende Dokument/Objekt nicht neu ist. Mit dem Attribut type wird bestimmt, ob es sich um ein Dokument oder Objekt handelt.',
+	),
+	'ifNotNewsletterSalutation'=>array(
+		'description'=>'Dieses Tag dient dazu, den umschlossenen Inhalt innerhalb eines Newsletters nur dann anzuzeigen, wenn das in type definierte Anredefeld dem Wert in match nicht entspricht.',
 	),
 	'ifNotObjectLanguage'=>array(
 		'description'=>'Mit we:ifObjectLanguage kann auf die Spracheinstellung des Objectes getestet werden, dabei können mehrere Werte durch Komma separiert angegeben werden (oder-Verknüpfung). Die möglichen Werte ergeben sich aus dem Einstellungsdialog, Tab `Sprachen`.',
@@ -394,9 +385,6 @@ $l_weTag=array(
 	'ifObject'=>array(
 		'description'=>'Dieses Tag dient dazu, den umschlossenen Inhalt nur dann anzuzeigen, wenn der jeweilige Eintrag innerhalb von &lt;we:listview type="search"&gt; ein Objekt ist.',
 	),
-	'ifobjektexists'=>array(
-		'description'=>'Führt den eingeschlossenen Code nur aus, wenn das Objekt/DB-Modul nicht deaktiviert wurde (Einstellungsdialog).',
-	),
 	'ifPageLanguage'=>array(
 		'description'=>'Mit we:ifPageLanguage kann auf die Spracheinstellung des Dokumentes getestet werden, dabei können mehrere Werte durch Komma separiert angegeben werden (oder-Verknüpfung). Die möglichen Werte ergeben sich aus dem Einstellungsdialog, Tab `Sprachen`.',
 	),
@@ -426,9 +414,6 @@ $l_weTag=array(
 	),
 	'ifShopEmpty'=>array(
 		'description'=>'Alles, was sich zwischen dam Start- und Endtag befindet, wird angezeigt, wenn der Warenkorb leer ist.',
-	),
-	'ifshopexists'=>array(
-		'description'=>'Führt den eingeschlossenen Code nur aus, wenn das Shop-Modul nicht deaktiviert wurde (Einstellungsdialog).',
 	),
 	'ifShopFieldEmpty'=>array(
 		'description'=>'Prüft, ob ein shopField leer ist. Ist dies der Fall, wird alles zwischen Start- und Endtag angezeigt.',
@@ -496,9 +481,6 @@ $l_weTag=array(
 	'ifVote'=>array(
 		'description'=>'Alles, was sich zwischen Start- und Endtag befindet, wird nur angezeigt, wenn das Voting erfolgreich gespeichert ist.',
 	),
-	'ifvotingexists'=>array(
-		'description'=>'Führt den eingeschlossenen Code nur aus, wenn das Voting-Modul nicht deaktiviert wurde (Einstellungsdialog).',
-	),
 	'ifVotingFieldEmpty'=>array(
 		'description'=>'&Uuml;berprüft ob ein VotingField leer ist, die Kombinationen von name und type Attributen entsprechen denen des we:votingFiled-Tags',
 	),
@@ -520,6 +502,24 @@ $l_weTag=array(
 	'ifWritten'=>array(
 		'description'=>'Alle was zwischen Start- und Endtag steht, wird nur angezeigt, wenn es keinen Fehler beim Schreiben eines Dokuments/Objekts mit dem Tag we:write gab. Bei einem Objekt muß type="object" sein.',
 	),
+	'ifbannerexists'=>array(
+		'description'=>'Führt den eingeschlossenen Code nur aus, wenn das Banner-Modul nicht deaktiviert wurde (Einstellungsdialog).',
+	),
+	'ifcustomerexists'=>array(
+		'description'=>'Führt den eingeschlossenen Code nur aus, wenn das Kundenverwaltungs-Modul nicht deaktiviert wurde (Einstellungsdialog).',
+	),
+	'ifnewsletterexists'=>array(
+		'description'=>'Führt den eingeschlossenen Code nur aus, wenn das Newsletter-Modul nicht deaktiviert wurde (Einstellungsdialog).',
+	),
+	'ifobjektexists'=>array(
+		'description'=>'Führt den eingeschlossenen Code nur aus, wenn das Objekt/DB-Modul nicht deaktiviert wurde (Einstellungsdialog).',
+	),
+	'ifshopexists'=>array(
+		'description'=>'Führt den eingeschlossenen Code nur aus, wenn das Shop-Modul nicht deaktiviert wurde (Einstellungsdialog).',
+	),
+	'ifvotingexists'=>array(
+		'description'=>'Führt den eingeschlossenen Code nur aus, wenn das Voting-Modul nicht deaktiviert wurde (Einstellungsdialog).',
+	),
 	'img'=>array(
 		'description'=>'Das we:img-Tag dient dazu, eine Grafik in den Inhalt eines Dokumentes einzubauen. Im Bearbeitungsmodus eines Dokumentes ist unter der Grafik ein Button "edit" sichtbar. Durch Anklicken des Buttons öffnet sich der Dateimanager, aus dem man eine Grafik auswählen oder neu anlegen kann. Wenn die Attribute "width", "height", "border", "hspace", "vspace", "alt" oder "align" gesetzt werden, dann werden diese Einstellungen für die Grafik verwendet, ansonsten gelten die Einstellungen, welche bei der Grafik gemacht wurden. Wenn das Attribut id gesetzt ist, dann wird die Grafik mit dieser ID benutzt, falls noch keine andere Grafik ausgewählt wurde. Das Attribut showimage ermöglicht es, das Bild im Bearbeiten-Modus nicht anzeigen zu lassen. Mit showinputs lassen sich die Eingabefelder für title und alt-text deaktivieren.',
 	),
@@ -535,14 +535,17 @@ $l_weTag=array(
 	'keywords'=>array(
 		'description'=>'Das we:keywords-Tag erzeugt ein Schlüsselwort Meta-Tag. Alles zwischen Start- und Endtag wird als default-keywords eingetragen, falls das Schlüsselwortfeld in der Ansicht "Eigenschaft" leer ist. Ansonsten werden die Schlüsselworte aus der Ansicht "Eigenschaft" eingetragen.',
 	),
-	'linklist'=>array(
-		'description'=>'Mit dem we:linklist-Tag kann man Linklisten generieren. Im Bearbeitungsmodus erscheint ein Plus-Button. Klickt man diesen Button, so wird der Liste ein neuer Link hinzugefügt. Innerhalb des Start- und Endtags wird mit Hilfe der Tags "we:link", "we:prelink" und "we:postlink", sowie normalem HTML, das Aussehen der Linkliste bestimmt. Alle eingefügten Links können mit einem Button "edit" verändert, oder mit einem Button "löschen" gelöscht werden.',
-	),
 	'linkToSeeMode'=>array(
 		'description'=>'Dieser Tag erzeugt auf der Web-Seite einen Link, der das eben besuchte Dokument im seeMode von webEdition öffnet und somit einfach bearbeitet werden kann.',
 	),
 	'link'=>array(
 		'description'=>'Das we:link-Tag erzeugt einen einzelnen Link, der durch einen Button "edit" verändert werden kann. Wird das Tag innerhalb von Linklisten verwendet, so darf das Attribut "name" nicht angegeben werden. Wird das Tag außerhalb von Linklisten verwendet, dann muß das Attribut "name" angegeben werden!Das Attribut only kann dazu eingesetzt werden nur ein einzelnes Attribut  (only="Attributname") oder den Inhalt (only="content") auszugeben.',
+	),
+	'linklist'=>array(
+		'description'=>'Mit dem we:linklist-Tag kann man Linklisten generieren. Im Bearbeitungsmodus erscheint ein Plus-Button. Klickt man diesen Button, so wird der Liste ein neuer Link hinzugefügt. Innerhalb des Start- und Endtags wird mit Hilfe der Tags "we:link", "we:prelink" und "we:postlink", sowie normalem HTML, das Aussehen der Linkliste bestimmt. Alle eingefügten Links können mit einem Button "edit" verändert, oder mit einem Button "löschen" gelöscht werden.',
+	),
+	'list'=>array(
+		'description'=>'Mit dem we:list-Tag kann man erweiterbare Listen erzeugen. Alles, was zwischen Start- und Endtag steht, wird im Bearbeitungsmodus durch einen Klick auf den Plus-Button angehängt, bzw. eingefügt. Dies können beliebiges HTML sowie fast alle we:tags sein.',
 	),
 	'listdir'=>array(
 		'description'=>'Mit dem we:listdir-Tag kann man eine Liste erzeugen, welche alle Dateien im gleichen Verzeichnis anzeigt. Im Attribut "field" kann man angeben, welches Feld angezeigt wird. Ist das Feld leer oder gibt es das Feld nicht, wird der Dateiname angezeigt. Bei Verzeichnissen wird überprüft, ob es darin eine index Datei gibt und wenn ja, wird diese angezeigt. Im Attribut "dirfield" kann man angeben, welches Feld zur Anzeige benutzt werden soll. Ist das Feld leer oder gibt es das Feld nicht, wird der Eintrag von "field" bzw der Dateiname benutzt. Ist das Attribut "id" gesetzt, werden die Dateien vom Verzeichnis mit der angegebenen ID angezeigt.',
@@ -564,9 +567,6 @@ $l_weTag=array(
 	),
 	'listview'=>array(
 		'description'=>'Das we:listview-Tag ist das Start- und Endtag von automatisch generierten Listen. (&Uuml;bersichtsseiten von News, usw.).',
-	),
-	'list'=>array(
-		'description'=>'Mit dem we:list-Tag kann man erweiterbare Listen erzeugen. Alles, was zwischen Start- und Endtag steht, wird im Bearbeitungsmodus durch einen Klick auf den Plus-Button angehängt, bzw. eingefügt. Dies können beliebiges HTML sowie fast alle we:tags sein.',
 	),
 	'master'=>array(
 		'description'=>'Wird in einer Detailvorlage verwendet und fügt den umschlossenen Inhalt beim we:content Tag im Mastertemplate ein. Die Verknüpfung zu we:content wird über das Attribut "name" hergestellt. (we:master name="head" =&gt; we:content name="head").<br/><br/>Inhalt der Detailvorlage außerhalb des we:master Tags wird weiterhin beim we:content ohne Name eingesetzt.',
@@ -614,11 +614,11 @@ $l_weTag=array(
 	'object'=>array(
 		'description'=>'Das we:object-Tag wird benötigt, um Objekte darzustellen. Innerhalb des we:object Start- und Endtags kann man Felder des Objekts mit we:field-Tags darstellen. Ist nur das Attribut "name" gesetzt, erscheint im Edit Mode ein Objekt-Selector, in dem der Redakteur aus allen vorhandenen Objekten aller Klassen auswählen kann. Schränkt man mit dem Attribut "classid" durch Angabe der ID einer Klasse die Auswahl ein, können jetzt nur noch Objekte dieser Klasse ausgewählt werden. Im Attribut "id" kann man ein festes Objekt der gesetzten classid bestimmen. Das Attribut "triggerid" wird gebraucht, um bei einer statisch erzeugten Objekt-Listview ein dynamisches Dokument anzugeben, welches bei Objekt-Links benötigt wird, um das entsprechende Objekt darzustellen.',
 	),
-	'orderitem'=>array(
-		'description'=>'Mit Hilfe dieses Tags kann man einen einzelnen Artikel einer Bestellung auf einer webEdition darstellen. Die Felder des Artikels werden wie bei einer Listview und beim <we:object> Tag mit dem Tag <we:field> dargestellt.',
-	),
 	'order'=>array(
 		'description'=>'Mit Hilfe dieses Tags kann man eine Bestellung auf einer webEdition darstellen. Die Felder der Bestellung werden wie bei einer Listview und beim <we:object> Tag mit dem Tag <we:field> dargestellt.',
+	),
+	'orderitem'=>array(
+		'description'=>'Mit Hilfe dieses Tags kann man einen einzelnen Artikel einer Bestellung auf einer webEdition darstellen. Die Felder des Artikels werden wie bei einer Listview und beim <we:object> Tag mit dem Tag <we:field> dargestellt.',
 	),
 	'pageLanguage'=>array(
 		'description'=>'Gibt die dem Dokument zugewiesene Sprache aus',
@@ -650,11 +650,11 @@ $l_weTag=array(
 	'quicktime'=>array(
 		'description'=>'Das we:quicktime-Tag dient dazu, einen Quicktime Movie in den Inhalt des Dokumentes einzubauen. Im Bearbeitungsmodus eines Dokumentes, das diese Vorlage zugrunde liegen hat, ist ein Button "edit" sichtbar. Durch Anklicken dieses Buttons, öffnet sich ein Dateimanager, in dem man einen Quicktime Movie, der zuvor in webEdition angelegt wurde, auswählen kann. Für das Tag we:quicktime gibt es momentan leider keine xhtml-valide Ausgabe, die auf gängigen Browsern korrekt ausgeführt wird. Daher wird dem Attribut "xml" unabhängig von der hier gemachten Einstellung immer der Wert "false" zugeordnet.',
 	),
-	'registeredUser'=>array(
-		'description'=>'Dieses Tag dient dazu, Daten eines bestimmten Kunden, der in der Kundenverwaltung eingetragen ist, anzuzeigen.',
-	),
 	'registerSwitch'=>array(
 		'description'=>'Dieses Tag erzeugt im Edit-Mode einen Umschalter, mit dem man zwischen dem Status eines registrierten und eines unregistrierten Benutzers umschalten kann. Das ist sinnvoll bei der Verwendung der Tags &lt;we:ifRegisteredUser&gt; und &lt;we:ifNotRgisteredUser&gt;, um die verschiedenen Ansichten zu überprüfen und volle Sicherheit über das Layout zu haben.',
+	),
+	'registeredUser'=>array(
+		'description'=>'Dieses Tag dient dazu, Daten eines bestimmten Kunden, der in der Kundenverwaltung eingetragen ist, anzuzeigen.',
 	),
 	'repeatShopItem'=>array(
 		'description'=>'Dieses Tag erstellt eine Liste aller Artikel im Warenkorb.',
@@ -732,11 +732,11 @@ $l_weTag=array(
 	'url'=>array(
 		'description'=>'Das we:url-Tag erzeugt eine webEdition-interne URL, die auf das Dokument mit der unten angegebenen ID verlinkt.',
 	),
-	'userInput'=>array(
-		'description'=>'Das we:userInput-Tag erzeugt Eingabefelder um in Verbindung mit we:form type="document" bzw. type="object" Dokumente oder Objekte zu erzeugen.',
-	),
 	'useShopVariant'=>array(
 		'description'=>'Das we:shopVariant-Tag übernimmt die Daten einer per Namen übergebenen Artikel-Variante. Existiert kein Artikel-Variante mit gegebenem Namen, wird der Original-Artikel verwendet.',
+	),
+	'userInput'=>array(
+		'description'=>'Das we:userInput-Tag erzeugt Eingabefelder um in Verbindung mit we:form type="document" bzw. type="object" Dokumente oder Objekte zu erzeugen.',
 	),
 	'var'=>array(
 		'description'=>'Das we:var-Tag zeigt den Inhalt einer globalen Php-Variablen bzw. den Inhalt eines Dokumentfeldes mit dem unten eingegebenen Namen an.',

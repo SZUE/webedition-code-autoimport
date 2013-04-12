@@ -8,11 +8,11 @@ $l_SEEM=array(
 	'confirm'=>array(
 		'change_to_preview'=>'Voulez-vous changer au Mode-de-Prévision?',
 	),
-	'ext_document_on_other_server_selected'=>'Vous avez cliquez sur un lien, qui mène à un document sur un autre web-serveur. Celui sera ouvert dans une nouvelle fenêtre.\nPoursuivre?',
 	'ext_doc'=>'La page: <b>%s</b> n`est <u>pas</u> pas editable avec webEdition',
 	'ext_doc_not_found'=>'La page demandée <b>%s</b> ne pouvait pas être trouvée.',
 	'ext_doc_selected'=>'Vous avez cliquez sur un lien, qui mène à un document qui n`est pas geré par webEdition.\nPoursuivre?',
 	'ext_doc_tmp'=>'La page n`a pas été ouvert correctement par webEdition. S`il vous plaôt utiliser la navigation normale du site, pour aller au document voulu.',
+	'ext_document_on_other_server_selected'=>'Vous avez cliquez sur un lien, qui mène à un document sur un autre web-serveur. Celui sera ouvert dans une nouvelle fenêtre.\nPoursuivre?',
 	'ext_form_target_other_server'=>'Vous voulez envoyer un formulaire à un autre web-serveur.\nCelui sera ouvert dans une nouvelle fenêtre. Poursuivre?',
 	'ext_form_target_we_server'=>'Le formulaire est envoyer à un non webEdition document. Poursuivre?',
 	'info_doc_with_parameter'=>'Lien avec paramètres',

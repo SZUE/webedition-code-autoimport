@@ -1,11 +1,11 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_javaMenu_object=array(
-	'classes'=>'Clases',
 	'class'=>'Clase',
-	'objects'=>'Objetos',
+	'classes'=>'Clases',
 	'object'=>'Objeto',
 	'object_directory'=>'Directorio de objetos',
+	'objects'=>'Objetos',
 	'open_class'=>'Clase',
 	'open_object'=>'Object',
 	'unpublished_objects'=>'Objetos inéditos',

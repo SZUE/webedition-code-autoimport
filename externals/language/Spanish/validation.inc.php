@@ -17,7 +17,6 @@ $l_validation=array(
 	'checkvia_url'=>'Transferir URL',
 	'connection_problems'=>'<strong>Ha ocurrido un error mientras se conectaba a este servicio</strong><br/><br/>Por favor notar: La opción "transferencia URL" está solamente disponible si su instalación de WebEdition está también accesible desde internet (fuera de su red local). Esto no es posible si WebEdition esta instalado localmente (servidor local).<br/><br/>También, algunos problemas pueden ocurrir cuando se usan firewalls y servidores proxy. Por favor chequee su configuración en estos casos.<br/><br/>HTTP responso: %s',
 	'ctype'=>'Tipo del Contenido',
-	'description'=>'Puedes seleccionar un servicio de la web para chequear la validez/accesibilidad de este documento',
 	
 	'desc'=>array(
 		'active'=>'Aquí puedes ocultar un servicio temporalmente',
@@ -26,6 +25,8 @@ $l_validation=array(
 		'fileEndings'=>'Insertar todas las extensiones que deben estar disponibles para este servicio. (.html,.css)',
 		'varname'=>'Insertar nombre del identificador de campo del archivo/URL',
 	),
+	'description'=>'Puedes seleccionar un servicio de la web para chequear la validez/accesibilidad de este documento',
+	
 	'edit_service'=>array(
 		'delete_failure'=>'El servicio no pudo ser eliminado.',
 		'delete_success'=>'El servicio fue eliminado.',

@@ -17,7 +17,6 @@ $l_validation=array(
 	'checkvia_url'=>'URL overdracht',
 	'connection_problems'=>'<strong>Er is een fout opgetreden tijdens het verbinden met deze dienst</strong><br/><br/>Let op: De optie "url overdracht" is alleen beschikbaar als uw webEdition installatie ook bereikbaar is via het internet (buiten uw lokale netwerk). Dit is niet mogelijk wanneer webEdition lokaal is geïnstalleerd (localhost).<br/><br/>Ook kunnen er problemen optreden wanneer u Firewalls en proxy-servers gebruikt. Controleer uw configuratie als dit het geval is.<br/><br/>HTTP-Reactie: %s',
 	'ctype'=>'Soort inhoud',
-	'description'=>'U kunt een internet-dienst kiezen om dit document te testen op geldigheid/toegankelijkheid.',
 	
 	'desc'=>array(
 		'active'=>'Hier kunt u een dienst tijdelijk verbergen.',
@@ -26,6 +25,8 @@ $l_validation=array(
 		'fileEndings'=>'Voeg alle extensies toe die beschikbaar zijn voor deze dienst. (.html,.css)',
 		'varname'=>'Voer de veldnaam in van het bestand/url',
 	),
+	'description'=>'U kunt een internet-dienst kiezen om dit document te testen op geldigheid/toegankelijkheid.',
+	
 	'edit_service'=>array(
 		'delete_failure'=>'De dienst kon niet verwijderd worden.',
 		'delete_success'=>'De dienst is verwijderd.',

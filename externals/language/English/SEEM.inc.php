@@ -8,11 +8,11 @@ $l_SEEM=array(
 	'confirm'=>array(
 		'change_to_preview'=>'Do you want switch back to preview?',
 	),
-	'ext_document_on_other_server_selected'=>'You have chosen a link which points to a document on another Web server.\nThis will open in a new browser window. Continue?',
 	'ext_doc'=>'The current document: <b>%s</b> is <u>not</u> editable with webEdition.',
 	'ext_doc_not_found'=>'Could not find the selected page <b>%s</b>.',
 	'ext_doc_selected'=>'You have selected a link which points to a document that is not administered by webEdition. Continue?',
 	'ext_doc_tmp'=>'This document was not opened correctly by webEdition. Please use the normal navigation of the website to reach your desired document.',
+	'ext_document_on_other_server_selected'=>'You have chosen a link which points to a document on another Web server.\nThis will open in a new browser window. Continue?',
 	'ext_form_target_other_server'=>'You are about to submit a form to another Web server.\nThis will open in a new window. Continue?',
 	'ext_form_target_we_server'=>'The form will send data to a document, which is not not administered by webEdition.\nContinue?',
 	'info_doc_with_parameter'=>'Link with parameter',

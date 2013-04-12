@@ -41,11 +41,6 @@ $l_buttons_global=array(
 		'value'=>'Attribute...',
 		'width'=>100,
 	),
-	'backup'=>array(
-		'alt'=>'Backup',
-		'value'=>'Backup',
-		'width'=>100,
-	),
 	'back'=>array(
 		'alt'=>'Zurück',
 		'value'=>'Zurück',
@@ -54,6 +49,11 @@ $l_buttons_global=array(
 	'back_to_login'=>array(
 		'alt'=>'Zurück zur webEdition-Anmeldung',
 		'value'=>'Zurück',
+		'width'=>100,
+	),
+	'backup'=>array(
+		'alt'=>'Backup',
+		'value'=>'Backup',
 		'width'=>100,
 	),
 	'browse'=>array(
@@ -302,11 +302,6 @@ $l_buttons_global=array(
 		'alt'=>'herunterladen',
 		'value'=>'Herunterladen',
 	),
-	'editor'=>array(
-		'alt'=>'Editor starten',
-		'value'=>'Editor starten',
-		'width'=>100,
-	),
 	'edit'=>array(
 		'alt'=>'Bearbeiten',
 		'value'=>'Bearbeiten',
@@ -316,6 +311,11 @@ $l_buttons_global=array(
 		'alt'=>'Miniaturansichten bearbeiten...',
 		'value'=>'Miniaturansichten bearbeiten...',
 		'width'=>220,
+	),
+	'editor'=>array(
+		'alt'=>'Editor starten',
+		'value'=>'Editor starten',
+		'width'=>100,
 	),
 	'export'=>array(
 		'alt'=>'Ausgewählte Dateien exportieren',
@@ -510,16 +510,6 @@ $l_buttons_global=array(
 		'value'=>'Ersetzen',
 		'width'=>100,
 	),
-	'reset'=>array(
-		'alt'=>'Zurücksetzen',
-		'value'=>'Zurücksetzen',
-		'width'=>100,
-	),
-	'restore_backup'=>array(
-		'alt'=>'Backup wiederherstellen',
-		'value'=>'Backup wiederherstellen',
-		'width'=>180,
-	),
 	'res_1024'=>array(
 		'alt'=>'1024x768 einstellen',
 		'value'=>'1024x768',
@@ -560,6 +550,16 @@ $l_buttons_global=array(
 		'value'=>'960x420',
 		'width'=>100,
 	),
+	'reset'=>array(
+		'alt'=>'Zurücksetzen',
+		'value'=>'Zurücksetzen',
+		'width'=>100,
+	),
+	'restore_backup'=>array(
+		'alt'=>'Backup wiederherstellen',
+		'value'=>'Backup wiederherstellen',
+		'width'=>180,
+	),
 	'revert_published'=>array(
 		'alt'=>'Änderungen verwerfen und veröffentlichte Version wiederherstellen.',
 		'value'=>'Veröffentlichte Version wiederherstellen',
@@ -570,15 +570,15 @@ $l_buttons_global=array(
 		'value'=>'/',
 		'width'=>40,
 	),
-	'saveversion'=>array(
-		'alt'=>'Speichert und legt eine neue Version an',
-		'value'=>'Speichere Version',
-		'width'=>120,
-	),
 	'save'=>array(
 		'alt'=>'Speichern',
 		'value'=>'Speichern',
 		'width'=>100,
+	),
+	'saveversion'=>array(
+		'alt'=>'Speichert und legt eine neue Version an',
+		'value'=>'Speichere Version',
+		'width'=>120,
 	),
 	'search'=>array(
 		'alt'=>'Suchen',
@@ -615,15 +615,15 @@ $l_buttons_global=array(
 		'value'=>'Miniaturansichten',
 		'width'=>100,
 	),
-	'unpublished_pages'=>array(
-		'alt'=>'Überblick über die unveröffentlichten Dokumente',
-		'value'=>'Unveröffentlichte Dokumente',
-		'width'=>200,
-	),
 	'unpublish'=>array(
 		'alt'=>'Parken',
 		'value'=>'Parken',
 		'width'=>100,
+	),
+	'unpublished_pages'=>array(
+		'alt'=>'Überblick über die unveröffentlichten Dokumente',
+		'value'=>'Unveröffentlichte Dokumente',
+		'width'=>200,
 	),
 	'upload'=>array(
 		'alt'=>'Datei hochladen',

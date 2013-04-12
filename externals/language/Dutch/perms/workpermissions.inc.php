@@ -43,6 +43,6 @@ $l_perms_workpermissions=array(
 	'NEW_TEXT'=>'De gebruiker is bevoegd om platte tekst bestanden aan te maken.',
 	'NEW_WEBEDITIONSITE'=>'De gebruiker is bevoegd om webEdition documenten aan te maken.',
 	'NO_DOCTYPE'=>'De gebruiker is bevoegd om documenten aan te maken zonder document type.',
-	'perm_group_title'=>'Werk bevoegdheden',
 	'SAVE_DOCUMENT_TEMPLATE'=>'De gebruiker is bevoegd om documenten en sjablonen te bewaren.',
+	'perm_group_title'=>'Werk bevoegdheden',
 );

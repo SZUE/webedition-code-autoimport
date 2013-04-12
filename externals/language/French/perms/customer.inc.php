@@ -8,6 +8,6 @@ $l_perms_customer=array(
 	'DELETE_CUSTOMER'=>'L`utilisateur a le droit de supprimer des clients',
 	'EDIT_CUSTOMER'=>'L`utilisateur a le droit de modifier des clients',
 	'NEW_CUSTOMER'=>'L`utilisateur a le droit de créer des nouveaux clients',
-	'perm_group_title'=>'Gestion clients',
 	'SHOW_CUSTOMER_ADMIN'=>'L`utilisateur a le droit de modifier les champs de clients',
+	'perm_group_title'=>'Gestion clients',
 );

@@ -41,11 +41,6 @@ $l_buttons_global=array(
 		'value'=>'Attribuutit...',
 		'width'=>100,
 	),
-	'backup'=>array(
-		'alt'=>'Ota varmuuskopio',
-		'value'=>'Varmuuskopioi',
-		'width'=>100,
-	),
 	'back'=>array(
 		'alt'=>'Edellinen',
 		'value'=>'Edellinen',
@@ -54,6 +49,11 @@ $l_buttons_global=array(
 	'back_to_login'=>array(
 		'alt'=>'Takaisin webEdition-kirjautumisikkunaan',
 		'value'=>'Takaisin',
+		'width'=>100,
+	),
+	'backup'=>array(
+		'alt'=>'Ota varmuuskopio',
+		'value'=>'Varmuuskopioi',
 		'width'=>100,
 	),
 	'browse'=>array(
@@ -302,11 +302,6 @@ $l_buttons_global=array(
 		'alt'=>'download',
 		'value'=>'Download',
 	),
-	'editor'=>array(
-		'alt'=>'Käynnistä editori',
-		'value'=>'Käynnistä editori',
-		'width'=>120,
-	),
 	'edit'=>array(
 		'alt'=>'Muokkaa',
 		'value'=>'Muokkaa',
@@ -316,6 +311,11 @@ $l_buttons_global=array(
 		'alt'=>'Muokkaa pikkukuvia',
 		'value'=>'Muokkaa pikkukuvia...',
 		'width'=>150,
+	),
+	'editor'=>array(
+		'alt'=>'Käynnistä editori',
+		'value'=>'Käynnistä editori',
+		'width'=>120,
 	),
 	'export'=>array(
 		'alt'=>'Vie valitut tiedostot',
@@ -510,16 +510,6 @@ $l_buttons_global=array(
 		'value'=>'Replace',
 		'width'=>100,
 	),
-	'reset'=>array(
-		'alt'=>'Nollaa ...',
-		'value'=>'Nollaa',
-		'width'=>100,
-	),
-	'restore_backup'=>array(
-		'alt'=>'Palauta varmuuskopiosta',
-		'value'=>'Palauta varmuuskopio',
-		'width'=>180,
-	),
 	'res_1024'=>array(
 		'alt'=>'Aseta 1024x768',
 		'value'=>'1024x768',
@@ -560,6 +550,16 @@ $l_buttons_global=array(
 		'value'=>'960x420',
 		'width'=>100,
 	),
+	'reset'=>array(
+		'alt'=>'Nollaa ...',
+		'value'=>'Nollaa',
+		'width'=>100,
+	),
+	'restore_backup'=>array(
+		'alt'=>'Palauta varmuuskopiosta',
+		'value'=>'Palauta varmuuskopio',
+		'width'=>180,
+	),
 	'revert_published'=>array(
 		'alt'=>'Hylkää muutokset ja palauta julkaistu versio.',
 		'value'=>'Palauta julkaistu versio',
@@ -570,15 +570,15 @@ $l_buttons_global=array(
 		'value'=>'/',
 		'width'=>40,
 	),
-	'saveversion'=>array(
-		'alt'=>'Saves the template and creates a new version',
-		'value'=>'Save Version',
-		'width'=>120,
-	),
 	'save'=>array(
 		'alt'=>'Tallenna',
 		'value'=>'Tallenna',
 		'width'=>100,
+	),
+	'saveversion'=>array(
+		'alt'=>'Saves the template and creates a new version',
+		'value'=>'Save Version',
+		'width'=>120,
 	),
 	'search'=>array(
 		'alt'=>'Hae',
@@ -615,15 +615,15 @@ $l_buttons_global=array(
 		'value'=>'Pikkukuvat',
 		'width'=>100,
 	),
-	'unpublished_pages'=>array(
-		'alt'=>'Julkaisemattomat sivut',
-		'value'=>'Julkaisemattomat sivut',
-		'width'=>200,
-	),
 	'unpublish'=>array(
 		'alt'=>'Poista julkaisusta',
 		'value'=>'Poista julkaisusta',
 		'width'=>160,
+	),
+	'unpublished_pages'=>array(
+		'alt'=>'Julkaisemattomat sivut',
+		'value'=>'Julkaisemattomat sivut',
+		'width'=>200,
 	),
 	'upload'=>array(
 		'alt'=>'Lataa tiedosto',

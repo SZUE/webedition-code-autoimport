@@ -43,6 +43,6 @@ $l_perms_workpermissions=array(
 	'NEW_TEXT'=>'Право на создание plain text файлов',
 	'NEW_WEBEDITIONSITE'=>'Право на создание документов webEdition',
 	'NO_DOCTYPE'=>'Право на создание документов без типа документов',
-	'perm_group_title'=>'Рабочие полномочия',
 	'SAVE_DOCUMENT_TEMPLATE'=>'Право на сохранение документов и шаблонов',
+	'perm_group_title'=>'Рабочие полномочия',
 );

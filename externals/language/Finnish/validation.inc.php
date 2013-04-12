@@ -17,7 +17,6 @@ $l_validation=array(
 	'checkvia_url'=>'URL -siirtoa',
 	'connection_problems'=>'<strong>Virhe yhteydenmuodostuksessa palveluun<(/trong><br/><br/><br/>Huomioi: valinta "url siirto" on käytettävissä vain, jos webEdition järjestelmän pääsy on sallittu internetiin.Siirto ei ole mahdollinen paikallisasennuksessa.<br/><br/>Ongelmia voi myös esiintyä käytettäessä palomuureja tai proxy-palvelimia. Tarkista asetukset tässä tapauksessa.<br/><br/>HTTP-Response: %s',
 	'ctype'=>'Sisällön tyyppi',
-	'description'=>'Voit valita palvelun verkosta tarkistaaksesi dokumentin validiteetin/käytettävyyden.',
 	
 	'desc'=>array(
 		'active'=>'Piilota palvelu väliaikaisesti.',
@@ -26,6 +25,8 @@ $l_validation=array(
 		'fileEndings'=>'Syötä kaikki päätteet jotka on käytettävissä tälle palvelulle. (.html,.css)',
 		'varname'=>'Syötä tiedoston/url -kentän nimi',
 	),
+	'description'=>'Voit valita palvelun verkosta tarkistaaksesi dokumentin validiteetin/käytettävyyden.',
+	
 	'edit_service'=>array(
 		'delete_failure'=>'Palvelua ei voitu poistaa.',
 		'delete_success'=>'Palvelu on poistettu.',

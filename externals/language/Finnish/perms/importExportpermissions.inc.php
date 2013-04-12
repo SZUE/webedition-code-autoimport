@@ -10,7 +10,7 @@ $l_perms_importExportpermissions=array(
 	'GENERICXML_IMPORT'=>'Käyttäjä voi tuoda XML -tiedostoja.',
 	'MAKE_EXPORT'=>'Käyttäjä voi ladata webEdition XML -tiedostoja',
 	'NEW_EXPORT'=>'Käyttäjä voi luoda uusia webEdition XML -vientejä',
-	'perm_group_title'=>'Tuonti-/Vienti oikeudet',
 	'SITE_IMPORT'=>'Käyttäjä voi tuoda tiedostoja palvelimelta.',
 	'WXML_IMPORT'=>'Käyttäjä voi tuoda webEdition -järjestelmän XML -tiedostoja.',
+	'perm_group_title'=>'Tuonti-/Vienti oikeudet',
 );

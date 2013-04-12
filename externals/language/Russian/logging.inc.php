@@ -1,6 +1,7 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_logging=array(
+	'ID'=>'ID',
 	'activated'=>'activated',
 	'all'=>'show all',
 	'anzahlVersions'=>'Number of versions',
@@ -12,7 +13,6 @@ $l_logging=array(
 	'defaultView'=>'Default-View',
 	'deleted'=>'deleted',
 	'details'=>'Details',
-	'ID'=>'ID',
 	'logEntry'=>'Log-Entry',
 	'name'=>'Name',
 	'next'=>'next',
@@ -22,8 +22,8 @@ $l_logging=array(
 	'prefsVersionChanged'=>'Version preferences changed',
 	'reset'=>'reset',
 	'user'=>'User',
-	'versions'=>'Versions',
 	'version'=>'Version',
+	'versions'=>'Versions',
 	'weeks'=>'Weeks',
 	'years'=>'Years',
 	'zeitraum'=>'time',

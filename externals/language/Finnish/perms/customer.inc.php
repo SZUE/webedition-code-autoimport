@@ -8,6 +8,6 @@ $l_perms_customer=array(
 	'DELETE_CUSTOMER'=>'Käyttäjä voi poistaa asiakkaita.',
 	'EDIT_CUSTOMER'=>'Käyttäjä voi muokata asiakkaita.',
 	'NEW_CUSTOMER'=>'Käyttäjä voi luoda uusia asiakkaita.',
-	'perm_group_title'=>'Asiakashallinta',
 	'SHOW_CUSTOMER_ADMIN'=>'Käyttäjä voi muokata asiakkaan kenttiä.',
+	'perm_group_title'=>'Asiakashallinta',
 );

@@ -10,26 +10,27 @@ $l_fileselector=array(
 	'bannerSelector'=>array(
 		'title'=>'Select banner',
 	),
-	'cancel'=>'Cancel',
 	'can_not_overwrite_we_file'=>'A webEdition file cannot be overwritten!',
-	'catname'=>'Category',
+	'cancel'=>'Cancel',
 	
 	'catSelector'=>array(
 		'title'=>'Select category',
 	),
 	'cat_in_use'=>'The following categories are in use and cannot be deleted:',
 	'cat_in_use_rename'=>'The category is in use and cannot be changed!',
+	'catname'=>'Category',
 	'close'=>'Close',
-	'created'=>'Date of creation',
 	'create_folder_nok'=>'The directory cannot be created!',
+	'created'=>'Date of creation',
 	'data'=>'File',
-	'deleteQuestion'=>'Delete selected entries! Are you sure?',
-	'delete'=>'Delete file',
-	'delete_entry'=>'Delete entry',
 	
 	'delSelector'=>array(
 		'title'=>'Select items to delete',
 	),
+	'deleteQuestion'=>'Delete selected entries! Are you sure?',
+	'delete'=>'Delete file',
+	'delete_entry'=>'Delete entry',
+	
 	'dirSelector'=>array(
 		'title'=>'Select directory',
 	),
@@ -44,11 +45,11 @@ $l_fileselector=array(
 		'title'=>'Select directory to export',
 	),
 	'filename'=>'File name',
-	'filesize'=>'File size',
 	'files'=>'Files',
+	'filesize'=>'File size',
+	'folder'=>'Folder',
 	'foldername'=>'Directory',
 	'folders'=>'Directories',
-	'folder'=>'Folder',
 	'groupname'=>'Group name',
 	'image_not_uploaded'=>'No image has been uploaded.',
 	'lookin'=>'Look in',
@@ -79,11 +80,12 @@ $l_fileselector=array(
 	'title'=>'Title',
 	'type'=>'File type',
 	'up_folder'=>'Up one folder',
-	'username'=>'User name',
 	
 	'userSelector'=>array(
 		'title'=>'Select users',
 	),
+	'username'=>'User name',
+	
 	'votingDirSelector'=>array(
 		'title'=>'Select voting directory',
 ));

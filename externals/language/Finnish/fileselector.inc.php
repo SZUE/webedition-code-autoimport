@@ -10,26 +10,27 @@ $l_fileselector=array(
 	'bannerSelector'=>array(
 		'title'=>'Select banner',
 	),
-	'cancel'=>'Peruuta',
 	'can_not_overwrite_we_file'=>'webEdition -tiedostoa ei voida ylikirjoittaa!',
-	'catname'=>'Kategoria',
+	'cancel'=>'Peruuta',
 	
 	'catSelector'=>array(
 		'title'=>'Select category',
 	),
 	'cat_in_use'=>'Seuraavat kategoriat ovat käytössä ja niitä ei voida tuhota:',
 	'cat_in_use_rename'=>'Kategoria on käytössä joten sitä ei voida tuhota!',
+	'catname'=>'Kategoria',
 	'close'=>'Sulje',
-	'created'=>'Luontiajankohta',
 	'create_folder_nok'=>'Hakemistoa ei voida luoda!',
+	'created'=>'Luontiajankohta',
 	'data'=>'Tiedosto',
-	'deleteQuestion'=>'Poista valinta! Oletko varma?',
-	'delete'=>'Poista tiedosto',
-	'delete_entry'=>'Poista kohta',
 	
 	'delSelector'=>array(
 		'title'=>'Select items to delete',
 	),
+	'deleteQuestion'=>'Poista valinta! Oletko varma?',
+	'delete'=>'Poista tiedosto',
+	'delete_entry'=>'Poista kohta',
+	
 	'dirSelector'=>array(
 		'title'=>'Select directory',
 	),
@@ -44,11 +45,11 @@ $l_fileselector=array(
 		'title'=>'Select directory to export',
 	),
 	'filename'=>'Tiedoston nimi',
-	'filesize'=>'Tiedoston koko',
 	'files'=>'Tiedostot',
+	'filesize'=>'Tiedoston koko',
+	'folder'=>'Kansio',
 	'foldername'=>'Hakemisto',
 	'folders'=>'Hakemistot',
-	'folder'=>'Kansio',
 	'groupname'=>'Ryhmän nimi',
 	'image_not_uploaded'=>'Kuvia ei siirretty.',
 	'lookin'=>'Katso',
@@ -79,11 +80,12 @@ $l_fileselector=array(
 	'title'=>'Otsikko',
 	'type'=>'Tiedostotyyppi',
 	'up_folder'=>'Yksi hakemisto ylöspäin',
-	'username'=>'Käyttäjänimi',
 	
 	'userSelector'=>array(
 		'title'=>'Select users',
 	),
+	'username'=>'Käyttäjänimi',
+	
 	'votingDirSelector'=>array(
 		'title'=>'Select voting directory',
 ));

@@ -1,10 +1,11 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_modules_customerFilter=array(
+	'AND'=>'UND',
+	'OR'=>'ODER',
 	'accessControlOnErrorDoc'=>'Zugriff über Fehlerkontrolle',
 	'accessControlOnTemplate'=>'Fehlerkontrolle wird von Vorlage übernommen',
 	'accessControl'=>'Zugriffskontrollsteuerung',
-	'AND'=>'UND',
 	'apply_filter'=>'Kundenfilter übertragen',
 	'apply_filter_cofirm_close'=>'Momentan sind Unterelemente dieses Ordners geöffnet. Um die Kundenfilter zu übertragen müssen alle Unterelemente geschlossen werden. Wenn Sie fortfahren, werden diese automatisch geschlossen, ungespeicherte Änderungen werden dann allerdings ignoriert.',
 	'apply_filter_done'=>'Die Kundenfilter wurden übertragen.',
@@ -28,7 +29,6 @@ $l_modules_customerFilter=array(
 	'mode_off'=>'Kein Filter benutzen (alle Besucher haben Zugriff)',
 	'mode_specific'=>'Nur bestimmte Kunden haben Zugriff',
 	'not_equal'=>'nicht gleich (!=)',
-	'OR'=>'ODER',
 	'starts_with'=>'beginnt mit',
 	'white_list'=>'Weiße Liste (diese Kunden haben immer Zugriff):',
 );

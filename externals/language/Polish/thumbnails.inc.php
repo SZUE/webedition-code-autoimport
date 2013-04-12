@@ -1,8 +1,8 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_thumbnails=array(
-	'add_descriptiontext'=>'Aby dodać nową mianiaturę kliknij w klawisz Plus',
 	'add_description_nogdlib'=>'Aby funkcja podglądu miniatur była dostępna wymagana jest na serwerze instalacja GD Library!',
+	'add_descriptiontext'=>'Aby dodać nową mianiaturę kliknij w klawisz Plus',
 	'create_thumbnails'=>'Utwórz podgląd miniatury',
 	'delete_prompt'=>'Usuń podgląd miniatury `%s`! Jesteś pewien?',
 	'format'=>'Format zadania',
@@ -22,10 +22,10 @@ $l_thumbnails=array(
 	'properties'=>'Właściwości',
 	'quality'=>'Quality',
 	'ratio'=>'Zachowaj proporcje',
-	'saved'=>'Zapisano ustawienia.',
-	'saved_successfully'=>'Zapisano ustawienia',
 	'save'=>'Ustawienia są zapisywane, proszę czekać ...',
 	'save_wait'=>'Zapisz ustawienia',
+	'saved'=>'Zapisano ustawienia.',
+	'saved_successfully'=>'Zapisano ustawienia',
 	'thumbnails'=>'Podgląd miniatury',
 	'width'=>'Szerokość',
 );

@@ -8,11 +8,11 @@ $l_SEEM=array(
 	'confirm'=>array(
 		'change_to_preview'=>'Czy chcesz z powrotem przełączyć do trybu podglądu?',
 	),
-	'ext_document_on_other_server_selected'=>'Kliknięto na odnośnik, który wskazuje na dokument na innym serwerze WWW. Dokument zostanie otwarty w nowym oknie przeglądarki.\nKontynuować?',
 	'ext_doc'=>'Aktualna strona: <b>%s</b><u>nie </u> jest stroną do zarządzania za pomocą webEdition',
 	'ext_doc_not_found'=>'Nie można znaleźć oczekiwanej strony <b>%s</b>.',
 	'ext_doc_selected'=>'You have selected a link which points to a document that is not administered by webEdition. Continue?',
 	'ext_doc_tmp'=>'Strona nie została prawidłowo otwarta przez webEdition. Zastosuj normalną nawigację WWW w celu dotarcia do oczekiwanej strony.',
+	'ext_document_on_other_server_selected'=>'Kliknięto na odnośnik, który wskazuje na dokument na innym serwerze WWW. Dokument zostanie otwarty w nowym oknie przeglądarki.\nKontynuować?',
 	'ext_form_target_other_server'=>'Chcesz wysłać formularz, który wskazuje na inny serwer WWW.\nZostanie on otwarty w nowym oknie przeglądarki. Kontynuować??',
 	'ext_form_target_we_server'=>'Formularz zostanie wysłany do dokumentu,\nktóry nie jest zarządzany przez webEdition. Kontynuować?',
 	'info_doc_with_parameter'=>'Odnośnik z parametrem',

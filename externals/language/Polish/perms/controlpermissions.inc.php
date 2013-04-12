@@ -8,8 +8,8 @@ $l_perms_controlpermissions=array(
 	'EDIT_SETTINGS_DEF_EXT'=>'Użytkownik może zmieniać standardowe rozszerzenia',
 	'NEW_GROUP'=>'Użytkownik może tworzyć nowe grupy',
 	'NEW_USER'=>'Użytkownik może tworzyć nowych użytkowników',
-	'perm_group_title'=>'Control permissions',
 	'PUBLISH'=>'Użytkownik może publikować',
 	'SAVE_GROUP'=>'Użytkownik może zmieniać nowe grupy',
 	'SAVE_USER'=>'Użytkownik może zmieniać użytkowników',
+	'perm_group_title'=>'Control permissions',
 );

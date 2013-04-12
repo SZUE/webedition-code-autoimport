@@ -17,7 +17,6 @@ $l_validation=array(
 	'checkvia_url'=>'Transmission d`URL',
 	'connection_problems'=>'<strong>Erreur en connectant au service choisi.</strong><br/><br/>Considerez: L`option "Transmission d`URL" ne peut être utilisé, que si votre Installation de webEdition est accessible par l`internet (alors en dehors de votre reseau local). Ce n`est pas le cas avec installation local (localhost).<br/><br/>Ainsi peuvent se produire des problèmes avec des serveur-proxy ou des pare-feux. Dans ce cas vérifiez votre configuration s`il vous plaît.<br/><br/>Réponse-HTTP: %s',
 	'ctype'=>'Type-de-fichier',
-	'description'=>'Vous pouvez vous servir des services de web, pour vérfifier la validité et accessibilité de votre site.',
 	
 	'desc'=>array(
 		'active'=>'Vous pouvez cacher/désactiver ces services.',
@@ -26,6 +25,8 @@ $l_validation=array(
 		'fileEndings'=>'Les extension pour lequelles ce service sera utilisé, peuvent être saisi ici. (.html,.css)',
 		'varname'=>'(saisir le nom de la saisie-d`HTML du fichier / URL)',
 	),
+	'description'=>'Vous pouvez vous servir des services de web, pour vérfifier la validité et accessibilité de votre site.',
+	
 	'edit_service'=>array(
 		'delete_failure'=>'Le service n`a pas pu être supprimé.',
 		'delete_success'=>'Le service a été enregistré avec succès.',

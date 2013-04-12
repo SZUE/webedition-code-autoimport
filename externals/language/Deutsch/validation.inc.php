@@ -17,7 +17,6 @@ $l_validation=array(
 	'checkvia_url'=>'URL-Übergabe',
 	'connection_problems'=>'<strong>Bei der Verbindung zu dem gewählten Dienst ist ein Fehler aufgetreten.</strong><br/><br/>Bitte beachten Sie: Die Option "URL-Übergabe" kann nur verwendet werden, wenn Ihre webEdition-Installation vom Internet (also auch ausserhalb ihres lokalen Netzwerks) aus zu erreichen ist. Dies ist nicht der Fall bei einer lokalen Installation (Localhost).<br/><br/>Ebenso können Probleme mit Firewalls und Proxy-Servern auftreten. Überprüfen Sie in diesen Fällen bitte Ihre Konfiguration.<br/><br/>HTTP-Antwort: %s',
 	'ctype'=>'Datei-Typ',
-	'description'=>'Sie können hier einige Dienste des Webs nutzen, um Ihre Seiten nach Validität, bzw. Zugänglichkeit zu testen.',
 	
 	'desc'=>array(
 		'active'=>'Sie können Dienste zeitweise ausblenden.',
@@ -26,6 +25,8 @@ $l_validation=array(
 		'fileEndings'=>'Dateiendungen für den dieser Service benutzt werden soll, können hier eingetragen werden. (.html,.css)',
 		'varname'=>'(Name des HTML-Eingabefelds der Datei/ URL eintragen)',
 	),
+	'description'=>'Sie können hier einige Dienste des Webs nutzen, um Ihre Seiten nach Validität, bzw. Zugänglichkeit zu testen.',
+	
 	'edit_service'=>array(
 		'delete_failure'=>'Der Dienst konnte nicht gelöscht werden.',
 		'delete_success'=>'Der Dienst wurde erfolgreich gelöscht.',

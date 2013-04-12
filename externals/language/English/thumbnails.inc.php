@@ -1,8 +1,8 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_thumbnails=array(
-	'add_descriptiontext'=>'Please click on the plus button to add new thumbnails.',
 	'add_description_nogdlib'=>'The gd library has to be installed on your server to use the thumbnail functions. Please contact your server administrator for information on this library.',
+	'add_descriptiontext'=>'Please click on the plus button to add new thumbnails.',
 	'create_thumbnails'=>'Create thumbnails',
 	'delete_prompt'=>'Delete thumbnail `%s`! Are you sure?',
 	'format'=>'Output format',
@@ -22,10 +22,10 @@ $l_thumbnails=array(
 	'properties'=>'Properties',
 	'quality'=>'Quality',
 	'ratio'=>'Keep aspect ratio',
-	'saved'=>'Preferences have been saved successfully.',
-	'saved_successfully'=>'Preferences saved',
 	'save'=>'Saving preferences, one moment ...',
 	'save_wait'=>'Saving preferences',
+	'saved'=>'Preferences have been saved successfully.',
+	'saved_successfully'=>'Preferences saved',
 	'thumbnails'=>'Thumbnails',
 	'width'=>'Width',
 );

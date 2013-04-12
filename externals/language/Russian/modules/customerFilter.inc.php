@@ -1,10 +1,11 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_modules_customerFilter=array(
+	'AND'=>'AND',
+	'OR'=>'OR',
 	'accessControlOnErrorDoc'=>'Use error documents',
 	'accessControlOnTemplate'=>'Error treatment through template',
 	'accessControl'=>'Access Control',
-	'AND'=>'AND',
 	'apply_filter'=>'Apply customer filters',
 	'apply_filter_cofirm_close'=>'Currently, several subitems of this folder are open. To apply the customerfilters all subitems must be closed. If you continue, all subitems are closed automatically, however unsaved changes are discarded.',
 	'apply_filter_done'=>'The customerfilters are applied.',
@@ -28,7 +29,6 @@ $l_modules_customerFilter=array(
 	'mode_off'=>'Filter is off (all visitors have access)',
 	'mode_specific'=>'Only selected customers have access',
 	'not_equal'=>'not equal (!=)',
-	'OR'=>'OR',
 	'starts_with'=>'starts with',
 	'white_list'=>'White list (these customers have always access):',
 );

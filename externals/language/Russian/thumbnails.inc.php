@@ -1,8 +1,8 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_thumbnails=array(
-	'add_descriptiontext'=>'Для добавления новой иконки нужно нажать на кнопку «плюс»',
 	'add_description_nogdlib'=>'Ипользование иконок обеспечивается установкой на сервере GD Library!',
+	'add_descriptiontext'=>'Для добавления новой иконки нужно нажать на кнопку «плюс»',
 	'create_thumbnails'=>'Создание иконок',
 	'delete_prompt'=>'Удалить иконку `%s`. Вы уверены?',
 	'format'=>'Формат вывода на экран',
@@ -22,10 +22,10 @@ $l_thumbnails=array(
 	'properties'=>'Свойства',
 	'quality'=>'Quality',
 	'ratio'=>'Сохранить пропорции',
-	'saved'=>'Настройки успешно сохранены',
-	'saved_successfully'=>'Настройки сохранены',
 	'save'=>'Сохранение настроек ...',
 	'save_wait'=>'Сохранение настроек',
+	'saved'=>'Настройки успешно сохранены',
+	'saved_successfully'=>'Настройки сохранены',
 	'thumbnails'=>'Иконки',
 	'width'=>'Ширина',
 );

@@ -10,26 +10,27 @@ $l_fileselector=array(
 	'bannerSelector'=>array(
 		'title'=>'Select banner',
 	),
-	'cancel'=>'Отменить',
 	'can_not_overwrite_we_file'=>'Файл системы webEdition не может быть переписан!',
-	'catname'=>'Категория',
+	'cancel'=>'Отменить',
 	
 	'catSelector'=>array(
 		'title'=>'Select category',
 	),
 	'cat_in_use'=>'Следующие категории обрабатываются и поэтому не могут быть удалены:',
 	'cat_in_use_rename'=>'Данная категория - действующая и поэтому не может быть изменена!',
+	'catname'=>'Категория',
 	'close'=>'Закрыть',
-	'created'=>'Date of creation',
 	'create_folder_nok'=>'Директория не может быть создана!',
+	'created'=>'Date of creation',
 	'data'=>'Файл',
-	'deleteQuestion'=>'Удалить выбранные данные! Вы уверены?',
-	'delete'=>'Удалить файл',
-	'delete_entry'=>'Удалить введенные данные',
 	
 	'delSelector'=>array(
 		'title'=>'Select items to delete',
 	),
+	'deleteQuestion'=>'Удалить выбранные данные! Вы уверены?',
+	'delete'=>'Удалить файл',
+	'delete_entry'=>'Удалить введенные данные',
+	
 	'dirSelector'=>array(
 		'title'=>'Select directory',
 	),
@@ -44,11 +45,11 @@ $l_fileselector=array(
 		'title'=>'Select directory to export',
 	),
 	'filename'=>'Имя файла',
-	'filesize'=>'Размер файла',
 	'files'=>'Files',
+	'filesize'=>'Размер файла',
+	'folder'=>'Директория',
 	'foldername'=>'Директория',
 	'folders'=>'Directories',
-	'folder'=>'Директория',
 	'groupname'=>'Имя группы',
 	'image_not_uploaded'=>'No image has been uploaded.',
 	'lookin'=>'Искать в',
@@ -79,11 +80,12 @@ $l_fileselector=array(
 	'title'=>'Title',
 	'type'=>'Тип файла',
 	'up_folder'=>'Вышестоящая директория',
-	'username'=>'Имя пользователя',
 	
 	'userSelector'=>array(
 		'title'=>'Select users',
 	),
+	'username'=>'Имя пользователя',
+	
 	'votingDirSelector'=>array(
 		'title'=>'Select voting directory',
 ));

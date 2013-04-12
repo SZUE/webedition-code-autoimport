@@ -1,6 +1,12 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_weTag=array(
+	'DID'=>array(
+		'description'=>'Tagi palauttaa webEdition dokumentin ID:n.',
+	),
+	'a'=>array(
+		'description'=>'we:a tagi luon HTML-linkki tagin joka viittaa sisäiseen, ID:llä määriteltävään webEdition dokumenttiin. Kaikki aloitus- ja lopetustagin väliin tuleva sisältö toimii linkkinä.',
+	),
 	'addDelNewsletterEmail'=>array(
 		'description'=>'Tätä tagia käytetään öisäämään tai poistamaan sähköpostiosoite uutiskirjeen tilaajalistalta. Attribuutissa "path" täytyy antaa täydellinen polku uutiskirjeen vastaanottajalistatiedostoon. Jos path alkaa ilman merkkiä "/", lisätään annettu merkkijono DOCUMENT_ROOT arvoon. Jos käytössä on useita listoja, voit antaa pathiin useita polkuja pilkkueroteltuna.',
 	),
@@ -15,9 +21,6 @@ $l_weTag=array(
 	),
 	'author'=>array(
 		'description'=>'Tagi we:author näyttää dokumentin luojan nimen. Jos attribuuttia `type` ei ole määritelty, näytetään käyttäjätunnus. Jos type="name", näytetään käyttäjän etu- ja sukunimi. Jos nimiä ei ole määritelty, näytetään edelleen vain käyttäjätunnus.',
-	),
-	'a'=>array(
-		'description'=>'we:a tagi luon HTML-linkki tagin joka viittaa sisäiseen, ID:llä määriteltävään webEdition dokumenttiin. Kaikki aloitus- ja lopetustagin väliin tuleva sisältö toimii linkkinä.',
 	),
 	'back'=>array(
 		'description'=>'Tagi we:back tagi luo HTML-linkin joka viittaa we:listviewin edelliselle sivulle. Kaikki aloitus- ja lopetustagin väliin tuleva sisältö toimii linkkinä.',
@@ -103,9 +106,6 @@ $l_weTag=array(
 	'description'=>array(
 		'description'=>'we:description tagi luo description- metatagin. Jos dokumentin kuvauskenttä Ominaisuudet- välilehdellä on tyhjä, käytetään HTML-sivun koko sisältöä kuvaustekstinä.',
 	),
-	'DID'=>array(
-		'description'=>'Tagi palauttaa webEdition dokumentin ID:n.',
-	),
 	'docType'=>array(
 		'description'=>'Tagi palauttaa webEdition dokumentin dokumenttityypin.',
 	),
@@ -118,14 +118,14 @@ $l_weTag=array(
 	'flashmovie'=>array(
 		'description'=>'we:flashmovie tagi mahdollistaa Flash-esityksen lisäämisen sivun sisältöön. Käytettäessä tätä tagia dokumentin muokkaustilassa näytetään tiedostoselaimen avaava esityksen valintapainike.',
 	),
+	'form'=>array(
+		'description'=>'we:form tagia käytetään haku- ja mailiformien luontiin. Se toimii samaan tapaan kuin normaali HTML-lomakekin, mutta se antaa parserin lisätä tarvitsemiaan lisätietokenttiä hidden muotoisena.',
+	),
 	'formfield'=>array(
 		'description'=>'Tagia käytetään lisättäessä lomakekenttiä front end lomakkeeseen.',
 	),
 	'formmail'=>array(
 		'description'=>'With activated Setting Call Formmail via webEdition document, the integration of the formmail script is realized with a webEdition document. For this, the (currently without attributes) we-Tag formmail will be used. <br/>If the Captcha-check is used, &lt;we:formmail/&gt; is located within the we-Tag ifCaptcha.',
-	),
-	'form'=>array(
-		'description'=>'we:form tagia käytetään haku- ja mailiformien luontiin. Se toimii samaan tapaan kuin normaali HTML-lomakekin, mutta se antaa parserin lisätä tarvitsemiaan lisätietokenttiä hidden muotoisena.',
 	),
 	'hidden'=>array(
 		'description'=>'we:hidden tagi luo piilotetun (hidden) kentän joka sisältää saman nimisestä globaalista PHP-muuttujasta haetun muuttuja-arvon. Käytä tätä tagia kun haluat siirtää esim. lomakkeelta tulevia arvoja eteenpäin.',
@@ -142,9 +142,6 @@ $l_weTag=array(
 	'ifBack'=>array(
 		'description'=>'Tagia käytetään &lt;we:listview&gt; aloitus- ja lopetustagien välillä. we:back aloitus- ja lopetustagien sisään määritelty sisältö näytetään vain jos listviewillä on olemassa edellinen sivu.',
 	),
-	'ifbannerexists'=>array(
-		'description'=>'Executes the enclosed code only, if the banner module is not deaktivated (settings dialog).',
-	),
 	'ifCaptcha'=>array(
 		'description'=>'Tämän tagin sulkema sisältö esitetään vain jos käyttäjän syöttämä koodi on oikein.',
 	),
@@ -159,9 +156,6 @@ $l_weTag=array(
 	),
 	'ifCurrentDate'=>array(
 		'description'=>'Tämä tagi korostaa halutun päivän kalenteri-listview:ssä',
-	),
-	'ifcustomerexists'=>array(
-		'description'=>'Executes the enclosed code only, if the customer module is not deaktivated (settings dialog).',
 	),
 	'ifDeleted'=>array(
 		'description'=>'Tämän tagin sisällä oleva tieto näytetään jos dokumentti tai objekti poistettiin käyttämällä we:delete -tagia',
@@ -244,17 +238,14 @@ $l_weTag=array(
 	'ifMale'=>array(
 		'description'=>'Tämän tagin sisällä oleva tieto näytetään vain jos käyttäjä on mies. Tätä tagia käytetään uutiskirjeiden käyttjien sukupuolen tunnistuksessa.',
 	),
-	'ifnewsletterexists'=>array(
-		'description'=>'Executes the enclosed code only, if the newsletter module is not deaktivated (settings dialog).',
+	'ifNew'=>array(
+		'description'=>'Tämän tagin sisällä oleva tieto näytetään vain uudessa webEdition dokumentissa tai objektissa.',
 	),
 	'ifNewsletterSalutationEmpty'=>array(
 		'description'=>'Content enclosed by this tag is only displayed within a newsletter, if the salutation field defined in type is empty.',
 	),
 	'ifNewsletterSalutationNotEmpty'=>array(
 		'description'=>'Content enclosed by this tag is only displayed within a newsletter, if the salutation field defined in type is not empty.',
-	),
-	'ifNew'=>array(
-		'description'=>'Tämän tagin sisällä oleva tieto näytetään vain uudessa webEdition dokumentissa tai objektissa.',
 	),
 	'ifNext'=>array(
 		'description'=>'Tämän tagin sisällä oleva tieto näytetään vain jos `Seuraavat` -objekteja on saatavilla',
@@ -304,11 +295,11 @@ $l_weTag=array(
 	'ifNotHtmlMail'=>array(
 		'description'=>'Tämän tagin sisältö näytetään vain jos uutiskirjeen formaatti ei ole HTML.',
 	),
-	'ifNotNewsletterSalutation'=>array(
-		'description'=>'Content enclosed by this tag is only displayed within a newsletter, if the salutation field defined in type is not equal to match.',
-	),
 	'ifNotNew'=>array(
 		'description'=>'Tämän tagin sisällä oleva tieto näytetään vain uudessa webEdition dokumentissa tai objektissa.',
+	),
+	'ifNotNewsletterSalutation'=>array(
+		'description'=>'Content enclosed by this tag is only displayed within a newsletter, if the salutation field defined in type is not equal to match.',
 	),
 	'ifNotObjectLanguage'=>array(
 		'description'=>'The tag we:ifNotObjectLanguage tests on the language setting in the properties tab of the object, several values can be separated by comma (OR relation). The possible values are taken from the general properties dialog, tab languages',
@@ -394,9 +385,6 @@ $l_weTag=array(
 	'ifObject'=>array(
 		'description'=>'Tämän tagin sisällä oleva tieto näytetään jos löydettiin yksilöllinen rivi we:listview type=`search`:lla joka on objekti.',
 	),
-	'ifobjektexists'=>array(
-		'description'=>'Executes the enclosed code only, if the object module is not deaktivated (settings dialog).',
-	),
 	'ifPageLanguage'=>array(
 		'description'=>'The tag we:ifPageLanguage tests on the language setting in the properties tab of the document, several values can be separated by comma (OR relation). The possible values are taken from the general properties dialog, tab languages',
 	),
@@ -426,9 +414,6 @@ $l_weTag=array(
 	),
 	'ifShopEmpty'=>array(
 		'description'=>'Tämän tagin sisältö näytetään jos ostoskori on tyhjä.',
-	),
-	'ifshopexists'=>array(
-		'description'=>'Executes the enclosed code only, if the shop module is not deaktivated (settings dialog).',
 	),
 	'ifShopFieldEmpty'=>array(
 		'description'=>'Content enclosed by this tag is only displayed if the shopField named in attribute "name" is empty.',
@@ -496,9 +481,6 @@ $l_weTag=array(
 	'ifVote'=>array(
 		'description'=>'Tämän tagin sisältö näytetään jos äänestys tallennettiin onnistuneesti.',
 	),
-	'ifvotingexists'=>array(
-		'description'=>'Executes the enclosed code only, if the voting module is not deaktivated (settings dialog).',
-	),
 	'ifVotingFieldEmpty'=>array(
 		'description'=>'Checks if a votingField is empty, the attribute combinations of name and type are the same as in the we:votingField tag',
 	),
@@ -520,6 +502,24 @@ $l_weTag=array(
 	'ifWritten'=>array(
 		'description'=>'Tämän tagin sisältö on käytettävissä vian jos kirjoitus dokumenttiin tai objektiin onnisui. kts. we:write -tagi.',
 	),
+	'ifbannerexists'=>array(
+		'description'=>'Executes the enclosed code only, if the banner module is not deaktivated (settings dialog).',
+	),
+	'ifcustomerexists'=>array(
+		'description'=>'Executes the enclosed code only, if the customer module is not deaktivated (settings dialog).',
+	),
+	'ifnewsletterexists'=>array(
+		'description'=>'Executes the enclosed code only, if the newsletter module is not deaktivated (settings dialog).',
+	),
+	'ifobjektexists'=>array(
+		'description'=>'Executes the enclosed code only, if the object module is not deaktivated (settings dialog).',
+	),
+	'ifshopexists'=>array(
+		'description'=>'Executes the enclosed code only, if the shop module is not deaktivated (settings dialog).',
+	),
+	'ifvotingexists'=>array(
+		'description'=>'Executes the enclosed code only, if the voting module is not deaktivated (settings dialog).',
+	),
 	'img'=>array(
 		'description'=>'we:img tagilla voidaan lisätä kuva dokumentin muokkaus-tilassa. Jos mitään attribuutteja ei määritetä, käytetään oletusarvoja. `showimage`:lla kuva voidaan piilottaa muokkaus-tilassa. `showinputs`:lla kuvan title- ja alt- attribuutit on pois käytöstä..',
 	),
@@ -535,14 +535,17 @@ $l_weTag=array(
 	'keywords'=>array(
 		'description'=>'we:keywords -tagi luo avainsana -metatagin.  Jos `Ominaisuus` avainsana -kenttä on tyhjä, tämän tagin sisällä olevia sanoja käytetään avainsanoina. Muuten käytetään `Ominaisuus`:ssa määriteltyjä avainsanoja.',
 	),
-	'linklist'=>array(
-		'description'=>'we:linklist -tagilla luodaan linkkilista. we:prelink -tagin sisältö tulostetaan ennen linkkiä muokkaustilassa..',
-	),
 	'linkToSeeMode'=>array(
 		'description'=>'Tämä tagi luo linkin joka avautuu valittuun dokumenttiin `seeMode`:ssa.',
 	),
 	'link'=>array(
 		'description'=>'we:link -tagi luo yksittäisen linkin jota voidaan muokata `muokkaa`-napilla. Jos we:link:iä käytetään we:linklist:n sisällä `nimi`-attribuuttia ei tule määritellä we:link-tagiin, muutoin kyllä. `only` -attribuuttiin voidaan määritellä attribuutti jonka linkki palauttaa, esim. `only="content"`.',
+	),
+	'linklist'=>array(
+		'description'=>'we:linklist -tagilla luodaan linkkilista. we:prelink -tagin sisältö tulostetaan ennen linkkiä muokkaustilassa..',
+	),
+	'list'=>array(
+		'description'=>'we:list -tagilla voit tehdä laajennettavia listoja. Tagien sisällä oleva tieto liitetään listaan.',
 	),
 	'listdir'=>array(
 		'description'=>'we:listdir -tagi luo listan joka näyttää kaikki dokumentit jotka ovat samassa kansiossa. `field` -attribuutilla voidaan määritellä minkä kentän arvo näytetään. Jos attribuutti on tyhjä tai ei ole olemassa, tiedoston nimi näytetään. Minkä kentän halutaan näyttävän kansioita tulee määrittää attribuuttiin `dirfield`. Jos attribuutti on tyhjä tai sitä ei ole olemassa, `field`-kentän nimi on verrannollinen käytetyn tiedoston nimeen. Jos käytetään `id`-attribuuttia, kansion tiedostot jossa on tämä sama id näytetään.',
@@ -564,9 +567,6 @@ $l_weTag=array(
 	),
 	'listview'=>array(
 		'description'=>'we:listview -tagilla luodaan listoja jotka generoidaan automaattisesti.',
-	),
-	'list'=>array(
-		'description'=>'we:list -tagilla voit tehdä laajennettavia listoja. Tagien sisällä oleva tieto liitetään listaan.',
 	),
 	'master'=>array(
 		'description'=>'Used inside a template which has a master template. The content between start and endtag is inserted in the master template where we:content is defined. The link between master and content is made via the name attribute.<br/><br/>Content which is not encapsulated in a master tag is inserted in the master-template where we:conent is defined without a name.',
@@ -614,11 +614,11 @@ $l_weTag=array(
 	'object'=>array(
 		'description'=>'we:object:lla näytetään objekteja. Objektin kenttiä voidaan näyttää we:field -tagilla. Jos `name`-attribuutti on määritelty niin objektivalitsin näytetään muokkaustilassa josta voi valita kaikki objektit kaikista luokista. Jos `classid` on määritelty objektivalitsimella voi valita kaikki objektit tietystä luokasta. Pelkällä `id`:llä voidaan valita yksittäinen objekti..',
 	),
-	'orderitem'=>array(
-		'description'=>'Using this tag, one can display a single item on an order on a webEdition page. Similar to the Listview or the <we:object> tag, the fields are displayed with the <we:field> tag.',
-	),
 	'order'=>array(
 		'description'=>'Using this tag, one can display an order on a webEdition page. Similar to the Listview or the <we:object> tag, the fields are displayed with the <we:field> tag.',
+	),
+	'orderitem'=>array(
+		'description'=>'Using this tag, one can display a single item on an order on a webEdition page. Similar to the Listview or the <we:object> tag, the fields are displayed with the <we:field> tag.',
 	),
 	'pageLanguage'=>array(
 		'description'=>'Shows the language of the document',
@@ -650,11 +650,11 @@ $l_weTag=array(
 	'quicktime'=>array(
 		'description'=>'we:quicktime -tagilla voit lisätä Quicktime elokuvan tiedostoon. Tähän sivupohjaan perustuvat tiedostot näyttävät muokkausnapin muokkaustilassa. Tämä napin klikkaaminen avaa tiedostohallinan, joka antaa sinun valita Quicktime elokuvan, jonka olet jo siirtäny webEditioniin. Tällä hetkellä ei ole xhtml-validia koodia, joka toimisi sekä IE:ssä että Mozillassa. Tämänvuoksi, xml on aina asetettu arvoon "epätosi"',
 	),
-	'registeredUser'=>array(
-		'description'=>'Tämä tagi tulostaa asiakastiedot, jotka on tallennettu asiakashalllintamoduuliin.',
-	),
 	'registerSwitch'=>array(
 		'description'=>'Tämä tagi luo kytkimen jolla voit vaihtaa rekisteröityneen ja rekisteröitymättönmän käyttäjän statuksen välillä muokkaustilassa. Jos olet käyttänyt &lt;we:ifRegisteredUser&gt; ja &lt;we:ifNotRgisteredUser&gt; -tags, tämä tagi antaa sinun katsoa eri tiloja ja pitää sisällön muotoilu kunnossa.',
+	),
+	'registeredUser'=>array(
+		'description'=>'Tämä tagi tulostaa asiakastiedot, jotka on tallennettu asiakashalllintamoduuliin.',
 	),
 	'repeatShopItem'=>array(
 		'description'=>'Tämä tagi näyttää kaiken ostoskorinsisällön.',
@@ -732,11 +732,11 @@ $l_weTag=array(
 	'url'=>array(
 		'description'=>'we:url -tagi luo sisäisen webEdition URL-osoitteen, joka osoittaa dokumenttiin, jolla on alla annettu id.',
 	),
-	'userInput'=>array(
-		'description'=>'we:userInput -tagi luo syöttökentät, joita voidaan käyttää we:form type="document" tai type="object" yhteydessä tiedostojen tai objektien luomiseksi.',
-	),
 	'useShopVariant'=>array(
 		'description'=>'we:shopVariant -tagi käyttää artikkelin toisinnon datan annetun nimen perusteella. Jos toisintoja annetulla nimellä ei ole, näytetään vakio artikkeli.',
+	),
+	'userInput'=>array(
+		'description'=>'we:userInput -tagi luo syöttökentät, joita voidaan käyttää we:form type="document" tai type="object" yhteydessä tiedostojen tai objektien luomiseksi.',
 	),
 	'var'=>array(
 		'description'=>'we:var -tagi esittää alla annettuun nimeen liittyvän tiedosto-kentän globaalin php -muuttujan sisällön.',

@@ -41,11 +41,6 @@ $l_buttons_global=array(
 		'value'=>'Attributes...',
 		'width'=>100,
 	),
-	'backup'=>array(
-		'alt'=>'Kopia bezpieczeństwa',
-		'value'=>'Backup',
-		'width'=>100,
-	),
 	'back'=>array(
 		'alt'=>'Wstecz',
 		'value'=>'Back',
@@ -54,6 +49,11 @@ $l_buttons_global=array(
 	'back_to_login'=>array(
 		'alt'=>'Powrót do logowania do webEdition',
 		'value'=>'Back',
+		'width'=>100,
+	),
+	'backup'=>array(
+		'alt'=>'Kopia bezpieczeństwa',
+		'value'=>'Backup',
 		'width'=>100,
 	),
 	'browse'=>array(
@@ -302,11 +302,6 @@ $l_buttons_global=array(
 		'alt'=>'download',
 		'value'=>'Download',
 	),
-	'editor'=>array(
-		'alt'=>'Start Editor',
-		'value'=>'Start Editor',
-		'width'=>100,
-	),
 	'edit'=>array(
 		'alt'=>'Edycja',
 		'value'=>'Edit',
@@ -316,6 +311,11 @@ $l_buttons_global=array(
 		'alt'=>'Edit thumbnails...',
 		'value'=>'Edit thumbnails...',
 		'width'=>150,
+	),
+	'editor'=>array(
+		'alt'=>'Start Editor',
+		'value'=>'Start Editor',
+		'width'=>100,
 	),
 	'export'=>array(
 		'alt'=>'Export selected files',
@@ -510,16 +510,6 @@ $l_buttons_global=array(
 		'value'=>'Replace',
 		'width'=>100,
 	),
-	'reset'=>array(
-		'alt'=>'Reset search input ...',
-		'value'=>'Reset',
-		'width'=>100,
-	),
-	'restore_backup'=>array(
-		'alt'=>'Przywraca kopię zapasową',
-		'value'=>'Recover Backup',
-		'width'=>180,
-	),
 	'res_1024'=>array(
 		'alt'=>'Ustawia 1024x768',
 		'value'=>'1024x768',
@@ -560,6 +550,16 @@ $l_buttons_global=array(
 		'value'=>'960x420',
 		'width'=>100,
 	),
+	'reset'=>array(
+		'alt'=>'Reset search input ...',
+		'value'=>'Reset',
+		'width'=>100,
+	),
+	'restore_backup'=>array(
+		'alt'=>'Przywraca kopię zapasową',
+		'value'=>'Recover Backup',
+		'width'=>180,
+	),
 	'revert_published'=>array(
 		'alt'=>'Discard changes and restore published version.',
 		'value'=>'Restore published version',
@@ -570,15 +570,15 @@ $l_buttons_global=array(
 		'value'=>'/',
 		'width'=>40,
 	),
-	'saveversion'=>array(
-		'alt'=>'Saves the template and creates a new version',
-		'value'=>'Save Version',
-		'width'=>120,
-	),
 	'save'=>array(
 		'alt'=>'Save',
 		'value'=>'Save',
 		'width'=>100,
+	),
+	'saveversion'=>array(
+		'alt'=>'Saves the template and creates a new version',
+		'value'=>'Save Version',
+		'width'=>120,
 	),
 	'search'=>array(
 		'alt'=>'Wyszukiwanie',
@@ -615,15 +615,15 @@ $l_buttons_global=array(
 		'value'=>'Thumbnails',
 		'width'=>100,
 	),
-	'unpublished_pages'=>array(
-		'alt'=>'Przegląd nieopublikowanych stron',
-		'value'=>'Unpublished documents',
-		'width'=>200,
-	),
 	'unpublish'=>array(
 		'alt'=>'Wycofaj',
 		'value'=>'Unpublish',
 		'width'=>100,
+	),
+	'unpublished_pages'=>array(
+		'alt'=>'Przegląd nieopublikowanych stron',
+		'value'=>'Unpublished documents',
+		'width'=>200,
 	),
 	'upload'=>array(
 		'alt'=>'Ładuje pliki na serwer',

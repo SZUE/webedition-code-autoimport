@@ -43,6 +43,6 @@ $l_perms_workpermissions=array(
 	'NEW_TEXT'=>'Käyttäjä voi luoda tekstitiedostoja.',
 	'NEW_WEBEDITIONSITE'=>'Käyttäjä voi luodan webEdition -dokumentteja.',
 	'NO_DOCTYPE'=>'Käyttäjä voi luoda dokumenttityypittömiä dokumentteja.',
-	'perm_group_title'=>'Työoikeudet',
 	'SAVE_DOCUMENT_TEMPLATE'=>'Käyttäjä voi tallentaa dokumentteja ja sivupohjia.',
+	'perm_group_title'=>'Työoikeudet',
 );

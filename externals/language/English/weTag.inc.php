@@ -1,6 +1,12 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_weTag=array(
+	'DID'=>array(
+		'description'=>'This tag returns the ID of a webEdition document.',
+	),
+	'a'=>array(
+		'description'=>'The we:a tag creates an HTML link tag that references an internal webEdition document that has the ID listed below. The tag links any content found between the start tag and the end tag.',
+	),
 	'addDelNewsletterEmail'=>array(
 		'description'=>'This tag is used to add or remove an email address from a newsletter address list. In attribute "path" the complete path to the newsletter list must be given. If the path begins without "/" the path will be emanated from DOCUMENT_ROOT. If you use several lists, you can enter several paths, separated by a comma.',
 	),
@@ -15,9 +21,6 @@ $l_weTag=array(
 	),
 	'author'=>array(
 		'description'=>'The we:author tag shows the creator of the document. If the attribute `type` is not set, the user name will be displayed. If type="name", the first and last name of the user will be displayed. If `type="initials", the initials of the user will be displayed. When no first or last name is entered, the username will be shown.',
-	),
-	'a'=>array(
-		'description'=>'The we:a tag creates an HTML link tag that references an internal webEdition document that has the ID listed below. The tag links any content found between the start tag and the end tag.',
 	),
 	'back'=>array(
 		'description'=>'The we:back tag creates an HTML link tag that references the previous we:listview page. The tag links any content found between the start tag and the end tag.',
@@ -103,9 +106,6 @@ $l_weTag=array(
 	'description'=>array(
 		'description'=>'The we:description tag generates a description meta tag. If the description field in the Properties view is empty, the content placed between the start tag and the end tag will be used as the default description.',
 	),
-	'DID'=>array(
-		'description'=>'This tag returns the ID of a webEdition document.',
-	),
 	'docType'=>array(
 		'description'=>'This tag returns the document type of a webEdition document.',
 	),
@@ -118,14 +118,14 @@ $l_weTag=array(
 	'flashmovie'=>array(
 		'description'=>'The we:flashmovie tag allows you to insert a Flash movie in the content of the document. Documents based on this template will display an edit button while in edit mode. Clicking on this button will launch a file manager, which allows you to select a Flash movie that you have already set up in webEdition.',
 	),
+	'form'=>array(
+		'description'=>'The we:form tag is used to search and mail forms. It works in the same fashion as the normal HTML form tag, but allows the parser to insert additional hidden fields.',
+	),
 	'formfield'=>array(
 		'description'=>'This tag is used to generate fields in a front end form.',
 	),
 	'formmail'=>array(
 		'description'=>'With activated Setting Call Formmail via webEdition document, the integration of the formmail script is realized with a webEdition document. For this, the (currently without attributes) we-Tag formmail will be used. <br/>If the Captcha-check is used, &lt;we:formmail/&gt; is located within the we-Tag ifCaptcha.',
-	),
-	'form'=>array(
-		'description'=>'The we:form tag is used to search and mail forms. It works in the same fashion as the normal HTML form tag, but allows the parser to insert additional hidden fields.',
 	),
 	'hidden'=>array(
 		'description'=>'The we:hidden tag creates a hidden input tag holding the value of the global PHP variable with the same name. Use this tag if you want to forward incoming variables.',
@@ -142,9 +142,6 @@ $l_weTag=array(
 	'ifBack'=>array(
 		'description'=>'This tag is used between the start and end tags of &lt;we:listview&gt;. Everything between the start and end tags of this tag is displayed only if a previous page exists. For example, you can use this tag on the second page of a 20 item listview where 5 items are displayed per page.',
 	),
-	'ifbannerexists'=>array(
-		'description'=>'Executes the enclosed code only, if the banner module is not deaktivated (settings dialog).',
-	),
 	'ifCaptcha'=>array(
 		'description'=>'Content enclosed by this tag is only displayed if the code entered by the user is valid.',
 	),
@@ -159,9 +156,6 @@ $l_weTag=array(
 	),
 	'ifCurrentDate'=>array(
 		'description'=>'This tag highlights the current day within a calendar-listview.',
-	),
-	'ifcustomerexists'=>array(
-		'description'=>'Executes the enclosed code only, if the customer module is not deaktivated (settings dialog).',
 	),
 	'ifDeleted'=>array(
 		'description'=>'Content enclosed by the start and end tags of this tag are only displayed if a particular document or object was deleted using &lt;we:delete/&gt;',
@@ -244,17 +238,14 @@ $l_weTag=array(
 	'ifMale'=>array(
 		'description'=>'Content enclosed by this tag is only displayed if the user is male. This tag is used for the salutation in newsletters.',
 	),
-	'ifnewsletterexists'=>array(
-		'description'=>'Executes the enclosed code only, if the newsletter module is not deaktivated (settings dialog).',
+	'ifNew'=>array(
+		'description'=>'Content enclosed by this tag is only displayed in a new webEdition document or object.',
 	),
 	'ifNewsletterSalutationEmpty'=>array(
 		'description'=>'Content enclosed by this tag is only displayed within a newsletter, if the salutation field defined in type is empty.',
 	),
 	'ifNewsletterSalutationNotEmpty'=>array(
 		'description'=>'Content enclosed by this tag is only displayed within a newsletter, if the salutation field defined in type is not empty.',
-	),
-	'ifNew'=>array(
-		'description'=>'Content enclosed by this tag is only displayed in a new webEdition document or object.',
 	),
 	'ifNext'=>array(
 		'description'=>'Content enclosed by this tag is displayed only if a next page of items is available in a &lt;we:listview&gt;',
@@ -304,11 +295,11 @@ $l_weTag=array(
 	'ifNotHtmlMail'=>array(
 		'description'=>'Content enclosed by this tag is only displayed in an HTML newsletter document.',
 	),
-	'ifNotNewsletterSalutation'=>array(
-		'description'=>'Content enclosed by this tag is only displayed within a newsletter, if the salutation field defined in type is not equal to match.',
-	),
 	'ifNotNew'=>array(
 		'description'=>'Content enclosed by this tag is only displayed in an old webEdition document or object.',
+	),
+	'ifNotNewsletterSalutation'=>array(
+		'description'=>'Content enclosed by this tag is only displayed within a newsletter, if the salutation field defined in type is not equal to match.',
 	),
 	'ifNotObjectLanguage'=>array(
 		'description'=>'The tag we:ifNotObjectLanguage tests on the language setting in the properties tab of the object, several values can be separated by comma (OR relation). The possible values are taken from the general properties dialog, tab languages',
@@ -394,9 +385,6 @@ $l_weTag=array(
 	'ifObject'=>array(
 		'description'=>'Content enclosed by this tag is only displayed if the indvidual entry found by &lt;we:listview type="search"&gt; is an object.',
 	),
-	'ifobjektexists'=>array(
-		'description'=>'Executes the enclosed code only, if the object module is not deaktivated (settings dialog).',
-	),
 	'ifPageLanguage'=>array(
 		'description'=>'The tag we:ifPageLanguage tests on the language setting in the properties tab of the document, several values can be separated by comma (OR relation). The possible values are taken from the general properties dialog, tab languages',
 	),
@@ -426,9 +414,6 @@ $l_weTag=array(
 	),
 	'ifShopEmpty'=>array(
 		'description'=>'Everything between the start- and endtag will be shown if the shopping cart is empty.',
-	),
-	'ifshopexists'=>array(
-		'description'=>'Executes the enclosed code only, if the shop module is not deaktivated (settings dialog).',
 	),
 	'ifShopFieldEmpty'=>array(
 		'description'=>'Content enclosed by this tag is only displayed if the shopField named in attribute "name" is empty.',
@@ -496,9 +481,6 @@ $l_weTag=array(
 	'ifVote'=>array(
 		'description'=>'Everything in between the start- and endtag is only displayed, if the voting was successfully saved.',
 	),
-	'ifvotingexists'=>array(
-		'description'=>'Executes the enclosed code only, if the voting module is not deaktivated (settings dialog).',
-	),
 	'ifVotingFieldEmpty'=>array(
 		'description'=>'Checks if a votingField is empty, the attribute combinations of name and type are the same as in the we:votingField tag',
 	),
@@ -520,6 +502,24 @@ $l_weTag=array(
 	'ifWritten'=>array(
 		'description'=>'Content enclosed by this tag is only available if the write process of a webEdition document or object was successful. See &lt;we:write&gt;.',
 	),
+	'ifbannerexists'=>array(
+		'description'=>'Executes the enclosed code only, if the banner module is not deaktivated (settings dialog).',
+	),
+	'ifcustomerexists'=>array(
+		'description'=>'Executes the enclosed code only, if the customer module is not deaktivated (settings dialog).',
+	),
+	'ifnewsletterexists'=>array(
+		'description'=>'Executes the enclosed code only, if the newsletter module is not deaktivated (settings dialog).',
+	),
+	'ifobjektexists'=>array(
+		'description'=>'Executes the enclosed code only, if the object module is not deaktivated (settings dialog).',
+	),
+	'ifshopexists'=>array(
+		'description'=>'Executes the enclosed code only, if the shop module is not deaktivated (settings dialog).',
+	),
+	'ifvotingexists'=>array(
+		'description'=>'Executes the enclosed code only, if the voting module is not deaktivated (settings dialog).',
+	),
 	'img'=>array(
 		'description'=>'The we:img tag is required to insert an image in the content of the page. In edit mode, you can see an edit button. Clicking on the button will launch a file manager, which allows you to select an image that has been uploaded to or set up in webEdition. If the attributes "width", "height", "border", "hspace", "vspace", "alt", or "align" are set up, these attributes will be used for the image. Otherwise, the settings made for the image are in force. If the attribute ID is set up, the image will be used with this ID if no other image has been selected. The attribut showimage allows to hide the image itself in edit-mode, only the controlbuttons are shown then. With showinputs the input fields for alt and title can be deactivated.',
 	),
@@ -535,14 +535,17 @@ $l_weTag=array(
 	'keywords'=>array(
 		'description'=>'The we:keywords tag generates a keywords meta tag. If the keywords field in the "Property" view is empty, the content placed between the start tag and the end tag will be used as the default keywords. Otherwise, the keywords from the Properties view will be entered.',
 	),
-	'linklist'=>array(
-		'description'=>'The we:linklist tag is used to generate link lists. A "+" button will appear in edit mode. Clicking this button will add a new link to the list. The appearance of the link list is determined by the HTML used in the list and by the use of "we:prelink" and "we:postlink" between &lt;we:link&gt; and &lt;/we:link&gt;. All the links inserted can be edited using an edit button and deleted using a delete button.',
-	),
 	'linkToSeeMode'=>array(
 		'description'=>'This tag generates a link which opens the selected document in seeMode.',
 	),
 	'link'=>array(
 		'description'=>'The we:link tag creates a single link which can be modified by using the "edit" button. The "name" attribute must not be specified between the we:linklist start tag and end tag. The "name" attribute must be specified outside the we:linklist tags."only" allows to return single attribut (only="name of attribute") of the link or only the content (only="content") of the link.',
+	),
+	'linklist'=>array(
+		'description'=>'The we:linklist tag is used to generate link lists. A "+" button will appear in edit mode. Clicking this button will add a new link to the list. The appearance of the link list is determined by the HTML used in the list and by the use of "we:prelink" and "we:postlink" between &lt;we:link&gt; and &lt;/we:link&gt;. All the links inserted can be edited using an edit button and deleted using a delete button.',
+	),
+	'list'=>array(
+		'description'=>'The we:list tag allows you to create expandable lists. Everything located between the start tag and the end tag will be entered (any HTML and almost all we:tags) if you click the plus button in edit mode.',
 	),
 	'listdir'=>array(
 		'description'=>'The we:listdir tag creates a new list displaying all files in the same directory. In the attribute "field" you can specify the field which is to be displayed. If the field is empty or does not exist, the name of the file is displayed. Directories are examined regarding index files; if there is an index file, it will be displayed. Which field should be used to display directories can be specified in the attribute "dirfield". If the field is empty or does not exist, the entry of "field" respective to the name of the file is used. If the attribute "id" is set up, the files of the directory with the indicated ID are displayed.',
@@ -564,9 +567,6 @@ $l_weTag=array(
 	),
 	'listview'=>array(
 		'description'=>'The we:listview tag is the start tag and end tag of lists that are generated automatically (summary news pages etc.).',
-	),
-	'list'=>array(
-		'description'=>'The we:list tag allows you to create expandable lists. Everything located between the start tag and the end tag will be entered (any HTML and almost all we:tags) if you click the plus button in edit mode.',
 	),
 	'master'=>array(
 		'description'=>'Used inside a template which has a master template. The content between start and endtag is inserted in the master template where we:content is defined. The link between master and content is made via the name attribute.<br/><br/>Content which is not encapsulated in a master tag is inserted in the master-template where we:conent is defined without a name.',
@@ -614,11 +614,11 @@ $l_weTag=array(
 	'object'=>array(
 		'description'=>'The we:object tag is used to display objects. The fields of an object can be displayed with we:field tags within the start tag and end tag. If just the attribute "name" for an object is set or has a value, the object selector will be displayed in the edit mode and the editor has the option to select all objects from all classes. If in addition the attribute "classid" has a value, the selection in the object selector will be reduced to all objects related to the class definded in "classid". With the attribute "id" you can define a preselection of a specific object defined by "classid" and "id". The attribute "triggerid" is used to display dynamic documents in a static object listview.',
 	),
-	'orderitem'=>array(
-		'description'=>'Using this tag, one can display a single item on an order on a webEdition page. Similar to the Listview or the <we:object> tag, the fields are displayed with the <we:field> tag.',
-	),
 	'order'=>array(
 		'description'=>'Using this tag, one can display an order on a webEdition page. Similar to the Listview or the <we:object> tag, the fields are displayed with the <we:field> tag.',
+	),
+	'orderitem'=>array(
+		'description'=>'Using this tag, one can display a single item on an order on a webEdition page. Similar to the Listview or the <we:object> tag, the fields are displayed with the <we:field> tag.',
 	),
 	'pageLanguage'=>array(
 		'description'=>'Shows the language of the document',
@@ -650,11 +650,11 @@ $l_weTag=array(
 	'quicktime'=>array(
 		'description'=>'The we:quicktime tag allows you to insert a Quicktime movie in the content of the document. Documents based on this template will display an edit button while in edit mode. Clicking on this button will launch a file manager, which allows you to select a Quicktime movie that you have already set up in webEdition. Currently there exists no xhtml-valid output working on both common browsers (IE, Mozilla). Therefore, xml is always set to "false"',
 	),
-	'registeredUser'=>array(
-		'description'=>'This tag is used to print customer data stored in the customer modules.',
-	),
 	'registerSwitch'=>array(
 		'description'=>'This tag generates a switch with which you can shift between the status of a registered and an unregistered user while in edit-mode. If you have used the &lt;we:ifRegisteredUser&gt; and &lt;we:ifNotRgisteredUser&gt; tags, this tag allows you to see the different views and and to keep control of the layout.',
+	),
+	'registeredUser'=>array(
+		'description'=>'This tag is used to print customer data stored in the customer modules.',
 	),
 	'repeatShopItem'=>array(
 		'description'=>'This tag displays all articles in the shopping cart.',
@@ -732,11 +732,11 @@ $l_weTag=array(
 	'url'=>array(
 		'description'=>'The we:url tag creates an internal webEdition URL that references to the document that has the ID listed below.',
 	),
-	'userInput'=>array(
-		'description'=>'The we:userInput tag creates input fields to use with we:form type="document" or type="object" in order to create documents or objects.',
-	),
 	'useShopVariant'=>array(
 		'description'=>'The we:shopVariant tag uses the data of a article variant by the submitted name of the variant. Is there no variant with the given name the default article will be displayed.',
+	),
+	'userInput'=>array(
+		'description'=>'The we:userInput tag creates input fields to use with we:form type="document" or type="object" in order to create documents or objects.',
 	),
 	'var'=>array(
 		'description'=>'The we:var tag displays the content of a global PHP variable respective to the content of a document field with the name listed below.',

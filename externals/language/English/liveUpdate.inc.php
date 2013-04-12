@@ -55,9 +55,16 @@ $l_liveUpdate=array(
 		'modules'=>'Modules',
 		'nextVersion'=>'Next version',
 		'register'=>'Registration',
-		'updatelog'=>'Log',
 		'update'=>'Update',
+		'updatelog'=>'Log',
 		'upgrade'=>'Update webEdition 5',
+	),
+	'update'=>array(
+		'actualVersion'=>'Running version',
+		'headline'=>'Look for new version',
+		'lastUpdate'=>'Last installation',
+		'lookForUpdate'=>'Look for update',
+		'neverUpdated'=>'-',
 	),
 	'updatelog'=>array(
 		'action'=>'Action',
@@ -72,13 +79,6 @@ $l_liveUpdate=array(
 		'noEntriesMatchFilter'=>'There are not entries matching the selected filter.',
 		'page'=>'page',
 		'version'=>'Version',
-	),
-	'update'=>array(
-		'actualVersion'=>'Running version',
-		'headline'=>'Look for new version',
-		'lastUpdate'=>'Last installation',
-		'lookForUpdate'=>'Look for update',
-		'neverUpdated'=>'-',
 	),
 	'upgrade'=>array(
 		'actualVersion'=>'Running version',

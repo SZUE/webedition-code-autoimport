@@ -14,7 +14,7 @@ $l_taged=array(
 	'no_type_selected'=>'Valitse tyyppi ensin.',
 	'required'=>'Kaikki kentät jotka on merkitty merkillä * täytyy täyttää!',
 	'select_type'=>'-- valitse tyyppi --',
-	'tagreference_linktext'=>'to the tag reference',
 	'tag_not_found'=>'Tagivelhon vaatimaa tiedostoa ei löytynyt. Jos käytät räätälöityä tagia varmista että se on tallennettu oikeaan hakemistoon (/webEdition/we/include/we_tags/custom_tags/).',
+	'tagreference_linktext'=>'to the tag reference',
 	'type_attribute'=>'Tyyppi - Attribuutti',
 );

@@ -17,7 +17,6 @@ $l_validation=array(
 	'checkvia_url'=>'podanie linku URL',
 	'connection_problems'=>'<strong>Wystšpił błšd podczas łšczenia się z wybranš usługš.</strong><br/><br/>Pamiętaj: opcję "podanie linku URL" możesz użyć tylko wtedy, jeżeli Twoja instalacja webEdition jest osišgalna z Internetu (czyli spoza Twojej sieci lokalnej). W przypadku instalacji lokalnej (Localhost) nie ma dostępu do programu z zewnštrz.<br/><br/>Przyczynš problemu mogš też być serwery zapór ogniowych (Firewall) i proxy. Sprawd pod tym kštem swojš konfigurację.<br/><br/>Odpowied HTTP: %s',
 	'ctype'=>'Typ pliku',
-	'description'=>'Tutaj można skorzystać z kilku usług, dzięki którym można sprawdzić swoją stronę pod względem poprawności czy też dostępności.',
 	
 	'desc'=>array(
 		'active'=>'Można wyświetlić usługi.',
@@ -26,6 +25,8 @@ $l_validation=array(
 		'fileEndings'=>'Tutaj mogą zostać wprowadzone zmiany pliku dla tej usługi. (.html,.css)',
 		'varname'=>'(Nazwa pliku HTML/ podać URL)',
 	),
+	'description'=>'Tutaj można skorzystać z kilku usług, dzięki którym można sprawdzić swoją stronę pod względem poprawności czy też dostępności.',
+	
 	'edit_service'=>array(
 		'delete_failure'=>'Usługa nie mogła zostać usunięta.',
 		'delete_success'=>'Usługa została usunięta.',

@@ -8,6 +8,6 @@ $l_perms_customer=array(
 	'DELETE_CUSTOMER'=>'De gebruiker is bevoegd om klanten te verwijderen.',
 	'EDIT_CUSTOMER'=>'De gebruiker is bevoegd om bestaande klanten te wijzigen.',
 	'NEW_CUSTOMER'=>'De gebruiker is bevoegd om nieuwe klanten aan te maken.',
-	'perm_group_title'=>'Klanten beheer',
 	'SHOW_CUSTOMER_ADMIN'=>'De gebruiker is bevoegd om klant velden te wijzigen.',
+	'perm_group_title'=>'Klanten beheer',
 );

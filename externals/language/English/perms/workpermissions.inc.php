@@ -43,6 +43,6 @@ $l_perms_workpermissions=array(
 	'NEW_TEXT'=>'The user is allowed to create plain text files.',
 	'NEW_WEBEDITIONSITE'=>'The user is allowed to create webEdition documents.',
 	'NO_DOCTYPE'=>'The user is allowed to create documents without a document type.',
-	'perm_group_title'=>'Work permissions',
 	'SAVE_DOCUMENT_TEMPLATE'=>'The user is allowed to save documents and templates.',
+	'perm_group_title'=>'Work permissions',
 );

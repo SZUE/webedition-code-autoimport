@@ -43,6 +43,6 @@ $l_perms_workpermissions=array(
 	'NEW_TEXT'=>'Der Benutzer darf Text-Dateien erstellen',
 	'NEW_WEBEDITIONSITE'=>'Der Benutzer darf webEdition-Seiten erstellen',
 	'NO_DOCTYPE'=>'Der Benutzer darf Dokumente ohne Dokument-Typ erstellen',
-	'perm_group_title'=>'Arbeitsrechte',
 	'SAVE_DOCUMENT_TEMPLATE'=>'Der Benutzer darf Dokumente und Vorlagen speichern',
+	'perm_group_title'=>'Arbeitsrechte',
 );

@@ -10,26 +10,27 @@ $l_fileselector=array(
 	'bannerSelector'=>array(
 		'title'=>'Select banner',
 	),
-	'cancel'=>'Annuleer',
 	'can_not_overwrite_we_file'=>'Een webEdition bestand kan niet overschreven worden!',
-	'catname'=>'Categorie',
+	'cancel'=>'Annuleer',
 	
 	'catSelector'=>array(
 		'title'=>'Select category',
 	),
 	'cat_in_use'=>'De volgende categorieën zijn in gebruik en kunnen niet verwijderd worden:',
 	'cat_in_use_rename'=>'De categorie is in gebruik en kan niet gewijzigd worden!',
+	'catname'=>'Categorie',
 	'close'=>'Sluit',
-	'created'=>'Datum aangemaakt',
 	'create_folder_nok'=>'De directory kan niet aangemaakt worden!',
+	'created'=>'Datum aangemaakt',
 	'data'=>'Bestand',
-	'deleteQuestion'=>'Verwijder geselecteerde invoeren! Weet u het zeker?',
-	'delete'=>'Verwijder bestand',
-	'delete_entry'=>'Verwijder invoer',
 	
 	'delSelector'=>array(
 		'title'=>'Select items to delete',
 	),
+	'deleteQuestion'=>'Verwijder geselecteerde invoeren! Weet u het zeker?',
+	'delete'=>'Verwijder bestand',
+	'delete_entry'=>'Verwijder invoer',
+	
 	'dirSelector'=>array(
 		'title'=>'Select directory',
 	),
@@ -44,11 +45,11 @@ $l_fileselector=array(
 		'title'=>'Select directory to export',
 	),
 	'filename'=>'Bestandsnaam',
-	'filesize'=>'Bestandsgrootte',
 	'files'=>'Bestanden',
+	'filesize'=>'Bestandsgrootte',
+	'folder'=>'Map',
 	'foldername'=>'Directorie',
 	'folders'=>'Directories',
-	'folder'=>'Map',
 	'groupname'=>'Groepsnaam',
 	'image_not_uploaded'=>'Er is geen afbeelding ge-upload.',
 	'lookin'=>'Kijk in',
@@ -79,11 +80,12 @@ $l_fileselector=array(
 	'title'=>'Titel',
 	'type'=>'Bestandstype',
 	'up_folder'=>'Één map omhoog',
-	'username'=>'Gebruikersnaam',
 	
 	'userSelector'=>array(
 		'title'=>'Select users',
 	),
+	'username'=>'Gebruikersnaam',
+	
 	'votingDirSelector'=>array(
 		'title'=>'Select voting directory',
 ));

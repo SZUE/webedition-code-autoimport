@@ -1,10 +1,11 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_modules_customerFilter=array(
+	'AND'=>'JA',
+	'OR'=>'TAI',
 	'accessControlOnErrorDoc'=>'Käytä virhesivuja',
 	'accessControlOnTemplate'=>'Virheenkäsittely sivupohjan kautta',
 	'accessControl'=>'Pääsyoikeuksien hallinta',
-	'AND'=>'JA',
 	'apply_filter'=>'Ota asiakassuodattimet käyttöön',
 	'apply_filter_cofirm_close'=>'Useampia alikohteita on auki. Asiakassuodatinten käyttöönottamiseksi kaikki alikohteet on suljettava. Jos jatkat, kaikki alikohteet suljetaan automaattisesti ja tallentamattomat muutokset menetetään.',
 	'apply_filter_done'=>'Asiakassuodattimet ovat käytössä.',
@@ -28,7 +29,6 @@ $l_modules_customerFilter=array(
 	'mode_off'=>'Suodatin pois käytöstä (kaikilla vierailijoilla on pääsyoikeus)',
 	'mode_specific'=>'Vain valituilla asiakkailla on pääsyoikeus',
 	'not_equal'=>'eri kuin (!=)',
-	'OR'=>'TAI',
 	'starts_with'=>'alkaa',
 	'white_list'=>'Valkealista (näillä asiakkailla on aina pääsyoikeus):',
 );
