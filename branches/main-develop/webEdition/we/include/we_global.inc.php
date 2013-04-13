@@ -1732,7 +1732,7 @@ $GLOBALS[\'weDefaultFrontendLanguage\'] = \'' . $default . '\';'
 }
 
 function we_filenameNotValid($filename){
-	return (substr($filename, 0, 2) === '..') || preg_match('#[^a-z0-9._-]#i', $filename);
+	return (substr($filename, 0, 2) === '..') || preg_match('-[<>?":|\\/*]-', $filename);
 }
 
 function we_isHttps(){

@@ -549,9 +549,8 @@ class weSiteImport{
 				return false;
 			}
 			var reg = /[^a-z0-9\._+\-]/gi;
-			if (reg.test(f.templateName.value)) {
-				' . we_message_reporting::getShowMessageCall(
-					g_l('alert', "[we_filename_notValid]"), we_message_reporting::WE_MESSAGE_ERROR) . '
+			if (reg.test(f.templateName.value)) {' .
+				we_message_reporting::getShowMessageCall(g_l('alert', "[we_filename_notValid]"), we_message_reporting::WE_MESSAGE_ERROR) . '
 				f.templateName.focus();
 				f.templateName.select();
 				return false;
@@ -967,11 +966,11 @@ class weSiteImport{
 		print $pb->getJS();
 
 		$table = new we_html_table(array(
-				"border" => "0",
-				"cellpadding" => "0",
-				"cellspacing" => "0",
-				"width" => "100%"
-				), 1, 2);
+			"border" => "0",
+			"cellpadding" => "0",
+			"cellspacing" => "0",
+			"width" => "100%"
+			), 1, 2);
 		$table->setCol(0, 0, null, '<div id="progressBarDiv" style="display:none;">' . $pb->getHTML() . '</div>');
 		$table->setCol(0, 1, array(
 			"align" => "right"
@@ -2009,7 +2008,7 @@ sh' && $contentType != 'movie/quicktime'){
 					, we_html_element::htmlIFrame('siteimportcontent', WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=siteImport&cmd=content", 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;overflow: auto') .
 					we_html_element::htmlIFrame('siteimportbuttons', "we_cmd.php?we_cmd[0]=siteImport&cmd=buttons", 'position:absolute;height:40px;bottom:0px;left:0px;right:0px;overflow: hidden') .
 					we_html_element::htmlIFrame('siteimportcmd', "about:blank", 'position:absolute;bottom:0px;height:0px;left:0px;right:0px;overflow: hidden;')
-				));
+		));
 
 		return $this->_getHtmlPage($body);
 	}

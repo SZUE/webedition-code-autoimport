@@ -431,7 +431,18 @@ class we_objectFile extends we_document{
 					$id = 1 + intval(f('SELECT max(ID) as ID FROM ' . OBJECT_FILES_TABLE, 'ID', $this->DB_WE));
 					$text = str_replace('%ID%', $id, $text);
 				}
-				$this->Text = str_replace(array('%d%', '%j%', '%m%', '%y%', '%Y%', '%n%', '%h%', '%H%', '%g%', '%G%',), array(date('d'), date('j'), date('m'), date('y'), date('Y'), date('n'), date('h'), date('H'), date('g'), date('G'),), $text);
+				$this->Text = strtr($text, array(
+					'%d%' => date('d'),
+					'%j%' => date('j'),
+					'%m%' => date('m'),
+					'%y%' => date('y'),
+					'%Y%' => date('Y'),
+					'%n%' => date('n'),
+					'%h%' => date('H'),
+					'%H%' => date('H'),
+					'%g%' => date('G'),
+					'%G%' => date('G'),
+				));
 			}
 
 			if($hash['DefaultValues']){
@@ -1910,25 +1921,45 @@ class we_objectFile extends we_document{
 				$text = preg_replace('/%urlunique[^%]*%/', $unique, $text);
 			}
 
-			$text = str_replace(
-				array('%ID%', '%locale%', '%language%', '%country%',)
-				, array($this->ID, $this->Language, substr($this->Language, 0, 2), substr($this->Language, 4, 2),)
-				, $text);
-			$text = str_replace(
-				array('%d%', 'j%', '%m%', '%y%', '%Y%', '%n%', '%g%', '%G%', '%h%', '%H%',)
-				, array(date("d", $this->CreationDate), date("j", $this->CreationDate), date("m", $this->CreationDate), date("y", $this->CreationDate), date("Y", $this->CreationDate), date("n", $this->CreationDate), date("g", $this->CreationDate), date("G", $this->CreationDate), date("h", $this->CreationDate), date("H", $this->CreationDate),)
-				, $text);
+			$text = strtr($text, array(
+				'%ID%' => $this->ID,
+				'%locale%' => $this->Language,
+				'%language%' => substr($this->Language, 0, 2),
+				'%country%' => substr($this->Language, 4, 2),
+				'%d%' => date("d", $this->CreationDate),
+				'j%' => date("j", $this->CreationDate),
+				'%m%' => date("m", $this->CreationDate),
+				'%y%' => date("y", $this->CreationDate),
+				'%Y%' => date("Y", $this->CreationDate),
+				'%n%' => date("n", $this->CreationDate),
+				'%g%' => date("G", $this->CreationDate),
+				'%G%' => date("G", $this->CreationDate),
+				'%h%' => date("H", $this->CreationDate),
+				'%H%' => date("H", $this->CreationDate),
+				'%Md%' => date("d", $this->ModDate),
+				'%Mj%' => date("j", $this->ModDate),
+				'%Mm%' => date("m", $this->ModDate),
+				'%My%' => date("y", $this->ModDate),
+				'%MY%' => date("Y", $this->ModDate),
+				'%Mn%' => date("n", $this->ModDate),
+				'%Mg%' => date("G", $this->ModDate),
+				'%MG%' => date("G", $this->ModDate),
+				'%Mh%' => date("H", $this->ModDate),
+				'%MH%' => date("H", $this->ModDate),
+				'%Fd%' => date("d", $urlfield[0]),
+				'%Fj%' => date("j", $urlfield[0]),
+				'%Fm%' => date("m", $urlfield[0]),
+				'%Fy%' => date("y", $urlfield[0]),
+				'%FY%' => date("Y", $urlfield[0]),
+				'%Fn%' => date("n", $urlfield[0]),
+				'%Fg%' => date("G", $urlfield[0]),
+				'%FG%' => date("G", $urlfield[0]),
+				'%Fh%' => date("H", $urlfield[0]),
+				'%FH%' => date("H", $urlfield[0]),
+				'%DirSep%' => '/'
+				)
+			);
 
-			$text = str_replace(
-				array('%Md%', '%Mj%', '%Mm%', '%My%', '%MY%', '%Mn%', '%Mg%', '%MG%', '%Mh%', '%MH%',)
-				, array(date("d", $this->ModDate), date("j", $this->ModDate), date("m", $this->ModDate), date("y", $this->ModDate), date("Y", $this->ModDate), date("n", $this->ModDate), date("g", $this->ModDate), date("G", $this->ModDate), date("h", $this->ModDate), date("H", $this->ModDate))
-				, $text);
-
-			$text = str_replace(
-				array('%Fd%', '%Fj%', '%Fm%', '%Fy%', '%FY%', '%Fn%', '%Fg%', '%FG%', '%Fh%', '%FH%',)
-				, array(date("d", $urlfield[0]), date("j", $urlfield[0]), date("m", $urlfield[0]), date("y", $urlfield[0]), date("Y", $urlfield[0]), date("n", $urlfield[0]), date("g", $urlfield[0]), date("G", $urlfield[0]), date("h", $urlfield[0]), date("H", $urlfield[0]))
-				, $text);
-			$text = str_replace('%DirSep%', '/', $text);
 
 			if(strpos($text, '%Parent%') !== false){
 				$fooo = getHash('SELECT Text FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($this->ParentID), $this->DB_WE);

@@ -1003,8 +1003,7 @@ function we_cmd(){
 }
 function we_checkName() {
 	var regExp = /\'|"|>|<|\\\|\\//;
-	if(regExp.test(document.getElementById("category").value)) {
-' .
+	if(regExp.test(document.getElementById("category").value)) {' .
 				we_message_reporting::getShowMessageCall(sprintf(g_l('weEditor', "[category][we_filename_notValid]"), $path), we_message_reporting::WE_MESSAGE_ERROR) . '
 	} else {
 		document.we_form.submit();
