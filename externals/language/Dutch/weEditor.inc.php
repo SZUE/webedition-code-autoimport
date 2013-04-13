@@ -86,7 +86,7 @@ $l_weEditor=array(
 		'response_unpublish_ok'=>'De class %s is succesvol gedepubliceerd!',
 		'we_filename_notAllowed'=>'De classnaam die u heeft opgegeven is niet toegestaan!',
 		'we_filename_notValid'=>'Invalid class name or automatic name!
-Valid characters are alpha-numeric, upper and lower case, as well as underscore, hyphen and dot (a-z, A-Z, 0-9, _, -, .).',
+All characters except <>?":|\\/* are valid.',
 	),
 	'pfolder_notsave'=>'De directory kan niet bewaard worden in de gekozen directory!',
 	'required_field_alert'=>'Het veld `%s` is vereist en moet ingevuld worden!',

@@ -12,7 +12,7 @@ $l_weEditor=array(
 		'response_unpublish_ok'=>'Die Datei `%s` wurde erfolgreich geparkt!',
 		'we_description_missing'=>'Bitte geben Sie eine Beschreibung im Feld `Beschreibung` an!',
 		'we_filename_notAllowed'=>'Der eingegebene Dateiname ist nicht erlaubt!',
-		'we_filename_notValid'=>'Der eingegebene Dateiname ist nicht gültig!\nErlaubte Zeichen sind Buchstaben von a bis z (Groß- oder Kleinschreibung), Zahlen, Unterstrich (_), Minus (-) und Punkt (.).',
+		'we_filename_notValid'=>'Der eingegebene Dateiname ist nicht gültig!\nErlaubte Zeichen sind allle außer <>?":|\\/* .',
 	),
 	'application/x-shockwave-flash'=>array(
 		'filename_empty'=>'Sie haben noch keinen Dateinamen eingegeben!',
@@ -23,7 +23,7 @@ $l_weEditor=array(
 		'response_save_ok'=>'Die Flash-Datei `%s` wurde erfolgreich gespeichert!',
 		'response_unpublish_ok'=>'Die Flash-Datei `%s` wurde erfolgreich geparkt!',
 		'we_filename_notAllowed'=>'Der eingegebene Dateiname ist nicht erlaubt!',
-		'we_filename_notValid'=>'Der eingegebene Dateiname ist nicht gültig!\nErlaubte Zeichen sind Buchstaben von a bis z (Groß- oder Kleinschreibung), Zahlen, Unterstrich (_), Minus (-) und Punkt (.).',
+		'we_filename_notValid'=>'Der eingegebene Dateiname ist nicht gültig!\nErlaubte Zeichen sind allle außer <>?":|\\/* .',
 	),
 	'category'=>array(
 		'filename_empty'=>'Der Name darf nicht leer sein',
@@ -31,7 +31,7 @@ $l_weEditor=array(
 		'response_path_exists'=>'Die Kategorie `%s` konnte nicht gespeichert werden, da es bereits eine andere Kategorie an dieser Stelle gibt!',
 		'response_save_notok'=>'Fehler beim Speichern der Kategorie `%s`!',
 		'response_save_ok'=>'Die Kategorie `%s` wurde erfolgreich gespeichert!',
-		'we_filename_notValid'=>'Der eingegebene Name ist nicht gültig!\nErlaubt sind alle Zeichen außer ", ` / < > und \\',
+		'we_filename_notValid'=>'Der eingegebene Name ist nicht gültig!\nErlaubte Zeichen sind allle außer <>?":|\\/* .',
 	),
 	'doubble_field_alert'=>'Das Feld `%s` gibt es schon! Bitte beachten Sie, daß Feldnamen nur einmal vorkommen dürfen!',
 	'filename_empty'=>'Sie haben noch keinen Dateinamen eingegeben!',
@@ -45,7 +45,7 @@ $l_weEditor=array(
 		'response_save_ok'=>'Das Verzeichnis `%s` wurde erfolgreich gespeichert!',
 		'response_unpublish_ok'=>'Das Verzeichnis `%s` wurde erfolgreich geparkt!',
 		'we_filename_notAllowed'=>'Der eingegebene Name für das Verzeichnis ist nicht erlaubt!',
-		'we_filename_notValid'=>'Der eingegebene Name für das Verzeichnis ist nicht gültig!\nErlaubte Zeichen sind Buchstaben von a bis z (Groß- oder Kleinschreibung), Zahlen, Unterstrich (_), Minus (-) und Punkt (.).',
+		'we_filename_notValid'=>'Der eingegebene Name für das Verzeichnis ist nicht gültig!\nErlaubte Zeichen sind allle außer <>?":|\\/* .',
 	),
 	'folder_save_nok_parent_same'=>'Das ausgewählte Eltern-Verzeichnis liegt innerhalb des aktuellen Verzeichnisses! Bitte wählen Sie ein anderes Verzeichnis aus und versuchen Sie es noch einmal!',
 	
@@ -58,7 +58,7 @@ $l_weEditor=array(
 		'response_save_ok'=>'Die Grafik `%s` wurde erfolgreich gespeichert',
 		'response_unpublish_ok'=>'Die Grafik `%s` wurde erfolgreich geparkt',
 		'we_filename_notAllowed'=>'Der eingegebene Dateiname ist nicht erlaubt!',
-		'we_filename_notValid'=>'Der eingegebene Dateiname ist nicht gültig!\nErlaubte Zeichen sind Buchstaben von a bis z (Groß- oder Kleinschreibung), Zahlen, Unterstrich (_), Minus (-) und Punkt (.).',
+		'we_filename_notValid'=>'Der eingegebene Dateiname ist nicht gültig!\nErlaubte Zeichen sind allle außer <>?":|\\/* .',
 	),
 	'objectFile'=>array(
 		'autoschedule'=>'Das Objekt wird am %s automatisch veröffentlicht!',
@@ -73,7 +73,7 @@ $l_weEditor=array(
 		'response_unpublish_notok'=>'Fehler beim Parken des Objekts `%s`!',
 		'response_unpublish_ok'=>'Das Objekt `%s` wurde erfolgreich geparkt!',
 		'we_filename_notAllowed'=>'Der eingegebene Objektname ist nicht erlaubt!',
-		'we_filename_notValid'=>'Der eingegebene Objektname ist nicht gültig!\nErlaubte Zeichen sind Buchstaben von a bis z (Groß- oder Kleinschreibung), Zahlen, Unterstrich (_), Minus (-) und Punkt (.).',
+		'we_filename_notValid'=>'Der eingegebene Objektname ist nicht gültig!\nErlaubte Zeichen sind allle außer <>?":|\\/* .',
 		'we_objecturl_exists'=>'Das Objekt `%s` konnte nicht gespeichert werden, da bereits ein anderes Object mit dieser URL existiert!',
 	),
 	'object'=>array(
@@ -86,7 +86,7 @@ $l_weEditor=array(
 		'response_unpublish_ok'=>'Die Klasse %s wurde erfolgreich geparkt!',
 		'we_filename_notAllowed'=>'Der eingegebene Klassenname ist nicht erlaubt!',
 		'we_filename_notValid'=>'Der eingegebene Klassenname oder der Automatische Name ist nicht gültig!
-Erlaubte Zeichen sind Buchstaben von a bis z (Groß- oder Kleinschreibung), Zahlen, Unterstrich (_), Minus (-) und Punkt (.).',
+Erlaubte Zeichen sind allle außer <>?":|\\/* .',
 	),
 	'pfolder_notsave'=>'Das Verzeichnis darf im ausgewählten Verzeichnis nicht gespeichert werden!',
 	'required_field_alert'=>'Das Feld `%s` ist ein Pflichtfeld und muß ausgefüllt sein!',
@@ -101,7 +101,7 @@ Erlaubte Zeichen sind Buchstaben von a bis z (Groß- oder Kleinschreibung), Zahl
 		'response_save_ok'=>'Die CSS-Datei `%s` wurde erfolgreich gespeichert!',
 		'response_unpublish_ok'=>'Die CSS-Datei `%s` wurde erfolgreich geparkt!',
 		'we_filename_notAllowed'=>'Der eingegebene Dateiname ist nicht erlaubt!',
-		'we_filename_notValid'=>'Der eingegebene Dateiname ist nicht gültig!\nErlaubte Zeichen sind Buchstaben von a bis z (Groß- oder Kleinschreibung), Zahlen, Unterstrich (_), Minus (-) und Punkt (.).',
+		'we_filename_notValid'=>'Der eingegebene Dateiname ist nicht gültig!\nErlaubte Zeichen sind allle außer <>?":|\\/* .',
 	),
 	'text/htaccess'=>array(
 		'filename_empty'=>'Sie haben noch keinen Dateinamen eingegeben!',
@@ -112,7 +112,7 @@ Erlaubte Zeichen sind Buchstaben von a bis z (Groß- oder Kleinschreibung), Zahl
 		'response_save_ok'=>'Die Datei `%s` wurde erfolgreich gespeichert!',
 		'response_unpublish_ok'=>'Die Datei `%s` wurde erfolgreich geparkt!',
 		'we_filename_notAllowed'=>'Der eingegebene Dateiname ist nicht erlaubt!',
-		'we_filename_notValid'=>'Der eingegebene Dateiname ist nicht gültig!\nErlaubte Zeichen sind Buchstaben von a bis z (Groß- oder Kleinschreibung), Zahlen, Unterstrich (_), Minus (-) und Punkt (.).',
+		'we_filename_notValid'=>'Der eingegebene Dateiname ist nicht gültig!\nErlaubte Zeichen sind allle außer <>?":|\\/* .',
 	),
 	'text/html'=>array(
 		'autoschedule'=>'Die HTML-Datei wird am %s automatisch veröffentlicht!',
@@ -127,7 +127,7 @@ Erlaubte Zeichen sind Buchstaben von a bis z (Groß- oder Kleinschreibung), Zahl
 		'response_unpublish_notok'=>'Fehler beim Parken der HTML-Datei `%s`!',
 		'response_unpublish_ok'=>'Die HTML-Datei `%s` wurde erfolgreich geparkt!',
 		'we_filename_notAllowed'=>'Der eingegebene Dateiname ist nicht erlaubt!',
-		'we_filename_notValid'=>'Der eingegebene Dateiname ist nicht gültig!\nErlaubte Zeichen sind Buchstaben von a bis z (Groß- oder Kleinschreibung), Zahlen, Unterstrich (_), Minus (-) und Punkt (.).',
+		'we_filename_notValid'=>'Der eingegebene Dateiname ist nicht gültig!\nErlaubte Zeichen sind allle außer <>?":|\\/* .',
 	),
 	'text/js'=>array(
 		'filename_empty'=>'Sie haben noch keinen Dateinamen eingegeben!',
@@ -138,7 +138,7 @@ Erlaubte Zeichen sind Buchstaben von a bis z (Groß- oder Kleinschreibung), Zahl
 		'response_save_ok'=>'Die Javascript-Datei `%s` wurde erfolgreich gespeichert!',
 		'response_unpublish_ok'=>'Die Javascript-Datei `%s` wurde erfolgreich geparkt!',
 		'we_filename_notAllowed'=>'Der eingegebene Dateiname ist nicht erlaubt!',
-		'we_filename_notValid'=>'Der eingegebene Dateiname ist nicht gültig!\nErlaubte Zeichen sind Buchstaben von a bis z (Groß- oder Kleinschreibung), Zahlen, Unterstrich (_), Minus (-) und Punkt (.).',
+		'we_filename_notValid'=>'Der eingegebene Dateiname ist nicht gültig!\nErlaubte Zeichen sind allle außer <>?":|\\/* .',
 	),
 	'text/plain'=>array(
 		'filename_empty'=>'Sie haben noch keinen Dateinamen eingegeben!',
@@ -149,7 +149,7 @@ Erlaubte Zeichen sind Buchstaben von a bis z (Groß- oder Kleinschreibung), Zahl
 		'response_save_ok'=>'Die Text-Datei `%s` wurde erfolgreich gespeichert!',
 		'response_unpublish_ok'=>'Die Text-Datei `%s` wurde erfolgreich geparkt!',
 		'we_filename_notAllowed'=>'Der eingegebene Dateiname ist nicht erlaubt!',
-		'we_filename_notValid'=>'Der eingegebene Dateiname ist nicht gültig!\nErlaubte Zeichen sind Buchstaben von a bis z (Groß- oder Kleinschreibung), Zahlen, Unterstrich (_), Minus (-) und Punkt (.).',
+		'we_filename_notValid'=>'Der eingegebene Dateiname ist nicht gültig!\nErlaubte Zeichen sind allle außer <>?":|\\/* .',
 	),
 	'text/weTmpl'=>array(
 		'filename_empty'=>'Sie haben noch keinen Dateinamen eingegeben!',
@@ -161,7 +161,7 @@ Erlaubte Zeichen sind Buchstaben von a bis z (Groß- oder Kleinschreibung), Zahl
 		'response_save_ok'=>'Die Vorlage `%s` wurde erfolgreich gespeichert!',
 		'response_unpublish_ok'=>'Die Vorlage `%s` wurde erfolgreich geparkt!',
 		'we_filename_notAllowed'=>'Der eingegebene Dateiname ist nicht erlaubt!',
-		'we_filename_notValid'=>'Der eingegebene Dateiname ist nicht gültig!\nErlaubte Zeichen sind Buchstaben von a bis z (Groß- oder Kleinschreibung), Zahlen, Unterstrich (_), Minus (-) und Punkt (.).',
+		'we_filename_notValid'=>'Der eingegebene Dateiname ist nicht gültig!\nErlaubte Zeichen sind allle außer <>?":|\\/* .',
 	),
 	'text/webedition'=>array(
 		'autoschedule'=>'Die webEdition-Seite wird am %s automatisch veröffentlicht!',
@@ -176,7 +176,7 @@ Erlaubte Zeichen sind Buchstaben von a bis z (Groß- oder Kleinschreibung), Zahl
 		'response_unpublish_notok'=>'Fehler beim Parken der webEdition-Seite `%s`!',
 		'response_unpublish_ok'=>'Die webEdition-Seite `%s` wurde erfolgreich geparkt!',
 		'we_filename_notAllowed'=>'Der eingegebene Dateiname ist nicht erlaubt!',
-		'we_filename_notValid'=>'Der eingegebene Dateiname ist nicht gültig!\nErlaubte Zeichen sind Buchstaben von a bis z (Groß- oder Kleinschreibung), Zahlen, Unterstrich (_), Minus (-) und Punkt (.).',
+		'we_filename_notValid'=>'Der eingegebene Dateiname ist nicht gültig!\nErlaubte Zeichen sind allle außer <>?":|\\/* .',
 	),
 	'text/xml'=>array(
 		'filename_empty'=>'Sie haben noch keinen Dateinamen eingegeben!',
@@ -187,7 +187,7 @@ Erlaubte Zeichen sind Buchstaben von a bis z (Groß- oder Kleinschreibung), Zahl
 		'response_save_ok'=>'Die XML-Datei `%s` wurde erfolgreich gespeichert!',
 		'response_unpublish_ok'=>'Die XML-Datei `%s` wurde erfolgreich geparkt!',
 		'we_filename_notAllowed'=>'Der eingegebene Dateiname ist nicht erlaubt!',
-		'we_filename_notValid'=>'Der eingegebene Dateiname ist nicht gültig!\nErlaubte Zeichen sind Buchstaben von a bis z (Groß- oder Kleinschreibung), Zahlen, Unterstrich (_), Minus (-) und Punkt (.).',
+		'we_filename_notValid'=>'Der eingegebene Dateiname ist nicht gültig!\nErlaubte Zeichen sind allle außer <>?":|\\/* .',
 	),
 	'variantNameInvalid'=>'Der Name einer Artikel-Variante darf nicht leer sein!',
 	
@@ -200,8 +200,8 @@ Erlaubte Zeichen sind Buchstaben von a bis z (Groß- oder Kleinschreibung), Zahl
 		'response_save_ok'=>'Die Quicktime-Datei `%s` wurde erfolgreich gespeichert!',
 		'response_unpublish_ok'=>'Die Quicktime-Datei `%s` wurde erfolgreich geparkt!',
 		'we_filename_notAllowed'=>'Der eingegebene Dateiname ist nicht erlaubt!',
-		'we_filename_notValid'=>'Der eingegebene Dateiname ist nicht gültig!\nErlaubte Zeichen sind Buchstaben von a bis z (Groß- oder Kleinschreibung), Zahlen, Unterstrich (_), Minus (-) und Punkt (.).',
+		'we_filename_notValid'=>'Der eingegebene Dateiname ist nicht gültig!\nErlaubte Zeichen sind allle außer <>?":|\\/* .',
 	),
 	'we_filename_notAllowed'=>'Der eingegebene Dateiname ist nicht erlaubt!',
-	'we_filename_notValid'=>'Der eingegebene Dateiname ist nicht gültig!\nErlaubte Zeichen sind Buchstaben von a bis z (Groß- oder Kleinschreibung), Zahlen, Unterstrich (_), Minus (-) und Punkt (.).',
+	'we_filename_notValid'=>'Der eingegebene Dateiname ist nicht gültig!\nErlaubte Zeichen sind allle außer <>?":|\\/* .',
 );

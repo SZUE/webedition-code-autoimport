@@ -86,7 +86,7 @@ $l_weEditor=array(
 		'response_unpublish_ok'=>'Класс %s успешно снят с публикации!',
 		'we_filename_notAllowed'=>'Введенное имя класса недопустимо!',
 		'we_filename_notValid'=>'Invalid class name or automatic name!
-Valid characters are alpha-numeric, upper and lower case, as well as underscore, hyphen and dot (a-z, A-Z, 0-9, _, -, .).',
+All characters except <>?":|\\/* are valid.',
 	),
 	'pfolder_notsave'=>'Данная директория не может быть сохранена в выбранной директории!',
 	'required_field_alert'=>'Требуется заполнить поле `%s`!',

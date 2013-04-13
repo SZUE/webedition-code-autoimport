@@ -86,7 +86,7 @@ $l_weEditor=array(
 		'response_unpublish_ok'=>'Wycofano klasę %s!',
 		'we_filename_notAllowed'=>'Wprowadzono niedozwoloną nazwę klasy!',
 		'we_filename_notValid'=>'Invalid class name or automatic name!
-Valid characters are alpha-numeric, upper and lower case, as well as underscore, hyphen and dot (a-z, A-Z, 0-9, _, -, .).',
+All characters except <>?":|\\/* are valid.',
 	),
 	'pfolder_notsave'=>'Nie można zapisać katalogu w wybranym katalogu!',
 	'required_field_alert'=>'Pole `%s` jest obowišzkowe i należy je wypełnić!',

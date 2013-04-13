@@ -86,7 +86,7 @@ $l_weEditor=array(
 		'response_unpublish_ok'=>'¡La clase %s fue despublicada éxitosamente!',
 		'we_filename_notAllowed'=>'El nombre de clase que Ud ha entrado no está permitido',
 		'we_filename_notValid'=>'Invalid class name or automatic name!
-Valid characters are alpha-numeric, upper and lower case, as well as underscore, hyphen and dot (a-z, A-Z, 0-9, _, -, .).',
+All characters except <>?":|\\/* are valid.',
 	),
 	'pfolder_notsave'=>'El directorio no puede ser salvado en el directorio seleccionado!',
 	'required_field_alert'=>'El campo `%s` es requerido y debe ser llenado!',
