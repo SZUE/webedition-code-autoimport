@@ -209,23 +209,9 @@ function we_cmd(){
 function submitForm() {
 	var f = self.document.we_form;
 
-	if (arguments[0]) {
-		f.target = arguments[0];
-	} else {
-		f.target = "' . $def_target . '";
-	}
-
-	if (arguments[1]) {
-		f.action = arguments[1];
-	} else {
-		f.action = "' . $this->frameset . '";
-	}
-
-	if (arguments[2]) {
-		f.method = arguments[2];
-	} else {
-		f.method = "' . $def_method . '";
-	}
+	f.target = (arguments[0]?arguments[0]:"' . $def_target . '");
+	f.action = (arguments[1]?arguments[1]:"' . $this->frameset . '");
+	f.method = (arguments[2]?arguments[2]:"' . $def_method . '");
 
 	f.submit();
 }';
@@ -239,20 +225,20 @@ function submitForm() {
 					print we_html_element::jsElement(
 							$this->topFrame . '.resize.right.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->raw->Text) . '";' .
 							$this->topFrame . '.resize.right.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";'
-						);
+					);
 					break;
 				case 'edit_raw':
 					$this->raw = new weShop($_REQUEST['cmdid']);
 					print we_html_element::jsElement(
 							$this->topFrame . '.resize.right.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->raw->Text) . '";' .
 							$this->topFrame . '.resize.right.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";'
-						);
+					);
 					break;
 				case 'save_raw':
 					if($this->raw->filenameNotValid()){
 						print we_html_element::jsElement(
 								we_message_reporting::getShowMessageCall(g_l('modules_shop', '[we_filename_notValid]'), we_message_reporting::WE_MESSAGE_ERROR)
-							);
+						);
 						break;
 					}
 
@@ -279,7 +265,7 @@ attribs["tooltip"]="";' .
 					print we_html_element::jsElement(
 							$js .
 							we_message_reporting::getShowMessageCall(g_l('modules_shop', '[raw_saved_ok]'), we_message_reporting::WE_MESSAGE_NOTICE)
-						);
+					);
 					break;
 				case 'delete_raw':
 					$js = '' . $this->topFrame . '.deleteEntry(' . $this->raw->ID . ');';
@@ -290,7 +276,7 @@ attribs["tooltip"]="";' .
 					print we_html_element::jsElement(
 							$js .
 							we_message_reporting::getShowMessageCall(g_l('modules_shop', '[raw_deleted]'), we_message_reporting::WE_MESSAGE_NOTICE)
-						);
+					);
 					break;
 				case 'switchPage':
 					break;

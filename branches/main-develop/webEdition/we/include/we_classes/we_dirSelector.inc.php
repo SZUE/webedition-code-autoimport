@@ -740,17 +740,17 @@ top.clearEntries();';
 			$folder->Filename = $txt;
 			$folder->Published = time();
 			$folder->Path = $folder->getPath();
-			$folder->ModifierID = isset($_SESSION["user"]["ID"]) ? $_SESSION["user"]["ID"] : "";
-			$this->db->query("SELECT ID,Text FROM " . $this->db->escape($this->table) . " WHERE Path='" . $this->db->escape($folder->Path) . "' AND ID != " . intval($this->we_editDirID));
+			$folder->ModifierID = isset($_SESSION['user']['ID']) ? $_SESSION['user']['ID'] : '';
+			$this->db->query('SELECT ID,Text FROM ' . $this->db->escape($this->table) . " WHERE Path='" . $this->db->escape($folder->Path) . "' AND ID != " . intval($this->we_editDirID));
 			if($this->db->next_record()){
-				$we_responseText = sprintf(g_l('weEditor', "[folder][response_path_exists]"), $folder->Path);
+				$we_responseText = sprintf(g_l('weEditor', '[folder][response_path_exists]'), $folder->Path);
 				print we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
 			} else{
 				if(preg_match('-[<>?":|\\/*]-', $folder->Filename)){
-					$we_responseText = sprintf(g_l('weEditor', "[folder][we_filename_notValid]"), $folder->Path);
+					$we_responseText = sprintf(g_l('weEditor', '[folder][we_filename_notValid]'), $folder->Path);
 					print we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
 				} else if(in_workspace($this->we_editDirID, get_ws($this->table), $this->table, $this->db)){
-					if(f('SELECT Text FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->we_editDirID), "Text", $this->db) != $txt){
+					if(f('SELECT Text FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->we_editDirID), 'Text', $this->db) != $txt){
 						$folder->we_save();
 						print 'var ref;
 if(top.opener.top.makeNewEntry) ref = top.opener.top;

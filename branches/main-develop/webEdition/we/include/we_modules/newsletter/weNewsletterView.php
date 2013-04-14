@@ -45,29 +45,29 @@ class weNewsletterView{
 		$this->db = new DB_WE();
 		$this->newsletter = new weNewsletter();
 
-		$this->hiddens[] = "ID";
+		$this->hiddens[] = 'ID';
 
 		$this->page = 0;
 
 		$this->show_import_box = -1;
 		$this->show_export_box = -1;
 
-		$this->frameset = WE_NEWSLETTER_MODULE_DIR . "edit_newsletter_frameset.php";
+		$this->frameset = WE_NEWSLETTER_MODULE_DIR . 'edit_newsletter_frameset.php';
 
 		$this->settings = self::getSettings();
 
-		if(defined("CUSTOMER_TABLE")){
+		if(defined('CUSTOMER_TABLE')){
 			$this->customers_fields = array();
-			$this->db->query("SHOW FIELDS FROM " . CUSTOMER_TABLE);
+			$this->db->query('SHOW FIELDS FROM ' . CUSTOMER_TABLE);
 			while($this->db->next_record()) {
-				$this->customers_fields[] = $this->db->f("Field");
+				$this->customers_fields[] = $this->db->f('Field');
 			}
 		}
 		$this->newsletter->Text = g_l('modules_newsletter', '[new_newsletter]');
-		$this->newsletter->Sender = $this->settings["default_sender"];
-		$this->newsletter->Reply = $this->settings["default_reply"];
-		$this->newsletter->Test = $this->settings["test_account"];
-		$this->newsletter->isEmbedImages = $this->settings["isEmbedImages"];
+		$this->newsletter->Sender = $this->settings['default_sender'];
+		$this->newsletter->Reply = $this->settings['default_reply'];
+		$this->newsletter->Test = $this->settings['test_account'];
+		$this->newsletter->isEmbedImages = $this->settings['isEmbedImages'];
 	}
 
 	function setFrames($topFrame, $treeFrame, $cmdFrame){
@@ -77,22 +77,22 @@ class weNewsletterView{
 	}
 
 	function getHiddens($predefs = array()){
-		$out = $this->htmlHidden("ncmd", (isset($predefs["ncmd"]) ? $predefs["ncmd"] : "new_newsletter"));
-		$out .= $this->htmlHidden("we_cmd[0]", "show_newsletter");
-		$out .= $this->htmlHidden("nid", (isset($predefs["nid"]) ? $predefs["nid"] : $this->newsletter->ID));
-		$out .= $this->htmlHidden("pnt", (isset($predefs["pnt"]) ? $predefs["pnt"] : $_REQUEST["pnt"]));
-		$out .= $this->htmlHidden("page", (isset($predefs["page"]) ? $predefs["page"] : $this->page));
-		$out .= $this->htmlHidden("gview", (isset($predefs["gview"]) ? $predefs["gview"] : 0));
-		$out .= $this->htmlHidden("hm", (isset($predefs["hm"]) ? $predefs["hm"] : 0));
-		$out .= $this->htmlHidden("ask", (isset($predefs["ask"]) ? $predefs["ask"] : 1));
-		$out .= $this->htmlHidden("test", (isset($predefs["test"]) ? $predefs["test"] : 0));
+		$out = $this->htmlHidden('ncmd', (isset($predefs['ncmd']) ? $predefs['ncmd'] : 'new_newsletter'));
+		$out .= $this->htmlHidden('we_cmd[0]', 'show_newsletter');
+		$out .= $this->htmlHidden('nid', (isset($predefs['nid']) ? $predefs['nid'] : $this->newsletter->ID));
+		$out .= $this->htmlHidden('pnt', (isset($predefs['pnt']) ? $predefs['pnt'] : $_REQUEST['pnt']));
+		$out .= $this->htmlHidden('page', (isset($predefs['page']) ? $predefs['page'] : $this->page));
+		$out .= $this->htmlHidden('gview', (isset($predefs['gview']) ? $predefs['gview'] : 0));
+		$out .= $this->htmlHidden('hm', (isset($predefs['hm']) ? $predefs['hm'] : 0));
+		$out .= $this->htmlHidden('ask', (isset($predefs['ask']) ? $predefs['ask'] : 1));
+		$out .= $this->htmlHidden('test', (isset($predefs['test']) ? $predefs['test'] : 0));
 		return $out;
 	}
 
 	function newsletterHiddens(){
-		$out = "";
+		$out = '';
 		foreach($this->hiddens as $val){
-			$attval = "";
+			$attval = '';
 
 			if(in_array($val, $this->newsletter->persistents)){
 				$attval = $this->newsletter->$val;
@@ -106,54 +106,54 @@ class weNewsletterView{
 	}
 
 	function getHiddensProperty(){
-		$out = "";
+		$out = '';
 		$counter = 0;
-		$val = "";
+		$val = '';
 
 		foreach($this->newsletter->groups as $group){
 
 			foreach($group->persistents as $per){
 				$val = $group->$per;
-				$out .= $this->htmlHidden("group" . $counter . "_" . $per, $val);
+				$out .= $this->htmlHidden('group' . $counter . '_' . $per, $val);
 			}
 
 			$counter++;
 		}
 
-		$out .= $this->htmlHidden("groups", $counter);
-		$out .= $this->htmlHidden("Step", $this->newsletter->Step);
-		$out .= $this->htmlHidden("Offset", $this->newsletter->Offset);
-		$out .= $this->htmlHidden("IsFolder", $this->newsletter->IsFolder);
+		$out .= $this->htmlHidden('groups', $counter);
+		$out .= $this->htmlHidden('Step', $this->newsletter->Step);
+		$out .= $this->htmlHidden('Offset', $this->newsletter->Offset);
+		$out .= $this->htmlHidden('IsFolder', $this->newsletter->IsFolder);
 		return $out;
 	}
 
 	function getHiddensPropertyPage(){
-		$out = "";
+		$out = '';
 
-		$out.=$this->htmlHidden("Text", $this->newsletter->Text);
-		$out.=$this->htmlHidden("Subject", $this->newsletter->Subject);
-		$out.=$this->htmlHidden("ParentID", $this->newsletter->ParentID);
-		$out.=$this->htmlHidden("Sender", $this->newsletter->Sender);
-		$out.=$this->htmlHidden("Reply", $this->newsletter->Reply);
-		$out.=$this->htmlHidden("Test", $this->newsletter->Test);
-		$out.=$this->htmlHidden("Charset", $this->newsletter->Charset);
-		$out.=$this->htmlHidden("isEmbedImages", $this->newsletter->isEmbedImages);
+		$out.=$this->htmlHidden('Text', $this->newsletter->Text);
+		$out.=$this->htmlHidden('Subject', $this->newsletter->Subject);
+		$out.=$this->htmlHidden('ParentID', $this->newsletter->ParentID);
+		$out.=$this->htmlHidden('Sender', $this->newsletter->Sender);
+		$out.=$this->htmlHidden('Reply', $this->newsletter->Reply);
+		$out.=$this->htmlHidden('Test', $this->newsletter->Test);
+		$out.=$this->htmlHidden('Charset', $this->newsletter->Charset);
+		$out.=$this->htmlHidden('isEmbedImages', $this->newsletter->isEmbedImages);
 
 		return $out;
 	}
 
 	function getHiddensMailingPage(){
-		$out = "";
+		$out = '';
 
-		$fields_names = array("fieldname", "operator", "fieldvalue", "logic", "hours", "minutes");
+		$fields_names = array('fieldname', 'operator', 'fieldvalue', 'logic', 'hours', 'minutes');
 		foreach($this->newsletter->groups as $g => $group){
 			if(is_array($group->aFilter)){
-				$out.=$this->htmlHidden("filter_" . $g, count($group->aFilter));
+				$out.=$this->htmlHidden('filter_' . $g, count($group->aFilter));
 
 				foreach($group->aFilter as $k => $v){
 					foreach($fields_names as $field){
-						if(isset($v["$field"]))
-							$out.=$this->htmlHidden("filter_" . $field . "_" . $g . "_" . $k, $v["$field"]);
+						if(isset($v['$field']))
+							$out.=$this->htmlHidden('filter_' . $field . '_' . $g . '_' . $k, $v['$field']);
 					}
 				}
 			}
@@ -163,54 +163,54 @@ class weNewsletterView{
 	}
 
 	function getHiddensContentPage(){
-		$out = "";
+		$out = '';
 		$counter = 0;
 
 		foreach($this->newsletter->blocks as $bk => $bv){
 
 			foreach($this->newsletter->blocks[$bk]->persistents as $per){
-				$out .= $this->htmlHidden("block" . $counter . "_" . $per, $bv->$per);
+				$out .= $this->htmlHidden('block' . $counter . '_' . $per, $bv->$per);
 			}
 
 			$counter++;
 		}
 
-		$out .= $this->htmlHidden("blocks", $counter);
+		$out .= $this->htmlHidden('blocks', $counter);
 
 		return $out;
 	}
 
-	function htmlHidden($name, $value = ""){
+	function htmlHidden($name, $value = ''){
 		return '<input type="hidden" name="' . trim($name) . '" value="' . oldHtmlspecialchars($value) . '" />';
 	}
 
 	/* creates the DocumentChoooser field with the "browse"-Button. Clicking on the Button opens the fileselector */
 
-	function formDocChooser($width = "", $rootDirID = 0, $Pathname = "ParentPath", $Pathvalue = "/", $IDName = "ParentID", $IDValue = "0", $cmd = ""){
-		$Pathvalue = f("SELECT Path FROM " . FILE_TABLE . " WHERE ID=" . intval($IDValue), "Path", $this->db);
+	function formDocChooser($width = '', $rootDirID = 0, $Pathname = 'ParentPath', $Pathvalue = '/', $IDName = 'ParentID', $IDValue = 0, $cmd = ''){
+		$Pathvalue = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($IDValue), 'Path', $this->db);
 
 		//javascript:we_cmd('openDocselector',document.we_form.elements['$IDName'].value,'".FILE_TABLE."','document.we_form.elements[\\'$IDName\\'].value','document.we_form.elements[\\'$Pathname\\'].value','".$cmd."','".session_id()."','$rootDirID','',".(we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1).")
 		$wecmdenc1 = we_cmd_enc("document.we_form.elements['$IDName'].value");
 		$wecmdenc2 = we_cmd_enc("document.we_form.elements['$Pathname'].value");
 		$wecmdenc3 = we_cmd_enc(str_replace('\\', '', $cmd));
-		$button = we_button::create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['$IDName'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','$rootDirID',''," . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")");
+		$button = we_button::create_button('select', "javascript:we_cmd('openDocselector',document.we_form.elements['$IDName'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','$rootDirID',''," . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")");
 
-		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($Pathname, 30, $Pathvalue, "", ' readonly', "text", $width, 0), "", "left", "defaultfont", $this->htmlHidden($IDName, $IDValue), we_html_tools::getPixel(20, 4), $button
+		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($Pathname, 30, $Pathvalue, '', ' readonly', 'text', $width, 0), '', 'left', 'defaultfont', $this->htmlHidden($IDName, $IDValue), we_html_tools::getPixel(20, 4), $button
 		);
 	}
 
 	/* creates the FileChoooser field with the "browse"-Button. Clicking on the Button opens the fileselector */
 
-	function formFileChooser($width = "", $IDName = "ParentID", $IDValue = "/", $cmd = "", $filter = "", $acObject = null, $contentType = ""){
+	function formFileChooser($width = '', $IDName = 'ParentID', $IDValue = '/', $cmd = '', $filter = '', $acObject = null, $contentType = ''){
 		$wecmdenc1 = we_cmd_enc("document.we_form.elements['$IDName'].value");
-		$button = we_button::create_button("select", "javascript:we_cmd('browse_server','" . $wecmdenc1 . "','$filter',document.we_form.elements['$IDName'].value);");
+		$button = we_button::create_button('select', "javascript:we_cmd('browse_server','" . $wecmdenc1 . "','$filter',document.we_form.elements['$IDName'].value);");
 
-		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($IDName, 30, $IDValue, "", 'readonly', "text", $width, 0), "", "left", "defaultfont", "", we_html_tools::getPixel(20, 4), we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? $button : "");
+		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($IDName, 30, $IDValue, '', 'readonly', 'text', $width, 0), '', 'left', 'defaultfont', '', we_html_tools::getPixel(20, 4), we_hasPerm('CAN_SELECT_EXTERNAL_FILES') ? $button : '');
 	}
 
-	function formWeChooser($table = FILE_TABLE, $width = "", $rootDirID = 0, $IDName = "ID", $IDValue = "0", $Pathname = "Path", $Pathvalue = "/", $cmd = "", $open_doc = "", $acObject = null, $contentType = ""){
-		if($Pathvalue == ""){
-			$Pathvalue = f("SELECT Path FROM " . $this->db->escape($table) . " WHERE ID=" . intval($IDValue), "Path", $this->db);
+	function formWeChooser($table = FILE_TABLE, $width = '', $rootDirID = 0, $IDName = 'ID', $IDValue = 0, $Pathname = 'Path', $Pathvalue = '/', $cmd = '', $open_doc = '', $acObject = null, $contentType = ''){
+		if($Pathvalue == ''){
+			$Pathvalue = f('SELECT Path FROM ' . $this->db->escape($table) . ' WHERE ID=' . intval($IDValue), 'Path', $this->db);
 		}
 
 		//javascript:we_cmd('openDocselector',document.we_form.elements['$IDName'].value,'$table','document.we_form.elements[\\'$IDName\\'].value','document.we_form.elements[\\'$Pathname\\'].value','".$cmd."','".session_id()."','$rootDirID','','$open_doc')
@@ -227,19 +227,19 @@ class weNewsletterView{
 			$yuiSuggest->setMaxResults(10);
 			$yuiSuggest->setMayBeEmpty(true);
 			$yuiSuggest->setResult($IDName, $IDValue);
-			$yuiSuggest->setSelector("Docselector");
+			$yuiSuggest->setSelector('Docselector');
 			$yuiSuggest->setTable($table);
 			$yuiSuggest->setWidth($width);
 			$yuiSuggest->setSelectButton($button);
 			return $yuiSuggest->getHTML();
 		} else{
-			return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($Pathname, 30, $Pathvalue, "", 'top.content.hot=1; readonly', "text", $width, 0), "", "left", "defaultfont", $this->htmlHidden($IDName, $IDValue), we_html_tools::getPixel(20, 4), $button);
+			return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($Pathname, 30, $Pathvalue, '', 'top.content.hot=1; readonly', 'text', $width, 0), '', 'left', 'defaultfont', $this->htmlHidden($IDName, $IDValue), we_html_tools::getPixel(20, 4), $button);
 		}
 	}
 
-	function formWeDocChooser($table = FILE_TABLE, $width = "", $rootDirID = 0, $IDName = "ID", $IDValue = "0", $Pathname = "Path", $Pathvalue = "/", $cmd = "", $filter = "text/webedition", $acObject = null){
-		if($Pathvalue == "")
-			$Pathvalue = f("SELECT Path FROM " . $this->db->escape($table) . " WHERE ID=" . intval($IDValue), "Path", $this->db);
+	function formWeDocChooser($table = FILE_TABLE, $width = '', $rootDirID = 0, $IDName = 'ID', $IDValue = 0, $Pathname = 'Path', $Pathvalue = '/', $cmd = '', $filter = 'text/webedition', $acObject = null){
+		if($Pathvalue == '')
+			$Pathvalue = f('SELECT Path FROM ' . $this->db->escape($table) . ' WHERE ID=' . intval($IDValue), 'Path', $this->db);
 
 		//javascript:we_cmd('openDocselector',document.we_form.elements['$IDName'].value,'$table','document.we_form.elements[\\'$IDName\\'].value','document.we_form.elements[\\'$Pathname\\'].value','".$cmd."','".session_id()."','$rootDirID','$filter',".(we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1).")"
 		$wecmdenc1 = we_cmd_enc("document.we_form.elements['$IDName'].value");
@@ -266,10 +266,10 @@ class weNewsletterView{
 		}
 	}
 
-	function formNewsletterDirChooser($width = "", $rootDirID = 0, $IDName = "ID", $IDValue = "0", $Pathname = "Path", $Pathvalue = "/", $cmd = "", $acObject = null){
+	function formNewsletterDirChooser($width = '', $rootDirID = 0, $IDName = 'ID', $IDValue = 0, $Pathname = 'Path', $Pathvalue = '/', $cmd = '', $acObject = null){
 		$table = NEWSLETTER_TABLE;
-		if($Pathvalue == ""){
-			$Pathvalue = f("SELECT Path FROM " . $this->db->escape($table) . " WHERE ID=" . intval($IDValue), "Path", $this->db);
+		if($Pathvalue == ''){
+			$Pathvalue = f('SELECT Path FROM ' . $this->db->escape($table) . ' WHERE ID=' . intval($IDValue), 'Path', $this->db);
 		}
 
 		//javascript:we_cmd('openDocselector',document.forms['we_form'].elements['$idname'].value,'$table','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','top.opener._EditorFrame.setEditorIsHot(true);','".session_id()."','$rootDir','objectFile',".(we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1).")
@@ -277,16 +277,16 @@ class weNewsletterView{
 		$wecmdenc2 = we_cmd_enc("document.we_form.elements['$Pathname'].value");
 		$wecmdenc3 = we_cmd_enc(str_replace('\\', '', $cmd));
 
-		$button = we_button::create_button("select", "javascript:we_cmd('openNewsletterDirselector',document.we_form.elements['$IDName'].value,'" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','$rootDirID')");
+		$button = we_button::create_button('select', "javascript:we_cmd('openNewsletterDirselector',document.we_form.elements['$IDName'].value,'" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','$rootDirID')");
 		if(is_object($acObject)){
 			$yuiSuggest = $acObject;
-			$yuiSuggest->setAcId("PathGroup");
-			$yuiSuggest->setContentType("folder");
+			$yuiSuggest->setAcId('PathGroup');
+			$yuiSuggest->setContentType('folder');
 			$yuiSuggest->setInput($Pathname, str_replace('\\', '/', $Pathvalue));
 			$yuiSuggest->setMaxResults(10);
 			$yuiSuggest->setMayBeEmpty(true);
 			$yuiSuggest->setResult($IDName, $IDValue);
-			$yuiSuggest->setSelector("Dirselector");
+			$yuiSuggest->setSelector('Dirselector');
 			$yuiSuggest->setTable(NEWSLETTER_TABLE);
 			$yuiSuggest->setWidth($width);
 			$yuiSuggest->setSelectButton($button);
@@ -294,13 +294,13 @@ class weNewsletterView{
 			return $yuiSuggest->getHTML();
 		} else{
 
-			return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($Pathname, 30, $Pathvalue, "", 'top.content.hot=1; readonly id="yuiAcInputPathGroup"', "text", $width, 0), "", "left", "defaultfont", $this->htmlHidden($IDName, $IDValue), we_html_tools::getPixel(20, 4), $button
+			return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($Pathname, 30, $Pathvalue, '', 'top.content.hot=1; readonly id="yuiAcInputPathGroup"', "text", $width, 0), "", "left", "defaultfont", $this->htmlHidden($IDName, $IDValue), we_html_tools::getPixel(20, 4), $button
 			);
 		}
 	}
 
 	function getFields($id, $table){
-		$ClassName = f('SELECT ClassName FROM ' . $this->db->escape($table) . ' WHERE ID=' . intval($id), "ClassName", $this->db);
+		$ClassName = f('SELECT ClassName FROM ' . $this->db->escape($table) . ' WHERE ID=' . intval($id), 'ClassName', $this->db);
 		$foo = array();
 
 		if($ClassName){
@@ -336,9 +336,9 @@ class weNewsletterView{
 	function getJSTopCode(){
 		$mod = isset($_REQUEST['mod']) ? $_REQUEST['mod'] : '';
 		$title = '';
-		foreach($GLOBALS["_we_available_modules"] as $modData){
-			if($modData["name"] == $mod){
-				$title = "webEdition " . g_l('global', "[modules]") . ' - ' . $modData["text"];
+		foreach($GLOBALS['_we_available_modules'] as $modData){
+			if($modData['name'] == $mod){
+				$title = 'webEdition ' . g_l('global', '[modules]') . ' - ' . $modData['text'];
 				break;
 			}
 		}
@@ -1405,7 +1405,7 @@ class weNewsletterView{
 						if($this->newsletter->filenameNotValid()){
 							print we_html_element::jsElement(
 									we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[we_filename_notValid]'), we_message_reporting::WE_MESSAGE_ERROR)
-								);
+							);
 							return;
 						}
 
@@ -1414,7 +1414,7 @@ class weNewsletterView{
 							if(!is_array($weAcResult) || $weAcResult[0]['IsFolder'] == 0){
 								print we_html_element::jsElement(
 										we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[path_nok]'), we_message_reporting::WE_MESSAGE_ERROR)
-									);
+								);
 								return;
 							}
 						}
@@ -1443,7 +1443,7 @@ class weNewsletterView{
 									if(!is_array($weAcResult) || count($weAcResult) < 1 || $weAcResult[0]['IsFolder'] == 1){
 										print we_html_element::jsElement(
 												we_message_reporting::getShowMessageCall(sprintf(g_l('modules_newsletter', '[blockFieldError]'), ($i + 1), $acErrorField), we_message_reporting::WE_MESSAGE_ERROR)
-											);
+										);
 										return;
 									}
 									if(!empty($_REQUEST['block' . $i . "_Field"]) && $_REQUEST['block' . $i . "_Field"] > 0){
@@ -1451,7 +1451,7 @@ class weNewsletterView{
 										if(!is_array($weAcResult) || $weAcResult[0]['IsFolder'] == 1){
 											print we_html_element::jsElement(
 													we_message_reporting::getShowMessageCall(sprintf(g_l('modules_newsletter', '[blockFieldError]'), $i, g_l('modules_newsletter', '[block_template]')), we_message_reporting::WE_MESSAGE_ERROR)
-												);
+											);
 											return;
 										}
 									}
@@ -1497,24 +1497,24 @@ class weNewsletterView{
 						if(!we_hasPerm("EDIT_NEWSLETTER") && !we_hasPerm("NEW_NEWSLETTER")){
 							print we_html_element::jsElement(
 									we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
-								);
+							);
 							return;
 						} else if($newone && !we_hasPerm("NEW_NEWSLETTER")){
 							print we_html_element::jsElement(
 									we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
-								);
+							);
 							return;
 						} else if(!$newone && !we_hasPerm("EDIT_NEWSLETTER")){
 							print we_html_element::jsElement(
 									we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
-								);
+							);
 							return;
 						} else{
 
 							if($double){
 								print we_html_element::jsElement(
 										we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[double_name]'), we_message_reporting::WE_MESSAGE_ERROR)
-									);
+								);
 								return;
 							}
 
@@ -1562,13 +1562,13 @@ class weNewsletterView{
 						if(!$_REQUEST["nid"]){
 							print we_html_element::jsElement(
 									we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[delete_nok]'), we_message_reporting::WE_MESSAGE_ERROR)
-								);
+							);
 							return;
 						}
 						if(!we_hasPerm("DELETE_NEWSLETTER")){
 							print we_html_element::jsElement(
 									we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
-								);
+							);
 							return;
 						} else{
 							$this->newsletter = new weNewsletter($_REQUEST["nid"]);
@@ -1584,13 +1584,13 @@ class weNewsletterView{
 							} else{
 								print we_html_element::jsElement(
 										we_message_reporting::getShowMessageCall(($_REQUEST["IsFolder"] == 1 ? g_l('modules_newsletter', '[delete_group_nok]') : g_l('modules_newsletter', '[delete_nok]')), we_message_reporting::WE_MESSAGE_ERROR)
-									);
+								);
 							}
 						}
 					} else{
 						print we_html_element::jsElement(
 								we_message_reporting::getShowMessageCall(($_REQUEST["IsFolder"] == 1 ? g_l('modules_newsletter', '[delete_group_nok]') : g_l('modules_newsletter', '[delete_nok]')), we_message_reporting::WE_MESSAGE_ERROR)
-							);
+						);
 					}
 					break;
 
@@ -1650,13 +1650,13 @@ class weNewsletterView{
 					if(!we_hasPerm("SEND_TEST_EMAIL")){
 						print we_html_element::jsElement(
 								we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
-							);
+						);
 						return;
 					}
 					$this->sendTestMail($_REQUEST["gview"], $_REQUEST["hm"]);
 					print we_html_element::jsElement(
 							we_message_reporting::getShowMessageCall(sprintf(g_l('modules_newsletter', '[test_mail_sent]'), $this->newsletter->Test), we_message_reporting::WE_MESSAGE_NOTICE)
-						);
+					);
 					break;
 
 				case "add_filter":
@@ -1767,7 +1767,7 @@ class weNewsletterView{
 						if(strpos($filepath, '..') !== false){
 							print we_html_element::jsElement(
 									we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[path_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR)
-								);
+							);
 						} else{
 							$row = array();
 							$control = array();
@@ -1807,7 +1807,7 @@ class weNewsletterView{
 							} else{
 								print we_html_element::jsElement(
 										we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[path_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR)
-									);
+								);
 							}
 						}
 					}
@@ -1859,7 +1859,7 @@ class weNewsletterView{
 						} else{
 							print we_html_element::jsElement(
 									we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[upload_nok]'), we_message_reporting::WE_MESSAGE_ERROR)
-								);
+							);
 						}
 					}
 					break;
@@ -1882,7 +1882,7 @@ class weNewsletterView{
 						} else{
 							print we_html_element::jsElement(
 									we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[upload_nok]'), we_message_reporting::WE_MESSAGE_ERROR)
-								);
+							);
 						}
 					}
 					break;
@@ -1953,7 +1953,7 @@ class weNewsletterView{
 							' . $url . '
 							new jsWindow(url,"newsletter_send",-1,-1,600,400,true,true,true,false);
 						' . ((trim($this->newsletter->Subject) == "") ? '}' : '')
-						);
+					);
 					break;
 				default:
 			}
@@ -2746,7 +2746,8 @@ class weNewsletterView{
 					$offset+=$this->settings["send_step"];
 					$groups++;
 					$this->saveToCache(serialize($tmp), $emailcache . "_$groups");
-				}else
+				}
+				else
 					$go = false;
 			}
 

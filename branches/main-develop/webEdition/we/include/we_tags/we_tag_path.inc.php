@@ -24,22 +24,22 @@
  */
 function we_tag_path($attribs){
 	$db = $GLOBALS['DB_WE'];
-	$field = weTag_getAttribute("field", $attribs);
-	$dirfield = weTag_getAttribute("dirfield", $attribs, $field);
-	$index = weTag_getAttribute("index", $attribs);
+	$field = weTag_getAttribute('field', $attribs);
+	$dirfield = weTag_getAttribute('dirfield', $attribs, $field);
+	$index = weTag_getAttribute('index', $attribs);
 	$oldHtmlspecialchars = weTag_getAttribute('htmlspecialchars', $attribs, false, true);
-	$fieldforfolder = weTag_getAttribute("fieldforfolder", $attribs, false, true);
-	$docAttr = weTag_getAttribute("doc", $attribs);
-	$sep = weTag_getAttribute("separator", $attribs, "/");
-	$home = weTag_getAttribute("home", $attribs, "home");
-	$hidehome = weTag_getAttribute("hidehome", $attribs, false, true);
-	$class = weTag_getAttribute("class", $attribs);
-	$style = weTag_getAttribute("style", $attribs);
+	$fieldforfolder = weTag_getAttribute('fieldforfolder', $attribs, false, true);
+	$docAttr = weTag_getAttribute('doc', $attribs);
+	$sep = weTag_getAttribute('separator', $attribs, '/');
+	$home = weTag_getAttribute('home', $attribs, 'home');
+	$hidehome = weTag_getAttribute('hidehome', $attribs, false, true);
+	$class = weTag_getAttribute('class', $attribs);
+	$style = weTag_getAttribute('style', $attribs);
 
 	$doc = we_getDocForTag($docAttr, true);
 	$pID = $doc->ParentID;
 
-	$indexArray = $index ? explode(',', $index) : array("index.html", "index.htm", "index.php", "default.htm", "default.html", "default.php");
+	$indexArray = $index ? explode(',', $index) : array('index.html', 'index.htm', 'index.php', 'default.htm', 'default.html', 'default.php');
 
 	$class = $class ? ' class="' . $class . '"' : '';
 	$style = $style ? ' style="' . $style . '"' : '';
@@ -63,9 +63,9 @@ function we_tag_path($attribs){
 		$fileID = $db->f('ID');
 		$filePath = $db->f('Path');
 		if($fileID){
-			$show = f('SELECT ' . CONTENT_TABLE . '.Dat as Dat FROM ' . LINK_TABLE . ',' . CONTENT_TABLE . ' WHERE ' . LINK_TABLE . '.DID=' . intval($fileID) . ' AND ' . LINK_TABLE . ".Name='" . $db->escape($dirfield) . " ' AND " . CONTENT_TABLE . '.ID=' . LINK_TABLE . '.CID', 'Dat', $db);
+			$show = f('SELECT ' . CONTENT_TABLE . '.Dat as Dat FROM ' . LINK_TABLE . ',' . CONTENT_TABLE . ' WHERE ' . LINK_TABLE . '.DID=' . intval($fileID) . ' AND ' . LINK_TABLE . '.Name="' . $db->escape($dirfield) .  '" AND ' . CONTENT_TABLE . '.ID=' . LINK_TABLE . '.CID', 'Dat', $db);
 			if(!$show && $fieldforfolder){
-				$show = f('SELECT ' . CONTENT_TABLE . '.Dat as Dat FROM ' . LINK_TABLE . ',' . CONTENT_TABLE . ' WHERE ' . LINK_TABLE . '.DID=' . intval($fileID) . ' AND ' . LINK_TABLE . ".Name='" . $db->escape($field) . " ' AND " . CONTENT_TABLE . ".ID=" . LINK_TABLE . '.CID', 'Dat', $db);
+				$show = f('SELECT ' . CONTENT_TABLE . '.Dat as Dat FROM ' . LINK_TABLE . ',' . CONTENT_TABLE . ' WHERE ' . LINK_TABLE . '.DID=' . intval($fileID) . ' AND ' . LINK_TABLE . '.Name="' . $db->escape($field) . '" AND ' . CONTENT_TABLE . '.ID=' . LINK_TABLE . '.CID', 'Dat', $db);
 			}
 			if(!$show){
 				$show = f('SELECT Text FROM ' . FILE_TABLE . ' WHERE ID=' . intval($pID), 'Text', $db);
@@ -78,9 +78,9 @@ function we_tag_path($attribs){
 			}
 		} else{
 			$link_pre = $link_post = '';
-			$show = f('SELECT Text FROM ' . FILE_TABLE . ' WHERE ID=' . intval($pID), "Text", $db);
+			$show = f('SELECT Text FROM ' . FILE_TABLE . ' WHERE ID=' . intval($pID), 'Text', $db);
 		}
-		$pID = f('SELECT ParentID FROM ' . FILE_TABLE . ' WHERE ID=' . intval($pID), "ParentID", $db);
+		$pID = f('SELECT ParentID FROM ' . FILE_TABLE . ' WHERE ID=' . intval($pID), 'ParentID', $db);
 		$path = (!$pID && $hidehome ? '' : $sep) . $link_pre . ($oldHtmlspecialchars ? oldHtmlspecialchars($show) : $show) . $link_post . $path;
 	}
 
