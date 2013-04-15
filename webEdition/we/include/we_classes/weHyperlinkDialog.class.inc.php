@@ -321,10 +321,10 @@ class weHyperlinkDialog extends weDialog{
 	var x=this.value.match(/(.*:\/\/[^#?]*)(\?([^?#]*))?(#([^?#]*))?/);
 	this.value=x[1];
 	if(x[3]!=undefined){
-		document.getElementsByName(\'we_dialog_args[param]\')[0].value=x[5];
+		document.getElementsByName(\'we_dialog_args[param]\')[0].value=x[3];
 	}
 	if(x[5]!=undefined){
-		document.getElementsByName(\'we_dialog_args[anchor]\')[0].value=x[3];
+		document.getElementsByName(\'we_dialog_args[anchor]\')[0].value=x[5];
 	}}"', "url", 300), "", "left", "defaultfont", we_html_tools::getPixel(10, 1), $_external_select_button, '', '', '', 0) . '</div>';
 
 
