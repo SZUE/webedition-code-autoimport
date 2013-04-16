@@ -127,7 +127,7 @@ class we_binaryDocument extends we_document{
 			if(!we_util_File::copyFile($this->elements["data"]["dat"], $this->getRealPath())){
 				return false;
 			}
-			if($this->i_isMoved()){
+			if($this->isMoved()){
 				we_util_File::delete($this->getRealPath(true));
 				we_util_File::delete($this->getSitePath(true));
 				$this->rewriteNavigation();
@@ -143,7 +143,7 @@ class we_binaryDocument extends we_document{
 		$is_ok = false;
 		if(isset($this->elements["data"]["dat"]) && file_exists($this->elements["data"]["dat"])){
 			$is_ok = we_util_File::copyFile($this->elements["data"]["dat"], $to);
-			if($this->i_isMoved()){
+			if($this->isMoved()){
 				we_util_File::delete($old);
 			}
 		}

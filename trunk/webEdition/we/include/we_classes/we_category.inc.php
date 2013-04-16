@@ -31,7 +31,7 @@
 class we_category extends weModelBase{
 
 	var $ClassName = __CLASS__;
-	var $ContentType = "category";
+	var $ContentType = 'category';
 
 	function __construct(){
 		parent::__construct(CATEGORY_TABLE);
@@ -42,7 +42,14 @@ class we_category extends weModelBase{
 			$this->Catfields = serialize($this->Catfields);
 		}
 
-		weModelBase::save();
+		parent::save();
+		weNavigationCache::clean(true);
+	}
+
+	function delete(){
+		$ret = parent::delete();
+		weNavigationCache::clean(true);
+		return $ret;
 	}
 
 	static function getCatSQLTail($catCSV = '', $table = FILE_TABLE, $catOr = false, $db = '', $fieldName = 'Category', $getParentCats = true, $categoryids = ''){
@@ -94,14 +101,14 @@ class we_category extends weModelBase{
 		}
 		if(!empty($folders)){
 			foreach($folders as &$cur){
-			$where[] = '('.$pre . implode($post . 'OR' . $pre, $cur) . $post.')';
+				$where[] = '(' . $pre . implode($post . 'OR' . $pre, $cur) . $post . ')';
 			}
 			unset($cur);
 		}
 
-		return /*(empty($where) ?
-				' AND ' . $table . '.' . $fieldName . ' = "-1" ' :*/
-				' AND (' . implode(($catOr ? ' OR ' : ' AND '), $where) . ' )';
+		return /* (empty($where) ?
+			  ' AND ' . $table . '.' . $fieldName . ' = "-1" ' : */
+			' AND (' . implode(($catOr ? ' OR ' : ' AND '), $where) . ' )';
 	}
 
 }
