@@ -224,6 +224,9 @@ class weBackup extends we_backup{
 			if(memory_get_usage(true) + 10 * $rowSz > $_SESSION['weS']['weBackupVars']['limits']['mem']){
 				return false;
 			}
+		}else{
+			//used for restore
+			
 		}
 
 		if($execTime == 0){

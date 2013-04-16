@@ -2405,6 +2405,9 @@ class we_objectFile extends we_document{
 			}
 		}
 		$oldUrl = f('SELECT Url FROM ' . $this->Table . ' WHERE ID=' . $this->ID, 'Url', $this->DB_WE);
+		$wasPublished = $this->Published > 0;
+		$oldCat = f('SELECT Category FROM ' . $this->Table . ' WHERE ID=' . $this->ID, 'Url', $this->DB_WE);
+
 		if($saveinMainDB && !we_root::we_save(1)){
 			return false;
 		}
@@ -2424,11 +2427,11 @@ class we_objectFile extends we_document{
 			}
 		}
 		we_temporaryDocument::delete($this->ID, $this->Table, $this->DB_WE);
-		if($oldUrl != $this->Url){
+		if($oldUrl != $this->Url || !$wasPublished || $oldCat != $this->Category){
 			$this->rewriteNavigation();
 		}
 //clear navigation cache to see change if object in navigation #6916
-		weNavigationCache::clean(true);
+//		weNavigationCache::clean(true);
 
 		return $this->insertAtIndex();
 	}
@@ -2454,7 +2457,8 @@ class we_objectFile extends we_document{
 			}
 		}
 //clear navigation cache to see change if object in navigation #6916
-		weNavigationCache::clean(true);
+		//	weNavigationCache::clean(true);
+		$this->rewriteNavigation();
 
 		return $this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE OID=' . $this->ID);
 	}
@@ -3027,6 +3031,15 @@ class we_objectFile extends we_document{
 		$db->query('UPDATE ' . LANGLINK_TABLE . ' SET DLocale="' . $lang . '" WHERE DID=' . $id . ' AND DocumentTable="' . $type . '"');
 //drop invalid entries => is this safe???
 		$db->query('DELETE FROM ' . LANGLINK_TABLE . ' WHERE DID=' . $id . ' AND DocumentTable="' . $type . '" AND Locale!="' . $lang . '"');
+	}
+
+	protected function getNavigationFoldersForDoc(){
+		$queries = array(
+			'(((Selection="' . weNavigation::SELECTION_STATIC . '" AND SelectionType="' . weNavigation::STPYE_OBJLINK . '") OR (IsFolder=1 AND FolderSelection="' . weNavigation::STPYE_OBJLINK . '")) AND LinkID=' . intval($this->ID) . ')',
+			'((Selection="' . weNavigation::SELECTION_DYNAMIC . '") AND SelectionType="' . weNavigation::STPYE_CLASS . '" AND (ClassID=' . $this->TableID . '))'
+		);
+		$this->DB_WE->query('SELECT DISTINCT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ' . implode(' OR ', $queries));
+		return $this->DB_WE->getAll(true);
 	}
 
 }

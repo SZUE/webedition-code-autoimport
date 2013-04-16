@@ -182,13 +182,14 @@ class we_wysiwyg{
 					.tbButtonWysiwygBorder {
 						border: 1px solid #006DB8;
 						background-image: url(' . IMAGE_DIR . 'pixel.gif);
-					  background-image: url(' . IMAGE_DIR . 'pixel.gif);
 						margin: 0px;
 						padding:4px;
 						text-align: left;
 						text-decoration: none;
 						position: relative;
 						overflow: auto;
+						height: auto;
+						width: auto;
 					}
 				</style>
 				'
@@ -316,6 +317,8 @@ function tinyMCECallRegisterDialog(win,action){
 						text-decoration: none;
 						position: relative;
 						overflow: auto;
+						height: auto;
+						width: auto;
 					}
 					.tbButtonWysiwygBackground{
 						background-image: url(' . IMAGE_DIR . 'backgrounds/aquaBackground.gif) ! important;

@@ -113,7 +113,7 @@ class weNavigationItem{
 				break;
 
 			// #6916
-			case OBJECT_FILES_TABLE:
+			case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
 				$__id = $this->docid;
 				$_v = f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($__id) . ' AND Published>0', 'ID', $db);
 				$this->visible = !empty($_v) ? 'true' : 'false';
@@ -209,7 +209,7 @@ class weNavigationItem{
 		}
 
 		switch($this->table){
-			case OBJECT_FILES_TABLE:
+			case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
 				if(isset($GLOBALS['we_obj'])){
 					$id = $GLOBALS['we_obj']->ID;
 				}
@@ -311,9 +311,9 @@ class weNavigationItem{
 		if($attr){
 			$_fields = makeArrayFromCSV($attr);
 			unset($attribs['attributes']);
-			if(isset($_fields['link_attribute'])){
+			/*if(isset($_fields['link_attribute'])){
 				$_link_attribute = $_fields['link_attribute'];
-			}
+			}*/
 			foreach($_fields as $_field){
 				switch($_field){
 					case 'link' :
@@ -387,9 +387,21 @@ class weNavigationItem{
 		$js = 'var we_winOpts;';
 
 		if($this->attributes['popup_center'] && $this->attributes['popup_width'] && $this->attributes['popup_height']){
-			$js .= 'if (window.screen) {var w = ' . $this->attributes['popup_width'] . ';var h = ' . $this->attributes['popup_height'] . ';var screen_height = screen.availHeight - 70;var screen_width = screen.availWidth-10;var w = Math.min(screen_width,w);var h = Math.min(screen_height,h);var x = (screen_width - w) / 2;var y = (screen_height - h) / 2;we_winOpts = \'left=\'+x+\',top=\'+y;}else{we_winOpts=\'\';};';
-		} else
-		if($this->attributes['popup_xposition'] != '' || $this->attributes['popup_yposition'] != ''){
+			$js .= '
+if (window.screen) {
+	var w = ' . $this->attributes['popup_width'] . ';
+	var h = ' . $this->attributes['popup_height'] . ';
+		var screen_height = screen.availHeight - 70;
+		var screen_width = screen.availWidth-10;
+		var w = Math.min(screen_width,w);
+		var h = Math.min(screen_height,h);
+		var x = (screen_width - w) / 2;
+		var y = (screen_height - h) / 2;
+		we_winOpts = \'left=\'+x+\',top=\'+y;
+	}else{
+		we_winOpts=\'\';
+	};';
+		} elseif($this->attributes['popup_xposition'] != '' || $this->attributes['popup_yposition'] != ''){
 			if($this->attributes['popup_xposition'] != ''){
 				$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'left=' . $this->attributes['popup_xposition'] . '\';';
 			}

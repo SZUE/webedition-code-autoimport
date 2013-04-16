@@ -776,19 +776,19 @@ class we_document extends we_root{
 		$this->Text = $this->Filename . $this->Extension;
 	}
 
-	function i_isMoved(){
+	protected function isMoved(){
 		return ($this->OldPath && ($this->Path != $this->OldPath));
 	}
 
 	protected function i_writeSiteDir($doc){
-		if($this->i_isMoved()){
+		if($this->isMoved()){
 			we_util_File::deleteLocalFile($this->getSitePath(true));
 		}
 		return we_util_File::saveFile($this->getSitePath(), $doc);
 	}
 
 	protected function i_writeMainDir($doc){
-		if($this->i_isMoved()){
+		if($this->isMoved()){
 			we_util_File::deleteLocalFile($this->getRealPath(true));
 		}
 		return we_util_File::saveFile($this->getRealPath(), $doc);
@@ -803,7 +803,7 @@ class we_document extends we_root{
 	}
 
 	protected function i_writeDocument(){
-		$update = $this->i_isMoved();
+		$update = $this->isMoved();
 		$doc = $this->i_getDocumentToSave();
 		if(!($doc || $doc == '')){
 			return false;

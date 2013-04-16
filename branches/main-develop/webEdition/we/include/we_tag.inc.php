@@ -758,11 +758,11 @@ function we_tag_ifvotingexists(){
 function we_post_tag_listview(){
 	if(isset($GLOBALS['we_lv_array'])){
 		array_pop($GLOBALS['we_lv_array']);
-		if(!empty($GLOBALS['we_lv_array'])){
-			$GLOBALS['lv'] = clone($GLOBALS['we_lv_array'][count($GLOBALS['we_lv_array']) - 1]);
-		} else{
+		if(empty($GLOBALS['we_lv_array'])){
 			unset($GLOBALS['lv']);
 			unset($GLOBALS['we_lv_array']);
+		} else{
+			$GLOBALS['lv'] = clone(end($GLOBALS['we_lv_array']));
 		}
 	}
 }

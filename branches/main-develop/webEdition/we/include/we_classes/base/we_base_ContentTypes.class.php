@@ -86,11 +86,11 @@ class we_base_ContentTypes{
 	<we:charset defined="UTF-8">UTF-8</we:charset>
 </head>
 <body>
-	<article>
+	<article style="width:400px">
 		<h1><we:input type="text" name="Headline" size="60"/></h1>
 		<p><b><we:input type="date" name="Date" format="d.m.Y"/></b></p>
 		<we:ifNotEmpty match="Image">
-			<we:img name="Image" showthumbcontrol="true"/>
+			<p><we:img name="Image" showthumbcontrol="true"/></p>
 		</we:ifNotEmpty>
 		<we:textarea name="Content" width="400" height="200" autobr="true" wysiwyg="true" removefirstparagraph="false" inlineedit="true"/>
 	</article>

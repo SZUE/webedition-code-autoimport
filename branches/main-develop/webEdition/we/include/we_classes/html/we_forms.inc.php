@@ -232,7 +232,7 @@ abstract class we_forms{
 
 				// Ende Bugfix
 
-				$out .= ($buttonTop ? '<div class="tbButtonWysiwygBorder" style="width:25px;border-bottom:0px;background-image: url(' . IMAGE_DIR . 'backgrounds/aquaBackground.gif);">' . $e->getHTML() . '</div>' : '') . '<div class="tbButtonWysiwygBorder ' . (empty($class) ? "" : $class . " ") . 'wetextarea tiny-wetextarea wetextarea-' . $origName . '" id="div_wysiwyg_' . $name . '">' . $value . '</div>' . ($buttonBottom ? '<div class="tbButtonWysiwygBorder" style="width:25px;border-top:0px;background-image: url(' . IMAGE_DIR . 'backgrounds/aquaBackground.gif);">' . $e->getHTML() . '</div>' : '');
+				$out .= ($buttonTop ? '<div class="tbButtonWysiwygBorder" style="width:25px;border-bottom:0px;background-image: url(' . IMAGE_DIR . 'backgrounds/aquaBackground.gif);">' . $e->getHTML() . '</div>' : '') . '<div class="tbButtonWysiwygBorder ' . (empty($class) ? "" : $class . " ") . 'wetextarea tiny-wetextarea wetextarea-' . $origName . '" id="div_wysiwyg_' . $name . '" style="height:auto; width:auto">' . $value . '</div>' . ($buttonBottom ? '<div class="tbButtonWysiwygBorder" style="width:25px;border-top:0px;background-image: url(' . IMAGE_DIR . 'backgrounds/aquaBackground.gif);">' . $e->getHTML() . '</div>' : '');
 			}
 		} else{
 			if($width){
