@@ -281,8 +281,7 @@ foreach($output as $n => $v){
 				$n2 = replace_bad_str($n2);
 				$foo = replace_bad_str($foo);
 				$we_txt .= $n . '[' . $n2 . "]: $foo\n" . ($foo ? '' : "\n");
-				$we_html .= '<tr><td align="right"><b>' . $n . '[' . $n2 . ']:</b></td><td>' . $foo . '</td></tr>
-';
+				$we_html .= '<tr><td align="right"><b>' . $n . '[' . $n2 . ']:</b></td><td>' . $foo . '</td></tr>';
 			}
 		}
 	} else{
@@ -327,11 +326,9 @@ $email = (isset($_REQUEST['email']) && $_REQUEST['email']) ?
 		$_REQUEST['from'] :
 		WE_DEFAULT_EMAIL);
 
-$subject = (isset($_REQUEST['subject']) && $_REQUEST['subject']) ?
+$subject = strip_tags((isset($_REQUEST['subject']) && $_REQUEST['subject']) ?
 	$_REQUEST['subject'] :
-	WE_DEFAULT_SUBJECT;
-
-$subject = strip_tags($subject);
+	WE_DEFAULT_SUBJECT);
 
 $charset = (isset($_REQUEST['charset']) && $_REQUEST['charset']) ?
 	str_replace("\n", "", str_replace("\r", "", $_REQUEST['charset'])) :

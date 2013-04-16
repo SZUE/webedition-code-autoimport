@@ -22,7 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 function we_include_tag_file($name){
 	$fn = 'we_tag_' . $name;
 
@@ -545,7 +544,9 @@ function we_tag_ifNotEmpty($attribs){
 }
 
 function we_tag_ifNotEqual($attribs){
-	if(isset($attribs['_name_orig'])){$attribs['name']=$attribs['_name_orig'];}
+	if(isset($attribs['_name_orig'])){
+		$attribs['name'] = $attribs['_name_orig'];
+	}
 	return !we_tag('ifEqual', $attribs);
 }
 
@@ -622,12 +623,16 @@ function we_tag_ifNotTemplate($attribs){
 }
 
 function we_tag_ifNotVar($attribs){
-	if(isset($attribs['_name_orig'])){$attribs['name']=$attribs['_name_orig'];}
+	if(isset($attribs['_name_orig'])){
+		$attribs['name'] = $attribs['_name_orig'];
+	}
 	return !we_tag('ifVar', $attribs);
 }
 
 function we_tag_ifNotVarSet($attribs){
-	if(isset($attribs['_name_orig'])){$attribs['name']=$attribs['_name_orig'];}
+	if(isset($attribs['_name_orig'])){
+		$attribs['name'] = $attribs['_name_orig'];
+	}
 	return !we_tag('ifVarSet', $attribs);
 }
 
@@ -668,7 +673,9 @@ function we_tag_ifUserInputNotEmpty($attribs){
 }
 
 function we_tag_ifVarNotEmpty($attribs){
-	if(isset($attribs['_name_orig'])){$attribs['name']=$attribs['_name_orig'];}
+	if(isset($attribs['_name_orig'])){
+		$attribs['name'] = $attribs['_name_orig'];
+	}
 	return !we_tag('ifVarEmpty', $attribs);
 }
 
@@ -741,11 +748,11 @@ function we_tag_ifvotingexists(){
 function we_post_tag_listview(){
 	if(isset($GLOBALS['we_lv_array'])){
 		array_pop($GLOBALS['we_lv_array']);
-		if(count($GLOBALS['we_lv_array'])){
-			$GLOBALS['lv'] = clone($GLOBALS['we_lv_array'][count($GLOBALS['we_lv_array']) - 1]);
-		} else{
+		if(empty($GLOBALS['we_lv_array'])){
 			unset($GLOBALS['lv']);
 			unset($GLOBALS['we_lv_array']);
+		} else{
+			$GLOBALS['lv'] = clone(end($GLOBALS['we_lv_array']));
 		}
 	}
 }

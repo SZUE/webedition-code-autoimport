@@ -1238,23 +1238,17 @@ abstract class we_root extends we_class{
 	 *
 	 * @return Array
 	 */
-	function getNavigationFoldersForDoc(){
-		switch($this->Table){
-			case FILE_TABLE:
-				if(isset($this->DocType)){
-					$this->DB_WE->query('SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ((Selection="' . weNavigation::SELECTION_DYNAMIC . '") AND (DocTypeID="' . $this->DB_WE->escape($this->DocType) . '" OR FolderID=' . intval($this->ParentID) . ')) OR
-						(((Selection="' . weNavigation::SELECTION_STATIC . '" AND SelectionType="' . weNavigation::STPYE_DOCLINK . '") OR (IsFolder=1 AND FolderSelection="' . weNavigation::STPYE_DOCLINK . '")) AND LinkID=' . intval($this->ID) . ')');
-					return $this->DB_WE->getAll(true);
-				} else{
-					$this->DB_WE->query('SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ((Selection="static" AND SelectionType="' . weNavigation::STPYE_DOCLINK . '") OR (IsFolder=1 AND FolderSelection="' . weNavigation::STPYE_DOCLINK . '")) AND LinkID=' . intval($this->ID));
-					return $this->DB_WE->getAll(true);
-				}
-			case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
-				$this->DB_WE->query('SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ((Selection="' . weNavigation::SELECTION_STATIC . '" AND SelectionType="' . weNavigation::STPYE_OBJLINK . '") OR (IsFolder=1 AND FolderSelection="' . weNavigation::STPYE_OBJLINK . '")) AND LinkID=' . intval($this->ID));
-				return $this->DB_WE->getAll(true);
-			default:
-				return array();
+	protected function getNavigationFoldersForDoc(){
+		if($this->Table == FILE_TABLE){
+			$queries = array('(((Selection="' . weNavigation::SELECTION_STATIC . '" AND SelectionType="' . weNavigation::STPYE_DOCLINK . '") OR (IsFolder=1 AND FolderSelection="' . weNavigation::STPYE_DOCLINK . '")) AND LinkID=' . intval($this->ID) . ')');
+			if(isset($this->DocType)){
+				$queries[] = '((Selection="' . weNavigation::SELECTION_DYNAMIC . '") AND (DocTypeID="' . $this->DB_WE->escape($this->DocType) . '" OR FolderID=' . intval($this->ParentID) . '))';
+			}
+			$this->DB_WE->query('SELECT DISTINCT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ' . implode(' OR ', $queries));
+			return $this->DB_WE->getAll(true);
 		}
+
+		return array();
 	}
 
 	function insertAtIndex(){
@@ -1272,7 +1266,6 @@ abstract class we_root extends we_class{
 		}
 
 		$_folders = $this->getNavigationFoldersForDoc();
-		$_folders = array_unique($_folders);
 		foreach($_folders as $_f){
 			weNavigationCache::delNavigationTree($_f);
 		}
