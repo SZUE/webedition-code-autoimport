@@ -134,10 +134,6 @@ function we_tag_listview($attribs){
 	$objectseourls = weTag_getAttribute('objectseourls', $attribs, TAGLINKS_OBJECTSEOURLS, true);
 	$docAttr = weTag_getAttribute('doc', $attribs, 'self');
 
-	if(!isset($GLOBALS['we_lv_array'])){
-		$GLOBALS['we_lv_array'] = array();
-	}
-
 	if($we_lv_languages == 'self' || $we_lv_languages == 'top'){
 		$we_lv_langguagesdoc = we_getDocForTag($we_lv_languages);
 		$we_lv_languages = $we_lv_langguagesdoc->Language;
@@ -163,6 +159,7 @@ function we_tag_listview($attribs){
 			$we_lv_doctype = f('SELECT DocType FROM ' . DOC_TYPES_TABLE . ' WHERE ID="' . $GLOBALS['we_doc']->DocType . '"', 'DocType', $GLOBALS['DB_WE']);
 		}
 	}
+	echo 'x1:' . count($GLOBALS['we_lv_array']);
 
 	switch($type){
 		case 'document':
@@ -182,12 +179,14 @@ function we_tag_listview($attribs){
 		case 'object':
 			if(!defined('OBJECT_TABLE')){
 				print modulFehltError('Object/DB', __FUNCTION__ . ' type="object"');
-				return;
+				unset($GLOBALS['lv']);
+				return false;
 			}
 			if(f('SELECT 1 AS a FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($class), 'a', $GLOBALS['DB_WE']) == '1'){
 				$GLOBALS['lv'] = new we_listview_object($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $class, $we_lv_cats, $we_lv_catOr, $cond, $triggerid, $cols, $seeMode, $we_lv_se, $we_lv_calendar, $we_lv_datefield, $we_lv_date, $we_lv_weekstart, $we_lv_categoryids, $we_lv_ws, $cfilter, $docid, $customers, $id, $we_predefinedSQL, $we_lv_languages, $hidedirindex, $objectseourls);
 			} else{
 				t_e('warning', 'Class with id=' . intval($class) . ' does not exist');
+				unset($GLOBALS['lv']);
 				return false;
 			}
 			break;
