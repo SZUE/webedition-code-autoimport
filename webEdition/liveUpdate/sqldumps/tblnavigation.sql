@@ -23,6 +23,7 @@ CREATE TABLE ###TBLPREFIX###tblnavigation (
   DocTypeID smallint(6) unsigned NOT NULL,
   ClassID bigint(20) unsigned NOT NULL default '0',
   Categories text NOT NULL,
+  CatAnd tinyint(1) unsigned NOT NULL default '1',
   Sort text NOT NULL,
   ShowCount tinyint(4) unsigned NOT NULL default '0',
   Ordn tinyint(4) unsigned NOT NULL default '0',
