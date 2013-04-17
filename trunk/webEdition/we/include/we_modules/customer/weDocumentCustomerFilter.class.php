@@ -154,8 +154,8 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter{
 	 * @param mixed $model
 	 * @return weDocumentCustomerFilter
 	 */
-	static function getFilterOfDocument(&$model){
-		return self::getFilterByIdAndTable($model->ID, $model->Table);
+	static function getFilterOfDocument(&$model, $db = ''){
+		return self::getFilterByIdAndTable($model->ID, $model->Table, $db);
 	}
 
 	/**
@@ -165,10 +165,10 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter{
 	 * @param string $contentType
 	 * @return weDocumentCustomerFilter
 	 */
-	static function getFilterByIdAndTable($id, $table){
-		$db = new DB_WE();
+	static function getFilterByIdAndTable($id, $table, $db = ''){
+		$db = ($db ? $db : new DB_WE());
 		$hash = getHash('SELECT * FROM ' . CUSTOMER_FILTER_TABLE . ' WHERE modelTable="' . $db->escape(stripTblPrefix($table)) . '" AND modelId = ' . intval($id), $db);
-		if(count($hash)){
+		if(!empty($hash)){
 			return self::getFilterByDbHash($hash);
 		}
 		return ''; // important do NOT return null
@@ -301,13 +301,14 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter{
 	 * @param mixed $model
 	 */
 	function saveForModel(&$model){
+		$_db = new DB_WE();
 
 		// check if there were any changes?
 		$_docCustomerFilter = $model->documentCustomerFilter; // filter of document
-		$_tmp = self::getFilterOfDocument($model); // filter stored in Database
+		$_tmp = self::getFilterOfDocument($model, $_db); // filter stored in Database
 
 		if(!self::filterAreQual($_docCustomerFilter, $_tmp)){ // the filter changed
-			self::deleteForModel($model);
+			self::deleteForModel($model, $_db);
 
 			if($_docCustomerFilter->getMode() != weAbstractCustomerFilter::OFF && $model->ID){ // only save if its is active
 				$_filter = $_docCustomerFilter->getFilter();
@@ -334,11 +335,10 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter{
 				));
 
 
-				$_db = new DB_WE();
 				$_db->query($_query);
-				unset($_db);
 			}
 		}
+		unset($_db);
 	}
 
 	/**
@@ -348,9 +348,9 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter{
 	 * param webeditionDocument or objectFile
 	 * @param mixed $model
 	 */
-	function deleteForModel(&$model){
+	function deleteForModel(&$model, $db = ''){
 		if($model->ID){
-			$_db = new DB_WE();
+			$_db = ($db ? $db : new DB_WE());
 			$_db->query('DELETE FROM ' . CUSTOMER_FILTER_TABLE . ' WHERE modelId=' . $model->ID . ' AND modelType="' . $model->ContentType . '" AND modelTable="' . stripTblPrefix($model->Table) . '"');
 		}
 	}

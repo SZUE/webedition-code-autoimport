@@ -2375,7 +2375,7 @@ class we_objectFile extends we_document{
 		}
 		$oldUrl = f('SELECT Url FROM ' . $this->Table . ' WHERE ID=' . $this->ID, 'Url', $this->DB_WE);
 		$wasPublished = $this->Published > 0;
-		$oldCat = f('SELECT Category FROM ' . $this->Table . ' WHERE ID=' . $this->ID, 'Url', $this->DB_WE);
+		$this->oldCategory = f('SELECT Category FROM ' . $this->Table . ' WHERE ID=' . $this->ID, 'Category', $this->DB_WE);
 
 		if($saveinMainDB && !we_root::we_save(1)){
 			return false;
@@ -2396,9 +2396,10 @@ class we_objectFile extends we_document{
 			}
 		}
 		we_temporaryDocument::delete($this->ID, $this->Table, $this->DB_WE);
-		if($oldUrl != $this->Url || !$wasPublished || $oldCat != $this->Category){
-			$this->rewriteNavigation();
-		}
+		//if($oldUrl != $this->Url || !$wasPublished || $this->oldCategory != $this->Category){
+		//FIXME: changes of customerFilter are missing here
+		$this->rewriteNavigation();
+		//}
 //clear navigation cache to see change if object in navigation #6916
 //		weNavigationCache::clean(true);
 
@@ -3003,10 +3004,18 @@ class we_objectFile extends we_document{
 	}
 
 	protected function getNavigationFoldersForDoc(){
+		$category = array_map('escape_sql_query', array_unique(array_filter(array_merge(explode(',', $this->Category), explode(',', $this->oldCategory)))));
+
 		$queries = array(
 			'(((Selection="' . weNavigation::SELECTION_STATIC . '" AND SelectionType="' . weNavigation::STPYE_OBJLINK . '") OR (IsFolder=1 AND FolderSelection="' . weNavigation::STPYE_OBJLINK . '")) AND LinkID=' . intval($this->ID) . ')',
+			//FIXME: query should use ID, not parentID
 			'((Selection="' . weNavigation::SELECTION_DYNAMIC . '") AND SelectionType="' . weNavigation::STPYE_CLASS . '" AND (ClassID=' . $this->TableID . '))'
 		);
+		if(!empty($category)){
+			//FIXME: query should use ID, not parentID
+			$queries[] = '((Selection="' . weNavigation::SELECTION_DYNAMIC . '" AND SelectionType="' . weNavigation::STPYE_CLASS . '") AND (FIND_IN_SET("' . implode('",Categories) OR FIND_IN_SET("', $category) . '",Categories)))';
+		}
+
 		$this->DB_WE->query('SELECT DISTINCT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ' . implode(' OR ', $queries));
 		return $this->DB_WE->getAll(true);
 	}
