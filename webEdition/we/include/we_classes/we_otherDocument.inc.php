@@ -29,8 +29,8 @@ class we_otherDocument extends we_binaryDocument{
 	function __construct(){
 		parent::__construct();
 		switch($this->Extension){
-			case ".pdf":
-				$this->Icon = "pdf.gif";
+			case '.pdf':
+				$this->Icon = 'pdf.gif';
 				break;
 		}
 		$this->EditPageNrs[] = WE_EDITPAGE_PREVIEW;
@@ -46,7 +46,7 @@ class we_otherDocument extends we_binaryDocument{
 	function editor(){
 		switch($this->EditPageNr){
 			case WE_EDITPAGE_PREVIEW:
-				return "we_templates/we_editor_other_preview.inc.php";
+				return 'we_templates/we_editor_other_preview.inc.php';
 			default:
 				return parent::editor();
 		}
@@ -55,7 +55,7 @@ class we_otherDocument extends we_binaryDocument{
 	/* gets the HTML for including in HTML-Docs */
 
 	function getHtml($dyn = false){
-		$_data = $this->getElement("data");
+		$_data = $this->getElement('data');
 		$this->html = ($this->ID || ($_data && !is_dir($_data) && is_readable($_data)) ?
 				'<p class="defaultfont"><b>Datei</b>: ' . $this->Text . '</p>' :
 				g_l('global', "[no_file_uploaded]"));
@@ -64,7 +64,7 @@ class we_otherDocument extends we_binaryDocument{
 	}
 
 	function formExtension2(){
-		return $this->htmlFormElementTable($this->htmlTextInput("we_" . $this->Name . "_Extension", 5, $this->Extension, "", 'onChange="_EditorFrame.setEditorIsHot(true);" style="width:92px"'), g_l('weClass', "[extension]"));
+		return $this->htmlFormElementTable($this->htmlTextInput('we_' . $this->Name . '_Extension', 5, $this->Extension, '', 'onChange="_EditorFrame.setEditorIsHot(true);" style="width:92px"'), g_l('weClass', '[extension]'));
 	}
 
 	public function we_save($resave = 0){
@@ -85,10 +85,10 @@ class we_otherDocument extends we_binaryDocument{
 		$text = '';
 		$this->resetElements();
 		while((list($k, $v) = $this->nextElement(''))) {
-			$foo = (isset($v["dat"]) && substr($v["dat"], 0, 2) == "a:") ? unserialize($v["dat"]) : '';
+			$foo = (isset($v['dat']) && substr($v['dat'], 0, 2) == 'a:') ? unserialize($v['dat']) : '';
 			if(!is_array($foo)){
-				if(isset($v["type"]) && $v["type"] == "txt" && isset($v["dat"])){
-					$text .= ' ' . trim($v["dat"]);
+				if(isset($v['type']) && $v['type'] == 'txt' && isset($v['dat'])){
+					$text .= ' ' . trim($v['dat']);
 				}
 			}
 		}
@@ -150,8 +150,8 @@ class we_otherDocument extends we_binaryDocument{
 				'WorkspaceID' => intval($this->ParentID),
 				'Category' => $this->Category,
 				'Doctype' => '',
-				'Title' => $this->getElement("Title"),
-				'Description' => $this->getElement("Description"),
+				'Title' => $this->getElement('Title'),
+				'Description' => $this->getElement('Description'),
 				'Path' => $this->Path);
 			return $this->DB_WE->query('REPLACE INTO ' . INDEX_TABLE . ' SET ' . we_database_base::arraySetter($set));
 		}
@@ -161,7 +161,7 @@ class we_otherDocument extends we_binaryDocument{
 
 	function i_descriptionMissing(){
 		if($this->IsSearchable){
-			$description = $this->getElement("Description");
+			$description = $this->getElement('Description');
 			return strlen($description) ? false : true;
 		}
 		return false;
@@ -189,7 +189,7 @@ class we_otherDocument extends we_binaryDocument{
 		// check to see if there is an image to create or to change
 		if(isset($_FILES["we_ui_$formname"]) && is_array($_FILES["we_ui_$formname"])){
 
-			$webuserId = isset($_SESSION["webuser"]["ID"]) ? $_SESSION["webuser"]["ID"] : 0;
+			$webuserId = isset($_SESSION['webuser']['ID']) ? $_SESSION['webuser']['ID'] : 0;
 
 			if(isset($_FILES["we_ui_$formname"]["name"]) && is_array($_FILES["we_ui_$formname"]["name"])){
 				foreach($_FILES["we_ui_$formname"]["name"] as $binaryName => $filename){
@@ -198,34 +198,34 @@ class we_otherDocument extends we_binaryDocument{
 					if($_binaryDataId !== false && isset($_SESSION[$_binaryDataId])){
 						$_SESSION[$_binaryDataId]['doDelete'] = false;
 
-						if(isset($_REQUEST["WE_UI_DEL_CHECKBOX_" . $binaryName]) && $_REQUEST["WE_UI_DEL_CHECKBOX_" . $binaryName] == 1){
+						if(isset($_REQUEST['WE_UI_DEL_CHECKBOX_' . $binaryName]) && $_REQUEST['WE_UI_DEL_CHECKBOX_' . $binaryName] == 1){
 							$_SESSION[$_binaryDataId]['doDelete'] = true;
 						} elseif($filename){
 							// file is selected, check to see if it is an image
 							$ct = getContentTypeFromFile($filename);
-							if($ct == "application/*"){
+							if($ct == 'application/*'){
 								$binaryId = intval($GLOBALS[$key][$formname]->getElement($binaryName));
 
 								// move document from upload location to tmp dir
-								$_SESSION[$_binaryDataId]["serverPath"] = TEMP_PATH . "/" . weFile::getUniqueId();
+								$_SESSION[$_binaryDataId]['serverPath'] = TEMP_PATH . '/' . weFile::getUniqueId();
 								move_uploaded_file(
-									$_FILES["we_ui_$formname"]["tmp_name"][$binaryName], $_SESSION[$_binaryDataId]["serverPath"]);
+									$_FILES["we_ui_$formname"]['tmp_name'][$binaryName], $_SESSION[$_binaryDataId]['serverPath']);
 
 
 
-								$tmp_Filename = $binaryName . "_" . weFile::getUniqueId() . "_" . preg_replace(
-										"/[^A-Za-z0-9._-]/", "", $_FILES["we_ui_$formname"]["name"][$binaryName]);
+								$tmp_Filename = $binaryName . '_' . weFile::getUniqueId() . '_' . preg_replace(
+										'/[^A-Za-z0-9._-]/', '', $_FILES["we_ui_$formname"]['name'][$binaryName]);
 
 								if($binaryId){
-									$_SESSION[$_binaryDataId]["id"] = $binaryId;
+									$_SESSION[$_binaryDataId]['id'] = $binaryId;
 								}
 
-								$_SESSION[$_binaryDataId]["fileName"] = preg_replace('#^(.+)\..+$#', '\\1', $tmp_Filename);
-								$_SESSION[$_binaryDataId]["extension"] = (strpos($tmp_Filename, ".") > 0) ? preg_replace(
-										'#^.+(\..+)$#', '\\1', $tmp_Filename) : "";
-								$_SESSION[$_binaryDataId]["text"] = $_SESSION[$_binaryDataId]["fileName"] . $_SESSION[$_binaryDataId]["extension"];
-								$_SESSION[$_binaryDataId]["type"] = $_FILES["we_ui_$formname"]["type"][$binaryName];
-								$_SESSION[$_binaryDataId]["size"] = $_FILES["we_ui_$formname"]["size"][$binaryName];
+								$_SESSION[$_binaryDataId]['fileName'] = preg_replace('#^(.+)\..+$#', '\\1', $tmp_Filename);
+								$_SESSION[$_binaryDataId]['extension'] = (strpos($tmp_Filename, '.') > 0) ? preg_replace(
+										'#^.+(\..+)$#', '\\1', $tmp_Filename) : '';
+								$_SESSION[$_binaryDataId]['text'] = $_SESSION[$_binaryDataId]['fileName'] . $_SESSION[$_binaryDataId]['extension'];
+								$_SESSION[$_binaryDataId]['type'] = $_FILES["we_ui_$formname"]['type'][$binaryName];
+								$_SESSION[$_binaryDataId]['size'] = $_FILES["we_ui_$formname"]['size'][$binaryName];
 							}
 						}
 					}
