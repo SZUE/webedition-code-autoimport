@@ -9,6 +9,7 @@ $l_navigation=array(
 	'ascending'=>'Ascendant',
 	'attributes'=>'Attributs',
 	'begin'=>'au début',
+	'catAnd'=>'AND concatenation',
 	'catLink'=>'Categorie',
 	'catParameter'=>'Nom du paramètre de catégorie',
 	'categories'=>'Categories',

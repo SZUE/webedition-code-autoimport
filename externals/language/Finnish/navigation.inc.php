@@ -9,6 +9,7 @@ $l_navigation=array(
 	'ascending'=>'nouseva',
 	'attributes'=>'Attribuutit',
 	'begin'=>'alkuun',
+	'catAnd'=>'AND concatenation',
 	'catLink'=>'Kategoria',
 	'catParameter'=>'Categoria parametrin nimi',
 	'categories'=>'Kategoriat',
