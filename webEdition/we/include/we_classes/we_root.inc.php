@@ -1273,7 +1273,6 @@ abstract class we_root extends we_class{
 		}
 
 		$folders = $this->getNavigationFoldersForDoc();
-		t_e($folders);
 		foreach($folders as $f){
 			weNavigationCache::delNavigationTree($f);
 		}
