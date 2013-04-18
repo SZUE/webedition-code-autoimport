@@ -159,7 +159,6 @@ function we_tag_listview($attribs){
 			$we_lv_doctype = f('SELECT DocType FROM ' . DOC_TYPES_TABLE . ' WHERE ID="' . $GLOBALS['we_doc']->DocType . '"', 'DocType', $GLOBALS['DB_WE']);
 		}
 	}
-	echo 'x1:' . count($GLOBALS['we_lv_array']);
 
 	switch($type){
 		case 'document':
