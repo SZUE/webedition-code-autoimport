@@ -1138,7 +1138,7 @@ categories_edit.setItem(0,(categories_edit.itemCount-1),"' . $cat . '");';
 		$table->setCol(3, 0, array('colspan' => '2'), we_html_tools::getPixel(5, 5));
 		$table->setCol(
 			4, 0, array('align' => 'left'), 
-			we_forms::checkboxWithHidden($this->Model->CatAnd, "CatAnd", g_l('rebuild', "[catAnd]"))
+			we_forms::checkboxWithHidden($this->Model->CatAnd, "CatAnd", g_l('navigation', "[catAnd]"))
 		);
 		$table->setCol(
 			4, 1, array('align' => 'right'),
