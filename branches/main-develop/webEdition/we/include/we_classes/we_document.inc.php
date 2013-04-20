@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -180,21 +181,21 @@ class we_document extends we_root{
 				$langkeys[] = $langkey;
 			}
 			return '
-			<table border="0" cellpadding="0" cellspacing="0">
-				<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
-				' . $_headline . '
-				<tr><td>' . $this->htmlSelect($inputName, $_languages, 1, $value, false, " onblur=\"_EditorFrame.setEditorIsHot(true);\" onchange=\"dieWerte='" . implode(',', $langkeys) . "';showhideLangLink('we_" . $this->Name . "_LanguageDocDiv',dieWerte,this.options[this.selectedIndex].value);_EditorFrame.setEditorIsHot(true);\"", "value", 508) . '</td></tr>
-				<tr><td>' . we_html_tools::getPixel(2, 20) . '</td></tr>
-				<tr><td class="defaultfont" align="left">' . g_l('weClass', '[languageLinks]') . '</td></tr>
-			</table>' .
-				"<br/>" . $htmlzw; //.$this->htmlFormElementTable($htmlzw,g_l('weClass','[languageLinksDefaults]'),"left",	"defaultfont");	dieWerte=\''.implode(',',$langkeys).'\'; disableLangDefault(\'we_'.$this->Name.'_LangDocType\',dieWerte,this.options[this.selectedIndex].value);"
+<table border="0" cellpadding="0" cellspacing="0">
+	<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
+	' . $_headline . '
+	<tr><td>' . $this->htmlSelect($inputName, $_languages, 1, $value, false, " onblur=\"_EditorFrame.setEditorIsHot(true);\" onchange=\"dieWerte='" . implode(',', $langkeys) . "';showhideLangLink('we_" . $this->Name . "_LanguageDocDiv',dieWerte,this.options[this.selectedIndex].value);_EditorFrame.setEditorIsHot(true);\"", "value", 508) . '</td></tr>
+	<tr><td>' . we_html_tools::getPixel(2, 20) . '</td></tr>
+	<tr><td class="defaultfont" align="left">' . g_l('weClass', '[languageLinks]') . '</td></tr>
+</table>
+<br/>' . $htmlzw; //.$this->htmlFormElementTable($htmlzw,g_l('weClass','[languageLinksDefaults]'),"left",	"defaultfont");	dieWerte=\''.implode(',',$langkeys).'\'; disableLangDefault(\'we_'.$this->Name.'_LangDocType\',dieWerte,this.options[this.selectedIndex].value);"
 		} else{
 			return '
-			<table border="0" cellpadding="0" cellspacing="0">
-				<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
-				' . $_headline . '
-				<tr><td>' . $this->htmlSelect($inputName, $_languages, 1, $value, false, " onblur=\"_EditorFrame.setEditorIsHot(true);\" onchange=\"_EditorFrame.setEditorIsHot(true);\"", "value", 508) . '</td></tr>
-			</table>';
+<table border="0" cellpadding="0" cellspacing="0">
+	<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
+	' . $_headline . '
+	<tr><td>' . $this->htmlSelect($inputName, $_languages, 1, $value, false, " onblur=\"_EditorFrame.setEditorIsHot(true);\" onchange=\"_EditorFrame.setEditorIsHot(true);\"", "value", 508) . '</td></tr>
+</table>';
 		}
 	}
 
@@ -238,19 +239,19 @@ class we_document extends we_root{
 			$filenameinput = '';
 		}
 		return $disable ? ('<span class="defaultfont">' . $this->Path . '</span>') : '
-			<table border="0" cellpadding="0" cellspacing="0">
-				<tr>
-				<td>' . $this->formInputField('', 'Filename', g_l('weClass', '[filename]'), 30, 388, 255, $filenameinput . 'onChange="_EditorFrame.setEditorIsHot(true);if(self.pathOfDocumentChanged){pathOfDocumentChanged();}"') . '</td>
-					<td></td>
-					<td>' . $this->formExtension2() . '</td>
-				</tr>
-				<tr>
-					<td>' . we_html_tools::getPixel(20, 4) . '</td>
-					<td>' . we_html_tools::getPixel(20, 2) . '</td>
-					<td>' . we_html_tools::getPixel(100, 2) . '</td>
-				</tr>
-				<tr><td colspan="3">' . $this->formDirChooser(388) . '</td></tr>
-			</table>';
+<table border="0" cellpadding="0" cellspacing="0">
+	<tr>
+	<td>' . $this->formInputField('', 'Filename', g_l('weClass', '[filename]'), 30, 388, 255, $filenameinput . 'onChange="_EditorFrame.setEditorIsHot(true);if(self.pathOfDocumentChanged){pathOfDocumentChanged();}"') . '</td>
+		<td></td>
+		<td>' . $this->formExtension2() . '</td>
+	</tr>
+	<tr>
+		<td>' . we_html_tools::getPixel(20, 4) . '</td>
+		<td>' . we_html_tools::getPixel(20, 2) . '</td>
+		<td>' . we_html_tools::getPixel(100, 2) . '</td>
+	</tr>
+	<tr><td colspan="3">' . $this->formDirChooser(388) . '</td></tr>
+</table>';
 	}
 
 	function formMetaInfos(){
@@ -426,7 +427,7 @@ class we_document extends we_root{
 
 	function getParentIDFromParentPath(){
 		$f = new we_folder();
-		return (!$f->initByPath($this->ParentPath) ? -1 : $f->ID);
+		return ($f->initByPath($this->ParentPath) ? $f->ID : -1);
 	}
 
 	function addEntryToList($name, $number = 1){
@@ -1005,9 +1006,8 @@ class we_document extends we_root{
 					}
 				}
 
-				if($val == 0){
-					$val = time();
-				}
+				$val = $val ? $val : time();
+
 				$format = isset($attribs['format']) ? $attribs['format'] : g_l('date', '[format][default]');
 				//FIXME: zend part doesn't use correctDateFormat & won't work on new Dates
 				if(isset($GLOBALS['WE_MAIN_DOC']) && $GLOBALS['WE_MAIN_DOC']->Language != 'de_DE' && is_numeric($val)){
@@ -1041,17 +1041,15 @@ class we_document extends we_root{
 				parseInternalLinks($val, $parentID);
 				$retval = preg_replace('/<\?xml[^>]+>/i', '', $val);
 
-				if(isset($attribs['html']) && ($attribs['html'] == 'off' || $attribs['html'] == 'false' || $attribs['html'] == '0')){
+				if(isset($attribs['html']) && !weTag_getAttribute('html', $attribs, false, true)){
 					$retval = strip_tags($retval, '<br>,<p>');
 				}
 
-				$_htmlspecialchars = isset($attribs['htmlspecialchars']) && ($attribs['htmlspecialchars'] == 'on' || $attribs['htmlspecialchars'] == 'true' || $attribs['htmlspecialchars'] == 'htmlspecialchars');
-				$_wysiwyg = isset($attribs['wysiwyg']) && ($attribs['wysiwyg'] == 'on' || $attribs['wysiwyg'] == 'true' || $attribs['wysiwyg'] == 'wysiwyg');
+				$_htmlspecialchars = weTag_getAttribute('htmlspecialchars', $attribs, false, true);
+				$_wysiwyg = weTag_getAttribute('wysiwyg', $attribs, false, true);
 
 				if($_htmlspecialchars && (!$_wysiwyg)){
-					$retval = preg_replace('/<br([^>]*)>/i', '#we##br\1#we##', $retval);
-					$retval = oldHtmlspecialchars($retval, ENT_QUOTES);
-					$retval = preg_replace('/#we##br([^#]*)#we##/', '<br\1>', $retval);
+					$retval = preg_replace('/#we##br([^#]*)#we##/', '<br\1>', oldHtmlspecialchars(preg_replace('/<br([^>]*)>/i', '#we##br\1#we##', $retval), ENT_QUOTES));
 				}
 				if(!weTag_getAttribute('php', $attribs, (defined('WE_PHP_DEFAULT') && WE_PHP_DEFAULT), true)){
 					$retval = we_util::rmPhp($retval);
@@ -1235,8 +1233,7 @@ class we_document extends we_root{
 		}
 
 		if(isset($link['ctype']) && $link['ctype'] == 'int'){
-			if(!$img)
-				$img = new we_imageDocument();
+			$img = $img ? $img : new we_imageDocument();
 			$img->initByID($link['img_id']);
 
 			$img_attribs = array('width' => $link['width'], 'height' => $link['height'], 'border' => $link['border'], 'hspace' => $link['hspace'], 'vspace' => $link['vspace'], 'align' => $link['align'], 'alt' => $link['alt'], 'title' => (isset($link['img_title']) ? $link['img_title'] : ''));
@@ -1393,8 +1390,8 @@ class we_document extends we_root{
 			$_linkAttribs = removeAttribs($_linkAttribs, array('hidedirindex', 'objectseourls'));
 			return $rollOverScript . getHtmlTag('a', $_linkAttribs, '', false, true);
 		} else{
-			if((isset($GLOBALS["we_link_not_published"])) && ($GLOBALS["we_link_not_published"])){
-				unset($GLOBALS["we_link_not_published"]);
+			if((isset($GLOBALS['we_link_not_published'])) && ($GLOBALS['we_link_not_published'])){
+				unset($GLOBALS['we_link_not_published']);
 			}
 		}
 	}
