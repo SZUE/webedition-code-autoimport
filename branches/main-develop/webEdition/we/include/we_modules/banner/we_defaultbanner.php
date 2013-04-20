@@ -107,7 +107,7 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js');
 
 	self.focus();
 </script>
-<?php echo $yuiSuggest->getYuiJsFiles(); ?>
+<?php echo weSuggest::getYuiJsFiles(); ?>
 
 </head>
 <body class="weDialogBody" onUnload="doUnload()">

@@ -34,8 +34,7 @@ $user_object = new we_user();
 if(isset($_SESSION["user_session_data"])){
 	$user_object->setState($_SESSION["user_session_data"]);
 }
-echo $yuiSuggest->getYuiCssFiles() .
- $yuiSuggest->getYuiJsFiles() .
+echo weSuggest::getYuiFiles() .
  we_html_element::jsScript(JS_DIR . 'images.js') .
  we_html_element::jsScript(JS_DIR . 'windows.js') .
  we_html_element::jsScript(JS_DIR . 'md5.js');
@@ -43,10 +42,10 @@ echo $yuiSuggest->getYuiCssFiles() .
 <script type="text/javascript"><!--
 
 	var loaded = 0;
-	function we_submitForm(target,url){
+	function we_submitForm(target, url) {
 		var f = self.document.we_form;
 
-		ok=true;
+		ok = true;
 
 		if (f.input_pass) {
 			if (f.oldtab.value == 0) {
@@ -86,63 +85,72 @@ echo $yuiSuggest->getYuiCssFiles() .
 		}
 	}
 
-	function we_cmd(){
+	function we_cmd() {
 		var args = "";
-		var url = "<?php print WEBEDITION_DIR; ?>we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
+		var url = "<?php print WEBEDITION_DIR; ?>we_cmd.php?";
+		for (var i = 0; i < arguments.length; i++) {
+			url += "we_cmd[" + i + "]=" + escape(arguments[i]);
+			if (i < (arguments.length - 1)) {
+				url += "&";
+			}
+		}
 
 		switch (arguments[0]) {
 			case "browse_users":
-				new jsWindow(url,"browse_users",-1,-1,500,300,true,false,true);
+				new jsWindow(url, "browse_users", -1, -1, 500, 300, true, false, true);
 				break;
 
 			case "openDirselector":
-				new jsWindow(url,"we_fileselector",-1,-1,<?php echo WINDOW_DIRSELECTOR_WIDTH . ',' . WINDOW_DIRSELECTOR_HEIGHT; ?>,true,true,true,true);
+				new jsWindow(url, "we_fileselector", -1, -1,<?php echo WINDOW_DIRSELECTOR_WIDTH . ',' . WINDOW_DIRSELECTOR_HEIGHT; ?>, true, true, true, true);
 				break;
 
 			case "select_seem_start":
 				myWind = false;
 
-				for(k=top.opener.top.jsWindow_count;k>-1;k--){
+				for (k = top.opener.top.jsWindow_count; k > -1; k--) {
 
 					eval("if(top.opener.top.jsWindow" + k + "Object){" +
-						"	if(top.opener.top.jsWindow" + k + "Object.ref == 'edit_module'){" +
-						"		myWind = top.opener.top.jsWindow" + k + "Object.wind.content.user_resize.user_right.user_editor.user_properties;" +
-						"		myWindStr = 'top.jsWindow" + k + "Object.wind.content.user_resize.user_right.user_editor.user_properties';" +
-						"	}" +
-						"}");
-					if(myWind){
+									"	if(top.opener.top.jsWindow" + k + "Object.ref == 'edit_module'){" +
+									"		myWind = top.opener.top.jsWindow" + k + "Object.wind.content.user_resize.user_right.user_editor.user_properties;" +
+									"		myWindStr = 'top.jsWindow" + k + "Object.wind.content.user_resize.user_right.user_editor.user_properties';" +
+									"	}" +
+									"}");
+					if (myWind) {
 						break;
 					}
 				}
 
-				top.opener.top.we_cmd('openDocselector', myWind.document.forms[0].elements['seem_start_file'].value,'<?php print FILE_TABLE; ?>', myWindStr + '.document.forms[0].elements[\'seem_start_file\'].value', myWindStr + '.document.forms[0].elements[\'seem_start_file_name\'].value','','<?php print session_id(); ?>','','text/webedition',1);
+				top.opener.top.we_cmd('openDocselector', myWind.document.forms[0].elements['seem_start_file'].value, '<?php print FILE_TABLE; ?>', myWindStr + '.document.forms[0].elements[\'seem_start_file\'].value', myWindStr + '.document.forms[0].elements[\'seem_start_file_name\'].value', '', '<?php print session_id(); ?>', '', 'text/webedition', 1);
 
 				break;
 			case "openNavigationDirselector":
 			case "openNewsletterDirselector":
-				if(arguments[0] == "openNewsletterDirselector") {
+				if (arguments[0] == "openNewsletterDirselector") {
 					url = "<?php echo WE_MODULES_DIR; ?>newsletter/we_dirfs.php?";
 				}
 				else {
 					url = "<?php echo WE_INCLUDES_DIR; ?>we_tools/navigation/we_navigationDirSelect.php?";
 				}
-				for(var i = 0; i < arguments.length; i++){
-					url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }
+				for (var i = 0; i < arguments.length; i++) {
+					url += "we_cmd[" + i + "]=" + escape(arguments[i]);
+					if (i < (arguments.length - 1)) {
+						url += "&";
+					}
 				}
-				new jsWindow(url,"we_navigation_dirselector",-1,-1,600,400,true,true,true);
+				new jsWindow(url, "we_navigation_dirselector", -1, -1, 600, 400, true, true, true);
 				break;
 			default:
 				for (var i = 0; i < arguments.length; i++) {
-					args += 'arguments['+i+']' + ((i < (arguments.length-1)) ? ',' : '');
+					args += 'arguments[' + i + ']' + ((i < (arguments.length - 1)) ? ',' : '');
 				}
-				eval('top.content.we_cmd('+args+')');
+				eval('top.content.we_cmd(' + args + ')');
 				break;
-			}
 		}
-		//-->
+	}
+	//-->
 </script>
 </head>
-<body class="weEditorBody" onUnload="doUnload()" onLoad="loaded=1;">
+<body class="weEditorBody" onUnload="doUnload()" onLoad="loaded = 1;">
 	<form name="we_form" method="post" onSubmit="return false">
 		<input type="hidden" name="ucmd" value="" />
 		<input type="hidden" name="tab" value="<?php print (isset($_REQUEST["tab"]) ? intval($_REQUEST["tab"]) : ""); ?>" />

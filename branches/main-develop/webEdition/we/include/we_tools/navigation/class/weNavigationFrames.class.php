@@ -914,7 +914,7 @@ function onFolderSelectionChangeJS(elem) {
 			$out .= $this->getHTMLEditorPreview();
 		} else{
 			// Property tab content
-			$out .= $yuiSuggest->getYuiJsFiles() .
+			$out .= weSuggest::getYuiJsFiles() .
 				we_html_element::htmlDiv(
 					array(
 					'id' => 'tab1', 'style' => ($tabNr == 1 ? 'display: block;' : 'display: none')
@@ -1090,29 +1090,32 @@ categories_edit.setItem(0,(categories_edit.itemCount-1),"' . $cat . '");';
 			'cellpadding' => 0,
 			'cellspacing' => 0,
 			'border' => 0
-			), 5, 1);
+			), 6, 2
+		);
 
-		$table->setColContent(0, 0, we_html_tools::getPixel(5, 5));
-		$table->setCol(1, 0, array(
-			'class' => 'defaultfont'
-			), g_l('navigation', '[categories]'));
-		$table->setColContent(
-			2, 0, we_html_element::htmlDiv(
+		$table->setCol(0, 0, array('colspan' => '2'), we_html_tools::getPixel(3, 3));
+		$table->setCol(1, 0, array('colspan' => '2','class' => 'defaultfont'), g_l('navigation', '[categories]'));
+		$table->setCol(2, 0, array('colspan' => '2'),
+			we_html_element::htmlDiv(
 				array(
 					'id' => 'categories',
 					'class' => 'blockWrapper',
 					'style' => 'width: ' . ($this->_width_size) . 'px; height: 60px; border: #AAAAAA solid 1px;'
-		)));
-
-		$table->setColContent(3, 0, we_html_tools::getPixel(5, 5));
-
+				)
+			)
+		);
+		$table->setCol(3, 0, array('colspan' => '2'), we_html_tools::getPixel(5, 5));
 		$table->setCol(
-			4, 0, array(
-			'colspan' => '2', 'align' => 'right'
-			), we_button::create_button_table(
-				array(
-					we_button::create_button("delete_all", "javascript:removeAllCats()"), $addbut
-		)));
+			4, 0, array('align' => 'left'),
+			we_forms::checkboxWithHidden($this->Model->CatAnd, "CatAnd", g_l('navigation', "[catAnd]"))
+		);
+		$table->setCol(
+			4, 1, array('align' => 'right'),
+			we_button::create_button_table(
+				array(we_button::create_button("delete_all", "javascript:removeAllCats()"), $addbut)
+			)
+		);
+		$table->setCol(5, 0, array('colspan' => '2'), we_html_tools::getPixel(3, 3));
 
 		return $table->getHtml() . $js . we_html_element::jsElement('
 function removeAllCats(){

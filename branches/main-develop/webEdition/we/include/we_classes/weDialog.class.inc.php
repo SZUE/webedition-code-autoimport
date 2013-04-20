@@ -127,20 +127,20 @@ class weDialog{
 		}
 	}
 
-	/*function getQueryString($what = ''){
-		$query = '';
-		if(isset($_REQUEST['we_cmd']) && is_array($_REQUEST['we_cmd'])){
-			foreach($_REQUEST['we_cmd'] as $k => $v){
-				$query .= 'we_cmd[' . rawurlencode($k) . ']=' . rawurlencode($v) . '&';
-			}
-		}
-		if(isset($this->args) && is_array($this->args)){
-			foreach($this->args as $k => $v){
-				$query .= 'we_dialog_args[' . rawurlencode($k) . ']=' . rawurlencode($v) . '&';
-			}
-		}
-		return rtrim($query, '&') . ($what ? '&we_what=' . rawurlencode($what) : '');
-	}*/
+	/* function getQueryString($what = ''){
+	  $query = '';
+	  if(isset($_REQUEST['we_cmd']) && is_array($_REQUEST['we_cmd'])){
+	  foreach($_REQUEST['we_cmd'] as $k => $v){
+	  $query .= 'we_cmd[' . rawurlencode($k) . ']=' . rawurlencode($v) . '&';
+	  }
+	  }
+	  if(isset($this->args) && is_array($this->args)){
+	  foreach($this->args as $k => $v){
+	  $query .= 'we_dialog_args[' . rawurlencode($k) . ']=' . rawurlencode($v) . '&';
+	  }
+	  }
+	  return rtrim($query, '&') . ($what ? '&we_what=' . rawurlencode($what) : '');
+	  } */
 
 	function getFramesetHTML(){
 		return we_html_element::jsElement('
@@ -166,8 +166,7 @@ class weDialog{
 				, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
 					, we_html_element::htmlExIFrame('navi', $this->getDialogHTML(), 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;overflow: hidden;') .
 					we_html_element::htmlIFrame('we_' . $this->ClassName . '_cmd_frame', HTML_DIR . 'white.html', 'position:absolute;height:0px;bottom:0px;left:0px;right:0px;overflow: hidden;')
-				));
-
+		));
 	}
 
 	function getNextBut(){
@@ -179,7 +178,7 @@ class weDialog{
 	}
 
 	function getCancelBut(){
-		return we_button::create_button("cancel", "javascript:top.close();");
+		return we_button::create_button('cancel', 'javascript:top.close();');
 	}
 
 	function getbackBut(){
@@ -240,7 +239,7 @@ class weDialog{
 	}
 
 	function getHeaderHTML($printJS_Style = false){
-		return we_html_tools::htmlTop($this->dialogTitle, $this->charset) .
+		return we_html_tools::htmlTop($this->dialogTitle, $this->charset) . STYLESHEET .
 			(isset($this->args['editor']) && $this->args['editor'] == 'tinyMce' ? $this->getTinyMceJS() : '') .
 			($printJS_Style ? STYLESHEET . $this->getJs() : '') . we_html_element::cssLink(WEBEDITION_DIR . 'editors/content/tinymce/we_tinymce/weDialogCss.css') .
 			'</head>';
@@ -339,7 +338,6 @@ class weDialog{
 		return '</body></html>';
 	}
 
-
 	function getHttpVar($name, $alt = ""){
 		return isset($_REQUEST["we_dialog_args"][$name]) ? $_REQUEST["we_dialog_args"][$name] : $alt;
 	}
@@ -361,19 +359,19 @@ class weDialog{
 	}
 
 	function getClassSelect(){
-			$clSelect = new we_html_select(array("name" => "we_dialog_args[class]", "id" => "we_dialog_args[class]", "size" => "1", "style" => "width: 300px;"));
-			$clSelect->addOption("", g_l('wysiwyg', "[none]"));
-			$classesCSV = trim($this->args["cssclasses"], ",");
-			if(!empty($classesCSV)){
-				foreach(explode(",", $classesCSV) as $val){
-					$clSelect->addOption($val, "." . $val);
-				}
+		$clSelect = new we_html_select(array("name" => "we_dialog_args[class]", "id" => "we_dialog_args[class]", "size" => "1", "style" => "width: 300px;"));
+		$clSelect->addOption("", g_l('wysiwyg', "[none]"));
+		$classesCSV = trim($this->args["cssclasses"], ",");
+		if(!empty($classesCSV)){
+			foreach(explode(",", $classesCSV) as $val){
+				$clSelect->addOption($val, "." . $val);
 			}
-			if(isset($this->args["class"]) && !empty($this->args["class"])){
-				$clSelect->selectOption($this->args["class"]);
-			}
+		}
+		if(isset($this->args["class"]) && !empty($this->args["class"])){
+			$clSelect->selectOption($this->args["class"]);
+		}
 
-			return $clSelect->getHTML() . '<input type="hidden" name="we_dialog_args[cssclasses]" value="' . oldHtmlspecialchars($classesCSV) . '" />';
+		return $clSelect->getHTML() . '<input type="hidden" name="we_dialog_args[cssclasses]" value="' . oldHtmlspecialchars($classesCSV) . '" />';
 	}
 
 }

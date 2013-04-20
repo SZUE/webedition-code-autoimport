@@ -57,6 +57,7 @@ class weNavigation extends weModelBase{
 	var $DocTypeID = 0;
 	var $ClassID = 0;
 	var $Categories = array();
+	var $CatAnd = 1;
 	var $CategoryIDs = '';
 	var $Sort = array();
 	var $ShowCount = 5;
@@ -430,12 +431,12 @@ class weNavigation extends weModelBase{
 		if($this->Selection == self::SELECTION_DYNAMIC){
 			switch($this->SelectionType){
 				case self::STPYE_DOCTYPE:
-					return weDynList::getDocuments($this->DocTypeID, $this->FolderID, $this->Categories, $this->Sort, $this->ShowCount, $this->TitleField);
+					return weDynList::getDocuments($this->DocTypeID, $this->FolderID, $this->Categories, $this->CatAnd ? 'AND' : 'OR', $this->Sort, $this->ShowCount, $this->TitleField);
 				case self::STPYE_CATEGORY:
 					return weDynList::getCatgories($this->FolderID, $this->ShowCount);
 				default:
 					return $this->ClassID > 0 ? weDynList::getObjects(
-							$this->ClassID, $this->FolderID, $this->Categories, $this->Sort, $this->ShowCount, $this->TitleField) : array();
+							$this->ClassID, $this->FolderID, $this->Categories, $this->CatAnd ? 'AND' : 'OR', $this->Sort, $this->ShowCount, $this->TitleField) : array();
 			}
 		}
 	}

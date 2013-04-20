@@ -607,7 +607,7 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 		$yuiSuggest->setSelectButton(we_button::create_button('select', "javascript:we_cmd('openDocselector',document.we_form.elements['$longdesc_id_name'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','','text/webedition,text/plain,text/html',1)"));
 		$yuiSuggest->setTrashButton(we_button::create_button('image:btn_function_trash', "javascript:document.we_form.elements['$longdesc_id_name'].value='-1';document.we_form.elements['$longdesc_text_name'].value='';_EditorFrame.setEditorIsHot(true); YAHOO.autocoml.setValidById('" . $yuiSuggest->getInputId() . "')"));
 		$_content->setCol(7, 0, array('colspan' => 5), we_html_tools::getPixel(1, 5));
-		$_content->setCol(8, 0, array('valign' => 'bottom', 'colspan' => 5), $yuiSuggest->getYuiFiles() . $yuiSuggest->getHTML() . $yuiSuggest->getYuiCode());
+		$_content->setCol(8, 0, array('valign' => 'bottom', 'colspan' => 5), weSuggest::getYuiFiles() . $yuiSuggest->getHTML() . $yuiSuggest->getYuiCode());
 
 		// Return HTML
 		return $_content->getHtml();

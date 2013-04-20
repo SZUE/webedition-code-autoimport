@@ -67,7 +67,7 @@ print we_html_element::cssElement("
 print we_html_element::jsScript(JS_DIR . "windows.js") .
 	we_html_element::jsScript(JS_DIR . "utils/multi_edit.js") .
 	(isset($yuiSuggest) ? // webuser filter is not displayed at images, so $yuiSuggest is not defined!
-		$yuiSuggest->getYuiCssFiles() . $yuiSuggest->getYuiJsFiles() : '') .
+		weSuggest::getYuiFiles() : '') .
 	'</head><body class="weEditorBody"><form name="we_form" onsubmit="return false">' .
 	we_class::hiddenTrans() .
 	($we_doc->ClassName != "we_imageDocument" ?
@@ -128,5 +128,5 @@ function formWebuser($canChange, $width = 388){
 	$yuiSuggest->setTrashButton($_trashBut);
 	$yuiSuggest->setTable(CUSTOMER_TABLE);
 
-	return $yuiSuggest->getYuiFiles() . $yuiSuggest->getHTML() . $yuiSuggest->getYuiCode();
+	return weSuggest::getYuiFiles() . $yuiSuggest->getHTML() . $yuiSuggest->getYuiCode();
 }

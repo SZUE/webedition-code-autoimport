@@ -643,7 +643,7 @@ class weSiteImport{
 		$yuiSuggest->setWidth(300);
 		$yuiSuggest->setSelectButton($_to_button, 10);
 
-		$_importTo = $yuiSuggest->getYuiFiles() . $yuiSuggest->getHTML() . $yuiSuggest->getYuiCode();
+		$_importTo = weSuggest::getYuiFiles() . $yuiSuggest->getHTML() . $yuiSuggest->getYuiCode();
 
 		// Checkboxes
 
@@ -1094,7 +1094,7 @@ class weSiteImport{
 		$yuiSuggest->setTable($table);
 		$yuiSuggest->setSelector("Dirselector");
 		$yuiSuggest->setSelectButton($button);
-		$dirChooser = $yuiSuggest->getYuiFiles() . $yuiSuggest->getHTML() . $yuiSuggest->getYuiCode();
+		$dirChooser = weSuggest::getYuiFiles() . $yuiSuggest->getHTML() . $yuiSuggest->getYuiCode();
 
 		/*
 

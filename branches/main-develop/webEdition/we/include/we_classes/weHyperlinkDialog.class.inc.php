@@ -447,9 +447,8 @@ class weHyperlinkDialog extends weDialog{
 
 		$show_accessible_class = (we_hasPerm("CAN_SEE_ACCESSIBLE_PARAMETERS") ? '' : ' class="weHide"');
 		$table .= '</table></div>' .
-			$yuiSuggest->getYuiCssFiles() .
+			weSuggest::getYuiFiles() .
 			$yuiSuggest->getYuiCss() .
-			$yuiSuggest->getYuiJsFiles() .
 			$yuiSuggest->getYuiJs();
 
 		$parts[] = array("html" => $table);

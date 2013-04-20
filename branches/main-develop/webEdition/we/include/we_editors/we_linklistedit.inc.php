@@ -354,10 +354,9 @@ if(isset($_REQUEST["ok"]) && isset($_REQUEST["linklist"]) && $_REQUEST["ok"] && 
 
 we_html_tools::htmlTop(g_l('linklistEdit', "[edit_link]"), isset($we_doc->elements["Charset"]["dat"]) ? $we_doc->elements["Charset"]["dat"] : '');
 $yuiSuggest = & weSuggest::getInstance();
-echo $yuiSuggest->getYuiCssFiles();
-echo $yuiSuggest->getYuiJsFiles();
-print we_html_element::jsScript(JS_DIR . "keyListener.js");
-echo we_html_element::jsScript(JS_DIR . 'windows.js');
+echo weSuggest::getYuiFiles().
+	we_html_element::jsScript(JS_DIR . "keyListener.js").
+	we_html_element::jsScript(JS_DIR . 'windows.js');
 ?>
 <script type="text/javascript"><!--
 

@@ -25,7 +25,7 @@
 abstract class we_textContentDocument extends we_textDocument{
 	/* Doc-Type of the document */
 
-	var $DocType = "";
+	public $DocType = '';
 
 	function __construct(){
 		parent::__construct();
@@ -306,7 +306,7 @@ abstract class we_textContentDocument extends we_textDocument{
 		$ret = $this->i_saveTmp(!$resave);
 		$this->OldPath = $this->Path;
 
-		if(($this->ContentType == "text/webedition" && defined('VERSIONING_TEXT_WEBEDITION') && VERSIONING_TEXT_WEBEDITION) || ($this->ContentType == "text/html" && defined('VERSIONING_TEXT_HTML') && VERSIONING_TEXT_HTML)){
+		if(($this->ContentType == 'text/webedition' && defined('VERSIONING_TEXT_WEBEDITION') && VERSIONING_TEXT_WEBEDITION) || ($this->ContentType == 'text/html' && defined('VERSIONING_TEXT_HTML') && VERSIONING_TEXT_HTML)){
 			$version->save($this);
 		}
 
@@ -334,6 +334,10 @@ abstract class we_textContentDocument extends we_textDocument{
 				return false;
 			}
 		}
+		$this->oldCategory = f('SELECT Category FROM ' . $this->Table . ' WHERE ID=' . $this->ID, 'Category', $this->DB_WE);
+		$oldDocType = f('SELECT DocType FROM ' . $this->Table . ' WHERE ID=' . $this->ID, 'DocType', $this->DB_WE);
+
+
 		if($saveinMainDB){
 			if(!we_root::we_save(1)){
 				return false; // calls the root function, so the document will be saved in main-db but it will not be written!
@@ -350,15 +354,15 @@ abstract class we_textContentDocument extends we_textDocument{
 		}
 
 		if($DoNotMark == false){
-			if(!$this->DB_WE->query('UPDATE ' . $this->DB_WE->escape($this->Table) . " SET Published='" . intval($this->Published) . "' WHERE ID=" . intval($this->ID)))
+			if(!$this->DB_WE->query('UPDATE ' . $this->DB_WE->escape($this->Table) . ' SET Published=' . intval($this->Published) . ' WHERE ID=' . intval($this->ID)))
 				return false; // mark the document as published;
 		}
 
 		//Bug #5505
-//		if($saveinMainDB) {
-		//FIXME: check this is needed because of filename change (is checked somewhere else) + customerfilter change (not checked yet)
+//		if($_oldPublished == 0 || $this->isMoved() || $this->Category != $this->oldCategory || $oldDocType != $this->DocType){
+		//FIXME: changes of customerFilter are missing here
 		$this->rewriteNavigation();
-//		}
+		//	}
 		if(isset($_SESSION['weS']['versions']['fromScheduler']) && $_SESSION['weS']['versions']['fromScheduler'] && (($this->ContentType == "text/webedition" && defined('VERSIONING_TEXT_WEBEDITION') && VERSIONING_TEXT_WEBEDITION) || ($this->ContentType == "text/html" && defined('VERSIONING_TEXT_HTML') && VERSIONING_TEXT_HTML))){
 			$version = new weVersions();
 			$version->save($this, 'published');

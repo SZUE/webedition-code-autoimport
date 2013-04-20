@@ -114,8 +114,8 @@ class weSuggest{
 		return '<img id="' . $id . '" src="' . IMAGE_DIR . 'icons/errormark.gif" width="' . $w . '" height="' . $h . '" border="0" style="position:relative; left:-' . $s . 'px; visibility: hidden;' . (we_base_browserDetect::isIE() ? 'top:4px; z-index:1000000' : '') . '" />';
 	}
 
-	function getYuiFiles(){
-		return $this->getYuiCssFiles() . $this->getYuiJsFiles();
+	static function getYuiFiles(){
+		return self::getYuiCssFiles() . self::getYuiJsFiles();
 	}
 
 	/**
@@ -123,7 +123,7 @@ class weSuggest{
 	 *
 	 * @return String
 	 */
-	function getYuiJsFiles(){
+	static function getYuiJsFiles(){
 		return we_html_element::jsScript(JS_DIR . 'libs/yui/yahoo-min.js') .
 			we_html_element::jsScript(JS_DIR . 'libs/yui/dom-min.js') .
 			we_html_element::jsScript(JS_DIR . 'libs/yui/event-min.js') .
@@ -144,7 +144,7 @@ class weSuggest{
 	 *
 	 * @return String
 	 */
-	function getYuiCssFiles(){
+	static function getYuiCssFiles(){
 		return '';
 	}
 
@@ -168,16 +168,16 @@ class weSuggest{
 			return;
 		}
 
-		$safariEventListener = "";
+		$safariEventListener = '';
 		$initVars = '	var ajaxMaxResponseTime = 1500;
 			var ajaxResponseStep = 100;
 			var ajaxResponseCT = 0;
 			var countMark = 0;
 			var ajaxURL = "' . WEBEDITION_DIR . 'rpc/rpc.php";';
 		// WORKSPACES
-		$weFieldWS = "var weWorkspacePathArray = new Array();";
+		$weFieldWS = 'var weWorkspacePathArray = new Array();';
 		// AC-FIEDS BY ID
-		$fildsById = "var yuiAcFieldsById = new Array();";
+		$fildsById = 'var yuiAcFieldsById = new Array();';
 		// AC-FIEDS
 		$fildsObj = 'var yuiAcFields = {';
 		$invalidFields = <<<HTS
@@ -191,10 +191,6 @@ class weSuggest{
 		}
 HTS;
 
-		$inputfields = "";
-		$tables = "";
-		$rootDirs = "";
-		$oACDS = "";
 		$oACDSInit = "";
 		$oAutoCompInit = "";
 		$oAutoCompRes = "";
@@ -204,7 +200,7 @@ HTS;
 		$onFocus = "";
 		$doAjax = "";
 		$weAcFields = "";
-		$postData = "protocol=text&cmd=SelectorGetSelectedId";
+		$postData = 'protocol=text&cmd=SelectorGetSelectedId';
 		// loop fields
 		for($i = 0; $i < count($this->inputfields); $i++){
 			$safariEventListener .= "YAHOO.util.Event.addListener('" . $this->inputfields[$i] . "','blur',YAHOO.autocoml.doSafariOnTextfieldBlur_$i);";
@@ -215,7 +211,7 @@ HTS;
 				$ix = 0;
 				foreach($weWorkspacePathArray as $val){
 					if($ix > 0){
-						$weWorkspacePathArrayJS .= ",";
+						$weWorkspacePathArrayJS .= ',';
 					}
 					$weWorkspacePathArrayJS .= '"' . $val . '"';
 					$ix++;

@@ -590,7 +590,7 @@ class we_wizard_import extends we_wizard{
 			$yuiSuggest->setSelectButton($btnDocDir, 10);
 
 
-			$docPath = $yuiSuggest->getYuiFiles() . $yuiSuggest->getHTML();
+			$docPath = weSuggest::getYuiFiles() . $yuiSuggest->getHTML();
 
 			$attribs = array("cellpadding" => 2, "cellspacing" => 2, "border" => 0, "id" => "doc_table");
 
@@ -1197,7 +1197,7 @@ HTS;
 				"space" => 120),
 			array(
 				"headline" => (defined("OBJECT_TABLE")) ? $radioDocs : g_l('import', "[documents]"),
-				"html" => $yuiSuggest->getYuiFiles() . $doctypeElement . we_html_tools::getPixel(1, 4) . $templateElement . we_html_tools::getPixel(1, 4) . $storeTo . $yuiSuggest->getYuiCode() . we_html_tools::getPixel(1, 4) . $specifyDoc->getHTML() . we_html_tools::getPixel(1, 4) .
+				"html" => weSuggest::getYuiFiles() . $doctypeElement . we_html_tools::getPixel(1, 4) . $templateElement . we_html_tools::getPixel(1, 4) . $storeTo . $yuiSuggest->getYuiCode() . we_html_tools::getPixel(1, 4) . $specifyDoc->getHTML() . we_html_tools::getPixel(1, 4) .
 				we_html_tools::htmlFormElementTable($docCategories, g_l('import', "[categories]"), "left", "defaultfont"),
 				"space" => 120,
 				"noline" => 1)
@@ -2160,7 +2160,7 @@ HTS;
 		if((file_exists($_SERVER['DOCUMENT_ROOT'] . $v["import_from"]) && is_readable($_SERVER['DOCUMENT_ROOT'] . $v["import_from"]))){
 			$parts[] = array(
 				"headline" => (defined("OBJECT_TABLE")) ? $radioDocs : g_l('import', "[documents]"),
-				"html" => $yuiSuggest->getYuiFiles() . $doctypeElement . we_html_tools::getPixel(1, 4) . $templateElement . we_html_tools::getPixel(1, 4) . $storeTo . $yuiSuggest->getYuiCode() . we_html_tools::getPixel(1, 4) . $specifyDoc->getHTML() . we_html_tools::getPixel(1, 4) .
+				"html" => weSuggest::getYuiFiles() . $doctypeElement . we_html_tools::getPixel(1, 4) . $templateElement . we_html_tools::getPixel(1, 4) . $storeTo . $yuiSuggest->getYuiCode() . we_html_tools::getPixel(1, 4) . $specifyDoc->getHTML() . we_html_tools::getPixel(1, 4) .
 				we_html_tools::htmlFormElementTable($docCategories, g_l('import', "[categories]"), "left", "defaultfont"),
 				"space" => 120,
 				"noline" => 1

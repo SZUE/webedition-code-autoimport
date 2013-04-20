@@ -403,20 +403,22 @@ function cleanTempFiles($cleanSessFiles = false){
 	}
 	$d->close();
 	$dstr = $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/';
-	$d = dir($dstr);
-	while(false !== ($entry = $d->read())) {
-		if($entry != '.' && $entry != '..'){
-			$foo = $dstr . $entry;
-			if(filemtime($foo) <= (time() - 300)){
-				if(is_dir($foo)){
-					we_util_File::deleteLocalFolder($foo, 1);
-				} elseif(file_exists($foo) && is_writable($foo)){
-					we_util_File::deleteLocalFile($foo);
+	if(we_util_File::checkAndMakeFolder($dstr)){
+		$d = dir($dstr);
+		while(false !== ($entry = $d->read())) {
+			if($entry != '.' && $entry != '..'){
+				$foo = $dstr . $entry;
+				if(filemtime($foo) <= (time() - 300)){
+					if(is_dir($foo)){
+						we_util_File::deleteLocalFolder($foo, 1);
+					} elseif(file_exists($foo) && is_writable($foo)){
+						we_util_File::deleteLocalFile($foo);
+					}
 				}
 			}
 		}
+		$d->close();
 	}
-	$d->close();
 
 // when a fragment task was stopped by the user, the tmp file will not be deleted! So we have to clean up
 	$d = dir(rtrim(WE_FRAGMENT_PATH, '/'));
@@ -425,7 +427,7 @@ function cleanTempFiles($cleanSessFiles = false){
 			$foo = WE_FRAGMENT_PATH . $entry;
 			if(filemtime($foo) <= (time() - 3600 * 24)){
 				if(is_dir($foo)){
-					we_util_File::deleteLocalFolder($foo, 1);
+					we_util_File::deleteLocalFolder($foo, true);
 				} elseif(file_exists($foo)){
 					we_util_File::deleteLocalFile($foo);
 				}

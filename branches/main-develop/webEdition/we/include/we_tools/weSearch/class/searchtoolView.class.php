@@ -3116,7 +3116,7 @@ class searchtoolView extends weToolView{
 				"select", "javascript:we_cmd('openDirselector',document.we_form.elements['$folderID'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "')"));
 
 		return
-			$yuiSuggest->getYuiFiles() .
+			weSuggest::getYuiFiles() .
 			$yuiSuggest->getHTML() .
 			$yuiSuggest->getYuiCode();
 	}

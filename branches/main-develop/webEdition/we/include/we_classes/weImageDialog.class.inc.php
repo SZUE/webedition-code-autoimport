@@ -410,6 +410,7 @@ class weImageDialog extends weDialog{
 </table></div>' .
 				we_html_tools::hidden("imgChangedCmd", "0") . we_html_tools::hidden("wasThumbnailChange", "0") . we_html_tools::hidden("isTinyMCEInitialization", "0") .
 				we_html_tools::hidden("tinyMCEInitRatioH", "0") . we_html_tools::hidden("tinyMCEInitRatioW", "0") .
+				weSuggest::getYuiFiles() .
 				$yuiSuggest->getYuiCss() . $yuiSuggest->getYuiJs() . we_html_element::jsScript(TINYMCE_JS_DIR . 'plugins/weimage/js/image_init.js')),
 		);
 	}
@@ -489,8 +490,7 @@ var ratiow = ' . (intval($this->args["width"] * $this->args["height"]) ? ($this-
 function fsubmit(e) {
 	return false;
 }') .
-			$yuiSuggest->getYuiJsFiles() .
-			$yuiSuggest->getYuiCssFiles();
+			weSuggest::getYuiFiles();
 	}
 
 }

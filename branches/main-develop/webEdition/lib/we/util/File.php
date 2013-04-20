@@ -151,11 +151,11 @@ abstract class we_util_File{
 	}
 
 	public static function mkpath($path){
-		$path = str_replace("\\", "/", $path);
+		$path = str_replace('\\', '/', $path);
 		if(self::hasURL($path)){
 			return false;
 		}
-		if($path != ""){
+		if($path != ''){
 			return self::createLocalFolderByPath($path);
 		}
 		return false;
@@ -276,7 +276,7 @@ abstract class we_util_File{
 		return $ret;
 	}
 
-	public static function createLocalFolder($RootDir, $path = ""){
+	public static function createLocalFolder($RootDir, $path = ''){
 		return self::createLocalFolderByPath($RootDir . $path);
 	}
 
@@ -437,7 +437,7 @@ abstract class we_util_File{
 		}
 	}
 
-	public static function deleteLocalFolder($filename, $delAll = 0){
+	public static function deleteLocalFolder($filename, $delAll = false){
 		if(!file_exists($filename))
 			return false;
 		if($delAll){
@@ -482,7 +482,7 @@ abstract class we_util_File{
 		if(is_file($path) || is_link($path)){
 			if($nofiles === false){
 				if(@unlink($path)){
-					return true;	
+					return true;
 				} else {
 					t_e('warning'," unable to delete file " . $path);
 				}

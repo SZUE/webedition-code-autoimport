@@ -1237,7 +1237,7 @@ class weNewsletterFrames extends weModuleFrames{
 			$this->View->getHiddensProperty();
 
 		if($this->View->page == 0){
-			$out.=$this->weAutoColpleter->getYuiJsFiles() .
+			$out.=weSuggest::getYuiJsFiles() .
 				$this->View->htmlHidden("home", "0") .
 				$this->View->htmlHidden("fromPage", "0");
 
@@ -1258,7 +1258,7 @@ class weNewsletterFrames extends weModuleFrames{
 				$this->View->htmlHidden("ngroup", "") .
 				$this->getHTMLNewsletterGroups();
 		} else{
-			$out.=$this->weAutoColpleter->getYuiJsFiles() .
+			$out.=weSuggest::getYuiJsFiles() .
 				$this->View->getHiddensMailingPage() .
 				$this->View->getHiddensPropertyPage() .
 				$this->View->htmlHidden("fromPage", "2") .

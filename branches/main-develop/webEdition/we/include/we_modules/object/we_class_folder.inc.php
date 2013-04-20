@@ -195,7 +195,7 @@ class we_class_folder extends we_folder{
 	function getUserDefaultWsPath(){
 		$userWSArray = makeArrayFromCSV(get_ws());
 
-		$userDefaultWsID = empty($userWSArray) ? 0:$userWSArray[0];
+		$userDefaultWsID = empty($userWSArray) ? 0 : $userWSArray[0];
 		return (intval($userDefaultWsID) != 0 ?
 				id_to_path($userDefaultWsID, FILE_TABLE, $GLOBALS['DB_WE']) :
 				'/');
@@ -539,8 +539,7 @@ class we_class_folder extends we_folder{
 							$content[$f][$i + 5]["dat"] = ($text == "1" ? g_l('global', "[yes]") : g_l('global', "[no]") );
 							break;
 						case "meta":
-							if($this->searchclass->f($type[$i + 5] . '_' . $head[$i + 5]["dat"]) != ''
-										&& isset($DefaultValues[$type[$i + 5] . '_' . $head[$i + 5]["dat"]]["meta"][$this->searchclass->f($type[$i + 5] . "_" . $head[$i + 5]["dat"])])){
+							if($this->searchclass->f($type[$i + 5] . '_' . $head[$i + 5]["dat"]) != '' && isset($DefaultValues[$type[$i + 5] . '_' . $head[$i + 5]["dat"]]["meta"][$this->searchclass->f($type[$i + 5] . "_" . $head[$i + 5]["dat"])])){
 								$text = $DefaultValues[$type[$i + 5] . '_' . $head[$i + 5]["dat"]]["meta"][$this->searchclass->f($type[$i + 5] . "_" . $head[$i + 5]["dat"])];
 								$content[$f][$i + 5]["dat"] = (strlen($text) > $strlen) ? substr($text, 0, $strlen) . " ..." : $text;
 							} else{
@@ -882,9 +881,8 @@ class we_class_folder extends we_folder{
 		</table>
 		</form>
 		' .
-			$yuiSuggest->getYuiCssFiles() .
+			weSuggest::getYuiFiles() .
 			$yuiSuggest->getYuiCss() .
-			$yuiSuggest->getYuiJsFiles() .
 			$yuiSuggest->getYuiJs();
 	}
 
@@ -1001,7 +999,7 @@ EOF;
 			'GreenOnly' => $this->GreenOnly,
 			'Order' => $this->Order,
 			'EditPageNr' => $this->EditPageNr,
-			));
+		));
 	}
 
 	function deleteObjects(){

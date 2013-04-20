@@ -41,6 +41,7 @@ class we_document extends we_root{
 
 	/* Categories of the document */
 	var $Category = '';
+	protected $oldCategory = '';
 	var $IsSearchable = 0;
 	var $InGlossar = 0;
 	var $NavigationItems = '';

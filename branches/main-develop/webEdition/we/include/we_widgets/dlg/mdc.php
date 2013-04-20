@@ -107,11 +107,11 @@ $doctypeElement = we_html_tools::htmlFormElementTable(
 			"DocTypeID", $docTypes, 1, 0, false, 'onChange="" style="width:420px; border: #AAAAAA solid 1px;"', 'value'), g_l('cockpit', "[doctype]"));
 
 $cls = new we_html_select(
-		array(
-			"name" => "classID",
-			"size" => "1",
-			"class" => "defaultfont",
-			"style" => "width:420px; border: #AAAAAA solid 1px"
+	array(
+	"name" => "classID",
+	"size" => "1",
+	"class" => "defaultfont",
+	"style" => "width:420px; border: #AAAAAA solid 1px"
 	));
 $optid = 0;
 $cls->insertOption($optid, 0, g_l('cockpit', "[no_entry]"));
@@ -136,7 +136,7 @@ function getHTMLCategory(){
 				'src' => BUTTONS_DIR . 'btn_function_trash.gif',
 				'onclick' => 'javascript:#####placeHolder#####;top.mark();',
 				'style' => 'cursor: pointer; width: 27px;'
-		)));
+	)));
 
 	$js = we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js');
 
@@ -163,15 +163,13 @@ function getHTMLCategory(){
 	$js .= we_html_element::jsElement($variant_js);
 
 	$table = new we_html_table(
-			array(
-				'id' => 'CategoriesBlock',
-				'style' => 'display: block;',
-				'cellpadding' => 0,
-				'cellspacing' => 0,
-				'border' => 0
-			),
-			5,
-			1);
+		array(
+		'id' => 'CategoriesBlock',
+		'style' => 'display: block;',
+		'cellpadding' => 0,
+		'cellspacing' => 0,
+		'border' => 0
+		), 5, 1);
 
 	$table->setColContent(0, 0, we_html_tools::getPixel(5, 5));
 	$table->setCol(1, 0, array(
@@ -183,7 +181,7 @@ function getHTMLCategory(){
 				'id' => 'categories',
 				'class' => 'blockWrapper',
 				'style' => 'width:420px;height:60px;border:#AAAAAA solid 1px;'
-		)));
+	)));
 
 	$table->setColContent(3, 0, we_html_tools::getPixel(5, 5));
 
@@ -193,7 +191,7 @@ function getHTMLCategory(){
 		), we_button::create_button_table(
 			array(
 				we_button::create_button("delete_all", "javascript:removeAllCats()"), $addbut
-		)));
+	)));
 
 	return $table->getHtml() . $js . we_html_element::jsElement(
 			"
@@ -438,7 +436,7 @@ $sTblWidget = we_multiIconBox::getHTML(
 
 print we_html_element::htmlDocType() . we_html_element::htmlHtml(
 		we_html_element::htmlHead(
-			we_html_tools::getHtmlInnerHead(g_l('cockpit', '[my_documents]')) . $yuiSuggest->getYuiCssFiles() . $yuiSuggest->getYuiJsFiles() . STYLESHEET .
+			we_html_tools::getHtmlInnerHead(g_l('cockpit', '[my_documents]')) . weSuggest::getYuiFiles() . STYLESHEET .
 			we_html_element::jsScript(JS_DIR . "we_showMessage.js") .
 			we_html_element::jsScript(JS_DIR . "windows.js") .
 			we_html_element::jsElement($jsPrefs . $jsCode)) .

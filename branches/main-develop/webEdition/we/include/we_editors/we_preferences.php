@@ -3215,7 +3215,7 @@ function setColorField(name) {
 
 
 	print STYLESHEET .
-		$_we_cmd_js . we_html_element::jsScript(JS_DIR . 'windows.js') . $yuiSuggest->getYuiCssFiles() . $yuiSuggest->getYuiJsFiles() . '</head>' .
+		$_we_cmd_js . we_html_element::jsScript(JS_DIR . 'windows.js') . weSuggest::getYuiFiles() . '</head>' .
 		we_html_element::htmlBody(array('class' => 'weDialogBody'), $_form) .
 		$yuiSuggest->getYuiCss() .
 		$yuiSuggest->getYuiJs() .

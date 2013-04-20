@@ -757,7 +757,9 @@ function we_tag_ifvotingexists(){
 //this function is used by all tags adding elements to we_lv_array
 function we_post_tag_listview(){
 	if(isset($GLOBALS['we_lv_array'])){
-		array_pop($GLOBALS['we_lv_array']);
+		if(isset($GLOBALS['lv'])){
+			array_pop($GLOBALS['we_lv_array']);
+		}
 		if(empty($GLOBALS['we_lv_array'])){
 			unset($GLOBALS['lv']);
 			unset($GLOBALS['we_lv_array']);

@@ -1205,14 +1205,14 @@ $this->Preferences=' . var_export($this->Preferences, true) . ';
 		$yuiSuggest = & weSuggest::getInstance();
 		switch($tab){
 			case 0:
-				return $yuiSuggest->getYuiJsFiles() .
+				return weSuggest::getYuiJsFiles() .
 					$this->formGeneralData() .
 					$yuiSuggest->getYuiCss();
 			//.$yuiSuggest->getYuiJs();
 			case 1:
 				return $this->formPermissions($perm_branch);
 			case 2:
-				return $yuiSuggest->getYuiJsFiles() .
+				return weSuggest::getYuiJsFiles() .
 					$this->formWorkspace() .
 					$yuiSuggest->getYuiCss();
 			//.$yuiSuggest->getYuiJs();

@@ -175,7 +175,7 @@ class weExportWizard{
 					we_html_element::htmlIFrame('body', $this->frameset . "?pnt=body", 'position:absolute;top:1px;bottom:45px;left:0px;right:0px;overflow: auto') .
 					we_html_element::htmlIFrame('footer', $this->frameset . "?pnt=footer", 'position:absolute;height:45px;bottom:0px;left:0px;right:0px;overflow: hidden') .
 					we_html_element::htmlIFrame('load', $this->frameset . "?pnt=load", 'position:absolute;bottom:0px;height:0px;left:0px;right:0px;overflow: hidden;')
-				));
+		));
 
 		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				we_html_element::htmlHead($head) .
@@ -382,7 +382,7 @@ top.close();');
 
 
 		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-				we_html_element::htmlHead(we_html_tools::getHtmlInnerHead(g_l('import', '[title]')) . STYLESHEET . $js . $yuiSuggest->getYuiCssFiles() . $yuiSuggest->getYuiJsFiles()) .
+				we_html_element::htmlHead(we_html_tools::getHtmlInnerHead(g_l('import', '[title]')) . STYLESHEET . $js . weSuggest::getYuiFiles()) .
 				we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
 						we_multiIconBox::getHTML("weExportWizard", "100%", $parts, 30, "", -1, "", "", false, g_l('export', "[step2]"))
 					) . $yuiSuggest->getYuiCss() . $yuiSuggest->getYuiJs()
@@ -1041,7 +1041,7 @@ function setState(a) {
 				we_html_element::htmlHead(
 					we_html_tools::getHtmlInnerHead(g_l('import', '[title]')) . STYLESHEET . (isset($progressbar) ? $progressbar->getJSCode() : "")
 				) .
-				we_html_element::htmlBody(array("class" => "weDialogButtonsBody",'style'=>'overflow:hidden;'), we_html_element::htmlForm(array(
+				we_html_element::htmlBody(array("class" => "weDialogButtonsBody", 'style' => 'overflow:hidden;'), we_html_element::htmlForm(array(
 						"name" => "we_form",
 						"method" => "post",
 						"target" => "load",

@@ -24,7 +24,7 @@
  */
 abstract class weDynList{
 
-	function getDocuments($doctypeid, $dirid, $categories, &$sort, $count, $field){
+	function getDocuments($doctypeid, $dirid, $categories, $catlogic, &$sort, $count, $field){
 		$_select = array(
 			FILE_TABLE . '.ID as ID',
 			FILE_TABLE . '.Text as Text',
@@ -32,7 +32,7 @@ abstract class weDynList{
 			CONTENT_TABLE . '.Dat as FieldData'
 		);
 
-		$_fieldset = self::getDocData($_select, $doctypeid, id_to_path($dirid), $categories, 'AND', array(), array(), 0);
+		$_fieldset = self::getDocData($_select, $doctypeid, id_to_path($dirid), $categories, $catlogic, array(), array(), 0);
 		$_docs = array();
 		$_txt = array();
 		$_fields = array();
@@ -113,26 +113,24 @@ abstract class weDynList{
 	private function getDocData($select = array(), $doctype, $dirpath = '/', $categories = array(), $catlogic = 'AND', $condition = array(), $order = array(), $offset = 0, $count = 999999999){
 
 		$_db = new DB_WE();
-		$_cats = array();
 		$categories = is_array($categories) ? $categories : makeArrayFromCSV($categories);
+		$_cats = array();
 		foreach($categories as $cat){
-			if(!is_numeric($cat)){
-				$cat = path_to_id($cat, CATEGORY_TABLE);
-			}
-			$_cats[] = '(Category LIKE "%,' . $_db->escape($cat) . ',%")';
+			$cat = is_numeric($cat) ? $cat : $_db->escape(path_to_id($cat, CATEGORY_TABLE));
+			$_cats[] = 'Category LIKE "%,' . $cat . ',%"';//bug #6729
 		}
 
 		$dirpath = clearPath($dirpath . '/');
 
 		$_db->query('SELECT ' . implode(',', $select) . ' FROM ' . FILE_TABLE . ',' . LINK_TABLE . ', ' . CONTENT_TABLE . ' WHERE (' . FILE_TABLE . '.ID=' . LINK_TABLE . '.DID AND ' . LINK_TABLE . '.CID=' . CONTENT_TABLE . '.ID)  AND (' . FILE_TABLE . '.IsFolder=0 AND ' . FILE_TABLE . '.Published>0) ' . ($doctype ? ' AND ' . FILE_TABLE . '.DocType=' . $_db->escape($doctype) : '') . (count(
-				$_cats) ? (' AND ' . implode(" $catlogic ", $_cats)) : '') . ($dirpath != '/' ? (' AND Path LIKE "' . $_db->escape($dirpath) . '%"') : '') . ' ' . ($condition ? (' AND ' . implode(
+				$_cats) ? (' AND (' . implode(" $catlogic ", $_cats) . ')') : '') . ($dirpath != '/' ? (' AND Path LIKE "' . $_db->escape($dirpath) . '%"') : '') . ' ' . ($condition ? (' AND ' . implode(
 					' AND ', $condition)) : '') . ' ' . ($order ? (' ORDER BY ' . $order) : '') . '  LIMIT ' . $offset . ',' . $count);
 
 
 		return $_db;
 	}
 
-	function getObjects($classid, $dirid, $categories, &$sort, $count, $field){
+	function getObjects($classid, $dirid, $categories, $catlogic, &$sort, $count, $field){
 
 		$_select = array(
 			'OF_ID', 'OF_Text'
@@ -150,7 +148,7 @@ abstract class weDynList{
 		}
 		$categories = is_array($categories) ? $categories : makeArrayFromCSV($categories);
 		$_fieldset = self::getObjData(
-				$_select, $classid, id_to_path($dirid, OBJECT_FILES_TABLE), $categories, 'AND', array(), $_order, 0, $count);
+				$_select, $classid, id_to_path($dirid, OBJECT_FILES_TABLE), $categories, $catlogic, array(), $_order, 0, $count);
 		$_ids = array();
 
 		while($_fieldset->next_record()) {
@@ -167,19 +165,18 @@ abstract class weDynList{
 	}
 
 	private function getObjData($select = array(), $classid, $dirpath = '/', $categories = array(), $catlogic = 'AND', $condition = array(), $order = array(), $offset = 0, $count = 999999999){
-
 		$_db = new DB_WE();
-		$categories = is_array($categories) ? $categories : array();
+		$categories = is_array($categories) ? $categories : makeArrayFromCSV($categories);
 		$_cats = array();
 		foreach($categories as $cat){
 			$cat = is_numeric($cat) ? $cat : $_db->escape(path_to_id($cat, CATEGORY_TABLE));
-			$_cats[] = '(OF_Category LIKE "%,' . $cat . ',%")';//bug #6729
+			$_cats[] = 'OF_Category LIKE "%,' . $cat . ',%"';//bug #6729
 		}
 
 		$_where = array();
 
 		if(!empty($_cats)){
-			$_where[] = implode(" $catlogic ", $_cats);
+			$_where[] = '(' . implode(" $catlogic ", $_cats) . ')';
 		}
 		if($condition){
 			$_where[] = implode(' AND ', $condition);

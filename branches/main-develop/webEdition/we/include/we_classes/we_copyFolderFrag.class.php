@@ -708,7 +708,7 @@ class copyFolderFrag extends taskFragment{
 	function printHeader(){
 		$yuiSuggest = & weSuggest::getInstance();
 		//FIXME: missing title
-		print we_html_element::htmlHead(we_html_tools::getHtmlInnerHead() . STYLESHEET . $yuiSuggest->getYuiJsFiles() . $yuiSuggest->getYuiCssFiles() .
+		print we_html_element::htmlHead(we_html_tools::getHtmlInnerHead() . STYLESHEET . weSuggest::getYuiFiles() .
 				we_html_element::jsElement('
 function fsubmit(e) {
 	return false;
@@ -755,7 +755,7 @@ function fsubmit(e) {
 					'src' => BUTTONS_DIR . 'btn_function_trash.gif',
 					'onclick' => 'javascript:#####placeHolder#####;',
 					'style' => 'cursor: pointer; width: 27px;'
-			)));
+		)));
 
 		$js = we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js') .
 			we_html_element::jsElement('
@@ -765,15 +765,13 @@ function fsubmit(e) {
 		');
 
 		$table = new we_html_table(
-				array(
-					'id' => 'CategoriesBlock',
-					'style' => 'display: block;',
-					'cellpadding' => 0,
-					'cellspacing' => 0,
-					'border' => 0
-				),
-				5,
-				2);
+			array(
+			'id' => 'CategoriesBlock',
+			'style' => 'display: block;',
+			'cellpadding' => 0,
+			'cellspacing' => 0,
+			'border' => 0
+			), 5, 2);
 
 		$table->setCol(0, 0, array(
 			'colspan' => 2
@@ -794,7 +792,7 @@ function fsubmit(e) {
 					'id' => 'categories',
 					'class' => 'blockWrapper',
 					'style' => 'width: 488px; height: 60px; border: #AAAAAA solid 1px;'
-			)));
+		)));
 
 		$table->setCol(3, 0, array(
 			'colspan' => 2
@@ -806,7 +804,7 @@ function fsubmit(e) {
 			), we_button::create_button_table(
 				array(
 					we_button::create_button("delete_all", "javascript:removeAllCats()"), $addbut
-			)));
+		)));
 
 		return $table->getHtml() . $js;
 	}

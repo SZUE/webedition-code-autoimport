@@ -162,7 +162,7 @@ class weExportFrames extends weModuleFrames{
 			return $out;
 		}
 		$yuiSuggest = & weSuggest::getInstance();
-		$body = we_html_element::htmlBody(array("class" => "weEditorBody", "onLoad" => "loaded=1;start();", "onunload" => "doUnload()"), $yuiSuggest->getYuiJsFiles() . we_html_element::htmlForm(array("name" => "we_form"), $this->View->getCommonHiddens($hiddens) . $this->getHTMLProperties()) . $yuiSuggest->getYuiCss() . $yuiSuggest->getYuiJs()
+		$body = we_html_element::htmlBody(array("class" => "weEditorBody", "onLoad" => "loaded=1;start();", "onunload" => "doUnload()"), weSuggest::getYuiJsFiles() . we_html_element::htmlForm(array("name" => "we_form"), $this->View->getCommonHiddens($hiddens) . $this->getHTMLProperties()) . $yuiSuggest->getYuiCss() . $yuiSuggest->getYuiJs()
 		);
 		return $this->getHTMLDocument($body, $this->View->getJSProperty());
 	}

@@ -369,7 +369,7 @@ class we_workflow_view extends we_workflow_base{
 			we_html_element::jsScript(JS_DIR . 'libs/yui/animation-min.js') .
 			we_html_element::jsScript(JS_DIR . 'libs/yui/json-min.js') .
 			we_html_element::jsScript(JS_DIR . 'libs/yui/autocomplete-min.js') .
-			$yuiSuggest->getYuiFiles() .
+			weSuggest::getYuiFiles() .
 			'	<table style="margin-right:30px;">
 				<tr valign="top">
 					<td>' . we_html_tools::htmlDialogBorder3(400, 300, $content, $headline) . '</td>

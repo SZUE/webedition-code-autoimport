@@ -1296,7 +1296,7 @@ class we_object extends we_document{
 		  $yuiSuggest->setTrashButton($delbutton,5);
 		  $yuiSuggest->setAddJS("YAHOO.autocoml.init;");
 
-		  return $yuiSuggest->getYuiFiles().$yuiSuggest->getHTML().$yuiSuggest->getYuiCode();
+		  return weSuggest::getYuiFiles().$yuiSuggest->getHTML().$yuiSuggest->getYuiCode();
 		 */
 		return $this->htmlFormElementTable(
 				$this->htmlTextInput($textname, 30, $path, "", ' readonly', "text", 246, 0), "", "left", "defaultfont", $this->htmlHidden($idname, $myid), we_html_tools::getPixel(10, 4), $button, we_html_tools::getPixel(5, 4), $delbutton) . ($DoubleNames ? '<span style="color:red" >' . g_l('modules_object', '[incObject_sameFieldname_start]') . implode(', ', $DoubleNames) . g_l('modules_object', '[incObject_sameFieldname_end]') . '</span>' : '');
