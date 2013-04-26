@@ -386,7 +386,7 @@ abstract class we_rebuild_wizard{
 					$data = we_rebuild::getMetadata($metaFields, $onlyEmpty, $metaFolders);
 					break;
 			}
-			if(count($data)){
+			if(!empty($data)){
 				$fr = new rebuildFragment($taskname, 1, 0, array(), $data);
 
 				return array();
