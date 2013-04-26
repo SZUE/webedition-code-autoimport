@@ -27,7 +27,7 @@
  * Base Class for all Customer Filters (Model)
  *
  */
-abstract class weAbstractCustomerFilter{
+abstract class weAbstractCustomerFilter {
 
 	const OFF = 0;
 	const ALL = 1;
@@ -44,6 +44,8 @@ abstract class weAbstractCustomerFilter{
 	const OP_ENDS_WITH = 7;
 	const OP_CONTAINS = 8;
 	const OP_IN = 9;
+	const OP_NOT_CONTAINS = 10;
+	const OP_NOT_IN = 11;
 
 	/**
 	 * Mode. Can be OFF, ALL, SPECIFIC, FILTER
@@ -91,16 +93,16 @@ abstract class weAbstractCustomerFilter{
 	 * @param array $filter
 	 * @return weAbstractCustomerFilter
 	 */
-	function __construct($mode = self::OFF, $specificCustomers = array(), $blackList = array(), $whiteList = array(), $filter = array()){
+	function __construct($mode = self::OFF, $specificCustomers = array(), $blackList = array(), $whiteList = array(), $filter = array()) {
 		$this->setMode($mode);
 		$this->setSpecificCustomers($specificCustomers);
-		if(is_array($blackList)){
+		if (is_array($blackList)) {
 			$this->setBlackList($blackList);
 		}
-		if(is_array($whiteList)){
+		if (is_array($whiteList)) {
 			$this->setWhiteList($whiteList);
 		}
-		if(is_array($filter)){
+		if (is_array($filter)) {
 			$this->setFilter($filter);
 		}
 	}
@@ -112,8 +114,8 @@ abstract class weAbstractCustomerFilter{
 	 *
 	 * @return boolean
 	 */
-	public function customerHasAccess(){
-		switch($this->_mode){
+	public function customerHasAccess() {
+		switch ($this->_mode) {
 			case self::OFF:
 				return true;
 			case self::ALL:
@@ -129,8 +131,8 @@ abstract class weAbstractCustomerFilter{
 		}
 	}
 
-	private static function evalSingleFilter($op, $key, $value){
-		switch($op){
+	private static function evalSingleFilter($op, $key, $value) {
+		switch ($op) {
 			case self::OP_EQ:
 				return $_SESSION['webuser'][$key] == $value;
 			case self::OP_NEQ:
@@ -149,8 +151,12 @@ abstract class weAbstractCustomerFilter{
 				return self::endsWith($_SESSION['webuser'][$key], $value);
 			case self::OP_CONTAINS:
 				return self::contains($_SESSION['webuser'][$key], $value);
+			case  self::OP_NOT_CONTAINS:
+				return !self::contains($_SESSION['webuser'][$key], $value);
 			case self::OP_IN:
 				return self::in($_SESSION['webuser'][$key], $value);
+			case self::OP_NOT_IN:
+				return !self::in($_SESSION['webuser'][$key], $value);
 			default:
 				t_e('invalid customer filter op: ' . $op);
 				return false;
@@ -162,25 +168,25 @@ abstract class weAbstractCustomerFilter{
 	 *
 	 * @return boolean
 	 */
-	private function customerHasFilterAccess(){
-		if(in_array($_SESSION['webuser']['ID'], $this->_blackList)){
+	private function customerHasFilterAccess() {
+		if (in_array($_SESSION['webuser']['ID'], $this->_blackList)) {
 			return false;
-		} else if(in_array($_SESSION['webuser']['ID'], $this->_whiteList)){
+		} else if (in_array($_SESSION['webuser']['ID'], $this->_whiteList)) {
 			return true;
 		}
 
 		$hasPermission = false;
 		$flag = false;
 		$invalidFields = array();
-		foreach($this->_filter as $_filter){
-			if(!isset($_SESSION['webuser'][$_filter['field']])){
+		foreach ($this->_filter as $_filter) {
+			if (!isset($_SESSION['webuser'][$_filter['field']])) {
 				$invalidFields[] = $_filter['field'];
 				continue;
 			}
-			if($flag && $_filter['logic'] == 'AND'){
+			if ($flag && $_filter['logic'] == 'AND') {
 				$hasPermission&=self::evalSingleFilter($_filter['operation'], $_filter['field'], $_filter['value']);
-			} else{
-				if($hasPermission){
+			} else {
+				if ($hasPermission) {
 					break;
 				}
 				$hasPermission = self::evalSingleFilter($_filter['operation'], $_filter['field'], $_filter['value']);
@@ -188,7 +194,7 @@ abstract class weAbstractCustomerFilter{
 			$flag = true;
 		}
 
-		if(!empty($invalidFields)){
+		if (!empty($invalidFields)) {
 			t_e('Customerfilter on document ? has invalid Parameters, maybe deleted Customer fields: ' . implode(',', $invalidFields));
 		}
 
@@ -201,26 +207,26 @@ abstract class weAbstractCustomerFilter{
 	 * @static
 	 * @return array
 	 */
-	static function getFilterFromRequest(){
+	static function getFilterFromRequest() {
 		$_filter = array();
 
-		if(isset($_REQUEST['filterSelect_0'])){
+		if (isset($_REQUEST['filterSelect_0'])) {
 			$_parse = true;
 			$_count = 0;
 
-			while($_parse) {
-				if(isset($_REQUEST['filterSelect_' . $_count])){
+			while ($_parse) {
+				if (isset($_REQUEST['filterSelect_' . $_count])) {
 
-					if(isset($_REQUEST['filterValue_' . $_count]) && trim($_REQUEST['filterValue_' . $_count]) <> ''){
+					if (isset($_REQUEST['filterValue_' . $_count]) && trim($_REQUEST['filterValue_' . $_count]) <> '') {
 						$_filter[] = array(
-							'logic' => (isset($_REQUEST['filterLogic_' . $_count]) && $_REQUEST['filterLogic_' . $_count] == 'OR' ? 'OR' : 'AND'),
-							'field' => $_REQUEST['filterSelect_' . $_count],
-							'operation' => $_REQUEST['filterOperation_' . $_count],
-							'value' => $_REQUEST['filterValue_' . $_count]
+								'logic' => (isset($_REQUEST['filterLogic_' . $_count]) && $_REQUEST['filterLogic_' . $_count] == 'OR' ? 'OR' : 'AND'),
+								'field' => $_REQUEST['filterSelect_' . $_count],
+								'operation' => $_REQUEST['filterOperation_' . $_count],
+								'value' => $_REQUEST['filterValue_' . $_count]
 						);
 					}
 					$_count++;
-				} else{
+				} else {
 					$_parse = false;
 				}
 			}
@@ -234,16 +240,16 @@ abstract class weAbstractCustomerFilter{
 	 * @static
 	 * @return array
 	 */
-	static function getSpecificCustomersFromRequest(){
+	static function getSpecificCustomersFromRequest() {
 		$_customers = array();
 
-		if(isset($_REQUEST['specificCustomersEditControl'])){
+		if (isset($_REQUEST['specificCustomersEditControl'])) {
 			$i = 0;
-			while(true) {
-				if(isset($_REQUEST[$_REQUEST['specificCustomersEditControl'] . '_variant0_' . $_REQUEST['specificCustomersEditControl'] . '_item' . $i])){
+			while (true) {
+				if (isset($_REQUEST[$_REQUEST['specificCustomersEditControl'] . '_variant0_' . $_REQUEST['specificCustomersEditControl'] . '_item' . $i])) {
 					$_customers[] = $_REQUEST[$_REQUEST['specificCustomersEditControl'] . '_variant0_' . $_REQUEST['specificCustomersEditControl'] . '_item' . $i];
 					$i++;
-				} else{
+				} else {
 					break;
 				}
 			}
@@ -257,16 +263,16 @@ abstract class weAbstractCustomerFilter{
 	 * @static
 	 * @return array
 	 */
-	static function getBlackListFromRequest(){
+	static function getBlackListFromRequest() {
 		$_blackList = array();
 
-		if(isset($_REQUEST['blackListEditControl'])){
+		if (isset($_REQUEST['blackListEditControl'])) {
 			$i = 0;
-			while(true) {
-				if(isset($_REQUEST[$_REQUEST['blackListEditControl'] . '_variant0_' . $_REQUEST['blackListEditControl'] . '_item' . $i])){
+			while (true) {
+				if (isset($_REQUEST[$_REQUEST['blackListEditControl'] . '_variant0_' . $_REQUEST['blackListEditControl'] . '_item' . $i])) {
 					$_blackList[] = $_REQUEST[$_REQUEST['blackListEditControl'] . '_variant0_' . $_REQUEST['blackListEditControl'] . '_item' . $i];
 					$i++;
-				} else{
+				} else {
 					break;
 				}
 			}
@@ -280,16 +286,16 @@ abstract class weAbstractCustomerFilter{
 	 * @static
 	 * @return array
 	 */
-	static function getWhiteListFromRequest(){
+	static function getWhiteListFromRequest() {
 		$_whiteList = array();
 
-		if(isset($_REQUEST['whiteListEditControl'])){
+		if (isset($_REQUEST['whiteListEditControl'])) {
 			$i = 0;
-			while(true) {
-				if(isset($_REQUEST[$_REQUEST['whiteListEditControl'] . '_variant0_' . $_REQUEST['whiteListEditControl'] . '_item' . $i])){
+			while (true) {
+				if (isset($_REQUEST[$_REQUEST['whiteListEditControl'] . '_variant0_' . $_REQUEST['whiteListEditControl'] . '_item' . $i])) {
 					$_whiteList[] = $_REQUEST[$_REQUEST['whiteListEditControl'] . '_variant0_' . $_REQUEST['whiteListEditControl'] . '_item' . $i];
 					$i++;
-				} else{
+				} else {
 					break;
 				}
 			}
@@ -305,7 +311,7 @@ abstract class weAbstractCustomerFilter{
 	 * @static
 	 * @return boolean
 	 */
-	static function endsWith($haystack, $needle){
+	static function endsWith($haystack, $needle) {
 		$pos = strlen($haystack) - strlen($needle);
 		return (strpos($haystack, $needle) === $pos);
 	}
@@ -318,7 +324,7 @@ abstract class weAbstractCustomerFilter{
 	 * @static
 	 * @return boolean
 	 */
-	static function contains($haystack, $needle){
+	static function contains($haystack, $needle) {
 		return (strpos($haystack, $needle) !== false);
 	}
 
@@ -330,10 +336,10 @@ abstract class weAbstractCustomerFilter{
 	 * @static
 	 * @return boolean
 	 */
-	static function in($value, $comp){
+	static function in($value, $comp) {
 		$comp = str_replace('\\,', '__WE_COMMA__', $comp);
 		$arr = explode(',', $comp);
-		foreach($arr as &$cur){
+		foreach ($arr as &$cur) {
 			$cur = str_replace('__WE_COMMA__', ',', $cur);
 		}
 		$value = explode(',', $value);
@@ -345,7 +351,7 @@ abstract class weAbstractCustomerFilter{
 	 *
 	 * @return boolean
 	 */
-	public static function customerIsLogedIn(){
+	public static function customerIsLogedIn() {
 		return isset($_SESSION) && isset($_SESSION['webuser']) && isset($_SESSION['webuser']['ID']) && $_SESSION['webuser']['ID'];
 	}
 
@@ -354,7 +360,7 @@ abstract class weAbstractCustomerFilter{
 	 *
 	 * @param integer $mode
 	 */
-	function setMode($mode){
+	function setMode($mode) {
 		$this->_mode = $mode;
 	}
 
@@ -363,7 +369,7 @@ abstract class weAbstractCustomerFilter{
 	 *
 	 * @return integer
 	 */
-	function getMode(){
+	function getMode() {
 		return $this->_mode;
 	}
 
@@ -372,7 +378,7 @@ abstract class weAbstractCustomerFilter{
 	 *
 	 * @param array $mode
 	 */
-	function setSpecificCustomers($specificCustomers){
+	function setSpecificCustomers($specificCustomers) {
 		$this->_specificCustomers = $specificCustomers;
 	}
 
@@ -381,7 +387,7 @@ abstract class weAbstractCustomerFilter{
 	 *
 	 * @return array
 	 */
-	function getSpecificCustomers(){
+	function getSpecificCustomers() {
 		return $this->_specificCustomers;
 	}
 
@@ -390,7 +396,7 @@ abstract class weAbstractCustomerFilter{
 	 *
 	 * @param array $mode
 	 */
-	function setBlackList($blackList){
+	function setBlackList($blackList) {
 		$this->_blackList = $blackList;
 	}
 
@@ -399,7 +405,7 @@ abstract class weAbstractCustomerFilter{
 	 *
 	 * @return array
 	 */
-	function getBlackList(){
+	function getBlackList() {
 		return $this->_blackList;
 	}
 
@@ -408,7 +414,7 @@ abstract class weAbstractCustomerFilter{
 	 *
 	 * @param array $mode
 	 */
-	function setWhiteList($whiteList){
+	function setWhiteList($whiteList) {
 		$this->_whiteList = $whiteList;
 	}
 
@@ -417,7 +423,7 @@ abstract class weAbstractCustomerFilter{
 	 *
 	 * @return array
 	 */
-	function getWhiteList(){
+	function getWhiteList() {
 		return $this->_whiteList;
 	}
 
@@ -426,7 +432,7 @@ abstract class weAbstractCustomerFilter{
 	 *
 	 * @param array $mode
 	 */
-	function setFilter($filter){
+	function setFilter($filter) {
 		$this->_filter = $filter;
 	}
 
@@ -435,7 +441,7 @@ abstract class weAbstractCustomerFilter{
 	 *
 	 * @return array
 	 */
-	function getFilter(){
+	function getFilter() {
 		return $this->_filter;
 	}
 

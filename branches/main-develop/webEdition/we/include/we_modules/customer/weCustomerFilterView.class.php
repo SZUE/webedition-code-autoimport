@@ -306,7 +306,9 @@ EO_SCRIPT;
 			weAbstractCustomerFilter::OP_STARTS_WITH => g_l('modules_customerFilter', '[starts_with]'),
 			weAbstractCustomerFilter::OP_ENDS_WITH => g_l('modules_customerFilter', '[ends_with]'),
 			weAbstractCustomerFilter::OP_CONTAINS => g_l('modules_customerFilter', '[contains]'),
-			weAbstractCustomerFilter::OP_IN => g_l('modules_customerFilter', '[in]')
+			weAbstractCustomerFilter::OP_NOT_CONTAINS => g_l('modules_customerFilter', '[not_contains]'),
+			weAbstractCustomerFilter::OP_IN => g_l('modules_customerFilter', '[in]'),
+			weAbstractCustomerFilter::OP_NOT_IN => g_l('modules_customerFilter', '[not_in]'),
 		);
 
 		$_filter_logic = array('AND' => g_l('modules_customerFilter', '[AND]')
