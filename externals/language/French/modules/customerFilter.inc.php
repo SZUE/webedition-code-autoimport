@@ -28,7 +28,9 @@ $l_modules_customerFilter=array(
 	'mode_none'=>'Only not logged in users have access',
 	'mode_off'=>'Filter is off (all visitors have access)',
 	'mode_specific'=>'Only selected customers have access',
+	'not_contains'=>'does not contain',
 	'not_equal'=>'not equal (!=)',
+	'not_in'=>'is none of',
 	'starts_with'=>'starts with',
 	'white_list'=>'White list (these customers have always access):',
 );
