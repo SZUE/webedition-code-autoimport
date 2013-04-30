@@ -34,15 +34,16 @@ class we_workflow_frames extends we_workflow_moduleFrames{
 		$this->getJSCmdCode();
 		?>
 		</head>
-		<frameset rows="32,*,0" framespacing="0" border="0" frameborder="NO" onLoad="start();">
-			<frame src="<?php print WE_WORKFLOW_MODULE_DIR; ?>edit_workflow_header.php" name="header" scrolling=no noresize>
-			<frame src="<?php print WE_WORKFLOW_MODULE_DIR; ?>edit_workflow_frameset.php?pnt=resize" name="resize" scrolling=no>
-			<frame src="<?php print WE_WORKFLOW_MODULE_DIR; ?>edit_workflow_frameset.php?pnt=cmd" name="cmd" scrolling=no noresize>
-		</frameset><noframes></noframes>
-
-		<body background="<?php print IMAGE_DIR ?>backgrounds/aquaBackground.gif" style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px">
-		</body>
+		<?php
+		print we_html_element::htmlBody(array('background' => IMAGE_DIR . 'backgrounds/aquaBackground.gif', 'style' => 'background-color:#bfbfbf;background-repeat:repeat;margin:0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;', "onload" => "start();")
+				, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
+					, we_html_element::htmlExIFrame('header', weModuleFrames::getHTMLHeader('workflow'), 'position:absolute;top:0px;height:32px;left:0px;right:0px;') .
+					we_html_element::htmlIFrame('resize', WE_WORKFLOW_MODULE_DIR . 'edit_workflow_frameset.php?pnt=resize', 'position:absolute;top:32px;bottom:1px;left:0px;right:0px;overflow: hidden;') .
+					we_html_element::htmlIFrame('cmd', WE_WORKFLOW_MODULE_DIR . 'edit_workflow_frameset.php?pnt=cmd', 'position:absolute;bottom:0px;height:1px;left:0px;right:0px;overflow: hidden;')
+				));
+		?>
 		</html>
+
 		<?php
 	}
 
