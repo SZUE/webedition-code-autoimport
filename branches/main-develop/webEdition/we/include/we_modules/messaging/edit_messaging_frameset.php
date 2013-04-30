@@ -753,14 +753,13 @@ foreach($messaging->available_folders as $folder){
 				//-->
 </script>
 </head>
-
-<frameset rows="32,40,*,0" framespacing="0" border="0" frameborder="NO">
-	<frame src="<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_header.php" name="messaging_header" scrolling="no" noresize>
-		<frame src="<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_iconbar.php?we_transaction=<?php echo $we_transaction ?>" name="messaging_iconbar" scrolling="no" noresize>
-			<frame src="<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_main.php?we_transaction=<?php echo $we_transaction ?>" name="messaging_main" scrolling="no" noresize>
-				<frame src="<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_cmd.php" name="messaging_cmd" scrolling="yes" noresize>
-					</frameset>
-
-					<body class="aqua"></body>
-
-					</html>
+<?php
+print we_html_element::htmlBody(array('background' => IMAGE_DIR . 'backgrounds/aquaBackground.gif', 'style' => 'background-color:#bfbfbf;background-repeat:repeat;margin:0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;', "onload" => "start();")
+		, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
+			, we_html_element::htmlExIFrame('messaging_header', weModuleFrames::getHTMLHeader('messaging'), 'position:absolute;top:0px;height:32px;left:0px;right:0px;') .
+			we_html_element::htmlIFrame('messaging_iconbar', WE_MESSAGING_MODULE_DIR . 'messaging_iconbar.php?we_transaction=' . $we_transaction, 'position:absolute;top:32px;height:40;left:0px;right:0px;overflow: hidden;') .
+			we_html_element::htmlIFrame('messaging_main', WE_MESSAGING_MODULE_DIR . 'messaging_main.php?we_transaction=' . $we_transaction, 'position:absolute;top:72px;bottom:1px;left:0px;right:0px;overflow: hidden;') .
+			we_html_element::htmlIFrame('messaging_cmd', WE_MESSAGING_MODULE_DIR . 'messaging_cmd.php', 'position:absolute;bottom:0px;height:1px;left:0px;right:0px;')
+		));
+?>
+</html>
