@@ -85,6 +85,7 @@ class weToolFrames extends weModuleFrames{
 		}
 	}
 
+	//TODO: call parent after if(){}
 	function getHTMLFrameset(){
 
 		$this->Model->clearSessionVars();
@@ -97,21 +98,17 @@ class weToolFrames extends weModuleFrames{
 			$_SESSION[$this->toolName]["modelidForTree"] = $_REQUEST['modelid'];
 		}
 
-
 		$js = $this->getJSCmdCode() .
 			$this->Tree->getJSTreeCode() .
 			we_html_element::jsElement($this->getJSStart()) .
 			we_html_element::jsScript(JS_DIR . 'we_showMessage.js');
 
-		$frameset = new we_html_frameset(array("framespacing" => "0", "border" => "0", "frameborder" => "no"));
-
-		$frameset->setAttributes(array("rows" => "32,*,0", "onLoad" => "start();"));
-		$frameset->addFrame(array("src" => $this->frameset . "?pnt=header", "name" => "header", "scrolling" => "no", "noresize" => null));
-		$frameset->addFrame(array("src" => $this->frameset . "?pnt=resize" . (isset($_REQUEST['tab']) ? '&tab=' . $_REQUEST['tab'] : '') . (isset($_REQUEST['modelid']) ? '&modelid=' . $_REQUEST['modelid'] : '') . (isset($_REQUEST['sid']) ? '&sid=' . $_REQUEST['sid'] : ''), "name" => "resize", "scrolling" => "no"));
-		$frameset->addFrame(array("src" => $this->frameset . "?pnt=cmd" . (isset($_REQUEST['modelid']) ? '&modelid=' . $_REQUEST['modelid'] : ''), "name" => "cmd", "scrolling" => "no", "noresize" => null));
-
-		// set and return html code
-		$body = $frameset->getHtml();
+		$body = we_html_element::htmlBody(array('style' => 'background-color:grey;margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;', "onload" => "start();")
+				, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
+					, we_html_element::htmlExIFrame('header', parent::getHTMLHeader($this->toolDir . 'conf/we_menu_' . $this->toolName . '.conf.php', $this->toolName), 'position:absolute;top:0px;height:32px;left:0px;right:0px;') .
+					we_html_element::htmlIFrame('resize', $this->frameset . '?pnt=resize', 'position:absolute;top:32px;bottom:1px;left:0px;right:0px;overflow: hidden;') .
+					we_html_element::htmlIFrame('cmd', $this->frameset . '?pnt=cmd', 'position:absolute;bottom:0px;height:1px;left:0px;right:0px;overflow: hidden;')
+				));
 
 		return $this->getHTMLDocument($body, $js);
 	}
@@ -182,7 +179,7 @@ class weToolFrames extends weModuleFrames{
 		include($this->toolDir . 'conf/we_menu_' . $this->toolName . '.conf.php');
 		include_once(WE_INCLUDES_PATH . "jsMessageConsole/messageConsole.inc.php" );
 
-		$lang_arr = 'we_menu_' . $this->toolName;
+		$lang_arr = 'we_menu_' . $this->toolName;t_e("larr",$lang_arr);
 		$jmenu = new weJavaMenu($$lang_arr, $this->topFrame . '.cmd');
 
 		$menu = '';
