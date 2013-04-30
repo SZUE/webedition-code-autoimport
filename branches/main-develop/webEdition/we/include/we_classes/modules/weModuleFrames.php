@@ -66,7 +66,6 @@ class weModuleFrames{
 	}
 
 	function getHTMLFrameset(){
-
 		$js = $this->getJSCmdCode() .
 			$this->Tree->getJSTreeCode() .
 			we_html_element::jsElement($this->getJSStart()) .
@@ -75,7 +74,7 @@ class weModuleFrames{
 		// set and return html code
 		$body = we_html_element::htmlBody(array('style' => 'background-color:grey;margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;', "onload" => "start();")
 				, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
-					, we_html_element::htmlExIFrame('header', $this->getHTMLHeader(), 'position:absolute;top:0px;height:32px;left:0px;right:0px;') .
+					, we_html_element::htmlExIFrame('header', self::getHTMLHeader($this->module), 'position:absolute;top:0px;height:32px;left:0px;right:0px;') .
 					we_html_element::htmlIFrame('resize', $this->frameset . '?pnt=resize', 'position:absolute;top:32px;bottom:1px;left:0px;right:0px;overflow: hidden;') .
 					we_html_element::htmlIFrame('cmd', $this->frameset . '?pnt=cmd', 'position:absolute;bottom:0px;height:1px;left:0px;right:0px;overflow: hidden;')
 				));
@@ -83,12 +82,12 @@ class weModuleFrames{
 		return $this->getHTMLDocument($body, $js);
 	}
 
-	function getHTMLHeader(){
+	static function getHTMLHeader($_module){
 		//	Include the menu.
-		include(WE_INCLUDES_PATH . "java_menu/modules/module_menu_" . $this->module . ".inc.php");
+		include(WE_INCLUDES_PATH . "java_menu/modules/module_menu_" . $_module . ".inc.php");
 		include_once(WE_INCLUDES_PATH . "jsMessageConsole/messageConsole.inc.php" );
 
-		$lang_arr = "we_menu_" . $this->module;
+		$lang_arr = "we_menu_" . $_module;
 		$jmenu = new weJavaMenu($$lang_arr, 'top.opener.top.load', '');
 
 		$menu = $jmenu->getCode(false) . $jmenu->getJS();

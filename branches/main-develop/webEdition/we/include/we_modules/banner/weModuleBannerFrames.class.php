@@ -28,6 +28,7 @@ class weModuleBannerFrames{
 	var $View;
 	var $frameset;
 	var $edit_cmd = "edit_newsletter";
+	var $module = "banner";
 
 	function __construct($frameset){
 		$this->db = new DB_WE();

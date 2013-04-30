@@ -71,11 +71,6 @@ $we_menu_banner = array(
 		'enabled' => '1',
 	),
 	array(
-		'text' => g_l('modules_banner', '[options]'),
-		'parent' => '000000',
-		'enabled' => '1',
-	),
-	array(
 		'text' => g_l('modules_banner', '[defaultbanner]') . '&hellip;',
 		'parent' => '002000',
 		'cmd' => 'default_banner',
@@ -89,6 +84,13 @@ $we_menu_banner = array(
 		'perm' => 'EDIT_BANNER || ADMINISTRATOR',
 		'enabled' => '0',
 	),
+	/*
+	'003000' => array(
+		'text' => g_l('modules_banner', '[options]'),
+		'parent' => '000000',
+		'enabled' => '1',
+	),
+	*/
 	'004000' => array(
 		'text' => g_l('modules_banner', '[help]'),
 		'parent' => '000000',

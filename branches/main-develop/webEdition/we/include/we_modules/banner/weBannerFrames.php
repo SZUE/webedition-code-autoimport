@@ -34,18 +34,13 @@ class weBannerFrames extends weModuleBannerFrames{
 	function getHTMLFrameset(){
 		$this->getJSTreeCode();
 		$this->getJSCmdCode();
-		?>
-		</head>
-		<frameset rows="32,*,0" framespacing="0" border="0" frameborder="NO" onLoad="start();">
-			<frame src="<?php print WEBEDITION_DIR . "we/include/we_modules/banner/"; ?>edit_banner_header.php" name="header" scrolling="NO" noresize>
-			<frame src="<?php print WEBEDITION_DIR . "we/include/we_modules/" . $this->frameset; ?>?pnt=resize" name="resize" scrolling="NO" noresize>
-			<frame src="<?php print WEBEDITION_DIR . "we/include/we_modules/" . $this->frameset; ?>?pnt=cmd" name="cmd" scrolling="NO" noresize>
-		</frameset>
 
-		<body>
-		</body>
-		</html>
-		<?php
+		print we_html_element::htmlBody(array('style' => 'background-color:grey;margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;', "onload" => "start();")
+				, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
+					, we_html_element::htmlExIFrame('header', weModuleFrames::getHTMLHeader($this->module), 'position:absolute;top:0px;height:32px;left:0px;right:0px;') .
+					we_html_element::htmlIFrame('resize', WEBEDITION_DIR . 'we/include/we_modules/' . $this->frameset . '?pnt=resize', 'position:absolute;top:32px;bottom:1px;left:0px;right:0px;overflow: hidden;') .
+					we_html_element::htmlIFrame('cmd', WEBEDITION_DIR . 'we/include/we_modules/' . $this->frameset . '?pnt=cmd', 'position:absolute;bottom:0px;height:1px;left:0px;right:0px;overflow: hidden;')
+				));
 	}
 
 	function getJSTreeCode(){
