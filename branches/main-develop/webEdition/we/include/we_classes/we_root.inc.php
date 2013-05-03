@@ -60,7 +60,7 @@ abstract class we_root extends we_class{
 	var $IsFolder = 0;
 
 	/* ContentType of the Object  */
-	var $ContentType = '';
+	public $ContentType = '';
 
 	/* Icon which is shown at the tree-menue  */
 	public $Icon = '';

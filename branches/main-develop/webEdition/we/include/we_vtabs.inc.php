@@ -56,19 +56,19 @@ $vtab = array(
 	),
 	'TEMPLATES_TABLE' => array(
 		'file' => 'we_language/' . $GLOBALS["WE_LANGUAGE"] . "/v-tabs/templates",
-		'show' => we_hasPerm("CAN_SEE_TEMPLATES") || we_hasPerm("ADMINISTRATOR"),
+		'show' => we_hasPerm("CAN_SEE_TEMPLATES"),
 		'size' => array(19, 83),
 		'desc' => g_l('global', '[templates]'),
 	),
 	'OBJECT_FILES_TABLE' => array(
 		'file' => 'we_language/' . $GLOBALS["WE_LANGUAGE"] . "/v-tabs/objects",
-		'show' => defined("OBJECT_TABLE") && (we_hasPerm("CAN_SEE_OBJECTFILES") || we_hasPerm("ADMINISTRATOR")),
+		'show' => defined("OBJECT_TABLE") && we_hasPerm("CAN_SEE_OBJECTFILES"),
 		'size' => array(19, 83),
 		'desc' => g_l('global', '[objects]'),
 	),
 	'OBJECT_TABLE' => array(
 		'file' => 'we_language/' . $GLOBALS["WE_LANGUAGE"] . "/v-tabs/classes",
-		'show' => defined("OBJECT_TABLE") && (we_hasPerm("CAN_SEE_OBJECTS") || we_hasPerm("ADMINISTRATOR")),
+		'show' => defined("OBJECT_TABLE") && we_hasPerm("CAN_SEE_OBJECTS"),
 		'size' => array(19, 83),
 		'desc' => g_l('javaMenu_object', '[classes]'),
 	)
