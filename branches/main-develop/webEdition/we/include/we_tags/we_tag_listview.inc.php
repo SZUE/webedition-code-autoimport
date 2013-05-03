@@ -86,6 +86,9 @@ function we_tag_listview($attribs){
 
 	$id = weTag_getAttribute('id', $attribs);
 	$cond = weTag_getAttribute('condition', $attribs);
+	if($cond&&$cond{0}!='$'&& isset($GLOBALS[$cond])){
+		$cond=$GLOBALS[$cond];
+	}
 	$type = weTag_getAttribute('type', $attribs, 'document');
 	$desc = weTag_getAttribute('desc', $attribs, false, true);
 	$we_lv_desc = (isset($_REQUEST['we_lv_desc_' . $name]) ? $_REQUEST['we_lv_desc_' . $name] : $desc ) ? true : false;

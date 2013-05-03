@@ -100,7 +100,7 @@ var ImageDialog = {
 			alt : nl.alt.value,
 			align : nl.align.value,
 			name : nl.name.value,
-			'class' : nl.class.value,
+			'class' : nl['class'].value, // 'class' is a reserved word in IE <= 8 and therefore needs wrapping
 			title : nl.title.value,
 			longdesc : nl.longdesc.value
 			//style : nl.style.value,

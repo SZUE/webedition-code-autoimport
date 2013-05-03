@@ -540,7 +540,7 @@ abstract class we_rebuild{
 	 * @param string $thumbsFolders csv value of directory IDs => Create Thumbs for images in these directories.
 	 */
 	public static function getThumbnails($thumbs = '', $thumbsFolders = ''){
-		if(we_hasPerm('REBUILD_THUMBS')){
+		if(!we_hasPerm('REBUILD_THUMBS')){
 			return array();
 		}
 		$data = array();

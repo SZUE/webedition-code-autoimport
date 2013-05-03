@@ -529,8 +529,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 			return;
 		}
 
-
-		$result = getHash('SELECT * FROM ' . $this->table . ' WHERE ID=' . intval($this->id), $this->db);
+		$result = getHash('SELECT * FROM ' . $this->table . ' WHERE ID=' . intval($this->id), $this->db, MYSQLI_ASSOC);
 		$path = isset($result['Path']) ? $result['Path'] : "";
 		$out = we_html_tools::getHtmlTop() .
 			STYLESHEET . we_html_element::cssElement('
@@ -591,8 +590,8 @@ top.parentID = "' . $this->values["ParentID"] . '";
 </head>
 <body bgcolor="white" class="defaultfont" onresize="setInfoSize()" onload="setTimeout(\'setInfoSize()\',50)">';
 		if(isset($result['ContentType']) && !empty($result['ContentType'])){
-			if($result['ContentType'] != "folder"){
-				$this->db->query("SELECT ID, Text, IsFolder FROM " . $this->db->escape($this->table) . " WHERE ParentID=" . intval($this->id));
+			if($result['ContentType'] == "folder"){
+				$this->db->query('SELECT ID, Text, IsFolder FROM ' . $this->db->escape($this->table) . ' WHERE ParentID=' . intval($this->id));
 				$folderFolders = array();
 				$folderFiles = array();
 				while($this->db->next_record()) {
@@ -606,42 +605,40 @@ top.parentID = "' . $this->values["ParentID"] . '";
 							$metainfos[$this->db->f('Name')] = $this->db->f('Dat');
 						}
 						break;
-					case (defined("OBJECT_FILES_TABLE") ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
-						$_fieldnames = getHash('SELECT DefaultDesc,DefaultTitle,DefaultKeywords FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($result["TableID"]), $this->db);
+					case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
+						$_fieldnames = getHash('SELECT DefaultDesc,DefaultTitle,DefaultKeywords FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($result["TableID"]), $this->db, MYSQLI_ASSOC);
 						$_selFields = "";
 						foreach($_fieldnames as $_key => $_val){
 							if(empty($_val) || $_val == '_') // bug #4657
 								continue;
-							if(!is_numeric($_key)){
-								if($_val == '_'){
-									$_val = '';
-								}
-								if($_val){
-									switch($_key){
-										case "DefaultDesc":
-											$_selFields .= $_val . " as Description,";
-											break;
-										case "DefaultTitle":
-											$_selFields .= $_val . " as Title,";
-											break;
-										case "DefaultKeywords":
-											$_selFields .= $_val . " as Keywords,";
-											break;
-									}
+							if($_val == '_'){
+								$_val = '';
+							}
+							if($_val){
+								switch($_key){
+									case "DefaultDesc":
+										$_selFields .= $_val . " as Description,";
+										break;
+									case "DefaultTitle":
+										$_selFields .= $_val . " as Title,";
+										break;
+									case "DefaultKeywords":
+										$_selFields .= $_val . " as Keywords,";
+										break;
 								}
 							}
 						}
 						if($_selFields){
 							$_selFields = substr($_selFields, 0, strlen($_selFields) - 1);
-							$metainfos = getHash("SELECT " . $_selFields . " FROM " . OBJECT_X_TABLE . $result["TableID"] . " WHERE OF_ID=" . intval($result["ID"]), $this->db);
+							$metainfos = getHash('SELECT ' . $_selFields . ' FROM ' . OBJECT_X_TABLE . $result['TableID'] . ' WHERE OF_ID=' . intval($result["ID"]), $this->db);
 						}
 				}
 			}
 			switch($result['ContentType']){
-				case "image/*":
-				case "text/webedition":
-				case "text/html":
-				case "application/*":
+				case 'image/*':
+				case 'text/webedition':
+				case 'text/html':
+				case 'application/*':
 					$showPriview = $result['Published'] > 0 ? true : false;
 					break;
 
@@ -752,9 +749,8 @@ top.parentID = "' . $this->values["ParentID"] . '";
 					"content" => $metainfos['Keywords']
 				);
 			}
-
 			switch($result['ContentType']){
-				case "image/*":
+				case 'image/*':
 					$Title = (isset($metainfos['title']) ? $metainfos['title'] : ((isset($metainfos['Title']) && isset($metainfos['useMetaTitle']) && $metainfos['useMetaTitle']) ? $metainfos['Title'] : ''));
 					$name = (isset($metainfos['name']) ? $metainfos['name'] : '');
 					$alt = (isset($metainfos['alt']) ? $metainfos['alt'] : '');
@@ -828,7 +824,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 					break;
 			}
 
-			$out .= "<table cellpadding='0' cellspacing='0' width='100%'>";
+			$out .= '<table cellpadding="0" cellspacing="0" width="100%">';
 			if(isset($_imagepreview) && $_imagepreview){
 				$out .= "<tr><td colspan='2' valign='middle' class='image' height='160' align='center' bgcolor='#EDEEED'>" . $_imagepreview . "</td></tr>";
 			}
@@ -842,7 +838,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 							}
 						}
 					}
-			$out .= "</table></div></td></tr></table>";
+			$out .= '</table></div></td></tr></table>';
 		}
 		$out .= '</body></html>';
 		echo $out;

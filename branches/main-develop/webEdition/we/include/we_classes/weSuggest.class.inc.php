@@ -181,14 +181,14 @@ class weSuggest{
 		// AC-FIEDS
 		$fildsObj = 'var yuiAcFields = {';
 		$invalidFields = <<<HTS
-		if(parent && parent.weAutoCompetionFields && parent.weAutoCompetionFields.length>0) {
 
-			for(i=0; i< parent.weAutoCompetionFields.length; i++) {
-				if(parent.weAutoCompetionFields[i] && parent.weAutoCompetionFields[i].id && !parent.weAutoCompetionFields[i].valid) {
-					YAHOO.autocoml.markNotValid(i);
+			if(parent && parent.weAutoCompetionFields && parent.weAutoCompetionFields.length>0) {
+				for(i=0; i< parent.weAutoCompetionFields.length; i++) {
+					if(parent.weAutoCompetionFields[i] && parent.weAutoCompetionFields[i].id && !parent.weAutoCompetionFields[i].valid) {
+						YAHOO.autocoml.markNotValid(i);
+					}
 				}
 			}
-		}
 HTS;
 
 		$oACDSInit = "";
@@ -220,18 +220,17 @@ HTS;
 			$weFieldWS .= "weWorkspacePathArray[$i] = new Array($weWorkspacePathArrayJS);";
 
 			$weAcFields .= <<<HTS
-if(parent && parent.weAutoCompetionFields && !parent.weAutoCompetionFields[$i]) {
-	parent.weAutoCompetionFields[$i] = {
-		'id' : yuiAcFields.set_$i.id,
-		'valid' : true,
-		'cType' : yuiAcFields.set_$i.cType
-	}
-}
 
+			if((inst == -1 || inst == 'set_$i') && parent && parent.weAutoCompetionFields && !parent.weAutoCompetionFields[$i]) {
+				parent.weAutoCompetionFields[$i] = {
+					'id' : yuiAcFields.set_$i.id,
+					'valid' : true,
+					'cType' : yuiAcFields.set_$i.cType
+				}
+			}
 HTS;
 
 			$fildsById .= "	yuiAcFieldsById['" . $this->inputfields[$i] . "']={'index':'$i','set':'set_$i'};";
-
 			$fildsObj .=
 				($i > 0 ? ',' : '') . "'set_$i': {
 			'id' : '" . $this->inputfields[$i] . "',
@@ -246,6 +245,7 @@ HTS;
 			'countMark': 0,
 			'changed': false,
 			'table': '" . $this->tables[$i] . "',
+			'rootDir': '" . $this->rootDirs[$i] . "',
 			'cTypes': '" . $this->contentTypes[$i] . "',
 			'workspace': new Array(" . $weWorkspacePathArrayJS . "),
 			'mayBeEmpty': " . ($this->inputMayBeEmpty[$i] ? "true" : "false");
@@ -375,13 +375,14 @@ HTS;
 				var wsPathInput_$i = document.getElementById(yuiAcFields.set_$i.id).value;
 				for(i=0; i<yuiAcFields.set_{$i}.workspace.length; i++) {
 					if(wsPathInput_$i.length >= yuiAcFields.set_{$i}.workspace[i].length) {
-						if(wsPathInput_$i.substr(0,yuiAcFields.set_{$i}.workspace[i].length) == yuiAcFields.set_{$i}.workspace[i])	{
+						if(wsPathInput_$i.substr(0,yuiAcFields.set_{$i}.workspace[i].length) == yuiAcFields.set_{$i}.workspace[i]){
 							wsValid_$i = true;
 						}
 					}
 				}
 			}
-			if(document.getElementById(yuiAcFields.set_$i.id).value =="/" && (yuiAcFields.set_$i.selector == "dirSelector"|| yuiAcFields.set_$i.selector == "Dirselector"|| yuiAcFields.set_$i.selector == "selector") && wsValid_$i) {
+			var rootDirValid_$i = (yuiAcFields.set_$i.rootDir !== '' && document.getElementById(yuiAcFields.set_$i.id).value.indexOf(yuiAcFields.set_$i.rootDir) !== 0) ? false : true;				
+			if(document.getElementById(yuiAcFields.set_$i.id).value =="/" && (yuiAcFields.set_$i.selector == "dirSelector"|| yuiAcFields.set_$i.selector == "Dirselector"|| yuiAcFields.set_$i.selector == "selector") && wsValid_$i && rootDirValid_$i) {
 				document.getElementById(yuiAcFields.set_{$i}.fields_id[0]).value = '0';
 				yuiAcFields.set_$i.newval = '/';
 				yuiAcFields.set_$i.run = false;
@@ -392,6 +393,10 @@ HTS;
 				YAHOO.autocoml.unmarkNotValid($i);
 			} else {
 				switch(true) {
+					case (!rootDirValid_$i):                              // ERROR: Not valid rootDir
+						debug('Not valid rootDir');
+						YAHOO.autocoml.markNotValid($i);
+						break;
 					case (!wsValid_$i):                                   // ERROR: Not valid workspace
 						debug('Not valid workspace');
 						YAHOO.autocoml.markNotValid($i);
@@ -506,50 +511,59 @@ HTS;
 
 HTS;
 			}
+			
 			// EOF loop fields
 
 			$fildsObj .= "		}";
 			$declare .=
-				'oACDS_' . $i . ' = new YAHOO.widget.DS_XHR(ajaxURL, ["\n", "\t"]);
-			oACDS_' . $i . '.responseType = YAHOO.widget.DS_XHR.TYPE_FLAT;
-			oACDS_' . $i . '.maxCacheEntries = 60;
-			oACDS_' . $i . '.queryMatchSubset = false;
-			oACDS_' . $i . '.scriptQueryAppend  = "protocol=text&cmd=SelectorSuggest&we_cmd[2]="+yuiAcFields.set_' . $i . '.table+"&we_cmd[3]="+yuiAcFields.set_' . $i . '.cTypes+"&we_cmd[4]=' . $weSelfContentType . '&we_cmd[5]=' . $weSelfID . '&we_cmd[6]=' . $this->rootDirs[$i] . '";
-			oACDS_' . $i . '.scriptQueryParam  = "we_cmd[1]";
-			var myInput = document.getElementById("' . $this->inputfields[$i] . '");
-			var myContainer = document.getElementById("' . $this->containerfields[$i] . '");
-			oAutoComp_' . $i . ' = new YAHOO.widget.AutoComplete(myInput,myContainer,oACDS_' . $i . ');
-			oAutoComp_' . $i . '.maxResultsDisplayed = ' . $this->weMaxResults[$i] . ';
-			oAutoComp_' . $i . '.queryDelay = 0;';
+				
+				'if(inst == -1 || inst == "set_' . $i . '"){
+				oACDS_' . $i . ' = null;
+				oACDS_' . $i . ' = new YAHOO.widget.DS_XHR(ajaxURL, ["\n", "\t"]);
+				oACDS_' . $i . '.responseType = YAHOO.widget.DS_XHR.TYPE_FLAT;
+				oACDS_' . $i . '.maxCacheEntries = 60;
+				oACDS_' . $i . '.queryMatchSubset = false;
+				oACDS_' . $i . '.scriptQueryAppend  = "protocol=text&cmd=SelectorSuggest&we_cmd[2]="+yuiAcFields.set_' . $i . '.table+"&we_cmd[3]="+yuiAcFields.set_' . $i . '.cTypes+"&we_cmd[4]=' . $weSelfContentType . '&we_cmd[5]=' . $weSelfID . '&we_cmd[6]="+yuiAcFields.set_' . $i . '.rootDir;
+				oACDS_' . $i . '.scriptQueryParam  = "we_cmd[1]";
+				var myInput = document.getElementById("' . $this->inputfields[$i] . '");
+				var myContainer = document.getElementById("' . $this->containerfields[$i] . '");
+				if(oAutoComp_' . $i . ' !== undefined){
+					oAutoComp_' . $i . '.destroy();
+				}
+				oAutoComp_' . $i . ' = new YAHOO.widget.AutoComplete(myInput,myContainer,oACDS_' . $i . ');
+				oAutoComp_' . $i . '.maxResultsDisplayed = ' . $this->weMaxResults[$i] . ';
+				oAutoComp_' . $i . '.queryDelay = 0;';
 			if(isset($this->setOnSelectFields[$i]) && is_array($this->setOnSelectFields[$i])){
 				$declare .= 'oAutoComp_' . $i . '.itemSelectEvent.subscribe(YAHOO.autocoml.doOnItemSelect_' . $i . ');' .
-					'oAutoComp_' . $i . '.dataRequestEvent.subscribe(YAHOO.autocoml.doOnDataRequestEvent_' . $i . ');' .
-					'oAutoComp_' . $i . '.dataReturnEvent.subscribe(YAHOO.autocoml.doOnDataReturnEvent_' . $i . ');' .
-					'oAutoComp_' . $i . '.unmatchedItemSelectEvent.subscribe(YAHOO.autocoml.doOnUnmatchedItemSelectEvent_' . $i . ');' .
-					'oAutoComp_' . $i . '.dataErrorEvent.subscribe(YAHOO.autocoml.doOnDataErrorEvent_' . $i . ');' .
-					'oAutoComp_' . $i . '.dataReturnEvent.subscribe(YAHOO.autocoml.doOnDataReturnEvent_' . $i . ');';
+				'oAutoComp_' . $i . '.dataRequestEvent.subscribe(YAHOO.autocoml.doOnDataRequestEvent_' . $i . ');' .
+				'oAutoComp_' . $i . '.dataReturnEvent.subscribe(YAHOO.autocoml.doOnDataReturnEvent_' . $i . ');' .
+				'oAutoComp_' . $i . '.unmatchedItemSelectEvent.subscribe(YAHOO.autocoml.doOnUnmatchedItemSelectEvent_' . $i . ');' .
+				'oAutoComp_' . $i . '.dataErrorEvent.subscribe(YAHOO.autocoml.doOnDataErrorEvent_' . $i . ');' .
+				'oAutoComp_' . $i . '.dataReturnEvent.subscribe(YAHOO.autocoml.doOnDataReturnEvent_' . $i . ');';
 			}
 			if(isset($this->checkFieldsValues[$i]) && $this->checkFieldsValues[$i]){
 				$declare .= 'oAutoComp_' . $i . '.textboxBlurEvent.subscribe(YAHOO.autocoml.doOnTextfieldBlur_' . $i . ');' .
-					'oAutoComp_' . $i . '.textboxFocusEvent.subscribe(YAHOO.autocoml.doOnTextfieldFocus_' . $i . ');' .
-					'oAutoComp_' . $i . '.containerCollapseEvent.subscribe(YAHOO.autocoml.doOnContainerCollapse_' . $i . ');';
+				'oAutoComp_' . $i . '.textboxFocusEvent.subscribe(YAHOO.autocoml.doOnTextfieldFocus_' . $i . ');' .
+				'oAutoComp_' . $i . '.containerCollapseEvent.subscribe(YAHOO.autocoml.doOnContainerCollapse_' . $i . ');';
 			}
 			$declare .= '
-			oAutoComp_' . $i . '.formatResult = function(oResultItem, sQuery) {
-				var sKey = oResultItem[0];
-				var nQuantity = oResultItem[1];
-				var sKeyQuery = sKey.substr(0, sQuery.length);
-				var sKeyRemainder = sKey.substr(sQuery.length);
-				oAutoCompRes_' . $i . '[sKeyQuery] = oResultItem[2];
-				var aMarkup = ["<div id=\'ysearchresult\'><div class=\'ysearchquery\'>",
+				oAutoComp_' . $i . '.formatResult = function(oResultItem, sQuery) {
+					var sKey = oResultItem[0];
+					var nQuantity = oResultItem[1];
+					var sKeyQuery = sKey.substr(0, sQuery.length);
+					var sKeyRemainder = sKey.substr(sQuery.length);
+					oAutoCompRes_' . $i . '[sKeyQuery] = oResultItem[2];
+					var aMarkup = ["<div id=\'ysearchresult\'><div class=\'ysearchquery\'>",
 					//nQuantity,
 					"</div><span style=\'font-weight:bold\'>",
 					sKeyQuery,
 					"</span>",
 					sKeyRemainder,
 					"</div>"];
-				return (aMarkup.join(""));
-			};';
+					return (aMarkup.join(""));
+				};
+			}
+			';
 		}
 
 		/* $declare .= <<<HTS
@@ -576,7 +590,8 @@ $onSelect
 $onBlur
 $onFocus
 $doAjax
-		init: function() {
+		init: function(param,inst) {
+			inst = inst === undefined ? -1 : inst;
 			$declare
 			$weAcFields
 			$invalidFields
@@ -651,11 +666,24 @@ $doAjax
 			}
 		},
 
-
 		modifySetById: function(fId,param,value){
 			set = yuiAcFieldsById[fId].set;
-			yuiAcFields[set][param]=value;
-			YAHOO.autocoml.init();
+			if(typeof param === 'object'){
+				for(var name in param){
+					yuiAcFields[set][name] = typeof yuiAcFields[set][name] !== 'undefined' ? param[name] : yuiAcFields[set][name];
+				}
+			} else{
+				yuiAcFields[set][param] = typeof yuiAcFields[set][param] !== 'undefined' ? value : yuiAcFields[set][param];
+			}
+			YAHOO.autocoml.init(undefined, set);
+		},
+
+		getParamById: function(fId,param){
+			set = yuiAcFieldsById[fId].set;
+			return yuiAcFields[set][param];
+		},
+		getYuiAcFields: function(){
+			return yuiAcFields;
 		},
 		isValidById: function(fId){
 			if(fId) {
