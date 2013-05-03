@@ -126,6 +126,7 @@ $l_weClass=array(
 	'noresize'=>'Не менять размер',
 	'notValidFolder'=>'The directory chosen is invalid!',
 	'onlyOwner'=>'Только основной владелец',
+	'openTemplate'=>'open template',
 	'origheight'=>'o.H.',
 	'origwidth'=>'o.W.',
 	'other'=>'Другие',

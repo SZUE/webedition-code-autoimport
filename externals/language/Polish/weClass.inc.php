@@ -126,6 +126,7 @@ $l_weClass=array(
 	'noresize'=>'Nie zmieniaj',
 	'notValidFolder'=>'The directory chosen is invalid!',
 	'onlyOwner'=>'Tylko administrator',
+	'openTemplate'=>'open template',
 	'origheight'=>'o.H.',
 	'origwidth'=>'o.W.',
 	'other'=>'Inne',
