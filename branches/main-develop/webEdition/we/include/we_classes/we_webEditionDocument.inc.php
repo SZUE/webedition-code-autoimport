@@ -278,7 +278,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		$textname = 'we_' . $this->Name . '_TemplateName';
 		$idname = 'we_' . $this->Name . '_TemplateID';
 		$ueberschrift = g_l('weClass', "[template]");
-		if(we_hasPerm("CAN_SEE_TEMPLATES") && $_SESSION['weS']['we_mode'] != "seem"){
+		if(we_hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] != 'seem'){
 			$ueberschriftLink = '<a href="javascript:goTemplate(document.we_form.elements[\'' . $idname . '\'].value)">' . g_l('weClass', "[template]") . '</a>';
 		} else{
 			$ueberschriftLink = $ueberschrift;
@@ -325,7 +325,7 @@ class we_webEditionDocument extends we_textContentDocument{
 			$myid = intval($this->TemplateID ? $this->TemplateID : 0);
 			$path = ($myid ? f('SELECT Path FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . $myid, 'Path', $this->DB_WE) : '');
 
-			$ueberschrift = (we_hasPerm("CAN_SEE_TEMPLATES") && $_SESSION['weS']["we_mode"] == "normal" ?
+			$ueberschrift = (we_hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] == 'normal' ?
 					'<a href="javascript:goTemplate(' . $myid . ')">' . g_l('weClass', '[template]') . '</a>' :
 					g_l('weClass', '[template]'));
 
@@ -352,17 +352,20 @@ class we_webEditionDocument extends we_textContentDocument{
 
 		$fieldname = 'we_' . $this->Name . '_TemplateID';
 
-		list($TID, $Templates) = getHash("SELECT TemplateID,Templates FROM " . DOC_TYPES_TABLE . " WHERE ID =" . intval($this->DocType), $this->DB_WE);
+		list($TID, $Templates) = getHash('SELECT TemplateID,Templates FROM ' . DOC_TYPES_TABLE . ' WHERE ID =' . intval($this->DocType), $this->DB_WE);
 		$tlist = '';
-		if($TID != '')
+		if($TID != ''){
 			$tlist = $TID;
-		if($Templates != '')
+		}
+		if($Templates != ''){
 			$tlist.=',' . $Templates;
+		}
 		if($tlist){
 			$temps = explode(',', $tlist);
-			if(in_array($this->TemplateID, $temps))
+			if(in_array($this->TemplateID, $temps)){
 				$TID = $this->TemplateID;
-			$tlist = implode(",", array_unique($temps));
+			}
+			$tlist = implode(',', array_unique($temps));
 		} else{
 			$foo = array();
 			$wsArray = makeArrayFromCSV($ws);
@@ -372,15 +375,14 @@ class we_webEditionDocument extends we_textContentDocument{
 			$tlist = makeCSVFromArray($foo);
 		}
 		if($this->TemplateID){
-			$tlist = $tlist ? ($tlist .= "," . $this->TemplateID) : $this->TemplateID;
-			//if($TID == "")
+			$tlist = $tlist ? ($tlist .= ',' . $this->TemplateID) : $this->TemplateID;
 			$TID = $this->TemplateID;
 		}
-		$ueberschrift = (we_hasPerm("CAN_SEE_TEMPLATES") && $_SESSION['weS']["we_mode"] == "normal" ?
+		$ueberschrift = (we_hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] == 'normal' ?
 				'<a href="javascript:goTemplate(document.we_form.elements[\'' . $fieldname . '\'].options[document.we_form.elements[\'' . $fieldname . '\'].selectedIndex].value)">' . g_l('weClass', "[template]") . '</a>' :
-				g_l('weClass', "[template]"));
+				g_l('weClass', '[template]'));
 
-		if($tlist != ""){
+		if(!empty($tlist)){
 			$foo = array();
 			$arr = makeArrayFromCSV($tlist);
 			foreach($arr as $tid){
@@ -388,11 +390,10 @@ class we_webEditionDocument extends we_textContentDocument{
 					$foo[] = $tid;
 				}
 			}
-			$tlist = makeCSVFromArray($foo);
-			$tlist = $tlist ? $tlist : -1;
-			return $this->formSelect4("", $width, "TemplateID", TEMPLATES_TABLE, "ID", "Path", $ueberschrift, " WHERE ID IN ($tlist) AND IsFolder=0 ORDER BY Path", 1, $TID, false, "we_cmd('template_changed');_EditorFrame.setEditorIsHot(true);", "", "left", "defaultfont", "", "", array(0, ""));
+			$tlist = $foo ? implode(',', $foo) : -1;
+			return $this->formSelect4('', $width, 'TemplateID', TEMPLATES_TABLE, 'ID', 'Path', $ueberschrift, ' WHERE ID IN (' . $tlist . ') AND IsFolder=0 ORDER BY Path', 1, $TID, false, "we_cmd('template_changed');_EditorFrame.setEditorIsHot(true);", "", "left", "defaultfont", "", "", array(0, ""));
 		} else{
-			return $this->formSelect2("", $width, "TemplateID", TEMPLATES_TABLE, "ID", "Path", $ueberschrift, "WHERE IsFolder=0 ORDER BY Path ", 1, $this->TemplateID, false, "_EditorFrame.setEditorIsHot(true);");
+			return $this->formSelect2('', $width, 'TemplateID', TEMPLATES_TABLE, 'ID', 'Path', $ueberschrift, 'WHERE IsFolder=0 ORDER BY Path ', 1, $this->TemplateID, false, "_EditorFrame.setEditorIsHot(true);");
 		}
 	}
 
@@ -418,8 +419,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		return '
 <table border="0" cellpadding="0" cellspacing="0">
 	<tr>
-		<td colspan="2">
-			' . $this->formInputField("txt", "Title", g_l('weClass', "[Title]"), 40, 508, "", "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
+		<td colspan="2">' . $this->formInputField("txt", "Title", g_l('weClass', "[Title]"), 40, 508, "", "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
 	</tr>
 	<tr>
 		<td>' . we_html_tools::getPixel(2, 4) . '</td>
@@ -432,8 +432,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		<td>' . we_html_tools::getPixel(2, 4) . '</td>
 	</tr>
 	<tr>
-		<td colspan="2">
-			' . $this->formInputField("txt", "Keywords", g_l('weClass', "[Keywords]"), 40, 508, "", "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
+		<td colspan="2">' . $this->formInputField("txt", "Keywords", g_l('weClass', "[Keywords]"), 40, 508, "", "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
 	</tr>' .
 			$this->getCharsetSelect() .
 			$this->formLanguage(true) .
