@@ -170,6 +170,7 @@ $l_alert=array(
 	'we_name_not_allowed'=>'The terms `we` and `webEdition` are reserved words and may not be used!',
 	
 	'wrong_file'=>array(
+		'application/*'=>'MIME type "application/*" is not applicable to the chosen document type.',
 		'application/x-shockwave-flash'=>'The file could not be stored. Either it is not a Flash movie or your disk space is exhausted!',
 		'image/*'=>'The file could not be stored. Either it is not an image, the format is not compatible for publishing in the internet (no bmp, tif) or your webspace is exhausted!',
 		'other'=>'The file could not be stored. Either your file format doesn`t match the type, you are not allowed to `store other` files or your disk space is exhausted!',

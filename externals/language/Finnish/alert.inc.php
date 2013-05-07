@@ -170,6 +170,7 @@ $l_alert=array(
 	'we_name_not_allowed'=>'Termit `we` and `webEdition` ovat varattuja sanoja joten niitä ei voida käyttää!',
 	
 	'wrong_file'=>array(
+		'application/*'=>'MIME type "application/*" is not applicable to the chosen document type.',
 		'application/x-shockwave-flash'=>'Valitsemasi tiedosto ei ole Flash -tiedosto!',
 		'image/*'=>'Valitsemasi tiedosto ei ole kuva!',
 		'other'=>'The file could not be stored. Either your file format doesn`t match the type, you are not allowed to `store other` files or your disk space is exhausted!',

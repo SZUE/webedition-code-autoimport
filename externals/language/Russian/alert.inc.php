@@ -170,6 +170,7 @@ $l_alert=array(
 	'we_name_not_allowed'=>'Имена `we` и `webEdition` зарезервированы для использования самой системой и не могут употребляться для других целей!',
 	
 	'wrong_file'=>array(
+		'application/*'=>'MIME type "application/*" is not applicable to the chosen document type.',
 		'application/x-shockwave-flash'=>'Невозможно сохранить файл.  Он либо не относится к Flash фильмам, либо недостаточно места на диске!',
 		'image/*'=>'Невозможно сохранить файл. Он либо не относится к графическим файлам, либо недостаточно пространства в сети!',
 		'other'=>'The file could not be stored. Either your file format doesn`t match the type, you are not allowed to `store other` files or your disk space is exhausted!',
