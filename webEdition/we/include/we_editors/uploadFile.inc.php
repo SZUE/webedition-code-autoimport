@@ -54,7 +54,7 @@ if(!isset($_SESSION['weS']['we_data'][$we_transaction])){
 			$allowedContentTypes = $we_doc->ContentType;
 	}
 
-	if(isset($_FILES["we_File"]) && $_FILES["we_File"]["name"] != "" && $_FILES['we_File']["type"] && (($allowedContentTypes == "") || (!(strpos($allowedContentTypes, $_FILES['we_File']["type"]) === false)))){
+	if(isset($_FILES['we_File']) && !empty($_FILES["we_File"]["name"])&& $_FILES['we_File']["type"] && ((empty($allowedContentTypes)) || (!(strpos($allowedContentTypes, $_FILES['we_File']['type']) === false)))){
 		$we_File = TEMP_PATH . '/' . weFile::getUniqueId();
 		move_uploaded_file($_FILES["we_File"]["tmp_name"], $we_File);
 		if((!$we_doc->Filename) || (!$we_doc->ID)){
@@ -87,7 +87,7 @@ if(!isset($_SESSION['weS']['we_data'][$we_transaction])){
 		}
 		$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]); // save the changed object in session
 	} else if(isset($_FILES['we_File']['name']) && !empty($_FILES['we_File']['name'])){
-		$we_alerttext = g_l('alert', "[wrong_file][" . $we_doc->ContentType . ']');
+		$we_alerttext = g_l('alert', '[wrong_file][' . $we_doc->ContentType . ']');
 	} else if(isset($_FILES['we_File']['name']) && empty($_FILES['we_File']['name'])){
 		$we_alerttext = g_l('alert', "[no_file_selected]");
 	}
