@@ -76,7 +76,7 @@ class we_users_util{
 			}
 
 			foreach($users as $user){
-				$isGroup = f("SELECT IsFolder FROM " . USER_TABLE . " WHERE ID=" . intval($user), "IsFolder", $db);
+				$isGroup = f('SELECT IsFolder FROM ' . USER_TABLE . ' WHERE ID=' . intval($user), "IsFolder", $db);
 				if($isGroup){
 					if(self::isUserInGroup($uid, $user)){
 						return true;
