@@ -136,7 +136,7 @@ class weSuggest{
 	}
 
 	function getYuiCode(){
-		return $this->getYuiCss() . $this->getYuiJs();
+		return self::getYuiCss() . self::getYuiJs();
 	}
 
 	/**
@@ -381,7 +381,7 @@ HTS;
 					}
 				}
 			}
-			var rootDirValid_$i = (yuiAcFields.set_$i.rootDir !== '' && document.getElementById(yuiAcFields.set_$i.id).value.indexOf(yuiAcFields.set_$i.rootDir) !== 0) ? false : true;				
+			var rootDirValid_$i = (yuiAcFields.set_$i.rootDir !== '' && document.getElementById(yuiAcFields.set_$i.id).value.indexOf(yuiAcFields.set_$i.rootDir) !== 0) ? false : true;
 			if(document.getElementById(yuiAcFields.set_$i.id).value =="/" && (yuiAcFields.set_$i.selector == "dirSelector"|| yuiAcFields.set_$i.selector == "Dirselector"|| yuiAcFields.set_$i.selector == "selector") && wsValid_$i && rootDirValid_$i) {
 				document.getElementById(yuiAcFields.set_{$i}.fields_id[0]).value = '0';
 				yuiAcFields.set_$i.newval = '/';
@@ -511,12 +511,12 @@ HTS;
 
 HTS;
 			}
-			
+
 			// EOF loop fields
 
 			$fildsObj .= "		}";
 			$declare .=
-				
+
 				'if(inst == -1 || inst == "set_' . $i . '"){
 				oACDS_' . $i . ' = null;
 				oACDS_' . $i . ' = new YAHOO.widget.DS_XHR(ajaxURL, ["\n", "\t"]);

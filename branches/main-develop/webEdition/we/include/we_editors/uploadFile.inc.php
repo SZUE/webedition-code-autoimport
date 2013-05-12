@@ -54,8 +54,9 @@ if(!isset($_SESSION['weS']['we_data'][$we_transaction])){
 			$allowedContentTypes = $we_doc->ContentType;
 	}
 
-	if(isset($_FILES['we_File']) && !empty($_FILES["we_File"]["name"])&& $_FILES['we_File']["type"] && ((empty($allowedContentTypes)) || (!(strpos($allowedContentTypes, $_FILES['we_File']['type']) === false)))){
-		$we_File = TEMP_PATH . '/' . weFile::getUniqueId();
+	if(isset($_FILES['we_File']) && !empty($_FILES["we_File"]["name"]) && $_FILES['we_File']["type"] && ((empty($allowedContentTypes)) || (!(strpos($allowedContentTypes, $_FILES['we_File']['type']) === false)))){
+		$we_doc->Extension = strtolower((strpos($_FILES["we_File"]["name"], ".") > 0) ? preg_replace('/^.+(\..+)$/', "\\1", $_FILES["we_File"]["name"]) : ""); //strtolower for feature 3764
+		$we_File = TEMP_PATH . '/' . weFile::getUniqueId() . $we_doc->Extension;
 		move_uploaded_file($_FILES["we_File"]["tmp_name"], $we_File);
 		if((!$we_doc->Filename) || (!$we_doc->ID)){
 			// Bug Fix #6284
@@ -63,16 +64,15 @@ if(!isset($_SESSION['weS']['we_data'][$we_transaction])){
 			$we_doc->Filename = preg_replace('/^(.+)\..+$/', "\\1", $we_doc->Filename);
 		}
 
-		$foo = explode("/", $_FILES["we_File"]["type"]);
-		$we_doc->setElement("data", $we_File, $foo[0]);
-		if($we_doc->ContentType == "image/*" || $we_doc->ContentType == "application/x-shockwave-flash"){
+		$foo = explode('/', $_FILES["we_File"]["type"]);
+		$we_doc->setElement('data', $we_File, $foo[0]);
+		if($we_doc->ContentType == 'image/*' || $we_doc->ContentType == "application/x-shockwave-flash"){
 			$we_size = $we_doc->getimagesize($we_File);
 			$we_doc->setElement("width", $we_size[0], "attrib");
 			$we_doc->setElement("height", $we_size[1], "attrib");
 			$we_doc->setElement("origwidth", $we_size[0]);
 			$we_doc->setElement("origheight", $we_size[1]);
 		}
-		$we_doc->Extension = strtolower((strpos($_FILES["we_File"]["name"], ".") > 0) ? preg_replace('/^.+(\..+)$/', "\\1", $_FILES["we_File"]["name"]) : ""); //strtolower for feature 3764
 		$we_doc->Text = $we_doc->Filename . $we_doc->Extension;
 		$we_doc->Path = $we_doc->getPath();
 		$we_doc->DocChanged = true;
@@ -117,19 +117,19 @@ if($we_alerttext){
 	print we_message_reporting::getShowMessageCall($we_alerttext, we_message_reporting::WE_MESSAGE_ERROR);
 	if($error){
 		?>
-					top.close();
+		top.close();
 		<?php
 	}
 }
 
 if(isset($we_File) && (!$we_alerttext)){
 	?>
-			opener.we_cmd("update_file");
-			_EditorFrame = opener.top.weEditorFrameController.getActiveEditorFrame();
-			_EditorFrame.getDocumentReference().frames[0].we_setPath("<?php print $we_doc->Path; ?>","<?php print $we_doc->Text; ?>");
-			self.close();
+	opener.we_cmd("update_file");
+	_EditorFrame = opener.top.weEditorFrameController.getActiveEditorFrame();
+	_EditorFrame.getDocumentReference().frames[0].we_setPath("<?php print $we_doc->Path; ?>", "<?php print $we_doc->Text; ?>");
+	self.close();
 <?php } ?>
-	//-->
+//-->
 </script>
 </head>
 

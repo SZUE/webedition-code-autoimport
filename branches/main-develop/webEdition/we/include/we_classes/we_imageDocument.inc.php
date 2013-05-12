@@ -200,6 +200,29 @@ class we_imageDocument extends we_binaryDocument{
 				$this->setElement($a, $b, 'attrib');
 			}
 		}
+		$this->checkDisableEditpages();
+	}
+
+	public function initByID($ID, $Table = '', $from = we_class::LOAD_MAID_DB){
+		parent::initByID($ID, $Table, $from);
+		$this->checkDisableEditpages();
+	}
+
+	private function isSvg(){
+		return ($this->Extension == '.svg' || $this->Extension == '.svgz');
+	}
+
+	private function checkDisableEditpages(){
+		if($this->isSvg()){
+			$pos = array_search(WE_EDITPAGE_IMAGEEDIT, $this->EditPageNrs);
+			if($pos !== false){
+				unset($this->EditPageNrs[$pos]);
+			}
+			$pos = array_search(WE_EDITPAGE_THUMBNAILS, $this->EditPageNrs);
+			if($pos !== false){
+				unset($this->EditPageNrs[$pos]);
+			}
+		}
 	}
 
 	/**
@@ -321,7 +344,7 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 	 * @param boolean $dyn
 	 * @param string $inc_href
 	 */
-	function getHtml($dyn = false, $inc_href = true, $pathOnly=false){
+	function getHtml($dyn = false, $inc_href = true, $pathOnly = false){
 		$_data = $this->getElement('data');
 		if($this->ID || ($_data && !is_dir($_data) && is_readable($_data))){
 			switch($this->getElement('LinkType')){
@@ -519,7 +542,16 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 	 * @param $filename complete path of the image
 	 */
 	function getimagesize($filename){
-		return we_thumbnail::getimagesize($filename);
+		return ($this->isSvg() ? $this->getSvgSize($filename) : we_thumbnail::getimagesize($filename));
+	}
+
+	private function getSvgSize($filename){
+		$line = weFile::load($filename, 'rb', 1000, 1);
+		$match = array();
+		return array(
+			(preg_match('|<svg[^>]*width="([^"]*)"[^>]*>|i', $line, $match) ? intval($match[1]) : ''),
+			(preg_match('|<svg[^>]*height="([^"]*)"[^>]*>|i', $line, $match) ? intval($match[1]) : ''),
+		);
 	}
 
 	/**
@@ -650,8 +682,9 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 	}
 
 	function getThumbnail(){
-		return ($this->getElement('data') && is_readable($this->getElement('data')) ?
-				'<img src="' . WEBEDITION_DIR . 'thumbnail.php?id=' . $this->ID . '&size=150&path=' . str_replace($_SERVER['DOCUMENT_ROOT'], '', $this->getElement('data')) . '&extension=' . $this->Extension . '&size2=200" border="0" /></a>' :
+		return ($this->getElement('data') && is_readable($this->getElement('data')) ? ($this->isSvg() ?
+					'<svg id="' . weFile::getUniqueId() . '" height="150" width="150" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" ><image x="0" y="0" height="150" width="150"  xlink:href="' . str_replace($_SERVER['DOCUMENT_ROOT'], '', $this->getElement('data')) . '" /></svg>' :
+					'<img src="' . WEBEDITION_DIR . 'thumbnail.php?id=' . $this->ID . '&size=150&path=' . str_replace($_SERVER['DOCUMENT_ROOT'], '', $this->getElement('data')) . '&extension=' . $this->Extension . '&size2=200" border="0" /></a>' ) :
 				$this->getHtml());
 	}
 

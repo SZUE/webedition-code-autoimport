@@ -24,7 +24,7 @@
  */
 abstract class weFile{
 
-	static function load($filename, $flags = 'rb', $rsize = 8192, $iscompressed = 0){
+	static function load($filename, $flags = 'rb', $rsize = 8192, $iscompressed = false){
 		if($filename == ''){
 			return false;
 		}
@@ -40,7 +40,7 @@ abstract class weFile{
 			}
 		}
 
-		$prefix = $iscompressed == 0 ? 'f' : self::getComPrefix('gzip');
+		$prefix = $iscompressed ? self::getComPrefix('gzip') : 'f';
 		$open = $prefix . 'open';
 		$read = $prefix . 'read';
 		$close = $prefix . 'close';
@@ -60,7 +60,7 @@ abstract class weFile{
 		return false;
 	}
 
-	static function loadLine($filename, $offset = 0, $rsize = 8192, $iscompressed = 0){
+	static function loadLine($filename, $offset = 0, $rsize = 8192, $iscompressed = false){
 		if($filename == '' || self::hasURL($filename) || !is_readable($filename)){
 			return false;
 		}
@@ -70,7 +70,7 @@ abstract class weFile{
 		  return;
 		  } */
 
-		$prefix = $iscompressed == 0 ? 'f' : self::getComPrefix('gzip');
+		$prefix = $iscompressed ? self::getComPrefix('gzip') : 'f';
 		$open = $prefix . 'open';
 		$seek = $prefix . 'seek';
 		$read = $prefix . 'read';
@@ -89,7 +89,7 @@ abstract class weFile{
 		return false;
 	}
 
-	static function loadPart($filename, $offset = 0, $rsize = 8192, $iscompressed = 0){
+	static function loadPart($filename, $offset = 0, $rsize = 8192, $iscompressed = false){
 		if($filename == '' || self::hasURL($filename) || !is_readable($filename)){
 			return false;
 		}
@@ -99,7 +99,7 @@ abstract class weFile{
 		  return;
 		  } */
 
-		$prefix = $iscompressed == 0 ? 'f' : self::getComPrefix('gzip');
+		$prefix = $iscompressed ? self::getComPrefix('gzip') : 'f';
 		$open = $prefix . 'open';
 		$seek = $prefix . 'seek';
 		$read = $prefix . 'read';
@@ -328,7 +328,7 @@ abstract class weFile{
 
 	static function compress($file, $compression = 'gzip', $destination = '', $remove = true, $writemode = 'wb'){
 		if(!self::hasCompression($compression)){
-			t_e('compression not available',$compression);
+			t_e('compression not available', $compression);
 			return false;
 		}
 		if($destination == ''){

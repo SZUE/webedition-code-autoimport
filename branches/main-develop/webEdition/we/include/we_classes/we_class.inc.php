@@ -419,8 +419,9 @@ abstract class we_class{
 		$myname = 'we_' . $this->Name . '_' . $name;
 
 
-		if(!$elementtype)
+		if(!$elementtype){
 			$ps = $this->$name;
+		}
 		$pop = $this->htmlSelect($myname, $vals, $size, $selectedIndex, $multiple, "onChange=\"$onChange\" " . $attribs, 'value', $width);
 		return $this->htmlFormElementTable(($precode ? $precode : '') . $pop . ($postcode ? $postcode : ''), $text, $textalign, $textclass);
 	}
