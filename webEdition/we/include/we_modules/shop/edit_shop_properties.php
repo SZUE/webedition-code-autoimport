@@ -50,41 +50,38 @@ function getFieldFromShoparticle(array $array, $name, $length = 0){
 			$val);
 }
 
-function getOrderCustomerData($orderId, $orderData = false, $customerId = false, $strFelder = array()){
-	if(!$customerId){
-		// get customerID from order
-		$tmp = getHash('SELECT IntCustomerID, strSerialOrder FROM ' . SHOP_TABLE . ' WHERE IntOrderID=' . intval($orderId), $GLOBALS['DB_WE']);
-
-		if(!empty($tmp)){
-			$customerId = $tmp['IntCustomerID'];
-			$orderData = @unserialize($tmp['strSerialOrder']);
-		}
-	}
-
+function getOrderCustomerData($orderId, $strFelder = array()){
+	list($customerId, $tmp) = getHash('SELECT IntCustomerID,strSerialOrder FROM ' . SHOP_TABLE . '	WHERE IntOrderID=' . intval($orderId), $GLOBALS['DB_WE'], MYSQL_NUM);
 	// get Customer
-	$customerDb = getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . intval($customerId), $GLOBALS['DB_WE']);
+	$customerDb = getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . intval($customerId), $GLOBALS['DB_WE'], MYSQL_ASSOC);
+
+	$orderData = @unserialize($tmp);
 	$customerOrder = (isset($orderData[WE_SHOP_CART_CUSTOMER_FIELD]) ? $orderData[WE_SHOP_CART_CUSTOMER_FIELD] : array());
 
-	// default values are fields saved with order
-	$tmpCustomer = array_merge($customerDb, $customerOrder);
+	if(empty($strFelder)){//only data from order - return all fields, fill in unknown fields from customer-db
+		// default values are fields saved with order
+		return array_merge($customerDb, $customerOrder);
+	}
 
-	// only fields explicity set with the order are shown here
-	if(isset($strFelder) && isset($strFelder['customerFields'])){
-		foreach($strFelder['customerFields'] as $k){
-			if(isset($customerDb[$k])){
-				$tmpCustomer[$k] = $customerDb[$k];
-			}
+	//make sure at least Forename + Surname is selected
+	$strFelder['customerFields'][] = 'Forename';
+	$strFelder['customerFields'][] = 'Surname';
+	
+	$customer = array();
+	foreach($strFelder['customerFields'] as $field){
+		if(isset($customerDb[$field])){
+			$customer[$field] = $customerDb[$field];
+		}
+	}
+	foreach($strFelder['orderCustomerFields'] as $field){
+		if(isset($customerOrder[$field])){
+			$customer[$field] = $customerOrder[$field];
+		} elseif(isset($customerDb[$field])){ //fallback to customerDB
+			$customer[$field] = $customerDb[$field];
 		}
 	}
 
-	$_customer = array();
-
-	foreach($tmpCustomer as $k => $v){
-		if(!is_int($k)){
-			$_customer[$k] = $v;
-		}
-	}
-	return $_customer;
+	return $customer;
 }
 
 function getFieldFromOrder($bid, $field){
@@ -98,28 +95,27 @@ function updateFieldFromOrder($orderId, $fieldname, $value){
 // config
 $feldnamen = explode('|', f('SELECT strFelder FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname = "shop_pref"', 'strFelder', $GLOBALS['DB_WE']));
 
-$waehr = "&nbsp;" . oldHtmlspecialchars($feldnamen[0]);
-$dbTitlename = "shoptitle";
-$dbPreisname = "price";
+$waehr = '&nbsp;' . oldHtmlspecialchars($feldnamen[0]);
+$dbPreisname = 'price';
 $numberformat = $feldnamen[2];
 $classid = (isset($feldnamen[3]) ? $feldnamen[3] : '');
 $classIds = makeArrayFromCSV($classid);
 $mwst = (!empty($feldnamen[1])) ? (($feldnamen[1])) : '';
-$notInc = "tblTemplates";
+$notInc = 'tblTemplates';
 
-$da = "%d.%m.%Y";
-$dateform = "00.00.0000";
-$db = "%d.%m.%Y %H:%i";
-$datetimeform = "00.00.0000 00:00";
+$da = '%d.%m.%Y';
+$dateform = '00.00.0000';
+$db = '%d.%m.%Y %H:%i';
+$datetimeform = '00.00.0000 00:00';
 
 
 if(isset($_REQUEST['we_cmd'][0])){
 	switch($_REQUEST['we_cmd'][0]){
 		case 'add_article':
-			if(intval($_REQUEST["anzahl"]) > 0){
+			if(intval($_REQUEST['anzahl']) > 0){
 
 				// add complete article / object here - inclusive request fields
-				$_strSerialOrder = getFieldFromOrder($_REQUEST["bid"], 'strSerialOrder');
+				$_strSerialOrder = getFieldFromOrder($_REQUEST['bid'], 'strSerialOrder');
 
 				$tmp = explode('_', $_REQUEST['add_article']);
 				$isObj = ($tmp[1] == 'o');
@@ -163,14 +159,14 @@ if(isset($_REQUEST['we_cmd'][0])){
 				}
 
 				//need pricefield:
-				$orderArray=  unserialize($_strSerialOrder);
+				$orderArray = unserialize($_strSerialOrder);
 				$pricename = (isset($orderArray[WE_SHOP_PRICENAME]) ? $orderArray[WE_SHOP_PRICENAME] : 'shopprice');
 				// now insert article to order:
 				$row = getHash('SELECT IntOrderID, IntCustomerID, DateOrder, DateShipping, Datepayment, IntPayment_Type FROM ' . SHOP_TABLE . ' WHERE IntOrderID=' . intval($_REQUEST['bid']), $GLOBALS['DB_WE']);
 				$GLOBALS['DB_WE']->query('INSERT INTO ' . SHOP_TABLE . ' SET ' .
 					we_database_base::arraySetter((array(
 						'IntArticleID' => $id,
-						'IntQuantity' => $_REQUEST["anzahl"],
+						'IntQuantity' => $_REQUEST['anzahl'],
 						'Price' => we_util::std_numberformat(getFieldFromShoparticle($serialDoc, $pricename)),
 						'IntOrderID' => $row['IntOrderID'],
 						'IntCustomerID' => $row['IntCustomerID'],
@@ -198,7 +194,7 @@ if(isset($_REQUEST['we_cmd'][0])){
 			$GLOBALS['DB_WE']->query('SELECT ' . CONTENT_TABLE . '.dat AS shopTitle, ' . LINK_TABLE . '.DID AS documentId FROM ' . CONTENT_TABLE . ', ' . LINK_TABLE . ', ' . FILE_TABLE .
 				' WHERE ' . FILE_TABLE . '.ID = ' . LINK_TABLE . '.DID
 					AND ' . LINK_TABLE . '.CID = ' . CONTENT_TABLE . '.ID
-					AND ' . LINK_TABLE . '.Name = "shoptitle"
+					AND ' . LINK_TABLE . '.Name = "' . WE_SHOP_TITLE_FIELD_NAME . '"
 					AND ' . LINK_TABLE . '.DocumentTable != "tblTemplates" ' .
 				(isset($_REQUEST['searchArticle']) && $_REQUEST['searchArticle'] ?
 					' AND ' . CONTENT_TABLE . '.Dat LIKE "%' . $GLOBALS['DB_WE']->escape($_REQUEST['searchArticle']) . '%"' :
@@ -206,19 +202,19 @@ if(isset($_REQUEST['we_cmd'][0])){
 			);
 
 			while($GLOBALS['DB_WE']->next_record()) {
-				$shopArticles[$GLOBALS['DB_WE']->f('documentId') . '_d'] = $GLOBALS['DB_WE']->f("shopTitle") . ' [' . $GLOBALS['DB_WE']->f("documentId") . ']' . g_l('modules_shop', '[isDoc]');
+				$shopArticles[$GLOBALS['DB_WE']->f('documentId') . '_d'] = $GLOBALS['DB_WE']->f('shopTitle') . ' [' . $GLOBALS['DB_WE']->f('documentId') . ']' . g_l('modules_shop', '[isDoc]');
 			}
 
 			if(defined('OBJECT_TABLE')){
 				// now get all shop objects
 				foreach($classIds as $_classId){
 					$_classId = intval($_classId);
-					$GLOBALS['DB_WE']->query('SELECT  ' . OBJECT_X_TABLE . $_classId . '.input_shoptitle as shopTitle, ' . OBJECT_X_TABLE . $_classId . '.OF_ID as objectId
+					$GLOBALS['DB_WE']->query('SELECT  ' . OBJECT_X_TABLE . $_classId . '.input_' . WE_SHOP_TITLE_FIELD_NAME . ' AS ' . WE_SHOP_TITLE_FIELD_NAME . ', ' . OBJECT_X_TABLE . $_classId . '.OF_ID as objectId
 						FROM ' . OBJECT_X_TABLE . $_classId . ', ' . OBJECT_FILES_TABLE . '
 						WHERE ' . OBJECT_X_TABLE . $_classId . '.OF_ID = ' . OBJECT_FILES_TABLE . '.ID
 							AND ' . OBJECT_X_TABLE . $_classId . '.ID = ' . OBJECT_FILES_TABLE . '.ObjectID ' .
 						(isset($_REQUEST['searchArticle']) && $_REQUEST['searchArticle'] ?
-							' AND ' . OBJECT_X_TABLE . $_classId . '.input_shoptitle  LIKE "%' . $GLOBALS['DB_WE']->escape($_REQUEST['searchArticle']) . '%"' :
+							' AND ' . OBJECT_X_TABLE . $_classId . '.input_' . WE_SHOP_TITLE_FIELD_NAME . '  LIKE "%' . $GLOBALS['DB_WE']->escape($_REQUEST['searchArticle']) . '%"' :
 							'')
 					);
 
@@ -243,12 +239,12 @@ if(isset($_REQUEST['we_cmd'][0])){
 			$end_entry = (($page * $MAX_PER_PAGE + $MAX_PER_PAGE < $AMOUNT_ARTICLES) ? ($page * $MAX_PER_PAGE + $MAX_PER_PAGE) : $AMOUNT_ARTICLES );
 
 			$backBut = ($start_entry - $MAX_PER_PAGE > 0 ?
-					we_button::create_button('back', "javascript:switchEntriesPage(" . ($page - 1) . ");") :
-					we_button::create_button('back', "#", true, 100, 22, '', '', true));
+					we_button::create_button('back', 'javascript:switchEntriesPage(' . ($page - 1) . ');') :
+					we_button::create_button('back', '#', true, 100, 22, '', '', true));
 
 			$nextBut = (($end_entry) < $AMOUNT_ARTICLES ?
-					we_button::create_button('next', "javascript:switchEntriesPage(" . ($page + 1) . ");") :
-					we_button::create_button('next', "#", true, 100, 22, '', '', true));
+					we_button::create_button('next', 'javascript:switchEntriesPage(' . ($page + 1) . ');') :
+					we_button::create_button('next', '#', true, 100, 22, '', '', true));
 
 
 			$shopArticlesSelect = $shopArticlesParts[$page];
@@ -275,12 +271,13 @@ function searchArticles() {
 </head>
 <body class="weDialogBody">';
 
-			$parts = array(($AMOUNT_ARTICLES > 0 ?
+			$parts = array(
+				($AMOUNT_ARTICLES > 0 ?
 					array(
 					'headline' => g_l('modules_shop', '[Artikel]'),
 					'space' => 100,
 					'html' => '
-<form name="we_intern_form">' . we_html_tools::hidden('bid', $_REQUEST['bid']) . we_html_tools::hidden("we_cmd[]", 'add_new_article') . '
+<form name="we_intern_form">' . we_html_tools::hidden('bid', $_REQUEST['bid']) . we_html_tools::hidden('we_cmd[]', 'add_new_article') . '
 	<table border="0" cellpadding="0" cellspacing="0">
 	<tr><td>' . we_class::htmlSelect("add_article", $shopArticlesSelect, 15, (isset($_REQUEST['add_article']) ? $_REQUEST['add_article'] : ''), false, 'onchange="selectArticle(this.options[this.selectedIndex].value);"', 'value', '380') . '</td>
 	<td>' . we_html_tools::getPixel(10, 1) . '</td>
@@ -323,21 +320,14 @@ function searchArticles() {
 					'-' => '-'
 				);
 
-				if($type == 'o'){
-					$model = new we_objectFile();
-					$model->initByID($id, OBJECT_FILES_TABLE);
+				$model = ($type == 'o' ? new we_objectFile() : new we_webEditionDocument());
 
-					$variantData = weShopVariants::getVariantData($model, '-');
-				} else{
-					$model = new we_webEditionDocument();
-					$model->initByID($id);
-
-					$variantData = weShopVariants::getVariantData($model, '-');
-				}
+				$model->initByID($id);
+				$variantData = weShopVariants::getVariantData($model, '-');
 
 				if(count($variantData) > 1){
 					foreach($variantData as $cur){
-						list($key, $varData) = each($cur);
+						list($key) = each($cur);
 						if($key != '-'){
 							$variantOptions[$key] = $key;
 						}
@@ -348,12 +338,11 @@ function searchArticles() {
 					'headline' => g_l('modules_shop', '[Artikel]'),
 					'space' => 100,
 					'html' => '
-					<form name="we_form" target="edbody">
-					' . we_html_tools::hidden('bid', $_REQUEST['bid']) .
+					<form name="we_form" target="edbody">' .
+					we_html_tools::hidden('bid', $_REQUEST['bid']) .
 					we_html_tools::hidden('we_cmd[]', 'add_article') .
 					we_html_tools::hidden('add_article', $_REQUEST['add_article']) .
-					'
-					<b>' . $model->elements['shoptitle']['dat'] . '</b>',
+					'<b>' . $model->elements[WE_SHOP_TITLE_FIELD_NAME]['dat'] . '</b>',
 					'noline' => 1
 				);
 
@@ -453,8 +442,8 @@ function searchArticles() {
 <form name="we_form">
 <input type="hidden" name="bid" value="' . $_REQUEST['bid'] . '" />
 <input type="hidden" name="we_cmd[0]" value="save_shop_cart_custom_field" />';
-			$saveBut = we_button::create_button('save', "javascript:we_submit();");
-			$cancelBut = we_button::create_button('cancel', "javascript:self.close();");
+			$saveBut = we_button::create_button('save', 'javascript:we_submit();');
+			$cancelBut = we_button::create_button('cancel', 'javascript:self.close();');
 
 
 			$val = '';
@@ -492,9 +481,7 @@ function searchArticles() {
 			unset($parts);
 			unset($val);
 			unset($fieldHtml);
-			print '
-				</form></body>
-</html>';
+			print '</form></body></html>';
 			exit;
 
 		case 'save_shop_cart_custom_field':
@@ -502,31 +489,23 @@ function searchArticles() {
 			if(isset($_REQUEST['cartfieldname']) && $_REQUEST['cartfieldname']){
 
 				$strSerialOrder = getFieldFromOrder($_REQUEST['bid'], 'strSerialOrder');
-
 				$serialOrder = @unserialize($strSerialOrder);
 				$serialOrder[WE_SHOP_CART_CUSTOM_FIELD][$_REQUEST['cartfieldname']] = htmlentities($_REQUEST['cartfieldvalue']);
 				$serialOrder[WE_SHOP_CART_CUSTOM_FIELD][$_REQUEST['cartfieldname']] = $_REQUEST['cartfieldvalue'];
 
 				// update all orders with this orderId
 				if(updateFieldFromOrder($_REQUEST['bid'], 'strSerialOrder', serialize($serialOrder))){
-					$jsCmd = '
-					top.opener.top.content.shop_tree.doClick(' . $_REQUEST['bid'] . ',"shop","' . SHOP_TABLE . '");' .
-						we_message_reporting::getShowMessageCall(sprintf(g_l('modules_shop', '[edit_order][js_saved_cart_field_success]'), $_REQUEST['cartfieldname']), we_message_reporting::WE_MESSAGE_NOTICE) .
-						'window.close();';
+					$jsCmd = 'top.opener.top.content.shop_tree.doClick(' . $_REQUEST['bid'] . ',"shop","' . SHOP_TABLE . '");' .
+						we_message_reporting::getShowMessageCall(sprintf(g_l('modules_shop', '[edit_order][js_saved_cart_field_success]'), $_REQUEST['cartfieldname']), we_message_reporting::WE_MESSAGE_NOTICE);
 				} else{
-					$jsCmd = we_message_reporting::getShowMessageCall(sprintf(g_l('modules_shop', '[edit_order][js_saved_cart_field_error]'), $_REQUEST['cartfieldname']), we_message_reporting::WE_MESSAGE_ERROR) .
-						'window.close();';
+					$jsCmd = we_message_reporting::getShowMessageCall(sprintf(g_l('modules_shop', '[edit_order][js_saved_cart_field_error]'), $_REQUEST['cartfieldname']), we_message_reporting::WE_MESSAGE_ERROR);
 				}
 			} else{
-
-				$jsCmd = we_message_reporting::getShowMessageCall(g_l('modules_shop', '[field_empty_js_alert]'), we_message_reporting::WE_MESSAGE_ERROR) .
-					'window.close();';
+				$jsCmd = we_message_reporting::getShowMessageCall(g_l('modules_shop', '[field_empty_js_alert]'), we_message_reporting::WE_MESSAGE_ERROR);
 			}
 
-			print we_html_element::jsElement($jsCmd) .
-				'</head>
-<body></body>
-</html>';
+			print we_html_element::jsElement($jsCmd . 'window.close();') .
+				'</head><body></body></html>';
 			unset($serialOrder);
 			unset($strSerialOrder);
 			exit;
@@ -536,17 +515,15 @@ function searchArticles() {
 			$shippingVats = array();
 
 			foreach($shopVats as $k => $shopVat){
-				if(strlen($shopVat->vat . ' - ' . $shopVat->text) > 20){
-					$shippingVats[$shopVat->vat] = substr($shopVat->vat . ' - ' . $shopVat->text, 0, 16) . ' ...';
-				} else{
-					$shippingVats[$shopVat->vat] = $shopVat->vat . ' - ' . $shopVat->text;
-				}
+				$shippingVats[$shopVat->vat] = (strlen($shopVat->vat . ' - ' . $shopVat->text) > 20 ?
+						substr($shopVat->vat . ' - ' . $shopVat->text, 0, 16) . ' ...' :
+						$shopVat->vat . ' - ' . $shopVat->text);
 			}
 
 			unset($shopVat);
 			unset($shopVats);
-			$saveBut = we_button::create_button('save', "javascript:document.we_form.submit();self.close();");
-			$cancelBut = we_button::create_button('cancel', "javascript:self.close();");
+			$saveBut = we_button::create_button('save', 'javascript:document.we_form.submit();self.close();');
+			$cancelBut = we_button::create_button('cancel', 'javascript:self.close();');
 
 			$strSerialOrder = getFieldFromOrder($_REQUEST['bid'], 'strSerialOrder');
 
@@ -568,34 +545,31 @@ function searchArticles() {
 				array(
 					'headline' => g_l('modules_shop', '[edit_order][shipping_costs]'),
 					'space' => 150,
-					'html' => we_class::htmlTextInput("weShipping_costs", 24, $shippingCost),
+					'html' => we_class::htmlTextInput('weShipping_costs', 24, $shippingCost),
 					'noline' => 1
 				),
 				array(
 					'headline' => g_l('modules_shop', '[edit_shipping_cost][isNet]'),
 					'space' => 150,
-					'html' => we_class::htmlSelect("weShipping_isNet", array('1' => g_l('global', '[yes]'), '0' => g_l('global', '[no]')), 1, $shippingIsNet),
+					'html' => we_class::htmlSelect('weShipping_isNet', array(1 => g_l('global', '[yes]'), 0 => g_l('global', '[no]')), 1, $shippingIsNet),
 					'noline' => 1
 				),
 				array(
 					'headline' => g_l('modules_shop', '[edit_shipping_cost][vatRate]'),
 					'space' => 150,
-					'html' => we_html_tools::htmlInputChoiceField("weShipping_vatRate", $shippingVat, $shippingVats, array(), '', true),
+					'html' => we_html_tools::htmlInputChoiceField('weShipping_vatRate', $shippingVat, $shippingVats, array(), '', true),
 					'noline' => 1
 				)
 			);
 
 
-			print '
-				</head>
+			print '</head>
 				<body class="weDialogBody">
-				<form name="we_form" target="edbody">
-				' . we_html_tools::hidden('bid', $_REQUEST['bid']) .
+				<form name="we_form" target="edbody">' .
+				we_html_tools::hidden('bid', $_REQUEST['bid']) .
 				we_html_tools::hidden("we_cmd[]", 'save_shipping_cost') .
-				we_multiIconBox::getHTML("", "100%", $parts, 30, we_button::position_yes_no_cancel($saveBut, '', $cancelBut), -1, "", "", false, g_l('modules_shop', '[edit_shipping_cost][title]')) .
-				'</form>
-				</body>
-				</html>';
+				we_multiIconBox::getHTML('', '100%', $parts, 30, we_button::position_yes_no_cancel($saveBut, '', $cancelBut), -1, '', '', false, g_l('modules_shop', '[edit_shipping_cost][title]')) .
+				'</form></body></html>';
 			exit;
 			break;
 
@@ -606,7 +580,7 @@ function searchArticles() {
 
 			if($serialOrder){
 
-				$weShippingCosts = str_replace(",", ".", $_REQUEST['weShipping_costs']);
+				$weShippingCosts = str_replace(',', '.', $_REQUEST['weShipping_costs']);
 				$serialOrder[WE_SHOP_SHIPPING]['costs'] = $weShippingCosts;
 				$serialOrder[WE_SHOP_SHIPPING]['isNet'] = $_REQUEST['weShipping_isNet'];
 				$serialOrder[WE_SHOP_SHIPPING]['vatRate'] = $_REQUEST['weShipping_vatRate'];
@@ -626,8 +600,8 @@ function searchArticles() {
 			break;
 
 		case 'edit_order_customer'; // edit data of the saved customer.
-			$saveBut = we_button::create_button('save', "javascript:document.we_form.submit();self.close();");
-			$cancelBut = we_button::create_button('cancel', "javascript:self.close();");
+			$saveBut = we_button::create_button('save', 'javascript:document.we_form.submit();self.close();');
+			$cancelBut = we_button::create_button('cancel', 'javascript:self.close();');
 			if(!Zend_Locale::hasCache()){
 				Zend_Locale::setCache(getWEZendCache());
 			}
@@ -635,7 +609,7 @@ function searchArticles() {
 			$_customer = getOrderCustomerData($_REQUEST['bid']);
 			ksort($_customer);
 
-			$dontEdit = array('ID', 'Username', 'Password', 'MemberSince', 'LastLogin', 'LastAccess', 'ParentID', 'Path', 'IsFolder', 'Icon', 'Text', 'Forename', 'Surname');
+			$dontEdit = explode(',', we_shop_shop::ignoredEditFields);
 
 			$parts = array(
 				array(
@@ -643,15 +617,15 @@ function searchArticles() {
 					'space' => 0
 				),
 				array(
-					'headline' => g_l('modules_customer', '[Forname]') . ": ",
+					'headline' => g_l('modules_customer', '[Forname]') . ': ',
 					'space' => 150,
-					'html' => we_class::htmlTextInput("weCustomerOrder[Forename]", 44, $_customer['Forename']),
+					'html' => we_class::htmlTextInput('weCustomerOrder[Forename]', 44, $_customer['Forename']),
 					'noline' => 1
 				),
 				array(
-					'headline' => g_l('modules_customer', '[Surname]') . ": ",
+					'headline' => g_l('modules_customer', '[Surname]') . ': ',
 					'space' => 150,
-					'html' => we_class::htmlTextInput("weCustomerOrder[Surname]", 44, $_customer['Surname']),
+					'html' => we_class::htmlTextInput('weCustomerOrder[Surname]', 44, $_customer['Surname']),
 					'noline' => 1
 				)
 			);
@@ -660,10 +634,10 @@ function searchArticles() {
 			foreach($_customer as $k => $v){
 				if(!in_array($k, $dontEdit)){
 					if(isset($CLFields['stateField']) && isset($CLFields['stateFieldIsISO']) && $k == $CLFields['stateField'] && $CLFields['stateFieldIsISO']){
-						$lang = explode('_', $GLOBALS["WE_LANGUAGE"]);
+						$lang = explode('_', $GLOBALS['WE_LANGUAGE']);
 						$langcode = array_search($lang[0], $GLOBALS['WE_LANGS']);
 						$countrycode = array_search($langcode, $GLOBALS['WE_LANGS_COUNTRIES']);
-						$countryselect = new we_html_select(array("name" => "weCustomerOrder[$k]", "size" => "1", "style" => "{width:280;}", "class" => "wetextinput"));
+						$countryselect = new we_html_select(array('name' => "weCustomerOrder[$k]", 'size' => 1, 'style' => '{width:280;}', 'class' => 'wetextinput'));
 
 						$topCountries = array_flip(explode(',', WE_COUNTRIES_TOP));
 						if(!Zend_Locale::hasCache()){
@@ -684,7 +658,6 @@ function searchArticles() {
 						asort($shownCountries, SORT_LOCALE_STRING);
 						setlocale(LC_ALL, $oldLocale);
 
-						$content = '';
 						if(WE_COUNTRIES_DEFAULT != ''){
 							$countryselect->addOption('--', CheckAndConvertISObackend(WE_COUNTRIES_DEFAULT));
 						}
@@ -692,8 +665,7 @@ function searchArticles() {
 							$countryselect->addOption($countrykey, CheckAndConvertISObackend($countryvalue));
 						}
 						unset($countryvalue);
-						$countryselect->addOption('-', '----', array("disabled" => "disabled"));
-						//$content.='<option value="-" disabled="disabled">----</option>'."\n";
+						$countryselect->addOption('-', '----', array('disabled' => 'disabled'));
 						foreach($shownCountries as $countrykey => &$countryvalue){
 							$countryselect->addOption($countrykey, CheckAndConvertISObackend($countryvalue));
 						}
@@ -701,19 +673,19 @@ function searchArticles() {
 						$countryselect->selectOption($v);
 
 						$parts[] = array(
-							'headline' => "$k: ",
+							'headline' => $k . ': ',
 							'space' => 150,
 							'html' => $countryselect->getHtml(),
 							'noline' => 1
 						);
 					} elseif((isset($CLFields['languageField']) && isset($CLFields['languageFieldIsISO']) && $k == $CLFields['languageField'] && $CLFields['languageFieldIsISO'])){
-						$frontendL = $GLOBALS["weFrontendLanguages"];
+						$frontendL = $GLOBALS['weFrontendLanguages'];
 						foreach($frontendL as $lc => &$lcvalue){
 							$lccode = explode('_', $lcvalue);
 							$lcvalue = $lccode[0];
 						}
 						unset($countryvalue);
-						$languageselect = new we_html_select(array("name" => "weCustomerOrder[$k]", "size" => "1", "style" => "{width:280;}", "class" => "wetextinput"));
+						$languageselect = new we_html_select(array('name' => "weCustomerOrder[$k]", 'size' => 1, 'style' => '{width:280;}', 'class' => 'wetextinput'));
 						foreach(g_l('languages', '') as $languagekey => $languagevalue){
 							if(in_array($languagekey, $frontendL)){
 								$languageselect->addOption($languagekey, $languagevalue);
@@ -722,16 +694,16 @@ function searchArticles() {
 						$languageselect->selectOption($v);
 
 						$parts[] = array(
-							'headline' => "$k: ",
+							'headline' => $k . ': ',
 							'space' => 150,
 							'html' => $languageselect->getHtml(),
 							'noline' => 1
 						);
 					} else{
 						$parts[] = array(
-							'headline' => "$k: ",
+							'headline' => $k . ': ',
 							'space' => 150,
-							'html' => we_class::htmlTextInput("weCustomerOrder[$k]", 44, $v),
+							'html' => we_class::htmlTextInput('weCustomerOrder[' . $k . ']', 44, $v),
 							'noline' => 1
 						);
 					}
@@ -743,22 +715,19 @@ function searchArticles() {
 				<body class="weDialogBody">
 				<form name="we_form" target="edbody">' .
 				we_html_tools::hidden('bid', $_REQUEST['bid']) .
-				we_html_tools::hidden("we_cmd[]", 'save_order_customer') .
-				we_multiIconBox::getHTML("", "100%", $parts, 30, we_button::position_yes_no_cancel($saveBut, '', $cancelBut), -1, "", "", false, g_l('modules_shop', '[preferences][customerdata]'), "", 560) .
+				we_html_tools::hidden('we_cmd[]', 'save_order_customer') .
+				we_multiIconBox::getHTML('', '100%', $parts, 30, we_button::position_yes_no_cancel($saveBut, '', $cancelBut), -1, '', '', false, g_l('modules_shop', '[preferences][customerdata]'), '', 560) .
 				'</form>
 				</body>
 				</html>';
 			exit;
 
 		case 'save_order_customer':
-
 			// just get this order and save this userdata in there.
-
 			$_strSerialOrder = getFieldFromOrder($_REQUEST['bid'], 'strSerialOrder');
 
 			$_orderData = @unserialize($_strSerialOrder);
 			$_customer = $_REQUEST['weCustomerOrder'];
-
 			$_orderData[WE_SHOP_CART_CUSTOMER_FIELD] = $_customer;
 
 
@@ -778,90 +747,65 @@ function searchArticles() {
 	}
 }
 
-if(isset($_REQUEST["deletethisorder"])){
+if(isset($_REQUEST['deletethisorder'])){
 	$GLOBALS['DB_WE']->query('DELETE FROM ' . SHOP_TABLE . ' WHERE IntOrderID = ' . $_REQUEST['bid']);
 	echo we_html_element::jsElement('top.content.deleteEntry(' . $_REQUEST['bid'] . ')') .
 	'</head>
 	<body class="weEditorBody" onunload="doUnload()">
 	<table border="0" cellpadding="0" cellspacing="2" width="300">
       <tr>
-        <td colspan="2" class="defaultfont">' . we_html_tools::htmlDialogLayout("<span class='defaultfont'>" . g_l('modules_shop', '[geloscht]') . "</span>", g_l('modules_shop', '[loscht]')) . '</td>
+        <td colspan="2" class="defaultfont">' . we_html_tools::htmlDialogLayout('<span class="defaultfont">' . g_l('modules_shop', '[geloscht]') . '</span>', g_l('modules_shop', '[loscht]')) . '</td>
       </tr>
       </table></html>';
 	exit;
 }
 
-if(isset($_REQUEST["deleteaartikle"])){
-	$GLOBALS['DB_WE']->query('DELETE FROM ' . SHOP_TABLE . ' WHERE IntID = ' . $_REQUEST["deleteaartikle"]);
-	$l = f('SELECT COUNT(1) AS a FROM ' . SHOP_TABLE . ' WHERE IntOrderID = ' . intval($_REQUEST["bid"]), 'a', $GLOBALS['DB_WE']);
-	if($l < 1){
+if(isset($_REQUEST['deleteaarticle'])){
+	$GLOBALS['DB_WE']->query('DELETE FROM ' . SHOP_TABLE . ' WHERE IntID=' . intval($_REQUEST['deleteaarticle']));
+	if(f('SELECT COUNT(1) AS a FROM ' . SHOP_TABLE . ' WHERE IntOrderID=' . intval($_REQUEST['bid']), 'a', $GLOBALS['DB_WE']) < 1){
 		$letzerartikel = 1;
 	}
 }
 // Get Customer data
-$_REQUEST["cid"] = f('SELECT IntCustomerID FROM ' . SHOP_TABLE . '	WHERE IntOrderID = ' . intval($_REQUEST["bid"]), 'IntCustomerID', $GLOBALS['DB_WE']);
+$_REQUEST['cid'] = f('SELECT IntCustomerID FROM ' . SHOP_TABLE . '	WHERE IntOrderID=' . intval($_REQUEST['bid']), 'IntCustomerID', $GLOBALS['DB_WE']);
 
-$strFelder = f('SELECT strFelder FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname = "edit_shop_properties"', 'strFelder', $GLOBALS['DB_WE']);
 
-if(($fields = @unserialize($strFelder))){
+if(($fields = @unserialize(f('SELECT strFelder FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname="edit_shop_properties"', 'strFelder', $GLOBALS['DB_WE'])))){
 	// we have an array with following syntax:
 	// array ( 'customerFields' => array('fieldname ...',...)
 	//         'orderCustomerFields' => array('fieldname', ...) )
 } else{
-
-	$fields['customerFields'] = array();
-	$fields['orderCustomerFields'] = array();
-
-	// the save format used to be ...
-	// Vorname:tblWebUser||Forename,Nachname:tblWebUser||Surname,Contact/Address1:tblWebUser||Contact_Address1,Contact/Address1:tblWebUser||Contact_Address1,...
-	$_fieldInfos = explode(',', $strFelder);
-
-	foreach($_fieldInfos as $_fieldInfo){
-
-		$tmp1 = explode('||', $_fieldInfo);
-		$tmp2 = explode(':', $tmp1[0]);
-
-		$_fieldname = $tmp1[1];
-		$_titel = $tmp2[0];
-		$_tbl = $tmp2[1];
-
-		if($_tbl != 'webE'){
-			$fields['customerFields'][] = $_fieldname;
-		}
-	}
-	$fields['customerFields'] = array_unique($fields['customerFields']);
-
-	unset($_tmpEntries);
+	//unsupported
+	t_e('unsupported Shop-Settings found');
 }
 
 // >>>> Getting customer data
-//$_customer = getOrderCustomerData(0, $orderData, $_REQUEST['cid'], $fields);
-$_customer = getOrderCustomerData(0, 0, $_REQUEST['cid'], $fields);
+$_customer = getOrderCustomerData(intval($_REQUEST['bid']), $fields);
 // <<<< End of getting customer data
 
 
 
 
-if(isset($_REQUEST["SendMail"])){
-	$weShopStatusMails->sendEMail($_REQUEST["SendMail"], $_REQUEST["bid"], $_customer);
+if(isset($_REQUEST['SendMail'])){
+	$weShopStatusMails->sendEMail($_REQUEST['SendMail'], $_REQUEST['bid'], $_customer);
 }
 foreach(weShopStatusMails::$StatusFields as $field){
 	if(isset($_REQUEST[$field])){
 		list($day, $month, $year) = explode('.', $_REQUEST[$field]);
-		$DateOrder = $year . "-" . $month . "-" . $day . " 00:00:00";
+		$DateOrder = $year . '-' . $month . '-' . $day . ' 00:00:00';
 		$GLOBALS['DB_WE']->query('UPDATE ' . SHOP_TABLE . ' SET ' . $field . '="' . $GLOBALS['DB_WE']->escape($DateOrder) . '" WHERE IntOrderID = ' . intval($_REQUEST["bid"]));
-		$weShopStatusMails->checkAutoMailAndSend(substr($field, 4), $_REQUEST["bid"], $_customer);
+		$weShopStatusMails->checkAutoMailAndSend(substr($field, 4), $_REQUEST['bid'], $_customer);
 	}
 }
 
-if(isset($_REQUEST["article"])){
-	if(isset($_REQUEST["preis"])){
-		$GLOBALS['DB_WE']->query('UPDATE ' . SHOP_TABLE . ' SET Price=' . abs($_REQUEST["preis"]) . ' WHERE IntID = ' . intval($_REQUEST["article"]));
-	} else if(isset($_REQUEST["anzahl"])){
-		$GLOBALS['DB_WE']->query('UPDATE ' . SHOP_TABLE . ' SET IntQuantity=' . abs($_REQUEST["anzahl"]) . ' WHERE IntID = ' . intval($_REQUEST["article"]));
+if(isset($_REQUEST['article'])){
+	if(isset($_REQUEST['preis'])){
+		$GLOBALS['DB_WE']->query('UPDATE ' . SHOP_TABLE . ' SET Price=' . abs($_REQUEST['preis']) . ' WHERE IntID = ' . intval($_REQUEST['article']));
+	} else if(isset($_REQUEST['anzahl'])){
+		$GLOBALS['DB_WE']->query('UPDATE ' . SHOP_TABLE . ' SET IntQuantity=' . abs($_REQUEST['anzahl']) . ' WHERE IntID = ' . intval($_REQUEST['article']));
 	} else if(isset($_REQUEST['vat'])){
 
-		$GLOBALS['DB_WE']->query('SELECT strSerial FROM ' . SHOP_TABLE . ' WHERE IntID = ' . $GLOBALS['DB_WE']->escape($_REQUEST["article"]));
+		$GLOBALS['DB_WE']->query('SELECT strSerial FROM ' . SHOP_TABLE . ' WHERE IntID = ' . $GLOBALS['DB_WE']->escape($_REQUEST['article']));
 
 		if($GLOBALS['DB_WE']->num_rows() == 1){
 			$GLOBALS['DB_WE']->next_record();
@@ -890,14 +834,14 @@ if(!isset($letzerartikel)){ // order has still articles - get them all
 		$format[] = 'DATE_FORMAT(' . $field . ',"' . $db . '") AS ' . $field;
 	}
 
-	$GLOBALS['DB_WE']->query('SELECT IntID, IntCustomerID, IntArticleID, strSerial, strSerialOrder, IntQuantity, Price, ' . implode(',', $format) . '	FROM ' . SHOP_TABLE . ' WHERE IntOrderID = ' . intval($_REQUEST["bid"]));
+	$GLOBALS['DB_WE']->query('SELECT IntID, IntCustomerID, IntArticleID, strSerial, strSerialOrder, IntQuantity, Price, ' . implode(',', $format) . '	FROM ' . SHOP_TABLE . ' WHERE IntOrderID = ' . intval($_REQUEST['bid']));
 
 	// loop through all articles
 	while($GLOBALS['DB_WE']->next_record()) {
 
 		// get all needed information for order-data
-		$_REQUEST["cid"] = $GLOBALS['DB_WE']->f("IntCustomerID");
-		$SerialOrder[] = $GLOBALS['DB_WE']->f("strSerialOrder");
+		$_REQUEST['cid'] = $GLOBALS['DB_WE']->f('IntCustomerID');
+		$SerialOrder[] = $GLOBALS['DB_WE']->f('strSerialOrder');
 		foreach(weShopStatusMails::$StatusFields as $field){
 			$_REQUEST[$field] = $GLOBALS['DB_WE']->f($field);
 		}
@@ -906,11 +850,11 @@ if(!isset($letzerartikel)){ // order has still articles - get them all
 		}
 
 		// all information for article
-		$ArticleId[] = $GLOBALS['DB_WE']->f("IntArticleID"); // id of article (object or document) in shopping cart
-		$tblOrdersId[] = $GLOBALS['DB_WE']->f("IntID");
-		$Quantity[] = $GLOBALS['DB_WE']->f("IntQuantity");
-		$Serial[] = $GLOBALS['DB_WE']->f("strSerial"); // the serialised doc
-		$Price[] = str_replace(',', '.', $GLOBALS['DB_WE']->f("Price")); // replace , by . for float values
+		$ArticleId[] = $GLOBALS['DB_WE']->f('IntArticleID'); // id of article (object or document) in shopping cart
+		$tblOrdersId[] = $GLOBALS['DB_WE']->f('IntID');
+		$Quantity[] = $GLOBALS['DB_WE']->f('IntQuantity');
+		$Serial[] = $GLOBALS['DB_WE']->f('strSerial'); // the serialised doc
+		$Price[] = str_replace(',', '.', $GLOBALS['DB_WE']->f('Price')); // replace , by . for float values
 	}
 	if(!isset($ArticleId)){
 		echo we_html_element::jsElement('parent.parent.frames.shop_header_icons.location.reload();') . '
@@ -955,9 +899,6 @@ if(!isset($letzerartikel)){ // order has still articles - get them all
 	//
 	$customerFieldTable = '';
 
-	// determine all fields for order head
-	$fl = 0;
-
 	// first show fields Forename and surname
 	if(isset($_customer['Forename'])){
 		$customerFieldTable .='
@@ -981,10 +922,7 @@ if(!isset($letzerartikel)){ // order has still articles - get them all
 	foreach($_customer as $key => $value){
 
 		if(in_array($key, $fields['customerFields']) || in_array($key, $fields['orderCustomerFields'])){
-			if($key == $CLFields['stateField'] && $CLFields['stateFieldIsISO']){
-				$value = g_l('countries', '[' . $value . ']');
-			}
-			if($key == $CLFields['languageField'] && $CLFields['languageFieldIsISO']){
+			if(($key == $CLFields['stateField'] && $CLFields['stateFieldIsISO']) || ($key == $CLFields['languageField'] && $CLFields['languageFieldIsISO'])){
 				$value = g_l('countries', '[' . $value . ']');
 			}
 			$customerFieldTable .='
@@ -996,8 +934,6 @@ if(!isset($letzerartikel)){ // order has still articles - get them all
 </tr>';
 		}
 	}
-
-
 
 	$orderDataTable = '
 <table cellpadding="0" cellspacing="0" border="0" width="99%" class="defaultfont">';
@@ -1051,7 +987,7 @@ if(!isset($letzerartikel)){ // order has still articles - get them all
 		<td colspan="9"><a href="javascript:we_cmd(\'edit_order_customer\');">' . g_l('modules_shop', '[order][edit_order_customer]') . '</a></td>
 	</tr>
 	<tr>
-		<td colspan="9">' . (we_hasPerm("EDIT_CUSTOMER") ? '<a href="javascript:we_cmd(\'edit_customer\');">' . g_l('modules_shop', '[order][open_customer]') . '</a>' : '') . ' </td>
+		<td colspan="9">' . (we_hasPerm('EDIT_CUSTOMER') ? '<a href="javascript:we_cmd(\'edit_customer\');">' . g_l('modules_shop', '[order][open_customer]') . '</a>' : '') . ' </td>
 	</tr>
 </table>';
 	//
@@ -1074,9 +1010,8 @@ if(!isset($letzerartikel)){ // order has still articles - get them all
 		<td>' . $pixelImg . '</td>
 		<th class="defaultgray" height="25">' . g_l('modules_shop', '[Preis]') . '</th>
 		<td>' . $pixelImg . '</td>
-		<th class="defaultgray" height="25">' . g_l('modules_shop', '[Gesamt]') . '</th>
-		' . ($calcVat ? '<td>' . $pixelImg . '</td>
-		<th class="defaultgray" height="25">' . g_l('modules_shop', '[mwst]') . '</th>' : '' ) . '
+		<th class="defaultgray" height="25">' . g_l('modules_shop', '[Gesamt]') . '</th>' .
+		($calcVat ? '<td>' . $pixelImg . '</td><th class="defaultgray" height="25">' . g_l('modules_shop', '[mwst]') . '</th>' : '' ) . '
 	</tr>';
 
 
@@ -1122,19 +1057,16 @@ if(!isset($letzerartikel)){ // order has still articles - get them all
 <tr>
 	<td class="shopContentfontR">' . "<a href=\"javascript:var anzahl=prompt('" . g_l('modules_shop', '[jsanz]') . "','" . $Quantity[$i] . "'); if(anzahl != null){if(anzahl.search(/\d.*/)==-1){" . we_message_reporting::getShowMessageCall("'" . g_l('modules_shop', '[keinezahl]') . "'", we_message_reporting::WE_MESSAGE_ERROR, true) . ";}else{document.location='" . $_SERVER['SCRIPT_NAME'] . "?bid=" . $_REQUEST["bid"] . "&article=$tblOrdersId[$i]&anzahl='+anzahl;}}\">" . $Quantity[$i] . "</a>" . '</td>
 	<td></td>
-	<td>' . getFieldFromShoparticle($shopArticleObject, 'shoptitle', 35) . '</td>
+	<td>' . getFieldFromShoparticle($shopArticleObject, WE_SHOP_TITLE_FIELD_NAME, 35) . '</td>
 	<td></td>
-	<td>' . getFieldFromShoparticle($shopArticleObject, 'shopdescription', 45) . '</td>
+	<td>' . getFieldFromShoparticle($shopArticleObject, WE_SHOP_DESCRIPTION_FIELD_NAME, 45) . '</td>
 	<td></td>
 	<td class="shopContentfontR">' . "<a href=\"javascript:var preis = prompt('" . g_l('modules_shop', '[jsbetrag]') . "','" . $Price[$i] . "'); if(preis != null ){if(preis.search(/\d.*/)==-1){" . we_message_reporting::getShowMessageCall("'" . g_l('modules_shop', '[keinezahl]') . "'", we_message_reporting::WE_MESSAGE_ERROR, true) . "}else{document.location='" . $_SERVER['SCRIPT_NAME'] . "?bid=" . $_REQUEST["bid"] . "&article=$tblOrdersId[$i]&preis=' + preis; } }\">" . we_util_Strings::formatNumber($Price[$i]) . "</a>" . $waehr . '</td>
 	<td></td>
-	<td class="shopContentfontR">' . we_util_Strings::formatNumber($articlePrice) . $waehr . '</td>
-	' . ($calcVat ? '
-		<td></td>
-		<td class="shopContentfontR small">(' . "<a href=\"javascript:var vat = prompt('" . g_l('modules_shop', '[keinezahl]') . "','" . $articleVat . "'); if(vat != null ){if(vat.search(/\d.*/)==-1){" . we_message_reporting::getShowMessageCall("'" . g_l('modules_shop', '[keinezahl]') . "'", we_message_reporting::WE_MESSAGE_ERROR, true) . ";}else{document.location='" . $_SERVER['SCRIPT_NAME'] . "?bid=" . $_REQUEST["bid"] . "&article=$tblOrdersId[$i]&vat=' + vat; } }\">" . we_util_Strings::formatNumber($articleVat) . "</a>" . '%)</td>' :
-				'') . '
+	<td class="shopContentfontR">' . we_util_Strings::formatNumber($articlePrice) . $waehr . '</td>' .
+			($calcVat ? '<td></td><td class="shopContentfontR small">(' . "<a href=\"javascript:var vat = prompt('" . g_l('modules_shop', '[keinezahl]') . "','" . $articleVat . "'); if(vat != null ){if(vat.search(/\d.*/)==-1){" . we_message_reporting::getShowMessageCall("'" . g_l('modules_shop', '[keinezahl]') . "'", we_message_reporting::WE_MESSAGE_ERROR, true) . ";}else{document.location='" . $_SERVER['SCRIPT_NAME'] . "?bid=" . $_REQUEST["bid"] . "&article=$tblOrdersId[$i]&vat=' + vat; } }\">" . we_util_Strings::formatNumber($articleVat) . "</a>" . '%)</td>' : '') . '
 	<td>' . $pixelImg . '</td>
-	<td>' . we_button::create_button("image:btn_function_trash", "javascript:check=confirm('" . g_l('modules_shop', '[jsloeschen]') . "'); if (check){document.location.href='" . $_SERVER['SCRIPT_NAME'] . "?bid=" . $_REQUEST["bid"] . "&deleteaartikle=" . $tblOrdersId[$i] . "';}", true, 100, 22, "", "", !we_hasPerm("DELETE_SHOP_ARTICLE")) . '</td>
+	<td>' . we_button::create_button('image:btn_function_trash', "javascript:check=confirm('" . g_l('modules_shop', '[jsloeschen]') . "'); if (check){document.location.href='" . $_SERVER['SCRIPT_NAME'] . "?bid=" . $_REQUEST["bid"] . "&deleteaarticle=" . $tblOrdersId[$i] . "';}", true, 100, 22, "", "", !we_hasPerm("DELETE_SHOP_ARTICLE")) . '</td>
 </tr>';
 		// if this article has custom fields or is a variant - we show them in a extra rows
 		// add variant.
@@ -1366,9 +1298,9 @@ if(!isset($letzerartikel)){ // order has still articles - get them all
 	// ********************************************************************************
 	// "Html output for order with articles"
 	//
-echo we_html_element::jsScript(JS_DIR . "jscalendar/calendar.js") .
-	we_html_element::jsScript(JS_DIR . "jscalendar/calendar-setup.js") .
-	we_html_element::jsScript(WE_INCLUDES_DIR . 'we_language/' . $GLOBALS["WE_LANGUAGE"] . "/calendar.js") .
+echo we_html_element::jsScript(JS_DIR . 'jscalendar/calendar.js') .
+	we_html_element::jsScript(JS_DIR . 'jscalendar/calendar-setup.js') .
+	we_html_element::jsScript(WE_INCLUDES_DIR . 'we_language/' . $GLOBALS['WE_LANGUAGE'] . '/calendar.js') .
 	we_html_element::jsScript(JS_DIR . 'images.js') .
 	we_html_element::jsScript(JS_DIR . 'windows.js') .
 	we_html_element::cssLink(JS_DIR . 'jscalendar/skins/aqua/theme.css');
@@ -1376,7 +1308,7 @@ echo we_html_element::jsScript(JS_DIR . "jscalendar/calendar.js") .
 
 	<script type="text/javascript">
 		function SendMail(was) {
-			document.location = "<?php print $_SERVER['SCRIPT_NAME'] . "?bid=" . $_REQUEST["bid"]; ?>&SendMail=" + was;
+			document.location = "<?php print $_SERVER['SCRIPT_NAME'] . '?bid=' . $_REQUEST['bid']; ?>&SendMail=" + was;
 		}
 		function doUnload() {
 			if (!!jsWindow_count) {
@@ -1401,21 +1333,21 @@ echo we_html_element::jsScript(JS_DIR . "jscalendar/calendar.js") .
 			switch (arguments[0]) {
 
 				case "edit_shipping_cost":
-					var wind = new jsWindow(url + "&bid=<?php echo $_REQUEST["bid"]; ?>", "edit_shipping_cost", -1, -1, 545, 205, true, true, true, false);
+					var wind = new jsWindow(url + "&bid=<?php echo $_REQUEST['bid']; ?>", "edit_shipping_cost", -1, -1, 545, 205, true, true, true, false);
 					break;
 
 				case "edit_shop_cart_custom_field":
-					var wind = new jsWindow(url + "&bid=<?php echo $_REQUEST["bid"]; ?>&cartfieldname=" + (arguments[1] ? arguments[1] : ''), "edit_shop_cart_custom_field", -1, -1, 545, 300, true, true, true, false);
+					var wind = new jsWindow(url + "&bid=<?php echo $_REQUEST['bid']; ?>&cartfieldname=" + (arguments[1] ? arguments[1] : ''), "edit_shop_cart_custom_field", -1, -1, 545, 300, true, true, true, false);
 					break;
 
 				case "edit_order_customer":
-					var wind = new jsWindow(url + "&bid=<?php echo $_REQUEST["bid"]; ?>", "edit_order_customer", -1, -1, 545, 600, true, true, true, false);
+					var wind = new jsWindow(url + "&bid=<?php echo $_REQUEST['bid']; ?>", "edit_order_customer", -1, -1, 545, 600, true, true, true, false);
 					break;
 				case "edit_customer":
-					top.document.location = '<?php print WE_MODULES_DIR; ?>show_frameset.php?mod=customer&sid=<?php print $_REQUEST["cid"]; ?>';
+					top.document.location = '<?php print WE_MODULES_DIR; ?>show_frameset.php?mod=customer&sid=<?php print $_REQUEST['cid']; ?>';
 					break;
 				case "add_new_article":
-					var wind = new jsWindow(url + "&bid=<?php echo $_REQUEST["bid"]; ?>", "add_new_article", -1, -1, 650, 600, true, false, true, false);
+					var wind = new jsWindow(url + "&bid=<?php echo $_REQUEST['bid']; ?>", "add_new_article", -1, -1, 650, 600, true, false, true, false);
 					break;
 			}
 		}
@@ -1442,23 +1374,23 @@ echo we_html_element::jsScript(JS_DIR . "jscalendar/calendar.js") .
 
 		<?php
 		$parts = array(array(
-				"html" => $orderDataTable,
-				"space" => 0
+				'html' => $orderDataTable,
+				'space' => 0
 			),
 			array(
-				"html" => $orderTable,
-				"space" => 0
+				'html' => $orderTable,
+				'space' => 0
 			)
 		);
 		if($customCartFieldsTable){
 
 			$parts[] = array(
-				"html" => $customCartFieldsTable,
-				"space" => 0
+				'html' => $customCartFieldsTable,
+				'space' => 0
 			);
 		}
 
-		print we_multiIconBox::getHTML("", "100%", $parts, 30);
+		print we_multiIconBox::getHTML('', '100%', $parts, 30);
 
 		//
 		// "Html output for order with articles"
@@ -1466,7 +1398,7 @@ echo we_html_element::jsScript(JS_DIR . "jscalendar/calendar.js") .
 	} else{ // This order has no more entries
 		echo we_html_element::jsElement('
 		top.content.shop_properties.location="' . WE_SHOP_MODULE_DIR . 'edit_shop_properties.php?deletethisorder=1&bid=' . $_REQUEST["bid"] . '";
-		top.content.deleteEntry(' . $_REQUEST["bid"] . ');
+		top.content.deleteEntry(' . $_REQUEST['bid'] . ');
 	') . '
 </head>
 <body bgcolor="#ffffff">';

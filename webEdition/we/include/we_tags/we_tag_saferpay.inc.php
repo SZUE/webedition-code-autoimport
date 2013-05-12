@@ -156,7 +156,7 @@ function we_tag_saferpay($attribs){
 		$summit = 0;
 		foreach($shoppingItems as $key => $item){
 
-			$itemTitle = (isset($item['serial']['we_shoptitle']) ? $item['serial']['we_shoptitle'] : $item['serial']['shoptitle']);
+			$itemTitle = (isset($item['serial']['we_' . WE_SHOP_TITLE_FIELD_NAME]) ? $item['serial']['we_' . WE_SHOP_TITLE_FIELD_NAME] : $item['serial'][WE_SHOP_TITLE_FIELD_NAME]);
 			$itemPrice = (isset($item['serial']["we_" . $pricename]) ? $item['serial']["we_" . $pricename] : $item['serial'][$pricename]);
 
 			// foreach article we must determine the correct tax-rate

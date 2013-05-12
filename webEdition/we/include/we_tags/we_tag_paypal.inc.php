@@ -224,14 +224,12 @@ function we_tag_paypal($attribs){
 						$p->add_field('charset', $charset);
 					}
 					//  determine the basket data
-					$p->add_field('item_name_' . $i, $itemTitle = (isset($item['serial']['we_shoptitle']) ? $item['serial']['we_shoptitle'] : $item['serial']['shoptitle']));
+					$p->add_field('item_name_' . $i, $itemTitle = (isset($item['serial']['we_' . WE_SHOP_TITLE_FIELD_NAME]) ? $item['serial']['we_' . WE_SHOP_TITLE_FIELD_NAME] : $item['serial'][WE_SHOP_TITLE_FIELD_NAME]));
 					$p->add_field('quantity_' . $i, $item['quantity']);
-
-					$itemPrice = (isset($item['serial']['we_' . $pricename]) ? $item['serial']['we_' . $pricename] : $item['serial'][$pricename]);
 
 					// correct price, if it has more than one "."
 					// bug #8717
-					$itemPrice = we_util::std_numberformat($itemPrice);
+					$itemPrice = we_util::std_numberformat(isset($item['serial']['we_' . $pricename]) ? $item['serial']['we_' . $pricename] : $item['serial'][$pricename]);
 
 					//seems to be gros product prices and customer do not need pay tax
 					//so we have to calculate the correct net article price
