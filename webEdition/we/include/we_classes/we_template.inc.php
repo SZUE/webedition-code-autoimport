@@ -647,6 +647,10 @@ class we_template extends we_document{
 		if(!$this->doUpdateCode){
 			return true;
 		}
+		static $recursiveTemplates = array();
+		if(empty($recursiveTemplates)){
+			array_push($recursiveTemplates, $this->ID);
+		}
 		$code = $this->getTemplateCode(false);
 
 		// find all we:master Tags
@@ -673,15 +677,17 @@ class we_template extends we_document{
 
 			$_templates = array();
 			self::getUsedTemplatesOfTemplate($this->MasterTemplateID, $_templates);
-			if(in_array($this->ID, $_templates) || $this->ID == $this->MasterTemplateID){
+			if(in_array($this->ID, $_templates) || $this->ID == $this->MasterTemplateID || in_array($this->MasterTemplateID, $recursiveTemplates)){
 				$code = g_l('parser', '[template_recursion_error]');
 				t_e(g_l('parser', '[template_recursion_error]'), 'Template ' . $this->ID . ' with same Master');
 			} else{
 				// we have a master template. => surround current template with it
 				// first get template code
+				array_push($recursiveTemplates, $this->MasterTemplateID);
 				$templObj = new we_template();
 				$templObj->initByID($this->MasterTemplateID, TEMPLATES_TABLE);
 				$masterTemplateCode = $templObj->getTemplateCode(true);
+				array_pop($recursiveTemplates);
 
 				$contentTags = array();
 				preg_match_all('|<we:content ?([^>+]*)/?>\n?|', $masterTemplateCode, $contentTags, PREG_SET_ORDER);
@@ -735,15 +741,17 @@ class we_template extends we_document{
 					if(isset($att['id']) && intval($att['id']) != 0){
 						$_templates = array();
 						self::getUsedTemplatesOfTemplate($att['id'], $_templates);
-						if(in_array($this->ID, $_templates) || $att['id'] == $this->ID){
+						if(in_array($this->ID, $_templates) || $att['id'] == $this->ID || in_array($att['id'], $recursiveTemplates)){
 							$code = str_replace($tag, g_l('parser', '[template_recursion_error]'), $code);
 							t_e(g_l('parser', '[template_recursion_error]'), 'Template: ' . $this->ID);
 						} else{
 							// get code of template
+							array_push($recursiveTemplates, $att['id']);
 							$templObj = new we_template();
 							$templObj->initByID($att['id'], TEMPLATES_TABLE);
 							$completeCode = (!(isset($att['included']) && ($att['included'] == 'false' || $att["included"] === '0' || $att['included'] == "off")));
 							$includedTemplateCode = $templObj->getTemplateCode($completeCode);
+							array_pop($recursiveTemplates);
 							// replace include tag with template code
 							$code = str_replace($tag, $includedTemplateCode, $code);
 							$this->IncludedTemplates .= ',' . intval($att["id"]);
