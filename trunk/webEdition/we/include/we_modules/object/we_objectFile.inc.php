@@ -858,7 +858,7 @@ class we_objectFile extends we_document{
 		$db = new DB_WE();
 		$foo = getHash('SELECT o.Text,of.ID FROM ' . OBJECT_TABLE . ' o,' . OBJECT_FILES_TABLE . ' of WHERE of.Path=o.Path AND o.ID=' . intval($ObjectID), $db);
 		$name = isset($foo['Text']) ? $foo['Text'] : '';
-		$pid = $foo['ID'];
+		$pid = isset($foo['ID']) ? $foo['ID'] : 0;
 		$textname = 'we_' . $this->Name . '_txt[we_object_' . $ObjectID . '_path]';
 		$idname = 'we_' . $this->Name . '_object[we_object_' . $ObjectID . ']';
 		$myid = $this->getElement('we_object_' . $ObjectID);
@@ -871,12 +871,10 @@ class we_objectFile extends we_document{
 			$myid = 0;
 			$npubl = 1;
 		}
+		$ob = new we_objectFile();
 		if($myid){
-			$ob = new we_objectFile();
 			$ob->initByID($myid, OBJECT_FILES_TABLE);
 			$ob->DefArray = $ob->getDefaultValueArray();
-		} else{
-			$ob = new we_objectFile();
 		}
 		$table = OBJECT_FILES_TABLE;
 
@@ -2547,14 +2545,19 @@ class we_objectFile extends we_document{
 		if(!$this->TableID){
 			return;
 		}
+		static $recursiveObjects = array();
+		if(empty($recursiveObjects)){
+			array_push($recursiveObjects, $this->ID);
+		}
+
 		$linkObjects = array();
 		$tableInfo = $this->getSortedTableInfo($this->TableID, false, $this->DB_WE);
 		$regs = array();
 		foreach($tableInfo as $cur){
 			if(preg_match('/(.+?)_(.*)/', $cur["name"], $regs)){
-				if($regs[1] != "OF"){
-					if($regs[1] == "object"){
-						$id = $this->getElement('we_' . $cur["name"]);
+				if($regs[1] != 'OF'){
+					if($regs[1] == 'object'){
+						$id = $this->getElement('we_' . $cur['name']);
 						if($id)
 							$linkObjects[] = $id;
 					}
@@ -2562,12 +2565,16 @@ class we_objectFile extends we_document{
 			}
 		}
 		foreach($linkObjects as $id){
-			$tmpObj = new we_objectFile();
-			$tmpObj->initByID($id, OBJECT_FILES_TABLE, 0);
-			foreach($tmpObj->elements as $n => $elem){
-				if($elem["type"] != "object" && $n != "Title" && $n != "Description"){
-					if(!isset($this->elements[$n])){
-						$this->elements[$n] = $elem;
+			if(!in_array($id, $recursiveObjects)){
+				array_push($recursiveObjects, $id);
+				$tmpObj = new we_objectFile();
+				$tmpObj->initByID($id, OBJECT_FILES_TABLE, 0);
+				array_pop($recursiveObjects);
+				foreach($tmpObj->elements as $n => $elem){
+					if($elem['type'] != 'object' && $n != 'Title' && $n != 'Description'){
+						if(!isset($this->elements[$n])){
+							$this->elements[$n] = $elem;
+						}
 					}
 				}
 			}
