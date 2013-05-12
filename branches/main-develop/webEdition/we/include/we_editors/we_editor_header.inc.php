@@ -107,7 +107,7 @@ if($_SESSION['weS']['we_mode'] != 'seem'){ //	No tabs in Super-Easy-Edit_mode
 			$we_tabs->addTab(new we_tab("#", g_l('weClass', "[webUser]"), (($we_doc->EditPageNr == WE_EDITPAGE_WEBUSER) ? "TAB_ACTIVE" : "TAB_NORMAL"), "we_cmd('switch_edit_page'," . WE_EDITPAGE_WEBUSER . ",'" . $we_transaction . "');", array("id" => "tab_" . WE_EDITPAGE_WEBUSER)));
 		}
 
-		if((we_hasPerm("ADMINISTRATOR") || we_hasPerm("SEE_VERSIONS")) && in_array(WE_EDITPAGE_VERSIONS, $we_doc->EditPageNrs)){
+		if(we_hasPerm("SEE_VERSIONS") && in_array(WE_EDITPAGE_VERSIONS, $we_doc->EditPageNrs)){
 			$we_tabs->addTab(new we_tab("#", g_l('weClass', "[version]"), (($we_doc->EditPageNr == WE_EDITPAGE_VERSIONS) ? "TAB_ACTIVE" : "TAB_NORMAL"), "we_cmd('switch_edit_page'," . WE_EDITPAGE_VERSIONS . ",'" . $we_transaction . "');", array("id" => "tab_" . WE_EDITPAGE_VERSIONS)));
 		}
 

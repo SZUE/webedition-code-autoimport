@@ -2419,7 +2419,13 @@ top.content.hloaded=1;') .
 				$passwd = md5($clearPassword . md5($username));
 				break;
 			case 2:
+		if(version_compare(PHP_VERSION, '5.3.7') >= 0){
 				$passwd = crypt($clearPassword, $password);
+		}else{
+			echo 'unable to check passwords php version to old!';
+			t_e('unable to check passwords php version to old!');
+			exit();
+		}
 				break;
 		}
 		return ($passwd == $password);

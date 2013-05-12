@@ -44,7 +44,7 @@ class we_shop_shop{
 		if(is_object($shoppingCart)){
 			$this->ShoppingCart = $shoppingCart;
 			$this->ShoppingCartItems = $shoppingCart->getShoppingItems();
-		}else{
+		} else{
 			t_e('called with non object');
 		}
 
@@ -97,6 +97,14 @@ class we_shop_shop{
 			$ret .= "&" . WE_SHOP_ARTICLE_CUSTOM_FIELD . "[$key]=$value";
 		}
 		return $ret;
+	}
+
+	public function getDBRecord(){
+		return $this->DB_WE->getRecord();
+	}
+
+	public function getDBf($field){
+		return $this->DB_WE->f($field);
 	}
 
 }
