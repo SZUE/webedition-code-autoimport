@@ -199,7 +199,7 @@ if(($maxRows = $DB_WE->num_rows())){
 				'formatDateOrder' => $DB_WE->f('formatDateOrder'), // also for ordering
 				'formatDatePayment' => $DB_WE->f('formatDatePayment'), // also for ordering
 				'Price' => $DB_WE->f('Price'), // also for ordering
-				'shoptitle' => (isset($shopArticleObject['shoptitle']) ? $shopArticleObject['shoptitle'] : $shopArticleObject['we_shoptitle']), // also for ordering
+				WE_SHOP_TITLE_FIELD_NAME => (isset($shopArticleObject[WE_SHOP_TITLE_FIELD_NAME]) ? $shopArticleObject[WE_SHOP_TITLE_FIELD_NAME] : $shopArticleObject['we_' . WE_SHOP_TITLE_FIELD_NAME]), // also for ordering
 				'orderArray' => $orderData,
 			);
 		}
@@ -357,7 +357,7 @@ if(($maxRows = $DB_WE->num_rows())){
 
 		$content[] = array(
 			array('dat' => $orderRows[$i]['IntOrderID']),
-			array('dat' => $orderRows[$i]['shoptitle'] . '<span class="small">' . $variantStr . ' ' . $customFields . '</span>'),
+			array('dat' => $orderRows[$i][WE_SHOP_TITLE_FIELD_NAME] . '<span class="small">' . $variantStr . ' ' . $customFields . '</span>'),
 			array('dat' => we_util_Strings::formatNumber($orderRows[$i]['Price']) . $waehr),
 			array('dat' => $orderRows[$i]['formatDateOrder']),
 			array('dat' => $orderRows[$i]['IntArticleID']),

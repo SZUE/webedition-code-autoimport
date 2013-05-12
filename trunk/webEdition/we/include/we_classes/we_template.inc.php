@@ -359,11 +359,11 @@ class we_template extends we_document{
 	 * @return boolean
 	 */
 	function canHaveVariants($checkFields = false){
-
-		if(!defined('SHOP_TABLE'))
+		if(!defined('SHOP_TABLE')){
 			return false;
+		}
 		$fieldnames = $this->getVariantFieldNames();
-		return in_array('shoptitle', $fieldnames) && in_array('shopdescription', $fieldnames);
+		return in_array(WE_SHOP_TITLE_FIELD_NAME, $fieldnames) && in_array(WE_SHOP_DESCRIPTION_FIELD_NAME, $fieldnames);
 	}
 
 	/**

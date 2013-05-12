@@ -2269,7 +2269,7 @@ class we_object extends we_document{
 		$fields = $this->getAllVariantFields();
 		$fieldnamesarr = array_keys($fields);
 		$fieldnames = implode(',', $fieldnamesarr) . ',';
-		return stristr($fieldnames, '_shoptitle,') && stristr($fieldnames, '_shopdescription,');
+		return stristr($fieldnames, '_' . WE_SHOP_TITLE_FIELD_NAME . ',') && stristr($fieldnames, '_' . WE_SHOP_DESCRIPTION_FIELD_NAME . ',');
 	}
 
 	/**

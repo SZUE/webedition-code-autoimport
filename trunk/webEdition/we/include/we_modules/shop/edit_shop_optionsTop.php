@@ -29,10 +29,7 @@ print STYLESHEET;
 
 $da = ( $GLOBALS["WE_LANGUAGE"] == "Deutsch" ) ? "%d.%m.%y" : "%m/%d/%y";
 if(isset($_REQUEST["cid"])){
-	$foo = getHash("SELECT Forename,Surname FROM " . CUSTOMER_TABLE . " WHERE ID=" . intval($_REQUEST["cid"]) . "'", $DB_WE);
-	$Kundenname = $foo["Forename"] . " " . $foo["Surname"];
-
-//$DB_WE->query("SELECT IntOrderID, Price, IntQuantity, DateShipping,DatePayment FROM ".SHOP_TABLE." WHERE IntCustomerID=$cid GROUP BY IntOrderID ORDER BY IntOrderID");
+	$Kundenname = f('SELECT CONCAT(Forename," ",Surname) AS Name FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . intval($_REQUEST["cid"]), 'Name', $DB_WE);
 
 	$Bestelldaten = '
 <table border="0" cellpadding="2" cellspacing="6" width="300">
@@ -43,10 +40,9 @@ if(isset($_REQUEST["cid"])){
 
 	$DB_WE->query("SELECT IntOrderID,DateShipping, DATE_FORMAT(DateOrder,'" . $da . "') as orddate, DATE_FORMAT(DateOrder,'%c%Y') as mdate FROM " . SHOP_TABLE . " WHERE IntCustomerID=" . intval($_REQUEST["cid"]) . " GROUP BY IntOrderID ORDER BY IntID DESC");
 	while($DB_WE->next_record()) {
-//echo "<br>".$DB_WE->f("Price");
-		$Bestelldaten .= "<tr><td class='defaultfont'><a href='" . WE_SHOP_MODULE_DIR . "edit_shop_properties.php?bid=" . $DB_WE->f("IntOrderID") . "' class=\"defaultfont\"><b>" . $DB_WE->f("IntOrderID") . ".</b></a></td>".
-			"<td class='defaultgray'>" . g_l('modules_shop', '[bestellungvom]') . "</td>".
-			"<td class='defaultfont'><a href='" . WE_SHOP_MODULE_DIR . "edit_shop_editorFrameset.php?bid=" . $DB_WE->f("IntOrderID") . "' class=\"defaultfont\" target=\"shop_properties\"><b>" . $DB_WE->f("orddate") . "</b></a></td></tr>";
+		$Bestelldaten .= "<tr><td class='defaultfont'><a href='" . WE_SHOP_MODULE_DIR . "edit_shop_properties.php?bid=" . $DB_WE->f("IntOrderID") . "' class=\"defaultfont\"><b>" . $DB_WE->f("IntOrderID") . ".</b></a></td>
+			<td class='defaultgray'>" . g_l('modules_shop', '[bestellungvom]') . "</td>
+			<td class='defaultfont'><a href='" . WE_SHOP_MODULE_DIR . "edit_shop_editorFrameset.php?bid=" . $DB_WE->f("IntOrderID") . "' class=\"defaultfont\" target=\"shop_properties\"><b>" . $DB_WE->f("orddate") . "</b></a></td></tr>";
 	}
 	$Bestelldaten .= "</table>";
 } else{

@@ -126,7 +126,7 @@ function we_tag_writeShopData($attribs){
                     if(typeof emosBasketPageArray == 'undefined') var emosBasketPageArray = new Array();
                     emosBasketPageArray[$articleCount] = new Array();
                     emosBasketPageArray[$articleCount][0]='" . $shoppingItem['id'] . "';
-                    emosBasketPageArray[$articleCount][1]='" . rawurlencode($shoppingItem['serial']['shoptitle']) . "';
+                    emosBasketPageArray[$articleCount][1]='" . rawurlencode($shoppingItem['serial'][WE_SHOP_TITLE_FIELD_NAME]) . "';
                     emosBasketPageArray[$articleCount][2]='$preis';
                     emosBasketPageArray[$articleCount][3]='';
                     emosBasketPageArray[$articleCount][4]='" . $shoppingItem['quantity'] . "';

@@ -50,9 +50,5 @@ if(empty($classid)){
 //$resultO = count($fe);
 $resultO = array_shift($fe);
 
-
-$dbTitlename = "shoptitle";
 // wether the resultset ist empty?
-$DB_WE->query("SELECT count(Name) as Anzahl FROM " . LINK_TABLE . " WHERE Name ='$dbTitlename'");
-$DB_WE->next_record();
-$resultD = $DB_WE->f("Anzahl");
+$resultD = f("SELECT count(Name) as Anzahl FROM " . LINK_TABLE . ' WHERE Name ="' . WE_SHOP_TITLE_FIELD_NAME . '"', 'Anzahl', $DB_WE);
