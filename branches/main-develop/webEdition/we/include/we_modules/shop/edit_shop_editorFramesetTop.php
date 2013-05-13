@@ -44,11 +44,8 @@ $fe = explode(",", $feldnamen[3]);
 // $resultO = count ($fe);
 $resultO = array_shift($fe);
 
-$dbTitlename = "shoptitle";
-
-
 // wether the resultset ist empty?
-$resultD = f('SELECT count(Name) as Anzahl FROM ' . LINK_TABLE . " WHERE Name ='" . $DB_WE->escape($dbTitlename) . "'",'Anzahl',$DB_WE);
+$resultD = f('SELECT count(Name) as Anzahl FROM ' . LINK_TABLE . " WHERE Name ='" . $DB_WE->escape(WE_SHOP_TITLE_FIELD_NAME) . "'",'Anzahl',$DB_WE);
 we_html_tools::htmlTop();
 ?>
 </head>

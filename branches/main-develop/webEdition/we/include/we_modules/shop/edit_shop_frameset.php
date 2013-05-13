@@ -25,46 +25,39 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
-
 we_html_tools::htmlTop();
-
 print STYLESHEET;
 
 
 // grep the last element from the year-set, wich is the current year
-$DB_WE->query("SELECT DATE_FORMAT(DateOrder,'%Y') AS DateOrd FROM " . SHOP_TABLE . " ORDER BY DateOrd");
+$DB_WE->query('SELECT DATE_FORMAT(DateOrder,"%Y") AS DateOrd FROM ' . SHOP_TABLE . ' ORDER BY DateOrd');
 while($DB_WE->next_record()) {
 	$strs = array($DB_WE->f("DateOrd"));
 	$yearTrans = end($strs);
 }
 // print $yearTrans;
 /// config
-$DB_WE->query("SELECT strFelder from " . ANZEIGE_PREFS_TABLE . " where strDateiname = 'shop_pref'");
-$DB_WE->next_record();
-$feldnamen = explode("|", $DB_WE->f("strFelder"));
+$feldnamen = explode('|', f('SELECT strFelder FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname="shop_pref"','strFelder',$DB_WE));
 for($i = 0; $i <= 3; $i++){
 	$feldnamen[$i] = isset($feldnamen[$i]) ? $feldnamen[$i] : '';
 }
 
-$fe = explode(",", $feldnamen[3]);
+$fe = explode(',', $feldnamen[3]);
 if(empty($classid)){
 	$classid = $fe[0];
 }
-
-
 //$resultO = count ($fe);
 $resultO = array_shift($fe);
 
-$dbTitlename = "shoptitle";
 // whether the resultset is empty?
-$resultD = f("SELECT count(Name) as Anzahl FROM " . LINK_TABLE . " WHERE Name ='$dbTitlename'", 'Anzahl', $DB_WE);
+$resultD = f('SELECT count(Name) as Anzahl FROM ' . LINK_TABLE . ' WHERE Name ="'.WE_SHOP_TITLE_FIELD_NAME.'"', 'Anzahl', $DB_WE);
 
 
 $mod = isset($_REQUEST['mod']) ? $_REQUEST['mod'] : '';
 $title = '';
-foreach($GLOBALS["_we_available_modules"] as $modData){
+foreach($GLOBALS['_we_available_modules'] as $modData){
 	if($modData["name"] == $mod){
-		$title = "webEdition " . g_l('global', "[modules]") . ' - ' . $modData["text"];
+		$title = 'webEdition ' . g_l('global', "[modules]") . ' - ' . $modData["text"];
 		break;
 	}
 }

@@ -7,6 +7,6 @@ $this->NeedsEndTag = true;
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
 $this->Attributes[] = new weTagData_textAttribute('name', true, '');
-$this->Attributes[] = new weTagData_selectAttribute('showselect', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
+$this->Attributes[] = new weTagData_selectAttribute('showselect', weTagData_selectAttribute::getTrueFalse(), false, '');
 $this->Attributes[] = new weTagData_textAttribute('start', false, '');
 $this->Attributes[] = new weTagData_textAttribute('limit', false, '');

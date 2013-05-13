@@ -36,6 +36,9 @@ define('WE_SHOP_VARIANT_REQUEST', 'we_variant');
 define('WE_SHOP_ARTICLE_CUSTOM_FIELD', 'we_sacf');
 define('WE_SHOP_CART_CUSTOM_FIELD', 'we_sscf');
 define('WE_SHOP_CART_CUSTOMER_FIELD', 'we_shopCustomer');
+define('WE_SHOP_TITLE_FIELD_NAME','shoptitle');
+define('WE_SHOP_DESCRIPTION_FIELD_NAME','shopdescription');
+
 define('WE_SHOP_VAT_FIELD_NAME', 'shopvat'); // due to the names of old fields (shoptitle, shopdescription) - we must name shopvat
 define('WE_SHOP_PRICE_IS_NET_NAME', 'we_shopPriceIsNet');
 define('WE_SHOP_PRICENAME', 'we_shopPricename');

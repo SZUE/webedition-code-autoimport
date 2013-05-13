@@ -91,12 +91,8 @@ if(empty($classid)){
 //$resultO = count($fe);
 $resultO = array_shift($fe);
 
-
-$dbTitlename = "shoptitle";
 // wether the resultset ist empty?
-$DB_WE->query("SELECT count(Name) as Anzahl FROM " . LINK_TABLE . " WHERE Name ='$dbTitlename'");
-$DB_WE->next_record();
-$resultD = $DB_WE->f("Anzahl");
+$resultD = f("SELECT count(Name) as Anzahl FROM " . LINK_TABLE . ' WHERE Name ="' . WE_SHOP_TITLE_FIELD_NAME . '"', 'Anzahl', $DB_WE);
 ?>
 
 <body background="<?php print IMAGE_DIR ?>backgrounds/iconbarBack.gif" marginwidth="0" topmargin="5" marginheight="5" leftmargin="0">
@@ -125,9 +121,9 @@ $resultD = $DB_WE->f("Anzahl");
 			if($headline){
 				?>
 				<td align="right" class="header_shop"><span style="margin-left:15px"><?php print @$headline; ?></span></td>
-				<?php
-			}
-			?>
+					<?php
+				}
+				?>
 		</tr>
 	</table>
 

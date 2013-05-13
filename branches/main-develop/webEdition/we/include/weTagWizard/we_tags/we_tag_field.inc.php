@@ -8,7 +8,7 @@
 
 	$name = new weTagData_choiceAttribute('name', array(new weTagDataOption('WE_PATH', false, ''), new weTagDataOption('WE_ID', false, ''), new weTagDataOption('WE_TEXT', false, ''), new weTagDataOption('wedoc_CreationDate', false, ''), new weTagDataOption('wedoc_ModDate', false, ''), new weTagDataOption('wedoc_Published', false, ''), new weTagDataOption('wedoc_ParentID', false, ''), new weTagDataOption('wedoc_Text', false, ''), new weTagDataOption('WE_SHOPVARIANTS', false, '')), false,false, '');
 	$classid = (defined("OBJECT_TABLE") ? new weTagData_selectorAttribute('classid',OBJECT_TABLE, 'object', false, ''): null);
-	$hyperlink = new weTagData_selectAttribute('hyperlink', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
+	$hyperlink = new weTagData_selectAttribute('hyperlink', weTagData_selectAttribute::getTrueFalse(), false, '');
 	$tid = (defined("TEMPLATES_TABLE") ? new weTagData_selectorAttribute('tid',TEMPLATES_TABLE, 'text/weTmpl', false, ''): null);
 	$href = new weTagData_textAttribute('href', false, '');
 	$target = new weTagData_choiceAttribute('target', array(new weTagDataOption('_top', false, ''), new weTagDataOption('_parent', false, ''), new weTagDataOption('_self', false, ''), new weTagDataOption('_blank', false, '')), false,false, '');
@@ -30,10 +30,10 @@
 	$vspace = new weTagData_textAttribute('vspace', false, '');
 	$align = new weTagData_selectAttribute('align', array(new weTagDataOption('left', false, ''), new weTagDataOption('right', false, ''), new weTagDataOption('top', false, ''), new weTagDataOption('bottom', false, ''), new weTagDataOption('absmiddle', false, ''), new weTagDataOption('middle', false, ''), new weTagDataOption('texttop', false, ''), new weTagDataOption('baseline', false, ''), new weTagDataOption('absbottom', false, '')), false, '');
 	//$only = new weTagData_textAttribute('only', false, '');
-$htmlspecialchars = new weTagData_selectAttribute('htmlspecialchars', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
-$seeMode = new weTagData_selectAttribute('seeMode', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
-$xml = new weTagData_selectAttribute('xml', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
-$win2iso = new weTagData_selectAttribute('win2iso', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
+$htmlspecialchars = new weTagData_selectAttribute('htmlspecialchars', weTagData_selectAttribute::getTrueFalse(), false, '');
+$seeMode = new weTagData_selectAttribute('seeMode', weTagData_selectAttribute::getTrueFalse(), false, '');
+$xml = new weTagData_selectAttribute('xml', weTagData_selectAttribute::getTrueFalse(), false, '');
+$win2iso = new weTagData_selectAttribute('win2iso', weTagData_selectAttribute::getTrueFalse(), false, '');
 $listviewname = new weTagData_textAttribute('listviewname', false, '');
 $striphtml = new weTagData_selectAttribute('striphtml', array(new weTagDataOption('false', false, ''), new weTagDataOption('true', false, '')), false, '');
 $only = new weTagData_selectAttribute('only', array(new weTagDataOption('name', false, ''), new weTagDataOption('src', false, ''), new weTagDataOption('parentpath', false, ''), new weTagDataOption('filename', false, ''), new weTagDataOption('extension', false, ''), new weTagDataOption('filesize', false, '')), false, '');
@@ -41,7 +41,7 @@ $onlyImg = new weTagData_selectAttribute('only', array(new weTagDataOption('name
 $outputlanguage = new weTagData_textAttribute('outputlanguage', false, '');
 $doc = new weTagData_selectAttribute('doc', array(new weTagDataOption('self', false, ''), new weTagDataOption('top', false, '')), false, '');
 $triggerid = (defined("FILE_TABLE") ? new weTagData_selectorAttribute('triggerid',FILE_TABLE, 'text/webedition', false, ''): null);
-$usekey = new weTagData_selectAttribute('usekey', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
+$usekey = new weTagData_selectAttribute('usekey', weTagData_selectAttribute::getTrueFalse(), false, '');
 
 $to = new weTagData_selectAttribute('to', array(new weTagDataOption('screen', false, ''),new weTagDataOption('request', false, ''), new weTagDataOption('post', false, ''), new weTagDataOption('get', false, ''), new weTagDataOption('global', false, ''), new weTagDataOption('session', false, ''), new weTagDataOption('top', false, ''), new weTagDataOption('self', false, ''), new weTagDataOption('sessionfield', false, '')), false, '');
 $nameto = new weTagData_textAttribute('nameto', false, '');

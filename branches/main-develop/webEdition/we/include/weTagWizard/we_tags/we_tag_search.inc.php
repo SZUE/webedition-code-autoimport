@@ -13,5 +13,5 @@ $this->Attributes[] = new weTagData_textAttribute('size', false, '');
 $this->Attributes[] = new weTagData_textAttribute('maxlength', false, '');
 $this->Attributes[] = new weTagData_textAttribute('cols', false, '');
 $this->Attributes[] = new weTagData_textAttribute('rows', false, '');
-$this->Attributes[] = new weTagData_selectAttribute('xml', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
+$this->Attributes[] = new weTagData_selectAttribute('xml', weTagData_selectAttribute::getTrueFalse(), false, '');
 //$this->Attributes[] = new weTagData_textAttribute('cachelifetime', false, '');

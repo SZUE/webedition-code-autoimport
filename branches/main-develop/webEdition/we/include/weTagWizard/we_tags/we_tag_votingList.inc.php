@@ -12,4 +12,4 @@ $this->Attributes[] = new weTagData_textAttribute('rows', false, '');
 $this->Attributes[] = new weTagData_textAttribute('offset', false, '');
 $this->Attributes[] = new weTagData_selectAttribute('desc', array(new weTagDataOption('true', false, '')), false, '');
 $this->Attributes[] = new weTagData_textAttribute('order', false, '');
-$this->Attributes[] = new weTagData_selectAttribute('subgroup', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
+$this->Attributes[] = new weTagData_selectAttribute('subgroup', weTagData_selectAttribute::getTrueFalse(), false, '');

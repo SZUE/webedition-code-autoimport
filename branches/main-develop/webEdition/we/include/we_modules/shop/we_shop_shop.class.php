@@ -28,7 +28,7 @@ class we_shop_shop{
 // $ClassName is used in we:listview_multiobject.class.php: if($GLOBALS["lv"]->ClassName == 'we_listview_shoppingCart')
 // This could be changed to: if(get_class($GLOBALS['lv']) == 'we_shop_shop')
 
-	var $ClassName = "we_listview_shoppingCart";
+	var $ClassName = 'we_listview_shoppingCart';
 	var $DB_WE;
 	var $IDs = array();
 	var $count = 0;
@@ -39,6 +39,8 @@ class we_shop_shop{
 	var $ShoppingCartItems;
 	var $ShoppingCartKey = '';
 	var $ActItem;
+
+	const ignoredEditFields = 'ID,Username,Password,MemberSince,LastLogin,LastAccess,ParentID,Path,IsFolder,Icon,Text,Forename,Surname,AutoLogin,AutoLoginDenied,ModifiedBy,ModifyDate';
 
 	function __construct($shoppingCart){
 		if(is_object($shoppingCart)){
