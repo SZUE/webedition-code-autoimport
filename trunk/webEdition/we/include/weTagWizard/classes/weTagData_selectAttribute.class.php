@@ -39,6 +39,14 @@ class weTagData_selectAttribute extends weTagDataAttribute{
 		$this->Options = parent::getUseOptions($options);
 	}
 
+	static function getTrueFalse(){
+		static $tmp=false;
+		if(!$tmp){
+			$tmp=array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, ''    ));
+		}
+		return $tmp;
+	}
+
 	/**
 	 * @return string
 	 */

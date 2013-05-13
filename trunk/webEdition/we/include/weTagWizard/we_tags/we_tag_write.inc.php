@@ -5,18 +5,17 @@ $this->NeedsEndTag = false;
 //$this->Groups[] = 'input_tags';
 //$this->Module = '';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
-$trueFalse=array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, ''    ));
 
 $formname = new weTagData_textAttribute('formname', false, '');
-$publish = new weTagData_selectAttribute('publish', $trueFalse, false, '');
-$searchable = new weTagData_selectAttribute('searchable', $trueFalse, false, '');
+$publish = new weTagData_selectAttribute('publish', weTagData_selectAttribute::getTrueFalse(), false, '');
+$searchable = new weTagData_selectAttribute('searchable', weTagData_selectAttribute::getTrueFalse(), false, '');
 
 $doctype = new weTagData_sqlRowAttribute('doctype',DOC_TYPES_TABLE, true, 'DocType', '', '', '');
 $categories = new weTagData_multiSelectorAttribute('categories',CATEGORY_TABLE, '', 'Path', false, '');
 $classid = (defined("OBJECT_TABLE") ? new weTagData_selectorAttribute('classid',OBJECT_TABLE, 'object', false, ''):null);
-$protected = new weTagData_selectAttribute('protected', $trueFalse, false, 'customer');
+$protected = new weTagData_selectAttribute('protected', weTagData_selectAttribute::getTrueFalse(), false, 'customer');
 $admin = new weTagData_textAttribute( 'admin', false, '');
-$forceedit = new weTagData_selectAttribute('forceedit', $trueFalse, false, '');
+$forceedit = new weTagData_selectAttribute('forceedit', weTagData_selectAttribute::getTrueFalse(), false, '');
 $mail = new weTagData_textAttribute('mail', false, '');
 $mailfrom = new weTagData_textAttribute('mailfrom', false, '');
 $charset = new weTagData_textAttribute('charset', false, '');
