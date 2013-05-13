@@ -177,21 +177,44 @@ function indexOfEntry(id){
 	return -1;
 }
 
-function get(eintrag){var nf = new container();var ai = 1;while (ai <= treeData.len) {if (treeData[ai].id == eintrag) nf=treeData[ai];ai++;}return nf;}
+function get(eintrag){
+	var nf = new container();
+	var ai = 1;
+	while (ai <= treeData.len) {
+		if (treeData[ai].id == eintrag){
+			nf=treeData[ai];
+		}
+		ai++;
+	}
+	return nf;
+}
 
-function search(eintrag){var nf = new container();var ai = 1;while (ai <= treeData.len) {if (treeData[ai].parentid == eintrag) nf.add(treeData[ai]);ai++;}return nf;}
+function search(eintrag){
+	var nf = new container();
+	var ai = 1;
+	while (ai <= treeData.len) {
+		if (treeData[ai].parentid == eintrag){
+			nf.add(treeData[ai]);
+		}
+		ai++;
+	}
+	return nf;
+}
 
-function add(object){this[++this.len] = object;}
+function add(object){
+	this[++this.len] = object;
+}
 
-function containerClear(){this.len =0;}
+function containerClear(){
+	this.len =0;
+}
 
 ' . $this->getJSAddSortFunction() . '
 ' . $this->getJSTreeFunctions() . '
 
 var startloc=0;
 var treeHTML;
-self.focus();
-		';
+self.focus();';
 
 		return ($withTag ? we_html_element::jsScript(JS_DIR . "images.js") . we_html_element::jsElement($js) : $js);
 	}
@@ -293,18 +316,17 @@ function checkNode(imgName) {
 
 	function getJSGetTreeLayout(){
 		return '
-				function getTreeLayout(){
-						return this.tree_layouts[this.state];
-				}';
+function getTreeLayout(){
+		return this.tree_layouts[this.state];
+}';
 	}
 
 	function getJSGetLayout(){
 		return '
-				function getLayout(){
-						var layout_key=(this.typ=="group" ? "group" : "item");
-						return treeData.node_layouts[layout_key];
-				}
-';
+function getLayout(){
+		var layout_key=(this.typ=="group" ? "group" : "item");
+		return treeData.node_layouts[layout_key];
+}';
 	}
 
 	function getJSSetTreeState(){
@@ -324,134 +346,127 @@ function setTreeState(){
 
 	function getJSApplyLayout(){
 		return '
-		function applyLayout(){
-			if(arguments[0])
-				eval("if("+treeData.treeFrame+".document.getElementById(\"lab_"+this.id+"\"))"+treeData.treeFrame+".document.getElementById(\"lab_"+this.id+"\").className =\""+arguments[0]+"\";");
-			else
-				eval("if("+treeData.treeFrame+".document.getElementById(\"lab_"+this.id+"\"))"+treeData.treeFrame+".document.getElementById(\"lab_"+this.id+"\").className =\""+this.getlayout()+"\";");
-		}
-	';
+function applyLayout(){
+	if(arguments[0])
+		eval("if("+treeData.treeFrame+".document.getElementById(\"lab_"+this.id+"\"))"+treeData.treeFrame+".document.getElementById(\"lab_"+this.id+"\").className =\""+arguments[0]+"\";");
+	else
+		eval("if("+treeData.treeFrame+".document.getElementById(\"lab_"+this.id+"\"))"+treeData.treeFrame+".document.getElementById(\"lab_"+this.id+"\").className =\""+this.getlayout()+"\";");
+}';
 	}
 
 	function getJSRootAdd(){
 		return '
-		function rootEntry(id,text,rootstat,offset){
-			this.id = id;
-			this.text = text;
-			this.open=1;
-			this.loaded=1;
-			this.typ = "root";
-			this.offset = offset;
-			this.rootstat = rootstat;
-			this.showsegment=showSegment;
-			this.clear=clearItems;
+function rootEntry(id,text,rootstat,offset){
+	this.id = id;
+	this.text = text;
+	this.open=1;
+	this.loaded=1;
+	this.typ = "root";
+	this.offset = offset;
+	this.rootstat = rootstat;
+	this.showsegment=showSegment;
+	this.clear=clearItems;
 
-			return this;
-		}
-	';
+	return this;
+}';
 	}
 
 	function getJSAddNode(){
 		return '
-		function node(attribs){
+function node(attribs){
 
-			for(aname in attribs){
-				var val=""+attribs[aname];
-				this[aname] = val;
-			}
+	for(aname in attribs){
+		var val=""+attribs[aname];
+		this[aname] = val;
+	}
 
-			this.getlayout=getLayout;
-			this.applylayout=applyLayout;
-			this.showsegment=showSegment;
-			this.clear=clearItems;
-			return this;
-		}
-	';
+	this.getlayout=getLayout;
+	this.applylayout=applyLayout;
+	this.showsegment=showSegment;
+	this.clear=clearItems;
+	return this;
+}';
 	}
 
 	function getJSSelectNode(){
 		return '
-		function selectNode(){
-				if(arguments[0]){
-        			var ind;
-					if(treeData.selection!="" && treeData.selection_table==treeData.table){
-						ind=indexOfEntry(treeData.selection);
-						if(ind!=-1){
-							var oldnode=get(treeData.selection);
-							oldnode.selected=0;
-							oldnode.applylayout();
-						}
-					}
-					ind=indexOfEntry(arguments[0]);
-					if(ind!=-1){
-						var newnode=get(arguments[0]);
-						newnode.selected=1;
-						newnode.applylayout();
-					}
-					treeData.selection=arguments[0];
-					treeData.selection_table=treeData.table;
+function selectNode(){
+		if(arguments[0]){
+					var ind;
+			if(treeData.selection!="" && treeData.selection_table==treeData.table){
+				ind=indexOfEntry(treeData.selection);
+				if(ind!=-1){
+					var oldnode=get(treeData.selection);
+					oldnode.selected=0;
+					oldnode.applylayout();
 				}
+			}
+			ind=indexOfEntry(arguments[0]);
+			if(ind!=-1){
+				var newnode=get(arguments[0]);
+				newnode.selected=1;
+				newnode.applylayout();
+			}
+			treeData.selection=arguments[0];
+			treeData.selection_table=treeData.table;
 		}
 
-	';
+}';
 	}
 
 	function getJSUnselectNode(){
 		return '
- 		function unselectNode(){
-			if(treeData.selection!="" && treeData.table==treeData.selection_table){
-				var ind=indexOfEntry(treeData.selection);
-				if(ind!=-1){
-					var node=get(treeData.selection);
-					node.selected=0;
-					if(node.applylayout) node.applylayout();
-				}
-				treeData.selection="";
-			}
+function unselectNode(){
+	if(treeData.selection!="" && treeData.table==treeData.selection_table){
+		var ind=indexOfEntry(treeData.selection);
+		if(ind!=-1){
+			var node=get(treeData.selection);
+			node.selected=0;
+			if(node.applylayout) node.applylayout();
 		}
-	';
+		treeData.selection="";
+	}
+}';
 	}
 
 	function getJSShowSegment(){
 		return '
- 		function showSegment(){
-			parentnode=' . $this->topFrame . '.get(this.parentid);
-			parentnode.clear();
-			we_cmd("loadFolder",treeData.table,parentnode.id,"","","",this.offset);
-			toggleBusy(1);
-		}
-	';
+function showSegment(){
+	parentnode=' . $this->topFrame . '.get(this.parentid);
+	parentnode.clear();
+	we_cmd("loadFolder",treeData.table,parentnode.id,"","","",this.offset);
+	toggleBusy(1);
+}';
 	}
 
 	function getJSClearItems(){
 		return '
- 		function clearItems(){
-			var ai = 1;
-			var delid = 1;
-			var deleted = 0;
+function clearItems(){
+	var ai = 1;
+	var delid = 1;
+	var deleted = 0;
 
-			while (ai <= treeData.len) {
-				if (treeData[ai].parentid == this.id){
-					if(treeData[ai].contenttype=="group") deleted+=treeData[ai].clear();
-					else{
-						ind=ai;
-                		while (ind <= treeData.len-1) {
-                        		treeData[ind]=treeData[ind+1];
-		                        ind++;
-                		}
-                		treeData.len[treeData.len]=null;
-                		treeData.len--;
-					}
-					deleted++;
-				}
-				else{
-					ai++;
-				}
+	while (ai <= treeData.len) {
+		if (treeData[ai].parentid == this.id){
+			if(treeData[ai].contenttype=="group"){
+				deleted+=treeData[ai].clear();
+			}else{
+				ind=ai;
+					while (ind <= treeData.len-1) {
+												treeData[ind]=treeData[ind+1];
+												ind++;
+								}
+								treeData.len[treeData.len]=null;
+								treeData.len--;
 			}
-			drawTree();
-			return deleted;
+			deleted++;
+		}else{
+			ai++;
 		}
-	';
+	}
+	drawTree();
+	return deleted;
+}';
 	}
 
 	function getJSContainer(){
@@ -472,40 +487,40 @@ function setTreeState(){
 
 		return '
 function container(){
-			this.len = 0;
-			this.state=0;
-			this.startloc=0;
-			this.clear=containerClear;
-			this.add = add;
-			this.addSort = addSort;
+	this.len = 0;
+	this.state=0;
+	this.startloc=0;
+	this.clear=containerClear;
+	this.add = add;
+	this.addSort = addSort;
 
-			this.table="";
+	this.table="";
 
-			this.selection="";
-			this.selection_table="";
-			this.selectnode=selectNode;
-			this.unselectnode=unselectNode;
+	this.selection="";
+	this.selection_table="";
+	this.selectnode=selectNode;
+	this.unselectnode=unselectNode;
 
-			this.setstate=setTreeState;
-			this.getlayout=getTreeLayout;
+	this.setstate=setTreeState;
+	this.getlayout=getTreeLayout;
 
-			this.tree_image_dir="' . $this->tree_image_dir . '";
-			this.tree_icon_dir="' . $this->tree_icon_dir . '";
-			this.topFrame="' . $this->topFrame . '";
-			this.treeFrame="' . $this->treeFrame . '";
+	this.tree_image_dir="' . $this->tree_image_dir . '";
+	this.tree_icon_dir="' . $this->tree_icon_dir . '";
+	this.topFrame="' . $this->topFrame . '";
+	this.treeFrame="' . $this->treeFrame . '";
 
-			' . $ts . '
-			' . $tl . '
-			' . (isset($ns) ? $ns : "") . '
-			' . $nl . '
+	' . $ts . '
+	' . $tl . '
+	' . (isset($ns) ? $ns : "") . '
+	' . $nl . '
 
-			this.check0_img=new Image();
-			this.check0_img.src="' . $this->tree_image_dir . 'check0.gif";
+	this.check0_img=new Image();
+	this.check0_img.src="' . $this->tree_image_dir . 'check0.gif";
 
-			this.check1_img=new Image();
-			this.check1_img.src="' . $this->tree_image_dir . 'check1.gif";
+	this.check1_img=new Image();
+	this.check1_img.src="' . $this->tree_image_dir . 'check1.gif";
 
-			return this;
+	return this;
 }';
 	}
 
