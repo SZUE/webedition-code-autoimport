@@ -113,9 +113,6 @@ class weTagData{
 					$tmp = $value->AllowedAttributes;
 					foreach($tmp as $cur){
 						if($cur != $this->TypeAttribute && !empty($cur) && !in_array($cur, $this->Attributes)){
-							if($tagName == 'userInput'){
-								t_e($cur, 'not found', $this->Attributes);
-							}
 							$this->Attributes[] = $cur;
 						}
 					}
