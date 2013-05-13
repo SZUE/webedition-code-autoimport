@@ -8,7 +8,7 @@ $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
 $this->Attributes[] = new weTagData_textAttribute('delimiter', false, '');
 $this->Attributes[] = new weTagData_selectAttribute('doc', array(new weTagDataOption('self', false, ''), new weTagDataOption('top', false, '')), false, '');
-$this->Attributes[] = new weTagData_selectAttribute('showpath', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
+$this->Attributes[] = new weTagData_selectAttribute('showpath', weTagData_selectAttribute::getTrueFalse(), false, '');
 $this->Attributes[] = new weTagData_textAttribute('rootdir', false, '');
 $this->Attributes[] = new weTagData_selectAttribute('field', array(new weTagDataOption('ID', false, ''), new weTagDataOption('Path', false, ''), new weTagDataOption('Title', false, ''), new weTagDataOption('Description', false, '')), false, '');
 $this->Attributes[] = new weTagData_textAttribute('onlyindir', false, '');

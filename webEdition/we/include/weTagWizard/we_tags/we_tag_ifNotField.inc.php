@@ -11,4 +11,4 @@ $this->Attributes[] = new weTagData_selectAttribute('type', array(new weTagDataO
 $this->Attributes[] = new weTagData_textAttribute('match', true, '');
 $this->Attributes[] = new weTagData_selectAttribute('operator', array(new weTagDataOption('equal', false, ''), new weTagDataOption('less', false, ''), new weTagDataOption('less|equal', false, ''), new weTagDataOption('greater', false, ''), new weTagDataOption('greater|equal', false, ''), new weTagDataOption('contains', false, '')), false, '');
 $this->Attributes[] = new weTagData_selectAttribute('striphtml', array(new weTagDataOption('false', false, ''), new weTagDataOption('true', false, '')), false, '');
-$this->Attributes[] = new weTagData_selectAttribute('usekey', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
+$this->Attributes[] = new weTagData_selectAttribute('usekey', weTagData_selectAttribute::getTrueFalse(), false, '');

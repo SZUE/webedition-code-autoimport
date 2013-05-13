@@ -14,8 +14,8 @@ $values = new weTagData_textAttribute('values', false, '');
 $class = new weTagData_textAttribute('class', false, '');
 $style = new weTagData_textAttribute('style', false, '');
 $onchange = new weTagData_textAttribute('onchange', false, '');
-$checked = new weTagData_selectAttribute('checked', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
-$xml = new weTagData_selectAttribute('xml', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
+$checked = new weTagData_selectAttribute('checked', weTagData_selectAttribute::getTrueFalse(), false, '');
+$xml = new weTagData_selectAttribute('xml', weTagData_selectAttribute::getTrueFalse(), false, '');
 
 $this->TypeAttribute = new weTagData_typeAttribute('type', array(
 		new weTagDataOption('email', false, 'newsletter', array($size, $maxlength, $value, $class, $style, $onchange), array()),
