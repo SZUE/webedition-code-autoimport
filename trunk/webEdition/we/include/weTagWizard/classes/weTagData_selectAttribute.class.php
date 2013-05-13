@@ -40,9 +40,9 @@ class weTagData_selectAttribute extends weTagDataAttribute{
 	}
 
 	static function getTrueFalse(){
-		static $tmp=false;
+		static $tmp = false;
 		if(!$tmp){
-			$tmp=array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, ''    ));
+			$tmp = array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, ''));
 		}
 		return $tmp;
 	}
@@ -67,9 +67,9 @@ class weTagData_selectAttribute extends weTagDataAttribute{
 		}
 
 		$select = new we_html_select(
-				array(
-					'name' => $this->getName(), 'id' => $this->getIdName(), 'class' => 'defaultfont selectinput'
-			));
+			array(
+			'name' => $this->getName(), 'id' => $this->getIdName(), 'class' => 'defaultfont selectinput'
+		));
 		$select->addOptions(count($values), $keys, $values);
 
 		$select->selectOption($this->Value);
