@@ -1,9 +1,9 @@
 /**
  * webEdition CMS
  *
- * $Rev: 6068 $
- * $Author: wbtmagnum $
- * $Date: 2013-04-26 12:48:50 +0200 (Fr, 26 Apr 2013) $
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
