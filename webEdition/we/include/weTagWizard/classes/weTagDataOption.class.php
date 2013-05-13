@@ -90,6 +90,9 @@ class weTagDataOption{
 	function getAllowedAttributes(){
 		$arr = array();
 		foreach($this->AllowedAttributes as $attribute){
+			if(empty($attribute)){
+				continue;
+			}
 			if(!is_object($attribute)){
 				t_e($attribute);
 				continue;

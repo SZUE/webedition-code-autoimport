@@ -95,15 +95,28 @@ class weTagData{
 		}
 
 		if($this->TypeAttribute){
-			if(!is_array($this->TypeAttribute->Options)){
+			if(!is_array($this->TypeAttribute->getOptions())){
 				t_e('Error in TypeAttribute of we:' . $this->Name);
 			} else{
+				$options = $this->TypeAttribute->getOptions();
 				if(!$this->noDocuLink){
-					foreach($this->TypeAttribute->Options as &$value){
+					foreach($options as &$value){
 						$tmp = new weTagData_cmdAttribute('TagReferenz', false, '', array('open_tagreference', strtolower($tagName) . '-' . $this->TypeAttribute->getName() . '-' . $value->Name), g_l('taged', '[tagreference_linktext]'));
 						$value->AllowedAttributes[] = $tmp;
 						if($value->Value != '-'){
 							$this->Attributes[] = $tmp;
+						}
+					}
+				}
+				//fix common error: not all type attributes are present in attributes
+				foreach($options as $value){
+					$tmp = $value->AllowedAttributes;
+					foreach($tmp as $cur){
+						if($cur != $this->TypeAttribute && !empty($cur) && !in_array($cur, $this->Attributes)){
+							if($tagName == 'userInput'){
+								t_e($cur, 'not found', $this->Attributes);
+							}
+							$this->Attributes[] = $cur;
 						}
 					}
 				}
@@ -120,12 +133,12 @@ class weTagData{
 		if($this->TypeAttribute){
 			$this->UsedAttributes[] = $this->TypeAttribute;
 		}
-		foreach($this->Attributes as $attr){
+		foreach($this->Attributes as $pos => $attr){
 			if($attr === null){
 				continue;
 			}
 			if(!is_object($attr)){
-				t_e('Error in Attributes of we:' . $this->Name, $attr);
+				t_e('Error in Attributes of we:' . $this->Name, $attr, $pos);
 			} else if($attr->useAttribute()){
 				$this->UsedAttributes[] = $attr;
 			}
@@ -244,7 +257,8 @@ class weTagData{
 				$attr[] = $attribute->getName();
 			}
 		}
-		return $attr;;
+		return $attr;
+		;
 	}
 
 	/**
