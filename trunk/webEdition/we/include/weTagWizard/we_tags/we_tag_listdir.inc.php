@@ -11,5 +11,5 @@ $this->Attributes[] = new weTagData_textAttribute('index', false, '');
 $this->Attributes[] = new weTagData_textAttribute('field', false, '');
 $this->Attributes[] = new weTagData_textAttribute('dirfield', false, '');
 $this->Attributes[] = new weTagData_textAttribute('order', false, '');
-$this->Attributes[] = new weTagData_selectAttribute('desc', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
+$this->Attributes[] = new weTagData_selectAttribute('desc', weTagData_selectAttribute::getTrueFalse(), false, '');
 //$this->Attributes[] = new weTagData_textAttribute('cachelifetime', false, '');

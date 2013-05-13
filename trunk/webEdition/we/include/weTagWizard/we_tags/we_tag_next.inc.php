@@ -9,5 +9,5 @@ $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 if(defined("FILE_TABLE")) { $this->Attributes[] = new weTagData_selectorAttribute('id',FILE_TABLE, 'text/webedition', false, ''); }
 $this->Attributes[] = new weTagData_textAttribute('class', false, '');
 $this->Attributes[] = new weTagData_textAttribute('style', false, '');
-$this->Attributes[] = new weTagData_selectAttribute('xml', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
+$this->Attributes[] = new weTagData_selectAttribute('xml', weTagData_selectAttribute::getTrueFalse(), false, '');
 $this->Attributes[] = new weTagData_selectAttribute('only', array(new weTagDataOption('href', false, ''), new weTagDataOption('id', false, '')), false, '');
