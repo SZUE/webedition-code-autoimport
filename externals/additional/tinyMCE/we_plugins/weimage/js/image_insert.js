@@ -1,9 +1,9 @@
 /**
  * webEdition CMS
  *
- * $Rev: 5500 $
- * $Author: lukasimhof $
- * $Date: 2013-01-02 11:06:34 +0100 (Mi, 02 Jan 2013) $
+ * $Rev: 6068 $
+ * $Author: wbtmagnum $
+ * $Date: 2013-04-26 12:48:50 +0200 (Fr, 26 Apr 2013) $
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -100,7 +100,7 @@ var ImageDialog = {
 			alt : nl.alt.value,
 			align : nl.align.value,
 			name : nl.name.value,
-			'class' : nl.class.value,
+			'class' : nl['class'].value, // 'class' is a reserved word in IE <= 8 and therefore needs wrapping
 			title : nl.title.value,
 			longdesc : nl.longdesc.value
 			//style : nl.style.value,

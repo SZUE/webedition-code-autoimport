@@ -41,7 +41,7 @@ var WeabbrDialog = { // TODO: clean code by using more vars
 		var printAsSelection = '';
 		
 		if(sel === ''){ 
-			// no selection, but cursor inside ACRONYM (the only case where acronym-Button is active without selection): 
+			// no selection, but cursor inside ABBR (the only case where acronym-Button is active without selection): 
 			sel = elm.innerHTML;
 			this.isAbbr = true;
 		} else{

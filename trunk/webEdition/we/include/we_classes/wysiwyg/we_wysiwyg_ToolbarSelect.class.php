@@ -30,7 +30,7 @@ class we_wysiwyg_ToolbarSelect extends we_wysiwyg_ToolbarElement{
 		$this->vals = $vals;
 	}
 
-	function hasProp(){
+	function hasProp($cmd = '', $contextMenu = false){
 		switch($this->cmd){
 			case "fontname":
 			case "fontsize":

@@ -31,6 +31,7 @@ class we_wysiwyg_ToolbarButton extends we_wysiwyg_ToolbarElement{
 			$this->tooltiptext = $tooltiptext;
 			$this->imgSrc = $imgSrc;
 		}
+		$this->showMeInContextmenu = $this->hasProp('',true);
 	}
 
 	function getHTML(){
@@ -52,13 +53,12 @@ onclick="' . $this->editor->ref . 'Obj.click(\'' . $this->cmd . '\');" /></div>'
 		}
 	}
 
-	function hasProp(){
+	function hasProp($cmd = '', $contextMenu = false){
 		switch($this->cmd){
-
 			case "caption":
 			case "removecaption":
 			case "edittable":
-				return we_wysiwyg::$editorType == 'tinyMCE' ? false : parent::hasProp() || parent::hasProp('table');
+				return we_wysiwyg::$editorType == 'tinyMCE' ? false : parent::hasProp('', $contextMenu) || parent::hasProp('table',$contextMenu);
 			case "inserttable":
 			case "editcell":
 			case "insertcolumnright":
@@ -69,36 +69,37 @@ onclick="' . $this->editor->ref . 'Obj.click(\'' . $this->cmd . '\');" /></div>'
 			case "deletecol":
 			case "increasecolspan":
 			case "decreasecolspan":
-				return parent::hasProp() || parent::hasProp('table');
+				return $this->editor->setPlugin('table', parent::hasProp('', $contextMenu) || parent::hasProp('table',$contextMenu));
 			case "editrow":
 			case "deletetable":
-				return we_wysiwyg::$editorType != 'tinyMCE' ? false : parent::hasProp() || parent::hasProp('table');
+				return $this->editor->setPlugin('table', parent::hasProp('', $contextMenu) || parent::hasProp('table',$contextMenu));
 			case "cut":
 			case "copy":
 			case "paste":
-				return parent::hasProp() || parent::hasProp('copypaste');
+				return $this->editor->setPlugin('paste', parent::hasProp('', $contextMenu) || parent::hasProp('copypaste',$contextMenu));
 			case "pastetext":
 			case "pasteword":
 			case "selectall":
-				return we_wysiwyg::$editorType == 'tinyMCE' && parent::hasProp() || parent::hasProp('copypaste');
+				return $this->editor->setPlugin('paste', parent::hasProp('', $contextMenu) || parent::hasProp('copypaste',$contextMenu));
 			case "forecolor":
 			case "backcolor":
-				return parent::hasProp() || parent::hasProp('color');
+				return parent::hasProp('', $contextMenu) || parent::hasProp('color',$contextMenu);
 			case "createlink":
 			case "unlink":
-				return parent::hasProp() || parent::hasProp('link');
+				return parent::hasProp('', $contextMenu) || parent::hasProp('link',$contextMenu);
 			case "insertunorderedlist":
 			case "insertorderedlist":
 			case "indent":
 			case "outdent":
-				return parent::hasProp() || parent::hasProp('list');
+				$this->editor->setPlugin('lists', parent::hasProp('', $contextMenu) || parent::hasProp('list',$contextMenu));
+				return $this->editor->setPlugin('advlist', parent::hasProp('', $contextMenu) || parent::hasProp('list',$contextMenu));
 			case "blockquote":
-				return we_wysiwyg::$editorType == 'tinyMCE' && parent::hasProp() || parent::hasProp('list');
+				return we_wysiwyg::$editorType == 'tinyMCE' && parent::hasProp('', $contextMenu) || parent::hasProp('list',$contextMenu);
 			case "justifyleft":
 			case "justifycenter":
 			case "justifyright":
 			case "justifyfull":
-				return parent::hasProp() || parent::hasProp('justify');
+				return parent::hasProp('', $contextMenu) || parent::hasProp('justify',$contextMenu);
 			case "bold":
 			case "italic":
 			case "underline":
@@ -107,39 +108,41 @@ onclick="' . $this->editor->ref . 'Obj.click(\'' . $this->cmd . '\');" /></div>'
 			case "strikethrough":
 			case "removetags":
 			case "removeformat":
-				return parent::hasProp() || parent::hasProp('prop');
+				return parent::hasProp('', $contextMenu) || parent::hasProp('prop',$contextMenu);
 			case "importrtf":
-				return we_wysiwyg::$editorType == 'tinyMCE' ? false : parent::hasProp();
+				return we_wysiwyg::$editorType == 'tinyMCE' ? false : parent::hasProp('', $contextMenu);
 			case "absolute":
 			case "insertlayer":
 			case "movebackward":
 			case "moveforward":
-				return we_wysiwyg::$editorType == 'tinyMCE' && parent::hasProp() || parent::hasProp('layer');
+				return $this->editor->setPlugin('layer', parent::hasProp('', $contextMenu) || parent::hasProp('layer',$contextMenu));
 			//TODO: we shouldcombine the following command to "insertelements": emotions,insertdate,inserttime,nonbreaking,hr,advhr,specialchar,nbsp?
 			//TODO: we should combine the following command to "direction": ltr,rtl?
 			case "abbr":
 			case "acronym":
 			case "lang":
-				return parent::hasProp() || parent::hasProp('xhtmlxtras');
+				return parent::hasProp('', $contextMenu) || parent::hasProp('xhtmlxtras',$contextMenu);
 			case "del":
 			case "ins":
 			case "cite" :
-				return we_wysiwyg::$editorType == 'tinyMCE' && parent::hasProp() || parent::hasProp('xhtmlxtras');
-			case "emotions":
-				return false; // problems with path to emoticons
+				return $this->editor->setPlugin('xhtmlxtras', parent::hasProp('', $contextMenu) || parent::hasProp('xhtmlxtras',$contextMenu));
 			case "insertdate":
 			case "inserttime":
-			case "nonbreaking":
-			case "hr":
+				return $this->editor->setPlugin('insertdatetime', parent::hasProp('', $contextMenu));
 			case "ltr":
 			case "rtl":
+				return $this->editor->setPlugin('directionality', parent::hasProp('', $contextMenu));
 			case "search":
 			case "replace":
-			case "fullscreen":
+				return $this->editor->setPlugin('searchreplace', parent::hasProp('', $contextMenu));
 			case "styleprops":
-				return we_wysiwyg::$editorType == 'tinyMCE' && parent::hasProp();
+				return $this->editor->setPlugin('style', parent::hasProp('', $contextMenu));
+			case "nonbreaking":
+			case "hr":
+			case "fullscreen":
+				return we_wysiwyg::$editorType == 'tinyMCE' && parent::hasProp('', $contextMenu);
 			default:
-				return parent::hasProp();
+				return parent::hasProp('', $contextMenu);
 		}
 	}
 

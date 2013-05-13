@@ -26,6 +26,7 @@ class we_wysiwyg_ToolbarElement{
 	var $editor;
 	var $classname = __CLASS__;
 	var $showMe = false;
+	var $showMeInContextmenu = false;
 
 	function __construct($editor, $cmd, $width, $height = ""){
 		$this->editor = $editor;
@@ -39,9 +40,9 @@ class we_wysiwyg_ToolbarElement{
 		return '';
 	}
 
-	function hasProp($cmd = ''){
+	function hasProp($cmd = '', $contextMenu = false){
 		$cmd = ($cmd ? $cmd : $this->cmd);
-		return stripos($this->editor->propstring, ',' . $cmd . ',') !== false || ($this->editor->propstring == '');
+		return !$contextMenu ? stripos($this->editor->propstring, ',' . $cmd . ',') !== false || $this->editor->propstring == '' : 
+			stripos($this->editor->restrictContextmenu, ',' . $cmd . ',') !== false;
 	}
-
 }
