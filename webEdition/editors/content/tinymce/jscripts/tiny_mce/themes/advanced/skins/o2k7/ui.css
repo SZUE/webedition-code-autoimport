@@ -220,3 +220,26 @@
 .o2k7Skin span.mce_restoredraft {background-position:-20px -40px}
 .o2k7Skin span.mce_spellchecker {background-position:-540px -20px}
 .o2k7Skin span.mce_visualblocks {background-position: -40px -40px}
+
+/* webEdition addons: */
+
+.o2k7Skin span.mce_wevisualaid {background:url(../../../../plugins/wevisualaid/img/visibleborders.gif)}
+.o2k7Skin span.mce_wefullscreen {background:url(../../../../plugins/wefullscreen/img/fullscreen.gif)}
+.o2k7Skin span.mce_welang {background:url(../../../../plugins/welang/img/lang.gif)}
+.o2k7Skin span.mce_weinsertbreak {background:url(../../../../plugins/weinsertbreak/img/br.gif)}
+.o2k7Skin span.mce_weimage {background-position:-380px 0}
+.o2k7Skin span.mce_welink {background-position:-500px 0}
+.o2k7Skin span.mce_wespellchecker {background:url(../../../../plugins/wespellchecker/img/spellcheck.gif)}
+
+.o2k7Skin span.mce_de_weadaptbold {background:url(../../../../plugins/weadaptbold/img/bold.gif)}
+.o2k7Skin span.mce_de_weadaptitalic {background:url(../../../../plugins/weadaptitalic/img/italic.gif)}
+.o2k7Skin span.mce_de_weabbr {background:url(../../../../plugins/weabbr/img/abbr_de.gif)}
+.o2k7Skin span.mce_de_weacronym {background:url(../../../../plugins/weacronym/img/acronym.gif)}
+.o2k7Skin span.mce_weadaptbold {background-position:0 0}
+.o2k7Skin span.mce_weadaptitalic {background-position:-60px 0}
+.o2k7Skin span.mce_weabbr {background-position:-860px -20px}
+.o2k7Skin span.mce_weacronym {background-position:-880px -20px}
+
+.o2k7Skin span.mce_undo {background-position:-158px 0}
+.o2k7Skin span.mce_charmap {background-position:-239px 0}
+

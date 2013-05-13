@@ -126,6 +126,7 @@ if(isset($fieldName) && isset($_REQUEST["we_okpressed"]) && $_REQUEST["we_okpres
 			  18 = documentCss
 			  19 = origName
 			  20 = tinyParams
+			  21 = contextmenu
 			 */
 
 			$e = new we_wysiwyg(
@@ -153,7 +154,8 @@ if(isset($fieldName) && isset($_REQUEST["we_okpressed"]) && $_REQUEST["we_okpres
 					true,
 					we_cmd_dec(18),
 					we_cmd_dec(19),
-					we_cmd_dec(20));
+					we_cmd_dec(20),
+					we_cmd_dec(21));
 
 			print we_wysiwyg::getHeaderHTML() . $e->getHTML() .
 				'<div style="height:8px"></div>' . we_button::position_yes_no_cancel($okBut, $cancelBut);

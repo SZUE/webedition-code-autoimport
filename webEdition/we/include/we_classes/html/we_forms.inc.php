@@ -138,6 +138,7 @@ abstract class we_forms{
 		$width = weTag_getAttribute('width', $attribs);
 		$height = weTag_getAttribute('height', $attribs);
 		$commands = preg_replace('/ *, */', ',', weTag_getAttribute('commands', $attribs));
+		$contextmenu = preg_replace('/ *, */', ',', weTag_getAttribute('contextmenu', $attribs));
 		$bgcolor = weTag_getAttribute('bgcolor', $attribs);
 		$wrap = weTag_getAttribute('wrap', $attribs);
 		$hideautobr = weTag_getAttribute('hideautobr', $attribs, false, true);
@@ -216,10 +217,10 @@ abstract class we_forms{
 			$tinyParams = weTag_getAttribute('tinyparams', $attribs);
 			
 			if($inlineedit){
-				$e = new we_wysiwyg($name, $width, $height, $value, $commands, $bgcolor, '', $class, $fontnames, (!$inwebedition), $xml, $removeFirstParagraph, $inlineedit, '', $charset, $cssClasses, $_lang, '', $showSpell, $isFrontendEdit, $buttonpos, $oldHtmlspecialchars, $contentCss, $origName, $tinyParams);
+				$e = new we_wysiwyg($name, $width, $height, $value, $commands, $bgcolor, '', $class, $fontnames, (!$inwebedition), $xml, $removeFirstParagraph, $inlineedit, '', $charset, $cssClasses, $_lang, '', $showSpell, $isFrontendEdit, $buttonpos, $oldHtmlspecialchars, $contentCss, $origName, $tinyParams, $contextmenu);
 				$out .= $e->getHTML();
 			} else{
-				$e = new we_wysiwyg($name, $width, $height, '', $commands, $bgcolor, '', $class, $fontnames, (!$inwebedition), $xml, $removeFirstParagraph, $inlineedit, '', $charset, $cssClasses, $_lang, '', $showSpell, $isFrontendEdit, $buttonpos, $oldHtmlspecialchars, $contentCss, $origName, $tinyParams);
+				$e = new we_wysiwyg($name, $width, $height, '', $commands, $bgcolor, '', $class, $fontnames, (!$inwebedition), $xml, $removeFirstParagraph, $inlineedit, '', $charset, $cssClasses, $_lang, '', $showSpell, $isFrontendEdit, $buttonpos, $oldHtmlspecialchars, $contentCss, $origName, $tinyParams, $contextmenu);
 
 				//$fieldName = preg_replace('#^.+_txt\[(.+)\]$#', '\1', $name);
 				// Bugfix => Workarround Bug # 7445

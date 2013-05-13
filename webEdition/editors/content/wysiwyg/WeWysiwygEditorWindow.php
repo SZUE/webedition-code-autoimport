@@ -69,6 +69,7 @@ if(isset($fieldName) && isset($_REQUEST["we_okpressed"]) && $_REQUEST["we_okpres
 			}
 
 			/*  diese Liste ist wohl nicht ganz richtig
+			 * => is this file still used? in which case?
 			  1 = name
 			  2 = width
 			  3 = height
