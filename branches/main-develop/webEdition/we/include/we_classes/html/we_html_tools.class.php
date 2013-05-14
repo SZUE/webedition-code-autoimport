@@ -486,11 +486,22 @@ abstract class we_html_tools{
 
 		if(($format == "") || $_monthPos > -1){
 			$months = '';
+			$monthType=(strpos($format, 'F')?'F':(strpos($format, 'M')?'M':0));
 			for($i = 1; $i <= 12; $i++){
-				$_atts2 = ($time && $month == $i) ? array('selected' => 'selected') : array();
-
-				$months .= getHtmlTag('option', array_merge($_attsOption, $_atts2), sprintf("%02d", $i));
-			}
+				switch($monthType){//Bug #4095
+				 case 'F':
+				  $val = g_l('date','[month][long]['.($i-1).']');
+				  break;
+				 case 'M':
+				  $val = g_l('date','[month][short]['.($i-1).']');
+				  break;
+				 default:
+				  $val = sprintf("%02d", $i);
+				}
+				$_atts2 = ($time && $month == $i) ? array('selected' => 'selected','value' =>
+				$i) : array('value' => $i);
+				$months .= getHtmlTag('option', array_merge($_attsOption, $_atts2), $val);
+			} 
 			$monthSelect = getHtmlTag(
 					'select', array_merge($_attsSelect, array(
 					'name' => sprintf($name, "_month"), 'id' => sprintf($name, "_month")

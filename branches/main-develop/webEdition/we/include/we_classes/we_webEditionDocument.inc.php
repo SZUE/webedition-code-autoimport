@@ -61,12 +61,13 @@ class we_webEditionDocument extends we_textContentDocument{
 		$this->ContentType = 'text/webedition';
 	}
 
-	public static function initDocument($formname = 'we_global_form', $tid = '', $doctype = '', $categories = ''){
+	public static function initDocument($formname = 'we_global_form', $tid = 0, $doctype = '', $categories = ''){
 		//  check if a <we:sessionStart> Tag was before
 		$session = isset($GLOBALS['WE_SESSION_START']) && $GLOBALS['WE_SESSION_START'];
 
-		if(!(isset($GLOBALS['we_document']) && is_array($GLOBALS['we_document'])))
+		if(!(isset($GLOBALS['we_document']) && is_array($GLOBALS['we_document']))){
 			$GLOBALS['we_document'] = array();
+		}
 		$GLOBALS['we_document'][$formname] = new we_webEditionDocument();
 		if((!$session) || (!isset($_SESSION["we_document_session_$formname"]))){
 			if($session){
@@ -133,11 +134,9 @@ class we_webEditionDocument extends we_textContentDocument{
 			$GLOBALS['we_document'][$formname]->Category = $cats;
 		}
 		if(isset($_REQUEST['we_ui_' . $formname . '_Category'])){
-			if(is_array($_REQUEST['we_ui_' . $formname . '_Category'])){
-				$_REQUEST['we_ui_' . $formname . '_Category'] = makeCSVFromArray($_REQUEST['we_ui_' . $formname . '_Category'], true);
-			} else{
-				$_REQUEST['we_ui_' . $formname . '_Category'] = makeCSVFromArray(makeArrayFromCSV($_REQUEST['we_ui_' . $formname . '_Category']), true);
-			}
+			$_REQUEST['we_ui_' . $formname . '_Category'] = (is_array($_REQUEST['we_ui_' . $formname . '_Category']) ?
+					makeCSVFromArray($_REQUEST['we_ui_' . $formname . '_Category'], true) :
+					makeCSVFromArray(makeArrayFromCSV($_REQUEST['we_ui_' . $formname . '_Category']), true));
 		}
 		foreach($GLOBALS['we_document'][$formname]->persistent_slots as $slotname){
 			if($slotname != 'categories' && isset($_REQUEST['we_ui_' . $formname . '_' . $slotname])){
@@ -159,7 +158,6 @@ class we_webEditionDocument extends we_textContentDocument{
 	function makeSameNew(){
 		$TemplateID = $this->TemplateID;
 		$TemplatePath = $this->TemplatePath;
-		$IsDynamic = $this->IsDynamic;
 		$IsDynamic = $this->IsDynamic;
 		parent::makeSameNew();
 		$this->TemplateID = $TemplateID;
@@ -212,11 +210,10 @@ class we_webEditionDocument extends we_textContentDocument{
 	 */
 
 	function formIsDynamic($leftwidth = 100, $disabled = false){
-		$n = '';
+		$v = $this->IsDynamic;
 		if(!$disabled){
 			$n = "we_" . $this->Name . "_IsDynamic";
-			$v = $this->IsDynamic;
-			$out = we_html_element::jsElement(
+			return we_forms::checkboxWithHidden($v ? true : false, $n, g_l('weClass', "[IsDynamic]"), false, "defaultfont", "_EditorFrame.setEditorIsHot(true);switchExt();") . we_html_element::jsElement(
 					'function switchExt() {' .
 					(!$this->Published ?
 						'var a=document.we_form.elements;' .
@@ -226,10 +223,8 @@ class we_webEditionDocument extends we_textContentDocument{
 						($this->ID ? '}' : '') : '') .
 					'}'
 			);
-			return we_forms::checkboxWithHidden($v ? true : false, $n, g_l('weClass', "[IsDynamic]"), false, "defaultfont", "_EditorFrame.setEditorIsHot(true);switchExt();") . $out;
 		} else{
-			$v = $this->IsDynamic;
-			return we_forms::checkboxWithHidden($v ? true : false, $n, g_l('weClass', "[IsDynamic]"), false, "defaultfont", "", true);
+			return we_forms::checkboxWithHidden($v ? true : false, '', g_l('weClass', "[IsDynamic]"), false, "defaultfont", "", true);
 		}
 	}
 

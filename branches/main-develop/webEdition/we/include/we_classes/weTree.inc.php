@@ -177,21 +177,44 @@ function indexOfEntry(id){
 	return -1;
 }
 
-function get(eintrag){var nf = new container();var ai = 1;while (ai <= treeData.len) {if (treeData[ai].id == eintrag) nf=treeData[ai];ai++;}return nf;}
+function get(eintrag){
+	var nf = new container();
+	var ai = 1;
+	while (ai <= treeData.len) {
+		if (treeData[ai].id == eintrag){
+			nf=treeData[ai];
+		}
+		ai++;
+	}
+	return nf;
+}
 
-function search(eintrag){var nf = new container();var ai = 1;while (ai <= treeData.len) {if (treeData[ai].parentid == eintrag) nf.add(treeData[ai]);ai++;}return nf;}
+function search(eintrag){
+	var nf = new container();
+	var ai = 1;
+	while (ai <= treeData.len) {
+		if (treeData[ai].parentid == eintrag){
+			nf.add(treeData[ai]);
+		}
+		ai++;
+	}
+	return nf;
+}
 
-function add(object){this[++this.len] = object;}
+function add(object){
+	this[++this.len] = object;
+}
 
-function containerClear(){this.len =0;}
+function containerClear(){
+	this.len =0;
+}
 
 ' . $this->getJSAddSortFunction() . '
 ' . $this->getJSTreeFunctions() . '
 
 var startloc=0;
 var treeHTML;
-self.focus();
-		';
+self.focus();';
 
 
 		return ($withTag ? we_html_element::jsScript(JS_DIR . 'images.js') . we_html_element::jsElement($js) : $js);
@@ -294,18 +317,17 @@ function checkNode(imgName) {
 
 	function getJSGetTreeLayout(){
 		return '
-				function getTreeLayout(){
-						return this.tree_layouts[this.state];
-				}';
+function getTreeLayout(){
+		return this.tree_layouts[this.state];
+}';
 	}
 
 	function getJSGetLayout(){
 		return '
-				function getLayout(){
-						var layout_key=(this.typ=="group" ? "group" : "item");
-						return treeData.node_layouts[layout_key];
-				}
-';
+function getLayout(){
+		var layout_key=(this.typ=="group" ? "group" : "item");
+		return treeData.node_layouts[layout_key];
+}';
 	}
 
 	function getJSSetTreeState(){
@@ -325,13 +347,12 @@ function setTreeState(){
 
 	function getJSApplyLayout(){
 		return '
-		function applyLayout(){
-			if(arguments[0])
-				eval("if("+treeData.treeFrame+".document.getElementById(\"lab_"+this.id+"\"))"+treeData.treeFrame+".document.getElementById(\"lab_"+this.id+"\").className =\""+arguments[0]+"\";");
-			else
-				eval("if("+treeData.treeFrame+".document.getElementById(\"lab_"+this.id+"\"))"+treeData.treeFrame+".document.getElementById(\"lab_"+this.id+"\").className =\""+this.getlayout()+"\";");
-		}
-	';
+function applyLayout(){
+	if(arguments[0])
+		eval("if("+treeData.treeFrame+".document.getElementById(\"lab_"+this.id+"\"))"+treeData.treeFrame+".document.getElementById(\"lab_"+this.id+"\").className =\""+arguments[0]+"\";");
+	else
+		eval("if("+treeData.treeFrame+".document.getElementById(\"lab_"+this.id+"\"))"+treeData.treeFrame+".document.getElementById(\"lab_"+this.id+"\").className =\""+this.getlayout()+"\";");
+}';
 	}
 
 	function getJSRootAdd(){
@@ -427,10 +448,11 @@ function clearItems(){
 
 	while (ai <= treeData.len) {
 		if (treeData[ai].parentid == this.id){
-			if(treeData[ai].contenttype=="group") deleted+=treeData[ai].clear();
-			else{
+			if(treeData[ai].contenttype=="group"){
+				deleted+=treeData[ai].clear();
+			}else{
 				ind=ai;
-								while (ind <= treeData.len-1) {
+					while (ind <= treeData.len-1) {
 												treeData[ind]=treeData[ind+1];
 												ind++;
 								}
@@ -438,8 +460,7 @@ function clearItems(){
 								treeData.len--;
 			}
 			deleted++;
-		}
-		else{
+		}else{
 			ai++;
 		}
 	}

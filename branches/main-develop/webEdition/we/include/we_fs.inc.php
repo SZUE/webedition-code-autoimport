@@ -40,7 +40,7 @@ switch($_REQUEST['we_cmd'][0]){
 		$multiple = isset($_REQUEST['we_cmd'][9]) ? $_REQUEST['we_cmd'][9] : '';
 
 		break;
-	case 'openDocselector' :
+	case 'openDocselector':
 		$id = isset($_REQUEST['we_cmd'][1]) ? $_REQUEST['we_cmd'][1] : '';
 		$table = isset($_REQUEST['we_cmd'][2]) ? $_REQUEST['we_cmd'][2] : '';
 		$JSIDName = we_cmd_dec(3);
@@ -69,7 +69,6 @@ switch($_REQUEST['we_cmd'][0]){
 		include_once (WEBEDITION_PATH . 'we_catSelect.php');
 		break;
 	case 'openDelSelector' :
-	case "openDelSelector" :
 		include_once (WEBEDITION_PATH . 'we_delSelect.php');
 		break;
 }
