@@ -134,11 +134,9 @@ class we_webEditionDocument extends we_textContentDocument{
 			$GLOBALS['we_document'][$formname]->Category = $cats;
 		}
 		if(isset($_REQUEST['we_ui_' . $formname . '_Category'])){
-			if(is_array($_REQUEST['we_ui_' . $formname . '_Category'])){
-				$_REQUEST['we_ui_' . $formname . '_Category'] = makeCSVFromArray($_REQUEST['we_ui_' . $formname . '_Category'], true);
-			} else{
-				$_REQUEST['we_ui_' . $formname . '_Category'] = makeCSVFromArray(makeArrayFromCSV($_REQUEST['we_ui_' . $formname . '_Category']), true);
-			}
+			$_REQUEST['we_ui_' . $formname . '_Category'] = (is_array($_REQUEST['we_ui_' . $formname . '_Category']) ?
+					makeCSVFromArray($_REQUEST['we_ui_' . $formname . '_Category'], true) :
+					makeCSVFromArray(makeArrayFromCSV($_REQUEST['we_ui_' . $formname . '_Category']), true));
 		}
 		foreach($GLOBALS['we_document'][$formname]->persistent_slots as $slotname){
 			if($slotname != 'categories' && isset($_REQUEST['we_ui_' . $formname . '_' . $slotname])){
@@ -160,7 +158,6 @@ class we_webEditionDocument extends we_textContentDocument{
 	function makeSameNew(){
 		$TemplateID = $this->TemplateID;
 		$TemplatePath = $this->TemplatePath;
-		$IsDynamic = $this->IsDynamic;
 		$IsDynamic = $this->IsDynamic;
 		parent::makeSameNew();
 		$this->TemplateID = $TemplateID;
@@ -213,11 +210,10 @@ class we_webEditionDocument extends we_textContentDocument{
 	 */
 
 	function formIsDynamic($leftwidth = 100, $disabled = false){
-		$n = '';
+		$v = $this->IsDynamic;
 		if(!$disabled){
 			$n = "we_" . $this->Name . "_IsDynamic";
-			$v = $this->IsDynamic;
-			$out = we_html_element::jsElement(
+			return we_forms::checkboxWithHidden($v ? true : false, $n, g_l('weClass', "[IsDynamic]"), false, "defaultfont", "_EditorFrame.setEditorIsHot(true);switchExt();") . we_html_element::jsElement(
 					'function switchExt() {' .
 					(!$this->Published ?
 						'var a=document.we_form.elements;' .
@@ -227,10 +223,8 @@ class we_webEditionDocument extends we_textContentDocument{
 						($this->ID ? '}' : '') : '') .
 					'}'
 			);
-			return we_forms::checkboxWithHidden($v ? true : false, $n, g_l('weClass', "[IsDynamic]"), false, "defaultfont", "_EditorFrame.setEditorIsHot(true);switchExt();") . $out;
 		} else{
-			$v = $this->IsDynamic;
-			return we_forms::checkboxWithHidden($v ? true : false, $n, g_l('weClass', "[IsDynamic]"), false, "defaultfont", "", true);
+			return we_forms::checkboxWithHidden($v ? true : false, '', g_l('weClass', "[IsDynamic]"), false, "defaultfont", "", true);
 		}
 	}
 
@@ -355,15 +349,18 @@ class we_webEditionDocument extends we_textContentDocument{
 
 		list($TID, $Templates) = getHash("SELECT TemplateID,Templates FROM " . DOC_TYPES_TABLE . " WHERE ID =" . intval($this->DocType), $this->DB_WE);
 		$tlist = '';
-		if($TID != '')
+		if($TID != ''){
 			$tlist = $TID;
-		if($Templates != '')
+		}
+		if($Templates != ''){
 			$tlist.=',' . $Templates;
+		}
 		if($tlist){
 			$temps = explode(',', $tlist);
-			if(in_array($this->TemplateID, $temps))
+			if(in_array($this->TemplateID, $temps)){
 				$TID = $this->TemplateID;
-			$tlist = implode(",", array_unique($temps));
+			}
+			$tlist = implode(',', array_unique($temps));
 		} else{
 			$foo = array();
 			$wsArray = makeArrayFromCSV($ws);
@@ -391,9 +388,9 @@ class we_webEditionDocument extends we_textContentDocument{
 			}
 			$tlist = makeCSVFromArray($foo);
 			$tlist = $tlist ? $tlist : -1;
-			return $this->formSelect4("", $width, "TemplateID", TEMPLATES_TABLE, "ID", "Path", $ueberschrift, " WHERE ID IN ($tlist) AND IsFolder=0 ORDER BY Path", 1, $TID, false, "we_cmd('template_changed');_EditorFrame.setEditorIsHot(true);", "", "left", "defaultfont", "", "", array(0, ""));
+			return $this->formSelect4('', $width, "TemplateID", TEMPLATES_TABLE, "ID", "Path", $ueberschrift, " WHERE ID IN ($tlist) AND IsFolder=0 ORDER BY Path", 1, $TID, false, "we_cmd('template_changed');_EditorFrame.setEditorIsHot(true);", "", "left", "defaultfont", "", "", array(0, ""));
 		} else{
-			return $this->formSelect2("", $width, "TemplateID", TEMPLATES_TABLE, "ID", "Path", $ueberschrift, "WHERE IsFolder=0 ORDER BY Path ", 1, $this->TemplateID, false, "_EditorFrame.setEditorIsHot(true);");
+			return $this->formSelect2('', $width, "TemplateID", TEMPLATES_TABLE, "ID", "Path", $ueberschrift, "WHERE IsFolder=0 ORDER BY Path ", 1, $this->TemplateID, false, "_EditorFrame.setEditorIsHot(true);");
 		}
 	}
 

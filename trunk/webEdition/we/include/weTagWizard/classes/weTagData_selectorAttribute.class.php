@@ -33,6 +33,7 @@ class weTagData_selectorAttribute extends weTagDataAttribute{
 	 * @var string
 	 */
 	var $Selectable;
+	private $useName;
 
 	/**
 	 * @param string $name
@@ -40,10 +41,10 @@ class weTagData_selectorAttribute extends weTagDataAttribute{
 	 * @param string $selectable
 	 * @param boolean $required
 	 */
-	function __construct($name, $table, $selectable, $required = false, $module = '', $description='', $deprecated=false){
+	function __construct($name, $table, $selectable, $required = false, $module = '', $useName = false, $description = '', $deprecated = false){
 		$this->Table = $table;
 		$this->Selectable = $selectable;
-
+		$this->useName = $useName;
 		parent::__construct($name, $required, $module, $description, $deprecated);
 	}
 
@@ -52,19 +53,16 @@ class weTagData_selectorAttribute extends weTagDataAttribute{
 	 */
 	function getCodeForTagWizard(){
 
-		$weCmd = 'openDocselector';
-
-		if($this->Selectable == 'folder'){
-			$weCmd = 'openDirselector';
-		}
-
-		if($this->Table == CATEGORY_TABLE){
-			$weCmd = 'openCatselector';
-			$this->Selectable = '';
-		}
-
-		if($this->Table == NAVIGATION_TABLE){
-			$weCmd = 'openSelector';
+		switch($this->Table){
+			case CATEGORY_TABLE:
+				$weCmd = 'openCatselector';
+				$this->Selectable = '';
+				break;
+			case NAVIGATION_TABLE:
+				$weCmd = 'openSelector';
+				break;
+			default:
+				$weCmd = ($this->Selectable == 'folder' ? 'openDirselector' : 'openDocselector');
 		}
 
 		$input = we_html_element::htmlInput(
@@ -73,10 +71,10 @@ class weTagData_selectorAttribute extends weTagDataAttribute{
 					'value' => $this->Value,
 					'id' => $this->getIdName(),
 					'class' => 'wetextinput'
-			));
+		));
 		$wecmdenc1 = we_cmd_enc("document.getElementById('" . $this->getIdName() . "').value");
 		$button = we_button::create_button(
-				"select", "javascript:we_cmd('" . $weCmd . "', document.getElementById('" . $this->getIdName() . "').value, '" . $this->Table . "','" . $wecmdenc1 . "', '', '', '" . session_id() . "', '', '" . $this->Selectable . "')");
+				"select", "javascript:we_cmd('" . $weCmd . "', document.getElementById('" . $this->getIdName() . "').value, '" . $this->Table . "','" . ($this->useName ? '' : $wecmdenc1) . "','" . ($this->useName ? $wecmdenc1 : '') . "', '', '" . session_id() . "', '', '" . $this->Selectable . "')");
 
 		return '<table class="attribute"><tr>
 						<td class="attributeName">' . $this->getLabelCodeForTagWizard() . '</td>
@@ -86,4 +84,3 @@ class weTagData_selectorAttribute extends weTagDataAttribute{
 	}
 
 }
-

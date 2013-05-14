@@ -481,7 +481,6 @@ padding: 0px;
 .weDefaultStyle{
 background: transparent;
 background-color: transparent;
-background-image: url(<?php echo IMAGE_DIR; ?>pixel.gif);
 border: 0px;
 color: #000000;
 cursor: default;
