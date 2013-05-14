@@ -483,9 +483,16 @@ abstract class we_html_tools{
 		if(($format == "") || $_monthPos > -1){
 			$months = '';
 			for($i = 1; $i <= 12; $i++){
-				$_atts2 = ($time && $month == $i) ? array('selected' => 'selected') : array();
-
-				$months .= getHtmlTag('option', array_merge($_attsOption, $_atts2), sprintf("%02d", $i));
+				if(strpos($format, "F")){// Bug #4095
+					$_atts2 = ($time && $month == $i) ? array('selected' => 'selected','value' => sprintf("%02d", $i)) : array('value' => sprintf("%02d", $i));
+					$months .= getHtmlTag('option', array_merge($_attsOption, $_atts2), g_l('date','[month][long]['.($i-1).']'));
+				}elseif(strpos($format, "M")){// Bug #4095
+					$_atts2 = ($time && $month == $i) ? array('selected' => 'selected','value' => sprintf("%02d", $i)) : array('value' => sprintf("%02d", $i));
+					$months .= getHtmlTag('option', array_merge($_attsOption, $_atts2), g_l('date','[month][short]['.($i-1).']'));
+				}else{
+					$_atts2 = ($time && $month == $i) ? array('selected' => 'selected') : array();
+					$months .= getHtmlTag('option', array_merge($_attsOption, $_atts2), sprintf("%02d", $i));
+				}
 			}
 			$monthSelect = getHtmlTag(
 					'select', array_merge($_attsSelect, array(
