@@ -24,6 +24,8 @@
  */
 class weTagData_selectorAttribute extends weTagDataAttribute{
 
+	const FOLDER = 'folder';
+
 	/**
 	 * @var string
 	 */
@@ -62,7 +64,7 @@ class weTagData_selectorAttribute extends weTagDataAttribute{
 				$weCmd = 'openSelector';
 				break;
 			default:
-				$weCmd = ($this->Selectable == 'folder' ? 'openDirselector' : 'openDocselector');
+				$weCmd = ($this->Selectable == self::FOLDER ? 'openDirselector' : 'openDocselector');
 		}
 
 		$input = we_html_element::htmlInput(

@@ -40,7 +40,7 @@ if(defined("FILE_TABLE")){
 }
 $ignoredocumentcss = new weTagData_selectAttribute('ignoredocumentcss', weTagData_selectAttribute::getTrueFalse(), false, '');
 $fontnames = new weTagData_choiceAttribute('fontnames', array(new weTagDataOption('arial', false, ''), new weTagDataOption('courier', false, ''), new weTagDataOption('tahoma', false, ''), new weTagDataOption('times', false, ''), new weTagDataOption('verdana', false, ''), new weTagDataOption('wingdings', false, '')), false, true, '');
-$parentid = new weTagData_selectorAttribute('parentid', FILE_TABLE, 'folder', true, 'customer');
+$parentid = new weTagData_selectorAttribute('parentid', FILE_TABLE, weTagData_selectorAttribute::FOLDER, true, 'customer');
 $quality = new weTagData_selectAttribute('quality', array(new weTagDataOption('0', false, ''), new weTagDataOption('1', false, ''), new weTagDataOption('2', false, ''), new weTagDataOption('3', false, ''), new weTagDataOption('4', false, ''), new weTagDataOption('5', false, ''), new weTagDataOption('6', false, ''), new weTagDataOption('7', false, ''), new weTagDataOption('8', false, ''), new weTagDataOption('9', false, ''), new weTagDataOption('10', false, '')), false, 'customer');
 $keepratio = new weTagData_selectAttribute('keepratio', weTagData_selectAttribute::getTrueFalse(), false, 'customer');
 $maximize = new weTagData_selectAttribute('maximize', weTagData_selectAttribute::getTrueFalse(), false, 'customer');
