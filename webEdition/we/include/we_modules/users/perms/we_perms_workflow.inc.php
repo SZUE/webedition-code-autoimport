@@ -22,14 +22,14 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-$perm_group_name = "workflow";
+$perm_group_name = 'workflow';
 $perm_group_title[$perm_group_name] = g_l('perms_' . $perm_group_name, '[perm_group_title]');
 
 $perm_values[$perm_group_name] = array(
-	"NEW_WORKFLOW",
-	"DELETE_WORKFLOW",
-	"EDIT_WORKFLOW",
-	"EMPTY_LOG"
+	'NEW_WORKFLOW',
+	'DELETE_WORKFLOW',
+	'EDIT_WORKFLOW',
+	'EMPTY_LOG'
 );
 
 //	Here the array of the permission-titles is set.
@@ -39,9 +39,8 @@ foreach($perm_values[$perm_group_name] as $cur){
 }
 
 $perm_defaults[$perm_group_name] = array(
-	"NEW_WORKFLOW" => 0,
-	"DELETE_WORKFLOW" => 0,
-	"EDIT_WORKFLOW" => 0,
-	"EMPTY_LOG" => 0
+	'NEW_WORKFLOW' => 0,
+	'DELETE_WORKFLOW' => 0,
+	'EDIT_WORKFLOW' => 0,
+	'EMPTY_LOG' => 0
 );
-
