@@ -30,16 +30,23 @@ function up6300_updateLang(){
 	we_loadLanguageConfig();
 	if(is_array($GLOBALS['weFrontendLanguages'])){
 		$FLkeys = array_keys($GLOBALS['weFrontendLanguages']);
-		if(!is_numeric($FLkeys[0])){
-			we_writeLanguageConfig($GLOBALS['weDefaultFrontendLanguage'], $FLkeys);
-		}
-	} else{
+		$FLvals = !is_numeric($FLkeys[0]) ? $FLkeys : $GLOBALS['weFrontendLanguages'];
+		$new = false;
 
+		for($i = 0; $i < count($FLvals); $i++){
+			preg_match('/[a-z]{2}_[A-Z]{2}/', $FLvals[$i], $match);
+			if($match[0]){
+				$FLvals[$i] = $match[0];
+				$new = $FLvals[$i] != $GLOBALS['weFrontendLanguages'][$i] ? true : $new;
+			} else{
+				unset($FLvals[$i]);
+				$new = true;
+			}
+		}
+		if($new){
+			we_writeLanguageConfig($GLOBALS['weDefaultFrontendLanguage'], $FLvals);
+		}
 	}
-	/* if(!we_writeLanguageConfig($GLOBALS['weFrontendLanguages'],$GLOBALS['weDefaultFrontendLanguage'])){
-	  $GLOBALS['errorDetail']='Error at updating global language.';
-	  return false;
-	  } */
 	return true;
 }
 
