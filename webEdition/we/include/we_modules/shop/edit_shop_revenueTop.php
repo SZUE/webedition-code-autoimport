@@ -24,13 +24,12 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 include_once ($_SERVER['DOCUMENT_ROOT'] . LIB_DIR . 'we/util/Strings.php');
 
-$selectedYear = isset($_REQUEST['ViewYear']) ? $_REQUEST['ViewYear'] : date("Y");
-$selectedMonth = isset($_REQUEST['ViewMonth']) ? $_REQUEST['ViewMonth'] : '0';
+$selectedYear = intval(isset($_REQUEST['ViewYear']) ? $_REQUEST['ViewYear'] : date('Y'));
+$selectedMonth = isset($_REQUEST['ViewMonth']) ? intval($_REQUEST['ViewMonth']) : 0;
 $orderBy = isset($_REQUEST['orderBy']) ? $_REQUEST['orderBy'] : 'IntOrderID';
 $actPage = isset($_REQUEST['actPage']) ? $_REQUEST['actPage'] : '0';
 
 function orderBy($a, $b){
-
 	$ret = ($a[$_REQUEST['orderBy']] >= $b[$_REQUEST['orderBy']]);
 	return (isset($_REQUEST['orderDesc']) ? !$ret : $ret);
 }
@@ -154,10 +153,10 @@ $parts = array(
 );
 
 // get queries for revenue and article list.
-$queryCondtion = 'date_format(DateOrder,"%Y") = "' . $selectedYear . '"';
+$queryCondtion = 'date_format(DateOrder,"%Y") = ' . $selectedYear;
 
-if($selectedMonth != '0'){
-	$queryCondtion .= ' AND date_format(DateOrder,"%c") = "' . $selectedMonth . '"';
+if($selectedMonth != 0){
+	$queryCondtion .= ' AND date_format(DateOrder,"%c") = ' . $selectedMonth;
 }
 
 $DB_WE->query('SELECT *,DATE_FORMAT(DateOrder, "%d.%m.%Y") AS formatDateOrder, DATE_FORMAT(DatePayment, "%d.%m.%Y") AS formatDatePayment FROM ' . SHOP_TABLE . '	WHERE ' . $queryCondtion . ' ORDER BY ' . (isset($_REQUEST['orderBy']) && $_REQUEST['orderBy'] ? $_REQUEST['orderBy'] : 'IntOrderID'));
@@ -187,7 +186,7 @@ if(($maxRows = $DB_WE->num_rows())){
 		$orderData = ($serialOrder ? @unserialize($serialOrder) : array());
 
 		if(($nr >= ($actPage * $nrOfPage)) && ($nr < $maxRows) && ($nr < ($actPage * $nrOfPage + $nrOfPage))){
-			$orderRows[$nr] = array(
+			$orderRows[] = array(
 				'articleArray' => $shopArticleObject,
 				// save all data in array
 				'IntOrderID' => $DB_WE->f('IntOrderID'), // also for ordering
@@ -290,8 +289,7 @@ if(($maxRows = $DB_WE->num_rows())){
 	<td colspan="5"></td>
 	<td class="shopContentfontR">' . $_vat . '&nbsp;%</td>
 	<td class="shopContentfontR">' . we_util_Strings::formatNumber($_amount) . $waehr . '</td>
-</tr>
-				';
+</tr>';
 		}
 	}
 
@@ -337,10 +335,10 @@ if(($maxRows = $DB_WE->num_rows())){
 	  usort($orderRows, 'orderBy');
 	  } */
 
-	for($i = ($actPage * $nrOfPage); $i < $maxRows && $i < ($actPage * $nrOfPage + $nrOfPage); $i++){
+	foreach($orderRows as $orderRow){
 
-		$orderData = $orderRows[$i]['orderArray'];
-		$articleData = $orderRows[$i]['articleArray'];
+		$orderData = $orderRow['orderArray'];
+		$articleData = $orderRow['articleArray'];
 
 		$variantStr = '';
 		if(isset($articleData['WE_VARIANT']) && $articleData['WE_VARIANT']){
@@ -356,12 +354,12 @@ if(($maxRows = $DB_WE->num_rows())){
 		}
 
 		$content[] = array(
-			array('dat' => $orderRows[$i]['IntOrderID']),
-			array('dat' => $orderRows[$i][WE_SHOP_TITLE_FIELD_NAME] . '<span class="small">' . $variantStr . ' ' . $customFields . '</span>'),
-			array('dat' => we_util_Strings::formatNumber($orderRows[$i]['Price']) . $waehr),
-			array('dat' => $orderRows[$i]['formatDateOrder']),
-			array('dat' => $orderRows[$i]['IntArticleID']),
-			array('dat' => ($orderRows[$i]['DatePayment'] != 0 ? $orderRows[$i]['formatDatePayment'] : '<span class="npshopContentfontR">' . g_l('modules_shop', '[artNPay]') . '</span>')),
+			array('dat' => $orderRow['IntOrderID']),
+			array('dat' => $orderRow[WE_SHOP_TITLE_FIELD_NAME] . '<span class="small">' . $variantStr . ' ' . $customFields . '</span>'),
+			array('dat' => we_util_Strings::formatNumber($orderRow['Price']) . $waehr),
+			array('dat' => $orderRow['formatDateOrder']),
+			array('dat' => $orderRow['IntArticleID']),
+			array('dat' => ($orderRow['DatePayment'] != 0 ? $orderRow['formatDatePayment'] : '<span class="npshopContentfontR">' . g_l('modules_shop', '[artNPay]') . '</span>')),
 		);
 	}
 
@@ -377,7 +375,7 @@ if(($maxRows = $DB_WE->num_rows())){
 	);
 } else{
 	$parts[] = array(
-		'html' => g_l('modules_shop', '[NoRevenue]'),
+		'html' => g_l('modules_shop', '[NoRevenue]') . ' (' . ($selectedMonth ? g_l('modules_shop', '[month][' . $selectedMonth . ']') . ' ' : '') . $selectedYear . ')',
 		'space' => 0
 	);
 }
