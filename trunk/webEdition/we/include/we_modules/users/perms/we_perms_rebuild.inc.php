@@ -22,20 +22,20 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-$perm_group_name = "rebuildpermissions";
+$perm_group_name = 'rebuildpermissions';
 
 $perm_group_title[$perm_group_name] = g_l('perms_' . $perm_group_name, '[perm_group_title]');
 
 $perm_values[$perm_group_name] = array(
-	"REBUILD",
-	"REBUILD_ALL",
-	"REBUILD_TEMPLATES",
-	"REBUILD_FILTERD",
-	"REBUILD_OBJECTS",
-	"REBUILD_INDEX",
-	"REBUILD_THUMBS",
-	"REBUILD_NAVIGATION",
-	"REBUILD_META"
+	'REBUILD',
+	'REBUILD_ALL',
+	'REBUILD_TEMPLATES',
+	'REBUILD_FILTERD',
+	'REBUILD_OBJECTS',
+	'REBUILD_INDEX',
+	'REBUILD_THUMBS',
+	'REBUILD_NAVIGATION',
+	'REBUILD_META'
 );
 
 
@@ -47,13 +47,13 @@ foreach($perm_values[$perm_group_name] as $cur){
 }
 
 $perm_defaults[$perm_group_name] = array(
-	"REBUILD" => 1,
-	"REBUILD_ALL" => 1,
-	"REBUILD_TEMPLATES" => 1,
-	"REBUILD_FILTERD" => 1,
-	"REBUILD_OBJECTS" => 1,
-	"REBUILD_INDEX" => 1,
-	"REBUILD_THUMBS" => 1,
-	"REBUILD_NAVIGATION" => 1,
-	"REBUILD_META" => 1
+	'REBUILD' => 1,
+	'REBUILD_ALL' => 1,
+	'REBUILD_TEMPLATES' => 1,
+	'REBUILD_FILTERD' => 1,
+	'REBUILD_OBJECTS' => 1,
+	'REBUILD_INDEX' => 1,
+	'REBUILD_THUMBS' => 1,
+	'REBUILD_NAVIGATION' => 1,
+	'REBUILD_META' => 1
 );

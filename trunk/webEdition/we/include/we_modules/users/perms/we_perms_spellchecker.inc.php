@@ -39,4 +39,3 @@ foreach($perm_values[$perm_group_name] as $cur){
 $perm_defaults[$perm_group_name] = array(
 	'SPELLCHECKER_ADMIN' => 0
 );
-
