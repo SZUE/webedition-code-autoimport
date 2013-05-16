@@ -25,7 +25,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 include_once ($_SERVER['DOCUMENT_ROOT'] . LIB_DIR . 'we/util/Strings.php');
 
 $selectedYear = intval(isset($_REQUEST['ViewYear']) ? $_REQUEST['ViewYear'] : date('Y'));
-$selectedMonth = isset($_REQUEST['ViewMonth']) ? intval($_REQUEST['ViewMonth']) : 0;
+$selectedMonth = isset($_REQUEST['ViewMonth']) ? intval($_REQUEST['ViewMonth']) : 1;
 $orderBy = isset($_REQUEST['orderBy']) ? $_REQUEST['orderBy'] : 'IntOrderID';
 $actPage = isset($_REQUEST['actPage']) ? $_REQUEST['actPage'] : '0';
 
@@ -65,11 +65,11 @@ function yearSelect($select_name){
 	return we_class::htmlSelect($select_name, $opts, 1, (isset($_REQUEST[$select_name]) ? $_REQUEST[$select_name] : ''), false, 'id="' . $select_name . '"');
 }
 
-function monthSelect($select_name){
+function monthSelect($select_name, $selectedMonth){
 	$opts = g_l('modules_shop', '[month]');
-	$opts[0] = '-';
+	$opts[-1] = '-';
 	ksort($opts, SORT_NUMERIC);
-	return we_class::htmlSelect($select_name, $opts, 1, (isset($_REQUEST[$select_name]) ? $_REQUEST[$select_name] : ''), false, 'id="' . $select_name . '"');
+	return we_class::htmlSelect($select_name, $opts, 1, $selectedMonth, false, 'id="' . $select_name . '"');
 }
 
 we_html_tools::protect();
@@ -85,7 +85,7 @@ print STYLESHEET .
 	var countSetTitle = 0;
 	function setHeaderTitle() {
 		pre = "";
-		post = "' . (isset($_REQUEST['ViewMonth']) && $_REQUEST['ViewMonth'] > 0 ? g_l('modules_shop', '[month][' . $_REQUEST['ViewMonth'] . ']') . " " : "") . $_REQUEST['ViewYear'] . '";
+		post = "' . (isset($_REQUEST['ViewMonth']) && $_REQUEST['ViewMonth'] > 0 ? g_l('modules_shop', '[month][' . $_REQUEST['ViewMonth'] . ']') . ' ' : '') . $_REQUEST['ViewYear'] . '";
 		if(parent.edheader && parent.edheader.setTitlePath) {
 			parent.edheader.hasPathGroup = true;
 			parent.edheader.setPathGroup(pre);
@@ -141,7 +141,7 @@ $parts = array(
 	),
 	array(
 		'headline' => '<label for="ViewMonth">' . g_l('modules_shop', '[selectMonth]') . '</label>',
-		'html' => monthSelect("ViewMonth"),
+		'html' => monthSelect("ViewMonth", $selectedMonth),
 		'space' => 150,
 		'noline' => 1
 	),
@@ -153,30 +153,24 @@ $parts = array(
 );
 
 // get queries for revenue and article list.
-$queryCondtion = 'date_format(DateOrder,"%Y") = ' . $selectedYear;
-
-if($selectedMonth != 0){
-	$queryCondtion .= ' AND date_format(DateOrder,"%c") = ' . $selectedMonth;
-}
-
-$DB_WE->query('SELECT *,DATE_FORMAT(DateOrder, "%d.%m.%Y") AS formatDateOrder, DATE_FORMAT(DatePayment, "%d.%m.%Y") AS formatDatePayment FROM ' . SHOP_TABLE . '	WHERE ' . $queryCondtion . ' ORDER BY ' . (isset($_REQUEST['orderBy']) && $_REQUEST['orderBy'] ? $_REQUEST['orderBy'] : 'IntOrderID'));
-
-if(($maxRows = $DB_WE->num_rows())){
-
-	$actOrder = 0;
-	$amountOrders = 0;
-	$editedOrders = 0;
-	$payedOrders = 0;
-	$unpayedOrders = 0;
-	$total = 0;
-	$payed = 0;
-	$unpayed = 0;
+$queryCondtion = 'YEAR(DateOrder)=' . $selectedYear . ($selectedMonth > 0 ? ' AND MONTH(DateOrder)=' . $selectedMonth : '');
+//$queryCondtion = 'date_format(DateOrder,"%Y") = ' . $selectedYear . ($selectedMonth > 0 ? ' AND date_format(DateOrder,"%c") = ' . $selectedMonth : '');
 
 
-	// first of all calculate complete revenue of this year -> important check vats as well.
 
-	$nr = 0;
+
+$query = ' FROM ' . SHOP_TABLE . '	WHERE ' . $queryCondtion;
+if(($maxRows = f('SELECT COUNT(1) AS a ' . $query, 'a', $DB_WE))){
+	$total = $payed = $unpayed = 0;
+
+	$amountOrders = f('SELECT COUNT(distinct IntOrderID) AS a ' . $query, 'a', $DB_WE);
+	//$unpayedOrders = f('SELECT COUNT(distinct IntOrderID) AS a ' . $query . ' AND ISNULL(DatePayment)', 'a', $DB_WE);
+	//$payedOrders = $amountOrders - $unpayedOrders;
+	$editedOrders = f('SELECT COUNT(distinct IntOrderID) AS a ' . $query . ' AND !ISNULL(DateShipping)', 'a', $DB_WE);
+
+	//get table entries
 	$orderRows = array();
+	$DB_WE->query('SELECT strSerial,strSerialOrder,IntOrderID,IntCustomerID,IntArticleID,IntQuantity,DatePayment,DateOrder,DATE_FORMAT(DateOrder, "%d.%m.%Y") AS formatDateOrder, DATE_FORMAT(DatePayment, "%d.%m.%Y") AS formatDatePayment,Price ' . $query . ' ORDER BY ' . (isset($_REQUEST['orderBy']) && $_REQUEST['orderBy'] ? $_REQUEST['orderBy'] : 'IntOrderID') . ' LIMIT ' . ($actPage * $nrOfPage) . ',' . $nrOfPage);
 	while($DB_WE->next_record()) {
 
 		// for the articlelist, we need also all these article, so sve them in array
@@ -185,95 +179,85 @@ if(($maxRows = $DB_WE->num_rows())){
 		$serialOrder = $DB_WE->f('strSerialOrder');
 		$orderData = ($serialOrder ? @unserialize($serialOrder) : array());
 
-		if(($nr >= ($actPage * $nrOfPage)) && ($nr < $maxRows) && ($nr < ($actPage * $nrOfPage + $nrOfPage))){
-			$orderRows[] = array(
-				'articleArray' => $shopArticleObject,
-				// save all data in array
-				'IntOrderID' => $DB_WE->f('IntOrderID'), // also for ordering
-				'IntCustomerID' => $DB_WE->f('IntCustomerID'),
-				'IntArticleID' => $DB_WE->f('IntArticleID'), // also for ordering
-				'IntQuantity' => $DB_WE->f('IntQuantity'),
-				'DatePayment' => $DB_WE->f('DatePayment'),
-				'DateOrder' => $DB_WE->f('DateOrder'),
-				'formatDateOrder' => $DB_WE->f('formatDateOrder'), // also for ordering
-				'formatDatePayment' => $DB_WE->f('formatDatePayment'), // also for ordering
-				'Price' => $DB_WE->f('Price'), // also for ordering
-				WE_SHOP_TITLE_FIELD_NAME => (isset($shopArticleObject[WE_SHOP_TITLE_FIELD_NAME]) ? $shopArticleObject[WE_SHOP_TITLE_FIELD_NAME] : $shopArticleObject['we_' . WE_SHOP_TITLE_FIELD_NAME]), // also for ordering
-				'orderArray' => $orderData,
-			);
-		}
-		// all data from strSerialOrder
-		// first unserialize order-data
-
-		$actPrice = 0;
-
-
-		// ********************************************************************************
-		// now get information about complete order
-		// - pay VAT?
-		// - prices are net?
-		// prices are net?
-		$pricesAreNet = (isset($orderData[WE_SHOP_PRICE_IS_NET_NAME]) ? $orderData[WE_SHOP_PRICE_IS_NET_NAME] : true);
-
-		// must calculate vat?
-		$calcVat = (isset($orderData[WE_SHOP_CALC_VAT]) ? $orderData[WE_SHOP_CALC_VAT] : true);
-
-		//
-		// no get information about complete order
-		// ********************************************************************************
-		// now calculate prices: without vat first
-		$actPrice = $DB_WE->f('Price') * $DB_WE->f('IntQuantity');
-		// now calculate vats to prices !!!
-		if($calcVat){ // vat must be payed for this order
-			// now determine VAT
-			$articleVat = (isset($shopArticleObject[WE_SHOP_VAT_FIELD_NAME]) ?
-					$shopArticleObject[WE_SHOP_VAT_FIELD_NAME] :
-					(isset($defaultVat) ? $defaultVat : 0)
-				);
-
-			if($articleVat > 0){
-				if(!isset($articleVatArray[$articleVat])){ // avoid notices
-					$articleVatArray[$articleVat] = 0;
-				}
-
-				// calculate vats to prices if neccessary
-				if($pricesAreNet){
-					$articleVatArray[$articleVat] += ($actPrice * $articleVat / 100);
-					$actPrice += ($actPrice * $articleVat / 100);
-				} else{
-					$articleVatArray[$articleVat] += ($actPrice * $articleVat / (100 + $articleVat));
-				}
-			}
-		}
-		$total += $actPrice;
-
-
-		if($DB_WE->f('DatePayment') != 0){
-			if($actOrder != $DB_WE->f('IntOrderID')){
-				$payedOrders++;
-			}
-			$payed += $actPrice;
-		} else{
-			if($actOrder != $DB_WE->f('IntOrderID')){
-				$unpayedOrders++;
-			}
-			$unpayed += $actPrice;
-		}
-
-		if($DB_WE->f('DateShipping') != 0){
-			if($actOrder != $DB_WE->f('IntOrderID')){
-				$editedOrders++;
-			}
-		}
-
-		// save last order.
-		if($actOrder != $DB_WE->f('IntOrderID')){
-			$actOrder = $DB_WE->f('IntOrderID');
-			$amountOrders++;
-		}
-		++$nr;
+		$orderRows[] = array(
+			'articleArray' => $shopArticleObject,
+			// save all data in array
+			'IntOrderID' => $DB_WE->f('IntOrderID'), // also for ordering
+			'IntCustomerID' => $DB_WE->f('IntCustomerID'),
+			'IntArticleID' => $DB_WE->f('IntArticleID'), // also for ordering
+			'IntQuantity' => $DB_WE->f('IntQuantity'),
+			'DatePayment' => $DB_WE->f('DatePayment'),
+			'DateOrder' => $DB_WE->f('DateOrder'),
+			'formatDateOrder' => $DB_WE->f('formatDateOrder'), // also for ordering
+			'formatDatePayment' => $DB_WE->f('formatDatePayment'), // also for ordering
+			'Price' => $DB_WE->f('Price'), // also for ordering
+			WE_SHOP_TITLE_FIELD_NAME => (isset($shopArticleObject[WE_SHOP_TITLE_FIELD_NAME]) ? $shopArticleObject[WE_SHOP_TITLE_FIELD_NAME] : $shopArticleObject['we_' . WE_SHOP_TITLE_FIELD_NAME]), // also for ordering
+			'orderArray' => $orderData,
+		);
 	}
 
+
+	// first of all calculate complete revenue of this year -> important check vats as well.
+	$cur = 0;
+	while($maxRows > $cur) {
+		$DB_WE->query('SELECT strSerial,strSerialOrder,(Price*IntQuantity) AS actPrice,(!ISNULL(DatePayment) && DatePayment>0) AS payed ' . $query . ' LIMIT ' . $cur . ',1000');
+		$cur+=1000;
+		while($DB_WE->next_record()) {
+
+			// for the articlelist, we need also all these article, so sve them in array
+			// initialize all data saved for an article
+			$shopArticleObject = @unserialize($DB_WE->f('strSerial'));
+			$serialOrder = $DB_WE->f('strSerialOrder');
+			$orderData = ($serialOrder ? @unserialize($serialOrder) : array());
+
+			// all data from strSerialOrders
+			// first unserialize order-data
+			// ********************************************************************************
+			// now get information about complete order
+			// - pay VAT?
+			// - prices are net?
+			// prices are net?
+			$pricesAreNet = (isset($orderData[WE_SHOP_PRICE_IS_NET_NAME]) ? $orderData[WE_SHOP_PRICE_IS_NET_NAME] : true);
+
+			// must calculate vat?
+			$calcVat = (isset($orderData[WE_SHOP_CALC_VAT]) ? $orderData[WE_SHOP_CALC_VAT] : true);
+
+			//
+			// no get information about complete order
+			// ********************************************************************************
+			// now calculate prices: without vat first
+			$actPrice = $DB_WE->f('actPrice');
+			// now calculate vats to prices !!!
+			if($calcVat){ // vat must be payed for this order
+				// now determine VAT
+				$articleVat = (isset($shopArticleObject[WE_SHOP_VAT_FIELD_NAME]) ?
+						$shopArticleObject[WE_SHOP_VAT_FIELD_NAME] :
+						(isset($defaultVat) ? $defaultVat : 0)
+					);
+
+				if($articleVat > 0){
+					if(!isset($articleVatArray[$articleVat])){ // avoid notices
+						$articleVatArray[$articleVat] = 0;
+					}
+
+					// calculate vats to prices if neccessary
+					if($pricesAreNet){
+						$articleVatArray[$articleVat] += ($actPrice * $articleVat / 100);
+						$actPrice += ($actPrice * $articleVat / 100);
+					} else{
+						$articleVatArray[$articleVat] += ($actPrice * $articleVat / (100 + $articleVat));
+					}
+				}
+			}
+			$total += $actPrice;
+
+			if($DB_WE->f('payed') == 0){
+				$payed += $actPrice;
+			} else{
+				$unpayed += $actPrice;
+			}
+		}
+	}
 	// generate vat table
 	$vatTable = '';
 	if(isset($articleVatArray)){
@@ -307,7 +291,7 @@ if(($maxRows = $DB_WE->num_rows())){
 </tr>
 <tr class="shopContentfont">
 	<td>' . $selectedYear . '</td>
-	<td>' . ($selectedMonth ? $selectedMonth : '' ) . '</td>
+	<td>' . ($selectedMonth > 0 ? $selectedMonth : '' ) . '</td>
 	<td>' . $amountOrders . '</td>
 	<td class="npshopContentfontR">' . ($amountOrders - $editedOrders) . '</td>
 	<td>' . we_util_Strings::formatNumber($payed) . $waehr . '</td>
@@ -375,7 +359,7 @@ if(($maxRows = $DB_WE->num_rows())){
 	);
 } else{
 	$parts[] = array(
-		'html' => g_l('modules_shop', '[NoRevenue]') . ' (' . ($selectedMonth ? g_l('modules_shop', '[month][' . $selectedMonth . ']') . ' ' : '') . $selectedYear . ')',
+		'html' => g_l('modules_shop', '[NoRevenue]') . ' (' . ($selectedMonth > 0 ? g_l('modules_shop', '[month][' . $selectedMonth . ']') . ' ' : '') . $selectedYear . ')',
 		'space' => 0
 	);
 }
