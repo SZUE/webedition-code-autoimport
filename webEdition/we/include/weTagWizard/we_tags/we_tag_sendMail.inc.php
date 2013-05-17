@@ -17,5 +17,5 @@ $this->Attributes[] = new weTagData_selectAttribute('mimetype', array(new weTagD
 $this->Attributes[] = new weTagData_textAttribute('charset', false, '');
 $this->Attributes[] = new weTagData_selectAttribute('includeimages', weTagData_selectAttribute::getTrueFalse(), false, '');
 $this->Attributes[] = new weTagData_selectAttribute('usebasehref', weTagData_selectAttribute::getTrueFalse(), false, '');
-$this->Attributes[] = new weTagData_selectAttribute('useformmaillog', weTagData_selectAttribute::getTrueFalse(), false, '');
-$this->Attributes[] = new weTagData_selectAttribute('useformmailblock', weTagData_selectAttribute::getTrueFalse(), false, '');
+$this->Attributes[] = new weTagData_selectAttribute('useformmailLog', weTagData_selectAttribute::getTrueFalse(), false, '');
+$this->Attributes[] = new weTagData_selectAttribute('useformmailBlock', weTagData_selectAttribute::getTrueFalse(), false, '');
