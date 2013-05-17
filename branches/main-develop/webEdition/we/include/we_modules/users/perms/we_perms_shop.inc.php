@@ -22,17 +22,17 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-$perm_group_name = "shop";
-$perm_group_title[$perm_group_name] = g_l('perms_shop', "[perm_group_title]");
+$perm_group_name = 'shop';
+$perm_group_title[$perm_group_name] = g_l('perms_shop', '[perm_group_title]');
 
 
 $perm_values[$perm_group_name] = array(
-	"NEW_SHOP_ARTICLE",
-	"DELETE_SHOP_ARTICLE",
-	"EDIT_SHOP_ORDER",
-	"DELETE_SHOP_ORDER",
-	"EDIT_SHOP_PREFS",
-	"CAN_EDIT_VARIANTS"
+	'NEW_SHOP_ARTICLE',
+	'DELETE_SHOP_ARTICLE',
+	'EDIT_SHOP_ORDER',
+	'DELETE_SHOP_ORDER',
+	'EDIT_SHOP_PREFS',
+	'CAN_EDIT_VARIANTS'
 );
 
 //	Here the array of the permission-titles is set.
@@ -44,10 +44,10 @@ foreach($perm_values[$perm_group_name] as $cur){
 
 
 $perm_defaults[$perm_group_name] = array(
-	"NEW_SHOP_ARTICLE" => 0,
-	"DELETE_SHOP_ARTICLE" => 0,
-	"EDIT_SHOP_ORDER" => 0,
-	"DELETE_SHOP_ORDER" => 0,
-	"EDIT_SHOP_PREFS" => 0,
-	"CAN_EDIT_VARIANTS" => 1
+	'NEW_SHOP_ARTICLE' => 0,
+	'DELETE_SHOP_ARTICLE' => 0,
+	'EDIT_SHOP_ORDER' => 0,
+	'DELETE_SHOP_ORDER' => 0,
+	'EDIT_SHOP_PREFS' => 0,
+	'CAN_EDIT_VARIANTS' => 1
 );

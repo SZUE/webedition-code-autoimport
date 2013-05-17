@@ -22,13 +22,13 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-$perm_group_name = "voting";
-$perm_group_title[$perm_group_name] = g_l('perms_voting', "[perm_group_title]");
+$perm_group_name = 'voting';
+$perm_group_title[$perm_group_name] = g_l('perms_voting', '[perm_group_title]');
 
 $perm_values[$perm_group_name] = array(
-	"NEW_VOTING",
-	"DELETE_VOTING",
-	"EDIT_VOTING"
+	'NEW_VOTING',
+	'DELETE_VOTING',
+	'EDIT_VOTING'
 );
 
 //	Here the array of the permission-titles is set.
@@ -39,8 +39,7 @@ foreach($perm_values[$perm_group_name] as $cur){
 }
 
 $perm_defaults[$perm_group_name] = array(
-	"NEW_VOTING" => 1,
-	"DELETE_VOTING" => 1,
-	"EDIT_VOTING" => 1
+	'NEW_VOTING' => 1,
+	'DELETE_VOTING' => 1,
+	'EDIT_VOTING' => 1
 );
-
