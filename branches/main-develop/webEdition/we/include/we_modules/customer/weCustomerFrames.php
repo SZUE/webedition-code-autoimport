@@ -33,24 +33,18 @@ class weCustomerFrames extends weModuleFrames{
 		$this->View = new weCustomerView(WE_CUSTOMER_MODULE_DIR . "edit_customer_frameset.php", "top.content");
 		$this->setupTree(CUSTOMER_TABLE, "top.content", "top.content.resize.left.tree", "top.content.cmd");
 		$this->module = "customer";
+		$this->treeDefaultWidth = 244;
 	}
 
 	function getHTMLFrameset(){
 		$this->View->customer->clearSessionVars();
-		//$this->View->settings->clearSessionVars();
 		$this->View->settings->load(false);
 		return parent::getHTMLFrameset();
 	}
 
-	function getHTMLResize(){
-		$body = we_html_element::htmlBody(array('style' => 'background-color:grey;margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;')
-				, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
-					, we_html_element::htmlIFrame('left', $this->frameset . '?pnt=left', 'position:absolute;top:0px;bottom:0px;left:0px;width:220px;overflow: hidden;') .
-					we_html_element::htmlIFrame('right', $this->frameset . '?pnt=right', 'position:absolute;top:0px;bottom:0px;left:220px;right:0px;overflow: hidden;')
-				));
-
-		return $this->getHTMLDocument($body);
-	}
+	/* use parent
+	function getHTMLResize(){}
+	*/
 
 	function getJSCmdCode(){
 		return $this->View->getJSTop();

@@ -22,7 +22,7 @@
  * @package    webEdition_modules
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weModuleFrames{
+class weModuleFrames {
 
 	var $module;
 	var $db;
@@ -31,6 +31,10 @@ class weModuleFrames{
 	var $topFrame;
 	var $treeFrame;
 	var $cmdFrame;
+
+	protected $treeDefaultWidth = 200;
+	protected $treeWidth = 0;
+	private static $treeWidthsJS = '{}';
 
 	function __construct($frameset){
 		$this->db = new DB_WE();
@@ -66,26 +70,25 @@ class weModuleFrames{
 	}
 
 	function getHTMLFrameset(){
-		$js = $this->getJSCmdCode() .
+		print $this->getJSCmdCode() .
+			self::getJSToggleTreeCode($this->module, $this->treeDefaultWidth) .
 			$this->Tree->getJSTreeCode() .
 			we_html_element::jsElement($this->getJSStart()) .
 			we_html_element::jsScript(JS_DIR . 'we_showMessage.js');
 
-		// set and return html code
-		$body = we_html_element::htmlBody(array('style' => 'background-color:grey;margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;', "onload" => "start();")
+		print we_html_element::htmlBody(array('style' => 'background-color:grey;margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;', "onload" => "start();")
 				, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
 					, we_html_element::htmlExIFrame('header', self::getHTMLHeader(WE_INCLUDES_PATH .'java_menu/modules/module_menu_' . $this->module . '.inc.php', $this->module), 'position:absolute;top:0px;height:32px;left:0px;right:0px;') .
 					we_html_element::htmlIFrame('resize', $this->frameset . '?pnt=resize', 'position:absolute;top:32px;bottom:1px;left:0px;right:0px;overflow: hidden;') .
 					we_html_element::htmlIFrame('cmd', $this->frameset . '?pnt=cmd', 'position:absolute;bottom:0px;height:1px;left:0px;right:0px;overflow: hidden;')
 				));
-
-		return $this->getHTMLDocument($body, $js);
 	}
 
 	//TODO: this method is called statically and should therefore be declared static. for this, we must first make weToolFrames->getHtmlHeader static too
 	//Btw: as soon as Apps got css-menues too, weToolFrames->getHtmlHeader is obsolete
 	function getHTMLHeader($_menuFile, $_module){
-		//	Include the menu.
+
+		//Include the menu.
 		include($_menuFile);
 		include_once(WE_INCLUDES_PATH . "jsMessageConsole/messageConsole.inc.php" );
 
@@ -102,25 +105,25 @@ class weModuleFrames{
 			we_html_element::htmlDiv(array('style' => 'background-color:#efefef;background-image: url(' . IMAGE_DIR . 'java_menu/background.gif); background-repeat:repeat;margin:0px;'), $table->getHtml());
 	}
 
-	//FIXME: remove
 	function getHTMLResize(){
+		$this->setTreeWidthFromCookie();
+		print self::getJSToggleTreeCode($this->module, $this->treeDefaultWidth);
 
-		if(we_base_browserDetect::isGecko()){
-			$frameset = new we_html_frameset(array("cols" => "200,*", "border" => "1", "id" => "resizeframeid"));
-		} else{
-			$frameset = new we_html_frameset(array("cols" => "200,*", "border" => "0", "frameborder" => "0", "framespacing" => "0", "id" => "resizeframeid"));
-		}
-		if(we_base_browserDetect::isIE()){
-			$frameset->addFrame(array("src" => $this->frameset . "?pnt=left", "name" => "left", "scrolling" => "no", "frameborder" => "no"));
-		} else{
-			$frameset->addFrame(array("src" => $this->frameset . "?pnt=left", "name" => "left", "scrolling" => "no"));
-		}
-		$frameset->addFrame(array("src" => $this->frameset . "?pnt=right" . (isset($_REQUEST['sid']) ? '&sid=' . $_REQUEST['sid'] : ''), "name" => "right"));
+		$_incDecTree = '
+			<img id="incBaum" src="' . BUTTONS_DIR . 'icons/function_plus.gif" width="9" height="12" style="position:absolute;bottom:53px;left:5px;border:1px solid grey;padding:0 1px;cursor: pointer; ' . ($this->treeWidth <= 30 ? 'bgcolor:grey;' : '') . '" onClick="top.content.resize.incTree();">
+			<img id="decBaum" src="' . BUTTONS_DIR . 'icons/function_minus.gif" width="9" height="12" style="position:absolute;bottom:33px;left:5px;border:1px solid grey;padding:0 1px;cursor: pointer; ' . ($this->treeWidth <= 30 ? 'bgcolor:grey;' : '') . '" onClick="top.content.resize.decTree();">
+			<img id="arrowImg" src="' . BUTTONS_DIR . 'icons/direction_' . ($this->treeWidth <= 30 ? 'right' : 'left') . '.gif" width="9" height="12" style="position:absolute;bottom:13px;left:5px;border:1px solid grey;padding:0 1px;cursor: pointer;" onClick="top.content.resize.toggleTree();">
+		';
 
-		// set and return html code
-		$body = $frameset->getHtml();
-
-		return $this->getHTMLDocument($body);
+		print we_html_element::htmlBody(array('style' => 'background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px'),
+			we_html_element::htmlDiv(array('style' => 'position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px;'),
+				we_html_element::htmlDiv(array('id' => 'lframeDiv','style' => 'position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px;width: ' . $this->treeWidth . 'px;'),
+					we_html_element::htmlDiv(array('style' => 'position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px; width: ' . weTree::HiddenWidth . 'px; background-image: url(/webEdition/images/v-tabs/background.gif); background-repeat: repeat-y; border-top: 1px solid black;'), $_incDecTree) .
+					we_html_element::htmlIFrame('left', $this->frameset . '?pnt=left', 'position: absolute; top: 0px; bottom: 0px; left: ' . weTree::HiddenWidth . 'px; right: 0px;')
+				) .
+				we_html_element::htmlIFrame('right', $this->frameset . '?pnt=right' . (isset($_REQUEST['sid']) ? '&sid=' . $_REQUEST['sid'] : ''), 'position: absolute; top: 0px; bottom: 0px; left: ' . $this->treeWidth . 'px; right: 0px; width:auto; border-left: 1px solid black; overflow: hidden;')
+			)
+		);
 	}
 
 	function getHTMLLeft(){
@@ -202,6 +205,133 @@ class weModuleFrames{
 			$table->setCol(2, 1, array("valign" => "top"), $pix2);
 		}
 		return $table->getHtml();
+	}
+
+	function setTreeWidthFromCookie(){
+		$_tw = isset($_COOKIE["treewidth_modules"]) ? $_COOKIE["treewidth_modules"] : $this->treeDefaultWidth;t_e("def",$this->treeDefaultWidth);
+		if(!is_numeric($_tw)){
+			$_tw = explode(',', trim($_tw,' ,'));
+			$_twArr = array();
+			$_twJS = '{';
+
+			foreach($_tw as $_v){
+				$entry = explode(':', trim($_v));
+				$_twArr[trim($entry[0])] = $entry[1];
+				$_twJS .= $entry[0] . ':' . $entry[1] . ',';
+			}
+			self::$treeWidthsJS = rtrim($_twJS,',') . '}';
+			$this->treeWidth = isset($_twArr[$this->module]) ? $_twArr[$this->module] : $this->treeDefaultWidth;
+		} else{
+			$this->treeWidth = $_tw;
+		}
+	}
+
+	static function getJSToggleTreeCode($module,$treeDefaultWidth){
+		//FIXME: throw some of these functions out again and use generic version of main-window functions
+		$leftDiv = $module == "users" ? "user_leftDiv" : ($module == "messaging" ? "messaging_treeDiv" : "leftDiv");
+		$rightDiv = $module == "users" ? "user_rightDiv" : ($module == "messaging" ? "messaging_rightDiv" : "rightDiv");
+
+		return we_html_element::jsElement('
+			var oldTreeWidth = ' . $treeDefaultWidth . ';
+
+			function toggleTree(){
+				var tDiv = self.document.getElementById("' . $leftDiv . '");
+				var w = getTreeWidth();
+
+				if(tDiv.style.display == "none"){
+					oldTreeWidth = (oldTreeWidth < ' . weTree::MinWidthModules . ' ? ' . $treeDefaultWidth . ' : oldTreeWidth);
+					setTreeWidth(oldTreeWidth);
+					tDiv.style.display = "block";
+					setTreeArrow("left");
+					storeTreeWidth(oldTreeWidth);
+				} else{
+					tDiv.style.display = "none";
+					oldTreeWidth = w;
+					setTreeWidth('. weTree::HiddenWidth .');
+					setTreeArrow("right");
+				}
+			}
+
+			function setTreeArrow(direction) {
+				try{
+					self.document.getElementById("arrowImg").src = "' . BUTTONS_DIR . 'icons/direction_" + direction + ".gif";
+					if(direction == "right"){
+						self.document.getElementById("incBaum").style.backgroundColor = "gray";
+						self.document.getElementById("decBaum").style.backgroundColor = "gray";
+					}else{
+						self.document.getElementById("incBaum").style.backgroundColor = "";
+						self.document.getElementById("decBaum").style.backgroundColor = "";
+					}
+				} catch(e) {
+					// Nothing
+				}
+			}
+
+			function getTreeWidth() {
+				var w = self.document.getElementById("lframeDiv").style.width;
+				return w.substr(0, w.length-2);
+			}
+
+			function setTreeWidth(w) {
+				self.document.getElementById("lframeDiv").style.width = w + "px";
+				self.document.getElementById("' . $rightDiv . '").style.left = w + "px";
+				if(w > ' . weTree::HiddenWidth . '){
+					storeTreeWidth(w);
+				}
+			}
+
+			function storeTreeWidth(w) {
+				var ablauf = new Date();
+				var newTime = ablauf.getTime() + 30758400000;
+				ablauf.setTime(newTime);
+				weSetCookie("' . $module . '", w, ablauf, "/");
+			}
+
+			function incTree(){
+				var w = parseInt(getTreeWidth());
+				if((w > ' . weTree::MinWidthModules . ') && (w < ' . weTree::MaxWidthModules . ')){
+					w += ' . weTree::StepWidth . ';
+					setTreeWidth(w);
+				}
+				if(w >= ' . weTree::MaxWidthModules . '){
+					w = ' . weTree::MaxWidthModules . ';
+					self.document.getElementById("incBaum").style.backgroundColor = "grey";
+				}
+			}
+
+			function decTree(){
+				var w = parseInt(getTreeWidth());
+				w -= ' . weTree::StepWidth . ';
+				if(w > ' . weTree::MinWidthModules . '){
+					setTreeWidth(w);
+					self.document.getElementById("incBaum").style.backgroundColor = "";
+				}
+				if(w <= ' . weTree::MinWidthModules . ' && ((w + ' . weTree::StepWidth . ') >= ' . weTree::MinWidthModules . ')){
+					toggleTree();
+				}
+			}
+
+			function weSetCookie(module, value, expires, path, domain){
+				var moduleVals = ' . self::$treeWidthsJS . ';
+				var doc = self.document;
+				if(module == "users" || module == "messaging"){
+					doc.cookie = "treewidth_" + module + "=" + escape(value) +
+						((expires == null) ? "" : "; expires=" + expires.toGMTString()) +
+						((path == null)    ? "" : "; path=" + path) +
+						((domain == null)  ? "" : "; domain=" + domain);
+				} else{
+					moduleVals[module] = value;//console.log(moduleVals);
+					var val = "";
+					for(var param in moduleVals){
+						val += val ? "," + param + ":" + moduleVals[param] : param + " : " + moduleVals[param];
+					}
+					doc.cookie = "treewidth_modules" + "=" + val +
+						((expires == null) ? "" : "; expires=" + expires.toGMTString()) +
+						((path == null)    ? "" : "; path=" + path) +
+						((domain == null)  ? "" : "; domain=" + domain);
+				}
+			}
+	');
 	}
 
 }

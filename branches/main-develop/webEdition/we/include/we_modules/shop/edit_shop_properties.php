@@ -495,7 +495,7 @@ function searchArticles() {
 
 				// update all orders with this orderId
 				if(updateFieldFromOrder($_REQUEST['bid'], 'strSerialOrder', serialize($serialOrder))){
-					$jsCmd = 'top.opener.top.content.shop_tree.doClick(' . $_REQUEST['bid'] . ',"shop","' . SHOP_TABLE . '");' .
+					$jsCmd = 'top.opener.top.content.resize.shop_tree.doClick(' . $_REQUEST['bid'] . ',"shop","' . SHOP_TABLE . '");' .
 						we_message_reporting::getShowMessageCall(sprintf(g_l('modules_shop', '[edit_order][js_saved_cart_field_success]'), $_REQUEST['cartfieldname']), we_message_reporting::WE_MESSAGE_NOTICE);
 				} else{
 					$jsCmd = we_message_reporting::getShowMessageCall(sprintf(g_l('modules_shop', '[edit_order][js_saved_cart_field_error]'), $_REQUEST['cartfieldname']), we_message_reporting::WE_MESSAGE_ERROR);
@@ -1357,7 +1357,7 @@ echo we_html_element::jsScript(JS_DIR . 'jscalendar/calendar.js') .
 		}
 
 		function deleteorder() {
-			top.content.shop_properties.location = "<?php print WE_SHOP_MODULE_DIR; ?>edit_shop_properties.php?deletethisorder=1&bid=<?php echo $_REQUEST["bid"]; ?>";
+			top.content.resize.shop_properties.location = "<?php print WE_SHOP_MODULE_DIR; ?>edit_shop_properties.php?deletethisorder=1&bid=<?php echo $_REQUEST["bid"]; ?>";
 			top.content.deleteEntry(<?php echo $_REQUEST["bid"]; ?>);
 		}
 
@@ -1397,7 +1397,7 @@ echo we_html_element::jsScript(JS_DIR . 'jscalendar/calendar.js') .
 		// ********************************************************************************
 	} else{ // This order has no more entries
 		echo we_html_element::jsElement('
-		top.content.shop_properties.location="' . WE_SHOP_MODULE_DIR . 'edit_shop_properties.php?deletethisorder=1&bid=' . $_REQUEST["bid"] . '";
+		top.content.resize.shop_properties.location="' . WE_SHOP_MODULE_DIR . 'edit_shop_properties.php?deletethisorder=1&bid=' . $_REQUEST["bid"] . '";
 		top.content.deleteEntry(' . $_REQUEST['bid'] . ');
 	') . '
 </head>

@@ -44,8 +44,8 @@ print we_html_element::jsElement('
 		switch (arguments[0]) {
 
 			case "openOrder":
-				if(top.content.shop_tree.window.doClick) {
-					top.content.shop_tree.window.doClick(arguments[1], arguments[2], arguments[3]);
+				if(top.content.resize.shop_tree.window.doClick) {
+					top.content.resize.shop_tree.window.doClick(arguments[1], arguments[2], arguments[3]);
 				}
 			break;
 
@@ -104,11 +104,11 @@ $resultD = f("SELECT count(Name) as Anzahl FROM " . LINK_TABLE . ' WHERE Name ="
 				<?php echo we_button::create_button("image:btn_shop_delOrd", "javascript:top.opener.top.we_cmd('delete_shop')", true, -1, -1, "", "", !we_hasPerm("NEW_USER")); ?></td>
 			<?php
 			if(($resultD > 0) && (!empty($resultO))){ //docs and objects
-				echo "<td>" . we_button::create_button("image:btn_shop_sum", "javascript:top.content.shop_properties.location=' edit_shop_editorFramesetTop.php?typ=document '", true) . "</td>";
+				echo "<td>" . we_button::create_button("image:btn_shop_sum", "javascript:top.content.resize.shop_properties.location=' edit_shop_editorFramesetTop.php?typ=document '", true) . "</td>";
 			} elseif(($resultD < 1) && (!empty($resultO))){ // no docs but objects
-				echo "<td>" . we_button::create_button("image:btn_shop_sum", "javascript:top.content.shop_properties.location=' edit_shop_editorFramesetTop.php?typ=object&ViewClass=$classid '", true) . "</td>";
+				echo "<td>" . we_button::create_button("image:btn_shop_sum", "javascript:top.content.resize.shop_properties.location=' edit_shop_editorFramesetTop.php?typ=object&ViewClass=$classid '", true) . "</td>";
 			} elseif(($resultD > 0) && (empty($resultO))){ // docs but no objects
-				echo "<td>" . we_button::create_button("image:btn_shop_sum", "javascript:top.content.shop_properties.location=' edit_shop_editorFramesetTop.php?typ=document '", true) . "</td>";
+				echo "<td>" . we_button::create_button("image:btn_shop_sum", "javascript:top.content.resize.shop_properties.location=' edit_shop_editorFramesetTop.php?typ=document '", true) . "</td>";
 			} else{
 				echo " ";
 			}

@@ -31,6 +31,8 @@ class weTree{
 	const DeleteWidth = 420;
 	const MoveWidth = 500;
 	const HiddenWidth = 24;
+	const MinWidthModules = 120;
+	const MaxWidthModules = 800;
 
 	protected $db;
 	var $topFrame;

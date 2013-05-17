@@ -27,21 +27,13 @@ class weBannerFrames extends weModuleBannerFrames{
 	var $edit_cmd = "edit_banner";
 
 	function __construct(){
-		parent::__construct("banner/edit_banner_frameset.php");
+		parent::__construct(WEBEDITION_DIR . 'we/include/we_modules/banner/edit_banner_frameset.php');
 		$this->View = new weBannerView();
 	}
 
-	function getHTMLFrameset(){
-		$this->getJSTreeCode();
-		$this->getJSCmdCode();
-
-		print we_html_element::htmlBody(array('style' => 'background-color:grey;margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;', "onload" => "start();")
-				, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
-					, we_html_element::htmlExIFrame('header', weModuleFrames::getHTMLHeader(WE_INCLUDES_PATH .'java_menu/modules/module_menu_' . $this->module . '.inc.php', $this->module), 'position:absolute;top:0px;height:32px;left:0px;right:0px;') .
-					we_html_element::htmlIFrame('resize', WEBEDITION_DIR . 'we/include/we_modules/' . $this->frameset . '?pnt=resize', 'position:absolute;top:32px;bottom:1px;left:0px;right:0px;overflow: hidden;') .
-					we_html_element::htmlIFrame('cmd', WEBEDITION_DIR . 'we/include/we_modules/' . $this->frameset . '?pnt=cmd', 'position:absolute;bottom:0px;height:1px;left:0px;right:0px;overflow: hidden;')
-				));
-	}
+	/* use parent
+	function getHTMLFrameset(){}
+	*/
 
 	function getJSTreeCode(){
 		$startloc = 0;

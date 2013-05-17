@@ -28,6 +28,11 @@ we_html_tools::protect();
 
 $what = isset($_REQUEST["pnt"]) ? $_REQUEST["pnt"] : "frameset";
 
+if($what == "resize" || $what == "frameset"){ //TODO: wenn alle framesets angepasst sind, faellt die bedinging raus!
+	we_html_tools::htmlTop();
+	print STYLESHEET;
+}
+
 $weFrame = new weVotingFrames();
 $weFrame->View->processVariables();
 $weFrame->View->processCommands();

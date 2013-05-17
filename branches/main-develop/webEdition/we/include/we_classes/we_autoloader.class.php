@@ -281,6 +281,7 @@ abstract class we_autoloader{
 			'objectsearch' => 'object/we_searchobject_class.inc.php',
 			'we_schedpro' => 'schedule/we_schedpro.inc.php',
 			'paypal_class' => 'shop/paypal.class.php',
+			'weShopFrames' => 'shop/weShopFrames.class.php',
 			'weShippingControl' => 'shop/weShippingControl.class.php',
 			'weShipping' => 'shop/weShippingControl.class.php',
 			'weShopStatusMails' => 'shop/weShopStatusMails.class.php',

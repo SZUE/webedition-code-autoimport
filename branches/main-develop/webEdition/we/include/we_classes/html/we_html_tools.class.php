@@ -635,11 +635,11 @@ abstract class we_html_tools{
 		print self::getHtmlTop($title, $charset, $doctype);
 	}
 
-	public static function getHtmlTop($title = 'webEdition', $charset = '', $doctype = '', $expand = false){
+	public static function getHtmlTop($title = 'webEdition', $charset = '', $doctype = '', $expand = false, $closeHtml = false, $closeHead = false){
 		return we_html_element::htmlDocType($doctype) .
 			we_html_element::htmlhtml(we_html_element::htmlHead(
-					self::getHtmlInnerHead($title, $charset, $expand), false)
-				, false);
+					self::getHtmlInnerHead($title, $charset, $expand), $closeHead)
+				, $closeHtml);
 	}
 
 	public static function getHtmlInnerHead($title = 'webEdition', $charset = '', $expand = false){

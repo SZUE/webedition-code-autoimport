@@ -23,28 +23,26 @@
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
-we_html_tools::htmlTop();
-?>
-</head>
+//TODO: base users on new class weUsersFrames extends weModuleFrames and use function getHTMLResize() instead of this file
+//TODO: use css classes instead of style attribut for iFrames
 
-<?php if(we_base_browserDetect::isGecko()){ ?>
-	<frameset cols="170,*" border="1" id="resizeframeid">
-		<frame src="<?php print WE_USERS_MODULE_DIR; ?>edit_users_left.php" name="user_left" scrolling="no"/>
-		<frame src="<?php print WE_USERS_MODULE_DIR; ?>edit_users_right.php" name="user_right"/>
-	</frameset>
-<?php } else if(we_base_browserDetect::isSafari()){ ?>
-	<frameset cols="170,*" framespacing="0" border="0" frameborder="0" id="resizeframeid">
-		<frame src="<?php print WE_USERS_MODULE_DIR; ?>edit_users_left.php" name="user_left" scrolling="no"/>
-		<frame src="<?php print WE_USERS_MODULE_DIR; ?>edit_users_right.php" name="user_right"/>
-	</frameset>
-<?php } else{ //IE  ?>
-	<frameset cols="170,*" framespacing="0" border="0" frameborder="0" id="resizeframeid">
-		<frame src="<?php print WE_USERS_MODULE_DIR; ?>edit_users_left.php" name="user_left" scrolling="no" frameborder="0"/>
-		<frame src="<?php print WE_USERS_MODULE_DIR; ?>edit_users_right.php" name="user_right"/>
-	</frameset>
-<?php } ?>
-<noframes>
-	<body background="<?php print IMAGE_DIR ?>backgrounds/aquaBackground.gif" style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px">
-	</body>
-</noframes>
-</html>
+we_html_tools::htmlTop();
+
+print weModuleFrames::getJSToggleTreeCode('users', 200);
+$_treewidth = isset($_COOKIE["treewidth_users"]) && ($_COOKIE["treewidth_users"] >= weTree::MinWidth) ? $_COOKIE["treewidth_users"] : 200;
+
+$incDecTree = '
+	<img id="incBaum" src="' . BUTTONS_DIR . 'icons/function_plus.gif" width="9" height="12" style="position:absolute;bottom:53px;left:5px;border:1px solid grey;padding:0 1px;cursor: pointer; ' . ($_treewidth <= 30 ? 'bgcolor:grey;' : '') . '" onClick="top.content.user_resize.incTree();">
+	<img id="decBaum" src="' . BUTTONS_DIR . 'icons/function_minus.gif" width="9" height="12" style="position:absolute;bottom:33px;left:5px;border:1px solid grey;padding:0 1px;cursor: pointer; ' . ($_treewidth <= 30 ? 'bgcolor:grey;' : '') . '" onClick="top.content.user_resize.decTree();">
+	<img id="arrowImg" src="' . BUTTONS_DIR . 'icons/direction_' . ($_treewidth <= 30 ? 'right' : 'left') . '.gif" width="9" height="12" style="position:absolute;bottom:13px;left:5px;border:1px solid grey;padding:0 1px;cursor: pointer;" onClick="top.content.user_resize.toggleTree();">
+';
+
+print we_html_element::htmlBody(array('style' => 'background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px'),
+	we_html_element::htmlDiv(array('style' => 'position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px;'),
+		we_html_element::htmlDiv(array('id' => 'lframeDiv','style' => 'position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px;width: ' . $_treewidth . 'px;'),
+			we_html_element::htmlDiv(array('style' => 'position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px; width: ' . weTree::HiddenWidth . 'px; background-image: url(/webEdition/images/v-tabs/background.gif); background-repeat: repeat-y; border-top: 1px solid black;'), $incDecTree) .
+			we_html_element::htmlIFrame('user_left', WE_USERS_MODULE_DIR . 'edit_users_left.php', 'position: absolute; top: 0px; bottom: 0px; left: ' . weTree::HiddenWidth . 'px; right: 0px;')
+		) .
+		we_html_element::htmlIFrame('user_right', WE_USERS_MODULE_DIR . 'edit_users_right.php', 'position: absolute; top: 0px; bottom: 0px; left: ' . $_treewidth . 'px; right: 0px; width:auto; border-left: 1px solid black; overflow: hidden;')
+	)
+);

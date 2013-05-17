@@ -99,10 +99,9 @@ class weGlossaryFrames extends weModuleFrames{
 		}
 	}
 
-	function getHTMLFrameset(){
-
-		return weModuleFrames::getHTMLFrameset();
-	}
+	/*use parent
+	function getHTMLFrameset(){}
+	*/
 
 	function getJSCmdCode(){
 

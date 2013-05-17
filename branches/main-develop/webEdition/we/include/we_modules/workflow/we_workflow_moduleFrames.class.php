@@ -22,13 +22,14 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_workflow_moduleFrames{
+class we_workflow_moduleFrames extends weModuleFrames {
 
 	var $db;
 	var $View;
 
 	function __construct(){
 		$this->db = new DB_WE();
+		$this->module="workflow";
 	}
 
 	function getJSTreeCode(){
@@ -235,6 +236,7 @@ class we_workflow_moduleFrames{
 		<?php
 	}
 
+	/*
 	function getHTMLResize(){
 		?>
 		</head>
@@ -261,7 +263,8 @@ class we_workflow_moduleFrames{
 		</html>
 		<?php
 	}
-
+	*/
+	
 	function getHTMLLeft(){
 		?>
 		</head>
