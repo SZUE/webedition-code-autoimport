@@ -27,14 +27,14 @@ class weShopFrames extends weModuleFrames {
 	var $db;
 	var $View;
 	var $frameset;
-	var $edit_cmd = "edit_newsletter";
+	//var $edit_cmd = "edit_newsletter";
 
 	function __construct($frameset){
 
 		parent::__construct(WE_SHOP_MODULE_DIR . "edit_shop_frameset.php");//FIXME: tmp!
 
 		//$this->Tree = new weGlossaryTree();
-		$this->View = new weShopView(WE_GLOSSARY_MODULE_DIR . "edit_shop_frameset.php", "top.content");
+		$this->View = new weShopView(WE_SHOP_MODULE_DIR . "edit_shop_frameset.php", "top.content");
 		
 		$this->module = "shop";
 		$this->treeDefaultWidth = 204;
