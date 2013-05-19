@@ -36,13 +36,9 @@ print STYLESHEET;
 
 $yid = isset($_REQUEST["ViewYear"]) ? abs($_REQUEST["ViewYear"]) : date("Y");
 $bid = isset($_REQUEST["bid"]) ? abs($_REQUEST["bid"]) : 0;
-$cid = f("SELECT IntCustomerID FROM " . SHOP_TABLE . " WHERE IntOrderID = " . intval($bid), "IntCustomerID", $DB_WE);
+$cid = f('SELECT IntCustomerID FROM ' . SHOP_TABLE . ' WHERE IntOrderID=' . intval($bid), "IntCustomerID", $DB_WE);
 $DB_WE->query("SELECT IntOrderID,DATE_FORMAT(DateOrder,'" . g_l('date', '[format][mysqlDate]') . "') as orddate FROM " . SHOP_TABLE . " GROUP BY IntOrderID ORDER BY IntID DESC");
-if($DB_WE->next_record()){
-	$headline = sprintf(g_l('modules_shop', '[lastOrder]'), $DB_WE->f("IntOrderID"), $DB_WE->f("orddate"));
-} else{
-	$headline = "";
-}
+$headline = ($DB_WE->next_record()?	sprintf(g_l('modules_shop', '[lastOrder]'), $DB_WE->f("IntOrderID"), $DB_WE->f("orddate")):'');
 
 /// config
 $DB_WE->query("SELECT strFelder from " . ANZEIGE_PREFS_TABLE . " WHERE strDateiname = 'shop_pref'");

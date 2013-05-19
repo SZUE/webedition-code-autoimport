@@ -103,7 +103,7 @@ class weShopView{
 		$out = '
 var hot = 0;
 
-parent.document.title = "<?php print ' . $title . '";
+parent.document.title = "' . $title . '";
 
 function doUnload() {
 	if (!!jsWindow_count) {
@@ -138,9 +138,9 @@ function we_cmd(){
 			}
 			break;
 		case "revenue_view":
-			' . ($resultD > 0 ? $this->topFrame . '.resize.shop_properties.location=' . WE_SHOP_MODULE_DIR . 'edit_shop_editorFramesetTop.php?typ=document' : 
-			(!empty($resultO) ? $this->topFrame . '.resize.shop_properties.location=' . WE_SHOP_MODULE_DIR . 'edit_shop_editorFramesetTop.php?typ=object&ViewClass=$classid' : 
-			'')) . ' 
+			' . ($resultD > 0 ? $this->topFrame . '.resize.shop_properties.location=' . WE_SHOP_MODULE_DIR . 'edit_shop_editorFramesetTop.php?typ=document' :
+			(!empty($resultO) ? $this->topFrame . '.resize.shop_properties.location=' . WE_SHOP_MODULE_DIR . 'edit_shop_editorFramesetTop.php?typ=object&ViewClass=$classid' :
+			'')) . '
 			break;
 		';
 
@@ -186,9 +186,9 @@ function we_cmd(){
 			break;
 	}
 }
-		'; 
+		';
 
-		return we_html_element::jsScript(JS_DIR . 'images.js') . we_html_element::jsScript(JS_DIR . 'windows.js') . 
+		return we_html_element::jsScript(JS_DIR . 'images.js') . we_html_element::jsScript(JS_DIR . 'windows.js') .
 			we_html_element::jsElement($out);
 	}
 
