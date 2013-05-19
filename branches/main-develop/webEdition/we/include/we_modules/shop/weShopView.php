@@ -137,6 +137,7 @@ function we_cmd(){
 			}
 			break;
 		case "revenue_view":
+		//FIXME: this is not correct; document doesnt work like this
 			' . ($resultD > 0 ? $this->topFrame . '.resize.shop_properties.location="' . WE_SHOP_MODULE_DIR . 'edit_shop_editorFramesetTop.php?typ=document";' :
 				(!empty($resultO) ? $this->topFrame . '.resize.shop_properties.location="' . WE_SHOP_MODULE_DIR . 'edit_shop_editorFramesetTop.php?typ=object&ViewClass='.$classid.'";' :
 					$this->topFrame . '.resize.shop_properties.location="' . WE_SHOP_MODULE_DIR . 'edit_shop_editorFramesetTop.php?typ=document')) . '";
