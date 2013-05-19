@@ -23,55 +23,49 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 // file
+$years = we_shop_shop::getAllOrderYears();
+
 $we_menu_shop = array(
-	'100000' => array(
+	100000 => array(
 		'text' => g_l('javaMenu_shop', '[menu_user]'),
 		'parent' => '000000',
 		'perm' => '',
-		'enabled' => '1',
+		'enabled' => 1,
 	),
-	'120000' => array(
+	120000 => array(
 		'text' => g_l('javaMenu_shop', '[year]'),
-		'parent' => '100000',
+		'parent' => 100000,
 		'perm' => '',
-		'enabled' => '1',
+		'enabled' => 1,
 	)
 );
 
-// first year
-$yearshop = date('Y');
-
-$z = 1;
-while($yearshop >= 2002) {
-
-	$menNr = '1' . (20000 + $z);
-	$we_menu_shop[$menNr] = array(
-		'text' => $yearshop,
-		'parent' => '120000',
-		'cmd' => 'year' . $yearshop,
+foreach($years as $cur){
+	$we_menu_shop[] = array(
+		'text' => $cur,
+		'parent' => 120000,
+		'cmd' => 'year' . $cur,
 		'perm' => '',
-		'enabled' => '1',
+		'enabled' => 1,
 	);
-	$yearshop--;
-	$z++;
 }
 
-$we_menu_shop['180000'] = array('parent' => '100000'); // separator
+$we_menu_shop[180000] = array('parent' => 100000); // separator
 
-$we_menu_shop['190000'] = array(
+$we_menu_shop[190000] = array(
 	'text' => g_l('javaMenu_shop', '[menu_exit]'),
-	'parent' => '100000',
+	'parent' => 100000,
 	'cmd' => 'exit_shop',
 	'perm' => '',
-	'enabled' => '1',
+	'enabled' => 1,
 );
 
 // edit
-$we_menu_shop['200000'] = array(
+$we_menu_shop[200000] = array(
 	'text' => g_l('javaMenu_shop', '[shop_edit]'),
 	'parent' => '000000',
 	'perm' => 'edit_shop',
-	'enabled' => '1',
+	'enabled' => 1,
 );
 
 $we_menu_shop['210000'] = array(
@@ -116,22 +110,22 @@ $we_menu_shop['260000'] = array(
 	'enabled' => '1',
 );
 
-$we_menu_shop['261000'] = array(
+$we_menu_shop[261000] = array(
 	'text' => g_l('modules_shop', '[shipping][payment_provider]') . '&hellip;',
-	'parent' => '200000',
+	'parent' => 200000,
 	'cmd' => 'payment_val',
 	'perm' => 'EDIT_SHOP_PREFS || ADMINISTRATOR',
-	'enabled' => '1',
+	'enabled' => 1,
 );
 
-$we_menu_shop['261001'] = array('parent' => '200000'); // separator
+$we_menu_shop[261001] = array('parent' => 200000); // separator
 
-$we_menu_shop['262000'] = array(
+$we_menu_shop[262000] = array(
 	'text' => g_l('modules_shop', '[shipping][revenue_view]'),
-	'parent' => '200000',
+	'parent' => 200000,
 	'cmd' => 'revenue_view',
 	'perm' => 'EDIT_SHOP_PREFS || ADMINISTRATOR',
-	'enabled' => '1',
+	'enabled' => 1,
 );
 
 $we_menu_shop['270000'] = array('parent' => '200000'); // separator

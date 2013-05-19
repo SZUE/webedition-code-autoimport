@@ -66,7 +66,6 @@ class weShopView{
 	}
 
 	function getJSTop_tmp(){//taken from old edit_shop_frameset.php
-
 		// grep the last element from the year-set, wich is the current year
 		$this->db->query('SELECT DATE_FORMAT(DateOrder,"%Y") AS DateOrd FROM ' . SHOP_TABLE . ' ORDER BY DateOrd');
 		while($this->db->next_record()) {
@@ -75,7 +74,7 @@ class weShopView{
 		}
 		// print $yearTrans;
 		/// config
-		$feldnamen = explode('|', f('SELECT strFelder FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname="shop_pref"','strFelder',$this->db));
+		$feldnamen = explode('|', f('SELECT strFelder FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname="shop_pref"', 'strFelder', $this->db));
 		for($i = 0; $i <= 3; $i++){
 			$feldnamen[$i] = isset($feldnamen[$i]) ? $feldnamen[$i] : '';
 		}
@@ -88,7 +87,7 @@ class weShopView{
 		$resultO = array_shift($fe);
 
 		// whether the resultset is empty?
-		$resultD = f('SELECT count(Name) as Anzahl FROM ' . LINK_TABLE . ' WHERE Name ="'.WE_SHOP_TITLE_FIELD_NAME.'"', 'Anzahl', $this->db);
+		$resultD = f('SELECT COUNT(Name) as Anzahl FROM ' . LINK_TABLE . ' WHERE Name ="' . WE_SHOP_TITLE_FIELD_NAME . '"', 'Anzahl', $this->db);
 
 
 		$mod = isset($_REQUEST['mod']) ? $_REQUEST['mod'] : '';
@@ -116,7 +115,7 @@ function doUnload() {
 function we_cmd(){
 	var args = "";
 
-	var url = "' .WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
+	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 	switch (arguments[0]){
 		case "new_shop":
 			' . $this->topFrame . '.resize.shop_properties.location="<?php print WE_SHOP_MODULE_DIR; ?>edit_shop_editorFrameset.php";
@@ -138,22 +137,18 @@ function we_cmd(){
 			}
 			break;
 		case "revenue_view":
-			' . ($resultD > 0 ? $this->topFrame . '.resize.shop_properties.location=' . WE_SHOP_MODULE_DIR . 'edit_shop_editorFramesetTop.php?typ=document' :
-			(!empty($resultO) ? $this->topFrame . '.resize.shop_properties.location=' . WE_SHOP_MODULE_DIR . 'edit_shop_editorFramesetTop.php?typ=object&ViewClass=$classid' :
-			'')) . '
+			' . ($resultD > 0 ? $this->topFrame . '.resize.shop_properties.location="' . WE_SHOP_MODULE_DIR . 'edit_shop_editorFramesetTop.php?typ=document";' :
+				(!empty($resultO) ? $this->topFrame . '.resize.shop_properties.location="' . WE_SHOP_MODULE_DIR . 'edit_shop_editorFramesetTop.php?typ=object&ViewClass='.$classid.'";' :
+					$this->topFrame . '.resize.shop_properties.location="' . WE_SHOP_MODULE_DIR . 'edit_shop_editorFramesetTop.php?typ=document')) . '";
 			break;
 		';
-
-		$yearshop = "2002";
-		$z = 1;
-		while($yearshop <= date("Y")) {
+		$years = we_shop_shop::getAllOrderYears();
+		foreach($years as $cur){
 			$out .= '
-		case "year' . $yearshop . '":
-			' . $this->topFrame . '.location="' . WE_MODULES_DIR . 'show.php?mod=shop&year=' . $yearshop . '";
+		case "year' . $cur . '":
+			' . $this->topFrame . '.location="' . WE_MODULES_DIR . 'show.php?mod=shop&year=' . $cur . '";
 				break;
 		';
-			$yearshop++;
-			$z++;
 		}
 
 		$out .= '
