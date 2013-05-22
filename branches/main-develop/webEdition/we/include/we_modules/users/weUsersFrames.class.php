@@ -245,8 +245,9 @@ function search(eintrag) {
 	var ai = 1;
 	while (ai <= menuDaten.laenge) {
 		if ((menuDaten[ai].typ == "folder") || (menuDaten[ai].typ == "user"))
-			if (menuDaten[ai].vorfahr == eintrag)
+			if (menuDaten[ai].vorfahr == eintrag){
 				nf.add(menuDaten[ai]);
+			}
 		ai++;
 	}
 	return nf;
@@ -352,7 +353,7 @@ function urlEntry(icon,name,vorfahr,text,contentType,table,published,denied) {
 
 			$jsCode .= 'startloc=' . $startloc . ';';
 
-			$this->db->query('SELECT ID,ParentID,Text,Type,Permissions FROM ' . USER_TABLE . " WHERE Path LIKE '" . $this->db->escape($parent_path) . "%' ORDER BY Text ASC");
+			$this->db->query('SELECT ID,ParentID,Text,Type,Permissions,LoginDenied FROM ' . USER_TABLE . " WHERE Path LIKE '" . $this->db->escape($parent_path) . "%' ORDER BY Text ASC");
 
 			while($this->db->next_record()) {
 				if($this->db->f("Type") == 1){
