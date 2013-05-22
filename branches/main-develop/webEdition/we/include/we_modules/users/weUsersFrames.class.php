@@ -514,18 +514,17 @@ function urlEntry(icon,name,vorfahr,text,contentType,table,published,denied) {
 			$user_object->setState($_SESSION["user_session_data"]);
 		}
 		print $this->View->getJSProperty();
-/*
-		$_content = we_html_element::htmlHidden($attribs = array("ucmd" => "",)).
-			we_html_element::htmlHidden($attribs = array("tab" => isset($_REQUEST["tab"]) ? intval($_REQUEST["tab"]) : "",)).
-			we_html_element::htmlHidden($attribs = array("oldtab" => isset($_REQUEST["tab"]) ? intval($_REQUEST["tab"]) : 0,)).
-			we_html_element::htmlHidden($attribs = array("perm_branch" => (isset($_REQUEST["perm_branch"]) && $_REQUEST["perm_branch"]) ? oldHtmlspecialchars($_REQUEST["perm_branch"]) : 0,)).
-			we_html_element::htmlHidden($attribs = array("old_perm_branch" => (isset($_REQUEST["perm_branch"]) && $_REQUEST["perm_branch"]) ? oldHtmlspecialchars($_REQUEST["perm_branch"]) : 0,)).
-			we_html_element::htmlHidden($attribs = array("obj_name" => $user_object->Name,)).
-			we_html_element::htmlHidden($attribs = array("uid" => $user_object->ID,)).
-			we_html_element::htmlHidden($attribs = array("ctype" => isset($_REQUEST["ctype"]) ? oldHtmlspecialchars($_REQUEST["ctype"]) : "",)).
-			we_html_element::htmlHidden($attribs = array("ctable" => isset($_REQUEST["ctable"]) ? oldHtmlspecialchars($_REQUEST["ctable"]) : "",)).
-			we_html_element::htmlHidden($attribs = array("sd" => "0",));
 
+		$_content = we_html_element::htmlHidden($attribs = array("name" => "ucmd", "value" => "",)).
+			we_html_element::htmlHidden($attribs = array("name" => "tab", "value" => isset($_REQUEST["tab"]) ? intval($_REQUEST["tab"]) : "",)).
+			we_html_element::htmlHidden($attribs = array("name" => "oldtab", "value" => isset($_REQUEST["tab"]) ? intval($_REQUEST["tab"]) : 0,)).
+			we_html_element::htmlHidden($attribs = array("name" => "perm_branch", "value" => (isset($_REQUEST["perm_branch"]) && $_REQUEST["perm_branch"]) ? oldHtmlspecialchars($_REQUEST["perm_branch"]) : 0,)).
+			we_html_element::htmlHidden($attribs = array("name" => "old_perm_branch", "value" => (isset($_REQUEST["perm_branch"]) && $_REQUEST["perm_branch"]) ? oldHtmlspecialchars($_REQUEST["perm_branch"]) : 0,)).
+			we_html_element::htmlHidden($attribs = array("name" => "obj_name", "value" => $user_object->Name,)).
+			we_html_element::htmlHidden($attribs = array("name" => "uid", "value" => $user_object->ID,)).
+			we_html_element::htmlHidden($attribs = array("name" => "ctype", "value" => isset($_REQUEST["ctype"]) ? oldHtmlspecialchars($_REQUEST["ctype"]) : "",)).
+			we_html_element::htmlHidden($attribs = array("name" => "ctable", "value" => isset($_REQUEST["ctable"]) ? oldHtmlspecialchars($_REQUEST["ctable"]) : "",)).
+			we_html_element::htmlHidden($attribs = array("name" => "sd", "value" => "0",));
 
 		if($user_object){
 			if(isset($_REQUEST["oldtab"]) && isset($_REQUEST["old_perm_branch"])){ // && isset($_REQUEST["old_perm_branch"]) added for 4705
@@ -548,11 +547,12 @@ function urlEntry(icon,name,vorfahr,text,contentType,table,published,denied) {
 		);
 
 		$_form = we_html_element::htmlForm($_form_attribs, $_content);
-		print we_html_element::htmlBody(array('class' => 'weEditorBody', 'onload' => 'loaded = 1;', 'onUnload' => 'doUnload()'), $_form);
+		print we_html_element::htmlBody(array('class' => 'weEditorBody', 'onload' => 'loaded=1;', 'onUnload' => 'doUnload()'), $_form);
 
-*/
-		//FIXME: somehow the variant using htmlForm(), htmlBody() etc... does not work...: save_user() not ok!
-		///*
+
+		//FIXME: somehow the variant using htmlForm(), htmlBody() etc...
+		//works now: check again
+		/*
 		?>
 		<body class="weEditorBody" onUnload="doUnload()" onLoad="loaded=1">
 			<form name="we_form" method="post" onSubmit="return false">
@@ -584,7 +584,7 @@ function urlEntry(icon,name,vorfahr,text,contentType,table,published,denied) {
 			</form>
 		</body>
 		<?php
-		// */
+		 */
 
 	}
 
