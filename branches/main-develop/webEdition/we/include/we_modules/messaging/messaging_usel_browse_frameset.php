@@ -358,7 +358,6 @@ echo we_html_element::htmlBody(array('style' => 'background-color:#bfbfbf;backgr
 		, we_html_element::htmlIFrame('messaging_usel_main', HTML_DIR.'white.html', 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;overflow: auto;') .
 		we_html_element::htmlDiv(array('style' => 'position:absolute;height:20px;bottom:0px;left:0px;right:0px;overflow: hidden;padding:10px;background-repeat:repeat;background-image: url(' . IMAGE_DIR . 'edit/editfooterback.gif);'), we_button::position_yes_no_cancel(we_button::create_button("ok", "javascript:do_selupdate();"), "", we_button::create_button("cancel", "javascript:close();")
 			))
-		//we_html_element::htmlIFrame('user_cmd', WE_MESSAGING_MODULE_DIR . 'messaging_usel_iconbar.php', 'position:absolute;height:40px;bottom:0px;left:0px;right:0px;overflow: hidden;')
 	));
 ?>
 

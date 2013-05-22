@@ -168,6 +168,28 @@ class weModuleFrames {
 		return $this->getHTMLDocument($body);
 	}
 
+	function getHTMLEditorFooter($btn_cmd){
+		if(isset($_REQUEST['home'])){
+			return $this->getHTMLDocument(we_html_element::htmlBody(array("bgcolor" => "EFf0EF"), ""));
+		}
+
+		$table1 = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0", "width" => "300"), 1, 1);
+		$table1->setCol(0, 0, array("nowrap" => null, "valign" => "top"), we_html_tools::getPixel(1600, 10));
+
+		$table2 = new we_html_table(array('border' => '0', 'cellpadding' => '0', 'cellspacing' => '0', 'width' => '300'), 1, 2);
+		$table2->setRow(0, array('valign' => 'middle'));
+		$table2->setCol(0, 0, array('nowrap' => null), we_html_tools::getPixel(5, 5));
+		$table2->setCol(0, 1, array('nowrap' => null), we_button::create_button('save', 'javascript:we_save();'));
+
+		return $this->getHTMLDocument(
+				we_html_element::jsElement(
+					'function we_save() {
+						top.content.we_cmd("' . $btn_cmd . '");
+					}') .
+				we_html_element::htmlBody(array('bgcolor' => 'white', 'background' => IMAGE_DIR . 'edit/editfooterback.gif', 'marginwidth' => '0', 'marginheight' => '0', 'leftmargin' => '0', 'topmargin' => '0'), we_html_element::htmlForm(array(), $table1->getHtml() . $table2->getHtml()))
+		);
+	}
+
 	function getHTMLCmd(){
 		// set and return html code
 		$head = $this->Tree->getJSLoadTree();
@@ -208,7 +230,7 @@ class weModuleFrames {
 	}
 
 	function setTreeWidthFromCookie(){
-		$_tw = isset($_COOKIE["treewidth_modules"]) ? $_COOKIE["treewidth_modules"] : $this->treeDefaultWidth;t_e("def",$this->treeDefaultWidth);
+		$_tw = isset($_COOKIE["treewidth_modules"]) ? $_COOKIE["treewidth_modules"] : $this->treeDefaultWidth;
 		if(!is_numeric($_tw)){
 			$_tw = explode(',', trim($_tw,' ,'));
 			$_twArr = array();
@@ -228,8 +250,8 @@ class weModuleFrames {
 
 	static function getJSToggleTreeCode($module,$treeDefaultWidth){
 		//FIXME: throw some of these functions out again and use generic version of main-window functions
-		$leftDiv = $module == "users" ? "user_leftDiv" : ($module == "messaging" ? "messaging_treeDiv" : "leftDiv");
-		$rightDiv = $module == "users" ? "user_rightDiv" : ($module == "messaging" ? "messaging_rightDiv" : "rightDiv");
+		$leftDiv = $module == "messaging" ? "messaging_treeDiv" : "leftDiv";
+		$rightDiv = $module == "messaging" ? "messaging_rightDiv" : "rightDiv";
 
 		return we_html_element::jsElement('
 			var oldTreeWidth = ' . $treeDefaultWidth . ';

@@ -379,29 +379,9 @@ class weCustomerFrames extends weModuleFrames{
 		return $this->getHTMLDocument($body, $this->View->getJSProperty());
 	}
 
-	function getHTMLEditorFooter(){
-		if(isset($_REQUEST['home'])){
-			return $this->getHTMLDocument(we_html_element::htmlBody(array("bgcolor" => "#EFf0EF"), ""));
-		}
-
-
-		$table1 = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0", "width" => "300"), 1, 1);
-		$table1->setCol(0, 0, array("nowrap" => null, "valign" => "top"), we_html_tools::getPixel(1600, 10));
-
-		$table2 = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0", "width" => "300"), 1, 2);
-		$table2->setRow(0, array("valign" => "middle"));
-		$table2->setCol(0, 0, array("nowrap" => null), we_html_tools::getPixel(5, 5));
-		$table2->setCol(0, 1, array("nowrap" => null), we_button::create_button("save", "javascript:we_save();"));
-
-
-		return $this->getHTMLDocument(
-				we_html_element::jsElement(
-					"function we_save() {
-						top.content.we_cmd('save_customer');
-					}") .
-				we_html_element::htmlBody(array('bgcolor' => 'white', 'background' => IMAGE_DIR . 'edit/editfooterback.gif', 'marginwidth' => '0', 'marginheight' => '0', 'leftmargin' => '0', 'topmargin' => '0'), we_html_element::htmlForm(array(), $table1->getHtml() . $table2->getHtml()))
-		);
-	}
+	/* use parent
+	function getHTMLEditorFooter(){}
+	*/
 
 	function getHTMLProperties($preselect = ''){
 		$parts = array();

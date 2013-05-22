@@ -644,18 +644,18 @@ class we_user{
 							}
 
 							// Tabs Module User
-							if (top.content.user_resize.user_right.user_editor.user_edheader) {
-								top.content.user_resize.user_right.user_editor.user_edheader.location = top.content.user_resize.user_right.user_editor.user_edheader.location +'?tab='+top.content.user_resize.user_right.user_editor.user_edheader.activeTab;
+							if (top.content.resize.right.editor.edheader) {
+								top.content.resize.right.editor.edheader.location = top.content.resize.right.editor.edheader.location +'?tab='+top.content.resize.right.editor.edheader.activeTab;
 							}
 
 							// Editor Module User
-							if (top.content.user_resize.user_right.user_editor.user_properties) {
-								top.content.user_resize.user_right.user_editor.user_properties.location = top.content.user_resize.user_right.user_editor.user_properties.location +'?tab=" . abs($_REQUEST['tab']) . "&perm_branch='+top.content.user_resize.user_right.user_editor.user_properties.opened_group;
+							if (top.content.resize.right.editor.properties) {
+								top.content.resize.right.editor.properties.location = top.content.resize.right.editor.properties.location +'?tab=" . abs($_REQUEST['tab']) . "&perm_branch='+top.content.resize.right.editor.properties.opened_group;
 							}
 
 							// Save Module User
-							if (top.content.user_resize.user_right.user_editor.user_edfooter) {
-								top.content.user_resize.user_right.user_editor.user_edfooter.location.reload();
+							if (top.content.resize.right.editor.edfooter) {
+								top.content.resize.right.editor.edfooter.location.reload();
 							}
 							if (top.opener.top.header) {
 								top.opener.top.header.location.reload();
@@ -692,18 +692,18 @@ if (parent.frames[0]) {
 }
 
 // Tabs Module User
-if (top.content.user_resize.user_right.user_editor.user_edheader) {
-	top.content.user_resize.user_right.user_editor.user_edheader.location = top.content.user_resize.user_right.user_editor.user_edheader.location +'?tab='+top.content.user_resize.user_right.user_editor.user_edheader.activeTab;
+if (top.content.resize.right.editor.edheader) {
+	top.content.resize.right.editor.edheader.location = top.content.resize.right.editor.edheader.location +'?tab='+top.content.resize.right.editor.edheader.activeTab;
 }
 
 // Editor Module User
-if (top.content.user_resize.user_right.user_editor.user_properties) {
-	top.content.user_resize.user_right.user_editor.user_properties.location = top.content.user_resize.user_right.user_editor.user_properties.location +'?tab=" . abs($_REQUEST['tab']) . "&perm_branch='+top.content.user_resize.user_right.user_editor.user_properties.opened_group;
+if (top.content.resize.right.editor.properties) {
+	top.content.resize.right.editor.properties.location = top.content.resize.right.editor.properties.location +'?tab=" . abs($_REQUEST['tab']) . "&perm_branch='+top.content.resize.right.editor.properties.opened_group;
 }
 
 // Save Module User
-if (top.content.user_resize.user_right.user_editor.user_edfooter) {
-	top.content.user_resize.user_right.user_editor.user_edfooter.location.reload();
+if (top.content.resize.right.editor.edfooter) {
+	top.content.resize.right.editor.edfooter.location.reload();
 }
 if (top.opener.top.header) {
 	top.opener.top.header.location.reload();
@@ -1687,13 +1687,13 @@ function delElement(elvalues,elem) {
 
 				switch($k){
 					case (defined('NEWSLETTER_TABLE') ? NEWSLETTER_TABLE : 'NEWSLETTER_TABLE'):
-						$button = we_button::create_button('select', "javascript:we_cmd('openNewsletterDirselector',document.forms[0]." . $obj_names . "_" . $key . ".value,'document.we_form." . $obj_names . "_" . $key . ".value','document.we_form." . $obj_names . "_" . $key . "_Text.value','opener.top.content.user_resize.user_right.user_editor.user_properties.setValues(" . $setValue . ")','" . session_id() . "','" . (isset($_REQUEST["rootDirID"]) ? $_REQUEST["rootDirID"] : "") . "' )");
+						$button = we_button::create_button('select', "javascript:we_cmd('openNewsletterDirselector',document.forms[0]." . $obj_names . "_" . $key . ".value,'document.we_form." . $obj_names . "_" . $key . ".value','document.we_form." . $obj_names . "_" . $key . "_Text.value','opener.top.content.resize.right.editor.properties.setValues(" . $setValue . ")','" . session_id() . "','" . (isset($_REQUEST["rootDirID"]) ? $_REQUEST["rootDirID"] : "") . "' )");
 						break;
 					case NAVIGATION_TABLE:
-						$button = we_button::create_button('select', "javascript:we_cmd('openNavigationDirselector',document.forms[0]." . $obj_names . "_" . $key . ".value,'document.we_form." . $obj_names . "_" . $key . ".value','document.we_form." . $obj_names . "_" . $key . "_Text.value','opener.top.content.user_resize.user_right.user_editor.user_properties.setValues(" . $setValue . ")','" . session_id() . "','" . (isset($_REQUEST["rootDirID"]) ? $_REQUEST["rootDirID"] : "") . "' )");
+						$button = we_button::create_button('select', "javascript:we_cmd('openNavigationDirselector',document.forms[0]." . $obj_names . "_" . $key . ".value,'document.we_form." . $obj_names . "_" . $key . ".value','document.we_form." . $obj_names . "_" . $key . "_Text.value','opener.top.content.resize.right.editor.properties.setValues(" . $setValue . ")','" . session_id() . "','" . (isset($_REQUEST["rootDirID"]) ? $_REQUEST["rootDirID"] : "") . "' )");
 						break;
 					default:
-						$button = we_button::create_button('select', "javascript:we_cmd('openDirselector',document.forms[0]." . $obj_names . "_" . $key . ".value,'" . $k . "','document.we_form." . $obj_names . "_" . $key . ".value','document.we_form." . $obj_names . "_" . $key . "_Text.value','opener.top.content.user_resize.user_right.user_editor.user_properties.setValues(" . $setValue . ")','" . session_id() . "','" . (isset($_REQUEST["rootDirID"]) ? $_REQUEST["rootDirID"] : "") . "' )");
+						$button = we_button::create_button('select', "javascript:we_cmd('openDirselector',document.forms[0]." . $obj_names . "_" . $key . ".value,'" . $k . "','document.we_form." . $obj_names . "_" . $key . ".value','document.we_form." . $obj_names . "_" . $key . "_Text.value','opener.top.content.resize.right.editor.properties.setValues(" . $setValue . ")','" . session_id() . "','" . (isset($_REQUEST["rootDirID"]) ? $_REQUEST["rootDirID"] : "") . "' )");
 				}
 
 				$yuiSuggest = & weSuggest::getInstance();
@@ -1879,8 +1879,8 @@ function delElement(elvalues,elem) {
 
 								eval(\"if(top.opener.top.jsWindow\" + k + \"Object){\" +
 									 \"	if(top.opener.top.jsWindow\" + k + \"Object.ref == 'edit_module'){\" +
-									 \"		myWind = top.opener.top.jsWindow\" + k + \"Object.wind.content.user_resize.user_right.user_editor.user_properties;\" +
-									 \"		myWindStr = 'top.jsWindow\" + k + \"Object.wind.content.user_resize.user_right.user_editor.user_properties';\" +
+									 \"		myWind = top.opener.top.jsWindow\" + k + \"Object.wind.content.resize.right.editor.properties;\" +
+									 \"		myWindStr = 'top.jsWindow\" + k + \"Object.wind.content.resize.right.editor.properties';\" +
 									 \"	}\" +
 									 \"}\");
 								if(myWind){
@@ -2367,23 +2367,23 @@ var activeTab = 0;
 function setTab(tab) {
 	switch(tab) {
 		case 0:
-			top.content.user_resize.user_right.user_editor.user_properties.switchPage(0);
+			top.content.resize.right.editor.properties.switchPage(0);
 			activeTab = 0;
 			break;
 		case 1:
-			if(top.content.user_resize.user_right.user_editor.user_properties.switchPage(1)==false){
+			if(top.content.resize.right.editor.properties.switchPage(1)==false){
 				setTimeout("resetTabs()",50);
 			}
 			activeTab = 1;
 			break;
 		case 2:
-			if(top.content.user_resize.user_right.user_editor.user_properties.switchPage(2)==false) {
+			if(top.content.resize.right.editor.properties.switchPage(2)==false) {
 				setTimeout("resetTabs()",50);
 			}
 			activeTab = 2;
 			break;
 		case 3:
-			if(top.content.user_resize.user_right.user_editor.user_properties.switchPage(3)==false) {
+			if(top.content.resize.right.editor.properties.switchPage(3)==false) {
 				setTimeout("resetTabs()",50);
 			}
 			activeTab = 3;
@@ -2392,8 +2392,8 @@ function setTab(tab) {
 }
 
 function resetTabs(){
-		top.content.user_resize.user_right.user_editor.user_properties.document.we_form.tab.value = 0;
-		top.content.user_resize.user_right.user_editor.user_edheader.tabCtrl.setActiveTab(0);
+		top.content.resize.right.editor.properties.document.we_form.tab.value = 0;
+		top.content.resize.right.editor.edheader.tabCtrl.setActiveTab(0);
 }
 
 top.content.hloaded=1;') .
