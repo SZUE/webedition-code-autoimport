@@ -34,7 +34,7 @@ function we_tag_sendMail($attribs, $content){
 		$reply = weTag_getAttribute("reply", $attribs);
 		$recipient = weTag_getAttribute("recipient", $attribs);
 		$recipientCC = weTag_getAttribute("recipientcc", $attribs,weTag_getAttribute("recipientCC", $attribs));
-		$recipientBCC = weTag_getAttribute("recipientbcc", $attribs,weTag_getAttribute("recipientBCC", $attribs);
+		$recipientBCC = weTag_getAttribute("recipientbcc", $attribs,weTag_getAttribute("recipientBCC", $attribs));
 
 		$mimetype = weTag_getAttribute("mimetype", $attribs);
 		$subject = weTag_getAttribute("subject", $attribs);
