@@ -163,7 +163,7 @@ abstract class we_rebuild_wizard{
 			)
 		);
 
-		if(defined("OBJECT_FILES_TABLE")){
+		if(false &&defined("OBJECT_FILES_TABLE")){
 
 			$parts[] = array(
 				"headline" => "",
