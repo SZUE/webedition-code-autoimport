@@ -34,10 +34,6 @@ class we_otherDocument extends we_binaryDocument{
 				break;
 		}
 		$this->EditPageNrs[] = WE_EDITPAGE_PREVIEW;
-		$pos = array_search(WE_EDITPAGE_WEBUSER, $this->EditPageNrs);
-		if($pos !== false){
-			unset($this->EditPageNrs[$pos]);
-		}
 		$this->ContentType = 'application/*';
 	}
 
