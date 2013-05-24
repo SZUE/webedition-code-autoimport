@@ -27,37 +27,38 @@ function we_tag_author($attribs){
 	$type = weTag_getAttribute('type', $attribs);
 	$creator = weTag_getAttribute('creator', $attribs, false, true);
 	$docAttr = weTag_getAttribute('doc', $attribs);
-	
-	$creator ? $author = "CreatorID" : $author = "ModifierID";
-	
+
+	$author = $creator ? "CreatorID" : "ModifierID";
+
 	switch($docAttr){
 		case 'listview' :
-			$authorID = "";
-			if($GLOBALS['lv']->ClassName == 'we_listview_object'){//listview type=object
-				$objID = $GLOBALS['lv']->getDBf('OF_ID');
-			}elseif($GLOBALS['lv']->ClassName == 'we_objecttag'){//we:object
-				$objID = $GLOBALS['lv']->id;
-			}elseif($GLOBALS['lv']->ClassName == 'we_search_listview'){//listview type=search
-				$getDocOrObj = getHash('SELECT DID,OID FROM '.INDEX_TABLE.' WHERE DID='.intval($GLOBALS['lv']->getDBf('WE_ID')).' OR OID='.intval($GLOBALS['lv']->getDBf('WE_ID')),$GLOBALS['DB_WE']);
-				if($getDocOrObj['OID'] > 0){//object
-					$objID = $GLOBALS['lv']->getDBf('WE_ID');
-				}else{//document
-					$docID = $GLOBALS['lv']->getDBf('WE_ID');
-				}
-			}else{//we_listview (document)
-				$author = "wedoc_".$author;
-				$authorID = $GLOBALS['lv']->f($author);
+			$authorID = '';
+			switch($GLOBALS['lv']->ClassName){
+				case 'we_listview_object'://listview type=object
+					$objID = $GLOBALS['lv']->getDBf('OF_ID');
+					break;
+				case 'we_objecttag'://we:object
+					$objID = $GLOBALS['lv']->id;
+					break;
+				case 'we_search_listview'://listview type=search
+					$oid = f('SELECT OID FROM ' . INDEX_TABLE . ' WHERE DID=' . intval($GLOBALS['lv']->getDBf('WE_ID')) . ' OR OID=' . intval($GLOBALS['lv']->getDBf('WE_ID')), 'OID', $GLOBALS['DB_WE']);
+					if($oid > 0){//object
+						$objID = $GLOBALS['lv']->getDBf('WE_ID');
+					} else{//document
+						$docID = $GLOBALS['lv']->getDBf('WE_ID');
+					}
+					break;
+				default://we_listview (document)
+					$author = 'wedoc_' . $author;
+					$authorID = $GLOBALS['lv']->f($author);
 			}
-			
+
 			if(empty($authorID)){
-				if(isset($objID) && $objID > 0){
-					$getAuthor = getHash('SELECT '.$author.' FROM '.OBJECT_FILES_TABLE.' WHERE ID='.intval($objID),$GLOBALS['DB_WE']);
-				}else{
-					$getAuthor = getHash('SELECT '.$author.' FROM '.FILE_TABLE.' WHERE ID='.intval($docID),$GLOBALS['DB_WE']);
-				}
-				$authorID = $getAuthor[$author];
+				$authorID = (isset($objID) && $objID > 0 ?
+						f('SELECT ' . $author . ' FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($objID), $author, $GLOBALS['DB_WE']) :
+						f('SELECT ' . $author . ' FROM ' . FILE_TABLE . ' WHERE ID=' . intval($docID), $author, $GLOBALS['DB_WE']));
 			}
-			
+
 			break;
 		case 'self' :
 		default :
