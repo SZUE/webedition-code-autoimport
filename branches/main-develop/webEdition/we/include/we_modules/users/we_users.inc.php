@@ -1227,11 +1227,11 @@ $this->Preferences=' . var_export($this->Preferences, true) . ';
 
 	function formGeneralData(){
 		switch($this->Type){
-			case 0:
+			case self::TYPE_USER:
 				return $this->formUserData();
-			case 1:
+			case self::TYPE_USER_GROUP:
 				return $this->formGroupData();
-			case 2:
+			case self::TYPE_ALIAS:
 				return $this->formAliasData();
 		}
 	}
@@ -1268,14 +1268,6 @@ $this->Preferences=' . var_export($this->Preferences, true) . ';
 		$_tableObj->setCol(3, 0, null, we_html_tools::getPixel(560, 10));
 		$_tableObj->setCol(4, 0, null, we_html_tools::htmlFormElementTable($weAcSelector, g_l('modules_users', '[group]')));
 
-		$parts = array(
-			array(
-				'headline' => g_l('modules_users', '[group_data]'),
-				'html' => $_tableObj->getHtml(),
-				'space' => 120
-			)
-		);
-
 		$content = '<select name="' . $this->Name . '_Users" size="8" style="width:560px" onChange="if(this.selectedIndex > -1){edit_enabled = switch_button_state(\'edit\', \'edit_enabled\', \'enabled\');}else{edit_enabled = switch_button_state(\'edit\', \'edit_enabled\', \'disabled\');}" ondblclick="top.content.we_cmd(\'display_user\',document.we_form.' . $this->Name . '_Users.value)">';
 		if($this->ID){
 			$this->DB_WE->query('SELECT ID,username,Text,Type FROM ' . USER_TABLE . ' WHERE Type IN (0,2) AND ParentID=' . intval($this->ID));
@@ -1286,10 +1278,17 @@ $this->Preferences=' . var_export($this->Preferences, true) . ';
 
 		$content.='</select><br/>' . we_html_tools::getPixel(5, 10) . '<br>' . we_button::create_button("edit", "javascript:we_cmd('display_user',document.we_form." . $this->Name . "_Users.value)", true, -1, -1, "", "", true, false);
 
-		$parts[] = array(
-			'headline' => g_l('modules_users', '[user]'),
-			'html' => $content,
-			'space' => 120
+		$parts = array(
+			array(
+				'headline' => g_l('modules_users', '[group_data]'),
+				'html' => $_tableObj->getHtml(),
+				'space' => 120
+			),
+			array(
+				'headline' => g_l('modules_users', '[user]'),
+				'html' => $content,
+				'space' => 120
+			)
 		);
 
 		return $js . we_multiIconBox::getHTML('', '100%', $parts, 30);
@@ -1305,29 +1304,29 @@ $this->Preferences=' . var_export($this->Preferences, true) . ';
 
 	function formUserData(){
 
+		$_description = '<textarea name="' . $this->Name . '_Description" cols="25" rows="5" style="width:520px" class="defaultfont" onChange="top.content.setHot();">' . $this->Description . '</textarea>';
 		$_attr = array('border' => '0', 'cellpadding' => '2', 'cellspacing' => '0');
-		$_tableObj = new we_html_table($_attr, 10, 2);
-
-		$_tableObj->setCol(0, 0, null, $this->getUserfield('Salutation', 'salutation'));
-		$_tableObj->setCol(0, 1, '');
-		$_tableObj->setCol(1, 0, null, $this->getUserfield('First', 'first_name'));
-		$_tableObj->setCol(1, 1, null, $this->getUserfield('Second', 'second_name'));
-		$_tableObj->setCol(2, 0, null, we_html_tools::getPixel(280, 20));
-		$_tableObj->setCol(2, 1, null, we_html_tools::getPixel(280, 5));
-		$_tableObj->setCol(3, 0, null, $this->getUserfield('Address', 'address'));
-		$_tableObj->setCol(3, 1, null, $this->getUserfield('HouseNo', 'houseno'));
-		$_tableObj->setCol(4, 0, null, $this->getUserfield('PLZ', 'PLZ', 'text', '16', true));
-		$_tableObj->setCol(4, 1, null, $this->getUserfield('City', 'city'));
-		$_tableObj->setCol(5, 0, null, $this->getUserfield('State', 'state'));
-		$_tableObj->setCol(5, 1, null, $this->getUserfield('Country', 'country'));
-		$_tableObj->setCol(6, 0, null, we_html_tools::getPixel(280, 20));
-		$_tableObj->setCol(6, 1, null, we_html_tools::getPixel(280, 5));
-		$_tableObj->setCol(7, 0, null, $this->getUserfield('Tel_preselection', 'tel_pre'));
-		$_tableObj->setCol(7, 1, null, $this->getUserfield('Telephone', 'telephone'));
-		$_tableObj->setCol(8, 0, null, $this->getUserfield('Fax_preselection', 'fax_pre'));
-		$_tableObj->setCol(8, 1, null, $this->getUserfield('Fax', 'fax'));
-		$_tableObj->setCol(9, 0, null, $this->getUserfield('Handy', 'mobile'));
-		$_tableObj->setCol(9, 1, null, $this->getUserfield('Email', 'email'));
+		$_tableObj = new we_html_table($_attr, 12, 2);
+		$line = 0;
+		$_tableObj->setCol($line, 0, null, $this->getUserfield('Salutation', 'salutation'));
+		$_tableObj->setCol(++$line, 0, null, $this->getUserfield('First', 'first_name'));
+		$_tableObj->setCol($line, 1, null, $this->getUserfield('Second', 'second_name'));
+		$_tableObj->setCol(++$line, 0, array('colspan' => 2), we_html_tools::getPixel(560, 20));
+		$_tableObj->setCol(++$line, 0, null, $this->getUserfield('Address', 'address'));
+		$_tableObj->setCol($line, 1, null, $this->getUserfield('HouseNo', 'houseno'));
+		$_tableObj->setCol(++$line, 0, null, $this->getUserfield('PLZ', 'PLZ', 'text', '16', true));
+		$_tableObj->setCol($line, 1, null, $this->getUserfield('City', 'city'));
+		$_tableObj->setCol(++$line, 0, null, $this->getUserfield('State', 'state'));
+		$_tableObj->setCol($line, 1, null, $this->getUserfield('Country', 'country'));
+		$_tableObj->setCol(++$line, 0, array('colspan' => 2), we_html_tools::getPixel(560, 20));
+		$_tableObj->setCol(++$line, 0, null, $this->getUserfield('Tel_preselection', 'tel_pre'));
+		$_tableObj->setCol($line, 1, null, $this->getUserfield('Telephone', 'telephone'));
+		$_tableObj->setCol(++$line, 0, null, $this->getUserfield('Fax_preselection', 'fax_pre'));
+		$_tableObj->setCol($line, 1, null, $this->getUserfield('Fax', 'fax'));
+		$_tableObj->setCol(++$line, 0, null, $this->getUserfield('Handy', 'mobile'));
+		$_tableObj->setCol($line, 1, null, $this->getUserfield('Email', 'email'));
+		$_tableObj->setCol(++$line, 0, array('colspan' => 2), we_html_tools::getPixel(520, 4));
+		$_tableObj->setCol(++$line, 0, array('colspan' => 2), we_html_tools::htmlFormElementTable($_description, g_l('modules_users', '[description]')));
 
 
 		$parts = array(
@@ -1342,7 +1341,7 @@ $this->Preferences=' . var_export($this->Preferences, true) . ';
 
 		$_username = /* ($this->ID) ?
 			  we_html_tools::htmlFormElementTable('<b class="defaultfont">' . $this->username . '</b>', g_l('modules_users', "[username]")) : */
-			$this->getUserfield('username', 'username', 'text', '255', false, 'id="yuiAcInputPathName" onblur="parent.frames[0].setPathName(this.value); parent.frames[0].setTitlePath();"');
+			$this->getUserfield('username', 'username', 'text', 255, false, 'id="yuiAcInputPathName" onblur="parent.frames[0].setPathName(this.value); parent.frames[0].setTitlePath();"');
 
 		$_password = (isset($_SESSION['user']['ID']) && $_SESSION['user']['ID'] && $_SESSION['user']['ID'] == $this->ID && !we_hasPerm('EDIT_PASSWD') ?
 				'****************' :
@@ -1417,15 +1416,11 @@ $this->Preferences=' . var_export($this->Preferences, true) . ';
 	 * @return     string
 	 */
 	function formPermissions($branch){
-		global $perm_defaults;
-
 		// Set output text
 		// Create a object of the class dynamicControls
 		$dynamic_controls = new we_dynamicControls();
 		// Now we create the overview of the user rights
 		$content = $dynamic_controls->fold_checkbox_groups($this->permissions_slots, $this->permissions_main_titles, $this->permissions_titles, $this->Name, $branch, array('administrator'), true, true, 'we_form', 'perm_branch', true, true);
-
-
 
 		$javascript = '
 function rebuildCheckboxClicked() {
@@ -1438,28 +1433,27 @@ function toggleRebuildPerm(disabledOnly) {';
 			foreach($this->permissions_slots['rebuildpermissions'] as $pname => $pvalue){
 				if($pname != 'REBUILD'){
 					$javascript .= '
-					if (document.we_form.' . $this->Name . '_Permission_REBUILD && document.we_form.' . $this->Name . '_Permission_' . $pname . ') {
-						if(document.we_form.' . $this->Name . '_Permission_REBUILD.checked) {
-							document.we_form.' . $this->Name . '_Permission_' . $pname . '.disabled = false;
-							if (!disabledOnly) {
-								document.we_form.' . $this->Name . '_Permission_' . $pname . '.checked = true;
-							}
-						} else {
-							document.we_form.' . $this->Name . '_Permission_' . $pname . '.disabled = true;
-							if (!disabledOnly) {
-								document.we_form.' . $this->Name . '_Permission_' . $pname . '.checked = false;
-							}
-						}
-					}
-					';
+	if (document.we_form.' . $this->Name . '_Permission_REBUILD && document.we_form.' . $this->Name . '_Permission_' . $pname . ') {
+		if(document.we_form.' . $this->Name . '_Permission_REBUILD.checked) {
+			document.we_form.' . $this->Name . '_Permission_' . $pname . '.disabled = false;
+			if (!disabledOnly) {
+				document.we_form.' . $this->Name . '_Permission_' . $pname . '.checked = true;
+			}
+		} else {
+			document.we_form.' . $this->Name . '_Permission_' . $pname . '.disabled = true;
+			if (!disabledOnly) {
+				document.we_form.' . $this->Name . '_Permission_' . $pname . '.checked = false;
+			}
+		}
+	}';
 				} else{
-					$handler = "
-					if (document.we_form." . $this->Name . "_Permission_" . $pname . ") {
-						document.we_form." . $this->Name . "_Permission_" . $pname . ".onclick = rebuildCheckboxClicked;
-					} else {
-						document.we_form." . $this->Name . "_Permission_" . $pname . ".onclick = top.content.setHot();
-					}
-					toggleRebuildPerm(true);";
+					$handler = '
+	if (document.we_form.' . $this->Name . '_Permission_' . $pname . ') {
+		document.we_form.' . $this->Name . '_Permission_' . $pname . ".onclick = rebuildCheckboxClicked;
+	} else {
+		document.we_form." . $this->Name . "_Permission_" . $pname . ".onclick = top.content.setHot();
+	}
+	toggleRebuildPerm(true);";
 				}
 			}
 		}
@@ -1872,56 +1866,56 @@ function delElement(elvalues,elem) {
 		$_document_path = '';
 		// Generate needed JS
 		$js = we_html_element::jsElement("
-						function select_seem_start() {
-							myWind = false;
+function select_seem_start() {
+	myWind = false;
 
-							for(k=top.opener.top.jsWindow_count;k>-1;k--){
+	for(k=top.opener.top.jsWindow_count;k>-1;k--){
 
-								eval(\"if(top.opener.top.jsWindow\" + k + \"Object){\" +
-									 \"	if(top.opener.top.jsWindow\" + k + \"Object.ref == 'edit_module'){\" +
-									 \"		myWind = top.opener.top.jsWindow\" + k + \"Object.wind.content.resize.right.editor.properties;\" +
-									 \"		myWindStr = 'top.jsWindow\" + k + \"Object.wind.content.resize.right.editor.properties';\" +
-									 \"	}\" +
-									 \"}\");
-								if(myWind){
-									break;
-								}
-							}
+		eval(\"if(top.opener.top.jsWindow\" + k + \"Object){\" +
+			 \"	if(top.opener.top.jsWindow\" + k + \"Object.ref == 'edit_module'){\" +
+			 \"		myWind = top.opener.top.jsWindow\" + k + \"Object.wind.content.resize.right.editor.properties;\" +
+			 \"		myWindStr = 'top.jsWindow\" + k + \"Object.wind.content.resize.right.editor.properties';\" +
+			 \"	}\" +
+			 \"}\");
+		if(myWind){
+			break;
+		}
+	}
 
-							if(document.getElementById('seem_start_type').value == 'object') {
-								top.opener.top.we_cmd('openDocselector', document.forms[0].elements['seem_start_object'].value, '" . (defined("OBJECT_FILES_TABLE") ? OBJECT_FILES_TABLE : "") . "', myWindStr + '.document.forms[0].elements[\'seem_start_object\'].value', myWindStr + '.document.forms[0].elements[\'seem_start_object_name\'].value', '', '" . session_id() . "', '', 'objectFile','objectFile'," . (we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ");
-							} else {
-								top.opener.top.we_cmd('openDocselector', document.forms[0].elements['seem_start_document'].value, '" . FILE_TABLE . "', myWindStr + '.document.forms[0].elements[\'seem_start_document\'].value', myWindStr + '.document.forms[0].elements[\'seem_start_document_name\'].value', '', '" . session_id() . "', '', 'text/webedition','objectFile'," . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");
-							}
-						}
+	if(document.getElementById('seem_start_type').value == 'object') {
+		top.opener.top.we_cmd('openDocselector', document.forms[0].elements['seem_start_object'].value, '" . (defined("OBJECT_FILES_TABLE") ? OBJECT_FILES_TABLE : "") . "', myWindStr + '.document.forms[0].elements[\'seem_start_object\'].value', myWindStr + '.document.forms[0].elements[\'seem_start_object_name\'].value', '', '" . session_id() . "', '', 'objectFile','objectFile'," . (we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ");
+	} else {
+		top.opener.top.we_cmd('openDocselector', document.forms[0].elements['seem_start_document'].value, '" . FILE_TABLE . "', myWindStr + '.document.forms[0].elements[\'seem_start_document\'].value', myWindStr + '.document.forms[0].elements[\'seem_start_document_name\'].value', '', '" . session_id() . "', '', 'text/webedition','objectFile'," . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");
+	}
+}
 
-						function show_seem_chooser(val) {
-							if(val == 'document') {
-								if(document.getElementById('seem_start_object')) {
-									document.getElementById('seem_start_object').style.display = 'none';
-								}
-								document.getElementById('seem_start_document').style.display = 'block';
-								document.getElementById('seem_start_weapp').style.display = 'none';
-				" . (defined('OBJECT_FILES_TABLE') ? "
-							} else if(val == 'object') {
-								document.getElementById('seem_start_document').style.display = 'none';
-								document.getElementById('seem_start_weapp').style.display = 'none';
-								document.getElementById('seem_start_object').style.display = 'block';
-						" : '') . "
-							} else if(val == 'weapp'){
-								document.getElementById('seem_start_document').style.display = 'none';
-								document.getElementById('seem_start_object').style.display = 'none';
-								document.getElementById('seem_start_weapp').style.display = 'block';
+function show_seem_chooser(val) {
+	if(val == 'document') {
+		if(document.getElementById('seem_start_object')) {
+			document.getElementById('seem_start_object').style.display = 'none';
+		}
+		document.getElementById('seem_start_document').style.display = 'block';
+		document.getElementById('seem_start_weapp').style.display = 'none';
+" . (defined('OBJECT_FILES_TABLE') ? "
+	} else if(val == 'object') {
+		document.getElementById('seem_start_document').style.display = 'none';
+		document.getElementById('seem_start_weapp').style.display = 'none';
+		document.getElementById('seem_start_object').style.display = 'block';
+" : '') . "
+	} else if(val == 'weapp'){
+		document.getElementById('seem_start_document').style.display = 'none';
+		document.getElementById('seem_start_object').style.display = 'none';
+		document.getElementById('seem_start_weapp').style.display = 'block';
 
-							} else {
-								document.getElementById('seem_start_document').style.display = 'none';
-								document.getElementById('seem_start_weapp').style.display = 'none';
-								if(document.getElementById('seem_start_object')) {
-									document.getElementById('seem_start_object').style.display = 'none';
-								}
+	} else {
+		document.getElementById('seem_start_document').style.display = 'none';
+		document.getElementById('seem_start_weapp').style.display = 'none';
+		if(document.getElementById('seem_start_object')) {
+			document.getElementById('seem_start_object').style.display = 'none';
+		}
 
-							}
-						}");
+	}
+}");
 
 		// Cockpit
 		$_object_path = '';
@@ -2279,23 +2273,23 @@ function delElement(elvalues,elem) {
 		$weAcSelectorGroup = $yuiSuggest->getHTML();
 
 		$content = '
-			<table cellpadding="0" cellspacing="0" border="0" width="530">
-			<colgroup><col style="width:170px;"/><col style="width:330px;"/></colgroup>
-				<tr>
-					<td class="defaultfont">' . g_l('modules_users', "[user]") . ':</td>
-					<td>' . $weAcSelectorName . '</td>
-				</tr>
-				<tr>
-					<td colspan="2" style="height:5px;"></td>
-				</tr>
-				<tr>
-					<td class="defaultfont">' . g_l('modules_users', "[group_member]") . ':</td>
-					<td>' . $weAcSelectorGroup . '</td>
-				</tr>
-				<tr>
-					<td colspan="2" style="height:1px;"></td>
-				</tr>
-			</table>';
+<table cellpadding="0" cellspacing="0" border="0" width="530">
+<colgroup><col style="width:170px;"/><col style="width:330px;"/></colgroup>
+	<tr>
+		<td class="defaultfont">' . g_l('modules_users', "[user]") . ':</td>
+		<td>' . $weAcSelectorName . '</td>
+	</tr>
+	<tr>
+		<td colspan="2" style="height:5px;"></td>
+	</tr>
+	<tr>
+		<td class="defaultfont">' . g_l('modules_users', "[group_member]") . ':</td>
+		<td>' . $weAcSelectorGroup . '</td>
+	</tr>
+	<tr>
+		<td colspan="2" style="height:1px;"></td>
+	</tr>
+</table>';
 
 		$parts = array(
 			array(
@@ -2321,13 +2315,12 @@ function delElement(elvalues,elem) {
 
 	function formInherits($name, $value, $title){
 		$content = '
-			<table cellpadding="0" cellspacing="0" border="0" width="500">
-				<tr>
-					<td class="defaultfont">' .
+<table cellpadding="0" cellspacing="0" border="0" width="500">
+	<tr>
+		<td class="defaultfont">' .
 			we_forms::checkbox(1, ($value ? true : false), $this->Name . $name, $title, "", "defaultfont", "top.content.setHot();") . '
-
-				</tr>
-			</table>';
+	</tr>
+</table>';
 		return $content;
 	}
 
@@ -2397,7 +2390,7 @@ function resetTabs(){
 }
 
 top.content.hloaded=1;') .
-			$tab_header.
+			$tab_header .
 			'<div id="main" >' . we_html_tools::getPixel(100, 3) . '<div style="margin:0px;padding-left:10px;" id="headrow"><nobr><b>' . str_replace(" ", "&nbsp;", $headline1) . '&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">' . str_replace(" ", "&nbsp;", (empty($this->Path) ? $this->getPath($this->ParentID) : $this->Path)) . '</b></span></nobr></div>' . we_html_tools::getPixel(100, 3) . $we_tabs->getHTML() . '</div>' .
 			$tab_body;
 	}
@@ -2419,13 +2412,13 @@ top.content.hloaded=1;') .
 				$passwd = md5($clearPassword . md5($username));
 				break;
 			case 2:
-		if(version_compare(PHP_VERSION, '5.3.7') >= 0){
-				$passwd = crypt($clearPassword, $password);
-		}else{
-			echo 'unable to check passwords php version to old!';
-			t_e('unable to check passwords php version to old!');
-			exit();
-		}
+				if(version_compare(PHP_VERSION, '5.3.7') >= 0){
+					$passwd = crypt($clearPassword, $password);
+				} else{
+					echo 'unable to check passwords php version to old!';
+					t_e('unable to check passwords php version to old!');
+					exit();
+				}
 				break;
 		}
 		return ($passwd == $password);
