@@ -32,59 +32,39 @@ function we_tag_author($attribs){
 
 	$foo = getHash('SELECT Username,First,Second,Address,HouseNo,City,PLZ,State,Country,Tel_preselection,Telephone,Fax_preselection,Fax,Handy,Email,Description,Salutation FROM ' . USER_TABLE . ' WHERE ID=' . intval($creator ? $doc->CreatorID : $doc->ModifierID), $GLOBALS['DB_WE']);
 
-	$out = "";
 	switch($type){
 		case 'forename' :
-			$out = trim($foo['First']);
-			return $out;
+			return trim($foo['First']);
 		case 'surname' :
-			$out = trim($foo['Second']);
-			return $out;
+			return trim($foo['Second']);
 		case 'name' :
 			$out = trim(($foo['First'] ? ($foo['First'] . ' ') : '') . $foo['Second']);
-			if(!$out){
-				$out = $foo['Username'];
-			}
-			return $out;
+			return empty($out) ? $foo['Username'] : $out;
 		case 'initials' :
-			$out = trim(($foo['First'] ? substr($foo['First'], 0, 1) : '') . ($foo['Second'] ? substr($foo['Second'], 0, 1) : ''));
-			if(!$out){
-				$out = $foo['Username'];
-			}
-			return $out;
+			$out = trim(($foo['First'] ? $foo['First']{0} : '') . ($foo['Second'] ? $foo['Second']{0} : ''));
+			return empty($out) ? $foo['Username'] : $out;
 		case 'salutation':
-			$out = trim($foo['Salutation']);
-			return $out;
+			return trim($foo['Salutation']);
 		case 'email':
-			$out = trim($foo['Email']);
-			return $out;
+			return trim($foo['Email']);
 		case 'address':
-			$out = trim(($foo['HouseNo'] ? ($foo['Address'] . ' ' . $foo['HouseNo']) : $foo['Address']));
-			return $out;
+			return trim(($foo['HouseNo'] ? ($foo['Address'] . ' ' . $foo['HouseNo']) : $foo['Address']));
 		case 'zip':
-			$out = trim($foo['PLZ']);
-			return $out;
+			return trim($foo['PLZ']);
 		case 'city':
-			$out = trim($foo['City']);
-			return $out;
+			return trim($foo['City']);
 		case 'state':
-			$out = trim($foo['State']);
-			return $out;
+			return trim($foo['State']);
 		case 'country':
-			$out = trim($foo['Country']);
-			return $out;
+			return trim($foo['Country']);
 		case 'telephone':
-			$out = trim(($foo['Tel_preselection'] ? ($foo['Tel_preselection'] . ' ' . $foo['Telephone']) : $foo['Telephone']));
-			return $out;
+			return trim(($foo['Tel_preselection'] ? ($foo['Tel_preselection'] . ' ' . $foo['Telephone']) : $foo['Telephone']));
 		case 'fax':
-			$out = trim(($foo['Fax_preselection'] ? ($foo['Fax_preselection'] . ' ' . $foo['Fax']) : $foo['Fax']));
-			return $out;
+			return trim(($foo['Fax_preselection'] ? ($foo['Fax_preselection'] . ' ' . $foo['Fax']) : $foo['Fax']));
 		case 'mobile':
-			$out = trim($foo['Handy']);
-			return $out;
+			return trim($foo['Handy']);
 		case 'description':
-			$out = trim($foo['Description']);
-			return $out;
+			return trim($foo['Description']);
 		default :
 			return $foo['Username'];
 	}
