@@ -30,9 +30,16 @@ function we_tag_author($attribs){
 
 	$doc = we_getDocForTag($docAttr, true);
 
-	$foo = getHash('SELECT Username,First,Second FROM ' . USER_TABLE . ' WHERE ID=' . intval($creator ? $doc->CreatorID : $doc->ModifierID), $GLOBALS['DB_WE']);
+	$foo = getHash('SELECT Username,First,Second,Address,HouseNo,City,PLZ,State,Country,Tel_preselection,Telephone,Fax_preselection,Fax,Handy,Email,Description,Salutation FROM ' . USER_TABLE . ' WHERE ID=' . intval($creator ? $doc->CreatorID : $doc->ModifierID), $GLOBALS['DB_WE']);
 
+	$out = "";
 	switch($type){
+		case 'forename' :
+			$out = trim($foo['First']);
+			return $out;
+		case 'surname' :
+			$out = trim($foo['Second']);
+			return $out;
 		case 'name' :
 			$out = trim(($foo['First'] ? ($foo['First'] . ' ') : '') . $foo['Second']);
 			if(!$out){
@@ -40,12 +47,43 @@ function we_tag_author($attribs){
 			}
 			return $out;
 		case 'initials' :
-			$out = trim(
-				($foo['First'] ? substr($foo['First'], 0, 1) : '') . ($foo['Second'] ? substr(
-						$foo['Second'], 0, 1) : ''));
+			$out = trim(($foo['First'] ? substr($foo['First'], 0, 1) : '') . ($foo['Second'] ? substr($foo['Second'], 0, 1) : ''));
 			if(!$out){
 				$out = $foo['Username'];
 			}
+			return $out;
+		case 'salutation':
+			$out = trim($foo['Salutation']);
+			return $out;
+		case 'email':
+			$out = trim($foo['Email']);
+			return $out;
+		case 'address':
+			$out = trim(($foo['HouseNo'] ? ($foo['Address'] . ' ' . $foo['HouseNo']) : $foo['Address']));
+			return $out;
+		case 'zip':
+			$out = trim($foo['PLZ']);
+			return $out;
+		case 'city':
+			$out = trim($foo['City']);
+			return $out;
+		case 'state':
+			$out = trim($foo['State']);
+			return $out;
+		case 'country':
+			$out = trim($foo['Country']);
+			return $out;
+		case 'telephone':
+			$out = trim(($foo['Tel_preselection'] ? ($foo['Tel_preselection'] . ' ' . $foo['Telephone']) : $foo['Telephone']));
+			return $out;
+		case 'fax':
+			$out = trim(($foo['Fax_preselection'] ? ($foo['Fax_preselection'] . ' ' . $foo['Fax']) : $foo['Fax']));
+			return $out;
+		case 'mobile':
+			$out = trim($foo['Handy']);
+			return $out;
+		case 'description':
+			$out = trim($foo['Description']);
 			return $out;
 		default :
 			return $foo['Username'];
