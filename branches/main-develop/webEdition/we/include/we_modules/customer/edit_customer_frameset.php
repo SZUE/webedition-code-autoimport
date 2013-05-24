@@ -27,7 +27,7 @@ $what = isset($_REQUEST['pnt']) ? $_REQUEST['pnt'] : 'frameset';
 $mode = isset($_REQUEST['art']) ? $_REQUEST['art'] : 0;
 
 //We need to set this (and in corresponding frames, since the data in database is formated this way
-if(!($mode == 'export' && isset($_REQUEST['step']) && $_REQUEST['step'] == 5)){
+if(!($mode == 'export' && isset($_REQUEST['step']) && $_REQUEST['step'] == 5) && $what != 'frameset'){
 	we_html_tools::htmlTop('', DEFAULT_CHARSET);
 }
 
@@ -43,76 +43,4 @@ if($what == 'export' || $what == 'eibody' || $what == 'eifooter' || $what == 'ei
 	$weFrame->View->processCommands();
 }
 
-switch($what){
-	case 'frameset':
-		print $weFrame->getHTMLFrameset();
-		break;
-	case 'header':
-		print $weFrame->getHTMLHeader();
-		break;
-	case 'left':
-		print $weFrame->getHTMLLeft();
-		break;
-	case 'right':
-		print $weFrame->getHTMLRight();
-		break;
-	case 'editor':
-		print $weFrame->getHTMLEditor();
-		break;
-	case 'edheader':
-		print $weFrame->getHTMLEditorHeader();
-		break;
-	case 'edbody':
-		print $weFrame->getHTMLEditorBody();
-		break;
-	case 'edfooter':
-		print $weFrame->getHTMLEditorFooter();
-		break;
-	case 'cmd':
-		print $weFrame->getHTMLCmd();
-		break;
-	case 'treeheader':
-		print $weFrame->getHTMLTreeHeader();
-		break;
-	case 'treefooter':
-		print $weFrame->getHTMLTreeFooter();
-		break;
-	case 'customer_admin':
-		print $weFrame->getHTMLCustomerAdmin();
-		break;
-	case 'branch_editor':
-		print $weFrame->getHTMLFieldEditor('branch', $mode);
-		break;
-	case 'field_editor':
-		print $weFrame->getHTMLFieldEditor('field', $mode);
-		break;
-	case 'sort_admin':
-		print $weFrame->getHTMLSortEditor();
-		break;
-	case 'search':
-		print $weFrame->getHTMLSearch();
-		break;
-	case 'settings':
-		print $weFrame->getHTMLSettings();
-		break;
-
-	case 'export':
-	case 'import':
-		print $ExImport->getHTMLFrameset($what);
-		break;
-	case 'eibody':
-		print $ExImport->getHTMLStep($mode, $step);
-		break;
-	case 'eifooter':
-		print $ExImport->getHTMLFooter($mode, $step);
-		break;
-	case 'eiload':
-		print $ExImport->getHTMLLoad();
-		break;
-	case 'resize':
-		print $weFrame->getHTMLResize();
-		break;
-
-	default:
-		t_e(__FILE__ . ' unknown reference: ' . $what);
-}
+$weFrame->getHTML($what, $mode, $step);

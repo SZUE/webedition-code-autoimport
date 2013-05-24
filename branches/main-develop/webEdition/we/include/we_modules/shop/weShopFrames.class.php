@@ -33,7 +33,6 @@ class weShopFrames extends weModuleFrames{
 	function __construct($frameset){
 
 		parent::__construct(WE_SHOP_MODULE_DIR . "edit_shop_frameset.php"); //FIXME: tmp!
-		//$this->Tree = new weGlossaryTree();
 		$this->View = new weShopView(WE_SHOP_MODULE_DIR . "edit_shop_frameset.php", "top.content");
 
 		$this->module = "shop";
@@ -41,50 +40,11 @@ class weShopFrames extends weModuleFrames{
 	}
 
 	function getHTML($what){
-
-		switch($what){
-			case "frameset":
-				print $this->getHTMLFrameset();
-				break;
-			/*
-			  case "header": print $bannerFrame->getHTMLHeader();
-			  break;
-			 *
-			 */
-			case "resize":
-				print $this->getHTMLResize();
-				break;
-			/*
-			  case "left":
-			 * 	print $this->getHTMLLeft();
-			  break;
-			  case "right":
-			 * 	print $this->getHTMLRight();
-			  break;
-			  case "editor":
-			 * 	print $this->getHTMLEditor();
-			  break;
-			  case "edheader":
-			 * 	print $this->getHTMLEditorHeader($mode);
-			  break;
-			  case "edbody":
-			 * 	print $this->getHTMLEditorBody();
-			  break;
-			  case "edfooter":
-			 * 	print $this->getHTMLEditorFooter($mode);
-			  break;
-			  case "cmd":
-			 * 	print $this->getHTMLCmd();
-			  break;
-			 */
-			default:
-		}
+		parent::getHTML($what);
 	}
 
 	function getJSCmdCode(){
-
 		return $this->View->getJSTop_tmp();
-		//. we_html_element::jsElement($this->Tree->getJSMakeNewEntry());
 	}
 
 	function getJSTreeCode(){ //TODO: use we_html_element::jsElement and move to new class weShopTree
@@ -96,7 +56,7 @@ class weShopFrames extends weModuleFrames{
 			var table = "<?php print SHOP_TABLE; ?>";
 
 			function drawEintraege() {
-				fr = top.content.resize.shop_tree.window.document;//imi new adress
+				fr = top.content.resize.left.window.document;//imi new adress
 				fr.open();
 				fr.writeln("<html><head>");
 				fr.writeln("<script type=\"text/javascript\">");
@@ -420,32 +380,121 @@ class weShopFrames extends weModuleFrames{
 	}
 
 	function getHTMLFrameset(){
-		print $this->getJSCmdCode() .
-			self::getJSToggleTreeCode($this->module, $this->treeDefaultWidth) .
-			$this->getJSTreeCode();
-
-		print we_html_element::htmlBody(array('style' => 'background-color:grey;margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;', "onload" => "start();")
-				, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
-					, we_html_element::htmlExIFrame('shop_header', parent::getHTMLHeader(WE_INCLUDES_PATH . 'java_menu/modules/module_menu_' . $this->module . '.inc.php', $this->module), 'position:absolute;top:0px;height:28px;left:0px;right:0px;') .
-					we_html_element::htmlIFrame('shop_header_icons', WE_SHOP_MODULE_DIR . 'edit_shop_iconbarHeader.php', 'position:absolute;top:28px;height:38px;left:0px;right:0px;') .
-					we_html_element::htmlIFrame('resize', $this->frameset . '?pnt=resize', 'position:absolute;top:66px;bottom:1px;left:0px;right:0px;overflow: hidden;') .
-					we_html_element::htmlIFrame('cmd', WE_SHOP_MODULE_DIR . 'edit_shop_cmd.php', 'position:absolute;bottom:0px;height:1px;left:0px;right:0px;overflow: hidden;')
-		));
-
-		//'header', self::getHTMLHeader(WE_INCLUDES_PATH .'java_menu/modules/module_menu_' . $this->module . '.inc.php', $this->module
+		$extraHead = $this->getJSTreeCode();
+		return weModuleFrames::getHTMLFrameset($extraHead, true);
 	}
 
-	function getHTMLHeader(){
+	function getHTMLIconbar(){
+		print STYLESHEET;
+
+		print we_html_element::jsElement('
+
+			function doUnload() {
+				if (!!jsWindow_count) {
+					for (i = 0; i < jsWindow_count; i++) {
+						eval("jsWindow" + i + "Object.close()");
+					}
+				}
+			}
+
+			function we_cmd() {
+
+				switch (arguments[0]) {
+
+					case "openOrder":
+						if(top.content.resize.left.window.doClick) {
+							top.content.resize.left.window.doClick(arguments[1], arguments[2], arguments[3]);
+						}
+					break;
+
+					default:
+						// not needed yet
+					break;
+				}
+			}
+
+		');
+
+		$bid = isset($_REQUEST["bid"]) ? intval($_REQUEST["bid"]) : 0;
+
+		$cid = f("SELECT IntCustomerID FROM " . SHOP_TABLE . " WHERE IntOrderID = " . $bid, "IntCustomerID", $this->db);
+		$this->db->query("SELECT IntOrderID,DATE_FORMAT(DateOrder,'" . g_l('date', '[format][mysqlDate]') . "') as orddate FROM " . SHOP_TABLE . " GROUP BY IntOrderID ORDER BY IntID DESC");
+
+		if($this->db->next_record()){
+			$headline = '<a style="text-decoration: none;" href="javascript:we_cmd(\'openOrder\', ' . $this->db->f("IntOrderID") . ',\'shop\',\'' . SHOP_TABLE . '\');">' . sprintf(g_l('modules_shop', '[lastOrder]'), $this->db->f("IntOrderID"), $this->db->f("orddate")) . '</a>';
+		} else{
+			$headline = "";
+		}
+
+
+		// grep the last element from the year-set, wich is the current year
+		$this->db->query("SELECT DATE_FORMAT(DateOrder,'%Y') AS DateOrd FROM " . SHOP_TABLE . " ORDER BY DateOrd");
+		while($this->db->next_record()) {
+			$strs = array($this->db->f("DateOrd"));
+			$yearTrans = end($strs);
+		}
+		// print $yearTrans;
+		/// config
+		$this->db->query("SELECT strFelder from " . ANZEIGE_PREFS_TABLE . " WHERE strDateiname = 'shop_pref'");
+		$this->db->next_record();
+		$feldnamen = explode("|", $this->db->f("strFelder"));
+		for($i = 0; $i <= 3; $i++){
+			$feldnamen[$i] = isset($feldnamen[$i]) ? $feldnamen[$i] : '';
+		}
+		$fe = explode(",", $feldnamen[3]);
+		if(empty($classid)){
+			$classid = $fe[0];
+		}
+
+		//$resultO = count($fe);
+		$resultO = array_shift($fe);
+
+		// wether the resultset ist empty?
+		$resultD = f("SELECT count(Name) as Anzahl FROM " . LINK_TABLE . ' WHERE Name ="' . WE_SHOP_TITLE_FIELD_NAME . '"', 'Anzahl', $this->db);
 		?>
-		</head>
-		<body style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px">
-			HEADER
-		</body>
-		</html>
+
+		<body background="<?php print IMAGE_DIR ?>backgrounds/iconbarBack.gif" marginwidth="0" topmargin="5" marginheight="5" leftmargin="0">
+			<table border="0" cellpadding="6" cellspacing="0" style="margin-left:8px">
+				<tr>
+					<?php echo "<td>" . we_button::create_button("image:btn_shop_extArt", "javascript:top.opener.top.we_cmd('new_article')", true, -1, -1, "", "", !we_hasPerm("NEW_USER")); ?></td>
+
+					<td>
+						<?php echo we_button::create_button("image:btn_shop_delOrd", "javascript:top.opener.top.we_cmd('delete_shop')", true, -1, -1, "", "", !we_hasPerm("NEW_USER")); ?></td>
+					<?php
+					if(($resultD > 0) && (!empty($resultO))){ //docs and objects
+						echo "<td>" . we_button::create_button("image:btn_shop_sum", "javascript:top.content.resize.shop_properties.location=' edit_shop_editorFramesetTop.php?typ=document '", true) . "</td>";
+					} elseif(($resultD < 1) && (!empty($resultO))){ // no docs but objects
+						echo "<td>" . we_button::create_button("image:btn_shop_sum", "javascript:top.content.resize.shop_properties.location=' edit_shop_editorFramesetTop.php?typ=object&ViewClass=$classid '", true) . "</td>";
+					} elseif(($resultD > 0) && (empty($resultO))){ // docs but no objects
+						echo "<td>" . we_button::create_button("image:btn_shop_sum", "javascript:top.content.resize.shop_properties.location=' edit_shop_editorFramesetTop.php?typ=document '", true) . "</td>";
+					} else{
+						echo " ";
+					}
+					?>
+					<td>
+						<?php echo we_button::create_button("image:btn_shop_pref", "javascript:top.opener.top.we_cmd('pref_shop')", true, -1, -1, "", "", !we_hasPerm("NEW_USER")); ?></td>
+					<td>
+						<?php echo we_button::create_button("image:btn_payment_val", "javascript:top.opener.top.we_cmd('payment_val')", true, -1, -1, "", "", !we_hasPerm("NEW_USER")); ?></td>
+					<?php
+					if($headline){
+						?>
+						<td align="right" class="header_shop"><span style="margin-left:15px"><?php print @$headline; ?></span></td>
+							<?php
+						}
+						?>
+				</tr>
+			</table>
+		</body></html>
 		<?php
 	}
 
-	function getHTMLResize(){//in use
+	function getHTMLCmd(){
+		$body = we_html_element::htmlBody();
+
+		return $this->getHTMLDocument($body);
+	}
+
+	function getHTMLResize(){
 		$_treewidth = 204;
 		$incDecTree = '
 			<img id="incBaum" src="' . BUTTONS_DIR . 'icons/function_plus.gif" width="9" height="12" style="position:absolute;bottom:53px;left:5px;border:1px solid grey;padding:0 1px;cursor: pointer; ' . ($_treewidth <= 100 ? 'bgcolor:grey;' : '') . '" onClick="incTree();">
@@ -456,11 +505,15 @@ class weShopFrames extends weModuleFrames{
 		$editorPath = isset($_REQUEST['bid']) ? WE_SHOP_MODULE_DIR . 'edit_shop_editorFrameset.php?bid=' . $_REQUEST['bid'] :
 			WE_SHOP_MODULE_DIR . 'edit_shop_editorFramesetTop.php?home=1';
 
-		print we_html_element::htmlBody(array('style' => 'background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px'), we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;'), we_html_element::htmlDiv(array('id' => 'lframeDiv', 'style' => 'position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px;'), we_html_element::htmlDiv(array('style' => 'position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px; width: 24px; background-image: url(/webEdition/images/v-tabs/background.gif); background-repeat: repeat-y; border-top: 1px solid black;'), $incDecTree) .
-						we_html_element::htmlIFrame('shop_tree', HTML_DIR . 'white.html', 'position: absolute; top: 0px; bottom: 0px; left: 24px; right: 0px; verflow: hidden; border-top: 1px solid white')
-					) .
-					we_html_element::htmlIFrame('shop_properties', $editorPath, 'position: absolute; top: 0px; bottom: 0px; left: 204px; right: 0px; width:auto; border-left: 1px solid black; overflow: hidden;')
-				)
+		print we_html_element::htmlBody(array('style' => 'background-color: #bfbfbf; background-repeat: repeat; margin: 0px 0px 0px 0px'), 
+			we_html_element::htmlDiv(array('style' => 'position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px;'), 
+				we_html_element::htmlDiv(array('id' => 'lframeDiv', 'style' => 'position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px;'), 
+					we_html_element::htmlDiv(array('style' => 'position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px; width: 24px; background-image: url(/webEdition/images/v-tabs/background.gif); background-repeat: repeat-y; border-top: 1px solid black;'), $incDecTree) .
+					we_html_element::htmlIFrame('left', HTML_DIR . 'white.html', 'position: absolute; top: 0px; bottom: 0px; left: 24px; right: 0px; verflow: hidden; border-top: 1px solid white')
+				) .
+				//we_html_element::htmlIFrame('shop_properties', $this->frameset . '?pnt=right', 'position: absolute; top: 0px; bottom: 0px; left: 204px; right: 0px; width:auto; border-left: 1px solid black; overflow: hidden;')
+				we_html_element::htmlIFrame('shop_properties', $editorPath, 'position: absolute; top: 0px; bottom: 0px; left: 204px; right: 0px; width:auto; border-left: 1px solid black; overflow: hidden;')
+			)
 		);
 	}
 
@@ -480,44 +533,10 @@ class weShopFrames extends weModuleFrames{
 	}
 
 	function getHTMLRight(){
-		?>
-		</head>
-		<frameset cols="*" framespacing="0" border="0" frameborder="NO">
-			<frame src="<?php
-		print $this->frameset
-		?>?pnt=editor" scrolling="no" noresize name="editor">
-		</frameset>
-		<noframes>
-			<body bgcolor="#ffffff">
-				<p></p>
-			</body>
-		</noframes>
-		</html>
-
-		<?php
+		//print $this->View->getHTMLProperties(); 
 	}
 
-	function getHTMLEditor(){
-		?>
-		</head>
-		<frameset rows="40,*,40" framespacing="0" border="0" frameborder="no">
-			<frame src="<?php
-		print $this->frameset
-		?>?pnt=edheader&home=1" name="edheader" noresize scrolling=no>
-			<frame src="<?php
-						 print $this->frameset
-						 ?>?pnt=edbody&home=1" name="edbody" scrolling=auto>
-			<frame src="<?php
-						 print $this->frameset
-						 ?>?pnt=edfooter&home=1" name="edfooter" scrolling=no>
-
-		</frameset>
-		<noframes>
-			<body style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px">
-			</body>
-		</noframes>
-		</html>
-		<?php
+	function getHTMLEditorBody(){
+		print $this->View->getHTMLProperties(); 
 	}
-
 }

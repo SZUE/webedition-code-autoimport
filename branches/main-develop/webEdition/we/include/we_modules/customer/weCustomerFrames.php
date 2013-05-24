@@ -36,10 +36,59 @@ class weCustomerFrames extends weModuleFrames{
 		$this->treeDefaultWidth = 244;
 	}
 
+	function getHTML($what = '', $mode = 0, $step = 0){
+		switch($what){
+			case 'treeheader':
+				print $this->getHTMLTreeHeader();
+				break;
+			case 'treefooter':
+				print $this->getHTMLTreeFooter();
+				break;
+			case 'customer_admin':
+				print $this->getHTMLCustomerAdmin();
+				break;
+			case 'branch_editor':
+				print $this->getHTMLFieldEditor('branch', $mode);
+				break;
+			case 'field_editor':
+				print $this->getHTMLFieldEditor('field', $mode);
+				break;
+			case 'sort_admin':
+				print $this->getHTMLSortEditor();
+				break;
+			case 'search':
+				print $this->getHTMLSearch();
+				break;
+			case 'settings':
+				print $this->getHTMLSettings();
+				break;
+			case 'export':
+			case 'import':
+				print $this->getHTMLFrameset($what);
+				break;
+			case 'eibody':
+				print $this->getHTMLStep($mode, $step);
+				break;
+			case 'eifooter':
+				print $this->getHTMLFooter($mode, $step);
+				break;
+			case 'eiload':
+				print $this->getHTMLLoad();
+				break;
+			case 'resize':
+				print $this->getHTMLResize();
+				break;
+			default:
+				parent::getHTML($what);
+		}
+	}
+
 	function getHTMLFrameset(){
 		$this->View->customer->clearSessionVars();
 		$this->View->settings->load(false);
-		return parent::getHTMLFrameset();
+
+		$extraHead = $this->Tree->getJSTreeCode() . we_html_element::jsElement($this->getJSStart());
+		return parent::getHTMLFrameset($extraHead);
 	}
 
 	/* use parent

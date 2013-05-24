@@ -25,12 +25,12 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
-we_html_tools::htmlTop();
+//we_html_tools::htmlTop();
 print STYLESHEET;
 
 $what = (isset($_REQUEST["pnt"])) ? $_REQUEST["pnt"] : "frameset";
 
 $weFrame = new weShopFrames(WE_SHOP_MODULE_DIR . 'edit_shop_frameset.php');
-//$weFrame->View->processVariables();
+//$weFrame->View->processVariables();//moved to getHTMLEditorBody
 //$weFrame->View->processCommands();
 $weFrame->getHTML($what);

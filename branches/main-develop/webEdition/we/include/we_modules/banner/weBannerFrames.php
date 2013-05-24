@@ -31,9 +31,23 @@ class weBannerFrames extends weModuleBannerFrames{
 		$this->View = new weBannerView();
 	}
 
-	/* use parent
-	function getHTMLFrameset(){}
-	*/
+	function getHTML($what = '', $mode = ''){
+		switch($what){
+			case "edheader": 
+				print $this->getHTMLEditorHeader($mode);
+				break;
+			case "edfooter": 
+				print $this->getHTMLEditorFooter($mode);
+				break;
+			default:
+				parent::getHTML($what);
+		}
+	}
+
+	function getHTMLFrameset(){
+		$extraHead = $this->getJSTreeCode();
+		return weModuleFrames::getHTMLFrameset($extraHead);
+	}
 
 	function getJSTreeCode(){
 		$startloc = 0;
@@ -83,11 +97,9 @@ class weBannerFrames extends weModuleBannerFrames{
 		if(isset($_GET["txt"]))
 			$text = $_GET["txt"];
 
-
 		$we_tabs = new we_tabs();
 
 		if($isFolder == 0){
-
 			$we_tabs->addTab(new we_tab("#", g_l('tabs', "[module][properties]"), ($page == 0 ? "TAB_ACTIVE" : "TAB_NORMAL"), "setTab(0);"));
 			$we_tabs->addTab(new we_tab("#", g_l('tabs', "[module][placement]"), ($page == 1 ? "TAB_ACTIVE" : "TAB_NORMAL"), "setTab(1);"));
 			$we_tabs->addTab(new we_tab("#", g_l('tabs', "[module][statistics]"), ($page == 2 ? "TAB_ACTIVE" : "TAB_NORMAL"), "setTab(2);"));
@@ -101,36 +113,42 @@ class weBannerFrames extends weModuleBannerFrames{
 
 		$tab_body = $we_tabs->getJS();
 
-		$out =
+		$extraHead =
 			$tab_head .
 			we_html_element::jsElement('
-	function setTab(tab){
-		switch(tab){
-			case ' . weBanner::PAGE_PROPERTY . ':
-			case ' . weBanner::PAGE_PLACEMENT . ':
-			case ' . weBanner::PAGE_STATISTICS . ':
-				top.content.resize.right.editor.edbody.we_cmd("switchPage",tab);
-				break;
-		}
+function setTab(tab){
+	switch(tab){
+		case ' . weBanner::PAGE_PROPERTY . ':
+		case ' . weBanner::PAGE_PLACEMENT . ':
+		case ' . weBanner::PAGE_STATISTICS . ':
+			top.content.resize.right.editor.edbody.we_cmd("switchPage",tab);
+			break;
 	}
-   top.content.hloaded=1;') . '
-	<body bgcolor="white" background="' . IMAGE_DIR . 'backgrounds/header_with_black_line.gif" marginwidth="0" marginheight="0" leftmargin="0" topmargin="0" onload="setFrameSize()" onresize="setFrameSize()">
-		<div id="main" >' . we_html_tools::getPixel(100, 3) . '<div style="margin:0px;padding-left:10px;" id="headrow"><nobr><b>' . str_replace(" ", "&nbsp;", $headline1) . ':&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">' . str_replace(" ", "&nbsp;", $text) . '</b></span></nobr></div>' . we_html_tools::getPixel(100, 3) .
-			$we_tabs->getHTML() .
-			'		</div>
-	</body>';
+}
+top.content.hloaded=1;');
 
-		return $out;
+	$body = '
+		<body bgcolor="white" background="' . IMAGE_DIR . 'backgrounds/header_with_black_line.gif" marginwidth="0" marginheight="0" leftmargin="0" topmargin="0" onload="setFrameSize()" onresize="setFrameSize()">
+			<div id="main" >' . we_html_tools::getPixel(100, 3) . '<div style="margin:0px;padding-left:10px;" id="headrow"><nobr><b>' . str_replace(" ", "&nbsp;", $headline1) . ':&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">' . str_replace(" ", "&nbsp;", $text) . '</b></span></nobr></div>' . we_html_tools::getPixel(100, 3) .
+				$we_tabs->getHTML() .
+				'		</div>
+		</body>';
+
+		return $this->getHTMLDocument($body, $extraHead);
 	}
 
 	function getHTMLEditorBody(){
 		return $this->View->getProperties();
 	}
 
-	function getHTMLEditorFooter($mode = 0){
+	function getHTMLEditorFooter($mode = 0){//TODO: make $extraHeader, $body and use $this->getHTMLDocument($body, $extraHead);
 		if(isset($_REQUEST["home"])){
 			return '<body bgcolor="#F0EFF0"></body></html>';
 		}
+
+		we_html_tools::htmlTop();
+		print STYLESHEET;
+
 		$this->View->getJSFooterCode();
 		?>
 		<script type="text/javascript"><!--
@@ -206,7 +224,8 @@ class weBannerFrames extends weModuleBannerFrames{
 		<?php
 	}
 
-	function getHTMLCmd(){
+	function getHTMLCmd(){//TODO: make $extraHeader, $body and use $this->getHTMLDocument($body, $extraHead);
+		print we_html_tools::htmlTop();
 		$this->View->getJSCmd();
 		?>
 		</head>
@@ -221,7 +240,8 @@ class weBannerFrames extends weModuleBannerFrames{
 		<?php
 	}
 
-	function getHTMLDCheck(){
+	function getHTMLDCheck(){//TODO: make $extraHeader, $body and use $this->getHTMLDocument($body, $extraHead);
+		print we_html_tools::htmlTop();
 		print we_html_element::jsElement('self.focus();') . '
 		</head>
 		<body>' .

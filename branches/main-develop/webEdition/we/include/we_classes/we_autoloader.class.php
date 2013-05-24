@@ -256,6 +256,8 @@ abstract class we_autoloader{
 			'weGlossaryTreeLoader' => 'glossary/weGlossaryTreeLoader.php',
 			'weGlossaryView' => 'glossary/weGlossaryView.php',
 			'we_format' => 'messaging/messaging_format.inc.php',
+			'weMessagingFrames' => 'messaging/weMessagingFrames.php',
+			'weMessagingView' => 'messaging/weMessagingView.php',
 			'we_message' => 'messaging/we_message.inc.php',
 			'we_messaging' => 'messaging/we_messaging.inc.php',
 			'we_msg_email' => 'messaging/we_msg_email.inc.php',
@@ -305,6 +307,7 @@ abstract class we_autoloader{
 			'weVotingTreeLoader' => 'voting/weVotingTreeLoader.php',
 			'weVotingView' => 'voting/weVotingView.php',
 			'we_votingDirSelector' => 'voting/we_votingDirSelector.php',
+			'weWorkflowFrames' => 'workflow/weWorkflowFrames.class.php',
 			'weModuleInfo' => 'weModuleInfo.class.php',
 		),
 		'we_hook/class' => array(

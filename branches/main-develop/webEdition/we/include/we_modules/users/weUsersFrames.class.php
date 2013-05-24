@@ -37,46 +37,10 @@ class weUsersFrames extends weModuleFrames {
 		$this->module = "users";
 		$this->treeDefaultWidth = 204;
 	}
-	
-	function getHTML($what){//TODO: move to parent
 
-		switch($what){
-			case "frameset": 
-				print $this->getHTMLFrameset();
-				break;
-			case "header":
-				print $this->getHTMLHeader();
-				break;
-			case "resize":
-				print $this->getHTMLResize();
-				break;
-			case "left": 
-				print $this->getHTMLLeft();
-				break;
-			case "right": 
-				print $this->getHTMLRight();
-				break;
-			case "editor": 
-				print $this->getHTMLEditor();
-				break;
-			case "edheader": 
-				print $this->getHTMLEditorHeader();
-				break;
-			case "edbody": 
-				print $this->getHTMLProperties();
-				break;
-			case "edfooter": 
-				print $this->getHTMLEditorFooter();
-				break;
-			case "search": 
-				print $this->getHTMLSearch();
-				break;
-			case "cmd": 
-				print $this->getHTMLCmd();
-				break;
-			default:
-		}
-	}
+	/* use parent
+	function getHTML($what){}
+	*/
 
 	function getJSCmdCode(){
 
@@ -382,16 +346,17 @@ function urlEntry(icon,name,vorfahr,text,contentType,table,published,denied) {
 	}
 
 	function getHTMLFrameset(){//TODO: use parent as soon as userTree.class exists
-		print $this->getJSCmdCode() . 
-			self::getJSToggleTreeCode($this->module, $this->treeDefaultWidth) . 
+		$extraHead = $this->getJSCmdCode() . 
 			$this->getJSTreeCode();
 
-		print we_html_element::htmlBody(array('style' => 'background-color:grey;margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;', "onload" => "start();")
-		, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
-			, we_html_element::htmlExIFrame('header', self::getHTMLHeader(WE_INCLUDES_PATH .'java_menu/modules/module_menu_users.inc.php', 'users'), 'position:absolute;top:0px;height:32px;left:0px;right:0px;') .
-			we_html_element::htmlIFrame('resize', $this->frameset . '?pnt=resize', 'position:absolute;top:32px;bottom:1px;left:0px;right:0px;overflow: hidden;') .
-			we_html_element::htmlIFrame('cmd', $this->frameset . '?pnt=cmd', 'position:absolute;bottom:0px;height:1px;left:0px;right:0px;overflow: hidden;')
-			));
+		$body = we_html_element::htmlBody(array('style' => 'background-color:grey;margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;', "onload" => "start();")
+			, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
+				, we_html_element::htmlExIFrame('header', self::getHTMLHeader(WE_INCLUDES_PATH .'java_menu/modules/module_menu_users.inc.php', 'users'), 'position:absolute;top:0px;height:32px;left:0px;right:0px;') .
+				we_html_element::htmlIFrame('resize', $this->frameset . '?pnt=resize', 'position:absolute;top:32px;bottom:1px;left:0px;right:0px;overflow: hidden;') .
+				we_html_element::htmlIFrame('cmd', $this->frameset . '?pnt=cmd', 'position:absolute;bottom:0px;height:1px;left:0px;right:0px;overflow: hidden;')
+				)
+		);
+		return parent::getHTMLFrameset($extraHead);
 	}
 
 	/* use parent
@@ -508,7 +473,7 @@ function urlEntry(icon,name,vorfahr,text,contentType,table,published,denied) {
 		}
 	}
 
-	function getHTMLProperties(){
+	function getHTMLEditorBody(){
 		$yuiSuggest = & weSuggest::getInstance();
 		$user_object = new we_user();
 		if(isset($_SESSION["user_session_data"])){

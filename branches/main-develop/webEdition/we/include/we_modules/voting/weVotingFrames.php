@@ -39,36 +39,6 @@ class weVotingFrames extends weModuleFrames{
 
 	function getHTML($what){
 		switch($what){
-			case "frameset":
-				print $this->getHTMLFrameset();
-				break;
-			case "header":
-				print $this->getHTMLHeader();
-				break;
-			case "resize":
-				print $this->getHTMLResize();
-				break;
-			case "left":
-				print $this->getHTMLLeft();
-				break;
-			case "right":
-				print $this->getHTMLRight();
-				break;
-			case "editor":
-				print $this->getHTMLEditor();
-				break;
-			case "edheader":
-				print $this->getHTMLEditorHeader();
-				break;
-			case "edbody":
-				print $this->getHTMLEditorBody();
-				break;
-			case "edfooter":
-				print $this->getHTMLEditorFooter();
-				break;
-			case "cmd":
-				print $this->getHTMLCmd();
-				break;
 			case "treeheader":
 				print $this->getHTMLTreeHeader();
 				break;
@@ -96,13 +66,15 @@ class weVotingFrames extends weModuleFrames{
 				print $this->getHTMLDeleteLog();
 				break;
 			default:
-				t_e(__FILE__ . " unknown reference: $what");
+				parent::getHTML($what);
 		}
 	}
 
 	function getHTMLFrameset(){
 		$this->View->voting->clearSessionVars();
-		return weModuleFrames::getHTMLFrameset();
+		$extraHead = $this->Tree->getJSTreeCode() . we_html_element::jsElement($this->getJSStart());
+		
+		return weModuleFrames::getHTMLFrameset($extraHead);
 	}
 
 	function getJSCmdCode(){

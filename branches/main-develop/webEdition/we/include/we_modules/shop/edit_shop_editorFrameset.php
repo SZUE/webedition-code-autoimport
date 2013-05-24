@@ -55,13 +55,11 @@ we_html_tools::htmlTop();
 
 		$year = $yearView;
 
-
 		print "<frame src=\"edit_shop_revenueTop.php?ViewYear=$year\" name=\"edbody\" scrolling=auto>";
-		?>
-
-	<?php } else{ ?>
-		<frame src="edit_shop_properties.php?bid=<?php print $bid; ?>" name="edbody" scrolling=auto>
-	<?php } ?>
+	} else{
+		print '<frame src="edit_shop_properties.php?bid=' . $bid . '" name="edbody" scrolling=auto>';
+		//print '<frame src="edit_shop_frameset.php?pnt=edbody&bid=' . $bid . '" name="edbody" scrolling=auto>';
+	} ?>
 </frameset>
 <body style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px">
 </body>

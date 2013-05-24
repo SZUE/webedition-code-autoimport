@@ -22,6 +22,8 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+
+//TODO: eliminate this class and let inherit weBannerFrames directly from weModuleFrames
 class weModuleBannerFrames extends weModuleFrames {
 
 	var $db;
@@ -215,15 +217,8 @@ class weModuleBannerFrames extends weModuleFrames {
 	}
 
 	function getHTMLFrameset(){
-		$this->getJSTreeCode();
-		$this->getJSCmdCode();
-
-		print we_html_element::htmlBody(array('style' => 'background-color:grey;margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;', "onload" => "start();")
-				, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
-					, we_html_element::htmlExIFrame('header', parent::getHTMLHeader(WE_INCLUDES_PATH .'java_menu/modules/module_menu_' . $this->module . '.inc.php', $this->module), 'position:absolute;top:0px;height:32px;left:0px;right:0px;') .
-					we_html_element::htmlIFrame('resize', $this->frameset . '?pnt=resize', 'position:absolute;top:32px;bottom:1px;left:0px;right:0px;overflow: hidden;') .
-					we_html_element::htmlIFrame('cmd', $this->frameset . '?pnt=cmd', 'position:absolute;bottom:0px;height:1px;left:0px;right:0px;overflow: hidden;')
-				));
+		$extraHead = $this->getJSTreeCode() . $this->getJSCmdCode();
+		return parent::getHTMLFrameset($extraHead);
 	}
 
 	function getHTMLHeader(){

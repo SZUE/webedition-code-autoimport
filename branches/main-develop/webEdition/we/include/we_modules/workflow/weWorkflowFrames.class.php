@@ -22,61 +22,92 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_workflow_moduleFrames extends weModuleFrames {
+class weWorkflowFrames extends weModuleFrames{
 
-	var $db;
-	var $View;
-
+	
+			
 	function __construct(){
-		$this->db = new DB_WE();
+		parent::__construct(WE_WORKFLOW_MODULE_DIR . "edit_workflow_frameset.php");
 		$this->module="workflow";
+		$this->View = new we_workflow_view();
+	}
+
+	function getHTML($what = '', $mode = 0, $type = 0){
+		switch($what){
+			case "edheader":
+				print $this->getHTMLEditorHeader($mode);
+				break;
+			case "edfooter":
+				print $this->getHTMLEditorFooter($mode);
+				break;
+
+			case "qlog":
+				print $this->getHTMLLogQuestion();
+				break;
+
+			case "log":
+				print $this->getHTMLLog($mode, $type);
+				break;
+			default:
+				parent::getHTML($what);
+		}
+	}
+
+	function getHTMLFrameset(){
+		$extraHead = $this->getJSTreeCode() . $this->getJSCmdCode();
+		return weModuleFrames::getHTMLFrameset($extraHead);
 	}
 
 	function getJSTreeCode(){
-		echo we_html_element::jsScript(JS_DIR . 'images.js') .
+		$db_tmp = new DB_WE();
+		$db_tmp1 = new DB_WE();
+		
+		//start ex we_workflow_moduleFrames::getJSTreeCode()
+		print we_html_element::jsScript(JS_DIR . 'images.js') .
 		we_html_element::jsScript(JS_DIR . 'windows.js') .
 		we_html_element::jsScript(JS_DIR . 'md5.js');
+
+		// TODO: move shared code for (some of the) modules-tree (not based on weTree!!) to new weModulesTree.class
 		?>
-		<script  type="text/javascript">
+		<script type="text/javascript">
 
 			var loaded=0;
 			var hot=0;
 			var hloaded=0;
 
 			function setHot(){
-		    hot=1;
+				hot=1;
 			}
 
 			function usetHot(){
-		    hot=0;
+				hot=0;
 			}
 
 			var menuDaten = new container();var count = 0;var folder=0;
 			var table="<?php print USER_TABLE; ?>";
 
 			function drawEintraege(){
-		    fr = top.content.resize.left.tree.document;
-		    fr.open();
-		    fr.writeln("<html><head>");
-		    fr.writeln("<script type=\"text/javascript\">");
-		    fr.writeln("clickCount=0;");
-		    fr.writeln("wasdblclick=0;");
-		    fr.writeln("tout=null");
-		    fr.writeln("function doClick(id,ct,table){");
-		    fr.writeln("if(ct=='folder') top.content.we_cmd('edit_workflow',id,ct,table); else if(ct=='file') top.content.we_cmd('show_document',id,ct,table);");
-		    fr.writeln("}");
-		    fr.writeln("top.content.loaded=1;");
-		    fr.writeln("</"+"script>");
-		    fr.writeln('<?php print STYLESHEET_SCRIPT; ?>');
-		    fr.write("</head>\n");
-		    fr.write("<body bgcolor=\"#F3F7FF\" link=\"#000000\" alink=\"#000000\" vlink=\"#000000\" leftmargin=5 topmargin=5 marginheight=5 marginwidth=5>\n");
-		    fr.write("<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\"><tr><td class=\"tree\">\n<nobr>\n");
-		    zeichne(top.content.startloc,"");
-		    fr.write("</nobr>\n</td></tr></table>\n");
-		    fr.write("</body>\n</html>");
-		    fr.close();
+				fr = top.content.resize.left.tree.document;
+				fr.open();
+				fr.writeln("<html><head>");
+				fr.writeln("<script type=\"text/javascript\">");
+				fr.writeln("clickCount=0;");
+				fr.writeln("wasdblclick=0;");
+				fr.writeln("tout=null");
+				fr.writeln("function doClick(id,ct,table){");
+				fr.writeln("if(ct=='folder') top.content.we_cmd('edit_workflow',id,ct,table); else if(ct=='file') top.content.we_cmd('show_document',id,ct,table);");
+				fr.writeln("}");
+				fr.writeln("top.content.loaded=1;");
+				fr.writeln("</"+"script>");
+				fr.writeln('<?php print STYLESHEET_SCRIPT; ?>');
+				fr.write("</head>\n");
+				fr.write("<body bgcolor=\"#F3F7FF\" link=\"#000000\" alink=\"#000000\" vlink=\"#000000\" leftmargin=5 topmargin=5 marginheight=5 marginwidth=5>\n");
+				fr.write("<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\"><tr><td class=\"tree\">\n<nobr>\n");
+				zeichne(top.content.startloc,"");
+				fr.write("</nobr>\n</td></tr></table>\n");
+				fr.write("</body>\n</html>");
+				fr.close();
 			}
-
 
 			function zeichne(startEntry,zweigEintrag){
 				var nf = search(startEntry);
@@ -208,64 +239,39 @@ class we_workflow_moduleFrames extends weModuleFrames {
 			self.focus();
 		</script>
 		<?php
+		//end ex we_workflow_moduleFrames::getJSTreeCode()
+
+		$out.='
+		 <script  type="text/javascript">
+		function loadData(){
+			menuDaten.clear();';
+
+		$startloc = 0;
+
+		$out.="startloc=" . $startloc . ";\n";
+		$this->db->query("SELECT * FROM " . WORKFLOW_TABLE . " ORDER BY Text ASC");
+		while($this->db->next_record()) {
+			$this->View->workflowDef = new we_workflow_workflow();
+			$this->View->workflowDef->load($this->db->f("ID"));
+			$out.="  menuDaten.add(new dirEntry('folder','" . $this->View->workflowDef->ID . "','0','" . oldHtmlspecialchars(addslashes($this->View->workflowDef->Text)) . "',false,'folder','workflowDef','" . $this->View->workflowDef->Status . "'));\n";
+
+			foreach($this->View->workflowDef->documents as $k => $v){
+				$out.="  menuDaten.add(new urlEntry('" . $v["Icon"] . "','" . $v["ID"] . "','" . $this->View->workflowDef->ID . "','" . oldHtmlspecialchars(addslashes($v["Text"])) . "','file','" . FILE_TABLE . "',1));\n";
+			}
+		}
+
+		$out.='}
+			</script>';
+		print $out;
 	}
 
-	function getHTMLFrameset(){
-		$this->getJSTreeCode();
-		?>
-		</head>
-		<frameset rows="32,*,0" framespacing="0" border="0" frameborder="NO" onLoad="start();">
-			<frame src="<?php print WE_WORKFLOW_MODULE_DIR; ?>edit_workflow_frameset.php?pnt=header" name="header" scrolling=no noresize>
-			<frame src="<?php print WE_WORKFLOW_MODULE_DIR; ?>edit_workflow_frameset.php?pnt=resize" name="resize" scrolling=no>
-			<frame src="<?php print WE_WORKFLOW_MODULE_DIR; ?>edit_workflow_frameset.php?pnt=cmd" name="cmd" scrolling=no noresize>
-		</frameset>
-
-		<body background="<?php print IMAGE_DIR ?>backgrounds/aquaBackground.gif" style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px">
-		</body>
-		</html>
-		<?php
+	function getJSCmdCode(){
+		print $this->View->getJSTopCode();
 	}
 
-	function getHTMLHeader(){
-		?>
-		</head>
-		<body style="background-color:#efefef;background-image: url(<?php print IMAGE_DIR ?>java_menu/background.gif); background-repeat:repeat;margin:0px;">
-			HEADER
-		</body>
-		</html>
-		<?php
-	}
-
-	/*
-	function getHTMLResize(){
-		?>
-		</head>
-		<?php if((we_base_browserDetect::isGecko()) || we_base_browserDetect::isOpera()){ ?>
-			<frameset cols="170,*" border="1" id="resizeframeid">
-				<frame src="<?php print WE_WORKFLOW_MODULE_DIR; ?>edit_workflow_frameset.php?pnt=left" scrolling="no" name="left">
-				<frame src="<?php print WE_WORKFLOW_MODULE_DIR; ?>edit_workflow_frameset.php?pnt=right" name="right" >
-			</frameset>
-		<?php } else if(we_base_browserDetect::isOpera()){ ?>
-			<frameset cols="170,*" framespacing="0" border="0" frameborder="0" id="resizeframeid">
-				<frame src="<?php print WE_WORKFLOW_MODULE_DIR; ?>edit_workflow_frameset.php?pnt=left" scrolling="no" name="left">
-				<frame src="<?php print WE_WORKFLOW_MODULE_DIR; ?>edit_workflow_frameset.php?pnt=right" name="right" >
-			</frameset>
-		<?php } else{ //IE  ?>
-			<frameset cols="170,*" framespacing="0" border="0" frameborder="0" id="resizeframeid">
-				<frame src="<?php print WE_WORKFLOW_MODULE_DIR; ?>edit_workflow_frameset.php?pnt=left" scrolling="no" frameborder="0" name="left">
-				<frame src="<?php print WE_WORKFLOW_MODULE_DIR; ?>edit_workflow_frameset.php?pnt=right" name="right" >
-			</frameset>
-		<?php } ?>
-		<noframes>
-			<body style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px">
-			</body>
-		</noframes>
-		</html>
-		<?php
-	}
-	*/
-	
 	function getHTMLLeft(){
+		we_html_tools::htmlTop();
+		print STYLESHEET;
 		?>
 		</head>
 		<frameset rows="1,*" framespacing="0" border="0" frameborder="NO">
@@ -281,6 +287,9 @@ class we_workflow_moduleFrames extends weModuleFrames {
 	}
 
 	function getHTMLRight(){
+		we_html_tools::htmlTop();
+		print STYLESHEET;
+		
 		?>
 		</head>
 		<frameset cols="*" framespacing="0" border="0" frameborder="NO">
@@ -292,11 +301,12 @@ class we_workflow_moduleFrames extends weModuleFrames {
 			</body>
 		</noframes>
 		</html>
-
 		<?php
 	}
 
 	function getHTMLEditor(){
+		we_html_tools::htmlTop();
+		print STYLESHEET;
 		?>
 		</head>
 		<frameset rows="40,*,40" framespacing="0" border="0" frameborder="no">
@@ -309,6 +319,158 @@ class we_workflow_moduleFrames extends weModuleFrames {
 			<body background="<?php print IMAGE_DIR ?>backgrounds/aquaBackground.gif" style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px">
 			</body>
 		</noframes>
+		</html>
+		<?php
+	}
+
+	function getHTMLEditorHeader($mode = 0){
+		if(isset($_REQUEST["home"])){
+			return '<body bgcolor="#F0EFF0"></body></html>';
+		}
+
+		$page = (isset($_GET["page"]) ? $_GET["page"] : 0);
+
+		$text = g_l('modules_workflow', '[new_workflow]');
+		if(isset($_GET["txt"])){
+			$text = $_GET["txt"];
+		}
+
+		$we_tabs = new we_tabs();
+
+		if($mode == 0){
+
+			$we_tabs->addTab(new we_tab("#", g_l('tabs', "[module][properties]"), "TAB_NORMAL", "setTab(0);", array("id" => "tab_0")));
+			$we_tabs->addTab(new we_tab("#", g_l('tabs', "[module][overview]"), "TAB_NORMAL", "setTab(1);", array("id" => "tab_1")));
+		} else{
+			$we_tabs->addTab(new we_tab("#", g_l('tabs', "[editor][information]"), "TAB_ACTIVE", "//", array("id" => "tab_0")));
+		}
+
+		$we_tabs->onResize();
+		$tab_header = $we_tabs->getHeader('', 22);
+		$tab_body = $we_tabs->getJS();
+		if(empty($page))
+			$page = 0;
+		$textPre = ($mode == 1 ? g_l('modules_workflow', '[document]') : g_l('modules_workflow', '[workflow]'));
+		$textPost = "/" . $text;
+
+		$out = we_html_tools::htmlTop() . 
+			STYLESHEET . 
+			we_html_element::jsElement('
+    function setTab(tab){
+        	switch(tab){
+			case 0:
+				top.content.resize.right.editor.edbody.we_cmd("switchPage",0);
+			break;
+			case 1:
+				top.content.resize.right.editor.edbody.we_cmd("switchPage",1);
+			break;
+		}
+	}
+
+   top.content.hloaded=1;') .
+			$tab_header . '
+   </head>
+   <body bgcolor="white" background="' . IMAGE_DIR . 'backgrounds/header_with_black_line.gif" marginwidth="0" marginheight="0" leftmargin="0" topmargin="0" onload="setFrameSize()", onresize="setFrameSize()">
+		<div id="main" >' . we_html_tools::getPixel(100, 3) . '<div style="margin:0px;padding-left:10px;" id="headrow"><nobr><b>' . oldHtmlspecialchars($textPre) . ':&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">' . oldHtmlspecialchars($textPost) . '</b></span></nobr></div>' . we_html_tools::getPixel(100, 3) .
+			$we_tabs->getHTML() .
+			'</div>' . we_html_element::jsElement('document.getElementById("tab_' . $page . '").className="tabActive";') . '
+	</body>';
+
+
+		return $out;
+	}
+
+	function getHTMLEditorBody(){
+		print we_html_tools::htmlTop();
+		print STYLESHEET;
+		return $this->View->getProperties();
+	}
+
+	function getHTMLEditorFooter($mode = 0){
+		if(isset($_REQUEST["home"])){
+			return '<body bgcolor="#EFF0EF"></body></html>';
+		}
+
+		we_html_tools::htmlTop();
+		print STYLESHEET;
+		?>
+		<script  type="text/javascript">
+			function setStatusCheck(){
+				var a=document.we_form._status_workflow;
+				var b;
+				if(top.content.resize.right.editor.edbody.loaded) b=top.content.resize.right.editor.edbody.getStatusContol();
+				else setTimeout("setStatusCheck()",100);
+
+				if(b==1) a.checked=true;
+				else a.checked=false;
+
+			}
+			function we_save() {
+				top.content.we_cmd('save_workflow');
+
+			}
+		</script>
+		</head>
+		<body bgcolor="white" background="<?php echo IMAGE_DIR;?>edit/editfooterback.gif" marginwidth="0" marginheight="0" leftmargin="0" topmargin="0"<?php if($mode == 0){ ?> onLoad="setStatusCheck()"<?php } ?>>
+			<form name="we_form">
+				<table border="0" cellpadding="0" cellspacing="0" width="3000">
+					<tr>
+						<td valign="top" colspan="2"><?php print we_html_tools::getPixel(1600, 10) ?></td>
+					</tr>
+				</table>
+				<table border="0" cellpadding="0" cellspacing="0" width="300">
+					<?php if($mode == 0){ ?>
+						<tr>
+							<td><?php print we_html_tools::getPixel(15, 5) ?></td>
+							<td><?php print we_button::create_button("save", "javascript:we_save();") ?></td>
+							<td class="defaultfont"><?php print $this->View->getStatusHTML(); ?></td>
+						</tr>
+					<?php } ?>
+				</table>
+			</form>
+		</body>
+		</html>
+		<?php
+	}
+
+	function getHTMLLog($docID, $type = 0){
+		print we_html_tools::htmlTop();
+		print STYLESHEET;
+		print we_html_element::jsElement('self.focus();').'
+		</head>
+		<body class="weDialogBody">'.
+		we_workflow_view::getLogForDocument($docID, $type).
+		'</body></html>';
+	}
+
+	function getHTMLCmd(){
+		$this->View->getCmdJS();
+		we_html_tools::htmlTop();
+		print STYLESHEET;
+		?>
+		</head>
+		<body>
+			<form name="we_form">
+				<?php
+				print $this->View->htmlHidden("wcmd", "");
+				print $this->View->htmlHidden("wopt", "");
+				?>
+			</form>
+		</body>
+		</html>
+		<?php
+	}
+
+	function getHTMLLogQuestion(){
+		we_html_tools::htmlTop();
+		print STYLESHEET;
+		?>
+		</head>
+		<body class="weDialogBody">
+			<form name="we_form">
+				<?php print $this->View->getLogQuestion(); ?>
+			</form>
+		</body>
 		</html>
 		<?php
 	}

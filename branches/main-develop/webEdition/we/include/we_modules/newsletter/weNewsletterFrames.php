@@ -40,17 +40,88 @@ class weNewsletterFrames extends weModuleFrames{
 		$this->weAutoColpleter = & weSuggest::getInstance();
 	}
 
+	function getHTML($what = '', $mode = 0){
+		switch($what){
+			case "edheader":
+				print $this->getHTMLEditorHeader($mode);
+				break;
+			case "edfooter":
+				print $this->getHTMLEditorFooter($mode);
+				break;
+			case "qlog":
+				print $this->getHTMLLogQuestion();
+				break;
+			case "domain_check":
+				print $this->getHTMLDCheck();
+				break;
+			case "show_log":
+				print $this->getHTMLLog();
+				break;
+			case "newsletter_settings":
+				print $this->getHTMLSettings();
+				break;
+			case "print_lists":
+				print $this->getHTMLPrintLists();
+				break;
+			case "qsend":
+				print $this->getHTMLSendQuestion();
+				break;
+			case "qsave1":
+				print $this->getHTMLSaveQuestion1();
+				break;
+			case "eemail":
+				print $this->getHTMLEmailEdit();
+				break;
+			case "preview":
+				print $this->getHTMLPreview();
+				break;
+			case "black_list":
+				print $this->getHTMLBlackList();
+				break;
+			case "upload_black":
+				print $this->getHTMLUploadCsv("javascript:we_cmd('do_upload_black');");
+				break;
+			case "upload_csv":
+				print $this->getHTMLUploadCsv();
+				break;
+			case "export_csv_mes":
+				print $this->getHTMLExportCsvMessage();
+				break;
+			case "edit_file":
+				print $this->getHTMLEditFile($mode);
+				break;
+			case "clear_log":
+				print $this->getHTMLClearLog();
+				break;
+			case "send":
+				print $this->getHTMLSendWait();
+				break;
+			case "send_frameset":
+				print $this->getHTMLSendFrameset();
+				break;
+			case "send_body":
+				print $this->getHTMLSendBody();
+				break;
+			case "send_cmd":
+				print $this->getHTMLSendCmd();
+				break;
+			case "send_control":
+				print $this->getHTMLSendControl();
+				break;
+			default:
+				parent::getHTML($what);
+		}
+	}
+
 	function getHTMLFrameset(){
-		$js = we_html_element::jsElement('
-			var hot = 0;
-			var scrollToVal = 0;
-		');
-
-		$frameset = weModuleFrames::getHTMLFrameset();
-
-		$body = we_html_element::htmlBody(array("bgcolor" => "#bfbfbf", "background" => IMAGE_DIR . "backgrounds/aquaBackground.gif", "marginwidth" => "0", "marginheight" => "0", "leftmargin" => "0", "topmargin" => "0"), "");
-
-		return $this->getHTMLDocument($frameset . $body, $js);
+		$extraHead = we_html_element::jsElement('
+				var hot = 0;
+				var scrollToVal = 0;
+			') . 
+			$this->Tree->getJSTreeCode() . 
+			we_html_element::jsElement($this->getJSStart());
+		
+		return parent::getHTMLFrameset($extraHead);
 	}
 
 	function getJSCmdCode(){

@@ -21,6 +21,8 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+
+//TODO: pack this completely to weShopView
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
@@ -495,7 +497,7 @@ function searchArticles() {
 
 				// update all orders with this orderId
 				if(updateFieldFromOrder($_REQUEST['bid'], 'strSerialOrder', serialize($serialOrder))){
-					$jsCmd = 'top.opener.top.content.resize.shop_tree.doClick(' . $_REQUEST['bid'] . ',"shop","' . SHOP_TABLE . '");' .
+					$jsCmd = 'top.opener.top.content.resize.left.doClick(' . $_REQUEST['bid'] . ',"shop","' . SHOP_TABLE . '");' .
 						we_message_reporting::getShowMessageCall(sprintf(g_l('modules_shop', '[edit_order][js_saved_cart_field_success]'), $_REQUEST['cartfieldname']), we_message_reporting::WE_MESSAGE_NOTICE);
 				} else{
 					$jsCmd = we_message_reporting::getShowMessageCall(sprintf(g_l('modules_shop', '[edit_order][js_saved_cart_field_error]'), $_REQUEST['cartfieldname']), we_message_reporting::WE_MESSAGE_ERROR);
@@ -857,7 +859,7 @@ if(!isset($letzerartikel)){ // order has still articles - get them all
 		$Price[] = str_replace(',', '.', $GLOBALS['DB_WE']->f('Price')); // replace , by . for float values
 	}
 	if(!isset($ArticleId)){
-		echo we_html_element::jsElement('parent.parent.frames.shop_header_icons.location.reload();') . '
+		echo we_html_element::jsElement('parent.parent.getElementById(iconbar).location.reload();') . '
 	</head>
 	<body class="weEditorBody" onunload="doUnload()">
 	<table border="0" cellpadding="0" cellspacing="2" width="300">

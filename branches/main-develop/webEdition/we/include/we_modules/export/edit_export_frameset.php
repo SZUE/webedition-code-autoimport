@@ -26,11 +26,6 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 
 $what = isset($_REQUEST["pnt"]) ? $_REQUEST["pnt"] : "frameset";
 
-if($what == "resize" || $what == "frameset"){ //TODO: wenn alle framesets angepasst sind, faellt die bedinging raus!
-	we_html_tools::htmlTop();
-	print STYLESHEET;
-}
-
 $weFrame=new weExportFrames();
 
 $weFrame->View->processVariables();

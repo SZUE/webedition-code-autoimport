@@ -25,11 +25,10 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
-we_html_tools::htmlTop();
+//we_html_tools::htmlTop();
+//print STYLESHEET;
 
-print STYLESHEET;
-
-$workflowFrame = new we_workflow_frames();
+$workflowFrame = new weWorkflowFrames();
 $workflowFrame->View->processVariables();
 $workflowFrame->View->processCommands();
 
@@ -37,53 +36,4 @@ $what = (isset($_GET["pnt"]) ? $_GET["pnt"] : "frameset");
 $mode = (isset($_GET["art"]) ? $_GET["art"] : 0);
 $type = (isset($_GET["type"]) ? $_GET["type"] : 0);
 
-switch($what){
-	case "frameset":
-		print $workflowFrame->getHTMLFrameset();
-		break;
-
-	case "header":
-		print $workflowFrame->getHTMLHeader();
-		break;
-
-	case "resize":
-		print $workflowFrame->getHTMLResize();
-		break;
-
-	case "left":
-		print $workflowFrame->getHTMLLeft();
-		break;
-	case "right":
-		print $workflowFrame->getHTMLRight();
-		break;
-
-	case "editor":
-		print $workflowFrame->getHTMLEditor();
-		break;
-
-	case "edheader":
-		print $workflowFrame->getHTMLEditorHeader($mode);
-		break;
-
-	case "edbody":
-		print $workflowFrame->getHTMLEditorBody();
-		break;
-
-	case "edfooter":
-		print $workflowFrame->getHTMLEditorFooter($mode);
-		break;
-
-	case "qlog":
-		print $workflowFrame->getHTMLLogQuestion();
-		break;
-
-	case "log":
-		print $workflowFrame->getHTMLLog($mode, $type);
-		break;
-
-	case "cmd":
-		print $workflowFrame->getHTMLCmd();
-		break;
-
-	default:
-}
+$workflowFrame->getHTML($what, $mode, $type);

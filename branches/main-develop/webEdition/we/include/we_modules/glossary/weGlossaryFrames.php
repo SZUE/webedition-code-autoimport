@@ -42,62 +42,9 @@ class weGlossaryFrames extends weModuleFrames{
 		$this->module = "glossary";
 	}
 
-	function getHTML($what){
-
-		switch($what){
-
-			case "frameset":
-				print $this->getHTMLFrameset();
-				break;
-
-			case "header":
-				print $this->getHTMLHeader();
-				break;
-
-			case "resize":
-				print $this->getHTMLResize();
-				break;
-
-			case "left":
-				print $this->getHTMLLeft();
-				break;
-
-			case "right":
-				print $this->getHTMLRight();
-				break;
-
-			case "editor":
-				print $this->getHTMLEditor();
-				break;
-
-			case "edheader":
-				print $this->getHTMLEditorHeader();
-				break;
-
-			case "edbody":
-				print $this->getHTMLEditorBody();
-				break;
-
-			case "edfooter":
-				print $this->getHTMLEditorFooter();
-				break;
-
-			case "cmd":
-				print $this->getHTMLCmd();
-				break;
-
-			case "treeheader":
-				print $this->getHTMLTreeHeader();
-				break;
-
-			case "treefooter":
-				print $this->getHTMLTreeFooter();
-				break;
-
-			default:
-				t_e(__FILE__ . " unknown reference: $what");
-		}
-	}
+	/* use parent
+	function getHTML($what){}
+	*/
 
 	/*use parent
 	function getHTMLFrameset(){}
@@ -106,6 +53,11 @@ class weGlossaryFrames extends weModuleFrames{
 	function getJSCmdCode(){
 
 		return $this->View->getJSTop() . we_html_element::jsElement($this->Tree->getJSMakeNewEntry());
+	}
+
+	function getHTMLFrameset(){
+		$extraHead = $this->Tree->getJSTreeCode() . we_html_element::jsElement($this->getJSStart());
+		return weModuleFrames::getHTMLFrameset($extraHead);
 	}
 
 	function getHTMLEditorHeader(){
