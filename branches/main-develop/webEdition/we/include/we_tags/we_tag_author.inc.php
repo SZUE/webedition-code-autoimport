@@ -27,10 +27,46 @@ function we_tag_author($attribs){
 	$type = weTag_getAttribute('type', $attribs);
 	$creator = weTag_getAttribute('creator', $attribs, false, true);
 	$docAttr = weTag_getAttribute('doc', $attribs);
+	
+	$creator ? $author = "CreatorID" : $author = "ModifierID";
+	
+	switch($docAttr){
+		case 'listview' :
+			$authorID = "";
+			if($GLOBALS['lv']->ClassName == 'we_listview_object'){//listview type=object
+				$objID = $GLOBALS['lv']->getDBf('OF_ID');
+			}elseif($GLOBALS['lv']->ClassName == 'we_objecttag'){//we:object
+				$objID = $GLOBALS['lv']->id;
+			}elseif($GLOBALS['lv']->ClassName == 'we_search_listview'){//listview type=search
+				$getDocOrObj = getHash('SELECT DID,OID FROM '.INDEX_TABLE.' WHERE DID='.intval($GLOBALS['lv']->getDBf('WE_ID')).' OR OID='.intval($GLOBALS['lv']->getDBf('WE_ID')),$GLOBALS['DB_WE']);
+				if($getDocOrObj['OID'] > 0){//object
+					$objID = $GLOBALS['lv']->getDBf('WE_ID');
+				}else{//document
+					$docID = $GLOBALS['lv']->getDBf('WE_ID');
+				}
+			}else{//we_listview (document)
+				$author = "wedoc_".$author;
+				$authorID = $GLOBALS['lv']->f($author);
+			}
+			
+			if(empty($authorID)){
+				if(isset($objID) && $objID > 0){
+					$getAuthor = getHash('SELECT '.$author.' FROM '.OBJECT_FILES_TABLE.' WHERE ID='.intval($objID),$GLOBALS['DB_WE']);
+				}else{
+					$getAuthor = getHash('SELECT '.$author.' FROM '.FILE_TABLE.' WHERE ID='.intval($docID),$GLOBALS['DB_WE']);
+				}
+				$authorID = $getAuthor[$author];
+			}
+			
+			break;
+		case 'self' :
+		default :
+			$doc = we_getDocForTag($docAttr, true);
+			$authorID = $doc->$author;
+			break;
+	}
 
-	$doc = we_getDocForTag($docAttr, true);
-
-	$foo = getHash('SELECT Username,First,Second,Address,HouseNo,City,PLZ,State,Country,Tel_preselection,Telephone,Fax_preselection,Fax,Handy,Email,Description,Salutation FROM ' . USER_TABLE . ' WHERE ID=' . intval($creator ? $doc->CreatorID : $doc->ModifierID), $GLOBALS['DB_WE']);
+	$foo = getHash('SELECT Username,First,Second,Address,HouseNo,City,PLZ,State,Country,Tel_preselection,Telephone,Fax_preselection,Fax,Handy,Email,Description,Salutation FROM ' . USER_TABLE . ' WHERE ID=' . intval($authorID), $GLOBALS['DB_WE']);
 
 	switch($type){
 		case 'forename' :
