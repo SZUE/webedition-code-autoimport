@@ -457,6 +457,9 @@ abstract class weShopVariants{
 		$variantDatArray = $model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'];
 
 		$model->Variant = $name;
+		if(!is_array($variantDatArray)){
+			return;
+		}
 
 		foreach($variantDatArray as $variant){
 			if(is_array($variant)){
