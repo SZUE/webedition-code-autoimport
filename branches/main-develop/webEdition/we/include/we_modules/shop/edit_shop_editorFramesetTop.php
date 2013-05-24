@@ -30,22 +30,20 @@ $home = isset($_REQUEST["home"]) ? $_REQUEST["home"] : 0;
 $mid = isset($_REQUEST["mid"]) ? $_REQUEST["mid"] : 0;
 $bid = isset($_REQUEST["bid"]) ? $_REQUEST["bid"] : 0;
 /// config
-$DB_WE->query("SELECT strFelder from " . ANZEIGE_PREFS_TABLE . " WHERE strDateiname = 'shop_pref'");
-$DB_WE->next_record();
-$feldnamen = explode("|", $DB_WE->f("strFelder"));
+$feldnamen = explode('|', f('SELECT strFelder FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname = "shop_pref"', 'strFelder', $DB_WE));
 for($i = 0; $i <= 3; $i++){
 	$feldnamen[$i] = isset($feldnamen[$i]) ? $feldnamen[$i] : '';
 }
-$fe = explode(",", $feldnamen[3]);
+$fe = explode(',', $feldnamen[3]);
 if(empty($classid)){
 	$classid = $fe[0];
 }
-$fe = explode(",", $feldnamen[3]);
+$fe = explode(',', $feldnamen[3]);
 // $resultO = count ($fe);
 $resultO = array_shift($fe);
 
 // wether the resultset ist empty?
-$resultD = f('SELECT count(Name) as Anzahl FROM ' . LINK_TABLE . " WHERE Name ='" . $DB_WE->escape(WE_SHOP_TITLE_FIELD_NAME) . "'",'Anzahl',$DB_WE);
+$resultD = f('SELECT COUNT(Name) as Anzahl FROM ' . LINK_TABLE . ' WHERE Name ="' . $DB_WE->escape(WE_SHOP_TITLE_FIELD_NAME) . '"', 'Anzahl', $DB_WE);
 we_html_tools::htmlTop();
 ?>
 </head>
