@@ -522,7 +522,7 @@ $GLOBALS[\'_we_active_integrated_modules\'] = array(
 
 		case 'WE_ERROR_MAIL_ADDRESS':
 			$_file = &$GLOBALS['config_files']['conf_global']['content'];
-			
+
 			if(WE_ERROR_MAIL_ADDRESS != $settingvalue){
 				$_file = we_base_preferences::changeSourceCode('define', $_file, "WE_ERROR_MAIL_ADDRESS", $settingvalue, true, $comment);
 			}
@@ -1083,7 +1083,7 @@ function build_dialog($selected_setting = 'ui'){
 			$_window_current_dimension_table = new we_html_table(array('border' => '0', 'cellpadding' => '0', 'cellspacing' => '0'), 1, 2);
 
 			$_window_current_dimension_table->setCol(0, 0, null, we_html_tools::getPixel(50, 1));
-			$_window_current_dimension_table->setCol(0, 1, null, we_button::create_button('apply_current_dimension', "javascript:document.getElementsByName('sizeOpt')[1].checked = true;document.getElementsByName('newconf[weWidth]')[0].disabled = false;document.getElementsByName('newconf[weHeight]')[0].disabled = false;document.getElementsByName('newconf[weWidth]')[0].value = " . (we_base_browserDetect::isIE() ? "parent.opener.top.document.body.clientWidth" : "parent.opener.top.window.outerWidth") . ";document.getElementsByName('newconf[weHeight]')[0].value = " . (we_base_browserDetect::isIE() ? "parent.opener.top.document.body.clientHeight;" : "parent.opener.top.window.outerHeight;"), true));
+			$_window_current_dimension_table->setCol(0, 1, null, we_button::create_button('apply_current_dimension', "javascript:document.getElementsByName('newconf[sizeOpt]')[1].checked = true;document.getElementsByName('newconf[weWidth]')[0].disabled = false;document.getElementsByName('newconf[weHeight]')[0].disabled = false;document.getElementsByName('newconf[weWidth]')[0].value = " . (we_base_browserDetect::isIE() ? "parent.opener.top.document.body.clientWidth" : "parent.opener.top.window.outerWidth") . ";document.getElementsByName('newconf[weHeight]')[0].value = " . (we_base_browserDetect::isIE() ? "parent.opener.top.document.body.clientHeight;" : "parent.opener.top.window.outerHeight;"), true));
 
 			// Build final HTML code
 			$_window_html = new we_html_table(array('border' => '0', 'cellpadding' => '0', 'cellspacing' => '0'), 5, 1);
