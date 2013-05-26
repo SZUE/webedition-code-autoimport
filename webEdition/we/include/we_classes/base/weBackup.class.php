@@ -206,17 +206,6 @@ class weBackup extends we_backup{
 	 * @return boolean true, if still time left
 	 */
 	public static function limitsReached($table, $execTime){
-		if(!isset($GLOBALS['we']['REQUEST_TIME'])){
-			$GLOBALS['we']['REQUEST_TIME'] = (isset($_SERVER['REQUEST_TIME']) ? $_SERVER['REQUEST_TIME'] :
-					//we don't have the time of the request, assume some time is already spent.
-					time() + 3);
-			$diff = time() - $GLOBALS['we']['REQUEST_TIME'];
-			if($diff > 5 || $diff < 0){
-				t_e('Request time & time differ too much', $diff, $GLOBALS['we']['REQUEST_TIME'], time());
-				$GLOBALS['we']['REQUEST_TIME'] = time() + 5;
-			}
-		}
-
 		if($table){
 			//check if at least 10 avg rows
 			$rowSz = $_SESSION['weS']['weBackupVars']['avgLen'][strtolower(stripTblPrefix($table))];
@@ -231,7 +220,7 @@ class weBackup extends we_backup{
 		}
 
 		$maxTime = $_SESSION['weS']['weBackupVars']['limits']['exec'] > 33 ? 30 : $_SESSION['weS']['weBackupVars']['limits']['exec'] - 2;
-		if(time() - intval($_SERVER['REQUEST_TIME']) + 2 * $execTime > $maxTime){
+		if(time() - intval($_SESSION['weS']['weBackupVars']['limits']['requestTime']) + 2 * $execTime > $maxTime){
 			return false;
 		}
 
