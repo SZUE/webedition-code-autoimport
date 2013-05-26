@@ -57,7 +57,9 @@ class weBackupPreparer{
 			'limits' => array(
 				'mem' => we_convertIniSizes(ini_get('memory_limit')),
 				'exec' => ini_get('max_execution_time'),
+				'requestTime' => 0,
 			),
+			'retry' => 0,
 		);
 
 		weBackupPreparer::getOptions($_SESSION['weS']['weBackupVars']['options'], $_SESSION['weS']['weBackupVars']['handle_options']);
@@ -94,11 +96,6 @@ class weBackupPreparer{
 			self::getFileList($_SESSION['weS']['weBackupVars']['extern_files']);
 			$_SESSION['weS']['weBackupVars']['extern_files_count'] = count($_SESSION['weS']['weBackupVars']['extern_files']);
 		}
-		$_SESSION['weS']['weBackupVars']['limits'] = array(
-			'mem' => we_convertIniSizes(ini_get('memory_limit')),
-			'exec' => ini_get('max_execution_time'),
-		);
-
 
 		$_SESSION['weS']['weBackupVars']['row_counter'] = 0;
 		$_SESSION['weS']['weBackupVars']['row_count'] = 0;
@@ -114,7 +111,7 @@ class weBackupPreparer{
 			}
 		}
 
-		weFile::save($_SESSION['weS']['weBackupVars']['backup_file'], ($_SESSION['weS']['weBackupVars']['protect'] && !$_SESSION['weS']['weBackupVars']['options']['compress'] ? weBackup::weXmlExImProtectCode : '') . weXMLExIm::getHeader('','backup'));
+		weFile::save($_SESSION['weS']['weBackupVars']['backup_file'], ($_SESSION['weS']['weBackupVars']['protect'] && !$_SESSION['weS']['weBackupVars']['options']['compress'] ? weBackup::weXmlExImProtectCode : '') . weXMLExIm::getHeader('', 'backup'));
 
 		return true;
 	}
@@ -164,10 +161,7 @@ class weBackupPreparer{
 			$_SESSION['weS']['weBackupVars']['files_to_delete_count'] = count($_SESSION['weS']['weBackupVars']['files_to_delete']);
 		}
 
-		if($_SESSION['weS']['weBackupVars']['handle_options']['versions']
-			|| $_SESSION['weS']['weBackupVars']['handle_options']['core']
-			|| $_SESSION['weS']['weBackupVars']['handle_options']['object']
-			|| $_SESSION['weS']['weBackupVars']['handle_options']['versions_binarys']
+		if($_SESSION['weS']['weBackupVars']['handle_options']['versions'] || $_SESSION['weS']['weBackupVars']['handle_options']['core'] || $_SESSION['weS']['weBackupVars']['handle_options']['object'] || $_SESSION['weS']['weBackupVars']['handle_options']['versions_binarys']
 		){
 			weBackupPreparer::clearVersionData();
 		}
@@ -386,8 +380,7 @@ class weBackupPreparer{
 	function isPathExist($path){
 		global $DB_WE;
 
-		return ((f('SELECT 1 AS a FROM ' . FILE_TABLE . " WHERE Path='" . $DB_WE->escape($path) . "'", 'a', $DB_WE) == '1')
-			|| (f('SELECT 1 AS a FROM ' . TEMPLATES_TABLE . " WHERE Path='" . $DB_WE->escape($path) . "'", 'a', $DB_WE) == '1'));
+		return ((f('SELECT 1 AS a FROM ' . FILE_TABLE . " WHERE Path='" . $DB_WE->escape($path) . "'", 'a', $DB_WE) == '1') || (f('SELECT 1 AS a FROM ' . TEMPLATES_TABLE . " WHERE Path='" . $DB_WE->escape($path) . "'", 'a', $DB_WE) == '1'));
 	}
 
 	static function getEncoding($file, $iscompressed){
@@ -429,7 +422,7 @@ class weBackupPreparer{
 			case 'weimport':
 				if(we_hasPerm('WXML_IMPORT')){
 					return we_html_element::jsElement('
-							if(confirm("' . str_replace('"','\'',g_l('backup', '[import_file_found]') . ' \n\n' . g_l('backup', '[import_file_found_question]')) . '")){
+							if(confirm("' . str_replace('"', '\'', g_l('backup', '[import_file_found]') . ' \n\n' . g_l('backup', '[import_file_found_question]')) . '")){
 								top.opener.top.we_cmd("import");
 								top.close();
 							} else {
