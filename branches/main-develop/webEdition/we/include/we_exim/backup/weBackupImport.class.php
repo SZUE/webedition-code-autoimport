@@ -175,13 +175,6 @@ class weBackupImport{
 					$object->save(true);
 				}
 
-				if(false && !FAST_RESTORE){
-					//speedup for some tables
-					$_SESSION['weS']['weBackupVars']['backup_steps'] =
-						(isset($object->table) && ($object->table == LINK_TABLE || $object->table == CONTENT_TABLE) ?
-							BACKUP_STEPS * $nFactor :
-							BACKUP_STEPS);
-				}
 				$parser->gotoMark('first');
 			}
 
@@ -242,7 +235,7 @@ class weBackupImport{
 		$file = TEMP_DIR . 'we_conf_global.inc.php';
 		$object->Path = $file;
 		$object->save(true);
-		we_base_preferences::check_global_config(true, $_SERVER['DOCUMENT_ROOT'] . $file, array('BACKUP_STEPS', 'DB_SET_CHARSET'));
+		we_base_preferences::check_global_config(true, $_SERVER['DOCUMENT_ROOT'] . $file, array('DB_SET_CHARSET'));
 		weFile::delete($_SERVER['DOCUMENT_ROOT'] . $file);
 	}
 

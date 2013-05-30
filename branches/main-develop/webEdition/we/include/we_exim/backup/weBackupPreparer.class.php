@@ -50,14 +50,16 @@ class weBackupPreparer{
 			'handle_options' => array(),
 			'offset' => 0,
 			'current_table' => '',
-			'backup_steps' => getPref('BACKUP_STEPS'),
+			'backup_steps' => 5,
 			'backup_log' => (isset($_REQUEST['backup_log']) && $_REQUEST['backup_log']) ? $_REQUEST['backup_log'] : 0,
 			'backup_log_data' => '',
 			'backup_log_file' => $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'data/lastlog.php',
 			'limits' => array(
 				'mem' => we_convertIniSizes(ini_get('memory_limit')),
 				'exec' => ini_get('max_execution_time'),
+				'requestTime' => 0,
 			),
+			'retry' => 0,
 		);
 
 		weBackupPreparer::getOptions($_SESSION['weS']['weBackupVars']['options'], $_SESSION['weS']['weBackupVars']['handle_options']);
@@ -94,11 +96,6 @@ class weBackupPreparer{
 			self::getFileList($_SESSION['weS']['weBackupVars']['extern_files']);
 			$_SESSION['weS']['weBackupVars']['extern_files_count'] = count($_SESSION['weS']['weBackupVars']['extern_files']);
 		}
-		$_SESSION['weS']['weBackupVars']['limits'] = array(
-			'mem' => we_convertIniSizes(ini_get('memory_limit')),
-			'exec' => ini_get('max_execution_time'),
-		);
-
 
 		$_SESSION['weS']['weBackupVars']['row_counter'] = 0;
 		$_SESSION['weS']['weBackupVars']['row_count'] = 0;
@@ -114,7 +111,7 @@ class weBackupPreparer{
 			}
 		}
 
-		weFile::save($_SESSION['weS']['weBackupVars']['backup_file'], ($_SESSION['weS']['weBackupVars']['protect'] && !$_SESSION['weS']['weBackupVars']['options']['compress'] ? weBackup::weXmlExImProtectCode : '') . weXMLExIm::getHeader('','backup'));
+		weFile::save($_SESSION['weS']['weBackupVars']['backup_file'], ($_SESSION['weS']['weBackupVars']['protect'] && !$_SESSION['weS']['weBackupVars']['options']['compress'] ? weBackup::weXmlExImProtectCode : '') . weXMLExIm::getHeader('', 'backup'));
 
 		return true;
 	}

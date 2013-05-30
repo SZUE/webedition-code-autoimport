@@ -120,9 +120,10 @@ abstract class we_rebuild{
 				  } */
 
 
-				if($data['tt']){
+				/*removed: can cause data loss
+				 * if($data['tt']){
 					$GLOBALS['we_doc']->we_resaveTemporaryTable();
-				}
+				}*/
 				if($data['mt'] || ($table == TEMPLATES_TABLE)){
 					$tmpPath = $GLOBALS['we_doc']->constructPath();
 					if($tmpPath){
