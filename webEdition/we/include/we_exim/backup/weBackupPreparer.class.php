@@ -50,7 +50,7 @@ class weBackupPreparer{
 			'handle_options' => array(),
 			'offset' => 0,
 			'current_table' => '',
-			'backup_steps' => getPref('BACKUP_STEPS'),
+			'backup_steps' => 5,
 			'backup_log' => (isset($_REQUEST['backup_log']) && $_REQUEST['backup_log']) ? $_REQUEST['backup_log'] : 0,
 			'backup_log_data' => '',
 			'backup_log_file' => $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'data/lastlog.php',

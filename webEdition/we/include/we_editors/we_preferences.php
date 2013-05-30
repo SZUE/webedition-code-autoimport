@@ -1626,9 +1626,6 @@ if(window.onload) {
 			//Build activation of line numbers
 			$_template_editor_linenumbers_code = we_forms::checkbox(1, get_value('editorLinenumbers'), 'newconf[editorLinenumbers]', g_l('prefs', '[editor_enable]'), true, 'defaultfont', '');
 
-			$tmp2 = we_forms::checkbox(1, get_value('FAST_RESTORE'), 'FAST_RESTORE', 'new fast Restore', false, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[FAST_RESTORE]\');') .
-				we_html_tools::hidden('newconf[FAST_RESTORE]', get_value('FAST_RESTORE'));
-
 			//Build activation of code completion
 			$_template_editor_codecompletion_code =
 				we_forms::checkbox(1, get_value('editorCodecompletion-WE'), 'editorCodecompletion0', 'WE-Tags', true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[editorCodecompletion][WE]\');') .
@@ -2692,50 +2689,6 @@ if(window.onload) {
 		 * ******************************************************************* */
 		case "backup":
 			return;
-		/* if(!we_hasPerm("ADMINISTRATOR")){
-		  break;
-		  }
-		  $perf = new we_html_table(array("width" => "420", "border" => "0", "cellpadding" => "2", "cellspacing" => "0"), 3, 5);
-		  $perf->setCol(0, 0, array("class" => "header_small"), g_l('prefs', '[backup_slow]'));
-		  $perf->setCol(0, 1, array(), we_html_tools::getPixel(5, 2));
-		  $perf->setCol(0, 2, array("class" => "header_small", "align" => "right"), g_l('prefs', '[backup_fast]'));
-
-
-
-		  $steps = explode(',', weBackup::backupSteps);
-		  $backup_steps = get_value("BACKUP_STEPS");
-		  $steps_code = '<table border="0" cellpadding="0" cellspacing="0" width="100%" style="margin-bottom:10px;"><tr>';
-		  foreach($steps as $step){
-		  $steps_code.=($step == $backup_steps ?
-		  '<td>' . we_html_element::htmlInput(array("type" => "radio", "value" => "$step", "name" => "newconf[BACKUP_STEPS]", "checked" => true)) . '</td>' :
-		  '<td>' . we_html_element::htmlInput(array("type" => "radio", "value" => "$step", "name" => "newconf[BACKUP_STEPS]")) . '</td>');
-		  }
-		  $steps_code.= '</tr></table>';
-		  $perf->setCol(1, 0, array("class" => "defaultfont", "colspan" => 3), $steps_code);
-
-		  $steps_code = ($backup_steps == 0 ?
-		  we_html_element::htmlInput(array("type" => "radio", "value" => "0", "name" => "newconf[BACKUP_STEPS]", "checked" => true)) :
-		  we_html_element::htmlInput(array("type" => "radio", "value" => "0", "name" => "newconf[BACKUP_STEPS]"))) .
-		  g_l('prefs', '[backup_auto]');
-		  $perf->setCol(2, 0, array("class" => "header_small", "colspan" => 3), $steps_code);
-
-		  $tmp = we_forms::checkbox(1, get_value('FAST_BACKUP'), 'FAST_BACKUP', 'new fast Backup', false, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[FAST_BACKUP]\');') .
-		  we_html_tools::hidden('newconf[FAST_BACKUP]', get_value('FAST_BACKUP'));
-
-		  $tmp2 = we_forms::checkbox(1, get_value('FAST_RESTORE'), 'setXhtml_show_wrong_js', 'new fast Restore', false, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[FAST_RESTORE]\');') .
-		  we_html_tools::hidden('newconf[FAST_RESTORE]', get_value('FAST_RESTORE'));
-
-		  $_settings = array(
-		  array("headline" => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[performance]'), 2, 450), "html" => "", "space" => 200),
-		  array("headline" => '', "html" => $perf->getHtml(), "space" => 15),
-		  array("headline" => 'Fast Backup', 'html' => $tmp, 'space' => 50, 'noline' => 1),
-		  array("headline" => 'Fast Restore (testing)', 'html' => $tmp2, 'space' => 50, 'noline' => 1),
-		  );
-
-		  $_settings_cookie = weGetCookieVariable("but_settings_predefined");
-
-		  return create_dialog("settings_backup", g_l('prefs', '[tab][backup]'), $_settings);
-		 */
 		case 'security':
 			if(!we_hasPerm('ADMINISTRATOR')){
 				return;
