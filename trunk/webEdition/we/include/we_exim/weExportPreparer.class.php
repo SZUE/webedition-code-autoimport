@@ -401,17 +401,20 @@ class weExportPreparer extends weXMLExIm{
 			// collect owners info
 			if($this->options["handle_owners"]){
 				$uids = array();
-				if(isset($doc->CreatorID) && !in_array($doc->CreatorID, $this->RefTable->Users))
+				if(isset($doc->CreatorID) && !in_array($doc->CreatorID, $this->RefTable->Users)){
 					$uids = array($doc->CreatorID);
-				if(isset($doc->Owners))
+				}
+				if(isset($doc->Owners)){
 					$uids = array_merge($uids, makeArrayFromCSV($doc->Owners));
-				if(count($uids))
+				}
+				if(!empty($uids)){
 					$this->RefTable->addToUsers($uids);
+				}
 			}
 
 			$id = $this->RefTable->getNext();
 			$_step++;
-			if(BACKUP_STEPS < $_step){
+			if(10 < $_step){ //FIXME: removed BACKUP_STEPS, should be handled equal to backup
 				break;
 			}
 		}

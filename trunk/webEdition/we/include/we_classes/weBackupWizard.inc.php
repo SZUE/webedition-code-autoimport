@@ -1308,10 +1308,6 @@ top.busy.location="' . $this->frameset . '?pnt=busy";' .
 						$we_backup_obj->export2send = (isset($_REQUEST["export_send"]) && $_REQUEST["export_send"]) ? 1 : 0;
 						$we_backup_obj->filename = isset($_REQUEST["filename"]) ? $_REQUEST["filename"] : "weBackup_" . time() . ".xml";
 						$we_backup_obj->compress = (isset($_REQUEST["compress"]) && $_REQUEST["compress"]) ? $_REQUEST["compress"] : "none";
-						$we_backup_obj->backup_steps = getPref("BACKUP_STEPS");
-						if($we_backup_obj->backup_steps == 0){
-							$we_backup_obj->backup_steps = self::getAutoSteps();
-						}
 						$we_backup_obj->backup_binary = (isset($_REQUEST["handle_binary"]) && $_REQUEST["handle_binary"]) ? 1 : 0;
 
 						//create file list
@@ -1412,10 +1408,6 @@ top.busy.location="' . $this->frameset . '?pnt=busy";' .
 						$we_backup_obj->backup_extern = (isset($_REQUEST["handle_extern"]) && $_REQUEST["handle_extern"]) ? 1 : 0;
 						$we_backup_obj->convert_charset = (isset($_REQUEST["convert_charset"]) && $_REQUEST["convert_charset"]) ? 1 : 0;
 						$we_backup_obj->compress = (isset($_REQUEST["compress"]) && $_REQUEST["compress"]) ? 1 : 0;
-						$we_backup_obj->backup_steps = getPref("BACKUP_STEPS");
-						if($we_backup_obj->backup_steps == 0){
-							$we_backup_obj->backup_steps = self::getAutoSteps();
-						}
 						$we_backup_obj->backup_binary = (isset($_REQUEST["handle_binary"]) && $_REQUEST["handle_binary"]) ? 1 : 0;
 						$we_backup_obj->rebuild = (isset($_REQUEST["rebuild"]) && $_REQUEST["rebuild"]) ? 1 : 0;
 
@@ -1656,7 +1648,7 @@ top.busy.location = "' . $this->frameset . '?pnt=busy&operation_mode=busy&curren
 
 		$cmd = ($this->mode == self::RECOVER ? 'import' : 'export');
 
-		$_retry = ($this->mode == self::RECOVER || false &&!FAST_BACKUP || false &&!FAST_RESTORE ? 5 : 2);
+		$_retry = 3;
 
 		return we_html_element::jsElement('
 function setLocation(loc){
