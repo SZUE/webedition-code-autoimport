@@ -262,25 +262,21 @@ abstract class we_database_base{
 	 * @return bool true, if the query was successfull
 	 */
 	function query($Query_String, $allowUnion = false, $unbuffered = false){
+		if($Query_String == ''){
+			return true;
+		}
+		if(self::$Trigger_cnt){
+			$time = microtime(true);
+		}
 		if(!$this->retry){
 			$this->Errno = 0;
 			$this->Error = '';
 			$this->Row = 0;
-			if(self::$Trigger_cnt){
-				--self::$Trigger_cnt;
-				t_e($Query_String);
-			}
 		}
 		/* No empty queries, please, since PHP4 chokes on them. */
-		if($Query_String == ''){
-			/* The empty query string is passed on from the constructor,
-			 * when calling the class without a query, e.g. in situations
-			 * like these: '$db = new DB_Sql_Subclass;'
-			 */
-			return true;
-		}
-		if(!$this->isConnected() && !$this->_connect())
+		if(!$this->isConnected() && !$this->_connect()){
 			return false;
+		}
 		/* we already complained in connect() about that. */
 
 // check for union This is the fastest check
@@ -311,6 +307,10 @@ abstract class we_database_base{
 				}
 
 				if(preg_match('/[\s\(`"\'\\/)]union[\s\(`\/]/i', $queryWithoutStrings)){
+					if(self::$Trigger_cnt){
+						--self::$Trigger_cnt;
+						t_e($Query_String);
+					}
 					exit('Bad SQL statement! For security reasons, the UNION operator is not allowed within SQL statements per default! You need to set the second parameter of the query function to true if you want to use the UNION operator!');
 				}
 			}
@@ -325,8 +325,7 @@ abstract class we_database_base{
 		if(!$this->Query_ID && preg_match('/alter table|drop table/i', $Query_String)){
 			$this->_query('FLUSH TABLES');
 			$this->Query_ID = $this->_query($Query_String);
-		} else
-		if(preg_match('/insert |update|replace /i', $Query_String)){
+		} elseif(preg_match('/insert |update|replace /i', $Query_String)){
 // delete getHash DB Cache
 			getHash('', $this);
 		}
@@ -336,6 +335,35 @@ abstract class we_database_base{
 		$this->Errno = $this->errno();
 		$this->Error = $this->error();
 		$this->Row = 0;
+		if(self::$Trigger_cnt){
+			--self::$Trigger_cnt;
+			$time = microtime(true) - $time;
+			$tmp = array(
+				'time' => $time,
+				'trigger' => self::$Trigger_cnt,
+				'errno' => $this->Errno,
+				'error' => $this->Error,
+				'affected' => $this->affected_rows(),
+				'rows' => $this->num_rows(),
+				'explain' => array()
+			);
+			if(stripos($Query_String, 'select') !== FALSE){
+				$this->free();
+				$this->Query_ID = $this->_query('EXPLAIN ' . $Query_String);
+
+				while($this->next_record(MYSQLI_ASSOC)) {
+					if(empty($tmp['explain'])){
+						$tmp['explain'][] =  implode(' | ',array_keys($this->Record));
+					}
+					$tmp['explain'][] = implode(' | ',$this->Record);
+				}
+				$this->free();
+				$this->Row = 0;
+				$this->Query_ID = $this->_query($Query_String, $unbuffered);
+			}
+			t_e($Query_String, $tmp);
+		}
+
 		if(!$this->Query_ID){
 			switch($this->Errno){
 				case 2006://SERVER_GONE_ERROR
