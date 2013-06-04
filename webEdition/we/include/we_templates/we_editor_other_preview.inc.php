@@ -27,14 +27,14 @@ if(isset($_REQUEST['we_cmd'][3]) && $_REQUEST['we_cmd'][3] == "download"){
 	//$_size = filesize($_SERVER['DOCUMENT_ROOT'] . $we_doc->Path);
 
 	if(we_isHttps()){		 // Additional headers to make downloads work using IE in HTTPS mode.
-		header("Pragma: ");
-		header("Cache-Control: ");
-		header("Expires: " . gmdate("D, d M Y H:i:s") . " GMT");
-		header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
-		header("Cache-Control: no-store, no-cache, must-revalidate");	 // HTTP 1.1
+		header('Pragma: ');
+		header('Cache-Control: ');
+		header('Expires: ' . gmdate("D, d M Y H:i:s") . ' GMT');
+		header('Last-Modified: ' . gmdate("D, d M Y H:i:s") . ' GMT');
+		header('Cache-Control: no-store, no-cache, must-revalidate');	 // HTTP 1.1
 		header('Cache-Control: post-check=0, pre-check=0', false);
 	} else{
-		header("Cache-control: private, max-age=0, must-revalidate");
+		header('Cache-control: private, max-age=0, must-revalidate');
 	}
 
 	header('Content-Type: application/octet-stream');
@@ -50,7 +50,7 @@ if(isset($_REQUEST['we_cmd'][3]) && $_REQUEST['we_cmd'][3] == "download"){
 we_html_tools::htmlTop();
 
 
-if(isset($_REQUEST['we_cmd'][0]) && substr($_REQUEST['we_cmd'][0], 0, 15) == "doImage_convert"){
+if(isset($_REQUEST['we_cmd'][0]) && substr($_REQUEST['we_cmd'][0], 0, 15) == 'doImage_convert'){
 	print we_html_element::jsElement('parent.frames[0].we_setPath("' . $we_doc->Path . '","' . $we_doc->Text . '", "' . $we_doc->ID . '");');
 }
 
