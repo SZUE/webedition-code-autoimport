@@ -46,7 +46,7 @@ function we_tag_object($attribs){
 	$we_oid = weTag_getAttribute('id', $attribs, 0);
 	$name = weTag_getAttribute('name', $attribs);
 	//never show name generated inside blocks
-	$_showName = weTag_getAttribute('_name_orig', $attribs);
+	$_showName = weTag_getAttribute('text', $attribs, weTag_getAttribute('_name_orig', $attribs));
 	$size = weTag_getAttribute('size', $attribs, 30);
 	$triggerid = weTag_getAttribute('triggerid', $attribs, '0');
 	$searchable = weTag_getAttribute('searchable', $attribs, false, true);
