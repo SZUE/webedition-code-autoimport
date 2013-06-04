@@ -70,7 +70,7 @@ $we_menu_banner = array(
 		'cmd' => 'exit_banner',
 		'enabled' => '1',
 	),
-	array(
+	'002000' => array(
 		'text' => g_l('modules_banner', '[options]'),
 		'parent' => '000000',
 		'enabled' => '1',
