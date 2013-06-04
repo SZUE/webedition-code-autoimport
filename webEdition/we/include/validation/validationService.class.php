@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,49 +22,45 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+class validationService{
 
-    class validationService{
+	var $id;
+	var $art;			 //  custom | default
+	var $category;	//  xhtml | link | css | accessibility
+	var $name;
+	var $host;
+	var $path;
+	var $method;
+	var $varname;
+	var $checkvia;
+	var $additionalVars;
+	var $ctype;
+	var $fileEndings;
+	var $active;
 
-        var $id;
+	function validationService($id = 0, $art = "", $category = "", $name = "", $host = "", $path = "", $method = "", $varname = "", $checkvia = "", $ctype = "", $additionalVars = "", $fileEndings = "", $active = 1){
 
-        var $art;       //  custom | default
-        var $category;  //  xhtml | link | css | accessibility
+		$this->id = $id;				//  id to edit this service
 
-        var $name;
-        var $host;
-        var $path;
-        var $method;
-        var $varname;
-        var $checkvia;
-        var $additionalVars;
-        var $ctype;
+		$this->art = $art;
+		$this->category = $category;
 
-        var $fileEndings;
+		$this->name = $name;
+		$this->host = $host;
+		$this->path = $path;
+		$this->method = $method;
+		$this->varname = $varname;
+		$this->checkvia = $checkvia;
+		$this->ctype = $ctype;
+		$this->additionalVars = $additionalVars;
 
-        var $active;
+		$this->fileEndings = $fileEndings;
 
-        function validationService($id=0,$art="",$category="",$name="",$host="",$path="",$method="",$varname="",$checkvia="",$ctype="",$additionalVars="",$fileEndings="",$active=1){
+		$this->active = $active;
+	}
 
-            $this->id = $id;        //  id to edit this service
+	function getName(){
+		return $this->art . '_' . $this->id;
+	}
 
-            $this->art = $art;
-            $this->category = $category;
-
-            $this->name = $name;
-            $this->host = $host;
-            $this->path = $path;
-            $this->method = $method;
-            $this->varname = $varname;
-            $this->checkvia = $checkvia;
-            $this->ctype = $ctype;
-            $this->additionalVars = $additionalVars;
-
-            $this->fileEndings = $fileEndings;
-
-            $this->active = $active;
-        }
-
-        function getName(){
-            return $this->art . '_' . $this->id;
-        }
-    }
+}
