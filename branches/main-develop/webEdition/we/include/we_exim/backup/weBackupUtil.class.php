@@ -169,22 +169,22 @@ abstract class weBackupUtil{
 		return (!empty($id) && stristr($path, VERSION_DIR) && $_SESSION['weS']['weBackupVars']['handle_options']['versions_binarys']);
 	}
 
-	static function exportFile($file, $fh){
+	static function exportFile($file, $fh, $fwrite = 'fwrite'){
 		$bin = weContentProvider::getInstance('weBinary', 0);
 		$bin->Path = $file;
 
-		weContentProvider::binary2file($bin, $fh, false);
+		weContentProvider::binary2file($bin, $fh, $fwrite);
 	}
 
 	static function exportFiles($to, $files){
 		$count = count($files);
 
-		if(($fh = fopen($to, 'ab'))){
+		if(($fh = $_SESSION['weS']['weBackupVars']['open']($to, 'ab'))){
 			for($i = 0; $i < $count; $i++){
 				$file_to_export = $files[$i];
-				self::exportFile($file_to_export, $fh);
+				self::exportFile($file_to_export, $fh, $_SESSION['weS']['weBackupVars']['write']);
 			}
-			fclose($fh);
+			$_SESSION['weS']['weBackupVars']['close']($fh);
 		}
 	}
 

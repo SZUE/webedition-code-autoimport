@@ -691,7 +691,7 @@ class weBackup extends we_backup{
 			$bin = weContentProvider::getInstance('weBinary', 0);
 			$bin->Path = $file;
 
-			weContentProvider::binary2file($bin, $fh, false);
+			weContentProvider::binary2file($bin, $fh);
 			fclose($fh);
 		}
 	}

@@ -48,9 +48,9 @@ abstract class weBackupExport{
 				'type' => 'create'
 			);
 
-			weContentProvider::object2xml($_object, $_fh, $_attributes);
+			weContentProvider::object2xml($_object, $_fh, $_attributes, $_SESSION['weS']['weBackupVars']['write']);
 
-			fwrite($_fh, weBackup::backupMarker . "\n");
+			$_SESSION['weS']['weBackupVars']['write']($_fh, weBackup::backupMarker . "\n");
 		}
 
 
@@ -77,7 +77,7 @@ abstract class weBackupExport{
 		// export table item
 
 		$_keys = weTableItem::getTableKey($_table);
-		$_keys_str = '`'.implode('`,`', $_keys).'`';
+		$_keys_str = '`' . implode('`,`', $_keys) . '`';
 
 		$_db->query('SELECT ' . $_db->escape($_keys_str) . ' FROM  ' . $_db->escape($_table) . ' ORDER BY ' . $_keys_str . ' LIMIT ' . intval($offset) . ' ,' . intval($lines), true);
 		$_def_table = weBackupUtil::getDefaultTableName($_table);
@@ -114,7 +114,7 @@ abstract class weBackupExport{
 
 							$bin = weContentProvider::getInstance('weBinary', $_object->ID);
 
-							weContentProvider::binary2file($bin, $_fh);
+							weContentProvider::binary2file($bin, $_fh, $_SESSION['weS']['weBackupVars']['write']);
 						}
 						break;
 
@@ -125,7 +125,7 @@ abstract class weBackupExport{
 
 						$bin = weContentProvider::getInstance('weVersion', $_object->ID);
 
-						weContentProvider::version2file($bin, $_fh);
+						weContentProvider::version2file($bin, $_fh, $_SESSION['weS']['weBackupVars']['write']);
 						break;
 				}
 			}
@@ -143,4 +143,3 @@ abstract class weBackupExport{
 	}
 
 }
-

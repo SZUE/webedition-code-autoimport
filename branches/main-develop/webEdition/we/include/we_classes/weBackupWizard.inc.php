@@ -983,19 +983,9 @@ function setLocation(loc){
 
 				$_link = weBackupUtil::getHttpLink($_SERVER['SERVER_NAME'], str_replace($_SERVER['DOCUMENT_ROOT'], '', $_down), (defined('HTTP_PORT') ? HTTP_PORT : ''), (defined('HTTP_USERNAME') ? HTTP_USERNAME : ''), (defined('HTTP_PASSWORD') ? HTTP_PASSWORD : ''));
 
-				$table->setCol(2, 0, array('class' => 'defaultfont'), self::getDownloadLinkText() . '<br><br>' .
+				$table->setCol(2, 0, array('class' => 'defaultfont'), self::getDownloadLinkText() . '<br/><br/>' .
 					we_html_element::htmlA(array('href' => $_link), g_l('backup', '[download_file]'))
 				);
-
-				/* } else {
-
-				  //print we_html_element::htmlMeta(array('http-equiv' => 'refresh', 'content' => '2; URL='.$this->frameset.'?pnt=body&step=3&backupfile='.urlencode($_down)));
-				  $table->setCol(2, 0, null,
-				  g_l('backup','[download_starting]').
-				  we_html_element::htmlA(array('href'=>$this->frameset.'?pnt=body&step=3&backupfile='.urlencode($_down)),g_l('backup','[download]'))
-				  );
-
-				  } */
 			} else{
 				$table->setCol(2, 0, null, g_l('backup', '[download_failed]'));
 			}
@@ -1275,7 +1265,7 @@ function setLocation(loc){
 }
 top.busy.location="' . $this->frameset . '?pnt=busy";' .
 								we_message_reporting::getShowMessageCall(sprintf(g_l('backup', "[cannot_save_tmpfile]"), BACKUP_DIR), we_message_reporting::WE_MESSAGE_ERROR)
-							);
+						);
 						return "";
 					}
 
@@ -1368,7 +1358,7 @@ function setLocation(loc){
 }
 top.opener.top.openWindow("' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=rebuild&step=2&btype=rebuild_all&responseText=' . g_l('backup', "[finished_success]") . '","rebuildwin",-1,-1,600,130,0,true);
 setTimeout("top.close();",300);'
-						);
+					);
 					break;
 				case "import":
 					if(!is_writable($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . "tmp")){
@@ -1378,7 +1368,7 @@ function setLocation(loc){
 }
 top.busy.location="' . $this->frameset . '?pnt=busy";' .
 								we_message_reporting::getShowMessageCall(sprintf(g_l('backup', "[cannot_save_tmpfile]"), BACKUP_DIR), we_message_reporting::WE_MESSAGE_ERROR)
-							);
+						);
 						return "";
 					}
 
@@ -1488,12 +1478,12 @@ top.cmd.location = "' . $this->frameset . '?pnt=cmd&operation_mode=import&temp_f
 if(top.busy.setProgressText) top.busy.setProgressText("current_description", "' . $we_backup_obj->current_description . '");
 if(top.busy.setProgress) top.busy.setProgress(' . $percent . ');
 top.cmd.location = "' . $this->frameset . '?pnt=cmd&operation_mode=import&temp_filename=' . $temp_filename . '";'
-								);
+							);
 						} else{
 							print we_html_element::jsElement('
 top.busy.location = "' . $this->frameset . '?pnt=busy";
 top.body.location = "' . $this->frameset . '?pnt=body&step=4&temp_filename=' . $temp_filename . '";'
-								);
+							);
 						}
 					} else{
 						$we_backup_obj->doUpdate();
@@ -1506,7 +1496,7 @@ top.busy.location = "' . $this->frameset . '?pnt=busy&operation_mode=busy&curren
 								($we_backup_obj->rebuild && empty($we_backup_obj->errors) ?
 									'top.cmd.location = "' . $this->frameset . '?pnt=cmd&operation_mode=rebuild";' :
 									'top.body.location = "' . $this->frameset . '?pnt=body&step=4&temp_filename=' . $temp_filename . '";')
-							);
+						);
 					}
 					break;
 				case "deleteall":
@@ -1535,7 +1525,7 @@ top.busy.location = "' . $this->frameset . '?pnt=busy&operation_mode=busy&curren
 				default:
 					print
 						we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('backup', '[error]'), we_message_reporting::WE_MESSAGE_ERROR)
-						);
+					);
 			}
 		}
 	}

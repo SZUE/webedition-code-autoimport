@@ -85,7 +85,7 @@ switch($_REQUEST['cmd']){
 
 			$description = g_l('backup', '[working]');
 		} elseif(isset($_SESSION['weS']['weBackupVars']['extern_files']) && !empty($_SESSION['weS']['weBackupVars']['extern_files'])){
-			if(($fh = fopen($_SESSION['weS']['weBackupVars']['backup_file'], 'ab'))){
+			if(($fh = $_SESSION['weS']['weBackupVars']['open']($_SESSION['weS']['weBackupVars']['backup_file'], 'ab'))){
 				$_SESSION['weS']['weBackupVars']['backup_steps'] = 2;
 				$description = g_l('backup', '[external_backup]');
 				$oldPercent = 0;
@@ -111,12 +111,12 @@ switch($_REQUEST['cmd']){
 					}
 					weBackupUtil::writeLog();
 				} while(!empty($_SESSION['weS']['weBackupVars']['extern_files']) && weBackup::limitsReached('', microtime(true) - $start));
-				fclose($fh);
+				$_SESSION['weS']['weBackupVars']['close']($fh);
 			}
 		} else{
 			$_SESSION['weS']['weBackupVars']['backup_steps'] = 10;
 			$oldPercent = 0;
-			$_fh = fopen($_SESSION['weS']['weBackupVars']['backup_file'], 'ab');
+			$_fh = $_SESSION['weS']['weBackupVars']['open']($_SESSION['weS']['weBackupVars']['backup_file'], 'ab');
 			do{
 				$start = microtime(true);
 				for($i = 0; $i < $_SESSION['weS']['weBackupVars']['backup_steps']; $i++){
@@ -137,7 +137,7 @@ switch($_REQUEST['cmd']){
 				}
 				weBackupUtil::writeLog();
 			} while(weBackup::limitsReached(weBackupUtil::getCurrentTable(), microtime(true) - $start));
-			fclose($_fh);
+			$_SESSION['weS']['weBackupVars']['close']($_fh);
 		}
 		if(($_SESSION['weS']['weBackupVars']['row_counter'] < $_SESSION['weS']['weBackupVars']['row_count']) || (isset($_SESSION['weS']['weBackupVars']['extern_files']) && count($_SESSION['weS']['weBackupVars']['extern_files']) > 0) || weBackupUtil::hasNextTable()){
 
@@ -181,31 +181,7 @@ switch($_REQUEST['cmd']){
 			weBackupUtil::writeLog();
 
 
-			weFile::save($_SESSION['weS']['weBackupVars']['backup_file'], weBackup::weXmlExImFooter, 'ab');
-
-//compress file
-			if(!empty($_SESSION['weS']['weBackupVars']['options']['compress']) && !isset($_SESSION['weS']['weBackupVars']['compression_done'])){
-
-				weBackupUtil::addLog('Compressing...');
-
-				if($_SESSION['weS']['weBackupVars']['protect']){
-					weFile::save($_SESSION['weS']['weBackupVars']['backup_file'] . '.gz', weBackup::weXmlExImProtectCode);
-				}
-
-				$_SESSION['weS']['weBackupVars']['backup_file'] = weFile::compress($_SESSION['weS']['weBackupVars']['backup_file'], 'gzip', '', true, 'ab');
-
-				if($_SESSION['weS']['weBackupVars']['backup_file'] === false){
-					weBackupUtil::addLog('Fatal error: compression failed!');
-					print we_html_element::jsElement(weBackupUtil::getProgressJS(100, g_l('backup', "[error]")) . '
-						top.checker.location = "' . HTML_DIR . 'white.html";
-						alert("' . g_l('backup', '[error_compressing_backup]') . '");
-						');
-					unset($_SESSION['weS']['weBackupVars']);
-					exit();
-				}
-				$_SESSION['weS']['weBackupVars']['compression_done'] = 1;
-				$_SESSION['weS']['weBackupVars']['filename'] = basename($_SESSION['weS']['weBackupVars']['backup_file']);
-			}
+			weFile::save($_SESSION['weS']['weBackupVars']['backup_file'], weBackup::weXmlExImFooter, 'ab', $_SESSION['weS']['weBackupVars']['options']['compress']);
 
 			if($_SESSION['weS']['weBackupVars']['protect'] && substr($_SESSION['weS']['weBackupVars']['filename'], -4) != ".php"){
 				$_SESSION['weS']['weBackupVars']['filename'] .= '.php';

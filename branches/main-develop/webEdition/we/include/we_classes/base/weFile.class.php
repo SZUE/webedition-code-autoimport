@@ -118,24 +118,19 @@ abstract class weFile{
 		return false;
 	}
 
-	static function save($filename, $content, $flags = 'wb', $create_path = false){
+	static function save($filename, $content, $flags = 'wb', $compression = ''){
 		if($filename == '' || self::hasURL($filename) || (file_exists($filename) && !is_writable($filename))){
 			t_e('error writing file', $filename);
 			return false;
-		} else{
-			/* if(strpos($filename, $_SERVER['DOCUMENT_ROOT']) === FALSE){
-			  t_e('warning', 'Acess outside document_root forbidden!', $filename, $oldFile,$_SERVER['DOCUMENT_ROOT']);
-			  return;
-			  } */
-			if(($create_path && !self::mkpath(dirname($filename))) && (!is_writable(dirname($filename)))){
-				t_e('failed to create file', $filename);
-				return false;
-			}
 		}
+		$prefix = self::getComPrefix($compression);
+		$open = $prefix . 'open';
+		$write = $prefix . 'write';
+		$close = $prefix . 'close';
 
-		if(($fp = @fopen($filename, $flags))){
-			$written = fwrite($fp, $content, strlen($content));
-			@fclose($fp);
+		if(($fp = $open($filename, $flags))){
+			$written = $write($fp, $content, strlen($content));
+			@$close($fp);
 			return $written;
 		}
 		t_e('error writing file', $filename);
@@ -319,7 +314,7 @@ abstract class weFile{
 	static function getCompression($filename){
 		$compressions = array('gzip', 'zip', 'bzip');
 		foreach($compressions as $val){
-			if(stripos(basename($filename), '.' . weFile::getZExtension($val)) !== false){
+			if(stripos(basename($filename), '.' . self::getZExtension($val)) !== false){
 				return $val;
 			}
 		}

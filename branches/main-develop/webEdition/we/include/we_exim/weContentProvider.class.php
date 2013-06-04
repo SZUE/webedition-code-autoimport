@@ -251,7 +251,7 @@ class weContentProvider{
 				true);
 	}
 
-	static function binary2file(&$object, $file, $isWe = true){
+	static function binary2file(&$object, $file, $fwrite = 'fwrite'){
 		$attribs = '';
 		foreach($object->persistent_slots as $k => $v){
 			if($v != 'Data' && $v != 'SeqN'){
@@ -259,7 +259,7 @@ class weContentProvider{
 				if(isset($object->$v)){
 					$content = $object->$v;
 				}
-				if(self::needCoding($object->ClassName, $v, $content)||self::needCdata($object->ClassName, $v, $content)){//fix for faulty parser
+				if(self::needCoding($object->ClassName, $v, $content) || self::needCdata($object->ClassName, $v, $content)){//fix for faulty parser
 					$content = self::getCDATA(self::encode($content));
 					$coding = array(self::CODING_ATTRIBUTE => self::CODING_ENCODE);
 				} else if(self::needCdata($object->ClassName, $v, $content)){
@@ -281,7 +281,7 @@ class weContentProvider{
 				}
 				$data = weFile::loadPart($path, $offset, $rsize);
 				if(!empty($data)){
-					fwrite($file, '<we:binary>' . $attribs .
+					$fwrite($file, '<we:binary>' . $attribs .
 						weXMLComposer::we_xmlElement('SeqN', $object->SeqN) .
 						weXMLComposer::we_xmlElement('Data', self::encode($data), array(self::CODING_ATTRIBUTE => self::CODING_ENCODE)) .
 						'</we:binary>' . weBackup::backupMarker . "\n");
@@ -296,15 +296,15 @@ class weContentProvider{
 		}
 	}
 
-	static function version2file(&$object, $file, $isWe = true){
+	static function version2file(&$object, $file, $fwrite = 'fwrite'){
 		$attribs = '';
-		foreach($object->persistent_slots as $k => $v){
+		foreach($object->persistent_slots as $v){
 			if($v != 'Data' && $v != 'SeqN'){
 				if(isset($object->$v)){
 					$content = $object->$v;
 				}
 				$coding = self::CODING_NONE;
-				if(self::needCoding($object->ClassName, $v, $content)||self::needCdata($object->ClassName, $v, $content)){//fix for faulty parser
+				if(self::needCoding($object->ClassName, $v, $content) || self::needCdata($object->ClassName, $v, $content)){//fix for faulty parser
 					$content = self::getCDATA(self::encode($content));
 					$coding = array(self::CODING_ATTRIBUTE => self::CODING_ENCODE);
 				} else if(self::needCdata($object->ClassName, $v, $content)){
@@ -326,7 +326,7 @@ class weContentProvider{
 				$data = weFile::loadPart($path, $offset, $rsize);
 
 				if(!empty($data)){
-					fwrite($file, '<we:version>' . $attribs .
+					$fwrite($file, '<we:version>' . $attribs .
 						weXMLComposer::we_xmlElement('SeqN', $object->SeqN) .
 						weXMLComposer::we_xmlElement('Data', self::encode($data), array(self::CODING_ATTRIBUTE => self::CODING_ENCODE)) .
 						'</we:version>' . weBackup::backupMarker . "\n");
@@ -351,7 +351,7 @@ class weContentProvider{
 		return $hash[$obj];
 	}
 
-	static function object2xml(&$object, $file, $attribs = array()){
+	static function object2xml(&$object, $file, $attribs = array(), $fwrite = 'fwrite'){
 		$classname = (isset($object->Pseudo) ? $object->Pseudo : $object->ClassName);
 
 		switch($classname){
@@ -406,7 +406,7 @@ class weContentProvider{
 			}
 
 
-			if(self::needCoding($classname, $v, $content)||self::needCdata($classname, $v, $content)){//fix for faulty parser
+			if(self::needCoding($classname, $v, $content) || self::needCdata($classname, $v, $content)){//fix for faulty parser
 				if(!is_array($content)){
 					$content = self::encode($content);
 					$coding = array(self::CODING_ATTRIBUTE => self::CODING_ENCODE);
@@ -416,7 +416,7 @@ class weContentProvider{
 			}
 			$write.=weXMLComposer::we_xmlElement($v, $content, $coding);
 		}
-		fwrite($file, $write);
+		$fwrite($file, $write);
 
 		if(isset($object->elements) && $object->ClassName != 'we_object'){
 			$elements_ids = array_keys($object->elements);
@@ -460,7 +460,7 @@ class weContentProvider{
 		}
 
 		//return $out;
-		fwrite($file, '</' . self::getTagName($object) . '>');
+		$fwrite($file, '</' . self::getTagName($object) . '>');
 	}
 
 	static function file2xml($file, $fh){

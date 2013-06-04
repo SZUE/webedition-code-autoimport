@@ -27,7 +27,8 @@ function we_tag_ifHasEntries(){
 		$element = end($GLOBALS['weNavigationItemArray']);
 		if(!empty($element->items)){
 			foreach($element->items as $item){
-				if($item->visible){
+				//FIXME: this causes many new objects. optimize while creating entries
+				if($item->isVisible()){
 					return true;
 				}
 			}

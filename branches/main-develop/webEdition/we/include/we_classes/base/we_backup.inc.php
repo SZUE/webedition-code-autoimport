@@ -31,7 +31,8 @@ define('BACKUP_TABLE', TBL_PREFIX . 'tblbackup');
 
 //FIXME: try to remove this class
 abstract class we_backup{
-
+	const COMPRESSION='gzip';
+	
 	var $backup_db;
 	var $errors = array();
 	var $warnings = array();

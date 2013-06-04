@@ -106,8 +106,7 @@ class weNavigationItem{
 					$mypath = id_to_path($this->docid, FILE_TABLE);
 					$mypath_parts = pathinfo($mypath);
 					if(in_array($mypath_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
-						$_v = f('SELECT ID FROM ' . FILE_TABLE . ' WHERE ID=' . intval($this->docid) . ' AND Published>0', 'ID', $db);
-						$this->visible = !empty($_v) ? 'true' : 'false';
+						$this->visible = f('SELECT 1 AS a FROM ' . FILE_TABLE . ' WHERE ID=' . intval($this->docid) . ' AND Published>0', 'a', $db) ? 'true' : 'false';
 					}
 				}
 				break;
@@ -115,8 +114,7 @@ class weNavigationItem{
 			// #6916
 			case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
 				$__id = $this->docid;
-				$_v = f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($__id) . ' AND Published>0', 'ID', $db);
-				$this->visible = !empty($_v) ? 'true' : 'false';
+				$this->visible = f('SELECT 1 AS a FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($__id) . ' AND Published>0', 'a', $db) ? 'true' : 'false';
 
 				if(NAVIGATION_DIRECTORYINDEX_HIDE && NAVIGATION_DIRECTORYINDEX_NAMES != ''){
 					$mypath = id_to_path($this->docid, OBJECT_FILES_TABLE);
@@ -230,7 +228,7 @@ class weNavigationItem{
 		return false;
 	}
 
-	private function isVisible(){
+	public function isVisible(){
 		if($this->visible == 'false'){
 			return false;
 		}
@@ -238,8 +236,8 @@ class weNavigationItem{
 		if(defined('CUSTOMER_TABLE') && $this->limitaccess){ // only init filter if access is limited
 			$_filter = new weNavigationCustomerFilter();
 			$_filter->initByNavItem($this);
-
-			return $_filter->customerHasAccess();
+			$this->visible = $_filter->customerHasAccess() ? 'true' : 'false';
+			return $this->visible;
 		}
 		return true;
 	}

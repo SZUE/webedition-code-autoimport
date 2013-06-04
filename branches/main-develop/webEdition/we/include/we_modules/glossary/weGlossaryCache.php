@@ -93,7 +93,7 @@ class weGlossaryCache{
 	 * @return boolean
 	 */
 	function isValid(){
-		$cacheFilename = weGlossaryCache::cacheIdToFilename($this->_cacheId);
+		$cacheFilename = self::cacheIdToFilename($this->_cacheId);
 
 		return file_exists($cacheFilename) && is_file($cacheFilename);
 	}
@@ -105,7 +105,7 @@ class weGlossaryCache{
 	 */
 	function clear(){
 		if($this->isValid()){
-			return unlink(weGlossaryCache::cacheIdToFilename($this->_cacheId));
+			return unlink(self::cacheIdToFilename($this->_cacheId));
 		}
 		return true;
 	}
@@ -222,8 +222,7 @@ class weGlossaryCache{
 							}
 
 							// Cat Parameter & Cat ID
-							if(isset($Attributes['CategoryCatParameter']) && trim($Attributes['CategoryCatParameter']) != ""
-								&& isset($Attributes['CategoryLinkID']) && trim($Attributes['CategoryLinkID']) != ""){
+							if(isset($Attributes['CategoryCatParameter']) && trim($Attributes['CategoryCatParameter']) != "" && isset($Attributes['CategoryLinkID']) && trim($Attributes['CategoryLinkID']) != ""){
 								$urladd = ($urladd ? $urladd . '&' : '?') . trim($Attributes['CategoryCatParameter']) . "=" . trim($Attributes['CategoryLinkID']);
 							}
 
@@ -402,7 +401,7 @@ if (window.screen) {
 				$postfix . '\5"';
 		}
 
-		$cacheFilename = weGlossaryCache::cacheIdToFilename($this->_cacheId);
+		$cacheFilename = self::cacheIdToFilename($this->_cacheId);
 
 		// Create Cache Directory if it not exists
 		if(!is_dir(dirname($cacheFilename))){
@@ -411,6 +410,7 @@ if (window.screen) {
 			}
 		}
 
+		//FIXME: replace by gz'd version
 		//return weFile::save($cacheFilename, gzdeflate(serialize($content), 9));
 		return weFile::save($cacheFilename, '<?php $content=unserialize(\'' . str_replace('\'', '\\\\\'', serialize($content)) . '\');');
 	}
@@ -422,14 +422,15 @@ if (window.screen) {
 	 */
 	function get($type){
 		if(empty($this->content)){
-			$cacheFilename = weGlossaryCache::cacheIdToFilename($this->_cacheId);
+			$cacheFilename = self::cacheIdToFilename($this->_cacheId);
 
 			if(!file_exists($cacheFilename) || !is_file($cacheFilename)){
-				if(!weGlossaryCache::write()){
+				if(!self::write()){
 					return array();
 				}
 			}
 			include($cacheFilename);
+			//FIXME: replace by gz'd version
 			$this->content = $content; //@unserialize(@gzinflate(weFile::load($cacheFilename)));
 		}
 		if(!empty($this->content)){

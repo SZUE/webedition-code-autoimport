@@ -88,7 +88,8 @@ function we_tag_path($attribs){
 		return $path;
 	}
 
-	list($fileID, $filePath) = getHash('SELECT ID,Path FROM ' . FILE_TABLE . ' WHERE ParentID=0 AND IsFolder=0 AND (' . $q . ') AND (Published>0 AND IsSearchable=1)', $db);
+	$hash = getHash('SELECT ID,Path FROM ' . FILE_TABLE . ' WHERE ParentID=0 AND IsFolder=0 AND (' . $q . ') AND (Published>0 AND IsSearchable=1)', $db);
+	list($fileID, $filePath) = (empty($hash) ? array(0, '') : $hash);
 	if($fileID){
 		$show = f('SELECT ' . CONTENT_TABLE . '.Dat as Dat FROM ' . LINK_TABLE . ',' . CONTENT_TABLE . ' WHERE ' . LINK_TABLE . '.DID=' . intval($fileID) . ' AND ' . LINK_TABLE . '.Name="' . $db->escape($field) . '" AND ' . CONTENT_TABLE . '.ID = ' . LINK_TABLE . '.CID', 'Dat', $db);
 		if(!$show){
