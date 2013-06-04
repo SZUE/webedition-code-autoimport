@@ -116,7 +116,7 @@ print STYLESHEET;
 <script type="text/javascript">
 
 
-	function we_submitForm(target,url){
+	function we_submitForm(target, url) {
 		var f = self.document.we_form;
 		f.target = target;
 		f.action = url;
@@ -125,28 +125,28 @@ print STYLESHEET;
 		f.submit();
 	}
 
-	function we_cmd(){
+	function we_cmd() {
 
 		var args = "";
 		var url = "<?php echo WEBEDITION_DIR; ?>we_cmd.php?";
 
-		for(var i = 0; i < arguments.length; i++){
-			url += "we_cmd["+i+"]="+escape(arguments[i]);
-			if(i < (arguments.length - 1)){
+		for (var i = 0; i < arguments.length; i++) {
+			url += "we_cmd[" + i + "]=" + escape(arguments[i]);
+			if (i < (arguments.length - 1)) {
 				url += "&";
 			}
 		}
-		switch(arguments[0]){
+		switch (arguments[0]) {
 			case 'checkDocument':
-				if(top.weEditorFrameController.getActiveDocumentReference().frames["1"].we_submitForm){
-					top.weEditorFrameController.getActiveDocumentReference().frames["1"].we_submitForm("validation",url);
+				if (top.weEditorFrameController.getActiveDocumentReference().frames["1"].we_submitForm) {
+					top.weEditorFrameController.getActiveDocumentReference().frames["1"].we_submitForm("validation", url);
 				}
 				break;
 			default:
-				for(var i = 0; i < arguments.length; i++){
-					args += 'arguments['+i+']' + ((i < (arguments.length-1)) ? ',' : '');
+				for (var i = 0; i < arguments.length; i++) {
+					args += 'arguments[' + i + ']' + ((i < (arguments.length - 1)) ? ',' : '');
 				}
-				eval('parent.we_cmd('+args+')');
+				eval('parent.we_cmd(' + args + ')');
 				break;
 		}
 	}
@@ -161,7 +161,7 @@ print STYLESHEET;
 
 <?php print $js; ?>
 
-	function switchPredefinedService(name){
+	function switchPredefinedService(name) {
 
 		var f = self.document.we_form;
 
@@ -175,15 +175,15 @@ print STYLESHEET;
 
 
 	}
-	function setIFrameSize(){
+	function setIFrameSize() {
 		var h = window.innerHeight ? window.innerHeight : document.body.offsetHeight;
 		var w = window.innerWidth ? window.innerWidth : document.body.offsetWidth;
-		w = Math.max(w,680);
+		w = Math.max(w, 680);
 		var iframeWidth = w - 52;
 		var validiframe = document.getElementById("validation");
-		validiframe.style.width=iframeWidth;
+		validiframe.style.width = iframeWidth;
 		if (h) { // h must be set (h!=0), if several documents are opened very fast -> editors are not loaded then => h = 0
-			validiframe.style.height=h - 185;
+			validiframe.style.height = h - 185;
 		}
 	}
 

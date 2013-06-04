@@ -45,17 +45,17 @@ abstract class validation{
 		}
 
 		$qSet = we_database_base::arraySetter(array(
-			'category' => $validationService->category,
-			'name' => $validationService->name,
-			'host' => $validationService->host,
-			'path' => $validationService->path,
-			'method' => $validationService->method,
-			'varname' => $validationService->varname,
-			'checkvia' => $validationService->checkvia,
-			'additionalVars' => $validationService->additionalVars,
-			'ctype' => $validationService->ctype,
-			'fileEndings' => $validationService->fileEndings,
-			'active' => $validationService->active
+				'category' => $validationService->category,
+				'name' => $validationService->name,
+				'host' => $validationService->host,
+				'path' => $validationService->path,
+				'method' => $validationService->method,
+				'varname' => $validationService->varname,
+				'checkvia' => $validationService->checkvia,
+				'additionalVars' => $validationService->additionalVars,
+				'ctype' => $validationService->ctype,
+				'fileEndings' => $validationService->fileEndings,
+				'active' => $validationService->active
 		));
 		if($validationService->id != 0){
 			$query = 'UPDATE ' . VALIDATION_SERVICES_TABLE . ' SET ' . $qSet .
