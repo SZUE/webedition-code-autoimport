@@ -134,10 +134,10 @@ if(isset($_REQUEST["ok"]) && isset($_REQUEST["linklist"]) && $_REQUEST["ok"] && 
 	$ll->setTarget($_REQUEST["nr"], $_REQUEST["target"]);
 	$ll->setTitle($_REQUEST["nr"], $_REQUEST["title"]);
 
-        //added for #7269
-        $ll->setBcc($_REQUEST["nr"], $_REQUEST["bcc"]);
-        $ll->setCc($_REQUEST["nr"], $_REQUEST["cc"]);
-        $ll->setSubject($_REQUEST["nr"], $_REQUEST["subject"]);
+	//added for #7269
+	$ll->setBcc($_REQUEST["nr"], $_REQUEST["bcc"]);
+	$ll->setCc($_REQUEST["nr"], $_REQUEST["cc"]);
+	$ll->setSubject($_REQUEST["nr"], $_REQUEST["subject"]);
 
 	$ll->setJsWinAttrib($_REQUEST["nr"], "jswin", (isset($_REQUEST["jswin"]) && $_REQUEST["jswin"]) ? $_REQUEST["jswin"] : null );
 	$ll->setJsWinAttrib($_REQUEST["nr"], "jscenter", isset($_REQUEST["jscenter"]) && $_REQUEST["jscenter"] ? $_REQUEST["jscenter"] : null);
@@ -167,61 +167,53 @@ if(isset($_REQUEST["ok"]) && isset($_REQUEST["linklist"]) && $_REQUEST["ok"] && 
 
 	$linklist = $ll->getString();
 } else if(isset($_REQUEST["ok"]) && $_REQUEST["ok"]){
-	$ln = array();
+	$ln = array(
+		"anchor" => $_REQUEST["anchor"],
+		"accesskey" => $_REQUEST["accesskey"],
+		"tabindex" => $_REQUEST["tabindex"],
+		"lang" => $_REQUEST["lang"],
+		"rel" => $_REQUEST["rel"],
+		"rev" => $_REQUEST["rev"],
+		"hreflang" => $_REQUEST["hreflang"],
+		"params" => $_REQUEST["params"],
+		"title" => $_REQUEST["title"],
+		//added for #7269
+		"bcc" => isset($_REQUEST["bcc"]) ? $_REQUEST["bcc"] : '',
+		"cc" => isset($_REQUEST["cc"]) ? $_REQUEST["cc"] : '',
+		"subject" => isset($_REQUEST["subject"]) ? $_REQUEST["subject"] : '',
+		"href" => ($_REQUEST["type"] = "mail" ? "mailto:" . str_replace('mailto:', '', $_REQUEST["emaillink"]) : $_REQUEST["href"]),
+		"attribs" => $_REQUEST["attribs"],
+		"target" => $_REQUEST["target"],
+		"jswin" => isset($_REQUEST["jswin"]) && $_REQUEST["jswin"] ? $_REQUEST["jswin"] : null,
+		"jscenter" => isset($_REQUEST["jscenter"]) && $_REQUEST["jscenter"] ? $_REQUEST["jscenter"] : null,
+		"jsposx" => $_REQUEST["jsposx"],
+		"jsposy" => $_REQUEST["jsposy"],
+		"jswidth" => $_REQUEST["jswidth"],
+		"jsheight" => $_REQUEST["jsheight"],
+		"jsstatus" => isset($_REQUEST["jsstatus"]) ? $_REQUEST["jsstatus"] : null,
+		"jsscrollbars" => isset($_REQUEST["jsscrollbars"]) ? $_REQUEST["jsscrollbars"] : null,
+		"jsmenubar" => isset($_REQUEST["jsmenubar"]) ? $_REQUEST["jsmenubar"] : null,
+		"jstoolbar" => isset($_REQUEST["jstoolbar"]) ? $_REQUEST["jstoolbar"] : null,
+		"jsresizable" => isset($_REQUEST["jsresizable"]) ? $_REQUEST["jsresizable"] : null,
+		"jslocation" => isset($_REQUEST["jslocation"]) ? $_REQUEST["jslocation"] : null,
+		"img_id" => $_REQUEST["img_id"],
+		"img_src" => $_REQUEST["img_src"],
+		"text" => $_REQUEST["text"],
+		"type" => ($_REQUEST["type"] = "mail") ? "int" : $_REQUEST["type"],
+		"ctype" => $_REQUEST["ctype"],
+		"width" => $_REQUEST["width"],
+		"height" => $_REQUEST["height"],
+		"border" => $_REQUEST["border"],
+		"hspace" => $_REQUEST["hspace"],
+		"vspace" => $_REQUEST["vspace"],
+		"align" => $_REQUEST["align"],
+		"alt" => $_REQUEST["alt"],
+		"img_title" => $_REQUEST["img_title"],
+	);
 	$ln["id"] = $_REQUEST["id"];
 	if(defined("OBJECT_TABLE")){
 		$ln["obj_id"] = $_REQUEST["obj_id"];
 	}
-	$ln["anchor"] = $_REQUEST["anchor"];
-	$ln["accesskey"] = $_REQUEST["accesskey"];
-	$ln["tabindex"] = $_REQUEST["tabindex"];
-	$ln["lang"] = $_REQUEST["lang"];
-	$ln["rel"] = $_REQUEST["rel"];
-	$ln["rev"] = $_REQUEST["rev"];
-	$ln["hreflang"] = $_REQUEST["hreflang"];
-	$ln["params"] = $_REQUEST["params"];
-	$ln["title"] = $_REQUEST["title"];
-
-        //added for #7269
-        $ln["bcc"] = $_REQUEST["bcc"];
-        $ln["cc"] = $_REQUEST["cc"];
-        $ln["subject"] = $_REQUEST["subject"];
-
-	if($_REQUEST["type"] == "mail"){
-		$ln["href"] = "mailto:" . str_replace('mailto:', '', $_REQUEST["emaillink"]);
-	} else{
-		$ln["href"] = $_REQUEST["href"];
-	}
-
-	$ln["attribs"] = $_REQUEST["attribs"];
-	$ln["target"] = $_REQUEST["target"];
-
-	$ln["jswin"] = isset($_REQUEST["jswin"]) && $_REQUEST["jswin"] ? $_REQUEST["jswin"] : null;
-	$ln["jscenter"] = isset($_REQUEST["jscenter"]) && $_REQUEST["jscenter"] ? $_REQUEST["jscenter"] : null;
-	$ln["jsposx"] = $_REQUEST["jsposx"];
-	$ln["jsposy"] = $_REQUEST["jsposy"];
-	$ln["jswidth"] = $_REQUEST["jswidth"];
-	$ln["jsheight"] = $_REQUEST["jsheight"];
-	$ln["jsstatus"] = isset($_REQUEST["jsstatus"]) ? $_REQUEST["jsstatus"] : null;
-	$ln["jsscrollbars"] = isset($_REQUEST["jsscrollbars"]) ? $_REQUEST["jsscrollbars"] : null;
-	$ln["jsmenubar"] = isset($_REQUEST["jsmenubar"]) ? $_REQUEST["jsmenubar"] : null;
-	$ln["jstoolbar"] = isset($_REQUEST["jstoolbar"]) ? $_REQUEST["jstoolbar"] : null;
-	$ln["jsresizable"] = isset($_REQUEST["jsresizable"]) ? $_REQUEST["jsresizable"] : null;
-	$ln["jslocation"] = isset($_REQUEST["jslocation"]) ? $_REQUEST["jslocation"] : null;
-
-	$ln["img_id"] = $_REQUEST["img_id"];
-	$ln["img_src"] = $_REQUEST["img_src"];
-	$ln["text"] = $_REQUEST["text"];
-	$ln["type"] = ($_REQUEST["type"] == "mail") ? "int" : $_REQUEST["type"];
-	$ln["ctype"] = $_REQUEST["ctype"];
-	$ln["width"] = $_REQUEST["width"];
-	$ln["height"] = $_REQUEST["height"];
-	$ln["border"] = $_REQUEST["border"];
-	$ln["hspace"] = $_REQUEST["hspace"];
-	$ln["vspace"] = $_REQUEST["vspace"];
-	$ln["align"] = $_REQUEST["align"];
-	$ln["alt"] = $_REQUEST["alt"];
-	$ln["img_title"] = $_REQUEST["img_title"];
 	$link = serialize($ln);
 } else{
 	$name = $_REQUEST['we_cmd'][1];
@@ -263,7 +255,7 @@ if(isset($_REQUEST["ok"]) && isset($_REQUEST["linklist"]) && $_REQUEST["ok"] && 
 		$jsresizable = $ll->getJsWinAttrib($nr, "jsresizable");
 		$jslocation = $ll->getJsWinAttrib($nr, "jslocation");
 
-                //added for #7269
+		//added for #7269
 		$bcc = $ll->getBcc($nr);
 		$cc = $ll->getCc($nr);
 		$subject = $ll->getSubject($nr);
@@ -313,7 +305,7 @@ if(isset($_REQUEST["ok"]) && isset($_REQUEST["linklist"]) && $_REQUEST["ok"] && 
 		$title = isset($ln["title"]) ? $ln["title"] : "";
 		$target = isset($ln["target"]) ? $ln["target"] : "";
 
-                 //added for #7269
+		//added for #7269
 		$bcc = isset($ln["bcc"]) ? $ln["bcc"] : "";
 		$cc = isset($ln["cc"]) ? $ln["cc"] : "";
 		$subject = isset($ln["subject"]) ? $ln["subject"] : "";
@@ -369,13 +361,13 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js');
 	function applyOnEnter(evt) {
 
 		_elemName = "target";
-		if ( typeof(evt["srcElement"]) != "undefined" ) { // IE
+		if (typeof(evt["srcElement"]) != "undefined") { // IE
 			_elemName = "srcElement";
 		}
 
-		if ( !( evt[_elemName].tagName == "SELECT" ||
-			( evt[_elemName].tagName == "INPUT" && (evt[_elemName].name == "href_int" || evt[_elemName].name == "href_obj" || evt[_elemName].name == "src_int") )
-	) ) {
+		if (!(evt[_elemName].tagName == "SELECT" ||
+						(evt[_elemName].tagName == "INPUT" && (evt[_elemName].name == "href_int" || evt[_elemName].name == "href_obj" || evt[_elemName].name == "src_int"))
+						)) {
 			document.forms['we_form'].submit();
 			return true;
 
@@ -383,35 +375,36 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js');
 	}
 
 
-	function changeTypeSelect(s){
-		for(var i=0; i< s.options.length; i++){
-			var trObj = document.getElementById(s.options[i].value+"_tr");
-			if(i != s.selectedIndex){
+	function changeTypeSelect(s) {
+		for (var i = 0; i < s.options.length; i++) {
+			var trObj = document.getElementById(s.options[i].value + "_tr");
+			if (i != s.selectedIndex) {
 				trObj.style.display = "none";
-			}else{
+			} else {
 				trObj.style.display = "";
 			}
 		}
-                //added for #7269
-                var emailTable=document.getElementById("emailOptions");
-                if(s.value=="mail"){
-                    emailTable.style.display="block";
-                }else{
-                    emailTable.style.display="none";}
+		//added for #7269
+		var emailTable = document.getElementById("emailOptions");
+		if (s.value == "mail") {
+			emailTable.style.display = "block";
+		} else {
+			emailTable.style.display = "none";
+		}
 	}
-	function changeCTypeSelect(s){
-		for(var i=0; i< s.options.length; i++){
-			var trObj = document.getElementById("c"+s.options[i].value+"_tr");
+	function changeCTypeSelect(s) {
+		for (var i = 0; i < s.options.length; i++) {
+			var trObj = document.getElementById("c" + s.options[i].value + "_tr");
 			var imgPropsObj = document.getElementById("cimgprops_tr");
-			if(i != s.selectedIndex){
+			if (i != s.selectedIndex) {
 				trObj.style.display = "none";
-			}else{
+			} else {
 				trObj.style.display = "";
 			}
 		}
-		if(s.options[s.selectedIndex].value=="text"){
+		if (s.options[s.selectedIndex].value == "text") {
 			imgPropsObj.style.display = "none";
-		}else{
+		} else {
 			imgPropsObj.style.display = "";
 		}
 	}
@@ -428,8 +421,8 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js');
 		return (((key >= 48) && (key <= 57)) || (key == 0) || (key == 13));
 	}
 
-	function openColorChooser(name,value) {
-		var win = new jsWindow("colorDialog.php?we_dialog_args[type]=dialog&we_dialog_args[name]="+escape(name)+"&we_dialog_args[color]="+escape(value),"colordialog",-1,-1,400,380,true,false,true,false);
+	function openColorChooser(name, value) {
+		var win = new jsWindow("colorDialog.php?we_dialog_args[type]=dialog&we_dialog_args[name]=" + escape(name) + "&we_dialog_args[color]=" + escape(value), "colordialog", -1, -1, 400, 380, true, false, true, false);
 	}
 
 	function IsDigitPercent(e) {
@@ -441,7 +434,7 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js');
 			key = event.keyCode;
 		}
 
-		return (((key >= 48) && (key <= 57)) || (key == 37) || (key == 0)  || (key == 13));
+		return (((key >= 48) && (key <= 57)) || (key == 37) || (key == 0) || (key == 13));
 	}
 
 	function doUnload() {
@@ -458,64 +451,64 @@ if(isset($_REQUEST["ok"]) && $_REQUEST["ok"] && $_REQUEST['we_cmd'][0] == "edit_
 	$_SESSION['weS']['WE_LINK'] = $link;
 	//FIXME: we_field XSS
 	?>
-			opener.setScrollTo();
-			opener.we_cmd("change_link_at_class", "<?php print $_REQUEST["we_transaction"]; ?>", "<?php print $_REQUEST["we_field"]; ?>", "<?php print $_REQUEST["name"]; ?>");
-			top.close();
+		opener.setScrollTo();
+		opener.we_cmd("change_link_at_class", "<?php print $_REQUEST["we_transaction"]; ?>", "<?php print $_REQUEST["we_field"]; ?>", "<?php print $_REQUEST["name"]; ?>");
+		top.close();
 	<?php
 } else if(isset($_REQUEST["ok"]) && $_REQUEST["ok"] && $_REQUEST['we_cmd'][0] == "edit_link_at_object"){
 	$_SESSION['weS']['WE_LINK'] = $link;
 	?>
-			opener.setScrollTo();
-			opener.we_cmd("change_link_at_object", "<?php print $_REQUEST["we_transaction"]; ?>", "link_<?php print $_REQUEST["name"]; ?>");
-			top.close();
+		opener.setScrollTo();
+		opener.we_cmd("change_link_at_object", "<?php print $_REQUEST["we_transaction"]; ?>", "link_<?php print $_REQUEST["name"]; ?>");
+		top.close();
 	<?php
 } else if(isset($_REQUEST["ok"]) && $_REQUEST["ok"] && isset($linklist) && $linklist){
 	$_SESSION['weS']["WE_LINKLIST"] = $linklist;
 	?>
-			opener.setScrollTo();
-			opener.we_cmd("change_linklist", "<?php print $_REQUEST["name"]; ?>", "");
+		opener.setScrollTo();
+		opener.we_cmd("change_linklist", "<?php print $_REQUEST["name"]; ?>", "");
 	<?php
 } else if(isset($_REQUEST["ok"]) && $_REQUEST["ok"] && isset($link) && $link){
 	$_SESSION['weS']['WE_LINK'] = $link;
 	?>
-			opener.setScrollTo();
-			opener.we_cmd("change_link", "<?php print $_REQUEST["name"]; ?>", "");
+		opener.setScrollTo();
+		opener.we_cmd("change_link", "<?php print $_REQUEST["name"]; ?>", "");
 	<?php
 } else{
 	?>
-			function we_cmd() {
-				var args = "";
-				var url = "<?php print WEBEDITION_DIR; ?>we_cmd.php?";
+		function we_cmd() {
+			var args = "";
+			var url = "<?php print WEBEDITION_DIR; ?>we_cmd.php?";
 
-				for (var i = 0; i < arguments.length; i++) {
-					url += "we_cmd["+i+"]="+escape(arguments[i]);
-					if (i < (arguments.length - 1)) {
-						url += "&";
-					}
+			for (var i = 0; i < arguments.length; i++) {
+				url += "we_cmd[" + i + "]=" + escape(arguments[i]);
+				if (i < (arguments.length - 1)) {
+					url += "&";
 				}
+			}
 
-				switch (arguments[0]) {
-					case "openDocselector":
-						new jsWindow(url,"we_fileselector",-1,-1,<?php echo WINDOW_DOCSELECTOR_WIDTH . ',' . WINDOW_DOCSELECTOR_HEIGHT; ?>,true,true,true,true);
-						break;
+			switch (arguments[0]) {
+				case "openDocselector":
+					new jsWindow(url, "we_fileselector", -1, -1,<?php echo WINDOW_DOCSELECTOR_WIDTH . ',' . WINDOW_DOCSELECTOR_HEIGHT; ?>, true, true, true, true);
+					break;
 
-					case "browse_server":
-						new jsWindow(url, "browse_server", -1, -1, 840, 400, true, false, true);
-						break;
+				case "browse_server":
+					new jsWindow(url, "browse_server", -1, -1, 840, 400, true, false, true);
+					break;
 
-					default:
-						for (var i = 0; i < arguments.length; i++) {
-							args += 'arguments['+i+']' + ((i < (arguments.length-1)) ? ',' : '');
-						}
-						eval('opener.parent.we_cmd('+args+')');
+				default:
+					for (var i = 0; i < arguments.length; i++) {
+						args += 'arguments[' + i + ']' + ((i < (arguments.length - 1)) ? ',' : '');
 					}
-				}
+					eval('opener.parent.we_cmd(' + args + ')');
+			}
+		}
 
-				self.focus();
+		self.focus();
 	<?php
 }
 ?>
-		//-->
+	//-->
 </script>
 
 <?php print STYLESHEET; ?>
@@ -587,10 +580,10 @@ if(isset($_REQUEST["ok"]) && $_REQUEST["ok"] && $_REQUEST['we_cmd'][0] == "edit_
 			$objLink = $yuiSuggest->getHTML();
 		}
 
-                //added for #7269
-                $bcc = we_html_tools::htmlTextInput("bcc", 30, $bcc, "", "", "text", 300);
-                $cc = we_html_tools::htmlTextInput("cc", 30, $cc, "", "", "text", 300);
-                $subject = we_html_tools::htmlTextInput("subject", 30, $subject, "", "", "text", 300);
+		//added for #7269
+		$bcc = we_html_tools::htmlTextInput("bcc", 30, $bcc, "", "", "text", 300);
+		$cc = we_html_tools::htmlTextInput("cc", 30, $cc, "", "", "text", 300);
+		$subject = we_html_tools::htmlTextInput("subject", 30, $subject, "", "", "text", 300);
 
 		$anchor = we_html_tools::htmlTextInput("anchor", 30, $anchor, "", "", "text", 300);
 		$accesskey = we_html_tools::htmlTextInput("accesskey", 30, $accesskey, "", "", "text", 140);
