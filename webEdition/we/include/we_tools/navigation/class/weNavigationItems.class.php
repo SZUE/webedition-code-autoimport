@@ -180,7 +180,9 @@ class weNavigationItems{
 			self::$cache[$parentid] = $this->items;
 		}
 
-		$this->items['id' . $parentid]->type = $showRoot ? ($_parent == 0 ? 'root' : $this->items['id' . $parentid]->type) : 'root';
+		if(is_object($this->items['id' . $parentid])){
+			$this->items['id' . $parentid]->type = $showRoot ? ($parentid == 0 ? 'root' : $this->items['id' . $parentid]->type) : 'root';
+		}
 
 		$navigationRulesStorage = weNavigationCache::getCachedRule();
 		if($navigationRulesStorage !== false){
