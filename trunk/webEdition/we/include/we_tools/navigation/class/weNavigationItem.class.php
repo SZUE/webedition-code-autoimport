@@ -42,7 +42,7 @@ class weNavigationItem{
 	var $position;
 	var $current = 'false';
 	var $containsCurrent = 'false';
-	var $visible = 'true';
+	private $visible = 'true';
 	var $CurrentOnUrlPar = '0';
 	var $CurrentOnAnker = '0';
 	//attributes
