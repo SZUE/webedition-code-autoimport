@@ -99,14 +99,13 @@ class weNavigationItem{
 
 				$__id = path_to_id($__path, FILE_TABLE);
 				if($__id){
-					$_v = f('SELECT ID FROM ' . FILE_TABLE . ' WHERE ID=' . intval($__id) . ' AND Published>0', 'ID', $db);
-					$this->visible = !empty($_v) ? 'true' : 'false';
+					$this->visible = (f('SELECT 1 AS a FROM ' . FILE_TABLE . ' WHERE ID=' . intval($__id) . ' AND Published>0', 'a', $db)==1?'true':'false');
 				}
 				if(NAVIGATION_DIRECTORYINDEX_HIDE && NAVIGATION_DIRECTORYINDEX_NAMES != ''){
 					$mypath = id_to_path($this->docid, FILE_TABLE);
 					$mypath_parts = pathinfo($mypath);
 					if(in_array($mypath_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
-						$this->visible = f('SELECT 1 AS a FROM ' . FILE_TABLE . ' WHERE ID=' . intval($this->docid) . ' AND Published>0', 'a', $db) ? 'true' : 'false';
+						$this->visible = ( f('SELECT 1 AS a FROM ' . FILE_TABLE . ' WHERE ID=' . intval($this->docid) . ' AND Published>0', 'a', $db)==1?'true':'false');
 					}
 				}
 				break;
@@ -114,14 +113,13 @@ class weNavigationItem{
 			// #6916
 			case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
 				$__id = $this->docid;
-				$this->visible = f('SELECT 1 AS a FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($__id) . ' AND Published>0', 'a', $db) ? 'true' : 'false';
+				$this->visible = (f('SELECT 1 AS a FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($__id) . ' AND Published>0', 'a', $db)==1?'true':'false');
 
 				if(NAVIGATION_DIRECTORYINDEX_HIDE && NAVIGATION_DIRECTORYINDEX_NAMES != ''){
 					$mypath = id_to_path($this->docid, OBJECT_FILES_TABLE);
 					$mypath_parts = pathinfo($mypath);
 					if(in_array($mypath_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
-						$_v = f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($this->docid) . ' AND Published>0', 'ID', $db);
-						$this->visible = !empty($_v) ? 'true' : 'false';
+						$this->visible = (f('SELECT 1 AS a FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($this->docid) . ' AND Published>0', 'a', $db)==1?'true':'false');
 					}
 				}
 				break;
@@ -236,7 +234,8 @@ class weNavigationItem{
 		if(defined('CUSTOMER_TABLE') && $this->limitaccess){ // only init filter if access is limited
 			$_filter = new weNavigationCustomerFilter();
 			$_filter->initByNavItem($this);
-			return $_filter->customerHasAccess() ? 'true' : 'false';
+			$this->visible=($_filter->customerHasAccess()?'true':'false');
+			return ($this->visible=='true');
 		}
 		return true;
 	}
