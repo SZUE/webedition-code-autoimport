@@ -630,6 +630,14 @@ abstract class we_html_tools{
 		return $retVal;
 	}
 
+	public static function getHTMLDocument($body = '', $extraHead = '', $title){
+		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
+				we_html_element::htmlHead(
+					self::getHtmlInnerHead($title) . STYLESHEET . $extraHead
+				) . ($body ? $body : we_html_element::htmlBody())
+		);
+	}
+
 	public static function htmlTop($title = 'webEdition', $charset = '', $doctype = ''){
 		self::headerCtCharset('text/html', ($charset ? $charset : $GLOBALS['WE_BACKENDCHARSET']));
 		print self::getHtmlTop($title, $charset, $doctype);

@@ -91,7 +91,6 @@ class weBannerFrames extends weModuleBannerFrames{
 		if(isset($_GET["page"]))
 			$page = $_GET["page"];
 
-
 		$headline1 = ($isFolder == 1) ? g_l('modules_banner', '[group]') : g_l('modules_banner', '[banner]');
 		$text = "" . ($isFolder == 1) ? g_l('modules_banner', '[newbannergroup]') : g_l('modules_banner', '[newbanner]');
 		if(isset($_GET["txt"]))
@@ -135,10 +134,6 @@ top.content.hloaded=1;');
 		</body>';
 
 		return $this->getHTMLDocument($body, $extraHead);
-	}
-
-	function getHTMLEditorBody(){
-		return $this->View->getProperties();
 	}
 
 	function getHTMLEditorFooter($mode = 0){//TODO: make $extraHeader, $body and use $this->getHTMLDocument($body, $extraHead);

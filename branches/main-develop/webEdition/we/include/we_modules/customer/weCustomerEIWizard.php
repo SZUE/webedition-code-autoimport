@@ -48,6 +48,26 @@ class weCustomerEIWizard{
 		$this->frameset = $frameset;
 	}
 
+	function getHTML($what = '', $mode = '', $step = ''){
+		switch($what){
+		case "export":
+		case "import":
+			print $this->getHTMLFrameset($what);
+			break;
+		case "eibody":
+			print $this->getHTMLStep($mode, $step);
+			break;
+		case "eifooter":
+			print $this->getHTMLFooter($mode, $step);
+			break;
+		case "eiload":
+			print $this->getHTMLLoad();
+			break;
+		default:
+			error_log(__FILE__ . " unknown reference: $what");
+		}
+	}
+
 	function getHTMLFrameset($mode){
 
 		$head = we_html_tools::getHtmlInnerHead(g_l('modules_customer', '[export_title]')) .

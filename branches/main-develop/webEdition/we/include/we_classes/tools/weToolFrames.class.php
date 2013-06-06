@@ -101,7 +101,8 @@ class weToolFrames extends weModuleFrames{
 		$js = $this->getJSCmdCode() .
 			$this->Tree->getJSTreeCode() .
 			we_html_element::jsElement($this->getJSStart()) .
-			we_html_element::jsScript(JS_DIR . 'we_showMessage.js');
+			we_html_element::jsScript(JS_DIR . 'we_showMessage.js') .
+			we_main_headermenu::css();
 
 		$body = we_html_element::htmlBody(array('style' => 'background-color:grey;margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;', "onload" => "start();")
 				, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')

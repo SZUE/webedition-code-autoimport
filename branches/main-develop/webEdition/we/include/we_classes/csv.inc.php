@@ -175,3 +175,4 @@ class CSV{
 		weFile::save($filename, $val, 'w');
 	}
 
+}

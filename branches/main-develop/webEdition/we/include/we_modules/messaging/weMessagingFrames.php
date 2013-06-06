@@ -770,7 +770,7 @@ function msg_start() {
 
 	function getHTMLFrameset(){//TODO: use parent as soon as userTree.class exists
 		//TODO: most of these JS will be obsolet when calling parent::getHTMLFRameset
-		$extraHead .= $this->getJSCmdCode() . 
+		$extraHead = $this->getJSCmdCode() . 
 			self::getJSToggleTreeCode($this->module, $this->treeDefaultWidth) .
 			we_html_element::jsScript(JS_DIR . 'we_showMessage.js') .
 			we_html_element::jsScript(JS_DIR . 'messaging_std.js') .

@@ -35,12 +35,11 @@ $ExImport = $weFrame = null;
 
 if($what == 'export' || $what == 'eibody' || $what == 'eifooter' || $what == 'eiload' || $what == 'import' || $what == 'eiupload'){
 	$ExImport = new weCustomerEIWizard();
-
 	$step = (isset($_REQUEST['step']) ? $_REQUEST['step'] : 0);
+	$ExImport->getHTML($what, $mode, $step);
 } else{
 	$weFrame = new weCustomerFrames();
 	$weFrame->View->processVariables();
 	$weFrame->View->processCommands();
+	$weFrame->getHTML($what, $mode);
 }
-
-$weFrame->getHTML($what, $mode, $step);

@@ -119,7 +119,7 @@ class we_workflow_view extends we_workflow_base{
 			$out = ob_get_contents();
 			ob_end_clean();
 		} else{
-			//$out=$this->getPropertyJS(); this is bullshit since getPropertyJS writes directly to screen
+			//$out=$this->getPropertyJS(); this is bullshit since getPropertyJS writes directly to screen <= then make it return instead of write
 			$this->getPropertyJS();
 
 			$out = '</head><body class="weEditorBody" onload="loaded=1;" onunload="doUnload()"><form name="we_form" onsubmit="return false">' . "\r\n";
@@ -567,17 +567,14 @@ class we_workflow_view extends we_workflow_base{
 	}
 
 	function getCmdJS(){
-		?>
-		<script type="text/javascript"><!--
-				function submitForm(){
-					var f = self.document.we_form;
-					f.target = "cmd";
-					f.method = "post";
-					f.submit();
-				}
-				//-->
-		</script>
-		<?php
+		return we_html_element::jsElement('
+function submitForm(){
+	var f = self.document.we_form;
+	f.target = "cmd";
+	f.method = "post";
+	f.submit();
+}
+		');
 	}
 
 	function getPropertyJS(){

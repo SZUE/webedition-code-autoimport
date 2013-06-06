@@ -215,7 +215,7 @@ class weExportFrames extends weModuleFrames{
 		);
 	}
 
-	function getHTMLProperties($preselect = ""){
+	function getHTMLProperties($preselect = ""){// TODO: move to weExportView
 		$this->SelectionTree->init($this->frameset, $this->editorBodyFrame, $this->editorBodyFrame, $this->cmdFrame);
 
 		$out = "";

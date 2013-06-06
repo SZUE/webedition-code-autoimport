@@ -120,29 +120,29 @@ function we_cmd(){
 	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 	switch (arguments[0]){
 		case "new_shop":
-			' . $this->topFrame . '.resize.shop_properties.location="<?php print WE_SHOP_MODULE_DIR; ?>edit_shop_editorFrameset.php";
+			' . $this->topFrame . '.resize.right.editor.location="<?php print WE_SHOP_MODULE_DIR; ?>edit_shop_frameset.php?pnt=editor";
 			break;
 		case "delete_shop":
-			if (' . $this->topFrame . '.resize && ' . $this->topFrame . '.resize.shop_properties.edbody.hot && ' . $this->topFrame . '.resize.shop_properties.edbody.hot == 1 ) {
+			if (' . $this->topFrame . '.resize && ' . $this->topFrame . '.resize.right.editor.edbody.hot && ' . $this->topFrame . '.resize.right.editor.edbody.hot == 1 ) {
 				if(confirm("' . g_l("modules_shop", "[del_shop]") . '")){
-					' . $this->topFrame . '.resize.shop_properties.edbody.deleteorder();
+					' . $this->topFrame . '.resize.right.editor.edbody.deleteorder();
 				}
 			} else {
 				' . we_message_reporting::getShowMessageCall(g_l("modules_shop", "[nothing_to_delete]"), we_message_reporting::WE_MESSAGE_NOTICE) . '
 			}
 			break;
 		case "new_article":
-			if (' . $this->topFrame . '.resize && ' . $this->topFrame . '.resize.shop_properties.edbody.hot && ' . $this->topFrame . '.resize.shop_properties.edbody.hot == 1 ) {
-				top.content.resize.shop_properties.edbody.neuerartikel();
+			if (' . $this->topFrame . '.resize && ' . $this->topFrame . '.resize.right.editor.edbody.hot && ' . $this->topFrame . '.resize.right.editor.edbody.hot == 1 ) {
+				top.content.resize.right.editor.edbody.neuerartikel();
 			} else {
 				' . we_message_reporting::getShowMessageCall(g_l("modules_shop", "[no_order_there]"), we_message_reporting::WE_MESSAGE_ERROR) . '
 			}
 			break;
 		case "revenue_view":
 		//FIXME: this is not correct; document doesnt work like this
-			' . ($resultD > 0 ? $this->topFrame . '.resize.shop_properties.location="' . WE_SHOP_MODULE_DIR . 'edit_shop_editorFramesetTop.php?typ=document";' :
-				(!empty($resultO) ? $this->topFrame . '.resize.shop_properties.location="' . WE_SHOP_MODULE_DIR . 'edit_shop_editorFramesetTop.php?typ=object&ViewClass='.$classid.'";' :
-					$this->topFrame . '.resize.shop_properties.location="' . WE_SHOP_MODULE_DIR . 'edit_shop_editorFramesetTop.php?typ=document')) . '";
+			' . ($resultD > 0 ? $this->topFrame . '.resize.right.editor.location="' . WE_SHOP_MODULE_DIR . 'edit_shop_frameset.php?pnt=editor&top=1&typ=document";' :
+				(!empty($resultO) ? $this->topFrame . '.resize.right.editor.location="' . WE_SHOP_MODULE_DIR . 'edit_shop_frameset.php?pnt=editor&top=1&typ=object&ViewClass='.$classid.'";' :
+					$this->topFrame . '.resize.right.editor.location="' . WE_SHOP_MODULE_DIR . 'edit_shop_frameset.php?pnt=editor&top=1&typ=document')) . '";
 			break;
 		';
 		$years = we_shop_shop::getAllOrderYears();
@@ -305,7 +305,7 @@ function we_cmd() {
 ' . $this->getJSSubmitFunction());
 	}
 	
-	function getHTMLProperties() {
+	function getProperties() {
 		we_html_tools::protect();
 		//we_html_tools::htmlTop();
 		print STYLESHEET;
@@ -958,7 +958,7 @@ function we_cmd() {
 				}
 
 				function deleteorder() {
-					top.content.resize.shop_properties.location = "<?php print WE_SHOP_MODULE_DIR; ?>edit_shop_properties.php?deletethisorder=1&bid=<?php echo $_REQUEST["bid"]; ?>";
+					top.content.resize.right.editor.location = "<?php print WE_SHOP_MODULE_DIR; ?>edit_shop_frameset.php?pnt=edbody&deletethisorder=1&bid=<?php echo $_REQUEST["bid"]; ?>";
 					top.content.deleteEntry(<?php echo $_REQUEST["bid"]; ?>);
 				}
 
@@ -998,7 +998,7 @@ function we_cmd() {
 				// ********************************************************************************
 			} else{ // This order has no more entries
 				echo we_html_element::jsElement('
-				top.content.resize.shop_properties.location="' . WE_SHOP_MODULE_DIR . 'edit_shop_properties.php?deletethisorder=1&bid=' . $_REQUEST["bid"] . '";
+				top.content.resize.right.editor.location="' . WE_SHOP_MODULE_DIR . 'edit_shop_frameset.php?pnt=edbody&deletethisorder=1&bid=' . $_REQUEST["bid"] . '";
 				top.content.deleteEntry(' . $_REQUEST['bid'] . ');
 			') . '
 		</head>
@@ -1809,8 +1809,9 @@ attribs["tooltip"]="";' .
 				unset($a[$k]);
 		}
 	}
-	
+
 	//some functions from edit_shop_properties
+
 	function getFieldFromShoparticle(array $array, $name, $length = 0){
 		$val = ( isset($array['we_' . $name]) ? $array['we_' . $name] : (isset($array[$name]) ? $array[$name] : '' ) );
 

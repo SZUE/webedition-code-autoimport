@@ -108,6 +108,9 @@ class weModuleFrames {
 			case "treefooter":
 				print $this->getHTMLTreeFooter();
 				break;
+			case "search":
+				print $this->getHTMLSearch();
+				break;
 			default:
 				t_e(__FILE__ . " unknown reference: $what");
 		}
@@ -149,7 +152,7 @@ class weModuleFrames {
 		return we_html_element::htmlDiv(array('class' => 'menuDiv'), $table->getHtml());
 	}
 
-	function getHTMLResize($extraHead = ''){
+	function getHTMLResize($extraHead = '', $editorParams = ''){//TODO: only customer uses param sid: handle sid with edParams
 		$this->setTreeWidthFromCookie();
 		$extraHead = self::getJSToggleTreeCode($this->module, $this->treeDefaultWidth) . 
 			$extraHead;
@@ -166,7 +169,7 @@ class weModuleFrames {
 						we_html_element::htmlDiv(array('style' => 'position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px; width: ' . weTree::HiddenWidth . 'px; background-image: url(/webEdition/images/v-tabs/background.gif); background-repeat: repeat-y; border-top: 1px solid black;'), $_incDecTree) .
 						we_html_element::htmlIFrame('left', $this->frameset . '?pnt=left', 'position: absolute; top: 0px; bottom: 0px; left: ' . weTree::HiddenWidth . 'px; right: 0px;')
 					) .
-					we_html_element::htmlIFrame('right', $this->frameset . '?pnt=right' . (isset($_REQUEST['sid']) ? '&sid=' . $_REQUEST['sid'] : ''), 'position: absolute; top: 0px; bottom: 0px; left: ' . $this->treeWidth . 'px; right: 0px; width:auto; border-left: 1px solid black; overflow: hidden;')
+					we_html_element::htmlIFrame('right', $this->frameset . '?pnt=right' . (isset($_REQUEST['sid']) ? '&sid=' . $_REQUEST['sid'] : '') . $editorParams, 'position: absolute; top: 0px; bottom: 0px; left: ' . $this->treeWidth . 'px; right: 0px; width:auto; border-left: 1px solid black; overflow: hidden;')
 			));
 
 		return $this->getHTMLDocument($body, $extraHead);
@@ -187,11 +190,10 @@ class weModuleFrames {
 		return $this->getHTMLDocument($body);
 	}
 
-	function getHTMLRight(){
-
+	function getHTMLRight($extraHead = '', $editorParams = ''){
 		$frameset = new we_html_frameset(array("framespacing" => "0", "border" => "0", "frameborder" => "no"));
 		$frameset->setAttributes(array("cols" => "*"));
-		$frameset->addFrame(array("src" => $this->frameset . "?pnt=editor" . (isset($_REQUEST['sid']) ? '&sid=' . $_REQUEST['sid'] : ''), "name" => "editor", "noresize" => null, "scrolling" => "no"));
+		$frameset->addFrame(array("src" => $this->frameset . "?pnt=editor" . (isset($_REQUEST['sid']) ? '&sid=' . $_REQUEST['sid'] : '') . $editorParams, "name" => "editor", "noresize" => null, "scrolling" => "no"));
 		$noframeset = new we_baseElement("noframes");
 		// set and return html code
 		$body = $frameset->getHtml() . $noframeset->getHTML();
@@ -212,6 +214,14 @@ class weModuleFrames {
 		$body = $frameset->getHtml();
 
 		return $this->getHTMLDocument($body);
+	}
+
+	function getHTMLEditorHeader(){
+		// to be overridden
+	}
+
+	function getHTMLEditorBody(){
+		return $this->View->getProperties();
 	}
 
 	function getHTMLEditorFooter($btn_cmd){
@@ -245,6 +255,10 @@ class weModuleFrames {
 		$body = we_html_element::htmlBody();
 
 		return $this->getHTMLDocument($body, $head);
+	}
+
+	function getHTMLSearch(){
+		// to be overridden
 	}
 
 	function getHTMLBox($content, $headline = "", $width = "100", $height = "50", $w = "25", $vh = "0", $ident = "0", $space = "5", $headline_align = "left", $content_align = "left"){

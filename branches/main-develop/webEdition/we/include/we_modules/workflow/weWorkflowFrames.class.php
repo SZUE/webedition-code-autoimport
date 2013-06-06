@@ -241,7 +241,7 @@ class weWorkflowFrames extends weModuleFrames{
 		<?php
 		//end ex we_workflow_moduleFrames::getJSTreeCode()
 
-		$out.='
+		$out = '
 		 <script  type="text/javascript">
 		function loadData(){
 			menuDaten.clear();';
@@ -393,22 +393,21 @@ class weWorkflowFrames extends weModuleFrames{
 
 		we_html_tools::htmlTop();
 		print STYLESHEET;
+		print we_html_element::jsElement('
+function setStatusCheck(){
+	var a=document.we_form._status_workflow;
+	var b;
+	if(top.content.resize.right.editor.edbody.loaded) b=top.content.resize.right.editor.edbody.getStatusContol();
+	else setTimeout("setStatusCheck()",100);
+
+	if(b==1) a.checked=true;
+	else a.checked=false;
+}
+function we_save() {
+	top.content.we_cmd("save_workflow");
+}
+		');
 		?>
-		<script  type="text/javascript">
-			function setStatusCheck(){
-				var a=document.we_form._status_workflow;
-				var b;
-				if(top.content.resize.right.editor.edbody.loaded) b=top.content.resize.right.editor.edbody.getStatusContol();
-				else setTimeout("setStatusCheck()",100);
-
-				if(b==1) a.checked=true;
-				else a.checked=false;
-
-			}
-			function we_save() {
-				top.content.we_cmd('save_workflow');
-
-			}
 		</script>
 		</head>
 		<body bgcolor="white" background="<?php echo IMAGE_DIR;?>edit/editfooterback.gif" marginwidth="0" marginheight="0" leftmargin="0" topmargin="0"<?php if($mode == 0){ ?> onLoad="setStatusCheck()"<?php } ?>>
@@ -434,45 +433,25 @@ class weWorkflowFrames extends weModuleFrames{
 	}
 
 	function getHTMLLog($docID, $type = 0){
-		print we_html_tools::htmlTop();
-		print STYLESHEET;
-		print we_html_element::jsElement('self.focus();').'
-		</head>
-		<body class="weDialogBody">'.
-		we_workflow_view::getLogForDocument($docID, $type).
-		'</body></html>';
+		$extraHead = we_html_element::jsElement('self.focus();');
+		$body = we_html_element::htmlBody(array('class' => 'weDialogBody'), we_workflow_view::getLogForDocument($docID, $type));
+		
+		return $this->getHTMLDocument($body, $extraHead);
 	}
 
 	function getHTMLCmd(){
-		$this->View->getCmdJS();
-		we_html_tools::htmlTop();
-		print STYLESHEET;
-		?>
-		</head>
-		<body>
-			<form name="we_form">
-				<?php
-				print $this->View->htmlHidden("wcmd", "");
-				print $this->View->htmlHidden("wopt", "");
-				?>
-			</form>
-		</body>
-		</html>
-		<?php
+		$extraHead = $this->View->getCmdJS();
+		$form = we_html_element::htmlForm(array('name' => 'we_form'), $this->View->htmlHidden("wcmd", "") . $this->View->htmlHidden("wopt", ""));
+		$body = we_html_element::htmlBody(array(), $form);
+
+		return $this->getHTMLDocument($body, $extraHead);
 	}
 
 	function getHTMLLogQuestion(){
-		we_html_tools::htmlTop();
-		print STYLESHEET;
-		?>
-		</head>
-		<body class="weDialogBody">
-			<form name="we_form">
-				<?php print $this->View->getLogQuestion(); ?>
-			</form>
-		</body>
-		</html>
-		<?php
+		$form = we_html_element::htmlForm(array('name' => 'we_form'), $this->View->getLogQuestion());
+		$body = we_html_element::htmlBody(array(), $form);
+
+		return $this->getHTMLDocument($body);
 	}
 
 }

@@ -38,6 +38,9 @@ class weCustomerFrames extends weModuleFrames{
 
 	function getHTML($what = '', $mode = 0, $step = 0){
 		switch($what){
+			case "edfooter": 
+				print $this->getHTMLEditorFooter('save_customer');
+				break;
 			case 'treeheader':
 				print $this->getHTMLTreeHeader();
 				break;
@@ -61,19 +64,6 @@ class weCustomerFrames extends weModuleFrames{
 				break;
 			case 'settings':
 				print $this->getHTMLSettings();
-				break;
-			case 'export':
-			case 'import':
-				print $this->getHTMLFrameset($what);
-				break;
-			case 'eibody':
-				print $this->getHTMLStep($mode, $step);
-				break;
-			case 'eifooter':
-				print $this->getHTMLFooter($mode, $step);
-				break;
-			case 'eiload':
-				print $this->getHTMLLoad();
 				break;
 			case 'resize':
 				print $this->getHTMLResize();
@@ -428,11 +418,7 @@ class weCustomerFrames extends weModuleFrames{
 		return $this->getHTMLDocument($body, $this->View->getJSProperty());
 	}
 
-	/* use parent
-	function getHTMLEditorFooter(){}
-	*/
-
-	function getHTMLProperties($preselect = ''){
+	function getHTMLProperties($preselect = ''){// TODO: move to weCustomerView
 		$parts = array();
 
 		$branches = array();

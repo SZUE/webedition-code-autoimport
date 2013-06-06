@@ -795,7 +795,7 @@ class weVotingFrames extends weModuleFrames{
 		return $parts;
 	}
 
-	function getHTMLProperties($preselect = ""){
+	function getHTMLProperties($preselect = ""){// TODO: move to weVotingView
 
 		$tabNr = isset($_REQUEST["tabnr"]) ? (($this->View->voting->IsFolder && $_REQUEST["tabnr"] != 1) ? 1 : $_REQUEST["tabnr"]) : 1;
 

@@ -31,16 +31,22 @@ class weShopFrames extends weModuleFrames{
 	//var $edit_cmd = "edit_newsletter";
 
 	function __construct($frameset){
-
-		parent::__construct(WE_SHOP_MODULE_DIR . "edit_shop_frameset.php"); //FIXME: tmp!
+		parent::__construct(WE_SHOP_MODULE_DIR . "edit_shop_frameset.php");
 		$this->View = new weShopView(WE_SHOP_MODULE_DIR . "edit_shop_frameset.php", "top.content");
-
 		$this->module = "shop";
 		$this->treeDefaultWidth = 204;
 	}
 
 	function getHTML($what){
-		parent::getHTML($what);
+		switch($what){
+			/*
+			case "shopproperties":
+				print $this->getHTMLShopProperties();
+				break;
+			*/
+			default:
+				parent::getHTML($what);
+		}
 	}
 
 	function getJSCmdCode(){
@@ -64,14 +70,14 @@ class weShopFrames extends weModuleFrames{
 				fr.writeln("wasdblclick=0;");
 				fr.writeln("tout=null");
 				fr.writeln("function doClick(id,ct,table){");
-				fr.writeln("top.content.resize.shop_properties.location='<?php print WE_SHOP_MODULE_DIR ?>edit_shop_editorFrameset.php?bid='+id;");
+				fr.writeln("top.content.resize.right.editor.location='<?php print WE_SHOP_MODULE_DIR ?>edit_shop_frameset.php?pnt=editor&bid='+id;");
 				fr.writeln("}");
 				fr.writeln("function doFolderClick(id,ct,table){");
-				fr.writeln("top.content.resize.shop_properties.location='<?php print WE_SHOP_MODULE_DIR; ?>edit_shop_editorFrameset.php?mid='+id;");
+				fr.writeln("top.content.resize.right.editor.location='<?php print WE_SHOP_MODULE_DIR; ?>edit_shop_frameset.php?pnt=editor&mid='+id;");
 				fr.writeln("}");
 
 				fr.writeln("function doYearClick(yearView){");
-				fr.writeln("top.content.resize.shop_properties.location='<?php print WE_SHOP_MODULE_DIR; ?>edit_shop_editorFrameset.php?ViewYear='+yearView;");
+				fr.writeln("top.content.resize.right.editor.location='<?php print WE_SHOP_MODULE_DIR; ?>edit_shop_frameset.php?pnt=editor&ViewYear='+yearView;");
 				fr.writeln("}");
 
 				fr.writeln("</" + "SCRIPT>");
@@ -381,51 +387,42 @@ class weShopFrames extends weModuleFrames{
 
 	function getHTMLFrameset(){
 		$extraHead = $this->getJSTreeCode();
-		return weModuleFrames::getHTMLFrameset($extraHead, true);
+		return parent::getHTMLFrameset($extraHead, true);
 	}
 
-	function getHTMLIconbar(){
-		print STYLESHEET;
+	function getHTMLIconbar(){ //TODO: move this to weShopView::getHTMLIconbar();
+		$extraHead = we_html_element::jsElement('
+function doUnload() {
+	if (!!jsWindow_count) {
+		for (i = 0; i < jsWindow_count; i++) {
+			eval("jsWindow" + i + "Object.close()");
+		}
+	}
+}
 
-		print we_html_element::jsElement('
+function we_cmd() {
 
-			function doUnload() {
-				if (!!jsWindow_count) {
-					for (i = 0; i < jsWindow_count; i++) {
-						eval("jsWindow" + i + "Object.close()");
-					}
-				}
+	switch (arguments[0]) {
+
+		case "openOrder":
+			if(top.content.resize.left.window.doClick) {
+				top.content.resize.left.window.doClick(arguments[1], arguments[2], arguments[3]);
 			}
+		break;
 
-			function we_cmd() {
-
-				switch (arguments[0]) {
-
-					case "openOrder":
-						if(top.content.resize.left.window.doClick) {
-							top.content.resize.left.window.doClick(arguments[1], arguments[2], arguments[3]);
-						}
-					break;
-
-					default:
-						// not needed yet
-					break;
-				}
-			}
+		default:
+			// not needed yet
+		break;
+	}
+}
 
 		');
 
 		$bid = isset($_REQUEST["bid"]) ? intval($_REQUEST["bid"]) : 0;
-
 		$cid = f("SELECT IntCustomerID FROM " . SHOP_TABLE . " WHERE IntOrderID = " . $bid, "IntCustomerID", $this->db);
 		$this->db->query("SELECT IntOrderID,DATE_FORMAT(DateOrder,'" . g_l('date', '[format][mysqlDate]') . "') as orddate FROM " . SHOP_TABLE . " GROUP BY IntOrderID ORDER BY IntID DESC");
 
-		if($this->db->next_record()){
-			$headline = '<a style="text-decoration: none;" href="javascript:we_cmd(\'openOrder\', ' . $this->db->f("IntOrderID") . ',\'shop\',\'' . SHOP_TABLE . '\');">' . sprintf(g_l('modules_shop', '[lastOrder]'), $this->db->f("IntOrderID"), $this->db->f("orddate")) . '</a>';
-		} else{
-			$headline = "";
-		}
-
+		$headline = $this->db->next_record() ? '<a style="text-decoration: none;" href="javascript:we_cmd(\'openOrder\', ' . $this->db->f("IntOrderID") . ',\'shop\',\'' . SHOP_TABLE . '\');">' . sprintf(g_l('modules_shop', '[lastOrder]'), $this->db->f("IntOrderID"), $this->db->f("orddate")) . '</a>' : '';
 
 		// grep the last element from the year-set, wich is the current year
 		$this->db->query("SELECT DATE_FORMAT(DateOrder,'%Y') AS DateOrd FROM " . SHOP_TABLE . " ORDER BY DateOrd");
@@ -433,6 +430,7 @@ class weShopFrames extends weModuleFrames{
 			$strs = array($this->db->f("DateOrd"));
 			$yearTrans = end($strs);
 		}
+
 		// print $yearTrans;
 		/// config
 		$this->db->query("SELECT strFelder from " . ANZEIGE_PREFS_TABLE . " WHERE strDateiname = 'shop_pref'");
@@ -446,46 +444,39 @@ class weShopFrames extends weModuleFrames{
 			$classid = $fe[0];
 		}
 
+		/* TODO: we have this or similar code at least four times!! */
+
 		//$resultO = count($fe);
 		$resultO = array_shift($fe);
 
 		// wether the resultset ist empty?
 		$resultD = f("SELECT count(Name) as Anzahl FROM " . LINK_TABLE . ' WHERE Name ="' . WE_SHOP_TITLE_FIELD_NAME . '"', 'Anzahl', $this->db);
-		?>
 
-		<body background="<?php print IMAGE_DIR ?>backgrounds/iconbarBack.gif" marginwidth="0" topmargin="5" marginheight="5" leftmargin="0">
-			<table border="0" cellpadding="6" cellspacing="0" style="margin-left:8px">
-				<tr>
-					<?php echo "<td>" . we_button::create_button("image:btn_shop_extArt", "javascript:top.opener.top.we_cmd('new_article')", true, -1, -1, "", "", !we_hasPerm("NEW_USER")); ?></td>
+		$c = 0;
+		$iconBarTable = new we_html_table(array("border" => "0", "cellpadding" => "6", "cellspacing" => "0", "style" => "margin-left:8px"), 1, 4);
 
-					<td>
-						<?php echo we_button::create_button("image:btn_shop_delOrd", "javascript:top.opener.top.we_cmd('delete_shop')", true, -1, -1, "", "", !we_hasPerm("NEW_USER")); ?></td>
-					<?php
-					if(($resultD > 0) && (!empty($resultO))){ //docs and objects
-						echo "<td>" . we_button::create_button("image:btn_shop_sum", "javascript:top.content.resize.shop_properties.location=' edit_shop_editorFramesetTop.php?typ=document '", true) . "</td>";
-					} elseif(($resultD < 1) && (!empty($resultO))){ // no docs but objects
-						echo "<td>" . we_button::create_button("image:btn_shop_sum", "javascript:top.content.resize.shop_properties.location=' edit_shop_editorFramesetTop.php?typ=object&ViewClass=$classid '", true) . "</td>";
-					} elseif(($resultD > 0) && (empty($resultO))){ // docs but no objects
-						echo "<td>" . we_button::create_button("image:btn_shop_sum", "javascript:top.content.resize.shop_properties.location=' edit_shop_editorFramesetTop.php?typ=document '", true) . "</td>";
-					} else{
-						echo " ";
-					}
-					?>
-					<td>
-						<?php echo we_button::create_button("image:btn_shop_pref", "javascript:top.opener.top.we_cmd('pref_shop')", true, -1, -1, "", "", !we_hasPerm("NEW_USER")); ?></td>
-					<td>
-						<?php echo we_button::create_button("image:btn_payment_val", "javascript:top.opener.top.we_cmd('payment_val')", true, -1, -1, "", "", !we_hasPerm("NEW_USER")); ?></td>
-					<?php
-					if($headline){
-						?>
-						<td align="right" class="header_shop"><span style="margin-left:15px"><?php print @$headline; ?></span></td>
-							<?php
-						}
-						?>
-				</tr>
-			</table>
-		</body></html>
-		<?php
+		$iconBarTable->setCol(0, $c++, null, we_button::create_button("image:btn_shop_extArt", "javascript:top.opener.top.we_cmd('new_article')", true, -1, -1, "", "", !we_hasPerm("NEW_USER")));
+		$iconBarTable->setCol(0, $c++, null, we_button::create_button("image:btn_shop_delOrd", "javascript:top.opener.top.we_cmd('delete_shop')", true, -1, -1, "", "", !we_hasPerm("NEW_USER")));
+
+		if($resultD > 0){
+			$iconBarTable->addCol();
+			$iconBarTable->setCol(0, $c++, null, we_button::create_button("image:btn_shop_sum", "javascript:top.content.resize.right.editor.location=' edit_shop_frameset.php?pnt=editor&top=1&typ=document '", true));
+		} elseif(!empty($resultO)){
+			$iconBarTable->addCol();
+			$iconBarTable->setCol(0, $c++, null, we_button::create_button("image:btn_shop_sum", "javascript:top.content.resize.right.editor.location=' edit_shop_frameset.php?pnt=editor&top=1&typ=object&ViewClass=$classid '", true));
+		}
+
+		$iconBarTable->setCol(0, $c++, null, we_button::create_button("image:btn_shop_pref", "javascript:top.opener.top.we_cmd('pref_shop')", true, -1, -1, "", "", !we_hasPerm("NEW_USER")));
+		$iconBarTable->setCol(0, $c++, null, we_button::create_button("image:btn_payment_val", "javascript:top.opener.top.we_cmd('payment_val')", true, -1, -1, "", "", !we_hasPerm("NEW_USER")));
+
+		if($headline){
+			$iconBarTable->addCol();
+			$iconBarTable->setCol(0, $c++, array('align' => 'right', 'class' => 'header_shop'), '<span style="margin-left:15px">' . @$headline . '</span>');
+		}
+
+		$body = we_html_element::htmlBody(array('background' => IMAGE_DIR . 'backgrounds/iconbarBack.gif', 'marginwidth' => '0', 'topmargin' => '5', 'marginheight' => '5', 'leftmargin' => '0'), $iconBarTable->getHTML());
+
+		return $this->getHTMLDocument($body, $extraHead);
 	}
 
 	function getHTMLCmd(){
@@ -495,48 +486,238 @@ class weShopFrames extends weModuleFrames{
 	}
 
 	function getHTMLResize(){
-		$_treewidth = 204;
-		$incDecTree = '
-			<img id="incBaum" src="' . BUTTONS_DIR . 'icons/function_plus.gif" width="9" height="12" style="position:absolute;bottom:53px;left:5px;border:1px solid grey;padding:0 1px;cursor: pointer; ' . ($_treewidth <= 100 ? 'bgcolor:grey;' : '') . '" onClick="incTree();">
-			<img id="decBaum" src="' . BUTTONS_DIR . 'icons/function_minus.gif" width="9" height="12" style="position:absolute;bottom:33px;left:5px;border:1px solid grey;padding:0 1px;cursor: pointer; ' . ($_treewidth <= 100 ? 'bgcolor:grey;' : '') . '" onClick="decTree();">
-			<img id="arrowImg" src="' . BUTTONS_DIR . 'icons/direction_' . ($_treewidth <= 100 ? 'right' : 'left') . '.gif" width="9" height="12" style="position:absolute;bottom:13px;left:5px;border:1px solid grey;padding:0 1px;cursor: pointer;" onClick="top.content.toggleTree();">
-		';
+		$editorParams = isset($_REQUEST['bid']) ? '&bid=' . $_REQUEST['bid'] : '&top=1&home=1';
 
-		$editorPath = isset($_REQUEST['bid']) ? WE_SHOP_MODULE_DIR . 'edit_shop_editorFrameset.php?bid=' . $_REQUEST['bid'] :
-			WE_SHOP_MODULE_DIR . 'edit_shop_editorFramesetTop.php?home=1';
-
-		print we_html_element::htmlBody(array('style' => 'background-color: #bfbfbf; background-repeat: repeat; margin: 0px 0px 0px 0px'), 
-			we_html_element::htmlDiv(array('style' => 'position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px;'), 
-				we_html_element::htmlDiv(array('id' => 'lframeDiv', 'style' => 'position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px;'), 
-					we_html_element::htmlDiv(array('style' => 'position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px; width: 24px; background-image: url(/webEdition/images/v-tabs/background.gif); background-repeat: repeat-y; border-top: 1px solid black;'), $incDecTree) .
-					we_html_element::htmlIFrame('left', HTML_DIR . 'white.html', 'position: absolute; top: 0px; bottom: 0px; left: 24px; right: 0px; verflow: hidden; border-top: 1px solid white')
-				) .
-				//we_html_element::htmlIFrame('shop_properties', $this->frameset . '?pnt=right', 'position: absolute; top: 0px; bottom: 0px; left: 204px; right: 0px; width:auto; border-left: 1px solid black; overflow: hidden;')
-				we_html_element::htmlIFrame('shop_properties', $editorPath, 'position: absolute; top: 0px; bottom: 0px; left: 204px; right: 0px; width:auto; border-left: 1px solid black; overflow: hidden;')
-			)
-		);
-	}
-
-	function getHTMLLeft(){
-		?>
-		</head>
-		<frameset rows="1,*" framespacing="0" border="0" frameborder="NO">
-			<frame src="<?php print HTML_DIR ?>whiteWithTopLine.html" scrolling="no" noresize>
-			<frame src="<?php print HTML_DIR ?>white.html" name="tree" scrolling="auto" noresize>
-		</frameset>
-		<noframes>
-			<body style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px">
-			</body>
-		</noframes>
-		</html>
-		<?php
+		return parent::getHTMLResize('', $editorParams); // because of two new frames (right and editor) we must pass parameters through
+									// TODO: at least frame/iFrame editor will be changed to div in all modules!
 	}
 
 	function getHTMLRight(){
-		//print $this->View->getHTMLProperties(); 
+		$editorParams = isset($_REQUEST['bid']) ? '&bid=' . $_REQUEST['bid'] : '&top=1&home=1';
+
+		return parent::getHTMLRight('', $editorParams);
 	}
 
-	function getHTMLEditorBody(){
-		print $this->View->getHTMLProperties(); 
+	function getHTMLEditor(){//TODO: maybe abandon the split between former Top- and other editor files
+		if(isset($_REQUEST['top']) && $_REQUEST['top'] == 1){//doing what have been done in edit_shop_editorFramesetTop before
+			return $this->getHTMLEditorTop();
+		}
+
+		$DB_WE = $this->db;//TODO: why does it not work without this?
+		//do what have been done in edit_shop_editorFrameset before
+
+		$bid = isset($_REQUEST["bid"]) ? intval($_REQUEST["bid"]) : 0;
+		$mid = isset($_REQUEST["mid"]) ? $_REQUEST["mid"] : 0;
+		$yearView = isset($_REQUEST["ViewYear"]) ? $_REQUEST["ViewYear"] : 0;
+		$home = isset($_REQUEST["home"]) ? $_REQUEST["home"] : 0;
+		
+		//define edbody, TODO: 
+		if($home){
+			$bodyURL = WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=mod_home&mod=shop';
+		} elseif($mid){
+			$year = substr($mid, (strlen($mid) - 4));
+			$month = str_replace($year, '', $_REQUEST["mid"]);
+			$bodyURL = WE_SHOP_MODULE_DIR . 'edit_shop_revenueTop.php?ViewYear=' . $year . '&ViewMonth=' . $month;
+		} elseif($yearView){
+			$year = $yearView;
+			$bodyURL = WE_SHOP_MODULE_DIR . 'edit_shop_revenueTop.php?ViewYear=' . $year;
+		} else{
+			$bodyURL = WE_SHOP_MODULE_DIR . 'edit_shop_frameset.php?pnt=edbody&bid=' . $bid;
+		}
+
+		$frameset = new we_html_frameset(array("framespacing" => "0", "border" => "0", "frameborder" => "no"));
+
+		$frameset->setAttributes(array("rows" => "40,*"));
+		$frameset->addFrame(array('src' => 'edit_shop_frameset.php?pnt=edheader&home=' . $home . '&mid=' . $mid . $yearView . '&bid=' . $bid, 'name' => 'edheader', 'noresize' => null, 'scrolling' => 'no'));
+		$frameset->addFrame(array('src' => $bodyURL, 'name' => 'edbody', 'scrolling' => 'auto'));
+
+		$body = $frameset->getHtml();
+
+		return $this->getHTMLDocument($body);
+	}
+
+	function getHTMLEditorTop(){// TODO: merge getHTMLRight and getHTMLRightTop
+		$DB_WE = $this->db;
+		include_once(WE_MODULES_PATH . 'shop/handle_shop_dbitemConnect.php');
+		$home = isset($_REQUEST["home"]) ? $_REQUEST["home"] : 0;
+		$mid = isset($_REQUEST["mid"]) ? $_REQUEST["mid"] : 0;
+		$bid = isset($_REQUEST["bid"]) ? $_REQUEST["bid"] : 0;
+
+		// config
+		$feldnamen = explode('|', f('SELECT strFelder FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname = "shop_pref"', 'strFelder', $this->db));
+		for($i = 0; $i <= 3; $i++){
+			$feldnamen[$i] = isset($feldnamen[$i]) ? $feldnamen[$i] : '';
+		}
+		$fe = explode(',', $feldnamen[3]);
+		if(empty($classid)){
+			$classid = $fe[0];
+		}
+		$fe = explode(',', $feldnamen[3]);
+
+		// $resultO = count ($fe);
+		$resultO = array_shift($fe);
+
+		// wether the resultset ist empty?
+		$resultD = f('SELECT COUNT(Name) as Anzahl FROM ' . LINK_TABLE . ' WHERE Name ="' . $this->db->escape(WE_SHOP_TITLE_FIELD_NAME) . '"', 'Anzahl', $this->db);
+
+		if($home){
+			$bodyURL = WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=mod_home&mod=shop';//same as in getHTMLRight()
+		} elseif($mid){
+			// TODO::WANN UND VON WEM WIRD DAS AUFGERUFEN ????
+			$bodyURL = WE_SHOP_MODULE_DIR . 'edit_shop_overviewTop.php?mid=' . $mid;
+		} else{
+			if(($resultD > 0) && (empty($resultO))){ // docs but no objects
+				$bodyURL = 'edit_shop_article_extend.php?typ=document';
+			} elseif(($resultD < 1) && (!empty($resultO))){ // no docs but objects
+				$bodyURL = 'edit_shop_article_extend.php?typ=object&ViewClass=' . $classid;
+			} elseif(($resultD > 0) && (!empty($resultO))){
+				$bodyURL = 'edit_shop_article_extend.php?typ=document';
+			}
+		}
+		
+		$frameset = new we_html_frameset(array("framespacing" => "0", "border" => "0", "frameborder" => "no"));
+		$frameset->setAttributes(array("rows" => "40,*"));
+		$frameset->addFrame(array('src' => 'edit_shop_frameset.php?pnt=edheader&top=1&home=' . $home . '&mid=' . $mid . '&bid=' . $bid . '&typ=object&ViewClass=' . $classid, 'name' => 'edheader', 'noresize' => null, 'scrolling' => 'no'));
+		$frameset->addFrame(array('src' => $bodyURL, 'name' => 'edbody', 'scrolling' => 'auto'));
+
+		$body = $frameset->getHtml();
+
+		return $this->getHTMLDocument($body);
+	}
+
+	function getHTMLEditorHeader(){
+		if (isset($_REQUEST["home"]) && $_REQUEST["home"]) {
+			return $this->getHTMLDocument('<body bgcolor="#F0EFF0"></body></html>');
+		}
+
+		if(isset($_REQUEST['top']) && $_REQUEST['top']){
+			return $this->getHTMLEditorHeaderTop();
+		}
+
+		$bid = isset($_REQUEST["bid"]) ? intval($_REQUEST["bid"]) : 0;
+
+		list($cid, $cdat) = getHash('SELECT IntCustomerID,DATE_FORMAT(DateOrder,"' . g_l('date', '[format][mysqlDate]') . '") FROM ' . SHOP_TABLE . ' WHERE IntOrderID=' . intval($bid), $DB_WE);
+		$order = getHash('SELECT IntOrderID,DATE_FORMAT(DateOrder,"' . g_l('date', '[format][mysqlDate]') . '") as orddate FROM ' . SHOP_TABLE . ' GROUP BY IntOrderID ORDER BY IntID DESC LIMIT 1', $DB_WE);
+		$headline = (empty($order) ? '' : sprintf(g_l('modules_shop', '[lastOrder]'), $order["IntOrderID"], $order["orddate"]));
+
+		$we_tabs = new we_tabs();
+
+		if (isset($_REQUEST["mid"]) && $_REQUEST["mid"] && $_REQUEST["mid"] != '00') {
+			$we_tabs->addTab(new we_tab('#', g_l('tabs', "[module][overview]"), 'TAB_ACTIVE', 0));
+		} else {
+			$we_tabs->addTab(new we_tab('#', g_l('tabs', '[module][orderdata]'), 'TAB_ACTIVE', "setTab(0);"));
+			$we_tabs->addTab(new we_tab("#", g_l('tabs', '[module][orderlist]'), 'TAB_NORMAL', "setTab(1);"));
+		}
+
+		$textPre = isset($_REQUEST['bid']) && $_REQUEST['bid'] > 0 ? g_l('modules_shop', '[orderList][order]') : g_l('modules_shop', '[order_view]');
+		$textPost = isset($_REQUEST['mid']) && $_REQUEST['mid'] > 0 ? (strlen($_REQUEST['mid']) > 5 ? g_l('modules_shop', '[month][' . substr($_REQUEST['mid'], 0, -5) . ']') . " " . substr($_REQUEST['mid'], -5, 4) : substr($_REQUEST['mid'], 1)) : ($bid ? sprintf(g_l('modules_shop', '[orderNo]'), $_REQUEST['bid'], $cdat) : '');
+		$we_tabs->onResize();
+
+		$tab_head = $we_tabs->getHeader() . we_html_element::jsElement('
+function setTab(tab) {
+	switch (tab) {
+		case 0:
+			parent.edbody.document.location = "edit_shop_frameset.php?pnt=edbody&bid=' . $bid . '";
+			break;
+		case 1:
+			parent.edbody.document.location = "edit_shop_orderlist.php?cid=' . $cid . '";
+			break;
+	}
+}
+
+top.content.hloaded = 1;
+		');
+
+		$tab_body_content = '<div id="main" >' . we_html_tools::getPixel(100, 3) . '<div style="margin:0px;padding-left:10px;" id="headrow"><nobr><b>' . str_replace(" ", "&nbsp;", $textPre) . ':&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">' . str_replace(" ", "&nbsp;", $textPost) . '</b></span></nobr></div>' . we_html_tools::getPixel(100, 3) .
+						$we_tabs->getHTML() .
+						'</div>';
+		$tab_body = we_html_element::htmlBody(array("bgcolor" => "#FFFFFF", "background" => IMAGE_DIR . "backgrounds/header_with_black_line.gif", "onLoad" => "setFrameSize()", "onResize" => "setFrameSize()"), $tab_body_content);
+
+		return $this->getHTMLDocument($tab_body, $tab_head);
+	}
+
+	function getHTMLEditorHeaderTop(){
+		$DB_WE = $this->db;
+		include_once(WE_MODULES_PATH . 'shop/handle_shop_dbitemConnect.php');//TODO: make function out of this: do we need it or does the following code the same?
+
+		$yid = isset($_REQUEST["ViewYear"]) ? abs($_REQUEST["ViewYear"]) : date("Y");
+		$bid = isset($_REQUEST["bid"]) ? abs($_REQUEST["bid"]) : 0;
+		$cid = f('SELECT IntCustomerID FROM ' . SHOP_TABLE . ' WHERE IntOrderID=' . intval($bid), "IntCustomerID", $this->db);
+		$this->db->query("SELECT IntOrderID,DATE_FORMAT(DateOrder,'" . g_l('date', '[format][mysqlDate]') . "') as orddate FROM " . SHOP_TABLE . " GROUP BY IntOrderID ORDER BY IntID DESC");
+		$headline = ($this->db->next_record()?	sprintf(g_l('modules_shop', '[lastOrder]'), $this->db->f("IntOrderID"), $this->db->f("orddate")):'');
+
+		/// config
+		$this->db->query("SELECT strFelder from " . ANZEIGE_PREFS_TABLE . " WHERE strDateiname = 'shop_pref'");
+		$this->db->next_record();
+		$feldnamen = explode("|", $this->db->f("strFelder"));
+		$fe = isset($feldnamen[3]) ? explode(",", $feldnamen[3]) : array(0);
+
+		if(empty($classid)){
+			$classid = $fe[0];
+		}
+		//$resultO = count($fe);
+		$resultO = array_shift($fe);
+
+		// wether the resultset ist empty?
+		$resultD = f('SELECT count(Name) as Anzahl FROM ' . LINK_TABLE . ' WHERE Name ="' . WE_SHOP_TITLE_FIELD_NAME . '"', 'Anzahl', $this->db);
+
+		// grep the last element from the year-set, wich is the current year
+		$this->db->query("SELECT DATE_FORMAT(DateOrder,'%Y') AS DateOrd FROM " . SHOP_TABLE . " ORDER BY DateOrd");
+		while($this->db->next_record()) {
+			$strs = array($this->db->f("DateOrd"));
+			$yearTrans = end($strs);
+		}
+
+		/*
+		  $DB_WE->query("SELECT COUNT(".SHOP_TABLE.".IntID) as db FROM ".SHOP_TABLE." WHERE YEAR(".SHOP_TABLE.".DateOrder) = $yid ");
+		  while($DB_WE->next_record()){
+		  $entries = $DB_WE->f("db");
+
+		  }
+		 */
+		//print $entries;
+		$we_tabs = new we_tabs();
+		if(isset($_REQUEST["mid"]) && $_REQUEST["mid"]){
+			$we_tabs->addTab(new we_tab("#", g_l('tabs', "[module][overview]"), "TAB_ACTIVE", "//"));
+		} else{
+			if(($resultD > 0) && (!empty($resultO))){ //docs and objects
+				$we_tabs->addTab(new we_tab("#", g_l('tabs', "[module][admin_1]"), "TAB_ACTIVE", "setTab(0);"));
+				$we_tabs->addTab(new we_tab("#", g_l('tabs', "[module][admin_2]"), "TAB_NORMAL", "setTab(1);"));
+			} elseif(($resultD > 0) && (empty($resultO))){ // docs but no objects
+				$we_tabs->addTab(new we_tab("#", g_l('tabs', "[module][admin_1]"), "TAB_NORMAL", "setTab(0);"));
+			} elseif(($resultD < 1) && (!empty($resultO))){ // no docs but objects
+				$we_tabs->addTab(new we_tab("#", g_l('tabs', "[module][admin_2]"), "TAB_NORMAL", "setTab(1);"));
+			}
+			if(isset($yearTrans) && $yearTrans != 0){
+				$we_tabs->addTab(new we_tab("#", g_l('tabs', "[module][admin_3]"), "TAB_NORMAL", "setTab(2);"));
+			}
+		}
+		$we_tabs->onResize();
+
+		$tab_head = $we_tabs->getHeader() . we_html_element::jsElement('
+function setTab(tab) {
+	switch (tab) {
+		case 0:
+			parent.edbody.document.location = "edit_shop_article_extend.php?typ=document";
+			break;
+		case 1:
+			parent.edbody.document.location = "edit_shop_article_extend.php?typ=object&ViewClass=' . $classid . '";
+			break;
+		' . (isset($yearTrans) ? '
+		case 2:
+			parent.edbody.document.location = "edit_shop_revenueTop.php?ViewYear=' . $yearTrans . '" // " + top.yearshop
+			break;	
+		' : '') . '
+	}
+}
+top.content.hloaded = 1;
+		');
+
+		$tab_body_content = '<div id="main" >' . we_html_tools::getPixel(100, 3) . '<div style="margin:0px;" id="headrow">&nbsp;' . we_html_element::htmlB($headline) . '</div>' . we_html_tools::getPixel(100, 3) .
+			$we_tabs->getHTML() .
+			'</div>';
+		$tab_body = we_html_element::htmlBody(array("bgcolor" => "#FFFFFF", "background" => IMAGE_DIR . "backgrounds/header_with_black_line.gif", "onLoad" => "setFrameSize()", "onResize" => "setFrameSize()"), $tab_body_content);
+
+		return $this->getHTMLDocument($tab_body, $tab_head);
 	}
 }
