@@ -628,19 +628,7 @@ class weCustomerFrames extends weModuleFrames{
 					we_html_element::htmlIFrame('tree', WEBEDITION_DIR . 'treeMain.php', 'position:absolute;top:40px;bottom:40px;left:0px;right:0px;overflow: auto;') .
 					we_html_element::htmlIFrame('treefooter', $this->frameset . '?pnt=treefooter', 'position:absolute;height:40px;bottom:0px;left:0px;right:0px;overflow: hidden;')
 				));
-		/*
-		  $frameset = new we_html_frameset(array("framespacing" => "0", "border" => "0", "frameborder" => "no"));
-		  $noframeset = new we_baseElement("noframes");
 
-		  $frameset->setAttributes(array("rows" => "40,*,40"));
-		  $frameset->addFrame(array("src" => $this->frameset . "?pnt=treeheader", "name" => "treeheader", "noresize" => null, "scrolling" => "no"));
-
-		  $frameset->addFrame(array("src" => WEBEDITION_DIR . "treeMain.php", "name" => "tree", "noresize" => null, "scrolling" => "auto"));
-		  $frameset->addFrame(array("src" => $this->frameset . "?pnt=treefooter", "name" => "treefooter", "noresize" => null, "scrolling" => "no"));
-
-		  // set and return html code
-		  $body = $frameset->getHtml() . $noframeset->getHTML();
-		 */
 		we_html_element::htmlBody(array('style' => 'margin:0px;'), '');
 		return $this->getHTMLDocument($body);
 	}

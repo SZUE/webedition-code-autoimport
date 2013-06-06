@@ -36,86 +36,79 @@ class weCustomerTree extends weTree{
 	}
 
 	function getJSCustomDraw(){
-		$out = parent::getJSCustomDraw();
 
-		return array(
-"sort" => '
+		return array_merge(parent::getJSCustomDraw(), array(
+
+		"sort" => '
 var newAst = zweigEintrag;
-
 var zusatz = (ai == nf.laenge) ? "end" : "";
 var oc_img;
 var oc_js;
 
 oc_img="' . $this->tree_image_dir . '"+(nf[ai].open == 0?"auf":"zu")+zusatz+".gif";
-
 oc_js=treeData.topFrame+".openClose(\'" + nf[ai].id + "\')\"";
 
-
 row+="&nbsp;&nbsp;<a href=\"javascript:"+oc_js+" border=0><img src="+oc_img+" width=19 height=18 align=absmiddle border=0 Alt=\"\"></a>";
-
-
 row+="<a name=\'_"+nf[ai].id+"\' href=\"javascript://\" onClick=\""+oc_js+";return true;\" border=0>";
 row+="<img src=' . $this->tree_image_dir . 'icons/"+nf[ai].icon+" width=16 height=18 align=absmiddle border=0 Alt=\"\">";
 row+="</a>";
-
 row+="<a name=\'_"+nf[ai].id+"\' href=\"javascript://\" onClick=\""+oc_js+";return true;\">";
 row+="<label style=\"cursor:pointer\" id=\"lab_"+nf[ai].id+"\" class=\""+treeData.node_layout[nf[ai].state]+"\">&nbsp;" + nf[ai].text+"</label>";
 row+="</a>";
-
 row+="&nbsp;&nbsp;<br>\n";
 
 if (nf[ai].open){
 	newAst = newAst + "<img src=' . $this->tree_image_dir . '"+(ai == nf.laenge?"leer.gif":"strich2.gif")+" width=19 height=18 align=absmiddle border=0>";
 	row+=draw(nf[ai].id,newAst);
-}',
+}
+			',
+
 		"group" => '
 var newAst = zweigEintrag;
-
 var zusatz = (ai == nf.len) ? "end" : "";
 var oc_img;
 var oc_js;
 
 oc_img="' . $this->tree_image_dir . '"+(nf[ai].open == 1?"zu":"auf")+zusatz+".gif";
-
-if(nf[ai].disabled!=1) oc_js=treeData.topFrame+".setScrollY();"+treeData.topFrame+".openClose(\'" + nf[ai].id + "\')\"";
-else oc_js="//";
-
+if(nf[ai].disabled!=1){
+	oc_js=treeData.topFrame+".setScrollY();"+treeData.topFrame+".openClose(\'" + nf[ai].id + "\')\"";
+} else{
+	oc_js="//";
+}
 oc_js=treeData.topFrame+".setScrollY();"+treeData.topFrame+".openClose(\'" + nf[ai].id + "\')\"";
-
 row+="&nbsp;&nbsp;<a href=\"javascript:"+oc_js+" border=0><img src="+oc_img+" width=19 height=18 align=absmiddle border=0 Alt=\"\"></a>";
 
 var folder_icon;
 folder_icon="folder"+(nf[ai].open==1 ? "open" : "")+(nf[ai].disabled==1 ? "_disabled" : "")+".gif";
-
 nf[ai].icon=folder_icon;
 
-if(nf[ai].disabled!=1) row+="<a name=\'_"+nf[ai].id+"\' href=\"javascript:"+oc_js+"\">";
-
+if(nf[ai].disabled!=1){
+	row+="<a name=\'_"+nf[ai].id+"\' href=\"javascript:"+oc_js+"\">";
+}
 row+="<img src=' . $this->tree_image_dir . 'icons/"+nf[ai].icon+" width=16 height=18 align=absmiddle border=0 alt=\"\">";
-
-if(nf[ai].disabled!=1) row+="</a>";
-
-
-if(nf[ai].disabled!=1) row+="<a name=\'_"+nf[ai].id+"\' href=\"javascript:"+oc_js+"\">";
-
+if(nf[ai].disabled!=1){
+	row+="</a>";
+	row+="<a name=\'_"+nf[ai].id+"\' href=\"javascript:"+oc_js+"\">";
+}
 row+="<label style=\"cursor:pointer\" id=\"lab_"+nf[ai].id+"\" class=\""+nf[ai].getlayout()+"\">&nbsp;" + nf[ai].text+"</label>";
-
-if(nf[ai].disabled!=1) row+="</a>";
-
+if(nf[ai].disabled!=1){
+	row+="</a>";
+}
 row+="&nbsp;&nbsp;<br>\n";
-
 if (nf[ai].open==1){
 	newAst = newAst + "<img src=' . $this->tree_image_dir . '"+(ai == nf.len?"leer.gif":"strich2.gif")+" width=19 height=18 align=absmiddle border=0>";
 	row+=draw(nf[ai].id,newAst);
-}'
-);
+}
+			'));
 	}
 
 	function getJSOpenClose(){
 		return '
-	function openClose(id){
+function openClose(id){
 	var sort="";
-	if(id=="") return;
+	if(id==""){
+		return;
+	}
 	var eintragsIndex = indexOfEntry(id);
 	var openstatus;
 
@@ -140,7 +133,9 @@ if (nf[ai].open==1){
 	}else{
 		drawTree();
 	}
-	if(openstatus==1) treeData[eintragsIndex].loaded=1;
+	if(openstatus==1){
+		treeData[eintragsIndex].loaded=1;
+	}
 }';
 	}
 
