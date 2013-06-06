@@ -236,8 +236,7 @@ class weNavigationItem{
 		if(defined('CUSTOMER_TABLE') && $this->limitaccess){ // only init filter if access is limited
 			$_filter = new weNavigationCustomerFilter();
 			$_filter->initByNavItem($this);
-			$this->visible = $_filter->customerHasAccess() ? 'true' : 'false';
-			return $this->visible;
+			return $_filter->customerHasAccess() ? 'true' : 'false';
 		}
 		return true;
 	}
