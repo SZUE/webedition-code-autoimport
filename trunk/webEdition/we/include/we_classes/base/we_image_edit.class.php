@@ -563,7 +563,7 @@ class we_image_edit{
 		$imgSrc = '/' . ltrim($imgSrc, '/');
 
 		$_imgPath = $_SERVER['DOCUMENT_ROOT'] . $imgSrc;
-		if(!($imagesize = getimagesize($_imgPath))){
+		if(!file_exists($_imgPath)||!($imagesize = getimagesize($_imgPath))){
 			$imagesize = array(0, 0);
 		}
 		if($imagesize[0] > $width || $imagesize[1] > $height){
