@@ -300,7 +300,7 @@ var i = 0;
 				}
 
 				$icon = $isfolder ? we_base_ContentTypes::FOLDER_ICON : we_base_ContentTypes::LINK_ICON;
-				$filesize = filesize($dir . "/" . $entry);
+				$filesize = file_exists($dir.'/'.$entry)?filesize($dir . '/' . $entry):0;
 				$_size = "";
 				if(!$isfolder){
 					if($filesize >= 1024 && $filesize < (1024 * 1024)){
@@ -327,7 +327,7 @@ var i = 0;
 						((strlen($entry) > 24) ? oldHtmlspecialchars(_cutText($entry, 24)) : oldHtmlspecialchars($entry)) .
 						'</span>';
 					$_type = '<span' . ($indb ? ' style="color:#006699"' : '') . ' title="' . oldHtmlspecialchars($type) . '">' . oldHtmlspecialchars(_cutText($type, 17)) . '</span>';
-					$_date = '<span' . ($indb ? ' style="color:#006699"' : '') . '>' . date("d-m-Y H:i:s", filectime($dir . "/" . $entry)) . '<span>';
+					$_date = '<span' . ($indb ? ' style="color:#006699"' : '') . '>' . (file_exists($dir . "/" . $entry)?date("d-m-Y H:i:s", filectime($dir . '/' . $entry)):'n/a') . '<span>';
 				}
 
 				if($show){

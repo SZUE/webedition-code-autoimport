@@ -42,6 +42,7 @@ class we_helpers_pdf2text{
 	const TRIM_REF = ' R';
 	const TRIM_NAME = ' /';
 	const DEFLATE_ALL = false;
+	const INFO_PORTION = 10240;
 
 	private static $space = 0;
 	private static $encodings = array();
@@ -87,11 +88,11 @@ class we_helpers_pdf2text{
 	}
 
 	public function getInfo(){
-		$offset = filesize($this->file) - 1024;
+		$offset = max(0, filesize($this->file) - self::INFO_PORTION);
 		$file = fopen($this->file, 'r');
-		$data = fread($file, 1024);
+		$data = fread($file, self::INFO_PORTION);
 		fseek($file, $offset);
-		$data .= fread($file, 1024);
+		$data .= fread($file, self::INFO_PORTION);
 		fclose($file);
 		$match = array();
 		if(preg_match('#trailer[\r\n ]*<<(.*)>>#s', $data, $match)){
@@ -112,6 +113,9 @@ class we_helpers_pdf2text{
 			}
 			$info = $this->data[$info];
 			$this->data = array();
+			if(!is_array($info)){
+				return array();
+			}
 			foreach($info as $key => &$cur){
 				$cur = self::getStringContent($cur);
 				if(strstr($key, 'Date') && method_exists('DateTime', 'createFromFormat')){
@@ -201,9 +205,9 @@ class we_helpers_pdf2text{
 					return;
 				} else{
 					//print_r($this->encodings);
-			if(defined('DEBUG') && strstr(DEBUG, 'fontout')){
-				echo 'not found:' . $encoding;
-			}
+					if(defined('DEBUG') && strstr(DEBUG, 'fontout')){
+						echo 'not found:' . $encoding;
+					}
 				}
 			case '':
 			case '/Identity':
@@ -701,8 +705,8 @@ class we_helpers_pdf2text{
 					$fonts = array();
 					$this->getPageFonts($fonts, $elem);
 					if(isset($elem['Font'])){
-						$tmp=rtrim($elem['Font'], self::TRIM_REF);
-						$data = isset($this->data[$tmp])?$this->data[$tmp]:'';
+						$tmp = rtrim($elem['Font'], self::TRIM_REF);
+						$data = isset($this->data[$tmp]) ? $this->data[$tmp] : '';
 						if(!empty($data)){
 							$this->getPageFonts($fonts, $data);
 						}

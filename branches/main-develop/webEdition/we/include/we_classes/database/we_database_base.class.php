@@ -307,7 +307,7 @@ abstract class we_database_base{
 				}
 
 				if(preg_match('/[\s\(`"\'\\/)]union[\s\(`\/]/i', $queryWithoutStrings)){
-					if(self::$Trigger_cnt){
+					if(self::$Trigger_cnt && (defined('ERROR_LOG_TABLE') && strpos($Query_String, ERROR_LOG_TABLE) === false || !defined('ERROR_LOG_TABLE'))){
 						--self::$Trigger_cnt;
 						t_e($Query_String);
 					}
@@ -335,7 +335,7 @@ abstract class we_database_base{
 		$this->Errno = $this->errno();
 		$this->Error = $this->error();
 		$this->Row = 0;
-		if(self::$Trigger_cnt){
+		if(self::$Trigger_cnt && (defined('ERROR_LOG_TABLE') && strpos($Query_String, ERROR_LOG_TABLE) === false || !defined('ERROR_LOG_TABLE'))){
 			--self::$Trigger_cnt;
 			$time = microtime(true) - $time;
 			$tmp = array(
@@ -353,9 +353,9 @@ abstract class we_database_base{
 
 				while($this->next_record(MYSQLI_ASSOC)) {
 					if(empty($tmp['explain'])){
-						$tmp['explain'][] =  implode(' | ',array_keys($this->Record));
+						$tmp['explain'][] = implode(' | ', array_keys($this->Record));
 					}
-					$tmp['explain'][] = implode(' | ',$this->Record);
+					$tmp['explain'][] = implode(' | ', $this->Record);
 				}
 				$this->free();
 				$this->Row = 0;

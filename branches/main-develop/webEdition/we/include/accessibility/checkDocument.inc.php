@@ -60,6 +60,7 @@ if(isset($_REQUEST['we_transaction'])){ //  initialise Document
 	$contentType = $_REQUEST['ctype'];
 
 	$http_request = new HttpRequest($path, $host, $s_method);
+	$http_request->addHeader('User-Agent', $_SERVER['HTTP_USER_AGENT']);
 
 	//  add additional parameters to the request
 	if($_REQUEST['additionalVars']){
@@ -77,7 +78,7 @@ if(isset($_REQUEST['we_transaction'])){ //  initialise Document
 	//  check what should happen with document
 	if($_REQUEST['checkvia'] == 'fileupload'){ //  submit via fileupload
 		$http_request->addFileByContent($varname, $content, $contentType, $filename);
-	} else{	//  submit via onlinecheck - site must be available online
+	} else{ //  submit via onlinecheck - site must be available online
 		// when it is a dynamic document, remove <?xml when short_open_tags are allowed.
 		if(ini_get("short_open_tag") == 1 && $GLOBALS['we_doc']->IsDynamic && $contentType == "text/html"){
 			$content = str_replace("<?xml", '<?php print "<?xml"; ?>', $content);
@@ -102,7 +103,7 @@ if(isset($_REQUEST['we_transaction'])){ //  initialise Document
 		if($http_response->getHttp_answer('code') == 200){
 			//  change base href -> css of included page is loaded correctly
 			print str_replace('<head>', '<head><base href="http://' . $host . '" />', $http_response->http_body);
-		} else{	//  no correct answer
+		} else{ //  no correct answer
 			we_html_tools::htmlTop();
 			print STYLESHEET;
 			print '</head>

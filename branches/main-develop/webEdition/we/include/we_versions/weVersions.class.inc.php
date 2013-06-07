@@ -1129,19 +1129,16 @@ class weVersions{
 				break;
 			case "documentElements":
 				if(!empty($document["elements"]) && is_array($document["elements"])){
-					//$entry = urlencode(htmlentities(serialize($document["elements"]), ENT_QUOTES));
 					$entry = gzcompress(serialize($document["elements"]), 9);
 				}
 				break;
 			case "documentScheduler":
 				if(!empty($document["schedArr"]) && is_array($document["schedArr"])){
-					//$entry = urlencode(htmlentities(serialize($document["schedArr"]), ENT_QUOTES));
 					$entry = gzcompress(serialize($document["schedArr"]), 9);
 				}
 				break;
 			case "documentCustomFilter":
 				if(!empty($document["documentCustomerFilter"]) && is_array($document["documentCustomerFilter"])){
-					//$entry = urlencode(htmlentities(serialize($document["documentCustomerFilter"]), ENT_QUOTES));
 					$entry = gzcompress(serialize($document["documentCustomerFilter"]), 9);
 				}
 				break;
@@ -1488,7 +1485,7 @@ class weVersions{
 									$_diff = array_diff_assoc($_tmpArr1, $_tmpArr2);
 									unset($val['dat']);
 									unset($oldArr['elements'][$key]['dat']);
-									$diff['elements'][$key] = $_diff; 
+									$diff['elements'][$key] = $_diff;
 								} else{
 									if(isset($val['dat']) && is_array($val['dat'])){
 										$val['dat'] = serialize($val['dat']);
@@ -1507,7 +1504,7 @@ class weVersions{
 					} elseif($k == 'documentCustomerFilter'){
 						//TODO: imi: check if we need the information of serialized arrays instead of array to string = Array
 						if(is_array($v) && isset($oldArr['documentCustomerFilter']) && is_array($oldArr['documentCustomerFilter'])){
-							
+
 							$_tmpArr1 = array();
 							$_tmpArr2 = array();
 							foreach($v as $_k => $_v){
