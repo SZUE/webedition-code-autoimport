@@ -30,6 +30,6 @@ we_html_tools::protect();
 $what = (isset($_REQUEST["pnt"])) ? $_REQUEST["pnt"] : "frameset";
 $transaction = isset($we_transaction) ? $we_transaction : '';
 
-$weFrame = new weMessagingFrames(WE_USERS_MODULE_DIR . 'edit_messaging_frameset_temp.php', $transaction);
+$weFrame = new weMessagingFrames(WE_MESSAGING_MODULE_DIR . 'edit_messaging_frameset_temp.php', $transaction);
 //$weFrame->View->processCommands(); //call tmp. moved to weFrame->getHTMLCmd()
 $weFrame->getHTML($what);

@@ -33,6 +33,9 @@ class weBannerFrames extends weModuleBannerFrames{
 
 	function getHTML($what = '', $mode = ''){
 		switch($what){
+			case "left":
+				print $this->getHTMLLeft(false);
+				break;
 			case "edheader": 
 				print $this->getHTMLEditorHeader($mode);
 				break;

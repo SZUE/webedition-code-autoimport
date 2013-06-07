@@ -36,9 +36,9 @@ print weModuleFrames::getJSToggleTreeCode('messaging', 204);
 $_treewidth = isset($_COOKIE["treewidth_messaging"]) && ($_COOKIE["treewidth_messaging"] >= weTree::MinWidth) ? $_COOKIE["treewidth_users"] : 204;
 
 $incDecTree = '
-	<img id="incBaum" src="' . BUTTONS_DIR . 'icons/function_plus.gif" width="9" height="12" style="position:absolute;bottom:53px;left:5px;border:1px solid grey;padding:0 1px;cursor: pointer; ' . ($_treewidth <= 30 ? 'bgcolor:grey;' : '') . '" onClick="top.content.messaging_main.incTree();">
-	<img id="decBaum" src="' . BUTTONS_DIR . 'icons/function_minus.gif" width="9" height="12" style="position:absolute;bottom:33px;left:5px;border:1px solid grey;padding:0 1px;cursor: pointer; ' . ($_treewidth <= 30 ? 'bgcolor:grey;' : '') . '" onClick="top.content.messaging_main.decTree();">
-	<img id="arrowImg" src="' . BUTTONS_DIR . 'icons/direction_' . ($_treewidth <= 30 ? 'right' : 'left') . '.gif" width="9" height="12" style="position:absolute;bottom:13px;left:5px;border:1px solid grey;padding:0 1px;cursor: pointer;" onClick="top.content.messaging_main.toggleTree();">
+	<img id="incBaum" src="' . BUTTONS_DIR . 'icons/function_plus.gif" width="9" height="12" style="position:absolute;bottom:53px;left:5px;border:1px solid grey;padding:0 1px;cursor: pointer; ' . ($_treewidth <= 30 ? 'bgcolor:grey;' : '') . '" onClick="top.content.resize.incTree();">
+	<img id="decBaum" src="' . BUTTONS_DIR . 'icons/function_minus.gif" width="9" height="12" style="position:absolute;bottom:33px;left:5px;border:1px solid grey;padding:0 1px;cursor: pointer; ' . ($_treewidth <= 30 ? 'bgcolor:grey;' : '') . '" onClick="top.content.resize.decTree();">
+	<img id="arrowImg" src="' . BUTTONS_DIR . 'icons/direction_' . ($_treewidth <= 30 ? 'right' : 'left') . '.gif" width="9" height="12" style="position:absolute;bottom:13px;left:5px;border:1px solid grey;padding:0 1px;cursor: pointer;" onClick="top.content.resize.toggleTree();">
 ';
 
 print we_html_element::htmlBody(array('style' => 'background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px'),
@@ -47,6 +47,6 @@ print we_html_element::htmlBody(array('style' => 'background-color:#bfbfbf; back
 			we_html_element::htmlDiv(array('style' => 'position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px; width: ' . weTree::HiddenWidth . 'px; background-image: url(/webEdition/images/v-tabs/background.gif); background-repeat: repeat-y; border-top: 1px solid black;'), $incDecTree) .
 			we_html_element::htmlIFrame('messaging_tree', HTML_DIR . 'white.html', 'position: absolute; top: 0px; bottom: 0px; left: ' . weTree::HiddenWidth . 'px; right: 0px; border-top: 1px solid white;')
 		) .
-		we_html_element::htmlIFrame('messaging_right', WE_MESSAGING_MODULE_DIR . 'messaging_right.php?we_transaction=' . $_REQUEST['we_transaction'], 'position: absolute; top: 0px; bottom: 0px; left: ' . $_treewidth . 'px; right: 0px; width:auto; border-left: 1px solid black; overflow: hidden;')
+		we_html_element::htmlIFrame('right', WE_MESSAGING_MODULE_DIR . 'messaging_right.php?we_transaction=' . $_REQUEST['we_transaction'], 'position: absolute; top: 0px; bottom: 0px; left: ' . $_treewidth . 'px; right: 0px; width:auto; border-left: 1px solid black; overflow: hidden;')
 	)
 );

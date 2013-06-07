@@ -22,6 +22,9 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+
+//TEST: was it ok to abandon treefooter?
+
 class weGlossaryFrames extends weModuleFrames{
 
 	var $View;
@@ -29,6 +32,8 @@ class weGlossaryFrames extends weModuleFrames{
 	var $_space_size = 150;
 	var $_text_size = 75;
 	var $_width_size = 535;
+
+	protected $treeDefaultWidth = 280;
 
 	function __construct(){
 
@@ -177,22 +182,10 @@ class weGlossaryFrames extends weModuleFrames{
 		}
 	}
 
-	function getHTMLLeft(){
-
-		$frameset = new we_html_frameset(array("framespacing" => "0", "border" => "0", "frameborder" => "no"));
-		$noframeset = new we_baseElement("noframes");
-
-		$frameset->setAttributes(array("rows" => "1,*,0"));
-		$frameset->addFrame(array("src" => HTML_DIR . "whiteWithTopLine.html", "name" => "treeheader", "noresize" => null, "scrolling" => "no"));
-
-		$frameset->addFrame(array("src" => WEBEDITION_DIR . "treeMain.php", "name" => "tree", "noresize" => null, "scrolling" => "auto"));
-		$frameset->addFrame(array("src" => $this->frameset . "?pnt=treefooter", "name" => "treefooter", "noresize" => null, "scrolling" => "no"));
-
-		// set and return html code
-		$body = $frameset->getHtml() . "\n" . $noframeset->getHTML();
-
-		return $this->getHTMLDocument($body);
-	}
+	/* use parent
+	function getHTMLLeft(){}
+	 * 
+	 */
 
 	function getHTMLTreeHeader(){
 		return "";

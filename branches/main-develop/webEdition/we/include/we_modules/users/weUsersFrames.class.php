@@ -38,9 +38,15 @@ class weUsersFrames extends weModuleFrames {
 		$this->treeDefaultWidth = 204;
 	}
 
-	/* use parent
-	function getHTML($what){}
-	*/
+	function getHTML($what = '', $mode = ''){
+		switch($what){
+			case "left":
+				print $this->getHTMLLeft(false, false, true, 'search');
+				break;
+			default:
+				parent::getHTML($what);
+		}
+	}
 
 	function getJSCmdCode(){
 
@@ -386,23 +392,10 @@ function urlEntry(icon,name,vorfahr,text,contentType,table,published,denied) {
 		$this->View->processCommands();
 	}
 
-	function getHTMLLeft(){
-		echo we_html_element::jsScript(JS_DIR . 'images.js');
-		print STYLESHEET;
-		?>
-		</head>
-		<frameset rows="1,*,40" framespacing="0" border="0" frameborder="NO">
-			<frame src="<?php print HTML_DIR ?>whiteWithTopLine.html" scrolling="no" noresize/>
-			<frame src="<?php print HTML_DIR ?>white.html" name="tree" scrolling="auto" noresize/>
-			<frame src="<?php print $this->frameset . '?pnt=search'?>" name="search" scrolling="no" noresize/>
-		</frameset>
-		<noframes>
-			<body background="<?php print IMAGE_DIR ?>backgrounds/aquaBackground.gif" style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px">
-			</body>
-		</noframes>
-		</html>
-		<?php
-	}
+	/* use parent
+	function getHTMLLeft(){}
+	 * 
+	 */
 
 	function getHTMLSearch(){
 		echo we_html_element::jsScript(JS_DIR . 'images.js') . STYLESHEET;

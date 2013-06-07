@@ -55,7 +55,7 @@ print STYLESHEET;
 </style>
 <script type="text/javascript"><!--
 	function todo_markdone() {
-		top.content.messaging_cmd.location = '<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_cmd.php?mcmd=todo_markdone&we_transaction=<?php echo $_REQUEST['we_transaction'] ?>';
+		top.content.cmd.location = '<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_cmd.php?mcmd=todo_markdone&we_transaction=<?php echo $_REQUEST['we_transaction'] ?>';
 	}
 	//-->
 </script>

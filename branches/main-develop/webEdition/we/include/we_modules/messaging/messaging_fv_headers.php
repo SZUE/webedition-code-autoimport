@@ -32,7 +32,7 @@ print we_html_element::jsElement('
 	function doSort(sortitem) {
 		entrstr = "";
 
-		top.content.messaging_cmd.location = "' . WE_MESSAGING_MODULE_DIR . 'messaging_cmd.php?mcmd=show_folder_content&sort=" + sortitem + entrstr + "&we_transaction=' . $_REQUEST['we_transaction'] . '";
+		top.content.cmd.location = "' . WE_MESSAGING_MODULE_DIR . 'messaging_cmd.php?mcmd=show_folder_content&sort=" + sortitem + entrstr + "&we_transaction=' . $_REQUEST['we_transaction'] . '";
 	}') .
 	STYLESHEET .
 	we_html_element::cssElement('.defaultfont a {color:black; text-decoration:none}');

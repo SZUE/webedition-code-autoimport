@@ -335,7 +335,9 @@ class weMessagingView extends weModuleView {
 	}
 
 	function getJSTreeHeader(){
+
 		return '
+
 			function doUnload() {
 				if (!!jsWindow_count) {
 					for (i = 0; i < jsWindow_count; i++) {
@@ -355,8 +357,7 @@ class weMessagingView extends weModuleView {
 						eval(\'top.content.we_cmd(\'+args+\')\');
 				}
 			}
-
-	' . $this->getJSSubmitFunction("cmd");
+		' . $this->getJSSubmitFunction("cmd");
 	}
 
 	function getJSSubmitFunction($def_target = "edbody", $def_method = "post"){

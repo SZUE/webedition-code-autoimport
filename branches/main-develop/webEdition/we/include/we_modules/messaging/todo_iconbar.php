@@ -45,48 +45,48 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js');
 	}
 
 	function forward_todo() {
-		if (top.content.messaging_main.messaging_right.msg_work.entries_selected && top.content.messaging_main.messaging_right.msg_work.entries_selected.length > 0) {
+		if (top.content.resize.right.msg_work.entries_selected && top.content.resize.right.msg_work.entries_selected.length > 0) {
 			new jsWindow("<?php print WE_MESSAGING_MODULE_DIR; ?>todo_edit_todo.php?we_transaction=<?php echo $_REQUEST['we_transaction'] ?>&mode=forward", "messaging_new_todo",-1,-1,705,600,true,true,true,false);
 		}
 	}
 
 	function reject_todo() {
-		if (top.content.messaging_main.messaging_right.msg_work.entries_selected && top.content.messaging_main.messaging_right.msg_work.entries_selected.length > 0) {
+		if (top.content.resize.right.msg_work.entries_selected && top.content.resize.right.msg_work.entries_selected.length > 0) {
 			new jsWindow("<?php print WE_MESSAGING_MODULE_DIR; ?>todo_edit_todo.php?we_transaction=<?php echo $_REQUEST['we_transaction'] ?>&mode=reject", "messaging_new_todo",-1,-1,690,600,true,false,true,false);
 		}
 	}
 
 	function update_todo() {
-		if (top.content.messaging_main.messaging_right.msg_work.entries_selected && top.content.messaging_main.messaging_right.msg_work.entries_selected.length > 0) {
+		if (top.content.resize.right.msg_work.entries_selected && top.content.resize.right.msg_work.entries_selected.length > 0) {
 			new jsWindow("<?php print WE_MESSAGING_MODULE_DIR; ?>todo_update_todo.php?we_transaction=<?php echo $_REQUEST['we_transaction'] ?>&mode=reject", "messaging_new_todo",-1,-1,705,600,true,true,true,false);
 		}
 	}
 
 	function copy_messages() {
-		if (top.content.messaging_main.messaging_right.msg_work.entries_selected && top.content.messaging_main.messaging_right.msg_work.entries_selected.length > 0) {
-			top.content.messaging_cmd.location = "<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_cmd.php?we_transaction=<?php echo $_REQUEST['we_transaction'] ?>&mcmd=copy_msg&entrsel=" + top.content.messaging_main.messaging_right.msg_work.entries_selected.join(',');
+		if (top.content.resize.right.msg_work.entries_selected && top.content.resize.right.msg_work.entries_selected.length > 0) {
+			top.content.cmd.location = "<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_cmd.php?we_transaction=<?php echo $_REQUEST['we_transaction'] ?>&mcmd=copy_msg&entrsel=" + top.content.resize.right.msg_work.entries_selected.join(',');
 		}
 	}
 
 	function cut_messages() {
-		if (top.content.messaging_main.messaging_right.msg_work.entries_selected && top.content.messaging_main.messaging_right.msg_work.entries_selected.length > 0) {
-			top.content.messaging_cmd.location = "<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_cmd.php?we_transaction=<?php echo $_REQUEST['we_transaction'] ?>&mcmd=cut_msg&entrsel=" + top.content.messaging_main.messaging_right.msg_work.entries_selected.join(',');
+		if (top.content.resize.right.msg_work.entries_selected && top.content.resize.right.msg_work.entries_selected.length > 0) {
+			top.content.cmd.location = "<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_cmd.php?we_transaction=<?php echo $_REQUEST['we_transaction'] ?>&mcmd=cut_msg&entrsel=" + top.content.resize.right.msg_work.entries_selected.join(',');
 		}
 	}
 
 	function paste_messages() {
-		if (top.content.messaging_main.messaging_right.msg_work.entries_selected) {
-			top.content.messaging_cmd.location = "<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_cmd.php?we_transaction=<?php echo $_REQUEST['we_transaction'] ?>&mcmd=paste_msg&entrsel=" + top.content.messaging_main.messaging_right.msg_work.entries_selected.join(',');
+		if (top.content.resize.right.msg_work.entries_selected) {
+			top.content.cmd.location = "<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_cmd.php?we_transaction=<?php echo $_REQUEST['we_transaction'] ?>&mcmd=paste_msg&entrsel=" + top.content.resize.right.msg_work.entries_selected.join(',');
 		}
 	}
 
 	function delete_messages() {
-		if (top.content.messaging_main.messaging_right.msg_work.entries_selected && top.content.messaging_main.messaging_right.msg_work.entries_selected.length > 0) {
+		if (top.content.resize.right.msg_work.entries_selected && top.content.resize.right.msg_work.entries_selected.length > 0) {
 			c = confirm("<?php echo g_l('modules_messaging', '[q_rm_todos]') ?>");
 			if (c == false) {
 				return;
 			}
-			top.content.messaging_cmd.location = "<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_cmd.php?we_transaction=<?php echo $_REQUEST['we_transaction'] ?>&mcmd=delete_msg&entrsel=" + top.content.messaging_main.messaging_right.msg_work.entries_selected.join(',');
+			top.content.cmd.location = "<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_cmd.php?we_transaction=<?php echo $_REQUEST['we_transaction'] ?>&mcmd=delete_msg&entrsel=" + top.content.resize.right.msg_work.entries_selected.join(',');
 		}
 	}
 
@@ -95,8 +95,8 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js');
 	}
 
 	function launch_msg() {
-		if (top.content.messaging_main.messaging_right.msg_work.entries_selected) {
-			top.content.messaging_cmd.location = '<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_cmd.php?mcmd=launch&mode=message&we_transaction=<?php echo $_REQUEST['we_transaction'] ?>';
+		if (top.content.resize.right.msg_work.entries_selected) {
+			top.content.cmd.location = '<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_cmd.php?mcmd=launch&mode=message&we_transaction=<?php echo $_REQUEST['we_transaction'] ?>';
 		}
 	}
 	//-->

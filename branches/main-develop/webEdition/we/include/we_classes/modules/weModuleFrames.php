@@ -35,6 +35,8 @@ class weModuleFrames {
 
 	protected $treeDefaultWidth = 200;
 	protected $treeWidth = 0;
+	protected $treeHeaderHeight = 0;
+	protected $treeFooterHeight = 40;
 	private static $treeWidthsJS = '{}';
 
 	function __construct($frameset){
@@ -175,19 +177,26 @@ class weModuleFrames {
 		return $this->getHTMLDocument($body, $extraHead);
 	}
 
-	function getHTMLLeft(){
-
-		$frameset = new we_html_frameset(array("framespacing" => "0", "border" => "0", "frameborder" => "no"));
-		$noframeset = new we_baseElement("noframes");
-
-		$frameset->setAttributes(array("rows" => "1,*"));
-		$frameset->addFrame(array("src" => HTML_DIR . "whiteWithTopLine.html", "name" => "treeheader", "noresize" => null, "scrolling" => "no"));
-		$frameset->addFrame(array("src" => WEBEDITION_DIR . "treeMain.php", "name" => "tree", "noresize" => null, "scrolling" => "auto"));
-
-		// set and return html code
-		$body = $frameset->getHtml() . $noframeset->getHTML();
+	function getHTMLLeft($loadMainTree = true, $header = false, $footer = false, $footerId = 'treefooter'){//TODO: $loadMainTree entfaellt, sobald trees einheitlich sind
+		$headerHeight = $this->getTreeHeaderHeigt();
+		$footerHeight = $this->getTreeFooterHeigt();
+		
+		$body = we_html_element::htmlBody(array(), 
+				($header ? we_html_element::htmlDiv(array('style' => 'position: absolute; top: 0px; left: 0px; height: ' . $headerHeight . 'px; width: 100%; background-color: #00ff00;'), '') : 
+					we_html_element::htmlDiv(array('style' => 'position: absolute; top: 0px; left: 0px; height: 1px; width: 100%; background-color: #ffffff;'), '')) . 
+				we_html_element::htmlIFrame('tree', ($loadMainTree ? WEBEDITION_DIR . 'treeMain.php' : HTML_DIR . 'white.html'), 'position: absolute; top: ' . ($header ? $headerHeight : 1) . 'px; bottom: ' . ($footer ? $footerHeight : 0) . 'px; left: 0px; width: 100%;') .
+				($footer ? we_html_element::htmlIFrame($footerId, $this->frameset . '?pnt=' . $footerId, 'position: absolute; bottom: 0px; left: 0px; height: ' . $footerHeight . 'px; width: 100%;') : '')
+			);
 
 		return $this->getHTMLDocument($body);
+	}
+
+	protected function getTreeHeaderHeigt(){
+		return $this->treeHeaderHeight;
+	}
+	
+	protected function getTreeFooterHeigt(){
+		return $this->treeFooterHeight;
 	}
 
 	function getHTMLRight($extraHead = '', $editorParams = ''){
@@ -313,14 +322,12 @@ class weModuleFrames {
 
 	static function getJSToggleTreeCode($module,$treeDefaultWidth){
 		//FIXME: throw some of these functions out again and use generic version of main-window functions
-		$leftDiv = $module == "messaging" ? "messaging_treeDiv" : "leftDiv";
-		$rightDiv = $module == "messaging" ? "messaging_rightDiv" : "rightDiv";
 
 		return we_html_element::jsElement('
 			var oldTreeWidth = ' . $treeDefaultWidth . ';
 
 			function toggleTree(){
-				var tDiv = self.document.getElementById("' . $leftDiv . '");
+				var tDiv = self.document.getElementById("leftDiv");
 				var w = getTreeWidth();
 
 				if(tDiv.style.display == "none"){
@@ -359,7 +366,7 @@ class weModuleFrames {
 
 			function setTreeWidth(w) {
 				self.document.getElementById("lframeDiv").style.width = w + "px";
-				self.document.getElementById("' . $rightDiv . '").style.left = w + "px";
+				self.document.getElementById("rightDiv").style.left = w + "px";
 				if(w > ' . weTree::HiddenWidth . '){
 					storeTreeWidth(w);
 				}

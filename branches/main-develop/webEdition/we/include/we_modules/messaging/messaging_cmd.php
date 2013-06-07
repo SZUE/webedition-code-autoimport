@@ -30,16 +30,16 @@ function print_fc_html($blank = true){
 	?>
 	<script type="text/javascript">
 		<!--
-		top.content.messaging_main.messaging_right.msg_work.entries_selected = new Array(<?php echo $GLOBALS['messaging']->get_ids_selected() ?>);
-		top.content.messaging_main.messaging_right.msg_work.messaging_fv_headers.location="<?php echo we_class::url(WE_MESSAGING_MODULE_DIR . 'messaging_fv_headers.php') . '&si=' . $GLOBALS['messaging']->get_sortitem() . '&so=' . $GLOBALS['messaging']->get_sortorder(); ?>&viewclass=" + top.content.viewclass;
-		if (top.content.messaging_main.messaging_right.msg_work.msg_mfv.messaging_messages_overview) {
-			top.content.messaging_main.messaging_right.msg_work.msg_mfv.messaging_messages_overview.location="<?php echo we_class::url(WE_MESSAGING_MODULE_DIR . 'messaging_show_folder_content.php'); ?>";
+		top.content.resize.right.msg_work.entries_selected = new Array(<?php echo $GLOBALS['messaging']->get_ids_selected() ?>);
+		top.content.resize.right.msg_work.messaging_fv_headers.location="<?php echo we_class::url(WE_MESSAGING_MODULE_DIR . 'messaging_fv_headers.php') . '&si=' . $GLOBALS['messaging']->get_sortitem() . '&so=' . $GLOBALS['messaging']->get_sortorder(); ?>&viewclass=" + top.content.viewclass;
+		if (top.content.resize.right.msg_work.msg_mfv.messaging_messages_overview) {
+			top.content.resize.right.msg_work.msg_mfv.messaging_messages_overview.location="<?php echo we_class::url(WE_MESSAGING_MODULE_DIR . 'messaging_show_folder_content.php'); ?>";
 		}
 
 
 	<?php
 	if($blank){
-		echo 'top.content.messaging_main.messaging_right.msg_work.msg_mfv.messaging_msg_view.location="' . HTML_DIR . 'white.html";';
+		echo 'top.content.resize.right.msg_work.msg_mfv.messaging_msg_view.location="' . HTML_DIR . 'white.html";';
 	}
 	?>
 		//-->
@@ -65,7 +65,7 @@ function get_folder_content($id, $sort = '', $entrsel = '', $searchterm = '', $u
 
 	if($id != $GLOBALS['messaging']->Folder_ID){
 		$GLOBALS['messaging']->reset_ids_selected();
-		print we_html_element::jsElement('top.content.messaging_main.messaging_right.msg_work.last_entry_selected = -1;');
+		print we_html_element::jsElement('top.content.resize.right.msg_work.last_entry_selected = -1;');
 	}
 
 	$GLOBALS['messaging']->get_fc_data(isset($id) ? $id : '', empty($sort) ? '' : $sort, $searchterm, $usecache);
@@ -134,7 +134,7 @@ switch($_REQUEST["mcmd"]){
 			?>
 			<script type="text/javascript">
 				<!--
-				top.content.messaging_main.messaging_right.msg_work.msg_mfv.messaging_msg_view.location="<?php print WE_MESSAGING_MODULE_DIR . "messaging_message_view.php?we_transaction=" . $_REQUEST['we_transaction'] . "&id=$id" ?>";
+				top.content.resize.right.msg_work.msg_mfv.messaging_msg_view.location="<?php print WE_MESSAGING_MODULE_DIR . "messaging_message_view.php?we_transaction=" . $_REQUEST['we_transaction'] . "&id=$id" ?>";
 				//-->
 			</script>
 			<?php
@@ -186,9 +186,9 @@ switch($_REQUEST["mcmd"]){
 		?>
 		<script type="text/javascript">
 			<!--
-			top.content.messaging_main.messaging_right.msg_work.entries_selected = new Array();
-			top.content.messaging_main.messaging_right.msg_work.msg_mfv.messaging_messages_overview.location="<?php echo we_class::url(WE_MESSAGING_MODULE_DIR . 'messaging_show_folder_content.php'); ?>";
-			top.content.messaging_main.messaging_right.msg_work.msg_mfv.messaging_msg_view.location="<?php echo HTML_DIR ?>white.html";
+			top.content.resize.right.msg_work.entries_selected = new Array();
+			top.content.resize.right.msg_work.msg_mfv.messaging_messages_overview.location="<?php echo we_class::url(WE_MESSAGING_MODULE_DIR . 'messaging_show_folder_content.php'); ?>";
+			top.content.resize.right.msg_work.msg_mfv.messaging_msg_view.location="<?php echo HTML_DIR ?>white.html";
 			//-->
 		</script>
 		<?php
@@ -229,11 +229,11 @@ switch($_REQUEST["mcmd"]){
 		?>
 		<script type="text/javascript">
 
-			top.content.messaging_main.messaging_right.msg_work.entries_selected = new Array();
-			top.content.messaging_main.messaging_right.msg_work.messaging_fv_headers.location="<?php echo we_class::url(WE_MESSAGING_MODULE_DIR . 'messaging_fv_headers.php') . '&si=' . $messaging->get_sortitem() . '&so=' . $messaging->get_sortorder();
+			top.content.resize.right.msg_work.entries_selected = new Array();
+			top.content.resize.right.msg_work.messaging_fv_headers.location="<?php echo we_class::url(WE_MESSAGING_MODULE_DIR . 'messaging_fv_headers.php') . '&si=' . $messaging->get_sortitem() . '&so=' . $messaging->get_sortorder();
 		?>&viewclass=" + top.content.viewclass;
-			top.content.messaging_main.messaging_right.msg_work.msg_mfv.messaging_messages_overview.location="<?php echo we_class::url(WE_MESSAGING_MODULE_DIR . 'messaging_show_folder_content.php'); ?>";
-			top.content.messaging_main.messaging_right.msg_work.msg_mfv.messaging_msg_view.location="<?php echo HTML_DIR ?>white.html";
+			top.content.resize.right.msg_work.msg_mfv.messaging_messages_overview.location="<?php echo we_class::url(WE_MESSAGING_MODULE_DIR . 'messaging_show_folder_content.php'); ?>";
+			top.content.resize.right.msg_work.msg_mfv.messaging_msg_view.location="<?php echo HTML_DIR ?>white.html";
 
 		<?php
 		$aid = $messaging->Folder_ID;
@@ -259,11 +259,11 @@ switch($_REQUEST["mcmd"]){
 		?>
 		<script type="text/javascript">
 			<!--
-			top.content.messaging_main.messaging_right.msg_work.entries_selected = new Array();
-			top.content.messaging_main.messaging_right.msg_work.messaging_fv_headers.location="<?php echo we_class::url(WE_MESSAGING_MODULE_DIR . 'messaging_fv_headers.php') . '&si=' . $messaging->get_sortitem() . '&so=' . $messaging->get_sortorder();
+			top.content.resize.right.msg_work.entries_selected = new Array();
+			top.content.resize.right.msg_work.messaging_fv_headers.location="<?php echo we_class::url(WE_MESSAGING_MODULE_DIR . 'messaging_fv_headers.php') . '&si=' . $messaging->get_sortitem() . '&so=' . $messaging->get_sortorder();
 		?>&viewclass" + top.content.viewclass;
-			top.content.messaging_main.messaging_right.msg_work.msg_mfv.messaging_messages_overview.location="<?php echo we_class::url(WE_MESSAGING_MODULE_DIR . 'messaging_show_folder_content.php'); ?>";
-			top.content.messaging_main.messaging_right.msg_work.msg_mfv.messaging_msg_view.location="<?php echo HTML_DIR ?>white.html";
+			top.content.resize.right.msg_work.msg_mfv.messaging_messages_overview.location="<?php echo we_class::url(WE_MESSAGING_MODULE_DIR . 'messaging_show_folder_content.php'); ?>";
+			top.content.resize.right.msg_work.msg_mfv.messaging_msg_view.location="<?php echo HTML_DIR ?>white.html";
 		<?php $aid = $messaging->Folder_ID; ?>
 
 			aid = <?php echo $aid ?>;
@@ -298,7 +298,7 @@ switch($_REQUEST["mcmd"]){
 			?>
 			<script type="text/javascript">
 				<!--
-				top.content.messaging_main.messaging_right.msg_work.location = "<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_edit_folder.php?we_transaction=<?php echo $_REQUEST['we_transaction'] ?>&mode=<?php echo $_REQUEST['mode'] ?>&fid=<?php echo (isset($_REQUEST['fid']) ? $_REQUEST['fid'] : -1) ?>";
+				top.content.resize.right.msg_work.location = "<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_edit_folder.php?we_transaction=<?php echo $_REQUEST['we_transaction'] ?>&mode=<?php echo $_REQUEST['mode'] ?>&fid=<?php echo (isset($_REQUEST['fid']) ? $_REQUEST['fid'] : -1) ?>";
 				//-->
 			</script>
 			<?php

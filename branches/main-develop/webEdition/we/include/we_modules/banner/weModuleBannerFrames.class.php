@@ -235,20 +235,10 @@ class weModuleBannerFrames extends weModuleFrames {
 	function getHTMLResize(){}
 	*/
 
-	function getHTMLLeft(){
-		?>
-		</head>
-		<frameset rows="1,*" framespacing="0" border="0" frameborder="NO">
-			<frame src="<?php print HTML_DIR ?>whiteWithTopLine.html" scrolling="no" noresize>
-			<frame src="<?php print HTML_DIR ?>white.html" name="tree" scrolling="auto" noresize>
-		</frameset>
-		<noframes>
-			<body style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px">
-			</body>
-		</noframes>
-		</html>
-		<?php
-	}
+	/* use parent
+	function getHTMLLeftback(){}
+	 * 
+	 */
 
 	function getHTMLRight(){
 		?>
