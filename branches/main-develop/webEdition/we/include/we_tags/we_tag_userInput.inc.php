@@ -91,7 +91,7 @@ function we_tag_userInput($attribs, $content){
 		$_hidden = getHtmlTag(
 			'input', array(
 			'type' => 'hidden', 'name' => $fieldname, 'value' => oldHtmlspecialchars($orgVal), 'xml' => $xml
-			));
+		));
 		return (($type != "hidden") ? $content : "") . $_hidden;
 	} else{
 		switch($type){
@@ -503,8 +503,7 @@ function we_tag_userInput($attribs, $content){
 						'editorcss',
 						'ignoredocumentcss',
 						'buttonpos'
-						
-						));
+					));
 					return we_getTextareaField($fieldname, $content, $atts);
 				} else{
 					echo we_html_element::jsElement('weFrontpageEdit=true;');
@@ -515,8 +514,7 @@ function we_tag_userInput($attribs, $content){
 					//FIXME: currently we use a separate preference-option for frontend editor (where tinyMCE is labelled beta)
 					$tmp = we_wysiwyg::$editorType;
 					we_wysiwyg::$editorType = WYSIWYG_TYPE_FRONTEND == 'tinyMCE' ? 'tinyMCE' : 'default';
-					$ret = we_forms::weTextarea($fieldname, $content, $attribs, $autobr, "autobr", $showAutobr, $GLOBALS['we_doc']->getHttpPath(),
-						false, false, $xml, $removeFirstParagraph, $charset, false, true);
+					$ret = we_forms::weTextarea($fieldname, $content, $attribs, $autobr, "autobr", $showAutobr, $GLOBALS['we_doc']->getHttpPath(), false, false, $xml, $removeFirstParagraph, $charset, false, true);
 					we_wysiwyg::$editorType = $tmp;
 					return $ret;
 				}
@@ -541,7 +539,7 @@ function we_tag_userInput($attribs, $content){
 					'height',
 					'bgcolor',
 					'fontnames'
-					));
+				));
 				if((!$isset) && $checked){
 					$content = 1;
 				}
@@ -673,7 +671,7 @@ function we_tag_userInput($attribs, $content){
 					'width',
 					'height',
 					'maxlength'
-					));
+				));
 				if($values){
 
 					$values = explode(',', $values);
@@ -729,7 +727,7 @@ function we_tag_userInput($attribs, $content){
 					'height',
 					'bgcolor',
 					'fontnames'
-					));
+				));
 				return (!$isset ?
 						we_getInputRadioField($fieldname, ($checked ? $value : $value . "dummy"), $value, $atts) :
 						we_getInputRadioField($fieldname, $content, $orgVal, $atts));
@@ -766,7 +764,7 @@ function we_tag_userInput($attribs, $content){
 					'bgcolor',
 					'fontnames',
 					'maxlength'
-					));
+				));
 				$mode = weTag_getAttribute("mode", $attribs);
 				return we_html_tools::htmlInputChoiceField($fieldname, $orgVal, $values, $atts, $mode);
 			case "password" :
@@ -790,8 +788,12 @@ function we_tag_userInput($attribs, $content){
 					'height',
 					'bgcolor',
 					'fontnames'
-					));
-				return we_getInputPasswordField($fieldname, $orgVal, $atts);
+				));
+				$atts['type'] = 'password';
+				$atts['name'] = $fieldname;
+				$atts['value'] = oldHtmlspecialchars($orgVal);
+
+				return getHtmlTag('input', $atts);
 			case 'textinput':
 			default :
 				$atts = removeAttribs($attribs, array(
@@ -814,7 +816,7 @@ function we_tag_userInput($attribs, $content){
 					'height',
 					'bgcolor',
 					'fontnames'
-					));
+				));
 				return we_getInputTextInputField($fieldname, $orgVal, $atts);
 		}
 	}

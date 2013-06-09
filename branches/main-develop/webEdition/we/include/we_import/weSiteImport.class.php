@@ -591,7 +591,7 @@ class weSiteImport{
 		$table = TEMPLATES_TABLE;
 		$textname = 'templateDummy';
 		$idname = 'templateID';
-		$path = f("SELECT Path FROM " . $GLOBALS['DB_WE']->escape($table) . " WHERE ID='" . abs($tid) . "'", "Path", $GLOBALS['DB_WE']);
+		$path = f('SELECT Path FROM ' . $GLOBALS['DB_WE']->escape($table) . ' WHERE ID=' . intval($tid), 'Path', $GLOBALS['DB_WE']);
 		//javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','document.we_form.elements[\\'$idname\\'].value','document.we_form.elements[\\'$textname\\'].value','opener.displayTable();','" . session_id() . "','','text/weTmpl',1)
 		$wecmdenc1 = we_cmd_enc("document.we_form.elements['$idname'].value");
 		$wecmdenc2 = we_cmd_enc("document.we_form.elements['$textname'].value");
@@ -602,7 +602,7 @@ class weSiteImport{
 
 		$foo = we_html_tools::htmlTextInput($textname, 30, $path, "", ' readonly', "text", 320, 0);
 		return we_html_tools::htmlFormElementTable(
-				$foo, oldHtmlspecialchars(g_l('siteimport', "[template]"), ENT_QUOTES), "left", "defaultfont", we_getHiddenField($idname, $tid), we_html_tools::getPixel(20, 4), $button);
+				$foo, oldHtmlspecialchars(g_l('siteimport', "[template]"), ENT_QUOTES), "left", "defaultfont", we_html_tools::hidden($idname, intval($tid)), we_html_tools::getPixel(20, 4), $button);
 	}
 
 	/**

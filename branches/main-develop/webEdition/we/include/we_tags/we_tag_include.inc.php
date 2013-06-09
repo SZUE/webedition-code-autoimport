@@ -81,7 +81,7 @@ function we_resetBackVar($we_unique){
 	unset($GLOBALS['we']['backVars'][$we_unique]);
 }
 
-function we_tag_include($attribs, $content){
+function we_tag_include($attribs){
 	$id = weTag_getAttribute('id', $attribs);
 	$path = weTag_getAttribute('path', $attribs);
 	$name = weTag_getAttribute('name', $attribs);
@@ -110,10 +110,10 @@ function we_tag_include($attribs, $content){
 		}
 	} else{//notEditmode
 		if($name && !($id || $path)){
-			$db = new DB_WE();
+			$db = $GLOBALS['DB_WE'];
 			$_name = weTag_getAttribute('_name_orig', $attribs);
-			$path = we_tag('href', array('name' => $_name, 'rootdir' => $rootdir, 'hidedirindex' => 'false'));
-			$nint = $name . "_we_jkhdsf_int";
+			$path = we_tag('href', array('name' => $_name, 'rootdir' => $rootdir, 'hidedirindex' => false));
+			$nint = $name . '_we_jkhdsf_int';
 			$int = ($GLOBALS['we_doc']->getElement($nint) == '') ? 0 : $GLOBALS['we_doc']->getElement($nint);
 			$intID = $GLOBALS['we_doc']->getElement($nint . 'ID');
 			if($int && $intID){
@@ -126,7 +126,7 @@ function we_tag_include($attribs, $content){
 		if(!(($id && ($GLOBALS['we_doc']->ContentType != 'text/webedition' || $GLOBALS['WE_MAIN_DOC']->ID != $id )) || $path != '' )){
 			return '';
 		}
-		$db = new DB_WE();
+		$db = $GLOBALS['DB_WE'];
 		$realPath = '';
 		if($id){
 			$tmp = getHash('SELECT Path,ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id) . ' AND Published>0', $db);
@@ -141,12 +141,15 @@ function we_tag_include($attribs, $content){
 			return '';
 		}
 
-		/* check early if there is a document - if not the rest is never needed */
+		// check early if there is a document - if not the rest is never needed
 		if($gethttp){
 			$content = getHTTP(getServerUrl(true), $realPath);
 		} else{
 			$realPath = $_SERVER['DOCUMENT_ROOT'] . $realPath;
-//check Customer-Filter on static documents
+			if(!file_exists($realPath)){
+				return '';
+			}
+			//check Customer-Filter on static documents
 			$id = intval($id ? $id : (isset($intID) ? $intID : 0));
 			if(defined('CUSTOMER_TABLE') && $id){
 				$filter = weDocumentCustomerFilter::getFilterByIdAndTable($id, FILE_TABLE);
@@ -158,10 +161,7 @@ function we_tag_include($attribs, $content){
 					}
 				}
 			}
-			$content = @file_get_contents($realPath);
-			if($content === false){
-				return '';
-			}
+			$content = file_get_contents($realPath);
 		}
 
 		if(isset($GLOBALS['we']['backVars']) && count($GLOBALS['we']['backVars'])){
@@ -186,6 +186,7 @@ function we_tag_include($attribs, $content){
 			$content = preg_replace('|< */? *form[^>]*>|i', '', $content);
 		}
 
+//FIXME: change eval to simple include, if not http; or move http-include to tmp-folder & include
 		return 'we_setBackVar(' . $we_unique . ');' .
 			'eval(\'?>' . str_replace('\'', "\'", $content) . '\');' .
 			'we_resetBackVar(' . $we_unique . ');';

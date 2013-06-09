@@ -226,15 +226,15 @@ function weTag_getParserAttribute($name, $attribs, $default = '', $isFlag = fals
 function weTag_getAttribute($name, $attribs, $default = '', $isFlag = false, $useGlobal = true){
 	$value = isset($attribs[$name]) ? $attribs[$name] : '';
 	$regs = array();
+	//FIXME: change this, it should be possible to use \$a[b][c] to get $GLOBALS['a']['b']['c']
 	if($useGlobal && !is_array($value) && preg_match('|^\\\\?\$(.+)$|', $value, $regs)){
 		$value = isset($GLOBALS[$regs[1]]) ? $GLOBALS[$regs[1]] : '';
 	}
 	if($isFlag){
 		$val = (is_string($value) ? strtolower(trim($value)) : $value);
-		$ret = (bool) $default;
-		$ret = $ret && !($val === 'false' || $val === 'off' || $val === '0' || $val === 0 || $val === false);
-		$ret = $ret || ($val === 'true' || $val === 'on' || $val === '1' || $value === $name || $val === 1 || $val === true);
-		return $ret;
+		return (((bool) $default) &&
+			!($val === 'false' || $val === 'off' || $val === '0' || $val === 0 || $val === false)) ||
+			($val === 'true' || $val === 'on' || $val === '1' || $value === $name || $val === 1 || $val === true);
 	}
 	$value = is_array($value) || strlen($value) ? $value : $default;
 
@@ -279,6 +279,8 @@ function cutSimpleText($text, $len){
 	$pos = array(
 		0,
 		strrpos($text, ' '),
+		strrpos($text, '.'),
+		strrpos($text, ','),
 		strrpos($text, "\n"),
 		strrpos($text, "\t"),
 	);
@@ -401,18 +403,6 @@ function we_getInputTextInputField($name, $value, $atts){
 	$atts['value'] = oldHtmlspecialchars($value);
 
 	return getHtmlTag('input', $atts);
-}
-
-function we_getInputPasswordField($name, $value, $atts){
-	$atts['type'] = 'password';
-	$atts['name'] = $name;
-	$atts['value'] = oldHtmlspecialchars($value);
-
-	return getHtmlTag('input', $atts);
-}
-
-function we_getHiddenField($name, $value, $xml = false){
-	return '<input type="hidden" name="' . $name . '" value="' . oldHtmlspecialchars($value) . '" ' . ($xml ? ' /' : '') . '>';
 }
 
 //function we_getInputChoiceField($name, $value, $values, $atts, $mode, $valuesIsHash = false){}
