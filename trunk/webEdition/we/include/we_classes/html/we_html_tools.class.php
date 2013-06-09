@@ -84,7 +84,7 @@ abstract class we_html_tools{
 			}
 		}
 		return '<table cellpadding="0" cellspacing="0" border="0">' . ($text ? '<tr><td class="' . trim($textclass) . '" align="' . trim(
-					$textalign) . '" colspan="' . $colspan . '">' . $text . '</td></tr>' : '') . ($abstand ? ('<tr><td colspan="' . $colspan . '">' . we_html_tools::getPixel(
+					$textalign) . '" colspan="' . $colspan . '">' . $text . '</td></tr>' : '') . ($abstand ? ('<tr><td colspan="' . $colspan . '">' . self::getPixel(
 					2, $abstand) . '</td></tr>') : '') . '<tr>' . $elemOut . '</tr></table>';
 	}
 
@@ -136,10 +136,10 @@ abstract class we_html_tools{
 
 		$_table->setCol(0, 0, array(
 			"class" => "defaultfont"
-			), we_html_tools::htmlTextInput(
+			), self::htmlTextInput(
 				$name, $size, $value, "", (!empty($onChange) ? 'onchange="' . $onChange . '"' : ''), "text", $width, 0, "", $disabled));
 
-		$_table->setCol(0, 1, null, we_html_tools::getPixel($abstand, 1));
+		$_table->setCol(0, 1, null, self::getPixel($abstand, 1));
 
 		$_table->setCol(0, 2, array(
 			"class" => "defaultfont"
@@ -179,12 +179,12 @@ abstract class we_html_tools{
 		$anz = count($headline);
 		$out = '<table' . ($id ? ' id="' . $id . '"' : '') . ($style ? ' style="' . $style . '"' : '') . ' border="0" cellpadding="0" cellspacing="0" width="' . $w . '">
 		<tr>
-		<td width="8" style="background-image:url(' . IMAGE_DIR . 'box/box_header_ol2.gif);">' . we_html_tools::getPixel(8, 21) . '</td>';
+		<td width="8" style="background-image:url(' . IMAGE_DIR . 'box/box_header_ol2.gif);">' . self::getPixel(8, 21) . '</td>';
 		// HEADLINE
 		for($f = 0; $f < $anz; $f++){
 			$out .= '<td class="' . $class . '" style="padding:1px 5px 1px 5px;background-image:url(' . IMAGE_DIR . 'box/box_header_bg2.gif);">' . $headline[$f]["dat"] . '</td>';
 		}
-		$out .= '<td width="8" style="background-image:url(' . IMAGE_DIR . 'box/box_header_or2.gif);">' . we_html_tools::getPixel(8, 21) . '</td>
+		$out .= '<td width="8" style="background-image:url(' . IMAGE_DIR . 'box/box_header_or2.gif);">' . self::getPixel(8, 21) . '</td>
 				</tr>';
 
 		//CONTENT
@@ -202,7 +202,7 @@ abstract class we_html_tools{
 			$_table->setCol(0, 0, array(
 				"colspan" => "2"
 				), $out);
-			$_table->setCol(1, 0, null, we_html_tools::getPixel($w, 5)); // row for gap between buttons and dialogborder
+			$_table->setCol(1, 0, null, self::getPixel($w, 5)); // row for gap between buttons and dialogborder
 			$_table->setCol(2, 0, array(
 				"align" => "right"
 				), $buttons);
@@ -215,7 +215,7 @@ abstract class we_html_tools{
 	static function htmlDialogBorder4Row($content, $class = "middlefont", $bgColor = ""){
 		$anz = count($content);
 		$out = '<td style="border-bottom: 1px solid silver;background-image:url(' . IMAGE_DIR . 'box/shaddowBox3_l.gif);">' .
-			we_html_tools::getPixel(8, isset($content[0]["height"]) ? $content[0]["height"] : 1) . '</td>';
+			self::getPixel(8, isset($content[0]["height"]) ? $content[0]["height"] : 1) . '</td>';
 
 		for($f = 0; $f < $anz; $f++){
 			$bgcol = $bgColor ? $bgColor : ((isset($content[$f]["bgcolor"]) && $content[$f]["bgcolor"]) ? $content[$f]["bgcolor"] : "white");
@@ -226,18 +226,18 @@ abstract class we_html_tools{
 				'</td>';
 		}
 		$out .= '<td style="border-bottom: 1px solid silver;background-image:url(' . IMAGE_DIR . 'box/shaddowBox3_r.gif);">' .
-			we_html_tools::getPixel(8, isset($content[0]["height"]) ? $content[0]["height"] : 1) . '</td>';
+			self::getPixel(8, isset($content[0]["height"]) ? $content[0]["height"] : 1) . '</td>';
 		return $out;
 	}
 
 	static function htmlDialogBorder4($w, $h, $content, $headline, $class = "middlefont", $bgColor = "", $buttons = "", $id = "", $style = ""){ //content && headline are arrays
 		$out = '<table' . ($id ? ' id="' . $id . '"' : '') . ($style ? ' style="' . $style . '"' : '') . ' border="0" cellpadding="0" cellspacing="0" width="' . $w . '">
-		<tr><td width="8" style="background-image:url(' . IMAGE_DIR . 'box/box_header_ol2.gif);">' . we_html_tools::getPixel(8, 21) . '</td>';
+		<tr><td width="8" style="background-image:url(' . IMAGE_DIR . 'box/box_header_ol2.gif);">' . self::getPixel(8, 21) . '</td>';
 		// HEADLINE
 		foreach($headline as $h){
 			$out .= '<td class="' . $class . '" style="padding:1px 5px 1px 5px;background-image:url(' . IMAGE_DIR . 'box/box_header_bg2.gif);">' . $h["dat"] . '</td>';
 		}
-		$out .= '<td width="8" style="background-image:url(' . IMAGE_DIR . 'box/box_header_or2.gif);">' . we_html_tools::getPixel(8, 21) . '</td></tr>';
+		$out .= '<td width="8" style="background-image:url(' . IMAGE_DIR . 'box/box_header_or2.gif);">' . self::getPixel(8, 21) . '</td></tr>';
 
 		//CONTENT
 		foreach($content as $c){
@@ -252,7 +252,7 @@ abstract class we_html_tools{
 			);
 			$_table = new we_html_table($attribs, 3, 1);
 			$_table->setCol(0, 0, array("colspan" => "2"), $out);
-			$_table->setCol(1, 0, null, we_html_tools::getPixel($w, 5)); // row for gap between buttons and dialogborder
+			$_table->setCol(1, 0, null, self::getPixel($w, 5)); // row for gap between buttons and dialogborder
 			$_table->setCol(2, 0, array("align" => "right"), $buttons);
 			return $_table->getHtml();
 		} else{
@@ -329,7 +329,7 @@ abstract class we_html_tools{
 				$disabled = '';
 			}
 			$out = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' .
-				we_html_tools::htmlTextInput($name, 5, $selected, "", $attribs, "text", $width / 2, "0", "top") .
+				self::htmlTextInput($name, 5, $selected, "", $attribs, "text", $width / 2, "0", "top") .
 				'</td><td><select class="weSelect" name="wetmp_' . $name . '" size=1' . $disabled . ($width ? ' style="width: ' . ($width / 2) . 'px"' : '') . ' onchange="if(typeof(_EditorFrame) != \'undefined\'){_EditorFrame.setEditorIsHot(true);}if(this.options[this.selectedIndex].text){this.form.elements[\'' . $name . '\'].value=this.options[this.selectedIndex].text;};this.selectedIndex=0"><option>';
 			foreach($extensions as $extension){
 				$out .= '<option>' . $extension . '</option>';
@@ -338,12 +338,12 @@ abstract class we_html_tools{
 			return $out;
 		} else{
 			$_ext = $extensions[0];
-			return we_html_tools::hidden($name, $_ext) . '<b class="defaultfont">' . $_ext . '</b>';
+			return self::hidden($name, $_ext) . '<b class="defaultfont">' . $_ext . '</b>';
 		}
 	}
 
 	static function pExtensionPopup($name, $selected, $extensions){
-		print we_html_tools::getExtensionPopup($name, $selected, $extensions);
+		print self::getExtensionPopup($name, $selected, $extensions);
 	}
 
 	static function getPixel($w, $h, $border = 0){
@@ -497,7 +497,7 @@ abstract class we_html_tools{
 				$_atts2 = ($time && $month == $i) ? array('selected' => 'selected','value' =>
 				$i) : array('value' => $i);
 				$months .= getHtmlTag('option', array_merge($_attsOption, $_atts2), $val);
-			} 
+			}
 			$monthSelect = getHtmlTag(
 					'select', array_merge($_attsSelect, array(
 						'name' => sprintf($name, "_month"), 'id' => sprintf($name, "_month")
@@ -716,7 +716,7 @@ abstract class we_html_tools{
 			"class" => "defaultfont"
 			), $text);
 
-		return we_html_tools::htmlDialogLayout(
+		return self::htmlDialogLayout(
 				(empty($script) ? '' : we_html_element::jsElement($script)) . $content->getHtml()
 				, "", we_button::position_yes_no_cancel($yesButton, $noButton, $cancelButton), "99%", "0");
 	}

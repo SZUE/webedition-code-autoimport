@@ -264,6 +264,8 @@ function cutSimpleText($text, $len){
 	$pos = array(
 		0,
 		strrpos($text, ' '),
+		strrpos($text, '.'),
+		strrpos($text, ','),
 		strrpos($text, "\n"),
 		strrpos($text, "\t"),
 	);
@@ -391,18 +393,6 @@ function we_getInputTextInputField($name, $value, $atts){
 	$atts['value'] = oldHtmlspecialchars($value);
 
 	return getHtmlTag('input', $atts);
-}
-
-function we_getInputPasswordField($name, $value, $atts){
-	$atts['type'] = 'password';
-	$atts['name'] = $name;
-	$atts['value'] = oldHtmlspecialchars($value);
-
-	return getHtmlTag('input', $atts);
-}
-
-function we_getHiddenField($name, $value, $xml = false){
-	return '<input type="hidden" name="' . $name . '" value="' . oldHtmlspecialchars($value) . '" ' . ($xml ? ' /' : '') . '>';
 }
 
 //function we_getInputChoiceField($name, $value, $values, $atts, $mode, $valuesIsHash = false){}
