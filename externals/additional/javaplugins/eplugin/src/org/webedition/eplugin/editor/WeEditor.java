@@ -22,18 +22,17 @@ import java.util.Vector;
 /*
  * Created on Oct 20, 2004
  *
- * TODO To change the template for this generated file go to Window -
- * Preferences - Java - Code Style - Code Templates
  */
 /**
  * @author Slavko Tomcic
  *
- * TODO To change the template for this generated type comment go to Window -
- * Preferences - Java - Code Style - Code Templates
  */
 public class WeEditor extends BaseElement implements Serializable {
+	public enum MODES {
 
-	static final long serialVersionUID = -1611200117062004002L;
+		INACTIVE, EDITOR, SETTINGS
+	};
+
 	public String Name;
 	public String Path;
 	public String Args = "";

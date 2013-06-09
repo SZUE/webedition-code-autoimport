@@ -23,7 +23,7 @@ public class DocumentManager {
 	protected static Hashtable Documents = new Hashtable();
 	protected static int Current = 0;
 	protected static String Last = null;
-	protected static Vector Keys = null;
+	protected static Vector<String> Keys = null;
 
 	private DocumentManager() {
 		Documents = new Hashtable();

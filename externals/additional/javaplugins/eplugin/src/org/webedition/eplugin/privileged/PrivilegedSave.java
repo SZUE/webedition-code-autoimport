@@ -58,7 +58,7 @@ public class PrivilegedSave implements PrivilegedAction {
 		encoding = WeSettings.getDefaultEncoding();
 	}
 
-	public void setCheck(boolean check) {
+	public final void setCheck(boolean check) {
 		IsCheck = check;
 	}
 

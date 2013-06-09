@@ -33,10 +33,9 @@ import org.webedition.eplugin.util.Base64Coder;
 
 public class EPlugin extends JApplet {
 
-	static final long serialVersionUID = -1611200117062004017L;
 	//Specify the look and feel to use.  Valid values:
 	//null (use the default), "Metal", "System", "Motif", "GTK+"
-	final static String look = "System";
+	//final static String look = "System";
 	protected EPEditorDialog editorDialog;
 	protected WeSettings weSettings;
 	protected String startDialog = "";
@@ -44,43 +43,40 @@ public class EPlugin extends JApplet {
 	private UIMonitor monUI = new UIMonitor();
 	private CacheMonitor monCache = new CacheMonitor();
 	protected boolean runThreads = true;
-	protected final int threadTick = 500;
+	protected final int threadTick = 300;
 	protected boolean debug = true;
-	protected Vector Messages = new Vector();
-	private static final int MODE_INACTIVE = 0;
-	private static final int MODE_EDITOR = 1;
-	private static final int MODE_SETTINGS = 2;
-	protected int runDialog = MODE_INACTIVE;
+	protected Vector<String> Messages = new Vector();
+	protected WeEditor.MODES runDialog = WeEditor.MODES.INACTIVE;
 	public boolean isLive = true;
 
 	private void initLookAndFeel() {
-		String lookAndFeel = null;
+		String lookAndFeel;
 
-		if (look != null) {
-			if (look.equals("Metal")) {
-				lookAndFeel = UIManager.getCrossPlatformLookAndFeelClassName();
-			} else if (look.equals("System")) {
-				lookAndFeel = UIManager.getSystemLookAndFeelClassName();
-			} else if (look.equals("Motif")) {
-				lookAndFeel = "com.sun.java.swing.plaf.motif.MotifLookAndFeel";
-			} else if (look.equals("GTK+")) { //new in 1.4.2
-				lookAndFeel = "com.sun.java.swing.plaf.gtk.GTKLookAndFeel";
-			} else {
-				lookAndFeel = UIManager.getCrossPlatformLookAndFeelClassName();
-			}
+		/*if (look != null) {
+		 if (look.equals("Metal")) {
+		 lookAndFeel = UIManager.getCrossPlatformLookAndFeelClassName();
+		 } else if (look.equals("System")) {*/
+		lookAndFeel = UIManager.getSystemLookAndFeelClassName();
+		/*} else if (look.equals("Motif")) {
+		 lookAndFeel = "com.sun.java.swing.plaf.motif.MotifLookAndFeel";
+		 } else if (look.equals("GTK+")) { //new in 1.4.2
+		 lookAndFeel = "com.sun.java.swing.plaf.gtk.GTKLookAndFeel";
+		 } else {
+		 lookAndFeel = UIManager.getCrossPlatformLookAndFeelClassName();
+		 }*/
 
-			try {
-				UIManager.setLookAndFeel(lookAndFeel);
-				JFrame.setDefaultLookAndFeelDecorated(false);
-				/*
-				 * } catch (ClassNotFoundException e) { e.printStackTrace(); } catch
-				 * (UnsupportedLookAndFeelException e) { e.printStackTrace();
-				 */
-			} catch (Exception e) {
+		try {
+			UIManager.setLookAndFeel(lookAndFeel);
+			JFrame.setDefaultLookAndFeelDecorated(false);
+			/*
+			 * } catch (ClassNotFoundException e) { e.printStackTrace(); } catch
+			 * (UnsupportedLookAndFeelException e) { e.printStackTrace();
+			 */
+		} catch (Exception e) {
 
-				e.printStackTrace();
-			}
+			e.printStackTrace();
 		}
+		//}
 	}
 
 	@Override
@@ -159,15 +155,15 @@ public class EPlugin extends JApplet {
 		PrivilegedSave ps = new PrivilegedSave(fn, content);
 		AccessController.doPrivileged(ps);
 
-		String path = new String(doc.getCacheFilename());
+		String path = doc.getCacheFilename();
 
 		//path = path.replaceAll("\\", "\\\\");
 
 		path = EPlugin.replace(path, "\\", "\\\\");
 
 
-		content = "transactions = new Object();\n";
-		content += "transactions[\"" + path + "\"] = \"" + doc.getTransaction() + "\";\n";
+		content = "transactions = new Object();\n"
+						+ "transactions[\"" + path + "\"] = \"" + doc.getTransaction() + "\";\n";
 
 		fn = weSettings.registryDir + "/transaction.js";
 
@@ -239,7 +235,7 @@ public class EPlugin extends JApplet {
 
 	private void invokeEditor(EPDocument doc) {
 
-		runDialog = MODE_EDITOR;
+		runDialog = WeEditor.MODES.EDITOR;
 
 		DocumentManager.addDocument(doc);
 
@@ -257,7 +253,7 @@ public class EPlugin extends JApplet {
 
 	public void editSettings() {
 
-		runDialog = MODE_SETTINGS;
+		runDialog = WeEditor.MODES.SETTINGS;
 
 		if (!monUI.isAlive()) {
 			monUI = new UIMonitor();
@@ -362,40 +358,39 @@ public class EPlugin extends JApplet {
 		public void run() {
 			while (runThreads) {
 
-				if (runDialog == MODE_EDITOR) {
+				switch (runDialog) {
+					case EDITOR:
+						EPDocument doc = DocumentManager.getLast();
 
-					EPDocument doc = DocumentManager.getLast();
+						if (weSettings.getSetting("askForEditor").equals("true")) {
+							editorDialog = new EPEditorDialog(doc, weSettings, WeEditor.MODES.EDITOR);
+							editorDialog.pack();
+							editorDialog.setVisible(true);
+						} else {
 
-					if (weSettings.getSetting("askForEditor").equals("true")) {
-						editorDialog = new EPEditorDialog(doc, weSettings, MODE_EDITOR);
+							weSettings.loadEditorList(doc.getCacheFilename(), doc.getContentType());
+							WeEditor ed = weSettings.getDefaultEditor(doc.getContentType());
+
+							if (ed != null) {
+								ed.start(doc);
+							} else {
+								JOptionPane.showMessageDialog(
+												editorDialog,
+												weSettings.getParam("lan_alert_nodefeditor_text"),
+												weSettings.getParam("lan_alert_noeditor_title"),
+												JOptionPane.ERROR_MESSAGE);
+							}
+
+						}
+						break;
+					case SETTINGS:
+						editorDialog = new EPEditorDialog(new EPDocument(), weSettings, WeEditor.MODES.SETTINGS);
 						editorDialog.pack();
 						editorDialog.setVisible(true);
-					} else {
-
-						weSettings.loadEditorList(doc.getCacheFilename(), doc.getContentType());
-						WeEditor ed = weSettings.getDefaultEditor(doc.getContentType());
-
-						if (ed != null) {
-							ed.start(doc);
-						} else {
-							JOptionPane.showMessageDialog(
-											editorDialog,
-											weSettings.getParam("lan_alert_nodefeditor_text"),
-											weSettings.getParam("lan_alert_noeditor_title"),
-											JOptionPane.ERROR_MESSAGE);
-						}
-
-					}
-
-				} else if (runDialog == MODE_SETTINGS) {
-
-					editorDialog = new EPEditorDialog(new EPDocument(), weSettings, MODE_SETTINGS);
-					editorDialog.pack();
-					editorDialog.setVisible(true);
 
 				}
 
-				runDialog = MODE_INACTIVE;
+				runDialog = WeEditor.MODES.INACTIVE;
 
 				gotoBed(threadTick);
 			}

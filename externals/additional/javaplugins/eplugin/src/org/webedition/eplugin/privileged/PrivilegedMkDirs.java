@@ -17,7 +17,7 @@ package org.webedition.eplugin.privileged;
 import java.io.File;
 import java.security.PrivilegedAction;
 
-public class PrivilegedMkDirs implements PrivilegedAction {
+public class PrivilegedMkDirs implements PrivilegedAction<String> {
 
 	private String Path;
 
@@ -27,12 +27,8 @@ public class PrivilegedMkDirs implements PrivilegedAction {
 
 	}
 
-	public Object run() {
-
-		String out = "";
-
+	public String run() {
 		try {
-
 			File d = new File(Path);
 			if (!d.exists()) {
 				d.mkdirs();
@@ -42,7 +38,7 @@ public class PrivilegedMkDirs implements PrivilegedAction {
 		} catch (Exception e) {
 		}
 
-		return out;
+		return "";
 
 	}
 }

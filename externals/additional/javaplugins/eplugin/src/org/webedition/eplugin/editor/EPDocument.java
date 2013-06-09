@@ -64,9 +64,7 @@ public class EPDocument {
 	}
 
 	public void setSource(String s) {
-
 		Source = s;
-
 	}
 
 	public String getSource() {
@@ -121,19 +119,19 @@ public class EPDocument {
 	public void loadSource() {
 		Source = "";
 		try {
-			BufferedReader in;
+			BufferedReader in = (WeSettings.isCharsetSupported(Encoding)
+							? new BufferedReader(new InputStreamReader(new FileInputStream(CacheFilename), Encoding))
+							: new BufferedReader(new InputStreamReader(new FileInputStream(CacheFilename))));
 
-			if (WeSettings.isCharsetSupported(Encoding)) {
-				in = new BufferedReader(new InputStreamReader(new FileInputStream(CacheFilename), Encoding));
-			} else {
-				in = new BufferedReader(new InputStreamReader(new FileInputStream(CacheFilename)));
-			}
 
 			String str;
+			StringBuilder buf = new StringBuilder();
 			while ((str = in.readLine()) != null) {
-				Source += str + System.getProperty("line.separator");
+				buf.append(str);
+				buf.append(System.getProperty("line.separator"));
 			}
 			in.close();
+			Source = buf.toString();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

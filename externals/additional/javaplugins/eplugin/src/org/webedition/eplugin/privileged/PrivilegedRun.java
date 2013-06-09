@@ -17,33 +17,28 @@ package org.webedition.eplugin.privileged;
 import java.security.PrivilegedAction;
 import org.webedition.eplugin.util.StreamWrapper;
 
-public class PrivilegedRun implements PrivilegedAction {
+public class PrivilegedRun implements PrivilegedAction<String> {
 
 	private String Command;
 
 	public PrivilegedRun(String cmd) {
-
 		Command = cmd;
-
 	}
 
-	public Object run() {
-
-		String out = new String();
-
+	public String run() {
 		try {
 			Process process = Runtime.getRuntime().exec(Command);
 			StreamWrapper reader = new StreamWrapper(process.getInputStream());
 			reader.start();
 			process.waitFor();
 			reader.join();
-			out = reader.getResult();
+			return reader.getResult();
 
 		} catch (Exception e) {
 			//return null;
 		}
 
-		return out;
+		return new String();
 
 	}
 }

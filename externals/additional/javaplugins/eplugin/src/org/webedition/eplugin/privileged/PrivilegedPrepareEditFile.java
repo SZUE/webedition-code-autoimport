@@ -19,7 +19,7 @@ import java.net.URL;
 import java.security.PrivilegedAction;
 import org.webedition.eplugin.util.CopyUtility;
 
-public class PrivilegedPrepareEditFile implements PrivilegedAction {
+public class PrivilegedPrepareEditFile implements PrivilegedAction<String> {
 
 	private URL SourceUrl;
 	private String DestinationFilename;
@@ -29,12 +29,8 @@ public class PrivilegedPrepareEditFile implements PrivilegedAction {
 		DestinationFilename = filename;
 	}
 
-	public Object run() {
-
-		String out = "";
-
+	public String run() {
 		try {
-
 			File d = new File(DestinationFilename).getParentFile();
 			if (!d.exists()) {
 				d.mkdirs();
@@ -47,7 +43,7 @@ public class PrivilegedPrepareEditFile implements PrivilegedAction {
 		} catch (Exception e) {
 		}
 
-		return out;
+		return "";
 
 	}
 }

@@ -28,12 +28,7 @@ public class CmdProxy {
 
 	public static String executeCmd(String cmd) {
 
-		String out = new String();
-
 		PrivilegedRun pr = new PrivilegedRun(cmd);
-		out = (AccessController.doPrivileged(pr)).toString();
-
-		return out;
-
+		return AccessController.doPrivileged(pr);
 	}
 }

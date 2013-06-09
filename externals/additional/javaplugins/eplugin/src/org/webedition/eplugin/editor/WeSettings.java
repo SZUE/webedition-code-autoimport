@@ -32,24 +32,24 @@ import org.xml.sax.SAXException;
 
 public class WeSettings {
 
-	private String buildVersion = "5.1_9";
+	private final String buildVersion = "6.3.7";
 	private String defRegistryCompanyDir = "webedition_e.V.";
-	private String defRegistryProductDir = "editorPlugin";
-	private String defEditorFile = "editor.xml";
-	private String defSettingsFile = "setting.xml";
-	private String defCacheDir = "cache";
+	private final String defRegistryProductDir = "editorPlugin";
+	private final String defEditorFile = "editor.xml";
+	private final String defSettingsFile = "setting.xml";
+	private final String defCacheDir = "cache";
 	public String registryDir;
 	private String editorFile;
 	private String settingsFile;
 	public String cacheDir;
 	public String lastContentType = "";
-	private Hashtable ParamList = new Hashtable();
-	private Hashtable Settings = new Hashtable();
+	private Hashtable<String, String> ParamList = new Hashtable();
+	private Hashtable<String, String> Settings = new Hashtable();
 	//private Vector EditorList=new Vector();
-	private Vector DefaultEditorList = new Vector();
-	private Vector SystemEditorList = new Vector();
-	private Vector ContentTypes = new Vector();
-	private Vector ContentTypeIcons = new Vector();
+	private Vector<WeEditor> DefaultEditorList = new Vector();
+	private Vector<WeEditor> SystemEditorList = new Vector();
+	private Vector<String> ContentTypes = new Vector();
+	//private Vector ContentTypeIcons = new Vector();
 	private URL HostUrl;
 	private Properties PluginProperties;
 	public String AppDir = new String("webEdition");
@@ -101,19 +101,19 @@ public class WeSettings {
 		ContentTypes.add("application/x-shockwave-flash");
 		ContentTypes.add("application/*");
 
-		ContentTypeIcons.add("link.gif"); //text/plain
-		ContentTypeIcons.add("prog.gif"); //text/js
-		ContentTypeIcons.add("prog.gif"); //text/css
-		ContentTypeIcons.add("prog.gif"); //text/html
-		ContentTypeIcons.add("link.gif"); //text/xml
-		ContentTypeIcons.add("prog.gif"); //text/htaccess
-		ContentTypeIcons.add("we_dokument.gif"); //text/webedition
-		ContentTypeIcons.add("prog.gif"); //text/weTmpl
-		ContentTypeIcons.add("image.gif"); //image/*
-		ContentTypeIcons.add("film.gif"); //video/quicktime
-		ContentTypeIcons.add("film.gif"); //application/x-shockwave-flash
-		ContentTypeIcons.add("link.gif"); //application/*
-
+		/*ContentTypeIcons.add("link.gif"); //text/plain
+		 ContentTypeIcons.add("prog.gif"); //text/js
+		 ContentTypeIcons.add("prog.gif"); //text/css
+		 ContentTypeIcons.add("prog.gif"); //text/html
+		 ContentTypeIcons.add("link.gif"); //text/xml
+		 ContentTypeIcons.add("prog.gif"); //text/htaccess
+		 ContentTypeIcons.add("we_dokument.gif"); //text/webedition
+		 ContentTypeIcons.add("prog.gif"); //text/weTmpl
+		 ContentTypeIcons.add("image.gif"); //image/*
+		 ContentTypeIcons.add("film.gif"); //video/quicktime
+		 ContentTypeIcons.add("film.gif"); //application/x-shockwave-flash
+		 ContentTypeIcons.add("link.gif"); //application/*
+		 */
 		Settings.put("askForEditor", "true");
 
 		PluginProperties = new Properties();
@@ -191,7 +191,7 @@ public class WeSettings {
 		return false;
 	}
 
-	public void addEditor(WeEditor Editor, Vector List) {
+	public void addEditor(WeEditor Editor, Vector<WeEditor> List) {
 
 		boolean found = false;
 
@@ -316,7 +316,7 @@ public class WeSettings {
 				if (appList.size() > 0) {
 
 
-					WeEditor ed = new WeEditor();
+					WeEditor ed;
 					String path;
 					String name;
 
@@ -367,7 +367,7 @@ public class WeSettings {
 			for (int i = 0; i < childCount; i++) {
 				node = childs.item(i);
 
-				if (node.getNodeName() == "Editor") {
+				if (node.getNodeName().equals("Editor")) {
 
 					NodeList editorProps = node.getChildNodes();
 
@@ -381,42 +381,42 @@ public class WeSettings {
 					for (int j = 0; j < editorProps.getLength(); j++) {
 
 						try {
-							if (editorProps.item(j).getNodeName() == "Name") {
+							if (editorProps.item(j).getNodeName().equals("Name")) {
 								Name = editorProps.item(j).getFirstChild().getNodeValue();
 							}
 						} catch (NullPointerException e) {
 							//System.err.println("No name:" + e);
 						}
 						try {
-							if (editorProps.item(j).getNodeName() == "Path") {
+							if (editorProps.item(j).getNodeName().equals("Path")) {
 								Path = editorProps.item(j).getFirstChild().getNodeValue();
 							}
 						} catch (NullPointerException e) {
 							//System.err.println("No path:" + e);
 						}
 						try {
-							if (editorProps.item(j).getNodeName() == "Args") {
+							if (editorProps.item(j).getNodeName().equals("Args")) {
 								Args = editorProps.item(j).getFirstChild().getNodeValue();
 							}
 						} catch (NullPointerException e) {
 							//System.err.println("No path:" + e);
 						}
 						try {
-							if (editorProps.item(j).getNodeName() == "ContentType") {
+							if (editorProps.item(j).getNodeName().equals("ContentType")) {
 								ContentType = editorProps.item(j).getFirstChild().getNodeValue();
 							}
 						} catch (NullPointerException e) {
 							//System.err.println("No content type:" + e);
 						}
 						try {
-							if (editorProps.item(j).getNodeName() == "DefaultFor") {
+							if (editorProps.item(j).getNodeName().equals("DefaultFor")) {
 								DefaultFor = editorProps.item(j).getFirstChild().getNodeValue();
 							}
 						} catch (NullPointerException e) {
 							//System.err.println("No default for: " + e);
 						}
 						try {
-							if (editorProps.item(j).getNodeName() == "Encoding") {
+							if (editorProps.item(j).getNodeName().equals("Encoding")) {
 								Encoding = editorProps.item(j).getFirstChild().getNodeValue();
 							}
 						} catch (NullPointerException e) {
@@ -478,17 +478,13 @@ public class WeSettings {
 
 	public Vector getEditorList(String ct) {
 
-		Vector edList = new Vector();
-
-		for (Iterator i = DefaultEditorList.iterator(); i.hasNext();) {
-			WeEditor ed = (WeEditor) i.next();
+		Vector<WeEditor> edList = new Vector();
+		for (WeEditor ed : DefaultEditorList) {
 			if (!ed.Path.equals("") && hasContentType(ed.ContentType, ct)) {
 				addEditor(ed, edList);
 			}
 		}
-
-		for (Iterator i = SystemEditorList.iterator(); i.hasNext();) {
-			WeEditor ed = (WeEditor) i.next();
+		for (WeEditor ed : SystemEditorList) {
 			if (!ed.Path.equals("") && hasContentType(ed.ContentType, ct)) {
 				addEditor(ed, edList);
 			}
@@ -510,23 +506,16 @@ public class WeSettings {
 	}
 
 	public WeEditor getDefaultEditor(String ct) {
-
-		for (Iterator i = DefaultEditorList.iterator(); i.hasNext();) {
-			WeEditor ed = (WeEditor) i.next();
-
+		for (WeEditor ed : DefaultEditorList) {
 			String edarr[] = ed.DefaultFor.split(",");
 			String it;
 
 			for (int j = 0; j < edarr.length; j++) {
-
 				it = (edarr[j].trim());
 				if (it.length() > 0 && it.equals(ct)) {
 					return ed;
 				}
-
-
 			}
-
 		}
 
 		return null;
@@ -537,8 +526,8 @@ public class WeSettings {
 		return (WeEditor) edList.elementAt(index);
 	}
 
-	public Vector getContentTypes() {
-		return (Vector) ContentTypes.clone();
+	public Vector<String> getContentTypes() {
+		return (Vector<String>) ContentTypes.clone();
 	}
 
 	public void setUrl(String url) {
@@ -571,9 +560,7 @@ public class WeSettings {
 	}
 
 	public boolean isInDefaultEditorList(WeEditor editor) {
-
-		for (Iterator i = DefaultEditorList.iterator(); i.hasNext();) {
-			WeEditor ed = (WeEditor) i.next();
+		for (WeEditor ed : DefaultEditorList) {
 			if (editor.Path.equals(ed.Path)) {
 				return true;
 			}
@@ -582,11 +569,11 @@ public class WeSettings {
 	}
 
 	public void replaceEditor(WeEditor editor) {
-		int i = 0;
+		int i;
 		int size = DefaultEditorList.size();
 
 		for (i = 0; i < size; i++) {
-			WeEditor ed = (WeEditor) DefaultEditorList.elementAt(i);
+			WeEditor ed = DefaultEditorList.elementAt(i);
 			if (ed.Path.equals(editor.Path)) {
 				break;
 			}
@@ -600,22 +587,23 @@ public class WeSettings {
 
 	public void saveSettings() {
 
-		String out = "<?xml version=\"1.0\"?>" + System.getProperty("line.separator");
-		out += "<webEdition>" + System.getProperty("line.separator");
+		StringBuilder out = new StringBuilder(
+						"<?xml version=\"1.0\"?>" + System.getProperty("line.separator")
+						+ "<webEdition>" + System.getProperty("line.separator"));
 
 		Enumeration e = Settings.keys();
 
 		for (; e.hasMoreElements();) {
-			out += "\t<Setting>" + System.getProperty("line.separator");
 			String key = (String) e.nextElement();
-			out += "\t\t<Name>" + key + "</Name>" + System.getProperty("line.separator");
-			out += "\t\t<Value>" + Settings.get(key) + "</Value>" + System.getProperty("line.separator");
-			out += "\t</Setting>" + System.getProperty("line.separator");
+			out.append("\t<Setting>").append(System.getProperty("line.separator"))
+							.append("\t\t<Name>").append(key).append("</Name>").append(System.getProperty("line.separator"))
+							.append("\t\t<Value>").append(Settings.get(key)).append("</Value>").append(System.getProperty("line.separator"))
+							.append("\t</Setting>").append(System.getProperty("line.separator"));
 		}
 
-		out += "</webEdition>" + System.getProperty("line.separator");
+		out.append("</webEdition>").append(System.getProperty("line.separator"));
 
-		PrivilegedSave pSave = new PrivilegedSave(settingsFile, out);
+		PrivilegedSave pSave = new PrivilegedSave(settingsFile, out.toString());
 		AccessController.doPrivileged(pSave);
 
 
@@ -649,7 +637,7 @@ public class WeSettings {
 					for (int i = 0; i < childCount; i++) {
 						node = childs.item(i);
 
-						if (node.getNodeName() == "Setting") {
+						if (node.getNodeName().equals("Setting")) {
 
 							NodeList settingProps = node.getChildNodes();
 
@@ -659,14 +647,14 @@ public class WeSettings {
 							for (int j = 0; j < settingProps.getLength(); j++) {
 
 								try {
-									if (settingProps.item(j).getNodeName() == "Name") {
+									if (settingProps.item(j).getNodeName().equals("Name")) {
 										Name = settingProps.item(j).getFirstChild().getNodeValue();
 									}
 								} catch (NullPointerException e) {
 									//System.err.println("No name:" + e);
 								}
 								try {
-									if (settingProps.item(j).getNodeName() == "Value") {
+									if (settingProps.item(j).getNodeName().equals("Value")) {
 										Value = settingProps.item(j).getFirstChild().getNodeValue();
 									}
 								} catch (NullPointerException e) {

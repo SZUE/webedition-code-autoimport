@@ -18,7 +18,7 @@ import java.net.URL;
 import java.security.PrivilegedAction;
 import org.webedition.eplugin.util.CopyUtility;
 
-public class PrivilegedCopy implements PrivilegedAction {
+public class PrivilegedCopy implements PrivilegedAction<String> {
 
 	private URL SourceUrl;
 	private String DestinationFilename;
@@ -30,20 +30,15 @@ public class PrivilegedCopy implements PrivilegedAction {
 
 	}
 
-	public Object run() {
-
-		String out = "";
-
+	public String run() {
 		try {
-
 			CopyUtility.copy(SourceUrl, DestinationFilename);
-
 			return DestinationFilename;
 
 		} catch (Exception e) {
 		}
 
-		return out;
+		return "";
 
 	}
 }

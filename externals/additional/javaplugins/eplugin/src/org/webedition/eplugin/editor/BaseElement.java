@@ -22,7 +22,7 @@ import java.util.Vector;
 
 abstract class BaseElement{
 
-	protected Vector persistents;
+	protected Vector<String> persistents;
 
 	public BaseElement(){
 		//System.out.println("enter base element");
