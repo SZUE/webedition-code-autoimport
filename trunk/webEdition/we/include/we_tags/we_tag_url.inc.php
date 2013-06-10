@@ -23,16 +23,16 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_url($attribs){
-	$foo = attributFehltError($attribs, "id", __FUNCTION__);
+	$foo = attributFehltError($attribs, 'id', __FUNCTION__);
 	if($foo)
 		return $foo;
 	static $urls = array();
 	static $objurls = array();
-	$type = weTag_getAttribute("type", $attribs, 'document');
-	$id = weTag_getAttribute("id", $attribs);
-	$triggerid = weTag_getAttribute("triggerid", $attribs, '0');
-	$hidedirindex = weTag_getAttribute("hidedirindex", $attribs, TAGLINKS_DIRECTORYINDEX_HIDE, true);
-	$objectseourls = weTag_getAttribute("objectseourls", $attribs, TAGLINKS_OBJECTSEOURLS, true);
+	$type = weTag_getAttribute('type', $attribs, 'document');
+	$id = weTag_getAttribute('id', $attribs);
+	$triggerid = weTag_getAttribute('triggerid', $attribs, '0');
+	$hidedirindex = weTag_getAttribute('hidedirindex', $attribs, TAGLINKS_DIRECTORYINDEX_HIDE, true);
+	$objectseourls = weTag_getAttribute('objectseourls', $attribs, TAGLINKS_OBJECTSEOURLS, true);
 	if($type == 'document'){
 		if(isset($urls[$id])){ // do only work you have never done before
 			return $urls[$id];
@@ -43,7 +43,7 @@ function we_tag_url($attribs){
 		}
 	}
 	if($id == '0'){
-		$url = "/";
+		$url = '/';
 	} else{
 		$urlNotSet = true;
 		if(($id == 'self' || $id == 'top') && $type == 'document'){
@@ -62,8 +62,8 @@ function we_tag_url($attribs){
 							$GLOBALS['WE_MAIN_DOC']->Url;
 					} else{
 						$url = (show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES != '' && $hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))) ?
-								($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . "?we_objectID=" . $GLOBALS['WE_MAIN_DOC']->OF_ID :
-								$GLOBALS['WE_MAIN_DOC']->Path . "?we_objectID=" . $GLOBALS['WE_MAIN_DOC']->OF_ID);
+								($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . '?we_objectID=' . $GLOBALS['WE_MAIN_DOC']->OF_ID :
+								$GLOBALS['WE_MAIN_DOC']->Path . '?we_objectID=' . $GLOBALS['WE_MAIN_DOC']->OF_ID);
 					}
 					$urlNotSet = false;
 				}
@@ -74,7 +74,7 @@ function we_tag_url($attribs){
 		if($urlNotSet){
 			if($type == 'document'){
 				$row = getHash('SELECT Path,IsFolder,IsDynamic FROM ' . FILE_TABLE . ' WHERE ID=' . intval($testid), $GLOBALS['DB_WE']);
-				$url = isset($row["Path"]) ? ($row["Path"] . ($row["IsFolder"] ? "/" : "")) : "";
+				$url = isset($row['Path']) ? ($row['Path'] . ($row['IsFolder'] ? '/' : '')) : '';
 				$path_parts = pathinfo($url);
 				if(show_SeoLinks() && $hidedirindex && NAVIGATION_DIRECTORYINDEX_NAMES != '' && TAGLINKS_DIRECTORYINDEX_HIDE && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
 					$url = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/';
@@ -92,9 +92,9 @@ function we_tag_url($attribs){
 						$row['Url'];
 				} else{
 					if(show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES != '' && $hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
-						$url = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . "?we_objectID=" . $row['ID'];
+						$url = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . '?we_objectID=' . $row['ID'];
 					} else{
-						$url = id_to_path($triggerid) . "?we_objectID=" . $row['ID'];
+						$url = id_to_path($triggerid) . '?we_objectID=' . $row['ID'];
 					}
 				}
 			}
