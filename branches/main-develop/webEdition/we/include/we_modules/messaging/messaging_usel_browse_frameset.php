@@ -331,7 +331,7 @@ while($DB_WE->next_record()) {
 	default_color = "#000000";
 
 	function showContent(id) {
-		top.cmd.location = "<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_cmd.php?we_transaction=<?php echo $we_transaction ?>&mcmd=show_message&id=" + id;
+		top.cmd.location = "<?php print WE_MESSAGING_MODULE_DIR; ?>edit_messaging_frameset.php?pnt=cmd&we_transaction=<?php echo $we_transaction ?>&mcmd=show_message&id=" + id;
 	}
 
 	function array_search(needle, haystack) {

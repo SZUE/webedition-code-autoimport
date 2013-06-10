@@ -389,7 +389,7 @@ class weMessagingView extends weModuleView {
 	';
 	}
 
-	function processCommands(){
+	function processCommands_back(){
 		if(isset($_REQUEST["cmd"])){
 			switch($_REQUEST["cmd"]){
 				case "resetscores":
@@ -816,6 +816,349 @@ class weMessagingView extends weModuleView {
 			foreach($ks as $k)
 				unset($a[$k]);
 		}
+	}
+
+	function processCommands(){//TODO: change $GLOBALS['messaging'] to  $this->messaging
+		if(!isset($_REQUEST['we_transaction'])){
+			$_REQUEST['we_transaction'] = $we_transaction;//??
+		} else{
+			$_REQUEST['we_transaction'] = (preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction']) ? $_REQUEST['we_transaction'] : 0);
+		}
+		$GLOBALS['messaging'] = new we_messaging($_SESSION['weS']['we_data'][$_REQUEST["we_transaction"]]);
+		$GLOBALS['messaging']->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
+
+
+		$GLOBALS['messaging']->init($_SESSION['weS']['we_data'][$_REQUEST["we_transaction"]]);
+
+		if(!isset($_REQUEST["mcmd"])){
+			$_REQUEST["mcmd"] = "goToDefaultCase";
+		}
+
+
+		switch($_REQUEST["mcmd"]){
+			case 'search_messages':
+			case 'show_folder_content':
+				return $this->get_folder_content(isset($_REQUEST['id']) ? $_REQUEST['id'] : "", isset($_REQUEST['sort']) ? $_REQUEST['sort'] : "", isset($_REQUEST['entrsel']) ? $_REQUEST['entrsel'] : "", isset($_REQUEST['searchterm']) ? $_REQUEST['searchterm'] : "", 1) .
+					$this->print_fc_html() .
+					$this->update_treeview();
+				break;
+			case 'launch':
+				if($_REQUEST['mode'] == 'todo'){
+					$f = $messaging->get_inbox_folder('we_todo');
+				} elseif($_REQUEST['mode'] == 'message'){
+					$f = $messaging->get_inbox_folder('we_message');
+				} else{
+					break;
+				}
+
+				return $this->get_folder_content($f['ID'], '', '', '', 0) .
+					$this->print_fc_html() .
+					$this->update_treeview() .
+					we_html_element::jsElement('
+					if (top.content.viewclass != "' . $_REQUEST['mode'] . '") {
+						top.content.set_frames("' . $_REQUEST['mode'] . '");
+					}
+					');
+				break;
+			case 'refresh_mwork':
+				return $this->refresh_work(true);
+			/* FALLTHROUGH */
+			case 'show_message':
+				$out = '';
+				if(isset($id)){
+					$out = we_html_element::jsElement('
+					top.content.resize.right.editor.edbody.msg_mfv.messaging_msg_view.location="' . (WE_MESSAGING_MODULE_DIR . 'messaging_message_view.php?we_transaction=' . $_REQUEST['we_transaction'] . '&id= ' . $id) . '";
+					');
+				}
+				$messaging->saveInSession($_SESSION['weS']['we_data'][$_REQUEST["we_transaction"]]);
+				return $out;
+				break;
+			case 'new_message':
+				return we_html_element::jsScript(JS_DIR . 'windows.js') .
+				we_html_element::jsElement('
+				new jsWindow("' . WE_MESSAGING_MODULE_DIR . 'messaging_newmessage.php?we_transaction=' . $_REQUEST['we_transaction'] . '&mode=' . $_REQUEST['mode'] . '", "messaging_new_message",-1,-1,670,530,true,false,true,false);
+				');
+				break;
+			case 'new_todo':
+				return we_html_element::jsScript(JS_DIR . 'windows.js') .
+				we_html_element::jsElement('
+				new jsWindow("' . WE_MESSAGING_MODULE_DIR . 'todo_edit_todo.php?we_transaction=' . $_REQUEST['we_transaction'] . '&mode=new", "messaging_new_todo",-1,-1,690,520,true,false,true,false);					//-->
+				');
+				break;
+			case 'forward_todo':
+				return we_html_element::jsScript(JS_DIR . 'windows.js') .
+				we_html_element::jsElement('
+				new jsWindow("' . WE_MESSAGING_MODULE_DIR . 'todo_edit_todo.php?we_transaction=' . $_REQUEST['we_transaction'] . '&mode=forward", "messaging_new_todo",-1,-1,690,600,true,false,true,false);
+				');					//-->
+				break;
+			case 'rej_todo':
+				return we_html_element::jsScript(JS_DIR . 'windows.js') .
+				we_html_element::jsElement('
+				new jsWindow("' . WE_MESSAGING_MODULE_DIR . 'todo_edit_todo.php?we_transaction=' . $_REQUEST['we_transaction'] . '&mode=reject", "messaging_new_todo",-1,-1,690,600,true,false,true,false);
+				');					//-->
+				break;
+			case 'reset_right_view':
+				return we_html_element::jsElement('
+				top.content.resize.right.editor.entries_selected = new Array();
+				top.content.resize.right.editor.edbody.msg_mfv.messaging_messages_overview.location="' . we_class::url(WE_MESSAGING_MODULE_DIR . 'messaging_show_folder_content.php') . '";
+				top.content.resize.right.editor.edbody.msg_mfv.messaging_msg_view.location="' . HTML_DIR . 'white.html"
+				');
+				break;
+			case 'update_todo':
+				if(!empty($messaging->selected_message)){
+					echo we_html_element::jsScript(JS_DIR . 'windows.js') . 
+					we_html_element::jsElement('
+					new jsWindow("' . WE_MESSAGING_MODULE_DIR . 'todo_update_todo.php?we_transaction=' . $_REQUEST['we_transaction'] . '&mode=reject", "messaging_new_todo",-1,-1,690,600,true,false,true,false);
+					');
+				}
+				break;
+			case 'todo_markdone':
+				$arr = array('todo_status' => '100');
+				$messaging->used_msgobjs['we_todo']->update_status($arr, $messaging->selected_message['int_hdrs']);
+				$out = $this->refresh_work(true);
+				$messaging->saveInSession($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
+				return $out;
+				break;
+			case 'copy_msg':
+				$messaging->set_clipboard($_REQUEST['entrsel'], 'copy');
+				$messaging->saveInSession($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
+				break;
+			case 'cut_msg':
+				$messaging->set_clipboard($_REQUEST['entrsel'], 'cut');
+				$messaging->saveInSession($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
+				break;
+			case 'paste_msg':
+				$errs = array();
+				$messaging->clipboard_paste($errs);
+				$messaging->reset_ids_selected();
+				$messaging->get_fc_data($messaging->Folder_ID, '', '', 0);
+
+				$messaging->saveInSession($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
+
+				$js_out = '
+				top.content.resize.right.editor.entries_selected = new Array();
+				top.content.resize.right.editor.edbody.messaging_fv_headers.location="' . we_class::url($this->frameset) . '&pnt=msg_fv_headers&si=' . $messaging->get_sortitem() . '&so=' . $messaging->get_sortorder() . '&viewclass=" + top.content.viewclass;
+				top.content.resize.right.editor.edbody.msg_mfv.messaging_messages_overview.location="' . we_class::url(WE_MESSAGING_MODULE_DIR . 'messaging_show_folder_content.php') . '";
+				top.content.resize.right.editor.edbody.msg_mfv.messaging_msg_view.location="' . HTML_DIR . 'white.html";
+				';
+
+				$aid = $messaging->Folder_ID;
+				$idx = array_ksearch('ID', $aid, $messaging->available_folders);
+				if($idx > -1){
+					$js_out = '
+					aid = ' . $aid . ';
+					top.content.updateEntry(aid, -1, "' . $messaging->available_folders[$idx]['Name'] . ' - (' . $messaging->get_message_count($aid, '') . ')", -1, 1);
+					';
+				}
+
+				return we_html_element::jsElement($js_out . $this->update_treeview());
+				break;
+			case 'delete_msg':
+				$messaging->set_ids_selected($_REQUEST['entrsel']);
+				$messaging->delete_items();
+				$messaging->reset_ids_selected();
+				$messaging->get_fc_data(isset($_REQUEST['id']) ? $_REQUEST['id'] : '', empty($_REQUEST['sort']) ? '' : $_REQUEST['sort'], isset($_REQUEST['searchterm']) ? $_REQUEST['searchterm'] : '', 1);
+
+				$messaging->saveInSession($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
+				
+				$js_out = '
+				top.content.resize.right.editor.entries_selected = new Array();
+				top.content.resize.right.editor.edbody.messaging_fv_headers.location="' . we_class::url($this->frameset) . '&pnt=msg_fv_headers&si=' . $messaging->get_sortitem() . '&so=' . $messaging->get_sortorder() . '&viewclass=" + top.content.viewclass;
+				top.content.resize.right.editor.edbody.msg_mfv.messaging_messages_overview.location=" ' . we_class::url(WE_MESSAGING_MODULE_DIR . 'messaging_show_folder_content.php') . '";
+				top.content.resize.right.editor.edbody.msg_mfv.messaging_msg_view.location="' . HTML_DIR . 'white.html";
+				';
+
+				$aid = $messaging->Folder_ID;
+				$js_out = '
+					aid = ' . $aid . ';
+					top.content.updateEntry(aid, -1, "' . $messaging->available_folders[array_ksearch('ID', $aid, $messaging->available_folders)]['Name'] . ' - (' . $messaging->get_message_count($aid, '') . ')", -1, 1));
+				';
+				return we_html_element::jsElement($js_out);
+				break;
+			case 'update_treeview':
+				return $this->update_treeview();
+				break;
+			case 'update_msgs':
+				return $this->update_treeview();
+				$blank = false;
+			/* FALLTHROUGH */
+			case 'update_fcview':
+				$out = '';
+				$id = $messaging->Folder_ID;
+				$blank = isset($blank) ? $blank : true;
+				if(($messaging->cont_from_folder != 1) && ($id != -1)){
+					if(isset($_REQUEST['entrsel']) && $_REQUEST['entrsel'] != ''){
+						$messaging->set_ids_selected($_REQUEST['entrsel']);
+					}
+
+					$messaging->get_fc_data($id, empty($_REQUEST['sort']) ? '' : $_REQUEST['sort'], '', 0);
+
+					$messaging->saveInSession($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
+					$out = $this->print_fc_html($blank);
+				}
+				return $out;
+				break;
+			case 'edit_folder':
+				$out = '';
+				if($_REQUEST['mode'] == 'new' || ($_REQUEST['mode'] == 'edit')){
+					$out = we_html_element::jsElement('
+					top.content.resize.right.editor.location = "' . WE_MESSAGING_MODULE_DIR . 'messaging_edit_folder.php?we_transaction=' . $_REQUEST['we_transaction'] . '&mode=' . $_REQUEST['mode'] . '&fid=' . (isset($_REQUEST['fid']) ? $_REQUEST['fid'] : -1) . '";
+					');
+				}
+				return $out;
+				break;
+			case 'save_folder_settings':
+				$out = '';
+				if(isset($_REQUEST['id'])){
+					$mcount = $_REQUEST['mode'] == 'new' ? 0 : $messaging->get_message_count($_REQUEST['id'], '');
+					if($_REQUEST["mode"] == 'new'){
+						$out = we_html_element::jsElement('
+top.content.folder_added(' . $_REQUEST['parent_id'] . ');
+top.content.menuDaten.add(new top.content.urlEntry("' . ($_REQUEST['type'] == 'we_todo' ? 'todo_folder' : 'msg_folder') . '.gif", "' . $_REQUEST['id'] . '", "' . $_REQUEST['parent_id'] . '", "' . $_REQUEST['name'] . ' - (0)", "leaf_Folder", "' . MESSAGES_TABLE . '", "' . ($_REQUEST['type'] == 'we_todo' ? 'todo_folder' : 'msg_folder') . '"));' .
+we_message_reporting::getShowMessageCall(g_l('modules_messaging', '[folder_created]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
+top.content.drawEintraege();
+						');
+					} else{
+						$js_out = '
+top.content.menuDaten.clear();
+top.content.startloc=0;
+top.content.menuDaten.add(new top.content.self.rootEntry("0","root","root"));
+						';
+
+						$entries = array();
+						foreach($messaging->available_folders as $folder)
+							if(($sf_cnt = $messaging->get_subfolder_count($folder['ID'], '')) >= 0){
+								$js_out = '
+top.content.menuDaten.add(
+	new top.content.dirEntry(
+		"' . ($folder['ClassName'] == 'we_todo' ? 'todo_folder' : 'msg_folder') . '.gif",
+		"' . $folder['ID'] . '","' . $folder['ParentID'] . '",
+		"' . $folder['Name'] . ' - (' . $messaging->get_message_count($folder['ID'], '') . ')",
+		false,
+		"parent_Folder",
+		"' . MESSAGES_TABLE . '",
+		' . $sf_cnt . ',
+		"' . ($folder['ClassName'] == 'we_todo' ? 'todo_folder' : 'msg_folder') . '"
+	)
+);
+								';
+							} else{
+								$js_out = '
+top.content.menuDaten.add(
+	new top.content.urlEntry(
+		"' . ($folder['ClassName'] == 'we_todo' ? 'todo_folder' : 'msg_folder') . '.gif",
+		"' . $folder['ID'] . '",
+		"' . $folder['ParentID'] . '",
+		"' . $folder['Name'] . ' - (' . $messaging->get_message_count($folder['ID'], '') . ')",
+			"leaf_Folder",
+		"' . MESSAGES_TABLE . '", 
+		"' . ($folder['ClassName'] == 'we_todo' ? 'todo_folder' : 'msg_folder') . '"
+	)
+);
+								';
+							}
+
+						$messaging->saveInSession($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
+						$js_out = '
+top.content.drawEintraege();
+						';
+
+						$out = we_html_element::jsElement($js_out);
+					}
+				}
+				return $out;
+				break;
+			case 'delete_folders':
+				if(!empty($_REQUEST['folders'])){
+					$folders = explode(',', $_REQUEST['folders']);
+
+					$out = we_html_element::jsElement('
+					top.content.delete_menu_entries(new Array(String(' . join('), String(', $folders) . ')));
+					top.content.folders_removed(new Array(String(' . join('), String(', $folders) . ')));
+					top.content.drawEintraege();
+					');
+				}
+				return $out;
+				break;
+			case 'edit_settings':
+				return we_html_element::jsScript(JS_DIR . 'windows.js') . 
+					we_html_element::jsElement('
+					new jsWindow("' . WE_MESSAGING_MODULE_DIR . 'messaging_settings.php?we_transaction=' . $_REQUEST['we_transaction'] . '&mode=' . $_REQUEST['mode'] . '", "messaging_settings",-1,-   1,280,200,true,false,true,false);
+					');
+				break;
+			case 'save_settings':
+				$out = '';
+				if($ui){
+					if($messaging->save_settings(array('update_interval' => $ui))){
+						$out = we_html_element::jsScript(JS_DIR . 'messaging_std.js') .
+						we_html_element::jsElement(
+						we_message_reporting::getShowMessageCall(g_l('modules_messaging', '[saved]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
+						close_win("messaging_settings");
+						');
+					}
+				}
+				return $out;
+				break;
+			case 'messaging_close':
+				return we_html_element::jsElement('
+				top.close();
+				');
+				break;
+			default:
+				return 'mcmd=' . $_REQUEST['mcmd'] . '<br>';
+		}
+		
+	}
+	
+	//some additional methods called by getJSCmd(). TODO: elimiminate GLOBALS by passing objects in
+	private function print_fc_html($blank = false){
+
+		return we_html_element::jsElement('
+top.content.resize.right.editor.entries_selected = new Array(' . $GLOBALS['messaging']->get_ids_selected() .');
+top.content.resize.right.editor.edbody.messaging_fv_headers.location="' . we_class::url($this->frameset) . '&pnt=msg_fv_headers&si=' . $GLOBALS['messaging']->get_sortitem() . '&so=' . $GLOBALS['messaging']->get_sortorder() . '&viewclass=" + top.content.viewclass;
+if (top.content.resize.right.editor.edbody.msg_mfv.messaging_messages_overview) {
+	top.content.resize.right.editor.edbody.msg_mfv.messaging_messages_overview.location="' . we_class::url(WE_MESSAGING_MODULE_DIR . "messaging_show_folder_content.php") . '";
+}' .
+($blank ? 'top.content.resize.right.editor.edbody.msg_mfv.messaging_msg_view.location="' . HTML_DIR . 'white.html";' : '')
+		);
+	}
+
+	private function refresh_work($blank = false){
+		if(isset($_REQUEST["entrsel"]) && $_REQUEST["entrsel"] != ''){
+			$GLOBALS['messaging']->set_ids_selected($_REQUEST["entrsel"]);
+		}
+
+		$GLOBALS['messaging']->get_fc_data($GLOBALS['messaging']->Folder_ID, '', '', 0);
+		//print $this->print_fc_html($blank);
+		return $this->print_fc_html($blank) . $this->update_treeview();
+	}
+
+	private function get_folder_content($id, $sort = '', $entrsel = '', $searchterm = '', $usecache = 1){
+
+		if($entrsel != ''){
+			$GLOBALS['messaging']->set_ids_selected($entrsel);
+		}
+
+		$out = '';
+		if($id != $GLOBALS['messaging']->Folder_ID){
+			$GLOBALS['messaging']->reset_ids_selected();
+			$out = we_html_element::jsElement('top.content.resize.right.editor.last_entry_selected = -1;');
+		}
+t_e("gm",$GLOBALS['messaging']);
+		$GLOBALS['messaging']->get_fc_data(isset($id) ? $id : '', empty($sort) ? '' : $sort, $searchterm, $usecache);
+		$we_transaction = (preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction']) ? $_REQUEST['we_transaction'] : 0);
+		$GLOBALS['messaging']->saveInSession($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
+t_e("seveli",$_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
+		return $out;
+	}
+
+	private function update_treeview(){
+		$tmp = '';
+		foreach($GLOBALS['messaging']->available_folders as $f){
+			$tmp.='top.content.updateEntry(' . $f['ID'] . ', ' . $f['ParentID'] . ', "' . $f['Name'] . ' - (' . $GLOBALS['messaging']->get_message_count($f['ID'], '') . ')", -1, 1);';
+		}
+		$tmp.='top.content.drawEintraege();';
+		return we_html_element::jsElement($tmp);
 	}
 
 }

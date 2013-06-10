@@ -64,7 +64,7 @@ switch($_REQUEST["mode"]){
 }
 we_html_tools::htmlTop($heading);
 print STYLESHEET . we_html_element::jsElement('
-			top.opener.top.content.cmd.location = "' . WE_MESSAGING_MODULE_DIR . 'messaging_cmd.php?mcmd=refresh_mwork&we_transaction=' . $_REQUEST['we_transaction'] . '";');
+			top.opener.top.content.cmd.location = "' . WE_MESSAGING_MODULE_DIR . 'edit_messaging_frameset.php?pnt=cmd&mcmd=refresh_mwork&we_transaction=' . $_REQUEST['we_transaction'] . '";');
 if(!empty($res['ok'])){
 	echo we_html_element::jsElement('
         if (opener && opener.top && opener.top.content) {

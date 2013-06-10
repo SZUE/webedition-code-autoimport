@@ -40,7 +40,7 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js');
 <script type="text/javascript"><!--
 
 	function new_message(mode) {
-		if (mode == 're' && (top.content.resize.right.msg_work.last_entry_selected == -1)) {
+		if (mode == 're' && (top.content.resize.right.editor.last_entry_selected == -1)) {
 			return;
 		}
 
@@ -49,31 +49,31 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js');
 
 	function copy_messages() {
 
-		if (top.content.resize.right.msg_work.entries_selected && top.content.resize.right.msg_work.entries_selected.length > 0) {
-			top.content.cmd.location = "<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_cmd.php?we_transaction=<?php echo $_REQUEST['we_transaction'] ?>&mcmd=copy_msg&entrsel=" + top.content.resize.right.msg_work.entries_selected.join(',');
+		if (top.content.resize.right.editor.entries_selected && top.content.resize.right.editor.entries_selected.length > 0) {
+			top.content.cmd.location = "<?php print WE_MESSAGING_MODULE_DIR; ?>edit_messaging_frameset.php?pnt=cmd&we_transaction=<?php echo $_REQUEST['we_transaction'] ?>&mcmd=copy_msg&entrsel=" + top.content.resize.right.editor.entries_selected.join(',');
 		}
 	}
 
 	function cut_messages() {
 
-		if (top.content.resize.right.msg_work.entries_selected && top.content.resize.right.msg_work.entries_selected.length > 0) {
-			top.content.cmd.location = "<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_cmd.php?we_transaction=<?php echo $_REQUEST['we_transaction'] ?>&mcmd=cut_msg&entrsel=" + top.content.resize.right.msg_work.entries_selected.join(',');
+		if (top.content.resize.right.editor.entries_selected && top.content.resize.right.editor.entries_selected.length > 0) {
+			top.content.cmd.location = "<?php print WE_MESSAGING_MODULE_DIR; ?>edit_messaging_frameset.php?pnt=cmd&we_transaction=<?php echo $_REQUEST['we_transaction'] ?>&mcmd=cut_msg&entrsel=" + top.content.resize.right.editor.entries_selected.join(',');
 		}
 	}
 
 	function paste_messages() {
-		if (top.content.resize.right.msg_work.entries_selected) {
-			top.content.cmd.location = "<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_cmd.php?we_transaction=<?php echo $_REQUEST['we_transaction'] ?>&mcmd=paste_msg&entrsel=" + top.content.resize.right.msg_work.entries_selected.join(',');
+		if (top.content.resize.right.editor.entries_selected) {
+			top.content.cmd.location = "<?php print WE_MESSAGING_MODULE_DIR; ?>edit_messaging_frameset.php?pnt=cmd&we_transaction=<?php echo $_REQUEST['we_transaction'] ?>&mcmd=paste_msg&entrsel=" + top.content.resize.right.editor.entries_selected.join(',');
 		}
 	}
 
 	function delete_messages() {
-		if (top.content.resize.right.msg_work.entries_selected && top.content.resize.right.msg_work.entries_selected.length > 0) {
+		if (top.content.resize.right.editor.entries_selected && top.content.resize.right.editor.entries_selected.length > 0) {
 			c = confirm("<?php echo g_l('modules_messaging', '[q_rm_messages]') ?>");
 			if (c == false) {
 				return;
 			}
-			top.content.cmd.location = "<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_cmd.php?we_transaction=<?php echo $_REQUEST['we_transaction'] ?>&mcmd=delete_msg&entrsel=" + top.content.resize.right.msg_work.entries_selected.join(',');
+			top.content.cmd.location = "<?php print WE_MESSAGING_MODULE_DIR; ?>edit_messaging_frameset.php?pnt=cmd&we_transaction=<?php echo $_REQUEST['we_transaction'] ?>&mcmd=delete_msg&entrsel=" + top.content.resize.right.editor.entries_selected.join(',');
 		}
 	}
 
@@ -82,8 +82,8 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js');
 	}
 
 	function launch_todo() {
-		if (top.content.resize.right.msg_work.entries_selected) {
-			top.content.cmd.location = '<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_cmd.php?mcmd=launch&mode=todo&we_transaction=<?php echo $_REQUEST['we_transaction'] ?>';
+		if (top.content.resize.right.editor.entries_selected) {
+			top.content.cmd.location = '<?php print WE_MESSAGING_MODULE_DIR; ?>edit_messaging_frameset.php?pnt=cmd&mcmd=launch&mode=todo&we_transaction=<?php echo $_REQUEST['we_transaction'] ?>';
 		}
 	}
 

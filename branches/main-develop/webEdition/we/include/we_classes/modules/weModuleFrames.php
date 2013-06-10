@@ -204,7 +204,6 @@ class weModuleFrames {
 		$frameset->setAttributes(array("cols" => "*"));
 		$frameset->addFrame(array("src" => $this->frameset . "?pnt=editor" . (isset($_REQUEST['sid']) ? '&sid=' . $_REQUEST['sid'] : '') . $editorParams, "name" => "editor", "noresize" => null, "scrolling" => "no"));
 		$noframeset = new we_baseElement("noframes");
-		// set and return html code
 		$body = $frameset->getHtml() . $noframeset->getHTML();
 
 		return $this->getHTMLDocument($body);

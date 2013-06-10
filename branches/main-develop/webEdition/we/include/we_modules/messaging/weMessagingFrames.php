@@ -46,6 +46,9 @@ class weMessagingFrames extends weModuleFrames{
 			case "left":
 				print $this->getHTMLLeft(false);
 				break;
+			case "msg_fv_headers":
+				print $this->getHTMLMsgFvHeaders();
+				break;
 			default:
 				parent::getHTML($what);
 		}
@@ -205,13 +208,13 @@ function r_tree_open(id) {
 
 function update_messaging() {
 	if (!deleteMode && (mode == "show_folder_content") && (load_state >= loaded_thr)) {
-		if (top.content.resize.right.msg_work.entries_selected && top.content.resize.right.msg_work.entries_selected.length > 0) {
-			ent_str = "&entrsel=" + top.content.resize.right.msg_work.entries_selected.join(",");
+		if (top.content.resize.right.editor.entries_selected && top.content.resize.right.editor.entries_selected.length > 0) {
+			ent_str = "&entrsel=" + top.content.resize.right.editor.entries_selected.join(",");
 		}
 		else {
 			ent_str = "";
 		}
-		cmd.location = "' . WE_MESSAGING_MODULE_DIR . 'messaging_cmd.php?we_transaction=' . $this->weTransaction . '&mcmd=update_msgs" + ent_str;
+		cmd.location = "' . $this->frameset . '?pnt=cmd&we_transaction=' . $this->weTransaction . '&mcmd=update_msgs" + ent_str;
 	}
 }
 
@@ -253,13 +256,13 @@ return -1;
 function set_frames(vc) {
 if (vc == "message") {
 	top.content.iconbar.location = "' . WE_MESSAGING_MODULE_DIR . 'messaging_iconbar.php?we_transaction=' . $this->weTransaction . '";
-	top.content.resize.right.msg_work.messaging_search.location = "' . WE_MESSAGING_MODULE_DIR . 'messaging_search_frame.php?we_transaction=' . $this->weTransaction . '";
-	top.content.resize.right.msg_work.messaging_fv_headers.location="' . WE_MESSAGING_MODULE_DIR . 'messaging_fv_headers.php?viewclass=message&we_transaction=' . $this->weTransaction . '";
+	top.content.resize.right.editor.edheader.location = "' . WE_MESSAGING_MODULE_DIR . 'messaging_search_frame.php?we_transaction=' . $this->weTransaction . '";
+	top.content.resize.right.editor.edbody.messaging_fv_headers.location="' . we_class::url($this->frameset) . '&pnt=msg_fv_headers&viewclass=message&we_transaction=' . $this->weTransaction . '";
 }
 else if (vc == "todo") {
 	top.content.iconbar.location = "' . WE_MESSAGING_MODULE_DIR . 'todo_iconbar.php?we_transaction=' . $this->weTransaction . '";
-	top.content.resize.right.msg_work.messaging_search.location = "' . WE_MESSAGING_MODULE_DIR . 'todo_search_frame.php?we_transaction=' . $this->weTransaction . '";
-	top.content.resize.right.msg_work.messaging_fv_headers.location="' . WE_MESSAGING_MODULE_DIR . 'messaging_fv_headers.php?viewclass=todo&we_transaction=' . $this->weTransaction . '>";
+	top.content.resize.right.editor.edheader.location = "' . WE_MESSAGING_MODULE_DIR . 'todo_search_frame.php?we_transaction=' . $this->weTransaction . '";
+	top.content.resize.right.editor.edbody.messaging_fv_headers.location="' . we_class::url($this->frameset) . '&pnt=msg_fv_headers&viewclass=todo&we_transaction=' . $this->weTransaction . '>";
 }
 viewclass= vc;
 }
@@ -284,7 +287,7 @@ for(var i = 0; i < arguments.length; i++) {
 
 if(hot == "1" && arguments[0] != "messaging_start_view") {
 	if(confirm("' . g_l('modules_messaging', "[save_changed_folder]") . '")) {
-		top.content.resize.right.msg_work.document.edit_folder.submit();
+		top.content.resize.right.editor.document.edit_folder.submit();
 	} else {
 		top.content.usetHot();
 	}
@@ -304,59 +307,59 @@ switch (arguments[0]) {
 			}
 			top.content.viewclass = menuDaten[ind].viewclass;
 		}
-		cmd.location = "' . WE_MESSAGING_MODULE_DIR . 'messaging_cmd.php?we_transaction=' . $this->weTransaction . '&mcmd=show_folder_content&id=" + arguments[1];
+		cmd.location = "' . $this->frameset . '?pnt=cmd&we_transaction=' . $this->weTransaction . '&mcmd=show_folder_content&id=" + arguments[1];
 		break;
 	case "edit_folder":
 		update_icon(arguments[1]);
-		top.content.cmd.location = "' . WE_MESSAGING_MODULE_DIR . 'messaging_cmd.php?we_transaction=' . $this->weTransaction . '&mcmd=edit_folder&mode=edit&fid=" + arguments[1];
+		top.content.cmd.location = "' . $this->frameset . '?pnt=cmd&we_transaction=' . $this->weTransaction . '&mcmd=edit_folder&mode=edit&fid=" + arguments[1];
 		break;
 	case "folder_new":
 		break;
 	case "messaging_new_message":
-		cmd.location = "' . WE_MESSAGING_MODULE_DIR . 'messaging_cmd.php?we_transaction=' . $this->weTransaction . '&mcmd=new_message&mode=new";
+		cmd.location = "' . $this->frameset . '?pnt=cmd&we_transaction=' . $this->weTransaction . '&mcmd=new_message&mode=new";
 		break;
 	case "messaging_new_todo":
-		cmd.location = "' . WE_MESSAGING_MODULE_DIR . 'messaging_cmd.php?we_transaction=' . $this->weTransaction . '&mcmd=new_todo";
+		cmd.location = "' . $this->frameset . '?pnt=cmd&we_transaction=' . $this->weTransaction . '&mcmd=new_todo";
 		break;
 	case "messaging_start_view":
 		deleteMode = false;
 		mode = "show_folder_content";
 		entries_selected = new Array();
 		drawEintraege();
-		top.content.resize.right.msg_work.location = "' . WE_MESSAGING_MODULE_DIR . 'messaging_work.php?we_transaction=' . $this->weTransaction . '";
+		top.content.resize.right.editor.location = "' . WE_MESSAGING_MODULE_DIR . 'messaging_work.php?we_transaction=' . $this->weTransaction . '";
 		top.content.usetHot();
 		break;
 	case "messaging_new_folder":
 		mode = "folder_new";
-		cmd.location = "' . WE_MESSAGING_MODULE_DIR . 'messaging_cmd.php?we_transaction=' . $this->weTransaction . '&mcmd=edit_folder&mode=new";
+		cmd.location = "' . $this->frameset . '?pnt=cmd&we_transaction=' . $this->weTransaction . '&mcmd=edit_folder&mode=new";
 		break;
 	case "messaging_delete_mode_on":
 		deleteMode = true;
 		drawEintraege();
-		top.content.resize.right.msg_work.location = "' . WE_MESSAGING_MODULE_DIR . 'messaging_delete_folders.php?we_transaction=' . $this->weTransaction . '";
+		top.content.resize.right.editor.location = "' . WE_MESSAGING_MODULE_DIR . 'messaging_delete_folders.php?we_transaction=' . $this->weTransaction . '";
 		break;
 	case "messaging_delete_folders":
-		cmd.location = "' . WE_MESSAGING_MODULE_DIR . 'messaging_cmd.php?we_transaction=' . $this->weTransaction . '&mcmd=delete_folders&folders=" + entries_selected.join(",");
+		cmd.location = "' . $this->frameset . '?pnt=cmd&we_transaction=' . $this->weTransaction . '&mcmd=delete_folders&folders=" + entries_selected.join(",");
 		break;
 	case "messaging_edit_folder":
 		mode = "edit_folder";
-		cmd.location = "' . WE_MESSAGING_MODULE_DIR . 'messaging_cmd.php?we_transaction=' . $this->weTransaction . '&mcmd=edit_folder&mode=edit&fid=" + open_folder;
+		cmd.location = "' . $this->frameset . '?pnt=cmd&we_transaction=' . $this->weTransaction . '&mcmd=edit_folder&mode=edit&fid=" + open_folder;
 		break;
 	case "messaging_settings":
-		cmd.location = "' . WE_MESSAGING_MODULE_DIR . 'messaging_cmd.php?we_transaction=' . $this->weTransaction . '&mcmd=edit_settings&mode=new";
+		cmd.location = "' . $this->frameset . '?pnt=cmd&we_transaction=' . $this->weTransaction . '&mcmd=edit_settings&mode=new";
 		break;
 	case "messaging_copy":
-		if (resize && resize.right && resize.right.msg_work && resize.right.msg_work.entries_selected && resize.right.msg_work.entries_selected.length > 0) {
-			cmd.location = "' . WE_MESSAGING_MODULE_DIR . 'messaging_cmd.php?we_transaction=' . $this->weTransaction . '&mcmd=copy_msg&entrsel=" + resize.right.msg_work.entries_selected.join(",");
+		if (resize && resize.right && resize.right.editor && resize.right.editor.entries_selected && resize.right.editor.entries_selected.length > 0) {
+			cmd.location = "' . $this->frameset . '?pnt=cmd&we_transaction=' . $this->weTransaction . '&mcmd=copy_msg&entrsel=" + resize.right.editor.entries_selected.join(",");
 		}
 		break;
 	case "messaging_cut":
-		if (resize && resize.right && resize.right.msg_work && resize.right.msg_work.entries_selected && resize.right.msg_work.entries_selected.length > 0) {
-			cmd.location = "' . WE_MESSAGING_MODULE_DIR . 'messaging_cmd.php?we_transaction=' . $this->weTransaction . '&mcmd=cut_msg&entrsel=" + resize.right.msg_work.entries_selected.join(",");
+		if (resize && resize.right && resize.right.editor && resize.right.editor.entries_selected && resize.right.editor.entries_selected.length > 0) {
+			cmd.location = "' . $this->frameset . '?pnt=cmd&we_transaction=' . $this->weTransaction . '&mcmd=cut_msg&entrsel=" + resize.right.editor.entries_selected.join(",");
 		}
 		break;
 	case "messaging_paste":
-		top.content.cmd.location = "' . WE_MESSAGING_MODULE_DIR . 'messaging_cmd.php?we_transaction=' . $this->weTransaction . '&mcmd=paste_msg";
+		top.content.cmd.location = "' . $this->frameset . '?pnt=cmd&we_transaction=' . $this->weTransaction . '&mcmd=paste_msg";
 		break;
 	default:
 		for(var i = 0; i < arguments.length; i++) {
@@ -822,7 +825,8 @@ function msg_start() {
 					, we_html_element::htmlExIFrame('header', parent::getHTMLHeader(WE_INCLUDES_PATH .'java_menu/modules/module_menu_messaging.inc.php', 'messaging'), 'position:absolute;top:0px;height:32px;left:0px;right:0px;') .
 					we_html_element::htmlIFrame('iconbar', WE_MESSAGING_MODULE_DIR . 'messaging_iconbar.php?we_transaction=' . $this->weTransaction, 'position:absolute;top:32px;height:40;left:0px;right:0px;overflow: hidden;') .
 					we_html_element::htmlIFrame('resize', $this->frameset . '?pnt=resize&we_transaction=' . $this->weTransaction, 'position:absolute;top:72px;bottom:1px;left:0px;right:0px;overflow: hidden;') .
-					we_html_element::htmlIFrame('cmd', WE_MESSAGING_MODULE_DIR . 'messaging_cmd.php', 'position:absolute;bottom:0px;height:1px;left:0px;right:0px;')
+					//we_html_element::htmlIFrame('cmd', WE_MESSAGING_MODULE_DIR . 'messaging_cmd.php', 'position:absolute;bottom:0px;height:1px;left:0px;right:0px;')
+					we_html_element::htmlIFrame('cmd', $this->frameset . '?pnt=cmd&we_transaction=' . $this->weTransaction, 'position:absolute;bottom:0px;height:1px;left:0px;right:0px;')
 				));
 		
 		return $this->getHTMLDocument($body, $extraHead);
@@ -850,7 +854,7 @@ function msg_start() {
 						we_html_element::htmlDiv(array('style' => 'position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px; width: ' . weTree::HiddenWidth . 'px; background-image: url(/webEdition/images/v-tabs/background.gif); background-repeat: repeat-y; border-top: 1px solid black;'), $_incDecTree) .
 						we_html_element::htmlIFrame('left', $this->frameset . '?pnt=left', 'position: absolute; top: 0px; bottom: 0px; left: ' . weTree::HiddenWidth . 'px; right: 0px;')
 					) .
-					we_html_element::htmlIFrame('right', WE_MESSAGING_MODULE_DIR . 'messaging_right.php?we_transaction=' . $_REQUEST['we_transaction'], 'position: absolute; top: 0px; bottom: 0px; left: ' . $this->treeWidth . 'px; right: 0px; width:auto; border-left: 1px solid black; overflow: hidden;')
+					we_html_element::htmlIFrame('right', $this->frameset . '?pnt=right&we_transaction=' . $_REQUEST['we_transaction'], 'position: absolute; top: 0px; bottom: 0px; left: ' . $this->treeWidth . 'px; right: 0px; width:auto; border-left: 1px solid black; overflow: hidden;')
 			));
 
 		return $this->getHTMLDocument($body, $extraHead);
@@ -858,7 +862,8 @@ function msg_start() {
 
 
 	function getHTMLCmd(){
-		$this->View->processCommands();
+
+		return $this->getHTMLDocument(we_html_element::htmlBody(array(), ''), $this->View->processCommands());
 	}
 
 	/* use parent
@@ -890,139 +895,164 @@ function msg_start() {
 		<?php
 	}
 
-	function getHTMLRight(){
-		?>
-		</head>
+	function getHTMLRight(){t_e("beat");
+		if(!preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction'])){
+			exit();
+		}
 
-		<frameset cols="*" framespacing="0" border="0" frameborder="NO">
-			<frame src="<?php print $this->frameset . '?pnt=editor'?>" scrolling="no" noresize name="editor"/>
-		</frameset>
-		<noframes>
-			<body bgcolor="#ffffff">
-				<p></p>
-			</body>
-		</noframes>
-		</html>
-		<?php
+		$frameset = new we_html_frameset(array("framespacing" => "0", "border" => "0", "frameborder" => "no"));
+		$frameset->setAttributes(array("cols" => "*"));
+		$frameset->addFrame(array("src" => $this->frameset . "?pnt=editor&we_transaction=" . $_REQUEST['we_transaction'], "name" => "editor", "noresize" => null, "scrolling" => "no"));
+		$noframeset = new we_baseElement("noframes");
+		$body = $frameset->getHtml() . $noframeset->getHTML();
+
+		return $this->getHTMLDocument($body);
 	}
 
-	function getHTMLEditor(){
-		?>
-		</head>
-		<frameset rows="40,*,40" framespacing="0" border="0" frameborder="no">
-			<frame src="<?php print $this->frameset . '?pnt=edheader&home=1'; ?>" name="edheader" noresize scrolling=no>
-			<frame src="<?php print WEBEDITION_DIR; ?>we_cmd.php?we_cmd[0]=mod_home&mod=messaging" name="properties" scrolling=auto>
-			<frame src="<?php print $this->frameset . '?pnt=edfooter&home=1'; ?>" name="edfooter" scrolling=no>
+	function getHTMLEditor(){t_e("reto");
 
+		$frameset = new we_html_frameset(array("framespacing" => "0", "border" => "0", "frameborder" => "no"));
+
+		$frameset->setAttributes(array("rows" => "35,*"));
+		$frameset->addFrame(array('src' => $this->frameset . '?pnt=edheader&we_transaction=' . $_REQUEST['we_transaction'], 'name' => 'edheader', 'noresize' => null, 'scrolling' => 'no'));
+		$frameset->addFrame(array('src' => $this->frameset . '?pnt=edbody&we_transaction=' . $_REQUEST['we_transaction'], 'name' => 'edbody', 'scrolling' => 'auto'));
+		//$frameset->addFrame(array('src' => $this->frameset . (isset($_REQUEST['sid']) ? '?sid=' . $_REQUEST['sid'] : '?home=1') . '&pnt=edfooter', 'name' => 'edfooter', 'scrolling' => 'no'));
+
+		$body = $frameset->getHtml();
+
+		return $this->getHTMLDocument($body);
+	}
+
+	function getHTMLEditorHeader(){t_e("sevi");
+		require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+		we_html_tools::protect();
+		we_html_tools::htmlTop();
+
+		print STYLESHEET;
+		if(!preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction'])){
+			exit();
+		}
+		echo we_html_element::jsScript(JS_DIR . 'windows.js');
+		?>
+		<script type="text/javascript"><!--
+			function doSearch() {
+				top.content.cmd.location = 'edit_messaging_frameset.php?pnt=cmd&mcmd=search_messages&we_transaction=<?php echo $_REQUEST['we_transaction'] ?>&searchterm=' + document.we_messaging_search.messaging_search_keyword.value;
+			}
+
+			function launchAdvanced() {
+				new jsWindow("<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_search_advanced.php?we_transaction=<?php echo $_REQUEST['we_transaction'] ?>","messaging_search_advanced",-1,-1,300,240,true,false,true,false);
+			}
+
+			function clearSearch() {
+				document.we_messaging_search.messaging_search_keyword.value = "";
+				top.content.cmd.location = '<?php print $this->frameset . '?pnt=cmd'; ?>&mcmd=launch&we_transaction=<?php echo $_REQUEST['we_transaction'] ?>&mode=' + top.content.viewclass;
+			}
+			//-->
+		</script>
+		</head>
+		<body marginwidth="10" marginheight="7" topmargin="7" leftmargin="7" background="<?php echo IMAGE_DIR; ?>msg_white_bg.gif">
+		<nobr>
+			<form name="we_messaging_search" action="<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_search_frame.php" onSubmit="return doSearch()">
+				<?php echo we_html_tools::hidden('we_transaction', $_REQUEST['we_transaction']) ?>
+
+				<table cellpadding="0" cellspacing="0" border="0">
+					<tr>
+						<td class="defaultfont"><?php echo g_l('modules_messaging', '[search_messages]') ?>:</td>
+						<td width="10"></td>
+						<?php
+						echo '<td class="defaultfont">' .
+						we_button::create_button_table(array(we_html_tools::htmlTextInput('messaging_search_keyword', 15, isset($_REQUEST['messaging_search_keyword']) ? $_REQUEST['messaging_search_keyword'] : '', 15),
+							we_button::create_button("search", "javascript:doSearch();"),
+							we_button::create_button("advanced", "javascript:launchAdvanced()", true),
+							we_button::create_button("reset_search", "javascript:clearSearch();")), 10)
+						. '</td>';
+						?>
+					</tr>
+				</table>
+			</form>
+		</nobr>
+		</body>
+		</html>
+	<?php
+	}
+
+	function getHTMLEditorBody(){
+		require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+
+		if(!preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction'])){
+			exit();
+		}
+
+		we_html_tools::protect();
+
+		we_html_tools::htmlTop();
+		?>
+		<script type="text/javascript"><!--
+			do_mark_messages = 0;
+			last_entry_selected = -1;
+			entries_selected = new Array();
+			//-->
+		</script>
+
+		</head>
+		<frameset rows="35,*" framespacing="0" border="0" frameborder="NO">	
+			<frameset rows="26,1,*" framespacing="0" border="0" frameborder="NO">
+				<frame src="<?php print we_class::url($this->frameset) . '&pnt=msg_fv_headers'; ?>" name="messaging_fv_headers" scrolling="no" noresize/>
+				<frame src="<?php echo HTML_DIR ?>msg_white_fr.html" noresize scrolling="no"/>
+				<frame src="<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_mfv.php" name="msg_mfv" scrolling="no"/>
+			</frameset>
 		</frameset>
 		<noframes>
 			<body background="<?php print IMAGE_DIR ?>backgrounds/aquaBackground.gif" style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px">
 			</body>
 		</noframes>
-		<body style="background-color: orange"></body>
+		</html>
+		<?php
+	}
+	
+	function getHTMLMsgFvHeaders(){
+		require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+		include_once($_SERVER['DOCUMENT_ROOT'] . WE_MESSAGING_MODULE_DIR . "msg_html_tools.inc.php");
+		we_html_tools::protect();
+		we_html_tools::htmlTop();
+
+		$_REQUEST['we_transaction'] = isset($_REQUEST['we_transaction']) ? $_REQUEST['we_transaction'] : $we_transaction;
+		$_REQUEST['we_transaction'] = (preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction']) ? $_REQUEST['we_transaction'] : 0);
+		print we_html_element::jsElement('
+			function doSort(sortitem) {
+				entrstr = "";
+
+				top.content.cmd.location = "' . $this->frameset . '?pnt=cmd&mcmd=show_folder_content&sort=" + sortitem + entrstr + "&we_transaction=' . $_REQUEST['we_transaction'] . '";
+			}') .
+			STYLESHEET .
+			we_html_element::cssElement('.defaultfont a {color:black; text-decoration:none}');
+		?>
+		</head>
+		<body  background="<?php print IMAGE_DIR; ?>backgrounds/header_with_black_line.gif"  marginwidth="7" marginheight="6" topmargin="6" leftmargin="7">
+			<table border="0" cellpadding="0" cellspacing="0" width="100%">
+				<tr>
+					<?php if(!isset($_REQUEST["viewclass"]) || $_REQUEST["viewclass"] != "todo"){ ?>
+						<td width="18"><?php we_html_tools::pPixel(18, 1) ?></td>
+						<td class="defaultfont" width="200"><a href="javascript:doSort('subject');"><b><?php echo g_l('modules_messaging', '[subject]') ?></b>&nbsp;<?php echo ( (isset($_REQUEST["si"]) && $_REQUEST["si"] == 'subject') ? sort_arrow("arrow_sortorder_" . $_REQUEST['so'], "") : we_html_tools::getPixel(1, 1)) ?></a></td>
+						<td class="defaultfont" width="170"><a href="javascript:doSort('date');"><b><?php echo g_l('modules_messaging', '[date]') ?></b>&nbsp;<?php echo ((isset($_REQUEST["si"]) && $_REQUEST["si"] == 'date') ? sort_arrow("arrow_sortorder_" . $_REQUEST['so'], "") : we_html_tools::getPixel(1, 1)) ?></a></td>
+						<td class="defaultfont" width="120"><a href="javascript:doSort('sender');"><b><?php echo g_l('modules_messaging', '[from]') ?></b>&nbsp;<?php echo ((isset($_REQUEST["si"]) && $_REQUEST["si"] == 'sender') ? sort_arrow("arrow_sortorder_" . $_REQUEST['so'], "") : we_html_tools::getPixel(1, 1)) ?></a></td>
+						<td class="defaultfont" width="70"><a href="javascript:doSort('isread');"><b><?php echo g_l('modules_messaging', '[is_read]') ?></b>&nbsp;<?php echo ((isset($_REQUEST["si"]) && $_REQUEST["si"] == 'isread') ? sort_arrow("arrow_sortorder_" . $_REQUEST['so'], "") : we_html_tools::getPixel(1, 1)) ?></a></td>
+					<?php } else{ ?>
+						<td width="18"><?php we_html_tools::pPixel(18, 1) ?></td>
+						<td class="defaultfont" width="200"><a href="javascript:doSort('subject');"><b><?php echo g_l('modules_messaging', '[subject]') ?></b>&nbsp;<?php echo ((isset($_REQUEST["si"]) && $_REQUEST["si"] == 'subject') ? sort_arrow("arrow_sortorder_" . $_REQUEST['so'], "") : we_html_tools::getPixel(1, 1)) ?></a></td>
+						<td class="defaultfont" width="170"><a href="javascript:doSort('deadline');"><b><?php echo g_l('modules_messaging', '[deadline]') ?></b>&nbsp;<?php echo ((isset($_REQUEST["si"]) && $_REQUEST["si"] == 'deadline') ? sort_arrow("arrow_sortorder_" . $_REQUEST['so'], "") : we_html_tools::getPixel(1, 1)) ?></a></td>
+						<td class="defaultfont" width="120"><a href="javascript:doSort('priority');"><b><?php echo g_l('modules_messaging', '[priority]') ?></b>&nbsp;<?php echo ((isset($_REQUEST["si"]) && $_REQUEST["si"] == 'priority') ? sort_arrow("arrow_sortorder_" . $_REQUEST['so'], "") : we_html_tools::getPixel(1, 1)) ?></a></td>
+						<td class="defaultfont" width="70"><a href="javascript:doSort('status');"><b><?php echo g_l('modules_messaging', '[status]') ?></b>&nbsp;<?php echo ((isset($_REQUEST["si"]) && $_REQUEST["si"] == 'status') ? sort_arrow("arrow_sortorder_" . $_REQUEST['so'], "") : we_html_tools::getPixel(1, 1)) ?></a></td>
+					<?php } ?>
+				</tr>
+			</table>
+		</body>
 		</html>
 		<?php
 	}
 
-	function getHTMLEditorHeader(){
-		if(isset($_REQUEST['home'])){//FIXME: find one working condition
-			print we_html_element::htmlBody(array('style' => 'background-color:#F0EFF0;'),'');
-		} else{
-			$user_object = new we_user();
-			$user_object->setState($_SESSION["user_session_data"]);
-			print we_html_element::htmlBody(array('style' => 'background:white url(' . IMAGE_DIR . 'backgrounds/header_with_black_line.gif); margin-top: 0; margin-left: 0;', 'onload' => 'setFrameSize()', 'onresize' => 'setFrameSize()'),
-				$user_object->formHeader(isset($_REQUEST["tab"]) ? $_REQUEST["tab"] : 0));
-		}
-	}
-
-	function getHTMLEditorBody(){
-		$yuiSuggest = & weSuggest::getInstance();
-		$user_object = new we_user();
-		if(isset($_SESSION["user_session_data"])){
-			$user_object->setState($_SESSION["user_session_data"]);
-		}
-		print $this->View->getJSProperty();
-
-		$_content = we_html_element::htmlHidden($attribs = array("name" => "ucmd", "value" => "",)).
-			we_html_element::htmlHidden($attribs = array("name" => "tab", "value" => isset($_REQUEST["tab"]) ? intval($_REQUEST["tab"]) : "",)).
-			we_html_element::htmlHidden($attribs = array("name" => "oldtab", "value" => isset($_REQUEST["tab"]) ? intval($_REQUEST["tab"]) : 0,)).
-			we_html_element::htmlHidden($attribs = array("name" => "perm_branch", "value" => (isset($_REQUEST["perm_branch"]) && $_REQUEST["perm_branch"]) ? oldHtmlspecialchars($_REQUEST["perm_branch"]) : 0,)).
-			we_html_element::htmlHidden($attribs = array("name" => "old_perm_branch", "value" => (isset($_REQUEST["perm_branch"]) && $_REQUEST["perm_branch"]) ? oldHtmlspecialchars($_REQUEST["perm_branch"]) : 0,)).
-			we_html_element::htmlHidden($attribs = array("name" => "obj_name", "value" => $user_object->Name,)).
-			we_html_element::htmlHidden($attribs = array("name" => "uid", "value" => $user_object->ID,)).
-			we_html_element::htmlHidden($attribs = array("name" => "ctype", "value" => isset($_REQUEST["ctype"]) ? oldHtmlspecialchars($_REQUEST["ctype"]) : "",)).
-			we_html_element::htmlHidden($attribs = array("name" => "ctable", "value" => isset($_REQUEST["ctable"]) ? oldHtmlspecialchars($_REQUEST["ctable"]) : "",)).
-			we_html_element::htmlHidden($attribs = array("name" => "sd", "value" => "0",));
-
-		if($user_object){
-			if(isset($_REQUEST["oldtab"]) && isset($_REQUEST["old_perm_branch"])){ // && isset($_REQUEST["old_perm_branch"]) added for 4705
-				$user_object->preserveState($_REQUEST["oldtab"], $_REQUEST["old_perm_branch"]);
-				$_SESSION["user_session_data"] = $user_object->getState();
-			}
-			if(isset($_REQUEST["seem_start_file"])){
-				$_SESSION["save_user_seem_start_file"][$_REQUEST["uid"]] = $_REQUEST["seem_start_file"];
-			}
-			$_content .= $user_object->formDefinition(isset($_REQUEST["tab"]) ? $_REQUEST["tab"] : "", isset($_REQUEST["perm_branch"]) ? $_REQUEST["perm_branch"] : 0);
-		}
-
-		$_content .= $yuiSuggest->getYuiCss();
-		$_content .= $yuiSuggest->getYuiJs();
-
-		$_form_attribs = array(
-			'name' => 'we_form',
-			'method' => 'post',
-			'onsubmit' => 'return false'
-		);
-
-		$_form = we_html_element::htmlForm($_form_attribs, $_content);
-		print we_html_element::htmlBody(array('class' => 'weEditorBody', 'onload' => 'loaded=1;', 'onUnload' => 'doUnload()'), $_form);
-
-
-		//FIXME: somehow the variant using htmlForm(), htmlBody() etc...
-		//works now: check again
-		/*
-		?>
-		<body class="weEditorBody" onUnload="doUnload()" onLoad="loaded=1">
-			<form name="we_form" method="post" onSubmit="return false">
-				<input type="hidden" name="ucmd" value="" />
-				<input type="hidden" name="tab" value="<?php print (isset($_REQUEST["tab"]) ? intval($_REQUEST["tab"]) : ""); ?>" />
-				<input type="hidden" name="oldtab" value="<?php print (isset($_REQUEST["tab"]) ? intval($_REQUEST["tab"]) : 0); ?>" />
-				<input type="hidden" name="perm_branch" value="<?php print ( (isset($_REQUEST["perm_branch"]) && $_REQUEST["perm_branch"]) ? oldHtmlspecialchars($_REQUEST["perm_branch"]) : 0); ?>" />
-				<input type="hidden" name="old_perm_branch" value="<?php print ( (isset($_REQUEST["perm_branch"]) && $_REQUEST["perm_branch"]) ? oldHtmlspecialchars($_REQUEST["perm_branch"]) : 0); ?>" />
-				<input type="hidden" name="obj_name" value="<?php print $user_object->Name ?>" />
-				<input type="hidden" name="uid" value="<?php print $user_object->ID ?>" />
-				<input type="hidden" name="ctype" value="<?php print (isset($_REQUEST["ctype"]) ? oldHtmlspecialchars($_REQUEST["ctype"]) : ""); ?>" />
-				<input type="hidden" name="ctable" value="<?php print (isset($_REQUEST["ctable"]) ? oldHtmlspecialchars($_REQUEST["ctable"]) : ""); ?>" />
-				<input type="hidden" name="sd" value="0" />
-				<?php
-				if($user_object){
-					if(isset($_REQUEST["oldtab"]) && isset($_REQUEST["old_perm_branch"])){ // && isset($_REQUEST["old_perm_branch"]) added for 4705
-						$user_object->preserveState($_REQUEST["oldtab"], $_REQUEST["old_perm_branch"]);
-						$_SESSION["user_session_data"] = $user_object->getState();
-					}
-					if(isset($_REQUEST["seem_start_file"])){
-						$_SESSION["save_user_seem_start_file"][$_REQUEST["uid"]] = $_REQUEST["seem_start_file"];
-					}
-					print $user_object->formDefinition(isset($_REQUEST["tab"]) ? $_REQUEST["tab"] : "", isset($_REQUEST["perm_branch"]) ? $_REQUEST["perm_branch"] : 0);
-				}
-
-				print $yuiSuggest->getYuiCss();
-				print $yuiSuggest->getYuiJs();
-				?>
-			</form>
-		</body>
-		<?php
-		 */
-
-	}
-
 	function getHTMLEditorFooter(){
-		if(isset($_SESSION["user_session_data"])){
-			$user_object = new we_user();
-			$user_object->setState($_SESSION["user_session_data"]);
-		}
-		
-		return parent::getHTMLEditorFooter('save_user');
+
 	}
 
 }
