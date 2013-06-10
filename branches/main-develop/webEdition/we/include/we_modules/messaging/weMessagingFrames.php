@@ -895,7 +895,7 @@ function msg_start() {
 		<?php
 	}
 
-	function getHTMLRight(){t_e("beat");
+	function getHTMLRight(){
 		if(!preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction'])){
 			exit();
 		}
@@ -909,7 +909,7 @@ function msg_start() {
 		return $this->getHTMLDocument($body);
 	}
 
-	function getHTMLEditor(){t_e("reto");
+	function getHTMLEditor(){
 
 		$frameset = new we_html_frameset(array("framespacing" => "0", "border" => "0", "frameborder" => "no"));
 
@@ -923,7 +923,7 @@ function msg_start() {
 		return $this->getHTMLDocument($body);
 	}
 
-	function getHTMLEditorHeader(){t_e("sevi");
+	function getHTMLEditorHeader(){
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 		we_html_tools::protect();
 		we_html_tools::htmlTop();
