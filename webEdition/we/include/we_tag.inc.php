@@ -273,13 +273,13 @@ function cutSimpleText($text, $len){
 	return substr($text, 0, max($pos));
 }
 
-function cutText($text, $max = 0){
+function cutText($text, $max = 0, $striphtml=false){
 	if((!$max) || (strlen($text) <= $max)){
 		return $text;
 	}
 	//no tags, simple cut off
 	if(strstr($text, '<') == FALSE){
-		return cutSimpleText($text, $max) . ' &hellip;';
+		return cutSimpleText($text, $max) . ($striphtml?' ...':' &hellip;');
 	}
 
 	$ret = '';
@@ -301,7 +301,7 @@ function cutText($text, $max = 0){
 					$ret.=($len > $max ? cutSimpleText($cur[0], $max) : $cur[0]);
 					$max-=$len;
 					if($max <= 0){
-						$ret.=' &hellip;';
+						$ret.=($striphtml?' ...':' &hellip;');
 					}
 				}
 				break;
