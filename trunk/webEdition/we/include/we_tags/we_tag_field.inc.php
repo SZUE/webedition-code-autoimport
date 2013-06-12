@@ -364,7 +364,7 @@ function we_tag_field($attribs){
 					}
 					$normVal = $altVal;
 				}
-				$out = cutText(($striphtml ? strip_tags($normVal) : $normVal), $max);
+				$out = cutText(($striphtml ? strip_tags($normVal) : $normVal), $max, $striphtml);
 			} elseif($value){
 				$out = ($striphtml ? strip_tags($value) : $value);
 			} else if($striphtml){
