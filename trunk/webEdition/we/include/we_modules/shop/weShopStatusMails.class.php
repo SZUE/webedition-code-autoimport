@@ -262,15 +262,15 @@ class weShopStatusMails{
 				$phpmail->setBCC($bccArray);
 			}
 			if(isset($this->EMailData['DocumentAttachmentFieldA']) && $this->EMailData['DocumentAttachmentFieldA'] != ''){
-				$attachmentAinternal = $maildoc->getElement($this->EMailData['DocumentAttachmentFieldA'] . '_we_jkhdsf_int');
-				$attachmentA = $maildoc->getElement($this->EMailData['DocumentAttachmentFieldA'] . ($attachmentAinternal ? '_we_jkhdsf_intPath' : ''));
+				$attachmentAinternal = $maildoc->getElement($this->EMailData['DocumentAttachmentFieldA'] . we_base_link::MAGIC_INT_LINK);
+				$attachmentA = $maildoc->getElement($this->EMailData['DocumentAttachmentFieldA'] . ($attachmentAinternal ? we_base_link::MAGIC_INT_LINK_PATH : ''));
 				if($attachmentA){
 					$phpmail->doaddAttachment($_SERVER['DOCUMENT_ROOT'] . $attachmentA);
 				}
 			}
 			if(isset($this->EMailData['DocumentAttachmentFieldB']) && $this->EMailData['DocumentAttachmentFieldB'] != ''){
-				$attachmentBinternal = $maildoc->getElement($this->EMailData['DocumentAttachmentFieldB'] . '_we_jkhdsf_int');
-				$attachmentB = $maildoc->getElement($this->EMailData['DocumentAttachmentFieldB'] . ($attachmentBinternal ? '_we_jkhdsf_intPath' : ''));
+				$attachmentBinternal = $maildoc->getElement($this->EMailData['DocumentAttachmentFieldB'] . we_base_link::MAGIC_INT_LINK);
+				$attachmentB = $maildoc->getElement($this->EMailData['DocumentAttachmentFieldB'] . ($attachmentBinternal ? we_base_link::MAGIC_INT_LINK_PATH : ''));
 				if($attachmentB){
 					$phpmail->doaddAttachment($_SERVER['DOCUMENT_ROOT'] . $attachmentB);
 				}

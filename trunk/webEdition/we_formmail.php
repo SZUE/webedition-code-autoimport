@@ -289,11 +289,7 @@ foreach($output as $n => $v){
 		$n = replace_bad_str($n);
 		$foo = replace_bad_str($foo);
 		$we_txt .= "$n: $foo\n" . ($foo ? '' : "\n");
-		if($n == 'email'){
-			$we_html .= '<tr><td align="right"><b>' . $n . ':</b></td><td><a href="mailto:' . $foo . '">' . $foo . '</a></td></tr>';
-		} else{
-			$we_html .= '<tr><td align="right"><b>' . $n . ':</b></td><td>' . $foo . '</td></tr>';
-		}
+		$we_html .= '<tr><td align="right"><b>' . $n . ':</b></td><td>' . ($n == 'email' ? '<a href="mailto:' . $foo . '">' . $foo . '</a>' : $foo) . '</td></tr>';
 	}
 }
 
@@ -327,8 +323,8 @@ $email = (isset($_REQUEST['email']) && $_REQUEST['email']) ?
 		WE_DEFAULT_EMAIL);
 
 $subject = strip_tags((isset($_REQUEST['subject']) && $_REQUEST['subject']) ?
-	$_REQUEST['subject'] :
-	WE_DEFAULT_SUBJECT);
+		$_REQUEST['subject'] :
+		WE_DEFAULT_SUBJECT);
 
 $charset = (isset($_REQUEST['charset']) && $_REQUEST['charset']) ?
 	str_replace("\n", "", str_replace("\r", "", $_REQUEST['charset'])) :
