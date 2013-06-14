@@ -112,8 +112,8 @@
 			}
 
 			// search wysiwyg textareas
-			$this->wysiwyg_patterns["doc"][] = "/([src|href]+".$spacer."\=".$spacer."\"document:)([0-9]+)(\")/sie";
-			$this->wysiwyg_patterns["obj"][] = "/(href".$spacer."\=".$spacer."\"object:)([0-9]+)(\")/sie";
+			$this->wysiwyg_patterns["doc"][] = "/([src|href]+".$spacer."\=".$spacer."\"".we_base_link::TYPE_INT_PREFIX.")([0-9]+)(\")/sie";
+			$this->wysiwyg_patterns["obj"][] = "/(href".$spacer."\=".$spacer."\"".we_base_link::TYPE_OBJ_PREFIX.")([0-9]+)(\")/sie";
 
 			// handle templates
 			$_tmpl_pats = array(

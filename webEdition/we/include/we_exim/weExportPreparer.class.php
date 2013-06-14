@@ -181,7 +181,7 @@ class weExportPreparer extends weXMLExIm{
 				foreach($patterns as $pattern){
 					if(preg_match_all($pattern, $text, $match)){
 						foreach($match[2] as $k => $include){
-							if(strpos($match[1][$k], "object:") !== false)
+							if(strpos($match[1][$k], we_base_link::TYPE_OBJ_PREFIX) !== false)
 								$this->addToDepArray($level, $include, 'objectFile');
 							else
 								$this->addToDepArray($level, $include);

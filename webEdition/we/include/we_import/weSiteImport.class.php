@@ -1502,7 +1502,7 @@ class weSiteImport{
 	private static function _makeInternalLink($href){
 		$id = path_to_id_ct($href, FILE_TABLE, $ct);
 		if(substr($ct, 0, 5) == "text/"){
-			$href = 'document:' . $id;
+			$href = we_base_link::TYPE_INT_PREFIX . $id;
 		} else
 		if($ct == "image/*"){
 			if(strpos($href, "?") === false){

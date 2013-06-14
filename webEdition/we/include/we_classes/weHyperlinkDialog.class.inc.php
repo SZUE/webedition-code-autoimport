@@ -44,18 +44,19 @@ class weHyperlinkDialog extends weDialog{
 			$okBut = (($this->getBackBut() != "") && ($this->getOkBut()) != "") ? we_button::create_button_table(array($this->getBackBut(), $this->getOkBut())) : (($this->getBackBut() == "") ? $this->getOkBut() : $this->getBackBut());
 		}
 
-		return we_button::position_yes_no_cancel($okBut, "", we_button::create_button("cancel", "javascript:top.close();"));
+		return we_button::position_yes_no_cancel($okBut, '', we_button::create_button('cancel', "javascript:top.close();"));
 	}
 
 	function initByHref($href, $target = "", $class = "", $param = "", $anchor = "", $lang = "", $hreflang = "", $title = "", $accesskey = "", $tabindex = "", $rel = "", $rev = ""){
 		if($href){
 			$this->args["href"] = $href;
 			list($type, $ref) = explode(':', $this->args["href"]);
+			$type.=':';
 
 			// Object Links and internal links are not possible when outside webEdition
 			// for exmaple in the wysiwyg (Mantis Bug #138)
 			if(isset($this->args["outsideWE"]) && $this->args["outsideWE"] == 1 && (
-				$type == "object" || $type == "document:"
+				$type == we_base_link::TYPE_OBJ_PREFIX || $type == we_base_link::TYPE_INT_PREFIX
 				)
 			){
 				$this->args["href"] = $type = $ref = '';
@@ -63,8 +64,8 @@ class weHyperlinkDialog extends weDialog{
 
 
 			switch($type){
-				case 'object':
-					$this->args['type'] = 'obj';
+				case we_base_link::TYPE_OBJ_PREFIX:
+					$this->args['type'] = we_base_link::TYPE_OBJ;
 					$this->args['extHref'] = '';
 					$this->args['fileID'] = '';
 					$this->args['fileHref'] = '';
@@ -72,8 +73,8 @@ class weHyperlinkDialog extends weDialog{
 					$this->args['objID'] = $ref;
 					$this->args['objHref'] = f('SELECT Path FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($this->args['objID']), 'Path', $this->db);
 					break;
-				case 'document':
-					$this->args['type'] = 'int';
+				case we_base_link::TYPE_INT_PREFIX:
+					$this->args['type'] = we_base_link::TYPE_INT;
 					$this->args['extHref'] = '';
 					$this->args['fileID'] = $ref;
 					$this->args['fileHref'] = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($this->args['fileID']), 'Path', $this->db);
@@ -81,8 +82,8 @@ class weHyperlinkDialog extends weDialog{
 					$this->args['objID'] = '';
 					$this->args['objHref'] = '';
 					break;
-				case 'mailto':
-					$this->args['type'] = 'mail';
+				case we_base_link::TYPE_MAIL_PREFIX:
+					$this->args['type'] = we_base_link::TYPE_MAIL;
 					$this->args['mailHref'] = preg_replace('|^([^\?#]+).*$|', '\1', $ref);
 					$this->args['extHref'] = '';
 					$this->args['fileID'] = '';
@@ -91,7 +92,7 @@ class weHyperlinkDialog extends weDialog{
 					$this->args['objHref'] = '';
 					break;
 				default:
-					$this->args['type'] = 'ext';
+					$this->args['type'] = we_base_link::TYPE_EXT;
 					$this->args['extHref'] = preg_replace('|^([^\?#]+).*$|', '\1', preg_replace('|^' . WEBEDITION_DIR . '|', '', preg_replace('|^' . WEBEDITION_DIR . 'we_cmd.php[^"\'#]+(#.*)$|', '\1', $this->args["href"])));
 					$this->args['fileID'] = '';
 					$this->args['fileHref'] = '';
@@ -115,8 +116,8 @@ class weHyperlinkDialog extends weDialog{
 
 	function initByFileID($fileID, $target = '', $class = '', $param = '', $anchor = '', $lang = '', $hreflang = '', $title = '', $accesskey = '', $tabindex = '', $rel = '', $rev = ''){
 		if($fileID){
-			$this->args['href'] = 'document:' . $fileID;
-			$this->args['type'] = 'int';
+			$this->args['href'] = we_base_link::TYPE_INT_PREFIX . $fileID;
+			$this->args['type'] = we_base_link::TYPE_INT;
 			$this->args['extHref'] = '';
 			$this->args['fileID'] = $fileID;
 			$this->args['fileHref'] = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($this->args['fileID']), 'Path', $this->db);
@@ -139,8 +140,8 @@ class weHyperlinkDialog extends weDialog{
 
 	function initByObjectID($objID, $target = '', $class = '', $param = '', $anchor = '', $lang = '', $hreflang = '', $title = '', $accesskey = '', $tabindex = '', $rel = '', $rev = ''){
 		if($objID){
-			$this->args['href'] = 'object:' . $objID;
-			$this->args['type'] = 'obj';
+			$this->args['href'] = we_base_link::TYPE_OBJ_PREFIX . $objID;
+			$this->args['type'] = we_base_link::TYPE_OBJ;
 			$this->args['extHref'] = '';
 			$this->args['fileID'] = '';
 			$this->args['fileHref'] = '';
@@ -163,8 +164,8 @@ class weHyperlinkDialog extends weDialog{
 
 	function initByMailHref($mailHref, $target = '', $class = '', $param = '', $anchor = '', $lang = '', $hreflang = '', $title = '', $accesskey = '', $tabindex = '', $rel = '', $rev = ''){
 		if($mailHref){
-			$this->args['href'] = 'mailto:' . $mailHref;
-			$this->args['type'] = 'mail';
+			$this->args['href'] = we_base_link::TYPE_MAIL_PREFIX . $mailHref;
+			$this->args['type'] = we_base_link::TYPE_MAIL;
 			$this->args['extHref'] = '';
 			$this->args['fileID'] = '';
 			$this->args['fileHref'] = '';
@@ -231,18 +232,18 @@ class weHyperlinkDialog extends weDialog{
 			$fileID = $this->getHttpVar("fileID", 0);
 			$objID = $this->getHttpVar("objID", 0);
 			switch($type){
-				case "ext":
-					$extHref = $this->getHttpVar("extHref", "#");
+				case we_base_link::TYPE_EXT:
+					$extHref = $this->getHttpVar('extHref', '#');
 					$this->initByHref($extHref, $target, $class, $param, $anchor, $lang, $hreflang, $title, $accesskey, $tabindex, $rel, $rev);
 					break;
-				case "int":
+				case we_base_link::TYPE_INT:
 					$this->initByFileID($fileID, $target, $class, $param, $anchor, $lang, $hreflang, $title, $accesskey, $tabindex, $rel, $rev);
 					break;
-				case "obj":
+				case we_base_link::TYPE_OBJ:
 					$this->initByObjectID($objID, $target, $class, $param, $anchor, $lang, $hreflang, $title, $accesskey, $tabindex, $rel, $rev);
 					break;
-				case "mail":
-					$mailhref = $this->getHttpVar("mailHref");
+				case we_base_link::TYPE_MAIL:
+					$mailhref = $this->getHttpVar('mailHref');
 					$this->initByMailHref($mailhref, $target, $class, $param, $anchor, $lang, $hreflang, $title, $accesskey, $tabindex, $rel, $rev);
 					break;
 			}
@@ -253,8 +254,8 @@ class weHyperlinkDialog extends weDialog{
 
 	function defaultInit(){
 		$this->args = array_merge($this->args, array(
-			'href' => 'document:',
-			'type' => 'int',
+			'href' => we_base_link::TYPE_INT_PREFIX,
+			'type' => we_base_link::TYPE_INT,
 			'extHref' => '',
 			'fileID' => '',
 			'fileHref' => '',
@@ -284,8 +285,8 @@ class weHyperlinkDialog extends weDialog{
 
 
 			$_select_type = '<select name="we_dialog_args[type]" size="1" style="margin-bottom:5px;" onchange="changeTypeSelect(this);">
-<option value="ext"' . (($this->args["type"] == "ext") ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', "[external_link]") . '</option>
-<option value="mail"' . (($this->args["type"] == "mail") ? ' selected="selected"' : '') . '>' . g_l('wysiwyg', "[emaillink]") . '</option>
+<option value="' . we_base_link::TYPE_EXT . '"' . (($this->args["type"] == we_base_link::TYPE_EXT) ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', "[external_link]") . '</option>
+<option value="' . we_base_link::TYPE_MAIL . '"' . (($this->args["type"] == we_base_link::TYPE_MAIL) ? ' selected="selected"' : '') . '>' . g_l('wysiwyg', "[emaillink]") . '</option>
 </select>';
 
 
@@ -302,11 +303,11 @@ class weHyperlinkDialog extends weDialog{
 			$_object_link = '';
 		} else{
 			$_select_type = '<select name="we_dialog_args[type]" id="weDialogType" size="1" style="margin-bottom:5px;width:300px;" onchange="changeTypeSelect(this);">
-<option value="ext"' . (($this->args["type"] == "ext") ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', "[external_link]") . '</option>
-<option value="int"' . (($this->args["type"] == "int") ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', "[internal_link]") . '</option>
-<option value="mail"' . (($this->args["type"] == "mail") ? ' selected="selected"' : '') . '>' . g_l('wysiwyg', "[emaillink]") . '</option>' .
+<option value="' . we_base_link::TYPE_EXT . '"' . (($this->args["type"] == we_base_link::TYPE_EXT) ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', "[external_link]") . '</option>
+<option value="' . we_base_link::TYPE_INT . '"' . (($this->args["type"] == we_base_link::TYPE_INT) ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', "[internal_link]") . '</option>
+<option value="' . we_base_link::TYPE_MAIL . '"' . (($this->args["type"] == we_base_link::TYPE_MAIL) ? ' selected="selected"' : '') . '>' . g_l('wysiwyg', "[emaillink]") . '</option>' .
 				((defined("OBJECT_TABLE") && ($_SESSION['weS']['we_mode'] == "normal" || we_hasPerm("CAN_SEE_OBJECTFILES"))) ?
-					'<option value="obj"' . (($this->args["type"] == "obj") ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', "[objectFile]") . '</option>' :
+					'<option value="' . we_base_link::TYPE_OBJ . '"' . (($this->args["type"] == we_base_link::TYPE_OBJ) ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', "[objectFile]") . '</option>' :
 					''
 				) . '</select>';
 
@@ -410,7 +411,7 @@ class weHyperlinkDialog extends weDialog{
 					<td class="defaultgray" valign="top" width="100" height="20">' . g_l('weClass', "[linkType]") . '</td>
 					<td valign="top">' . $_select_type . '</td>
 				</tr>
-				<tr id="ext_tr" style="display:' . (($this->args["type"] == "ext") ? "table-row" : "none") . ';">
+				<tr id="ext_tr" style="display:' . (($this->args["type"] == we_base_link::TYPE_EXT) ? "table-row" : "none") . ';">
 					<td class="defaultgray" valign="top" width="100">' . g_l('linklistEdit', "[external_link]") . '</td><td valign="top" >' . $_external_link . '</td>
 				</tr>';
 
@@ -423,14 +424,14 @@ class weHyperlinkDialog extends weDialog{
 			}');
 
 			$table .= '
-				<tr id="int_tr" style="display:' . (($this->args["type"] == "int") ? "table-row" : "none") . ';">
+				<tr id="int_tr" style="display:' . (($this->args["type"] == we_base_link::TYPE_INT) ? "table-row" : "none") . ';">
 					<td class="defaultgray" valign="top" width="100"> ' . g_l('weClass', "[document]") . '</td>
 					<td valign="top"> ' . $autoSuggest . '</td>
 				</tr>';
 		}
 
 		$table .= '
-				<tr id="mail_tr" style="display:' . (($this->args["type"] == "mail") ? "table-row" : "none") . ';">
+				<tr id="mail_tr" style="display:' . (($this->args["type"] == we_base_link::TYPE_MAIL) ? "table-row" : "none") . ';">
 					<td class="defaultgray" valign="top" width="100">' . g_l('wysiwyg', "[emaillink]") . '</td>
 					<td valign="top">
 						' . $_email_link . '</td>
@@ -438,7 +439,7 @@ class weHyperlinkDialog extends weDialog{
 
 		if(defined("OBJECT_TABLE") && isset($_object_link)){
 			$table .= '
-				<tr id="obj_tr" style="display:' . (($this->args["type"] == "obj") ? "table-row" : "none") . ';">
+				<tr id="obj_tr" style="display:' . (($this->args["type"] == we_base_link::TYPE_OBJ) ? "table-row" : "none") . ';">
 					<td class="defaultgray" valign="top" width="100" height="0">' . g_l('contentTypes', '[objectFile]') . '</td>
 					<td valign="top">
 						' . $_object_link . '</td>
@@ -560,7 +561,7 @@ class weHyperlinkDialog extends weDialog{
 
 				function weCheckAcFields(){
 					if(!!weFocusedField) weFocusedField.blur();
-					if(document.getElementById("weDialogType").value=="int"){
+					if(document.getElementById("weDialogType").value=="' . we_base_link::TYPE_INT . '"){
 						setTimeout("weDoCheckAcFields()",100);
 					} else {
 						document.forms["we_form"].submit();

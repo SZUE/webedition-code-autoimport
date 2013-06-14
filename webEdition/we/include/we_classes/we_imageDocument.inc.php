@@ -325,13 +325,13 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 		$_data = $this->getElement('data');
 		if($this->ID || ($_data && !is_dir($_data) && is_readable($_data))){
 			switch($this->getElement('LinkType')){
-				case 'int':
+				case we_base_link::TYPE_INT:
 					$href = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID = ' . intval($this->getElement('LinkID')), 'Path', $this->DB_WE);
 					break;
-				case 'ext':
+				case we_base_link::TYPE_EXT:
 					$href = $this->getElement('LinkHref');
 					break;
-				case 'obj':
+				case we_base_link::TYPE_OBJ:
 					$id = $this->getElement('ObjID');
 					if(isset($GLOBALS['WE_MAIN_DOC'])){
 						$pid = $GLOBALS['WE_MAIN_DOC']->ParentID;
@@ -386,7 +386,7 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 				WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=show_binaryDoc&we_cmd[1]=' .
 				$this->ContentType . '&we_cmd[2]=' .
 				$GLOBALS['we_transaction'] . '&rand=' . $randval :
-				($this->getElement('LinkType') == 'int' ? (we_isHttps() ? '' : BASE_IMG) : '') .
+				($this->getElement('LinkType') == we_base_link::TYPE_INT ? (we_isHttps() ? '' : BASE_IMG) : '') .
 				$img_path;
 
 			if(isset($this->elements['sizingrel'])){
@@ -781,7 +781,7 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 
 		$_ext_link = "href" . we_html_element::htmlBr() . $_ext_link_table->getHtml();
 
-		$_content->setCol(2, 0, array('valign' => 'top'), we_forms::radiobutton('ext', ($linkType == 'ext'), 'we_' . $this->Name . '_txt[LinkType]', g_l('weClass', '[extern]'), true, 'defaultfont', '_EditorFrame.setEditorIsHot(true)'));
+		$_content->setCol(2, 0, array('valign' => 'top'), we_forms::radiobutton(we_base_link::TYPE_EXT, ($linkType == we_base_link::TYPE_EXT), 'we_' . $this->Name . '_txt[LinkType]', g_l('weClass', '[extern]'), true, 'defaultfont', '_EditorFrame.setEditorIsHot(true)'));
 		$_content->setCol(2, 1, array('class' => 'defaultfont', 'valign' => 'top'), $_ext_link);
 
 		// Space
@@ -797,7 +797,7 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 
 		$_int_link = 'href' . we_html_element::htmlBr() . $_int_link_table->getHtml();
 
-		$_content->setCol(4, 0, array('valign' => 'top'), we_forms::radiobutton('int', ($linkType == 'int'), 'we_' . $this->Name . '_txt[LinkType]', g_l('weClass', '[intern]'), true, 'defaultfont', '_EditorFrame.setEditorIsHot(true);'));
+		$_content->setCol(4, 0, array('valign' => 'top'), we_forms::radiobutton(we_base_link::TYPE_INT, ($linkType == we_base_link::TYPE_INT), 'we_' . $this->Name . '_txt[LinkType]', g_l('weClass', '[intern]'), true, 'defaultfont', '_EditorFrame.setEditorIsHot(true);'));
 		$_content->setCol(4, 1, array('class' => 'defaultfont', 'valign' => 'top'), $_int_link);
 
 		// Object link
@@ -813,7 +813,7 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 
 			$_obj_link = 'href' . we_html_element::htmlBr() . $_obj_link_table->getHtml();
 
-			$_content->setCol(6, 0, array('valign' => 'top'), we_forms::radiobutton('obj', ($linkType == 'obj'), 'we_' . $this->Name . '_txt[LinkType]', g_l('linklistEdit', '[objectFile]'), true, 'defaultfont', '_EditorFrame.setEditorIsHot(true);'));
+			$_content->setCol(6, 0, array('valign' => 'top'), we_forms::radiobutton(we_base_link::TYPE_OBJ, ($linkType == we_base_link::TYPE_OBJ), 'we_' . $this->Name . '_txt[LinkType]', g_l('linklistEdit', '[objectFile]'), true, 'defaultfont', '_EditorFrame.setEditorIsHot(true);'));
 			$_content->setCol(6, 1, array('class' => 'defaultfont', 'valign' => 'top'), $_obj_link);
 		}
 

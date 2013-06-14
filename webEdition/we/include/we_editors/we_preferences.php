@@ -2544,28 +2544,29 @@ if(window.onload) {
 			$_error_display_table = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0"), 8, 1);
 			$_error_display_table->setCol(0, 0, array('class' => 'defaultfont', 'style' => 'padding-left: 25px;'), we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[error_notices_warning]'), 1, 260));
 
-			$_error_display_table->setCol(1, 0, null, we_forms::checkbox(1, get_value("WE_ERROR_SHOW"), "newconf[WE_ERROR_SHOW]", g_l('prefs', '[error_display]'), false, "defaultfont", "", !get_value("WE_ERROR_HANDLER")));
+			$_error_display_table->setCol(1, 0, null, we_forms::checkbox(1, get_value('WE_ERROR_SHOW'), 'newconf[WE_ERROR_SHOW]', g_l('prefs', '[error_display]'), false, "defaultfont", "", !get_value("WE_ERROR_HANDLER")));
 			$_error_display_table->setCol(2, 0, null, we_html_tools::getPixel(1, 5));
-			$_error_display_table->setCol(3, 0, null, we_forms::checkbox(1, get_value("WE_ERROR_LOG"), "newconf[WE_ERROR_LOG]", g_l('prefs', '[error_log]'), false, "defaultfont", "", !get_value("WE_ERROR_HANDLER")));
+			$_error_display_table->setCol(3, 0, null, we_forms::checkbox(1, get_value('WE_ERROR_LOG'), 'newconf[WE_ERROR_LOG]', g_l('prefs', '[error_log]'), false, "defaultfont", "", !get_value("WE_ERROR_HANDLER")));
 			$_error_display_table->setCol(4, 0, null, we_html_tools::getPixel(1, 5));
-			$_error_display_table->setCol(5, 0, null, we_forms::checkbox(1, get_value("WE_ERROR_MAIL"), "newconf[WE_ERROR_MAIL]", g_l('prefs', '[error_mail]'), false, "defaultfont", "", !get_value("WE_ERROR_HANDLER")));
+			$_error_display_table->setCol(5, 0, null, we_forms::checkbox(1, get_value('WE_ERROR_MAIL'), 'newconf[WE_ERROR_MAIL]', g_l('prefs', '[error_mail]'), false, "defaultfont", "", !get_value("WE_ERROR_HANDLER")));
 
 			// Create specify mail address input
-			$_error_mail_specify_table = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0"), 1, 4);
+			$_error_mail_specify_table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 1, 4);
 
 			$_error_mail_specify_table->setCol(0, 0, null, we_html_tools::getPixel(25, 1));
-			$_error_mail_specify_table->setCol(0, 1, array("class" => "defaultfont"), g_l('prefs', '[error_mail_address]') . ":");
+			$_error_mail_specify_table->setCol(0, 1, array('class' => 'defaultfont'), g_l('prefs', '[error_mail_address]') . ':');
 			$_error_mail_specify_table->setCol(0, 2, null, we_html_tools::getPixel(6, 1));
-			$_error_mail_specify_table->setCol(0, 3, array("align" => "left"), we_html_tools::htmlTextInput("newconf[WE_ERROR_MAIL_ADDRESS]", 6, (get_value("WE_ERROR_MAIL_ADDRESS")), 100, "", "text", 195));
+
+			$_error_mail_specify_table->setCol(0, 3, array("align" => "left"), we_html_tools::htmlTextInput('newconf[WE_ERROR_MAIL_ADDRESS]', 6, (get_value("WE_ERROR_MAIL")?get_value("WE_ERROR_MAIL_ADDRESS"):''), 100, 'placeholder="mail@example"', "text", 195));
 
 			$_error_display_table->setCol(6, 0, null, we_html_tools::getPixel(1, 10));
 			$_error_display_table->setCol(7, 0, null, $_error_mail_specify_table->getHtml());
 
 			$_settings = array(
-				array("headline" => g_l('prefs', '[templates]'), "html" => $_template_error_handling_table->getHtml(), "space" => 200),
-				array("headline" => g_l('prefs', '[tab][error_handling]'), "html" => $_we_error_handler, "space" => 200),
-				array("headline" => g_l('prefs', '[error_types]'), "html" => $_error_handling_table->getHtml(), "space" => 200),
-				array("headline" => g_l('prefs', '[error_displaying]'), "html" => $_error_display_table->getHtml(), "space" => 200),
+				array("headline" => g_l('prefs', '[templates]'), "html" => $_template_error_handling_table->getHtml(), 'space' => 200),
+				array("headline" => g_l('prefs', '[tab][error_handling]'), "html" => $_we_error_handler, 'space' => 200),
+				array("headline" => g_l('prefs', '[error_types]'), "html" => $_error_handling_table->getHtml(), 'space' => 200),
+				array("headline" => g_l('prefs', '[error_displaying]'), "html" => $_error_display_table->getHtml(), 'space' => 200),
 			);
 
 			$_settings_cookie = weGetCookieVariable("but_settings_error_expert");

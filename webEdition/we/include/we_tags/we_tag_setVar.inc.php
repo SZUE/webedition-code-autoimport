@@ -64,7 +64,7 @@ function we_tag_setVar($attribs){
 					$valueFrom = isset($GLOBALS['WE_MAIN_DOC']->$nameFrom) ? $GLOBALS['WE_MAIN_DOC']->$nameFrom : '';
 				} else{
 					if($typeFrom == 'href'){
-						$valueFrom = isset($GLOBALS['WE_MAIN_DOC']->elements[$nameFrom . '_we_jkhdsf_int']) ? $GLOBALS['WE_MAIN_DOC']->getField(
+						$valueFrom = isset($GLOBALS['WE_MAIN_DOC']->elements[$nameFrom . we_base_link::MAGIC_INT_LINK]) ? $GLOBALS['WE_MAIN_DOC']->getField(
 								array(
 								'name' => $nameFrom
 								), $typeFrom, true) : '';
@@ -81,7 +81,7 @@ function we_tag_setVar($attribs){
 					$valueFrom = isset($GLOBALS['we_doc']->$nameFrom) ? $GLOBALS['we_doc']->$nameFrom : '';
 				} else{
 					if($typeFrom == 'href'){
-						$valueFrom = isset($GLOBALS['we_doc']->elements[$nameFrom . '_we_jkhdsf_int']) ? $GLOBALS['we_doc']->getField(
+						$valueFrom = isset($GLOBALS['we_doc']->elements[$nameFrom . we_base_link::MAGIC_INT_LINK]) ? $GLOBALS['we_doc']->getField(
 								array(
 								'name' => $nameFrom
 								), $typeFrom, true) : '';
@@ -120,8 +120,8 @@ function we_tag_setVar($attribs){
 				$nameFrom = we_tag_getPostName($nameFrom);
 				if($typeFrom == 'href'){
 
-					if($GLOBALS['we_doc']->elements[$nameFrom . '_we_jkhdsf_int']['dat']){
-						$nameFrom .= '_we_jkhdsf_intPath';
+					if($GLOBALS['we_doc']->elements[$nameFrom . we_base_link::MAGIC_INT_LINK]['dat']){
+						$nameFrom .= we_base_link::MAGIC_INT_LINK_PATH;
 					}
 				}
 				$valueFrom = isset($GLOBALS['WE_MAIN_DOC']->elements[$nameFrom]) ? $GLOBALS['WE_MAIN_DOC']->getField(

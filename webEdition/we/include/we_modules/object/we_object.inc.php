@@ -924,9 +924,9 @@ class we_object extends we_document{
 			case 'href':
 				$typeVal = $this->getElement($name . "hreftype", "dat");
 				$typeSelect = '<select class="weSelect" id="we_' . $this->Name . '_input[' . $name . 'hreftype]" name="we_' . $this->Name . '_input[' . $name . 'hreftype]" onchange="_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_entry_at_class\',\'' . $GLOBALS['we_transaction'] . '\',\'' . $identifier . '\');">
-			<option' . (($typeVal == "all" || $typeVal == "") ? " selected" : "") . ' value="all">all
-			<option' . (($typeVal == "int") ? " selected" : "") . ' value="int">int
-			<option' . (($typeVal == "ext") ? " selected" : "") . ' value="ext">ext
+			<option' . (($typeVal == we_base_link::TYPE_ALL || $typeVal == "") ? " selected" : "") . ' value="'.we_base_link::TYPE_ALL.'">all
+			<option' . (($typeVal == we_base_link::TYPE_INT) ? " selected" : "") . ' value="'.we_base_link::TYPE_INT.'">int
+			<option' . (($typeVal == we_base_link::TYPE_EXT) ? " selected" : "") . ' value="'.we_base_link::TYPE_EXT.'">ext
 			</select>';
 				$fileVal = $this->getElement($name . "hreffile", "dat");
 				$fileVal = $fileVal ? $fileVal : "true";
@@ -1200,9 +1200,9 @@ class we_object extends we_document{
 			$hrefArr = array();
 		}
 
-		$nint = $n . "_we_jkhdsf_int";
-		$nintID = $n . "_we_jkhdsf_intID";
-		$nintPath = $n . "_we_jkhdsf_intPath";
+		$nint = $n . we_base_link::MAGIC_INT_LINK;
+		$nintID = $n . we_base_link::MAGIC_INT_LINK_ID;
+		$nintPath = $n . we_base_link::MAGIC_INT_LINK_PATH;
 		$nextPath = $n . "_we_jkhdsf_extPath";
 
 		$attr = ' size="20" ';
@@ -1220,10 +1220,10 @@ class we_object extends we_document{
 		$ext_elem_Name = 'we_' . $this->Name . '_href[' . $nextPath . ']';
 
 		switch($type){
-			case 'int':
+			case we_base_link::TYPE_INT:
 				$out = $this->hrefRow($intID_elem_Name, $intID, $intPath_elem_Name, $intPath, $attr, $int_elem_Name);
 				break;
-			case 'ext':
+			case we_base_link::TYPE_EXT:
 				$out = $this->hrefRow('', '', $ext_elem_Name, $extPath, $attr, $int_elem_Name);
 				break;
 			default:
@@ -1244,7 +1244,7 @@ class we_object extends we_document{
 			$link = array();
 		}
 		if(empty($link)){
-			$link = array("ctype" => "text", "type" => "ext", "href" => "#", "text" => g_l('global', "[new_link]"));
+			$link = array("ctype" => "text", "type" => we_base_link::TYPE_EXT, "href" => "#", "text" => g_l('global', "[new_link]"));
 		}
 		$img = new we_imageDocument();
 		$content = parent::getLinkContent($link, $this->ParentID, $this->Path, $GLOBALS['DB_WE'], $img);

@@ -60,18 +60,18 @@ function we_tag_href($attribs){
 		return (!empty($hrefArr) ? we_document::getHrefByArray($hrefArr) : '');
 	}
 
-	$nint = $name . '_we_jkhdsf_int';
-	$nintID = $name . '_we_jkhdsf_intID';
-	$nintPath = $name . '_we_jkhdsf_intPath';
+	$nint = $name . we_base_link::MAGIC_INT_LINK;
+	$nintID = $name . we_base_link::MAGIC_INT_LINK_ID;
+	$nintPath = $name . we_base_link::MAGIC_INT_LINK_PATH;
 	$extPath = $GLOBALS['we_doc']->getElement($name);
 
 	// we have to use a html_entity_decode first in case a user has set &amp, &uuml; by himself
 	$extPath = !empty($extPath) ? oldHtmlspecialchars(html_entity_decode($extPath)) : $extPath;
 
 	switch($type){
-		case 'int':
-		case 'all':
-			$int = ($type == 'int' || $GLOBALS['we_doc']->getElement($nint) != '') ? $GLOBALS['we_doc']->getElement($nint) : false;
+		case we_base_link::TYPE_INT:
+		case we_base_link::TYPE_ALL:
+			$int = ($type == we_base_link::TYPE_INT || $GLOBALS['we_doc']->getElement($nint) != '') ? $GLOBALS['we_doc']->getElement($nint) : false;
 			$intID = $GLOBALS['we_doc']->getElement($nintID);
 /*			if(!isset($GLOBALS['we_doc']->elements[$nintID]['dat']) && $rootdirid){
 				$intID = $rootdirid;
@@ -95,7 +95,7 @@ function we_tag_href($attribs){
 				break;
 			}
 		//no break;
-		case 'ext':
+		case we_base_link::TYPE_EXT:
 			$int = false;
 			$href = $extPath;
 			$include_path = $href ? $_SERVER['DOCUMENT_ROOT'] . '/' . $href : '';
@@ -127,7 +127,7 @@ function we_tag_href($attribs){
 	$attr = we_make_attribs($attribs, 'name,value,type,onkeydown,onKeyDown,_name_orig');
 
 	switch($type){
-		case "all":
+		case we_base_link::TYPE_ALL:
 			$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['$intID_elem_Name'].value");
 			$wecmdenc2 = we_cmd_enc("document.forms['we_form'].elements['$intPath_elem_Name'].value");
 			$wecmdenc3 = we_cmd_enc("opener._EditorFrame.setEditorIsHot(true); opener.document.we_form.elements['$int_elem_Name'][0].checked = true;" . (($include || $reload) ? "opener.setScrollTo(); opener.top.we_cmd('reload_editpage');" : ""));
@@ -160,7 +160,7 @@ function we_tag_href($attribs){
 				</table>' .
 				($include && $include_path && file_exists($include_path) ? '<?php include("' . $include_path . '"); ?>' : '');
 
-		case 'int':
+		case we_base_link::TYPE_INT:
 			$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['$intID_elem_Name'].value");
 			$wecmdenc2 = we_cmd_enc("document.forms['we_form'].elements['$intPath_elem_Name'].value");
 			$wecmdenc3 = we_cmd_enc("opener._EditorFrame.setEditorIsHot(true); " . (($include || $reload) ? "opener.setScrollTo(); opener.top.we_cmd('reload_editpage');" : ""));
@@ -181,7 +181,7 @@ function we_tag_href($attribs){
 					</tr>
 				</table>' .
 				($include && $include_path && file_exists($include_path) ? '<?php include("' . $include_path . '"); ?>' : '');
-		case 'ext':
+		case we_base_link::TYPE_EXT:
 			$ext_elem_Name = 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']';
 
 			$trashbut2 = we_button::create_button("image:btn_function_trash", "javascript:document.we_form.elements['" . $ext_elem_Name . "'].value = ''; _EditorFrame.setEditorIsHot(true)", true);

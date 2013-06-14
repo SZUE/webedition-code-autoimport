@@ -1192,7 +1192,7 @@ function parseInternalLinks(&$text, $pid, $path = '', $doBaseReplace = true){
 	$doBaseReplace&=we_isHttps();
 	$DB_WE = new DB_WE();
 	$regs = array();
-	if(preg_match_all('/(href|src)="document:(\\d+)(&amp;|&)?("|[^"]+")/i', $text, $regs, PREG_SET_ORDER)){
+	if(preg_match_all('/(href|src)="' . we_base_link::TYPE_INT_PREFIX . '(\\d+)(&amp;|&)?("|[^"]+")/i', $text, $regs, PREG_SET_ORDER)){
 		foreach($regs as $reg){
 
 			$foo = getHash('SELECT Path,(ContentType="image/*") AS isImage  FROM ' . FILE_TABLE . ' WHERE ID=' . intval($reg[2]) . (isset($GLOBALS['we_doc']->InWebEdition) && $GLOBALS['we_doc']->InWebEdition ? '' : ' AND Published > 0'), $DB_WE);
@@ -1202,27 +1202,27 @@ function parseInternalLinks(&$text, $pid, $path = '', $doBaseReplace = true){
 				if(show_SeoLinks() && WYSIWYGLINKS_DIRECTORYINDEX_HIDE && NAVIGATION_DIRECTORYINDEX_NAMES != '' && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
 					$foo['Path'] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/';
 				}
-				$text = str_replace($reg[1] . '="document:' . $reg[2] . $reg[3] . $reg[4], $reg[1] . '="' . ($doBaseReplace && $foo['isImage'] ? BASE_IMG : '') . $foo['Path'] . ($reg[3] ? '?' : '') . $reg[4], $text);
+				$text = str_replace($reg[1] . '="' . we_base_link::TYPE_INT_PREFIX . $reg[2] . $reg[3] . $reg[4], $reg[1] . '="' . ($doBaseReplace && $foo['isImage'] ? BASE_IMG : '') . $foo['Path'] . ($reg[3] ? '?' : '') . $reg[4], $text);
 			} else{
 				$text = preg_replace(array(
-					'|<a [^>]*href="document:' . $reg[2] . '"[^>]*>(.*)</a>|Ui', '|<a [^>]*href="document:' . $reg[2] . '"[^>]*>|Ui', '|<img [^>]*src="document:' . $reg[2] . '"[^>]*>|Ui'), array(
+					'|<a [^>]*href="' . we_base_link::TYPE_INT_PREFIX . $reg[2] . '"[^>]*>(.*)</a>|Ui', '|<a [^>]*href="' . we_base_link::TYPE_INT_PREFIX . $reg[2] . '"[^>]*>|Ui', '|<img [^>]*src="' . we_base_link::TYPE_INT_PREFIX . $reg[2] . '"[^>]*>|Ui'), array(
 					'\1', '', ''), $text);
 			}
 		}
 	}
-	if(preg_match_all('/src="thumbnail:([^" ]+)"/i', $text, $regs, PREG_SET_ORDER)){
+	if(preg_match_all('/src="' . we_base_link::TYPE_THUMB_PREFIX . '([^" ]+)"/i', $text, $regs, PREG_SET_ORDER)){
 		foreach($regs as $reg){
 			list($imgID, $thumbID) = explode(',', $reg[1]);
 			$thumbObj = new we_thumbnail();
 			if($thumbObj->initByImageIDAndThumbID($imgID, $thumbID)){
-				$text = str_replace('src="thumbnail:' . $reg[1] . '"', 'src="' . ($doBaseReplace ? BASE_IMG : '') . $thumbObj->getOutputPath() . '"', $text);
+				$text = str_replace('src="' . we_base_link::TYPE_THUMB_PREFIX . $reg[1] . '"', 'src="' . ($doBaseReplace ? BASE_IMG : '') . $thumbObj->getOutputPath() . '"', $text);
 			} else{
-				$text = preg_replace('|<img[^>]+src="thumbnail:' . $reg[1] . '[^>]+>|Ui', '', $text);
+				$text = preg_replace('|<img[^>]+src="' . we_base_link::TYPE_THUMB_PREFIX . $reg[1] . '[^>]+>|Ui', '', $text);
 			}
 		}
 	}
 	if(defined('OBJECT_TABLE')){
-		if(preg_match_all('/href="object:(\d+)(\??)("|[^"]+")/i', $text, $regs, PREG_SET_ORDER)){
+		if(preg_match_all('/href="' . we_base_link::TYPE_OBJ_PREFIX . '(\d+)(\??)("|[^"]+")/i', $text, $regs, PREG_SET_ORDER)){
 			foreach($regs as $reg){
 				$href = getHrefForObject($reg[1], $pid, $path, "", WYSIWYGLINKS_DIRECTORYINDEX_HIDE, WYSIWYGLINKS_OBJECTSEOURLS);
 				if(isset($GLOBALS['we_link_not_published'])){
@@ -1230,11 +1230,11 @@ function parseInternalLinks(&$text, $pid, $path = '', $doBaseReplace = true){
 				}
 				if($href){
 					$text = ($reg[2] == '?' ?
-							str_replace('href="object:' . $reg[1] . '?', 'href="' . $href . '&amp;', $text) :
-							str_replace('href="object:' . $reg[1] . $reg[2] . $reg[3], 'href="' . $href . $reg[2] . $reg[3], $text));
+							str_replace('href="' . we_base_link::TYPE_OBJ_PREFIX . $reg[1] . '?', 'href="' . $href . '&amp;', $text) :
+							str_replace('href="' . we_base_link::TYPE_OBJ_PREFIX . $reg[1] . $reg[2] . $reg[3], 'href="' . $href . $reg[2] . $reg[3], $text));
 				} else{
-					$text = preg_replace(array('|<a [^>]*href="object:' . $reg[1] . '"[^>]*>(.*)</a>|Ui',
-						'|<a [^>]*href="object:' . $reg[1] . '"[^>]*>|Ui',), array('\1'), $text);
+					$text = preg_replace(array('|<a [^>]*href="' . we_base_link::TYPE_OBJ_PREFIX . $reg[1] . '"[^>]*>(.*)</a>|Ui',
+						'|<a [^>]*href="' . we_base_link::TYPE_OBJ_PREFIX . $reg[1] . '"[^>]*>|Ui',), array('\1'), $text);
 				}
 			}
 		}

@@ -53,7 +53,7 @@ function weDoLinkCmd($args){
 top.close();
 ');
 	} else{
-		if(strpos($href, 'mailto:') === 0){
+		if(strpos($href, we_base_link::TYPE_MAIL_PREFIX) === 0){
 			$href = $args['href'] . (empty($param) ? '' : $param);
 			$tmpClass = $args['class'];
 			foreach($args as &$val){
