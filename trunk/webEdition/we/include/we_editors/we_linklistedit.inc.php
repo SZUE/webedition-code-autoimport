@@ -279,7 +279,6 @@ if(isset($_REQUEST['ok']) && isset($_REQUEST['linklist']) && $_REQUEST['ok'] && 
 		if(empty($ln)){
 			$ln = array('ctype' => we_base_link::CONTENT_TEXT, 'type' => we_base_link::TYPE_INT, 'href' => 'http://', 'text' => g_l('global', '[new_link]'));
 		}
-		t_e($ln);
 		$href = isset($ln['href']) ? $ln['href'] : '';
 		if(!empty($href) && strpos($href, we_base_link::TYPE_MAIL_PREFIX) === 0){
 			$emaillink = substr($href, strlen(we_base_link::TYPE_MAIL_PREFIX));
