@@ -67,6 +67,7 @@ class we_core_Local{
 	 * @return string
 	 */
 	public static function weLangToLocale($lang){
+		//FIXME: remove static list, use Zend instead
 		$locales = array(
 			'Deutsch' => 'de', 'English' => 'en', 'Dutch' => 'nl', 'Finnish' => 'fi', 'French' => 'fr', 'Polish' => 'pl', 'Russian' => 'ru', 'Spanish' => 'es', 'Norwegian' => 'no');
 
@@ -130,11 +131,11 @@ class we_core_Local{
 				try {
 					Zend_Session::start();
                 } catch(Zend_Session_Exception $e) {
-					t_e('Zend_Session start failed',$e);	
+					t_e('Zend_Session start failed',$e);
 				}
 				if(!isset($_SESSION)){
                 	t_e('Zend_Session start failed');
-                	
+
 				}
 			}
 

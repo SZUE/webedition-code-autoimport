@@ -28,7 +28,7 @@ function we_tag_link($attribs, $content){
 		$link = $GLOBALS['we']['ll']->getLink();
 		$linkcontent = $GLOBALS['we']['ll']->getLinkContent();
 		if($link){
-			return $GLOBALS['we']['ll']->getLinktag($link, $attribs) . ($only?'':$linkcontent.'</a>');
+			return $GLOBALS['we']['ll']->getLinktag($link, $attribs) . ($only ? '' : $linkcontent . '</a>');
 		}
 		return $linkcontent;
 	}
@@ -67,15 +67,15 @@ function we_tag_link($attribs, $content){
 				'vspace' => '',
 				'align' => '',
 				'alt' => '',
-				'ctype' => ((isset($imageid) && $imageid != 0) ? we_base_link::TYPE_INT : we_base_link::TYPE_TEXT),
+				'ctype' => ((isset($imageid) && $imageid != 0) ? we_base_link::CONTENT_INT : we_base_link::CONTENT_TEXT),
 				'img_id' => ((isset($imageid) && $imageid != 0) ? $imageid : ''),
 				'type' => (isset($id) ? we_base_link::TYPE_INT : we_base_link::TYPE_EXT),
 				'href' => (isset($id) ? '' : 'http://'),
-				'text' => ((isset($imageid) && $imageid != 0 ? '' : (isset($text) && $text != '' ? $text : g_l('global', '[new_link]'))))
+				'text' => (isset($imageid) && $imageid ? (isset($text) && $text != '' ? $text : g_l('global', '[new_link]')) : '')
 			);
 
 			// Link should only displayed if it's a preset link
-			if($id != '' || $imageid != 0 || $text != ''){
+			if(!empty($id) || $imageid != 0 || !empty($text)){
 				$_SESSION['weS']['WE_LINK'] = serialize($link);
 				$GLOBALS['we_doc']->changeLink($name);
 				$GLOBALS['we_doc']->saveInSession($_SESSION['weS']['we_data'][$GLOBALS['we_transaction']]);
@@ -90,12 +90,9 @@ function we_tag_link($attribs, $content){
 		$editbut = we_button::create_button('image:btn_edit_link', "javascript:setScrollTo(); we_cmd('edit_link', '" . $name . "')", true);
 		$delbut = we_button::create_button('image:btn_function_trash', "javascript:setScrollTo(); we_cmd('delete_link', '" . $name . "')", true);
 
-		if(!$content){
-			$content = $text;
-		}
 		return we_button::create_button_table(
 				array(
-				($startTag ? $startTag : '') . $content . ($startTag ? '</a>' : ''), $editbut, $delbut
+				($startTag ? $startTag : '') . ($content ? $content : $text) . ($startTag ? '</a>' : ''), $editbut, $delbut
 				), 5);
 	}
 	return '';

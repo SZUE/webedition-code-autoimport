@@ -32,8 +32,10 @@ class we_base_link{
 	const TYPE_MAIL = 'mail';
 	const TYPE_OBJ = 'obj';
 	const TYPE_ALL = 'all';
-	//don't know what this should be?!
-	const TYPE_TEXT='text';
+	const CONTENT_TEXT = 'text';
+	const CONTENT_INT = 'int';
+	const CONTENT_EXT = 'ext';
+
 	const TYPE_INT_PREFIX = 'document:';
 	const TYPE_MAIL_PREFIX = 'mailto:';
 	const TYPE_OBJ_PREFIX = 'object:';
