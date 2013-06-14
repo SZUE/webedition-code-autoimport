@@ -29,7 +29,7 @@ class weWorkflowFrames extends weModuleFrames{
 	function __construct(){
 		parent::__construct(WE_WORKFLOW_MODULE_DIR . "edit_workflow_frameset.php");
 		$this->module="workflow";
-		$this->View = new we_workflow_view();
+		$this->View = new weWorkflowView();
 	}
 
 	function getHTML($what = '', $mode = 0, $type = 0){
@@ -270,62 +270,18 @@ class weWorkflowFrames extends weModuleFrames{
 	}
 
 	function getHTMLLeft(){
-		we_html_tools::htmlTop();
-		print STYLESHEET;
-		?>
-		</head>
-		<frameset rows="1,*" framespacing="0" border="0" frameborder="NO">
-			<frame src="<?php print HTML_DIR ?>whiteWithTopLine.html" scrolling="no" noresize>
-			<frame src="<?php print HTML_DIR ?>white.html" name="tree" scrolling="auto" noresize>
-		</frameset>
-		<noframes>
-			<body style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px">
-			</body>
-		</noframes>
-		</html>
-		<?php
-	}
-
-	function getHTMLRight(){
-		we_html_tools::htmlTop();
-		print STYLESHEET;
-		
-		?>
-		</head>
-		<frameset cols="*" framespacing="0" border="0" frameborder="NO">
-			<frame src="<?php print WE_WORKFLOW_MODULE_DIR; ?>edit_workflow_frameset.php?pnt=editor" scrolling="no" noresize name="editor">
-		</frameset>
-		<noframes>
-			<body bgcolor="#ffffff">
-				<p></p>
-			</body>
-		</noframes>
-		</html>
-		<?php
+		return parent::getHTMLLeft(false);
 	}
 
 	function getHTMLEditor(){
-		we_html_tools::htmlTop();
-		print STYLESHEET;
-		?>
-		</head>
-		<frameset rows="40,*,40" framespacing="0" border="0" frameborder="no">
-			<frame src="<?php print WE_WORKFLOW_MODULE_DIR; ?>edit_workflow_frameset.php?pnt=edheader&home=1" name="edheader" noresize scrolling=no>
-			<frame src="<?php print WE_WORKFLOW_MODULE_DIR; ?>edit_workflow_frameset.php?pnt=edbody&home=1" name="edbody" scrolling=auto>
-			<frame src="<?php print WE_WORKFLOW_MODULE_DIR; ?>edit_workflow_frameset.php?pnt=edfooter&home=1" name="edfooter" scrolling=no>
+		$extraUrlParams = '&home=1';
 
-		</frameset>
-		<noframes>
-			<body background="<?php print IMAGE_DIR ?>backgrounds/aquaBackground.gif" style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px">
-			</body>
-		</noframes>
-		</html>
-		<?php
+		return parent::getHTMLEditor($extraUrlParams);
 	}
 
 	function getHTMLEditorHeader($mode = 0){
 		if(isset($_REQUEST["home"])){
-			return '<body bgcolor="#F0EFF0"></body></html>';
+			return $this->getHTMLDocument(we_html_element::htmlBody(array("bgcolor" => "F0EFF0"), ""));
 		}
 
 		$page = (isset($_GET["page"]) ? $_GET["page"] : 0);
@@ -338,7 +294,6 @@ class weWorkflowFrames extends weModuleFrames{
 		$we_tabs = new we_tabs();
 
 		if($mode == 0){
-
 			$we_tabs->addTab(new we_tab("#", g_l('tabs', "[module][properties]"), "TAB_NORMAL", "setTab(0);", array("id" => "tab_0")));
 			$we_tabs->addTab(new we_tab("#", g_l('tabs', "[module][overview]"), "TAB_NORMAL", "setTab(1);", array("id" => "tab_1")));
 		} else{
@@ -353,88 +308,98 @@ class weWorkflowFrames extends weModuleFrames{
 		$textPre = ($mode == 1 ? g_l('modules_workflow', '[document]') : g_l('modules_workflow', '[workflow]'));
 		$textPost = "/" . $text;
 
-		$out = we_html_tools::htmlTop() . 
-			STYLESHEET . 
-			we_html_element::jsElement('
-    function setTab(tab){
-        	switch(tab){
-			case 0:
-				top.content.resize.right.editor.edbody.we_cmd("switchPage",0);
+		$extraHead = we_html_element::jsElement('
+function setTab(tab){
+	switch(tab){
+		case 0:
+			top.content.resize.right.editor.edbody.we_cmd("switchPage",0);
 			break;
-			case 1:
-				top.content.resize.right.editor.edbody.we_cmd("switchPage",1);
+		case 1:
+			top.content.resize.right.editor.edbody.we_cmd("switchPage",1);
 			break;
-		}
 	}
+}
 
-   top.content.hloaded=1;') .
-			$tab_header . '
-   </head>
-   <body bgcolor="white" background="' . IMAGE_DIR . 'backgrounds/header_with_black_line.gif" marginwidth="0" marginheight="0" leftmargin="0" topmargin="0" onload="setFrameSize()", onresize="setFrameSize()">
-		<div id="main" >' . we_html_tools::getPixel(100, 3) . '<div style="margin:0px;padding-left:10px;" id="headrow"><nobr><b>' . oldHtmlspecialchars($textPre) . ':&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">' . oldHtmlspecialchars($textPost) . '</b></span></nobr></div>' . we_html_tools::getPixel(100, 3) .
-			$we_tabs->getHTML() .
-			'</div>' . we_html_element::jsElement('document.getElementById("tab_' . $page . '").className="tabActive";') . '
-	</body>';
+top.content.hloaded=1;
+		') . $tab_header; 
 
-
-		return $out;
+		$mainDiv = we_html_element::htmlDiv(array('id' => 'main'), 
+			we_html_tools::getPixel(100, 3) .
+			we_html_element::htmlDiv(array('style' => 'margin:0px;padding-left:10px;', 'id' => 'headrow'), 
+				we_html_element::htmlNobr(
+					we_html_element::htmlB(oldHtmlspecialchars($textPre) . ':&nbsp;') . 
+					we_html_element::htmlSpan(array('id' => 'h_path', 'class' => 'header_small'),
+						'<b id="titlePath">' . oldHtmlspecialchars($textPost) . '</b>')
+					)) .
+			we_html_tools::getPixel(100, 3) .
+			$we_tabs->getHTML()
+			);
+		
+		$body = we_html_element::htmlBody(array(
+			'bgcolor' => 'white',
+			'background' => IMAGE_DIR . 'backgrounds/header_with_black_line.gif',
+			'marginwidth' => '0',
+			'marginheight' => '0',
+			'leftmargin' => '0',
+			'topmargin' => '0',
+			'onload' => 'setFrameSize()',
+			'onresize' => 'setFrameSize()'
+			), $mainDiv . we_html_element::jsElement('document.getElementById("tab_' . $page . '").className="tabActive";')
+		);
+		
+		return $this->getHTMLDocument($body, $extraHead);
 	}
 
 	function getHTMLEditorBody(){
-		print we_html_tools::htmlTop();
-		print STYLESHEET;
+
 		return $this->View->getProperties();
 	}
 
 	function getHTMLEditorFooter($mode = 0){
 		if(isset($_REQUEST["home"])){
-			return '<body bgcolor="#EFF0EF"></body></html>';
+			return $this->getHTMLDocument(we_html_element::htmlBody(array("bgcolor" => "EFF0EF"), ""));
 		}
 
-		we_html_tools::htmlTop();
-		print STYLESHEET;
-		print we_html_element::jsElement('
-function setStatusCheck(){
-	var a=document.we_form._status_workflow;
-	var b;
-	if(top.content.resize.right.editor.edbody.loaded) b=top.content.resize.right.editor.edbody.getStatusContol();
-	else setTimeout("setStatusCheck()",100);
+		$extraHead =  we_html_element::jsElement('
+			function setStatusCheck(){
+				var a=document.we_form._status_workflow;
+				var b;
+				if(top.content.resize.right.editor.edbody.loaded) b=top.content.resize.right.editor.edbody.getStatusContol();
+				else setTimeout("setStatusCheck()",100);
 
-	if(b==1) a.checked=true;
-	else a.checked=false;
-}
-function we_save() {
-	top.content.we_cmd("save_workflow");
-}
+				if(b==1) a.checked=true;
+				else a.checked=false;
+			}
+			function we_save() {
+				top.content.we_cmd("save_workflow");
+			}
 		');
-		?>
-		</script>
-		</head>
-		<body bgcolor="white" background="<?php echo IMAGE_DIR;?>edit/editfooterback.gif" marginwidth="0" marginheight="0" leftmargin="0" topmargin="0"<?php if($mode == 0){ ?> onLoad="setStatusCheck()"<?php } ?>>
-			<form name="we_form">
-				<table border="0" cellpadding="0" cellspacing="0" width="3000">
-					<tr>
-						<td valign="top" colspan="2"><?php print we_html_tools::getPixel(1600, 10) ?></td>
-					</tr>
-				</table>
-				<table border="0" cellpadding="0" cellspacing="0" width="300">
-					<?php if($mode == 0){ ?>
-						<tr>
-							<td><?php print we_html_tools::getPixel(15, 5) ?></td>
-							<td><?php print we_button::create_button("save", "javascript:we_save();") ?></td>
-							<td class="defaultfont"><?php print $this->View->getStatusHTML(); ?></td>
-						</tr>
-					<?php } ?>
-				</table>
-			</form>
-		</body>
-		</html>
-		<?php
+
+		$table1 = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0", "width" => "300"), 1, 1);
+		$table1->setCol(0, 0, array("nowrap" => null, "valign" => "top"), we_html_tools::getPixel(1600, 10));
+
+		$table2 = new we_html_table(array('border' => '0', 'cellpadding' => '0', 'cellspacing' => '0', 'width' => '300'), 1, 3);
+		//$table2->setRow(0, array('valign' => 'middle'));
+		$table2->setCol(0, 0, array('nowrap' => null), we_html_tools::getPixel(15, 5));
+		$table2->setCol(0, 1, array('nowrap' => null), we_button::create_button('save', 'javascript:we_save()'));
+		$table2->setCol(0, 2, array('nowrap' => null, 'class' => 'defaultfont'), $this->View->getStatusHTML());
+		
+		$body = we_html_element::htmlBody(array(
+			'bgcolor' => 'white',
+			'background' => IMAGE_DIR . 'edit/editfooterback.gif',
+			'marginwidth' => '0', 'marginheight' => '0',
+			'leftmargin' => '0', 'topmargin' => '0',
+			'onload' => ($mode == 0 ? 'setStatusCheck()' : '')
+			), we_html_element::htmlForm($attribs = array(), $table1->getHtml() . $table2->getHtml())
+		);
+
+		return $this->getHTMLDocument($body, $extraHead);
+		
 	}
 
 	function getHTMLLog($docID, $type = 0){
 		$extraHead = we_html_element::jsElement('self.focus();');
-		$body = we_html_element::htmlBody(array('class' => 'weDialogBody'), we_workflow_view::getLogForDocument($docID, $type));
+		$body = we_html_element::htmlBody(array('class' => 'weDialogBody'), weWorkflowView::getLogForDocument($docID, $type));
 		
 		return $this->getHTMLDocument($body, $extraHead);
 	}

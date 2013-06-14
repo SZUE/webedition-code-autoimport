@@ -28,9 +28,9 @@ we_html_tools::htmlTop();
 print STYLESHEET;
 ?>
 </head>
-<frameset rows="180,*" framespacing="0" border="1" frameborder="0">
-	<frame src="<?php echo HTML_DIR ?>white_inc.html" name="messaging_messages_overview" scrolling="auto" style="border-bottom:1px solid black"/>
-	<frame src="<?php echo HTML_DIR ?>white_inc.html" name="messaging_msg_view"/>
+<frameset rows="160,*" framespacing="0" border="1" frameborder="1">
+	<frame src="<?php echo HTML_DIR ?>white_inc.html" name="messaging_messages_overview" scrolling="auto" noresize style="border-bottom:1px solid black"/>
+	<frame src="<?php echo HTML_DIR ?>white_inc.html" name="messaging_msg_view" scrolling="auto"/>
 </frameset>
 <body>
 </body>

@@ -25,7 +25,7 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 
-$bannerFrame = new weBannerFrames();
+$bannerFrame = new weBannerFrames(WEBEDITION_DIR . 'we/include/we_modules/banner/edit_banner_frameset.php');
 $bannerFrame->View->processVariables();
 $bannerFrame->View->processCommands();
 

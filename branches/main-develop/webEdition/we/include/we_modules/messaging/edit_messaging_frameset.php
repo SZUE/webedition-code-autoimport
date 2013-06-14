@@ -24,12 +24,14 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
-//we_html_tools::htmlTop(); 
-//print STYLESHEET;
 
 $what = (isset($_REQUEST["pnt"])) ? $_REQUEST["pnt"] : "frameset";
-$transaction = isset($we_transaction) ? $we_transaction : '';
 
-$weFrame = new weMessagingFrames(WE_MESSAGING_MODULE_DIR . 'edit_messaging_frameset_temp.php', $transaction);
-//$weFrame->View->processCommands(); //call tmp. moved to weFrame->getHTMLCmd()
+if(!isset($we_transaction)){
+	$we_transaction = 0;
+}
+$transaction = $what == 'frameset' ? $we_transaction : (isset($_REQUEST['we_transaction']) ? $_REQUEST['we_transaction'] : 'no_request');
+
+$weFrame = new weMessagingFrames(WE_MESSAGING_MODULE_DIR . 'edit_messaging_frameset.php', isset($_REQUEST["viewclass"]) ? $_REQUEST["viewclass"] : 'message', 
+		isset($_REQUEST["we_transaction"]) ? $_REQUEST["we_transaction"] : 'no_request', $we_transaction);
 $weFrame->getHTML($what);

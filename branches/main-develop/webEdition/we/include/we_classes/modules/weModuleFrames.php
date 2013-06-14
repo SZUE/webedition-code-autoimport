@@ -118,7 +118,7 @@ class weModuleFrames {
 		}
 	}
 
-	function getHTMLFrameset($extraHead = '', $iconbar = false){
+	function getHTMLFrameset($extraHead = '', $iconbar = false, $extraUrlParams = ''){
 		$extraHead = $this->getJSCmdCode() .
 			self::getJSToggleTreeCode($this->module, $this->treeDefaultWidth) .
 			we_html_element::jsScript(JS_DIR . 'we_showMessage.js') . 
@@ -128,9 +128,9 @@ class weModuleFrames {
 		$body = we_html_element::htmlBody(array('style' => 'background-color: gray; position: fixed; top: 0px; left: 0px; right: 0px; bottom: 0px; border: 0px none;', "onload" => "start();") ,
 				we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
 					, we_html_element::htmlExIFrame('header', self::getHTMLHeader(WE_INCLUDES_PATH .'java_menu/modules/module_menu_' . $this->module . '.inc.php', $this->module), 'position: absolute; top: 0px; height: 32px; left: 0px; right: 0px;') .
-					($iconbar ? we_html_element::htmlIFrame('iconbar', $this->frameset . '?pnt=iconbar', 'position: absolute; top: 32px; left: 0px; right: 0px; height: 40px; overflow: hidden;') : '') . 
-					we_html_element::htmlIFrame('resize', $this->frameset . '?pnt=resize', 'position: absolute; top:' . ($iconbar ? 72 : 32) . 'px; bottom: 1px; left: 0px; right: 0px; overflow: hidden;') . 
-					we_html_element::htmlIFrame('cmd', $this->frameset . '?pnt=cmd', 'position: absolute; bottom: 0px; height: 1px; left: 0px; right: 0px; overflow: hidden;')
+					($iconbar ? we_html_element::htmlIFrame('iconbar', $this->frameset . '?pnt=iconbar' . $extraUrlParams, 'position: absolute; top: 32px; left: 0px; right: 0px; height: 40px; overflow: hidden;') : '') . 
+					we_html_element::htmlIFrame('resize', $this->frameset . '?pnt=resize' . $extraUrlParams, 'position: absolute; top:' . ($iconbar ? 72 : 32) . 'px; bottom: 1px; left: 0px; right: 0px; overflow: hidden;') . 
+					we_html_element::htmlIFrame('cmd', $this->frameset . '?pnt=cmd' . $extraUrlParams, 'position: absolute; bottom: 0px; height: 1px; left: 0px; right: 0px; overflow: hidden;')
 				));
 
 		return $this->getHTMLDocument($body, $extraHead);
@@ -199,24 +199,24 @@ class weModuleFrames {
 		return $this->treeFooterHeight;
 	}
 
-	function getHTMLRight($extraHead = '', $editorParams = ''){
+	function getHTMLRight($extraHead = '', $extraUrlParams = ''){
 		$frameset = new we_html_frameset(array("framespacing" => "0", "border" => "0", "frameborder" => "no"));
 		$frameset->setAttributes(array("cols" => "*"));
-		$frameset->addFrame(array("src" => $this->frameset . "?pnt=editor" . (isset($_REQUEST['sid']) ? '&sid=' . $_REQUEST['sid'] : '') . $editorParams, "name" => "editor", "noresize" => null, "scrolling" => "no"));
+		$frameset->addFrame(array("src" => $this->frameset . "?pnt=editor" . (isset($_REQUEST['sid']) ? '&sid=' . $_REQUEST['sid'] : '') . $extraUrlParams, "name" => "editor", "noresize" => null, "scrolling" => "no"));
 		$noframeset = new we_baseElement("noframes");
 		$body = $frameset->getHtml() . $noframeset->getHTML();
 
-		return $this->getHTMLDocument($body);
+		return $this->getHTMLDocument($body, $extraHead);
 	}
 
-	function getHTMLEditor(){
+	function getHTMLEditor($extraUrlParams = ''){
 
 		$frameset = new we_html_frameset(array("framespacing" => "0", "border" => "0", "frameborder" => "no"));
 
 		$frameset->setAttributes(array("rows" => "40,*,40"));
-		$frameset->addFrame(array('src' => $this->frameset . (isset($_REQUEST['sid']) ? '?sid=' . $_REQUEST['sid'] : '?home=1') . '&pnt=edheader', 'name' => 'edheader', 'noresize' => null, 'scrolling' => 'no'));
-		$frameset->addFrame(array('src' => $this->frameset . (isset($_REQUEST['sid']) ? '?sid=' . $_REQUEST['sid'] : '?home=1') . '&pnt=edbody', 'name' => 'edbody', 'scrolling' => 'auto'));
-		$frameset->addFrame(array('src' => $this->frameset . (isset($_REQUEST['sid']) ? '?sid=' . $_REQUEST['sid'] : '?home=1') . '&pnt=edfooter', 'name' => 'edfooter', 'scrolling' => 'no'));
+		$frameset->addFrame(array('src' => $this->frameset . (isset($_REQUEST['sid']) ? '?sid=' . $_REQUEST['sid'] : '?home=1') . '&pnt=edheader' . $extraUrlParams, 'name' => 'edheader', 'noresize' => null, 'scrolling' => 'no'));
+		$frameset->addFrame(array('src' => $this->frameset . (isset($_REQUEST['sid']) ? '?sid=' . $_REQUEST['sid'] : '?home=1') . '&pnt=edbody' . $extraUrlParams, 'name' => 'edbody', 'scrolling' => 'auto'));
+		$frameset->addFrame(array('src' => $this->frameset . (isset($_REQUEST['sid']) ? '?sid=' . $_REQUEST['sid'] : '?home=1') . '&pnt=edfooter' . $extraUrlParams, 'name' => 'edfooter', 'scrolling' => 'no'));
 
 		// set and return html code
 		$body = $frameset->getHtml();
@@ -232,13 +232,14 @@ class weModuleFrames {
 		return $this->View->getProperties();
 	}
 
-	function getHTMLEditorFooter($btn_cmd){
+	function getHTMLEditorFooter($btn_cmd, $extraHead = ''){
 		if(isset($_REQUEST['home'])){
 			return $this->getHTMLDocument(we_html_element::htmlBody(array("bgcolor" => "EFf0EF"), ""));
 		}
 		
-		$extraHead = we_html_element::jsElement(
-			'function we_save() {
+		$extraHead .= we_html_element::jsElement('
+
+			function we_save() {
 				top.content.we_cmd("' . $btn_cmd . '");
 			}'
 		);
