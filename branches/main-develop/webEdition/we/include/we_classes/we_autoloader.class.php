@@ -411,6 +411,7 @@ abstract class we_autoloader{
 			'weNavigation' => 'navigation/class/weNavigation.class.php',
 			'weNavigationCache' => 'navigation/class/weNavigationCache.class.php',
 			'weNavigationFrames' => 'navigation/class/weNavigationFrames.class.php',
+			'weToolFramesInterim' => 'navigation/class/weToolFrames_interim.class.php',//TODO: delete when navigation is module!
 			'weNavigationItem' => 'navigation/class/weNavigationItem.class.php',
 			'weNavigationItems' => 'navigation/class/weNavigationItems.class.php',
 			'weNavigationRule' => 'navigation/class/weNavigationRule.class.php',

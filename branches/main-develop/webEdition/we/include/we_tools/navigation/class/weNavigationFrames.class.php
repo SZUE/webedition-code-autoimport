@@ -22,7 +22,8 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weNavigationFrames extends weToolFrames{
+class weNavigationFrames extends weToolFrames {
+//class weNavigationFrames extends weToolFramesInterim {
 
 	function __construct(){
 		$this->toolName = 'navigation';
