@@ -206,8 +206,9 @@ class we_workflow_utility{
 	  defined documnet, otherwise false
 	 */
 	function canUserEditDoc($docID, $table, $userID){
-		if($_SESSION["perms"]["ADMINISTRATOR"])
+		if(we_hasPerm("ADMINISTRATOR")){
 			return true;
+		}
 		$doc = self::getWorkflowDocument($docID, $table);
 		if(isset($doc->ID)){
 			$i = $doc->findLastActiveStep();

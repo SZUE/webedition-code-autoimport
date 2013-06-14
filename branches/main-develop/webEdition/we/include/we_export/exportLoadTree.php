@@ -63,7 +63,7 @@ if($ws = get_ws($table)){
 			$path = dirname($path);
 		}
 	}
-} else if(defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE && (!$_SESSION["perms"]["ADMINISTRATOR"])){
+} else if(defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE && (!we_hasPerm("ADMINISTRATOR"))){
 	$ac = getAllowedClasses($DB_WE);
 	foreach($ac as $cid){
 		$path = id_to_path($cid, OBJECT_TABLE);

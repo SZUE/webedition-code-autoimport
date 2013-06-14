@@ -24,7 +24,7 @@
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
-if($_SESSION["perms"]["ADMINISTRATOR"]){
+if(we_hasPerm("ADMINISTRATOR")){
 	$GLOBALS['DB_WE']->query("UPDATE " . NAVIGATION_TABLE . " SET  LimitAccess=0, ApplyFilter=0");
 
 	print we_html_element::jsElement(

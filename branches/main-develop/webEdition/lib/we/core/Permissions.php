@@ -36,14 +36,7 @@ class we_core_Permissions{
 	 * @return boolean
 	 */
 	static function hasPerm($perm){
-		$perm = strtoupper($perm);
-		if(isset($_SESSION["perms"]["ADMINISTRATOR"]) && $_SESSION["perms"]["ADMINISTRATOR"]){
-			return true;
-		}
-		//we_util_Log::errorlog($perm);
-		//we_util_Log::errorlog($_SESSION["perms"][$perm]);
-		//we_util_Log::errorlog($_SESSION["perms"]);
-		return ((isset($_SESSION["perms"][$perm]) && $_SESSION["perms"][$perm]) || (!isset($_SESSION["perms"][$perm])));
+		return we_hasPerm(strtoupper($perm));
 	}
 
 	/**

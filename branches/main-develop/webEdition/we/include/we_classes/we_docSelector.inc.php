@@ -61,13 +61,13 @@ class we_docSelector extends we_dirSelector{
 		}
 
 		// deal with workspaces
-		if($_SESSION["perms"]["ADMINISTRATOR"]){
+		if(we_hasPerm("ADMINISTRATOR")){
 			$wsQuery = '';
 		} else{
 			$wsQuery = '';
 			if(get_ws($this->table)){
 				$wsQuery = getWsQueryForSelector($this->table);
-			} else if(defined("OBJECT_FILES_TABLE") && $this->table == OBJECT_FILES_TABLE && (!$_SESSION["perms"]["ADMINISTRATOR"])){
+			} else if(defined("OBJECT_FILES_TABLE") && $this->table == OBJECT_FILES_TABLE && (!we_hasPerm("ADMINISTRATOR"))){
 				$ac = getAllowedClasses($this->db);
 				foreach($ac as $cid){
 					$path = id_to_path($cid, OBJECT_TABLE);
@@ -407,7 +407,7 @@ function enableNewFileBut() {
 	}
 
 	function _userCanMakeNewFile(){
-		if($_SESSION["perms"]["ADMINISTRATOR"]){
+		if(we_hasPerm("ADMINISTRATOR")){
 			return true;
 		}
 		if(!$this->userCanSeeDir()){

@@ -53,7 +53,7 @@ foreach($tbls as $table){
 	$myWfDocsCSV = "";
 	if(defined("WORKFLOW_TABLE")){
 		$myWfDocsArray = we_workflow_utility::getWorkflowDocsForUser(
-				$_SESSION["user"]["ID"], $table, $_SESSION["perms"]["ADMINISTRATOR"], $_SESSION["perms"]["PUBLISH"], ($table == $_objectFilesTable) ? "" : get_ws($table));
+				$_SESSION["user"]["ID"], $table, we_hasPerm("ADMINISTRATOR"), we_hasPerm("PUBLISH"), ($table == $_objectFilesTable) ? "" : get_ws($table));
 		$myWfDocsCSV = makeCSVFromArray($myWfDocsArray);
 		$wfDocsArray = we_workflow_utility::getAllWorkflowDocs($table);
 		$wfDocsCSV = makeCSVFromArray($wfDocsArray);

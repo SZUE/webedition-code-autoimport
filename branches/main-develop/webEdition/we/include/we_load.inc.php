@@ -169,7 +169,7 @@ if(isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] == "closeFolder"){
 				$path = dirname($path);
 			}
 		}
-	} elseif(defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE && (!$_SESSION["perms"]["ADMINISTRATOR"])){
+	} elseif(defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE && (!we_hasPerm("ADMINISTRATOR"))){
 		$ac = getAllowedClasses($DB_WE);
 		foreach($ac as $cid){
 			$path = id_to_path($cid, OBJECT_TABLE);

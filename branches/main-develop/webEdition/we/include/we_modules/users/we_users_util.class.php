@@ -57,7 +57,7 @@ class we_users_util{
 	}
 
 	static function isUserInUsers($uid, $users){ // $users can be a csv string or an array
-		if($_SESSION["perms"]["ADMINISTRATOR"])
+		if(we_hasPerm("ADMINISTRATOR"))
 			return true;
 		if(!is_array($users)){
 			$users = makeArrayFromCSV($users);

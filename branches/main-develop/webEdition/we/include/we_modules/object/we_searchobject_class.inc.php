@@ -124,23 +124,16 @@ class objectsearch extends we_search{
 			$out = '<table border="0" cellpadding="0" cellspacing="0">';
 			for($i = 0; $i < count($exws); $i++){
 				if($exws[$i] != ""){
-					if($_SESSION["perms"]["ADMINISTRATOR"]){
-						$foo = true;
-					} else{
-						$foo = in_workspace($exws[$i], $userWSArray);
-					}
-					if($foo){
-						$checkbox = '<a href="javascript:we_cmd(\'toggleExtraWorkspace\',\'' . $GLOBALS["we_transaction"] . '\',\'' . $this->db->f("ID") . '\',\'' . $exws[$i] . '\',\'' . $id . '\')"><img name="check_' . $id . '_' . $this->db->f("ID") . '" src="' . TREE_IMAGE_DIR . 'check' . (strstr($this->db->f("OF_ExtraWorkspacesSelected"), "," . $exws[$i] . ",") ? "1" : "0") . '.gif" width="16" height="18" border="0" /></a>';
-					} else{
-						$checkbox = '<img name="check_' . $id . '_' . $this->db->f("ID") . '" src="' . TREE_IMAGE_DIR . 'check' . (strstr($this->db->f("OF_ExtraWorkspacesSelected"), "," . $exws[$i] . ",") ? "1" : "0") . '_disabled.gif" width="16" height="18" border="0" />';
-					}
+					$foo = (we_hasPerm("ADMINISTRATOR") ? true : in_workspace($exws[$i], $userWSArray));
+
+					$checkbox = ($foo ?
+							'<a href="javascript:we_cmd(\'toggleExtraWorkspace\',\'' . $GLOBALS["we_transaction"] . '\',\'' . $this->db->f("ID") . '\',\'' . $exws[$i] . '\',\'' . $id . '\')"><img name="check_' . $id . '_' . $this->db->f("ID") . '" src="' . TREE_IMAGE_DIR . 'check' . (strstr($this->db->f("OF_ExtraWorkspacesSelected"), "," . $exws[$i] . ",") ? "1" : "0") . '.gif" width="16" height="18" border="0" /></a>' :
+							'<img name="check_' . $id . '_' . $this->db->f("ID") . '" src="' . TREE_IMAGE_DIR . 'check' . (strstr($this->db->f("OF_ExtraWorkspacesSelected"), "," . $exws[$i] . ",") ? "1" : "0") . '_disabled.gif" width="16" height="18" border="0" />');
 					$p = id_to_path($exws[$i]);
 					$out .= '
 						<tr>
-							<td>
-								' . $checkbox . '</td>
-							<td>
-								' . we_html_tools::getPixel(5, 2) . '</td>
+							<td>' . $checkbox . '</td>
+							<td>' . we_html_tools::getPixel(5, 2) . '</td>
 							<td class="middlefont">
 								&nbsp;<a href="javascript:setWs(\'' . $p . '\',\'' . $exws[$i] . '\')" style="text-decoration:none" class="middlefont" title="' . $p . '">' . shortenPath($p, $we_extraWsLength) . '</a><td>
 						</tr>';

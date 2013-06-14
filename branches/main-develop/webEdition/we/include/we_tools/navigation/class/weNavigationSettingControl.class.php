@@ -25,7 +25,7 @@
 class weNavigationSettingControl{
 
 	function saveSettings($default = false){
-		if($_SESSION["perms"]["ADMINISTRATOR"]){
+		if(we_hasPerm("ADMINISTRATOR")){
 			if($default){
 				$CacheLifeTime = '';
 				$Add = 'true';

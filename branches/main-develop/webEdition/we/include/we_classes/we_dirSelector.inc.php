@@ -320,7 +320,7 @@ function enableNewFolderBut(){
 	}
 
 	function userCanSeeDir($showAll = false){
-		if($_SESSION["perms"]["ADMINISTRATOR"])
+		if(we_hasPerm('ADMINISTRATOR'))
 			return true;
 		if(!$showAll){
 			if(!in_workspace(intval($this->dir), get_ws($this->table), $this->table, $this->db)){
@@ -331,7 +331,7 @@ function enableNewFolderBut(){
 	}
 
 	function userCanRenameFolder(){
-		if($_SESSION["perms"]["ADMINISTRATOR"]){
+		if(we_hasPerm('ADMINISTRATOR')){
 			return true;
 		}
 		if(!$this->userHasRenameFolderPerms()){
@@ -344,11 +344,10 @@ function enableNewFolderBut(){
 		if(defined("OBJECT_FILES_TABLE") && ($this->table == OBJECT_FILES_TABLE) && (!$this->dir)){
 			return false;
 		}
-		if($_SESSION["perms"]["ADMINISTRATOR"])
+		if(we_hasPerm('ADMINISTRATOR')){
 			return true;
-		if(!$this->userCanSeeDir())
-			return false;
-		if(!$this->userHasFolderPerms()){
+		}
+		if(!$this->userCanSeeDir() || !$this->userHasFolderPerms()){
 			return false;
 		}
 		return true;

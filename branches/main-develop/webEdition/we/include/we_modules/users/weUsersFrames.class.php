@@ -53,7 +53,7 @@ class weUsersFrames extends weModuleFrames {
 		return $this->View->getJSTop_tmp();
 		//. we_html_element::jsElement($this->Tree->getJSMakeNewEntry());
 	}
-	
+
 	function getJSTreeCode(){ //TODO: move to new class weUsersTree
 		$jsCode = '
 var menuDaten = new container();
@@ -311,8 +311,8 @@ function urlEntry(icon,name,vorfahr,text,contentType,table,published,denied) {
 		';
 
 		$entries = array();
-		if($_SESSION["perms"]["NEW_USER"] || $_SESSION["perms"]["NEW_GROUP"] || $_SESSION["perms"]["SAVE_USER"] || $_SESSION["perms"]["SAVE_GROUP"] || $_SESSION["perms"]["DELETE_USER"] || $_SESSION["perms"]["DELETE_GROUP"] || $_SESSION["perms"]["ADMINISTRATOR"]){
-			if($_SESSION["perms"]["ADMINISTRATOR"]){
+		if(we_hasPerm("NEW_USER") || we_hasPerm("NEW_GROUP") || we_hasPerm("SAVE_USER") || we_hasPerm("SAVE_GROUP") || we_hasPerm("DELETE_USER") || we_hasPerm("DELETE_GROUP")){
+			if(we_hasPerm("ADMINISTRATOR")){
 				$parent_path = '/';
 				$startloc = 0;
 			} else{
@@ -352,7 +352,7 @@ function urlEntry(icon,name,vorfahr,text,contentType,table,published,denied) {
 	}
 
 	function getHTMLFrameset(){//TODO: use parent as soon as userTree.class exists
-		$extraHead = $this->getJSCmdCode() . 
+		$extraHead = $this->getJSCmdCode() .
 			$this->getJSTreeCode();
 
 		$body = we_html_element::htmlBody(array('style' => 'background-color:grey;margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;', "onload" => "start();")
@@ -394,7 +394,7 @@ function urlEntry(icon,name,vorfahr,text,contentType,table,published,denied) {
 
 	/* use parent
 	function getHTMLLeft(){}
-	 * 
+	 *
 	 */
 
 	function getHTMLSearch(){
@@ -552,7 +552,7 @@ function urlEntry(icon,name,vorfahr,text,contentType,table,published,denied) {
 			$user_object = new we_user();
 			$user_object->setState($_SESSION["user_session_data"]);
 		}
-		
+
 		return parent::getHTMLEditorFooter('save_user');
 	}
 
