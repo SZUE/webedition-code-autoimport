@@ -57,8 +57,8 @@ function we_isVarSet($name, $orig, $type, $docAttr, $property = false, $formname
 				if($property){
 					return isset($doc->$name) || isset($doc->orig);
 				} else{
-					if($type == 'href' && isset($doc->elements[$name . '_we_jkhdsf_int']) && $doc->elements[$name . '_we_jkhdsf_int']['dat']){
-						return isset($doc->elements[$name . '_we_jkhdsf_intPath']['dat']);
+					if($type == 'href' && isset($doc->elements[$name . we_base_link::MAGIC_INT_LINK]) && $doc->elements[$name . we_base_link::MAGIC_INT_LINK]['dat']){
+						return isset($doc->elements[$name . we_base_link::MAGIC_INT_LINK_PATH]['dat']);
 					}
 					if(isset($doc->elements[$name])){
 						$fieldType = isset($doc->elements[$name]['type']) ? $doc->elements[$name]['type'] : '';

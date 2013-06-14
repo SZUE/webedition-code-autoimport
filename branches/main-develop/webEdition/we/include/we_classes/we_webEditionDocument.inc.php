@@ -640,12 +640,12 @@ class we_webEditionDocument extends we_textContentDocument{
 				$value = $this->getElement($name);
 				if(preg_match_all('|src="/[^">]+\\?id=(\\d+)"|i', $value, $regs, PREG_SET_ORDER)){
 					foreach($regs as $reg){
-						$value = str_replace($reg[0], 'src="document:' . $reg[1] . '"', $value);
+						$value = str_replace($reg[0], 'src="'.we_base_link::TYPE_INT_PREFIX . $reg[1] . '"', $value);
 					}
 				}
 				if(preg_match_all('|src="/[^">]+\\?thumb=(\\d+,\\d+)"|i', $value, $regs, PREG_SET_ORDER)){
 					foreach($regs as $reg){
-						$value = str_replace($reg[0], 'src="thumbnail:' . $reg[1] . '"', $value);
+						$value = str_replace($reg[0], 'src="'.we_base_link::TYPE_THUMB_PREFIX . $reg[1] . '"', $value);
 					}
 				}
 

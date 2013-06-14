@@ -1150,11 +1150,11 @@ class we_document extends we_root{
 	function getHref($attribs, $db = '', $fn = 'this'){
 		$db = $db ? $db : new_DB_WE();
 		$n = $attribs['name'];
-		$nint = $n . '_we_jkhdsf_int';
+		$nint = $n . we_base_link::MAGIC_INT_LINK;
 		$int = $this->getValFromSrc($fn, $nint);
 		$int = ($int == '') ? 0 : $int;
 		if($int){
-			$intID = $this->getValFromSrc($fn, $n . '_we_jkhdsf_intID');
+			$intID = $this->getValFromSrc($fn, $n . we_base_link::MAGIC_INT_LINK_ID);
 			return f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($intID), 'Path', $db);
 		} else{
 			return $this->getValFromSrc($fn, $n);
@@ -1175,8 +1175,8 @@ class we_document extends we_root{
 		$db = ($db ? $db : new DB_WE());
 
 		// Bug Fix 8170&& 8166
-		if(isset($link['href']) && strlen($link['href']) >= 7 && substr($link['href'], 0, 7) == 'mailto:'){
-			$link['type'] = 'mail';
+		if(isset($link['href']) && strpos($link['href'], we_base_link::TYPE_MAIL_PREFIX) === 0){
+			$link['type'] = we_base_link::TYPE_MAIL;
 
 			//added for #7269
 			if(isset($link['subject']) && $link['subject'] != ''){
@@ -1193,7 +1193,7 @@ class we_document extends we_root{
 			return '';
 		}
 		switch($link['type']){
-			case 'int':
+			case we_base_link::TYPE_INT:
 				$id = $link['id'];
 				if($id == ''){
 					return '';
@@ -1212,7 +1212,7 @@ class we_document extends we_root{
 				$GLOBALS['we_link_not_published'] = 1;
 				return '';
 
-			case 'obj':
+			case we_base_link::TYPE_OBJ:
 				return getHrefForObject($link['obj_id'], $parentID, $path, $db, $hidedirindex, $objectseourls);
 			default:
 
@@ -1224,7 +1224,6 @@ class we_document extends we_root{
 	}
 
 	function getLinkContent($link, $parentID = 0, $path = '', $db = '', $img = '', $xml = '', $_useName = '', $oldHtmlspecialchars = false, $hidedirindex = false, $objectseourls = false){
-
 		$l_href = self::getLinkHref($link, $parentID, $path, $db, $hidedirindex, $objectseourls);
 
 		if(isset($GLOBALS['we_link_not_published']) && $GLOBALS['we_link_not_published']){
@@ -1232,49 +1231,49 @@ class we_document extends we_root{
 			return '';
 		}
 
-		if(isset($link['ctype']) && $link['ctype'] == 'int'){
-			$img = $img ? $img : new we_imageDocument();
-			$img->initByID($link['img_id']);
+		switch(isset($link['ctype']) ? $link['ctype'] : ''){
+			case we_base_link::CONTENT_INT:
+				$img = ($img ? $img : new we_imageDocument());
+				$img->initByID($link['img_id']);
 
-			$img_attribs = array('width' => $link['width'], 'height' => $link['height'], 'border' => $link['border'], 'hspace' => $link['hspace'], 'vspace' => $link['vspace'], 'align' => $link['align'], 'alt' => $link['alt'], 'title' => (isset($link['img_title']) ? $link['img_title'] : ''));
+				$img_attribs = array('width' => $link['width'], 'height' => $link['height'], 'border' => $link['border'], 'hspace' => $link['hspace'], 'vspace' => $link['vspace'], 'align' => $link['align'], 'alt' => $link['alt'], 'title' => (isset($link['img_title']) ? $link['img_title'] : ''));
 
-			if($_useName){ //	rollover with links ...
-				$img_attribs['name'] = $_useName;
-				$img->elements['name']['dat'] = $_useName;
-			}
-
-			if($xml){
-				$img_attribs['xml'] = 'true';
-			}
-
-			$img->initByAttribs($img_attribs);
-
-			return $img->getHtml(false, false);
-		} else if(isset($link['ctype']) && $link['ctype'] == 'ext'){
-
-			//  set default atts
-			$img_attribs = array('src' => $link['img_src'],
-				'alt' => '',
-				'xml' => $xml
-			);
-			if(isset($link['img_title'])){
-				$img_attribs['title'] = $link['img_title'];
-			}
-			//  deal with all remaining attribs
-			$img_attList = array('width', 'height', 'border', 'hspace', 'vspace', 'align', 'alt', 'name');
-			foreach($img_attList AS $k){
-				if(isset($link[$k]) && $link[$k] != ''){
-					$img_attribs[$k] = $link[$k];
+				if($_useName){ //	rollover with links ...
+					$img_attribs['name'] = $_useName;
+					$img->elements['name']['dat'] = $_useName;
 				}
-			}
-			return getHtmlTag('img', $img_attribs);
-		} else if(isset($link['ctype']) && $link['ctype'] == 'text'){
-			// Workarround => We have to find another solution
-			if($xml){
-				return oldHtmlspecialchars(html_entity_decode($link['text']));
-			} else{
-				return $oldHtmlspecialchars ? oldHtmlspecialchars($link['text']) : $link['text'];
-			}
+
+				if($xml){
+					$img_attribs['xml'] = 'true';
+				}
+
+				$img->initByAttribs($img_attribs);
+
+				return $img->getHtml(false, false);
+			case we_base_link::CONTENT_EXT:
+				//  set default atts
+				$img_attribs = array('src' => $link['img_src'],
+					'alt' => '',
+					'xml' => $xml
+				);
+				if(isset($link['img_title'])){
+					$img_attribs['title'] = $link['img_title'];
+				}
+				//  deal with all remaining attribs
+				$img_attList = array('width', 'height', 'border', 'hspace', 'vspace', 'align', 'alt', 'name');
+				foreach($img_attList AS $k){
+					if(isset($link[$k]) && $link[$k] != ''){
+						$img_attribs[$k] = $link[$k];
+					}
+				}
+				return getHtmlTag('img', $img_attribs);
+			case we_base_link::CONTENT_TEXT:
+				// Workarround => We have to find another solution
+				if($xml){
+					return oldHtmlspecialchars(html_entity_decode($link['text']));
+				} else{
+					return $oldHtmlspecialchars ? oldHtmlspecialchars($link['text']) : $link['text'];
+				}
 		}
 	}
 
@@ -1309,7 +1308,7 @@ class we_document extends we_root{
 			$rollOverScript = '';
 			$rollOverAttribsArr = array();
 
-			if($link['ctype'] == 'int'){
+			if($link['ctype'] == we_base_link::TYPE_INT){
 				//	set name of image dynamically
 				if($_useName){ //	we must set the name of the image -> rollover
 					$img->setElement('name', $_useName, 'dat');

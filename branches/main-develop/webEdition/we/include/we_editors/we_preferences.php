@@ -2593,7 +2593,8 @@ function formmailBlockOnOff() {
 			$_error_mail_specify_table->setCol(0, 0, null, we_html_tools::getPixel(25, 1));
 			$_error_mail_specify_table->setCol(0, 1, array('class' => 'defaultfont'), g_l('prefs', '[error_mail_address]') . ':');
 			$_error_mail_specify_table->setCol(0, 2, null, we_html_tools::getPixel(6, 1));
-			$_error_mail_specify_table->setCol(0, 3, array('align' => 'left'), we_html_tools::htmlTextInput('newconf[WE_ERROR_MAIL_ADDRESS]', 6, (get_value('WE_ERROR_MAIL_ADDRESS')), 100, '', 'text', 195));
+
+			$_error_mail_specify_table->setCol(0, 3, array('align' => 'left'), we_html_tools::htmlTextInput('newconf[WE_ERROR_MAIL_ADDRESS]', 6, (get_value('WE_ERROR_MAIL')?get_value('WE_ERROR_MAIL_ADDRESS'):''), 100, 'placeholder="mail@example"', 'email', 195));
 
 			$_error_display_table->setCol(6, 0, null, we_html_tools::getPixel(1, 10));
 			$_error_display_table->setCol(7, 0, null, $_error_mail_specify_table->getHtml());

@@ -41,7 +41,7 @@ function we_tag_description($attribs, $content){
 
 		$attribs["name"] = "description";
 		$descr = $htmlspecialchars ? oldHtmlspecialchars(strip_tags($descr)) : strip_tags($descr);
-		$attribs["content"] = $max?cutText($descr,$max):$descr;
+		$attribs["content"] = $max?cutText($descr,$max,true):$descr;
 		return getHtmlTag("meta", $attribs) . "\n";
 	}
 }

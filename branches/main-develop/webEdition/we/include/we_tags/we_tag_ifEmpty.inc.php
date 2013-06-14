@@ -48,9 +48,9 @@ function we_isNotEmpty($attribs){
 				}
 				return $hreftmp ? true : false;
 			}
-			$int = intval($doc->getElement($match . '_we_jkhdsf_int'));
+			$int = intval($doc->getElement($match . we_base_link::MAGIC_INT_LINK));
 			if($int){ // for type = href int
-				$intID = $doc->getElement($match . '_we_jkhdsf_intID');
+				$intID = $doc->getElement($match . we_base_link::MAGIC_INT_LINK_ID);
 				return (bool) ($intID > 0) && strlen(id_to_path(array($intID)));
 			} else{
 				$hreftmp = $doc->getElement($match);

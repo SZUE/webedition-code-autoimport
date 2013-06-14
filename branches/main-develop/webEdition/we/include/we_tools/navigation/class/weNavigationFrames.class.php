@@ -1494,6 +1494,7 @@ function ' . $prefix . 'setLinkSelection(value){
 	}
 
 	function getLangField($name, $value, $title, $width){
+	//FIXME: these values should be obtained from global settings
 		$input = we_html_tools::htmlTextInput("Attributes[$name]", 15, $value, "", 'onchange=' . $this->topFrame . '.mark(); ', "text", $width - 100);
 		$select = '
 <select style="width:100px;" class="weSelect" name="' . $name . '_select" size="1" onchange="' . $this->topFrame . '.mark(); this.form.elements[\'Attributes[' . $name . ']\'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;">
@@ -1511,7 +1512,8 @@ function ' . $prefix . 'setLinkSelection(value){
 	}
 
 	function getRevRelSelect($type, $value, $title){
-		$input = we_html_tools::htmlTextInput("Attributes[$type]", 15, $value, "", 'onchange=' . $this->topFrame . '.mark(); ', "text", $this->_width_size - 100);
+		$input = we_html_tools::htmlTextInput(
+				"Attributes[$type]", 15, $value, '', 'onchange=' . $this->topFrame . '.mark(); ', 'text', $this->_width_size - 100);
 		$select = '<select name="' . $type . '_sel" class="weSelect" size="1" style="width:100px;" onchange="' . $this->topFrame . '.mark(); this.form.elements[\'Attributes[' . $type . ']\'].value=this.options[this.selectedIndex].text;this.selectedIndex=0;">
 	<option></option>
 	<option>contents</option>

@@ -83,13 +83,13 @@ class we_linklist{
 	function getLink(){
 		//$id = $this->getID($nr);
 		switch($this->getType()){
-			case 'int':
+			case we_base_link::TYPE_INT:
 				return $this->getUrl();
-			case 'ext':
+			case we_base_link::TYPE_EXT:
 				return $this->getHref();
-			case 'mail':
+			case we_base_link::TYPE_MAIL:
 				return $this->getHref();
-			case 'obj':
+			case we_base_link::TYPE_OBJ:
 				$link = getHrefForObject(
 					$this->getObjID(), $GLOBALS["WE_MAIN_DOC"]->ParentID, $GLOBALS["WE_MAIN_DOC"]->Path, $this->db, $this->hidedirindex, $this->objectseourls);
 				if(isset($GLOBALS["we_link_not_published"])){
@@ -668,7 +668,7 @@ class we_linklist{
 			'href' => 'http://',
 			'text' => g_l('global', '[new_link]'),
 			'target' => '',
-			'type' => 'ext',
+			'type' => we_base_link::TYPE_EXT,
 			'ctype' => 'text',
 			'nr' => $this->getMaxListNr() + 1,
 		);
@@ -676,11 +676,11 @@ class we_linklist{
 
 	function getLinkContent(){
 		switch($this->getCType()){
-			case 'int':
+			case we_base_link::CONTENT_INT:
 				return $this->makeImgTag();
-			case 'ext':
+			case we_base_link::CONTENT_EXT:
 				return $this->makeImgTagFromSrc($this->getImageSrc(), $this->getImageAttribs());
-			case 'text':
+			case we_base_link::CONTENT_TEXT:
 				return $this->getText();
 			default:
 				return '';

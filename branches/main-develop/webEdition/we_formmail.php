@@ -280,9 +280,7 @@ foreach($output as $n => $v){
 		$foo = replace_bad_str((get_magic_quotes_gpc() == 1) ? stripslashes($v) : $v);
 		$n = replace_bad_str($n);
 		$we_txt .= "$n: $foo\n" . ($foo ? '' : "\n");
-		$we_html .= ($n == 'email' ?
-				'<tr><td align="right"><b>' . $n . ':</b></td><td><a href="mailto:' . $foo . '">' . $foo . '</a></td></tr>' :
-				'<tr><td align="right"><b>' . $n . ':</b></td><td>' . $foo . '</td></tr>');
+		$we_html .= '<tr><td align="right"><b>' . $n . ':</b></td><td>' . ($n == 'email' ? '<a href="mailto:' . $foo . '">' . $foo . '</a>' : $foo) . '</td></tr>';
 	}
 }
 
@@ -315,7 +313,9 @@ $email = (isset($_REQUEST['email']) && $_REQUEST['email']) ?
 		$_REQUEST['from'] :
 		WE_DEFAULT_EMAIL);
 
-$subject = strip_tags((isset($_REQUEST['subject']) && $_REQUEST['subject']) ? $_REQUEST['subject'] : WE_DEFAULT_SUBJECT);
+$subject = strip_tags((isset($_REQUEST['subject']) && $_REQUEST['subject']) ?
+		$_REQUEST['subject'] :
+		WE_DEFAULT_SUBJECT);
 $charset = (isset($_REQUEST['charset']) && $_REQUEST['charset']) ? str_replace(array("\n", "\r"), '', $_REQUEST['charset']) : $GLOBALS['WE_BACKENDCHARSET'];
 $recipient = (isset($_REQUEST['recipient']) && $_REQUEST['recipient']) ? $_REQUEST['recipient'] : '';
 $from = (isset($_REQUEST['from']) && $_REQUEST['from']) ? $_REQUEST['from'] : WE_DEFAULT_EMAIL;

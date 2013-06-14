@@ -200,7 +200,7 @@ class we_wysiwyg{
 				</style>
 				'
 					.
-					we_html_element::jsScript(WEBEDITION_DIR . 'editors/content/tinymce/jscripts/tiny_mce/tiny_mce.js') . 
+					we_html_element::jsScript(WEBEDITION_DIR . 'editors/content/tinymce/jscripts/tiny_mce/tiny_mce.js') .
 					we_html_element::jsElement('
 function tinyMCECallRegisterDialog(win,action){
 	if(typeof(top.isRegisterDialogHere) != "undefined"){
@@ -1260,18 +1260,18 @@ function tinyMCECallRegisterDialog(win,action){
 		$rows = $this->getToolbarRows();
 		$editValue = $this->value;
 		$regs = array();
-		if(preg_match_all('/src="document:(\\d+)/i', $editValue, $regs, PREG_SET_ORDER)){
+		if(preg_match_all('/src="'.we_base_link::TYPE_INT_PREFIX.'(\\d+)/i', $editValue, $regs, PREG_SET_ORDER)){
 			foreach($regs as $reg){
 				$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($reg[1]), 'Path', $GLOBALS['DB_WE']);
-				$editValue = str_ireplace('src="document:' . $reg[1], 'src="' . $path . "?id=" . $reg[1], $editValue);
+				$editValue = str_ireplace('src="'.we_base_link::TYPE_INT_PREFIX . $reg[1], 'src="' . $path . "?id=" . $reg[1], $editValue);
 			}
 		}
-		if(preg_match_all('/src="thumbnail:([^" ]+)/i', $editValue, $regs, PREG_SET_ORDER)){
+		if(preg_match_all('/src="'.we_base_link::TYPE_THUMB_PREFIX.'([^" ]+)/i', $editValue, $regs, PREG_SET_ORDER)){
 			foreach($regs as $reg){
 				list($imgID, $thumbID) = explode(',', $reg[1]);
 				$thumbObj = new we_thumbnail();
 				$thumbObj->initByImageIDAndThumbID($imgID, $thumbID);
-				$editValue = str_ireplace('src="thumbnail:' . $reg[1], 'src="' . $thumbObj->getOutputPath() . "?thumb=" . $reg[1], $editValue);
+				$editValue = str_ireplace('src="'.we_base_link::TYPE_THUMB_PREFIX . $reg[1], 'src="' . $thumbObj->getOutputPath() . "?thumb=" . $reg[1], $editValue);
 				unset($thumbObj);
 			}
 		}
@@ -1308,9 +1308,9 @@ function tinyMCECallRegisterDialog(win,action){
 
 				$this->tinyPlugins = implode(',',array_unique($this->tinyPlugins));
 				$this->wePlugins = implode(',',array_intersect($this->wePlugins, $allCommands));
-				$plugins = ($this->createContextmenu ? 'wecontextmenu,' : '') . 
-					($this->tinyPlugins ? $this->tinyPlugins . ',' : '') . 
-					($this->wePlugins ? $this->wePlugins . ',' : '') . 
+				$plugins = ($this->createContextmenu ? 'wecontextmenu,' : '') .
+					($this->tinyPlugins ? $this->tinyPlugins . ',' : '') .
+					($this->wePlugins ? $this->wePlugins . ',' : '') .
 					'weutil,autolink';
 				//very fast fix for textarea-height. TODO, when wysiwyg is thrown out: use or rewrite existing methods like getToolbarWithAndHeight()
 				$toolBarHeight = $k * 24 - 10;
@@ -1406,7 +1406,7 @@ function tinyMCECallRegisterDialog(win,action){
 						//onchange_callback : "tinyMCEchanged",
 
 						plugins : "' . $plugins . '",
-						we_restrict_contextmenu: ' . $this->getContextmenuCommands() . ', 
+						we_restrict_contextmenu: ' . $this->getContextmenuCommands() . ',
 
 						// Theme options
 						' . $tinyRows . '

@@ -347,6 +347,7 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 			}
 			include($configFile);
 
+	//FIXME: these values should be obtained from global settings
 			$Languages = array(
 				'de' => 'de',
 				'en' => 'en',

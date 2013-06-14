@@ -26,7 +26,7 @@ function we_include_tag_file($name){
 	$fn = 'we_tag_' . $name;
 
 	// as default: all tag_functions are in this file.
-	if(function_exists($fn) || $fn == 'we_tag_noCache'){
+	if(function_exists($fn)){
 		// do noting
 		return true;
 	}
@@ -288,13 +288,13 @@ function cutSimpleText($text, $len){
 	return substr($text, 0, max($pos));
 }
 
-function cutText($text, $max = 0){
+function cutText($text, $max = 0, $striphtml=false){
 	if((!$max) || (strlen($text) <= $max)){
 		return $text;
 	}
 	//no tags, simple cut off
 	if(strstr($text, '<') == FALSE){
-		return cutSimpleText($text, $max) . ' &hellip;';
+		return cutSimpleText($text, $max) . ($striphtml?' ...':' &hellip;');
 	}
 
 	$ret = '';
@@ -316,7 +316,7 @@ function cutText($text, $max = 0){
 					$ret.=($len > $max ? cutSimpleText($cur[0], $max) : $cur[0]);
 					$max-=$len;
 					if($max <= 0){
-						$ret.=' &hellip;';
+						$ret.=($striphtml?' ...':' &hellip;');
 					}
 				}
 				break;
@@ -363,17 +363,17 @@ function modulFehltError($modul, $tag){
 
 function parseError($text){
 	t_e('warning', html_entity_decode($text, ENT_QUOTES, $GLOBALS['WE_BACKENDCHARSET']), g_l('weClass', '[template]') . ': ' . we_tag_tagParser::$curFile);
-	return "<b>" . g_l('parser', '[error_in_template]') . ":</b>$text<br/>\n" . g_l('weClass', '[template]') . ': ' . we_tag_tagParser::$curFile; /* .'<?php trigger_error(\''.str_replace('\'', '"', $text).'\',E_USER_WARNING);?>'; */
+	return '<b>' . g_l('parser', '[error_in_template]') . ':</b>' . $text . "<br/>\n" . g_l('weClass', '[template]') . ': ' . we_tag_tagParser::$curFile;
 }
 
 function attributFehltError($attribs, $attr, $tag, $canBeEmpty = false){
 	$tag = str_replace(array('we_tag_', 'we_parse_tag_'), '', $tag);
 	if($canBeEmpty){
-		if(!isset($attribs[$attr]))
+		if(!isset($attribs[$attr])){
 			return parseError(sprintf(g_l('parser', '[attrib_missing2]'), $attr, $tag));
-	} else{
-		if(!isset($attribs[$attr]) || $attribs[$attr] == '')
-			return parseError(sprintf(g_l('parser', '[attrib_missing]'), $attr, $tag));
+		}
+	} elseif(!isset($attribs[$attr]) || $attribs[$attr] == ''){
+		return parseError(sprintf(g_l('parser', '[attrib_missing]'), $attr, $tag));
 	}
 	return '';
 }

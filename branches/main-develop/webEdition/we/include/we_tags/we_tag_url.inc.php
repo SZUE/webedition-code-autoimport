@@ -27,13 +27,20 @@ function we_tag_url($attribs){
 		return $foo;
 	}
 	static $urls = array();
+	static $objurls = array();
 	$type = weTag_getAttribute('type', $attribs, 'document');
 	$id = weTag_getAttribute('id', $attribs);
 	$triggerid = weTag_getAttribute('triggerid', $attribs, '0');
 	$hidedirindex = weTag_getAttribute('hidedirindex', $attribs, TAGLINKS_DIRECTORYINDEX_HIDE, true);
 	$objectseourls = weTag_getAttribute('objectseourls', $attribs, TAGLINKS_OBJECTSEOURLS, true);
-	if(isset($urls[$type . $id])){ // do only work you have never done before
-		return $urls[$type . $id];
+	if($type == 'document'){
+		if(isset($urls[$id])){ // do only work you have never done before
+			return $urls[$id];
+		}
+	} else{
+		if(isset($objurls[$id])){ // do only work you have never done before
+			return $objurls[$id];
+		}
 	}
 	if(intval($id) == 0){
 		$url = '/';

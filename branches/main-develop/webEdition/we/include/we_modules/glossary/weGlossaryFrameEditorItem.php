@@ -901,6 +901,7 @@ class weGlossaryFrameEditorItem extends weGlossaryFrameEditor{
 	function getLangField($name, $value, $title, $width){
 
 		$_name = md5($name);
+	//FIXME: these values should be obtained from global settings
 		$_options = array(
 			'' => '',
 			'de' => 'de',
@@ -911,15 +912,12 @@ class weGlossaryFrameEditorItem extends weGlossaryFrameEditor{
 			'nl' => 'nl',
 			'pl' => 'pl',
 		);
-		$_size = 1;
-		$_multiple = false;
 		$_attributes = "onchange=\"setHot();this.form.elements['" . $name . "'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;\"";
-		$_compare = "value";
 		$_width = 100;
 
 		$input = we_html_tools::htmlTextInput($name, 15, $value, "", '', "text", ($width - $_width));
 
-		$select = we_html_tools::htmlSelect($_name, $_options, $_size, "", $_multiple, $_attributes, $_compare, $_width);
+		$select = we_html_tools::htmlSelect($_name, $_options, 1, "", false, $_attributes, 'value', $_width);
 
 		return we_html_tools::htmlFormElementTable($input, $title, "left", "defaultfont", $select);
 	}

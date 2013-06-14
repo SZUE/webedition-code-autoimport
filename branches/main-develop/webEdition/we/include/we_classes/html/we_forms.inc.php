@@ -258,33 +258,33 @@ abstract class we_forms{
 	static function removeBrokenInternalLinksAndImages(&$text){
 		$DB_WE = new DB_WE();
 		$regs = array();
-		if(preg_match_all('/(href|src)="document:(\\d+)([" \?#])/i', $text, $regs, PREG_SET_ORDER)){
+		if(preg_match_all('/(href|src)="' . we_base_link::TYPE_INT_PREFIX . '(\\d+)([" \?#])/i', $text, $regs, PREG_SET_ORDER)){
 			foreach($regs as $reg){
 				if(!f('SELECT 1 FROM ' . FILE_TABLE . ' WHERE ID=' . intval($reg[2]), 'Path', $DB_WE)){
 					$text = preg_replace(array(
-						'|<a [^>]*href="document:' . $reg[2] . $reg[3] . '"[^>]*>([^<]+)</a>|i',
-						'|<a [^>]*href="document:' . $reg[2] . $reg[3] . '"[^>]*>|i',
-						'|<img [^>]*src="document:' . $reg[2] . $reg[3] . '"[^>]*>|i',
+						'|<a [^>]*href="' . we_base_link::TYPE_INT_PREFIX . $reg[2] . $reg[3] . '"[^>]*>([^<]+)</a>|i',
+						'|<a [^>]*href="' . we_base_link::TYPE_INT_PREFIX . $reg[2] . $reg[3] . '"[^>]*>|i',
+						'|<img [^>]*src="' . we_base_link::TYPE_INT_PREFIX . $reg[2] . $reg[3] . '"[^>]*>|i',
 						), array('\1'), $text);
 				}
 			}
 		}
-		if(preg_match_all('/src="thumbnail:(\\d+)[" ]/i', $text, $regs, PREG_SET_ORDER)){
+		if(preg_match_all('/src="' . we_base_link::TYPE_THUMB_PREFIX . '(\\d+)[" ]/i', $text, $regs, PREG_SET_ORDER)){
 			foreach($regs as $reg){
 				list($imgID, $thumbID) = explode(',', $reg[1]);
 				$thumbObj = new we_thumbnail();
 				if(!$thumbObj->initByImageIDAndThumbID(intval($imgID), intval($thumbID))){
-					$text = preg_replace('|<img[^>]+src="thumbnail:' . $reg[1] . '[^>]+>|i', '', $text);
+					$text = preg_replace('|<img[^>]+src="' . we_base_link::TYPE_THUMB_PREFIX . $reg[1] . '[^>]+>|i', '', $text);
 				}
 			}
 		}
 		if(defined("OBJECT_TABLE")){
-			if(preg_match_all('/href="object:(\\d+)[^" \?#]+\??/i', $text, $regs, PREG_SET_ORDER)){
+			if(preg_match_all('/href="' . we_base_link::TYPE_OBJ_PREFIX . '(\\d+)[^" \?#]+\??/i', $text, $regs, PREG_SET_ORDER)){
 				foreach($regs as $reg){
 					if(!id_to_path($reg[1], OBJECT_FILES_TABLE)){ // if object doesn't exists, remove the link
 						$text = preg_replace(array(
-							'|<a [^>]*href="object:' . $reg[1] . '"[^>]*>([^<]+)</a>|i',
-							'|<a [^>]*href="object:' . $reg[1] . '"[^>]*>|i',
+							'|<a [^>]*href="' . we_base_link::TYPE_OBJ_PREFIX . $reg[1] . '"[^>]*>([^<]+)</a>|i',
+							'|<a [^>]*href="' . we_base_link::TYPE_OBJ_PREFIX . $reg[1] . '"[^>]*>|i',
 							), array('\1'), $text);
 					}
 				}

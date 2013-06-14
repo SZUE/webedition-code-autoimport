@@ -35,28 +35,13 @@ abstract class weToolLookup{
 			return $_SESSION[self::REGISTRY_NAME]['metaIncDis'];
 		}
 
-		$_tools = array();
-
-		$_toolsDirs = array();
-
-		//$_ignore = array('','.','..','cvs','cache','search','first_steps_wizard','weSearch','navigation');
-
-		/*
-		  if($addInternTools) {
-		  $addSearch = current(array_keys($_ignore, 'weSearch'));
-		  unset($_ignore[$addSearch]);
-		  $addNavigation = current(array_keys($_ignore, 'navigation'));
-		  unset($_ignore[$addNavigation]);
-		  }
-		 */
+		$_tools = $_toolsDirs = array();
 
 		$_bd = $_SERVER['DOCUMENT_ROOT'] . '/webEdition/apps';
 		$_d = opendir($_bd);
 
-		while($_entry = readdir($_d)) {
-			//if( !in_array($_entry,$_ignore) && is_dir($_bd . '/' . $_entry)){
+		while(($_entry = readdir($_d))) {
 			$_toolsDirs[] = $_bd . '/' . $_entry;
-			//}
 		}
 		closedir($_d);
 
@@ -119,7 +104,7 @@ abstract class weToolLookup{
 
 	static function getToolProperties($name){
 
-		$_tools = weToolLookup::getAllTools(true, false, true);
+		$_tools = self::getAllTools(true, false, true);
 
 		foreach($_tools as $_tool){
 			if($_tool['name'] == $name){
@@ -138,16 +123,13 @@ abstract class weToolLookup{
 				$_REQUEST['tool'] = $tmp[1];
 				return 'we_tools/' . $tmp[1] . '/hook/we_phpCmdHook_' . $tmp[1] . '.inc.php';
 			}
-			$_tools = weToolLookup::getAllTools(true, true);
+			$_tools = self::getAllTools(true, true);
 			foreach($_tools as $_tool){
 				if(stripos($_REQUEST['we_cmd'][0], 'tool_' . $_tool['name'] . '_') === 0){
 					$_REQUEST['tool'] = $_tool['name'];
-					if($_REQUEST['tool'] == 'weSearch' || $_REQUEST['tool'] == 'navigation'){
-						return 'we_tools/' . $_tool['name'] . '/hook/we_phpCmdHook_' . $_tool['name'] . '.inc.php';
-					} else{
-						return 'apps/' . $_tool['name'] . '/hook/we_phpCmdHook_' . $_tool['name'] . '.inc.php';
-					}
-					break;
+					return ($_REQUEST['tool'] == 'weSearch' || $_REQUEST['tool'] == 'navigation' ?
+							'we_tools/' : 'apps/' ) .
+						$_tool['name'] . '/hook/we_phpCmdHook_' . $_tool['name'] . '.inc.php';
 				}
 			}
 		}
@@ -158,7 +140,7 @@ abstract class weToolLookup{
 	static function getJsCmdInclude(){
 
 		$_inc = array();
-		$_tools = weToolLookup::getAllTools(true, true);
+		$_tools = self::getAllTools(true, true);
 		foreach($_tools as $_tool){
 			if(($_tool['name'] == 'weSearch' || $_tool['name'] == 'navigation') && file_exists(WE_INCLUDES_PATH . 'we_tools/' . $_tool['name'] . '/hook/we_jsCmdHook_' . $_tool['name'] . '.inc.php')){
 				$_inc[] = WE_INCLUDES_PATH . 'we_tools/' . $_tool['name'] . '/hook/we_jsCmdHook_' . $_tool['name'] . '.inc.php';
@@ -177,7 +159,7 @@ abstract class weToolLookup{
 		}
 
 		$_inc = array();
-		$_tools = weToolLookup::getAllTools();
+		$_tools = self::getAllTools();
 		foreach($_tools as $_tool){
 			if(file_exists($_SERVER['DOCUMENT_ROOT'] . '/webEdition/apps/' . $_tool['name'] . '/conf/define.conf.php')){
 				$_inc[] = $_SERVER['DOCUMENT_ROOT'] . '/webEdition/apps/' . $_tool['name'] . '/conf/define.conf.php';
@@ -197,7 +179,7 @@ abstract class weToolLookup{
 		}
 
 		$_inc = array();
-		$_tools = weToolLookup::getAllTools();
+		$_tools = self::getAllTools();
 		foreach($_tools as $_tool){
 			if(file_exists($_SERVER['DOCUMENT_ROOT'] . '/webEdition/apps/' . $_tool['name'] . '/externtriggered/tasks.php') && we_app_Common::isActive($_tool['name'])){
 				$_inc[] = $_SERVER['DOCUMENT_ROOT'] . '/webEdition/apps/' . $_tool['name'] . '/externtriggered/tasks.php';
@@ -217,7 +199,7 @@ abstract class weToolLookup{
 		}
 
 		$_inc = array();
-		$_tools = weToolLookup::getAllTools();
+		$_tools = self::getAllTools();
 		foreach($_tools as $_tool){
 			if(file_exists($_SERVER['DOCUMENT_ROOT'] . '/webEdition/apps/' . $_tool['name'] . '/tags')){
 				$_inc[] = $_SERVER['DOCUMENT_ROOT'] . '/webEdition/apps/' . $_tool['name'] . '/tags';
@@ -231,11 +213,11 @@ abstract class weToolLookup{
 	}
 
 	static function isActiveTag($filepath){
-		return in_array(dirname($filepath), weToolLookup::getTagDirs());
+		return in_array(dirname($filepath), self::getTagDirs());
 	}
 
 	static function isTool($name, $includeDisabled = false){
-		$_tools = weToolLookup::getAllTools(false, false, $includeDisabled);
+		$_tools = self::getAllTools(false, false, $includeDisabled);
 		foreach($_tools as $_tool){
 			if($_tool['name'] == $name){
 				return true;
@@ -255,15 +237,15 @@ abstract class weToolLookup{
 	}
 
 	static function getAllToolTags($toolname, $includeDisabled = false){
-		return weToolLookup::getFileRegister($toolname, '/tags', 'we_tag_', 'we_tag_', '.inc.php', $includeDisabled);
+		return self::getFileRegister($toolname, '/tags', 'we_tag_', 'we_tag_', '.inc.php', $includeDisabled);
 	}
 
 	static function getAllToolTagWizards($toolname, $includeDisabled = false){
-		return weToolLookup::getFileRegister($toolname, '/tagwizard', 'we_tag_', 'we_tag_', '.inc.php', $includeDisabled);
+		return self::getFileRegister($toolname, '/tagwizard', 'we_tag_', 'we_tag_', '.inc.php', $includeDisabled);
 	}
 
 	static function getAllToolServices($toolname, $includeDisabled = false){
-		return weToolLookup::getFileRegister($toolname, '/service/cmds', '^rpc', 'rpc', 'Cmd.class.php', $includeDisabled);
+		return self::getFileRegister($toolname, '/service/cmds', '^rpc', 'rpc', 'Cmd.class.php', $includeDisabled);
 	}
 
 	static function getAllToolLanguages($toolname, $subdir = '/lang', $includeDisabled = false){
@@ -271,9 +253,9 @@ abstract class weToolLookup{
 		$_founds = array();
 		$toolFolder = defined('WE_APPS_PATH') ? WE_APPS_PATH : $GLOBALS['__WE_APP_PATH__'] . '/';
 		$_tooldir = $toolFolder . $toolname . $subdir;
-		if(weToolLookup::isTool($toolname, $includeDisabled) && is_dir($_tooldir)){
+		if(self::isTool($toolname, $includeDisabled) && is_dir($_tooldir)){
 			$_d = opendir($_tooldir);
-			while($_entry = readdir($_d)) {
+			while(($_entry = readdir($_d))) {
 				if(is_dir($_tooldir . '/' . $_entry) && stristr($_entry, '.') === FALSE){
 					$_tagname = we_core_Local::localeToWeLang($_entry);
 					$_founds[$_tagname] = $_tooldir . '/' . $_entry . '/default.xml';
@@ -288,12 +270,11 @@ abstract class weToolLookup{
 		$_founds = array();
 		$toolFolder = defined('WE_APPS_PATH') ? WE_APPS_PATH : $GLOBALS['__WE_APP_PATH__'] . '/';
 		$_tooldir = $toolFolder . $toolname . $subdir;
-		if(weToolLookup::isTool($toolname, $includeDisabled) && is_dir($_tooldir)){
+		if(self::isTool($toolname, $includeDisabled) && is_dir($_tooldir)){
 			$_d = opendir($_tooldir);
-			while($_entry = readdir($_d)) {
+			while(($_entry = readdir($_d))) {
 				if(!is_dir($_tooldir . '/' . $_entry) && stripos($_entry, $filematch) !== false){
-					$_tagname = str_replace($rem_before, '', $_entry);
-					$_tagname = str_replace($rem_after, '', $_tagname);
+					$_tagname = str_replace(array($rem_before, $rem_after), '', $_entry);
 					$_founds[$_tagname] = $_tooldir . '/' . $_entry;
 				}
 			}
@@ -303,7 +284,7 @@ abstract class weToolLookup{
 	}
 
 	static function getToolTag($name, &$include, $includeDisabled = false){
-		$_tools = weToolLookup::getAllTools(false, false, $includeDisabled);
+		$_tools = self::getAllTools(false, false, $includeDisabled);
 		$toolFolder = defined('WE_APPS_PATH') ? WE_APPS_PATH : $GLOBALS['__WE_APP_PATH__'] . '/';
 		foreach($_tools as $_tool){
 			if(file_exists($toolFolder . $_tool['name'] . '/tags/we_tag_' . $name . '.inc.php')){
@@ -315,7 +296,7 @@ abstract class weToolLookup{
 	}
 
 	static function getToolListviewTag($name, &$include, $includeDisabled = false){
-		$_tools = weToolLookup::getAllTools(false, false, $includeDisabled);
+		$_tools = self::getAllTools(false, false, $includeDisabled);
 		$toolFolder = defined('WE_APPS_PATH') ? WE_APPS_PATH : $GLOBALS['__WE_APP_PATH__'] . '/';
 		foreach($_tools as $_tool){
 			if(file_exists($toolFolder . $_tool['name'] . '/tags/we_listviewtag_' . $name . '.inc.php')){
@@ -327,7 +308,7 @@ abstract class weToolLookup{
 	}
 
 	static function getToolListviewItemTag($name, &$include, $includeDisabled = false){
-		$_tools = weToolLookup::getAllTools(false, false, $includeDisabled);
+		$_tools = self::getAllTools(false, false, $includeDisabled);
 		$toolFolder = defined('WE_APPS_PATH') ? WE_APPS_PATH : $GLOBALS['__WE_APP_PATH__'] . '/';
 		foreach($_tools as $_tool){
 			if(file_exists($toolFolder . $_tool['name'] . '/tags/we_listviewitemtag_' . $name . '.inc.php')){
@@ -339,7 +320,7 @@ abstract class weToolLookup{
 	}
 
 	static function getToolTagWizard($name, &$include, $includeDisabled = false){
-		$_tools = weToolLookup::getAllTools(false, false, $includeDisabled);
+		$_tools = self::getAllTools(false, false, $includeDisabled);
 		$toolFolder = defined('WE_APPS_PATH') ? WE_APPS_PATH : $GLOBALS['__WE_APP_PATH__'] . '/';
 		foreach($_tools as $_tool){
 			if(file_exists($toolFolder . $_tool['name'] . '/tagwizard/we_tag_' . $name . '.inc.php')){
@@ -351,7 +332,7 @@ abstract class weToolLookup{
 	}
 
 	static function getToolListviewTagWizard($name, &$include, $includeDisabled = false){
-		$_tools = weToolLookup::getAllTools(false, false, $includeDisabled);
+		$_tools = self::getAllTools(false, false, $includeDisabled);
 		$toolFolder = defined('WE_APPS_PATH') ? WE_APPS_PATH : $GLOBALS['__WE_APP_PATH__'] . '/';
 		foreach($_tools as $_tool){
 			if(file_exists($toolFolder . $_tool['name'] . '/tagwizard/we_listviewtag_' . $name . '.inc.php')){
@@ -364,7 +345,7 @@ abstract class weToolLookup{
 
 	static function getPermissionIncludes($includeDisabled = false){
 		$_inc = array();
-		$_tools = weToolLookup::getAllTools(false, false, $includeDisabled);
+		$_tools = self::getAllTools(false, false, $includeDisabled);
 		foreach($_tools as $_tool){
 			if(file_exists($_SERVER['DOCUMENT_ROOT'] . '/webEdition/apps/' . $_tool['name'] . '/conf/permission.conf.php')){
 				$_inc[] = $_SERVER['DOCUMENT_ROOT'] . '/webEdition/apps/' . $_tool['name'] . '/conf/permission.conf.php';
@@ -376,7 +357,7 @@ abstract class weToolLookup{
 
 	static function getToolsForBackup($includeDisabled = false){
 		$_inc = array();
-		$_tools = weToolLookup::getAllTools(false, false, $includeDisabled);
+		$_tools = self::getAllTools(false, false, $includeDisabled);
 		foreach($_tools as $_tool){
 			if(file_exists($_SERVER['DOCUMENT_ROOT'] . '/webEdition/apps/' . $_tool['name'] . '/conf/backup.conf.php')){
 				if($_tool['maintable'] != ''){
@@ -408,7 +389,7 @@ abstract class weToolLookup{
 		if(file_exists($baseDir)){
 
 			$dh = opendir($baseDir);
-			while($entry = readdir($dh)) {
+			while(($entry = readdir($dh))) {
 
 				if($entry != '' && $entry != '.' && $entry != '..'){
 
@@ -419,7 +400,7 @@ abstract class weToolLookup{
 					}
 
 					if(is_dir($_entry) && strtolower(strtolower($entry) != 'cvs')){
-						weToolLookup::getFilesOfDir($allFiles, $_entry);
+						self::getFilesOfDir($allFiles, $_entry);
 					}
 				}
 			}
@@ -432,7 +413,7 @@ abstract class weToolLookup{
 		if(file_exists($baseDir)){
 
 			$dh = opendir($baseDir);
-			while($entry = readdir($dh)) {
+			while(($entry = readdir($dh))) {
 
 				if($entry != '' && $entry != '.' && $entry != '..' && strtolower($entry != 'cvs')){
 
@@ -440,7 +421,7 @@ abstract class weToolLookup{
 
 					if(is_dir($_entry)){
 						$allDirs[] = $_entry;
-						weToolLookup::getDirsOfDir($allDirs, $_entry);
+						self::getDirsOfDir($allDirs, $_entry);
 					}
 				}
 			}
@@ -453,7 +434,7 @@ abstract class weToolLookup{
 	}
 
 	static function isInIgnoreList($toolname){
-		$_ignore = weToolLookup::getIgnoreList();
+		$_ignore = self::getIgnoreList();
 		return in_array($toolname, $_ignore);
 	}
 
@@ -463,7 +444,7 @@ abstract class weToolLookup{
 			return $metaInfo['classname'];
 		}
 
-		$_tool = weToolLookup::getToolProperties($name);
+		$_tool = self::getToolProperties($name);
 		if(!empty($_tool)){
 			return $_tool['classname'];
 		}

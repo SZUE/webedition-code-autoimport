@@ -167,27 +167,27 @@ class we_objectEx extends we_object{
 
 	function getFieldType($type){
 		switch($type){
-			case "country":
-			case "language":
-			case "meta":
-			case "link":
-				return "meta";
-			case "href":
-			case "input":
-				return "string";
-			case "float":
-				return "real";
-			case "img":
-			case "flashmovie":
-			case "quicktime":
-			case "binary":
-			case "object":
-			case "date":
-			case "checkbox":
-			case "int":
-				return "int";
-			case "text":
-				return "blob";
+			case 'country':
+			case 'language':
+			case 'meta':
+			case 'link':
+				return 'meta';
+			case 'href':
+			case 'input':
+				return 'string';
+			case 'float':
+				return 'real';
+			case 'img':
+			case 'flashmovie':
+			case 'quicktime':
+			case 'binary':
+			case 'object':
+			case 'date':
+			case 'checkbox':
+			case 'int':
+				return 'int';
+			case 'text':
+				return 'blob';
 		}
 		return '';
 	}

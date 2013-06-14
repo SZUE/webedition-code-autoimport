@@ -1135,33 +1135,33 @@ class we_objectFile extends we_document{
 			$hrefArr = array();
 		}
 		if($we_editmode){
-			$nint = $n . "_we_jkhdsf_int";
-			$nintID = $n . "_we_jkhdsf_intID";
-			$nintPath = $n . "_we_jkhdsf_intPath";
-			$nextPath = $n . "_we_jkhdsf_extPath";
+			$nint = $n . we_base_link::MAGIC_INT_LINK;
+			$nintID = $n . we_base_link::MAGIC_INT_LINK_ID;
+			$nintPath = $n . we_base_link::MAGIC_INT_LINK_PATH;
+			$nextPath = $n . '_we_jkhdsf_extPath';
 
 			$attr = ' size="20" ';
 
-			$int = isset($hrefArr["int"]) ? $hrefArr["int"] : false;
-			$intID = (isset($hrefArr["intID"]) && $hrefArr["intID"]) ? $hrefArr["intID"] : '';
-			$intPath = $intID ? id_to_path($intID) : "";
-			$extPath = isset($hrefArr["extPath"]) ? $hrefArr["extPath"] : "";
+			$int = isset($hrefArr['int']) ? $hrefArr['int'] : false;
+			$intID = (isset($hrefArr['intID']) && $hrefArr['intID']) ? $hrefArr['intID'] : '';
+			$intPath = $intID ? id_to_path($intID) : '';
+			$extPath = isset($hrefArr['extPath']) ? $hrefArr['extPath'] : '';
 			$int_elem_Name = 'we_' . $this->Name . '_href[' . $nint . ']';
 			$intPath_elem_Name = 'we_' . $this->Name . '_href[' . $nintPath . ']';
 			$intID_elem_Name = 'we_' . $this->Name . '_href[' . $nintID . ']';
 			$ext_elem_Name = 'we_' . $this->Name . '_href[' . $nextPath . ']';
 			switch($type){
-				case "int":
+				case we_base_link::TYPE_INT:
 					$out = $this->hrefRow($intID_elem_Name, $intID, $intPath_elem_Name, $intPath, $attr, $int_elem_Name, false, true, "", $file, $directory);
 					break;
-				case "ext":
-					$out = $this->hrefRow("", "", $ext_elem_Name, $extPath, $attr, $int_elem_Name, false, true, "", $file, $directory);
+				case we_base_link::TYPE_EXT:
+					$out = $this->hrefRow('', '', $ext_elem_Name, $extPath, $attr, $int_elem_Name, false, true, '', $file, $directory);
 					break;
 				default:
-					$out = $this->hrefRow($intID_elem_Name, $intID, $intPath_elem_Name, $intPath, $attr, $int_elem_Name, true, $int, "", $file, $directory) .
-						$this->hrefRow("", "", $ext_elem_Name, $extPath, $attr, $int_elem_Name, true, $int, "", $file, $directory);
+					$out = $this->hrefRow($intID_elem_Name, $intID, $intPath_elem_Name, $intPath, $attr, $int_elem_Name, true, $int, '', $file, $directory) .
+						$this->hrefRow('', '', $ext_elem_Name, $extPath, $attr, $int_elem_Name, true, $int, '', $file, $directory);
 			}
-			return ($variant ? '' : '<span class="weObjectPreviewHeadline"><b>' . $n . ($this->DefArray["href_" . $n]["required"] ? '*' : '') . '</b></span>' . (isset($this->DefArray["href_" . $n]['editdescription']) && $this->DefArray["href_" . $n]['editdescription'] ? '<div class="objectDescription">' . $this->DefArray["href_" . $n]['editdescription'] . '</div>' : we_html_element::htmlBr() )) .
+			return ($variant ? '' : '<span class="weObjectPreviewHeadline"><b>' . $n . ($this->DefArray['href_' . $n]['required'] ? '*' : '') . '</b></span>' . (isset($this->DefArray["href_" . $n]['editdescription']) && $this->DefArray["href_" . $n]['editdescription'] ? '<div class="objectDescription">' . $this->DefArray["href_" . $n]['editdescription'] . '</div>' : we_html_element::htmlBr() )) .
 				'<table border="0" cellpadding="0" cellspacing="0" background="' . IMAGE_DIR . 'backgrounds/aquaBackground.gif">' . $out . '</table>';
 		}
 		return $this->getPreviewView($n, parent::getHrefByArray($hrefArr));
@@ -1173,7 +1173,7 @@ class we_objectFile extends we_document{
 		$link = $this->getElement($n) ? unserialize($this->getElement($n)) : array();
 		if(is_array($link)){
 			if(empty($link)){
-				$link = array("ctype" => "text", "type" => "ext", "href" => "#", "text" => g_l('global', "[new_link]"));
+				$link = array("ctype" => "text", "type" => we_base_link::TYPE_EXT, "href" => "#", "text" => g_l('global', "[new_link]"));
 			}
 			$img = new we_imageDocument();
 			$content = parent::getLinkContent($link, $this->ParentID, $this->Path, $GLOBALS['DB_WE'], $img);

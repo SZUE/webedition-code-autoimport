@@ -292,8 +292,8 @@ function we_tag_field($attribs){
 				switch($GLOBALS['lv']->ClassName){
 					case 'we_listview':
 						$hrefArr = array();
-						$hrefArr['int'] = $GLOBALS['lv']->f($name . '_we_jkhdsf_int') ? $GLOBALS['lv']->f($name . '_we_jkhdsf_int') : $GLOBALS['lv']->f(we_tag_getPostName($name) . '_we_jkhdsf_int');
-						$hrefArr['intID'] = $GLOBALS['lv']->f($name . '_we_jkhdsf_intID') ? $GLOBALS['lv']->f($name . '_we_jkhdsf_intID') : $GLOBALS['lv']->f(we_tag_getPostName($name) . '_we_jkhdsf_intID');
+						$hrefArr['int'] = $GLOBALS['lv']->f($name . we_base_link::MAGIC_INT_LINK) ? $GLOBALS['lv']->f($name . we_base_link::MAGIC_INT_LINK) : $GLOBALS['lv']->f(we_tag_getPostName($name) . we_base_link::MAGIC_INT_LINK);
+						$hrefArr['intID'] = $GLOBALS['lv']->f($name . we_base_link::MAGIC_INT_LINK_ID) ? $GLOBALS['lv']->f($name . we_base_link::MAGIC_INT_LINK_ID) : $GLOBALS['lv']->f(we_tag_getPostName($name) . we_base_link::MAGIC_INT_LINK_ID);
 						$hrefArr['extPath'] = $GLOBALS['lv']->f($name);
 						break;
 					case 'we_listview_multiobject':
@@ -364,7 +364,7 @@ function we_tag_field($attribs){
 					}
 					$normVal = $altVal;
 				}
-				$out = cutText(($striphtml ? strip_tags($normVal) : $normVal), $max);
+				$out = cutText(($striphtml ? strip_tags($normVal) : $normVal), $max, $striphtml);
 			} elseif($value){
 				$out = ($striphtml ? strip_tags($value) : $value);
 			} else if($striphtml){
