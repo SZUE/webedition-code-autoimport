@@ -676,11 +676,11 @@ class we_linklist{
 
 	function getLinkContent(){
 		switch($this->getCType()){
-			case we_base_link::TYPE_INT:
+			case we_base_link::CONTENT_INT:
 				return $this->makeImgTag();
-			case we_base_link::TYPE_EXT:
+			case we_base_link::CONTENT_EXT:
 				return $this->makeImgTagFromSrc($this->getImageSrc(), $this->getImageAttribs());
-			case we_base_link::TYPE_TEXT:
+			case we_base_link::CONTENT_TEXT:
 				return $this->getText();
 			default:
 				return '';

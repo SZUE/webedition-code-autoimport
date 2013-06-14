@@ -1178,7 +1178,7 @@ class we_document extends we_root{
 		$db = ($db ? $db : new DB_WE());
 
 		// Bug Fix 8170&& 8166
-		if(isset($link['href']) && strlen($link['href']) >= 7 && strpos($link['href'], we_base_link::TYPE_MAIL_PREFIX) === 0){
+		if(isset($link['href']) && strpos($link['href'], we_base_link::TYPE_MAIL_PREFIX) === 0){
 			$link['type'] = we_base_link::TYPE_MAIL;
 
 			//added for #7269
@@ -1235,7 +1235,7 @@ class we_document extends we_root{
 		}
 
 		switch(isset($link['ctype']) ? $link['ctype'] : ''){
-			case we_base_link::TYPE_INT:
+			case we_base_link::CONTENT_INT:
 				$img = ($img ? $img : new we_imageDocument());
 				$img->initByID($link['img_id']);
 
@@ -1253,7 +1253,7 @@ class we_document extends we_root{
 				$img->initByAttribs($img_attribs);
 
 				return $img->getHtml(false, false);
-			case we_base_link::TYPE_EXT:
+			case we_base_link::CONTENT_EXT:
 				//  set default atts
 				$img_attribs = array('src' => $link['img_src'],
 					'alt' => '',
@@ -1270,7 +1270,7 @@ class we_document extends we_root{
 					}
 				}
 				return getHtmlTag('img', $img_attribs);
-			case we_base_link::TYPE_TEXT:
+			case we_base_link::CONTENT_TEXT:
 				// Workarround => We have to find another solution
 				if($xml){
 					return oldHtmlspecialchars(html_entity_decode($link['text']));

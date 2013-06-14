@@ -1161,7 +1161,7 @@ categories_edit.setItem(0,(categories_edit.itemCount-1),"' . $cat . '");';
 		);
 		$table->setCol(3, 0, array('colspan' => '2'), we_html_tools::getPixel(5, 5));
 		$table->setCol(
-			4, 0, array('align' => 'left'), 
+			4, 0, array('align' => 'left'),
 			we_forms::checkboxWithHidden($this->Model->CatAnd, "CatAnd", g_l('navigation', "[catAnd]"))
 		);
 		$table->setCol(
@@ -1321,11 +1321,11 @@ function selectItem() {
 		$_button_cat = we_button::create_button('select', "javascript:we_cmd('openCatselector',document.we_form.elements['FolderID'].value,'" . CATEGORY_TABLE . "','document.we_form.elements[\\'FolderID\\'].value','document.we_form.elements[\\'FolderPath\\'].value','opener." . $this->topFrame . ".mark();','" . session_id() . "','$rootDirID')");
 		$_buttons = '<div id="docFolder" style="display: ' . (($this->Model->SelectionType == weNavigation::STPYE_DOCTYPE) ? 'inline' : 'none') . '">' . $_button_doc . '</div><div id="objFolder" style="display: ' . ($this->Model->SelectionType == weNavigation::STPYE_CLASS ? 'inline' : 'none') . '">' . $_button_obj . '</div><div id="catFolder" style="display: ' . ($this->Model->SelectionType == weNavigation::STPYE_CATEGORY ? 'inline' : 'none') . '">' . $_button_cat . '</div>';
 
-		$_table = $this->Model->SelectionType == weNavigation::STPYE_DOCTYPE ? FILE_TABLE : 
-			($this->Model->SelectionType == weNavigation::STPYE_CLASS ? OBJECT_FILES_TABLE : 
-			($this->Model->SelectionType == weNavigation::STPYE_CATEGORY ? CATEGORY_TABLE : 
+		$_table = $this->Model->SelectionType == weNavigation::STPYE_DOCTYPE ? FILE_TABLE :
+			($this->Model->SelectionType == weNavigation::STPYE_CLASS ? OBJECT_FILES_TABLE :
+			($this->Model->SelectionType == weNavigation::STPYE_CATEGORY ? CATEGORY_TABLE :
 			FILE_TABLE));
-		
+
 		$_path = id_to_path($this->Model->FolderID, $_table);
 		$_attribs = array("onChange" => $this->topFrame . ".mark();");
 		if(!$_countSubDirs){
@@ -1508,6 +1508,7 @@ function selectItem() {
 	}
 
 	function getLangField($name, $value, $title, $width){
+	//FIXME: these values should be obtained from global settings
 		$input = we_html_tools::htmlTextInput("Attributes[$name]", 15, $value, "", 'onchange=' . $this->topFrame . '.mark(); ', "text", $width - 100);
 		$select = '
 <select style="width:100px;" class="weSelect" name="' . $name . '_select" size="1" onchange="' . $this->topFrame . '.mark(); this.form.elements[\'Attributes[' . $name . ']\'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;">
@@ -1526,7 +1527,7 @@ function selectItem() {
 
 	function getRevRelSelect($type, $value, $title){
 		$input = we_html_tools::htmlTextInput(
-				"Attributes[$type]", 15, $value, "", 'onchange=' . $this->topFrame . '.mark(); ', "text", $this->_width_size - 100);
+				"Attributes[$type]", 15, $value, '', 'onchange=' . $this->topFrame . '.mark(); ', 'text', $this->_width_size - 100);
 		$select = '<select name="' . $type . '_sel" class="weSelect" size="1" style="width:100px;" onchange="' . $this->topFrame . '.mark(); this.form.elements[\'Attributes[' . $type . ']\'].value=this.options[this.selectedIndex].text;this.selectedIndex=0;">
 	<option></option>
 	<option>contents</option>
