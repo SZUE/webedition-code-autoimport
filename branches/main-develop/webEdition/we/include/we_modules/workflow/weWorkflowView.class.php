@@ -110,7 +110,7 @@ class weWorkflowView extends we_workflow_base{
 	function getProperties(){
 		if(isset($_REQUEST['home']) && $_REQUEST['home']){ //TODO: find a better solution fpr this!
 			$GLOBALS['we_print_not_htmltop'] = true;
-			$GLOBALS['we_head_insert'] = $this->getPropertyJS(); //this this is bullshit since getPropertyJS writes directly to screen
+			$GLOBALS['we_head_insert'] = $this->getPropertyJS();
 			$GLOBALS['we_body_insert'] = '<form name="we_form">';
 			$GLOBALS['we_body_insert'] .= $this->getHiddens() . '</form>';
 			$GLOBALS['mod'] = 'workflow';
@@ -121,47 +121,42 @@ class weWorkflowView extends we_workflow_base{
 
 			return we_html_tools::htmlTop() . STYLESHEET . $out;
 		} else{
-			//$out=$this->getPropertyJS(); this is bullshit since getPropertyJS writes directly to screen <= then make it return instead of write
-			$this->getPropertyJS();
-
-			$content = '<form name="we_form" onsubmit="return false">' . "\r\n";
-			$content .=$this->getHiddens();
+			$content = '<form name="we_form" onsubmit="return false">' .
+				$this->getHiddens();
 			if($this->show){
 				$content .=$this->getDocumentInfo();
 			} else{
 				$content .=$this->workflowHiddens();
-				$parts = array();
 
 				if($this->page == 0){
 
 					$_space = 143;
-
-					$content .= $this->getHiddensFormOverviewPage();
-
-					$parts[] = $this->getWorkflowHeaderMultiboxParts($_space);
-					$parts[] = array(
+					$parts = array(
+						$this->getWorkflowHeaderMultiboxParts($_space),
+						$parts[] = array(
 						'headline' => g_l('modules_workflow', '[type]'),
 						'space' => $_space - 25,
-						'html' => $this->getWorkflowTypeHTML());
-					$myout = '<br/>';
-					$myout .= we_forms::checkboxWithHidden($this->workflowDef->EmailPath, $this->uid . '_EmailPath', g_l('modules_workflow', '[EmailPath]'), false, 'defaultfont', '', false);
-
-					$myout .= we_forms::checkboxWithHidden($this->workflowDef->LastStepAutoPublish, $this->uid . '_LastStepAutoPublish', g_l('modules_workflow', '[LastStepAutoPublish]'), false, 'defaultfont', '', false);
-					array_push($parts, array(
-						'headline' => g_l('modules_workflow', '[specials]'),
-						'space' => $_space - 25,
-						'html' => $myout));
+						'html' => $this->getWorkflowTypeHTML()),
+						array(
+							'headline' => g_l('modules_workflow', '[specials]'),
+							'space' => $_space - 25,
+							'html' => '<br/>' .
+							we_forms::checkboxWithHidden($this->workflowDef->EmailPath, $this->uid . '_EmailPath', g_l('modules_workflow', '[EmailPath]'), false, 'defaultfont', '', false) .
+							we_forms::checkboxWithHidden($this->workflowDef->LastStepAutoPublish, $this->uid . '_LastStepAutoPublish', g_l('modules_workflow', '[LastStepAutoPublish]'), false, 'defaultfont', '', false)
+						),
+					);
 					//	Workflow-Type
-					$content .= we_multiIconBox::getHTML('workflowProperties', '100%', $parts, 30);
+					$content .= $this->getHiddensFormOverviewPage().
+						we_multiIconBox::getHTML('workflowProperties', '100%', $parts, 30);
 				} else{
-					$content .= $this->getHiddensFormPropertyPage();
-					$content .= we_html_tools::htmlDialogLayout($this->getStepsHTML(), '');
+					$content .= $this->getHiddensFormPropertyPage() .
+						we_html_tools::htmlDialogLayout($this->getStepsHTML(), '');
 				}
 			}
 			$content .='</form>';
 			$body = we_html_element::htmlBody(array('class' => 'weEditorBody', 'onload' => 'loaded=1;', 'onunload' => 'doUnload()'), $content);
 
-			return we_html_tools::htmlTop() . STYLESHEET . '</head>' . $body . '</html>';
+			return we_html_tools::htmlTop() . STYLESHEET . $this->getPropertyJS() . '</head>' . $body . '</html>';
 		}
 	}
 
@@ -488,27 +483,33 @@ class weWorkflowView extends we_workflow_base{
 
 			parent.document.title = "<?php print $title; ?>";
 
-			function we_cmd(){
+			function we_cmd() {
 				var args = "";
-				var url = "<?php print WEBEDITION_DIR; ?>we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
-				if(hot == "1" && arguments[0]!="save_workflow") {
+				var url = "<?php print WEBEDITION_DIR; ?>we_cmd.php?";
+				for (var i = 0; i < arguments.length; i++) {
+					url += "we_cmd[" + i + "]=" + escape(arguments[i]);
+					if (i < (arguments.length - 1)) {
+						url += "&";
+					}
+				}
+				if (hot == "1" && arguments[0] != "save_workflow") {
 					var hotConfirmMsg = confirm("<?php print g_l('modules_workflow', '[save_changed_workflow]') ?>");
-					if(hotConfirmMsg==true) {
+					if (hotConfirmMsg == true) {
 						arguments[0] = "save_workflow";
 						top.content.usetHot();
 					} else {
 						top.content.setHot();
 					}
 				}
-				switch (arguments[0]){
+				switch (arguments[0]) {
 					case "exit_workflow":
-						if(hot != "1") {
+						if (hot != "1") {
 							eval('top.opener.top.we_cmd(\'exit_modules\')');
 						}
 						break;
 					case "new_workflow":
-						top.content.resize.right.editor.edbody.document.we_form.wcmd.value=arguments[0];
-						top.content.resize.right.editor.edbody.document.we_form.wid.value=arguments[1];
+						top.content.resize.right.editor.edbody.document.we_form.wcmd.value = arguments[0];
+						top.content.resize.right.editor.edbody.document.we_form.wid.value = arguments[1];
 						top.content.resize.right.editor.edbody.submitForm();
 						break;
 					case "delete_workflow":
@@ -517,13 +518,16 @@ class weWorkflowView extends we_workflow_base{
 			print we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
 		} else{
 			?>
-								if(top.content.resize.right.editor.edbody.loaded){
-									if(!confirm("<?php print g_l('modules_workflow', '[delete_question]') ?>")) return;
-								}
-								else { <?php print we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR); ?> }
+							if (top.content.resize.right.editor.edbody.loaded) {
+								if (!confirm("<?php print g_l('modules_workflow', '[delete_question]') ?>"))
+									return;
+							}
+							else {
+			<?php print we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
+							}
 
-								top.content.resize.right.editor.edbody.document.we_form.wcmd.value=arguments[0];
-								top.content.resize.right.editor.edbody.submitForm();
+							top.content.resize.right.editor.edbody.document.we_form.wcmd.value = arguments[0];
+							top.content.resize.right.editor.edbody.submitForm();
 		<?php } ?>
 						break;
 					case "save_workflow":
@@ -532,40 +536,44 @@ class weWorkflowView extends we_workflow_base{
 			print we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
 		} else{
 			?>
-								if(top.content.resize.right.editor.edbody.loaded){
-									top.content.resize.right.editor.edbody.setStatus(top.content.resize.right.editor.edfooter.document.we_form.status_workflow.value);
-									chk=top.content.resize.right.editor.edbody.checkData();
-									if(!chk) return;
-									num=top.content.resize.right.editor.edbody.getNumOfDocs();
-									if(num>0)
-										if(!confirm("<?php print g_l('modules_workflow', '[save_question]') ?>")) return;
-								}
-								else { <?php print we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[nothing_to_save]'), we_message_reporting::WE_MESSAGE_ERROR); ?> }
-								top.content.resize.right.editor.edbody.document.we_form.wcmd.value=arguments[0];
-								top.content.resize.right.editor.edbody.submitForm();
-								top.content.usetHot();
+							if (top.content.resize.right.editor.edbody.loaded) {
+								top.content.resize.right.editor.edbody.setStatus(top.content.resize.right.editor.edfooter.document.we_form.status_workflow.value);
+								chk = top.content.resize.right.editor.edbody.checkData();
+								if (!chk)
+									return;
+								num = top.content.resize.right.editor.edbody.getNumOfDocs();
+								if (num > 0)
+									if (!confirm("<?php print g_l('modules_workflow', '[save_question]') ?>"))
+										return;
+							}
+							else {
+			<?php print we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[nothing_to_save]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
+							}
+							top.content.resize.right.editor.edbody.document.we_form.wcmd.value = arguments[0];
+							top.content.resize.right.editor.edbody.submitForm();
+							top.content.usetHot();
 		<?php } ?>
 						break;
 					case "edit_workflow":
 					case "show_document":
-						top.content.resize.right.editor.edbody.document.we_form.wcmd.value=arguments[0];
-						top.content.resize.right.editor.edbody.document.we_form.wid.value=arguments[1];
+						top.content.resize.right.editor.edbody.document.we_form.wcmd.value = arguments[0];
+						top.content.resize.right.editor.edbody.document.we_form.wid.value = arguments[1];
 						top.content.resize.right.editor.edbody.submitForm();
 						break;
 					case "reload_workflow":
 						top.content.resize.left.tree.location.reload(true);
 						break;
 					case "empty_log":
-						new jsWindow("<?php print WE_WORKFLOW_MODULE_DIR ?>edit_workflow_frameset.php?pnt=qlog","log_question",-1,-1,360,230,true,false,true);
+						new jsWindow("<?php print WE_WORKFLOW_MODULE_DIR ?>edit_workflow_frameset.php?pnt=qlog", "log_question", -1, -1, 360, 230, true, false, true);
 						break;
 					default:
-						for(var i = 0; i < arguments.length; i++){
-							args += 'arguments['+i+']' + ((i < (arguments.length-1)) ? ',' : '');
+						for (var i = 0; i < arguments.length; i++) {
+							args += 'arguments[' + i + ']' + ((i < (arguments.length - 1)) ? ',' : '');
 						}
-						eval('top.opener.top.we_cmd('+args+')');
-					}
+						eval('top.opener.top.we_cmd(' + args + ')');
 				}
-				//-->
+			}
+			//-->
 		</script>
 		<?php
 	}
@@ -582,243 +590,230 @@ function submitForm(){
 	}
 
 	function getPropertyJS(){
-		echo we_html_element::jsScript(JS_DIR . 'windows.js');
-		?>
-		<script type="text/javascript"><!--
-				var loaded;
+		return we_html_element::jsScript(JS_DIR . 'windows.js') . we_html_element::jsElement('
+var loaded;
 
-				function doUnload() {
-					if (!!jsWindow_count) {
-						for (i = 0; i < jsWindow_count; i++) {
-							eval("jsWindow" + i + "Object.close()");
-						}
-					}
-				}
+function doUnload() {
+	if (!!jsWindow_count) {
+		for (i = 0; i < jsWindow_count; i++) {
+			eval("jsWindow" + i + "Object.close()");
+		}
+	}
+}
 
-				function we_cmd(){
-					var args = "";
-					var url = "<?php print WEBEDITION_DIR; ?>we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
-					switch (arguments[0]){
-						case "browse_users":
-							new jsWindow(url,"browse_users",-1,-1,500,300,true,false,true);
-							break;
-						case "openDirselector":
-							new jsWindow(url,"we_fileselector",-1,-1,<?php echo WINDOW_DIRSELECTOR_WIDTH . ',' . WINDOW_DIRSELECTOR_HEIGHT; ?>,true,true,true,true);
-							break;
-						case "openCatselector":
-							new jsWindow(url,"we_catselector",-1,-1,<?php echo WINDOW_CATSELECTOR_WIDTH . ',' . WINDOW_CATSELECTOR_HEIGHT; ?>,true,true,true,true);
-							break;
-						case "openObjselector":
-							url = "<?php echo WEBEDITION_DIR; ?>we_cmd.php?we_cmd[0]=openDocselector&we_cmd[8]=object&we_cmd[1]=&we_cmd[2]=<?php print (defined("OBJECT_TABLE") ? OBJECT_TABLE : ""); ?>&we_cmd[5]="+arguments[5]+"&we_cmd[9]=1";
-							new jsWindow(url,"we_objectselector",-1,-1,<?php echo WINDOW_DOCSELECTOR_WIDTH . ',' . WINDOW_DOCSELECTOR_HEIGHT; ?>,true,true,true);
-							break;
-						case "add_cat":
-						case "del_cat":
-						case "del_all_cats":
-							document.we_form.wcmd.value=arguments[0];
-							document.we_form.wcat.value=arguments[1];
-							submitForm();
-							break;
-						case "add_objcat":
-						case "del_objcat":
-						case "del_all_objcats":
-							document.we_form.wcmd.value=arguments[0];
-							document.we_form.wocat.value=arguments[1];
-							submitForm();
-							break;
-						case "add_folder":
-						case "del_folder":
-						case "del_all_folders":
-							document.we_form.wcmd.value=arguments[0];
-							document.we_form.wfolder.value=arguments[1];
-							submitForm();
-							break;
-						case "add_object_file_folder":
-						case "del_object_file_folder":
-						case "del_all_object_file_folders":
-							document.we_form.wcmd.value=arguments[0];
-							document.we_form.woffolder.value=arguments[1];
-							submitForm();
-							break;
-						case "add_object":
-						case "del_object":
-						case "del_all_objects":
-							document.we_form.wcmd.value=arguments[0];
-							document.we_form.wobject.value=arguments[1];
-							submitForm();
-							break;
-						case "switchPage":
-							document.we_form.wcmd.value=arguments[0];
-							document.we_form.page.value=arguments[1];
-							submitForm();
-							break;
-						default:
-							for(var i = 0; i < arguments.length; i++){
-								args += 'arguments['+i+']' + ((i < (arguments.length-1)) ? ',' : '');
-							}
-							eval('top.content.we_cmd('+args+')');
-						}
-					}
+function we_cmd(){
+	var args = "";
+	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
+	switch (arguments[0]){
+		case "browse_users":
+			new jsWindow(url,"browse_users",-1,-1,500,300,true,false,true);
+			break;
+		case "openDirselector":
+			new jsWindow(url,"we_fileselector",-1,-1,' . WINDOW_DIRSELECTOR_WIDTH . ',' . WINDOW_DIRSELECTOR_HEIGHT . ',true,true,true,true);
+			break;
+		case "openCatselector":
+			new jsWindow(url,"we_catselector",-1,-1,' . WINDOW_CATSELECTOR_WIDTH . ',' . WINDOW_CATSELECTOR_HEIGHT . ',true,true,true,true);
+			break;
+		case "openObjselector":
+			url = "' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=openDocselector&we_cmd[8]=object&we_cmd[1]=&we_cmd[2]=' . (defined("OBJECT_TABLE") ? OBJECT_TABLE : "") . '&we_cmd[5]="+arguments[5]+"&we_cmd[9]=1";
+			new jsWindow(url,"we_objectselector",-1,-1,' . WINDOW_DOCSELECTOR_WIDTH . ',' . WINDOW_DOCSELECTOR_HEIGHT . ',true,true,true);
+			break;
+		case "add_cat":
+		case "del_cat":
+		case "del_all_cats":
+			document.we_form.wcmd.value=arguments[0];
+			document.we_form.wcat.value=arguments[1];
+			submitForm();
+			break;
+		case "add_objcat":
+		case "del_objcat":
+		case "del_all_objcats":
+			document.we_form.wcmd.value=arguments[0];
+			document.we_form.wocat.value=arguments[1];
+			submitForm();
+			break;
+		case "add_folder":
+		case "del_folder":
+		case "del_all_folders":
+			document.we_form.wcmd.value=arguments[0];
+			document.we_form.wfolder.value=arguments[1];
+			submitForm();
+			break;
+		case "add_object_file_folder":
+		case "del_object_file_folder":
+		case "del_all_object_file_folders":
+			document.we_form.wcmd.value=arguments[0];
+			document.we_form.woffolder.value=arguments[1];
+			submitForm();
+			break;
+		case "add_object":
+		case "del_object":
+		case "del_all_objects":
+			document.we_form.wcmd.value=arguments[0];
+			document.we_form.wobject.value=arguments[1];
+			submitForm();
+			break;
+		case "switchPage":
+			document.we_form.wcmd.value=arguments[0];
+			document.we_form.page.value=arguments[1];
+			submitForm();
+			break;
+		default:
+			for(var i = 0; i < arguments.length; i++){
+				args += \'arguments[\'+i+\']\' + ((i < (arguments.length-1)) ? \',\' : \'\');
+			}
+			eval(\'top.content.we_cmd(\'+args+\')\');
+	}
+}
 
 
-					function submitForm(){
-						var f = self.document.we_form;
-						f.target = "edbody";
-						f.method = "post";
-						f.submit();
-					}
-		<?php if(!$this->show){ ?>
+function submitForm(){
+	var f = self.document.we_form;
+	f.target = "edbody";
+	f.method = "post";
+	f.submit();
+}
+' . (!$this->show ? '
 
 
-						function clickCheck(a){
-							if(a.checked) a.value=1;
-							else a.value=0;
-						}
+function clickCheck(a){
+	if(a.checked) a.value=1;
+	else a.value=0;
+}
 
-						function addStep(){
-							document.we_form.wsteps.value++;
-							document.we_form.wcmd.value="reload_table";
-							submitForm();
+function addStep(){
+	document.we_form.wsteps.value++;
+	document.we_form.wcmd.value="reload_table";
+	submitForm();
 
-						}
+}
 
-						function addTask(){
-							document.we_form.wtasks.value++;
-							document.we_form.wcmd.value="reload_table";
-							submitForm();
+function addTask(){
+	document.we_form.wtasks.value++;
+	document.we_form.wcmd.value="reload_table";
+	submitForm();
 
-						}
+}
 
-						function delStep(){
-							if(document.we_form.wsteps.value>1){
-								document.we_form.wsteps.value--;
-								document.we_form.wcmd.value="reload_table";
-								submitForm();
-							}
-							else{
-			<?php print we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[del_last_step]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
-								}
-							}
+function delStep(){
+	if(document.we_form.wsteps.value>1){
+		document.we_form.wsteps.value--;
+		document.we_form.wcmd.value="reload_table";
+		submitForm();
+	}else{' .
+					we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[del_last_step]'), we_message_reporting::WE_MESSAGE_ERROR) . '
+		}
+	}
 
-							function setStatus(val){
-								document.we_form.<?php print $this->uid; ?>_Status.value=val;
+function setStatus(val){
+	document.we_form.' . $this->uid . '_Status.value=val;
 
-							}
+}
 
-							function getStatusContol(){
-								return document.we_form.<?php print $this->uid; ?>_Status.value;
-							}
+function getStatusContol(){
+	return document.we_form.' . $this->uid . '_Status.value;
+}
 
-							function delTask(){
-								if(document.we_form.wtasks.value>1){
-									document.we_form.wtasks.value--;
-									document.we_form.wcmd.value="reload_table";
-									submitForm();
-								}
-								else{
-			<?php print we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[del_last_task]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
-								}
-							}
+function delTask(){
+	if(document.we_form.wtasks.value>1){
+		document.we_form.wtasks.value--;
+		document.we_form.wcmd.value="reload_table";
+		submitForm();
+	}else{' .
+					we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[del_last_task]'), we_message_reporting::WE_MESSAGE_ERROR) . '
+	}
+}
 
-							function getNumOfDocs(){
-								return <?php
-			$this->workflowDef->loadDocuments();
-			print count($this->workflowDef->documents)
-			?>;
-							}
+function getNumOfDocs(){
+	return ' . $this->workflowDef->loadDocuments() . count($this->workflowDef->documents) . ';
+}
 
-							function sprintf(){
-								if (!arguments || arguments.length < 1) return;
+function sprintf(){
+	if (!arguments || arguments.length < 1) return;
 
-								var argum = arguments[0];
-								var regex = /([^%]*)%(%|d|s)(.*)/;
-								var arr = new Array();
-								var iterator = 0;
-								var matches = 0;
+	var argum = arguments[0];
+	var regex = /([^%]*)%(%|d|s)(.*)/;
+	var arr = new Array();
+	var iterator = 0;
+	var matches = 0;
 
-								while (arr=regex.exec(argum)){
-									var left = arr[1];
-									var type = arr[2];
-									var right = arr[3];
+	while (arr=regex.exec(argum)){
+		var left = arr[1];
+		var type = arr[2];
+		var right = arr[3];
 
-									matches++;
-									iterator++;
+		matches++;
+		iterator++;
 
-									var replace = arguments[iterator];
+		var replace = arguments[iterator];
 
-									if (type=='d') replace = parseInt(param) ? parseInt(param) : 0;
-									else if (type=='s') replace = arguments[iterator];
-									argum = left + replace + right;
-								}
-								return argum;
-							}
+		if (type==\'d\') replace = parseInt(param) ? parseInt(param) : 0;
+		else if (type==\'s\') replace = arguments[iterator];
+		argum = left + replace + right;
+	}
+	return argum;
+}
 
 
-							function checkData(){
-								var nsteps=document.we_form.wsteps;
-								var ntasks=document.we_form.wtasks;
-								ret=false;
-								if(document.we_form.<?php print $this->uid ?>_Text.value=="") ret=true;
-								if(ret){
-			<?php print we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[name_empty]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
-									return false;
-								}
+function checkData(){
+	var nsteps=document.we_form.wsteps;
+	var ntasks=document.we_form.wtasks;
+	ret=false;
+	if(document.we_form.' . $this->uid . '_Text.value=="") ret=true;
+	if(ret){' .
+					we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[name_empty]'), we_message_reporting::WE_MESSAGE_ERROR) . '
+		return false;
+	}
 
-								ret=false;
-								if(document.we_form.<?php print $this->uid ?>_Folders.value=="" && document.we_form.<?php print $this->uid ?>_Type.value==1) ret=true;
-								if(ret){
-			<?php print we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[folders_empty]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
-									return false;
-								}
+	ret=false;
+	if(document.we_form.' . $this->uid . '_Folders.value=="" && document.we_form.' . $this->uid . '_Type.value==1) ret=true;
+	if(ret){' .
+					we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[folders_empty]'), we_message_reporting::WE_MESSAGE_ERROR) . '
+		return false;
+	}
 
-								ret=false;
-								if(document.we_form.<?php print $this->uid ?>_ObjectFileFolders.value=="" && document.we_form.<?php print $this->uid ?>_Type.value==2) ret=true;
-								if(ret){
-			<?php print we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[folders_empty]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
-									return false;
-								}
+	ret=false;
+	if(document.we_form.' . $this->uid . '_ObjectFileFolders.value=="" && document.we_form.' . $this->uid . '_Type.value==2) ret=true;
+	if(ret){' .
+					we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[folders_empty]'), we_message_reporting::WE_MESSAGE_ERROR) . '
+		return false;
+	}
 
-								ret=false;
-								if((document.we_form.<?php print $this->uid ?>_DocType.value==0 && document.we_form.<?php print $this->uid ?>_Categories.value=="") && document.we_form.<?php print $this->uid ?>_Type.value==0) ret=true;
-								if(ret){
-			<?php print we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[doctype_empty]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
-									return false;
-								}
+	ret=false;
+	if((document.we_form.' . $this->uid . '_DocType.value==0 && document.we_form.' . $this->uid . '_Categories.value=="") && document.we_form.' . $this->uid . '_Type.value==0) ret=true;
+	if(ret){' .
+					we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[doctype_empty]'), we_message_reporting::WE_MESSAGE_ERROR) . '
+		return false;
+	}
 
-								ret=false;
-								if(document.we_form.<?php print $this->uid ?>_Objects.value=="" && document.we_form.<?php print $this->uid ?>_Type.value==2) ret=true;
-								if(ret){
-			<?php print we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[objects_empty]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
-									return false;
-								}
+	ret=false;
+	if(document.we_form.' . $this->uid . '_Objects.value=="" && document.we_form.' . $this->uid . '_Type.value==2) ret=true;
+	if(ret){' .
+					we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[objects_empty]'), we_message_reporting::WE_MESSAGE_ERROR) . '
+		return false;
+	}
 
-								ret=false;
-								for(i=0;i<nsteps.value;i++){
-									eval('if(document.we_form.<?php print $this->uid ?>_step'+i+'_Worktime.value=="") ret=true;');
-									if(ret){
-										var _txt = "<?php print addslashes(g_l('modules_workflow', '[worktime_empty]')); ?>";
-			<?php print we_message_reporting::getShowMessageCall("_txt.replace(/%s/,i+1)", we_message_reporting::WE_MESSAGE_ERROR, true); ?>
-										return false;
-									}
-									userempty=true;
-									for(j=0;j<ntasks.value;j++){
-										eval('if(document.we_form.<?php print $this->uid ?>_task_'+i+'_'+j+'_userid.value!=0) userempty=false;');
-									}
-									if(userempty){
-										var _txt = "<?php print addslashes(g_l('modules_workflow', '[user_empty]')); ?>";
+	ret=false;
+	for(i=0;i<nsteps.value;i++){
+		eval(\'if(document.we_form.' . $this->uid . '_step\'+i+\'_Worktime.value=="") ret=true;\');
+		if(ret){
+			var _txt = "' . addslashes(g_l('modules_workflow', '[worktime_empty]')) . '";' .
+					we_message_reporting::getShowMessageCall("_txt.replace(/%s/,i+1)", we_message_reporting::WE_MESSAGE_ERROR, true) . '
+			return false;
+		}
+		userempty=true;
+		for(j=0;j<ntasks.value;j++){
+			eval(\'if(document.we_form.' . $this->uid . '_task_\'+i+\'_\'+j+\'_userid.value!=0) userempty=false;\');
+		}
+		if(userempty){
+			var _txt = "' . addslashes(g_l('modules_workflow', '[user_empty]')) . '";' .
+					we_message_reporting::getShowMessageCall("_txt.replace(/%s/,i+1)", we_message_reporting::WE_MESSAGE_ERROR, true) . '
+			return false;
+		}
 
-			<?php print we_message_reporting::getShowMessageCall("_txt.replace(/%s/,i+1)", we_message_reporting::WE_MESSAGE_ERROR, true); ?>
-										return false;
-									}
-
-								}
-								return true;
-							}
-
-		<?php } ?>
-					//-->
-		</script>
-		<?php
+	}
+	return true;
+}' : ''));
 	}
 
 	function processCommands(){
