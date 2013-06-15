@@ -55,7 +55,7 @@ if(isset($_REQUEST['we_cmd'][0]) && substr($_REQUEST['we_cmd'][0], 0, 15) == 'do
 }
 
 echo we_html_element::jsScript(JS_DIR . 'windows.js');
-include_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
+require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 
 print STYLESHEET;
 ?>

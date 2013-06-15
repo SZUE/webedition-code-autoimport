@@ -30,9 +30,9 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 //	file is included and the matching functions are included.
 
 if(!isset($_SESSION['weS']['we_mode']) || $_SESSION['weS']['we_mode'] == "normal"){ //	working in normal mode
-	include_once(WE_INCLUDES_PATH . 'webEdition_normal.inc.php');
+	require_once(WE_INCLUDES_PATH . 'webEdition_normal.inc.php');
 } else if($_SESSION['weS']['we_mode'] == "seem"){ //	working in super-easy-edit-mode
-	include_once(WE_INCLUDES_PATH . 'webEdition_seem.inc.php');
+	require_once(WE_INCLUDES_PATH . 'webEdition_seem.inc.php');
 }
 
 
@@ -465,7 +465,7 @@ foreach($GLOBALS['_we_active_integrated_modules'] as $mod){
 
 	if(file_exists(WE_MODULES_PATH . $mod . "/we_webEditionCmd_" . $mod . ".inc.php")){
 
-		include_once(WE_MODULES_PATH . $mod . "/we_webEditionCmd_" . $mod . ".inc.php");
+		require_once(WE_MODULES_PATH . $mod . "/we_webEditionCmd_" . $mod . ".inc.php");
 	}
 }{ // deal with uninstalled modules
 	foreach($_we_available_modules as $m){

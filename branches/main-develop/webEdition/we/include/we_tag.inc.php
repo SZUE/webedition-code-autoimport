@@ -31,17 +31,17 @@ function we_include_tag_file($name){
 		return true;
 	}
 	if(file_exists(WE_INCLUDES_PATH . 'we_tags/' . $fn . '.inc.php')){
-		include_once (WE_INCLUDES_PATH . 'we_tags/' . $fn . '.inc.php');
+		require_once (WE_INCLUDES_PATH . 'we_tags/' . $fn . '.inc.php');
 		return true;
 	}
 	if(file_exists(WE_INCLUDES_PATH . 'we_tags/custom_tags/' . $fn . '.inc.php')){
-		include_once (WE_INCLUDES_PATH . 'we_tags/custom_tags/' . $fn . '.inc.php');
+		require_once (WE_INCLUDES_PATH . 'we_tags/custom_tags/' . $fn . '.inc.php');
 		return true;
 	}
 
 	$toolinc = '';
 	if(weToolLookup::getToolTag($name, $toolinc, true)){
-		include_once ($toolinc);
+		require_once ($toolinc);
 		return true;
 	}
 	if(strpos(trim($name), 'if') === 0){ // this ifTag does not exist

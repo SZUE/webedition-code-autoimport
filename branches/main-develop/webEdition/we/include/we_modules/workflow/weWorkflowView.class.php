@@ -1349,7 +1349,7 @@ function submitForm(){
 		);
 
 
-		include_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
+		require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 
 		return we_html_element::jsScript(JS_DIR . 'windows.js') . we_html_element::jsElement('
 		function openToEdit(tab,id,contentType){

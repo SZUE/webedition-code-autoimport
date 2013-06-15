@@ -23,8 +23,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-include_once (WE_INCLUDES_PATH . 'we_widgets/inc/plg/chart.php');
-include_once ($_SERVER['DOCUMENT_ROOT'] . WE_TRACKER_DIR . "/includes/showme.inc.php");
+require_once (WE_INCLUDES_PATH . 'we_widgets/inc/plg/chart.php');
+require_once ($_SERVER['DOCUMENT_ROOT'] . WE_TRACKER_DIR . "/includes/showme.inc.php");
 
 we_html_tools::protect();
 

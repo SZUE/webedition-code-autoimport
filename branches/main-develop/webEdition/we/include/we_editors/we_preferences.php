@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-include_once(WE_INCLUDES_PATH . 'we_editors/we_preferences_config.inc.php');
+require_once(WE_INCLUDES_PATH . 'we_editors/we_preferences_config.inc.php');
 
 //NOTE: only add "newConf" to entries set in $GLOBALS['configs']. All "temporary" entries should remain in main-Request-Scope
 

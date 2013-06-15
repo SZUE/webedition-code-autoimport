@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition SDK
  *
@@ -10,7 +11,7 @@
  *
  * The GNU Lesser General Public License can be found at
  * http://www.gnu.org/licenses/lgpl-3.0.html.
- * A copy is found in the textfile 
+ * A copy is found in the textfile
  * webEdition/licenses/webEditionSDK/License.txt
  *
  *
@@ -18,28 +19,26 @@
  * @package    we_util
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-
 include_once ('Zend/Log.php');
 
 /**
  * static logging class for logging messages
- * 
+ *
  * @category   we
  * @package    we_util
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-class we_util_Log
-{
+class we_util_Log{
 
 	const ENABLE_LOGGING = true;
 
 	/**
-	 * @var Zend_Log object for syslog.php 
+	 * @var Zend_Log object for syslog.php
 	 */
 	protected static $_syslog = null;
 
 	/**
-	 * @var Zend_Log object for other logfiles than syslog.php 
+	 * @var Zend_Log object for other logfiles than syslog.php
 	 */
 	protected static $_logfile = null;
 
@@ -58,33 +57,32 @@ class we_util_Log
 	 * 			DEBUG   = 7;  // Debug: debug messages
 	 * @return bool false if logging to file fails (mostly because of insufficient file access rights)
 	 */
-	public static function log($message = "", $errorlevel = 7, $filename = "syslog")
-	{
-		
-		if (!self::isActive()) {
+	public static function log($message = "", $errorlevel = 7, $filename = "syslog"){
+
+		if(!self::isActive()){
 			return false;
 		}
-		if ($filename != "syslog") {
+		if($filename != "syslog"){
 			self::$_logfile = null;
 		}
-		if (is_null(self::$_syslog)) {
+		if(is_null(self::$_syslog)){
 			//$writer = new Zend_Log_Writer_Stream('php://output');
 			$logCheck = self::checkCreateLog($filename);
-			if ($logCheck === false) {
+			if($logCheck === false){
 				error_log("could write to syslog");
 				return false;
-			} else {
+			} else{
 				$writer = new Zend_Log_Writer_Stream($logCheck);
-				if ($filename == "syslog") {
+				if($filename == "syslog"){
 					self::$_syslog = new Zend_Log($writer);
-				} else {
+				} else{
 					self::$_logfile = new Zend_Log($writer);
 				}
 			}
 		}
-		if ($filename == "syslog") {
+		if($filename == "syslog"){
 			self::$_syslog->log($message, $errorlevel);
-		} else {
+		} else{
 			self::$_logfile->log($message, $errorlevel);
 		}
 	}
@@ -104,9 +102,8 @@ class we_util_Log
 	 * @return bool status ofs yslog()
 	 * @uses syslog http://de.php.net/manual/de/function.syslog.php
 	 */
-	public static function syslog($message = "", $errorlevel = 7)
-	{
-		if (!self::isActive()) {
+	public static function syslog($message = "", $errorlevel = 7){
+		if(!self::isActive()){
 			return false;
 		}
 		$errorcodes = array(LOG_EMERG, LOG_ALERT, LOG_CRIT, LOG_ERR, LOG_WARNING, LOG_NOTICE, LOG_INFO, LOG_DEBUG);
@@ -119,12 +116,11 @@ class we_util_Log
 	 * @param mixed $message message to write to errorlog
 	 * 			$message can be a string as well as an array or an object
 	 */
-	public static function errorLog($message = "")
-	{
-		if (!self::isActive()) {
+	public static function errorLog($message = ""){
+		if(!self::isActive()){
 			return false;
 		}
-		switch ($message) {
+		switch($message){
 			case "" :
 				error_log("empty log");
 				break;
@@ -144,14 +140,13 @@ class we_util_Log
 	 * logs current memory usage to syslog
 	 * @param string $message optional text message for description
 	 */
-	public static function memusage($message = "")
-	{
-		if (!self::isActive()) {
+	public static function memusage($message = ""){
+		if(!self::isActive()){
 			return false;
 		}
-		if (!empty($message)) {
+		if(!empty($message)){
 			$message .= ": ";
-		} else {
+		} else{
 			$message = "used: ";
 		}
 		error_log($message . round(((memory_get_usage() / 1024) / 1024), 3) . " MB, limit: " . ini_get('memory_limit'));
@@ -162,25 +157,24 @@ class we_util_Log
 	 * creates the missinglog file in webEdition/log/ with php exit statement at the beginning and .php suffix
 	 * if it does not exist already.
 	 */
-	public static function checkCreateLog($filename = "")
-	{
-		if (empty($filename) || ctype_alnum($filename) === false)
+	public static function checkCreateLog($filename = ""){
+		if(empty($filename) || ctype_alnum($filename) === false)
 			return false;
 		$logPath = $_SERVER['DOCUMENT_ROOT'] . '/webEdition/log/';
 		$file = $logPath . $filename . ".php";
-		if (is_file($file) && is_writable($file)) {
+		if(is_file($file) && is_writable($file)){
 			return $file;
-		} else {
-			if (!is_dir($logPath)) {
-				if (!@mkdir($logPath)) {
+		} else{
+			if(!is_dir($logPath)){
+				if(!@mkdir($logPath)){
 					error_log("log directory not found, could not create it due to insufficient accesss rights.");
 					return false;
 				}
 			}
 			$exitCode = "<?php\n exit(); \n ?>\n";
-			if (!@file_put_contents($file, $exitCode)) {
+			if(!@file_put_contents($file, $exitCode)){
 				error_log("could not create logfile due to insufficient accesss rights.");
-			} else {
+			} else{
 				return $file;
 			}
 		}
@@ -190,11 +184,11 @@ class we_util_Log
 	 * checks if either the system wide constant ENABLE_LOGGING or the class constant SELF::ENABLE_LOGGING is set to (bool)true
 	 * @return bool true/false
 	 */
-	public static function isActive()
-	{
-		if (@constant("self::ENABLE_LOGGING") === true || @constant("ENABLE_LOGGING") === true) {
+	public static function isActive(){
+		if(@constant("self::ENABLE_LOGGING") === true || @constant("ENABLE_LOGGING") === true){
 			return true;
 		}
 		return false;
 	}
+
 }

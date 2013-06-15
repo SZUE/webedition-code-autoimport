@@ -109,8 +109,8 @@ $_userName = $_SESSION['user']['Username'];
 @require ($_SERVER['DOCUMENT_ROOT'] . WE_TRACKER_DIR . "/includes/showme.inc.php");
 //$_dns = getDomainList($_userName,$_md5passwd);
 //if (defined('WE_TRACKER_DIR')) {
-include_once ($_SERVER['DOCUMENT_ROOT'] . WE_TRACKER_DIR . "/includes/global.inc.php");
-include_once ($_SERVER['DOCUMENT_ROOT'] . WE_TRACKER_DIR . "/includes/db.inc.php");
+require_once ($_SERVER['DOCUMENT_ROOT'] . WE_TRACKER_DIR . "/includes/global.inc.php");
+require_once ($_SERVER['DOCUMENT_ROOT'] . WE_TRACKER_DIR . "/includes/db.inc.php");
 $pl_db = new stat_db();
 $pl_tables = new stat_tables();
 $pl_tables->build_tables();

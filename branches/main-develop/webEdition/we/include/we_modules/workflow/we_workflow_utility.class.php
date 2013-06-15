@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once(WE_MODULES_PATH . 'workflow/we_conf_workflow.inc.php');
+require_once(WE_MODULES_PATH . 'workflow/we_conf_workflow.inc.php');
 
 class we_workflow_utility{
 

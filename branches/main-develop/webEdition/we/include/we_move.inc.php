@@ -21,7 +21,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once (WE_INCLUDES_PATH . 'we_move_fn.inc.php');
+require_once (WE_INCLUDES_PATH . 'we_move_fn.inc.php');
 
 we_html_tools::protect();
 $table = $_REQUEST['we_cmd'][2];
@@ -31,7 +31,7 @@ $script = "";
 if(($table == TEMPLATES_TABLE && !we_hasPerm("MOVE_TEMPLATE")) ||
 	($table == FILE_TABLE && !we_hasPerm("MOVE_DOCUMENT")) ||
 	(defined("OBJECT_TABLE") && $table == OBJECT_TABLE && !we_hasPerm("MOVE_OBJECTFILES"))){
-	include_once (WE_USERS_MODULE_PATH . 'we_users_permmessage.inc.php');
+	require_once (WE_USERS_MODULE_PATH . 'we_users_permmessage.inc.php');
 	exit();
 }
 

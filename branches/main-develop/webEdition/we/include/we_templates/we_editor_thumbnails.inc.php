@@ -22,9 +22,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 we_html_tools::htmlTop();
-include_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
-print STYLESHEET;
-echo we_html_element::jsScript(JS_DIR . 'windows.js');
+require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
+echo STYLESHEET.
+	we_html_element::jsScript(JS_DIR . 'windows.js');
 ?>
 
 </head>

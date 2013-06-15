@@ -40,26 +40,3 @@ $htmlPage->addHTML('<div><a href="javascript:we_ui_controls_TextField.setDisable
 $htmlPage->addElement($inp2);
 
 print $htmlPage->getHTML();
-/*
-  if (!$_SERVER['DOCUMENT_ROOT']) {
-  $_SERVER['DOCUMENT_ROOT'] = '../../../';
-  }
-
-  include_once('webEdition/lib/we/core/autoload.php');
-
-  $textInput = new we_ui_controls_TextField();
-  $textInput->setName('test');
-
-  $p = new we_ui_layout_HTMLPage();
-  $p->addBodyAttribute('onload', 'alert(999);');
-  $p->addBodyAttribute('onunload', 'alert(998);');
-  $p->addCSSFile('we_ui_controls_TextInput');
-  $p->addElement($textInput);
-  $p->addHTML('<pre>TEST</pre>');
-  $p->addInlineCSS('a {border: 1px solid black;}');
-  $p->addInlineJS('alert("TEST");');
-  $p->setCharset('ISO-8859-1');
-  $p->setLang('de');
-  $p->setTitle('My Title');
-  print $p->getHTML(); */
-?>

@@ -164,7 +164,7 @@ function we_saveCustomerImages(){
 						//everything ok, now delete
 
 						$GLOBALS['NOT_PROTECT'] = true;
-						include_once(WE_INCLUDES_PATH . 'we_delete_fn.inc.php');
+						require_once(WE_INCLUDES_PATH . 'we_delete_fn.inc.php');
 						deleteEntry($imgId, FILE_TABLE);
 						$GLOBALS['NOT_PROTECT'] = false;
 						// reset image field

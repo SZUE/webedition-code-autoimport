@@ -21,7 +21,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once(WE_INCLUDES_PATH . 'we_tag.inc.php');
+require_once(WE_INCLUDES_PATH . 'we_tag.inc.php');
 echo we_html_element::htmlDocType();
 ?><html>
 
@@ -46,7 +46,7 @@ echo we_html_element::htmlDocType();
 		<?php
 		if(isset($we_editmode) && $we_editmode){
 			echo we_html_element::jsScript(JS_DIR . 'windows.js');
-			include_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
+			require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 		} else{
 			print we_tag("textarea", array("name" => "HEAD"));
 		}
