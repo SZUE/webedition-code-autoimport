@@ -22,8 +22,40 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+we_html_tools::protect();
+we_html_tools::htmlTop(g_l('thumbnails', '[thumbnails]'));
+
 $reloadUrl = getServerUrl(true) . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=editThumbs';
-$save_javascript = '';
+
+// Check if we need to create a new thumbnail
+if(isset($_GET['newthumbnail']) && $_GET['newthumbnail'] != ''){
+	if(we_hasPerm('ADMINISTRATOR')){
+		$DB_WE->query('INSERT INTO ' . THUMBNAILS_TABLE . ' SET Name ="' . $DB_WE->escape($_GET['newthumbnail']) . '"');
+		header('Location: ' . $reloadUrl . '&id=' . f('SELECT ID FROM ' . THUMBNAILS_TABLE . ' WHERE Name="' . $DB_WE->escape($_GET['newthumbnail']) . '"', 'ID', $DB_WE));
+		exit();
+	}
+}
+
+// Check if we need to delete a thumbnail
+if(isset($_GET['deletethumbnail']) && $_GET['deletethumbnail'] != ''){
+	if(we_hasPerm('ADMINISTRATOR')){
+		// Delete thumbnails in filesystem
+		we_thumbnail::deleteByThumbID($_GET['deletethumbnail']);
+
+		// Delete entry in database
+		$DB_WE->query('DELETE FROM ' . THUMBNAILS_TABLE . ' WHERE ID=' . intval($_GET['deletethumbnail']));
+
+		header('Location: ' . $reloadUrl);
+		exit();
+	}
+}
+
+// Check which thumbnail to work with
+if(!isset($_GET['id']) || $_GET['id'] == ''){
+	$tmpid = f('SELECT ID FROM ' . THUMBNAILS_TABLE . ' ORDER BY Name LIMIT 1', 'ID', $DB_WE);
+
+	$_GET['id'] = $tmpid ? $tmpid : -1;
+}
 
 /**
  * This function returns the HTML code of a dialog.
@@ -362,28 +394,73 @@ function render_dialog(){
 		we_html_element::htmlDiv(array('id' => 'thumbnails_save', 'style' => 'display: none;'), build_dialog('save'));
 }
 
-we_html_tools::htmlTop();
+function getFooter(){
+	$_javascript = we_html_element::jsElement('
+function we_save() {
+	top.we_thumbnails.document.getElementById("thumbnails_dialog").style.display = "none";
+	top.we_thumbnails.document.getElementById("thumbnails_save").style.display = "";
+	top.we_thumbnails.document.we_form.save_thumbnails.value = "true";
+	top.we_thumbnails.document.we_form.submit();
+}');
 
-// Check if we need to save settings
-if(isset($_REQUEST['save_thumbnails']) && $_REQUEST['save_thumbnails'] == 'true'){
+	return $_javascript .
+		we_html_element::htmlDiv(array('class' => 'weDialogButtonsBody', 'style' => 'height:100%'), we_button::position_yes_no_cancel(we_button::create_button('save', 'javascript:we_save();'), '', we_button::create_button("close", "javascript:" . ((isset($_REQUEST["closecmd"]) && $_REQUEST["closecmd"]) ? ($_REQUEST["closecmd"] . ';') : '') . 'top.close()'), 10, '', '', 0));
+}
 
-	if(isset($_REQUEST['thumbnail_name']) && (strpos($_REQUEST['thumbnail_name'], "'") !== false || strpos($_REQUEST['thumbnail_name'], ',') !== false)){
-		$save_javascript = we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', '[thumbnail_hochkomma]'), we_message_reporting::WE_MESSAGE_ERROR) .
-				'history.back()');
+function getMainDialog(){
+	// Check if we need to save settings
+	if(isset($_REQUEST['save_thumbnails']) && $_REQUEST['save_thumbnails'] == 'true'){
+
+		if(isset($_REQUEST['thumbnail_name']) && (strpos($_REQUEST['thumbnail_name'], "'") !== false || strpos($_REQUEST['thumbnail_name'], ',') !== false)){
+			$save_javascript = we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', '[thumbnail_hochkomma]'), we_message_reporting::WE_MESSAGE_ERROR) .
+					'history.back()');
+		} else{
+			save_all_values();
+
+
+			$save_javascript = we_html_element::jsElement(
+					$save_javascript . we_message_reporting::getShowMessageCall(g_l('thumbnails', '[saved]'), we_message_reporting::WE_MESSAGE_NOTICE) .
+					"self.location = '" . $GLOBALS['reloadUrl'] . "&id=" . $_REQUEST["edited_id"] . "';");
+		}
+
+		return $save_javascript .
+	we_html_element::htmlDiv(array('class' => 'weDialogBody', 'style' => 'height:100%;width:100%'), build_dialog('saved'));
 	} else{
-		save_all_values();
-
-
-		$save_javascript = we_html_element::jsElement(
-				$save_javascript . we_message_reporting::getShowMessageCall(g_l('thumbnails', '[saved]'), we_message_reporting::WE_MESSAGE_NOTICE) .
-				"self.location = '" . $GLOBALS['reloadUrl'] . "&id=" . $_REQUEST["edited_id"] . "';");
+		$_form = we_html_element::htmlForm(array('name' => 'we_form', 'method' => 'get', 'action' => $_SERVER['SCRIPT_NAME']), we_html_element::htmlHidden(array('name' => 'save_thumbnails', 'value' => 'false')) . render_dialog());
+	return we_html_element::htmlDiv(array('class' => 'weDialogBody', 'style' => 'height:100%;width:100%', 'onload' => 'init()'), $_form);
 	}
+}
 
-	print STYLESHEET . $save_javascript . '</head>' .
-		we_html_element::htmlBody(array('class' => 'weDialogBody'), build_dialog('saved')) . '</html>';
-} else{
-	$_form = we_html_element::htmlForm(array('name' => 'we_form', 'method' => 'get', 'action' => $_SERVER['SCRIPT_NAME']), we_html_element::htmlHidden(array('name' => 'save_thumbnails', 'value' => 'false')) . render_dialog());
+//  check if gd_lib is installed ...
+if(we_image_edit::gd_version() > 0){
 
-	print STYLESHEET . '</head>' .
-		we_html_element::htmlBody(array('class' => 'weDialogBody', 'onload' => 'init()'), $_form) . '</html>';
+	echo
+	we_html_element::jsElement('self.focus();') .
+	we_html_element::jsScript(JS_DIR . 'keyListener.js') .
+	we_html_element::jsElement('
+function closeOnEscape() {
+	return true;
+}
+
+function saveOnKeyBoard() {
+	window.frames[1].we_save();
+	return true;
+}') . STYLESHEET . '</head>' .
+	we_html_element::htmlBody(array('style' => 'margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;text-align:center;')
+		, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
+			, we_html_element::htmlExIFrame('we_thumbnails', getMainDialog(), 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;overflow: hidden;') .
+			we_html_element::htmlExIFrame('we_thumbnails_footer', getFooter(), 'position:absolute;height:40px;bottom:0px;left:0px;right:0px;overflow: hidden;')
+	)) . '</html>';
+} else{ //  gd_lib is not installed - show error
+	print STYLESHEET . '</head><body class="weDialogBody">';
+
+
+	$parts = array(
+		array(
+			'headline' => '',
+			'html' => we_html_tools::htmlAlertAttentionBox(g_l('importFiles', '[add_description_nogdlib]'), we_html_tools::TYPE_INFO, 440),
+			'space' => 0
+		)
+	);
+	print we_multiIconBox::getHTML('thumbnails', '100%', $parts, 30, '', -1, '', '', false, g_l('thumbnails', '[thumbnails]'));
 }

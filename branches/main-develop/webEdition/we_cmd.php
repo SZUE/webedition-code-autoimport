@@ -128,7 +128,7 @@ if(!$INCLUDE){
 			$INCLUDE = 'we_editors/we_preferences_frameset.inc.php';
 			break;
 		case 'editThumbs':
-			$INCLUDE = 'we_editors/we_thumbnails_frameset.inc.php';
+			$INCLUDE = 'we_editors/we_thumbnails.inc.php';
 			break;
 		case 'editMetadataFields':
 			$INCLUDE = 'we_editors/we_metadata_fields/frameset.inc.php';
