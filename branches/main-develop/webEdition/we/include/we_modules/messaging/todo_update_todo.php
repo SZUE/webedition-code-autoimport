@@ -27,7 +27,7 @@ if (!preg_match('|^([a-f0-9]){32}$|i',$_REQUEST['we_transaction'])) {
 }
 
 require_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
-include_once(WE_MESSAGING_MODULE_PATH . "msg_html_tools.inc.php");
+require_once(WE_MESSAGING_MODULE_PATH . "msg_html_tools.inc.php");
 
 we_html_tools::protect();
 

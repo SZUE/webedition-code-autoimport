@@ -155,7 +155,7 @@ we_html_tools::htmlTop(g_l('weClass', '[generateTemplate]'));
 print we_html_element::jsScript(JS_DIR . 'windows.js') .
 	STYLESHEET;
 
-include_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
+require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 
 echo '</head><body class="weDialogBody"><form name="we_form">';
 $tmpl = new we_makenewtemplate();

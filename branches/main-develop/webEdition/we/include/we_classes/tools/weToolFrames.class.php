@@ -178,7 +178,7 @@ class weToolFrames extends weModuleFrames{
 	function getHTMLHeader(){
 		//	Include the menu.
 		include($this->toolDir . 'conf/we_menu_' . $this->toolName . '.conf.php');
-		include_once(WE_INCLUDES_PATH . "jsMessageConsole/messageConsole.inc.php" );
+		require_once(WE_INCLUDES_PATH . "jsMessageConsole/messageConsole.inc.php" );
 
 		$lang_arr = 'we_menu_' . $this->toolName;t_e("larr",$lang_arr);
 		$jmenu = new weJavaMenu($$lang_arr, $this->topFrame . '.cmd');

@@ -23,7 +23,7 @@
  */
 
 // include autoload function
-include_once('../lib/we/core/autoload.php');
+require_once('../lib/we/core/autoload.php');
 
 // get controller instabce
 $controller = Zend_Controller_Front::getInstance();

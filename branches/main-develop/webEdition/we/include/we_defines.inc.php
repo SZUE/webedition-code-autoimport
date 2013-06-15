@@ -100,7 +100,7 @@ define('ZENDCACHE_PATH', WEBEDITION_PATH . 'we/zendcache/');
 
 
 // Activate the webEdition error handler
-include_once (WE_INCLUDES_PATH . 'we_error_handler.inc.php');
+require_once (WE_INCLUDES_PATH . 'we_error_handler.inc.php');
 if(!defined('WE_ERROR_HANDLER_SET')){
 	we_error_handler();
 }

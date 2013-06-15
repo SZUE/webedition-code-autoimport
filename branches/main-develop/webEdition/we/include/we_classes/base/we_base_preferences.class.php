@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once(WE_INCLUDES_PATH . 'we_editors/we_preferences_config.inc.php');
+require_once(WE_INCLUDES_PATH . 'we_editors/we_preferences_config.inc.php');
 
 class we_base_preferences{
 

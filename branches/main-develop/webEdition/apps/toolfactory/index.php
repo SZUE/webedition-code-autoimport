@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 // include autoload function
-include_once('../../lib/we/core/autoload.php');
+require_once('../../lib/we/core/autoload.php');
 
 // include configuration
 include_once('toolfactory/conf/meta.conf.php');

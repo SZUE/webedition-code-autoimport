@@ -267,7 +267,7 @@ if($_userID != 0 && $_userID != $_SESSION['user']['ID'] && $we_doc->ID){ // docu
 		$we_doc->EditPageNr = WE_EDITPAGE_PREVIEW;
 		$_SESSION['weS']['EditPageNr'] = WE_EDITPAGE_PREVIEW;
 	} else{
-		include_once(WE_USERS_MODULE_PATH . 'we_users_lockmessage.inc.php');
+		require_once(WE_USERS_MODULE_PATH . 'we_users_lockmessage.inc.php');
 		exit;
 	}
 } elseif($_userID != $_SESSION['user']['ID'] && $_SESSION['weS']['we_mode'] == 'seem' && $we_doc->EditPageNr != WE_EDITPAGE_PREVIEW){

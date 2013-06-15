@@ -791,12 +791,12 @@ function msg_start() {
 
 	function getHTMLFrameset(){
 		$this->transaction = &$this->weTransaction;
-	
+
 		$this->messaging = new we_messaging($_SESSION['weS']['we_data'][$this->transaction]);
 		$this->messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
 
 		if(!$this->messaging->check_folders()){
-			include_once(WE_MESSAGING_MODULE_PATH . "messaging_interfaces.inc.php");
+			require_once(WE_MESSAGING_MODULE_PATH . "messaging_interfaces.inc.php");
 			if(!msg_create_folders($_SESSION["user"]["ID"])){
 				$extraHead .= we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_messaging', '[cant_create_folders]'), we_message_reporting::WE_MESSAGE_ERROR));
 			}
@@ -818,7 +818,7 @@ function msg_start() {
 			}
 		}
 
-		$extraHead = $this->getJSCmdCode() . 
+		$extraHead = $this->getJSCmdCode() .
 			we_html_element::jsScript(JS_DIR . 'messaging_std.js') .
 			we_html_element::jsScript(JS_DIR . 'messaging_hl.js') .
 			$this->getJSTreeCode() .
@@ -834,7 +834,7 @@ function msg_start() {
 
 	function getHTMLResize(){//TODO: as soon as transaction is checked centrally in constructor we can us parent
 
-		return parent::getHTMLResize('', '&we_transaction=' . $this->transaction); 
+		return parent::getHTMLResize('', '&we_transaction=' . $this->transaction);
 	}
 
 
@@ -886,16 +886,16 @@ function msg_start() {
 				document.we_messaging_search.messaging_search_keyword.value = "";
 				doSearch();
 			}
-		') . we_html_element::jsScript(JS_DIR . 'windows.js'); 
+		') . we_html_element::jsScript(JS_DIR . 'windows.js');
 
 		$searchlabel = $this->viewclass == 'todo' ? '[search_todos]' : '[search_messages]';
 		$hidden = we_html_tools::hidden('we_transaction', $this->transaction);
 		$table = new we_html_table(array('style' => 'margin: 4px 0px 0px 7px;', 'border' => '0'), 1, 2);
 
-		$table->setCol(0, 0, array('class' => 'defaultfont'), 
+		$table->setCol(0, 0, array('class' => 'defaultfont'),
 			g_l('modules_messaging', $searchlabel) .
-			we_html_tools::getPixel(10, 1) . 
-			we_html_tools::htmlTextInput('messaging_search_keyword', 15, isset($_REQUEST['messaging_search_keyword']) ? $_REQUEST['messaging_search_keyword'] : '', 15) . 
+			we_html_tools::getPixel(10, 1) .
+			we_html_tools::htmlTextInput('messaging_search_keyword', 15, isset($_REQUEST['messaging_search_keyword']) ? $_REQUEST['messaging_search_keyword'] : '', 15) .
 			we_html_tools::getPixel(10, 1)
 		);
 
@@ -954,15 +954,15 @@ function msg_start() {
 
 		$table = new we_html_table(array(
 			'style' => 'margin: 5px 0 0 0px',
-			'border' => '0', 
+			'border' => '0',
 			'cellpadding' => '0',
 			'cellspacing' => '0',
 			'width' => '100%'), 1, count($colsArray) + 1);
 
 		$table->setCol(0, 0, array('width' => '18'), we_html_tools::pPixel(18, 1));
 		for($i = 0; $i < count($colsArray); $i++){
-			$table->setCol(0, $i + 1, array('class' => 'defaultfont', 'width' => $colsArray[$i][0]), 
-				'<a href="javascript:doSort(\'' . $colsArray[$i][1] . '\');"><b>' . g_l('modules_messaging', $colsArray[$i][2]) . 
+			$table->setCol(0, $i + 1, array('class' => 'defaultfont', 'width' => $colsArray[$i][0]),
+				'<a href="javascript:doSort(\'' . $colsArray[$i][1] . '\');"><b>' . g_l('modules_messaging', $colsArray[$i][2]) .
 				'</b>&nbsp;' . ((isset($_REQUEST["si"]) && $_REQUEST["si"] == $colsArray[$i][1]) ? $this->sort_arrow("arrow_sortorder_" . $_REQUEST['so'], "") : we_html_tools::getPixel(1, 1)) . '</a>'
 			);
 		}
@@ -979,7 +979,7 @@ function msg_start() {
 		$_image_path = IMAGE_DIR . 'modules/messaging/' . $name . '.gif';
 
 		// Check if we have to create a form or href
-		return $href? '<a href="' . $href . '"><img src="' . $_image_path . '" border="0" alt="" /></a>' : 
+		return $href? '<a href="' . $href . '"><img src="' . $_image_path . '" border="0" alt="" /></a>' :
 			'<input type="image" src="' . $_image_path . '" border="0" alt="" />';
 	}
 

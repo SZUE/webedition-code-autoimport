@@ -24,7 +24,7 @@
 /**
  * Includes autoload function
  */
-include_once (dirname(dirname(__FILE__)) . '/../../we/core/autoload.php');
+require_once (dirname(dirname(__FILE__)) . '/../../we/core/autoload.php');
 
 we_core_Permissions::protect();
 

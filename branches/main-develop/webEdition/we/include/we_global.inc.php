@@ -1532,7 +1532,7 @@ function clearPath($path){
  *          attribs through the tagParser.
  */
 function getHtmlTag($element, $attribs = array(), $content = '', $forceEndTag = false, $onlyStartTag = false){
-	include_once (WE_INCLUDES_PATH . 'we_tag.inc.php');
+	require_once (WE_INCLUDES_PATH . 'we_tag.inc.php');
 //	default at the moment is xhtml-style
 	$_xmlClose = false;
 
@@ -1558,7 +1558,7 @@ function getHtmlTag($element, $attribs = array(), $content = '', $forceEndTag = 
 		$_xmlClose = true;
 
 		if(XHTML_DEBUG){ //  check if XHTML_DEBUG is activated - system pref
-			include_once (WE_INCLUDES_PATH . 'validation/xhtml.inc.php');
+			require_once (WE_INCLUDES_PATH . 'validation/xhtml.inc.php');
 
 			$showWrong = (isset($_SESSION['prefs']['xhtml_show_wrong']) && $_SESSION['prefs']['xhtml_show_wrong'] && isset(
 					$GLOBALS['we_doc']) && $GLOBALS['we_doc']->InWebEdition); //  check if XML_SHOW_WRONG is true (user) - only in webEdition
@@ -1869,7 +1869,7 @@ function g_l($name, $specific, $omitErrors = false){
 }
 
 function we_templateInit(){
-	include_once ($_SERVER['DOCUMENT_ROOT'] . LIB_DIR . 'we/core/autoload.php');
+	require_once ($_SERVER['DOCUMENT_ROOT'] . LIB_DIR . 'we/core/autoload.php');
 	if(!isset($GLOBALS['DB_WE'])){
 		$GLOBALS['DB_WE'] = new DB_WE;
 	}
@@ -1917,7 +1917,7 @@ function we_templateHead(){
 	if(isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode']){
 		print STYLESHEET_BUTTONS_ONLY . SCRIPT_BUTTONS_ONLY;
 		print we_html_element::jsScript(JS_DIR . 'windows.js');
-		include_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
+		require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 	}
 }
 

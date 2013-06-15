@@ -146,7 +146,7 @@ top.weSidebar = weSidebar;
 
 
 				<?php
-				include_once(WE_INCLUDES_PATH . "jsMessageConsole/messageConsole.inc.php" );
+				require_once(WE_INCLUDES_PATH . "jsMessageConsole/messageConsole.inc.php" );
 				print createMessageConsole("mainWindow");
 				?>
 				<img src="<?php print IMAGE_DIR ?>pixel.gif" alt="" name="busy" width="20" height="19">

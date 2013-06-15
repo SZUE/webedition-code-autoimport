@@ -380,7 +380,7 @@ function checkFooter(){
 			switch($s['task']){
 				case self::DELETE:
 					$GLOBALS["NOT_PROTECT"] = true;
-					include_once(WE_INCLUDES_PATH . 'we_delete_fn.inc.php');
+					require_once(WE_INCLUDES_PATH . 'we_delete_fn.inc.php');
 					deleteEntry($id, $schedFile['table']);
 					$deleted = true;
 					$changeTmpDoc = false;

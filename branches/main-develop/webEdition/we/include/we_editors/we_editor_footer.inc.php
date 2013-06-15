@@ -53,19 +53,19 @@ switch($we_doc->userHasAccess()){
 		break;
 
 	case we_root::FILE_NOT_IN_USER_WORKSPACE : //	file is not in workspace of user
-		include_once(WE_INCLUDES_PATH . 'we_editors/file_in_workspace_footer.inc.php');
+		require_once(WE_INCLUDES_PATH . 'we_editors/file_in_workspace_footer.inc.php');
 		exit();
 
 	case we_root::USER_NO_PERM : //	access is restricted and user has no permission
-		include_once(WE_INCLUDES_PATH . 'we_editors/file_restricted_footer.inc.php');
+		require_once(WE_INCLUDES_PATH . 'we_editors/file_restricted_footer.inc.php');
 		exit;
 
 	case we_root::FILE_LOCKED : //	file is locked by another user
-		include_once(WE_INCLUDES_PATH . 'we_editors/file_locked_footer.inc.php');
+		require_once(WE_INCLUDES_PATH . 'we_editors/file_locked_footer.inc.php');
 		exit;
 
 	case we_root::USER_NO_SAVE : //	user has not the right to save the file.
-		include_once(WE_INCLUDES_PATH . 'we_editors/file_no_save_footer.inc.php');
+		require_once(WE_INCLUDES_PATH . 'we_editors/file_no_save_footer.inc.php');
 		exit;
 }
 
@@ -453,7 +453,7 @@ function showEditFooterForNormalMode(){
 		}
 	}
 
-	
+
 	if($we_doc->IsTextContentDoc && $haspermNew){
 
 		$_ctrlElem = getControlElement('checkbox', 'makeSameDoc');

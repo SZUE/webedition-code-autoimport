@@ -88,7 +88,7 @@ $GLOBALS['_we_active_integrated_modules'][] = 'users';
 
 foreach($GLOBALS['_we_active_integrated_modules'] as $active){
 	if(file_exists(WE_MODULES_PATH . $active . '/we_conf_' . $active . '.inc.php')){
-		include_once (WE_MODULES_PATH . $active . '/we_conf_' . $active . '.inc.php');
+		require_once (WE_MODULES_PATH . $active . '/we_conf_' . $active . '.inc.php');
 	}
 }
 
@@ -149,7 +149,7 @@ if(!isset($GLOBALS['WE_IS_DYN'])){ //only true on dynamic frontend pages
 	include_once (WE_INCLUDES_PATH . 'define_styles.inc.php');
 	include_once (WE_INCLUDES_PATH . 'we_available_modules.inc.php');
 	//FIXME: needed by liveupdate, calls old protect directly remove in 6.4
-	include_once (WE_INCLUDES_PATH . 'we_perms.inc.php');
+	require_once (WE_INCLUDES_PATH . 'we_perms.inc.php');
 
 
 	//send header?

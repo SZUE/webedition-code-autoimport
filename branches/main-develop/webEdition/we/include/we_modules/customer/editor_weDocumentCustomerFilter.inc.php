@@ -52,7 +52,7 @@ $parts[] = array(
 
 print we_html_tools::htmlTop() .
 	STYLESHEET;
-include_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
+require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 print we_html_element::cssElement("
 .paddingLeft {
 	padding-left: 25px;

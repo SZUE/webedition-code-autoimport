@@ -22,8 +22,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 header("Content-Type: text/javascript");
-include_once( $_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_defines.inc.php');
-include_once ($_SERVER['DOCUMENT_ROOT'] . LIB_DIR.'we/core/autoload.php');
+require_once( $_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_defines.inc.php');
+require_once ($_SERVER['DOCUMENT_ROOT'] . LIB_DIR.'we/core/autoload.php');
 
 
 $useSeeModeJS = array(

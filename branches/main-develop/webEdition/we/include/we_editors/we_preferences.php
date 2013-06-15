@@ -106,7 +106,7 @@ function get_value($settingname){
 		case 'proxy_proxy':
 			// Check for settings file
 			if(file_exists(WEBEDITION_PATH . 'liveUpdate/includes/proxysettings.inc.php')){
-				include_once(WEBEDITION_PATH . 'liveUpdate/includes/proxysettings.inc.php');
+				require_once(WEBEDITION_PATH . 'liveUpdate/includes/proxysettings.inc.php');
 			}
 			return defined('WE_PROXYHOST');
 

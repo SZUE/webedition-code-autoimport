@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once(WE_MESSAGING_MODULE_PATH . "messaging_std.inc.php");
+require_once(WE_MESSAGING_MODULE_PATH . "messaging_std.inc.php");
 
 /* message object class */
 
@@ -210,7 +210,7 @@ class we_message extends we_msg_proto{
 			$in_folder = $this->DB_WE->f('ID');
 			if(!isset($in_folder) || $in_folder == ''){
 				/* Create default Folders for target user */
-				include_once(WE_MESSAGING_MODULE_PATH . "messaging_interfaces.inc.php");
+				require_once(WE_MESSAGING_MODULE_PATH . "messaging_interfaces.inc.php");
 				if(msg_create_folders($userid) == 1){
 					$this->DB_WE->query('SELECT ID FROM ' . $this->DB_WE->escape($this->folder_tbl) . ' WHERE obj_type = ' . we_msg_proto::FOLDER_INBOX . ' AND msg_type = ' . intval($this->sql_class_nr) . ' AND UserID = ' . intval($userid));
 					$this->DB_WE->next_record();

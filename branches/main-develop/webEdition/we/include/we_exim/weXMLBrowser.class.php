@@ -101,7 +101,7 @@ class weXMLBrowser extends we_xml_parser{
 
 	function getFile($file, $timeout = 0){
 		if(file_exists(WEBEDITION_PATH . 'updateinclude/proxysettings.php')){
-			include_once(WEBEDITION_PATH . 'updateinclude/proxysettings.php');
+			require_once(WEBEDITION_PATH . 'updateinclude/proxysettings.php');
 		}
 		$url = (weFile::hasURL($file) ? getHttpOption() : 'local');
 		$this->fileName = $file;

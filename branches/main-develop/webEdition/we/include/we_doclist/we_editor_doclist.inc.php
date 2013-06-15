@@ -31,7 +31,7 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js') .
  we_html_element::jsScript(JS_DIR . 'libs/yui/event-min.js') .
  we_html_element::jsScript(JS_DIR . 'libs/yui/connection-min.js');
 
-include_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
+require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 
 $headCal = we_html_element::cssLink(JS_DIR . "jscalendar/skins/aqua/theme.css") .
 	we_html_element::jsScript(JS_DIR . "jscalendar/calendar.js") .

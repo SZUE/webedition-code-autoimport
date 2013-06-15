@@ -57,18 +57,18 @@ switch($_REQUEST['we_cmd'][0]){
 
 switch($_REQUEST['we_cmd'][0]){
 	case 'openDirselector' :
-		include_once (WEBEDITION_PATH . 'we_dirSelect.php');
+		require_once (WEBEDITION_PATH . 'we_dirSelect.php');
 		break;
 	case 'openSelector' :
-		include_once (WEBEDITION_PATH . 'we_fs.php');
+		require_once (WEBEDITION_PATH . 'we_fs.php');
 		break;
 	case 'openDocselector' :
-		include_once (WEBEDITION_PATH . 'we_docSelect.php');
+		require_once (WEBEDITION_PATH . 'we_docSelect.php');
 		break;
 	case 'openCatselector' :
-		include_once (WEBEDITION_PATH . 'we_catSelect.php');
+		require_once (WEBEDITION_PATH . 'we_catSelect.php');
 		break;
 	case 'openDelSelector' :
-		include_once (WEBEDITION_PATH . 'we_delSelect.php');
+		require_once (WEBEDITION_PATH . 'we_delSelect.php');
 		break;
 }

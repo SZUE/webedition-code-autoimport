@@ -510,8 +510,8 @@ function we_cmd() {
 		$mid = isset($_REQUEST["mid"]) ? $_REQUEST["mid"] : 0;
 		$yearView = isset($_REQUEST["ViewYear"]) ? $_REQUEST["ViewYear"] : 0;
 		$home = isset($_REQUEST["home"]) ? $_REQUEST["home"] : 0;
-		
-		//define edbody, TODO: 
+
+		//define edbody, TODO:
 		if($home){
 			$bodyURL = WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=mod_home&mod=shop';
 		} elseif($mid){
@@ -538,7 +538,7 @@ function we_cmd() {
 
 	function getHTMLEditorTop(){// TODO: merge getHTMLRight and getHTMLRightTop
 		$DB_WE = $this->db;
-		include_once(WE_MODULES_PATH . 'shop/handle_shop_dbitemConnect.php');
+		require_once(WE_MODULES_PATH . 'shop/handle_shop_dbitemConnect.php');
 		$home = isset($_REQUEST["home"]) ? $_REQUEST["home"] : 0;
 		$mid = isset($_REQUEST["mid"]) ? $_REQUEST["mid"] : 0;
 		$bid = isset($_REQUEST["bid"]) ? $_REQUEST["bid"] : 0;
@@ -574,7 +574,7 @@ function we_cmd() {
 				$bodyURL = 'edit_shop_article_extend.php?typ=document';
 			}
 		}
-		
+
 		$frameset = new we_html_frameset(array("framespacing" => "0", "border" => "0", "frameborder" => "no"));
 		$frameset->setAttributes(array("rows" => "40,*"));
 		$frameset->addFrame(array('src' => 'edit_shop_frameset.php?pnt=edheader&top=1&home=' . $home . '&mid=' . $mid . '&bid=' . $bid . '&typ=object&ViewClass=' . $classid, 'name' => 'edheader', 'noresize' => null, 'scrolling' => 'no'));
@@ -638,7 +638,7 @@ top.content.hloaded = 1;
 
 	function getHTMLEditorHeaderTop(){
 		$DB_WE = $this->db;
-		include_once(WE_MODULES_PATH . 'shop/handle_shop_dbitemConnect.php');//TODO: make function out of this: do we need it or does the following code the same?
+		require_once(WE_MODULES_PATH . 'shop/handle_shop_dbitemConnect.php');//TODO: make function out of this: do we need it or does the following code the same?
 
 		$yid = isset($_REQUEST["ViewYear"]) ? abs($_REQUEST["ViewYear"]) : date("Y");
 		$bid = isset($_REQUEST["bid"]) ? abs($_REQUEST["bid"]) : 0;
@@ -706,7 +706,7 @@ function setTab(tab) {
 		' . (isset($yearTrans) ? '
 		case 2:
 			parent.edbody.document.location = "edit_shop_revenueTop.php?ViewYear=' . $yearTrans . '" // " + top.yearshop
-			break;	
+			break;
 		' : '') . '
 	}
 }

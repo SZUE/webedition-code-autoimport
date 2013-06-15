@@ -93,7 +93,7 @@ class rpcCmdShell{
 
 			return $_obj;
 		}
-		include_once('views/json/rpcGenericJSONView.class.php');
+		require_once('views/json/rpcGenericJSONView.class.php');
 		$_obj = new rpcGenericJSONView();
 		$_obj->setCmdShell($this);
 		return $_obj;

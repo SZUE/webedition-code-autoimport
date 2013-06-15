@@ -214,7 +214,6 @@ class Image_Transform
             }
 		}
 		    // we: driver already loaded!
-        //include_once 'Image/Transform/Driver/' . basename($driver) . '.php';
 
         $classname = "Image_Transform_Driver_{$driver}";
         if (! @class_exists($classname)) {

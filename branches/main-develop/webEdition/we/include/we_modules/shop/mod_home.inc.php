@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once(WE_MODULES_PATH . 'shop/handle_shop_dbitemConnect.php');
+require_once(WE_MODULES_PATH . 'shop/handle_shop_dbitemConnect.php');
 
 
 $prefshop = we_button::create_button("pref_shop", "javascript:top.opener.top.we_cmd('pref_shop');", true, -1, -1, "", "", !we_hasPerm("NEW_USER"));

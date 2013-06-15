@@ -1,3 +1,4 @@
+
 <?php
 
 /**
@@ -121,15 +122,15 @@ class weModuleFrames {
 	function getHTMLFrameset($extraHead = '', $iconbar = false, $extraUrlParams = ''){
 		$extraHead = $this->getJSCmdCode() .
 			self::getJSToggleTreeCode($this->module, $this->treeDefaultWidth) .
-			we_html_element::jsScript(JS_DIR . 'we_showMessage.js') . 
+			we_html_element::jsScript(JS_DIR . 'we_showMessage.js') .
 			we_main_headermenu::css() .
 			$extraHead;
 
 		$body = we_html_element::htmlBody(array('style' => 'background-color: gray; position: fixed; top: 0px; left: 0px; right: 0px; bottom: 0px; border: 0px none;', "onload" => "start();") ,
 				we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
 					, we_html_element::htmlExIFrame('header', self::getHTMLHeader(WE_INCLUDES_PATH .'java_menu/modules/module_menu_' . $this->module . '.inc.php', $this->module), 'position: absolute; top: 0px; height: 32px; left: 0px; right: 0px;') .
-					($iconbar ? we_html_element::htmlIFrame('iconbar', $this->frameset . '?pnt=iconbar' . $extraUrlParams, 'position: absolute; top: 32px; left: 0px; right: 0px; height: 40px; overflow: hidden;') : '') . 
-					we_html_element::htmlIFrame('resize', $this->frameset . '?pnt=resize' . $extraUrlParams, 'position: absolute; top:' . ($iconbar ? 72 : 32) . 'px; bottom: 1px; left: 0px; right: 0px; overflow: hidden;') . 
+					($iconbar ? we_html_element::htmlIFrame('iconbar', $this->frameset . '?pnt=iconbar' . $extraUrlParams, 'position: absolute; top: 32px; left: 0px; right: 0px; height: 40px; overflow: hidden;') : '') .
+					we_html_element::htmlIFrame('resize', $this->frameset . '?pnt=resize' . $extraUrlParams, 'position: absolute; top:' . ($iconbar ? 72 : 32) . 'px; bottom: 1px; left: 0px; right: 0px; overflow: hidden;') .
 					we_html_element::htmlIFrame('cmd', $this->frameset . '?pnt=cmd' . $extraUrlParams, 'position: absolute; bottom: 0px; height: 1px; left: 0px; right: 0px; overflow: hidden;')
 				));
 
@@ -140,7 +141,7 @@ class weModuleFrames {
 
 		//Include the menu.
 		include($_menuFile);
-		include_once(WE_INCLUDES_PATH . "jsMessageConsole/messageConsole.inc.php" );
+		require_once(WE_INCLUDES_PATH . "jsMessageConsole/messageConsole.inc.php" );
 
 		$lang_arr = "we_menu_" . $_module;
 		$jmenu = new weJavaMenu($$lang_arr, 'top.opener.top.load', '');
@@ -156,7 +157,7 @@ class weModuleFrames {
 
 	function getHTMLResize($extraHead = '', $editorParams = ''){//TODO: only customer uses param sid: handle sid with edParams
 		$this->setTreeWidthFromCookie();
-		$extraHead = self::getJSToggleTreeCode($this->module, $this->treeDefaultWidth) . 
+		$extraHead = self::getJSToggleTreeCode($this->module, $this->treeDefaultWidth) .
 			$extraHead;
 
 		$_incDecTree = '
@@ -165,7 +166,7 @@ class weModuleFrames {
 			<img id="arrowImg" src="' . BUTTONS_DIR . 'icons/direction_' . ($this->treeWidth <= 30 ? 'right' : 'left') . '.gif" width="9" height="12" style="position:absolute;bottom:13px;left:5px;border:1px solid grey;padding:0 1px;cursor: pointer;" onClick="top.content.resize.toggleTree();">
 		';
 
-		$body = we_html_element::htmlBody(array('style' => 'background-color:#bfbfbf;'), 
+		$body = we_html_element::htmlBody(array('style' => 'background-color:#bfbfbf;'),
 				we_html_element::htmlDiv(array('style' => 'position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px;'),
 					we_html_element::htmlDiv(array('id' => 'lframeDiv','style' => 'position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px;width: ' . $this->treeWidth . 'px;'),
 						we_html_element::htmlDiv(array('style' => 'position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px; width: ' . weTree::HiddenWidth . 'px; background-image: url(/webEdition/images/v-tabs/background.gif); background-repeat: repeat-y; border-top: 1px solid black;'), $_incDecTree) .
@@ -180,10 +181,10 @@ class weModuleFrames {
 	function getHTMLLeft($loadMainTree = true, $header = false, $footer = false, $footerId = 'treefooter'){//TODO: $loadMainTree entfaellt, sobald trees einheitlich sind
 		$headerHeight = $this->getTreeHeaderHeigt();
 		$footerHeight = $this->getTreeFooterHeigt();
-		
-		$body = we_html_element::htmlBody(array(), 
-				($header ? we_html_element::htmlDiv(array('style' => 'position: absolute; top: 0px; left: 0px; height: ' . $headerHeight . 'px; width: 100%; background-color: #00ff00;'), '') : 
-					we_html_element::htmlDiv(array('style' => 'position: absolute; top: 0px; left: 0px; height: 1px; width: 100%; background-color: #ffffff;'), '')) . 
+
+		$body = we_html_element::htmlBody(array(),
+				($header ? we_html_element::htmlDiv(array('style' => 'position: absolute; top: 0px; left: 0px; height: ' . $headerHeight . 'px; width: 100%; background-color: #00ff00;'), '') :
+					we_html_element::htmlDiv(array('style' => 'position: absolute; top: 0px; left: 0px; height: 1px; width: 100%; background-color: #ffffff;'), '')) .
 				we_html_element::htmlIFrame('tree', ($loadMainTree ? WEBEDITION_DIR . 'treeMain.php' : HTML_DIR . 'white.html'), 'position: absolute; top: ' . ($header ? $headerHeight : 1) . 'px; bottom: ' . ($footer ? $footerHeight : 0) . 'px; left: 0px; width: 100%;') .
 				($footer ? we_html_element::htmlIFrame($footerId, $this->frameset . '?pnt=' . $footerId, 'position: absolute; bottom: 0px; left: 0px; height: ' . $footerHeight . 'px; width: 100%;') : '')
 			);
@@ -194,7 +195,7 @@ class weModuleFrames {
 	protected function getTreeHeaderHeigt(){
 		return $this->treeHeaderHeight;
 	}
-	
+
 	protected function getTreeFooterHeigt(){
 		return $this->treeFooterHeight;
 	}
@@ -236,7 +237,7 @@ class weModuleFrames {
 		if(isset($_REQUEST['home'])){
 			return $this->getHTMLDocument(we_html_element::htmlBody(array("bgcolor" => "EFf0EF"), ""));
 		}
-		
+
 		$extraHead .= we_html_element::jsElement('
 
 			function we_save() {
@@ -251,7 +252,7 @@ class weModuleFrames {
 		$table2->setRow(0, array('valign' => 'middle'));
 		$table2->setCol(0, 0, array('nowrap' => null), we_html_tools::getPixel(5, 5));
 		$table2->setCol(0, 1, array('nowrap' => null), we_button::create_button('save', 'javascript:we_save()'));
-		
+
 		$body = we_html_element::htmlBody(array('bgcolor' => 'white', 'background' => IMAGE_DIR . 'edit/editfooterback.gif', 'marginwidth' => '0', 'marginheight' => '0', 'leftmargin' => '0', 'topmargin' => '0'), $table1->getHtml() . $table2->getHtml());
 
 		return $this->getHTMLDocument($body, $extraHead);

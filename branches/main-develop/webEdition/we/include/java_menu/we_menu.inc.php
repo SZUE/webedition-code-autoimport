@@ -984,7 +984,7 @@ while((list($key, $val) = each($GLOBALS['_we_available_modules']))) {
 	if(!isset($val['integrated']) || ( in_array($val['name'], $GLOBALS['_we_active_integrated_modules']) )){
 
 		if(file_exists(WE_INCLUDES_PATH . 'java_menu/modules/we_menu_' . $val['name'] . '.inc.php')){
-			include_once(WE_INCLUDES_PATH . 'java_menu/modules/we_menu_' . $val['name'] . '.inc.php');
+			require_once(WE_INCLUDES_PATH . 'java_menu/modules/we_menu_' . $val['name'] . '.inc.php');
 		}
 	}
 }

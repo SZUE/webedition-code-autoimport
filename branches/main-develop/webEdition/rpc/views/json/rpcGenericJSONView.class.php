@@ -25,7 +25,7 @@
 class rpcGenericJSONView extends rpcView{
 
 	function getResponse($response){
-		include_once(WE_INCLUDES_PATH . 'we_classes/JSON.php');
+		require_once(WE_INCLUDES_PATH . 'we_classes/JSON.php');
 		$json = new Services_JSON();
 		return $json->encode($response);
 	}
