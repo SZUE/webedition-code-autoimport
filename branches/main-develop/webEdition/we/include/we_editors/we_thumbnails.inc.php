@@ -423,11 +423,10 @@ function getMainDialog(){
 					"self.location = '" . $GLOBALS['reloadUrl'] . "&id=" . $_REQUEST["edited_id"] . "';");
 		}
 
-		return $save_javascript .
-	we_html_element::htmlDiv(array('class' => 'weDialogBody', 'style' => 'height:100%;width:100%'), build_dialog('saved'));
+		return $save_javascript . build_dialog('saved');
 	} else{
-		$_form = we_html_element::htmlForm(array('name' => 'we_form', 'method' => 'get', 'action' => $_SERVER['SCRIPT_NAME']), we_html_element::htmlHidden(array('name' => 'save_thumbnails', 'value' => 'false')) . render_dialog());
-	return we_html_element::htmlDiv(array('class' => 'weDialogBody', 'style' => 'height:100%;width:100%', 'onload' => 'init()'), $_form);
+		return we_html_element::htmlForm(array('name' => 'we_form', 'method' => 'get', 'action' => $_SERVER['SCRIPT_NAME']), we_html_element::htmlHidden(array('name' => 'save_thumbnails', 'value' => 'false')) . render_dialog()) .
+			we_html_element::jsElement('init();');
 	}
 }
 
@@ -448,7 +447,7 @@ function saveOnKeyBoard() {
 }') . STYLESHEET . '</head>' .
 	we_html_element::htmlBody(array('style' => 'margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;text-align:center;')
 		, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
-			, we_html_element::htmlExIFrame('we_thumbnails', getMainDialog(), 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;overflow: hidden;') .
+			, we_html_element::htmlExIFrame('we_thumbnails', getMainDialog(), 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;overflow: hidden;', 'weDialogBody') .
 			we_html_element::htmlExIFrame('we_thumbnails_footer', getFooter(), 'position:absolute;height:40px;bottom:0px;left:0px;right:0px;overflow: hidden;')
 	)) . '</html>';
 } else{ //  gd_lib is not installed - show error

@@ -131,7 +131,7 @@ if(!$INCLUDE){
 			$INCLUDE = 'we_editors/we_thumbnails.inc.php';
 			break;
 		case 'editMetadataFields':
-			$INCLUDE = 'we_editors/we_metadata_fields/frameset.inc.php';
+			$INCLUDE = 'we_editors/we_metadata_fields/edit_metadatafields.inc.php';
 			break;
 		case 'show':
 			$FROM_WE_SHOW_DOC = true;

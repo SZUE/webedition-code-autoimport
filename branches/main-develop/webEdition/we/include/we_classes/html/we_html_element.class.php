@@ -117,9 +117,8 @@ abstract class we_html_element{
 	}
 
 	static function cssLink($url){
-		return we_baseElement::getHtmlCode(new we_baseElement('link', false,
-					array('href' => self::getUnCache($url), 'rel' => 'styleSheet', 'type' => 'text/css')
-			));
+		return we_baseElement::getHtmlCode(new we_baseElement('link', false, array('href' => self::getUnCache($url), 'rel' => 'styleSheet', 'type' => 'text/css')
+		));
 	}
 
 	/**
@@ -416,10 +415,10 @@ abstract class we_html_element{
 		return self::htmlDiv(array('style' => $style, 'name' => $name . 'Div', 'id' => $name . 'Div')
 				, we_baseElement::getHtmlCode(
 					new we_baseElement('iframe', true, array('name' => $name, 'id' => $name, 'frameBorder' => 0, 'src' => $src, 'style' => $iframestyle))
-				));
+		));
 	}
 
-	static function htmlExIFrame($__name, $__src, $__style){
+	static function htmlExIFrame($__name, $__src, $__style, $class = ''){
 		if(strlen($__src) > 100){
 			$tmp = $__src;
 		} else{
@@ -428,8 +427,11 @@ abstract class we_html_element{
 			$tmp = ob_get_contents();
 			ob_end_clean();
 		}
-		return self::htmlDiv(array('style' => $__style, 'name' => $__name . 'Div', 'id' => $__name . 'Div')
-				, $tmp);
+		$tmpArray = array('style' => $__style, 'name' => $__name . 'Div', 'id' => $__name . 'Div');
+		if(!empty($class)){
+			$tmpArray['class'] = $class;
+		}
+		return self::htmlDiv($tmpArray, $tmp);
 	}
 
 }
