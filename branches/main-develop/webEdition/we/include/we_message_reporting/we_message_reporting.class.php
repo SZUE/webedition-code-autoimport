@@ -51,7 +51,7 @@ class we_message_reporting{
 			case self::WE_MESSAGE_INFO:
 			case self::WE_MESSAGE_FRONTEND:
 				return ($isJsMsg ? // message is build from scripts, just print it!
-						"alert( $message );" :
+						'alert(' . $message . ');' :
 						'alert("' . str_replace(array('\n', '\\', '"', '##NL##', '`'), array('##NL##', '\\\\', '\\"', '\n', '\"'), $message) . '");');
 				break;
 			default:
