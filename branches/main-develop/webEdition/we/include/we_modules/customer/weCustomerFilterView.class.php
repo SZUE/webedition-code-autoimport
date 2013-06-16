@@ -322,7 +322,7 @@ EO_SCRIPT;
 					array(
 						'logic' => '',
 						'field' => 'id',
-						'operation' => '0',
+						'operation' => 0,
 						'value' => ''
 					)
 				)

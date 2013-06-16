@@ -261,7 +261,7 @@ function finish(rebuild) {
 
 		$prevNextButtons = $prevButton ? we_button::create_button_table(array($prevButton, $nextButton)) : null;
 
-		$content = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0", "width" => "100%"), 1, 2);
+		$content = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0, "width" => "100%"), 1, 2);
 		$content->setCol(0, 0, null, $pb);
 		$content->setCol(0, 1, array("align" => "right"), '
 <div id="standardDiv">' . we_button::position_yes_no_cancel($prevNextButtons, null, $cancelButton, 10, "", array(), 10) . '</div>
@@ -513,8 +513,8 @@ top.document.getElementById('function_reload').onmouseup = we_import_handler;";
 									$_SESSION['fsw_importRefTable'] = isset($_SESSION['weS']['ExImRefTable']) ? $_SESSION['weS']['ExImRefTable'] : array();
 
 									$JScript = "
-function we_import_handler(e) { 
-	we_import(1," . ($v['numFiles'] - 1) . "); 
+function we_import_handler(e) {
+	we_import(1," . ($v['numFiles'] - 1) . ");
 }
 top.document.getElementById('function_reload').onmouseup = we_import_handler;
 setTimeout('we_import(1," . $v['numFiles'] . ");',15);";

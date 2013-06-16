@@ -27,41 +27,41 @@ $we_menu_navigation = array(
 		'text' => g_l('navigation', '[navigation]'),
 		'parent' => '000000',
 		'perm' => '',
-		'enabled' => '1',
+		'enabled' => 1,
 	),
 	'000200' => array(
 		'text' => g_l('navigation', '[menu_new]'),
 		'parent' => '000100',
 		'perm' => '',
-		'enabled' => '1',
+		'enabled' => 1,
 	),
 	array(
 		'text' => g_l('navigation', '[entry]'),
 		'parent' => '000200',
 		'cmd' => 'tool_navigation_new',
 		'perm' => 'EDIT_NAVIGATION || ADMINISTRATOR',
-		'enabled' => '1',
+		'enabled' => 1,
 	),
 	array(
 		'text' => g_l('navigation', '[group]'),
 		'parent' => '000200',
 		'cmd' => 'tool_navigation_new_group',
 		'perm' => 'EDIT_NAVIGATION || ADMINISTRATOR',
-		'enabled' => '1',
+		'enabled' => 1,
 	),
 	array(
 		'text' => g_l('navigation', '[menu_save]'),
 		'parent' => '000100',
 		'cmd' => 'tool_navigation_save',
 		'perm' => 'EDIT_NAVIGATION || ADMINISTRATOR',
-		'enabled' => '1',
+		'enabled' => 1,
 	),
 	array(
 		'text' => g_l('navigation', '[menu_delete]'),
 		'parent' => '000100',
 		'cmd' => 'tool_navigation_delete',
 		'perm' => 'EDIT_NAVIGATION || ADMINISTRATOR',
-		'enabled' => '1',
+		'enabled' => 1,
 	),
 	array(
 		'parent' => '000100', // separator
@@ -71,7 +71,7 @@ $we_menu_navigation = array(
 		'parent' => '000100',
 		'cmd' => 'tool_navigation_exit',
 		'perm' => '',
-		'enabled' => '1',
+		'enabled' => 1,
 	),
 	/*
 	  '001500'=>array(
@@ -101,14 +101,14 @@ $we_menu_navigation = array(
 		'text' => g_l('navigation', '[menu_options]'),
 		'parent' => '000000',
 		'perm' => '',
-		'enabled' => '1',
+		'enabled' => 1,
 	),
 	array(
 		'text' => g_l('navigation', '[menu_highlight_rules]'),
 		'parent' => '002000',
 		'perm' => '',
 		'cmd' => 'tool_navigation_rules',
-		'enabled' => '1',
+		'enabled' => 1,
 	));
 if(defined('CUSTOMER_TABLE')){
 	$we_menu_navigation['002200'] = array(
@@ -116,7 +116,7 @@ if(defined('CUSTOMER_TABLE')){
 		'parent' => '002000',
 		'perm' => 'ADMINISTRATOR',
 		'cmd' => 'tool_navigation_reset_customer_filter',
-		'enabled' => '1',
+		'enabled' => 1,
 	);
 }
 
@@ -124,7 +124,7 @@ $we_menu_navigation['003000'] = array(
 	'text' => g_l('navigation', '[menu_help]'),
 	'parent' => '000000',
 	'perm' => '',
-	'enabled' => '1',
+	'enabled' => 1,
 );
 
 $we_menu_navigation['003100'] = array(
@@ -132,7 +132,7 @@ $we_menu_navigation['003100'] = array(
 	'parent' => '003000',
 	'cmd' => 'help_tools',
 	'perm' => '',
-	'enabled' => '1',
+	'enabled' => 1,
 );
 
 $we_menu_navigation['003200'] = array(
@@ -140,5 +140,5 @@ $we_menu_navigation['003200'] = array(
 	'parent' => '003000',
 	'cmd' => 'info_tools',
 	'perm' => '',
-	'enabled' => '1',
+	'enabled' => 1,
 );

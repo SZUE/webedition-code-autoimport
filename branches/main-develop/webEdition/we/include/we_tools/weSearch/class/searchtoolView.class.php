@@ -1505,11 +1505,11 @@ class searchtoolView extends weToolView{
 
 		$_table = new we_html_table(
 			array(
-			'border' => '0',
-			'cellpadding' => '2',
-			'cellspacing' => '0',
-			'width' => '500',
-			'height' => '50'
+			'border' => 0,
+			'cellpadding' => 2,
+			'cellspacing' => 0,
+			'width' => 500,
+			'height' => 50
 			), 4, 2);
 
 		switch($whichSearch){
@@ -1649,11 +1649,11 @@ class searchtoolView extends weToolView{
 
 		$_table = new we_html_table(
 			array(
-			'border' => '0',
-			'cellpadding' => '2',
-			'cellspacing' => '0',
-			'width' => '550',
-			'height' => '50'
+			'border' => 0,
+			'cellpadding' => 2,
+			'cellspacing' => 0,
+			'width' => 550,
+			'height' => 50
 			), 4, 3);
 
 		if(we_hasPerm('CAN_SEE_DOCUMENTS')){
@@ -2837,9 +2837,9 @@ class searchtoolView extends weToolView{
 		$btnDatePicker = we_button::create_button(
 				"image:date_picker", "javascript:", null, null, null, null, null, null, false, $_btn);
 		$oSelector = new we_html_table(array(
-			"cellpadding" => "0",
-			"cellspacing" => "0",
-			"border" => "0",
+			"cellpadding" => 0,
+			"cellspacing" => 0,
+			"border" => 0,
 			"id" => $_name . "_cell"
 			), 1, 5);
 		$oSelector->setCol(0, 2, null, we_html_tools::htmlTextInput($name = $_name, $size = 55, $value, $maxlength = 10, $attribs = 'id="' . $_name . '" class="wetextinput" readonly="1"', $type = "text", $width = 100));

@@ -71,7 +71,7 @@ abstract class we_html_element{
 	static function htmlRadioCheckbox($attribs = array()){
 		$attribs['type'] = 'checkbox';
 
-		$table = new we_html_table(array('cellpadding' => '0', 'cellspacing' => '0', 'border' => '0'), 1, 3);
+		$table = new we_html_table(array('cellpadding' => 0, 'cellspacing' => 0, 'border' => 0), 1, 3);
 		$table->setColContent(0, 0, self::htmlInput($attribs));
 		$table->setColContent(0, 1, we_html_tools::getPixel(4, 2));
 		$table->setColContent(0, 2, self::htmlLabel(array('for' => '$name', 'title' => sprintf(g_l('htmlForms', '[click_here]'), $attribs['title']), $attribs['title'])));

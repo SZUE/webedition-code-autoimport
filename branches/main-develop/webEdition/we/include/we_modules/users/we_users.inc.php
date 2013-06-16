@@ -1305,7 +1305,7 @@ $this->Preferences=' . var_export($this->Preferences, true) . ';
 	function formUserData(){
 
 		$_description = '<textarea name="' . $this->Name . '_Description" cols="25" rows="5" style="width:520px" class="defaultfont" onChange="top.content.setHot();">' . $this->Description . '</textarea>';
-		$_attr = array('border' => '0', 'cellpadding' => '2', 'cellspacing' => '0');
+		$_attr = array('border' => 0, 'cellpadding' => 2, 'cellspacing' => 0);
 		$_tableObj = new we_html_table($_attr, 12, 2);
 		$line = 0;
 		$_tableObj->setCol($line, 0, null, $this->getUserfield('Salutation', 'salutation'));
@@ -1372,7 +1372,7 @@ $this->Preferences=' . var_export($this->Preferences, true) . ';
 		$_tableObj->setCol(2, 1, array("class" => "defaultfont"), g_l('modules_users', "[lastPing]") . ' ' . (($this->Ping) ? date('d.m.Y H:i:s', $this->Ping) : '-'));
 		$_tableObj->setCol(3, 0, null, we_html_tools::getPixel(280, 10));
 		$_tableObj->setCol(3, 1, null, we_html_tools::getPixel(280, 5));
-		$_tableObj->setCol(4, 0, array("colspan" => "2"), we_html_tools::htmlFormElementTable($weAcSelector, g_l('modules_users', "[group]")));
+		$_tableObj->setCol(4, 0, array("colspan" => 2), we_html_tools::htmlFormElementTable($weAcSelector, g_l('modules_users', "[group]")));
 		$_tableObj->setCol(5, 0, null, we_html_tools::getPixel(280, 10));
 		$_tableObj->setCol(5, 1, null, we_html_tools::getPixel(280, 5));
 		if($this->CreatorID){
@@ -1768,7 +1768,7 @@ function delElement(elvalues,elem) {
 		$_settings = array();
 
 		// Create checkboxes
-		$_table = new we_html_table(array('border' => '0', 'cellpadding' => '0', 'cellspacing' => '0'), 3, 1);
+		$_table = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0), 3, 1);
 
 		$_table->setCol(0, 0, null, we_forms::checkbox(1, $this->Preferences['force_glossary_check'], $this->Name . '_Preference_force_glossary_check', g_l('prefs', '[force_glossary_check]'), 'false', 'defaultfont', "top.content.setHot()"));
 		$_table->setCol(1, 0, null, we_html_tools::getPixel(1, 5));
@@ -2027,7 +2027,7 @@ function show_seem_chooser(val) {
 		$_seem_object_chooser = we_button::create_button_table(array($weAcSelector), 10, array('id' => 'seem_start_object', 'style' => 'display:none'));
 
 		// Build final HTML code
-		$_seem_html = new we_html_table(array('border' => '0', 'cellpadding' => '0', 'cellspacing' => '0'), 2, 1);
+		$_seem_html = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0), 2, 1);
 		$_seem_html->setCol(0, 0, array('class' => 'defaultfont'), $_start_type->getHtml() . we_html_tools::getPixel(200, 1));
 		$_seem_html->setCol(1, 0, null, $_seem_document_chooser . $_seem_object_chooser . $_seem_weapp_chooser);
 
@@ -2103,7 +2103,7 @@ function show_seem_chooser(val) {
 		$_window_specify_code = we_forms::radiobutton(1, !($this->Preferences['sizeOpt'] == 0), $this->Name . '_Preference_sizeOpt', g_l('prefs', '[specify]'), true, 'defaultfont', "document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].disabled = false;top.content.setHot();");
 
 		// Create specify window dimension input
-		$_window_specify_table = new we_html_table(array('border' => '0', 'cellpadding' => '0', 'cellspacing' => '0'), 4, 4);
+		$_window_specify_table = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0), 4, 4);
 
 		$_window_specify_table->setCol(0, 0, null, we_html_tools::getPixel(1, 10));
 		$_window_specify_table->setCol(1, 0, null, we_html_tools::getPixel(40, 1));
@@ -2120,13 +2120,13 @@ function show_seem_chooser(val) {
 		$_window_specify_table->setCol(3, 3, null, we_html_tools::htmlTextInput($this->Name . "_Preference_weHeight", 6, ( ($this->Preferences['weHeight'] != '' && $this->Preferences['weHeight'] != '0') ? $this->Preferences['weHeight'] : 600), 4, ($this->Preferences['sizeOpt'] == 0 ? "disabled=\"disabled\"" : "") . "onChange='top.content.setHot();'", "text", 60));
 
 		// Build apply current window dimension
-		$_window_current_dimension_table = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0"), 1, 2);
+		$_window_current_dimension_table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 1, 2);
 
 		$_window_current_dimension_table->setCol(0, 0, null, we_html_tools::getPixel(90, 1));
 		$_window_current_dimension_table->setCol(0, 1, null, we_button::create_button("apply_current_dimension", "javascript:top.content.setHot();document.getElementsByName('" . $this->Name . "_Preference_sizeOpt')[1].checked = true;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].value = " . (we_base_browserDetect::isIE() ? "top.opener.top.document.body.clientWidth" : "top.opener.top.window.outerWidth") . ";document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].value = " . (we_base_browserDetect::isIE() ? "top.opener.top.document.body.clientHeight;" : "top.opener.top.window.outerHeight;"), true, 210));
 
 		// Build final HTML code
-		$_window_html = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0"), 5, 1);
+		$_window_html = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 5, 1);
 		$_window_html->setCol(0, 0, null, $_window_max_code);
 		$_window_html->setCol(1, 0, null, we_html_tools::getPixel(1, 10));
 		$_window_html->setCol(2, 0, null, $_window_specify_code . $_window_specify_table->getHtml());
@@ -2137,7 +2137,7 @@ function show_seem_chooser(val) {
 		$_settings[] = array("headline" => g_l('prefs', '[dimension]'), "html" => $_window_html->getHtml(), "space" => 200);
 
 		// Create predefined window dimension buttons
-		$_window_predefined_table = new we_html_table(array("border" => "0", "align" => "right", "cellpadding" => "1", "cellspacing" => "0"), 3, 1);
+		$_window_predefined_table = new we_html_table(array("border" => 0, "align" => "right", "cellpadding" => 1, "cellspacing" => 0), 3, 1);
 
 		$_window_predefined_table->setCol(0, 0, null, we_button::create_button_table(array(we_button::create_button("res_800", "javascript:top.content.setHot();document.getElementsByName('" . $this->Name . "_Preference_sizeOpt')[1].checked = true;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].value = '800';document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].value = '600';", true), we_button::create_button("res_1024", "javascript:top.content.setHot();document.getElementsByName('" . $this->Name . "_Preference_sizeOpt')[1].checked = true;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].value = '1024';document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].value = '768';", true))));
 		$_window_predefined_table->setCol(2, 0, null, we_button::create_button_table(array(we_button::create_button("res_1280", "javascript:top.content.setHot();document.getElementsByName('" . $this->Name . "_Preference_sizeOpt')[1].checked = true;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].value = '1280';document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].value = '960';", true), we_button::create_button("res_1600", "javascript:top.content.setHot();document.getElementsByName('" . $this->Name . "_Preference_sizeOpt')[1].checked = true;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].value = '1600';document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].value = '1200';", true))));
@@ -2158,7 +2158,7 @@ function show_seem_chooser(val) {
 	function formPreferencesEditor(){
 
 		//Editor Mode
-		$_template_editor_mode = new we_html_select(array("class" => "weSelect", "name" => $this->Name . "_Preference_editorMode", "size" => "1", "onchange" => "displayEditorOptions(this.options[this.options.selectedIndex].value);"));
+		$_template_editor_mode = new we_html_select(array("class" => "weSelect", "name" => $this->Name . "_Preference_editorMode", "size" => 1, "onchange" => "displayEditorOptions(this.options[this.options.selectedIndex].value);"));
 		$_template_editor_mode->addOption('textarea', g_l('prefs', '[editor_plaintext]'));
 		$_template_editor_mode->addOption('codemirror2', g_l('prefs', '[editor_javascript2]'));
 		$_template_editor_mode->addOption('java', g_l('prefs', '[editor_java]'));
@@ -2185,7 +2185,7 @@ function show_seem_chooser(val) {
 		$_template_editor_font_specify_code = we_forms::checkbox(1, $_template_editor_font_specify, $this->Name . "_Preference_editorFont", g_l('prefs', '[specify]'), true, "defaultfont", "top.content.setHot(); if (document.getElementsByName('" . $this->Name . "_Preference_editorFont')[0].checked) { document.getElementsByName('" . $this->Name . "_Preference_editorFontname')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_editorFontsize')[0].disabled = false; } else { document.getElementsByName('" . $this->Name . "_Preference_editorFontname')[0].disabled = true;document.getElementsByName('" . $this->Name . "_Preference_editorFontsize')[0].disabled = true; }");
 
 		// Create specify window dimension input
-		$_template_editor_font_specify_table = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0"), 4, 4);
+		$_template_editor_font_specify_table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 4, 4);
 
 		$_template_editor_font_specify_table->setCol(0, 0, null, we_html_tools::getPixel(1, 10));
 		$_template_editor_font_specify_table->setCol(1, 0, null, we_html_tools::getPixel(50, 1));
@@ -2198,7 +2198,7 @@ function show_seem_chooser(val) {
 		$_template_editor_font_specify_table->setCol(1, 2, null, we_html_tools::getPixel(10, 1));
 		$_template_editor_font_specify_table->setCol(3, 2, null, we_html_tools::getPixel(10, 1));
 
-		$_template_editor_font_select_box = new we_html_select(array("class" => "weSelect", "name" => $this->Name . "_Preference_editorFontname", "size" => "1", "style" => "width: 90px;", ($_template_editor_font_specify ? "enabled" : "disabled") => ($_template_editor_font_specify ? "enabled" : "disabled"), "onChange" => "top.content.setHot();"));
+		$_template_editor_font_select_box = new we_html_select(array("class" => "weSelect", "name" => $this->Name . "_Preference_editorFontname", "size" => 1, "style" => "width: 90px;", ($_template_editor_font_specify ? "enabled" : "disabled") => ($_template_editor_font_specify ? "enabled" : "disabled"), "onChange" => "top.content.setHot();"));
 
 		foreach($_template_fonts as $tf){
 			$_template_editor_font_select_box->addOption($tf, $tf);
@@ -2214,7 +2214,7 @@ function show_seem_chooser(val) {
 			}
 		}
 
-		$_template_editor_font_sizes_select_box = new we_html_select(array("class" => "weSelect", "name" => $this->Name . "_Preference_editorFontsize", "size" => "1", "style" => "width: 90px;", ($_template_editor_font_size_specify ? "enabled" : "disabled") => ($_template_editor_font_size_specify ? "enabled" : "disabled"), "onChange" => "top.content.setHot();"));
+		$_template_editor_font_sizes_select_box = new we_html_select(array("class" => "weSelect", "name" => $this->Name . "_Preference_editorFontsize", "size" => 1, "style" => "width: 90px;", ($_template_editor_font_size_specify ? "enabled" : "disabled") => ($_template_editor_font_size_specify ? "enabled" : "disabled"), "onChange" => "top.content.setHot();"));
 
 		foreach($_template_font_sizes as $tf){
 			$_template_editor_font_sizes_select_box->addOption($tf, $tf);

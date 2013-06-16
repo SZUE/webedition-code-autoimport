@@ -23,7 +23,7 @@
  * @package    webEdition_modules
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weModuleFrames {
+class weModuleFrames{
 
 	var $module;
 	var $db;
@@ -33,7 +33,6 @@ class weModuleFrames {
 	var $topFrame;
 	var $treeFrame;
 	var $cmdFrame;
-
 	protected $treeDefaultWidth = 200;
 	protected $treeWidth = 0;
 	protected $treeHeaderHeight = 0;
@@ -126,13 +125,12 @@ class weModuleFrames {
 			we_main_headermenu::css() .
 			$extraHead;
 
-		$body = we_html_element::htmlBody(array('style' => 'background-color: gray; position: fixed; top: 0px; left: 0px; right: 0px; bottom: 0px; border: 0px none;', "onload" => "start();") ,
-				we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
-					, we_html_element::htmlExIFrame('header', self::getHTMLHeader(WE_INCLUDES_PATH .'java_menu/modules/module_menu_' . $this->module . '.inc.php', $this->module), 'position: absolute; top: 0px; height: 32px; left: 0px; right: 0px;') .
+		$body = we_html_element::htmlBody(array('style' => 'background-color: gray; position: fixed; top: 0px; left: 0px; right: 0px; bottom: 0px; border: 0px none;', "onload" => "start();"), we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
+					, we_html_element::htmlExIFrame('header', self::getHTMLHeader(WE_INCLUDES_PATH . 'java_menu/modules/module_menu_' . $this->module . '.inc.php', $this->module), 'position: absolute; top: 0px; height: 32px; left: 0px; right: 0px;') .
 					($iconbar ? we_html_element::htmlIFrame('iconbar', $this->frameset . '?pnt=iconbar' . $extraUrlParams, 'position: absolute; top: 32px; left: 0px; right: 0px; height: 40px; overflow: hidden;') : '') .
 					we_html_element::htmlIFrame('resize', $this->frameset . '?pnt=resize' . $extraUrlParams, 'position: absolute; top:' . ($iconbar ? 72 : 32) . 'px; bottom: 1px; left: 0px; right: 0px; overflow: hidden;') .
 					we_html_element::htmlIFrame('cmd', $this->frameset . '?pnt=cmd' . $extraUrlParams, 'position: absolute; bottom: 0px; height: 1px; left: 0px; right: 0px; overflow: hidden;')
-				));
+		));
 
 		return $this->getHTMLDocument($body, $extraHead);
 	}
@@ -148,7 +146,7 @@ class weModuleFrames {
 
 		$menu = $jmenu->getCode(false) . $jmenu->getJS();
 
-		$table = new we_html_table(array("width" => "100%", "cellpadding" => "0", "cellspacing" => "0", "border" => "0"), 1, 2);
+		$table = new we_html_table(array("width" => "100%", "cellpadding" => 0, "cellspacing" => 0, "border" => 0), 1, 2);
 		$table->setCol(0, 0, array("align" => "left", "valign" => "top"), $menu);
 		$table->setCol(0, 1, array("align" => "right", "valign" => "top"), createMessageConsole("moduleFrame"));
 
@@ -166,14 +164,11 @@ class weModuleFrames {
 			<img id="arrowImg" src="' . BUTTONS_DIR . 'icons/direction_' . ($this->treeWidth <= 30 ? 'right' : 'left') . '.gif" width="9" height="12" style="position:absolute;bottom:13px;left:5px;border:1px solid grey;padding:0 1px;cursor: pointer;" onClick="top.content.resize.toggleTree();">
 		';
 
-		$body = we_html_element::htmlBody(array('style' => 'background-color:#bfbfbf;'),
-				we_html_element::htmlDiv(array('style' => 'position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px;'),
-					we_html_element::htmlDiv(array('id' => 'lframeDiv','style' => 'position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px;width: ' . $this->treeWidth . 'px;'),
-						we_html_element::htmlDiv(array('style' => 'position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px; width: ' . weTree::HiddenWidth . 'px; background-image: url(/webEdition/images/v-tabs/background.gif); background-repeat: repeat-y; border-top: 1px solid black;'), $_incDecTree) .
+		$body = we_html_element::htmlBody(array('style' => 'background-color:#bfbfbf;'), we_html_element::htmlDiv(array('style' => 'position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px;'), we_html_element::htmlDiv(array('id' => 'lframeDiv', 'style' => 'position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px;width: ' . $this->treeWidth . 'px;'), we_html_element::htmlDiv(array('style' => 'position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px; width: ' . weTree::HiddenWidth . 'px; background-image: url(/webEdition/images/v-tabs/background.gif); background-repeat: repeat-y; border-top: 1px solid black;'), $_incDecTree) .
 						we_html_element::htmlIFrame('left', $this->frameset . '?pnt=left', 'position: absolute; top: 0px; bottom: 0px; left: ' . weTree::HiddenWidth . 'px; right: 0px;')
 					) .
 					we_html_element::htmlIFrame('right', $this->frameset . '?pnt=right' . (isset($_REQUEST['sid']) ? '&sid=' . $_REQUEST['sid'] : '') . $editorParams, 'position: absolute; top: 0px; bottom: 0px; left: ' . $this->treeWidth . 'px; right: 0px; width:auto; border-left: 1px solid black; overflow: hidden;')
-			));
+		));
 
 		return $this->getHTMLDocument($body, $extraHead);
 	}
@@ -182,12 +177,11 @@ class weModuleFrames {
 		$headerHeight = $this->getTreeHeaderHeigt();
 		$footerHeight = $this->getTreeFooterHeigt();
 
-		$body = we_html_element::htmlBody(array(),
-				($header ? we_html_element::htmlDiv(array('style' => 'position: absolute; top: 0px; left: 0px; height: ' . $headerHeight . 'px; width: 100%; background-color: #00ff00;'), '') :
+		$body = we_html_element::htmlBody(array(), ($header ? we_html_element::htmlDiv(array('style' => 'position: absolute; top: 0px; left: 0px; height: ' . $headerHeight . 'px; width: 100%; background-color: #00ff00;'), '') :
 					we_html_element::htmlDiv(array('style' => 'position: absolute; top: 0px; left: 0px; height: 1px; width: 100%; background-color: #ffffff;'), '')) .
 				we_html_element::htmlIFrame('tree', ($loadMainTree ? WEBEDITION_DIR . 'treeMain.php' : HTML_DIR . 'white.html'), 'position: absolute; top: ' . ($header ? $headerHeight : 1) . 'px; bottom: ' . ($footer ? $footerHeight : 0) . 'px; left: 0px; width: 100%;') .
 				($footer ? we_html_element::htmlIFrame($footerId, $this->frameset . '?pnt=' . $footerId, 'position: absolute; bottom: 0px; left: 0px; height: ' . $footerHeight . 'px; width: 100%;') : '')
-			);
+		);
 
 		return $this->getHTMLDocument($body);
 	}
@@ -201,7 +195,7 @@ class weModuleFrames {
 	}
 
 	function getHTMLRight($extraHead = '', $extraUrlParams = ''){
-		$frameset = new we_html_frameset(array("framespacing" => "0", "border" => "0", "frameborder" => "no"));
+		$frameset = new we_html_frameset(array("framespacing" => 0, "border" => 0, "frameborder" => "no"));
 		$frameset->setAttributes(array("cols" => "*"));
 		$frameset->addFrame(array("src" => $this->frameset . "?pnt=editor" . (isset($_REQUEST['sid']) ? '&sid=' . $_REQUEST['sid'] : '') . $extraUrlParams, "name" => "editor", "noresize" => null, "scrolling" => "no"));
 		$noframeset = new we_baseElement("noframes");
@@ -212,7 +206,7 @@ class weModuleFrames {
 
 	function getHTMLEditor($extraUrlParams = ''){
 
-		$frameset = new we_html_frameset(array("framespacing" => "0", "border" => "0", "frameborder" => "no"));
+		$frameset = new we_html_frameset(array("framespacing" => 0, "border" => 0, "frameborder" => "no"));
 
 		$frameset->setAttributes(array("rows" => "40,*,40"));
 		$frameset->addFrame(array('src' => $this->frameset . (isset($_REQUEST['sid']) ? '?sid=' . $_REQUEST['sid'] : '?home=1') . '&pnt=edheader' . $extraUrlParams, 'name' => 'edheader', 'noresize' => null, 'scrolling' => 'no'));
@@ -245,18 +239,17 @@ class weModuleFrames {
 			}'
 		);
 
-		$table1 = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0", "width" => "300"), 1, 1);
+		$table1 = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0, "width" => 300), 1, 1);
 		$table1->setCol(0, 0, array("nowrap" => null, "valign" => "top"), we_html_tools::getPixel(1600, 10));
 
-		$table2 = new we_html_table(array('border' => '0', 'cellpadding' => '0', 'cellspacing' => '0', 'width' => '300'), 1, 2);
+		$table2 = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0, 'width' => 300), 1, 2);
 		$table2->setRow(0, array('valign' => 'middle'));
 		$table2->setCol(0, 0, array('nowrap' => null), we_html_tools::getPixel(5, 5));
 		$table2->setCol(0, 1, array('nowrap' => null), we_button::create_button('save', 'javascript:we_save()'));
 
-		$body = we_html_element::htmlBody(array('bgcolor' => 'white', 'background' => IMAGE_DIR . 'edit/editfooterback.gif', 'marginwidth' => '0', 'marginheight' => '0', 'leftmargin' => '0', 'topmargin' => '0'), $table1->getHtml() . $table2->getHtml());
+		$body = we_html_element::htmlBody(array('bgcolor' => 'white', 'background' => IMAGE_DIR . 'edit/editfooterback.gif', 'marginwidth' => 0, 'marginheight' => 0, 'leftmargin' => 0, 'topmargin' => 0), $table1->getHtml() . $table2->getHtml());
 
 		return $this->getHTMLDocument($body, $extraHead);
-
 	}
 
 	function getHTMLCmd(){
@@ -305,7 +298,7 @@ class weModuleFrames {
 	function setTreeWidthFromCookie(){
 		$_tw = isset($_COOKIE["treewidth_modules"]) ? $_COOKIE["treewidth_modules"] : $this->treeDefaultWidth;
 		if(!is_numeric($_tw)){
-			$_tw = explode(',', trim($_tw,' ,'));
+			$_tw = explode(',', trim($_tw, ' ,'));
 			$_twArr = array();
 			$_twJS = '{';
 
@@ -314,14 +307,14 @@ class weModuleFrames {
 				$_twArr[trim($entry[0])] = $entry[1];
 				$_twJS .= $entry[0] . ':' . $entry[1] . ',';
 			}
-			self::$treeWidthsJS = rtrim($_twJS,',') . '}';
+			self::$treeWidthsJS = rtrim($_twJS, ',') . '}';
 			$this->treeWidth = isset($_twArr[$this->module]) ? $_twArr[$this->module] : $this->treeDefaultWidth;
 		} else{
 			$this->treeWidth = $_tw;
 		}
 	}
 
-	static function getJSToggleTreeCode($module,$treeDefaultWidth){
+	static function getJSToggleTreeCode($module, $treeDefaultWidth){
 		//FIXME: throw some of these functions out again and use generic version of main-window functions
 
 		return we_html_element::jsElement('
@@ -340,7 +333,7 @@ class weModuleFrames {
 				} else{
 					tDiv.style.display = "none";
 					oldTreeWidth = w;
-					setTreeWidth('. weTree::HiddenWidth .');
+					setTreeWidth(' . weTree::HiddenWidth . ');
 					setTreeArrow("right");
 				}
 			}

@@ -157,7 +157,7 @@ class weMessagingView extends weModuleView {
 	}
 
 	function processCommands(){
-	    
+
 		if($this->transaction == 'no_request'){
 			$this->transaction = $this->weTransaction;
 		} else{
@@ -243,14 +243,14 @@ class weMessagingView extends weModuleView {
 				break;
 			case 'update_todo':
 				if(!empty($this->messaging->selected_message)){
-					echo we_html_element::jsScript(JS_DIR . 'windows.js') . 
+					echo we_html_element::jsScript(JS_DIR . 'windows.js') .
 					we_html_element::jsElement('
 					new jsWindow("' . WE_MESSAGING_MODULE_DIR . 'todo_update_todo.php?we_transaction=' . $this->transaction . '&mode=reject", "messaging_new_todo",-1,-1,690,600,true,false,true,false);
 					');
 				}
 				break;
 			case 'todo_markdone':
-				$arr = array('todo_status' => '100');
+				$arr = array('todo_status' => 100);
 				$this->messaging->used_msgobjs['we_todo']->update_status($arr, $this->messaging->selected_message['int_hdrs']);
 				$out .= $this->refresh_work(true);
 				$this->messaging->saveInSession($_SESSION['weS']['we_data'][$this->transaction]);
@@ -297,7 +297,7 @@ class weMessagingView extends weModuleView {
 				$this->messaging->get_fc_data(isset($_REQUEST['id']) ? $_REQUEST['id'] : '', empty($_REQUEST['sort']) ? '' : $_REQUEST['sort'], isset($_REQUEST['searchterm']) ? $_REQUEST['searchterm'] : '', 1);
 
 				$this->messaging->saveInSession($_SESSION['weS']['we_data'][$this->transaction]);
-				
+
 				$js_out = '
 				top.content.resize.right.editor.edbody.entries_selected = new Array();
 				//we_class::2xok
@@ -386,7 +386,7 @@ top.content.menuDaten.add(
 		"' . $folder['ParentID'] . '",
 		"' . $folder['Name'] . ' - (' . $this->messaging->get_message_count($folder['ID'], '') . ')",
 			"leaf_Folder",
-		"' . MESSAGES_TABLE . '", 
+		"' . MESSAGES_TABLE . '",
 		"' . ($folder['ClassName'] == 'we_todo' ? 'todo_folder' : 'msg_folder') . '"
 	)
 );
@@ -416,7 +416,7 @@ top.content.drawEintraege();
 				return $out;
 				break;
 			case 'edit_settings':
-				return we_html_element::jsScript(JS_DIR . 'windows.js') . 
+				return we_html_element::jsScript(JS_DIR . 'windows.js') .
 					we_html_element::jsElement('
 					new jsWindow("' . WE_MESSAGING_MODULE_DIR . 'messaging_settings.php?we_transaction=' . $this->transaction . '&mode=' . $_REQUEST['mode'] . '", "messaging_settings",-1,-   1,280,200,true,false,true,false);
 					');
@@ -441,7 +441,7 @@ top.content.drawEintraege();
 			default:
 				return 'mcmd=' . $_REQUEST['mcmd'] . '<br>';
 		}
-		
+
 	}
 
 	//some additional methods called by getJSCmd(). TODO: elimiminate GLOBALS by passing objects in

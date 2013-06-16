@@ -483,7 +483,7 @@ function urlEntry(icon,name,vorfahr,text,contentType,table,published,denied) {
 			we_html_element::htmlHidden($attribs = array("name" => "uid", "value" => $user_object->ID,)).
 			we_html_element::htmlHidden($attribs = array("name" => "ctype", "value" => isset($_REQUEST["ctype"]) ? oldHtmlspecialchars($_REQUEST["ctype"]) : "",)).
 			we_html_element::htmlHidden($attribs = array("name" => "ctable", "value" => isset($_REQUEST["ctable"]) ? oldHtmlspecialchars($_REQUEST["ctable"]) : "",)).
-			we_html_element::htmlHidden($attribs = array("name" => "sd", "value" => "0",));
+			we_html_element::htmlHidden($attribs = array("name" => "sd", "value" => 0,));
 
 		if($user_object){
 			if(isset($_REQUEST["oldtab"]) && isset($_REQUEST["old_perm_branch"])){ // && isset($_REQUEST["old_perm_branch"]) added for 4705

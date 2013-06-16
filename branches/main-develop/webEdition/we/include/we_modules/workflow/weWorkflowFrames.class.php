@@ -24,8 +24,8 @@
  */
 class weWorkflowFrames extends weModuleFrames{
 
-	
-			
+
+
 	function __construct(){
 		parent::__construct(WE_WORKFLOW_MODULE_DIR . "edit_workflow_frameset.php");
 		$this->module="workflow";
@@ -61,7 +61,7 @@ class weWorkflowFrames extends weModuleFrames{
 	function getJSTreeCode(){
 		$db_tmp = new DB_WE();
 		$db_tmp1 = new DB_WE();
-		
+
 		//start ex we_workflow_moduleFrames::getJSTreeCode()
 		print we_html_element::jsScript(JS_DIR . 'images.js') .
 		we_html_element::jsScript(JS_DIR . 'windows.js') .
@@ -321,32 +321,32 @@ function setTab(tab){
 }
 
 top.content.hloaded=1;
-		') . $tab_header; 
+		') . $tab_header;
 
-		$mainDiv = we_html_element::htmlDiv(array('id' => 'main'), 
+		$mainDiv = we_html_element::htmlDiv(array('id' => 'main'),
 			we_html_tools::getPixel(100, 3) .
-			we_html_element::htmlDiv(array('style' => 'margin:0px;padding-left:10px;', 'id' => 'headrow'), 
+			we_html_element::htmlDiv(array('style' => 'margin:0px;padding-left:10px;', 'id' => 'headrow'),
 				we_html_element::htmlNobr(
-					we_html_element::htmlB(oldHtmlspecialchars($textPre) . ':&nbsp;') . 
+					we_html_element::htmlB(oldHtmlspecialchars($textPre) . ':&nbsp;') .
 					we_html_element::htmlSpan(array('id' => 'h_path', 'class' => 'header_small'),
 						'<b id="titlePath">' . oldHtmlspecialchars($textPost) . '</b>')
 					)) .
 			we_html_tools::getPixel(100, 3) .
 			$we_tabs->getHTML()
 			);
-		
+
 		$body = we_html_element::htmlBody(array(
 			'bgcolor' => 'white',
 			'background' => IMAGE_DIR . 'backgrounds/header_with_black_line.gif',
-			'marginwidth' => '0',
-			'marginheight' => '0',
-			'leftmargin' => '0',
-			'topmargin' => '0',
+			'marginwidth' => 0,
+			'marginheight' => 0,
+			'leftmargin' => 0,
+			'topmargin' => 0,
 			'onload' => 'setFrameSize()',
 			'onresize' => 'setFrameSize()'
 			), $mainDiv . we_html_element::jsElement('document.getElementById("tab_' . $page . '").className="tabActive";')
 		);
-		
+
 		return $this->getHTMLDocument($body, $extraHead);
 	}
 
@@ -375,32 +375,32 @@ top.content.hloaded=1;
 			}
 		');
 
-		$table1 = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0", "width" => "300"), 1, 1);
+		$table1 = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0, "width" => 300), 1, 1);
 		$table1->setCol(0, 0, array("nowrap" => null, "valign" => "top"), we_html_tools::getPixel(1600, 10));
 
-		$table2 = new we_html_table(array('border' => '0', 'cellpadding' => '0', 'cellspacing' => '0', 'width' => '300'), 1, 3);
+		$table2 = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0, 'width' => 300), 1, 3);
 		//$table2->setRow(0, array('valign' => 'middle'));
 		$table2->setCol(0, 0, array('nowrap' => null), we_html_tools::getPixel(15, 5));
 		$table2->setCol(0, 1, array('nowrap' => null), we_button::create_button('save', 'javascript:we_save()'));
 		$table2->setCol(0, 2, array('nowrap' => null, 'class' => 'defaultfont'), $this->View->getStatusHTML());
-		
+
 		$body = we_html_element::htmlBody(array(
 			'bgcolor' => 'white',
 			'background' => IMAGE_DIR . 'edit/editfooterback.gif',
-			'marginwidth' => '0', 'marginheight' => '0',
-			'leftmargin' => '0', 'topmargin' => '0',
+			'marginwidth' => 0, 'marginheight' => 0,
+			'leftmargin' => 0, 'topmargin' => 0,
 			'onload' => ($mode == 0 ? 'setStatusCheck()' : '')
 			), we_html_element::htmlForm($attribs = array(), $table1->getHtml() . $table2->getHtml())
 		);
 
 		return $this->getHTMLDocument($body, $extraHead);
-		
+
 	}
 
 	function getHTMLLog($docID, $type = 0){
 		$extraHead = we_html_element::jsElement('self.focus();');
 		$body = we_html_element::htmlBody(array('class' => 'weDialogBody'), weWorkflowView::getLogForDocument($docID, $type));
-		
+
 		return $this->getHTMLDocument($body, $extraHead);
 	}
 

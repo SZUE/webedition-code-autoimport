@@ -182,7 +182,7 @@ if(isset($_REQUEST['we_cmd'][0])){
 			we_html_element::htmlHead(
 				$_meta_content_type = we_html_element::htmlMeta(array("http-equiv" => "content-type", "content" => "text/html; charset=" . $GLOBALS['WE_BACKENDCHARSET']))
 			) .
-			we_html_element::htmlBody(array("bgcolor" => "white", "marginwidth" => "0", "marginheight" => "0", "leftmargin" => "0", "topmargin" => "0"), $out
+			we_html_element::htmlBody(array("bgcolor" => "white", "marginwidth" => 0, "marginheight" => 0, "leftmargin" => 0, "topmargin" => 0), $out
 			)
 		);
 }

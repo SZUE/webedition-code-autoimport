@@ -45,7 +45,7 @@ function getDateSelector($_label, $_name, $_btn){
 	$btnDatePicker = we_button::create_button(
 			"image:date_picker", "javascript:", null, null, null, null, null, null, false, $_btn);
 	$oSelector = new we_html_table(array(
-			"cellpadding" => "0", "cellspacing" => "0", "border" => "0", "id" => $_name . "_cell"
+			"cellpadding" => 0, "cellspacing" => 0, "border" => 0, "id" => $_name . "_cell"
 			), 1, 5);
 	$oSelector->setCol(0, 0, array(
 		"class" => "middlefont"

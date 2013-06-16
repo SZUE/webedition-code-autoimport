@@ -385,7 +385,7 @@ if(isset($_POST['checkLogin']) && empty($_COOKIE)){
 	$_layoutRight2 = 10;
 	$_layoutRight = ($_layoutRight1 + $_layoutRight2);
 
-	$_layouttable = new we_html_table(array('border' => '0', 'cellpadding' => '0', 'cellspacing' => '0', 'width' => 440), 4, 5);
+	$_layouttable = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0, 'width' => 440), 4, 5);
 
 	$_layouttable->setCol(0, 0, null, we_html_element::htmlImg(array('src' => IMAGE_DIR . 'info/top_left2.gif', 'width' => $_layoutLeft2, 'height' => 21)));
 	$_layouttable->setCol(0, 1, null, we_html_element::htmlImg(array('src' => IMAGE_DIR . 'info/top_left.gif', 'width' => $_layoutLeft, 'height' => 21)));

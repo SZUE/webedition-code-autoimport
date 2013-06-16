@@ -72,8 +72,8 @@ abstract class we_versions_wizard{
 			$nextButton = we_button::create_button("next", "javascript:parent.wizbody.handle_event('next');", true, -1, -1, "", "", $nextbutdisabled, false);
 
 			$content2 = new we_html_table(array(
-					"border" => "0", "cellpadding" => "0", "cellspacing" => "0"
-					), 1, 4);
+				"border" => 0, "cellpadding" => 0, "cellspacing" => 0
+				), 1, 4);
 			$content2->setCol(
 				0, 0, array(
 				"id" => "prev",
@@ -98,11 +98,9 @@ abstract class we_versions_wizard{
 				), $cancelButton);
 
 			$content = new we_html_table(
-					array(
-						"border" => "0", "cellpadding" => "0", "cellspacing" => "0", "width" => "100%"
-					),
-					1,
-					2);
+				array(
+				"border" => 0, "cellpadding" => 0, "cellspacing" => 0, "width" => "100%"
+				), 1, 2);
 			$content->setCol(0, 0, array(
 				"id" => "progr", "style" => "display:none", "align" => "left"
 				), $pb);
@@ -177,7 +175,7 @@ abstract class we_versions_wizard{
 				"html" => we_forms::radiobutton(
 					"reset_versions", ($type == "reset_versions"), "type", g_l('versions', '[reset_versions]'), true, "defaultfont", "", false, g_l('versions', '[txt_reset_versions]'), 0, 495),
 				"space" => 0
-			));
+		));
 
 
 		$js = '
@@ -247,7 +245,7 @@ set_button_state(false);';
 			$hiddenFields .
 			we_html_element::htmlHidden(array("name" => "fr", "value" => "body")) .
 			we_html_element::htmlHidden(array("name" => "we_cmd[0]", "value" => "versions_wizard")) .
-			we_html_element::htmlHidden(array("name" => "step", "value" => "1"))
+			we_html_element::htmlHidden(array("name" => "step", "value" => 1))
 		);
 	}
 
@@ -309,13 +307,13 @@ set_button_state(false);';
 		$versions_delete_date = weVersionsSearch::getDateSelector("", "delete_date", "_1", $version_delete_date);
 
 		$reset_hours = new we_html_select(
-				array(
-					"id" => "delete_hours",
-					"name" => "delete_hours",
-					"style" => "",
-					"class" => "weSelect",
-					"onChange" => ""
-			));
+			array(
+			"id" => "delete_hours",
+			"name" => "delete_hours",
+			"style" => "",
+			"class" => "weSelect",
+			"onChange" => ""
+		));
 
 		for($x = 0; $x <= 23; $x++){
 			$txt = $x;
@@ -328,13 +326,13 @@ set_button_state(false);';
 		$reset_hours->selectOption($version_delete_hours);
 
 		$reset_minutes = new we_html_select(
-				array(
-					"id" => "delete_minutes",
-					"name" => "delete_minutes",
-					"style" => "",
-					"class" => "weSelect",
-					"onChange" => ""
-			));
+			array(
+			"id" => "delete_minutes",
+			"name" => "delete_minutes",
+			"style" => "",
+			"class" => "weSelect",
+			"onChange" => ""
+		));
 
 		for($x = 0; $x <= 59; $x++){
 			$txt = $x;
@@ -347,13 +345,13 @@ set_button_state(false);';
 		$reset_minutes->selectOption($version_delete_minutes);
 
 		$reset_seconds = new we_html_select(
-				array(
-					"id" => "delete_seconds",
-					"name" => "delete_seconds",
-					"style" => "",
-					"class" => "weSelect",
-					"onChange" => ""
-			));
+			array(
+			"id" => "delete_seconds",
+			"name" => "delete_seconds",
+			"style" => "",
+			"class" => "weSelect",
+			"onChange" => ""
+		));
 
 		for($x = 0; $x <= 59; $x++){
 			$txt = $x;
@@ -489,7 +487,7 @@ set_button_state(false);';
 			we_html_element::htmlHidden(array("name" => "fr", "value" => "body")) .
 			we_html_element::htmlHidden(array("name" => "type", "value" => $type)) .
 			we_html_element::htmlHidden(array("name" => "we_cmd[0]", "value" => "versions_wizard")) .
-			we_html_element::htmlHidden(array("name" => "step", "value" => "2"))
+			we_html_element::htmlHidden(array("name" => "step", "value" => 2))
 		);
 	}
 
@@ -547,13 +545,13 @@ set_button_state(false);';
 		);
 
 		$reset_hours = new we_html_select(
-				array(
-					"id" => "reset_hours",
-					"name" => "reset_hours",
-					"style" => "",
-					"class" => "weSelect",
-					"onChange" => ""
-			));
+			array(
+			"id" => "reset_hours",
+			"name" => "reset_hours",
+			"style" => "",
+			"class" => "weSelect",
+			"onChange" => ""
+		));
 
 		for($x = 0; $x <= 23; $x++){
 			$txt = $x;
@@ -566,13 +564,13 @@ set_button_state(false);';
 		$reset_hours->selectOption($version_reset_hours);
 
 		$reset_minutes = new we_html_select(
-				array(
-					"id" => "reset_minutes",
-					"name" => "reset_minutes",
-					"style" => "",
-					"class" => "weSelect",
-					"onChange" => ""
-			));
+			array(
+			"id" => "reset_minutes",
+			"name" => "reset_minutes",
+			"style" => "",
+			"class" => "weSelect",
+			"onChange" => ""
+		));
 
 		for($x = 0; $x <= 59; $x++){
 			$txt = $x;
@@ -585,13 +583,13 @@ set_button_state(false);';
 		$reset_minutes->selectOption($version_reset_minutes);
 
 		$reset_seconds = new we_html_select(
-				array(
-					"id" => "reset_seconds",
-					"name" => "reset_seconds",
-					"style" => "",
-					"class" => "weSelect",
-					"onChange" => ""
-			));
+			array(
+			"id" => "reset_seconds",
+			"name" => "reset_seconds",
+			"style" => "",
+			"class" => "weSelect",
+			"onChange" => ""
+		));
 
 		for($x = 0; $x <= 59; $x++){
 			$txt = $x;
@@ -741,7 +739,7 @@ set_button_state(false);';
 			we_html_element::htmlHidden(array("name" => "fr", "value" => "body")) .
 			we_html_element::htmlHidden(array("name" => "type", "value" => $type)) .
 			we_html_element::htmlHidden(array("name" => "we_cmd[0]", "value" => "versions_wizard")) .
-			we_html_element::htmlHidden(array("name" => "step", "value" => "2"))
+			we_html_element::htmlHidden(array("name" => "step", "value" => 2))
 		);
 	}
 
@@ -892,7 +890,6 @@ set_button_state(false);';
 				"table" => $GLOBALS['DB_WE']->f("documentTable"),
 				"contentType" => $GLOBALS['DB_WE']->f("ContentType"),
 				"timestamp" => $GLOBALS['DB_WE']->f("timestamp")
-
 			);
 			$_SESSION['weS']['versions']['logDeleteIds'][$GLOBALS['DB_WE']->f('ID')] = array(
 				'Text' => $GLOBALS['DB_WE']->f('Text'),
@@ -944,7 +941,7 @@ set_button_state(false);';
 		foreach($version_delete as $k => $v){
 			$hiddenFields .= we_html_element::htmlHidden(array(
 					"name" => $k, "value" => $v
-				));
+			));
 		}
 
 		return array(
@@ -954,7 +951,7 @@ set_button_state(false);';
 			we_html_element::htmlHidden(array("name" => "fr", "value" => "body")) .
 			we_html_element::htmlHidden(array("name" => "type", "value" => $type)) .
 			we_html_element::htmlHidden(array("name" => "we_cmd[0]", "value" => "versions_wizard")) .
-			we_html_element::htmlHidden(array("name" => "step", "value" => "3"))
+			we_html_element::htmlHidden(array("name" => "step", "value" => 3))
 		);
 	}
 
@@ -1079,7 +1076,7 @@ set_button_state(false);';
 			we_html_element::htmlHidden(array("name" => "fr", "value" => "body")) .
 			we_html_element::htmlHidden(array("name" => "type", "value" => $type)) .
 			we_html_element::htmlHidden(array("name" => "we_cmd[0]", "value" => "versions_wizard")) .
-			we_html_element::htmlHidden(array("name" => "step", "value" => "3"))
+			we_html_element::htmlHidden(array("name" => "step", "value" => 3))
 		);
 	}
 
@@ -1122,14 +1119,14 @@ set_button_state(false);';
 					, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
 						, we_html_element::htmlIFrame('wizbusy', WEBEDITION_DIR . 'we_cmd.php?' . http_build_query(array('we_cmd[0]' => 'versions_wizard', 'fr' => 'busy', 'dc' => 1)), 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;overflow: hidden;') .
 						we_html_element::htmlIFrame('wizcmd', HTML_DIR . "white.html", 'position:absolute;height:0px;bottom:0px;left:0px;right:0px;overflow: hidden;')
-					));
+			));
 		} else{
 			$body = we_html_element::htmlBody(array('style' => 'margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;text-align:center;')
 					, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
-						, we_html_element::htmlIFrame('wizbody', WEBEDITION_DIR . 'we_cmd.php?' . http_build_query(array('we_cmd[0]' => 'versions_wizard', 'fr' => 'body'), 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;overflow: auto;')) .
-						we_html_element::htmlIFrame('wizbusy', WEBEDITION_DIR . 'we_cmd.php?' . http_build_query(array('we_cmd[0]' => 'versions_wizard', 'fr' => 'busy'), 'position:absolute;bottom:0px;height:40px;left:0px;right:0px;overflow: hidden;')) .
-						we_html_element::htmlIFrame('wizcmd', WEBEDITION_DIR . 'we_cmd.php?' . http_build_query(array('we_cmd[0]' => 'versions_wizard', 'fr' => 'cmd'), 'position:absolute;height:0px;bottom:0px;left:0px;right:0px;overflow: hidden;'))
-					));
+						, we_html_element::htmlIFrame('wizbody', WEBEDITION_DIR . 'we_cmd.php?' . http_build_query(array('we_cmd[0]' => 'versions_wizard', 'fr' => 'body')), 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;overflow: auto;') .
+						we_html_element::htmlIFrame('wizbusy', WEBEDITION_DIR . 'we_cmd.php?' . http_build_query(array('we_cmd[0]' => 'versions_wizard', 'fr' => 'busy')), 'position:absolute;bottom:0px;height:40px;left:0px;right:0px;overflow: hidden;') .
+						we_html_element::htmlIFrame('wizcmd', WEBEDITION_DIR . 'we_cmd.php?' . http_build_query(array('we_cmd[0]' => 'versions_wizard', 'fr' => 'cmd')), 'position:absolute;height:0px;bottom:0px;left:0px;right:0px;overflow: hidden;')
+			));
 		}
 
 		return we_html_element::htmlDocType() . we_html_element::htmlHtml(

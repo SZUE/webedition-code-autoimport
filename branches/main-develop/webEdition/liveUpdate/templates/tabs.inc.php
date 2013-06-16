@@ -45,7 +45,7 @@ $bodyContent = '<div id="main" >' . we_html_tools::getPixel(100, 3) . '<div styl
 	'</div>';
 
 $_body = we_html_element::htmlBody(array("bgcolor" => "#ffffff",
-		"topmargin" => "0",
+		"topmargin" => 0,
 		"background" => IMAGE_DIR . "backgrounds/header.gif",
 		"onload" => "setFrameSize();",
 		"onresize" => "setFrameSize()"), $bodyContent);

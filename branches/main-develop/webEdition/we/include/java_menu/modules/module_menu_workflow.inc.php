@@ -26,28 +26,28 @@ $we_menu_workflow = array(
 	"000100" => array(
 		"text" => g_l('javaMenu_workflow', '[workflow]'),
 		"parent" => "000000",
-		"enabled" => "1",
+		"enabled" => 1,
 	),
 	array(
 		"text" => g_l('javaMenu_workflow', '[new]'),
 		"cmd" => "new_workflow",
 		"perm" => "NEW_WORKFLOW || ADMINISTRATOR",
 		"parent" => "000100",
-		"enabled" => "0",
+		"enabled" => 0,
 	),
 	array(
 		"text" => g_l('javaMenu_workflow', '[save]'),
 		"parent" => "000100",
 		"cmd" => "save_workflow",
 		"perm" => "EDIT_WORKFLOW || ADMINISTRATOR",
-		"enabled" => "0",
+		"enabled" => 0,
 	),
 	array(
 		"text" => g_l('javaMenu_workflow', '[delete]'),
 		"parent" => "000100",
 		"cmd" => "delete_workflow",
 		"perm" => "DELETE_WORKFLOW || ADMINISTRATOR",
-		"enabled" => "0",
+		"enabled" => 0,
 	),
 	array(
 		"parent" => "000100", // separator

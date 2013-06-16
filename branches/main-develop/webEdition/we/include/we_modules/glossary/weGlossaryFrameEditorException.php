@@ -53,10 +53,10 @@ class weGlossaryFrameEditorException extends weGlossaryFrameEditor{
 
 
 		$_table = array(
-			'border' => '0',
-			'cellpadding' => '0',
-			'cellspacing' => '0',
-			'width' => '3000',
+			'border' => 0,
+			'cellpadding' => 0,
+			'cellspacing' => 0,
+			'width' => 3000,
 		);
 
 		$table1 = new we_html_table($_table, 1, 1);
@@ -64,9 +64,9 @@ class weGlossaryFrameEditorException extends weGlossaryFrameEditor{
 
 
 		$_table = array(
-			'border' => '0',
-			'cellpadding' => '0',
-			'cellspacing' => '0',
+			'border' => 0,
+			'cellpadding' => 0,
+			'cellspacing' => 0,
 		);
 
 		$_we_button = we_button::create_button("save", "javascript:top.opener.top.we_cmd('save_exception')", true, 100, 22, '', '', (!we_hasPerm('NEW_GLOSSARY') && !we_hasPerm('EDIT_GLOSSARY')));

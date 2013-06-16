@@ -30,7 +30,7 @@ $select2 = new we_ui_controls_Select(
 			'hidden' => false,
 			'onChange' => 'alert("onChange!");',
 			'title' => 'Titel 2',
-			'selectedValue' => '2',
+			'selectedValue' => 2,
 			'options' => array(
 				'1' => 'Option 1',
 				'2' => 'Option 2',
@@ -51,7 +51,7 @@ $select3 = new we_ui_controls_Select(
 			'hidden' => false,
 			'title' => 'Titel 2',
 			'width' => 150,
-			'selectedValue' => '2',
+			'selectedValue' => 2,
 			'optgroups' => array(
 				array(
 					'label' => 'group 1',

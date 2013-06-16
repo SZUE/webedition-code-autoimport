@@ -69,10 +69,10 @@ class searchtoolFrames extends weToolFrames{
 		$out = we_html_element::htmlBody(
 				array(
 				'bgcolor' => 'white',
-				'marginwidth' => '10',
-				'marginheight' => '10',
-				'leftmargin' => '10',
-				'topmargin' => '10'
+				'marginwidth' => 10,
+				'marginheight' => 10,
+				'leftmargin' => 10,
+				'topmargin' => 10
 				), we_html_element::htmlForm(
 					array(
 					'name' => 'we_form'
@@ -163,10 +163,10 @@ class searchtoolFrames extends weToolFrames{
 				array(
 				"bgcolor" => "white",
 				"background" => IMAGE_DIR . "backgrounds/header_with_black_line.gif",
-				"marginwidth" => "0",
-				"marginheight" => "0",
-				"leftmargin" => "0",
-				"topmargin" => "0",
+				"marginwidth" => 0,
+				"marginheight" => 0,
+				"leftmargin" => 0,
+				"topmargin" => 0,
 				"onload" => "setFrameSize()",
 				"onresize" => "setFrameSize()"
 				), '<div id="main" >' . we_html_tools::getPixel(100, 3) . '<div style="margin:0px;" id="headrow">&nbsp;' . we_html_element::htmlB(
@@ -242,7 +242,7 @@ class searchtoolFrames extends weToolFrames{
 
 	function getHTMLEditorFooter(){
 
-		$table1 = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0", "width" => "3000"), 1, 1);
+		$table1 = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0, "width" => 3000), 1, 1);
 		$table1->setCol(0, 0, array(
 			"nowrap" => null, "valign" => "top"
 			), we_html_tools::getPixel(1600, 10));
@@ -265,10 +265,10 @@ class searchtoolFrames extends weToolFrames{
 					array(
 					"bgcolor" => "white",
 					"background" => IMAGE_DIR . "edit/editfooterback.gif",
-					"marginwidth" => "0",
-					"marginheight" => "0",
-					"leftmargin" => "0",
-					"topmargin" => "0"
+					"marginwidth" => 0,
+					"marginheight" => 0,
+					"leftmargin" => 0,
+					"topmargin" => 0
 					), we_html_element::htmlForm(array(), $table1->getHtml() . $_but_table)));
 	}
 

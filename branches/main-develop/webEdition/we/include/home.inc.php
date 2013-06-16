@@ -1005,7 +1005,7 @@ clone.style.display="inline";
 	}
 
 	$oTblWidgets = new we_html_table(array(
-		"cellpadding" => "0", "cellspacing" => "0", "border" => "0", "height" => "98%"
+		"cellpadding" => 0, "cellspacing" => 0, "border" => 0, "height" => "98%"
 		), 1, 1);
 	$oTblWidgets->setCol(
 		0, 0, array(

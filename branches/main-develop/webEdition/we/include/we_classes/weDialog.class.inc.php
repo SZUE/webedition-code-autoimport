@@ -360,7 +360,7 @@ class weDialog{
 	}
 
 	function getClassSelect(){
-		$clSelect = new we_html_select(array("name" => "we_dialog_args[class]", "id" => "we_dialog_args[class]", "size" => "1", "style" => "width: 300px;"));
+		$clSelect = new we_html_select(array("name" => "we_dialog_args[class]", "id" => "we_dialog_args[class]", "size" => 1, "style" => "width: 300px;"));
 		$clSelect->addOption("", g_l('wysiwyg', "[none]"));
 		$classesCSV = trim($this->args["cssclasses"], ",");
 		if(!empty($classesCSV)){

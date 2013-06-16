@@ -234,10 +234,10 @@ function clearItems(){
 					'link' => '#000000',
 					'alink' => '#000000',
 					'vlink' => '#000000',
-					'marginwidth' => '0',
-					'marginheight' => '4',
-					'leftmargin' => '0',
-					'topmargin' => '4'
+					'marginwidth' => 0,
+					'marginheight' => 4,
+					'leftmargin' => 0,
+					'topmargin' => 4
 					), '<div id="treetable"></div>
 					'
 				)

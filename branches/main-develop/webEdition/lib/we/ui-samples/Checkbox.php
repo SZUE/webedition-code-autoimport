@@ -16,7 +16,7 @@ $checkbox->setTitle('Title');
 
 $checkbox2 = new we_ui_controls_Checkbox(
 		array(
-			'value' => '1',
+			'value' => 1,
 			'checked' => false,
 			'name' => 'test2',
 			'label' => 'Label 2',

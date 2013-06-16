@@ -37,7 +37,7 @@ class rpcChangeDocTypeCmd extends rpcCmd {
 				$paths_arr = id_to_path($values["Templates"],TEMPLATES_TABLE,"",false,true);
 				$TPLselect = new we_html_select(array(
 					"name"		=> "docTypeTemplateId",
-					"size"		=> "1",
+					"size"		=> 1,
 					"class"		=> "weSelect",
 					"onClick"	=> (defined("OBJECT_TABLE"))?"self.document.forms['we_form'].elements['v[import_type]'][0].checked=true;":"",
 					//"onChange"  => "we_submit_form(self.document.forms['we_form'], 'wizbody', '".$this->path."');",

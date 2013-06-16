@@ -103,7 +103,7 @@ class rpcGetRssCmd extends rpcCmd{
 				we_html_element::htmlA(array("href" => $item['link'], "target" => "_blank", "style" => "text-decoration:underline;"), g_l('cockpit', '[more]')) : "";
 			$sRssOut .= ($bShowDesc) ? $item['description'] . $sLink . we_html_element::htmlBr() : "";
 			if($bShowContEnc){
-				$contEnc = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0"), 1, 1);
+				$contEnc = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 1, 1);
 				$contEnc->setCol(0, 0, null, $item['content:encoded'] . ((!$bCfgDesc) ? $sLink : ""));
 				$sRssOut .= $contEnc->getHTML();
 			} else if(!$bShowDesc){

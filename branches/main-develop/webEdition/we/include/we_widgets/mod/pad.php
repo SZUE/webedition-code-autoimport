@@ -131,13 +131,13 @@ $sctValid = we_html_tools::htmlSelect("sct_valid", array(
 		g_l('cockpit', '[always]'), g_l('cockpit', '[from_date]'), g_l('cockpit', '[period]')
 		), 1, g_l('cockpit', '[always]'), false, 'style="width:100px;" onChange="toggleTblValidity()"', 'value', 100, 'middlefont');
 $oTblValidity = new we_html_table(array(
-		"cellpadding" => "0", "cellspacing" => "0", "border" => "0", "id" => "oTblValidity"
+		"cellpadding" => 0, "cellspacing" => 0, "border" => 0, "id" => "oTblValidity"
 		), 1, 3);
 $oTblValidity->setCol(0, 0, null, getDateSelector(g_l('cockpit', '[from]'), "f_ValidFrom", "_from"));
 $oTblValidity->setCol(0, 1, null, we_html_tools::getPixel(10, 1));
 $oTblValidity->setCol(0, 2, null, getDateSelector(g_l('cockpit', '[until]'), "f_ValidUntil", "_until"));
 $oTblPeriod = new we_html_table(array(
-		"width" => "100%", "cellpadding" => "0", "cellspacing" => "0", "border" => "0"
+		"width" => "100%", "cellpadding" => 0, "cellspacing" => 0, "border" => 0
 		), 1, 2);
 $oTblPeriod->setCol(0, 0, array(
 	"class" => "middlefont"
@@ -154,7 +154,7 @@ $rdoPrio[1] = we_forms::radiobutton(
 $rdoPrio[2] = we_forms::radiobutton(
 		$value = 2, $checked = 1, $name = "rdo_prio", $text = g_l('cockpit', '[low]'), $uniqid = true, $class = "middlefont", $onClick = "", $disabled = false, $description = "", $type = 0, $onMouseUp = "");
 $oTblPrio = new we_html_table(array(
-		"cellpadding" => "0", "cellspacing" => "0", "border" => "0"
+		"cellpadding" => 0, "cellspacing" => 0, "border" => 0
 		), 1, 8);
 $oTblPrio->setCol(0, 0, null, $rdoPrio[0]);
 $oTblPrio->setCol(
@@ -194,7 +194,7 @@ $buttons = we_button::position_yes_no_cancel($delete_button, $cancel_button, $sa
 
 // Edit note dialog
 $oTblProps = new we_html_table(array(
-		"width" => "100%", "cellpadding" => "0", "cellspacing" => "0", "border" => "0"
+		"width" => "100%", "cellpadding" => 0, "cellspacing" => 0, "border" => 0
 		), 9, 2);
 $oTblProps->setCol(0, 0, array(
 	"class" => "middlefont"
@@ -235,7 +235,7 @@ $oTblProps->setCol(8, 0, array(
 
 // Button: add note
 $oTblBtnProps = new we_html_table(array(
-		"width" => "100%", "cellpadding" => "0", "cellspacing" => "0", "border" => "0"
+		"width" => "100%", "cellpadding" => 0, "cellspacing" => 0, "border" => 0
 		), 1, 1);
 $oTblBtnProps->setCol(0, 0, array(
 	"align" => "right"
@@ -245,15 +245,15 @@ $oTblBtnProps->setCol(0, 0, array(
 $oPad = new we_html_table(
 		array(
 			"width" => "100%",
-			"cellpadding" => "0",
-			"cellspacing" => "0",
-			"border" => "0",
+			"cellpadding" => 0,
+			"cellspacing" => 0,
+			"border" => 0,
 			"style" => "table-layout:fixed;"
 		),
 		3,
 		3);
 $oPad->setCol(0, 0, array(
-	"width" => "6"
+	"width" => 6
 	), we_html_element::htmlImg(array(
 		"src" => IMAGE_DIR . "pd/pad_corner_lt.gif", "width" => 6, "height" => 4
 	)));
@@ -261,7 +261,7 @@ $oPad->setCol(0, 1, array(
 	"class" => "cl_notes"
 	), "");
 $oPad->setCol(0, 2, array(
-	"width" => "6"
+	"width" => 6
 	), we_html_element::htmlImg(array(
 		"src" => IMAGE_DIR . "pd/pad_corner_rt.gif", "width" => 6, "height" => 4
 	)));
@@ -271,7 +271,7 @@ $oPad->setCol(1, 0, array(
 		"id" => "notices"
 		), getNoteList($_sql, $bDate, $bDisplay)));
 $oPad->setCol(2, 0, array(
-	"width" => "6"
+	"width" => 6
 	), we_html_element::htmlImg(array(
 		"src" => IMAGE_DIR . "pd/pad_corner_lb.gif", "width" => 6, "height" => 6
 	)));
@@ -279,7 +279,7 @@ $oPad->setCol(2, 1, array(
 	"class" => "cl_notes"
 	), "");
 $oPad->setCol(2, 2, array(
-	"width" => "6"
+	"width" => 6
 	), we_html_element::htmlImg(array(
 		"src" => IMAGE_DIR . "pd/pad_corner_rb.gif", "width" => 6, "height" => 6
 	)));
@@ -607,10 +607,10 @@ print we_html_element::htmlDocType() . we_html_element::htmlHtml(
 			}
 		")) . we_html_element::htmlBody(
 			array(
-			"marginwidth" => "0",
-			"marginheight" => "0",
-			"leftmargin" => "0",
-			"topmargin" => "0",
+			"marginwidth" => 0,
+			"marginheight" => 0,
+			"leftmargin" => 0,
+			"topmargin" => 0,
 			"onload" => (($_REQUEST['we_cmd'][6] == "pad/pad") ? "if(parent!=self)init();" : "")
 			), we_html_element::htmlForm(array("style" => "display:inline;"), we_html_element::htmlDiv(
 					array("id" => "pad"), $_notepad .

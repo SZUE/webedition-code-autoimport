@@ -38,10 +38,10 @@ class weBannerFrames extends weModuleFrames{
 			case "left":
 				print $this->getHTMLLeft(false);
 				break;
-			case "edheader": 
+			case "edheader":
 				print $this->getHTMLEditorHeader($mode);
 				break;
-			case "edfooter": 
+			case "edfooter":
 				print $this->getHTMLEditorFooter($mode);
 				break;
 			default:
@@ -315,10 +315,10 @@ class weBannerFrames extends weModuleFrames{
 			');
 
 		//TODO: we have the following body in several modules!
-		$body = we_html_element::htmlBody(array('bgcolor' => 'white', 'background' => IMAGE_DIR . 'backgrounds/header_with_black_line.gif', 'marginwidth' => '0', 'marginheight' => '0', 'leftmargin' => '0', 'topmargin' => '0', 'onload' => 'setFrameSize()', 'onresize' => 'setFrameSize()'),
+		$body = we_html_element::htmlBody(array('bgcolor' => 'white', 'background' => IMAGE_DIR . 'backgrounds/header_with_black_line.gif', 'marginwidth' => 0, 'marginheight' => 0, 'leftmargin' => 0, 'topmargin' => 0, 'onload' => 'setFrameSize()', 'onresize' => 'setFrameSize()'),
 			we_html_element::htmlDiv(array('id' => 'main'),
 				we_html_tools::getPixel(100, 3) .
-				we_html_element::htmlDiv(array('style' => 'margin:0px;padding-left:10px;', 'id' => 'headrow'), 
+				we_html_element::htmlDiv(array('style' => 'margin:0px;padding-left:10px;', 'id' => 'headrow'),
 					we_html_element::htmlNobr(
 						we_html_element::htmlB(str_replace(" ", "&nbsp;", $headline1) . ':&nbsp;') .
 						we_html_element::htmlSpan(array('id' => 'h_path', 'class' => 'header_small'),
@@ -343,7 +343,7 @@ class weBannerFrames extends weModuleFrames{
 		print STYLESHEET;
 
 		$this->View->getJSFooterCode();
-		
+
 		$extraHead = $this->View->getJSFooterCode() . we_html_element::jsElement('
 			function sprintf(){
 				if (!arguments || arguments.length < 1) return;
@@ -393,14 +393,14 @@ class weBannerFrames extends weModuleFrames{
 			}
 		');
 
-		return parent::getHTMLEditorFooter('save_banner', $extraHead); 
+		return parent::getHTMLEditorFooter('save_banner', $extraHead);
 	}
 
 	function getHTMLCmd(){
 		$extraHead = $this->View->getJSCmd();
 
-		$body = we_html_element::htmlBody(array(), 
-			we_html_element::htmlForm(array(), 
+		$body = we_html_element::htmlBody(array(),
+			we_html_element::htmlForm(array(),
 				$this->View->htmlHidden("ncmd", "") .
 				$this->View->htmlHidden("nopt", "")
 			)

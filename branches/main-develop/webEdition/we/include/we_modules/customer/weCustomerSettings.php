@@ -400,12 +400,12 @@ class weCustomerSettings{
 			}
 
 			$ret = array(
-				'day' => '0',
-				'month' => '0',
-				'year' => '0',
-				'hour' => '0',
-				'minute' => '0',
-				'second' => '0'
+				'day' => 0,
+				'month' => 0,
+				'year' => 0,
+				'hour' => 0,
+				'minute' => 0,
+				'second' => 0
 			);
 			foreach($date_format as $key => $val){
 				if(isset($order[$key]))

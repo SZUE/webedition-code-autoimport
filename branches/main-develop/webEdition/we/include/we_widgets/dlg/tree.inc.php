@@ -225,7 +225,7 @@ class weExportTree extends weMainTree{
 				$style_code .= $st . "\n";
 
 		$header = new we_html_table(array(
-				"cellpadding" => 0, "cellspacing" => 0, "border" => "0"
+				"cellpadding" => 0, "cellspacing" => 0, "border" => 0
 				), 3, 1);
 
 		$header->setCol(0, 0, array(

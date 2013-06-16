@@ -388,7 +388,7 @@ self.focus();
 		);
 
 		$body = we_html_element::htmlBody(array("class" => "weDialogBody", "onLoad" => "startStep();"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), we_html_element::htmlHidden(array("name" => "pnt", "value" => "body")) .
-					we_html_element::htmlHidden(array("name" => "step", "value" => "3")) .
+					we_html_element::htmlHidden(array("name" => "step", "value" => 3)) .
 					we_multiIconBox::getHTML("backup_options", "100%", $parts, 30, "", -1, "", "", false, g_l('backup', "[step2]"))
 				)
 		);
@@ -422,7 +422,7 @@ self.focus();
 					$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', "[defaultcharset_warning]"), we_html_tools::TYPE_ALERT, 600, false), "space" => 0, "noline" => 1);
 				}
 				$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(sprintf(g_l('newFile', "[max_possible_size]"), round($maxsize / (1024 * 1024), 3) . "MB"), we_html_tools::TYPE_ALERT, 600), "space" => 0, "noline" => 1);
-				$parts[] = array("headline" => "", "html" => we_html_element::htmlInput(array("name" => "we_upload_file", "type" => "file", "size" => "35")), "space" => 0, "noline" => 1);
+				$parts[] = array("headline" => "", "html" => we_html_element::htmlInput(array("name" => "we_upload_file", "type" => "file", "size" => 35)), "space" => 0, "noline" => 1);
 				$parts[] = array("headline" => "", "html" => we_html_tools::getPixel(1, 1), "space" => 0, "noline" => 1);
 			}
 		} else{
@@ -433,7 +433,7 @@ function setLocation(loc){
 }
 extra_files=new Array();
 extra_files_desc=new Array();';
-			$select = new we_html_select(array("name" => "backup_select", "size" => "7", "style" => "width: 600px;"));
+			$select = new we_html_select(array("name" => "backup_select", "size" => 7, "style" => "width: 600px;"));
 
 
 			$files = array();
@@ -726,7 +726,7 @@ self.focus();');
 
 		$body = we_html_element::htmlBody(array("class" => "weDialogBody", "onLoad" => "startStep();"), we_html_element::htmlForm($form_attribs, we_html_element::htmlHidden(array("name" => "pnt", "value" => "cmd")) .
 					we_html_element::htmlHidden(array("name" => "cmd", "value" => "import")) .
-					we_html_element::htmlHidden(array("name" => "step", "value" => "3")) .
+					we_html_element::htmlHidden(array("name" => "step", "value" => 3)) .
 					we_html_element::htmlHidden(array("name" => "MAX_FILE_SIZE", "value" => $maxsize)) .
 					we_html_element::htmlInput(array("type" => "hidden", "name" => "operation_mode", "value" => "import")) .
 					we_multiIconBox::getJS() .
@@ -1109,7 +1109,7 @@ function startStep(){
 			we_html_tools::getHtmlInnerHead() . STYLESHEET;
 		$body = '';
 
-		$table = new we_html_table(array("border" => "0", "align" => "right", "cellpadding" => "0", "cellspacing" => "0"), 2, 4);
+		$table = new we_html_table(array("border" => 0, "align" => "right", "cellpadding" => 0, "cellspacing" => 0), 2, 4);
 		$table->setCol(0, 0, null, we_html_tools::getPixel(15, 5));
 
 		if(isset($_REQUEST["operation_mode"])){
@@ -1558,7 +1558,7 @@ top.busy.location = "' . $this->frameset . '?pnt=busy&operation_mode=busy&curren
 
 		$table = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0, "class" => "defaultfont"), 3, 1);
 		$table->setCol(0, 0, null, g_l('backup', "[finish_error]"));
-		$table->setCol(1, 0, null, we_html_element::htmlTextArea(array("name" => "text_errors", "cols" => "45", "rows" => "7"), $text));
+		$table->setCol(1, 0, null, we_html_element::htmlTextArea(array("name" => "text_errors", "cols" => 45, "rows" => 7), $text));
 		$table->setCol(2, 0, null, we_html_tools::getPixel(400, 5));
 		return $table->getHtml();
 	}
@@ -1580,7 +1580,7 @@ top.busy.location = "' . $this->frameset . '?pnt=busy&operation_mode=busy&curren
 
 			$table = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0, "class" => "defaultfont"), 3, 1);
 			$table->setCol(0, 0, null, g_l('backup', "[finish_warning]"));
-			$table->setCol(1, 0, null, we_html_element::htmlTextArea(array("name" => "text_errors", "cols" => "45", "rows" => "7"), $text));
+			$table->setCol(1, 0, null, we_html_element::htmlTextArea(array("name" => "text_errors", "cols" => 45, "rows" => 7), $text));
 			$table->setCol(2, 0, null, we_html_tools::getPixel(400, 5));
 			return $table->getHtml();
 		}
@@ -1590,7 +1590,7 @@ top.busy.location = "' . $this->frameset . '?pnt=busy&operation_mode=busy&curren
 	/* 	function getPerformanceBox(){
 	  $weBackup = new weBackup();
 
-	  $perf = new we_html_table(array("border" => "0", "cellpadding" => "2", "cellspacing" => "0"), 3, 5);
+	  $perf = new we_html_table(array("border" => 0, "cellpadding" => 2, "cellspacing" => 0), 3, 5);
 	  $perf->setCol(0, 0, array("class" => "header_small"), g_l('backup', "[slow]"));
 	  $perf->setCol(0, 1, array(), we_html_tools::getPixel(5, 2));
 	  $perf->setCol(0, 2, array("class" => "header_small", "align" => "right"), g_l('backup', "[fast]"));

@@ -761,7 +761,7 @@ if(isset($_REQUEST["ok"]) && $_REQUEST["ok"] && $_REQUEST['we_cmd'][0] == "edit_
 					</tr>
 ' : '') . '
 </table>',
-				'space' => '150',
+				'space' => 150,
 				'noline' => 1),
 			array('headline' => g_l('global', "[content]"),
 				'html' => '
@@ -785,18 +785,18 @@ if(isset($_REQUEST["ok"]) && $_REQUEST["ok"] && $_REQUEST['we_cmd'][0] == "edit_
 						<td>' . we_html_tools::getPixel(10, 3) . "<br>" . $imgProps . '</td>
 					</tr>
 				</table><div></div>',
-				'space' => '150'),
+				'space' => 150),
 			array('headline' => g_l('linklistEdit', "[link_anchor]"),
 				'html' => $anchor,
-				'space' => '150',
+				'space' => 150,
 				'noline' => 1),
 			array('headline' => g_l('linklistEdit', "[link_params]"),
 				'html' => $params,
-				'space' => '150',
+				'space' => 150,
 				'noline' => 1),
 			array('headline' => g_l('linklistEdit', "[link_target]"),
 				'html' => $ctarget,
-				'space' => '150')
+				'space' => 150)
 		);
 
 
@@ -810,12 +810,12 @@ if(isset($_REQUEST["ok"]) && $_REQUEST["ok"] && $_REQUEST['we_cmd'][0] == "edit_
                                 <td>' . $hreflang . '</td>
                             </tr>
 			                 </table>',
-				'space' => '150',
+				'space' => 150,
 				'noline' => 1);
 
 			$_parts[] = array('headline' => g_l('linklistEdit', '[title]'),
 				'html' => $title,
-				'space' => '150',
+				'space' => 150,
 				'noline' => 1);
 
 			$_parts[] = array('headline' => g_l('linklistEdit', '[keyboard]'),
@@ -831,7 +831,7 @@ if(isset($_REQUEST["ok"]) && $_REQUEST["ok"] && $_REQUEST['we_cmd'][0] == "edit_
                                 <td>' . $tabindex . '</td>
                             </tr>
 			                 </table>',
-				'space' => '150',
+				'space' => 150,
 				'noline' => 1);
 
 			$_parts[] = array('headline' => g_l('wysiwyg', "[relation]"),
@@ -842,19 +842,19 @@ if(isset($_REQUEST["ok"]) && $_REQUEST["ok"] && $_REQUEST['we_cmd'][0] == "edit_
                                 <td>' . $revfield . '</td>
                             </tr>
 			                 </table>',
-				'space' => '150',
+				'space' => 150,
 				'noline' => 1);
 
 			$_parts[] = array('headline' => g_l('linklistEdit', "[link_attr]"),
 				'html' => $cattribs,
-				'space' => '150');
+				'space' => 150);
 		}
 
 
 		//   Pop-Up
 		$_parts[] = array('headline' => g_l('global', "[jswin]"),
 			'html' => $jswinonoff,
-			'space' => '150');
+			'space' => 150);
 		?>
 		<form name="we_form" action="<?php print WEBEDITION_DIR; ?>we_cmd.php" method="post" onSubmit="return false">
 			<input type="hidden" name="we_cmd[0]" value="<?php print $_REQUEST['we_cmd'][0]; ?>" />

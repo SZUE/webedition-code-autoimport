@@ -66,10 +66,10 @@ echo we_html_element::htmlDocType();
 
 	$foo = '<pre class="defaultfont">' . oldHtmlspecialchars($foo . we_html_element::htmlTitle($we_doc->getElement("Title"))) . '
 </pre>
-	' . we_tag("textarea", array("name" => "HEAD", "rows" => "8", "cols" => 80, "wrap" => "virtual", "style" => "width: 600px;")) . '<br>
+	' . we_tag("textarea", array("name" => "HEAD", "rows" => 8, "cols" => 80, "wrap" => "virtual", "style" => "width: 600px;")) . '<br>
 <pre class="defaultfont">	&lt;/head&gt;
-	&lt;body ' . we_tag("input", array("type" => "text", "size" => "60", "name" => "BODYTAG", "style" => "width: 480px;")) . '&gt;</pre>
-' . we_tag("textarea", array("name" => "BODY", "rows" => "15", "cols" => 80, "wrap" => "virtual", "style" => "width: 600px;")) . '
+	&lt;body ' . we_tag("input", array("type" => "text", "size" => 60, "name" => "BODYTAG", "style" => "width: 480px;")) . '&gt;</pre>
+' . we_tag("textarea", array("name" => "BODY", "rows" => 15, "cols" => 80, "wrap" => "virtual", "style" => "width: 600px;")) . '
 <pre class="defaultfont">	&lt;/body&gt;
 &lt;/html&gt;</pre>';
 	print we_html_tools::htmlMessageBox(667, 650, $foo);

@@ -45,7 +45,7 @@ class weCustomerAdd{
 			$fcounter = 0;
 			$row_num = 0;
 
-			$sort_table = new we_html_table(array('border' => '0', 'cellpadding' => '2', 'cellspacing' => '1', 'width' => 400, 'height' => 50), 1, 5);
+			$sort_table = new we_html_table(array('border' => 0, 'cellpadding' => 2, 'cellspacing' => 1, 'width' => 400, 'height' => 50), 1, 5);
 			$sort_table->setCol(0, 0, array('class' => 'defaultfont'), we_html_element::htmlB(g_l('modules_customer', '[sort_branch]')));
 			$sort_table->setCol(0, 1, array('class' => 'defaultfont'), we_html_element::htmlB(g_l('modules_customer', '[sort_field]')));
 			//$sort_table->setCol(0, 2, array('class' => 'defaultfont'), we_html_element::htmlB(g_l('modules_customer', '[sort_function]')));
@@ -132,7 +132,7 @@ class weCustomerAdd{
 
 			$fhidden.=we_html_element::htmlHidden(array("name" => "fcounter_" . $counter, "value" => "$fcounter"));
 
-			$_htmlCode = $pob->getHTMLBox(we_html_element::htmlInput(array("name" => "sort_" . $counter, "value" => $k, "size" => "40")), g_l('modules_customer', '[name]'), 100, 50, 25, 0, 0, 50) .
+			$_htmlCode = $pob->getHTMLBox(we_html_element::htmlInput(array("name" => "sort_" . $counter, "value" => $k, "size" => 40)), g_l('modules_customer', '[name]'), 100, 50, 25, 0, 0, 50) .
 				$sort_table->getHtml() .
 				we_button::create_button("image:btn_function_trash", "javascript:we_cmd('del_sort','$k')");
 
@@ -311,7 +311,7 @@ function we_cmd(){
 		}
 
 
-		$advsearch = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "3"), 1, 4);
+		$advsearch = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 3), 1, 4);
 		$branch = $pob->getHTMLBranchSelect();
 		$branch->setOptionVT(1, g_l('modules_customer', '[other]'), g_l('modules_customer', '[other]'));
 
@@ -346,7 +346,7 @@ function we_cmd(){
 			$advsearch->setCol($c, 0, array(), $branch->getHtml());
 			$advsearch->setCol($c, 1, array(), $field->getHtml());
 			$advsearch->setCol($c, 2, array(), we_html_tools::htmlSelect("operator_" . $i, $operators, 1, (isset($search_arr["operator_" . $i]) ? $search_arr["operator_" . $i] : ""), false, '', "value", "60"));
-			$advsearch->setCol($c, 3, array("width" => "190"), "<table border='0' cellpadding='0' cellspacing='0'><tr><td>" . $value_i . $value_date_i . "</td><td>" . we_html_tools::getPixel(3, 1) . "</td><td id='dpzell_$i' style='display:none' align='right'>$btnDatePicker</td></tr></table>");
+			$advsearch->setCol($c, 3, array("width" => 190), "<table border='0' cellpadding='0' cellspacing='0'><tr><td>" . $value_i . $value_date_i . "</td><td>" . we_html_tools::getPixel(3, 1) . "</td><td id='dpzell_$i' style='display:none' align='right'>$btnDatePicker</td></tr></table>");
 			++$c;
 		}
 
@@ -423,10 +423,10 @@ function we_cmd(){
 		$select->setAttributes(array("OnChange" => "applySort();", "style" => "width:150px"));
 		$select->selectOption($pob->View->settings->getSettings('default_sort_view'));
 
-		$table1 = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0", "width" => "3000"), 1, 1);
+		$table1 = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0, "width" => 3000), 1, 1);
 		$table1->setCol(0, 0, array("nowrap" => null, "class" => "small"), we_html_tools::getPixel(300, 1));
 
-		$table = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "3"), 1, 3);
+		$table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 3), 1, 3);
 		$table->setRow(0, array("valign" => "bottom"));
 
 		$table->setCol(0, 0, array("nowrap" => null, "class" => "small"), $select->getHtml());
@@ -434,11 +434,11 @@ function we_cmd(){
 		$table->setCol(0, 2, array("nowrap" => null, "class" => "small"), we_button::create_button("image:btn_edit_edit", "javascript:we_cmd('show_sort_admin')"));
 
 		$hiddens = we_html_element::htmlHidden(array("name" => "pnt", "value" => "treeheader")) .
-			we_html_element::htmlHidden(array("name" => "pid", "value" => "0")) .
+			we_html_element::htmlHidden(array("name" => "pid", "value" => 0)) .
 			we_html_element::htmlHidden(array("name" => "cmd", "value" => "no_cmd"));
 
 
-		$body = we_html_element::htmlBody(array('style' => 'overflow:hidden', "background" => IMAGE_DIR . "backgrounds/header_with_black_line.gif", "marginwidth" => "5", "marginheight" => "5", "leftmargin" => "5", "topmargin" => "5"), we_html_element::jsElement($pob->View->getJSTreeHeader()) .
+		$body = we_html_element::htmlBody(array('style' => 'overflow:hidden', "background" => IMAGE_DIR . "backgrounds/header_with_black_line.gif", "marginwidth" => 5, "marginheight" => 5, "leftmargin" => 5, "topmargin" => 5), we_html_element::jsElement($pob->View->getJSTreeHeader()) .
 				we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
 					$table1->getHtml() .
 					$table->getHtml()

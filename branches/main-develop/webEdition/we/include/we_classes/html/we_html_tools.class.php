@@ -200,11 +200,11 @@ abstract class we_html_tools{
 
 		if($buttons){
 			$attribs = array(
-				"border" => "0", "cellpadding" => "0", "cellspacing" => "0"
+				"border" => 0, "cellpadding" => 0, "cellspacing" => 0
 			);
 			$_table = new we_html_table($attribs, 3, 1);
 			$_table->setCol(0, 0, array(
-				"colspan" => "2"
+				"colspan" => 2
 				), $out);
 			$_table->setCol(1, 0, null, self::getPixel($w, 5)); // row for gap between buttons and dialogborder
 			$_table->setCol(2, 0, array(
@@ -252,10 +252,10 @@ abstract class we_html_tools{
 
 		if($buttons){
 			$attribs = array(
-				"border" => "0", "cellpadding" => "0", "cellspacing" => "0"
+				"border" => 0, "cellpadding" => 0, "cellspacing" => 0
 			);
 			$_table = new we_html_table($attribs, 3, 1);
-			$_table->setCol(0, 0, array("colspan" => "2"), $out);
+			$_table->setCol(0, 0, array("colspan" => 2), $out);
 			$_table->setCol(1, 0, null, self::getPixel($w, 5)); // row for gap between buttons and dialogborder
 			$_table->setCol(2, 0, array("align" => "right"), $buttons);
 			return $_table->getHtml();

@@ -117,9 +117,9 @@ class weToolFrames extends weModuleFrames{
 	function getHTMLResize(){
 
 		if((we_base_browserDetect::isGecko()) || (we_base_browserDetect::isOpera())){
-			$frameset = new we_html_frameset(array("cols" => "200,*", "border" => "1", "id" => "resizeframeid"));
+			$frameset = new we_html_frameset(array("cols" => "200,*", "border" => 1, "id" => "resizeframeid"));
 		} else{
-			$frameset = new we_html_frameset(array("cols" => "200,*", "border" => "0", "frameborder" => "0", "framespacing" => "0", "id" => "resizeframeid"));
+			$frameset = new we_html_frameset(array("cols" => "200,*", "border" => 0, "frameborder" => 0, "framespacing" => 0, "id" => "resizeframeid"));
 		}
 		if(we_base_browserDetect::isIE()){
 			$frameset->addFrame(array("src" => $this->frameset . "?pnt=left" . (isset($_REQUEST['modelid']) ? '&modelid=' . $_REQUEST['modelid'] : ''), "name" => "left", "scrolling" => "no", "frameborder" => "no"));
@@ -138,7 +138,7 @@ class weToolFrames extends weModuleFrames{
 
 	function getHTMLRight(){
 
-		$frameset = new we_html_frameset(array("framespacing" => "0", "border" => "0", "frameborder" => "no"));
+		$frameset = new we_html_frameset(array("framespacing" => 0, "border" => 0, "frameborder" => "no"));
 		$frameset->setAttributes(array("cols" => "*"));
 		$frameset->addFrame(array("src" => $this->frameset . "?pnt=editor" . (isset($_REQUEST['tab']) ? '&tab=' . $_REQUEST['tab'] : '') . (isset($_REQUEST['sid']) ? '&sid=' . $_REQUEST['sid'] : ''), "name" => "editor", "noresize" => null, "scrolling" => "no"));
 		$noframeset = new we_baseElement("noframes");
@@ -150,7 +150,7 @@ class weToolFrames extends weModuleFrames{
 
 	function getHTMLEditor(){
 
-		$frameset = new we_html_frameset(array("framespacing" => "0", "border" => "0", "frameborder" => "no"));
+		$frameset = new we_html_frameset(array("framespacing" => 0, "border" => 0, "frameborder" => "no"));
 		$noframeset = new we_baseElement("noframes");
 
 		$frameset->setAttributes(array("rows" => "40,*,40"));
@@ -189,7 +189,7 @@ class weToolFrames extends weModuleFrames{
 		$menu = ob_get_contents();
 		ob_end_clean();
 
-		$table = new we_html_table(array("width" => "100%", "cellpadding" => "0", "cellspacing" => "0", "border" => "0"), 1, 2);
+		$table = new we_html_table(array("width" => "100%", "cellpadding" => 0, "cellspacing" => 0, "border" => 0), 1, 2);
 		$table->setCol(0, 0, array("align" => "left", "valign" => "top"), $menu);
 		$table->setCol(0, 1, array("align" => "right", "valign" => "top"), createMessageConsole("toolFrame"));
 
@@ -243,7 +243,7 @@ function setTab(tab) {
 
 ' . ($this->Model->ID ? '' : $this->topFrame . '.activ_tab=1;'));
 
-		$table = new we_html_table(array("width" => "3000", "cellpadding" => "0", "cellspacing" => "0", "border" => "0"), 3, 1);
+		$table = new we_html_table(array("width" => 3000, "cellpadding" => 0, "cellspacing" => 0, "border" => 0), 3, 1);
 
 		$table->setCol(0, 0, array(), we_html_tools::getPixel(1, 3));
 
@@ -255,7 +255,7 @@ function setTab(tab) {
 		);
 
 		$extraJS = 'document.getElementById("tab_"+' . $this->topFrame . '.activ_tab).className="tabActive";';
-		$body = we_html_element::htmlBody(array("bgcolor" => "white", "background" => IMAGE_DIR . "backgrounds/header_with_black_line.gif", "marginwidth" => "0", "marginheight" => "0", "leftmargin" => "0", "topmargin" => "0", "onload" => "setFrameSize()", "onresize" => "setFrameSize()"), '<div id="main" >' . we_html_tools::getPixel(100, 3) . '<div style="margin:0px;" id="headrow">&nbsp;' . we_html_element::htmlB(($this->Model->IsFolder ? g_l('tools', '[group]') : g_l('tools', '[entry]')) . ':&nbsp;' . str_replace('&amp;', '&', $this->Model->Text) . '<div id="mark" style="display: none;">*</div>') . '</div>' . we_html_tools::getPixel(100, 3) .
+		$body = we_html_element::htmlBody(array("bgcolor" => "white", "background" => IMAGE_DIR . "backgrounds/header_with_black_line.gif", "marginwidth" => 0, "marginheight" => 0, "leftmargin" => 0, "topmargin" => 0, "onload" => "setFrameSize()", "onresize" => "setFrameSize()"), '<div id="main" >' . we_html_tools::getPixel(100, 3) . '<div style="margin:0px;" id="headrow">&nbsp;' . we_html_element::htmlB(($this->Model->IsFolder ? g_l('tools', '[group]') : g_l('tools', '[entry]')) . ':&nbsp;' . str_replace('&amp;', '&', $this->Model->Text) . '<div id="mark" style="display: none;">*</div>') . '</div>' . we_html_tools::getPixel(100, 3) .
 				$we_tabs->getHTML() .
 				'</div>' . we_html_element::jsElement($extraJS)
 		);
@@ -271,7 +271,7 @@ function setTab(tab) {
 			$hiddens['cmd'] = 'home';
 			$GLOBALS['we_print_not_htmltop'] = true;
 			$GLOBALS['we_head_insert'] = $this->View->getJSProperty();
-			$GLOBALS['we_body_insert'] = we_html_element::htmlForm(array('name' => 'we_form'), $this->View->getCommonHiddens($hiddens) . we_html_element::htmlHidden(array('name' => 'home', 'value' => '0')));
+			$GLOBALS['we_body_insert'] = we_html_element::htmlForm(array('name' => 'we_form'), $this->View->getCommonHiddens($hiddens) . we_html_element::htmlHidden(array('name' => 'home', 'value' => 0)));
 			$tool = $GLOBALS['tool'] = $this->toolName;
 			ob_start();
 			include($this->toolDir . 'home.inc.php');
@@ -298,7 +298,7 @@ function setTab(tab) {
 			return $this->getHTMLDocument(we_html_element::htmlBody(array("bgcolor" => "#F0EFF0"), ""));
 		}
 
-		$table1 = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0", "width" => "3000"), 1, 1);
+		$table1 = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0, "width" => 3000), 1, 1);
 		$table1->setCol(0, 0, array("nowrap" => null, "valign" => "top"), we_html_tools::getPixel(1600, 10));
 
 
@@ -313,7 +313,7 @@ function setTab(tab) {
 function we_save() {
 	' . $this->topFrame . '.we_cmd("tool_' . $this->toolName . '_save");
 }') .
-				we_html_element::htmlBody(array("bgcolor" => "white", "background" => IMAGE_DIR . "edit/editfooterback.gif", "marginwidth" => "0", "marginheight" => "0", "leftmargin" => "0", "topmargin" => "0"), we_html_element::htmlForm(array(), $table1->getHtml() .
+				we_html_element::htmlBody(array("bgcolor" => "white", "background" => IMAGE_DIR . "edit/editfooterback.gif", "marginwidth" => 0, "marginheight" => 0, "leftmargin" => 0, "topmargin" => 0), we_html_element::htmlForm(array(), $table1->getHtml() .
 						$_but_table)
 				)
 		);
@@ -359,7 +359,7 @@ function we_save() {
 	}
 
 	function getHTMLLeft(){
-		$frameset = new we_html_frameset(array("framespacing" => "0", "border" => "0", "frameborder" => "no"));
+		$frameset = new we_html_frameset(array("framespacing" => 0, "border" => 0, "frameborder" => "no"));
 
 		$frameset->setAttributes(array("rows" => "1,*,40"));
 		$frameset->addFrame(array("src" => HTML_DIR . "white.html", "name" => "treeheader", "noresize" => null, "scrolling" => "no"));
@@ -379,7 +379,7 @@ function we_save() {
 
 	function getHTMLTreeFooter(){
 		return $this->getHTMLDocument(
-				we_html_element::htmlBody(array("bgcolor" => "white", "background" => IMAGE_DIR . "edit/editfooterback.gif", "marginwidth" => "5", "marginheight" => "0", "leftmargin" => "5", "topmargin" => "0"), '<div id="infoField" style="margin:5px; display: none;" class="defaultfont"></div>')
+				we_html_element::htmlBody(array("bgcolor" => "white", "background" => IMAGE_DIR . "edit/editfooterback.gif", "marginwidth" => 5, "marginheight" => 0, "leftmargin" => 5, "topmargin" => 0), '<div id="infoField" style="margin:5px; display: none;" class="defaultfont"></div>')
 		);
 	}
 
@@ -402,7 +402,7 @@ function we_save() {
 		$hiddens = we_html_element::htmlHidden(array('name' => 'pnt', 'value' => 'cmd')) .
 			we_html_element::htmlHidden(array('name' => 'cmd', 'value' => 'no_cmd'));
 
-		$out = we_html_element::htmlBody(array('bgcolor' => 'white', 'marginwidth' => '10', 'marginheight' => '10', 'leftmargin' => '10', 'topmargin' => '10'), we_html_element::htmlForm(array('name' => 'we_form'), $hiddens .
+		$out = we_html_element::htmlBody(array('bgcolor' => 'white', 'marginwidth' => 10, 'marginheight' => 10, 'leftmargin' => 10, 'topmargin' => 10), we_html_element::htmlForm(array('name' => 'we_form'), $hiddens .
 					we_html_element::jsElement($rootjs . $this->Tree->getJSLoadTree($_loader->getItems($pid, $offset, $this->Tree->default_segment, '')))
 				)
 		);

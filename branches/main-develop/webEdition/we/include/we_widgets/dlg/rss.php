@@ -336,7 +336,7 @@ function htmlClipElement($smalltext, $text, $content){
 	');
 
 	$oClip = new we_html_table(array(
-			"border" => "0", "cellpadding" => "0", "cellspacing" => "0"
+			"border" => 0, "cellpadding" => 0, "cellspacing" => 0
 			), 1, 3);
 	$oClip->setCol(
 		0, 0, array(
@@ -368,7 +368,7 @@ $oIptUri = we_html_tools::htmlFormElementTable(
 
 $oSctRss = new we_html_select(
 		array(
-			"name" => "sct_rss", "size" => "1", "class" => "defaultfont", "onChange" => "onChangeSctRss(this);"
+			"name" => "sct_rss", "size" => 1, "class" => "defaultfont", "onChange" => "onChangeSctRss(this);"
 	));
 $oSctRss->insertOption(0, "", "");
 $oTblSctRss = we_html_tools::htmlFormElementTable($oSctRss->getHTML(), g_l('cockpit', '[rss_top_feeds]'), "left", "defaultfont");
@@ -388,7 +388,7 @@ $btnDeleteTopRssFeed = we_button::create_button(
 		"delete", "javascript:handleTopRssFeed('delete');", false, -1, -1, "", "", false, false);
 
 $oBtnNewFeed = new we_html_table(array(
-		"border" => "0", "cellpadding" => "0", "cellspacing" => "0"
+		"border" => 0, "cellpadding" => 0, "cellspacing" => 0
 		), 1, 5);
 $oBtnNewFeed->setCol(0, 0, null, $btnAddTopRssFeed);
 $oBtnNewFeed->setCol(0, 1, null, we_html_tools::getPixel(10, 1));
@@ -397,7 +397,7 @@ $oBtnNewFeed->setCol(0, 3, null, we_html_tools::getPixel(10, 1));
 $oBtnNewFeed->setCol(0, 4, null, $btnDeleteTopRssFeed);
 
 $oNewFeed = new we_html_table(array(
-		"width" => 390, "border" => "0", "cellpadding" => "0", "cellspacing" => "0"
+		"width" => 390, "border" => 0, "cellpadding" => 0, "cellspacing" => 0
 		), 3, 1);
 $oNewFeed->setCol(
 	0, 0, null, $oRemTopFeeds . we_html_tools::getPixel(1, 5) . we_html_element::htmlBr() . $oIptNewTitle . we_html_tools::getPixel(1, 5) . we_html_element::htmlBr() . $oIptNewUri);
@@ -416,7 +416,7 @@ $oChbxContDesc = we_forms::checkbox($value = 0, $checked = 0, $name = "chbx_conf
 $oChbxContEnc = we_forms::checkbox($value = 0, $checked = 0, $name = "chbx_conf", $text = g_l('cockpit', '[content_encoded]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0);
 $oChbxContPubDate = we_forms::checkbox($value = 0, $checked = 0, $name = "chbx_conf", $text = g_l('cockpit', '[pubdate]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0);
 $oChbxContCategory = we_forms::checkbox($value = 0, $checked = 0, $name = "chbx_conf", $text = g_l('cockpit', '[category]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0);
-$oSctNumEntries = new we_html_select(array("name" => "sct_conf", "size" => "1", "class" => "defaultfont"));
+$oSctNumEntries = new we_html_select(array("name" => "sct_conf", "size" => 1, "class" => "defaultfont"));
 $oSctNumEntries->insertOption(0, 0, g_l('cockpit', '[no]'));
 
 for($iCurrEntry = 1; $iCurrEntry <= 50; $iCurrEntry++){
@@ -427,7 +427,7 @@ for($iCurrEntry = 1; $iCurrEntry <= 50; $iCurrEntry++){
 }
 
 $oRssContR = new we_html_table(array(
-		"height" => "100%", "border" => "0", "cellpadding" => "0", "cellspacing" => "0"
+		"height" => "100%", "border" => 0, "cellpadding" => 0, "cellspacing" => 0
 		), 2, 3);
 $oRssContR->setCol(0, 0, array(
 	"valign" => "middle", "class" => "defaultfont"
@@ -441,7 +441,7 @@ $oRssContR->setCol(1, 0, array(
 	), $oChbxContPubDate . $oChbxContCategory);
 
 $oSelectRssCont = new we_html_table(array(
-		"border" => "0", "cellpadding" => "0", "cellspacing" => "0"
+		"border" => 0, "cellpadding" => 0, "cellspacing" => 0
 		), 1, 2);
 $oSelectRssCont->setCol(0, 0, array(
 	"width" => 165
@@ -464,7 +464,7 @@ $oRdoTitle[0] = we_forms::radiobutton($value = 1, $checked = 0, $name = "rdo_tit
 $oRdoTitle[1] = we_forms::radiobutton($value = 0, $checked = 0, $name = "rdo_title", $text = g_l('cockpit', '[personalized]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $onMouseUp = "");
 
 $oTitleTb = new we_html_table(array(
-		"border" => "0", "cellpadding" => "0", "cellspacing" => "0"
+		"border" => 0, "cellpadding" => 0, "cellspacing" => 0
 		), 2, 1);
 $oTitleTb->setCol(0, 0, array(
 	"width" => 165
@@ -474,7 +474,7 @@ $oTitleTb->setCol(1, 0, array(
 	), $oRdoTitle[1]);
 
 $oEditTb = new we_html_table(array(
-		"border" => "0", "cellpadding" => "0", "cellspacing" => "0"
+		"border" => 0, "cellpadding" => 0, "cellspacing" => 0
 		), 6, 2);
 $oEditTb->setCol(0, 0, array(
 	"width" => 165

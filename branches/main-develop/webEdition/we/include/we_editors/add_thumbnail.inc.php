@@ -102,7 +102,7 @@ if(isset($we_doc->ClassName) && $we_doc->ClassName == "we_imageDocument"){
 	print STYLESHEET . "</head>";
 
 	// SELECT Box with thumbnails
-	$_thumbnails = new we_html_select(array("multiple" => "multiple", "name" => "Thumbnails", "id" => "Thumbnails", "class" => "defaultfont", "size" => "6", "style" => "width: 340px;", "onchange" => "select_thumbnails(this);"));
+	$_thumbnails = new we_html_select(array("multiple" => "multiple", "name" => "Thumbnails", "id" => "Thumbnails", "class" => "defaultfont", "size" => 6, "style" => "width: 340px;", "onchange" => "select_thumbnails(this);"));
 	$DB_WE->query("SELECT ID,Name,Format FROM " . THUMBNAILS_TABLE . " ORDER BY Name");
 
 	$_thumbnail_counter_firsttime = true;

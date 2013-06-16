@@ -179,7 +179,7 @@ class Image_Transform
                                       'y'     => 20,
                                       'color' => 'red',
                                       'font'  => 'Arial.ttf',
-        							  'size'  => '12',
+        							  'size'  => 12,
         							  'angle' => 0,
                                       'resize_first' => false);
 

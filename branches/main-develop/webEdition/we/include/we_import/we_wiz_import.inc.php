@@ -608,7 +608,7 @@ class we_wizard_import extends we_wizard{
 			// --------------
 			// import templates
 			$rootDirID = get_def_ws(TEMPLATES_TABLE);
-			$tbl_extra->setCol(2, 0, array("colspan" => "2"), we_forms::checkboxWithHidden((isset($v["import_templ"]) && $v["import_templ"]) ? true : false, "v[import_templ]", g_l('import', "[import_templ]"), false, "defaultfont", "toggle('tpl_table')"));
+			$tbl_extra->setCol(2, 0, array("colspan" => 2), we_forms::checkboxWithHidden((isset($v["import_templ"]) && $v["import_templ"]) ? true : false, "v[import_templ]", g_l('import', "[import_templ]"), false, "defaultfont", "toggle('tpl_table')"));
 			$wecmdenc1 = we_cmd_enc("self.wizbody.document.forms['we_form'].elements['v[tpl_dir_id]'].value");
 			$wecmdenc2 = we_cmd_enc("self.wizbody.document.forms['we_form'].elements['v[tpl_dir]'].value");
 			$wecmdenc3 = '';
@@ -639,7 +639,7 @@ class we_wizard_import extends we_wizard{
 
 			$tbl_extra->setCol(3, 0, null, $dir_table->getHtml());
 
-			$tbl_extra->setCol(4, 0, array("colspan" => "2"), we_forms::checkboxWithHidden((isset($v["import_thumbnails"]) && $v["import_thumbnails"]) ? true : false, "v[import_thumbnails]", g_l('import', "[import_thumbnails]"), false, "defaultfont"));
+			$tbl_extra->setCol(4, 0, array("colspan" => 2), we_forms::checkboxWithHidden((isset($v["import_thumbnails"]) && $v["import_thumbnails"]) ? true : false, "v[import_thumbnails]", g_l('import', "[import_thumbnails]"), false, "defaultfont"));
 
 
 			// --------------
@@ -774,9 +774,9 @@ class we_wizard_import extends we_wizard{
 					)
 				);
 			} else{
-				$hdns .= we_html_element::htmlHidden(array("name" => "v[import_owners]", "value" => "0")) .
-					we_html_element::htmlHidden(array("name" => "v[owners_overwrite]", "value" => "0")) .
-					we_html_element::htmlHidden(array("name" => "v[owners_overwrite_id]", "value" => "0"));
+				$hdns .= we_html_element::htmlHidden(array("name" => "v[import_owners]", "value" => 0)) .
+					we_html_element::htmlHidden(array("name" => "v[owners_overwrite]", "value" => 0)) .
+					we_html_element::htmlHidden(array("name" => "v[owners_overwrite_id]", "value" => 0));
 			}
 		} else{
 			$parts[] = array(
@@ -1031,7 +1031,7 @@ HTS;
 		$DB_WE->query("SELECT ID,DocType FROM " . DOC_TYPES_TABLE . " Order By DocType");
 		$DTselect = new we_html_select(array(
 			"name" => "v[docType]",
-			"size" => "1",
+			"size" => 1,
 			"class" => "weSelect",
 			"onClick" => (defined("OBJECT_TABLE")) ? "self.document.forms['we_form'].elements['v[import_type]'][0].checked=true;" : "",
 			"onChange" => "this.form.doctypeChanged.value=1; weChangeDocType(this);",
@@ -1070,7 +1070,7 @@ HTS;
 
 		$TPLselect = new we_html_select(array(
 			"name" => "docTypeTemplateId",
-			"size" => "1",
+			"size" => 1,
 			"class" => "weSelect",
 			"onClick" => (defined("OBJECT_TABLE")) ? "self.document.forms['we_form'].elements['v[import_type]'][0].checked=true;" : "",
 			//"onChange"  => "we_submit_form(self.document.forms['we_form'], 'wizbody', '".$this->path."');",
@@ -1145,7 +1145,7 @@ HTS;
 		$v["classID"] = isset($v["classID"]) ? $v["classID"] : -1;
 		$CLselect = new we_html_select(array(
 			"name" => "v[classID]",
-			"size" => "1",
+			"size" => 1,
 			"class" => "weSelect",
 			"onClick" => "self.document.forms['we_form'].elements['v[import_type]'][1].checked=true;",
 			"style" => "width: 150px")
@@ -1275,7 +1275,7 @@ HTS;
 			if($xmlWellFormed && $hasChildNode){
 				$rcdSelect = new we_html_select(array(
 					"name" => "we_select",
-					"size" => "1",
+					"size" => 1,
 					"class" => "weSelect",
 					(($isSingleNode) ? "disabled" : "style") => "",
 					"onChange" => "this.form.elements['v[to_iElem]'].value=this.options[this.selectedIndex].value; this.form.elements['v[from_iElem]'].value=1;this.form.elements['v[sct_node]'].value=this.options[this.selectedIndex].text;" .
@@ -1304,9 +1304,9 @@ HTS;
 				$tblSelect->setCol(0, 6, array(), we_html_tools::htmlTextInput("v[to_iElem]", 4, $firstOptVal, 5, "align=right", "text", 30, "", "", ($isSingleNode && ($firstOptVal == 1)) ? 1 : 0));
 
 				$tblFrame = new we_html_table(array(), 3, 2);
-				$tblFrame->setCol(0, 0, array("colspan" => "2", "class" => "defaultfont"), ($isSingleNode) ? we_html_tools::htmlAlertAttentionBox(g_l('import', "[well_formed]") . " " . g_l('import', "[select_elements]"), we_html_tools::TYPE_INFO, 530) :
+				$tblFrame->setCol(0, 0, array("colspan" => 2, "class" => "defaultfont"), ($isSingleNode) ? we_html_tools::htmlAlertAttentionBox(g_l('import', "[well_formed]") . " " . g_l('import', "[select_elements]"), we_html_tools::TYPE_INFO, 530) :
 						we_html_tools::htmlAlertAttentionBox(g_l('import', "[xml_valid_1]") . " $optid " . g_l('import', "[xml_valid_m2]"), we_html_tools::TYPE_INFO, 530));
-				$tblFrame->setCol(1, 0, array("colspan" => "2"));
+				$tblFrame->setCol(1, 0, array("colspan" => 2));
 				$tblFrame->setCol(2, 1, array(), $tblSelect->getHtml());
 
 				array_push($parts, array("html" => $tblFrame->getHtml(), "space" => 0, "noline" => 1));
@@ -1501,7 +1501,7 @@ function handle_event(evt) {
 			$hdns .= we_html_element::htmlHidden(array("name" => "records[$i]", "value" => $record));
 			$sct_we_fields = new we_html_select(array(
 				"name" => "we_flds[$record]",
-				"size" => "1",
+				"size" => 1,
 				"class" => "weSelect",
 				"onClick" => "",
 				"style" => "")
@@ -1542,7 +1542,7 @@ function handle_event(evt) {
 		// Assigned record or attribute field selectors.
 		$rcdPfxSelect = new we_html_select(array(
 			"name" => "v[rcd_pfx]",
-			"size" => "1",
+			"size" => 1,
 			"class" => "weSelect",
 			"onClick" => "self.document.forms['we_form'].elements['v[pfx_fn]'].value=1;self.document.forms['we_form'].elements['v[rdo_filename]'][1].checked=true;",
 			"style" => "width: 150px")
@@ -1728,7 +1728,7 @@ function handle_event(evt) {
 		$importLocs->setCol($_tblRow++, 0, array(), $importFromLocal);
 		/*		 * *************************************************************************************************************** */
 		$iptDel = we_html_tools::htmlTextInput("v[csv_seperator]", 2, (isset($v["csv_seperator"]) ? (($v["csv_seperator"] != "") ? $v["csv_seperator"] : " ") : ";"), 2, "", "text", 20);
-		$fldDel = new we_html_select(array("name" => "v[sct_csv_seperator]", "size" => "1", "class" => "weSelect", "onChange" => "this.form.elements['v[csv_seperator]'].value=this.options[this.selectedIndex].innerHTML.substr(0,2);this.selectedIndex=options[0];", "style" => "width: 130px"));
+		$fldDel = new we_html_select(array("name" => "v[sct_csv_seperator]", "size" => 1, "class" => "weSelect", "onChange" => "this.form.elements['v[csv_seperator]'].value=this.options[this.selectedIndex].innerHTML.substr(0,2);this.selectedIndex=options[0];", "style" => "width: 130px"));
 		$fldDel->addOption("", "");
 		$fldDel->addOption("semicolon", g_l('import', "[semicolon]"));
 		$fldDel->addOption("comma", g_l('import', "[comma]"));
@@ -1739,7 +1739,7 @@ function handle_event(evt) {
 			$fldDel->selectOption($v["sct_csv_seperator"]);
 		}
 
-		$charSet = new we_html_select(array("name" => "v[file_format]", "size" => "1", "class" => "weSelect", "onChange" => "", "style" => ""));
+		$charSet = new we_html_select(array("name" => "v[file_format]", "size" => 1, "class" => "weSelect", "onChange" => "", "style" => ""));
 		$charSet->addOption("win", "Windows");
 		$charSet->addOption("unix", "Unix");
 		$charSet->addOption("mac", "Mac");
@@ -1747,7 +1747,7 @@ function handle_event(evt) {
 			$charSet->selectOption($v["file_format"]);
 		}
 
-		$txtDel = new we_html_select(array("name" => "v[csv_enclosed]", "size" => "1", "class" => "weSelect", "onChange" => "", "style" => "width: 300px"));
+		$txtDel = new we_html_select(array("name" => "v[csv_enclosed]", "size" => 1, "class" => "weSelect", "onChange" => "", "style" => "width: 300px"));
 		$txtDel->addOption("double_quote", g_l('import', "[double_quote]"));
 		$txtDel->addOption("single_quote", g_l('import', "[single_quote]"));
 		$txtDel->addOption("none", g_l('import', "[none]"));
@@ -1996,7 +1996,7 @@ HTS;
 		$DB_WE->query("SELECT ID,DocType FROM " . DOC_TYPES_TABLE . " Order By DocType");
 		$DTselect = new we_html_select(array(
 			"name" => "v[docType]",
-			"size" => "1",
+			"size" => 1,
 			"class" => "weSelect",
 			"onClick" => (defined("OBJECT_TABLE")) ? "self.document.forms['we_form'].elements['v[import_type]'][0].checked=true;" : "",
 			"onChange" => "this.form.doctypeChanged.value=1; weChangeDocType(this);",
@@ -2036,7 +2036,7 @@ HTS;
 
 		$TPLselect = new we_html_select(array(
 			"name" => "v[we_TemplateID]",
-			"size" => "1",
+			"size" => 1,
 			"class" => "weSelect",
 			"onClick" => "self.document.forms['we_form'].elements['v[import_type]'][0].checked=true;",
 			"style" => "width: 300px")
@@ -2112,7 +2112,7 @@ HTS;
 		$v["classID"] = isset($v["classID"]) ? $v["classID"] : -1;
 		$CLselect = new we_html_select(array(
 			"name" => "v[classID]",
-			"size" => "1",
+			"size" => 1,
 			"class" => "weSelect",
 			"onClick" => "self.document.forms['we_form'].elements['v[import_type]'][1].checked=true;",
 			"style" => "width: 150px")
@@ -2346,7 +2346,7 @@ function handle_event(evt) {
 			$hdns .= we_html_element::htmlHidden(array("name" => "records[$i]", "value" => $record));
 			$sct_we_fields = new we_html_select(array(
 				"name" => "we_flds[$record]",
-				"size" => "1",
+				"size" => 1,
 				"class" => "weSelect",
 				"onClick" => "",
 				"style" => "")
@@ -2392,7 +2392,7 @@ function handle_event(evt) {
 		// Assigned record or attribute field selectors.
 		$rcdPfxSelect = new we_html_select(array(
 			"name" => "v[rcd_pfx]",
-			"size" => "1",
+			"size" => 1,
 			"class" => "weSelect",
 			"onClick" => "self.document.forms['we_form'].elements['v[pfx_fn]'].value=1;self.document.forms['we_form'].elements['v[rdo_filename]'][1].checked=true;",
 			"style" => "width: 150px")

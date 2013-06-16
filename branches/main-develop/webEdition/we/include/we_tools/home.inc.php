@@ -32,10 +32,10 @@ $we_body_insert = isset($GLOBALS["we_body_insert"]) ? $GLOBALS["we_body_insert"]
 
 
 $_row = 0;
-$_starttable = new we_html_table(array("border" => "0",
-	"cellpadding" => "7",
-	"cellspacing" => "0",
-	"width" => "228"), 3, 1);
+$_starttable = new we_html_table(array("border" => 0,
+	"cellpadding" => 7,
+	"cellspacing" => 0,
+	"width" => 228), 3, 1);
 $_starttable->setCol($_row++, 0, array("class" => "defaultfont",
 	"colspan" => 3,
 	"align" => "center"), "<strong>" .

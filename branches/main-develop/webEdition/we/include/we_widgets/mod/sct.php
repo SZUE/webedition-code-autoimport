@@ -135,7 +135,7 @@ foreach($shortcuts as $sctCol){
 }
 
 $sc = new we_html_table(array(
-		"width" => "100%", "border" => "0", "cellpadding" => "0", "cellspacing" => "0"
+		"width" => "100%", "border" => 0, "cellpadding" => 0, "cellspacing" => 0
 		), 1, 1);
 $sc->setCol(0, 0, array(
 	"align" => "center", "valign" => "top"
@@ -158,10 +158,10 @@ if(!isset($aProps)){
 				we_html_tools::getHtmlInnerHead(g_l('cockpit', '[shortcuts]')) . STYLESHEET . we_html_element::jsElement(
 					$sJsCode)) . we_html_element::htmlBody(
 				array(
-				"marginwidth" => "15",
-				"marginheight" => "10",
-				"leftmargin" => "15",
-				"topmargin" => "10",
+				"marginwidth" => 15,
+				"marginheight" => 10,
+				"leftmargin" => 15,
+				"topmargin" => 10,
 				"onload" => "if(parent!=self)init();"
 				), we_html_element::htmlDiv(array(
 					"id" => "sct"

@@ -147,7 +147,7 @@ function setTab(tab) {
 		);
 
 
-		$table = new we_html_table(array("width" => "3000", "cellpadding" => "0", "cellspacing" => "0", "border" => "0"), 3, 1);
+		$table = new we_html_table(array("width" => 3000, "cellpadding" => 0, "cellspacing" => 0, "border" => 0), 3, 1);
 
 		$table->setCol(0, 0, array(), we_html_tools::getPixel(1, 3));
 
@@ -163,10 +163,10 @@ function setTab(tab) {
 				array(
 				"bgcolor" => "white",
 				"background" => IMAGE_DIR . "backgrounds/header_with_black_line.gif",
-				"marginwidth" => "0",
-				"marginheight" => "0",
-				"leftmargin" => "0",
-				"topmargin" => "0",
+				"marginwidth" => 0,
+				"marginheight" => 0,
+				"leftmargin" => 0,
+				"topmargin" => 0,
 				"onload" => "setFrameSize()",
 				"onresize" => "setFrameSize()"
 				), we_html_element::htmlDiv(array('id' => "main"), we_html_tools::getPixel(100, 3) . we_html_element::htmlDiv(array('id' => 'headrow', 'style' => "margin:0px;"), '&nbsp;' .
@@ -184,10 +184,10 @@ function setTab(tab) {
 	function getHTMLGeneral(){
 		$_table = new we_html_table(
 			array(
-			'border' => '0',
-			'cellpadding' => '0',
-			'cellspacing' => '0',
-			'width' => '300',
+			'border' => 0,
+			'cellpadding' => 0,
+			'cellspacing' => 0,
+			'width' => 300,
 			'style' => 'margin-top: 5px;'
 			), 1, 3);
 
@@ -467,9 +467,9 @@ function setTab(tab) {
 		$_table = new we_html_table(
 			array(
 			'width' => $this->_width_size,
-			'cellpadding' => '0',
-			'cellspacing' => '2',
-			'border' => '0',
+			'cellpadding' => 0,
+			'cellspacing' => 2,
+			'border' => 0,
 			'class' => 'defaultfont'
 			), 5, 2);
 
@@ -709,9 +709,9 @@ var hasClassSubDirs = {' . implode(',', $classHasSubDirsJS) . '};') . '
 		$_table = new we_html_table(
 			array(
 			'width' => $this->_width_size,
-			'cellpadding' => '0',
-			'cellspacing' => '0',
-			'border' => '0',
+			'cellpadding' => 0,
+			'cellspacing' => 0,
+			'border' => 0,
 			'class' => 'defaultfont'
 			), 9, 2);
 
@@ -1144,9 +1144,9 @@ categories_edit.setItem(0,(categories_edit.itemCount-1),"' . $cat . '");';
 			), 6, 2
 		);
 
-		$table->setCol(0, 0, array('colspan' => '2'), we_html_tools::getPixel(3, 3));
-		$table->setCol(1, 0, array('colspan' => '2', 'class' => 'defaultfont'), g_l('navigation', '[categories]'));
-		$table->setCol(2, 0, array('colspan' => '2'), we_html_element::htmlDiv(
+		$table->setCol(0, 0, array('colspan' => 2), we_html_tools::getPixel(3, 3));
+		$table->setCol(1, 0, array('colspan' => 2, 'class' => 'defaultfont'), g_l('navigation', '[categories]'));
+		$table->setCol(2, 0, array('colspan' => 2), we_html_element::htmlDiv(
 				array(
 					'id' => 'categories',
 					'class' => 'blockWrapper',
@@ -1154,7 +1154,7 @@ categories_edit.setItem(0,(categories_edit.itemCount-1),"' . $cat . '");';
 				)
 			)
 		);
-		$table->setCol(3, 0, array('colspan' => '2'), we_html_tools::getPixel(5, 5));
+		$table->setCol(3, 0, array('colspan' => 2), we_html_tools::getPixel(5, 5));
 		$table->setCol(
 			4, 0, array('align' => 'left'), we_forms::checkboxWithHidden($this->Model->CatAnd, "CatAnd", g_l('navigation', "[catAnd]"))
 		);
@@ -1163,7 +1163,7 @@ categories_edit.setItem(0,(categories_edit.itemCount-1),"' . $cat . '");';
 				array(we_button::create_button("delete_all", "javascript:removeAllCats()"), $addbut)
 			)
 		);
-		$table->setCol(5, 0, array('colspan' => '2'), we_html_tools::getPixel(3, 3));
+		$table->setCol(5, 0, array('colspan' => 2), we_html_tools::getPixel(3, 3));
 
 		return $table->getHtml() . $js . we_html_element::jsElement('
 function removeAllCats(){
@@ -1348,7 +1348,7 @@ function selectItem() {
 	function getHTMLDynPreview(){
 		$_select = new we_html_select(
 			array(
-			'size' => '20',
+			'size' => 20,
 			'style' => 'width: 420px; height: 200; margin: 5px 0px 5px 0px;'
 		));
 
@@ -1482,7 +1482,7 @@ function ' . $prefix . 'setLinkSelection(value){
 		reset($charsets);
 
 		$table = new we_html_table(array(
-			"border" => "0", "cellpadding" => "0", "cellspacing" => "0"
+			"border" => 0, "cellpadding" => 0, "cellspacing" => 0
 			), 1, 3);
 		$table->setCol(0, 0, null, we_html_tools::htmlTextInput("Charset", 15, $value, '', '', 'text', 120));
 		$table->setCol(0, 1, null, we_html_tools::getPixel(2, 10, 0));
@@ -1598,10 +1598,10 @@ function ' . $prefix . 'setLinkSelection(value){
 
 		$_input_width = 70;
 
-		$_popup = new we_html_table(array('cellpadding' => '5', 'cellspacing' => '0'), 4, 4);
+		$_popup = new we_html_table(array('cellpadding' => 5, 'cellspacing' => 0), 4, 4);
 
-		$_popup->setCol(0, 0, array('colspan' => '2'), we_forms::checkboxWithHidden($this->Model->getAttribute('popup_open'), 'Attributes[popup_open]', g_l('navigation', '[popup_open]'), false, "defaultfont", $this->topFrame . '.mark();"'));
-		$_popup->setCol(0, 2, array('colspan' => '2'), we_forms::checkboxWithHidden($this->Model->getAttribute('popup_center'), 'Attributes[popup_center]', g_l('navigation', '[popup_center]'), false, "defaultfont", $this->topFrame . '.mark();"'));
+		$_popup->setCol(0, 0, array('colspan' => 2), we_forms::checkboxWithHidden($this->Model->getAttribute('popup_open'), 'Attributes[popup_open]', g_l('navigation', '[popup_open]'), false, "defaultfont", $this->topFrame . '.mark();"'));
+		$_popup->setCol(0, 2, array('colspan' => 2), we_forms::checkboxWithHidden($this->Model->getAttribute('popup_center'), 'Attributes[popup_center]', g_l('navigation', '[popup_center]'), false, "defaultfont", $this->topFrame . '.mark();"'));
 
 		$_popup->setCol(1, 0, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('Attributes[popup_xposition]', 5, $this->Model->getAttribute('popup_xposition'), '', 'onchange="' . $this->topFrame . '.mark();"', 'text', $_input_width), g_l('navigation', '[popup_x]')));
 		$_popup->setCol(1, 1, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('Attributes[popup_yposition]', 5, $this->Model->getAttribute('popup_yposition'), '', 'onchange="' . $this->topFrame . '.mark();"', 'text', $_input_width), g_l('navigation', '[popup_y]')));
@@ -1630,7 +1630,7 @@ function ' . $prefix . 'setLinkSelection(value){
 
 	function getHTMLImageAttributes(){
 		$_input_width = 70;
-		$_img_props = new we_html_table(array('cellpadding' => '5', 'cellspacing' => '0', 'border' => '0'), 4, 5);
+		$_img_props = new we_html_table(array('cellpadding' => 5, 'cellspacing' => 0, 'border' => 0), 4, 5);
 
 		$_img_props->setCol(0, 0, array(), we_html_tools::htmlFormElementTable(
 				we_html_tools::htmlTextInput('Attributes[icon_width]', 5, $this->Model->getAttribute('icon_width'), '', 'onchange="' . $this->topFrame . '.mark();"', 'text', $_input_width), g_l('navigation', '[icon_width]')));
@@ -1642,7 +1642,7 @@ function ' . $prefix . 'setLinkSelection(value){
 				we_html_tools::htmlTextInput('Attributes[icon_hspace]', 5, $this->Model->getAttribute('icon_hspace'), '', 'onchange="' . $this->topFrame . '.mark();"', 'text', $_input_width), g_l('navigation', '[icon_hspace]')));
 		$_img_props->setCol(0, 4, array(), we_html_tools::htmlFormElementTable(
 				we_html_tools::htmlTextInput('Attributes[icon_vspace]', 5, $this->Model->getAttribute('icon_vspace'), '', 'onchange="' . $this->topFrame . '.mark();"', 'text', $_input_width), g_l('navigation', '[icon_vspace]')));
-		$_img_props->setCol(1, 0, array('colspan' => '5'), we_html_tools::htmlFormElementTable(
+		$_img_props->setCol(1, 0, array('colspan' => 5), we_html_tools::htmlFormElementTable(
 				we_html_tools::htmlSelect(
 					'Attributes[icon_align]', array(
 					'' => 'Default',
@@ -1657,12 +1657,12 @@ function ' . $prefix . 'setLinkSelection(value){
 					'absbottom' => 'Abs Bottom'
 					), 1, $this->Model->getAttribute('icon_align'), false, 'style="width: ' . ($this->_width_size - 50) . 'px;"'), g_l('navigation', '[icon_align]')));
 		$_img_props->setCol(2, 0, array(
-			'colspan' => '5'
+			'colspan' => 5
 			), we_html_tools::htmlFormElementTable(
 				we_html_tools::htmlTextInput(
 					'Attributes[icon_alt]', 5, $this->Model->getAttribute('icon_alt'), '', 'onchange="' . $this->topFrame . '.mark();"', 'text', ($this->_width_size - 50)), g_l('navigation', '[icon_alt]')));
 		$_img_props->setCol(3, 0, array(
-			'colspan' => '5'
+			'colspan' => 5
 			), we_html_tools::htmlFormElementTable(
 				we_html_tools::htmlTextInput(
 					'Attributes[icon_title]', 5, $this->Model->getAttribute('icon_title'), '', 'onchange="' . $this->topFrame . '.mark();"', 'text', ($this->_width_size - 50)), g_l('navigation', '[icon_title]')));
@@ -1696,13 +1696,13 @@ function ' . $prefix . 'setLinkSelection(value){
 		}
 
 		$table1 = new we_html_table(array(
-			"border" => "0", "cellpadding" => "0", "cellspacing" => "0", "width" => "3000"
+			"border" => 0, "cellpadding" => 0, "cellspacing" => 0, "width" => 3000
 			), 1, 1);
 		$table1->setCol(0, 0, array(
 			"nowrap" => null, "valign" => "top"
 			), we_html_tools::getPixel(1600, 10));
 
-		$table2 = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0", "width" => "400"), 1, 2);
+		$table2 = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0, "width" => 400), 1, 2);
 		$table2->setColContent(0, 0, we_button::create_button_table(
 				array(
 				we_button::create_button(
@@ -1724,10 +1724,10 @@ function ' . $prefix . 'setLinkSelection(value){
 					array(
 					"bgcolor" => "white",
 					"background" => IMAGE_DIR . "edit/editfooterback.gif",
-					"marginwidth" => "0",
-					"marginheight" => "0",
-					"leftmargin" => "0",
-					"topmargin" => "0",
+					"marginwidth" => 0,
+					"marginheight" => 0,
+					"leftmargin" => 0,
+					"topmargin" => 0,
 					"onLoad" => "document.we_form.makeNewDoc.checked=" . $this->topFrame . ".makeNewDoc;"
 					), we_html_element::htmlForm(array(), $table1->getHtml() . $table2->getHtml())));
 	}

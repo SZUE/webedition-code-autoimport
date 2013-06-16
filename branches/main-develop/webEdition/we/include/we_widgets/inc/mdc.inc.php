@@ -24,7 +24,7 @@
 
 $splitMdc = explode(';', $aProps[3]);
 $oTblCont = new we_html_table(array(
-	"border" => "0", "cellpadding" => "0", "cellspacing" => "0"
+	"border" => 0, "cellpadding" => 0, "cellspacing" => 0
 ), 1, 1);
 $oTblCont->setCol(
 		0,

@@ -453,7 +453,7 @@ function we_cmd() {
 		$resultD = f("SELECT count(Name) as Anzahl FROM " . LINK_TABLE . ' WHERE Name ="' . WE_SHOP_TITLE_FIELD_NAME . '"', 'Anzahl', $this->db);
 
 		$c = 0;
-		$iconBarTable = new we_html_table(array("border" => "0", "cellpadding" => "6", "cellspacing" => "0", "style" => "margin-left:8px"), 1, 4);
+		$iconBarTable = new we_html_table(array("border" => 0, "cellpadding" => 6, "cellspacing" => 0, "style" => "margin-left:8px"), 1, 4);
 
 		$iconBarTable->setCol(0, $c++, null, we_button::create_button("image:btn_shop_extArt", "javascript:top.opener.top.we_cmd('new_article')", true, -1, -1, "", "", !we_hasPerm("NEW_USER")));
 		$iconBarTable->setCol(0, $c++, null, we_button::create_button("image:btn_shop_delOrd", "javascript:top.opener.top.we_cmd('delete_shop')", true, -1, -1, "", "", !we_hasPerm("NEW_USER")));
@@ -474,7 +474,7 @@ function we_cmd() {
 			$iconBarTable->setCol(0, $c++, array('align' => 'right', 'class' => 'header_shop'), '<span style="margin-left:15px">' . @$headline . '</span>');
 		}
 
-		$body = we_html_element::htmlBody(array('background' => IMAGE_DIR . 'backgrounds/iconbarBack.gif', 'marginwidth' => '0', 'topmargin' => '5', 'marginheight' => '5', 'leftmargin' => '0'), $iconBarTable->getHTML());
+		$body = we_html_element::htmlBody(array('background' => IMAGE_DIR . 'backgrounds/iconbarBack.gif', 'marginwidth' => 0, 'topmargin' => 5, 'marginheight' => 5, 'leftmargin' => 0), $iconBarTable->getHTML());
 
 		return $this->getHTMLDocument($body, $extraHead);
 	}
@@ -525,7 +525,7 @@ function we_cmd() {
 			$bodyURL = WE_SHOP_MODULE_DIR . 'edit_shop_frameset.php?pnt=edbody&bid=' . $bid;
 		}
 
-		$frameset = new we_html_frameset(array("framespacing" => "0", "border" => "0", "frameborder" => "no"));
+		$frameset = new we_html_frameset(array("framespacing" => 0, "border" => 0, "frameborder" => "no"));
 
 		$frameset->setAttributes(array("rows" => "40,*"));
 		$frameset->addFrame(array('src' => 'edit_shop_frameset.php?pnt=edheader&home=' . $home . '&mid=' . $mid . $yearView . '&bid=' . $bid, 'name' => 'edheader', 'noresize' => null, 'scrolling' => 'no'));
@@ -575,7 +575,7 @@ function we_cmd() {
 			}
 		}
 
-		$frameset = new we_html_frameset(array("framespacing" => "0", "border" => "0", "frameborder" => "no"));
+		$frameset = new we_html_frameset(array("framespacing" => 0, "border" => 0, "frameborder" => "no"));
 		$frameset->setAttributes(array("rows" => "40,*"));
 		$frameset->addFrame(array('src' => 'edit_shop_frameset.php?pnt=edheader&top=1&home=' . $home . '&mid=' . $mid . '&bid=' . $bid . '&typ=object&ViewClass=' . $classid, 'name' => 'edheader', 'noresize' => null, 'scrolling' => 'no'));
 		$frameset->addFrame(array('src' => $bodyURL, 'name' => 'edbody', 'scrolling' => 'auto'));

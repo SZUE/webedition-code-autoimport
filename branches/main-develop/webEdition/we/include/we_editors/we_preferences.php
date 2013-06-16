@@ -1363,7 +1363,7 @@ function build_dialog($selected_setting = 'ui'){
 				we_html_element::htmlHidden(array('name' => 'newconf[locale_locales]', 'value' => implode(',', array_keys($locales)), 'id' => 'locale_locales'));
 
 			//Locales
-			$_select_box = new we_html_select(array('class' => 'weSelect', 'name' => 'locale_temp_locales', 'size' => '10', 'id' => 'locale_temp_locales', 'style' => 'width: 340px'));
+			$_select_box = new we_html_select(array('class' => 'weSelect', 'name' => 'locale_temp_locales', 'size' => 10, 'id' => 'locale_temp_locales', 'style' => 'width: 340px'));
 			$_select_box->addOptions(count($locales), array_keys($locales), array_values($locales));
 
 			$_enabled_buttons = (count($locales) > 0);
@@ -1920,7 +1920,7 @@ function formmailBlockOnOff() {
 				/**
 				 * Recipients list
 				 */
-				$_select_box = new we_html_select(array("class" => "weSelect", "name" => "we_recipient", "size" => "10", "style" => "width: 340px;height:100px", "ondblclick" => "edit_recipient();"));
+				$_select_box = new we_html_select(array("class" => "weSelect", "name" => "we_recipient", "size" => 10, "style" => "width: 340px;height:100px", "ondblclick" => "edit_recipient();"));
 
 				$_enabled_buttons = false;
 

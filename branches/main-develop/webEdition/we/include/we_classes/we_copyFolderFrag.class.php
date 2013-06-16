@@ -800,7 +800,7 @@ function fsubmit(e) {
 
 		$table->setCol(
 			4, 0, array(
-			'colspan' => '2', 'align' => 'right'
+			'colspan' => 2, 'align' => 'right'
 			), we_button::create_button_table(
 				array(
 					we_button::create_button("delete_all", "javascript:removeAllCats()"), $addbut

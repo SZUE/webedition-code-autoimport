@@ -733,18 +733,18 @@ class weSiteImport{
 
 		/* Create Main Table */
 		$_attr = array(
-			"border" => "0", "cellpadding" => "0", "cellspacing" => "0"
+			"border" => 0, "cellpadding" => 0, "cellspacing" => 0
 		);
 		$_tableObj = new we_html_table($_attr, 6, 3);
 
 		$_tableObj->setCol(0, 0, array(
-			"colspan" => "2"
+			"colspan" => 2
 			), $_images);
 		$_tableObj->setCol(1, 0, array(
-			"colspan" => "2"
+			"colspan" => 2
 			), $_flashmovies);
 		$_tableObj->setCol(2, 0, array(
-			"colspan" => "2"
+			"colspan" => 2
 			), $_htmlPages);
 		$_tableObj->setCol(3, 0, null, "");
 		$_tableObj->setCol(3, 1, null, $_createWePages);
@@ -966,9 +966,9 @@ class weSiteImport{
 		print $pb->getJS();
 
 		$table = new we_html_table(array(
-			"border" => "0",
-			"cellpadding" => "0",
-			"cellspacing" => "0",
+			"border" => 0,
+			"cellpadding" => 0,
+			"cellspacing" => 0,
 			"width" => "100%"
 			), 1, 2);
 		$table->setCol(0, 0, null, '<div id="progressBarDiv" style="display:none;">' . $pb->getHTML() . '</div>');
@@ -1999,7 +1999,7 @@ sh' && $contentType != 'movie/quicktime'){
 		return
 			we_html_element::htmlHidden(array("name" => "we_cmd[0]", "value" => "siteImport")) .
 			we_html_element::htmlHidden(array("name" => "cmd", "value" => "buttons")) .
-			we_html_element::htmlHidden(array("name" => "step", "value" => "1"));
+			we_html_element::htmlHidden(array("name" => "step", "value" => 1));
 	}
 
 	private function _getFrameset(){

@@ -394,9 +394,9 @@ function checkButtons(){
 			we_html_element::htmlImg(
 				array(
 					"src" => IMAGE_DIR . 'button/btn_function_trash.gif',
-					"width" => "27",
-					"height" => "22",
-					"border" => "0",
+					"width" => 27,
+					"height" => 22,
+					"border" => 0,
 					"align" => "absmiddle",
 					"onMouseDown" => "we_trashButDown(this)",
 					"onMouseUp" => "we_trashButUp(this)",
@@ -423,7 +423,7 @@ function checkButtons(){
 				array(
 					"name" => "we_File",
 					"type" => "file",
-					"size" => "40",
+					"size" => 40,
 					"onclick" => "checkFileinput();",
 					"onchange" => "checkFileinput();"
 			)) . $but;
@@ -504,7 +504,7 @@ function checkButtons(){
 				array(
 				"action" => WEBEDITION_DIR . "we_cmd.php", "name" => "we_startform", "method" => "post"
 				), we_html_element::htmlHidden(array(
-					'name' => 'step', 'value' => '3'
+					'name' => 'step', 'value' => 3
 				)) . we_multiIconBox::getHTML(
 					"uploadFiles", "100%", $parts, 30, "", -1, "", "", "", g_l('importFiles', "[step3]")))// bugfix 1001
 		;
@@ -653,7 +653,7 @@ function next() {
 		$prevNextButtons = $prevButton ? we_button::create_button_table(array($prevButton, $nextButton)) : null;
 
 		$table = new we_html_table(array(
-			"border" => "0", "cellpadding" => "0", "cellspacing" => "0", "width" => "100%"
+			"border" => 0, "cellpadding" => 0, "cellspacing" => 0, "width" => "100%"
 			), 1, 2);
 		$table->setCol(0, 0, null, $progressbar);
 		$table->setCol(0, 1, array(
@@ -817,9 +817,9 @@ function next() {
 	function _getHiddens(){
 		return we_html_element::htmlHidden(array("name" => "we_cmd[0]", "value" => "import_files")) .
 			we_html_element::htmlHidden(array("name" => "cmd", "value" => "buttons")) .
-			we_html_element::htmlHidden(array("name" => "step", "value" => "1")) .
-			we_html_element::htmlHidden(array("name" => "weFormNum", "value" => "0")) .
-			we_html_element::htmlHidden(array("name" => "weFormCount", "value" => "0")) .
+			we_html_element::htmlHidden(array("name" => "step", "value" => 1)) .
+			we_html_element::htmlHidden(array("name" => "weFormNum", "value" => 0)) .
+			we_html_element::htmlHidden(array("name" => "weFormCount", "value" => 0)) .
 			we_html_element::htmlHidden(array("name" => "importToID", "value" => $this->importToID)) .
 			we_html_element::htmlHidden(array("name" => "sameName", "value" => $this->sameName)) .
 			we_html_element::htmlHidden(array("name" => "thumbs", "value" => $this->thumbs)) .
@@ -905,7 +905,7 @@ categories_edit.setItem(0,(categories_edit.itemCount-1),"' . id_to_path($cat, CA
 		$table->setColContent(2, 0, we_html_tools::getPixel(5, 5));
 		$table->setCol(
 			3, 0, array(
-			'colspan' => '2', 'align' => 'right'
+			'colspan' => 2, 'align' => 'right'
 			), we_button::create_button_table(
 				array(
 					we_button::create_button("delete_all", "javascript:removeAllCats()"), $addbut

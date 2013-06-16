@@ -84,13 +84,13 @@ abstract class we_rebuild_wizard{
 			$prevButton = we_button::create_button("back", "javascript:parent.wizbody.handle_event('previous');", true, -1, -1, "", "", true, false);
 			$nextButton = we_button::create_button("next", "javascript:parent.wizbody.handle_event('next');", true, -1, -1, "", "", $nextbutdisabled, false);
 
-			$content2 = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0"), 1, 4);
+			$content2 = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 1, 4);
 			$content2->setCol(0, 0, array("id" => "prev", "style" => "display:table-cell; padding-left:10px;", "align" => "right"), $prevButton);
 			$content2->setCol(0, 1, array("id" => "next", "style" => "display:table-cell; padding-left:10px;", "align" => "right"), $nextButton);
 			$content2->setCol(0, 2, array("id" => "refresh", "style" => "display:none; padding-left:10px;", "align" => "right"), $refreshButton);
 			$content2->setCol(0, 3, array("id" => "cancel", "style" => "display:table-cell; padding-left:10px;", "align" => "right"), $cancelButton);
 
-			$content = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0", "width" => "100%"), 1, 2);
+			$content = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0, "width" => "100%"), 1, 2);
 			$content->setCol(0, 0, array("id" => "progr", "style" => "display:none", "align" => "left"), $pb);
 			$content->setCol(0, 1, array("align" => "right"), $content2->getHtml());
 		}
@@ -306,7 +306,7 @@ abstract class we_rebuild_wizard{
 			we_html_element::htmlHidden(array("name" => "btype", "value" => $btype)) .
 			we_html_element::htmlHidden(array("name" => "onlyEmpty", "value" => $onlyEmpty)) .
 			we_html_element::htmlHidden(array("name" => "we_cmd[0]", "value" => "rebuild")) .
-			we_html_element::htmlHidden(array("name" => "step", "value" => "1")));
+			we_html_element::htmlHidden(array("name" => "step", "value" => 1)));
 	}
 
 	/**

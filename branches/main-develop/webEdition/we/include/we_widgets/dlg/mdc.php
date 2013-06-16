@@ -109,7 +109,7 @@ $doctypeElement = we_html_tools::htmlFormElementTable(
 $cls = new we_html_select(
 	array(
 	"name" => "classID",
-	"size" => "1",
+	"size" => 1,
 	"class" => "defaultfont",
 	"style" => "width:420px; border: #AAAAAA solid 1px"
 	));
@@ -187,7 +187,7 @@ function getHTMLCategory(){
 
 	$table->setCol(
 		4, 0, array(
-		'colspan' => '2', 'align' => 'right'
+		'colspan' => 2, 'align' => 'right'
 		), we_button::create_button_table(
 			array(
 				we_button::create_button("delete_all", "javascript:removeAllCats()"), $addbut

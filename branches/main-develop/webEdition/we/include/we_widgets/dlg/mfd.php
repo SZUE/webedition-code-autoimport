@@ -235,14 +235,14 @@ if(we_hasPerm('CAN_SEE_CLASSES') && $_SESSION['weS']['we_mode'] != "seem"){
 }
 
 $oDbTableType = new we_html_table(array(
-		"border" => "0", "cellpadding" => "0", "cellspacing" => "0"
+		"border" => 0, "cellpadding" => 0, "cellspacing" => 0
 		), 1, 3);
 $oDbTableType->setCol(0, 0, null, $oChbxDocs . $oChbxTmpl);
 $oDbTableType->setCol(0, 1, null, we_html_tools::getPixel(10, 1));
 $oDbTableType->setCol(0, 2, null, $oChbxObjs . $oChbxCls);
 
 $oSctDate = new we_html_select(array(
-		"name" => "sct_date", "size" => "1", "class" => "defaultfont", "onChange" => ""
+		"name" => "sct_date", "size" => 1, "class" => "defaultfont", "onChange" => ""
 	));
 $aLangDate = array(
 	g_l('cockpit', '[all]'),
@@ -258,7 +258,7 @@ $oSctDate->selectOption($iDate);
 
 $oChbxShowMfdBy = we_forms::checkbox($value = 0, $checked = $sDisplayOpt{0}, $name = "chbx_display_opt", $text = g_l('cockpit', '[modified_by]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0);
 $oChbxShowDate = we_forms::checkbox($value = 0, $checked = $sDisplayOpt{1}, $name = "chbx_display_opt", $text = g_l('cockpit', '[date_last_modification]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0);
-$oSctNumEntries = new we_html_select(array("name" => "sct_amount_entries", "size" => "1", "class" => "defaultfont"));
+$oSctNumEntries = new we_html_select(array("name" => "sct_amount_entries", "size" => 1, "class" => "defaultfont"));
 $oSctNumEntries->insertOption(0, 0, g_l('cockpit', '[all]'));
 for($iCurrEntry = 1; $iCurrEntry <= 50; $iCurrEntry++){
 	$oSctNumEntries->insertOption($iCurrEntry, $iCurrEntry, $iCurrEntry);
@@ -269,7 +269,7 @@ for($iCurrEntry = 1; $iCurrEntry <= 50; $iCurrEntry++){
 $oSctNumEntries->selectOption($iAmountEntries);
 
 $oSelMaxEntries = new we_html_table(array(
-		"height" => "100%", "border" => "0", "cellpadding" => "0", "cellspacing" => "0"
+		"height" => "100%", "border" => 0, "cellpadding" => 0, "cellspacing" => 0
 		), 1, 3);
 $oSelMaxEntries->setCol(0, 0, array(
 	"valign" => "middle", "class" => "defaultfont"

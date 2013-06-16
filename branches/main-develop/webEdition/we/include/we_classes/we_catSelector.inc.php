@@ -963,7 +963,7 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != ""){
 
 			$dir_chooser = we_button::create_button('select', "javascript:we_cmd('openSelector', document.we_form.elements['FolderID'].value, '" . CATEGORY_TABLE . "', 'document.we_form.elements[\\'FolderID\\'].value', 'document.we_form.elements[\\'FolderIDPath\\'].value', '', '', '', '1', '', 'false', 1)");
 
-			$table = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0"), 4, 3);
+			$table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 4, 3);
 
 			$table->setCol(0, 0, array("style" => "width:100px; padding: 0px 0px 10px 0px;", "class" => "defaultfont"), '<b>' . g_l('weClass', "[category]") . '</b>');
 			$table->setCol(0, 1, array("colspan" => 2, "style" => "width:350px; padding: 0px 0px 10px 0px;", "class" => "defaultfont"), we_html_tools::htmlTextInput("Category", 50, $category, "", ' id="category"', "text", 360));
@@ -978,7 +978,7 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != ""){
 			$table->setCol(3, 0, array("style" => "width:100px; padding: 0px 0px 10px 0px;", "class" => "defaultfont"), "<b>" . g_l('global', "[title]") . "</b>");
 			$table->setCol(3, 1, array("colspan" => 2, "style" => "width:350px; padding: 0px 0px 10px 0px;", "class" => "defaultfont"), we_html_tools::htmlTextInput("catTitle", 50, $title, "", '', "text", 360));
 
-			$ta = we_html_tools::htmlFormElementTable(we_forms::weTextarea("catDescription", $description, array("bgcolor" => "white", "inlineedit" => "true", "wysiwyg" => "true", "width" => "450", "height" => "130"), true, 'autobr', true, "", true, true, true, false, ""), "<b>" . g_l('global', "[description]") . "</b>", "left", "defaultfont", "", "", "", "", "", 0);
+			$ta = we_html_tools::htmlFormElementTable(we_forms::weTextarea("catDescription", $description, array("bgcolor" => "white", "inlineedit" => "true", "wysiwyg" => "true", "width" => 450, "height" => 130), true, 'autobr', true, "", true, true, true, false, ""), "<b>" . g_l('global', "[description]") . "</b>", "left", "defaultfont", "", "", "", "", "", 0);
 			$saveBut = we_button::create_button("save", "javascript:weWysiwygSetHiddenText();we_checkName();");
 		}
 

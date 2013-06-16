@@ -184,7 +184,7 @@ class weGlossaryFrames extends weModuleFrames{
 
 	/* use parent
 	function getHTMLLeft(){}
-	 * 
+	 *
 	 */
 
 	function getHTMLTreeHeader(){
@@ -193,7 +193,7 @@ class weGlossaryFrames extends weModuleFrames{
 
 	function getHTMLTreeFooter(){
 
-		$body = we_html_element::htmlBody(array("bgcolor" => "white", "background" => IMAGE_DIR . "edit/editfooterback.gif", "marginwidth" => "5", "marginheight" => "0", "leftmargin" => "5", "topmargin" => "0"), ""
+		$body = we_html_element::htmlBody(array("bgcolor" => "white", "background" => IMAGE_DIR . "edit/editfooterback.gif", "marginwidth" => 5, "marginheight" => 0, "leftmargin" => 5, "topmargin" => 0), ""
 		);
 
 		return $this->getHTMLDocument($body);
@@ -224,7 +224,7 @@ class weGlossaryFrames extends weModuleFrames{
 		$hiddens = we_html_element::htmlHidden(array("name" => "pnt", "value" => "cmd")) .
 			we_html_element::htmlHidden(array("name" => "cmd", "value" => "no_cmd"));
 
-		$out.=we_html_element::htmlBody(array("bgcolor" => "white", "marginwidth" => "10", "marginheight" => "10", "leftmargin" => "10", "topmargin" => "10"), we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
+		$out.=we_html_element::htmlBody(array("bgcolor" => "white", "marginwidth" => 10, "marginheight" => 10, "leftmargin" => 10, "topmargin" => 10), we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
 					we_html_element::jsElement($rootjs . $this->Tree->getJSLoadTree(weGlossaryTreeLoader::getItems($pid, $offset, $this->Tree->default_segment, "")))
 				)
 		);

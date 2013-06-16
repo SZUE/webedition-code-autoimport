@@ -159,8 +159,8 @@ $applet = we_html_element::htmlApplet(array(
 		"code" => "EPlugin",
 		"archive" => "weplugin.jar",
 		"codebase" => getServerUrl() . WEBEDITION_DIR . 'editors/content/eplugin/',
-		"width" => "10",
-		"height" => "10",
+		"width" => 10,
+		"height" => 10,
 		' width' => 100, //keep html attributes
 		' height' => 100,
 		), we_html_element::htmlParam(array("name" => "param_list", "value" => "lan_main_dialog_title,lan_alert_noeditor_title,lan_alert_noeditor_text,lan_select_text,lan_select_button,lan_start_button,lan_close_button,lan_clear_button,lan_list_label,lan_showall_label,lan_edit_button,lan_default_for,lan_editor_name,lan_path,lan_args,lan_contenttypes,lan_defaultfor_label,lan_del_button,lan_save_button,lan_autostart_label,lan_settings_dialog_title,lan_alert_nodefeditor_text,lan_del_question,lan_clear_question,lan_encoding,lan_add_button")) .
@@ -204,7 +204,7 @@ print we_html_element::htmlDocType() . we_html_element::htmlHtml(
 			we_html_element::htmlTitle('start wePlugin') .
 			$js) .
 		we_html_element::htmlBody(array("bgcolor" => "white", "onload" => "to=window.setTimeout('pingPlugin()',5000);"), we_html_element::htmlDiv(array("id" => "debug"), "") .
-			we_html_element::htmlHidden(array("name" => "hm", "value" => "0")) .
+			we_html_element::htmlHidden(array("name" => "hm", "value" => 0)) .
 			$applet .
 			we_html_element::htmlForm(array("name" => "we_form", "target" => "load", "action" => WEBEDITION_DIR . "editors/content/eplugin/weplugin_cmd.php", "method" => "post", "accept-charset" => $charset), we_html_element::htmlHidden(array("name" => "we_cmd[0]", "value" => "")) .
 				we_html_element::htmlHidden(array("name" => "we_cmd[1]", "value" => "")) .

@@ -49,10 +49,10 @@ class weExportFrames extends weModuleFrames{
 			case "load":
 				print $this->getHTMLCmd();
 				break;
-			case "treeheader": 
+			case "treeheader":
 				print $this->getHTMLTreeHeader();
 				break;
-			case "treefooter": 
+			case "treefooter":
 				print $this->getHTMLTreeFooter();
 				break;
 			default:
@@ -105,7 +105,7 @@ class weExportFrames extends weModuleFrames{
 
 		$tabsHead .=$js;
 
-		$table = new we_html_table(array("width" => "3000", "cellpadding" => "0", "cellspacing" => "0", "border" => "0"), 3, 1);
+		$table = new we_html_table(array("width" => 3000, "cellpadding" => 0, "cellspacing" => 0, "border" => 0), 3, 1);
 
 		$table->setCol(0, 0, array(), we_html_tools::getPixel(1, 3));
 
@@ -119,10 +119,10 @@ class weExportFrames extends weModuleFrames{
 		$extraJS = 'document.getElementById("tab_"+top.content.activ_tab).className="tabActive";';
 
 		//TODO: we have the following body in several modules!
-		$body = we_html_element::htmlBody(array('bgcolor' => 'white', 'background' => IMAGE_DIR . 'backgrounds/header_with_black_line.gif', 'marginwidth' => '0', 'marginheight' => '0', 'leftmargin' => '0', 'topmargin' => '0', 'onload' => 'setFrameSize()', 'onresize' => 'setFrameSize()'),
+		$body = we_html_element::htmlBody(array('bgcolor' => 'white', 'background' => IMAGE_DIR . 'backgrounds/header_with_black_line.gif', 'marginwidth' => 0, 'marginheight' => 0, 'leftmargin' => 0, 'topmargin' => 0, 'onload' => 'setFrameSize()', 'onresize' => 'setFrameSize()'),
 			we_html_element::htmlDiv(array('id' => 'main'),
 				we_html_tools::getPixel(100, 3) .
-				we_html_element::htmlDiv(array('style' => 'margin:0px; padding-left:10px;', 'id' => 'headrow'), 
+				we_html_element::htmlDiv(array('style' => 'margin:0px; padding-left:10px;', 'id' => 'headrow'),
 					we_html_element::htmlNobr(
 						we_html_element::htmlB(str_replace(" ", "&nbsp;", g_l('export', '[export]')) . ':&nbsp;') .
 						we_html_element::htmlSpan(array('id' => 'h_path', 'class' => 'header_small'),
@@ -135,7 +135,7 @@ class weExportFrames extends weModuleFrames{
 			) .
 			we_html_element::jsElement($extraJS)
 		);
-		
+
 
 		return $this->getHTMLDocument($body, $tabsHead);
 	}
@@ -148,7 +148,7 @@ class weExportFrames extends weModuleFrames{
 			$hiddens["cmd"] = "home";
 			$GLOBALS["we_print_not_htmltop"] = true;
 			$GLOBALS["we_head_insert"] = $this->View->getJSProperty();
-			$GLOBALS["we_body_insert"] = we_html_element::htmlForm(array("name" => "we_form"), $this->View->getCommonHiddens($hiddens) . we_html_element::htmlHidden(array("name" => "home", "value" => "0"))
+			$GLOBALS["we_body_insert"] = we_html_element::htmlForm(array("name" => "we_form"), $this->View->getCommonHiddens($hiddens) . we_html_element::htmlHidden(array("name" => "home", "value" => 0))
 			);
 			$GLOBALS["mod"] = "export";
 			ob_start();
@@ -169,10 +169,10 @@ class weExportFrames extends weModuleFrames{
 		}
 
 		$col = 0;
-		$table1 = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0", "width" => "3000"), 1, 1);
+		$table1 = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0, "width" => 3000), 1, 1);
 		$table1->setCol(0, 0, array("nowrap" => null, "valign" => "top"), we_html_tools::getPixel(1600, 10));
 
-		$table2 = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0", "width" => "210"), 1, 5);
+		$table2 = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0, "width" => 210), 1, 5);
 		$table2->setRow(0, array("valign" => "middle"));
 		$table2->setCol(0, $col++, array("nowrap" => null), we_html_tools::getPixel(5, 5));
 		$table2->setCol(0, $col++, array("nowrap" => null), we_button::create_button("save", "javascript:we_save()")
@@ -223,7 +223,7 @@ class weExportFrames extends weModuleFrames{
 		$table2->setCol(0, 4, array("id" => "progress", "style" => "display: none", "nowrap" => null), $progressbar->getHtml());
 
 		return $this->getHTMLDocument(
-				we_html_element::htmlBody(array("bgcolor" => "white", "background" => IMAGE_DIR . "edit/editfooterback.gif", "marginwidth" => "15", "marginheight" => "0", "leftmargin" => "15", "topmargin" => "0"), we_html_element::htmlForm(array(), $table1->getHtml() . $table2->getHtml())
+				we_html_element::htmlBody(array("bgcolor" => "white", "background" => IMAGE_DIR . "edit/editfooterback.gif", "marginwidth" => 15, "marginheight" => 0, "leftmargin" => 15, "topmargin" => 0), we_html_element::htmlForm(array(), $table1->getHtml() . $table2->getHtml())
 				), (isset($progressbar) ? $progressbar->getJSCode() . "\n" : "") . $js
 		);
 	}
@@ -387,7 +387,7 @@ class weExportFrames extends weModuleFrames{
 
 		if(defined("OBJECT_TABLE")){
 			$formattable = new we_html_table(array("cellpadding" => 2, "cellspacing" => 2, "border" => 0), 3, 1);
-			$formattable->setCol(0, 0, array("colspan" => "2"), we_forms::checkboxWithHidden(($this->View->export->HandleDefClasses ? true : false), "HandleDefClasses", g_l('export', "[handle_def_classes]"), false, 'defaultfont', $this->topFrame . '.hot=1;'));
+			$formattable->setCol(0, 0, array("colspan" => 2), we_forms::checkboxWithHidden(($this->View->export->HandleDefClasses ? true : false), "HandleDefClasses", g_l('export', "[handle_def_classes]"), false, 'defaultfont', $this->topFrame . '.hot=1;'));
 			$formattable->setCol(1, 0, null, we_forms::checkboxWithHidden(($this->View->export->HandleObjEmbeds ? true : false), "HandleObjEmbeds", g_l('export', "[handle_object_embeds]"), false, 'defaultfont', $this->topFrame . '.hot=1;'));
 			array_push($parts, array(
 				"headline" => g_l('export', "[handle_object_options]") . we_html_element::htmlBr() . g_l('export', "[handle_classes_options]"),
@@ -466,7 +466,7 @@ class weExportFrames extends weModuleFrames{
 
 	/* use parent
 	function getHTMLLeft(){}
-	 * 
+	 *
 	 */
 
 	function getHTMLTreeHeader(){
@@ -476,7 +476,7 @@ class weExportFrames extends weModuleFrames{
 
 	function getHTMLTreeFooter(){
 
-		$body = we_html_element::htmlBody(array("bgcolor" => "white", "background" => IMAGE_DIR . "edit/editfooterback.gif", "marginwidth" => "5", "marginheight" => "0", "leftmargin" => "5", "topmargin" => "0"), ""
+		$body = we_html_element::htmlBody(array("bgcolor" => "white", "background" => IMAGE_DIR . "edit/editfooterback.gif", "marginwidth" => 5, "marginheight" => 0, "leftmargin" => 5, "topmargin" => 0), ""
 		);
 
 		return $this->getHTMLDocument($body);
@@ -568,7 +568,7 @@ class weExportFrames extends weModuleFrames{
 
 						$out = we_html_element::htmlDocType() . we_html_element::htmlHtml(
 								we_html_element::htmlHead('') .
-								we_html_element::htmlBody(array("bgcolor" => "#ffffff", "marginwidth" => "5", "marginheight" => "5", "leftmargin" => "5", "topmargin" => "5", "onLoad" => "document.we_form.submit()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "action" => $this->frameset), $hiddens)
+								we_html_element::htmlBody(array("bgcolor" => "#ffffff", "marginwidth" => 5, "marginheight" => 5, "leftmargin" => 5, "topmargin" => 5, "onLoad" => "document.we_form.submit()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "action" => $this->frameset), $hiddens)
 								)
 						);
 					} else if($_SESSION['weS']['ExImPrepare']){
@@ -626,7 +626,7 @@ class weExportFrames extends weModuleFrames{
 
 						$out = we_html_element::htmlDocType() . we_html_element::htmlHtml(
 								we_html_element::htmlHead('') .
-								we_html_element::htmlBody(array("bgcolor" => "#ffffff", "marginwidth" => "5", "marginheight" => "5", "leftmargin" => "5", "topmargin" => "5", "onLoad" => "document.we_form.submit()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "action" => $this->frameset), $hiddens) . $_progress_update
+								we_html_element::htmlBody(array("bgcolor" => "#ffffff", "marginwidth" => 5, "marginheight" => 5, "leftmargin" => 5, "topmargin" => 5, "onLoad" => "document.we_form.submit()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "action" => $this->frameset), $hiddens) . $_progress_update
 								)
 						);
 					} else{
@@ -703,7 +703,7 @@ class weExportFrames extends weModuleFrames{
 						if($all > $exports){
 							$out = we_html_element::htmlDocType() . we_html_element::htmlHtml(
 									we_html_element::htmlHead($head) .
-									we_html_element::htmlBody(array("bgcolor" => "#ffffff", "marginwidth" => "5", "marginheight" => "5", "leftmargin" => "5", "topmargin" => "5", "onLoad" => "document.we_form.submit()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "action" => $this->frameset), $hiddens) . $_progress_update
+									we_html_element::htmlBody(array("bgcolor" => "#ffffff", "marginwidth" => 5, "marginheight" => 5, "leftmargin" => 5, "topmargin" => 5, "onLoad" => "document.we_form.submit()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "action" => $this->frameset), $hiddens) . $_progress_update
 									)
 							);
 						} else{
@@ -731,10 +731,10 @@ class weExportFrames extends weModuleFrames{
 									we_html_element::htmlBody(
 										array(
 											"bgcolor" => "#ffffff",
-											"marginwidth" => "5",
-											"marginheight" => "5",
-											"leftmargin" => "5",
-											"topmargin" => "5",
+											"marginwidth" => 5,
+											"marginheight" => 5,
+											"leftmargin" => 5,
+											"topmargin" => 5,
 											"onLoad" => ($this->View->export->ExportTo == 'local' ? ($this->cmdFrame . ".location='" . $this->frameset . "?pnt=cmd&cmd=upload&exportfile=" . urlencode($this->View->export->ExportFilename) . "';") : ( we_message_reporting::getShowMessageCall(g_l('export', "[server_finished]"), we_message_reporting::WE_MESSAGE_NOTICE) )) . $this->topFrame . ".resize.right.editor.edfooter.hideProgress();")
 									), null
 							);

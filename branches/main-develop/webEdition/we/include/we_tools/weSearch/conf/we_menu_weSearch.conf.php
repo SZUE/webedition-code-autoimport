@@ -29,13 +29,13 @@ $we_menu_weSearch = array(
 		'text' => g_l('searchtool', '[menu_suche]'),
 		'parent' => '000000',
 		'perm' => '',
-		'enabled' => '1',
+		'enabled' => 1,
 	),
 	'000200' => array(
 		'text' => g_l('searchtool', '[menu_new]'),
 		'parent' => '000100',
 		'perm' => '',
-		'enabled' => '1',
+		'enabled' => 1,
 	)
 );
 if(we_hasPerm('CAN_SEE_DOCUMENTS')){
@@ -44,7 +44,7 @@ if(we_hasPerm('CAN_SEE_DOCUMENTS')){
 		'parent' => '000200',
 		'cmd' => 'tool_' . $metaInfo['name'] . '_new_forDocuments',
 		'perm' => 'EDIT_NAVIGATION || ADMINISTRATOR',
-		'enabled' => '1',
+		'enabled' => 1,
 	);
 }
 if($_SESSION['weS']['we_mode'] != 'seem' && we_hasPerm('CAN_SEE_TEMPLATES')){
@@ -53,7 +53,7 @@ if($_SESSION['weS']['we_mode'] != 'seem' && we_hasPerm('CAN_SEE_TEMPLATES')){
 		'parent' => '000200',
 		'cmd' => 'tool_' . $metaInfo['name'] . '_new_forTemplates',
 		'perm' => 'EDIT_NAVIGATION || ADMINISTRATOR',
-		'enabled' => '1',
+		'enabled' => 1,
 	);
 }
 if(defined('OBJECT_FILES_TABLE') && defined('OBJECT_TABLE') && we_hasPerm('CAN_SEE_OBJECTFILES')){
@@ -62,7 +62,7 @@ if(defined('OBJECT_FILES_TABLE') && defined('OBJECT_TABLE') && we_hasPerm('CAN_S
 		'parent' => '000200',
 		'cmd' => 'tool_' . $metaInfo['name'] . '_new_forObjects',
 		'perm' => 'EDIT_NAVIGATION || ADMINISTRATOR',
-		'enabled' => '1',
+		'enabled' => 1,
 	);
 }
 $we_menu_weSearch['000600'] = array(
@@ -70,14 +70,14 @@ $we_menu_weSearch['000600'] = array(
 	'parent' => '000200',
 	'cmd' => 'tool_' . $metaInfo['name'] . '_new_advSearch',
 	'perm' => 'EDIT_NAVIGATION || ADMINISTRATOR',
-	'enabled' => '1',
+	'enabled' => 1,
 );
 
 //'text'=> g_l('searchtool','[menu_new_group]'),
 //'parent'=> '000200',
 //'cmd'=> 'tool_' . $metaInfo['name'] . '_new_group',
 //'perm'=> 'ADMINISTRATOR',
-//'enabled'=> '1',
+//'enabled'=> 1,
 
 
 $we_menu_weSearch['000800'] = array(
@@ -85,7 +85,7 @@ $we_menu_weSearch['000800'] = array(
 	'parent' => '000100',
 	'cmd' => 'tool_' . $metaInfo['name'] . '_save',
 	'perm' => '',
-	'enabled' => '1',
+	'enabled' => 1,
 );
 
 $we_menu_weSearch['000900'] = array(
@@ -93,7 +93,7 @@ $we_menu_weSearch['000900'] = array(
 	'parent' => '000100',
 	'cmd' => 'tool_' . $metaInfo['name'] . '_delete',
 	'perm' => '',
-	'enabled' => '1',
+	'enabled' => 1,
 );
 
 $we_menu_weSearch['000950'] = array('parent' => '000100'); // separator
@@ -104,14 +104,14 @@ $we_menu_weSearch['001000'] = array(
 	'parent' => '000100',
 	'cmd' => 'tool_' . $metaInfo['name'] . '_exit',
 	'perm' => '',
-	'enabled' => '1',
+	'enabled' => 1,
 );
 
 $we_menu_weSearch['003000'] = array(
 	'text' => g_l('searchtool', '[menu_help]'),
 	'parent' => '000000',
 	'perm' => '',
-	'enabled' => '1',
+	'enabled' => 1,
 );
 
 $we_menu_weSearch['003100'] = array(
@@ -119,7 +119,7 @@ $we_menu_weSearch['003100'] = array(
 	'parent' => '003000',
 	'cmd' => 'help_tools',
 	'perm' => '',
-	'enabled' => '1',
+	'enabled' => 1,
 );
 
 $we_menu_weSearch['003200'] = array(
@@ -127,5 +127,5 @@ $we_menu_weSearch['003200'] = array(
 	'parent' => '003000',
 	'cmd' => 'info_tools',
 	'perm' => '',
-	'enabled' => '1',
+	'enabled' => 1,
 );

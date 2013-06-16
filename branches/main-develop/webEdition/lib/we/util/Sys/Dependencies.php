@@ -122,7 +122,7 @@ class we_util_Sys_Dependencies extends we_util_Sys{
 
 $dependencies = new we_util_Sys_Dependencies();
 $dependencies->addDependency("Php", array("operation" => "versionCompare", "version" => "5.2.4", "operator" => ">="));
-$dependencies->addDependency("Webedition", array("operation" => "versionCompare", "version" => "6100", "operator" => ">="));
+$dependencies->addDependency("Webedition", array("operation" => "versionCompare", "version" => 6100, "operator" => ">="));
 $dependencies->addDependency("Webedition", array("operation" => "module", "property" => "newsletter"));
-$dependencies->addDependency("Webedition", array("operation" => "toolVersionCompare", "property" => "navigation", "version" => "6100", "operator" => ">="));
+$dependencies->addDependency("Webedition", array("operation" => "toolVersionCompare", "property" => "navigation", "version" => 6100, "operator" => ">="));
 $dependencies->check();

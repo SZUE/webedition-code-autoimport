@@ -227,7 +227,7 @@ class weExportTree extends weMainTree{
 			foreach($this->SelectionTree->styles as $st)
 				$style_code.=$st . "\n";
 
-		$header = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => "0"), 3, 1);
+		$header = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 3, 1);
 
 		$header->setCol(0, 0, array("bgcolor" => "white"), we_html_tools::getPixel(5, 5));
 

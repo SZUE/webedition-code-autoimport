@@ -234,10 +234,10 @@ class weGlossaryFrameEditorItem extends weGlossaryFrameEditor{
 
 
 		$_table = array(
-			'border' => '0',
-			'cellpadding' => '0',
-			'cellspacing' => '0',
-			'width' => '3000',
+			'border' => 0,
+			'cellpadding' => 0,
+			'cellspacing' => 0,
+			'width' => 3000,
 		);
 
 		$table1 = new we_html_table($_table, 1, 1);
@@ -245,9 +245,9 @@ class weGlossaryFrameEditorItem extends weGlossaryFrameEditor{
 
 
 		$_table = array(
-			'border' => '0',
-			'cellpadding' => '0',
-			'cellspacing' => '0',
+			'border' => 0,
+			'cellpadding' => 0,
+			'cellspacing' => 0,
 		);
 
 		$SaveButton = we_button::create_button("save", "javascript:if(top.publishWhenSave==1){" . $weGlossaryFrames->View->EditorBodyFrame . ".document.getElementById('Published').value=1;};we_save();", true, 100, 22, '', '', (!we_hasPerm('NEW_GLOSSARY') && !we_hasPerm('EDIT_GLOSSARY')));
@@ -1030,11 +1030,11 @@ class weGlossaryFrameEditorItem extends weGlossaryFrameEditor{
 
 		$_input_width = 70;
 
-		$_popup = new we_html_table(array('cellpadding' => '5', 'cellspacing' => '0'), 4, 4);
+		$_popup = new we_html_table(array('cellpadding' => 5, 'cellspacing' => 0), 4, 4);
 
-		$_popup->setCol(0, 0, array('colspan' => '2'), we_forms::checkboxWithHidden($weGlossaryFrames->View->Glossary->getAttribute('popup_open'), 'link[Attributes][popup_open]', g_l('modules_glossary', '[popup_open]'))
+		$_popup->setCol(0, 0, array('colspan' => 2), we_forms::checkboxWithHidden($weGlossaryFrames->View->Glossary->getAttribute('popup_open'), 'link[Attributes][popup_open]', g_l('modules_glossary', '[popup_open]'))
 		);
-		$_popup->setCol(0, 2, array('colspan' => '2'), we_forms::checkboxWithHidden($weGlossaryFrames->View->Glossary->getAttribute('popup_center'), 'link[Attributes][popup_center]', g_l('modules_glossary', '[popup_center]'))
+		$_popup->setCol(0, 2, array('colspan' => 2), we_forms::checkboxWithHidden($weGlossaryFrames->View->Glossary->getAttribute('popup_center'), 'link[Attributes][popup_center]', g_l('modules_glossary', '[popup_center]'))
 		);
 
 		$_popup->setCol(1, 0, array(), we_html_tools::htmlFormElementTable(

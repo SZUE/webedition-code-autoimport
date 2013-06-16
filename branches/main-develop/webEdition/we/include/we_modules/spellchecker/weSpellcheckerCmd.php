@@ -174,7 +174,7 @@ if(isset($_REQUEST['cmd'][0])){
 		case 'refresh':
 			we_loadLanguageConfig();
 
-			$table = new we_html_table(array('width' => '380', 'cellpadding' => '2', 'cellspacing' => '2', 'border' => '0', 'style' => 'margin: 5px;'), 1, 6);
+			$table = new we_html_table(array('width' => 380, 'cellpadding' => 2, 'cellspacing' => 2, 'border' => 0, 'style' => 'margin: 5px;'), 1, 6);
 
 			$table->setRow(0, array('style' => 'background-color: silver;font-weight: bold;'), 6);
 			$table->setCol(0, 0, array('valign' => 'top', 'class' => 'small', 'style' => 'color: white;'), g_l('modules_spellchecker', '[default]'));

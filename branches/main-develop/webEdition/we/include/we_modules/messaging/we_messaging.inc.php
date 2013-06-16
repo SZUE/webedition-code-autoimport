@@ -891,7 +891,7 @@ class we_messaging extends we_class{
 		$mergedArray = array_merge(
 			array(
 			array(
-				'ID' => '0',
+				'ID' => 0,
 				'Name' => "-- " . g_l('modules_messaging', "[nofolder]") . " --"
 			)
 			), array_hash_construct(

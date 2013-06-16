@@ -158,9 +158,9 @@ if(isset($GLOBALS["loginpage"]) && $GLOBALS["loginpage"]){
 
 
 	//	mode-table
-	$_modetable = new we_html_table(array("border" => "0",
-			"cellpadding" => "0",
-			"cellspacing" => "0",
+	$_modetable = new we_html_table(array("border" => 0,
+			"cellpadding" => 0,
+			"cellspacing" => 0,
 			"width" => $_middlePart),
 			1,
 			3);
@@ -172,17 +172,17 @@ if(isset($GLOBALS["loginpage"]) && $GLOBALS["loginpage"]){
 			if(WE_LOGIN_WEWINDOW == 1){
 				$_modetable->setCol(0, 1, array("align" => "right",
 					"valign" => "bottom",
-					"rowspan" => "2"), '<input type="hidden" name="popup" value="popup"/>' . $loginButton);
+					"rowspan" => 2), '<input type="hidden" name="popup" value="popup"/>' . $loginButton);
 			} else{
 				$_modetable->setCol(0, 1, array("align" => "right",
 					"valign" => "bottom",
-					"rowspan" => "2"), $loginButton);
+					"rowspan" => 2), $loginButton);
 			}
 		} else{
 			$_modetable->setCol(0, 0, array(), we_forms::checkbox('popup', getValueLoginMode('popup'), 'popup', g_l('SEEM', '[popup]')));
 			$_modetable->setCol(0, 1, array("align" => "right",
 				"valign" => "bottom",
-				"rowspan" => "2"), we_html_element::htmlHidden(array("name" => "mode", "value" => "normal")) . $loginButton);
+				"rowspan" => 2), we_html_element::htmlHidden(array("name" => "mode", "value" => "normal")) . $loginButton);
 		}
 	} else{ //	normal login
 		//	15th Mode
@@ -214,7 +214,7 @@ if(isset($GLOBALS["loginpage"]) && $GLOBALS["loginpage"]){
 		</table>');
 		$_modetable->setCol(0, 1, array("align" => "right",
 			"valign" => "bottom",
-			"rowspan" => "3"), $loginButton);
+			"rowspan" => 3), $loginButton);
 	}
 
 	//	16th
@@ -244,7 +244,7 @@ if(isset($GLOBALS["loginpage"]) && $GLOBALS["loginpage"]){
 	);
 
 	$_loginTable->setCol($loginRow, 0, array("width" => $_leftPart, "class" => "small"), $_content);
-//	$_loginTable->setCol($loginRow++, 1, array('width' => $_logoPart, 'rowspan' => '5', 'height' => 60), '<img src="' . IMAGE_DIR . 'info/partnerLogo.gif" width="140" height="60" />');
+//	$_loginTable->setCol($loginRow++, 1, array('width' => $_logoPart, 'rowspan' => 5, 'height' => 60), '<img src="' . IMAGE_DIR . 'info/partnerLogo.gif" width="140" height="60" />');
 
 	$_table->addRow(4);
 
@@ -269,7 +269,7 @@ if(isset($GLOBALS["loginpage"]) && $GLOBALS["loginpage"]){
 		"colspan" => 3), we_html_tools::getPixel($_widthTotal, 15));
 } else if(isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] == "info"){
 	$_table->addRow();
-	$_table->setCol($_actRow++, 0, array("colspan" => "3"), we_html_tools::getPixel(2, 50));
+	$_table->setCol($_actRow++, 0, array("colspan" => 3), we_html_tools::getPixel(2, 50));
 }
 
 if(isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] == "info"){

@@ -230,8 +230,8 @@ class weCustomerTreeLoader{
 					"icon" => we_base_ContentTypes::FOLDER_ICON,
 					"isfolder" => 1,
 					"typ" => "group",
-					"disabled" => "0",
-					"open" => "0"
+					"disabled" => 0,
+					"open" => 0
 				);
 				$check[$gname] = 1;
 			} else{
@@ -250,8 +250,8 @@ class weCustomerTreeLoader{
 								"icon" => we_base_ContentTypes::FOLDER_ICON,
 								"isfolder" => 1,
 								"typ" => "group",
-								"disabled" => "0",
-								"open" => "0"
+								"disabled" => 0,
+								"open" => 0
 							);
 							$check[$gname] = 1;
 						}
@@ -293,7 +293,7 @@ class weCustomerTreeLoader{
 						"icon" => $db->f("Icon"),
 						"isfolder" => $db->f("IsFolder"),
 						"typ" => "item",
-						"disabled" => "0",
+						"disabled" => 0,
 						"tooltip" => $db->f("ID")
 					);
 				}

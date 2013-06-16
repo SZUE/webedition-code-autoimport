@@ -142,7 +142,7 @@ $buttonTable4 = new we_ui_layout_ButtonTableYesNo(
 
 $checkbox = new we_ui_controls_Checkbox(
 		array(
-			'value' => '1',
+			'value' => 1,
 			'checked' => true,
 			'name' => 'test',
 			'label' => 'Label 1',
@@ -155,7 +155,7 @@ $checkbox = new we_ui_controls_Checkbox(
 
 $radio = new we_ui_controls_RadioButton(
 		array(
-			'value' => '1',
+			'value' => 1,
 			'checked' => true,
 			'name' => 'test',
 			'label' => 'Label 1',
@@ -176,7 +176,7 @@ $select = new we_ui_controls_Select(
 			'title' => 'Titel',
 			'width' => 100,
 			'onChange' => 'alert("onChange!");',
-			'selectedValue' => '3',
+			'selectedValue' => 3,
 			'options' => array(
 				'1' => 'Option 1',
 				'2' => 'Option 2',

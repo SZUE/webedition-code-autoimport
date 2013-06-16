@@ -144,7 +144,7 @@ $chbxChart[8] = we_forms::checkbox(
 		$value = 0, $checked = 0, $name = "chbx_chart", $text = g_l('cockpit', '[promo_value_tai]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0);
 
 $chart = new we_html_table(array(
-		"cellpadding" => "0", "cellspacing" => "0", "border" => "0"
+		"cellpadding" => 0, "cellspacing" => 0, "border" => 0
 		), 13, 1);
 $chart->setCol(0, 0, null, $sctDns);
 $chart->setCol(1, 0, null, we_html_tools::getPixel(1, 8));
@@ -176,7 +176,7 @@ $sMultibox = we_multiIconBox::getJS() . we_multiIconBox::getHTML(
 		"plgProps", "100%", $parts, 30, $buttons, -1, "", "", "", g_l('cockpit', '[pagelogger]'));
 
 $_pLogProps = new we_html_table(array(
-		"border" => "0", "cellpadding" => "0", "cellspacing" => "0"
+		"border" => 0, "cellpadding" => 0, "cellspacing" => 0
 		), 2, 1);
 $_pLogProps->setCol(0, 0, null, $sMultibox);
 $_pLogProps->setCol(1, 0, null, we_html_tools::getPixel(1, 10));

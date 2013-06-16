@@ -41,7 +41,7 @@ class weGlossaryFrameEditorHome{
 			'cmd' => 'home',
 			'pnt' => 'edbody',
 			'name' => 'home',
-			'value' => '0',
+			'value' => 0,
 		);
 
 		$_form = array(
@@ -65,10 +65,10 @@ class weGlossaryFrameEditorHome{
 
 		$_body = array(
 			'bgcolor' => 'white',
-			'marginwidth' => '15',
-			'marginheight' => '15',
-			'leftmargin' => '15',
-			'topmargin' => '15',
+			'marginwidth' => 15,
+			'marginheight' => 15,
+			'leftmargin' => 15,
+			'topmargin' => 15,
 			'onLoad' => 'loaded=1;',
 		);
 
