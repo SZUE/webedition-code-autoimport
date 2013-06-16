@@ -22,7 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 //TEST: was it ok to abandon treefooter?
 
 class weExportFrames extends weModuleFrames{
@@ -119,21 +118,17 @@ class weExportFrames extends weModuleFrames{
 		$extraJS = 'document.getElementById("tab_"+top.content.activ_tab).className="tabActive";';
 
 		//TODO: we have the following body in several modules!
-		$body = we_html_element::htmlBody(array('bgcolor' => 'white', 'background' => IMAGE_DIR . 'backgrounds/header_with_black_line.gif', 'marginwidth' => 0, 'marginheight' => 0, 'leftmargin' => 0, 'topmargin' => 0, 'onload' => 'setFrameSize()', 'onresize' => 'setFrameSize()'),
-			we_html_element::htmlDiv(array('id' => 'main'),
-				we_html_tools::getPixel(100, 3) .
-				we_html_element::htmlDiv(array('style' => 'margin:0px; padding-left:10px;', 'id' => 'headrow'),
-					we_html_element::htmlNobr(
-						we_html_element::htmlB(str_replace(" ", "&nbsp;", g_l('export', '[export]')) . ':&nbsp;') .
-						we_html_element::htmlSpan(array('id' => 'h_path', 'class' => 'header_small'),
-							'<b id="titlePath">' . str_replace(" ", "&nbsp;", $text) . '</b>'
+		$body = we_html_element::htmlBody(array('bgcolor' => 'white', 'background' => IMAGE_DIR . 'backgrounds/header_with_black_line.gif', 'marginwidth' => 0, 'marginheight' => 0, 'leftmargin' => 0, 'topmargin' => 0, 'onload' => 'setFrameSize()', 'onresize' => 'setFrameSize()'), we_html_element::htmlDiv(array('id' => 'main'), we_html_tools::getPixel(100, 3) .
+					we_html_element::htmlDiv(array('style' => 'margin:0px; padding-left:10px;', 'id' => 'headrow'), we_html_element::htmlNobr(
+							we_html_element::htmlB(str_replace(" ", "&nbsp;", g_l('export', '[export]')) . ':&nbsp;') .
+							we_html_element::htmlSpan(array('id' => 'h_path', 'class' => 'header_small'), '<b id="titlePath">' . str_replace(" ", "&nbsp;", $text) . '</b>'
+							)
 						)
-					)
+					) .
+					we_html_tools::getPixel(100, 3) .
+					$we_tabs->getHTML()
 				) .
-				we_html_tools::getPixel(100, 3) .
-				$we_tabs->getHTML()
-			) .
-			we_html_element::jsElement($extraJS)
+				we_html_element::jsElement($extraJS)
 		);
 
 
@@ -465,7 +460,7 @@ class weExportFrames extends weModuleFrames{
 	}
 
 	/* use parent
-	function getHTMLLeft(){}
+	  function getHTMLLeft(){}
 	 *
 	 */
 
@@ -593,8 +588,8 @@ class weExportFrames extends weModuleFrames{
 										' . $this->editorBodyFrame . '.addLog("' . addslashes(we_html_tools::getPixel(20, 5)) . we_html_element::htmlB(g_l('export', '[export]')) . '<br>");
 									}
 								');
-						//FIXME: set export type in getHeader
-						weFile::save($this->View->export->ExportFilename, weXMLExIm::getHeader(), "wb");
+							//FIXME: set export type in getHeader
+							weFile::save($this->View->export->ExportFilename, weXMLExIm::getHeader(), "wb");
 							if($this->View->export->HandleOwners){
 								weFile::save($this->View->export->ExportFilename, weXMLExport::exportInfoMap($xmlExIm->RefTable->Users), "ab");
 							}
@@ -664,7 +659,7 @@ class weExportFrames extends weModuleFrames{
 										$_path = id_to_path($ref->ID, $table);
 									}
 
-									$_progress_text = we_html_element::htmlB(g_l('contentTypes', '[' . $ref->ContentType . ']') !== false ? g_l('contentTypes', '[' . $ref->ContentType . ']') : (g_l('export', '[' . $ref->ContentType . ']') !== false ? g_l('export', '[' . $ref->ContentType . ']') : '')) . '&nbsp;&nbsp;' . $_path;
+									$_progress_text = we_html_element::htmlB(g_l('contentTypes', '[' . $ref->ContentType . ']', true) !== false ? g_l('contentTypes', '[' . $ref->ContentType . ']') : (g_l('export', '[' . $ref->ContentType . ']', true) !== false ? g_l('export', '[' . $ref->ContentType . ']') : '')) . '&nbsp;&nbsp;' . $_path;
 
 									if(strlen($_path) > 75){
 										$_progress_text = addslashes(substr($_progress_text, 0, 65) . '<acronym title="' . $_path . '">...</acronym>' . substr($_progress_text, -10));
