@@ -267,7 +267,7 @@ class weXMLImport extends weXMLExIm{
 						$match = array();
 						preg_match('|(/+[a-zA-Z0-9_+-\.]*)|', $object->Path, $match);
 						if(isset($match[0])){
-							$object->TableID = f('SELECT ID FROM ' . OBJECT_TABLE . ' WHERE Path=\'' . $db->escape($match[0]) . '\'', 'ID', $db);
+							$object->TableID = f('SELECT ID FROM ' . OBJECT_TABLE . ' WHERE Path="' . $db->escape($match[0]) . '"', 'ID', $db);
 						}
 					}
 				}
@@ -276,7 +276,7 @@ class weXMLImport extends weXMLExIm{
 				$this->refreshOwners($object);
 
 				if($save){
-					$this->saveObject($object);
+					$save = $this->saveObject($object);
 				}
 				$this->RefTable->add($object, $extra);
 			}

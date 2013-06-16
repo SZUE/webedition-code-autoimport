@@ -247,7 +247,7 @@ class weXMLExIm{
 			$encoding = $GLOBALS['WE_BACKENDCHARSET'];
 		}
 		return '<?xml version="1.0" encoding="' . $encoding . '" standalone="yes"?>' . "\n" .
-			'<webEdition version="' . WE_VERSION . '" type="'.$type.'" xmlns:we="we-namespace">' . "\n";
+			'<webEdition version="' . WE_VERSION . '" type="' . $type . '" xmlns:we="we-namespace">' . "\n";
 	}
 
 	static function getFooter(){
@@ -313,7 +313,7 @@ class weXMLExIm{
 			}
 		}
 
-		return 'AND (1 '.makeOwnersSql() . ( $wsQuery ? 'OR (' . implode(' OR ', $wsQuery) . ')' : '').')';
+		return 'AND (1 ' . makeOwnersSql() . ( $wsQuery ? 'OR (' . implode(' OR ', $wsQuery) . ')' : '') . ')';
 	}
 
 	function getSelectedItems($selection, $extype, $art, $type, $doctype, $classname, $categories, $dir, &$selDocs, &$selTempl, &$selObjs, &$selClasses){
@@ -369,6 +369,7 @@ class weXMLExIm{
 	}
 
 	function saveObject(&$object){
+		$ret = true;
 		if(is_object($object)){
 			// save binary data first to stay compatible with the new binary feature in v5.1
 			if(in_array("savebinarydata", get_class_methods(get_class($object)))){
@@ -376,15 +377,19 @@ class weXMLExIm{
 			}
 
 			if($object->ClassName == 'we_docTypes'){
-				$object->we_save_exim();
+				$ret = $object->we_save_exim();
 			} else{
 				$GLOBALS['we_doc'] = $object;
 				if(in_array("we_save", get_class_methods(get_class($object)))){
-					$object->we_save();
+					if(!$object->we_save()){
+						return false;
+					}
 				}
 
 				if(in_array("we_publish", get_class_methods(get_class($object)))){
-					$object->we_publish();
+					if(!$object->we_publish()){
+						return false;
+					}
 				}
 
 				if(in_array("savebinarydata", get_class_methods(get_class($object)))){
@@ -392,6 +397,7 @@ class weXMLExIm{
 				}
 			}
 		}
+		return $ret;
 	}
 
 //FIXME: splitFile,exportChunk missing - called in Backup class
