@@ -690,23 +690,24 @@ class we_wizard_import extends we_wizard{
 			$docPath = $yuiSuggest->getHTML() . $yuiSuggest->getYuiCode();
 
 			$dir_table = new we_html_table($attribs, 2, 2);
-			if((isset($v["import_navigation"]) && !$v["import_navigation"]))
+			if((isset($v["import_navigation"]) && !$v["import_navigation"])){
 				$dir_table->setStyle('display', 'none');
+			}
 			$dir_table->setCol(0, 0, null, we_html_tools::getPixel(20, 1));
 			$dir_table->setCol(0, 1, null, we_html_tools::htmlAlertAttentionBox(g_l('import', "[navigation_desc]"), we_html_tools::TYPE_ALERT, 390));
 			$dir_table->setCol(1, 1, null, $docPath);
 
 			$tbl_extra->setCol(3, 0, null, $dir_table->getHtml());
 
+			$xml_encoding = we_xml_parser::getEncoding($_import_file);
 
 			$parts[] = array(
 				"headline" => g_l('import', "[handle_doctype_options]") . '<br>' . g_l('import', "[handle_category_options]"),
-				"html" => $tbl_extra->getHTML(),
+				"html" => '<input type="hidden" name="v[import_XMLencoding]" value="' . $xml_encoding . '" />'.$tbl_extra->getHTML(),
 				"space" => 120
 			);
 
 
-			$xml_encoding = we_xml_parser::getEncoding($_import_file);
 			if(DEFAULT_CHARSET != '' && (DEFAULT_CHARSET == 'ISO-8859-1' || DEFAULT_CHARSET == 'UTF-8' ) && ($xml_encoding == 'ISO-8859-1' || $xml_encoding == 'UTF-8' )){
 				if(($xml_encoding != DEFAULT_CHARSET)){
 					$parts[] = array(
@@ -718,7 +719,7 @@ class we_wizard_import extends we_wizard{
 			} else{
 				$parts[] = array(
 					'headline' => g_l('import', '[encoding_headline]'),
-					'html' => we_forms::checkboxWithHidden((isset($v['import_ChangeEncoding']) && $v['import_ChangeEncoding']) ? true : false, 'v[import_ChangeEncoding]', g_l('import', '[encoding_noway]'), false, "defaultfont", '', true),
+					'html' => we_forms::checkboxWithHidden((isset($v['import_ChangeEncoding']) && $v['import_ChangeEncoding']) ? true : false, 'v[import_ChangeEncoding]', g_l('import', '[encoding_noway]') . '<input type="hidden" name="v[import_XMLencoding]" value="' . $xml_encoding . '" />', false, "defaultfont", '', true),
 					'space' => 120
 				);
 			}

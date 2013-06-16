@@ -2183,6 +2183,9 @@ class we_objectFile extends we_document{
 	}
 
 	public function we_save($resave = 0, $skipHook = 0){
+		if(intval($this->TableID) == 0){
+			return false;
+		}
 		$this->errMsg = '';
 
 		if($this->i_pathNotValid()){
@@ -2713,6 +2716,9 @@ class we_objectFile extends we_document{
 	}
 
 	function i_saveContentDataInDB(){
+		if(intval($this->TableID) == 0){
+			return false;
+		}
 		$ctable = OBJECT_X_TABLE . $this->TableID;
 
 		$tableInfo = $this->DB_WE->metadata($ctable);

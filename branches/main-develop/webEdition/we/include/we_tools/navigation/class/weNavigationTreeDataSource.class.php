@@ -38,7 +38,7 @@ class weNavigationTreeDataSource extends weToolTreeDataSource{
 		$_aWsQuery = array();
 		$parentpaths = array();
 
-		if($ws = get_ws($table)){
+		if(($ws = get_ws($table))){
 			$wsPathArray = id_to_path($ws, $table, $db, false, true);
 			foreach($wsPathArray as $path){
 				$_aWsQuery[] = " Path LIKE '" . $db->escape($path) . "/%' OR " . weNavigationTreeDataSource::getQueryParents($path);

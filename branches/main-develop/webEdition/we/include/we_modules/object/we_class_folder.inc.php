@@ -64,7 +64,7 @@ class we_class_folder extends we_folder{
 	}
 
 	function we_initSessDat($sessDat){
-		we_folder::we_initSessDat($sessDat);
+		parent::we_initSessDat($sessDat);
 		if(isset($this->searchclass_class) && !is_object($this->searchclass_class)){
 			$this->searchclass_class = unserialize($this->searchclass_class);
 		} else if(isset($_SESSION['weS']['we_objectSearch'][$this->ID])){
@@ -235,18 +235,16 @@ class we_class_folder extends we_folder{
 		}
 		$this->Order = $_REQUEST['Order'];
 
-		if(isset($_POST['SearchStart'])){
-			$this->searchclass->searchstart = $_POST['SearchStart'];
+		if(isset($_REQUEST['SearchStart'])){
+			$this->searchclass->searchstart = $_REQUEST['SearchStart'];
 		}
 
 		if(isset($_REQUEST['Anzahl'])){
 			$this->searchclass->anzahl = $_REQUEST['Anzahl'];
 		}
 
-		//$this->searchclass->setlimit(1);
 		$we_obectPathLength = 32;
 
-		//$this->searchclass->setlimit(2);
 		$we_wsLength = 26;
 		$we_extraWsLength = 26;
 
@@ -730,9 +728,7 @@ class we_class_folder extends we_folder{
 		</table>
 		<table border="0" cellpadding="0" cellspacing="0">
 		<tr>
-			<td class="defaultgray">' .
-			(isset($this->searchclass->searchname) ? g_l('modules_objectClassfoldersearch', '[teilsuche]') : '') .
-			'</td>
+			<td class="defaultgray">' . (isset($this->searchclass->searchname) ? g_l('modules_objectClassfoldersearch', '[teilsuche]') : '') . '</td>
 			<td align="right">' . $this->searchclass->getNextPrev($foundItems) . '</td>
 		</tr>
 		<tr>
@@ -895,6 +891,7 @@ class we_class_folder extends we_folder{
 		$ret = <<<EOF
 		function sub(){
 			document.we_form_search.target="load";
+			document.getElementsByName("SearchStart")[0].value=0;
 			document.we_form_search.action="{$modulepath}search_submit.php";
 			document.we_form_search.todo.value="search";
 			document.we_form_search.submit();

@@ -73,7 +73,7 @@ class we_docTypes extends we_class{
 	}
 
 	function we_save_exim(){
-		return we_class::we_save(0);
+		return parent::we_save(0);
 	}
 
 	function saveInSession(&$save){
