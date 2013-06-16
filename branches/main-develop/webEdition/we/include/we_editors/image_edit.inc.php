@@ -283,7 +283,7 @@ function we_getImageResizeDialog(){
 		(($GLOBALS['we_doc']->getGDType() == "jpg") ?
 			'<br><div class="defaultfont">' . g_l('weClass', "[quality]") . '</div>' . we_image_edit::qualitySelect("quality") :
 			'');
-	array_push($_content, array("headline" => "", "html" => $_table, "space" => 0));
+	$_content[] = array("headline" => "", "html" => $_table, "space" => 0);
 	return we_multiIconBox::getHTML("", "100%", $_content, 30, $buttons, -1, "", "", false, g_l('weClass', "[resize]"));
 }
 
@@ -295,7 +295,7 @@ function we_getImageConvertDialog(){
 	$buttons = we_button::position_yes_no_cancel($okbut, null, $cancelbut);
 	$cancelbut = we_button::create_button("cancel", "javascript:top.close();");
 	$_dialog = '<div class="defaultfont">' . g_l('weClass', "[quality]") . '</div>' . we_image_edit::qualitySelect("quality");
-	array_push($_content, array("headline" => "", "html" => $_dialog, "space" => 0));
+	$_content[] = array("headline" => "", "html" => $_dialog, "space" => 0);
 
 
 	return we_multiIconBox::getHTML("", "100%", $_content, 30, $buttons, -1, "", "", false, g_l('weClass', "[convert]"));
@@ -318,7 +318,7 @@ function we_getImageRotateDialog(){
 			'<br><div class="defaultfont">' . g_l('weClass', "[quality]") . '</div>' . we_image_edit::qualitySelect("quality") :
 			'');
 
-	array_push($_content, array("headline" => "", "html" => $_dialog, "space" => 0));
+	$_content[] = array("headline" => "", "html" => $_dialog, "space" => 0);
 
 
 	return we_multiIconBox::getHTML("", "100%", $_content, 30, $buttons, -1, "", "", false, g_l('weClass', "[rotate]"));

@@ -44,7 +44,7 @@ class weAcronymDialog extends weDialog{
 		$this->args["class"] = "";
 		$this->args["style"] = "";
 	}
-	
+
 	function getTinyMceJS(){
 		$out = parent::getTinyMceJS();
 		$out .= we_html_element::jsScript(TINYMCE_JS_DIR . 'plugins/weacronym/js/acronym_init.js');
@@ -101,14 +101,14 @@ class weAcronymDialog extends weDialog{
 		$trashbut = we_button::create_button("image:btn_function_trash", "javascript:document.we_form.elements['we_dialog_args[title]'].value='';weDoOk();");
 
 		$buttons = array();
-		array_push($buttons, $trashbut);
+		$buttons[] = $trashbut;
 
 		if(defined("GLOSSARY_TABLE") && we_hasPerm("NEW_GLOSSARY")){
 			$glossarybut = we_button::create_button("to_glossary", "javascript:weSaveToGlossaryFn();", true, 100);
-			array_push($buttons, $glossarybut);
+			$buttons[] = $glossarybut;
 		}
 
-		array_push($buttons, parent::getDialogButtons());
+		$buttons[] = parent::getDialogButtons();
 
 		return we_button::create_button_table($buttons);
 	}

@@ -1900,13 +1900,12 @@ sh' && $contentType != 'movie/quicktime'){
 						if($this->createWePages){
 							$contentType = "text/webedition";
 							// webEdition files needs to be post processed (external links => internal links)
-							array_push(
-								$this->_postProcess, array(
+							$this->_postProcess[]= array(
 								"path" => $PathOfEntry,
 								"contentType" => "post/process",
 								"sourceDir" => $this->from,
 								"destDirID" => $this->to
-							));
+							);
 						}
 						$importIt = true;
 					}

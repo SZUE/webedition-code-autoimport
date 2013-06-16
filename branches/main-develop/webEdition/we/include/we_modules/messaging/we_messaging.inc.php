@@ -188,7 +188,7 @@ class we_messaging extends we_class{
 
 		foreach($arr as $elem){
 			if(isset($ret[$elem['ClassName']]) && is_array($ret[$elem['ClassName']])){
-				array_push($ret[$elem['ClassName']], $elem['ID']);
+				$ret[$elem['ClassName']][] = $elem['ID'];
 			} else{
 				$ret[$elem['ClassName']] = array((string) $elem['ID']);
 			}
@@ -312,7 +312,7 @@ class we_messaging extends we_class{
 			$offset = array_ksearch('ID', $id, $this->selected_set);
 			$cn = $this->selected_set[$offset]['hdrs']['ClassName'];
 			if(isset($s_hash[$cn]) && is_array($s_hash[$cn])){
-				array_push($s_hash[$cn], array('ID' => $id, 'hdrs' => $this->selected_set[$offset]['int_hdrs']));
+				$s_hash[$cn][] = array('ID' => $id, 'hdrs' => $this->selected_set[$offset]['int_hdrs']);
 			} else{
 				$s_hash[$cn] = array(array('ID' => $id, 'hdrs' => $this->selected_set[$offset]['int_hdrs']));
 			}
@@ -528,7 +528,7 @@ class we_messaging extends we_class{
 		foreach($nids as $f_id){
 			$cn = $this->available_folders[array_ksearch('ID', $f_id, $this->available_folders)]['ClassName'];
 			if(isset($s_hash[$cn]) && is_array($s_hash[$cn])){
-				array_push($s_hash[$cn], (string) $f_id);
+				$s_hash[$cn][] = (string) $f_id;
 			} else{
 				$s_hash[$cn] = array((string) $f_id);
 			}
@@ -704,7 +704,7 @@ class we_messaging extends we_class{
 					foreach($this->available_folders as $afolder){
 						$cn = $afolder['ClassName'];
 						if(isset($s_hash[$cn]) && is_array($s_hash[$cn])){
-							array_push($s_hash[$cn], $afolder['ID']);
+							$s_hash[$cn][] = $afolder['ID'];
 						} else{
 							$s_hash[$cn] = array($afolder['ID']);
 						}
@@ -713,7 +713,7 @@ class we_messaging extends we_class{
 					foreach($this->search_folder_ids as $sfolder){
 						$cn = $this->available_folders[array_ksearch('ID', $sfolder, $this->available_folders)]['ClassName'];
 						if(isset($s_hash[$cn]) && is_array($s_hash[$cn])){
-							array_push($s_hash[$cn], $sfolder);
+							$s_hash[$cn][] = $sfolder;
 						} else{
 							$s_hash[$cn] = array("$sfolder");
 						}

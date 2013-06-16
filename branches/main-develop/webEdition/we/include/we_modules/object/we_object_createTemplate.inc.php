@@ -167,8 +167,9 @@ $tmpl->Extension = ".tmpl";
 $tmpl->setParentID(isset($pid) ? $pid : "" );
 $tmpl->Path = $tmpl->ParentPath . (isset($filename) ? $filename : "") . ".tmpl";
 
-$usedIDs = array();
-array_push($usedIDs, $_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["ID"]);
+$usedIDs = array(
+	$_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["ID"]
+);
 
 $sort = $_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"]["we_sort"]["dat"];
 

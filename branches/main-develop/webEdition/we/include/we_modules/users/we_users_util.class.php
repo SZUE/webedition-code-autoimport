@@ -108,9 +108,9 @@ class we_users_util{
 
 	static function addAllUsersAndGroups($uid, &$arr){
 		$db = new DB_WE();
-		$db->query("SELECT ID,IsFolder FROM " . USER_TABLE . " WHERE ParentID=" . intval($uid));
+		$db->query('SELECT ID,IsFolder FROM ' . USER_TABLE . ' WHERE ParentID=' . intval($uid));
 		while($db->next_record()) {
-			array_push($arr, $db->f("ID"));
+			$arr[] = $db->f("ID");
 			if($db->f("IsFolder")){
 				self::addAllUsersAndGroups($db->f("ID"), $arr);
 			}

@@ -2578,7 +2578,7 @@ class we_objectFile extends we_document{
 		}
 		static $recursiveObjects = array();
 		if(empty($recursiveObjects)){
-			array_push($recursiveObjects, $this->ID);
+			$recursiveObjects[] = $this->ID;
 		}
 
 		$linkObjects = array();
@@ -2597,7 +2597,7 @@ class we_objectFile extends we_document{
 		}
 		foreach($linkObjects as $id){
 			if(!in_array($id, $recursiveObjects)){
-				array_push($recursiveObjects, $id);
+				$recursiveObjects[] = $id;
 				$tmpObj = new we_objectFile();
 				$tmpObj->initByID($id, OBJECT_FILES_TABLE, 0);
 				array_pop($recursiveObjects);

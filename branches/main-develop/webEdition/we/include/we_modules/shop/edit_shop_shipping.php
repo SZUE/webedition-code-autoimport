@@ -215,12 +215,11 @@ foreach($customerTableFields as $tblField){
 	$selectFields[$tblField['name']] = $tblField['name'];
 }
 
-array_push($parts, array(
+$parts[] = array(
 	'headline' => g_l('modules_shop', '[vat_country][stateField]'),
 	'space' => 200,
 	'html' => we_class::htmlSelect('stateField', $selectFields, 1, $weShippingControl->stateField, false, '', 'value', 200),
 	'noline' => 1
-	)
 );
 unset($selectFields);
 
@@ -229,18 +228,16 @@ $selectFields = array();
 foreach($shopVats as $id => $shopVat){
 	$selectFields[$id] = $shopVat->text . ' (' . $shopVat->vat . '%)';
 }
-array_push($parts, array(
+$parts[] = array(
 	'headline' => g_l('modules_shop', '[mwst]'),
 	'space' => 200,
 	'html' => we_class::htmlSelect('vatId', $selectFields, 1, $weShippingControl->vatId, false, '', 'value', 200),
 	'noline' => 1
-	)
 );
-array_push($parts, array(
+$parts[] = array(
 	'headline' => g_l('modules_shop', '[shipping][prices_are_net]'),
 	'space' => 200,
 	'html' => we_class::htmlSelect('isNet', array(1 => g_l('global', "[true]"), 0 => g_l('global', "[false]")), 1, $weShippingControl->isNet, false, '', 'value', 200)
-	)
 );
 // selectBox with all existing shippings
 // select menu with all available shipping costs
@@ -249,7 +246,7 @@ foreach($weShippingControl->shippings as $key => $shipping){
 	$selectFields[$key] = $shipping->text;
 }
 
-array_push($parts, array(
+$parts[] = array(
 	'headline' => g_l('modules_shop', '[shipping][insert_packaging]'),
 	'space' => 200,
 	'html' => '<table border="0" cellpadding="0" cellpsacing="0" class="defaultfont">
@@ -263,28 +260,23 @@ array_push($parts, array(
 	'</td>
 	</tr>
 	</table>'
-	)
 );
 
 
 // if a shipping should be edited, show it in a form
 
 if(isset($weShipping)){ // show the shipping which must be edited
-	array_push(
-		$parts, array(
+	$parts[] = array(
 		'headline' => g_l('modules_shop', '[shipping][name]'),
 		'space' => 150,
 		'html' => we_class::htmlTextInput('weShipping_text', 24, $weShipping->text) . we_html_tools::hidden('weShippingId', $weShipping->id),
 		'noline' => 1
-		)
 	);
-	array_push(
-		$parts, array(
+	$parts[] = array(
 		'headline' => g_l('modules_shop', '[shipping][countries]'),
 		'space' => 150,
 		'html' => we_class::htmlTextArea('weShipping_countries', 4, 20, implode("\n", $weShipping->countries)),
 		'noline' => 1
-		)
 	);
 	// foreach ...
 	// form table with every value -> cost entry
@@ -305,8 +297,8 @@ if(isset($weShipping)){ // show the shipping which must be edited
 			</tr>';
 		}
 	}
-	array_push(
-		$parts, array(
+
+	$parts[] = array(
 		'headline' => g_l('modules_shop', '[shipping][costs]'),
 		'space' => 150,
 		'html' =>
@@ -323,15 +315,12 @@ if(isset($weShipping)){ // show the shipping which must be edited
 	</table>
 	' . we_button::create_button('image:btn_function_plus', 'javascript:we_cmd(\'addShippingCostTableRow\',\'12\');'),
 		'noline' => 1
-		)
 	);
-	array_push(
-		$parts, array(
+	$parts[] = array(
 		'headline' => 'Standard',
 		'space' => 150,
 		'html' => we_class::htmlSelect('weShipping_default', array(1 => g_l('global', "[true]"), 0 => g_l('global', "[false]")), 1, $weShipping->default),
 		'noline' => 1
-		)
 	);
 }
 
@@ -339,7 +328,7 @@ print we_multiIconBox::getHTML(
 		'weShipping', "100%", $parts, 30, we_button::position_yes_no_cancel(
 			we_button::create_button('save', 'javascript:we_cmd(\'save\');'), '', we_button::create_button('close', 'javascript:we_cmd(\'close\');')
 		), -1, '', '', false, g_l('modules_shop', '[shipping][shipping_package]')
-	);
+);
 
 print '
 </form>

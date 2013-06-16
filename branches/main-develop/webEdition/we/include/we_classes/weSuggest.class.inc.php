@@ -1243,19 +1243,19 @@ function doDebugResizeH(){
 	 * @param unknown_type $containerwidth
 	 */
 	function setAutocompleteField($inputFieldId, $containerFieldId, $table, $contentType = "", $selector = "", $maxResults = 10, $queryDelay = 0, $layerId = null, $setOnSelectFields = null, $checkFieldsValue = true, $containerwidth = "100%", $inputMayBeEmpty = 'true', $rootDir = ''){
-		array_push($this->inputfields, $inputFieldId);
-		array_push($this->containerfields, $containerFieldId);
-		array_push($this->tables, $table);
-		array_push($this->rootDirs, $rootDir);
-		array_push($this->contentTypes, $contentType);
-		array_push($this->selectors, $selector);
-		array_push($this->weMaxResults, $maxResults);
-		array_push($this->queryDelay, $queryDelay);
+		$this->inputfields[] = $inputFieldId;
+		$this->containerfields[] = $containerFieldId;
+		$this->tables[] = $table;
+		$this->rootDirs[] = $rootDir;
+		$this->contentTypes[] = $contentType;
+		$this->selectors[] = $selector;
+		$this->weMaxResults[] = $maxResults;
+		$this->queryDelay[] = $queryDelay;
 		$layerId ? array_push($this->layer, $layerId) : "";
-		array_push($this->setOnSelectFields, $setOnSelectFields);
-		array_push($this->checkFieldsValues, $checkFieldsValue);
-		array_push($this->containerwidth, $containerwidth);
-		array_push($this->inputMayBeEmpty, $inputMayBeEmpty);
+		$this->setOnSelectFields[] = $setOnSelectFields;
+		$this->checkFieldsValues[] = $checkFieldsValue;
+		$this->containerwidth[] = $containerwidth;
+		$this->inputMayBeEmpty[] = $inputMayBeEmpty;
 		switch($contentType){
 			case "dirSelector":
 				array($this->ct, "folder");
@@ -1270,9 +1270,9 @@ function doDebugResizeH(){
 				array($this->ct, "doc");
 				break;
 		}
-		array_push($this->_doOnItemSelect, $this->doOnItemSelect);
+		$this->_doOnItemSelect[] = $this->doOnItemSelect;
 		$this->doOnItemSelect = "";
-		array_push($this->_doOnTextfieldBlur, $this->doOnTextfieldBlur);
+		$this->_doOnTextfieldBlur[] = $this->doOnTextfieldBlur;
 		$this->doOnTextfieldBlur = "";
 	}
 

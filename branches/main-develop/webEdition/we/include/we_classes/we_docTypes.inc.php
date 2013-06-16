@@ -164,7 +164,7 @@ class we_docTypes extends we_class{
 		$ids = makeArrayFromCSV($id);
 		foreach($ids as $id){
 			if($id && (!in_array($id, $cats))){
-				array_push($cats, $id);
+				$cats[] = $id;
 			}
 		}
 		$this->Category = makeCSVFromArray($cats, true);

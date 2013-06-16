@@ -312,7 +312,7 @@ class we_rtf2html{
 	function parseColorTable($colortbl){
 		$a = array();
 		$b = array();
-		array_push($this->colorTable, $this->hexColor(0, 0, 0));
+		$this->colorTable[] = $this->hexColor(0, 0, 0);
 		$a = explode(";", $colortbl);
 		foreach($a as $k => $v){
 			if($v != ""){
@@ -325,7 +325,7 @@ class we_rtf2html{
 				$m = array();
 				if(preg_match("/blue([0-9]+)/", $v, $m))
 					$blue = $m[1];
-				array_push($this->colorTable, $this->hexColor($red, $green, $blue));
+				$this->colorTable[] = $this->hexColor($red, $green, $blue);
 			}
 		}
 	}
@@ -539,7 +539,7 @@ class we_rtf2html{
 	function propParse($key, $para = ""){
 
 		if(($key == 19) || ($key == 20) || ($key == 21)){
-			array_push($this->align, $key);
+			$this->align[] = $key;
 		}
 
 		if($key == 95){

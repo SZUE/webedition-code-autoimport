@@ -35,7 +35,7 @@ class copyWeDocumentCustomerFilterFrag extends taskFragment{
 		// if we_cmd 3 is set, take filters of that folder as parent!!
 		$_idForFilter = (isset($_REQUEST['we_cmd'][3]) ? $_REQUEST['we_cmd'][3] : $_id);
 
-		if($_id==0){
+		if($_id == 0){
 			t_e('called function with invalid id');
 			die();
 		}
@@ -51,14 +51,13 @@ class copyWeDocumentCustomerFilterFrag extends taskFragment{
 		$this->alldata = array();
 
 		while($_db->next_record()) {
-			array_push(
-				$this->alldata, array(
+
+			$this->alldata[] = array(
 				"folder_id" => $_id,
 				"table" => $_table,
 				"idForFilter" => $_idForFilter,
 				"id" => $_db->f("ID"),
 				"contenttype" => $_db->f("ContentType"),
-				)
 			);
 		}
 	}
@@ -160,7 +159,7 @@ if(isset($_REQUEST["startCopy"])){ // start the fragment
 
 	$buttonBar = we_button::create_button("cancel", "javascript:top.close();");
 
-	$_iframeLocation = WEBEDITION_DIR.'we_cmd.php?we_cmd[0]=' . $_REQUEST['we_cmd'][0] . '&we_cmd[1]=' . $_REQUEST['we_cmd'][1] . "&we_cmd[2]=" . $_REQUEST['we_cmd'][2] . (isset($_REQUEST['we_cmd'][3]) ? "&we_cmd[3]=" . $_REQUEST['we_cmd'][3] : "" ) . '&startCopy=1';
+	$_iframeLocation = WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=' . $_REQUEST['we_cmd'][0] . '&we_cmd[1]=' . $_REQUEST['we_cmd'][1] . "&we_cmd[2]=" . $_REQUEST['we_cmd'][2] . (isset($_REQUEST['we_cmd'][3]) ? "&we_cmd[3]=" . $_REQUEST['we_cmd'][3] : "" ) . '&startCopy=1';
 
 	we_html_tools::htmlTop(g_l('modules_customerFilter', '[apply_filter]'));
 	print STYLESHEET;

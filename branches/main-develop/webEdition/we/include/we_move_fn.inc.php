@@ -194,7 +194,7 @@ function moveItem($targetDirectoryID, $id, $table, &$notMovedItems){
 
 			// move document file
 			if(!file_exists($_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $oldPath)){
-				array_push($notMovedItems, $item);
+				$notMovedItems[] = $item;
 				return false;
 			}
 			if(!copy(

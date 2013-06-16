@@ -32,7 +32,7 @@ define('BACKUP_TABLE', TBL_PREFIX . 'tblbackup');
 //FIXME: try to remove this class
 abstract class we_backup{
 	const COMPRESSION='gzip';
-	
+
 	var $backup_db;
 	var $errors = array();
 	var $warnings = array();
@@ -1040,7 +1040,7 @@ abstract class we_backup{
 			$this->backup_db->query("SHOW COLUMNS FROM " . $this->backup_db->escape($tab) . ";");
 			while($this->backup_db->next_record()) {
 				if(!in_array(strtolower($this->backup_db->f("Field")), $fnames)){
-					array_push($fupdate, "ALTER TABLE " . $this->backup_db->escape($tab) . " ADD " . $this->backup_db->f("Field") . " " . $this->backup_db->f("Type") . " DEFAULT '" . $this->backup_db->f("Default") . "'" . ($this->backup_db->f("Null") == "YES" ? " NOT NULL" : "") . ";");
+					$fupdate[] = "ALTER TABLE " . $this->backup_db->escape($tab) . " ADD " . $this->backup_db->f("Field") . " " . $this->backup_db->f("Type") . " DEFAULT '" . $this->backup_db->f("Default") . "'" . ($this->backup_db->f("Null") == "YES" ? " NOT NULL" : "") . ";";
 				}
 			}
 		}

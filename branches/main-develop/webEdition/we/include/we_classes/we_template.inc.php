@@ -649,7 +649,7 @@ class we_template extends we_document{
 		}
 		static $recursiveTemplates = array();
 		if(empty($recursiveTemplates)){
-			array_push($recursiveTemplates, $this->ID);
+			$recursiveTemplates[] = $this->ID;
 		}
 		$code = $this->getTemplateCode(false);
 
@@ -683,7 +683,7 @@ class we_template extends we_document{
 			} else{
 				// we have a master template. => surround current template with it
 				// first get template code
-				array_push($recursiveTemplates, $this->MasterTemplateID);
+				$recursiveTemplates[] = $this->MasterTemplateID;
 				$templObj = new we_template();
 				$templObj->initByID($this->MasterTemplateID, TEMPLATES_TABLE);
 				$masterTemplateCode = $templObj->getTemplateCode(true);
@@ -746,7 +746,7 @@ class we_template extends we_document{
 							t_e(g_l('parser', '[template_recursion_error]'), 'Template: ' . $this->ID);
 						} else{
 							// get code of template
-							array_push($recursiveTemplates, $att['id']);
+							$recursiveTemplates[] = $att['id'];
 							$templObj = new we_template();
 							$templObj->initByID($att['id'], TEMPLATES_TABLE);
 							$completeCode = (!(isset($att['included']) && ($att['included'] == 'false' || $att["included"] === '0' || $att['included'] == "off")));

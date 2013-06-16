@@ -22,10 +22,10 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-$parts = array();
-array_push($parts, array("icon" => "path.gif", "headline" => g_l('weClass', "[path]"), "html" => $GLOBALS['we_doc']->formPath(), "space" => 120));
-array_push($parts, array("icon" => "charset.gif", "headline" => g_l('weClass', "[Charset]"), "html" => $GLOBALS['we_doc']->formCharset(), "space" => 120));
-array_push($parts, array("icon" => "user.gif", "headline" => g_l('weClass', "[owners]"), "html" => $GLOBALS['we_doc']->formCreatorOwners(), "space" => 120));
-array_push($parts, array("icon" => "copy.gif", "headline" => g_l('weClass', "[copy" . $GLOBALS['we_doc']->ContentType . ']'), "html" => $GLOBALS['we_doc']->formCopyDocument(), "space" => 120));
+$parts = array(
+	array("icon" => "path.gif", "headline" => g_l('weClass', "[path]"), "html" => $GLOBALS['we_doc']->formPath(), "space" => 120),
+	array("icon" => "charset.gif", "headline" => g_l('weClass', "[Charset]"), "html" => $GLOBALS['we_doc']->formCharset(), "space" => 120),
+	array("icon" => "user.gif", "headline" => g_l('weClass', "[owners]"), "html" => $GLOBALS['we_doc']->formCreatorOwners(), "space" => 120),
+	array("icon" => "copy.gif", "headline" => g_l('weClass', "[copy" . $GLOBALS['we_doc']->ContentType . ']'), "html" => $GLOBALS['we_doc']->formCopyDocument(), "space" => 120));
 
 print we_multiIconBox::getHTML("", "100%", $parts, 30);

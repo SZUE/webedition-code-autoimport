@@ -75,8 +75,8 @@ foreach($tbls as $table){
 		if(($ws = get_ws($table))){
 			$wsArr = makeArrayFromCSV($ws);
 			foreach($wsArr as $i){
-				array_push($parents, $i);
-				array_push($childs, $i);
+				$parents[] = $i;
+				$childs[] = $i;
 				we_readParents($i, $parents, $table);
 				we_readChilds($i, $childs, $table);
 			}
@@ -113,39 +113,28 @@ foreach($tbls as $table){
 				"Icon") . '" width="16" height="18" />' . we_html_tools::getPixel(4, 1) . '</td><td valign="middle" class="middlefont"><nobr><a href="javascript:top.weEditorFrameController.openDocument(\'' . $table . '\',\'' . $DB_WE->f(
 				"ID") . '\',\'' . $DB_WE->f("ContentType") . '\')" title="' . $DB_WE->f("Path") . '" style="color:' . ($DB_WE->f(
 				"Published") ? "#3366CC" : "#FF0000") . ';text-decoration:none;">' . $DB_WE->f("Path") . '</a></nobr></td></tr>';
-		array_push($row, array(
+		$row[] = array(
 			"dat" => $path
-		));
-		$usern = f("
-				SELECT username
-				FROM " . USER_TABLE . "
-				WHERE ID=" . intval($DB_WE->f("CreatorID")), "username", $db2);
+		);
+		$usern = f("SELECT username FROM " . USER_TABLE . " WHERE ID=" . intval($DB_WE->f("CreatorID")), "username", $db2);
 		$usern = $usern ? $usern : "-";
-		array_push($row, array(
+		$row[] = array(
 			"dat" => $usern
-		));
+		);
 
 		$foo = $DB_WE->f("CreationDate") ? date(g_l('date', '[format][default]'), $DB_WE->f("CreationDate")) : "-";
-		array_push($row, array(
-			"dat" => $foo
-		));
+		$row[] = array("dat" => $foo);
 		$usern = f("
 				SELECT username
 				FROM " . USER_TABLE . "
 				WHERE ID=" . intval($DB_WE->f("ModifierID")), "username", $db2);
 		$usern = $usern ? $usern : "-";
-		array_push($row, array(
-			"dat" => $usern
-		));
+		$row[] = array("dat" => $usern);
 
 		$foo = $DB_WE->f("ModDate") ? date(g_l('date', '[format][default]'), $DB_WE->f("ModDate")) : "-";
-		array_push($row, array(
-			"dat" => $foo
-		));
+		$row[] = array("dat" => $foo);
 		$foo = $DB_WE->f("Published") ? date(g_l('date', '[format][default]'), $DB_WE->f("Published")) : "-";
-		array_push($row, array(
-			"dat" => $foo
-		));
+		$row[] = array("dat" => $foo);
 		if(defined("WORKFLOW_TABLE"))
 			if($DB_WE->f("wforder")){
 				$step = we_workflow_utility::findLastActiveStep($DB_WE->f("ID"), $table) + 1;
@@ -155,14 +144,11 @@ foreach($tbls as $table){
 					$text .= '&nbsp;<img src="' . IMAGE_DIR . 'we_boebbel_blau.gif" align="absmiddle" />';
 				else
 					$text .= '&nbsp;<img src="' . IMAGE_DIR . 'we_boebbel_grau.gif" align="absmiddle" />';
-				array_push($row, array(
-					"dat" => $text
-				));
-			} else
-				array_push($row, array(
-					"dat" => "-"
-				));
-		array_push($content, $row);
+				$row[] = array("dat" => $text);
+			}
+			else
+				$row[] = array("dat" => "-");
+		$content[] = $row;
 	}
 }
 

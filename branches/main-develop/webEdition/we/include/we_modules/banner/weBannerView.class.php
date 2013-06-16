@@ -504,7 +504,7 @@ class weBannerView extends weBannerBase{
 						$ids = makeArrayFromCSV($_REQUEST["ncmdvalue"]);
 						foreach($ids as $id){
 							if($id && (!in_array($id, $arr))){
-								array_push($arr, $id);
+								$arr[] = $id;
 							}
 						}
 						$this->banner->CategoryIDs = makeCSVFromArray($arr, true);
@@ -529,7 +529,7 @@ class weBannerView extends weBannerBase{
 						$ids = makeArrayFromCSV($_REQUEST["ncmdvalue"]);
 						foreach($ids as $id){
 							if($id && (!in_array($id, $arr))){
-								array_push($arr, $id);
+								$arr[] = $id;
 							}
 						}
 						$this->banner->FileIDs = makeCSVFromArray($arr, true);
@@ -554,7 +554,7 @@ class weBannerView extends weBannerBase{
 						$ids = makeArrayFromCSV($_REQUEST["ncmdvalue"]);
 						foreach($ids as $id){
 							if(strlen($id) && (!in_array($id, $arr))){
-								array_push($arr, $id);
+								$arr[] = $id;
 							}
 						}
 						$this->banner->FolderIDs = makeCSVFromArray($arr, true);
@@ -566,7 +566,7 @@ class weBannerView extends weBannerBase{
 						$ids = makeArrayFromCSV($_REQUEST["ncmdvalue"]);
 						foreach($ids as $id){
 							if($id && (!in_array($id, $arr))){
-								array_push($arr, $id);
+								$arr[] = $id;
 							}
 						}
 						$this->banner->Customers = makeCSVFromArray($arr, true);

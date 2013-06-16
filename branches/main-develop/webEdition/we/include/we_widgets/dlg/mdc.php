@@ -419,12 +419,12 @@ $divContent = we_html_element::htmlDiv(
 			we_html_tools::htmlTextInput(
 				$name = "title", $size = 55, $value = $_title, $maxlength = 255, $attribs = "", $type = "text", $width = 420, $height = 0), g_l('cockpit', '[title]'), "left", "defaultfont"));
 
-array_push($parts, array(
+$parts[] = array(
 	"headline" => "", "html" => $divContent, "space" => 0
-));
-array_push($parts, array(
+);
+$parts[] = array(
 	"headline" => "", "html" => $oSelCls->getHTML(), "space" => 0
-));
+);
 
 $save_button = we_button::create_button("save", "javascript:save();", false, -1, -1);
 $preview_button = we_button::create_button("preview", "javascript:preview();", false, -1, -1);

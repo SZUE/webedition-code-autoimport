@@ -317,7 +317,7 @@ function doClick(opt) {
 					we_html_element::htmlIFrame('busy', $this->frameset, 'position:absolute;height:40px;bottom:0px;left:0px;right:0px;overflow: hidden') .
 					we_html_element::htmlIFrame('cmd', $this->frameset . "?pnt=cmd", 'position:absolute;height:0px;bottom:0px;left:0px;right:0px;overflow: hidden') .
 					we_html_element::htmlIFrame('checker', HTML_DIR . 'white.html', 'position:absolute;bottom:0px;height:0px;left:0px;right:0px;overflow: hidden;')
-				));
+		));
 
 		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				we_html_element::htmlHead($head) .
@@ -338,10 +338,10 @@ function doClick(opt) {
 	}
 
 	function getHTMLRecoverStep1(){
-		$parts = array();
-
-		array_push($parts, array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', "[save_before]"), we_html_tools::TYPE_ALERT, 600), "space" => 0, "noline" => 1));
-		array_push($parts, array("headline" => "", "html" => g_l('backup', "[save_question]"), "space" => 0, "noline" => 1));
+		$parts = array(
+			array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', "[save_before]"), we_html_tools::TYPE_ALERT, 600), "space" => 0, "noline" => 1),
+			array("headline" => "", "html" => g_l('backup', "[save_question]"), "space" => 0, "noline" => 1),
+		);
 
 		$js = we_html_element::jsElement('
 function setLocation(loc){
@@ -517,7 +517,7 @@ extra_files_desc=new Array();';
 			$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', "[old_backups_warning]"), we_html_tools::TYPE_ALERT, 600, false), "space" => 0, "noline" => 1);
 			$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', "[select_server_file]"), we_html_tools::TYPE_INFO, 600, false), "space" => 0, "noline" => 1);
 			$parts[] = array("headline" => "", "html" => $select->getHtml(), "space" => 0, "noline" => 1);
-			//array_push($parts,array("headline"=>"","html"=>we_forms::checkbox(1, false, "show_all", g_l('backup',"[show_all]"), false, "defaultfont", "showAll()"),"space"=>0,"noline"=>1));
+			//$parts[] =array("headline"=>"","html"=>we_forms::checkbox(1, false, "show_all", g_l('backup',"[show_all]"), false, "defaultfont", "showAll()"),"space"=>0,"noline"=>1);
 			$parts[] = array("headline" => "", "html" => we_button::create_button("delete_backup", "javascript:delSelected();", true, 100, 22, '', '', false, false), "space" => 0);
 		}
 

@@ -55,7 +55,7 @@ class we_shop_shop{
 		if(!isset($GLOBALS['we_lv_array']) || !is_array($GLOBALS['we_lv_array'])){
 			$GLOBALS['we_lv_array'] = array();
 		}
-		array_push($GLOBALS['we_lv_array'], clone($this));
+		$GLOBALS['we_lv_array'][] = clone($this);
 	}
 
 	function next_record(){

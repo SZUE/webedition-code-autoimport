@@ -767,11 +767,10 @@ class we_wizard_import extends we_wizard{
 				$tbl_extra2->setCol(0, 0, null, we_html_tools::getPixel(20, 20));
 				$tbl_extra2->setCol(0, 1, null, $this->formWeChooser(USER_TABLE, '', 0, 'v[owners_overwrite_id]', (isset($v["owners_overwrite_id"]) ? $v["owners_overwrite_id"] : 0), 'v[owners_overwrite_path]', (isset($v["owners_overwrite_path"]) ? $v["owners_overwrite_path"] : '/')));
 
-				array_push($parts, array(
+				$parts[] = array(
 					"headline" => g_l('import', '[handle_owners_option]'),
 					"html" => we_html_tools::htmlAlertAttentionBox(g_l('import', "[notexist_overwrite]"), we_html_tools::TYPE_ALERT, 530) . $tbl_extra->getHTML() . $tbl_extra2->getHTML(),
 					"space" => 120
-					)
 				);
 			} else{
 				$hdns .= we_html_element::htmlHidden(array("name" => "v[import_owners]", "value" => 0)) .
@@ -1161,7 +1160,7 @@ HTS;
 					$CLselect->selectOption($DB_WE->f("ID"));
 				}
 			}
-		}else{
+		} else{
 			$CLselect->insertOption($optid, -1, g_l('import', "[none]"));
 		}
 
@@ -1309,10 +1308,10 @@ HTS;
 				$tblFrame->setCol(1, 0, array("colspan" => 2));
 				$tblFrame->setCol(2, 1, array(), $tblSelect->getHtml());
 
-				array_push($parts, array("html" => $tblFrame->getHtml(), "space" => 0, "noline" => 1));
+				$parts[] = array("html" => $tblFrame->getHtml(), "space" => 0, "noline" => 1);
 			}
 			else
-				array_push($parts, array("html" => we_html_tools::htmlAlertAttentionBox((!$xmlWellFormed) ? g_l('import', "[not_well_formed]") : g_l('import', "[missing_child_node]"), we_html_tools::TYPE_ALERT, 530), "space" => 0, "noline" => 1));
+				$parts[] = array("html" => we_html_tools::htmlAlertAttentionBox((!$xmlWellFormed) ? g_l('import', "[not_well_formed]") : g_l('import', "[missing_child_node]"), we_html_tools::TYPE_ALERT, 530), "space" => 0, "noline" => 1);
 		}
 		else{
 			$xmlWellFormed = $hasChildNode = false;
@@ -1444,7 +1443,7 @@ function handle_event(evt) {
 							// tags with text content, links and hrefs
 							case "input":
 								if(in_array("date", $this->parseAttributes($tag)))
-									array_push($dateFields, $name);
+									$dateFields[] = $name;
 							case "textarea":
 							case "href":
 							case "link":
@@ -1462,10 +1461,10 @@ function handle_event(evt) {
 			$classFields = $this->getClassFields($v["classID"]);
 			foreach($classFields as $classField){
 				if($this->isTextField($classField["type"]) || $this->isNumericField($classField["type"]) || $this->isDateField($classField["type"])){
-					array_push($records, $classField["name"]);
+					$records[] = $classField["name"];
 				}
 				if($this->isDateField($classField["type"])){
-					array_push($dateFields, $classField["name"]);
+					$dateFields[] = $classField["name"];
 				}
 			}
 		}

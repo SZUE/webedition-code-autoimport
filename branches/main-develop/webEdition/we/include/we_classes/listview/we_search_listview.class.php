@@ -198,7 +198,7 @@ class we_search_listview extends listviewBase{
 			$cond = array();
 			foreach($workspaces as $id){
 				$workspace = id_to_path($id, FILE_TABLE, $this->DB_WE);
-				array_push($cond, "(" . INDEX_TABLE . ".Workspace LIKE '" . $this->DB_WE->escape($workspace) . "/%' OR " . INDEX_TABLE . ".Workspace='" . $this->DB_WE->escape($workspace) . "')");
+				$cond[] = "(" . INDEX_TABLE . ".Workspace LIKE '" . $this->DB_WE->escape($workspace) . "/%' OR " . INDEX_TABLE . ".Workspace='" . $this->DB_WE->escape($workspace) . "')";
 			}
 			$ws_where = ' AND (' . implode(' OR ', $cond) . ')';
 		} else{

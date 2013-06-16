@@ -398,7 +398,7 @@ class weNewsletterFrames extends weModuleFrames{
 		return $this->getHTMLDocument(we_html_element::htmlBody(array("bgcolor" => "white", "marginwidth" => 10, "marginheight" => 10, "leftmargin" => 10, "topmargin" => 10), we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
 						we_html_element::jsElement($rootjs . $this->Tree->getJSLoadTree(weNewsletterTreeLoader::getItems($pid)))
 					)
-				));
+		));
 	}
 
 	function getHTMLSendQuestion(){
@@ -843,11 +843,9 @@ class weNewsletterFrames extends weModuleFrames{
 		$btnDatePicker = we_button::create_button(
 				"image:date_picker", "javascript:", null, null, null, null, null, null, false, $_btn);
 		$oSelector = new we_html_table(
-				array(
-					"cellpadding" => 0, "cellspacing" => 0, "border" => 0, "id" => $_name . "_cell"
-				),
-				1,
-				5);
+			array(
+			"cellpadding" => 0, "cellspacing" => 0, "border" => 0, "id" => $_name . "_cell"
+			), 1, 5);
 		$oSelector->setCol(
 			0, 2, null, we_html_tools::htmlTextInput(
 				$name = $_name, $size = 55, $value, $maxlength = 10, $attribs = 'id="' . $_name . '" class="wetextinput" readonly="1"', $type = "text", $width = 100));
@@ -970,8 +968,9 @@ class weNewsletterFrames extends weModuleFrames{
 		$out = "";
 		$counter = 0;
 
-		$parts = array();
-		array_push($parts, array("headline" => "", "html" => $this->View->htmlHidden("blocks", count($this->View->newsletter->blocks)), "space" => 140, "noline" => 1));
+		$parts = array(
+			array("headline" => "", "html" => $this->View->htmlHidden("blocks", count($this->View->newsletter->blocks)), "space" => 140, "noline" => 1)
+		);
 
 
 		foreach($this->View->newsletter->blocks as $block){
@@ -1300,7 +1299,7 @@ class weNewsletterFrames extends weModuleFrames{
 					"type" => "text/css",
 					"href" => JS_DIR . "jscalendar/skins/aqua/theme.css",
 					"title" => "Aqua"
-			));
+		));
 
 
 		$out = $this->View->getHiddens() .
@@ -1605,7 +1604,7 @@ class weNewsletterFrames extends weModuleFrames{
 				if(strpos($filepath, '..') !== false){
 					print we_html_element::jsElement(
 							we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[path_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR)
-						);
+					);
 				} else{
 					$fh = @fopen($_SERVER['DOCUMENT_ROOT'] . $filepath, "rb");
 					if($fh){
@@ -1629,7 +1628,7 @@ class weNewsletterFrames extends weModuleFrames{
 					} else{
 						print we_html_element::jsElement(
 								we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[path_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR)
-							);
+						);
 					}
 				}
 			}
@@ -2613,11 +2612,7 @@ class weNewsletterFrames extends weModuleFrames{
 				$emailName = $email;
 			}
 			$phpmail = new we_util_Mailer(
-					$emailName,
-					$this->View->newsletter->Subject,
-					$this->View->newsletter->Sender,
-					$this->View->newsletter->Reply,
-					$this->View->newsletter->isEmbedImages
+				$emailName, $this->View->newsletter->Subject, $this->View->newsletter->Sender, $this->View->newsletter->Reply, $this->View->newsletter->isEmbedImages
 			);
 			$phpmail->setCharSet($this->View->newsletter->Charset != "" ? $this->View->newsletter->Charset : $GLOBALS["_language"]["charset"]);
 

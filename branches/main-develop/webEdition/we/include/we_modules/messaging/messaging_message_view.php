@@ -103,11 +103,10 @@ print STYLESHEET;
 		);
 
 		if(isset($messaging->selected_message['hdrs']['ClassName']) && $messaging->selected_message['hdrs']['ClassName'] == 'we_todo' && ($h = $format->get_todo_history())){
-			array_push($parts, array("headline" => "",
+			$parts[] = array("headline" => "",
 				"html" => $format->get_todo_history(),
 				"noline" => 1,
 				"space" => 0
-				)
 			);
 		}
 	} else{ //	Message

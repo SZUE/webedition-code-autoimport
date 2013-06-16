@@ -376,7 +376,7 @@ class weXMLImport extends weXMLExIm{
 					$object->elements = array_merge($object->elements, $content->getElement());
 				} else{
 					if($nodname == "ClassName"){
-						array_push($this->nodehierarchy, $noddata);
+						$this->nodehierarchy[] = $noddata;
 						switch($noddata){
 							case "we_object":
 								if(defined("OBJECT_TABLE")){

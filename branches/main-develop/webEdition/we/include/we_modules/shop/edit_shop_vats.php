@@ -36,10 +36,7 @@ if(isset($_REQUEST['we_cmd'])){
 		case 'saveVat':
 
 			$weShopVat = new weShopVat(
-					$_REQUEST['weShopVatId'],
-					$_REQUEST['weShopVatText'],
-					$_REQUEST['weShopVatVat'],
-					$_REQUEST['weShopVatStandard']
+				$_REQUEST['weShopVatId'], $_REQUEST['weShopVatText'], $_REQUEST['weShopVatVat'], $_REQUEST['weShopVatStandard']
 			);
 
 			if($newId = weShopVats::saveWeShopVAT($weShopVat)){
@@ -69,10 +66,7 @@ if(isset($_REQUEST['we_cmd'])){
 
 if(!isset($weShopVat)){
 	$weShopVat = new weShopVat(
-			0,
-			g_l('modules_shop', '[vat][new_vat_name]'),
-			19,
-			0
+		0, g_l('modules_shop', '[vat][new_vat_name]'), 19, 0
 	);
 }
 $jsFunction = '
@@ -293,17 +287,16 @@ $formVat = '
 </form>
 ';
 
-array_push($parts, array(
+$parts[] = array(
 	'html' => $formVat,
 	'space' => 0
-	)
 );
 
 print we_multiIconBox::getHTML(
 		'weShopVates', "100%", $parts, 30, we_button::position_yes_no_cancel(
 			'', '', we_button::create_button('close', 'javascript:we_cmd(\'close\');')
 		), -1, '', '', false, g_l('modules_shop', '[vat][vat_edit_form_headline_box]'), "", 409
-	);
+);
 
 print '
 </body></html>';

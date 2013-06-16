@@ -102,7 +102,7 @@ class weGlossaryFrameEditorFolder extends weGlossaryFrameEditor{
 
 			$headline = '<a href="javascript://" onclick="' . $this->topFrame . '.resize.right.editor.edbody.location=\'' . $weGlossaryFrames->frameset . '?pnt=edbody&cmd=view_type&cmdid=' . $_REQUEST['cmdid'] . '_' . $key . '&tabnr=\'+' . $weGlossaryFrames->topFrame . '.activ_tab;">' . g_l('modules_glossary', '[' . $key . ']') . '</a>';
 
-			array_push($parts, array("headline" => $headline, "html" => $content, "space" => 120));
+			$parts[] = array("headline" => $headline, "html" => $content, "space" => 120);
 		}
 
 		return $parts;

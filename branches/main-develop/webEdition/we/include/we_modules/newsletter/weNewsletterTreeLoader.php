@@ -56,7 +56,7 @@ class weNewsletterTreeLoader{
 			foreach($wsPathArray as $path){
 				$_aWsQuery[] = " Path LIKE '$path/%' OR " . weNewsletterTreeLoader::getQueryParents($path);
 				while($path != "/" && $path != "\\" && $path) {
-					array_push($parentpaths, $path);
+					$parentpaths[] = $path;
 					$path = dirname($path);
 				}
 			}

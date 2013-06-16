@@ -475,7 +475,7 @@ abstract class exportFunctions{
 							case "textarea":
 							case "href":
 							case "link":
-								array_push($_records, $_name);
+								$_records[] = $_name;
 								break;
 						}
 					}

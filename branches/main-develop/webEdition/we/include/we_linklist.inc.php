@@ -599,7 +599,7 @@ class we_linklist{
 	}
 
 	function addLink(){
-		array_push($this->listArray, $this->getRawLink());
+		$this->listArray[] = $this->getRawLink();
 	}
 
 	function length(){

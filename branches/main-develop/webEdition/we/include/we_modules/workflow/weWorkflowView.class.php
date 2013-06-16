@@ -858,7 +858,7 @@ function checkData(){
 						$ids = makeArrayFromCSV($_REQUEST['wocat']);
 						foreach($ids as $id){
 							if(strlen($id) && (!in_array($id, $arr))){
-								array_push($arr, $id);
+								$arr[] = $id;
 							}
 						}
 						$this->workflowDef->ObjCategories = makeCSVFromArray($arr, true);
@@ -884,7 +884,7 @@ function checkData(){
 						$ids = makeArrayFromCSV($_REQUEST['wfolder']);
 						foreach($ids as $id){
 							if(strlen($id) && (!in_array($id, $arr))){
-								array_push($arr, $id);
+								$arr[] = $id;
 							}
 						}
 						$this->workflowDef->Folders = makeCSVFromArray($arr, true);
@@ -910,7 +910,7 @@ function checkData(){
 						$ids = makeArrayFromCSV($_REQUEST['woffolder']);
 						foreach($ids as $id){
 							if(strlen($id) && (!in_array($id, $arr))){
-								array_push($arr, $id);
+								$arr[] = $id;
 							}
 						}
 						$this->workflowDef->ObjectFileFolders = makeCSVFromArray($arr, true);

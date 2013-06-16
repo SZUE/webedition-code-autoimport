@@ -180,7 +180,7 @@ class we_imageDocument extends we_binaryDocument{
 
 		foreach($thumbsArray as $t){
 			if($t != $thumbnailID){
-				array_push($newArray, $t);
+				$newArray[] = $t;
 			}
 		}
 

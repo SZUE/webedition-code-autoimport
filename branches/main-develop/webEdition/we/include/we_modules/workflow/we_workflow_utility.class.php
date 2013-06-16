@@ -235,7 +235,7 @@ class we_workflow_utility{
 		foreach($wids as $id){
 			if(!in_array($id, $ids)){
 				if(self::isUserInWorkflow($id, $table, $userID)){
-					array_push($ids, $id);
+					$ids[] = $id;
 				}
 			}
 		}
@@ -250,7 +250,7 @@ class we_workflow_utility{
 		$db->query('SELECT DISTINCT ' . WORKFLOW_DOC_TABLE . '.documentID as ID FROM ' . WORKFLOW_DOC_TABLE . ',' . WORKFLOW_TABLE . ' WHERE ' . WORKFLOW_DOC_TABLE . ".workflowID=" . WORKFLOW_TABLE . '.ID AND ' . WORKFLOW_DOC_TABLE . '.Status = ' . we_workflow_document::STATUS_UNKNOWN . ' AND ' . WORKFLOW_TABLE . '.Type IN(' . $type . ')');
 		while($db->next_record()) {
 			if(!in_array($db->f("ID"), $ids)){
-				array_push($ids, $db->f("ID"));
+				$ids[] = $db->f("ID");
 			}
 		}
 		return $ids;

@@ -58,7 +58,7 @@ class treePopup{
 		$GLOBALS['DB_WE']->query($query);
 		$container = array();
 		while($GLOBALS['DB_WE']->next_record()) {
-			array_push($container, $this->dirEntry($GLOBALS['DB_WE']->f("ID"), $GLOBALS['DB_WE']->f("ParentID"), $GLOBALS['DB_WE']->f("Text"), $GLOBALS['DB_WE']->f("IsFolder")));
+			$container[] = $this->dirEntry($GLOBALS['DB_WE']->f("ID"), $GLOBALS['DB_WE']->f("ParentID"), $GLOBALS['DB_WE']->f("Text"), $GLOBALS['DB_WE']->f("IsFolder"));
 		}
 		return $container;
 	}

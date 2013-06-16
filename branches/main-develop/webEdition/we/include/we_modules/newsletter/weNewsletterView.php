@@ -1306,7 +1306,7 @@ class weNewsletterView{
 							$ids = makeArrayFromCSV($_REQUEST["ncustomer"]);
 							foreach($ids as $id){
 								if($id && (!in_array($id, $arr))){
-									array_push($arr, $id);
+									$arr[] = $id;
 								}
 							}
 

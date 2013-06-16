@@ -117,7 +117,7 @@ switch($_REQUEST['we_cmd'][0]){
 		$ids = makeArrayFromCSV($_REQUEST['we_cmd'][1]);
 		foreach($ids as $id){
 			if(!in_array($id, $foo)){
-				array_push($foo, $id);
+				$foo[] = $id;
 			}
 		}
 		$we_doc->Templates = makeCSVFromArray($foo);
@@ -366,44 +366,38 @@ function disableLangDefault(allnames, allvalues, deselect) {
 
 		if($we_doc->ID){
 
-			array_push($parts, array("headline" => g_l('weClass', "[doctypes]"),
+			$parts[] = array("headline" => g_l('weClass', "[doctypes]"),
 				"html" => $GLOBALS['we_doc']->formDocTypeHeader(),
 				"space" => 120
-				)
 			);
 
-			array_push($parts, array("headline" => g_l('weClass', "[name]"),
+			$parts[] = array("headline" => g_l('weClass', "[name]"),
 				"html" => $GLOBALS['we_doc']->formName(),
 				"space" => 120
-				)
 			);
 
-			array_push($parts, array("headline" => g_l('global', "[templates]"),
+			$parts[] = array("headline" => g_l('global', "[templates]"),
 				"html" => $GLOBALS['we_doc']->formDocTypeTemplates(),
 				"space" => 120
-				)
 			);
 
-			array_push($parts, array("headline" => g_l('weClass', "[defaults]"),
+			$parts[] = array("headline" => g_l('weClass', "[defaults]"),
 				"html" => $GLOBALS['we_doc']->formDocTypeDefaults(),
 				"space" => 120
-				)
 			);
 		} else{
-			array_push($parts, array("headline" => "",
+			$parts[] = array("headline" => "",
 				"html" => $GLOBALS['we_doc']->formNewDocType(),
 				"space" => 0
-				)
 			);
 		}
 
 		$cancelbut = we_button::create_button("close", "javascript:self.close();if(top.opener.we_cmd){top.opener.we_cmd('switch_edit_page',0);}");
 
-		if($we_doc->ID){
-			$buttons = we_button::position_yes_no_cancel(we_button::create_button("save", "javascript:we_cmd('save_docType', '$we_transaction')"), "", $cancelbut);
-		} else{
-			$buttons = '<div align="right">' . $cancelbut . '</div>';
-		}
+		$buttons = ($we_doc->ID ?
+				we_button::position_yes_no_cancel(we_button::create_button("save", "javascript:we_cmd('save_docType', '$we_transaction')"), "", $cancelbut) :
+				'<div align="right">' . $cancelbut . '</div>');
+
 
 		print we_multiIconBox::getJS() .
 			we_multiIconBox::getHTML("", "100%", $parts, 30, $buttons, -1, "", "", false, "", "", 630) .

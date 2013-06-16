@@ -34,10 +34,10 @@ we_core_Permissions::protect();
 $type = "application/json";
 header("Content-Type: " . $type);
 $ZW = array();
-foreach($_GET as $gKey => $gValue ){
-	$ZW[strip_tags($gKey)]=$gValue;
+foreach($_GET as $gKey => $gValue){
+	$ZW[strip_tags($gKey)] = $gValue;
 }
-$_GET=$ZW;
+$_GET = $ZW;
 
 if(isset($_GET["id"])){
 	$id = urlencode($_GET["id"]);
@@ -75,7 +75,7 @@ if(isset($sessionName) && $sessionName !== '' && isset($id) && $id !== ''){
 		} else{
 			//if opening node
 			if(!$close){
-				array_push($session->openNodes, $id);
+				$session->openNodes[] = $id;
 			}
 		}
 

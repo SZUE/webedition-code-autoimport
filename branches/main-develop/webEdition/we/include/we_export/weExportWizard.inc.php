@@ -1538,7 +1538,7 @@ function setState(a) {
 						$ids = makeArrayFromCSV($_REQUEST["cat"]);
 						foreach($ids as $id){
 							if(strlen($id) && (!in_array($id, $arr))){
-								array_push($arr, $id);
+								$arr[] = $id;
 							}
 						}
 						$this->exportVars["categories"] = makeCSVFromArray($arr, true);

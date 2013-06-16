@@ -1060,7 +1060,7 @@ function tinyMCECallRegisterDialog(win,action){
 		foreach($this->elements as $i => $elem){
 			if($elem->showMe){
 				if((!$lastSep) || ($elem->classname != "we_wysiwyg_ToolbarSeparator")){
-					array_push($this->filteredElements, $elem);
+					$this->filteredElements[] = $elem;
 				}
 				$lastSep = ($elem->classname == "we_wysiwyg_ToolbarSeparator");
 			}
@@ -1102,7 +1102,7 @@ function tinyMCECallRegisterDialog(win,action){
 		$rowwidth = 0;
 		while(!empty($tmpElements)) {
 			if(!$this->hasSep($rows[$rownr]) || $rowwidth <= max($this->width, $this->maxGroupWidth)){
-				array_push($rows[$rownr], array_shift($tmpElements));
+				$rows[$rownr][] = array_shift($tmpElements);
 				$rowwidth += $rows[$rownr][count($rows[$rownr]) - 1]->width;
 			} else{
 				if(!empty($rows[$rownr])){

@@ -614,7 +614,7 @@ abstract class we_rebuild_wizard{
 			$foldersArray = makeArrayFromCSV($folders);
 			for($i = 0; $i < count($foldersArray); $i++){
 				if(in_workspace($foldersArray[$i], $ws)){
-					array_push($newFolders, $foldersArray[$i]);
+					$newFolders[] = $foldersArray[$i];
 				}
 			}
 			$folders = makeCSVFromArray($newFolders);
@@ -631,10 +631,10 @@ abstract class we_rebuild_wizard{
 
 
 
-		array_push($parts, array(
+		$parts[]= array(
 			'headline' => '',
 			'html' => $content,
-			'space' => 0)
+			'space' => 0
 		);
 
 
@@ -687,7 +687,7 @@ abstract class we_rebuild_wizard{
 			$foldersArray = makeArrayFromCSV($folders);
 			for($i = 0; $i < count($foldersArray); $i++){
 				if(in_workspace($foldersArray[$i], $ws)){
-					array_push($newFolders, $foldersArray[$i]);
+					$newFolders[] = $foldersArray[$i];
 				}
 			}
 			$folders = makeCSVFromArray($newFolders);
@@ -704,10 +704,10 @@ abstract class we_rebuild_wizard{
 
 
 
-		array_push($parts, array(
+		$parts[]= array(
 			'headline' => '',
 			'html' => $content,
-			'space' => 0)
+			'space' => 0
 		);
 
 

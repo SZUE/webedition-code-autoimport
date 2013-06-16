@@ -339,7 +339,7 @@ class weGlossaryFrameEditorItem extends weGlossaryFrameEditor{
 			"html" => $content,
 			"space" => 120
 		);
-		array_push($parts, $item);
+		$parts[] = $item;
 
 
 		$html = weGlossaryFrameEditorItem::getHTMLAbbreviation($weGlossaryFrames) .
@@ -354,7 +354,7 @@ class weGlossaryFrameEditorItem extends weGlossaryFrameEditor{
 			"space" => 120,
 			'noline' => 1,
 		);
-		array_push($parts, $item);
+		$parts[] = $item;
 
 		$items = weGlossaryFrameEditorItem::getHTMLLinkAttributes($weGlossaryFrames);
 		$parts = array_merge($parts, $items);

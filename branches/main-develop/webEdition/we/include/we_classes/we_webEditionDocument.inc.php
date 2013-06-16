@@ -609,7 +609,7 @@ class we_webEditionDocument extends we_textContentDocument{
 								"name" => $name,
 								"type" => $tagname
 							);
-							array_push($blocks, $foo);
+							$blocks[] = $foo;
 							break;
 					}
 				}

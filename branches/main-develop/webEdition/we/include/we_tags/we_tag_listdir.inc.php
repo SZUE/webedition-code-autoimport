@@ -81,7 +81,7 @@ function we_tag_listdir($attribs, $content){
 			} else{
 				$namefield = $db->f("Text");
 			}
-			array_push($files, array("properties" => $db->Record, "sort" => $sortfield, "name" => $namefield));
+			$files[] = array("properties" => $db->Record, "sort" => $sortfield, "name" => $namefield);
 		}
 	}
 

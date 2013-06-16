@@ -235,10 +235,10 @@ function _cutText($text, $l){
 
 
 			foreach($ordDir as $key => $value){
-				array_push($final, $arDir[$key]);
+				$final[] = $arDir[$key];
 			}
 			foreach($ordFile as $key => $value){
-				array_push($final, $arFile[$key]);
+				$final[] = $arFile[$key];
 			}
 
 			print '<script type="text/javascript"><!--

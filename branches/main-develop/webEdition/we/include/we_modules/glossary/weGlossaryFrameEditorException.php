@@ -107,7 +107,7 @@ class weGlossaryFrameEditorException extends weGlossaryFrameEditor{
 			"html" => $content,
 			"space" => 120
 		);
-		array_push($parts, $item);
+		$parts[] = $item;
 
 		return $parts;
 	}

@@ -327,7 +327,7 @@ function cutText($text, $max = 0, $striphtml=false){
 						if($cur[3]){//close
 							array_pop($tags);
 						} else{
-							array_push($tags, $cur[4]);
+							$tags[] = $cur[4];
 						}
 					}
 				}

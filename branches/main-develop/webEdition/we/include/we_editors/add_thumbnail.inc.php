@@ -129,12 +129,12 @@ if(isset($we_doc->ClassName) && $we_doc->ClassName == "we_imageDocument"){
 
 	$editbut = we_button::create_button("edit_all_thumbs", "javascript:we_cmd('editThumbs','top.opener.location = top.opener.location;');", false);
 
-	array_push($_thumbs, array("headline" => "", "html" => $_thumbnails->getHtml() . '<p align="right">' . $editbut . '</p>', "space" => 0));
+	$_thumbs[] = array("headline" => "", "html" => $_thumbnails->getHtml() . '<p align="right">' . $editbut . '</p>', "space" => 0);
 
 
 	$iframe = '<iframe name="showthumbs" id="showthumbs" src="' . WEBEDITION_DIR . 'showThumb.php?u=' . $uniqid . '&t=' . $we_transaction . '&id=' . $selectedID . '" width="340" height="130"></iframe>';
 
-	array_push($_thumbs, array("headline" => "", "html" => $iframe, "space" => 0));
+	$_thumbs[] = array("headline" => "", "html" => $iframe, "space" => 0);
 
 	$addbut = we_button::create_button("add", "javascript:add_thumbnails();", false, -1, -1, "", "", !$_enabled_buttons, false);
 	$cancelbut = we_button::create_button("cancel", "javascript:top.close();");

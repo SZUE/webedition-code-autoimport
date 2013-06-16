@@ -169,7 +169,7 @@ function we_tag_xmlnode($attribs){
 		}
 	}
 
-	array_push($GLOBALS["xstack"], $ind_name); //war einfach ind_name und fehler undefinend konstant
+	$GLOBALS["xstack"][] = $ind_name; //war einfach ind_name und fehler undefinend konstant
 
 	return new _we_tag_xmlnode_struct($nodes_name, $feed_name);
 }

@@ -837,7 +837,7 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 					"html" => $Content,
 					"space" => 0
 				);
-				array_push($Parts, $Part);
+				$Parts[] = $Part;
 
 				echo we_multiIconBox::getHTML('weMultibox', "100%", $Parts, 30, $Buttons, -1, '', '', false, g_l('modules_glossary', '[glossary_check]'));
 

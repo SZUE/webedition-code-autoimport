@@ -1680,7 +1680,7 @@ function getDoctypeQuery($db = ''){
 			foreach($b as $k => $v){
 				$_tmp_path = id_to_path($v);
 				while($_tmp_path && $_tmp_path != '/') {
-					array_push($paths, '"' . $db->escape($_tmp_path) . '"');
+					$paths[] = '"' . $db->escape($_tmp_path) . '"';
 					$_tmp_path = dirname($_tmp_path);
 				}
 			}

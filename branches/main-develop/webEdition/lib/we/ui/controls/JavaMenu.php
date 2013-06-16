@@ -87,14 +87,14 @@ class we_ui_controls_JavaMenu extends we_ui_abstract_AbstractElement{
 						$and = explode("&&", $v);
 						$one = true;
 						foreach($and as $key => $val){
-							array_push($set, 'isset($_SESSION["perms"]["' . trim($val) . '"])');
+							$set[]= 'isset($_SESSION["perms"]["' . trim($val) . '"])';
 							//$and[$key]='$_SESSION["perms"]["'.trim($val).'"]';
 							$and[$key] = '(isset($_SESSION["perms"]["' . trim($val) . '"]) && $_SESSION["perms"]["' . trim($val) . '"])';
 							$one = false;
 						}
 						$or[$k] = implode(" && ", $and);
 						if($one && !in_array('isset($_SESSION["perms"]["' . trim($v) . '"])', $set))
-							array_push($set, 'isset($_SESSION["perms"]["' . trim($v) . '"])');
+							$set[]= 'isset($_SESSION["perms"]["' . trim($v) . '"])';
 					}
 					$set_str = implode(" || ", $set);
 					$condition_str = implode(" || ", $or);
@@ -202,14 +202,14 @@ class we_ui_controls_JavaMenu extends we_ui_abstract_AbstractElement{
 						$and = explode("&&", $v);
 						$one = true;
 						foreach($and as $key => $val){
-							array_push($set, 'isset($_SESSION["perms"]["' . trim($val) . '"])');
+							$set[]= 'isset($_SESSION["perms"]["' . trim($val) . '"])';
 							//$and[$key]='$_SESSION["perms"]["'.trim($val).'"]';
 							$and[$key] = '(isset($_SESSION["perms"]["' . trim($val) . '"]) && $_SESSION["perms"]["' . trim($val) . '"])';
 							$one = false;
 						}
 						$or[$k] = implode(" && ", $and);
 						if($one && !in_array('isset($_SESSION["perms"]["' . trim($v) . '"])', $set))
-							array_push($set, 'isset($_SESSION["perms"]["' . trim($v) . '"])');
+							$set[]= 'isset($_SESSION["perms"]["' . trim($v) . '"])';
 					}
 					$set_str = implode(" || ", $set);
 					$condition_str = implode(" || ", $or);

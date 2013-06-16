@@ -234,7 +234,7 @@ class we_tag_tagParser{
 		$regs = array();
 		for($i = $ipos + 1; $i < count($this->tags); $i++){
 			if(preg_match('|(< ?/ ?we ?: ?' . $tagname . '[^a-z])|i', $this->tags[$i], $regs)){
-				array_push($endtags, $regs[1]);
+				$endtags[] = $regs[1];
 				if($tagcount){
 					$tagcount--;
 				} else{

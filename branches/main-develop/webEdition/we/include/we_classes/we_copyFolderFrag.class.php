@@ -97,7 +97,7 @@ class copyFolderFrag extends taskFragment{
 					$db->Record["CreateTemplateInFolderID"] = $CreateTemplateInFolderID;
 					$db->Record["OverwriteCategories"] = $OverwriteCategories;
 					$db->Record["newCategories"] = $newCategories;
-					array_push($this->alldata, $db->Record);
+					$this->alldata[] = $db->Record;
 				}
 			}
 		} else{
@@ -319,9 +319,9 @@ class copyFolderFrag extends taskFragment{
 								$newTemplateIDs = array();
 								foreach($templArray as $id){
 									if($id == $oldTemplateID){
-										array_push($newTemplateIDs, $GLOBALS['we_doc']->TemplateID);
+										$newTemplateIDs[] = $GLOBALS['we_doc']->TemplateID;
 									} else{
-										array_push($newTemplateIDs, $id);
+										$newTemplateIDs[] = $id;
 									}
 								}
 								$dt->Templates = makeCSVFromArray($newTemplateIDs);
@@ -527,7 +527,7 @@ class copyFolderFrag extends taskFragment{
 					case 'txt' :
 						if(preg_match('|(.+)_we_jkhdsf_(.+)|', $k, $regs)){ // is a we:href field
 							if(!in_array($regs[1], $hrefs)){
-								array_push($hrefs, $regs[1]);
+								$hrefs[] = $regs[1];
 								$int = ((!isset($we_doc->elements[$regs[1] . we_base_link::MAGIC_INT_LINK]['dat'])) || $we_doc->elements[$regs[1] . we_base_link::MAGIC_INT_LINK]['dat'] == '') ? 0 : $we_doc->elements[$regs[1] . we_base_link::MAGIC_INT_LINK]['dat'];
 								if($int){
 									if(isset($we_doc->elements[$regs[1] . we_base_link::MAGIC_INT_LINK_ID]['dat'])){
