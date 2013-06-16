@@ -196,7 +196,7 @@ class weXMLImport extends weXMLExIm{
 							$match = array();
 							preg_match('|(/+[a-zA-Z0-9_+-\.]*)|', $object->Path, $match);
 							if(isset($match[0])){
-								if(f('SELECT 1 as A FROM ' . OBJECT_TABLE . ' WHERE Path="' . $db->escape($match[0]) . '"', 'a', $db) !== 1){
+								if(f('SELECT 1 AS a FROM ' . OBJECT_TABLE . ' WHERE Path="' . $db->escape($match[0]) . '"', 'a', $db) !== '1'){
 									return false;
 								}
 							}
