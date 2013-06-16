@@ -47,7 +47,6 @@ class weXMLImport extends weXMLExIm{
 
 		$data = weFile::load($chunk_file);
 		$this->xmlBrowser = new weXMLParser();
-//			$this->xmlBrowser->parse($data,$_SESSION['weXMLimportCharset']); Original , �nderung f�r Zeichensatz Wandlung
 		$this->xmlBrowser->parse($data, $this->options['xml_encoding']);
 		unset($data);
 		$this->xmlBrowser->normalize();
