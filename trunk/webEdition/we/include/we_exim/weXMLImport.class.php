@@ -91,11 +91,11 @@ class weXMLImport extends weXMLExIm{
 						break;
 					case "we_docTypes":
 						$extra["ContentType"] = "doctype";
-						$dtid = f("SELECT ID FROM " . DOC_TYPES_TABLE . " WHERE DocType='" . $db->escape($object->DocType) . "'", "ID", $db);
+						$dtid = f('SELECT ID FROM ' . DOC_TYPES_TABLE . ' WHERE DocType="' . $db->escape($object->DocType) . '"', 'ID', $db);
 						if($dtid){
-							if($this->options["handle_collision"] == "replace"){
+							if($this->options["handle_collision"] == 'replace'){
 								$object->ID = $dtid;
-							} else if($this->options["handle_collision"] == "rename"){
+							} else if($this->options["handle_collision"] == 'rename'){
 								$this->getNewName($object, $dtid, "DocType");
 							} else{
 								$save = false;
@@ -104,7 +104,7 @@ class weXMLImport extends weXMLExIm{
 						}
 						break;
 					case "weNavigationRule":
-						$nid = f("SELECT ID FROM " . NAVIGATION_RULE_TABLE . " WHERE NavigationName='" . $db->escape($object->NavigationName) . "'", "ID", $db);
+						$nid = f('SELECT ID FROM ' . NAVIGATION_RULE_TABLE . ' WHERE NavigationName="' . $db->escape($object->NavigationName) . '"', 'ID', $db);
 						if($nid){
 							if($this->options["handle_collision"] == "replace"){
 								$object->ID = $nid;
@@ -191,6 +191,16 @@ class weXMLImport extends weXMLExIm{
 						$pathids = array();
 						$_old_pid = $object->ParentID;
 						$owner = ($this->options['owners_overwrite'] && $this->options['owners_overwrite_id']) ? $this->options['owners_overwrite_id'] : 0;
+						if(defined("OBJECT_TABLE") && $object->ClassName == 'we_objectFile'){
+							//dont create Path in objects if the class doesn't exist
+							$match = array();
+							preg_match('|(/+[a-zA-Z0-9_+-\.]*)|', $object->Path, $match);
+							if(isset($match[0])){
+								if(f('SELECT 1 as A FROM ' . OBJECT_TABLE . ' WHERE Path="' . $db->escape($match[0]) . '"', 'a', $db) !== 1){
+									return false;
+								}
+							}
+						}
 						$object->ParentID = makePath(dirname($object->Path), $object->Table, $pathids, $owner);
 						if(isset($object->ParentPath))
 							$object->ParentPath = id_to_path($object->ParentID, $object->Table);
@@ -198,7 +208,7 @@ class weXMLImport extends weXMLExIm{
 						// insert new created folders in ref table
 						foreach($pathids as $pid){
 
-							$h = getHash("SELECT ParentID,Path FROM " . $db->escape($object->Table) . " WHERE ID=" . intval($pid), $db);
+							$h = getHash('SELECT ParentID,Path FROM ' . $db->escape($object->Table) . ' WHERE ID=' . intval($pid), $db);
 							if(!$this->RefTable->exists(array("ID" => $pid, "ContentType" => "folder"))){
 								$this->RefTable->add2(
 									array_merge(array(
@@ -646,3 +656,4 @@ class weXMLImport extends weXMLExIm{
 	}
 
 }
+
