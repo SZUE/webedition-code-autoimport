@@ -162,7 +162,7 @@ class weGlossaryCache{
 
 							// Href
 							$temp['href'] = '';
-							if(isset($Attributes['ExternUrl']) && trim($Attributes['ExternUrl']) != "" && trim($Attributes['ExternUrl']) != "http://"){
+							if(isset($Attributes['ExternUrl']) && trim($Attributes['ExternUrl']) != "" && trim($Attributes['ExternUrl']) != we_base_link::EMPTY_EXT){
 								$temp['href'] .= trim($Attributes['ExternUrl']);
 							}
 

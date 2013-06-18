@@ -32,7 +32,7 @@ $dialog->registerCmdFn('weDoLinkCmd');
 print $dialog->getHTML();
 
 function weDoLinkCmd($args){
-	if((!isset($args['href'])) || $args['href'] == 'http://'){
+	if((!isset($args['href'])) || $args['href'] == we_base_link::EMPTY_EXT){
 		$args['href'] = '';
 	}
 	$param = trim($args['param'], '?& ');

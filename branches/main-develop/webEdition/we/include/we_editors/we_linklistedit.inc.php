@@ -277,7 +277,7 @@ if(isset($_REQUEST['ok']) && isset($_REQUEST['linklist']) && $_REQUEST['ok'] && 
 	} else{
 		$ln = $we_doc->getElement($name) ? unserialize($we_doc->getElement($name)) : array();
 		if(empty($ln)){
-			$ln = array('ctype' => we_base_link::CONTENT_TEXT, 'type' => we_base_link::TYPE_INT, 'href' => 'http://', 'text' => g_l('global', '[new_link]'));
+			$ln = array('ctype' => we_base_link::CONTENT_TEXT, 'type' => we_base_link::TYPE_INT, 'href' => we_base_link::EMPTY_EXT, 'text' => g_l('global', '[new_link]'));
 		}
 		$href = isset($ln['href']) ? $ln['href'] : '';
 		if(!empty($href) && strpos($href, we_base_link::TYPE_MAIL_PREFIX) === 0){

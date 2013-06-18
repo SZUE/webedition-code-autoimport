@@ -245,8 +245,9 @@ class we_linklist{
 
 	function getUrl($params = ""){
 		$id = $this->getID();
-		if($id == '')
-			return "http://";
+		if(empty($id)){
+			return we_base_link::EMPTY_EXT;
+		}
 		if(isset($this->cache[$id])){
 			$row = $this->cache[$id];
 		} else{
@@ -665,7 +666,7 @@ class we_linklist{
 
 	function getRawLink(){
 		return array(
-			'href' => 'http://',
+			'href' => we_base_link::EMPTY_EXT,
 			'text' => g_l('global', '[new_link]'),
 			'target' => '',
 			'type' => we_base_link::TYPE_EXT,

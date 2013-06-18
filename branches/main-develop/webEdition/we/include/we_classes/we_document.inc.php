@@ -1215,11 +1215,7 @@ class we_document extends we_root{
 			case we_base_link::TYPE_OBJ:
 				return getHrefForObject($link['obj_id'], $parentID, $path, $db, $hidedirindex, $objectseourls);
 			default:
-
-				if($link['href'] == 'http://'){
-					$link['href'] = '';
-				}
-				return $link['href'];
+				return ($link['href'] == we_base_link::EMPTY_EXT ? '' : $link['href']);
 		}
 	}
 

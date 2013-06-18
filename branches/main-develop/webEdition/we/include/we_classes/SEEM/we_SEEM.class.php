@@ -491,11 +491,11 @@ abstract class we_SEEM{
 				} else{ //  Target is on the same Web-Server - open doc with webEdition.
 					if(strpos($linkArray[5][$i], WEBEDITION_DIR . 'we_cmd.php') === 0){ //  it is a command link - use open_document_with_parameters
 						//  Work with the parameters
-						$theParameters = "";
-
 						if($linkArray[3][$i] != ""){
 							$theParameterArray = self::getAttributesFromGet($linkArray[3][$i], 'we_cmd');
 							$theParameters = self::arrayToParameters($theParameterArray, "", array('we_cmd'));
+						} else{
+							$theParameters = "";
 						}
 
 						$javascriptCode = (array_key_exists("we_objectID", $theParameterArray) ? //	target is a object

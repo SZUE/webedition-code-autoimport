@@ -654,54 +654,39 @@ class weGlossaryFrameEditorItem extends weGlossaryFrameEditor{
 
 		$parameter = g_l('modules_glossary', '[parameter]');
 
-		$_url = "http://";
-		$_parameter = "";
 		if($weGlossaryFrames->View->Glossary->Type == "link" && $weGlossaryFrames->View->Glossary->getAttribute('mode') == "extern"){
 			$_url = $weGlossaryFrames->View->Glossary->getAttribute('ExternUrl');
 			$_parameter = $weGlossaryFrames->View->Glossary->getAttribute('ExternParameter');
+		} else{
+			$_url = we_base_link::EMPTY_EXT;
+			$_parameter = "";
 		}
 
-		$pre = '<div id="mode_extern" style="display: none;">';
-		$post = '</div>';
-
-		$content = '<table border="0" cellpadding="0" cellspacing="0">
-					<tr>
-						<td>
-							' . we_html_tools::getPixel(2, 4) . '</td>
-					</tr>
-					<tr>
-						<td>
-							' . we_html_tools::htmlTextInput('link[Attributes][ExternUrl]', 58, $_url, '', 'onchange="setHot();"', 'text', 520) . '</td>
-					</tr>
-					<tr>
-						<td>
-							' . we_html_tools::getPixel(2, 4) . '</td>
-					</tr>
-					<tr>
-						<td class="defaultfont">' . $parameter . '</td>
-					</tr>
-					<tr>
-						<td>
-							' . we_html_tools::htmlTextInput('link[Attributes][ExternParameter]', 58, $_parameter, '', 'onchange="setHot();"', 'text', 520, 0) . '</td>
-					</tr>
-				</table>';
-
-		return $pre . $content . $post;
+		return '<div id="mode_extern" style="display: none;">
+	<table border="0" cellpadding="0" cellspacing="0">
+		<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
+		<tr><td>' . we_html_tools::htmlTextInput('link[Attributes][ExternUrl]', 58, $_url, '', 'onchange="setHot();"', 'text', 520) . '</td></tr>
+		<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
+		<tr><td class="defaultfont">' . $parameter . '</td></tr>
+		<tr><td>' . we_html_tools::htmlTextInput('link[Attributes][ExternParameter]', 58, $_parameter, '', 'onchange="setHot();"', 'text', 520, 0) . '</td></tr>
+	</table>
+</div>';
 	}
 
 	function getHTMLObject(&$weGlossaryFrames){
 		$workspace = g_l('modules_glossary', '[workspace]');
 		$parameter = g_l('modules_glossary', '[parameter]');
 
-		$_linkPath = "";
-		$_linkID = "";
-		$_workspaceID = "";
-		$_parameter = "";
 		if($weGlossaryFrames->View->Glossary->Type == "link" && $weGlossaryFrames->View->Glossary->getAttribute('mode') == "object"){
 			$_linkPath = $weGlossaryFrames->View->Glossary->getAttribute('ObjectLinkPath');
 			$_linkID = $weGlossaryFrames->View->Glossary->getAttribute('ObjectLinkID');
 			$_workspaceID = $weGlossaryFrames->View->Glossary->getAttribute('ObjectWorkspaceID');
 			$_parameter = $weGlossaryFrames->View->Glossary->getAttribute('ObjectParameter');
+		} else{
+			$_linkPath = "";
+			$_linkID = "";
+			$_workspaceID = "";
+			$_parameter = "";
 		}
 
 
@@ -717,55 +702,26 @@ class weGlossaryFrameEditorItem extends weGlossaryFrameEditor{
 		);
 
 
-		if($this->View->Glossary->getAttribute('ObjectLinkID') != ''){
-			$_wsid = weDynList::getWorkspacesForObject($this->View->Glossary->getAttribute('ObjectLinkID'));
-		} else{
-			$_wsid = array();
-		}
+		$_wsid =($this->View->Glossary->getAttribute('ObjectLinkID') != ''?			 weDynList::getWorkspacesForObject($this->View->Glossary->getAttribute('ObjectLinkID')):array());
 
-		$pre = '<div id="mode_object" style="display: none;">';
-		$post = '</div>';
+		return '<div id="mode_object" style="display: none;">
+	<table border="0" cellpadding="0" cellspacing="0">
+			<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
+			<tr><td>' . $selector . '</td></tr>
+			<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
+	</table>
+	<div id="ObjectWorkspaceID" style="display: block;">
+		<table border="0" cellpadding="0" cellspacing="0">
+			<tr><td class="defaultfont">' . $workspace . '</td></tr>
+			<tr><td>' . we_html_tools::htmlSelect('link[Attributes][ObjectWorkspaceID]', $_wsid, 0, $_workspaceID, false, 'style="width: ' . 520 . 'px; border: #AAAAAA solid 1px;" onChange="setHot();"', 'value') . '</td></tr>
+		</table>
+	</div>
+	<table border="0" cellpadding="0" cellspacing="0">
+		<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
+		<tr><td class="defaultfont">' . $parameter . '</td></tr>
+		<tr><td>' . we_html_tools::htmlTextInput('link[Attributes][ObjectParameter]', 58, $_parameter, '', 'onchange="setHot();"', 'text', 520, 0) . '</td></tr>
+	</table></div>';
 
-		$content = '<table border="0" cellpadding="0" cellspacing="0">
-					<tr>
-						<td>
-							' . we_html_tools::getPixel(2, 4) . '</td>
-					</tr>
-					<tr>
-						<td>
-							' . $selector . '</td>
-					</tr>
-					<tr>
-						<td>
-							' . we_html_tools::getPixel(2, 4) . '</td>
-					</tr>
-					</table>
-					<div id="ObjectWorkspaceID" style="display: block;">
-					<table border="0" cellpadding="0" cellspacing="0">
-					<tr>
-						<td class="defaultfont">' . $workspace . '</td>
-					</tr>
-					<tr>
-						<td>
-							' . we_html_tools::htmlSelect('link[Attributes][ObjectWorkspaceID]', $_wsid, 0, $_workspaceID, false, 'style="width: ' . 520 . 'px; border: #AAAAAA solid 1px;" onChange="setHot();"', 'value') . '</td>
-					</tr>
-					</table>
-					</div>
-					<table border="0" cellpadding="0" cellspacing="0">
-					<tr>
-						<td>
-							' . we_html_tools::getPixel(2, 4) . '</td>
-					</tr>
-					<tr>
-						<td class="defaultfont">' . $parameter . '</td>
-					</tr>
-					<tr>
-						<td>
-							' . we_html_tools::htmlTextInput('link[Attributes][ObjectParameter]', 58, $_parameter, '', 'onchange="setHot();"', 'text', 520, 0) . '</td>
-					</tr>
-				</table>';
-
-		return $pre . $content . $post;
 	}
 
 	function getHTMLCategory(&$weGlossaryFrames){
@@ -822,76 +778,33 @@ class weGlossaryFrameEditorItem extends weGlossaryFrameEditor{
 		$selector2 = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][CategoryInternLinkPath]', 58, $_internLinkPath, '', 'onchange="setHot();" readonly', 'text', 400, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden(array('name' => 'link[Attributes][CategoryInternLinkID]', "value" => $_internLinkID)), we_html_tools::getPixel(20, 4), $_button
 		);
 
-		$pre = '<div id="mode_category" style="display: none;">';
-		$post = '</div>';
-
-		$content = '<table border="0" cellpadding="0" cellspacing="0">
-					<tr>
-						<td>
-							' . we_html_tools::getPixel(2, 4) . '</td>
-					</tr>
-					<tr>
-						<td>
-							' . $selector1 . '</td>
-					</tr>
-					<tr>
-						<td>
-							' . we_html_tools::getPixel(2, 4) . '</td>
-					</tr>
-					<tr>
-						<td class="defaultfont">' . $mode . '</td>
-					</tr>
-					<tr>
-						<td>
-							' . we_html_tools::htmlSelect("link[Attributes][modeCategory]", $_modes, 1, $_modeCategory, false, " onchange=\"setHot();showLinkModeCategory(this.value);\"", "value", 520) . '</td>
-					</tr>
-					<tr>
-						<td>
-							' . we_html_tools::getPixel(2, 4) . '</td>
-					</tr>
-					</table>
-					<div id="mode_category_intern" style="display: none;">
-					<table border="0" cellpadding="0" cellspacing="0">
-					<tr>
-						<td>
-							' . $selector2 . '</td>
-					</tr>
-					</table>
-					</div>
-					<div id="mode_category_extern" style="display: none;">
-					<table border="0" cellpadding="0" cellspacing="0">
-					<tr>
-						<td>
-							' . we_html_tools::htmlTextInput('link[Attributes][CategoryUrl]', 58, $_url, '', 'onchange="setHot();"', 'text', 520) . '</td>
-					</tr>
-					</table>
-					</div>
-					<table border="0" cellpadding="0" cellspacing="0">
-					<tr>
-						<td>
-							' . we_html_tools::getPixel(2, 4) . '</td>
-					</tr>
-					<tr>
-						<td class="defaultfont">' . $catParameter . '</td>
-					</tr>
-					<tr>
-						<td>
-							' . we_html_tools::htmlTextInput('link[Attributes][CategoryCatParameter]', 58, $_catParameter, '', 'onchange="setHot();"', 'text', 520) . '</td>
-					</tr>
-					<tr>
-						<td>
-							' . we_html_tools::getPixel(2, 4) . '</td>
-					</tr>
-					<tr>
-						<td class="defaultfont">' . $parameter . '</td>
-					</tr>
-					<tr>
-						<td>
-							' . we_html_tools::htmlTextInput('link[Attributes][CategoryParameter]', 58, $_parameter, '', 'onchange="setHot();"', 'text', 520, 0) . '</td>
-					</tr>
-				</table>';
-
-		return $pre . $content . $post;
+		return '<div id="mode_category" style="display: none;">
+<table border="0" cellpadding="0" cellspacing="0">
+		<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
+		<tr><td>' . $selector1 . '</td></tr>
+		<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
+		<tr><td class="defaultfont">' . $mode . '</td></tr>
+		<tr><td>' . we_html_tools::htmlSelect("link[Attributes][modeCategory]", $_modes, 1, $_modeCategory, false, " onchange=\"setHot();showLinkModeCategory(this.value);\"", "value", 520) . '</td></tr>
+		<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
+	</table>
+	<div id="mode_category_intern" style="display: none;">
+	<table border="0" cellpadding="0" cellspacing="0">
+		<tr><td>' . $selector2 . '</td></tr>
+	</table>
+	</div>
+	<div id="mode_category_extern" style="display: none;">
+		<table border="0" cellpadding="0" cellspacing="0">
+			<tr><td>' . we_html_tools::htmlTextInput('link[Attributes][CategoryUrl]', 58, $_url, '', 'onchange="setHot();"', 'text', 520) . '</td></tr>
+		</table>
+	</div>
+	<table border="0" cellpadding="0" cellspacing="0">
+		<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
+		<tr><td class="defaultfont">' . $catParameter . '</td></tr>
+		<tr><td>' . we_html_tools::htmlTextInput('link[Attributes][CategoryCatParameter]', 58, $_catParameter, '', 'onchange="setHot();"', 'text', 520) . '</td></tr>
+		<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
+		<tr><td class="defaultfont">' . $parameter . '</td></tr>
+		<tr><td>' . we_html_tools::htmlTextInput('link[Attributes][CategoryParameter]', 58, $_parameter, '', 'onchange="setHot();"', 'text', 520, 0) . '</td></tr>
+	</table></div>';
 	}
 
 	// ---> Helper Methods
@@ -901,7 +814,7 @@ class weGlossaryFrameEditorItem extends weGlossaryFrameEditor{
 	function getLangField($name, $value, $title, $width){
 
 		$_name = md5($name);
-	//FIXME: these values should be obtained from global settings
+		//FIXME: these values should be obtained from global settings
 		$_options = array(
 			'' => '',
 			'de' => 'de',

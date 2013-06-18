@@ -85,7 +85,7 @@ class weImageDialog extends weDialog{
 			}
 		} else{
 			$this->args["type"] = we_base_link::TYPE_EXT;
-			$this->args["extSrc"] = "http://";
+			$this->args["extSrc"] = we_base_link::EMPTY_EXT;
 		}
 		$this->initAttributes($width, $height, $hspace, $vspace, $border, $alt, $align, $name, $class, $title, $longdesc);
 	}

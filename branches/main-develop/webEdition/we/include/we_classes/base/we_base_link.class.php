@@ -35,7 +35,7 @@ class we_base_link{
 	const CONTENT_TEXT = 'text';
 	const CONTENT_INT = 'int';
 	const CONTENT_EXT = 'ext';
-
+	const EMPTY_EXT = 'http://';
 	const TYPE_INT_PREFIX = 'document:';
 	const TYPE_MAIL_PREFIX = 'mailto:';
 	const TYPE_OBJ_PREFIX = 'object:';
