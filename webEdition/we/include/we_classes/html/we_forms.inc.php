@@ -145,7 +145,11 @@ abstract class we_forms{
 		$class = weTag_getAttribute('class', $attribs);
 		$style = weTag_getAttribute('style', $attribs);
 		$id = weTag_getAttribute('id', $attribs);
-		$inlineedit = weTag_getAttribute('inlineedit', $attribs, defined('INLINEEDIT_DEFAULT') ? INLINEEDIT_DEFAULT : true, true);
+		if(strpos("we_ui", $name !== false)){// we are in frontend, where default is inlineedit = true
+			$inlineedit = weTag_getAttribute('inlineedit', $attribs, defined('INLINEEDIT_DEFAULT') ? INLINEEDIT_DEFAULT : true, true);
+		} else{
+			$inlineedit = weTag_getAttribute('inlineedit', $attribs, true, true);
+		}
 		$tabindex = weTag_getAttribute('tabindex', $attribs);
 		$oldHtmlspecialchars = weTag_getAttribute('htmlspecialchars', $attribs, false, true);
 		$ignoredocumentcss = weTag_getAttribute('ignoredocumentcss', $attribs, false, true);
@@ -221,19 +225,26 @@ abstract class we_forms{
 				$out .= $e->getHTML();
 			} else{
 				$e = new we_wysiwyg($name, $width, $height, '', $commands, $bgcolor, '', $class, $fontnames, (!$inwebedition), $xml, $removeFirstParagraph, $inlineedit, '', $charset, $cssClasses, $_lang, '', $showSpell, $isFrontendEdit, $buttonpos, $oldHtmlspecialchars, $contentCss, $origName, $tinyParams, $contextmenu);
-
 				//$fieldName = preg_replace('#^.+_txt\[(.+)\]$#', '\1', $name);
 				// Bugfix => Workarround Bug # 7445
-				$value = str_replace(array("##|r##", "##|n##"), array("\r", "\n"), (
-					isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->ClassName != 'we_objectFile' && $GLOBALS['we_doc']->ClassName != 'we_object' ?
-						$GLOBALS['we_doc']->getField($attribs) :
-						parseInternalLinks($value, 0)
-					)
-				);
+
+				if(strpos("we_ui", $name !== false)){// we are in frontend, where default is inlineedit = true. FIXME: look for simple flag
+					$value = str_replace(array("##|r##", "##|n##"), array("\r", "\n"),$value);
+				} else{
+					$value = str_replace(array("##|r##", "##|n##"), array("\r", "\n"), (
+						isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->ClassName != 'we_objectFile' && $GLOBALS['we_doc']->ClassName != 'we_object' ?
+							$GLOBALS['we_doc']->getField($attribs) :
+							parseInternalLinks($value, 0)
+						)
+					);
+				}
+				
+
+				
 
 				// Ende Bugfix
 
-				$out .= ($buttonTop ? '<div class="tbButtonWysiwygBorder" style="width:25px;border-bottom:0px;background-image: url(' . IMAGE_DIR . 'backgrounds/aquaBackground.gif);">' . $e->getHTML() . '</div>' : '') . '<div class="tbButtonWysiwygBorder ' . (empty($class) ? "" : $class . " ") . 'wetextarea tiny-wetextarea wetextarea-' . $origName . '" id="div_wysiwyg_' . $name . '" style="height:auto; width:auto">' . $value . '</div>' . ($buttonBottom ? '<div class="tbButtonWysiwygBorder" style="width:25px;border-top:0px;background-image: url(' . IMAGE_DIR . 'backgrounds/aquaBackground.gif);">' . $e->getHTML() . '</div>' : '');
+				$out .= ($buttonTop ? '<div class="tbButtonWysiwygBorder" style="width:25px;border-bottom:0px;background-image: url(' . IMAGE_DIR . 'backgrounds/aquaBackground.gif);">' . $e->getHTML($value) . '</div>' : '') . '<div class="tbButtonWysiwygBorder ' . (empty($class) ? "" : $class . " ") . 'wetextarea tiny-wetextarea wetextarea-' . $origName . '" id="div_wysiwyg_' . $name . '" style="height:auto; width:auto">' . $value . '</div>' . ($buttonBottom ? '<div class="tbButtonWysiwygBorder" style="width:25px;border-top:0px;background-image: url(' . IMAGE_DIR . 'backgrounds/aquaBackground.gif);">' . $e->getHTML() . '</div>' : '');
 			}
 		} else{
 			if($width){

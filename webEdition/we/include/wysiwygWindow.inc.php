@@ -56,14 +56,17 @@ include (WE_INCLUDES_PATH . "we_editors/we_init_doc.inc.php");
 
 if(preg_match('%^.+_te?xt\[.+\]$%i', $_REQUEST['we_cmd'][1])){
 	$fieldName = preg_replace('/^.+_te?xt\[(.+)\]$/', '\1', $_REQUEST['we_cmd'][1]);
-} else
-if(preg_match('|^.+_input\[.+\]$|i', $_REQUEST['we_cmd'][1])){
+} else if(preg_match('|^.+_input\[.+\]$|i', $_REQUEST['we_cmd'][1])){
 	$fieldName = preg_replace('/^.+_input\[(.+)\]$/', '\1', $_REQUEST['we_cmd'][1]);
+} else if(preg_match('|^we_ui.+\[.+\]$|i', $_REQUEST['we_cmd'][1])){//we_user_input
+	$fieldName = preg_replace('/^we_ui.+\[(.+)\]$/', '\1', $_REQUEST['we_cmd'][1]);
+	$writeToFrontend = true;
 }
 
 we_html_tools::htmlTop(sprintf("sali", $fieldName), ($_REQUEST['we_cmd'][15] ? $_REQUEST['we_cmd'][15] : $defaultCharset));
 
 if(isset($fieldName) && isset($_REQUEST["we_okpressed"]) && $_REQUEST["we_okpressed"]){
+	if(!isset($writeToFrontend)){
 	if(preg_match('%^(.+_te?xt)\[.+\]$%i', $_REQUEST['we_cmd'][1])){
 		$reqName = preg_replace('/^(.+_te?xt)\[.+\]$/', '\1', $_REQUEST['we_cmd'][1]);
 	} else if(preg_match('|^(.+_input)\[.+\]$|i', $_REQUEST['we_cmd'][1])){
@@ -83,6 +86,20 @@ if(isset($fieldName) && isset($_REQUEST["we_okpressed"]) && $_REQUEST["we_okpres
 			//top.opener.we_cmd("reload_editpage");
 		}
 		top.close();');
+	} else{//writeToFrontend
+		
+		
+		$reqName = str_replace('[' . $fieldName . ']', '', $_REQUEST['we_cmd'][1]);
+		echo we_html_element::jsElement('
+
+			if(top.opener && top.opener.document.getElementById("div_wysiwyg_' . $_REQUEST['we_cmd'][1] . '")){
+				top.opener.document.getElementById("div_wysiwyg_' . $_REQUEST['we_cmd'][1] . '").innerHTML = \'' . str_replace("'", "&#039;", $_REQUEST[$reqName][$fieldName]) . '\';
+				top.close();
+			}
+
+			top.close();
+			');
+	}
 	?>
 
 	</head>
@@ -127,13 +144,15 @@ if(isset($fieldName) && isset($_REQUEST["we_okpressed"]) && $_REQUEST["we_okpres
 			  19 = origName
 			  20 = tinyParams
 			  21 = contextmenu
+			  22 = isInPopup
+			 * 
 			 */
 
 			$e = new we_wysiwyg(
 					$_REQUEST['we_cmd'][1],
 					$_REQUEST['we_cmd'][2],
 					$_REQUEST['we_cmd'][3],
-					$we_doc->getElement($fieldName),
+					$we_doc->getElement($fieldName) ? $we_doc->getElement($fieldName) : 'PLACEHOLDER',
 					$_REQUEST['we_cmd'][5],
 					$_REQUEST['we_cmd'][13],
 					'',
@@ -155,7 +174,8 @@ if(isset($fieldName) && isset($_REQUEST["we_okpressed"]) && $_REQUEST["we_okpres
 					we_cmd_dec(18),
 					we_cmd_dec(19),
 					we_cmd_dec(20),
-					we_cmd_dec(21));
+					we_cmd_dec(21),
+					$_REQUEST['we_cmd'][22]);
 
 			print we_wysiwyg::getHeaderHTML() . $e->getHTML() .
 				'<div style="height:8px"></div>' . we_button::position_yes_no_cancel($okBut, $cancelBut);
