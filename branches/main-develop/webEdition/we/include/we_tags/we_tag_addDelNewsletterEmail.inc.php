@@ -129,12 +129,12 @@ function we_tag_addDelNewsletterEmail($attribs){
 
 		if($doubleoptin && (!isset($_REQUEST['confirmID']))){ // Direkte ANmeldung mit doubleoptin => zuerst confirmmail verschicken.
 			$confirmID = md5(uniqid(__FUNCTION__, true));
-			$lists = '';
+			$lists = array();
 			$emailExistsInOneOfTheLists = false;
 			switch($type){
 				case 'customer':
 					$__query = getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ' . $_customerFieldPrefs['customer_email_field'] . "='" . $db->escape($f['subscribe_mail']) . "'", $db);
-					
+
 					/** original code before bug #5589
 					*if(!empty($__query)){
 					*	$emailExistsInOneOfTheLists = true;
@@ -147,13 +147,13 @@ function we_tag_addDelNewsletterEmail($attribs){
 					*	$lists .= $cAbo . ',';
 					*}
 					*/
-					
+
 					// #5589 start
 					if(!empty($__query)){
 						foreach($abos as $cAbo){
 							$dbAbo = isset($__query[$cAbo]) ? $__query[$cAbo] : false;
 							if(empty($dbAbo)){
-								$lists .= $cAbo . ',';
+								$lists[] = $cAbo;
 							}
 						}
 						if(empty($lists)){// subscriber exists in all lists
@@ -161,7 +161,7 @@ function we_tag_addDelNewsletterEmail($attribs){
 						}
 					}
 					// #5589 end
-					
+
 					break;
 				case 'csv':
 					foreach($paths as $p){
@@ -183,7 +183,7 @@ function we_tag_addDelNewsletterEmail($attribs){
 								$emailExistsInOneOfTheLists = false; // List does not exists, so email can't also exists
 							}
 						}
-						$lists .= $p . ',';
+						$lists[]= $p;
 					}
 					break;
 			}
@@ -192,7 +192,7 @@ function we_tag_addDelNewsletterEmail($attribs){
 				return;
 			}
 
-			$lists = rtrim($lists, ',');
+			$lists = implode(',',$lists);
 
 			$mailid = weTag_getAttribute('mailid', $attribs);
 			$expiredoubleoptin = weTag_getAttribute('expiredoubleoptin', $attribs, 1440) * 60; // in secs

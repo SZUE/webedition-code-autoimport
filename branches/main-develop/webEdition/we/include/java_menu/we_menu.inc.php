@@ -744,7 +744,7 @@ $we_menu[4033300] = array(
 $_tools = weToolLookup::getAllTools(true, false);
 
 foreach($_tools as $_k => $_tool){
-	$we_menu[intval(($_tool['name'] == 'toolfactory' ? '404' : '405') . sprintf('%04d', $_k))] = array(
+	$we_menu[($_tool['name'] == 'toolfactory' ? 4040000 : 4050000) + $_k] = array(
 		'text' => $_tool['text'] . '&hellip;',
 		'parent' => 4000000,
 		'cmd' => 'tool_' . $_tool['name'] . '_edit',
