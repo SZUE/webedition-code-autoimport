@@ -1313,7 +1313,7 @@ class doclistView{
 		$thisObj = (isset($_REQUEST['we_cmd'] ['obj']) ? new doclistView () : $this);
 
 		if(we_hasPerm('PUBLISH')){
-			$publishButtonCheckboxAll = we_forms::checkbox("1", 0, "publish_all", "", false, "middlefont", "checkAllPubChecks()");
+			$publishButtonCheckboxAll = we_forms::checkbox(1, 0, "publish_all", "", false, "middlefont", "checkAllPubChecks()");
 			$publishButton = we_button::create_button("publish", "javascript:publishDocs();", true, 100, 22, "", "");
 		} else{
 			$publishButton = "";

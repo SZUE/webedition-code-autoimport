@@ -623,7 +623,7 @@ class weCustomerEIWizard{
 			$tmptable->setCol(0, 0, array(), we_html_tools::getPixel(2, 5));
 			$tmptable->setCol(1, 0, array(), we_html_tools::getPixel(2, 5));
 		}
-		//$tmptable->setCol(2,0,array("valign"=>"middle"),we_html_element::htmlInput(array("name"=>"upload","type"=>"file","size"=>"35","value"=>$upload)));
+		//$tmptable->setCol(2,0,array("valign"=>"middle"),we_html_element::htmlInput(array("name"=>"upload","type"=>"file","size"=>35,"value"=>$upload)));
 		$tmptable->setCol(2, 0, array("valign" => "middle"), we_html_tools::htmlTextInput("upload", 35, "", 255, "onClick=\"document.we_form.import_from[1].checked=true;\"", "file"));
 		$tmptable->setCol(3, 0, array(), we_html_tools::getPixel(2, 5));
 		//
@@ -1701,7 +1701,7 @@ class weCustomerEIWizard{
 		return $js . $hiddens . $custs->get();
 	}
 
-	function formWeChooser($table = FILE_TABLE, $width = "", $rootDirID = 0, $IDName = "ID", $IDValue = "0", $Pathname = "Path", $Pathvalue = "/", $cmd = ""){
+	function formWeChooser($table = FILE_TABLE, $width = "", $rootDirID = 0, $IDName = "ID", $IDValue = 0, $Pathname = "Path", $Pathvalue = "/", $cmd = ""){
 		if($Pathvalue == ""){
 			$Pathvalue = f("SELECT Path FROM " . $this->db->escape($table) . " WHERE ID=" . intval($IDValue) . ";", "Path", $this->db);
 		}

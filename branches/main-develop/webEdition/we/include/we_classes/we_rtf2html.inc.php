@@ -688,9 +688,9 @@ class we_rtf2html{
 					$this->pasteChars("&#x" . we_codeConvertor::toUnicode($this->codepage, strtoupper($para)) . ";");
 				} else{
 					if($this->standard == "mac")
-						$this->pasteChars("&#x" . we_codeConvertor::toUnicode("10000", strtoupper($para)) . ";");
+						$this->pasteChars("&#x" . we_codeConvertor::toUnicode(10000, strtoupper($para)) . ";");
 					else
-						$this->pasteChars("&#x" . we_codeConvertor::toUnicode("1252", strtoupper($para)) . ";");
+						$this->pasteChars("&#x" . we_codeConvertor::toUnicode(1252, strtoupper($para)) . ";");
 				}
 				$go = false;
 				break;

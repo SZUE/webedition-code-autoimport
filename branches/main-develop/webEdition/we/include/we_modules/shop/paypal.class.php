@@ -183,7 +183,7 @@ class paypal_class {
       $post_string.="cmd=_notify-validate"; // append ipn command
 
       // open the connection to paypal
-      $fp = fsockopen($url_parsed[host],"80",$err_num,$err_str,30);
+      $fp = fsockopen($url_parsed[host],80,$err_num,$err_str,30);
       if(!$fp) {
 
          // could not open the connection.  If loggin is on, the error message

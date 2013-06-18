@@ -28,6 +28,10 @@
  */
 class we_imageDocument extends we_binaryDocument{
 
+	const ALT_FIELD = '_img_custom_alt';
+	const TITLE_FIELD = '_img_custom_title';
+	const THUMB_FIELD = '_img_custom_thumb';
+
 	/**
 	 * Comma separated value of IDs from THUMBNAILS_TABLE  This value is not stored in DB!!
 	 * @var string

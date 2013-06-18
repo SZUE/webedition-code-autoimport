@@ -37,7 +37,7 @@ abstract class we_multiIconBox{
 	 * @param	$headline			string
 	 * @return	string
 	 */
-	static function getHTML($name, $width, $content, $marginLeft = "0", $buttons = "", $foldAtNr = -1, $foldRight = "", $foldDown = "", $displayAtStartup = false, $headline = "", $delegate = "", $height = 0, $overflow = "auto"){
+	static function getHTML($name, $width, $content, $marginLeft = 0, $buttons = "", $foldAtNr = -1, $foldRight = "", $foldDown = "", $displayAtStartup = false, $headline = "", $delegate = "", $height = 0, $overflow = "auto"){
 		$uniqname = $name ? $name : md5(uniqid(__FILE__, true));
 
 		$out = (isset($headline) && $headline != '') ?
@@ -275,7 +275,7 @@ abstract class we_multiIconBox{
 			}');
 	}
 
-	static function _getBoxStartHeadline($width, $headline, $uniqname, $marginLeft = "0", $overflow = "auto"){
+	static function _getBoxStartHeadline($width, $headline, $uniqname, $marginLeft = 0, $overflow = "auto"){
 		return '<table border="0" cellspacing="0" cellpadding="0" style="margin-top:10px;width:' . $width . (is_numeric($width) ? 'px' : '') . '; overflow:' . $overflow . '">
 	<tr>
 		<td style="padding-left:' . $marginLeft . 'px;padding-bottom:10px;" class="weDialogHeadline">' . $headline . '</td>

@@ -1011,8 +1011,7 @@ class weVersionsView{
 			array("dat" => g_l('versions', '[modifications]')),
 			array("dat" => (we_hasPerm("ADMINISTRATOR") ? '<div style="margin:0px 0px 5px 0px;" id="deleteButton">' . we_button::create_button(
 						"image:btn_function_trash", "javascript:deleteVers();") . '</div>' : '') .
-				we_forms::checkbox(
-					"1", 0, "deleteAllVersions", $markText, false, "middlefont", "checkAll();")),
+				we_forms::checkbox(1, 0, "deleteAllVersions", $markText, false, "middlefont", "checkAll();")),
 			array("dat" => we_html_tools::getPixel(1, 1)),
 			array("dat" => we_html_tools::getPixel(1, 1)),
 			array("dat" => we_html_tools::getPixel(1, 1)),

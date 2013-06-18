@@ -152,7 +152,7 @@ abstract class we_html_tools{
 		return $_table->getHtml();
 	}
 
-	static function htmlTextInput($name, $size = 24, $value = "", $maxlength = "", $attribs = "", $type = "text", $width = "0", $height = "0", $markHot = "", $disabled = false){
+	static function htmlTextInput($name, $size = 24, $value = "", $maxlength = "", $attribs = "", $type = "text", $width = 0, $height = 0, $markHot = "", $disabled = false){
 		$style = ($width || $height) ? (' style="' . ($width ? ('width: ' . $width . (is_numeric($width) ? 'px' : '') . ';') : '') .
 			($height ? ('height: ' . $height . (is_numeric($height) ? 'px' : '') . ';') : '') . '"') : '';
 		return '<input' . ($markHot ? ' onchange="if(_EditorFrame){_EditorFrame.setEditorIsHot(true);}' . $markHot . '.hot=1;"' : '') .
@@ -166,7 +166,7 @@ abstract class we_html_tools{
 			'<div>' . $content . '</div><div style="margin-top:20px;">' . $buttons . '</div></div>';
 	}
 
-	static function htmlDialogLayout($content, $headline, $buttons = "", $width = "100%", $marginLeft = "30", $height = "", $overflow = "auto"){
+	static function htmlDialogLayout($content, $headline, $buttons = "", $width = "100%", $marginLeft = 30, $height = "", $overflow = "auto"){
 		$parts = array(
 			array(
 				"html" => $content, "headline" => "", "space" => 0
@@ -333,7 +333,7 @@ abstract class we_html_tools{
 				$disabled = '';
 			}
 			$out = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' .
-				self::htmlTextInput($name, 5, $selected, "", $attribs, "text", $width / 2, "0", "top") .
+				self::htmlTextInput($name, 5, $selected, "", $attribs, "text", $width / 2, 0, "top") .
 				'</td><td><select class="weSelect" name="wetmp_' . $name . '" size=1' . $disabled . ($width ? ' style="width: ' . ($width / 2) . 'px"' : '') . ' onchange="if(typeof(_EditorFrame) != \'undefined\'){_EditorFrame.setEditorIsHot(true);}if(this.options[this.selectedIndex].text){this.form.elements[\'' . $name . '\'].value=this.options[this.selectedIndex].text;};this.selectedIndex=0"><option>';
 			foreach($extensions as $extension){
 				$out .= '<option>' . $extension . '</option>';

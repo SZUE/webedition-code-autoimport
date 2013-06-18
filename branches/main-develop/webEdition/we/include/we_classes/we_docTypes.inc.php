@@ -256,7 +256,7 @@ class we_docTypes extends we_class{
 			}
 			$vals[$v] = $t;
 		}
-		return $this->htmlSelect("DocTypes", $vals, "8", $this->ID, false, 'style="width:328px" onChange="we_cmd(\'change_docType\',this.options[this.selectedIndex].value)"');
+		return $this->htmlSelect("DocTypes", $vals, 8, $this->ID, false, 'style="width:328px" onChange="we_cmd(\'change_docType\',this.options[this.selectedIndex].value)"');
 	}
 
 	function formDocTypes3($headline, $langkey, $derDT = 0){
@@ -269,7 +269,7 @@ class we_docTypes extends we_class{
 			$t = $this->DB_WE->f("DocType");
 			$vals[$v] = $t;
 		}
-		return we_html_tools::htmlFormElementTable($this->htmlSelect("we_" . $this->Name . "_LangDocType[" . $langkey . "]", $vals, "1", $derDT, false, ($langkey == $this->Language ? ' disabled="disabled" ' : '') . 'style="width:328px" onChange=""'), $headline, "left", "defaultfont");
+		return we_html_tools::htmlFormElementTable($this->htmlSelect("we_" . $this->Name . "_LangDocType[" . $langkey . "]", $vals, 1, $derDT, false, ($langkey == $this->Language ? ' disabled="disabled" ' : '') . 'style="width:328px" onChange=""'), $headline, "left", "defaultfont");
 	}
 
 	function formDirChooser($width = 100){

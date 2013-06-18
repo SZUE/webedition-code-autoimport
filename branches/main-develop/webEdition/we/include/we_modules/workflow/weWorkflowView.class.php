@@ -259,7 +259,7 @@ class weWorkflowView extends we_workflow_base{
 	}
 
 	function getStatusHTML(){
-		return we_forms::checkboxWithHidden('1', 'status_workflow', g_l('modules_workflow', '[active]'), false, 'defaultfont', 'top.content.setHot();');
+		return we_forms::checkboxWithHidden(1, 'status_workflow', g_l('modules_workflow', '[active]'), false, 'defaultfont', 'top.content.setHot();');
 	}
 
 	function getStepsHTML(){
@@ -300,12 +300,12 @@ class weWorkflowView extends we_workflow_base{
 					'align' => 'center',
 				),
 				array(
-					'dat' => '<table><tr valign="top"><td>' . we_forms::radiobutton("1", $sv->stepCondition ? 1 : 0, $this->uid . "_step" . $counter . "_and", "", false, "defaultfont", "top.content.setHot();") . '</td><td>' . we_html_tools::getPixel(5, 5) . '</td><td>' . we_forms::radiobutton("0", $sv->stepCondition ? 0 : 1, $this->uid . "_step" . $counter . "_and", "", false, "defaultfont", "top.content.setHot();") . '</td></tr></table>',
+					'dat' => '<table><tr valign="top"><td>' . we_forms::radiobutton(1, $sv->stepCondition ? 1 : 0, $this->uid . "_step" . $counter . "_and", "", false, "defaultfont", "top.content.setHot();") . '</td><td>' . we_html_tools::getPixel(5, 5) . '</td><td>' . we_forms::radiobutton(0, $sv->stepCondition ? 0 : 1, $this->uid . "_step" . $counter . "_and", "", false, "defaultfont", "top.content.setHot();") . '</td></tr></table>',
 					'height' => '',
 					'align' => '',
 				),
 				array(
-					'dat' => '<table cellpadding="0" cellspacing="0"><tr><td>' . we_html_tools::getPixel(5, 7) . '</td></tr><tr valign="middle"><td class="middlefont">' . we_html_tools::htmlTextInput($this->uid . "_step" . $counter . "_Worktime", "15", $sv->Worktime, "", 'onChange="top.content.setHot();"') . '</td></tr>' .
+					'dat' => '<table cellpadding="0" cellspacing="0"><tr><td>' . we_html_tools::getPixel(5, 7) . '</td></tr><tr valign="middle"><td class="middlefont">' . we_html_tools::htmlTextInput($this->uid . "_step" . $counter . "_Worktime", 15, $sv->Worktime, "", 'onChange="top.content.setHot();"') . '</td></tr>' .
 					'<tr valign="middle"><td>' . we_html_tools::getPixel(5, $_spacer_1_height) . '</td><tr>' .
 					'<tr valign="top">' .
 					'<td class="middlefont">' . we_forms::checkboxWithHidden($sv->timeAction == 1, $this->uid . "_step" . $counter . "_timeAction", g_l('modules_workflow', '[go_next]'), false, "middlefont", "top.content.setHot();") . '</td>' .
@@ -1603,10 +1603,10 @@ function checkData(){
 				'<td>' . we_html_tools::getPixel(10, 10) . '</td>' .
 				'</tr>' .
 				'<tr>' .
-				'<td>' . $this->getTypeTableHTML(we_forms::radiobutton('1', true, 'clear_time', g_l('modules_workflow', '[log_question_time]'), true, 'defaultfont', "javascript:document.we_form.clear_opt.value=1;"), $vals) . '</td>' .
+				'<td>' . $this->getTypeTableHTML(we_forms::radiobutton(1, true, 'clear_time', g_l('modules_workflow', '[log_question_time]'), true, 'defaultfont', "javascript:document.we_form.clear_opt.value=1;"), $vals) . '</td>' .
 				'</tr>' .
 				'<tr>' .
-				'<td>' . we_html_tools::getPixel(22, 10) . '<br/>' . we_forms::radiobutton('0', false, 'clear_time', g_l('modules_workflow', '[log_question_all]'), true, 'defaultfont', "javascript:document.we_form.clear_opt.value=0;") . '</td>' .
+				'<td>' . we_html_tools::getPixel(22, 10) . '<br/>' . we_forms::radiobutton(0, false, 'clear_time', g_l('modules_workflow', '[log_question_all]'), true, 'defaultfont', "javascript:document.we_form.clear_opt.value=0;") . '</td>' .
 				'</tr>' .
 				'</tr>' .
 				'</table>'

@@ -2477,7 +2477,7 @@ function handle_event(evt) {
 		return array($functions, $content);
 	}
 
-	function formWeChooser($table = FILE_TABLE, $width = "", $rootDirID = 0, $IDName = "ID", $IDValue = "0", $Pathname = "Path", $Pathvalue = "/", $cmd = ""){
+	function formWeChooser($table = FILE_TABLE, $width = "", $rootDirID = 0, $IDName = "ID", $IDValue = 0, $Pathname = "Path", $Pathvalue = "/", $cmd = ""){
 		if($Pathvalue == ""){
 			$Pathvalue = f('SELECT Path FROM ' . escape_sql_query($table) . ' WHERE ID=' . intval($IDValue), "Path", new DB_WE());
 		}

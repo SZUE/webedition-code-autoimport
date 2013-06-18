@@ -65,7 +65,7 @@ class we_langlink_listview extends listviewBase{
 	 * @param   searchable 	  boolean - if false then show also documents which are not marked as searchable
 	 * @return we_listview
 	 */
-	function __construct($name = "0", $rows = 999999999, $offset = 0, $order = "", $desc = false, $linkType = 'tblFile', $cols = "", $seeMode = true, $searchable = true, $customerFilterType = 'off', $showself = false, $id = "", $pagelanguage = "", $ownlanguage = "", $hidedirindex = false, $objectseourls = false){
+	function __construct($name, $rows = 999999999, $offset = 0, $order = "", $desc = false, $linkType = 'tblFile', $cols = "", $seeMode = true, $searchable = true, $customerFilterType = 'off', $showself = false, $id = "", $pagelanguage = "", $ownlanguage = "", $hidedirindex = false, $objectseourls = false){
 		$id = intval($id);
 		parent::__construct($name, $rows, $offset, $order, $desc, '', false, '', $cols, '', '', '', '', '', 'off', $id);
 

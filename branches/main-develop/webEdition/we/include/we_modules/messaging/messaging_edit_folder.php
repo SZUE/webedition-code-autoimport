@@ -128,7 +128,7 @@ print STYLESHEET;
 		$_btn_tbl = we_button::position_yes_no_cancel(we_button::create_button("save", "javascript:save()"), "", we_button::create_button("cancel", "javascript:top.content.we_cmd('messaging_start_view','', '" . (isset($_REQUEST["table"]) ? $_REQUEST["table"] : "") . "')")
 			)
 		;
-		print we_html_tools::htmlDialogLayout($input_tbl, $heading, $_btn_tbl, "100%", "30", "", "none");
+		print we_html_tools::htmlDialogLayout($input_tbl, $heading, $_btn_tbl, "100%", 30, "", "none");
 		?></td>
 </form>
 </body>

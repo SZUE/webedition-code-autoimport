@@ -234,7 +234,7 @@ print we_html_element::jsElement($jsFunction) .
 	<input type="hidden" name="we_cmd[0]" value="saveShopStatusMails" />';
 
 print we_multiIconBox::getHTML(
-		'weShopStatusMails', "700", $parts, 30, we_button::position_yes_no_cancel(
+		'weShopStatusMails', 700, $parts, 30, we_button::position_yes_no_cancel(
 			we_button::create_button('save', 'javascript:we_cmd(\'save\');'), '', we_button::create_button('cancel', 'javascript:we_cmd(\'close\');')
 		), -1, '', '', false, g_l('modules_shop', '[statusmails][box_headline]'), '', '', 'scroll'
 	);

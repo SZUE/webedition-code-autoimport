@@ -264,7 +264,7 @@ class weModuleFrames{
 		// to be overridden
 	}
 
-	function getHTMLBox($content, $headline = "", $width = "100", $height = "50", $w = "25", $vh = "0", $ident = "0", $space = "5", $headline_align = "left", $content_align = "left"){
+	function getHTMLBox($content, $headline = "", $width = 100, $height = 50, $w = 25, $vh = 0, $ident = 0, $space = 5, $headline_align = "left", $content_align = "left"){
 		$headline = str_replace(" ", "&nbsp;", $headline);
 		if($ident){
 			$pix1 = we_html_tools::getPixel($ident, $vh);

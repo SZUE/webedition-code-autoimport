@@ -217,7 +217,7 @@ class we_shop_Basket{
 			case 'o':
 				$classArray = getHash('SELECT * FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($id), $DB_WE);
 
-				$olv = new we_listview_object('0', 1, 0, '', 0, $classArray['TableID'], '', '', ' ' . OBJECT_X_TABLE . $classArray["TableID"] . '.ID=' . $classArray['ObjectID']);
+				$olv = new we_listview_object(0, 1, 0, '', 0, $classArray['TableID'], '', '', ' ' . OBJECT_X_TABLE . $classArray["TableID"] . '.ID=' . $classArray['ObjectID']);
 				$olv->next_record();
 
 				$Record = $olv->DB_WE->Record;

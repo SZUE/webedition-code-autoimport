@@ -25,106 +25,106 @@
 require_once (WE_INCLUDES_PATH . 'we_tools/weSearch/conf/meta.conf.php');
 
 $we_menu_weSearch = array(
-	'000100' => array(
+	100 => array(
 		'text' => g_l('searchtool', '[menu_suche]'),
-		'parent' => '000000',
+		'parent' => 0,
 		'perm' => '',
 		'enabled' => 1,
 	),
-	'000200' => array(
+	200 => array(
 		'text' => g_l('searchtool', '[menu_new]'),
-		'parent' => '000100',
+		'parent' => 100,
 		'perm' => '',
 		'enabled' => 1,
 	)
 );
 if(we_hasPerm('CAN_SEE_DOCUMENTS')){
-	$we_menu_weSearch['000300'] = array(
+	$we_menu_weSearch[300] = array(
 		'text' => g_l('searchtool', '[forDocuments]'),
-		'parent' => '000200',
+		'parent' => 200,
 		'cmd' => 'tool_' . $metaInfo['name'] . '_new_forDocuments',
 		'perm' => 'EDIT_NAVIGATION || ADMINISTRATOR',
 		'enabled' => 1,
 	);
 }
 if($_SESSION['weS']['we_mode'] != 'seem' && we_hasPerm('CAN_SEE_TEMPLATES')){
-	$we_menu_weSearch['000400'] = array(
+	$we_menu_weSearch[400] = array(
 		'text' => g_l('searchtool', '[forTemplates]'),
-		'parent' => '000200',
+		'parent' => 200,
 		'cmd' => 'tool_' . $metaInfo['name'] . '_new_forTemplates',
 		'perm' => 'EDIT_NAVIGATION || ADMINISTRATOR',
 		'enabled' => 1,
 	);
 }
 if(defined('OBJECT_FILES_TABLE') && defined('OBJECT_TABLE') && we_hasPerm('CAN_SEE_OBJECTFILES')){
-	$we_menu_weSearch['000500'] = array(
+	$we_menu_weSearch[500] = array(
 		'text' => g_l('searchtool', '[forObjects]'),
-		'parent' => '000200',
+		'parent' => 200,
 		'cmd' => 'tool_' . $metaInfo['name'] . '_new_forObjects',
 		'perm' => 'EDIT_NAVIGATION || ADMINISTRATOR',
 		'enabled' => 1,
 	);
 }
-$we_menu_weSearch['000600'] = array(
+$we_menu_weSearch[600] = array(
 	'text' => g_l('searchtool', '[menu_advSearch]'),
-	'parent' => '000200',
+	'parent' => 200,
 	'cmd' => 'tool_' . $metaInfo['name'] . '_new_advSearch',
 	'perm' => 'EDIT_NAVIGATION || ADMINISTRATOR',
 	'enabled' => 1,
 );
 
 //'text'=> g_l('searchtool','[menu_new_group]'),
-//'parent'=> '000200',
+//'parent'=> 200,
 //'cmd'=> 'tool_' . $metaInfo['name'] . '_new_group',
 //'perm'=> 'ADMINISTRATOR',
 //'enabled'=> 1,
 
 
-$we_menu_weSearch['000800'] = array(
+$we_menu_weSearch[800] = array(
 	'text' => g_l('searchtool', '[menu_save]'),
-	'parent' => '000100',
+	'parent' => 100,
 	'cmd' => 'tool_' . $metaInfo['name'] . '_save',
 	'perm' => '',
 	'enabled' => 1,
 );
 
-$we_menu_weSearch['000900'] = array(
+$we_menu_weSearch[900] = array(
 	'text' => g_l('searchtool', '[menu_delete]'),
-	'parent' => '000100',
+	'parent' => 100,
 	'cmd' => 'tool_' . $metaInfo['name'] . '_delete',
 	'perm' => '',
 	'enabled' => 1,
 );
 
-$we_menu_weSearch['000950'] = array('parent' => '000100'); // separator
+$we_menu_weSearch[950] = array('parent' => 100); // separator
 
 
-$we_menu_weSearch['001000'] = array(
+$we_menu_weSearch[1000] = array(
 	'text' => g_l('searchtool', '[menu_exit]'),
-	'parent' => '000100',
+	'parent' => 100,
 	'cmd' => 'tool_' . $metaInfo['name'] . '_exit',
 	'perm' => '',
 	'enabled' => 1,
 );
 
-$we_menu_weSearch['003000'] = array(
+$we_menu_weSearch[3000] = array(
 	'text' => g_l('searchtool', '[menu_help]'),
-	'parent' => '000000',
+	'parent' => 0,
 	'perm' => '',
 	'enabled' => 1,
 );
 
-$we_menu_weSearch['003100'] = array(
+$we_menu_weSearch[3100] = array(
 	'text' => g_l('searchtool', '[menu_help]') . '&hellip;',
-	'parent' => '003000',
+	'parent' => 3000,
 	'cmd' => 'help_tools',
 	'perm' => '',
 	'enabled' => 1,
 );
 
-$we_menu_weSearch['003200'] = array(
+$we_menu_weSearch[3200] = array(
 	'text' => g_l('searchtool', '[menu_info]') . '&hellip;',
-	'parent' => '003000',
+	'parent' => 3000,
 	'cmd' => 'info_tools',
 	'perm' => '',
 	'enabled' => 1,

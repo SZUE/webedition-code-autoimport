@@ -107,18 +107,18 @@ class we_document extends we_root{
 	}
 
 	// returns the whole document Alias - don't remove
-	function getDocument($we_editmode = '0', $baseHref = '0', $we_transaction = ''){
+	function getDocument($we_editmode = 0, $baseHref = 0, $we_transaction = ''){
 		return $this->i_getDocument();
 	}
 
 	function initLanguageFromParent(){
 		$ParentID = $this->ParentID;
 		$i = 0;
-		while($this->Language == '') {
+		while(empty($this->Language)) {
 			if($ParentID == 0 || $i > 20){
 				we_loadLanguageConfig();
 				$this->Language = self::getDefaultLanguage();
-				if($this->Language == ''){
+				if(empty($this->Language)){
 					$this->Language = 'de_DE';
 				}
 			} else{
@@ -341,7 +341,7 @@ class we_document extends we_root{
 			$_ord = ($ordn == 'end' ? 10000 : (is_numeric($ordn) && $ordn > 0 ? $ordn : 0));
 
 			$_ppath = id_to_path($parentid, NAVIGATION_TABLE);
-			$_new_path = $_ppath == '/' ? $_ppath . $text : $_ppath . '/' . $text;
+			$_new_path = rtrim($_ppath, '/') . '/' . $text;
 
 			$rename = false;
 			if(empty($id)){
@@ -601,8 +601,8 @@ class we_document extends we_root{
 
 	function remove_image($name){
 		unset($this->elements[$name]);
-		unset($this->elements[$name . '_img_custom_alt']);
-		unset($this->elements[$name . '_img_custom_title']);
+		unset($this->elements[$name . we_imageDocument::ALT_FIELD]);
+		unset($this->elements[$name . we_imageDocument::TITLE_FIELD]);
 	}
 
 	/*
@@ -757,7 +757,7 @@ class we_document extends we_root{
 
 		$this->i_setExtensions();
 
-		if($this->Language == '' && $this->Table != TEMPLATES_TABLE){
+		if(empty($this->Language) && $this->Table != TEMPLATES_TABLE){
 			$this->initLanguageFromParent();
 		}
 	}
@@ -807,7 +807,7 @@ class we_document extends we_root{
 	protected function i_writeDocument(){
 		$update = $this->isMoved();
 		$doc = $this->i_getDocumentToSave();
-		if(!($doc || $doc == '')){
+		if(!($doc || empty($doc))){
 			return false;
 		}
 		if(!$this->i_writeSiteDir($doc) || !$this->i_writeMainDir($doc)){
@@ -861,8 +861,8 @@ class we_document extends we_root{
 				$img->LoadBinaryContent = false;
 				$img->initByID($val, FILE_TABLE);
 
-				$altField = $img->Name . '_img_custom_alt';
-				$titleField = $img->Name . '_img_custom_title';
+				$altField = $img->Name . we_imageDocument::ALT_FIELD;
+				$titleField = $img->Name . we_imageDocument::TITLE_FIELD;
 
 				if(isset($GLOBALS['lv']) && isset($GLOBALS['lv']->ClassName) && $GLOBALS['lv']->ClassName == 'we_shop_listviewShopVariants'){
 
@@ -1195,7 +1195,7 @@ class we_document extends we_root{
 		switch($link['type']){
 			case we_base_link::TYPE_INT:
 				$id = $link['id'];
-				if($id == ''){
+				if(empty($id)){
 					return '';
 				}
 				$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), 'Path', $db);

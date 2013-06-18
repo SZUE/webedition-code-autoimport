@@ -225,7 +225,7 @@ $Parts[] = array("html" => $_htmlTable->getHtml());
 $_buttons = we_button::position_yes_no_cancel(we_button::create_button("save", "javascript:document.we_form.submit();"), "", we_button::create_button("cancel", "javascript:self.close();")
 );
 
-$frame = we_multiIconBox::getHTML('', '100%', $Parts, '30', $_buttons, -1, '', '', false, g_l('modules_shop', '[paymentP]'), '', '', 'hidden');
+$frame = we_multiIconBox::getHTML('', '100%', $Parts, 30, $_buttons, -1, '', '', false, g_l('modules_shop', '[paymentP]'), '', '', 'hidden');
 
 
 echo we_html_element::jsElement('self.focus();') . '

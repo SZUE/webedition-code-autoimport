@@ -80,7 +80,7 @@ $_parts = array(
 	array('html' => $we_doc->searchProperties())
 );
 
-echo we_multiIconBox::getHTML('', '100%', $_parts, '30', '', -1, '', '', false) .
+echo we_multiIconBox::getHTML('', '100%', $_parts, 30, '', -1, '', '', false) .
  '
 
 </body>

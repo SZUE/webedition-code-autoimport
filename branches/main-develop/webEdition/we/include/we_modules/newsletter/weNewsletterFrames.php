@@ -643,7 +643,7 @@ class weNewsletterFrames extends weModuleFrames{
 		$gml_table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0, "width" => 538), 4, 2);
 		$gml_table->setCol(0, 0, array("class" => "defaultfont"), g_l('modules_newsletter', '[global_mailing_list]'));
 		$gml_table->setCol(1, 0, array(), we_html_tools::getPixel(5, 5));
-		$gml_table->setCol(2, 0, array(), $this->View->formFileChooser("380", "global_mailing_list", $settings["global_mailing_list"]));
+		$gml_table->setCol(2, 0, array(), $this->View->formFileChooser(380, "global_mailing_list", $settings["global_mailing_list"]));
 		$gml_table->setCol(2, 1, array('align' => 'right'), $deselect);
 		$gml_table->setCol(3, 0, array(), we_html_tools::getPixel(5, 5));
 
@@ -681,7 +681,7 @@ class weNewsletterFrames extends weModuleFrames{
 		$values[weNewsletterBlock::ATTACHMENT] = g_l('modules_newsletter', '[newsletter_type_6]');
 		$values[weNewsletterBlock::URL] = g_l('modules_newsletter', '[newsletter_type_7]');
 
-		return we_html_tools::htmlSelect($name, $values, 1, $selected, false, 'style="width:440;" onChange="we_cmd(\'switchPage\',2);"', "value", "315", "defaultfont");
+		return we_html_tools::htmlSelect($name, $values, 1, $selected, false, 'style="width:440;" onChange="we_cmd(\'switchPage\',2);"', "value", 315, "defaultfont");
 	}
 
 	function getHTMLBox($w, $h, $content, $headline = "", $width = 120, $height = 2){
@@ -991,13 +991,13 @@ class weNewsletterFrames extends weModuleFrames{
 
 			switch($block->Type){
 				case weNewsletterBlock::DOCUMENT:
-					$content.=we_html_tools::htmlFormElementTable($this->View->formWeDocChooser(FILE_TABLE, "320", 0, "block" . $counter . "_LinkID", $block->LinkID, "block" . $counter . "_LinkPath", "", "opener.top.content.hot=1;", "text/webedition", $this->weAutoColpleter), g_l('modules_newsletter', '[block_document]')) .
+					$content.=we_html_tools::htmlFormElementTable($this->View->formWeDocChooser(FILE_TABLE, 320, 0, "block" . $counter . "_LinkID", $block->LinkID, "block" . $counter . "_LinkPath", "", "opener.top.content.hot=1;", "text/webedition", $this->weAutoColpleter), g_l('modules_newsletter', '[block_document]')) .
 						we_html_tools::htmlFormElementTable(we_forms::checkbox((($block->Field) ? "0" : "1"), (($block->Field) ? false : true), "block" . $counter . "_use_def_template", g_l('modules_newsletter', '[use_default]'), false, "defaultfont", "top.content.hot=1;if(document.we_form.block" . $counter . "_use_def_template.checked){ document.we_form.block" . $counter . "_Field.value=0; document.we_form.block" . $counter . "_FieldPath.value='';}"), "&nbsp;&nbsp;&nbsp;") .
-						we_html_tools::htmlFormElementTable($this->View->formWeChooser(TEMPLATES_TABLE, "320", 0, "block" . $counter . "_Field", (!is_numeric($block->Field) ? 0 : $block->Field), "block" . $counter . "_FieldPath", "", "if(opener.document.we_form.block" . $counter . "_use_def_template.checked) opener.document.we_form.block" . $counter . "_use_def_template.checked=false;opener.top.content.hot=1;", "", $this->weAutoColpleter, "folder,text/weTmpl"), g_l('modules_newsletter', '[block_template]'));
+						we_html_tools::htmlFormElementTable($this->View->formWeChooser(TEMPLATES_TABLE, 320, 0, "block" . $counter . "_Field", (!is_numeric($block->Field) ? 0 : $block->Field), "block" . $counter . "_FieldPath", "", "if(opener.document.we_form.block" . $counter . "_use_def_template.checked) opener.document.we_form.block" . $counter . "_use_def_template.checked=false;opener.top.content.hot=1;", "", $this->weAutoColpleter, "folder,text/weTmpl"), g_l('modules_newsletter', '[block_template]'));
 					break;
 
 				case weNewsletterBlock::DOCUMENT_FIELD:
-					$content.=we_html_tools::htmlFormElementTable($this->View->formWeChooser(FILE_TABLE, "320", 0, "block" . $counter . "_LinkID", $block->LinkID, "block" . $counter . "_LinkPath", "", "opener.we_cmd(\'switchPage\',2);opener.top.content.hot=1;", "", $this->weAutoColpleter, "folder,text/webedition"), g_l('modules_newsletter', '[block_document]'));
+					$content.=we_html_tools::htmlFormElementTable($this->View->formWeChooser(FILE_TABLE, 320, 0, "block" . $counter . "_LinkID", $block->LinkID, "block" . $counter . "_LinkPath", "", "opener.we_cmd(\'switchPage\',2);opener.top.content.hot=1;", "", $this->weAutoColpleter, "folder,text/webedition"), g_l('modules_newsletter', '[block_document]'));
 
 					if($block->LinkID){
 						$values = $this->View->getFields($block->LinkID, FILE_TABLE);
@@ -1010,12 +1010,12 @@ class weNewsletterFrames extends weModuleFrames{
 					break;
 
 				case weNewsletterBlock::OBJECT:
-					$content.=we_html_tools::htmlFormElementTable($this->View->formWeChooser(OBJECT_FILES_TABLE, "320", 0, "block" . $counter . "_LinkID", $block->LinkID, "block" . $counter . "_LinkPath", "", "opener.top.content.hot=1;", (we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1), $this->weAutoColpleter, "folder,objectFile"), g_l('modules_newsletter', '[block_object]')) .
-						we_html_tools::htmlFormElementTable($this->View->formWeChooser(TEMPLATES_TABLE, "320", 0, "block" . $counter . "_Field", (!is_numeric($block->Field) ? 0 : $block->Field), "block" . $counter . "_FieldPath", "", "opener.top.content.hot=1;", "", $this->weAutoColpleter, "folder,text/weTmpl"), g_l('modules_newsletter', '[block_template]'));
+					$content.=we_html_tools::htmlFormElementTable($this->View->formWeChooser(OBJECT_FILES_TABLE, 320, 0, "block" . $counter . "_LinkID", $block->LinkID, "block" . $counter . "_LinkPath", "", "opener.top.content.hot=1;", (we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1), $this->weAutoColpleter, "folder,objectFile"), g_l('modules_newsletter', '[block_object]')) .
+						we_html_tools::htmlFormElementTable($this->View->formWeChooser(TEMPLATES_TABLE, 320, 0, "block" . $counter . "_Field", (!is_numeric($block->Field) ? 0 : $block->Field), "block" . $counter . "_FieldPath", "", "opener.top.content.hot=1;", "", $this->weAutoColpleter, "folder,text/weTmpl"), g_l('modules_newsletter', '[block_template]'));
 					break;
 
 				case weNewsletterBlock::OBJECT_FIELD:
-					$content.=we_html_tools::htmlFormElementTable($this->View->formWeChooser(OBJECT_FILES_TABLE, "320", 0, "block" . $counter . "_LinkID", $block->LinkID, "block" . $counter . "_LinkPath", "", "opener.we_cmd(\'switchPage\',2);opener.top.content.hot=1;", (we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1), $this->weAutoColpleter, "folder,objectFile"), g_l('modules_newsletter', '[block_object]'));
+					$content.=we_html_tools::htmlFormElementTable($this->View->formWeChooser(OBJECT_FILES_TABLE, 320, 0, "block" . $counter . "_LinkID", $block->LinkID, "block" . $counter . "_LinkPath", "", "opener.we_cmd(\'switchPage\',2);opener.top.content.hot=1;", (we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1), $this->weAutoColpleter, "folder,objectFile"), g_l('modules_newsletter', '[block_object]'));
 
 					if($block->LinkID){
 						$values = $this->View->getFields($block->LinkID, OBJECT_FILES_TABLE);
@@ -1028,7 +1028,7 @@ class weNewsletterFrames extends weModuleFrames{
 					break;
 
 				case weNewsletterBlock::FILE:
-					$content.=we_html_tools::htmlFormElementTable($this->View->formFileChooser("320", "block" . $counter . "_Field", (is_numeric($block->Field) ? "" : ((substr($block->Field, 0, 1) != "/") ? "" : $block->Field))), g_l('modules_newsletter', '[block_file]'));
+					$content.=we_html_tools::htmlFormElementTable($this->View->formFileChooser(320, "block" . $counter . "_Field", (is_numeric($block->Field) ? "" : ((substr($block->Field, 0, 1) != "/") ? "" : $block->Field))), g_l('modules_newsletter', '[block_file]'));
 					break;
 
 				case weNewsletterBlock::TEXT:
@@ -1057,11 +1057,11 @@ class weNewsletterFrames extends weModuleFrames{
 					break;
 
 				case weNewsletterBlock::ATTACHMENT:
-					$content.=we_html_tools::htmlFormElementTable($this->View->formWeChooser(FILE_TABLE, "320", 0, "block" . $counter . "_LinkID", $block->LinkID, "block" . $counter . "_LinkPath", "", "", "", $this->weAutoColpleter, "folder,text/xml,text/webedition,image/*,text/html,application/*,application/x-shockwave-flash,video/quicktime"), g_l('modules_newsletter', '[block_attachment]'));
+					$content.=we_html_tools::htmlFormElementTable($this->View->formWeChooser(FILE_TABLE, 320, 0, "block" . $counter . "_LinkID", $block->LinkID, "block" . $counter . "_LinkPath", "", "", "", $this->weAutoColpleter, "folder,text/xml,text/webedition,image/*,text/html,application/*,application/x-shockwave-flash,video/quicktime"), g_l('modules_newsletter', '[block_attachment]'));
 					break;
 
 				case weNewsletterBlock::URL:
-					$content.=we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("block" . $counter . "_Field", 49, (is_numeric($block->Field) ? "" : $block->Field), "", "style='width:440'", "text", "0", "0", "top.content"), g_l('modules_newsletter', '[block_url]'));
+					$content.=we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("block" . $counter . "_Field", 49, (is_numeric($block->Field) ? "" : $block->Field), "", "style='width:440'", "text", 0, 0, "top.content"), g_l('modules_newsletter', '[block_url]'));
 					break;
 			}
 
@@ -1103,7 +1103,7 @@ class weNewsletterFrames extends weModuleFrames{
 			$plus = ($i == $count - 1 ? we_button::create_button("image:btn_function_plus", "javascript:we_cmd('addGroup')") : null);
 			$trash = ($count > 1 ? we_button::create_button("image:btn_function_trash", "javascript:we_cmd('delGroup'," . $i . ")") : null);
 
-			$buttons = we_button::create_button_table(array($plus, $trash), "10", array("align" => "right"));
+			$buttons = we_button::create_button_table(array($plus, $trash), 10, array("align" => "right"));
 
 			$wepos = weGetCookieVariable("but_newsletter_group_box_$i");
 
@@ -1120,7 +1120,7 @@ class weNewsletterFrames extends weModuleFrames{
 		$table->setCol(1, 0, array(), we_html_tools::getPixel(10, 10));
 		$table->setCol(2, 0, array(), we_html_tools::htmlFormElementTable($this->View->formNewsletterDirChooser(($this->def_width - 120), 0, "ParentID", $this->View->newsletter->ParentID, "Path", dirname($this->View->newsletter->Path), "opener.top.content.hot=1;", $this->weAutoColpleter), g_l('modules_newsletter', '[dir]')));
 
-		//$table->setCol(2,0,array(),we_html_tools::htmlFormElementTable($this->View->formWeDocChooser(NEWSLETTER_TABLE,"320",0,"ParentID",$this->View->newsletter->ParentID,"Path",dirname($this->View->newsletter->Path),"opener.top.content.hot=1;","folder"),g_l('modules_newsletter','[dir]')));
+		//$table->setCol(2,0,array(),we_html_tools::htmlFormElementTable($this->View->formWeDocChooser(NEWSLETTER_TABLE,320,0,"ParentID",$this->View->newsletter->ParentID,"Path",dirname($this->View->newsletter->Path),"opener.top.content.hot=1;","folder"),g_l('modules_newsletter','[dir]')));
 		$parts = array(
 			array("headline" => "", "html" => "", "space" => 140, "noline" => 1),
 			array("headline" => g_l('modules_newsletter', '[path]'), "html" => $table->getHtml(), "space" => 140),
@@ -1147,7 +1147,7 @@ class weNewsletterFrames extends weModuleFrames{
 					we_html_element::htmlInput(array("type" => "checkbox", "value" => 1, "name" => "isEmbedImagesChk", "onClick" => $this->topFrame . ".hot=1;if(document.we_form.isEmbedImagesChk.checked){document.we_form.isEmbedImages.value=1;}else{document.we_form.isEmbedImages.value=0;}"), g_l('modules_newsletter', '[isEmbedImages]'))
 				);
 			$_embedImagesHid = we_html_element::htmlHidden(array("name" => "isEmbedImages", "value" => $this->View->newsletter->isEmbedImages));
-			//$_embedImagesChk = we_html_element::htmlInput(array("type"=>"checkbox", "value"=>"1", "name"=>"_isEmbedImages" ,"onClick"=>$this->topFrame.".hot=1;","checked"=>($this->View->newsletter->isEmbedImages?"true":"false")),g_l('modules_newsletter','[isEmbedImages]'));
+			//$_embedImagesChk = we_html_element::htmlInput(array("type"=>"checkbox", "value"=>1, "name"=>"_isEmbedImages" ,"onClick"=>$this->topFrame.".hot=1;","checked"=>($this->View->newsletter->isEmbedImages?"true":"false")),g_l('modules_newsletter','[isEmbedImages]'));
 			$_embedImagesLab = we_html_element::htmlLabel(array("class" => "defaultfont", "onClick" => $this->topFrame . ".hot=1;if(document.we_form.isEmbedImagesChk.checked){ document.we_form.isEmbedImagesChk.checked=false; document.we_form.isEmbedImages.value=0; }else{document.we_form.isEmbedImagesChk.checked=true;document.we_form.isEmbedImages.value=1;}"), g_l('modules_newsletter', '[isEmbedImages]'));
 
 			$table->setCol(8, 0, array(), we_html_tools::htmlFormElementTable($_embedImagesHid . $_embedImagesChk . "&nbsp;" . $_embedImagesLab, ""));
@@ -1757,7 +1757,7 @@ class weNewsletterFrames extends weModuleFrames{
 						$this->View->getHiddens() .
 						(isset($_REQUEST["grp"]) ? $this->View->htmlHidden("group", $_REQUEST["grp"]) : "") .
 						$this->View->htmlHidden("MAX_FILE_SIZE", "8388608") .
-						we_html_tools::htmlDialogLayout($table->getHtml(), g_l('modules_newsletter', '[csv_upload]'), $buttons, "100%", "30", "", "hidden")
+						we_html_tools::htmlDialogLayout($table->getHtml(), g_l('modules_newsletter', '[csv_upload]'), $buttons, "100%", 30, "", "hidden")
 					)
 				)
 		);
@@ -1806,9 +1806,9 @@ class weNewsletterFrames extends weModuleFrames{
 							$this->View->htmlHidden("pnt", "clear_log") .
 							$this->View->htmlHidden("ncmd", "do_clear_log") .
 							we_html_tools::htmlDialogLayout(
-								$table->getHtml(), g_l('modules_newsletter', '[clear_log]'), we_button::position_yes_no_cancel($ok, null, $cancel), "100%", "30", "", "hidden") :
+								$table->getHtml(), g_l('modules_newsletter', '[clear_log]'), we_button::position_yes_no_cancel($ok, null, $cancel), "100%", 30, "", "hidden") :
 							we_html_tools::htmlDialogLayout(
-								$table->getHtml(), g_l('modules_newsletter', '[csv_download]'), we_button::position_yes_no_cancel(null, $close, null), "100%", "30", "", "hidden")
+								$table->getHtml(), g_l('modules_newsletter', '[csv_download]'), we_button::position_yes_no_cancel(null, $close, null), "100%", 30, "", "hidden")
 						) .
 						we_html_element::jsElement("self.focus();")
 					)
@@ -2162,7 +2162,7 @@ class weNewsletterFrames extends weModuleFrames{
 					$this->View->htmlHidden("eid", "") .
 					//we_button::create_button_table(array($close,$edit)).
 
-					we_html_tools::htmlDialogLayout($chooser->getHtml() . '<br>' . $out, g_l('modules_newsletter', '[select_file]'), we_button::create_button_table(array($close, $edit)), "100%", "30", "597")
+					we_html_tools::htmlDialogLayout($chooser->getHtml() . '<br>' . $out, g_l('modules_newsletter', '[select_file]'), we_button::create_button_table(array($close, $edit)), "100%", 30, "597")
 				)
 		);
 
@@ -2425,7 +2425,7 @@ class weNewsletterFrames extends weModuleFrames{
 				top.send_body.setProgressText("title","<font color=\"#006699\"><b>' . g_l('modules_newsletter', '[finished]') . '</b></font>",2);
 				updateText("' . g_l('modules_newsletter', '[campaign_ends]') . '");
 			');
-			$this->View->db->query("UPDATE " . NEWSLETTER_TABLE . " SET Step='0',Offset='0' WHERE ID=" . $this->View->newsletter->ID);
+			$this->View->db->query("UPDATE " . NEWSLETTER_TABLE . " SET Step=0,Offset=0 WHERE ID=" . $this->View->newsletter->ID);
 			if(!$test)
 				$this->View->newsletter->addLog("log_end_send");
 			return;

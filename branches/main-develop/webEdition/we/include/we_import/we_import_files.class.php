@@ -303,14 +303,13 @@ function checkButtons(){
 					"space" => 150
 				);
 
-				$widthInput = we_html_tools::htmlTextInput("width", "10", $this->width, "", '', "text", 60);
-				$heightInput = we_html_tools::htmlTextInput("height", "10", $this->height, "", '', "text", 60);
+				$widthInput = we_html_tools::htmlTextInput("width", 10, $this->width, "", '', "text", 60);
+				$heightInput = we_html_tools::htmlTextInput("height", 10, $this->height, "", '', "text", 60);
 
 				$widthSelect = '<select size="1" class="weSelect" name="widthSelect"><option value="pixel"' . (($this->widthSelect == "pixel") ? ' selected="selected"' : '') . '>' . g_l('weClass', "[pixel]") . '</option><option value="percent"' . (($this->widthSelect == "percent") ? ' selected="selected"' : '') . '>' . g_l('weClass', "[percent]") . '</option></select>';
 				$heightSelect = '<select size="1" class="weSelect" name="heightSelect"><option value="pixel"' . (($this->heightSelect == "pixel") ? ' selected="selected"' : '') . '>' . g_l('weClass', "[pixel]") . '</option><option value="percent"' . (($this->heightSelect == "percent") ? ' selected="selected"' : '') . '>' . g_l('weClass', "[percent]") . '</option></select>';
 
-				$ratio_checkbox = we_forms::checkbox(
-						"1", $this->keepRatio, "keepRatio", g_l('thumbnails', "[ratio]"));
+				$ratio_checkbox = we_forms::checkbox(1, $this->keepRatio, "keepRatio", g_l('thumbnails', "[ratio]"));
 
 				$_resize = '<table border="0" cellpadding="2" cellspacing="0">
 				<tr>
@@ -333,13 +332,13 @@ function checkButtons(){
 				);
 
 				$_radio0 = we_forms::radiobutton(
-						"0", $this->degrees == 0, "degrees", g_l('weClass', "[rotate0]"));
+						0, $this->degrees == 0, "degrees", g_l('weClass', "[rotate0]"));
 				$_radio180 = we_forms::radiobutton(
-						"180", $this->degrees == 180, "degrees", g_l('weClass', "[rotate180]"));
+						180, $this->degrees == 180, "degrees", g_l('weClass', "[rotate180]"));
 				$_radio90l = we_forms::radiobutton(
-						"90", $this->degrees == 90, "degrees", g_l('weClass', "[rotate90l]"));
+						90, $this->degrees == 90, "degrees", g_l('weClass', "[rotate90l]"));
 				$_radio90r = we_forms::radiobutton(
-						"270", $this->degrees == 270, "degrees", g_l('weClass', "[rotate90r]"));
+						270, $this->degrees == 270, "degrees", g_l('weClass', "[rotate90r]"));
 
 				$parts[] = array(
 					"headline" => g_l('weClass', "[rotate]"),
@@ -431,7 +430,7 @@ function checkButtons(){
 		$fileinput = '<table><tr><td valign="top" class="weMultiIconBoxHeadline">' . g_l('importFiles', "[file]") . '&nbsp;<span id="headline_uploadFiles_WEFORMNUM">WE_FORM_NUM</span></td><td>' . we_html_tools::getPixel(
 				35, 5) . '</td><td>' . $fileinput . '</td></tr></table>';
 
-		$form_content = str_replace("WEFORMNUM", "0", $this->_getHiddens("buttons", $this->step) . str_replace("WE_FORM_NUM", "1", $fileinput));
+		$form_content = str_replace("WEFORMNUM", 0, $this->_getHiddens("buttons", $this->step) . str_replace("WE_FORM_NUM", 1, $fileinput));
 		$formhtml = we_html_element::htmlForm(
 				array(
 				"action" => WEBEDITION_DIR . "we_cmd.php",

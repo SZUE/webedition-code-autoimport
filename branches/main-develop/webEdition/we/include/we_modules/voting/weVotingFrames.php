@@ -932,7 +932,7 @@ class weVotingFrames extends weModuleFrames{
 
 			$body = we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), we_html_element::htmlHidden(array("name" => "group", "value" => (isset($group) ? $group : ""))) .
 						we_html_tools::htmlDialogLayout(
-							$table->getHtml(), g_l('modules_voting', '[csv_download]'), we_button::position_yes_no_cancel(null, $close, null), "100%", "30", 350)
+							$table->getHtml(), g_l('modules_voting', '[csv_download]'), we_button::position_yes_no_cancel(null, $close, null), "100%", 30, 350)
 						.
 						we_html_element::jsElement("self.focus();")
 					)
@@ -971,7 +971,7 @@ class weVotingFrames extends weModuleFrames{
 
 			$body = we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), we_html_element::htmlHidden(array("name" => "group", "value" => (isset($group) ? $group : ""))) .
 						we_html_tools::htmlDialogLayout(
-							$table->getHtml(), g_l('modules_voting', '[csv_download]'), we_button::position_yes_no_cancel(null, $close, null), "100%", "30", 350)
+							$table->getHtml(), g_l('modules_voting', '[csv_download]'), we_button::position_yes_no_cancel(null, $close, null), "100%", 30, 350)
 						.
 						we_html_element::jsElement("self.focus();")
 					)

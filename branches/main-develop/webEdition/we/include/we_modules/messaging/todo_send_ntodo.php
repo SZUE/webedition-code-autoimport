@@ -96,7 +96,7 @@ if(!empty($res['ok'])){
 		    </tr>') . '
 	    </table>
 	';
-	echo we_html_tools::htmlDialogLayout($tbl, $heading, we_button::create_button("ok", "javascript:top.window.close()"), "100%", "30", "", "hidden");
+	echo we_html_tools::htmlDialogLayout($tbl, $heading, we_button::create_button("ok", "javascript:top.window.close()"), "100%", 30, "", "hidden");
 	?>
 </body>
 </html>

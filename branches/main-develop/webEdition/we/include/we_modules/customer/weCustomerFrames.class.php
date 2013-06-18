@@ -938,7 +938,7 @@ class weCustomerFrames extends weModuleFrames{
 	}") .
 					we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
 						we_html_tools::htmlDialogLayout(
-							$table->getHtml(), g_l('modules_customer', '[search]'), we_button::position_yes_no_cancel(null, we_button::create_button("close", "javascript:self.close();")), "100%", "30", "558"
+							$table->getHtml(), g_l('modules_customer', '[search]'), we_button::position_yes_no_cancel(null, we_button::create_button("close", "javascript:self.close();")), "100%", 30, 558
 						)
 					) .
 					((isset($_REQUEST['mode']) && $_REQUEST['mode']) ? we_html_element::jsElement("setTimeout('lookForDateFields()', 1);") : "")

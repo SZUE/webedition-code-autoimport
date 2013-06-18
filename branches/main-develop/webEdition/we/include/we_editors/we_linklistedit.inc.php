@@ -616,22 +616,22 @@ if(isset($_REQUEST["ok"]) && $_REQUEST["ok"] && $_REQUEST['we_cmd'][0] == "edit_
 						<td colspan="9">' . we_html_tools::getPixel(2, 2) . '</td>
 					</tr>
 					<tr>
-						<td>' . we_forms::checkbox("1", $jsstatus, "jsstatus", g_l('global', "[status]"), true, "small") . '</td>
+						<td>' . we_forms::checkbox(1, $jsstatus, "jsstatus", g_l('global', "[status]"), true, "small") . '</td>
 						<td></td>
-						<td>' . we_forms::checkbox("1", $jsscrollbars, "jsscrollbars", g_l('global', "[scrollbars]"), true, "small") . '</td>
+						<td>' . we_forms::checkbox(1, $jsscrollbars, "jsscrollbars", g_l('global', "[scrollbars]"), true, "small") . '</td>
 						<td></td>
-						<td>' . we_forms::checkbox("1", $jsmenubar, "jsmenubar", g_l('global', "[menubar]"), true, "small") . '</td>
+						<td>' . we_forms::checkbox(1, $jsmenubar, "jsmenubar", g_l('global', "[menubar]"), true, "small") . '</td>
 						<td></td>
 						<td></td>
 						<td></td>
 						<td></td>
 					</tr>
 					<tr>
-						<td>' . we_forms::checkbox("1", $jsresizable, "jsresizable", g_l('global', "[resizable]"), true, "small") . '</td>
+						<td>' . we_forms::checkbox(1, $jsresizable, "jsresizable", g_l('global', "[resizable]"), true, "small") . '</td>
 						<td></td>
-						<td>' . we_forms::checkbox("1", $jslocation, "jslocation", g_l('global', "[location]"), true, "small") . '</td>
+						<td>' . we_forms::checkbox(1, $jslocation, "jslocation", g_l('global', "[location]"), true, "small") . '</td>
 						<td></td>
-						<td>' . we_forms::checkbox("1", $jstoolbar, "jstoolbar", g_l('global', "[toolbar]"), true, "small") . '</td>
+						<td>' . we_forms::checkbox(1, $jstoolbar, "jstoolbar", g_l('global', "[toolbar]"), true, "small") . '</td>
 						<td></td>
 						<td></td>
 						<td></td>
@@ -641,9 +641,9 @@ if(isset($_REQUEST["ok"]) && $_REQUEST["ok"] && $_REQUEST['we_cmd'][0] == "edit_
 		$foo = '
 				<table border="0" cellspacing="0" cellpadding="0">
 					<tr>
-						<td>' . we_forms::checkbox("1", $jswin, "jswin", g_l('global', "[open]")) . '</td>
+						<td>' . we_forms::checkbox(1, $jswin, "jswin", g_l('global', "[open]")) . '</td>
 						<td>' . we_html_tools::getPixel(10, 2) . '</td>
-						<td>' . we_forms::checkbox("1", $jscenter, "jscenter", g_l('global', "[center]"), true, "defaultfont", "if(this.checked){if(this.form.jswidth.value==''){this.form.jswidth.value='100';};if(this.form.jsheight.value==''){this.form.jsheight.value='100';};}") . '</td>
+						<td>' . we_forms::checkbox(1, $jscenter, "jscenter", g_l('global', "[center]"), true, "defaultfont", "if(this.checked){if(this.form.jswidth.value==''){this.form.jswidth.value='100';};if(this.form.jsheight.value==''){this.form.jsheight.value='100';};}") . '</td>
 					</tr>
 				</table>';
 		$jswinonoff = we_html_tools::htmlFormElementTable($jsWinProps, $foo, "left", "defaultfont", we_html_tools::getPixel(10, 2), "", "", "", "", 0);

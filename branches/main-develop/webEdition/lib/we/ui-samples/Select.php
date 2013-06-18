@@ -84,7 +84,7 @@ $select3 = new we_ui_controls_Select(
 		)
 );
 
-$select->addOption("7", "added Option 7");
+$select->addOption(7, "added Option 7");
 
 $addedOptions = array(
 	'8' => 'new Option 8',

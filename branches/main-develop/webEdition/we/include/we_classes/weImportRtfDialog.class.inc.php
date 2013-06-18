@@ -85,9 +85,9 @@ function importFile(){
 	<tr><td class="defaultfont"><b>' . g_l('importrtf', "[chose]") . '</b></td></tr>
 	<tr><td><input type="file" name="fileName" size="50" onKeyDown="return false" /></td></tr>
 	<tr><td>' . we_html_tools::getPixel(5, 10) . '</td></tr>
-	<tr><td>' . we_forms::checkbox("1", (isset($this->args["applyFontName"]) && $this->args["applyFontName"] == 1), "we_dialog_args[applyFontName]", g_l('importrtf', "[use_fontname]")) . '</td></tr>
-	<tr><td>' . we_forms::checkbox("1", (isset($this->args["applyFontSize"]) && $this->args["applyFontSize"] == 1), "we_dialog_args[applyFontSize]", g_l('importrtf', "[use_fontsize]")) . '</td></tr>
-	<tr><td>' . we_forms::checkbox("1", (isset($this->args["applyFontColor"]) && $this->args["applyFontColor"] == 1), "we_dialog_args[applyFontColor]", g_l('importrtf', "[use_fontcolor]")) . '</td></tr>
+	<tr><td>' . we_forms::checkbox(1, (isset($this->args["applyFontName"]) && $this->args["applyFontName"] == 1), "we_dialog_args[applyFontName]", g_l('importrtf', "[use_fontname]")) . '</td></tr>
+	<tr><td>' . we_forms::checkbox(1, (isset($this->args["applyFontSize"]) && $this->args["applyFontSize"] == 1), "we_dialog_args[applyFontSize]", g_l('importrtf', "[use_fontsize]")) . '</td></tr>
+	<tr><td>' . we_forms::checkbox(1, (isset($this->args["applyFontColor"]) && $this->args["applyFontColor"] == 1), "we_dialog_args[applyFontColor]", g_l('importrtf', "[use_fontcolor]")) . '</td></tr>
 	<tr><td>' . we_html_tools::getPixel(5, 22) . '</td></tr>
 </table><input type="hidden" name="we_pageNr" value="2" />';
 			case 2:

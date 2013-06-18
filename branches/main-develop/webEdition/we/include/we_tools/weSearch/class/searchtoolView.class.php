@@ -2572,7 +2572,7 @@ class searchtoolView extends weToolView{
 			;
 		}
 		if(we_hasPerm('PUBLISH') && ($whichSearch == "AdvSearch" || $whichSearch == "DocSearch")){
-			$publishButtonCheckboxAll = we_forms::checkbox("1", 0, "publish_all_" . $whichSearch, "", false, "middlefont", "checkAllPubChecks('" . $whichSearch . "')");
+			$publishButtonCheckboxAll = we_forms::checkbox(1, 0, "publish_all_" . $whichSearch, "", false, "middlefont", "checkAllPubChecks('" . $whichSearch . "')");
 			$publishButton = we_button::create_button("publish", "javascript:publishDocs('" . $whichSearch . "');", true, 100, 22, "", "");
 		}
 

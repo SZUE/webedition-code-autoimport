@@ -69,7 +69,7 @@ class we_listview extends listviewBase{
 	 * @return we_listview
 	 */
 
-	function __construct($name = '0', $rows = 999999999, $offset = 0, $order = '', $desc = false, $docType = '', $cats = '', $catOr = false, $casesensitive = false, $workspaceID = '0', $contentTypes = '', $cols = '', $searchable = true, $condition = '', $calendar = '', $datefield = '', $date = '', $weekstart = '', $categoryids = '', $customerFilterType = 'off', $subfolders = true, $customers = '', $id = '', $languages = '', $numorder = false, $hidedirindex = false){
+	function __construct($name = 0, $rows = 999999999, $offset = 0, $order = '', $desc = false, $docType = '', $cats = '', $catOr = false, $casesensitive = false, $workspaceID = 0, $contentTypes = '', $cols = '', $searchable = true, $condition = '', $calendar = '', $datefield = '', $date = '', $weekstart = '', $categoryids = '', $customerFilterType = 'off', $subfolders = true, $customers = '', $id = '', $languages = '', $numorder = false, $hidedirindex = false){
 		parent::__construct($name, $rows, $offset, $order, $desc, $cats, $catOr, $workspaceID, $cols, $calendar, $datefield, $date, $weekstart, $categoryids, $customerFilterType, $id);
 
 		$this->docType = trim($docType);
