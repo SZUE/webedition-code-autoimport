@@ -64,9 +64,10 @@ class we_wysiwyg{
 	private $isFrontendEdit = false;
 	private $htmlSpecialchars = true; // in wysiwyg default was "true" (although Tag-Hilfe says "false")
 	private $contentCss = '';
+	private $isFrontendInPopup = false;
 	public static $editorType = WYSIWYG_TYPE; //FIXME: remove after old editor is removed
 
-	function __construct($name, $width, $height, $value = '', $propstring = '', $bgcol = '', $fullscreen = '', $className = '', $fontnames = '', $outsideWE = false, $xml = false, $removeFirstParagraph = true, $inlineedit = true, $baseHref = '', $charset = '', $cssClasses = '', $Language = '', $test = '', $spell = true, $isFrontendEdit = false, $buttonpos = 'top', $oldHtmlspecialchars = true, $contentCss = '', $origName = '', $tinyParams = '', $contextmenu = ''){
+	function __construct($name, $width, $height, $value = '', $propstring = '', $bgcol = '', $fullscreen = '', $className = '', $fontnames = '', $outsideWE = false, $xml = false, $removeFirstParagraph = true, $inlineedit = true, $baseHref = '', $charset = '', $cssClasses = '', $Language = '', $test = '', $spell = true, $isFrontendEdit = false, $buttonpos = 'top', $oldHtmlspecialchars = true, $contentCss = '', $origName = '', $tinyParams = '', $contextmenu = '', $isFrontendInPopup = false){
 		$this->propstring = $propstring ? ',' . $propstring . ',' : '';
 		$this->restrictContextmenu = $contextmenu ? ',' . $contextmenu . ',' : '';
 		$this->createContextmenu = trim($contextmenu," ,'") == 'false' ? false : true;
@@ -141,6 +142,7 @@ class we_wysiwyg{
 		$this->height = $height;
 		$this->ref = preg_replace('%[^0-9a-zA-Z_]%', '', $this->name);
 		$this->hiddenValue = $value;
+		$this->isFrontendInPopup = $isFrontendInPopup;
 
 		if($inlineedit){
 			if($value){
@@ -1080,18 +1082,22 @@ function tinyMCECallRegisterDialog(win,action){
 		return false;
 	}
 
-	function getEditButtonHTML(){
+	function getEditButtonHTML($value = ''){//FIXME: throw out parameter $value and test: in Frontend wie only have a placeholder as value because we load content per JS
 		list($tbwidth, $tbheight) = $this->getToolbarWidthAndHeight();
 		$tbheight += self::$editorType == 'tinyMCE' ? 18 : 0;
 		$fns = '';
 		foreach($this->fontnames as $fn){
 			$fns .= str_replace(",", ";", $fn) . ",";
 		}
+		if($this->isFrontendEdit){
+			return we_button::create_button("image:btn_edit_edit", "javascript:open_wysiwyg_win('open_wysiwyg_window', '" . $this->name . "', '" . max(220, $this->width) . "', '" . $this->height . "','" . we_cmd_enc($value) . "','" . $this->propstring . "','" . $this->className . "','" . rtrim($fns, ',') . "','" . $this->outsideWE . "','" . $tbwidth . "','" . $tbheight . "','" . $this->xml . "','" . $this->removeFirstParagraph . "','" . $this->bgcol . "','" . $this->baseHref . "','" . $this->charset . "','" . $this->cssClassesCSV . "','" . $this->Language . "','" . we_cmd_enc($this->contentCss) . "','" . $this->origName . "','" . we_cmd_enc($this->tinyParams) . "','" . we_cmd_enc($this->restrictContextmenu) . "', 'true');", true, 25);
+		}
+		
 		return we_button::create_button("image:btn_edit_edit", "javascript:we_cmd('open_wysiwyg_window', '" . $this->name . "', '" . max(220, $this->width) . "', '" . $this->height . "','" . $GLOBALS["we_transaction"] . "','" . $this->propstring . "','" . $this->className . "','" . rtrim($fns, ',') . "','" . $this->outsideWE . "','" . $tbwidth . "','" . $tbheight . "','" . $this->xml . "','" . $this->removeFirstParagraph . "','" . $this->bgcol . "','" . $this->baseHref . "','" . $this->charset . "','" . $this->cssClassesCSV . "','" . $this->Language . "','" . we_cmd_enc($this->contentCss) . "','" . $this->origName . "','" . we_cmd_enc($this->tinyParams) . "','" . we_cmd_enc($this->restrictContextmenu) . "');", true, 25);
 	}
 
-	function getHTML(){
-		return ($this->inlineedit ? $this->getInlineHTML() : $this->getEditButtonHTML());
+	function getHTML($value = ''){
+		return ($this->inlineedit ? $this->getInlineHTML() : $this->getEditButtonHTML($value));
 	}
 
 	function getToolbarRows(){
@@ -1433,15 +1439,20 @@ function tinyMCECallRegisterDialog(win,action){
 						skin : "o2k7",
 						skin_variant : "silver",
 
-						' . ($this->tinyParams != '' ? '//paramas from attribute tinyparams
+						' . ($this->tinyParams != '' ? '//params from attribute tinyparams
 						' . $this->tinyParams . ',' : '') . '
 
 						setup : function(ed){
 							ed.settings.language = "' . we_core_Local::weLangToLocale($GLOBALS['WE_LANGUAGE']) . '";
 
-							ed.onInit.add(function(ed){
+							ed.onInit.add(function(ed, o){
 								ed.pasteAsPlainText = ' . $pastetext . ';
 								ed.controlManager.setActive("pastetext", ' . $pastetext . ');
+								' . ($this->isFrontendInPopup ? '
+									if(top.opener){
+										ed.setContent(top.opener.document.getElementById("div_wysiwyg_' . $this->name . '").innerHTML)
+									}
+									' : '') . '
 							});
 							'
 						. (!$this->removeFirstParagraph ? '' : '
