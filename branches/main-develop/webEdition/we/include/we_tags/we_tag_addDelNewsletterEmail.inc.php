@@ -134,16 +134,34 @@ function we_tag_addDelNewsletterEmail($attribs){
 			switch($type){
 				case 'customer':
 					$__query = getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ' . $_customerFieldPrefs['customer_email_field'] . "='" . $db->escape($f['subscribe_mail']) . "'", $db);
+					
+					/** original code before bug #5589
+					*if(!empty($__query)){
+					*	$emailExistsInOneOfTheLists = true;
+					*}
+					*foreach($abos as $cAbo){
+					*	$dbAbo = isset($__query[$cAbo]) ? $__query[$cAbo] : '';
+					*	if(!empty($dbAbo)){
+					*		$emailExistsInOneOfTheLists = true;
+					*	}
+					*	$lists .= $cAbo . ',';
+					*}
+					*/
+					
+					// #5589 start
 					if(!empty($__query)){
-						$emailExistsInOneOfTheLists = true;
-					}
-					foreach($abos as $cAbo){
-						$dbAbo = isset($__query[$cAbo]) ? $__query[$cAbo] : '';
-						if(!empty($dbAbo)){
+						foreach($abos as $cAbo){
+							$dbAbo = isset($__query[$cAbo]) ? $__query[$cAbo] : false;
+							if(empty($dbAbo)){
+								$lists .= $cAbo . ',';
+							}
+						}
+						if(empty($lists)){// subscriber exists in all lists
 							$emailExistsInOneOfTheLists = true;
 						}
-						$lists .= $cAbo . ',';
 					}
+					// #5589 end
+					
 					break;
 				case 'csv':
 					foreach($paths as $p){
