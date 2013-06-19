@@ -924,9 +924,9 @@ class we_object extends we_document{
 			case 'href':
 				$typeVal = $this->getElement($name . "hreftype", "dat");
 				$typeSelect = '<select class="weSelect" id="we_' . $this->Name . '_input[' . $name . 'hreftype]" name="we_' . $this->Name . '_input[' . $name . 'hreftype]" onchange="_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_entry_at_class\',\'' . $GLOBALS['we_transaction'] . '\',\'' . $identifier . '\');">
-			<option' . (($typeVal == we_base_link::TYPE_ALL || $typeVal == "") ? " selected" : "") . ' value="'.we_base_link::TYPE_ALL.'">all
-			<option' . (($typeVal == we_base_link::TYPE_INT) ? " selected" : "") . ' value="'.we_base_link::TYPE_INT.'">int
-			<option' . (($typeVal == we_base_link::TYPE_EXT) ? " selected" : "") . ' value="'.we_base_link::TYPE_EXT.'">ext
+			<option' . (($typeVal == we_base_link::TYPE_ALL || $typeVal == "") ? " selected" : "") . ' value="' . we_base_link::TYPE_ALL . '">all
+			<option' . (($typeVal == we_base_link::TYPE_INT) ? " selected" : "") . ' value="' . we_base_link::TYPE_INT . '">int
+			<option' . (($typeVal == we_base_link::TYPE_EXT) ? " selected" : "") . ' value="' . we_base_link::TYPE_EXT . '">ext
 			</select>';
 				$fileVal = $this->getElement($name . "hreffile", "dat");
 				$fileVal = $fileVal ? $fileVal : "true";
@@ -2225,7 +2225,7 @@ class we_object extends we_document{
 
 	public function we_save($resave = 0, $skipHook = 0){
 		$this->save();
-		if(resave == 0){
+		if($resave == 0){
 			we_history::insertIntoHistory($this);
 		}
 		/* hook */

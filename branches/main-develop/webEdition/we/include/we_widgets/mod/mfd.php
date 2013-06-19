@@ -37,7 +37,7 @@ $bTypeCls = (bool) $sTypeBinary{3};
 $iDate = intval($aCols[1]);
 switch($iDate){
 	default:
-	break;
+		break;
 	case 1 :
 		$timestamp = 'CURDATE()';
 		break;
@@ -98,7 +98,7 @@ if($bTypeCls && we_hasPerm('CAN_SEE_OBJECTS') && defined("OBJECT_TABLE") && $_SE
 	$_where[] = '"' . stripTblPrefix(OBJECT_TABLE) . '"';
 }
 
-$_whereSeem =($_SESSION['weS']['we_mode'] == "seem")? " AND ContentType!='folder' ":'';
+$_whereSeem = ($_SESSION['weS']['we_mode'] == "seem") ? " AND ContentType!='folder' " : '';
 
 $lastModified = '<table cellspacing="0" cellpadding="0" border="0">';
 $_count = 10;
@@ -131,6 +131,7 @@ while($j < $iMaxItems) {
 				$_show = we_history::userHasPerms($_hash['CreatorID'], $_hash['Owners'], $_hash['RestrictOwners']);
 			}
 			if($_show){
+				$user = f('SELECT UserName FROM ' . HISTORY_TABLE . ' WHERE DID=' . $DB_WE->f('DID') . ' AND DocumentTable="' . $DB_WE->f('DocumentTable') . '" AND ModDate="' . $DB_WE->f('m') . '" LIMIT 1', 'UserName', $_db);
 				if($i + 1 <= $iMaxItems){
 					++$i;
 					++$j;
@@ -138,7 +139,7 @@ while($j < $iMaxItems) {
 						'<td valign="middle" class="middlefont">' .
 						'<a href="javascript:top.weEditorFrameController.openDocument(\'' . $_table . '\',\'' . $_hash['ID'] . '\',\'' . $_hash['ContentType'] . '\');" title="' . $_hash['Path'] . '" style="color:#000000;text-decoration:none;">' . $_hash['Path'] . "</a></td>";
 					if($bMfdBy){
-						$lastModified .= '<td>' . we_html_tools::getPixel(5, 1) . '</td><td class="middlefont" nowrap>' . $DB_WE->f("UserName") . (($bDateLastMfd) ? ',' : '') . '</td>';
+						$lastModified .= '<td>' . we_html_tools::getPixel(5, 1) . '</td><td class="middlefont" nowrap>' . $user . (($bDateLastMfd) ? ',' : '') . '</td>';
 					}
 					if($bDateLastMfd){
 						$lastModified .= '<td>' . we_html_tools::getPixel(5, 1) . '</td><td class="middlefont" nowrap>' . date(g_l('date', '[format][default]'), $_hash['ModDate']) . '</td>';

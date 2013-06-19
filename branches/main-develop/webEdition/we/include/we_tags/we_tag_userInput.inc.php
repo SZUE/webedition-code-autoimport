@@ -32,6 +32,7 @@ function we_tag_userInput($attribs, $content){
 	$property = weTag_getAttribute("property", $attribs, false, true);
 	$format = weTag_getAttribute("format", $attribs);
 	$checked = weTag_getAttribute("checked", $attribs, false, true);
+	$inlineedit = weTag_getAttribute("inlineedit", $attribs, true, true);
 	$value = weTag_getAttribute("value", $attribs);
 	$editable = weTag_getAttribute("editable", $attribs, true, true);
 	$autobrAttr = weTag_getAttribute("autobr", $attribs, true, true);
@@ -477,7 +478,7 @@ function we_tag_userInput($attribs, $content){
 					return '';
 				}
 			case "textarea" :
-				$attribs['inlineedit'] = "true"; // bugfix: 7276
+				//$attribs['inlineedit'] = "true"; // bugfix: 7276
 				$pure = weTag_getAttribute("pure", $attribs, false, true);
 				if($pure){
 					$atts = removeAttribs($attribs, array(
@@ -508,6 +509,47 @@ function we_tag_userInput($attribs, $content){
 				} else{
 					echo we_html_element::jsElement('weFrontpageEdit=true;');
 					require_once (JS_PATH . "we_textarea_include.inc.php");
+
+					if(!$inlineedit){
+						//TODO: move js function open_wysiwyg_win to separate js file
+						echo we_html_element::jsScript(JS_DIR . 'weButton.js') . 
+							we_html_element::jsScript(JS_DIR . 'weTinyMceDialogs.js') . 
+							we_html_element::jsElement('
+							function open_wysiwyg_win(){
+								//var url = "' . WEBEDITION_DIR . 'we_cmd.php?";
+								var url = "' . WEBEDITION_DIR . 'we_cmd_frontend.php?";
+								for(var i = 0; i < arguments.length; i++) {
+								url += "we_cmd["+i+"]="+escape(arguments[i]);
+								if(i < (arguments.length - 1))
+									url += "&";
+								}
+								
+								if (window.screen) {
+									h = ((screen.height - 100) > screen.availHeight ) ? screen.height - 100 : screen.availHeight;
+									w = screen.availWidth;
+								}
+								var wyw = Math.max(arguments[2],arguments[9]);
+								wyw = wyw ? wyw : 800;
+								var wyh = parseInt(arguments[3]) +parseInt(arguments[10]);
+								wyh = wyh ? wyh : 600;
+
+								if (window.screen) {
+									var screen_height = ((screen.height - 50) > screen.availHeight ) ? screen.height - 50 : screen.availHeight;
+									screen_height = screen_height - 40;
+									var screen_width = screen.availWidth-10;
+									wyw = Math.min(screen_width, wyw);
+									wyh = Math.min(screen_height, wyh);
+								}
+								// set new width & height;
+
+								url = url.replace(/we_cmd\[2\]=[^&]+/, "we_cmd[2]=" + wyw);
+								url = url.replace(/we_cmd\[3\]=[^&]+/, "we_cmd[3]="+ (wyh-arguments[10]));
+
+								new jsWindow(url,"we_wysiwygWin",-1,-1,Math.max(220,wyw+(document.all ? 0 : ((navigator.userAgent.toLowerCase().indexOf(\'safari\') > -1) ? 20 : 4))),Math.max(100,wyh+60),true,false,true);
+								//doPostCmd(arguments,"we_wysiwygWin");
+							}
+						');
+					}
 					$autobr = $autobrAttr ? "on" : "off";
 					$showAutobr = isset($attribs["autobr"]);
 					$charset = weTag_getAttribute("charset", $attribs, "iso-8859-1");

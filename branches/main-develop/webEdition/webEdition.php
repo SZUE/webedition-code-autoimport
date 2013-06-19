@@ -1199,7 +1199,6 @@ echo 'new jsWindow("http://www.webedition.org/de/webedition-cms/versionshistorie
 								wyh = Math.min(screen_height, wyh);
 							}
 							// set new width & height
-
 							url = url.replace(/we_cmd\[2\]=[^&]+/, 'we_cmd[2]=' + wyw);
 							url = url.replace(/we_cmd\[3\]=[^&]+/, 'we_cmd[3]='+ (wyh-arguments[10]));
 

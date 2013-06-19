@@ -2237,13 +2237,8 @@ class we_objectFile extends we_document{
 
 		$this->setUrl();
 
-		if($resave == 0){
-			if($this->ID){
-				we_history::insertIntoHistory($this);
-			}
-			if($_resaveWeDocumentCustomerFilter){
-				$this->resaveWeDocumentCustomerFilter();
-			}
+		if($resave == 0 && $_resaveWeDocumentCustomerFilter){
+			$this->resaveWeDocumentCustomerFilter();
 		}
 
 		if(!$this->Published){

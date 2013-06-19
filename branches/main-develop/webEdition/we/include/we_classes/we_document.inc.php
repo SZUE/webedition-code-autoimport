@@ -1041,7 +1041,7 @@ class we_document extends we_root{
 				parseInternalLinks($val, $parentID);
 				$retval = preg_replace('/<\?xml[^>]+>/i', '', $val);
 
-				if(isset($attribs['html']) && !weTag_getAttribute('html', $attribs, false, true)){
+				if(!weTag_getAttribute('html', $attribs, false, true)){
 					$retval = strip_tags($retval, '<br>,<p>');
 				}
 
@@ -1059,9 +1059,7 @@ class we_document extends we_root{
 
 				if(preg_match('/^[\d.,]+$/', trim($retval))){
 					$precision = isset($attribs['precision']) ? abs($attribs['precision']) : 2;
-
-					$num = weTag_getAttribute('num_format', $attribs);
-					if($num){
+					if(($num = weTag_getAttribute('num_format', $attribs))){
 						$retval = we_util_Strings::formatNumber(we_util::std_numberformat($retval), $num, $precision);
 					}
 				}

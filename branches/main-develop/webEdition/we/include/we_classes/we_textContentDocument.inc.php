@@ -295,7 +295,6 @@ abstract class we_textContentDocument extends we_textDocument{
 			$this->ModifierID = isset($_SESSION["user"]["ID"]) ? $_SESSION["user"]["ID"] : 0;
 			$this->ModDate = time();
 			$this->wasUpdate = 1;
-			we_history::insertIntoHistory($this);
 			$this->resaveWeDocumentCustomerFilter();
 		}
 
