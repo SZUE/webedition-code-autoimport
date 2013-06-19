@@ -143,7 +143,6 @@ class weNavigationFrames extends weToolFrames{
 					self.focus();
 					' . $this->topFrame . '.activ_tab=tab;
 				}
-
 				' . ($this->Model->ID ? '' : $this->topFrame . '.activ_tab=1;')
 		);
 
@@ -536,12 +535,12 @@ class weNavigationFrames extends weToolFrames{
 					$classDirs[] = $this->db->f('classDirID');
 					$classHasSubDirsJS[$this->db->f('ID')] = $this->db->f('ID') . ':false';
 					$classDirsJS[] = $this->db->f('ID') . ':' . $this->db->f('classDirID');
-					$classPathsJS[] = $this->db->f('ID') . ':"' . $this->db->f('Path'). '"';
+					$classPathsJS[] = $this->db->f('ID') . ':"' . $this->db->f('Path') . '"';
 				}
 			}
-			$this->db->query('SELECT ID, ParentID FROM ' . OBJECT_FILES_TABLE . ' WHERE ParentID IN (' . implode(',',$classDirs) . ') AND IsFolder = 1');
+			$this->db->query('SELECT ID, ParentID FROM ' . OBJECT_FILES_TABLE . ' WHERE ParentID IN (' . implode(',', $classDirs) . ') AND IsFolder = 1');
 			while($this->db->next_record()) {
-					$classHasSubDirsJS[$classID2Dir[$this->db->f('ParentID')]] = $classID2Dir[$this->db->f('ParentID')] . ':true';
+				$classHasSubDirsJS[$classID2Dir[$this->db->f('ParentID')]] = $classID2Dir[$this->db->f('ParentID')] . ':true';
 			}
 		}
 
@@ -636,7 +635,7 @@ var hasClassSubDirs = {' . implode(',', $classHasSubDirsJS) . '};') . '
 			);
 
 		$yuiSuggest = & weSuggest::getInstance();
-		$yuiSuggest->setAcId("LinkPath","");
+		$yuiSuggest->setAcId("LinkPath", "");
 		$yuiSuggest->setContentType(
 			$this->Model->SelectionType == weNavigation::STPYE_DOCLINK ? "folder,text/xml,text/webedition,image/*,text/html,application/*,application/x-shockwave-flash,video/quicktime" : ($this->Model->SelectionType == 'folder,objectFile' ? OBJECT_FILES_TABLE : ''));
 		$yuiSuggest->setInput('LinkPath', $_path, array(
@@ -1149,9 +1148,8 @@ categories_edit.setItem(0,(categories_edit.itemCount-1),"' . $cat . '");';
 		);
 
 		$table->setCol(0, 0, array('colspan' => '2'), we_html_tools::getPixel(3, 3));
-		$table->setCol(1, 0, array('colspan' => '2','class' => 'defaultfont'), g_l('navigation', '[categories]'));
-		$table->setCol(2, 0, array('colspan' => '2'),
-			we_html_element::htmlDiv(
+		$table->setCol(1, 0, array('colspan' => '2', 'class' => 'defaultfont'), g_l('navigation', '[categories]'));
+		$table->setCol(2, 0, array('colspan' => '2'), we_html_element::htmlDiv(
 				array(
 					'id' => 'categories',
 					'class' => 'blockWrapper',
@@ -1161,12 +1159,10 @@ categories_edit.setItem(0,(categories_edit.itemCount-1),"' . $cat . '");';
 		);
 		$table->setCol(3, 0, array('colspan' => '2'), we_html_tools::getPixel(5, 5));
 		$table->setCol(
-			4, 0, array('align' => 'left'),
-			we_forms::checkboxWithHidden($this->Model->CatAnd, "CatAnd", g_l('navigation', "[catAnd]"))
+			4, 0, array('align' => 'left'), we_forms::checkboxWithHidden($this->Model->CatAnd, "CatAnd", g_l('navigation', "[catAnd]"))
 		);
 		$table->setCol(
-			4, 1, array('align' => 'right'),
-			we_button::create_button_table(
+			4, 1, array('align' => 'right'), we_button::create_button_table(
 				array(we_button::create_button("delete_all", "javascript:removeAllCats()"), $addbut)
 			)
 		);
@@ -1270,14 +1266,9 @@ function selectItem() {
 				'space' => 0
 			)
 		);
-		$button = we_button::position_yes_no_cancel(
-				we_button::create_button('save', 'javascript:setFields();', true, 100, 22, '', '', true, false), null, we_button::create_button('close', 'javascript:self.close();'));
+		$button = we_button::position_yes_no_cancel(we_button::create_button('save', 'javascript:setFields();', true, 100, 22, '', '', true, false), null, we_button::create_button('close', 'javascript:self.close();'));
 
-		we_button::create_button_table(
-			array(
-				we_button::create_button(
-					'save', 'javascript:setFields();', true, 100, 22, '', '', true, false), we_button::create_button('close', 'javascript:self.close();')
-		));
+		we_button::create_button_table(array(we_button::create_button('save', 'javascript:setFields();', true, 100, 22, '', '', true, false), we_button::create_button('close', 'javascript:self.close();')));
 
 		$_body = we_html_element::htmlBody(
 				array(
@@ -1304,8 +1295,7 @@ function selectItem() {
 		$wecmdenc1 = we_cmd_enc("document.we_form.elements['FolderID'].value");
 		$wecmdenc2 = we_cmd_enc("document.we_form.elements['FolderPath'].value");
 		$wecmdenc3 = we_cmd_enc("opener." . $this->topFrame . ".mark();");
-		$_button_doc = we_button::create_button(
-				'select', "javascript:we_cmd('openDirselector',document.we_form.elements['FolderID'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','$rootDirID')");
+		$_button_doc = we_button::create_button('select', "javascript:we_cmd('openDirselector',document.we_form.elements['FolderID'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','$rootDirID')");
 		$_countSubDirs = 1;
 		if(defined('OBJECT_FILES_TABLE') && ($this->Model->SelectionType == weNavigation::STPYE_CLASS || $this->Model->SelectionType == weNavigation::STPYE_OBJLINK)){
 			$_classDirID = f('SELECT ' . OBJECT_FILES_TABLE . '.ID AS classDirID FROM ' . OBJECT_TABLE . ' LEFT JOIN ' . OBJECT_FILES_TABLE . ' ON (' . OBJECT_TABLE . '.Path=' . OBJECT_FILES_TABLE . '.Path) WHERE ' . OBJECT_TABLE . '.ID=' . $this->Model->ClassID . '', 'classDirID', $this->db);
@@ -1316,15 +1306,14 @@ function selectItem() {
 		$wecmdenc2 = we_cmd_enc("document.we_form.elements['FolderPath'].value");
 		$wecmdenc3 = we_cmd_enc("opener." . $this->topFrame . ".mark();");
 
-		$_button_obj = defined('OBJECT_TABLE') ? we_button::create_button(
-				'select', "javascript:we_cmd('openDirselector',document.we_form.elements['FolderID'].value,'" . OBJECT_FILES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "',classDirs[document.we_form.elements['ClassID'].options[document.we_form.elements['ClassID'].selectedIndex].value])", true, 100, 22, "", "", ($_countSubDirs ? false : true), false, "_XFolder") : '';
+		$_button_obj = defined('OBJECT_TABLE') ? we_button::create_button('select', "javascript:we_cmd('openDirselector',document.we_form.elements['FolderID'].value,'" . OBJECT_FILES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "',classDirs[document.we_form.elements['ClassID'].options[document.we_form.elements['ClassID'].selectedIndex].value])", true, 100, 22, "", "", ($_countSubDirs ? false : true), false, "_XFolder") : '';
 		$_button_cat = we_button::create_button('select', "javascript:we_cmd('openCatselector',document.we_form.elements['FolderID'].value,'" . CATEGORY_TABLE . "','document.we_form.elements[\\'FolderID\\'].value','document.we_form.elements[\\'FolderPath\\'].value','opener." . $this->topFrame . ".mark();','" . session_id() . "','$rootDirID')");
 		$_buttons = '<div id="docFolder" style="display: ' . (($this->Model->SelectionType == weNavigation::STPYE_DOCTYPE) ? 'inline' : 'none') . '">' . $_button_doc . '</div><div id="objFolder" style="display: ' . ($this->Model->SelectionType == weNavigation::STPYE_CLASS ? 'inline' : 'none') . '">' . $_button_obj . '</div><div id="catFolder" style="display: ' . ($this->Model->SelectionType == weNavigation::STPYE_CATEGORY ? 'inline' : 'none') . '">' . $_button_cat . '</div>';
 
 		$_table = $this->Model->SelectionType == weNavigation::STPYE_DOCTYPE ? FILE_TABLE :
 			($this->Model->SelectionType == weNavigation::STPYE_CLASS ? OBJECT_FILES_TABLE :
-			($this->Model->SelectionType == weNavigation::STPYE_CATEGORY ? CATEGORY_TABLE :
-			FILE_TABLE));
+				($this->Model->SelectionType == weNavigation::STPYE_CATEGORY ? CATEGORY_TABLE :
+					FILE_TABLE));
 
 		$_path = id_to_path($this->Model->FolderID, $_table);
 		$_attribs = array("onChange" => $this->topFrame . ".mark();");
@@ -1508,7 +1497,7 @@ function selectItem() {
 	}
 
 	function getLangField($name, $value, $title, $width){
-	//FIXME: these values should be obtained from global settings
+		//FIXME: these values should be obtained from global settings
 		$input = we_html_tools::htmlTextInput("Attributes[$name]", 15, $value, "", 'onchange=' . $this->topFrame . '.mark(); ', "text", $width - 100);
 		$select = '
 <select style="width:100px;" class="weSelect" name="' . $name . '_select" size="1" onchange="' . $this->topFrame . '.mark(); this.form.elements[\'Attributes[' . $name . ']\'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;">
@@ -1756,8 +1745,7 @@ function selectItem() {
 		$table2->setColContent(
 			0, 0, we_button::create_button_table(
 				array(
-				we_button::create_button(
-					"save", "javascript:we_save();", true, 100, 22, '', '', (!we_hasPerm('EDIT_NAVIGATION')))
+				we_button::create_button("save", "javascript:we_save();", true, 100, 22, '', '', (!we_hasPerm('EDIT_NAVIGATION')))
 				), 10, array(
 				'style' => 'margin-left: 15px'
 		)));
