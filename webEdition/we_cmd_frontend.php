@@ -32,38 +32,17 @@ include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_defines.inc
 include_once ($_SERVER['DOCUMENT_ROOT'] . LIB_DIR . 'we/core/autoload.php');
 
 $INCLUDE = '';
-//	In we.inc.php all names of the active modules have already been searched
-//	so we only have to use the array $GLOBALS['_we_active_integrated_modules']
+switch($_REQUEST['we_cmd'][0]){
+	case 'open_wysiwyg_window':
+		$INCLUDE = 'wysiwygWindow.inc.php';
+		break;
 
-if(!$INCLUDE){
-	switch($_REQUEST['we_cmd'][0]){
-		case 'open_wysiwyg_window':
-			$INCLUDE = 'wysiwygWindow.inc.php';
-			break;
-
-		default:
-			exit();
-	}
+	default:
+		exit();
 }
 
 if($INCLUDE){
-	//  When pressing a link in edit-mode, the page is being reloaded from
-	//  webedition. If a webedition link was pressed this page shall not be
-	//  reloaded. All entries in this array represent values for we_cmd[0]
-	//  when the javascript command shall NOT be inserted (p.ex while saving the file.)
-	//	This is ONLY used in the edit-mode of the documents.
-
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 	include(WE_INCLUDES_PATH . $INCLUDE);
-
-	//This statement prevents the page from being reloaded
-	if(!in_array($_REQUEST['we_cmd'][0], $cmds_no_js)){
-		print we_html_element::jsElement('parent.openedWithWE = 1;');
-	}
-
-	if($_REQUEST['we_cmd'][0] == 'edit_document' || $_REQUEST['we_cmd'][0] == 'switch_edit_page' || $_REQUEST['we_cmd'][0] == 'load_editor'){
-
-		print we_html_element::jsScript(JS_DIR . 'attachKeyListener.js');
-	}
 	exit;
 }
