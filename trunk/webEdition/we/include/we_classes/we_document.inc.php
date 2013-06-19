@@ -1042,12 +1042,12 @@ class we_document extends we_root{
 				parseInternalLinks($val, $parentID);
 				$retval = preg_replace('/<\?xml[^>]+>/i', '', $val);
 
-				if(isset($attribs['html']) && ($attribs['html'] == 'off' || $attribs['html'] == 'false' || $attribs['html'] == '0')){
+				if(!weTag_getAttribute('html', $attribs, false, true)){
 					$retval = strip_tags($retval, '<br>,<p>');
 				}
 
-				$_htmlspecialchars = isset($attribs['htmlspecialchars']) && ($attribs['htmlspecialchars'] == 'on' || $attribs['htmlspecialchars'] == 'true' || $attribs['htmlspecialchars'] == 'htmlspecialchars');
-				$_wysiwyg = isset($attribs['wysiwyg']) && ($attribs['wysiwyg'] == 'on' || $attribs['wysiwyg'] == 'true' || $attribs['wysiwyg'] == 'wysiwyg');
+				$_htmlspecialchars = weTag_getAttribute('htmlspecialchars', $attribs, false, true);
+				$_wysiwyg = weTag_getAttribute('wysiwyg', $attribs, false, true);
 
 				if($_htmlspecialchars && (!$_wysiwyg)){
 					$retval = preg_replace('/<br([^>]*)>/i', '#we##br\1#we##', $retval);
@@ -1062,9 +1062,7 @@ class we_document extends we_root{
 
 				if(preg_match('/^[\d.,]+$/', trim($retval))){
 					$precision = isset($attribs['precision']) ? abs($attribs['precision']) : 2;
-
-					$num = weTag_getAttribute('num_format', $attribs);
-					if($num){
+					if(($num = weTag_getAttribute('num_format', $attribs))){
 						$retval = we_util_Strings::formatNumber(we_util::std_numberformat($retval), $num, $precision);
 					}
 				}
