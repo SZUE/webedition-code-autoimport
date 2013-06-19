@@ -228,8 +228,9 @@ abstract class we_forms{
 				//$fieldName = preg_replace('#^.+_txt\[(.+)\]$#', '\1', $name);
 				// Bugfix => Workarround Bug # 7445
 
-				if(strpos("we_ui", $name !== false)){// we are in frontend, where default is inlineedit = true. FIXME: look for simple flag
+				if(stripos($name, "we_ui") !== false){// we are in frontend, where default is inlineedit = true. FIXME: look for simple flag
 					$value = str_replace(array("##|r##", "##|n##"), array("\r", "\n"),$value);
+					$out .= we_html_element::htmlHidden($attribs = array("name" => $name, "id" => $name, "value" => "testval"));
 				} else{
 					$value = str_replace(array("##|r##", "##|n##"), array("\r", "\n"), (
 						isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->ClassName != 'we_objectFile' && $GLOBALS['we_doc']->ClassName != 'we_object' ?
@@ -238,9 +239,6 @@ abstract class we_forms{
 						)
 					);
 				}
-				
-
-				
 
 				// Ende Bugfix
 

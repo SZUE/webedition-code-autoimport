@@ -88,12 +88,17 @@ if(isset($fieldName) && isset($_REQUEST["we_okpressed"]) && $_REQUEST["we_okpres
 		top.close();');
 	} else{//writeToFrontend
 		
-		
 		$reqName = str_replace('[' . $fieldName . ']', '', $_REQUEST['we_cmd'][1]);
+		
+		$newVal = str_replace("'", "&#039;", $_REQUEST[$reqName][$fieldName]);
+		$newVal = preg_replace(
+			'|script|i', 'scr"+"ipt', str_replace("\"", "\\\"", str_replace("\r", "\\r", str_replace("\n", "\\n", $newVal))));
+		
 		echo we_html_element::jsElement('
 
 			if(top.opener && top.opener.document.getElementById("div_wysiwyg_' . $_REQUEST['we_cmd'][1] . '")){
-				top.opener.document.getElementById("div_wysiwyg_' . $_REQUEST['we_cmd'][1] . '").innerHTML = \'' . str_replace("'", "&#039;", $_REQUEST[$reqName][$fieldName]) . '\';
+				top.opener.document.getElementById("div_wysiwyg_' . $_REQUEST['we_cmd'][1] . '").innerHTML = \'' . $newVal . '\';
+				top.opener.document.getElementById("' . $_REQUEST['we_cmd'][1] . '").value = \'' . $newVal . '\';
 				top.close();
 			}
 
