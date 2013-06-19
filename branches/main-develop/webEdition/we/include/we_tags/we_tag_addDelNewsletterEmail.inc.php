@@ -134,20 +134,6 @@ function we_tag_addDelNewsletterEmail($attribs){
 			switch($type){
 				case 'customer':
 					$__query = getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ' . $_customerFieldPrefs['customer_email_field'] . "='" . $db->escape($f['subscribe_mail']) . "'", $db);
-
-					/** original code before bug #5589
-					*if(!empty($__query)){
-					*	$emailExistsInOneOfTheLists = true;
-					*}
-					*foreach($abos as $cAbo){
-					*	$dbAbo = isset($__query[$cAbo]) ? $__query[$cAbo] : '';
-					*	if(!empty($dbAbo)){
-					*		$emailExistsInOneOfTheLists = true;
-					*	}
-					*	$lists .= $cAbo . ',';
-					*}
-					*/
-
 					// #5589 start
 					if(!empty($__query)){
 						foreach($abos as $cAbo){
@@ -165,25 +151,28 @@ function we_tag_addDelNewsletterEmail($attribs){
 					break;
 				case 'csv':
 					foreach($paths as $p){
-						if(!$emailExistsInOneOfTheLists){
-							$realPath = realpath((substr($p, 0, 1) == '/') ? ($_SERVER['DOCUMENT_ROOT'] . $p) : ($_SERVER['DOCUMENT_ROOT'] . '/' . $p));
-							if(@file_exists($realPath)){
-								$file = weFile::load($realPath);
-								if($file !== false){
-									if(preg_match("%[\r\n]" . $f['subscribe_mail'] . ",[^\r\n]+[\r\n]%i", $file) || preg_match('%^' . $f['subscribe_mail'] . ",[^\r\n]+[\r\n]%i", $file)){
-										$emailExistsInOneOfTheLists = true; // E-Mail does not exists in one of the lists
-									}
-								} else{
-									t_e('newsletter file not found');
-									$GLOBALS['WE_WRITENEWSLETTER_STATUS'] = weNewsletterBase::STATUS_ERROR; // FATAL ERROR
-									$GLOBALS['WE_REMOVENEWSLETTER_STATUS'] = weNewsletterBase::STATUS_ERROR; // FATAL ERROR
-									return;
+						$realPath = realpath((substr($p, 0, 1) == '/') ? ($_SERVER['DOCUMENT_ROOT'] . $p) : ($_SERVER['DOCUMENT_ROOT'] . '/' . $p));
+						if(@file_exists($realPath)){
+							$file = weFile::load($realPath);
+							if($file !== false){// #5135
+								if(!preg_match("%[\r\n]" . $f['subscribe_mail'] . ",[^\r\n]+[\r\n]%i", $file) && !preg_match('%^' . $f['subscribe_mail'] . ",[^\r\n]+[\r\n]%i", $file)){
+									$lists[] = $p;
 								}
 							} else{
-								$emailExistsInOneOfTheLists = false; // List does not exists, so email can't also exists
+								t_e('newsletter file not found');
+								$GLOBALS['WE_WRITENEWSLETTER_STATUS'] = weNewsletterBase::STATUS_ERROR; // FATAL ERROR
+								$GLOBALS['WE_REMOVENEWSLETTER_STATUS'] = weNewsletterBase::STATUS_ERROR; // FATAL ERROR
+								return;
 							}
+						}else{
+							t_e('newsletter file not found');
+							$GLOBALS['WE_WRITENEWSLETTER_STATUS'] = weNewsletterBase::STATUS_ERROR; // FATAL ERROR
+							$GLOBALS['WE_REMOVENEWSLETTER_STATUS'] = weNewsletterBase::STATUS_ERROR; // FATAL ERROR
+							return;
 						}
-						$lists[]= $p;
+					}
+					if(empty($lists)){// #5135 subscriber exists in all lists
+						$emailExistsInOneOfTheLists = true;
 					}
 					break;
 			}
