@@ -369,7 +369,7 @@ class weNavigation extends weModelBase{
 	}
 
 	function pathExists($path){
-		return f('SELECT 1 AS a FROM ' . $this->db->escape($this->table) . ' WHERE Path = \'' . $this->db->escape($path) . '\' AND ID !=' . intval($this->ID), 'a', $this->db) === '1';
+		return f('SELECT 1 AS a FROM ' . $this->db->escape($this->table) . ' WHERE Path = "' . $this->db->escape($path) . '" AND ID !=' . intval($this->ID), 'a', $this->db) === '1';
 	}
 
 	function isSelf(){
@@ -406,12 +406,12 @@ class weNavigation extends weModelBase{
 			$path = $this->Text;
 		}
 
-		$foo = getHash('SELECT Text,ParentID FROM ' . NAVIGATION_TABLE . " WHERE ID=" . intval($id), $db_tmp);
+		$foo = getHash('SELECT Text,ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($id), $db_tmp);
 		$path = '/' . (isset($foo['Text']) ? $foo['Text'] : '') . $path;
 
 		$pid = isset($foo['ParentID']) ? $foo['ParentID'] : '';
 		while($pid > 0) {
-			$db_tmp->query("SELECT Text,ParentID FROM " . NAVIGATION_TABLE . " WHERE ID=" . intval($pid));
+			$db_tmp->query("SELECT Text,ParentID FROM " . NAVIGATION_TABLE . ' WHERE ID=' . intval($pid));
 			while($db_tmp->next_record()) {
 				$path = '/' . $db_tmp->f('Text') . $path;
 				$pid = $db_tmp->f('ParentID');
@@ -421,9 +421,7 @@ class weNavigation extends weModelBase{
 	}
 
 	function saveField($name, $serialize = false){
-		$field = ($serialize ? serialize($this->$name) : $this->$name);
-
-		$this->db->query('UPDATE ' . $this->db->escape($this->table) . ' SET ' . $name . '="' . $this->db->escape($field) . '" WHERE ID=' . intval($this->ID));
+		$this->db->query('UPDATE ' . $this->db->escape($this->table) . ' SET ' . $name . '="' . $this->db->escape(($serialize ? serialize($this->$name) : $this->$name)) . '" WHERE ID=' . intval($this->ID));
 		return $this->db->affected_rows();
 	}
 
@@ -642,9 +640,8 @@ class weNavigation extends weModelBase{
 	function reorderUp(){
 		if($this->ID){
 			if($this->Ordn > 0){
-				$_db = new DB_WE();
-				$_parentid = f('SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($this->ID), 'ParentID', $_db);
-				$_db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=' . abs($this->Ordn) . ' WHERE ParentID=' . intval($_parentid) . ' AND Ordn=' . abs($this->Ordn - 1));
+				$_parentid = f('SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($this->ID), 'ParentID', $this->db);
+				$this->db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=' . abs($this->Ordn) . ' WHERE ParentID=' . intval($_parentid) . ' AND Ordn=' . abs($this->Ordn - 1));
 				$this->Ordn--;
 				$this->saveField('Ordn');
 				$this->reorder($this->ParentID);
@@ -659,8 +656,7 @@ class weNavigation extends weModelBase{
 			$_parentid = f('SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($this->ID), 'ParentID', $this->db);
 			$_num = f('SELECT COUNT(ID) as OrdCount FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($_parentid), 'OrdCount', $this->db);
 			if($this->Ordn < ($_num - 1)){
-				$_db = new DB_WE();
-				$_db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=' . abs($this->Ordn) . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Ordn=' . abs($this->Ordn + 1));
+				$this->db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=' . abs($this->Ordn) . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Ordn=' . abs($this->Ordn + 1));
 				$this->Ordn++;
 				$this->saveField('Ordn');
 				$this->reorder($this->ParentID);

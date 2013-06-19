@@ -38,6 +38,7 @@ class weNavigationView{
 	var $item_pattern = '';
 	var $group_pattern = '';
 	var $page = 1;
+	var $Model;
 
 	function __construct($frameset = '', $topframe = 'top'){
 		$this->db = new DB_WE();
@@ -714,7 +715,7 @@ class weNavigationView{
 					if(!we_hasPerm('EDIT_NAVIGATION')){
 						print we_html_element::jsElement(
 								we_message_reporting::getShowMessageCall(g_l('navigation', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR)
-							);
+						);
 						break;
 					}
 					$this->Model = new weNavigation();
@@ -729,7 +730,7 @@ class weNavigationView{
 					if(!we_hasPerm('EDIT_NAVIGATION')){
 						print we_html_element::jsElement(
 								we_message_reporting::getShowMessageCall(g_l('navigation', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR)
-							);
+						);
 						break;
 					}
 
@@ -742,7 +743,7 @@ class weNavigationView{
 					if(!$this->Model->isAllowedForUser()){
 						print we_html_element::jsElement(
 								we_message_reporting::getShowMessageCall(g_l('navigation', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR)
-							);
+						);
 						$this->Model = new weNavigation();
 						$_REQUEST['home'] = true;
 						break;
@@ -758,24 +759,18 @@ class weNavigationView{
 					break;
 				case 'tool_navigation_save':
 					if(!we_hasPerm('EDIT_NAVIGATION') && !we_hasPerm('EDIT_NAVIGATION')){
-						print we_html_element::jsElement(
-								we_message_reporting::getShowMessageCall(g_l('navigation', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR)
-							);
+						print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('navigation', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR));
 						break;
 					}
 
 					$js = '';
 					if($this->Model->filenameNotValid($this->Model->Text)){
-						print we_html_element::jsElement(
-								we_message_reporting::getShowMessageCall(g_l('navigation', "[wrongtext]"), we_message_reporting::WE_MESSAGE_ERROR)
-							);
+						print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('navigation', "[wrongtext]"), we_message_reporting::WE_MESSAGE_ERROR));
 						break;
 					}
 
 					if(trim($this->Model->Text) == ''){
-						print we_html_element::jsElement(
-								we_message_reporting::getShowMessageCall(g_l('navigation', "[name_empty]"), we_message_reporting::WE_MESSAGE_ERROR)
-							);
+						print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('navigation', "[name_empty]"), we_message_reporting::WE_MESSAGE_ERROR));
 						break;
 					}
 
@@ -783,16 +778,12 @@ class weNavigationView{
 					// set the path and check it
 					$this->Model->setPath();
 					if($this->Model->pathExists($this->Model->Path)){
-						print we_html_element::jsElement(
-								we_message_reporting::getShowMessageCall(g_l('navigation', "[name_exists]"), we_message_reporting::WE_MESSAGE_ERROR)
-							);
+						print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('navigation', "[name_exists]"), we_message_reporting::WE_MESSAGE_ERROR));
 						break;
 					}
 
 					if($this->Model->isSelf()){
-						print we_html_element::jsElement(
-								we_message_reporting::getShowMessageCall(g_l('navigation', "[path_nok]"), we_message_reporting::WE_MESSAGE_ERROR)
-							);
+						print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('navigation', "[path_nok]"), we_message_reporting::WE_MESSAGE_ERROR));
 						break;
 					}
 
@@ -806,15 +797,11 @@ class weNavigationView{
 								}
 							}
 							if(!key_exists($this->Model->TitleField, $_fieldsByNamePart) && !key_exists($this->Model->TitleField, $_classFields)){
-								print we_html_element::jsElement(
-										we_message_reporting::getShowMessageCall(g_l('navigation', '[wrongTitleField]'), we_message_reporting::WE_MESSAGE_ERROR)
-									);
+								print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('navigation', '[wrongTitleField]'), we_message_reporting::WE_MESSAGE_ERROR));
 								break;
 							}
 						} else{
-							print we_html_element::jsElement(
-									we_message_reporting::getShowMessageCall(g_l('navigation', '[wrongTitleField]'), we_message_reporting::WE_MESSAGE_ERROR)
-								);
+							print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('navigation', '[wrongTitleField]'), we_message_reporting::WE_MESSAGE_ERROR));
 							break;
 						}
 					}
@@ -834,14 +821,12 @@ class weNavigationView{
 						$db_tmp = new DB_WE();
 						$this->db->query('SELECT ID FROM ' . NAVIGATION_TABLE . ' WHERE Path LIKE \'' . $this->db->escape($oldpath) . '%\' AND ID!=' . intval($this->Model->ID));
 						while($this->db->next_record()) {
-							$db_tmp->query('UPDATE ' . NAVIGATION_TABLE . ' SET Path=\'' . $this->db->escape($this->Model->evalPath($this->db->f("ID"))) . '\' WHERE ID=' . intval($this->db->f("ID")));
+							$db_tmp->query('UPDATE ' . NAVIGATION_TABLE . ' SET Path="' . $this->db->escape($this->Model->evalPath($this->db->f("ID"))) . '" WHERE ID=' . intval($this->db->f("ID")));
 						}
 					}
-					if($newone){
-						$js = $this->topFrame . '.makeNewEntry(\'' . $this->Model->Icon . '\',\'' . $this->Model->ID . '\',\'' . $this->Model->ParentID . '\',\'' . addslashes($this->Model->Text) . '\',0,\'' . ($this->Model->IsFolder ? 'folder' : 'item') . '\',\'' . NAVIGATION_TABLE . '\',0,' . $this->Model->Ordn . ');';
-					} else{
-						$js = $this->topFrame . '.updateEntry(\'' . $this->Model->ID . '\',\'' . addslashes($this->Model->Text) . '\',\'' . $this->Model->ParentID . '\',\'' . $this->Model->Depended . '\',0,\'' . ($this->Model->IsFolder ? 'folder' : 'item') . '\',\'' . NAVIGATION_TABLE . '\',' . $this->Model->Depended . ',' . $this->Model->Ordn . ');';
-					}
+					$js = ($newone ?
+							$this->topFrame . '.makeNewEntry(\'' . $this->Model->Icon . '\',\'' . $this->Model->ID . '\',\'' . $this->Model->ParentID . '\',\'' . addslashes($this->Model->Text) . '\',0,\'' . ($this->Model->IsFolder ? 'folder' : 'item') . '\',\'' . NAVIGATION_TABLE . '\',0,' . $this->Model->Ordn . ');' :
+							$this->topFrame . '.updateEntry(\'' . $this->Model->ID . '\',\'' . addslashes($this->Model->Text) . '\',\'' . $this->Model->ParentID . '\',\'' . $this->Model->Depended . '\',0,\'' . ($this->Model->IsFolder ? 'folder' : 'item') . '\',\'' . NAVIGATION_TABLE . '\',' . $this->Model->Depended . ',' . $this->Model->Ordn . ');');
 
 					if($this->Model->IsFolder && $this->Model->Selection == weNavigation::SELECTION_DYNAMIC){
 						$_old_items = array();
@@ -896,7 +881,7 @@ class weNavigationView{
 					if(!we_hasPerm("DELETE_NAVIGATION")){
 						print we_html_element::jsElement(
 								we_message_reporting::getShowMessageCall(g_l('navigation', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR)
-							);
+						);
 						return;
 					} else{
 						if($this->Model->delete()){
@@ -911,7 +896,7 @@ class weNavigationView{
 						} else{
 							print we_html_element::jsElement(
 									we_message_reporting::getShowMessageCall(g_l('navigation', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR)
-								);
+							);
 						}
 					}
 					break;
@@ -934,7 +919,7 @@ class weNavigationView{
 									' . $this->editorBodyFrame . '.switch_button_state("direction_up", "direction_up_enabled", "enabled");
 								}
 								'
-							);
+						);
 					}
 					break;
 				case 'move_down' :
@@ -953,7 +938,7 @@ class weNavigationView{
 										' . $this->editorBodyFrame . '.switch_button_state("direction_down", "direction_down_enabled", "enabled");
 									}
 									'
-							);
+						);
 					}
 					break;
 				case 'populate':
@@ -966,7 +951,7 @@ class weNavigationView{
 					print we_html_element::jsElement(
 							$_js .
 							we_message_reporting::getShowMessageCall(g_l('navigation', '[populate_msg]'), we_message_reporting::WE_MESSAGE_NOTICE)
-						);
+					);
 					break;
 				case 'depopulate':
 					$_items = $this->Model->depopulateGroup();
@@ -986,7 +971,7 @@ class weNavigationView{
 						we_html_element::jsElement('
 						url = "' . WE_INCLUDES_DIR . 'we_tools/navigation/edit_navigation_frameset.php?pnt=dyn_preview";
 						new jsWindow(url,"we_navigation_dyn_preview",-1,-1,480,350,true,true,true);'
-						);
+					);
 					break;
 				case 'create_template':
 					print we_html_element::jsElement(
@@ -1017,7 +1002,7 @@ class weNavigationView{
 								' . $this->editorBodyForm . '.FolderWsID.options[' . $this->editorBodyForm . '.FolderWsID.options.length] = new Option("/",0);
 								' . $this->editorBodyForm . '.FolderWsID.selectedIndex = 0;
 								' . $this->editorBodyFrame . '.setVisible("objLinkFolderWorkspace",true);'
-								);
+							);
 						} else{
 							print we_html_element::jsElement(
 									$this->editorBodyFrame . '.setVisible("objLinkFolderWorkspace' . $_prefix . '",false);
