@@ -86,7 +86,7 @@ class weBannerView extends weBannerBase{
 			$out = ob_get_contents();
 			ob_end_clean();
 		} else{
-			$out = we_html_tools::htmlTop() . STYLESHEET . $this->getJSProperty() . $yuiSuggest->getYuiJsFiles() . '
+			$out = $this->getJSProperty() . $yuiSuggest->getYuiJsFiles() . '
 				</head>
 				<body class="weEditorBody" onload="loaded=1;" onunload="doUnload()">
 				<form name="we_form" onsubmit="return false;">' . "\n";
@@ -323,36 +323,32 @@ class weBannerView extends weBannerBase{
 	}
 
 	function getJSFooterCode(){
+		?>
+		<script type="text/javascript">
 
-		return we_html_element::jsElement('
-			function doUnload() {
-				if (!!jsWindow_count) {
-					for (i = 0; i < jsWindow_count; i++) {
-						eval("jsWindow" + i + "Object.close()");
-					}
-				}
-			}
-
-			function we_cmd(){
-				var args = "";
-				var url = "' . WEBEDITION_DIR . 'we_cmd.php?";
-				for(var i = 0; i < arguments.length; i++){ 
-					url += "we_cmd["+i+"]="+escape(arguments[i]);
-					if(i < (arguments.length - 1)){
-						url += "&";
-					}
-				}
-				switch (arguments[0]){
-					case "empty_log":
-						break;
-					default:
-						for(var i = 0; i < arguments.length; i++){
-							args += \'arguments[\'+i+\']\' + ((i < (arguments.length-1)) ? "," : "");
+				function doUnload() {
+					if (!!jsWindow_count) {
+						for (i = 0; i < jsWindow_count; i++) {
+							eval("jsWindow" + i + "Object.close()");
 						}
-						eval(\'parent.edbody.we_cmd(\'+args+\')\');
+					}
 				}
-			}
-		');
+
+				function we_cmd(){
+					var args = "";
+					var url = "<?php print WEBEDITION_DIR; ?>we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
+					switch (arguments[0]){
+						case "empty_log":
+							break;
+						default:
+							for(var i = 0; i < arguments.length; i++){
+								args += 'arguments['+i+']' + ((i < (arguments.length-1)) ? ',' : '');
+							}
+							eval('parent.edbody.we_cmd('+args+')');
+					}
+				}
+		</script>
+		<?php
 	}
 
 	function getJSCmd(){
