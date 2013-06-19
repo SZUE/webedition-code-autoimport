@@ -799,19 +799,15 @@ abstract class we_database_base{
 	/**
 	 * checks if a key with a full key definition exists
 	 * @param type $tab table to check
-	 * @param string $key full key definition what is used in a create statement
-	 * @return string|boolean extracted key name
+	 * @param string $key name
+	 * @return boolean true if exists
 	 */
 	public function isKeyExistAtAll($tab, $key){
-		$matches = array();
-		preg_match('|.*KEY *`?([^( `]*)`? \(|', $key, $matches);
-		$key = $matches[1];
-
 		$zw = $this->getTableCreateArray($tab);
 		if($zw){
 			foreach($zw as $v){
 				if(preg_match('|.*KEY *`?' . $key . '`? \(|', $v)){
-					return $key;
+					return true;
 				}
 			}
 		}
