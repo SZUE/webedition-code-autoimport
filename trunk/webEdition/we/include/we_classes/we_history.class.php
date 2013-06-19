@@ -49,18 +49,17 @@ abstract class we_history{
 	static function insertIntoHistory(&$object, $action = 'save'){
 		$db = new DB_WE();
 		$table = $db->escape(stripTblPrefix($object->Table));
-		$_username = isset($_SESSION['user']['Username']) ? $_SESSION['user']['Username'] : '';
 		$cnt = f('SELECT COUNT(1) AS cnt FROM ' . HISTORY_TABLE . ' WHERE DID=' . intval($object->ID) . ' AND DocumentTable="' . $table . '"', 'cnt', $db);
 		if($cnt > self::MAX){
 			$db->query('DELETE FROM ' . HISTORY_TABLE . ' WHERE DID=' . intval($object->ID) . ' AND DocumentTable="' . $table . '" ORDER BY ID LIMIT ' . ($cnt - self::MAX));
 		}
-		$db->query('INSERT INTO ' . HISTORY_TABLE . ' SET ' . we_database_base::arraySetter(array(
+		$db->query('REPLACE INTO ' . HISTORY_TABLE . ' SET ' . we_database_base::arraySetter(array(
 				'DID' => intval($object->ID),
 				'DocumentTable' => $table,
 				'ContentType' => $object->ContentType,
 				'Act' => $action,
-				'UserName' => $_username,
-			)));
+				'UserName' => (isset($_SESSION['user']['Username']) ? $_SESSION['user']['Username'] : ''),
+		)));
 	}
 
 	/**

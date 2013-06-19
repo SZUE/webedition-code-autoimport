@@ -105,7 +105,7 @@ $_count = 10;
 $i = $j = $k = 0;
 $_db = new DB_WE();
 while($j < $iMaxItems) {
-	$DB_WE->query('SELECT DID,UserName,DocumentTable,MAX(ModDate) AS m FROM ' . HISTORY_TABLE . (!empty($_where) ? (' WHERE ' . ((count($_users_where) > 0) ? 'UserName IN (' . implode(',', $_users_where) . ') AND ' : '') . 'DocumentTable IN(' . implode(',', $_where) . ')') : '') . (isset($timestamp) ? ' AND ModDate >=' . $timestamp : '') . $_whereSeem . ' GROUP BY UserName,DID,DocumentTable  ORDER BY m DESC LIMIT ' . ($k++ * $_count) . ' , ' . ($_count));
+	$DB_WE->query('SELECT DID,UserName,DocumentTable,MAX(ModDate) AS m FROM ' . HISTORY_TABLE . (!empty($_where) ? (' WHERE ' . ((count($_users_where) > 0) ? 'UserName IN (' . implode(',', $_users_where) . ') AND ' : '') . 'DocumentTable IN(' . implode(',', $_where) . ')') : '') . (isset($timestamp) ? ' AND ModDate >=' . $timestamp : '') . $_whereSeem . ' GROUP BY DID,DocumentTable  ORDER BY m DESC LIMIT ' . ($k++ * $_count) . ' , ' . ($_count));
 	$num_rows = $DB_WE->num_rows();
 	if($num_rows == 0){
 		break;
@@ -131,6 +131,7 @@ while($j < $iMaxItems) {
 				$_show = we_history::userHasPerms($_hash['CreatorID'], $_hash['Owners'], $_hash['RestrictOwners']);
 			}
 			if($_show){
+				$user = f('SELECT UserName FROM ' . HISTORY_TABLE . ' WHERE DID=' . $DB_WE->f('DID') . ' AND DocumentTable="' . $DB_WE->f('DocumentTable') . '" AND ModDate="' . $DB_WE->f('m') . '" LIMIT 1', 'UserName', $_db);
 				if($i + 1 <= $iMaxItems){
 					++$i;
 					++$j;
@@ -138,7 +139,7 @@ while($j < $iMaxItems) {
 						'<td valign="middle" class="middlefont">' .
 						'<a href="javascript:top.weEditorFrameController.openDocument(\'' . $_table . '\',\'' . $_hash['ID'] . '\',\'' . $_hash['ContentType'] . '\');" title="' . $_hash['Path'] . '" style="color:#000000;text-decoration:none;">' . $_hash['Path'] . "</a></td>";
 					if($bMfdBy){
-						$lastModified .= '<td>' . we_html_tools::getPixel(5, 1) . '</td><td class="middlefont" nowrap>' . $DB_WE->f("UserName") . (($bDateLastMfd) ? ',' : '') . '</td>';
+						$lastModified .= '<td>' . we_html_tools::getPixel(5, 1) . '</td><td class="middlefont" nowrap>' . $user . (($bDateLastMfd) ? ',' : '') . '</td>';
 					}
 					if($bDateLastMfd){
 						$lastModified .= '<td>' . we_html_tools::getPixel(5, 1) . '</td><td class="middlefont" nowrap>' . date(g_l('date', '[format][default]'), $_hash['ModDate']) . '</td>';
