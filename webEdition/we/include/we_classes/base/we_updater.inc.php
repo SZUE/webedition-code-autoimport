@@ -245,7 +245,7 @@ class we_updater{
 
 			$_table = OBJECT_FILES_TABLE;
 
-			$_db->query('SHOW TABLES LIKE "' . OBJECT_X_TABLE . '%"');	//note: _% ignores _, so escaping _ with \_ does the job
+			$_db->query('SHOW TABLES LIKE "' . OBJECT_X_TABLE . '%"'); //note: _% ignores _, so escaping _ with \_ does the job
 			$allTab = $_db->getAll(true);
 			foreach($allTab as $_table){
 				if($_table == OBJECT_FILES_TABLE){
@@ -410,6 +410,22 @@ class we_updater{
 		}
 	}
 
+	static function fixHistory(){
+		$db = $GLOBALS['DB_WE'];
+		if($db->isColExist(HISTORY_TABLE, 'ID')){
+			$db->query('SELECT h1.ID FROM ' . HISTORY_TABLE . ' h1 LEFT JOIN ' . HISTORY_TABLE . ' h2 ON h1.DID = h2.DID AND h1.DocumentTable = h2.DocumentTable AND h1.ModDate = h2.ModDate WHERE h1.ID < h2.ID');
+			$tmp = $db->getAll(true);
+			if(!empty($tmp)){
+				$db->query('DELETE FROM ' . HISTORY_TABLE . ' WHERE ID IN (' . implode(',', $tmp) . ')');
+			}
+			$db->delCol(HISTORY_TABLE, 'ID');
+			if($db->isKeyExistAtAll(HISTORY_TABLE, 'DID')){
+				$db->delKey(HISTORY_TABLE, 'DID');
+			}
+			self::replayUpdateDB();
+		}
+	}
+
 	function doUpdate(){
 		self::replayUpdateDB();
 
@@ -422,6 +438,7 @@ class we_updater{
 		self::updateLangLink();
 		self::fixInconsistentTables();
 		self::updateGlossar();
+		self::fixHistory();
 		self::replayUpdateDB();
 	}
 
