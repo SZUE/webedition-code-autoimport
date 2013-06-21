@@ -438,14 +438,17 @@ function we_cmd(){
 			we_html_element::htmlHidden(array("name" => "cmd", "value" => "no_cmd"));
 
 
-		$body = we_html_element::htmlBody(array('style' => 'overflow:hidden', "background" => IMAGE_DIR . "backgrounds/header_with_black_line.gif", "marginwidth" => 5, "marginheight" => 5, "leftmargin" => 5, "topmargin" => 5), we_html_element::jsElement($pob->View->getJSTreeHeader()) .
-				we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
+		$content = we_html_element::htmlForm(array("name" => "we_form_treeheader"), $hiddens .
 					$table1->getHtml() .
 					$table->getHtml()
-				)
+				);
+		return $content;
+		$body = we_html_element::htmlBody(array('style' => 'overflow:hidden', "background" => IMAGE_DIR . "backgrounds/header_with_black_line.gif", "marginwidth" => "5", "marginheight" => "5", "leftmargin" => "5", "topmargin" => "5"), 
+			$content
 		);
 
-		return $pob->getHTMLDocument($body);
+		//return $pob->getHTMLDocument($body);
+		return we_html_element::htmlDiv(array('style' => 'overflow:hidden; position: absolute; margin: 5px 0 0 0', 'background' => IMAGE_DIR . 'backgrounds/header_with_black_line.gif'), $content);
 	}
 
 }

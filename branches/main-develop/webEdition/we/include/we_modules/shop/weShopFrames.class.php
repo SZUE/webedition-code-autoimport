@@ -62,7 +62,7 @@ class weShopFrames extends weModuleFrames{
 			var table = "<?php print SHOP_TABLE; ?>";
 
 			function drawEintraege() {
-				fr = top.content.resize.left.window.document;//imi new adress
+				fr = top.content.tree.window.document;//TODO: when frame tree is eliminated change adress to ...getElementById('tree')!!!
 				fr.open();
 				fr.writeln("<html><head>");
 				fr.writeln("<script type=\"text/javascript\">");
@@ -70,14 +70,14 @@ class weShopFrames extends weModuleFrames{
 				fr.writeln("wasdblclick=0;");
 				fr.writeln("tout=null");
 				fr.writeln("function doClick(id,ct,table){");
-				fr.writeln("top.content.resize.right.editor.location='<?php print WE_SHOP_MODULE_DIR ?>edit_shop_frameset.php?pnt=editor&bid='+id;");
+				fr.writeln("top.content.right.editor.location='<?php print WE_SHOP_MODULE_DIR ?>edit_shop_frameset.php?pnt=editor&bid='+id;");
 				fr.writeln("}");
 				fr.writeln("function doFolderClick(id,ct,table){");
-				fr.writeln("top.content.resize.right.editor.location='<?php print WE_SHOP_MODULE_DIR; ?>edit_shop_frameset.php?pnt=editor&mid='+id;");
+				fr.writeln("top.content.right.editor.location='<?php print WE_SHOP_MODULE_DIR; ?>edit_shop_frameset.php?pnt=editor&mid='+id;");
 				fr.writeln("}");
 
 				fr.writeln("function doYearClick(yearView){");
-				fr.writeln("top.content.resize.right.editor.location='<?php print WE_SHOP_MODULE_DIR; ?>edit_shop_frameset.php?pnt=editor&ViewYear='+yearView;");
+				fr.writeln("top.content.right.editor.location='<?php print WE_SHOP_MODULE_DIR; ?>edit_shop_frameset.php?pnt=editor&ViewYear='+yearView;");
 				fr.writeln("}");
 
 				fr.writeln("</" + "SCRIPT>");
@@ -387,7 +387,9 @@ class weShopFrames extends weModuleFrames{
 
 	function getHTMLFrameset(){
 		$extraHead = $this->getJSTreeCode();
-		return parent::getHTMLFrameset($extraHead, true);
+		$extraUrlParams = isset($_REQUEST['bid']) ? '&bid=' . $_REQUEST['bid'] : '&top=1&home=1';
+
+		return parent::getHTMLFrameset($extraHead, true, $extraUrlParams);
 	}
 
 	function getHTMLIconbar(){ //TODO: move this to weShopView::getHTMLIconbar();
@@ -405,8 +407,9 @@ function we_cmd() {
 	switch (arguments[0]) {
 
 		case "openOrder":
-			if(top.content.resize.left.window.doClick) {
-				top.content.resize.left.window.doClick(arguments[1], arguments[2], arguments[3]);
+			//TODO: check this adress: mit oder ohne tree? Bisher: left
+			if(top.content.left.window.doClick) {
+				top.content.left.window.doClick(arguments[1], arguments[2], arguments[3]);//TODO: check this adress
 			}
 		break;
 
@@ -460,10 +463,10 @@ function we_cmd() {
 
 		if($resultD > 0){
 			$iconBarTable->addCol();
-			$iconBarTable->setCol(0, $c++, null, we_button::create_button("image:btn_shop_sum", "javascript:top.content.resize.right.editor.location=' edit_shop_frameset.php?pnt=editor&top=1&typ=document '", true));
+			$iconBarTable->setCol(0, $c++, null, we_button::create_button("image:btn_shop_sum", "javascript:top.content.right.editor.location=' edit_shop_frameset.php?pnt=editor&top=1&typ=document '", true));
 		} elseif(!empty($resultO)){
 			$iconBarTable->addCol();
-			$iconBarTable->setCol(0, $c++, null, we_button::create_button("image:btn_shop_sum", "javascript:top.content.resize.right.editor.location=' edit_shop_frameset.php?pnt=editor&top=1&typ=object&ViewClass=$classid '", true));
+			$iconBarTable->setCol(0, $c++, null, we_button::create_button("image:btn_shop_sum", "javascript:top.content.right.editor.location=' edit_shop_frameset.php?pnt=editor&top=1&typ=object&ViewClass=$classid '", true));
 		}
 
 		$iconBarTable->setCol(0, $c++, null, we_button::create_button("image:btn_shop_pref", "javascript:top.opener.top.we_cmd('pref_shop')", true, -1, -1, "", "", !we_hasPerm("NEW_USER")));
@@ -483,13 +486,6 @@ function we_cmd() {
 		$body = we_html_element::htmlBody();
 
 		return $this->getHTMLDocument($body);
-	}
-
-	function getHTMLResize(){
-		$editorParams = isset($_REQUEST['bid']) ? '&bid=' . $_REQUEST['bid'] : '&top=1&home=1';
-
-		return parent::getHTMLResize('', $editorParams); // because of two new frames (right and editor) we must pass parameters through
-									// TODO: at least frame/iFrame editor will be changed to div in all modules!
 	}
 
 	function getHTMLRight(){

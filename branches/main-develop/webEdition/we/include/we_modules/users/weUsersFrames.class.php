@@ -28,6 +28,8 @@ class weUsersFrames extends weModuleFrames {
 	var $View;
 	var $frameset;
 
+	protected $useMainTree = false;
+
 	function __construct($frameset){
 
 		parent::__construct(WE_USERS_MODULE_DIR . "edit_users_frameset.php");
@@ -36,16 +38,24 @@ class weUsersFrames extends weModuleFrames {
 		$this->View = new weUsersView(WE_USERS_MODULE_DIR . "edit_users_frameset.php", "top.content");
 		$this->module = "users";
 		$this->treeDefaultWidth = 204;
+		$this->treeFooterHeight = 40;
 	}
 
 	function getHTML($what = '', $mode = ''){
 		switch($what){
+			/*
 			case "left":
 				print $this->getHTMLLeft(false, false, true, 'search');
 				break;
+			 *
+			 */
 			default:
 				parent::getHTML($what);
 		}
+	}
+
+	function getHTMLLeftDiv(){
+		return parent::getHTMLLeftDiv(false, false, true, 'search');
 	}
 
 	function getJSCmdCode(){
@@ -62,7 +72,7 @@ var folder=0;
 var table="' . USER_TABLE . '";
 
 function drawEintraege() {
-	fr = top.content.resize.left.tree.window.document;
+	fr = top.content.tree.window.document;
 	fr.open();
 	fr.charset = "' . DEFAULT_CHARSET . '";
 	fr.writeln("<HTML><HEAD>' . addslashes(we_html_element::htmlMeta(array('http-equiv' => 'content-type', 'content' => 'text/html; charset=' . DEFAULT_CHARSET))) . '");
@@ -364,29 +374,6 @@ function urlEntry(icon,name,vorfahr,text,contentType,table,published,denied) {
 		);
 		return parent::getHTMLFrameset($extraHead);
 	}
-
-	/* use parent
-	function getHTMLResize(){
-		print weModuleFrames::getJSToggleTreeCode('users', 204);
-		$this->setTreeWidthFromCookie();
-
-		$incDecTree = '
-			<img id="incBaum" src="' . BUTTONS_DIR . 'icons/function_plus.gif" width="9" height="12" style="position:absolute;bottom:53px;left:5px;border:1px solid grey;padding:0 1px;cursor: pointer; ' . ($this->treeWidth <= 30 ? 'bgcolor:grey;' : '') . '" onClick="top.content.resize.incTree();">
-			<img id="decBaum" src="' . BUTTONS_DIR . 'icons/function_minus.gif" width="9" height="12" style="position:absolute;bottom:33px;left:5px;border:1px solid grey;padding:0 1px;cursor: pointer; ' . ($this->treeWidth <= 30 ? 'bgcolor:grey;' : '') . '" onClick="top.content.resize.decTree();">
-			<img id="arrowImg" src="' . BUTTONS_DIR . 'icons/direction_' . ($this->treeWidth <= 30 ? 'right' : 'left') . '.gif" width="9" height="12" style="position:absolute;bottom:13px;left:5px;border:1px solid grey;padding:0 1px;cursor: pointer;" onClick="top.content.resize.toggleTree();">
-		';
-
-		print we_html_element::htmlBody(array('style' => 'background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px'),
-			we_html_element::htmlDiv(array('style' => 'position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px;'),
-				we_html_element::htmlDiv(array('id' => 'lframeDiv','style' => 'position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px;width: ' . $this->treeWidth . 'px;'),
-					we_html_element::htmlDiv(array('style' => 'position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px; width: ' . weTree::HiddenWidth . 'px; background-image: url(/webEdition/images/v-tabs/background.gif); background-repeat: repeat-y; border-top: 1px solid black;'), $incDecTree) .
-					we_html_element::htmlIFrame('left', $this->frameset . '?pnt=left', 'position: absolute; top: 0px; bottom: 0px; left: ' . weTree::HiddenWidth . 'px; right: 0px;')
-				) .
-				we_html_element::htmlIFrame('right', $this->frameset . '?pnt=right', 'position: absolute; top: 0px; bottom: 0px; left: ' . $this->treeWidth . 'px; right: 0px; width:auto; border-left: 1px solid black; overflow: hidden;')
-			)
-		);
-	}
-	*/
 
 	function getHTMLCmd(){
 		$this->View->processCommands();

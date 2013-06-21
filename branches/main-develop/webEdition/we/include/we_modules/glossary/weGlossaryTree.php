@@ -94,11 +94,11 @@ class weGlossaryTree extends weMainTree{
 						} else {
 							top.content.usetHot();
 							var node=' . $this->topFrame . '.get(id);
-							' . $this->topFrame . '.resize.right.editor.edbody.location="' . $this->frameset . '?pnt=edbody&cmd=" + node.cmd + "&cmdid="+node.id+"&tabnr="+' . $this->topFrame . '.activ_tab;
+							' . $this->topFrame . '.right.editor.edbody.location="' . $this->frameset . '?pnt=edbody&cmd=" + node.cmd + "&cmdid="+node.id+"&tabnr="+' . $this->topFrame . '.activ_tab;
 						}
 					} else {
 						var node=' . $this->topFrame . '.get(id);
-						' . $this->topFrame . '.resize.right.editor.edbody.location="' . $this->frameset . '?pnt=edbody&cmd=" + node.cmd + "&cmdid="+node.id+"&tabnr="+' . $this->topFrame . '.activ_tab;
+						' . $this->topFrame . '.right.editor.edbody.location="' . $this->frameset . '?pnt=edbody&cmd=" + node.cmd + "&cmdid="+node.id+"&tabnr="+' . $this->topFrame . '.activ_tab;
 					}
 			}' . $this->topFrame . '.loaded=1;';
 	}

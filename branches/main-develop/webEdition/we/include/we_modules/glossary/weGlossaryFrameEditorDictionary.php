@@ -44,8 +44,8 @@
 			$tabNr = isset($_REQUEST["tabnr"]) ? (($weGlossaryFrames->View->Glossary->IsFolder && $_REQUEST["tabnr"]!=1) ? 1 : $_REQUEST["tabnr"]) : 1;
 
 
-			$_js =		$weGlossaryFrames->topFrame.'.resize.right.editor.edheader.location="'.$weGlossaryFrames->frameset.'?pnt=edheader&cmd=view_dictionary&cmdid=' . $_REQUEST['cmdid'] . '";'
-					.	$weGlossaryFrames->topFrame.'.resize.right.editor.edfooter.location="'.$weGlossaryFrames->frameset.'?pnt=edfooter&cmd=view_dictionary&cmdid=' . $_REQUEST['cmdid'] . '"';
+			$_js =		$weGlossaryFrames->topFrame.'.right.editor.edheader.location="'.$weGlossaryFrames->frameset.'?pnt=edheader&cmd=view_dictionary&cmdid=' . $_REQUEST['cmdid'] . '";'
+					.	$weGlossaryFrames->topFrame.'.right.editor.edfooter.location="'.$weGlossaryFrames->frameset.'?pnt=edfooter&cmd=view_dictionary&cmdid=' . $_REQUEST['cmdid'] . '"';
 
 	        $js = we_html_element::jsElement($_js);
 

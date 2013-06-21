@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weToolFrames extends weModuleFrames{
+class weToolFrames extends weModuleFrames {
 
 	var $View;
 	var $Table;

@@ -42,18 +42,10 @@ class weGlossaryFrames extends weModuleFrames{
 		$this->Tree = new weGlossaryTree();
 		$this->View = new weGlossaryView(WE_GLOSSARY_MODULE_DIR . "edit_glossary_frameset.php", "top.content");
 
-		$this->setupTree(GLOSSARY_TABLE, "top.content", "top.content.resize.left.tree", "top.content.cmd");
+		$this->setupTree(GLOSSARY_TABLE, "top.content", "top.content.tree", "top.content.cmd");
 
 		$this->module = "glossary";
 	}
-
-	/* use parent
-	function getHTML($what){}
-	*/
-
-	/*use parent
-	function getHTMLFrameset(){}
-	*/
 
 	function getJSCmdCode(){
 
@@ -62,6 +54,7 @@ class weGlossaryFrames extends weModuleFrames{
 
 	function getHTMLFrameset(){
 		$extraHead = $this->Tree->getJSTreeCode() . we_html_element::jsElement($this->getJSStart());
+
 		return weModuleFrames::getHTMLFrameset($extraHead);
 	}
 
@@ -181,11 +174,6 @@ class weGlossaryFrames extends weModuleFrames{
 			return weGlossaryFrameEditorItem::Footer($this);
 		}
 	}
-
-	/* use parent
-	function getHTMLLeft(){}
-	 *
-	 */
 
 	function getHTMLTreeHeader(){
 		return "";

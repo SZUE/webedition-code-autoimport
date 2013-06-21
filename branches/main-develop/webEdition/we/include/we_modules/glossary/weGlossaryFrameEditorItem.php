@@ -133,7 +133,7 @@ class weGlossaryFrameEditorItem extends weGlossaryFrameEditor{
 				}
 
 				function setHot() {
-					//' . $weGlossaryFrames->topFrame . '.resize.right.editor.edheader.document.getElementById("mark").style.display = "inline";
+					//' . $weGlossaryFrames->topFrame . '.right.editor.edheader.document.getElementById("mark").style.display = "inline";
 					top.hot=1;
 				}
 
@@ -204,8 +204,8 @@ class weGlossaryFrameEditorItem extends weGlossaryFrameEditor{
 					f.submit();
 				}
 
-				' . $weGlossaryFrames->topFrame . '.resize.right.editor.edheader.location="' . $weGlossaryFrames->frameset . '?pnt=edheader";'
-				. $weGlossaryFrames->topFrame . '.resize.right.editor.edfooter.location="' . $weGlossaryFrames->frameset . '?pnt=edfooter"')
+				' . $weGlossaryFrames->topFrame . '.right.editor.edheader.location="' . $weGlossaryFrames->frameset . '?pnt=edheader";'
+				. $weGlossaryFrames->topFrame . '.right.editor.edfooter.location="' . $weGlossaryFrames->frameset . '?pnt=edfooter"')
 			. we_multiIconBox::getJs();
 
 

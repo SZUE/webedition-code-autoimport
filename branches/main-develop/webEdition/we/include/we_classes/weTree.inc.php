@@ -605,6 +605,7 @@ function setUnCheckNode(imgName){
 				) .
 				we_html_element::htmlBody(array(
 					'bgcolor' => '#F3F7FF',
+					'style' => 'background: #F3F7FF',
 					'link' => '#000000',
 					'alink' => '#000000',
 					'vlink' => '#000000',

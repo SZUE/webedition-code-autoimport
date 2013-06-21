@@ -1536,7 +1536,7 @@ class weCustomerEIWizard{
 
 					$js = we_html_element::jsElement('
 							function doNext(){
-									top.opener.top.content.resize.left.treeheader.applySort();
+									top.opener.top.content.treeheader.applySort();//TODO: check this adress
 									' . $this->footerFrame . '.location="' . $this->frameset . '?pnt=eifooter&art=import&step=6";
 									document.we_form.submit();
 							}

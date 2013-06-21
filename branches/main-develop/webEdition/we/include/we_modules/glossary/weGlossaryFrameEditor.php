@@ -37,7 +37,7 @@ class weGlossaryFrameEditor{
 		$_js = "
 			function setTab(tab) {
 				" . $this->topFrame . ".activ_tab=tab;
-				//top.content.resize.right.editor.edbody.we_cmd('switchPage',0);
+				//top.content.right.editor.edbody.we_cmd('switchPage',0);
 			}
 			top.content.hloaded = 1;\n";
 

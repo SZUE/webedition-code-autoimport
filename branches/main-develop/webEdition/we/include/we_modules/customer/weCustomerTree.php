@@ -113,7 +113,7 @@ function openClose(id){
 	var openstatus;
 
 	if(treeData[eintragsIndex].typ=="group"){
-		sort=' . $this->topFrame . '.resize.left.treeheader.document.we_form.sort.value;
+		sort=' . $this->topFrame . '.document.we_form_treeheader.sort.value;
 	}
 
 	openstatus=(treeData[eintragsIndex].open==0?1:0);
@@ -232,7 +232,7 @@ function showSegment(){
 	var sort="";
 	parentnode=' . $this->topFrame . '.get(this.parentid);
 	parentnode.clear();
-	sort=' . $this->topFrame . '.resize.left.treeheader.document.we_form.sort.value;
+	sort=' . $this->topFrame . '.document.we_form_treheader.sort.value;
 	we_cmd("load",parentnode.id,this.offset,sort);
 }';
 	}

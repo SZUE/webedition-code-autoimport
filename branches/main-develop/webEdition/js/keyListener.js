@@ -232,14 +232,13 @@ function keyModuleListener( _successor ) {
 
 			if ( evt["keyCode"] == 83 ) { // S (Save)
 				if (	top.content &&
-					top.content.resize &&
-					top.content.resize.right &&
-					top.content.resize.right.editor &&
-					top.content.resize.right.editor.edfooter &&
-					typeof(top.content.resize.right.editor.edfooter.we_save ) == "function" ) {
+					top.content.right &&
+					top.content.right.editor &&
+					top.content.right.editor.edfooter &&
+					typeof(top.content.right.editor.edfooter.we_save ) == "function" ) {
 
 					this.cancelEvent(evt);
-					top.content.resize.right.editor.edfooter.we_save();
+					top.content.right.editor.edfooter.we_save();
 					return true;
 				}
 			}

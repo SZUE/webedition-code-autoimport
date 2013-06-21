@@ -24,8 +24,8 @@
  */
 class weWorkflowFrames extends weModuleFrames{
 
-
-
+	protected $useMainTree = false;
+			
 	function __construct(){
 		parent::__construct(WE_WORKFLOW_MODULE_DIR . "edit_workflow_frameset.php");
 		$this->module="workflow";
@@ -58,6 +58,10 @@ class weWorkflowFrames extends weModuleFrames{
 		return weModuleFrames::getHTMLFrameset($extraHead);
 	}
 
+	function getHTMLLeftDiv(){//TODO: $loadMainTree entfaellt, sobald trees einheitlich sind
+		return parent::getHTMLLeftDiv(false);
+	}
+
 	function getJSTreeCode(){
 		$db_tmp = new DB_WE();
 		$db_tmp1 = new DB_WE();
@@ -87,7 +91,7 @@ class weWorkflowFrames extends weModuleFrames{
 			var table="<?php print USER_TABLE; ?>";
 
 			function drawEintraege(){
-				fr = top.content.resize.left.tree.document;
+				fr = top.content.tree.document;
 				fr.open();
 				fr.writeln("<html><head>");
 				fr.writeln("<script type=\"text/javascript\">");
@@ -269,10 +273,6 @@ class weWorkflowFrames extends weModuleFrames{
 		print $this->View->getJSTopCode();
 	}
 
-	function getHTMLLeft(){
-		return parent::getHTMLLeft(false);
-	}
-
 	function getHTMLEditor(){
 		$extraUrlParams = '&home=1';
 
@@ -312,10 +312,10 @@ class weWorkflowFrames extends weModuleFrames{
 function setTab(tab){
 	switch(tab){
 		case 0:
-			top.content.resize.right.editor.edbody.we_cmd("switchPage",0);
+			top.content.right.editor.edbody.we_cmd("switchPage",0);
 			break;
 		case 1:
-			top.content.resize.right.editor.edbody.we_cmd("switchPage",1);
+			top.content.right.editor.edbody.we_cmd("switchPage",1);
 			break;
 	}
 }
@@ -364,7 +364,7 @@ top.content.hloaded=1;
 			function setStatusCheck(){
 				var a=document.we_form._status_workflow;
 				var b;
-				if(top.content.resize.right.editor.edbody.loaded) b=top.content.resize.right.editor.edbody.getStatusContol();
+				if(top.content.right.editor.edbody.loaded) b=top.content.right.editor.edbody.getStatusContol();
 				else setTimeout("setStatusCheck()",100);
 
 				if(b==1) a.checked=true;

@@ -33,6 +33,8 @@ class weMessagingFrames extends weModuleFrames{
 	public $weTransaction;
 	protected $messaging;
 	public $viewclass;
+	
+	protected $useMainTree = false;
 
 	function __construct($frameset, $viewclass = 'message', $reqTransaction, &$weTransaction){
 		parent::__construct(WE_MESSAGING_MODULE_DIR . "edit_messaging_frameset.php");
@@ -52,15 +54,16 @@ class weMessagingFrames extends weModuleFrames{
 		}
 
 		switch($what){
-			case "left":
-				print $this->getHTMLLeft(false);
-				break;
 			case "msg_fv_headers":
 				print $this->getHTMLFvHeaders();
 				break;
 			default:
 				parent::getHTML($what);
 		}
+	}
+
+	function getHTMLLeftDiv(){
+		return parent::getHTMLLeftDiv(false);
 	}
 
 	function getJSCmdCode(){
@@ -148,9 +151,9 @@ function check(img) {
 	for (i = 1; i <= menuDaten.laenge; i++) {
 		if (menuDaten[i].name == id) {
 			if (menuDaten[i].checked) {
-				if (resize.left.document.images) {
-					if (resize.left.document.images[img]) {
-						resize.left.document.images[img].src = check0_img.src;
+				if (left.document.images) {
+					if (left.document.images[img]) {
+						left.document.images[img].src = check0_img.src;
 					}
 				}
 				menuDaten[i].checked = false;
@@ -158,9 +161,9 @@ function check(img) {
 				break;
 			}
 			else {
-				if (resize.left.document.images) {
-					if (resize.left.document.images[img]) {
-						resize.left.document.images[img].src = check1_img.src;
+				if (left.document.images) {
+					if (left.document.images[img]) {
+						left.document.images[img].src = check1_img.src;
 					}
 				}
 				menuDaten[i].checked = true;
@@ -169,7 +172,7 @@ function check(img) {
 			}
 		}
 	}
-	if (!resize.left.document.images) {
+	if (!left.document.images) {
 		drawEintraege();
 	}
 }
@@ -217,8 +220,8 @@ function r_tree_open(id) {
 
 function update_messaging() {
 	if (!deleteMode && (mode == "show_folder_content") && (load_state >= loaded_thr)) {
-		if (top.content.resize.right.editor.edbody.entries_selected && top.content.resize.right.editor.edbody.entries_selected.length > 0) {
-			ent_str = "&entrsel=" + top.content.resize.right.editor.edbody.entries_selected.join(",");
+		if (top.content.right.editor.edbody.entries_selected && top.content.right.editor.edbody.entries_selected.length > 0) {
+			ent_str = "&entrsel=" + top.content.right.editor.edbody.entries_selected.join(",");
 		}
 		else {
 			ent_str = "";
@@ -266,14 +269,14 @@ function set_frames(vc) {
 if (vc == "message") {
 	top.content.iconbar.location = "' . $this->frameset . '?we_transaction=' . $this->transaction . '&pnt=iconbar&viewclass=" + vc;
 	//top.content.iconbar.location = "' . WE_MESSAGING_MODULE_DIR . 'messaging_iconbar.php?we_transaction=' . $this->transaction . '";
-	top.content.resize.right.editor.edheader.location = "' . $this->frameset . '?we_transaction=' . $this->transaction . '&pnt=edheader&viewclass=" + vc;
-	top.content.resize.right.editor.edbody.messaging_fv_headers.location="' . $this->frameset . '?we_transaction=' . $this->transaction . '&pnt=msg_fv_headers&viewclass=" + vc;
+	top.content.right.editor.edheader.location = "' . $this->frameset . '?we_transaction=' . $this->transaction . '&pnt=edheader&viewclass=" + vc;
+	top.content.right.editor.edbody.messaging_fv_headers.location="' . $this->frameset . '?we_transaction=' . $this->transaction . '&pnt=msg_fv_headers&viewclass=" + vc;
 }
 else if (vc == "todo") {
 	top.content.iconbar.location = "' . $this->frameset . '?we_transaction=' . $this->transaction . '&pnt=iconbar&viewclass=" + vc;
 	//top.content.iconbar.location = "' . WE_MESSAGING_MODULE_DIR . 'todo_iconbar.php?we_transaction=' . $this->transaction . '";
-	top.content.resize.right.editor.edheader.location = "' . $this->frameset . '?we_transaction=' . $this->transaction . '&pnt=edheader&viewclass=" + vc;
-	top.content.resize.right.editor.edbody.messaging_fv_headers.location="' . $this->frameset . '?we_transaction=' . $this->transaction . '&pnt=msg_fv_headers&viewclass=" + vc;
+	top.content.right.editor.edheader.location = "' . $this->frameset . '?we_transaction=' . $this->transaction . '&pnt=edheader&viewclass=" + vc;
+	top.content.right.editor.edbody.messaging_fv_headers.location="' . $this->frameset . '?we_transaction=' . $this->transaction . '&pnt=msg_fv_headers&viewclass=" + vc;
 }
 viewclass= vc;
 }
@@ -298,7 +301,7 @@ for(var i = 0; i < arguments.length; i++) {
 
 if(hot == "1" && arguments[0] != "messaging_start_view") {
 	if(confirm("' . g_l('modules_messaging', "[save_changed_folder]") . '")) {
-		top.content.resize.right.editor.document.edit_folder.submit();
+		top.content.right.editor.document.edit_folder.submit();
 	} else {
 		top.content.usetHot();
 	}
@@ -337,7 +340,7 @@ switch (arguments[0]) {
 		mode = "show_folder_content";
 		entries_selected = new Array();
 		drawEintraege();
-		top.content.resize.right.editor.edbody.location = "' . WE_MESSAGING_MODULE_DIR . 'messaging_work.php?we_transaction=' . $this->transaction . '";
+		top.content.right.editor.edbody.location = "' . WE_MESSAGING_MODULE_DIR . 'messaging_work.php?we_transaction=' . $this->transaction . '";
 		top.content.usetHot();
 		break;
 	case "messaging_new_folder":
@@ -347,7 +350,7 @@ switch (arguments[0]) {
 	case "messaging_delete_mode_on":
 		deleteMode = true;
 		drawEintraege();
-		top.content.resize.right.editor.edbody.location = "' . WE_MESSAGING_MODULE_DIR . 'messaging_delete_folders.php?we_transaction=' . $this->transaction . '";
+		top.content.right.editor.edbody.location = "' . WE_MESSAGING_MODULE_DIR . 'messaging_delete_folders.php?we_transaction=' . $this->transaction . '";
 		break;
 	case "messaging_delete_folders":
 		cmd.location = "' . $this->frameset . '?pnt=cmd&we_transaction=' . $this->transaction . '&mcmd=delete_folders&folders=" + entries_selected.join(",");
@@ -360,13 +363,13 @@ switch (arguments[0]) {
 		cmd.location = "' . $this->frameset . '?pnt=cmd&we_transaction=' . $this->transaction . '&mcmd=edit_settings&mode=new";
 		break;
 	case "messaging_copy":
-		if (resize && resize.right && resize.right.editor && resize.right.editor.edbody && resize.right.editor.edbody.entries_selected && resize.right.editor.edbody.entries_selected.length > 0) {
-			cmd.location = "' . $this->frameset . '?pnt=cmd&we_transaction=' . $this->transaction . '&mcmd=copy_msg&entrsel=" + resize.right.editor.edbody.entries_selected.join(",");
+		if (right && right.editor && right.editor.edbody && right.editor.edbody.entries_selected && right.editor.edbody.entries_selected.length > 0) {
+			cmd.location = "' . $this->frameset . '?pnt=cmd&we_transaction=' . $this->transaction . '&mcmd=copy_msg&entrsel=" + right.editor.edbody.entries_selected.join(",");
 		}
 		break;
 	case "messaging_cut":
-		if (resize && resize.right && resize.right.editor && resize.right.editor.edbody && resize.right.editor.edbody.entries_selected && resize.right.editor.edbody.entries_selected.length > 0) {
-			cmd.location = "' . $this->frameset . '?pnt=cmd&we_transaction=' . $this->transaction . '&mcmd=cut_msg&entrsel=" + resize.right.editor.edbody.entries_selected.join(",");
+		if (right && right.editor && right.editor.edbody && right.editor.edbody.entries_selected && right.editor.edbody.entries_selected.length > 0) {
+			cmd.location = "' . $this->frameset . '?pnt=cmd&we_transaction=' . $this->transaction . '&mcmd=cut_msg&entrsel=" + right.editor.edbody.entries_selected.join(",");
 		}
 		break;
 	case "messaging_paste":
@@ -395,7 +398,7 @@ var table="' . MESSAGES_TABLE . '";
 var mode = "show_folder_content";
 
 function drawEintraege() {
-	fr = top.content.resize.left.window.document;
+	fr = top.content.tree.window.document;//IMI: set tree indstead of left
 	fr.open();
 	fr.writeln("<html><head>");
 	fr.writeln("<script type=\"text/javascript\"><!--");

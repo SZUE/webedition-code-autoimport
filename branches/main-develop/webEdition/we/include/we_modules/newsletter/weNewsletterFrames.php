@@ -31,10 +31,10 @@ class weNewsletterFrames extends weModuleFrames{
 	function __construct(){
 		parent::__construct(WE_NEWSLETTER_MODULE_DIR . "edit_newsletter_frameset.php");
 		$this->View = new weNewsletterView();
-		$this->View->setFrames("top.content", "top.content.resize.left.tree", "top.content.cmd");
+		$this->View->setFrames("top.content", "top.content.tree", "top.content.cmd");
 
 		$this->Tree = new weNewsletterTree();
-		$this->setupTree(NEWSLETTER_TABLE, "top.content", "top.content.resize.left.tree", "top.content.cmd");
+		$this->setupTree(NEWSLETTER_TABLE, "top.content", "top.content.tree", "top.content.cmd");
 
 		$this->module = "newsletter";
 		$this->weAutoColpleter = & weSuggest::getInstance();
@@ -157,15 +157,15 @@ class weNewsletterFrames extends weModuleFrames{
 				function setTab(tab) {
 					switch (tab) {
 						case 0:
-							top.content.resize.right.editor.edbody.we_cmd("switchPage",0);
+							top.content.right.editor.edbody.we_cmd("switchPage",0);
 							break;
 
 						case 1:
-							top.content.resize.right.editor.edbody.we_cmd("switchPage",1);
+							top.content.right.editor.edbody.we_cmd("switchPage",1);
 							break;
 
 						case 2:
-							top.content.resize.right.editor.edbody.we_cmd("switchPage",2);
+							top.content.right.editor.edbody.we_cmd("switchPage",2);
 							break;
 					}
 
@@ -266,10 +266,10 @@ class weNewsletterFrames extends weModuleFrames{
 			}
 
 			function populateGroups() {
-				if (top.content.resize.right.editor.edbody.getGroupsNum) {
+				if (top.content.right.editor.edbody.getGroupsNum) {
 
-					if (top.content.resize.right.editor.edbody.loaded) {
-						var num=top.content.resize.right.editor.edbody.getGroupsNum();
+					if (top.content.right.editor.edbody.loaded) {
+						var num=top.content.right.editor.edbody.getGroupsNum();
 
 							if (!num) {
 								num = 1;

@@ -124,25 +124,25 @@ class weUsersView extends weModuleView {
 					}
 					break;
 				case "new_user":
-					top.content.resize.right.editor.properties.focus();
-					if(hot==1 && top.content.resize.right.editor.properties.document.we_form.ucmd) {
+					top.content.right.editor.properties.focus();
+					if(hot==1 && top.content.right.editor.properties.document.we_form.ucmd) {
 						if(confirm("' . g_l('modules_users', "[save_changed_user]") . '")) {
-							top.content.resize.right.editor.properties.document.we_form.ucmd.value="save_user";
-							top.content.resize.right.editor.properties.document.we_form.sd.value=1;
+							top.content.right.editor.properties.document.we_form.ucmd.value="save_user";
+							top.content.right.editor.properties.document.we_form.sd.value=1;
 						} else {
 							top.content.usetHot();
-							top.content.resize.right.editor.properties.document.we_form.ucmd.value="new_user";
+							top.content.right.editor.properties.document.we_form.ucmd.value="new_user";
 						}
 						if(arguments[1]){
-							top.content.resize.right.editor.properties.document.we_form.uid.value=arguments[1];
+							top.content.right.editor.properties.document.we_form.uid.value=arguments[1];
 						}
 						if(arguments[2]){
-							top.content.resize.right.editor.properties.document.we_form.ctype.value=arguments[2];
+							top.content.right.editor.properties.document.we_form.ctype.value=arguments[2];
 						}
 						if(arguments[3]){
-							top.content.resize.right.editor.properties.document.we_form.ctable.value=arguments[3];
+							top.content.right.editor.properties.document.we_form.ctable.value=arguments[3];
 						}
-						top.content.resize.right.editor.properties.we_submitForm("cmd","' . $this->frameset . '?pnt=cmd");
+						top.content.right.editor.properties.we_submitForm("cmd","' . $this->frameset . '?pnt=cmd");
 					} else {
 						top.content.cmd.location="' . $this->frameset . '?pnt=cmd&ucmd=new_user&cgroup="+cgroup;
 					}
@@ -151,100 +151,100 @@ class weUsersView extends weModuleView {
 					top.content.cmd.location="' . $this->frameset . '?pnt=cmd&ucmd=check_user_display&uid="+arguments[1];
 					break;
 				case "display_user":
-					top.content.resize.right.editor.properties.focus();
-					if(hot==1 && top.content.resize.right.editor.properties.document.we_form.ucmd) {
+					top.content.right.editor.properties.focus();
+					if(hot==1 && top.content.right.editor.properties.document.we_form.ucmd) {
 						if(confirm("' . g_l('modules_users', '[save_changed_user]') . '")) {
-							top.content.resize.right.editor.properties.document.we_form.ucmd.value="save_user";
-							top.content.resize.right.editor.properties.document.we_form.sd.value=1;
+							top.content.right.editor.properties.document.we_form.ucmd.value="save_user";
+							top.content.right.editor.properties.document.we_form.sd.value=1;
 						}
 						else {
 							top.content.usetHot();
-							top.content.resize.right.editor.properties.document.we_form.ucmd.value="display_user";
+							top.content.right.editor.properties.document.we_form.ucmd.value="display_user";
 						}
 						if(arguments[1])
-							top.content.resize.right.editor.properties.document.we_form.uid.value=arguments[1];
+							top.content.right.editor.properties.document.we_form.uid.value=arguments[1];
 						if(arguments[2])
-							top.content.resize.right.editor.properties.document.we_form.ctype.value=arguments[2];
+							top.content.right.editor.properties.document.we_form.ctype.value=arguments[2];
 						if(arguments[3])
-							top.content.resize.right.editor.properties.document.we_form.ctable.value=arguments[3];
-						top.content.resize.right.editor.properties.we_submitForm("cmd","' . $this->frameset . '?pnt=cmd");
+							top.content.right.editor.properties.document.we_form.ctable.value=arguments[3];
+						top.content.right.editor.properties.we_submitForm("cmd","' . $this->frameset . '?pnt=cmd");
 					}
 					else {
 						top.content.cmd.location="' .$this->frameset . '?pnt=cmd&ucmd=display_user&uid="+arguments[1];
 					}
 					break;
 				case "display_alias":
-					top.content.resize.right.editor.properties.focus();
-					top.content.resize.right.editor.properties.document.we_form.ucmd.value="display_user";
-					if(hot==1 && top.content.resize.right.editor.properties.document.we_form.ucmd) {
+					top.content.right.editor.properties.focus();
+					top.content.right.editor.properties.document.we_form.ucmd.value="display_user";
+					if(hot==1 && top.content.right.editor.properties.document.we_form.ucmd) {
 						if(confirm("' . g_l('modules_users', '[save_changed_user]') . '")) {
-							top.content.resize.right.editor.properties.document.we_form.ucmd.value="save_user";
-							top.content.resize.right.editor.properties.document.we_form.sd.value=1;
+							top.content.right.editor.properties.document.we_form.ucmd.value="save_user";
+							top.content.right.editor.properties.document.we_form.sd.value=1;
 						}
 						else {
 							top.content.usetHot();
-							top.content.resize.right.editor.properties.document.we_form.ucmd.value="display_user";
+							top.content.right.editor.properties.document.we_form.ucmd.value="display_user";
 						}
 						if(arguments[1]){
-							top.content.resize.right.editor.properties.document.we_form.uid.value=arguments[1];
+							top.content.right.editor.properties.document.we_form.uid.value=arguments[1];
 						}
 						if(arguments[2]){
-							top.content.resize.right.editor.properties.document.we_form.ctype.value=arguments[2];
+							top.content.right.editor.properties.document.we_form.ctype.value=arguments[2];
 						}
 						if(arguments[3]){
-							top.content.resize.right.editor.properties.document.we_form.ctable.value=arguments[3];
+							top.content.right.editor.properties.document.we_form.ctable.value=arguments[3];
 						}
-						top.content.resize.right.editor.properties.we_submitForm("cmd","' . $this->frameset . '?pnt=cmd");
+						top.content.right.editor.properties.we_submitForm("cmd","' . $this->frameset . '?pnt=cmd");
 					}
 					else {
 						top.content.cmd.location="' . $this->frameset . '?pnt=cmd&ucmd=display_user&uid="+arguments[1];
 					}
 					break;
 				case "new_group":
-					if(hot==1 && top.content.resize.right.editor.properties.document.we_form.ucmd) {
+					if(hot==1 && top.content.right.editor.properties.document.we_form.ucmd) {
 						if(confirm("' . g_l('modules_users', '[save_changed_user]') . '")) {
-							top.content.resize.right.editor.properties.document.we_form.ucmd.value="save_user";
-							top.content.resize.right.editor.properties.document.we_form.sd.value=1;
+							top.content.right.editor.properties.document.we_form.ucmd.value="save_user";
+							top.content.right.editor.properties.document.we_form.sd.value=1;
 						} else {
 							top.content.usetHot();
-							top.content.resize.right.editor.properties.document.we_form.ucmd.value="new_group";
+							top.content.right.editor.properties.document.we_form.ucmd.value="new_group";
 						}
 						if(arguments[1])
-							top.content.resize.right.editor.properties.document.we_form.uid.value=arguments[1];
+							top.content.right.editor.properties.document.we_form.uid.value=arguments[1];
 						if(arguments[2])
-							top.content.resize.right.editor.properties.document.we_form.ctype.value=arguments[2];
+							top.content.right.editor.properties.document.we_form.ctype.value=arguments[2];
 						if(arguments[3])
-							top.content.resize.right.editor.properties.document.we_form.ctable.value=arguments[3];
-						top.content.resize.right.editor.properties.we_submitForm("cmd","' . $this->frameset . '?pnt=cmd");
+							top.content.right.editor.properties.document.we_form.ctable.value=arguments[3];
+						top.content.right.editor.properties.we_submitForm("cmd","' . $this->frameset . '?pnt=cmd");
 					} else {
 						top.content.cmd.location="' . $this->frameset . '?pnt=cmd&ucmd=new_group&cgroup="+cgroup;
 					}
 					break;
 				case "new_alias":
-					if(hot==1 && top.content.resize.right.editor.properties.document.we_form.ucmd) {
+					if(hot==1 && top.content.right.editor.properties.document.we_form.ucmd) {
 						if(confirm("' . g_l('modules_users', "[save_changed_user]") . '")) {
-							top.content.resize.right.editor.properties.document.we_form.ucmd.value="save_user";
-							top.content.resize.right.editor.properties.document.we_form.sd.value=1;
+							top.content.right.editor.properties.document.we_form.ucmd.value="save_user";
+							top.content.right.editor.properties.document.we_form.sd.value=1;
 						} else {
 							top.content.usetHot();
-							top.content.resize.right.editor.properties.document.we_form.ucmd.value="new_alias";
+							top.content.right.editor.properties.document.we_form.ucmd.value="new_alias";
 						}
 						if(arguments[1])
-							top.content.resize.right.editor.properties.document.we_form.uid.value=arguments[1];
+							top.content.right.editor.properties.document.we_form.uid.value=arguments[1];
 						if(arguments[2])
-							top.content.resize.right.editor.properties.document.we_form.ctype.value=arguments[2];
+							top.content.right.editor.properties.document.we_form.ctype.value=arguments[2];
 						if(arguments[3])
-							top.content.resize.right.editor.properties.document.we_form.ctable.value=arguments[3];
-						top.content.resize.right.editor.properties.we_submitForm("cmd","' . $this->frameset . '?pnt=cmd");
+							top.content.right.editor.properties.document.we_form.ctable.value=arguments[3];
+						top.content.right.editor.properties.we_submitForm("cmd","' . $this->frameset . '?pnt=cmd");
 					} else {
 						top.content.cmd.location="' . $this->frameset . '?pnt=cmd&ucmd=new_alias&cgroup="+cgroup;
 					}
 					break;
 				case "save_user":
-					if(top.content.resize.right.editor.properties.document.we_form) {
-						top.content.resize.right.editor.properties.document.we_form.ucmd.value="save_user";
+					if(top.content.right.editor.properties.document.we_form) {
+						top.content.right.editor.properties.document.we_form.ucmd.value="save_user";
 						top.content.usetHot();
-						top.content.resize.right.editor.properties.we_submitForm("cmd","' . $this->frameset . '?pnt=cmd");
+						top.content.right.editor.properties.we_submitForm("cmd","' . $this->frameset . '?pnt=cmd");
 					}
 					break;
 				case "delete_user":
@@ -302,27 +302,27 @@ function we_cmd() {
 	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 	switch (arguments[0]) {
 		case "new_raw":
-			if(' . $this->topFrame . '.resize.right.editor.edbody.loaded) {
+			if(' . $this->topFrame . '.right.editor.edbody.loaded) {
 				' . $this->topFrame . '.hot = 1;
-				' . $this->topFrame . '.resize.right.editor.edbody.document.we_form.cmd.value = arguments[0];
-				' . $this->topFrame . '.resize.right.editor.edbody.document.we_form.cmdid.value = arguments[1];
-				' . $this->topFrame . '.resize.right.editor.edbody.document.we_form.tabnr.value = 1;
-				' . $this->topFrame . '.resize.right.editor.edbody.submitForm();
+				' . $this->topFrame . '.right.editor.edbody.document.we_form.cmd.value = arguments[0];
+				' . $this->topFrame . '.right.editor.edbody.document.we_form.cmdid.value = arguments[1];
+				' . $this->topFrame . '.right.editor.edbody.document.we_form.tabnr.value = 1;
+				' . $this->topFrame . '.right.editor.edbody.submitForm();
 			} else {
 				setTimeout(\'we_cmd("new_raw");\', 10);
 			}
 			break;
 
 		case "delete_raw":
-			if(top.content.resize.right.editor.edbody.document.we_form.cmd.value=="home") return;
+			if(top.content.right.editor.edbody.document.we_form.cmd.value=="home") return;
 			' . (!we_hasPerm("DELETE_RAW") ?
 					( we_message_reporting::getShowMessageCall(g_l('modules_shop', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)) :
 					('
-					if (' . $this->topFrame . '.resize.right.editor.edbody.loaded) {
+					if (' . $this->topFrame . '.right.editor.edbody.loaded) {
 						if (confirm("' . g_l('modules_shop', '[delete_alert]') . '")) {
-							' . $this->topFrame . '.resize.right.editor.edbody.document.we_form.cmd.value=arguments[0];
-							' . $this->topFrame . '.resize.right.editor.edbody.document.we_form.tabnr.value=' . $this->topFrame . '.activ_tab;
-							' . $this->topFrame . '.resize.right.editor.edbody.submitForm();
+							' . $this->topFrame . '.right.editor.edbody.document.we_form.cmd.value=arguments[0];
+							' . $this->topFrame . '.right.editor.edbody.document.we_form.tabnr.value=' . $this->topFrame . '.activ_tab;
+							' . $this->topFrame . '.right.editor.edbody.submitForm();
 						}
 					} else {
 						' . we_message_reporting::getShowMessageCall(g_l('modules_shop', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR) . '
@@ -332,14 +332,14 @@ function we_cmd() {
 			break;
 
 		case "save_raw":
-			if(top.content.resize.right.editor.edbody.document.we_form.cmd.value=="home") return;
+			if(top.content.right.editor.edbody.document.we_form.cmd.value=="home") return;
 
 
-					if (' . $this->topFrame . '.resize.right.editor.edbody.loaded) {
-							' . $this->topFrame . '.resize.right.editor.edbody.document.we_form.cmd.value=arguments[0];
-							' . $this->topFrame . '.resize.right.editor.edbody.document.we_form.tabnr.value=' . $this->topFrame . '.activ_tab;
+					if (' . $this->topFrame . '.right.editor.edbody.loaded) {
+							' . $this->topFrame . '.right.editor.edbody.document.we_form.cmd.value=arguments[0];
+							' . $this->topFrame . '.right.editor.edbody.document.we_form.tabnr.value=' . $this->topFrame . '.activ_tab;
 
-							' . $this->topFrame . '.resize.right.editor.edbody.submitForm();
+							' . $this->topFrame . '.right.editor.edbody.submitForm();
 					} else {
 						' . we_message_reporting::getShowMessageCall(g_l('modules_shop', '[nothing_to_save]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 					}
@@ -348,10 +348,10 @@ function we_cmd() {
 
 		case "edit_raw":
 			' . $this->topFrame . '.hot=0;
-			' . $this->topFrame . '.resize.right.editor.edbody.document.we_form.cmd.value=arguments[0];
-			' . $this->topFrame . '.resize.right.editor.edbody.document.we_form.cmdid.value=arguments[1];
-			' . $this->topFrame . '.resize.right.editor.edbody.document.we_form.tabnr.value=' . $this->topFrame . '.activ_tab;
-			' . $this->topFrame . '.resize.right.editor.edbody.submitForm();
+			' . $this->topFrame . '.right.editor.edbody.document.we_form.cmd.value=arguments[0];
+			' . $this->topFrame . '.right.editor.edbody.document.we_form.cmdid.value=arguments[1];
+			' . $this->topFrame . '.right.editor.edbody.document.we_form.tabnr.value=' . $this->topFrame . '.activ_tab;
+			' . $this->topFrame . '.right.editor.edbody.submitForm();
 		break;
 		case "load":
 			' . $this->topFrame . '.cmd.location="' . $this->frameset . '?pnt=cmd&pid="+arguments[1]+"&offset="+arguments[2]+"&sort="+arguments[3];
@@ -441,8 +441,8 @@ function we_cmd() {
 
 				eval("if(top.opener.top.jsWindow" + k + "Object){" +
 								"	if(top.opener.top.jsWindow" + k + "Object.ref == \'edit_module\'){" +
-								"		myWind = top.opener.top.jsWindow" + k + "Object.wind.content.resize.right.editor.properties;" +
-								"		myWindStr = \'top.jsWindow" + k + "Object.wind.content.resize.right.editor.properties\';" +
+								"		myWind = top.opener.top.jsWindow" + k + "Object.wind.content.right.editor.properties;" +
+								"		myWindStr = \'top.jsWindow" + k + "Object.wind.content.right.editor.properties\';" +
 								"	}" +
 								"}");
 				if (myWind) {
@@ -540,9 +540,9 @@ function submitForm() {
 					$_SESSION["user_session_data"] = $user_object->getState();
 
 					print we_html_element::jsElement('
-		top.content.resize.right.editor.edheader.location="' . $this->frameset . '?pnt=edheader";
-		top.content.resize.right.editor.properties.location="' . $this->frameset . '?pnt=edbody";
-		top.content.resize.right.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";');
+		top.content.right.editor.edheader.location="' . $this->frameset . '?pnt=edheader";
+		top.content.right.editor.properties.location="' . $this->frameset . '?pnt=edbody";
+		top.content.right.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";');
 					break;
 
 				case "new_alias":
@@ -564,14 +564,14 @@ function submitForm() {
 
 					$_SESSION["user_session_data"] = $user_object->getState();
 					print we_html_element::jsElement('
-		top.content.resize.right.editor.edheader.location="' . $this->frameset . '?pnt=edheader";
-		top.content.resize.right.editor.properties.location="' . $this->frameset . '?pnt=edbody";
-		top.content.resize.right.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";');
+		top.content.right.editor.edheader.location="' . $this->frameset . '?pnt=edheader";
+		top.content.right.editor.properties.location="' . $this->frameset . '?pnt=edbody";
+		top.content.right.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";');
 					break;
 
 				case "search":
 					print we_html_element::jsElement('
-				    top.content.resize.right.editor.properties.location="' . WE_USERS_MODULE_DIR . 'edit_users_sresults.php?kwd=' . $_REQUEST["kwd"] . '";
+				    top.content.right.editor.properties.location="' . WE_USERS_MODULE_DIR . 'edit_users_sresults.php?kwd=' . $_REQUEST["kwd"] . '";
 				');
 					break;
 
@@ -579,9 +579,9 @@ function submitForm() {
 					if($uid && $ctype && $ctable){
 						print we_html_element::jsElement('
 		top.content.usetHot();
-		top.content.resize.right.editor.edheader.location="' . $this->frameset . '?pnt=edheader&uid=".$uid."&ctype=".ctype."&ctable=".$ctable;
-		top.content.resize.right.editor.properties.location="' . $this->frameset . '?pnt=edbody&uid=".$uid."&ctype=".ctype."&ctable=".$ctable;
-		top.content.resize.right.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter&uid=".$uid."&ctype=".ctype."&ctable=".$ctable;');
+		top.content.right.editor.edheader.location="' . $this->frameset . '?pnt=edheader&uid=".$uid."&ctype=".ctype."&ctable=".$ctable;
+		top.content.right.editor.properties.location="' . $this->frameset . '?pnt=edbody&uid=".$uid."&ctype=".ctype."&ctable=".$ctable;
+		top.content.right.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter&uid=".$uid."&ctype=".ctype."&ctable=".$ctable;');
 					}
 					break;
 
@@ -602,9 +602,9 @@ function submitForm() {
 
 					$_SESSION["user_session_data"] = $user_object->getState();
 					print we_html_element::jsElement('
-		top.content.resize.right.editor.edheader.location="' . $this->frameset . '?pnt=edheader";
-		top.content.resize.right.editor.properties.location="' . $this->frameset . '?pnt=edbody&oldtab=0";
-		top.content.resize.right.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";');
+		top.content.right.editor.edheader.location="' . $this->frameset . '?pnt=edheader";
+		top.content.right.editor.properties.location="' . $this->frameset . '?pnt=edbody&oldtab=0";
+		top.content.right.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";');
 					break;
 				case "display_user":
 					if($_REQUEST["uid"]){
@@ -624,9 +624,9 @@ function submitForm() {
 						print we_html_element::jsElement('
 		top.content.usetHot();
 		' . $setgroup . '
-		top.content.resize.right.editor.edheader.location="' . $this->frameset . '?pnt=edheader";
-		top.content.resize.right.editor.properties.location="' . $this->frameset . '?pnt=edbody&?oldtab=0";
-		top.content.resize.right.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";');
+		top.content.right.editor.edheader.location="' . $this->frameset . '?pnt=edheader";
+		top.content.right.editor.properties.location="' . $this->frameset . '?pnt=edbody&?oldtab=0";
+		top.content.right.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";');
 					}
 					break;
 				case "save_user":
@@ -891,9 +891,9 @@ function submitForm() {
 						if($user_object->deleteMe()){
 							print we_html_element::jsElement('
 		top.content.deleteEntry(' . $user_object->ID . ');
-		top.content.resize.right.editor.edheader.location="' . WEBEDITION_DIR . 'html/grayWithTopLine.html";
-		top.content.resize.right.editor.properties.location="' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=mod_home&mod=users";
-		top.content.resize.right.editor.edfooter.location="' . WEBEDITION_DIR . 'html/gray.html";');
+		top.content.right.editor.edheader.location="' . WEBEDITION_DIR . 'html/grayWithTopLine.html";
+		top.content.right.editor.properties.location="' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=mod_home&mod=users";
+		top.content.right.editor.edfooter.location="' . WEBEDITION_DIR . 'html/gray.html";');
 							unset($_SESSION["user_session_data"]);
 						}
 					}

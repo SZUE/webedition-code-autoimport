@@ -59,9 +59,9 @@ class weVotingView{
 
 	function setTopFrame($frame){
 		$this->topFrame = $frame;
-		$this->editorBodyFrame = $frame . '.resize.right.editor.edbody';
+		$this->editorBodyFrame = $frame . '.right.editor.edbody';
 		$this->editorBodyForm = $this->editorBodyFrame . '.document.we_form';
-		$this->editorHeaderFrame = $frame . '.resize.right.editor.edheader';
+		$this->editorHeaderFrame = $frame . '.right.editor.edheader';
 	}
 
 	//------------------------------------------------
@@ -127,31 +127,31 @@ class weVotingView{
 				        break;
 
 					case "vote":
-							' . $this->topFrame . '.resize.right.editor.edbody.document.we_form.cmd.value = arguments[0];
-							' . $this->topFrame . '.resize.right.editor.edbody.document.we_form.tabnr.value = 3;
-							' . $this->topFrame . '.resize.right.editor.edbody.document.we_form.votnr.value = arguments[1];
-							' . $this->topFrame . '.resize.right.editor.edbody.submitForm();
+							' . $this->topFrame . '.right.editor.edbody.document.we_form.cmd.value = arguments[0];
+							' . $this->topFrame . '.right.editor.edbody.document.we_form.tabnr.value = 3;
+							' . $this->topFrame . '.right.editor.edbody.document.we_form.votnr.value = arguments[1];
+							' . $this->topFrame . '.right.editor.edbody.submitForm();
 							break;
 					case "resetscores":
-							' . $this->topFrame . '.resize.right.editor.edbody.document.we_form.cmd.value = arguments[0];
-							' . $this->topFrame . '.resize.right.editor.edbody.document.we_form.tabnr.value = 3;
-							' . $this->topFrame . '.resize.right.editor.edbody.submitForm();
+							' . $this->topFrame . '.right.editor.edbody.document.we_form.cmd.value = arguments[0];
+							' . $this->topFrame . '.right.editor.edbody.document.we_form.tabnr.value = 3;
+							' . $this->topFrame . '.right.editor.edbody.submitForm();
 							break;
 		            case "new_voting":
 		            case "new_voting_group":
-						if(' . $this->topFrame . '.resize.right.editor.edbody.loaded) {
-							' . $this->topFrame . '.resize.right.editor.edbody.document.we_form.cmd.value = arguments[0];
-							' . $this->topFrame . '.resize.right.editor.edbody.document.we_form.cmdid.value = arguments[1];
-							' . $this->topFrame . '.resize.right.editor.edbody.document.we_form.tabnr.value = 1;
-							' . $this->topFrame . '.resize.right.editor.edbody.document.we_form.vernr.value = 0;
-							' . $this->topFrame . '.resize.right.editor.edbody.submitForm();
+						if(' . $this->topFrame . '.right.editor.edbody.loaded) {
+							' . $this->topFrame . '.right.editor.edbody.document.we_form.cmd.value = arguments[0];
+							' . $this->topFrame . '.right.editor.edbody.document.we_form.cmdid.value = arguments[1];
+							' . $this->topFrame . '.right.editor.edbody.document.we_form.tabnr.value = 1;
+							' . $this->topFrame . '.right.editor.edbody.document.we_form.vernr.value = 0;
+							' . $this->topFrame . '.right.editor.edbody.submitForm();
 						} else {
 							setTimeout(\'we_cmd("new_voting");\', 10);
 						}
 						break;
 					case "delete_voting":
-						if(top.content.resize.right.editor.edbody.document.we_form.cmd.value=="home") return;
-						if(top.content.resize.right.editor.edbody.document.we_form.newone.value==1){
+						if(top.content.right.editor.edbody.document.we_form.cmd.value=="home") return;
+						if(top.content.right.editor.edbody.document.we_form.newone.value==1){
 							' . we_message_reporting::getShowMessageCall(g_l('modules_voting', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 							return;
 						}
@@ -160,13 +160,13 @@ class weVotingView{
 				we_message_reporting::getShowMessageCall(g_l('modules_voting', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
 				) :
 				('
-								if (' . $this->topFrame . '.resize.right.editor.edbody.loaded) {
+								if (' . $this->topFrame . '.right.editor.edbody.loaded) {
 									if (confirm("' . g_l('modules_voting', '[delete_alert]') . '")) {
-										' . $this->topFrame . '.resize.right.editor.edbody.document.we_form.cmd.value=arguments[0];
-										' . $this->topFrame . '.resize.right.editor.edbody.document.we_form.tabnr.value=' . $this->topFrame . '.activ_tab;
+										' . $this->topFrame . '.right.editor.edbody.document.we_form.cmd.value=arguments[0];
+										' . $this->topFrame . '.right.editor.edbody.document.we_form.tabnr.value=' . $this->topFrame . '.activ_tab;
 										' . $this->editorHeaderFrame . '.location="' . $this->frameset . '?home=1&pnt=edheader";
-										' . $this->topFrame . '.resize.right.editor.edfooter.location="' . $this->frameset . '?home=1&pnt=edfooter";
-										' . $this->topFrame . '.resize.right.editor.edbody.submitForm();
+										' . $this->topFrame . '.right.editor.edfooter.location="' . $this->frameset . '?home=1&pnt=edfooter";
+										' . $this->topFrame . '.right.editor.edbody.submitForm();
 									}
 								} else {
 									' . we_message_reporting::getShowMessageCall(g_l('modules_voting', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR) . '
@@ -176,26 +176,26 @@ class weVotingView{
 						break;
 
 					case "save_voting":
-						if(top.content.resize.right.editor.edbody.document.we_form.cmd.value=="home") return;
+						if(top.content.right.editor.edbody.document.we_form.cmd.value=="home") return;
 
 
-								if (' . $this->topFrame . '.resize.right.editor.edbody.loaded) {
+								if (' . $this->topFrame . '.right.editor.edbody.loaded) {
 
-										' . $this->topFrame . '.resize.right.editor.edbody.document.we_form.cmd.value=arguments[0];
-										' . $this->topFrame . '.resize.right.editor.edbody.document.we_form.tabnr.value=' . $this->topFrame . '.activ_tab;
-										' . $this->topFrame . '.resize.right.editor.edbody.document.we_form.owners_name.value=' . $this->topFrame . '.resize.right.editor.edbody.owners_label.name;
-										' . $this->topFrame . '.resize.right.editor.edbody.document.we_form.owners_count.value=' . $this->topFrame . '.resize.right.editor.edbody.owners_label.itemCount;
+										' . $this->topFrame . '.right.editor.edbody.document.we_form.cmd.value=arguments[0];
+										' . $this->topFrame . '.right.editor.edbody.document.we_form.tabnr.value=' . $this->topFrame . '.activ_tab;
+										' . $this->topFrame . '.right.editor.edbody.document.we_form.owners_name.value=' . $this->topFrame . '.right.editor.edbody.owners_label.name;
+										' . $this->topFrame . '.right.editor.edbody.document.we_form.owners_count.value=' . $this->topFrame . '.right.editor.edbody.owners_label.itemCount;
 										' . '
 										if(' . $this->editorBodyForm . '.IsFolder.value!=1){
-											' . $this->topFrame . '.resize.right.editor.edbody.document.we_form.question_name.value=' . $this->topFrame . '.resize.right.editor.edbody.question_edit.name;
-											' . $this->topFrame . '.resize.right.editor.edbody.document.we_form.answers_name.value=' . $this->topFrame . '.resize.right.editor.edbody.answers_edit.name;
-											' . $this->topFrame . '.resize.right.editor.edbody.document.we_form.variant_count.value=' . $this->topFrame . '.resize.right.editor.edbody.answers_edit.variantCount;
-											' . $this->topFrame . '.resize.right.editor.edbody.document.we_form.item_count.value=' . $this->topFrame . '.resize.right.editor.edbody.answers_edit.itemCount;
-											' . $this->topFrame . '.resize.right.editor.edbody.document.we_form.iptable_name.value=' . $this->topFrame . '.resize.right.editor.edbody.iptable_label.name;
-											' . $this->topFrame . '.resize.right.editor.edbody.document.we_form.iptable_count.value=' . $this->topFrame . '.resize.right.editor.edbody.iptable_label.itemCount;
+											' . $this->topFrame . '.right.editor.edbody.document.we_form.question_name.value=' . $this->topFrame . '.right.editor.edbody.question_edit.name;
+											' . $this->topFrame . '.right.editor.edbody.document.we_form.answers_name.value=' . $this->topFrame . '.right.editor.edbody.answers_edit.name;
+											' . $this->topFrame . '.right.editor.edbody.document.we_form.variant_count.value=' . $this->topFrame . '.right.editor.edbody.answers_edit.variantCount;
+											' . $this->topFrame . '.right.editor.edbody.document.we_form.item_count.value=' . $this->topFrame . '.right.editor.edbody.answers_edit.itemCount;
+											' . $this->topFrame . '.right.editor.edbody.document.we_form.iptable_name.value=' . $this->topFrame . '.right.editor.edbody.iptable_label.name;
+											' . $this->topFrame . '.right.editor.edbody.document.we_form.iptable_count.value=' . $this->topFrame . '.right.editor.edbody.iptable_label.itemCount;
 										}
 
-										' . $this->topFrame . '.resize.right.editor.edbody.submitForm();
+										' . $this->topFrame . '.right.editor.edbody.submitForm();
 										top.content.usetHot();
 								} else {
 									' . we_message_reporting::getShowMessageCall(g_l('modules_voting', '[nothing_to_save]'), we_message_reporting::WE_MESSAGE_ERROR) . '
@@ -205,10 +205,10 @@ class weVotingView{
 
 					case "edit_voting":
 						' . (!we_hasPerm("EDIT_VOTING") ? we_message_reporting::getShowMessageCall(g_l('modules_voting', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR) . 'return;' : '') . '
-						' . $this->topFrame . '.resize.right.editor.edbody.document.we_form.cmd.value=arguments[0];
-						' . $this->topFrame . '.resize.right.editor.edbody.document.we_form.cmdid.value=arguments[1];
-						' . $this->topFrame . '.resize.right.editor.edbody.document.we_form.tabnr.value=' . $this->topFrame . '.activ_tab;
-						' . $this->topFrame . '.resize.right.editor.edbody.submitForm();
+						' . $this->topFrame . '.right.editor.edbody.document.we_form.cmd.value=arguments[0];
+						' . $this->topFrame . '.right.editor.edbody.document.we_form.cmdid.value=arguments[1];
+						' . $this->topFrame . '.right.editor.edbody.document.we_form.tabnr.value=' . $this->topFrame . '.activ_tab;
+						' . $this->topFrame . '.right.editor.edbody.submitForm();
 					break;
 					case "load":
 						' . $this->topFrame . '.cmd.location="' . $this->frameset . '?pnt=cmd&pid="+arguments[1]+"&offset="+arguments[2]+"&sort="+arguments[3];
@@ -407,8 +407,8 @@ class weVotingView{
 					$this->voting = new weVoting();
 					$this->voting->IsFolder = $_REQUEST["cmd"] == 'new_voting_group' ? 1 : 0;
 					print we_html_element::jsElement('
-								' . $this->topFrame . '.resize.right.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->voting->Text) . '";
-								' . $this->topFrame . '.resize.right.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";
+								' . $this->topFrame . '.right.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->voting->Text) . '";
+								' . $this->topFrame . '.right.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";
 					');
 					break;
 				case "edit_voting":
@@ -432,8 +432,8 @@ class weVotingView{
 						break;
 					}
 					print we_html_element::jsElement(
-							$this->topFrame . '.resize.right.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->voting->Text) . '";' .
-							$this->topFrame . '.resize.right.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";');
+							$this->topFrame . '.right.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->voting->Text) . '";' .
+							$this->topFrame . '.right.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";');
 					break;
 				case "save_voting":
 					if(!we_hasPerm("NEW_VOTING") && !we_hasPerm("EDIT_VOTING")){

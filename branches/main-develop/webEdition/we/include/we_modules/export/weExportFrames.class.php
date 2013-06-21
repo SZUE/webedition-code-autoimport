@@ -37,10 +37,10 @@ class weExportFrames extends weModuleFrames{
 		$this->Tree = new weExportTreeMain();
 		$this->SelectionTree = new weExportTree();
 		$this->View = new weExportView(WE_EXPORT_MODULE_DIR . "edit_export_frameset.php", "top.content");
-		$this->setupTree(EXPORT_TABLE, "top.content", "top.content.resize.left.tree", "top.content.cmd");
+		$this->setupTree(EXPORT_TABLE, "top.content", "top.content.tree", "top.content.cmd");
 		$this->module = "export";
 
-		$this->editorBodyFrame = $this->topFrame . '.resize.right.editor.edbody';
+		$this->editorBodyFrame = $this->topFrame . '.right.editor.edbody';
 	}
 
 	function getHTML($what){
@@ -62,6 +62,7 @@ class weExportFrames extends weModuleFrames{
 	function getHTMLFrameset(){
 		$this->View->export->clearSessionVars();
 		$extraHead = $this->Tree->getJSTreeCode() . we_html_element::jsElement($this->getJSStart());
+
 		return weModuleFrames::getHTMLFrameset($extraHead);
 	}
 
@@ -579,10 +580,10 @@ class weExportFrames extends weModuleFrames{
 						if(!$xmlExIm->prepare){
 							$_progress_update =
 								we_html_element::jsElement('
-										if(' . $this->editorBodyFrame . '.addLog) ' . $this->editorBodyFrame . '.addLog("' . addslashes(we_html_tools::getPixel(10, 10)) . we_html_element::htmlB(g_l('export', '[start_export]') . ' - ' . date("d.m.Y H:i:s")) . '<br><br>");
-										if(' . $this->editorBodyFrame . '.addLog) ' . $this->editorBodyFrame . '.addLog("' . addslashes(we_html_tools::getPixel(20, 5)) . we_html_element::htmlB(g_l('export', '[prepare]')) . '<br>");
-										if(' . $this->topFrame . '.resize.right.editor.edfooter.doProgress) ' . $this->topFrame . '.resize.right.editor.edfooter.doProgress(0);
-										if(' . $this->topFrame . '.resize.right.editor.edfooter.setProgressText) ' . $this->topFrame . '.resize.right.editor.edfooter.setProgressText("current_description","' . g_l('export', '[working]') . '");
+										if (' . $this->editorBodyFrame . '.addLog) ' . $this->editorBodyFrame . '.addLog("' . addslashes(we_html_tools::getPixel(10, 10)) . we_html_element::htmlB(g_l('export', '[start_export]') . ' - ' . date("d.m.Y H:i:s")) . '<br><br>");
+										if (' . $this->editorBodyFrame . '.addLog) ' . $this->editorBodyFrame . '.addLog("' . addslashes(we_html_tools::getPixel(20, 5)) . we_html_element::htmlB(g_l('export', '[prepare]')) . '<br>");
+										if (' . $this->topFrame . '.right.editor.edfooter.doProgress) ' . $this->topFrame . '.right.editor.edfooter.doProgress(0);
+										if(' . $this->topFrame . '.right.editor.edfooter.setProgressText) ' . $this->topFrame . '.right.editor.edfooter.setProgressText("current_description","' . g_l('export', '[working]') . '");
 										if(' . $this->editorBodyFrame . '.addLog){
 										' . $this->editorBodyFrame . '.addLog("' . addslashes(we_html_tools::getPixel(20, 5)) . we_html_element::htmlB(g_l('export', '[export]')) . '<br>");
 									}
@@ -601,8 +602,8 @@ class weExportFrames extends weModuleFrames{
 
 							$_progress_update =
 								we_html_element::jsElement('
-									if(' . $this->topFrame . '.resize.right.editor.edfooter.doProgress) ' . $this->topFrame . '.resize.right.editor.edfooter.doProgress("' . $percent . '");
-									if(' . $this->topFrame . '.resize.right.editor.edfooter.setProgressText) ' . $this->topFrame . '.resize.right.editor.edfooter.setProgressText("current_description","' . g_l('export', '[prepare]') . '");
+									if (' . $this->topFrame . '.right.editor.edfooter.doProgress) ' . $this->topFrame . '.right.editor.edfooter.doProgress("' . $percent . '");
+									if(' . $this->topFrame . '.right.editor.edfooter.setProgressText) ' . $this->topFrame . '.right.editor.edfooter.setProgressText("current_description","' . g_l('export', '[prepare]') . '");
 							');
 						}
 
@@ -680,7 +681,7 @@ class weExportFrames extends weModuleFrames{
 
 						$_progress_update .= "\n" .
 							we_html_element::jsElement('
-									if (' . $this->topFrame . '.resize.right.editor.edfooter.doProgress) ' . $this->topFrame . '.resize.right.editor.edfooter.doProgress(' . $percent . ');
+									if (' . $this->topFrame . '.right.editor.edfooter.doProgress) ' . $this->topFrame . '.right.editor.edfooter.doProgress(' . $percent . ');
 						') . "\n";
 						$_SESSION['weS']['ExImCurrentRef'] = $xmlExIm->RefTable->current;
 
@@ -703,7 +704,7 @@ class weExportFrames extends weModuleFrames{
 							}
 							$_progress_update .= "\n" .
 								we_html_element::jsElement('
-									if (' . $this->topFrame . '.resize.right.editor.edfooter.doProgress) ' . $this->topFrame . '.resize.right.editor.edfooter.doProgress(100);
+									if (' . $this->topFrame . '.right.editor.edfooter.doProgress) ' . $this->topFrame . '.right.editor.edfooter.doProgress(100);
 									if (' . $this->editorBodyFrame . '.addLog) ' . $this->editorBodyFrame . '.addLog("<br>' . addslashes(we_html_tools::getPixel(10, 10)) . we_html_element::htmlB(g_l('export', '[end_export]') . ' - ' . date("d.m.Y H:i:s")) . '<br><br>");
 							') . "\n" .
 								($this->View->export->ExportTo == 'local' ?
@@ -726,7 +727,7 @@ class weExportFrames extends weModuleFrames{
 											"marginheight" => 5,
 											"leftmargin" => 5,
 											"topmargin" => 5,
-											"onLoad" => ($this->View->export->ExportTo == 'local' ? ($this->cmdFrame . ".location='" . $this->frameset . "?pnt=cmd&cmd=upload&exportfile=" . urlencode($this->View->export->ExportFilename) . "';") : ( we_message_reporting::getShowMessageCall(g_l('export', "[server_finished]"), we_message_reporting::WE_MESSAGE_NOTICE) )) . $this->topFrame . ".resize.right.editor.edfooter.hideProgress();")
+											"onLoad" => ($this->View->export->ExportTo == 'local' ? ($this->cmdFrame . ".location='" . $this->frameset . "?pnt=cmd&cmd=upload&exportfile=" . urlencode($this->View->export->ExportFilename) . "';") : ( we_message_reporting::getShowMessageCall(g_l('export', "[server_finished]"), we_message_reporting::WE_MESSAGE_NOTICE) )) . $this->topFrame . ".right.editor.edfooter.hideProgress();")
 									), null
 							);
 							$xmlExIm->unsetPerserves();

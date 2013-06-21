@@ -31,9 +31,11 @@ class weCustomerFrames extends weModuleFrames{
 		parent::__construct(WE_CUSTOMER_MODULE_DIR . 'edit_customer_frameset.php');
 		$this->Tree = new weCustomerTree();
 		$this->View = new weCustomerView(WE_CUSTOMER_MODULE_DIR . "edit_customer_frameset.php", "top.content");
-		$this->setupTree(CUSTOMER_TABLE, "top.content", "top.content.resize.left.tree", "top.content.cmd");
+		$this->setupTree(CUSTOMER_TABLE, "top.content", "top.content.tree", "top.content.cmd");
 		$this->module = "customer";
 		$this->treeDefaultWidth = 244;
+		$this->treeFooterHeight = 40;
+		$this->treeHeaderHeight = 40;
 	}
 
 	function getHTML($what = '', $mode = 0, $step = 0){
@@ -65,9 +67,6 @@ class weCustomerFrames extends weModuleFrames{
 			case 'settings':
 				print $this->getHTMLSettings();
 				break;
-			case 'resize':
-				print $this->getHTMLResize();
-				break;
 			default:
 				parent::getHTML($what);
 		}
@@ -76,9 +75,15 @@ class weCustomerFrames extends weModuleFrames{
 	function getHTMLFrameset(){
 		$this->View->customer->clearSessionVars();
 		$this->View->settings->load(false);
+		$extraHead = $this->Tree->getJSTreeCode() . 
+			we_html_element::jsElement($this->getJSStart()) .
+			we_html_element::jsElement($this->View->getJSTreeHeader());
 
-		$extraHead = $this->Tree->getJSTreeCode() . we_html_element::jsElement($this->getJSStart());
 		return parent::getHTMLFrameset($extraHead);
+	}
+
+	function getHTMLLeftDiv(){
+		return parent::getHTMLLeftDiv(true, true, true);
 	}
 
 	function getJSCmdCode(){
@@ -628,18 +633,6 @@ class weCustomerFrames extends weModuleFrames{
 			);
 		}
 		return we_multiIconBox::getHTML("", 680, $parts, 30);
-	}
-
-	function getHTMLLeft(){
-		$body = we_html_element::htmlBody(array('style' => 'background-color:grey;margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;')
-				, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
-					, we_html_element::htmlIFrame('treeheader', $this->frameset . '?pnt=treeheader', 'position:absolute;top:0px;height:40px;left:0px;right:0px;overflow: hidden;') .
-					we_html_element::htmlIFrame('tree', WEBEDITION_DIR . 'treeMain.php', 'position:absolute;top:40px;bottom:40px;left:0px;right:0px;overflow: auto;') .
-					we_html_element::htmlIFrame('treefooter', $this->frameset . '?pnt=treefooter', 'position:absolute;height:40px;bottom:0px;left:0px;right:0px;overflow: hidden;')
-				));
-
-		we_html_element::htmlBody(array('style' => 'margin:0px;'), '');
-		return $this->getHTMLDocument($body);
 	}
 
 	function getHTMLTreeHeader(){

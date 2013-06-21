@@ -55,9 +55,9 @@ class weExportView{
 
 	function setTopFrame($frame){
 		$this->topFrame = $frame;
-		$this->editorBodyFrame = $frame . '.resize.right.editor.edbody';
+		$this->editorBodyFrame = $frame . '.right.editor.edbody';
 		$this->editorBodyForm = $this->editorBodyFrame . '.document.we_form';
-		$this->editorHeaderFrame = $frame . '.resize.right.editor.edheader';
+		$this->editorHeaderFrame = $frame . '.right.editor.edheader';
 	}
 
 	//------------------------------------------------
@@ -182,9 +182,9 @@ class weExportView{
 								}
 								' . (!we_hasPerm("NEW_EXPORT") ? we_message_reporting::getShowMessageCall(g_l('export', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR) . 'return;' : ''
 			) . '
-								if (' . $this->topFrame . '.resize.right.editor.edheader.setTab) ' . $this->topFrame . '.resize.right.editor.edheader.setActiveTab("tab_3");
-								if (' . $this->topFrame . '.resize.right.editor.edheader.setTab) ' . $this->topFrame . '.resize.right.editor.edheader.setTab(3);
-								if (' . $this->topFrame . '.resize.right.editor.edfooter.doProgress) ' . $this->topFrame . '.resize.right.editor.edfooter.doProgress(0);
+								if (' . $this->topFrame . '.right.editor.edheader.setTab) ' . $this->topFrame . '.right.editor.edheader.setActiveTab("tab_3");
+								if (' . $this->topFrame . '.right.editor.edheader.setTab) ' . $this->topFrame . '.right.editor.edheader.setTab(3);
+								if (' . $this->topFrame . '.right.editor.edfooter.doProgress) ' . $this->topFrame . '.right.editor.edfooter.doProgress(0);
 								if (' . $this->editorBodyFrame . '.clearLog) ' . $this->editorBodyFrame . '.clearLog();
 								if (' . $this->editorBodyFrame . '.addLog) ' . $this->editorBodyFrame . '.addLog("' . addslashes(we_html_tools::getPixel(10, 10)) . '<br>");
 					case "save_export":
@@ -406,8 +406,8 @@ class weExportView{
 					} else{
 						$this->export = new weExport();
 						print we_html_element::jsElement('
-								' . $this->topFrame . '.resize.right.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->export->Text) . '";
-								' . $this->topFrame . '.resize.right.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";
+								' . $this->topFrame . '.right.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->export->Text) . '";
+								' . $this->topFrame . '.right.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";
 						');
 					}
 
@@ -423,8 +423,8 @@ class weExportView{
 						$this->export->Text = g_l('export', '[newFolder]');
 						$this->export->IsFolder = 1;
 						print we_html_element::jsElement('
-								' . $this->topFrame . '.resize.right.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->export->Text) . '";
-								' . $this->topFrame . '.resize.right.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";
+								' . $this->topFrame . '.right.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->export->Text) . '";
+								' . $this->topFrame . '.right.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";
 						');
 					}
 					break;
@@ -438,8 +438,8 @@ class weExportView{
 						$this->export = new weExport($_REQUEST["cmdid"]);
 						print we_html_element::jsElement('
 								' . $this->topFrame . '.hot=0;
-								' . $this->topFrame . '.resize.right.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->export->Text) . '";
-								' . $this->topFrame . '.resize.right.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";
+								' . $this->topFrame . '.right.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->export->Text) . '";
+								' . $this->topFrame . '.right.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";
 						');
 					}
 					break;

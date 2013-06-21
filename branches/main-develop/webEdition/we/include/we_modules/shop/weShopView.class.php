@@ -120,29 +120,29 @@ function we_cmd(){
 	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 	switch (arguments[0]){
 		case "new_shop":
-			' . $this->topFrame . '.resize.right.editor.location="<?php print WE_SHOP_MODULE_DIR; ?>edit_shop_frameset.php?pnt=editor";
+			' . $this->topFrame . '.right.editor.location="<?php print WE_SHOP_MODULE_DIR; ?>edit_shop_frameset.php?pnt=editor";
 			break;
 		case "delete_shop":
-			if (' . $this->topFrame . '.resize && ' . $this->topFrame . '.resize.right.editor.edbody.hot && ' . $this->topFrame . '.resize.right.editor.edbody.hot == 1 ) {
+			if (' . $this->topFrame . '.right && ' . $this->topFrame . '.right.editor.edbody.hot && ' . $this->topFrame . '.right.editor.edbody.hot == 1 ) {
 				if(confirm("' . g_l("modules_shop", "[del_shop]") . '")){
-					' . $this->topFrame . '.resize.right.editor.edbody.deleteorder();
+					' . $this->topFrame . '.right.editor.edbody.deleteorder();
 				}
 			} else {
 				' . we_message_reporting::getShowMessageCall(g_l("modules_shop", "[nothing_to_delete]"), we_message_reporting::WE_MESSAGE_NOTICE) . '
 			}
 			break;
 		case "new_article":
-			if (' . $this->topFrame . '.resize && ' . $this->topFrame . '.resize.right.editor.edbody.hot && ' . $this->topFrame . '.resize.right.editor.edbody.hot == 1 ) {
-				top.content.resize.right.editor.edbody.neuerartikel();
+			if (' . $this->topFrame . '.right && ' . $this->topFrame . '.right.editor.edbody.hot && ' . $this->topFrame . '.right.editor.edbody.hot == 1 ) {
+				top.content.right.editor.edbody.neuerartikel();
 			} else {
 				' . we_message_reporting::getShowMessageCall(g_l("modules_shop", "[no_order_there]"), we_message_reporting::WE_MESSAGE_ERROR) . '
 			}
 			break;
 		case "revenue_view":
 		//FIXME: this is not correct; document doesnt work like this
-			' . ($resultD > 0 ? $this->topFrame . '.resize.right.editor.location="' . WE_SHOP_MODULE_DIR . 'edit_shop_frameset.php?pnt=editor&top=1&typ=document";' :
-				(!empty($resultO) ? $this->topFrame . '.resize.right.editor.location="' . WE_SHOP_MODULE_DIR . 'edit_shop_frameset.php?pnt=editor&top=1&typ=object&ViewClass='.$classid.'";' :
-					$this->topFrame . '.resize.right.editor.location="' . WE_SHOP_MODULE_DIR . 'edit_shop_frameset.php?pnt=editor&top=1&typ=document')) . '";
+			' . ($resultD > 0 ? $this->topFrame . '.right.editor.location="' . WE_SHOP_MODULE_DIR . 'edit_shop_frameset.php?pnt=editor&top=1&typ=document";' :
+				(!empty($resultO) ? $this->topFrame . '.right.editor.location="' . WE_SHOP_MODULE_DIR . 'edit_shop_frameset.php?pnt=editor&top=1&typ=object&ViewClass='.$classid.'";' :
+					$this->topFrame . '.right.editor.location="' . WE_SHOP_MODULE_DIR . 'edit_shop_frameset.php?pnt=editor&top=1&typ=document')) . '";
 			break;
 		';
 		$years = we_shop_shop::getAllOrderYears();
@@ -210,27 +210,27 @@ function we_cmd() {
 	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 	switch (arguments[0]) {
 		case "new_raw":
-			if(' . $this->topFrame . '.resize.right.editor.edbody.loaded) {
+			if(' . $this->topFrame . '.right.editor.edbody.loaded) {
 				' . $this->topFrame . '.hot = 1;
-				' . $this->topFrame . '.resize.right.editor.edbody.document.we_form.cmd.value = arguments[0];
-				' . $this->topFrame . '.resize.right.editor.edbody.document.we_form.cmdid.value = arguments[1];
-				' . $this->topFrame . '.resize.right.editor.edbody.document.we_form.tabnr.value = 1;
-				' . $this->topFrame . '.resize.right.editor.edbody.submitForm();
+				' . $this->topFrame . '.right.editor.edbody.document.we_form.cmd.value = arguments[0];
+				' . $this->topFrame . '.right.editor.edbody.document.we_form.cmdid.value = arguments[1];
+				' . $this->topFrame . '.right.editor.edbody.document.we_form.tabnr.value = 1;
+				' . $this->topFrame . '.right.editor.edbody.submitForm();
 			} else {
 				setTimeout(\'we_cmd("new_raw");\', 10);
 			}
 			break;
 
 		case "delete_raw":
-			if(top.content.resize.right.editor.edbody.document.we_form.cmd.value=="home") return;
+			if(top.content.right.editor.edbody.document.we_form.cmd.value=="home") return;
 			' . (!we_hasPerm("DELETE_RAW") ?
 					( we_message_reporting::getShowMessageCall(g_l('modules_shop', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)) :
 					('
-					if (' . $this->topFrame . '.resize.right.editor.edbody.loaded) {
+					if (' . $this->topFrame . '.right.editor.edbody.loaded) {
 						if (confirm("' . g_l('modules_shop', '[delete_alert]') . '")) {
-							' . $this->topFrame . '.resize.right.editor.edbody.document.we_form.cmd.value=arguments[0];
-							' . $this->topFrame . '.resize.right.editor.edbody.document.we_form.tabnr.value=' . $this->topFrame . '.activ_tab;
-							' . $this->topFrame . '.resize.right.editor.edbody.submitForm();
+							' . $this->topFrame . '.right.editor.edbody.document.we_form.cmd.value=arguments[0];
+							' . $this->topFrame . '.right.editor.edbody.document.we_form.tabnr.value=' . $this->topFrame . '.activ_tab;
+							' . $this->topFrame . '.right.editor.edbody.submitForm();
 						}
 					} else {
 						' . we_message_reporting::getShowMessageCall(g_l('modules_shop', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR) . '
@@ -240,14 +240,14 @@ function we_cmd() {
 			break;
 
 		case "save_raw":
-			if(top.content.resize.right.editor.edbody.document.we_form.cmd.value=="home") return;
+			if(top.content.right.editor.edbody.document.we_form.cmd.value=="home") return;
 
 
-					if (' . $this->topFrame . '.resize.right.editor.edbody.loaded) {
-							' . $this->topFrame . '.resize.right.editor.edbody.document.we_form.cmd.value=arguments[0];
-							' . $this->topFrame . '.resize.right.editor.edbody.document.we_form.tabnr.value=' . $this->topFrame . '.activ_tab;
+					if (' . $this->topFrame . '.right.editor.edbody.loaded) {
+							' . $this->topFrame . '.right.editor.edbody.document.we_form.cmd.value=arguments[0];
+							' . $this->topFrame . '.right.editor.edbody.document.we_form.tabnr.value=' . $this->topFrame . '.activ_tab;
 
-							' . $this->topFrame . '.resize.right.editor.edbody.submitForm();
+							' . $this->topFrame . '.right.editor.edbody.submitForm();
 					} else {
 						' . we_message_reporting::getShowMessageCall(g_l('modules_shop', '[nothing_to_save]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 					}
@@ -256,10 +256,10 @@ function we_cmd() {
 
 		case "edit_raw":
 			' . $this->topFrame . '.hot=0;
-			' . $this->topFrame . '.resize.right.editor.edbody.document.we_form.cmd.value=arguments[0];
-			' . $this->topFrame . '.resize.right.editor.edbody.document.we_form.cmdid.value=arguments[1];
-			' . $this->topFrame . '.resize.right.editor.edbody.document.we_form.tabnr.value=' . $this->topFrame . '.activ_tab;
-			' . $this->topFrame . '.resize.right.editor.edbody.submitForm();
+			' . $this->topFrame . '.right.editor.edbody.document.we_form.cmd.value=arguments[0];
+			' . $this->topFrame . '.right.editor.edbody.document.we_form.cmdid.value=arguments[1];
+			' . $this->topFrame . '.right.editor.edbody.document.we_form.tabnr.value=' . $this->topFrame . '.activ_tab;
+			' . $this->topFrame . '.right.editor.edbody.submitForm();
 		break;
 		case "load":
 			' . $this->topFrame . '.cmd.location="' . $this->frameset . '?pnt=cmd&pid="+arguments[1]+"&offset="+arguments[2]+"&sort="+arguments[3];
@@ -958,7 +958,7 @@ function we_cmd() {
 				}
 
 				function deleteorder() {
-					top.content.resize.right.editor.location = "<?php print WE_SHOP_MODULE_DIR; ?>edit_shop_frameset.php?pnt=edbody&deletethisorder=1&bid=<?php echo $_REQUEST["bid"]; ?>";
+					top.content.right.editor.location = "<?php print WE_SHOP_MODULE_DIR; ?>edit_shop_frameset.php?pnt=edbody&deletethisorder=1&bid=<?php echo $_REQUEST["bid"]; ?>";
 					top.content.deleteEntry(<?php echo $_REQUEST["bid"]; ?>);
 				}
 
@@ -998,7 +998,7 @@ function we_cmd() {
 				// ********************************************************************************
 			} else{ // This order has no more entries
 				echo we_html_element::jsElement('
-				top.content.resize.right.editor.location="' . WE_SHOP_MODULE_DIR . 'edit_shop_frameset.php?pnt=edbody&deletethisorder=1&bid=' . $_REQUEST["bid"] . '";
+				top.content.right.editor.location="' . WE_SHOP_MODULE_DIR . 'edit_shop_frameset.php?pnt=edbody&deletethisorder=1&bid=' . $_REQUEST["bid"] . '";
 				top.content.deleteEntry(' . $_REQUEST['bid'] . ');
 			') . '
 		</head>
@@ -1457,7 +1457,8 @@ function submitForm() {
 
 						// update all orders with this orderId
 						if(updateFieldFromOrder($_REQUEST['bid'], 'strSerialOrder', serialize($serialOrder))){
-							$jsCmd = 'top.opener.top.content.resize.left.doClick(' . $_REQUEST['bid'] . ',"shop","' . SHOP_TABLE . '");' .
+							//TODO: check JS-adress!!
+							$jsCmd = 'top.opener.top.content.left.doClick(' . $_REQUEST['bid'] . ',"shop","' . SHOP_TABLE . '");' .
 								we_message_reporting::getShowMessageCall(sprintf(g_l('modules_shop', '[edit_order][js_saved_cart_field_success]'), $_REQUEST['cartfieldname']), we_message_reporting::WE_MESSAGE_NOTICE);
 						} else{
 							$jsCmd = we_message_reporting::getShowMessageCall(sprintf(g_l('modules_shop', '[edit_order][js_saved_cart_field_error]'), $_REQUEST['cartfieldname']), we_message_reporting::WE_MESSAGE_ERROR);
@@ -1716,15 +1717,15 @@ function submitForm() {
 				case 'new_raw':
 					$this->raw = new weShop();
 					print we_html_element::jsElement(
-							$this->topFrame . '.resize.right.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->raw->Text) . '";' .
-							$this->topFrame . '.resize.right.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";'
+							$this->topFrame . '.right.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->raw->Text) . '";' .
+							$this->topFrame . '.right.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";'
 					);
 					break;
 				case 'edit_raw':
 					$this->raw = new weShop($_REQUEST['cmdid']);
 					print we_html_element::jsElement(
-							$this->topFrame . '.resize.right.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->raw->Text) . '";' .
-							$this->topFrame . '.resize.right.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";'
+							$this->topFrame . '.right.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->raw->Text) . '";' .
+							$this->topFrame . '.right.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";'
 					);
 					break;
 				case 'save_raw':

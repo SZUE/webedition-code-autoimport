@@ -33,8 +33,9 @@ class weVotingFrames extends weModuleFrames{
 		parent::__construct(WE_VOTING_MODULE_DIR . "edit_voting_frameset.php");
 		$this->Tree = new weVotingTree();
 		$this->View = new weVotingView(WE_VOTING_MODULE_DIR . "edit_voting_frameset.php", "top.content");
-		$this->setupTree(VOTING_TABLE, "top.content", "top.content.resize.left.tree", "top.content.cmd");
+		$this->setupTree(VOTING_TABLE, "top.content", "top.content.tree", "top.content.cmd");
 		$this->module = "voting";
+		//$this->treeFooterHeight = 0;
 	}
 
 	function getHTML($what){
@@ -75,6 +76,10 @@ class weVotingFrames extends weModuleFrames{
 		$extraHead = $this->Tree->getJSTreeCode() . we_html_element::jsElement($this->getJSStart());
 
 		return weModuleFrames::getHTMLFrameset($extraHead);
+	}
+
+	function getHTMLLeftDiv(){
+		return parent::getHTMLLeftDiv(true, false, true);
 	}
 
 	function getJSCmdCode(){
@@ -148,8 +153,8 @@ class weVotingFrames extends weModuleFrames{
 			ob_end_clean();
 			return
 				we_html_element::jsElement('
-			' . $this->topFrame . '.resize.right.editor.edheader.location = "' . $this->frameset . '?pnt=edheader&home=1";
-			' . $this->topFrame . '.resize.right.editor.edfooter.location = "' . $this->frameset . '?pnt=edfooter&home=1";
+			' . $this->topFrame . '.right.editor.edheader.location = "' . $this->frameset . '?pnt=edheader&home=1";
+			' . $this->topFrame . '.right.editor.edfooter.location = "' . $this->frameset . '?pnt=edfooter&home=1";
 			') . $out;
 		}
 
@@ -838,23 +843,6 @@ class weVotingFrames extends weModuleFrames{
 		$yuiSuggest->setLabel(g_l('modules_voting', '[group]'));
 
 		return $yuiSuggest->getHTML();
-	}
-
-	function getHTMLLeft(){
-
-		$frameset = new we_html_frameset(array("framespacing" => 0, "border" => 0, "frameborder" => "no"));
-		$noframeset = new we_baseElement("noframes");
-
-		$frameset->setAttributes(array("rows" => "1,*,0"));
-		$frameset->addFrame(array("src" => HTML_DIR . "whiteWithTopLine.html", "name" => "treeheader", "noresize" => null, "scrolling" => "no"));
-
-		$frameset->addFrame(array("src" => WEBEDITION_DIR . "treeMain.php", "name" => "tree", "noresize" => null, "scrolling" => "auto"));
-		$frameset->addFrame(array("src" => $this->frameset . "?pnt=treefooter", "name" => "treefooter", "noresize" => null, "scrolling" => "no"));
-
-		// set and return html code
-		$body = $frameset->getHtml() . $noframeset->getHTML();
-
-		return $this->getHTMLDocument($body);
 	}
 
 	function getHTMLTreeHeader(){

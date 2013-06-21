@@ -121,26 +121,26 @@ class weCustomerView{
 						}
 						break;
 					case "new_customer":
-						if(' . $this->topFrame . '.resize.right.editor.edbody.loaded) {
-							' . $this->topFrame . '.resize.right.editor.edbody.document.we_form.cmd.value = arguments[0];
-							' . $this->topFrame . '.resize.right.editor.edbody.document.we_form.cmdid.value = arguments[1];
-							' . $this->topFrame . '.resize.right.editor.edbody.submitForm();
+						if(' . $this->topFrame . '.right.editor.edbody.loaded) {
+							' . $this->topFrame . '.right.editor.edbody.document.we_form.cmd.value = arguments[0];
+							' . $this->topFrame . '.right.editor.edbody.document.we_form.cmdid.value = arguments[1];
+							' . $this->topFrame . '.right.editor.edbody.submitForm();
 						} else {
 							setTimeout(\'we_cmd("new_customer");\', 10);
 						}
 						break;
 
 					case "delete_customer":
-						if(top.content.resize.right.editor.edbody.document.we_form.cmd.value=="home") return;
+						if(top.content.right.editor.edbody.document.we_form.cmd.value=="home") return;
 						' . (!we_hasPerm("DELETE_CUSTOMER") ?
 				('
 							' . we_message_reporting::getShowMessageCall(g_l('modules_customer', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 						') :
 				('
-								if (' . $this->topFrame . '.resize.right.editor.edbody.loaded) {
+								if (' . $this->topFrame . '.right.editor.edbody.loaded) {
 									if (confirm("' . g_l('modules_customer', '[delete_alert]') . '")) {
-										' . $this->topFrame . '.resize.right.editor.edbody.document.we_form.cmd.value=arguments[0];
-										' . $this->topFrame . '.resize.right.editor.edbody.submitForm();
+										' . $this->topFrame . '.right.editor.edbody.document.we_form.cmd.value=arguments[0];
+										' . $this->topFrame . '.right.editor.edbody.submitForm();
 									}
 								} else {
 									' . we_message_reporting::getShowMessageCall(g_l('modules_customer', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR) . '
@@ -150,16 +150,16 @@ class weCustomerView{
 						break;
 
 					case "save_customer":
-						if(top.content.resize.right.editor.edbody.document.we_form.cmd.value=="home") return;
+						if(top.content.right.editor.edbody.document.we_form.cmd.value=="home") return;
 						' . ((!we_hasPerm("EDIT_CUSTOMER") && !we_hasPerm("NEW_CUSTOMER")) ?
 				('
 							' . we_message_reporting::getShowMessageCall(g_l('modules_customer', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 						') :
 				('
 
-								if (' . $this->topFrame . '.resize.right.editor.edbody.loaded) {
-										' . $this->topFrame . '.resize.right.editor.edbody.document.we_form.cmd.value=arguments[0];
-										' . $this->topFrame . '.resize.right.editor.edbody.submitForm();
+								if (' . $this->topFrame . '.right.editor.edbody.loaded) {
+										' . $this->topFrame . '.right.editor.edbody.document.we_form.cmd.value=arguments[0];
+										' . $this->topFrame . '.right.editor.edbody.submitForm();
 								} else {
 									' . we_message_reporting::getShowMessageCall(g_l('modules_customer', '[nothing_to_save]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 								}
@@ -168,32 +168,32 @@ class weCustomerView{
 						break;
 
 					case "edit_customer":
-						' . $this->topFrame . '.resize.right.editor.edbody.document.we_form.cmd.value=arguments[0];
-						' . $this->topFrame . '.resize.right.editor.edbody.document.we_form.cmdid.value=arguments[1];
-						' . $this->topFrame . '.resize.right.editor.edbody.submitForm();
+						' . $this->topFrame . '.right.editor.edbody.document.we_form.cmd.value=arguments[0];
+						' . $this->topFrame . '.right.editor.edbody.document.we_form.cmdid.value=arguments[1];
+						' . $this->topFrame . '.right.editor.edbody.submitForm();
 					break;
 					case "show_admin":
 					case "show_sort_admin":
-						if(' . $this->topFrame . '.resize.right.editor.edbody.document.we_form.cmd.value=="home") ' . $this->topFrame . '.resize.right.editor.edbody.document.we_form.home.value="1";
-						' . $this->topFrame . '.resize.right.editor.edbody.document.we_form.cmd.value=arguments[0];
-						' . $this->topFrame . '.resize.right.editor.edbody.document.we_form.cmdid.value=arguments[1];
-						' . $this->topFrame . '.resize.right.editor.edbody.submitForm();
+						if(' . $this->topFrame . '.right.editor.edbody.document.we_form.cmd.value=="home") ' . $this->topFrame . '.right.editor.edbody.document.we_form.home.value="1";
+						' . $this->topFrame . '.right.editor.edbody.document.we_form.cmd.value=arguments[0];
+						' . $this->topFrame . '.right.editor.edbody.document.we_form.cmdid.value=arguments[1];
+						' . $this->topFrame . '.right.editor.edbody.submitForm();
 					break;
 					case "show_search":
-						' . $this->topFrame . '.resize.left.treefooter.document.we_form.cmd.value=arguments[0];
-						' . $this->topFrame . '.resize.left.treefooter.submitForm();
+						' . $this->topFrame . '.treefooter.document.we_form.cmd.value=arguments[0];
+						' . $this->topFrame . '.treefooter.submitForm();
 					break;
 					case "show_customer_settings":
-						' . $this->topFrame . '.resize.left.treefooter.document.we_form.cmd.value=arguments[0];
-						' . $this->topFrame . '.resize.left.treefooter.submitForm();
+						' . $this->topFrame . '.treefooter.document.we_form.cmd.value=arguments[0];
+						' . $this->topFrame . '.treefooter.submitForm();
 					break;
 					case "export_customer":
-						' . $this->topFrame . '.resize.left.treefooter.document.we_form.cmd.value=arguments[0];
-						' . $this->topFrame . '.resize.left.treefooter.submitForm();
+						' . $this->topFrame . '.treefooter.document.we_form.cmd.value=arguments[0];
+						' . $this->topFrame . '.treefooter.submitForm();
 					break;
 					case "import_customer":
-						' . $this->topFrame . '.resize.left.treefooter.document.we_form.cmd.value=arguments[0];
-						' . $this->topFrame . '.resize.left.treefooter.submitForm();
+						' . $this->topFrame . '.treefooter.document.we_form.cmd.value=arguments[0];
+						' . $this->topFrame . '.treefooter.submitForm();
 					break;
 					case "load":
 						' . $this->topFrame . '.cmd.location="' . $this->frameset . '?pnt=cmd&pid="+arguments[1]+"&offset="+arguments[2]+"&sort="+arguments[3];
@@ -314,7 +314,7 @@ class weCustomerView{
 			function refreshForm(){
 				if(document.we_form.cmd.value!="home"){
 					we_cmd("switchPage",' . $this->topFrame . '.activ_tab);
-					' . $this->topFrame . '.resize.right.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->customer->Text) . '";
+					' . $this->topFrame . '.right.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->customer->Text) . '";
 				}
 			}
 			' . $this->getJSSubmitFunction();
@@ -448,25 +448,27 @@ class weCustomerView{
 	function getJSTreeHeader(){
 		return '
 			function applySort(){
-				document.we_form.pnt.value="cmd";
-				document.we_form.cmd.value="applySort";
+				document.we_form_treeheader.pnt.value="cmd";
+				document.we_form_treeheader.cmd.value="applySort";
 				submitForm();
 			}
 
 			function addSorting(sortname) {
 				var found=false;
-				len = document.we_form.sort.options.length;
+				len = document.we_form_treeheader.sort.options.length;
 				for(i=0;i<len;i++) {
-					if(document.we_form.sort.options[i].value==sortname){
+					if(document.we_form_treeheader.sort.options[i].value==sortname){
 						found = true;
 					}
 				}
 				if(!found){
-					document.we_form.sort.options[len] = new Option(sortname,sortname);
+					document.we_form_treeheader.sort.options[len] = new Option(sortname,sortname);
 				}
 
 			}
-
+			
+			/*
+			//obsolete after removing treeheader frame
 			function doUnload() {
 				if (!!jsWindow_count) {
 					for (i = 0; i < jsWindow_count; i++) {
@@ -474,7 +476,10 @@ class weCustomerView{
 					}
 				}
 			}
+			*/
 
+			/*
+			//this function was used to loop treeheader.we_cmd() to content.we_cmd: obsolete, because all treeheader-JS was moved to content
 			function we_cmd(){
 				var args = "";
 				var url = "' . $this->frameset . '?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
@@ -483,10 +488,11 @@ class weCustomerView{
 						for (var i = 0; i < arguments.length; i++) {
 							args += \'arguments[\'+i+\']\' + ((i < (arguments.length-1)) ? \',\' : \'\');
 						}
-						eval(\'top.content.we_cmd(\'+args+\')\');
+						eval(\'top.content.we_cmd(\'+args+\')\')//da;
 				}
-			}' .
-			$this->getJSSubmitFunction('cmd');
+			}
+			*/' .
+			$this->getJSSubmitFunction('cmd', 'post', 'we_form_treeheader');
 	}
 
 	function getJSSearch(){
@@ -519,10 +525,10 @@ class weCustomerView{
 	' . $this->getJSSubmitFunction("customer_settings");
 	}
 
-	function getJSSubmitFunction($def_target = 'edbody', $def_method = 'post'){
+	function getJSSubmitFunction($def_target = 'edbody', $def_method = 'post', $form_name = 'we_form'){
 		return '
 			function submitForm() {
-				var f = self.document.we_form;
+				var f = self.document.' . $form_name . ';
 
 				if (arguments[0]) {
 					f.target = arguments[0];
@@ -553,15 +559,15 @@ class weCustomerView{
 					$this->customer = new weCustomer();
 					$this->settings->initCustomerWithDefaults($this->customer);
 					print we_html_element::jsElement(
-							$this->topFrame . '.resize.right.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->customer->Text) . '";' .
-							$this->topFrame . '.resize.right.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";'
+							$this->topFrame . '.right.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->customer->Text) . '";' .
+							$this->topFrame . '.right.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";'
 						);
 					break;
 				case 'edit_customer':
 					$this->customer = new weCustomer($_REQUEST["cmdid"]);
 					print we_html_element::jsElement(
-							$this->topFrame . '.resize.right.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->customer->Text) . '";' .
-							$this->topFrame . '.resize.right.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";'
+							$this->topFrame . '.right.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->customer->Text) . '";' .
+							$this->topFrame . '.right.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";'
 						);
 					break;
 				case 'save_customer':
@@ -614,7 +620,7 @@ class weCustomerView{
 									attribs["disable"]=\'0\';
 									attribs["tooltip"]=\'' . (($this->customer->Forename != "" || $this->customer->Surname != "") ? $this->customer->Forename . "&nbsp;" . $this->customer->Surname : "") . '\';' .
 							$this->topFrame . '.treeData.addSort(new ' . $this->topFrame . '.node(attribs));';
-						$js .= $this->topFrame . '.resize.left.treeheader.applySort();';
+						$js .= $this->topFrame . '.applySort();';
 					} else{
 						$js = $this->topFrame . '.updateEntry(' . $this->customer->ID . ',"' . $tt . '");' . "\n";
 					}
@@ -633,9 +639,9 @@ class weCustomerView{
 					print we_html_element::jsElement(
 							we_message_reporting::getShowMessageCall(g_l('modules_customer', '[customer_deleted]'), we_message_reporting::WE_MESSAGE_NOTICE) .
 							$this->topFrame . '.deleteEntry("' . $oldid . '"); ' .
-							$this->topFrame . '.resize.right.editor.edheader.location="' . $this->frameset . '?home=1&pnt=edheader"; ' .
-							$this->topFrame . '.resize.right.editor.edbody.location="' . $this->frameset . '?home=1&pnt=edbody"; ' .
-							$this->topFrame . '.resize.right.editor.edfooter.location="' . $this->frameset . '?home=1&pnt=edfooter";'
+							$this->topFrame . '.right.editor.edheader.location="' . $this->frameset . '?home=1&pnt=edheader"; ' .
+							$this->topFrame . '.right.editor.edbody.location="' . $this->frameset . '?home=1&pnt=edbody"; ' .
+							$this->topFrame . '.right.editor.edfooter.location="' . $this->frameset . '?home=1&pnt=edfooter";'
 						);
 
 					break;
@@ -889,23 +895,23 @@ class weCustomerView{
 				case 'save_sort':
 
 					$this->settings->save();
-					$_sorting = 'opener.' . $this->topFrame . '.resize.left.treeheader.addSorting("' . g_l('modules_customer', '[no_sort]') . '");' . "\n";
+					$_sorting = 'opener.' . $this->topFrame . '.addSorting("' . g_l('modules_customer', '[no_sort]') . '");' . "\n";
 					foreach(array_keys($this->settings->SortView) as $_sort){
-						$_sorting .= 'opener.' . $this->topFrame . '.resize.left.treeheader.addSorting("' . $_sort . '");' . "\n";
+						$_sorting .= 'opener.' . $this->topFrame . '.addSorting("' . $_sort . '");' . "\n";
 					}
 
 					$js = we_message_reporting::getShowMessageCall(g_l('modules_customer', '[sort_saved]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
-							var selected = opener.' . $this->topFrame . '.resize.left.treeheader.document.we_form.sort.selectedIndex;
-							opener.' . $this->topFrame . '.resize.left.treeheader.document.we_form.sort.options.length=0;
+							var selected = opener.' . $this->topFrame . '.document.we_form_treeheader.sort.selectedIndex;
+							opener.' . $this->topFrame . '.document.we_form_treeheader.sort.options.length=0;
 							' . $_sorting . '
 
-							if(selected<opener.' . $this->topFrame . '.resize.left.treeheader.document.we_form.sort.options.length){
-								opener.' . $this->topFrame . '.resize.left.treeheader.document.we_form.sort.selectedIndex = selected;
+							if(selected<opener.' . $this->topFrame . '.document.we_form_treeheader.sort.options.length){
+								opener.' . $this->topFrame . '.document.we_form_treeheader.sort.selectedIndex = selected;
 							} else {
-								opener.' . $this->topFrame . '.resize.left.treeheader.document.we_form.sort.selectedIndex = opener.' . $this->topFrame . '.resize.left.treeheader.document.we_form.sort.options.length-1;
+								opener.' . $this->topFrame . '.document.we_form_treeheader.sort.selectedIndex = opener.' . $this->topFrame . '.document.we_form_treeheader.sort.options.length-1;
 							}
 
-							opener.' . $this->topFrame . '.resize.left.treeheader.applySort();
+							opener.' . $this->topFrame . '.applySort();
 							self.close();';
 					print we_html_element::jsScript(JS_DIR . "we_showMessage.js").
 					 we_html_element::jsElement($js);
