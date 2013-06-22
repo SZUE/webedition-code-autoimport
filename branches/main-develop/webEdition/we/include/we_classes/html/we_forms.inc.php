@@ -145,11 +145,6 @@ abstract class we_forms{
 		$class = weTag_getAttribute('class', $attribs);
 		$style = weTag_getAttribute('style', $attribs);
 		$id = weTag_getAttribute('id', $attribs);
-		if(strpos("we_ui", $name !== false)){// we are in frontend, where default is inlineedit = true
-			$inlineedit = weTag_getAttribute('inlineedit', $attribs, defined('INLINEEDIT_DEFAULT') ? INLINEEDIT_DEFAULT : true, true);
-		} else{
-			$inlineedit = weTag_getAttribute('inlineedit', $attribs, true, true);
-		}
 		$tabindex = weTag_getAttribute('tabindex', $attribs);
 		$oldHtmlspecialchars = weTag_getAttribute('htmlspecialchars', $attribs, false, true);
 		$ignoredocumentcss = weTag_getAttribute('ignoredocumentcss', $attribs, false, true);
@@ -199,6 +194,12 @@ abstract class we_forms{
 		$doc = (isset($GLOBALS['we_doc']) && $GLOBALS['we_doc'] != '' && $GLOBALS['we_doc']->ClassName == 'we_objectFile' ? 'we_doc' : 'WE_MAIN_DOC');
 		$inwebedition = ($forceinwebedition ? $forceinwebedition : (isset($GLOBALS[$doc]->InWebEdition) && $GLOBALS[$doc]->InWebEdition));
 
+		if(!$inwebedition){// we are in frontend, where default is inlineedit = true
+			$inlineedit = weTag_getAttribute('inlineedit', $attribs, true, true);
+		} else{
+			$inlineedit = weTag_getAttribute('inlineedit', $attribs, defined('INLINEEDIT_DEFAULT') ? INLINEEDIT_DEFAULT : true, true);
+		}
+
 		$value = self::removeBrokenInternalLinksAndImages($value);
 
 		if($wysiwyg){
@@ -214,7 +215,7 @@ abstract class we_forms{
 				$commands = str_replace('applystyle,', '', implode(',', we_wysiwyg::getAllCmds()));
 			}
 
-			$out .= we_wysiwyg::getHeaderHTML();
+			$out .= we_wysiwyg::getHeaderHTML(!$inwebedition);
 
 			$_lang = (isset($GLOBALS['we_doc']) && isset($GLOBALS['we_doc']->Language)) ? $GLOBALS['we_doc']->Language : WE_LANGUAGE;
 			$buttonpos = $buttonpos ? $buttonpos : 'top';
@@ -242,7 +243,13 @@ abstract class we_forms{
 
 				// Ende Bugfix
 
-				$out .= ($buttonTop ? '<div class="tbButtonWysiwygBorder" style="width:25px;border-bottom:0px;background-image: url(' . IMAGE_DIR . 'backgrounds/aquaBackground.gif);">' . $e->getHTML($value) . '</div>' : '') . '<div class="tbButtonWysiwygBorder ' . (empty($class) ? "" : $class . " ") . 'wetextarea tiny-wetextarea wetextarea-' . $origName . '" id="div_wysiwyg_' . $name . '" style="height:auto; width:auto">' . $value . '</div>' . ($buttonBottom ? '<div class="tbButtonWysiwygBorder" style="width:25px;border-top:0px;background-image: url(' . IMAGE_DIR . 'backgrounds/aquaBackground.gif);">' . $e->getHTML() . '</div>' : '');
+				$fieldName = '';
+				if(preg_match('|^.+\[.+\]$|i', $name)){
+					$fieldName = preg_replace('/^.+\[(.+)\]$/', '\1', $name);
+				};
+
+				$out .= ($fieldName ? we_html_element::jsElement('tiny_instances["' . $fieldName . '"] = "' . $name . '";') : '') . 
+					($buttonTop ? '<div class="tbButtonWysiwygBorder" style="width:25px;border-bottom:0px;background-image: url(' . IMAGE_DIR . 'backgrounds/aquaBackground.gif);">' . $e->getHTML($value) . '</div>' : '') . '<div class="tbButtonWysiwygBorder ' . (empty($class) ? "" : $class . " ") . 'wetextarea tiny-wetextarea wetextarea-' . $origName . '" id="div_wysiwyg_' . $name . '" style="height:auto; width:auto">' . $value . '</div>' . ($buttonBottom ? '<div class="tbButtonWysiwygBorder" style="width:25px;border-top:0px;background-image: url(' . IMAGE_DIR . 'backgrounds/aquaBackground.gif);">' . $e->getHTML() . '</div>' : '');
 			}
 		} else{
 			if($width){

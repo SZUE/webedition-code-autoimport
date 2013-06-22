@@ -28,6 +28,7 @@ class we_wysiwyg{
 
 	var $name = '';
 	private $origName = '';
+	private $fieldName = '';
 	var $width = '';
 	var $height = '';
 	var $ref = '';
@@ -72,6 +73,9 @@ class we_wysiwyg{
 		$this->restrictContextmenu = $contextmenu ? ',' . $contextmenu . ',' : '';
 		$this->createContextmenu = trim($contextmenu," ,'") == 'false' ? false : true;
 		$this->name = $name;
+		if(preg_match('|^.+\[.+\]$|i', $this->name)){
+			$this->fieldName = preg_replace('/^.+\[(.+)\]$/', '\1', $this->name);
+		};
 		$this->origName = $origName;
 		$this->bgcol = (self::$editorType != 'tinyMCE' && empty($bgcol)) ? 'white' : $bgcol;
 		$this->tinyParams = str_replace('\'', '"', trim($tinyParams, ' ,'));
@@ -176,7 +180,7 @@ class we_wysiwyg{
 		$this->maxGroupWidth = max($w, $this->maxGroupWidth);
 	}
 
-	static function getHeaderHTML(){
+	static function getHeaderHTML($loadDialogRegistry){
 		if(defined('WE_WYSIWG_HEADER')){
 			return '';
 		}
@@ -203,7 +207,18 @@ class we_wysiwyg{
 				'
 					.
 					we_html_element::jsScript(WEBEDITION_DIR . 'editors/content/tinymce/jscripts/tiny_mce/tiny_mce.js') .
+					($loadDialogRegistry ? we_html_element::jsScript(JS_DIR . 'weTinyMceDialogs.js') : '') .
 					we_html_element::jsElement('
+
+var tiny_instances = {};
+function getTinyInstanceByFieldname(fn){
+	return typeof tiny_instances[fn] !== "undefined" ? tiny_instances[fn] : null;
+}
+
+function getTinyDivByFieldname(fn){
+	return typeof tiny_instances[fn] !== "undefined" ? document.getElementById("div_wysiwyg_" + tiny_instances[fn]) : null;
+}
+
 function tinyMCECallRegisterDialog(win,action){
 	if(typeof(top.isRegisterDialogHere) != "undefined"){
 		try{
@@ -1339,6 +1354,46 @@ function tinyMCECallRegisterDialog(win,action){
 				$editorLangSuffix = $editorLang == 'de' ? 'de_' : '';
 
 				return we_html_element::jsElement('
+					' . ($this->fieldName ? '
+					/* -- tinyMCE -- */
+
+					/*
+					To adress an instance of tinyMCE using JavaScript from anywhere on your page use:
+					getTinyInstanceByFieldname("WE_FIELDNAME");
+
+					To adress the div container of an editor inlineedit=false use:
+					getTinyDivByFieldname("WE_FIELDNAME");
+
+					WE_FIELDNAME if THIS instance is: "' . $this->fieldName . '"
+					*/
+
+					/*
+					//if you want to add additional event listeners to THIS instance of tinyMCE
+					//copy the following function to your webEdition template and edit its content
+					function we_tinyMCE_' . $this->fieldName . '_init(ed){
+						//you can adress this instance of tinyMCE using variable ed:
+						var this_editor = ed;
+
+						//to adress other instances of tinyMCE on this same page use:
+						getTinyInstanceByFieldname("OTHER_WE_FIELDNAME");
+						//IMPORTANT: 
+						//other instances of tinyMCE may not yet be instantiated at the very moment of calling this function.
+						//this is why you must allways use the getter-function: do not save their reference into a variable.
+
+						//example of adding event listener
+						this_editor.onChange.add(function(ed){
+							try{
+								getTinyInstanceByFieldname("OTHER_WE_FIELDNAME").setContent(this_editor.getContent());
+							} catch(err){
+								console.log("too bad");
+							}
+						});
+
+						//read more about event listeners of the editor object in the tinyMCE API
+					}
+					*/
+					' : '') . '
+
 					var weclassNames_tinyMce = new Array (' . $this->cssClassesJS . ');
 					tinyMCE.addI18n({' . $editorLang . ':{
 						we:{
@@ -1443,16 +1498,45 @@ function tinyMCECallRegisterDialog(win,action){
 						' . $this->tinyParams . ',' : '') . '
 
 						setup : function(ed){
+
 							ed.settings.language = "' . we_core_Local::weLangToLocale($GLOBALS['WE_LANGUAGE']) . '";
 
 							ed.onInit.add(function(ed, o){
 								ed.pasteAsPlainText = ' . $pastetext . ';
 								ed.controlManager.setActive("pastetext", ' . $pastetext . ');
 								' . ($this->isFrontendInPopup ? '
-									if(top.opener){
-										ed.setContent(top.opener.document.getElementById("div_wysiwyg_' . $this->name . '").innerHTML)
+								try{
+									ed.setContent(top.opener.document.getElementById("div_wysiwyg_' . $this->name . '").innerHTML)
+								}catch(e){
+									console.log("failed getting content from main window");
+								}
+								' : '') . '
+								' . ($this->fieldName ? '
+								tiny_instances["' . $this->fieldName . '"] = ed;
+								if(typeof we_tinyMCE_' . $this->fieldName . '_init != "undefined"){
+									we_tinyMCE_' . $this->fieldName . '_init(ed);
+								} else if(opener){
+									if(opener.top.weEditorFrameController){
+										//we are in backend
+										var editor = opener.top.weEditorFrameController.ActiveEditorFrameId;
+										try{
+											opener.top.rframe.bm_content_frame.frames[editor].frames["editor_" + editor].we_tinyMCE_' . $this->fieldName . '_init(ed);
+											//TODO: find a better way to get this reference...
+										}catch(e){
+											//opener.console.log("no external init function for ' . $this->fieldName . ' defined");
+										}
+									} else{
+										//we mus be in frontend
+										try{
+											opener.we_tinyMCE_' . $this->fieldName . '_init(ed);
+										}catch(e){
+											//opener.console.log("no external init function for ' . $this->fieldName . ' defined");
+										}
 									}
-									' : '') . '
+								} else{
+									//console.log("no external init function for ' . $this->fieldName . ' defined");
+								}
+								' : '') . '
 							});
 							' 
 						. (!$this->removeFirstParagraph ? '' : '

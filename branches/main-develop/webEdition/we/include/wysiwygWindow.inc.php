@@ -157,7 +157,7 @@ if(isset($fieldName) && isset($_REQUEST["we_okpressed"]) && $_REQUEST["we_okpres
 					$_REQUEST['we_cmd'][1],
 					$_REQUEST['we_cmd'][2],
 					$_REQUEST['we_cmd'][3],
-					$we_doc->getElement($fieldName) ? $we_doc->getElement($fieldName) : 'PLACEHOLDER',
+					!isset($_REQUEST['we_cmd'][22]) || !$_REQUEST['we_cmd'][22] ? $we_doc->getElement($fieldName) : '',
 					$_REQUEST['we_cmd'][5],
 					$_REQUEST['we_cmd'][13],
 					'',
