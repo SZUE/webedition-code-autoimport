@@ -233,7 +233,7 @@ abstract class we_root extends we_class{
 	/* creates the DirectoryChoooser field with the "browse"-Button. Clicking on the Button opens the fileselector */
 
 	function formDirChooser($width = 0, $rootDirID = 0, $table = '', $Pathname = 'ParentPath', $IDName = 'ParentID', $cmd = '', $showTitle = true){
-		$yuiSuggest = & weSuggest::getInstance();
+		$yuiSuggest = &weSuggest::getInstance();
 
 		if(!$table){
 			$table = $this->Table;
@@ -343,8 +343,8 @@ abstract class we_root extends we_class{
 		$owners = makeArrayFromCSV($this->Owners);
 		$ownersReadOnly = $this->OwnersReadOnly ? unserialize($this->OwnersReadOnly) : array();
 
-		$content = '<table border="0" cellpadding="0" cellspacing="0" width="370">';
-		$content .= '<tr><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(351, 2) . '</td><td>' . we_html_tools::getPixel(100, 2) . '</td><td>' . we_html_tools::getPixel(26, 2) . '</td></tr>' . "\n";
+		$content = '<table border="0" cellpadding="0" cellspacing="0" width="370">'.
+			'<tr><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(351, 2) . '</td><td>' . we_html_tools::getPixel(100, 2) . '</td><td>' . we_html_tools::getPixel(26, 2) . '</td></tr>' . "\n";
 		if(count($owners)){
 			foreach($owners as $owner){
 				$foo = getHash('SELECT ID,Path,Icon from ' . USER_TABLE . ' WHERE ID=' . intval($owner), $this->DB_WE);
@@ -485,7 +485,7 @@ abstract class we_root extends we_class{
 		$username = '';
 		$userid = $old_userID;
 
-		if((int) $userid > 0){
+		if(intval($userid) > 0){
 			$username = f('SELECT username FROM ' . USER_TABLE . ' WHERE ID=' . intval($userid), 'username', $this->DB_WE);
 		}
 
@@ -508,7 +508,6 @@ abstract class we_root extends we_class{
 			$myid = $this->TriggerID ? $this->TriggerID : '';
 		}
 		$path = f('SELECT Path FROM ' . $this->DB_WE->escape($table) . ' WHERE ID=' . intval($myid), 'Path', $this->DB_WE);
-		//javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','','document.we_form.elements[\\'$textname\\'].value','opener._EditorFrame.setEditorIsHot(true);','".session_id()."','','text/webedition',1)"
 		$wecmdenc1 = we_cmd_enc("document.we_form.elements['$idname'].value");
 		$wecmdenc2 = we_cmd_enc("document.we_form.elements['$textname'].value");
 		$wecmdenc3 = we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);");

@@ -319,7 +319,7 @@ class weMetaData{
 	static function getDefinedMetaDataFields(){
 		// if metadataFields are not cached, we have to get them from db
 		if(!isset($GLOBALS['WE_METADATA_DEFINED_FIELDS'])){
-			$GLOBALS['DB_WE']->query('SELECT * FROM ' . METADATA_TABLE . ' ORDER BY id');
+			$GLOBALS['DB_WE']->query('SELECT * FROM ' . METADATA_TABLE . ' ORDER BY tag');
 			$GLOBALS['WE_METADATA_DEFINED_FIELDS'] = $GLOBALS['DB_WE']->getAll();
 		}
 		return $GLOBALS['WE_METADATA_DEFINED_FIELDS'];

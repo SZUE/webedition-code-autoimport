@@ -252,7 +252,7 @@ class we_binaryDocument extends we_document{
 
 		// show an alert if there are none
 		if(empty($_defined_fields)){
-			return "";
+			return '';
 		}
 
 		// second we build all input fields for them and take
