@@ -67,12 +67,11 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 		}
 		$iDatLen = count($aDat);
 	} else{
-
 		$iLayoutCols = $iDefCols;
-		$_SESSION["prefs"]["cockpit_amount_columns"] = $iDefCols;
+		$_SESSION['prefs']['cockpit_amount_columns'] = $iDefCols;
 
-		setUserPref("cockpit_amount_columns", $iDefCols);
-		setUserPref("cockpit_dat", serialize($aCfgProps));
+		setUserPref('cockpit_amount_columns', $iDefCols);
+		setUserPref('cockpit_dat', serialize($aCfgProps));
 		$aDat = $aCfgProps;
 		$aTrf = array_pop($aDat);
 		$iDatLen = count($aDat);

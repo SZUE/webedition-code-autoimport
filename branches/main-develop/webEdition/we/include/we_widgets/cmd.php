@@ -25,10 +25,10 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 switch($_REQUEST['we_cmd'][0]){
-	case "save" :
-		setUserPref("cockpit_dat", $_REQUEST['we_cmd'][1]);
+	case 'save' :
+		setUserPref('cockpit_dat', $_REQUEST['we_cmd'][1]);
 		break;
-	case "add" :
+	case 'add' :
 		include_once(WE_INCLUDES_PATH . 'we_widgets/cfg.inc.php');
 
 		$aProps = array(
@@ -48,8 +48,9 @@ switch($_REQUEST['we_cmd'][0]){
 		$iCurrId = str_replace('m_', '', $_REQUEST['we_cmd'][2]);
 		$iWidth = $aPrefs[$aProps[0]]['width'];
 		if($aProps[0] != 'rss' && $aProps[0] != 'pad'){
-			if($aProps[0] == "msg")
+			if($aProps[0] == "msg"){
 				$_transact = md5(uniqid(__FUNCTION__, true));
+			}
 			include_once (WE_INCLUDES_PATH . 'we_widgets/mod/' . $aProps[0] . '.php');
 		}
 		include_once (WE_INCLUDES_PATH . 'we_widgets/inc/' . $aProps[0] . '.inc.php');

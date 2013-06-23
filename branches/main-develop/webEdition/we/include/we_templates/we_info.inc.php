@@ -37,15 +37,15 @@ $_credits = '<br /><span style="line-height:160%">' .
 
 $we_version = '';
 if(!isset($GLOBALS['loginpage'])){
-	$we_version .= ((defined('WE_VERSION_NAME') && WE_VERSION_NAME != '') ? WE_VERSION_NAME : WE_VERSION) . ' (' . WE_VERSION;
-	$we_version .= ((defined('WE_SVNREV') && WE_SVNREV != '0000') ? ', SVN-Revision: ' . WE_SVNREV : '') . ')';
-	$we_version .= (defined("WE_VERSION_SUPP") && WE_VERSION_SUPP != '') ? ' ' . g_l('global', '[' . WE_VERSION_SUPP . ']') : '';
-	$we_version .= (defined("WE_VERSION_SUPP_VERSION") && WE_VERSION_SUPP_VERSION != '0') ? WE_VERSION_SUPP_VERSION : '';
+	$we_version .= ((defined('WE_VERSION_NAME') && WE_VERSION_NAME != '') ? WE_VERSION_NAME : WE_VERSION) . ' (' . WE_VERSION .
+		((defined('WE_SVNREV') && WE_SVNREV != '0000') ? ', SVN-Revision: ' . WE_SVNREV : '') . ')' .
+		((defined("WE_VERSION_SUPP") && WE_VERSION_SUPP != '') ? ' ' . g_l('global', '[' . WE_VERSION_SUPP . ']') : '') .
+		((defined("WE_VERSION_SUPP_VERSION") && WE_VERSION_SUPP_VERSION != '0') ? WE_VERSION_SUPP_VERSION : '');
 }
 
-if(isset($GLOBALS["loginpage"]) && WE_LOGIN_HIDEWESTATUS){
-	$_logo = "info.jpg";
-} elseif(defined("WE_VERSION_SUPP")){
+if(isset($GLOBALS['loginpage']) && WE_LOGIN_HIDEWESTATUS){
+	$_logo = 'info.jpg';
+} elseif(defined('WE_VERSION_SUPP')){
 	switch(strtolower(WE_VERSION_SUPP)){
 		case "rc":
 			$_logo = "info_rc.jpg";
@@ -76,9 +76,7 @@ if(isset($GLOBALS["loginpage"]) && WE_LOGIN_HIDEWESTATUS){
 }
 
 $_table = new we_html_table(array(
-		"style" => "border-style:none; padding:0px;border-spacing:0px;background-image:url(" . IMAGE_DIR . 'info/' . $_logo . ");background-repeat: no-repeat;background-color:#EBEBEB;width:" . $_widthTotal . 'px'),
-		8,
-		3);
+	"style" => "border-style:none; padding:0px;border-spacing:0px;background-image:url(" . IMAGE_DIR . 'info/' . $_logo . ");background-repeat: no-repeat;background-color:#EBEBEB;width:" . $_widthTotal . 'px'), 8, 3);
 $_actRow = 0;
 //	First row with background
 $_table->setCol($_actRow++, 0, array("colspan" => 3,
@@ -137,10 +135,8 @@ if(isset($GLOBALS["loginpage"]) && $GLOBALS["loginpage"]){
 	$loginRow = 0;
 
 	$_loginTable = new we_html_table(
-			array("style" => "border-style:none; padding:0px;border-spacing:0px;"
-			),
-			7,
-			2
+		array("style" => "border-style:none; padding:0px;border-spacing:0px;"
+		), 7, 2
 	);
 
 	$_loginTable->setCol($loginRow++, 0, array("width" => $_leftPart, "class" => "small"), we_baseElement::getHtmlCode(new we_baseElement("label", true, array("for" => "username"), g_l('global', '[username]'))));
@@ -159,11 +155,9 @@ if(isset($GLOBALS["loginpage"]) && $GLOBALS["loginpage"]){
 
 	//	mode-table
 	$_modetable = new we_html_table(array("border" => 0,
-			"cellpadding" => 0,
-			"cellspacing" => 0,
-			"width" => $_middlePart),
-			1,
-			3);
+		"cellpadding" => 0,
+		"cellspacing" => 0,
+		"width" => $_middlePart), 1, 3);
 
 	$loginButton = '<button type="submit" style="border: none; background-color: transparent; margin: 0px; padding: 0px;">' . we_button::create_button("login", "javascript:document.loginForm.submit();") . '</button>';
 	if(!WE_SEEM){ //	deactivate See-Mode
@@ -235,12 +229,10 @@ if(isset($GLOBALS["loginpage"]) && $GLOBALS["loginpage"]){
 
 
 	$_loginTable = new we_html_table(
-			array("border" => 0,
-				"cellpadding" => 0,
-				"cellspacing" => 0
-			),
-			2,
-			2
+		array("border" => 0,
+		"cellpadding" => 0,
+		"cellspacing" => 0
+		), 2, 2
 	);
 
 	$_loginTable->setCol($loginRow, 0, array("width" => $_leftPart, "class" => "small"), $_content);
