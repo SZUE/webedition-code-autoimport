@@ -6,6 +6,7 @@ $l_sysinfo=array(
 	'connection_types'=>'Update-Verbindungstypen',
 	'dbversion warning'=>'Der verwendete DB-Server meldet die Version %s, webEdition benötigt jedoch mindestens die MySQL-Server Version 5.0. webEdition mag mit der genutzten Version funktionieren, dies kann jedoch nicht für neue webEdition Versionen (z.B. nach Updates) garantiert werden.  Spätestens ab webEdition Version 7 wird MySQL Version 5 benötigt. Außerdem: die auf dem Server installierte MySQL Version ist veraltet. Für diese Version gibt es keine Updates mehr, dies kann die Sicherheit des gesamten Systems beeinträchtigen.',
 	'detectable warning'=>'Einige Softwarevoraussetzungen konnten nicht überprüft werden (Suhosin?). Bitte prüfen Sie die Systemvoraussetzungen unter http://www.webedition.org/de/webedition-cms/systemvoraussetzungen.php',
+	'display_errors warning'=>'Sie sollten aus Sicherheitsgründen auf produktiv Systemen diese Option deaktivieren! Sie ermöglichen sonst Angreifern den Zugriff auf Ihr System!',
 	'exif warning'=>'EXIF-Metadaten für Bilder sind nicht verfügbar',
 	'exif'=>'EXIF Unterstützung',
 	'gdlib'=>'GDlib Unterstützung',
