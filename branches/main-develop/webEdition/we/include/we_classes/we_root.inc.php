@@ -874,13 +874,11 @@ abstract class we_root extends we_class{
 								$dates[$name][$what] = $v2;
 							} else{
 								if(preg_match('/(.+)#(.+)/', $name, $regs)){
-									$this->elements[$regs[1]]['type'] = $type;
-									$this->elements[$regs[1]][$regs[2]] = $v2;
+									$this->setElement($regs[1], $v2, $type);
 								} else{
-									$this->elements[$name]['type'] = $type;
 									//FIXME: check if we can apply the correct type
 									$this->i_convertElemFromRequest('internal', $v2, $name);
-									$this->elements[$name]['dat'] = $v2;
+									$this->setElement($name, $v2, $type);
 								}
 							}
 						}

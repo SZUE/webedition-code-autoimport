@@ -27,20 +27,17 @@ require_once(WE_INCLUDES_PATH . 'we_tag.inc.php');
 /* the parent class for documents */
 
 class we_document extends we_root{
-	/* Extension of the document */
 
+	//Extension of the document
 	var $Extension = '';
-
-	/* Array of possible filename extensions for the document */
+	//Array of possible filename extensions for the document
 	var $Extensions;
 	var $Published = 0;
 	var $Language = '';
-
-	/* If the file should only be saved in the db */
+	//If the file should only be saved in the db
 	var $IsDynamic = 0;
 	var $schedArr = array();
-
-	/* Categories of the document */
+	//Categories of the document
 	var $Category = '';
 	protected $oldCategory = '';
 	var $IsSearchable = 0;
@@ -48,11 +45,6 @@ class we_document extends we_root{
 	var $NavigationItems = '';
 	private $DocStream = '';
 
-	/*
-	 * Functions
-	 */
-
-	// Constructor
 	function __construct(){
 		parent::__construct();
 		array_push($this->persistent_slots, 'Extension', 'IsDynamic', 'Published', 'Category', 'IsSearchable', 'InGlossar', 'Language', 'schedArr');

@@ -542,7 +542,7 @@ class we_object extends we_document{
 	}
 
 	function setSort(){
-		if(!$this->issetElement("we_sort")){
+		if(!$this->issetElement('we_sort')){
 			$t = we_objectFile::getSortArray($this->ID, $this->DB_WE);
 			$sort = array();
 			foreach($t as $k => $v){
@@ -551,7 +551,7 @@ class we_object extends we_document{
 				}
 				$sort[str_replace('.', '', uniqid(__FUNCTION__, true))] = $v;
 			}
-			$this->setElement("we_sort", $sort);
+			$this->setElement('we_sort', $sort);
 		}
 	}
 
@@ -922,7 +922,7 @@ class we_object extends we_document{
 				break;
 
 			case 'href':
-				$typeVal = $this->getElement($name . "hreftype", "dat");
+				$typeVal = $this->getElement($name . 'hreftype', 'dat');
 				$typeSelect = '<select class="weSelect" id="we_' . $this->Name . '_input[' . $name . 'hreftype]" name="we_' . $this->Name . '_input[' . $name . 'hreftype]" onchange="_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_entry_at_class\',\'' . $GLOBALS['we_transaction'] . '\',\'' . $identifier . '\');">
 			<option' . (($typeVal == we_base_link::TYPE_ALL || $typeVal == "") ? " selected" : "") . ' value="' . we_base_link::TYPE_ALL . '">all
 			<option' . (($typeVal == we_base_link::TYPE_INT) ? " selected" : "") . ' value="' . we_base_link::TYPE_INT . '">int
@@ -2166,55 +2166,36 @@ class we_object extends we_document{
 	}
 
 	protected function i_setElementsFromHTTP(){
-		$changeData = $hrefFields = false;
+		$hrefFields = false;
 		$regs = array();
 		foreach($_REQUEST as $n => $v){
 			if(preg_match('/^we_' . preg_quote($this->Name) . '_([^\[]+)$/', $n, $regs)){
-				$changeData = true;
-				if($regs[1] == "href"){
+				if($regs[1] == 'href'){
 					$hrefFields = true;
 					break;
 				}
 			}
 		}
 
-		if($changeData){
-			/*
-			  //reset radio fields which can be unset
-			  if(isset($this->elements['title']['dat'])){
-			  unset($this->elements['title']['dat']);
-			  }
-			  if(isset($this->elements['desc']['dat'])){
-			  unset($this->elements['desc']['dat']);
-			  }
-			  if(isset($this->elements['keywords']['dat'])){
-			  unset($this->elements['keywords']['dat']);
-			  }
-			  if(isset($this->elements['urlfield0']['dat'])){
-			  unset($this->elements['urlfield0']['dat']);
-			  }
-			  if(isset($this->elements['urlfield1']['dat'])){
-			  unset($this->elements['urlfield1']['dat']);
-			  }
-			  if(isset($this->elements['urlfield2']['dat'])){
-			  unset($this->elements['urlfield2']['dat']);
-			  }
-			  if(isset($this->elements['urlfield3']['dat'])){
-			  unset($this->elements['urlfield3']['dat']);
-			  } */
-		}
 		parent::i_setElementsFromHTTP();
 
 		if($hrefFields){
-
 			$this->resetElements();
 			$hrefs = array();
+			$matches = array();
 			while((list($k, $v) = $this->nextElement('href'))) {
-
-				$realName = preg_replace('/^(.+)_we_jkhdsf_.+$/', '\1', $k);
-				$key = preg_replace('/^.+_we_jkhdsf_(.+)$/', '\1', $k);
-				if(!isset($hrefs[$realName]))
+				preg_match('/^(.+)_we_jkhdsf_(.+)$/', $k, $matches);
+				list(, $realName, $key) = $matches;
+				if(($pos = strpos($realName, 'default')) != false){
+					$name = substr($realName, 0, $pos);
+					//skip if new type is not href
+					if($this->getElement($name . 'dtype', 'dat') !== 'href'){
+						continue;
+					}
+				}
+				if(!isset($hrefs[$realName])){
 					$hrefs[$realName] = array();
+				}
 				$hrefs[$realName][$key] = $v["dat"];
 			}
 			foreach($hrefs as $k => $v){
