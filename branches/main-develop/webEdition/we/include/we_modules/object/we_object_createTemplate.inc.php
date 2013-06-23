@@ -188,7 +188,7 @@ $content = '<html>
 if(!empty($sort)){
 	foreach($sort as $key => $val){
 		$name = $_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"][$_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"]["wholename" . $key]["dat"]]["dat"];
-		$type = $_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"][$_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"]["wholename" . $key]["dat"] . "dtype"]["dat"];
+		$type = $_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"][$_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"]["wholename" . $key]["dat"] . we_object::ELEMENT_TYPE]["dat"];
 
 		$content .= getTmplTableRow($type, $name);
 	}
@@ -208,7 +208,7 @@ if($_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["ID"]){
 	if(!empty($sort)){
 		foreach($sort as $key => $val){
 			$name = $_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"][$_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"]["wholename" . $key]["dat"]]["dat"];
-			$type = $_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"][$_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"]["wholename" . $key]["dat"] . "dtype"]["dat"];
+			$type = $_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"][$_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"]["wholename" . $key]["dat"] . we_object::ELEMENT_TYPE]["dat"];
 
 			$content .= getTmplTableRow($type, $name, true);
 		}
