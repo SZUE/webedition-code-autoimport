@@ -53,7 +53,6 @@ echo we_html_element::jsScript(JS_DIR . 'libs/yui/yahoo-min.js') .
 								}
 							}
 							mfdData = result.DataArray.mfd_data;
-							console.log(mfdData);
 							if (_ref.setMfdData && mfdData !== 'undefined') {
 								_ref.setMfdData(mfdData);
 							}
