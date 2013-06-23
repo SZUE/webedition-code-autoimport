@@ -1915,8 +1915,9 @@ function we_templateInit(){
 
 function we_templateHead(){
 	if(isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode']){
-		print STYLESHEET_BUTTONS_ONLY . SCRIPT_BUTTONS_ONLY;
-		print we_html_element::jsScript(JS_DIR . 'windows.js');
+		print STYLESHEET_BUTTONS_ONLY . SCRIPT_BUTTONS_ONLY .
+			we_html_element::jsScript(JS_DIR . 'windows.js') . weSuggest::getYuiFiles().
+			we_html_element::cssElement('.weMarkInputError, input:invalid {background-color: #ff8888 ! important;}');
 		require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 	}
 }
@@ -1931,7 +1932,10 @@ function we_templatePreContent(){
 
 function we_templatePostContent(){
 	if(isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'] && (--$GLOBALS['we_templatePreContent']) == 0){
-		print '</form>';
+		$yuiSuggest = & weSuggest::getInstance();
+		print '</form>' .
+			$yuiSuggest->getYuiCss() .
+			$yuiSuggest->getYuiJs();
 	}
 }
 

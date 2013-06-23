@@ -535,16 +535,16 @@ HTS;
 				oAutoComp_' . $i . '.queryDelay = 0;';
 			if(isset($this->setOnSelectFields[$i]) && is_array($this->setOnSelectFields[$i])){
 				$declare .= 'oAutoComp_' . $i . '.itemSelectEvent.subscribe(YAHOO.autocoml.doOnItemSelect_' . $i . ');' .
-				'oAutoComp_' . $i . '.dataRequestEvent.subscribe(YAHOO.autocoml.doOnDataRequestEvent_' . $i . ');' .
-				'oAutoComp_' . $i . '.dataReturnEvent.subscribe(YAHOO.autocoml.doOnDataReturnEvent_' . $i . ');' .
-				'oAutoComp_' . $i . '.unmatchedItemSelectEvent.subscribe(YAHOO.autocoml.doOnUnmatchedItemSelectEvent_' . $i . ');' .
-				'oAutoComp_' . $i . '.dataErrorEvent.subscribe(YAHOO.autocoml.doOnDataErrorEvent_' . $i . ');' .
-				'oAutoComp_' . $i . '.dataReturnEvent.subscribe(YAHOO.autocoml.doOnDataReturnEvent_' . $i . ');';
+					'oAutoComp_' . $i . '.dataRequestEvent.subscribe(YAHOO.autocoml.doOnDataRequestEvent_' . $i . ');' .
+					'oAutoComp_' . $i . '.dataReturnEvent.subscribe(YAHOO.autocoml.doOnDataReturnEvent_' . $i . ');' .
+					'oAutoComp_' . $i . '.unmatchedItemSelectEvent.subscribe(YAHOO.autocoml.doOnUnmatchedItemSelectEvent_' . $i . ');' .
+					'oAutoComp_' . $i . '.dataErrorEvent.subscribe(YAHOO.autocoml.doOnDataErrorEvent_' . $i . ');' .
+					'oAutoComp_' . $i . '.dataReturnEvent.subscribe(YAHOO.autocoml.doOnDataReturnEvent_' . $i . ');';
 			}
 			if(isset($this->checkFieldsValues[$i]) && $this->checkFieldsValues[$i]){
 				$declare .= 'oAutoComp_' . $i . '.textboxBlurEvent.subscribe(YAHOO.autocoml.doOnTextfieldBlur_' . $i . ');' .
-				'oAutoComp_' . $i . '.textboxFocusEvent.subscribe(YAHOO.autocoml.doOnTextfieldFocus_' . $i . ');' .
-				'oAutoComp_' . $i . '.containerCollapseEvent.subscribe(YAHOO.autocoml.doOnContainerCollapse_' . $i . ');';
+					'oAutoComp_' . $i . '.textboxFocusEvent.subscribe(YAHOO.autocoml.doOnTextfieldFocus_' . $i . ');' .
+					'oAutoComp_' . $i . '.containerCollapseEvent.subscribe(YAHOO.autocoml.doOnContainerCollapse_' . $i . ');';
 			}
 			$declare .= '
 				oAutoComp_' . $i . '.formatResult = function(oResultItem, sQuery) {
@@ -895,82 +895,6 @@ function doDebugResizeH(){
 		return empty($inputfields) ? "" : $out;
 	}
 
-	//not in use
-	/*
-	  function createAutocompleter($acId, $button, $inputField, $inputId = "", $resultField, $resultId = "", $label = "", $table, $contentType = "", $selector = "", $maxResults = 10, $queryDelay = 0, $checkFieldsValue = true, $width = "100%", $inputMayBeEmpty = 'true', $inputButtonSpace = 20, $buttonButtonSpace = 10){
-
-	  $this->setInputId($inputId);
-	  $elog = '';
-	  foreach(func_get_args() as $val){
-	  $elog.= "\n\n$val";
-	  }
-	  $layerId = "yuiAcLayer" . $acId;
-	  $inputId = (is_array($inputField) && isset($inputField['id'])) ? $inputField['id'] : ($inputId ? $inputId : "yuiAcInput$acId");
-	  $containerId = "yuiAcContainer" . $acId;
-
-	  $iField = "";
-	  if(is_array($inputField)){
-	  } else{
-	  $iField = $inputField;
-	  }
-
-	  $autoSuggest = "<div id=\"$layerId\" class=\"yuiAcLayer\">" . $iField . "<div id=\"$containerId\"></div></div>" . we_html_tools::getPixel(1, 1);
-	  $containerWidth = (empty($this->containerWidth) ? $width : $this->containerWidth);
-	  if(!$this->containerWidthForAll){
-	  $this->containerWidth = "";
-	  }
-	  $this->setAutocompleteField($inputId, $containerId, $table, $contentType, $selector, $maxResults, $queryDelay, $layerId, array($resultId), $checkFieldsValue, (we_base_browserDetect::isIE() ? $containerWidth : ($containerWidth - 8)), $inputMayBeEmpty);
-
-	  $_button1 = "";
-	  if(is_array($button)){
-	  if(we_base_browserDetect::isIE()){
-	  $_button = array("text" => "<div>" . $button[0] . "</div>", "valign" => "top");
-	  $_button1 = array("text" => "<div>" . $button[1] . "</div>", "valign" => "top");
-	  $_space = $width + $inputButtonSpace - 1;
-	  $_space2 = we_html_tools::getPixel($buttonButtonSpace, 4);
-	  } else{
-	  $_button = array("text" => $button[0], "valign" => "top");
-	  $_button1 = array("text" => $button[1], "valign" => "top");
-	  $_space = $width + $inputButtonSpace;
-	  $_space2 = we_html_tools::getPixel($buttonButtonSpace, 4);
-	  }
-	  } else{
-	  if(we_base_browserDetect::isIE()){
-	  $_button = array("text" => "<div>" . $button . "</div>", "valign" => "top");
-	  $_space = $width + $inputButtonSpace - 1;
-	  $_space2 = "";
-	  } else{
-	  $_button = array("text" => "<div style='position:relative; top:-3px'>" . $button . "</div>", "valig" => "top", "style" => "");
-	  $_space = $width + $inputButtonSpace;
-	  $_space2 = "";
-	  }
-	  }
-
-	  // check if input value is ok.
-	  if(empty($this->inputValue)){
-	  if(!$this->mayBeEmpty){
-	  $this->preCheck .= "setTimeout(\"YAHOO.autocoml.setNotValidById('{$this->inputId}')\",100);\n";
-	  }
-	  } else{
-	  $weAcQuery = new weSelectorQuery();
-	  $ct = explode(",", str_replace(" ", "", $this->contentType));
-	  if($this->inputValue == "/"){
-
-	  } elseif(in_array("folder", $ct)){
-
-	  $weAcQueryResult = $weAcQuery->getItemByPath($this->inputValue, $this->table, array("IsFolder"));
-	  if((count($weAcQueryResult) < 1) || (count($ct) == 1 && $ct[0] == "folder" && $weAcQueryResult[0]['IsFolder'] == 0) || ((count($ct) > 1 || (count($ct) == 1 && $ct[0] != "folder")) && $weAcQueryResult[0]['IsFolder'] == 1)){
-	  $this->preCheck .= "setTimeout(\"YAHOO.autocoml.setNotValidById('{$this->inputId}')\",100);\n";
-	  }
-	  }
-	  }
-
-	  return htmlFormElementTable(
-	  array("text" => $resultField . $autoSuggest . we_html_tools::getPixel($_space, 4), "valign" => "top", "style" => "height:10px"), $label, "left", "defaultfont", $_button, $_space2, $_button1
-	  );
-	  }
-	 */
-
 	function getHTML(){
 		$selectButtonSpace = $this->selectButtonSpace + $this->width - 1;
 		$inputId = empty($this->inputId) ? "yuiAcInput" . $this->acId : $this->inputId;
@@ -980,17 +904,17 @@ function doDebugResizeH(){
 		$this->setAutocompleteField($inputId, "yuiAcContainer" . $this->acId, $this->table, $this->contentType, $this->selector, $this->maxResults, 0, "yuiAcLayer" . $this->acId, array($resultId), $this->checkFieldValue, (we_base_browserDetect::isIE() ? $containerWidth : ($containerWidth - 8)), $this->mayBeEmpty, $this->rootDir);
 		$inputField = $this->_htmlTextInput($this->inputName, 30, $this->inputValue, "", 'id="' . $inputId . '" ' . $this->inputAttribs, "text", $this->width, 0, "", $this->inputDisabled);
 		$resultField = we_html_tools::hidden($this->resultName, $this->resultValue, array('id' => $resultId));
-		$autoSuggest = "<div id=\"yuiAcLayer{$this->acId}\" class=\"yuiAcLayer\">" . $inputField . "<div id=\"yuiAcContainer{$this->acId}\"></div></div>" . we_html_tools::getPixel(1, 1);
+		$autoSuggest = "<div id=\"yuiAcLayer{$this->acId}\" class=\"yuiAcLayer\">" . $inputField . "<div id=\"yuiAcContainer{$this->acId}\"></div></div>";
 
 		$html = we_html_tools::htmlFormElementTable(
-				array("text" => $resultField . $autoSuggest . we_html_tools::getPixel($selectButtonSpace, 4), "valign" => "top", "style" => "height:10px"), $this->label, "left", "defaultfont", array("text" => "<div style=''>" . $this->selectButton . "</div>", "valign" => "top"), we_html_tools::getPixel($this->trashButtonSpace, 4), (empty($this->trashButton) ? "" : array("text" => "<div style='margin-right:" . $this->trashButtonSpace . "px'>" . $this->trashButton . "</div>", "valign" => "top")), (empty($this->openButton) ? "" : array("text" => "<div style='margin-right:" . $this->openButtonSpace . "px'>" . $this->openButton . "</div>", "valign" => "top")), (empty($this->createButton) ? "" : array("text" => "<div style='margin-right:" . $this->createButtonSpace . "px'>" . $this->createButton . "</div>", "valign" => "top"))
+				array("text" => $resultField . $autoSuggest . ($this->selectButton ? we_html_tools::getPixel($selectButtonSpace, 4) : ''), "valign" => "top", "style" => "height:10px"), $this->label, "left", "defaultfont", ($this->selectButton ? array("text" => "<div style=''>" . $this->selectButton . "</div>", "valign" => "top") : ''), we_html_tools::getPixel($this->trashButtonSpace, 4), (empty($this->trashButton) ? '' : array("text" => "<div style='margin-right:" . $this->trashButtonSpace . "px'>" . $this->trashButton . "</div>", "valign" => "top")), (empty($this->openButton) ? "" : array("text" => "<div style='margin-right:" . $this->openButtonSpace . "px'>" . $this->openButton . '</div>', "valign" => "top")), (empty($this->createButton) ? "" : array("text" => "<div style='margin-right:" . $this->createButtonSpace . "px'>" . $this->createButton . "</div>", "valign" => "top"))
 		);
 
-		$this->acId = "";
-		$this->containerWidth = "";
+		$this->acId = '';
+		$this->containerWidth = '';
 		$this->containerWidthForAll = 0;
-		$this->contentType = "folder";
-		$this->label = "";
+		$this->contentType = 'folder';
+		$this->label = '';
 		$this->maxResults = 20;
 		$this->mayBeEmpty = 1;
 		$this->resultName = "";

@@ -87,9 +87,10 @@ abstract class we_html_tools{
 				$colspan++;
 			}
 		}
-		return '<table cellpadding="0" cellspacing="0" border="0">' . ($text ? '<tr><td class="' . trim($textclass) . '" align="' . trim(
-					$textalign) . '" colspan="' . $colspan . '">' . $text . '</td></tr>' : '') . ($abstand ? ('<tr><td colspan="' . $colspan . '">' . self::getPixel(
-					2, $abstand) . '</td></tr>') : '') . '<tr>' . $elemOut . '</tr></table>';
+		return '<table cellpadding="0" cellspacing="0" border="0">' .
+			($text ? '<tr><td class="' . trim($textclass) . '" align="' . trim($textalign) . '" colspan="' . $colspan . '">' . $text . '</td></tr>' : '') .
+			($abstand ? ('<tr style="height:' . $abstand . 'px"><td></td></tr>') : '') .
+			'<tr>' . $elemOut . '</tr></table>';
 	}
 
 	static function targetBox($name, $size, $width = "", $id = "", $value = "", $onChange = "", $abstand = 8, $selectboxWidth = "", $disabled = false){
@@ -486,20 +487,20 @@ abstract class we_html_tools{
 
 		if(($format == "") || $_monthPos > -1){
 			$months = '';
-			$monthType=(strpos($format, 'F')?'F':(strpos($format, 'M')?'M':0));
+			$monthType = (strpos($format, 'F') ? 'F' : (strpos($format, 'M') ? 'M' : 0));
 			for($i = 1; $i <= 12; $i++){
 				switch($monthType){//Bug #4095
-				 case 'F':
-				  $val = g_l('date','[month][long]['.($i-1).']');
-				  break;
-				 case 'M':
-				  $val = g_l('date','[month][short]['.($i-1).']');
-				  break;
-				 default:
-				  $val = sprintf("%02d", $i);
+					case 'F':
+						$val = g_l('date', '[month][long][' . ($i - 1) . ']');
+						break;
+					case 'M':
+						$val = g_l('date', '[month][short][' . ($i - 1) . ']');
+						break;
+					default:
+						$val = sprintf("%02d", $i);
 				}
-				$_atts2 = ($time && $month == $i) ? array('selected' => 'selected','value' =>
-				$i) : array('value' => $i);
+				$_atts2 = ($time && $month == $i) ? array('selected' => 'selected', 'value' =>
+					$i) : array('value' => $i);
 				$months .= getHtmlTag('option', array_merge($_attsOption, $_atts2), $val);
 			}
 			$monthSelect = getHtmlTag(

@@ -755,11 +755,6 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 	 */
 	function formLink(){
 		$yuiSuggest = &weSuggest::getInstance();
-		$yuiSuggest->setMaxResults(10);
-		$yuiSuggest->setMayBeEmpty(0);
-		$yuiSuggest->setWidth(280);
-		$yuiSuggest->setSelector('Docselector');
-		$yuiSuggest->setLabel('href');
 
 		$textname = 'we_' . $this->Name . '_txt[LinkPath]';
 		$idname = 'we_' . $this->Name . '_txt[LinkID]';
@@ -835,6 +830,11 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 		$yuiSuggest->setResult($idname, $this->getElement('LinkID'));
 		$yuiSuggest->setTable(FILE_TABLE);
 		$yuiSuggest->setSelectButton($but1);
+		$yuiSuggest->setMaxResults(10);
+		$yuiSuggest->setMayBeEmpty(0);
+		$yuiSuggest->setWidth(280);
+		$yuiSuggest->setSelector('Docselector');
+		$yuiSuggest->setLabel('href');
 		$_int_link = $yuiSuggest->getHTML();
 
 		$_content->setCol(4, 0, array('valign' => 'top'), we_forms::radiobutton(we_base_link::TYPE_INT, ($linkType == we_base_link::TYPE_INT), 'we_' . $this->Name . '_txt[LinkType]', g_l('weClass', '[intern]'), true, 'defaultfont', '_EditorFrame.setEditorIsHot(true);'));
@@ -851,6 +851,11 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 			$yuiSuggest->setResult($objidname, $this->getElement('ObjID'));
 			$yuiSuggest->setTable(OBJECT_FILES_TABLE);
 			$yuiSuggest->setSelectButton($butObj);
+			$yuiSuggest->setMaxResults(10);
+			$yuiSuggest->setMayBeEmpty(0);
+			$yuiSuggest->setWidth(280);
+			$yuiSuggest->setSelector('Docselector');
+			$yuiSuggest->setLabel('href');
 			$_obj_link = $yuiSuggest->getHTML();
 
 
@@ -876,6 +881,11 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 		$yuiSuggest->setResult($RollOverIDName, $RollOverID);
 		$yuiSuggest->setTable(FILE_TABLE);
 		$yuiSuggest->setSelectButton($but2);
+		$yuiSuggest->setMaxResults(10);
+		$yuiSuggest->setMayBeEmpty(0);
+		$yuiSuggest->setWidth(280);
+		$yuiSuggest->setSelector('Docselector');
+		$yuiSuggest->setLabel('href');
 		$_rollover = $yuiSuggest->getHTML();
 
 		$_content->setCol((defined('OBJECT_TABLE') ? 10 : 8), 0, array('valign' => 'top'), we_forms::checkbox(1, $RollOverFlag, $checkFlagName, 'Roll Over', false, 'defaultfont', "_EditorFrame.setEditorIsHot(true); this.form.elements['$RollOverFlagName'].value = (this.checked ? 1 : 0); ") . $this->htmlHidden($RollOverFlagName, $RollOverFlag));

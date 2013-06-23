@@ -496,7 +496,7 @@ abstract class we_root extends we_class{
 	}
 
 	function formTriggerDocument($isclass = false){
-		$yuiSuggest = & weSuggest::getInstance();
+		$yuiSuggest = &weSuggest::getInstance();
 		$table = FILE_TABLE;
 		if($isclass){
 			$textname = 'we_' . $this->Name . '_TriggerName';

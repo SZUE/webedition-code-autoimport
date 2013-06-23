@@ -278,7 +278,7 @@ class weHyperlinkDialog extends weDialog{
 
 	function getDialogContentHTML(){
 		// Initialize we_button class
-		$yuiSuggest = & weSuggest::getInstance();
+		$yuiSuggest = &weSuggest::getInstance();
 
 		$extHref = utf8_decode((substr($this->args["extHref"], 0, 1) == "#") ? "" : $this->args["extHref"]);
 		if(isset($this->args["outsideWE"]) && $this->args["outsideWE"] == 1){
