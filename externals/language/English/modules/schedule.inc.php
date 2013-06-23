@@ -21,10 +21,14 @@ $l_modules_schedule=array(
 		'4'=>'Change document type',
 		'5'=>'Change categories',
 		'6'=>'Change directory',
+		'7'=>'searchable activated',
+		'8'=>'searchable deactivated',
 		'headline'=>'Task',
 	),
 	'time'=>'Time',
-	'toBeforeNow'=>'The entered `To date` is in the past!\nThe document has not been saved!\nPlease deactivate the `To-function` or change the `To-date`!',
+	'toBeforeNow'=>'The entered `To date` is in the past
+The document has not been saved!
+Please deactivate the `To-function` or change the `To-date`!',
 	'to'=>'To',
 	
 	'type'=>array(

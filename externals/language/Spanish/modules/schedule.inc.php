@@ -21,6 +21,8 @@ $l_modules_schedule=array(
 		'4'=>'Cambiar tipo de documento',
 		'5'=>'Cambiar categorías',
 		'6'=>'Cambiar directorio',
+		'7'=>'searchable activated',
+		'8'=>'searchable deactivated',
 		'headline'=>'Task',
 	),
 	'time'=>'Horas',

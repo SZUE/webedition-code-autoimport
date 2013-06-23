@@ -21,10 +21,14 @@ $l_modules_schedule=array(
 		'4'=>'Dokument-Typ ändern',
 		'5'=>'Kategorien ändern',
 		'6'=>'Verzeichnis ändern',
+		'7'=>'durchsuchbar aktiv',
+		'8'=>'durchsuchbar inaktiv',
 		'headline'=>'Aufgabe',
 	),
 	'time'=>'Uhrzeit',
-	'toBeforeNow'=>'Das eingetragene Bis-Datum liegt in der Vergangenheit!\nDas Dokument wurde NICHT gespeichert!\nBitte deaktivieren Sie die Bis-Funktion oder ändern Sie das Bis-Datum!',
+	'toBeforeNow'=>'Das eingetragene Bis-Datum liegt in der Vergangenheit!
+Das Dokument wurde NICHT gespeichert!
+Bitte deaktivieren Sie die Bis-Funktion oder ändern Sie das Bis-Datum!',
 	'to'=>'Bis',
 	
 	'type'=>array(

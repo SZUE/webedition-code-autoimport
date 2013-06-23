@@ -21,6 +21,8 @@ $l_modules_schedule=array(
 		'4'=>'Изменить тип документа',
 		'5'=>'Изменить категории',
 		'6'=>'Изменить директорию',
+		'7'=>'searchable activated',
+		'8'=>'searchable deactivated',
 		'headline'=>'Task',
 	),
 	'time'=>'Время',

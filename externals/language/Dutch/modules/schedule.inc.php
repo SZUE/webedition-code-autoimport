@@ -21,6 +21,8 @@ $l_modules_schedule=array(
 		'4'=>'Wijzig document type',
 		'5'=>'Wijzig categorieën',
 		'6'=>'Wijzig directory',
+		'7'=>'searchable activated',
+		'8'=>'searchable deactivated',
 		'headline'=>'Task',
 	),
 	'time'=>'Tijd',

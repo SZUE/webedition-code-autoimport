@@ -21,6 +21,8 @@ $l_modules_schedule=array(
 		'4'=>'Muuta dokumentin tyyppiä',
 		'5'=>'Muokkaa kategoroita',
 		'6'=>'Vaihda hakemistoa',
+		'7'=>'searchable activated',
+		'8'=>'searchable deactivated',
 		'headline'=>'Task',
 	),
 	'time'=>'Aika',
