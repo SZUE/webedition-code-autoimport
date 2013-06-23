@@ -52,10 +52,12 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 	$bResetProps = ($_REQUEST['we_cmd'][0] == "reset_home") ? true : false;
 	if(!$bResetProps && $iLayoutCols){
 
-		$aDatTblPref = getPref("cockpit_dat"); // array as saved in the prefs
+		$aDatTblPref = getPref('cockpit_dat'); // array as saved in the prefs
+		$aTrf = getPref('cockpit_rss');
 		$aDat = (!empty($aDatTblPref)) ? @unserialize($aDatTblPref) : $aCfgProps; //
 		$aDat = $aDat ? $aDat : $aCfgProps;
-		$aTrf = array_pop($aDat);
+		$aTrf = empty($aTrf) ? array_pop($aDat) : @unserialize($aTrf);
+		$aTrf = empty($aTrf) ? $aTopRssFeeds : $aTrf;
 		if(count($aDat) > $iLayoutCols){
 			while(count($aDat) > $iLayoutCols) {
 				$aDelCol = array_pop($aDat);
@@ -63,7 +65,8 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 					$aDat[count($aDat) - 1][] = $aShiftWidget;
 				}
 			}
-			setUserPref("cockpit_dat", serialize($aDat));
+			setUserPref('cockpit_dat', serialize($aDat));
+			setUserPref('cockpit_rss', serialize($aTrf));
 		}
 		$iDatLen = count($aDat);
 	} else{
@@ -72,8 +75,9 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 
 		setUserPref('cockpit_amount_columns', $iDefCols);
 		setUserPref('cockpit_dat', serialize($aCfgProps));
+		setUserPref('cockpit_rss', serialize($aTopRssFeeds));
 		$aDat = $aCfgProps;
-		$aTrf = array_pop($aDat);
+		$aTrf = $aTopRssFeeds;
 		$iDatLen = count($aDat);
 	}
 
@@ -300,10 +304,10 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 					}
 				}
 			}
-			aDat[_iLayoutCols] = new Array();
+			rss = new Array();
 			var topRssFeedsLen = _trf.length;
 			for (var i = 0; i < topRssFeedsLen; i++) {
-				aDat[_iLayoutCols][i] = [_trf[i][0], _trf[i][1]];
+				rss[i] = [_trf[i][0], _trf[i][1]];
 			}
 			if (_bDgSave) {
 				var sDg = '';
@@ -319,6 +323,7 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 
 			fo = self.document.forms['we_form'];
 			fo.elements['we_cmd[1]'].value = serialize(aDat);
+			fo.elements['we_cmd[2]'].value = serialize(rss);
 			top.YAHOO.util.Connect.setForm(fo);
 			var cObj = top.YAHOO.util.Connect.asyncRequest('POST', '<?php echo WE_INCLUDES_DIR; ?>we_widgets/cmd.php', top.weDummy);
 		}
@@ -327,8 +332,8 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 			var res = gel(id + '_res').value;
 			switch (a) {
 				case 'swap':
-					gel(id + '_res').value = (res == 0) ? 1 : 0;
-					gel(id + '_icon_resize').title = (res == 0) ? '<?php echo g_l('cockpit', "[reduce_size]") ?>' : '<?php echo g_l('cockpit', "[increase_size]"); ?>';
+					gel(id + '_res').value = (res === 0) ? 1 : 0;
+					gel(id + '_icon_resize').title = (res === 0) ? '<?php echo g_l('cockpit', "[reduce_size]") ?>' : '<?php echo g_l('cockpit', "[increase_size]"); ?>';
 					break;
 				case 'get':
 					return res;

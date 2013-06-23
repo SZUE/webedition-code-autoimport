@@ -65,7 +65,7 @@ $GLOBALS['configs'] = array(
 		'WE_ERROR_SHOW' => array('Show errors', false),
 		'WE_ERROR_LOG' => array('Log errors', true),
 		'WE_ERROR_MAIL' => array('Mail errors', false),
-		'WE_ERROR_MAIL_ADDRESS' => array('E-Mail address to which to mail errors',''),
+		'WE_ERROR_MAIL_ADDRESS' => array('E-Mail address to which to mail errors', ''),
 		'ERROR_DOCUMENT_NO_OBJECTFILE' => array('Document to open when trying to open non-existing object', 0),
 		'DISABLE_TEMPLATE_CODE_CHECK' => array('Disable the check for php-errors in templates', 0),
 		'DISABLE_TEMPLATE_PARSER' => array('Disable run of parser - only report errors', 0),
@@ -190,6 +190,9 @@ $GLOBALS['configs'] = array(
 		'cockpit_amount_columns' => array(5),
 		'cockpit_amount_last_documents' => array(5),
 		'cockpit_dat' => array(''),
+		//all rss feeds set in cockpit
+		'cockpit_rss' => array(''),
+		//current url for rss feed
 		'cockpit_rss_feed_url' => array(''),
 		'editorMode' => array('codemirror2'),
 		'editorCodecompletion' => array(serialize(array())),

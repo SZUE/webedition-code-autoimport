@@ -311,25 +311,26 @@ function htmlClipElement($smalltext, $text, $content){
 			var oText=gel("' . $unique . '");
 			var oDiv=gel("div_' . $unique . '");
 			var oBtn=gel("btn_' . $unique . '");
+				
 			if(state_' . $unique . '==0){
 				oText.innerHTML=text_' . $unique . ';
 				oDiv.style.display="block";
-				oBtn.innerHTML="' . we_html_element::htmlA(
+				oBtn.innerHTML=\'' . we_html_element::htmlA(
 				array(
 				"href" => "javascript:clip_" . $unique . "();"
 				), we_html_element::htmlImg(array(
 					"src" => BUTTONS_DIR . "btn_direction_down.gif", "border" => 0
-			))) . '";
+			))) . '\';
 				state_' . $unique . '=1;
 			}else{
 				oText.innerHTML=textsmall_' . $unique . ';
 				oDiv.style.display="none";
-				oBtn.innerHTML="' . we_html_element::htmlA(
+				oBtn.innerHTML=\'' . we_html_element::htmlA(
 				array(
 				"href" => "javascript:clip_" . $unique . "();"
 				), we_html_element::htmlImg(array(
 					"src" => BUTTONS_DIR . "btn_direction_right.gif", "border" => 0
-			))) . '";
+			))) . '\';
 				state_' . $unique . '=0;
 			}
 		}
