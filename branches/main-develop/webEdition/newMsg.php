@@ -29,7 +29,6 @@ $msg_cmd = "javascript:top.opener.we_cmd('messaging_start', 'message');self.clos
 $todo_cmd = "javascript:top.opener.we_cmd('messaging_start', 'todo');self.close();";
 
 $text = '';
-//msg="+newmsg_count+"&todo="+newtodo_count+"&omsg="+oldMsg+"otodo="+oldTodo
 $msg = intval($_REQUEST['msg']) - intval($_REQUEST['omsg']);
 $todo = intval($_REQUEST['todo']) - intval($_REQUEST['otodo']);
 

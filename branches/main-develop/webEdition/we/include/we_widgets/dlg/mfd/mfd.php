@@ -48,5 +48,6 @@ print we_html_element::htmlDocType() . we_html_element::htmlHtml(
 			"onload" => "if(parent!=self)init();"
 			), we_html_element::htmlDiv(array(
 				"id" => "mfd"
-				), $lastModified)));
+				), we_html_element::htmlDiv(array('id' => 'mfd_data'), $lastModified)
+)));
 

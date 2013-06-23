@@ -108,8 +108,7 @@ function getCsv(){
 
 function refresh(bRender){
 	if(bRender)_sLastPreviewCsv=getCsv();
-	opener.rpc(getBinary('type'),_oSctDate.selectedIndex,_oSctNumEntries.selectedIndex,
-		getBinary('display_opt'),_sUsers,_sObjId,_sMfdInc);
+	opener.rpc(getBinary('type'),_oSctDate.selectedIndex,_oSctNumEntries.selectedIndex,getBinary('display_opt'),_sUsers,_sObjId,_sMfdInc);
 }
 
 function save(){
@@ -235,14 +234,14 @@ if(we_hasPerm('CAN_SEE_CLASSES') && $_SESSION['weS']['we_mode'] != "seem"){
 }
 
 $oDbTableType = new we_html_table(array(
-		"border" => 0, "cellpadding" => 0, "cellspacing" => 0
-		), 1, 3);
+	"border" => 0, "cellpadding" => 0, "cellspacing" => 0
+	), 1, 3);
 $oDbTableType->setCol(0, 0, null, $oChbxDocs . $oChbxTmpl);
 $oDbTableType->setCol(0, 1, null, we_html_tools::getPixel(10, 1));
 $oDbTableType->setCol(0, 2, null, $oChbxObjs . $oChbxCls);
 
 $oSctDate = new we_html_select(array(
-		"name" => "sct_date", "size" => 1, "class" => "defaultfont", "onChange" => ""
+	"name" => "sct_date", "size" => 1, "class" => "defaultfont", "onChange" => ""
 	));
 $aLangDate = array(
 	g_l('cockpit', '[all]'),
@@ -269,8 +268,8 @@ for($iCurrEntry = 1; $iCurrEntry <= 50; $iCurrEntry++){
 $oSctNumEntries->selectOption($iAmountEntries);
 
 $oSelMaxEntries = new we_html_table(array(
-		"height" => "100%", "border" => 0, "cellpadding" => 0, "cellspacing" => 0
-		), 1, 3);
+	"height" => "100%", "border" => 0, "cellpadding" => 0, "cellspacing" => 0
+	), 1, 3);
 $oSelMaxEntries->setCol(0, 0, array(
 	"valign" => "middle", "class" => "defaultfont"
 	), g_l('cockpit', '[max_amount_entries]'));
@@ -313,4 +312,3 @@ print we_html_element::htmlDocType() . we_html_element::htmlHtml(
 			array(
 			"class" => "weDialogBody", "onload" => "init();"
 			), we_html_element::htmlForm("", $sTblWidget)));
-
