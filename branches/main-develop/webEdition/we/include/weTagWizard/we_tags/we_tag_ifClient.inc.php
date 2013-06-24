@@ -7,6 +7,46 @@ $this->Groups[] = 'if_tags';
 //$this->Module = '';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
-$this->Attributes[] = new weTagData_choiceAttribute('browser', array(new weTagDataOption('ie', false, ''), new weTagDataOption('nn', false, ''), new weTagDataOption('mozilla', false, ''), new weTagDataOption('safari', false, ''), new weTagDataOption('opera', false, ''), new weTagDataOption('lynx', false, ''), new weTagDataOption('konqueror', false, ''),new weTagDataOption('firefox', false, ''),new weTagDataOption('chrome', false, ''), new weTagDataOption('unknown', false, '')), false,false, '');
-$this->Attributes[] = new weTagData_choiceAttribute('version', array(new weTagDataOption('eq1', false, ''), new weTagDataOption('eq2', false, ''), new weTagDataOption('eq3', false, ''), new weTagDataOption('eq4', false, ''), new weTagDataOption('eq5', false, ''), new weTagDataOption('eq6', false, ''), new weTagDataOption('eq7', false, ''), new weTagDataOption('eq8', false, ''), new weTagDataOption('eq9', false, ''), new weTagDataOption('up2', false, ''), new weTagDataOption('up3', false, ''), new weTagDataOption('up4', false, ''), new weTagDataOption('up5', false, ''), new weTagDataOption('up6', false, ''), new weTagDataOption('up7', false, ''), new weTagDataOption('up8', false, ''), new weTagDataOption('up9', false, ''), new weTagDataOption('down1', false, ''), new weTagDataOption('down2', false, ''), new weTagDataOption('down3', false, ''), new weTagDataOption('down4', false, ''), new weTagDataOption('down5', false, ''), new weTagDataOption('down6', false, ''), new weTagDataOption('down7', false, ''), new weTagDataOption('down8', false, ''), new weTagDataOption('down9', false, '')), false,true, '');
-$this->Attributes[] = new weTagData_choiceAttribute('system', array(new weTagDataOption('win', false, ''), new weTagDataOption('mac', false, ''), new weTagDataOption('unix', false, ''), new weTagDataOption('unknown', false, '')), false,false, '');
+$this->Attributes[] = new weTagData_choiceAttribute('browser', array(new weTagDataOption('ie'),
+	new weTagDataOption('nn'),
+	new weTagDataOption('mozilla'),
+	new weTagDataOption('safari'),
+	new weTagDataOption('opera'),
+	new weTagDataOption('lynx'),
+	new weTagDataOption('konqueror'),
+	new weTagDataOption('firefox'),
+	new weTagDataOption('chrome'),
+	new weTagDataOption('unknown'),
+	), false, false, '');
+$this->Attributes[] = new weTagData_choiceAttribute('version', array(new weTagDataOption('eq1'),
+	new weTagDataOption('eq2'),
+	new weTagDataOption('eq3'),
+	new weTagDataOption('eq4'),
+	new weTagDataOption('eq5'),
+	new weTagDataOption('eq6'),
+	new weTagDataOption('eq7'),
+	new weTagDataOption('eq8'),
+	new weTagDataOption('eq9'),
+	new weTagDataOption('up2'),
+	new weTagDataOption('up3'),
+	new weTagDataOption('up4'),
+	new weTagDataOption('up5'),
+	new weTagDataOption('up6'),
+	new weTagDataOption('up7'),
+	new weTagDataOption('up8'),
+	new weTagDataOption('up9'),
+	new weTagDataOption('down1'),
+	new weTagDataOption('down2'),
+	new weTagDataOption('down3'),
+	new weTagDataOption('down4'),
+	new weTagDataOption('down5'),
+	new weTagDataOption('down6'),
+	new weTagDataOption('down7'),
+	new weTagDataOption('down8'),
+	new weTagDataOption('down9'),
+	), false, true, '');
+$this->Attributes[] = new weTagData_choiceAttribute('system', array(new weTagDataOption('win'),
+	new weTagDataOption('mac'),
+	new weTagDataOption('unix'),
+	new weTagDataOption('unknown'),
+	), false, false, '');

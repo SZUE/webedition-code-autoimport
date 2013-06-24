@@ -1,4 +1,5 @@
 <?php
+
 //NOTE you are inside the constructor of weTagData.class.php
 
 $this->NeedsEndTag = true;
@@ -10,5 +11,3 @@ $this->Attributes[] = new weTagData_selectAttribute('htmlspecialchars', weTagDat
 $this->Attributes[] = new weTagData_textAttribute('prefix', false, '');
 $this->Attributes[] = new weTagData_textAttribute('suffix', false, '');
 $this->Attributes[] = new weTagData_textAttribute('delimiter', false, '');
-
-//$this->Attributes[] = new weTagData_textAttribute('cachelifetime', false, '');

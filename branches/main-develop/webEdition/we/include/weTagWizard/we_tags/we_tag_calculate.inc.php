@@ -1,4 +1,5 @@
 <?php
+
 //NOTE you are inside the constructor of weTagData.class.php
 
 $this->NeedsEndTag = true;
@@ -6,7 +7,20 @@ $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 $this->Module = 'shop';
 
 $this->Attributes[] = new weTagData_textAttribute('sum', false, '');
-$this->Attributes[] = new weTagData_choiceAttribute('num_format', array(new weTagDataOption('german', false, ''), new weTagDataOption('french', false, ''), new weTagDataOption('english', false, ''), new weTagDataOption('swiss', false, '')), false,false, '');
-$this->Attributes[] = new weTagData_choiceAttribute('print', weTagData_selectAttribute::getTrueFalse(), false,false, '');
-$this->Attributes[] = new weTagData_selectAttribute('to', array(new weTagDataOption('screen', false, ''),new weTagDataOption('request', false, ''), new weTagDataOption('post', false, ''), new weTagDataOption('get', false, ''), new weTagDataOption('global', false, ''), new weTagDataOption('session', false, ''), new weTagDataOption('top', false, ''), new weTagDataOption('self', false, ''), new weTagDataOption('sessionfield', false, '')), false, '');
+$this->Attributes[] = new weTagData_choiceAttribute('num_format', array(new weTagDataOption('german'),
+	new weTagDataOption('french'),
+	new weTagDataOption('english'),
+	new weTagDataOption('swiss'),
+	), false, false, '');
+$this->Attributes[] = new weTagData_choiceAttribute('print', weTagData_selectAttribute::getTrueFalse(), false, false, '');
+$this->Attributes[] = new weTagData_selectAttribute('to', array(new weTagDataOption('screen'),
+	new weTagDataOption('request'),
+	new weTagDataOption('post'),
+	new weTagDataOption('get'),
+	new weTagDataOption('global'),
+	new weTagDataOption('session'),
+	new weTagDataOption('top'),
+	new weTagDataOption('self'),
+	new weTagDataOption('sessionfield'),
+	), false, '');
 $this->Attributes[] = new weTagData_textAttribute('nameto', false, '');
