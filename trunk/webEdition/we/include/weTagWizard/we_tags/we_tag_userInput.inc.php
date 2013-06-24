@@ -78,5 +78,5 @@ $this->TypeAttribute = new weTagData_typeAttribute('type', array(
 	new weTagDataOption('language', false, '', array($name, $size, $class, $style, $doc, $value), array($name))), true, '');
 
 $this->Attributes = array($name, $property, $checked, $editable, $xml, $removefirstparagraph, $size, $maxlength, $format, $value, $values, $hidden, $currentdate, $cols,
-	$rows, $pure, $autobr, $width, $height, $bgcolor, $class, $style, $wysiwyg, $buttonpos, $ignoredocumentcss, $editorcss, $commands, $contextmenu, $classes, $fontnames, $parentid, $quality, $keepratio, $maximize, $bordercolor,
+	$rows, $pure, $autobr, $width, $height, $bgcolor, $class, $style, $wysiwyg, $buttonpos, $ignoredocumentcss, $editorcss, $commands, $contextmenu, $classes, $fontnames, $parentid, $quality, $keepratio, $maximize, $thumbnail, $bordercolor,
 	$checkboxstyle, $checkboxclass, $inputstyle, $inputclass, $checkboxtext, $doc, $minyear, $maxyear, $to, $nameto);
