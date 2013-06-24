@@ -4,4 +4,5 @@
 $this->NeedsEndTag = true;
 $this->Groups[] = 'if_tags';
 $this->Module = 'customer';
+$this->Deprecated = true;
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);

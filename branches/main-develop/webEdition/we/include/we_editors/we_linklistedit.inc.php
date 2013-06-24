@@ -23,9 +23,11 @@
  */
 we_html_tools::protect();
 
+//todo: make int/ext/mail/obj consts of some class
 function getLangField($name, $value, $title, $width){
 	//FIXME: these values should be obtained from global settings
 	$input = we_html_tools::htmlTextInput($name, 15, $value, '', '', "text", $width - 50);
+	//FIXME: remove this fixed list by global lang settings
 	$select = '<select style="width:50px;" class="defaultfont" name="' . $name . '_select" size="1" onchange="this.form.elements[\'' . $name . '\'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;">
 						<option value=""></option>
 						<option value="en">en</option>

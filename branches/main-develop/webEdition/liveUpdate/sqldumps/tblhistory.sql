@@ -5,6 +5,6 @@ CREATE TABLE ###TBLPREFIX###tblhistory (
   ModDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   Act enum('save') NOT NULL default 'save',
   UserName varchar(64) NOT NULL default '',
-  PRIMARY KEY (DID,DocumentTable,ModDate),
+  PRIMARY KEY (DID,DocumentTable,ModDate,Act),
   KEY UserName (UserName,DocumentTable)
 ) ENGINE=MyISAM;

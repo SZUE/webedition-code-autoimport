@@ -74,8 +74,8 @@ function we_tag($name, $attribs = array(), $content = ''){
 		$nameTo = '';
 		$to = 'screen';
 	} else{
-		$nameTo = weTag_getAttribute("nameto", $attribs);
-		$to = weTag_getAttribute("to", $attribs, 'screen');
+		$nameTo = weTag_getAttribute('nameto', $attribs);
+		$to = weTag_getAttribute('to', $attribs, 'screen');
 		$attribs = removeAttribs($attribs, array('cachelifetime', 'comment', 'to', 'nameto', 'user'));
 		/* if to attribute is set, output of the tag is redirected to a variable
 		 * this makes only sense if tag output is equal to non-editmode */
@@ -288,13 +288,13 @@ function cutSimpleText($text, $len){
 	return substr($text, 0, max($pos));
 }
 
-function cutText($text, $max = 0, $striphtml=false){
+function cutText($text, $max = 0, $striphtml = false){
 	if((!$max) || (strlen($text) <= $max)){
 		return $text;
 	}
 	//no tags, simple cut off
 	if(strstr($text, '<') == FALSE){
-		return cutSimpleText($text, $max) . ($striphtml?' ...':' &hellip;');
+		return cutSimpleText($text, $max) . ($striphtml ? ' ...' : ' &hellip;');
 	}
 
 	$ret = '';
@@ -316,7 +316,7 @@ function cutText($text, $max = 0, $striphtml=false){
 					$ret.=($len > $max ? cutSimpleText($cur[0], $max) : $cur[0]);
 					$max-=$len;
 					if($max <= 0){
-						$ret.=($striphtml?' ...':' &hellip;');
+						$ret.=($striphtml ? ' ...' : ' &hellip;');
 					}
 				}
 				break;
@@ -554,6 +554,10 @@ function we_tag_ifNotFound($attribs){
 	return !we_tag('ifFound', $attribs);
 }
 
+function we_tag_ifNotIsActive($attribs){
+	return !we_tag('ifFound', $attribs);
+}
+
 function we_tag_ifNotObject($attribs){
 	return !we_tag('ifObject', $attribs);
 }
@@ -721,27 +725,27 @@ function we_tag_makeMail(){
 }
 
 function we_tag_ifshopexists(){
-	return defined('SHOP_TABLE');
+	return we_tag('ifIsActive', array('name' => 'shop'));
 }
 
 function we_tag_ifobjektexists(){
-	return defined('OBJECT_TABLE');
+	return we_tag('ifIsActive', array('name' => 'object'));
 }
 
 function we_tag_ifnewsletterexists(){
-	return defined('NEWSLETTER_TABLE');
+	return we_tag('ifIsActive', array('name' => 'newsletter'));
 }
 
 function we_tag_ifcustomerexists(){
-	return defined('CUSTOMER_TABLE');
+	return we_tag('ifIsActive', array('name' => 'customer'));
 }
 
 function we_tag_ifbannerexists(){
-	return defined('BANNER_TABLE');
+	return we_tag('ifIsActive', array('name' => 'banner'));
 }
 
 function we_tag_ifvotingexists(){
-	return defined('VOTING_TABLE');
+	return we_tag('ifIsActive', array('name' => 'voting'));
 }
 
 //this function is used by all tags adding elements to we_lv_array

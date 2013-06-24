@@ -1033,7 +1033,7 @@ class we_document extends we_root{
 				parseInternalLinks($val, $parentID);
 				$retval = preg_replace('/<\?xml[^>]+>/i', '', $val);
 
-				if(!weTag_getAttribute('html', $attribs, false, true)){
+				if(!weTag_getAttribute('html', $attribs, true, true)){
 					$retval = strip_tags($retval, '<br>,<p>');
 				}
 

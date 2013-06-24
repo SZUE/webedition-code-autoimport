@@ -532,7 +532,7 @@ function checkButtons(){
 		$cancelButton = we_button::create_button("cancel", "javascript:top.close()");
 		$closeButton = we_button::create_button("close", "javascript:top.close()");
 
-		$progressbar = "";
+		$progressbar = '';
 		$formnum = (isset($_REQUEST["weFormNum"]) ? $_REQUEST["weFormNum"] : 0);
 		$formcount = (isset($_REQUEST["weFormCount"]) ? $_REQUEST["weFormCount"] : 0);
 		$js = we_button::create_state_changer(false) . '
@@ -580,7 +580,7 @@ function next() {
 
 			$filelist = '';
 			foreach($_SESSION['weS']['WE_IMPORT_FILES_ERRORs'] as $err){
-				$filelist .= '- ' . $err["filename"] . ' => ' . g_l('importFiles', '[' . $err["error"] . ']') . '\n';
+				$filelist .= '- ' . $err["filename"] . ' => ' .  $err["error"]  . '\n';
 			}
 			unset($_SESSION['weS']['WE_IMPORT_FILES_ERRORs']);
 			$js .= we_message_reporting::getShowMessageCall(sprintf(g_l('importFiles', "[error]"), $filelist), we_message_reporting::WE_MESSAGE_ERROR);
@@ -739,30 +739,27 @@ function next() {
 				$we_doc->setMetaDataFromFile($tempName);
 			}
 
-			$we_doc->setElement("type", $we_ContentType, "attrib");
-			$fh = @fopen($tempName, "rb");
-			if($_FILES['we_File']["size"] <= 0){
-				$_FILES['we_File']["size"] = 1;
+			$we_doc->setElement('type', $we_ContentType, "attrib");
+			$fh = @fopen($tempName, 'rb');
+			if($_FILES['we_File']['size'] <= 0){
+				$_FILES['we_File']['size'] = 1;
 			}
 			if($fh){
-				if(!$we_doc->isBinary()){
-					$we_fileData = fread($fh, $_FILES['we_File']["size"]);
+				if($we_doc->isBinary()){
+					$we_doc->setElement("data", $tempName);
+				}else{
+					$foo = explode('/', $_FILES["we_File"]["type"]);
+					$we_doc->setElement("data", fread($fh, $_FILES['we_File']["size"]), $foo[0]);
 				}
 				fclose($fh);
 			} else{
-				return array("filename" => $_FILES['we_File']["name"], 'error' => g_l('importFiles', '[read_file_error]'));
-			}
-			$foo = explode('/', $_FILES["we_File"]["type"]);
-			if($we_doc->isBinary()){
-				$we_doc->setElement("data", $tempName);
-			} else{
-				$we_doc->setElement("data", $we_fileData, $foo[0]);
+				return array('filename' => $_FILES['we_File']['name'], 'error' => g_l('importFiles', '[read_file_error]'));
 			}
 
-			$we_doc->setElement("filesize", $_FILES['we_File']["size"], "attrib");
+			$we_doc->setElement('filesize', $_FILES['we_File']['size'], 'attrib');
 			$we_doc->Table = FILE_TABLE;
 			$we_doc->Published = time();
-			if($we_ContentType == "image/*"){
+			if($we_ContentType == 'image/*'){
 				$we_doc->Thumbs = $this->thumbs;
 
 				$newWidth = 0;
