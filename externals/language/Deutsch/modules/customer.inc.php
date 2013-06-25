@@ -82,6 +82,7 @@ $l_modules_customer=array(
 	'export_xml_cdata'=>'CDATA-Abschnitte hinzufügen',
 	'export_xml_entities'=>'Entitäten ersetzen',
 	'exporting'=>'Exportieren...',
+	'failedLogins'=>'Fehlgeschlagene Logins in %s Stunden',
 	'field_admin'=>'Felder verwalten',
 	'field_default'=>'Vorgegebener Wert',
 	'field_deleted'=>'Feld %s wurde vom Bereich %s gelöscht',

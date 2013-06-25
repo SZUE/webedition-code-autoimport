@@ -82,6 +82,7 @@ $l_modules_customer=array(
 	'export_xml_cdata'=>'Lisää CDATA -kentät',
 	'export_xml_entities'=>'Korvaa XML -kokonaisuus',
 	'exporting'=>'Viedään...',
+	'failedLogins'=>'Failed Logins within %s hours',
 	'field_admin'=>'Kenttien hallinta',
 	'field_default'=>'Oletus',
 	'field_deleted'=>'Kenttä on poistettu %s näkymästä.',

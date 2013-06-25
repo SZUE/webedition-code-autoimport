@@ -82,6 +82,7 @@ $l_modules_customer=array(
 	'export_xml_cdata'=>'Voeg CDATA secties toe',
 	'export_xml_entities'=>'Vervang entiteiten',
 	'exporting'=>'Bezig met exporteren...',
+	'failedLogins'=>'Failed Logins within %s hours',
 	'field_admin'=>'Veld administratie',
 	'field_default'=>'Standaard',
 	'field_deleted'=>'Veld is verwijderd van %s weergave.',
