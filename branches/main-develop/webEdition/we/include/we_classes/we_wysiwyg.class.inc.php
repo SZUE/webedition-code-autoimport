@@ -65,10 +65,10 @@ class we_wysiwyg{
 	private $isFrontendEdit = false;
 	private $htmlSpecialchars = true; // in wysiwyg default was "true" (although Tag-Hilfe says "false")
 	private $contentCss = '';
-	private $isFrontendInPopup = false;
+	private $isInPopup = false;
 	public static $editorType = WYSIWYG_TYPE; //FIXME: remove after old editor is removed
 
-	function __construct($name, $width, $height, $value = '', $propstring = '', $bgcol = '', $fullscreen = '', $className = '', $fontnames = '', $outsideWE = false, $xml = false, $removeFirstParagraph = true, $inlineedit = true, $baseHref = '', $charset = '', $cssClasses = '', $Language = '', $test = '', $spell = true, $isFrontendEdit = false, $buttonpos = 'top', $oldHtmlspecialchars = true, $contentCss = '', $origName = '', $tinyParams = '', $contextmenu = '', $isFrontendInPopup = false){
+	function __construct($name, $width, $height, $value = '', $propstring = '', $bgcol = '', $fullscreen = '', $className = '', $fontnames = '', $outsideWE = false, $xml = false, $removeFirstParagraph = true, $inlineedit = true, $baseHref = '', $charset = '', $cssClasses = '', $Language = '', $test = '', $spell = true, $isFrontendEdit = false, $buttonpos = 'top', $oldHtmlspecialchars = true, $contentCss = '', $origName = '', $tinyParams = '', $contextmenu = '', $isInPopup = false){
 		$this->propstring = $propstring ? ',' . $propstring . ',' : '';
 		$this->restrictContextmenu = $contextmenu ? ',' . $contextmenu . ',' : '';
 		$this->createContextmenu = trim($contextmenu," ,'") == 'false' ? false : true;
@@ -146,7 +146,7 @@ class we_wysiwyg{
 		$this->height = $height;
 		$this->ref = preg_replace('%[^0-9a-zA-Z_]%', '', $this->name);
 		$this->hiddenValue = $value;
-		$this->isFrontendInPopup = $isFrontendInPopup;
+		$this->isInPopup = $isInPopup;
 
 		if($inlineedit){
 			if($value){
@@ -180,7 +180,7 @@ class we_wysiwyg{
 		$this->maxGroupWidth = max($w, $this->maxGroupWidth);
 	}
 
-	static function getHeaderHTML($loadDialogRegistry){
+	static function getHeaderHTML($loadDialogRegistry = false){
 		if(defined('WE_WYSIWG_HEADER')){
 			return '';
 		}
@@ -208,16 +208,8 @@ class we_wysiwyg{
 					.
 					we_html_element::jsScript(WEBEDITION_DIR . 'editors/content/tinymce/jscripts/tiny_mce/tiny_mce.js') .
 					($loadDialogRegistry ? we_html_element::jsScript(JS_DIR . 'weTinyMceDialogs.js') : '') .
+					we_html_element::jsScript(JS_DIR . 'weTinyMceFunctions.js') .
 					we_html_element::jsElement('
-
-var tiny_instances = {};
-function getTinyInstanceByFieldname(fn){
-	return typeof tiny_instances[fn] !== "undefined" ? tiny_instances[fn] : null;
-}
-
-function getTinyDivByFieldname(fn){
-	return typeof tiny_instances[fn] !== "undefined" ? document.getElementById("div_wysiwyg_" + tiny_instances[fn]) : null;
-}
 
 function tinyMCECallRegisterDialog(win,action){
 	if(typeof(top.isRegisterDialogHere) != "undefined"){
@@ -238,23 +230,24 @@ function tinyMCECallRegisterDialog(win,action){
 }
 				') .
 					we_html_element::jsElement('
-					function weWysiwygSetHiddenTextSync(){
-						weWysiwygSetHiddenText(1);
-						setTimeout(weWysiwygSetHiddenTextSync,500);
-					}
+function weWysiwygSetHiddenTextSync(){
+	weWysiwygSetHiddenText(1);
+	setTimeout(weWysiwygSetHiddenTextSync,500);
+}
 
-					function weWysiwygSetHiddenText(arg) {
-						try {
-							if (weWysiwygIsIntialized) {
-								for (var i = 0; i < we_wysiwygs.length; i++) {
-									we_wysiwygs[i].setHiddenText(arg);
-								}
-							}else{
-								}
-						} catch(e) {
-							// Nothing
-						}
-					}');
+function weWysiwygSetHiddenText(arg) {
+	try {
+		if (weWysiwygIsIntialized) {
+			for (var i = 0; i < we_wysiwygs.length; i++) {
+				we_wysiwygs[i].setHiddenText(arg);
+			}
+		}else{
+			}
+	} catch(e) {
+		// Nothing
+	}
+}
+					');
 			default:
 			case 'default':
 				include_once(WEBEDITION_PATH . 'editors/content/wysiwyg/weWysiwygLang.inc.php');
@@ -1104,11 +1097,11 @@ function tinyMCECallRegisterDialog(win,action){
 		foreach($this->fontnames as $fn){
 			$fns .= str_replace(",", ";", $fn) . ",";
 		}
-		if($this->isFrontendEdit){
-			return we_button::create_button("image:btn_edit_edit", "javascript:open_wysiwyg_win('open_wysiwyg_window', '" . $this->name . "', '" . max(220, $this->width) . "', '" . $this->height . "','" . we_cmd_enc($value) . "','" . $this->propstring . "','" . $this->className . "','" . rtrim($fns, ',') . "','" . $this->outsideWE . "','" . $tbwidth . "','" . $tbheight . "','" . $this->xml . "','" . $this->removeFirstParagraph . "','" . $this->bgcol . "','" . $this->baseHref . "','" . $this->charset . "','" . $this->cssClassesCSV . "','" . $this->Language . "','" . we_cmd_enc($this->contentCss) . "','" . $this->origName . "','" . we_cmd_enc($this->tinyParams) . "','" . we_cmd_enc($this->restrictContextmenu) . "', 'true');", true, 25);
-		}
+		$js_function = $this->isFrontendEdit ? 'open_wysiwyg_win' : 'we_cmd';
 		
-		return we_button::create_button("image:btn_edit_edit", "javascript:we_cmd('open_wysiwyg_window', '" . $this->name . "', '" . max(220, $this->width) . "', '" . $this->height . "','" . $GLOBALS["we_transaction"] . "','" . $this->propstring . "','" . $this->className . "','" . rtrim($fns, ',') . "','" . $this->outsideWE . "','" . $tbwidth . "','" . $tbheight . "','" . $this->xml . "','" . $this->removeFirstParagraph . "','" . $this->bgcol . "','" . $this->baseHref . "','" . $this->charset . "','" . $this->cssClassesCSV . "','" . $this->Language . "','" . we_cmd_enc($this->contentCss) . "','" . $this->origName . "','" . we_cmd_enc($this->tinyParams) . "','" . we_cmd_enc($this->restrictContextmenu) . "');", true, 25);
+		return we_button::create_button("image:btn_edit_edit", "javascript:" . $js_function . "('open_wysiwyg_window', '" . $this->name . "','" . max(220, $this->width) . "', '" . $this->height . "','value','" . $this->propstring . "','" . $this->className . "','" . rtrim($fns, ',') . "',
+			'" . $this->outsideWE . "','" . $tbwidth . "','" . $tbheight . "','" . $this->xml . "','" . $this->removeFirstParagraph . "','" . $this->bgcol . "','" . $this->baseHref . "','" . $this->charset . "','" . $this->cssClassesCSV . "','" . $this->Language . "','" . we_cmd_enc($this->contentCss) . "',
+			'" . $this->origName . "','" . we_cmd_enc($this->tinyParams) . "','" . we_cmd_enc($this->restrictContextmenu) . "', 'true', '" . $this->isFrontendEdit . "');", true, 25);
 	}
 
 	function getHTML($value = ''){
@@ -1358,13 +1351,13 @@ function tinyMCECallRegisterDialog(win,action){
 					/* -- tinyMCE -- */
 
 					/*
-					To adress an instance of tinyMCE using JavaScript from anywhere on your page use:
-					getTinyInstanceByFieldname("WE_FIELDNAME");
+					To adress an instance of tinyMCE (inlineeedit=true) using JavaScript from anywhere on your page use:
+					TinyWrapper("SOME_WE_FIELDNAME").getEditor();
 
 					To adress the div container of an editor inlineedit=false use:
-					getTinyDivByFieldname("WE_FIELDNAME");
+					TinyWrapper("SOME_WE_FIELDNAME").getDiv();
 
-					WE_FIELDNAME if THIS instance is: "' . $this->fieldName . '"
+					WE_FIELDNAME of THIS instance is: "' . $this->fieldName . '"
 					*/
 
 					/*
@@ -1373,25 +1366,28 @@ function tinyMCECallRegisterDialog(win,action){
 					function we_tinyMCE_' . $this->fieldName . '_init(ed){
 						//you can adress this instance of tinyMCE using variable ed:
 						var this_editor = ed;
+						//or:
+						//var this_editor = TinyWrapper(' . $this->fieldName . ').getEditor();
 
 						//to adress other instances of tinyMCE on this same page use:
-						getTinyInstanceByFieldname("OTHER_WE_FIELDNAME");
-						//IMPORTANT: 
-						//other instances of tinyMCE may not yet be instantiated at the very moment of calling this function.
-						//this is why you must allways use the getter-function: do not save their reference into a variable.
+						TinyWrapper("OTHER_WE_FIELDNAME").getEditor();
 
 						//example of adding event listener
 						this_editor.onChange.add(function(ed){
 							try{
-								getTinyInstanceByFieldname("OTHER_WE_FIELDNAME").setContent(this_editor.getContent());
+								TinyWrapper("OTHER_WE_FIELDNAME").setContent(this_editor.getContent());
 							} catch(err){
 								console.log("too bad");
 							}
 						});
-
-						//read more about event listeners of the editor object in the tinyMCE API
 					}
 					*/
+
+					/*
+					read more about event listeners of the tiny editor object in the tinyMCE API,
+					and have a look at /webEdition/js/weTinyMceFunctions to see what TinyWrapper can do for you
+					*/
+
 					' : '') . '
 
 					var weclassNames_tinyMce = new Array (' . $this->cssClassesJS . ');
@@ -1502,32 +1498,37 @@ function tinyMCECallRegisterDialog(win,action){
 							ed.settings.language = "' . we_core_Local::weLangToLocale($GLOBALS['WE_LANGUAGE']) . '";
 
 							ed.onInit.add(function(ed, o){
+								//TODO: clean up the mess in here!
 								ed.pasteAsPlainText = ' . $pastetext . ';
 								ed.controlManager.setActive("pastetext", ' . $pastetext . ');
-								' . ($this->isFrontendInPopup ? '
+								var openerDocument = ' . (!$this->isInPopup ? '""' : ($this->isFrontendEdit ? 'top.opener.document' : 'top.opener.top.weEditorFrameController.getVisibleEditorFrame().document')) . ';
+								' . ($this->isInPopup ? '
 								try{
-									ed.setContent(top.opener.document.getElementById("div_wysiwyg_' . $this->name . '").innerHTML)
+									ed.setContent(openerDocument.getElementById("' . $this->name . '").value)
 								}catch(e){
-									console.log("failed getting content from main window");
+									//console.log("failed getting content from main window");
 								}
 								' : '') . '
 								' . ($this->fieldName ? '
-								tiny_instances["' . $this->fieldName . '"] = ed;
+								tinyEditors["' . $this->fieldName . '"] = ed;
 								if(typeof we_tinyMCE_' . $this->fieldName . '_init != "undefined"){
 									we_tinyMCE_' . $this->fieldName . '_init(ed);
 								} else if(opener){
 									if(opener.top.weEditorFrameController){
 										//we are in backend
 										var editor = opener.top.weEditorFrameController.ActiveEditorFrameId;
+										var wedoc = opener.top.rframe.bm_content_frame.frames[editor].frames["editor_" + editor];
 										try{
-											opener.top.rframe.bm_content_frame.frames[editor].frames["editor_" + editor].we_tinyMCE_' . $this->fieldName . '_init(ed);
+											wedoc.tinyEditorsInPopup["' . $this->fieldName . '"] = ed;
+											wedoc.we_tinyMCE_' . $this->fieldName . '_init(ed);
 											//TODO: find a better way to get this reference...
 										}catch(e){
 											//opener.console.log("no external init function for ' . $this->fieldName . ' defined");
 										}
 									} else{
-										//we mus be in frontend
+										//we are in frontend
 										try{
+											opener.tinyEditorsInPopup["' . $this->fieldName . '"] = ed;
 											opener.we_tinyMCE_' . $this->fieldName . '_init(ed);
 										}catch(e){
 											//opener.console.log("no external init function for ' . $this->fieldName . ' defined");

@@ -153,7 +153,7 @@ class weCustomerSettings{
 
 	function load($tryFromSession = true){
 		$modified = false;
-		$this->db->query('SELECT * FROM ' . $this->table);
+		$this->db->query('SELECT Name,Value FROM ' . $this->table);
 		while($this->db->next_record()) {
 			$this->properties[$this->db->f('Name')] = $this->db->f('Value');
 		}

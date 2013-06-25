@@ -75,7 +75,7 @@ class weCustomerFrames extends weModuleFrames{
 	function getHTMLFrameset(){
 		$this->View->customer->clearSessionVars();
 		$this->View->settings->load(false);
-		$extraHead = $this->Tree->getJSTreeCode() . 
+		$extraHead = $this->Tree->getJSTreeCode() .
 			we_html_element::jsElement($this->getJSStart()) .
 			we_html_element::jsElement($this->View->getJSTreeHeader());
 
@@ -388,21 +388,17 @@ class weCustomerFrames extends weModuleFrames{
 		$text = $this->View->customer->Username;
 
 		//TODO: we have the following body in several modules!
-		$body = we_html_element::htmlBody(array('bgcolor' => 'white', 'background' => IMAGE_DIR . 'backgrounds/header_with_black_line.gif', 'marginwidth' => 0, 'marginheight' => 0, 'leftmargin' => 0, 'topmargin' => 0, 'onload' => 'setFrameSize()', 'onresize' => 'setFrameSize()'),
-			we_html_element::htmlDiv(array('id' => 'main'),
-				we_html_tools::getPixel(100, 3) .
-				we_html_element::htmlDiv(array('style' => 'margin:0px; padding-left:10px;', 'id' => 'headrow'),
-					we_html_element::htmlNobr(
-						we_html_element::htmlB(str_replace(" ", "&nbsp;", g_l('modules_customer', '[customer]')) . ':&nbsp;') .
-						we_html_element::htmlSpan(array('id' => 'h_path', 'class' => 'header_small'),
-							'<b id="titlePath">' . str_replace(" ", "&nbsp;", $text) . '</b>'
+		$body = we_html_element::htmlBody(array('bgcolor' => 'white', 'background' => IMAGE_DIR . 'backgrounds/header_with_black_line.gif', 'marginwidth' => 0, 'marginheight' => 0, 'leftmargin' => 0, 'topmargin' => 0, 'onload' => 'setFrameSize()', 'onresize' => 'setFrameSize()'), we_html_element::htmlDiv(array('id' => 'main'), we_html_tools::getPixel(100, 3) .
+					we_html_element::htmlDiv(array('style' => 'margin:0px; padding-left:10px;', 'id' => 'headrow'), we_html_element::htmlNobr(
+							we_html_element::htmlB(str_replace(" ", "&nbsp;", g_l('modules_customer', '[customer]')) . ':&nbsp;') .
+							we_html_element::htmlSpan(array('id' => 'h_path', 'class' => 'header_small'), '<b id="titlePath">' . str_replace(" ", "&nbsp;", $text) . '</b>'
+							)
 						)
-					)
+					) .
+					we_html_tools::getPixel(100, 3) .
+					$tabs->getHTML()
 				) .
-				we_html_tools::getPixel(100, 3) .
-				$tabs->getHTML()
-			) .
-			we_html_element::jsElement($extraJS)
+				we_html_element::jsElement($extraJS)
 		);
 
 
@@ -436,169 +432,178 @@ class weCustomerFrames extends weModuleFrames{
 		$parts = array();
 
 		$branches = array();
-		$common = array();
+		$common = array(
+			'ID' => $this->View->customer->ID,
+		);
 		$other = array();
 
-		$common['ID'] = $this->View->customer->ID;
 		$this->View->customer->getBranches($branches, $common, $other, $this->View->settings->getEditSort());
 
+		$failedLogins = f('SELECT count(1) AS a FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTable="tblWebUser" AND Username="' . $GLOBALS['DB_WE']->escape($_REQUEST['s']['Username']) . '" AND LoginDate >DATE_SUB(NOW(), INTERVAL ' . intval(SECURITY_LIMIT_CUSTOMER_NAME_HOURS) . ' hour)', 'a', $GLOBALS['DB_WE']);
+		$common['failedLogins'] = $failedLogins;
+		if($failedLogins > intval(SECURITY_LIMIT_CUSTOMER_NAME)){
+			$common['resetFailed'] = '';
+		}
 
-
-		if($preselect == g_l('modules_customer', '[common]') || $preselect == g_l('modules_customer', '[all]')){
-			$table = new we_html_table(array("width" => 300, "height" => 50, "cellpadding" => 10, "cellspacing" => 0, "border" => 0), 1, 2);
-			$r = 0;
-			$c = 0;
-			$table->setRow(0, array("valign" => "top"));
-			foreach($common as $pk => $pv){
-				$pv = $pv;
-
-				if($this->View->customer->isInfoDate($pk)){
-					$pv = ($pv == '' || !is_numeric($pv)) ? 0 : $pv;
-					$table->setCol($r, $c, array("class" => "defaultfont"), we_html_tools::htmlFormElementTable(($pv != "0" ? we_html_element::htmlDiv(array("class" => "defaultgray"), date(g_l('weEditorInfo', "[date_format]"), $pv)) : "-" . we_html_tools::getPixel(100, 5)), $this->View->settings->getPropertyTitle($pk)));
-				} else{
-					switch($pk){
-						case 'ID':
-							$table->setCol($r, $c, array("class" => "defaultfont"), we_html_tools::htmlFormElementTable(($pv != "0" ? we_html_element::htmlDiv(array("class" => "defaultgray"), $pv) : "-" . we_html_tools::getPixel(100, 5)), $this->View->settings->getPropertyTitle($pk)));
-							++$c;
-							$table->setCol($r, $c, array("class" => "defaultfont"), "");
-							break;
-						case 'LoginDenied':
-							$table->setCol($r, $c, array("class" => "defaultfont"), we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(array("class" => "defaultgray"), we_forms::checkbox(1, $pv, "LoginDenied", g_l('modules_customer', '[login_denied]'), false, "defaultfont", "top.content.setHot();")), $this->View->settings->getPropertyTitle($pk)));
-							break;
-						case 'AutoLoginDenied':
-							$table->setCol($r, $c, array("class" => "defaultfont"), we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(array("class" => "defaultgray"), we_forms::checkbox(1, $pv, "AutoLoginDenied", g_l('modules_customer', '[login_denied]'), false, "defaultfont", "top.content.setHot();")), $this->View->settings->getPropertyTitle($pk)));
-							break;
-						case 'AutoLogin':
-							$table->setCol($r, $c, array("class" => "defaultfont"), we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(array("class" => "defaultgray"), we_forms::checkbox(1, $pv, "AutoLogin", g_l('modules_customer', '[autologin_request]'), false, "defaultfont", "top.content.setHot();")), $this->View->settings->getPropertyTitle($pk)));
-							break;
-						case 'Password':
-							$table->setCol($r, $c, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($pk, 32, (we_hasPerm('CUSTOMER_PASSWORD_VISIBLE') ? $pv : weCustomer::NOPWD_CHANGE), "", "onchange=\"top.content.setHot();\" ", (we_hasPerm('CUSTOMER_PASSWORD_VISIBLE') ? 'text' : 'password'), "240px"), $this->View->settings->getPropertyTitle($pk)));
-							break;
-						case 'Username':
-							$inputattribs = ' id="yuiAcInputPathName" onblur="parent.edheader.setPathName(this.value); parent.edheader.setTitlePath()"';
-							$table->setCol($r, $c, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($pk, 32, $pv, "", "onchange=\"top.content.setHot();\" " . $inputattribs, "text", "240px"), $this->View->settings->getPropertyTitle($pk)));
-							break;
-						default:
-							$inputattribs = '';
-							$table->setCol($r, $c, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($pk, 32, $pv, "", "onchange=\"top.content.setHot();\" " . $inputattribs, "text", "240px"), $this->View->settings->getPropertyTitle($pk)));
+		switch($preselect){
+			case g_l('modules_customer', '[all]'):
+			case g_l('modules_customer', '[common]'):
+				$table = new we_html_table(array("width" => 300, "height" => 50, "cellpadding" => 10, "cellspacing" => 0, "border" => 0), 1, 2);
+				$r = 0;
+				$c = 0;
+				$table->setRow(0, array("valign" => "top"));
+				foreach($common as $pk => $pv){
+					if($this->View->customer->isInfoDate($pk)){
+						$pv = ($pv == '' || !is_numeric($pv)) ? 0 : $pv;
+						$table->setCol($c / 2, $c % 2, array("class" => "defaultfont"), we_html_tools::htmlFormElementTable(($pv != "0" ? we_html_element::htmlDiv(array("class" => "defaultgray"), date(g_l('weEditorInfo', "[date_format]"), $pv)) : "-" . we_html_tools::getPixel(100, 5)), $this->View->settings->getPropertyTitle($pk)));
+					} else{
+						switch($pk){
+							case 'ID':
+								$table->setCol($c / 2, $c % 2, array("class" => "defaultfont"), we_html_tools::htmlFormElementTable(($pv != 0 ? we_html_element::htmlDiv(array("class" => "defaultgray"), $pv) : "-" . we_html_tools::getPixel(100, 5)), $this->View->settings->getPropertyTitle($pk)));
+								++$c;
+								$table->setCol($c / 2, $c % 2, array("class" => "defaultfont"), "");
+								break;
+							case 'LoginDenied':
+								$table->setCol($c / 2, $c % 2, array("class" => "defaultfont"), we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(array("class" => "defaultgray"), we_forms::checkbox(1, $pv, "LoginDenied", g_l('modules_customer', '[login_denied]'), false, "defaultfont", "top.content.setHot();")), $this->View->settings->getPropertyTitle($pk)));
+								break;
+							case 'AutoLoginDenied':
+								$table->setCol($c / 2, $c % 2, array("class" => "defaultfont"), we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(array("class" => "defaultgray"), we_forms::checkbox(1, $pv, "AutoLoginDenied", g_l('modules_customer', '[login_denied]'), false, "defaultfont", "top.content.setHot();")), $this->View->settings->getPropertyTitle($pk)));
+								break;
+							case 'AutoLogin':
+								$table->setCol($c / 2, $c % 2, array("class" => "defaultfont"), we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(array("class" => "defaultgray"), we_forms::checkbox(1, $pv, "AutoLogin", g_l('modules_customer', '[autologin_request]'), false, "defaultfont", "top.content.setHot();")), $this->View->settings->getPropertyTitle($pk)));
+								break;
+							case 'Password':
+								$table->setCol($c / 2, $c % 2, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($pk, 32, (we_hasPerm('CUSTOMER_PASSWORD_VISIBLE') ? $pv : weCustomer::NOPWD_CHANGE), "", "onchange=\"top.content.setHot();\" ", (we_hasPerm('CUSTOMER_PASSWORD_VISIBLE') ? 'text' : 'password'), "240px"), $this->View->settings->getPropertyTitle($pk)));
+								break;
+							case 'Username':
+								$inputattribs = ' id="yuiAcInputPathName" onblur="parent.edheader.setPathName(this.value); parent.edheader.setTitlePath()"';
+								$table->setCol($c / 2, $c % 2, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($pk, 32, $pv, "", "onchange=\"top.content.setHot();\" " . $inputattribs, "text", "240px"), $this->View->settings->getPropertyTitle($pk)));
+								break;
+							case 'failedLogins':
+								$tmp=sprintf(g_l('modules_customer', '[failedLogins]'), SECURITY_LIMIT_CUSTOMER_NAME);
+								$table->setCol($c / 2, $c % 2, array("class" => "defaultfont"), we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(array("class" => "defaultgray"), $pv), $tmp));
+								break;
+							case 'resetFailed':
+//FIXME: add button to reset failed logins
+								$table->setCol($c/2, $c%2, array("class" => "defaultfont"), we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(array("class" => "defaultgray"), 'RESET BUTTON'), $pk));
+								break;
+							default:
+								$inputattribs = '';
+								$table->setCol($c / 2, $c % 2, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($pk, 32, $pv, "", "onchange=\"top.content.setHot();\" " . $inputattribs, "text", "240px"), $this->View->settings->getPropertyTitle($pk)));
+						}
 					}
-				}
-				++$c;
-				if($c > 1){
-					++$r;
-					$table->addRow();
-					$table->setRow($r, array("valign" => "top"));
-				}
-				if($c > 1)
-					$c = 0;
-			}
-
-			$parts[] = array(
-				"headline" => ($preselect == g_l('modules_customer', '[all]') ? g_l('modules_customer', '[common]') : g_l('modules_customer', '[data]')),
-				"html" => $table->getHtml(),
-				"space" => 120
-			);
-		}
-		if($preselect == g_l('modules_customer', '[orderTab]')){
-			$orderStr = we_shop_functions::getCustomersOrderList($this->View->customer->ID, false);
-
-			$parts[] = array(
-				"html" => $orderStr,
-				"space" => 0
-			);
-		}
-		if($preselect == g_l('modules_customer', '[objectTab]')){
-
-			$DB_WE = new DB_WE();
-			$DB_WE->query('SELECT ID,Path,Text,ModDate,Published FROM ' . OBJECT_FILES_TABLE . ' WHERE ' . OBJECT_FILES_TABLE . '.WebUserID = ' . $this->View->customer->ID . ' ORDER BY ' . OBJECT_FILES_TABLE . '.Path');
-			$objectStr = '';
-			if($DB_WE->num_rows()){
-				$objectStr.='<table class="defaultfont" width="600">' .
-					'<tr><td>&nbsp;</td> <td><b>' . g_l('modules_customer', '[ID]') . '</b></td><td><b>' . g_l('modules_customer', '[filename]') . '</b></td><td><b>' . g_l('modules_customer', '[Aenderungsdatum]') . '</b></td>';
-				while($DB_WE->next_record()) {
-					$objectStr.='<tr>' .
-						'<td>' . we_button::create_button('image:btn_edit_edit', "javascript: if(top.opener.top.doClickDirect){top.opener.top.doClickDirect(" . $DB_WE->f('ID') . ",'" . $DB_WE->f('ContentType') . "','tblObjectFiles'); }") . '</td>' .
-						'<td>' . $DB_WE->f('ID') . '</td>' .
-						'<td title="' . $DB_WE->f('Path') . '">' . $DB_WE->f('Text') . '</td>' .
-						'<td class="' .
-						($DB_WE->f('Published') ? ($DB_WE->f('ModDate') > $DB_WE->f('Published') ? 'changeddefaultfont' : 'defaultfont') : 'npdefaultfont')
-						. '">' . date('d.m.Y H:i', $DB_WE->f('ModDate')) . '</td>' .
-						'</tr>';
-				}
-				$objectStr.='</table>';
-			} else{
-				$objectStr = g_l('modules_customer', '[NoObjects]');
-			}
-			//$objectStr = getCustomersObjectList($this->View->customer->ID, false);
-
-			$parts[] = array(
-				"html" => $objectStr,
-				"space" => 0
-			);
-		}
-		if($preselect == g_l('modules_customer', '[documentTab]')){
-			$query = 'SELECT ID,Path,Text,Published,ModDate FROM ' . FILE_TABLE . ' WHERE ' . FILE_TABLE . '.WebUserID = ' . $this->View->customer->ID . ' ORDER BY ' . FILE_TABLE . '.Path';
-			$DB_WE = new DB_WE();
-			$DB_WE->query($query);
-			$documentStr = '';
-			if($DB_WE->num_rows()){
-				$documentStr.='<table class="defaultfont" width="600">' .
-					'<tr><td>&nbsp;</td> <td><b>' . g_l('modules_customer', '[ID]') . '</b></td><td><b>' . g_l('modules_customer', '[Filename]') . '</b></td><td><b>' . g_l('modules_customer', '[Aenderungsdatum]') . '</b></td><td><b>' . g_l('modules_customer', '[Titel]') . '</b></td>' .
-					'</tr>';
-				$db_we2 = new DB_WE();
-				while($DB_WE->next_record()) {
-					$titel = f('SELECT ' . CONTENT_TABLE . '.Dat AS Inhalt FROM ' . FILE_TABLE . ', ' . LINK_TABLE . ',' . CONTENT_TABLE . ' WHERE ' . FILE_TABLE . '.ID=' . LINK_TABLE . '.DID AND ' . LINK_TABLE . '.CID=' . CONTENT_TABLE . '.ID AND ' . LINK_TABLE . ".Name='Title' AND " .
-						LINK_TABLE . ".DocumentTable='" . FILE_TABLE . "' AND " . FILE_TABLE . '.ID=' . $DB_WE->f('ID'), 'Inhalt', $db_we2);
-
-					$beschreibung = f('SELECT ' . CONTENT_TABLE . '.Dat AS Inhalt FROM ' . FILE_TABLE . ', ' . LINK_TABLE . ',' . CONTENT_TABLE . ' WHERE ' . FILE_TABLE . '.ID=' . LINK_TABLE . '.DID AND ' . LINK_TABLE . '.CID=' . CONTENT_TABLE . '.ID AND ' . LINK_TABLE . ".Name='Description' AND " .
-						LINK_TABLE . ".DocumentTable='" . FILE_TABLE . "' AND " . FILE_TABLE . '.ID=' . $DB_WE->f('ID'), 'Inhalt', $db_we2);
-
-					$documentStr.='<tr>' .
-						'<td>' . we_button::create_button('image:btn_edit_edit', "javascript: if(top.opener.top.doClickDirect){top.opener.top.doClickDirect(" . $DB_WE->f('ID') . ",'" . $DB_WE->f('ContentType') . "','tblFile'); }") . '</td>' .
-						'<td>' . $DB_WE->f('ID') . '</td>' .
-						'<td title="' . $DB_WE->f('Path') . '">' . $DB_WE->f('Text') . '</td>' .
-						'<td class="' .
-						($DB_WE->f('Published') ? ($DB_WE->f('ModDate') > $DB_WE->f('Published') ? 'changeddefaultfont' : 'defaultfont') : 'npdefaultfont')
-						. '">' . date('d.m.Y H:i', $DB_WE->f('ModDate')) . '</td>' .
-						'<td title="' . $beschreibung . '">' . $titel . '</td>' .
-						'</tr>';
-				}
-				$documentStr.='</table>';
-			} else{
-				$documentStr = g_l('modules_customer', '[NoDocuments]');
-			}
-			//$documentStr = getCustomersDocumentList($this->View->customer->ID, false);
-
-			$parts[] = array(
-				"html" => $documentStr,
-				"space" => 0
-			);
-		}
-		if($preselect == g_l('modules_customer', '[other]') || $preselect == g_l('modules_customer', '[all]')){
-
-			$table = new we_html_table(array("width" => 500, "height" => 50, "cellpadding" => 10, "cellspacing" => 0, "border" => 0), 1, 2);
-			$r = 0;
-			$c = 0;
-			$table->setRow(0, array("valign" => "top"));
-			foreach($other as $k => $v){
-				$control = $this->getHTMLFieldControl($k, $v);
-				if($control != ""){
-					$table->setCol($r, $c, array(), we_html_tools::htmlFormElementTable($control, $k));
-					$c++;
-					if($c > 1){
-						++$r;
+					if(++$c % 2 == 0){
 						$table->addRow();
-						$table->setRow($r, array("valign" => "top"));
+						$table->setRow($c / 2, array("valign" => "top"));
 					}
-					if($c > 1)
-						$c = 0;
 				}
-			}
-			$parts[] = array(
-				"headline" => ($preselect == g_l('modules_customer', '[all]') ? g_l('modules_customer', '[other]') : g_l('modules_customer', '[data]')),
-				"html" => $table->getHtml(),
-				"space" => 120
-			);
+				$parts[] = array(
+					"headline" => ($preselect == g_l('modules_customer', '[all]') ? g_l('modules_customer', '[common]') : g_l('modules_customer', '[data]')),
+					"html" => $table->getHtml(),
+					"space" => 120
+				);
+				if($preselect != g_l('modules_customer', '[all]')){
+					break;
+				}
+			case g_l('modules_customer', '[other]'):
+
+				$table = new we_html_table(array("width" => 500, "height" => 50, "cellpadding" => 10, "cellspacing" => 0, "border" => 0), 1, 2);
+				$r = 0;
+				$c = 0;
+				$table->setRow(0, array("valign" => "top"));
+				foreach($other as $k => $v){
+					$control = $this->getHTMLFieldControl($k, $v);
+					if($control != ""){
+						$table->setCol($r, $c, array(), we_html_tools::htmlFormElementTable($control, $k));
+						$c++;
+						if($c > 1){
+							++$r;
+							$table->addRow();
+							$table->setRow($r, array("valign" => "top"));
+						}
+						if($c > 1)
+							$c = 0;
+					}
+				}
+				$parts[] = array(
+					"headline" => ($preselect == g_l('modules_customer', '[all]') ? g_l('modules_customer', '[other]') : g_l('modules_customer', '[data]')),
+					"html" => $table->getHtml(),
+					"space" => 120
+				);
+				break;
+			case g_l('modules_customer', '[orderTab]'):
+				$orderStr = we_shop_functions::getCustomersOrderList($this->View->customer->ID, false);
+
+				$parts[] = array(
+					"html" => $orderStr,
+					"space" => 0
+				);
+				break;
+
+			case g_l('modules_customer', '[objectTab]'):
+				$DB_WE = new DB_WE();
+				$DB_WE->query('SELECT ID,Path,Text,ModDate,Published FROM ' . OBJECT_FILES_TABLE . ' WHERE ' . OBJECT_FILES_TABLE . '.WebUserID = ' . $this->View->customer->ID . ' ORDER BY ' . OBJECT_FILES_TABLE . '.Path');
+				$objectStr = '';
+				if($DB_WE->num_rows()){
+					$objectStr.='<table class="defaultfont" width="600">' .
+						'<tr><td>&nbsp;</td> <td><b>' . g_l('modules_customer', '[ID]') . '</b></td><td><b>' . g_l('modules_customer', '[filename]') . '</b></td><td><b>' . g_l('modules_customer', '[Aenderungsdatum]') . '</b></td>';
+					while($DB_WE->next_record()) {
+						$objectStr.='<tr>' .
+							'<td>' . we_button::create_button('image:btn_edit_edit', "javascript: if(top.opener.top.doClickDirect){top.opener.top.doClickDirect(" . $DB_WE->f('ID') . ",'" . $DB_WE->f('ContentType') . "','tblObjectFiles'); }") . '</td>' .
+							'<td>' . $DB_WE->f('ID') . '</td>' .
+							'<td title="' . $DB_WE->f('Path') . '">' . $DB_WE->f('Text') . '</td>' .
+							'<td class="' .
+							($DB_WE->f('Published') ? ($DB_WE->f('ModDate') > $DB_WE->f('Published') ? 'changeddefaultfont' : 'defaultfont') : 'npdefaultfont')
+							. '">' . date('d.m.Y H:i', $DB_WE->f('ModDate')) . '</td>' .
+							'</tr>';
+					}
+					$objectStr.='</table>';
+				} else{
+					$objectStr = g_l('modules_customer', '[NoObjects]');
+				}
+				//$objectStr = getCustomersObjectList($this->View->customer->ID, false);
+
+				$parts[] = array(
+					"html" => $objectStr,
+					"space" => 0
+				);
+				break;
+			case g_l('modules_customer', '[documentTab]'):
+				$DB_WE = new DB_WE();
+				$DB_WE->query('SELECT ID,Path,Text,Published,ModDate FROM ' . FILE_TABLE . ' WHERE ' . FILE_TABLE . '.WebUserID = ' . $this->View->customer->ID . ' ORDER BY ' . FILE_TABLE . '.Path');
+				$documentStr = '';
+				if($DB_WE->num_rows()){
+					$documentStr.='<table class="defaultfont" width="600">' .
+						'<tr><td>&nbsp;</td> <td><b>' . g_l('modules_customer', '[ID]') . '</b></td><td><b>' . g_l('modules_customer', '[Filename]') . '</b></td><td><b>' . g_l('modules_customer', '[Aenderungsdatum]') . '</b></td><td><b>' . g_l('modules_customer', '[Titel]') . '</b></td>' .
+						'</tr>';
+					$db_we2 = new DB_WE();
+					while($DB_WE->next_record()) {
+						$titel = f('SELECT ' . CONTENT_TABLE . '.Dat AS Inhalt FROM ' . FILE_TABLE . ', ' . LINK_TABLE . ',' . CONTENT_TABLE . ' WHERE ' . FILE_TABLE . '.ID=' . LINK_TABLE . '.DID AND ' . LINK_TABLE . '.CID=' . CONTENT_TABLE . '.ID AND ' . LINK_TABLE . ".Name='Title' AND " .
+							LINK_TABLE . ".DocumentTable='" . FILE_TABLE . "' AND " . FILE_TABLE . '.ID=' . $DB_WE->f('ID'), 'Inhalt', $db_we2);
+
+						$beschreibung = f('SELECT ' . CONTENT_TABLE . '.Dat AS Inhalt FROM ' . FILE_TABLE . ', ' . LINK_TABLE . ',' . CONTENT_TABLE . ' WHERE ' . FILE_TABLE . '.ID=' . LINK_TABLE . '.DID AND ' . LINK_TABLE . '.CID=' . CONTENT_TABLE . '.ID AND ' . LINK_TABLE . ".Name='Description' AND " .
+							LINK_TABLE . ".DocumentTable='" . FILE_TABLE . "' AND " . FILE_TABLE . '.ID=' . $DB_WE->f('ID'), 'Inhalt', $db_we2);
+
+						$documentStr.='<tr>' .
+							'<td>' . we_button::create_button('image:btn_edit_edit', "javascript: if(top.opener.top.doClickDirect){top.opener.top.doClickDirect(" . $DB_WE->f('ID') . ",'" . $DB_WE->f('ContentType') . "','tblFile'); }") . '</td>' .
+							'<td>' . $DB_WE->f('ID') . '</td>' .
+							'<td title="' . $DB_WE->f('Path') . '">' . $DB_WE->f('Text') . '</td>' .
+							'<td class="' .
+							($DB_WE->f('Published') ? ($DB_WE->f('ModDate') > $DB_WE->f('Published') ? 'changeddefaultfont' : 'defaultfont') : 'npdefaultfont')
+							. '">' . date('d.m.Y H:i', $DB_WE->f('ModDate')) . '</td>' .
+							'<td title="' . $beschreibung . '">' . $titel . '</td>' .
+							'</tr>';
+					}
+					$documentStr.='</table>';
+				} else{
+					$documentStr = g_l('modules_customer', '[NoDocuments]');
+				}
+				//$documentStr = getCustomersDocumentList($this->View->customer->ID, false);
+
+				$parts[] = array(
+					"html" => $documentStr,
+					"space" => 0
+				);
 		}
 
 		foreach($branches as $bk => $branch){
@@ -954,7 +959,7 @@ class weCustomerFrames extends weModuleFrames{
 		$default_sort_view_select->selectOption($this->View->settings->getSettings('default_sort_view'));
 
 		$table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 5, 3);
-		$cur=0;
+		$cur = 0;
 		$table->setCol($cur, 0, array("class" => "defaultfont"), g_l('modules_customer', '[default_sort_view]') . ":&nbsp;");
 		$table->setCol($cur, 1, array(), we_html_tools::getPixel(5, 30));
 		$table->setCol($cur, 2, array("class" => "defaultfont"), $default_sort_view_select->getHtml());

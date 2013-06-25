@@ -177,7 +177,7 @@ abstract class we_class{
 		}
 		$formname = 'we_' . $this->Name . '_' . $type . '[' . $name . ']';
 		$out = $this->htmlHidden($formname, $this->getElement($name)) . '<table cellpadding="0" cellspacing="0" border="1"><tr><td' . ($value ? (' bgcolor="' . $value . '"') : '') . '><a href="javascript:setScrollTo();we_cmd(\'openColorChooser\',\'' . $formname . '\',document.we_form.elements[\'' . $formname . '\'].value);">' . we_html_tools::getPixel($width, $height) . '</a></td></tr></table>';
-		return g_l('weClass', '[' . $name . ']') !== false ? $this->htmlFormElementTable($out, g_l('weClass', '[' . $name . ']')) : $out;
+		return g_l('weClass', '[' . $name . ']',true) !== false ? $this->htmlFormElementTable($out, g_l('weClass', '[' . $name . ']')) : $out;
 	}
 
 	/* creates a select field for entering Data that will be stored at the $elements Array */

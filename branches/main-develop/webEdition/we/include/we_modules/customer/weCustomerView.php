@@ -983,16 +983,26 @@ class weCustomerView{
 		if(is_array($this->customer->persistent_slots)){
 			foreach($this->customer->persistent_slots as $key => $val){
 				$varname = $val;
-				if($varname == 'LoginDenied'){
-					if(isset($_REQUEST[$varname])){
-						$this->customer->{$val} = '1';
-					} elseif(isset($_REQUEST['Username'])){
-						$this->customer->{$val} = '0';
-					}
-				} elseif($varname == 'Password' && isset($_REQUEST[$varname]) && $_REQUEST[$varname] == weCustomer::NOPWD_CHANGE){
-					//keep old pwd
-				} elseif(isset($_REQUEST[$varname])){
-					$this->customer->{$val} = $_REQUEST[$varname];
+				switch($varname){
+					case 'LoginDenied':
+					case 'AutoLoginDenied':
+					case 'AutoLogin':
+
+						if(isset($_REQUEST[$varname])){
+							$this->customer->{$val} = 1;
+						} elseif(isset($_REQUEST['Username'])){
+							$this->customer->{$val} = 0;
+						}
+						break;
+					case 'Password':
+						if(isset($_REQUEST[$varname]) && $_REQUEST[$varname] == weCustomer::NOPWD_CHANGE){
+							//keep old pwd
+							break;
+						}
+					default:
+						if(isset($_REQUEST[$varname])){
+							$this->customer->{$val} = $_REQUEST[$varname];
+						}
 				}
 			}
 		}
