@@ -347,6 +347,8 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 						unset($GLOBALS['we_link_not_published']);
 					}
 					break;
+				default:
+					break;
 			}
 
 			$img_path = $this->Path;
@@ -446,7 +448,7 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 			}
 
 			if(($this->getElement('alt') == '')){ //  always use alt-Text -> can be empty
-				$attribs['alt'] = '';
+				$attribs['alt'] = ' ';
 			}
 
 			while((list($k, $v) = $this->nextElement('attrib'))) {
@@ -468,7 +470,11 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 			}
 
 			if((isset($href) && $href) && (isset($inc_href) && $inc_href)){ //  use link with rollover
-				$_aAtts['href'] = $href;
+				$_aAtts=array(
+					'href' => $href,
+					'title'=>$attribs['title'],
+					);
+
 				if($target){
 					$_aAtts['target'] = $target;
 				}
