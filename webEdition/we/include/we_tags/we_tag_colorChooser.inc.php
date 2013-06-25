@@ -23,20 +23,22 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_colorChooser($attribs){
-	$foo = attributFehltError($attribs, "name", __FUNCTION__);
-	if($foo)
+	if(($foo = attributFehltError($attribs, "name", __FUNCTION__))){
 		return $foo;
+	}
 
+	$name = weTag_getAttribute('name', $attribs);
+	
 	if(!$GLOBALS['we_doc']->getElement($attribs["name"])){
 		if(isset($attribs["value"]) && $attribs["value"])
 			$GLOBALS['we_doc']->setElement($attribs["name"], $attribs["value"]);
 	}
 
 	if($GLOBALS['we_editmode']){
-		$width = (isset($attribs["width"]) && $attribs["width"]) ? $attribs["width"] : 100;
-		$height = (isset($attribs["height"]) && $attribs["height"]) ? $attribs["height"] : 18;
-		return $GLOBALS['we_doc']->formColor($width, $attribs["name"], 25, "txt", $height);
+		$width = weTag_getAttribute('width', $attribs, 100);
+		$height = weTag_getAttribute('height', $attribs, 18);
+		return $GLOBALS['we_doc']->formColor($width, $name, 25, "txt", $height);
 	} else{
-		return $GLOBALS['we_doc']->getElement($attribs["name"]);
+		return $GLOBALS['we_doc']->getElement($name);
 	}
 }
