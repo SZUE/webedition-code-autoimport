@@ -74,7 +74,7 @@ class weUsersView extends weModuleView {
 				break;
 			}
 		}
-		
+
 		$jsCode = '
 		var loaded=0;
 		var hot=0;
@@ -89,7 +89,7 @@ class weUsersView extends weModuleView {
 		if(isset($_SESSION['user_session_data'])){
 			unset($_SESSION['user_session_data']);
 		}
-		
+
 		$jsCode .= '
 		function doUnload(){
 			if(!!jsWindow_count){
@@ -98,7 +98,7 @@ class weUsersView extends weModuleView {
 				}
 			}
 		}
-		
+
 		function we_cmd() {
 			var args = "";
 			var url = "' . WEBEDITION_DIR . 'we_cmd.php?";
@@ -369,7 +369,7 @@ function we_cmd() {
 		return weSuggest::getYuiFiles() .
 			we_html_element::jsScript(JS_DIR . 'images.js') .
 			we_html_element::jsScript(JS_DIR . 'windows.js') .
-			we_html_element::jsScript(JS_DIR . 'md5.js') . 
+			we_html_element::jsScript(JS_DIR . 'md5.js') .
 			we_html_element::jsElement('
 var loaded = 0;
 function we_submitForm(target, url) {
@@ -625,7 +625,7 @@ function submitForm() {
 		top.content.usetHot();
 		' . $setgroup . '
 		top.content.right.editor.edheader.location="' . $this->frameset . '?pnt=edheader";
-		top.content.right.editor.properties.location="' . $this->frameset . '?pnt=edbody&?oldtab=0";
+		top.content.right.editor.properties.location="' . $this->frameset . '?pnt=edbody&oldtab=0";
 		top.content.right.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";');
 					}
 					break;

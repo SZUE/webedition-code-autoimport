@@ -785,16 +785,16 @@ abstract class we_html_tools{
 	static function htmlAlertAttentionBox($text, $type = self::TYPE_NONE, $width = 0, $useHtmlSpecialChars = true, $clip = 0){
 		switch($type){
 			case self::TYPE_ALERT:
-				$icon = "alert";
+				$icon = 'alert';
 				break;
 			case self::TYPE_INFO:
-				$icon = "info";
+				$icon = 'info';
 				break;
 			case self::TYPE_QUESTION:
-				$icon = "question";
+				$icon = 'question';
 				break;
 			default :
-				$icon = "";
+				$icon = '';
 		}
 
 		$text = ($useHtmlSpecialChars) ? oldHtmlspecialchars($text, ENT_COMPAT, 'ISO-8859-1', false) : $text;

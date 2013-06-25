@@ -43,7 +43,7 @@ abstract class we_forms{
 	 *
 	 * @return     string
 	 */
-	static function checkbox($value, $checked, $name, $text, $uniqid = false, $class = 'defaultfont', $onClick = '', $disabled = false, $description = '', $type = 0, $width = 0, $html = '', $style = ''){
+	static function checkbox($value, $checked, $name, $text, $uniqid = false, $class = 'defaultfont', $onClick = '', $disabled = false, $description = '', $type = we_html_tools::TYPE_NONE, $width = 0, $html = '', $style = ''){
 		// Check if we have to create a uniqe id
 		$_id = ($uniqid ? $name . '_' . md5(uniqid(__FUNCTION__, true)) : $name);
 
@@ -70,7 +70,7 @@ abstract class we_forms{
 	 *
 	 * @return     string
 	 */
-	static function checkboxWithHidden($checked, $name, $text, $uniqid = false, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0){
+	static function checkboxWithHidden($checked, $name, $text, $uniqid = false, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = we_html_tools::TYPE_NONE, $width = 0){
 		$onClick = "this.form.elements['$name'].value=this.checked ? 1 : 0;" . $onClick;
 		return '<input type="hidden" name="' . $name . '" value="' . ($checked ? 1 : 0) . '" />' . self::checkbox(1, $checked, '_' . $name, $text, $uniqid, $class, $onClick, $disabled, $description, $type, $width);
 	}
@@ -87,7 +87,7 @@ abstract class we_forms{
 	 *
 	 * @return     string
 	 */
-	static function radiobutton($value, $checked, $name, $text, $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0, $onMouseUp = "", $extra_content = ""){
+	static function radiobutton($value, $checked, $name, $text, $uniqid = true, $class = "defaultfont", $onClick = '', $disabled = false, $description = '', $type = we_html_tools::TYPE_NONE, $width = 0, $onMouseUp = '', $extra_content = ''){
 		// Check if we have to create a uniqe id
 		$_id = $name . ($uniqid ? '_' . md5(uniqid(__FUNCTION__, true)) : '');
 
@@ -95,11 +95,9 @@ abstract class we_forms{
 		return '
 			<table cellpadding="0" border="0" cellspacing="0">
 				<tr>
-					<td class="weEditmodeStyle"' . ($description ? ' valign="top"' : '') . '>
-						<input type="radio" name="' . $name . '" id="' . $_id . '" value="' . $value . '" style="cursor: pointer;outline: 0px;" ' . ($checked ? " checked=\"checked\"" : "") . ($onMouseUp ? " onmouseup=\"$onMouseUp\"" : "") . ($onClick ? " onclick=\"$onClick\"" : "") . ($disabled ? " disabled=\"disabled\"" : "") . ' /></td>
-					<td class="weEditmodeStyle">
-						' . we_html_tools::getPixel(4, 2) . '</td>
-					<td class="weEditmodeStyle ' . $class . '" nowrap="nowrap"><label id="label_' . $_id . '" for="' . $_id . '" style="' . ($disabled ? 'color: grey; ' : 'cursor: pointer;') . 'outline: 0px;" ' . ($onMouseUp ? " onmouseup=\"" . str_replace("this.", "document.getElementById('" . $_id . "').", $onMouseUp) . "\"" : "") . '>' . $text . '</label>' . ($description ? "<br>" . we_html_tools::getPixel(1, 3) . "<br>" . we_html_tools::htmlAlertAttentionBox($description, $type, $width) : "") .
+					<td class="weEditmodeStyle"' . ($description ? ' valign="top"' : '') . '><input type="radio" name="' . $name . '" id="' . $_id . '" value="' . $value . '" style="cursor: pointer;outline: 0px;" ' . ($checked ? " checked=\"checked\"" : "") . ($onMouseUp ? " onmouseup=\"$onMouseUp\"" : "") . ($onClick ? " onclick=\"$onClick\"" : "") . ($disabled ? ' disabled="disabled"' : "") . ' /></td>
+					<td class="weEditmodeStyle">' . we_html_tools::getPixel(4, 2) . '</td>
+					<td class="weEditmodeStyle ' . $class . '" nowrap="nowrap"><label id="label_' . $_id . '" for="' . $_id . '" style="' . ($disabled ? 'color: grey; ' : 'cursor: pointer;') . 'outline: 0px;" ' . ($onMouseUp ? " onmouseup=\"" . str_replace("this.", "document.getElementById('" . $_id . "').", $onMouseUp) . "\"" : "") . '>' . $text . '</label>' . ($description ? we_html_element::htmlBr() . we_html_tools::getPixel(1, 3) . we_html_element::htmlBr() . we_html_tools::htmlAlertAttentionBox($description, $type, $width) : "") .
 			($extra_content ? (we_html_element::htmlBr() . we_html_tools::getPixel(1, 3) . we_html_element::htmlBr() . $extra_content) : "") . '</td>
 				</tr>
 			</table>';
@@ -230,7 +228,7 @@ abstract class we_forms{
 				// Bugfix => Workarround Bug # 7445
 
 				if(stripos($name, "we_ui") !== false){// we are in frontend, where default is inlineedit = true. FIXME: look for simple flag
-					$value = str_replace(array("##|r##", "##|n##"), array("\r", "\n"),$value);
+					$value = str_replace(array("##|r##", "##|n##"), array("\r", "\n"), $value);
 					$out .= we_html_element::htmlHidden($attribs = array("name" => $name, "id" => $name, "value" => "testval"));
 				} else{
 					$value = str_replace(array("##|r##", "##|n##"), array("\r", "\n"), (
@@ -248,7 +246,7 @@ abstract class we_forms{
 					$fieldName = preg_replace('/^.+\[(.+)\]$/', '\1', $name);
 				};
 
-				$out .= ($fieldName ? we_html_element::jsElement('tiny_instances["' . $fieldName . '"] = "' . $name . '";') : '') . 
+				$out .= ($fieldName ? we_html_element::jsElement('tiny_instances["' . $fieldName . '"] = "' . $name . '";') : '') .
 					($buttonTop ? '<div class="tbButtonWysiwygBorder" style="width:25px;border-bottom:0px;background-image: url(' . IMAGE_DIR . 'backgrounds/aquaBackground.gif);">' . $e->getHTML($value) . '</div>' : '') . '<div class="tbButtonWysiwygBorder ' . (empty($class) ? "" : $class . " ") . 'wetextarea tiny-wetextarea wetextarea-' . $origName . '" id="div_wysiwyg_' . $name . '" style="height:auto; width:auto">' . $value . '</div>' . ($buttonBottom ? '<div class="tbButtonWysiwygBorder" style="width:25px;border-top:0px;background-image: url(' . IMAGE_DIR . 'backgrounds/aquaBackground.gif);">' . $e->getHTML() . '</div>' : '');
 			}
 		} else{
