@@ -480,8 +480,8 @@ class weCustomerFrames extends weModuleFrames{
 								$table->setCol($c / 2, $c % 2, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($pk, 32, $pv, "", "onchange=\"top.content.setHot();\" " . $inputattribs, "text", "240px"), $this->View->settings->getPropertyTitle($pk)));
 								break;
 							case 'failedLogins':
-								$tmp=sprintf(g_l('modules_customer', '[failedLogins]'), SECURITY_LIMIT_CUSTOMER_NAME);
-								$table->setCol($c / 2, $c % 2, array("class" => "defaultfont"), we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(array("class" => "defaultgray"), $pv), $tmp));
+								$tmp=sprintf(g_l('modules_customer', '[failedLogins]'),SECURITY_LIMIT_CUSTOMER_NAME_HOURS);
+								$table->setCol($c / 2, $c % 2, array("class" => "defaultfont"), we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(array("class" => "defaultgray"), $pv.' / '.SECURITY_LIMIT_CUSTOMER_NAME), $tmp));
 								break;
 							case 'resetFailed':
 //FIXME: add button to reset failed logins
