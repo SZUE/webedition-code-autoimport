@@ -1406,11 +1406,11 @@ class we_object extends we_document{
 		$content = '<table border="0" cellpadding="0" cellspacing="0" width="388">' .
 			'<tr><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(324, 2) . '</td><td>' . we_html_tools::getPixel(26, 2) . '</td></tr>' . "\n";
 		if(empty($users)){
-			$content .= '<tr><td><img src="' . ICON_DIR . 'usergroup.gif" width="16" height="18" /></td><td class="defaultfont">' . g_l('weClass', "[everybody]") . '</td><td>' . we_html_tools::getPixel(26, 18) . '</td></tr>' . "\n";
+			$content .= '<tr><td><img src="' . ICON_DIR . 'usergroup.gif" width="16" height="18" /></td><td class="defaultfont">' . g_l('weClass', "[everybody]") . '</td><td>' . we_html_tools::getPixel(26, 18) . '</td></tr>';
 		} else{
 			for($i = 1; $i < (count($users) - 1); $i++){
-				$foo = getHash('SELECT ID,Path,Icon FROM ' . USER_TABLE . ' WHERE ID=' . intval($users[$i]), $this->DB_WE);
-				$content .= '<tr><td><img src="' . ICON_DIR . $foo["Icon"] . '" width="16" height="18" /></td><td class="defaultfont">' . $foo["Path"] . '</td><td>' . we_button::create_button("image:btn_function_trash", "javascript:we_cmd('del_user_from_field','" . $GLOBALS['we_transaction'] . "','" . $nr . "'," . $users[$i] . ",'" . $name . "');") . '</td></tr>' . "\n";
+				$foo = getHash('SELECT Path,Icon FROM ' . USER_TABLE . ' WHERE ID=' . intval($users[$i]), $this->DB_WE);
+				$content .= '<tr><td>'.(empty($foo)?'':'<img src="' . ICON_DIR . $foo["Icon"] . '" width="16" height="18" />').'</td><td class="defaultfont">' . (empty($foo)?'Unknown':$foo["Path"]) . '</td><td>' . we_button::create_button("image:btn_function_trash", "javascript:we_cmd('del_user_from_field','" . $GLOBALS['we_transaction'] . "','" . $nr . "'," . $users[$i] . ",'" . $name . "');") . '</td></tr>';
 			}
 		}
 		$content .= '<tr><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(324, 2) . '</td><td>' . we_html_tools::getPixel(26, 2) . '</td></tr></table>' . "\n";
@@ -1435,8 +1435,8 @@ class we_object extends we_document{
 			$content .= '<tr><td><img src="' . ICON_DIR . "user.gif" . '" width="16" height="18" /></td><td class="defaultfont">' . g_l('weClass', "[onlyOwner]") . '</td><td></td></tr>' . "\n";
 		} else{
 			for($i = 0; $i < count($users); $i++){
-				$foo = getHash('SELECT ID,Path,Icon FROM ' . USER_TABLE . ' WHERE ID=' . intval($users[$i]), $this->DB_WE);
-				$content .= '<tr><td><img src="' . ICON_DIR . $foo["Icon"] . '" width="16" height="18" /></td><td class="defaultfont">' . $foo["Path"] . '</td><td>' .
+				$foo = getHash('SELECT Path,Icon FROM ' . USER_TABLE . ' WHERE ID=' . intval($users[$i]), $this->DB_WE);
+				$content .= '<tr><td>'.(empty($foo)?'':'<img src="' . ICON_DIR . $foo["Icon"] . '" width="16" height="18" />').'</td><td class="defaultfont">' . (empty($foo)?'Unknown':$foo["Path"]) . '</td><td>' .
 					($canChange ?
 						$this->htmlHidden('we_users_read_only[' . $users[$i] . ']', (isset($usersReadOnly[$users[$i]]) && $usersReadOnly[$users[$i]]) ? $usersReadOnly[$users[$i]] : "" ) . '<input type="checkbox" value="1" name="wetmp_users_read_only[' . $users[$i] . ']"' . ( (isset($usersReadOnly[$users[$i]]) && $usersReadOnly[$users[$i]] ) ? ' checked' : '') . ' OnClick="this.form.elements[\'we_users_read_only[' . $users[$i] . ']\'].value=(this.checked ? 1 : 0);_EditorFrame.setEditorIsHot(true);" />' :
 						'<img src="' . TREE_IMAGE_DIR . ($usersReadOnly[$users[$i]] ? 'check1_disabled.gif' : 'check0_disabled.gif') . '" />') . '</td><td class="defaultfont">' . g_l('weClass', "[readOnly]") . '</td><td>' . ($canChange ? we_button::create_button("image:btn_function_trash", "javascript:we_cmd('del_user','" . $users[$i] . "');_EditorFrame.setEditorIsHot(true);") : "") . '</td></tr>' . "\n";
