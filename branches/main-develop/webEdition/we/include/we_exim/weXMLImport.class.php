@@ -561,7 +561,7 @@ class weXMLImport extends weXMLExIm{
 		$head = weFile::loadPart($filename, 0, 256, $compress == 'gzip');
 
 		$encoding = we_xml_parser::getEncoding('', $head);
-		$_SESSION['weXMLimportCharset'] = $encoding;
+		$_SESSION['weS']['weXMLimportCharset'] = $encoding;
 		$header = weXMLExIm::getHeader($encoding);
 		$footer = weXMLExIm::getFooter();
 

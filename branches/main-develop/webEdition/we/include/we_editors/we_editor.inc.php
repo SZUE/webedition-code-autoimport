@@ -119,7 +119,7 @@ switch($_REQUEST['we_cmd'][0]){
 		$we_doc->remove_image($_REQUEST['we_cmd'][1]);
 		break;
 	case 'wrap_on_off':
-		$_SESSION['we_wrapcheck'] = ($_REQUEST['we_cmd'][1] == 'true') ? 1 : 0;
+		$_SESSION['weS']['we_wrapcheck'] = ($_REQUEST['we_cmd'][1] == 'true') ? 1 : 0;
 		$we_doc->EditPageNr = WE_EDITPAGE_CONTENT;
 		$_SESSION['weS']['EditPageNr'] = WE_EDITPAGE_CONTENT;
 		break;

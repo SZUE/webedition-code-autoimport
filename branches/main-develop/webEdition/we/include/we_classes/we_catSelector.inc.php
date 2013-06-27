@@ -891,8 +891,8 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != ""){
 					"default" => array("Title" => "", "Description" => "")
 				);
 			}
-			$fields[$_SESSION["we_catVariant"]]["Title"] = $_REQUEST["catTitle"];
-			$fields[$_SESSION["we_catVariant"]]["Description"] = $_REQUEST["catDescription"];
+			$fields[$_SESSION['weS']["we_catVariant"]]["Title"] = $_REQUEST["catTitle"];
+			$fields[$_SESSION['weS']["we_catVariant"]]["Description"] = $_REQUEST["catDescription"];
 			$path = $result['Path'];
 			$parentid = ($_REQUEST["FolderID"] != "" ? $_REQUEST["FolderID"] : $result['ParentID']);
 			$category = (isset($_REQUEST['Category']) ? $_REQUEST['Category'] : $result['Category']);
@@ -935,8 +935,8 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != ""){
 
 		$path = '';
 		$title = '';
-		$variant = isset($_SESSION["we_catVariant"]) ? $_SESSION["we_catVariant"] : "default";
-		$_SESSION["we_catVariant"] = $variant;
+		$variant = isset($_SESSION['weS']["we_catVariant"]) ? $_SESSION['weS']["we_catVariant"] : "default";
+		$_SESSION['weS']["we_catVariant"] = $variant;
 		$description = "";
 		if($showPrefs){
 			$result = getHash('SELECT ID,Category,Catfields,Path,ParentID FROM ' . CATEGORY_TABLE . ' WHERE ID=' . intval($_REQUEST["catid"]), new DB_WE());
@@ -954,8 +954,8 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != ""){
 			$parentId = isset($result["ParentID"]) ? $result["ParentID"] : '0';
 			$category = isset($result["Category"]) ? $result["Category"] : '';
 			$catID = isset($result["ID"]) ? intval($result["ID"]) : 0;
-			$title = $fields[$_SESSION["we_catVariant"]]["Title"];
-			$description = $fields[$_SESSION["we_catVariant"]]["Description"];
+			$title = $fields[$_SESSION['weS']["we_catVariant"]]["Title"];
+			$description = $fields[$_SESSION['weS']["we_catVariant"]]["Description"];
 			unset($result);
 
 			$dir_hidden = we_html_tools::hidden('FolderID', $parentId);

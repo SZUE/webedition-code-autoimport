@@ -2487,4 +2487,16 @@ top.content.hloaded=1;') .
 		}
 	}
 
+	static function removeOldWESession(){
+		unset($_SESSION['user']);
+		unset($_SESSION['perms']);
+		unset($_SESSION['prefs']);
+		if(isset($_SESSION['weS'])){
+			unset($_SESSION['weS']);
+		}
+		if(isset($_SESSION['apps'])){
+			unset($_SESSION['apps']);
+		}
+	}
+
 }

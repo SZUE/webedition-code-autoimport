@@ -35,11 +35,11 @@ class weJavaMenu{
 		if($entries){
 			$this->entries = $entries;
 			if(we_base_browserDetect::isGecko()){
-				$_SESSION["menuentries"] = $this->entries;
+				$_SESSION['weS']['menuentries'] = $this->entries;
 			}
-		} else if(isset($_SESSION["menuentries"])){
-			$this->entries = $_SESSION["menuentries"];
-			unset($_SESSION["menuentries"]);
+		} else if(isset($_SESSION['weS']["menuentries"])){
+			$this->entries = $_SESSION['weS']["menuentries"];
+			unset($_SESSION['weS']["menuentries"]);
 		}
 		$this->lcmdFrame = $lcmdFrame;
 	}

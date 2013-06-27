@@ -165,9 +165,9 @@ we_error_handler(false);
 @ini_set("memory_limit", "128M");
 
 // knock out identifiation and permissions
-$_SESSION["perms"] = array();
-$_SESSION["perms"]["ADMINISTRATOR"] = true;
-$_SESSION["user"]["Username"] = 1;
+$_SESSION['perms'] = array();
+$_SESSION['perms']['ADMINISTRATOR'] = true;
+$_SESSION['user']['Username'] = 1;
 
 
 if(!isset($_SERVER['SERVER_NAME'])){
@@ -369,9 +369,7 @@ if(!isset($_SESSION['weS']['weBackupVars']) || empty($_SESSION['weS']['weBackupV
 			if($_REQUEST['verbose']){
 				print "-";
 			}
-			if(weBackupExport::export(
-					$_fh, $_SESSION['weS']['weBackupVars']['offset'], $_SESSION['weS']['weBackupVars']['row_counter'], $_SESSION['weS']['weBackupVars']['backup_steps'], $_SESSION['weS']['weBackupVars']['options']['backup_binary'], $_SESSION['weS']['weBackupVars']['backup_log']
-				) === false){
+			if(weBackupExport::export($_fh, $_SESSION['weS']['weBackupVars']['offset'], $_SESSION['weS']['weBackupVars']['row_counter'], $_SESSION['weS']['weBackupVars']['backup_steps'], $_SESSION['weS']['weBackupVars']['options']['backup_binary'], $_SESSION['weS']['weBackupVars']['backup_log']) === false){
 				// force end
 				$_SESSION['weS']['weBackupVars']['row_counter'] = $_SESSION['weS']['weBackupVars']['row_count'];
 			}

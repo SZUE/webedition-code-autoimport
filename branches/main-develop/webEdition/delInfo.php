@@ -46,7 +46,7 @@ if(isset($_SESSION['weS']['delete_files_nok']) && is_array($_SESSION['weS']['del
 
 $parts = array(
 	array(
-		"headline" => we_html_tools::htmlAlertAttentionBox($_SESSION["delete_files_info"], we_html_tools::TYPE_ALERT, 500),
+		"headline" => we_html_tools::htmlAlertAttentionBox($_SESSION['weS']['delete_files_info'], we_html_tools::TYPE_ALERT, 500),
 		"html" => "",
 		"space" => 10,
 		"noline" => 1),

@@ -139,6 +139,7 @@ class we_wizard_import extends we_wizard{
 	function parseAttributes($attr){
 		//FIXME: use tagParser
 		$attribs = '';
+		$foo = array();
 		preg_match_all('/([^=]+)= *("[^"]*")/', $attr, $foo, PREG_SET_ORDER);
 		foreach($foo as $cur){
 			$attribs .= '"' . trim($cur[1]) . '"=>' . trim($cur[2]) . ',';
@@ -1779,7 +1780,7 @@ function handle_event(evt) {
 		);
 
 
-		$content = we_html_element::htmlHidden(array('name' => 'v[csv_fieldnames]', 'value' => (isset($v['csv_fieldnames'])) ? $v['csv_fieldnames'] : 1)).
+		$content = we_html_element::htmlHidden(array('name' => 'v[csv_fieldnames]', 'value' => (isset($v['csv_fieldnames'])) ? $v['csv_fieldnames'] : 1)) .
 			we_html_element::htmlHidden(array('name' => 'v[import_from]', 'value' => (isset($v['import_from']) ? $v['import_from'] : ''))) .
 			we_html_element::htmlHidden(array('name' => 'v[csv_escaped]', 'value' => (isset($v['csv_escaped'])) ? $v['csv_escaped'] : '')) .
 			we_html_element::htmlHidden(array('name' => 'v[collision]', 'value' => (isset($v['collision'])) ? $v['collision'] : 'rename')) .

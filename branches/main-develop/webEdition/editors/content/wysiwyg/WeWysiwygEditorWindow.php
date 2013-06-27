@@ -28,7 +28,7 @@ if(isset($fieldName) && isset($_REQUEST["we_okpressed"]) && $_REQUEST["we_okpres
 
 
 	$newHTML = $_REQUEST[$fieldName];
-	$_SESSION['WEAPP_' . $_REQUEST['we_cmd'][0] . '_' . $_REQUEST['we_cmd'][1]] = $newHTML;
+	$_SESSION['weS']['WEAPP_' . $_REQUEST['we_cmd'][0] . '_' . $_REQUEST['we_cmd'][1]] = $newHTML;
 	$newHTMLoldA = preg_replace(
 		'|script|i', 'scr"+"ipt', $newHTML);
 	$newHTMLoldB = preg_replace(
@@ -94,7 +94,7 @@ if(isset($fieldName) && isset($_REQUEST["we_okpressed"]) && $_REQUEST["we_okpres
 					$_REQUEST['we_cmd'][1], //$name,
 					$_REQUEST['we_cmd'][2], //$width,
 					$_REQUEST['we_cmd'][3], //$height
-					$_SESSION['WEAPP_' . $_REQUEST['we_cmd'][0] . '_' . $_REQUEST['we_cmd'][1]], //value
+					$_SESSION['weS']['WEAPP_' . $_REQUEST['we_cmd'][0] . '_' . $_REQUEST['we_cmd'][1]], //value
 					$_REQUEST['we_cmd'][5], //$propstring
 					$_REQUEST['we_cmd'][13], //$bgcol
 					"", //$fullscreen

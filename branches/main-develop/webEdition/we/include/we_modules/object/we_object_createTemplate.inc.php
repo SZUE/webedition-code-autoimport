@@ -64,7 +64,7 @@ function getMultiObjectTags($name){
 		$id = $_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"]["multiobject_" . $name . "class"]["dat"];
 	} else{
 		return '';
-		$newfields = explode(",", $_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"]["neuefelder"]["dat"]);
+		$newfields = explode(',', $_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"]["neuefelder"]["dat"]);
 		foreach($newfields as $tempname){
 			if($tempname != ""){
 				if($_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"][$tempname]["dat"] == $name){
@@ -238,7 +238,7 @@ $content .= '
 </html>';
 
 
-//  $_SESSION["content"] is only used for generating a default template, it is
+//  $_SESSION['weS']["content"] is only used for generating a default template, it is
 //  used only in WE_OBJECT_MODULE_PATH/we_object_createTemplatecmd.php
 $_SESSION['weS']['content'] = $content;
 

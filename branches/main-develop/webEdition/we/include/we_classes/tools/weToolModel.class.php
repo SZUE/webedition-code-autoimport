@@ -39,12 +39,12 @@ class weToolModel extends weModelBase{
 	}
 
 	function saveInSession(){
-		$_SESSION[$this->toolName . '_session'] = serialize($this);
+		$_SESSION['weS'][$this->toolName . '_session'] = serialize($this);
 	}
 
 	function clearSessionVars(){
-		if(!empty($this->toolName) && isset($_SESSION[$this->toolName . '_session'])){
-			unset($_SESSION[$this->toolName . '_session']);
+		if(!empty($this->toolName) && isset($_SESSION['weS'][$this->toolName . '_session'])){
+			unset($_SESSION['weS'][$this->toolName . '_session']);
 		}
 	}
 

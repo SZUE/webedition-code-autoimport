@@ -26,47 +26,24 @@ if(str_replace(dirname($_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME']) ==
 	exit();
 }
 
-$DB_WE->query('DELETE FROM ' . LOCK_TABLE . ' WHERE UserID=' . intval($_SESSION["user"]["ID"]) . ' AND sessionID="' . session_id() . '"');
+$DB_WE->query('DELETE FROM ' . LOCK_TABLE . ' WHERE UserID=' . intval($_SESSION['user']['ID']) . ' AND sessionID="' . session_id() . '"');
 //FIXME: table is set to false value, if 2 sessions are open; but this is updated shortly - so ignore it now
 //TODO: update to time if still locked files open
-$DB_WE->query('UPDATE ' . USER_TABLE . ' SET Ping=0 WHERE ID=' . intval($_SESSION["user"]["ID"]));
+$DB_WE->query('UPDATE ' . USER_TABLE . ' SET Ping=0 WHERE ID=' . intval($_SESSION['user']['ID']));
 
 cleanTempFiles(true);
 
 //FIXME: is there any need for this?
-if(isset($_SESSION["prefs"]["userID"])){ //	bugfix 2585, only update prefs, when userId is available
-	we_user::writePrefs($_SESSION["prefs"]["userID"], $GLOBALS['DB_WE']);
+if(isset($_SESSION['prefs']['userID'])){ //	bugfix 2585, only update prefs, when userId is available
+	we_user::writePrefs($_SESSION['prefs']['userID'], $GLOBALS['DB_WE']);
 }
 
 //	getJSCommand
-if(isset($_SESSION['weS']['SEEM']["startId"])){ // logout from webEdition opened with tag:linkToSuperEasyEditMode
-	$keys = array_keys($_SESSION);
-	foreach($keys as $key){
-		if($key != "webuser"){
-			unset($_SESSION[$key]);
-		}
-	}
-	$_path = $_SESSION['weS']['SEEM']["startPath"];
-} else{ //	normal logout from webEdition.
-	unset($_SESSION["user"]);
-	if(isset($_SESSION['weS'])){
-		unset($_SESSION['weS']);
-	}
-	$_path = WEBEDITION_DIR;
-}
+$_path = (isset($_SESSION['weS']['SEEM']['startId'])? // logout from webEdition opened with tag:linkToSuperEasyEditMode
+		$_SESSION['weS']['SEEM']['startPath']:
+	WEBEDITION_DIR);
 
-if(isset($_SESSION)){
-	unset($_SESSION['weS']);
-}
-
-//FIXME: this should be removed if all variables are located inside weS; fix other!!
-if(isset($_SESSION)){
-	unset($_SESSION['weS']);
-	while((list($name, $val) = each($_SESSION))) {
-		unset($_SESSION[$name]);
-	}
-}
-$_SESSION = array();
+we_user::removeOldWESession();
 
 if(!isset($GLOBALS['isIncluded']) || !$GLOBALS['isIncluded']){
 	echo we_html_element::jsElement('

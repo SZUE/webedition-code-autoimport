@@ -510,7 +510,7 @@ top.document.getElementById('function_reload').onmouseup = we_import_handler;";
 										we_html_element::jsElement($JScript . "setTimeout('we_import(1," . $v['cid'] . ");',15);"));
 							} else{
 								if($type == "first_steps_wizard"){
-									$_SESSION['fsw_importRefTable'] = isset($_SESSION['weS']['ExImRefTable']) ? $_SESSION['weS']['ExImRefTable'] : array();
+									$_SESSION['weS']['fsw_importRefTable'] = isset($_SESSION['weS']['ExImRefTable']) ? $_SESSION['weS']['ExImRefTable'] : array();
 
 									$JScript = "
 function we_import_handler(e) {

@@ -95,7 +95,7 @@ class weToolFrames extends weModuleFrames {
 			$this->Model = new $_class();
 			$this->Model->load($_REQUEST['modelid']);
 			$this->Model->saveInSession();
-			$_SESSION[$this->toolName]["modelidForTree"] = $_REQUEST['modelid'];
+			$_SESSION['weS'][$this->toolName]["modelidForTree"] = $_REQUEST['modelid'];
 		}
 
 		$js = $this->getJSCmdCode() .

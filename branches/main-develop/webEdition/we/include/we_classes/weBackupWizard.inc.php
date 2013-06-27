@@ -1502,7 +1502,7 @@ top.busy.location = "' . $this->frameset . '?pnt=busy&operation_mode=busy&curren
 				case "deleteall":
 					$_SESSION['weS']['backup_delete'] = 1;
 					$_SESSION['weS']['delete_files_nok'] = array();
-					$_SESSION["delete_files_info"] = g_l('backup', "[files_not_deleted]");
+					$_SESSION['weS']["delete_files_info"] = g_l('backup', "[files_not_deleted]");
 					print we_html_element::jsScript(JS_DIR . "windows.js") .
 						we_html_element::jsElement('new jsWindow("' . WEBEDITION_DIR . 'delFrag.php?currentID=-1", "we_del", -1, -1, 600, 130, true, true, true);');
 					break;

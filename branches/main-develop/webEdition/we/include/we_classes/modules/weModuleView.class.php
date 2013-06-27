@@ -70,7 +70,7 @@ class weModuleView {
 	}
 
 	function getJSTop(){//TODO: is this shop-code or a copy paste from another module?
-		return we_html_element::jsScript(JS_DIR . 'windows.js'); 
+		return we_html_element::jsScript(JS_DIR . 'windows.js');
 	}
 
 	function getJSProperty(){
@@ -150,12 +150,12 @@ attribs["tooltip"]="";' .
 			}
 		}
 
-		$_SESSION['raw_session'] = serialize($this->raw);
+		$_SESSION['weS']['raw_session'] = serialize($this->raw);
 	}
 
 	function processVariables(){
-		if(isset($_SESSION['raw_session'])){
-			$this->raw = unserialize($_SESSION['raw_session']);
+		if(isset($_SESSION['weS']['raw_session'])){
+			$this->raw = unserialize($_SESSION['weS']['raw_session']);
 		}
 
 		if(is_array($this->raw->persistent_slots)){

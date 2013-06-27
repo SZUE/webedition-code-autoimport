@@ -46,7 +46,7 @@ if(isset($_SESSION['weS']['move_files_nok']) && is_array($_SESSION['weS']['move_
 
 $parts = array(
 	array(
-		"headline" => we_html_tools::htmlAlertAttentionBox($_SESSION["move_files_info"], we_html_tools::TYPE_ALERT, 500),
+		"headline" => we_html_tools::htmlAlertAttentionBox($_SESSION['weS']["move_files_info"], we_html_tools::TYPE_ALERT, 500),
 		"html" => "",
 		"space" => 10,
 		"noline" => 1),

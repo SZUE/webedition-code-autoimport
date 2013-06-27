@@ -159,9 +159,8 @@ we_error_handler(false);
 @ini_set("memory_limit", "128M");
 
 // knock out identifiation and permissions
-$_SESSION["perms"] = array();
-$_SESSION["perms"]["ADMINISTRATOR"] = true;
-$_SESSION["user"]["Username"] = 1;
+$_SESSION['perms'] = array('ADMINISTRATOR' => true);
+$_SESSION['user']['Username'] = 1;
 
 
 if(!isset($_SERVER['SERVER_NAME'])){

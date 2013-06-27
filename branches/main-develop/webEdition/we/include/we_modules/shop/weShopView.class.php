@@ -31,7 +31,7 @@ class weShopView{
 	var $frameset;
 	var $topFrame;
 	var $raw;
-	
+
 	private $CLFields = array();//
 
 	function __construct($frameset = '', $topframe = 'top.content'){
@@ -304,7 +304,7 @@ function we_cmd() {
 }
 ' . $this->getJSSubmitFunction());
 	}
-	
+
 	function getProperties() {
 		we_html_tools::protect();
 		//we_html_tools::htmlTop();
@@ -1778,12 +1778,12 @@ attribs["tooltip"]="";' .
 			}
 		}
 
-		$_SESSION['raw_session'] = serialize($this->raw);
+		$_SESSION['weS']['raw_session'] = serialize($this->raw);
 	}
 
 	function processVariables(){
-		if(isset($_SESSION['raw_session'])){
-			$this->raw = unserialize($_SESSION['raw_session']);
+		if(isset($_SESSION['weS']['raw_session'])){
+			$this->raw = unserialize($_SESSION['weS']['raw_session']);
 		}
 
 		if(is_array($this->raw->persistent_slots)){

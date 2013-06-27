@@ -358,7 +358,7 @@ if($_REQUEST['we_cmd'][0] == "do_delete" || $_REQUEST['we_cmd'][0] == "delete_si
 					if($_SESSION['weS']['we_mode'] == 'normal'){ //	different messages in normal or seeMode
 						if(!empty($GLOBALS['we_folder_not_del'])){
 							$_SESSION['weS']['delete_files_nok'] = array();
-							$_SESSION['delete_files_info'] = str_replace('\n', '', sprintf(g_l('alert', '[folder_not_empty]'), ''));
+							$_SESSION['weS']['delete_files_info'] = str_replace('\n', '', sprintf(g_l('alert', '[folder_not_empty]'), ''));
 							foreach($GLOBALS["we_folder_not_del"] as $datafile){
 								$_SESSION['weS']['delete_files_nok'][] = array('icon' => we_base_ContentTypes::FOLDER_ICON, "path" => $datafile);
 							}

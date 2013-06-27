@@ -934,8 +934,8 @@ function submitForm() {
 	}
 
 	function processVariables(){
-		if(isset($_SESSION['raw_session'])){
-			$this->raw = unserialize($_SESSION['raw_session']);
+		if(isset($_SESSION['weS']['raw_session'])){
+			$this->raw = unserialize($_SESSION['weS']['raw_session']);
 		}
 
 		if(is_array($this->raw->persistent_slots)){

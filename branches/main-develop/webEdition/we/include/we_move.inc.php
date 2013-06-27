@@ -99,7 +99,7 @@ if($_REQUEST['we_cmd'][0] == "do_move" || $_REQUEST['we_cmd'][0] == 'move_single
 			if($_SESSION['weS']['we_mode'] == "normal"){ //	different messages in normal or seeMode
 				if(!empty($notMovedItems)){
 					$_SESSION['weS']['move_files_nok'] = array();
-					$_SESSION["move_files_info"] = str_replace("\\n", "", sprintf(g_l('alert', "[move_of_files_failed]"), ""));
+					$_SESSION['weS']["move_files_info"] = str_replace("\\n", "", sprintf(g_l('alert', "[move_of_files_failed]"), ""));
 					foreach($notMovedItems as $item){
 						$_SESSION['weS']['move_files_nok'][] = array(
 							"icon" => $item['Icon'], "path" => $item['Path']

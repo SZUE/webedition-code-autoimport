@@ -648,7 +648,7 @@ var CMoptions = { //these are the CodeMirror options
 	workTime: 300,
 	workDelay: 800,
 	height: ' . intval(($_SESSION["prefs"]["editorHeight"] != 0) ? $_SESSION["prefs"]["editorHeight"] : 320) . ',
-	lineWrapping:' . ((isset($_SESSION["we_wrapcheck"]) && $_SESSION["we_wrapcheck"]) ? 'true' : 'false') . ',
+	lineWrapping:' . ((isset($_SESSION['weS']["we_wrapcheck"]) && $_SESSION['weS']["we_wrapcheck"]) ? 'true' : 'false') . ',
 	autoCloseTags: ' . ($_SESSION['prefs']['editorDocuintegration'] ? 'true' : 'false') . ', // use object with indentTags to indent these tags
 	autofocus: true,
 	extraKeys: {' . ($hasCompletion ? '
@@ -664,7 +664,7 @@ window.orignalTemplateContent=document.getElementById("editarea").value.replace(
 			return $maineditor;
 		}
 
-		$wrap = (isset($_SESSION["we_wrapcheck"]) && $_SESSION["we_wrapcheck"]) ? "virtual" : "off";
+		$wrap = (isset($_SESSION['weS']["we_wrapcheck"]) && $_SESSION['weS']["we_wrapcheck"]) ? "virtual" : "off";
 
 		$code = $we_doc->getElement("data");
 
@@ -677,7 +677,7 @@ window.orignalTemplateContent=document.getElementById("editarea").value.replace(
 		if($_useJavaEditor){
 			$maineditor .= we_getJavaEditorCode($code);
 		} else{
-			$maineditor .= '<textarea id="editarea" style="width: 100%; height: ' . (($_SESSION["prefs"]["editorHeight"] != 0) ? $_SESSION["prefs"]["editorHeight"] : "320") . 'px;' . (($_SESSION["prefs"]["editorFont"] == 1) ? " font-family: " . $_SESSION["prefs"]["editorFontname"] . "; font-size: " . $_SESSION["prefs"]["editorFontsize"] . "px;" : "") . '" id="data" name="we_' . $we_doc->Name . '_txt[data]" wrap="' . $wrap . '" ' . ((!we_base_browserDetect::isGecko() && (!isset($_SESSION["we_wrapcheck"]) || !$_SESSION["we_wrapcheck"] )) ? '' : ' rows="20" cols="80"') . ' onhange="_EditorFrame.setEditorIsHot(true);" ' . ($_SESSION['prefs']['editorMode'] == 'codemirror2' ? '' : (we_base_browserDetect::isIE() || we_base_browserDetect::isOpera() ? 'onkeydown="return wedoKeyDown(this,event.keyCode);"' : 'onkeypress="return wedoKeyDown(this,event.keyCode);"')) . '>'
+			$maineditor .= '<textarea id="editarea" style="width: 100%; height: ' . (($_SESSION["prefs"]["editorHeight"] != 0) ? $_SESSION["prefs"]["editorHeight"] : "320") . 'px;' . (($_SESSION["prefs"]["editorFont"] == 1) ? " font-family: " . $_SESSION["prefs"]["editorFontname"] . "; font-size: " . $_SESSION["prefs"]["editorFontsize"] . "px;" : "") . '" id="data" name="we_' . $we_doc->Name . '_txt[data]" wrap="' . $wrap . '" ' . ((!we_base_browserDetect::isGecko() && (!isset($_SESSION['weS']["we_wrapcheck"]) || !$_SESSION['weS']["we_wrapcheck"] )) ? '' : ' rows="20" cols="80"') . ' onhange="_EditorFrame.setEditorIsHot(true);" ' . ($_SESSION['prefs']['editorMode'] == 'codemirror2' ? '' : (we_base_browserDetect::isIE() || we_base_browserDetect::isOpera() ? 'onkeydown="return wedoKeyDown(this,event.keyCode);"' : 'onkeypress="return wedoKeyDown(this,event.keyCode);"')) . '>'
 				. oldHtmlspecialchars($code) . '</textarea>';
 			if($_SESSION['prefs']['editorMode'] == 'codemirror2'){ //Syntax-Highlighting
 				$maineditor .= we_getCodeMirror2Code($code);
@@ -698,7 +698,7 @@ window.orignalTemplateContent=document.getElementById("editarea").value.replace(
 			) . '
 					</td>
 					<td align="right" class="defaultfont">' .
-			($_useJavaEditor ? '' : we_forms::checkbox(1, (isset($_SESSION["we_wrapcheck"]) && $_SESSION["we_wrapcheck"] == 1), 'we_wrapcheck_tmp', g_l('global', '[wrapcheck]'), false, "defaultfont", "we_cmd('wrap_on_off',this.checked)", false, '', 0, 0, '', 'display:inline-block;')) .
+			($_useJavaEditor ? '' : we_forms::checkbox(1, (isset($_SESSION['weS']["we_wrapcheck"]) && $_SESSION['weS']["we_wrapcheck"] == 1), 'we_wrapcheck_tmp', g_l('global', '[wrapcheck]'), false, "defaultfont", "we_cmd('wrap_on_off',this.checked)", false, '', 0, 0, '', 'display:inline-block;')) .
 			(substr($_SESSION['prefs']['editorMode'], 0, 10) == 'codemirror' ? '<div id="reindentButton" style="display:inline-block;margin-left:10px;margin-top:-3px;">' . we_button::create_button("reindent", 'javascript:reindent();') . '</div>' : '') .
 			'</td>	</tr>
         </table></td></tr></table>';

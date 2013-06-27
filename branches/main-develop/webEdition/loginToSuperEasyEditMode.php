@@ -31,12 +31,7 @@ if(!isset($_SESSION)){
 	@session_start();
 }
 
-//FIXME: this should be removed if all variables are located inside weS
-while((list($name, $val) = each($_SESSION))) {
-	if($name != "webuser"){
-		unset($_SESSION[$name]);
-	}
-}
+we_user::removeOldWESession();
 
 if(isset($_POST["username"]) && isset($_POST["id"]) && isset($_POST["type"])){
 

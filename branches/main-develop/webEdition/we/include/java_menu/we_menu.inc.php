@@ -691,7 +691,6 @@ foreach($GLOBALS['_we_available_modules'] as $key => $val){
 	$moduleList .= $key . '|';
 	//}
 }
-//$_SESSION['we_module_list'] = rtrim($moduleList, '|');
 // Modules > pagelogger
 if(WE_TRACKER_DIR){
 	$we_menu[3020000] = array(

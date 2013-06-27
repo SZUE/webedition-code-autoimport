@@ -73,9 +73,9 @@ class we_objectFile extends we_document{
 			$GLOBALS['we_object'] = array();
 		}
 		$GLOBALS['we_object'][$formname] = new we_objectFile();
-		if((!$session) || (!isset($_SESSION['we_object_session_' . $formname]))){
+		if((!$session) || (!isset($_SESSION['weS']['we_object_session_' . $formname]))){
 			if($session){
-				$_SESSION['we_object_session_' . $formname] = array();
+				$_SESSION['weS']['we_object_session_' . $formname] = array();
 			}
 			$GLOBALS['we_object'][$formname]->we_new();
 			if(isset($_REQUEST['we_editObject_ID']) && $_REQUEST['we_editObject_ID']){
@@ -105,14 +105,14 @@ class we_objectFile extends we_document{
 			}
 
 			if($session){
-				$GLOBALS['we_object'][$formname]->saveInSession($_SESSION['we_object_session_' . $formname]);
+				$GLOBALS['we_object'][$formname]->saveInSession($_SESSION['weS']['we_object_session_' . $formname]);
 			}
 		} else{
 			if(isset($_REQUEST['we_editObject_ID']) && $_REQUEST['we_editObject_ID']){
 				$GLOBALS['we_object'][$formname]->initByID(intval($_REQUEST['we_editObject_ID']), OBJECT_FILES_TABLE);
 			} else{
 				if($session){
-					$GLOBALS['we_object'][$formname]->we_initSessDat($_SESSION['we_object_session_' . $formname]);
+					$GLOBALS['we_object'][$formname]->we_initSessDat($_SESSION['weS']['we_object_session_' . $formname]);
 				}
 			}
 			if($classID && ($GLOBALS['we_object'][$formname]->TableID != $classID)){
@@ -178,7 +178,7 @@ class we_objectFile extends we_document{
 		we_otherDocument::checkAndPrepare($formname, 'we_object');
 
 		if($session){
-			$GLOBALS['we_object'][$formname]->saveInSession($_SESSION['we_object_session_' . $formname]);
+			$GLOBALS['we_object'][$formname]->saveInSession($_SESSION['weS']['we_object_session_' . $formname]);
 		}
 		return $GLOBALS['we_object'][$formname];
 	}

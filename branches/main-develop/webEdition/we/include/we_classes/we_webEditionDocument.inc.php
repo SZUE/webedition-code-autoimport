@@ -69,9 +69,9 @@ class we_webEditionDocument extends we_textContentDocument{
 			$GLOBALS['we_document'] = array();
 		}
 		$GLOBALS['we_document'][$formname] = new we_webEditionDocument();
-		if((!$session) || (!isset($_SESSION["we_document_session_$formname"]))){
+		if((!$session) || (!isset($_SESSION['weS']['we_document_session_' . $formname]))){
 			if($session){
-				$_SESSION["we_document_session_$formname"] = array();
+				$_SESSION['weS']['we_document_session_' . $formname] = array();
 			}
 			$GLOBALS['we_document'][$formname]->we_new();
 			if(isset($_REQUEST['we_editDocument_ID']) && $_REQUEST['we_editDocument_ID']){
@@ -88,13 +88,13 @@ class we_webEditionDocument extends we_textContentDocument{
 				}
 			}
 			if($session)
-				$GLOBALS['we_document'][$formname]->saveInSession($_SESSION["we_document_session_$formname"]);
+				$GLOBALS['we_document'][$formname]->saveInSession($_SESSION['weS']['we_document_session_' . $formname]);
 		} else{
 			if(isset($_REQUEST['we_editDocument_ID']) && $_REQUEST['we_editDocument_ID']){
 				$GLOBALS['we_document'][$formname]->initByID($_REQUEST['we_editDocument_ID'], FILE_TABLE);
 			} else{
 				if($session){
-					$GLOBALS['we_document'][$formname]->we_initSessDat($_SESSION["we_document_session_$formname"]);
+					$GLOBALS['we_document'][$formname]->we_initSessDat($_SESSION['weS']['we_document_session_' . $formname]);
 				}
 			}
 			if(strlen($categories)){
@@ -150,7 +150,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		we_otherDocument::checkAndPrepare($formname, 'we_document');
 
 		if($session){
-			$GLOBALS['we_document'][$formname]->saveInSession($_SESSION["we_document_session_$formname"]);
+			$GLOBALS['we_document'][$formname]->saveInSession($_SESSION['weS']['we_document_session_' . $formname]);
 		}
 		return $GLOBALS['we_document'][$formname];
 	}
@@ -640,12 +640,12 @@ class we_webEditionDocument extends we_textContentDocument{
 				$value = $this->getElement($name);
 				if(preg_match_all('|src="/[^">]+\\?id=(\\d+)"|i', $value, $regs, PREG_SET_ORDER)){
 					foreach($regs as $reg){
-						$value = str_replace($reg[0], 'src="'.we_base_link::TYPE_INT_PREFIX . $reg[1] . '"', $value);
+						$value = str_replace($reg[0], 'src="' . we_base_link::TYPE_INT_PREFIX . $reg[1] . '"', $value);
 					}
 				}
 				if(preg_match_all('|src="/[^">]+\\?thumb=(\\d+,\\d+)"|i', $value, $regs, PREG_SET_ORDER)){
 					foreach($regs as $reg){
-						$value = str_replace($reg[0], 'src="'.we_base_link::TYPE_THUMB_PREFIX . $reg[1] . '"', $value);
+						$value = str_replace($reg[0], 'src="' . we_base_link::TYPE_THUMB_PREFIX . $reg[1] . '"', $value);
 					}
 				}
 
