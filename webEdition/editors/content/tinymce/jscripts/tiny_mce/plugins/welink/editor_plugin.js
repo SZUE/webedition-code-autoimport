@@ -14,7 +14,7 @@
 					wehref = a.dom.getParent(c.getNode(), 'A').href;
 				};
 				a.windowManager.open({
-					file: b + "/../../../../../wysiwyg/linkDialog.php?we_dialog_args[editor]=tinyMce&we_dialog_args[href]=" + encodeURIComponent(wehref) + "&we_dialog_args[cssclasses]=" + a.getParam('weClassNames_urlEncoded'),
+					file: b + "/../../../../../wysiwyg/linkDialog.php?we_dialog_args[editor]=tinyMce&we_dialog_args[href]=" + encodeURIComponent(wehref) + "&we_dialog_args[cssclasses]=" + a.getParam('weClassNames_urlEncoded') + "&we_dialog_args[isFrontend]=" + a.getParam('weIsFrontend'),
 					width: 600 + parseInt(a.getLang("welink.delta_width", 0)),
 					popup_css: false,
 					height: 600 + parseInt(a.getLang("welink.delta_height", 0)),

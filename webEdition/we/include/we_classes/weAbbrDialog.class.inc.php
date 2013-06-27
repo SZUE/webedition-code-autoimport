@@ -32,9 +32,10 @@ class weAbbrDialog extends weDialog{
 		"style"
 	);
 
-	function __construct(){
+	function __construct($noInternals = false){
 		parent::__construct();
 		$this->dialogTitle = g_l('wysiwyg', "[abbr_title]");
+		$this->noInternals = $noInternals;
 		$this->defaultInit();
 	}
 
@@ -98,7 +99,7 @@ class weAbbrDialog extends weDialog{
 			$trashbut
 		);
 
-		if(defined("GLOSSARY_TABLE") && we_hasPerm("NEW_GLOSSARY")){
+		if(defined("GLOSSARY_TABLE") && we_hasPerm("NEW_GLOSSARY") && !$this->noInternals){
 			$glossarybut = we_button::create_button("to_glossary", "javascript:weSaveToGlossaryFn();", true, 100);
 			$buttons[] = $glossarybut;
 		}

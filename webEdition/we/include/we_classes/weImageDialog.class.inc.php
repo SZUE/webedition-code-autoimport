@@ -47,9 +47,10 @@ class weImageDialog extends weDialog{
 		"longdesc"
 	);
 
-	function __construct(){
+	function __construct($noInternals = false){
 		parent::__construct();
 		$this->dialogTitle = g_l('wysiwyg', "[edit_image]");
+		$this->noInternals = $noInternals;
 	}
 
 	function initBySrc($src, $width = "", $height = "", $hspace = "", $vspace = "", $border = "", $alt = "", $align = "", $name = "", $class = "", $title = "", $longdesc = ""){
@@ -237,8 +238,8 @@ class weImageDialog extends weDialog{
 
 	function getDialogContentHTML(){
 		$yuiSuggest = & weSuggest::getInstance();
-		if(isset($this->args["outsideWE"]) && $this->args["outsideWE"] == "1"){
-			$extSrc = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[extSrc]", 30, (isset($this->args["extSrc"]) ? $this->args["extSrc"] : ""), "", "", "text", 410), "src", "left", "defaultfont", we_html_tools::getPixel(10, 2), "", "", "", "", 0);
+		if($this->noInternals || (isset($this->args["outsideWE"]) && $this->args["outsideWE"] == "1")){
+			$extSrc = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[extSrc]", 30, (isset($this->args["extSrc"]) ? $this->args["extSrc"] : ""), "", "", "text", 410), "", "left", "defaultfont", we_html_tools::getPixel(10, 2), "", "", "", "", 0);
 			$intSrc = "";
 			$thumbnails = "";
 
