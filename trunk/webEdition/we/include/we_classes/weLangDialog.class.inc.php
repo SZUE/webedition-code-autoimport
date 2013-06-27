@@ -29,9 +29,10 @@ class weLangDialog extends weDialog{
 	var $changeableArgs = array("lang"
 	);
 
-	function __construct(){
+	function __construct($noInternals = false){
 		parent::__construct();
 		$this->dialogTitle = g_l('wysiwyg', "[language_title]");
+		$this->noInternals = $noInternals;
 		$this->defaultInit();
 	}
 
@@ -48,7 +49,7 @@ class weLangDialog extends weDialog{
 
 		$js = weDialog::getJs();
 
-		if(defined("GLOSSARY_TABLE")){
+		if(defined("GLOSSARY_TABLE") && !$this->noInternals){
 			$js .= we_html_element::jsElement('
 					function weSaveToGlossaryFn() {
 						if(typeof(isTinyMCE) != "undefined" && isTinyMCE === true){
@@ -78,7 +79,7 @@ class weLangDialog extends weDialog{
 </table>
 ';
 
-		if(defined("GLOSSARY_TABLE") && we_hasPerm("NEW_GLOSSARY")){
+		if(defined("GLOSSARY_TABLE") && we_hasPerm("NEW_GLOSSARY") && !$this->noInternals){
 			$table .= we_html_tools::hidden("weSaveToGlossary", 0);
 			$table .= we_html_tools::hidden("language", isset($_REQUEST['language']) ? $_REQUEST['language'] : $GLOBALS['weDefaultFrontendLanguage']);
 			$table .= we_html_tools::hidden("text", "");
@@ -93,7 +94,7 @@ class weLangDialog extends weDialog{
 		$buttons = array();
 		array_push($buttons, $trashbut);
 
-		if(defined("GLOSSARY_TABLE") && we_hasPerm("NEW_GLOSSARY")){
+		if(defined("GLOSSARY_TABLE") && we_hasPerm("NEW_GLOSSARY") && !$this->noInternals){
 			$glossarybut = we_button::create_button("to_glossary", "javascript:weSaveToGlossaryFn();", true, 100);
 			array_push($buttons, $glossarybut);
 		}
