@@ -65,29 +65,28 @@ function we_tag_listdir($attribs, $content){
 	$desc = weTag_getAttribute('desc', $attribs, false, true);
 
 	$q = array();
-	foreach($index as $i => $v){
+	foreach($index as $v){
 		$q[] = ' Text="' . $v . '"';
 	}
-	$q = implode(' OR ', $q);
+	$indexes = implode(' OR ', $q);
 
 	$files = array();
 
 	$db = new DB_WE();
 	$db2 = $GLOBALS['DB_WE'];
 
-	$db->query('SELECT ID,Text,IsFolder,Path FROM ' . FILE_TABLE . ' WHERE ((Published > 0 AND IsSearchable = 1) OR (IsFolder = 1)) AND ParentID=' . intval($dirID));
+	$db->query('SELECT ID,Text,IsFolder,Path FROM ' . FILE_TABLE . ' WHERE ((Published>0 AND IsSearchable=1) OR (IsFolder=1)) AND ParentID=' . intval($dirID));
 
 	while($db->next_record()) {
-		$sortfield = $namefield = '';
 		$id = intval($db->f('IsFolder') ?
-				f('SELECT ID FROM ' . FILE_TABLE . ' WHERE ParentID=' . intval($db->f('ID')) . ' AND IsFolder = 0 AND (' . $q . ') AND (Published > 0 AND IsSearchable = 1)', 'ID', $db2) :
+				f('SELECT ID FROM ' . FILE_TABLE . ' WHERE ParentID=' . intval($db->f('ID')) . ' AND IsFolder=0 AND (' . $indexes . ') AND (Published>0 AND IsSearchable=1)', 'ID', $db2) :
 				$db->f('ID'));
 
 		if($id){
 			$files[] = array(
 				'ID' => $db->f('ID'),
-				'Path'=>$db->f('Path'),
-				'Text'=>$db->f('Text'),
+				'Path' => $db->f('Path'),
+				'Text' => $db->f('Text'),
 				'sort' => _listdir_getSortField($sort, $id, $db->f('Text')),
 				'name' => _listdir_getNameField($dirfield, $id, $db->f('Text'))
 			);
@@ -103,9 +102,8 @@ function _listdir_getSortField($sort, $id, $text){
 		$db = $GLOBALS['DB_WE'];
 		$dat = f('SELECT ' . CONTENT_TABLE . '.Dat as Dat FROM ' . LINK_TABLE . ',' . CONTENT_TABLE . ' WHERE ' . LINK_TABLE . '.DID=' . intval($id) . ' AND ' . LINK_TABLE . '.Name="' . $db->escape($sort) . '" AND ' . CONTENT_TABLE . '.ID=' . LINK_TABLE . '.CID', 'Dat', $db);
 		return $dat ? $dat : $text;
-	} else{
-		return $text;
 	}
+	return $text;
 }
 
 function _listdir_getNameField($dirfield, $id, $text){
@@ -113,43 +111,30 @@ function _listdir_getNameField($dirfield, $id, $text){
 		$db = $GLOBALS['DB_WE'];
 		$dat = f('SELECT ' . CONTENT_TABLE . '.Dat as Dat FROM ' . LINK_TABLE . ',' . CONTENT_TABLE . ' WHERE ' . LINK_TABLE . '.DID=' . intval($id) . ' AND ' . LINK_TABLE . '.Name="' . $db->escape($dirfield) . '" AND ' . CONTENT_TABLE . '.ID=' . LINK_TABLE . '.CID', 'Dat', $db);
 		return $dat ? $dat : $text;
-	} else{
-		return $text;
 	}
+	return $text;
 }
 
 function we_cmpText($a, $b){
 	$x = strtolower(correctUml($a['Text']));
 	$y = strtolower(correctUml($b['Text']));
-	if($x == $y){
-		return 0;
-	}
-	return ($x < $y) ? -1 : 1;
+	return ($x == $y ? 0 : ($x < $y ? -1 : 1));
 }
 
 function we_cmpTextDesc($a, $b){
 	$x = strtolower(correctUml($a['Text']));
 	$y = strtolower(correctUml($b['Text']));
-	if($x == $y){
-		return 0;
-	}
-	return ($x > $y) ? -1 : 1;
+	return ($x == $y ? 0 : ($x > $y ? -1 : 1));
 }
 
 function we_cmpField($a, $b){
 	$x = strtolower(correctUml($a['sort']));
 	$y = strtolower(correctUml($b['sort']));
-	if($x == $y){
-		return 0;
-	}
-	return ($x < $y) ? -1 : 1;
+	return ($x == $y ? 0 : ($x < $y ? -1 : 1));
 }
 
 function we_cmpFieldDesc($a, $b){
 	$x = strtolower(correctUml($a['sort']));
 	$y = strtolower(correctUml($b['sort']));
-	if($x == $y){
-		return 0;
-	}
-	return ($x > $y) ? -1 : 1;
+	return ($x == $y ? 0 : ($x > $y ? -1 : 1));
 }
