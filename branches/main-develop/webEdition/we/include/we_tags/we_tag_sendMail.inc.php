@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_sendMail($attribs, $content){
-	if(($foo = attributFehltError($attribs, "recipient", __FUNCTION__)) || ($foo = attributFehltError($attribs, "from", __FUNCTION__))){
+	if(($foo = attributFehltError($attribs, array("recipient" => false, 'from' => false), __FUNCTION__))){
 		return $foo;
 	}
 
@@ -33,16 +33,16 @@ function we_tag_sendMail($attribs, $content){
 		$from = weTag_getAttribute("from", $attribs);
 		$reply = weTag_getAttribute("reply", $attribs);
 		$recipient = weTag_getAttribute("recipient", $attribs);
-		$recipientCC = weTag_getAttribute("recipientcc", $attribs,weTag_getAttribute("recipientCC", $attribs));
-		$recipientBCC = weTag_getAttribute("recipientbcc", $attribs,weTag_getAttribute("recipientBCC", $attribs));
+		$recipientCC = weTag_getAttribute("recipientcc", $attribs, weTag_getAttribute("recipientCC", $attribs));
+		$recipientBCC = weTag_getAttribute("recipientbcc", $attribs, weTag_getAttribute("recipientBCC", $attribs));
 
 		$mimetype = weTag_getAttribute("mimetype", $attribs);
 		$subject = weTag_getAttribute("subject", $attribs);
 		$charset = weTag_getAttribute("charset", $attribs, "UTF-8");
 		$includeimages = weTag_getAttribute("includeimages", $attribs, false, true);
 		$useBaseHref = weTag_getAttribute("usebasehref", $attribs, true, true);
-		$useFormmailLog = weTag_getAttribute("useformmaillog", $attribs, weTag_getAttribute("useformmailLog", $attribs,false,true), true);
-		$useFormmailBlock = weTag_getAttribute("useformmailblock", $attribs, weTag_getAttribute("useformmailblock", $attribs, false, true),true);
+		$useFormmailLog = weTag_getAttribute("useformmaillog", $attribs, weTag_getAttribute("useformmailLog", $attribs, false, true), true);
+		$useFormmailBlock = weTag_getAttribute("useformmailblock", $attribs, weTag_getAttribute("useformmailblock", $attribs, false, true), true);
 		if($useFormmailBlock){
 			$useFormmailLog = true;
 		}

@@ -32,7 +32,7 @@
 					return;
 				}
 				e.windowManager.open({
-					file: f + '/../../../../../wysiwyg/acronymDialog.php?we_dialog_args[editor]=tinyMce',
+					file: f + '/../../../../../wysiwyg/acronymDialog.php?we_dialog_args[editor]=tinyMce&we_dialog_args[isFrontend]=' + e.getParam('weIsFrontend'),
 					popup_css: false,
 					width: 460 + parseInt(e.getLang('weacronym.delta_width', 0)),
 					height: 200 + parseInt(e.getLang('weacronym.delta_height', 0)),

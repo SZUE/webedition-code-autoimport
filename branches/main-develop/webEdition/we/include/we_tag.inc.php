@@ -366,14 +366,19 @@ function parseError($text){
 	return '<b>' . g_l('parser', '[error_in_template]') . ':</b>' . $text . "<br/>\n" . g_l('weClass', '[template]') . ': ' . we_tag_tagParser::$curFile;
 }
 
-function attributFehltError($attribs, $attr, $tag, $canBeEmpty = false){
+function attributFehltError($attribs, $attrs, $tag, $canBeEmpty = false){
 	$tag = str_replace(array('we_tag_', 'we_parse_tag_'), '', $tag);
-	if($canBeEmpty){
-		if(!isset($attribs[$attr])){
-			return parseError(sprintf(g_l('parser', '[attrib_missing2]'), $attr, $tag));
+	if(!is_array($attrs)){
+		$attrs = array($attrs => $canBeEmpty);
+	}
+	foreach($attrs as $attr => $canBeEmpty){
+		if($canBeEmpty){
+			if(!isset($attribs[$attr])){
+				return parseError(sprintf(g_l('parser', '[attrib_missing2]'), $attr, $tag));
+			}
+		} elseif(!isset($attribs[$attr]) || $attribs[$attr] == ''){
+			return parseError(sprintf(g_l('parser', '[attrib_missing]'), $attr, $tag));
 		}
-	} elseif(!isset($attribs[$attr]) || $attribs[$attr] == ''){
-		return parseError(sprintf(g_l('parser', '[attrib_missing]'), $attr, $tag));
 	}
 	return '';
 }

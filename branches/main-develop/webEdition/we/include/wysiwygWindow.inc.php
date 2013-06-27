@@ -46,10 +46,11 @@ if(isset($_REQUEST['we_cmd'][15])){
 	}
 }
 
-
 @we_html_tools::headerCtCharset('text/html', ($_REQUEST['we_cmd'][15] ? $_REQUEST['we_cmd'][15] : $defaultCharset));
 
-we_html_tools::protect();
+if(!(isset($_REQUEST['we_cmd'][23]) && $_REQUEST['we_cmd'][23] == 1 && we_cmd_dec(4) == 'frontend')){
+	we_html_tools::protect();
+}
 
 //$we_dt = isset($_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][4]]) ? $_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][4]] : '';
 //include (WE_INCLUDES_PATH . "we_editors/we_init_doc.inc.php");
@@ -117,7 +118,7 @@ if(isset($fieldName) && isset($_REQUEST["we_okpressed"]) && $_REQUEST["we_okpres
 			  1 = name
 			  2 = width
 			  3 = height
-			  4 = transaction
+			  4 = empty
 			  5 = propstring
 			  6 = classname
 			  7 = fontnames

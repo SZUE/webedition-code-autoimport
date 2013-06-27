@@ -24,18 +24,18 @@
  */
 function we_tag_bannerSelect($attribs){
 	global $DB_WE;
-	if(($foo = attributFehltError($attribs, "name", __FUNCTION__))){
+	if(($foo = attributFehltError($attribs, 'name', __FUNCTION__))){
 		return $foo;
 	}
 
-	$name = weTag_getAttribute("name", $attribs);
-	$customer = weTag_getAttribute("customer", $attribs, false, true);
-	$rootdir = weTag_getAttribute("rootdir", $attribs, "/");
-	$firstentry = weTag_getAttribute("firstentry", $attribs);
-	$showpath = weTag_getAttribute("showpath", $attribs, false, true);
-	$submitonchange = weTag_getAttribute("submitonchange", $attribs, false, true);
+	$name = weTag_getAttribute('name', $attribs);
+	$customer = weTag_getAttribute('customer', $attribs, false, true);
+	$rootdir = weTag_getAttribute('rootdir', $attribs, '/');
+	$firstentry = weTag_getAttribute('firstentry', $attribs);
+	$showpath = weTag_getAttribute('showpath', $attribs, false, true);
+	$submitonchange = weTag_getAttribute('submitonchange', $attribs, false, true);
 
-	$where = " WHERE IsFolder=0 ";
+	$where = ' WHERE IsFolder=0 ';
 
 	$newAttribs = removeAttribs($attribs, array('showpath', 'rootdir', 'firstentry', 'submitonchange', 'customer'));
 	if($submitonchange){
@@ -49,13 +49,13 @@ function we_tag_bannerSelect($attribs){
 	}
 	$DB_WE->query('SELECT ID,Text,Path,Customers FROM ' . BANNER_TABLE . ' ' . $where . ' ORDER BY Path');
 	while($DB_WE->next_record()) {
-		if((!defined("CUSTOMER_TABLE")) || (!$customer) || ($customer && defined("CUSTOMER_TABLE") && weBanner::customerOwnsBanner($_SESSION["webuser"]["ID"], $DB_WE->f("ID")))){
+		if((!defined('CUSTOMER_TABLE')) || (!$customer) || ($customer && defined('CUSTOMER_TABLE') && weBanner::customerOwnsBanner($_SESSION['webuser']['ID'], $DB_WE->f('ID')))){
 			if(!isset($_REQUEST[$name])){
-				$_REQUEST[$name] = $DB_WE->f("Path");
+				$_REQUEST[$name] = $DB_WE->f('Path');
 			}
-			$options .= ($_REQUEST[$name] == $DB_WE->f("Path") ?
-					getHtmlTag('option', array('value' => $DB_WE->f("Path"), 'selected' => 'selected'), $showpath ? $DB_WE->f("Path") : $DB_WE->f("Text")) :
-					getHtmlTag('option', array('value' => $DB_WE->f("Path")), $showpath ? $DB_WE->f("Path") : $DB_WE->f("Text")));
+			$options .= ($_REQUEST[$name] == $DB_WE->f('Path') ?
+					getHtmlTag('option', array('value' => $DB_WE->f('Path'), 'selected' => 'selected'), $showpath ? $DB_WE->f('Path') : $DB_WE->f('Text')) :
+					getHtmlTag('option', array('value' => $DB_WE->f('Path')), $showpath ? $DB_WE->f('Path') : $DB_WE->f('Text')));
 		}
 	}
 

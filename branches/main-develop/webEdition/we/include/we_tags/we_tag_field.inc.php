@@ -162,7 +162,7 @@ function we_tag_field($attribs){
 
 	$isCalendar = (isset($GLOBALS['lv']->calendar_struct['calendar']) && $GLOBALS['lv']->calendar_struct['calendar'] != '' && $GLOBALS['lv']->isCalendarField($type));
 
-	if(!$GLOBALS['lv']->f('WE_ID') && $GLOBALS['lv']->calendar_struct['calendar'] == ''){
+	if((!$GLOBALS['lv']->f('WE_ID') && property_exists($GLOBALS['lv'],'calendar_struct')&& $GLOBALS['lv']->calendar_struct['calendar'] == '')|| !property_exists($GLOBALS['lv'],'calendar_struct')){
 		return '';
 	}
 

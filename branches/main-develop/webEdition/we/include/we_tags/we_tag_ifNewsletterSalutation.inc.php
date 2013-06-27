@@ -19,8 +19,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_ifNewsletterSalutation($attribs){
-	if(($foo = attributFehltError($attribs, 'type', __FUNCTION__, true)) ||
-		($foo = attributFehltError($attribs, 'match', __FUNCTION__))){
+	if(($foo = attributFehltError($attribs, array('type' => true, 'match' => false), __FUNCTION__))){
 		print($foo);
 		return false;
 	}

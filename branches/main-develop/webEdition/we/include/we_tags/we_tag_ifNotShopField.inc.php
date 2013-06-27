@@ -23,10 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_ifNotShopField($attribs){
-	if(($foo = attributFehltError($attribs, 'name', __FUNCTION__)) ||
-		($foo = attributFehltError($attribs, 'reference', __FUNCTION__)) ||
-		($foo = attributFehltError($attribs, 'shopname', __FUNCTION__)) ||
-		($foo = attributFehltError($attribs, 'match', __FUNCTION__, true))){
+	if(($foo = attributFehltError($attribs, array('name' => false, 'reference' => false, 'shopname' => false, 'match' => true), __FUNCTION__))){
 		print $foo;
 		return false;
 	}

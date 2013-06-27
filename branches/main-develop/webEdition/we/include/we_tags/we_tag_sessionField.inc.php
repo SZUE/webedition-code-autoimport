@@ -312,9 +312,9 @@ function we_tag_sessionField($attribs, $content){
 			$showcontrol = weTag_getAttribute('showcontrol', $attribs, true, true);
 			if($showcontrol){
 
-				$foo = attributFehltError($attribs, 'parentid', __FUNCTION__);
-				if($foo)
+				if(($foo = attributFehltError($attribs, 'parentid', __FUNCTION__))){
 					return $foo;
+				}
 			}
 
 			$imgId = $_SESSION['webuser']['imgtmp'][$name]['id'];

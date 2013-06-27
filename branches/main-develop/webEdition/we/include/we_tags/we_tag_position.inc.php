@@ -28,7 +28,7 @@ function we_tag_position($attribs){
 	//	type is required !!!
 	if(($missingAttrib = attributFehltError($attribs, "type", __FUNCTION__))){
 		print $missingAttrib;
-		return "";
+		return '';
 	}
 
 	//	here we get the needed attributes
@@ -71,7 +71,7 @@ function we_tag_position($attribs){
 				$_retPos = $_content['position'];  //  #6890
 			}
 			break;
-		
+
 		case "block" : //	look in function we_tag_block for details
 			//	first we must get right array !!!
 			$missingAttrib = attributFehltError($attribs, "reference", __FUNCTION__);

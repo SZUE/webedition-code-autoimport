@@ -140,7 +140,7 @@ onclick="' . $this->editor->ref . 'Obj.click(\'' . $this->cmd . '\');" /></div>'
 			case "nonbreaking":
 			case "hr":
 			case "fullscreen":
-				return we_wysiwyg::$editorType == 'tinyMCE' && parent::hasProp('', $contextMenu);
+				return !$this->editor->getIsFrontendEdit() && we_wysiwyg::$editorType == 'tinyMCE' && parent::hasProp('', $contextMenu);
 			default:
 				return parent::hasProp('', $contextMenu);
 		}

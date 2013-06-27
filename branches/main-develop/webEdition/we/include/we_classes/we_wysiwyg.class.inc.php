@@ -167,6 +167,10 @@ class we_wysiwyg{
 		$this->value = $value;
 	}
 
+	public function getIsFrontendEdit(){
+		return $this->isFrontendEdit;
+	}
+
 	function getMaxGroupWidth(){
 		$w = 0;
 		foreach($this->filteredElements as $i => $v){
@@ -1032,12 +1036,6 @@ function weWysiwygSetHiddenText(arg) {
 				$this->_imagePath . "visibleborders.gif",
 				g_l('wysiwyg', "[visible_borders]")
 			),
-			new we_wysiwyg_ToolbarButton(
-				$this,
-				"editsource",
-				$this->_imagePath . "editsourcecode.gif",
-				g_l('wysiwyg', "[edit_sourcecode]")
-			)
 		);
 		if(defined('SPELLCHECKER') && $this->showSpell){
 			$this->elements[] = new we_wysiwyg_ToolbarButton(
@@ -1055,6 +1053,12 @@ function weWysiwygSetHiddenText(arg) {
 					g_l('wysiwyg', "[fullscreen]")
 			);
 		}
+		$this->elements[] = new we_wysiwyg_ToolbarButton(
+				$this,
+				"editsource",
+				$this->_imagePath . "editsourcecode.gif",
+				g_l('wysiwyg', "[edit_sourcecode]")
+		);
 	}
 
 	function getWidthOfElem($startPos, $end){
@@ -1098,8 +1102,9 @@ function weWysiwygSetHiddenText(arg) {
 			$fns .= str_replace(",", ";", $fn) . ",";
 		}
 		$js_function = $this->isFrontendEdit ? 'open_wysiwyg_win' : 'we_cmd';
+		$param4 = !$this->isFrontendEdit ? 'value' : we_cmd_enc('frontend');
 		
-		return we_button::create_button("image:btn_edit_edit", "javascript:" . $js_function . "('open_wysiwyg_window', '" . $this->name . "','" . max(220, $this->width) . "', '" . $this->height . "','value','" . $this->propstring . "','" . $this->className . "','" . rtrim($fns, ',') . "',
+		return we_button::create_button("image:btn_edit_edit", "javascript:" . $js_function . "('open_wysiwyg_window', '" . $this->name . "','" . max(220, $this->width) . "', '" . $this->height . "','" . $param4 . "','" . $this->propstring . "','" . $this->className . "','" . rtrim($fns, ',') . "',
 			'" . $this->outsideWE . "','" . $tbwidth . "','" . $tbheight . "','" . $this->xml . "','" . $this->removeFirstParagraph . "','" . $this->bgcol . "','" . $this->baseHref . "','" . $this->charset . "','" . $this->cssClassesCSV . "','" . $this->Language . "','" . we_cmd_enc($this->contentCss) . "',
 			'" . $this->origName . "','" . we_cmd_enc($this->tinyParams) . "','" . we_cmd_enc($this->restrictContextmenu) . "', 'true', '" . $this->isFrontendEdit . "');", true, 25);
 	}
@@ -1439,6 +1444,7 @@ function weWysiwygSetHiddenText(arg) {
 							"contextmenu" : "' . urlencode(trim($this->restrictContextmenu,',')) . '",
 						},
 						weClassNames_urlEncoded : "' . urlencode($this->cssClassesCSV) . '",
+						weIsFrontend : "' . ($this->isFrontendEdit ? 1 : 0) . '",
 
 						language : "' . $lang . '",
 						mode : "exact",

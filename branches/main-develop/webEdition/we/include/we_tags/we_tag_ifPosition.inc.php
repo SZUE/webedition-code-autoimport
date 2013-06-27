@@ -119,9 +119,7 @@ function we_tag_ifPosition($attribs){
 	if(isset($GLOBALS['we']['ll'])){
 		$attribs['type'] = 'linklist';
 	}
-	if(($missingAttrib = attributFehltError($attribs, 'type', __FUNCTION__)) ||
-		($missingAttrib = attributFehltError($attribs, 'position', __FUNCTION__))
-	){
+	if(($missingAttrib = attributFehltError($attribs, array('type' => false, 'position' => false), __FUNCTION__))){
 		print $missingAttrib;
 		return '';
 	}
@@ -151,7 +149,7 @@ function we_tag_ifPosition($attribs){
 
 			if(is_array($_reference) && isset($_reference['position'])){
 				foreach($positionArray as $_position){
-					$tmp = _we_tag_ifPosition_op($_position, $_size, $operator, $_reference['position']+1, $_reference['size']);
+					$tmp = _we_tag_ifPosition_op($_position, $_size, $operator, $_reference['position'] + 1, $_reference['size']);
 					if($tmp !== -1){
 						return $tmp;
 					}

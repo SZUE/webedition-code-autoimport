@@ -24,8 +24,9 @@
  */
 function we_tag_formfield($attribs){
 
-	if(($foo = attributFehltError($attribs, "name", __FUNCTION__)))
+	if(($foo = attributFehltError($attribs, "name", __FUNCTION__))){
 		return $foo;
+	}
 	$name = weTag_getAttribute("name", $attribs);
 
 	$types = makeArrayFromCSV(weTag_getAttribute("type", $attribs, "textinput"));

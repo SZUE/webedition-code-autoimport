@@ -23,10 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_ifField($attribs){
-	if(($foo = attributFehltError($attribs, 'name', __FUNCTION__)) ||
-		($foo = attributFehltError($attribs, 'match', __FUNCTION__, true)) ||
-		($foo = attributFehltError($attribs, 'type', __FUNCTION__, true))
-	){
+	if(($foo = attributFehltError($attribs, array('name' => false, 'match' => true, 'type' => true), __FUNCTION__))){
 		print($foo);
 		return false;
 	}

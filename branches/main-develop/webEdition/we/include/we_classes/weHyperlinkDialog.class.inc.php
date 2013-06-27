@@ -30,9 +30,10 @@ class weHyperlinkDialog extends weDialog{
 		'param', 'anchor', 'lang', 'hreflang', 'title', 'accesskey', 'tabindex', 'rel', 'rev'
 	);
 
-	function __construct($href = '', $target = '', $fileID = 0, $objID = 0){
+	function __construct($href = '', $target = '', $fileID = 0, $objID = 0, $noInternals = false){
 		parent::__construct();
 		$this->dialogTitle = g_l('wysiwyg', '[edit_hyperlink]');
+		$this->noInternals = $noInternals;
 	}
 
 	function getDialogButtons(){
@@ -55,7 +56,7 @@ class weHyperlinkDialog extends weDialog{
 
 			// Object Links and internal links are not possible when outside webEdition
 			// for exmaple in the wysiwyg (Mantis Bug #138)
-			if(isset($this->args["outsideWE"]) && $this->args["outsideWE"] == 1 && (
+			if(($this->noInternals || (isset($this->args["outsideWE"]) && $this->args["outsideWE"] == 1)) && (
 				$type == we_base_link::TYPE_OBJ_PREFIX || $type == we_base_link::TYPE_INT_PREFIX
 				)
 			){
@@ -280,18 +281,16 @@ class weHyperlinkDialog extends weDialog{
 		// Initialize we_button class
 		$yuiSuggest = &weSuggest::getInstance();
 
-		$extHref = utf8_decode((substr($this->args["extHref"], 0, 1) == "#") ? "" : $this->args["extHref"]);
-		if(isset($this->args["outsideWE"]) && $this->args["outsideWE"] == 1){
+		$extHref = $this->args['extHref'] == '' ? 'http://' : (utf8_decode((substr($this->args['extHref'], 0, 1) == "#") ? '' : $this->args['extHref']));
+		if($this->noInternals || (isset($this->args['outsideWE']) && $this->args['outsideWE'] == 1)){
 
 
-			$_select_type = '<select name="we_dialog_args[type]" size="1" style="margin-bottom:5px;" onchange="changeTypeSelect(this);">
+		$_select_type = '<select name="we_dialog_args[type]" id="weDialogType" size="1" style="margin-bottom:5px;width:300px;" onchange="changeTypeSelect(this);">
 <option value="' . we_base_link::TYPE_EXT . '"' . (($this->args["type"] == we_base_link::TYPE_EXT) ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', "[external_link]") . '</option>
 <option value="' . we_base_link::TYPE_MAIL . '"' . (($this->args["type"] == we_base_link::TYPE_MAIL) ? ' selected="selected"' : '') . '>' . g_l('wysiwyg', "[emaillink]") . '</option>
 </select>';
 
-
 			$_external_link = we_html_tools::htmlTextInput("we_dialog_args[extHref]", 30, $extHref, "", '', "url", 300);
-
 
 			// INTERNAL LINK
 			$_internal_link = '';

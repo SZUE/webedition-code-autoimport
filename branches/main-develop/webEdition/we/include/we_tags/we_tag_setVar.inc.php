@@ -23,10 +23,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_setVar($attribs){
-	if(($foo = attributFehltError($attribs, 'nameto', __FUNCTION__)))
+	if(($foo = attributFehltError($attribs, array('nameto' => false, 'to' => false), __FUNCTION__))){
 		return $foo;
-	if(($foo = attributFehltError($attribs, 'to', __FUNCTION__)))
-		return $foo;
+	}
 
 	$nameFrom = weTag_getAttribute('namefrom', $attribs);
 	$nameTo = weTag_getAttribute('nameto', $attribs);
@@ -114,7 +113,7 @@ function we_tag_setVar($attribs){
 				}
 				$valueFrom = we_tag('field', array(
 					'name' => $nameFrom, 'type' => $typeFrom
-					));
+				));
 				break;
 			case 'block' :
 				$nameFrom = we_tag_getPostName($nameFrom);

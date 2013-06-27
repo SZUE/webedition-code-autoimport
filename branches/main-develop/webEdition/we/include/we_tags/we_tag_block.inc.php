@@ -36,8 +36,9 @@ function we_parse_tag_block($attribs, $content){
 	$GLOBALS['blkCnt'] = (isset($GLOBALS['blkCnt']) ? $GLOBALS['blkCnt'] + 1 : 0);
 	$arr = array();
 	eval('$arr = ' . (PHPLOCALSCOPE ? str_replace('$', '\$', $attribs) : $attribs) . ';'); //Bug #6516
-	if(($foo = attributFehltError($arr, 'name', __FUNCTION__)))
+	if(($foo = attributFehltError($arr, 'name', __FUNCTION__))){
 		return $foo;
+	}
 
 	//cleanup content
 	while(strpos($content, '\$') !== false) {

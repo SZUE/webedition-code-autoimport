@@ -133,7 +133,7 @@ function we_isFieldNotEmpty($attribs){
 	return $GLOBALS['lv']->f($match) != '';
 }
 
-function we_tag_ifFieldEmpty($attribs, $content){
+function we_tag_ifFieldEmpty($attribs){
 	if(($foo = attributFehltError($attribs, 'match', __FUNCTION__))){
 		print($foo);
 		return false;
