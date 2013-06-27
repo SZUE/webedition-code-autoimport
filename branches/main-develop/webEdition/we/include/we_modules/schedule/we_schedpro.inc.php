@@ -363,7 +363,7 @@ function checkFooter(){
 
 	function processSchedule($id, $schedFile, $now, $DB_WE){
 		usort($schedFile["value"], array('we_schedpro', 'weCmpSchedLast'));
-
+		$GLOBALS['we']['Scheduler_active'] = 1;
 		$doc_save = isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc'] : NULL;
 		$GLOBALS['we_doc'] = new $schedFile['ClassName']();
 		$GLOBALS['we_doc']->InitByID($id, $schedFile["table"], we_class::LOAD_SCHEDULE_DB);
@@ -445,7 +445,8 @@ function checkFooter(){
 
 		$_SESSION['weS']['versions']['fromScheduler'] = false;
 
-//		$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET Active=0 WHERE DID=' . intval($id) . ' AND Wann<=' . $now . ' AND Schedpro != "" AND Active=1 AND Type="' . self::TYPE_ONCE . '"');
+		//		$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET Active=0 WHERE DID=' . intval($id) . ' AND Wann<=' . $now . ' AND Schedpro != "" AND Active=1 AND Type="' . self::TYPE_ONCE . '"');
+		unset($GLOBALS['we']['Scheduler_active']);
 	}
 
 	static function trigger_schedule(){

@@ -46,19 +46,20 @@ abstract class we_history{
 		return false;
 	}
 
-	static function insertIntoHistory(&$object, $action = 'save'){
+	static function insertIntoHistory(&$object, $action = 'save', $user=''){
 		$db = new DB_WE();
 		$table = $db->escape(stripTblPrefix($object->Table));
 		$cnt = f('SELECT COUNT(1) AS cnt FROM ' . HISTORY_TABLE . ' WHERE DID=' . intval($object->ID) . ' AND DocumentTable="' . $table . '"', 'cnt', $db);
 		if($cnt > self::MAX){
 			$db->query('DELETE FROM ' . HISTORY_TABLE . ' WHERE DID=' . intval($object->ID) . ' AND DocumentTable="' . $table . '" ORDER BY ModDate DESC LIMIT ' . ($cnt - self::MAX));
 		}
+		$user=(isset($GLOBALS['we']['Scheduler_active'])?'Scheduler':'');
 		$db->query('REPLACE INTO ' . HISTORY_TABLE . ' SET ' . we_database_base::arraySetter(array(
 				'DID' => intval($object->ID),
 				'DocumentTable' => $table,
 				'ContentType' => $object->ContentType,
 				'Act' => $action,
-				'UserName' => (isset($_SESSION['user']['Username']) ? $_SESSION['user']['Username'] : ''),
+				'UserName' => ($user?$user:(isset($_SESSION['user']['Username']) ? $_SESSION['user']['Username'] : (isset($_SESSION['webuser']['Username'])?$_SESSION['webuser']['Username']:'Unknown'))),
 		)));
 	}
 

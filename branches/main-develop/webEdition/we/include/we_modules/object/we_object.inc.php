@@ -77,7 +77,7 @@ class we_object extends we_document{
 		}
 
 		$this->ModDate = time();
-		$this->ModifierID = isset($_SESSION['user']['ID']) ? $_SESSION['user']['ID'] : 0;
+		$this->ModifierID = !isset($GLOBALS['we']['Scheduler_active']) && isset($_SESSION['user']['ID']) ? $_SESSION['user']['ID'] : 0;
 
 		$this->saveToDB();
 

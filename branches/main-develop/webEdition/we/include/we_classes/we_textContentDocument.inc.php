@@ -292,7 +292,7 @@ abstract class we_textContentDocument extends we_textDocument{
 				return false;
 		}
 		if($resave == 0){
-			$this->ModifierID = isset($_SESSION["user"]["ID"]) ? $_SESSION["user"]["ID"] : 0;
+			$this->ModifierID = !isset($GLOBALS['we']['Scheduler_active']) && isset($_SESSION["user"]["ID"]) ? $_SESSION["user"]["ID"] : 0;
 			$this->ModDate = time();
 			$this->wasUpdate = 1;
 			we_history::insertIntoHistory($this);
