@@ -2456,6 +2456,9 @@ top.content.hloaded=1;') .
 		while($db->next_record(MYSQL_ASSOC)) {
 			$ret[$db->f('key')] = $db->f('value');
 		}
+		if($login){
+			self::writePrefs($id, $db);
+		}
 		return $ret;
 	}
 

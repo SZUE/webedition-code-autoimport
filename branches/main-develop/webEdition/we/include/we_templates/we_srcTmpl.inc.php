@@ -223,7 +223,7 @@ switch($_SESSION['prefs']['editorMode']){
 						setTimeout(initEditor, 500);
 					}
 				} else {
-					alert("JavaEditor could not be loaded. Please close this Template and try again."); // TODO: make regular we-Alaert
+					alert("<?php echo g_l('eplugin', 'no_java'); ?>"); // TODO: make regular we-Alaert
 				}
 		<?php
 		break;

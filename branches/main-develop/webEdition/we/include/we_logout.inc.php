@@ -33,11 +33,6 @@ $DB_WE->query('UPDATE ' . USER_TABLE . ' SET Ping=0 WHERE ID=' . intval($_SESSIO
 
 cleanTempFiles(true);
 
-//FIXME: is there any need for this?
-if(isset($_SESSION['prefs']['userID'])){ //	bugfix 2585, only update prefs, when userId is available
-	we_user::writePrefs($_SESSION['prefs']['userID'], $GLOBALS['DB_WE']);
-}
-
 //	getJSCommand
 $_path = (isset($_SESSION['weS']['SEEM']['startId'])? // logout from webEdition opened with tag:linkToSuperEasyEditMode
 		$_SESSION['weS']['SEEM']['startPath']:

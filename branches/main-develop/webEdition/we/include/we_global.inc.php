@@ -522,9 +522,10 @@ function we_userCanEditModule($modName){
 	$one = false;
 	$set = array();
 	$enable = 1;
-	if($_SESSION['perms']['ADMINISTRATOR']){
+	if(we_hasPerm('ADMINISTRATOR')){
 		return true;
 	}
+//FIXME: remove eval + change code
 	foreach($GLOBALS['_we_available_modules'] as $m){
 		if($m['name'] == $modName){
 
@@ -544,7 +545,6 @@ function we_userCanEditModule($modName){
 			}
 			$set_str = implode(' || ', $set);
 			$condition_str = implode(' || ', $or);
-//FIXME: remove eval
 			eval('if ((' . $set_str . ')&&(' . $condition_str . ')) { $enable=1; } else { $enable=0; }');
 			return $enable;
 		}

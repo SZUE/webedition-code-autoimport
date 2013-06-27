@@ -27,8 +27,8 @@ require_once(WE_MESSAGING_MODULE_PATH . "messaging_std.inc.php");
 /* message object class */
 
 class we_message extends we_msg_proto{
-
 	/* Flag which is set when the file is not new */
+
 	var $selected_message = array();
 	var $selected_set = array();
 	var $search_fields = array('m.headerSubject', 'm.headerFrom', 'm.MessageText');
@@ -119,14 +119,12 @@ class we_message extends we_msg_proto{
 			return -1;
 		}
 
-		$cond = '';
+		$cond = array();
 		foreach($i_headers as $ih){
-			$cond .= 'ID = ' . intval($ih['_ID']) . ' OR ';
+			$cond[] = 'ID = ' . intval($ih['_ID']);
 		}
 
-		$cond = substr($cond, 0, -4);
-
-		$this->DB_WE->query('DELETE FROM ' . $this->table . " WHERE ($cond) AND obj_type=" . we_msg_proto::MESSAGE_NR . " AND UserID=" . intval($this->userid));
+		$this->DB_WE->query('DELETE FROM ' . $this->table . ' WHERE (' . implode(' OR ', $cond) . ') AND obj_type=' . we_msg_proto::MESSAGE_NR . ' AND UserID=' . intval($this->userid));
 
 		return 1;
 	}
@@ -145,15 +143,13 @@ class we_message extends we_msg_proto{
 	}
 
 	function clipboard_copy($items, $target_fid){
-		$tmp_msgs = array();
-
 		if(empty($items)){
 			return;
 		}
 
 		foreach($items as $item){
 			$tmp = array();
-			$this->DB_WE->query('SELECT ParentID, msg_type, obj_type, headerDate, headerSubject, headerUserID, headerFrom, Priority, MessageText, seenStatus, tag FROM ' . $this->table . " WHERE ID=" . intval($item) . " AND UserID=" . intval($this->userid));
+			$this->DB_WE->query('SELECT ParentID, msg_type, obj_type, headerDate, headerSubject, headerUserID, headerFrom, Priority, MessageText, seenStatus, tag FROM ' . $this->table . ' WHERE ID=' . intval($item) . ' AND UserID=' . intval($this->userid));
 			while($this->DB_WE->next_record()) {
 				$tmp['ParentID'] = isset($this->DB_WE->Record['ParentID']) ? $this->DB_WE->Record['ParentID'] : 'NULL';
 				$tmp['msg_type'] = $this->DB_WE->f('msg_type');
@@ -181,7 +177,7 @@ class we_message extends we_msg_proto{
 					'MessageText' => $tmp['MessageText'],
 					'seenStatus' => $tmp['seenStatus'],
 					'tag' => $tmp['tag'],
-				)));
+			)));
 
 			$pending_ids[] = $this->DB_WE->getInsertId();
 		}

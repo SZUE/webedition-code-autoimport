@@ -410,9 +410,7 @@ if (window.screen) {
 			}
 		}
 
-		//FIXME: replace by gz'd version
-		//return weFile::save($cacheFilename, gzdeflate(serialize($content), 9));
-		return weFile::save($cacheFilename, '<?php $content=unserialize(\'' . str_replace('\'', '\\\\\'', serialize($content)) . '\');');
+		return weFile::save($cacheFilename, gzdeflate(serialize($content), 9));
 	}
 
 	/**
@@ -429,9 +427,12 @@ if (window.screen) {
 					return array();
 				}
 			}
-			include($cacheFilename);
-			//FIXME: replace by gz'd version
-			$this->content = $content; //@unserialize(@gzinflate(weFile::load($cacheFilename)));
+			if(weFile::load($cacheFilename, 'rb', 5) == '<?php'){
+				include($cacheFilename);
+				$this->content = $content;
+			} else{
+				$this->content = @unserialize(@gzinflate(weFile::load($cacheFilename)));
+			}
 		}
 		if(!empty($this->content)){
 			return $this->content[$type];

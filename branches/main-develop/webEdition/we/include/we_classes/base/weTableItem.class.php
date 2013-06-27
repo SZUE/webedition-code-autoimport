@@ -41,8 +41,8 @@ class weTableItem extends weModelBase{
 			$this->db = new DB_WE();
 			$this->table = $table;
 		}
-		$this->attribute_slots["table"] = stripTblPrefix($table);
-		$this->setKeys($this->getTableKey($this->table));
+		$this->attribute_slots['table'] = stripTblPrefix($table);
+		$this->setKeys(self::getTableKey($this->table));
 	}
 
 	function load(array $ids){
@@ -52,7 +52,7 @@ class weTableItem extends weModelBase{
 		parent::load();
 	}
 
-	function getTableKey($table){
+	static function getTableKey($table){
 		$table = strtolower($table);
 		include(WE_INCLUDES_PATH . 'we_exim/backup/weTableKeys.inc.php');
 		if(in_array($table, array_keys($tableKeys))){

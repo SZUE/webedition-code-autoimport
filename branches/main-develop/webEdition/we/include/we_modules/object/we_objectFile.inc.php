@@ -895,7 +895,7 @@ class we_objectFile extends we_document{
 			$editObjectButtonDis = we_button::create_button("image:btn_edit_object", "", true, 44, 22, "", "", true);
 			$inputWidth = 443;
 
-			$uniq = md5(uniqid(__FUNCTION__, true)); // FIXME: #6590: str_replace('.', '', uniqid("",true))
+			$uniq = md5(uniqid(__FUNCTION__, true));
 			$openCloseButton = we_multiIconBox::_getButton($uniq, "weToggleBox('$uniq','','')", "down", g_l('global', "[openCloseBox]"));
 			$openCloseButtonDis = we_html_tools::getPixel(21, 1);
 
@@ -912,7 +912,7 @@ class we_objectFile extends we_document{
 		}
 
 		if(!$editable){
-			$uniq = md5(uniqid(__FUNCTION__, true)); // FIXME: #6590: str_replace('.', '', uniqid("",true))
+			$uniq = md5(uniqid(__FUNCTION__, true));
 			$txt = $ob->Text ? $ob->Text : $name;
 			$but = we_multiIconBox::_getButton($uniq, "weToggleBox('$uniq','" . $txt . "','" . $txt . "')", "down", g_l('global', "[openCloseBox]"));
 
@@ -1067,7 +1067,7 @@ class we_objectFile extends we_document{
 			for($f = 0; $f < $show; $f++){
 				$myid = $objects[$f];
 				if($myid){
-					$uniq = md5(uniqid(__FUNCTION__, true)); // FIXME: #6590: str_replace('.', '', uniqid("",true))
+					$uniq = md5(uniqid(__FUNCTION__, true));
 					$ob = new we_objectFile();
 					$ob->initByID($myid, OBJECT_FILES_TABLE);
 					$ob->DefArray = $ob->getDefaultValueArray();
