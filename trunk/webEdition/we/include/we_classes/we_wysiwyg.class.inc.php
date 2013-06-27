@@ -167,6 +167,10 @@ class we_wysiwyg{
 		$this->value = $value;
 	}
 
+	public function getIsFrontendEdit(){
+		return $this->isFrontendEdit;
+	}
+
 	function getMaxGroupWidth(){
 		$w = 0;
 		foreach($this->filteredElements as $i => $v){
@@ -1032,12 +1036,6 @@ function weWysiwygSetHiddenText(arg) {
 				$this->_imagePath . "visibleborders.gif",
 				g_l('wysiwyg', "[visible_borders]")
 			),
-			new we_wysiwyg_ToolbarButton(
-				$this,
-				"editsource",
-				$this->_imagePath . "editsourcecode.gif",
-				g_l('wysiwyg', "[edit_sourcecode]")
-			)
 		);
 		if(defined('SPELLCHECKER') && $this->showSpell){
 			$this->elements[] = new we_wysiwyg_ToolbarButton(
@@ -1055,6 +1053,12 @@ function weWysiwygSetHiddenText(arg) {
 					g_l('wysiwyg', "[fullscreen]")
 			);
 		}
+		$this->elements[] = new we_wysiwyg_ToolbarButton(
+				$this,
+				"editsource",
+				$this->_imagePath . "editsourcecode.gif",
+				g_l('wysiwyg', "[edit_sourcecode]")
+		);
 	}
 
 	function getWidthOfElem($startPos, $end){
