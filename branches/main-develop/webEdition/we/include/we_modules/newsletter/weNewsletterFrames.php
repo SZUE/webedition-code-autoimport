@@ -157,15 +157,15 @@ class weNewsletterFrames extends weModuleFrames{
 				function setTab(tab) {
 					switch (tab) {
 						case 0:
-							top.content.right.editor.edbody.we_cmd("switchPage",0);
+							top.content.editor.edbody.we_cmd("switchPage",0);
 							break;
 
 						case 1:
-							top.content.right.editor.edbody.we_cmd("switchPage",1);
+							top.content.editor.edbody.we_cmd("switchPage",1);
 							break;
 
 						case 2:
-							top.content.right.editor.edbody.we_cmd("switchPage",2);
+							top.content.editor.edbody.we_cmd("switchPage",2);
 							break;
 					}
 
@@ -266,10 +266,10 @@ class weNewsletterFrames extends weModuleFrames{
 			}
 
 			function populateGroups() {
-				if (top.content.right.editor.edbody.getGroupsNum) {
+				if (top.content.editor.edbody.getGroupsNum) {
 
-					if (top.content.right.editor.edbody.loaded) {
-						var num=top.content.right.editor.edbody.getGroupsNum();
+					if (top.content.editor.edbody.loaded) {
+						var num=top.content.editor.edbody.getGroupsNum();
 
 							if (!num) {
 								num = 1;

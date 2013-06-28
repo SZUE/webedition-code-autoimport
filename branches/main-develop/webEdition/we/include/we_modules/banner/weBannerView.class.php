@@ -260,16 +260,16 @@ class weBannerView extends weBannerBase{
 						}
 						break;
 					case "new_banner":
-						if(top.content.right.editor.edbody.loaded){
-							top.content.right.editor.edbody.document.we_form.ncmd.value=arguments[0];
-							top.content.right.editor.edbody.submitForm();
+						if(top.content.editor.edbody.loaded){
+							top.content.editor.edbody.document.we_form.ncmd.value=arguments[0];
+							top.content.editor.edbody.submitForm();
 						}
 						else setTimeout('we_cmd("new_banner");',10);
 						break;
 					case "new_bannergroup":
-						if(top.content.right.editor.edbody.loaded){
-							top.content.right.editor.edbody.document.we_form.ncmd.value=arguments[0];
-							top.content.right.editor.edbody.submitForm();
+						if(top.content.editor.edbody.loaded){
+							top.content.editor.edbody.document.we_form.ncmd.value=arguments[0];
+							top.content.editor.edbody.submitForm();
 						}
 						else setTimeout('we_cmd("new_bannergroup");',10);
 						break;
@@ -279,21 +279,21 @@ class weBannerView extends weBannerBase{
 			print we_message_reporting::getShowMessageCall(g_l('modules_banner', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
 		} else{
 			?>
-								if(top.content.right.editor.edbody.loaded && top.content.right.editor.edbody.we_is_home==undefined){
+								if(top.content.editor.edbody.loaded && top.content.editor.edbody.we_is_home==undefined){
 									if(!confirm("<?php print g_l('modules_banner', '[delete_question]') ?>")) return;
 								}
 								else {
 			<?php print we_message_reporting::getShowMessageCall(g_l('modules_banner', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_WARNING); ?>
 									return;
 								}
-								top.content.right.editor.edbody.document.we_form.ncmd.value=arguments[0];
-								top.content.right.editor.edbody.submitForm();
+								top.content.editor.edbody.document.we_form.ncmd.value=arguments[0];
+								top.content.editor.edbody.submitForm();
 		<?php } ?>
 						break;
 					case "save_banner":
 		<?php if(we_hasPerm("EDIT_BANNER") || we_hasPerm("NEW_BANNER")){ ?>
-							if(top.content.right.editor.edbody.loaded && top.content.right.editor.edbody.we_is_home==undefined){
-								if(!top.content.right.editor.edbody.checkData()){
+							if(top.content.editor.edbody.loaded && top.content.editor.edbody.we_is_home==undefined){
+								if(!top.content.editor.edbody.checkData()){
 									return;
 								}
 							}else{
@@ -301,15 +301,15 @@ class weBannerView extends weBannerBase{
 									return;
 								}
 
-								top.content.right.editor.edbody.document.we_form.ncmd.value=arguments[0];
-								top.content.right.editor.edbody.submitForm();
+								top.content.editor.edbody.document.we_form.ncmd.value=arguments[0];
+								top.content.editor.edbody.submitForm();
 		<?php } ?>
 						top.content.usetHot();
 						break;
 					case "edit_banner":
-						top.content.right.editor.edbody.document.we_form.ncmd.value=arguments[0];
-						top.content.right.editor.edbody.document.we_form.bid.value=arguments[1];
-						top.content.right.editor.edbody.submitForm();
+						top.content.editor.edbody.document.we_form.ncmd.value=arguments[0];
+						top.content.editor.edbody.document.we_form.bid.value=arguments[1];
+						top.content.editor.edbody.submitForm();
 						break;
 					default:
 						for(var i = 0; i < arguments.length; i++) {
@@ -467,22 +467,22 @@ class weBannerView extends weBannerBase{
 					$this->page = 0;
 					$this->banner = new weBanner();
 					print we_html_element::jsElement('
-					top.content.right.editor.edheader.location="edit_banner_frameset.php?pnt=edheader&page=' . $this->page . '&txt=' . $this->banner->Path . '&isFolder=' . $this->banner->IsFolder . '";
-					top.content.right.editor.edfooter.location="edit_banner_frameset.php?pnt=edfooter";
+					top.content.editor.edheader.location="edit_banner_frameset.php?pnt=edheader&page=' . $this->page . '&txt=' . $this->banner->Path . '&isFolder=' . $this->banner->IsFolder . '";
+					top.content.editor.edfooter.location="edit_banner_frameset.php?pnt=edfooter";
 					');
 					break;
 				case "new_bannergroup":
 					$this->page = 0;
 					$this->banner = new weBanner(0, 1);
 					print we_html_element::jsElement('
-					top.content.right.editor.edheader.location="edit_banner_frameset.php?pnt=edheader&page=' . $this->page . '&txt=' . $this->banner->Path . '&isFolder=' . $this->banner->IsFolder . '";
-					top.content.right.editor.edfooter.location="edit_banner_frameset.php?pnt=edfooter";
+					top.content.editor.edheader.location="edit_banner_frameset.php?pnt=edheader&page=' . $this->page . '&txt=' . $this->banner->Path . '&isFolder=' . $this->banner->IsFolder . '";
+					top.content.editor.edfooter.location="edit_banner_frameset.php?pnt=edfooter";
 					');
 					break;
 				case "reload":
 					print we_html_element::jsElement('
-					top.content.right.editor.edheader.location="edit_banner_frameset.php?pnt=edheader&page=' . $this->page . '&txt=' . $this->banner->Path . '&isFolder=' . $this->banner->IsFolder . '";
-					top.content.right.editor.edfooter.location="edit_banner_frameset.php?pnt=edfooter";') . '
+					top.content.editor.edheader.location="edit_banner_frameset.php?pnt=edheader&page=' . $this->page . '&txt=' . $this->banner->Path . '&isFolder=' . $this->banner->IsFolder . '";
+					top.content.editor.edfooter.location="edit_banner_frameset.php?pnt=edfooter";') . '
 					</head>
 					<body></body>
 					</html>';

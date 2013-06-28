@@ -170,9 +170,9 @@ class weGlossaryView{
 	function setTopFrame($Frame){
 
 		$this->TopFrame = $Frame;
-		$this->EditorBodyFrame = $Frame . '.right.editor.edbody';
+		$this->EditorBodyFrame = $Frame . '.editor.edbody';
 		$this->EditorBodyForm = $this->EditorBodyFrame . '.document.we_form';
-		$this->EditorHeaderFrame = $Frame . '.right.editor.edheader';
+		$this->EditorHeaderFrame = $Frame . '.editor.edheader';
 	}
 
 	//------------------------------------------------
@@ -243,13 +243,13 @@ class weGlossaryView{
 					case "new_glossary_foreignword":
 					case "new_glossary_link":
 					case "new_glossary_textreplacement":
-						if(' . $this->TopFrame . '.right.editor.edbody.loaded) {
-							' . $this->TopFrame . '.right.editor.edbody.document.we_form.cmd.value = arguments[0];
+						if(' . $this->TopFrame . '.editor.edbody.loaded) {
+							' . $this->TopFrame . '.editor.edbody.document.we_form.cmd.value = arguments[0];
 							if(arguments[1] != undefined) {
-								' . $this->TopFrame . '.right.editor.edbody.document.we_form.cmdid.value = arguments[1];
+								' . $this->TopFrame . '.editor.edbody.document.we_form.cmdid.value = arguments[1];
 							}
-							' . $this->TopFrame . '.right.editor.edbody.document.we_form.tabnr.value = 1;
-							' . $this->TopFrame . '.right.editor.edbody.submitForm();
+							' . $this->TopFrame . '.editor.edbody.document.we_form.tabnr.value = 1;
+							' . $this->TopFrame . '.editor.edbody.submitForm();
 						} else {
 							if(arguments[1] != undefined) {
 								str = \'we_cmd("\' + arguments[0] + \'", "\' + arguments[1] + \'");\';
@@ -262,16 +262,16 @@ class weGlossaryView{
 						break;
 
 					case "delete_glossary":
-						var exc = ' . $this->TopFrame . '.right.editor.edbody.document.we_form.cmdid.value;
+						var exc = ' . $this->TopFrame . '.editor.edbody.document.we_form.cmdid.value;
 						if (exc.substring(exc.length-10, exc.length)=="_exception") {
 							' . we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 							break;
 						}
-						if(top.content.right.editor.edbody.document.we_form.cmd.value=="home") return;
-						if(top.content.right.editor.edbody.document.we_form.cmd.value=="view_folder") return;
-						if(top.content.right.editor.edbody.document.we_form.cmd.value=="view_type") return;
-						if(top.content.right.editor.edbody.document.we_form.cmd.value=="view_exception") return;
-						if(top.content.right.editor.edbody.document.we_form.newone.value==1){
+						if(top.content.editor.edbody.document.we_form.cmd.value=="home") return;
+						if(top.content.editor.edbody.document.we_form.cmd.value=="view_folder") return;
+						if(top.content.editor.edbody.document.we_form.cmd.value=="view_type") return;
+						if(top.content.editor.edbody.document.we_form.cmd.value=="view_exception") return;
+						if(top.content.editor.edbody.document.we_form.newone.value==1){
 							' . we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 							return;
 						}
@@ -280,13 +280,13 @@ class weGlossaryView{
 				we_message_reporting::getShowMessageCall(g_l('modules_glossary', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR)
 				) :
 				('
-							if (' . $this->TopFrame . '.right.editor.edbody.loaded) {
+							if (' . $this->TopFrame . '.editor.edbody.loaded) {
 								if (confirm("' . g_l('modules_glossary', "[delete_alert]") . '")) {
-									' . $this->TopFrame . '.right.editor.edbody.document.we_form.cmd.value=arguments[0];
-									' . $this->TopFrame . '.right.editor.edbody.document.we_form.tabnr.value=' . $this->TopFrame . '.activ_tab;
+									' . $this->TopFrame . '.editor.edbody.document.we_form.cmd.value=arguments[0];
+									' . $this->TopFrame . '.editor.edbody.document.we_form.tabnr.value=' . $this->TopFrame . '.activ_tab;
 									' . $this->EditorHeaderFrame . '.location="' . $this->FrameSet . '?home=1&pnt=edheader";
-									' . $this->TopFrame . '.right.editor.edfooter.location="' . $this->FrameSet . '?home=1&pnt=edfooter";
-									' . $this->TopFrame . '.right.editor.edbody.submitForm();
+									' . $this->TopFrame . '.editor.edfooter.location="' . $this->FrameSet . '?home=1&pnt=edfooter";
+									' . $this->TopFrame . '.editor.edbody.submitForm();
 								}
 							} else {
 								' . we_message_reporting::getShowMessageCall(g_l('modules_glossary', "[nothing_to_delete]"), we_message_reporting::WE_MESSAGE_ERROR) . '
@@ -296,20 +296,20 @@ class weGlossaryView{
 
 					case "save_exception":
 					case "save_glossary":
-						var exc = ' . $this->TopFrame . '.right.editor.edbody.document.we_form.cmdid.value;
+						var exc = ' . $this->TopFrame . '.editor.edbody.document.we_form.cmdid.value;
 						if (exc.substring(exc.length-10, exc.length)=="_exception") {
 							arguments[0] = "save_exception";
 						}
-						if(top.content.right.editor.edbody.document.we_form.cmd.value=="home") return;
-						if(top.content.right.editor.edbody.document.we_form.cmd.value=="view_folder") return;
-						if(top.content.right.editor.edbody.document.we_form.cmd.value=="view_type") return;
-						if (' . $this->TopFrame . '.right.editor.edbody.loaded) {
-							' . $this->TopFrame . '.right.editor.edbody.document.we_form.cmd.value=arguments[0];
-							' . $this->TopFrame . '.right.editor.edbody.document.we_form.tabnr.value=' . $this->TopFrame . '.activ_tab;
+						if(top.content.editor.edbody.document.we_form.cmd.value=="home") return;
+						if(top.content.editor.edbody.document.we_form.cmd.value=="view_folder") return;
+						if(top.content.editor.edbody.document.we_form.cmd.value=="view_type") return;
+						if (' . $this->TopFrame . '.editor.edbody.loaded) {
+							' . $this->TopFrame . '.editor.edbody.document.we_form.cmd.value=arguments[0];
+							' . $this->TopFrame . '.editor.edbody.document.we_form.tabnr.value=' . $this->TopFrame . '.activ_tab;
 							if(top.makeNewEntry==1) {
-								' . $this->TopFrame . '.right.editor.edbody.submitForm("cmd");
+								' . $this->TopFrame . '.editor.edbody.submitForm("cmd");
 							} else {
-								' . $this->TopFrame . '.right.editor.edbody.submitForm();
+								' . $this->TopFrame . '.editor.edbody.submitForm();
 							}
 						} else {
 							' . we_message_reporting::getShowMessageCall(g_l('modules_glossary', "[nothing_to_save]"), we_message_reporting::WE_MESSAGE_ERROR) . '
@@ -324,10 +324,10 @@ class weGlossaryView{
 					case "edit_glossary_textreplacement":
 						' . (!we_hasPerm("EDIT_GLOSSARY") ? we_message_reporting::getShowMessageCall(g_l('modules_glossary', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR) . 'return;' : '') . '
 						' . $this->TopFrame . '.hot=0;
-						' . $this->TopFrame . '.right.editor.edbody.document.we_form.cmd.value=arguments[0];
-						' . $this->TopFrame . '.right.editor.edbody.document.we_form.cmdid.value=arguments[1];
-						' . $this->TopFrame . '.right.editor.edbody.document.we_form.tabnr.value=' . $this->TopFrame . '.activ_tab;
-						' . $this->TopFrame . '.right.editor.edbody.submitForm();
+						' . $this->TopFrame . '.editor.edbody.document.we_form.cmd.value=arguments[0];
+						' . $this->TopFrame . '.editor.edbody.document.we_form.cmdid.value=arguments[1];
+						' . $this->TopFrame . '.editor.edbody.document.we_form.tabnr.value=' . $this->TopFrame . '.activ_tab;
+						' . $this->TopFrame . '.editor.edbody.submitForm();
 						break;
 
 					case "load":
@@ -467,8 +467,8 @@ class weGlossaryView{
 					$this->Glossary->Type = array_pop(explode("_", $_REQUEST["cmd"], 4));
 
 					print we_html_element::jsElement('
-							' . $this->TopFrame . '.right.editor.edheader.location="' . $this->FrameSet . '?pnt=edheader&text=' . urlencode($this->Glossary->Text) . '";
-							' . $this->TopFrame . '.right.editor.edfooter.location="' . $this->FrameSet . '?pnt=edfooter";
+							' . $this->TopFrame . '.editor.edheader.location="' . $this->FrameSet . '?pnt=edheader&text=' . urlencode($this->Glossary->Text) . '";
+							' . $this->TopFrame . '.editor.edfooter.location="' . $this->FrameSet . '?pnt=edfooter";
 					');
 					break;
 
@@ -488,8 +488,8 @@ class weGlossaryView{
 					$this->Glossary = new weGlossary($_REQUEST["cmdid"]);
 
 					print we_html_element::jsElement('
-						' . $this->TopFrame . '.right.editor.edheader.location="' . $this->FrameSet . '?pnt=edheader&text=' . urlencode($this->Glossary->Text) . '";
-						' . $this->TopFrame . '.right.editor.edfooter.location="' . $this->FrameSet . '?pnt=edfooter";
+						' . $this->TopFrame . '.editor.edheader.location="' . $this->FrameSet . '?pnt=edheader&text=' . urlencode($this->Glossary->Text) . '";
+						' . $this->TopFrame . '.editor.edfooter.location="' . $this->FrameSet . '?pnt=edfooter";
 					');
 					break;
 

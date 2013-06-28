@@ -79,7 +79,9 @@ class weCustomerFrames extends weModuleFrames{
 			we_html_element::jsElement($this->getJSStart()) .
 			we_html_element::jsElement($this->View->getJSTreeHeader());
 
-		return parent::getHTMLFrameset($extraHead);
+		$extraUrlParams = isset($_REQUEST['sid']) ? '&sid=' . $_REQUEST['sid'] : '';
+
+		return parent::getHTMLFrameset($extraHead, false, $extraUrlParams);
 	}
 
 	function getHTMLLeftDiv(){

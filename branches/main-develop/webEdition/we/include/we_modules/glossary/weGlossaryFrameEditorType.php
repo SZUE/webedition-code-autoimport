@@ -128,8 +128,8 @@
 
 			// ---> some javascript code
 
-			$_js .=		$weGlossaryFrames->topFrame.'.right.editor.edheader.location="'.$weGlossaryFrames->frameset.'?pnt=edheader&cmd=view_type&cmdid=' . $_REQUEST['cmdid'] . '";
-						' . $weGlossaryFrames->topFrame.'.right.editor.edfooter.location="'.$weGlossaryFrames->frameset.'?pnt=edfooter&cmd=view_type&cmdid=' . $_REQUEST['cmdid'] . '";
+			$_js .=		$weGlossaryFrames->topFrame . '.editor.edheader.location="' . $weGlossaryFrames->frameset . '?pnt=edheader&cmd=view_type&cmdid=' . $_REQUEST['cmdid'] . '";
+						' . $weGlossaryFrames->topFrame . '.editor.edfooter.location="' . $weGlossaryFrames->frameset . '?pnt=edfooter&cmd=view_type&cmdid=' . $_REQUEST['cmdid'] . '";
 		function AllItems()
 		{
 			if(document.we_form.selectAll.value == 0) {
@@ -291,7 +291,7 @@
 					'bgcolor' => '#ffffff',
 				);
 
-				$link = '<a href="javascript://" onclick="'.$weGlossaryFrames->topFrame.'.right.editor.edbody.location=\''.$weGlossaryFrames->frameset.'?pnt=edbody&cmd=edit_glossary_' . $Type . '&cmdid=' . $Search->getField('ID') . '&tabnr=\'+'.$weGlossaryFrames->topFrame.'.activ_tab;">' . oldHtmlspecialchars($Search->getField('Text')) . '</a>';
+				$link = '<a href="javascript://" onclick="' . $weGlossaryFrames->topFrame . '.editor.edbody.location=\'' . $weGlossaryFrames->frameset . '?pnt=edbody&cmd=edit_glossary_' . $Type . '&cmdid=' . $Search->getField('ID') . '&tabnr=\'+'.$weGlossaryFrames->topFrame.'.activ_tab;">' . oldHtmlspecialchars($Search->getField('Text')) . '</a>';
 				$temp[2] = array(
 					'dat' => $link,
 					'height' => 25,

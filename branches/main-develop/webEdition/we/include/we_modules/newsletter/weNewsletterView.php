@@ -387,59 +387,59 @@ class weNewsletterView{
 						break;
 
 					case "new_newsletter":
-						if(top.content.right.editor.edbody.loaded) {
-							top.content.right.editor.edbody.document.we_form.ncmd.value = arguments[0];
-							top.content.right.editor.edbody.submitForm();
+						if(top.content.editor.edbody.loaded) {
+							top.content.editor.edbody.document.we_form.ncmd.value = arguments[0];
+							top.content.editor.edbody.submitForm();
 						} else {
 							setTimeout("we_cmd(\"new_newsletter\");", 10);
 						}
 						break;
 
 					case "new_newsletter_group":
-						if(top.content.right.editor.edbody.loaded) {
-							top.content.right.editor.edbody.document.we_form.ncmd.value = arguments[0];
-							top.content.right.editor.edbody.submitForm();
+						if(top.content.editor.edbody.loaded) {
+							top.content.editor.edbody.document.we_form.ncmd.value = arguments[0];
+							top.content.editor.edbody.submitForm();
 						} else {
 							setTimeout("we_cmd(\"new_newsletter_group\");", 10);
 						}
 						break;
 
 					case "delete_newsletter":
-						if(top.content.right.editor.edbody.document.we_form.ncmd.value=="home") {
+						if(top.content.editor.edbody.document.we_form.ncmd.value=="home") {
 							' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[no_newsletter_selected]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 						} else {
 							' . ((!we_hasPerm("DELETE_NEWSLETTER")) ? (
 					we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
 					) : ('
-									if (top.content.right.editor.edbody.loaded) {
-										var delQuestion = top.content.right.editor.edbody.document.we_form.IsFolder.value == 1 ? "' . g_l('modules_newsletter', '[delete_group_question]') . '" : "' . g_l('modules_newsletter', '[delete_question]') . '";
+									if (top.content.editor.edbody.loaded) {
+										var delQuestion = top.content.editor.edbody.document.we_form.IsFolder.value == 1 ? "' . g_l('modules_newsletter', '[delete_group_question]') . '" : "' . g_l('modules_newsletter', '[delete_question]') . '";
 										if (!confirm(delQuestion)) {
 											return;
 										}
 									} else {
 										' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 									}
-									' . $this->topFrame . '.right.editor.edheader.location="' . $this->frameset . '?home=1&pnt=edheader";
-									' . $this->topFrame . '.right.editor.edfooter.location="' . $this->frameset . '?home=1&pnt=edfooter";
-									top.content.right.editor.edbody.document.we_form.ncmd.value=arguments[0];
-									top.content.right.editor.edbody.submitForm();
+									' . $this->topFrame . '.editor.edheader.location="' . $this->frameset . '?home=1&pnt=edheader";
+									' . $this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?home=1&pnt=edfooter";
+									top.content.editor.edbody.document.we_form.ncmd.value=arguments[0];
+									top.content.editor.edbody.submitForm();
 							')) . '
 						}
 						break;
 
 					case "save_newsletter":
-						if(top.content.right.editor.edbody.document.we_form.ncmd.value=="home") {
+						if(top.content.editor.edbody.document.we_form.ncmd.value=="home") {
 							' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[no_newsletter_selected]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 						} else {
 							' . ((!we_hasPerm("EDIT_NEWSLETTER") && !we_hasPerm("NEW_NEWSLETTER")) ? (
 					we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
 					) : ('
-									if (top.content.right.editor.edbody.loaded) {
-										if (!top.content.right.editor.edbody.checkData()) {
+									if (top.content.editor.edbody.loaded) {
+										if (!top.content.editor.edbody.checkData()) {
 											return;
 										}
-										top.content.right.editor.edbody.document.we_form.ncmd.value=arguments[0];
-										top.content.right.editor.edbody.submitForm();
+										top.content.editor.edbody.document.we_form.ncmd.value=arguments[0];
+										top.content.editor.edbody.submitForm();
 
 									} else {
 										' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[nothing_to_save]'), we_message_reporting::WE_MESSAGE_ERROR) . '
@@ -451,25 +451,25 @@ class weNewsletterView{
 
 					case "edit_newsletter":
 						top.content.hot=0;
-						top.content.right.editor.edbody.document.we_form.ncmd.value=arguments[0];
-						top.content.right.editor.edbody.document.we_form.nid.value=arguments[1];
-						top.content.right.editor.edbody.submitForm();
+						top.content.editor.edbody.document.we_form.ncmd.value=arguments[0];
+						top.content.editor.edbody.document.we_form.nid.value=arguments[1];
+						top.content.editor.edbody.submitForm();
 						break;
 
 					case "send_test":
-						if(top.content.right.editor.edbody.document.we_form.ncmd.value=="home") {
+						if(top.content.editor.edbody.document.we_form.ncmd.value=="home") {
 							' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[no_newsletter_selected]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-						} else if(top.content.right.editor.edbody.document.we_form.IsFolder.value==1) {
+						} else if(top.content.editor.edbody.document.we_form.IsFolder.value==1) {
 							' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[no_newsletter_selected]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 						} else {
-							top.content.right.editor.edbody.we_cmd("send_test");
+							top.content.editor.edbody.we_cmd("send_test");
 						}
 						break;
 
 					case "empty_log":
-						if(top.content.right.editor.edbody.document.we_form.ncmd.value=="home") {
+						if(top.content.editor.edbody.document.we_form.ncmd.value=="home") {
 							' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[no_newsletter_selected]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-						} else if(top.content.right.editor.edbody.document.we_form.IsFolder.value==1) {
+						} else if(top.content.editor.edbody.document.we_form.IsFolder.value==1) {
 							' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[no_newsletter_selected]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 						} else {
 							new jsWindow("' . $this->frameset . '?pnt=qlog","log_question",-1,-1,330,230,true,false,true);
@@ -477,32 +477,32 @@ class weNewsletterView{
 						break;
 
 					case "preview_newsletter":
-						if(top.content.right.editor.edbody.document.we_form.ncmd.value=="home") {
+						if(top.content.editor.edbody.document.we_form.ncmd.value=="home") {
 							' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[no_newsletter_selected]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-						} else if(top.content.right.editor.edbody.document.we_form.IsFolder.value==1) {
+						} else if(top.content.editor.edbody.document.we_form.IsFolder.value==1) {
 							' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[no_newsletter_selected]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 						} else {
-							top.content.right.editor.edbody.we_cmd("popPreview");
+							top.content.editor.edbody.we_cmd("popPreview");
 						}
 						break;
 
 					case "send_newsletter":
-						if(top.content.right.editor.edbody.document.we_form.ncmd.value=="home") {
+						if(top.content.editor.edbody.document.we_form.ncmd.value=="home") {
 							' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[no_newsletter_selected]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-						} else if(top.content.right.editor.edbody.document.we_form.IsFolder.value==1) {
+						} else if(top.content.editor.edbody.document.we_form.IsFolder.value==1) {
 							' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[no_newsletter_selected]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 						} else {
-							top.content.right.editor.edbody.we_cmd("popSend");
+							top.content.editor.edbody.we_cmd("popSend");
 						}
 						break;
 
 					case "test_newsletter":
-						if(top.content.right.editor.edbody.document.we_form.ncmd.value=="home") {
+						if(top.content.editor.edbody.document.we_form.ncmd.value=="home") {
 							' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[no_newsletter_selected]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-						} else if(top.content.right.editor.edbody.document.we_form.IsFolder.value==1) {
+						} else if(top.content.editor.edbody.document.we_form.IsFolder.value==1) {
 							' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[no_newsletter_selected]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 						} else {
-							top.content.right.editor.edbody.we_cmd("popSend","1");
+							top.content.editor.edbody.we_cmd("popSend","1");
 						}
 						break;
 
@@ -511,23 +511,23 @@ class weNewsletterView{
 					case "print_lists":
 					case "search_email":
 					case "clear_log":
-						if(top.content.right.editor.edbody.document.we_form.ncmd.value=="home") {
+						if(top.content.editor.edbody.document.we_form.ncmd.value=="home") {
 							' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[no_newsletter_selected]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-						} else if(top.content.right.editor.edbody.document.we_form.IsFolder.value==1) {
+						} else if(top.content.editor.edbody.document.we_form.IsFolder.value==1) {
 							' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[no_newsletter_selected]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 						} else {
-							top.content.right.editor.edbody.we_cmd(arguments[0]);
+							top.content.editor.edbody.we_cmd(arguments[0]);
 						}
 						break;
 
 					case "newsletter_settings":
 					case "black_list":
 					case "edit_file":
-						top.content.right.editor.edbody.we_cmd(arguments[0]);
+						top.content.editor.edbody.we_cmd(arguments[0]);
 						break;
 
 					case "home":
-						top.content.right.editor.location="' . $this->frameset . '?pnt=editor";
+						top.content.editor.location="' . $this->frameset . '?pnt=editor";
 						break;
 
 					default:
@@ -1282,8 +1282,8 @@ class weNewsletterView{
 					$this->newsletter->isEmbedImages = $this->settings['isEmbedImages'];
 
 					print we_html_element::jsElement('
-							top.content.right.editor.edheader.location="' . $this->frameset . '?pnt=edheader' . (isset($_REQUEST["page"]) ? ("&page=" . $_REQUEST["page"]) : ("")) . '";
-							top.content.right.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";
+							top.content.editor.edheader.location="' . $this->frameset . '?pnt=edheader' . (isset($_REQUEST["page"]) ? ("&page=" . $_REQUEST["page"]) : ("")) . '";
+							top.content.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";
 					');
 					break;
 				case "new_newsletter_group":
@@ -1292,8 +1292,8 @@ class weNewsletterView{
 					$this->newsletter->IsFolder = "1";
 					$this->newsletter->Text = g_l('modules_newsletter', '[new_newsletter_group]');
 					print we_html_element::jsElement('
-							top.content.right.editor.edheader.location="' . $this->frameset . '?pnt=edheader&group=1";
-							top.content.right.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter&group=1";
+							top.content.editor.edheader.location="' . $this->frameset . '?pnt=edheader&group=1";
+							top.content.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter&group=1";
 					');
 					break;
 				case "add_customer":
@@ -1373,8 +1373,8 @@ class weNewsletterView{
 
 				case "reload":
 					print we_html_element::jsElement('
-							top.content.right.editor.edheader.location="' . $this->frameset . '?pnt=edheader&page=' . $this->page . '&txt=' . urlencode($this->newsletter->Text) . ($this->newsletter->IsFolder ? '&group=1' : '') . '";
-							top.content.right.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter' . ($this->newsletter->IsFolder ? '&group=1' : '') . '";
+							top.content.editor.edheader.location="' . $this->frameset . '?pnt=edheader&page=' . $this->page . '&txt=' . urlencode($this->newsletter->Text) . ($this->newsletter->IsFolder ? '&group=1' : '') . '";
+							top.content.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter' . ($this->newsletter->IsFolder ? '&group=1' : '') . '";
 					');
 					break;
 
@@ -1629,7 +1629,7 @@ class weNewsletterView{
 				case "addGroup":
 					$this->newsletter->addGroup();
 					print we_html_element::jsElement('
-								var edf=top.content.right.editor.edfooter;
+								var edf=top.content.editor.edfooter;
 								edf.document.we_form.gview.length = 0;
 								edf.populateGroups();
 					');
@@ -1639,7 +1639,7 @@ class weNewsletterView{
 					if(isset($_REQUEST["ngroup"])){
 						$this->newsletter->removeGroup($_REQUEST["ngroup"]);
 						print we_html_element::jsElement('
-								var edf=top.content.right.editor.edfooter;
+								var edf=top.content.editor.edfooter;
 								edf.document.we_form.gview.length = 0;
 								edf.populateGroups();
 						');

@@ -408,22 +408,6 @@ function urlEntry(icon,name,vorfahr,text,contentType,table,published,denied) {
 		<?php
 	}
 
-	function getHTMLRight(){
-		?>
-		</head>
-
-		<frameset cols="*" framespacing="0" border="0" frameborder="NO">
-			<frame src="<?php print $this->frameset . '?pnt=editor'?>" scrolling="no" noresize name="editor"/>
-		</frameset>
-		<noframes>
-			<body bgcolor="#ffffff">
-				<p></p>
-			</body>
-		</noframes>
-		</html>
-		<?php
-	}
-
 	function getHTMLEditor(){
 		?>
 		</head>
@@ -494,44 +478,6 @@ function urlEntry(icon,name,vorfahr,text,contentType,table,published,denied) {
 
 		$_form = we_html_element::htmlForm($_form_attribs, $_content);
 		print we_html_element::htmlBody(array('class' => 'weEditorBody', 'onload' => 'loaded=1;', 'onUnload' => 'doUnload()'), $_form);
-
-
-		//FIXME: somehow the variant using htmlForm(), htmlBody() etc...
-		//works now: check again
-		/*
-		?>
-		<body class="weEditorBody" onUnload="doUnload()" onLoad="loaded=1">
-			<form name="we_form" method="post" onSubmit="return false">
-				<input type="hidden" name="ucmd" value="" />
-				<input type="hidden" name="tab" value="<?php print (isset($_REQUEST["tab"]) ? intval($_REQUEST["tab"]) : ""); ?>" />
-				<input type="hidden" name="oldtab" value="<?php print (isset($_REQUEST["tab"]) ? intval($_REQUEST["tab"]) : 0); ?>" />
-				<input type="hidden" name="perm_branch" value="<?php print ( (isset($_REQUEST["perm_branch"]) && $_REQUEST["perm_branch"]) ? oldHtmlspecialchars($_REQUEST["perm_branch"]) : 0); ?>" />
-				<input type="hidden" name="old_perm_branch" value="<?php print ( (isset($_REQUEST["perm_branch"]) && $_REQUEST["perm_branch"]) ? oldHtmlspecialchars($_REQUEST["perm_branch"]) : 0); ?>" />
-				<input type="hidden" name="obj_name" value="<?php print $user_object->Name ?>" />
-				<input type="hidden" name="uid" value="<?php print $user_object->ID ?>" />
-				<input type="hidden" name="ctype" value="<?php print (isset($_REQUEST["ctype"]) ? oldHtmlspecialchars($_REQUEST["ctype"]) : ""); ?>" />
-				<input type="hidden" name="ctable" value="<?php print (isset($_REQUEST["ctable"]) ? oldHtmlspecialchars($_REQUEST["ctable"]) : ""); ?>" />
-				<input type="hidden" name="sd" value="0" />
-				<?php
-				if($user_object){
-					if(isset($_REQUEST["oldtab"]) && isset($_REQUEST["old_perm_branch"])){ // && isset($_REQUEST["old_perm_branch"]) added for 4705
-						$user_object->preserveState($_REQUEST["oldtab"], $_REQUEST["old_perm_branch"]);
-						$_SESSION["user_session_data"] = $user_object->getState();
-					}
-					if(isset($_REQUEST["seem_start_file"])){
-						$_SESSION["save_user_seem_start_file"][$_REQUEST["uid"]] = $_REQUEST["seem_start_file"];
-					}
-					print $user_object->formDefinition(isset($_REQUEST["tab"]) ? $_REQUEST["tab"] : "", isset($_REQUEST["perm_branch"]) ? $_REQUEST["perm_branch"] : 0);
-				}
-
-				print $yuiSuggest->getYuiCss();
-				print $yuiSuggest->getYuiJs();
-				?>
-			</form>
-		</body>
-		<?php
-		 */
-
 	}
 
 	function getHTMLEditorFooter(){

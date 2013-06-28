@@ -89,15 +89,15 @@ class weModuleView {
 				case 'new_raw':
 					$this->raw = new weShop();
 					print we_html_element::jsElement(
-							$this->topFrame . '.right.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->raw->Text) . '";' .
-							$this->topFrame . '.right.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";'
+							$this->topFrame . '.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->raw->Text) . '";' .
+							$this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";'
 					);
 					break;
 				case 'edit_raw':
 					$this->raw = new weShop($_REQUEST['cmdid']);
 					print we_html_element::jsElement(
-							$this->topFrame . '.right.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->raw->Text) . '";' .
-							$this->topFrame . '.right.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";'
+							$this->topFrame . '.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->raw->Text) . '";' .
+							$this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";'
 					);
 					break;
 				case 'save_raw':

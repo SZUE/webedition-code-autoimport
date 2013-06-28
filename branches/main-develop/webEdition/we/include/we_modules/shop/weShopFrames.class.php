@@ -70,14 +70,14 @@ class weShopFrames extends weModuleFrames{
 				fr.writeln("wasdblclick=0;");
 				fr.writeln("tout=null");
 				fr.writeln("function doClick(id,ct,table){");
-				fr.writeln("top.content.right.editor.location='<?php print WE_SHOP_MODULE_DIR ?>edit_shop_frameset.php?pnt=editor&bid='+id;");
+				fr.writeln("top.content.editor.location='<?php print WE_SHOP_MODULE_DIR ?>edit_shop_frameset.php?pnt=editor&bid='+id;");
 				fr.writeln("}");
 				fr.writeln("function doFolderClick(id,ct,table){");
-				fr.writeln("top.content.right.editor.location='<?php print WE_SHOP_MODULE_DIR; ?>edit_shop_frameset.php?pnt=editor&mid='+id;");
+				fr.writeln("top.content.editor.location='<?php print WE_SHOP_MODULE_DIR; ?>edit_shop_frameset.php?pnt=editor&mid='+id;");
 				fr.writeln("}");
 
 				fr.writeln("function doYearClick(yearView){");
-				fr.writeln("top.content.right.editor.location='<?php print WE_SHOP_MODULE_DIR; ?>edit_shop_frameset.php?pnt=editor&ViewYear='+yearView;");
+				fr.writeln("top.content.editor.location='<?php print WE_SHOP_MODULE_DIR; ?>edit_shop_frameset.php?pnt=editor&ViewYear='+yearView;");
 				fr.writeln("}");
 
 				fr.writeln("</" + "SCRIPT>");
@@ -408,8 +408,8 @@ function we_cmd() {
 
 		case "openOrder":
 			//TODO: check this adress: mit oder ohne tree? Bisher: left
-			if(top.content.left.window.doClick) {
-				top.content.left.window.doClick(arguments[1], arguments[2], arguments[3]);//TODO: check this adress
+			if(top.content.tree.window.doClick) {
+				top.content.tree.window.doClick(arguments[1], arguments[2], arguments[3]);//TODO: check this adress
 			}
 		break;
 
@@ -463,10 +463,10 @@ function we_cmd() {
 
 		if($resultD > 0){
 			$iconBarTable->addCol();
-			$iconBarTable->setCol(0, $c++, null, we_button::create_button("image:btn_shop_sum", "javascript:top.content.right.editor.location=' edit_shop_frameset.php?pnt=editor&top=1&typ=document '", true));
+			$iconBarTable->setCol(0, $c++, null, we_button::create_button("image:btn_shop_sum", "javascript:top.content.editor.location=' edit_shop_frameset.php?pnt=editor&top=1&typ=document '", true));
 		} elseif(!empty($resultO)){
 			$iconBarTable->addCol();
-			$iconBarTable->setCol(0, $c++, null, we_button::create_button("image:btn_shop_sum", "javascript:top.content.right.editor.location=' edit_shop_frameset.php?pnt=editor&top=1&typ=object&ViewClass=$classid '", true));
+			$iconBarTable->setCol(0, $c++, null, we_button::create_button("image:btn_shop_sum", "javascript:top.content.editor.location=' edit_shop_frameset.php?pnt=editor&top=1&typ=object&ViewClass=$classid '", true));
 		}
 
 		$iconBarTable->setCol(0, $c++, null, we_button::create_button("image:btn_shop_pref", "javascript:top.opener.top.we_cmd('pref_shop')", true, -1, -1, "", "", !we_hasPerm("NEW_USER")));
@@ -488,10 +488,9 @@ function we_cmd() {
 		return $this->getHTMLDocument($body);
 	}
 
-	function getHTMLRight(){
-		$editorParams = isset($_REQUEST['bid']) ? '&bid=' . $_REQUEST['bid'] : '&top=1&home=1';
-
-		return parent::getHTMLRight('', $editorParams);
+	function getHTMLResize(){
+		$extraUrlParams = isset($_REQUEST['bid']) ? '&bid=' . $_REQUEST['bid'] : '&top=1&home=1';
+		return parent::getHTMLResize('', $extraUrlParams);
 	}
 
 	function getHTMLEditor(){//TODO: maybe abandon the split between former Top- and other editor files
@@ -540,7 +539,7 @@ function we_cmd() {
 		$bid = isset($_REQUEST["bid"]) ? $_REQUEST["bid"] : 0;
 
 		// config
-		$feldnamen = explode('|', f('SELECT strFelder FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname = "shop_pref"', 'strFelder', $this->db));
+		$feldnamen = explode('|', f('SELECT strFelder FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname = "shop_pref"', 'strFelder', $DB_WE));
 		for($i = 0; $i <= 3; $i++){
 			$feldnamen[$i] = isset($feldnamen[$i]) ? $feldnamen[$i] : '';
 		}
@@ -554,7 +553,7 @@ function we_cmd() {
 		$resultO = array_shift($fe);
 
 		// wether the resultset ist empty?
-		$resultD = f('SELECT COUNT(Name) as Anzahl FROM ' . LINK_TABLE . ' WHERE Name ="' . $this->db->escape(WE_SHOP_TITLE_FIELD_NAME) . '"', 'Anzahl', $this->db);
+		$resultD = f('SELECT COUNT(Name) as Anzahl FROM ' . LINK_TABLE . ' WHERE Name ="' . $DB_WE->escape(WE_SHOP_TITLE_FIELD_NAME) . '"', 'Anzahl', $DB_WE);
 
 		if($home){
 			$bodyURL = WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=mod_home&mod=shop';//same as in getHTMLRight()
@@ -582,6 +581,7 @@ function we_cmd() {
 	}
 
 	function getHTMLEditorHeader(){
+		$DB_WE = $this->db;
 		if (isset($_REQUEST["home"]) && $_REQUEST["home"]) {
 			return $this->getHTMLDocument('<body bgcolor="#F0EFF0"></body></html>');
 		}
@@ -638,14 +638,14 @@ top.content.hloaded = 1;
 
 		$yid = isset($_REQUEST["ViewYear"]) ? abs($_REQUEST["ViewYear"]) : date("Y");
 		$bid = isset($_REQUEST["bid"]) ? abs($_REQUEST["bid"]) : 0;
-		$cid = f('SELECT IntCustomerID FROM ' . SHOP_TABLE . ' WHERE IntOrderID=' . intval($bid), "IntCustomerID", $this->db);
-		$this->db->query("SELECT IntOrderID,DATE_FORMAT(DateOrder,'" . g_l('date', '[format][mysqlDate]') . "') as orddate FROM " . SHOP_TABLE . " GROUP BY IntOrderID ORDER BY IntID DESC");
-		$headline = ($this->db->next_record()?	sprintf(g_l('modules_shop', '[lastOrder]'), $this->db->f("IntOrderID"), $this->db->f("orddate")):'');
+		$cid = f('SELECT IntCustomerID FROM ' . SHOP_TABLE . ' WHERE IntOrderID=' . intval($bid), "IntCustomerID", $DB_WE);
+		$DB_WE->query("SELECT IntOrderID,DATE_FORMAT(DateOrder,'" . g_l('date', '[format][mysqlDate]') . "') as orddate FROM " . SHOP_TABLE . " GROUP BY IntOrderID ORDER BY IntID DESC");
+		$headline = ($DB_WE->next_record()?	sprintf(g_l('modules_shop', '[lastOrder]'), $DB_WE->f("IntOrderID"), $DB_WE->f("orddate")):'');
 
 		/// config
-		$this->db->query("SELECT strFelder from " . ANZEIGE_PREFS_TABLE . " WHERE strDateiname = 'shop_pref'");
-		$this->db->next_record();
-		$feldnamen = explode("|", $this->db->f("strFelder"));
+		$DB_WE->query("SELECT strFelder from " . ANZEIGE_PREFS_TABLE . " WHERE strDateiname = 'shop_pref'");
+		$DB_WE->next_record();
+		$feldnamen = explode("|", $DB_WE->f("strFelder"));
 		$fe = isset($feldnamen[3]) ? explode(",", $feldnamen[3]) : array(0);
 
 		if(empty($classid)){
@@ -655,19 +655,19 @@ top.content.hloaded = 1;
 		$resultO = array_shift($fe);
 
 		// wether the resultset ist empty?
-		$resultD = f('SELECT count(Name) as Anzahl FROM ' . LINK_TABLE . ' WHERE Name ="' . WE_SHOP_TITLE_FIELD_NAME . '"', 'Anzahl', $this->db);
+		$resultD = f('SELECT count(Name) as Anzahl FROM ' . LINK_TABLE . ' WHERE Name ="' . WE_SHOP_TITLE_FIELD_NAME . '"', 'Anzahl', $DB_WE);
 
 		// grep the last element from the year-set, wich is the current year
-		$this->db->query("SELECT DATE_FORMAT(DateOrder,'%Y') AS DateOrd FROM " . SHOP_TABLE . " ORDER BY DateOrd");
-		while($this->db->next_record()) {
-			$strs = array($this->db->f("DateOrd"));
+		$DB_WE->query("SELECT DATE_FORMAT(DateOrder,'%Y') AS DateOrd FROM " . SHOP_TABLE . " ORDER BY DateOrd");
+		while($DB_WE->next_record()) {
+			$strs = array($DB_WE->f("DateOrd"));
 			$yearTrans = end($strs);
 		}
 
 		/*
-		  $DB_WE->query("SELECT COUNT(".SHOP_TABLE.".IntID) as db FROM ".SHOP_TABLE." WHERE YEAR(".SHOP_TABLE.".DateOrder) = $yid ");
-		  while($DB_WE->next_record()){
-		  $entries = $DB_WE->f("db");
+		  $this->db->query("SELECT COUNT(".SHOP_TABLE.".IntID) as db FROM ".SHOP_TABLE." WHERE YEAR(".SHOP_TABLE.".DateOrder) = $yid ");
+		  while($this->db->next_record()){
+		  $entries = $this->db->f("db");
 
 		  }
 		 */

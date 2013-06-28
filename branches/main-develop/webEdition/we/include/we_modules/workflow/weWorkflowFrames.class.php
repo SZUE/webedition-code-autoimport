@@ -312,10 +312,10 @@ class weWorkflowFrames extends weModuleFrames{
 function setTab(tab){
 	switch(tab){
 		case 0:
-			top.content.right.editor.edbody.we_cmd("switchPage",0);
+			top.content.editor.edbody.we_cmd("switchPage",0);
 			break;
 		case 1:
-			top.content.right.editor.edbody.we_cmd("switchPage",1);
+			top.content.editor.edbody.we_cmd("switchPage",1);
 			break;
 	}
 }
@@ -364,7 +364,7 @@ top.content.hloaded=1;
 			function setStatusCheck(){
 				var a=document.we_form._status_workflow;
 				var b;
-				if(top.content.right.editor.edbody.loaded) b=top.content.right.editor.edbody.getStatusContol();
+				if(top.content.editor.edbody.loaded) b=top.content.editor.edbody.getStatusContol();
 				else setTimeout("setStatusCheck()",100);
 
 				if(b==1) a.checked=true;

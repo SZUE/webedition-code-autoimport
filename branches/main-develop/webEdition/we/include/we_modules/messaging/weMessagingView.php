@@ -65,9 +65,9 @@ class weMessagingView extends weModuleView {
 
 	function setTopFrame($frame){
 		$this->topFrame = $frame;
-		$this->editorBodyFrame = $frame . '.right.editor.edbody';
+		$this->editorBodyFrame = $frame . '.editor.edbody';
 		$this->editorBodyForm = $this->editorBodyFrame . '.document.we_form';
-		$this->editorHeaderFrame = $frame . '.right.editor.edheader';
+		$this->editorHeaderFrame = $frame . '.editor.edheader';
 	}
 
 	//------------------------------------------------
@@ -204,7 +204,7 @@ class weMessagingView extends weModuleView {
 			case 'show_message':
 				if(isset($id)){
 					$out .= we_html_element::jsElement('
-					top.content.right.editor.edbody.msg_mfv.messaging_msg_view.location="' . (WE_MESSAGING_MODULE_DIR . 'messaging_message_view.php?we_transaction=' . $this->transaction . '&id= ' . $id) . '";
+					top.content.editor.edbody.msg_mfv.messaging_msg_view.location="' . (WE_MESSAGING_MODULE_DIR . 'messaging_message_view.php?we_transaction=' . $this->transaction . '&id= ' . $id) . '";
 					');
 				}
 				$this->messaging->saveInSession($_SESSION['weS']['we_data'][$this->transaction]);
@@ -236,9 +236,9 @@ class weMessagingView extends weModuleView {
 				break;
 			case 'reset_right_view':
 				return we_html_element::jsElement('
-				top.content.right.editor.edbody.entries_selected = new Array();
-				top.content.right.editor.edbody.msg_mfv.messaging_messages_overview.location="' . we_class::url(WE_MESSAGING_MODULE_DIR . 'messaging_show_folder_content.php') . '";
-				top.content.right.editor.edbody.msg_mfv.messaging_msg_view.location="' . HTML_DIR . 'white.html"
+				top.content.editor.edbody.entries_selected = new Array();
+				top.content.editor.edbody.msg_mfv.messaging_messages_overview.location="' . we_class::url(WE_MESSAGING_MODULE_DIR . 'messaging_show_folder_content.php') . '";
+				top.content.editor.edbody.msg_mfv.messaging_msg_view.location="' . HTML_DIR . 'white.html"
 				');
 				break;
 			case 'update_todo':
@@ -273,10 +273,10 @@ class weMessagingView extends weModuleView {
 				$this->messaging->saveInSession($_SESSION['weS']['we_data'][$this->transaction]);
 
 				$js_out = '
-				top.content.right.editor.edbody.entries_selected = new Array();
-				top.content.right.editor.edbody.messaging_fv_headers.location="' . we_class::url($this->frameset) . '&pnt=msg_fv_headers&si=' . $this->messaging->get_sortitem() . '&so=' . $this->messaging->get_sortorder() . '&viewclass=" + top.content.viewclass;
-				top.content.right.editor.edbody.msg_mfv.messaging_messages_overview.location="' . we_class::url(WE_MESSAGING_MODULE_DIR . 'messaging_show_folder_content.php') . '";
-				top.content.right.editor.edbody.msg_mfv.messaging_msg_view.location="' . HTML_DIR . 'white.html";
+				top.content.editor.edbody.entries_selected = new Array();
+				top.content.editor.edbody.messaging_fv_headers.location="' . we_class::url($this->frameset) . '&pnt=msg_fv_headers&si=' . $this->messaging->get_sortitem() . '&so=' . $this->messaging->get_sortorder() . '&viewclass=" + top.content.viewclass;
+				top.content.editor.edbody.msg_mfv.messaging_messages_overview.location="' . we_class::url(WE_MESSAGING_MODULE_DIR . 'messaging_show_folder_content.php') . '";
+				top.content.editor.edbody.msg_mfv.messaging_msg_view.location="' . HTML_DIR . 'white.html";
 				';
 
 				$aid = $this->messaging->Folder_ID;
@@ -299,11 +299,11 @@ class weMessagingView extends weModuleView {
 				$this->messaging->saveInSession($_SESSION['weS']['we_data'][$this->transaction]);
 
 				$js_out = '
-				top.content.right.editor.edbody.entries_selected = new Array();
+				top.content.editor.edbody.entries_selected = new Array();
 				//we_class::2xok
-				top.content.right.editor.edbody.messaging_fv_headers.location="' . we_class::url($this->frameset) . '&pnt=msg_fv_headers&si=' . $this->messaging->get_sortitem() . '&so=' . $this->messaging->get_sortorder() . '&viewclass=" + top.content.viewclass;
-				top.content.right.editor.edbody.msg_mfv.messaging_messages_overview.location=" ' . we_class::url(WE_MESSAGING_MODULE_DIR . 'messaging_show_folder_content.php') . '";
-				top.content.right.editor.edbody.msg_mfv.messaging_msg_view.location="' . HTML_DIR . 'white.html";
+				top.content.editor.edbody.messaging_fv_headers.location="' . we_class::url($this->frameset) . '&pnt=msg_fv_headers&si=' . $this->messaging->get_sortitem() . '&so=' . $this->messaging->get_sortorder() . '&viewclass=" + top.content.viewclass;
+				top.content.editor.edbody.msg_mfv.messaging_messages_overview.location=" ' . we_class::url(WE_MESSAGING_MODULE_DIR . 'messaging_show_folder_content.php') . '";
+				top.content.editor.edbody.msg_mfv.messaging_msg_view.location="' . HTML_DIR . 'white.html";
 				';
 
 				$aid = $this->messaging->Folder_ID;
@@ -338,7 +338,7 @@ class weMessagingView extends weModuleView {
 			case 'edit_folder':
 				if($_REQUEST['mode'] == 'new' || ($_REQUEST['mode'] == 'edit')){
 					$out .= we_html_element::jsElement('
-					top.content.right.editor.location = "' . WE_MESSAGING_MODULE_DIR . 'messaging_edit_folder.php?we_transaction=' . $this->transaction . '&mode=' . $_REQUEST['mode'] . '&fid=' . (isset($_REQUEST['fid']) ? $_REQUEST['fid'] : -1) . '";
+					top.content.editor.location = "' . WE_MESSAGING_MODULE_DIR . 'messaging_edit_folder.php?we_transaction=' . $this->transaction . '&mode=' . $_REQUEST['mode'] . '&fid=' . (isset($_REQUEST['fid']) ? $_REQUEST['fid'] : -1) . '";
 					');
 				}
 				return $out;
@@ -448,12 +448,12 @@ top.content.drawEintraege();
 	private function print_fc_html($blank = true){
 
 		return we_html_element::jsElement('
-top.content.right.editor.edbody.entries_selected = new Array(' . $this->messaging->get_ids_selected() .');
-top.content.right.editor.edbody.messaging_fv_headers.location="' . we_class::url($this->frameset) . '&pnt=msg_fv_headers&si=' . $this->messaging->get_sortitem() . '&so=' . $this->messaging->get_sortorder() . '&viewclass=" + top.content.viewclass;
-if (top.content.right.editor.edbody.msg_mfv.messaging_messages_overview) {
-	top.content.right.editor.edbody.msg_mfv.messaging_messages_overview.location="' . we_class::url(WE_MESSAGING_MODULE_DIR . "messaging_show_folder_content.php") . '";
+top.content.editor.edbody.entries_selected = new Array(' . $this->messaging->get_ids_selected() .');
+top.content.editor.edbody.messaging_fv_headers.location="' . we_class::url($this->frameset) . '&pnt=msg_fv_headers&si=' . $this->messaging->get_sortitem() . '&so=' . $this->messaging->get_sortorder() . '&viewclass=" + top.content.viewclass;
+if (top.content.editor.edbody.msg_mfv.messaging_messages_overview) {
+	top.content.editor.edbody.msg_mfv.messaging_messages_overview.location="' . we_class::url(WE_MESSAGING_MODULE_DIR . "messaging_show_folder_content.php") . '";
 }' .
-($blank ? 'top.content.right.editor.edbody.msg_mfv.messaging_msg_view.location="' . HTML_DIR . 'white.html";' : '')
+($blank ? 'top.content.editor.edbody.msg_mfv.messaging_msg_view.location="' . HTML_DIR . 'white.html";' : '')
 		);
 	}
 
@@ -476,7 +476,7 @@ if (top.content.right.editor.edbody.msg_mfv.messaging_messages_overview) {
 		$out = '';
 		if($id != $this->messaging->Folder_ID){
 			$this->messaging->reset_ids_selected();
-			$out = we_html_element::jsElement('top.content.right.editor.edbody.last_entry_selected = -1;');
+			$out = we_html_element::jsElement('top.content.editor.edbody.last_entry_selected = -1;');
 		}
 
 		$this->messaging->get_fc_data(isset($id) ? $id : '', empty($sort) ? '' : $sort, $searchterm, $usecache);

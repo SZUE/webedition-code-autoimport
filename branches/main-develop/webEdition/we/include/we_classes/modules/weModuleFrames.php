@@ -23,6 +23,8 @@
  * @package    webEdition_modules
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+//TODO in modulesFrames: set module-settings as class properties instead of looping them through as method parameters!
+
 class weModuleFrames{
 
 	var $module;
@@ -174,7 +176,9 @@ class weModuleFrames{
 						we_html_element::htmlDiv(array('style' => 'position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px; width: ' . weTree::HiddenWidth . 'px; background-image: url(/webEdition/images/v-tabs/background.gif); background-repeat: repeat-y; border-top: 1px solid black;'), $_incDecTree) .
 						$this->getHTMLLeftDiv()
 					) .
-					we_html_element::htmlIFrame('right', $this->frameset . '?pnt=right' . (isset($_REQUEST['sid']) ? '&sid=' . $_REQUEST['sid'] : '') . $extraUrlParams, 'position: absolute; top: 0px; bottom: 0px; left: ' . $this->treeWidth . 'px; right: 0px; width:auto; border-left: 1px solid black; overflow: hidden;')
+					we_html_element::htmlDiv(array('id' => 'right', 'style' => 'background: #F0EFF0; position: absolute; top: 0px; bottom: 0px; left: ' . $this->treeWidth . 'px; right: 0px; width: auto; border-left: 1px solid black; overflow: auto;'), 
+						we_html_element::htmlIFrame('editor', $this->frameset . '?pnt=editor' . $extraUrlParams, 'position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px; overflow: hidden;')
+					)
 			);
 
 		$attribs = array('id' => 'resize', 'name' => 'resize', 'style' => 'position: absolute; top:' . ($iconbar ? 72 : 32) . 'px; bottom: 1px; left: 0px; right: 0px; overflow: hidden;');
@@ -226,6 +230,7 @@ class weModuleFrames{
 		return $this->treeFooterHeight;
 	}
 
+	/*
 	function getHTMLRight($extraHead = '', $extraUrlParams = ''){
 		$frameset = new we_html_frameset(array("framespacing" => 0, "border" => 0, "frameborder" => "no"));
 		$frameset->setAttributes(array("cols" => "*"));
@@ -235,6 +240,7 @@ class weModuleFrames{
 
 		return $this->getHTMLDocument($body, $extraHead);
 	}
+	*/
 
 	function getHTMLEditor($extraUrlParams = ''){
 
@@ -392,7 +398,7 @@ class weModuleFrames{
 
 			function setTreeWidth(w) {
 				self.document.getElementById("lframeDiv").style.width = w + "px";
-				self.document.getElementById("rightDiv").style.left = w + "px";
+				self.document.getElementById("right").style.left = w + "px";
 				if(w > ' . weTree::HiddenWidth . '){
 					storeTreeWidth(w);
 				}

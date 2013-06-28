@@ -94,12 +94,12 @@ class weVotingTree extends weMainTree{
 							top.content.usetHot();
 							cmd = "edit_voting";
 							var node=' . $this->topFrame . '.get(id);
-							' . $this->topFrame . '.right.editor.edbody.location="' . $this->frameset . '?pnt=edbody&cmd="+cmd+"&cmdid="+node.id+"&tabnr="+' . $this->topFrame . '.activ_tab;
+							' . $this->topFrame . '.editor.edbody.location="' . $this->frameset . '?pnt=edbody&cmd="+cmd+"&cmdid="+node.id+"&tabnr="+' . $this->topFrame . '.activ_tab;
 						}
 					} else {
 						cmd = "edit_voting";
 						var node=' . $this->topFrame . '.get(id);
-						' . $this->topFrame . '.right.editor.edbody.location="' . $this->frameset . '?pnt=edbody&cmd="+cmd+"&cmdid="+node.id+"&tabnr="+' . $this->topFrame . '.activ_tab;
+						' . $this->topFrame . '.editor.edbody.location="' . $this->frameset . '?pnt=edbody&cmd="+cmd+"&cmdid="+node.id+"&tabnr="+' . $this->topFrame . '.activ_tab;
 					}
 				}
 				' . $this->topFrame . '.loaded=1;';

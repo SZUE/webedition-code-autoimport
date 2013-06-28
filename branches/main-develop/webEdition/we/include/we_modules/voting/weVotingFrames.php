@@ -153,8 +153,8 @@ class weVotingFrames extends weModuleFrames{
 			ob_end_clean();
 			return
 				we_html_element::jsElement('
-			' . $this->topFrame . '.right.editor.edheader.location = "' . $this->frameset . '?pnt=edheader&home=1";
-			' . $this->topFrame . '.right.editor.edfooter.location = "' . $this->frameset . '?pnt=edfooter&home=1";
+			' . $this->topFrame . '.editor.edheader.location = "' . $this->frameset . '?pnt=edheader&home=1";
+			' . $this->topFrame . '.editor.edfooter.location = "' . $this->frameset . '?pnt=edfooter&home=1";
 			') . $out;
 		}
 

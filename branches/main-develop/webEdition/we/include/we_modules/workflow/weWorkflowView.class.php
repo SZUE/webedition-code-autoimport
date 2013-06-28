@@ -508,9 +508,9 @@ class weWorkflowView extends we_workflow_base{
 						}
 						break;
 					case "new_workflow":
-						top.content.right.editor.edbody.document.we_form.wcmd.value = arguments[0];
-						top.content.right.editor.edbody.document.we_form.wid.value = arguments[1];
-						top.content.right.editor.edbody.submitForm();
+						top.content.editor.edbody.document.we_form.wcmd.value = arguments[0];
+						top.content.editor.edbody.document.we_form.wid.value = arguments[1];
+						top.content.editor.edbody.submitForm();
 						break;
 					case "delete_workflow":
 		<?php
@@ -518,13 +518,13 @@ class weWorkflowView extends we_workflow_base{
 			print we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
 		} else{
 			?>
-								if(top.content.right.editor.edbody.loaded){
+								if(top.content.editor.edbody.loaded){
 									if(!confirm("<?php print g_l('modules_workflow', '[delete_question]') ?>")) return;
 								}
 								else { <?php print we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR); ?> }
 
-								top.content.right.editor.edbody.document.we_form.wcmd.value = arguments[0];
-								top.content.right.editor.edbody.submitForm();
+								top.content.editor.edbody.document.we_form.wcmd.value = arguments[0];
+								top.content.editor.edbody.submitForm();
 		<?php } ?>
 						break;
 					case "save_workflow":
@@ -533,25 +533,25 @@ class weWorkflowView extends we_workflow_base{
 			print we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
 		} else{
 			?>
-								if(top.content.right.editor.edbody.loaded){
-									top.content.right.editor.edbody.setStatus(top.content.right.editor.edfooter.document.we_form.status_workflow.value);
-									chk = top.content.right.editor.edbody.checkData();
+								if(top.content.editor.edbody.loaded){
+									top.content.editor.edbody.setStatus(top.content.editor.edfooter.document.we_form.status_workflow.value);
+									chk = top.content.editor.edbody.checkData();
 									if(!chk) return;
-									num = top.content.right.editor.edbody.getNumOfDocs();
+									num = top.content.editor.edbody.getNumOfDocs();
 									if(num > 0)
 										if(!confirm("<?php print g_l('modules_workflow', '[save_question]') ?>")) return;
 								}
 								else { <?php print we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[nothing_to_save]'), we_message_reporting::WE_MESSAGE_ERROR); ?> }
-								top.content.right.editor.edbody.document.we_form.wcmd.value = arguments[0];
-								top.content.right.editor.edbody.submitForm();
+								top.content.editor.edbody.document.we_form.wcmd.value = arguments[0];
+								top.content.editor.edbody.submitForm();
 								top.content.usetHot();
 		<?php } ?>
 						break;
 					case "edit_workflow":
 					case "show_document":
-						top.content.right.editor.edbody.document.we_form.wcmd.value = arguments[0];
-						top.content.right.editor.edbody.document.we_form.wid.value = arguments[1];
-						top.content.right.editor.edbody.submitForm();
+						top.content.editor.edbody.document.we_form.wcmd.value = arguments[0];
+						top.content.editor.edbody.document.we_form.wid.value = arguments[1];
+						top.content.editor.edbody.submitForm();
 						break;
 					/*
 					case "reload_workflow":
@@ -818,8 +818,8 @@ function checkData(){
 					$this->workflowDef = new we_workflow_workflow();
 					$this->page = 0;
 					print we_html_element::jsElement('
-					top.content.right.editor.edheader.location="' . WE_WORKFLOW_MODULE_DIR . 'edit_workflow_frameset.php?pnt=edheader";
-					top.content.right.editor.edfooter.location="' . WE_WORKFLOW_MODULE_DIR . 'edit_workflow_frameset.php?pnt=edfooter";
+					top.content.editor.edheader.location="' . WE_WORKFLOW_MODULE_DIR . 'edit_workflow_frameset.php?pnt=edheader";
+					top.content.editor.edfooter.location="' . WE_WORKFLOW_MODULE_DIR . 'edit_workflow_frameset.php?pnt=edfooter";
 					');
 					break;
 				case 'add_cat':
@@ -949,8 +949,8 @@ function checkData(){
 					break;
 				case 'reload':
 					print we_html_element::jsElement('
-					top.content.right.editor.edheader.location="' . WE_WORKFLOW_MODULE_DIR . 'edit_workflow_frameset.php?pnt=edheader&page=' . $this->page . '&txt=' . $this->workflowDef->Text . '";
-					top.content.right.editor.edfooter.location="' . WE_WORKFLOW_MODULE_DIR . 'edit_workflow_frameset.php?pnt=edfooter";
+					top.content.editor.edheader.location="' . WE_WORKFLOW_MODULE_DIR . 'edit_workflow_frameset.php?pnt=edheader&page=' . $this->page . '&txt=' . $this->workflowDef->Text . '";
+					top.content.editor.edfooter.location="' . WE_WORKFLOW_MODULE_DIR . 'edit_workflow_frameset.php?pnt=edfooter";
 					');
 					break;
 				case 'edit_workflow':
@@ -1002,7 +1002,7 @@ function checkData(){
 								print 'top.content.updateEntry(' . $this->workflowDef->ID . ',0,"' . $this->workflowDef->Text . '","' . $this->workflowDef->Status . '");';
 							}
 							print $childs;
-							print 'top.content.right.editor.edheader.document.getElementById("headrow").innerHTML="' . we_html_element::htmlB(g_l('modules_workflow', '[workflow]') . ': ' . oldHtmlspecialchars($this->workflowDef->Text)) . '";';
+							print 'top.content.editor.edheader.document.getElementById("headrow").innerHTML="' . we_html_element::htmlB(g_l('modules_workflow', '[workflow]') . ': ' . oldHtmlspecialchars($this->workflowDef->Text)) . '";';
 							print we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[save_ok]'), we_message_reporting::WE_MESSAGE_NOTICE);
 							print '//--></script>';
 						}
@@ -1014,8 +1014,8 @@ function checkData(){
 						$this->page = 0;
 						$this->documentDef->load($_REQUEST['wid']);
 						print we_html_element::jsElement('
-					top.content.right.editor.edheader.location="' . WE_WORKFLOW_MODULE_DIR . 'edit_workflow_frameset.php?pnt=edheader&art=1&txt=' . $this->documentDef->document->Text . '";
-					top.content.right.editor.edfooter.location="' . WE_WORKFLOW_MODULE_DIR . 'edit_workflow_frameset.php?pnt=edfooter&art=1";
+					top.content.editor.edheader.location="' . WE_WORKFLOW_MODULE_DIR . 'edit_workflow_frameset.php?pnt=edheader&art=1&txt=' . $this->documentDef->document->Text . '";
+					top.content.editor.edfooter.location="' . WE_WORKFLOW_MODULE_DIR . 'edit_workflow_frameset.php?pnt=edfooter&art=1";
 					');
 					}
 					break;

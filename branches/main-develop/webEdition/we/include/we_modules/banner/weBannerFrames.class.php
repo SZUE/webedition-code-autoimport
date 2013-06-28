@@ -310,7 +310,7 @@ class weBannerFrames extends weModuleFrames{
 						case ' . weBanner::PAGE_PROPERTY . ':
 						case ' . weBanner::PAGE_PLACEMENT . ':
 						case ' . weBanner::PAGE_STATISTICS . ':
-							top.content.right.editor.edbody.we_cmd("switchPage",tab);
+							top.content.editor.edbody.we_cmd("switchPage",tab);
 							break;
 					}
 				}
@@ -377,14 +377,14 @@ class weBannerFrames extends weModuleFrames{
 			function we_save() {
 				var acLoopCount=0;
 				var acIsRunning = false;
-				if(!!top.content.right.editor.edbody.YAHOO && !!top.content.right.editor.edbody.YAHOO.autocoml){
-					while(acLoopCount<20 && top.content.right.editor.edbody.YAHOO.autocoml.isRunnigProcess()){
+				if(!!top.content.editor.edbody.YAHOO && !!top.content.editor.edbody.YAHOO.autocoml){
+					while(acLoopCount<20 && top.content.editor.edbody.YAHOO.autocoml.isRunnigProcess()){
 						acLoopCount++;
 						acIsRunning = true;
 						setTimeout("we_save()",100);
 					}
 					if(!acIsRunning) {
-						if(top.content.right.editor.edbody.YAHOO.autocoml.isValid()) {
+						if(top.content.editor.edbody.YAHOO.autocoml.isValid()) {
 							_we_save();
 						} else {
 							' . we_message_reporting::getShowMessageCall(g_l('alert', '[save_error_fields_value_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR) . '
