@@ -1518,7 +1518,11 @@ function weWysiwygSetHiddenText(arg) {
 								' . ($this->fieldName ? '
 								tinyEditors["' . $this->fieldName . '"] = ed;
 								if(typeof we_tinyMCE_' . $this->fieldName . '_init != "undefined"){
-									we_tinyMCE_' . $this->fieldName . '_init(ed);
+									try{
+										we_tinyMCE_' . $this->fieldName . '_init(ed);
+									} catch(e){
+										//nothing
+									}
 								} else if(opener){
 									if(opener.top.weEditorFrameController){
 										//we are in backend
