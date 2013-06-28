@@ -142,9 +142,10 @@ function we_cmd(){
 		//FIXME: this is not correct; document doesnt work like this
 			' . ($resultD > 0 ? $this->topFrame . '.right.editor.location="' . WE_SHOP_MODULE_DIR . 'edit_shop_frameset.php?pnt=editor&top=1&typ=document";' :
 				(!empty($resultO) ? $this->topFrame . '.right.editor.location="' . WE_SHOP_MODULE_DIR . 'edit_shop_frameset.php?pnt=editor&top=1&typ=object&ViewClass='.$classid.'";' :
-					$this->topFrame . '.right.editor.location="' . WE_SHOP_MODULE_DIR . 'edit_shop_frameset.php?pnt=editor&top=1&typ=document')) . '";
+					$this->topFrame . '.right.editor.location="' . WE_SHOP_MODULE_DIR . 'edit_shop_frameset.php?pnt=editor&top=1&typ=document";')) . '
 			break;
 		';
+
 		$years = we_shop_shop::getAllOrderYears();
 		foreach($years as $cur){
 			$out .= '
