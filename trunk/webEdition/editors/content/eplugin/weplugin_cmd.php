@@ -103,11 +103,14 @@ if(isset($_REQUEST['we_cmd'][0])){
 
 			break;
 		case "setSource":
+			$transactionID = isset($_REQUEST['we_cmd'][1]) ? $_REQUEST['we_cmd'][1] : '';
+			if(isset($_SESSION['weS']['we_data'][$transactionID][0]["elements"]["data"]["dat"])){
+				$_SESSION['weS']['we_data'][$transactionID][0]["elements"]["data"]["dat"] = $_REQUEST['we_cmd'][2];
+				$_SESSION['weS']['we_data'][$transactionID][1]["data"]["dat"] = $_REQUEST['we_cmd'][2];
 
-			if(isset($_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][1]][0]["elements"]["data"]["dat"])){
-
-				$_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][1]][0]["elements"]["data"]["dat"] = $_REQUEST['we_cmd'][2];
-				$_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][1]][1]["data"]["dat"] = $_REQUEST['we_cmd'][2];
+			$out = we_html_element::jsElement('
+					var _EditorFrame = top.weEditorFrameController.getEditorFrameByTransaction("' . $transactionID . '");
+					_EditorFrame.getEditorFrameWindow().frames[2].reloadContent = true;');
 			}
 
 			break;
@@ -184,5 +187,5 @@ if(isset($_REQUEST['we_cmd'][0])){
 			) .
 			we_html_element::htmlBody(array("bgcolor" => "white", "marginwidth" => "0", "marginheight" => "0", "leftmargin" => "0", "topmargin" => "0"), $out
 			)
-		);
+	);
 }
