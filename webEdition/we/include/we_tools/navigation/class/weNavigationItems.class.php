@@ -79,8 +79,7 @@ class weNavigationItems{
 
 		$this->readItemsFromDb($this->rootItem);
 
-		$this->items['id' . $_navigation->ID] = new weNavigationItem(
-			$_navigation->ID, $_navigation->LinkID, ($_navigation->IsFolder ? ($_navigation->FolderSelection == weNavigation::STPYE_OBJLINK ? OBJECT_FILES_TABLE : FILE_TABLE) : (($_navigation->SelectionType == weNavigation::STPYE_CLASS || $_navigation->SelectionType == weNavigation::STPYE_OBJLINK) ? OBJECT_FILES_TABLE : FILE_TABLE)), $_navigation->Text, $_navigation->Display, $_navigation->getHref($_navigation->SelectionType, $_navigation->LinkID, $_navigation->Url, $_navigation->Parameter, $_navigation->WorkspaceID), $showRoot ? 'folder' : 'root', $this->id2path($_navigation->IconID), $_navigation->Attributes, $_navigation->LimitAccess, $this->getCustomerData($_navigation), $_navigation->CurrentOnUrlPar, $_navigation->CurrentOnAnker);
+		$this->items['id' . $_navigation->ID] = new weNavigationItem($_navigation->ID, $_navigation->LinkID, ($_navigation->IsFolder ? ($_navigation->FolderSelection == weNavigation::STPYE_OBJLINK ? OBJECT_FILES_TABLE : FILE_TABLE) : (($_navigation->SelectionType == weNavigation::STPYE_CLASS || $_navigation->SelectionType == weNavigation::STPYE_OBJLINK) ? OBJECT_FILES_TABLE : FILE_TABLE)), $_navigation->Text, $_navigation->Display, $_navigation->getHref($_navigation->SelectionType, $_navigation->LinkID, $_navigation->Url, $_navigation->Parameter, $_navigation->WorkspaceID), $showRoot ? 'folder' : 'root', $this->id2path($_navigation->IconID), $_navigation->Attributes, $_navigation->LimitAccess, $this->getCustomerData($_navigation), $_navigation->CurrentOnUrlPar, $_navigation->CurrentOnAnker);
 
 		$_items = $_navigation->getDynamicPreview($this->Storage);
 
@@ -107,8 +106,7 @@ class weNavigationItems{
 		$_all = count($_items) - count($_depended) + count($_new_items);
 		$_items = array_splice($_items, 0, $_all);
 		foreach($_items as $_item){
-			$this->items['id' . $_item['id']] = new weNavigationItem(
-				$_item['id'], $_item['docid'], $_item['table'], $_item['text'], $_item['display'], $_item['href'], $_item['type'], $_item['icon'], $_item['attributes'], $_item['limitaccess'], $_item['customers'], $_item['currentonurlpar'], $_item['currentonanker']);
+			$this->items['id' . $_item['id']] = new weNavigationItem($_item['id'], $_item['docid'], $_item['table'], $_item['text'], $_item['display'], $_item['href'], $_item['type'], $_item['icon'], $_item['attributes'], $_item['limitaccess'], $_item['customers'], $_item['currentonurlpar'], $_item['currentonanker']);
 			if(isset($this->items['id' . $_item['parentid']])){
 				$this->items['id' . $_item['parentid']]->addItem($this->items['id' . $_item['id']]);
 			}
