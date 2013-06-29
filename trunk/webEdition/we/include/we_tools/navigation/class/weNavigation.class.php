@@ -548,13 +548,8 @@ class weNavigation extends weModelBase{
 	function getDynamicPreview(&$storage, $rules = false){
 		$_items = array();
 
-		$_count = count($storage['items']);
-		for($i = 0; $i < $_count; $i++){
-
-			$item = $storage['items'][$i];
-
+		foreach($storage['items'] as $item){
 			if($item['ParentID'] == $this->ID){
-
 				$_nav = new weNavigation();
 				$_nav->initByRawData($item);
 				if($_nav->IsFolder || $_nav->Selection != self::SELECTION_DYNAMIC){
@@ -582,7 +577,6 @@ class weNavigation extends weModelBase{
 				}
 
 				if($_nav->IsFolder == 0 && $_nav->Selection == self::SELECTION_DYNAMIC){
-
 					$_dyn_items = $_nav->getDynamicEntries();
 					foreach($_dyn_items as $_dyn){
 
@@ -599,12 +593,13 @@ class weNavigation extends weModelBase{
 							'type' => 'item',
 							'parentid' => $_nav->ParentID,
 							'workspaceid' => $_nav->WorkspaceID,
-							'icon' => isset($storage['ids'][$_nav->IconID]) ? $storage['ids'][$_nav->IconID] : id_to_path(
-									$_nav->IconID),
+							'icon' => isset($storage['ids'][$_nav->IconID]) ? $storage['ids'][$_nav->IconID] : id_to_path($_nav->IconID),
 							'attributes' => $_nav->Attributes,
 							'customers' => weNavigationItems::getCustomerData($_nav),
+							'currentonurlpar' => $_nav->CurrentOnUrlPar,
+							'currentonanker' => $_nav->CurrentOnAnker,
 							'limitaccess' => $_nav->LimitAccess,
-							'depended' => 2
+							'depended' => 2,
 						);
 
 						if($rules){
@@ -618,10 +613,6 @@ class weNavigation extends weModelBase{
 					$_items = array_merge($_items, $_nav->getDynamicPreview($storage, $rules));
 				}
 			}
-		}
-
-		if(!empty($_new_items)){
-			$_items = array_merge($_items, array_reverse($_new_items, true));
 		}
 
 		return $_items;
