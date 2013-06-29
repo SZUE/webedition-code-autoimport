@@ -230,7 +230,7 @@ abstract class weBackupUtil{
 	}
 
 	static function writeLog(){
-		if($_SESSION['weS']['weBackupVars']['backup_log_data'] == ''){
+		if(empty($_SESSION['weS']['weBackupVars']['backup_log_data'])){
 			return;
 		}
 		if($_SESSION['weS']['weBackupVars']['backup_log']){
