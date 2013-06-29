@@ -27,8 +27,8 @@ class weBackupImport{
 //	private static $mem = 0;
 
 	static function import($filename, &$offset, $lines = 1, $iscompressed = 0, $encoding = 'ISO-8859-1', $log = 0){
-//		self::$mem = memory_get_usage(true);
-		weBackupUtil::addLog(sprintf('Reading offset %s', $offset));
+		weBackupUtil::addLog(sprintf('Reading offset %s, %s lines, Mem: %s', $offset, $lines, memory_get_usage(true)));
+		weBackupUtil::writeLog();
 		$data = weBackupFileReader::readLine($filename, $offset, $lines, 0, $iscompressed);
 		if(empty($data)){
 			return false;
@@ -36,8 +36,8 @@ class weBackupImport{
 //		weBackupUtil::addLog('XX read: ' . ((memory_get_usage(true) - self::$mem) / 1048576) . ' ' . $locLines);
 		$data =
 			(isset($_SESSION['weS']['weBackupVars']['options']['convert_charset']) && $_SESSION['weS']['weBackupVars']['options']['convert_charset'] ?
-				weXMLExIm::getHeader($_SESSION['weS']['weBackupVars']['encoding'],'backup') :
-				weXMLExIm::getHeader('','backup')) .
+				weXMLExIm::getHeader($_SESSION['weS']['weBackupVars']['encoding'], 'backup') :
+				weXMLExIm::getHeader('', 'backup')) .
 			$data .
 			weBackup::weXmlExImFooter;
 
@@ -118,7 +118,7 @@ class weBackupImport{
 							$object->$name = weContentProvider::getDecodedData(($attr && isset($attr[weContentProvider::CODING_ATTRIBUTE]) ? $attr[weContentProvider::CODING_ATTRIBUTE] : weContentProvider::CODING_NONE), $parser->getNodeData());
 						} else{
 							// import field
-							$object->$name = (weContentProvider::needCoding($classname, $name,  weContentProvider::CODING_OLD) ?
+							$object->$name = (weContentProvider::needCoding($classname, $name, weContentProvider::CODING_OLD) ?
 									weContentProvider::decode($parser->getNodeData()) :
 									$parser->getNodeData()); //original mit Bug #3412 aber diese Version l�st 4092
 						}

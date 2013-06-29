@@ -37,6 +37,7 @@ if(($_REQUEST['cmd'] == 'export' || $_REQUEST['cmd'] == 'import') && isset($_SES
 	$_SESSION['weS']['weBackupVars']['limits']['requestTime'] = (isset($_SERVER['REQUEST_TIME']) ? $_SERVER['REQUEST_TIME'] :
 			//we don't have the time of the request, assume some time is already spent.
 			time() - 3);
+	$_SESSION['weS']['weBackupVars']['limits']['lastMem'] = 0;
 
 	if(isset($_REQUEST['reload']) && $_REQUEST['reload']){
 		$tmp = $_SESSION['weS']['weBackupVars']['limits']['requestTime'] - $last;

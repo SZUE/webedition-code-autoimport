@@ -55,7 +55,7 @@ class weBackup extends we_backup{
 
 	function __construct($handle_options = array()){
 		$this->header = '<?xml version="1.0" encoding="' . $GLOBALS['WE_BACKENDCHARSET'] . '" standalone="yes"?>' . $this->nl .
-			self::weXmlExImHead.' version="' . WE_VERSION . '" type="backup" xmlns:we="we-namespace">' . $this->nl;
+			self::weXmlExImHead . ' version="' . WE_VERSION . '" type="backup" xmlns:we="we-namespace">' . $this->nl;
 		$this->footer = $this->nl . self::weXmlExImFooter;
 
 		$this->properties[] = 'mode';
@@ -206,14 +206,21 @@ class weBackup extends we_backup{
 	 * @param type $execTime
 	 * @return boolean true, if still time left
 	 */
-	public static function limitsReached($table, $execTime){
+	public static function limitsReached($table, $execTime, $memMulti = 2){
 		if($table){
 			//check if at least 10 avg rows
 			$rowSz = $_SESSION['weS']['weBackupVars']['avgLen'][strtolower(stripTblPrefix($table))];
 			if(memory_get_usage(true) + 10 * $rowSz > $_SESSION['weS']['weBackupVars']['limits']['mem']){
 				return false;
 			}
+		} elseif($_SESSION['weS']['weBackupVars']['limits']['lastMem'] != 0){
+			$cur = memory_get_usage(true);
+			$diff = $cur - $_SESSION['weS']['weBackupVars']['limits']['lastMem'];
+			if($cur + $diff * $memMulti > $_SESSION['weS']['weBackupVars']['limits']['mem']){
+				return false;
+			}
 		}
+		$_SESSION['weS']['weBackupVars']['limits']['lastMem'] = memory_get_usage(true);
 
 		if($execTime == 0){
 			t_e('execTime was 0 - this should never happen - assume microtime is not working correct', $execTime);
