@@ -88,116 +88,7 @@ class weBackup extends we_backup{
 		if($this->mode == 'sql'){
 			return parent::splitFile($this->filename);
 		}
-
-		return weXMLExIm::splitFile($this->filename, $this->backup_dir_tmp, $this->backup_steps);
-
-		$path = $this->backup_dir_tmp;
-		//FIXME: use RegEx
-		$marker = weBackup::backupMarker;
-		$marker2 = '<!--webackup -->'; //Backup 5089
-		$pattern = basename($this->filename) . "_%s";
-
-
-		$this->compress = ($this->isCompressed($this->filename) ? "gzip" : "none");
-
-		$header = $this->header;
-
-		$buff = "";
-		$filename_tmp = "";
-
-		$fh = ($this->compress != "none" ?
-				@gzopen($this->filename, 'rb') :
-				@fopen($this->filename, 'rb'));
-
-		$num = -1;
-		$open_new = true;
-		$fsize = 0;
-
-		$elnum = 0;
-
-		$marker_size = strlen($marker);
-		$marker2_size = strlen($marker2); //Backup 5089
-
-		if($fh){
-			while(!@feof($fh)) {
-				@set_time_limit(240);
-				$line = "";
-				$findline = false;
-
-				while($findline == false && !@feof($fh)) {
-					$line .= ($this->compress != 'none' ?
-							@gzgets($fh, 4096) :
-							@fgets($fh, 4096));
-
-					if(substr($line, -1) == "\n"){
-						$findline = true;
-					}
-				}
-
-				if($open_new){
-					$num++;
-					$filename_tmp = sprintf($path . $pattern, $num);
-					$fh_temp = fopen($filename_tmp, 'wb');
-					fwrite($fh_temp, $header);
-					if($num == 0){
-						$header = '';
-					}
-					$open_new = false;
-				}
-
-				if($fh_temp){
-					if((substr($line, 0, 2) != "<?") && (substr($line, 0, 11) != self::weXmlExImHead) && (substr($line, 0, 12) != self::weXmlExImFooter)){
-
-						$buff.=$line;
-						if($marker_size){
-							$write = ((substr($buff, (0 - ($marker_size + 1))) == $marker . "\n") ||
-								(substr($buff, (0 - ($marker_size + 2))) == $marker . "\r\n" ) ||
-								(substr($buff, (0 - ($marker2_size + 1))) == $marker2 . "\n") ||
-								(substr($buff, (0 - ($marker2_size + 2))) == $marker2 . "\r\n" ));
-						} else{
-							$write = true;
-						}
-						if($write){
-							$fsize+=strlen($buff);
-							fwrite($fh_temp, $buff);
-							if($marker_size){
-								$elnum++;
-								if($elnum >= $this->backup_steps){
-									$elnum = 0;
-									$open_new = true;
-									fwrite($fh_temp, $this->footer);
-									@fclose($fh_temp);
-								}
-								$fsize = 0;
-							}
-							$buff = "";
-						}
-					} else{
-						if(((substr($line, 0, 2) == "<?") || (substr($line, 0, 11) == self::weXmlExImHead)) && $num == 0){
-							$header.=$line;
-						}
-					}
-				} else{
-					return -1;
-				}
-			}
-		} else{
-			return -1;
-		}
-		if($fh_temp){
-			if($buff){
-				fwrite($fh_temp, $buff);
-				fwrite($fh_temp, $this->footer);
-			}
-			@fclose($fh_temp);
-		}
-		if($this->compress != "none"){
-			@gzclose($fh);
-		} else{
-			@fclose($fh);
-		}
-
-		return $num + 1;
+		t_e('this should not happen');
 	}
 
 	/**
@@ -215,7 +106,7 @@ class weBackup extends we_backup{
 			}
 		}else{
 			//used for restore
-			
+
 		}
 
 		if($execTime == 0){
