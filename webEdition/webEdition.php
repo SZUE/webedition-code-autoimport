@@ -761,8 +761,9 @@ if(!empty($_jsincludes)){
 				if (jsWindow_count) {
 					for (var k = jsWindow_count - 1; k > -1; k--) {
 						eval("if(jsWindow" + k + "Object.ref=='edit_module'){ fo=true;wind=jsWindow" + k + "Object.wind}");
-						if (fo)
+						if (fo){
 							break;
+						}
 					}
 					wind.focus();
 				}
@@ -774,8 +775,9 @@ if(!empty($_jsincludes)){
 				if (jsWindow_count) {
 					for (var k = jsWindow_count - 1; k > -1; k--) {
 						eval("if(jsWindow" + k + "Object.ref=='edit_module'){ fo=true;wind=jsWindow" + k + "Object.wind}");
-						if (fo)
+						if (fo){
 							break;
+						}
 					}
 					wind.focus();
 				}
@@ -787,8 +789,9 @@ if(!empty($_jsincludes)){
 				if (jsWindow_count) {
 					for (var k = jsWindow_count - 1; k > -1; k--) {
 						eval("if(jsWindow" + k + "Object.ref=='tool_window' || jsWindow" + k + "Object.ref=='tool_window_navigation' || jsWindow" + k + "Object.ref=='tool_window_weSearch'){ fo=true;wind=jsWindow" + k + "Object.wind}");
-						if (fo)
+						if (fo){
 							break;
+						}
 					}
 					wind.focus();
 				}
@@ -800,8 +803,9 @@ if(!empty($_jsincludes)){
 				if (jsWindow_count) {
 					for (var k = jsWindow_count - 1; k > -1; k--) {
 						eval("if(jsWindow" + k + "Object.ref=='tool_window' || jsWindow" + k + "Object.ref=='tool_window_navigation' || jsWindow" + k + "Object.ref=='tool_window_weSearch'){ fo=true;wind=jsWindow" + k + "Object.wind}");
-						if (fo)
+						if (fo){
 							break;
+						}
 					}
 					wind.focus();
 				}
@@ -1057,12 +1061,15 @@ echo 'new jsWindow("http://www.webedition.org/de/webedition-cms/versionshistorie
 				try {
 					if ((typeof treeData != "undefined") && treeData) {
 						treeData.unselectnode();
-						if (arguments[1])
+						if (arguments[1]){
 							treeData.selection_table = arguments[1];
-						if (arguments[2])
+						}
+						if (arguments[2]){
 							treeData.selection = arguments[2];
-						if (treeData.selection_table == treeData.table)
+						}
+						if (treeData.selection_table == treeData.table){
 							treeData.selectnode(treeData.selection);
+						}
 					}
 				} catch (e) {
 				}
