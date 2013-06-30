@@ -51,11 +51,10 @@ if(isset($_REQUEST['we_cmd'][0])){
 			}
 
 			// charset is necessary when encoding=true
-			if(isset($_SESSION['weS']['we_data'][$_we_transaction][0]['elements']['Charset']['dat']) && !empty($_SESSION['weS']['we_data'][$_we_transaction][0]['elements']['Charset']['dat'])){
-				$charset = $_SESSION['weS']['we_data'][$_we_transaction][0]['elements']['Charset']['dat'];
-			} else{
-				$charset = $GLOBALS['WE_BACKENDCHARSET'];
-			}
+			$charset = (isset($_SESSION['weS']['we_data'][$_we_transaction][0]['elements']['Charset']['dat']) && !empty($_SESSION['weS']['we_data'][$_we_transaction][0]['elements']['Charset']['dat']) ?
+					$_SESSION['weS']['we_data'][$_we_transaction][0]['elements']['Charset']['dat'] :
+					$GLOBALS['WE_BACKENDCHARSET']);
+
 
 			$out = we_html_element::jsElement('
 					session = "' . session_id() . '";
@@ -108,9 +107,9 @@ if(isset($_REQUEST['we_cmd'][0])){
 				$_SESSION['weS']['we_data'][$transactionID][0]["elements"]["data"]["dat"] = $_REQUEST['we_cmd'][2];
 				$_SESSION['weS']['we_data'][$transactionID][1]["data"]["dat"] = $_REQUEST['we_cmd'][2];
 
-			$out = we_html_element::jsElement('
+				$out = we_html_element::jsElement('
 					var _EditorFrame = top.weEditorFrameController.getEditorFrameByTransaction("' . $transactionID . '");
-					_EditorFrame.getEditorFrameWindow().frames[2].reloadContent = true;');
+					_EditorFrame.getContentFrame().reloadContent = true;');
 			}
 
 			break;

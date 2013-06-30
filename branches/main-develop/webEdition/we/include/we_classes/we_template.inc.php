@@ -78,6 +78,9 @@ class we_template extends we_document{
 			$this->setElement($k, $temp->getElement($k), 'txt');
 		}
 		$this->EditPageNr = 0;
+		echo we_html_element::jsElement('
+var _currentEditorRootFrame = top.weEditorFrameController.getActiveDocumentReference();
+_currentEditorRootFrame.frames[2].reloadContent = true;');
 	}
 
 	/* must be called from the editor-script. Returns a filename which has to be included from the global-Script */
