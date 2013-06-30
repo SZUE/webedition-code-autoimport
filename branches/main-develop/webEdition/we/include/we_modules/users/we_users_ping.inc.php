@@ -37,7 +37,7 @@ echo we_html_element::jsScript(JS_DIR . 'libs/yui/yahoo-min.js') .
 	var weRpcFailedCnt = 0;
 	var ajaxCallback = {
 		success: function(o) {
-			if (typeof(o.responseText) !== 'undefined' && o.responseText !== '') {
+			if (typeof(o.responseText) !== undefined && o.responseText !== '') {
 				eval("var result=" + o.responseText);
 				if (result.Success) {
 					var num_users = result.DataArray.num_users;
@@ -53,7 +53,7 @@ echo we_html_element::jsScript(JS_DIR . 'libs/yui/yahoo-min.js') .
 								}
 							}
 							mfdData = result.DataArray.mfd_data;
-							if (_ref.setMfdData && mfdData !== 'undefined') {
+							if (_ref.setMfdData && mfdData !== undefined) {
 								_ref.setMfdData(mfdData);
 							}
 						}
