@@ -43,15 +43,16 @@ CodeMirror.defineMode("text/weTmpl", function(config, parserConfig) {
 					return "weCloseTag weTag";
 				}
 				if (state.open) {
-					if (stream.eatSpace())
+					if (stream.eatSpace()) {
 						return null;
+					}
 					if (state.attrActive) {
 						stream.next();//consume =
 						quot = false;
-						while ((ch = stream.next()) != null) {
+						while ((ch = stream.next()) !== null && ch !== undefined) {
 							switch (ch) {
 								case "\\":
-									if (stream.peek() == "\"") {
+									if (stream.peek() === "\"") {
 										stream.next();
 									}
 								case "\"":
@@ -65,7 +66,7 @@ CodeMirror.defineMode("text/weTmpl", function(config, parserConfig) {
 					} else {
 						var attrName = "";
 						state.attrActive = true;
-						while ((ch = stream.next()) !== null) {
+						while ((ch = stream.next()) !== null && ch !== undefined) {
 							switch (ch) {
 								default:
 									attrName += ch;
@@ -85,7 +86,7 @@ CodeMirror.defineMode("text/weTmpl", function(config, parserConfig) {
 						}
 					}
 				}
-				stream.skipToEnd()
+				stream.skipToEnd();
 				return null;
 			} else {
 				state.open = stream.match("<we:");
@@ -94,7 +95,7 @@ CodeMirror.defineMode("text/weTmpl", function(config, parserConfig) {
 				if (state.open || state.close) {
 					state.insideTag = true;
 					state.tagName = '';
-					while ((ch = stream.next()) != null) {
+					while ((ch = stream.next()) !== null && ch !== undefined) {
 						switch (ch) {
 							default:
 								state.tagName += ch;
@@ -125,11 +126,8 @@ CodeMirror.defineMode("text/weTmpl", function(config, parserConfig) {
 							name += ch;
 						}
 					}
-
-
-
 				}
-				if (!stream.eol() && stream.peek() == "<") {
+				if (!stream.eol() && stream.peek() === "<") {
 					stream.next();
 				}
 				if (!stream.skipTo("<")) {
