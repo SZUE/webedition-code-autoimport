@@ -39,6 +39,7 @@ if(($_REQUEST['cmd'] == 'export' || $_REQUEST['cmd'] == 'import') && isset($_SES
 	$_SESSION['weS']['weBackupVars']['limits']['requestTime'] = (isset($_SERVER['REQUEST_TIME']) ? $_SERVER['REQUEST_TIME'] :
 			//we don't have the time of the request, assume some time is already spent.
 			time() - 3);
+	$_SESSION['weS']['weBackupVars']['limits']['lastMem'] = 0;
 
 	if(isset($_REQUEST['reload']) && $_REQUEST['reload']){
 		$tmp = $_SESSION['weS']['weBackupVars']['limits']['requestTime'] - $last;
@@ -281,7 +282,7 @@ switch($_REQUEST['cmd']){
 				do{
 					$start = microtime(true);
 					$count = ($_SESSION['weS']['weBackupVars']['current_table'] == LINK_TABLE || $_SESSION['weS']['weBackupVars']['current_table'] == CONTENT_TABLE ? 150 : 10);
-					if(!weBackupImport::import($_SESSION['weS']['weBackupVars']['backup_file'], $_SESSION['weS']['weBackupVars']['offset'], $count, $_SESSION['weS']['weBackupVars']['options']['compress'], $_SESSION['weS']['weBackupVars']['encoding'], $_SESSION['weS']['weBackupVars']['backup_log'])){
+					if(!weBackupImport::import($_SESSION['weS']['weBackupVars']['backup_file'], $_SESSION['weS']['weBackupVars']['offset'], $count, $_SESSION['weS']['weBackupVars']['options']['compress'], $_SESSION['weS']['weBackupVars']['encoding'])){
 						break;
 					}
 					$percent = weBackupUtil::getImportPercent();

@@ -41,6 +41,7 @@ $_useJavaEditor = ($_SESSION['prefs']['editorMode'] == 'java');
 ?>
 <script  type="text/javascript"><!--
 	var weIsTextEditor = true;
+	var reloadContent = false;
 	try {
 		top.we_setEditorWasLoaded(false);
 	} catch (e) {

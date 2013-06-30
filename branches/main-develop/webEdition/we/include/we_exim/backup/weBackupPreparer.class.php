@@ -58,6 +58,7 @@ abstract class weBackupPreparer{
 				'mem' => we_convertIniSizes(ini_get('memory_limit')),
 				'exec' => ini_get('max_execution_time'),
 				'requestTime' => 0,
+				'lastMem'=>0,
 			),
 			'retry' => 0,
 		);

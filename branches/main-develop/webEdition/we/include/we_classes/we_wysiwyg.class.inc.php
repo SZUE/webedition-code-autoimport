@@ -29,6 +29,7 @@ class we_wysiwyg{
 	var $name = '';
 	private $origName = '';
 	private $fieldName = '';
+	private $fieldName_clean = '';
 	var $width = '';
 	var $height = '';
 	var $ref = '';
@@ -75,6 +76,7 @@ class we_wysiwyg{
 		$this->name = $name;
 		if(preg_match('|^.+\[.+\]$|i', $this->name)){
 			$this->fieldName = preg_replace('/^.+\[(.+)\]$/', '\1', $this->name);
+			$this->fieldName_clean = str_replace(array('-', '.', '#'), array('_minus_', '_dot_', '_sharp_'), $this->fieldName);
 		};
 		$this->origName = $origName;
 		$this->bgcol = (self::$editorType != 'tinyMCE' && empty($bgcol)) ? 'white' : $bgcol;
@@ -1368,11 +1370,13 @@ function weWysiwygSetHiddenText(arg) {
 					/*
 					//if you want to add additional event listeners to THIS instance of tinyMCE
 					//copy the following function to your webEdition template and edit its content
-					function we_tinyMCE_' . $this->fieldName . '_init(ed){
+					' . ($this->fieldName_clean == $this->fieldName ? '' : '//ATTENTION: the field name in the following function name was changed due to javasript restrictions!') . '
+
+					function we_tinyMCE_' . $this->fieldName_clean . '_init(ed){
 						//you can adress this instance of tinyMCE using variable ed:
 						var this_editor = ed;
 						//or:
-						//var this_editor = TinyWrapper(' . $this->fieldName . ').getEditor();
+						//var this_editor = TinyWrapper("' . $this->fieldName . '").getEditor();
 
 						//to adress other instances of tinyMCE on this same page use:
 						TinyWrapper("OTHER_WE_FIELDNAME").getEditor();
@@ -1517,8 +1521,12 @@ function weWysiwygSetHiddenText(arg) {
 								' : '') . '
 								' . ($this->fieldName ? '
 								tinyEditors["' . $this->fieldName . '"] = ed;
-								if(typeof we_tinyMCE_' . $this->fieldName . '_init != "undefined"){
-									we_tinyMCE_' . $this->fieldName . '_init(ed);
+								if(typeof we_tinyMCE_' . $this->fieldName_clean . '_init != "undefined"){
+									try{
+										we_tinyMCE_' . $this->fieldName_clean . '_init(ed);
+									} catch(e){
+										//nothing
+									}
 								} else if(opener){
 									if(opener.top.weEditorFrameController){
 										//we are in backend
@@ -1526,7 +1534,7 @@ function weWysiwygSetHiddenText(arg) {
 										var wedoc = opener.top.rframe.bm_content_frame.frames[editor].frames["editor_" + editor];
 										try{
 											wedoc.tinyEditorsInPopup["' . $this->fieldName . '"] = ed;
-											wedoc.we_tinyMCE_' . $this->fieldName . '_init(ed);
+											wedoc.we_tinyMCE_' . $this->fieldName_clean . '_init(ed);
 											//TODO: find a better way to get this reference...
 										}catch(e){
 											//opener.console.log("no external init function for ' . $this->fieldName . ' defined");
@@ -1535,7 +1543,7 @@ function weWysiwygSetHiddenText(arg) {
 										//we are in frontend
 										try{
 											opener.tinyEditorsInPopup["' . $this->fieldName . '"] = ed;
-											opener.we_tinyMCE_' . $this->fieldName . '_init(ed);
+											opener.we_tinyMCE_' . $this->fieldName_clean . '_init(ed);
 										}catch(e){
 											//opener.console.log("no external init function for ' . $this->fieldName . ' defined");
 										}

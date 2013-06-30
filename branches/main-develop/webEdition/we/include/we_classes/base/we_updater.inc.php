@@ -284,15 +284,15 @@ class we_updater{
 				//add indices to all objects
 				self::updateUnindexedCols($_table, 'object_%');
 				$key = 'KEY OF_WebUserID (OF_WebUserID)';
-				if(!$GLOBALS['DB_WE']->isKeyExistAtAll($_table, $key)){
+				if(!$GLOBALS['DB_WE']->isKeyExistAtAll($_table, 'OF_WebUserID')){
 					$GLOBALS['DB_WE']->addKey($_table, $key);
 				}
 				$key = 'KEY published (OF_ID,OF_Published,OF_IsSearchable)';
-				if(!$GLOBALS['DB_WE']->isKeyExistAtAll($_table, $key)){
+				if(!$GLOBALS['DB_WE']->isKeyExistAtAll($_table, 'published')){
 					$GLOBALS['DB_WE']->addKey($_table, $key);
 				}
 				$key = 'KEY OF_IsSearchable (OF_IsSearchable)';
-				if(!$GLOBALS['DB_WE']->isKeyExistAtAll($_table, $key)){
+				if(!$GLOBALS['DB_WE']->isKeyExistAtAll($_table, 'OF_IsSearchable')){
 					$GLOBALS['DB_WE']->addKey($_table, $key);
 				}
 			}
@@ -332,13 +332,13 @@ class we_updater{
 
 				$db->query('TRUNCATE ' . LANGLINK_TABLE);
 				if(!$GLOBALS['DB_WE']->isKeyExist(LANGLINK_TABLE, "UNIQUE KEY `DID` (`DID`,`DLocale`,`IsObject`,`IsFolder`,`Locale`,`DocumentTable`)")){
-					if($GLOBALS['DB_WE']->isKeyExistAtAll(LANGLINK_TABLE, "UNIQUE KEY `DID` (`DID`,`DLocale`,`IsObject`,`IsFolder`,`Locale`,`DocumentTable`)")){
+					if($GLOBALS['DB_WE']->isKeyExistAtAll(LANGLINK_TABLE, "DID")){
 						$GLOBALS['DB_WE']->delKey(LANGLINK_TABLE, 'DID');
 					}
 					$GLOBALS['DB_WE']->addKey(LANGLINK_TABLE, 'UNIQUE KEY DID (DID,DLocale,IsObject,IsFolder,Locale,DocumentTable)');
 				}
 				if(!$GLOBALS['DB_WE']->isKeyExist(LANGLINK_TABLE, "UNIQUE KEY `DLocale` (`DLocale`,`IsFolder`,`IsObject`,`LDID`,`Locale`,`DocumentTable`)")){
-					if($GLOBALS['DB_WE']->isKeyExistAtAll(LANGLINK_TABLE, "UNIQUE KEY `DLocale` (`DLocale`,`IsFolder`,`IsObject`,`LDID`,`Locale`,`DocumentTable`)")){
+					if($GLOBALS['DB_WE']->isKeyExistAtAll(LANGLINK_TABLE, "DLocale")){
 						$GLOBALS['DB_WE']->delKey(LANGLINK_TABLE, 'DLocale');
 					}
 					$GLOBALS['DB_WE']->addKey(LANGLINK_TABLE, 'UNIQUE KEY DLocale (DLocale,IsFolder,IsObject,LDID,Locale,DocumentTable)');

@@ -73,7 +73,7 @@ if($_SESSION['weS']['we_mode'] != 'seem'){ //	No tabs in Super-Easy-Edit_mode
 		}
 
 		if(in_array(WE_EDITPAGE_PREVIEW_TEMPLATE, $we_doc->EditPageNrs)){
-			$we_tabs->addTab(new we_tab("#", g_l('weClass', "[preview]"), (($we_doc->EditPageNr == WE_EDITPAGE_PREVIEW_TEMPLATE) ? "TAB_ACTIVE" : "TAB_NORMAL"), "we_cmd('switch_edit_page'," . WE_EDITPAGE_PREVIEW_TEMPLATE . ",'" . $we_transaction . "');", array("id" => "tab_" . WE_EDITPAGE_PREVIEW_TEMPLATE)));
+			$we_tabs->addTab(new we_tab("#", g_l('weClass', '[preview]'), (($we_doc->EditPageNr == WE_EDITPAGE_PREVIEW_TEMPLATE) ? 'TAB_ACTIVE' : 'TAB_NORMAL'), "we_cmd('switch_edit_page'," . WE_EDITPAGE_PREVIEW_TEMPLATE . ",'" . $we_transaction . "');", array("id" => "tab_" . WE_EDITPAGE_PREVIEW_TEMPLATE)));
 		}
 
 		if(in_array(WE_EDITPAGE_METAINFO, $we_doc->EditPageNrs)){

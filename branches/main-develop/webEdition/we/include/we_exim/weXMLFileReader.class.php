@@ -27,7 +27,7 @@ abstract class weXMLFileReader{
 	static $file = array();
 
 	static function readLine($filename, &$offset, $lines = 1, $size = 0, $iscompressed = 0){
-		$data='';
+		$data = '';
 		$prefix = $iscompressed == 0 ? 'f' : weFile::getComPrefix('gzip');
 		$open = $prefix . 'open';
 		$seek = $prefix . 'seek';
@@ -54,7 +54,6 @@ abstract class weXMLFileReader{
 			return false;
 		}
 
-		$i = 0;
 		$condition = false;
 
 		do{
@@ -97,13 +96,12 @@ abstract class weXMLFileReader{
 				if(empty($buffer)){
 					$condition = false;
 				} else{
-					$i = strlen($buffer);
-					$condition = ($i < $size ? !$eof(self::$file['fp']) : false );
+					$condition = (strlen($buffer) < $size ? !$eof(self::$file['fp']) : false );
 				}
 			} else if($lines > 0){
-				$condition = ($i < $lines ? !$eof(self::$file['fp']) : false );
-				$i++;
+				$condition = (--$lines > 0 ? !$eof(self::$file['fp']) : false );
 			}
+			$condition&=!weBackup::limitsReached('', 0.1, 10);
 
 			$data .= $buffer;
 		} while($condition);
@@ -111,7 +109,6 @@ abstract class weXMLFileReader{
 		unset($buffer);
 
 		self::$file['offset'] = $offset = $tell(self::$file['fp']);
-
 		return $data;
 	}
 

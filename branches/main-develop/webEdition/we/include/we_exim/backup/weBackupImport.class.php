@@ -24,62 +24,44 @@
  */
 class weBackupImport{
 
-//	private static $mem = 0;
-
-	static function import($filename, &$offset, $lines = 1, $iscompressed = 0, $encoding = 'ISO-8859-1', $log = 0){
-//		self::$mem = memory_get_usage(true);
-		weBackupUtil::addLog(sprintf('Reading offset %s', $offset));
+	static function import($filename, &$offset, $lines = 1, $iscompressed = 0, $encoding = 'ISO-8859-1'){
+		weBackupUtil::addLog(sprintf('Reading offset %s, %s lines, Mem: %s', $offset, $lines, memory_get_usage(true)));
+		weBackupUtil::writeLog();
 		$data = weBackupFileReader::readLine($filename, $offset, $lines, 0, $iscompressed);
 		if(empty($data)){
 			return false;
 		}
-//		weBackupUtil::addLog('XX read: ' . ((memory_get_usage(true) - self::$mem) / 1048576) . ' ' . $locLines);
+
 		$data =
 			(isset($_SESSION['weS']['weBackupVars']['options']['convert_charset']) && $_SESSION['weS']['weBackupVars']['options']['convert_charset'] ?
-				weXMLExIm::getHeader($_SESSION['weS']['weBackupVars']['encoding'],'backup') :
-				weXMLExIm::getHeader('','backup')) .
+				weXMLExIm::getHeader($_SESSION['weS']['weBackupVars']['encoding'], 'backup') :
+				weXMLExIm::getHeader('', 'backup')) .
 			$data .
 			weBackup::weXmlExImFooter;
 
-		self::transfer($data, $encoding, $log);
+		self::transfer($data, $encoding);
 		return true;
 	}
 
-	private static function transfer(&$data, $charset = 'ISO-8859-1', $log = 0){
-		$nFactor = 5;
-
-		if($log){
-			weBackupUtil::addLog('Parsing data');
-		}
+	private static function transfer(&$data, $charset = 'ISO-8859-1'){
+		weBackupUtil::addLog('Parsing data');
 
 		$parser = new weXMLParser();
 
-		//if(isset($_SESSION['weS']['weBackupVars']['options']['convert_charset']) && $_SESSION['weS']['weBackupVars']['options']['convert_charset']){ vor 4092
-		if(DEFAULT_CHARSET != ''){// Fix f�r 4092, in Verbindung mit alter Version f�r bug 3412 l�st das beide Situationen
-			$parser->parse($data, DEFAULT_CHARSET);
-		} else{
-			$parser->parse($data);
-		}
-//		weBackupUtil::addLog('XX + parser: ' . ((memory_get_usage(true) - self::$mem) / 1048576) . ' ' . (memory_get_usage(true) / 1048576) . ' ' . ((memory_get_usage(false) - self::$mem) / 1048576));
+		$parser->parse($data, ((DEFAULT_CHARSET == '') ? 'ISO-8859-1' : DEFAULT_CHARSET)); // Fix f�r 4092, in Verbindung mit alter Version f�r bug 3412 l�st das beide Situationen
 		// free some memory
 		unset($data);
-//		weBackupUtil::addLog('XX + parser-data: ' . ((memory_get_usage(true) - self::$mem) / 1048576) . ' ' . ((memory_get_usage(false) - self::$mem) / 1048576));
 
 		if($parser === false){
 			p_r($parser->parseError);
-			if($log){
-				weBackupUtil::addLog(print_r($parser->parseError, true));
-			}
+			weBackupUtil::addLog(print_r($parser->parseError, true));
 		}
 
-
 		$parser->normalize();
-//		weBackupUtil::addLog('XX normalize: ' . ((memory_get_usage(true) - self::$mem) / 1048576));
 		// set parser on the first child node
 		$parser->seek(1);
 
 		do{
-
 			$entity = $parser->getNodeName();
 			$attributes = $parser->getNodeAttributes();
 
@@ -118,7 +100,7 @@ class weBackupImport{
 							$object->$name = weContentProvider::getDecodedData(($attr && isset($attr[weContentProvider::CODING_ATTRIBUTE]) ? $attr[weContentProvider::CODING_ATTRIBUTE] : weContentProvider::CODING_NONE), $parser->getNodeData());
 						} else{
 							// import field
-							$object->$name = (weContentProvider::needCoding($classname, $name,  weContentProvider::CODING_OLD) ?
+							$object->$name = (weContentProvider::needCoding($classname, $name, weContentProvider::CODING_OLD) ?
 									weContentProvider::decode($parser->getNodeData()) :
 									$parser->getNodeData()); //original mit Bug #3412 aber diese Version l�st 4092
 						}
@@ -139,30 +121,28 @@ class weBackupImport{
 					}
 				} while($parser->nextSibling());
 
-				if($log){
-					$addtext = '';
-					if(isset($_SESSION['weS']['weBackupVars']['options']['convert_charset']) && $_SESSION['weS']['weBackupVars']['options']['convert_charset']){
-						$addtext = (method_exists($object, 'convertCharsetEncoding') ?
-								" - Converting Charset: " . $_SESSION['weS']['weBackupVars']['encoding'] . " -> " . DEFAULT_CHARSET :
-								" - Converting Charset: NO ");
-					}
-					$_prefix = 'Saving object ';
-					switch($classname){
-						case 'weTable':
-						case 'weTableAdv':
-							weBackupUtil::addLog($_prefix . $classname . ':' . $object->table . $addtext);
-							break;
-						case 'weTableItem':
-							$_id_val = '';
-							foreach($object->keys as $_key){
-								$_id_val .= ':' . $object->$_key;
-							}
-							weBackupUtil::addLog($_prefix . $classname . ':' . $object->table . $_id_val . $addtext);
-							break;
-						case 'weBinary':
-							weBackupUtil::addLog($_prefix . $classname . ':' . $object->ID . ':' . $object->Path . $addtext);
-							break;
-					}
+				$addtext = '';
+				if(isset($_SESSION['weS']['weBackupVars']['options']['convert_charset']) && $_SESSION['weS']['weBackupVars']['options']['convert_charset']){
+					$addtext = (method_exists($object, 'convertCharsetEncoding') ?
+							" - Converting Charset: " . $_SESSION['weS']['weBackupVars']['encoding'] . " -> " . DEFAULT_CHARSET :
+							" - Converting Charset: NO ");
+				}
+				$_prefix = 'Saving object ';
+				switch($classname){
+					case 'weTable':
+					case 'weTableAdv':
+						weBackupUtil::addLog($_prefix . $classname . ':' . $object->table . $addtext);
+						break;
+					case 'weTableItem':
+						$_id_val = '';
+						foreach($object->keys as $_key){
+							$_id_val .= ':' . $object->$_key;
+						}
+						weBackupUtil::addLog($_prefix . $classname . ':' . $object->table . $_id_val . $addtext);
+						break;
+					case 'weBinary':
+						weBackupUtil::addLog($_prefix . $classname . ':' . $object->ID . ':' . $object->Path . $addtext);
+						break;
 				}
 				if(isset($_SESSION['weS']['weBackupVars']['options']['convert_charset']) && $_SESSION['weS']['weBackupVars']['options']['convert_charset'] && method_exists($object, 'convertCharsetEncoding')){
 					$object->convertCharsetEncoding($_SESSION['weS']['weBackupVars']['encoding'], DEFAULT_CHARSET);

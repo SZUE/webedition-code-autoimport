@@ -32,7 +32,7 @@ function we_tag_navigationEntry($attribs, $content){
 		return;
 	}
 
-	$navigationName = weTag_getAttribute('navigationname', $attribs, "default");
+	$navigationName = weTag_getAttribute('navigationname', $attribs, 'default');
 	$type = weTag_getAttribute('type', $attribs);
 	$level = weTag_getAttribute('level', $attribs, 'defaultLevel');
 	$current = weTag_getAttribute('current', $attribs, 'defaultCurrent');

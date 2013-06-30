@@ -155,14 +155,11 @@ function we_tag_field($attribs){
 				(isset($GLOBALS['we_doc']->TableID) ?
 					$GLOBALS['we_doc']->TableID :
 					0)));
-	$isImageDoc = false;
-	if(isset($GLOBALS['lv']->Record['wedoc_ContentType']) && $GLOBALS['lv']->Record['wedoc_ContentType'] == 'image/*'){
-		$isImageDoc = true;
-	}
 
+	$isImageDoc = (isset($GLOBALS['lv']->Record['wedoc_ContentType']) && $GLOBALS['lv']->Record['wedoc_ContentType'] == 'image/*' ? true : false);
 	$isCalendar = (isset($GLOBALS['lv']->calendar_struct['calendar']) && $GLOBALS['lv']->calendar_struct['calendar'] != '' && $GLOBALS['lv']->isCalendarField($type));
 
-	if((!$GLOBALS['lv']->f('WE_ID') && property_exists($GLOBALS['lv'],'calendar_struct')&& $GLOBALS['lv']->calendar_struct['calendar'] == '')|| !property_exists($GLOBALS['lv'],'calendar_struct')){
+	if((!$GLOBALS['lv']->f('WE_ID') && property_exists($GLOBALS['lv'],'calendar_struct')&& $GLOBALS['lv']->calendar_struct['calendar'] == '')){
 		return '';
 	}
 
@@ -291,10 +288,11 @@ function we_tag_field($attribs){
 			if(isset($GLOBALS['lv'])){
 				switch($GLOBALS['lv']->ClassName){
 					case 'we_listview':
-						$hrefArr = array();
-						$hrefArr['int'] = $GLOBALS['lv']->f($name . we_base_link::MAGIC_INT_LINK) ? $GLOBALS['lv']->f($name . we_base_link::MAGIC_INT_LINK) : $GLOBALS['lv']->f(we_tag_getPostName($name) . we_base_link::MAGIC_INT_LINK);
-						$hrefArr['intID'] = $GLOBALS['lv']->f($name . we_base_link::MAGIC_INT_LINK_ID) ? $GLOBALS['lv']->f($name . we_base_link::MAGIC_INT_LINK_ID) : $GLOBALS['lv']->f(we_tag_getPostName($name) . we_base_link::MAGIC_INT_LINK_ID);
-						$hrefArr['extPath'] = $GLOBALS['lv']->f($name);
+						$hrefArr = array(
+							'int' => $GLOBALS['lv']->f($name . we_base_link::MAGIC_INT_LINK) ? $GLOBALS['lv']->f($name . we_base_link::MAGIC_INT_LINK) : $GLOBALS['lv']->f(we_tag_getPostName($name) . we_base_link::MAGIC_INT_LINK),
+							'intID' => $GLOBALS['lv']->f($name . we_base_link::MAGIC_INT_LINK_ID) ? $GLOBALS['lv']->f($name . we_base_link::MAGIC_INT_LINK_ID) : $GLOBALS['lv']->f(we_tag_getPostName($name) . we_base_link::MAGIC_INT_LINK_ID),
+							'extPath' => $GLOBALS['lv']->f($name)
+						);
 						break;
 					case 'we_listview_multiobject':
 					case 'we_listview_object':
