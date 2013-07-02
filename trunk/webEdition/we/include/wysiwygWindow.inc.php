@@ -79,15 +79,19 @@ if(isset($fieldName) && isset($_REQUEST["we_okpressed"]) && $_REQUEST["we_okpres
 		$openerDocument = 'top.opener.document';
 	}
 
-	$newVal = preg_replace('|script|i', 'scr"+"ipt', 
-		str_replace(array("\"", "\r", "\n", "'"), array("\\\"", "\\r", "\\n", "&#039;"), $_REQUEST[$reqName][$fieldName]));
+	$value = preg_replace('|script|i', 'scr"+"ipt', str_replace(array("\r", "\n", "'"), array("\\r", "\\n", "&#039;"), $_REQUEST[$reqName][$fieldName]));
+	$taValue = str_replace("\"", "\\\"", $value);
+	$divValue = isset($writeToFrontend) ? $taValue : str_replace("\"", "\\\"", parseInternalLinks($value, 0));
 
 	echo we_html_element::jsElement('
 		try{
-			' . $openerDocument . '.getElementById("' . $_REQUEST['we_cmd'][1] . '").value = \'' . $newVal . '\';
+			' . $openerDocument . '.getElementById("' . $_REQUEST['we_cmd'][1] . '").value = \'' . $taValue . '\';
 		} catch(err){}
 		try{
-			' . $openerDocument . '.getElementById("div_wysiwyg_' . $_REQUEST['we_cmd'][1] . '").innerHTML = \'' . $newVal . '\';
+			' . $openerDocument . '.getElementById("div_wysiwyg_' . $_REQUEST['we_cmd'][1] . '").innerHTML = \'' . $divValue . '\';
+		} catch(err){}
+		try{
+			top.opener.top.weEditorFrameController.getVisibleEditorFrame().seeMode_dealWithLinks();
 		} catch(err){}
 
 		top.close();
