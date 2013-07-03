@@ -36,7 +36,6 @@ class weModuleView {
 		$this->db = new DB_WE();
 		$this->setFramesetName($frameset);
 		$this->setTopFrame($topframe);
-		//$this->raw = new weShop();
 	}
 
 	//----------- Utility functions ------------------
@@ -81,6 +80,15 @@ class weModuleView {
 	}
 
 	function getJSSubmitFunction($def_target = "edbody", $def_method = "post"){
+		return '
+			function submitForm() {
+				var f = arguments[3] ? self.document.forms[arguments[3]] : self.document.we_form;
+				f.target = arguments[0]?arguments[0]:"' . $def_target . '";
+				f.action = arguments[1]?arguments[1]:"' . $this->frameset . '";
+				f.method = arguments[2]?arguments[2]:"' . $def_method . '";
+
+				f.submit();
+			}';
 	}
 
 	function processCommands(){

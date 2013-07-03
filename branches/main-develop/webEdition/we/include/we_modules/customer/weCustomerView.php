@@ -519,9 +519,9 @@ class weCustomerView{
 	' . $this->getJSSubmitFunction("customer_settings");
 	}
 
-	function getJSSubmitFunction($def_target = 'edbody', $def_method = 'post'){
+	function getJSSubmitFunctionCH($def_target = 'edbody', $def_method = 'post'){t_e("sali");
 		return '
-			function submitForm() {
+			function submitFormgugus() {
 				var f = self.document.we_form;
 
 				if (arguments[0]) {

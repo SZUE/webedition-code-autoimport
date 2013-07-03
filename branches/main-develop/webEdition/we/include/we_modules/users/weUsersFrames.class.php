@@ -28,34 +28,18 @@ class weUsersFrames extends weModuleFrames {
 	var $View;
 	var $frameset;
 
+	public $module = "users";
 	protected $useMainTree = false;
+	protected $treeFooterHeight = 40;
+	protected $treeDefaultWidth = 204;
 
 	function __construct($frameset){
-
 		parent::__construct(WE_USERS_MODULE_DIR . "edit_users_frameset.php");
-
-		//$this->Tree = new weGlossaryTree();
 		$this->View = new weUsersView(WE_USERS_MODULE_DIR . "edit_users_frameset.php", "top.content");
-		$this->module = "users";
-		$this->treeDefaultWidth = 204;
-		$this->treeFooterHeight = 40;
-	}
-
-	function getHTML($what = '', $mode = ''){
-		switch($what){
-			/*
-			case "left":
-				print $this->getHTMLLeft(false, false, true, 'search');
-				break;
-			 *
-			 */
-			default:
-				parent::getHTML($what);
-		}
 	}
 
 	function getHTMLLeftDiv(){
-		return parent::getHTMLLeftDiv(false, false, true, 'search');
+		return parent::getHTMLLeftDiv(true);
 	}
 
 	function getJSCmdCode(){
@@ -384,28 +368,23 @@ function urlEntry(icon,name,vorfahr,text,contentType,table,published,denied) {
 	 *
 	 */
 
-	function getHTMLSearch(){
-		echo we_html_element::jsScript(JS_DIR . 'images.js') . STYLESHEET;
-		?>
-		</head>
-		<body bgcolor="white" background="<?php echo IMAGE_DIR; ?>edit/editfooterback.gif" marginwidth="0" marginheight="0" leftmargin="0" topmargin="0">
-			<form name="we_form" onSubmit="top.content.we_cmd('search',document.we_form.keyword.value); return false;">
-				<table border="0" cellpadding="0" cellspacing="0" width="3000">
-					<tr>
-						<td></td>
-						<td colspan="2" valign="top"><?php we_html_tools::pPixel(1600, 10); ?></td>
-					</tr>
-					<tr>
-						<td><?php we_html_tools::pPixel(1, 5); ?></td>
-						<td><?php
-							print we_button::create_button_table(array(we_html_tools::htmlTextInput("keyword", 14, "", "", "", "text", 120), we_button::create_button("image:btn_function_search", "javascript:top.content.we_cmd('search',document.we_form.keyword.value);")), 5);?>
-						</td>
-					</tr>
-				</table>
-			</form>
-		</body>
-		</html>
-		<?php
+	function getHTMLTreeFooter(){//TODO: js an customer anpassen oder umgekehrt!
+		$hiddens = we_html_element::htmlHidden(array("name" => "pnt", "value" => "cmd")) .
+			we_html_element::htmlHidden(array("name" => "cmd", "value" => "show_search"));
+
+		$table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0, "width" => 3000), 2, 1);
+		$table->setCol(0, 0, array("valign" => "top"), we_html_tools::getPixel(1600, 10));
+		$table->setCol(1, 0, array("nowrap" => null, "class" => "small"), we_html_element::jsElement($this->View->getJSSubmitFunction("cmd", "post")) .
+			$hiddens .
+			we_button::create_button_table(
+				array(
+					we_html_tools::htmlTextInput("keyword", 10, "", "", "", "text", "150px"),
+					we_button::create_button("image:btn_function_search", "javascript:top.content.we_cmd('search',document.we_form_treefooter.keyword.value);")
+				)
+			)
+		);
+
+		return we_html_element::htmlForm(array("name" => "we_form_treefooter"), $table->getHtml());
 	}
 
 	function getHTMLEditor(){

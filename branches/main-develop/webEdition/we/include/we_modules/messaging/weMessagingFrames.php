@@ -34,15 +34,16 @@ class weMessagingFrames extends weModuleFrames{
 	protected $messaging;
 	public $viewclass;
 	
+	public $module = "messaging";
+	protected $hasIconbar = true;
 	protected $useMainTree = false;
+	protected $treeDefaultWidth = 204;
 
 	function __construct($frameset, $viewclass = 'message', $reqTransaction, &$weTransaction){
 		parent::__construct(WE_MESSAGING_MODULE_DIR . "edit_messaging_frameset.php");
 
 		$this->transaction = $reqTransaction;
 		$this->weTransaction = &$weTransaction;
-		$this->module = "messaging";
-		$this->treeDefaultWidth = 204;
 		$this->viewclass = $viewclass;
 		$this->View = new weMessagingView(WE_MESSAGING_MODULE_DIR . "edit_messaging_frameset.php", "top.content", $this->transaction, $this->weTransaction);
 	}
@@ -60,10 +61,6 @@ class weMessagingFrames extends weModuleFrames{
 			default:
 				parent::getHTML($what);
 		}
-	}
-
-	function getHTMLLeftDiv(){
-		return parent::getHTMLLeftDiv(false);
 	}
 
 	function getJSCmdCode(){
@@ -826,16 +823,12 @@ function msg_start() {
 			$this->getJSTreeCode() .
 			we_html_element::jsElement($this->getJSStart());
 
-		return parent::getHTMLFrameset($extraHead, true, '&we_transaction=' . $this->transaction);
+		return parent::getHTMLFrameset($extraHead, '&we_transaction=' . $this->transaction);
 	}
 
 	function getHTMLIconbar(){
 		$iconbar = new weMessagingIconbar($this);
 		return $iconbar->getHTML();
-	}
-
-	function getHTMLResize(){//TODO: as soon as transaction is checked centrally in constructor we can us parent
-		return parent::getHTMLResize('', '&we_transaction=' . $this->transaction);
 	}
 
 	function getHTMLCmd(){

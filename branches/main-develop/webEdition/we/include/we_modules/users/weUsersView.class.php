@@ -504,19 +504,6 @@ function we_cmd(){
 			$this->getJSSubmitFunction("cmd");
 	}
 
-	function getJSSubmitFunction($def_target = "edbody", $def_method = "post"){
-		return '
-function submitForm() {
-	var f = self.document.we_form;
-
-	f.target = (arguments[0]?arguments[0]:"' . $def_target . '");
-	f.action = (arguments[1]?arguments[1]:"' . $this->frameset . '");
-	f.method = (arguments[2]?arguments[2]:"' . $def_method . '");
-
-	f.submit();
-}';
-	}
-
 	function processCommands(){
 		if(isset($_REQUEST["ucmd"])){
 			switch($_REQUEST["ucmd"]){

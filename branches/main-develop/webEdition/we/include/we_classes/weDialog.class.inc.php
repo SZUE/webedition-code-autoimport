@@ -42,6 +42,8 @@ class weDialog{
 	var $charset = '';
 	var $tinyMCEPopupManagment = true;
 	private $noInternals = false;
+	protected $we_cmd = array();
+	
 
 	/*	 * ***********************************************************************
 	 * CONSTRUCTOR
@@ -75,6 +77,7 @@ class weDialog{
 	function initByHttp(){
 		$this->tinyMCEPopupManagment = (isset($_REQUEST["tinyMCEPopupManagment"]) && $_REQUEST["tinyMCEPopupManagment"] == "n") ? false : $this->tinyMCEPopupManagment;
 		$this->what = isset($_REQUEST['we_what']) ? $_REQUEST['we_what'] : '';
+		$this->we_cmd = isset($_REQUEST['we_cmd']) ? $_REQUEST['we_cmd'] : array();
 
 		if(isset($_REQUEST['we_dialog_args']) && is_array($_REQUEST['we_dialog_args'])){
 			$this->args = $_REQUEST['we_dialog_args'];
@@ -97,7 +100,7 @@ class weDialog{
 			case 'cmd':
 				return $this->getCmdHTML();
 			default:
-				return $this->getHeaderHTML() .
+				return $this->getHeaderHTML(true) .
 					$this->getFramesetHTML() . '</html>';
 		}
 	}
@@ -110,6 +113,7 @@ class weDialog{
 		foreach($this->args as $k => $v){
 			$send[$k] = str_replace('"', '\"', $v);
 		}
+
 		if($this->cmdFN){
 			return $fn($send);
 		} else{
@@ -213,15 +217,26 @@ class weDialog{
 	}
 
 	function getFormHTML(){
-		$hiddens = '';
+		$hiddens = "";
 		if(isset($_REQUEST['we_cmd']) && is_array($_REQUEST['we_cmd'])){
 			foreach($_REQUEST['we_cmd'] as $k => $v){
-				$hiddens .= '<input type="hidden" name="we_cmd[' . $k . ']" value="' . rawurlencode($v) . '" />';
+				//TODO: why should we loop this commands through?
+				$hiddens .= "<input type=\"hidden\" name=\"we_cmd[$k]\" value=\"" . rawurlencode($v) . "\" />";
 			}
 		}
+
+		//create some empty we_cmds to be filled by JS if needed
+		for($i= 0; $i < 4; $i++){
+			$hiddens .= isset($_REQUEST['we_cmd'][$i]) ? '' : "<input type=\"hidden\" name=\"we_cmd[$i]\" value=\"\" />";
+		}
+
 		$target = (!$this->JsOnly ? ' target="we_' . $this->ClassName . '_cmd_frame"' : '');
 
-		return '<form name="we_form" action="' . $_SERVER["SCRIPT_NAME"] . '" method="post"' . $target . '>' . $hiddens;
+		return '<form name="we_form" action="' . $_SERVER["SCRIPT_NAME"] . '" method="post"' . $target . $this->getFormJsOnSubmit() .'>' . $hiddens;
+	}
+
+	function getFormJsOnSubmit(){
+		return '';
 	}
 
 	function getHiddenArgs(){

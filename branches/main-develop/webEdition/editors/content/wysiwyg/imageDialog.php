@@ -30,12 +30,11 @@ if(!(isset($_REQUEST['we_dialog_args']) &&
 } else{
 	$noInternals = true;
 }
-$noInternals |= !isset($_SESSION['user']) || !isset($_SESSION['user']['Username']) || $_SESSION['user']['Username'] == '';
-
+$noInternals = !isset($_SESSION['user']) || !isset($_SESSION['user']['Username']) || $_SESSION['user']['Username'] == '';
 $dialog = new weImageDialog($noInternals);
 $dialog->initByHttp();
-$dialog->registerCmdFn("weDoImgCmd");
-//$yuiSuggest =& weSuggest::getInstance();
+$dialog->registerCmdFn(isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] ? "" : "weDoImgCmd");
+
 print $dialog->getHTML();
 
 function weDoImgCmd($args){

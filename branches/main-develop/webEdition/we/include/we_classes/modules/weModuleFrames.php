@@ -35,11 +35,15 @@ class weModuleFrames{
 	var $topFrame;
 	var $treeFrame;
 	var $cmdFrame;
+
 	protected $useMainTree = true;
-	protected $treeDefaultWidth = 200;
-	protected $treeWidth = 0;
 	protected $treeHeaderHeight = 1;
 	protected $treeFooterHeight = 0;
+	protected $treeDefaultWidth = 200;
+	protected $treeWidth = 0;
+
+	protected $hasIconbar = false;
+
 	private static $treeWidthsJS = '{}';
 
 	function __construct($frameset){
@@ -123,7 +127,7 @@ class weModuleFrames{
 		}
 	}
 
-	function getHTMLFrameset($extraHead = '', $iconbar = false, $extraUrlParams = ''){
+	function getHTMLFrameset($extraHead = '', $extraUrlParams = ''){
 		$extraHead = $this->getJSCmdCode() .
 			self::getJSToggleTreeCode($this->module, $this->treeDefaultWidth) .
 			we_html_element::jsScript(JS_DIR . 'we_showMessage.js') .
@@ -138,8 +142,8 @@ class weModuleFrames{
 		$body = we_html_element::htmlBody(array('style' => 'background-color: gray; position: fixed; top: 0px; left: 0px; right: 0px; bottom: 0px; border: 0px none;', "onload" => "start();") ,
 				we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
 					, we_html_element::htmlExIFrame('header', self::getHTMLHeader(WE_INCLUDES_PATH .'java_menu/modules/module_menu_' . $this->module . '.inc.php', $this->module), 'position: absolute; top: 0px; height: 32px; left: 0px; right: 0px;') .
-					($iconbar ? we_html_element::htmlIFrame('iconbar', $this->frameset . '?pnt=iconbar' . $extraUrlParams, 'position: absolute; top: 32px; left: 0px; right: 0px; height: 40px; overflow: hidden;') : '') . 
-					$this->getHTMLResizeDiv($iconbar, $extraUrlParams) .
+					($this->hasIconbar ? we_html_element::htmlIFrame('iconbar', $this->frameset . '?pnt=iconbar' . $extraUrlParams, 'position: absolute; top: 32px; left: 0px; right: 0px; height: 40px; overflow: hidden;') : '') . 
+					$this->getHTMLResizeDiv($extraUrlParams) .
 					we_html_element::htmlIFrame('cmd', $this->frameset . '?pnt=cmd' . $extraUrlParams, 'position: absolute; bottom: 0px; height: 1px; left: 0px; right: 0px; overflow: hidden;')
 		));
 
@@ -164,7 +168,7 @@ class weModuleFrames{
 		return we_html_element::htmlDiv(array('class' => 'menuDiv'), $table->getHtml());
 	}
 
-	function getHTMLResizeDiv($iconbar = false, $extraUrlParams = ''){//TODO: only customer uses param sid: handle sid with edParams
+	function getHTMLResizeDiv($extraUrlParams = ''){//TODO: only customer uses param sid: handle sid with edParams
 		$_incDecTree = '
 			<img id="incBaum" src="' . BUTTONS_DIR . 'icons/function_plus.gif" width="9" height="12" style="position:absolute;bottom:53px;left:5px;border:1px solid grey;padding:0 1px;cursor: pointer; ' . ($this->treeWidth <= 30 ? 'bgcolor:grey;' : '') . '" onClick="top.content.incTree();">
 			<img id="decBaum" src="' . BUTTONS_DIR . 'icons/function_minus.gif" width="9" height="12" style="position:absolute;bottom:33px;left:5px;border:1px solid grey;padding:0 1px;cursor: pointer; ' . ($this->treeWidth <= 30 ? 'bgcolor:grey;' : '') . '" onClick="top.content.decTree();">
@@ -181,12 +185,12 @@ class weModuleFrames{
 					)
 			);
 
-		$attribs = array('id' => 'resize', 'name' => 'resize', 'style' => 'position: absolute; top:' . ($iconbar ? 72 : 32) . 'px; bottom: 1px; left: 0px; right: 0px; overflow: hidden;');
+		$attribs = array('id' => 'resize', 'name' => 'resize', 'style' => 'position: absolute; top:' . ($this->hasIconbar ? 72 : 32) . 'px; bottom: 1px; left: 0px; right: 0px; overflow: hidden;');
 
 		return we_html_element::htmlDiv($attribs, $content);
 	}
 
-	function getHTMLLeftDiv($loadMainTree = true, $header = false, $footer = false, $footerId = 'treefooter'){//TODO: $loadMainTree entfaellt, sobald trees einheitlich sind
+	function getHTMLLeftDiv($footer = false){//TODO: $loadMainTree entfaellt, sobald trees einheitlich sind
 		//we load tree in iFrame, because the complete tree JS is based on document.open() and document.write()
 		//it makes not much sense, to rewrite trees before abandoning them anyway
 
@@ -194,7 +198,7 @@ class weModuleFrames{
 
 		$content = we_html_element::htmlDiv(array('id' => 'treeheader', 'style' => 'overflow:hidden; position: absolute; top: 0px; left: 0px; height: ' . $this->treeHeaderHeight . 'px; width: 100%; ' . ($this->treeHeaderHeight != 1 ? 'background: url(' . IMAGE_DIR . 'backgrounds/header_with_black_line.gif); padding: 5px 0 0 0 ; ' : 'background: #ffffff')), $this->getHTMLTreeheader()) . 
 			we_html_element::htmlIFrame('tree', ($this->useMainTree ? WEBEDITION_DIR . 'treeMainModules.php' : $this->frameset . '?pnt=tree'), 'position: absolute; top: ' . $this->treeHeaderHeight . 'px; bottom: ' . $this->treeFooterHeight . 'px; left: 0px; width: 100%;') .
-			($footer ? we_html_element::htmlIFrame($footerId, $this->frameset . '?pnt=' . $footerId, 'position: absolute; bottom: 0px; left: 0px; height: ' . $this->treeFooterHeight . 'px; width: 100%;') : '');
+			($this->treeFooterHeight == 0 ? '' : we_html_element::htmlDiv(array('style' => 'position: absolute; bottom: 0px; left: 0px; padding-left: 2px; height: ' . $this->treeFooterHeight . 'px; width: 100%; overflow:hidden; background: url(\'' . IMAGE_DIR . 'edit/editfooterback.gif\')'), $this->getHTMLTreefooter()));
 
 		return we_html_element::htmlDiv($attribs, $content);
 	}
@@ -215,10 +219,12 @@ class weModuleFrames{
 	}
 
 	function getHTMLTreeheader(){
+		return ''; 
 		//to be overridden
 	}
 
 	function getHTMLTreefooter(){
+		return '';
 		//to be overridden
 	}
 
@@ -229,18 +235,6 @@ class weModuleFrames{
 	protected function getTreeFooterHeigt(){
 		return $this->treeFooterHeight;
 	}
-
-	/*
-	function getHTMLRight($extraHead = '', $extraUrlParams = ''){
-		$frameset = new we_html_frameset(array("framespacing" => 0, "border" => 0, "frameborder" => "no"));
-		$frameset->setAttributes(array("cols" => "*"));
-		$frameset->addFrame(array("src" => $this->frameset . "?pnt=editor" . (isset($_REQUEST['sid']) ? '&sid=' . $_REQUEST['sid'] : '') . $extraUrlParams, "name" => "editor", "noresize" => null, "scrolling" => "no"));
-		$noframeset = new we_baseElement("noframes");
-		$body = $frameset->getHtml() . $noframeset->getHTML();
-
-		return $this->getHTMLDocument($body, $extraHead);
-	}
-	*/
 
 	function getHTMLEditor($extraUrlParams = ''){
 

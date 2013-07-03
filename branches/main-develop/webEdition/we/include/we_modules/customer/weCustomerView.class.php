@@ -24,9 +24,9 @@
  */
 /* the parent class of storagable webEdition classes */
 
-class weCustomerView{
+class weCustomerView extends weModuleView {
 
-	private $db;
+	//private $db;
 	var $frameset;
 	var $topFrame;
 	var $customer;
@@ -525,32 +525,9 @@ class weCustomerView{
 	' . $this->getJSSubmitFunction("customer_settings");
 	}
 
-	function getJSSubmitFunction($def_target = 'edbody', $def_method = 'post', $form_name = 'we_form'){
-		return '
-			function submitForm() {
-				var f = self.document.' . $form_name . ';
-
-				if (arguments[0]) {
-					f.target = arguments[0];
-				} else {
-					f.target = "' . $def_target . '";
-				}
-
-				if (arguments[1]) {
-					f.action = arguments[1];
-				} else {
-					f.action = "' . $this->frameset . '";
-				}
-
-				if (arguments[2]) {
-					f.method = arguments[2];
-				} else {
-					f.method = "' . $def_method . '";
-				}
-
-				f.submit();
-			}';
-	}
+	/*use parent
+	function getJSSubmitFunctionBack($def_target = 'edbody', $def_method = 'post'){}
+	*/
 
 	function processCommands(){
 		if(isset($_REQUEST['cmd'])){

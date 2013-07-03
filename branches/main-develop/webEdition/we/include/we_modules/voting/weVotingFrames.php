@@ -29,13 +29,13 @@ class weVotingFrames extends weModuleFrames{
 	var $_text_size = 75;
 	var $_width_size = 535;
 
+	public $module = "voting";
+
 	function __construct(){
 		parent::__construct(WE_VOTING_MODULE_DIR . "edit_voting_frameset.php");
 		$this->Tree = new weVotingTree();
 		$this->View = new weVotingView(WE_VOTING_MODULE_DIR . "edit_voting_frameset.php", "top.content");
 		$this->setupTree(VOTING_TABLE, "top.content", "top.content.tree", "top.content.cmd");
-		$this->module = "voting";
-		//$this->treeFooterHeight = 0;
 	}
 
 	function getHTML($what){
@@ -75,11 +75,11 @@ class weVotingFrames extends weModuleFrames{
 		$this->View->voting->clearSessionVars();
 		$extraHead = $this->Tree->getJSTreeCode() . we_html_element::jsElement($this->getJSStart());
 
-		return weModuleFrames::getHTMLFrameset($extraHead);
+		return parent::getHTMLFrameset($extraHead);
 	}
 
 	function getHTMLLeftDiv(){
-		return parent::getHTMLLeftDiv(true, false, true);
+		return parent::getHTMLLeftDiv(true);
 	}
 
 	function getJSCmdCode(){

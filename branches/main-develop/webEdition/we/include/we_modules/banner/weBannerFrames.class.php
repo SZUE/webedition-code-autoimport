@@ -26,12 +26,12 @@ class weBannerFrames extends weModuleFrames{
 
 	var $edit_cmd = "edit_banner";
 
+	public $module = "banner";
 	protected $useMainTree = false;
+	protected $treeDefaultWidth = 224;
 
 	function __construct($frameset){
 		parent::__construct($frameset);
-		$this->module = "banner";
-		$this->treeDefaultWidth = 224;
 		$this->View = new weBannerView();
 	}
 
@@ -51,10 +51,6 @@ class weBannerFrames extends weModuleFrames{
 	function getHTMLFrameset(){
 		$extraHead = $this->getJSTreeCode();
 		return parent::getHTMLFrameset($extraHead);
-	}
-
-	function getHTMLLeftDiv(){//TODO: $loadMainTree entfaellt, sobald trees einheitlich sind
-		return parent::getHTMLLeftDiv(false);
 	}
 
 	function getHTMLEditor(){

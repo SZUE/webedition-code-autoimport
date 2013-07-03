@@ -28,13 +28,13 @@ class weShopFrames extends weModuleFrames{
 	var $View;
 	var $frameset;
 
-	//var $edit_cmd = "edit_newsletter";
+	public $module = "shop";
+	protected $hasIconbar = true;
+	protected $treeDefaultWidth = 204;
 
 	function __construct($frameset){
 		parent::__construct(WE_SHOP_MODULE_DIR . "edit_shop_frameset.php");
 		$this->View = new weShopView(WE_SHOP_MODULE_DIR . "edit_shop_frameset.php", "top.content");
-		$this->module = "shop";
-		$this->treeDefaultWidth = 204;
 	}
 
 	function getHTML($what){
@@ -389,7 +389,7 @@ class weShopFrames extends weModuleFrames{
 		$extraHead = $this->getJSTreeCode();
 		$extraUrlParams = isset($_REQUEST['bid']) ? '&bid=' . $_REQUEST['bid'] : '&top=1&home=1';
 
-		return parent::getHTMLFrameset($extraHead, true, $extraUrlParams);
+		return parent::getHTMLFrameset($extraHead, $extraUrlParams);
 	}
 
 	function getHTMLIconbar(){ //TODO: move this to weShopView::getHTMLIconbar();
@@ -486,11 +486,6 @@ function we_cmd() {
 		$body = we_html_element::htmlBody();
 
 		return $this->getHTMLDocument($body);
-	}
-
-	function getHTMLResize(){
-		$extraUrlParams = isset($_REQUEST['bid']) ? '&bid=' . $_REQUEST['bid'] : '&top=1&home=1';
-		return parent::getHTMLResize('', $extraUrlParams);
 	}
 
 	function getHTMLEditor(){//TODO: maybe abandon the split between former Top- and other editor files

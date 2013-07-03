@@ -24,11 +24,11 @@
  */
 class weWorkflowFrames extends weModuleFrames{
 
+	public $module = "workflow";
 	protected $useMainTree = false;
 			
 	function __construct(){
 		parent::__construct(WE_WORKFLOW_MODULE_DIR . "edit_workflow_frameset.php");
-		$this->module="workflow";
 		$this->View = new weWorkflowView();
 	}
 
@@ -55,11 +55,7 @@ class weWorkflowFrames extends weModuleFrames{
 
 	function getHTMLFrameset(){
 		$extraHead = $this->getJSTreeCode() . $this->getJSCmdCode();
-		return weModuleFrames::getHTMLFrameset($extraHead);
-	}
-
-	function getHTMLLeftDiv(){//TODO: $loadMainTree entfaellt, sobald trees einheitlich sind
-		return parent::getHTMLLeftDiv(false);
+		return parent::getHTMLFrameset($extraHead);
 	}
 
 	function getJSTreeCode(){

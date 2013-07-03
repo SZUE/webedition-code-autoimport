@@ -32,14 +32,14 @@ class weExportFrames extends weModuleFrames{
 	var $_text_size = 75;
 	var $_width_size = 535;
 
+	public $module = "export";
+
 	function __construct(){
 		parent::__construct(WE_EXPORT_MODULE_DIR . "edit_export_frameset.php");
 		$this->Tree = new weExportTreeMain();
 		$this->SelectionTree = new weExportTree();
 		$this->View = new weExportView(WE_EXPORT_MODULE_DIR . "edit_export_frameset.php", "top.content");
 		$this->setupTree(EXPORT_TABLE, "top.content", "top.content.tree", "top.content.cmd");
-		$this->module = "export";
-
 		$this->editorBodyFrame = $this->topFrame . '.editor.edbody';
 	}
 
@@ -63,7 +63,7 @@ class weExportFrames extends weModuleFrames{
 		$this->View->export->clearSessionVars();
 		$extraHead = $this->Tree->getJSTreeCode() . we_html_element::jsElement($this->getJSStart());
 
-		return weModuleFrames::getHTMLFrameset($extraHead);
+		return parent::getHTMLFrameset($extraHead);
 	}
 
 	function getJSCmdCode(){

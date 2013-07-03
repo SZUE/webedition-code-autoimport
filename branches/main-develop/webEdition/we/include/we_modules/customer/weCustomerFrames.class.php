@@ -26,16 +26,18 @@ class weCustomerFrames extends weModuleFrames{
 
 	var $View;
 	var $jsOut_fieldTypesByName;
+	
+	public $module = "customer";
+	protected $treeHeaderHeight = 40;
+	protected $treeFooterHeight = 40;
+	protected $treeDefaultWidth = 244;
+	
 
 	function __construct(){
 		parent::__construct(WE_CUSTOMER_MODULE_DIR . 'edit_customer_frameset.php');
 		$this->Tree = new weCustomerTree();
 		$this->View = new weCustomerView(WE_CUSTOMER_MODULE_DIR . "edit_customer_frameset.php", "top.content");
 		$this->setupTree(CUSTOMER_TABLE, "top.content", "top.content.tree", "top.content.cmd");
-		$this->module = "customer";
-		$this->treeDefaultWidth = 244;
-		$this->treeFooterHeight = 40;
-		$this->treeHeaderHeight = 40;
 	}
 
 	function getHTML($what = '', $mode = 0, $step = 0){
@@ -81,11 +83,11 @@ class weCustomerFrames extends weModuleFrames{
 
 		$extraUrlParams = isset($_REQUEST['sid']) ? '&sid=' . $_REQUEST['sid'] : '';
 
-		return parent::getHTMLFrameset($extraHead, false, $extraUrlParams);
+		return parent::getHTMLFrameset($extraHead, $extraUrlParams);
 	}
 
 	function getHTMLLeftDiv(){
-		return parent::getHTMLLeftDiv(true, true, true);
+		return parent::getHTMLLeftDiv(true);
 	}
 
 	function getJSCmdCode(){
@@ -647,25 +649,22 @@ class weCustomerFrames extends weModuleFrames{
 	}
 
 	function getHTMLTreeFooter(){
-		$hiddens = we_html_element::htmlHidden(array("name" => "pnt", "value" => "treefooter")) .
+		$hiddens = we_html_element::htmlHidden(array("name" => "pnt", "value" => "cmd")) .
 			we_html_element::htmlHidden(array("name" => "cmd", "value" => "show_search"));
 
 		$table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0, "width" => 3000), 2, 1);
 		$table->setCol(0, 0, array("valign" => "top"), we_html_tools::getPixel(1600, 10));
-		$table->setCol(1, 0, array("nowrap" => null, "class" => "small"), we_html_element::jsElement($this->View->getJSSubmitFunction("treefooter")) .
+		$table->setCol(1, 0, array("nowrap" => null, "class" => "small"), we_html_element::jsElement($this->View->getJSSubmitFunction("cmd", "post")) .
 			$hiddens .
 			we_button::create_button_table(
 				array(
 					we_html_tools::htmlTextInput("keyword", 10, "", "", "", "text", "150px"),
-					we_button::create_button("image:btn_function_search", "javascript:submitForm()")
+					we_button::create_button("image:btn_function_search", "javascript:submitForm('cmd', '', '', 'we_form_treefooter')")
 				)
 			)
 		);
 
-		$body = we_html_element::htmlBody(array('style' => 'overflow:hidden', "background" => IMAGE_DIR . "edit/editfooterback.gif", "marginwidth" => 5, "marginheight" => 0, "leftmargin" => 5, "topmargin" => 0), we_html_element::htmlForm(array("name" => "we_form"), $table->getHtml())
-		);
-
-		return $this->getHTMLDocument($body);
+		return we_html_element::htmlForm(array("name" => "we_form_treefooter"), $table->getHtml());
 	}
 
 	function getHTMLCustomerAdmin(){
@@ -826,7 +825,7 @@ class weCustomerFrames extends weModuleFrames{
 		return weCustomerAdd::getHTMLSortEditor($this);
 	}
 
-	function getHTMLSearch(){
+	function getHTMLSearch(){//TODO: this is popup search editor: make separate frameset for popups!
 		$colspan = 4;
 
 		$mode = isset($_REQUEST["mode"]) ? $_REQUEST["mode"] : 0;

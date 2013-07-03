@@ -28,15 +28,14 @@ class weNewsletterFrames extends weModuleFrames{
 	var $def_width = 450;
 	var $weAutoColpleter;
 
+	public $module = "newsletter";
+
 	function __construct(){
 		parent::__construct(WE_NEWSLETTER_MODULE_DIR . "edit_newsletter_frameset.php");
 		$this->View = new weNewsletterView();
 		$this->View->setFrames("top.content", "top.content.tree", "top.content.cmd");
-
 		$this->Tree = new weNewsletterTree();
 		$this->setupTree(NEWSLETTER_TABLE, "top.content", "top.content.tree", "top.content.cmd");
-
-		$this->module = "newsletter";
 		$this->weAutoColpleter = & weSuggest::getInstance();
 	}
 

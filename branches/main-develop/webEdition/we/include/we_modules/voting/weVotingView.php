@@ -23,9 +23,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 /* the parent class of storagable webEdition classes */
-class weVotingView{
+class weVotingView extends weModuleView {
 
-	var $db;
 	var $frameset;
 	var $topFrame;
 	var $voting;
@@ -359,34 +358,10 @@ class weVotingView{
 	' . $this->getJSSubmitFunction("cmd");
 	}
 
-	function getJSSubmitFunction($def_target = "edbody", $def_method = "post"){
-		return '
-			function submitForm() {
-				var f = self.document.we_form;
-
-				if (arguments[0]) {
-					f.target = arguments[0];
-				} else {
-					f.target = "' . $def_target . '";
-				}
-
-				if (arguments[1]) {
-					f.action = arguments[1];
-				} else {
-					f.action = "' . $this->frameset . '";
-				}
-
-				if (arguments[2]) {
-					f.method = arguments[2];
-				} else {
-					f.method = "' . $def_method . '";
-				}
-
-				f.submit();
-			}
-
-	';
-	}
+	/*use parent
+	function getJSSubmitFunctionS($def_target = "edbody", $def_method = "post"){}
+	 * 
+	 */
 
 	function processCommands(){
 		if(isset($_REQUEST["cmd"])){
