@@ -38,7 +38,8 @@
 					'em' : 'weadaptitalic',
 					'i' : 'weadaptitalic',
 					'acronym' : 'weacronym',
-					'abbr' : 'weabbr'
+					'abbr' : 'weabbr',
+					'img' : 'weimage'
 				};
 
 				n = ed.dom.getParent(n, 'STRONG,B,EM,I,ACRONYM,ABBR,A,IMG,SPAN');
