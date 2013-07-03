@@ -255,7 +255,7 @@ class weShopStatusMails{
 			$phpmail->setIsEmbedImages(true);
 
 			$phpmail->addHTMLPart($codes);
-			$phpmail->addTextPart(strip_tags(strtr(array('&nbsp;' => " ", '<br />' => "\n", '<br>', "\n", $codes))));
+			$phpmail->addTextPart(strip_tags(strtr( $codes,array('&nbsp;' => " ", '<br />' => "\n", '<br>', "\n"))));
 			$phpmail->addTo($cdata[$this->EMailData['emailField']], ( (isset($this->EMailData['titleField']) && $this->EMailData['titleField'] != '' && isset($cdata[$this->EMailData['titleField']]) && $cdata[$this->EMailData['titleField']] != '' ) ? $cdata[$this->EMailData['titleField']] . ' ' : '') . $cdata['Forename'] . ' ' . $cdata['Surname']);
 			if(isset($this->EMailData['bcc']) && $this->EMailData['bcc'] != ''){
 				$bccArray = explode(',', $this->EMailData['bcc']);
