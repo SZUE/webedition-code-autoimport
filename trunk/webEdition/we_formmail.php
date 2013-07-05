@@ -40,7 +40,7 @@ if(FORMMAIL_LOG){
 	// insert into log
 	$GLOBALS['DB_WE']->query('INSERT INTO ' . FORMMAIL_LOG_TABLE . ' (ip, unixTime) VALUES("' . $GLOBALS['DB_WE']->escape($_ip) . '", UNIX_TIMESTAMP())');
 	if(FORMMAIL_EMPTYLOG > -1){
-		$GLOBALS['DB_WE']->query('DELETE FROM ' . FORMMAIL_LOG_TABLE . ' WHERE unixTime < ' . intval($_now - FORMMAIL_EMPTYLOG));
+		$GLOBALS['DB_WE']->query('DELETE FROM ' . FORMMAIL_LOG_TABLE . ' WHERE unixTime<(UNIX_TIMESTAMP()-'.FORMMAIL_EMPTYLOG.')');
 	}
 
 	if(FORMMAIL_BLOCK){
@@ -201,17 +201,15 @@ function redirect($url, $_emosScontact = ''){
 }
 
 function check_recipient($email){
-	return (f('SELECT ID FROM ' . RECIPIENTS_TABLE . " WHERE Email='" . $GLOBALS['DB_WE']->escape($email) . "'", 'ID', $GLOBALS['DB_WE']) ? true : false);
+	return (f('SELECT 1 AS a FROM ' . RECIPIENTS_TABLE . " WHERE Email='" . $GLOBALS['DB_WE']->escape($email) . "'", 'a', $GLOBALS['DB_WE']) ? true : false);
 }
 
 function check_captcha(){
 	$name = $_REQUEST['captchaname'];
 
-	if(isset($_REQUEST[$name]) && !empty($_REQUEST[$name])){
-		return Captcha::check($_REQUEST[$name]);
-	} else{
-		return false;
-	}
+	return (isset($_REQUEST[$name]) && !empty($_REQUEST[$name])?
+		Captcha::check($_REQUEST[$name]):
+		false);
 }
 
 $_req = isset($_REQUEST['required']) ? $_REQUEST['required'] : '';
