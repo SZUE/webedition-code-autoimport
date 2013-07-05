@@ -83,7 +83,7 @@ if($_blocked){
 }
 
 function is_valid_email($email){
-	return (filter_var($email, FILTER_VALIDATE_EMAIL) !== false);
+	return we_check_email($email);
 }
 
 function contains_bad_str($str_to_test){

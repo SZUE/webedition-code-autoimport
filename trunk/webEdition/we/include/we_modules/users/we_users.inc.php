@@ -2425,8 +2425,8 @@ top.content.hloaded=1;') .
 		if(version_compare(PHP_VERSION, '5.3.7') >= 0){
 				$passwd = crypt($clearPassword, $password);
 		}else{
-			echo 'unable to check passwords php version to old!';
-			t_e('unable to check passwords php version to old!');
+			echo 'unable to check passwords php version to old ('.PHP_VERSION.', needed at least 5.3.7)!';
+			t_e('unable to check passwords php version to old ('.PHP_VERSION.', needed at least 5.3.7)!');
 			exit();
 		}
 				break;
