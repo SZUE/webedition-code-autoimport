@@ -187,4 +187,15 @@ $_we_available_modules = array(
 		'dependson' => '',
 		'childmodule' => ''
 	),
+	'navigation' => array(
+		'name' => 'navigation',
+		'perm' => 'EDIT_NAVIGATION || ADMINISTRATOR', //TODO: check perms
+		'text' => 'Navigation',//add g_l()
+		'text_short' => 'Navigation',//add g_l()
+		'inModuleMenu' => true,
+		'integrated' => true,
+		'alwaysActive' => true, //add real val
+		'hasSettings' => '',
+		'dependson' => ''
+	),
 );

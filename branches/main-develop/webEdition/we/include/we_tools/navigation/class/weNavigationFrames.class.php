@@ -22,29 +22,45 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weNavigationFrames extends weToolFrames {
+class weNavigationFrames extends weModuleFrames {
 //class weNavigationFrames extends weToolFramesInterim {
 
+	var $toolDir;//TODO: replace toll/module-wide by $module
+	var $toolUrl;//TODO: replace toll/module-wide by $module
+	var $_space_size = 120;
+	var $_text_size = 75;
+	var $_width_size = 520;
+	var $Model;
+
+	public $module = 'navigation';
+	public $toolName = 'navigation';
+	public $toolClassName = 'weNavigation';
+
+	public $Table = NAVIGATION_TABLE;
+	public $TreeSource = '';
+	protected $treeFooterHeight = 0;
+
 	function __construct(){
-		$this->toolName = 'navigation';
-		$this->toolClassName = 'weNavigation';
-		$this->toolUrl = WE_INCLUDES_DIR . 'we_tools/' . $this->toolName . '/';
-		$this->toolDir = $_SERVER['DOCUMENT_ROOT'] . $this->toolUrl;
+		$this->toolUrl = WE_INCLUDES_DIR . 'we_tools/' . $this->module . '/';//TODO: replace toll/module-wide by $module
+		$this->toolDir = $_SERVER['DOCUMENT_ROOT'] . $this->toolUrl;//TODO: replace toll/module-wide by $module
+		
 		$_frameset = $this->toolUrl . 'edit_' . $this->toolName . '_frameset.php';
 		parent::__construct($_frameset);
 
-		$this->Table = NAVIGATION_TABLE;
+		$this->Tree = new weNavigationTree();
 		$this->TreeSource = 'table:' . $this->Table;
 
-		$this->Tree = new weNavigationTree();
 		$this->View = new weNavigationView($_frameset, 'top.content');
 		$this->Model = &$this->View->Model;
 
-		$this->setupTree(NAVIGATION_TABLE, 'top.content', 'top.content.resize.left.tree', 'top.content.cmd');
+		$this->setupTree(NAVIGATION_TABLE, 'top.content', 'top.content.tree', 'top.content.cmd');
 	}
 
 	function getHTML($what){
 		switch($what){
+			case 'header':
+				print $this->getHTMLHeader();
+				break;
 			case 'preview' :
 				print $this->getHTMLEditorBody();
 				break;
@@ -60,6 +76,49 @@ class weNavigationFrames extends weToolFrames {
 			default :
 				parent::getHTML($what);
 		}
+	}
+
+	function getHTMLFrameset(){
+		$extraHead = $this->getJSCmdCode() .
+			$this->Tree->getJSTreeCode() .
+			we_html_element::jsElement($this->getJSStart()) .
+			we_html_element::jsScript(JS_DIR . 'we_showMessage.js') .
+			we_main_headermenu::css();
+		
+		$extraUrlParams = isset($_REQUEST['tab']) ? '&tab=' . $_REQUEST['tab'] : '' . isset($_REQUEST['sid']) ? '&sid=' . $_REQUEST['sid'] : '';
+
+		return parent::getHTMLFrameset($extraHead, $extraUrlParams);
+	}
+
+	function getHTMLCmd(){
+		if(!isset($_REQUEST["pid"])){
+			exit;
+		}
+
+		$pid = $_REQUEST["pid"];
+		$offset = (isset($_REQUEST["offset"]) ? $_REQUEST["offset"] : 0);
+		$_class = $this->toolClassName . 'TreeDataSource';
+		include_once( $this->toolDir . 'class/' . $_class . '.class.php');
+
+		$_loader = new $_class($this->TreeSource);
+
+		$rootjs = (!$pid ?
+				$this->Tree->topFrame . '.treeData.clear();' .
+				$this->Tree->topFrame . '.treeData.add(new ' . $this->Tree->topFrame . '.rootEntry(\'' . $pid . '\',\'root\',\'root\'));' : '');
+
+		$hiddens = we_html_element::htmlHidden(array('name' => 'pnt', 'value' => 'cmd')) .
+			we_html_element::htmlHidden(array('name' => 'cmd', 'value' => 'no_cmd'));
+
+		$out = we_html_element::htmlBody(array('bgcolor' => 'white', 'marginwidth' => '10', 'marginheight' => '10', 'leftmargin' => '10', 'topmargin' => '10'), we_html_element::htmlForm(array('name' => 'we_form'), $hiddens .
+					we_html_element::jsElement($rootjs . $this->Tree->getJSLoadTree($_loader->getItems($pid, $offset, $this->Tree->default_segment, '')))
+				)
+		);
+
+		return $this->getHTMLDocument($out);
+	}
+
+	function getJSCmdCode(){
+		return $this->View->getJSTop() . we_html_element::jsElement($this->Tree->getJSMakeNewEntry());
 	}
 
 	/**
@@ -173,12 +232,39 @@ function setTab(tab) {
 						we_html_element::htmlB(($this->Model->IsFolder ? g_l('navigation', '[group]') : g_l('navigation', '[entry]')) . ':&nbsp;' .
 							str_replace('&amp;', '&', $this->Model->Text) .
 							we_html_element::htmlDiv(array('id' => 'mark', 'style' => 'display: none;'), '*'))) .
-					we_html_tools::getPixel(100, 3) . $we_tabs->getHTML() . '</div>' . we_html_element::jsElement($extraJS))//			$js.
-				//			$table->getHtml() .
-				//			$tabsBody
+					we_html_tools::getPixel(100, 3) . $we_tabs->getHTML() . '</div>' . we_html_element::jsElement($extraJS))
 		);
 
 		return $this->getHTMLDocument($body, $tabsHead);
+	}
+
+	function getHTMLEditorBody(){
+
+		$hiddens = array('cmd' => 'tool_' . $this->toolName . '_edit', 'pnt' => 'edbody', 'vernr' => (isset($_REQUEST['vernr']) ? $_REQUEST['vernr'] : 0));
+
+		if(isset($_REQUEST["home"]) && $_REQUEST["home"]){
+			$hiddens['cmd'] = 'home';
+			$GLOBALS['we_print_not_htmltop'] = true;
+			$GLOBALS['we_head_insert'] = $this->View->getJSProperty();
+			$GLOBALS['we_body_insert'] = we_html_element::htmlForm(array('name' => 'we_form'), $this->View->getCommonHiddens($hiddens) . we_html_element::htmlHidden(array('name' => 'home', 'value' => '0')));
+			$tool = $GLOBALS['tool'] = $this->toolName;
+			ob_start();
+			include($this->toolDir . 'home.inc.php');
+			$out = ob_get_contents();
+			ob_end_clean();
+			return
+				we_html_element::jsElement('
+								' . $this->topFrame . '.editor.edheader.location="' . $this->frameset . '?pnt=edheader&home=1";
+								' . $this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter&home=1";
+			') . $out;
+		}
+
+		$body = we_html_element::htmlBody(array("class" => "weEditorBody", 'onLoad' => 'loaded=1;'), we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js?' . WE_VERSION) .
+				we_html_element::htmlForm(array('name' => 'we_form', 'onsubmit' => 'return false'), $this->getHTMLProperties()
+				)
+		);
+
+		return $this->getHTMLDocument($body, STYLESHEET . $this->View->getJSProperty());
 	}
 
 	function getHTMLGeneral(){
@@ -1681,7 +1767,7 @@ function ' . $prefix . 'setLinkSelection(value){
 		));
 	}
 
-	function getHTMLEditorFooter(){
+	function getHTMLEditorFooter(){t_e("edfooter son");
 		if(isset($_REQUEST["home"])){
 			return $this->getHTMLDocument(we_html_element::htmlBody(array(
 						"bgcolor" => "#F0EFF0"
@@ -1724,4 +1810,21 @@ function ' . $prefix . 'setLinkSelection(value){
 					), we_html_element::htmlForm(array(), $table1->getHtml() . $table2->getHtml())));
 	}
 
+	//TODO: function comes from weToolFrames: do we need it in navigation?
+	function getPercent($total, $value, $precision = 0){
+		$result = ($total ? round(($value * 100) / $total, $precision) : 0);
+		return we_util_Strings::formatNumber($result, strtolower($GLOBALS['WE_LANGUAGE']), 2);
+	}
+
+	//TODO: probably not used
+	/*
+	function formFileChooser($width = '', $IDName = 'ParentID', $IDValue = '/', $cmd = '', $filter = ''){
+		//javascript:we_cmd('browse_server','document.we_form.elements[\\'$IDName\\'].value','$filter',document.we_form.elements['$IDName'].value);
+		$wecmdenc1 = we_cmd_enc("document.we_form.elements['$IDName'].value");
+		$button = we_button::create_button('select', "javascript:we_cmd('browse_server','" . $wecmdenc1 . "','$filter',document.we_form.elements['$IDName'].value);");
+
+		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($IDName, 30, $IDValue, '', 'readonly', 'text', ($this->_width_size - 120), 0), "", "left", "defaultfont", "", we_html_tools::getPixel(20, 4), we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? $button : "");
+	}
+	 * 
+	 */
 }

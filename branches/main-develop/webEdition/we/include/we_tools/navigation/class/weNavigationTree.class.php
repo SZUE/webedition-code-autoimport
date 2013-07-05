@@ -35,7 +35,7 @@ class weNavigationTree extends weToolTree{
 		$out .= '
 				function doClick(id,typ){
 					var node=' . $this->topFrame . '.get(id);
-					' . $this->topFrame . '.resize.right.editor.edbody.we_cmd("tool_navigation_edit",node.id);
+					' . $this->topFrame . '.editor.edbody.we_cmd("tool_navigation_edit",node.id);
 				}
 				' . $this->topFrame . '.loaded=1;
 			';

@@ -122,6 +122,9 @@ class weModuleFrames{
 			case "search":
 				print $this->getHTMLSearch();
 				break;
+			case 'exit_doc_question':
+				print $this->getHTMLExitQuestion();
+				break;
 			default:
 				t_e(__FILE__ . " unknown reference: $what");
 		}
@@ -151,8 +154,6 @@ class weModuleFrames{
 	}
 
 	function getHTMLHeader($_menuFile, $_module){
-
-		//Include the menu.
 		include($_menuFile);
 		require_once(WE_INCLUDES_PATH . "jsMessageConsole/messageConsole.inc.php" );
 
@@ -325,6 +326,27 @@ class weModuleFrames{
 			$table->setCol(2, 1, array("valign" => "top"), $pix2);
 		}
 		return $table->getHtml();
+	}
+
+	function getHTMLExitQuestion(){
+		if(isset($_REQUEST['delayCmd']) && isset($_REQUEST['delayParam'])){
+
+			$_frame = 'opener.' . $this->topFrame;
+			$_form = $_frame . '.document.we_form';
+
+			$_yes = $_frame . '.hot=0;' . $_frame . '.we_cmd("tool_' . $this->module . '_save");self.close();';
+			$_no = $_frame . '.hot=0;' . $_frame . '.we_cmd("' . $_REQUEST['delayCmd'] . '","' . $_REQUEST['delayParam'] . '");self.close();';
+			$_cancel = 'self.close();';
+
+			return we_html_tools::getHtmlTop() .
+				STYLESHEET .
+				'</head>
+
+			<body class="weEditorBody" onBlur="self.focus()" onload="self.focus()">' .
+				we_html_tools::htmlYesNoCancelDialog(g_l('tools', '[exit_doc_question]'), IMAGE_DIR . "alert.gif", "ja", "nein", "abbrechen", $_yes, $_no, $_cancel) .
+				'</body>
+			</html>';
+		}
 	}
 
 	function setTreeWidthFromCookie(){

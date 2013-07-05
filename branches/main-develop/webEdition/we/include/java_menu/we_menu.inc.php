@@ -713,7 +713,8 @@ $we_menu[4000000] = array(
 $we_menu[4031000] = array(
 	'text' => g_l('javaMenu_global', '[navigation]') . '&hellip;',
 	'parent' => 4000000,
-	'cmd' => 'tool_navigation_edit',
+	//'cmd' => 'tool_navigation_edit',
+	'cmd' => 'edit_navigation_ifthere',
 	'perm' => 'EDIT_NAVIGATION || ADMINISTRATOR',
 	'enabled' => 1,
 );

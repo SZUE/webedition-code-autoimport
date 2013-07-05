@@ -35,8 +35,11 @@ function order_available_modules($a, $b){
 	return (strcmp($a["text"], $b["text"]));
 }
 
-uasort($GLOBALS['_we_available_modules'], "order_available_modules");
+//TODO: remove when implemented completely
+$GLOBALS['_we_active_integrated_modules'][] = 'navigation';
 
+uasort($GLOBALS['_we_available_modules'], "order_available_modules");
+//END TODO
 
 foreach($GLOBALS['_we_available_modules'] as $_menuItem){
 	if((isset($_menuItem["inModuleMenu"]) && $_menuItem["inModuleMenu"]) || (isset($_menuItem["inModuleWindow"]) && $_menuItem["inModuleWindow"])){

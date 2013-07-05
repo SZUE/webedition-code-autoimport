@@ -63,10 +63,10 @@ class weNavigationView{
 
 	function setTopFrame($frame){
 		$this->topFrame = $frame;
-		$this->editorBodyFrame = $frame . '.resize.right.editor.edbody';
+		$this->editorBodyFrame = $frame . '.editor.edbody';
 		$this->editorBodyForm = $this->editorBodyFrame . '.document.we_form';
-		$this->editorHeaderFrame = $frame . '.resize.right.editor.edheader';
-		$this->editorFooterFrame = $frame . '.resize.right.editor.edfooter';
+		$this->editorHeaderFrame = $frame . '.editor.edheader';
+		$this->editorFooterFrame = $frame . '.editor.edfooter';
 	}
 
 	//------------------------------------------------
@@ -167,12 +167,12 @@ class weNavigationView{
 						}
 					break;
 					case "tool_navigation_delete":
-						if(' . $this->topFrame . '.resize.right.editor.edbody.document.we_form.cmd.value=="home"){
+						if(' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value=="home"){
 							' . we_message_reporting::getShowMessageCall(g_l('navigation', "[nothing_selected]"), we_message_reporting::WE_MESSAGE_ERROR) . '
 							return;
 						}
-						if(' . $this->topFrame . '.resize.right.editor.edbody.document.we_form.newone){
-							if(' . $this->topFrame . '.resize.right.editor.edbody.document.we_form.newone.value==1){
+						if(' . $this->topFrame . '.editor.edbody.document.we_form.newone){
+							if(' . $this->topFrame . '.editor.edbody.document.we_form.newone.value==1){
 							' . we_message_reporting::getShowMessageCall(g_l('navigation', "[nothing_to_delete]"), we_message_reporting::WE_MESSAGE_ERROR) . '
 							return;
 						} }
@@ -181,13 +181,13 @@ class weNavigationView{
 				we_message_reporting::getShowMessageCall(g_l('navigation', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR)
 				) :
 				('
-								if (' . $this->topFrame . '.resize.right.editor.edbody.loaded) {
+								if (' . $this->topFrame . '.editor.edbody.loaded) {
 									if (confirm("' . g_l('navigation', "[delete_alert]") . '")) {
-										' . $this->topFrame . '.resize.right.editor.edbody.document.we_form.cmd.value=arguments[0];
-										' . $this->topFrame . '.resize.right.editor.edbody.document.we_form.tabnr.value=' . $this->topFrame . '.activ_tab;
+										' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value=arguments[0];
+										' . $this->topFrame . '.editor.edbody.document.we_form.tabnr.value=' . $this->topFrame . '.activ_tab;
 										' . $this->editorHeaderFrame . '.location="' . $this->frameset . '?home=1&pnt=edheader";
-										' . $this->topFrame . '.resize.right.editor.edfooter.location="' . $this->frameset . '?home=1&pnt=edfooter";
-										' . $this->topFrame . '.resize.right.editor.edbody.submitForm();
+										' . $this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?home=1&pnt=edfooter";
+										' . $this->topFrame . '.editor.edbody.submitForm();
 									}
 								} else {
 									' . we_message_reporting::getShowMessageCall(g_l('navigation', "[nothing_to_delete]"), we_message_reporting::WE_MESSAGE_ERROR) . '
@@ -723,7 +723,7 @@ class weNavigationView{
 					$this->Model->ParentID = isset($_REQUEST['ParentID']) && $_REQUEST['ParentID'] ? $_REQUEST['ParentID'] : 0;
 					print we_html_element::jsElement('
 								' . $this->editorHeaderFrame . '.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->Model->Text) . '";
-								' . $this->topFrame . '.resize.right.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";
+								' . $this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";
 					');
 					break;
 				case 'tool_navigation_edit':
@@ -737,7 +737,7 @@ class weNavigationView{
 					$this->Model = new weNavigation($_REQUEST['cmdid']);
 
 					if(!empty($this->Model->Charset) && !$_header_sent){
-						we_html_tools::headerCtCharset('text/html', $this->Model->Charset);
+						//we_html_tools::headerCtCharset('text/html', $this->Model->Charset);
 					}
 
 					if(!$this->Model->isAllowedForUser()){
@@ -750,7 +750,7 @@ class weNavigationView{
 					}
 					print we_html_element::jsElement('
 								' . $this->editorHeaderFrame . '.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->Model->Text) . '";
-								' . $this->topFrame . '.resize.right.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";
+								' . $this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";
 								if(' . $this->topFrame . '.treeData){
 									' . $this->topFrame . '.treeData.unselectnode();
 									' . $this->topFrame . '.treeData.selectnode(' . $this->Model->ID . ');

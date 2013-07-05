@@ -32,6 +32,9 @@ include_once (WE_INCLUDES_PATH . 'conf/we_active_integrated_modules.inc.php');
 //start autoloader!
 require_once ($_SERVER['DOCUMENT_ROOT'] . LIB_DIR . 'we/core/autoload.php');
 
+//TODO: remove when navigation is completely implemented as a module
+$GLOBALS['_we_active_integrated_modules'][] = 'navigation';
+
 $INCLUDE = '';
 //	In we.inc.php all names of the active modules have already been searched
 //	so we only have to use the array $GLOBALS['_we_active_integrated_modules']
