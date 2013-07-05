@@ -949,7 +949,7 @@ abstract class we_SEEM{
 						$theParameters = self::arrayToParameters($theParametersArray, "", array('we_cmd'));
 					}
 
-					if(!isset($GLOBALS['we_doc'])){
+					if(isset($GLOBALS['we_doc'])){
 						$GLOBALS['we_doc']->ID = $_SESSION['weS']['we_data'][$theParametersArray["we_transaction"]][0]["ID"];
 					}
 
