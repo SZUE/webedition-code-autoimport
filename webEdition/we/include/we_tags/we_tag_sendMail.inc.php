@@ -125,7 +125,7 @@ function we_tag_sendMail($attribs, $content){
 					$_trials = FORMMAIL_TRIALS;
 
 					// first delete all entries from blocktable which are older then now - blocktime
-					$GLOBALS['DB_WE']->query("DELETE FROM " . FORMMAIL_BLOCK_TABLE . ' WHERE blockedUntil!=-1 AND blockedUntil<UNIX_TIMESTAMP()');
+					$GLOBALS['DB_WE']->query('DELETE FROM ' . FORMMAIL_BLOCK_TABLE . ' WHERE blockedUntil!=-1 AND blockedUntil<UNIX_TIMESTAMP()');
 
 					// check if ip is allready blocked
 					if(f('SELECT 1 AS a FROM ' . FORMMAIL_BLOCK_TABLE . " WHERE ip='" . $GLOBALS['DB_WE']->escape($_SERVER['REMOTE_ADDR']) . "'", "a", $GLOBALS['DB_WE'])){
@@ -133,7 +133,7 @@ function we_tag_sendMail($attribs, $content){
 					} else{
 
 						// ip is not blocked, so see if we need to block it
-						$GLOBALS['DB_WE']->query("SELECT * FROM " . FORMMAIL_LOG_TABLE . ' WHERE unixTime>(UNIX_TIMESTAMP()-' . intval(FORMMAIL_SPAN) . ") AND ip='" . $GLOBALS['DB_WE']->escape($_SERVER['REMOTE_ADDR']) . "'");
+						$GLOBALS['DB_WE']->query('SELECT * FROM ' . FORMMAIL_LOG_TABLE . ' WHERE unixTime>(UNIX_TIMESTAMP()-' . intval(FORMMAIL_SPAN) . ") AND ip='" . $GLOBALS['DB_WE']->escape($_SERVER['REMOTE_ADDR']) . "'");
 						if($GLOBALS['DB_WE']->next_record()){
 							$_num = $GLOBALS['DB_WE']->num_rows();
 							if($_num > $_trials){
