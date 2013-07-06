@@ -34,40 +34,27 @@ $_blocked = false;
 // check to see if we need to lock or block the formmail request
 
 if(FORMMAIL_LOG){
-	$_ip = $_SERVER['REMOTE_ADDR'];
-	$_now = time();
-
 	// insert into log
-	$GLOBALS['DB_WE']->query('INSERT INTO ' . FORMMAIL_LOG_TABLE . ' (ip, unixTime) VALUES("' . $GLOBALS['DB_WE']->escape($_ip) . '", UNIX_TIMESTAMP())');
+	$GLOBALS['DB_WE']->query('INSERT INTO ' . FORMMAIL_LOG_TABLE . ' (ip, unixTime) VALUES("' . $GLOBALS['DB_WE']->escape($_SERVER['REMOTE_ADDR']) . '", UNIX_TIMESTAMP())');
 	if(FORMMAIL_EMPTYLOG > -1){
-		$GLOBALS['DB_WE']->query('DELETE FROM ' . FORMMAIL_LOG_TABLE . ' WHERE unixTime<(UNIX_TIMESTAMP()-'.FORMMAIL_EMPTYLOG.')');
+		$GLOBALS['DB_WE']->query('DELETE FROM ' . FORMMAIL_LOG_TABLE . ' WHERE unixTime<(UNIX_TIMESTAMP()-' . FORMMAIL_EMPTYLOG . ')');
 	}
 
 	if(FORMMAIL_BLOCK){
-		$_num = 0;
-		$_trials = FORMMAIL_TRIALS;
-		$_blocktime = FORMMAIL_BLOCKTIME;
-
 		// first delete all entries from blocktable which are older then now - blocktime
 		$GLOBALS['DB_WE']->query('DELETE FROM ' . FORMMAIL_BLOCK_TABLE . ' WHERE blockedUntil != -1 AND blockedUntil < UNIX_TIMESTAMP()');
 
 		// check if ip is allready blocked
-		if(f('SELECT id FROM ' . FORMMAIL_BLOCK_TABLE . ' WHERE ip="' . $GLOBALS['DB_WE']->escape($_ip) . '"', 'id', $GLOBALS['DB_WE'])){
+		if(f('SELECT id FROM ' . FORMMAIL_BLOCK_TABLE . ' WHERE ip="' . $GLOBALS['DB_WE']->escape($_SERVER['REMOTE_ADDR']) . '"', 'id', $GLOBALS['DB_WE'])){
 			$_blocked = true;
 		} else{
-
 			// ip is not blocked, so see if we need to block it
-			$GLOBALS['DB_WE']->query('SELECT * FROM ' . FORMMAIL_LOG_TABLE . ' WHERE unixTime > ' . intval($_now - FORMMAIL_SPAN) . ' AND ip="' . $GLOBALS['DB_WE']->escape($_ip) . '"');
-			if($GLOBALS['DB_WE']->next_record()){
-				$_num = $GLOBALS['DB_WE']->num_rows();
-				if($_num > $_trials){
-					$_blocked = true;
-					// cleanup
-					$GLOBALS['DB_WE']->query('DELETE FROM ' . FORMMAIL_BLOCK_TABLE . ' WHERE ip="' . $GLOBALS['DB_WE']->escape($_ip) . '"');
-					// insert in block table
-					$blockedUntil = ($_blocktime == -1) ? -1 : intval($_now + $_blocktime);
-					$GLOBALS['DB_WE']->query('INSERT INTO ' . FORMMAIL_BLOCK_TABLE . " (ip, blockedUntil) VALUES('" . $GLOBALS['DB_WE']->escape($_ip) . "', " . $blockedUntil . ")");
-				}
+			$_num = f('SELECT COUNT(1) AS a FROM ' . FORMMAIL_LOG_TABLE . ' WHERE unixTime>(UNIX_TIMESTAMP()-' . intval(FORMMAIL_SPAN) . ') AND ip="' . $GLOBALS['DB_WE']->escape($_SERVER['REMOTE_ADDR']) . '"', 'a', $GLOBALS['DB_WE']);
+			if($_num > FORMMAIL_TRIALS){
+				$_blocked = true;
+				// insert in block table
+				$blockedUntil = (FORMMAIL_BLOCKTIME == -1) ? -1 : '(UNIX_TIMESTAMP()+' . intval(FORMMAIL_BLOCKTIME) . ')';
+				$GLOBALS['DB_WE']->query('REPLACE INTO ' . FORMMAIL_BLOCK_TABLE . " (ip, blockedUntil) VALUES('" . $GLOBALS['DB_WE']->escape($_SERVER['REMOTE_ADDR']) . "', " . $blockedUntil . ")");
 			}
 		}
 	}
@@ -178,16 +165,9 @@ function error_page(){
 function ok_page($_subject = ''){
 	if($_REQUEST['ok_page']){
 		$ok_page = (get_magic_quotes_gpc() == 1) ? stripslashes($_REQUEST['ok_page']) : $_REQUEST['ok_page'];
-		if(defined('WE_ECONDA_STAT') && WE_ECONDA_STAT){
-			redirect($ok_page, $_subject);
-		} else{
-			redirect($ok_page);
-		}
+		redirect($ok_page);
 	} else{
 		print 'Vielen Dank, Ihre Formulardaten sind bei uns angekommen! / Thank you, we received your form data!';
-		if(defined('WE_ECONDA_STAT') && WE_ECONDA_STAT){
-			print "<a name='emos_name' title='scontact' rel='$_subject' rev=''></a>\n";
-		}
 		exit;
 	}
 }
@@ -201,15 +181,15 @@ function redirect($url, $_emosScontact = ''){
 }
 
 function check_recipient($email){
-	return (f('SELECT 1 AS a FROM ' . RECIPIENTS_TABLE . " WHERE Email='" . $GLOBALS['DB_WE']->escape($email) . "'", 'a', $GLOBALS['DB_WE']) ? true : false);
+	return (f('SELECT 1 AS a FROM ' . RECIPIENTS_TABLE . ' WHERE Email="' . $GLOBALS['DB_WE']->escape($email) . '"', 'a', $GLOBALS['DB_WE']) ? true : false);
 }
 
 function check_captcha(){
 	$name = $_REQUEST['captchaname'];
 
-	return (isset($_REQUEST[$name]) && !empty($_REQUEST[$name])?
-		Captcha::check($_REQUEST[$name]):
-		false);
+	return (isset($_REQUEST[$name]) && !empty($_REQUEST[$name]) ?
+			Captcha::check($_REQUEST[$name]) :
+			false);
 }
 
 $_req = isset($_REQUEST['required']) ? $_REQUEST['required'] : '';
@@ -278,7 +258,7 @@ foreach($output as $n => $v){
 				$n = replace_bad_str($n);
 				$n2 = replace_bad_str($n2);
 				$foo = replace_bad_str($foo);
-				$we_txt .= $n . '[' . $n2 . "]: $foo\n" . ($foo ? '' : "\n");
+				$we_txt .= $n . '[' . $n2 . ']: ' . $foo . "\n" . ($foo ? '' : "\n");
 				$we_html .= '<tr><td align="right"><b>' . $n . '[' . $n2 . ']:</b></td><td>' . $foo . '</td></tr>';
 			}
 		}
@@ -286,7 +266,7 @@ foreach($output as $n => $v){
 		$foo = (get_magic_quotes_gpc() == 1) ? stripslashes($v) : $v;
 		$n = replace_bad_str($n);
 		$foo = replace_bad_str($foo);
-		$we_txt .= "$n: $foo\n" . ($foo ? '' : "\n");
+		$we_txt .= $n . ': ' . $foo . "\n" . ($foo ? '' : "\n");
 		$we_html .= '<tr><td align="right"><b>' . $n . ':</b></td><td>' . ($n == 'email' ? '<a href="mailto:' . $foo . '">' . $foo . '</a>' : $foo) . '</td></tr>';
 	}
 }
@@ -325,7 +305,7 @@ $subject = strip_tags((isset($_REQUEST['subject']) && $_REQUEST['subject']) ?
 		WE_DEFAULT_SUBJECT);
 
 $charset = (isset($_REQUEST['charset']) && $_REQUEST['charset']) ?
-	str_replace("\n", "", str_replace("\r", "", $_REQUEST['charset'])) :
+	str_replace(array("\n", "\r"), "", $_REQUEST['charset']) :
 	$GLOBALS['WE_BACKENDCHARSET'];
 $recipient = (isset($_REQUEST['recipient']) && $_REQUEST['recipient']) ?
 	$_REQUEST['recipient'] :
@@ -341,11 +321,11 @@ $wasSent = false;
 if($recipient){
 	$fromMail = (isset($_REQUEST['forcefrom']) && $_REQUEST['forcefrom'] == 'true' ? $from : $email);
 
-	$subject = preg_replace("/(\\n+|\\r+)/", "", $subject);
-	$charset = preg_replace("/(\\n+|\\r+)/", "", $charset);
-	$fromMail = preg_replace("/(\\n+|\\r+)/", "", $fromMail);
-	$email = preg_replace("/(\\n+|\\r+)/", "", $email);
-	$from = preg_replace("/(\\n+|\\r+)/", "", $from);
+	$subject = preg_replace("/(\\n+|\\r+)/", '', $subject);
+	$charset = preg_replace("/(\\n+|\\r+)/", '', $charset);
+	$fromMail = preg_replace("/(\\n+|\\r+)/", '', $fromMail);
+	$email = preg_replace("/(\\n+|\\r+)/", '', $email);
+	$from = preg_replace("/(\\n+|\\r+)/", '', $from);
 
 	contains_bad_str($email);
 	contains_bad_str($from);
@@ -383,7 +363,7 @@ if($recipient){
 			print_error(g_l('global', '[email_invalid]'));
 		}
 
-		$recipient = preg_replace("/(\\n+|\\r+)/", "", $recipient);
+		$recipient = preg_replace("/(\\n+|\\r+)/", '', $recipient);
 
 		if(we_check_email($recipient) && check_recipient($recipient)){
 			$recipientsList[] = $recipient;
@@ -393,7 +373,7 @@ if($recipient){
 	}
 
 	if(count($recipientsList) > 0){
-		foreach($_FILES as $name => $file){
+		foreach($_FILES as $file){
 			if(isset($file['tmp_name']) && $file['tmp_name']){
 				$tempName = TEMP_PATH . '/' . $file['name'];
 				move_uploaded_file($file['tmp_name'], $tempName);

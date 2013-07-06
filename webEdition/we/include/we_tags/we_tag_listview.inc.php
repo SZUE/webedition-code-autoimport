@@ -169,14 +169,6 @@ function we_tag_listview($attribs){
 			break;
 		case 'search':
 			$GLOBALS['lv'] = new we_search_listview($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $doctype, $class, $we_lv_cats, $we_lv_catOr, $casesensitive, $we_lv_ws, $triggerid, $cols, $cfilter, $we_lv_languages, $hidedirindex, $objectseourls);
-			if(!isset($GLOBALS['weEconda'])){
-				$GLOBALS['weEconda'] = '';
-			}
-			if(!isset($GLOBALS['weEconda']['HTML'])){
-				$GLOBALS['weEconda']['HTML'] = '';
-			}
-
-			$GLOBALS['weEconda']['HTML'] .= '<a name="emos_name" title="search" rel="' . $GLOBALS["lv"]->search . '" rev="' . $GLOBALS["lv"]->anz_all . '" >';
 			break;
 		case 'object':
 			if(!defined('OBJECT_TABLE')){

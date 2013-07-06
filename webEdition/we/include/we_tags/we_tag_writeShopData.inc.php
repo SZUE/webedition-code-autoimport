@@ -79,10 +79,6 @@ function we_tag_writeShopData($attribs){
 
 		$totPrice = 0;
 
-		if(defined("WE_ECONDA_STAT") && defined("WE_ECONDA_PATH") && WE_ECONDA_STAT && WE_ECONDA_PATH != "" && !$GLOBALS['we_doc']->InWebEdition){
-			$GLOBALS['weEconda'] = array('emosBasket' => "");
-			$GLOBALS['weEconda'] = array('emosBilling' => "");
-		}
 		$articleCount = 0;
 
 		foreach($shoppingItems as $shoppingItem){
