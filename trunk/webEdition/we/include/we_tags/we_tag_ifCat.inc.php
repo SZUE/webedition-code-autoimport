@@ -24,41 +24,42 @@
  */
 function we_tag_ifCat($attribs){
 
-	$categories = weTag_getAttribute("categories", $attribs);
-	$category = weTag_getAttribute("category", $attribs);
+	$categories = weTag_getAttribute('categories', $attribs);
+	$category = weTag_getAttribute('category', $attribs);
 
 	if(strlen($categories) == 0 && strlen($category) == 0){
-		if(($foo = attributFehltError($attribs, "categories", __FUNCTION__))){
+		if(($foo = attributFehltError($attribs, 'categories', __FUNCTION__))){
 			print($foo);
-			return "";
+			return '';
 		}
 	}
 
-	$parent = weTag_getAttribute("parent", $attribs, false, true);
-	$docAttr = weTag_getAttribute("doc", $attribs, "self");
+	$parent = weTag_getAttribute('parent', $attribs, false, true);
+	$docAttr = weTag_getAttribute('doc', $attribs, 'self');
 
 	$match = $categories ? $categories : $category;
 	$db = $GLOBALS['DB_WE'];
 	$matchArray = makeArrayFromCSV($match);
 
 	if($docAttr == 'listview' && isset($GLOBALS['lv'])){
-		$DocCatsPaths = id_to_path($GLOBALS['lv']->f('wedoc_Category'), CATEGORY_TABLE, $db, true, false, $parent);
+		$cat = $GLOBALS['lv']->f('wedoc_Category');
 	} else{
 		$doc = we_getDocForTag($docAttr);
-		$DocCatsPaths = id_to_path($doc->Category, CATEGORY_TABLE, $db, true, false, $parent);
+		$cat = $doc->Category;
 	}
+	$DocCatsPaths = id_to_path($cat, CATEGORY_TABLE, $db, true, false, $parent);
 
 	foreach($matchArray as $match){
 
-		if(substr($match, 0, 1) != "/"){
-			$match = "/" . $match;
+		if(substr($match, 0, 1) != '/'){
+			$match = '/' . $match;
 		}
 		if($parent){
 			if(strpos($DocCatsPaths, ',' . $match . ',') !== false || strpos($DocCatsPaths, ',' . $match . '/') !== false){
 				return true;
 			}
 		} else{
-			if(!(strpos($DocCatsPaths, "," . $match . ",") === false)){
+			if(!(strpos($DocCatsPaths, ',' . $match . ',') === false)){
 				return true;
 			}
 		}
