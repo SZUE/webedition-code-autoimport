@@ -91,18 +91,19 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 
 	$SrcBody = "";
 	foreach($we_doc->elements as $key => $name){
-		if($key != "data"
-			&& $key != "Title"
-			&& $key != "Description"
-			&& $key != "Keywords"
-			&& $key != "Charset"
-			&& isset($we_doc->elements[$key]['type'])
-			&& (
-			$we_doc->elements[$key]['type'] == "txt"
-			|| $we_doc->elements[$key]['type'] == "input"
-			)
-		){
-			$SrcBody .= $we_doc->elements[$key]['dat'] . " ";
+		switch($key){
+			case "data":
+			case "Title":
+			case "Description":
+			case "Keywords":
+			case "Charset":
+			default:
+				if(isset($we_doc->elements[$key]['type']) && (
+					$we_doc->elements[$key]['type'] == "txt" || $we_doc->elements[$key]['type'] == "input"
+					)
+				){
+					$SrcBody .= $we_doc->elements[$key]['dat'] . " ";
+				}
 		}
 	}
 
@@ -123,15 +124,12 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 	}
 
 	$Text = preg_replace("=<br(>|([\s/][^>]*)>)\r?\n?=i", "\n", $ReplBody);
-	$Text = implode(" ", explode("\r\n", $Text));
-	$Text = implode(" ", explode("\n", $Text));
+	$Text = str_replace(array("\r\n", "\n"), ' ', $Text);
 	$Text = str_replace("\"", "\\\"", $ReplBody);
 	$Text = preg_replace("=<br(>|([\s/][^>]*)>)\r?\n?=i", "\n", $Text);
-	$Text = implode(" ", explode("\r\n", $Text));
-	$Text = implode(" ", explode("\n", $Text));
+	$Text = str_replace(array("\r\n", "\n"), ' ', $Text);
 	$Text = str_replace("&nbsp;", " ", $Text);
-	$Text = preg_replace("/[\t]+/", " ", $Text);
-	$Text = preg_replace("/[ ]+/", " ", $Text);
+	$Text = preg_replace(array("/[\t]+/", "/[ ]+/"), " ", $Text);
 
 	$ExceptionListFilename = weGlossary::getExceptionFilename($Language);
 
@@ -205,23 +203,23 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 	}
 	?>
 			orginal = "<?php echo $Text; ?>";
-			window.setTimeout("spellcheck()",1000);
+			window.setTimeout("spellcheck()", 1000);
 
 		}
 
 		function spellcheck() {
 			retry = 0;
-			if(document.spellchecker.isReady()) {
+			if (document.spellchecker.isReady()) {
 				top.frames.glossarycheck.document.getElementById("statusText").innerHTML = "<?php print g_l('modules_glossary', '[checking]'); ?>...";
 				var text = getTextOnly(orginal);
 				document.spellchecker.check(text);
-				window.setTimeout("findNext()",2000);
+				window.setTimeout("findNext()", 2000);
 			} else {
-				if(retryjava<5) {
-					window.setTimeout("spellcheck()",1000);
+				if (retryjava < 5) {
+					window.setTimeout("spellcheck()", 1000);
 					retryjava++;
 				} else {
-					fadeout("spinner",80,10,10);
+					fadeout("spinner", 80, 10, 10);
 					top.frames.glossarycheck.noJava();
 				}
 			}
@@ -229,9 +227,9 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 
 
 		function findNext() {
-			if(document.spellchecker.isReady()) {
-				if(document.spellchecker.isReady()) {
-					if(document.spellchecker.nextSuggestion()) {
+			if (document.spellchecker.isReady()) {
+				if (document.spellchecker.isReady()) {
+					if (document.spellchecker.nextSuggestion()) {
 						temp = document.spellchecker.getMisspelledWord();
 						var suggs = document.spellchecker.getSuggestions();
 						suggs = suggs + "";
@@ -239,20 +237,20 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 						top.frames.glossarycheck.addRow(temp, suggA);
 
 						clearTimeout(to);
-						to = window.setTimeout("findNext()",250);
+						to = window.setTimeout("findNext()", 250);
 
-					} else if(document.spellchecker.isWorking()) {
+					} else if (document.spellchecker.isWorking()) {
 						clearTimeout(to);
-						to = window.setTimeout("findNext()",250);
+						to = window.setTimeout("findNext()", 250);
 
-					} else if(retry<7) {
+					} else if (retry < 7) {
 						clearTimeout(to);
-						to = window.setTimeout("findNext()",250);
+						to = window.setTimeout("findNext()", 250);
 						retry++;
 
 					} else {
-						if(top.frames.glossarycheck.document.getElementById("spinner").style.display!="none") {
-							fadeout("spinner",80,10,10);
+						if (top.frames.glossarycheck.document.getElementById("spinner").style.display != "none") {
+							fadeout("spinner", 80, 10, 10);
 							top.frames.glossarycheck.activateButtons();
 						}
 						retry = 0;
@@ -262,7 +260,7 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 				}
 
 			} else {
-				window.setTimeout("spellcheck()",250);
+				window.setTimeout("spellcheck()", 250);
 
 			}
 
@@ -273,15 +271,15 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 		}
 
 		function getTextOnly(text) {
-			var newtext  = text.replace(/(<([^>]+)>)/ig," ");
-			newtext  = newtext.replace(/\&([^; ]+);/ig," ");
-			newtext  = newtext.replace("&amp;","&");
+			var newtext = text.replace(/(<([^>]+)>)/ig, " ");
+			newtext = newtext.replace(/\&([^; ]+);/ig, " ");
+			newtext = newtext.replace("&amp;", "&");
 
 			return newtext;
 
 		}
 
-		function fade(id,opacity) {
+		function fade(id, opacity) {
 			var styleObj = top.frames.glossarycheck.document.getElementById(id).style;
 			styleObj.opacity = (opacity / 100);
 			styleObj.MozOpacity = (opacity / 100);
@@ -289,12 +287,12 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 			styleObj.filter = "alpha(opacity=" + opacity + ")";
 		}
 
-		function fadeout(id,from,step,speed) {
-			fade(id,from);
-			if(from==0) {
-				top.frames.glossarycheck.document.getElementById(id).style.display="none";
+		function fadeout(id, from, step, speed) {
+			fade(id, from);
+			if (from == 0) {
+				top.frames.glossarycheck.document.getElementById(id).style.display = "none";
 			} else {
-				window.setTimeout("fadeout(\""+id+"\","+(from-step)+","+step+","+speed+")",speed);
+				window.setTimeout("fadeout(\"" + id + "\"," + (from - step) + "," + step + "," + speed + ")", speed);
 			}
 		}
 		//-->
@@ -347,7 +345,7 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 			}
 			include($configFile);
 
-	//FIXME: these values should be obtained from global settings
+			//FIXME: these values should be obtained from global settings
 			$Languages = array(
 				'de' => 'de',
 				'en' => 'en',
@@ -360,11 +358,9 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 
 			$Modes = array();
 			if((
-				isset($_SESSION['prefs']['force_glossary_action'])
-				&& $_SESSION['prefs']['force_glossary_action'] == 0
+				isset($_SESSION['prefs']['force_glossary_action']) && $_SESSION['prefs']['force_glossary_action'] == 0
 				) && (
-				!isset($_REQUEST['we_cmd'][3])
-				|| $_REQUEST['we_cmd'][3] != "checkOnly"
+				!isset($_REQUEST['we_cmd'][3]) || $_REQUEST['we_cmd'][3] != "checkOnly"
 				)
 			){
 				$Modes[''] = g_l('modules_glossary', '[please_choose]');
@@ -417,25 +413,25 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 				var Combobox = new weCombobox();
 
 
-				function init () {
+				function init() {
 					table = document.getElementById('unknown');
 					top.setDialog();
 				}
 
 
 				function getTextColumn(text, colspan) {
-					text = text+'';
+					text = text + '';
 					var td = document.createElement('td');
 					td.setAttribute('style', 'overflow: hidden;');
 					td.setAttribute('title', text);
-					if(colspan > 1) {
+					if (colspan > 1) {
 						td.setAttribute("colspan", colspan);
 						td.setAttribute("align", "center");
 						td.setAttribute("valign", "middle");
 						td.setAttribute("height", "220");
 					}
-					if(text!="<?php echo g_l('modules_glossary', '[all_words_identified]'); ?>" && text!="<?php echo g_l('modules_glossary', '[no_java]'); ?>") {
-						text = shortenWord(text,20);
+					if (text != "<?php echo g_l('modules_glossary', '[all_words_identified]'); ?>" && text != "<?php echo g_l('modules_glossary', '[no_java]'); ?>") {
+						text = shortenWord(text, 20);
 					}
 
 					td.appendChild(document.createTextNode(text));
@@ -445,18 +441,18 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 				function shortenWord(text, chars) {
 					var newText = "";
 					var textlength = text.length;
-					if(textlength>chars) {
-						var showPointsFrom = Math.round(chars/2)-1;
-						var showPointsTo = Math.round(chars/2)+1;
-						for(var i=0;i<chars;i++) {
-							if(i<showPointsFrom) {
+					if (textlength > chars) {
+						var showPointsFrom = Math.round(chars / 2) - 1;
+						var showPointsTo = Math.round(chars / 2) + 1;
+						for (var i = 0; i < chars; i++) {
+							if (i < showPointsFrom) {
 								newText += text.charAt(i);
 							}
-							if(i>=showPointsFrom && i<=showPointsTo) {
+							if (i >= showPointsFrom && i <= showPointsTo) {
 								newText += ".";
 							}
-							if(i>showPointsTo) {
-								var pos = textlength-(chars-i);
+							if (i > showPointsTo) {
+								var pos = textlength - (chars - i);
 								newText += text.charAt(pos);
 							}
 						}
@@ -468,7 +464,7 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 					return newText;
 				}
 
-				function getInnerColumn(html){
+				function getInnerColumn(html) {
 					var td = document.createElement('td');
 					td.innerHTML = html;
 					return td
@@ -478,7 +474,7 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 					var td = document.createElement('td');
 					var html;
 
-					html 	=	'<img src="' + src + '" width="' + width + '" height="' + height + '" />';
+					html = '<img src="' + src + '" width="' + width + '" height="' + height + '" />';
 
 					td.innerHTML = html;
 					return td
@@ -489,260 +485,260 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 					var td = document.createElement('td');
 					var html;
 
-					html	=	'<select class="defaultfont" name="item[' + word + '][type]" size="1" id="type_' + counter + '" onChange="disableItem(' + counter + ', this.value);" style="width: 140px">'
+					html = '<select class="defaultfont" name="item[' + word + '][type]" size="1" id="type_' + counter + '" onChange="disableItem(' + counter + ', this.value);" style="width: 140px">'
 	<?php
 	foreach($Modes as $Key => $Value){
 		echo "		+	'<option value=\"" . $Key . "\"' + (type == '" . $Key . "' ? ' selected=\"selected\"' : '') + '>" . $Value . "</option>'\n";
 	}
 	?>
-				+	'</select>';
+					+ '</select>';
 
-			td.innerHTML = html;
-			return td
-		}
-
-
-		function getTitleColumn(word, suggestions, title) {
-			var td = document.createElement('td');
-			var html;
-
-			html	=	'<input class="wetextinput" type="text" name="item[' + word + '][title]" size="24" value="' + title + '" maxlength="100" id="title_' + counter + '" style="display: inline; width: 200px;" onblur="this.className=\'wetextinput\';" disabled=\"disabled\" onfocus="this.className=\'wetextinputselected\'" />'
-				+	'<select class="defaultfont" name="suggest_' + counter + '" id="suggest_' + counter + '" size="1" onchange="document.getElementById(\'title_' + counter + '\').value=this.value;this.value=\'\';" disabled=\"disabled\" style="width: 200px; display: none;">'
-				+	'<option value="' + word + '">' + word + '</option>'
-				+	'<optgroup label="<?php echo g_l('modules_glossary', '[change_to]'); ?>">'
-				+	'<option value="">-- <?php echo g_l('modules_glossary', '[input]'); ?> --</option>'
-				+	'</optgroup>';
-			if(suggestions.length > 1) {
-				html +=		'<optgroup label="<?php echo g_l('modules_glossary', '[suggestions]'); ?>">';
-				for(i = 0; i < suggestions.length; i++) {
-					if(suggestions[i] != '') {
-						html +=	'<option value="' + suggestions[i] + '">' + suggestions[i] + '</option>';
-					}
+					td.innerHTML = html;
+					return td
 				}
-				html	+	'</optgroup>';
-			}
-			html	+	'</select>';
-
-			td.innerHTML = html;
-
-			return td
-		}
 
 
-		function getLanguageColumn(word, lang) {
-			var td = document.createElement('td');
-			var html;
+				function getTitleColumn(word, suggestions, title) {
+					var td = document.createElement('td');
+					var html;
 
-			html	=	'<select class="defaultfont" name="item[' + word + '][lang]" size="1" id="lang_' + counter + '" disabled=\"disabled\" style="width: 100px">'
-				+	'<option value="' + lang + '">' + lang + '</option>'
-				+	'<optgroup label="<?php echo g_l('modules_glossary', '[change_to]'); ?>">'
-				+	'<option value="">-- <?php echo g_l('modules_glossary', '[input]'); ?> --</option>'
-				+	'</optgroup>'
-				+	'<optgroup label="<?php echo g_l('modules_glossary', '[languages]'); ?>">'
+					html = '<input class="wetextinput" type="text" name="item[' + word + '][title]" size="24" value="' + title + '" maxlength="100" id="title_' + counter + '" style="display: inline; width: 200px;" onblur="this.className=\'wetextinput\';" disabled=\"disabled\" onfocus="this.className=\'wetextinputselected\'" />'
+									+ '<select class="defaultfont" name="suggest_' + counter + '" id="suggest_' + counter + '" size="1" onchange="document.getElementById(\'title_' + counter + '\').value=this.value;this.value=\'\';" disabled=\"disabled\" style="width: 200px; display: none;">'
+									+ '<option value="' + word + '">' + word + '</option>'
+									+ '<optgroup label="<?php echo g_l('modules_glossary', '[change_to]'); ?>">'
+									+ '<option value="">-- <?php echo g_l('modules_glossary', '[input]'); ?> --</option>'
+									+ '</optgroup>';
+					if (suggestions.length > 1) {
+						html += '<optgroup label="<?php echo g_l('modules_glossary', '[suggestions]'); ?>">';
+						for (i = 0; i < suggestions.length; i++) {
+							if (suggestions[i] != '') {
+								html += '<option value="' + suggestions[i] + '">' + suggestions[i] + '</option>';
+							}
+						}
+						html + '</optgroup>';
+					}
+					html + '</select>';
+
+					td.innerHTML = html;
+
+					return td
+				}
+
+
+				function getLanguageColumn(word, lang) {
+					var td = document.createElement('td');
+					var html;
+
+					html = '<select class="defaultfont" name="item[' + word + '][lang]" size="1" id="lang_' + counter + '" disabled=\"disabled\" style="width: 100px">'
+									+ '<option value="' + lang + '">' + lang + '</option>'
+									+ '<optgroup label="<?php echo g_l('modules_glossary', '[change_to]'); ?>">'
+									+ '<option value="">-- <?php echo g_l('modules_glossary', '[input]'); ?> --</option>'
+									+ '</optgroup>'
+									+ '<optgroup label="<?php echo g_l('modules_glossary', '[languages]'); ?>">'
 
 	<?php
 	foreach($Languages as $Key => $Value){
 		echo "		+	'<option value=\"" . $Key . "\">" . $Value . "</option>'";
 	}
 	?>
-				+	'</optgroup>'
-				+	'</select>';
+					+ '</optgroup>'
+									+ '</select>';
 
-			td.innerHTML = html;
-			return td
-		}
-
-
-		function getColumn(text) {
-			var td = document.createElement('td');
-			td.appendChild(document.createTextNode(text));
-			return td
-		}
+					td.innerHTML = html;
+					return td
+				}
 
 
-		function addRow(word, suggestions) {
-			var tr = document.createElement('tr');
-
-			tr.appendChild(getInnerColumn("<?php echo we_html_tools::getPixel(1, 5); ?>"));
-			tr.appendChild(getInnerColumn("<?php echo we_html_tools::getPixel(1, 5); ?>"));
-			tr.appendChild(getInnerColumn("<?php echo we_html_tools::getPixel(1, 5); ?>"));
-			tr.appendChild(getInnerColumn("<?php echo we_html_tools::getPixel(1, 5); ?>"));
-			tr.appendChild(getInnerColumn("<?php echo we_html_tools::getPixel(1, 5); ?>"));
-			tr.appendChild(getInnerColumn("<?php echo we_html_tools::getPixel(1, 5); ?>"));
-			tr.appendChild(getInnerColumn("<?php echo we_html_tools::getPixel(1, 5); ?>"));
-			table.appendChild(tr);
-
-			tr = document.createElement('tr');
-			tr.appendChild(getTextColumn(word, 1));
-			tr.appendChild(getInnerColumn("<?php echo we_html_tools::getPixel(20, 1); ?>"));
-			tr.appendChild(getActionColumn(word, ''));
-			tr.appendChild(getInnerColumn("<?php echo we_html_tools::getPixel(20, 1); ?>"));
-			tr.appendChild(getTitleColumn(word, suggestions, ''));
-			tr.appendChild(getInnerColumn("<?php echo we_html_tools::getPixel(20, 1); ?>"));
-			tr.appendChild(getLanguageColumn(word, ''));
-			table.appendChild(tr);
-
-			Combobox.init('suggest_' + counter, 'wetextinput');
-			Combobox.init('lang_' + counter, 'wetextinput');
-
-			counter++;
-
-		}
+				function getColumn(text) {
+					var td = document.createElement('td');
+					td.appendChild(document.createTextNode(text));
+					return td
+				}
 
 
-		function addPredefinedRow(word, suggestions, type, title, lang) {
-			var tr = document.createElement('tr');
+				function addRow(word, suggestions) {
+					var tr = document.createElement('tr');
 
-			tr.appendChild(getInnerColumn("<?php echo we_html_tools::getPixel(1, 5); ?>"));
-			tr.appendChild(getInnerColumn("<?php echo we_html_tools::getPixel(1, 5); ?>"));
-			tr.appendChild(getInnerColumn("<?php echo we_html_tools::getPixel(1, 5); ?>"));
-			tr.appendChild(getInnerColumn("<?php echo we_html_tools::getPixel(1, 5); ?>"));
-			tr.appendChild(getInnerColumn("<?php echo we_html_tools::getPixel(1, 5); ?>"));
-			tr.appendChild(getInnerColumn("<?php echo we_html_tools::getPixel(1, 5); ?>"));
-			tr.appendChild(getInnerColumn("<?php echo we_html_tools::getPixel(1, 5); ?>"));
-			table.appendChild(tr);
+					tr.appendChild(getInnerColumn('<?php echo we_html_tools::getPixel(1, 5); ?>'));
+					tr.appendChild(getInnerColumn('<?php echo we_html_tools::getPixel(1, 5); ?>'));
+					tr.appendChild(getInnerColumn('<?php echo we_html_tools::getPixel(1, 5); ?>'));
+					tr.appendChild(getInnerColumn('<?php echo we_html_tools::getPixel(1, 5); ?>'));
+					tr.appendChild(getInnerColumn('<?php echo we_html_tools::getPixel(1, 5); ?>'));
+					tr.appendChild(getInnerColumn('<?php echo we_html_tools::getPixel(1, 5); ?>'));
+					tr.appendChild(getInnerColumn('<?php echo we_html_tools::getPixel(1, 5); ?>'));
+					table.appendChild(tr);
 
-			tr = document.createElement('tr');
-			tr.appendChild(getTextColumn(word, 1));
-			tr.appendChild(getInnerColumn("<?php echo we_html_tools::getPixel(20, 1); ?>"));
-			tr.appendChild(getActionColumn(word, type));
-			tr.appendChild(getInnerColumn("<?php echo we_html_tools::getPixel(20, 1); ?>"));
-			tr.appendChild(getTitleColumn(word, suggestions, title));
-			tr.appendChild(getInnerColumn("<?php echo we_html_tools::getPixel(20, 1); ?>"));
-			tr.appendChild(getLanguageColumn(word, lang));
-			table.appendChild(tr);
+					tr = document.createElement('tr');
+					tr.appendChild(getTextColumn(word, 1));
+					tr.appendChild(getInnerColumn('<?php echo we_html_tools::getPixel(20, 1); ?>'));
+					tr.appendChild(getActionColumn(word, ''));
+					tr.appendChild(getInnerColumn('<?php echo we_html_tools::getPixel(20, 1); ?>'));
+					tr.appendChild(getTitleColumn(word, suggestions, ''));
+					tr.appendChild(getInnerColumn('<?php echo we_html_tools::getPixel(20, 1); ?>'));
+					tr.appendChild(getLanguageColumn(word, ''));
+					table.appendChild(tr);
 
-			Combobox.init('suggest_' + counter, 'wetextinput');
-			Combobox.init('lang_' + counter, 'wetextinput');
+					Combobox.init('suggest_' + counter, 'wetextinput');
+					Combobox.init('lang_' + counter, 'wetextinput');
 
-			disableItem(counter, type);
+					counter++;
 
-			counter++;
+				}
 
-		}
 
-		function activateButtons() {
-			if(counter == 0) {
-				var tr = document.createElement('tr');
+				function addPredefinedRow(word, suggestions, type, title, lang) {
+					var tr = document.createElement('tr');
 
-				tr.appendChild(getTextColumn('<?php echo g_l('modules_glossary', '[all_words_identified]'); ?>', 7));
-				table.appendChild(tr);
-				weButton.hide('execute');
+					tr.appendChild(getInnerColumn('<?php echo we_html_tools::getPixel(1, 5); ?>'));
+					tr.appendChild(getInnerColumn('<?php echo we_html_tools::getPixel(1, 5); ?>'));
+					tr.appendChild(getInnerColumn('<?php echo we_html_tools::getPixel(1, 5); ?>'));
+					tr.appendChild(getInnerColumn('<?php echo we_html_tools::getPixel(1, 5); ?>'));
+					tr.appendChild(getInnerColumn('<?php echo we_html_tools::getPixel(1, 5); ?>'));
+					tr.appendChild(getInnerColumn('<?php echo we_html_tools::getPixel(1, 5); ?>'));
+					tr.appendChild(getInnerColumn('<?php echo we_html_tools::getPixel(1, 5); ?>'));
+					table.appendChild(tr);
+
+					tr = document.createElement('tr');
+					tr.appendChild(getTextColumn(word, 1));
+					tr.appendChild(getInnerColumn('<?php echo we_html_tools::getPixel(20, 1); ?>'));
+					tr.appendChild(getActionColumn(word, type));
+					tr.appendChild(getInnerColumn('<?php echo we_html_tools::getPixel(20, 1); ?>'));
+					tr.appendChild(getTitleColumn(word, suggestions, title));
+					tr.appendChild(getInnerColumn('<?php echo we_html_tools::getPixel(20, 1); ?>'));
+					tr.appendChild(getLanguageColumn(word, lang));
+					table.appendChild(tr);
+
+					Combobox.init('suggest_' + counter, 'wetextinput');
+					Combobox.init('lang_' + counter, 'wetextinput');
+
+					disableItem(counter, type);
+
+					counter++;
+
+				}
+
+				function activateButtons() {
+					if (counter === 0) {
+						var tr = document.createElement('tr');
+
+						tr.appendChild(getTextColumn('<?php echo g_l('modules_glossary', '[all_words_identified]'); ?>', 7));
+						table.appendChild(tr);
+						weButton.hide('execute');
 	<?php
 	if(!isset($_REQUEST['we_cmd'][3]) || $_REQUEST['we_cmd'][3] != "checkOnly"){
 		?>
+							weButton.enable('publish');
+							weButton.show('publish');
+		<?php
+	}
+	?>
+
+					} else {
+						weButton.enable('execute');
+
+					}
+
+				}
+
+				function noJava() {
+					var tr = document.createElement('tr');
+
+					tr.appendChild(getTextColumn('<?php echo g_l('modules_glossary', '[no_java]'); ?>', 7));
+					table.appendChild(tr);
+					weButton.hide('execute');
+	<?php
+	if(!isset($_REQUEST['we_cmd'][3]) || $_REQUEST['we_cmd'][3] != "checkOnly"){
+		?>
+						document.getElementById('execute').innerHTML = '<?php echo str_replace("'", "\'", we_button::create_button("publish", "javascript:top.we_save_document();", true, 120, 22, "", "", true, false)); ?>';
 						weButton.enable('publish');
-						weButton.show('publish');
 		<?php
 	}
 	?>
 
-			} else {
-				weButton.enable('execute');
+				}
 
-			}
+				function disableItem(id, value) {
+					if (value == 'foreignword') {
+						document.getElementById('title_' + id).disabled = true;
+						document.getElementById('lang_' + id).disabled = false;
+						document.getElementById('title_' + id).style.display = 'inline';
+						document.getElementById('suggest_' + id).style.display = 'none';
 
-		}
+					} else if (value == 'ignore' || value == 'exception' || value == 'dictionary') {
+						document.getElementById('title_' + id).disabled = true;
+						document.getElementById('lang_' + id).disabled = true;
+						document.getElementById('suggest_' + id).style.display = 'none';
+						document.getElementById('title_' + id).style.display = 'inline';
 
-		function noJava() {
-			var tr = document.createElement('tr');
+					} else if (value == 'correct') {
+						document.getElementById('title_' + id).style.display = 'none';
+						document.getElementById('lang_' + id).disabled = true;
+						document.getElementById('suggest_' + id).disabled = false;
+						document.getElementById('title_' + id).disabled = false;
+						document.getElementById('suggest_' + id).style.display = 'inline';
 
-			tr.appendChild(getTextColumn('<?php echo g_l('modules_glossary', '[no_java]'); ?>', 7));
-			table.appendChild(tr);
-			weButton.hide('execute');
-	<?php
-	if(!isset($_REQUEST['we_cmd'][3]) || $_REQUEST['we_cmd'][3] != "checkOnly"){
-		?>
-					document.getElementById('execute').innerHTML = '<?php echo str_replace("'", "\'", we_button::create_button("publish", "javascript:top.we_save_document();", true, 120, 22, "", "", true, false)); ?>';
-					weButton.enable('publish');
-		<?php
-	}
-	?>
-
-		}
-
-		function disableItem(id, value) {
-			if(value == 'foreignword') {
-				document.getElementById('title_' + id).disabled = true;
-				document.getElementById('lang_' + id).disabled = false;
-				document.getElementById('title_' + id).style.display = 'inline';
-				document.getElementById('suggest_' + id).style.display = 'none';
-
-			} else if(value == 'ignore' || value == 'exception' || value == 'dictionary') {
-				document.getElementById('title_' + id).disabled = true;
-				document.getElementById('lang_' + id).disabled = true;
-				document.getElementById('suggest_' + id).style.display = 'none';
-				document.getElementById('title_' + id).style.display = 'inline';
-
-			} else if(value == 'correct') {
-				document.getElementById('title_' + id).style.display = 'none';
-				document.getElementById('lang_' + id).disabled = true;
-				document.getElementById('suggest_' + id).disabled = false;
-				document.getElementById('title_' + id).disabled = false;
-				document.getElementById('suggest_' + id).style.display = 'inline';
-
-			} else if(value == "") {
-				document.getElementById('title_' + id).disabled = true;
-				document.getElementById('lang_' + id).disabled = true;
-				document.getElementById('suggest_' + id).style.display = 'none';
-				document.getElementById('title_' + id).style.display = 'inline';
-			} else {
-				document.getElementById('title_' + id).disabled = false;
-				document.getElementById('lang_' + id).disabled = false;
-				document.getElementById('suggest_' + id).style.display = 'none';
-				document.getElementById('title_' + id).style.display = 'inline';
-			}
-		}
-
-		function checkForm() {
-			for(i = 0; i < counter; i++) {
-				type = document.getElementById('type_' +  i).value;
-				title = document.getElementById('title_' +  i).value;
-				lang = document.getElementById('lang_' +  i).value;
-				switch(type) {
-					case 'abbreviation':
-					case 'acronym':
-						if(title == '') {
-							document.getElementById('title_' +  i).focus();
-	<?php print we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[please_insert_title]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
-							return false;
-						}
-						if(lang == '') {
-							document.getElementById('lang_' +  i).focus();
-	<?php print we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[please_insert_language]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
-							return false;
-						}
-						break;
-					case 'foreignword':
-						if(lang == '') {
-							document.getElementById('lang_' +  i).focus();
-	<?php print we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[please_insert_language]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
-							return false;
-						}
-						break;
-					case 'ignore':
-					case 'exception':
-					case 'dictionary':
-						break;
-					case 'correct':
-						document.getElementById('title_' +  i).value = document.getElementById('suggest_' +  i).value;
-						title = document.getElementById('title_' +  i).value;
-						if(title == '') {
-							document.getElementById('title_' +  i).focus();
-	<?php print we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[please_insert_correct_word]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
-							return false;
-						}
-						break;
-					default:
-						document.getElementById('type_' +  i).focus();
-	<?php print we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[please_choose_action]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
-						return false;
-						break;
+					} else if (value == "") {
+						document.getElementById('title_' + id).disabled = true;
+						document.getElementById('lang_' + id).disabled = true;
+						document.getElementById('suggest_' + id).style.display = 'none';
+						document.getElementById('title_' + id).style.display = 'inline';
+					} else {
+						document.getElementById('title_' + id).disabled = false;
+						document.getElementById('lang_' + id).disabled = false;
+						document.getElementById('suggest_' + id).style.display = 'none';
+						document.getElementById('title_' + id).style.display = 'inline';
 					}
 				}
-				document.forms[0].submit();
-			}
-			//-->
+
+				function checkForm() {
+					for (i = 0; i < counter; i++) {
+						type = document.getElementById('type_' + i).value;
+						title = document.getElementById('title_' + i).value;
+						lang = document.getElementById('lang_' + i).value;
+						switch (type) {
+							case 'abbreviation':
+							case 'acronym':
+								if (title == '') {
+									document.getElementById('title_' + i).focus();
+	<?php print we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[please_insert_title]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
+									return false;
+								}
+								if (lang == '') {
+									document.getElementById('lang_' + i).focus();
+	<?php print we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[please_insert_language]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
+									return false;
+								}
+								break;
+							case 'foreignword':
+								if (lang == '') {
+									document.getElementById('lang_' + i).focus();
+	<?php print we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[please_insert_language]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
+									return false;
+								}
+								break;
+							case 'ignore':
+							case 'exception':
+							case 'dictionary':
+								break;
+							case 'correct':
+								document.getElementById('title_' + i).value = document.getElementById('suggest_' + i).value;
+								title = document.getElementById('title_' + i).value;
+								if (title == '') {
+									document.getElementById('title_' + i).focus();
+	<?php print we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[please_insert_correct_word]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
+									return false;
+								}
+								break;
+							default:
+								document.getElementById('type_' + i).focus();
+	<?php print we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[please_choose_action]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
+								return false;
+								break;
+						}
+					}
+					document.forms[0].submit();
+				}
+				//-->
 			</script>
 
 		</head>
@@ -870,10 +866,8 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 						} elseif($Entry['type'] == "correct"){
 
 							foreach($we_doc->elements as $idx => $val){
-								if(isset($we_doc->elements[$idx]['type'])
-									&& (
-									$we_doc->elements[$idx]['type'] == "txt"
-									|| $we_doc->elements[$idx]['type'] == "input"
+								if(isset($we_doc->elements[$idx]['type']) && (
+									$we_doc->elements[$idx]['type'] == "txt" || $we_doc->elements[$idx]['type'] == "input"
 									)
 								){
 									$temp = " " . $we_doc->elements[$idx]['dat'] . " ";
