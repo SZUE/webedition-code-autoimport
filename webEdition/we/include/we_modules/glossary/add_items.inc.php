@@ -289,7 +289,7 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 
 		function fadeout(id, from, step, speed) {
 			fade(id, from);
-			if (from == 0) {
+			if (from === 0) {
 				top.frames.glossarycheck.document.getElementById(id).style.display = "none";
 			} else {
 				window.setTimeout("fadeout(\"" + id + "\"," + (from - step) + "," + step + "," + speed + ")", speed);
@@ -331,8 +331,8 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 				//-->
 			</script>
 			<?php
-			echo '<iframe id="glossarycheck" name="glossarycheck" frameborder="0" src="' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=' . $_REQUEST['we_cmd'][0] . '&we_cmd[1]=prepare&we_cmd[2]=' . $_REQUEST['we_cmd'][2] . (isset($_REQUEST['we_cmd'][3]) ? '&we_cmd[3]=' . $_REQUEST['we_cmd'][3] : '' ) . '" width="730px" height="400px" style="overflow: hidden;"></iframe>';
-			echo $AppletCode;
+			echo '<iframe id="glossarycheck" name="glossarycheck" frameborder="0" src="' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=' . $_REQUEST['we_cmd'][0] . '&we_cmd[1]=prepare&we_cmd[2]=' . $_REQUEST['we_cmd'][2] . (isset($_REQUEST['we_cmd'][3]) ? '&we_cmd[3]=' . $_REQUEST['we_cmd'][3] : '' ) . '" width="730px" height="400px" style="overflow: hidden;"></iframe>' .
+			$AppletCode;
 
 //
 // ---> Form with all unidentified words
@@ -430,12 +430,12 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 						td.setAttribute("valign", "middle");
 						td.setAttribute("height", "220");
 					}
-					if (text != "<?php echo g_l('modules_glossary', '[all_words_identified]'); ?>" && text != "<?php echo g_l('modules_glossary', '[no_java]'); ?>") {
+					if (text !== "<?php echo g_l('modules_glossary', '[all_words_identified]'); ?>" && text !== "<?php echo g_l('modules_glossary', '[no_java]'); ?>") {
 						text = shortenWord(text, 20);
 					}
 
 					td.appendChild(document.createTextNode(text));
-					return td
+					return td;
 				}
 
 				function shortenWord(text, chars) {
@@ -456,8 +456,7 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 								newText += text.charAt(pos);
 							}
 						}
-					}
-					else {
+					} else {
 						newText = text;
 					}
 
@@ -467,17 +466,13 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 				function getInnerColumn(html) {
 					var td = document.createElement('td');
 					td.innerHTML = html;
-					return td
+					return td;
 				}
 
 				function getImageColumn(src, width, height) {
 					var td = document.createElement('td');
-					var html;
-
-					html = '<img src="' + src + '" width="' + width + '" height="' + height + '" />';
-
-					td.innerHTML = html;
-					return td
+					td.innerHTML = '<img src="' + src + '" width="' + width + '" height="' + height + '" />';
+					return td;
 				}
 
 
@@ -488,13 +483,13 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 					html = '<select class="defaultfont" name="item[' + word + '][type]" size="1" id="type_' + counter + '" onChange="disableItem(' + counter + ', this.value);" style="width: 140px">'
 	<?php
 	foreach($Modes as $Key => $Value){
-		echo "		+	'<option value=\"" . $Key . "\"' + (type == '" . $Key . "' ? ' selected=\"selected\"' : '') + '>" . $Value . "</option>'\n";
+		echo "		+	'<option value=\"" . $Key . "\"' + (type == '" . $Key . "' ? ' selected=\"selected\"' : '') + '>" . $Value . "</option>'";
 	}
 	?>
 					+ '</select>';
 
 					td.innerHTML = html;
-					return td
+					return td;
 				}
 
 
@@ -511,7 +506,7 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 					if (suggestions.length > 1) {
 						html += '<optgroup label="<?php echo g_l('modules_glossary', '[suggestions]'); ?>">';
 						for (i = 0; i < suggestions.length; i++) {
-							if (suggestions[i] != '') {
+							if (suggestions[i] !== '') {
 								html += '<option value="' + suggestions[i] + '">' + suggestions[i] + '</option>';
 							}
 						}
@@ -521,15 +516,13 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 
 					td.innerHTML = html;
 
-					return td
+					return td;
 				}
 
 
 				function getLanguageColumn(word, lang) {
 					var td = document.createElement('td');
-					var html;
-
-					html = '<select class="defaultfont" name="item[' + word + '][lang]" size="1" id="lang_' + counter + '" disabled=\"disabled\" style="width: 100px">'
+					td.innerHTML = '<select class="defaultfont" name="item[' + word + '][lang]" size="1" id="lang_' + counter + '" disabled=\"disabled\" style="width: 100px">'
 									+ '<option value="' + lang + '">' + lang + '</option>'
 									+ '<optgroup label="<?php echo g_l('modules_glossary', '[change_to]'); ?>">'
 									+ '<option value="">-- <?php echo g_l('modules_glossary', '[input]'); ?> --</option>'
@@ -544,15 +537,14 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 					+ '</optgroup>'
 									+ '</select>';
 
-					td.innerHTML = html;
-					return td
+					return td;
 				}
 
 
 				function getColumn(text) {
 					var td = document.createElement('td');
 					td.appendChild(document.createTextNode(text));
-					return td
+					return td;
 				}
 
 
@@ -635,7 +627,6 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 
 					} else {
 						weButton.enable('execute');
-
 					}
 
 				}
@@ -658,35 +649,39 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 				}
 
 				function disableItem(id, value) {
-					if (value == 'foreignword') {
-						document.getElementById('title_' + id).disabled = true;
-						document.getElementById('lang_' + id).disabled = false;
-						document.getElementById('title_' + id).style.display = 'inline';
-						document.getElementById('suggest_' + id).style.display = 'none';
-
-					} else if (value == 'ignore' || value == 'exception' || value == 'dictionary') {
-						document.getElementById('title_' + id).disabled = true;
-						document.getElementById('lang_' + id).disabled = true;
-						document.getElementById('suggest_' + id).style.display = 'none';
-						document.getElementById('title_' + id).style.display = 'inline';
-
-					} else if (value == 'correct') {
-						document.getElementById('title_' + id).style.display = 'none';
-						document.getElementById('lang_' + id).disabled = true;
-						document.getElementById('suggest_' + id).disabled = false;
-						document.getElementById('title_' + id).disabled = false;
-						document.getElementById('suggest_' + id).style.display = 'inline';
-
-					} else if (value == "") {
-						document.getElementById('title_' + id).disabled = true;
-						document.getElementById('lang_' + id).disabled = true;
-						document.getElementById('suggest_' + id).style.display = 'none';
-						document.getElementById('title_' + id).style.display = 'inline';
-					} else {
-						document.getElementById('title_' + id).disabled = false;
-						document.getElementById('lang_' + id).disabled = false;
-						document.getElementById('suggest_' + id).style.display = 'none';
-						document.getElementById('title_' + id).style.display = 'inline';
+					switch (value) {
+						case 'foreignword':
+							document.getElementById('title_' + id).disabled = true;
+							document.getElementById('lang_' + id).disabled = false;
+							document.getElementById('title_' + id).style.display = 'inline';
+							document.getElementById('suggest_' + id).style.display = 'none';
+							break;
+						case 'ignore':
+						case 'exception':
+						case 'dictionary':
+							document.getElementById('title_' + id).disabled = true;
+							document.getElementById('lang_' + id).disabled = true;
+							document.getElementById('suggest_' + id).style.display = 'none';
+							document.getElementById('title_' + id).style.display = 'inline';
+							break;
+						case 'correct':
+							document.getElementById('title_' + id).style.display = 'none';
+							document.getElementById('lang_' + id).disabled = true;
+							document.getElementById('suggest_' + id).disabled = false;
+							document.getElementById('title_' + id).disabled = false;
+							document.getElementById('suggest_' + id).style.display = 'inline';
+							break;
+						case "":
+							document.getElementById('title_' + id).disabled = true;
+							document.getElementById('lang_' + id).disabled = true;
+							document.getElementById('suggest_' + id).style.display = 'none';
+							document.getElementById('title_' + id).style.display = 'inline';
+							break;
+						default:
+							document.getElementById('title_' + id).disabled = false;
+							document.getElementById('lang_' + id).disabled = false;
+							document.getElementById('suggest_' + id).style.display = 'none';
+							document.getElementById('title_' + id).style.display = 'inline';
 					}
 				}
 
@@ -698,19 +693,19 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 						switch (type) {
 							case 'abbreviation':
 							case 'acronym':
-								if (title == '') {
+								if (title === '') {
 									document.getElementById('title_' + i).focus();
 	<?php print we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[please_insert_title]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
 									return false;
 								}
-								if (lang == '') {
+								if (lang === '') {
 									document.getElementById('lang_' + i).focus();
 	<?php print we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[please_insert_language]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
 									return false;
 								}
 								break;
 							case 'foreignword':
-								if (lang == '') {
+								if (lang === '') {
 									document.getElementById('lang_' + i).focus();
 	<?php print we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[please_insert_language]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
 									return false;
@@ -723,7 +718,7 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 							case 'correct':
 								document.getElementById('title_' + i).value = document.getElementById('suggest_' + i).value;
 								title = document.getElementById('title_' + i).value;
-								if (title == '') {
+								if (title === '') {
 									document.getElementById('title_' + i).focus();
 	<?php print we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[please_insert_correct_word]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
 									return false;
@@ -870,11 +865,8 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 									$we_doc->elements[$idx]['type'] == "txt" || $we_doc->elements[$idx]['type'] == "input"
 									)
 								){
-									$temp = " " . $we_doc->elements[$idx]['dat'] . " ";
-									$RegExp = "/((<[^>]*)|([^[:alnum:]]){$Key}([^[:alnum:]]))/e";
-									$Replacement = "\3" . $Entry . "\4";
-									$temp = preg_replace("/((<[^>]*)|([^[:alnum:]]){$Key}([^[:alnum:]]))/e", '"\2"=="\1"?"\1":"\3' . $Entry['title'] . '\4"', $temp);
-									$temp = trim($temp);
+									$temp = ' ' . $we_doc->elements[$idx]['dat'] . ' ';
+									$temp = trim(preg_replace("/((<[^>]*)|([^[:alnum:]]){$Key}([^[:alnum:]]))/e", '"\2"=="\1"?"\1":"\3' . $Entry['title'] . '\4"', $temp));
 									$we_doc->elements[$idx]['dat'] = $temp;
 								}
 							}
@@ -926,19 +918,16 @@ top.add();
 				}
 
 				// Only glossary check
-				if(isset($_REQUEST['we_cmd'][3]) && $_REQUEST['we_cmd'][3] == "checkOnly"){
-					$Message = g_l('modules_glossary', '[check_successful]');
+				$Message = (isset($_REQUEST['we_cmd'][3]) && $_REQUEST['we_cmd'][3] == "checkOnly" ?
+						g_l('modules_glossary', '[check_successful]') :
+						// glossary check with publishing
+						g_l('modules_glossary', '[check_successful_and_publish]'));
 
-					// glossary check with publishing
-				} else{
-					$Message = g_l('modules_glossary', '[check_successful_and_publish]');
-				}
 
-				$Js .= we_message_reporting::getShowMessageCall($Message, we_message_reporting::WE_MESSAGE_NOTICE, false, true);
-				$Js .= "top.close();";
+				$Js .= we_message_reporting::getShowMessageCall($Message, we_message_reporting::WE_MESSAGE_NOTICE, false, true) .
+					"top.close();";
 
-				$Js = we_html_element::jsElement($Js);
-				print $Js;
+				echo we_html_element::jsElement($Js);
 				?>
 
 				</head>
