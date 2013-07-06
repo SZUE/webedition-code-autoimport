@@ -224,9 +224,9 @@ abstract class we_forms{
 				$out .= $e->getHTML();
 			} else{
 				$e = new we_wysiwyg($name, $width, $height, '', $commands, $bgcolor, '', $class, $fontnames, (!$inwebedition), $xml, $removeFirstParagraph, $inlineedit, '', $charset, $cssClasses, $_lang, '', $showSpell, $isFrontendEdit, $buttonpos, $oldHtmlspecialchars, $contentCss, $origName, $tinyParams, $contextmenu);
-				if(stripos($name, "we_ui") !== false){// we are in frontend, where default is inlineedit = true. FIXME: look for simple flag
-					$value = str_replace(array("##|r##", "##|n##"), array("\r", "\n"), $value);
-				} else{
+				$hiddenTextareaValue = str_replace(array("##|r##", "##|n##"), array("\r", "\n"),$value);
+
+				if(stripos($name, "we_ui") === false){
 					// Bugfix => Workarround Bug # 7445
 					$value = str_replace(array("##|r##", "##|n##"), array("\r", "\n"), (
 						isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->ClassName != 'we_objectFile' && $GLOBALS['we_doc']->ClassName != 'we_object' ?
@@ -235,12 +235,15 @@ abstract class we_forms{
 						)
 					);
 					// Ende Bugfix
+				} else{
+					$value = $hiddenTextareaValue;
 				}
+
 				$fieldName = '';
 				if(preg_match('|^.+\[.+\]$|i', $name)){
 					$fieldName = preg_replace('/^.+\[(.+)\]$/', '\1', $name);
 				};
-				$out .= we_html_element::htmlTextArea(array('name' => $name, 'id' => $name, 'onchange' =>'_EditorFrame.setEditorIsHot(true);', 'style' => 'display: none;'), $value) . '<br/>';
+				$out .= we_html_element::htmlTextArea(array('name' => $name, 'id' => $name, 'onchange' =>'_EditorFrame.setEditorIsHot(true);', 'style' => 'display: none;'), $hiddenTextareaValue) . '<br/>';
 				$out .= ($fieldName ? we_html_element::jsElement('tinyEditors["' . $fieldName . '"] = "' . $name . '";') : '') . 
 					($buttonTop ? '<div class="tbButtonWysiwygBorder" style="width:25px;border-bottom:0px;background-image: url(' . IMAGE_DIR . 'backgrounds/aquaBackground.gif);">' . $e->getHTML($value) . '</div>' : '') . '<div class="tbButtonWysiwygBorder ' . (empty($class) ? "" : $class . " ") . 'wetextarea tiny-wetextarea wetextarea-' . $origName . '" id="div_wysiwyg_' . $name . '" style="height:auto; width:auto">' . $value . '</div>' . ($buttonBottom ? '<div class="tbButtonWysiwygBorder" style="width:25px;border-top:0px;background-image: url(' . IMAGE_DIR . 'backgrounds/aquaBackground.gif);">' . $e->getHTML() . '</div>' : '');
 			}

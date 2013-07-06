@@ -28,7 +28,8 @@ require_once ($_SERVER['DOCUMENT_ROOT'] . LIB_DIR.'we/core/autoload.php');
 
 $useSeeModeJS = array(
 	"text/webedition" => array(WE_EDITPAGE_CONTENT),
-	"text/weTmpl" => array(WE_EDITPAGE_PREVIEW, WE_EDITPAGE_PREVIEW_TEMPLATE)
+	"text/weTmpl" => array(WE_EDITPAGE_PREVIEW, WE_EDITPAGE_PREVIEW_TEMPLATE),
+	"objectFile" => array(WE_EDITPAGE_CONTENT, WE_EDITPAGE_PREVIEW)
 );
 $includeJs = false;
 

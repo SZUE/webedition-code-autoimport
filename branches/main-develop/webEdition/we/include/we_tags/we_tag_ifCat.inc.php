@@ -27,7 +27,7 @@ function we_tag_ifCat($attribs){
 	$categories = weTag_getAttribute('categories', $attribs);
 	$category = weTag_getAttribute('category', $attribs);
 
-	if(empty($categories) && empty($category)){
+	if(strlen($categories) == 0 && strlen($category) == 0){
 		if(($foo = attributFehltError($attribs, 'categories', __FUNCTION__))){
 			print($foo);
 			return false;
@@ -41,11 +41,12 @@ function we_tag_ifCat($attribs){
 	$matchArray = makeArrayFromCSV($match);
 
 	if($docAttr == 'listview' && isset($GLOBALS['lv'])){
-		$DocCatsPaths = id_to_path($GLOBALS['lv']->f('wedoc_Category'), CATEGORY_TABLE, $GLOBALS['DB_WE'], true, false, $parent);
+		$cat = $GLOBALS['lv']->f('wedoc_Category');
 	} else{
 		$doc = we_getDocForTag($docAttr);
-		$DocCatsPaths = id_to_path($doc->Category, CATEGORY_TABLE, $GLOBALS['DB_WE'], true, false, $parent);
+		$cat = $doc->Category;
 	}
+	$DocCatsPaths = id_to_path($cat, CATEGORY_TABLE, $db, true, false, $parent);
 
 	foreach($matchArray as $match){
 		$match = '/' . ltrim($match, '/');

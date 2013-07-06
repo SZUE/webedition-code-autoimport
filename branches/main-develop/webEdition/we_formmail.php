@@ -33,40 +33,27 @@ $_blocked = false;
 // check to see if we need to lock or block the formmail request
 
 if(FORMMAIL_LOG){
-	$_ip = $_SERVER['REMOTE_ADDR'];
-	$_now = time();
-
 	// insert into log
-	$GLOBALS['DB_WE']->query('INSERT INTO ' . FORMMAIL_LOG_TABLE . ' (ip, unixTime) VALUES("' . $GLOBALS['DB_WE']->escape($_ip) . '", UNIX_TIMESTAMP())');
+	$GLOBALS['DB_WE']->query('INSERT INTO ' . FORMMAIL_LOG_TABLE . ' (ip, unixTime) VALUES("' . $GLOBALS['DB_WE']->escape($_SERVER['REMOTE_ADDR']) . '", UNIX_TIMESTAMP())');
 	if(FORMMAIL_EMPTYLOG > -1){
-		$GLOBALS['DB_WE']->query('DELETE FROM ' . FORMMAIL_LOG_TABLE . ' WHERE unixTime < ' . intval($_now - FORMMAIL_EMPTYLOG));
+		$GLOBALS['DB_WE']->query('DELETE FROM ' . FORMMAIL_LOG_TABLE . ' WHERE unixTime<(UNIX_TIMESTAMP()-' . FORMMAIL_EMPTYLOG . ')');
 	}
 
 	if(FORMMAIL_BLOCK){
-		$_num = 0;
-		$_trials = FORMMAIL_TRIALS;
-		$_blocktime = FORMMAIL_BLOCKTIME;
-
 		// first delete all entries from blocktable which are older then now - blocktime
 		$GLOBALS['DB_WE']->query('DELETE FROM ' . FORMMAIL_BLOCK_TABLE . ' WHERE blockedUntil != -1 AND blockedUntil < UNIX_TIMESTAMP()');
 
 		// check if ip is allready blocked
-		if(f('SELECT id FROM ' . FORMMAIL_BLOCK_TABLE . ' WHERE ip="' . $GLOBALS['DB_WE']->escape($_ip) . '"', 'id', $GLOBALS['DB_WE'])){
+		if(f('SELECT id FROM ' . FORMMAIL_BLOCK_TABLE . ' WHERE ip="' . $GLOBALS['DB_WE']->escape($_SERVER['REMOTE_ADDR']) . '"', 'id', $GLOBALS['DB_WE'])){
 			$_blocked = true;
 		} else{
-
 			// ip is not blocked, so see if we need to block it
-			$GLOBALS['DB_WE']->query('SELECT * FROM ' . FORMMAIL_LOG_TABLE . ' WHERE unixTime > ' . intval($_now - FORMMAIL_SPAN) . ' AND ip="' . $GLOBALS['DB_WE']->escape($_ip) . '"');
-			if($GLOBALS['DB_WE']->next_record()){
-				$_num = $GLOBALS['DB_WE']->num_rows();
-				if($_num > $_trials){
-					$_blocked = true;
-					// cleanup
-					$GLOBALS['DB_WE']->query('DELETE FROM ' . FORMMAIL_BLOCK_TABLE . ' WHERE ip="' . $GLOBALS['DB_WE']->escape($_ip) . '"');
-					// insert in block table
-					$blockedUntil = ($_blocktime == -1) ? -1 : intval($_now + $_blocktime);
-					$GLOBALS['DB_WE']->query('INSERT INTO ' . FORMMAIL_BLOCK_TABLE . " (ip, blockedUntil) VALUES('" . $GLOBALS['DB_WE']->escape($_ip) . "', " . $blockedUntil . ")");
-				}
+			$_num = f('SELECT COUNT(1) AS a FROM ' . FORMMAIL_LOG_TABLE . ' WHERE unixTime>(UNIX_TIMESTAMP()-' . intval(FORMMAIL_SPAN) . ') AND ip="' . $GLOBALS['DB_WE']->escape($_SERVER['REMOTE_ADDR']) . '"', 'a', $GLOBALS['DB_WE']);
+			if($_num > FORMMAIL_TRIALS){
+				$_blocked = true;
+				// insert in block table
+				$blockedUntil = (FORMMAIL_BLOCKTIME == -1) ? -1 : '(UNIX_TIMESTAMP()+' . intval(FORMMAIL_BLOCKTIME) . ')';
+				$GLOBALS['DB_WE']->query('REPLACE INTO ' . FORMMAIL_BLOCK_TABLE . " (ip, blockedUntil) VALUES('" . $GLOBALS['DB_WE']->escape($_SERVER['REMOTE_ADDR']) . "', " . $blockedUntil . ")");
 			}
 		}
 	}
@@ -82,7 +69,7 @@ if($_blocked){
 }
 
 function is_valid_email($email){
-	return (filter_var($email, FILTER_VALIDATE_EMAIL) !== false);
+	return we_check_email($email);
 }
 
 function contains_bad_str($str_to_test){
@@ -176,16 +163,9 @@ function error_page(){
 function ok_page($_subject = ''){
 	if($_REQUEST['ok_page']){
 		$ok_page = (get_magic_quotes_gpc() == 1) ? stripslashes($_REQUEST['ok_page']) : $_REQUEST['ok_page'];
-		if(defined('WE_ECONDA_STAT') && WE_ECONDA_STAT){
-			redirect($ok_page, $_subject);
-		} else{
-			redirect($ok_page);
-		}
+		redirect($ok_page);
 	} else{
 		echo 'Vielen Dank, Ihre Formulardaten sind bei uns angekommen! / Thank you, we received your form data!';
-		if(defined('WE_ECONDA_STAT') && WE_ECONDA_STAT){
-			print "<a name='emos_name' title='scontact' rel='$_subject' rev=''></a>\n";
-		}
 		exit;
 	}
 }
@@ -199,12 +179,14 @@ function redirect($url, $_emosScontact = ''){
 }
 
 function check_recipient($email){
-	return (f('SELECT ID FROM ' . RECIPIENTS_TABLE . " WHERE Email='" . $GLOBALS['DB_WE']->escape($email) . "'", 'ID', $GLOBALS['DB_WE']) ? true : false);
+	return (f('SELECT 1 AS a FROM ' . RECIPIENTS_TABLE . ' WHERE Email="' . $GLOBALS['DB_WE']->escape($email) . '"', 'a', $GLOBALS['DB_WE']) ? true : false);
 }
 
 function check_captcha(){
 	$name = $_REQUEST['captchaname'];
-	return(isset($_REQUEST[$name]) && !empty($_REQUEST[$name]) ? Captcha::check($_REQUEST[$name]) : false);
+	return (isset($_REQUEST[$name]) && !empty($_REQUEST[$name]) ?
+			Captcha::check($_REQUEST[$name]) :
+			false);
 }
 
 $_req = isset($_REQUEST['required']) ? $_REQUEST['required'] : '';
@@ -272,14 +254,14 @@ foreach($output as $n => $v){
 				$foo = replace_bad_str((get_magic_quotes_gpc() == 1) ? stripslashes($v2) : $v2);
 				$n = replace_bad_str($n);
 				$n2 = replace_bad_str($n2);
-				$we_txt .= $n . '[' . $n2 . "]: $foo\n" . ($foo ? '' : "\n");
+				$we_txt .= $n . '[' . $n2 . ']: ' . $foo . "\n" . ($foo ? '' : "\n");
 				$we_html .= '<tr><td align="right"><b>' . $n . '[' . $n2 . ']:</b></td><td>' . $foo . '</td></tr>';
 			}
 		}
 	} else{
 		$foo = replace_bad_str((get_magic_quotes_gpc() == 1) ? stripslashes($v) : $v);
 		$n = replace_bad_str($n);
-		$we_txt .= "$n: $foo\n" . ($foo ? '' : "\n");
+		$we_txt .= $n . ': ' . $foo . "\n" . ($foo ? '' : "\n");
 		$we_html .= '<tr><td align="right"><b>' . $n . ':</b></td><td>' . ($n == 'email' ? '<a href="mailto:' . $foo . '">' . $foo . '</a>' : $foo) . '</td></tr>';
 	}
 }

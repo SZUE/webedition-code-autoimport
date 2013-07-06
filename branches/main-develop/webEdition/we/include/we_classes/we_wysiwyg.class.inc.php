@@ -1096,7 +1096,7 @@ function weWysiwygSetHiddenText(arg) {
 		return false;
 	}
 
-	function getEditButtonHTML($value = ''){//FIXME: throw out parameter $value and test: in Frontend wie only have a placeholder as value because we load content per JS
+	function getEditButtonHTML($value = ''){
 		list($tbwidth, $tbheight) = $this->getToolbarWidthAndHeight();
 		$tbheight += self::$editorType == 'tinyMCE' ? 18 : 0;
 		$fns = '';
