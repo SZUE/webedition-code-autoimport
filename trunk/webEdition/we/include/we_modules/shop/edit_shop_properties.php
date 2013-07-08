@@ -923,7 +923,7 @@ if(!isset($letzerartikel)){ // order has still articles - get them all
 
 		if(in_array($key, $fields['customerFields']) || in_array($key, $fields['orderCustomerFields'])){
 			if(($key == $CLFields['stateField'] && $CLFields['stateFieldIsISO']) || ($key == $CLFields['languageField'] && $CLFields['languageFieldIsISO'])){
-				$value = g_l('countries', '[' . $value . ']');
+				$value = empty($value)?'':g_l('countries', '[' . $value . ']');
 			}
 			$customerFieldTable .='
 <tr height="25">
