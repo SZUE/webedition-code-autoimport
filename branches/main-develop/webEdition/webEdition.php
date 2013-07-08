@@ -461,7 +461,9 @@ if(defined('MESSAGING_SYSTEM')){
 //	so we only have to use the array $GLOBALS['_we_active_integrated_modules']
 
 foreach($GLOBALS['_we_active_integrated_modules'] as $mod){
+	if(file_exists(WE_MODULES_PATH . $mod . '/we_webEditionCmd_' . $mod . '.inc.php')){
 		@include_once(WE_MODULES_PATH . $mod . '/we_webEditionCmd_' . $mod . '.inc.php');
+	}
 }{ // deal with uninstalled modules
 	foreach($GLOBALS['_we_available_modules'] as $m){
 		echo 'case "edit_' . $m["name"] . '_ifthere":';

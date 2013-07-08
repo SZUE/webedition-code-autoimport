@@ -35,8 +35,7 @@ function order_available_modules($a, $b){
 	return (strcmp($a["text"], $b["text"]));
 }
 
-//TODO: remove when implemented completely
-$GLOBALS['_we_active_integrated_modules'][] = 'navigation';
+//$GLOBALS['_we_active_integrated_modules'][] = 'navigation';//TODO: remove when implemented completely
 
 uasort($GLOBALS['_we_available_modules'], "order_available_modules");
 //END TODO

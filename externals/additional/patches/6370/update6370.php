@@ -12,6 +12,8 @@ include_once(WE_INCLUDES_PATH."we_classes/base/weFile.class.php");
 
 function up6370_addNavigationToModules(){
 	$file = $_SERVER["DOCUMENT_ROOT"] . '/webEdition/we/include/conf/we_active_integrated_modules.inc.php';
+	//$modNavDir = $_SERVER["DOCUMENT_ROOT"] . '/webEdition/we/include/we_modules/navigation';
+	//if(file_exists($file) && is_dir($modNavDir)){
 	if(file_exists($file)){
 		include($file);
 		if(!in_array('navigation', $GLOBALS['_we_active_integrated_modules'])){
