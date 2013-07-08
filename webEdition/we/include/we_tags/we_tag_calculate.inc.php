@@ -45,7 +45,7 @@ function we_tag_calculate($attribs, $content){
 			$sum = weTag_getAttribute("sum", $attribs);
 			$num_format = weTag_getAttribute("num_format", $attribs);
 			$print = weTag_getAttribute("print", $attribs, true, true);
-			@eval('$result = (' . $content . ') ;');
+			@eval('$result = (' . ($content?$content:0) . ') ;');
 			if(!isset($result)){
 				$result = 0;
 			}
