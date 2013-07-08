@@ -85,8 +85,7 @@ if(empty($GLOBALS['_we_active_integrated_modules']) || !in_array('users', $GLOBA
 }
 //make sure we always load users
 $GLOBALS['_we_active_integrated_modules'][] = 'users';
-
-$GLOBALS['_we_active_integrated_modules'][] = 'navigation';//TODO: remove when navigation is completely implemented as a module
+//$GLOBALS['_we_active_integrated_modules'][] = 'navigation';//TODO: remove when navigation is completely implemented as a module
 
 foreach($GLOBALS['_we_active_integrated_modules'] as $active){
 	if(file_exists(WE_MODULES_PATH . $active . '/we_conf_' . $active . '.inc.php')){

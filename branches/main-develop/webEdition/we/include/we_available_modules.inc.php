@@ -50,6 +50,17 @@ $_we_available_modules = array(
 		'dependson' => '',
 		'childmodule' => 'shop'
 	),
+	'navigation' => array(
+		'name' => 'navigation',
+		'perm' => 'EDIT_NAVIGATION || ADMINISTRATOR',
+		'text' => g_l('javaMenu_global', '[navigation]'),
+		'text_short' => g_l('javaMenu_global', '[navigation]'),
+		'inModuleMenu' => true,
+		'integrated' => true,
+		'alwaysActive' => true,
+		'hasSettings' => '',
+		'dependson' => ''
+	),
 	'shop' => array(
 		'name' => 'shop',
 		'text' => g_l('javaMenu_moduleInformation', '[shop][text]'),
@@ -186,16 +197,5 @@ $_we_available_modules = array(
 		'hasSettings' => true,
 		'dependson' => '',
 		'childmodule' => ''
-	),
-	'navigation' => array(
-		'name' => 'navigation',
-		'perm' => 'EDIT_NAVIGATION || ADMINISTRATOR', //TODO: check perms
-		'text' => 'Navigation',//add g_l()
-		'text_short' => 'Navigation',//add g_l()
-		'inModuleMenu' => true,
-		'integrated' => true,
-		'alwaysActive' => true, //add real val
-		'hasSettings' => '',
-		'dependson' => ''
 	),
 );
