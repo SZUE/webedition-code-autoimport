@@ -22,28 +22,27 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weNavigationFrames extends weModuleFrames {
+class weNavigationFrames extends weModuleFrames{
+
 //class weNavigationFrames extends weToolFramesInterim {
 
-	var $toolDir;//TODO: replace toll/module-wide by $module
-	var $toolUrl;//TODO: replace toll/module-wide by $module
+	var $toolDir; //TODO: replace toll/module-wide by $module
+	var $toolUrl; //TODO: replace toll/module-wide by $module
 	var $_space_size = 120;
 	var $_text_size = 75;
 	var $_width_size = 520;
 	var $Model;
-
 	public $module = 'navigation';
 	public $toolName = 'navigation';
 	public $toolClassName = 'weNavigation';
-
 	public $Table = NAVIGATION_TABLE;
 	public $TreeSource = '';
 	protected $treeFooterHeight = 40;
 
 	function __construct(){
-		$this->toolUrl = WE_INCLUDES_DIR . 'we_modules/' . $this->module . '/';
-		$this->toolDir = $_SERVER['DOCUMENT_ROOT'] . $this->toolUrl;
-		
+		$this->toolUrl = WE_INCLUDES_DIR . 'we_tools/' . $this->module . '/'; //TODO: replace toll/module-wide by $module
+		$this->toolDir = $_SERVER['DOCUMENT_ROOT'] . $this->toolUrl; //TODO: replace toll/module-wide by $module
+
 		$_frameset = $this->toolUrl . 'edit_' . $this->toolName . '_frameset.php';
 		parent::__construct($_frameset);
 
@@ -84,7 +83,7 @@ class weNavigationFrames extends weModuleFrames {
 			we_html_element::jsElement($this->getJSStart()) .
 			we_html_element::jsScript(JS_DIR . 'we_showMessage.js') .
 			we_main_headermenu::css();
-		
+
 		$extraUrlParams = isset($_REQUEST['tab']) ? '&tab=' . $_REQUEST['tab'] : '' . isset($_REQUEST['sid']) ? '&sid=' . $_REQUEST['sid'] : '';
 
 		return parent::getHTMLFrameset($extraHead, $extraUrlParams);
@@ -622,9 +621,11 @@ function setTab(tab) {
 					$classPathsJS[] = $this->db->f('ID') . ':"' . $this->db->f('Path') . '"';
 				}
 			}
-			$this->db->query('SELECT ID, ParentID FROM ' . OBJECT_FILES_TABLE . ' WHERE ParentID IN (' . implode(',', $classDirs) . ') AND IsFolder = 1');
-			while($this->db->next_record()) {
-				$classHasSubDirsJS[$classID2Dir[$this->db->f('ParentID')]] = $classID2Dir[$this->db->f('ParentID')] . ':true';
+			if(!empty($classDirs)){
+				$this->db->query('SELECT ID, ParentID FROM ' . OBJECT_FILES_TABLE . ' WHERE ParentID IN (' . implode(',', $classDirs) . ') AND IsFolder = 1');
+				while($this->db->next_record()) {
+					$classHasSubDirsJS[$classID2Dir[$this->db->f('ParentID')]] = $classID2Dir[$this->db->f('ParentID')] . ':true';
+				}
 			}
 		}
 
@@ -1822,13 +1823,13 @@ function ' . $prefix . 'setLinkSelection(value){
 
 	//TODO: probably not used
 	/*
-	function formFileChooser($width = '', $IDName = 'ParentID', $IDValue = '/', $cmd = '', $filter = ''){
-		//javascript:we_cmd('browse_server','document.we_form.elements[\\'$IDName\\'].value','$filter',document.we_form.elements['$IDName'].value);
-		$wecmdenc1 = we_cmd_enc("document.we_form.elements['$IDName'].value");
-		$button = we_button::create_button('select', "javascript:we_cmd('browse_server','" . $wecmdenc1 . "','$filter',document.we_form.elements['$IDName'].value);");
+	  function formFileChooser($width = '', $IDName = 'ParentID', $IDValue = '/', $cmd = '', $filter = ''){
+	  //javascript:we_cmd('browse_server','document.we_form.elements[\\'$IDName\\'].value','$filter',document.we_form.elements['$IDName'].value);
+	  $wecmdenc1 = we_cmd_enc("document.we_form.elements['$IDName'].value");
+	  $button = we_button::create_button('select', "javascript:we_cmd('browse_server','" . $wecmdenc1 . "','$filter',document.we_form.elements['$IDName'].value);");
 
-		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($IDName, 30, $IDValue, '', 'readonly', 'text', ($this->_width_size - 120), 0), "", "left", "defaultfont", "", we_html_tools::getPixel(20, 4), we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? $button : "");
-	}
-	 * 
+	  return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($IDName, 30, $IDValue, '', 'readonly', 'text', ($this->_width_size - 120), 0), "", "left", "defaultfont", "", we_html_tools::getPixel(20, 4), we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? $button : "");
+	  }
+	 *
 	 */
 }

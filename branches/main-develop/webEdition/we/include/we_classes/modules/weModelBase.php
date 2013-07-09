@@ -93,7 +93,7 @@ class weModelBase{
 		if($force_new){
 			$this->isnew = true;
 		}
-		foreach($this->persistent_slots as $key => $val){
+		foreach($this->persistent_slots as $val){
 			//if(!in_array($val,$this->keys))
 			if(isset($this->{$val})){
 				$sets[$val] = $this->{$val};

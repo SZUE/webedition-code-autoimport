@@ -113,7 +113,7 @@ class weCustomerSettings{
 		'key', 'set', 'enum', 'default', 'where', 'group', 'by', 'order', 'add', 'column', 'table', 'index', 'constraint', 'primary',
 		'unique', 'foreign', 'change', 'modify', 'drop', 'disable', 'enable', 'charachter', 'collate', 'first', 'rename',
 		'fulltext', 'quick', 'using', 'truncate',
-		'id', 'username', 'isfolder', 'icon', 'parentid', 'membersince', 'lastlogin', 'lastaccess', 'path', 'text', 'forename', 'surname', 'logindenied,autologin,autologindenied'
+		'id', 'username', 'isfolder', 'icon', 'parentid', 'membersince', 'lastlogin', 'lastaccess', 'path', 'text', 'forename', 'surname', 'logindenied', 'autologin', 'autologindenied'
 	);
 	public $treeTextFormat = '#Text';
 	public $formatFields = array();
