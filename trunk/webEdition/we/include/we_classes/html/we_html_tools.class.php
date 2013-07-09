@@ -110,8 +110,8 @@ abstract class we_html_tools{
 		));
 
 		$_table = new we_html_table(array(
-				"cellpadding" => 0, "cellspacing" => 0, "border" => 0
-				), 1, 3);
+			"cellpadding" => 0, "cellspacing" => 0, "border" => 0
+			), 1, 3);
 
 		$_inputs = array(
 			"name" => $name,
@@ -275,13 +275,13 @@ abstract class we_html_tools{
 		//  First input='text'
 		$textField = getHtmlTag('input', array_merge($atts, array('type' => 'text', 'name' => $name, 'value' => oldHtmlspecialchars($value))));
 
-		$opts = getHtmlTag('option', array('value' => ''), '', true) . "\n";
+		$opts = getHtmlTag('option', array('value' => ''), '', true);
 		$attsOpts = array();
 
 		if($valuesIsHash){
 			foreach($values as $_val => $_text){
 				$attsOpts['value'] = oldHtmlspecialchars($_val);
-				$opts .= getHtmlTag('option', $attsOpts, oldHtmlspecialchars($_text)) . "\n";
+				$opts .= getHtmlTag('option', $attsOpts, oldHtmlspecialchars($_text));
 			}
 		} else{
 			// options of select Menu
@@ -292,7 +292,7 @@ abstract class we_html_tools{
 
 			foreach($options as $option){
 				$attsOpts['value'] = oldHtmlspecialchars($option);
-				$opts .= getHtmlTag('option', $attsOpts, oldHtmlspecialchars($option)) . "\n";
+				$opts .= getHtmlTag('option', $attsOpts, oldHtmlspecialchars($option));
 			}
 		}
 
@@ -329,7 +329,7 @@ abstract class we_html_tools{
 				$disabled = '';
 			}
 			$out = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' .
-				self::htmlTextInput($name, 5, $selected, "", $attribs, "text", $width / 2, "0", "top") .
+				self::htmlTextInput($name, 5, $selected, "", $attribs, "text", $width / 2, 0, "top") .
 				'</td><td><select class="weSelect" name="wetmp_' . $name . '" size=1' . $disabled . ($width ? ' style="width: ' . ($width / 2) . 'px"' : '') . ' onchange="if(typeof(_EditorFrame) != \'undefined\'){_EditorFrame.setEditorIsHot(true);}if(this.options[this.selectedIndex].text){this.form.elements[\'' . $name . '\'].value=this.options[this.selectedIndex].text;};this.selectedIndex=0"><option>';
 			foreach($extensions as $extension){
 				$out .= '<option>' . $extension . '</option>';
@@ -466,51 +466,51 @@ abstract class we_html_tools{
 			}
 			$daySelect = getHtmlTag(
 					'select', array_merge($_attsSelect, array(
-						'name' => sprintf($name, "_day"), 'id' => sprintf($name, "_day")
+					'name' => sprintf($name, "_day"), 'id' => sprintf($name, "_day")
 					)), $days, true) . '&nbsp;';
 		} else{
 			$daySelect = getHtmlTag(
 				'input', array_merge(
 					$_attsHidden, array(
-					'type' => 'hidden',
-					'name' => sprintf($name, "_day"),
-					'id' => sprintf($name, "_day"),
-					'value' => $day
-				)));
+				'type' => 'hidden',
+				'name' => sprintf($name, "_day"),
+				'id' => sprintf($name, "_day"),
+				'value' => $day
+			)));
 			$_showDay = false;
 		}
 
-		if(($format == "") || $_monthPos > -1){
+		if(($format == '') || $_monthPos > -1){
 			$months = '';
-			$monthType=(strpos($format, 'F')?'F':(strpos($format, 'M')?'M':0));
+			$monthType = (strpos($format, 'F') ? 'F' : (strpos($format, 'M') ? 'M' : 0));
 			for($i = 1; $i <= 12; $i++){
 				switch($monthType){//Bug #4095
-				 case 'F':
-				  $val = g_l('date','[month][long]['.($i-1).']');
-				  break;
-				 case 'M':
-				  $val = g_l('date','[month][short]['.($i-1).']');
-				  break;
-				 default:
-				  $val = sprintf("%02d", $i);
+					case 'F':
+						$val = g_l('date', '[month][long][' . ($i - 1) . ']');
+						break;
+					case 'M':
+						$val = g_l('date', '[month][short][' . ($i - 1) . ']');
+						break;
+					default:
+						$val = sprintf("%02d", $i);
 				}
-				$_atts2 = ($time && $month == $i) ? array('selected' => 'selected','value' =>
-				$i) : array('value' => $i);
+				$_atts2 = ($time && $month == $i) ? array('selected' => 'selected', 'value' =>
+					$i) : array('value' => $i);
 				$months .= getHtmlTag('option', array_merge($_attsOption, $_atts2), $val);
 			}
 			$monthSelect = getHtmlTag(
 					'select', array_merge($_attsSelect, array(
-						'name' => sprintf($name, "_month"), 'id' => sprintf($name, "_month")
+					'name' => sprintf($name, "_month"), 'id' => sprintf($name, "_month")
 					)), $months, true) . '&nbsp;';
 		} else{
 			$monthSelect = getHtmlTag(
 				'input', array_merge(
 					$_attsHidden, array(
-					'type' => 'hidden',
-					'name' => sprintf($name, "_month"),
-					'id' => sprintf($name, "_month"),
-					'value' => $month
-				)));
+				'type' => 'hidden',
+				'name' => sprintf($name, "_month"),
+				'id' => sprintf($name, "_month"),
+				'value' => $month
+			)));
 			$_showMonth = false;
 		}
 		if(($format == "") || $_yearPos > -1){
@@ -527,17 +527,17 @@ abstract class we_html_tools{
 			}
 			$yearSelect = getHtmlTag(
 					'select', array_merge($_attsSelect, array(
-						'name' => sprintf($name, "_year"), 'id' => sprintf($name, "_year")
+					'name' => sprintf($name, "_year"), 'id' => sprintf($name, "_year")
 					)), $years, true) . '&nbsp;';
 		} else{
 			$yearSelect = getHtmlTag(
 				'input', array_merge(
 					$_attsHidden, array(
-					'type' => 'hidden',
-					'name' => sprintf($name, "_year"),
-					'id' => sprintf($name, "_year"),
-					'value' => $year
-				)));
+				'type' => 'hidden',
+				'name' => sprintf($name, "_year"),
+				'id' => sprintf($name, "_year"),
+				'value' => $year
+			)));
 			$_showYear = false;
 		}
 
@@ -549,17 +549,17 @@ abstract class we_html_tools{
 			}
 			$hourSelect = getHtmlTag(
 					'select', array_merge($_attsSelect, array(
-						'name' => sprintf($name, "_hour"), 'id' => sprintf($name, "_hour")
+					'name' => sprintf($name, "_hour"), 'id' => sprintf($name, "_hour")
 					)), $hours, true) . '&nbsp;';
 		} else{
 			$hourSelect = getHtmlTag(
 				'input', array_merge(
 					$_attsHidden, array(
-					'type' => 'hidden',
-					'name' => sprintf($name, "_hour"),
-					'id' => sprintf($name, "_hour"),
-					'value' => $hour
-				)));
+				'type' => 'hidden',
+				'name' => sprintf($name, "_hour"),
+				'id' => sprintf($name, "_hour"),
+				'value' => $hour
+			)));
 			$_showHour = false;
 		}
 
@@ -571,17 +571,17 @@ abstract class we_html_tools{
 			}
 			$minSelect = getHtmlTag(
 					'select', array_merge($_attsSelect, array(
-						'name' => sprintf($name, "_minute"), 'id' => sprintf($name, "_minute")
+					'name' => sprintf($name, "_minute"), 'id' => sprintf($name, "_minute")
 					)), $minutes, true) . '&nbsp;';
 		} else{
 			$minSelect = getHtmlTag(
 				'input', array_merge(
 					$_attsHidden, array(
-					'type' => 'hidden',
-					'name' => sprintf($name, "_minute"),
-					'id' => sprintf($name, "_minute"),
-					'value' => $minute
-				)));
+				'type' => 'hidden',
+				'name' => sprintf($name, "_minute"),
+				'id' => sprintf($name, "_minute"),
+				'value' => $minute
+			)));
 			$_showMinute = false;
 		}
 
@@ -670,7 +670,7 @@ abstract class we_html_tools{
 		return we_html_element::htmlMeta(array(
 				"http-equiv" => "content-type",
 				"content" => $content . '; charset=' . $charset
-			));
+		));
 	}
 
 	static function headerCtCharset($content, $charset){
@@ -698,8 +698,8 @@ abstract class we_html_tools{
 
 
 		$content = new we_html_table(array(
-				"cellpadding" => 10, "cellspacing" => 0, "border" => 0
-				), 1, ($img != "" ? 2 : 1));
+			"cellpadding" => 10, "cellspacing" => 0, "border" => 0
+			), 1, ($img != "" ? 2 : 1));
 
 		if($img != "" && file_exists($_SERVER['DOCUMENT_ROOT'] . $img)){
 			$size = getimagesize($_SERVER['DOCUMENT_ROOT'] . $img);
@@ -709,7 +709,7 @@ abstract class we_html_tools{
 				), we_html_element::htmlImg(
 					array(
 						"src" => $img, "border" => 0, "width" => $size[0], "height" => $size[1]
-				)));
+			)));
 		}
 
 		$content->setCol(0, ($img != "" ? 1 : 0), array(

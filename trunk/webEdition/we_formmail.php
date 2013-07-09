@@ -42,7 +42,7 @@ if(FORMMAIL_LOG){
 
 	if(FORMMAIL_BLOCK){
 		// first delete all entries from blocktable which are older then now - blocktime
-		$GLOBALS['DB_WE']->query('DELETE FROM ' . FORMMAIL_BLOCK_TABLE . ' WHERE blockedUntil != -1 AND blockedUntil < UNIX_TIMESTAMP()');
+		$GLOBALS['DB_WE']->query('DELETE FROM ' . FORMMAIL_BLOCK_TABLE . ' WHERE blockedUntil!=-1 AND blockedUntil<UNIX_TIMESTAMP()');
 
 		// check if ip is allready blocked
 		if(f('SELECT id FROM ' . FORMMAIL_BLOCK_TABLE . ' WHERE ip="' . $GLOBALS['DB_WE']->escape($_SERVER['REMOTE_ADDR']) . '"', 'id', $GLOBALS['DB_WE'])){
@@ -60,10 +60,7 @@ if(FORMMAIL_LOG){
 	}
 }
 
-if(FORMMAIL_VIAWEDOC){
-	if($_SERVER['SCRIPT_NAME'] == WEBEDITION_DIR . 'we_formmail.php')
-		$_blocked = true;
-}
+$_blocked |= (FORMMAIL_VIAWEDOC && $_SERVER['SCRIPT_NAME'] == WEBEDITION_DIR . basename(__FILE__));
 
 if($_blocked){
 	print_error('Email dispatch blocked / Email Versand blockiert!');
@@ -85,7 +82,7 @@ function contains_bad_str($str_to_test){
 	);
 
 	foreach($bad_strings as $bad_string){
-		if(preg_match('|^' . preg_quote($bad_string, "|") . '|i', $str_to_test) || preg_match('|[\n\r]' . preg_quote($bad_string, "|") . '|i', $str_to_test)){
+		if(preg_match('|^' . preg_quote($bad_string, '|') . '|i', $str_to_test) || preg_match('|[\n\r]' . preg_quote($bad_string, "|") . '|i', $str_to_test)){
 			print_error('Email dispatch blocked / Email Versand blockiert!');
 		}
 	}
@@ -95,27 +92,22 @@ function contains_bad_str($str_to_test){
 }
 
 function replace_bad_str($str_to_test){
-	$out = $str_to_test;
 	$bad_strings = array(
-		'(content-type)(:)',
-		'(mime-version)(:)',
-		'(multipart/mixed)',
-		'(Content-Transfer-Encoding)(:)',
-		'(bcc)(:)',
-		'(cc)(:)',
-		'(to)(:)',
+		'#(content-type)(:)#i',
+		'#(mime-version)(:)#i',
+		'#(multipart/mixed)#i',
+		'#(Content-Transfer-Encoding)(:)#i',
+		'#(bcc)(:)#i',
+		'#(cc)(:)#i',
+		'#(to)(:)#i',
 	);
 
-
-	foreach($bad_strings as $bad_string){
-		$out = preg_replace("#$bad_string#i", "($1)$2", $out);
-	}
-	return $out;
+	return preg_replace($bad_strings, '($1)$2', $str_to_test);
 }
 
 function contains_newlines($str_to_test){
 	if(preg_match("/(\\n+|\\r+)/", $str_to_test) != 0){
-		print_error("newline found in $str_to_test. Suspected injection attempt - mail not being sent.");
+		print_error('newline found in ' . $str_to_test . '. Suspected injection attempt - mail not being sent.');
 	}
 }
 
@@ -124,15 +116,8 @@ function print_error($errortext){
 	$headline = 'Fehler / Error';
 	$content = g_l('global', '[formmailerror]') . getHtmlTag('br') . '&#8226; ' . $errortext;
 
-	$css = array(
-		'media' => 'screen',
-		'rel' => 'stylesheet',
-		'type' => 'text/css',
-		'href' => WEBEDITION_DIR . 'css/global.php',
-	);
-
 	print we_html_tools::htmlTop() .
-		getHtmlTag('link', $css) .
+		we_html_element::cssLink(WEBEDITION_DIR . 'css/global.php').
 		'</head>' .
 		getHtmlTag('body', array('class' => 'weEditorBody'), '', false, true) .
 		we_html_tools::htmlDialogLayout(getHtmlTag('div', array('class' => 'defaultgray'), $content), $headline) .
@@ -162,7 +147,7 @@ function error_page(){
 	}
 }
 
-function ok_page($_subject = ''){
+function ok_page(){
 	if($_REQUEST['ok_page']){
 		$ok_page = (get_magic_quotes_gpc() == 1) ? stripslashes($_REQUEST['ok_page']) : $_REQUEST['ok_page'];
 		redirect($ok_page);
@@ -283,12 +268,12 @@ if(isset($_REQUEST['email']) && $_REQUEST['email']){
 		$we_txt_confirm = $we_txt;
 		if(isset($_REQUEST['pre_confirm']) && $_REQUEST['pre_confirm']){
 			contains_bad_str($_REQUEST['pre_confirm']);
-			$we_html_confirm = $_REQUEST['pre_confirm'] . '<br>' . $we_html_confirm;
+			$we_html_confirm = $_REQUEST['pre_confirm'] . getHtmlTag('br') . $we_html_confirm;
 			$we_txt_confirm = $_REQUEST['pre_confirm'] . "\n\n" . $we_txt_confirm;
 		}
 		if(isset($_REQUEST['post_confirm']) && $_REQUEST['post_confirm']){
 			contains_bad_str($_REQUEST['post_confirm']);
-			$we_html_confirm = $we_html_confirm . '<br>' . $_REQUEST['post_confirm'];
+			$we_html_confirm = $we_html_confirm . getHtmlTag('br') . $_REQUEST['post_confirm'];
 			$we_txt_confirm = $we_txt_confirm . "\n\n" . $_REQUEST['post_confirm'];
 		}
 	}
@@ -305,7 +290,7 @@ $subject = strip_tags((isset($_REQUEST['subject']) && $_REQUEST['subject']) ?
 		WE_DEFAULT_SUBJECT);
 
 $charset = (isset($_REQUEST['charset']) && $_REQUEST['charset']) ?
-	str_replace(array("\n", "\r"), "", $_REQUEST['charset']) :
+	str_replace(array("\n", "\r"), '', $_REQUEST['charset']) :
 	$GLOBALS['WE_BACKENDCHARSET'];
 $recipient = (isset($_REQUEST['recipient']) && $_REQUEST['recipient']) ?
 	$_REQUEST['recipient'] :
