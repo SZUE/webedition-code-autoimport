@@ -459,7 +459,7 @@ function we_cmd() {
 				url = "' . WE_MODULES_DIR . 'newsletter/we_dirfs.php?";
 			}
 			else {
-				url = "' . WE_INCLUDES_DIR . 'we_tools/navigation/we_navigationDirSelect.php?";
+				url = "' . WE_INCLUDES_DIR . 'we_modules/navigation/we_navigationDirSelect.php?";
 			}
 			for (var i = 0; i < arguments.length; i++) {
 				url += "we_cmd[" + i + "]=" + escape(arguments[i]);

@@ -119,9 +119,14 @@ abstract class weToolLookup{
 		if(isset($_REQUEST['we_cmd'][0])){
 			//FIX for charset in tools, due to not started session
 			$tmp = explode('_', $_REQUEST['we_cmd'][0]);
-			if($tmp[1] == 'weSearch' || $tmp[1] == 'navigation'){
+			if($tmp[1] == 'weSearch'){
 				$_REQUEST['tool'] = $tmp[1];
 				return 'we_tools/' . $tmp[1] . '/hook/we_phpCmdHook_' . $tmp[1] . '.inc.php';
+			}
+			//TODO: does this work after refactoring navigation as a module
+			if($tmp[1] == 'navigation'){
+				$_REQUEST['mod'] = 'navigation';
+				return 'we_modules/navigation/hook/we_phpCmdHook_' . $tmp[1] . '.inc.php';
 			}
 			$_tools = self::getAllTools(true, true);
 			foreach($_tools as $_tool){

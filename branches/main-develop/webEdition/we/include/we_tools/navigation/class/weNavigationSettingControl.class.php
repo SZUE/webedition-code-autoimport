@@ -22,48 +22,4 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weNavigationSettingControl{
-
-	function saveSettings($default = false){
-		if(we_hasPerm("ADMINISTRATOR")){
-			if($default){
-				$CacheLifeTime = '';
-				$Add = 'true';
-				$Edit = 'true';
-				$Delete = 'true';
-			} else{
-				$CacheLifeTime = (int) str_replace("'", "", $_REQUEST['CacheLifeTime']);
-
-				$Add = 'false';
-				if($_REQUEST['NavigationCacheAdd'] == 1){
-					$Add = 'true';
-				}
-
-				$Edit = 'false';
-				if($_REQUEST['NavigationCacheEdit'] == 1){
-					$Edit = 'true';
-				}
-
-				$Delete = 'false';
-				if($_REQUEST['NavigationCacheDelete'] == 1){
-					$Delete = 'true';
-				}
-			}
-
-			$code = <<<EOF
-<?php
-
-\$GLOBALS['weDefaultNavigationCacheLifetime'] = '{$CacheLifeTime}';
-
-\$GLOBALS['weNavigationCacheDeleteAfterAdd'] = {$Add};
-\$GLOBALS['weNavigationCacheDeleteAfterEdit'] = {$Edit};
-\$GLOBALS['weNavigationCacheDeleteAfterDelete'] = {$Delete};
-
-EOF;
-
-			$languageFile = WE_INCLUDES_PATH . 'we_tools/navigation/conf/we_conf_navigation.inc.php';
-			return weFile::save($languageFile, $code, "w+");
-		}
-	}
-
-}
+//TODO: remove this (directory 'navigation' has moved to we_modules

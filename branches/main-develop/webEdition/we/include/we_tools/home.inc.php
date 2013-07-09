@@ -69,9 +69,7 @@ $_y_we3 = $_y_table_back + 116;
 </head>
 
 <?php
-$tooldir = ($tool == 'weSearch' || $tool == 'navigation' ?
-		WE_INCLUDES_DIR . 'we_tools/' :
-		WE_APPS_DIR);
+$tooldir = ($tool == 'weSearch' ? WE_INCLUDES_DIR . 'we_tools/' : WE_APPS_DIR);
 ?>
 
 <body bgcolor="#F0EFF0" onLoad="loaded = 1;">

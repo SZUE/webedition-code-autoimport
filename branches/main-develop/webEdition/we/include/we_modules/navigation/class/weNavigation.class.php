@@ -112,7 +112,7 @@ class weNavigation extends weModelBase{
 			$this->load($navigationID);
 		}
 
-		include (WE_INCLUDES_PATH . 'we_tools/navigation/conf/we_navigationSettings.inc.php');
+		include (WE_INCLUDES_PATH . 'we_modules/navigation/conf/we_navigationSettings.inc.php');
 		$this->defaultPreviewCode = str_replace('@###PARENTID###@', $this->ID, $this->defaultPreviewCode);
 		$this->previewCode = $this->defaultPreviewCode;
 		$this->Charset = DEFAULT_CHARSET;
@@ -184,7 +184,7 @@ class weNavigation extends weModelBase{
 	}
 
 	function save($order = true, $rebuild = false){
-		$configFile = WE_INCLUDES_PATH . 'we_tools/navigation/conf/we_conf_navigation.inc.php';
+		$configFile = WE_INCLUDES_PATH . 'we_modules/navigation/conf/we_conf_navigation.inc.php';
 		if(!file_exists($configFile) || !is_file($configFile)){
 			weNavigationSettingControl::saveSettings(true);
 		}
@@ -263,7 +263,7 @@ class weNavigation extends weModelBase{
 		}
 		$this->Categories = $_paths;
 		$this->Sort = $_preSort;
-		include (WE_INCLUDES_PATH . 'we_tools/navigation/conf/we_navigationSettings.inc.php');
+		include (WE_INCLUDES_PATH . 'we_modules/navigation/conf/we_navigationSettings.inc.php');
 		$this->defaultPreviewCode = str_replace('@###PARENTID###@', $this->ID, $this->defaultPreviewCode);
 		$this->previewCode = $this->defaultPreviewCode;
 
@@ -310,7 +310,7 @@ class weNavigation extends weModelBase{
 	}
 
 	function delete(){
-		$configFile = WE_INCLUDES_PATH . 'we_tools/navigation/conf/we_conf_navigation.inc.php';
+		$configFile = WE_INCLUDES_PATH . 'we_modules/navigation/conf/we_conf_navigation.inc.php';
 		if(!file_exists($configFile) || !is_file($configFile)){
 			weNavigationSettingControl::saveSettings(true);
 		}

@@ -272,9 +272,9 @@ class we_document extends we_root{
 	function formNavigation(){
 		$delallbut = we_button::create_button('delete_all', "javascript:if(confirm('" . g_l('navigation', '[dellall_question]') . "')) we_cmd('delete_all_navi')", true, -1, -1, "", "", (we_hasPerm('EDIT_NAVIGATION') && $this->NavigationItems) ? false : true);
 
-		$addbut = we_button::create_button('add', "javascript:we_cmd('tool_navigation_edit_navi',0)", true, 100, 22, '', '', (we_hasPerm('EDIT_NAVIGATION') && $this->ID && $this->Published) ? false : true, false);
+		$addbut = we_button::create_button('add', "javascript:we_cmd('module_navigation_edit_navi',0)", true, 100, 22, '', '', (we_hasPerm('EDIT_NAVIGATION') && $this->ID && $this->Published) ? false : true, false);
 
-		$navis = new MultiFileChooser(508, $this->NavigationItems, 'delete_navi', we_button::create_button_table(array($delallbut, $addbut)), "tool_navigation_edit_navi", "Icon,Path", NAVIGATION_TABLE);
+		$navis = new MultiFileChooser(508, $this->NavigationItems, 'delete_navi', we_button::create_button_table(array($delallbut, $addbut)), "module_navigation_edit_navi", "Icon,Path", NAVIGATION_TABLE);
 		$navis->extraDelFn = 'setScrollTo();';
 		$NoDelNavis = makeArrayFromCSV($this->NavigationItems);
 		foreach($NoDelNavis as $_path){

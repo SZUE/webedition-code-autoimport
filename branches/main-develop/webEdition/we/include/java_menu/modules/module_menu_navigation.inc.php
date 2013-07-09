@@ -38,28 +38,28 @@ $we_menu_navigation = array(
 	array(
 		'text' => g_l('navigation', '[entry]'),
 		'parent' => 200,
-		'cmd' => 'tool_navigation_new',
+		'cmd' => 'module_navigation_new',
 		'perm' => 'EDIT_NAVIGATION || ADMINISTRATOR',
 		'enabled' => 1,
 	),
 	array(
 		'text' => g_l('navigation', '[group]'),
 		'parent' => 200,
-		'cmd' => 'tool_navigation_new_group',
+		'cmd' => 'module_navigation_new_group',
 		'perm' => 'EDIT_NAVIGATION || ADMINISTRATOR',
 		'enabled' => 1,
 	),
 	array(
 		'text' => g_l('navigation', '[menu_save]'),
 		'parent' => 100,
-		'cmd' => 'tool_navigation_save',
+		'cmd' => 'module_navigation_save',
 		'perm' => 'EDIT_NAVIGATION || ADMINISTRATOR',
 		'enabled' => 1,
 	),
 	array(
 		'text' => g_l('navigation', '[menu_delete]'),
 		'parent' => 100,
-		'cmd' => 'tool_navigation_delete',
+		'cmd' => 'module_navigation_delete',
 		'perm' => 'EDIT_NAVIGATION || ADMINISTRATOR',
 		'enabled' => 1,
 	),
@@ -69,7 +69,7 @@ $we_menu_navigation = array(
 	array(
 		'text' => g_l('navigation', '[menu_exit]'),
 		'parent' => 100,
-		'cmd' => 'tool_navigation_exit',
+		'cmd' => 'module_navigation_exit',
 		'perm' => '',
 		'enabled' => 1,
 	),
@@ -107,7 +107,7 @@ $we_menu_navigation = array(
 		'text' => g_l('navigation', '[menu_highlight_rules]'),
 		'parent' => 2000,
 		'perm' => '',
-		'cmd' => 'tool_navigation_rules',
+		'cmd' => 'module_navigation_rules',
 		'enabled' => 1,
 	));
 if(defined('CUSTOMER_TABLE')){
@@ -115,7 +115,7 @@ if(defined('CUSTOMER_TABLE')){
 		'text' => g_l('navigation', '[reset_customer_filter]'),
 		'parent' => 2000,
 		'perm' => 'ADMINISTRATOR',
-		'cmd' => 'tool_navigation_reset_customer_filter',
+		'cmd' => 'module_navigation_reset_customer_filter',
 		'enabled' => 1,
 	);
 }
@@ -130,7 +130,7 @@ $we_menu_navigation[3000] = array(
 $we_menu_navigation[3100] = array(
 	'text' => g_l('navigation', '[menu_help]') . '&hellip;',
 	'parent' => 3000,
-	'cmd' => 'help_tools',
+	'cmd' => 'help_modules',
 	'perm' => '',
 	'enabled' => 1,
 );
@@ -138,7 +138,7 @@ $we_menu_navigation[3100] = array(
 $we_menu_navigation[3200] = array(
 	'text' => g_l('navigation', '[menu_info]') . '&hellip;',
 	'parent' => 3000,
-	'cmd' => 'info_tools',
+	'cmd' => 'info_modules',
 	'perm' => '',
 	'enabled' => 1,
 );

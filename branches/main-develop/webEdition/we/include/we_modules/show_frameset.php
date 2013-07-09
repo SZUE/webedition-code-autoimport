@@ -44,6 +44,11 @@ if(isset($_REQUEST['mod']) && !isset($mod)){
 	$mod = $_REQUEST['mod'];
 }
 $_REQUEST['mod'] = $mod;
+
+//when opened by navigation hook
+if(isset($_REQUEST['tool']) && $_REQUEST['tool'] = 'navigation'){
+	$_REQUEST['mod'] = $mod = 'navigation';
+}
 ?>
 </head>
 <body style="background-color:grey;margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;" onload="setFrameSize()" onresize="setFrameSize()">

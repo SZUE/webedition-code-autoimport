@@ -199,7 +199,7 @@ class weModuleFrames{
 
 		$content = we_html_element::htmlDiv(array('id' => 'treeheader', 'style' => 'overflow:hidden; position: absolute; top: 0px; left: 0px; height: ' . $this->treeHeaderHeight . 'px; width: 100%; ' . ($this->treeHeaderHeight != 1 ? 'background: url(' . IMAGE_DIR . 'backgrounds/header_with_black_line.gif); padding: 5px 0 0 0 ; ' : 'background: #ffffff')), $this->getHTMLTreeheader()) . 
 			we_html_element::htmlIFrame('tree', ($this->useMainTree ? WEBEDITION_DIR . 'treeMainModules.php' : $this->frameset . '?pnt=tree'), 'position: absolute; top: ' . $this->treeHeaderHeight . 'px; bottom: ' . $this->treeFooterHeight . 'px; left: 0px; width: 100%;') .
-			($this->treeFooterHeight == 0 ? '' : we_html_element::htmlDiv(array('style' => 'position: absolute; bottom: 0px; left: 0px; padding-left: 2px; height: ' . $this->treeFooterHeight . 'px; width: 100%; overflow:hidden; background: url(\'' . IMAGE_DIR . 'edit/editfooterback.gif\')'), $this->getHTMLTreefooter()));
+			($this->treeFooterHeight == 0 ? '' : we_html_element::htmlDiv(array('id' => 'treefooter', 'style' => 'position: absolute; bottom: 0px; left: 0px; padding-left: 2px; height: ' . $this->treeFooterHeight . 'px; width: 100%; overflow:hidden; background: url(\'' . IMAGE_DIR . 'edit/editfooterback.gif\')'), $this->getHTMLTreefooter()));
 
 		return we_html_element::htmlDiv($attribs, $content);
 	}
@@ -330,11 +330,9 @@ class weModuleFrames{
 
 	function getHTMLExitQuestion(){
 		if(isset($_REQUEST['delayCmd']) && isset($_REQUEST['delayParam'])){
-
 			$_frame = 'opener.' . $this->topFrame;
 			$_form = $_frame . '.document.we_form';
-
-			$_yes = $_frame . '.hot=0;' . $_frame . '.we_cmd("tool_' . $this->module . '_save");self.close();';
+			$_yes = $_frame . '.hot=0;' . $_frame . '.we_cmd("module_' . $this->module . '_save");self.close();';
 			$_no = $_frame . '.hot=0;' . $_frame . '.we_cmd("' . $_REQUEST['delayCmd'] . '","' . $_REQUEST['delayParam'] . '");self.close();';
 			$_cancel = 'self.close();';
 

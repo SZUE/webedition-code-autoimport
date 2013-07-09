@@ -23,20 +23,20 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 switch($_REQUEST['we_cmd'][0]){
-	case 'tool_navigation_rules':
+	case 'module_navigation_rules':
 		$toolInclude = 'navigation/edit_navigation_rules_frameset.php';
 		break;
-	case 'tool_navigation_edit':
-		$toolInclude = 'tools_frameset.php';
+	case 'module_navigation_edit':
+		$toolInclude = 'show_frameset.php';
 		break;
-	case 'tool_navigation_edit_navi':
+	case 'module_navigation_edit_navi':
 		$toolInclude = 'navigation/weNaviEditor.php';
 		break;
-	case 'tool_navigation_do_reset_customer_filter':
+	case 'module_navigation_do_reset_customer_filter':
 		$toolInclude = 'navigation/reset_customerFilter.php';
 		break;
 }
 
 if(isset($toolInclude)){
-	include(WE_INCLUDES_PATH . 'we_tools/' . $toolInclude);
+	include(WE_INCLUDES_PATH . 'we_modules/' . $toolInclude);
 }

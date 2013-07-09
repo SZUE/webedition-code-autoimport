@@ -38,11 +38,11 @@ class weNavigationFrames extends weModuleFrames {
 
 	public $Table = NAVIGATION_TABLE;
 	public $TreeSource = '';
-	protected $treeFooterHeight = 0;
+	protected $treeFooterHeight = 40;
 
 	function __construct(){
-		$this->toolUrl = WE_INCLUDES_DIR . 'we_tools/' . $this->module . '/';//TODO: replace toll/module-wide by $module
-		$this->toolDir = $_SERVER['DOCUMENT_ROOT'] . $this->toolUrl;//TODO: replace toll/module-wide by $module
+		$this->toolUrl = WE_INCLUDES_DIR . 'we_modules/' . $this->module . '/';
+		$this->toolDir = $_SERVER['DOCUMENT_ROOT'] . $this->toolUrl;
 		
 		$_frameset = $this->toolUrl . 'edit_' . $this->toolName . '_frameset.php';
 		parent::__construct($_frameset);
@@ -88,6 +88,10 @@ class weNavigationFrames extends weModuleFrames {
 		$extraUrlParams = isset($_REQUEST['tab']) ? '&tab=' . $_REQUEST['tab'] : '' . isset($_REQUEST['sid']) ? '&sid=' . $_REQUEST['sid'] : '';
 
 		return parent::getHTMLFrameset($extraHead, $extraUrlParams);
+	}
+
+	function getHTMLTreeFooter(){
+		return '<div id="infoField" style="margin:5px; display: none;" class="defaultfont"></div>';
 	}
 
 	function getHTMLCmd(){
@@ -1767,7 +1771,7 @@ function ' . $prefix . 'setLinkSelection(value){
 		));
 	}
 
-	function getHTMLEditorFooter(){t_e("edfooter son");
+	function getHTMLEditorFooter(){
 		if(isset($_REQUEST["home"])){
 			return $this->getHTMLDocument(we_html_element::htmlBody(array(
 						"bgcolor" => "#F0EFF0"
@@ -1796,7 +1800,7 @@ function ' . $prefix . 'setLinkSelection(value){
 				we_html_element::jsElement('
 					function we_save() {
 						' . $this->topFrame . '.makeNewDoc = document.we_form.makeNewDoc.checked;
-						' . $this->topFrame . '.we_cmd("tool_' . $this->toolName . '_save");
+						' . $this->topFrame . '.we_cmd("module_' . $this->toolName . '_save");
 					}
 					') . we_html_element::htmlBody(
 					array(

@@ -93,13 +93,13 @@ class weNavigationView{
 			function we_cmd() {
 				var args = "";
 				var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
-				if(' . $this->topFrame . '.hot && (arguments[0]=="tool_navigation_edit" || arguments[0]=="tool_navigation_new" || arguments[0]=="tool_navigation_new_group" || arguments[0]=="tool_navigation_exit")){
+				if(' . $this->topFrame . '.hot && (arguments[0]=="module_navigation_edit" || arguments[0]=="module_navigation_new" || arguments[0]=="module_navigation_new_group" || arguments[0]=="module_navigation_exit")){
 					' . $this->editorBodyFrame . '.document.we_form.delayCmd.value = arguments[0];
 					' . $this->editorBodyFrame . '.document.we_form.delayParam.value = arguments[1];
 					arguments[0] = "exit_doc_question";
 				}
 				switch (arguments[0]) {
-					case "tool_navigation_edit":
+					case "module_navigation_edit":
 						if(' . $this->editorBodyFrame . '.loaded) {
 							' . $this->editorBodyFrame . '.document.we_form.cmd.value = arguments[0];
 							' . $this->editorBodyFrame . '.document.we_form.cmdid.value=arguments[1];
@@ -107,11 +107,11 @@ class weNavigationView{
 							' . $this->editorBodyFrame . '.document.we_form.pnt.value="edbody";
 							' . $this->editorBodyFrame . '.submitForm();
 						} else {
-							setTimeout(\'we_cmd("tool_navigation_edit",\'+arguments[1]+\');\', 10);
+							setTimeout(\'we_cmd("module_navigation_edit",\'+arguments[1]+\');\', 10);
 						}
 					break;
-					case "tool_navigation_new":
-					case "tool_navigation_new_group":
+					case "module_navigation_new":
+					case "module_navigation_new_group":
 						if(' . $this->editorBodyFrame . '.loaded) {
 							' . $this->topFrame . '.hot = 0;
 							if(' . $this->editorBodyFrame . '.document.we_form.presetFolder !== undefined) ' . $this->editorBodyFrame . '.document.we_form.presetFolder.value = false;
@@ -126,7 +126,7 @@ class weNavigationView{
 							treeData.unselectnode();
 						}
 					break;
-					case "tool_navigation_save":
+					case "module_navigation_save":
 						if(' . $this->editorBodyFrame . '.document.we_form.cmd.value=="home") return;
 						if (' . $this->editorBodyFrame . '.loaded) {
 								if(' . $this->editorBodyFrame . '.document.we_form.presetFolder) ' . $this->editorBodyFrame . '.document.we_form.presetFolder.value = makeNewDoc;
@@ -166,7 +166,7 @@ class weNavigationView{
 								}
 						}
 					break;
-					case "tool_navigation_delete":
+					case "module_navigation_delete":
 						if(' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value=="home"){
 							' . we_message_reporting::getShowMessageCall(g_l('navigation', "[nothing_selected]"), we_message_reporting::WE_MESSAGE_ERROR) . '
 							return;
@@ -218,7 +218,7 @@ class weNavigationView{
 						' . $this->topFrame . '.treeData.unselectnode();
 						' . $this->topFrame . '.drawTree();
 					break;
-					case "tool_navigation_exit":
+					case "module_navigation_exit":
 						top.close();
 					break;
 					case "exit_doc_question":
@@ -226,9 +226,9 @@ class weNavigationView{
 						new jsWindow(url,"we_exit_doc_question",-1,-1,380,130,true,false,true);
 					break;
 
-					case "tool_navigation_reset_customer_filter":
+					case "module_navigation_reset_customer_filter":
 						if(confirm("' . g_l('navigation', "[reset_customerfilter_question]") . '")) {
-							we_cmd("tool_navigation_do_reset_customer_filter");
+							we_cmd("module_navigation_do_reset_customer_filter");
 						}
 					break;
 					default:
@@ -284,14 +284,14 @@ class weNavigationView{
 						new jsWindow(url,"we_catselector",-1,-1,' . WINDOW_CATSELECTOR_WIDTH . ',' . WINDOW_CATSELECTOR_HEIGHT . ',true,true,true,true);
 						break;
 					case "openNavigationDirselector":
-						url = "' . WE_INCLUDES_DIR . 'we_tools/navigation/we_navigationDirSelect.php?";
+						url = "' . WE_INCLUDES_DIR . 'we_modules/navigation/we_navigationDirSelect.php?";
 						for(var i = 0; i < arguments.length; i++){
 							url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }
 						}
 						new jsWindow(url,"we_navigation_dirselector",-1,-1,600,400,true,true,true);
 						break;
 					case "openFieldSelector":
-						url = "' . WE_INCLUDES_DIR . 'we_tools/navigation/edit_navigation_frameset.php?pnt=fields&cmd="+arguments[1]+"&type="+arguments[2]+"&selection="+arguments[3]+"&multi="+arguments[4];
+						url = "' . WE_INCLUDES_DIR . 'we_modules/navigation/edit_navigation_frameset.php?pnt=fields&cmd="+arguments[1]+"&type="+arguments[2]+"&selection="+arguments[3]+"&multi="+arguments[4];
 						new jsWindow(url,"we_navigation_field_selector",-1,-1,380,350,true,true,true);
 						break;
 					case "copyNaviFolder":
@@ -314,7 +314,7 @@ class weNavigationView{
 			function copyNaviFolder(folderPath,folderID) {
 				var parentPos = selfNaviPath.indexOf(folderPath);
 				if(parentPos==(-1) || selfNaviPath.indexOf(folderPath)>0) {
-					cnfUrl = copyNaviFolderUrl+"?protocol=text&cmd=CopyNavigationFolder&cns=tools/navigation&we_cmd[0]="+selfNaviPath+"&we_cmd[1]="+selfNaviId+"&we_cmd[2]="+folderPath+"&we_cmd[3]="+folderID;
+					cnfUrl = copyNaviFolderUrl+"?protocol=text&cmd=CopyNavigationFolder&cns=modules/navigation&we_cmd[0]="+selfNaviPath+"&we_cmd[1]="+selfNaviId+"&we_cmd[2]="+folderPath+"&we_cmd[3]="+folderID;
 					top.YAHOO.util.Connect.asyncRequest("GET", cnfUrl, copyNaviFolderAjaxCallback);
 				} else {
 					' . we_message_reporting::getShowMessageCall(g_l('alert', "[copy_folder_not_valid]"), we_message_reporting::WE_MESSAGE_ERROR) . '
@@ -710,8 +710,8 @@ class weNavigationView{
 			}
 
 			switch($_REQUEST['cmd']){
-				case 'tool_navigation_new':
-				case 'tool_navigation_new_group':
+				case 'module_navigation_new':
+				case 'module_navigation_new_group':
 					if(!we_hasPerm('EDIT_NAVIGATION')){
 						print we_html_element::jsElement(
 								we_message_reporting::getShowMessageCall(g_l('navigation', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR)
@@ -719,14 +719,14 @@ class weNavigationView{
 						break;
 					}
 					$this->Model = new weNavigation();
-					$this->Model->IsFolder = ($_REQUEST['cmd'] == 'tool_navigation_new_group') ? 1 : 0;
+					$this->Model->IsFolder = ($_REQUEST['cmd'] == 'module_navigation_new_group') ? 1 : 0;
 					$this->Model->ParentID = isset($_REQUEST['ParentID']) && $_REQUEST['ParentID'] ? $_REQUEST['ParentID'] : 0;
 					print we_html_element::jsElement('
 								' . $this->editorHeaderFrame . '.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->Model->Text) . '";
 								' . $this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";
 					');
 					break;
-				case 'tool_navigation_edit':
+				case 'module_navigation_edit':
 					if(!we_hasPerm('EDIT_NAVIGATION')){
 						print we_html_element::jsElement(
 								we_message_reporting::getShowMessageCall(g_l('navigation', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR)
@@ -757,7 +757,7 @@ class weNavigationView{
 								}
 					');
 					break;
-				case 'tool_navigation_save':
+				case 'module_navigation_save':
 					if(!we_hasPerm('EDIT_NAVIGATION') && !we_hasPerm('EDIT_NAVIGATION')){
 						print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('navigation', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR));
 						break;
@@ -856,7 +856,7 @@ class weNavigationView{
 							we_message_reporting::getShowMessageCall(($this->Model->IsFolder == 1 ? g_l('navigation', "[save_group_ok]") : g_l('navigation', "[save_ok]")), we_message_reporting::WE_MESSAGE_NOTICE) .
 							$this->topFrame . '.hot=0;
 						if(' . $this->topFrame . '.makeNewDoc) {
-							setTimeout("' . $this->topFrame . '.we_cmd(\"tool_navigation_' . (($this->Model->IsFolder == 1) ? 'new_group' : 'new') . '\",100)");
+							setTimeout("' . $this->topFrame . '.we_cmd(\"module_navigation_' . (($this->Model->IsFolder == 1) ? 'new_group' : 'new') . '\",100)");
 						}
 					');
 
@@ -874,7 +874,7 @@ class weNavigationView{
 					print $js;
 
 					break;
-				case 'tool_navigation_delete':
+				case 'module_navigation_delete':
 
 					print we_html_element::jsScript(JS_DIR . 'we_showMessage.js');
 
@@ -969,7 +969,7 @@ class weNavigationView{
 
 					print we_html_element::jsScript(JS_DIR . "windows.js") .
 						we_html_element::jsElement('
-						url = "' . WE_INCLUDES_DIR . 'we_tools/navigation/edit_navigation_frameset.php?pnt=dyn_preview";
+						url = "' . WE_INCLUDES_DIR . 'we_modules/navigation/edit_navigation_frameset.php?pnt=dyn_preview";
 						new jsWindow(url,"we_navigation_dyn_preview",-1,-1,480,350,true,true,true);'
 					);
 					break;

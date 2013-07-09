@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weNavigationTree extends weToolTree{
+class weNavigationTree extends weModuleTree{
 
 	function __construct($frameset = '', $topFrame = '', $treeFrame = '', $cmdFrame = ''){
 		parent::__construct($frameset, $topFrame, $treeFrame, $cmdFrame);
@@ -35,7 +35,7 @@ class weNavigationTree extends weToolTree{
 		$out .= '
 				function doClick(id,typ){
 					var node=' . $this->topFrame . '.get(id);
-					' . $this->topFrame . '.editor.edbody.we_cmd("tool_navigation_edit",node.id);
+					' . $this->topFrame . '.editor.edbody.we_cmd("module_navigation_edit",node.id);
 				}
 				' . $this->topFrame . '.loaded=1;
 			';

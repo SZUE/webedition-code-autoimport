@@ -29,7 +29,7 @@ class weNavigationRuleFrames{
 	public $db;
 
 	function __construct(){
-		$this->Frameset = WE_INCLUDES_DIR . 'we_tools/navigation/edit_navigation_rules_frameset.php';
+		$this->Frameset = WE_INCLUDES_DIR . 'we_modules/navigation/edit_navigation_rules_frameset.php';
 		$this->Controller = new weNavigationRuleControl();
 		$this->db = new DB_WE();
 		$yuiSuggest = &weSuggest::getInstance();
