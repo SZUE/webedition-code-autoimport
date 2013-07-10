@@ -660,7 +660,7 @@ class we_document extends we_root{
 		$this->errMsg = '';
 		$this->i_setText();
 
-		if($skipHook == 0){
+		if(!$skipHook){
 			$hook = new weHook('preSave', '', array($this, 'resave' => $resave));
 			$ret = $hook->executeHook();
 			//check if doc should be saved
@@ -689,7 +689,7 @@ class we_document extends we_root{
 		}
 
 		/* hook */
-		if($skipHook == 0){
+		if(!$skipHook){
 			$hook = new weHook('save', '', array($this, 'resave' => $resave));
 			$ret = $hook->executeHook();
 			//check if doc should be saved
