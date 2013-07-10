@@ -707,7 +707,7 @@ class weNavigation extends weModelBase{
 					break;
 				case self::STPYE_CATEGORY:
 				case self::STPYE_CATLINK:
-					$_path = $this->LinkSelection == 'extern' ? $this->Url : ($_path = isset($storage[$_id]) ? $storage[$_id] : id_to_path($this->UrlID, FILE_TABLE));
+					$_path = $this->LinkSelection == 'extern' ? $this->Url : ($_path = isset($storage[$this->UrlID]) ? $storage[$this->UrlID] : id_to_path($this->UrlID, FILE_TABLE));
 					if(!empty($this->CatParameter)){
 						$_param = $this->CatParameter . '=' . $_id . (!empty($_param) ? '&' : '') . $_param;
 					}

@@ -44,11 +44,8 @@ function we_tag_showShopItemNumber($attribs){
 	$attr = removeAttribs($attribs, array('option', 'inputfield', 'type', 'start', 'stop', 'shopname', 'nameto', 'to', 'floatquantities', '$num_format'));
 
 	// $type of the field
-	$articleType = 'w';
+	$articleType = (isset($GLOBALS['lv']->Record['OF_ID']) ? we_shop_shop::OBJECT : we_shop_shop::DOCUMENT);
 
-	if(isset($GLOBALS['lv']->Record['OF_ID'])){
-		$articleType = 'o';
-	}
 
 	$itemQuantity = (isset($GLOBALS['lv']) && isset($GLOBALS['lv']->ShoppingCartKey) ?
 			$GLOBALS[$shopname]->Get_Item_Quantity($GLOBALS['lv']->ShoppingCartKey) :

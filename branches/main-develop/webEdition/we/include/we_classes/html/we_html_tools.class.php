@@ -280,13 +280,13 @@ abstract class we_html_tools{
 		//  First input='text'
 		$textField = getHtmlTag('input', array_merge($atts, array('type' => 'text', 'name' => $name, 'value' => oldHtmlspecialchars($value))));
 
-		$opts = getHtmlTag('option', array('value' => ''), '', true) . "\n";
+		$opts = getHtmlTag('option', array('value' => ''), '', true);
 		$attsOpts = array();
 
 		if($valuesIsHash){
 			foreach($values as $_val => $_text){
 				$attsOpts['value'] = oldHtmlspecialchars($_val);
-				$opts .= getHtmlTag('option', $attsOpts, oldHtmlspecialchars($_text)) . "\n";
+				$opts .= getHtmlTag('option', $attsOpts, oldHtmlspecialchars($_text));
 			}
 		} else{
 			// options of select Menu
@@ -297,7 +297,7 @@ abstract class we_html_tools{
 
 			foreach($options as $option){
 				$attsOpts['value'] = oldHtmlspecialchars($option);
-				$opts .= getHtmlTag('option', $attsOpts, oldHtmlspecialchars($option)) . "\n";
+				$opts .= getHtmlTag('option', $attsOpts, oldHtmlspecialchars($option));
 			}
 		}
 
@@ -485,7 +485,7 @@ abstract class we_html_tools{
 			$_showDay = false;
 		}
 
-		if(($format == "") || $_monthPos > -1){
+		if(($format == '') || $_monthPos > -1){
 			$months = '';
 			$monthType = (strpos($format, 'F') ? 'F' : (strpos($format, 'M') ? 'M' : 0));
 			for($i = 1; $i <= 12; $i++){

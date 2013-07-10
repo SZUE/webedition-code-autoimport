@@ -81,7 +81,7 @@ function we_tag_form($attribs){
 						'xml' => $xml,
 						'type' => 'hidden',
 						'name' => 'type',
-						'value' => ( isset($GLOBALS['lv']->classID) ? 'o' : (isset($GLOBALS['lv']->ID) ? 'w' : (isset($GLOBALS['we_doc']->ClassID) || isset($GLOBALS['we_doc']->ObjectID)) ? 'o' : 'w' )),
+						'value' => ( isset($GLOBALS['lv']->classID) ? we_shop_shop::OBJECT : (isset($GLOBALS['lv']->ID) ? we_shop_shop::DOCUMENT : (isset($GLOBALS['we_doc']->ClassID) || isset($GLOBALS['we_doc']->ObjectID)) ? we_shop_shop::OBJECT : we_shop_shop::DOCUMENT )),
 					)) . getHtmlTag(
 						'input', array(
 						'xml' => $xml,

@@ -121,7 +121,7 @@ class we_shop_Basket{
 	 * @param string $type
 	 * @param string $variant
 	 */
-	function Add_Item($id, $quantity = 1, $type = 'w', $variant = '', $customFields = array()){
+	function Add_Item($id, $quantity = 1, $type = we_shop_shop::DOCUMENT, $variant = '', $customFields = array()){
 
 		// check if this item is already in the shoppingCart
 		if(($key = $this->getShoppingItemIndex($id, $type, $variant, $customFields))){ // item already exists
@@ -179,7 +179,7 @@ class we_shop_Basket{
 		$Record = array();
 
 		switch($type){
-			case 'w':
+			case we_shop_shop::DOCUMENT:
 				// unfortunately this is not made with initDocById,
 				// but its much faster -> so we use it
 				$DB_WE->query('SELECT ' . CONTENT_TABLE . '.BDID as BDID, ' . CONTENT_TABLE . '.Dat as Dat, ' . LINK_TABLE . '.Name as Name FROM ' . LINK_TABLE . ',' . CONTENT_TABLE . ' WHERE ' . LINK_TABLE . '.DID=' . intval($id) . ' AND ' . LINK_TABLE . '.CID=' . CONTENT_TABLE . '.ID AND ' . LINK_TABLE . '.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"');
@@ -214,7 +214,7 @@ class we_shop_Basket{
 					}
 				}
 				break;
-			case 'o':
+			case we_shop_shop::OBJECT:
 				$classArray = getHash('SELECT * FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($id), $DB_WE);
 
 				$olv = new we_listview_object(0, 1, 0, '', 0, $classArray['TableID'], '', '', ' ' . OBJECT_X_TABLE . $classArray["TableID"] . '.ID=' . $classArray['ObjectID']);
@@ -334,7 +334,7 @@ class we_shop_Basket{
 	 * @param string $variant
 	 * @return mixed
 	 */
-	function getShoppingItemIndex($id, $type = 'w', $variant = '', $customFields = array()){
+	function getShoppingItemIndex($id, $type = we_shop_shop::DOCUMENT, $variant = '', $customFields = array()){
 
 		foreach($this->ShoppingItems as $index => $item){
 			if($item['id'] == $id && $item['type'] == $type && $item['variant'] == $variant && $customFields == $item['customFields']){
