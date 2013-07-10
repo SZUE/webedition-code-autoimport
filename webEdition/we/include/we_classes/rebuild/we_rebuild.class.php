@@ -118,7 +118,7 @@ abstract class we_rebuild{
 				}
 				$tmp = $data['cn'];
 				$GLOBALS['we_doc'] = new $tmp();
-				$GLOBALS['we_doc']->initByID($data['id'], $table, we_class::LOAD_MAID_DB);
+				$GLOBALS['we_doc']->initByID($data['id'], $table, ($table == OBJECT_FILES_TABLE ? we_class::LOAD_TEMP_DB : we_class::LOAD_MAID_DB));
 				if($printIt){
 					print ('Rebuilding: ' . $GLOBALS['we_doc']->Path);
 					flush();
@@ -134,10 +134,10 @@ abstract class we_rebuild{
 				  } */
 
 
-				/*removed: can cause data loss
+				/* removed: can cause data loss
 				 * if($data['tt']){
-					$GLOBALS['we_doc']->we_resaveTemporaryTable();
-				}*/
+				  $GLOBALS['we_doc']->we_resaveTemporaryTable();
+				  } */
 				if($data['mt'] || ($table == TEMPLATES_TABLE)){
 					$tmpPath = $GLOBALS['we_doc']->constructPath();
 					if($tmpPath){
@@ -154,7 +154,10 @@ abstract class we_rebuild{
 				if($data['it']){
 					$GLOBALS['we_doc']->insertAtIndex();
 				} else{
-					$GLOBALS['we_doc']->we_rewrite();
+					$ret=$GLOBALS['we_doc']->we_rewrite();
+					if(!$ret){
+						t_e('err write');
+					}
 					$GLOBALS['we_doc']->we_republish($data['mt']);
 				}
 				if($printIt){

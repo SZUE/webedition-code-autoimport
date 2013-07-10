@@ -2184,7 +2184,7 @@ class we_objectFile extends we_document{
 		$_resaveWeDocumentCustomerFilter = true;
 		$this->correctWorkspaces();
 
-		if($skipHook == 0){
+		if(!$skipHook){
 			$hook = new weHook('preSave', '', array($this, 'resave' => $resave));
 			$ret = $hook->executeHook();
 //check if doc should be saved
@@ -2201,12 +2201,11 @@ class we_objectFile extends we_document{
 			}
 		}
 		$this->ModDate = time();
-		$this->ModifierID = isset($_SESSION["user"]["ID"]) ? $_SESSION["user"]["ID"] : 0;
+		$this->ModifierID = isset($_SESSION['user']['ID']) ? $_SESSION['user']['ID'] : 0;
 		$this->wasUpdate = 1;
-
 		$this->setUrl();
 
-		if($resave == 0 && $_resaveWeDocumentCustomerFilter){
+		if(!$resave && $_resaveWeDocumentCustomerFilter){
 			$this->resaveWeDocumentCustomerFilter();
 		}
 
@@ -2219,9 +2218,8 @@ class we_objectFile extends we_document{
 			}
 		}
 		$a = $this->i_saveTmp();
-
 // version
-		if($this->ContentType == "objectFile" && defined('VERSIONING_OBJECT') && VERSIONING_OBJECT){
+		if($this->ContentType == 'objectFile' && defined('VERSIONING_OBJECT') && VERSIONING_OBJECT){
 			$version = new weVersions();
 			$version->save($this);
 		}
@@ -2232,7 +2230,7 @@ class we_objectFile extends we_document{
 			$this->checkRemoteLanguage($this->Table, false);
 		}
 // hook
-		if($skipHook == 0){
+		if(!$skipHook){
 			$hook = new weHook('save', '', array($this, 'resave' => $resave));
 			$ret = $hook->executeHook();
 //check if doc should be saved
@@ -2360,7 +2358,7 @@ class we_objectFile extends we_document{
 	}
 
 	public function we_publish($DoNotMark = false, $saveinMainDB = true, $skipHook = 0){
-		if($skipHook == 0){
+		if(!$skipHook){
 			$hook = new weHook('prePublish', '', array($this));
 			$ret = $hook->executeHook();
 //check if doc should be saved
@@ -2382,7 +2380,7 @@ class we_objectFile extends we_document{
 			}
 		}
 		//hook
-		if($skipHook == 0){
+		if(!$skipHook){
 			$hook = new weHook('publish', '', array($this));
 			$ret = $hook->executeHook();
 //check if doc should be saved
@@ -2413,7 +2411,7 @@ class we_objectFile extends we_document{
 			$version->save($this, 'unpublished');
 		}
 		/* hook */
-		if($skipHook == 0){
+		if(!$skipHook){
 			$hook = new weHook('unpublish', '', array($this));
 			$ret = $hook->executeHook();
 //check if doc should be saved
@@ -2446,7 +2444,7 @@ class we_objectFile extends we_document{
 	}
 
 	public function we_republish($rebuildMain = true){
-		return ($this->Published ?
+		return ($this->Published && $this->ModDate <= $this->Published ?
 				$this->we_publish(true, $rebuildMain) :
 				$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE OID=' . $this->ID)
 			);

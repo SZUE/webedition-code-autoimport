@@ -279,7 +279,7 @@ class we_folder extends we_root{
 			$this->checkRemoteLanguage($this->Table, true); //if language changed, we
 		}
 		/* hook */
-		if($skipHook == 0){
+		if(!$skipHook){
 			$hook = new weHook('save', '', array($this, 'resave' => $resave));
 			$ret = $hook->executeHook();
 			//check if doc should be saved

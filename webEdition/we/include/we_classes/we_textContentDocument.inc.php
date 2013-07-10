@@ -278,7 +278,7 @@ abstract class we_textContentDocument extends we_textDocument{
 	public function we_save($resave = 0, $skipHook = 0){
 		$this->errMsg = '';
 		$this->i_setText();
-		if($skipHook == 0){
+		if(!$skipHook){
 			$hook = new weHook('preSave', '', array($this, 'resave' => $resave));
 			$ret = $hook->executeHook();
 			//check if doc should be saved
@@ -312,7 +312,7 @@ abstract class we_textContentDocument extends we_textDocument{
 		}
 
 		/* hook */
-		if($skipHook == 0){
+		if(!$skipHook){
 			$hook = new weHook('save', '', array($this, 'resave' => $resave));
 			$ret = $hook->executeHook();
 			//check if doc should be saved
@@ -326,7 +326,7 @@ abstract class we_textContentDocument extends we_textDocument{
 	}
 
 	public function we_publish($DoNotMark = false, $saveinMainDB = true, $skipHook = 0){
-		if($skipHook == 0){
+		if(!$skipHook){
 			$hook = new weHook('prePublish', '', array($this));
 			$ret = $hook->executeHook();
 			//check if doc should be saved
@@ -369,7 +369,7 @@ abstract class we_textContentDocument extends we_textDocument{
 			$version->save($this, 'published');
 		}
 		/* hook */
-		if($skipHook == 0){
+		if(!$skipHook){
 			$hook = new weHook('publish', '', array($this));
 			$ret = $hook->executeHook();
 			//check if doc should be saved
@@ -404,7 +404,7 @@ abstract class we_textContentDocument extends we_textDocument{
 			$version->save($this, 'unpublished');
 		}
 		/* hook */
-		if($skipHook == 0){
+		if(!$skipHook){
 			$hook = new weHook('unpublish', '', array($this));
 			$ret = $hook->executeHook();
 			//check if doc should be saved
