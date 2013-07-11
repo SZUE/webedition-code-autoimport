@@ -491,7 +491,7 @@ class Zend_Session extends Zend_Session_Abstract
             if (!$startedCleanly) {
                 if (self::$_throwStartupExceptions) {
                     set_error_handler(array('Zend_Session_Exception', 'handleSilentWriteClose'), $errorLevel);
-                } 
+                }
                 session_write_close();
                 if (self::$_throwStartupExceptions) {
                     restore_error_handler();
