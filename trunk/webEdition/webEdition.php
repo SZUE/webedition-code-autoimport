@@ -24,7 +24,7 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 
-//	we need some different functions for normal mode and seeMode 
+//	we need some different functions for normal mode and seeMode
 //	these function all have the same name: pWebEditionXXXX() and
 //	are located in 2 different files. Depending on mode the correct
 //	file is included and the matching functions are included.
