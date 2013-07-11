@@ -24,29 +24,23 @@
  */
 function we_tag_ifTemplate($attribs){
 	$id = weTag_getAttribute('id', $attribs);
-	$workspaceID = weTag_getAttribute('workspaceID', $attribs);
-	$path = weTag_getAttribute('path', $attribs);
 	$TID = (isset($GLOBALS['we_doc']->TemplateID) ? $GLOBALS['we_doc']->TemplateID : ($GLOBALS['we_doc'] instanceof we_template && isset($GLOBALS['we_doc']->ID) ? $GLOBALS['we_doc']->ID : 0));
 
-	if($TID && $id !== ''){
+	if($TID && !empty($id)){
 		return in_array($TID, makeArrayFromCSV($id));
 	} else{
-		if($workspaceID !== ''){
-			if(isset($GLOBALS['we_doc']->TemplatePath)){ // in documents
-				$curTempPath = str_replace(TEMPLATES_PATH, '', $GLOBALS['we_doc']->TemplatePath);
-			} else{ // in templates
-				$curTempPath = $GLOBALS['we_doc']->Path;
-			}
+		$workspaceID = weTag_getAttribute('workspaceID', $attribs);
+		if(!empty($workspaceID)){
+			$curTempPath = (isset($GLOBALS['we_doc']->TemplatePath) ? // in documents
+					str_replace(TEMPLATES_PATH, '', $GLOBALS['we_doc']->TemplatePath) :
+					// in templates
+					$GLOBALS['we_doc']->Path);
 			$path = f('SELECT DISTINCT Path FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . intval($workspaceID) . ' LIMIT 1', 'Path', $GLOBALS['DB_WE']);
-			return (($path != '') && strpos($curTempPath, $path) !== false && strpos($curTempPath, $path) == 0);
+			return (!empty($path) && strpos($curTempPath, $path) === 0);
 		} else{
-			if($path === ''){
-				return true;
-			}
-			if(isset($GLOBALS['we_doc']->TemplatePath)){
-				$pathReg = "|^" . str_replace("\\*", '.*', preg_quote($path, '|')) . "\$|";
-				return preg_match($pathReg, $GLOBALS['we_doc']->TemplatePath);
-			}
+			$path = weTag_getAttribute('path', $attribs);
+			return ($path === '' ||
+				(isset($GLOBALS['we_doc']->TemplatePath) && preg_match('|^' . str_replace("\\*", '.*', preg_quote($path, '|')) . '\$|', $GLOBALS['we_doc']->TemplatePath)));
 		}
 	}
 	return false;
