@@ -94,7 +94,7 @@ onclick="' . $this->editor->ref . 'Obj.click(\'' . $this->cmd . '\');" /></div>'
 				$this->editor->setPlugin('lists', parent::hasProp('', $contextMenu) || parent::hasProp('list',$contextMenu));
 				return $this->editor->setPlugin('advlist', parent::hasProp('', $contextMenu) || parent::hasProp('list',$contextMenu));
 			case "blockquote":
-				return we_wysiwyg::$editorType == 'tinyMCE' && parent::hasProp('', $contextMenu) || parent::hasProp('list',$contextMenu);
+				return we_wysiwyg::$editorType == 'tinyMCE' && parent::hasProp('', $contextMenu);
 			case "justifyleft":
 			case "justifycenter":
 			case "justifyright":
