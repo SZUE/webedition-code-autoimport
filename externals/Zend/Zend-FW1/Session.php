@@ -488,7 +488,7 @@ class Zend_Session extends Zend_Session_Abstract
                 restore_error_handler();
             }
 
-            if (!$startedCleanly || Zend_Session_Exception::$sessionStartError != null) {
+            if (!$startedCleanly) {
                 if (self::$_throwStartupExceptions) {
                     set_error_handler(array('Zend_Session_Exception', 'handleSilentWriteClose'), $errorLevel);
                 }
