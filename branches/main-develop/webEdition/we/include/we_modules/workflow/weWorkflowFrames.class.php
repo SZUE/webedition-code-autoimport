@@ -346,11 +346,6 @@ top.content.hloaded=1;
 		return $this->getHTMLDocument($body, $extraHead);
 	}
 
-	function getHTMLEditorBody(){
-
-		return $this->View->getProperties();
-	}
-
 	function getHTMLEditorFooter($mode = 0){
 		if(isset($_REQUEST["home"])){
 			return $this->getHTMLDocument(we_html_element::htmlBody(array("bgcolor" => "EFF0EF"), ""));

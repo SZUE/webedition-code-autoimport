@@ -268,7 +268,7 @@ class weBannerFrames extends weModuleFrames{
 
 	function getHTMLEditorHeader($mode = 0){
 		if(isset($_REQUEST["home"])){
-			return '<body bgcolor="#F0EFF0"></body></html>';
+			return $this->getHTMLDocument(we_html_element::htmlBody(array('bgcolor' => '#F0EFF0'), ''));
 		}
 		$isFolder = 0;
 		if(isset($_GET["isFolder"]))
@@ -333,9 +333,9 @@ class weBannerFrames extends weModuleFrames{
 		return $this->getHTMLDocument($body, $extraHead);
 	}
 
-	function getHTMLEditorFooter($mode = 0){//TODO: make $extraHeader, $body and use $this->getHTMLDocument($body, $extraHead);
+	function getHTMLEditorFooter($mode = 0){
 		if(isset($_REQUEST["home"])){
-			return '<body bgcolor="#F0EFF0"></body></html>';
+			return $this->getHTMLDocument(we_html_element::htmlBody(array('bgcolor' => '#F0EFF0'), ''));
 		}
 
 		we_html_tools::htmlTop();

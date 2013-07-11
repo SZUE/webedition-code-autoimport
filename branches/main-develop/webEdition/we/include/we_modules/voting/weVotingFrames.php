@@ -35,17 +35,11 @@ class weVotingFrames extends weModuleFrames{
 		parent::__construct(WE_VOTING_MODULE_DIR . "edit_voting_frameset.php");
 		$this->Tree = new weVotingTree();
 		$this->View = new weVotingView(WE_VOTING_MODULE_DIR . "edit_voting_frameset.php", "top.content");
-		$this->setupTree(VOTING_TABLE, "top.content", "top.content.tree", "top.content.cmd");
+		$this->setupTree(VOTING_TABLE, "top.content", "top.content", "top.content.cmd");
 	}
 
 	function getHTML($what){
 		switch($what){
-			case "treeheader":
-				print $this->getHTMLTreeHeader();
-				break;
-			case "treefooter":
-				print $this->getHTMLTreeFooter();
-				break;
 			case "export_csv":
 				print $this->getHTMLExportCsvMessage();
 				break;
@@ -76,10 +70,6 @@ class weVotingFrames extends weModuleFrames{
 		$extraHead = $this->Tree->getJSTreeCode() . we_html_element::jsElement($this->getJSStart());
 
 		return parent::getHTMLFrameset($extraHead);
-	}
-
-	function getHTMLLeftDiv(){
-		return parent::getHTMLLeftDiv(true);
 	}
 
 	function getJSCmdCode(){

@@ -26,11 +26,6 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 $what = isset($_REQUEST['pnt']) ? $_REQUEST['pnt'] : 'frameset';
 $mode = isset($_REQUEST['art']) ? $_REQUEST['art'] : 0;
 
-//We need to set this (and in corresponding frames, since the data in database is formated this way
-if(!($mode == 'export' && isset($_REQUEST['step']) && $_REQUEST['step'] == 5) && $what != 'frameset'){
-	we_html_tools::htmlTop('', DEFAULT_CHARSET);
-}
-
 $ExImport = $weFrame = null;
 
 if($what == 'export' || $what == 'eibody' || $what == 'eifooter' || $what == 'eiload' || $what == 'import' || $what == 'eiupload'){
@@ -39,6 +34,7 @@ if($what == 'export' || $what == 'eibody' || $what == 'eifooter' || $what == 'ei
 	$ExImport->getHTML($what, $mode, $step);
 } else{
 	$weFrame = new weCustomerFrames();
+	$weFrame->getHTMLDocumentHeader($what, $mode);
 	$weFrame->View->processVariables();
 	$weFrame->View->processCommands();
 	$weFrame->getHTML($what, $mode);

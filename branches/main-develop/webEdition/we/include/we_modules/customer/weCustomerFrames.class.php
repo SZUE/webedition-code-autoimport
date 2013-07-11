@@ -34,8 +34,16 @@ class weCustomerFrames extends weModuleFrames{
 	function __construct(){
 		parent::__construct(WE_CUSTOMER_MODULE_DIR . 'edit_customer_frameset.php');
 		$this->Tree = new weCustomerTree();
-		$this->View = new weCustomerView(WE_CUSTOMER_MODULE_DIR . 'edit_customer_frameset.php', 'top.content');
-		$this->setupTree(CUSTOMER_TABLE, 'top.content', 'top.content.tree', 'top.content.cmd');
+		$this->setupTree(CUSTOMER_TABLE, "top.content", "top.content", "top.content.cmd");
+		$this->View = new weCustomerView(WE_CUSTOMER_MODULE_DIR . "edit_customer_frameset.php", "top.content");
+	}
+
+	function getHTMLDocumentHeader($what = '', $mode = ''){
+		//We need to set this (and in corresponding frames, since the data in database is formated this way
+		if(!($mode == 'export' && isset($_REQUEST["step"]) && $_REQUEST["step"] == 5)){
+			print we_html_tools::headerCtCharset('text/html', DEFAULT_CHARSET);
+			print we_html_tools::htmlTop('', DEFAULT_CHARSET);
+		}
 	}
 
 	function getHTML($what = '', $mode = 0, $step = 0){
@@ -82,10 +90,6 @@ class weCustomerFrames extends weModuleFrames{
 		$extraUrlParams = isset($_REQUEST['sid']) ? '&sid=' . $_REQUEST['sid'] : '';
 
 		return parent::getHTMLFrameset($extraHead, $extraUrlParams);
-	}
-
-	function getHTMLLeftDiv(){
-		return parent::getHTMLLeftDiv(true);
 	}
 
 	function getJSCmdCode(){

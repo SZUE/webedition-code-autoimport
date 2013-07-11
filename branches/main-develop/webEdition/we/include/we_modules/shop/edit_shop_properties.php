@@ -1,11 +1,10 @@
 <?php
-
 /**
  * webEdition CMS
  *
- * $Rev: 5071 $
+ * $Rev: 6093 $
  * $Author: mokraemer $
- * $Date: 2012-11-05 00:13:52 +0100 (Mo, 05 Nov 2012) $
+ * $Date: 2013-05-12 19:30:42 +0200 (So, 12 Mai 2013) $
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -23,12 +22,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+
 we_html_tools::protect();
+print STYLESHEET;
 
-$what = isset($_REQUEST["pnt"]) ? $_REQUEST["pnt"] : "frameset";
-
-$weFrame = new weNavigationFrames();
-$weFrame->getHTMLDocumentHeader();
-$weFrame->View->processVariables();
-$weFrame->View->processCommands();
-$weFrame->getHTML($what);
+$weView = new weShopView();
+$weView->getProperties();

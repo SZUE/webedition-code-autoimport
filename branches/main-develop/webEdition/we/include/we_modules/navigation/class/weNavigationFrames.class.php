@@ -37,6 +37,7 @@ class weNavigationFrames extends weModuleFrames{
 	public $toolClassName = 'weNavigation';
 	public $Table = NAVIGATION_TABLE;
 	public $TreeSource = '';
+	protected $treeDefaultWidth = 220;
 	protected $treeFooterHeight = 40;
 
 	function __construct(){
@@ -48,18 +49,13 @@ class weNavigationFrames extends weModuleFrames{
 
 		$this->Tree = new weNavigationTree();
 		$this->TreeSource = 'table:' . $this->Table;
-
 		$this->View = new weNavigationView($_frameset, 'top.content');
 		$this->Model = &$this->View->Model;
-
-		$this->setupTree(NAVIGATION_TABLE, 'top.content', 'top.content.tree', 'top.content.cmd');
+		$this->setupTree(NAVIGATION_TABLE, 'top.content', 'top.content', 'top.content.cmd');
 	}
 
 	function getHTML($what){
 		switch($what){
-			case 'header':
-				print $this->getHTMLHeader();
-				break;
 			case 'preview' :
 				print $this->getHTMLEditorBody();
 				break;

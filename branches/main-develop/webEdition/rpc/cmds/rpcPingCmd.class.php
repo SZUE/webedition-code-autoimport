@@ -48,7 +48,7 @@ class rpcPingCmd extends rpcCmd{
 		$resp->setData('num_users', $users_online->getNumUsers());
 
 		$aDatTblPref = getPref('cockpit_dat'); // array as saved in the prefs
-		$aDat = (!empty($aDatTblPref)) ? @unserialize($aDatTblPref) : '';
+		$aDat = (!empty($aDatTblPref)) ? @unserialize($aDatTblPref) : array();
 		foreach($aDat as $d){
 			foreach($d as $aProps){
 				if($aProps[0] === 'mfd'){

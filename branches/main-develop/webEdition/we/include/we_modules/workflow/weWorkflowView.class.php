@@ -119,7 +119,7 @@ class weWorkflowView extends we_workflow_base{
 			$out = ob_get_contents();
 			ob_end_clean();
 
-			return we_html_tools::htmlTop() . STYLESHEET . $out;
+			return $out;
 		} else{
 			$content = '<form name="we_form" onsubmit="return false">' .
 				$this->getHiddens();

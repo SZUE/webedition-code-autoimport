@@ -31,15 +31,11 @@ class weUsersFrames extends weModuleFrames {
 	public $module = "users";
 	protected $useMainTree = false;
 	protected $treeFooterHeight = 40;
-	protected $treeDefaultWidth = 204;
+	protected $treeDefaultWidth = 224;
 
 	function __construct($frameset){
 		parent::__construct(WE_USERS_MODULE_DIR . "edit_users_frameset.php");
 		$this->View = new weUsersView(WE_USERS_MODULE_DIR . "edit_users_frameset.php", "top.content");
-	}
-
-	function getHTMLLeftDiv(){
-		return parent::getHTMLLeftDiv(true);
 	}
 
 	function getJSCmdCode(){
@@ -346,16 +342,7 @@ function urlEntry(icon,name,vorfahr,text,contentType,table,published,denied) {
 	}
 
 	function getHTMLFrameset(){//TODO: use parent as soon as userTree.class exists
-		$extraHead = $this->getJSCmdCode() .
-			$this->getJSTreeCode();
-
-		$body = we_html_element::htmlBody(array('style' => 'background-color:grey;margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;', "onload" => "start();")
-			, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
-				, we_html_element::htmlExIFrame('header', self::getHTMLHeader(WE_INCLUDES_PATH .'java_menu/modules/module_menu_users.inc.php', 'users'), 'position:absolute;top:0px;height:32px;left:0px;right:0px;') .
-				we_html_element::htmlIFrame('resize', $this->frameset . '?pnt=resize', 'position:absolute;top:32px;bottom:1px;left:0px;right:0px;overflow: hidden;') .
-				we_html_element::htmlIFrame('cmd', $this->frameset . '?pnt=cmd', 'position:absolute;bottom:0px;height:1px;left:0px;right:0px;overflow: hidden;')
-				)
-		);
+		$extraHead = $this->getJSCmdCode() . $this->getJSTreeCode();
 		return parent::getHTMLFrameset($extraHead);
 	}
 
@@ -387,22 +374,14 @@ function urlEntry(icon,name,vorfahr,text,contentType,table,published,denied) {
 		return we_html_element::htmlForm(array("name" => "we_form_treefooter"), $table->getHtml());
 	}
 
-	function getHTMLEditor(){
-		?>
-		</head>
-		<frameset rows="40,*,40" framespacing="0" border="0" frameborder="no">
-			<frame src="<?php print $this->frameset . '?pnt=edheader&home=1'; ?>" name="edheader" noresize scrolling=no>
-			<frame src="<?php print WEBEDITION_DIR; ?>we_cmd.php?we_cmd[0]=mod_home&mod=users" name="properties" scrolling=auto>
-			<frame src="<?php print $this->frameset . '?pnt=edfooter&home=1'; ?>" name="edfooter" scrolling=no>
+	function getHTMLEditor(){//TODO: Throw out the the exeption for properties/edbody and use parent
+		$body = we_html_element::htmlBody(array('style' => 'position: fixed; top: 0px; left: 0px; right: 0px; bottom: 0px; border: 0px none;') ,
+			we_html_element::htmlIFrame('edheader', $this->frameset . '?pnt=edheader&home=1', 'position: absolute; top: 0px; left: 0px; right: 0px; height: 40px; overflow: hidden;') .
+			we_html_element::htmlIFrame('properties', WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=mod_home&mod=users', 'position: absolute; top: 40px; bottom: 40px; left: 0px; right: 0px; overflow: auto;', 'border:0px;width:100%;height:100%;overflow: auto;') .
+			we_html_element::htmlIFrame('edfooter', $this->frameset . '?pnt=edfooter&home=1' . (isset($_REQUEST['sid']) ? '&sid=' . $_REQUEST['sid'] : '&home=1') . $extraUrlParams, 'position: absolute; bottom: 0px; left: 0px; right: 0px; height: 40px; overflow: hidden;')
+		);
 
-		</frameset>
-		<noframes>
-			<body background="<?php print IMAGE_DIR ?>backgrounds/aquaBackground.gif" style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px">
-			</body>
-		</noframes>
-		<body style="background-color: orange"></body>
-		</html>
-		<?php
+		return $this->getHTMLDocument($body);
 	}
 
 	function getHTMLEditorHeader(){

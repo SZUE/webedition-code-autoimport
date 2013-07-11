@@ -450,7 +450,7 @@ class weCustomerView extends weModuleView {
 			function applySort(){
 				document.we_form_treeheader.pnt.value="cmd";
 				document.we_form_treeheader.cmd.value="applySort";
-				submitForm();
+				submitForm("", "", "", "we_form_treeheader");
 			}
 
 			function addSorting(sortname) {

@@ -86,7 +86,7 @@ class weBannerView extends weBannerBase{
 			$out = ob_get_contents();
 			ob_end_clean();
 		} else{
-			$out = we_html_tools::htmlTop() . STYLESHEET . $this->getJSProperty() . weSuggest::getYuiJsFiles() . '
+			$out = STYLESHEET . $this->getJSProperty() . weSuggest::getYuiJsFiles() . '
 				</head>
 				<body class="weEditorBody" onload="loaded=1;" onunload="doUnload()">
 				<form name="we_form" onsubmit="return false;">' . "\n";

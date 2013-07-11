@@ -31,6 +31,7 @@ class weExportFrames extends weModuleFrames{
 	var $_space_size = 130;
 	var $_text_size = 75;
 	var $_width_size = 535;
+	protected $treeDefaultWidth = 220;
 
 	public $module = "export";
 
@@ -39,8 +40,14 @@ class weExportFrames extends weModuleFrames{
 		$this->Tree = new weExportTreeMain();
 		$this->SelectionTree = new weExportTree();
 		$this->View = new weExportView(WE_EXPORT_MODULE_DIR . "edit_export_frameset.php", "top.content");
-		$this->setupTree(EXPORT_TABLE, "top.content", "top.content.tree", "top.content.cmd");
+		$this->setupTree(EXPORT_TABLE, "top.content", "top.content", "top.content.cmd");
 		$this->editorBodyFrame = $this->topFrame . '.editor.edbody';
+	}
+
+	function getHTMLDocumentHeader($what = '', $mode = ''){
+		if(!($what == "cmd" || $what == "load")){
+			parent::getHTMLDocumentHeader();
+		}
 	}
 
 	function getHTML($what){

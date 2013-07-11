@@ -925,7 +925,7 @@ function we_cmd(){
 			$this->raw = unserialize($_SESSION['weS']['raw_session']);
 		}
 
-		if(is_array($this->raw->persistent_slots)){
+		if(isset($this->raw) && is_array($this->raw->persistent_slots)){
 			foreach($this->raw->persistent_slots as $key => $val){
 				$varname = $val;
 				if(isset($_REQUEST[$varname])){

@@ -53,7 +53,6 @@ class weMessagingFrames extends weModuleFrames{
 			!preg_match('|^([a-f0-9]){32}$|', $this->transaction)){
 			exit();
 		}
-
 		switch($what){
 			case "msg_fv_headers":
 				print $this->getHTMLFvHeaders();
@@ -841,14 +840,10 @@ function msg_start() {
 	}
 
 	function getHTMLEditor(){
-
-		$frameset = new we_html_frameset(array("framespacing" => 0, "border" => 0, "frameborder" => "no"));
-
-		$frameset->setAttributes(array("rows" => "35,*"));
-		$frameset->addFrame(array('src' => $this->frameset . '?pnt=edheader&we_transaction=' . $this->transaction, 'name' => 'edheader', 'noresize' => null, 'scrolling' => 'no'));
-		$frameset->addFrame(array('src' => $this->frameset . '?pnt=edbody&we_transaction=' . $this->transaction, 'name' => 'edbody', 'scrolling' => 'auto'));
-
-		$body = $frameset->getHtml();
+		$body = we_html_element::htmlBody(array('style' => 'position: fixed; top: 0px; left: 0px; right: 0px; bottom: 0px; border: 0px none;') ,
+			we_html_element::htmlIFrame('edheader', $this->frameset . '?pnt=edheader&we_transaction=' . $this->transaction, 'position: absolute; top: 0px; left: 0px; right: 0px; height: 35px; overflow: hidden;') .
+			we_html_element::htmlIFrame('edbody', $this->frameset . '?pnt=edbody&we_transaction=' . $this->transaction, 'position: absolute; top: 35px; bottom: 0px; left: 0px; right: 0px; overflow: auto;', 'border:0px;width:100%;height:100%;overflow: auto;')
+		);
 
 		return $this->getHTMLDocument($body);
 	}

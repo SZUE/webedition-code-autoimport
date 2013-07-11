@@ -25,11 +25,11 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 
-$bannerFrame = new weBannerFrames(WEBEDITION_DIR . 'we/include/we_modules/banner/edit_banner_frameset.php');
-$bannerFrame->View->processVariables();
-$bannerFrame->View->processCommands();
-
 $what = (isset($_REQUEST["pnt"])) ? $_REQUEST["pnt"] : "frameset";
 $mode = (isset($_REQUEST["art"])) ? $_REQUEST["art"] : 0;
 
-$bannerFrame->getHTML($what, $mode);
+$weFrame = new weBannerFrames(WEBEDITION_DIR . 'we/include/we_modules/banner/edit_banner_frameset.php');
+$weFrame->getHTMLDocumentHeader();
+$weFrame->View->processVariables();
+$weFrame->View->processCommands();
+$weFrame->getHTML($what, $mode);

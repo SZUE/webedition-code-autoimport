@@ -1068,11 +1068,11 @@ function submitForm() {
 }';
 		}
 
-		private function processCommands(){
-			if(isset($_REQUEST['we_cmd'][0])){
-				switch($_REQUEST['we_cmd'][0]){
-					case 'add_article':
-						if(intval($_REQUEST['anzahl']) > 0){
+	function processCommands(){
+		if(isset($_REQUEST['we_cmd'][0])){
+			switch($_REQUEST['we_cmd'][0]){
+				case 'add_article':
+					if(intval($_REQUEST['anzahl']) > 0){
 
 							// add complete article / object here - inclusive request fields
 							$_strSerialOrder = $this->getFieldFromOrder($_REQUEST['bid'], 'strSerialOrder');

@@ -30,23 +30,12 @@ class weShopFrames extends weModuleFrames{
 
 	public $module = "shop";
 	protected $hasIconbar = true;
+	protected $useMainTree = false;
 	protected $treeDefaultWidth = 204;
 
 	function __construct($frameset){
 		parent::__construct(WE_SHOP_MODULE_DIR . "edit_shop_frameset.php");
 		$this->View = new weShopView(WE_SHOP_MODULE_DIR . "edit_shop_frameset.php", "top.content");
-	}
-
-	function getHTML($what){
-		switch($what){
-			/*
-			case "shopproperties":
-				print $this->getHTMLShopProperties();
-				break;
-			*/
-			default:
-				parent::getHTML($what);
-		}
 	}
 
 	function getJSCmdCode(){
@@ -515,13 +504,10 @@ function we_cmd() {
 			$bodyURL = WE_SHOP_MODULE_DIR . 'edit_shop_frameset.php?pnt=edbody&bid=' . $bid;
 		}
 
-		$frameset = new we_html_frameset(array("framespacing" => 0, "border" => 0, "frameborder" => "no"));
-
-		$frameset->setAttributes(array("rows" => "40,*"));
-		$frameset->addFrame(array('src' => 'edit_shop_frameset.php?pnt=edheader&home=' . $home . '&mid=' . $mid . $yearView . '&bid=' . $bid, 'name' => 'edheader', 'noresize' => null, 'scrolling' => 'no'));
-		$frameset->addFrame(array('src' => $bodyURL, 'name' => 'edbody', 'scrolling' => 'auto'));
-
-		$body = $frameset->getHtml();
+		$body = we_html_element::htmlBody(array('style' => 'position: fixed; top: 0px; left: 0px; right: 0px; bottom: 0px; border: 0px none;') ,
+			we_html_element::htmlIFrame('edheader', $this->frameset . '?pnt=edheader&home=' . $home . '&mid=' . $mid . $yearView . '&bid=' . $bid, 'position: absolute; top: 0px; left: 0px; right: 0px; height: 40px; overflow: hidden;') .
+			we_html_element::htmlIFrame('edbody', $bodyURL . '?pnt=edbody&we_transaction=' . $this->transaction, 'position: absolute; top: 40px; bottom: 0px; left: 0px; right: 0px; overflow: auto;', 'border:0px;width:100%;height:100%;overflow: auto;')
+		);
 
 		return $this->getHTMLDocument($body);
 	}

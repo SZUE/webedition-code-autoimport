@@ -35,8 +35,14 @@ class weNewsletterFrames extends weModuleFrames{
 		$this->View = new weNewsletterView();
 		$this->View->setFrames("top.content", "top.content.tree", "top.content.cmd");
 		$this->Tree = new weNewsletterTree();
-		$this->setupTree(NEWSLETTER_TABLE, "top.content", "top.content.tree", "top.content.cmd");
+		$this->setupTree(NEWSLETTER_TABLE, "top.content", "top.content", "top.content.cmd");
 		$this->weAutoColpleter = & weSuggest::getInstance();
+	}
+	
+	function getHTMLDocumentHeader($what = '', $mode = ''){
+		if($what != "send" && $what != "send_body" && $what != "send_cmd" && $what != "edbody" && $what != "preview" && $what != "black_list" && $what != "newsletter_settings" && $what != "eemail" && $what != "edit_file" && $what != "clear_log" && $what != "export_csv_mes" && $what != "qsend" && $what != "qsave1"){
+			parent::getHTMLDocumentHeader();
+		}
 	}
 
 	function getHTML($what = '', $mode = 0){
