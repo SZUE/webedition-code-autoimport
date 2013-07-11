@@ -29,13 +29,13 @@ function we_tag_ifTemplate($attribs){
 	if($TID && !empty($id)){
 		return in_array($TID, makeArrayFromCSV($id));
 	} else{
-		$workspaceID = weTag_getAttribute('workspaceID', $attribs);
-		if(!empty($workspaceID)){
+		$parentid = weTag_getAttribute('workspaceID', $attribs, weTag_getAttribute('parentid', $attribs));
+		if(!empty($parentid)){
 			$curTempPath = (isset($GLOBALS['we_doc']->TemplatePath) ? // in documents
 					str_replace(TEMPLATES_PATH, '', $GLOBALS['we_doc']->TemplatePath) :
 					// in templates
 					$GLOBALS['we_doc']->Path);
-			$path = f('SELECT DISTINCT Path FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . intval($workspaceID) . ' LIMIT 1', 'Path', $GLOBALS['DB_WE']);
+			$path = f('SELECT DISTINCT Path FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . intval($parentid) . ' LIMIT 1', 'Path', $GLOBALS['DB_WE']);
 			return (!empty($path) && strpos($curTempPath, $path) === 0);
 		} else{
 			$path = weTag_getAttribute('path', $attribs);
