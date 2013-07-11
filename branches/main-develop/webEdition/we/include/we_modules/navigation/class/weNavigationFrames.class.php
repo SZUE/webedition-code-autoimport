@@ -41,7 +41,7 @@ class weNavigationFrames extends weModuleFrames{
 	protected $treeFooterHeight = 40;
 
 	function __construct(){
-		$this->toolUrl = WE_INCLUDES_DIR . 'we_tools/' . $this->module . '/'; //TODO: replace toll/module-wide by $module
+		$this->toolUrl = WE_INCLUDES_DIR . 'we_modules/' . $this->module . '/'; //TODO: replace toll/module-wide by $module
 		$this->toolDir = $_SERVER['DOCUMENT_ROOT'] . $this->toolUrl; //TODO: replace toll/module-wide by $module
 
 		$_frameset = $this->toolUrl . 'edit_' . $this->toolName . '_frameset.php';
@@ -225,8 +225,8 @@ function setTab(tab) {
 				"marginheight" => 0,
 				"leftmargin" => 0,
 				"topmargin" => 0,
-				"onload" => "setFrameSize()",
-				"onresize" => "setFrameSize()"
+				//"onload" => "setFrameSize()",
+				//"onresize" => "setFrameSize()"
 				), we_html_element::htmlDiv(array('id' => "main"), we_html_tools::getPixel(100, 3) . we_html_element::htmlDiv(array('id' => 'headrow', 'style' => "margin:0px;"), '&nbsp;' .
 						we_html_element::htmlB(($this->Model->IsFolder ? g_l('navigation', '[group]') : g_l('navigation', '[entry]')) . ':&nbsp;' .
 							str_replace('&amp;', '&', $this->Model->Text) .

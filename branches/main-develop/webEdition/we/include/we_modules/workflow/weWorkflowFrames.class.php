@@ -338,8 +338,8 @@ top.content.hloaded=1;
 			'marginheight' => 0,
 			'leftmargin' => 0,
 			'topmargin' => 0,
-			'onload' => 'setFrameSize()',
-			'onresize' => 'setFrameSize()'
+			//'onload' => 'setFrameSize()',
+			//'onresize' => 'setFrameSize()'
 			), $mainDiv . we_html_element::jsElement('document.getElementById("tab_' . $page . '").className="tabActive";')
 		);
 

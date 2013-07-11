@@ -390,7 +390,7 @@ function urlEntry(icon,name,vorfahr,text,contentType,table,published,denied) {
 		} else{
 			$user_object = new we_user();
 			$user_object->setState($_SESSION["user_session_data"]);
-			print we_html_element::htmlBody(array('style' => 'background:white url(' . IMAGE_DIR . 'backgrounds/header_with_black_line.gif); margin-top: 0; margin-left: 0;', 'onload' => 'setFrameSize()', 'onresize' => 'setFrameSize()'),
+			print we_html_element::htmlBody(array('style' => 'background:white url(' . IMAGE_DIR . 'backgrounds/header_with_black_line.gif); margin-top: 0; margin-left: 0;'),
 				$user_object->formHeader(isset($_REQUEST["tab"]) ? $_REQUEST["tab"] : 0));
 		}
 	}
