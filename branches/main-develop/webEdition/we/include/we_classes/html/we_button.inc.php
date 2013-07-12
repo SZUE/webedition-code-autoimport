@@ -280,7 +280,7 @@ class we_button{
 		$_count_button = count($buttons);
 
 		// Get number of columns to create
-		$_cols_to_create = ($_count_button > 1) ? (($_count_button * 2) - 1) : $_count_button;
+		$_cols_to_create = $_count_button;
 
 		// Create array for table attributes
 		$attr = array("style" => "border-style:none; padding:0px;border-spacing:0px;");
@@ -293,16 +293,11 @@ class we_button{
 		}
 
 		// Create table
-		$_button_table = new we_html_table($attr, 1, $_cols_to_create);
+		$_button_table = new we_html_table($attr, 1, $_count_button);
 
 		// Build cols for every button
 		for($i = 0; $i < $_count_button; $i++){
-			$_button_table->setCol(0, ($i * 2), array("class" => "weEditmodeStyle"), $buttons[$i]);
-
-			// Check if we have to create a gap
-			if(($i > 0) && ($i < $_count_button)){
-				$_button_table->setCol(0, (($i * 2) - 1), array("class" => "weEditmodeStyle"), we_html_tools::getPixel($gap, 1));
-			}
+			$_button_table->setCol(0, $i, array("class" => "weEditmodeStyle",'style'=>( $i < $_count_button-1?'padding-right:'.$gap.'px':'')), $buttons[$i]);
 		}
 
 		// Get created HTML
