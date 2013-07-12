@@ -245,7 +245,8 @@ class we_template extends we_document{
 			$GLOBALS['we']['errorhandler']['shutdown'] = 'template';
 			register_shutdown_function(array($this, 'handleShutdown'), $code);
 
-			$var = create_function('', '?>' . $code . '<?php ');
+			//remove "use" since this is not allowed inside functions
+			$var = create_function('', '?>' . preg_replace('|use [\w,\s\\\\]*;|','',$code) . '<?php ');
 			if(empty($var) && ( $error = error_get_last() )){
 				$tmp = explode("\n", $code);
 				if(!is_array($tmp)){
