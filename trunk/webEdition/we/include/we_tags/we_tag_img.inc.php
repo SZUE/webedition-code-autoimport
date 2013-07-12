@@ -31,7 +31,6 @@ function we_tag_img($attribs){
 	$startid = weTag_getAttribute('startid', $attribs);
 	$parentid = weTag_getAttribute('parentid', $attribs, '0');
 	$showcontrol = weTag_getAttribute('showcontrol', $attribs, true, true);
-	//FIXME: wtf is showthumbcontrol?! what does it do?
 	$showThumb = weTag_getAttribute('showthumbcontrol', $attribs, false, true);
 	$showimage = weTag_getAttribute('showimage', $attribs, true, true);
 	$showinputs = weTag_getAttribute('showinputs', $attribs, SHOWINPUTS_DEFAULT, true);
@@ -71,8 +70,8 @@ function we_tag_img($attribs){
 		$img = new we_imageDocument();
 		$img->initByID($id);
 
-		$alt = $img->getElement('alt');
-		$title = $img->getElement('title');
+		$alt = weTag_getAttribute('alt', $attribs,$img->getElement('alt'));
+		$title = weTag_getAttribute('title', $attribs,$img->getElement('title'));
 		if($showThumb){
 			$thumb = $img->getElement($thumbname);
 		}
