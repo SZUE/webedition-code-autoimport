@@ -31,7 +31,6 @@ function we_tag_img($attribs){
 	$startid = weTag_getAttribute('startid', $attribs);
 	$parentid = weTag_getAttribute('parentid', $attribs, '0');
 	$showcontrol = weTag_getAttribute('showcontrol', $attribs, true, true);
-	//FIXME: wtf is showthumbcontrol?! what does it do?
 	$showThumb = weTag_getAttribute('showthumbcontrol', $attribs, false, true);
 	$showimage = weTag_getAttribute('showimage', $attribs, true, true);
 	$showinputs = weTag_getAttribute('showinputs', $attribs, SHOWINPUTS_DEFAULT, true);
@@ -71,8 +70,8 @@ function we_tag_img($attribs){
 		$img = new we_imageDocument();
 		$img->initByID($id);
 
-		$alt = $img->getElement('alt');
-		$title = $img->getElement('title');
+		$alt = weTag_getAttribute('alt', $attribs,$img->getElement('alt'));
+		$title = weTag_getAttribute('title', $attribs,$img->getElement('title'));
 		if($showThumb){
 			$thumb = $img->getElement($thumbname);
 		}
@@ -135,23 +134,23 @@ function we_tag_img($attribs){
 		</td>
 	</tr>' .
 			($showinputs ? //  only when wanted
-				"<tr>
-		            <td class=\"weEditmodeStyle\" align=\"center\" colspan=\"2\" style=\"width: 180px;\">
-		            <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\">
+				'<tr>
+		            <td class="weEditmodeStyle" align="center" colspan="2" style="width: 180px;">
+		            <table border="0" cellpadding="0" cellspacing="0">
                     <tr>
-                        <td class=\"weEditmodeStyle\" style=\"color: black; font-size: 12px; font-family: " . g_l('css', '[font_family]') . ";\">" . g_l('weClass', "[alt_kurz]") . ":&nbsp;</td>
-                        <td class=\"weEditmodeStyle\">" . we_html_tools::htmlTextInput($altname, 16, $alt, '', 'onchange="_EditorFrame.setEditorIsHot(true);"') . "</td>
+                        <td class="weEditmodeStyle" style="color: black; font-size: 12px; font-family: ' . g_l('css', '[font_family]') . ';">' . g_l('weClass', "[alt_kurz]") . ':&nbsp;</td>
+                        <td class="weEditmodeStyle">' . we_html_tools::htmlTextInput($altname, 16, $alt, '', 'onchange="_EditorFrame.setEditorIsHot(true);"') . '</td>
                     </tr>
 					<tr>
-						<td class=\"weEditmodeStyle\"></td>
-						<td class=\"weEditmodeStyle\"></td>
+						<td class="weEditmodeStyle"></td>
+						<td class="weEditmodeStyle"></td>
 					</tr>
 				    <tr>
-		                <td class=\"weEditmodeStyle\" style=\"color: black; font-size: 12px; font-family: " . g_l('css', '[font_family]') . ";\">" . g_l('weClass', "[Title]") . ":&nbsp;</td>
-		                <td class=\"weEditmodeStyle\">" . we_html_tools::htmlTextInput($titlename, 16, $title, '', 'onchange="_EditorFrame.setEditorIsHot(true);"') . "</td>
+		                <td class="weEditmodeStyle" style="color: black; font-size: 12px; font-family: ' . g_l('css', '[font_family]') . ";\">" . g_l('weClass', "[Title]") . ':&nbsp;</td>
+		                <td class="weEditmodeStyle">' . we_html_tools::htmlTextInput($titlename, 16, $title, '', 'onchange="_EditorFrame.setEditorIsHot(true);"') . '</td>
                     </tr>
 		            </table>
-                </tr>" : ''
+                </tr>' : ''
 			);
 
 		if($showThumb){ //  only when wanted
@@ -164,17 +163,17 @@ function we_tag_img($attribs){
 					$thumbnails .= '<option value="' . $db->f("Name") . '"' . (($thumbattr == $db->f("Name")) ? (' selected="selected"') : "") . '>' . $db->f("Name") . '</option>';
 				}
 				$thumbnails .= '</select>';
-				$out .= "
+				$out .= '
 	<tr>
-		<td class=\"weEditmodeStyle\" align=\"center\" colspan=\"2\" style=\"width: 180px;\">
-			<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\">
+		<td class="weEditmodeStyle" align="center" colspan="2" style="width: 180px;">
+			<table border="0" cellpadding="0" cellspacing="0">
 								<tr>
-										<td class=\"weEditmodeStyle\" style=\"color: black; font-size: 12px; font-family: " . g_l('css', '[font_family]') . ";\">" . g_l('weClass', "[thumbnails]") . ":&nbsp;</td>
-										<td class=\"weEditmodeStyle\">" . $thumbnails . "</td>
+										<td class="weEditmodeStyle" style="color: black; font-size: 12px; font-family: ' . g_l('css', '[font_family]') . ';">' . g_l('weClass', "[thumbnails]") . ':&nbsp;</td>
+										<td class="weEditmodeStyle">' . $thumbnails . '</td>
 								</tr>
 			</table>
 		</td>
-	</tr>";
+	</tr>';
 			}
 		}
 		$out .= '

@@ -177,7 +177,7 @@ abstract class we_class{
 		}
 		$formname = 'we_' . $this->Name . '_' . $type . '[' . $name . ']';
 		$out = $this->htmlHidden($formname, $this->getElement($name)) . '<table cellpadding="0" cellspacing="0" border="1"><tr><td' . ($value ? (' bgcolor="' . $value . '"') : '') . '><a href="javascript:setScrollTo();we_cmd(\'openColorChooser\',\'' . $formname . '\',document.we_form.elements[\'' . $formname . '\'].value);">' . we_html_tools::getPixel($width, $height) . '</a></td></tr></table>';
-		return g_l('weClass', '[' . $name . ']',true) !== false ? $this->htmlFormElementTable($out, g_l('weClass', '[' . $name . ']')) : $out;
+		return g_l('weClass', '[' . $name . ']', true) !== false ? $this->htmlFormElementTable($out, g_l('weClass', '[' . $name . ']')) : $out;
 	}
 
 	/* creates a select field for entering Data that will be stored at the $elements Array */
@@ -430,9 +430,8 @@ abstract class we_class{
 # public ##################
 
 	public function initByID($ID, $Table = '', $from = we_class::LOAD_MAID_DB){
-		if($Table == ''){
-			$Table = FILE_TABLE;
-		}
+		$Table = ($Table == '' ? FILE_TABLE : $Table);
+
 		$this->ID = intval($ID);
 		$this->Table = $Table;
 		$this->we_load($from);
@@ -497,8 +496,7 @@ abstract class we_class{
 	protected function i_setElementsFromHTTP(){
 
 		// do not set REQUEST VARS into the document
-		if(($_REQUEST['we_cmd'][0] == 'switch_edit_page' && isset($_REQUEST['we_cmd'][3]))
-			|| ($_REQUEST['we_cmd'][0] == 'save_document' && isset($_REQUEST['we_cmd'][7]) && $_REQUEST['we_cmd'][7] == 'save_document')){
+		if(($_REQUEST['we_cmd'][0] == 'switch_edit_page' && isset($_REQUEST['we_cmd'][3])) || ($_REQUEST['we_cmd'][0] == 'save_document' && isset($_REQUEST['we_cmd'][7]) && $_REQUEST['we_cmd'][7] == 'save_document')){
 			return true;
 		}
 		if(!empty($_REQUEST)){
@@ -923,4 +921,5 @@ abstract class we_class{
 	public function getDBf($field){
 		return $this->DB_WE->f($field);
 	}
+
 }

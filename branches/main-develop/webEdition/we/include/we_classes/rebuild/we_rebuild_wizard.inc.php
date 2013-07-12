@@ -163,7 +163,7 @@ abstract class we_rebuild_wizard{
 			)
 		);
 
-		if(false &&defined("OBJECT_FILES_TABLE")){
+		if(defined("OBJECT_FILES_TABLE")){
 
 			$parts[] = array(
 				"headline" => "",
@@ -476,9 +476,9 @@ abstract class we_rebuild_wizard{
 	static function formMetadata($metaFields, $onlyEmpty){
 		$metaDataFields = weMetaData::getDefinedMetaDataFields();
 
-		$_html = we_html_element::jsElement('document._errorMessage=' . (!empty($metaFields) ? '""' : '"' . addslashes(g_l('rebuild', "[noFieldsChecked]")) . '"'));
-		$_html .= we_html_tools::htmlAlertAttentionBox(g_l('rebuild', "[expl_rebuild_metadata]"), we_html_tools::TYPE_INFO, 520);
-		$_html .= '<div class="defaultfont" style="margin:10px 0 5px 0;">' . g_l('rebuild', "[metadata]") . ':</div>' . "\n";
+		$_html = we_html_element::jsElement('document._errorMessage=' . (!empty($metaFields) ? '""' : '"' . addslashes(g_l('rebuild', "[noFieldsChecked]")) . '"')) .
+			we_html_tools::htmlAlertAttentionBox(g_l('rebuild', "[expl_rebuild_metadata]"), we_html_tools::TYPE_INFO, 520) .
+			'<div class="defaultfont" style="margin:10px 0 5px 0;">' . g_l('rebuild', "[metadata]") . ':</div>' . "\n";
 
 		$selAllBut = we_button::create_button("selectAll", "javascript:we_cmd('select_all_fields');");
 		$deselAllBut = we_button::create_button("deselectAll", "javascript:we_cmd('deselect_all_fields');");
@@ -531,7 +531,7 @@ abstract class we_rebuild_wizard{
 
 		$all_content = ($_SESSION['perms']['ADMINISTRATOR'] ?
 				we_forms::checkbox(1, $maintable, 'maintable', g_l('rebuild', '[rebuild_maintable]'), false, 'defaultfont', 'document.we_form.btype[0].checked=true;')/* .
-				we_forms::checkbox(1, $tmptable, 'tmptable', g_l('rebuild', '[rebuild_tmptable]'), false, 'defaultfont', 'document.we_form.btype[0].checked=true;') */:
+				  we_forms::checkbox(1, $tmptable, 'tmptable', g_l('rebuild', '[rebuild_tmptable]'), false, 'defaultfont', 'document.we_form.btype[0].checked=true;') */ :
 				'');
 
 		$filter_content = we_rebuild_wizard::formCategory($categories, $catAnd) . '<br/>' . we_html_tools::getPixel(2, 5) . '<br/>' .
@@ -641,7 +641,7 @@ abstract class we_rebuild_wizard{
 		$dthidden = '';
 		$doctypesArray = makeArrayFromCSV($doctypes);
 		for($i = 0; $i < count($doctypesArray); $i++){
-			$dthidden .= we_html_element::htmlHidden(array('name' => 'doctypes['.$i.']', 'value' => $doctypesArray[$i]));
+			$dthidden .= we_html_element::htmlHidden(array('name' => 'doctypes[' . $i . ']', 'value' => $doctypesArray[$i]));
 		}
 		$metaFieldsHidden = '';
 		foreach($metaFields as $_key => $_val){
@@ -696,30 +696,30 @@ abstract class we_rebuild_wizard{
 		if($ws && strpos($ws, (',0,')) !== true && ($metaFolders == '' || $metaFolders == '0')){
 			$metaFolders = get_def_ws(FILE_TABLE);
 		}
-		$parts = array();
 
 		$content = we_rebuild_wizard::formMetadata($metaFields, $onlyEmpty) .
-			'<br>' . we_html_tools::getPixel(2, 15) . '<br/>' .
+			we_html_element::htmlBr() . we_html_tools::getPixel(2, 15) . we_html_element::htmlBr() .
 			we_rebuild_wizard::formFolders($metaFolders, true, 520);
 
 
 
-		$parts[]= array(
-			'headline' => '',
-			'html' => $content,
-			'space' => 0
+		$parts = array(
+			array(
+				'headline' => '',
+				'html' => $content,
+				'space' => 0)
 		);
 
 
 		$dthidden = '';
 		$doctypesArray = makeArrayFromCSV($doctypes);
 		for($i = 0; $i < count($doctypesArray); $i++){
-			$dthidden .= we_html_element::htmlHidden(array('name' => 'doctypes['.$i.']', 'value' => $doctypesArray[$i]));
+			$dthidden .= we_html_element::htmlHidden(array('name' => 'doctypes[' . $i . ']', 'value' => $doctypesArray[$i]));
 		}
 		$thumbsHidden = '';
 		$thumbsArray = makeArrayFromCSV($thumbs);
 		for($i = 0; $i < count($thumbsArray); $i++){
-			$thumbsHidden .= we_html_element::htmlHidden(array('name' => 'thumbs['.$i.']', 'value' => $thumbsArray[$i]));
+			$thumbsHidden .= we_html_element::htmlHidden(array('name' => 'thumbs[' . $i . ']', 'value' => $thumbsArray[$i]));
 		}
 		return array(we_rebuild_wizard::getPage2Js('metaFolders'), we_multiIconBox::getHTML('', '100%', $parts, 40, '', -1, '', '', false, g_l('rebuild', '[rebuild_metadata]')) .
 			$dthidden .
@@ -741,24 +741,12 @@ abstract class we_rebuild_wizard{
 	 * @return string
 	 */
 	static function getFrameset(){
-		$tail = '';
-		if(isset($_REQUEST['btype'])){
-			$tail .= '&amp;btype=' . rawurlencode($_REQUEST['btype']);
-		}
-		if(isset($_REQUEST['type'])){
-			$tail .= '&amp;type=' . rawurlencode($_REQUEST['type']);
-		}
-		if(isset($_REQUEST['templateID'])){
-			$tail .= '&amp;templateID=' . rawurlencode($_REQUEST['templateID']);
-		}
-		if(isset($_REQUEST['step'])){
-			$tail .= '&amp;step=' . rawurlencode($_REQUEST['step']);
-		}
-		if(isset($_REQUEST['responseText'])){
-			$tail .= '&amp;responseText=' . rawurlencode($_REQUEST['responseText']);
-		}
-
-
+		$tail =
+			(isset($_REQUEST['btype']) ? '&amp;btype=' . rawurlencode($_REQUEST['btype']) : '') .
+			(isset($_REQUEST['type']) ? '&amp;type=' . rawurlencode($_REQUEST['type']) : '') .
+			(isset($_REQUEST['templateID']) ? '&amp;templateID=' . rawurlencode($_REQUEST['templateID']) : '') .
+			(isset($_REQUEST['step']) ? '&amp;step=' . rawurlencode($_REQUEST['step']) : '') .
+			(isset($_REQUEST['responseText']) ? '&amp;responseText=' . rawurlencode($_REQUEST['responseText']) : '');
 
 		$taskname = md5(session_id() . '_rebuild');
 		$taskFilename = WE_FRAGMENT_PATH . $taskname;

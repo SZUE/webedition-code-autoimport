@@ -77,7 +77,7 @@ class <?php print $CLASSNAME;?>_models_Default extends we_app_Model
 	{
 		// allowing hook functionality
         /* hook */
-		if ($skipHook==0){
+		if (!$skipHook){
 			$hook = new weHook('save', $this->_appName, array($this));
 			$hook->executeHook();
         }

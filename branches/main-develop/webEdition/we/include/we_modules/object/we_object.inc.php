@@ -2214,7 +2214,7 @@ class we_object extends we_document{
 			we_history::insertIntoHistory($this);
 		}
 		/* hook */
-		if($skipHook == 0){
+		if(!$skipHook){
 			$hook = new weHook('save', '', array($this, 'resave' => $resave));
 			$ret = $hook->executeHook();
 			//check if doc should be saved

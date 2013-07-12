@@ -1149,7 +1149,7 @@ abstract class we_root extends we_class{
 
 	function we_resaveMainTable(){
 		$this->wasUpdate = 1;
-		return we_root::we_save(1);
+		return we_root::we_save(1, 1);
 	}
 
 	function we_rewrite(){

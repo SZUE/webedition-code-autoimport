@@ -297,7 +297,7 @@ function deleteEntry($id, $table, $delR = true, $skipHook = 0, $DB_WE = ''){
 		}
 		$ct = weVersions::getContentTypesVersioning();
 		//no need to init doc, if no version is needed or hook is executed
-		if(in_array($row['ContentType'], $ct) || $skipHook == 0){
+		if(in_array($row['ContentType'], $ct) || !$skipHook){
 			$object = weContentProvider::getInstance($row['ContentType'], $id, $table);
 		}
 		if(in_array($row['ContentType'], $ct)){
@@ -310,7 +310,7 @@ function deleteEntry($id, $table, $delR = true, $skipHook = 0, $DB_WE = ''){
 			$version->setVersionOnDelete($id, $table, $row['ContentType'], $DB_WE);
 		}
 		/* hook */
-		if($skipHook == 0){
+		if(!$skipHook){
 			$hook = new weHook('delete', '', array($object));
 			$hook->executeHook();
 		}

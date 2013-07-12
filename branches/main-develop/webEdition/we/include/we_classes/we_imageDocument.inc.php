@@ -398,8 +398,11 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 					}
 
 
-					$this->setElement('width', $thumbObj->getOutputWidth(), 'attrib');
-					$this->setElement('height', $thumbObj->getOutputHeight(), 'attrib');
+//					$this->setElement('width', $thumbObj->getOutputWidth(), 'attrib');
+//					$this->setElement('height', $thumbObj->getOutputHeight(), 'attrib');
+					//no need to set width+height, since img has its scale
+					unset($this->elements['width']);
+					unset($this->elements['height']);
 				}
 			}
 
