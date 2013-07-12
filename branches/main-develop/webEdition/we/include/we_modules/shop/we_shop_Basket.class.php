@@ -46,6 +46,11 @@ class we_shop_Basket{
 	 */
 	public $CartFields = array();
 	public $orderID = 0;
+	private $creationTime;
+
+	function __construct(array $array){
+		$this->setCartProperties($array);
+	}
 
 	function initCartFields(){
 
@@ -102,14 +107,16 @@ class we_shop_Basket{
 	 *
 	 * @param array $array
 	 */
-	function setCartProperties($array){
+	private function setCartProperties(array $array){
 
 		if(isset($array['shoppingItems']) && isset($array['cartFields'])){
 			$this->ShoppingItems = $array['shoppingItems'];
 			$this->CartFields = $array['cartFields'];
+			$this->creationTime = $array['creationTime'];
 		} else{
 			$this->ShoppingItems = array();
 			$this->CartFields = array();
+			$this->creationTime = time();
 		}
 	}
 
