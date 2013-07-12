@@ -438,6 +438,8 @@ HTS;
 			}
 			if (typeof _EditorFrame != 'undefined' && yuiAcFields.set_$i.old != yuiAcFields.set_$i.newval && yuiAcFields.set_$i.newval!=null) {
 				_EditorFrame.setEditorIsHot(true);
+				//don't match again, since on save frame is not reloaded
+				yuiAcFields.set_$i.old=yuiAcFields.set_$i.newval;
 			}
 			inputID = yuiAcFields.set_$i.id;
 			resultID = yuiAcFields.set_$i.fields_id[0];
