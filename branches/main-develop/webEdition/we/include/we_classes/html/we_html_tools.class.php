@@ -153,7 +153,7 @@ abstract class we_html_tools{
 		return $_table->getHtml();
 	}
 
-	static function htmlTextInput($name, $size = 24, $value = "", $maxlength = "", $attribs = "", $type = "text", $width = 0, $height = 0, $markHot = "", $disabled = false){
+	static function htmlTextInput($name, $size = 24, $value = '', $maxlength = '', $attribs = '', $type = 'text', $width = 0, $height = 0, $markHot = '', $disabled = false){
 		$style = ($width || $height) ? (' style="' . ($width ? ('width: ' . $width . (is_numeric($width) ? 'px' : '') . ';') : '') .
 			($height ? ('height: ' . $height . (is_numeric($height) ? 'px' : '') . ';') : '') . '"') : '';
 		return '<input' . ($markHot ? ' onchange="if(_EditorFrame){_EditorFrame.setEditorIsHot(true);}' . $markHot . '.hot=1;"' : '') .
@@ -161,23 +161,18 @@ abstract class we_html_tools{
 			'" size="' . intval($size) . '" value="' . oldHtmlspecialchars($value) . '"' . ($maxlength ? (' maxlength="' . intval($maxlength) . '"') : '') . ($attribs ? " $attribs" : '') . $style . ' onblur="this.className=\'wetextinput\';" onfocus="this.className=\'wetextinputselected\'"' . ($disabled ? (' disabled="true"') : '') . ' />';
 	}
 
-	static function htmlMessageBox($w, $h, $content, $headline = "", $buttons = ""){
+	static function htmlMessageBox($w, $h, $content, $headline = '', $buttons = ''){
 		return '<div style="width:' . $w . 'px;height:' . $h . 'px;background-color:#F7F5F5;border: 2px solid #D7D7D7;padding:20px;">' .
 			($headline ? '<h1 class="header">' . $headline . '</h1>' : '') .
 			'<div>' . $content . '</div><div style="margin-top:20px;">' . $buttons . '</div></div>';
 	}
 
-	static function htmlDialogLayout($content, $headline, $buttons = "", $width = "100%", $marginLeft = 30, $height = "", $overflow = "auto"){
-		$parts = array(
-			array(
-				"html" => $content, "headline" => "", "space" => 0
-			)
-		);
-
-		if($buttons){
-			$buttons = '<div align="right" style="margin-left:10px;">' . $buttons . '</div>';
-		}
-		return we_multiIconBox::getHTML('', $width, $parts, $marginLeft, $buttons, -1, "", "", false, $headline, "", $height, $overflow);
+	static function htmlDialogLayout($content, $headline, $buttons = '', $width = "100%", $marginLeft = 30, $height = "", $overflow = "auto"){
+		return we_multiIconBox::getHTML('', $width, array(
+				array(
+					"html" => $content, "headline" => "", "space" => 0
+				)
+				), $marginLeft, ($buttons ? '<div align="right" style="margin-left:10px;">' . $buttons . '</div>' : ''), -1, "", "", false, $headline, "", $height, $overflow);
 	}
 
 	static function htmlDialogBorder3($w, $h, $content, $headline, $class = "middlefont", $bgColor = "", $buttons = "", $id = "", $style = ""){ //content && headline are arrays

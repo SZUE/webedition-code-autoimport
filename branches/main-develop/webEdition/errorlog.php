@@ -124,32 +124,23 @@ $buttons = we_button::position_yes_no_cancel(
 );
 
 
-
-
-$_parts = array();
-
 $db = new DB_WE();
 if(isset($_REQUEST['delete'])){
 	$db->query('TRUNCATE TABLE `' . ERROR_LOG_TABLE . '`');
 }
+
 $size = f('SELECT COUNT(1) as cnt FROM `' . ERROR_LOG_TABLE . '`', 'cnt', $db);
 $start = (isset($_REQUEST['start']) ? abs($_REQUEST['start']) : 0);
 $start = $start > $size ? $size : $start;
 
-if($size){
-	$record = getHash('SELECT * FROM `' . ERROR_LOG_TABLE . '` ORDER By ID DESC LIMIT ' . intval($start) . ',1', $db);
-	$_parts[] = array(
-		'html' => getInfoTable($record),
+$_parts = array(
+	array(
+		'html' => ($size ? getInfoTable(getHash('SELECT * FROM `' . ERROR_LOG_TABLE . '` ORDER By ID DESC LIMIT ' . intval($start) . ',1', $db)) : g_l('global', '[no_entries]')),
 		'space' => 10,
-	);
-} else{
-	$_parts[] = array(
-		'html' => g_l('global','[no_entries]'),
-		'space' => 10,
-	);
-}
+	)
+);
 
-we_html_tools::htmlTop(g_l('javaMenu_global','[showerrorlog]'));
+we_html_tools::htmlTop(g_l('javaMenu_global', '[showerrorlog]'));
 echo we_html_element::jsScript(JS_DIR . 'keyListener.js') .
  we_html_element::jsElement('function closeOnEscape() {
 		return true;
