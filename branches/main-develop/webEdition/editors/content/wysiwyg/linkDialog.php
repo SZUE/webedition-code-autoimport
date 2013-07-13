@@ -23,9 +23,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-if(!(isset($_REQUEST['we_dialog_args']) && 
-		((isset($_REQUEST['we_dialog_args']['outsideWE']) && $_REQUEST['we_dialog_args']['outsideWE'] == 1) || 
-		(isset($_REQUEST['we_dialog_args']['isFrontend']) && $_REQUEST['we_dialog_args']['isFrontend'] == 1)))){
+if(!(isset($_REQUEST['we_dialog_args']) &&
+	((isset($_REQUEST['we_dialog_args']['outsideWE']) && $_REQUEST['we_dialog_args']['outsideWE'] == 1) ||
+	(isset($_REQUEST['we_dialog_args']['isFrontend']) && $_REQUEST['we_dialog_args']['isFrontend'] == 1)))){
 	we_html_tools::protect();
 } else{
 	$noInternals = true;
@@ -48,7 +48,6 @@ function weDoLinkCmd($args){
 		parse_str($param, $tmp);
 		$param = '?' . http_build_query($tmp, null, '&');
 	}
-
 	// TODO: $args['href'] comes from weHyperlinkDialog with params and anchor: strip these elements there, not here!
 	$href = (strpos($args['href'], '?') !== false ? substr($args['href'], 0, strpos($args['href'], '?')) :
 			(strpos($args['href'], '#') === false ? $args['href'] : substr($args['href'], 0, strpos($args['href'], '#')))) . $param . ($anchor ? '#' . $anchor : '');
@@ -60,7 +59,19 @@ top.close();
 ');
 	} else{
 		if(strpos($href, we_base_link::TYPE_MAIL_PREFIX) === 0){
-			$href = $args['href'] . (empty($param) ? '' : $param);
+			$query = array();
+			if(!empty($args['mail_subject'])){
+				$query['subject'] = $args['mail_subject'];
+			}
+			if(!empty($args['mail_cc'])){
+				$query['cc'] = $args['mail_cc'];
+			}
+			if(!empty($args['mail_bcc'])){
+				$query['bcc'] = $args['mail_bcc'];
+			}
+
+			$href = $args['href'] . (empty($query) ? '' : '?' . http_build_query($query));
+
 			$tmpClass = $args['class'];
 			foreach($args as &$val){
 				$val = '';

@@ -41,9 +41,9 @@ class weDialog{
 	var $dialogWidth = 350;
 	var $charset = '';
 	var $tinyMCEPopupManagment = true;
-	private $noInternals = false;
+	protected $noInternals = false;
 	protected $we_cmd = array();
-	
+
 
 	/*	 * ***********************************************************************
 	 * CONSTRUCTOR
