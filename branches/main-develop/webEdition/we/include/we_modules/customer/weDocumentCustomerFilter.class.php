@@ -39,49 +39,49 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter{
 	 *
 	 * @var integer
 	 */
-	var $_id = 0;
+	private $_id = 0;
 
 	/**
 	 * Id of model (document or object)
 	 *
 	 * @var integer
 	 */
-	var $_modelId = 0;
+	private $_modelId = 0;
 
 	/**
 	 * DocumentType of model (eg. text/webEdition)
 	 *
 	 * @var string
 	 */
-	var $_modelType = '';
+	private $_modelType = '';
 
 	/**
 	 * Table where model is stored in db (eg. FILE_TABLE)
 	 *
 	 * @var string
 	 */
-	var $_modelTable = '';
+	private $_modelTable = '';
 
 	/**
 	 * Flag if access control is made by template or not
 	 *
 	 * @var boolean
 	 */
-	var $_accessControlOnTemplate = false;
+	private $_accessControlOnTemplate = false;
 
 	/**
 	 * Id of Document which is shown when customer is not logged in
 	 *
 	 * @var boolean
 	 */
-	var $_errorDocNoLogin = 0;
+	private $_errorDocNoLogin = 0;
 
 	/**
 	 * Id of Document which is shown when customer has no acces
 	 *
 	 * @var boolean
 	 */
-	var $_errorDocNoAccess = 0;
+	private $_errorDocNoAccess = 0;
 
 	/**
 	 * Constructor for PHP 5
@@ -131,9 +131,8 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter{
 	 * @param mixed $model
 	 * @return weDocumentCustomerFilter
 	 */
-	function getCustomerFilterFromRequest(&$model){
-
-		if($_REQUEST["wecf_mode"] == weAbstractCustomerFilter::OFF){
+	static function getCustomerFilterFromRequest(&$model){
+		if($_REQUEST['wecf_mode'] == weAbstractCustomerFilter::OFF){
 			return self::getEmptyDocumentCustomerFilter();
 		} else{
 			$_specificCustomers = self::getSpecificCustomersFromRequest();
@@ -143,7 +142,7 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter{
 
 
 			return new self(
-				intval($_REQUEST["weDocumentCustomerFilter_id"]), intval($model->ID), $model->ContentType, $model->Table, ($_REQUEST["wecf_accessControlOnTemplate"] == "onTemplate") ? 1 : 0, intval($_REQUEST["wecf_noLoginId"]), intval($_REQUEST["wecf_noAccessId"]), intval($_REQUEST["wecf_mode"]), $_specificCustomers, $_filter, $_whiteList, $_blackList
+				intval($_REQUEST['weDocumentCustomerFilter_id']), intval($model->ID), $model->ContentType, $model->Table, ($_REQUEST['wecf_accessControlOnTemplate'] == "onTemplate") ? 1 : 0, intval($_REQUEST['wecf_noLoginId']), intval($_REQUEST['wecf_noAccessId']), intval($_REQUEST['wecf_mode']), $_specificCustomers, $_filter, $_whiteList, $_blackList
 			);
 		}
 	}
@@ -229,7 +228,7 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter{
 	 *
 	 * @return weDocumentCustomerFilter
 	 */
-	function getEmptyDocumentCustomerFilter(){
+	static function getEmptyDocumentCustomerFilter(){
 		return new self();
 	}
 
