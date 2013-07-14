@@ -165,17 +165,6 @@ class we_webEditionDocument extends we_textContentDocument{
 		$this->IsDynamic = $IsDynamic;
 	}
 
-	function wait($usecs){
-		$temp = gettimeofday();
-		$start = (int) $temp["usec"];
-		while(1) {
-			$temp = gettimeofday();
-			$stop = (int) $temp["usec"];
-			if($stop - $start >= $usecs)
-				break;
-		}
-	}
-
 	function editor($baseHref = true){
 		$GLOBALS["we_baseHref"] = $baseHref ? getServerUrl(true) . $this->Path : '';
 		switch($this->EditPageNr){
@@ -188,10 +177,10 @@ class we_webEditionDocument extends we_textContentDocument{
 				return 'we_templates/we_editor_info.inc.php';
 
 			case WE_EDITPAGE_CONTENT:
-				$GLOBALS["we_editmode"] = true;
+				$GLOBALS['we_editmode'] = true;
 				break;
 			case WE_EDITPAGE_PREVIEW:
-				$GLOBALS["we_editmode"] = false;
+				$GLOBALS['we_editmode'] = false;
 				break;
 			case WE_EDITPAGE_VALIDATION:
 				return 'we_templates/validateDocument.inc.php';
@@ -273,11 +262,10 @@ class we_webEditionDocument extends we_textContentDocument{
 		$textname = 'we_' . $this->Name . '_TemplateName';
 		$idname = 'we_' . $this->Name . '_TemplateID';
 		$ueberschrift = g_l('weClass', "[template]");
-		if(we_hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] != 'seem'){
-			$ueberschriftLink = '<a href="javascript:goTemplate(document.we_form.elements[\'' . $idname . '\'].value)">' . g_l('weClass', "[template]") . '</a>';
-		} else{
-			$ueberschriftLink = $ueberschrift;
-		}
+		$ueberschriftLink = (we_hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] != 'seem' ?
+				'<a href="javascript:goTemplate(document.we_form.elements[\'' . $idname . '\'].value)">' . g_l('weClass', "[template]") . '</a>' :
+				$ueberschrift);
+
 		if($this->TemplateID > 0){
 			$styleTemplateLabel = "display:none";
 			$styleTemplateLabelLink = "display:inline";
@@ -326,10 +314,10 @@ class we_webEditionDocument extends we_textContentDocument{
 
 			if($this->DocType){
 				return (empty($templateFromDoctype) ?
-						$ueberschrift . '<br/>' . $path :
+						$ueberschrift . we_html_element::htmlBr() . $path :
 						$this->xformTemplatePopup(388));
 			}
-			return $ueberschrift . '<br/>' . $path;
+			return $ueberschrift . we_html_element::htmlBr() . $path;
 		}
 
 		if($this->DocType){
@@ -473,22 +461,24 @@ class we_webEditionDocument extends we_textContentDocument{
 			$chars = $_charsetHandler->getCharsetsByArray($chars);
 
 			//	Last step: get Information about the charsets
-			$retSelect = $this->htmlSelect("we_tmp_" . $name, $chars, 1, $value, false, " onblur=_EditorFrame.setEditorIsHot(true);document.forms[0].elements['" . $inputName . "'].value=this.options[this.selectedIndex].value; onchange=\"_EditorFrame.setEditorIsHot(true);document.forms[0].elements['" . $inputName . "'].value=this.options[this.selectedIndex].value;\"", "value", "254");
+			$retSelect = $this->htmlSelect('we_tmp_' . $name, $chars, 1, $value, false, " onblur=_EditorFrame.setEditorIsHot(true);document.forms[0].elements['" . $inputName . "'].value=this.options[this.selectedIndex].value; onchange=\"_EditorFrame.setEditorIsHot(true);document.forms[0].elements['" . $inputName . "'].value=this.options[this.selectedIndex].value;\"", "value", "254");
 
 			return '<tr><td colspan="2">' . we_html_tools::getPixel(2, 4) . '</td></tr>
-					<tr><td>
-					<table border="0" cellpadding="0" cellspacing="0">
-						<tr><td colspan="2" class="defaultfont">' . g_l('weClass', "[Charset]") . '</td>
-						<tr><td>' . $retInput . '</td><td>' . $retSelect . '</td></tr>
-					</table>';
+<tr><td>
+	<table border="0" cellpadding="0" cellspacing="0">
+		<tr><td colspan="2" class="defaultfont">' . g_l('weClass', "[Charset]") . '</td>
+		<tr><td>' . $retInput . '</td><td>' . $retSelect . '</td></tr>
+	</table>
+</td></tr>';
 		} else{ //	charset-tag NOT available
 			//getCharsets
 			return '<tr><td colspan="2">' . we_html_tools::getPixel(2, 4) . '</td></tr>
-					<tr><td>
-					<table border="0" cellpadding="0" cellspacing="0">
-		 			<tr><td colspan="2" class="defaultfont">' . g_l('weClass', "[Charset]") . '</td>
-		 			<tr><td>' . $this->htmlTextInput("dummi", 40, g_l('charset', "[error][no_charset_tag]"), "", " readonly disabled", "text", 254) . '</td><td>' . $this->htmlSelect("dummi2", array(g_l('charset', "[error][no_charset_available]")), 1, DEFAULT_CHARSET, false, "disabled ", "value", "254") . '</td></tr>
-		 			</table>';
+<tr><td>
+	<table border="0" cellpadding="0" cellspacing="0">
+		<tr><td colspan="2" class="defaultfont">' . g_l('weClass', "[Charset]") . '</td>
+		<tr><td>' . $this->htmlTextInput("dummi", 40, g_l('charset', "[error][no_charset_tag]"), "", " readonly disabled", "text", 254) . '</td><td>' . $this->htmlSelect("dummi2", array(g_l('charset', "[error][no_charset_available]")), 1, DEFAULT_CHARSET, false, "disabled ", "value", "254") . '</td></tr>
+	</table>
+</td></tr>';
 		}
 	}
 
@@ -503,20 +493,6 @@ class we_webEditionDocument extends we_textContentDocument{
 		$this->TemplateID = $templID;
 		$this->setTemplatePath();
 	}
-
-	/* 	function setCache() {
-	  if($this->TemplateID) {
-	  $this->CacheLifeTime = f("SELECT CacheLifeTime FROM " . TEMPLATES_TABLE . " WHERE ID=".intval($this->TemplateID),"CacheLifeTime",$this->DB_WE);
-	  if($this->CacheLifeTime > 0) {
-	  $this->CacheType = f("SELECT CacheType FROM " . TEMPLATES_TABLE . " WHERE ID=".intval($this->TemplateID),"CacheType",$this->DB_WE);
-	  } else {
-	  $this->CacheType = "none";
-	  }
-	  } else {
-	  $this->CacheType = "none";
-	  $this->CacheLifeTime = 0;
-	  }
-	  } */
 
 	public function we_new(){
 		parent::we_new();
@@ -551,12 +527,6 @@ class we_webEditionDocument extends we_textContentDocument{
 		return str_replace('####BLOCKNR####', '[0-9]+', $out);
 	}
 
-	function makeListName($block, $field){
-		$field = str_replace('[0-9]+', '####BLOCKNR####', $field);
-		$out = preg_quote($field . "_") . '[0-9]+';
-		return str_replace('####BLOCKNR####', '[0-9]+', $out);
-	}
-
 	function makeLinklistName($block, $field){
 		$block = str_replace('[0-9]+', '####BLOCKNR####', $block);
 		$field = str_replace('[0-9]+', '####BLOCKNR####', $field);
@@ -569,7 +539,7 @@ class we_webEditionDocument extends we_textContentDocument{
 	 * @desc this function returns the code of the template this document bases on
 	 */
 	function getTemplateCode($completeCode = true){
-		return f('SELECT ' . CONTENT_TABLE . '.Dat as Dat FROM ' . CONTENT_TABLE . ',' . LINK_TABLE . ' WHERE ' . LINK_TABLE . '.CID=' . CONTENT_TABLE . '.ID AND ' . LINK_TABLE . '.DocumentTable="' . stripTblPrefix(TEMPLATES_TABLE) . '" AND ' . LINK_TABLE . '.DID=' . intval($this->TemplateID) . ' AND ' . LINK_TABLE . '.Name="' . ($completeCode ? "completeData" : "data") . '"', 'Dat', $this->DB_WE);
+		return f('SELECT ' . CONTENT_TABLE . '.Dat as Dat FROM ' . CONTENT_TABLE . ',' . LINK_TABLE . ' WHERE ' . LINK_TABLE . '.CID=' . CONTENT_TABLE . '.ID AND ' . LINK_TABLE . '.DocumentTable="' . stripTblPrefix(TEMPLATES_TABLE) . '" AND ' . LINK_TABLE . '.DID=' . intval($this->TemplateID) . ' AND ' . LINK_TABLE . '.Name="' . ($completeCode ? 'completeData' : 'data') . '"', 'Dat', $this->DB_WE);
 	}
 
 	function getFieldTypes($templateCode, $useTextarea = false){
@@ -592,9 +562,6 @@ class we_webEditionDocument extends we_textContentDocument{
 							case "block":
 								$name = self::makeBlockName($blockname, $name);
 								break;
-							case "list":
-								$name = self::makeListName($blockname, $name);
-								break;
 							case "linklist":
 								$name = self::makeLinklistName($blockname, $name);
 								break;
@@ -603,7 +570,6 @@ class we_webEditionDocument extends we_textContentDocument{
 					$fieldTypes[$name] = self::getFieldType($tagname, $tag, $useTextarea);
 					switch($tagname){
 						case "block":
-						case "list":
 						case "linklist":
 							$foo = array(
 								"name" => $name,
@@ -617,7 +583,6 @@ class we_webEditionDocument extends we_textContentDocument{
 				$tagname = $regs[1];
 				switch($tagname){
 					case "block":
-					case "list":
 					case "linklist":
 						if(!empty($blocks)){
 							array_pop($blocks);
@@ -667,11 +632,11 @@ class we_webEditionDocument extends we_textContentDocument{
 				case 'img':
 				case 'list':
 					if(isset($types[$k])){
-						$this->elements[$k]["type"] = $types[$k];
+						$this->elements[$k]['type'] = $types[$k];
 					}
 					break;
 				default:
-					$this->elements[$k]["type"] = "txt";
+					$this->elements[$k]['type'] = 'txt';
 					break;
 			}
 		}
@@ -714,17 +679,11 @@ class we_webEditionDocument extends we_textContentDocument{
 	}
 
 	public function we_unpublish($skipHook = 0){
-		if(!$this->ID){
-			return false;
-		}
-		return parent::we_unpublish($skipHook);
+		return ($this->ID ? parent::we_unpublish($skipHook) : false);
 	}
 
 	public function we_delete(){
-		if(!$this->ID){
-			return false;
-		}
-		return we_document::we_delete();
+		return ($this->ID ? we_document::we_delete() : false);
 	}
 
 	public function we_load($from = we_class::LOAD_MAID_DB){
@@ -787,9 +746,6 @@ class we_webEditionDocument extends we_textContentDocument{
 	}
 
 	function i_scheduleToBeforeNow(){
-		if(defined('SCHEDULE_TABLE')){
-
-		}
 		return false;
 	}
 
@@ -869,7 +825,7 @@ if (!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 		} else{
 			static $cache = array();
 			if(isset($cache[$this->ID])){
-				$doc = $cache[$this->ID];
+				return $cache[$this->ID];
 			} else{
 				$doc = $this->i_getDocument();
 
@@ -891,9 +847,7 @@ if (!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 	 * 		for this document, use with tags we:hidePages and we:controlElement
 	 */
 	function setDocumentControlElements(){
-
 		//	get code of the matching template
-
 		$_templateCode = $this->getTemplateCode();
 
 		//	First set hidePages from document ...
@@ -904,7 +858,6 @@ if (!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 	}
 
 	function executeDocumentControlElements(){
-
 		// here we must check, if setDocumentControlElements() already worked
 		if(!isset($this->controlElement) || !is_array($this->controlElement)){
 			$this->setDocumentControlElements();
@@ -921,8 +874,6 @@ if (!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 	 *
 	 */
 	function setControlElements($templatecode){
-
-
 		if(strpos($templatecode, '<we:controlElement') !== false){ // tag we:control exists
 			$_tags = we_tag_tagParser::itemize_we_tag('we:controlElement', $templatecode);
 			//	we need all given tags ...

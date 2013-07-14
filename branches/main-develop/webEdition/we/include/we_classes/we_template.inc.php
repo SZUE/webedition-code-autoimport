@@ -249,7 +249,7 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 			register_shutdown_function(array($this, 'handleShutdown'), $code);
 
 			//remove "use" since this is not allowed inside functions
-			$var = create_function('', '?>' . preg_replace('|use [\w,\s\\\\]*;|','',$code) . '<?php ');
+			$var = create_function('', '?>' . preg_replace('|use [\w,\s\\\\]*;|', '', $code) . '<?php ');
 			if(empty($var) && ( $error = error_get_last() )){
 				$tmp = explode("\n", $code);
 				if(!is_array($tmp)){
@@ -435,38 +435,23 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 		foreach($tags as $tag){
 			if(preg_match('|<we:([^> /]+)|i', $tag, $regs)){ // starttag found
 				$tagname = $regs[1];
-				if(preg_match('|name="([^"]+)"|i', $tag, $regs) && ($tagname != "var") && ($tagname != "field")){ // name found
+				if(preg_match('|name="([^"]+)"|i', $tag, $regs) && ($tagname != 'var') && ($tagname != 'field')){ // name found
 					$name = $regs[1];
 
-					$size = count($blocks);
-					if($size){
-						$foo = $blocks[$size - 1];
+					if(!empty($blocks)){
+						$foo = end($blocks);
 						$blockname = $foo["name"];
-						$blocktype = $foo["type"];
-						switch($blocktype){
-							case "block":
+						switch($foo['type']){
+							case 'block':
 								$name = we_webEditionDocument::makeBlockName($blockname, $name);
 								break;
-							case "list":
-								$name = we_webEditionDocument::makeListName($blockname, $name);
-								break;
-							case "linklist":
+							case 'linklist':
 								$name = we_webEditionDocument::makeLinklistName($blockname, $name);
 								break;
 						}
 					}
 
-
-					$attributes = str_ireplace("<we:$tagname", '', $tag);
-
-					$foo = array();
-					$attribs = '';
-					preg_match_all('/([^=]+)= *("[^"]*")/', $attributes, $foo, PREG_SET_ORDER);
-					foreach($foo as $cur){
-						$attribs .= '"' . trim($cur[1]) . '"=>' . trim($cur[2]) . ',';
-					}
-					$att = array();
-					@eval('$att = array(' . $attribs . ');');
+					$att = self::_getAttribsArray(str_ireplace('<we:' . $tagname, '', $tag));
 
 					if(in_array($tagname, $variant_tags)){
 						if($tagname == 'input' && isset($att['type']) && $att['type'] == 'date' && !$includedatefield){
@@ -490,7 +475,6 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 
 					switch($tagname){
 						case "block":
-						case "list":
 						case "linklist":
 							$blocks[] = array(
 								"name" => $name,
@@ -503,7 +487,6 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 				$tagname = $regs[1];
 				switch($tagname){
 					case "block":
-					case "list":
 					case "linklist":
 						if(!empty($blocks)){
 							array_pop($blocks);
@@ -586,15 +569,9 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 		return $completeCode ? $this->getElement('completeData') : $this->getElement('data');
 	}
 
-	function _getAttribsArray($attributes){
-		$foo = array();
-		$attribs = '';
-		preg_match_all('/([^=]+)= *("[^"]*")/', $attributes, $foo, PREG_SET_ORDER);
-		foreach($foo as $f){
-			$attribs .= '"' . trim($f[1]) . '"=>' . trim($f[2]) . ',';
-		}
+	private static function _getAttribsArray($attributes){
 		$att = array();
-		@eval('$att = array(' . $attribs . ');');
+		@eval('$att = array(' . we_tag_tagParser::parseAttribs($attributes) . ');');
 		return $att;
 	}
 
@@ -664,7 +641,7 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 
 
 		foreach($regs as $reg){
-			$attribs = $this->_getAttribsArray(isset($reg[2]) ? $reg[2] : '');
+			$attribs = self::_getAttribsArray(isset($reg[2]) ? $reg[2] : '');
 			$name = isset($attribs['name']) ? $attribs['name'] : '';
 			if($name){
 				if(!isset($masterTags[$name])){
@@ -698,7 +675,7 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 
 				foreach($contentTags as $reg){
 					$all = $reg[0];
-					$attribs = $this->_getAttribsArray($reg[1]);
+					$attribs = self::_getAttribsArray($reg[1]);
 					$name = isset($attribs['name']) ? $attribs['name'] : '';
 					if($name){
 						$we_masterTagCode = isset($masterTags[$name]['content']) ? $masterTags[$name]['content'] : '';
@@ -721,14 +698,7 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 			// search for include tag
 			if(preg_match('|^<we:include ([^>]+)>$|i', $tag, $regs)){ // include found
 				// get attributes of tag
-				$attributes = $regs[1];
-				$foo = array();
-				$attribs = '';
-				preg_match_all('/([^=]+)= *("[^"]*")/', $attributes, $foo, PREG_SET_ORDER);
-				foreach($foo as $f){
-					$attribs .= '"' . trim($f[1]) . '"=>' . trim($f[2]) . ',';
-				}
-				@eval('$att = array(' . $attribs . ');');
+				$att = self::_getAttribsArray($regs[1]);
 				// if type-attribute is equal to "template"
 				if(isset($att["type"]) && $att["type"] == "template"){
 

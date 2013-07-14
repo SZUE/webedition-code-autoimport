@@ -445,16 +445,20 @@ abstract class we_root extends we_class{
 			return true;
 		}
 		if(defined('OBJECT_TABLE') && ($this->Table == OBJECT_FILES_TABLE)){
-			if(!(we_hasPerm('NEW_OBJECTFILE_FOLDER') || we_hasPerm('NEW_OBJECTFILE')))
+			if(!(we_hasPerm('NEW_OBJECTFILE_FOLDER') || we_hasPerm('NEW_OBJECTFILE'))){
 				return false;
+			}
 		}else{
-			if(!we_hasPerm('SAVE_DOCUMENT_TEMPLATE'))
+			if(!we_hasPerm('SAVE_DOCUMENT_TEMPLATE')){
 				return false;
+			}
 		}
-		if(!$this->RestrictOwners)
+		if(!$this->RestrictOwners){
 			return true;
-		if(!$this->userHasPerms())
+		}
+		if(!$this->userHasPerms()){
 			return false;
+		}
 		$ownersReadOnly = $this->OwnersReadOnly ? unserialize($this->OwnersReadOnly) : array();
 		$readers = array();
 		foreach(array_keys($ownersReadOnly) as $key){
@@ -625,7 +629,7 @@ abstract class we_root extends we_class{
 	function nextElement($type = 'txt'){
 		if(is_array($this->elements)){
 			while($arr = each($this->elements)) {
-				if((isset($arr['value']['type']) && $arr['value']['type'] == $type) || $type == ''){
+				if(empty($type)||(isset($arr['value']['type']) && $arr['value']['type'] == $type)){
 					return $arr;
 				}
 			}
@@ -1274,7 +1278,7 @@ abstract class we_root extends we_class{
 		}
 	}
 
-	function revert_published(){
+	public function revert_published(){
 
 	}
 
