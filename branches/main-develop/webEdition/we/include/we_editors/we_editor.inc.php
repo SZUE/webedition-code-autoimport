@@ -287,6 +287,10 @@ if((($_REQUEST['we_cmd'][0] != 'save_document' && $_REQUEST['we_cmd'][0] != 'pub
 	$we_include = $we_doc->editor();
 	$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]); // save the changed object in session
 	ob_start();
+	if($we_doc->ContentType == 'text/webedition'){
+		//remove all already parsed names
+		$we_doc->resetUsedElements();
+	}
 	if(substr(strtolower($we_include), 0, strlen($_SERVER['DOCUMENT_ROOT'])) == strtolower($_SERVER['DOCUMENT_ROOT'])){
 		include($we_include);
 	} else{

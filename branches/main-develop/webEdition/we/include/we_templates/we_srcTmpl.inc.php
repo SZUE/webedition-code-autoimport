@@ -489,7 +489,7 @@ switch($_SESSION['prefs']['editorMode']){
 			$allTags = array();
 			$setting = @unserialize($_SESSION['prefs']['editorCodecompletion']);
 			if($css || $setting['WE']){
-				$allWeTags = weTagWizard::getExistingWeTags();
+				$allWeTags = weTagWizard::getExistingWeTags($css); //only load deprecated tags if css is requested
 				foreach($allWeTags as $tagName){
 					$weTag = weTagData::getTagData($tagName);
 					if($css){
@@ -503,7 +503,7 @@ switch($_SESSION['prefs']['editorMode']){
 				return $ret;
 			}
 
-			include($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_templates/htmlTags.inc.php');
+			include(WE_INCLUDES_PATH . 'we_templates/htmlTags.inc.php');
 			$allTags = array_merge($allTags, ($setting['htmlTag'] ? $html : array()), ($setting['html5Tag'] ? $html5 : array()));
 			if(empty($allTags)){
 				return '';

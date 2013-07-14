@@ -37,6 +37,7 @@ class we_webEditionDocument extends we_textContentDocument{
 	var $hasVariants = null;
 	// Paths to stylesheets from we:css-tags that are user by tinyMCE
 	private $DocumentCss = '';
+	protected $usedElementNames = array();
 
 	/**
 	 * @var weDocumentCustomerFilter
@@ -56,7 +57,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		if(isset($_SESSION['prefs']['DefaultTemplateID'])){
 			$this->TemplateID = $_SESSION['prefs']['DefaultTemplateID'];
 		}
-		array_push($this->persistent_slots, 'TemplateID', 'TemplatePath', 'hidePages', 'controlElement', 'temp_template_id', 'temp_doc_type', 'temp_category');
+		array_push($this->persistent_slots, 'TemplateID', 'TemplatePath', 'hidePages', 'controlElement', 'temp_template_id', 'temp_doc_type', 'temp_category', 'usedElementNames');
 		$this->Icon = 'we_dokument.gif';
 		$this->ContentType = 'text/webedition';
 	}
@@ -499,7 +500,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		$this->setTemplatePath();
 	}
 
-	private function getFieldType($tagname, $tag, $useTextarea){
+	private static function getFieldType($tagname, $tag, $useTextarea){
 		switch($tagname){
 			case 'list':
 				return 'block';
@@ -602,10 +603,10 @@ class we_webEditionDocument extends we_textContentDocument{
 	function correctFields(){
 		// this is new for shop-variants
 		$this->correctVariantFields();
-		$types = we_webEditionDocument::getFieldTypes($this->getTemplateCode(), true);
 		$regs = array();
-		foreach($types as $name => &$type){
-			if($type == 'textarea'){
+		$allElements = $this->getUsedElements();
+		if(isset($allElements['textarea'])){
+			foreach($allElements['textarea'] as $name){
 				//Bugfix for buggy tiny implementation where internal links looked like href="/img.gif?id=123" #7210
 				$value = $this->getElement($name);
 				if(preg_match_all('|src="/[^">]+\\?id=(\\d+)"|i', $value, $regs, PREG_SET_ORDER)){
@@ -620,10 +621,10 @@ class we_webEditionDocument extends we_textContentDocument{
 				}
 
 				$this->setElement($name, $value);
-				$type = 'txt';
 			}
 		}
-		unset($type);
+		//FIXME: it is better to use $this->getUsedElements - only we:input type="date" is not handled...
+		$types = self::getFieldTypes($this->getTemplateCode());
 
 		foreach($this->elements as $k => $v){
 			switch(isset($v['type']) ? $v['type'] : ''){
@@ -653,7 +654,7 @@ class we_webEditionDocument extends we_textContentDocument{
 	public function we_save($resave = 0, $skipHook = 0){
 		// First off correct corupted fields
 		$this->correctFields();
-
+//FIXME: maybe use $this->getUsedElements() to unset unused elements?! add setting to do this? check rebuild!!!
 
 		// Bug Fix #6615
 		$this->temp_template_id = $this->TemplateID;
@@ -1112,6 +1113,31 @@ if (!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 
 	public function getDocumentCss(){
 		return $this->DocumentCss;
+	}
+
+	public function resetUsedElements(){
+		$this->usedElementNames = array();
+	}
+
+	public function addUsedElement($type, $name){
+		if(!isset($this->usedElementNames[$type])){
+			$this->usedElementNames[$type] = array($name);
+		} else{
+			$this->usedElementNames[$type][] = $name;
+		}
+	}
+
+	public function getUsedElements($txtNamesOnly = false){
+		if($txtNamesOnly){
+			$ret = array();
+			foreach($this->usedElementNames as $tag => $val){
+				if(self::getFieldType($tag, '', false) == 'txt'){
+					$ret = array_merge($ret, $val);
+				}
+			}
+			return array_unique($ret);
+		}
+		return $this->usedElementNames;
 	}
 
 }

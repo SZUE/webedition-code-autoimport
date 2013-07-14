@@ -1933,7 +1933,8 @@ function we_templatePreContent(){
 function we_templatePostContent(){
 	if(isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'] && (--$GLOBALS['we_templatePreContent']) == 0){
 		$yuiSuggest = & weSuggest::getInstance();
-		print '</form>' .
+		//FIXME: check this new field to determine if all data has been transmitted
+		print '<input type="hidden" name="we_complete_request" value="1"/></form>' .
 			$yuiSuggest->getYuiCss() .
 			$yuiSuggest->getYuiJs();
 	}

@@ -741,7 +741,7 @@ abstract class we_root extends we_class{
 		if($this->PublWhenSave){
 			$this->Published = time();
 		}
-		if($resave == 0){
+		if(!$resave){
 			$this->ModDate = time();
 			$this->ModifierID = !isset($GLOBALS['we']['Scheduler_active']) && isset($_SESSION['user']['ID']) ? $_SESSION['user']['ID'] : 0;
 		}
@@ -749,7 +749,7 @@ abstract class we_root extends we_class{
 			return false;
 		}
 		$a = $this->i_saveContentDataInDB();
-		if($resave == 0 && $this->ClassName != 'we_class_folder'){
+		if(!$resave && $this->ClassName != 'we_class_folder'){
 			we_history::insertIntoHistory($this);
 		}
 		return $a;

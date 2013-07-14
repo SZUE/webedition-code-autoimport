@@ -68,12 +68,12 @@ abstract class we_textContentDocument extends we_textDocument{
 	}
 
 	function insertAtIndex(){
-		if(isset($GLOBALS['INDEX_TYPE']) && $GLOBALS['INDEX_TYPE'] == 'PAGE'){
-			$text = $this->i_getDocument();
-		} else{
+		if($this->IsSearchable && $this->Published){
 			$text = '';
 
 			if($this->ContentType == 'text/webedition'){
+				$allUsedElements = $this->getUsedElements(true);
+if(empty($allUsedElements)){//FIXME:needed for rebuild, since tags are unintialized
 				// dont save unneeded fields in index-table
 				$fieldTypes = we_webEditionDocument::getFieldTypes($this->getTemplateCode(), false);
 				$fieldTypes = array_keys($fieldTypes, 'txt');
@@ -84,6 +84,10 @@ abstract class we_textContentDocument extends we_textDocument{
 						break;
 					}
 				}
+
+}else{
+				array_push($allUsedElements, 'Title', 'Description', 'Keywords');
+}
 			}
 
 			$this->resetElements();
@@ -93,7 +97,9 @@ abstract class we_textContentDocument extends we_textDocument{
 					//skip elements whose names are variables or if element is empty
 					continue;
 				}
+
 				if((!is_array($_dat) || (isset($_dat['text']) && $_dat['text'])) && isset($fieldTypes) && is_array($fieldTypes)){
+//rebuild variant
 					foreach($fieldTypes as $name){
 						if(preg_match('|^' . $name . '$|i', $k)){
 							if(is_array($_dat) && !empty($_dat['text'])){
@@ -103,18 +109,26 @@ abstract class we_textContentDocument extends we_textDocument{
 							}
 						}
 					}
+				}elseif((!is_array($_dat) || (isset($_dat['text']) && $_dat['text'])) && isset($allUsedElements) && is_array($allUsedElements)){
+//normal save of we_doc
+					if(in_array($k, $allUsedElements)){
+						if(is_array($_dat) && !empty($_dat['text'])){
+							$text .= ' ' . $_dat['text'];
+						} elseif($v['type'] == 'txt'){
+							$text .= ' ' . $_dat;
+						}
+					}
 				} else if(!is_array($_dat)){
+//save of text_document
 					if(isset($v['type']) && $v['type'] == 'txt'){
 						$text .= ' ' . $_dat;
 					}
 				}
 			}
-		}
 
-		$maxDB = min(1000000, getMaxAllowedPacket($this->DB_WE) - 1024);
-		$text = substr(preg_replace(array("/\n+/", '/  +/'), ' ', trim(strip_tags($text))), 0, $maxDB);
 
-		if($this->IsSearchable && $this->Published){
+			$maxDB = min(1000000, getMaxAllowedPacket($this->DB_WE) - 1024);
+			$text = substr(preg_replace(array("/\n+/", '/  +/'), ' ', trim(strip_tags($text))), 0, $maxDB);
 			$set = array('DID' => intval($this->ID),
 				'Text' => $text,
 				'Workspace' => $this->ParentPath,
@@ -217,7 +231,6 @@ abstract class we_textContentDocument extends we_textDocument{
 	<tr><td>' . $this->formInGlossar() . '</td></tr>
 </table>';
 	}
-
 
 	public function we_new(){
 		parent::we_new();
