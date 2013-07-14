@@ -191,7 +191,7 @@ function we_tag_form($attribs){
 			$formAttribs['onsubmit'] = $onsubmit;
 			$formAttribs['action'] = WEBEDITION_DIR . 'we_formmail.php';
 			if($id){
-				$formAttribs['action'] = ($id == 'self' ? $_SERVER['SCRIPT_NAME'] : f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), 'Path', $GLOBALS['DB_WE']));
+				$formAttribs['action'] = ($id == 'self' ? (defined('WE_REDIRECTED_SEO') ? WE_REDIRECTED_SEO : $_SERVER['SCRIPT_NAME']) : f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), 'Path', $GLOBALS['DB_WE']));
 			}
 
 
