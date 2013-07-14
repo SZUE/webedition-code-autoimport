@@ -501,6 +501,8 @@ class we_webEditionDocument extends we_textContentDocument{
 
 	private function getFieldType($tagname, $tag, $useTextarea){
 		switch($tagname){
+			case 'list':
+				return 'block';
 			case 'textarea':
 				if(!$useTextarea){
 					return 'txt';
@@ -509,7 +511,6 @@ class we_webEditionDocument extends we_textContentDocument{
 			case 'formfield':
 			case 'img':
 			case 'linklist':
-			case 'list':
 			case 'block':
 				return $tagname;
 			case 'input':
@@ -523,14 +524,14 @@ class we_webEditionDocument extends we_textContentDocument{
 	function makeBlockName($block, $field){
 		$block = str_replace('[0-9]+', '####BLOCKNR####', $block);
 		$field = str_replace('[0-9]+', '####BLOCKNR####', $field);
-		$out = preg_quote($field . "blk_" . $block . "__") . '[0-9]+';
+		$out = preg_quote($field . 'blk_' . $block . '__') . '[0-9]+';
 		return str_replace('####BLOCKNR####', '[0-9]+', $out);
 	}
 
 	function makeLinklistName($block, $field){
 		$block = str_replace('[0-9]+', '####BLOCKNR####', $block);
 		$field = str_replace('[0-9]+', '####BLOCKNR####', $field);
-		$out = preg_quote($field . $block . "_TAGS_") . '[0-9]+';
+		$out = preg_quote($field . $block . '_TAGS_') . '[0-9]+';
 		return str_replace('####BLOCKNR####', '[0-9]+', $out);
 	}
 
@@ -552,28 +553,31 @@ class we_webEditionDocument extends we_textContentDocument{
 		foreach($tags as $tag){
 			if(preg_match('|<we:([^> /]+)|i', $tag, $regs)){ // starttag found
 				$tagname = $regs[1];
-				if(($tagname != "var") && ($tagname != "field") && preg_match('|name="([^"]+)"|i', $tag, $regs)){ // name found
+				if(($tagname != 'var') && ($tagname != 'field') && preg_match('|name="([^"]+)"|i', $tag, $regs)){ // name found
 					$name = str_replace(array('[', ']'), array('\[', '\]'), $regs[1]);
 					if(!empty($blocks)){
 						$foo = end($blocks);
-						$blockname = $foo["name"];
-						$blocktype = $foo["type"];
+						$blockname = $foo['name'];
+						$blocktype = $foo['type'];
 						switch($blocktype){
-							case "block":
+							case 'list':
+							case 'block':
 								$name = self::makeBlockName($blockname, $name);
 								break;
-							case "linklist":
+							case 'linklist':
 								$name = self::makeLinklistName($blockname, $name);
 								break;
 						}
 					}
 					$fieldTypes[$name] = self::getFieldType($tagname, $tag, $useTextarea);
 					switch($tagname){
-						case "block":
-						case "linklist":
+						case 'list':
+							$tagname = 'block';
+						case 'block':
+						case 'linklist':
 							$foo = array(
-								"name" => $name,
-								"type" => $tagname
+								'name' => $name,
+								'type' => $tagname
 							);
 							$blocks[] = $foo;
 							break;
@@ -582,8 +586,9 @@ class we_webEditionDocument extends we_textContentDocument{
 			} else if(preg_match('|</we:([^> ]+)|i', $tag, $regs)){ // endtag found
 				$tagname = $regs[1];
 				switch($tagname){
-					case "block":
-					case "linklist":
+					case 'block':
+					case 'list':
+					case 'linklist':
 						if(!empty($blocks)){
 							array_pop($blocks);
 						}
@@ -621,7 +626,11 @@ class we_webEditionDocument extends we_textContentDocument{
 		unset($type);
 
 		foreach($this->elements as $k => $v){
-			switch(isset($v["type"]) ? $v["type"] : ''){
+			switch(isset($v['type']) ? $v['type'] : ''){
+				case 'block':
+				case 'list':
+					$this->elements[$k]['type'] = 'block';
+					break;
 				case 'txt':
 				case 'attrib':
 				case 'variant':
@@ -630,7 +639,6 @@ class we_webEditionDocument extends we_textContentDocument{
 				case 'image':
 				case 'linklist':
 				case 'img':
-				case 'list':
 					if(isset($types[$k])){
 						$this->elements[$k]['type'] = $types[$k];
 					}
@@ -747,6 +755,8 @@ class we_webEditionDocument extends we_textContentDocument{
 
 	function i_scheduleToBeforeNow(){
 		return false;
+//FIXME: check
+		//return (defined('SCHEDULE_TABLE') && ($this->To < time() && $this->ToOk));
 	}
 
 	function i_areVariantNamesValid(){

@@ -218,8 +218,6 @@ abstract class we_textContentDocument extends we_textDocument{
 </table>';
 	}
 
-### neu
-## public ###
 
 	public function we_new(){
 		parent::we_new();

@@ -372,7 +372,7 @@ class weXMLExIm{
 		$ret = true;
 		if(is_object($object)){
 			// save binary data first to stay compatible with the new binary feature in v5.1
-			if(in_array("savebinarydata", get_class_methods(get_class($object)))){
+			if(in_array('savebinarydata', get_class_methods(get_class($object)))){
 				$object->savebinarydata();
 			}
 
@@ -380,20 +380,20 @@ class weXMLExIm{
 				$ret = $object->we_save_exim();
 			} else{
 				$GLOBALS['we_doc'] = $object;
-				if(in_array("we_save", get_class_methods(get_class($object)))){
+				if(in_array('we_save', get_class_methods(get_class($object)))){
 					if(!$object->we_save()){
 						return false;
 					}
 				}
 
-				if(in_array("we_publish", get_class_methods(get_class($object)))){
+				if(in_array('we_publish', get_class_methods(get_class($object)))){
 					if(!$object->we_publish()){
 						return false;
 					}
 				}
 
-				if(in_array("savebinarydata", get_class_methods(get_class($object)))){
-					$object->setElement("data", "");
+				if(in_array('savebinarydata', get_class_methods(get_class($object)))){
+					$object->setElement('data', '');
 				}
 			}
 		}
@@ -402,3 +402,4 @@ class weXMLExIm{
 
 //FIXME: splitFile,exportChunk missing - called in Backup class
 }
+

@@ -724,9 +724,10 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 			oContent.style.display = 'block';
 			hideLoadingSymbol(widgetId);
 
-			eval(((widgetType == 'pad') ? 'docIFrm.getElementById(widgetType)' : 'oInline') + '.innerHTML=contentData;');
-			if (widgetType == 'pad')
+			eval(((widgetType === 'pad') ? 'docIFrm.getElementById(widgetType)' : 'oInline') + '.innerHTML=contentData;');
+			if (widgetType === 'pad') {
 				iFrmScr.calendarSetup();
+			}
 			setLabel(widgetId, titel, '');
 			initWidget(widgetId);
 
@@ -770,7 +771,7 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 
 		var ajaxCallback = {
 			success: function(o) {
-				if (typeof(o.responseText) != 'undefined' && o.responseText != '') {
+				if (typeof(o.responseText) !== undefined && o.responseText !== '') {
 					var weResponse = false;
 					try {
 						eval(o.responseText);
@@ -805,7 +806,7 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 			// start bugfix #1145
 			var _tmpForm = document.createElement("form");
 			document.getElementsByTagName("body")[0].appendChild(_tmpForm);
-			var path = (sType != 'rss' && sType != 'pad' && sType != 'plg' && sType != 'sct') ? 'dlg/' + arguments[6] : 'mod/' + sType;
+			var path = (sType !== 'rss' && sType !== 'pad' && sType !== 'plg' && sType !== 'sct') ? 'dlg/' + arguments[6] : 'mod/' + sType;
 			_tmpForm.id = "_tmpSubmitForm";
 			_tmpForm.method = "POST";
 			_tmpForm.action = '<?php echo WE_INCLUDES_DIR; ?>we_widgets/' + path + '.php';
@@ -955,12 +956,8 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 	<?php
 	$aCmd = explode('_', $_REQUEST['we_cmd'][0]);
 	if($aCmd[0] == 'new'){
-		$in = array(
-			substr($aCmd[2], -3), 1, 1
-		);
-		$aDat[0] = array_merge(array_slice($aDat[0], 0, 0), array(
-			$in
-			), array_slice($aDat[0], 0));
+		$in = array(substr($aCmd[2], -3), 1, 1);
+		$aDat[0] = array_merge(array_slice($aDat[0], 0, 0), array($in), array_slice($aDat[0], 0));
 	}
 	$aDiscard = array('rss', 'pad');
 	$s1 = '';
@@ -972,9 +969,9 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 		$iCurrCol++;
 		foreach($d as $aProps){
 			$iCurrId++;
-			if(!((($aProps[0] == 'usr' || $aProps[0] == 'msg') && !defined('USER_TABLE')) || ($aProps[0] == 'msg' && !defined(
-					'MESSAGING_SYSTEM')) || ($aProps[0] == 'plg' && (!WE_TRACKER_DIR || !file_exists(
-					$_SERVER['DOCUMENT_ROOT'] . WE_TRACKER_DIR . "/includes/showme.inc.php"))))){
+			if(!((($aProps[0] == 'usr' || $aProps[0] == 'msg') && !defined('USER_TABLE')) ||
+				($aProps[0] == 'msg' && !defined('MESSAGING_SYSTEM')) ||
+				($aProps[0] == 'plg' && (!WE_TRACKER_DIR || !file_exists($_SERVER['DOCUMENT_ROOT'] . WE_TRACKER_DIR . "/includes/showme.inc.php"))))){
 				$iWidth = ((!$aProps[2]) ? $small : $large);
 				if(!in_array($aProps[0], $aDiscard)){
 					if($aProps[0] == 'upb' && $aProps[3] == ''){

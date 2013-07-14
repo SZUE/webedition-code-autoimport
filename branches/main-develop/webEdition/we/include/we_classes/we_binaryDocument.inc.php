@@ -351,7 +351,7 @@ class we_binaryDocument extends we_document{
 	}
 
 	function savebinarydata(){
-		$_data = $this->getElement("data");
+		$_data = $this->getElement('data');
 		if($_data && !file_exists($_data)){
 			$_path = weFile::saveTemp($_data);
 			$this->setElement('data', $_path);

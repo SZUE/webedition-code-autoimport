@@ -444,7 +444,7 @@ class we_document extends we_root{
 
 			$listarray[] = '_' . $new_nr;
 		}
-		$this->setElement($name, serialize(array_values($listarray)));
+		$this->setElement($name, serialize(array_values($listarray)), 'block');
 	}
 
 	function getMaxListArrayNr($la){
@@ -478,7 +478,7 @@ class we_document extends we_root{
 			$listarray[$nr] = '_' . $new_nr;
 		}
 
-		$this->setElement($name, serialize(array_values($listarray)));
+		$this->setElement($name, serialize(array_values($listarray)), 'block');
 	}
 
 	function upEntryAtList($name, $nr, $number = 1){
@@ -495,7 +495,7 @@ class we_document extends we_root{
 		$listarray[$newPos] = $listarray[$nr];
 		$listarray[$nr] = $temp;
 
-		$this->setElement($name, serialize($listarray));
+		$this->setElement($name, serialize($listarray), 'block');
 	}
 
 	function downEntryAtList($name, $nr, $number = 1){
@@ -511,7 +511,7 @@ class we_document extends we_root{
 		$temp = $listarray[$newPos];
 		$listarray[$newPos] = $listarray[$nr];
 		$listarray[$nr] = $temp;
-		$this->setElement($name, serialize($listarray));
+		$this->setElement($name, serialize($listarray), 'block');
 	}
 
 	function removeEntryFromList($name, $nr, $names = '', $isBlock = false){
@@ -535,42 +535,42 @@ class we_document extends we_root{
 			}
 		}
 
-		$this->setElement($name, serialize(array_values($listarray)));
+		$this->setElement($name, serialize(array_values($listarray)), 'block');
 	}
 
 	function addLinkToLinklist($name){
 		$linklist = $this->getElement($name);
 		$ll = new we_linklist($linklist);
 		$ll->addLink();
-		$this->setElement($name, $ll->getString());
+		$this->setElement($name, $ll->getString(), 'linklist');
 	}
 
 	function upEntryAtLinklist($name, $nr){
 		$linklist = $this->getElement($name);
 		$ll = new we_linklist($linklist);
 		$ll->upLink($nr);
-		$this->setElement($name, $ll->getString());
+		$this->setElement($name, $ll->getString(), 'linklist');
 	}
 
 	function downEntryAtLinklist($name, $nr){
 		$linklist = $this->getElement($name);
 		$ll = new we_linklist($linklist);
 		$ll->downLink($nr);
-		$this->setElement($name, $ll->getString());
+		$this->setElement($name, $ll->getString(), 'linklist');
 	}
 
 	function insertLinkAtLinklist($name, $nr){
 		$linklist = $this->getElement($name);
 		$ll = new we_linklist($linklist);
 		$ll->insertLink($nr);
-		$this->setElement($name, $ll->getString());
+		$this->setElement($name, $ll->getString(), 'linklist');
 	}
 
 	function removeLinkFromLinklist($name, $nr, $names = ''){
 		$linklist = $this->getElement($name);
 		$ll = new we_linklist($linklist);
 		$ll->removeLink($nr, $names, $name);
-		$this->setElement($name, $ll->getString());
+		$this->setElement($name, $ll->getString(), 'linklist');
 	}
 
 	function changeLink($name){

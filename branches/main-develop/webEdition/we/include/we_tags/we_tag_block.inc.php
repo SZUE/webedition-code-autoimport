@@ -63,7 +63,7 @@ function we_parse_tag_block($attribs, $content){
 		'while(we_condition_tag_block($block_' . $name . ')){?>' . $content . '<?php }}else{?>' .
 		$ctlPre . 'array(\'name\'=>we_tag_getPostName("' . $blockName . '"),\'pos\'=>0,\'listSize\'=>0,' .
 		'\'ctlShowSelect\'=>' . (weTag_getParserAttribute('showselect', $arr, true, true) ? 'true' : 'false') . ',' .
-		'\'ctlShow\'=>' . (int) weTag_getParserAttribute('limit', $arr, 10) . ')' . $ctlPost .
+		'\'ctlShow\'=>' . intval(weTag_getParserAttribute('limit', $arr, 10)) . ')' . $ctlPost .
 		'<?php }unset($block_' . $name . ');?>';
 }
 
@@ -147,7 +147,7 @@ function we_tag_block($attribs){
 	);
 }
 
-function we_tag_blockControls($attribs, $content = ''){
+function we_tag_blockControls($attribs){
 	//if in listview no Buttons are shown!
 	if(!$GLOBALS['we_editmode'] || isset($GLOBALS['lv'])){
 		return '';
@@ -200,8 +200,8 @@ function we_tag_blockControls($attribs, $content = ''){
 			$plusbut = we_button::create_button('image:btn_add_listelement', "javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('add_entry_to_list','" . $attribs['name'] . "',1)", true, 100, 22, '', '', ($attribs['ctlShow'] > 0 ? false : true));
 		}
 
-		return '<input type="hidden" name="we_' . $GLOBALS['we_doc']->Name . '_list[' . $attribs['name'] . ']" value="' . htmlentities(
-				serialize(isset($attribs['list']) ? $attribs['list'] : array())) . '"><input type="hidden" name="we_' . $GLOBALS['we_doc']->Name . '_list[' . $attribs['name'] . '#content]" value="' .
-			$content . '" />' . $plusbut;
+		return '<input type="hidden" name="we_' . $GLOBALS['we_doc']->Name . '_block[' . $attribs['name'] . ']" value="' .
+			htmlentities(serialize(isset($attribs['list']) ? $attribs['list'] : array())) .
+			'">' . $plusbut;
 	}
 }

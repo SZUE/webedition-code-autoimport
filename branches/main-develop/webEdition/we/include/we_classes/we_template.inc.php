@@ -442,6 +442,7 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 						$foo = end($blocks);
 						$blockname = $foo["name"];
 						switch($foo['type']){
+							case 'list':
 							case 'block':
 								$name = we_webEditionDocument::makeBlockName($blockname, $name);
 								break;
@@ -474,11 +475,13 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 					}
 
 					switch($tagname){
-						case "block":
-						case "linklist":
+						case 'list':
+							$tagname = 'block';
+						case 'block':
+						case 'linklist':
 							$blocks[] = array(
-								"name" => $name,
-								"type" => $tagname
+								'name' => $name,
+								'type' => $tagname
 							);
 							break;
 					}
@@ -486,8 +489,9 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 			} else if(preg_match('|</we:([^> ]+)|i', $tag, $regs)){ // endtag found
 				$tagname = $regs[1];
 				switch($tagname){
-					case "block":
-					case "linklist":
+					case 'block':
+					case 'list':
+					case 'linklist':
 						if(!empty($blocks)){
 							array_pop($blocks);
 						}
