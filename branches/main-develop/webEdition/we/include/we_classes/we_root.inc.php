@@ -343,7 +343,7 @@ abstract class we_root extends we_class{
 		$owners = makeArrayFromCSV($this->Owners);
 		$ownersReadOnly = $this->OwnersReadOnly ? unserialize($this->OwnersReadOnly) : array();
 
-		$content = '<table border="0" cellpadding="0" cellspacing="0" width="370">'.
+		$content = '<table border="0" cellpadding="0" cellspacing="0" width="370">' .
 			'<tr><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(351, 2) . '</td><td>' . we_html_tools::getPixel(100, 2) . '</td><td>' . we_html_tools::getPixel(26, 2) . '</td></tr>' . "\n";
 		if(count($owners)){
 			foreach($owners as $owner){
@@ -448,7 +448,7 @@ abstract class we_root extends we_class{
 			if(!(we_hasPerm('NEW_OBJECTFILE_FOLDER') || we_hasPerm('NEW_OBJECTFILE'))){
 				return false;
 			}
-		}else{
+		} else{
 			if(!we_hasPerm('SAVE_DOCUMENT_TEMPLATE')){
 				return false;
 			}
@@ -629,7 +629,7 @@ abstract class we_root extends we_class{
 	function nextElement($type = 'txt'){
 		if(is_array($this->elements)){
 			while($arr = each($this->elements)) {
-				if(empty($type)||(isset($arr['value']['type']) && $arr['value']['type'] == $type)){
+				if(empty($type) || (isset($arr['value']['type']) && $arr['value']['type'] == $type)){
 					return $arr;
 				}
 			}
@@ -877,11 +877,12 @@ abstract class we_root extends we_class{
 								$dates[$name][$what] = $v2;
 							} else{
 								if(preg_match('/(.+)#(.+)/', $name, $regs)){
-									$this->setElement($regs[1], $v2, $type);
+									$this->elements[$regs[1]]['type'] = $type;
+									$this->elements[$regs[1]][$regs[2]] = $v2;
 								} else{
 									//FIXME: check if we can apply the correct type
 									$this->i_convertElemFromRequest('internal', $v2, $name);
-									$this->setElement($name, $v2, $type);
+									$this->elements[$name]['dat'] = $v2;
 								}
 							}
 						}
