@@ -1162,14 +1162,14 @@ function submitForm() {
 						);
 
 						while($this->db->next_record()) {
-							$shopArticles[$this->db->f('documentId') . '_d'] = $this->db->f('shopTitle') . ' [' . $this->db->f('documentId') . ']' . g_l('modules_shop', '[isDoc]');
+							$shopArticles[$this->db->f('documentId') . '_'.we_shop_shop::DOCUMENT] = $this->db->f('shopTitle') . ' [' . g_l('modules_shop', '[isDoc]').': '.$this->db->f('documentId') . ']';
 						}
 
 						if(defined('OBJECT_TABLE')){
 							// now get all shop objects
 							foreach($classIds as $_classId){
 								$_classId = intval($_classId);
-								$this->db->query('SELECT  ' . OBJECT_X_TABLE . $_classId . '.input_' . WE_SHOP_TITLE_FIELD_NAME . ' AS ' . WE_SHOP_TITLE_FIELD_NAME . ', ' . OBJECT_X_TABLE . $_classId . '.OF_ID as objectId
+								$this->db->query('SELECT  ' . OBJECT_X_TABLE . $_classId . '.input_' . WE_SHOP_TITLE_FIELD_NAME . ' AS shopTitle, ' . OBJECT_X_TABLE . $_classId . '.OF_ID as objectId
 								FROM ' . OBJECT_X_TABLE . $_classId . ', ' . OBJECT_FILES_TABLE . '
 								WHERE ' . OBJECT_X_TABLE . $_classId . '.OF_ID = ' . OBJECT_FILES_TABLE . '.ID
 									AND ' . OBJECT_X_TABLE . $_classId . '.ID = ' . OBJECT_FILES_TABLE . '.ObjectID ' .
@@ -1179,7 +1179,7 @@ function submitForm() {
 								);
 
 								while($this->db->next_record()) {
-									$shopArticles[$this->db->f('objectId') . '_o'] = $this->db->f('shopTitle') . ' [' . $this->db->f('objectId') . ']' . g_l('modules_shop', '[isObj]');
+									$shopArticles[$this->db->f('objectId') . '_'.we_shop_shop::OBJECT] = $this->db->f('shopTitle') . ' [' . g_l('modules_shop', '[isObj]').': '.$this->db->f('objectId') . ']';
 								}
 							}
 							unset($_classId);
