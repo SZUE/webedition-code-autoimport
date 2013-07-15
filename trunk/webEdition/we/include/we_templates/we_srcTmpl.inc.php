@@ -427,8 +427,8 @@ switch($_SESSION['prefs']['editorMode']){
 		parent.editorScrollPosTop = getScrollPosTop();
 		parent.editorScrollPosLeft = getScrollPosLeft();" <?php
 //FIXME: no resize for IE!
-		echo (we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 9 ? '' : 'onResize="sizeEditor();"');
-		?>>
+			echo (we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 9 ? '' : 'onResize="sizeEditor();"');
+			?>>
 	<form name="we_form" method="post" onsubmit="return false;" style="margin:0px;"><?php
 		echo we_class::hiddenTrans();
 
@@ -480,18 +480,18 @@ switch($_SESSION['prefs']['editorMode']){
 					), '', $params);
 		}
 
-		function we_getCodeMirror2Tags($css){
+		function we_getCodeMirror2Tags($css, $weTags = true){
 			//FIXME: this should only be loaded once! not for every document opened!
 			$ret = '';
 			$allTags = array();
 			$setting = @unserialize($_SESSION['prefs']['editorCodecompletion']);
-			if($css || $setting['WE']){
+			if($weTags && ($css || $setting['WE'])){
 				$allWeTags = weTagWizard::getExistingWeTags();
 				foreach($allWeTags as $tagName){
 					$weTag = weTagData::getTagData($tagName);
 					if($css){
 						$ret.='.cm-weTag_' . $tagName . ':hover:after {content: "' . str_replace('"', '\'', html_entity_decode($weTag->getDescription(), null, $GLOBALS['WE_BACKENDCHARSET'])) . '";}';
-					} else{
+					} else {
 						$allTags['we:' . $tagName] = array('we' => $weTag->getAttributesForCM());
 					}
 				}
@@ -551,6 +551,7 @@ switch($_SESSION['prefs']['editorMode']){
 			$parser_js = array();
 			$parser_css = array('theme/elegant.css', 'theme/cobalt.css');
 			$toolTip = false;
+			$useCompletion = false;
 			switch($GLOBALS['we_doc']->ContentType){ // Depending on content type we use different parsers and css files
 				case 'text/css':
 					$parser_js[] = 'mode/css/css.js';
@@ -570,13 +571,14 @@ switch($_SESSION['prefs']['editorMode']){
 					$parser_js[] = 'addon/edit/closetag.js';
 					$parser_js[] = 'addon/fold/foldcode.js';
 					$parser_js[] = 'addon/edit/matchbrackets.js';
-					if(true || $_SESSION['prefs']['editorCodecompletion']){
+					if($_SESSION['prefs']['editorCodecompletion']){
 						$parser_js[] = 'addon/hint/simple-hint.js';
 						$parser_js[] = 'addon/we/we-hint.js';
 					}
 					$parser_css[] = 'lib/util/simple-hint.css';
 					$toolTip = $_SESSION['prefs']['editorTooltips'];
 					$mode = 'text/weTmpl';
+					$useCompletion = true;
 				case 'text/html':
 					$parser_js[] = 'mode/xml/xml.js';
 					$parser_js[] = 'mode/javascript/javascript.js';
@@ -587,7 +589,13 @@ switch($_SESSION['prefs']['editorMode']){
 					$parser_js[] = 'addon/edit/closetag.js';
 					$parser_js[] = 'addon/fold/foldcode.js';
 					$parser_js[] = 'addon/edit/matchbrackets.js';
+					if($_SESSION['prefs']['editorCodecompletion']){
+						$parser_js[] = 'addon/hint/simple-hint.js';
+						$parser_js[] = 'addon/we/we-hint.js';
+					}
+					$parser_css[] = 'lib/util/simple-hint.css';
 					$mode = (isset($mode) ? $mode : 'application/x-httpd-php');
+					$useCompletion = true;
 					break;
 				case 'text/xml':
 					$parser_js[] = 'mode/xml/xml.js';
@@ -657,7 +665,7 @@ var CMoptions = { //these are the CodeMirror options
 							  "Ctrl-Space": function(cm) { CodeMirror.weHint(cm, \'\'); }' : ''
 						) . '
 	}
-};' . ($hasCompletion && $GLOBALS['we_doc']->ContentType == 'text/weTmpl' ? we_getCodeMirror2Tags(false) : '') . '
+};' . ($hasCompletion && $useCompletion ? we_getCodeMirror2Tags(false, $mode == 'text/weTmpl') : '') . '
 window.orignalTemplateContent=document.getElementById("editarea").value.replace(/\r/g,""); //this is our reference of the original content to compare with current content
 ');
 			}
@@ -676,7 +684,7 @@ window.orignalTemplateContent=document.getElementById("editarea").value.replace(
 
 		if($_useJavaEditor){
 			$maineditor .= we_getJavaEditorCode($code);
-		} else{
+		} else {
 			$maineditor .= '<textarea id="editarea" style="width: 100%; height: ' . (($_SESSION["prefs"]["editorHeight"] != 0) ? $_SESSION["prefs"]["editorHeight"] : "320") . 'px;' . (($_SESSION["prefs"]["editorFont"] == 1) ? " font-family: " . $_SESSION["prefs"]["editorFontname"] . "; font-size: " . $_SESSION["prefs"]["editorFontsize"] . "px;" : "") . '" id="data" name="we_' . $we_doc->Name . '_txt[data]" wrap="' . $wrap . '" ' . ((!we_base_browserDetect::isGecko() && (!isset($_SESSION["we_wrapcheck"]) || !$_SESSION["we_wrapcheck"] )) ? '' : ' rows="20" cols="80"') . ' onhange="_EditorFrame.setEditorIsHot(true);" ' . ($_SESSION['prefs']['editorMode'] == 'codemirror2' ? '' : (we_base_browserDetect::isIE() || we_base_browserDetect::isOpera() ? 'onkeydown="return wedoKeyDown(this,event.keyCode);"' : 'onkeypress="return wedoKeyDown(this,event.keyCode);"')) . '>'
 				. oldHtmlspecialchars($code) . '</textarea>';
 			if($_SESSION['prefs']['editorMode'] == 'codemirror2'){ //Syntax-Highlighting
