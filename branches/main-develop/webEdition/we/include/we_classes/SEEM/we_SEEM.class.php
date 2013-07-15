@@ -193,7 +193,7 @@ abstract class we_SEEM{
 				//	$linkArray[7] - Array which contains the content-types of the documents or ''
 				$linkArray[7] = self::getDocContentTypesByID($linkArray[6]);
 
-				$code = (defined("WE_SIDEBAR") ?
+				$code = (defined('WE_SIDEBAR') ?
 						self::replaceLinksForSidebar($code, $linkArray) :
 						self::replaceLinks($code, $linkArray));
 			}

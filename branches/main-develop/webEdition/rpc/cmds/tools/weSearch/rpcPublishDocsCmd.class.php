@@ -26,7 +26,7 @@ class rpcPublishDocsCmd extends rpcCmd{
 
 	function execute(){
 
-		$db = new DB_WE();
+		$db = $GLOBALS['DB_WE'];
 
 		we_html_tools::protect();
 

@@ -920,7 +920,7 @@ class weVersionsView{
 	 * @abstract generates content for versions found
 	 * @return array with content
 	 */
-	function getVersionsOfDoc(){
+	static function getVersionsOfDoc(){
 		$DB_WE = new DB_WE();
 
 		$thisObj = (isset($_REQUEST['we_cmd']['obj']) ? new weVersionsView() : $this);

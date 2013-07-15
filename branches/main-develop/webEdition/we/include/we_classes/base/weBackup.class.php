@@ -213,7 +213,7 @@ class weBackup extends we_backup{
 		weFile::delete($_SERVER['DOCUMENT_ROOT'] . $file);
 	}
 
-	function recoverInfo($nodeset, &$xmlBrowser){
+	/*function recoverInfo($nodeset, &$xmlBrowser){
 		$node_set2 = $xmlBrowser->getSet($nodeset);
 
 		//$classname = weContentProvider::getContentTypeHandler("weBinary");
@@ -227,16 +227,14 @@ class weBackup extends we_backup{
 					$id = $attributes["ID"];
 					$path = $attributes["Path"];
 					//$this->backup_db->query("SELECT ".FILE_TABLE.".ID AS ID,".FILE_TABLE.".TemplateID AS TemplateID,".TEMPLATES_TABLE.".Path AS TemplatePath FROM ".FILE_TABLE.",".TEMPLATES_TABLE." WHERE ".FILE_TABLE.".TemplateID=".TEMPLATES_TABLE.".ID;");
-					$this->backup_db->query('SELECT ID FROM ' . TEMPLATES_TABLE . " WHERE Path=" . $this->backup_db->escape($path));
-					if($this->backup_db->next_record()){
-						if($this->backup_db->f('ID') != $id){
-							$db2->query('UPDATE ' . FILE_TABLE . ' SET TemplateID=' . intval($this->backup_db->f("ID")) . ' WHERE TemplateID=' . intval($id));
-						}
+					$tmpId = f('SELECT ID FROM ' . TEMPLATES_TABLE . ' WHERE Path="' . $this->backup_db->escape($path) . '"', 'ID', $this->backup_db);
+					if(!empty($tmpId) && $tmpId != $id){
+						$db2->query('UPDATE ' . FILE_TABLE . ' SET TemplateID=' . intval($tmpId) . ' WHERE TemplateID=' . intval($id));
 					}
 				}
 			}
 		}
-	}
+	}*/
 
 	function recover($chunk_file){
 		if(!is_readable($chunk_file)){
@@ -317,7 +315,7 @@ class weBackup extends we_backup{
 		$num_tables = count($tables);
 		if($num_tables){
 			$i = 0;
-			while($i < $num_tables) {
+			while($i < $num_tables){
 				$table = $tables[$i];
 				$noprefix = $this->getDefaultTableName($table);
 
@@ -345,7 +343,7 @@ class weBackup extends we_backup{
 						$start = microtime(true);
 						$this->backup_db->query($this->getBackupQuery($table, $keys));
 
-						while($this->backup_db->next_record()) {
+						while($this->backup_db->next_record()){
 							$keyvalue = array();
 							foreach($keys as $key){
 								$keyvalue[] = $this->backup_db->f($key);
@@ -389,7 +387,7 @@ class weBackup extends we_backup{
 		}
 		$out = '<we:info>';
 		$this->backup_db->query('SELECT ' . implode(',', $fields) . ' FROM ' . $this->backup_db->escape($table));
-		while($this->backup_db->next_record()) {
+		while($this->backup_db->next_record()){
 			$out.='<we:map table="' . $this->getDefaultTableName($table) . '"';
 			foreach($fields as $field){
 				$out.=' ' . $field . '="' . $this->backup_db->f($field) . '"';
@@ -494,7 +492,7 @@ class weBackup extends we_backup{
 		}
 		$thumbDir = trim(WE_THUMBNAIL_DIRECTORY, '/');
 		$d = dir($dir);
-		while(false !== ($entry = $d->read())) {
+		while(false !== ($entry = $d->read())){
 			switch($entry){
 				case '.':
 				case '..':
@@ -604,8 +602,8 @@ $this->file_list=' . var_export($this->file_list, true) . ';';
 	function getExportPercent(){
 		$all = 0;
 		$db = new DB_WE();
-		$db->query("SHOW TABLE STATUS");
-		while($db->next_record()) {
+		$db->query('SHOW TABLE STATUS');
+		while($db->next_record()){
 			$noprefix = $this->getDefaultTableName($db->f("Name"));
 			if(!$this->isFixed($noprefix))
 				$all += $db->f("Rows");
@@ -691,7 +689,7 @@ $this->file_list=' . var_export($this->file_list, true) . ';';
 			return;
 		}
 		$this->backup_db->query("SHOW TABLE STATUS");
-		while($this->backup_db->next_record()) {
+		while($this->backup_db->next_record()){
 			$table = $this->backup_db->f("Name");
 			$name = stripTblPrefix($this->backup_db->f("Name"));
 			if(substr(strtolower($name), 0, 10) == strtolower(stripTblPrefix(OBJECT_X_TABLE)) && is_numeric(str_replace(strtolower(OBJECT_X_TABLE), '', strtolower($table)))){

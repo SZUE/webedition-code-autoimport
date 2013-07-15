@@ -30,10 +30,9 @@ class rpcDeleteVersionsWizardCmd extends rpcCmd{
 
 		we_html_tools::protect();
 
-		$db = new DB_WE();
+		$db = $GLOBALS['DB_WE'];
 
-		$query = "DELETE FROM `" . VERSIONS_TABLE . "` WHERE " . $_SESSION['weS']['versions']['deleteWizardWhere'];
-		$db->query($query);
+		$db->query('DELETE FROM `' . VERSIONS_TABLE . '` WHERE ' . $_SESSION['weS']['versions']['deleteWizardWhere']);
 
 		unset($_SESSION['weS']['versions']['deleteWizardWhere']);
 
@@ -46,7 +45,7 @@ class rpcDeleteVersionsWizardCmd extends rpcCmd{
 		if(isset($_SESSION['weS']['versions']['deleteWizardbinaryPath']) && is_array($_SESSION['weS']['versions']['deleteWizardbinaryPath']) && !empty($_SESSION['weS']['versions']['deleteWizardbinaryPath'])){
 			foreach($_SESSION['weS']['versions']['deleteWizardbinaryPath'] as $k => $v){
 				$binaryPath = $_SERVER['DOCUMENT_ROOT'] . $v;
-				$binaryPathUsed = f("SELECT binaryPath FROM " . VERSIONS_TABLE . " WHERE binaryPath='" . $db->escape($v) . "' LIMIT 1", "binaryPath", $db);
+				$binaryPathUsed = f('SELECT binaryPath FROM ' . VERSIONS_TABLE . " WHERE binaryPath='" . $db->escape($v) . "' LIMIT 1", "binaryPath", $db);
 
 				if(file_exists($binaryPath) && $binaryPathUsed == ""){
 					@unlink($binaryPath);

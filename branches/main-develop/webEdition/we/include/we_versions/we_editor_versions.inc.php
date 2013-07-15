@@ -25,6 +25,7 @@
 we_html_tools::protect();
 
 we_html_tools::htmlTop();
+$_view = new weVersionsView();
 
 echo we_html_element::jsScript(JS_DIR . 'windows.js') .
  we_html_element::jsScript(JS_DIR . 'libs/yui/yahoo-min.js') .
@@ -33,18 +34,13 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js') .
 
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 
-$headCal = we_html_element::cssLink(JS_DIR . "jscalendar/skins/aqua/theme.css") .
-	we_html_element::jsScript(JS_DIR . "jscalendar/calendar.js") .
-	we_html_element::jsScript(WE_INCLUDES_DIR. 'we_language/' . $GLOBALS["WE_LANGUAGE"] . "/calendar.js") .
-	we_html_element::jsScript(JS_DIR . "jscalendar/calendar-setup.js");
-
-echo $headCal;
-
-$_view = new weVersionsView();
-
-print $_view->getJS() .
-	STYLESHEET .'
-<style type="text/css" media="screen">
+echo we_html_element::cssLink(JS_DIR . "jscalendar/skins/aqua/theme.css") .
+ we_html_element::jsScript(JS_DIR . "jscalendar/calendar.js") .
+ we_html_element::jsScript(WE_INCLUDES_DIR . 'we_language/' . $GLOBALS["WE_LANGUAGE"] . "/calendar.js") .
+ we_html_element::jsScript(JS_DIR . "jscalendar/calendar-setup.js") .
+ $_view->getJS() .
+ STYLESHEET .
+ we_html_element::cssElement('
 #scrollContent {overflow: auto; }
 #searchTable {display: block; }
 #eintraege_pro_seite {display: inline;margin-right:10px; }
@@ -60,10 +56,8 @@ print $_view->getJS() .
 #deleteVersion{display: block; }
 #deleteAllVersions{display: block; }
 #label_deleteAllVersions{display: block; }
-#deleteButton{display: block; }
-</style>
-
-<style type="text/css" media="print">
+#deleteButton{display: block; }', array('media' => 'screen')) .
+ we_html_element::cssElement('
 #scrollContent {overflow: visible; }
 #searchTable {display: none; }
 #eintraege_pro_seite {display: none; }
@@ -79,28 +73,20 @@ print $_view->getJS() .
 #deleteVersion{display: none; }
 #deleteAllVersions{display: none; }
 #label_deleteAllVersions{display: none; }
-#deleteButton{display: none; }
-</style>
-';
+#deleteButton{display: none; }', array('media' => 'print')) . '
+</head>
+<body class="weEditorBody" onUnload="doUnload()" onkeypress="javascript:if(event.keyCode==\'13\' || event.keyCode==\'3\') search(true);" onLoad="setTimeout(\'init();\',200)" onresize="sizeScrollContent();">
+<form name="we_form" onSubmit="return false;" style="padding:0px;margin:0px;">';
 
-echo '</head>';
-
-echo '<body class="weEditorBody" onUnload="doUnload()" onkeypress="javascript:if(event.keyCode==\'13\' || event.keyCode==\'3\') search(true);" onLoad="setTimeout(\'init();\',200)" onresize="sizeScrollContent();">';
-echo '<form name="we_form" onSubmit="return false;" style="padding:0px;margin:0px;">';
-
-$_parts = array();
-$_parts[] = array("html" => "<div id='searchTable'>" . $_view->getBodyTop() . "</div>");
-
-$content = $_view->getVersionsOfDoc();
+$content = weVersionsView::getVersionsOfDoc();
 $headline = $_view->makeHeadLines();
 $foundItems = count($content);
 
-$_parts[] = array("html" => "<div id='parametersTop'>" . $_view->getParameterTop($foundItems) . "</div>" . $_view->tblList($content, $headline) . "<div id='parametersBottom'>" . $_view->getParameterBottom($foundItems) . "</div>");
+$_parts = array(
+	array("html" => "<div id='searchTable'>" . $_view->getBodyTop() . "</div>"),
+	array("html" => "<div id='parametersTop'>" . $_view->getParameterTop($foundItems) . "</div>" . $_view->tblList($content, $headline) . "<div id='parametersBottom'>" . $_view->getParameterBottom($foundItems) . "</div>")
+);
 
-echo $_view->getHTMLforVersions($_parts);
-
-
-echo '</form>';
-echo '</body>';
-echo '</html>';
-?>
+echo $_view->getHTMLforVersions($_parts) .
+ '</form>
+</body></html>';
