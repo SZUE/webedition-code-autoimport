@@ -29,7 +29,7 @@ class we_users_util{
 	private static function getGroupList($id){
 		$ret = array();
 		if($id){
-			$db_tmp = new DB_WE;
+			$db_tmp = new DB_WE();
 			$db_tmp->query("SELECT ID,username WHERE ParentID=" . intval($id) . " AND Type=1");
 			while($db_tmp->next_record()) {
 				$ret[$db_tmp->f("ID")] = $db_tmp->f("username");
@@ -43,7 +43,7 @@ class we_users_util{
 
 	private static function getUserTree($id){
 		$ret = array();
-		$db_tmp = new DB_WE;
+		$db_tmp = new DB_WE();
 		$db_tmp->query("SELECT ID,username,Type WHERE ParentID=" . intval($id));
 		while($db_tmp->next_record()) {
 			$ret[$db_tmp->f("ID")]["name"] = $db_tmp->f("username");

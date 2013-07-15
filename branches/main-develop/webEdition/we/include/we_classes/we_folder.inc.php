@@ -293,9 +293,9 @@ class we_folder extends we_root{
 
 	function changeLanguageRecursive(){
 
-		$DB_WE = new DB_WE;
-		$DB_WE2 = new DB_WE;
-		$DB_WE3 = new DB_WE;
+		$DB_WE = new DB_WE();
+		$DB_WE2 = new DB_WE();
+		$DB_WE3 = new DB_WE();
 
 		$language = $this->Language;
 
@@ -403,8 +403,8 @@ class we_folder extends we_root{
 
 	function changeTriggerIDRecursive(){
 
-		$DB_WE = new DB_WE;
-		$DB_WE2 = new DB_WE;
+		$DB_WE = new DB_WE();
+		$DB_WE2 = new DB_WE();
 
 		$language = $this->TriggerID;
 
@@ -616,7 +616,7 @@ class we_folder extends we_root{
 
 	function modifyChildrenPath(){
 		@ignore_user_abort(true);
-		$DB_WE = new DB_WE;
+		$DB_WE = new DB_WE();
 		// Update Paths also in Doctype Table
 		$DB_WE->query('UPDATE ' . DOC_TYPES_TABLE . ' SET ParentPath="' . $DB_WE->escape($this->Path) . '" WHERE ParentID=' . intval($this->ID));
 		$DB_WE->query('SELECT ID,ClassName FROM ' . $DB_WE->escape($this->Table) . ' WHERE ParentID=' . intval($this->ID));

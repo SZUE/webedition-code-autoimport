@@ -375,7 +375,7 @@ class weNewsletter extends weNewsletterBase{
 	 */
 	function fixChildsPaths(){
 
-		$dbtmp = new DB_WE;
+		$dbtmp = new DB_WE();
 		$oldpath = f("SELECT Path FROM " . NEWSLETTER_TABLE . " WHERE ID=" . intval($this->ID), "Path", $this->db);
 
 		if(trim($oldpath) != "" && trim($oldpath) != "/"){

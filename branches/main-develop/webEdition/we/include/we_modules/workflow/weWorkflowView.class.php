@@ -1369,7 +1369,7 @@ function checkData(){
 	}
 
 	static function getDocumentStatus($workflowDocID){
-		$db = new DB_WE;
+		$db = new DB_WE();
 		$headline = array(array('dat' => '<div class="middlefont">' . g_l('modules_workflow', '[step]') . '</div>'));
 
 		$workflowDocument = new we_workflow_document($workflowDocID);
@@ -1490,7 +1490,7 @@ function checkData(){
 	}
 
 	static function getLogForDocument($docID, $type = 0){
-		$db = new DB_WE;
+		$db = new DB_WE();
 
 		$content = array();
 

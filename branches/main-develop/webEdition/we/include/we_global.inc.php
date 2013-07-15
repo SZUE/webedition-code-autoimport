@@ -1871,7 +1871,7 @@ function g_l($name, $specific, $omitErrors = false){
 function we_templateInit(){
 	require_once ($_SERVER['DOCUMENT_ROOT'] . LIB_DIR . 'we/core/autoload.php');
 	if(!isset($GLOBALS['DB_WE'])){
-		$GLOBALS['DB_WE'] = new DB_WE;
+		$GLOBALS['DB_WE'] = new DB_WE();
 	}
 
 	if($GLOBALS['we_doc']){

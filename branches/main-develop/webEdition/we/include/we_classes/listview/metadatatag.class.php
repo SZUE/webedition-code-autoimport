@@ -22,7 +22,7 @@
  * @package    webEdition_listview
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class metadatatag{
+class metadatatag {
 
 	private $DB_WE;
 	var $ClassName = __CLASS__;
@@ -31,7 +31,7 @@ class metadatatag{
 	var $id = 0;
 
 	function __construct($name){
-		$this->DB_WE = new DB_WE;
+		$this->DB_WE = new DB_WE();
 
 		if($name){
 			$unique = md5(uniqid(__FILE__, true));
@@ -41,7 +41,7 @@ class metadatatag{
 				if(!$_value){
 					$_value = $GLOBALS['we_doc']->getElement($name);
 				}
-			} else{
+			} else {
 				$_value = $GLOBALS["lv"]->f($name);
 			}
 			$this->id = 0;

@@ -182,7 +182,7 @@ class we_shop_Basket{
 	 * @return string
 	 */
 	function getserial($id, $type, $variant = false, $customFields = array()){
-		$DB_WE = new DB_WE;
+		$DB_WE = new DB_WE();
 		$Record = array();
 
 		switch($type){

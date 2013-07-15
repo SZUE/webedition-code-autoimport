@@ -124,7 +124,7 @@ $buttons = we_button::position_yes_no_cancel(
 );
 
 
-$db = new DB_WE();
+$db = $GLOBALS['DB_WE'];
 if(isset($_REQUEST['delete'])){
 	$db->query('TRUNCATE TABLE `' . ERROR_LOG_TABLE . '`');
 }

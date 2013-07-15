@@ -37,7 +37,7 @@ class we_shop_orderitemtag{
 			return;
 		}
 
-		$this->DB_WE = new DB_WE;
+		$this->DB_WE = new DB_WE();
 		$this->hidedirindex = $hidedirindex;
 
 		$this->object = new we_shop_listviewOrderitem(0, 1, 0, "", 0, '(IntID=' . intval($this->id) . ')' . ($condition ? " AND $condition" : ''), '', 0, 0, $hidedirindex);

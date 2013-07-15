@@ -24,7 +24,7 @@
  */
 function we_parse_tag_listview($attribs, $content){
 	$arr = array();
-	eval('$arr = ' . str_replace(array('\$','$','%WED%',), array('%WED%','\$','\$'), $attribs) . ';'); //Bug #6516
+	eval('$arr = ' . str_replace(array('\$', '$', '%WED%',), array('%WED%', '\$', '\$'), $attribs) . ';'); //Bug #6516
 	switch(weTag_getParserAttribute('type', $arr)){
 		default:
 		case 'document':
@@ -178,7 +178,7 @@ function we_tag_listview($attribs){
 			}
 			if(f('SELECT 1 AS a FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($class), 'a', $GLOBALS['DB_WE']) == '1'){
 				$GLOBALS['lv'] = new we_listview_object($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $class, $we_lv_cats, $we_lv_catOr, $cond, $triggerid, $cols, $seeMode, $we_lv_se, $we_lv_calendar, $we_lv_datefield, $we_lv_date, $we_lv_weekstart, $we_lv_categoryids, $we_lv_ws, $cfilter, $docid, $customers, $id, $we_predefinedSQL, $we_lv_languages, $hidedirindex, $objectseourls);
-			} else{
+			} else {
 				t_e('warning', 'Class with id=' . intval($class) . ' does not exist');
 				unset($GLOBALS['lv']);
 				return false;
@@ -192,19 +192,19 @@ function we_tag_listview($attribs){
 				if(isset($we_lv_langguagesdoc->TableID) && $we_lv_langguagesdoc->TableID){
 					$we_lv_pageID = $we_lv_langguagesdoc->OF_ID;
 					$we_lv_linktype = 'tblObjectFile';
-				} else{
+				} else {
 					$we_lv_pageID = $we_lv_langguagesdoc->ID;
 					$we_lv_linktype = 'tblFile';
 				}
 				unset($we_lv_langguagesdoc);
-			} else{
+			} else {
 				$we_lv_DocAttr = $docAttr;
 				$we_lv_langguagesdoc = we_getDocForTag($we_lv_DocAttr);
 				if(isset($we_lv_langguagesdoc->TableID) && $we_lv_langguagesdoc->TableID){
 					//$we_lv_pagelanguage = $we_lv_langguagesdoc->Language;
 					$we_lv_pageID = $we_lv_langguagesdoc->OF_ID;
 					$we_lv_linktype = 'tblObjectFile';
-				} else{
+				} else {
 					//$we_lv_pagelanguage = $we_lv_langguagesdoc->Language;
 					$we_lv_pageID = $we_lv_langguagesdoc->ID;
 					$we_lv_linktype = 'tblFile';
@@ -258,8 +258,8 @@ function we_tag_listview($attribs){
 			$path = weTag_getAttribute('path', $attribs);
 			$filterdatestart = weTag_getAttribute('filterdatestart', $attribs, '-1');
 			$filterdateend = weTag_getAttribute('filterdateend', $attribs, '-1');
-			$bannerid = f('SELECT ID FROM ' . BANNER_TABLE . ' WHERE PATH="' . $GLOBALS[DB_WE]->escape($path) . '"', 'ID', new DB_WE());
-			if($customer && defined('CUSTOMER_TABLE') && (!weBanner::customerOwnsBanner($_SESSION['webuser']['ID'], $bannerid))){
+			$bannerid = f('SELECT ID FROM ' . BANNER_TABLE . ' WHERE PATH="' . $GLOBALS[DB_WE]->escape($path) . '"', 'ID', $GLOBALS['DB_WE']);
+			if($customer && defined('CUSTOMER_TABLE') && (!weBanner::customerOwnsBanner($_SESSION['webuser']['ID'], $bannerid, $GLOBALS['DB_WE']))){
 				$bannerid = 0;
 			}
 			$GLOBALS['lv'] = new we_listview_banner($name, $we_rows, $order, $bannerid, $usefilter, $filterdatestart, $filterdateend);

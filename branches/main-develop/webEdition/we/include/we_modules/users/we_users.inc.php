@@ -1128,7 +1128,7 @@ _multiEditorreload = true;";
 				$user_permissions[$k] = $v;
 			}
 		}
-		$db_tmp = new DB_WE;
+		$db_tmp = new DB_WE();
 		$this->DB_WE->query('SELECT ParentID,ParentPerms,Permissions,Alias FROM ' . USER_TABLE . ' WHERE ID=' . intval($this->ID) . ' OR Alias=' . intval($this->ID));
 		$group_permissions = array();
 		while($this->DB_WE->next_record()) {

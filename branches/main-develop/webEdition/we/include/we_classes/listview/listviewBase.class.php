@@ -28,7 +28,7 @@
  * @desc    This is the base class for all webEdition listviews.
  *
  */
-abstract class listviewBase{
+abstract class listviewBase {
 
 	var $DB_WE; /* Main DB Object */
 	var $name; /* name of listview */
@@ -76,7 +76,7 @@ abstract class listviewBase{
 		//? strange setting - don't know what it is supposed to be
 		$this->search = ((!isset($_REQUEST['we_lv_search_' . $this->name])) && (isset($_REQUEST['we_from_search_' . $this->name]))) ? -1 : isset($_REQUEST['we_lv_search_' . $this->name]) ? $_REQUEST['we_lv_search_' . $this->name] : '';
 		$this->search = trim(str_replace(array('"', '\\"'), '', $this->search));
-		$this->DB_WE = new DB_WE;
+		$this->DB_WE = new DB_WE();
 		$this->rows = $rows;
 		$this->maxItemsPerPage = $cols ? ($rows * $cols) : $rows;
 		$this->cols = (($cols == '' && ($calendar == 'month' || $calendar == 'month_table')) ? 7 : $cols);
@@ -281,7 +281,7 @@ abstract class listviewBase{
 		} else if($this->hasPrevPage()){
 			$foo = $this->start - $this->maxItemsPerPage;
 			$tmp_href = oldHtmlspecialchars(listviewBase::we_makeQueryString('we_lv_start_' . $this->name . '=' . $foo));
-		} else{
+		} else {
 			return '';
 		}
 
@@ -290,7 +290,7 @@ abstract class listviewBase{
 		if($only){
 			$this->close_a = false;
 			return (isset($attribs[$only]) ? $attribs[$only] : '');
-		} else{
+		} else {
 			return getHtmlTag('a', $attribs, '', false, true);
 		}
 	}
@@ -330,7 +330,7 @@ abstract class listviewBase{
 						foreach($val as $ikey => $ival){
 							$url_tail .= $key . '[' . $ikey . ']=' . rawurlencode($ival) . '&';
 						}
-					} else{
+					} else {
 						$url_tail .= $key . '=' . rawurlencode($val) . '&';
 					}
 				}
@@ -387,21 +387,21 @@ abstract class listviewBase{
 
 			$foo = $this->start + $this->maxItemsPerPage;
 			$tmp_href = oldHtmlspecialchars(listviewBase::we_makeQueryString('we_lv_start_' . $this->name . '=' . $foo));
-		} else{
+		} else {
 			return '';
 		}
 
 		$attribs['href'] = we_tag('url', array('id' => ($urlID ? $urlID : 'top'), 'hidedirindex' => $this->hidedirindex));
 		if(strpos($attribs['href'], '?') === false){
 			$attribs['href'] = $attribs['href'] . '?';
-		} else{
+		} else {
 			$attribs['href'] = $attribs['href'] . '&';
 		}
 		$attribs['href'] = $attribs['href'] . $tmp_href;
 		if($only){
 			$this->close_a = false;
 			return (isset($attribs[$only]) ? $attribs[$only] : '');
-		} else{
+		} else {
 			return getHtmlTag('a', $attribs, '', false, true);
 		}
 	}
@@ -423,7 +423,7 @@ abstract class listviewBase{
 			case 'day':
 				if($calendar == 'day'){
 					return date('j', $GLOBALS['lv']->calendar_struct['defaultDate']);
-				} else{
+				} else {
 					return ($GLOBALS['lv']->calendar_struct['date'] > 0 ? date('j', $GLOBALS['lv']->calendar_struct['date']) : '');
 				}
 			case 'dayname':
@@ -524,7 +524,7 @@ abstract class listviewBase{
 				$this->calendar_struct['datefield'] = '###Published###';
 				$calendar_select = ',' . FILE_TABLE . '.Published AS Calendar ';
 				$calendar_where = ' AND (' . FILE_TABLE . '.Published>=' . $start_date . ' AND ' . FILE_TABLE . '.Published<=' . $end_date . ') ';
-			} else{
+			} else {
 				$field = (!empty($matrix) && in_array($this->calendar_struct['datefield'], array_keys($matrix))) ?
 					$matrix[$this->calendar_struct['datefield']]['table'] . '.' . $matrix[$this->calendar_struct['datefield']]['type'] . '_' . $this->calendar_struct['datefield'] :
 					CONTENT_TABLE . '.Dat';

@@ -65,7 +65,7 @@ class we_workflow_task extends we_workflow_base{
 	 * get all workflow tasks from database (STATIC)
 	 */
 	function getAllTasks($stepID){
-		$db = new DB_WE;
+		$db = new DB_WE();
 
 		$db->query("SELECT ID FROM " . WORKFLOW_TASK_TABLE . " WHERE stepID  =" . intval($stepID) . " ORDER BY ID");
 

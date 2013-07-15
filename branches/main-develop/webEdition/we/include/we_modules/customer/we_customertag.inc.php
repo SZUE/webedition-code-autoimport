@@ -38,7 +38,7 @@ class we_customertag{
 			return;
 		}
 
-		$this->DB_WE = new DB_WE;
+		$this->DB_WE = new DB_WE();
 		$this->hidedirindex = $hidedirindex;
 		$unique = md5(uniqid(__FILE__, true));
 

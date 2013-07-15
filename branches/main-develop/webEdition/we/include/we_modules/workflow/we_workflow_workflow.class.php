@@ -236,7 +236,7 @@ class we_workflow_workflow extends we_workflow_base{
 	}
 
 	function isDocInWorkflow($docID, $type){
-		$db = new DB_WE;
+		$db = new DB_WE();
 		$db->query('SELECT ID FROM ' . WORKFLOW_DOC_TABLE . ' WHERE documentID=' . intval($docID) . ' AND Type IN(0,1) AND Status=0');
 		if($db->next_record())
 			return $db->f('ID');
@@ -245,7 +245,7 @@ class we_workflow_workflow extends we_workflow_base{
 	}
 
 	function isObjectInWorkflow($docID){
-		$db = new DB_WE;
+		$db = new DB_WE();
 		$db->query('SELECT ID FROM ' . WORKFLOW_DOC_TABLE . ' WHERE documentID=' . intval($docID) . ' AND Type=2 AND Status=0');
 		if($db->next_record())
 			return $db->f('ID');
@@ -259,7 +259,7 @@ class we_workflow_workflow extends we_workflow_base{
 	function getDocumentWorkflow($doctype, $categories, $folder){
 
 		$wfIDs = array();
-		$db = new DB_WE;
+		$db = new DB_WE();
 		$workflowID = 0;
 		/**
 		 * find by document type (has to be together with category)
@@ -330,7 +330,7 @@ class we_workflow_workflow extends we_workflow_base{
 	 * Get workflow for object
 	 */
 	function getObjectWorkflow($object, $categories='', $folderID=0){
-		$db = new DB_WE;
+		$db = new DB_WE();
 		$workflowID = 0;
 
 		$wfIDs = array();
