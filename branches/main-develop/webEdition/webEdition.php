@@ -528,48 +528,41 @@ if(!empty($_jsincludes)){
 
 				if (eTable === "") {
 					hasPerm = false;
-				} else if (wePerms.ADMINISTRATOR) {
+				} else if (<?php echo ($_SESSION["perms"]["ADMINISTRATOR"] ? 'true' : 'false');?>) {
 					hasPerm = true;
 				} else if (isFolder) {
 					switch (eTable) {
 						case "<?php echo FILE_TABLE; ?>":
-							if (wePerms.DELETE_DOC_FOLDER) {
-								hasPerm = true;
-							}
+							hasPerm = <?php echo ($_SESSION['perms']['DELETE_DOC_FOLDER'] ? 'true' : 'false'); ?>;
 							break;
 						case "<?php echo TEMPLATES_TABLE; ?>":
-							if (wePerms.DELETE_TEMP_FOLDER) {
-								hasPerm = true;
-							}
+							hasPerm = <?php echo ($_SESSION['perms']['DELETE_TEMP_FOLDER'] ? 'true' : 'false'); ?>;
 							break;
 						case "<?php echo defined("OBJECT_FILES_TABLE") ? OBJECT_FILES_TABLE : -1; ?>":
-							if (wePerms.DELETE_OBJECTFILE) {
-								hasPerm = true;
-							}
+							hasPerm = <?php echo ($_SESSION['perms']['DELETE_OBJECTFILE'] ? 'true' : 'false'); ?>;
 							break;
+						default:
+							hasPerm = false;
 					}
 				} else {
 					switch (eTable) {
 						case "<?php echo FILE_TABLE; ?>":
-							if (wePerms.DELETE_DOCUMENT) {
-								hasPerm = true;
-							}
+							hasPerm = <?php echo ($_SESSION['perms']['DELETE_DOCUMENT'] ? 'true' : 'false'); ?>;
 							break;
 						case "<?php echo TEMPLATES_TABLE; ?>":
+							hasPerm = <?php echo ($_SESSION['perms']['DELETE_TEMPLATE'] ? 'true' : 'false'); ?>;
 							if (wePerms.DELETE_TEMPLATE) {
 								hasPerm = true;
 							}
 							break;
 						case "<?php echo defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : -1; ?>":
-							if (wePerms.DELETE_OBJECTFILE) {
-								hasPerm = true;
-							}
+							hasPerm = <?php echo ($_SESSION['perms']['DELETE_OBJECTFILE'] ? 'true' : 'false'); ?>;
 							break;
 						case "<?php echo defined('OBJECT_FILES_TABLE') ? OBJECT_TABLE : -2; ?>":
-							if (wePerms.DELETE_OBJECT) {
-								hasPerm = true;
-							}
+							hasPerm = <?php echo ($_SESSION['perms']['DELETE_OBJECT'] ? 'true' : 'false'); ?>;
 							break;
+						default:
+							hasPerm = false;
 					}
 				}
 
@@ -592,48 +585,43 @@ if(!empty($_jsincludes)){
 				var isFolder = (cType === "folder");
 				var hasPerm = false;
 
-				if (wePerms.ADMINISTRATOR) {
+				if (eTable === "") {
+					hasPerm = false;
+				} else if (<?php echo ($_SESSION["perms"]["ADMINISTRATOR"] ? 'true' : 'false');?>) {
 					hasPerm = true;
 				} else if (isFolder) {
 					switch (eTable) {
 						case "<?php echo FILE_TABLE; ?>":
-							if (wePerms.DELETE_DOC_FOLDER) {
-								hasPerm = true;
-							}
+							hasPerm = <?php echo ($_SESSION['perms']['DELETE_DOC_FOLDER'] ? 'true' : 'false'); ?>;
 							break;
 						case "<?php echo TEMPLATES_TABLE; ?>":
-							if (wePerms.DELETE_TEMP_FOLDER) {
-								hasPerm = true;
-							}
+							hasPerm = <?php echo ($_SESSION['perms']['DELETE_TEMP_FOLDER'] ? 'true' : 'false'); ?>;
 							break;
 						case "<?php echo defined("OBJECT_FILES_TABLE") ? OBJECT_FILES_TABLE : -1; ?>":
-							if (wePerms.DELETE_OBJECTFILE) {
-								hasPerm = true;
-							}
+							hasPerm = <?php echo ($_SESSION['perms']['DELETE_OBJECTFILE'] ? 'true' : 'false'); ?>;
 							break;
+						default:
+							hasPerm = false;
 					}
 				} else {
 					switch (eTable) {
 						case "<?php echo FILE_TABLE; ?>":
-							if (wePerms.DELETE_DOCUMENT) {
-								hasPerm = true;
-							}
+							hasPerm = <?php echo ($_SESSION['perms']['DELETE_DOCUMENT'] ? 'true' : 'false'); ?>;
 							break;
 						case "<?php echo TEMPLATES_TABLE; ?>":
+							hasPerm = <?php echo ($_SESSION['perms']['DELETE_TEMPLATE'] ? 'true' : 'false'); ?>;
 							if (wePerms.DELETE_TEMPLATE) {
 								hasPerm = true;
 							}
 							break;
 						case "<?php echo defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : -1; ?>":
-							if (wePerms.DELETE_OBJECTFILE) {
-								hasPerm = true;
-							}
+							hasPerm = <?php echo ($_SESSION['perms']['DELETE_OBJECTFILE'] ? 'true' : 'false'); ?>;
 							break;
-						case "<?php echo defined('OBJECT_TABLE') ? OBJECT_TABLE : -2; ?>":
-							if (wePerms.DELETE_OBJECT) {
-								hasPerm = true;
-							}
+						case "<?php echo defined('OBJECT_FILES_TABLE') ? OBJECT_TABLE : -2; ?>":
+							hasPerm = <?php echo ($_SESSION['perms']['DELETE_OBJECT'] ? 'true' : 'false'); ?>;
 							break;
+						default:
+							hasPerm = false;
 					}
 				}
 
