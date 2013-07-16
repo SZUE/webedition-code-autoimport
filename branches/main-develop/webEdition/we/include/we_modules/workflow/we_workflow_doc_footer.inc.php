@@ -31,10 +31,8 @@ function showWorkflowFooterForNormalMode(){
 	$_col = 0;
 
 	$_footerTable = new we_html_table(array("cellpadding" => 0,
-			"cellspacing" => 0,
-			"border" => 0),
-			1,
-			0);
+		"cellspacing" => 0,
+		"border" => 0), 1, 0);
 
 	$_publishbutton = '';
 	//	decline
@@ -44,7 +42,7 @@ function showWorkflowFooterForNormalMode(){
 
 	if(we_workflow_utility::isWorkflowFinished($we_doc->ID, $we_doc->Table) || ((1 + we_workflow_utility::findLastActiveStep($we_doc->ID, $we_doc->Table)) == count(we_workflow_utility::getNumberOfSteps($we_doc->ID, $we_doc->Table)) && we_hasPerm("PUBLISH"))){
 		$_publishbutton = we_button::create_button("publish", "javascript:finish_workflow();");
-	} else{
+	} else {
 		$_footerTable->addCol(2);
 		$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
 		$_footerTable->setColContent(0, $_col++, we_button::create_button("forward", "javascript:pass_workflow();"));
@@ -61,7 +59,7 @@ function showWorkflowFooterForNormalMode(){
 		$_footerTable->addCol(2);
 		$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
 		$_footerTable->setColContent(0, $_col++, $_publishbutton);
-	} else{
+	} else {
 		if(we_workflow_utility::canUserEditDoc($we_doc->ID, $we_doc->Table, $_SESSION["user"]["ID"]) && $we_doc->userCanSave()){
 
 			if(!isset($we_doc->IsClassFolder) || !$we_doc->IsClassFolder){
@@ -85,9 +83,8 @@ function showWorkflowFooterForSEEMMode(){
 	$_col = 0;
 	$_gap = 16;
 	$_footerTable = new we_html_table(array("cellpadding" => 0,
-			"cellspacing" => 0,
-			"border" => 0),
-			1, 0);
+		"cellspacing" => 0,
+		"border" => 0), 1, 0);
 
 	if($we_doc->EditPageNr == WE_EDITPAGE_PREVIEW){
 
@@ -105,7 +102,7 @@ function showWorkflowFooterForSEEMMode(){
 		$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
 		if(we_workflow_utility::isWorkflowFinished($we_doc->ID, $we_doc->Table) || ((1 + we_workflow_utility::findLastActiveStep($we_doc->ID, $we_doc->Table)) == count(we_workflow_utility::getNumberOfSteps($we_doc->ID, $we_doc->Table)) && we_hasPerm("PUBLISH"))){
 			$_footerTable->setColContent(0, $_col++, we_button::create_button("publish", "javascript:finish_workflow();"));
-		} else{
+		} else {
 			$_footerTable->setColContent(0, $_col++, we_button::create_button("forward", "javascript:pass_workflow();"));
 		}
 	} else if($we_doc->EditPageNr == WE_EDITPAGE_CONTENT){
@@ -129,7 +126,7 @@ function showWorkflowFooterForSEEMMode(){
 		$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
 		if(we_workflow_utility::isWorkflowFinished($we_doc->ID, $we_doc->Table) || ((1 + we_workflow_utility::findLastActiveStep($we_doc->ID, $we_doc->Table)) == count(we_workflow_utility::getNumberOfSteps($we_doc->ID, $we_doc->Table)) && we_hasPerm("PUBLISH"))){
 			$_footerTable->setColContent(0, $_col++, we_button::create_button("publish", "javascript:finish_workflow();"));
-		} else{
+		} else {
 			$_footerTable->setColContent(0, $_col++, we_button::create_button("forward", "javascript:pass_workflow();"));
 		}
 		if(we_workflow_utility::canUserEditDoc($we_doc->ID, $we_doc->Table, $_SESSION["user"]["ID"]) && $we_doc->userCanSave()){
@@ -162,7 +159,7 @@ function showWorkflowFooterForSEEMMode(){
 		$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
 		if(we_workflow_utility::isWorkflowFinished($we_doc->ID, $we_doc->Table) || ((1 + we_workflow_utility::findLastActiveStep($we_doc->ID, $we_doc->Table)) == count(we_workflow_utility::getNumberOfSteps($we_doc->ID, $we_doc->Table)) && we_hasPerm("PUBLISH"))){
 			$_footerTable->setColContent(0, $_col++, we_button::create_button("publish", "javascript:finish_workflow();"));
-		} else{
+		} else {
 			$_footerTable->setColContent(0, $_col++, we_button::create_button("forward", "javascript:pass_workflow();"));
 		}
 
@@ -185,50 +182,28 @@ function showWorkflowFooterForSEEMMode(){
 
 if(we_workflow_utility::isUserInWorkflow($we_doc->ID, $we_doc->Table, $_SESSION["user"]["ID"]) || we_hasPerm("PUBLISH")){
 
-	if($_SESSION['weS']['we_mode'] == "normal"){
-		$_table = showWorkflowFooterForNormalMode();
-	} else if($_SESSION['weS']['we_mode'] == "seem"){
-		$_table = showWorkflowFooterForSEEMMode();
-	}
+	$_table = ($_SESSION['weS']['we_mode'] == "normal" ?
+			showWorkflowFooterForNormalMode() :
+			($_SESSION['weS']['we_mode'] == "seem" ?
+				showWorkflowFooterForSEEMMode() : ''));
 
+	$_we_form = we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), $_table);
 
-	$_we_form = we_html_element::htmlForm(array("name" => "we_form",
-			"method" => "post"), $_table
-	);
-
-	$_body = we_html_element::htmlBody(array("bgcolor" => "white",
-			"background" => EDIT_IMAGE_DIR . "editfooterback.gif",
-			"marginwidth" => 0,
-			"marginheight" => 8,
-			"leftmargin" => 0,
-			"topmargin" => 8), $_we_form)
+	echo we_html_element::htmlBody(array(
+		'style' => 'margin: 8px 0px 0px 8px;background: url(' . EDIT_IMAGE_DIR . 'editfooterback.gif);',
+		), $_we_form)
 	;
+} else {
 
-	print $_body;
-} else{
-
-	$_table = new we_html_table(array("cellpadding" => 0,
-			"cellspacing" => 0,
-			"border" => 0),
-			1,
-			4);
+	$_table = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 1, 4);
 	$_table->setColContent(0, 0, we_html_tools::getPixel(16, 2));
 	$_table->setColContent(0, 1, we_html_element::htmlImg(array("src" => IMAGE_DIR . "alert.gif")));
 	$_table->setColContent(0, 2, we_html_tools::getPixel(16, 2));
 	$_table->setCol(0, 3, array("class" => "defaultfont"), g_l('modules_workflow', '[doc_in_wf_warning]'));
 
-	$_body = we_html_element::htmlBody(array("bgcolor" => "white",
-			"background" => EDIT_IMAGE_DIR . "editfooterback.gif",
-			"marginwidth" => 0,
-			"marginheight" => 8,
-			"leftmargin" => 0,
-			"topmargin" => 8), $_table->getHtml());
-
-	print $_body;
+	echo we_html_element::htmlBody(array(
+		'style' => 'margin: 0px 8px 0px 8px;background: url("' . EDIT_IMAGE_DIR . 'editfooterback.gif")',
+		), $_table->getHtml());
 }
-
-$_jscode = "";
-
-print we_html_element::jsElement($_jscode);
 ?>
 </html>

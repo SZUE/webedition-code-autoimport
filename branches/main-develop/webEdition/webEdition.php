@@ -24,7 +24,7 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 
-//	we need some different functions for normal mode and seeMode 
+//	we need some different functions for normal mode and seeMode
 //	these function all have the same name: pWebEditionXXXX() and
 //	are located in 2 different files. Depending on mode the correct
 //	file is included and the matching functions are included.
@@ -329,7 +329,7 @@ if(defined('MESSAGING_SYSTEM')){
 
 	function getSidebarWidth() {
 		var obj = self.rframe.document.getElementById("sidebarDiv");
-		if (obj === undefined) {
+		if (obj === undefined || obj === null) {
 			return 0;
 		}
 		var w = obj.style.left;
@@ -338,7 +338,7 @@ if(defined('MESSAGING_SYSTEM')){
 
 	function setSidebarWidth() {
 		var obj = self.rframe.document.getElementById("sidebarDiv");
-		if (obj !== undefined) {
+		if (obj !== undefined && obj !== null) {
 			obj.style.left = w + "px";
 		}
 	}
@@ -769,7 +769,7 @@ if(!empty($_jsincludes)){
 				if (jsWindow_count) {
 					for (var k = jsWindow_count - 1; k > -1; k--) {
 						eval("if(jsWindow" + k + "Object.ref=='edit_module'){ fo=true;wind=jsWindow" + k + "Object.wind}");
-						if (fo){
+						if (fo) {
 							break;
 						}
 					}
@@ -783,7 +783,7 @@ if(!empty($_jsincludes)){
 				if (jsWindow_count) {
 					for (var k = jsWindow_count - 1; k > -1; k--) {
 						eval("if(jsWindow" + k + "Object.ref=='tool_window' || jsWindow" + k + "Object.ref=='tool_window_navigation' || jsWindow" + k + "Object.ref=='tool_window_weSearch'){ fo=true;wind=jsWindow" + k + "Object.wind}");
-						if (fo){
+						if (fo) {
 							break;
 						}
 					}
@@ -797,7 +797,7 @@ if(!empty($_jsincludes)){
 				if (jsWindow_count) {
 					for (var k = jsWindow_count - 1; k > -1; k--) {
 						eval("if(jsWindow" + k + "Object.ref=='tool_window' || jsWindow" + k + "Object.ref=='tool_window_navigation' || jsWindow" + k + "Object.ref=='tool_window_weSearch'){ fo=true;wind=jsWindow" + k + "Object.wind}");
-						if (fo){
+						if (fo) {
 							break;
 						}
 					}
@@ -813,13 +813,13 @@ if(!empty($_jsincludes)){
 					else
 						url = "<?php echo WEBEDITION_DIR; ?>getHelp.php";
 					new jsWindow(url, "help", -1, -1, 720, 600, true, false, true, true);
-<?php } else{ ?>
+<?php } else { ?>
 					url = "<?php echo WEBEDITION_DIR; ?>noAvailable.php";
 					new jsWindow(url, "help_no_available", -1, -1, 380, 140, true, false, true);
 <?php } ?>
 				break;
 			case "help_documentation":
-				new jsWindow("http://documentation.webedition.org/wiki/<?php echo ($GLOBALS["WE_LANGUAGE"] == 'Deutsch' ? 'de' : 'en');?>/","help_documentation",-1,-1,960,700,true,true,true,true);
+				new jsWindow("http://documentation.webedition.org/wiki/<?php echo ($GLOBALS["WE_LANGUAGE"] == 'Deutsch' ? 'de' : 'en'); ?>/", "help_documentation", -1, -1, 960, 700, true, true, true, true);
 				break;
 			case "help_forum":
 				new jsWindow("http://forum.webedition.org", "help_forum", -1, -1, 960, 700, true, true, true, true);
@@ -828,13 +828,13 @@ if(!empty($_jsincludes)){
 				new jsWindow("http://qa.webedition.org/tracker/", "help_bugtracker", -1, -1, 960, 700, true, true, true, true);
 				break;
 			case "help_tagreference":
-				new jsWindow("http://tags.webedition.org/<?php echo ($GLOBALS["WE_LANGUAGE"] == 'Deutsch' ? 'de' : 'en');?>/","help_tagreference",-1,-1,960,700,true,true,true,true);
+				new jsWindow("http://tags.webedition.org/<?php echo ($GLOBALS["WE_LANGUAGE"] == 'Deutsch' ? 'de' : 'en'); ?>/", "help_tagreference", -1, -1, 960, 700, true, true, true, true);
 				break;
 			case "help_demo":
-				new jsWindow("http://demo.webedition.org/<?php echo ($GLOBALS["WE_LANGUAGE"] == 'Deutsch' ? 'de' : 'en');?>/","help_demo",-1,-1,960,700,true,true,true,true);
+				new jsWindow("http://demo.webedition.org/<?php echo ($GLOBALS["WE_LANGUAGE"] == 'Deutsch' ? 'de' : 'en'); ?>/", "help_demo", -1, -1, 960, 700, true, true, true, true);
 				break;
 			case "help_changelog":
-				new jsWindow("http://www.webedition.org/de/webedition-cms/versionshistorie/webedition-6/","help_changelog",-1,-1,960,700,true,true,true,true);
+				new jsWindow("http://www.webedition.org/de/webedition-cms/versionshistorie/webedition-6/", "help_changelog", -1, -1, 960, 700, true, true, true, true);
 				break;
 			case "openSelector":
 				new jsWindow(url, "we_fileselector", -1, -1,<?php echo WINDOW_SELECTOR_WIDTH . ',' . WINDOW_SELECTOR_HEIGHT; ?>, true, true, true, true);
@@ -1032,10 +1032,10 @@ if(!empty($_jsincludes)){
 				try {
 					if ((typeof treeData !== "undefined") && treeData) {
 						treeData.unselectnode();
-						if (arguments[1]){
+						if (arguments[1]) {
 							treeData.selection_table = arguments[1];
 						}
-						if (arguments[2]){
+						if (arguments[2]) {
 							treeData.selection = arguments[2];
 						}
 						if (treeData.selection_table === treeData.table) {

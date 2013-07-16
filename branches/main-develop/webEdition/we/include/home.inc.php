@@ -59,7 +59,7 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 		$aTrf = empty($aTrf) ? array_pop($aDat) : @unserialize($aTrf);
 		$aTrf = empty($aTrf) ? $aTopRssFeeds : $aTrf;
 		if(count($aDat) > $iLayoutCols){
-			while(count($aDat) > $iLayoutCols) {
+			while(count($aDat) > $iLayoutCols){
 				$aDelCol = array_pop($aDat);
 				foreach($aDelCol as $aShiftWidget){
 					$aDat[count($aDat) - 1][] = $aShiftWidget;
@@ -69,7 +69,7 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 			setUserPref('cockpit_rss', serialize($aTrf));
 		}
 		$iDatLen = count($aDat);
-	} else{
+	} else {
 		$iLayoutCols = $iDefCols;
 		$_SESSION['prefs']['cockpit_amount_columns'] = $iDefCols;
 
@@ -86,7 +86,7 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 			if(!is_array($item)){
 				if($item == $value){
 					return true;
-				} else{
+				} else {
 					continue;
 				}
 			}
@@ -187,7 +187,7 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 		$count_i = count($d);
 		echo "\t\t[";
 		reset($d);
-		while((list(, $v) = each($d))) {
+		while((list(, $v) = each($d))){
 			$i++;
 			echo "{'type':'" . $v[0] . "','cls':'" . $v[1] . "','res':" . $v[2] . ",'csv':'" . $v[3] . "'}" . (($i < $count_i) ? "," : "");
 		}
@@ -1004,7 +1004,7 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 			$s1 .= '<td id="spacer_' . $iCurrCol . '" style="width: 5px;"></td>';
 		}
 	}
-	while($iCurrCol < $iLayoutCols) {
+	while($iCurrCol < $iLayoutCols){
 		$iCurrCol++;
 		$s1 .= '<td id="c_' . $iCurrCol . '" class="cls_' . $iCurrCol . '_collapse">' . we_html_element::htmlDiv(
 				array(
@@ -1030,12 +1030,9 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 	print
 		we_html_element::htmlBody(
 			array(
-			"onload" => "_EditorFrame.initEditorFrameData({'EditorIsLoading':false});",
-			"marginwidth" => "10px",
-			"marginheight" => "10px",
-			"leftmargin" => "10px",
-			"topmargin" => "10px",
-			"class" => "bgc_white"
+			'onload' => "_EditorFrame.initEditorFrameData({'EditorIsLoading':false});",
+			'style' => 'margin: 10px 10px 10px 10px',
+			'class' => "bgc_white"
 			), we_html_element::htmlForm(
 				array(
 				"name" => "we_form"
@@ -1062,7 +1059,7 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 				array(
 				"id" => "divClone", "style" => "position:relative;display:none;"
 				), $oClone->getHtml()));
-} else{ // no right to see cockpit!!!
+} else { // no right to see cockpit!!!
 	print
 		we_html_element::jsElement('
 		function isHot(){

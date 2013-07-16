@@ -37,7 +37,7 @@ function in_array(arr, val) {
 function findInArray(arrayToSearch, searchValue, optionalMatchFn) {
 	var retVal = -1;
 	for (var i = 0; i < arrayToSearch.length; i++) {
-		if (optionalMatchFn !== null) {
+		if (optionalMatchFn !== null && optionalMatchFn !== undefined) {
 			if (optionalMatchFn(arrayToSearch[i], searchValue)) {
 				retVal = i;
 				break;

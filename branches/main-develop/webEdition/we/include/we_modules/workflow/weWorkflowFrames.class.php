@@ -26,7 +26,7 @@ class weWorkflowFrames extends weModuleFrames{
 
 	public $module = "workflow";
 	protected $useMainTree = false;
-			
+
 	function __construct(){
 		parent::__construct(WE_WORKFLOW_MODULE_DIR . "edit_workflow_frameset.php");
 		$this->View = new weWorkflowView();
@@ -378,8 +378,7 @@ top.content.hloaded=1;
 		$body = we_html_element::htmlBody(array(
 			'bgcolor' => 'white',
 			'background' => IMAGE_DIR . 'edit/editfooterback.gif',
-			'marginwidth' => 0, 'marginheight' => 0,
-			'leftmargin' => 0, 'topmargin' => 0,
+			'style' => 'margin: 0px 0px 0px 0px;',
 			'onload' => ($mode == 0 ? 'setStatusCheck()' : '')
 			), we_html_element::htmlForm($attribs = array(), $table1->getHtml() . $table2->getHtml())
 		);

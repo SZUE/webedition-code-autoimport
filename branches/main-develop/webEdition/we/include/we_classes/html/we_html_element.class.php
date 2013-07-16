@@ -226,7 +226,9 @@ abstract class we_html_element{
 	 */
 	static function htmlBody($attribs = array(), $content = ''){
 		$body = new we_baseElement('body', true, $attribs, $content);
-		$body->setStyle('margin', '0px 0px 0px 0px');
+		if(!$body->hasStyle('margin')){
+			$body->setStyle('margin', '0px 0px 0px 0px');
+		}
 		return $body->getHTML();
 	}
 
@@ -421,7 +423,7 @@ abstract class we_html_element{
 	static function htmlExIFrame($__name, $__src, $__style, $class = ''){
 		if(strlen($__src) > 100){
 			$tmp = $__src;
-		} else{
+		} else {
 			ob_start();
 			include $__src;
 			$tmp = ob_get_contents();
