@@ -50,7 +50,7 @@ class liveUpdateFrames{
 					// open frameset
 					if(isset($_REQUEST['active'])){
 						$this->Data['activeTab'] = $this->getValidTab($_REQUEST['active']);
-					} else{
+					} else {
 						$this->Data['activeTab'] = $this->getValidTab();
 					}
 					break;
@@ -150,7 +150,7 @@ class liveUpdateFrames{
 						weFile::save(LIVEUPDATE_DIR . 'conf/conf.inc.php', $conf);
 					}
 				}
-			} else{
+			} else {
 				$conf.='$_REQUEST[\'testUpdate\'] = ' . $_REQUEST['setTestUpdate'] . ';';
 				weFile::save(LIVEUPDATE_DIR . 'conf/conf.inc.php', $conf);
 			}
@@ -199,7 +199,7 @@ class liveUpdateFrames{
 				if(strpos($lng, "..") === false && $lng != ""){
 					if($liveUpdateFunc->deleteDir(LIVEUPDATE_SOFTWARE_DIR . '/webEdition/we/include/we_language/' . $lng)){
 						$deletedLngs[] = $lng;
-					} else{
+					} else {
 						$notDeletedLngs[] = $lng;
 					}
 				}
@@ -283,7 +283,7 @@ class liveUpdateFrames{
 		$this->Data['amountEntries'] = 0;
 
 		$GLOBALS['DB_WE']->query($queryAmount);
-		while($GLOBALS['DB_WE']->next_record()) {
+		while($GLOBALS['DB_WE']->next_record()){
 
 			$this->Data['allEntries'] += $GLOBALS['DB_WE']->f('amount');
 
@@ -318,7 +318,7 @@ class liveUpdateFrames{
 			$this->Data['logEntries'] = array();
 
 			$GLOBALS['DB_WE']->query($query);
-			while(($row = $GLOBALS['DB_WE']->next_record())) {
+			while(($row = $GLOBALS['DB_WE']->next_record())){
 
 				$this->Data['logEntries'][] = array(
 					'date' => $GLOBALS['DB_WE']->f('date'),
