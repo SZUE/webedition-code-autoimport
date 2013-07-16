@@ -119,7 +119,7 @@ function get_value($settingname){
 					//handle subkey
 					$tmp = @unserialize(isset($_SESSION['prefs'][$settingname]) ? $_SESSION['prefs'][$settingname] : $GLOBALS['configs']['user'][$settingname][0]);
 					return isset($tmp[$all[1]]) ? $tmp[$all[1]] : 0;
-				} else{
+				} else {
 					return (isset($_SESSION['prefs'][$settingname]) ? $_SESSION['prefs'][$settingname] : $GLOBALS['configs']['user'][$settingname][0]);
 				}
 			}
@@ -156,7 +156,7 @@ function remember_value($settingvalue, $settingname, $comment = ''){
 		default:
 			if(isset($GLOBALS['configs']['user'][$settingname])){
 				$_SESSION['prefs'][$settingname] = ($settingvalue == null ? 0 : $settingvalue);
-			} else{
+			} else {
 				$_file = &$GLOBALS['config_files']['conf_global']['content'];
 				$_file = we_base_preferences::changeSourceCode('define', $_file, $settingname, $settingvalue, true, $comment);
 			}
@@ -399,7 +399,7 @@ function remember_value($settingvalue, $settingname, $comment = ''){
 							if(isset($_single_recipient[1]) && $_single_recipient[1]){
 								$DB_WE->query('INSERT INTO ' . RECIPIENTS_TABLE . ' (Email) VALUES("' . $DB_WE->escape($_single_recipient[1]) . '")');
 							}
-						} else{
+						} else {
 							if(isset($_single_recipient[1]) && isset($_single_recipient[0]) && $_single_recipient[1] && $_single_recipient[0]){
 								$DB_WE->query('UPDATE ' . RECIPIENTS_TABLE . ' SET Email="' . $DB_WE->escape($_single_recipient[1]) . '" WHERE ID=' . intval($_single_recipient[0]));
 							}
@@ -435,7 +435,7 @@ $GLOBALS[\'_we_active_integrated_modules\'] = array(
 	define(\'WE_PROXYUSER\', "' . ((isset($_REQUEST['newconf']["proxyuser"]) && $_REQUEST['newconf']["proxyuser"] != null) ? $_REQUEST['newconf']["proxyuser"] : '') . '");
 	define(\'WE_PROXYPASSWORD\', "' . ((isset($_REQUEST['newconf']["proxypass"]) && $_REQUEST['newconf']["proxypass"] != null) ? $_REQUEST['newconf']["proxypass"] : '') . '");'
 				);
-			} else{
+			} else {
 				// Delete proxy settings file
 				if(file_exists(WEBEDITION_PATH . 'liveUpdate/includes/proxysettings.inc.php')){
 					unlink(WEBEDITION_PATH . 'liveUpdate/includes/proxysettings.inc.php');
@@ -480,7 +480,7 @@ $GLOBALS[\'_we_active_integrated_modules\'] = array(
 					$_file = we_base_preferences::changeSourceCode('define', $_file, 'HTTP_USERNAME', ((isset($_REQUEST['newconf']['HTTP_USERNAME']) && $_REQUEST['newconf']['HTTP_USERNAME'] != null) ? $_REQUEST['newconf']['HTTP_USERNAME'] : ''));
 					$_file = we_base_preferences::changeSourceCode('define', $_file, 'HTTP_PASSWORD', ((isset($_REQUEST['newconf']['HTTP_PASSWORD']) && $_REQUEST['newconf']['HTTP_PASSWORD'] != null) ? $_REQUEST['newconf']['HTTP_PASSWORD'] : ''));
 				}
-			} else{
+			} else {
 				// disable
 				if(defined('HTTP_USERNAME') || defined('HTTP_PASSWORD')){
 					$_file = we_base_preferences::changeSourceCode('define', $_file, 'HTTP_USERNAME', 'myUsername', false);
@@ -628,7 +628,7 @@ function build_dialog($selected_setting = 'ui'){
 			//	Look which languages are installed ...
 			$_language_directory = dir(WE_INCLUDES_PATH . 'we_language');
 
-			while(false !== ($entry = $_language_directory->read())) {
+			while(false !== ($entry = $_language_directory->read())){
 				if($entry != '.' && $entry != '..'){
 					if(is_dir(WE_INCLUDES_PATH . 'we_language/' . $entry)){
 						$_language[$entry] = $entry;
@@ -659,7 +659,7 @@ function build_dialog($selected_setting = 'ui'){
 </div>';
 				// Build dialog
 				$_settings[] = array('headline' => g_l('prefs', '[choose_language]'), 'html' => $_languages->getHtml() . '<br><br>' . $langNote, 'space' => 200, 'noline' => 1);
-			} else{ // Just one Language Installed, no select box needed
+			} else { // Just one Language Installed, no select box needed
 				foreach($_language as $key => $value){
 					$_languages = $value;
 				}
@@ -945,7 +945,7 @@ function build_dialog($selected_setting = 'ui'){
 				if($showStartType){
 					if(in_array($_seem_start_type, $permitedStartTypes)){
 						$_start_type->selectOption($_seem_start_type);
-					} else{
+					} else {
 						$_seem_start_type = $permitedStartTypes[0];
 					}
 					$_seem_html = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0), 2, 1);
@@ -1051,7 +1051,7 @@ function build_dialog($selected_setting = 'ui'){
 			if(get_value('sizeOpt') == 0){
 				$_window_specify = false;
 				$_window_max = true;
-			} else{
+			} else {
 				$_window_specify = true;
 				$_window_max = false;
 			}
@@ -1676,9 +1676,10 @@ if(window.onload) {
 				'<table border="0" cellpadding="0" cellspacing="0">
 				<tr><td class="defaultfont" style="width:200px;">' . g_l('prefs', '[editor_tabSize]') . '</td><td>' . we_html_tools::htmlTextInput("newconf[editorTabSize]", 2, get_value("editorTabSize"), "", "", "int", 135) . '</td></tr>
 			</table>';
+
 			$_template_editor_autoIndent_code =
 				we_forms::checkbox(1, get_value('editorAutoIndent'), 'editorAutoIndent', g_l('prefs', '[editor_enable]'), true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[editorAutoIndent]\');') .
-				we_html_tools::hidden('newconf[editorAutoIndent]', get_value('editorAutoIndent')) .
+				we_html_tools::hidden('newconf[editorAutoIndent]', get_value('editorAutoIndent'));
 
 			$_template_editor_tooltips_code = we_forms::checkbox(1, get_value('editorTooltips'), 'newconf[editorTooltips]', g_l('prefs', '[editor_enable]'), true, 'defaultfont', '');
 
@@ -1930,7 +1931,7 @@ function formmailBlockOnOff() {
 
 				$DB_WE->query('SELECT ID, Email FROM ' . RECIPIENTS_TABLE . ' ORDER BY Email');
 
-				while($DB_WE->next_record()) {
+				while($DB_WE->next_record()){
 					$_enabled_buttons = true;
 					$_select_box->addOption($DB_WE->f("ID"), $DB_WE->f("Email"));
 				}
@@ -2272,7 +2273,7 @@ function formmailBlockOnOff() {
 			$GLOBALS['DB_WE']->query('SHOW CHARACTER SET');
 
 			$charsets = array('');
-			while($GLOBALS['DB_WE']->next_record()) {
+			while($GLOBALS['DB_WE']->next_record()){
 				$charsets[] = $GLOBALS['DB_WE']->f('Charset');
 			}
 			sort($charsets);
@@ -2282,7 +2283,7 @@ function formmailBlockOnOff() {
 
 			if(defined('DB_SET_CHARSET') && DB_SET_CHARSET != ''){
 				$_db_set_charset->selectOption(DB_SET_CHARSET);
-			} else{
+			} else {
 				$tmp = $GLOBALS['DB_WE']->getCurrentCharset();
 				if($tmp){
 					$_db_set_charset->selectOption($tmp);
@@ -2328,7 +2329,7 @@ function formmailBlockOnOff() {
 				$_but = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_button::create_button("select", "javascript:we_cmd('browse_server', '" . $wecmdenc1 . "', 'folder', document.forms[0].elements['newconf[WE_THUMBNAIL_DIRECTORY]'].value, '')") : "";
 				$_inp = we_html_tools::htmlTextInput("newconf[WE_THUMBNAIL_DIRECTORY]", 12, get_value("WE_THUMBNAIL_DIRECTORY"), "", "", "text", 125);
 				$_thumbnail_dir = we_button::create_button_table(array($_inp, $_but));
-			} else{ //  gd lib ist nicht installiert
+			} else { //  gd lib ist nicht installiert
 				$_but = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_button::create_button("select", "#", true, 100, 22, '', '', true) : "";
 				$_inp = we_html_tools::htmlTextInput("newconf[WE_THUMBNAIL_DIRECTORY]", 12, get_value("WE_THUMBNAIL_DIRECTORY"), "", "", "text", 125, 0, '', true);
 				$_thumbnail_dir = we_button::create_button_table(array($_inp, $_but)) . '<br/>' . g_l('thumbnails', "[add_description_nogdlib]");
@@ -2598,7 +2599,7 @@ function formmailBlockOnOff() {
 			$_error_mail_specify_table->setCol(0, 1, array('class' => 'defaultfont'), g_l('prefs', '[error_mail_address]') . ':');
 			$_error_mail_specify_table->setCol(0, 2, null, we_html_tools::getPixel(6, 1));
 
-			$_error_mail_specify_table->setCol(0, 3, array('align' => 'left'), we_html_tools::htmlTextInput('newconf[WE_ERROR_MAIL_ADDRESS]', 6, (get_value('WE_ERROR_MAIL')?get_value('WE_ERROR_MAIL_ADDRESS'):''), 100, 'placeholder="mail@example"', 'email', 195));
+			$_error_mail_specify_table->setCol(0, 3, array('align' => 'left'), we_html_tools::htmlTextInput('newconf[WE_ERROR_MAIL_ADDRESS]', 6, (get_value('WE_ERROR_MAIL') ? get_value('WE_ERROR_MAIL_ADDRESS') : ''), 100, 'placeholder="mail@example"', 'email', 195));
 
 			$_error_display_table->setCol(6, 0, null, we_html_tools::getPixel(1, 10));
 			$_error_display_table->setCol(7, 0, null, $_error_mail_specify_table->getHtml());
@@ -3101,7 +3102,7 @@ if(isset($_REQUEST['save_settings']) && $_REQUEST['save_settings'] == 'true'){
 			if(empty($_REQUEST['seem_start_document'])){
 				$acError = true;
 				$acErrorMsg = sprintf(g_l('alert', '[field_in_tab_notvalid]'), g_l('prefs', '[seem_startdocument]'), g_l('prefs', '[tab][ui]')) . "\\n";
-			} else{
+			} else {
 				$acResponse = $acQuery->getItemById($_REQUEST['seem_start_document'], FILE_TABLE, array('IsFolder'));
 				if(!$acResponse || $acResponse[0]['IsFolder'] == 1){
 					$acError = true;
@@ -3119,7 +3120,7 @@ if(isset($_REQUEST['save_settings']) && $_REQUEST['save_settings'] == 'true'){
 			if(empty($_REQUEST['seem_start_object'])){
 				$acError = true;
 				$acErrorMsg = sprintf(g_l('alert', '[field_in_tab_notvalid]'), g_l('prefs', '[seem_startdocument]'), g_l('prefs', '[tab][ui]')) . "\\n";
-			} else{
+			} else {
 				$acResponse = $acQuery->getItemById($_REQUEST['seem_start_object'], OBJECT_FILES_TABLE, array('IsFolder'));
 				if(!$acResponse || $acResponse[0]['IsFolder'] == 1){
 					$acError = true;
@@ -3180,7 +3181,7 @@ setTimeout(function(){
 					   ') .
 		'</head>' .
 		we_html_element::htmlBody(array('class' => 'weDialogBody', 'onload' => 'doClose()'), build_dialog('saved')) . '</html>';
-} else{
+} else {
 	$_form = we_html_element::htmlForm(array('onSubmit' => 'return false;', 'name' => 'we_form', 'method' => 'post', 'action' => $_SERVER['SCRIPT_NAME']), we_html_element::htmlHidden(array('name' => 'save_settings', 'value' => 'false')) . render_dialog());
 
 	$_we_cmd_js = we_html_element::jsElement('function we_cmd(){
