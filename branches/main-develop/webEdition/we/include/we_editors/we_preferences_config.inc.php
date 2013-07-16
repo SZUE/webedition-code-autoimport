@@ -243,6 +243,7 @@ $GLOBALS['configs'] = array(
 		'usePlugin' => array(0),
 		'editorShowTab' => array(1),
 		'editorTabSize' => array(2),
+		'editorAutoIndent' => array(1),
 	),
 	'other' => array(
 		'formmail_values' => array('', 'FORMMAIL'),

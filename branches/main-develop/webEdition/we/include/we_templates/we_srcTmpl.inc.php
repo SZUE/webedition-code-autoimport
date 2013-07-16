@@ -494,7 +494,7 @@ switch($_SESSION['prefs']['editorMode']){
 					$weTag = weTagData::getTagData($tagName);
 					if($css){
 						$ret.='.cm-weTag_' . $tagName . ':hover:after {content: "' . str_replace('"', '\'', html_entity_decode($weTag->getDescription(), null, $GLOBALS['WE_BACKENDCHARSET'])) . '";}';
-					} else{
+					} else {
 						$allTags['we:' . $tagName] = array('we' => $weTag->getAttributesForCM());
 					}
 				}
@@ -637,7 +637,7 @@ switch($_SESSION['prefs']['editorMode']){
 					) . we_html_element::jsElement('
 var CMoptions = { //these are the CodeMirror options
 	mode: "' . $mode . '",
-	enterMode: "indent",
+	enterMode: "' . ($_SESSION['prefs']['editorAutoIndent'] ? 'indent' : 'keep') . '",
 	electricChars: false,
 	theme: "' . $_SESSION['prefs']['editorTheme'] . '",
 	lineNumbers: ' . ($_SESSION['prefs']['editorLinenumbers'] ? 'true' : 'false') . ',
@@ -677,7 +677,7 @@ window.orignalTemplateContent=document.getElementById("editarea").value.replace(
 
 		if($_useJavaEditor){
 			$maineditor .= we_getJavaEditorCode($code);
-		} else{
+		} else {
 			$maineditor .= '<textarea id="editarea" style="width: 100%; height: ' . (($_SESSION["prefs"]["editorHeight"] != 0) ? $_SESSION["prefs"]["editorHeight"] : "320") . 'px;' . (($_SESSION["prefs"]["editorFont"] == 1) ? " font-family: " . $_SESSION["prefs"]["editorFontname"] . "; font-size: " . $_SESSION["prefs"]["editorFontsize"] . "px;" : "") . '" id="data" name="we_' . $we_doc->Name . '_txt[data]" wrap="' . $wrap . '" ' . ((!we_base_browserDetect::isGecko() && (!isset($_SESSION['weS']["we_wrapcheck"]) || !$_SESSION['weS']["we_wrapcheck"] )) ? '' : ' rows="20" cols="80"') . ' onhange="_EditorFrame.setEditorIsHot(true);" ' . ($_SESSION['prefs']['editorMode'] == 'codemirror2' ? '' : (we_base_browserDetect::isIE() || we_base_browserDetect::isOpera() ? 'onkeydown="return wedoKeyDown(this,event.keyCode);"' : 'onkeypress="return wedoKeyDown(this,event.keyCode);"')) . '>'
 				. oldHtmlspecialchars($code) . '</textarea>';
 			if($_SESSION['prefs']['editorMode'] == 'codemirror2'){ //Syntax-Highlighting
