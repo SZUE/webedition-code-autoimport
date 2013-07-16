@@ -85,6 +85,7 @@ $l_prefs=array(
 	'disable_template_tag_check'=>'Poista puuttuvien,<br/>we:lopetustagien tarkistus',
 	'dynamic'=>'Dynaamiset sivut',
 	'editor_autoCloseTags'=>'Close tags automatically',
+	'editor_autoindent'=>'Autoindent code',
 	'editor_comment_font_color'=>'Kommentit',
 	'editor_completion'=>'Code Completion',
 	'editor_docuclick'=>'Docu integration',

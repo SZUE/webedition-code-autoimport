@@ -85,6 +85,7 @@ $l_prefs=array(
 	'disable_template_tag_check'=>'Deactivate check for missing,<br/>closing we:tags',
 	'dynamic'=>'Páginas dinámicas',
 	'editor_autoCloseTags'=>'Close tags automatically',
+	'editor_autoindent'=>'Autoindent code',
 	'editor_comment_font_color'=>'Comments',
 	'editor_completion'=>'Code Completion',
 	'editor_docuclick'=>'Docu integration',
