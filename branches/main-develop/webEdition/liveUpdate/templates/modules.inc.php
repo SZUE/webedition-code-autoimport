@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,7 +22,6 @@
  * @package    webEdition_update
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 /*
  * This is the template for tab update. It contains the information screen
  * before searching for an update
@@ -30,30 +30,25 @@
 
 $nextButton = we_button::create_button('next', $_SERVER['SCRIPT_NAME'] . '?section=modules&update_cmd=modules&detail=selectModules');
 
-
-if (!empty($GLOBALS['LU_Variables']['clientInstalledModules'])) {
-
+if(!empty($GLOBALS['LU_Variables']['clientInstalledModules'])){
 	$moduleString = "<ul>";
-	foreach ($GLOBALS['LU_Variables']['clientInstalledModules'] as $moduleKey) {
+	foreach($GLOBALS['LU_Variables']['clientInstalledModules'] as $moduleKey){
 
-		if ( g_l('javaMenu_moduleInformation','['.$moduleKey.'][text]')!==false ) {
+		if(g_l('javaMenu_moduleInformation', '[' . $moduleKey . '][text]') !== false){
 
 			$moduleString .= "
-			<li>" . g_l('javaMenu_moduleInformation','['.$moduleKey.'][text]') . "</li>";
+			<li>" . g_l('javaMenu_moduleInformation', '[' . $moduleKey . '][text]') . "</li>";
 		}
 	}
 	$moduleKey .= '</ul>';
-
 } else {
-
-	$moduleString = g_l('liveUpdate','[modules][noModulesInstalled]');
+	$moduleString = g_l('liveUpdate', '[modules][noModulesInstalled]');
 }
-
 
 $content = '
 <table class="defaultfont" width="100%">
 <tr class="valignTop">
-	<td>' . g_l('liveUpdate','[modules][installedModules]') . '</td>
+	<td>' . g_l('liveUpdate', '[modules][installedModules]') . '</td>
 	<td>' . $moduleString . '</td>
 </tr>
 <tr>
@@ -63,10 +58,9 @@ $content = '
 	</td>
 </tr>
 <tr>
-	<td>' . g_l('liveUpdate','[modules][showModules]') . '</td>
+	<td>' . g_l('liveUpdate', '[modules][showModules]') . '</td>
 	<td>' . $nextButton . '</td>
 </tr>
-</table>
-';
+</table>';
 
-print liveUpdateTemplates::getHtml(g_l('liveUpdate','[modules][headline]'), $content);
+print liveUpdateTemplates::getHtml(g_l('liveUpdate', '[modules][headline]'), $content);

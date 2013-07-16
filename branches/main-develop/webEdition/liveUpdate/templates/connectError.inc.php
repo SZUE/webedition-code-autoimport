@@ -22,23 +22,18 @@
  * @package    webEdition_update
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-$errorMessage = "";
-if(isset($Response)){
-	$errorMessage .= str_replace("</body></html>", "", stristr($Response, "<body>"));
-}
-$errorMessage .= "<div id=\"contentHeadlineDiv\" style=\"height: 30px; margin-top:30px; \">
+$errorMessage = (isset($Response) ? str_replace("</body></html>", "", stristr($Response, "<body>")) : '') .
+	"<div id=\"contentHeadlineDiv\" style=\"height: 30px; margin-top:30px; \">
 			<b>" . g_l('liveUpdate', '[connect][connectionInfo]') . "<hr /></b>
-			</div><br />";
-$errorMessage .= "<li>" . g_l('liveUpdate', '[connect][availableConnectionTypes]') . ": ";
-$errorMessage .= "<ul>";
-if(ini_get("allow_url_fopen") == "1"){
-	$errorMessage .= "<li>fopen</li>";
-}
-if(is_callable("curl_exec")){
-	$errorMessage .= "<li>curl</li>";
-}
-$errorMessage .= "</ul>";
-$errorMessage .= "<li>" . g_l('liveUpdate', '[connect][connectionType]') . ": ";
+			</div><br />
+	<li>" . g_l('liveUpdate', '[connect][availableConnectionTypes]') . ":
+	<ul>" .
+	(ini_get("allow_url_fopen") == "1" ?
+		"<li>fopen</li>" : '') .
+	(is_callable("curl_exec") ?
+		"<li>curl</li>" : '') .
+	"</ul>
+	<li>" . g_l('liveUpdate', '[connect][connectionType]') . ": ";
 if(isset($_SESSION['le_proxy_use']) && $_SESSION['le_proxy_use'] == "1"){
 	$errorMessage .= "Proxy (fsockopen)" .
 		"<ul>" .
@@ -51,7 +46,7 @@ if(isset($_SESSION['le_proxy_use']) && $_SESSION['le_proxy_use'] == "1"){
 			if($hostName != $_SESSION["le_proxy_host"]){
 				$errorMessage .= "" . g_l('liveUpdate', '[connect][succeeded]') . ".</li>" .
 					"<li>" . g_l('liveUpdate', '[connect][hostName]') . ": " . $hostName . "</li>";
-			} else{
+			} else {
 				$errorMessage .= "" . g_l('liveUpdate', '[connect][failed]') . ".</li>";
 			}
 		}
@@ -67,18 +62,18 @@ if(isset($_SESSION['le_proxy_use']) && $_SESSION['le_proxy_use'] == "1"){
 		  $errorMessage .= "".$GLOBALS['l_liveUpdate']['connect']["failed"].".</li>";
 		  }
 		  }
-		 */ else{
+		 */ else {
 			$errorMessage .= "<li>" . g_l('liveUpdate', '[connect][dnsResolutionTest]') . ": ";
 			if($ipAddr = gethostbynamel($_SESSION["le_proxy_host"])){
 				$errorMessage .= "" . g_l('liveUpdate', '[connect][succeeded]') . ".</li>" .
 					"<li>" . g_l('liveUpdate', '[connect][ipAddresses]') . ": " . implode(",", $ipAddr) . "</li>";
-			} else{
+			} else {
 				$errorMessage .= "" . g_l('liveUpdate', '[connect][failed]') . ".</li>";
 			}
 		}
 	}
 	$errorMessage .= "</ul>";
-} else{
+} else {
 	$errorMessage .= liveUpdateHttp::getHttpOption();
 }
 $errorMessage .= "</li>" .
@@ -86,14 +81,11 @@ $errorMessage .= "</li>" .
 	"<ul>" .
 	"<li>" . g_l('liveUpdate', '[connect][hostName]') . ": " . LIVEUPDATE_SERVER . "</li>";
 if(is_callable("gethostbynamel")){
-	$errorMessage .= "<li>" . g_l('liveUpdate', '[connect][dnsResolutionTest]') . ": ";
-	if($ipAddr = gethostbynamel(LIVEUPDATE_SERVER)){
-		$errorMessage .= "" . g_l('liveUpdate', '[connect][succeeded]') . ".</li>" .
-			"<li>" . g_l('liveUpdate', '[connect][ipAddresses]') . ": " . implode(",", $ipAddr) . "</li>";
-	} else{
-		$errorMessage .= "" . g_l('liveUpdate', '[connect][failed]') . ".</li>";
-	}
-	$errorMessage .= "</ul>";
+	$errorMessage .= "<li>" . g_l('liveUpdate', '[connect][dnsResolutionTest]') . ": " .
+		(($ipAddr = gethostbynamel(LIVEUPDATE_SERVER)) ?
+			g_l('liveUpdate', '[connect][succeeded]') . '.</li><li>' . g_l('liveUpdate', '[connect][ipAddresses]') . ": " . implode(",", $ipAddr) . "</li>" :
+			g_l('liveUpdate', '[connect][failed]') . ".</li>"
+		) . "</ul>";
 }
 
 $content = '
