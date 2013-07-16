@@ -46,8 +46,7 @@ function we_tag_input($attribs, $content){
 		switch($type){
 			case 'date':
 				$d = abs($GLOBALS['we_doc']->getElement($name));
-				return we_html_tools::getDateInput2(
-						'we_' . $GLOBALS['we_doc']->Name . '_date[' . $name . ']', ($d ? $d : time()), true, $format);
+				return we_html_tools::getDateInput2('we_' . $GLOBALS['we_doc']->Name . '_date[' . $name . ']', ($d ? $d : time()), true, $format);
 			case 'checkbox':
 				$attr = we_make_attribs($attribs, 'name,value,type,_name_orig');
 				return '<input onclick="_EditorFrame.setEditorIsHot(true);this.form.elements[\'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']\'].value=(this.checked ? 1 : \'\');' . ($reload ? (';setScrollTo();top.we_cmd(\'reload_editpage\');') : '') . '" type="checkbox" name="we_' . $GLOBALS['we_doc']->Name . '_attrib_' . $name . '" value="1"' . ($attr ? " $attr" : "") . ($val ? " checked" : "") . ' /><input type="hidden" name="we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']" value="' . $val . '" />';
@@ -165,11 +164,11 @@ function we_tag_input($attribs, $content){
 							'image:spellcheck', 'javascript:we_cmd("spellcheck","we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']")') . '</td>
 	</tr>
 </table>';
-				} else{
+				} else {
 					return '<input onchange="_EditorFrame.setEditorIsHot(true);" class="wetextinput" type="text" name="we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']" value="' . $val . '"' . ($attr ? " $attr" : "") . ' />';
 				}
 		}
-	} else{
+	} else {
 		//not-editmode
 		switch($type){
 			case 'date':
@@ -190,7 +189,7 @@ function we_tag_input($attribs, $content){
 				}
 				if($GLOBALS['we_doc']->getElement($name) == '--'){
 					return '';
-				} else{
+				} else {
 					if(!Zend_Locale::hasCache()){
 						Zend_Locale::setCache(getWEZendCache());
 					}

@@ -1014,7 +1014,7 @@ class weCustomerFrames extends weModuleFrames{
 
 	function getDateInput2($name, $time = '', $setHot = false, $format = '', $onchange = '', $class = "defaultfont", $from_year = 1970){
 		// removed attribute setHot
-
+//FIXME: replace by we_html_tools::getDateInput2
 		if(is_array($time)){
 			$day = isset($time["day"]) ? $time["day"] : date("d");
 			$month = isset($time["month"]) ? $time["month"] : date("m");

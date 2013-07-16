@@ -408,7 +408,7 @@ abstract class we_html_tools{
 		return -1;
 	}
 
-	static function getDateInput2($name, $time = "", $setHot = false, $format = "", $onchange = "", $class = "weSelect", $xml = "", $minyear = "", $maxyear = "", $style = ""){
+	static function getDateInput2($name, $time = '', $setHot = false, $format = '', $onchange = '', $class = 'weSelect', $xml = '', $minyear = '', $maxyear = '', $style = ''){
 		$_attsSelect = array();
 		$_attsOption = array();
 		$_attsHidden = array();
@@ -438,11 +438,11 @@ abstract class we_html_tools{
 			$minute = $time->format('i');
 		} else if($time){
 			$time = intval($time);
-			$day = intval(date("j", $time));
-			$month = intval(date("n", $time));
-			$year = intval(date("Y", $time));
-			$hour = intval(date("G", $time));
-			$minute = intval(date("i", $time));
+			$day = intval(date('j', $time));
+			$month = intval(date('n', $time));
+			$year = intval(date('Y', $time));
+			$hour = intval(date('G', $time));
+			$minute = intval(date('i', $time));
 		}
 
 		$_dayPos = self::we_getDayPos($format);
@@ -466,15 +466,15 @@ abstract class we_html_tools{
 			}
 			$daySelect = getHtmlTag(
 					'select', array_merge($_attsSelect, array(
-					'name' => sprintf($name, "_day"), 'id' => sprintf($name, "_day")
+					'name' => sprintf($name, '_day'), 'id' => sprintf($name, '_day')
 					)), $days, true) . '&nbsp;';
 		} else{
 			$daySelect = getHtmlTag(
 				'input', array_merge(
 					$_attsHidden, array(
 				'type' => 'hidden',
-				'name' => sprintf($name, "_day"),
-				'id' => sprintf($name, "_day"),
+				'name' => sprintf($name, '_day'),
+				'id' => sprintf($name, '_day'),
 				'value' => $day
 			)));
 			$_showDay = false;
@@ -513,12 +513,12 @@ abstract class we_html_tools{
 			)));
 			$_showMonth = false;
 		}
-		if(($format == "") || $_yearPos > -1){
+		if(($format == '') || $_yearPos > -1){
 			$years = '';
-			if($minyear == ""){
+			if($minyear == ''){
 				$minyear = 1970;
 			}
-			if($maxyear == ""){
+			if($maxyear == ''){
 				$maxyear = abs(date("Y") + 100);
 			}
 			for($i = $minyear; $i <= $maxyear; $i++){

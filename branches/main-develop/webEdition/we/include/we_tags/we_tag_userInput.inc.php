@@ -67,7 +67,7 @@ function we_tag_userInput($attribs, $content){
 		if($property){
 			$isset = isset($objekt->{$name});
 			$orgVal = $isset ? $objekt->{$name} : $value;
-		} else{
+		} else {
 			$isset = (!$objekt->ID && $objekt->getElement($name) === "" ?
 					false :
 					$objekt->issetElement($name));
@@ -78,7 +78,7 @@ function we_tag_userInput($attribs, $content){
 		$object_path = $objekt->Path;
 		$object_tableID = isset($objekt->TableID) ? $objekt->TableID : "";
 		$content = $objekt->getFieldByVal($orgVal, $type, $attribs, true, $object_pid, $object_path, $GLOBALS['DB_WE'], $object_tableID);
-	} else{
+	} else {
 		$orgVal = $value;
 		$object_pid = 0;
 		$object_path = "";
@@ -94,7 +94,7 @@ function we_tag_userInput($attribs, $content){
 			'type' => 'hidden', 'name' => $fieldname, 'value' => oldHtmlspecialchars($orgVal), 'xml' => $xml
 		));
 		return (($type != "hidden") ? $content : "") . $_hidden;
-	} else{
+	} else {
 		switch($type){
 			case "img" :
 
@@ -132,7 +132,7 @@ function we_tag_userInput($attribs, $content){
 						$src = '/' . ltrim(substr($_SESSION[$_imgDataId]["serverPath"], strlen($_SERVER['DOCUMENT_ROOT'])), '/');
 
 						$imgTag = '<img src="' . $src . '" alt="" width="' . $_SESSION[$_imgDataId]["imgwidth"] . '" height="' . $_SESSION[$_imgDataId]["imgheight"] . '" />';
-					} else{
+					} else {
 						unset($attribs["width"]);
 						unset($attribs["height"]);
 						$imgTag = $GLOBALS['we_doc']->getField($attribs, "img");
@@ -165,7 +165,7 @@ function we_tag_userInput($attribs, $content){
 							</td>
 						</tr>
 					</table>';
-				} else{
+				} else {
 					$hidden = '<input type="hidden" name="WE_UI_IMG_DATA_ID_' . $name . '" value="' . $_imgDataId . '" />';
 
 					if(isset($_SESSION[$_imgDataId]["serverPath"])){
@@ -183,7 +183,7 @@ function we_tag_userInput($attribs, $content){
 						unset($attribs["height"]);
 						$attribs["id"] = $_SESSION[$_imgDataId]["id"];
 						return $GLOBALS['we_doc']->getField($attribs, "img") . $hidden;
-					} else{
+					} else {
 						return '';
 					}
 				}
@@ -220,7 +220,7 @@ function we_tag_userInput($attribs, $content){
 
 						// $flashmovieTag = 'Dadi'.'<img src="' . $src . '" alt="" width="' . $_SESSION[$_flashmovieDataId]["imgwidth"] . '" height="' . $_SESSION[$_flashmovieDataId]["imgheight"] . '" />';
 						$flashmovieTag = '';
-					} else{
+					} else {
 						unset($attribs["width"]);
 						unset($attribs["height"]);
 
@@ -257,7 +257,7 @@ function we_tag_userInput($attribs, $content){
 							</td>
 						</tr>
 					</table>';
-				} else{
+				} else {
 					$hidden = '<input type="hidden" name="WE_UI_FLASHMOVIE_DATA_ID_' . $name . '" value="' . $_flashmovieDataId . '" />';
 
 					if(isset($_SESSION[$_flashmovieDataId]["serverPath"])){
@@ -276,7 +276,7 @@ function we_tag_userInput($attribs, $content){
 						unset($attribs["height"]);
 						$attribs["id"] = $_SESSION[$_flashmovieDataId]["id"];
 						return $GLOBALS['we_doc']->getField($attribs, "flashmovie") . $hidden;
-					} else{
+					} else {
 						return '';
 					}
 				}
@@ -315,7 +315,7 @@ function we_tag_userInput($attribs, $content){
 
 						//$quicktimeTag = '<img src="' . $src . '" alt="" width="' . $_SESSION[$_quicktimeDataId]["imgwidth"] . '" height="' . $_SESSION[$_quicktimeDataId]["imgheight"] . '" />';
 						$quicktimeTag = '';
-					} else{
+					} else {
 						unset($attribs["width"]);
 						unset($attribs["height"]);
 						$quicktimeTag = (isset($attribs["id"]) && $attribs["id"] ?
@@ -350,7 +350,7 @@ function we_tag_userInput($attribs, $content){
 							</td>
 						</tr>
 					</table>';
-				} else{
+				} else {
 					$hidden = '<input type="hidden" name="WE_UI_QUICKTIME_DATA_ID_' . $name . '" value="' . $_quicktimeDataId . '" />';
 
 					if(isset($_SESSION[$_quicktimeDataId]["serverPath"])){
@@ -369,7 +369,7 @@ function we_tag_userInput($attribs, $content){
 						unset($attribs["height"]);
 						$attribs["id"] = $_SESSION[$_quicktimeDataId]["id"];
 						return $GLOBALS['we_doc']->getField($attribs, "quicktime") . $hidden;
-					} else{
+					} else {
 						return '';
 					}
 				}
@@ -405,7 +405,7 @@ function we_tag_userInput($attribs, $content){
 						$src = '/' . ltrim(substr($_SESSION[$_binaryDataId]["serverPath"], strlen($_SERVER['DOCUMENT_ROOT'])), '/');
 						//$imgTag = '<img src="' . $src . '" alt=""  />';
 						$imgTag = 'imgTag';
-					} else{
+					} else {
 
 						//$imgTag = $GLOBALS['we_doc']->getField($attribs, "img");
 						$binaryTag = $GLOBALS['we_doc']->getField($attribs, "binary");
@@ -443,7 +443,7 @@ function we_tag_userInput($attribs, $content){
 							</td>
 						</tr>
 					</table>';
-				} else{
+				} else {
 					if(!isset($_SESSION[$_binaryDataId])){
 						$_SESSION[$_binaryDataId] = array();
 					}
@@ -456,7 +456,7 @@ function we_tag_userInput($attribs, $content){
 					if(isset($_SESSION[$_binaryDataId]["serverPath"])){
 						$src = '/' . ltrim(substr($_SESSION[$_binaryDataId]["serverPath"], strlen($_SERVER['DOCUMENT_ROOT'])), '/');
 						return $hidden;
-					} else{
+					} else {
 						if(isset($_SESSION[$_binaryDataId]["id"]) && $_SESSION[$_binaryDataId]["id"]){
 							if(isset($_SESSION[$_binaryDataId]["doDelete"]) && $_SESSION[$_binaryDataId]["doDelete"]){
 								return $hidden;
@@ -471,7 +471,7 @@ function we_tag_userInput($attribs, $content){
 							$fn = implode('_', $t);
 							$imgTag = '<a href="' . $binaryTag[1] . '" target="_blank">' . $fn . '</a>';
 							return $imgTag . $hidden;
-						} else{
+						} else {
 							return '';
 						}
 					}
@@ -506,15 +506,15 @@ function we_tag_userInput($attribs, $content){
 						'buttonpos'
 					));
 					return we_getTextareaField($fieldname, $content, $atts);
-				} else{
+				} else {
 					echo we_html_element::jsElement('weFrontpageEdit=true;');
 					require_once (JS_PATH . "we_textarea_include.inc.php");
 
 					if(!$inlineedit){
 						//TODO: move js function open_wysiwyg_win to separate js file
-						echo we_html_element::jsScript(JS_DIR . 'weButton.js') . 
-							we_html_element::jsScript(JS_DIR . 'weTinyMceDialogs.js') . 
-							we_html_element::jsElement('
+						echo we_html_element::jsScript(JS_DIR . 'weButton.js') .
+						we_html_element::jsScript(JS_DIR . 'weTinyMceDialogs.js') .
+						we_html_element::jsElement('
 							function open_wysiwyg_win(){
 								//var url = "' . WEBEDITION_DIR . 'we_cmd.php?";
 								var url = "' . WEBEDITION_DIR . 'we_cmd_frontend.php?";
@@ -523,7 +523,7 @@ function we_tag_userInput($attribs, $content){
 								if(i < (arguments.length - 1))
 									url += "&";
 								}
-								
+
 								if (window.screen) {
 									h = ((screen.height - 100) > screen.availHeight ) ? screen.height - 100 : screen.availHeight;
 									w = screen.availWidth;
@@ -587,9 +587,7 @@ function we_tag_userInput($attribs, $content){
 				}
 				return we_getInputCheckboxField($fieldname, $content, $atts);
 			case 'date' :
-				$currentdate = weTag_getAttribute("currentdate", $attribs, false, true);
-				$minyear = weTag_getAttribute("minyear", $attribs);
-				$maxyear = weTag_getAttribute("maxyear", $attribs);
+				$currentdate = weTag_getAttribute('currentdate', $attribs, false, true);
 				if($orgVal == 0 || $currentdate){
 					$orgVal = time();
 				}
@@ -601,11 +599,12 @@ function we_tag_userInput($attribs, $content){
 						'xml' => $xml
 					);
 					return getHtmlTag('input', $attsHidden);
-				} else{
-					return we_html_tools::getDateInput2(
-							"we_ui_" . (isset($GLOBALS["WE_FORM"]) ? $GLOBALS["WE_FORM"] : "") . "[we_date_" . $name . "]", ($orgVal ? $orgVal : time()), false, $format, '', '', $xml, $minyear, $maxyear);
+				} else {
+					$minyear = weTag_getAttribute('minyear', $attribs);
+					$maxyear = weTag_getAttribute('maxyear', $attribs);
+					return we_html_tools::getDateInput2('we_ui_' . (isset($GLOBALS['WE_FORM']) ? $GLOBALS['WE_FORM'] : '') . '[we_date_' . $name . ']', ($orgVal ? $orgVal : time()), false, $format, '', '', $xml, $minyear, $maxyear);
 				}
-			case "country":
+			case 'country':
 				$newAtts = removeAttribs($attribs, array('wysiwyg', 'commands', 'pure', 'type', 'value', 'checked', 'autobr', 'name', 'values', 'hidden', 'editable', 'format', 'property', 'rows', 'cols', 'fontnames', 'bgcolor', 'width', 'height', 'maxlength'));
 				$docAttr = weTag_getAttribute("doc", $attribs, "self");
 
@@ -662,7 +661,7 @@ function we_tag_userInput($attribs, $content){
 				$lang = $doc->Language;
 				if($lang != ''){
 					$langcode = substr($lang, 0, 2);
-				} else{
+				} else {
 					$langcode = we_core_Local::weLangToLocale($GLOBALS["WE_LANGUAGE"]);
 				}
 				$frontendL = $GLOBALS["weFrontendLanguages"];
@@ -735,7 +734,7 @@ function we_tag_userInput($attribs, $content){
 							$atts2 = array(
 								'value' => $key, 'selected' => 'selected'
 							);
-						} else{
+						} else {
 							$atts2 = array(
 								'value' => $key
 							);
