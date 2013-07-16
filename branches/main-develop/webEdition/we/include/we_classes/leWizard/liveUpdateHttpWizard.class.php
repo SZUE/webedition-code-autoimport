@@ -36,7 +36,7 @@ class liveUpdateHttpWizard extends liveUpdateHttp{
 			$params .= '<input type="hidden" name="' . $LU_name . '" value="' . urlencode((is_array($LU_value) ? serialize($LU_value) : $LU_value)) . '" />';
 		}
 
-		$html = we_html_tools::headerCtCharset('text/html', $GLOBALS['WE_BACKENDCHARSET']) . we_html_element::htmlDocType() . '<html>
+		return we_html_tools::headerCtCharset('text/html', $GLOBALS['WE_BACKENDCHARSET']) . we_html_element::htmlDocType() . '<html>
 <head>
 	' . LIVEUPDATE_CSS . '
 <head>
@@ -50,7 +50,6 @@ class liveUpdateHttpWizard extends liveUpdateHttp{
 </form>
 </body>
 </html>';
-		return $html;
 	}
 
 }

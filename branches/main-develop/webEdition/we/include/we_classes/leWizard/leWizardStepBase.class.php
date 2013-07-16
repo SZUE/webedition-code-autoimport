@@ -175,11 +175,8 @@ class leWizardStepBase{
 	 * @return string
 	 */
 	function getUrl(){
+		$debug = (isset($_REQUEST['debug'])?			"&debug=" . $_REQUEST['debug']:'');
 
-		$debug = "";
-		if(isset($_REQUEST['debug'])){
-			$debug = "&debug=" . $_REQUEST['debug'];
-		}
 		return WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=" . $_REQUEST['we_cmd'][0] . "&leWizard=" . $this->getWizardName() . "&leStep=" . $this->Name . $debug;
 	}
 
@@ -205,25 +202,13 @@ class leWizardStepBase{
 	 * @return integer
 	 */
 	function executeOnline(&$Template, $UpdateCmd = "", $UpdateCmdDetail = ""){
-
-		if($UpdateCmd != ""){
-			$_REQUEST['update_cmd'] = $UpdateCmd;
-		} else{
-			$_REQUEST['update_cmd'] = $this->Wizard->Name;
-		}
-
-		if($UpdateCmdDetail != ""){
-			$_REQUEST['detail'] = $UpdateCmdDetail;
-		} else{
-			$_REQUEST['detail'] = $this->Name;
-		}
+		$_REQUEST['update_cmd'] = ($UpdateCmd != "" ? $UpdateCmd : $this->Wizard->Name);
+		$_REQUEST['detail'] = ($UpdateCmdDetail != "" ? $UpdateCmdDetail : $this->Name);
 
 		$this->liveUpdateHttpResponse = $this->getLiveUpdateHttpResponse();
 
 		if($this->liveUpdateHttpResponse){
-
 			if($this->liveUpdateHttpResponse->Type == "executeOnline"){
-
 				$code = $this->liveUpdateHttpResponse->Code;
 				$this->liveUpdateHttpResponse = null;
 
