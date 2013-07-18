@@ -22,8 +22,14 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_ifLoginFailed(){
-	$foo = isset($_SESSION['webuser']['loginfailed']) ? $_SESSION['webuser']['loginfailed'] : '';
-	$_SESSION['webuser']['loginfailed'] = '';
-	return $foo;
+function we_tag_ifLoginFailed($attribs){
+	switch(weTag_getAttribute('type', $attribs, 'all')){
+		default:
+		case 'all':
+			return isset($_SESSION['webuser']) && isset($_SESSION['webuser']['loginfailed']) ? ($_SESSION['webuser']['loginfailed'] !== false) : false;
+		case 'credentials':
+			return isset($_SESSION['webuser']) && isset($_SESSION['webuser']['loginfailed']) ? ($_SESSION['webuser']['loginfailed'] === we_user::INVALID_CREDENTIALS) : false;
+		case 'retrylimit':
+			return isset($_SESSION['webuser']) && isset($_SESSION['webuser']['loginfailed']) ? ($_SESSION['webuser']['loginfailed'] === we_user::MAX_LOGIN_COUNT_REACHED) : false;
+	}
 }

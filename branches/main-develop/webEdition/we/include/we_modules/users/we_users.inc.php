@@ -27,6 +27,8 @@ class we_user{
 	const TYPE_USER = 0;
 	const TYPE_USER_GROUP = 1;
 	const TYPE_ALIAS = 2;
+	const INVALID_CREDENTIALS=1;
+	const MAX_LOGIN_COUNT_REACHED=2;
 
 	// Name of the class => important for reconstructing the class from outside the class
 	var $ClassName = __CLASS__;

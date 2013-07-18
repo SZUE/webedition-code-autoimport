@@ -64,13 +64,13 @@ function getAllowedClasses($db = ''){
 	}
 	$db->query('SELECT ID,Workspaces,Path FROM ' . OBJECT_TABLE . ' WHERE IsFolder=0');
 
-	while($db->next_record()) {
+	while($db->next_record()){
 		$path = $db->f('Path');
 		if(!$ws || $_SESSION['perms']['ADMINISTRATOR'] || (!$db->f('Workspaces')) || in_workspace($db->f('Workspaces'), $ws, FILE_TABLE, '', true)){
 			$path2 = $path . '/';
 			if(!$ofWs || $_SESSION['perms']['ADMINISTRATOR']){
 				$out[] = $db->f('ID');
-			} else{
+			} else {
 
 // object Workspace check (New since Version 4.x)
 				foreach($ofWsArray as $w){
@@ -103,7 +103,7 @@ function makePIDTail($pid, $cid, $db = '', $table = FILE_TABLE){
 	$parentIDs = array();
 	$pid = intval($pid);
 	$parentIDs[] = $pid;
-	while($pid != 0) {
+	while($pid != 0){
 		$pid = f('SELECT ParentID FROM ' . FILE_TABLE . ' WHERE ID=' . $pid, 'ParentID', $db);
 		$parentIDs[] = $pid;
 	}
@@ -139,7 +139,7 @@ function we_getCatsFromIDs($catIDs, $tokken = ',', $showpath = false, $db = '', 
 	$field = $catfield ? $catfield : ($showpath ? 'Path' : 'Category');
 	$showpath &=!$catfield;
 	$db->query('SELECT ID,Path,Category,Catfields FROM ' . CATEGORY_TABLE . ' WHERE ID IN(' . trim($catIDs, ',') . ')');
-	while($db->next_record()) {
+	while($db->next_record()){
 		$data = $db->getRecord();
 		if($field == 'Title' || $field == 'Description'){
 			if($data['Catfields']){
@@ -185,10 +185,10 @@ function getHttpOption(){
 		@ini_set('allow_url_fopen', '1');
 		if(ini_get('allow_url_fopen') != 1){
 			return (function_exists('curl_init') ? 'curl' : 'none');
-		} else{
+		} else {
 			return 'fopen';
 		}
-	} else{
+	} else {
 		return 'fopen';
 	}
 }
@@ -275,7 +275,7 @@ function getCurlHttp($server, $path, $files = array(), $header = false, $timeout
 		$_response['status'] = 1;
 		$_response['error'] = curl_error($_session);
 		return false;
-	} else{
+	} else {
 		$_response['status'] = 0;
 		$_response['data'] = $_data;
 		curl_close($_session);
@@ -370,7 +370,7 @@ function addTblPrefix($table){
 function cleanTempFiles($cleanSessFiles = false){
 	$db2 = new DB_WE();
 	$GLOBALS['DB_WE']->query('SELECT Date,Path FROM ' . CLEAN_UP_TABLE . ' WHERE Date <= ' . (time() - 300));
-	while($GLOBALS['DB_WE']->next_record()) {
+	while($GLOBALS['DB_WE']->next_record()){
 		$p = $GLOBALS['DB_WE']->f('Path');
 		if(file_exists($p)){
 			we_util_File::deleteLocalFile($GLOBALS['DB_WE']->f('Path'));
@@ -380,7 +380,7 @@ function cleanTempFiles($cleanSessFiles = false){
 	if($cleanSessFiles){
 		$seesID = session_id();
 		$GLOBALS['DB_WE']->query('SELECT Date,Path FROM ' . CLEAN_UP_TABLE . " WHERE Path LIKE '%" . $GLOBALS['DB_WE']->escape($seesID) . "%'");
-		while($GLOBALS['DB_WE']->next_record()) {
+		while($GLOBALS['DB_WE']->next_record()){
 			$p = $GLOBALS['DB_WE']->f('Path');
 			if(file_exists($p)){
 				we_util_File::deleteLocalFile($GLOBALS['DB_WE']->f('Path'));
@@ -389,7 +389,7 @@ function cleanTempFiles($cleanSessFiles = false){
 		}
 	}
 	$d = dir(TEMP_PATH);
-	while(false !== ($entry = $d->read())) {
+	while(false !== ($entry = $d->read())){
 		if($entry != '.' && $entry != '..'){
 			$foo = TEMP_PATH . '/' . $entry;
 			if(filemtime($foo) <= (time() - 300)){
@@ -405,7 +405,7 @@ function cleanTempFiles($cleanSessFiles = false){
 	$dstr = $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/';
 	if(we_util_File::checkAndMakeFolder($dstr)){
 		$d = dir($dstr);
-		while(false !== ($entry = $d->read())) {
+		while(false !== ($entry = $d->read())){
 			if($entry != '.' && $entry != '..'){
 				$foo = $dstr . $entry;
 				if(filemtime($foo) <= (time() - 300)){
@@ -422,7 +422,7 @@ function cleanTempFiles($cleanSessFiles = false){
 
 // when a fragment task was stopped by the user, the tmp file will not be deleted! So we have to clean up
 	$d = dir(rtrim(WE_FRAGMENT_PATH, '/'));
-	while(false !== ($entry = $d->read())) {
+	while(false !== ($entry = $d->read())){
 		if($entry != '.' && $entry != '..'){
 			$foo = WE_FRAGMENT_PATH . $entry;
 			if(filemtime($foo) <= (time() - 3600 * 24)){
@@ -486,7 +486,7 @@ function we_makeHiddenFields($filter = ''){
 					foreach($val as $v){
 						$hidden .= '<input type="hidden" name="' . $key . '" value="' . oldHtmlspecialchars($v) . '" />';
 					}
-				} else{
+				} else {
 					$hidden .= '<input type="hidden" name="' . $key . '" value="' . oldHtmlspecialchars($val) . '" />';
 				}
 			}
@@ -579,7 +579,7 @@ function makeOwnersSql($useCreatorID = true){
 
 function we_getParentIDs($table, $id, &$ids, $db = ''){
 	$db = $db ? $db : new DB_WE();
-	while(($pid = f('SELECT ParentID FROM ' . $table . ' WHERE ID=' . intval($id), 'ParentID', $db)) > 0) {
+	while(($pid = f('SELECT ParentID FROM ' . $table . ' WHERE ID=' . intval($id), 'ParentID', $db)) > 0){
 		$id = $pid; // #5836
 		$ids[] = $id;
 	}
@@ -719,7 +719,7 @@ function userIsOwnerCreatorOfParentDir($folderID, $tab){
 		$ownersArr[] = $tmp['CreatorID'];
 		$ownersArr = array_unique($ownersArr);
 		return (in_array($_SESSION['user']['ID'], $ownersArr));
-	} else{
+	} else {
 		$pid = f('SELECT ParentID FROM ' . $tab . ' WHERE ID=' . intval($folderID), 'ParentID', $db);
 		return userIsOwnerCreatorOfParentDir($pid, $tab);
 	}
@@ -770,7 +770,7 @@ function id_to_path($IDs, $table = FILE_TABLE, $db = '', $prePostKomma = false, 
 	foreach($IDs as $id){
 		if($id == 0){
 			$foo[] = '/';
-		} else{
+		} else {
 			$foo2 = getHash('SELECT Path,IsFolder FROM ' . $db->escape($table) . ' WHERE ID=' . intval($id), $db);
 			if(isset($foo2['Path'])){
 				if($endslash && $foo2['IsFolder']){
@@ -829,7 +829,7 @@ function getPathsFromTable($table = FILE_TABLE, $db = '', $type = FILE_ONLY, $ws
 	$out = $first ? array('0' => $first) : array();
 
 	$db->query('SELECT ID,Path FROM ' . $table . (count($query) ? ' WHERE ' . implode(' AND ', $query) : '') . ' ORDER BY ' . $order);
-	while($db->next_record()) {
+	while($db->next_record()){
 		$out[$db->f('ID')] = $db->f('Path');
 	}
 	return $out;
@@ -851,7 +851,7 @@ function pushChilds(&$arr, $id, $table = FILE_TABLE, $isFolder = ''){
 	$db = new DB_WE();
 	$arr[] = $id;
 	$db->query('SELECT ID FROM ' . $table . ' WHERE ParentID=' . intval($id) . (($isFolder != '' || $isFolder == '0') ? (' AND IsFolder="' . $db->escape($isFolder) . '"') : ''));
-	while($db->next_record()) {
+	while($db->next_record()){
 		pushChilds($arr, $db->f('ID'), $table, $isFolder);
 	}
 }
@@ -883,7 +883,7 @@ function we_readParents($id, &$parentlist, $tab, $match = 'ContentType', $matchv
 	if($pid !== ''){
 		if($pid == 0){
 			$parentlist[] = $pid;
-		} else{
+		} else {
 			$tmp = f('SELECT 1 AS a FROM ' . $db->escape($tab) . ' WHERE ID=' . intval($pid) . ' AND ' . $match . ' = "' . $db->escape($matchvalue) . '"', 'a', $db);
 			if($tmp == '1'){
 				$parentlist[] = $pid;
@@ -897,7 +897,7 @@ function we_readChilds($pid, &$childlist, $tab, $folderOnly = true, $where = '',
 	$db = $db ? $db : new DB_WE();
 	$db->query('SELECT ID,' . $db->escape($match) . ' FROM ' . $db->escape($tab) . ' WHERE ' . ($folderOnly ? ' IsFolder=1 AND ' : '') . 'ParentID=' . intval($pid) . $where);
 	$todo = array();
-	while($db->next_record()) {
+	while($db->next_record()){
 		if($db->f($match) == $matchvalue){
 			$todo[] = $db->f('ID');
 		}
@@ -928,7 +928,7 @@ function getWsQueryForSelector($tab, $includingFolders = true){
 			$path .= $part;
 			if($includingFolders){
 				$wsQuery[] = 'Path = "' . $GLOBALS['DB_WE']->escape($path) . '"';
-			} else{
+			} else {
 				$wsQuery[] = 'Path LIKE "' . $GLOBALS['DB_WE']->escape($path) . '/%"';
 			}
 			$path .= '/';
@@ -937,7 +937,7 @@ function getWsQueryForSelector($tab, $includingFolders = true){
 		if($includingFolders){
 			$wsQuery[] = 'Path = "' . $GLOBALS['DB_WE']->escape($path) . '"';
 			$wsQuery[] = 'Path LIKE "' . $GLOBALS['DB_WE']->escape($path) . '/%"';
-		} else{
+		} else {
 			$wsQuery[] = 'Path LIKE "' . $GLOBALS['DB_WE']->escape($path) . '/%"';
 		}
 		$wsQuery[] = 'Path LIKE "' . $GLOBALS['DB_WE']->escape($path) . '/%"';
@@ -1010,7 +1010,7 @@ function t_e($type = 'warning'){
 			$inc = true;
 			if(defined('E_USER_DEPRECATED')){ //not defined in php <5.3; write warning instead
 				$type = E_USER_DEPRECATED;
-			} else{
+			} else {
 				$data[] = 'DEPRECATED';
 				$type = E_USER_NOTICE;
 			}
@@ -1027,7 +1027,7 @@ function t_e($type = 'warning'){
 		}
 		if(is_array($value) || is_object($value)){
 			$data[] = @print_r($value, true);
-		} else{
+		} else {
 			$data[] = (is_bool($value) ? var_export($value, true) : $value);
 		}
 	}
@@ -1068,10 +1068,10 @@ function getHrefForObject($id, $pid, $path = '', $DB_WE = '', $hidedirindex = fa
 			if(in_workspace($foo['TriggerID'], $foo['ExtraWorkspacesSelected'], FILE_TABLE, $DB_WE)){
 				$showLink = true;
 			}
-		} else{
+		} else {
 			if(in_workspace($pid, $foo['Workspaces'], FILE_TABLE, $DB_WE)){
 				$showLink = true;
-			} else{
+			} else {
 				if($foo['ExtraWorkspacesSelected']){
 					if(in_workspace($pid, $foo['ExtraWorkspacesSelected'], FILE_TABLE, $DB_WE))
 						$showLink = true;
@@ -1098,7 +1098,7 @@ function getHrefForObject($id, $pid, $path = '', $DB_WE = '', $hidedirindex = fa
 			if($objecttriggerid){
 				$path_parts = pathinfo(id_to_path($objecttriggerid));
 			}
-		} else{
+		} else {
 			$objecturl = '';
 		}
 		$pidstr = '';
@@ -1111,10 +1111,10 @@ function getHrefForObject($id, $pid, $path = '', $DB_WE = '', $hidedirindex = fa
 					'' :
 					$path_parts['filename'] . '/' ) .
 				$objecturl . $pidstr;
-		} else{
+		} else {
 			return $path . '?we_objectID=' . intval($id) . str_replace('?', '&amp;', $pidstr);
 		}
-	} else{
+	} else {
 		if($foo['Workspaces']){
 			$fooArr = makeArrayFromCSV($foo['Workspaces']);
 			$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE Published > 0 AND ContentType="text/webedition" AND IsDynamic=1 AND Path LIKE "' . $DB_WE->escape(id_to_path($fooArr[0], FILE_TABLE, $DB_WE)) . '%"', 'Path', $DB_WE);
@@ -1163,7 +1163,7 @@ function parseInternalLinks(&$text, $pid, $path = '', $doBaseReplace = true){
 					$foo['Path'] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/';
 				}
 				$text = str_replace($reg[1] . '="' . we_base_link::TYPE_INT_PREFIX . $reg[2] . $reg[3] . $reg[4], $reg[1] . '="' . ($doBaseReplace && $foo['isImage'] ? BASE_IMG : '') . $foo['Path'] . ($reg[3] ? '?' : '') . $reg[4], $text);
-			} else{
+			} else {
 				$text = preg_replace(array(
 					'|<a [^>]*href="' . we_base_link::TYPE_INT_PREFIX . $reg[2] . '"[^>]*>(.*)</a>|Ui', '|<a [^>]*href="' . we_base_link::TYPE_INT_PREFIX . $reg[2] . '"[^>]*>|Ui', '|<img [^>]*src="' . we_base_link::TYPE_INT_PREFIX . $reg[2] . '"[^>]*>|Ui'), array(
 					'\1', '', ''), $text);
@@ -1176,7 +1176,7 @@ function parseInternalLinks(&$text, $pid, $path = '', $doBaseReplace = true){
 			$thumbObj = new we_thumbnail();
 			if($thumbObj->initByImageIDAndThumbID($imgID, $thumbID)){
 				$text = str_replace('src="' . we_base_link::TYPE_THUMB_PREFIX . $reg[1] . '"', 'src="' . ($doBaseReplace ? BASE_IMG : '') . $thumbObj->getOutputPath() . '"', $text);
-			} else{
+			} else {
 				$text = preg_replace('|<img[^>]+src="' . we_base_link::TYPE_THUMB_PREFIX . $reg[1] . '[^>]+>|Ui', '', $text);
 			}
 		}
@@ -1192,7 +1192,7 @@ function parseInternalLinks(&$text, $pid, $path = '', $doBaseReplace = true){
 					$text = ($reg[2] == '?' ?
 							str_replace('href="' . we_base_link::TYPE_OBJ_PREFIX . $reg[1] . '?', 'href="' . $href . '&amp;', $text) :
 							str_replace('href="' . we_base_link::TYPE_OBJ_PREFIX . $reg[1] . $reg[2] . $reg[3], 'href="' . $href . $reg[2] . $reg[3], $text));
-				} else{
+				} else {
 					$text = preg_replace(array('|<a [^>]*href="' . we_base_link::TYPE_OBJ_PREFIX . $reg[1] . '"[^>]*>(.*)</a>|Ui',
 						'|<a [^>]*href="' . we_base_link::TYPE_OBJ_PREFIX . $reg[1] . '"[^>]*>|Ui',), array('\1'), $text);
 				}
@@ -1218,7 +1218,7 @@ function getMysqlVer($nodots = true){
 
 	if($res){
 		$res = explode('-', $res);
-	} else{
+	} else {
 		$res = f('SHOW VARIABLES LIKE "version"', 'Value', $DB_WE);
 		if($res){
 			$res = explode('-', $res);
@@ -1236,7 +1236,7 @@ function getMysqlVer($nodots = true){
 			}
 
 			return $ver;
-		} else{
+		} else {
 			return $res[0];
 		}
 	}
@@ -1280,7 +1280,7 @@ function weGetCookieVariable($name){
 function getContentTypeFromFile($dat){
 	if(is_dir($dat)){
 		return 'folder';
-	} else{
+	} else {
 		$ext = strtolower(preg_replace('#^.*(\..+)$#', '\1', $dat));
 		if($ext){
 			$type = we_base_ContentTypes::inst()->getTypeForExtension($ext);
@@ -1299,7 +1299,7 @@ function getUploadMaxFilesize($mysql = false, $db = ''){
 
 	if(intval(WE_MAX_UPLOAD_SIZE) == 0){
 		return $min;
-	} else{
+	} else {
 		return min(WE_MAX_UPLOAD_SIZE * 1024 * 1024, $min);
 	}
 }
@@ -1396,7 +1396,7 @@ function getRequestVar($name, $default, $yescode = '', $nocode = ''){
 			eval($yescode);
 		}
 		return $_REQUEST[$name];
-	} else{
+	} else {
 		if($nocode != ''){
 			eval($nocode);
 		}
@@ -1577,7 +1577,7 @@ function getHtmlTag($element, $attribs = array(), $content = '', $forceEndTag = 
 	}
 	if($content != '' || $forceEndTag){ //	use endtag
 		$_tag .= '>' . $content . '</' . $element . '>';
-	} else{ //	xml style or not
+	} else { //	xml style or not
 		$_tag .= ( ($_xmlClose && !$onlyStartTag) ? ' />' : '>');
 	}
 	return $_tag;
@@ -1669,17 +1669,17 @@ function getDoctypeQuery($db = ''){
 		if(WE_DOCTYPE_WORKSPACE_BEHAVIOR == 0){
 			foreach($b as $k => $v){
 				$db->query('SELECT ID,Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($v));
-				while($db->next_record()) {
+				while($db->next_record()){
 					$paths[] = '(ParentPath = "' . $db->escape($db->f('Path')) . '" || ParentPath LIKE "' . $db->escape($db->f('Path')) . '/%")';
 				}
 			}
 			if(is_array($paths) && count($paths) > 0){
 				return 'WHERE (' . implode(' OR ', $paths) . ' OR ParentPath="") ORDER BY DocType';
 			}
-		} else{
+		} else {
 			foreach($b as $k => $v){
 				$_tmp_path = id_to_path($v);
-				while($_tmp_path && $_tmp_path != '/') {
+				while($_tmp_path && $_tmp_path != '/'){
 					$paths[] = '"' . $db->escape($_tmp_path) . '"';
 					$_tmp_path = dirname($_tmp_path);
 				}
@@ -1785,7 +1785,7 @@ function getVarArray($arr, $string){
 	foreach($arr_matches[1] as $dimension){
 		if(isset($return[$dimension])){
 			$return = $return[$dimension];
-		} else{
+		} else {
 			return false;
 		}
 	}
@@ -1853,7 +1853,7 @@ function g_l($name, $specific, $omitErrors = false){
 						mb_convert_encoding($tmp, $charset, 'UTF-8')
 					) :
 					$tmp);
-		} else{
+		} else {
 			if(!$omitErrors){
 				t_e('notice', 'Requested lang entry l_' . $name . $specific . ' not found in ' . $file . ' !');
 				return '??';
@@ -1916,7 +1916,7 @@ function we_templateInit(){
 function we_templateHead(){
 	if(isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode']){
 		print STYLESHEET_BUTTONS_ONLY . SCRIPT_BUTTONS_ONLY .
-			we_html_element::jsScript(JS_DIR . 'windows.js') . weSuggest::getYuiFiles().
+			we_html_element::jsScript(JS_DIR . 'windows.js') . weSuggest::getYuiFiles() .
 			we_html_element::cssElement('.weMarkInputError, input:invalid {background-color: #ff8888 ! important;}');
 		require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 	}
@@ -1943,6 +1943,9 @@ function we_templatePostContent(){
 function we_templatePost(){
 	if(isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode']){
 		print we_html_element::jsElement('setTimeout("doScrollTo();",100);');
+	}
+	if(isset($_SESSION) && isset($_SESSION['webuser']) && isset($_SESSION['webuser']['loginfailed'])){
+		unset($_SESSION['webuser']['loginfailed']);
 	}
 	if(defined('DEBUG_MEM')){
 		weMemDebug();
@@ -1971,7 +1974,7 @@ function we_TemplateExit($param = 0){
 		}
 //FIXME: use g_l
 		t_e('template forces document to exit, see Backtrace for template name. Message of statement', $param);
-	} else{
+	} else {
 		exit($param);
 	}
 }

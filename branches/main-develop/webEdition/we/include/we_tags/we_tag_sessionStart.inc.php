@@ -52,7 +52,7 @@ function we_tag_sessionStart($attribs){
 		$_SESSION['webuser'] = array('registered' => false);
 
 		$GLOBALS['WE_LOGOUT'] = true;
-	} else{
+	} else {
 		if(isset($_REQUEST['we_set_registeredUser']) && $GLOBALS['we_doc']->InWebEdition){
 			$_SESSION['weS']['we_set_registered'] = $_REQUEST['we_set_registeredUser'];
 		}
@@ -92,7 +92,7 @@ function we_tag_sessionStart($attribs){
 			if($_SESSION['webuser']['registered']){
 				$WebUserID = $_SESSION['webuser']['ID'];
 				$WebUserGroup = ($monitorgroupfield != '' ? $_SESSION['webuser'][$monitorgroupfield] : 'we_guest');
-			} else{
+			} else {
 				$WebUserID = 0;
 				$WebUserGroup = 'we_guest';
 			}
@@ -122,9 +122,9 @@ function we_tag_sessionStart($attribs){
 	}
 }
 
-function wetagsessionHandleFailedLogin($locked = false){
+function wetagsessionHandleFailedLogin(){
 	$_SESSION['webuser'] = array(
-		'registered' => false, 'loginfailed' => true
+		'registered' => false, 'loginfailed' => we_user::INVALID_CREDENTIALS
 	);
 	if(!isset($GLOBALS['WE_LOGIN_DENIED'])){
 		we_log_loginFailed('tblWebUser', $_REQUEST['s']['Username']);
@@ -137,8 +137,9 @@ function wetagsessionHandleFailedLogin($locked = false){
 	){
 		//don't serve user
 		if(SECURITY_LIMIT_CUSTOMER_REDIRECT){
+			$_SESSION['webuser']['loginfailed'] = we_user::MAX_LOGIN_COUNT_REACHED;
 			@include($_SERVER['DOCUMENT_ROOT'] . id_to_path(SECURITY_LIMIT_CUSTOMER_REDIRECT, FILE_TABLE));
-		} else{
+		} else {
 			echo CheckAndConvertISOfrontend('Dear customer, our service is currently not available. Please try again later. Thank you.<br/>' .
 				'Sehr geehrter Kunde, aus Sicherheitsgründen ist ein Login derzeit nicht möglich! Bitte probieren Sie es später noch ein mal. Vielen Dank');
 		}

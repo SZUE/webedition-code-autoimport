@@ -8,7 +8,8 @@ $this->Groups[] = 'input_tags';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
 $id = new weTagData_selectorAttribute('id', FILE_TABLE, 'text/webedition', true, '');
-$target = new weTagData_choiceAttribute('target', array(new weTagDataOption('_top'),
+$target = new weTagData_choiceAttribute('target', array(
+	new weTagDataOption('_top'),
 	new weTagDataOption('_parent'),
 	new weTagDataOption('_self'),
 	new weTagDataOption('_blank'),
@@ -27,8 +28,6 @@ $shopname = new weTagData_textAttribute('shopname', false, 'shop');
 $editself = new weTagData_selectAttribute('editself', weTagData_selectAttribute::getTrueFalse(), false, '');
 $delete = new weTagData_selectAttribute('delete', weTagData_selectAttribute::getTrueFalse(), false, '');
 $xml = new weTagData_selectAttribute('xml', weTagData_selectAttribute::getTrueFalse(), false, '');
-// = new weTagData_textAttribute( 'cachelifetime', false, '');
-
 
 
 $this->TypeAttribute = new weTagData_typeAttribute('edit', array(

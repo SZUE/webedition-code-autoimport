@@ -1149,6 +1149,7 @@ function build_dialog($selected_setting = 'ui'){
 			$CSSAPPLYTO_DEFAULT->addOption('wysiwyg', 'wysiwyg');
 			$CSSAPPLYTO_DEFAULT->selectOption(get_value('CSSAPPLYTO_DEFAULT') ? get_value('CSSAPPLYTO_DEFAULT') : 'around');
 
+			
 			$BASE_IMG = we_html_tools::htmlTextInput('newconf[BASE_IMG]', 22, get_value('BASE_IMG'), '', 'placeholder="http://example.org"', 'url', 225, 0, '');
 			$BASE_CSS = we_html_tools::htmlTextInput('newconf[BASE_CSS]', 22, get_value('BASE_CSS'), '', 'placeholder="http://example.org"', 'url', 225, 0, '');
 			$BASE_JS = we_html_tools::htmlTextInput('newconf[BASE_JS]', 22, get_value('BASE_JS'), '', 'placeholder="http://example.org"', 'url', 225, 0, '');
