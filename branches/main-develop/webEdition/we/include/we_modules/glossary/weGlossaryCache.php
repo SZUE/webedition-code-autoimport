@@ -121,7 +121,7 @@ class weGlossaryCache{
 		$DB_WE->query('SELECT Text, Type, Language, Title, Attributes, LENGTH(Text) as Length FROM ' . GLOSSARY_TABLE . ' WHERE Language = "' . $DB_WE->escape($this->language) . '" AND Published > 0 ORDER BY Length DESC');
 		$Items = array();
 
-		while($DB_WE->next_record()) {
+		while($DB_WE->next_record()){
 			$Text = $DB_WE->f('Text');
 			$Type = $DB_WE->f('Type');
 			$Title = $DB_WE->f('Title');
@@ -134,7 +134,7 @@ class weGlossaryCache{
 				$Title = utf8_decode($Title);
 			}
 
-			$Text = weGlossary::escapeChars(oldHtmlspecialchars($Text, ENT_NOQUOTES));
+			$Text = oldHtmlspecialchars($Text, ENT_NOQUOTES);
 
 			$Title = oldHtmlspecialchars($Title, ENT_QUOTES);
 
@@ -151,7 +151,7 @@ class weGlossaryCache{
 			$attributes = '';
 
 			// Language
-			if($Type == 'link'){
+			if($Type == weGlossary::TYPE_LINK){
 				$urladd = '';
 
 				if(isset($Attributes['mode'])){
@@ -213,7 +213,7 @@ class weGlossaryCache{
 								if(isset($Attributes['CategoryInternLinkID']) && trim($Attributes['CategoryInternLinkID']) != ""){
 									$temp['href'] .= id_to_path($Attributes['CategoryInternLinkID']);
 								}
-							} else{
+							} else {
 
 								// Href
 								if(isset($Attributes['CategoryUrl']) && trim($Attributes['CategoryUrl']) != ""){
@@ -309,7 +309,7 @@ if (window.screen) {
 } else {
 	we_winOpts="";
 }';
-					} else{
+					} else {
 
 						// popup_xposition
 						if(isset($Attributes['popup_xposition']) && trim($Attributes['popup_xposition']) != ""){
@@ -350,11 +350,11 @@ if (window.screen) {
 		}
 
 		$content = array(
-			'link' => array(),
-			'acronym' => array(),
-			'abbreviation' => array(),
-			'foreignword' => array(),
-			'textreplacement' => array(),
+			weGlossary::TYPE_LINK => array(),
+			weGlossary::TYPE_ACRONYM => array(),
+			weGlossary::TYPE_ABBREVATION => array(),
+			weGlossary::TYPE_FOREIGNWORD => array(),
+			weGlossary::TYPE_TEXTREPLACE => array(),
 		);
 
 		foreach($Items as $Text => $Value){
@@ -364,19 +364,19 @@ if (window.screen) {
 			foreach($Value as $Type => $AttributeList){
 
 				switch($Type){
-					case 'link':
+					case weGlossary::TYPE_LINK:
 						$Tag = 'a';
 						break;
-					case 'acronym':
+					case weGlossary::TYPE_ACRONYM:
 						$Tag = 'acronym';
 						break;
-					case 'abbreviation':
+					case weGlossary::TYPE_ABBREVATION:
 						$Tag = 'abbr';
 						break;
-					case 'foreignword':
+					case weGlossary::TYPE_FOREIGNWORD:
 						$Tag = 'span';
 						break;
-					case 'textreplacement':
+					case weGlossary::TYPE_TEXTREPLACE:
 						$Tag = '';
 						break;
 				}
@@ -384,11 +384,11 @@ if (window.screen) {
 				if($Tag != ''){
 					$prefix .= '<' . $Tag;
 				}
-				if($Type != 'textreplacement'){
+				if($Type != weGlossary::TYPE_TEXTREPLACE){
 					foreach($AttributeList as $Attribute => $Val){
 						$prefix .= ($Attribute == 'attribute' ? $Val : ' ' . $Attribute . '=\"' . $Val . '\"');
 					}
-				} else{
+				} else {
 					$prefix .=$AttributeList['title'];
 				}
 				if($Tag != ''){
@@ -396,9 +396,9 @@ if (window.screen) {
 					$postfix = '</' . $Tag . '>' . $postfix;
 				}
 			}
-			$content[$Type]['/((<[^>]*)|([^[:alnum:]])(' . $Text . ')([^[:alnum:]]))/e'] = '"\2"=="\1"?"\1":"\3' . $prefix .
-				($Type != 'textreplacement' ? '\4' : '') .
-				$postfix . '\5"';
+			$content[$Type]['/((<[^>]*)|([^[:alnum:]])(' . preg_quote($Text, '/') . ')([^[:alnum:]]))/e'] = '"$2"=="$1"?"$1":"${3}' . $prefix .
+				($Type != weGlossary::TYPE_TEXTREPLACE ? '$4' : '') .
+				$postfix . '$5"';
 		}
 
 		$cacheFilename = self::cacheIdToFilename($this->_cacheId);
@@ -430,7 +430,7 @@ if (window.screen) {
 			if(weFile::load($cacheFilename, 'rb', 5) == '<?php'){
 				include($cacheFilename);
 				$this->content = $content;
-			} else{
+			} else {
 				$this->content = @unserialize(@gzinflate(weFile::load($cacheFilename)));
 			}
 		}

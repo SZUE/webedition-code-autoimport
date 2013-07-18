@@ -93,11 +93,11 @@ abstract class weGlossaryReplace{
 		// get the words to replace
 		$cache = new weGlossaryCache($language);
 		$replace = array(
-			'<span ' => $cache->get('foreignword'),
-			'<abbr ' => $cache->get('abbreviation'),
-			'<acronym ' => $cache->get('acronym'),
-			'<a ' => $cache->get('link'),
-			'' => $cache->get('textreplacement')
+			'<span ' => $cache->get(weGlossary::TYPE_FOREIGNWORD),
+			'<abbr ' => $cache->get(weGlossary::TYPE_ABBREVATION),
+			'<acronym ' => $cache->get(weGlossary::TYPE_ACRONYM),
+			'<a ' => $cache->get(weGlossary::TYPE_LINK),
+			'' => $cache->get(weGlossary::TYPE_TEXTREPLACE)
 		);
 		unset($cache);
 
@@ -143,7 +143,7 @@ abstract class weGlossaryReplace{
 		$replBody = str_replace('@@@we@@@', '\'', $replBody);
 		if(isset($matches[1])){
 			return str_replace($srcBody, $replBody, $src);
-		} else{
+		} else {
 			return $replBody;
 		}
 	}
@@ -168,7 +168,7 @@ abstract class weGlossaryReplace{
 			for($i = $len - 1; $i >= 0; $i--){
 				if($src{$i} == ' '){
 					$spaceStr .=' ';
-				} else{
+				} else {
 					break;
 				}
 			}

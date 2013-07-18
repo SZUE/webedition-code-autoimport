@@ -145,7 +145,7 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 	$UnpublishedEntries = weGlossary::getEntries($Language, 'unpublished');
 	$List = array();
 	foreach($UnpublishedEntries as $Key => $Value){
-		if($UnpublishedEntries[$Key]['Type'] != "link"){
+		if($UnpublishedEntries[$Key]['Type'] != weGlossary::TYPE_LINK){
 			$List[] = $Value;
 		}
 	}
@@ -367,10 +367,10 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 			}
 			$Modes['ignore'] = g_l('modules_glossary', '[ignore]');
 			if(we_hasPerm("NEW_GLOSSARY")){
-				$Modes['abbreviation'] = g_l('modules_glossary', '[abbreviation]');
-				$Modes['acronym'] = g_l('modules_glossary', '[acronym]');
-				$Modes['foreignword'] = g_l('modules_glossary', '[foreignword]');
-				$Modes['textreplacement'] = g_l('modules_glossary', '[textreplacement]');
+				$Modes[weGlossary::TYPE_ABBREVATION] = g_l('modules_glossary', '[abbreviation]');
+				$Modes[weGlossary::TYPE_ACRONYM] = g_l('modules_glossary', '[acronym]');
+				$Modes[weGlossary::TYPE_FOREIGNWORD] = g_l('modules_glossary', '[foreignword]');
+				$Modes[weGlossary::TYPE_TEXTREPLACE] = g_l('modules_glossary', '[textreplacement]');
 			}
 			if(we_hasPerm("EDIT_GLOSSARY_DICTIONARY")){
 				$Modes['exception'] = g_l('modules_glossary', '[to_exceptionlist]');
@@ -650,7 +650,7 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 
 				function disableItem(id, value) {
 					switch (value) {
-						case 'foreignword':
+						case <?php echo weGlossary::TYPE_FOREIGNWORD;?>:
 							document.getElementById('title_' + id).disabled = true;
 							document.getElementById('lang_' + id).disabled = false;
 							document.getElementById('title_' + id).style.display = 'inline';
@@ -691,8 +691,8 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 						title = document.getElementById('title_' + i).value;
 						lang = document.getElementById('lang_' + i).value;
 						switch (type) {
-							case 'abbreviation':
-							case 'acronym':
+							case <?php echo weGlossary::TYPE_ABBREVATION;?>:
+							case <?php echo weGlossary::TYPE_ACRONYM;?>:
 								if (title === '') {
 									document.getElementById('title_' + i).focus();
 	<?php print we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[please_insert_title]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
@@ -704,7 +704,7 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 									return false;
 								}
 								break;
-							case 'foreignword':
+							case <?php echo weGlossary::TYPE_FOREIGNWORD;?>:
 								if (lang === '') {
 									document.getElementById('lang_' + i).focus();
 	<?php print we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[please_insert_language]'), we_message_reporting::WE_MESSAGE_ERROR); ?>

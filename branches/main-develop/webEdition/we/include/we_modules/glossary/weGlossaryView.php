@@ -101,23 +101,23 @@ class weGlossaryView{
 			switch($_REQUEST['cmd']){
 
 				case 'new_glossary_abbreviation':
-					$this->Glossary->Type = 'abbreviation';
+					$this->Glossary->Type = weGlossary::TYPE_ABBREVATION;
 					break;
 
 				case 'new_glossary_acronym':
-					$this->Glossary->Type = 'acronym';
+					$this->Glossary->Type = weGlossary::TYPE_ACRONYM;
 					break;
 
 				case 'new_glossary_foreignword':
-					$this->Glossary->Type = 'foreignword';
+					$this->Glossary->Type = weGlossary::TYPE_FOREIGNWORD;
 					break;
 
 				case 'new_glossary_link':
-					$this->Glossary->Type = 'link';
+					$this->Glossary->Type = weGlossary::TYPE_LINK;
 					break;
 
 				case 'new_glossary_textreplacement':
-					$this->Glossary->Type = 'textreplacement';
+					$this->Glossary->Type = weGlossary::TYPE_TEXTREPLACE;
 					break;
 			}
 		} elseif(isset($_REQUEST['type'])){
@@ -553,7 +553,7 @@ class weGlossaryView{
 						break;
 					}
 					$this->Glossary->Text = $_REQUEST[$_REQUEST['Type']]['Text'];
-					if($this->Glossary->Type != "foreignword"){
+					if($this->Glossary->Type != weGlossary::TYPE_FOREIGNWORD){
 						$this->Glossary->Title = $_REQUEST[$_REQUEST['Type']]['Title'];
 					}
 					if(isset($_REQUEST[$_REQUEST['Type']]['Attributes'])){

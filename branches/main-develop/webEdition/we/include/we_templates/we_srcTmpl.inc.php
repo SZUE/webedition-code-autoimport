@@ -483,12 +483,12 @@ switch($_SESSION['prefs']['editorMode']){
 					), '', $params);
 		}
 
-		function we_getCodeMirror2Tags($css){
+		function we_getCodeMirror2Tags($css, $weTags = true){
 			//FIXME: this should only be loaded once! not for every document opened!
 			$ret = '';
 			$allTags = array();
 			$setting = @unserialize($_SESSION['prefs']['editorCodecompletion']);
-			if($css || $setting['WE']){
+			if($weTags && ($css || $setting['WE'])){
 				$allWeTags = weTagWizard::getExistingWeTags($css); //only load deprecated tags if css is requested
 				foreach($allWeTags as $tagName){
 					$weTag = weTagData::getTagData($tagName);
@@ -554,6 +554,7 @@ switch($_SESSION['prefs']['editorMode']){
 			$parser_js = array();
 			$parser_css = array('theme/' . $_SESSION['prefs']['editorTheme'] . '.css');
 			$toolTip = false;
+			$useCompletion = false;
 			switch($GLOBALS['we_doc']->ContentType){ // Depending on content type we use different parsers and css files
 				case 'text/css':
 					$parser_js[] = 'mode/css/css.js';
@@ -573,13 +574,14 @@ switch($_SESSION['prefs']['editorMode']){
 					$parser_js[] = 'addon/edit/closetag.js';
 					$parser_js[] = 'addon/fold/foldcode.js';
 					$parser_js[] = 'addon/edit/matchbrackets.js';
-					if(true || $_SESSION['prefs']['editorCodecompletion']){
+					if($_SESSION['prefs']['editorCodecompletion']){
 						$parser_js[] = 'addon/hint/simple-hint.js';
 						$parser_js[] = 'addon/we/we-hint.js';
 					}
 					$parser_css[] = 'lib/util/simple-hint.css';
 					$toolTip = $_SESSION['prefs']['editorTooltips'];
 					$mode = 'text/weTmpl';
+					$useCompletion = true;
 				case 'text/html':
 					$parser_js[] = 'mode/xml/xml.js';
 					$parser_js[] = 'mode/javascript/javascript.js';
@@ -590,7 +592,13 @@ switch($_SESSION['prefs']['editorMode']){
 					$parser_js[] = 'addon/edit/closetag.js';
 					$parser_js[] = 'addon/fold/foldcode.js';
 					$parser_js[] = 'addon/edit/matchbrackets.js';
+					if($_SESSION['prefs']['editorCodecompletion']){
+						$parser_js[] = 'addon/hint/simple-hint.js';
+						$parser_js[] = 'addon/we/we-hint.js';
+					}
+					$parser_css[] = 'lib/util/simple-hint.css';
 					$mode = (isset($mode) ? $mode : 'application/x-httpd-php');
+					$useCompletion = true;
 					break;
 				case 'text/xml':
 					$parser_js[] = 'mode/xml/xml.js';
@@ -658,7 +666,7 @@ var CMoptions = { //these are the CodeMirror options
 							  "Ctrl-Space": function(cm) { CodeMirror.weHint(cm, \'\'); }' : ''
 						) . '
 	}
-};' . ($hasCompletion && $GLOBALS['we_doc']->ContentType == 'text/weTmpl' ? we_getCodeMirror2Tags(false) : '') . '
+};' . ($hasCompletion && $useCompletion ? we_getCodeMirror2Tags(false, $mode == 'text/weTmpl') : '') . '
 window.orignalTemplateContent=document.getElementById("editarea").value.replace(/\r/g,""); //this is our reference of the original content to compare with current content
 ');
 			}

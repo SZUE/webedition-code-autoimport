@@ -28,40 +28,37 @@ class weGlossaryFrameEditorItem extends weGlossaryFrameEditor{
 
 		$we_tabs = new we_tabs();
 
-		$title = "";
-
 		switch($weGlossaryFrames->View->Glossary->Type){
-			case 'abbreviation':
+			case weGlossary::TYPE_ABBREVATION:
 				$we_tabs->addTab(new we_tab("#", g_l('modules_glossary', '[property]'), 'TAB_ACTIVE', "setTab('1');"));
 
-				$title .= g_l('modules_glossary', '[abbreviation]');
+				$title = g_l('modules_glossary', '[abbreviation]');
 				break;
 
-			case 'acronym':
+			case weGlossary::TYPE_ACRONYM:
 				$we_tabs->addTab(new we_tab("#", g_l('modules_glossary', '[property]'), 'TAB_ACTIVE', "setTab('1');"));
 
-				$title .= g_l('modules_glossary', '[acronym]');
+				$title = g_l('modules_glossary', '[acronym]');
 				break;
 
-			case 'foreignword':
+			case weGlossary::TYPE_FOREIGNWORD:
 				$we_tabs->addTab(new we_tab("#", g_l('modules_glossary', '[property]'), 'TAB_ACTIVE', "setTab('1');"));
 
-				$title .= g_l('modules_glossary', '[foreignword]');
+				$title = g_l('modules_glossary', '[foreignword]');
 				break;
 
-			case 'link':
+			case weGlossary::TYPE_LINK:
 				$we_tabs->addTab(new we_tab("#", g_l('modules_glossary', '[property]'), 'TAB_ACTIVE', "setTab('1');"));
 
-				$title .= g_l('modules_glossary', '[link]');
+				$title = g_l('modules_glossary', '[link]');
 				break;
-			case 'textreplacement':
+			case weGlossary::TYPE_TEXTREPLACE:
 				$we_tabs->addTab(new we_tab("#", g_l('modules_glossary', '[property]'), 'TAB_ACTIVE', "setTab('1');"));
 
-				$title .= g_l('modules_glossary', '[textreplacement]');
+				$title = g_l('modules_glossary', '[textreplacement]');
 				break;
 		}
 
-		//$title .= ":&nbsp;" . ($weGlossaryFrames->View->Glossary->ID != 0 ? $weGlossaryFrames->View->Glossary->Text : g_l('modules_glossary','[menu_new]')).'<div id="mark" style="display: none;">*</div>';
 
 		return weGlossaryFrameEditorItem::buildHeader($weGlossaryFrames, $we_tabs, $title, ($weGlossaryFrames->View->Glossary->ID != 0 ? oldHtmlspecialchars($weGlossaryFrames->View->Glossary->Text) : g_l('modules_glossary', '[menu_new]')) . '<div id="mark" style="display: none;">*</div>');
 	}
@@ -298,11 +295,11 @@ class weGlossaryFrameEditorItem extends weGlossaryFrameEditor{
 		$parts = array();
 
 		$_types = array(
-			'acronym' => g_l('modules_glossary', '[acronym]'),
-			'abbreviation' => g_l('modules_glossary', '[abbreviation]'),
-			'foreignword' => g_l('modules_glossary', '[foreignword]'),
-			'link' => g_l('modules_glossary', '[link]'),
-			'textreplacement' => g_l('modules_glossary', '[textreplacement]'),
+			weGlossary::TYPE_ACRONYM => g_l('modules_glossary', '[acronym]'),
+			weGlossary::TYPE_ABBREVATION => g_l('modules_glossary', '[abbreviation]'),
+			weGlossary::TYPE_FOREIGNWORD => g_l('modules_glossary', '[foreignword]'),
+			weGlossary::TYPE_LINK => g_l('modules_glossary', '[link]'),
+			weGlossary::TYPE_TEXTREPLACE => g_l('modules_glossary', '[textreplacement]'),
 		);
 
 		$hidden = we_html_element::htmlHidden(array('name' => 'newone', 'value' => ($weGlossaryFrames->View->Glossary->ID == 0 ? 1 : 0)))
@@ -372,7 +369,7 @@ class weGlossaryFrameEditorItem extends weGlossaryFrameEditor{
 		$_title = "";
 		$_language = "";
 
-		if($weGlossaryFrames->View->Glossary->Type == "abbreviation"){
+		if($weGlossaryFrames->View->Glossary->Type == weGlossary::TYPE_ABBREVATION){
 			$_text = html_entity_decode($weGlossaryFrames->View->Glossary->Text);
 			$_title = html_entity_decode($weGlossaryFrames->View->Glossary->Title);
 			$_language = $weGlossaryFrames->View->Glossary->getAttribute('lang');
@@ -424,7 +421,7 @@ class weGlossaryFrameEditorItem extends weGlossaryFrameEditor{
 		$_title = "";
 		$_language = "";
 
-		if($weGlossaryFrames->View->Glossary->Type == "acronym"){
+		if($weGlossaryFrames->View->Glossary->Type == weGlossary::TYPE_ACRONYM){
 			$_text = html_entity_decode($weGlossaryFrames->View->Glossary->Text);
 			$_title = html_entity_decode($weGlossaryFrames->View->Glossary->Title);
 			$_language = $weGlossaryFrames->View->Glossary->getAttribute('lang');
@@ -473,7 +470,7 @@ class weGlossaryFrameEditorItem extends weGlossaryFrameEditor{
 		$_text = "";
 		$_language = "";
 
-		if($weGlossaryFrames->View->Glossary->Type == "foreignword"){
+		if($weGlossaryFrames->View->Glossary->Type == weGlossary::TYPE_FOREIGNWORD){
 			$_text = html_entity_decode($weGlossaryFrames->View->Glossary->Text);
 			$_language = $weGlossaryFrames->View->Glossary->getAttribute('lang');
 		}
@@ -511,7 +508,7 @@ class weGlossaryFrameEditorItem extends weGlossaryFrameEditor{
 		$_text = "";
 		$_language = "";
 
-		if($weGlossaryFrames->View->Glossary->Type == "textreplacement"){
+		if($weGlossaryFrames->View->Glossary->Type == weGlossary::TYPE_TEXTREPLACE){
 			$_text = html_entity_decode($weGlossaryFrames->View->Glossary->Text, null, $GLOBALS["WE_BACKENDCHARSET"]);
 			$_title = html_entity_decode($weGlossaryFrames->View->Glossary->Title, null, $GLOBALS["WE_BACKENDCHARSET"]);
 		}
@@ -550,7 +547,7 @@ class weGlossaryFrameEditorItem extends weGlossaryFrameEditor{
 		$_text = "";
 		$_mode = "";
 
-		if($weGlossaryFrames->View->Glossary->Type == "link"){
+		if($weGlossaryFrames->View->Glossary->Type == weGlossary::TYPE_LINK){
 			$_text = html_entity_decode($weGlossaryFrames->View->Glossary->Text);
 			$_mode = $weGlossaryFrames->View->Glossary->getAttribute('mode');
 		}
@@ -654,10 +651,10 @@ class weGlossaryFrameEditorItem extends weGlossaryFrameEditor{
 
 		$parameter = g_l('modules_glossary', '[parameter]');
 
-		if($weGlossaryFrames->View->Glossary->Type == "link" && $weGlossaryFrames->View->Glossary->getAttribute('mode') == "extern"){
+		if($weGlossaryFrames->View->Glossary->Type == weGlossary::TYPE_LINK && $weGlossaryFrames->View->Glossary->getAttribute('mode') == "extern"){
 			$_url = $weGlossaryFrames->View->Glossary->getAttribute('ExternUrl');
 			$_parameter = $weGlossaryFrames->View->Glossary->getAttribute('ExternParameter');
-		} else{
+		} else {
 			$_url = we_base_link::EMPTY_EXT;
 			$_parameter = "";
 		}
@@ -677,12 +674,12 @@ class weGlossaryFrameEditorItem extends weGlossaryFrameEditor{
 		$workspace = g_l('modules_glossary', '[workspace]');
 		$parameter = g_l('modules_glossary', '[parameter]');
 
-		if($weGlossaryFrames->View->Glossary->Type == "link" && $weGlossaryFrames->View->Glossary->getAttribute('mode') == "object"){
+		if($weGlossaryFrames->View->Glossary->Type == weGlossary::TYPE_LINK && $weGlossaryFrames->View->Glossary->getAttribute('mode') == "object"){
 			$_linkPath = $weGlossaryFrames->View->Glossary->getAttribute('ObjectLinkPath');
 			$_linkID = $weGlossaryFrames->View->Glossary->getAttribute('ObjectLinkID');
 			$_workspaceID = $weGlossaryFrames->View->Glossary->getAttribute('ObjectWorkspaceID');
 			$_parameter = $weGlossaryFrames->View->Glossary->getAttribute('ObjectParameter');
-		} else{
+		} else {
 			$_linkPath = "";
 			$_linkID = "";
 			$_workspaceID = "";
@@ -702,7 +699,7 @@ class weGlossaryFrameEditorItem extends weGlossaryFrameEditor{
 		);
 
 
-		$_wsid =($this->View->Glossary->getAttribute('ObjectLinkID') != ''?			 weDynList::getWorkspacesForObject($this->View->Glossary->getAttribute('ObjectLinkID')):array());
+		$_wsid = ($this->View->Glossary->getAttribute('ObjectLinkID') != '' ? weDynList::getWorkspacesForObject($this->View->Glossary->getAttribute('ObjectLinkID')) : array());
 
 		return '<div id="mode_object" style="display: none;">
 	<table border="0" cellpadding="0" cellspacing="0">
@@ -721,7 +718,6 @@ class weGlossaryFrameEditorItem extends weGlossaryFrameEditor{
 		<tr><td class="defaultfont">' . $parameter . '</td></tr>
 		<tr><td>' . we_html_tools::htmlTextInput('link[Attributes][ObjectParameter]', 58, $_parameter, '', 'onchange="setHot();"', 'text', 520, 0) . '</td></tr>
 	</table></div>';
-
 	}
 
 	function getHTMLCategory(&$weGlossaryFrames){
@@ -743,7 +739,7 @@ class weGlossaryFrameEditorItem extends weGlossaryFrameEditor{
 		$_url = "http://";
 		$_catParameter = "";
 		$_parameter = "";
-		if($weGlossaryFrames->View->Glossary->Type == "link" && $weGlossaryFrames->View->Glossary->getAttribute('mode') == "category"){
+		if($weGlossaryFrames->View->Glossary->Type == weGlossary::TYPE_LINK && $weGlossaryFrames->View->Glossary->getAttribute('mode') == "category"){
 			$_linkPath = $weGlossaryFrames->View->Glossary->getAttribute('CategoryLinkPath');
 			$_linkID = $weGlossaryFrames->View->Glossary->getAttribute('CategoryLinkID');
 			$_internLinkPath = $weGlossaryFrames->View->Glossary->getAttribute('CategoryInternLinkPath');
