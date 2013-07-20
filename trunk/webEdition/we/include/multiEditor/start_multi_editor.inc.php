@@ -31,11 +31,9 @@ we_html_tools::protect();
  */
 function checkIfValidStartdocument($id, $type = 'document'){
 
-	if($type == 'object'){
-		return (f('SELECT ContentType FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($id), 'ContentType', $GLOBALS['DB_WE']) == 'objectFile');
-	} else{
-		return (f('SELECT ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), 'ContentType', $GLOBALS['DB_WE']) == 'text/webedition');
-	}
+	return ($type == 'object' ?
+			(f('SELECT ContentType FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($id), 'ContentType', $GLOBALS['DB_WE']) == 'objectFile') :
+			(f('SELECT ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), 'ContentType', $GLOBALS['DB_WE']) == 'text/webedition'));
 }
 
 //	Here begins the code for showing the correct frameset.
@@ -55,7 +53,7 @@ if(isset($_REQUEST['we_cmd']) && isset($_REQUEST['we_cmd'][4]) && $_REQUEST['we_
 		$directCmd[] = $_REQUEST['we_cmd'][$i];
 	}
 	$jsCommand = _buildJsCommand($directCmd);
-} else{ // check preferences for which document to open at startup
+} else { // check preferences for which document to open at startup
 // <we:linkToSeeMode> !!!!
 	if(isset($_SESSION['weS']['SEEM']) && isset($_SESSION['weS']['SEEM']['open_selected'])){
 		switch($_SESSION['weS']['SEEM']['startType']){
@@ -67,7 +65,7 @@ if(isset($_REQUEST['we_cmd']) && isset($_REQUEST['we_cmd'][4]) && $_REQUEST['we_
 						'text/webedition',
 					);
 					$jsCommand = _buildJsCommand($directCmd);
-				} else{
+				} else {
 					t_e('invalid start doc ' . $_SESSION['weS']['SEEM']['startId']);
 				}
 				break;
@@ -79,7 +77,7 @@ if(isset($_REQUEST['we_cmd']) && isset($_REQUEST['we_cmd'][4]) && $_REQUEST['we_
 						'objectFile'
 					);
 					$jsCommand = _buildJsCommand($directCmd);
-				} else{
+				} else {
 					t_e('invalid start doc ' . $_SESSION['weS']['SEEM']['startId']);
 				}
 				break;
@@ -87,7 +85,7 @@ if(isset($_REQUEST['we_cmd']) && isset($_REQUEST['we_cmd'][4]) && $_REQUEST['we_
 		unset($_SESSION['weS']['SEEM']['open_selected']);
 
 // normal mode, start document depends on settings
-	} else{
+	} else {
 		switch($_SESSION['prefs']['seem_start_type']){
 			case 'object':
 				if($_SESSION['prefs']['seem_start_file'] != 0 && checkIfValidStartdocument($_SESSION['prefs']['seem_start_file'], 'object')){ //	if a stardocument is already selected - show this
@@ -97,7 +95,7 @@ if(isset($_REQUEST['we_cmd']) && isset($_REQUEST['we_cmd'][4]) && $_REQUEST['we_
 						'objectFile',
 					);
 					$jsCommand = _buildJsCommand($directCmd);
-				} else{
+				} else {
 					t_e('start doc not valid');
 				}
 				break;
@@ -112,7 +110,7 @@ if(isset($_REQUEST['we_cmd']) && isset($_REQUEST['we_cmd'][4]) && $_REQUEST['we_
 						'text/webedition',
 					);
 					$jsCommand = _buildJsCommand($directCmd);
-				} else{
+				} else {
 					if($_SESSION['prefs']['seem_start_file'] != 0){
 						t_e('start doc not valid', $_SESSION['prefs']['seem_start_file']);
 					}
@@ -132,6 +130,6 @@ if(isset($_REQUEST['we_cmd']) && isset($_REQUEST['we_cmd'][4]) && $_REQUEST['we_
 }
 if($_SESSION['prefs']['seem_start_type'] !== '0'){
 	print we_html_element::jsElement($jsCommand);
-} else{
+} else {
 	print we_html_element::jsElement('top.weEditorFrameController.toggleFrames();');
 }

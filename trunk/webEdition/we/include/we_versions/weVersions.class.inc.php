@@ -1124,16 +1124,16 @@ class weVersions{
 			case "documentID":
 				$entry = $document["ID"];
 				break;
-			case "documentTable":
-				$entry = $document["Table"];
+			case 'documentTable':
+				$entry = $document['Table'];
 				break;
-			case "documentElements":
-				if(!empty($document["elements"]) && is_array($document["elements"])){
+			case 'documentElements':
+				if(!empty($document['elements']) && is_array($document['elements'])){
 					$entry = gzcompress(serialize($document["elements"]), 9);
 				}
 				break;
-			case "documentScheduler":
-				if(!empty($document["schedArr"]) && is_array($document["schedArr"])){
+			case 'documentScheduler':
+				if(!empty($document['schedArr']) && is_array($document['schedArr'])){
 					$entry = gzcompress(serialize($document["schedArr"]), 9);
 				}
 				break;
@@ -1142,20 +1142,20 @@ class weVersions{
 					$entry = gzcompress(serialize($document["documentCustomerFilter"]), 9);
 				}
 				break;
-			case "timestamp":
+			case 'timestamp':
 				$lastEntryVersion = f("SELECT ID FROM " . VERSIONS_TABLE . " WHERE documentID=" . intval($document["ID"]) . " AND documentTable='" . $db->escape($document["Table"]) . "' LIMIT 1", 'ID', $db);
 				$entry = ($lastEntryVersion ? time() : $document['CreationDate']);
 				break;
-			case "status":
+			case 'status':
 				$this->setStatus($status);
 				$entry = $status;
 				break;
-			case "Charset":
+			case 'Charset':
 				if(isset($document['elements']['Charset']['dat'])){
 					$entry = $document['elements']['Charset']['dat'];
 				}
 				break;
-			case "version":
+			case 'version':
 				$lastEntryVersion = f('SELECT MAX(version) AS version FROM ' . VERSIONS_TABLE . ' WHERE documentID=' . intval($document["ID"]) . ' AND documentTable="' . $db->escape($document["Table"]) . '"', 'version', $db);
 				if($lastEntryVersion){
 					$newVersion = $lastEntryVersion + 1;
@@ -1163,20 +1163,15 @@ class weVersions{
 				}
 				$entry = $this->getVersion();
 				break;
-			case "binaryPath":
-				$binaryPath = "";
-
-				//$binaryPath = f("SELECT binaryPath FROM " . VERSIONS_TABLE . " WHERE binaryPath!='' AND version<'".intval($this->version)."' AND documentTable='".$db->escape($document['Table'])."' AND documentID='".abs($document['ID'])."'  ORDER BY version DESC limit 1 ","binaryPath",$db);
-				//if($document["ContentType"]=="objectFile") { vor #4120
-				if($document["ContentType"] == "objectFile" || $document["ContentType"] == "text/weTmpl"){
-					$binaryPath = "";
-				} else{
+			case 'binaryPath':
+				$binaryPath = '';
+				if(!($document['ContentType'] == 'objectFile' || $document['ContentType'] == 'text/weTmpl')){
 					$documentPath = substr($document["Path"], 1);
 					$siteFile = $_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $documentPath;
 
 					$vers = $this->getVersion();
 
-					$versionName = $document["ID"] . "_" . $document["Table"] . "_" . $vers . $document["Extension"];
+					$versionName = $document['ID'] . '_' . $document['Table'] . '_' . $vers . $document['Extension'];
 					$binaryPath = VERSION_DIR . $versionName . '.gz';
 
 					if($document["IsDynamic"]){
