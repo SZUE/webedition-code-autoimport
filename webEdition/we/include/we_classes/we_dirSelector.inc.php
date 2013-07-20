@@ -266,7 +266,7 @@ function addEntry(ID,icon,text,isFolder,path,modDate){
 
 	function printFramesetJSFunctionAddEntries(){
 		$ret = '';
-		while($this->next_record()) {
+		while($this->next_record()){
 			$ret.='addEntry(' . $this->f("ID") . ',"' . $this->f("Icon") . '","' . addcslashes($this->f("Text"), '"') . '",' . $this->f("IsFolder") . ',"' . addcslashes($this->f("Path"), '"') . '","' . date(g_l('date', '[format][default]'), (is_numeric($this->f("ModDate")) ? $this->f("ModDate") : 0)) . '");';
 		}
 		return we_html_element::jsElement($ret);
@@ -275,7 +275,7 @@ function addEntry(ID,icon,text,isFolder,path,modDate){
 	function printCmdAddEntriesHTML(){
 		$ret = '';
 		$this->query();
-		while($this->next_record()) {
+		while($this->next_record()){
 			$ret.='top.addEntry(' . $this->f("ID") . ',"' . $this->f("Icon") . '","' . $this->f("Text") . '",' . $this->f("IsFolder") . ',"' . $this->f("Path") . '","' . date(g_l('date', '[format][default]'), (is_numeric($this->f("ModDate")) ? $this->f("ModDate") : 0)) . '");';
 		}
 		$ret.='top.fsheader.' . ($this->userCanMakeNewDir() ? 'enable' : 'disable') . 'NewFolderBut();';
@@ -396,7 +396,7 @@ function setRootDir(){
 		$pid = $this->dir;
 		$out = '';
 		$c = 0;
-		while($pid != 0) {
+		while($pid != 0){
 			$c++;
 			$this->db->query("SELECT ID,Text,ParentID FROM " . $this->db->escape($this->table) . " WHERE ID=" . intval($pid));
 			if($this->db->next_record()){
@@ -452,7 +452,7 @@ top.fsheader.selectIt();';
 		$out = '';
 		$c = 0;
 		$z = 0;
-		while($pid != 0) {
+		while($pid != 0){
 			++$c;
 			$data = getHash('SELECT ID,Text,ParentID FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($pid), $this->db);
 			if(!empty($data)){
@@ -629,7 +629,7 @@ top.clearEntries();';
 			print we_message_reporting::getShowMessageCall(g_l('weEditor', "[folder][we_filename_notValid]"), we_message_reporting::WE_MESSAGE_ERROR);
 		} elseif($_REQUEST['id'] == 0 && strtolower($txt) == "webedition"){
 			print we_message_reporting::getShowMessageCall(g_l('weEditor', "[folder][we_filename_notAllowed]"), we_message_reporting::WE_MESSAGE_ERROR);
-		} else{
+		} else {
 			$folder = (defined('OBJECT_FILES_TABLE') && $this->table == OBJECT_FILES_TABLE ? //4076
 					new we_class_folder() :
 					new we_folder());
@@ -649,11 +649,11 @@ top.clearEntries();';
 			if($this->db->next_record()){
 				$we_responseText = sprintf(g_l('weEditor', '[folder][response_path_exists]'), $folder->Path);
 				print we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
-			} else{
+			} else {
 				if(preg_match('/[^a-z0-9\._\-]/i', $folder->Filename)){
 					$we_responseText = sprintf(g_l('weEditor', '[folder][we_filename_notValid]'), $folder->Path);
 					print we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
-				} else{
+				} else {
 					$folder->we_save();
 					print 'var ref;
 if(top.opener.top.makeNewEntry){
@@ -728,7 +728,7 @@ top.clearEntries();';
 		$txt = $this->FolderText;
 		if($txt == ""){
 			print we_message_reporting::getShowMessageCall(g_l('weEditor', '[folder][filename_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
-		} else{
+		} else {
 			$folder = (defined('OBJECT_FILES_TABLE') && $this->table == OBJECT_FILES_TABLE ? //4076
 					new we_class_folder() :
 					new we_folder());
@@ -744,7 +744,7 @@ top.clearEntries();';
 			if($this->db->next_record()){
 				$we_responseText = sprintf(g_l('weEditor', "[folder][response_path_exists]"), $folder->Path);
 				print we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
-			} else{
+			} else {
 				if(preg_match('/[^a-z0-9\._\-]/i', $folder->Filename)){
 					$we_responseText = sprintf(g_l('weEditor', "[folder][we_filename_notValid]"), $folder->Path);
 					print we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
@@ -779,7 +779,7 @@ top.selectFile(top.currentID);
 	function printPreviewHTML(){
 		if($this->id){
 			$query = $this->db->query('SELECT * FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->id));
-			while($this->db->next_record()) {
+			while($this->db->next_record()){
 				$result = array(
 					'Text' => $this->db->f('Text'),
 					'Path' => $this->db->f('Path'),
@@ -862,21 +862,21 @@ top.selectFile(top.currentID);
 			if(isset($result['ContentType']) && !empty($result['ContentType'])){
 				if($this->table == FILE_TABLE && $result['ContentType'] != "folder"){
 					$query = $this->db->query('SELECT a.Name, b.Dat FROM ' . LINK_TABLE . ' a LEFT JOIN ' . CONTENT_TABLE . ' b on (a.CID = b.ID) WHERE a.DID=' . intval($this->id) . ' AND NOT a.DocumentTable="tblTemplates"');
-					while($this->db->next_record()) {
+					while($this->db->next_record()){
 						$metainfos[$this->db->f('Name')] = $this->db->f('Dat');
 					}
 				} elseif($this->table == FILE_TABLE && $result['ContentType'] = 'folder'){
 					$query = $this->db->query('SELECT ID, Text, IsFolder FROM ' . $this->db->escape($this->table) . ' WHERE ParentID=' . intval($this->id));
 					$folderFolders = array();
 					$folderFiles = array();
-					while($this->db->next_record()) {
+					while($this->db->next_record()){
 						$this->db->f('IsFolder') ? $folderFolders[$this->db->f('ID')] = $this->db->f('Text') : $folderFiles[$this->db->f('ID')] = $this->db->f('Text');
 					}
 				}
 
 				$fs = file_exists($_SERVER['DOCUMENT_ROOT'] . $result['Path']) ? filesize($_SERVER['DOCUMENT_ROOT'] . $result['Path']) : 0;
 
-				$filesize = $fs < 1000 ? $fs . ' byte' : ($fs < 1024000 ? round(($fs / 1024), 2) . ' kB' : round(($fs / (1024 * 1024)), 2) . ' MB');
+				$filesize = weFile::getHumanFileSize($fs);
 				$next = 0;
 				$previewDefauts = "
 <tr><td class='info' width='100%'>
@@ -909,7 +909,7 @@ top.selectFile(top.currentID);
 								if(!file_exists($_SERVER['DOCUMENT_ROOT'] . $thumbpath) || ($created > filemtime($_SERVER['DOCUMENT_ROOT'] . $thumbpath))){
 									$thumb = we_image_edit::edit_image($_SERVER['DOCUMENT_ROOT'] . $result['Path'], $extension, $_SERVER['DOCUMENT_ROOT'] . $thumbpath, null, 150, 200);
 								}
-							} else{
+							} else {
 								$thumbpath = $result['Path'];
 							}
 
