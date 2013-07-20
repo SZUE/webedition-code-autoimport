@@ -32,6 +32,7 @@ class we_schedpro{
 	const DIR = 6;
 	const SEARCHABLE_ENABLED = 7;
 	const SEARCHABLE_DISABLED = 8;
+	const CALL = 9;
 	const TYPE_ONCE = 0;
 	const TYPE_HOUR = 1;
 	const TYPE_DAY = 2;
@@ -65,7 +66,7 @@ class we_schedpro{
 			$this->ParentID = isset($s['ParentID']) ? $s['ParentID'] : $this->ParentID;
 			$this->active = isset($s['active']) ? $s['active'] : $this->active;
 			$this->doctypeAll = isset($s['doctypeAll']) ? $s['doctypeAll'] : $this->doctypeAll;
-		} else{
+		} else {
 			$this->time = time();
 		}
 		$this->nr = $nr;
@@ -90,7 +91,7 @@ class we_schedpro{
 			if($i <= 31){
 				$days .= '<td>' . we_forms::checkbox(1, $this->days[$i - 1], "check_we_schedule_day" . $i . "_" . $this->nr, sprintf('%02d', $i), false, "defaultfont", "this.form.elements['we_schedule_day" . $i . "_" . $this->nr . "'].value=this.checked?1:0;_EditorFrame.setEditorIsHot(true)") .
 					'<input type="hidden" name="we_schedule_day' . $i . '_' . $this->nr . '" value="' . $this->days[$i - 1] . '" /></td><td class="defaultfont">&nbsp;</td>';
-			} else{
+			} else {
 				$days .= '<td colspan="3">';
 			}
 			switch($i){
@@ -165,19 +166,20 @@ function checkFooter(){
 		$taskpopup = '<select class="weSelect we_schedule_task" name="we_schedule_task_' . $this->nr . '" size="1" onchange="_EditorFrame.setEditorIsHot(true);checkFooter();if(self.we_hasExtraRow_' . $this->nr . ' || this.options[this.selectedIndex].value==' . self::DOCTYPE . ' || this.options[this.selectedIndex].value==' . self::CATEGORY . ' || this.options[this.selectedIndex].value==' . self::DIR . '){ setScrollTo();we_cmd(\'reload_editpage\');}">
 <option value="' . self::SCHEDULE_FROM . '"' . (($this->task == self::SCHEDULE_FROM) ? ' selected' : '') . '>' . g_l('modules_schedule', "[task][" . self::SCHEDULE_FROM . ']') . '</option>
 <option value="' . self::SCHEDULE_TO . '"' . (($this->task == self::SCHEDULE_TO) ? ' selected' : '') . '>' . g_l('modules_schedule', "[task][" . self::SCHEDULE_TO . ']') . '</option>';
-		if((we_hasPerm("DELETE_DOCUMENT") && (!$isobj)) || (we_hasPerm("DELETE_OBJECTFILE") && $isobj)){
+		if((we_hasPerm('DELETE_DOCUMENT') && (!$isobj)) || (we_hasPerm('DELETE_OBJECTFILE') && $isobj)){
 			$taskpopup .= '<option value="' . self::DELETE . '"' . (($this->task == self::DELETE) ? ' selected' : '') . '>' . g_l('modules_schedule', "[task][" . self::DELETE . ']') . '</option>';
 		}
 		if(!$isobj){
-			$taskpopup .= '<option value="' . self::DOCTYPE . '"' . (($this->task == self::DOCTYPE) ? ' selected' : '') . '>' . g_l('modules_schedule', "[task][" . self::DOCTYPE . ']') . '</option>';
+			$taskpopup .= '<option value="' . self::DOCTYPE . '"' . (($this->task == self::DOCTYPE) ? ' selected' : '') . '>' . g_l('modules_schedule', "[task][" . self::DOCTYPE . ']') . '</option>
+<option value="' . self::CALL . '"' . (($this->task == self::CALL) ? ' selected' : '') . '>' . g_l('modules_schedule', "[task][" . self::CALL . ']') . '</option>';
 		}
 		$taskpopup .= '<option value="' . self::CATEGORY . '"' . (($this->task == self::CATEGORY) ? ' selected' : '') . '>' . g_l('modules_schedule', "[task][" . self::CATEGORY . ']') . '</option>';
-		if((we_hasPerm("MOVE_DOCUMENT") && (!$isobj)) || (we_hasPerm("MOVE_OBJECTFILE") && $isobj)){
+		if((we_hasPerm('MOVE_DOCUMENT') && (!$isobj)) || (we_hasPerm("MOVE_OBJECTFILE") && $isobj)){
 			$taskpopup .= '<option value="' . self::DIR . '"' . (($this->task == self::DIR) ? ' selected' : '') . '>' . g_l('modules_schedule', "[task][" . self::DIR . ']') . '</option>';
 		}
 		$taskpopup .= '
-<option value="' . self::SEARCHABLE_ENABLED. '"' . (($this->task == self::SEARCHABLE_ENABLED) ? ' selected' : '') . '>' . g_l('modules_schedule', "[task][" . self::SEARCHABLE_ENABLED . ']') . '</option>
-<option value="' . self::SEARCHABLE_DISABLED. '"' . (($this->task == self::SEARCHABLE_DISABLED) ? ' selected' : '') . '>' . g_l('modules_schedule', "[task][" . self::SEARCHABLE_DISABLED. ']') . '</option>
+<option value="' . self::SEARCHABLE_ENABLED . '"' . (($this->task == self::SEARCHABLE_ENABLED) ? ' selected' : '') . '>' . g_l('modules_schedule', "[task][" . self::SEARCHABLE_ENABLED . ']') . '</option>
+<option value="' . self::SEARCHABLE_DISABLED . '"' . (($this->task == self::SEARCHABLE_DISABLED) ? ' selected' : '') . '>' . g_l('modules_schedule', "[task][" . self::SEARCHABLE_DISABLED . ']') . '</option>
 </select>';
 		$extracont = '';
 		$extraheadl = '';
@@ -189,7 +191,7 @@ function checkFooter(){
 				$q = getDoctypeQuery($db);
 				$db->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' ' . $q);
 				$doctypepop = '<select class="weSelect" name="we_schedule_doctype_' . $this->nr . '" size="1" onchange="_EditorFrame.setEditorIsHot(true)">';
-				while($db->next_record()) {
+				while($db->next_record()){
 					$doctypepop .= '<option value="' . $db->f("ID") . '"' . (($this->DoctypeID == $db->f("ID")) ? ' selected="selected"' : '') . '>' . $db->f("DocType") . '</option>';
 				}
 				$doctypepop .= '</select>';
@@ -221,7 +223,7 @@ function checkFooter(){
 						$path = $GLOBALS['we_doc']->RootDirPath;
 					}
 					$_rootDirID = $GLOBALS['we_doc']->rootDirID;
-				} else{
+				} else {
 					$_rootDirID = 0;
 				}
 
@@ -362,22 +364,22 @@ function checkFooter(){
 	}
 
 	function processSchedule($id, $schedFile, $now, $DB_WE){
-		usort($schedFile["value"], array('we_schedpro', 'weCmpSchedLast'));
+		usort($schedFile['value'], array('we_schedpro', 'weCmpSchedLast'));
 		$GLOBALS['we']['Scheduler_active'] = 1;
 		$doc_save = isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc'] : NULL;
 		$GLOBALS['we_doc'] = new $schedFile['ClassName']();
 		$GLOBALS['we_doc']->InitByID($id, $schedFile["table"], we_class::LOAD_SCHEDULE_DB);
-		$deleted = false;
+		$callPublish = true;
 		$changeTmpDoc = false;
 		$_SESSION['weS']['versions']['fromScheduler'] = true;
 
-		foreach($schedFile["value"] as $s){
+		foreach($schedFile['value'] as $s){
 			switch($s['task']){
 				case self::DELETE:
 					$GLOBALS['NOT_PROTECT'] = true;
 					require_once(WE_INCLUDES_PATH . 'we_delete_fn.inc.php');
 					deleteEntry($id, $schedFile['table']);
-					$deleted = true;
+					$callPublish = false;
 					$changeTmpDoc = false;
 					break 2; //exit foreach
 
@@ -408,19 +410,28 @@ function checkFooter(){
 					$GLOBALS['we_doc']->Path = $GLOBALS['we_doc']->getPath();
 					$changeTmpDoc = true;
 					break;
-				case SEARCHABLE_ENABLED:
+				case self::SEARCHABLE_ENABLED:
 					$GLOBALS['we_doc']->IsSearchable = true;
 					$changeTmpDoc = true;
 					break;
-				case SEARCHABLE_DISABLED:
+				case self::SEARCHABLE_DISABLED:
 					$GLOBALS['we_doc']->IsSearchable = false;
 					$changeTmpDoc = true;
+					break;
+				case self::CALL:
+					require_once(WE_INCLUDES_PATH . 'we_tag.inc.php');
+					$callPublish = (count($schedFile['value']) > 1); //only if other operations pending
+					//don't show any output
+					ob_start();
+					//use we:include to call document. Note: editmode, inWE is already disabled
+					eval(we_tag('include', array('type' => 'document', 'id' => $id)));
+					ob_end_clean();
 					break;
 			}
 
 			if($s['type'] != self::TYPE_ONCE && ($nextWann = self::getNextTimestamp($s, $now))){
 				$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET Wann=' . intval($nextWann) . ' WHERE Active=1 AND DID=' . intval($id) . ' AND ClassName="' . $schedFile['ClassName'] . '" AND Type="' . $s['type'] . '" AND Was="' . $s['task'] . '" AND Wann=' . $schedFile['Wann']);
-			} else{
+			} else {
 				$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET Active=0 WHERE Active=1 AND DID=' . intval($id) . ' AND ClassName="' . $schedFile['ClassName'] . '" AND Type="' . $s['type'] . '" AND Was="' . $s['task'] . '" AND Wann=' . $schedFile['Wann']);
 			}
 		}
@@ -431,7 +442,7 @@ function checkFooter(){
 			}
 		}
 
-		if(!$deleted){
+		if($callPublish){
 			$pub = ($GLOBALS['we_doc']->Published ?
 					$GLOBALS['we_doc']->we_publish() :
 					$GLOBALS['we_doc']->we_unpublish());
@@ -450,12 +461,20 @@ function checkFooter(){
 	}
 
 	static function trigger_schedule(){
-		//FIXME: do we want to limit this query, if not called by cron?
 		$DB_WE = new DB_WE();
 		$now = time();
 		$hasLock = $DB_WE->hasLock();
+		//allow at max 10 scheduled activities per call, in case no cron is used.
+		$maxSched = defined('SCHEDULED_BY_CRON') ? -1 : 10;
+//make sure documents don't know they are inside WE
+		$lastWEState = array(
+			'WE_MAIN_EDITMODE' => $GLOBALS['WE_MAIN_EDITMODE'],
+			'we_editmode' => $GLOBALS['we_editmode'],
+			'InWebEdition' => $GLOBALS['WE_MAIN_DOC']->InWebEdition,
+		);
+		$GLOBALS['WE_MAIN_EDITMODE'] = $GLOBALS['we_editmode'] = $GLOBALS['WE_MAIN_DOC']->InWebEdition = false;
 
-		while((!$hasLock || $DB_WE->lock(array(SCHEDULE_TABLE, ERROR_LOG_TABLE))) && ($rec = getHash('SELECT * FROM ' . SCHEDULE_TABLE . ' WHERE Wann<=UNIX_TIMESTAMP() AND lockedUntil<NOW() AND Active=1 ORDER BY Wann LIMIT 1', $DB_WE))) {
+		while((!$hasLock || $DB_WE->lock(array(SCHEDULE_TABLE, ERROR_LOG_TABLE))) && (--$maxSched != 0) && ($rec = getHash('SELECT * FROM ' . SCHEDULE_TABLE . ' WHERE Wann<=UNIX_TIMESTAMP() AND lockedUntil<NOW() AND Active=1 ORDER BY Wann LIMIT 1', $DB_WE))){
 			$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET lockedUntil=lockedUntil+INTERVAL 1 minute WHERE DID=' . $rec['DID'] . ' AND Active=1 AND ClassName="' . $rec['ClassName'] . '" AND Type="' . $rec["Type"] . '" AND Was="' . $rec["Was"] . '" AND Wann=' . $rec['Wann']);
 			if($hasLock){
 				$DB_WE->unlock();
@@ -470,13 +489,17 @@ function checkFooter(){
 					'table' => $rec['ClassName'] == 'we_objectFile' ? OBJECT_FILES_TABLE : FILE_TABLE,
 				);
 				self::processSchedule($rec['DID'], $tmp, $now, $DB_WE);
-			} else{
+			} else {
 				//data invalid, reset & make sure this is not processed the next time
 				$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET Active=0, Schedpro="' . serialize(array()) . '" WHERE DID=' . $rec['DID'] . ' AND Active=1 AND Wann=' . $rec['Wann'] . ' AND ClassName="' . $rec['ClassName'] . '" AND Type="' . $rec["Type"] . '" AND Was="' . $rec["Was"] . '"');
 			}
 		}
 		//make sure DB is unlocked!
 		$DB_WE->unlock();
+//reset state
+		$GLOBALS['WE_MAIN_EDITMODE'] = $lastWEState['WE_MAIN_EDITMODE'];
+		$GLOBALS['we_editmode'] = $lastWEState['we_editmode'];
+		$GLOBALS['WE_MAIN_DOC']->InWebEdition = $lastWEState['WE_MAIN_DOC'];
 	}
 
 	function check_and_convert_to_sched_pro(){
@@ -485,7 +508,7 @@ function checkFooter(){
 		$scheddy = array();
 
 		$DB_WE->query('SELECT * FROM ' . SCHEDULE_TABLE . ' WHERE Schedpro IS NULL OR Schedpro=""');
-		while($DB_WE->next_record()) {
+		while($DB_WE->next_record()){
 			$s = array();
 
 			$s['did'] = $DB_WE->f('DID');
@@ -564,7 +587,7 @@ function checkFooter(){
 				$dayTomorrow = date('j', $tomorrow);
 
 				$trys = 0;
-				while($s['days'][$dayTomorrow - 1] == 0 && $trys <= 365) {
+				while($s['days'][$dayTomorrow - 1] == 0 && $trys <= 365){
 					$tomorrow += 86400;
 					$dayTomorrow = date('j', $tomorrow);
 					$trys++;
@@ -585,7 +608,7 @@ function checkFooter(){
 				$monthTomorrow = intval(date('m', $tomorrow));
 
 				$trys = 0;
-				while(($s['days'][$dayTomorrow - 1] == 0 || $s['months'][$monthTomorrow - 1] == 0) && $trys <= 365) {
+				while(($s['days'][$dayTomorrow - 1] == 0 || $s['months'][$monthTomorrow - 1] == 0) && $trys <= 365){
 					$tomorrow += 86400;
 					$dayTomorrow = date('j', $tomorrow);
 					$monthTomorrow = intval(date('m', $tomorrow));
@@ -653,7 +676,7 @@ function checkFooter(){
 				$dayYesterday = date('j', $yesterday);
 
 				$trys = 0;
-				while($s['days'][$dayYesterday - 1] == 0 && $trys <= 365) {
+				while($s['days'][$dayYesterday - 1] == 0 && $trys <= 365){
 					$yesterday -= 86400;
 					$dayYesterday = date('j', $yesterday);
 					$trys++;
@@ -675,7 +698,7 @@ function checkFooter(){
 				$monthYesterday = intval(date('m', $yesterday));
 
 				$trys = 0;
-				while(($s['days'][$dayYesterday - 1] == 0 || $s['months'][$monthYesterday - 1] == 0) && $trys <= 365) {
+				while(($s['days'][$dayYesterday - 1] == 0 || $s['months'][$monthYesterday - 1] == 0) && $trys <= 365){
 					$yesterday -= 86400;
 					$dayYesterday = date('j', $yesterday);
 					$monthYesterday = intval(date('m', $yesterday));
@@ -707,7 +730,7 @@ function checkFooter(){
 			if($s['task'] == self::SCHEDULE_FROM && $s['active']){
 				$serializedDoc = we_temporaryDocument::load($object->ID, $object->Table, $db); // nicht noch mal unten beim Speichern serialisieren, ist bereits serialisiert #5743
 				$makeSched = true;
-			} else{
+			} else {
 				$serializedDoc = '';
 			}
 			$Wann = self::getNextTimestamp($s, time());

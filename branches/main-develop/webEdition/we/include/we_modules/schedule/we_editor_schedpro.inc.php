@@ -41,11 +41,9 @@ $parts = array();
 foreach($we_doc->schedArr as $i => $sched){
 	$schedObj = new we_schedpro($sched, $i);
 
-	$ofT = defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : '';
-
 	$parts[] = array(
 		'headline' => '',
-		'html' => $schedObj->getHTML($GLOBALS['we_doc']->Table == $ofT),
+		'html' => $schedObj->getHTML($GLOBALS['we_doc']->Table == (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE')),
 		'space' => 0
 	);
 }

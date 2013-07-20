@@ -18,13 +18,14 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-require_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
+require_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 
-if(defined("SCHEDULE_TABLE")) {
+define('SCHEDULED_BY_CRON',1);
+if(defined('SCHEDULE_TABLE')) {
     we_schedpro::trigger_schedule();
 
 }
-if(defined("WORKFLOW_TABLE")){
+if(defined('WORKFLOW_TABLE')){
 	echo we_workflow_utility::forceOverdueDocuments();
 }
 $_tooltasks = weToolLookup::getExternTriggeredTasks();
