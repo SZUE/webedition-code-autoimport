@@ -23,6 +23,7 @@ $l_modules_schedule=array(
 		'6'=>'Verzeichnis ändern',
 		'7'=>'durchsuchbar aktiv',
 		'8'=>'durchsuchbar inaktiv',
+		'9'=>'Seite aufrufen',
 		'headline'=>'Aufgabe',
 	),
 	'time'=>'Uhrzeit',

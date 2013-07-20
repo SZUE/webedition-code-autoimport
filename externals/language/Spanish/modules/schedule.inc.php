@@ -23,6 +23,7 @@ $l_modules_schedule=array(
 		'6'=>'Cambiar directorio',
 		'7'=>'searchable activated',
 		'8'=>'searchable deactivated',
+		'9'=>'Call page',
 		'headline'=>'Task',
 	),
 	'time'=>'Horas',
