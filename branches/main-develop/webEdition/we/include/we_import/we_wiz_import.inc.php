@@ -383,7 +383,7 @@ class we_wizard_import extends we_wizard{
 		$importLocs->setCol(2, 0, array(), we_html_tools::getPixel(1, 4));
 		$importLocs->setCol(3, 0, array(), $rdoLLocal);
 		$maxsize = getUploadMaxFilesize(false);
-		$importLocs->setCol(4, 0, array(), we_html_tools::htmlAlertAttentionBox(sprintf(g_l('import', "[filesize_local]"), round($maxsize / (1024 * 1024), 3) . "MB"), we_html_tools::TYPE_ALERT, 410));
+		$importLocs->setCol(4, 0, array(), we_html_tools::htmlAlertAttentionBox(sprintf(g_l('import', "[filesize_local]"), weFile::getHumanFileSize($maxsize, weFile::SZ_MB)), we_html_tools::TYPE_ALERT, 410));
 		$importLocs->setCol(5, 0, array(), we_html_tools::getPixel(1, 2));
 		$importLocs->setCol(6, 0, array(), $importFromLocal);
 
@@ -421,7 +421,7 @@ class we_wizard_import extends we_wizard{
 			if(empty($_FILES['uploaded_xml_file']['tmp_name']) || $_FILES['uploaded_xml_file']['error']){
 
 				$_upload_error = true;
-			} else{
+			} else {
 
 				$v['import_from'] = TEMP_DIR . weFile::getUniqueId() . '_w.xml';
 				move_uploaded_file($_FILES['uploaded_xml_file']['tmp_name'], $_SERVER['DOCUMENT_ROOT'] . $v['import_from']);
@@ -507,7 +507,7 @@ function toggle(name){
 
 			$maxsize = getUploadMaxFilesize();
 			$_return[1] = we_html_element::jsElement($functions . ' ' .
-					we_message_reporting::getShowMessageCall(sprintf(g_l('import', '[upload_failed]'), round($maxsize / (1024 * 1024), 3) . 'MB'), we_message_reporting::WE_MESSAGE_ERROR) . '
+					we_message_reporting::getShowMessageCall(sprintf(g_l('import', '[upload_failed]'), weFile::getHumanFileSize($maxsize, weFile::SZ_MB)), we_message_reporting::WE_MESSAGE_ERROR) . '
 							handle_event("previous");');
 			return $_return;
 		}
@@ -518,7 +518,7 @@ function toggle(name){
 					we_message_reporting::getShowMessageCall(g_l('import', '[format_unknown]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 							handle_event("previous");');
 			return $_return;
-		} else{
+		} else {
 			$_xml_type = weBackupUtil::getXMLImportType($_import_file);
 			if($_xml_type == 'backup'){
 				$_return[0] = '';
@@ -531,7 +531,7 @@ if(confirm("' . str_replace('"', '\'', g_l('import', '[backup_file_found]') . ' 
 	top.close();
 }
 handle_event("previous");');
-				} else{
+				} else {
 					$_return[1] = we_html_element::jsElement(
 							$functions .
 							we_message_reporting::getShowMessageCall(g_l('import', '[backup_file_found]'), we_message_reporting::WE_MESSAGE_ERROR) .
@@ -700,7 +700,7 @@ handle_event("previous");');
 						'space' => 120
 					);
 				}
-			} else{
+			} else {
 				$parts[] = array(
 					'headline' => g_l('import', '[encoding_headline]'),
 					'html' => we_forms::checkboxWithHidden((isset($v['import_ChangeEncoding']) && $v['import_ChangeEncoding']) ? true : false, 'v[import_ChangeEncoding]', g_l('import', '[encoding_noway]') . '<input type="hidden" name="v[import_XMLencoding]" value="' . $xml_encoding . '" />', false, "defaultfont", '', true),
@@ -757,12 +757,12 @@ handle_event("previous");');
 					'html' => we_html_tools::htmlAlertAttentionBox(g_l('import', '[notexist_overwrite]'), we_html_tools::TYPE_ALERT, 530) . $tbl_extra->getHTML() . $tbl_extra2->getHTML(),
 					'space' => 120
 				);
-			} else{
+			} else {
 				$hdns .= we_html_element::htmlHidden(array('name' => 'v[import_owners]', 'value' => 0)) .
 					we_html_element::htmlHidden(array('name' => 'v[owners_overwrite]', 'value' => 0)) .
 					we_html_element::htmlHidden(array('name' => 'v[owners_overwrite_id]', 'value' => 0));
 			}
-		} else{
+		} else {
 			$parts[] = array(
 				'headline' => g_l('import', '[xml_file]'),
 				'html' => we_html_tools::htmlAlertAttentionBox(g_l('import', '[invalid_wxml]'), we_html_tools::TYPE_ALERT, 530),
@@ -1007,7 +1007,7 @@ HTS;
 		$importLocs->setCol($_tblRow++, 0, array(), we_html_tools::getPixel(1, 4));
 		$importLocs->setCol($_tblRow++, 0, array(), $rdoLLocal);
 		$maxsize = getUploadMaxFilesize(false);
-		$importLocs->setCol($_tblRow++, 0, array(), we_html_tools::htmlAlertAttentionBox(sprintf(g_l('import', '[filesize_local]'), round($maxsize / (1024 * 1024), 3) . 'MB'), we_html_tools::TYPE_ALERT, 410));
+		$importLocs->setCol($_tblRow++, 0, array(), we_html_tools::htmlAlertAttentionBox(sprintf(g_l('import', '[filesize_local]'), weFile::getHumanFileSize($maxsize, weFile::SZ_MB)), we_html_tools::TYPE_ALERT, 410));
 		$importLocs->setCol($_tblRow++, 0, array(), we_html_tools::getPixel(1, 2));
 		$importLocs->setCol($_tblRow++, 0, array(), $importFromLocal);
 
@@ -1024,7 +1024,7 @@ HTS;
 		$DTselect->insertOption($optid, -1, g_l('import', '[none]'));
 
 		$v['docType'] = isset($v['docType']) ? $v['docType'] : -1;
-		while($DB_WE->next_record()) {
+		while($DB_WE->next_record()){
 			$optid++;
 			$DTselect->insertOption($optid, $DB_WE->f('ID'), $DB_WE->f('DocType'));
 			if($v['docType'] == $DB_WE->f('ID'))
@@ -1038,7 +1038,7 @@ HTS;
 		$idname = 'noDocTypeTemplateId';
 		if(we_hasPerm('CAN_SEE_TEMPLATES')){
 			$ueberschrift = '<a href="javascript:goTemplate(document.we_form.elements[\'' . $idname . '\'].value)">' . g_l('import', "[template]") . '</a>';
-		} else{
+		} else {
 			$ueberschrift = g_l('import', '[template]');
 		}
 		$myid = (isset($v['we_TemplateID'])) ? $v['we_TemplateID'] : 0;
@@ -1068,13 +1068,13 @@ HTS;
 			$paths_arr = id_to_path($foo['Templates'], TEMPLATES_TABLE, '', false, true);
 
 			$optid = 0;
-			while(list(, $templateID) = each($ids_arr)) {
+			while(list(, $templateID) = each($ids_arr)){
 				$TPLselect->insertOption($optid, $templateID, $paths_arr[$optid]);
 				$optid++;
 				if(isset($v['we_TemplateID']) && $v['we_TemplateID'] == $templateID)
 					$TPLselect->selectOption($templateID);
 			}
-		} else{
+		} else {
 			$displayDocType = 'display:none';
 			$displayNoDocType = 'display:block';
 		}
@@ -1135,7 +1135,7 @@ HTS;
 		$ac = makeCSVFromArray(getAllowedClasses($DB_WE));
 		if($ac){
 			$DB_WE->query('SELECT ID,Text FROM ' . OBJECT_TABLE . ' ' . ($ac ? ' WHERE ID IN(' . $ac . ') ' : '') . 'ORDER BY Text');
-			while($DB_WE->next_record()) {
+			while($DB_WE->next_record()){
 				$optid++;
 				$CLselect->insertOption($optid, $DB_WE->f('ID'), $DB_WE->f('Text'));
 				if($DB_WE->f('ID') == $v['classID']){
@@ -1295,7 +1295,7 @@ HTS;
 			else
 				$parts[] = array('html' => we_html_tools::htmlAlertAttentionBox((!$xmlWellFormed) ? g_l('import', '[not_well_formed]') : g_l('import', '[missing_child_node]'), we_html_tools::TYPE_ALERT, 530), 'space' => 0, 'noline' => 1);
 		}
-		else{
+		else {
 			$xmlWellFormed = $hasChildNode = false;
 			if(!file_exists($_SERVER['DOCUMENT_ROOT'] . $v['import_from']))
 				$parts[] = array('html' => we_html_tools::htmlAlertAttentionBox(g_l('import', '[file_exists]') . $_SERVER['DOCUMENT_ROOT'] . $v['import_from'], we_html_tools::TYPE_ALERT, 530), 'space' => 0, 'noline' => 1);
@@ -1437,7 +1437,7 @@ function handle_event(evt) {
 			$records[] = 'Description';
 			$records[] = 'Keywords';
 		}
-		else{
+		else {
 			$classFields = $this->getClassFields($v['classID']);
 			foreach($classFields as $classField){
 				if($this->isTextField($classField['type']) || $this->isNumericField($classField['type']) || $this->isDateField($classField['type'])){
@@ -1476,7 +1476,7 @@ function handle_event(evt) {
 
 		reset($records);
 		$i = 0;
-		while(list(, $record) = each($records)) {
+		while(list(, $record) = each($records)){
 			$hdns .= we_html_element::htmlHidden(array('name' => 'records[$i]', 'value' => $record));
 			$sct_we_fields = new we_html_select(array(
 				'name' => "we_flds[$record]",
@@ -1494,7 +1494,7 @@ function handle_event(evt) {
 					if($value == $we_flds[$record])
 						$sct_we_fields->selectOption($value);
 				}
-				else{
+				else {
 					if($value == $record)
 						$sct_we_fields->selectOption($value);
 				}
@@ -1707,7 +1707,7 @@ function handle_event(evt) {
 		$importLocs->setCol($_tblRow++, 0, array(), we_html_tools::getPixel(1, 4));
 		$importLocs->setCol($_tblRow++, 0, array(), $rdoLLocal);
 		$maxsize = getUploadMaxFilesize(false);
-		$importLocs->setCol($_tblRow++, 0, array(), we_html_tools::htmlAlertAttentionBox(sprintf(g_l('import', '[filesize_local]'), round($maxsize / (1024 * 1024), 3) . 'MB'), we_html_tools::TYPE_ALERT, 410));
+		$importLocs->setCol($_tblRow++, 0, array(), we_html_tools::htmlAlertAttentionBox(sprintf(g_l('import', '[filesize_local]'), weFile::getHumanFileSize($maxsize, weFile::SZ_MB)), we_html_tools::TYPE_ALERT, 410));
 		$importLocs->setCol($_tblRow++, 0, array(), we_html_tools::getPixel(1, 2));
 		$importLocs->setCol($_tblRow++, 0, array(), $importFromLocal);
 		/*		 * *************************************************************************************************************** */
@@ -1991,7 +1991,7 @@ HTS;
 		$DTselect->insertOption($optid, -1, g_l('import', '[none]'));
 
 		$v['docType'] = isset($v['docType']) ? $v['docType'] : -1;
-		while($DB_WE->next_record()) {
+		while($DB_WE->next_record()){
 			$optid++;
 			$DTselect->insertOption($optid, $DB_WE->f('ID'), $DB_WE->f('DocType'));
 			if($v['docType'] == $DB_WE->f('ID')){
@@ -2039,7 +2039,7 @@ HTS;
 				if(isset($v["we_TemplateID"]) && $v["we_TemplateID"] == $templateID)
 					$TPLselect->selectOption($templateID);
 			}
-		} else{
+		} else {
 			$displayDocType = 'display:none';
 			$displayNoDocType = 'display:block';
 			/*
@@ -2105,13 +2105,13 @@ HTS;
 		$ac = makeCSVFromArray(getAllowedClasses($DB_WE));
 		if($ac){
 			$DB_WE->query('SELECT ID,Text FROM ' . OBJECT_TABLE . ' ' . ($ac ? ' WHERE ID IN(' . $ac . ') ' : '') . 'ORDER BY Text');
-			while($DB_WE->next_record()) {
+			while($DB_WE->next_record()){
 				$optid++;
 				$CLselect->insertOption($optid, $DB_WE->f("ID"), $DB_WE->f("Text"));
 				if($DB_WE->f("ID") == $v["classID"])
 					$CLselect->selectOption($DB_WE->f("ID"));
 			}
-		} else{
+		}else {
 			$CLselect->insertOption($optid, -1, g_l('import', "[none]"));
 		}
 
@@ -2159,7 +2159,7 @@ HTS;
 					"noline" => 1
 				);
 			}
-		} else{
+		} else {
 			if(!file_exists($_SERVER['DOCUMENT_ROOT'] . $v["import_from"])){
 				$parts[] = array("html" => we_html_tools::htmlAlertAttentionBox(g_l('import', "[file_exists]") . $_SERVER['DOCUMENT_ROOT'] . $v["import_from"], we_html_tools::TYPE_ALERT, 530), "space" => 0, "noline" => 1);
 			} else if(!is_readable($_SERVER['DOCUMENT_ROOT'] . $v["import_from"])){
@@ -2265,12 +2265,12 @@ function handle_event(evt) {
 						}
 					}
 				}
-			} else{
+			} else {
 				$records[] = "Title";
 				$records[] = "Description";
 				$records[] = "Keywords";
 			}
-		} else{
+		} else {
 			$classFields = $this->getClassFields($v["classID"]);
 			foreach($classFields as $classField){
 				if($this->isTextField($classField["type"]) || $this->isNumericField($classField["type"]) || $this->isDateField($classField["type"])){
@@ -2313,7 +2313,7 @@ function handle_event(evt) {
 			for($i = 0; $i < count($recs); $i++){
 				if($v["csv_fieldnames"] && $recs[$i] != ""){
 					$val_nodes[$recs[$i]] = $recs[$i];
-				} else{
+				} else {
 					$val_nodes["f_" . $i] = g_l('import', "[record_field]") . ($i + 1);
 				}
 			}

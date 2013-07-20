@@ -55,7 +55,7 @@ class we_docSelector extends we_dirSelector{
 					$filterQuery .= 'ContentType="' . $this->db->escape($ct) . '" OR ';
 				}
 				$filterQuery .= ' isFolder=1)';
-			} else{
+			} else {
 				$filterQuery = ' AND (ContentType="' . $this->db->escape($this->filter) . '" OR IsFolder=1 ) ';
 			}
 		}
@@ -63,7 +63,7 @@ class we_docSelector extends we_dirSelector{
 		// deal with workspaces
 		if(we_hasPerm("ADMINISTRATOR")){
 			$wsQuery = '';
-		} else{
+		} else {
 			$wsQuery = '';
 			if(get_ws($this->table)){
 				$wsQuery = getWsQueryForSelector($this->table);
@@ -93,20 +93,20 @@ class we_docSelector extends we_dirSelector{
 			case FILE_TABLE:
 
 				$_db->query('SELECT a.ID, c.Dat FROM (' . FILE_TABLE . ' a LEFT JOIN ' . LINK_TABLE . ' b ON (a.ID=b.DID)) LEFT JOIN ' . CONTENT_TABLE . ' c ON (b.CID=c.ID) WHERE a.ParentID=' . intval($this->dir) . ' AND b.Name="Title"');
-				while($_db->next_record()) {
+				while($_db->next_record()){
 					$this->titles[$_db->f('ID')] = $_db->f('Dat');
 				}
 				break;
 			case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
 				$_path = $this->path;
-				while($_path !== "" && dirname($_path) != "\\" && dirname($_path) != "/") {
+				while($_path !== "" && dirname($_path) != "\\" && dirname($_path) != "/"){
 					$_path = dirname($_path);
 				}
 				$_cid = f('SELECT ID FROM ' . OBJECT_TABLE . " WHERE Path='" . $_db->escape($_path) . "'", "ID", $_db);
 				$this->titleName = f('SELECT DefaultTitle FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($_cid), 'DefaultTitle', $_db);
 				if($this->titleName && strpos($this->titleName, '_')){
 					$_db->query('SELECT OF_ID, ' . $this->titleName . ' FROM ' . OBJECT_X_TABLE . $_cid . ' WHERE OF_ParentID=' . intval($this->dir));
-					while($_db->next_record()) {
+					while($_db->next_record()){
 						$this->titles[$_db->f('OF_ID')] = $_db->f($this->titleName);
 					}
 				}
@@ -314,7 +314,7 @@ function entry(ID,icon,text,isFolder,path,modDate,contentType,published,title) {
 	function printFramesetJSFunctionAddEntries(){
 		$ret = '';
 		if($this->userCanSeeDir(true)){
-			while($this->next_record()) {
+			while($this->next_record()){
 				$title = isset($this->titles[$this->f("ID")]) ? $this->titles[$this->f("ID")] : '&nbsp;';
 				$title = strip_tags(str_replace(array('\\', '"', "\n",), array('\\\\', '\"', ' '), $title));
 				$title = $title == '&nbsp;' ? '-' : oldHtmlspecialchars($title);
@@ -328,7 +328,7 @@ function entry(ID,icon,text,isFolder,path,modDate,contentType,published,title) {
 	function printCmdAddEntriesHTML(){
 		$ret = '';
 		$this->query();
-		while($this->next_record()) {
+		while($this->next_record()){
 			$title = isset($this->titles[$this->f("ID")]) ? $this->titles[$this->f("ID")] : '&nbsp;';
 			$published = $this->table == FILE_TABLE ? $this->f("Published") : 1;
 			$title = $title == '&nbsp;' ? '-' : oldHtmlspecialchars($title);
@@ -391,7 +391,7 @@ function enableNewFileBut() {
 	' . ((isset($this->ctb[$this->filter])) ? $this->ctb[$this->filter] : "") . '_enabled = switch_button_state("' . ((isset($this->ctb[$this->filter])) ? $this->ctb[$this->filter] : "") . '", "", "enabled", "image");
 	newFileState = 1;
 }';
-			} else{
+			} else {
 				return $ret . '
 function disableNewFileBut() {
 	btn_add_file_enabled = switch_button_state("btn_add_file", "", "disabled", "image");
@@ -594,14 +594,14 @@ top.parentID = "' . $this->values["ParentID"] . '";
 				$this->db->query('SELECT ID, Text, IsFolder FROM ' . $this->db->escape($this->table) . ' WHERE ParentID=' . intval($this->id));
 				$folderFolders = array();
 				$folderFiles = array();
-				while($this->db->next_record()) {
+				while($this->db->next_record()){
 					$this->db->f('IsFolder') ? $folderFolders[$this->db->f('ID')] = $this->db->f('Text') : $folderFiles[$this->db->f('ID')] = $this->db->f('Text');
 				}
-			} else{
+			} else {
 				switch($this->table){
 					case FILE_TABLE:
 						$this->db->query('SELECT a.Name, b.Dat FROM ' . LINK_TABLE . ' a LEFT JOIN ' . CONTENT_TABLE . ' b on (a.CID = b.ID) WHERE a.DID=' . intval($this->id) . " AND NOT a.DocumentTable='tblTemplates'");
-						while($this->db->next_record()) {
+						while($this->db->next_record()){
 							$metainfos[$this->db->f('Name')] = $this->db->f('Dat');
 						}
 						break;
@@ -649,7 +649,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 
 			$fs = file_exists($_SERVER['DOCUMENT_ROOT'] . $result['Path']) ? filesize($_SERVER['DOCUMENT_ROOT'] . $result['Path']) : 0;
 
-			$_filesize = $fs < 1000 ? $fs . ' byte' : ($fs < 1024000 ? round(($fs / 1024), 2) . ' kb' : round(($fs / (1024 * 1024)), 2) . ' mb');
+			$_filesize = weFile::getHumanFileSize($fs);
 
 
 			if($result['ContentType'] == "image/*" && file_exists($_SERVER['DOCUMENT_ROOT'] . $result['Path'])){
@@ -657,7 +657,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 					$_imagesize = array(0, 0);
 					$_thumbpath = IMAGE_DIR . 'icons/no_image.gif';
 					$_imagepreview = "<img src='$_thumbpath' border='0' id='previewpic'><p>" . g_l('fileselector', "[image_not_uploaded]") . "</p>";
-				} else{
+				} else {
 					$_imagesize = getimagesize($_SERVER['DOCUMENT_ROOT'] . $result['Path']);
 					$_thumbpath = WEBEDITION_DIR . 'thumbnail.php?id=' . $this->id . '&size=150&path=' . str_replace($_SERVER['DOCUMENT_ROOT'], '', $result['Path']) . '&extension=' . $result['Extension'] . '&size2=200';
 					$_imagepreview = "<a href='" . $result['Path'] . "' target='_blank' align='center'><img src='$_thumbpath' border='0' id='previewpic'></a>";

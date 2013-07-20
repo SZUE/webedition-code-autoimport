@@ -29,7 +29,7 @@ $allowedContentTypes = "";
 $error = false;
 
 $maxsize = getUploadMaxFilesize(false);
-$we_maxfilesize_text = sprintf(g_l('newFile', "[max_possible_size]"), round($maxsize / (1024 * 1024), 3) . "MB");
+$we_maxfilesize_text = sprintf(g_l('newFile', "[max_possible_size]"), weFile::getHumanFileSize($fs, weFile::SZ_MB));
 
 
 we_html_tools::htmlTop(g_l('newFile', "[import_File_from_hd_title]"));
@@ -39,7 +39,7 @@ print STYLESHEET;
 if(!isset($_SESSION['weS']['we_data'][$we_transaction])){
 	$we_alerttext = $we_maxfilesize_text;
 	$error = true;
-} else{
+} else {
 
 	$we_dt = $_SESSION['weS']['we_data'][$we_transaction];
 	include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');

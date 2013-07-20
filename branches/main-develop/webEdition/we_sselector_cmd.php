@@ -37,31 +37,32 @@ if(!isset($_REQUEST["cmd"]) || (isset($_REQUEST["cmd"]) && $_REQUEST["cmd"] != "
 	<script type="text/javascript"><!--
 
 		function drawNewFolder() {
-			for(var i=0; i<top.allentries.length;i++){
-				if(elem = top.fsbody.document.getElementById(top.allentries[i])){
+			for (var i = 0; i < top.allentries.length; i++) {
+				if (elem = top.fsbody.document.getElementById(top.allentries[i])) {
 					elem.style.backgroundColor = 'white';
 				}
 			}
-			drawDir(top.currentDir,"new_folder");
+			drawDir(top.currentDir, "new_folder");
 		}
 
 		function setFilter(filter) {
-			top.currentFilter=filter;
+			top.currentFilter = filter;
 			drawDir(top.currentDir);
 		}
 
 		function setDir(dir) {
-			var a=top.fsheader.document.forms["we_form"].elements["lookin"].options;
-			if(a.length-2>-1) {
-				for(j=0;j<a.length;j++) {
-					if(a[j].value==dir) {
-						a.length=j+1;a[j].selected=true;
+			var a = top.fsheader.document.forms["we_form"].elements["lookin"].options;
+			if (a.length - 2 > -1) {
+				for (j = 0; j < a.length; j++) {
+					if (a[j].value === dir) {
+						a.length = j + 1;
+						a[j].selected = true;
 					}
 				}
 	<?php if(isset($_REQUEST["filter"]) && ($_REQUEST["filter"] == "folder" || $_REQUEST["filter"] == "filefolder")){ ?>
 					selectFile(dir);
 	<?php } ?>
-				top.currentDir=dir;
+				top.currentDir = dir;
 				selectDir();
 			}
 			else {
@@ -70,100 +71,99 @@ if(!isset($_REQUEST["cmd"]) || (isset($_REQUEST["cmd"]) && $_REQUEST["cmd"] != "
 		}
 
 		function goUp() {
-			var a=top.fsheader.document.forms["we_form"].elements["lookin"].options;
-			if(a.length-2>-1)
-				setDir(a[a.length-2].value);
+			var a = top.fsheader.document.forms["we_form"].elements["lookin"].options;
+			if (a.length - 2 > -1)
+				setDir(a[a.length - 2].value);
 			else
-	<?php print we_message_reporting::getShowMessageCall(g_l('fileselector', "[already_root]"), we_message_reporting::WE_MESSAGE_ERROR); ?>
-			}
+	<?php print we_message_reporting::getShowMessageCall(g_l('fileselector', '[already_root]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
+		}
 
-			function selectFile(fid) {
-				if(fid != "/") {
-					top.currentID=top.sitepath+top.rootDir+top.currentDir+((top.currentDir != "/") ? "/" : "")+fid;
-					top.currentName=fid;
-					top.fsfooter.document.forms["we_form"].elements["fname"].value=fid;
-					if(top.fsbody.document.getElementById(fid)) {
-						for(var i=0; i<top.allentries.length;i++){
-							if(top.fsbody.document.getElementById(top.allentries[i])) top.fsbody.document.getElementById(top.allentries[i]).style.backgroundColor = 'white';
-						}
-						top.fsbody.document.getElementById(fid).style.backgroundColor = '#DFE9F5';
+		function selectFile(fid) {
+			if (fid !== "/") {
+				top.currentID = top.sitepath + top.rootDir + top.currentDir + ((top.currentDir != "/") ? "/" : "") + fid;
+				top.currentName = fid;
+				top.fsfooter.document.forms["we_form"].elements["fname"].value = fid;
+				if (top.fsbody.document.getElementById(fid)) {
+					for (var i = 0; i < top.allentries.length; i++) {
+						if (top.fsbody.document.getElementById(top.allentries[i]))
+							top.fsbody.document.getElementById(top.allentries[i]).style.backgroundColor = 'white';
 					}
-				} else {
-					top.currentID=top.sitepath;
-					top.currentName=fid;
-					top.fsfooter.document.forms["we_form"].elements["fname"].value=fid;
-					if(top.fsbody.document.getElementById(fid)) {
-						for(var i=0; i<top.allentries.length;i++){
-							if(top.fsbody.document.getElementById(top.allentries[i])) top.fsbody.document.getElementById(top.allentries[i]).style.backgroundColor = 'white';
-						}
-						top.fsbody.document.getElementById(fid).style.backgroundColor = '#DFE9F5';
+					top.fsbody.document.getElementById(fid).style.backgroundColor = '#DFE9F5';
+				}
+			} else {
+				top.currentID = top.sitepath;
+				top.currentName = fid;
+				top.fsfooter.document.forms["we_form"].elements["fname"].value = fid;
+				if (top.fsbody.document.getElementById(fid)) {
+					for (var i = 0; i < top.allentries.length; i++) {
+						if (top.fsbody.document.getElementById(top.allentries[i]))
+							top.fsbody.document.getElementById(top.allentries[i]).style.backgroundColor = 'white';
 					}
+					top.fsbody.document.getElementById(fid).style.backgroundColor = '#DFE9F5';
 				}
 			}
+		}
 
-			function selectDir() {
-				if(arguments[0]) {
+		function selectDir() {
+			if (arguments[0]) {
 	<?php if(isset($_REQUEST["filter"]) && $_REQUEST["filter"] == "folder"){ ?>
-						//selectFile(arguments[0],true);
+					//selectFile(arguments[0],true);
 	<?php } ?>
-					if(top.currentDir=="/")
-						top.currentDir=top.currentDir+arguments[0];
-					else
-						top.currentDir=top.currentDir+"/"+arguments[0];
-					top.fsheader.addOption(arguments[0],top.currentDir);
-				}
-
-				if (top.currentDir.substring(0,12) == "<?php echo WEBEDITION_DIR; ?>" || top.currentDir=="<?php echo rtrim(WEBEDITION_DIR, '/'); ?>") {
-					top.fsheader.weButton.disable("btn_new_dir_ss");
-					top.fsheader.weButton.disable("btn_add_file_ss");
-					top.fsheader.weButton.disable("btn_function_trash_ss");
-				} else {
-					top.fsheader.weButton.enable("btn_new_dir_ss");
-					top.fsheader.weButton.enable("btn_add_file_ss");
-					top.fsheader.weButton.enable("btn_function_trash_ss");
-				}
-
-				drawDir(top.currentDir);
-
+				top.currentDir = top.currentDir + (top.currentDir === "/" ? "" : "/") + arguments[0];
+				top.fsheader.addOption(arguments[0], top.currentDir);
 			}
 
-			function reorderDir(dir,order) {
-				setTimeout('top.fsbody.location="we_sselector_body.php?dir='+dir+'&ord='+order+'&file='+top.currentFilter+'&curID='+escape(top.currentID)+'"',100);
+			if (top.currentDir.substring(0, 12) === "<?php echo WEBEDITION_DIR; ?>" || top.currentDir === "<?php echo rtrim(WEBEDITION_DIR, '/'); ?>") {
+				top.fsheader.weButton.disable("btn_new_dir_ss");
+				top.fsheader.weButton.disable("btn_add_file_ss");
+				top.fsheader.weButton.disable("btn_function_trash_ss");
+			} else {
+				top.fsheader.weButton.enable("btn_new_dir_ss");
+				top.fsheader.weButton.enable("btn_add_file_ss");
+				top.fsheader.weButton.enable("btn_function_trash_ss");
 			}
 
-			function drawDir(dir) {
-				switch(arguments[1]){
-					case "new_folder":
-						top.fsbody.location="we_sselector_body.php?dir="+escape(top.rootDir+dir)+"&nf=new_folder&file="+top.currentFilter+"&curID="+escape(top.currentID);
-						break;
-					case "rename_folder":
-						if(arguments[2]) {
-							top.fsbody.location="we_sselector_body.php?dir="+escape(top.rootDir+dir)+"&nf=rename_folder&sid="+escape(arguments[2])+"&file="+top.currentFilter+"&curID="+escape(top.currentID);
-						}
-						break;
-					case "rename_file":
-						if(arguments[2]) {
-							top.fsbody.location="we_sselector_body.php?dir="+escape(top.rootDir+dir)+"&nf=rename_file&sid="+escape(arguments[2])+"&file="+top.currentFilter+"&curID="+escape(top.currentID);
-						}
-						break;
-					default:
-						setTimeout('top.fsbody.location="we_sselector_body.php?dir='+escape(top.rootDir+dir)+'&file='+top.currentFilter+'&curID='+escape(top.currentID)+'"',100);
-				}
-			}
+			drawDir(top.currentDir);
 
-			function delFile() {
-				if((top.currentID!="")&&(top.fsfooter.document.forms["we_form"].elements["fname"].value!="")){
-					top.fscmd.location="we_sselector_cmd.php?cmd=delete_file&fid="+top.currentID+"&ask="+arguments[0];
-				}else{
+		}
+
+		function reorderDir(dir, order) {
+			setTimeout('top.fsbody.location="we_sselector_body.php?dir=' + dir + '&ord=' + order + '&file=' + top.currentFilter + '&curID=' + escape(top.currentID) + '"', 100);
+		}
+
+		function drawDir(dir) {
+			switch (arguments[1]) {
+				case "new_folder":
+					top.fsbody.location = "we_sselector_body.php?dir=" + escape(top.rootDir + dir) + "&nf=new_folder&file=" + top.currentFilter + "&curID=" + escape(top.currentID);
+					break;
+				case "rename_folder":
+					if (arguments[2]) {
+						top.fsbody.location = "we_sselector_body.php?dir=" + escape(top.rootDir + dir) + "&nf=rename_folder&sid=" + escape(arguments[2]) + "&file=" + top.currentFilter + "&curID=" + escape(top.currentID);
+					}
+					break;
+				case "rename_file":
+					if (arguments[2]) {
+						top.fsbody.location = "we_sselector_body.php?dir=" + escape(top.rootDir + dir) + "&nf=rename_file&sid=" + escape(arguments[2]) + "&file=" + top.currentFilter + "&curID=" + escape(top.currentID);
+					}
+					break;
+				default:
+					setTimeout('top.fsbody.location="we_sselector_body.php?dir=' + escape(top.rootDir + dir) + '&file=' + top.currentFilter + '&curID=' + escape(top.currentID) + '"', 100);
+			}
+		}
+
+		function delFile() {
+			if ((top.currentID !== "") && (top.fsfooter.document.forms["we_form"].elements["fname"].value !== "")) {
+				top.fscmd.location = "we_sselector_cmd.php?cmd=delete_file&fid=" + top.currentID + "&ask=" + arguments[0];
+			} else {
 	<?php print we_message_reporting::getShowMessageCall(g_l('fileselector', "[edit_file_nok]"), we_message_reporting::WE_MESSAGE_ERROR); ?>
-				}
 			}
+		}
 
 	<?php
 
 	function delDir($dir){
 		$d = dir($dir);
-		while(false !== ($entry = $d->read())) {
+		while(false !== ($entry = $d->read())){
 			if($entry != "." && $entry != ".."){
 				if(is_dir($dir . "/" . $entry)){
 					delDir($dir . "/" . $entry);
@@ -186,7 +186,7 @@ if(!isset($_REQUEST["cmd"]) || (isset($_REQUEST["cmd"]) && $_REQUEST["cmd"] != "
 			print we_message_reporting::getShowMessageCall(g_l('alert', "[we_filename_empty]"), we_message_reporting::WE_MESSAGE_ERROR);
 		} else if(preg_match('|[\'"<>/]|', $_REQUEST["txt"])){
 			print we_message_reporting::getShowMessageCall(g_l('alert', "[name_nok]"), we_message_reporting::WE_MESSAGE_ERROR);
-		} else{
+		} else {
 			$path = str_replace('//', '/', $_SERVER['DOCUMENT_ROOT'] . $_REQUEST["pat"] . "/" . $_REQUEST["txt"]);
 			if(!@is_dir($path)){
 				$oldumask = @umask(0000);
@@ -195,35 +195,35 @@ if(!isset($_REQUEST["cmd"]) || (isset($_REQUEST["cmd"]) && $_REQUEST["cmd"] != "
 
 				if(!we_util_File::createLocalFolder($path)){
 					print we_message_reporting::getShowMessageCall(g_l('alert', "[create_folder_nok]"), we_message_reporting::WE_MESSAGE_ERROR);
-				} else{
+				} else {
 					print 'selectFile("' . $_REQUEST["txt"] . '");top.currentID="' . $path . '";';
 				}
 				@umask($oldumask);
-			} else{
+			} else {
 				$we_responseText = sprintf(g_l('alert', "[path_exists]"), str_replace($_SERVER['DOCUMENT_ROOT'], '', $path));
-				print we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR) . "\n";
+				print we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
 			}
 		}
 	}
 
 	if(isset($_REQUEST["cmd"]) && $_REQUEST["cmd"] == "rename_folder"){
 		if($_REQUEST["txt"] == ""){
-			print we_message_reporting::getShowMessageCall(g_l('alert', "[we_filename_empty]"), we_message_reporting::WE_MESSAGE_ERROR).
+			print we_message_reporting::getShowMessageCall(g_l('alert', "[we_filename_empty]"), we_message_reporting::WE_MESSAGE_ERROR) .
 				"drawDir(top.currentDir);\n";
 		} else if(preg_match('|[\'"<>/]|', $_REQUEST["txt"])){
-			print we_message_reporting::getShowMessageCall(g_l('alert', "[name_nok]"), we_message_reporting::WE_MESSAGE_ERROR).
+			print we_message_reporting::getShowMessageCall(g_l('alert', "[name_nok]"), we_message_reporting::WE_MESSAGE_ERROR) .
 				"drawDir(top.currentDir);\n";
-		} else{
+		} else {
 			$old = str_replace('//', '/', $_SERVER['DOCUMENT_ROOT'] . $_REQUEST["pat"] . "/" . $_REQUEST["sid"]);
 			$new = str_replace('//', '/', $_SERVER['DOCUMENT_ROOT'] . $_REQUEST["pat"] . "/" . $_REQUEST["txt"]);
 			if($old != $new){
 				if(!@is_dir($new)){
 					if(!rename($old, $new)){
 						print we_message_reporting::getShowMessageCall(g_l('alert', "[rename_folder_nok]"), we_message_reporting::WE_MESSAGE_ERROR);
-					} else{
+					} else {
 						print 'selectFile("' . $_REQUEST["txt"] . '");' . "\n";
 					}
-				} else{
+				} else {
 					$we_responseText = sprintf(g_l('alert', "[path_exists]"), str_replace($_SERVER['DOCUMENT_ROOT'], '', $new));
 					print we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
 				}
@@ -232,22 +232,22 @@ if(!isset($_REQUEST["cmd"]) || (isset($_REQUEST["cmd"]) && $_REQUEST["cmd"] != "
 		}
 	} else if(isset($_REQUEST["cmd"]) && $_REQUEST["cmd"] == "rename_file"){
 		if($_REQUEST["txt"] == ""){
-			print we_message_reporting::getShowMessageCall(g_l('alert', "[we_filename_empty]"), we_message_reporting::WE_MESSAGE_ERROR).
+			print we_message_reporting::getShowMessageCall(g_l('alert', "[we_filename_empty]"), we_message_reporting::WE_MESSAGE_ERROR) .
 				"drawDir(top.currentDir);\n";
 		} else if(preg_match('|[\'"<>/]|', $_REQUEST["txt"])){
-			print we_message_reporting::getShowMessageCall(g_l('alert', "[name_nok]"), we_message_reporting::WE_MESSAGE_ERROR).
+			print we_message_reporting::getShowMessageCall(g_l('alert', "[name_nok]"), we_message_reporting::WE_MESSAGE_ERROR) .
 				"drawDir(top.currentDir);\n";
-		} else{
+		} else {
 			$old = str_replace('//', '/', $_SERVER['DOCUMENT_ROOT'] . $_REQUEST["pat"] . '/' . $_REQUEST["sid"]);
 			$new = str_replace('//', '/', $_SERVER['DOCUMENT_ROOT'] . $_REQUEST["pat"] . '/' . $_REQUEST["txt"]);
 			if($old != $new){
 				if(!@file_exists($new)){
 					if(!rename($old, $new)){
 						print we_message_reporting::getShowMessageCall(g_l('alert', "[rename_file_nok]"), we_message_reporting::WE_MESSAGE_ERROR);
-					} else{
+					} else {
 						print 'selectFile("' . $_REQUEST["txt"] . '");' . "\n";
 					}
-				} else{
+				} else {
 					$we_responseText = sprintf(g_l('alert', "[path_exists]"), str_replace($_SERVER['DOCUMENT_ROOT'], '', $new));
 					print we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
 				}
@@ -259,7 +259,7 @@ if(!isset($_REQUEST["cmd"]) || (isset($_REQUEST["cmd"]) && $_REQUEST["cmd"] != "
 			$foo = f("SELECT ID FROM " . FILE_TABLE . " WHERE Path='" . $DB_WE->escape($_REQUEST["fid"]) . "'", 'ID', $DB_WE);
 			if(preg_match('|' . WEBEDITION_PATH . '|', $_REQUEST["fid"]) || ($_REQUEST["fid"] == rtrim(WEBEDITION_PATH, '/')) || strpos("..", $_REQUEST["fid"]) || $foo || $_REQUEST["fid"] == $_SERVER['DOCUMENT_ROOT'] || $_REQUEST["fid"] . "/" == $_SERVER['DOCUMENT_ROOT']){
 				print we_message_reporting::getShowMessageCall(g_l('alert', "[access_denied]"), we_message_reporting::WE_MESSAGE_ERROR);
-			} else{
+			} else {
 				if(is_dir($_REQUEST["fid"]) && ($_REQUEST["ask"])){
 					print "if (confirm(\"" . g_l('alert', "[delete_folder]") . "\")){delFile(0);}";
 				} else if(is_file($_REQUEST["fid"]) && ($_REQUEST["ask"])){
@@ -274,7 +274,7 @@ if(!isset($_REQUEST["cmd"]) || (isset($_REQUEST["cmd"]) && $_REQUEST["cmd"] != "
 		}
 	}
 	?>
-			//-->
+		//-->
 	</script>
 <?php } ?>
 </head>

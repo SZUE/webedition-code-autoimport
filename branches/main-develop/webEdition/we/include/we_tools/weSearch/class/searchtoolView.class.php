@@ -224,7 +224,7 @@ class searchtoolView extends weToolView{
 							$js =
 								$this->topFrame . '.makeNewEntry(\'' . $this->Model->Icon . '\',\'' . $this->Model->ID . '\',\'' . $this->Model->ParentID . '\',\'' . addslashes(
 									$this->Model->Text) . '\',0,\'' . ($this->Model->IsFolder ? 'folder' : 'item') . '\',\'' . SUCHE_TABLE . '\',0,0);';
-						} else{
+						} else {
 							$js = $this->topFrame . '.updateEntry(\'' . $this->Model->ID . '\',\'' . $this->Model->Text . '\',\'' . $this->Model->ParentID . '\',0,0,\'' . ($this->Model->IsFolder ? 'folder' : 'item') . '\',\'' . SUCHE_TABLE . '\',0,0);';
 						}
 
@@ -245,7 +245,7 @@ class searchtoolView extends weToolView{
 								$_REQUEST['delayParam'] = '';
 							}
 						}
-					} else{
+					} else {
 						$js = we_html_element::jsElement($js .
 								$this->editorHeaderFrame . '.location.reload();' .
 								we_message_reporting::getShowMessageCall(($this->Model->IsFolder == 1 ? g_l('searchtool', "[save_group_failed]") : g_l('searchtool', "[save_failed]")), we_message_reporting::WE_MESSAGE_ERROR) .
@@ -424,7 +424,7 @@ class searchtoolView extends weToolView{
 	function getSearchJS($whichSearch){
 		if($whichSearch == "AdvSearch"){
 			$h = (we_base_browserDetect::isIE() ? 125 : 140);
-		} else{
+		} else {
 			$h = (we_base_browserDetect::isIE() ? 155 : 170);
 		}
 
@@ -1421,7 +1421,7 @@ class searchtoolView extends weToolView{
 		if(isset($_REQUEST['we_cmd']['obj'])){
 			$anzahl = $_SESSION['weS']['weSearch']['anzahl' . $whichSearch];
 			$searchstart = $_SESSION['weS']['weSearch']['searchstart' . $whichSearch];
-		} else{
+		} else {
 			switch($whichSearch){
 				case "DocSearch" :
 					$anzahl = $this->Model->anzahlDocSearch;
@@ -1444,7 +1444,7 @@ class searchtoolView extends weToolView{
 		$out = '<table cellpadding="0" cellspacing="0" border="0"><tr><td>';
 		if($searchstart){
 			$out .= we_button::create_button("back", "javascript:back(" . $anzahl . ");");
-		} else{
+		} else {
 
 			$out .= we_button::create_button("back", "", true, 100, 22, "", "", true);
 		}
@@ -1453,7 +1453,7 @@ class searchtoolView extends weToolView{
 
 		if(($we_search_anzahl - $searchstart) < $anzahl){
 			$out .= $we_search_anzahl;
-		} else{
+		} else {
 
 			$out .= $searchstart + $anzahl;
 		}
@@ -1463,7 +1463,7 @@ class searchtoolView extends weToolView{
 		if(($searchstart + $anzahl) < $we_search_anzahl){
 			//bt_back
 			$out .= we_button::create_button("next", "javascript:next(" . $anzahl . ");");
-		} else{
+		} else {
 
 			$out .= we_button::create_button("next", "", true, 100, 22, "", "", true);
 		}
@@ -1700,7 +1700,7 @@ class searchtoolView extends weToolView{
 			case "DocSearch" :
 				if(isset($_REQUEST["locationDocSearch"])){
 					$this->Model->locationDocSearch = $_REQUEST["locationDocSearch"];
-				} else{
+				} else {
 					$this->Model->locationDocSearch[0] = "CONTAIN";
 				}
 				$this->Model->searchFieldsDocSearch = array();
@@ -1741,7 +1741,7 @@ class searchtoolView extends weToolView{
 			case "TmplSearch" :
 				if(isset($_REQUEST["locationTmplSearch"])){
 					$this->Model->locationTmplSearch = $_REQUEST["locationTmplSearch"];
-				} else{
+				} else {
 					$this->Model->locationTmplSearch[0] = "CONTAIN";
 				}
 
@@ -1897,7 +1897,7 @@ class searchtoolView extends weToolView{
 
 			$_searchstart = $_REQUEST['we_cmd']['searchstart' . $whichSearch];
 			$_anzahl = $_REQUEST['we_cmd']['anzahl' . $whichSearch];
-		} else{
+		} else {
 			$obj = $this->Model;
 			$thisObj = $this;
 
@@ -2003,7 +2003,7 @@ class searchtoolView extends weToolView{
 					we_html_element::jsElement(
 						we_message_reporting::getShowMessageCall(
 							g_l('searchtool', '[noTempTableRightsSearch]'), we_message_reporting::WE_MESSAGE_NOTICE));
-			} else{
+			} else {
 				$thisObj->searchclass->createTempTable();
 				$op = ($whichSearch == "AdvSearch" ? ' AND ' : ' OR ');
 
@@ -2020,7 +2020,7 @@ class searchtoolView extends weToolView{
 						if(isset($searchText[0])){
 							if($whichSearch == 'AdvSearch' && isset($searchText[$i])){
 								$searchString = ($GLOBALS['WE_BACKENDCHARSET'] == "UTF-8" ? utf8_encode($searchText[$i]) : $searchText[$i]);
-							} else{
+							} else {
 								//$searchString = $searchText[0]; Bug#4422
 								$searchString = ($GLOBALS['WE_BACKENDCHARSET'] == "UTF-8" ? utf8_encode($searchText[0]) : $searchText[0]);
 							}
@@ -2048,7 +2048,7 @@ class searchtoolView extends weToolView{
 									$objectTable = defined('OBJECT_TABLE') ? OBJECT_TABLE : '';
 									if($objectTable != "" && $_table == $objectTable){
 
-									} else{
+									} else {
 										$w = $thisObj->searchclass->searchContent($searchString, $_table);
 										if($where == '' && $w == ''){
 											$where .= ' AND 0 ';
@@ -2160,7 +2160,7 @@ class searchtoolView extends weToolView{
 								if(isset($_REQUEST['we_cmd']['obj'])){
 									$isCheckedFileTable = $_REQUEST['we_cmd']['search_tables_advSearch[' . FILE_TABLE];
 									$isCheckedObjFileTable = (defined("OBJECT_FILES_TABLE")) ? $_REQUEST['we_cmd']['search_tables_advSearch[' . OBJECT_FILES_TABLE] : 1;
-								} else{
+								} else {
 									$isCheckedFileTable = $thisObj->Model->search_tables_advSearch[FILE_TABLE];
 									$isCheckedObjFileTable = (defined("OBJECT_FILES_TABLE")) ? $thisObj->Model->search_tables_advSearch[OBJECT_FILES_TABLE] : 1;
 								}
@@ -2197,7 +2197,7 @@ class searchtoolView extends weToolView{
 
 				$thisObj->searchclass->selectFromTempTable($_searchstart, $_anzahl, $_order);
 
-				while($thisObj->searchclass->next_record()) {
+				while($thisObj->searchclass->next_record()){
 					if(isset($thisObj->searchclass->Record['VersionID']) && $thisObj->searchclass->Record['VersionID'] != 0){
 
 						$versionsFound[] = array(
@@ -2225,7 +2225,7 @@ class searchtoolView extends weToolView{
 					}
 
 					$thisObj->searchclass->selectFromTempTable($_searchstart, $_anzahl, $_order);
-					while($thisObj->searchclass->next_record()) {
+					while($thisObj->searchclass->next_record()){
 						if(!isset(
 								$saveArrayIds[$thisObj->searchclass->Record['ContentType']][$thisObj->searchclass->Record['docID']])){
 							$saveArrayIds[$thisObj->searchclass->Record['ContentType']][$thisObj->searchclass->Record['docID']] = $thisObj->searchclass->Record['docID'];
@@ -2247,7 +2247,7 @@ class searchtoolView extends weToolView{
 			$_result[$k]["Description"] = '';
 			if($_result[$k]['docTable'] == FILE_TABLE && $_result[$k]['Published'] >= $_result[$k]['ModDate'] && $_result[$k]['Published'] != 0){
 				$DB_WE->query('SELECT a.ID, c.Dat FROM (' . FILE_TABLE . ' a LEFT JOIN ' . LINK_TABLE . ' b ON (a.ID=b.DID)) LEFT JOIN ' . CONTENT_TABLE . ' c ON (b.CID=c.ID) WHERE a.ID=' . intval($_result[$k]["docID"]) . ' AND b.Name="Description" AND b.DocumentTable="' . FILE_TABLE . '"');
-				while($DB_WE->next_record()) {
+				while($DB_WE->next_record()){
 					$_result[$k]["Description"] = $DB_WE->f('Dat');
 				}
 			} elseif($_result[$k]['docTable'] == FILE_TABLE){
@@ -2258,7 +2258,7 @@ class searchtoolView extends weToolView{
 						$_result[$k]["Description"] = $tempDoc[0]['elements']['Description']['dat'];
 					}
 				}
-			} else{
+			} else {
 				$_result[$k]['Description'] = '';
 			}
 		}
@@ -2318,7 +2318,7 @@ class searchtoolView extends weToolView{
 						}
 
 						$DB_WE->query('SELECT ID,timestamp, version, active FROM ' . VERSIONS_TABLE . ' WHERE ID=' . intval($k));
-						while($DB_WE->next_record()) {
+						while($DB_WE->next_record()){
 							$timestamp = $DB_WE->f('timestamp');
 							$version = $DB_WE->f('version');
 							$ID = $DB_WE->f('ID');
@@ -2336,11 +2336,10 @@ class searchtoolView extends weToolView{
 						//if class doesn't exists it's not possible to reset object-version!
 						if($_result[$f]['ContentType'] == "objectFile"){
 
-							$classExists = f(
-								"SELECT ID FROM " . OBJECT_TABLE . " WHERE ID= " . intval($_result[$f]["TableID"]), "ID", $DB_WE);
-							if($classExists == ""){
+							$classExists = f('SELECT 1 AS a FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($_result[$f]["TableID"]), 'a', $DB_WE);
+							if(empty($classExists)){
 								$resetDisabled = true;
-								$classNotExistsText = "(" . g_l('versions', '[objClassNotExists]') . ")";
+								$classNotExistsText = '(' . g_l('versions', '[objClassNotExists]') . ')';
 							}
 						}
 
@@ -2366,20 +2365,18 @@ class searchtoolView extends weToolView{
 				//	$_result[$f]["SiteTitle"] = utf8_encode($_result[$f]["SiteTitle"]);
 				//}
 
-				$content[$f][0]["dat"] = we_html_tools::getPixel(20, 1) . $publishCheckbox;
-				$content[$f][1]["dat"] = '<img src="' . ICON_DIR . $Icon . '" border="0" width="16" height="18" />';
-				$content[$f][2]["dat"] = '<a href="javascript:openToEdit(\'' . $_result[$f]["docTable"] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" style="text-decoration:none;color:' . $fontColor . ';"  title="' . $_result[$f]["Text"] . '"><u>' . $_result[$f]["Text"];
-				//$content[$f][2]["dat"] = '<nobr>'. g_l('contentTypes','['.$_result[$f]['ContentType'].']') .'</nobr>';
-				$content[$f][3]["dat"] = $_result[$f]["SiteTitle"];
-				$content[$f][4]["dat"] = $checkTable = isset($_result[$f]["VersionID"]) && $_result[$f]["VersionID"] ? "-" : ($_result[$f]["CreationDate"] ? date(
-							g_l('searchtool', "[date_format]"), $_result[$f]["CreationDate"]) : "-");
-				$content[$f][5]["dat"] = ($_result[$f]["ModDate"] ? date(
-							g_l('searchtool', "[date_format]"), $_result[$f]["ModDate"]) : "-");
-			} else{
-				$fs = file_exists($_SERVER['DOCUMENT_ROOT'] . $_result[$f]["Path"]) ? filesize(
-						$_SERVER['DOCUMENT_ROOT'] . $_result[$f]["Path"]) : 0;
-				$filesize = $fs < 1000 ? $fs . ' byte' : ($fs < 1024000 ? round(($fs / 1024), 2) . ' kb' : round(
-							($fs / (1024 * 1024)), 2) . ' mb');
+				$content[$f] = array(
+					array("dat" => we_html_tools::getPixel(20, 1) . $publishCheckbox),
+					array("dat" => '<img src="' . ICON_DIR . $Icon . '" border="0" width="16" height="18" />'),
+					array("dat" => '<a href="javascript:openToEdit(\'' . $_result[$f]["docTable"] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" style="text-decoration:none;color:' . $fontColor . ';"  title="' . $_result[$f]["Text"] . '"><u>' . $_result[$f]["Text"]),
+					array("dat" => $_result[$f]["SiteTitle"]),
+					array("dat" => $checkTable = isset($_result[$f]["VersionID"]) && $_result[$f]["VersionID"] ? "-" : ($_result[$f]["CreationDate"] ? date(
+								g_l('searchtool', "[date_format]"), $_result[$f]["CreationDate"]) : "-")),
+					array("dat" => ($_result[$f]["ModDate"] ? date(g_l('searchtool', "[date_format]"), $_result[$f]["ModDate"]) : "-")),
+				);
+			} else {
+				$fs = file_exists($_SERVER['DOCUMENT_ROOT'] . $_result[$f]["Path"]) ? filesize($_SERVER['DOCUMENT_ROOT'] . $_result[$f]["Path"]) : 0;
+				$filesize = weFile::getHumanFileSize($fs);
 
 				if($_result[$f]["ContentType"] == "image/*"){
 					$smallSize = 64;
@@ -2390,16 +2387,16 @@ class searchtoolView extends weToolView{
 						if(file_exists(WE_THUMB_PREVIEW_PATH . $_result[$f]["docID"] . "_'.$smallSize.'_'.$smallSize.'" . strtolower($_result[$f]["Extension"]))){
 							$thumbpath = WE_THUMB_PREVIEW_DIR . $_result[$f]["docID"] . "_'.$smallSize.'_'.$smallSize.'" . strtolower($_result[$f]["Extension"]);
 							$imageView = "<img src='$thumbpath' border='0' /></a>";
-						} else{
+						} else {
 							$imageView = "<img src='" . WEBEDITION_DIR . "thumbnail.php?id=" . $_result[$f]["docID"] . "&size=" . $smallSize . "&path=" . $_result[$f]["Path"] . "&extension=" . $_result[$f]["Extension"] . "' border='0' /></a>";
 						}
 						if(file_exists(WE_THUMB_PREVIEW_PATH . $_result[$f]["docID"] . "_'.$bigSize.'_'.$bigSize.'" . strtolower($_result[$f]["Extension"]))){
 							$thumbpathPopup = WE_THUMB_PREVIEW_DIR . $_result[$f]["docID"] . "_'.$bigSize.'_'.$bigSize.'" . strtolower($_result[$f]["Extension"]);
 							$imageViewPopup = "<img src='$thumbpathPopup' border='0' /></a>";
-						} else{
+						} else {
 							$imageViewPopup = "<img src='" . WEBEDITION_DIR . "thumbnail.php?id=" . $_result[$f]["docID"] . "&size=" . $bigSize . "&path=" . $_result[$f]["Path"] . "&extension=" . $_result[$f]["Extension"] . "' border='0' /></a>";
 						}
-					} else{
+					} else {
 						$imagesize = array(
 							0, 0
 						);
@@ -2407,7 +2404,7 @@ class searchtoolView extends weToolView{
 						$imageView = "<img src='$thumbpath' border='0' />";
 						$imageViewPopup = "<img src='$thumbpath' border='0' />";
 					}
-				} else{
+				} else {
 					$imagesize = array(
 						0, 0
 					);
@@ -2422,18 +2419,18 @@ class searchtoolView extends weToolView{
 				if($_result[$f]["ContentType"] == "text/webedition" && $_result[$f]["Table"] != VERSIONS_TABLE){
 					if($_result[$f]["Published"] >= $_result[$f]["ModDate"] && $_result[$f]["Published"] != 0){
 						$templateID = $_result[$f]["TemplateID"];
-					} else{
+					} else {
 						$templateID = $_result[$f]["temp_template_id"];
 					}
 					$templateText = g_l('searchtool', "[no_template]");
 					if($templateID != ""){
 						$sql = "SELECT ID, Text FROM " . TEMPLATES_TABLE . " WHERE ID = " . intval($templateID);
 						$DB_WE->query($sql);
-						while($DB_WE->next_record()) {
+						while($DB_WE->next_record()){
 							$templateText = shortenPath($DB_WE->f('Text'), 20) . " (ID=" . $DB_WE->f('ID') . ")";
 						}
 					}
-				} else{
+				} else {
 					$templateText = "";
 				}
 
@@ -2449,7 +2446,7 @@ class searchtoolView extends weToolView{
 					if(weContentProvider::isBinary($_result[$f]["docID"])){
 						$DB_WE->query("SELECT a.ID, c.Dat FROM (" . FILE_TABLE . " a LEFT JOIN " . LINK_TABLE . " b ON (a.ID=b.DID)) LEFT JOIN " . CONTENT_TABLE . " c ON (b.CID=c.ID) WHERE b.DID=" . intval($_result[$f]["docID"]) . " AND b.Name='" . escape_sql_query($_tagName) . "' AND b.DocumentTable='" . FILE_TABLE . "'");
 						$metafields[$_tagName] = "";
-						while($DB_WE->next_record()) {
+						while($DB_WE->next_record()){
 							$metafields[$_tagName] = shortenPath($DB_WE->f('Dat'), 45);
 						}
 					}
@@ -2489,7 +2486,7 @@ class searchtoolView extends weToolView{
 			$_anzahl = $_REQUEST['we_cmd']['anzahl' . $whichSearch];
 			$anzahl = "anzahl" . $whichSearch;
 			$searchstart = "searchstart" . $whichSearch;
-		} else{
+		} else {
 			$thisObj = $this;
 
 			switch($whichSearch){
@@ -2560,7 +2557,7 @@ class searchtoolView extends weToolView{
 	function getSearchParameterBottom($foundItems, $whichSearch){
 		if(isset($_REQUEST['we_cmd']['obj'])){
 			$thisObj = new searchtoolView();
-		} else{
+		} else {
 			$thisObj = $this;
 		}
 
@@ -2627,10 +2624,10 @@ class searchtoolView extends weToolView{
 				} elseif($_REQUEST["cmd"] != "" && $_REQUEST["cmd"] != "tool_weSearch_save"){
 					$this->searchclass->height = 1;
 				}
-			} else{
+			} else {
 				$this->searchclass->height = count($_REQUEST["searchFieldsAdvSearch"]);
 			}
-		} else{
+		} else {
 			if(isset($_REQUEST["cmdid"])){
 				if($_REQUEST["cmdid"] != ""){
 					$this->searchclass->height = count($this->Model->searchFieldsAdvSearch);
@@ -2642,10 +2639,10 @@ class searchtoolView extends weToolView{
 						$this->searchclass->height = 1;
 					}
 				}
-			} else{
+			} else {
 				if(!isset($this->Model->searchFieldsAdvSearch[0])){
 					$this->searchclass->height = 1;
-				} else{
+				} else {
 					$this->searchclass->height = count($this->Model->searchFieldsAdvSearch);
 				}
 			}
@@ -2686,12 +2683,12 @@ class searchtoolView extends weToolView{
 			foreach($_REQUEST['locationAdvSearch'] as $k => $v){
 				if(isset($_REQUEST['locationAdvSearch'][$k])){
 					$r3[$m] = $_REQUEST['locationAdvSearch'][$k];
-				} else{
+				} else {
 					$r3[$m] = "disabled";
 				}
 				$m++;
 			}
-		} else{
+		} else {
 			if(isset($this->Model->locationAdvSearch) && is_array($this->Model->locationAdvSearch)){
 				foreach($this->Model->locationAdvSearch as $k => $v){
 					$r3[] = $this->Model->locationAdvSearch[$k];
@@ -2920,7 +2917,7 @@ class searchtoolView extends weToolView{
 						searchtoolView::tblListRow($content[$m])) . '</tr>';
 			}
 			$out .= '</tbody></table>';
-		} else{
+		} else {
 			$out = '<table border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td align="center">';
 
 			for($m = 0; $m < $x; $m++){

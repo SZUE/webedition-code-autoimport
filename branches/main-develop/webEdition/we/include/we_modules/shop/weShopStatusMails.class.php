@@ -245,7 +245,7 @@ class weShopStatusMails{
 		if($subject == ''){
 			$subject = 'no subject given';
 		}
-		if($recipientOK && $subject != '' && $this->EMailData['address'] != '' && we_check_email($this->EMailData['address'])){
+		if($recipientOK && $this->EMailData['address'] != '' && we_check_email($this->EMailData['address'])){
 			$from = (!isset($this->EMailData['name']) || $this->EMailData['name'] === '' || $this->EMailData['name'] === null || $this->EMailData['name'] === $this->EMailData['address'] ?
 					$this->EMailData['address'] :
 					array('email' => $this->EMailData['address'], 'name' => $this->EMailData['name'])

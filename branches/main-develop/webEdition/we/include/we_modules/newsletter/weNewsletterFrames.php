@@ -359,7 +359,7 @@ class weNewsletterFrames extends weModuleFrames{
 		$content = "";
 		$this->View->db->query('SELECT * FROM ' . NEWSLETTER_LOG_TABLE . ' WHERE NewsletterID=' . $this->View->newsletter->ID . ' ORDER BY LogTime DESC');
 
-		while($this->View->db->next_record()) {
+		while($this->View->db->next_record()){
 			$log = g_l('modules_newsletter', '[' . $this->View->db->f("Log") . ']');
 			$param = $this->View->db->f("Param");
 			$content.=we_html_element::htmlDiv(array("class" => "defaultfont"), date(g_l('weEditorInfo', "[date_format_sec]"), $this->View->db->f("LogTime")) . '&nbsp;' . ($param ? sprintf($log, $param) : $log));
@@ -384,7 +384,7 @@ class weNewsletterFrames extends weModuleFrames{
 	function getHTMLCmd(){
 		if(isset($_REQUEST["pid"])){
 			$pid = $_REQUEST["pid"];
-		} else{
+		} else {
 			exit;
 		}
 
@@ -505,7 +505,7 @@ class weNewsletterFrames extends weModuleFrames{
 					if(!$this->View->newsletter->check_domain($email, $domain)){
 						$out.=we_html_element::htmlDiv(array("class" => "defaultfont"), $tab3 . sprintf(g_l('modules_newsletter', '[domain_nok]'), $domain));
 					}
-				} else{
+				} else {
 					$out.=we_html_element::htmlDiv(array("class" => "defaultfont"), $tab3 . sprintf(g_l('modules_newsletter', '[email_malformed]'), $email));
 				}
 			}
@@ -566,7 +566,7 @@ class weNewsletterFrames extends weModuleFrames{
 			$c++;
 			if($text == 'default_reply' || $text == weNewsletter::MALE_SALUTATION_FIELD){
 				$table->setCol($c, 0, array('colspan' => 3), we_html_tools::getPixel(5, 10));
-			} else{
+			} else {
 				$table->setCol($c, 0, array('colspan' => 3), we_html_tools::getPixel(5, 3));
 			}
 			$c++;
@@ -638,7 +638,7 @@ class weNewsletterFrames extends weModuleFrames{
 				$radio_table->setCol(0, 2, array(), we_html_tools::getPixel(5, 5));
 				$radio_table->setCol(0, 3, array("class" => "defaultfont"), we_html_tools::htmlTextInput($radio, 5, $settings[$radio], "", "OnChange='if(document.we_form." . $radio . ".value!=0) document.we_form." . $radio . "_check.checked=true; else document.we_form." . $radio . "_check.checked=false;'"));
 				$radios_code.=$radio_table->getHtml();
-			} else{
+			} else {
 				$radios_code.=we_forms::checkbox($settings[$radio], (($settings[$radio] == 1) ? true : false), $radio, oldHtmlspecialchars(g_l('modules_newsletter', '[' . $radio . ']')), false, "defaultfont", "if(document.we_form." . $radio . ".checked) document.we_form." . $radio . ".value=1; else document.we_form." . $radio . ".value=0;");
 			}
 		}
@@ -818,7 +818,7 @@ class weNewsletterFrames extends weModuleFrames{
 					$table->setCol($c, 4, array("class" => "defaultfont"), "&nbsp;h :");
 					$table->setCol($c, 5, array(), we_html_tools::htmlSelect("filter_minutes_" . $group . "_" . $k, $minutes, 1, isset($v["minutes"]) ? $v["minutes"] : "", false, 'onChange="top.content.hot=1;"'));
 					$table->setCol($c, 6, array("class" => "defaultfont"), "&nbsp;m");
-				} else{
+				} else {
 					$table->setCol($c, 2, array("colspan" => $colspan, "id" => "td_value_fields_" . $group . "_" . $k), we_html_tools::htmlTextInput("filter_fieldvalue_" . $group . "_" . $k, 16, isset($v["fieldvalue"]) ? $v["fieldvalue"] : "", "", 'onKeyUp="top.content.hot=1;"', "text", "200"));
 				}
 
@@ -1332,7 +1332,7 @@ class weNewsletterFrames extends weModuleFrames{
 				$this->View->htmlHidden("nfile", "") .
 				$this->View->htmlHidden("ngroup", "") .
 				$this->getHTMLNewsletterGroups();
-		} else{
+		} else {
 			$out.=weSuggest::getYuiJsFiles() .
 				$this->View->getHiddensMailingPage() .
 				$this->View->getHiddensPropertyPage() .
@@ -1358,7 +1358,7 @@ class weNewsletterFrames extends weModuleFrames{
 				$$v = $_REQUEST[$k];
 			} else if($v == "htmlmail"){
 				$$v = f("SELECT  pref_value FROM " . NEWSLETTER_PREFS_TABLE . " WHERE pref_name='default_htmlmail'", "pref_value", $this->db);
-			} else{
+			} else {
 				$$v = "";
 			}
 		}
@@ -1489,7 +1489,7 @@ class weNewsletterFrames extends weModuleFrames{
 					</body>
 
 				</html>';
-		} else{
+		} else {
 			print $content;
 		}
 	}
@@ -1613,7 +1613,7 @@ class weNewsletterFrames extends weModuleFrames{
 				} else{
 					$fh = @fopen($_SERVER['DOCUMENT_ROOT'] . $filepath, "rb");
 					if($fh){
-						while(($dat = fgetcsv($fh, 1000, $delimiter))) {
+						while(($dat = fgetcsv($fh, 1000, $delimiter))){
 							$_alldat = implode("", $dat);
 							if(str_replace(" ", "", $_alldat) == ""){
 								continue;
@@ -1626,11 +1626,11 @@ class weNewsletterFrames extends weModuleFrames{
 						if(!empty($row)){
 							if($this->View->settings["black_list"] == ''){
 								$this->View->settings["black_list"] = makeCSVFromArray($row);
-							} else{
+							} else {
 								$this->View->settings["black_list"].="," . makeCSVFromArray($row);
 							}
 						}
-					} else{
+					} else {
 						print we_html_element::jsElement(
 								we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[path_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR)
 						);
@@ -1751,8 +1751,8 @@ class weNewsletterFrames extends weModuleFrames{
 
 		$table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 4, 1);
 		if($maxsize){
-			$table->setCol(0, 0, array("style" => "padding-right:30px"), we_html_tools::htmlAlertAttentionBox(sprintf(g_l('newFile', "[max_possible_size]"), round($maxsize / (1024 * 1024), 3) . "MB"), we_html_tools::TYPE_ALERT));
-		} else{
+			$table->setCol(0, 0, array("style" => "padding-right:30px"), we_html_tools::htmlAlertAttentionBox(sprintf(g_l('newFile', "[max_possible_size]"), weFile::getHumanFileSize($maxsize, weFile::SZ_MB)), we_html_tools::TYPE_ALERT));
+		} else {
 			$table->setCol(0, 0, array(), we_html_tools::getPixel(2, 10));
 		}
 		$table->setCol(1, 0, array(), we_html_tools::getPixel(2, 10));
@@ -1801,7 +1801,7 @@ class weNewsletterFrames extends weModuleFrames{
 				$table->setCol(9, 0, array(), we_html_tools::getPixel(100, 15));
 				$cancel = we_button::create_button("cancel", "javascript:self.close();");
 				$ok = we_button::create_button("ok", "javascript:clearLog();");
-			} else{
+			} else {
 				$close = we_button::create_button("close", "javascript:self.close();");
 			}
 
@@ -1867,7 +1867,7 @@ class weNewsletterFrames extends weModuleFrames{
 			if($csv_file){
 				$emails = weNewsletter::getEmailsFromExtern2($csv_file, null, null, null, (isset($_REQUEST['weEmailStatus']) ? $_REQUEST['weEmailStatus'] : 0), $emailkey);
 			}
-		} else{
+		} else {
 			print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[path_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR));
 		}
 
@@ -2075,7 +2075,7 @@ class weNewsletterFrames extends weModuleFrames{
 
 		if($offset){
 			$colcontent = we_button::create_button("back", "javascript:document.we_form.offset.value=" . ($offset - $numRows) . ";submitForm('edit_file');");
-		} else{
+		} else {
 			$colcontent = we_button::create_button("back", "#", false, 100, 22, "", "", true);
 		}
 
@@ -2091,7 +2091,7 @@ class weNewsletterFrames extends weModuleFrames{
 				g_l('global', "[from]") .
 				we_html_tools::getPixel(5, 1) .
 				$anz;
-		} else{
+		} else {
 			$colcontent = ( $anz ? $offset + 1 : 0 ) . "-" . $offset + $numRows .
 				we_html_tools::getPixel(5, 1) .
 				g_l('global', "[from]") .
@@ -2132,15 +2132,15 @@ class weNewsletterFrames extends weModuleFrames{
 				we_html_tools::htmlDialogBorder3(850, 300, $content, $headlines) .
 				we_html_tools::getPixel(5, 5) .
 				$end;
-		} else{
+		} else {
 			if(!$csv_file && empty($csv_file) && strlen($csv_file) < 4){
 				$_nlMessage = g_l('modules_newsletter', '[no_file_selected]');
 				$selectStatus2 = '';
-			} else{
+			} else {
 				if(isset($_REQUEST['weEmailStatus']) && $_REQUEST['weEmailStatus'] == 1){
 					$_nlMessage = g_l('modules_newsletter', '[file_all_ok]');
 					$selectStatus2 = "<br/>" . we_html_element::htmlB(g_l('modules_newsletter', '[status]')) . " " . we_html_tools::htmlSelect("weEmailStatus", array(g_l('modules_newsletter', '[statusAll]'), g_l('modules_newsletter', '[statusInvalid]')), "", (isset($_REQUEST['weEmailStatus']) ? $_REQUEST['weEmailStatus'] : "0"), "", "onchange='listFile();'", "value", "150");
-				} else{
+				} else {
 					$_nlMessage = g_l('modules_newsletter', '[file_all_ok]');
 					$selectStatus2 = '';
 				}
@@ -2201,7 +2201,7 @@ class weNewsletterFrames extends weModuleFrames{
 
 		$csv = "";
 		$this->View->db->query("SELECT " . NEWSLETTER_TABLE . ".Text as NewsletterName, " . NEWSLETTER_LOG_TABLE . ".* FROM " . NEWSLETTER_TABLE . "," . NEWSLETTER_LOG_TABLE . " WHERE " . NEWSLETTER_TABLE . ".ID=" . NEWSLETTER_LOG_TABLE . ".NewsletterID;");
-		while($this->View->db->next_record()) {
+		while($this->View->db->next_record()){
 			$csv.=$this->View->db->f("NewsletterName") . "," . date(g_l('weEditorInfo', "[date_format]"), $this->View->db->f("LogTime")) . "," . (g_l('modules_newsletter', '[' . $this->View->db->f("Log") . ']') !== false ? (sprintf($lg_l('modules_newsletter', '[' . $this->View->db->f("Log") . ']'), $this->View->db->f("Param"))) : $this->View->db->f("Log")) . "\n";
 		}
 
@@ -2328,7 +2328,7 @@ class weNewsletterFrames extends weModuleFrames{
 	function getHTMLSendCmd(){
 		if(isset($_REQUEST["nid"])){
 			$nid = $_REQUEST["nid"];
-		} else{
+		} else {
 			return;
 		}
 
@@ -2403,10 +2403,10 @@ class weNewsletterFrames extends weModuleFrames{
 
 		if($gcount <= $egc){
 			$cc = 0;
-			while(true) {
+			while(true){
 				if(file_exists(WE_NEWSLETTER_CACHE_DIR . $blockcache . "_p_" . $cc)){
 					weFile::delete(WE_NEWSLETTER_CACHE_DIR . $blockcache . "_p_" . $cc);
-				} else{
+				} else {
 					break;
 				}
 				if(file_exists(WE_NEWSLETTER_CACHE_DIR . $blockcache . "_h_" . $cc)){
@@ -2419,7 +2419,7 @@ class weNewsletterFrames extends weModuleFrames{
 						}
 					}
 					weFile::delete(WE_NEWSLETTER_CACHE_DIR . $blockcache . "_h_" . $cc);
-				} else{
+				} else {
 					break;
 				}
 				$cc++;
@@ -2464,7 +2464,7 @@ class weNewsletterFrames extends weModuleFrames{
 			$customerid = isset($emails[$j][8]) ? str_replace("\r", "", str_replace("\n", "", $emails[$j][8])) : "";
 			if(isset($emails[$j][9]) && $emails[$j][9] == 'customer'){
 				$iscustomer = 'C';
-			} else{
+			} else {
 				$iscustomer = '';
 			}
 
@@ -2593,7 +2593,7 @@ class weNewsletterFrames extends weModuleFrames{
 				$content = str_replace('###CUSTOMERID###', $customerid, $content);
 				$content_plain = str_replace('###LASTNAME###', $lastname, $contentLN_plain);
 				$content_plain = str_replace('###CUSTOMERID###', $customerid, $content_plain);
-			} else{
+			} else {
 
 				$content = $contentDefault;
 				$content_plain = $content_plainDefault;
@@ -2613,7 +2613,7 @@ class weNewsletterFrames extends weModuleFrames{
 					($firstname ? $firstname . ' ' : '') .
 					$lastname . '<' . $email . '>';
 				//$email = $emailName;
-			} else{
+			} else {
 				$emailName = $email;
 			}
 			$phpmail = new we_util_Mailer(
@@ -2624,7 +2624,7 @@ class weNewsletterFrames extends weModuleFrames{
 			if($htmlmail){
 				$phpmail->addHTMLPart($content);
 				$phpmail->addTextPart(trim($content_plain));
-			} else{
+			} else {
 				$phpmail->addTextPart(trim($content_plain));
 			}
 
@@ -2646,7 +2646,7 @@ class weNewsletterFrames extends weModuleFrames{
 					if($phpmail->Send()){
 						if($this->View->settings["log_sending"])
 							$this->View->newsletter->addLog("mail_sent", $email);
-					} else{
+					} else {
 						if($this->View->settings["log_sending"])
 							$this->View->newsletter->addLog("mail_failed", $email);
 						print we_html_element::jsElement('
@@ -2702,7 +2702,7 @@ class weNewsletterFrames extends weModuleFrames{
 			print we_html_element::jsElement('
 				setTimeout("document.we_form.submit()",' . $this->View->settings["send_wait"] . ');
 			');
-		} else{
+		} else {
 			print we_html_element::jsElement('
 				document.we_form.submit();
 			');

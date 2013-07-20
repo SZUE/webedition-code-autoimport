@@ -31,14 +31,14 @@ we_html_tools::htmlTop();
 $docroot = str_replace('\\', '/', rtrim($_SERVER['DOCUMENT_ROOT'], '/'));
 we_cmd_dec(4);
 we_cmd_dec(1);
-
+t_e('call');
 $filter = (isset($_REQUEST['we_cmd'][2]) && $_REQUEST['we_cmd'][2] != '') ? $_REQUEST['we_cmd'][2] : 'all_Types';
-$currentDir = ( isset($_REQUEST['we_cmd'][3]) ?
+$currentDir = str_replace('\\', '/', ( isset($_REQUEST['we_cmd'][3]) ?
 		($_REQUEST['we_cmd'][3] == '/' ? '' :
 			( parse_url($_REQUEST['we_cmd'][3]) === FALSE && is_dir($docroot . $_REQUEST['we_cmd'][3]) ?
 				$_REQUEST['we_cmd'][3] :
-				str_replace('\\', '/', dirname($_REQUEST['we_cmd'][3])))) :
-		'');
+				dirname($_REQUEST['we_cmd'][3]))) :
+		''));
 $currentName = ($filter != 'folder' ? basename(isset($_REQUEST['we_cmd'][3]) ? $_REQUEST['we_cmd'][3] : '') : '');
 if(!file_exists($docroot . $currentDir . '/' . $currentName)){
 	$currentDir = '';
@@ -48,44 +48,37 @@ if(!file_exists($docroot . $currentDir . '/' . $currentName)){
 $currentID = $docroot . $currentDir . ($filter == 'folder' || $filter == 'filefolder' ? '' : (($currentDir != '') ? '/' : '') . $currentName);
 
 $currentID = str_replace('\\', '/', $currentID);
-$currentDir = str_replace('\\', '/', $currentDir);
 
 $rootDir = ((isset($_REQUEST['we_cmd'][5]) && $_REQUEST['we_cmd'][5] != '') ? $_REQUEST['we_cmd'][5] : '');
 ?>
 <script type="text/javascript"><!--
-	var rootDir="<?php print $rootDir; ?>";
-	var currentID="<?php print $currentID; ?>";
-	var currentDir="<?php print str_replace($rootDir, '', $currentDir); ?>";
-	var currentName="<?php print $currentName; ?>";
-	var currentFilter="<?php print str_replace(' ', '%20', g_l('contentTypes', '[' . $filter . ']') !== false ? g_l('contentTypes', '[' . $filter . ']') : ""); ?>";
+	var rootDir = "<?php print $rootDir; ?>";
+	var currentID = "<?php print $currentID; ?>";
+	var currentDir = "<?php print str_replace($rootDir, '', $currentDir); ?>";
+	var currentName = "<?php print $currentName; ?>";
+	var currentFilter = "<?php print str_replace(' ', '%20', g_l('contentTypes', '[' . $filter . ']', true) !== false ? g_l('contentTypes', '[' . $filter . ']') : ''); ?>";
 	var filter = '<?php print $filter; ?>';
 	var browseServer = <?php print isset($_REQUEST['we_cmd'][1]) ? 'false' : 'true'; ?>
 
-	var currentType="<?php print ($filter == 'folder') ? 'folder' : ''; ?>";
-	var sitepath="<?php print $docroot; ?>";
-	var dirsel=1;
+	var currentType = "<?php print ($filter == 'folder') ? 'folder' : ''; ?>";
+	var sitepath = "<?php print $docroot; ?>";
+	var dirsel = 1;
 	var scrollToVal = 0;
 	var allentries = new Array();
 
-	function exit_close(){
+	function exit_close() {
 <?php if(isset($_REQUEST['we_cmd'][1]) && $_REQUEST['we_cmd'][1] != ""){ ?>
-			var foo;
-			if(currentID){
-				if(currentID == sitepath) foo = "/";
-				else foo = currentID.substring(sitepath.length);
-			}else{
-				foo = "/";
-			}
+			var foo= (!currentID ||(currentID === sitepath) ? "/" : currentID.substring(sitepath.length));
 
-			opener.<?php print $_REQUEST['we_cmd'][1] ?>=foo;
-			if(!!opener.postSelectorSelect) {
+			opener.<?php print $_REQUEST['we_cmd'][1] ?> = foo;
+			if (!!opener.postSelectorSelect) {
 				opener.postSelectorSelect('selectFile');
 			}
 
 	<?php
 }
 if(isset($_REQUEST['we_cmd'][4]) && $_REQUEST['we_cmd'][4] != ""){
-	print $_REQUEST['we_cmd'][4] . ";";
+	print $_REQUEST['we_cmd'][4] . ';';
 }
 ?>
 		close();
@@ -99,7 +92,11 @@ if(isset($_REQUEST['we_cmd'][4]) && $_REQUEST['we_cmd'][4] != ""){
 	}
 	//-->
 </script>
-<?php echo we_html_element::jsScript(JS_DIR . 'keyListener.js').'</head>' ?>
+<?php
+//t_e($_REQUEST);
+echo we_html_element::jsScript(JS_DIR . 'keyListener.js');
+?>
+</head>
 
 <frameset rows="73,*,<?php print ( (isset($_REQUEST['we_cmd'][2]) && $_REQUEST['we_cmd'][2] ) ? 60 : 90); ?>,0" border="0" onload="top.fscmd.selectDir()">
   <frame src="we_sselector_header.php?ret=<?php print ( (isset($_REQUEST['we_cmd'][1]) && $_REQUEST['we_cmd'][1]) ? 1 : 0); ?>&filter=<?php print $filter; ?>&currentDir=<?php print $currentDir; ?>" name="fsheader" noresize scrolling="no">

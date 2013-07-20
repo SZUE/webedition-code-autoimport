@@ -321,7 +321,7 @@ class weCustomerEIWizard{
 						)
 					)
 			);
-		} else{
+		} else {
 			$message = we_html_element::htmlSpan(array("class" => "defaultfont"), g_l('modules_customer', '[export_finished]') . "<br><br>" .
 					g_l('modules_customer', '[server_finished]') . "<br>" .
 					($path != "/" ? $path : "") . "/" . $filename
@@ -617,9 +617,9 @@ class weCustomerEIWizard{
 		//upload table
 		$maxsize = getUploadMaxFilesize(true);
 		if($maxsize){
-			$tmptable->setCol(0, 0, array(), we_html_tools::htmlAlertAttentionBox(sprintf(g_l('newFile', "[max_possible_size]"), round($maxsize / (1024 * 1024), 3) . "MB"), we_html_tools::TYPE_ALERT, 430));
+			$tmptable->setCol(0, 0, array(), we_html_tools::htmlAlertAttentionBox(sprintf(g_l('newFile', "[max_possible_size]"),  weFile::getHumanFileSize($maxsize, weFile::SZ_MB)), we_html_tools::TYPE_ALERT, 430));
 			$tmptable->setCol(1, 0, array(), we_html_tools::getPixel(2, 5));
-		} else{
+		} else {
 			$tmptable->setCol(0, 0, array(), we_html_tools::getPixel(2, 5));
 			$tmptable->setCol(1, 0, array(), we_html_tools::getPixel(2, 5));
 		}
@@ -670,7 +670,7 @@ class weCustomerEIWizard{
 				$filesource = $_SERVER['DOCUMENT_ROOT'] . $filename;
 				move_uploaded_file($_FILES['upload']["tmp_name"], $filesource);
 			}
-		} else{
+		} else {
 			$filename = $source;
 			$filesource = $_SERVER['DOCUMENT_ROOT'] . $filename;
 		}
@@ -738,7 +738,7 @@ class weCustomerEIWizard{
 				$fileformattable->setColContent(5, 0, we_forms::checkbox($csv_fieldnames, ($csv_fieldnames == 1), "csv_fieldnames", g_l('modules_customer', '[csv_fieldnames]')));
 
 				$parts = array(array("headline" => g_l('modules_customer', '[csv_params]'), "html" => $fileformattable->getHtml(), "space" => 150));
-			} else{
+			} else {
 				//invoke parser
 				$xp = new we_xml_parser($filesource);
 				$xmlWellFormed = ($xp->parseError == "") ? true : false;
@@ -798,14 +798,14 @@ class weCustomerEIWizard{
 
 					$_REQUEST["dataset"] = $firstItem;
 					$parts = array(array("html" => $tblFrame->getHtml(), "space" => 0, "noline" => 1));
-				}else{
+				}else {
 					$parts = array(array("html" => we_html_tools::htmlAlertAttentionBox((!$xmlWellFormed) ? g_l('modules_customer', '[not_well_formed]') : g_l('modules_customer', '[missing_child_node]'), we_html_tools::TYPE_ALERT, 570), "space" => 0, "noline" => 1));
 					$js = we_html_element::jsElement('
 						' . $this->footerFrame . '.location="' . $this->frameset . '?pnt=eifooter&art=import&step=99";
 					');
 				}
 			}
-		} else{
+		} else {
 			$js = we_html_element::jsElement('
 					' . $this->footerFrame . '.location="' . $this->frameset . '?pnt=eifooter&art=import&step=99";
 			');
@@ -849,7 +849,7 @@ class weCustomerEIWizard{
 			$arrgs["lineend"] = $csv_lineend;
 			$arrgs["fieldnames"] = $csv_fieldnames;
 			$arrgs["charset"] = $the_charset;
-		} else{
+		} else {
 			$arrgs["dataset"] = $dataset;
 		}
 
@@ -858,7 +858,7 @@ class weCustomerEIWizard{
 
 		if($type == "gxml"){
 			$tableheader = array(array("dat" => g_l('modules_customer', '[we_flds]')), array("dat" => g_l('modules_customer', '[rcd_flds]')), array("dat" => g_l('import', "[attributes]")));
-		} else{
+		} else {
 			$tableheader = array(array("dat" => g_l('modules_customer', '[we_flds]')), array("dat" => g_l('modules_customer', '[rcd_flds]')));
 		}
 
@@ -882,7 +882,7 @@ class weCustomerEIWizard{
 					if($node == $field_mappings[$record])
 						$we_fields->selectOption($node);
 				}
-				else{
+				else {
 					if($node == $record)
 						$we_fields->selectOption($node);
 				}
@@ -893,7 +893,7 @@ class weCustomerEIWizard{
 					array("dat" => $we_fields->getHTML()),
 					array("dat" => we_html_tools::htmlTextInput("att_mappings[$record]", 30, (isset($att_mappings[$record]) ? $att_mappings[$record] : ""), 255, "", "text", 100))
 				);
-			} else{
+			} else {
 				$rows[] = array(
 					array("dat" => $record),
 					array("dat" => $we_fields->getHTML())
@@ -1007,7 +1007,7 @@ class weCustomerEIWizard{
 						we_button::create_button("next", "", false, 100, 22, "", "", true))
 					), we_button::create_button("cancel", "javascript:top.close();")
 			);
-		} else{
+		} else {
 			$buttons = we_button::position_yes_no_cancel(
 					we_button::create_button_table(array(
 						we_button::create_button("back", "javascript:" . $this->loadFrame . ".location='" . $this->frameset . "?pnt=eiload&cmd=export_back&step=" . $step . "';"),
@@ -1181,7 +1181,7 @@ class weCustomerEIWizard{
 
 					if($_REQUEST["selection"] == "manual"){
 						$customers = makeArrayFromCSV((isset($_REQUEST["customers"]) ? $_REQUEST["customers"] : ""));
-					} else{
+					} else {
 
 						$filterarr = array();
 						$filtersql = "";
@@ -1214,7 +1214,7 @@ class weCustomerEIWizard{
 
 						$filtersql = implode(" ", $filterarr);
 						$this->db->query("SELECT ID FROM " . CUSTOMER_TABLE . ($filtersql != "" ? " WHERE ($filtersql)" : ""));
-						while($this->db->next_record()) {
+						while($this->db->next_record()){
 							$customers[] = $this->db->f("ID");
 						}
 					}
@@ -1436,7 +1436,7 @@ class weCustomerEIWizard{
 						$options["csv_lineend"] = $csv_lineend;
 						$options["the_charset"] = $the_charset;
 						$options["csv_fieldnames"] = $csv_fieldnames;
-					} else{
+					} else {
 						$options["dataset"] = $dataset;
 						$options["xml_from"] = $xml_from;
 						$options["xml_to"] = $xml_to;
@@ -1769,7 +1769,7 @@ class weCustomerEIWizard{
 		$custfields = array();
 		$customers_fields = array();
 		$this->db->query("SHOW FIELDS FROM " . CUSTOMER_TABLE);
-		while($this->db->next_record()) {
+		while($this->db->next_record()){
 			$customers_fields[] = $this->db->f("Field");
 		}
 		foreach($customers_fields as $fk => $fv){
@@ -1799,7 +1799,7 @@ class weCustomerEIWizard{
 				$table->addRow();
 				$table->setCol($c, 0, array("colspan" => $colspan), we_html_tools::htmlSelect("filter_logic_" . $i, $logic, 1, $new["logic"], false, '', "value", "70"));
 				$c++;
-			} else{
+			} else {
 				$table->addRow();
 				$table->setCol($c, 0, array("colspan" => $colspan), we_html_element::htmlHidden(array("name" => "filter_logic_0", "value" => "")));
 				$c++;

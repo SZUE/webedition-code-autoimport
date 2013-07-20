@@ -48,7 +48,7 @@ class we_import_files{
 				// bugfix Workarround #700
 				if(is_numeric($_cat)){
 					$_cats[] = $_cat;
-				} else{
+				} else {
 					$_cats[] = path_to_id($_cat, CATEGORY_TABLE);
 				}
 			}
@@ -291,7 +291,7 @@ function checkButtons(){
 				$Thselect = g_l('importFiles', "[thumbnails]") . "<br>" . we_html_tools::getPixel(1, 3) . "<br>" . '<select class="defaultfont" name="thumbs_tmp" size="5" multiple style="width: 260px" onchange="this.form.thumbs.value=\'\';for(var i=0;i<this.options.length;i++){if(this.options[i].selected){this.form.thumbs.value +=(this.options[i].value+\',\');}};this.form.thumbs.value=this.form.thumbs.value.replace(/^(.+),$/,\'$1\');">' . "\n";
 
 				$thumbsArray = makeArrayFromCSV($this->thumbs);
-				while($GLOBALS['DB_WE']->next_record()) {
+				while($GLOBALS['DB_WE']->next_record()){
 					$Thselect .= '<option value="' . $GLOBALS['DB_WE']->f("ID") . '"' . (in_array(
 							$GLOBALS['DB_WE']->f("ID"), $thumbsArray) ? " selected" : "") . '>' . $GLOBALS['DB_WE']->f("Name") . "</option>\n";
 				}
@@ -351,7 +351,7 @@ function checkButtons(){
 					"html" => we_image_edit::qualitySelect("quality", $this->quality),
 					"space" => 150
 				);
-			} else{
+			} else {
 				$parts[] = array(
 					"headline" => "",
 					"html" => we_html_tools::htmlAlertAttentionBox(
@@ -360,7 +360,7 @@ function checkButtons(){
 				);
 			}
 			$foldAt = 3;
-		} else{
+		} else {
 			$foldAt = -1;
 		}
 		$wepos = weGetCookieVariable("but_weimportfiles");
@@ -407,7 +407,7 @@ function checkButtons(){
 		$but = str_replace("\n", " ", str_replace("\r", " ", $but));
 
 		$maxsize = getUploadMaxFilesize(false, $GLOBALS['DB_WE']);
-		$maxsize = round($maxsize / (1024 * 1024), 3) . 'MB';
+		$maxsize = weFile::getHumanFileSize($fs, weFile::SZ_MB);
 
 		$content = we_html_tools::hidden('we_cmd[0]', 'import_files') .
 			we_html_tools::hidden('cmd', 'content') . we_html_tools::hidden('step', 2) .
@@ -492,7 +492,7 @@ function checkButtons(){
 
 			$parts[] = array(
 				'html' => we_html_tools::htmlAlertAttentionBox(sprintf(str_replace('\n', '<br>', g_l('importFiles', '[error]')), $filelist), we_html_tools::TYPE_ALERT, 520, false));
-		} else{
+		} else {
 
 			$parts[] = array(
 				'html' => we_html_tools::htmlAlertAttentionBox(g_l('importFiles', '[finished]'), we_html_tools::TYPE_INFO, 520, false)
@@ -580,11 +580,11 @@ function next() {
 
 			$filelist = '';
 			foreach($_SESSION['weS']['WE_IMPORT_FILES_ERRORs'] as $err){
-				$filelist .= '- ' . $err["filename"] . ' => ' .  $err["error"]  . '\n';
+				$filelist .= '- ' . $err["filename"] . ' => ' . $err["error"] . '\n';
 			}
 			unset($_SESSION['weS']['WE_IMPORT_FILES_ERRORs']);
 			$js .= we_message_reporting::getShowMessageCall(sprintf(g_l('importFiles', "[error]"), $filelist), we_message_reporting::WE_MESSAGE_ERROR);
-		} else{
+		} else {
 			$js .= we_message_reporting::getShowMessageCall(g_l('importFiles', "[finished]"), we_message_reporting::WE_MESSAGE_NOTICE);
 		}
 
@@ -713,14 +713,14 @@ function next() {
 				if($this->sameName == "rename"){
 					$z = 0;
 					$footext = $we_doc->Filename . "_" . $z . $we_doc->Extension;
-					while(f("SELECT ID FROM " . FILE_TABLE . " WHERE Text='" . $GLOBALS['DB_WE']->escape($footext) . "' AND ParentID=" . intval($this->importToID), "ID", $GLOBALS['DB_WE'])) {
+					while(f("SELECT ID FROM " . FILE_TABLE . " WHERE Text='" . $GLOBALS['DB_WE']->escape($footext) . "' AND ParentID=" . intval($this->importToID), "ID", $GLOBALS['DB_WE'])){
 						$z++;
 						$footext = $we_doc->Filename . "_" . $z . $we_doc->Extension;
 					}
 					$we_doc->Text = $footext;
 					$we_doc->Filename = $we_doc->Filename . "_" . $z;
 					$we_doc->Path = $we_doc->getParentPath() . (($we_doc->getParentPath() != "/") ? "/" : "") . $we_doc->Text;
-				} else{
+				} else {
 					return array("filename" => $_FILES['we_File']["name"], 'error' => g_l('importFiles', '[same_name]'));
 				}
 			}
@@ -747,12 +747,12 @@ function next() {
 			if($fh){
 				if($we_doc->isBinary()){
 					$we_doc->setElement("data", $tempName);
-				}else{
+				} else {
 					$foo = explode('/', $_FILES["we_File"]["type"]);
 					$we_doc->setElement("data", fread($fh, $_FILES['we_File']["size"]), $foo[0]);
 				}
 				fclose($fh);
-			} else{
+			} else {
 				return array('filename' => $_FILES['we_File']['name'], 'error' => g_l('importFiles', '[read_file_error]'));
 			}
 
@@ -805,7 +805,7 @@ function next() {
 				$we_doc->importMetaData();
 			}
 			return array();
-		} else{
+		} else {
 			return array("filename" => $_FILES['we_File']["name"], "error" => g_l('importFiles', '[php_error]'));
 		}
 	}

@@ -58,7 +58,7 @@ abstract class weBackupPreparer{
 				'mem' => we_convertIniSizes(ini_get('memory_limit')),
 				'exec' => ini_get('max_execution_time'),
 				'requestTime' => 0,
-				'lastMem'=>0,
+				'lastMem' => 0,
 			),
 			'retry' => 0,
 		);
@@ -103,7 +103,7 @@ abstract class weBackupPreparer{
 
 		$db = new DB_WE();
 		$db->query('SHOW TABLE STATUS');
-		while($db->next_record()) {
+		while($db->next_record()){
 			// fix for object tables
 			//if(in_array($db->f('Name'),$_SESSION['weS']['weBackupVars']['tables'])) {
 			if(($name = weBackupUtil::getDefaultTableName($db->f('Name'))) !== false){
@@ -299,7 +299,7 @@ abstract class weBackupPreparer{
 		$thumbDir = trim(WE_THUMBNAIL_DIRECTORY, '/');
 
 		$d = dir($dir);
-		while(false !== ($entry = $d->read())) {
+		while(false !== ($entry = $d->read())){
 			switch($entry){
 				case '.':
 				case '..':
@@ -319,7 +319,7 @@ abstract class weBackupPreparer{
 								self::addToFileList($list, $file, $rem_doc_root);
 							}
 							self::getFileList($list, $file, $with_dirs, $rem_doc_root);
-						} else{
+						} else {
 							self::addToFileList($list, $file, $rem_doc_root);
 						}
 					} elseif(is_dir($file)){
@@ -367,7 +367,7 @@ abstract class weBackupPreparer{
 		$DB_WE->query('TRUNCATE TABLE ' . VERSIONS_TABLE . ';');
 		$path = $_SERVER['DOCUMENT_ROOT'] . VERSION_DIR;
 		if(($dir = opendir($path))){
-			while(($file = readdir($dir))) {
+			while(($file = readdir($dir))){
 				if(!is_dir($file) && $file != "." && $file != ".." && $file != "dummy"){
 					unlink($path . $file);
 				}
@@ -426,7 +426,7 @@ abstract class weBackupPreparer{
 							} else {
 								top.body.location = "' . WE_INCLUDES_DIR . 'we_editors/we_recover_backup.php?pnt=body&step=2";
 							}');
-				} else{
+				} else {
 					return we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('backup', '[import_file_found]'), we_message_reporting::WE_MESSAGE_WARNING) .
 							'top.body.location = "' . WE_INCLUDES_DIR . 'we_editors/we_recover_backup.php?pnt=body&step=2";');
 				}
@@ -445,8 +445,8 @@ abstract class weBackupPreparer{
 		if(empty($_SESSION['weS']['weBackupVars']['backup_file'])){
 			if(isset($_SESSION['weS']['weBackupVars']['options']['upload'])){
 				$maxsize = getUploadMaxFilesize();
-				$_mess = sprintf(g_l('backup', '[upload_failed]'), round($maxsize / (1024 * 1024), 3) . "MB");
-			} else{
+				$_mess = sprintf(g_l('backup', '[upload_failed]'), weFile::getHumanFileSize($fs, weFile::SZ_MB));
+			} else {
 				$_mess = g_l('backup', '[file_missing]');
 			}
 		} else if(!is_readable($_SESSION['weS']['weBackupVars']['backup_file'])){
@@ -461,7 +461,7 @@ abstract class weBackupPreparer{
 		} else if($_SESSION['weS']['weBackupVars']['options']['compress'] && !weFile::hasGzip()){
 
 			$_mess = g_l('backup', '[cannot_split_file_ziped]');
-		} else{
+		} else {
 			$_mess = g_l('backup', '[unspecified_error]');
 		}
 
@@ -490,13 +490,13 @@ abstract class weBackupPreparer{
 					} while(true);
 					fclose($fp);
 				}
-				else{
+				else {
 					fclose($fs);
 					return false;
 				}
 			}
 			fclose($fs);
-		} else{
+		} else {
 			return false;
 		}
 

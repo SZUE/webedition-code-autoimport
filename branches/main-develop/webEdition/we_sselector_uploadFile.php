@@ -46,19 +46,19 @@ if(isset($_FILES['we_uploadFile'])){
 			if(weFile($_REQUEST["pat"] . "/" . $_FILES['we_uploadFile']["name"])){
 				$we_alerttext = g_l('fileselector', "[can_not_overwrite_we_file]");
 			}
-		} else{
+		} else {
 			$z = 0;
 
 			if(preg_match('|^(.+)(\.[^\.]+)$|', $_FILES['we_uploadFile']["name"], $regs)){
 				$extension = $regs[2];
 				$filename = $regs[1];
-			} else{
+			} else {
 				$extension = "";
 				$filename = $_FILES['we_uploadFile']["name"];
 			}
 
 			$footext = $filename . "_" . $z . $extension;
-			while(file_exists($cpat . "/" . $footext)) {
+			while(file_exists($cpat . "/" . $footext)){
 				$z++;
 				$footext = $filename . "_" . $z . $extension;
 			}
@@ -79,7 +79,7 @@ $buttons = we_button::position_yes_no_cancel($yes_button, null, $cancel_button);
 
 $content = '<table border="0" cellpadding="0" cellspacing="0">' .
 	($maxsize ? ('<tr><td>' . we_html_tools::htmlAlertAttentionBox(
-			sprintf(g_l('newFile', "[max_possible_size]"), round($maxsize / (1024 * 1024), 3) . 'MB'), we_html_tools::TYPE_ALERT, 390) . '</td></tr><tr><td>' . we_html_tools::getPixel(2, 10) . '</td></tr>') : '') . '
+			sprintf(g_l('newFile', "[max_possible_size]"), weFile::getHumanFileSize($maxsize, weFile::SZ_MB)), we_html_tools::TYPE_ALERT, 390) . '</td></tr><tr><td>' . we_html_tools::getPixel(2, 10) . '</td></tr>') : '') . '
 			<tr><td><input name="we_uploadFile" TYPE="file" size="35" /></td></tr><tr><td>' . we_html_tools::getPixel(2, 10) . '</td></tr>
 			<tr><td class="defaultfont">' . g_l('newFile', '[caseFileExists]') . '</td></tr><tr><td>' .
 	we_forms::radiobutton("yes", true, "overwrite", g_l('newFile', '[overwriteFile]')) .

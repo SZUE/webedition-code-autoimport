@@ -81,7 +81,7 @@ if((!$we_alerttext) && isset($_FILES['we_uploadedFile']) && $_FILES['we_uploaded
 			$tmp = $we_doc->ClassName;
 			$we_doc = new $tmp();
 			$we_doc->initByID($file_id, FILE_TABLE);
-		} else{
+		} else {
 			$z = 0;
 			$footext = $we_doc->Filename . '_' . $z . $we_doc->Extension;
 			while(f('SELECT ID FROM ' . FILE_TABLE . " WHERE Text='" . $DB_WE->escape($footext) . "' AND ParentID='$pid'", 'ID', $DB_WE)) {
@@ -127,7 +127,7 @@ if((!$we_alerttext) && isset($_FILES['we_uploadedFile']) && $_FILES['we_uploaded
 	if(isset($_REQUEST['Thumbnails'])){
 		if(is_array($_REQUEST['Thumbnails'])){
 			$we_doc->Thumbs = makeCSVFromArray($_REQUEST['Thumbnails'], true);
-		} else{
+		} else {
 			$we_doc->Thumbs = $_REQUEST['Thumbnails'];
 		}
 	}
@@ -152,7 +152,7 @@ $buttons = we_button::position_yes_no_cancel($yes_button, null, $cancel_button);
 
 if($maxsize){
 	$parts[] = array('headline' => '', 'html' => we_html_tools::htmlAlertAttentionBox(
-			sprintf(g_l('newFile', '[max_possible_size]'), round($maxsize / (1024 * 1024), 3) . 'MB'), we_html_tools::TYPE_ALERT, 390), 'space' => 0, 'noline' => 1);
+			sprintf(g_l('newFile', '[max_possible_size]'), weFile::getHumanFileSize($maxsize, weFile::SZ_MB)), we_html_tools::TYPE_ALERT, 390), 'space' => 0, 'noline' => 1);
 }
 
 $parts[] = array('headline' => '', 'html' => '<input name="we_uploadedFile" TYPE="file"' . ($allowedContentTypes ? ' ACCEPT="' . $allowedContentTypes . '"' : '') . ' size="35" />', "space" => 0);
@@ -167,7 +167,7 @@ if($we_ContentType == 'image/*'){
 
 	$selectedID = 0;
 	$_enabled_buttons = false;
-	while($DB_WE->next_record()) {
+	while($DB_WE->next_record()){
 		$_enabled_buttons = true;
 		$_thumbnail_counter = $DB_WE->f('ID');
 

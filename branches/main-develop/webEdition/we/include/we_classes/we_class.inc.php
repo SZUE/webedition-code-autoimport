@@ -121,47 +121,6 @@ abstract class we_class {
 		
 	}
 
-	function hrefRow($intID_elem_Name, $intID, $Path_elem_Name, $path, $attr, $int_elem_Name, $showRadio = false, $int = true, $extraCmd = '', $file = true, $directory = false){
-		$checked = ($intID_elem_Name && $int) || ((!$intID_elem_Name) && (!$int));
-		$out = '<tr>' .
-			($showRadio ?
-				'<td>' . we_forms::radiobutton(($intID_elem_Name ? 1 : 0), $checked, $int_elem_Name, ((!$intID_elem_Name) ? g_l('tags', '[ext_href]') : g_l('tags', '[int_href]')) . ':&nbsp;', true, 'defaultfont', '') . '</td>' :
-				'<input type="hidden" name="' . $int_elem_Name . '" value="' . ($intID_elem_Name ? 1 : 0) . '" />'
-			) . '<td>' .
-			($intID_elem_Name ?
-				'<input type="hidden" name="' . $intID_elem_Name . '" value="' . $intID . '"><input type="text" name="' . $Path_elem_Name . '" value="' . $path . '" ' . $attr . ' readonly="readonly" />' :
-				'<input' . ($showRadio ? ' onChange="this.form.elements[\'' . $int_elem_Name . '\'][' . ($intID_elem_Name ? 0 : 1) . '].checked=true;"' : '' ) . ' type="text" name="' . $Path_elem_Name . '" value="' . $path . '" ' . $attr . ' />'
-			);
-
-		if($intID_elem_Name){
-			$trashbut = we_button::create_button('image:btn_function_trash', "javascript:document.we_form.elements['" . $intID_elem_Name . "'].value='';document.we_form.elements['" . $Path_elem_Name . "'].value='';_EditorFrame.setEditorIsHot(true);");
-			$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['$intID_elem_Name'].value");
-			$wecmdenc2 = we_cmd_enc("document.forms['we_form'].elements['$Path_elem_Name'].value");
-			$wecmdenc3 = we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);" . ($showRadio ? "opener.document.we_form.elements['$int_elem_Name'][0].checked=true;" : "") . str_replace('\\', '', $extraCmd));
-			$but = (($directory && $file) || $file ?
-					we_button::create_button('select', "javascript:we_cmd('openDocselector',document.forms[0].elements['$intID_elem_Name'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "',0,''," . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ",''," . ($directory ? 0 : 1) . ");") :
-					we_button::create_button('select', "javascript:we_cmd('openDirselector',document.forms[0].elements['$intID_elem_Name'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "',0);")
-				);
-		} else {
-			$trashbut = we_button::create_button('image:btn_function_trash', "javascript:document.we_form.elements['" . $Path_elem_Name . "'].value='';_EditorFrame.setEditorIsHot(true);");
-			$wecmdenc1 = we_cmd_enc("document.forms[0].elements['$Path_elem_Name'].value");
-			$wecmdenc4 = we_cmd_enc("if (opener.opener != null){opener.opener._EditorFrame.setEditorIsHot(true);}else{opener._EditorFrame.setEditorIsHot(true);}" . ($showRadio ? "opener.document.we_form.elements['$int_elem_Name'][1].checked=true;" : ""));
-			$but = (!we_hasPerm('CAN_SELECT_EXTERNAL_FILES') ? '' : (($directory && $file) || $file ?
-						we_button::create_button('select', "javascript:we_cmd('browse_server','" . $wecmdenc1 . "','" . (($directory && $file) ? "filefolder" : "") . "',document.forms[0].elements['$Path_elem_Name'].value,'" . $wecmdenc4 . "')") :
-						we_button::create_button('select', "javascript:we_cmd('browse_server','" . $wecmdenc1 . "','folder',document.forms[0].elements['$Path_elem_Name'].value,'" . $wecmdenc4 . "')")
-					));
-		}
-
-		$out .='
-	</td>
-	<td>' . we_html_tools::getPixel(6, 4) . '</td>
-	<td>' . $but . '</td>
-	<td>' . we_html_tools::getPixel(5, 2) . '</td>
-	<td>' . $trashbut . '</td>
-</tr>';
-		return $out;
-	}
-
 	/* creates a text-input field for entering Data that will be stored at the $elements Array */
 
 	function formInput($name, $size = 25, $type = 'txt'){
