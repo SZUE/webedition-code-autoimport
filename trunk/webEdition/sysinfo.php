@@ -118,7 +118,7 @@ function parseValue($name, $value){
 }
 
 function convertToMb($value){
-	return round($value / (1024 * 1024), 3) . ' MB';
+	return weFile::getHumanFileSize($value, weFile::SZ_MB);
 }
 
 function getConnectionTypes(){
@@ -173,12 +173,12 @@ if(defined("WE_VERSION_SUPP_VERSION") && WE_VERSION_SUPP_VERSION != '0')
 if(is_callable("gd_info")){
 	if(defined("GD_VERSION")){
 		$gdVersion = GD_VERSION;
-	} else{
+	} else {
 		$gdinfoArray = gd_info();
 		$gdVersion = $gdinfoArray["GD Version"];
 		unset($gdinfoArray);
 	}
-} else{
+} else {
 	$gdVersion = "";
 }
 
@@ -200,24 +200,24 @@ if(count($phpextensions) > 3){
 
 	if(in_array(strtolower('PDO'), $phpextensions) && in_array(strtolower('pdo_mysql'), $phpextensions)){//sp�ter ODER mysqli
 		$phpextensionsSDK_DB = 'PDO &amp; PDO_mysql';
-	} else{
+	} else {
 		$phpextensionsSDK_DB = getWarning(g_l('sysinfo', "[sdk_db warning]"), '-');
 	}
-} else{
+} else {
 	$phpExtensionsDetectable = false;
 	$phpextensionsSDK_DB = 'unkown';
 }
 if(in_array('suhosin', get_loaded_extensions())){
 	if(ini_get_bool('suhosin.simulation')){
 		$SuhosinText = getOK('', g_l('sysinfo', '[suhosin simulation]'));
-	} else{
+	} else {
 		if(ini_get_bool('suhosin.cookie.encrypt')){
 			$SuhosinText = getWarning(g_l('sysinfo', '[suhosin warning]'), 'on' . ' (suhosin.cookie.encrypt=on)');
-		} else{
+		} else {
 			$SuhosinText = getWarning(g_l('sysinfo', '[suhosin warning]'), 'on');
 		}
 	}
-} else{
+} else {
 	$SuhosinText = getOK('', ini_get_message('suhosin'));
 }
 

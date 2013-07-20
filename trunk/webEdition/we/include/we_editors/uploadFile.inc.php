@@ -29,7 +29,7 @@ $allowedContentTypes = "";
 $error = false;
 
 $maxsize = getUploadMaxFilesize(false);
-$we_maxfilesize_text = sprintf(g_l('newFile', "[max_possible_size]"), round($maxsize / (1024 * 1024), 3) . "MB");
+$we_maxfilesize_text = sprintf(g_l('newFile', "[max_possible_size]"), weFile::getHumanFileSize($fs, weFile::SZ_MB));
 
 
 we_html_tools::htmlTop(g_l('newFile', "[import_File_from_hd_title]"));
@@ -39,7 +39,7 @@ print STYLESHEET;
 if(!isset($_SESSION['weS']['we_data'][$we_transaction])){
 	$we_alerttext = $we_maxfilesize_text;
 	$error = true;
-} else{
+} else {
 
 	$we_dt = $_SESSION['weS']['we_data'][$we_transaction];
 	include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
@@ -54,7 +54,7 @@ if(!isset($_SESSION['weS']['we_data'][$we_transaction])){
 			$allowedContentTypes = $we_doc->ContentType;
 	}
 
-	if(isset($_FILES['we_File']) && !empty($_FILES["we_File"]["name"])&& $_FILES['we_File']["type"] && ((empty($allowedContentTypes)) || (!(strpos($allowedContentTypes, $_FILES['we_File']['type']) === false)))){
+	if(isset($_FILES['we_File']) && !empty($_FILES["we_File"]["name"]) && $_FILES['we_File']["type"] && ((empty($allowedContentTypes)) || (!(strpos($allowedContentTypes, $_FILES['we_File']['type']) === false)))){
 		$we_File = TEMP_PATH . '/' . weFile::getUniqueId();
 		move_uploaded_file($_FILES["we_File"]["tmp_name"], $we_File);
 		if((!$we_doc->Filename) || (!$we_doc->ID)){
@@ -117,19 +117,19 @@ if($we_alerttext){
 	print we_message_reporting::getShowMessageCall($we_alerttext, we_message_reporting::WE_MESSAGE_ERROR);
 	if($error){
 		?>
-					top.close();
+		top.close();
 		<?php
 	}
 }
 
 if(isset($we_File) && (!$we_alerttext)){
 	?>
-			opener.we_cmd("update_file");
-			_EditorFrame = opener.top.weEditorFrameController.getActiveEditorFrame();
-			_EditorFrame.getDocumentReference().frames[0].we_setPath("<?php print $we_doc->Path; ?>","<?php print $we_doc->Text; ?>");
-			self.close();
+	opener.we_cmd("update_file");
+	_EditorFrame = opener.top.weEditorFrameController.getActiveEditorFrame();
+	_EditorFrame.getDocumentReference().frames[0].we_setPath("<?php print $we_doc->Path; ?>", "<?php print $we_doc->Text; ?>");
+	self.close();
 <?php } ?>
-	//-->
+//-->
 </script>
 </head>
 

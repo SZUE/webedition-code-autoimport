@@ -1212,7 +1212,7 @@ class we_object extends we_document{
 		$intID = isset($hrefArr["intID"]) ? $hrefArr["intID"] : 0;
 		$intPath = $intID ? id_to_path($intID) : "";
 		$extPath = isset($hrefArr["extPath"]) ? $hrefArr["extPath"] : "";
-		$objID = isset($hrefArr["objID"]) ? $hrefArr["objID"] : 0;
+//		$objID = isset($hrefArr["objID"]) ? $hrefArr["objID"] : 0;
 		//$objPath = $objID ? id_to_path($objID, OBJECT_FILES_TABLE) : "";
 		$int_elem_Name = 'we_' . $this->Name . '_href[' . $nint . ']';
 		$intPath_elem_Name = 'we_' . $this->Name . '_href[' . $nintPath . ']';
@@ -1221,14 +1221,14 @@ class we_object extends we_document{
 
 		switch($type){
 			case we_base_link::TYPE_INT:
-				$out = $this->hrefRow($intID_elem_Name, $intID, $intPath_elem_Name, $intPath, $attr, $int_elem_Name);
+				$out = we_objectFile::hrefRow($intID_elem_Name, $intID, $intPath_elem_Name, $intPath, $attr, $int_elem_Name);
 				break;
 			case we_base_link::TYPE_EXT:
-				$out = $this->hrefRow('', '', $ext_elem_Name, $extPath, $attr, $int_elem_Name);
+				$out = we_objectFile::hrefRow('', '', $ext_elem_Name, $extPath, $attr, $int_elem_Name);
 				break;
 			default:
-				$out = $this->hrefRow($intID_elem_Name, $intID, $intPath_elem_Name, $intPath, $attr, $int_elem_Name, true, $int) .
-					$this->hrefRow('', '', $ext_elem_Name, $extPath, $attr, $int_elem_Name, true, $int);
+				$out = we_objectFile::hrefRow($intID_elem_Name, $intID, $intPath_elem_Name, $intPath, $attr, $int_elem_Name, true, $int) .
+					we_objectFile::hrefRow('', '', $ext_elem_Name, $extPath, $attr, $int_elem_Name, true, $int);
 		}
 		return '<table border="0" cellpadding="0" cellspacing="0">' . $out . '</table>';
 	}
