@@ -186,6 +186,7 @@ $l_weClass=array(
 	'upload'=>'Upload',
 	'upload_single_files'=>'ATTENTION: Please note that you can upload only single files using this function. To upload multiple files at once please use the import function, which can be acessed using the file menu.',
 	'upload_will_replace'=>'By using the "upload" button you can now replace the current file. If you want to upload another file or multiple files at once, please use the import function or return to this page using the file menu.',
+	'urlMap'=>'Replace directory by given Domainname',
 	'urlfield0'=>'URL field',
 	'urlfield1'=>'URL field 1',
 	'urlfield2'=>'URL field 2',

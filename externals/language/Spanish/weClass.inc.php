@@ -186,6 +186,7 @@ $l_weClass=array(
 	'upload'=>'Cargar',
 	'upload_single_files'=>'ATENCIÓN: Por favor, note que solamente puede cargar archivos únicos usando esta función. Para cargar múltiples archivos de una vez use la función de importación, a la cual puede acceder usando el menú de archivo.',
 	'upload_will_replace'=>'Ud puede ahora reemplazar el archivo actual usando el botón "cargar". Si Ud desea cargar otro archivo o múltiples archivos de una vez; por favor, use la función de importación o regrese a esta página usando el menú de archivo.',
+	'urlMap'=>'Replace directory by given Domainname',
 	'urlfield0'=>'URL field',
 	'urlfield1'=>'URL field 1',
 	'urlfield2'=>'URL field 2',

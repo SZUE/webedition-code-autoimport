@@ -186,6 +186,7 @@ $l_weClass=array(
 	'upload'=>'Lataa',
 	'upload_single_files'=>'HUOMIOITAVAA: Huomioi että voi ladata vain yksittäisiä tiedostoja tämän toiminnon kautta. Jos haluat ladata useita tiedostoja kerrallaan, käytä tuo toimintoa, Tiedosto -valikosta.',
 	'upload_will_replace'=>'Käyttämällä "Lataa" -painiketta voit korvata tämänhetkisen tiedoston. Jos haluat ladata muun tiedoston tai useita tiedostoja kerrallaan, käytä tuo -toimintoa  Tiedosto -valikosta.',
+	'urlMap'=>'Replace directory by given Domainname',
 	'urlfield0'=>'URL field',
 	'urlfield1'=>'URL field 1',
 	'urlfield2'=>'URL field 2',
