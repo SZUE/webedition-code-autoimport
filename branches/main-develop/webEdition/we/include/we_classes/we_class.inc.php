@@ -69,12 +69,12 @@ abstract class we_class {
 
 	//Overwrite
 	public function we_new(){
-		
+
 	}
 
 	//Overwrite
 	function we_initSessDat($sessDat){
-		
+
 	}
 
 	/* Constructor */
@@ -118,7 +118,7 @@ abstract class we_class {
 	/* must be overwritten by child */
 
 	function saveInSession(/* &$save */){
-		
+
 	}
 
 	/* creates a text-input field for entering Data that will be stored at the $elements Array */
@@ -159,7 +159,7 @@ abstract class we_class {
 		return $this->htmlFormElementTable($this->htmlTextInput(($elementtype ? ('we_' . $this->Name . '_' . $elementtype . "[$name]") : ('we_' . $this->Name . '_' . $name)), $size, ($elementtype ? $this->getElement($name) : $ps), $maxlength, $attribs), $text, $textalign, $textclass);
 	}
 
-	function formInputField($elementtype, $name, $text, $size = 24, $width, $maxlength = '', $attribs = '', $textalign = 'left', $textclass = 'defaultfont'){
+	function formInputField($elementtype, $name, $text, $size, $width, $maxlength = '', $attribs = '', $textalign = 'left', $textclass = 'defaultfont'){
 		if(!$elementtype){
 			$ps = $this->$name;
 		}

@@ -77,7 +77,7 @@ class we_webEditionDocument extends we_textContentDocument{
 			$GLOBALS['we_document'][$formname]->we_new();
 			if(isset($_REQUEST['we_editDocument_ID']) && $_REQUEST['we_editDocument_ID']){
 				$GLOBALS['we_document'][$formname]->initByID($_REQUEST['we_editDocument_ID'], FILE_TABLE);
-			} else{
+			} else {
 				$dt = f('SELECT ID FROM ' . DOC_TYPES_TABLE . " WHERE DocType LIKE '" . $GLOBALS['we_document'][$formname]->DB_WE->escape($doctype) . "'", 'ID', $GLOBALS['we_document'][$formname]->DB_WE);
 				$GLOBALS['we_document'][$formname]->changeDoctype($dt);
 				if($tid){
@@ -90,10 +90,10 @@ class we_webEditionDocument extends we_textContentDocument{
 			}
 			if($session)
 				$GLOBALS['we_document'][$formname]->saveInSession($_SESSION['weS']['we_document_session_' . $formname]);
-		} else{
+		} else {
 			if(isset($_REQUEST['we_editDocument_ID']) && $_REQUEST['we_editDocument_ID']){
 				$GLOBALS['we_document'][$formname]->initByID($_REQUEST['we_editDocument_ID'], FILE_TABLE);
-			} else{
+			} else {
 				if($session){
 					$GLOBALS['we_document'][$formname]->we_initSessDat($_SESSION['weS']['we_document_session_' . $formname]);
 				}
@@ -112,7 +112,7 @@ class we_webEditionDocument extends we_textContentDocument{
 			foreach($_REQUEST['we_ui_' . $formname] as $n => $v){
 				if(preg_match('/^we_date_([a-zA-Z0-9_]+)_(day|month|year|minute|hour)$/', $n, $regs)){
 					$dates[$regs[1]][$regs[2]] = $v;
-				} else{
+				} else {
 					$v = we_util::rmPhp($v);
 					$GLOBALS['we_document'][$formname]->setElement($n, $v);
 				}
@@ -213,7 +213,7 @@ class we_webEditionDocument extends we_textContentDocument{
 						($this->ID ? '}' : '') : '') .
 					'}'
 			);
-		} else{
+		} else {
 			return we_forms::checkboxWithHidden($v ? true : false, '', g_l('weClass', "[IsDynamic]"), false, "defaultfont", "", true);
 		}
 	}
@@ -270,7 +270,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		if($this->TemplateID > 0){
 			$styleTemplateLabel = "display:none";
 			$styleTemplateLabelLink = "display:inline";
-		} else{
+		} else {
 			$styleTemplateLabel = "display:inline";
 			$styleTemplateLabelLink = "display:none";
 		}
@@ -350,7 +350,7 @@ class we_webEditionDocument extends we_textContentDocument{
 				$TID = $this->TemplateID;
 			}
 			$tlist = implode(',', array_unique($temps));
-		} else{
+		} else {
 			$foo = array();
 			$wsArray = makeArrayFromCSV($ws);
 			foreach($wsArray as $wid){
@@ -376,7 +376,7 @@ class we_webEditionDocument extends we_textContentDocument{
 			}
 			$tlist = $foo ? implode(',', $foo) : -1;
 			return $this->formSelect4('', $width, 'TemplateID', TEMPLATES_TABLE, 'ID', 'Path', $ueberschrift, ' WHERE ID IN (' . $tlist . ') AND IsFolder=0 ORDER BY Path', 1, $TID, false, "we_cmd('template_changed');_EditorFrame.setEditorIsHot(true);", "", "left", "defaultfont", "", "", array(0, ""));
-		} else{
+		} else {
 			return $this->formSelect2('', $width, 'TemplateID', TEMPLATES_TABLE, 'ID', 'Path', $ueberschrift, 'WHERE IsFolder=0 ORDER BY Path ', 1, $this->TemplateID, false, "_EditorFrame.setEditorIsHot(true);");
 		}
 	}
@@ -471,7 +471,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		<tr><td>' . $retInput . '</td><td>' . $retSelect . '</td></tr>
 	</table>
 </td></tr>';
-		} else{ //	charset-tag NOT available
+		} else { //	charset-tag NOT available
 			//getCharsets
 			return '<tr><td colspan="2">' . we_html_tools::getPixel(2, 4) . '</td></tr>
 <tr><td>
@@ -655,7 +655,6 @@ class we_webEditionDocument extends we_textContentDocument{
 		// First off correct corupted fields
 		$this->correctFields();
 //FIXME: maybe use $this->getUsedElements() to unset unused elements?! add setting to do this? check rebuild!!!
-
 		// Bug Fix #6615
 		$this->temp_template_id = $this->TemplateID;
 		$this->temp_doc_type = $this->DocType;
@@ -665,7 +664,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		$out = parent::we_save($resave, $skipHook);
 		if(LANGLINK_SUPPORT && isset($_REQUEST['we_' . $this->Name . '_LanguageDocID']) && $_REQUEST['we_' . $this->Name . '_LanguageDocID'] != 0){
 			$this->setLanguageLink($_REQUEST['we_' . $this->Name . '_LanguageDocID'], 'tblFile', false, false); // response deactivated
-		} else{
+		} else {
 			//if language changed, we must delete eventually existing entries in tblLangLink, even if !LANGLINK_SUPPORT!
 			$this->checkRemoteLanguage($this->Table, false);
 		}
@@ -766,7 +765,7 @@ class we_webEditionDocument extends we_textContentDocument{
 
 			if(!empty($variationFields)){
 				$i = 0;
-				while(isset($this->elements[WE_SHOP_VARIANTS_PREFIX . $i])) {
+				while(isset($this->elements[WE_SHOP_VARIANTS_PREFIX . $i])){
 					if(!trim($this->elements[WE_SHOP_VARIANTS_PREFIX . $i++]['dat'])){
 						return false;
 					}
@@ -833,18 +832,22 @@ if (!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 } else {
 	include($_SERVER[\'DOCUMENT_ROOT\'] . \'' . WE_INCLUDES_DIR . 'we_showDocument.inc.php\');
 }';
-		} else{
+		} else {
 			static $cache = array();
 			if(isset($cache[$this->ID])){
 				return $cache[$this->ID];
-			} else{
+			} else {
 				$doc = $this->i_getDocument();
+				$urlReplace = we_folder::getUrlReplacements($GLOBALS['DB_WE']);
+// --> Glossary Replacement
+				$useGlossary = ((defined('GLOSSARY_TABLE') && (!isset($GLOBALS['WE_MAIN_DOC']) || $GLOBALS['WE_MAIN_DOC'] == $GLOBALS['we_doc'])) && (isset($we_doc->InGlossar) && $we_doc->InGlossar == 0) && weGlossaryReplace::useAutomatic());
 
 				// --> Glossary Replacement
-				if(defined('GLOSSARY_TABLE')){
-					if(isset($this->InGlossar) && $this->InGlossar == 0){
-						$doc = weGlossaryReplace::replace($doc, $this->Language);
-					}
+				if($useGlossary){
+					$doc = weGlossaryReplace::doReplace($doc, $this->Language);
+				}
+				if($urlReplace){
+					$doc = preg_replace($urlReplace, array_keys($urlReplace), $doc);
 				}
 				$cache[$this->ID] = $doc;
 			}
@@ -895,7 +898,7 @@ if (!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 
 				if(!in_array('controlElement', $this->persistent_slots)){
 					$this->persistent_slots[] = 'controlElement';
-				} else{
+				} else {
 					unset($this->controlElement);
 				}
 
@@ -954,7 +957,7 @@ if (!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 
 				if(!in_array('hidePages', $this->persistent_slots)){
 					$this->persistent_slots[] = 'hidePages';
-				} else{
+				} else {
 					unset($this->hidePages);
 				}
 				$this->hidePages = $_pages;
@@ -986,7 +989,7 @@ if (!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 
 			if(in_array('all', $_hidePagesArr)){
 				$this->EditPageNrs = array();
-			} else{
+			} else {
 				foreach($this->EditPageNrs AS $key => $editPage){
 					if(array_key_exists($editPage, $MNEMONIC_EDITPAGES) && in_array($MNEMONIC_EDITPAGES[$editPage], $_hidePagesArr)){
 						unset($this->EditPageNrs[$key]);
@@ -1052,14 +1055,14 @@ if (!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 
 		if($this->InWebEdition){
 			$this->hasVariants = (f('SELECT 1 as CCID FROM ' . LINK_TABLE . ' WHERE DID=' . intval($this->TemplateID) . ' AND DocumentTable="tblTemplates" AND Name LIKE ("variant_%") LIMIT 1', 'CCID', $this->DB_WE) == '1');
-		} else{
+		} else {
 			if(isset($this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat']) && is_array($this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'])){
 				$this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'] = serialize($this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat']);
 			}
 			if(isset($this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]) && substr($this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'], 0, 2) == 'a:'){
 				$_vars = unserialize($this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat']);
 				$this->hasVariants = (is_array($_vars) && !empty($_vars));
-			} else{
+			} else {
 				$this->hasVariants = false;
 			}
 		}
@@ -1122,7 +1125,7 @@ if (!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 	public function addUsedElement($type, $name){
 		if(!isset($this->usedElementNames[$type])){
 			$this->usedElementNames[$type] = array($name);
-		} else{
+		} else {
 			$this->usedElementNames[$type][] = $name;
 		}
 	}

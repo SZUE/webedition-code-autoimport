@@ -60,7 +60,7 @@ if(($_userID != 0 && $_userID != $_SESSION['user']['ID']) || (isset($_REQUEST['w
 		if(!preg_match('|^([a-f0-9]){32}$|i', $we_transaction)){
 			exit();
 		}
-	} else{
+	} else {
 		exit();
 	}
 
@@ -118,7 +118,7 @@ if(($_userID != 0 && $_userID != $_SESSION['user']['ID']) || (isset($_REQUEST['w
 		//	init document
 		$GLOBALS['we_doc']->we_initSessDat($we_dt);
 		$_REQUEST['we_objectID'] = $_SESSION['weS']['we_data'][$we_transaction][0]['ID'];
-	} else{
+	} else {
 		showContent();
 		exit;
 	}
@@ -130,7 +130,7 @@ if(($_userID != 0 && $_userID != $_SESSION['user']['ID']) || (isset($_REQUEST['w
 	// init document
 	$we_dt = $_SESSION['weS']['we_data'][$we_transaction];
 	include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
-} else{ //	view with template
+} else { //	view with template
 	$tid = isset($_REQUEST['we_cmd'][2]) ? $_REQUEST['we_cmd'][2] : (isset($we_objectTID) ? $we_objectTID : '');
 
 	$GLOBALS['we_obj'] = new we_objectFile();
@@ -196,7 +196,7 @@ if(isset($GLOBALS['we_obj']) && $GLOBALS['we_obj']->documentCustomerFilter && !i
 				unset($_errorDocPath);
 				unset($_errorDocId);
 				return;
-			} else{
+			} else {
 				die('Customer has no access to this document');
 			}
 		}
@@ -245,30 +245,28 @@ if(isset($_SESSION['weS']['we_data'][$we_transaction]['0']['InWebEdition']) && $
 	$contents = ob_get_contents();
 	ob_end_clean();
 	print we_SEEM::parseDocument($contents);
-} else{ //	Not in webEdition, just show the file.
+} else { //	Not in webEdition, just show the file.
 	//
 		// --> Start Glossary Replacement
 	//
-
-		if(defined('GLOSSARY_TABLE') && (!isset($GLOBALS['WE_MAIN_DOC']) || $GLOBALS['WE_MAIN_DOC'] == $GLOBALS['we_doc'])){
-		if(isset($we_doc->InGlossar) && $we_doc->InGlossar == 0){
-			weGlossaryReplace::start();
-		}
+		$urlReplace = we_folder::getUrlReplacements($GLOBALS['DB_WE']);
+// --> Glossary Replacement
+	$useGlossary = ((defined('GLOSSARY_TABLE') && (!isset($GLOBALS['WE_MAIN_DOC']) || $GLOBALS['WE_MAIN_DOC'] == $GLOBALS['we_doc'])) && (isset($we_doc->InGlossar) && $we_doc->InGlossar == 0) && weGlossaryReplace::useAutomatic());
+	$useBuffer = !empty($urlReplace) || $useGlossary;
+	if($useBuffer){
+		ob_start();
 	}
-
-	//
-	// --> Include Content
-	//
-
-		include(TEMPLATES_PATH . $tmplPath);
-
-	//
-	// --> Finish Glossary Replacement
-	//
-
-		if(defined('GLOSSARY_TABLE') && (!isset($GLOBALS['WE_MAIN_DOC']) || $GLOBALS['WE_MAIN_DOC'] == $GLOBALS['we_doc'])){
-		if(isset($we_doc->InGlossar) && $we_doc->InGlossar == 0){
-			weGlossaryReplace::end($GLOBALS['we_doc']->Language);
+	include(TEMPLATES_PATH . $tmplPath);
+	if($useBuffer){
+		$content = ob_get_contents();
+		ob_end_clean();
+		if($useGlossary){
+			$content = weGlossaryReplace::doReplace($content, $GLOBALS['we_doc']->Language);
 		}
+		if($urlReplace){
+			$content = preg_replace($urlReplace, array_keys($urlReplace), $content);
+		}
+
+		echo $content;
 	}
 }

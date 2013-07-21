@@ -26,35 +26,15 @@ abstract class weGlossaryReplace{
 
 	const configFile = 'we_conf_glossary_settings.inc.php';
 
-	/**
-	 * defines the start of the content which have to be replaced
-	 *
-	 */
-	public static function start(){
+	public static function useAutomatic(){
 		$configFile = WE_GLOSSARY_MODULE_PATH . self::configFile;
 		if(!file_exists($configFile) || !is_file($configFile)){
 			weGlossarySettingControl::saveSettings(true);
 		}
 		include_once($configFile);
 
-		if(isset($GLOBALS['weGlossaryAutomaticReplacement']) && $GLOBALS['weGlossaryAutomaticReplacement']){
-			ob_start();
-		}
-	}
+		return (isset($GLOBALS['weGlossaryAutomaticReplacement']) && $GLOBALS['weGlossaryAutomaticReplacement']);
 
-	/**
-	 * finish the output buffering and do the replacements
-	 *
-	 * @param unknown_type $language
-	 */
-	public static function end($language){
-		include_once(WE_GLOSSARY_MODULE_PATH . self::configFile);
-
-		if(isset($GLOBALS['weGlossaryAutomaticReplacement']) && $GLOBALS['weGlossaryAutomaticReplacement']){
-			$content = ob_get_contents();
-			ob_end_clean();
-			echo self::doReplace($content, $language);
-		}
 	}
 
 	/**
@@ -84,7 +64,7 @@ abstract class weGlossaryReplace{
 	 * @param string $language
 	 * @return string
 	 */
-	private static function doReplace($src, $language){
+	public static function doReplace($src, $language){
 		if($language == ''){
 			we_loadLanguageConfig();
 			$language = $GLOBALS['weDefaultFrontendLanguage'];
