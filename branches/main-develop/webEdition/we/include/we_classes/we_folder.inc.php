@@ -684,22 +684,39 @@ class we_folder extends we_root{
 	/* for internal use */
 
 	function saveToServer(){
-		if($this->Table == FILE_TABLE || $this->Table == TEMPLATES_TABLE){
-			$isTemplFolder = ($this->Table == TEMPLATES_TABLE);
+		$isTemplFolder = false;
+		switch($this->Table){
+			case TEMPLATES_TABLE:
+				$isTemplFolder = true;
+			case FILE_TABLE:
+				$path = $this->getPath();
 
-			$path = $this->getPath();
-
-			// creates the folder on the local machine in the root-dir
-			if(!we_util_File::createLocalFolder(($isTemplFolder ? TEMPLATES_PATH : $_SERVER['DOCUMENT_ROOT']), $path))
-				return false;
-
-			// creates the folder on the local machine in the root-dir+site-dir
-			if(!$isTemplFolder){
-				if(!we_util_File::createLocalFolder($_SERVER['DOCUMENT_ROOT'] . SITE_DIR, $path))
+				// creates the folder on the local machine in the root-dir
+				if(!we_util_File::createLocalFolder(($isTemplFolder ? TEMPLATES_PATH : $_SERVER['DOCUMENT_ROOT']), $path)){
 					return false;
-			}
+				}
+				$weName = rtrim(WEBEDITION_DIR, '/');
+				if(!$isTemplFolder && !empty($this->urlMap)){
+					$target = $_SERVER['DOCUMENT_ROOT'] . $path . $weName;
+					$linktarget = realpath(is_link($target) ? $_SERVER['DOCUMENT_ROOT'] . $path . '/' . readlink($target) : WEBEDITION_PATH);
+
+					if(($linktarget == false || $linktarget != realpath(WEBEDITION_PATH))){
+						@unlink($target);
+					}
+					if(!file_exists($target)){
+						$cnt = substr_count($path, '/');
+						$link = rtrim(str_repeat('../', $cnt), '/') . $weName;
+						symlink($link, $target);
+					}
+				}
+
+				// creates the folder on the local machine in the root-dir+site-dir
+				if(!$isTemplFolder && !we_util_File::createLocalFolder($_SERVER['DOCUMENT_ROOT'] . SITE_DIR, $path)){
+					return false;
+				}
+			default:
+				return true;
 		}
-		return true;
 	}
 
 	/**
@@ -741,7 +758,8 @@ class we_folder extends we_root{
 		$ret = array();
 		$db->query('SELECT Path,urlMap FROM ' . FILE_TABLE . ' WHERE urlMap!=""');
 		while($db->next_record(MYSQL_NUM)){
-			$ret['\1' . retrim($db->f(1), '/') . '\4'] = '-((href|src)\s*=\s*["\'])(' . preg_quote($db->f(0), '-') . ')(/[^"\']*")-';
+			$host = trim(preg_replace('-(http://|https://)-', '', $db->f(1)), '/');
+			$ret['\1' . ($_SERVER['SERVER_NAME'] == $host ? '' : '//' . $host) . '\4'] = '-((href|src)\s*=\s*["\'])(' . preg_quote($db->f(0), '-') . ')(/[^"\']*")-';
 		}
 		return $ret;
 	}
