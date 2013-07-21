@@ -424,6 +424,25 @@ abstract class weFile{
 		return false;
 	}
 
+	/**
+	 * @destination string where the link should point to (fullqualified)
+	 * @link string	fullqualified linkname
+	 */
+	static function makeSymbolicLink($destination, $link){
+		//basename+dirname
+		$destinationPath = str_replace($_SERVER['DOCUMENT_ROOT'], '', rtrim($destination, '/'));
+		$linktarget = realpath(is_link($link) ? dirname($link) . '/' . readlink($link) : $destination);
+
+		if(($linktarget == false || $linktarget != realpath($destination))){
+			@unlink($link);
+		}
+		if(!is_link($link)){
+			$cnt = substr_count(str_replace($_SERVER['DOCUMENT_ROOT'], '', $link), '/') - 1;
+			$destination = str_repeat('../', $cnt) . basename($destinationPath);
+			symlink($destination, $link);
+		}
+	}
+
 	static function getHumanFileSize($filesize, $type = self::SZ_HUMAN){
 		switch($type){
 			case self::SZ_BYTE:

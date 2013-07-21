@@ -695,18 +695,10 @@ class we_folder extends we_root{
 				if(!we_util_File::createLocalFolder(($isTemplFolder ? TEMPLATES_PATH : $_SERVER['DOCUMENT_ROOT']), $path)){
 					return false;
 				}
-				$weName = rtrim(WEBEDITION_DIR, '/');
 				if(!$isTemplFolder && !empty($this->urlMap)){
-					$target = $_SERVER['DOCUMENT_ROOT'] . $path . $weName;
-					$linktarget = realpath(is_link($target) ? $_SERVER['DOCUMENT_ROOT'] . $path . '/' . readlink($target) : WEBEDITION_PATH);
-
-					if(($linktarget == false || $linktarget != realpath(WEBEDITION_PATH))){
-						@unlink($target);
-					}
-					if(!file_exists($target)){
-						$cnt = substr_count($path, '/');
-						$link = rtrim(str_repeat('../', $cnt), '/') . $weName;
-						symlink($link, $target);
+					weFile::makeSymbolicLink(WEBEDITION_PATH, $_SERVER['DOCUMENT_ROOT'] . $path . rtrim(WEBEDITION_DIR, '/'));
+					if(WE_THUMBNAIL_DIRECTORY != ''){
+						weFile::makeSymbolicLink($_SERVER['DOCUMENT_ROOT'] . WE_THUMBNAIL_DIRECTORY, $_SERVER['DOCUMENT_ROOT'] . $path . WE_THUMBNAIL_DIRECTORY);
 					}
 				}
 
