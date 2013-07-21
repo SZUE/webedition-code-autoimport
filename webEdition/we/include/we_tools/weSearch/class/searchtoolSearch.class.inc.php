@@ -330,7 +330,7 @@ class searchtoolsearch extends we_search{
 					$res[$_db->f('ID')] = $_db->f($field);
 				}
 				//search in unpublic objects and write them in the array
-				$query2 = 'SELECT DocumentObject  FROM ' . TEMPORARY_DOC_TABLE . " WHERE DocTable = 'tblObjectFiles' AND Active=1";
+				$query2 = 'SELECT DocumentObject  FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocTable = "tblObjectFiles" AND Active=1';
 				$_db->query($query2);
 				while($_db->next_record()){
 					$tempObj = unserialize($_db->f('DocumentObject'));
@@ -480,7 +480,7 @@ class searchtoolsearch extends we_search{
 			$modifications = array();
 			$ids = array();
 			$_ids = array();
-			$db->query('SELECT ID, modifications FROM ' . VERSIONS_TABLE . " WHERE modifications != '' ");
+			$db->query('SELECT ID, modifications FROM ' . VERSIONS_TABLE . ' WHERE modifications != ""');
 
 			while($db->next_record()){
 				$modifications[$db->f('ID')] = makeArrayFromCSV($db->f('modifications'));
@@ -515,13 +515,11 @@ class searchtoolsearch extends we_search{
 							}
 						}
 					}
-					if($mtof){
-						$where .= ' AND ' . $table . '.ID IN (' . makeCSVFromArray($arr) . ') ';
-					} elseif(!empty($_ids[0])){
-						$where .= ' AND ' . $table . '.ID IN (' . makeCSVFromArray($_ids[0]) . ') ';
-					} else {
-						$where .= ' AND 0';
-					}
+					$where .= ' AND ' . ($mtof ?
+							$table . '.ID IN (' . makeCSVFromArray($arr) . ') ' :
+							(!empty($_ids[0]) ?
+								$table . '.ID IN (' . makeCSVFromArray($_ids[0]) . ') ' :
+								' 0'));
 				}
 			}
 		}
@@ -535,20 +533,20 @@ class searchtoolsearch extends we_search{
 		switch($table){
 			case FILE_TABLE:
 			case TEMPLATES_TABLE:
-				$_db->query('SELECT a.Name, b.Dat, a.DID FROM ' . LINK_TABLE . " a LEFT JOIN " . CONTENT_TABLE . " b on (a.CID = b.ID) WHERE b.Dat LIKE '%" . escape_sql_query(
-						trim($keyword)) . "%' AND a.Name!='completeData' AND a.DocumentTable='" . escape_sql_query(stripTblPrefix($table)) . "'");
+				$_db->query('SELECT a.Name, b.Dat, a.DID FROM ' . LINK_TABLE . ' a LEFT JOIN ' . CONTENT_TABLE . " b on (a.CID = b.ID) WHERE b.Dat LIKE '%" . escape_sql_query(
+						trim($keyword)) . "%' AND a.Name!='completeData' AND a.DocumentTable='" . $_db->escape(stripTblPrefix($table)) . "'");
 				while($_db->next_record()){
 					$contents[] = $_db->f('DID');
 				}
 
 				if($table == FILE_TABLE){
-					$_db->query('SELECT DocumentID, DocumentObject  FROM ' . TEMPORARY_DOC_TABLE . " WHERE DocumentObject LIKE '%" . escape_sql_query(trim($keyword)) . "%' AND DocTable = '" . escape_sql_query(stripTblPrefix($table)) . "' AND Active = 1");
+					$_db->query('SELECT DocumentID, DocumentObject  FROM ' . TEMPORARY_DOC_TABLE . " WHERE DocumentObject LIKE '%" . $_db->escape(trim($keyword)) . "%' AND DocTable = '" . escape_sql_query(stripTblPrefix($table)) . "' AND Active = 1");
 					while($_db->next_record()){
 						$contents[] = $_db->f('DocumentID');
 					}
 				}
 
-				return (!empty($contents) ? "  " . $table . ".ID IN (" . makeCSVFromArray($contents) . ")" : '');
+				return (!empty($contents) ? ' ' . $table . '.ID IN (' . makeCSVFromArray($contents) . ')' : '');
 			case VERSIONS_TABLE:
 				$_db->query('SELECT ID, documentElements  FROM ' . VERSIONS_TABLE);
 				while($_db->next_record()){
@@ -601,16 +599,16 @@ class searchtoolsearch extends we_search{
 						if($k != 0){
 							$where .= ' OR ';
 						}
-						$where .= $v . " LIKE '%" . escape_sql_query(trim($keyword)) . "%' ";
+						$where .= $v . " LIKE '%" . $_db->escape(trim($keyword)) . "%' ";
 					}
 
-					$_db->query('SELECT ' . escape_sql_query($_obj_table) . '.OF_ID FROM ' . escape_sql_query($_obj_table) . ' WHERE ' . $where);
+					$_db->query('SELECT ' . escape_sql_query($_obj_table) . '.OF_ID FROM ' . $_db->escape($_obj_table) . ' WHERE ' . $where);
 					while($_db->next_record()){
 						$Ids[] = $_db->f('OF_ID');
 					}
 				}
 				//only saved objects
-				$_db->query('SELECT DocumentID, DocumentObject  FROM ' . TEMPORARY_DOC_TABLE . " WHERE DocumentObject LIKE '%" . escape_sql_query(trim($keyword)) . "%' AND DocTable = 'tblObjectFiles' AND Active = 1");
+				$_db->query('SELECT DocumentID, DocumentObject  FROM ' . TEMPORARY_DOC_TABLE . " WHERE DocumentObject LIKE '%" . $_db->escape(trim($keyword)) . "%' AND DocTable = 'tblObjectFiles' AND Active = 1");
 				while($_db->next_record()){
 					$Ids[] = $_db->f('DocumentID');
 				}
@@ -683,7 +681,7 @@ class searchtoolsearch extends we_search{
 					}
 					$this->db->query($query);
 				}
-				if(defined("OBJECT_FILES_TABLE")){
+				if(defined('OBJECT_FILES_TABLE')){
 					if($_SESSION['weS']['weSearch']['onlyObjects'] || $_SESSION['weS']['weSearch']['ObjectsAndDocs']){
 						$query = "INSERT INTO SEARCH_TEMP_TABLE SELECT ''," . VERSIONS_TABLE . ".documentID," . VERSIONS_TABLE . ".documentTable," . VERSIONS_TABLE . ".Text," . VERSIONS_TABLE . ".Path," . VERSIONS_TABLE . ".ParentID,'',''," . VERSIONS_TABLE . ".TemplateID," . VERSIONS_TABLE . ".ContentType,''," . VERSIONS_TABLE . ".timestamp," . VERSIONS_TABLE . ".modifierID,'',''," . VERSIONS_TABLE . ".Extension," . VERSIONS_TABLE . ".TableID," . VERSIONS_TABLE . ".ID FROM " . VERSIONS_TABLE . " LEFT JOIN " . OBJECT_FILES_TABLE . " ON " . VERSIONS_TABLE . ".documentID = " . OBJECT_FILES_TABLE . ".ID " . $this->where . " " . $_SESSION['weS']['weSearch']['onlyObjectsRestrUsersWhere'] . " ";
 						if(stristr($query, VERSIONS_TABLE . ".status='deleted'")){
@@ -703,11 +701,11 @@ class searchtoolsearch extends we_search{
 				$this->db->query("INSERT INTO SEARCH_TEMP_TABLE  SELECT '',ID,'" . TEMPLATES_TABLE . "',Text,Path,ParentID,IsFolder,'','',ContentType,'',CreationDate,CreatorID,ModDate,'',Extension,'','' FROM `" . TEMPLATES_TABLE . "` " . $this->where);
 				break;
 
-			case (defined("OBJECT_FILES_TABLE") ? OBJECT_FILES_TABLE : -4):
+			case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
 				$this->db->query("INSERT INTO SEARCH_TEMP_TABLE SELECT '',ID,'" . OBJECT_FILES_TABLE . "',Text,Path,ParentID,IsFolder,'','',ContentType,'',CreationDate,CreatorID,ModDate,Published,'',TableID,'' FROM `" . OBJECT_FILES_TABLE . "` " . $this->where);
 				break;
 
-			case (defined("OBJECT_TABLE") ? OBJECT_TABLE : -5):
+			case (defined('OBJECT_TABLE') ? OBJECT_TABLE : 'OBJECT_TABLE'):
 				$this->db->query("INSERT INTO SEARCH_TEMP_TABLE SELECT '',ID,'" . OBJECT_TABLE . "',Text,Path,ParentID,IsFolder,'','',ContentType,'',CreationDate,CreatorID,ModDate,'','','','' FROM `" . OBJECT_TABLE . "` " . $this->where);
 				break;
 		}
@@ -748,19 +746,19 @@ class searchtoolsearch extends we_search{
 		$sql = '';
 		$tableInfo = $GLOBALS['DB_WE']->metadata($this->table);
 
-		$whatParentID = "";
+		$whatParentID = '';
 		switch($searchfield){
-			case "ParentIDDoc":
-			case "ParentIDObj":
-			case "ParentIDTmpl":
+			case 'ParentIDDoc':
+			case 'ParentIDObj':
+			case 'ParentIDTmpl':
 				$whatParentID = $searchfield;
-				$searchfield = "ParentID";
+				$searchfield = 'ParentID';
 				break;
-			case "ID":
-			case "CreatorID":
-			case "WebUserID":
+			case 'ID':
+			case 'CreatorID':
+			case 'WebUserID':
 				if(!is_numeric($searchname)){
-					return " AND 0";
+					return ' AND 0';
 				}
 				break;
 		}
@@ -844,16 +842,16 @@ class searchtoolsearch extends we_search{
 										$searching = ' ' . $searchlocation . " '" . $timestampStart . "' ";
 										$sql .= $this->sqlwhere($searchfield, $searching, $operator);
 										break;
-									case "<=":
-										$searching = " " . $searchlocation . " '" . $timestampEnd . "' ";
+									case '<=':
+										$searching = ' ' . $searchlocation . " '" . $timestampEnd . "' ";
 										$sql .= $this->sqlwhere($searchfield, $searching, $operator);
 										break;
-									case ">":
-										$searching = " " . $searchlocation . " '" . $timestampEnd . "' ";
+									case '>':
+										$searching = ' ' . $searchlocation . " '" . $timestampEnd . "' ";
 										$sql .= $this->sqlwhere($searchfield, $searching, $operator);
 										break;
-									case ">=":
-										$searching = " " . $searchlocation . " '" . $timestampStart . "' ";
+									case '>=':
+										$searching = ' ' . $searchlocation . " '" . $timestampStart . "' ";
 										$sql .= $this->sqlwhere($searchfield, $searching, $operator);
 										break;
 								}
@@ -862,23 +860,23 @@ class searchtoolsearch extends we_search{
 					} else {
 						if(isset($searchlocation)){
 							switch($searchlocation){
-								case "END":
+								case 'END':
 									$searching = " LIKE '%" . escape_sql_query($searchname) . "' ";
 									$sql .= $this->sqlwhere($searchfield, $searching, $operator);
 									break;
-								case "START":
+								case 'START':
 									$searching = " LIKE '" . escape_sql_query($searchname) . "%' ";
 									$sql .= $this->sqlwhere($searchfield, $searching, $operator);
 									break;
-								case "IS":
-									$searching = " = '" . escape_sql_query($searchname) . "' ";
+								case 'IS':
+									$searching = "='" . escape_sql_query($searchname) . "' ";
 									$sql .= $this->sqlwhere($searchfield, $searching, $operator);
 									break;
-								case "<":
-								case "<=":
-								case ">":
-								case ">=":
-									$searching = " " . $searchlocation . " '" . escape_sql_query($searchname) . "' ";
+								case '<':
+								case '<=':
+								case '>':
+								case '>=':
+									$searching = ' ' . $searchlocation . " '" . escape_sql_query($searchname) . "' ";
 									$sql .= $this->sqlwhere($searchfield, $searching, $operator);
 									break;
 								default :
@@ -895,7 +893,7 @@ class searchtoolsearch extends we_search{
 	}
 
 	function ofFolderAndChildsOnly($folderID, $table){
-		$_SESSION['weS']['weSearch']["countChilds"] = array();
+		$_SESSION['weS']['weSearch']['countChilds'] = array();
 		$childsOfFolderId = array();
 		//fix #2940
 		if(is_array($folderID)){
