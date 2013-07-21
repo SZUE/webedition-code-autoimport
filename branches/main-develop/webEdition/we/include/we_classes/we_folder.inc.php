@@ -741,7 +741,7 @@ class we_folder extends we_root{
 		$ret = array();
 		$db->query('SELECT Path,urlMap FROM ' . FILE_TABLE . ' WHERE urlMap!=""');
 		while($db->next_record(MYSQL_NUM)){
-			$ret['\1' . $db->f(1) . '\4'] = '-((href|src)\s*=\s*["\'])(' . preg_quote($db->f(0), '-') . ')(/[^"\']*")-';
+			$ret['\1' . retrim($db->f(1), '/') . '\4'] = '-((href|src)\s*=\s*["\'])(' . preg_quote($db->f(0), '-') . ')(/[^"\']*")-';
 		}
 		return $ret;
 	}
