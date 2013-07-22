@@ -44,12 +44,12 @@ class searchtoolFrames extends weToolFrames{
 	}
 
 	function getHTMLCmd(){
-		if(!isset($_REQUEST["pid"])){
+		if(!isset($_REQUEST['pid'])){
 			exit();
 		}
-		$pid = $_REQUEST["pid"];
+		$pid = $_REQUEST['pid'];
 
-		$offset = (isset($_REQUEST["offset"]) ? $_REQUEST["offset"] : 0);
+		$offset = (isset($_REQUEST['offset']) ? $_REQUEST['offset'] : 0);
 
 		$_class = $this->toolClassName . 'TreeDataSource';
 		include_once ($this->toolDir . 'class/' . $_class . '.class.php');
@@ -80,10 +80,10 @@ class searchtoolFrames extends weToolFrames{
 						$rootjs . $this->Tree->getJSLoadTree(
 							$_loader->getItems($pid, $offset, $this->Tree->default_segment, '')))));
 
-		if(isset($_SESSION['weS']['weSearch']["modelidForTree"])){
+		if(isset($_SESSION['weS']['weSearch']['modelidForTree'])){
 			$out .= we_html_element::jsElement(
 					'' . $this->topFrame . '.treeData.selectnode("' . ($_SESSION['weS']['weSearch']["modelidForTree"]) . '");');
-			unset($_SESSION['weS']['weSearch']["modelidForTree"]);
+			unset($_SESSION['weS']['weSearch']['modelidForTree']);
 		}
 
 		return $this->getHTMLDocument($out);
@@ -94,36 +94,36 @@ class searchtoolFrames extends weToolFrames{
 		$we_tabs = new we_tabs();
 
 		//folders and entries have different tabs to display
-		$displayEntry = "none";
-		$displayFolder = "inline";
+		$displayEntry = 'none';
+		$displayFolder = 'inline';
 
 		if($this->Model->IsFolder == 0){
-			$displayEntry = "inline";
-			$displayFolder = "none";
+			$displayEntry = 'inline';
+			$displayFolder = 'none';
 		}
 
 		//tabs for entries
 		if(we_hasPerm('CAN_SEE_DOCUMENTS')){
 			$we_tabs->addTab(new we_tab(
 				'#', g_l('searchtool', '[documents]'), '((' . $this->topFrame . '.activ_tab==1) ? TAB_ACTIVE : TAB_NORMAL)', "setTab('1');", array(
-				"id" => "tab_1", "style" => "display:$displayEntry"
+				'id' => 'tab_1', 'style' => "display:$displayEntry"
 			)));
 		}
-		if($_SESSION['weS']['we_mode'] != "seem" && we_hasPerm('CAN_SEE_TEMPLATES')){
+		if($_SESSION['weS']['we_mode'] != 'seem' && we_hasPerm('CAN_SEE_TEMPLATES')){
 			$we_tabs->addTab(new we_tab(
 				'#', g_l('searchtool', '[templates]'), '((' . $this->topFrame . '.activ_tab==2) ? TAB_ACTIVE : TAB_NORMAL)', "setTab('2');", array(
-				"id" => "tab_2", "style" => "display:$displayEntry"
+				'id' => 'tab_2', 'style' => "display:$displayEntry"
 			)));
 		}
 		$we_tabs->addTab(new we_tab(
 			'#', g_l('searchtool', '[advSearch]'), '((' . $this->topFrame . '.activ_tab==3) ? TAB_ACTIVE : TAB_NORMAL)', "setTab('3');", array(
-			"id" => "tab_3", "style" => "display:$displayEntry"
+			'id' => 'tab_3', 'style' => "display:$displayEntry"
 		)));
 
 		//tabs for folders
 		$we_tabs->addTab(new we_tab(
 			'#', g_l('searchtool', '[properties]'), '((' . $this->topFrame . '.activ_tab==4) ? TAB_ACTIVE : TAB_NORMAL)', "setTab('4');", array(
-			"id" => "tab_4", "style" => "display:$displayFolder"
+			'id' => 'tab_4', 'style' => "display:$displayFolder"
 		)));
 
 		$we_tabs->onResize();
@@ -161,14 +161,11 @@ class searchtoolFrames extends weToolFrames{
 
 		$body = we_html_element::htmlBody(
 				array(
-				"bgcolor" => "white",
-				"background" => IMAGE_DIR . "backgrounds/header_with_black_line.gif",
-				"marginwidth" => 0,
-				"marginheight" => 0,
-				"leftmargin" => 0,
-				"topmargin" => 0,
-				"onload" => "setFrameSize()",
-				"onresize" => "setFrameSize()"
+				'bgcolor' => '#C8D8EC',
+				'background' => IMAGE_DIR . 'backgrounds/header_with_black_line.gif',
+				'style' => 'margin:0px 0px 0px 0px',
+				'onload' => 'setFrameSize()',
+				'onresize' => 'setFrameSize()'
 				), '<div id="main" >' . we_html_tools::getPixel(100, 3) . '<div style="margin:0px;" id="headrow">&nbsp;' . we_html_element::htmlB(
 					($this->Model->IsFolder ? g_l('searchtool', '[topDir]') : g_l('searchtool', '[topSuche]')) . ':&nbsp;' .
 					$Text . '<div id="mark" style="display: none;">*</div>') . '</div>' . we_html_tools::getPixel(
@@ -180,7 +177,7 @@ class searchtoolFrames extends weToolFrames{
 	function getHTMLEditorBody(){
 		$body = we_html_element::htmlBody(
 				array(
-				"class" => "weEditorBody",
+				'class' => 'weEditorBody',
 				'onkeypress' => 'javascript:if(event.keyCode==\'13\' || event.keyCode==\'3\') search(true);',
 				'onLoad' => 'loaded=1;setTimeout(\'init()\',200);',
 				'onresize' => 'sizeScrollContent();'
@@ -196,31 +193,31 @@ class searchtoolFrames extends weToolFrames{
 							'name' => 'savedSearchName', 'value' => $this->Model->Text
 		))));
 
-		$whichSearch = "DocSearch";
+		$whichSearch = 'DocSearch';
 
 		$tabNr = $this->getTab();
 
 		switch($tabNr){
 			case 1 :
-				$whichSearch = "DocSearch";
+				$whichSearch = 'DocSearch';
 				break;
 			case 2 :
-				$whichSearch = "TmplSearch";
+				$whichSearch = 'TmplSearch';
 				break;
 			case 3 :
-				$whichSearch = "AdvSearch";
+				$whichSearch = 'AdvSearch';
 				break;
 		}
 
 		$head = we_html_element::linkElement(
 				array(
-					"rel" => "stylesheet",
-					"type" => "text/css",
-					"href" => JS_DIR . "jscalendar/skins/aqua/theme.css",
-					"title" => "Aqua"
-			)) . we_html_element::jsScript(JS_DIR . "jscalendar/calendar.js") .
-			we_html_element::jsScript(WE_INCLUDES_DIR . "we_language/" . $GLOBALS["WE_LANGUAGE"] . "/calendar.js") .
-			we_html_element::jsScript(JS_DIR . "jscalendar/calendar-setup.js");
+					'rel' => 'stylesheet',
+					'type' => 'text/css',
+					'href' => JS_DIR . 'jscalendar/skins/aqua/theme.css',
+					'title' => 'Aqua'
+			)) . we_html_element::jsScript(JS_DIR . 'jscalendar/calendar.js') .
+			we_html_element::jsScript(WE_INCLUDES_DIR . 'we_language/' . $GLOBALS['WE_LANGUAGE'] . '/calendar.js') .
+			we_html_element::jsScript(JS_DIR . 'jscalendar/calendar-setup.js');
 
 
 		return $this->getHTMLDocument(
@@ -228,13 +225,13 @@ class searchtoolFrames extends weToolFrames{
 	}
 
 	function getTab(){
-		$cmdid = isset($_REQUEST['cmdid']) ? ($_REQUEST['cmdid']) : "";
-		if($cmdid != ""){
-			$_REQUEST["searchstartAdvSearch"] = 0;
+		$cmdid = isset($_REQUEST['cmdid']) ? ($_REQUEST['cmdid']) : '';
+		if($cmdid != ''){
+			$_REQUEST['searchstartAdvSearch'] = 0;
 		}
-		if(isset($_REQUEST["tab"]) && $_REQUEST["tab"] != ""){
-			return $_REQUEST["tab"];
-		} elseif($cmdid != ""){
+		if(isset($_REQUEST['tab']) && $_REQUEST['tab'] != ''){
+			return $_REQUEST['tab'];
+		} elseif($cmdid != ''){
 			return $this->Model->activTab;
 		}
 		return isset($_REQUEST['tabnr']) ? ($_REQUEST['tabnr']) : 1;
@@ -242,33 +239,33 @@ class searchtoolFrames extends weToolFrames{
 
 	function getHTMLEditorFooter(){
 
-		$table1 = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0, "width" => 3000), 1, 1);
+		$table1 = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0, 'width' => 3000), 1, 1);
 		$table1->setCol(0, 0, array(
-			"nowrap" => null, "valign" => "top"
+			'nowrap' => null, 'valign' => 'top'
 			), we_html_tools::getPixel(1600, 10));
 
 		$_but_table = we_button::create_button_table(
 				array(
 				we_button::create_button(
-					"save", "javascript:we_save();", true, 100, 22, '', '', (!we_hasPerm('EDIT_NAVIGATION')))
+					'save', 'javascript:we_save();', true, 100, 22, '', '', (!we_hasPerm('EDIT_NAVIGATION')))
 				), 10, array(
 				'style' => 'margin-left: 15px'
 		));
 
 		return $this->getHTMLDocument(
-				we_html_element::jsScript(JS_DIR . "attachKeyListener.js") .
+				we_html_element::jsScript(JS_DIR . 'attachKeyListener.js') .
 				we_html_element::jsElement('
           function we_save() {
             ' . $this->topFrame . '.we_cmd("tool_' . $this->toolName . '_save");
           }
           ') . we_html_element::htmlBody(
 					array(
-					"bgcolor" => "white",
-					"background" => IMAGE_DIR . "edit/editfooterback.gif",
-					"marginwidth" => 0,
-					"marginheight" => 0,
-					"leftmargin" => 0,
-					"topmargin" => 0
+					'bgcolor' => 'white',
+					'background' => IMAGE_DIR . 'edit/editfooterback.gif',
+					'marginwidth' => 0,
+					'marginheight' => 0,
+					'leftmargin' => 0,
+					'topmargin' => 0
 					), we_html_element::htmlForm(array(), $table1->getHtml() . $_but_table)));
 	}
 
@@ -319,7 +316,7 @@ class searchtoolFrames extends weToolFrames{
 
 	function getHTMLTabDocuments(){
 		//parameter: search of the tab (load only search dependent model data in the view)
-		$innerSearch = "DocSearch";
+		$innerSearch = 'DocSearch';
 
 		$_searchDirChooser_block = '<div>' . $this->View->getDirSelector($innerSearch) . '</div>';
 		$_searchField_block = '<div>' . $this->View->getSearchDialog($innerSearch) . '</div>';
@@ -357,7 +354,7 @@ class searchtoolFrames extends weToolFrames{
 	}
 
 	function getHTMLTabTemplates(){
-		$innerSearch = "TmplSearch";
+		$innerSearch = 'TmplSearch';
 
 		$_searchDirChooser_block = '<div>' . $this->View->getDirSelector($innerSearch) . '</div>';
 		$_searchField_block = '<div>' . $this->View->getSearchDialog($innerSearch) . '</div>';
@@ -394,7 +391,7 @@ class searchtoolFrames extends weToolFrames{
 	}
 
 	function getHTMLTabAdvanced(){
-		$innerSearch = "AdvSearch";
+		$innerSearch = 'AdvSearch';
 		$_searchFields_block = '<div>' . $this->View->getSearchDialogAdvSearch() . '</div>';
 		$_searchCheckboxes_block = '<div>' . $this->View->getSearchDialogCheckboxesAdvSearch() . '</div>';
 		$content = $this->View->searchProperties($innerSearch);
@@ -427,23 +424,23 @@ class searchtoolFrames extends weToolFrames{
 		$out = '';
 
 		foreach($content as $i => $c){
-			$_forceRightHeadline = (isset($c["forceRightHeadline"]) && $c["forceRightHeadline"]);
-			$icon = (isset($c["icon"]) && $c["icon"]) ? ('<img src="' . IMAGE_DIR . 'icons/' . $c["icon"] . '" width="64" height="64" alt="" style="margin-left:20px;" />') : "";
-			$headline = (isset($c["headline"]) && $c["headline"]) ? ('<div  class="weMultiIconBoxHeadline" style="margin-bottom:10px;margin-left:30px;">' . $c["headline"] . '</div>') : "";
-			$mainContent = (isset($c["html"]) && $c["html"]) ? $c["html"] : "";
-			$leftWidth = (isset($c["space"]) && $c["space"]) ? abs($c["space"]) : 0;
-			$leftContent = $icon ? $icon : (($leftWidth && (!$_forceRightHeadline)) ? $headline : "");
-			$rightContent = '<div class="defaultfont">' . ((($icon && $headline) || ($leftContent === "") || $_forceRightHeadline) ? ($headline . '<div>' . $mainContent . '</div>') : '<div>' . $mainContent . '</div>') . '</div>';
+			$_forceRightHeadline = (isset($c['forceRightHeadline']) && $c['forceRightHeadline']);
+			$icon = (isset($c['icon']) && $c['icon']) ? ('<img src="' . IMAGE_DIR . 'icons/' . $c["icon"] . '" width="64" height="64" alt="" style="margin-left:20px;" />') : "";
+			$headline = (isset($c['headline']) && $c['headline']) ? ('<div  class="weMultiIconBoxHeadline" style="margin-bottom:10px;margin-left:30px;">' . $c["headline"] . '</div>') : "";
+			$mainContent = (isset($c['html']) && $c['html']) ? $c['html'] : '';
+			$leftWidth = (isset($c['space']) && $c['space']) ? abs($c['space']) : 0;
+			$leftContent = $icon ? $icon : (($leftWidth && (!$_forceRightHeadline)) ? $headline : '');
+			$rightContent = '<div class="defaultfont">' . ((($icon && $headline) || ($leftContent === '') || $_forceRightHeadline) ? ($headline . '<div>' . $mainContent . '</div>') : '<div>' . $mainContent . '</div>') . '</div>';
 
-			if($leftContent || $leftWidth && $leftContent != ""){
+			if($leftContent || $leftWidth && $leftContent != ''){
 				if((!$leftContent) && $leftWidth){
-					$leftContent = "&nbsp;";
+					$leftContent = '&nbsp;';
 				}
 				$out .= '<div style="float:left;width:' . $leftWidth . 'px">' . $leftContent . '</div>';
 			}
 
 			$out .= $rightContent .
-				($i < (count($content) - 1) && (!isset($c["noline"])) ?
+				($i < (count($content) - 1) && (!isset($c['noline'])) ?
 					'<div style="border-top: 1px solid #AFB0AF;margin:10px 0 10px 0;clear:both;"></div>' :
 					'<div style="margin:10px 0;clear:both;"></div>');
 		}

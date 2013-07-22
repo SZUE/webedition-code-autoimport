@@ -148,7 +148,7 @@ class we_baseElement{
 				$this->setStyle('background-color', $attrib_value);
 				break;
 			case 'background':
-				$this->setStyle('background-image:', 'url(' . $attrib_value . ')');
+				$this->setStyle('background-image', 'url(' . $attrib_value . ')');
 				break;
 			default:
 				$this->attribs[$attrib_name] = $attrib_value;

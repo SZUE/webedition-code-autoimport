@@ -38,7 +38,7 @@ class weNewsletterFrames extends weModuleFrames{
 		$this->setupTree(NEWSLETTER_TABLE, "top.content", "top.content", "top.content.cmd");
 		$this->weAutoColpleter = & weSuggest::getInstance();
 	}
-	
+
 	function getHTMLDocumentHeader($what = '', $mode = ''){
 		if($what != "send" && $what != "send_body" && $what != "send_cmd" && $what != "edbody" && $what != "preview" && $what != "black_list" && $what != "newsletter_settings" && $what != "eemail" && $what != "edit_file" && $what != "clear_log" && $what != "export_csv_mes" && $what != "qsend" && $what != "qsave1"){
 			parent::getHTMLDocumentHeader();
@@ -191,7 +191,7 @@ class weNewsletterFrames extends weModuleFrames{
 		$tabHead = $we_tabs->getHeader() . $js;
 		$tabBody = $we_tabs->getJS();
 
-		$body = we_html_element::htmlBody(array("bgcolor" => "white", "background" => IMAGE_DIR . "backgrounds/header_with_black_line.gif", "marginwidth" => 0, "marginheight" => 0, "leftmargin" => 0, "topmargin" => 0), '<div id="main" >' . we_html_tools::getPixel(100, 3) . '<div style="margin:0px;padding-left:10px;" id="headrow"><nobr><b>' . oldHtmlspecialchars($textPre) . ':&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">' . oldHtmlspecialchars($textPost) . '</b></span></nobr></div>' . we_html_tools::getPixel(100, 3) .
+		$body = we_html_element::htmlBody(array("bgcolor" => "#C8D8EC", "background" => IMAGE_DIR . "backgrounds/header_with_black_line.gif", "marginwidth" => 0, "marginheight" => 0, "leftmargin" => 0, "topmargin" => 0), '<div id="main" >' . we_html_tools::getPixel(100, 3) . '<div style="margin:0px;padding-left:10px;" id="headrow"><nobr><b>' . oldHtmlspecialchars($textPre) . ':&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">' . oldHtmlspecialchars($textPost) . '</b></span></nobr></div>' . we_html_tools::getPixel(100, 3) .
 				$we_tabs->getHTML() .
 				'</div>'
 		);

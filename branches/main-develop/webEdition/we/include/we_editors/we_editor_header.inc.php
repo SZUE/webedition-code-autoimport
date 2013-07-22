@@ -197,7 +197,7 @@ _EditorFrame.setEditorEditPageNr(' . $we_doc->EditPageNr . ');' .
 	STYLESHEET;
 ?>
 </head>
-<body id="eHeaderBody" bgcolor="white" background="<?php print IMAGE_DIR; ?>backgrounds/header.gif" marginwidth="0" marginheight="0" leftmargin="0" topmargin="0" onLoad="setFrameSize()" onResize="setFrameSize()">
+<body id="eHeaderBody" style="background: #C8D8EC url(<?php print IMAGE_DIR; ?>backgrounds/header.gif);margin 0px 0px 0px 0px;" onLoad="setFrameSize()" onResize="setFrameSize()">
 	<div id="main" ><?php
 		print '<div style="margin:3px 0px 3px 5px;" id="headrow">&nbsp;' . we_html_element::htmlB(str_replace(' ', '&nbsp;', g_l('contentTypes', '[' . $we_doc->ContentType . ']'))) . ': ' .
 			($we_doc->Table == FILE_TABLE && $we_doc->ID ? '<a href="javascript:top.wasdblclick=1;top.doClick(\'' . $we_doc->ID . '\');">' : '') .

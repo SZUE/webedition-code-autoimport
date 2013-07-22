@@ -90,7 +90,7 @@ print $tab_header;
 	}
 </script>
 </head>
-<body bgcolor="white" topmargin="0" leftmargin="0" marginheight="0" marginwidth="0" background="<?php print IMAGE_DIR; ?>backgrounds/header.gif" link="black" alink="#1559b0" vlink="black" onload="setFrameSize()" onresize="setFrameSize()">
+<body style="background: #C8D8EC url(<?php print IMAGE_DIR; ?>backgrounds/header.gif);margin 0px 0px 0px 0px;" link="black" alink="#1559b0" vlink="black" onload="setFrameSize()" onresize="setFrameSize()">
 	<div id="main" ><?php echo $we_tabs->getHTML(); ?></div>
 <?php
 //	print $tab_js;
