@@ -205,15 +205,13 @@ function setTab(tab) {
 		);
 
 
-		$table = new we_html_table(array("width" => 3000, "cellpadding" => 0, "cellspacing" => 0, "border" => 0), 3, 1);
+		$table = new we_html_table(array("style" => 'width:100%;margin-top:3px;', "cellpadding" => 0, "cellspacing" => 0, "border" => 0), 1, 1);
 
-		$table->setCol(0, 0, array(), we_html_tools::getPixel(1, 3));
-
-		$table->setCol(1, 0, array("valign" => "top", "class" => "small"), we_html_tools::getPixel(15, 2) .
+		$table->setCol(0, 0, array("valign" => "top", "class" => "small"), we_html_tools::getPixel(15, 2) .
 			we_html_element::htmlB(
 				g_l('navigation', ($this->Model->IsFolder ? '[group]' : '[entry]')) .
 				':&nbsp;' . str_replace('&amp;', '&', $this->Model->Text) .
-				'<div id="mark" style="display: none;">*</div>' . we_html_tools::getPixel(1600, 19)
+				'<div id="mark" style="display: none;">*</div>' . we_html_tools::getPixel(1, 19)
 		));
 
 		$extraJS = 'document.getElementById("tab_"+' . $this->topFrame . '.activ_tab).className="tabActive";';
@@ -1775,14 +1773,7 @@ function ' . $prefix . 'setLinkSelection(value){
 						), ""));
 		}
 
-		$table1 = new we_html_table(array(
-			"border" => 0, "cellpadding" => 0, "cellspacing" => 0, "width" => 3000
-			), 1, 1);
-		$table1->setCol(0, 0, array(
-			"nowrap" => null, "valign" => "top"
-			), we_html_tools::getPixel(1600, 10));
-
-		$table2 = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0, "width" => 400), 1, 2);
+		$table2 = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0, "style" => 'width:400px;margin-top:10px;'), 1, 2);
 		$table2->setColContent(0, 0, we_button::create_button_table(
 				array(
 				we_button::create_button("save", "javascript:we_save();", true, 100, 22, '', '', (!we_hasPerm('EDIT_NAVIGATION')))
@@ -1808,7 +1799,7 @@ function ' . $prefix . 'setLinkSelection(value){
 					"leftmargin" => 0,
 					"topmargin" => 0,
 					"onLoad" => "document.we_form.makeNewDoc.checked=" . $this->topFrame . ".makeNewDoc;"
-					), we_html_element::htmlForm(array(), $table1->getHtml() . $table2->getHtml())));
+					), we_html_element::htmlForm(array(), $table2->getHtml())));
 	}
 
 	//TODO: function comes from weToolFrames: do we need it in navigation?

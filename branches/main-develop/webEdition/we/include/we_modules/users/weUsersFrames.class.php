@@ -359,9 +359,8 @@ function urlEntry(icon,name,vorfahr,text,contentType,table,published,denied) {
 		$hiddens = we_html_element::htmlHidden(array("name" => "pnt", "value" => "cmd")) .
 			we_html_element::htmlHidden(array("name" => "cmd", "value" => "show_search"));
 
-		$table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0, "width" => 3000), 2, 1);
-		$table->setCol(0, 0, array("valign" => "top"), we_html_tools::getPixel(1600, 10));
-		$table->setCol(1, 0, array("nowrap" => null, "class" => "small"), we_html_element::jsElement($this->View->getJSSubmitFunction("cmd", "post")) .
+		$table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0, "style" => 'width:100%;margin-top:10px;'), 1, 1);
+		$table->setCol(0, 0, array("nowrap" => null, "class" => "small"), we_html_element::jsElement($this->View->getJSSubmitFunction("cmd", "post")) .
 			$hiddens .
 			we_button::create_button_table(
 				array(

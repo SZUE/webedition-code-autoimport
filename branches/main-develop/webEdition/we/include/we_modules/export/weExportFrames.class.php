@@ -32,7 +32,6 @@ class weExportFrames extends weModuleFrames{
 	var $_text_size = 75;
 	var $_width_size = 535;
 	protected $treeDefaultWidth = 220;
-
 	public $module = "export";
 
 	function __construct(){
@@ -112,15 +111,11 @@ class weExportFrames extends weModuleFrames{
 
 		$tabsHead .=$js;
 
-		$table = new we_html_table(array("width" => 3000, "cellpadding" => 0, "cellspacing" => 0, "border" => 0), 3, 1);
+		$table = new we_html_table(array("style" => 'width:100%;margin-top:3px', "cellpadding" => 0, "cellspacing" => 0, "border" => 0), 1, 1);
 
-		$table->setCol(0, 0, array(), we_html_tools::getPixel(1, 3));
 
-		$table->setCol(1, 0, array("valign" => "top", "class" => "small"), we_html_tools::getPixel(15, 2) .
-			we_html_element::htmlB(
-				g_l('export', '[export]') . ':&nbsp;' . $this->View->export->Text .
-				we_html_tools::getPixel(1600, 19)
-			)
+		$table->setCol(0, 0, array("valign" => "top", "class" => "small"), we_html_tools::getPixel(15, 2) .
+			we_html_element::htmlB(g_l('export', '[export]') . ':&nbsp;' . $this->View->export->Text)
 		);
 		$text = !empty($this->View->export->Path) ? $this->View->export->Path : "/" . $this->View->export->Text;
 		$extraJS = 'document.getElementById("tab_"+top.content.activ_tab).className="tabActive";';
@@ -172,10 +167,7 @@ class weExportFrames extends weModuleFrames{
 		}
 
 		$col = 0;
-		$table1 = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0, "width" => 3000), 1, 1);
-		$table1->setCol(0, 0, array("nowrap" => null, "valign" => "top"), we_html_tools::getPixel(1600, 10));
-
-		$table2 = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0, "width" => 210), 1, 5);
+		$table2 = new we_html_table(array('style' => 'margin-top:10px;', "border" => 0, "cellpadding" => 0, "cellspacing" => 0, "width" => 210), 1, 5);
 		$table2->setRow(0, array("valign" => "middle"));
 		$table2->setCol(0, $col++, array("nowrap" => null), we_html_tools::getPixel(5, 5));
 		$table2->setCol(0, $col++, array("nowrap" => null), we_button::create_button("save", "javascript:we_save()")
@@ -226,8 +218,8 @@ class weExportFrames extends weModuleFrames{
 		$table2->setCol(0, 4, array("id" => "progress", "style" => "display: none", "nowrap" => null), $progressbar->getHtml());
 
 		return $this->getHTMLDocument(
-				we_html_element::htmlBody(array("bgcolor" => "white", "background" => IMAGE_DIR . "edit/editfooterback.gif", "marginwidth" => 15, "marginheight" => 0, "leftmargin" => 15, "topmargin" => 0), we_html_element::htmlForm(array(), $table1->getHtml() . $table2->getHtml())
-				), (isset($progressbar) ? $progressbar->getJSCode() . "\n" : "") . $js
+				we_html_element::htmlBody(array("bgcolor" => "white", "background" => IMAGE_DIR . "edit/editfooterback.gif", "marginwidth" => 15, "marginheight" => 0, "leftmargin" => 15, "topmargin" => 0), we_html_element::htmlForm(array(), $table2->getHtml())
+				), (isset($progressbar) ? $progressbar->getJSCode() : "") . $js
 		);
 	}
 
@@ -319,14 +311,14 @@ class weExportFrames extends weModuleFrames{
 		$docTypes = array();
 		$q = getDoctypeQuery($this->db);
 		$this->db->query("SELECT ID,DocType FROM " . DOC_TYPES_TABLE . " $q");
-		while($this->db->next_record()) {
+		while($this->db->next_record()){
 			$docTypes[$this->db->f("ID")] = $this->db->f("DocType");
 		}
 
 		if(defined("OBJECT_TABLE")){
 			$classNames = array();
 			$this->db->query("SELECT ID,Text FROM " . OBJECT_TABLE);
-			while($this->db->next_record()) {
+			while($this->db->next_record()){
 				$classNames[$this->db->f("ID")] = $this->db->f("Text");
 			}
 		}
@@ -529,7 +521,7 @@ class weExportFrames extends weModuleFrames{
 							$finalTempl = makeArrayFromCSV($this->View->export->selTempl);
 							$finalObjs = makeArrayFromCSV($this->View->export->selObjs);
 							$finalClasses = makeArrayFromCSV($this->View->export->selClasses);
-						} else{
+						} else {
 							$finalDocs = array();
 							$finalTempl = array();
 							$finalObjs = array();
@@ -602,7 +594,7 @@ class weExportFrames extends weModuleFrames{
 							}
 
 							$xmlExIm->RefTable->reset();
-						} else{
+						} else {
 
 							$percent = ($all != 0 ? (($xmlExIm->RefTable->current / $all) * 100) : 0);
 							$percent = ($percent < 0 ? 0 : ($percent > 100 ? 100 : $percent));
@@ -625,7 +617,7 @@ class weExportFrames extends weModuleFrames{
 								we_html_element::htmlBody(array("bgcolor" => "#ffffff", "marginwidth" => 5, "marginheight" => 5, "leftmargin" => 5, "topmargin" => 5, "onLoad" => "document.we_form.submit()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "action" => $this->frameset), $hiddens) . $_progress_update
 								)
 						);
-					} else{
+					} else {
 						$xmlExIm = new weXMLExport();
 						$xmlExIm->loadPerserves();
 						$exports = 0;
@@ -705,7 +697,7 @@ class weExportFrames extends weModuleFrames{
 									we_html_element::htmlBody(array("bgcolor" => "#ffffff", "marginwidth" => 5, "marginheight" => 5, "leftmargin" => 5, "topmargin" => 5, "onLoad" => "document.we_form.submit()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "action" => $this->frameset), $hiddens) . $_progress_update
 									)
 							);
-						} else{
+						} else {
 							if(is_writable($this->View->export->ExportFilename)){
 								weFile::save($this->View->export->ExportFilename, weXMLExIm::getFooter(), "ab");
 							}
@@ -758,7 +750,7 @@ class weExportFrames extends weModuleFrames{
 								header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 								header("Cache-Control: no-store, no-cache, must-revalidate"); // HTTP 1.1
 								header("Cache-Control: post-check=0, pre-check=0", false);
-							} else{
+							} else {
 								header("Cache-control: private, max-age=0, must-revalidate");
 							}
 
@@ -769,11 +761,11 @@ class weExportFrames extends weModuleFrames{
 
 							$_filehandler = readfile(TEMP_PATH . $_filename);
 							exit;
-						} else{
+						} else {
 							header("Location: " . $preurl . $this->frameset . "?pnt=cmd&cmd=upload_failed");
 							exit;
 						}
-					} else{
+					} else {
 						header("Location: " . $preurl . $this->frameset . "?pnt=cmd&cmd=error=upload_failed");
 						exit;
 					}

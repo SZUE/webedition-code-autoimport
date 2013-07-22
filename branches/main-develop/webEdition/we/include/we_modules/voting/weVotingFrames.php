@@ -112,7 +112,7 @@ class weVotingFrames extends weModuleFrames{
 		$table->setCol(1, 0, array("valign" => "top", "class" => "small"), we_html_tools::getPixel(15, 2) .
 			we_html_element::htmlB(
 				($this->View->voting->IsFolder ? g_l('modules_voting', '[group]') : g_l('modules_voting', '[voting]')) . ':&nbsp;' . $this->View->voting->Text .
-				we_html_tools::getPixel(1600, 19)
+				we_html_tools::getPixel(1, 19)
 			)
 		);
 

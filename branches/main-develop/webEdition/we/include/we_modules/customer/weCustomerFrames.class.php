@@ -379,12 +379,12 @@ class weCustomerFrames extends weModuleFrames{
 		$tabsBody = $tabs->getJS();
 		$tabsHead .= $js;
 
-		$table = new we_html_table(array("width" => 3000, "cellpadding" => 0, "cellspacing" => 0, "border" => 0), 3, 1);
+		$table = new we_html_table(array("width" => '100%', "cellpadding" => 0, "cellspacing" => 0, "border" => 0), 3, 1);
 		$table->setCol(0, 0, array(), we_html_tools::getPixel(1, 3));
 		$table->setCol(1, 0, array("valign" => "top", "class" => "small"), we_html_tools::getPixel(15, 2) .
 			we_html_element::htmlB(
 				g_l('modules_customer', '[customer]') . ":&nbsp;" . $this->View->customer->Username .
-				we_html_tools::getPixel(1600, 10)
+				we_html_tools::getPixel(1, 10)
 			)
 		);
 
@@ -654,9 +654,8 @@ class weCustomerFrames extends weModuleFrames{
 		$hiddens = we_html_element::htmlHidden(array("name" => "pnt", "value" => "cmd")) .
 			we_html_element::htmlHidden(array("name" => "cmd", "value" => "show_search"));
 
-		$table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0, "width" => 3000), 2, 1);
-		$table->setCol(0, 0, array("valign" => "top"), we_html_tools::getPixel(1600, 10));
-		$table->setCol(1, 0, array("nowrap" => null, "class" => "small"), we_html_element::jsElement($this->View->getJSSubmitFunction("cmd", "post")) .
+		$table = new we_html_table(array('style'=>'margin-top:10px',"border" => 0, "cellpadding" => 0, "cellspacing" => 0, "width" => '100%'), 1, 1);
+		$table->setCol(0, 0, array("nowrap" => null, "class" => "small"), we_html_element::jsElement($this->View->getJSSubmitFunction("cmd", "post")) .
 			$hiddens .
 			we_button::create_button_table(
 				array(

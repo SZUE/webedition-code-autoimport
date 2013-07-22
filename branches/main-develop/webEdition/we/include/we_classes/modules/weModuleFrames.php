@@ -75,7 +75,7 @@ class weModuleFrames{
 					we_html_tools::getHtmlInnerHead($this->module) . STYLESHEET . $extraHead
 				) . $body
 		);
-		 * 
+		 *
 		 */
 		//this is not nice, but it works for the moment...
 		return STYLESHEET . $extraHead . '</head>' . $body . '</html>';
@@ -139,7 +139,7 @@ class weModuleFrames{
 		$body = we_html_element::htmlBody(array('style' => 'background-color: gray; position: fixed; top: 0px; left: 0px; right: 0px; bottom: 0px; border: 0px none;', "onload" => "start();") ,
 				we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
 					, we_html_element::htmlExIFrame('header', self::getHTMLHeader(WE_INCLUDES_PATH .'java_menu/modules/module_menu_' . $this->module . '.inc.php', $this->module), 'position: absolute; top: 0px; height: 32px; left: 0px; right: 0px;') .
-					($this->hasIconbar ? we_html_element::htmlIFrame('iconbar', $this->frameset . '?pnt=iconbar' . $extraUrlParams, 'position: absolute; top: 32px; left: 0px; right: 0px; height: 40px; overflow: hidden;') : '') . 
+					($this->hasIconbar ? we_html_element::htmlIFrame('iconbar', $this->frameset . '?pnt=iconbar' . $extraUrlParams, 'position: absolute; top: 32px; left: 0px; right: 0px; height: 40px; overflow: hidden;') : '') .
 					$this->getHTMLResize($extraUrlParams) .
 					we_html_element::htmlIFrame('cmd', $this->frameset . '?pnt=cmd' . $extraUrlParams, 'position: absolute; bottom: 0px; height: 1px; left: 0px; right: 0px; overflow: hidden;')
 		));
@@ -175,7 +175,7 @@ class weModuleFrames{
 						we_html_element::htmlDiv(array('style' => 'position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px; width: ' . weTree::HiddenWidth . 'px; background-image: url(/webEdition/images/v-tabs/background.gif); background-repeat: repeat-y; border-top: 1px solid black;'), $_incDecTree) .
 						$this->getHTMLLeft()
 					) .
-					we_html_element::htmlDiv(array('id' => 'right', 'style' => 'background: #F0EFF0; position: absolute; top: 0px; bottom: 0px; left: ' . $this->treeWidth . 'px; right: 0px; width: auto; border-left: 1px solid black; overflow: auto;'), 
+					we_html_element::htmlDiv(array('id' => 'right', 'style' => 'background: #F0EFF0; position: absolute; top: 0px; bottom: 0px; left: ' . $this->treeWidth . 'px; right: 0px; width: auto; border-left: 1px solid black; overflow: auto;'),
 						we_html_element::htmlIFrame('editor', $this->frameset . '?pnt=editor' . $extraUrlParams, 'position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px; overflow: hidden;')
 					)
 			);
@@ -191,16 +191,16 @@ class weModuleFrames{
 
 		$attribs = array('id' => 'left', 'name' => 'left', 'style' => 'position: absolute; top: 0px; bottom: 0px; left: ' . weTree::HiddenWidth . 'px; right: 0px;');
 
-		$content = we_html_element::htmlDiv(array('id' => 'treeheader', 'style' => 'overflow:hidden; position: absolute; top: 0px; left: 0px; height: ' . $this->treeHeaderHeight . 'px; width: 100%; ' . ($this->treeHeaderHeight != 1 ? 'background: url(' . IMAGE_DIR . 'backgrounds/header_with_black_line.gif); padding: 5px 0 0 0 ; ' : 'background: #ffffff')), $this->getHTMLTreeheader()) . 
-			($this->useMainTree ? $this->getHTMLTree() : 
-				we_html_element::htmlIFrame('tree', $this->frameset . '?pnt=tree', 'position: absolute; top: ' . $this->treeHeaderHeight . 'px; bottom: ' . $this->treeFooterHeight . 'px; left: 0px; width: 100%;')) . 
+		$content = we_html_element::htmlDiv(array('id' => 'treeheader', 'style' => 'overflow:hidden; position: absolute; top: 0px; left: 0px; height: ' . $this->treeHeaderHeight . 'px; width: 100%; ' . ($this->treeHeaderHeight != 1 ? 'background: url(' . IMAGE_DIR . 'backgrounds/header_with_black_line.gif); padding: 5px 0 0 0 ; ' : 'background: #ffffff')), $this->getHTMLTreeheader()) .
+			($this->useMainTree ? $this->getHTMLTree() :
+				we_html_element::htmlIFrame('tree', $this->frameset . '?pnt=tree', 'position: absolute; top: ' . $this->treeHeaderHeight . 'px; bottom: ' . $this->treeFooterHeight . 'px; left: 0px; width: 100%;')) .
 			($this->treeFooterHeight == 0 ? '' : we_html_element::htmlDiv(array('id' => 'treefooter', 'style' => 'position: absolute; bottom: 0px; left: 0px; padding-left: 2px; height: ' . $this->treeFooterHeight . 'px; width: 100%; overflow:hidden; background: url(\'' . IMAGE_DIR . 'edit/editfooterback.gif\')'), $this->getHTMLTreefooter()));
 
 		return we_html_element::htmlDiv($attribs, $content);
 	}
 
 	//TODO: we do not abandon the two tree types because trees will be re-implemented anyway
-	function getHTMLTree(){ 
+	function getHTMLTree(){
 		if($this->useMainTree){
 			if(isset($_REQUEST['code'])){
 				//return('REQUEST[\'code\'] is forbidden!');
@@ -209,14 +209,14 @@ class weModuleFrames{
 			$Tree = new weMainTree('webEdition.php', 'top', 'top', 'top.load');//IMI: FOR MODULES WE NEED top.tree NOT top.left.tree!!!
 
 			return we_html_element::htmlDiv(array(
-				'id' => 'tree', 
-				'style' => 'position: absolute; top: ' . $this->treeHeaderHeight . 'px; bottom: ' . $this->treeFooterHeight . 'px; left: 0px; width: 100%; background: #F3F7FF', 
-				'link' => '#000000', 
-				'alink' => '#000000', 
-				'vlink' => '#000000', 
-				'marginwidth' => 0, 
-				'marginheight' => 4, 
-				'leftmargin' => 0, 
+				'id' => 'tree',
+				'style' => 'position: absolute; top: ' . $this->treeHeaderHeight . 'px; bottom: ' . $this->treeFooterHeight . 'px; left: 0px; width: 100%; background: #F3F7FF',
+				'link' => '#000000',
+				'alink' => '#000000',
+				'vlink' => '#000000',
+				'marginwidth' => 0,
+				'marginheight' => 4,
+				'leftmargin' => 0,
 				'topmargin' => 4), $Tree->getHTMLContructX('if(top.treeResized){top.treeResized();}')
 			);
 		}
@@ -225,7 +225,7 @@ class weModuleFrames{
 	}
 
 	function getHTMLTreeheader(){
-		return ''; 
+		return '';
 		//to be overridden
 	}
 
@@ -264,15 +264,12 @@ class weModuleFrames{
 			}'
 		);
 
-		$table1 = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0, "width" => 300), 1, 1);
-		$table1->setCol(0, 0, array("nowrap" => null, "valign" => "top"), we_html_tools::getPixel(1600, 10));
-
-		$table2 = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0, 'width' => 300), 1, 2);
+		$table2 = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0, 'style' => 'width:300px;margin-top:10px;'), 1, 2);
 		$table2->setRow(0, array('valign' => 'middle'));
 		$table2->setCol(0, 0, array('nowrap' => null), we_html_tools::getPixel(5, 5));
 		$table2->setCol(0, 1, array('nowrap' => null), we_button::create_button('save', 'javascript:we_save()'));
 
-		$body = we_html_element::htmlBody(array('bgcolor' => 'white', 'background' => IMAGE_DIR . 'edit/editfooterback.gif', 'marginwidth' => 0, 'marginheight' => 0, 'leftmargin' => 0, 'topmargin' => 0), $table1->getHtml() . $table2->getHtml());
+		$body = we_html_element::htmlBody(array('bgcolor' => 'white', 'background' => IMAGE_DIR . 'edit/editfooterback.gif', 'marginwidth' => 0, 'marginheight' => 0, 'leftmargin' => 0, 'topmargin' => 0), $table2->getHtml());
 
 		return $this->getHTMLDocument($body, $extraHead);
 	}
