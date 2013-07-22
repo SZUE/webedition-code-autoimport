@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weToolFrames extends weModuleFrames {
+class weToolFrames extends weModuleFrames{
 
 	var $View;
 	var $Table;
@@ -109,7 +109,7 @@ class weToolFrames extends weModuleFrames {
 					, we_html_element::htmlExIFrame('header', parent::getHTMLHeader($this->toolDir . 'conf/we_menu_' . $this->toolName . '.conf.php', $this->toolName), 'position:absolute;top:0px;height:32px;left:0px;right:0px;') .
 					we_html_element::htmlIFrame('resize', $this->frameset . '?pnt=resize', 'position:absolute;top:32px;bottom:1px;left:0px;right:0px;overflow: hidden;') .
 					we_html_element::htmlIFrame('cmd', $this->frameset . '?pnt=cmd', 'position:absolute;bottom:0px;height:1px;left:0px;right:0px;overflow: hidden;')
-				));
+		));
 
 		return $this->getHTMLDocument($body, $js);
 	}
@@ -118,12 +118,12 @@ class weToolFrames extends weModuleFrames {
 
 		if((we_base_browserDetect::isGecko()) || (we_base_browserDetect::isOpera())){
 			$frameset = new we_html_frameset(array("cols" => "200,*", "border" => 1, "id" => "resizeframeid"));
-		} else{
+		} else {
 			$frameset = new we_html_frameset(array("cols" => "200,*", "border" => 0, "frameborder" => 0, "framespacing" => 0, "id" => "resizeframeid"));
 		}
 		if(we_base_browserDetect::isIE()){
 			$frameset->addFrame(array("src" => $this->frameset . "?pnt=left" . (isset($_REQUEST['modelid']) ? '&modelid=' . $_REQUEST['modelid'] : ''), "name" => "left", "scrolling" => "no", "frameborder" => "no"));
-		} else{
+		} else {
 			$frameset->addFrame(array("src" => $this->frameset . "?pnt=left" . (isset($_REQUEST['modelid']) ? '&modelid=' . $_REQUEST['modelid'] : ''), "name" => "left", "scrolling" => "no"));
 		}
 		$frameset->addFrame(array("src" => $this->frameset . "?pnt=right" . (isset($_REQUEST['tab']) ? '&tab=' . $_REQUEST['tab'] : '') . (isset($_REQUEST['sid']) ? '&sid=' . $_REQUEST['sid'] : ''), "name" => "right"));
@@ -180,7 +180,8 @@ class weToolFrames extends weModuleFrames {
 		include($this->toolDir . 'conf/we_menu_' . $this->toolName . '.conf.php');
 		require_once(WE_INCLUDES_PATH . "jsMessageConsole/messageConsole.inc.php" );
 
-		$lang_arr = 'we_menu_' . $this->toolName;t_e("larr",$lang_arr);
+		$lang_arr = 'we_menu_' . $this->toolName;
+		t_e("larr", $lang_arr);
 		$jmenu = new weJavaMenu($$lang_arr, $this->topFrame . '.cmd');
 
 		$menu = '';
@@ -243,14 +244,13 @@ function setTab(tab) {
 
 ' . ($this->Model->ID ? '' : $this->topFrame . '.activ_tab=1;'));
 
-		$table = new we_html_table(array("width" => 3000, "cellpadding" => 0, "cellspacing" => 0, "border" => 0), 3, 1);
+		$table = new we_html_table(array("width" => '100%', "cellpadding" => 0, "cellspacing" => 0, "border" => 0), 3, 1);
 
 		$table->setCol(0, 0, array(), we_html_tools::getPixel(1, 3));
 
 		$table->setCol(1, 0, array("valign" => "top", "class" => "small"), we_html_tools::getPixel(15, 2) .
 			we_html_element::htmlB(
-				($this->Model->IsFolder ? g_l('tools', '[group]') : g_l('tools', '[entry]')) . ':&nbsp;' . str_replace('&amp;', '&', $this->Model->Text) . '<div id="mark" style="display: none;">*</div>' .
-				we_html_tools::getPixel(1600, 19)
+				($this->Model->IsFolder ? g_l('tools', '[group]') : g_l('tools', '[entry]')) . ':&nbsp;' . str_replace('&amp;', '&', $this->Model->Text) . '<div id="mark" style="display: none;">*</div>'
 			)
 		);
 
@@ -298,13 +298,9 @@ function setTab(tab) {
 			return $this->getHTMLDocument(we_html_element::htmlBody(array("bgcolor" => "#F0EFF0"), ""));
 		}
 
-		$table1 = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0, "width" => 3000), 1, 1);
-		$table1->setCol(0, 0, array("nowrap" => null, "valign" => "top"), we_html_tools::getPixel(1600, 10));
-
-
 		$_but_table = we_button::create_button_table(array(
 				we_button::create_button("save", "javascript:we_save();", true, 100, 22, '', '', (!we_hasPerm('EDIT_NAVIGATION')))
-				), 10, array('style' => 'margin-left: 15px')
+				), 10, array('style' => 'margin-left: 15px;margin-top:10px;')
 		);
 
 		return $this->getHTMLDocument(
@@ -313,8 +309,7 @@ function setTab(tab) {
 function we_save() {
 	' . $this->topFrame . '.we_cmd("tool_' . $this->toolName . '_save");
 }') .
-				we_html_element::htmlBody(array("bgcolor" => "white", "background" => IMAGE_DIR . "edit/editfooterback.gif", "marginwidth" => 0, "marginheight" => 0, "leftmargin" => 0, "topmargin" => 0), we_html_element::htmlForm(array(), $table1->getHtml() .
-						$_but_table)
+				we_html_element::htmlBody(array("bgcolor" => "white", "background" => IMAGE_DIR . "edit/editfooterback.gif", "marginwidth" => 0, "marginheight" => 0, "leftmargin" => 0, "topmargin" => 0), we_html_element::htmlForm(array(), $_but_table)
 				)
 		);
 	}
@@ -461,7 +456,7 @@ function we_save() {
 					we_button::create_button('image:btn_function_trash', 'javascript:document.we_form.elements["' . $IDName . '"].value=0;document.we_form.elements["' . $PathName . '"].value="/";', true, 27, 22)
 					), 10);
 			$_width = 157;
-		} else{
+		} else {
 			$_button = we_button::create_button('select', $_cmd, true, 100, 22, '', '', $disabled);
 			$_width = 120;
 		}

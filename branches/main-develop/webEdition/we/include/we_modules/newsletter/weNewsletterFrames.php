@@ -302,11 +302,7 @@ class weNewsletterFrames extends weModuleFrames{
 
 		$select = new we_html_select(array("name" => "gview"));
 
-
-		$table1 = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0, "width" => 3000), 1, 1);
-		$table1->setCol(0, 0, array("nowrap" => null, "valign" => "top"), we_html_tools::getPixel(1600, 10));
-
-		$table2 = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0, "width" => 300), 1, 10);
+		$table2 = new we_html_table(array('style'=>'margin-top:10px',"border" => 0, "cellpadding" => 0, "cellspacing" => 0, "width" => 300), 1, 10);
 		if($mode == 0){
 			$table2->setRow(0, array("valign" => "middle"));
 
@@ -346,7 +342,6 @@ class weNewsletterFrames extends weModuleFrames{
 		}');
 
 		$body = we_html_element::htmlBody(array("bgcolor" => "white", "background" => IMAGE_DIR . "edit/editfooterback.gif", "marginwidth" => 0, "marginheight" => 0, "leftmargin" => 0, "topmargin" => 0, "onload" => "setTimeout('populateGroups()',100)"), we_html_element::htmlForm(array(), we_html_element::htmlHidden(array("name" => "hm", "value" => 0)) .
-					$table1->getHtml() .
 					$table2->getHtml() .
 					$post_js
 				)

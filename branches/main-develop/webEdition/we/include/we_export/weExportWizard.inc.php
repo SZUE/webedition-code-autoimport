@@ -92,7 +92,7 @@ class weExportWizard{
 					$_SESSION['weS']['exportVars'][$k] = $v;
 			}
 		}
-		else{
+		else {
 			$_SESSION['weS']['exportVars'] = $this->exportVars;
 		}
 	}
@@ -316,7 +316,7 @@ top.close();');
 			  else */
 			if($this->exportVars["extype"] == "csv"){
 				return $this->getHTMLStep1();
-			} else{
+			} else {
 				return $this->getHTMLStep2b();
 			}
 		}
@@ -765,7 +765,7 @@ function setState(a) {
 					header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 					header("Cache-Control: no-store, no-cache, must-revalidate"); // HTTP 1.1
 					header("Cache-Control: post-check=0, pre-check=0", false);
-				} else{
+				} else {
 					header("Cache-control: private, max-age=0, must-revalidate");
 				}
 
@@ -777,11 +777,11 @@ function setState(a) {
 				$_filehandler = readfile(TEMP_PATH . $_filename);
 
 				exit;
-			} else{
+			} else {
 				header("Location: " . $preurl . $this->frameset . "?pnt=body&step=99&error=download_failed");
 				exit;
 			}
-		} else{
+		} else {
 			header("Location: " . $preurl . $this->frameset . "?pnt=body&step=99&error=download_failed");
 			exit;
 		}
@@ -833,7 +833,7 @@ function setState(a) {
 		$art = $this->exportVars["art"];
 		$selection = $this->exportVars["selection"];
 
-		$table = new we_html_table(array("width" => 3000, "cellpadding" => 0, "cellspacing" => 0, "border" => 0), 3, 1);
+		$table = new we_html_table(array("width" => '100%', "cellpadding" => 0, "cellspacing" => 0, "border" => 0), 3, 1);
 		//print $step;
 
 		if($step == 3){
@@ -1178,7 +1178,7 @@ function setState(a) {
 
 						/* } else if ((count($finalTempl) > 0 && $extype=="wxml") || (count($finalClasses) > 0  && $extype=="wxml")) {
 						  $start_export = true; */
-					} else{
+					} else {
 						$export_error = (defined("OBJECT_TABLE") ? "nothing_selected_objs" : "nothing_selected_docs");
 					}
 
@@ -1348,7 +1348,7 @@ function setState(a) {
 						$_SESSION['weS']['exportVars']["filename"] = ($export_local ? TEMP_PATH . '/' . $filename : $_SERVER['DOCUMENT_ROOT'] . $path . $filename);
 						//FIXME set export type in getHeader
 						$ret = weFile::save($_SESSION['weS']['exportVars']["filename"], weXMLExIm::getHeader(), "wb");
-					} else{
+					} else {
 						$xmlExIm->RefTable->Array2RefTable($this->exportVars["RefTable"]);
 						$xmlExIm->RefTable->current = $this->exportVars["CurrentRef"];
 						$all = count($xmlExIm->RefTable->Storage);
@@ -1468,7 +1468,7 @@ function setState(a) {
 		$this->db->query("SELECT ID,DocType FROM " . DOC_TYPES_TABLE . " $q");
 		$select = new we_html_select(array("name" => "doctype", "size" => 1, "class" => "weSelect", "style" => "{width: $width;}", "onChange" => ""));
 		$first = "";
-		while($this->db->next_record()) {
+		while($this->db->next_record()){
 			if($first == "")
 				$first = $this->db->f("ID");
 			$select->addOption($this->db->f("ID"), $this->db->f("DocType"));
@@ -1503,7 +1503,7 @@ function setState(a) {
 			$this->db->query("SELECT ID,Text FROM " . OBJECT_TABLE);
 			$select = new we_html_select(array("name" => "classname", "class" => "weSelect", "size" => 1, "style" => "{width: $width}", "onChange" => $this->topFrame . ".classname=document.we_form.classname.options[document.we_form.classname.selectedIndex].value;"));
 			$first = "";
-			while($this->db->next_record()) {
+			while($this->db->next_record()){
 				if($first == "")
 					$first = $this->db->f("ID");
 				$select->addOption($this->db->f("ID"), $this->db->f("Text"));
@@ -1524,7 +1524,7 @@ function setState(a) {
 
 			$radio = $showdocs ? we_forms::radiobutton("classname", ($type == "classname" ? true : false), "type", g_l('export', "[classname]"), true, "defaultfont", $this->topFrame . ".type='classname'") : we_html_tools::getPixel(25, 5) . g_l('export', "[classname]");
 			return $js . we_html_tools::htmlFormElementTable(we_html_tools::getPixel(25, 5) . $select->getHtml(), $radio);
-		} else{
+		} else {
 			return null;
 		}
 	}

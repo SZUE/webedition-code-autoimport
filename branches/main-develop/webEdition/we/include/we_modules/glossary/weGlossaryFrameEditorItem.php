@@ -228,25 +228,6 @@ class weGlossaryFrameEditorItem extends weGlossaryFrameEditor{
 	}
 
 	function Footer(&$weGlossaryFrames){
-
-
-		$_table = array(
-			'border' => 0,
-			'cellpadding' => 0,
-			'cellspacing' => 0,
-			'width' => 3000,
-		);
-
-		$table1 = new we_html_table($_table, 1, 1);
-		$table1->setCol(0, 0, array("nowrap" => null, "valign" => "top"), we_html_tools::getPixel(1600, 10));
-
-
-		$_table = array(
-			'border' => 0,
-			'cellpadding' => 0,
-			'cellspacing' => 0,
-		);
-
 		$SaveButton = we_button::create_button("save", "javascript:if(top.publishWhenSave==1){" . $weGlossaryFrames->View->EditorBodyFrame . ".document.getElementById('Published').value=1;};we_save();", true, 100, 22, '', '', (!we_hasPerm('NEW_GLOSSARY') && !we_hasPerm('EDIT_GLOSSARY')));
 		$UnpublishButton = we_button::create_button("deactivate", "javascript:" . $weGlossaryFrames->View->EditorBodyFrame . ".document.getElementById('Published').value=0;top.opener.top.we_cmd('save_glossary')", true, 100, 22, '', '', (!we_hasPerm('NEW_GLOSSARY') && !we_hasPerm('EDIT_GLOSSARY')));
 
@@ -256,7 +237,12 @@ class weGlossaryFrameEditorItem extends weGlossaryFrameEditor{
 		$ShowUnpublish = $weGlossaryFrames->View->Glossary->ID == 0 ? true : ($weGlossaryFrames->View->Glossary->Published > 0 ? true : false);
 
 		$col = 0;
-		$table2 = new we_html_table($_table, 1, 6);
+		$table2 = new we_html_table(array(
+			'border' => 0,
+			'cellpadding' => 0,
+			'cellspacing' => 0,
+			'style' => 'margin-top:10px',
+			), 1, 6);
 		$table2->setRow(0, array("valign" => "middle"));
 		if($ShowUnpublish){
 			$table2->setCol(0, $col++, array("nowrap" => null), we_html_tools::getPixel(10, 20));
@@ -285,7 +271,7 @@ class weGlossaryFrameEditorItem extends weGlossaryFrameEditor{
 				}
 				");
 
-		$form = we_html_element::htmlForm(array(), $table1->getHtml() . $table2->getHtml() . $js);
+		$form = we_html_element::htmlForm(array(), $table2->getHtml() . $js);
 
 		return weGlossaryFrameEditorItem::buildFooter($weGlossaryFrames, $form);
 	}

@@ -423,7 +423,7 @@ function we_cmd(){
 		$select->setAttributes(array("OnChange" => "applySort();", "style" => "width:150px"));
 		$select->selectOption($pob->View->settings->getSettings('default_sort_view'));
 
-		$table1 = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0, "width" => 3000), 1, 1);
+		$table1 = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0, "width" => '100%'), 1, 1);
 		$table1->setCol(0, 0, array("nowrap" => null, "class" => "small"), we_html_tools::getPixel(300, 1));
 
 		$table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 3), 1, 3);
@@ -443,7 +443,7 @@ function we_cmd(){
 					$table->getHtml()
 				);
 		return $content;
-		$body = we_html_element::htmlBody(array('style' => 'overflow:hidden', "background" => IMAGE_DIR . "backgrounds/header_with_black_line.gif", "marginwidth" => "5", "marginheight" => "5", "leftmargin" => "5", "topmargin" => "5"), 
+		$body = we_html_element::htmlBody(array('style' => 'overflow:hidden', "background" => IMAGE_DIR . "backgrounds/header_with_black_line.gif", "marginwidth" => "5", "marginheight" => "5", "leftmargin" => "5", "topmargin" => "5"),
 			$content
 		);
 

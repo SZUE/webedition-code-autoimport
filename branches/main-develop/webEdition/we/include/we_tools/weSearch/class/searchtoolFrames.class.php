@@ -238,18 +238,12 @@ class searchtoolFrames extends weToolFrames{
 	}
 
 	function getHTMLEditorFooter(){
-
-		$table1 = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0, 'width' => 3000), 1, 1);
-		$table1->setCol(0, 0, array(
-			'nowrap' => null, 'valign' => 'top'
-			), we_html_tools::getPixel(1600, 10));
-
 		$_but_table = we_button::create_button_table(
 				array(
 				we_button::create_button(
 					'save', 'javascript:we_save();', true, 100, 22, '', '', (!we_hasPerm('EDIT_NAVIGATION')))
 				), 10, array(
-				'style' => 'margin-left: 15px'
+				'style' => 'margin-left: 15px;margin-top:10px;'
 		));
 
 		return $this->getHTMLDocument(
@@ -266,7 +260,7 @@ class searchtoolFrames extends weToolFrames{
 					'marginheight' => 0,
 					'leftmargin' => 0,
 					'topmargin' => 0
-					), we_html_element::htmlForm(array(), $table1->getHtml() . $_but_table)));
+					), we_html_element::htmlForm(array(), $_but_table)));
 	}
 
 	function getHTMLProperties($preselect = ''){

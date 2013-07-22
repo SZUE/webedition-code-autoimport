@@ -50,33 +50,19 @@ class weGlossaryFrameEditorException extends weGlossaryFrameEditor{
 	}
 
 	function Footer(&$weGlossaryFrames){
-
-
-		$_table = array(
-			'border' => 0,
-			'cellpadding' => 0,
-			'cellspacing' => 0,
-			'width' => 3000,
-		);
-
-		$table1 = new we_html_table($_table, 1, 1);
-		$table1->setCol(0, 0, array("nowrap" => null, "valign" => "top"), we_html_tools::getPixel(1600, 10));
-
-
-		$_table = array(
-			'border' => 0,
-			'cellpadding' => 0,
-			'cellspacing' => 0,
-		);
-
 		$_we_button = we_button::create_button("save", "javascript:top.opener.top.we_cmd('save_exception')", true, 100, 22, '', '', (!we_hasPerm('NEW_GLOSSARY') && !we_hasPerm('EDIT_GLOSSARY')));
 
-		$table2 = new we_html_table($_table, 1, 2);
+		$table2 = new we_html_table(array(
+			'border' => 0,
+			'cellpadding' => 0,
+			'cellspacing' => 0,
+			'style' => 'margin-top:10px'
+			), 1, 2);
 		$table2->setRow(0, array("valign" => "middle"));
 		$table2->setCol(0, 0, array("nowrap" => null), we_html_tools::getPixel(10, 20));
 		$table2->setCol(0, 1, array("nowrap" => null), $_we_button);
 
-		$form = we_html_element::htmlForm(array(), $table1->getHtml() . $table2->getHtml());
+		$form = we_html_element::htmlForm(array(), $table2->getHtml());
 
 		return weGlossaryFrameEditorException::buildFooter($weGlossaryFrames, $form);
 	}

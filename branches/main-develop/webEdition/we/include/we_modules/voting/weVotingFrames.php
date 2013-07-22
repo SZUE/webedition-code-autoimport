@@ -28,7 +28,6 @@ class weVotingFrames extends weModuleFrames{
 	var $_space_size = 150;
 	var $_text_size = 75;
 	var $_width_size = 535;
-
 	public $module = "voting";
 
 	function __construct(){
@@ -54,7 +53,7 @@ class weVotingFrames extends weModuleFrames{
 				break;
 			case "show_log": if($this->View->voting->LogDB){
 					print $this->getHTMLShowLogNew();
-				} else{
+				} else {
 					print $this->getHTMLShowLogOld();
 				}break;
 			case "delete_log":
@@ -106,7 +105,7 @@ class weVotingFrames extends weModuleFrames{
 		);
 
 
-		$table = new we_html_table(array("width" => 3000, "cellpadding" => 0, "cellspacing" => 0, "border" => 0), 3, 1);
+		$table = new we_html_table(array("width" => '100%', "cellpadding" => 0, "cellspacing" => 0, "border" => 0), 3, 1);
 
 		$table->setCol(0, 0, array(), we_html_tools::getPixel(1, 3));
 
@@ -159,10 +158,7 @@ class weVotingFrames extends weModuleFrames{
 			return $this->getHTMLDocument(we_html_element::htmlBody(array("bgcolor" => "#EFF0EF"), ""));
 		}
 
-		$table1 = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0, "width" => 3000), 1, 1);
-		$table1->setCol(0, 0, array("nowrap" => null, "valign" => "top"), we_html_tools::getPixel(1600, 10));
-
-		$table2 = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0, "width" => 300), 1, 2);
+		$table2 = new we_html_table(array('style' => 'margin-top:10px', "border" => 0, "cellpadding" => 0, "cellspacing" => 0, "width" => 300), 1, 2);
 		$table2->setRow(0, array("valign" => "middle"));
 		$table2->setCol(0, 0, array("nowrap" => null), we_html_tools::getPixel(5, 5));
 		$table2->setCol(0, 1, array("nowrap" => null), we_button::create_button("save", "javascript:we_save()", true, 100, 22, '', '', (!we_hasPerm('NEW_VOTING') && !we_hasPerm('EDIT_VOTING')))
@@ -174,7 +170,7 @@ class weVotingFrames extends weModuleFrames{
 					function we_save() {
 						top.content.we_cmd("save_voting");
 					}') .
-				we_html_element::htmlBody(array("bgcolor" => "white", "background" => IMAGE_DIR . "edit/editfooterback.gif", "marginwidth" => 0, "marginheight" => 0, "leftmargin" => 0, "topmargin" => 0), we_html_element::htmlForm(array(), $table1->getHtml() . $table2->getHtml())
+				we_html_element::htmlBody(array("bgcolor" => "white", "background" => IMAGE_DIR . "edit/editfooterback.gif", "marginwidth" => 0, "marginheight" => 0, "leftmargin" => 0, "topmargin" => 0), we_html_element::htmlForm(array(), $table2->getHtml())
 				)
 		);
 	}
@@ -231,7 +227,7 @@ class weVotingFrames extends weModuleFrames{
 									$aval2 = $this->View->voting->QASetAdditions[$variant]['imageID'][$akey];
 									$aval3 = $this->View->voting->QASetAdditions[$variant]['mediaID'][$akey];
 									$aval4 = $this->View->voting->QASetAdditions[$variant]['successorID'][$akey];
-								} else{
+								} else {
 									$aval2 = $aval3 = $aval4 = '';
 								}
 								$variant_js .=
@@ -1074,7 +1070,7 @@ class weVotingFrames extends weModuleFrames{
 			$nextprev = '<table style="margin-top: 10px;" border="0" cellpadding="0" cellspacing="0"><tr><td>';
 			if($start < $size){
 				$nextprev .= we_button::create_button("back", $this->frameset . "?pnt=show_log&start=" . $back); //bt_back
-			} else{
+			} else {
 				$nextprev .= we_button::create_button("back", "", false, 100, 22, "", "", true);
 			}
 
@@ -1086,7 +1082,7 @@ class weVotingFrames extends weModuleFrames{
 
 			if($next > 0){
 				$nextprev .= we_button::create_button("next", $this->frameset . "?pnt=show_log&start=" . $next); //bt_next
-			} else{
+			} else {
 				$nextprev .= we_button::create_button("next", "", "", 100, 22, "", "", true);
 			}
 			$nextprev .= "</td></tr></table>";
@@ -1099,7 +1095,7 @@ class weVotingFrames extends weModuleFrames{
 				'space' => 0,
 				'noline' => 1
 			);
-		} else{
+		} else {
 			$parts[] = array(
 				'headline' => '',
 				'html' => we_html_element::htmlSpan(array('class' => 'middlefontgray'), g_l('modules_voting', '[log_is_empty]')) .
@@ -1215,7 +1211,7 @@ class weVotingFrames extends weModuleFrames{
 			$nextprev = '<table style="margin-top: 10px;" border="0" cellpadding="0" cellspacing="0"><tr><td>';
 			if($start < $size){
 				$nextprev .= we_button::create_button("back", $this->frameset . "?pnt=show_log&start=" . $back); //bt_back
-			} else{
+			} else {
 				$nextprev .= we_button::create_button("back", "", false, 100, 22, "", "", true);
 			}
 
@@ -1227,7 +1223,7 @@ class weVotingFrames extends weModuleFrames{
 
 			if($next > 0){
 				$nextprev .= we_button::create_button("next", $this->frameset . "?pnt=show_log&start=" . $next); //bt_next
-			} else{
+			} else {
 				$nextprev .= we_button::create_button("next", "", "", 100, 22, "", "", true);
 			}
 			$nextprev .= "</td></tr></table>";
@@ -1240,7 +1236,7 @@ class weVotingFrames extends weModuleFrames{
 				'space' => 0,
 				'noline' => 1
 			);
-		} else{
+		} else {
 			$parts[] = array(
 				'headline' => '',
 				'html' => we_html_element::htmlSpan(array('class' => 'middlefontgray'), g_l('modules_voting', '[log_is_empty]')) .
@@ -1341,7 +1337,7 @@ class weVotingFrames extends weModuleFrames{
 			$nextprev = '<table style="margin-top: 10px;" border="0" cellpadding="0" cellspacing="0"><tr><td>';
 			if($start < $size){
 				$nextprev .= we_button::create_button("back", $this->frameset . "?pnt=show_log&start=" . $back); //bt_back
-			} else{
+			} else {
 				$nextprev .= we_button::create_button("back", "", false, 100, 22, "", "", true);
 			}
 
@@ -1353,7 +1349,7 @@ class weVotingFrames extends weModuleFrames{
 
 			if($next > 0){
 				$nextprev .= we_button::create_button("next", $this->frameset . "?pnt=show_log&start=" . $next); //bt_next
-			} else{
+			} else {
 				$nextprev .= we_button::create_button("next", "", "", 100, 22, "", "", true);
 			}
 			$nextprev .= "</td></tr></table>";
@@ -1366,7 +1362,7 @@ class weVotingFrames extends weModuleFrames{
 				'space' => 0,
 				'noline' => 1
 			);
-		} else{
+		} else {
 			$parts[] = array(
 				'headline' => '',
 				'html' => we_html_element::htmlSpan(array('class' => 'middlefontgray'), g_l('modules_voting', '[log_is_empty]')) .
