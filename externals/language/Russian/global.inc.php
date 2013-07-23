@@ -151,8 +151,8 @@ $l_global=array(
 	
 	'we_make_same'=>array(
 		'objectFile'=>'New object after saving',
-		'text/html'=>'После сохранения новая страница',
-		'text/webedition'=>'После сохранения новая страница',
+		'text/html'=>'После сохранения новая страница HTML',
+		'text/webedition'=>'После сохранения новая страница webEdition',
 	),
 	'we_new_doc_after_save'=>'New Document after saving',
 	'we_new_entry_after_save'=>'New entry after saving',

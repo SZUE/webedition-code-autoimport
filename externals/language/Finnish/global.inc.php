@@ -151,8 +151,8 @@ $l_global=array(
 	
 	'we_make_same'=>array(
 		'objectFile'=>'Uusi objekti tallennuksen jälkeen',
-		'text/html'=>'Uusi sivu tallentamisen jälkeen',
-		'text/webedition'=>'Uusi sivu tallentamisen jälkeen',
+		'text/html'=>'Uusi HTML-sivu tallentamisen jälkeen',
+		'text/webedition'=>'Uusi webEdition-sivu tallentamisen jälkeen',
 	),
 	'we_new_doc_after_save'=>'Uusi dokumentti tallentamisen jälkeen',
 	'we_new_entry_after_save'=>'Uusi kohde tallennuksen jälkeen',
