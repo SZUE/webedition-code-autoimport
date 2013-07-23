@@ -34,11 +34,11 @@ function we_tag_href($attribs){
 	$rootdir = weTag_getAttribute('rootdir', $attribs, '/');
 	$seeMode = weTag_getAttribute((isset($attribs['seem']) ? 'seem' : 'seeMode'), $attribs, true, true);
 
-	if(substr($rootdir, 0, 1) != '/'){
+	if($rootdir[0] != '/'){
 		$rootdirid = $rootdir;
 		$rootdir = id_to_path($rootdir, FILE_TABLE);
-	} else{
-		if(strlen($rootdir) > 1){
+	} else {
+		if($rootdir != '/'){
 			$rootdir = rtrim($rootdir, '/');
 		}
 		$rootdirid = path_to_id($rootdir, FILE_TABLE);
@@ -50,7 +50,7 @@ function we_tag_href($attribs){
 
 	$file = weTag_getAttribute('file', $attribs, true, true);
 	$directory = weTag_getAttribute('directory', $attribs, false, true);
-	$attribs = removeAttribs($attribs, array('rootdir'));
+	$attribs = removeAttribs($attribs, array('rootdir', 'file', 'directory'));
 
 	if($GLOBALS['we_doc']->ClassName == 'we_objectFile'){
 		$hrefArr = $GLOBALS['we_doc']->getElement($name) ? unserialize($GLOBALS['we_doc']->getElement($name)) : array();
@@ -134,7 +134,7 @@ function we_tag_href($attribs){
 			if(($directory && $file) || $file){
 				$but = we_button::create_button(we_button::WE_IMAGE_BUTTON_IDENTIFY . 'edit_link', "javascript:we_cmd('openDocselector', document.forms[0].elements['$intID_elem_Name'].value, '" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "', '" . $rootdirid . "', '', " . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ",''," . ($directory ? 1 : 0) . ");");
 				$but2 = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_button::create_button(we_button::WE_IMAGE_BUTTON_IDENTIFY . 'edit_link', "javascript:we_cmd('browse_server', 'document.forms[0].elements[\\'$ext_elem_Name\\'].value', '" . (($directory && $file) ? "filefolder" : '') . "', document.forms[0].elements['$ext_elem_Name'].value, 'opener._EditorFrame.setEditorIsHot(true); opener.document.we_form.elements[\'$int_elem_Name\'][1].checked = true;','" . $rootdir . "')") : '';
-			} else{
+			} else {
 				$but = we_button::create_button(we_button::WE_IMAGE_BUTTON_IDENTIFY . 'edit_link', "javascript:we_cmd('openDirselector', document.forms[0].elements['$intID_elem_Name'].value, '" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "', '" . $rootdirid . "');");
 				$but2 = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_button::create_button(we_button::WE_IMAGE_BUTTON_IDENTIFY . 'edit_link', "javascript:we_cmd('browse_server', 'document.forms[0].elements[\\'$ext_elem_Name\\'].value', 'folder', document.forms[0].elements['$ext_elem_Name'].value, 'opener._EditorFrame.setEditorIsHot(true); opener.document.we_form.elements[\'$int_elem_Name\'][1].checked = true;','" . $rootdir . "')") : '';
 			}

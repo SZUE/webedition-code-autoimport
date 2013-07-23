@@ -119,7 +119,7 @@ class we_html_table extends we_baseCollection{
 	 *
 	 * @return     void
 	 */
-	function setCol($rowid, $colid, $attribs = array(), $content = ""){
+	function setCol($rowid, $colid, $attribs = array(), $content = ''){
 		$row = & $this->getChild($rowid);
 		$col = & $row->getChild($colid);
 		$col->setAttributes($attribs);

@@ -233,7 +233,7 @@ function switch_button_state(element, button, state, type) {
 		}
 
 		$value = (strpos($name, self::WE_IMAGE_BUTTON_IDENTIFY) === false) ? g_l('button', '[' . $name . '][value]') . ($opensDialog ? '&hellip;' : '') :
-			'<img src="' . BUTTONS_DIR . 'icons/' . str_replace("btn_", "", $_button_pure_name) . '.gif" class="weBtnImage" />';
+			'<img src="' . BUTTONS_DIR . 'icons/' . str_replace('btn_', '', $_button_pure_name) . '.gif" class="weBtnImage" alt="" />';
 
 		$title = '';
 		// Check if the button will a text button or an image button
