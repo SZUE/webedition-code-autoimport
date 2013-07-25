@@ -74,7 +74,7 @@ $_useJavaEditor = ($_SESSION['prefs']['editorMode'] == 'java');
 				editarea.nextSibling.style.width = editorWidth + "px";
 		}
 
-		if (document.weEditorApplet && typeof(document.weEditorApplet.width) != "undefined") {
+		if (document.weEditorApplet && typeof(document.weEditorApplet.width) != undefined) {
 			document.weEditorApplet.width = editorWidth;
 		}
 
@@ -106,7 +106,7 @@ if(we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 9){
 					window.editor.frame.style.height = (h - (wizardOpen ? wizardHeight.closed : wizardHeight.open)) + "px";
 				}
 
-				if (document.weEditorApplet && typeof(document.weEditorApplet.setSize) != "undefined") {
+				if (document.weEditorApplet && typeof(document.weEditorApplet.setSize) != undefined) {
 					try {
 						document.weEditorApplet.height = editorHeight;
 						//document.weEditorApplet.setSize(editorWidth,editorHeight);
@@ -134,7 +134,7 @@ if(we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 9){
 					window.editor.frame.style.height = (h - wizardHeight.closed) + "px";
 				}
 
-				if (document.weEditorApplet && typeof(document.weEditorApplet.setSize) != "undefined") {
+				if (document.weEditorApplet && typeof(document.weEditorApplet.setSize) != undefined) {
 					try {
 						document.weEditorApplet.height = h - wizardHeight.closed;
 						//document.weEditorApplet.setSize(editorWidth,h - wizardHeight.closed);
@@ -211,7 +211,7 @@ switch($_SESSION['prefs']['editorMode']){
 				countJEditorInitAttempts++;
 				// imi: console.log("init: " + countJEditorInitAttempts);
 				if (countJEditorInitAttempts < 10) {
-					if (document.weEditorApplet && top.weEditorWasLoaded && typeof(document.weEditorApplet.setCode) != "undefined" && typeof(document.weEditorApplet.initUndoManager) != "undefined") {
+					if (document.weEditorApplet && top.weEditorWasLoaded && typeof(document.weEditorApplet.setCode) != undefined && typeof(document.weEditorApplet.initUndoManager) != undefined) {
 						try {
 							sizeEditor();
 							document.getElementById("weEditorApplet").style.left = "0";
@@ -264,7 +264,7 @@ switch($_SESSION['prefs']['editorMode']){
 	// ################ Java Editor specific Functions
 
 	function weEditorSetHiddenText() {
-		if (document.weEditorApplet && typeof(document.weEditorApplet.getCode) != "undefined") {
+		if (document.weEditorApplet && typeof(document.weEditorApplet.getCode) != undefined) {
 			if (document.weEditorApplet.isHot()) {
 				_EditorFrame.setEditorIsHot(true);
 				document.weEditorApplet.setHot(false);
@@ -275,7 +275,7 @@ switch($_SESSION['prefs']['editorMode']){
 
 
 	function checkAndSetHot() {
-		if (document.weEditorApplet && typeof(document.weEditorApplet.isHot) != "undefined") {
+		if (document.weEditorApplet && typeof(document.weEditorApplet.isHot) != undefined) {
 			if (document.weEditorApplet.isHot()) {
 				_EditorFrame.setEditorIsHot(true);
 			} else {
@@ -285,7 +285,7 @@ switch($_SESSION['prefs']['editorMode']){
 	}
 
 	function setCode() {
-		if (document.weEditorApplet && typeof(document.weEditorApplet.setCode) != "undefined") {
+		if (document.weEditorApplet && typeof(document.weEditorApplet.setCode) != undefined) {
 			document.weEditorApplet.setCode(document.forms['we_form'].elements["<?php print 'we_' . $we_doc->Name . '_txt[data]'; ?>"].value);
 		}
 	}
@@ -346,7 +346,7 @@ switch($_SESSION['prefs']['editorMode']){
 	function setSource(source) {
 		document.forms['we_form'].elements['we_<?php print $we_doc->Name; ?>_txt[data]'].value = source;
 		//Codemirror
-		if (editor != "undefined" && editor != null && typeof editor == 'object') {
+		if (editor != undefined && editor != null && typeof editor == 'object') {
 			editor.setValue(source);
 		}
 		// for Applet
@@ -354,7 +354,7 @@ switch($_SESSION['prefs']['editorMode']){
 	}
 
 	function getSource() {
-		if (document.weEditorApplet && typeof(document.weEditorApplet.getCode) != "undefined") {
+		if (document.weEditorApplet && typeof(document.weEditorApplet.getCode) != undefined) {
 			return document.weEditorApplet.getCode();
 		} else {
 			return document.forms['we_form'].elements['we_<?php print $we_doc->Name; ?>_txt[data]'].value;
@@ -394,7 +394,7 @@ switch($_SESSION['prefs']['editorMode']){
 		for (var cursor = editor.getSearchCursor(text, 0, caseIns); cursor.findNext(); ) {
 			marked.push(editor.markText(cursor.from(), cursor.to(), {className: "searched"}));
 		}
-		if (lastQuery != text) {
+		if (lastQuery !== text) {
 			lastPos = null;
 		}
 		var cursor = editor.getSearchCursor(text, lastPos || editor.getCursor(), caseIns);
@@ -414,10 +414,10 @@ switch($_SESSION['prefs']['editorMode']){
 		if (!text || !replaceby) {
 			return;
 		}
-		if (editor.getSelection() != text) {
+		if (editor.getSelection() !== text) {
 			search(text, caseIns);
 		}
-		if (editor.getSelection() != text) {
+		if (editor.getSelection() !== text) {
 			return;
 		}
 		editor.replaceSelection(replaceby);
@@ -549,7 +549,7 @@ switch($_SESSION['prefs']['editorMode']){
 			return $ret;
 		}
 
-		function we_getCodeMirror2Code($code){
+		function we_getCodeMirror2Code(){
 			$maineditor = '';
 			$parser_js = array();
 			$parser_css = array('theme/' . $_SESSION['prefs']['editorTheme'] . '.css');
@@ -614,13 +614,13 @@ switch($_SESSION['prefs']['editorMode']){
 
 			if(!empty($parser_js)){ // CodeMirror will be used
 				$parser_js[] = 'addon/search/searchcursor.js';
-				$maineditor = we_html_element::cssLink(WEBEDITION_DIR . 'editors/template/CodeMirror2/lib/codemirror.css') .
-					we_html_element::jsScript(WEBEDITION_DIR . 'editors/template/CodeMirror2/lib/codemirror.js');
+				$maineditor = we_html_element::cssLink(WEBEDITION_DIR . 'editors/template/CodeMirror/lib/codemirror.css') .
+					we_html_element::jsScript(WEBEDITION_DIR . 'editors/template/CodeMirror/lib/codemirror.js');
 				foreach($parser_css as $css){
-					$maineditor.=we_html_element::cssLink(WEBEDITION_DIR . 'editors/template/CodeMirror2/' . $css);
+					$maineditor.=we_html_element::cssLink(WEBEDITION_DIR . 'editors/template/CodeMirror/' . $css);
 				}
 				foreach($parser_js as $js){
-					$maineditor.=we_html_element::jsScript(WEBEDITION_DIR . 'editors/template/CodeMirror2/' . $js);
+					$maineditor.=we_html_element::jsScript(WEBEDITION_DIR . 'editors/template/CodeMirror/' . $js);
 				}
 
 				$tmp = @unserialize($_SESSION['prefs']['editorCodecompletion']);
@@ -689,7 +689,7 @@ window.orignalTemplateContent=document.getElementById("editarea").value.replace(
 			$maineditor .= '<textarea id="editarea" style="width: 100%; height: ' . (($_SESSION["prefs"]["editorHeight"] != 0) ? $_SESSION["prefs"]["editorHeight"] : "320") . 'px;' . (($_SESSION["prefs"]["editorFont"] == 1) ? " font-family: " . $_SESSION["prefs"]["editorFontname"] . "; font-size: " . $_SESSION["prefs"]["editorFontsize"] . "px;" : "") . '" id="data" name="we_' . $we_doc->Name . '_txt[data]" wrap="' . $wrap . '" ' . ((!we_base_browserDetect::isGecko() && (!isset($_SESSION['weS']["we_wrapcheck"]) || !$_SESSION['weS']["we_wrapcheck"] )) ? '' : ' rows="20" cols="80"') . ' onhange="_EditorFrame.setEditorIsHot(true);" ' . ($_SESSION['prefs']['editorMode'] == 'codemirror2' ? '' : (we_base_browserDetect::isIE() || we_base_browserDetect::isOpera() ? 'onkeydown="return wedoKeyDown(this,event.keyCode);"' : 'onkeypress="return wedoKeyDown(this,event.keyCode);"')) . '>'
 				. oldHtmlspecialchars($code) . '</textarea>';
 			if($_SESSION['prefs']['editorMode'] == 'codemirror2'){ //Syntax-Highlighting
-				$maineditor .= we_getCodeMirror2Code($code);
+				$maineditor .= we_getCodeMirror2Code();
 			}
 		}
 		$maineditor .= '</td>
@@ -818,7 +818,7 @@ window.orignalTemplateContent=document.getElementById("editarea").value.replace(
 			}
 
 			function insertAtStart(tagText) {
-				if (document.weEditorApplet && typeof(document.weEditorApplet.insertAtStart) != "undefined") {
+				if (document.weEditorApplet && typeof(document.weEditorApplet.insertAtStart) != undefined) {
 					document.weEditorApplet.insertAtStart(tagText);
 				} else if(window.editor && window.editor.frame) {
 					window.editor.insertIntoLine(window.editor.firstLine(), 0, tagText + "\n");
@@ -829,7 +829,7 @@ window.orignalTemplateContent=document.getElementById("editarea").value.replace(
 			}
 
 			function insertAtEnd(tagText) {
-				if (document.weEditorApplet && typeof(document.weEditorApplet.insertAtEnd) != "undefined") {
+				if (document.weEditorApplet && typeof(document.weEditorApplet.insertAtEnd) != undefined) {
 					document.weEditorApplet.insertAtEnd(tagText);
 				} else if(window.editor && window.editor.frame) {
 					window.editor.insertIntoLine(window.editor.lastLine(), "end", "\n" + tagText);
@@ -842,7 +842,7 @@ window.orignalTemplateContent=document.getElementById("editarea").value.replace(
 
 			function addCursorPosition ( tagText ) {
 
-				if (document.weEditorApplet && typeof(document.weEditorApplet.replaceSelection) != "undefined") {
+				if (document.weEditorApplet && typeof(document.weEditorApplet.replaceSelection) != undefined) {
 					document.weEditorApplet.replaceSelection(tagText);
 				} else if(window.editor && window.editor.frame) {
 					window.editor.replaceSelection(tagText);
