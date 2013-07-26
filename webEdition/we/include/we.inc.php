@@ -41,8 +41,7 @@ if(isset($_SERVER['HTTP_HOST']) && $_SERVER['SERVER_NAME'] != $_SERVER['HTTP_HOS
 }
 
 // Set PHP flags
-@$_memlimit = intval(ini_get('memory_limit'));
-if($_memlimit < 32){
+if( intval(ini_get('memory_limit')) < 32){
 	@ini_set('memory_limit', '32M');
 }
 @ini_set('allow_url_fopen', '1');
