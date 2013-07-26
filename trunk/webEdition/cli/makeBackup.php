@@ -162,7 +162,9 @@ we_error_handler(false);
 @set_time_limit(0);
 
 // set memory limit to an equitable value if possible
-@ini_set("memory_limit", "128M");
+if( intval(ini_get('memory_limit')) < 128){
+	@ini_set('memory_limit', '128M');
+}
 
 // knock out identifiation and permissions
 $_SESSION["perms"] = array();
