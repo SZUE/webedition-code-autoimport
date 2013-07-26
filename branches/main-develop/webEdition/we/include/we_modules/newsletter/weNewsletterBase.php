@@ -109,22 +109,17 @@ class weNewsletterBase{
 				}
 			}
 
-			$sets[] = $val . "='" . ($this->table == NEWSLETTER_BLOCK_TABLE ? $this->$val : $this->db->escape($this->$val)) . "'";
+			$sets[$val] = $this->$val;
 		}
-		$where = implode(",", $wheres);
-		$set = implode(",", $sets);
-
+		$where = implode(',', $wheres);
+		$set = we_database_base::arraySetter($sets);
+		
 		if($this->ID == 0){
-
-			$query = 'INSERT INTO ' . $this->db->escape($this->table) . ' SET ' . $set;
-			$this->db->query($query);
+			$this->db->query('INSERT INTO ' . $this->db->escape($this->table) . ' SET ' . $set);
 			# get ID #
-			$this->db->query("SELECT LAST_INSERT_ID()");
-			$this->db->next_record();
-			$this->ID = $this->db->f(0);
+			$this->ID = $this->db->getInsertId();
 		} else{
-			$query = 'UPDATE ' . $this->table . ' SET ' . $set . ' WHERE ' . $where;
-			$this->db->query($query);
+			$this->db->query('UPDATE ' . $this->table . ' SET ' . $set . ' WHERE ' . $where);
 		}
 	}
 
@@ -281,12 +276,12 @@ class weNewsletterBase{
 
 	function htmlSelectEmailList($name, $values, $size = 1, $selectedIndex = "", $multiple = false, $attribs = "", $compare = "value", $width = "", $cls = "defaultfont"){
 		reset($values);
-		$ret = '<select class="' . $cls . '" name="' . trim($name) . '" size=' . abs($size) . ' ' . ($multiple ? " multiple" : "") . ($attribs ? " $attribs" : "") . ($width ? ' style="width: ' . $width . 'px"' : '') . '>' . "\n";
+		$ret = '<select class="' . $cls . '" name="' . trim($name) . '" size=' . abs($size) . ' ' . ($multiple ? " multiple" : "") . ($attribs ? " $attribs" : "") . ($width ? ' style="width: ' . $width . 'px"' : '') . '>';
 		$selIndex = makeArrayFromCSV($selectedIndex);
 		while(list($value, $text) = each($values)) {
-			$ret .= '<option value="' . oldHtmlspecialchars($value) . '"' . (in_array((($compare == "value") ? $value : $text), $selIndex) ? " selected" : "") . (we_check_email($text) ? ' class="markValid"' : ' class="markNotValid"') . '>' . $text . "</option>\n";
+			$ret .= '<option value="' . oldHtmlspecialchars($value) . '"' . (in_array((($compare == "value") ? $value : $text), $selIndex) ? " selected" : "") . (we_check_email($text) ? ' class="markValid"' : ' class="markNotValid"') . '>' . $text . "</option>";
 		}
-		$ret .= "</select>";
+		$ret .= '</select>';
 		return $ret;
 	}
 

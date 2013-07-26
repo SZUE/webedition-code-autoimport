@@ -22,12 +22,11 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weNewsletterFrames extends weModuleFrames{
+class weNewsletterFrames extends weModuleFrames {
 
 	var $multibox_width = 950;
 	var $def_width = 450;
 	var $weAutoColpleter;
-
 	public $module = "newsletter";
 
 	function __construct(){
@@ -302,7 +301,7 @@ class weNewsletterFrames extends weModuleFrames{
 
 		$select = new we_html_select(array("name" => "gview"));
 
-		$table2 = new we_html_table(array('style'=>'margin-top:10px',"border" => 0, "cellpadding" => 0, "cellspacing" => 0, "width" => 300), 1, 10);
+		$table2 = new we_html_table(array('style' => 'margin-top:10px', "border" => 0, "cellpadding" => 0, "cellspacing" => 0, "width" => 300), 1, 10);
 		if($mode == 0){
 			$table2->setRow(0, array("valign" => "middle"));
 
@@ -422,7 +421,7 @@ class weNewsletterFrames extends weModuleFrames{
 		$out = '';
 		$count = count($this->View->newsletter->groups) + 1;
 
-		$tab1 = "&nbsp;&nbsp;&nbsp;";
+		$tab1 = '&nbsp;&nbsp;&nbsp;';
 		$tab2 = $tab1 . $tab1;
 		$tab3 = $tab1 . $tab1 . $tab1;
 		$c = 0;
@@ -432,7 +431,7 @@ class weNewsletterFrames extends weModuleFrames{
 			$gc = 0;
 			if(defined("CUSTOMER_TABLE")){
 				$out.=we_html_element::htmlDiv(array("class" => "defaultfont"), $tab2 . g_l('modules_newsletter', '[customers]'));
-				$emails = $this->View->getEmails($k, 1, 1);
+				$emails = $this->View->getEmails($k, weNewsletterView::MAILS_CUSTOMER, 1);
 
 				foreach($emails as $email){
 					$gc++;
@@ -442,7 +441,7 @@ class weNewsletterFrames extends weModuleFrames{
 
 			$out.=we_html_element::htmlDiv(array("class" => "defaultfont"), $tab2 . g_l('modules_newsletter', '[emails]'));
 
-			$emails = $this->View->getEmails($k, 2, 1);
+			$emails = $this->View->getEmails($k, weNewsletterView::MAILS_EMAILS, 1);
 			foreach($emails as $email){
 				$gc++;
 				$out.=we_html_element::htmlDiv(array("class" => "defaultfont"), $tab3 . $email);
@@ -450,7 +449,7 @@ class weNewsletterFrames extends weModuleFrames{
 
 			$out.=we_html_element::htmlDiv(array("class" => "defaultfont"), $tab2 . g_l('modules_newsletter', '[file_email]'));
 
-			$emails = $this->View->getEmails($k, 3, 1);
+			$emails = $this->View->getEmails($k, weNewsletterView::MAILS_FILE, 1);
 			foreach($emails as $email){
 				$gc++;
 				$out.=we_html_element::htmlDiv(array("class" => "defaultfont"), $tab3 . $email);
@@ -491,7 +490,7 @@ class weNewsletterFrames extends weModuleFrames{
 
 			$out.=we_html_element::htmlDiv(array("class" => "defaultfont"), $tab2 . sprintf(g_l('modules_newsletter', '[domain_check_list]'), $k));
 
-			$emails = $this->View->getEmails($k, 0, 1);
+			$emails = $this->View->getEmails($k, weNewsletterView::MAILS_ALL, 1);
 
 			foreach($emails as $email){
 				if($this->View->newsletter->check_email($email)){
@@ -778,7 +777,18 @@ class weNewsletterFrames extends weModuleFrames{
 			}
 		}
 
-		$operators = array("0" => "=", "1" => "<>", "2" => "<", "3" => "<=", "4" => ">", "5" => ">=", "7" => g_l('modules_newsletter', '[operator][contains]'), "8" => g_l('modules_newsletter', '[operator][startWith]'), "9" => g_l('modules_newsletter', '[operator][endsWith]'), "6" => "LIKE",);
+		$operators = array(
+			weNewsletter::OP_EQ => "=",
+			weNewsletter::OP_NEQ => "<>",
+			weNewsletter::OP_LE => "<",
+			weNewsletter::OP_LEQ => "<=",
+			weNewsletter::OP_GE => ">",
+			weNewsletter::OP_GEQ => ">=",
+			weNewsletter::OP_CONTAINS => g_l('modules_newsletter', '[operator][contains]'),
+			weNewsletter::OP_STARTS => g_l('modules_newsletter', '[operator][startWith]'),
+			weNewsletter::OP_ENDS => g_l('modules_newsletter', '[operator][endsWith]'),
+			weNewsletter::OP_LIKE => "LIKE",
+		);
 		$logic = array("AND" => g_l('modules_newsletter', '[logic][and]'), "OR" => g_l('modules_newsletter', '[logic][or]'));
 		$hours = array();
 		for($i = 0; $i < 24; $i++){
@@ -1605,7 +1615,7 @@ class weNewsletterFrames extends weModuleFrames{
 					print we_html_element::jsElement(
 							we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[path_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR)
 					);
-				} else{
+				} else {
 					$fh = @fopen($_SERVER['DOCUMENT_ROOT'] . $filepath, "rb");
 					if($fh){
 						while(($dat = fgetcsv($fh, 1000, $delimiter))){

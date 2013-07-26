@@ -26,7 +26,7 @@ we_html_tools::protect();
 //todo: make int/ext/mail/obj consts of some class
 function getLangField($name, $value, $title, $width){
 	//FIXME: these values should be obtained from global settings
-	$input = we_html_tools::htmlTextInput($name, 15, $value, '', '', "text", $width - 50);
+	$input = we_html_tools::htmlTextInput($name, 15, $value, '', '', 'text', $width - 50);
 	//FIXME: remove this fixed list by global lang settings
 	$select = '<select style="width:50px;" class="defaultfont" name="' . $name . '_select" size="1" onchange="this.form.elements[\'' . $name . '\'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;">
 						<option value=""></option>
@@ -69,151 +69,154 @@ function getRevRelSelect($type, $value){
 $we_dt = $_SESSION['weS']['we_data'][$we_transaction];
 include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
 
-if(isset($we_doc->elements["Charset"]["dat"])){ //	send charset which might be determined in template
-	we_html_tools::headerCtCharset('text/html', $we_doc->elements["Charset"]["dat"]);
+if(isset($we_doc->elements['Charset']['dat'])){ //	send charset which might be determined in template
+	we_html_tools::headerCtCharset('text/html', $we_doc->elements['Charset']['dat']);
 }
 
-if(isset($_REQUEST["ok"]) && $_REQUEST["ok"]){
-	$alt = $_REQUEST["alt"];
-	$img_title = $_REQUEST["img_title"];
-	$text = $_REQUEST["text"];
-	$attribs = $_REQUEST["attribs"];
-	$href = $_REQUEST["href"];
-	$anchor = trim($_REQUEST["anchor"]);
-	$tabindex = $_REQUEST["tabindex"];
-	$accesskey = $_REQUEST["accesskey"];
-	$lang = $_REQUEST["lang"];
-	$rel = $_REQUEST["rel"];
-	$rev = $_REQUEST["rev"];
-	$hreflang = $_REQUEST["hreflang"];
-	$params = $_REQUEST["params"];
-	$title = $_REQUEST["title"];
+if(isset($_REQUEST['ok']) && $_REQUEST['ok']){
+	$alt = $_REQUEST['alt'];
+	$img_title = $_REQUEST['img_title'];
+	$text = $_REQUEST['text'];
+	$attribs = $_REQUEST['attribs'];
+	$href = $_REQUEST['href'];
+	$anchor = trim($_REQUEST['anchor']);
+	$tabindex = $_REQUEST['tabindex'];
+	$accesskey = $_REQUEST['accesskey'];
+	$lang = $_REQUEST['lang'];
+	$rel = $_REQUEST['rel'];
+	$rev = $_REQUEST['rev'];
+	$hreflang = $_REQUEST['hreflang'];
+	$params = $_REQUEST['params'];
+	$title = $_REQUEST['title'];
 
 	if(!empty($anchor)){ //	accept anchor with or without '#', when saving the link
 		$anchor = (substr($anchor, 0, 1) == '#' ? $anchor : '#' . $anchor);
-		$_REQUEST["anchor"] = $anchor;
+		$_REQUEST['anchor'] = $anchor;
 	}
 
 	if(strlen($params) > 0){ //	accept parameters with or without '?', when saving the link
 		//	when type=object we need a '&'
-		if($_REQUEST["type"] == we_base_link::TYPE_OBJ){
-			if(substr($params, 0, 1) != '&'){
-				$params = (substr($params, 0, 1) == '?' ? '&' . substr($params, 1) : '&' . $params);
-			}
-		} else{
-			if(substr($params, 0, 1) != '?'){
-				$params = (substr($params, 0, 1) == '&' ? '?' . substr($params, 1) : '?' . $params);
-			}
+		switch($_REQUEST['type']){
+			case we_base_link::TYPE_OBJ:
+				if(substr($params, 0, 1) != '&'){
+					$params = (substr($params, 0, 1) == '?' ? '&' . substr($params, 1) : '&' . $params);
+				}
+				break;
+			default:
+				if(substr($params, 0, 1) != '?'){
+					$params = (substr($params, 0, 1) == '&' ? '?' . substr($params, 1) : '?' . $params);
+				}
 		}
 
 		$_REQUEST['params'] = $params;
 	}
-}
 
-if(isset($_REQUEST['ok']) && isset($_REQUEST['linklist']) && $_REQUEST['ok'] && $_REQUEST['linklist']){
-	$linklist = $_REQUEST['linklist'];
-	//  set $nr to global, because it is used everywhere;
-	$nr = $_REQUEST['nr'];
-	$ll = new we_linklist($linklist);
-	$ll->setID($_REQUEST['nr'], $_REQUEST['id']);
-	if(defined('OBJECT_TABLE')){
-		$ll->setObjID($_REQUEST['nr'], $_REQUEST['obj_id']);
-	}
-	$ll->setHref($_REQUEST['nr'], ($_REQUEST['type'] == we_base_link::TYPE_MAIL ? we_base_link::TYPE_MAIL_PREFIX . str_replace(we_base_link::TYPE_MAIL_PREFIX, '', $_REQUEST['emaillink']) : $_REQUEST['href']));
-	$ll->setAnchor($_REQUEST['nr'], $_REQUEST['anchor']);
-	$ll->setAccesskey($_REQUEST['nr'], $_REQUEST['accesskey']);
-	$ll->setTabindex($_REQUEST['nr'], $_REQUEST['tabindex']);
-	$ll->setLang($_REQUEST['nr'], $_REQUEST['lang']);
-	$ll->setRel($_REQUEST['nr'], $_REQUEST['rel']);
-	$ll->setRev($_REQUEST['nr'], $_REQUEST['rev']);
-	$ll->setHreflang($_REQUEST['nr'], $_REQUEST['hreflang']);
-	$ll->setParams($_REQUEST['nr'], $_REQUEST['params']);
-	$ll->setAttribs($_REQUEST['nr'], $_REQUEST['attribs']);
-	$ll->setTarget($_REQUEST['nr'], $_REQUEST['target']);
-	$ll->setTitle($_REQUEST['nr'], $_REQUEST['title']);
 
-	//added for #7269
-	$ll->setBcc($_REQUEST['nr'], $_REQUEST['bcc']);
-	$ll->setCc($_REQUEST['nr'], $_REQUEST['cc']);
-	$ll->setSubject($_REQUEST['nr'], $_REQUEST['subject']);
+	if(isset($_REQUEST['linklist']) && $_REQUEST['linklist']){
+		$linklist = $_REQUEST['linklist'];
+		//  set $nr to global, because it is used everywhere;
+		$nr = $_REQUEST['nr'];
+		$ll = new we_linklist($linklist);
+		$ll->setID($_REQUEST['nr'], $_REQUEST['id']);
+		if(defined('OBJECT_TABLE')){
+			$ll->setObjID($_REQUEST['nr'], $_REQUEST['obj_id']);
+		}
+		$ll->setHref($_REQUEST['nr'], ($_REQUEST['type'] == we_base_link::TYPE_MAIL ? we_base_link::TYPE_MAIL_PREFIX . str_replace(we_base_link::TYPE_MAIL_PREFIX, '', $_REQUEST['emaillink']) : $_REQUEST['href']));
+		$ll->setAnchor($_REQUEST['nr'], $_REQUEST['anchor']);
+		$ll->setAccesskey($_REQUEST['nr'], $_REQUEST['accesskey']);
+		$ll->setTabindex($_REQUEST['nr'], $_REQUEST['tabindex']);
+		$ll->setLang($_REQUEST['nr'], $_REQUEST['lang']);
+		$ll->setRel($_REQUEST['nr'], $_REQUEST['rel']);
+		$ll->setRev($_REQUEST['nr'], $_REQUEST['rev']);
+		$ll->setHreflang($_REQUEST['nr'], $_REQUEST['hreflang']);
+		$ll->setParams($_REQUEST['nr'], $_REQUEST['params']);
+		$ll->setAttribs($_REQUEST['nr'], $_REQUEST['attribs']);
+		$ll->setTarget($_REQUEST['nr'], $_REQUEST['target']);
+		$ll->setTitle($_REQUEST['nr'], $_REQUEST['title']);
 
-	$ll->setJsWinAttrib($_REQUEST['nr'], 'jswin', (isset($_REQUEST['jswin']) && $_REQUEST['jswin']) ? $_REQUEST['jswin'] : null );
-	$ll->setJsWinAttrib($_REQUEST['nr'], 'jscenter', isset($_REQUEST['jscenter']) && $_REQUEST['jscenter'] ? $_REQUEST['jscenter'] : null);
-	$ll->setJsWinAttrib($_REQUEST['nr'], 'jsposx', $_REQUEST['jsposx']);
-	$ll->setJsWinAttrib($_REQUEST['nr'], 'jsposy', $_REQUEST['jsposy']);
-	$ll->setJsWinAttrib($_REQUEST['nr'], 'jswidth', $_REQUEST['jswidth']);
-	$ll->setJsWinAttrib($_REQUEST['nr'], 'jsheight', $_REQUEST['jsheight']);
-	$ll->setJsWinAttrib($_REQUEST['nr'], 'jsstatus', isset($_REQUEST['jsstatus']) ? $_REQUEST['jsstatus'] : null);
-	$ll->setJsWinAttrib($_REQUEST['nr'], 'jsscrollbars', isset($_REQUEST['jsscrollbars']) ? $_REQUEST['jsscrollbars'] : null);
-	$ll->setJsWinAttrib($_REQUEST['nr'], 'jsmenubar', isset($_REQUEST['jsmenubar']) ? $_REQUEST['jsmenubar'] : null);
-	$ll->setJsWinAttrib($_REQUEST['nr'], 'jstoolbar', isset($_REQUEST['jstoolbar']) ? $_REQUEST['jstoolbar'] : null);
-	$ll->setJsWinAttrib($_REQUEST['nr'], 'jsresizable', isset($_REQUEST['jsresizable']) ? $_REQUEST['jsresizable'] : null);
-	$ll->setJsWinAttrib($_REQUEST['nr'], 'jslocation', isset($_REQUEST['jslocation']) ? $_REQUEST['jslocation'] : null);
-
-	$ll->setImageID($_REQUEST['nr'], $_REQUEST['img_id']);
-	$ll->setImageSrc($_REQUEST['nr'], $_REQUEST['img_src']);
-	$ll->setText($_REQUEST['nr'], $_REQUEST['text']);
-	$ll->setType($_REQUEST['nr'], $_REQUEST['type']);
-	$ll->setCType($_REQUEST['nr'], $_REQUEST['ctype']);
-	$ll->setImageAttrib($_REQUEST['nr'], 'width', $_REQUEST['width']);
-	$ll->setImageAttrib($_REQUEST['nr'], 'height', $_REQUEST['height']);
-	$ll->setImageAttrib($_REQUEST['nr'], 'border', $_REQUEST['border']);
-	$ll->setImageAttrib($_REQUEST['nr'], 'hspace', $_REQUEST['hspace']);
-	$ll->setImageAttrib($_REQUEST['nr'], 'vspace', $_REQUEST['vspace']);
-	$ll->setImageAttrib($_REQUEST['nr'], 'align', $_REQUEST['align']);
-	$ll->setImageAttrib($_REQUEST['nr'], 'alt', $_REQUEST['alt']);
-
-	$linklist = $ll->getString();
-} else if(isset($_REQUEST["ok"]) && $_REQUEST["ok"]){
-	$ln = array(
-		'anchor' => $_REQUEST['anchor'],
-		'accesskey' => $_REQUEST['accesskey'],
-		'tabindex' => $_REQUEST['tabindex'],
-		'lang' => $_REQUEST['lang'],
-		'rel' => $_REQUEST['rel'],
-		'rev' => $_REQUEST['rev'],
-		'hreflang' => $_REQUEST['hreflang'],
-		'params' => $_REQUEST['params'],
-		'title' => $_REQUEST['title'],
 		//added for #7269
-		'bcc' => isset($_REQUEST['bcc']) ? $_REQUEST['bcc'] : '',
-		'cc' => isset($_REQUEST['cc']) ? $_REQUEST['cc'] : '',
-		'subject' => isset($_REQUEST['subject']) ? $_REQUEST['subject'] : '',
-		'href' => ($_REQUEST['type'] == we_base_link::TYPE_MAIL ? we_base_link::TYPE_MAIL_PREFIX . str_replace(we_base_link::TYPE_MAIL_PREFIX, '', $_REQUEST['emaillink']) : $_REQUEST['href']),
-		'attribs' => $_REQUEST['attribs'],
-		'target' => $_REQUEST['target'],
-		'jswin' => isset($_REQUEST['jswin']) && $_REQUEST['jswin'] ? $_REQUEST['jswin'] : null,
-		'jscenter' => isset($_REQUEST['jscenter']) && $_REQUEST['jscenter'] ? $_REQUEST['jscenter'] : null,
-		'jsposx' => $_REQUEST['jsposx'],
-		'jsposy' => $_REQUEST['jsposy'],
-		'jswidth' => $_REQUEST['jswidth'],
-		'jsheight' => $_REQUEST['jsheight'],
-		'jsstatus' => isset($_REQUEST['jsstatus']) ? $_REQUEST['jsstatus'] : null,
-		'jsscrollbars' => isset($_REQUEST['jsscrollbars']) ? $_REQUEST['jsscrollbars'] : null,
-		'jsmenubar' => isset($_REQUEST['jsmenubar']) ? $_REQUEST['jsmenubar'] : null,
-		'jstoolbar' => isset($_REQUEST['jstoolbar']) ? $_REQUEST['jstoolbar'] : null,
-		'jsresizable' => isset($_REQUEST['jsresizable']) ? $_REQUEST['jsresizable'] : null,
-		'jslocation' => isset($_REQUEST['jslocation']) ? $_REQUEST['jslocation'] : null,
-		'img_id' => $_REQUEST['img_id'],
-		'img_src' => $_REQUEST['img_src'],
-		'text' => $_REQUEST['text'],
-		'type' => ($_REQUEST['type'] = we_base_link::TYPE_MAIL) ? we_base_link::TYPE_INT : $_REQUEST['type'],
-		'ctype' => $_REQUEST['ctype'],
-		'width' => $_REQUEST['width'],
-		'height' => $_REQUEST['height'],
-		'border' => $_REQUEST['border'],
-		'hspace' => $_REQUEST['hspace'],
-		'vspace' => $_REQUEST['vspace'],
-		'align' => $_REQUEST['align'],
-		'alt' => $_REQUEST['alt'],
-		'img_title' => $_REQUEST['img_title'],
-	);
-	$ln["id"] = $_REQUEST["id"];
-	if(defined("OBJECT_TABLE")){
-		$ln["obj_id"] = $_REQUEST["obj_id"];
+		$ll->setBcc($_REQUEST['nr'], $_REQUEST['bcc']);
+		$ll->setCc($_REQUEST['nr'], $_REQUEST['cc']);
+		$ll->setSubject($_REQUEST['nr'], $_REQUEST['subject']);
+
+		$ll->setJsWinAttrib($_REQUEST['nr'], 'jswin', (isset($_REQUEST['jswin']) && $_REQUEST['jswin']) ? $_REQUEST['jswin'] : null );
+		$ll->setJsWinAttrib($_REQUEST['nr'], 'jscenter', isset($_REQUEST['jscenter']) && $_REQUEST['jscenter'] ? $_REQUEST['jscenter'] : null);
+		$ll->setJsWinAttrib($_REQUEST['nr'], 'jsposx', $_REQUEST['jsposx']);
+		$ll->setJsWinAttrib($_REQUEST['nr'], 'jsposy', $_REQUEST['jsposy']);
+		$ll->setJsWinAttrib($_REQUEST['nr'], 'jswidth', $_REQUEST['jswidth']);
+		$ll->setJsWinAttrib($_REQUEST['nr'], 'jsheight', $_REQUEST['jsheight']);
+		$ll->setJsWinAttrib($_REQUEST['nr'], 'jsstatus', isset($_REQUEST['jsstatus']) ? $_REQUEST['jsstatus'] : null);
+		$ll->setJsWinAttrib($_REQUEST['nr'], 'jsscrollbars', isset($_REQUEST['jsscrollbars']) ? $_REQUEST['jsscrollbars'] : null);
+		$ll->setJsWinAttrib($_REQUEST['nr'], 'jsmenubar', isset($_REQUEST['jsmenubar']) ? $_REQUEST['jsmenubar'] : null);
+		$ll->setJsWinAttrib($_REQUEST['nr'], 'jstoolbar', isset($_REQUEST['jstoolbar']) ? $_REQUEST['jstoolbar'] : null);
+		$ll->setJsWinAttrib($_REQUEST['nr'], 'jsresizable', isset($_REQUEST['jsresizable']) ? $_REQUEST['jsresizable'] : null);
+		$ll->setJsWinAttrib($_REQUEST['nr'], 'jslocation', isset($_REQUEST['jslocation']) ? $_REQUEST['jslocation'] : null);
+
+		$ll->setImageID($_REQUEST['nr'], $_REQUEST['img_id']);
+		$ll->setImageSrc($_REQUEST['nr'], $_REQUEST['img_src']);
+		$ll->setText($_REQUEST['nr'], $_REQUEST['text']);
+		$ll->setType($_REQUEST['nr'], $_REQUEST['type']);
+		$ll->setCType($_REQUEST['nr'], $_REQUEST['ctype']);
+		$ll->setImageAttrib($_REQUEST['nr'], 'width', $_REQUEST['width']);
+		$ll->setImageAttrib($_REQUEST['nr'], 'height', $_REQUEST['height']);
+		$ll->setImageAttrib($_REQUEST['nr'], 'border', $_REQUEST['border']);
+		$ll->setImageAttrib($_REQUEST['nr'], 'hspace', $_REQUEST['hspace']);
+		$ll->setImageAttrib($_REQUEST['nr'], 'vspace', $_REQUEST['vspace']);
+		$ll->setImageAttrib($_REQUEST['nr'], 'align', $_REQUEST['align']);
+		$ll->setImageAttrib($_REQUEST['nr'], 'alt', $_REQUEST['alt']);
+
+		$linklist = $ll->getString();
+	} else {
+		$ln = array(
+			'anchor' => $_REQUEST['anchor'],
+			'accesskey' => $_REQUEST['accesskey'],
+			'tabindex' => $_REQUEST['tabindex'],
+			'lang' => $_REQUEST['lang'],
+			'rel' => $_REQUEST['rel'],
+			'rev' => $_REQUEST['rev'],
+			'hreflang' => $_REQUEST['hreflang'],
+			'params' => $_REQUEST['params'],
+			'title' => $_REQUEST['title'],
+			//added for #7269
+			'bcc' => isset($_REQUEST['bcc']) ? $_REQUEST['bcc'] : '',
+			'cc' => isset($_REQUEST['cc']) ? $_REQUEST['cc'] : '',
+			'subject' => isset($_REQUEST['subject']) ? $_REQUEST['subject'] : '',
+			'href' => ($_REQUEST['type'] == we_base_link::TYPE_MAIL ? we_base_link::TYPE_MAIL_PREFIX . str_replace(we_base_link::TYPE_MAIL_PREFIX, '', $_REQUEST['emaillink']) : $_REQUEST['href']),
+			'attribs' => $_REQUEST['attribs'],
+			'target' => $_REQUEST['target'],
+			'jswin' => isset($_REQUEST['jswin']) && $_REQUEST['jswin'] ? $_REQUEST['jswin'] : null,
+			'jscenter' => isset($_REQUEST['jscenter']) && $_REQUEST['jscenter'] ? $_REQUEST['jscenter'] : null,
+			'jsposx' => $_REQUEST['jsposx'],
+			'jsposy' => $_REQUEST['jsposy'],
+			'jswidth' => $_REQUEST['jswidth'],
+			'jsheight' => $_REQUEST['jsheight'],
+			'jsstatus' => isset($_REQUEST['jsstatus']) ? $_REQUEST['jsstatus'] : null,
+			'jsscrollbars' => isset($_REQUEST['jsscrollbars']) ? $_REQUEST['jsscrollbars'] : null,
+			'jsmenubar' => isset($_REQUEST['jsmenubar']) ? $_REQUEST['jsmenubar'] : null,
+			'jstoolbar' => isset($_REQUEST['jstoolbar']) ? $_REQUEST['jstoolbar'] : null,
+			'jsresizable' => isset($_REQUEST['jsresizable']) ? $_REQUEST['jsresizable'] : null,
+			'jslocation' => isset($_REQUEST['jslocation']) ? $_REQUEST['jslocation'] : null,
+			'img_id' => $_REQUEST['img_id'],
+			'img_src' => $_REQUEST['img_src'],
+			'text' => $_REQUEST['text'],
+			'type' => ($_REQUEST['type'] == we_base_link::TYPE_MAIL) ? we_base_link::TYPE_INT : $_REQUEST['type'],
+			'ctype' => $_REQUEST['ctype'],
+			'width' => $_REQUEST['width'],
+			'height' => $_REQUEST['height'],
+			'border' => $_REQUEST['border'],
+			'hspace' => $_REQUEST['hspace'],
+			'vspace' => $_REQUEST['vspace'],
+			'align' => $_REQUEST['align'],
+			'alt' => $_REQUEST['alt'],
+			'img_title' => $_REQUEST['img_title'],
+		);
+		$ln['id'] = $_REQUEST['id'];
+		if(defined('OBJECT_TABLE')){
+			$ln['obj_id'] = $_REQUEST['obj_id'];
+		}
+		$link = serialize($ln);
 	}
-	$link = serialize($ln);
-} else{
+} else {
 	$name = $_REQUEST['we_cmd'][1];
 	$nr = isset($_REQUEST['we_cmd'][2]) ? $_REQUEST['we_cmd'][2] : '';
 	if($nr != ''){
@@ -223,7 +226,7 @@ if(isset($_REQUEST['ok']) && isset($_REQUEST['linklist']) && $_REQUEST['ok'] && 
 			$emaillink = substr($href, strlen(we_base_link::TYPE_MAIL_PREFIX));
 			$href = '';
 			$type = we_base_link::TYPE_MAIL;
-		} else{
+		} else {
 			$type = $ll->getType($nr);
 			$type = empty($type) ? we_base_link::TYPE_INT : $type;
 			$emaillink = '';
@@ -240,18 +243,18 @@ if(isset($_REQUEST['ok']) && isset($_REQUEST['linklist']) && $_REQUEST['ok'] && 
 		$attribs = $ll->getAttribs($nr);
 		$text = $ll->getText($nr);
 		$target = $ll->getTarget($nr);
-		$jswin = $ll->getJsWinAttrib($nr, "jswin");
-		$jscenter = $ll->getJsWinAttrib($nr, "jscenter");
-		$jsposx = $ll->getJsWinAttrib($nr, "jsposx");
-		$jsposy = $ll->getJsWinAttrib($nr, "jsposy");
-		$jswidth = $ll->getJsWinAttrib($nr, "jswidth");
-		$jsheight = $ll->getJsWinAttrib($nr, "jsheight");
-		$jsstatus = $ll->getJsWinAttrib($nr, "jsstatus");
-		$jsscrollbars = $ll->getJsWinAttrib($nr, "jsscrollbars");
-		$jsmenubar = $ll->getJsWinAttrib($nr, "jsmenubar");
-		$jstoolbar = $ll->getJsWinAttrib($nr, "jstoolbar");
-		$jsresizable = $ll->getJsWinAttrib($nr, "jsresizable");
-		$jslocation = $ll->getJsWinAttrib($nr, "jslocation");
+		$jswin = $ll->getJsWinAttrib($nr, 'jswin');
+		$jscenter = $ll->getJsWinAttrib($nr, 'jscenter');
+		$jsposx = $ll->getJsWinAttrib($nr, 'jsposx');
+		$jsposy = $ll->getJsWinAttrib($nr, 'jsposy');
+		$jswidth = $ll->getJsWinAttrib($nr, 'jswidth');
+		$jsheight = $ll->getJsWinAttrib($nr, 'jsheight');
+		$jsstatus = $ll->getJsWinAttrib($nr, 'jsstatus');
+		$jsscrollbars = $ll->getJsWinAttrib($nr, 'jsscrollbars');
+		$jsmenubar = $ll->getJsWinAttrib($nr, 'jsmenubar');
+		$jstoolbar = $ll->getJsWinAttrib($nr, 'jstoolbar');
+		$jsresizable = $ll->getJsWinAttrib($nr, 'jsresizable');
+		$jslocation = $ll->getJsWinAttrib($nr, 'jslocation');
 
 		//added for #7269
 		$bcc = $ll->getBcc($nr);
@@ -259,24 +262,24 @@ if(isset($_REQUEST['ok']) && isset($_REQUEST['linklist']) && $_REQUEST['ok'] && 
 		$subject = $ll->getSubject($nr);
 
 		$id = $ll->getID($nr);
-		if(defined("OBJECT_TABLE")){
+		if(defined('OBJECT_TABLE')){
 			$obj_id = $ll->getObjID($nr);
 			$href_obj = $ll->getHrefObj($nr);
 		}
 		$img_id = $ll->getImageID($nr);
 		$img_src = $ll->getImageSrc($nr);
-		$width = $ll->getImageAttrib($nr, "width");
-		$height = $ll->getImageAttrib($nr, "height");
-		$border = $ll->getImageAttrib($nr, "border");
-		$hspace = $ll->getImageAttrib($nr, "hspace");
-		$vspace = $ll->getImageAttrib($nr, "vspace");
-		$align = $ll->getImageAttrib($nr, "align");
-		$alt = $ll->getImageAttrib($nr, "alt");
-		$img_title = $ll->getImageAttrib($nr, "img_title");
+		$width = $ll->getImageAttrib($nr, 'width');
+		$height = $ll->getImageAttrib($nr, 'height');
+		$border = $ll->getImageAttrib($nr, 'border');
+		$hspace = $ll->getImageAttrib($nr, 'hspace');
+		$vspace = $ll->getImageAttrib($nr, 'vspace');
+		$align = $ll->getImageAttrib($nr, 'align');
+		$alt = $ll->getImageAttrib($nr, 'alt');
+		$img_title = $ll->getImageAttrib($nr, 'img_title');
 		$href_int = $ll->getHrefInt($nr);
 		$src_int = $ll->getImageSrcInt($nr);
 		$ctype = $ll->getCType($nr);
-	} else{
+	} else {
 		$ln = $we_doc->getElement($name) ? unserialize($we_doc->getElement($name)) : array();
 		if(empty($ln)){
 			$ln = array('ctype' => we_base_link::CONTENT_TEXT, 'type' => we_base_link::TYPE_INT, 'href' => we_base_link::EMPTY_EXT, 'text' => g_l('global', '[new_link]'));
@@ -286,7 +289,7 @@ if(isset($_REQUEST['ok']) && isset($_REQUEST['linklist']) && $_REQUEST['ok'] && 
 			$emaillink = substr($href, strlen(we_base_link::TYPE_MAIL_PREFIX));
 			$href = '';
 			$type = we_base_link::TYPE_MAIL;
-		} else{
+		} else {
 			$type = isset($ln['type']) ? $ln['type'] : we_base_link::TYPE_INT;
 			$emaillink = '';
 		}
@@ -342,7 +345,7 @@ if(isset($_REQUEST['ok']) && isset($_REQUEST['linklist']) && $_REQUEST['ok'] && 
 	}
 }
 
-we_html_tools::htmlTop(g_l('linklistEdit', "[edit_link]"), isset($we_doc->elements["Charset"]["dat"]) ? $we_doc->elements["Charset"]["dat"] : '');
+we_html_tools::htmlTop(g_l('linklistEdit', '[edit_link]'), isset($we_doc->elements['Charset']['dat']) ? $we_doc->elements['Charset']['dat'] : '');
 $yuiSuggest = & weSuggest::getInstance();
 echo $yuiSuggest->getYuiCssFiles() .
  $yuiSuggest->getYuiJsFiles() .
@@ -384,10 +387,12 @@ echo $yuiSuggest->getYuiCssFiles() .
 		}
 		//added for #7269
 		var emailTable = document.getElementById("emailOptions");
-		if (s.value == "<?php echo we_base_link::TYPE_MAIL; ?>") {
-			emailTable.style.display = "block";
-		} else {
-			emailTable.style.display = "none";
+		if (emailTable) {
+			if (s.value == "<?php echo we_base_link::TYPE_MAIL; ?>") {
+				emailTable.style.display = "block";
+			} else {
+				emailTable.style.display = "none";
+			}
 		}
 	}
 	function changeCTypeSelect(s) {
@@ -472,7 +477,7 @@ if(isset($_REQUEST["ok"]) && $_REQUEST["ok"] && $_REQUEST['we_cmd'][0] == "edit_
 		opener.setScrollTo();
 		opener.we_cmd("change_link", "<?php print $_REQUEST["name"]; ?>", "");
 	<?php
-} else{
+} else {
 	?>
 		function we_cmd() {
 			var args = "";
@@ -572,21 +577,21 @@ if(isset($_REQUEST["ok"]) && $_REQUEST["ok"] && $_REQUEST['we_cmd'][0] == "edit_
 		}
 
 		//added for #7269
-		$bcc = we_html_tools::htmlTextInput("bcc", 30, $bcc, "", "", "text", 300);
-		$cc = we_html_tools::htmlTextInput("cc", 30, $cc, "", "", "text", 300);
-		$subject = we_html_tools::htmlTextInput("subject", 30, $subject, "", "", "text", 300);
+		$bcc = we_html_tools::htmlTextInput('bcc', 30, $bcc, '', '', 'text', 300);
+		$cc = we_html_tools::htmlTextInput('cc', 30, $cc, '', '', 'text', 300);
+		$subject = we_html_tools::htmlTextInput('subject', 30, $subject, '', '', 'text', 300);
 
-		$anchor = we_html_tools::htmlTextInput("anchor", 30, $anchor, "", "", "text", 300);
-		$accesskey = we_html_tools::htmlTextInput("accesskey", 30, $accesskey, "", "", "text", 140);
-		$tabindex = we_html_tools::htmlTextInput("tabindex", 30, $tabindex, "", "", "text", 140);
+		$anchor = we_html_tools::htmlTextInput('anchor', 30, $anchor, '', '', 'text', 300);
+		$accesskey = we_html_tools::htmlTextInput('accesskey', 30, $accesskey, '', '', 'text', 140);
+		$tabindex = we_html_tools::htmlTextInput('tabindex', 30, $tabindex, '', '', 'text', 140);
 		$lang = getLangField('lang', $lang, g_l('linklistEdit', '[link_language]'), 140);
-		$relfield = getRevRelSelect("rel", $rel);
-		$revfield = getRevRelSelect("rev", $rev);
+		$relfield = getRevRelSelect('rel', $rel);
+		$revfield = getRevRelSelect('rev', $rev);
 		$hreflang = getLangField('hreflang', $hreflang, g_l('linklistEdit', '[href_language]'), 140);
-		$params = we_html_tools::htmlTextInput("params", 30, $params, "", "", "text", 300);
-		$title = we_html_tools::htmlTextInput("title", 30, $title, "", "", "text", 300);
-		$ctarget = we_html_tools::targetBox("target", 30, 300, "", $target);
-		$cattribs = we_html_tools::htmlTextInput("attribs", 30, $attribs, "", "", "text", 300);
+		$params = we_html_tools::htmlTextInput('params', 30, $params, '', '', 'text', 300);
+		$title = we_html_tools::htmlTextInput('title', 30, $title, '', '', 'text', 300);
+		$ctarget = we_html_tools::targetBox('target', 30, 300, '', $target);
+		$cattribs = we_html_tools::htmlTextInput('attribs', 30, $attribs, '', '', 'text', 300);
 		$jsWinProps = '
 				<table cellspacing="0" cellpadding="0" border="0" width="100%">
 					<tr>
@@ -873,7 +878,7 @@ if(isset($_REQUEST["ok"]) && $_REQUEST["ok"] && $_REQUEST['we_cmd'][0] == "edit_
 			<input type="hidden" name="we_transaction" value="<?php print $we_transaction; ?>" />
 			<input type="hidden" name="we_field" value="<?php print isset($_REQUEST['we_cmd'][3]) ? $_REQUEST['we_cmd'][3] : ""; ?>" />
 			<?php
-			print we_multiIconBox::getHTML("", "100%", $_parts, 30, $buttons, -1, "", "", false, g_l('linklistEdit', "[edit_link]"), "", 671) .
+			print we_multiIconBox::getHTML('', '100%', $_parts, 30, $buttons, -1, '', '', false, g_l('linklistEdit', '[edit_link]'), '', 671) .
 				$yuiSuggest->getYuiCss() .
 				$yuiSuggest->getYuiJs();
 			?>
@@ -885,6 +890,6 @@ if(isset($_REQUEST["ok"]) && $_REQUEST["ok"] && $_REQUEST['we_cmd'][0] == "edit_
 
 </html>
 <?php
-if(!isset($_REQUEST["ok"]) || !$_REQUEST["ok"]){
+if(!isset($_REQUEST['ok']) || !$_REQUEST['ok']){
 	$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
 }
