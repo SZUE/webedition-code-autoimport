@@ -496,11 +496,13 @@ class weXMLImport extends weXMLExIm{
 			if(isset($object->ModifierID)){
 				$object->ModifierID = $userid;
 			}
-		}else {
-			if(isset($object->CreatorID))
+		} else {
+			if(isset($object->CreatorID)){
 				$object->CreatorID = 0;
-			if(isset($object->ModifierID))
+			}
+			if(isset($object->ModifierID)){
 				$object->ModifierID = 0;
+			}
 		}
 
 		if(isset($object->Owners) && ($this->options['handle_owners'] || $this->options['owners_overwrite'])){
@@ -509,16 +511,19 @@ class weXMLImport extends weXMLExIm{
 			foreach($owners as $owner){
 				if($this->options['handle_owners']){
 					$own = $this->RefTable->getNewOwnerID($owner);
-					if($own == 0 && $this->options['owners_overwrite'] && $this->options['owners_overwrite_id'])
+					if($own == 0 && $this->options['owners_overwrite'] && $this->options['owners_overwrite_id']){
 						$own = $this->options['owners_overwrite_id'];
+					}
 				} else if($this->options['owners_overwrite'] && $this->options['owners_overwrite_id']){
 					$own = $this->options['owners_overwrite_id'];
 				}
 				if(isset($own) && $own && !in_array($own, $newowners)){
-					if(!$object->CreatorID)
+					if(!$object->CreatorID){
 						$object->CreatorID = $own;
-					if(!$object->ModifierID)
+					}
+					if(!$object->ModifierID){
 						$object->ModifierID = $own;
+					}
 					$newowners[] = $own;
 				}
 			}
@@ -530,32 +535,38 @@ class weXMLImport extends weXMLExIm{
 					foreach($readonly as $key => $value){
 						if($this->options['handle_owners']){
 							$newkey = $this->RefTable->getNewOwnerID($key);
-							if($newkey == 0 && $this->options['owners_overwrite'] && $this->options['owners_overwrite_id'])
+							if($newkey == 0 && $this->options['owners_overwrite'] && $this->options['owners_overwrite_id']){
 								$newkey = $this->options['owners_overwrite_id'];
+							}
 						} else if($this->options['owners_overwrite'] && $this->options['owners_overwrite_id']){
 							$newkey = $this->options['owners_overwrite_id'];
 						}
-						if($newkey)
+						if($newkey){
 							$readonly_new[$newkey] = $value;
+						}
 					}
 					$object->OwnersReadOnly = serialize($readonly_new);
 				}
 			}
 		} else {
-			if(isset($object->Owners))
+			if(isset($object->Owners)){
 				$object->Owners = '';
-			if(isset($object->RestrictOwners))
+			}
+			if(isset($object->RestrictOwners)){
 				$object->RestrictOwners = 0;
-			if(isset($object->OwnersReadOnly))
+			}
+			if(isset($object->OwnersReadOnly)){
 				$object->OwnersReadOnly = serialize(array());
+			}
 		}
 	}
 
 	function splitFile($filename, $tmppath, $count){
 		global $_language;
 
-		if($filename == "")
+		if($filename == ""){
 			return -1;
+		}
 
 		$path = $tmppath;
 		$marker = weBackup::backupMarker;
@@ -601,8 +612,9 @@ class weXMLImport extends weXMLExIm{
 					$filename_tmp = sprintf($path . $pattern, $num);
 					$fh_temp = fopen($filename_tmp, "wb");
 					fwrite($fh_temp, $header);
-					if($num == 0)
+					if($num == 0){
 						$header = "";
+					}
 					$open_new = false;
 				}
 

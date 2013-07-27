@@ -158,9 +158,9 @@ class weExportTree extends weMainTree{
 						' . $this->topFrame . '.SelectedItems[' . $this->topFrame . '.table].length=' . $this->topFrame . '.SelectedItems[' . $this->topFrame . '.table].length+1;
 						for(z=0;z<' . $this->topFrame . '.SelectedItems[' . $this->topFrame . '.table].length;z++){
 							if(' . $this->topFrame . '.SelectedItems[' . $this->topFrame . '.table][z]==treeData[i].id) found=true;
-							if(found)
+							if(found){
 								' . $this->topFrame . '.SelectedItems[' . $this->topFrame . '.table][z]=' . $this->topFrame . '.SelectedItems[' . $this->topFrame . '.table][z+1];
-						}
+						}}
 						' . $this->topFrame . '.SelectedItems[' . $this->topFrame . '.table].length=' . $this->topFrame . '.SelectedItems[' . $this->topFrame . '.table].length-2;
 					}
 					else ' . $this->topFrame . '.SelectedItems[' . $this->topFrame . '.table]=new Array();
@@ -225,9 +225,11 @@ class weExportTree extends weMainTree{
 		$parts = array();
 
 		$style_code = "";
-		if(isset($this->SelectionTree->styles))
-			foreach($this->SelectionTree->styles as $st)
+		if(isset($this->SelectionTree->styles)){
+			foreach($this->SelectionTree->styles as $st){
 				$style_code.=$st . "\n";
+			}
+		}
 
 		$header = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 3, 1);
 

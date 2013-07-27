@@ -68,9 +68,7 @@ class we_util_Sys_Php{
 	 * @return boolean
 	 */
 	public static function extension($ext = ""){
-		if(empty($ext))
-			return false;
-		return (in_array($ext, @get_loaded_extensions(true)));
+		return (empty($ext) ? false : (in_array($ext, @get_loaded_extensions(true))));
 	}
 
 	/**

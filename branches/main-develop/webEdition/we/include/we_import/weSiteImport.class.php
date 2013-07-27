@@ -1871,8 +1871,9 @@ sh' && $contentType != 'movie/quicktime'){
 		// go throuh all files of the directory
 		$d = dir($importDirectory);
 		while(false !== ($entry = $d->read())){
-			if($entry == '.' || $entry == '..' || ((strlen($entry) >= 2) && substr($entry, 0, 2) == "._"))
+			if($entry == '.' || $entry == '..' || ((strlen($entry) >= 2) && substr($entry, 0, 2) == "._")){
 				continue;
+			}
 			// now we have to check if the file should be imported
 			$PathOfEntry = $importDirectory . $this->_slash . $entry;
 

@@ -56,8 +56,9 @@ class we_wizard_import extends we_wizard{
 		$foo = getHash('SELECT strOrder,DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . (int) $classID, $db);
 		$order = makeArrayFromCSV($foo['strOrder']);
 		$dv = $foo['DefaultValues'] ? unserialize($foo['DefaultValues']) : array();
-		if(!is_array($dv))
+		if(!is_array($dv)){
 			$dv = array();
+		}
 		$tableInfo_sorted = we_objectFile::getSortedTableInfo($classID, true, $db);
 		$fields = array();
 		$regs = array();

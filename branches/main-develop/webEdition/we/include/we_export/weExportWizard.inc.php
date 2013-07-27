@@ -366,8 +366,9 @@ top.close();');
 			$parts[] = $_tmp;
 		}
 
-		if(!$showdocs)
+		if(!$showdocs){
 			$js.= we_html_element::jsElement($this->topFrame . ".type='classname';");
+		}
 		$hiddens = we_html_element::htmlHidden(array("name" => "pnt", "value" => "body")) .
 			we_html_element::htmlHidden(array("name" => "type", "value" => ($showdocs ? "doctype" : "classname"))) .
 			we_html_element::htmlHidden(array("name" => "step", "value" => 4));
@@ -909,7 +910,7 @@ function setState(a) {
 			$table->setCol(1, 0, array("valign" => "top"), we_html_tools::getPixel(15, 2));
 			$table->setCol(2, 0, array("nowrap" => "nowrap"), we_html_element::jsElement('setTimeout("we_tabInit()",500);')
 			);
-		} else if($step == 1 || $step == 2 || $step == 4)
+		} else if($step == 1 || $step == 2 || $step == 4){
 			$js2 = we_html_element::jsElement('
 				if (parent.frames.length > 0) {
 					var frmRows = parent.document.body.rows;
@@ -925,6 +926,7 @@ function setState(a) {
 					}
 				}
 		');
+		}
 
 		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				we_html_element::htmlHead(we_html_tools::getHtmlInnerHead(g_l('import', '[title]')) . STYLESHEET . $js) .
@@ -1353,8 +1355,9 @@ function setState(a) {
 						$xmlExIm->RefTable->current = $this->exportVars["CurrentRef"];
 						$all = count($xmlExIm->RefTable->Storage);
 						$ref = $xmlExIm->RefTable->getNext();
-						if(!empty($ref->ID) && !empty($ref->ContentType))
+						if(!empty($ref->ID) && !empty($ref->ContentType)){
 							$xmlExIm->exportChunk($ref->ID, $ref->ContentType, $filename);
+						}
 						$exports = $xmlExIm->RefTable->current;
 					}
 
@@ -1469,8 +1472,9 @@ function setState(a) {
 		$select = new we_html_select(array("name" => "doctype", "size" => 1, "class" => "weSelect", "style" => "{width: $width;}", "onChange" => ""));
 		$first = "";
 		while($this->db->next_record()){
-			if($first == "")
+			if($first == ""){
 				$first = $this->db->f("ID");
+			}
 			$select->addOption($this->db->f("ID"), $this->db->f("DocType"));
 		}
 
@@ -1504,8 +1508,9 @@ function setState(a) {
 			$select = new we_html_select(array("name" => "classname", "class" => "weSelect", "size" => 1, "style" => "{width: $width}", "onChange" => $this->topFrame . ".classname=document.we_form.classname.options[document.we_form.classname.selectedIndex].value;"));
 			$first = "";
 			while($this->db->next_record()){
-				if($first == "")
+				if($first == ""){
 					$first = $this->db->f("ID");
+				}
 				$select->addOption($this->db->f("ID"), $this->db->f("Text"));
 			}
 
@@ -1545,8 +1550,9 @@ function setState(a) {
 					$arr = makeArrayFromCSV($this->exportVars["categories"]);
 					if(isset($_REQUEST["cat"])){
 						foreach($arr as $k => $v){
-							if($v == $_REQUEST["cat"])
+							if($v == $_REQUEST["cat"]){
 								array_splice($arr, $k, 1);
+							}
 						}
 						$this->exportVars["categories"] = makeCSVFromArray($arr, true);
 					}

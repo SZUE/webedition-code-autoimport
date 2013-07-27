@@ -537,8 +537,9 @@ function we_userCanEditModule($modName){
 					$one = false;
 				}
 				$or[$k] = implode(' && ', $and);
-				if($one && !in_array('isset($_SESSION[\'perms\'][\'' . trim($v) . '\'])', $set))
+				if($one && !in_array('isset($_SESSION[\'perms\'][\'' . trim($v) . '\'])', $set)){
 					$set[] = 'isset($_SESSION[\'perms\'][\'' . trim($v) . '\'])';
+				}
 			}
 			$set_str = implode(' || ', $set);
 			$condition_str = implode(' || ', $or);
@@ -947,8 +948,9 @@ function get_def_ws($table = FILE_TABLE, $prePostKomma = false){
 	if(!get_ws($table, $prePostKomma)){ // WORKARROUND
 		return '';
 	}
-	if($_SESSION['perms']['ADMINISTRATOR'])
+	if($_SESSION['perms']['ADMINISTRATOR']){
 		return '';
+	}
 	$ws = '';
 
 	$foo = f('SELECT workSpaceDef FROM ' . USER_TABLE . ' WHERE ID=' . intval($_SESSION['user']['ID']), 'workSpaceDef', new DB_WE());
@@ -958,7 +960,7 @@ function get_def_ws($table = FILE_TABLE, $prePostKomma = false){
 		$wsA = makeArrayFromCSV(get_ws($table, $prePostKomma));
 		return (!empty($wsA) ? $wsA[0] : '');
 	}
-		return $ws;
+	return $ws;
 }
 
 function getArrayKey($needle, $haystack){
@@ -1070,16 +1072,18 @@ function getHrefForObject($id, $pid, $path = '', $DB_WE = '', $hidedirindex = fa
 				$showLink = true;
 			} else {
 				if($foo['ExtraWorkspacesSelected']){
-					if(in_workspace($pid, $foo['ExtraWorkspacesSelected'], FILE_TABLE, $DB_WE))
+					if(in_workspace($pid, $foo['ExtraWorkspacesSelected'], FILE_TABLE, $DB_WE)){
 						$showLink = true;
+					}
 				}
 			}
 		}
 	}
 	if($showLink){
 		$path = ($foo['TriggerID'] ? id_to_path($foo['TriggerID']) : getNextDynDoc($path, $pid, $foo['Workspaces'], $foo['ExtraWorkspacesSelected'], $DB_WE));
-		if(!$path)
+		if(!$path){
 			return '';
+		}
 
 		if(!((isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode']) || (isset($GLOBALS['WE_MAIN_EDITMODE']) && $GLOBALS['WE_MAIN_EDITMODE'])) && $hidedirindex){
 			$path_parts = pathinfo($path);
@@ -1228,8 +1232,9 @@ function getMysqlVer($nodots = true){
 			$ver = (int) $strver;
 			if(strlen($ver) < 4){
 				$ver = sprintf('%04d', $ver);
-				if(substr($ver, 0, 1) == '0')
+				if(substr($ver, 0, 1) == '0'){
 					$ver = (int) (substr($ver, 1) . '0');
+				}
 			}
 
 			return $ver;
