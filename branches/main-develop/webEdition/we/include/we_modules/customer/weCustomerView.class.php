@@ -24,7 +24,7 @@
  */
 /* the parent class of storagable webEdition classes */
 
-class weCustomerView extends weModuleView {
+class weCustomerView extends weModuleView{
 
 	//private $db;
 	var $frameset;
@@ -466,7 +466,7 @@ class weCustomerView extends weModuleView {
 				}
 
 			}
-			
+
 			/*
 			//obsolete after removing treeheader frame
 			function doUnload() {
@@ -525,9 +525,9 @@ class weCustomerView extends weModuleView {
 	' . $this->getJSSubmitFunction("customer_settings");
 	}
 
-	/*use parent
-	function getJSSubmitFunctionBack($def_target = 'edbody', $def_method = 'post'){}
-	*/
+	/* use parent
+	  function getJSSubmitFunctionBack($def_target = 'edbody', $def_method = 'post'){}
+	 */
 
 	function processCommands(){
 		if(isset($_REQUEST['cmd'])){
@@ -538,14 +538,14 @@ class weCustomerView extends weModuleView {
 					print we_html_element::jsElement(
 							$this->topFrame . '.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->customer->Text) . '";' .
 							$this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";'
-						);
+					);
 					break;
 				case 'edit_customer':
 					$this->customer = new weCustomer($_REQUEST["cmdid"]);
 					print we_html_element::jsElement(
 							$this->topFrame . '.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->customer->Text) . '";' .
 							$this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";'
-						);
+					);
 					break;
 				case 'save_customer':
 					$js = '';
@@ -553,7 +553,7 @@ class weCustomerView extends weModuleView {
 					if($this->customer->Username == ''){
 						print we_html_element::jsElement(
 								we_message_reporting::getShowMessageCall(g_l('modules_customer', '[username_empty]'), we_message_reporting::WE_MESSAGE_ERROR)
-							);
+						);
 						break;
 					}
 
@@ -571,7 +571,7 @@ class weCustomerView extends weModuleView {
 					if($exists){
 						print we_html_element::jsElement(
 								we_message_reporting::getShowMessageCall(sprintf(g_l('modules_customer', '[username_exists]'), $this->customer->Username), we_message_reporting::WE_MESSAGE_ERROR)
-							);
+						);
 						break;
 					}
 					$c = unserialize($_SESSION['weS']['customer_session']);
@@ -598,7 +598,7 @@ class weCustomerView extends weModuleView {
 									attribs["tooltip"]=\'' . (($this->customer->Forename != "" || $this->customer->Surname != "") ? $this->customer->Forename . "&nbsp;" . $this->customer->Surname : "") . '\';' .
 							$this->topFrame . '.treeData.addSort(new ' . $this->topFrame . '.node(attribs));';
 						$js .= $this->topFrame . '.applySort();';
-					} else{
+					} else {
 						$js = $this->topFrame . '.updateEntry(' . $this->customer->ID . ',"' . $tt . '");' . "\n";
 					}
 
@@ -606,7 +606,7 @@ class weCustomerView extends weModuleView {
 					print we_html_element::jsElement(
 							$js .
 							we_message_reporting::getShowMessageCall(sprintf(g_l('modules_customer', '[customer_saved_ok]'), addslashes($this->customer->Text)), we_message_reporting::WE_MESSAGE_NOTICE)
-						);
+					);
 					break;
 				case 'delete_customer':
 					$oldid = $this->customer->ID;
@@ -619,7 +619,7 @@ class weCustomerView extends weModuleView {
 							$this->topFrame . '.editor.edheader.location="' . $this->frameset . '?home=1&pnt=edheader"; ' .
 							$this->topFrame . '.editor.edbody.location="' . $this->frameset . '?home=1&pnt=edbody"; ' .
 							$this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?home=1&pnt=edfooter";'
-						);
+					);
 
 					break;
 				case 'switchPage':
@@ -720,10 +720,7 @@ class weCustomerView extends weModuleView {
 					$ber = '';
 					$fname = $this->customer->transFieldName($field, $ber);
 
-					if($ber == '' && preg_match('%' . g_l('modules_customer', '[other]') . '%i', $field))
-						$this->deleteField($fname);
-					else
-						$this->deleteField($field);
+					$this->deleteField(($ber == '' && preg_match('%' . g_l('modules_customer', '[other]') . '%i', $field) ? $fname : $field));
 
 					$this->customer->loadPresistents();
 					$js =
@@ -793,7 +790,7 @@ class weCustomerView extends weModuleView {
 						$this->settings->save();
 						$this->customer->loadPresistents();
 					}
-					$js =						'opener.refreshForm();';
+					$js = 'opener.refreshForm();';
 					print we_html_element::jsElement($js);
 
 					break;
@@ -804,7 +801,7 @@ class weCustomerView extends weModuleView {
 					if($branch_new == g_l('modules_customer', '[common]') || $branch_new == g_l('modules_customer', '[other]') || $branch_new == g_l('modules_customer', '[all]')){
 						print we_html_element::jsElement(
 								we_message_reporting::getShowMessageCall(g_l('modules_customer', '[branch_no_edit]'), we_message_reporting::WE_MESSAGE_ERROR)
-							);
+						);
 						return;
 					}
 
@@ -815,14 +812,14 @@ class weCustomerView extends weModuleView {
 						if(in_array($branch_new, $arr)){
 							print we_html_element::jsElement(
 									we_message_reporting::getShowMessageCall(g_l('modules_customer', '[name_exists]'), we_message_reporting::WE_MESSAGE_ERROR)
-								);
+							);
 							return;
 						}
 					}
 
 					if($this->saveBranch($branch_old, $branch_new) == -5)
 						we_message_reporting::getShowMessageCall(sprintf(g_l('modules_customer', '[cannot_save_property]'), $field), we_message_reporting::WE_MESSAGE_ERROR);
-					else{
+					else {
 						$this->customer->loadPresistents();
 						$js = '
 							opener.document.we_form.branch.value="' . g_l('modules_customer', '[other]') . '";
@@ -846,7 +843,7 @@ class weCustomerView extends weModuleView {
 				case 'add_sort':
 					$cout = 0;
 					$found = false;
-					while(!$found) {
+					while(!$found){
 						$cname = g_l('modules_customer', '[sort_name]') . $cout;
 						if(!in_array($cname, array_keys($this->settings->SortView)))
 							$found = true;
@@ -890,8 +887,8 @@ class weCustomerView extends weModuleView {
 
 							opener.' . $this->topFrame . '.applySort();
 							self.close();';
-					print we_html_element::jsScript(JS_DIR . "we_showMessage.js").
-					 we_html_element::jsElement($js);
+					print we_html_element::jsScript(JS_DIR . "we_showMessage.js") .
+						we_html_element::jsElement($js);
 					break;
 				case 'applySort':
 					$js = $this->topFrame . '.clearTree();';
@@ -940,7 +937,7 @@ class weCustomerView extends weModuleView {
 					if($this->settings->save()){
 						$js = we_message_reporting::getShowMessageCall(g_l('modules_customer', '[settings_saved]'), we_message_reporting::WE_MESSAGE_NOTICE) .
 							'self.close();';
-					} else{
+					} else {
 						$js = we_message_reporting::getShowMessageCall(g_l('modules_customer', '[settings_not_saved]'), we_message_reporting::WE_MESSAGE_NOTICE);
 					}
 					print we_html_element::jsScript(JS_DIR . 'we_showMessage.js') .
@@ -997,7 +994,7 @@ class weCustomerView extends weModuleView {
 
 					if(isset($_REQUEST['sort_' . $i]) && $_REQUEST['sort_' . $i] != ''){
 						$sort_name = $_REQUEST['sort_' . $i];
-					} else{
+					} else {
 						$sort_name = g_l('modules_customer', '[sort_name]') . '_' . $i;
 					}
 
@@ -1116,7 +1113,7 @@ class weCustomerView extends weModuleView {
 				$banche = '';
 				$fieldname = $this->customer->transFieldName($k, $banche);
 				if($banche == $old_branch && $fieldname != ''){
-					$this->db->query('ALTER TABLE ' . $this->customer->table . ' CHANGE ' . $k . ' ' . $new_branch . '_' . $fieldname . ' ' . $v['Type'] . (!empty($v["Default"])? " DEFAULT '" . $v["Default"]."'" :''). " NOT NULL;");
+					$this->db->query('ALTER TABLE ' . $this->customer->table . ' CHANGE ' . $k . ' ' . $new_branch . '_' . $fieldname . ' ' . $v['Type'] . (!empty($v["Default"]) ? " DEFAULT '" . $v["Default"] . "'" : '') . " NOT NULL;");
 				}
 			}
 		}
@@ -1187,7 +1184,7 @@ class weCustomerView extends weModuleView {
 				}
 				if($condition != ''){
 					$condition.=" $ak (" . implode(' OR ', $conditionarr) . ')';
-				} else{
+				} else {
 					$condition.=' (' . implode(' OR ', $conditionarr) . ')';
 				}
 			}
@@ -1201,7 +1198,7 @@ class weCustomerView extends weModuleView {
 		$this->db->query('SELECT ID, CONCAT(Username, " (",Forename," ",Surname,")") AS user FROM ' . $this->db->escape($this->customer->table) . $condition . " LIMIT 0,$res_num");
 
 		$result = array();
-		while($this->db->next_record()) {
+		while($this->db->next_record()){
 			$result[$this->db->f('ID')] = oldHtmlspecialchars($this->db->f('user'));
 		}
 

@@ -617,7 +617,7 @@ class weCustomerEIWizard{
 		//upload table
 		$maxsize = getUploadMaxFilesize(true);
 		if($maxsize){
-			$tmptable->setCol(0, 0, array(), we_html_tools::htmlAlertAttentionBox(sprintf(g_l('newFile', "[max_possible_size]"),  weFile::getHumanFileSize($maxsize, weFile::SZ_MB)), we_html_tools::TYPE_ALERT, 430));
+			$tmptable->setCol(0, 0, array(), we_html_tools::htmlAlertAttentionBox(sprintf(g_l('newFile', "[max_possible_size]"), weFile::getHumanFileSize($maxsize, weFile::SZ_MB)), we_html_tools::TYPE_ALERT, 430));
 			$tmptable->setCol(1, 0, array(), we_html_tools::getPixel(2, 5));
 		} else {
 			$tmptable->setCol(0, 0, array(), we_html_tools::getPixel(2, 5));
@@ -1166,10 +1166,7 @@ class weCustomerEIWizard{
 					$file_name = isset($_REQUEST["filename"]) ? $_REQUEST["filename"] : "";
 					$export_to = isset($_REQUEST["export_to"]) ? $_REQUEST["export_to"] : "";
 
-					if($export_to == "server")
-						$path = isset($_REQUEST["path"]) ? $_REQUEST["path"] : "";
-					else
-						$path = rtrim(TEMP_DIR, '/');
+					$path = ($export_to == "server" ? (isset($_REQUEST["path"]) ? $_REQUEST["path"] : "") : rtrim(TEMP_DIR, '/'));
 
 					$cdata = isset($_REQUEST["cdata"]) ? $_REQUEST["cdata"] : "0";
 					$csv_delimiter = isset($_REQUEST["csv_delimiter"]) ? $_REQUEST["csv_delimiter"] : "";
@@ -1322,15 +1319,9 @@ class weCustomerEIWizard{
 
 
 					$exports = count($customers);
-					if($all != 0)
-						$percent = (int) ((($all - $exports + 2) / $all) * 100);
-					else
-						$percent = 0;
-					if($percent < 0){
-						$percent = 0;
-					} else if($percent > 100){
-						$percent = 100;
-					}
+					$percent = ($all != 0 ? (int) ((($all - $exports + 2) / $all) * 100) : 0);
+					$percent = ($percent < 0 ? 0 : ($percent > 100 ? 100 : $percent));
+
 
 					$progressjs = we_html_element::jsElement('if (top.footer.setProgress) top.footer.setProgress(' . $percent . ');');
 
@@ -1565,10 +1556,11 @@ class weCustomerEIWizard{
 		foreach($selIDs as $v){
 			if($v){
 				$isfolder = f("SELECT IsFolder FROM " . $this->db->escape($table) . " WHERE ID=" . intval($v), "IsFolder", $this->db);
-				if($isfolder)
+				if($isfolder){
 					we_readChilds($v, $tmp, $table, false);
-				else
+				} else {
 					$tmp[] = $v;
+				}
 			}
 		}
 		foreach($tmp as $v){
@@ -1742,10 +1734,11 @@ class weCustomerEIWizard{
 					$count++;
 					break;
 				case "del_filter":
-					if($count)
+					if($count){
 						$count--;
-					else
+					} else {
 						$count = 0;
+					}
 					break;
 				default:
 			}

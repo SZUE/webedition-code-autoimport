@@ -38,7 +38,7 @@ abstract class weDynList{
 		$_fields = array();
 		$_ids = array();
 
-		while($_fieldset->next_record()) {
+		while($_fieldset->next_record()){
 			if(!isset($_docs[$_fieldset->Record['ID']])){
 				$_docs[$_fieldset->Record['ID']] = array();
 			}
@@ -48,8 +48,7 @@ abstract class weDynList{
 
 			if($_fieldset->Record['FieldName'] == $field){
 				$_fields[$_fieldset->Record['ID']] = $_fieldset->Record['FieldData'];
-			} else
-			if(!isset($_fields[$_fieldset->Record['ID']])){
+			} elseif(!isset($_fields[$_fieldset->Record['ID']])){
 				$_fields[$_fieldset->Record['ID']] = $_fieldset->Record['Text'];
 			}
 		}
@@ -69,7 +68,7 @@ abstract class weDynList{
 			if($_sort['order'] == 'DESC'){
 				natcasesort($_arr[$_k]);
 				$_arr[$_k] = array_reverse($_arr[$_k]);
-			} else{
+			} else {
 				natcasesort($_arr[$_k]);
 			}
 		}
@@ -87,11 +86,11 @@ abstract class weDynList{
 						'text' => $_txt[$_id],
 						'field' => weNavigation::encodeSpecChars(isset($_fields[$_id]) ? $_fields[$_id] : '')
 					);
-				} else{
+				} else {
 					break;
 				}
 			}
-		} else{
+		} else {
 			$_counter = 0;
 			foreach($_docs as $_id => $_doc){
 				if($_counter < $count){
@@ -101,7 +100,7 @@ abstract class weDynList{
 						'text' => $_txt[$_id]
 					);
 					$_counter++;
-				} else{
+				} else {
 					break;
 				}
 			}
@@ -117,7 +116,7 @@ abstract class weDynList{
 		$_cats = array();
 		foreach($categories as $cat){
 			$cat = is_numeric($cat) ? $cat : $_db->escape(path_to_id($cat, CATEGORY_TABLE));
-			$_cats[] = 'Category LIKE "%,' . $cat . ',%"';//bug #6729
+			$_cats[] = 'Category LIKE "%,' . $cat . ',%"'; //bug #6729
 		}
 
 		$dirpath = clearPath($dirpath . '/');
@@ -151,7 +150,7 @@ abstract class weDynList{
 				$_select, $classid, id_to_path($dirid, OBJECT_FILES_TABLE), $categories, $catlogic, array(), $_order, 0, $count);
 		$_ids = array();
 
-		while($_fieldset->next_record()) {
+		while($_fieldset->next_record()){
 
 			$_ids[] = array(
 				'id' => $_fieldset->Record['OF_ID'],
@@ -170,7 +169,7 @@ abstract class weDynList{
 		$_cats = array();
 		foreach($categories as $cat){
 			$cat = is_numeric($cat) ? $cat : $_db->escape(path_to_id($cat, CATEGORY_TABLE));
-			$_cats[] = 'OF_Category LIKE "%,' . $cat . ',%"';//bug #6729
+			$_cats[] = 'OF_Category LIKE "%,' . $cat . ',%"'; //bug #6729
 		}
 
 		$_where = array();
@@ -187,7 +186,7 @@ abstract class weDynList{
 		$_where[] = 'OF_Published > 0'; // Bug #4797
 		$_db->query('SELECT ' . implode(',', $select) . ' FROM ' . OBJECT_X_TABLE . $classid . '
 						WHERE OF_ID<>0 ' . (!empty($_where) ? ('AND ' . implode(
-					' AND ', $_where)) : '') . ($order ? (' ORDER BY ' . implode(',', $order)) : '') . ' LIMIT ' . $offset . ',' . $count );
+					' AND ', $_where)) : '') . ($order ? (' ORDER BY ' . implode(',', $order)) : '') . ' LIMIT ' . $offset . ',' . $count);
 
 		return $_db;
 	}
@@ -197,7 +196,7 @@ abstract class weDynList{
 		$_fieldset = new DB_WE();
 		$_fieldset->query('SELECT * FROM ' . CATEGORY_TABLE . ' WHERE ParentID=' . intval($dirid) . ' AND IsFolder=0  LIMIT 0,' . $count);
 
-		while($_fieldset->next_record()) {
+		while($_fieldset->next_record()){
 			$_catfields = @unserialize($_fieldset->f('Catfields'));
 			$_ids[] = array(
 				'id' => $_fieldset->Record['ID'],
@@ -221,7 +220,7 @@ abstract class weDynList{
 		foreach($_values as $_k => $_id){
 			if(!weFileExists($_id) || !in_array($_id, $_all)){
 				unset($_values[$_k]);
-			} else{
+			} else {
 				$_ret[$_id] = id_to_path($_id);
 			}
 		}
@@ -238,7 +237,7 @@ abstract class weDynList{
 		foreach($_values as $_k => $_id){
 			if(!weFileExists($_id)){
 				unset($_values[$_k]);
-			} else{
+			} else {
 				$_ret[$_id] = id_to_path($_id);
 			}
 		}

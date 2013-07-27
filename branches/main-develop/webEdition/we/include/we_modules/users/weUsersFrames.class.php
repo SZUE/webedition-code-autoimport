@@ -83,10 +83,11 @@ function zeichne(startEntry,zweigEintrag) {
 	while (ai <= nf.laenge) {
 		fr.write(zweigEintrag);
 		if (nf[ai].typ == "user") {
-			if(ai == nf.laenge)
+			if(ai == nf.laenge){
 				fr.write("&nbsp;&nbsp;<IMG SRC=' . TREE_IMAGE_DIR . 'kreuzungend.gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0>");
-			else
+			}else{
 				fr.write("&nbsp;&nbsp;<IMG SRC=' . TREE_IMAGE_DIR . 'kreuzung.gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0>");
+			}
 			if(nf[ai].name != -1) {
 				fr.write("<a name=\'_"+nf[ai].name+"\' href=\"javascript://\" onClick=\"doClick("+nf[ai].name+",\'"+nf[ai].contentType+"\',\'"+nf[ai].table+"\');return true;\" BORDER=0>");
 			}
@@ -113,10 +114,11 @@ function zeichne(startEntry,zweigEintrag) {
 			fr.write("</a>");
 			fr.write("&nbsp;&nbsp;<BR>\n");
 			if (nf[ai].offen) {
-				if(ai == nf.laenge)
+				if(ai == nf.laenge){
 					newAst = newAst + "<IMG SRC=' . TREE_IMAGE_DIR . 'leer.gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0>";
-				else
+				}else{
 					newAst = newAst + "<IMG SRC=' . TREE_IMAGE_DIR . 'strich2.gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0>";
+				}
 				zeichne(nf[ai].name,newAst);
 			}
 		}

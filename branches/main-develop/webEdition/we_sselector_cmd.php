@@ -72,10 +72,11 @@ if(!isset($_REQUEST["cmd"]) || (isset($_REQUEST["cmd"]) && $_REQUEST["cmd"] != "
 
 		function goUp() {
 			var a = top.fsheader.document.forms["we_form"].elements["lookin"].options;
-			if (a.length - 2 > -1)
+			if (a.length - 2 > -1) {
 				setDir(a[a.length - 2].value);
-			else
+			} else {
 	<?php print we_message_reporting::getShowMessageCall(g_l('fileselector', '[already_root]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
+			}
 		}
 
 		function selectFile(fid) {
@@ -170,9 +171,9 @@ if(!isset($_REQUEST["cmd"]) || (isset($_REQUEST["cmd"]) && $_REQUEST["cmd"] != "
 				} else if(is_file($dir . "/" . $entry)){
 					if(!@unlink($dir . "/" . $entry))
 						print we_message_reporting::getShowMessageCall(sprintf(g_l('alert', "[delete_nok_file]"), $entry), we_message_reporting::WE_MESSAGE_ERROR);
-				}
-				else
+				}else{
 					print we_message_reporting::getShowMessageCall(sprintf(g_l('alert', "[delete_nok_noexist]"), $entry), we_message_reporting::WE_MESSAGE_ERROR);
+				}
 			}
 		}
 		if(!@rmdir($dir)){

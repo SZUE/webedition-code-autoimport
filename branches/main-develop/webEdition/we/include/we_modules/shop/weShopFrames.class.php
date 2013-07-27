@@ -27,7 +27,6 @@ class weShopFrames extends weModuleFrames{
 	var $db;
 	var $View;
 	var $frameset;
-
 	public $module = "shop";
 	protected $hasIconbar = true;
 	protected $useMainTree = false;
@@ -88,10 +87,11 @@ class weShopFrames extends weModuleFrames{
 				while (ai <= nf.laenge) {
 					fr.write(zweigEintrag);
 					if (nf[ai].typ == 'shop') {
-						if (ai == nf.laenge)
+						if (ai == nf.laenge) {
 							fr.write("&nbsp;&nbsp;<IMG SRC=<?php print TREE_IMAGE_DIR; ?>kreuzungend.gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0>");
-						else
+						} else {
 							fr.write("&nbsp;&nbsp;<IMG SRC=<?php print TREE_IMAGE_DIR; ?>kreuzung.gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0>");
+						}
 		<?php if(we_hasPerm("EDIT_SHOP_ORDER")){ ?> // make  in tree clickable
 							if (nf[ai].name != -1) {
 								fr.write("<a href=\"javascript://\" onClick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\" BORDER=0>");
@@ -142,10 +142,11 @@ class weShopFrames extends weModuleFrames{
 		<?php } ?>
 						fr.write("&nbsp;&nbsp;<BR>\n");
 						if (nf[ai].offen) {
-							if (ai == nf.laenge)
+							if (ai == nf.laenge) {
 								newAst = newAst + "<IMG SRC=<?php print TREE_IMAGE_DIR; ?>leer.gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0>";
-							else
+							} else {
 								newAst = newAst + "<IMG SRC=<?php print TREE_IMAGE_DIR; ?>strich2.gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0>";
+							}
 							zeichne(nf[ai].name, newAst);
 						}
 					}
@@ -156,10 +157,11 @@ class weShopFrames extends weModuleFrames{
 			function makeNewEntry(icon, id, pid, txt, offen, ct, tab, pub) {
 				if (table == tab) {
 					if (menuDaten[indexOfEntry(pid)]) {
-						if (ct == "folder")
+						if (ct == "folder") {
 							menuDaten.addSort(new dirEntry(icon, id, pid, txt, offen, ct, tab));
-						else
+						} else {
 							menuDaten.addSort(new urlEntry(icon, id, pid, txt, ct, tab, pub));
+						}
 						drawEintraege();
 					}
 				}
@@ -317,7 +319,7 @@ class weShopFrames extends weModuleFrames{
 // echo "menuDaten.add(new dirEntry('folder.gif','aaaa',0, 'Article',0,'','',".(($k>0)?1:0)."));";
 
 		$this->db->query("SELECT IntOrderID,DateShipping,DateConfirmation,DateCustomA,DateCustomB,DateCustomC,DateCustomD,DateCustomE,DatePayment,DateCustomF,DateCustomG,DateCancellation,DateCustomH,DateCustomI,DatecustomJ,DateFinished, DATE_FORMAT(DateOrder,'" . g_l('date', '[format][mysqlDate]') . "') as orddate, DATE_FORMAT(DateOrder,'%c%Y') as mdate FROM " . SHOP_TABLE . " GROUP BY IntOrderID ORDER BY IntID DESC");
-		while($this->db->next_record()) {
+		while($this->db->next_record()){
 			//added for #6786
 			$style = "color:black;font-weight:bold;";
 
@@ -338,7 +340,7 @@ class weShopFrames extends weModuleFrames{
 			if($this->db->f("DateShipping") <= 0){
 				if(isset(${'l' . $this->db->f("mdate")})){
 					${'l' . $this->db->f("mdate")}++;
-				} else{
+				} else {
 					${'l' . $this->db->f("mdate")} = 1;
 				}
 			}
@@ -347,7 +349,7 @@ class weShopFrames extends weModuleFrames{
 			//FIXME: remove eval
 			if(isset(${'v' . $this->db->f("mdate")})){
 				${'v' . $this->db->f("mdate")}++;
-			} else{
+			} else {
 				${'v' . $this->db->f("mdate")} = 1;
 			}
 		}
@@ -418,7 +420,7 @@ function we_cmd() {
 
 		// grep the last element from the year-set, wich is the current year
 		$this->db->query("SELECT DATE_FORMAT(DateOrder,'%Y') AS DateOrd FROM " . SHOP_TABLE . " ORDER BY DateOrd");
-		while($this->db->next_record()) {
+		while($this->db->next_record()){
 			$strs = array($this->db->f("DateOrd"));
 			$yearTrans = end($strs);
 		}
@@ -482,7 +484,7 @@ function we_cmd() {
 			return $this->getHTMLEditorTop();
 		}
 
-		$DB_WE = $this->db;//TODO: why does it not work without this?
+		$DB_WE = $this->db; //TODO: why does it not work without this?
 		//do what have been done in edit_shop_editorFrameset before
 
 		$bid = isset($_REQUEST["bid"]) ? intval($_REQUEST["bid"]) : 0;
@@ -500,13 +502,12 @@ function we_cmd() {
 		} elseif($yearView){
 			$year = $yearView;
 			$bodyURL = WE_SHOP_MODULE_DIR . 'edit_shop_revenueTop.php?ViewYear=' . $year;
-		} else{
+		} else {
 			$bodyURL = WE_SHOP_MODULE_DIR . 'edit_shop_frameset.php?pnt=edbody&bid=' . $bid;
 		}
 
-		$body = we_html_element::htmlBody(array('style' => 'position: fixed; top: 0px; left: 0px; right: 0px; bottom: 0px; border: 0px none;') ,
-			we_html_element::htmlIFrame('edheader', $this->frameset . '?pnt=edheader&home=' . $home . '&mid=' . $mid . $yearView . '&bid=' . $bid, 'position: absolute; top: 0px; left: 0px; right: 0px; height: 40px; overflow: hidden;') .
-			we_html_element::htmlIFrame('edbody', $bodyURL . '?pnt=edbody&we_transaction=' . $this->transaction, 'position: absolute; top: 40px; bottom: 0px; left: 0px; right: 0px; overflow: auto;', 'border:0px;width:100%;height:100%;overflow: auto;')
+		$body = we_html_element::htmlBody(array('style' => 'position: fixed; top: 0px; left: 0px; right: 0px; bottom: 0px; border: 0px none;'), we_html_element::htmlIFrame('edheader', $this->frameset . '?pnt=edheader&home=' . $home . '&mid=' . $mid . $yearView . '&bid=' . $bid, 'position: absolute; top: 0px; left: 0px; right: 0px; height: 40px; overflow: hidden;') .
+				we_html_element::htmlIFrame('edbody', $bodyURL . '?pnt=edbody&we_transaction=' . $this->transaction, 'position: absolute; top: 40px; bottom: 0px; left: 0px; right: 0px; overflow: auto;', 'border:0px;width:100%;height:100%;overflow: auto;')
 		);
 
 		return $this->getHTMLDocument($body);
@@ -537,11 +538,11 @@ function we_cmd() {
 		$resultD = f('SELECT COUNT(Name) as Anzahl FROM ' . LINK_TABLE . ' WHERE Name ="' . $DB_WE->escape(WE_SHOP_TITLE_FIELD_NAME) . '"', 'Anzahl', $DB_WE);
 
 		if($home){
-			$bodyURL = WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=mod_home&mod=shop';//same as in getHTMLRight()
+			$bodyURL = WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=mod_home&mod=shop'; //same as in getHTMLRight()
 		} elseif($mid){
 			// TODO::WANN UND VON WEM WIRD DAS AUFGERUFEN ????
 			$bodyURL = WE_SHOP_MODULE_DIR . 'edit_shop_overviewTop.php?mid=' . $mid;
-		} else{
+		} else {
 			if(($resultD > 0) && (empty($resultO))){ // docs but no objects
 				$bodyURL = 'edit_shop_article_extend.php?typ=document';
 			} elseif(($resultD < 1) && (!empty($resultO))){ // no docs but objects
@@ -563,7 +564,7 @@ function we_cmd() {
 
 	function getHTMLEditorHeader(){
 		$DB_WE = $this->db;
-		if (isset($_REQUEST["home"]) && $_REQUEST["home"]) {
+		if(isset($_REQUEST["home"]) && $_REQUEST["home"]){
 			return $this->getHTMLDocument('<body bgcolor="#F0EFF0"></body></html>');
 		}
 
@@ -579,7 +580,7 @@ function we_cmd() {
 
 		$we_tabs = new we_tabs();
 
-		if (isset($_REQUEST["mid"]) && $_REQUEST["mid"] && $_REQUEST["mid"] != '00') {
+		if(isset($_REQUEST["mid"]) && $_REQUEST["mid"] && $_REQUEST["mid"] != '00'){
 			$we_tabs->addTab(new we_tab('#', g_l('tabs', "[module][overview]"), 'TAB_ACTIVE', 0));
 		} else {
 			$we_tabs->addTab(new we_tab('#', g_l('tabs', '[module][orderdata]'), 'TAB_ACTIVE', "setTab(0);"));
@@ -606,8 +607,8 @@ top.content.hloaded = 1;
 		');
 
 		$tab_body_content = '<div id="main" >' . we_html_tools::getPixel(100, 3) . '<div style="margin:0px;padding-left:10px;" id="headrow"><nobr><b>' . str_replace(" ", "&nbsp;", $textPre) . ':&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">' . str_replace(" ", "&nbsp;", $textPost) . '</b></span></nobr></div>' . we_html_tools::getPixel(100, 3) .
-						$we_tabs->getHTML() .
-						'</div>';
+			$we_tabs->getHTML() .
+			'</div>';
 		$tab_body = we_html_element::htmlBody(array("bgcolor" => "#FFFFFF", "background" => IMAGE_DIR . "backgrounds/header_with_black_line.gif"), $tab_body_content);
 
 		return $this->getHTMLDocument($tab_body, $tab_head);
@@ -615,13 +616,13 @@ top.content.hloaded = 1;
 
 	function getHTMLEditorHeaderTop(){
 		$DB_WE = $this->db;
-		require_once(WE_MODULES_PATH . 'shop/handle_shop_dbitemConnect.php');//TODO: make function out of this: do we need it or does the following code the same?
+		require_once(WE_MODULES_PATH . 'shop/handle_shop_dbitemConnect.php'); //TODO: make function out of this: do we need it or does the following code the same?
 
 		$yid = isset($_REQUEST["ViewYear"]) ? abs($_REQUEST["ViewYear"]) : date("Y");
 		$bid = isset($_REQUEST["bid"]) ? abs($_REQUEST["bid"]) : 0;
 		$cid = f('SELECT IntCustomerID FROM ' . SHOP_TABLE . ' WHERE IntOrderID=' . intval($bid), "IntCustomerID", $DB_WE);
 		$DB_WE->query("SELECT IntOrderID,DATE_FORMAT(DateOrder,'" . g_l('date', '[format][mysqlDate]') . "') as orddate FROM " . SHOP_TABLE . " GROUP BY IntOrderID ORDER BY IntID DESC");
-		$headline = ($DB_WE->next_record()?	sprintf(g_l('modules_shop', '[lastOrder]'), $DB_WE->f("IntOrderID"), $DB_WE->f("orddate")):'');
+		$headline = ($DB_WE->next_record() ? sprintf(g_l('modules_shop', '[lastOrder]'), $DB_WE->f("IntOrderID"), $DB_WE->f("orddate")) : '');
 
 		/// config
 		$DB_WE->query("SELECT strFelder from " . ANZEIGE_PREFS_TABLE . " WHERE strDateiname = 'shop_pref'");
@@ -640,7 +641,7 @@ top.content.hloaded = 1;
 
 		// grep the last element from the year-set, wich is the current year
 		$DB_WE->query("SELECT DATE_FORMAT(DateOrder,'%Y') AS DateOrd FROM " . SHOP_TABLE . " ORDER BY DateOrd");
-		while($DB_WE->next_record()) {
+		while($DB_WE->next_record()){
 			$strs = array($DB_WE->f("DateOrd"));
 			$yearTrans = end($strs);
 		}
@@ -656,7 +657,7 @@ top.content.hloaded = 1;
 		$we_tabs = new we_tabs();
 		if(isset($_REQUEST["mid"]) && $_REQUEST["mid"]){
 			$we_tabs->addTab(new we_tab("#", g_l('tabs', "[module][overview]"), "TAB_ACTIVE", "//"));
-		} else{
+		} else {
 			if(($resultD > 0) && (!empty($resultO))){ //docs and objects
 				$we_tabs->addTab(new we_tab("#", g_l('tabs', "[module][admin_1]"), "TAB_ACTIVE", "setTab(0);"));
 				$we_tabs->addTab(new we_tab("#", g_l('tabs', "[module][admin_2]"), "TAB_NORMAL", "setTab(1);"));
@@ -697,4 +698,5 @@ top.content.hloaded = 1;
 
 		return $this->getHTMLDocument($tab_body, $tab_head);
 	}
+
 }

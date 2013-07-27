@@ -61,10 +61,8 @@ class weBinary{
 			if($this->Path && $loadData){
 				return $this->loadFile($this->Path);
 			}
-			return false;
 		}
-		else
-			return false;
+		return false;
 	}
 
 	function loadFile($file){

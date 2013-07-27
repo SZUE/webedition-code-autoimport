@@ -96,7 +96,7 @@ class weXMLImport extends weXMLExIm{
 								$object->ID = $dtid;
 							} else if($this->options["handle_collision"] == 'rename'){
 								$this->getNewName($object, $dtid, "DocType");
-							} else{
+							} else {
 								$save = false;
 								continue;
 							}
@@ -109,7 +109,7 @@ class weXMLImport extends weXMLExIm{
 								$object->ID = $nid;
 							} else if($this->options["handle_collision"] == "rename"){
 								$this->getNewName($object, $nid, "NavigationName");
-							} else{
+							} else {
 								$save = false;
 								continue;
 							}
@@ -122,7 +122,7 @@ class weXMLImport extends weXMLExIm{
 								$object->ID = $nid;
 							} else if($this->options["handle_collision"] == "rename"){
 								$this->getNewName($object, $nid, "Name");
-							} else{
+							} else {
 								$save = false;
 								continue;
 							}
@@ -174,7 +174,7 @@ class weXMLImport extends weXMLExIm{
 								}
 							} else if($this->options["handle_collision"] == "rename"){
 								$this->getNewName($object, $id, "Path");
-							} else{
+							} else {
 								$save = false;
 								continue;
 							}
@@ -242,7 +242,7 @@ class weXMLImport extends weXMLExIm{
 								$object->Path = $_path;
 								unset($_path);
 								unset($_c);
-							} else{
+							} else {
 								$save = false;
 							}
 						}
@@ -270,7 +270,7 @@ class weXMLImport extends weXMLExIm{
 					if($ref){
 						// assign TableID and ParentID from reference
 						$object->TableID = $ref->ID;
-					} else{
+					} else {
 						//assign TableID based on Path
 						// evaluate root dir for object
 						$match = array();
@@ -299,10 +299,8 @@ class weXMLImport extends weXMLExIm{
 		do{
 			$c++;
 
-			if($object->ClassName == "we_docTypes" || $object->ClassName == "weNavigationRule" || $object->ClassName == "we_thumbnailEx")
-				$newname = $object->$prop;
-			else
-				$newname = basename($object->$prop);
+			$newname = ($object->ClassName == "we_docTypes" || $object->ClassName == "weNavigationRule" || $object->ClassName == "we_thumbnailEx" ?
+					$object->$prop : basename($object->$prop));
 
 			if($newid)
 				$newname = $c . "_" . $newname;
@@ -347,7 +345,7 @@ class weXMLImport extends weXMLExIm{
 			if($_ref){
 				$object->ParentID = $_ref->ID;
 				$object->Path = $_ref->Path . '/' . $new_name;
-			} else{
+			} else {
 				$object->Path = clearPath(dirname($object->Path) . '/' . $new_name);
 			}
 		}
@@ -383,7 +381,7 @@ class weXMLImport extends weXMLExIm{
 					$content = $this->importNodeSet($node);
 					$this->xmlBrowser->gotoMark('we:content');
 					$object->elements = array_merge($object->elements, $content->getElement());
-				} else{
+				} else {
 					if($nodname == "ClassName"){
 						$this->nodehierarchy[] = $noddata;
 						switch($noddata){
@@ -444,34 +442,34 @@ class weXMLImport extends weXMLExIm{
 
 				if($value == $this->options['xml_encoding']){
 					return $this->options['target_encoding'];
-				} else{
+				} else {
 					if($this->isSerialized($value)){
 						$usv = unserialize($value);
 						if(is_array($usv)){
 							foreach($usv as &$av){
 								if($this->options['xml_encoding'] == 'ISO-8859-1'){
 									$av = utf8_encode($av);
-								} else{
+								} else {
 									$av = utf8_decode($av);
 								}
 							}
 							$sv = serialize($usv);
 							return $sv;
-						} else{
+						} else {
 							return $value;
 						}
-					} else{
+					} else {
 						if($this->options['xml_encoding'] == 'ISO-8859-1'){
 							return utf8_encode($value);
-						} else{
+						} else {
 							return utf8_decode($value);
 						}
 					}
 				}
-			} else{
+			} else {
 				return $value;
 			}
-		} else{
+		} else {
 			return $value;
 		}
 	}
@@ -485,13 +483,13 @@ class weXMLImport extends weXMLExIm{
 					$userid = $this->options['owners_overwrite_id'];
 			} else if($this->options['owners_overwrite'] && $this->options['owners_overwrite_id']){
 				$userid = $this->options['owners_overwrite_id'];
-			} else{
+			} else {
 				$userid = 0;
 			}
 			$object->CreatorID = $userid;
 			if(isset($object->ModifierID))
 				$object->ModifierID = $userid;
-		}else{
+		}else {
 			if(isset($object->CreatorID))
 				$object->CreatorID = 0;
 			if(isset($object->ModifierID))
@@ -536,7 +534,7 @@ class weXMLImport extends weXMLExIm{
 					$object->OwnersReadOnly = serialize($readonly_new);
 				}
 			}
-		} else{
+		} else {
 			if(isset($object->Owners))
 				$object->Owners = '';
 			if(isset($object->RestrictOwners))
@@ -579,12 +577,12 @@ class weXMLImport extends weXMLExIm{
 		$marker2_size = strlen($marker2); //Backup 5089
 
 		if($fh){
-			while(!@feof($fh)) {
+			while(!@feof($fh)){
 				@set_time_limit(240);
 				$line = "";
 				$findline = false;
 
-				while($findline == false && !@feof($fh)) {
+				while($findline == false && !@feof($fh)){
 					$line .= ($compress != "none" ? @gzgets($fh, 4096) : @fgets($fh, 4096));
 					if(substr($line, -1) == "\n"){
 						$findline = true;
@@ -608,7 +606,7 @@ class weXMLImport extends weXMLExIm{
 						$write = false;
 						if($marker_size){
 							$write = ((substr($buff, (0 - ($marker_size + 1))) == $marker . "\n") || (substr($buff, (0 - ($marker_size + 2))) == $marker . "\r\n") || (substr($buff, (0 - ($marker2_size + 1))) == $marker2 . "\n") || (substr($buff, (0 - ($marker2_size + 2))) == $marker2 . "\r\n" ));
-						} else{
+						} else {
 							$write = true;
 						}
 
@@ -627,16 +625,16 @@ class weXMLImport extends weXMLExIm{
 							}
 							$buff = "";
 						}
-					} else{
+					} else {
 						if(((substr($line, 0, 2) == "<?") || (substr($line, 0, 11) == weBackup::weXmlExImHead)) && $num == 0){
 							$header.=$line;
 						}
 					}
-				} else{
+				} else {
 					return -1;
 				}
 			}
-		} else{
+		} else {
 			return -1;
 		}
 		if($fh_temp && trim($line) != weBackup::weXmlExImFooter){
@@ -646,10 +644,11 @@ class weXMLImport extends weXMLExIm{
 			@fwrite($fh_temp, $footer);
 			@fclose($fh_temp);
 		}
-		if($compress != "none")
+		if($compress != "none"){
 			@gzclose($fh);
-		else
+		} else {
 			@fclose($fh);
+		}
 
 		return $num + 1;
 	}

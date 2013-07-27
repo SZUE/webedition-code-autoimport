@@ -655,8 +655,7 @@ function startImport() {
 		top.body.delete_enabled = top.body.switch_button_state("delete", "delete_enabled", "disabled");
 		document.we_form.action = "' . WE_INCLUDES_DIR . 'we_editors/we_backup_cmd.php";
 		setTimeout("document.we_form.submit()",100);
-	}
-	else
+	}else
 		' . we_message_reporting::getShowMessageCall(g_l('backup', "[nothing_selected]"), we_message_reporting::WE_MESSAGE_WARNING) . '
 	') : ('
 	if(document.we_form.backup_select.value) {

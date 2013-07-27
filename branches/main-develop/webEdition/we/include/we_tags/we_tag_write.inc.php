@@ -134,7 +134,7 @@ function we_tag_write($attribs){
 						if($objname == ''){
 							$objname = 1 + intval(f('SELECT MAX(ID) AS ID FROM ' . OBJECT_FILES_TABLE, 'ID', $db));
 						}
-					} else{
+					} else {
 						switch($onpredefinedname){
 							case 'appendto':
 								$objname = ($objname != '' ? $GLOBALS['we_' . $type][$name]->Text . '_' . $objname : $GLOBALS['we_' . $type][$name]->Text);
@@ -153,7 +153,7 @@ function we_tag_write($attribs){
 					if($objexists == ''){
 						$GLOBALS['we_' . $type][$name]->Text = $objname;
 						$GLOBALS['we_' . $type][$name]->Path = str_replace('//', '/', $GLOBALS['we_' . $type][$name]->Path . '/' . $objname);
-					} else{
+					} else {
 						switch($onduplicate){
 							case 'abort':
 								$GLOBALS['we_object_write_ok'] = false;
@@ -167,7 +167,7 @@ function we_tag_write($attribs){
 							case 'increment':
 								$z = 1;
 								$footext = $objname . '_' . $z;
-								while(f('SELECT ID FROM ' . OBJECT_FILES_TABLE . " WHERE Path='" . escape_sql_query(str_replace('//', '/', $GLOBALS['we_' . $type][$name]->Path . "/" . $footext)) . "'", 'ID', $db)) {
+								while(f('SELECT ID FROM ' . OBJECT_FILES_TABLE . " WHERE Path='" . escape_sql_query(str_replace('//', '/', $GLOBALS['we_' . $type][$name]->Path . "/" . $footext)) . "'", 'ID', $db)){
 									$z++;
 									$footext = $objname . '_' . $z;
 								}
@@ -182,7 +182,7 @@ function we_tag_write($attribs){
 					if($publish && !$doworkflow){
 						if($type == 'document' && (!$GLOBALS['we_' . $type][$name]->IsDynamic) && isset($GLOBALS['we_doc'])){ // on static HTML Documents we have to do it different
 							$ret1 = $GLOBALS['we_doc']->we_publish();
-						} else{
+						} else {
 							$ret1 = $GLOBALS['we_' . $type][$name]->we_publish();
 						}
 					}
@@ -239,7 +239,7 @@ function we_tag_write($attribs){
 					$phpmail->buildMessage();
 					$phpmail->Send();
 				}
-			} else{
+			} else {
 				$GLOBALS['we_object_write_ok'] = false;
 			}
 		}
@@ -272,8 +272,7 @@ function checkAndCreateFlashmovie($formname, $type = 'we_document'){
 						$GLOBALS[$type][$formname]->setElement($_flashName, 0);
 					}
 				}
-			} else
-			if(isset($_SESSION[$_flashmovieDataId]['serverPath'])){
+			} elseif(isset($_SESSION[$_flashmovieDataId]['serverPath'])){
 				if(substr($_SESSION[$_flashmovieDataId]['type'], 0, 29) == 'application/x-shockwave-flash'){
 					$flashDocument = new we_flashDocument();
 
@@ -347,8 +346,7 @@ function checkAndCreateQuicktime($formname, $type = 'we_document'){
 						$GLOBALS[$type][$formname]->setElement($_quicktimeName, 0);
 					}
 				}
-			} else
-			if(isset($_SESSION[$_quicktimeDataId]['serverPath'])){
+			} elseif(isset($_SESSION[$_quicktimeDataId]['serverPath'])){
 				if(substr($_SESSION[$_quicktimeDataId]['type'], 0, 15) == 'video/quicktime'){
 					$quicktimeDocument = new we_quicktimeDocument();
 
@@ -423,8 +421,7 @@ function checkAndCreateImage($formname, $type = 'we_document'){
 						$GLOBALS[$type][$formname]->setElement($_imgName, 0);
 					}
 				}
-			} else
-			if(isset($_SESSION[$_imgDataId]['serverPath'])){
+			} elseif(isset($_SESSION[$_imgDataId]['serverPath'])){
 				if(substr($_SESSION[$_imgDataId]['type'], 0, 6) == 'image/'){
 					$imgDocument = new we_imageDocument();
 
@@ -499,8 +496,7 @@ function checkAndCreateBinary($formname, $type = 'we_document'){
 						$GLOBALS[$type][$formname]->setElement($_binaryName, 0);
 					}
 				}
-			} else
-			if(isset($_SESSION[$_binaryDataId]['serverPath'])){
+			} elseif(isset($_SESSION[$_binaryDataId]['serverPath'])){
 				if(substr($_SESSION[$_binaryDataId]['type'], 0, 12) == 'application/'){
 					$binaryDocument = new we_otherDocument();
 

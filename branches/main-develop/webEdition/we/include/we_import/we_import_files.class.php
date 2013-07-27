@@ -709,8 +709,7 @@ function next() {
 					$tmp = $we_doc->ClassName;
 					$we_doc = new $tmp();
 					$we_doc->initByID($file_id, FILE_TABLE);
-				} else
-				if($this->sameName == "rename"){
+				} elseif($this->sameName == "rename"){
 					$z = 0;
 					$footext = $we_doc->Filename . "_" . $z . $we_doc->Extension;
 					while(f("SELECT ID FROM " . FILE_TABLE . " WHERE Text='" . $GLOBALS['DB_WE']->escape($footext) . "' AND ParentID=" . intval($this->importToID), "ID", $GLOBALS['DB_WE'])){

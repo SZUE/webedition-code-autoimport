@@ -38,7 +38,7 @@ if($bTypeDoc && $bTypeObj){
 	if(defined("OBJECT_FILES_TABLE") && we_hasPerm("CAN_SEE_OBJECTFILES")){
 		$tbls[] = OBJECT_FILES_TABLE;
 	}
-} else{
+} else {
 	if($bTypeDoc && defined("FILE_TABLE")){
 		$tbls[] = FILE_TABLE;
 	}
@@ -107,7 +107,7 @@ foreach($tbls as $table){
 	$db2 = new DB_WE();
 	$content = array();
 
-	while($DB_WE->next_record()) {
+	while($DB_WE->next_record()){
 		$row = array();
 		$_cont[$DB_WE->f("ModDate")] = $path = '<tr><td width="20" height="20" valign="middle" nowrap><img src="' . ICON_DIR . $DB_WE->f(
 				"Icon") . '" width="16" height="18" />' . we_html_tools::getPixel(4, 1) . '</td><td valign="middle" class="middlefont"><nobr><a href="javascript:top.weEditorFrameController.openDocument(\'' . $table . '\',\'' . $DB_WE->f(
@@ -140,14 +140,11 @@ foreach($tbls as $table){
 				$step = we_workflow_utility::findLastActiveStep($DB_WE->f("ID"), $table) + 1;
 				$steps = count(we_workflow_utility::getNumberOfSteps($DB_WE->f("ID"), $table));
 				$text = "$step&nbsp;" . g_l('resave', '[of]') . "&nbsp;$steps";
-				if($DB_WE->f("mywforder"))
-					$text .= '&nbsp;<img src="' . IMAGE_DIR . 'we_boebbel_blau.gif" align="absmiddle" />';
-				else
-					$text .= '&nbsp;<img src="' . IMAGE_DIR . 'we_boebbel_grau.gif" align="absmiddle" />';
+				$text .= '&nbsp;<img src="' . IMAGE_DIR . 'we_boebbel_' . ($DB_WE->f("mywforder") ? 'blau' : 'grau') . '.gif" align="absmiddle" />';
 				$row[] = array("dat" => $text);
-			}
-			else
+			} else {
 				$row[] = array("dat" => "-");
+			}
 		$content[] = $row;
 	}
 }

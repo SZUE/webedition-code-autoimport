@@ -117,7 +117,7 @@ class we_tag_tagParser{
 
 				$_endtag = '';
 				$i++;
-			} else{ //  "normal" we:tag
+			} else { //  "normal" we:tag
 				$_start = strpos($code, $_tags[$i]);
 				$_starttag = $_tags[$i];
 				$i++;
@@ -167,7 +167,7 @@ class we_tag_tagParser{
 				}
 				$this->tags[$ipos] = '';
 				$ipos+=$tmp;
-			} else{
+			} else {
 				$ipos++;
 			}
 		}
@@ -193,7 +193,7 @@ class we_tag_tagParser{
 
 					if($_matches[1][0] == '/'){
 						$Counter[$_matches[2][0]]--;
-					} else{
+					} else {
 						//selfclosing-Tag
 						if($_matches[4][0] == '/'){
 							continue;
@@ -213,8 +213,7 @@ class we_tag_tagParser{
 				$ErrorMsg .= parseError(sprintf(g_l('parser', '[missing_open_tag]') . ' (' . abs($_counter) . ')', 'we:' . $_tag));
 
 				$isError = true;
-			} else
-			if($_counter > 0){
+			} elseif($_counter > 0){
 				$err.=sprintf(g_l('parser', '[missing_close_tag]'), 'we:' . $_tag);
 				$ErrorMsg .= parseError(sprintf(g_l('parser', '[missing_close_tag]') . ' (' . abs($_counter) . ')', 'we:' . $_tag));
 				$isError = true;
@@ -237,7 +236,7 @@ class we_tag_tagParser{
 				$endtags[] = $regs[1];
 				if($tagcount){
 					$tagcount--;
-				} else{
+				} else {
 					// found endtag
 					for($n = 0; $n < count($endtags); $n++){
 						$endtagpos = strpos($code, $endtags[$n], $endtagpos + 1);
@@ -245,7 +244,7 @@ class we_tag_tagParser{
 					$this->tags[$i] = '';
 					return array($endtagpos, $i);
 				}
-			} else{
+			} else {
 				if(preg_match('|(< ?we ?: ?' . $tagname . '[^a-z])|i', $this->tags[$i])){
 					$tagcount++;
 				}
@@ -302,8 +301,7 @@ class we_tag_tagParser{
 		if(preg_match('|name[ \t]*=[ \t]*"([^"]*)"|i', $attr, $regs)){
 			if(!$regs[1]){
 				print parseError(sprintf(g_l('parser', '[name_empty]'), $tagname));
-			} else
-			if(strlen($regs[1]) > 255){
+			} elseif(strlen($regs[1]) > 255){
 				print parseError(sprintf(g_l('parser', '[name_to_long]'), $tagname));
 			}
 		}
@@ -321,7 +319,7 @@ class we_tag_tagParser{
 		$endeStartTag = $tagPos + strlen($tag);
 		if($selfclose){
 			$content = '';
-		} else{
+		} else {
 			list($endTagPos, $endTagNo) = $this->searchEndtag($tagname, $code, $tagPos, $ipos);
 			if($endTagPos !== FALSE){
 				$endeEndTagPos = strpos($code, '>', $endTagPos) + 1;
@@ -334,7 +332,7 @@ class we_tag_tagParser{
 						return $tmp;
 					}
 				}
-			} else{
+			} else {
 				//FIXME: remove in 6.4
 				//if it is not a selfclosing tag (<we:xx/>),
 				//there exists a tagWizzard file, and in this file this tag is stated to be selfclosing
@@ -348,15 +346,16 @@ class we_tag_tagParser{
 					unset($endTagNo);
 					//don't break for now.
 					parseError(sprintf('Compatibility MODE of parser - Note this will soon be removed!' . "\n" . g_l('parser', '[start_endtag_missing]'), $tagname));
-				}else
+				} else {
 					return parseError(sprintf(g_l('parser', '[start_endtag_missing]'), $tagname));
+				}
 			}
 		}
 
 		if(PHPLOCALSCOPE){
 			$attribs = str_replace('\$', '$', 'array(' . rtrim($attribs, ',') . ')'); //#6330
 			//t_e($tag, $tagPos, $endeStartTag, $endTagPos, $ipos, $content,$this->tags);
-		} else{
+		} else {
 			$attribs = 'array(' . rtrim($attribs, ',') . ')';
 		}
 		$parseFn = 'we_parse_tag_' . $tagname;
@@ -369,8 +368,7 @@ class we_tag_tagParser{
 			$code = substr($code, 0, $tagPos) .
 				$content .
 				substr($code, (isset($endeEndTagPos) ? $endeEndTagPos : $endeStartTag));
-		} else
-		if(substr($tagname, 0, 2) == "if" && $tagname != "ifNoJavaScript"){
+		} elseif(substr($tagname, 0, 2) == "if" && $tagname != "ifNoJavaScript"){
 			if(!isset($endeEndTagPos)){
 				return parseError(sprintf(g_l('parser', '[selfclosingIf]'), $tagname));
 			}
@@ -379,12 +377,12 @@ class we_tag_tagParser{
 				$content .
 				'<?php } ?>' .
 				substr($code, $endeEndTagPos);
-		} else{
+		} else {
 			// Tag besitzt Endtag
 			if($content){
 				$code = substr($code, 0, $tagPos) . '<?php printElement(' . self::printTag($tagname, $attribs, $content, true) . '); ?>' . substr(
 						$code, $endeEndTagPos);
-			} else{
+			} else {
 				$code = substr($code, 0, $tagPos) . '<?php printElement(' . self::printTag($tagname, $attribs) . '); ?>' . substr(
 						$code, (isset($endeEndTagPos) ? $endeEndTagPos : $endeStartTag));
 			}

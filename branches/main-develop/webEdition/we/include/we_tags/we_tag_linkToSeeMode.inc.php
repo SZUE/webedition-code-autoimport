@@ -40,8 +40,7 @@ function we_tag_linkToSeeMode($attribs){
 	if(isset($id) && !empty($id)){
 
 		$type = 'document';
-	} else
-	if(isset($GLOBALS['we_obj']) || $oid){ // use object if possible
+	} elseif(isset($GLOBALS['we_obj']) || $oid){ // use object if possible
 		$type = 'object';
 		if($oid){
 			$id = $oid;

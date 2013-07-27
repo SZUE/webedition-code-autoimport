@@ -99,13 +99,13 @@ class weNavigationItem{
 
 				$__id = path_to_id($__path, FILE_TABLE);
 				if($__id){
-					$this->visible = (f('SELECT 1 AS a FROM ' . FILE_TABLE . ' WHERE ID=' . intval($__id) . ' AND Published>0', 'a', $db)==1?'true':'false');
+					$this->visible = (f('SELECT 1 AS a FROM ' . FILE_TABLE . ' WHERE ID=' . intval($__id) . ' AND Published>0', 'a', $db) == 1 ? 'true' : 'false');
 				}
 				if(NAVIGATION_DIRECTORYINDEX_HIDE && NAVIGATION_DIRECTORYINDEX_NAMES != ''){
 					$mypath = id_to_path($this->docid, FILE_TABLE);
 					$mypath_parts = pathinfo($mypath);
 					if(in_array($mypath_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
-						$this->visible = ( f('SELECT 1 AS a FROM ' . FILE_TABLE . ' WHERE ID=' . intval($this->docid) . ' AND Published>0', 'a', $db)==1?'true':'false');
+						$this->visible = ( f('SELECT 1 AS a FROM ' . FILE_TABLE . ' WHERE ID=' . intval($this->docid) . ' AND Published>0', 'a', $db) == 1 ? 'true' : 'false');
 					}
 				}
 				break;
@@ -113,13 +113,13 @@ class weNavigationItem{
 			// #6916
 			case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
 				$__id = $this->docid;
-				$this->visible = (f('SELECT 1 AS a FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($__id) . ' AND Published>0', 'a', $db)==1?'true':'false');
+				$this->visible = (f('SELECT 1 AS a FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($__id) . ' AND Published>0', 'a', $db) == 1 ? 'true' : 'false');
 
 				if(NAVIGATION_DIRECTORYINDEX_HIDE && NAVIGATION_DIRECTORYINDEX_NAMES != ''){
 					$mypath = id_to_path($this->docid, OBJECT_FILES_TABLE);
 					$mypath_parts = pathinfo($mypath);
 					if(in_array($mypath_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
-						$this->visible = (f('SELECT 1 AS a FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($this->docid) . ' AND Published>0', 'a', $db)==1?'true':'false');
+						$this->visible = (f('SELECT 1 AS a FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($this->docid) . ' AND Published>0', 'a', $db) == 1 ? 'true' : 'false');
 					}
 				}
 				break;
@@ -176,12 +176,12 @@ class weNavigationItem{
 				if($this->CurrentOnAnker || $this->CurrentOnUrlPar){
 					if(isset($uri['query'])){
 						parse_str($uri['query'], $uriarrq);
-					} else{
+					} else {
 						$uriarrq = array();
 					}
 					if(isset($ref['query'])){
 						parse_str($ref['query'], $refarrq);
-					} else{
+					} else {
 						$refarrq = array();
 					}
 					if($this->CurrentOnAnker && !$this->CurrentOnUrlPar){
@@ -234,8 +234,8 @@ class weNavigationItem{
 		if(defined('CUSTOMER_TABLE') && $this->limitaccess){ // only init filter if access is limited
 			$_filter = new weNavigationCustomerFilter();
 			$_filter->initByNavItem($this);
-			$this->visible=($_filter->customerHasAccess()?'true':'false');
-			return ($this->visible=='true');
+			$this->visible = ($_filter->customerHasAccess() ? 'true' : 'false');
+			return ($this->visible == 'true');
 		}
 		return true;
 	}
@@ -272,7 +272,7 @@ class weNavigationItem{
 				return ($fieldname == 'title' ?
 						oldHtmlspecialchars($this->attributes[$fieldname]) :
 						$this->attributes[$fieldname]);
-			} else{
+			} else {
 				return '';
 			}
 		}
@@ -307,9 +307,9 @@ class weNavigationItem{
 		if($attr){
 			$_fields = makeArrayFromCSV($attr);
 			unset($attribs['attributes']);
-			/*if(isset($_fields['link_attribute'])){
-				$_link_attribute = $_fields['link_attribute'];
-			}*/
+			/* if(isset($_fields['link_attribute'])){
+			  $_link_attribute = $_fields['link_attribute'];
+			  } */
 			foreach($_fields as $_field){
 				switch($_field){
 					case 'link' :
@@ -368,8 +368,7 @@ class weNavigationItem{
 					default :
 						if(isset($this->$_field) && $this->$_field != ''){
 							$attribs[$_field] = oldHtmlspecialchars($this->$_field);
-						} else
-						if(isset($this->attributes[$_field]) && $this->attributes[$_field] != ''){
+						} elseif(isset($this->attributes[$_field]) && $this->attributes[$_field] != ''){
 							$attribs[$_field] = oldHtmlspecialchars($this->attributes[$_field]);
 						}
 				}

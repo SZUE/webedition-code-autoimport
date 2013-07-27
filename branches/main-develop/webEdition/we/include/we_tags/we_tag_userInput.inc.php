@@ -172,8 +172,7 @@ function we_tag_userInput($attribs, $content){
 						$src = '/' . ltrim(substr($_SESSION[$_imgDataId]["serverPath"], strlen($_SERVER['DOCUMENT_ROOT'])), '/');
 
 						return '<img src="' . $src . '" alt="" width="' . $_SESSION[$_imgDataId]["imgwidth"] . '" height="' . $_SESSION[$_imgDataId]["imgheight"] . '" />' . $hidden;
-					} else
-					if(isset($_SESSION[$_imgDataId]["id"]) && $_SESSION[$_imgDataId]["id"]){
+					} elseif(isset($_SESSION[$_imgDataId]["id"]) && $_SESSION[$_imgDataId]["id"]){
 
 						if(isset($_SESSION[$_imgDataId]["doDelete"]) && $_SESSION[$_imgDataId]["doDelete"]){
 							return $hidden;
@@ -265,8 +264,7 @@ function we_tag_userInput($attribs, $content){
 
 						//return '<img src="' . $src . '" alt="" width="' . $_SESSION[$_flashmovieDataId]["imgwidth"] . '" height="' . $_SESSION[$_flashmovieDataId]["imgheight"] . '" />' . $hidden;
 						return $hidden;
-					} else
-					if(isset($_SESSION[$_flashmovieDataId]["id"]) && $_SESSION[$_flashmovieDataId]["id"]){
+					} elseif(isset($_SESSION[$_flashmovieDataId]["id"]) && $_SESSION[$_flashmovieDataId]["id"]){
 
 						if(isset($_SESSION[$_flashmovieDataId]["doDelete"]) && $_SESSION[$_flashmovieDataId]["doDelete"]){
 							return $hidden;
@@ -358,8 +356,7 @@ function we_tag_userInput($attribs, $content){
 
 						//return '<img src="' . $src . '" alt="" width="' . $_SESSION[$_quicktimeDataId]["imgwidth"] . '" height="' . $_SESSION[$_quicktimeDataId]["imgheight"] . '" />' . $hidden;
 						return $hidden;
-					} else
-					if(isset($_SESSION[$_quicktimeDataId]["id"]) && $_SESSION[$_quicktimeDataId]["id"]){
+					} elseif(isset($_SESSION[$_quicktimeDataId]["id"]) && $_SESSION[$_quicktimeDataId]["id"]){
 
 						if(isset($_SESSION[$_quicktimeDataId]["doDelete"]) && $_SESSION[$_quicktimeDataId]["doDelete"]){
 							return $hidden;

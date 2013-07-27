@@ -22,7 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 //TEST: was it ok to abandon treefooter?
 
 class weGlossaryFrames extends weModuleFrames{
@@ -32,7 +31,6 @@ class weGlossaryFrames extends weModuleFrames{
 	var $_space_size = 150;
 	var $_text_size = 75;
 	var $_width_size = 535;
-	
 	public $module = "glossary";
 	protected $treeDefaultWidth = 280;
 
@@ -94,7 +92,7 @@ class weGlossaryFrames extends weModuleFrames{
 			if(isset($_REQUEST['cmdid']) && !preg_match('|^[0-9]|', $_REQUEST['cmdid'])){
 				$this->View->Glossary->Language = substr($_REQUEST['cmdid'], 0, 5);
 			}
-		} else{
+		} else {
 			return weGlossaryFrameEditorItem::Header($this);
 		}
 	}
@@ -133,7 +131,7 @@ class weGlossaryFrames extends weModuleFrames{
 			if(isset($_REQUEST['cmdid']) && !preg_match('|^[0-9]|', $_REQUEST['cmdid'])){
 				$this->View->Glossary->Language = substr($_REQUEST['cmdid'], 0, 5);
 			}
-		} else{
+		} else {
 			return weGlossaryFrameEditorItem::Body($this);
 		}
 	}
@@ -172,7 +170,7 @@ class weGlossaryFrames extends weModuleFrames{
 			if(isset($_REQUEST['cmdid']) && !preg_match('|^[0-9]|', $_REQUEST['cmdid'])){
 				$this->View->Glossary->Language = substr($_REQUEST['cmdid'], 0, 5);
 			}
-		} else{
+		} else {
 			return weGlossaryFrameEditorItem::Footer($this);
 		}
 	}
@@ -194,15 +192,11 @@ class weGlossaryFrames extends weModuleFrames{
 
 		if(isset($_REQUEST["pid"])){
 			$pid = $_REQUEST["pid"];
-		}
-		else
+		} else {
 			exit;
-
-		if(isset($_REQUEST["offset"])){
-			$offset = $_REQUEST["offset"];
 		}
-		else
-			$offset = 0;
+
+		$offset = (isset($_REQUEST["offset"]) ? $_REQUEST["offset"] : 0);
 
 		$rootjs = "";
 		if(!$pid)

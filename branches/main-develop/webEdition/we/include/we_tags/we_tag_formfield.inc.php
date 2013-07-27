@@ -173,16 +173,14 @@ function we_tag_formfield($attribs){
 					$name, 'ffdefault') . '" /></td>
 	</tr>
 ';
-		} else
-		if($type_sel == 'file'){
+		} elseif($type_sel == 'file'){
 			$tbl .= '	<tr>
 		<td class=\"weEditmodeStyle\" width="62" style="color: black; font-size: 12px; font-family: Verdana, sans-serif" align="right"><nobr>' . g_l('global', "[max_file_size]") . ':</nobr></td>
 		<td class=\"weEditmodeStyle\" width="161"><input type="text" name="' . $nameprefix . 'ffmaxfilesize]" size="24" value="' . $GLOBALS['we_doc']->getElement(
 					$name, 'ffmaxfilesize') . '" /></td>
 	</tr>
 ';
-		} else
-		if($type_sel == 'radio' || $type_sel == 'checkbox'){
+		} elseif($type_sel == 'radio' || $type_sel == 'checkbox'){
 			$tbl .= '	<tr>
 		<td class=\"weEditmodeStyle\" width="62" style="color: black; font-size: 12px; font-family: Verdana, sans-serif" align="right"><nobr>' . g_l('global', "[checked]") . ':</nobr></td>
 		<td class=\"weEditmodeStyle\" width="161"><select name="' . $nameprefix . 'ffchecked]" size="1"><option value="0"' . ($GLOBALS['we_doc']->getElement(

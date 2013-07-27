@@ -461,10 +461,9 @@ class searchtoolView extends weToolView{
     else {
      setTimeout(\'sizeScrollContent();\', 1000);
     }';
-		}
-		else
+		} else {
 			$scrollContentFunction = "";
-
+		}
 
 		$anzahl = 0;
 

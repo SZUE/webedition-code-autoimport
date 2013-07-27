@@ -97,7 +97,7 @@ class weNavigationItems{
 		foreach($_new_items as $_new){
 			if(isset($_depended[$i])){
 				$_items[$_depended[$i]] = $_new;
-			} else{
+			} else {
 				$_items[] = $_new;
 			}
 			$i++;
@@ -169,7 +169,7 @@ class weNavigationItems{
 
 		if(isset(self::$cache[$parentid])){
 			$this->items = self::$cache[$parentid];
-		} else{
+		} else {
 			$this->items = weNavigationCache::getCacheFromFile($parentid);
 			if($this->items === false){
 				$this->items = array();
@@ -265,7 +265,7 @@ class weNavigationItems{
 					return true;
 				}
 			}
-		} else{
+		} else {
 			return true;
 		}
 		return false;
@@ -298,7 +298,7 @@ class weNavigationItems{
 				if($_rule->SelectionType == weNavigation::STPYE_DOCTYPE && $_rule->DoctypeID){
 					if(isset($GLOBALS['WE_MAIN_DOC']->DocType) && ($_rule->DoctypeID == $GLOBALS['WE_MAIN_DOC']->DocType)){
 						$_ponder--;
-					} else{
+					} else {
 						$_ponder = 999; // remove from selection
 					}
 				}
@@ -306,7 +306,7 @@ class weNavigationItems{
 				if($_rule->SelectionType == weNavigation::STPYE_CLASS && $_rule->ClassID){
 					if(isset($GLOBALS["WE_MAIN_DOC"]->TableID) && ($GLOBALS["WE_MAIN_DOC"]->TableID == $_rule->ClassID)){
 						$_ponder--;
-					} else{
+					} else {
 						$_ponder = 999; // remove from selection
 					}
 				}
@@ -349,7 +349,7 @@ class weNavigationItems{
 				if(!empty($_cats)){
 					if($this->checkCategories($_rule->Categories, $GLOBALS['WE_MAIN_DOC']->Category)){
 						$_ponder--;
-					} else{
+					} else {
 						$_ponder = 999; // remove from selection
 					}
 				}
@@ -360,7 +360,7 @@ class weNavigationItems{
 				} elseif($_ponder <= $_score){
 					if(NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH){
 						$this->setCurrent($_rule->NavigationID, null);
-					} else{
+					} else {
 						$_score = $_ponder;
 						$_candidate = $_rule->NavigationID;
 					}
@@ -380,7 +380,7 @@ class weNavigationItems{
 		foreach($this->items[$id]->items as $key => $val){
 			if($val->type == 'folder'){
 				$_items = array_merge($_items, $this->getItemIds($key));
-			} else{
+			} else {
 				$_items[] = $key;
 			}
 		}
@@ -422,7 +422,7 @@ class weNavigationItems{
 
 		if(isset($useTemplate[$item->position])){
 			return $useTemplate[$item->position];
-		} else{
+		} else {
 			if($item->position % 2 === 1){
 				if(isset($useTemplate['odd'])){
 					return $useTemplate['odd'];
@@ -492,7 +492,7 @@ class weNavigationItems{
 		$_ids = array();
 
 		$_db->query('SELECT * FROM ' . NAVIGATION_TABLE . ' WHERE Path LIKE "' . $_db->escape($_path) . '" ' . ($id != 0 ? ' OR ID=' . intval($id) : '') . ' ORDER BY Ordn');
-		while($_db->next_record()) {
+		while($_db->next_record()){
 			$_tmpItem = $_db->getRecord();
 			$_tmpItem["Name"] = $_tmpItem["Text"];
 			$this->Storage['items'][] = $_tmpItem;
@@ -502,8 +502,7 @@ class weNavigationItems{
 				$_ids[] = $_db->Record['LinkID'];
 			} elseif($_db->Record['Selection'] == weNavigation::SELECTION_STATIC && $_db->Record['SelectionType'] == weNavigation::STPYE_DOCLINK){
 				$_ids[] = $_db->Record['LinkID'];
-			} else
-			if(($_db->Record['SelectionType'] == weNavigation::STPYE_CATEGORY || $_db->Record['SelectionType'] == weNavigation::STPYE_CATLINK) && $_db->Record['LinkSelection'] != 'extern'){
+			} elseif(($_db->Record['SelectionType'] == weNavigation::STPYE_CATEGORY || $_db->Record['SelectionType'] == weNavigation::STPYE_CATLINK) && $_db->Record['LinkSelection'] != 'extern'){
 				$_ids[] = $_db->Record['UrlID'];
 			}
 
@@ -515,7 +514,7 @@ class weNavigationItems{
 		if(!empty($_ids)){
 			array_unique($_ids);
 			$_db->query('SELECT ID,Path FROM ' . FILE_TABLE . ' WHERE ID IN(' . implode(',', $_ids) . ') ORDER BY ID');
-			while($_db->next_record()) {
+			while($_db->next_record()){
 				$this->Storage['ids'][$_db->f('ID')] = $_db->f('Path');
 			}
 		}
@@ -534,7 +533,7 @@ class weNavigationItems{
 	function id2path($id){
 		if(isset($this->Storage['ids'][$id])){
 			return $this->Storage['ids'][$id];
-		} else{
+		} else {
 			$_path = id_to_path($id, FILE_TABLE);
 			$this->Storage['ids'][$id] = $_path;
 			return $_path;

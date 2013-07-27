@@ -528,7 +528,7 @@ if(!empty($_jsincludes)){
 
 				if (eTable === "") {
 					hasPerm = false;
-				} else if (<?php echo ($_SESSION["perms"]["ADMINISTRATOR"] ? 'true' : 'false');?>) {
+				} else if (<?php echo ($_SESSION["perms"]["ADMINISTRATOR"] ? 'true' : 'false'); ?>) {
 					hasPerm = true;
 				} else if (isFolder) {
 					switch (eTable) {
@@ -587,7 +587,7 @@ if(!empty($_jsincludes)){
 
 				if (eTable === "") {
 					hasPerm = false;
-				} else if (<?php echo ($_SESSION["perms"]["ADMINISTRATOR"] ? 'true' : 'false');?>) {
+				} else if (<?php echo ($_SESSION["perms"]["ADMINISTRATOR"] ? 'true' : 'false'); ?>) {
 					hasPerm = true;
 				} else if (isFolder) {
 					switch (eTable) {
@@ -796,10 +796,10 @@ if(!empty($_jsincludes)){
 				break;
 			case "help":
 <?php if($online_help){ ?>
-					if (arguments[1])
-						url = "<?php echo WEBEDITION_DIR; ?>getHelp.php?hid=" + arguments[1];
-					else
-						url = "<?php echo WEBEDITION_DIR; ?>getHelp.php";
+					url = "<?php echo WEBEDITION_DIR; ?>getHelp.php"+(arguments[1] ?
+									"?hid=" + arguments[1] :
+									""
+									);
 					new jsWindow(url, "help", -1, -1, 720, 600, true, false, true, true);
 <?php } else { ?>
 					url = "<?php echo WEBEDITION_DIR; ?>noAvailable.php";

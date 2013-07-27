@@ -66,8 +66,7 @@ switch($_REQUEST['we_cmd'][2]){
 		if($q_Valid == "always"){
 			$q_ValidUntil = "3000-01-01";
 			$q_ValidFrom = date("Y-m-d");
-		} else
-		if($q_Valid == "date"){
+		} elseif($q_Valid == "date"){
 			$q_ValidUntil = "3000-01-01";
 		}
 

@@ -350,10 +350,11 @@ function setTreeState(){
 	function getJSApplyLayout(){
 		return '
 function applyLayout(){
-	if(arguments[0])
+	if(arguments[0]){
 		eval("if("+treeData.treeFrame+".document.getElementById(\"lab_"+this.id+"\"))"+treeData.treeFrame+".document.getElementById(\"lab_"+this.id+"\").className =\""+arguments[0]+"\";");
-	else
+	}else{
 		eval("if("+treeData.treeFrame+".document.getElementById(\"lab_"+this.id+"\"))"+treeData.treeFrame+".document.getElementById(\"lab_"+this.id+"\").className =\""+this.getlayout()+"\";");
+	}
 }';
 	}
 
@@ -651,7 +652,7 @@ function drawTree(){
 	try{
 		var type=typeof(' . $this->treeFrame . ');
 	}catch(e){
-		console.log("Frame not found '.$this->treeFrame.'");
+		console.log("Frame not found ' . $this->treeFrame . '");
 		var type="undefined";
 	}
 

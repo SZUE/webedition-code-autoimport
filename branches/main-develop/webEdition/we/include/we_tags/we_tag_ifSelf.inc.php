@@ -29,7 +29,7 @@ function we_tag_ifSelf($attribs){
 	if(!$id){
 		if(isset($GLOBALS['we_obj'])){
 			$id = $GLOBALS['we_obj']->ID;
-		} else{
+		} else {
 			$id = $GLOBALS['WE_MAIN_DOC']->ID;
 		}
 	}
@@ -42,11 +42,9 @@ function we_tag_ifSelf($attribs){
 		case 'listview' :
 			if($GLOBALS['lv']->ClassName == 'we_listview_object'){
 				return in_array($GLOBALS['lv']->getDBf('OF_ID'), $ids);
-			} else
-			if($GLOBALS['lv']->ClassName == 'we_search_listview'){
+			} elseif($GLOBALS['lv']->ClassName == 'we_search_listview'){
 				return in_array($GLOBALS['lv']->getDBf('WE_ID'), $ids);
-			} else
-			if($GLOBALS['lv']->ClassName == 'we_shop_listviewShopVariants'){
+			} elseif($GLOBALS['lv']->ClassName == 'we_shop_listviewShopVariants'){
 				reset($GLOBALS['lv']->Record);
 				$key = key($GLOBALS['lv']->Record);
 				if(isset($GLOBALS['we_doc']->Variant)){
@@ -54,25 +52,25 @@ function we_tag_ifSelf($attribs){
 					if($key == $GLOBALS['we_doc']->Variant){
 						return true;
 					}
-				} else{
+				} else {
 					if($key == $GLOBALS['lv']->DefaultName){
 						return true;
 					}
 				}
 				return false;
-			} else{
+			} else {
 				return in_array($GLOBALS['lv']->IDs[$GLOBALS['lv']->count - 1], $ids);
 			}
 		case 'self' :
 			if(isset($GLOBALS['we']['ll'])){
 				return $GLOBALS['we']['ll']->getID() == $GLOBALS['we_doc']->ID;
-			} else{
+			} else {
 				return in_array($GLOBALS['we_doc']->ID, $ids);
 			}
 		default :
 			if(isset($GLOBALS['we']['ll'])){
 				return $GLOBALS['we']['ll']->getID() == $GLOBALS['WE_MAIN_DOC']->ID;
-			} else{
+			} else {
 				return in_array($GLOBALS['WE_MAIN_DOC']->ID, $ids);
 			}
 	}

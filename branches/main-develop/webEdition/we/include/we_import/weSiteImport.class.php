@@ -339,7 +339,7 @@ class weSiteImport{
 			$data['valueDateFormatField'] = isset($_REQUEST['dateformatField']) ? $_REQUEST['dateformatField'] : '';
 			$data['valueTemplateName'] = 'neueVorlage';
 			$data['valueTemplateParentID'] = '0';
-		} else{
+		} else {
 			$data['valueTemplateId'] = '0';
 			$data['valueUseRegex'] = false;
 			$data['valueFieldValues'] = serialize(array());
@@ -381,7 +381,7 @@ class weSiteImport{
 				if($index > -1){
 					$valpre = $values[$index]["pre"];
 					$valpost = $values[$index]["post"];
-				} else{
+				} else {
 					$valpre = "";
 					$valpost = "";
 				}
@@ -718,7 +718,7 @@ class weSiteImport{
 
 		$thumbsarray = array();
 		$GLOBALS['DB_WE']->query("SELECT ID,Name FROM " . THUMBNAILS_TABLE . " ORDER BY Name");
-		while($GLOBALS['DB_WE']->next_record()) {
+		while($GLOBALS['DB_WE']->next_record()){
 			$thumbsarray[$GLOBALS['DB_WE']->f("ID")] = $GLOBALS['DB_WE']->f("Name");
 		}
 		$_select = we_html_tools::htmlSelect("thumbs[]", $thumbsarray, 5, $this->thumbs, true, "", "value", 150);
@@ -855,7 +855,7 @@ class weSiteImport{
 					"html" => we_image_edit::qualitySelect("quality", $this->quality),
 					"space" => 120
 				);
-			} else{
+			} else {
 				$parts[] = array(
 					"headline" => "",
 					"html" => we_html_tools::htmlAlertAttentionBox(
@@ -864,7 +864,7 @@ class weSiteImport{
 				);
 			}
 			$foldAT = 4;
-		} else{
+		} else {
 			$foldAT = -1;
 		}
 
@@ -904,7 +904,7 @@ class weSiteImport{
 				if(count(scandir($importDirectory)) <= 2){
 					return we_html_element::jsElement('alert(\'' . addslashes(
 								g_l('importFiles', "[emptyDir]")) . '\');top.close()');
-				} else{
+				} else {
 					return we_html_element::jsElement('alert(\'' . addslashes(
 								g_l('importFiles', "[noFiles]")) . '\');top.close();');
 				}
@@ -1004,7 +1004,7 @@ class weSiteImport{
 
 		if($_valueCreateType == "auto"){
 			self::_importAuto($content, $we_doc, $_valueTemplateName, $_valueTemplateParentID);
-		} else{
+		} else {
 			self::_importSpecify($content, $we_doc, $_valueTemplateId, $_valueUseRegex, $_valueFieldValues, $_valueDateFormat, $_valueDateFormatField);
 		}
 	}
@@ -1021,7 +1021,7 @@ class weSiteImport{
 		$parentPath = $docpath;
 		$newLinkPath = '';
 
-		while($parentPath != substr($linkpath, 0, strlen($parentPath))) {
+		while($parentPath != substr($linkpath, 0, strlen($parentPath))){
 			$parentPath = dirname($parentPath);
 			$newLinkPath .= '../';
 		}
@@ -1046,13 +1046,12 @@ class weSiteImport{
 			if(substr($path, 0, 1) == "/"){
 				// if href is an absolute URL convert it into a relative URL
 				$path = self::makeRelativePath($sourcePath, $path);
-			} else
-			if(substr($path, 0, 2) == "./"){
+			} elseif(substr($path, 0, 2) == "./"){
 				// if href is a relative URL starting with "./" remove the "./"
 				$path = substr($path, 2);
 			}
 			// Make absolute Path out of it
-			while(substr($path, 0, 3) == "../" && strlen($parentPath) > 0 && $parentPath != "/") {
+			while(substr($path, 0, 3) == "../" && strlen($parentPath) > 0 && $parentPath != "/"){
 				$parentPath = dirname($parentPath);
 				$path = substr($path, 3);
 			}
@@ -1264,7 +1263,7 @@ class weSiteImport{
 		if(preg_match('/<body[^>]*>(.*)<\/body>/is', $content, $regs)){
 			$bodyhtml = $regs[1];
 			$templateCode = preg_replace('/(.*<body[^>]*>).*(<\/body>.*)/is', "$1$textareaCode$2", $content);
-		} else{
+		} else {
 			$bodyhtml = $content;
 			$templateCode = $textareaCode;
 		}
@@ -1277,8 +1276,7 @@ class weSiteImport{
 		if(preg_match('/<meta ([^>]*)name="description"([^>]*)>/is', $content, $regs)){
 			if(preg_match('/content="([^"]+)"/is', $regs[1], $attr)){
 				$description = $attr[1];
-			} else
-			if(preg_match('/content="([^"]+)"/is', $regs[2], $attr)){
+			} elseif(preg_match('/content="([^"]+)"/is', $regs[2], $attr)){
 				$description = $attr[1];
 			}
 			$templateCode = preg_replace('/<meta [^>]*name="description"[^>]*>/is', "$descriptionCode", $templateCode);
@@ -1286,8 +1284,7 @@ class weSiteImport{
 		if(preg_match('/<meta ([^>]*)name="keywords"([^>]*)>/is', $content, $regs)){
 			if(preg_match('/content="([^"]+)"/is', $regs[1], $attr)){
 				$keywords = $attr[1];
-			} else
-			if(preg_match('/content="([^"]+)"/is', $regs[2], $attr)){
+			} elseif(preg_match('/content="([^"]+)"/is', $regs[2], $attr)){
 				$keywords = $attr[1];
 			}
 			$templateCode = preg_replace('/<meta [^>]*name="keywords"[^>]*>/is', "$keywordsCode", $templateCode);
@@ -1297,8 +1294,7 @@ class weSiteImport{
 				if(preg_match('/charset=([^ "\']+)/is', $attr[1], $cs)){
 					$charset = $cs[1];
 				}
-			} else
-			if(preg_match('/content="([^"]+)"/is', $regs[2], $attr)){
+			} elseif(preg_match('/content="([^"]+)"/is', $regs[2], $attr)){
 				if(preg_match('/charset=([^ "\']+)/is', $attr[1], $cs)){
 					$charset = $cs[1];
 				}
@@ -1353,12 +1349,12 @@ class weSiteImport{
 			$GLOBALS['DB_WE']->query("SELECT Filename FROM " . TEMPLATES_TABLE . " WHERE ParentID=" . abs($templateParentID) . " AND Filename LIKE '" . $GLOBALS['DB_WE']->escape($templateFilename) . "%'");
 			$result = array();
 			if($GLOBALS['DB_WE']->num_rows()){
-				while($GLOBALS['DB_WE']->next_record()) {
+				while($GLOBALS['DB_WE']->next_record()){
 					$result[] = $GLOBALS['DB_WE']->f("Filename");
 				}
 			}
 			$z = 1;
-			while(in_array($newTemplateFilename, $result)) {
+			while(in_array($newTemplateFilename, $result)){
 				$newTemplateFilename = $templateFilename . $z;
 				$z++;
 			}
@@ -1417,7 +1413,7 @@ class weSiteImport{
 						$prepos += strlen($field["pre"]);
 						$fieldval = substr($content, $prepos, $postpos - $prepos);
 					}
-				} else{
+				} else {
 					$regs = array();
 					if(preg_match('/' . preg_quote($field["pre"], '/') . '(.+)' . preg_quote($field["post"], '/') . '/isU', $content, $regs)){
 						$fieldval = $regs[1];
@@ -1450,7 +1446,7 @@ class weSiteImport{
 								"bdid" => $imgId
 							);
 						}
-					} else{
+					} else {
 						$we_doc->setElement($field["name"], trim($fieldval));
 					}
 				}
@@ -1469,8 +1465,7 @@ class weSiteImport{
 		$id = path_to_id_ct($href, FILE_TABLE, $ct);
 		if(substr($ct, 0, 5) == "text/"){
 			$href = we_base_link::TYPE_INT_PREFIX . $id;
-		} else
-		if($ct == "image/*"){
+		} elseif($ct == "image/*"){
 			if(strpos($href, "?") === false){
 				$href .= '?id=' . $id;
 			}
@@ -1700,11 +1695,11 @@ sh' && $contentType != 'movie/quicktime'){
 
 		if($contentType == "folder"){
 			$GLOBALS["we_doc"]->Filename = $GLOBALS["we_doc"]->Text;
-		} else{
+		} else {
 			if(preg_match('|^(.+)(\.[^\.]+)$|', $GLOBALS["we_doc"]->Text, $regs)){
 				$GLOBALS["we_doc"]->Extension = $regs[2];
 				$GLOBALS["we_doc"]->Filename = $regs[1];
-			} else{
+			} else {
 				$GLOBALS["we_doc"]->Extension = '';
 				$GLOBALS["we_doc"]->Filename = $GLOBALS["we_doc"]->Text;
 			}
@@ -1715,18 +1710,17 @@ sh' && $contentType != 'movie/quicktime'){
 		if($id){
 			if($sameName == "overwrite" || $contentType == "folder"){ // folders we dont have to rename => we can use the existing folder
 				$GLOBALS["we_doc"]->initByID($id, FILE_TABLE);
-			} else
-			if($sameName == "rename"){
+			} elseif($sameName == "rename"){
 				$z = 0;
 				$footext = $GLOBALS["we_doc"]->Filename . "_" . $z . $GLOBALS["we_doc"]->Extension;
-				while(f("SELECT ID FROM " . FILE_TABLE . " WHERE Text='" . $GLOBALS['DB_WE']->escape($footext) . "' AND ParentID='" . intval($parentID) . "'", "ID", $GLOBALS['DB_WE'])) {
+				while(f("SELECT ID FROM " . FILE_TABLE . " WHERE Text='" . $GLOBALS['DB_WE']->escape($footext) . "' AND ParentID='" . intval($parentID) . "'", "ID", $GLOBALS['DB_WE'])){
 					$z++;
 					$footext = $GLOBALS["we_doc"]->Filename . "_" . $z . $GLOBALS["we_doc"]->Extension;
 				}
 				$GLOBALS["we_doc"]->Text = $footext;
 				$GLOBALS["we_doc"]->Filename = $GLOBALS["we_doc"]->Filename . "_" . $z;
 				$GLOBALS["we_doc"]->Path = $GLOBALS["we_doc"]->getParentPath() . (($GLOBALS["we_doc"]->getParentPath() != "/") ? "/" : "") . $GLOBALS["we_doc"]->Text;
-			} else{
+			} else {
 				return array(
 					"filename" => $GLOBALS["we_doc"]->Path,
 					"error" => "same_name"
@@ -1876,7 +1870,7 @@ sh' && $contentType != 'movie/quicktime'){
 
 		// go throuh all files of the directory
 		$d = dir($importDirectory);
-		while(false !== ($entry = $d->read())) {
+		while(false !== ($entry = $d->read())){
 			if($entry == '.' || $entry == '..' || ((strlen($entry) >= 2) && substr($entry, 0, 2) == "._"))
 				continue;
 			// now we have to check if the file should be imported
@@ -1900,7 +1894,7 @@ sh' && $contentType != 'movie/quicktime'){
 						if($this->createWePages){
 							$contentType = "text/webedition";
 							// webEdition files needs to be post processed (external links => internal links)
-							$this->_postProcess[]= array(
+							$this->_postProcess[] = array(
 								"path" => $PathOfEntry,
 								"contentType" => "post/process",
 								"sourceDir" => $this->from,

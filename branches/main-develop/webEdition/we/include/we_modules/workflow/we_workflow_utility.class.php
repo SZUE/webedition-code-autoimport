@@ -190,13 +190,8 @@ class we_workflow_utility{
 				return false;
 			$j = $doc->steps[$i]->findTaskByUser($userID);
 			if($j > -1){
-				if($doc->steps[$i]->tasks[$j]->Status == we_workflow_documentTask::STATUS_UNKNOWN)
-					return true;
-				else
-					return false;
+				return ($doc->steps[$i]->tasks[$j]->Status == we_workflow_documentTask::STATUS_UNKNOWN ? true : false);
 			}
-			else
-				return false;
 		}
 		return false;
 	}
@@ -248,7 +243,7 @@ class we_workflow_utility{
 		$db = new DB_WE();
 		$ids = array();
 		$db->query('SELECT DISTINCT ' . WORKFLOW_DOC_TABLE . '.documentID as ID FROM ' . WORKFLOW_DOC_TABLE . ',' . WORKFLOW_TABLE . ' WHERE ' . WORKFLOW_DOC_TABLE . ".workflowID=" . WORKFLOW_TABLE . '.ID AND ' . WORKFLOW_DOC_TABLE . '.Status = ' . we_workflow_document::STATUS_UNKNOWN . ' AND ' . WORKFLOW_TABLE . '.Type IN(' . $type . ')');
-		while($db->next_record()) {
+		while($db->next_record()){
 			if(!in_array($db->f("ID"), $ids)){
 				$ids[] = $db->f("ID");
 			}
@@ -264,10 +259,10 @@ class we_workflow_utility{
 			if(!in_array($id, $ids)){
 				if(is_array($ws) && !empty($ws)){
 					if(in_workspace($id, $ws, $table, $db)){
-						$ids[]= $id;
+						$ids[] = $id;
 					}
-				} else{
-					$ids[]= $id;
+				} else {
+					$ids[] = $id;
 				}
 			}
 		}
@@ -304,7 +299,7 @@ class we_workflow_utility{
 		$db = new DB_WE();
 		$ret = '';
 		$db->query('SELECT ' . WORKFLOW_DOC_TABLE . '.ID AS docID,' . WORKFLOW_DOC_STEP_TABLE . ".ID AS docstepID," . WORKFLOW_STEP_TABLE . ".ID AS stepID FROM " . WORKFLOW_DOC_TABLE . "," . WORKFLOW_DOC_STEP_TABLE . "," . WORKFLOW_STEP_TABLE . " WHERE " . WORKFLOW_DOC_TABLE . ".ID=" . WORKFLOW_DOC_STEP_TABLE . ".workflowDocID AND " . WORKFLOW_DOC_STEP_TABLE . ".workflowStepID=" . WORKFLOW_STEP_TABLE . ".ID AND " . WORKFLOW_DOC_STEP_TABLE . ".startDate<>0 AND (" . WORKFLOW_DOC_STEP_TABLE . ".startDate+ ROUND(" . WORKFLOW_STEP_TABLE . ".Worktime*3600))<" . time() . " AND " . WORKFLOW_DOC_STEP_TABLE . ".finishDate=0 AND " . WORKFLOW_DOC_STEP_TABLE . ".Status=" . we_workflow_documentStep::STATUS_UNKNOWN . " AND " . WORKFLOW_DOC_TABLE . ".Status=" . we_workflow_document::STATUS_UNKNOWN);
-		while($db->next_record()) {
+		while($db->next_record()){
 			@set_time_limit(50);
 			$workflowDocument = new we_workflow_document($db->f('docID'));
 			$userID = $userID ? $userID : $workflowDocument->userID;
@@ -318,11 +313,11 @@ class we_workflow_utility{
 						if($workflowDocument->workflow->LastStepAutoPublish){
 							$workflowDocument->autopublish($userID, g_l('modules_workflow', '[auto_published]'), true);
 							$ret.="(ID: " . $workflowDocument->ID . ") " . g_l('modules_workflow', '[auto_published]') . "\n";
-						} else{
+						} else {
 							$workflowDocument->decline($userID, g_l('modules_workflow', '[auto_declined]'), true);
 							$ret.="(ID: " . $workflowDocument->ID . ") " . g_l('modules_workflow', '[auto_declined]') . "\n";
 						}
-					} else{
+					} else {
 						$workflowDocument->approve($userID, g_l('modules_workflow', '[auto_approved]'), true);
 						$ret.="(ID: " . $workflowDocument->ID . ") " . g_l('modules_workflow', '[auto_approved]') . "\n";
 					}

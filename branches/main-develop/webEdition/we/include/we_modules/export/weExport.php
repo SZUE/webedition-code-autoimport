@@ -82,7 +82,7 @@ class weExport extends weModelBase{
 		if(defined('OBJECT_TABLE')){
 			$this->selObjs = $this->clearExpiered($this->selObjs, OBJECT_FILES_TABLE);
 			$this->selClasses = $this->clearExpiered($this->selClasses, OBJECT_TABLE);
-		} else{
+		} else {
 			$this->selObjs = '';
 			$this->selClasses = '';
 		}
@@ -122,7 +122,7 @@ class weExport extends weModelBase{
 				$this->ID = $this->db->getInsertId();
 			}
 			return $ret;
-		} else{
+		} else {
 			return $this->db->query('UPDATE ' . $this->table . ' SET ' . $set . ' WHERE ' . $where);
 		}
 
@@ -193,11 +193,8 @@ class weExport extends weModelBase{
 	}
 
 	function pathExists($path){
-		$this->db->query('SELECT * FROM ' . $this->table . ' WHERE Path = "' . $path . '" AND ID!='  . intval($this->ID));
-		if($this->db->next_record())
-			return true;
-		else
-			return false;
+		$this->db->query('SELECT 1 FROM ' . $this->table . ' WHERE Path = "' . $path . '" AND ID!=' . intval($this->ID));
+		return ($this->db->next_record() ? true : false);
 	}
 
 	function isSelf(){

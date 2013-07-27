@@ -64,29 +64,31 @@ class weWorkflowFrames extends weModuleFrames{
 
 		//start ex we_workflow_moduleFrames::getJSTreeCode()
 		print we_html_element::jsScript(JS_DIR . 'images.js') .
-		we_html_element::jsScript(JS_DIR . 'windows.js') .
-		we_html_element::jsScript(JS_DIR . 'md5.js');
+			we_html_element::jsScript(JS_DIR . 'windows.js') .
+			we_html_element::jsScript(JS_DIR . 'md5.js');
 
 		// TODO: move shared code for (some of the) modules-tree (not based on weTree!!) to new weModulesTree.class
 		?>
 		<script type="text/javascript">
 
-			var loaded=0;
-			var hot=0;
-			var hloaded=0;
+			var loaded = 0;
+			var hot = 0;
+			var hloaded = 0;
 
-			function setHot(){
-				hot=1;
+			function setHot() {
+				hot = 1;
 			}
 
-			function usetHot(){
-				hot=0;
+			function usetHot() {
+				hot = 0;
 			}
 
-			var menuDaten = new container();var count = 0;var folder=0;
-			var table="<?php print USER_TABLE; ?>";
+			var menuDaten = new container();
+			var count = 0;
+			var folder = 0;
+			var table = "<?php print USER_TABLE; ?>";
 
-			function drawEintraege(){
+			function drawEintraege() {
 				fr = top.content.tree.document;
 				fr.open();
 				fr.writeln("<html><head>");
@@ -98,56 +100,62 @@ class weWorkflowFrames extends weModuleFrames{
 				fr.writeln("if(ct=='folder') top.content.we_cmd('edit_workflow',id,ct,table); else if(ct=='file') top.content.we_cmd('show_document',id,ct,table);");
 				fr.writeln("}");
 				fr.writeln("top.content.loaded=1;");
-				fr.writeln("</"+"script>");
+				fr.writeln("</" + "script>");
 				fr.writeln('<?php print STYLESHEET_SCRIPT; ?>');
 				fr.write("</head>\n");
 				fr.write("<body bgcolor=\"#F3F7FF\" link=\"#000000\" alink=\"#000000\" vlink=\"#000000\" leftmargin=5 topmargin=5 marginheight=5 marginwidth=5>\n");
 				fr.write("<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\"><tr><td class=\"tree\">\n<nobr>\n");
-				zeichne(top.content.startloc,"");
+				zeichne(top.content.startloc, "");
 				fr.write("</nobr>\n</td></tr></table>\n");
 				fr.write("</body>\n</html>");
 				fr.close();
 			}
 
-			function zeichne(startEntry,zweigEintrag){
+			function zeichne(startEntry, zweigEintrag) {
 				var nf = search(startEntry);
 				var ai = 1;
 				while (ai <= nf.laenge) {
 					fr.write(zweigEintrag);
-					nf[ai].text = nf[ai].text.replace(/</g,"&lt;");
-					nf[ai].text = nf[ai].text.replace(/>/g,"&gt;");
+					nf[ai].text = nf[ai].text.replace(/</g, "&lt;");
+					nf[ai].text = nf[ai].text.replace(/>/g, "&gt;");
 					if (nf[ai].typ == 'file') {
-						if(ai == nf.laenge) fr.write("&nbsp;&nbsp;<IMG SRC=<?php print TREE_IMAGE_DIR; ?>kreuzungend.gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0>");
-						else fr.write("&nbsp;&nbsp;<IMG SRC=<?php print TREE_IMAGE_DIR; ?>kreuzung.gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0>");
-						if(nf[ai].name != -1){
-							fr.write("<a name='_"+nf[ai].name+"' href=\"javascript://\" onClick=\"doClick("+nf[ai].name+",'"+nf[ai].contentType+"','"+nf[ai].table+"');return true;\" BORDER=0>");
+						if (ai == nf.laenge) {
+							fr.write("&nbsp;&nbsp;<IMG SRC=<?php print TREE_IMAGE_DIR; ?>kreuzungend.gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0>");
+						} else {
+							fr.write("&nbsp;&nbsp;<IMG SRC=<?php print TREE_IMAGE_DIR; ?>kreuzung.gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0>");
 						}
-						fr.write("<IMG SRC=<?php print TREE_IMAGE_DIR; ?>icons/"+nf[ai].icon+" WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 alt=\"<?php #print g_l('tree',"[edit_statustext]");  ?>\">");
+						if (nf[ai].name != -1) {
+							fr.write("<a name='_" + nf[ai].name + "' href=\"javascript://\" onClick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\" BORDER=0>");
+						}
+						fr.write("<IMG SRC=<?php print TREE_IMAGE_DIR; ?>icons/" + nf[ai].icon + " WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 alt=\"<?php #print g_l('tree',"[edit_statustext]");     ?>\">");
 						fr.write("</a>");
-						fr.write("&nbsp;<a name='_"+nf[ai].name+"' href=\"javascript://\" onClick=\"doClick("+nf[ai].name+",'"+nf[ai].contentType+"','"+nf[ai].table+"');return true;\">"+(parseInt(nf[ai].published) ? "" : "")+ nf[ai].text +(parseInt(nf[ai].published) ? "" : "")+ "</A>&nbsp;&nbsp;<BR>\n");
-					}else{
+						fr.write("&nbsp;<a name='_" + nf[ai].name + "' href=\"javascript://\" onClick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">" + (parseInt(nf[ai].published) ? "" : "") + nf[ai].text + (parseInt(nf[ai].published) ? "" : "") + "</A>&nbsp;&nbsp;<BR>\n");
+					} else {
 						var newAst = zweigEintrag;
 
 						var zusatz = (ai == nf.laenge) ? "end" : "";
 
-						if (nf[ai].offen == 0){
-							fr.write("&nbsp;&nbsp;<A href=\"javascript:top.content.openClose('" + nf[ai].name + "',1)\" BORDER=0><IMG SRC=<?php print TREE_IMAGE_DIR; ?>auf"+zusatz+".gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0 Alt=\"<?php #print g_l('tree',"[open_statustext]")  ?>\"></A>");
+						if (nf[ai].offen == 0) {
+							fr.write("&nbsp;&nbsp;<A href=\"javascript:top.content.openClose('" + nf[ai].name + "',1)\" BORDER=0><IMG SRC=<?php print TREE_IMAGE_DIR; ?>auf" + zusatz + ".gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0 Alt=\"<?php #print g_l('tree',"[open_statustext]")     ?>\"></A>");
 							var zusatz2 = "";
-						}else{
-							fr.write("&nbsp;&nbsp;<A href=\"javascript:top.content.openClose('" + nf[ai].name + "',0)\" BORDER=0><IMG SRC=<?php print TREE_IMAGE_DIR; ?>zu"+zusatz+".gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0 Alt=\"<?php #print g_l('tree',"[close_statustext]")  ?>\"></A>");
+						} else {
+							fr.write("&nbsp;&nbsp;<A href=\"javascript:top.content.openClose('" + nf[ai].name + "',0)\" BORDER=0><IMG SRC=<?php print TREE_IMAGE_DIR; ?>zu" + zusatz + ".gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0 Alt=\"<?php #print g_l('tree',"[close_statustext]")     ?>\"></A>");
 							var zusatz2 = "open";
 						}
-						fr.write("<a name='_"+nf[ai].name+"' href=\"javascript://\" onClick=\"doClick("+nf[ai].name+",'"+nf[ai].contentType+"','"+nf[ai].table+"');return true;\" BORDER=0>");
-						fr.write("<IMG SRC=<?php print TREE_IMAGE_DIR; ?>icons/workflow_folder"+zusatz2+".gif WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 Alt=\"<?php #print g_l('tree',"[edit_statustext]");  ?>\">");
+						fr.write("<a name='_" + nf[ai].name + "' href=\"javascript://\" onClick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\" BORDER=0>");
+						fr.write("<IMG SRC=<?php print TREE_IMAGE_DIR; ?>icons/workflow_folder" + zusatz2 + ".gif WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 Alt=\"<?php #print g_l('tree',"[edit_statustext]");     ?>\">");
 						fr.write("</a>");
-						fr.write("<A name='_"+nf[ai].name+"' HREF=\"javascript://\" onClick=\"doClick("+nf[ai].name+",'"+nf[ai].contentType+"','"+nf[ai].table+"');return true;\">");
-						fr.write("&nbsp;<b>"+(!parseInt(nf[ai].published) ? "<font color=\"red\">" : "") + nf[ai].text + (parseInt(nf[ai].published) ? "</font>" : "")+"</b>");
+						fr.write("<A name='_" + nf[ai].name + "' HREF=\"javascript://\" onClick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">");
+						fr.write("&nbsp;<b>" + (!parseInt(nf[ai].published) ? "<font color=\"red\">" : "") + nf[ai].text + (parseInt(nf[ai].published) ? "</font>" : "") + "</b>");
 						fr.write("</a>");
 						fr.write("&nbsp;&nbsp;<BR>\n");
-						if (nf[ai].offen){
-							if(ai == nf.laenge) newAst = newAst + "<IMG SRC=<?php print TREE_IMAGE_DIR; ?>leer.gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0>";
-							else newAst = newAst + "<IMG SRC=<?php print TREE_IMAGE_DIR; ?>strich2.gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0>";
-							zeichne(nf[ai].name,newAst);
+						if (nf[ai].offen) {
+							if (ai == nf.laenge) {
+								newAst = newAst + "<IMG SRC=<?php print TREE_IMAGE_DIR; ?>leer.gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0>";
+							} else {
+								newAst = newAst + "<IMG SRC=<?php print TREE_IMAGE_DIR; ?>strich2.gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0>";
+							}
+							zeichne(nf[ai].name, newAst);
 						}
 					}
 					ai++;
@@ -155,86 +163,161 @@ class weWorkflowFrames extends weModuleFrames{
 			}
 
 
-			function makeNewEntry(icon,id,pid,txt,offen,ct,tab,pub){
-				if(ct=="folder")
-					menuDaten.addSort(new dirEntry(icon,id,pid,txt,offen,ct,tab,pub));
-				else
-					menuDaten.addSort(new urlEntry(icon,id,pid,txt,ct,tab,pub));
+			function makeNewEntry(icon, id, pid, txt, offen, ct, tab, pub) {
+				if (ct == "folder") {
+					menuDaten.addSort(new dirEntry(icon, id, pid, txt, offen, ct, tab, pub));
+				} else {
+					menuDaten.addSort(new urlEntry(icon, id, pid, txt, ct, tab, pub));
+				}
 				drawEintraege();
 			}
 
-			function updateEntry(id,pid,text,pub){
+			function updateEntry(id, pid, text, pub) {
 				var ai = 1;
 				while (ai <= menuDaten.laenge) {
-					if ((menuDaten[ai].typ=='folder'))
-						if (menuDaten[ai].name==id) {
-							menuDaten[ai].vorfahr=pid;
-							menuDaten[ai].text=text;
-							menuDaten[ai].published=pub;
+					if ((menuDaten[ai].typ == 'folder'))
+						if (menuDaten[ai].name == id) {
+							menuDaten[ai].vorfahr = pid;
+							menuDaten[ai].text = text;
+							menuDaten[ai].published = pub;
 						}
 					ai++;
 				}
 				drawEintraege();
 			}
 
-			function deleteEntry(id,type){
+			function deleteEntry(id, type) {
 				var ai = 1;
-				var ind=0;
+				var ind = 0;
 				while (ai <= menuDaten.laenge) {
-					if ((menuDaten[ai].typ==type))
-						if (menuDaten[ai].name==id) {
-							ind=ai;
+					if ((menuDaten[ai].typ == type))
+						if (menuDaten[ai].name == id) {
+							ind = ai;
 							break;
 						}
 					ai++;
 				}
-				if(ind!=0){
+				if (ind != 0) {
 					ai = ind;
-					while (ai <= menuDaten.laenge-1) {
-						menuDaten[ai]=menuDaten[ai+1];
+					while (ai <= menuDaten.laenge - 1) {
+						menuDaten[ai] = menuDaten[ai + 1];
 						ai++;
 					}
-					menuDaten.laenge[menuDaten.laenge]=null;
+					menuDaten.laenge[menuDaten.laenge] = null;
 					menuDaten.laenge--;
 					drawEintraege();
 				}
 			}
 
-			function openClose(name,status){
+			function openClose(name, status) {
 				var eintragsIndex = indexOfEntry(name);
 				menuDaten[eintragsIndex].offen = status;
-				if(status){
-					if(!menuDaten[eintragsIndex].loaded){
+				if (status) {
+					if (!menuDaten[eintragsIndex].loaded) {
 						drawEintraege();
-					}else{
+					} else {
 						drawEintraege();
 					}
-				}else{
+				} else {
 					drawEintraege();
 				}
 			}
 
-			function indexOfEntry(name){var ai = 1;while (ai <= menuDaten.laenge) {if ((menuDaten[ai].typ == 'root') || (menuDaten[ai].typ == 'folder'))if (menuDaten[ai].name == name) return ai;ai++;}return -1;}
+			function indexOfEntry(name) {
+				var ai = 1;
+				while (ai <= menuDaten.laenge) {
+					if ((menuDaten[ai].typ == 'root') || (menuDaten[ai].typ == 'folder'))
+						if (menuDaten[ai].name == name)
+							return ai;
+					ai++;
+				}
+				return -1;
+			}
 
-			function search(eintrag){var nf = new container();var ai = 1;while (ai <= menuDaten.laenge) {if ((menuDaten[ai].typ == 'folder') || (menuDaten[ai].typ == 'file'))if (menuDaten[ai].vorfahr == eintrag) nf.add(menuDaten[ai]);ai++;}return nf;}
+			function search(eintrag) {
+				var nf = new container();
+				var ai = 1;
+				while (ai <= menuDaten.laenge) {
+					if ((menuDaten[ai].typ == 'folder') || (menuDaten[ai].typ == 'file'))
+						if (menuDaten[ai].vorfahr == eintrag)
+							nf.add(menuDaten[ai]);
+					ai++;
+				}
+				return nf;
+			}
 
-			function container(){this.laenge = 0;this.clear=containerClear;this.add = add;this.addSort = addSort;return this;}
+			function container() {
+				this.laenge = 0;
+				this.clear = containerClear;
+				this.add = add;
+				this.addSort = addSort;
+				return this;
+			}
 
-			function add(object){this.laenge++;this[this.laenge] = object;}
+			function add(object) {
+				this.laenge++;
+				this[this.laenge] = object;
+			}
 
-			function containerClear(){this.laenge =0;}
+			function containerClear() {
+				this.laenge = 0;
+			}
 
-			function addSort(object){this.laenge++;for(var i=this.laenge; i>0; i--){if(i > 1 && this[i-1].text.toLowerCase() > object.text.toLowerCase() ){this[i] = this[i-1];}else{this[i] = object;break;}}}
+			function addSort(object) {
+				this.laenge++;
+				for (var i = this.laenge; i > 0; i--) {
+					if (i > 1 && this[i - 1].text.toLowerCase() > object.text.toLowerCase()) {
+						this[i] = this[i - 1];
+					} else {
+						this[i] = object;
+						break;
+					}
+				}
+			}
 
-			function rootEntry(name,text,rootstat){this.name = name;this.text = text;this.loaded=true;this.typ = 'root';this.rootstat = rootstat;return this;}
+			function rootEntry(name, text, rootstat) {
+				this.name = name;
+				this.text = text;
+				this.loaded = true;
+				this.typ = 'root';
+				this.rootstat = rootstat;
+				return this;
+			}
 
-			function dirEntry(icon,name,vorfahr,text,offen,contentType,table,published){this.icon=icon;this.name = name;this.vorfahr = vorfahr;this.text = text;this.typ = 'folder';this.offen = (offen ? 1 : 0);this.contentType = contentType;this.table = table;this.loaded = (offen ? 1 : 0);this.checked = false;this.published = published;return this;}
+			function dirEntry(icon, name, vorfahr, text, offen, contentType, table, published) {
+				this.icon = icon;
+				this.name = name;
+				this.vorfahr = vorfahr;
+				this.text = text;
+				this.typ = 'folder';
+				this.offen = (offen ? 1 : 0);
+				this.contentType = contentType;
+				this.table = table;
+				this.loaded = (offen ? 1 : 0);
+				this.checked = false;
+				this.published = published;
+				return this;
+			}
 
-			function urlEntry(icon,name,vorfahr,text,contentType,table,published){this.icon=icon;this.name = name;this.vorfahr = vorfahr;this.text = text;this.typ = 'file';this.checked = false;this.contentType = contentType;this.table = table;this.published = published;return this;}
+			function urlEntry(icon, name, vorfahr, text, contentType, table, published) {
+				this.icon = icon;
+				this.name = name;
+				this.vorfahr = vorfahr;
+				this.text = text;
+				this.typ = 'file';
+				this.checked = false;
+				this.contentType = contentType;
+				this.table = table;
+				this.published = published;
+				return this;
+			}
 
-			function start(){loadData();drawEintraege();}
+			function start() {
+				loadData();
+				drawEintraege();
+			}
 
-			var startloc=0;
+			var startloc = 0;
 
 			self.focus();
 		</script>
@@ -250,7 +333,7 @@ class weWorkflowFrames extends weModuleFrames{
 
 		$out.="startloc=" . $startloc . ";\n";
 		$this->db->query("SELECT * FROM " . WORKFLOW_TABLE . " ORDER BY Text ASC");
-		while($this->db->next_record()) {
+		while($this->db->next_record()){
 			$this->View->workflowDef = new we_workflow_workflow();
 			$this->View->workflowDef->load($this->db->f("ID"));
 			$out.="  menuDaten.add(new dirEntry('folder','" . $this->View->workflowDef->ID . "','0','" . oldHtmlspecialchars(addslashes($this->View->workflowDef->Text)) . "',false,'folder','workflowDef','" . $this->View->workflowDef->Status . "'));\n";
@@ -292,7 +375,7 @@ class weWorkflowFrames extends weModuleFrames{
 		if($mode == 0){
 			$we_tabs->addTab(new we_tab("#", g_l('tabs', "[module][properties]"), "TAB_NORMAL", "setTab(0);", array("id" => "tab_0")));
 			$we_tabs->addTab(new we_tab("#", g_l('tabs', "[module][overview]"), "TAB_NORMAL", "setTab(1);", array("id" => "tab_1")));
-		} else{
+		} else {
 			$we_tabs->addTab(new we_tab("#", g_l('tabs', "[editor][information]"), "TAB_ACTIVE", "//", array("id" => "tab_0")));
 		}
 
@@ -319,28 +402,25 @@ function setTab(tab){
 top.content.hloaded=1;
 		') . $tab_header;
 
-		$mainDiv = we_html_element::htmlDiv(array('id' => 'main'),
-			we_html_tools::getPixel(100, 3) .
-			we_html_element::htmlDiv(array('style' => 'margin:0px;padding-left:10px;', 'id' => 'headrow'),
-				we_html_element::htmlNobr(
-					we_html_element::htmlB(oldHtmlspecialchars($textPre) . ':&nbsp;') .
-					we_html_element::htmlSpan(array('id' => 'h_path', 'class' => 'header_small'),
-						'<b id="titlePath">' . oldHtmlspecialchars($textPost) . '</b>')
-					)) .
-			we_html_tools::getPixel(100, 3) .
-			$we_tabs->getHTML()
-			);
+		$mainDiv = we_html_element::htmlDiv(array('id' => 'main'), we_html_tools::getPixel(100, 3) .
+				we_html_element::htmlDiv(array('style' => 'margin:0px;padding-left:10px;', 'id' => 'headrow'), we_html_element::htmlNobr(
+						we_html_element::htmlB(oldHtmlspecialchars($textPre) . ':&nbsp;') .
+						we_html_element::htmlSpan(array('id' => 'h_path', 'class' => 'header_small'), '<b id="titlePath">' . oldHtmlspecialchars($textPost) . '</b>')
+				)) .
+				we_html_tools::getPixel(100, 3) .
+				$we_tabs->getHTML()
+		);
 
 		$body = we_html_element::htmlBody(array(
-			'bgcolor' => 'white',
-			'background' => IMAGE_DIR . 'backgrounds/header_with_black_line.gif',
-			'marginwidth' => 0,
-			'marginheight' => 0,
-			'leftmargin' => 0,
-			'topmargin' => 0,
-			//'onload' => 'setFrameSize()',
-			//'onresize' => 'setFrameSize()'
-			), $mainDiv . we_html_element::jsElement('document.getElementById("tab_' . $page . '").className="tabActive";')
+				'bgcolor' => 'white',
+				'background' => IMAGE_DIR . 'backgrounds/header_with_black_line.gif',
+				'marginwidth' => 0,
+				'marginheight' => 0,
+				'leftmargin' => 0,
+				'topmargin' => 0,
+				//'onload' => 'setFrameSize()',
+				//'onresize' => 'setFrameSize()'
+				), $mainDiv . we_html_element::jsElement('document.getElementById("tab_' . $page . '").className="tabActive";')
 		);
 
 		return $this->getHTMLDocument($body, $extraHead);
@@ -351,7 +431,7 @@ top.content.hloaded=1;
 			return $this->getHTMLDocument(we_html_element::htmlBody(array("bgcolor" => "EFF0EF"), ""));
 		}
 
-		$extraHead =  we_html_element::jsElement('
+		$extraHead = we_html_element::jsElement('
 			function setStatusCheck(){
 				var a=document.we_form._status_workflow;
 				var b;
@@ -376,15 +456,14 @@ top.content.hloaded=1;
 		$table2->setCol(0, 2, array('nowrap' => null, 'class' => 'defaultfont'), $this->View->getStatusHTML());
 
 		$body = we_html_element::htmlBody(array(
-			'bgcolor' => 'white',
-			'background' => IMAGE_DIR . 'edit/editfooterback.gif',
-			'style' => 'margin: 0px 0px 0px 0px;',
-			'onload' => ($mode == 0 ? 'setStatusCheck()' : '')
-			), we_html_element::htmlForm($attribs = array(), $table1->getHtml() . $table2->getHtml())
+				'bgcolor' => 'white',
+				'background' => IMAGE_DIR . 'edit/editfooterback.gif',
+				'style' => 'margin: 0px 0px 0px 0px;',
+				'onload' => ($mode == 0 ? 'setStatusCheck()' : '')
+				), we_html_element::htmlForm($attribs = array(), $table1->getHtml() . $table2->getHtml())
 		);
 
 		return $this->getHTMLDocument($body, $extraHead);
-
 	}
 
 	function getHTMLLog($docID, $type = 0){

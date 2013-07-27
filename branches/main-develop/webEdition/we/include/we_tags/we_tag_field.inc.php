@@ -159,7 +159,7 @@ function we_tag_field($attribs){
 	$isImageDoc = (isset($GLOBALS['lv']->Record['wedoc_ContentType']) && $GLOBALS['lv']->Record['wedoc_ContentType'] == 'image/*' ? true : false);
 	$isCalendar = (isset($GLOBALS['lv']->calendar_struct['calendar']) && $GLOBALS['lv']->calendar_struct['calendar'] != '' && $GLOBALS['lv']->isCalendarField($type));
 
-	if((!$GLOBALS['lv']->f('WE_ID') && property_exists($GLOBALS['lv'],'calendar_struct')&& $GLOBALS['lv']->calendar_struct['calendar'] == '')){
+	if((!$GLOBALS['lv']->f('WE_ID') && property_exists($GLOBALS['lv'], 'calendar_struct') && $GLOBALS['lv']->calendar_struct['calendar'] == '')){
 		return '';
 	}
 
@@ -253,7 +253,7 @@ function we_tag_field($attribs){
 			}
 			if(WE_COUNTRIES_DEFAULT != '' && $GLOBALS['lv']->f($name) == '--'){
 				$out = WE_COUNTRIES_DEFAULT;
-			} else{
+			} else {
 				if(!Zend_Locale::hasCache()){
 					Zend_Locale::setCache(getWEZendCache());
 				}
@@ -314,7 +314,7 @@ function we_tag_field($attribs){
 					(show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES != '' && isset($GLOBALS['lv']->hidedirindex) && $GLOBALS['lv']->hidedirindex && in_array($triggerpath_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))) ?
 						'' : $triggerpath_parts['filename'] . '/' ) .
 					$GLOBALS['lv']->f('WE_URL');
-			} else{
+			} else {
 				$testtype = ($type == 'select' && $usekey) ? 'text' : $type;
 				if(($GLOBALS['lv']->ClassName == 'we_listview_object' || $GLOBALS['lv']->ClassName == 'we_objecttag') && $type == 'select'){// bugfix #6399
 					$attribs['name'] = $attribs['_name_orig'];
@@ -404,7 +404,7 @@ function we_tag_field($attribs){
 					$newWinProps .= 'width=\'+w+\',left=\'+x+\',';
 					unset($winpropsArray['left']);
 					unset($winpropsArray['width']);
-				} else{
+				} else {
 					if(isset($winpropsArray['left'])){
 						$newWinProps .= 'left=' . $winpropsArray['left'] . ',';
 						unset($winpropsArray['left']);
@@ -420,7 +420,7 @@ function we_tag_field($attribs){
 					$newWinProps .= 'height=\'+h+\',top=\'+y+\',';
 					unset($winpropsArray['top']);
 					unset($winpropsArray['height']);
-				} else{
+				} else {
 					if(isset($winpropsArray['top'])){
 						$newWinProps .= 'top=' . $winpropsArray['top'] . ',';
 						unset($winpropsArray['top']);
@@ -438,7 +438,7 @@ function we_tag_field($attribs){
 
 				$_linkAttribs['onclick'] = $js . ';var we_win = window.open(\'\',\'win_' . $name . '\',\'' . rtrim($newWinProps, ',') . '\');';
 				$_linkAttribs['target'] = 'win_' . $name;
-			} else{ // we are in webEdition
+			} else { // we are in webEdition
 				if($_SESSION['weS']['we_mode'] == 'seem'){ //	we are in seeMode -> open in edit_include ?....
 				}
 			}
@@ -447,7 +447,7 @@ function we_tag_field($attribs){
 		if($href){
 			$_linkAttribs['href'] = $href;
 			$out = getHtmlTag('a', $_linkAttribs, $out, true);
-		} else{
+		} else {
 
 			if($id && $isCalendar){
 				if(isset($GLOBALS['lv']->calendar_struct['storage']) && !empty($GLOBALS['lv']->calendar_struct['storage'])){
@@ -477,8 +477,7 @@ function we_tag_field($attribs){
 						$out = getHtmlTag('a', $_linkAttribs, $out, true);
 					}
 				}
-			} else
-			if($id && $isImageDoc){
+			} elseif($id && $isImageDoc){
 				$_linkAttribs['href'] = id_to_path($id) . '?' .
 					($GLOBALS['lv']->contentTypes ? ('we_lv_ct_' . $lvname . '=' . rawurlencode($GLOBALS['lv']->contentTypes) . '&amp;') : '') .
 					($GLOBALS['lv']->order ? ('we_lv_order_' . $lvname . '=' . rawurlencode($GLOBALS['lv']->order) . '&amp;') : '') .
@@ -493,7 +492,7 @@ function we_tag_field($attribs){
 					'&amp;we_lv_pstart_' . $lvname . '=' . ($GLOBALS['lv']->start);
 
 				$out = getHtmlTag('a', $_linkAttribs, $out, true);
-			} else{
+			} else {
 
 				if($tid){
 					$GLOBALS['lv']->tid = $tid;
@@ -518,7 +517,7 @@ function we_tag_field($attribs){
 					if(show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES != '' && isset($GLOBALS['lv']->hidedirindex) && $GLOBALS['lv']->hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
 						$_linkAttribs['href'] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' .
 							($GLOBALS['lv']->objectseourls && $objecturl != '' ? $objecturl . $pidstr : '?we_objectID=' . $GLOBALS['lv']->f('OID') . str_replace('?', '&amp;', $pidstr));
-					} else{
+					} else {
 						$_linkAttribs['href'] = ($GLOBALS['lv']->objectseourls && $objecturl != '' ?
 								($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . $path_parts['filename'] . '/' . $objecturl . $pidstr :
 								$_SERVER['SCRIPT_NAME'] . '?we_objectID=' . $GLOBALS['lv']->f('OID') . str_replace('?', '&amp;', $pidstr)
@@ -530,8 +529,7 @@ function we_tag_field($attribs){
 							$_linkAttribs['href'] :
 							getHtmlTag('a', $_linkAttribs, $out, true) //  output of link-tag
 						);
-				} else
-				if(isset($GLOBALS['lv']->ClassName) && $GLOBALS['lv']->ClassName == 'we_catListview' && we_tag('ifHasChildren', array(), '')){
+				} elseif(isset($GLOBALS['lv']->ClassName) && $GLOBALS['lv']->ClassName == 'we_catListview' && we_tag('ifHasChildren', array(), '')){
 					$parentidname = weTag_getAttribute('parentidname', $attribs, 'we_parentid');
 					$_linkAttribs['href'] = $_SERVER['SCRIPT_NAME'] . '?' . $parentidname . '=' . $GLOBALS['lv']->f('ID');
 
@@ -539,7 +537,7 @@ function we_tag_field($attribs){
 							$_linkAttribs['href'] :
 							getHtmlTag('a', $_linkAttribs, $out, true) //  output of link-tag
 						);
-				} else{
+				} else {
 
 					switch(isset($GLOBALS['lv']->ClassName) ? $GLOBALS['lv']->ClassName : ''){
 						case '':
@@ -575,7 +573,7 @@ function we_tag_field($attribs){
 
 						if(($GLOBALS['we_doc']->ClassName == 'we_objectFile') && ($GLOBALS['we_doc']->InWebEdition)){
 							$_linkAttribs['href'] = $GLOBALS['lv']->f('wedoc_lastPath') . $tail;
-						} else{
+						} else {
 							$path_parts = pathinfo($GLOBALS['lv']->f('WE_PATH'));
 							if($triggerid){
 								$triggerpath = id_to_path($triggerid);
@@ -584,7 +582,7 @@ function we_tag_field($attribs){
 									(!$GLOBALS['WE_MAIN_DOC']->InWebEdition && NAVIGATION_DIRECTORYINDEX_NAMES != '' && isset($GLOBALS['lv']->hidedirindex) && $GLOBALS['lv']->hidedirindex && in_array($triggerpath_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))) ?
 										'' : $triggerpath_parts['filename'] . '/'
 									) . $GLOBALS['lv']->f('WE_URL') . $tail;
-							} else{
+							} else {
 								$_linkAttribs['href'] = (show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES != '' && isset($GLOBALS['lv']->hidedirindex) && $GLOBALS['lv']->hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))) ?
 										($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' :
 										$GLOBALS['lv']->f('WE_PATH') . $tail

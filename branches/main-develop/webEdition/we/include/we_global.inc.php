@@ -322,18 +322,15 @@ function std_numberformat($content){
 		$umschreib = preg_replace('#(.*),([0-9]*)$#', '\1.\2', $content);
 		$pos = strrpos($content, ',');
 		$vor = str_replace('.', '', substr($umschreib, 0, $pos));
-		$content = $vor . substr($umschreib, $pos, strlen($umschreib) - $pos);
-	} else
-	if(preg_match('#.*\.[0-9]*$#', $content)){
+		return $vor . substr($umschreib, $pos, strlen($umschreib) - $pos);
+	} elseif(preg_match('#.*\.[0-9]*$#', $content)){
 // Englische Schreibweise
 		$pos = strrpos($content, '.');
 		$vor = substr($content, 0, $pos);
 		$vor = str_replace(',', '', str_replace('.', '', $vor));
-		$content = $vor . substr($content, $pos, strlen($content) - $pos);
+		return $vor . substr($content, $pos, strlen($content) - $pos);
 	}
-	else
-		$content = str_replace(',', '', str_replace('.', '', $content));
-	return $content;
+	return str_replace(',', '', str_replace('.', '', $content));
 }
 
 /**
@@ -961,13 +958,13 @@ function get_def_ws($table = FILE_TABLE, $prePostKomma = false){
 		$wsA = makeArrayFromCSV(get_ws($table, $prePostKomma));
 		return (!empty($wsA) ? $wsA[0] : '');
 	}
-	else
 		return $ws;
 }
 
 function getArrayKey($needle, $haystack){
-	if(!is_array($haystack))
+	if(!is_array($haystack)){
 		return '';
+	}
 	foreach($haystack as $i => $val){
 		if($val == $needle){
 			return $i;

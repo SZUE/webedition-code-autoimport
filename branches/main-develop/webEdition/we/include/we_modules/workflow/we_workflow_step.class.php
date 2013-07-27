@@ -76,7 +76,7 @@ class we_workflow_step extends we_workflow_base{
 
 		$steps = array();
 
-		while($db->next_record()) {
+		while($db->next_record()){
 			$steps[] = new self($db->f("ID"));
 		}
 		return $steps;
@@ -85,7 +85,7 @@ class we_workflow_step extends we_workflow_base{
 	/**
 	 * Load step from database
 	 */
-	function load($id=0){
+	function load($id = 0){
 		if($id)
 			$this->ID = $id;
 		if($this->ID){
@@ -93,7 +93,7 @@ class we_workflow_step extends we_workflow_base{
 			## get tasks for step
 			$this->tasks = we_workflow_task::getAllTasks($this->ID);
 			return true;
-		} else{
+		} else {
 			return false;
 		}
 	}
@@ -134,8 +134,7 @@ class we_workflow_step extends we_workflow_base{
 			parent::delete();
 			return true;
 		}
-		else
-			return false;
+		return false;
 	}
 
 }

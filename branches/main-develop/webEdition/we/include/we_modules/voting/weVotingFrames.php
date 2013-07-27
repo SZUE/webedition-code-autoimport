@@ -848,22 +848,17 @@ class weVotingFrames extends weModuleFrames{
 
 		if(isset($_REQUEST["pid"])){
 			$pid = $_REQUEST["pid"];
-		}
-		else
+		} else {
 			exit;
-
-		if(isset($_REQUEST["offset"])){
-			$offset = $_REQUEST["offset"];
 		}
-		else
-			$offset = 0;
 
-		$rootjs = "";
+		$offset = (isset($_REQUEST["offset"]) ? $_REQUEST["offset"] : 0);
+
+		$rootjs = '';
 		if(!$pid)
-			$rootjs.='
-		' . $this->Tree->topFrame . '.treeData.clear();
-		' . $this->Tree->topFrame . '.treeData.add(new ' . $this->Tree->topFrame . '.rootEntry(\'' . $pid . '\',\'root\',\'root\'));
-		';
+			$rootjs.=
+				$this->Tree->topFrame . '.treeData.clear();' .
+				$this->Tree->topFrame . '.treeData.add(new ' . $this->Tree->topFrame . '.rootEntry(\'' . $pid . '\',\'root\',\'root\'));';
 
 		$hiddens = we_html_element::htmlHidden(array("name" => "pnt", "value" => "cmd")) .
 			we_html_element::htmlHidden(array("name" => "cmd", "value" => "no_cmd"));

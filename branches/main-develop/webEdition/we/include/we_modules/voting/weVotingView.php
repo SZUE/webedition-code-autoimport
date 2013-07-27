@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 /* the parent class of storagable webEdition classes */
-class weVotingView extends weModuleView {
+class weVotingView extends weModuleView{
 
 	var $frameset;
 	var $topFrame;
@@ -358,9 +358,9 @@ class weVotingView extends weModuleView {
 	' . $this->getJSSubmitFunction("cmd");
 	}
 
-	/*use parent
-	function getJSSubmitFunctionS($def_target = "edbody", $def_method = "post"){}
-	 * 
+	/* use parent
+	  function getJSSubmitFunctionS($def_target = "edbody", $def_method = "post"){}
+	 *
 	 */
 
 	function processCommands(){
@@ -376,7 +376,7 @@ class weVotingView extends weModuleView {
 					if(!we_hasPerm("NEW_VOTING")){
 						print we_html_element::jsElement(
 								we_message_reporting::getShowMessageCall(g_l('modules_voting', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
-							);
+						);
 						break;
 					}
 					$this->voting = new weVoting();
@@ -390,7 +390,7 @@ class weVotingView extends weModuleView {
 					if(!we_hasPerm("EDIT_VOTING")){
 						print we_html_element::jsElement(
 								we_message_reporting::getShowMessageCall(g_l('modules_voting', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
-							);
+						);
 						$_REQUEST['home'] = '1';
 						$_REQUEST['pnt'] = 'edbody';
 						break;
@@ -401,7 +401,7 @@ class weVotingView extends weModuleView {
 					if(!$this->voting->isAllowedForUser()){
 						print we_html_element::jsElement(
 								we_message_reporting::getShowMessageCall(g_l('modules_voting', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
-							);
+						);
 						$this->voting = new weVoting();
 						$_REQUEST["home"] = true;
 						break;
@@ -414,7 +414,7 @@ class weVotingView extends weModuleView {
 					if(!we_hasPerm("NEW_VOTING") && !we_hasPerm("EDIT_VOTING")){
 						print we_html_element::jsElement(
 								we_message_reporting::getShowMessageCall(g_l('modules_voting', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
-							);
+						);
 						break;
 					}
 
@@ -422,21 +422,21 @@ class weVotingView extends weModuleView {
 					if($this->voting->filenameNotValid($this->voting->Text)){
 						print we_html_element::jsElement(
 								we_message_reporting::getShowMessageCall(g_l('modules_voting', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR)
-							);
+						);
 						break;
 					}
 
 					if(trim($this->voting->Text) == ''){
 						print we_html_element::jsElement(
 								we_message_reporting::getShowMessageCall(g_l('modules_voting', '[name_empty]'), we_message_reporting::WE_MESSAGE_ERROR)
-							);
+						);
 						break;
 					}
 
 					if($this->voting->Active == 1 && $this->voting->ActiveTime && $this->voting->Valid < time()){
 						print we_html_element::jsElement(
 								we_message_reporting::getShowMessageCall(g_l('modules_voting', '[not_active]'), we_message_reporting::WE_MESSAGE_ERROR)
-							);
+						);
 						break;
 					}
 
@@ -447,13 +447,13 @@ class weVotingView extends weModuleView {
 					if($this->voting->pathExists($this->voting->Path)){
 						print we_html_element::jsElement(
 								we_message_reporting::getShowMessageCall(g_l('modules_voting', '[name_exists]'), we_message_reporting::WE_MESSAGE_ERROR)
-							);
+						);
 						break;
 					}
 					if($this->voting->isSelf()){
 						print we_html_element::jsElement(
 								we_message_reporting::getShowMessageCall(g_l('modules_voting', '[path_nok]'), we_message_reporting::WE_MESSAGE_ERROR)
-							);
+						);
 						break;
 					}
 
@@ -468,16 +468,16 @@ class weVotingView extends weModuleView {
 							if($q === ''){
 								$q_empty = true;
 								break;
-							} else
-								$q_empty = false;
+							}
+							$q_empty = false;
 
 							foreach($set['answers'] as $ans){
 								$q = trim($ans);
 								if($q === ''){
 									$a_empty = true;
 									break;
-								} else
-									$a_empty = false;
+								}
+								$a_empty = false;
 							}
 						}
 
@@ -485,13 +485,13 @@ class weVotingView extends weModuleView {
 							$error = true;
 							print we_html_element::jsElement(
 									we_message_reporting::getShowMessageCall(g_l('modules_voting', '[question_empty]'), we_message_reporting::WE_MESSAGE_ERROR)
-								);
+							);
 							break;
 						} else if($a_empty){
 							$error = true;
 							print we_html_element::jsElement(
 									we_message_reporting::getShowMessageCall(g_l('modules_voting', '[answer_empty]'), we_message_reporting::WE_MESSAGE_ERROR)
-								);
+							);
 							break;
 						}
 					}
@@ -502,7 +502,7 @@ class weVotingView extends weModuleView {
 						if(!is_array($weAcResult) || $weAcResult[0]['IsFolder'] == 0){
 							print we_html_element::jsElement(
 									we_message_reporting::getShowMessageCall(g_l('modules_voting', '[path_nok]'), we_message_reporting::WE_MESSAGE_ERROR)
-								);
+							);
 							break;
 						}
 					}
@@ -514,7 +514,7 @@ class weVotingView extends weModuleView {
 						if($this->voting->IsFolder && $oldpath != '' && $oldpath != '/' && $oldpath != $this->voting->Path){
 							$db_tmp = new DB_WE();
 							$this->db->query('SELECT ID FROM ' . VOTING_TABLE . ' WHERE Path LIKE "' . $db_tmp->escape($oldpath) . '%" AND ID!=' . intval($this->voting->ID));
-							while($this->db->next_record()) {
+							while($this->db->next_record()){
 								$db_tmp->query('UPDATE ' . VOTING_TABLE . ' SET Path="' . $this->voting->evalPath($this->db->f('ID')) . '" WHERE ID=' . $this->db->f('ID'));
 							}
 						}
@@ -533,9 +533,9 @@ class weVotingView extends weModuleView {
 					if(!we_hasPerm("DELETE_VOTING")){
 						print we_html_element::jsElement(
 								we_message_reporting::getShowMessageCall(g_l('modules_voting', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
-							);
+						);
 						return;
-					} else{
+					} else {
 						if($this->voting->delete()){
 							print we_html_element::jsElement(
 									$this->topFrame . '.deleteEntry(' . $this->voting->ID . ');
@@ -543,10 +543,10 @@ class weVotingView extends weModuleView {
 							$this->voting = new weVoting();
 							$_REQUEST['home'] = '1';
 							$_REQUEST['pnt'] = 'edbody';
-						} else{
+						} else {
 							print we_html_element::jsElement(
 									we_message_reporting::getShowMessageCall(g_l('modules_voting', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR)
-								);
+							);
 						}
 					}
 					break;
@@ -642,7 +642,7 @@ class weVotingView extends weModuleView {
 								default:
 									$mess = g_l('modules_voting', '[log_error]');
 							}
-						} else{
+						} else {
 							$mess = g_l('modules_voting', '[log_success]');
 						}
 
@@ -665,10 +665,10 @@ class weVotingView extends weModuleView {
 								foreach($addData as $key => $values){
 									$myline .= $enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim($values)) . $enclose . $delimiter;
 								}
-							} else{
+							} else {
 								$myline.= $enclose . '-' . $enclose . $delimiter;
 							}
-						} else{
+						} else {
 							$myline.= $enclose . '-' . $enclose . $delimiter;
 						}
 						$content[] = $myline;

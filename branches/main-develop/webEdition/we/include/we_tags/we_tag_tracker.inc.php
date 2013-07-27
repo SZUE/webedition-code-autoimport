@@ -39,11 +39,10 @@ function we_tag_tracker($attribs){
 	if($trackname == "WE_PATH"){
 		if(isset($_REQUEST['we_objectID'])){
 			$trackname = "/object" . id_to_path(intval($_REQUEST['we_objectID']), OBJECT_FILES_TABLE);
-		} else{
+		} else {
 			$trackname = $GLOBALS["WE_MAIN_DOC"]->Path;
 		}
-	} else
-	if($trackname == "WE_TITLE"){
+	} elseif($trackname == "WE_TITLE"){
 		$trackname = $GLOBALS["WE_MAIN_DOC"]->getElement("Title");
 	}
 
@@ -63,15 +62,12 @@ _my_stat_write(\'' . $websitename . '\',\'' . $trackerurl . '\'' . ($trackname ?
 </noscript>
 <!-- pageLogger Code END -->
 ';
-	} else
-	if($type == 'robot'){
+	} elseif($type == 'robot'){
 		include ($_SERVER['DOCUMENT_ROOT'] . WE_TRACKER_DIR . "/spidertracker.php");
 		@logspider($websitename);
-	} else
-	if($type == 'fileserver'){
+	} elseif($type == 'fileserver'){
 		@include_once ($_SERVER['DOCUMENT_ROOT'] . WE_TRACKER_DIR . "/service/fileserver.php");
-	} else
-	if($type == 'downloads'){
+	} elseif($type == 'downloads'){
 		@include_once ($_SERVER['DOCUMENT_ROOT'] . WE_TRACKER_DIR . "/includes/showcat.inc.php");
 		$category = weTag_getAttribute("category", $attribs);
 		$order = weTag_getAttribute("order", $attribs, "FILETITLE");

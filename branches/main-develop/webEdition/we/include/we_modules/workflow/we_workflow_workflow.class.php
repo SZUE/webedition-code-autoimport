@@ -28,14 +28,15 @@
  *
  */
 class we_workflow_workflow extends we_workflow_base{
-	const STATE_INACTIVE=0;
-	const STATE_ACTIVE=1;
+
+	const STATE_INACTIVE = 0;
+	const STATE_ACTIVE = 1;
 // Document-Type/Category based Workflow Type
-	const DOCTYPE_CATEGORY=0;
+	const DOCTYPE_CATEGORY = 0;
 // Directory based Workflow Type
-	const FOLDER=1;
+	const FOLDER = 1;
 // Object based Workflow Type
-	const OBJECT=2;
+	const OBJECT = 2;
 
 	//properties
 	var $ID;
@@ -111,7 +112,7 @@ class we_workflow_workflow extends we_workflow_base{
 	/**
 	 * Load workflow definition from database
 	 */
-	function load($id=0){
+	function load($id = 0){
 		if($id)
 			$this->ID = $id;
 		if($this->ID){
@@ -122,7 +123,7 @@ class we_workflow_workflow extends we_workflow_base{
 			$this->steps = we_workflow_step::getAllSteps($this->ID);
 			$this->loadDocuments();
 			return true;
-		} else{
+		} else {
 			return false;
 		}
 	}
@@ -134,7 +135,7 @@ class we_workflow_workflow extends we_workflow_base{
 		$db_tmp = new DB_WE();
 		$this->db->query('SELECT ID,documentID FROM ' . WORKFLOW_DOC_TABLE . ' WHERE workflowID=' . intval($this->ID) . ' AND Status=0');
 		$docTable = ($this->Type == self::OBJECT ? OBJECT_FILES_TABLE : FILE_TABLE );
-		while($this->db->next_record()) {
+		while($this->db->next_record()){
 			$db_tmp->query('SELECT ID,Text,Icon FROM ' . $docTable . ' WHERE ID=\'' . $this->db->f('documentID') . '\'');
 			if($db_tmp->next_record()){
 				$newdoc = array();
@@ -154,7 +155,7 @@ class we_workflow_workflow extends we_workflow_base{
 		$this->db->query('SELECT ID FROM ' . WORKFLOW_TABLE . ' ORDER BY Text');
 
 		$wfs = array();
-		while($this->db->next_record()) {
+		while($this->db->next_record()){
 			$wfs[] = new self($this->db->f('ID'));
 		}
 		return $wfs;
@@ -164,13 +165,13 @@ class we_workflow_workflow extends we_workflow_base{
 	 * get all workflows from database
 	 *
 	 */
-	function getAllWorkflowsInfo($status=self::STATE_ACTIVE, $type=self::DOCTYPE_CATEGORY){
+	function getAllWorkflowsInfo($status = self::STATE_ACTIVE, $type = self::DOCTYPE_CATEGORY){
 
 		$db = new DB_WE();
 
 		$db->query('SELECT ID,Text FROM ' . WORKFLOW_TABLE . ' WHERE Status IN (' . $status . ') AND Type IN (' . $type . ') ORDER BY Text');
 		$wfs = array();
-		while($db->next_record()) {
+		while($db->next_record()){
 			$wfs[$db->f('ID')] = $db->f('Text');
 		}
 		return $wfs;
@@ -238,19 +239,13 @@ class we_workflow_workflow extends we_workflow_base{
 	function isDocInWorkflow($docID, $type){
 		$db = new DB_WE();
 		$db->query('SELECT ID FROM ' . WORKFLOW_DOC_TABLE . ' WHERE documentID=' . intval($docID) . ' AND Type IN(0,1) AND Status=0');
-		if($db->next_record())
-			return $db->f('ID');
-		else
-			false;
+		return ($db->next_record() ? $db->f('ID') : false);
 	}
 
 	function isObjectInWorkflow($docID){
 		$db = new DB_WE();
 		$db->query('SELECT ID FROM ' . WORKFLOW_DOC_TABLE . ' WHERE documentID=' . intval($docID) . ' AND Type=2 AND Status=0');
-		if($db->next_record())
-			return $db->f('ID');
-		else
-			false;
+		return ($db->next_record() ? $db->f('ID') : false);
 	}
 
 	/**
@@ -266,10 +261,10 @@ class we_workflow_workflow extends we_workflow_base{
 		 */
 		if($doctype){
 			$db->query('SELECT ID FROM ' . WORKFLOW_TABLE . ' WHERE DocType LIKE \'%,' . $doctype . ',%\' AND Type=' . self::DOCTYPE_CATEGORY . ' AND Status=' . self::STATE_ACTIVE);
-			while($db->next_record()) {
+			while($db->next_record()){
 				if(isset($wfIDs[$db->f('ID')])){
 					$wfIDs[$db->f('ID')]++;
-				} else{
+				} else {
 					$wfIDs[$db->f('ID')] = 1;
 				}
 			}
@@ -281,14 +276,15 @@ class we_workflow_workflow extends we_workflow_base{
 		if($categories){
 			$cats = makeArrayFromCSV($categories);
 			foreach($cats as $k => $v){
-				if($doctype != '')
+				if($doctype != ''){
 					$db->query('SELECT ID FROM ' . WORKFLOW_TABLE . ' WHERE DocType IN (' . $doctype . ') AND Categories LIKE \'%,' . $db->escape($v) . ',%\' AND Type=' . self::DOCTYPE_CATEGORY . ' AND Status=' . self::STATE_ACTIVE);
-				else
+				} else {
 					$db->query('SELECT ID FROM ' . WORKFLOW_TABLE . ' WHERE Categories LIKE \'%,' . $db->escape($v) . ',%\' AND Type=' . self::DOCTYPE_CATEGORY . ' AND Status=' . self::STATE_ACTIVE);
-				while($db->next_record()) {
+				}
+				while($db->next_record()){
 					if(isset($wfIDs[$db->f('ID')])){
 						$wfIDs[$db->f('ID')]++;
-					} else{
+					} else {
 						$wfIDs[$db->f('ID')] = 1;
 					}
 				}
@@ -321,7 +317,7 @@ class we_workflow_workflow extends we_workflow_base{
 		if($folderID > 0 && (!$wfID)){
 			$pid = f('SELECT ParentID FROM ' . FILE_TABLE . ' WHERE ID=' . intval($folderID), 'ParentID', $db);
 			return self::findWfIdForFolder($pid);
-		} else{
+		} else {
 			return $wfID;
 		}
 	}
@@ -329,7 +325,7 @@ class we_workflow_workflow extends we_workflow_base{
 	/**
 	 * Get workflow for object
 	 */
-	function getObjectWorkflow($object, $categories='', $folderID=0){
+	function getObjectWorkflow($object, $categories = '', $folderID = 0){
 		$db = new DB_WE();
 		$workflowID = 0;
 
@@ -342,10 +338,10 @@ class we_workflow_workflow extends we_workflow_base{
 		}
 
 		$db->query('SELECT ID FROM ' . WORKFLOW_TABLE . ' WHERE Objects LIKE \'%,' . $db->escape($object) . ',%\' AND Type=' . self::OBJECT . ' AND Status=' . self::STATE_ACTIVE . $tail);
-		while($db->next_record()) {
+		while($db->next_record()){
 			if(isset($wfIDs[$db->f('ID')])){
 				$wfIDs[$db->f('ID')]++;
-			} else{
+			} else {
 				$wfIDs[$db->f('ID')] = 1;
 			}
 		}
@@ -357,10 +353,10 @@ class we_workflow_workflow extends we_workflow_base{
 			$cats = makeArrayFromCSV($categories);
 			foreach($cats as $k => $v){
 				$db->query('SELECT ID FROM ' . WORKFLOW_TABLE . ' WHERE Objects LIKE \'%,' . $db->escape($object) . ',%\' AND ObjCategories LIKE \'%,' . $db->escape($v) . ',%\' AND Type=' . self::OBJECT . ' AND Status=' . self::STATE_ACTIVE);
-				while($db->next_record()) {
+				while($db->next_record()){
 					if(isset($wfIDs[$db->f('ID')])){
 						$wfIDs[$db->f('ID')]++;
-					} else{
+					} else {
 						$wfIDs[$db->f('ID')] = 1;
 					}
 				}

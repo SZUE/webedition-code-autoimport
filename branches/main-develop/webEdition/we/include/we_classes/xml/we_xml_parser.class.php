@@ -165,7 +165,7 @@ class we_xml_parser{
 		else if(file_exists($file) && is_readable($file)){
 			// Read the file.
 			$data = implode('', file($file));
-		} else{
+		} else {
 			return FALSE;
 		}
 
@@ -177,7 +177,7 @@ class we_xml_parser{
 	function setEncoding($force_encoding, $data = ''){
 		if(empty($force_encoding)){
 			$encoding = $this->getEncoding('', $data);
-		} else{
+		} else {
 			$encoding = $force_encoding;
 		}
 
@@ -230,7 +230,7 @@ class we_xml_parser{
 
 			// All done, clean up.
 			xml_parser_free($parser);
-		} else{
+		} else {
 			// Add a warning and return FALSE if the given string is empty.
 			$this->addWarning(ERROR_XML_FILE_EMPTY, $this->fileName);
 			return FALSE;
@@ -409,7 +409,7 @@ class we_xml_parser{
 		if(!$this->nodes[$context]['children'][$nodeName]){
 			// Set the default name.
 			$this->nodes[$context]['children'][$nodeName] = 1;
-		} else{
+		} else {
 			// Calculate the name.
 			$this->nodes[$context]['children'][$nodeName] =
 				$this->nodes[$context]['children'][$nodeName] + 1;
@@ -448,7 +448,7 @@ class we_xml_parser{
 				// Save the new attributes.
 				$this->nodes[$parent]['attributes'] = $new;
 			}
-		} else{
+		} else {
 			// Nodes to be renamed.
 			$rename = array();
 
@@ -549,7 +549,7 @@ class we_xml_parser{
 
 			// Set the attribute.
 			$parent['attributes'][$attribute] .= $value;
-		} else{
+		} else {
 			// Set the character data of the node.
 			$this->nodes[$absoluteXPath]['data'] .= $value;
 			if($this->nodes[$absoluteXPath]['cdata-section'] != 1){
@@ -578,7 +578,7 @@ class we_xml_parser{
 
 			// Set the attribute.
 			$parent['attributes'][$attribute] = $value;
-		} else{
+		} else {
 			// Set the character data of the node.
 			$this->nodes[$absoluteXPath]['data'] = $value;
 		}
@@ -607,7 +607,7 @@ class we_xml_parser{
 			$attributeValue = $parentNode['attributes'][$attributeName];
 
 			return $attributeValue;
-		} else{
+		} else {
 			// Return the character data of the node.
 			return stripslashes(isset($this->nodes[$absoluteXPath]['data']) ? $this->nodes[$absoluteXPath]['data'] : "");
 		}
@@ -656,7 +656,7 @@ class we_xml_parser{
 		$attrString = '';
 		if(!empty($element['attributes'])){
 			// Add each attribute name and value.
-			while(list($name, $value) = each($element['attributes'])) {
+			while(list($name, $value) = each($element['attributes'])){
 				$attrString .= ' ' . $name . '="' . $value . '"';
 			}
 		}
@@ -872,7 +872,7 @@ class we_xml_parser{
 			// Split the step to extract the axis and the node-test.
 			$axis['axis'] = $this->prestr($step, '::');
 			$axis['node-test'] = $this->poststr($step, '::');
-		} else{
+		} else {
 			// Check if the step is empty.
 			if(empty($step)){
 				// Set it to the default value.
@@ -904,7 +904,7 @@ class we_xml_parser{
 					// Save the evaluated function.
 					$axis['axis'] = 'method';
 					$axis['node-test'] = $this->evaluateMethod($before, $between, $node);
-				} else{
+				} else {
 					// Use the child axis and a function.
 					$axis['axis'] = 'child';
 					$axis['node-test'] = $step;
@@ -929,7 +929,7 @@ class we_xml_parser{
 				// Select the child axis and the child.
 				$axis['axis'] = 'child';
 				$axis['node-test'] = $step;
-			} else{
+			} else {
 				// Use the child axis and a name.
 				$axis['axis'] = 'child';
 				$axis['node-test'] = $step;
@@ -1015,7 +1015,7 @@ class we_xml_parser{
 				// Call this method for this single path.
 				$nodes = array_merge($nodes, $this->evaluateStep($path, $steps));
 			}
-		} else{
+		} else {
 			// Get this step.
 			$step = array_shift($steps);
 
@@ -1030,11 +1030,11 @@ class we_xml_parser{
 				if(is_array($axis['node-test'])){
 					// Add the results to the list of contexts.
 					$contexts = array_merge($contexts, $axis['node-test']);
-				} else{
+				} else {
 					// Add the result to the list of contexts.
 					$contexts[] = $axis['node-test'];
 				}
-			} else{
+			} else {
 				// The name of the method.
 				$method = 'execAxis_' . str_replace('-', '_', $axis['axis']);
 
@@ -1057,7 +1057,7 @@ class we_xml_parser{
 			if(!empty($steps)){
 				// Continue the evaluation with the next steps.
 				$nodes = $this->evaluateStep($contexts, $steps);
-			} else{
+			} else {
 				// Save contexts to the list of nodes.
 				$nodes = $contexts;
 			}
@@ -1242,7 +1242,7 @@ class we_xml_parser{
 					// Return a division of the two results.
 					if($right == 0){
 						return FALSE;
-					} else{
+					} else {
 						// Return the result of the division.
 						return ($left / $right);
 					}
@@ -1282,7 +1282,7 @@ class we_xml_parser{
 			} else if($this->isMethod($before)){
 				// Return the evaluated method.
 				return $this->evaluateMethod($before, $between, $node);
-			} else{
+			} else {
 				return FALSE;
 			}
 		}
@@ -1345,10 +1345,7 @@ class we_xml_parser{
 				// Check if it is an integer.
 				if(is_int($check)){
 					// Check if it is the current position.
-					if($check == $this->execMethod_position($node, ''))
-						$check = TRUE;
-					else
-						$check = FALSE;
+					$check = ($check == $this->execMethod_position($node, '') ? true : false);
 				}
 
 				// Check if the predicate is ok for this node.
@@ -1421,7 +1418,7 @@ class we_xml_parser{
 							// Add this node to the list of nodes.
 							return TRUE;
 						}
-					} else{
+					} else {
 						// Check if the node has processing instructions.
 						if(!empty($this->nodes[$context]
 								['processing-instructions'])){
@@ -1443,7 +1440,7 @@ class we_xml_parser{
 				// Add this node to the list of nodes.
 				return TRUE;
 			}
-		} else{
+		} else {
 			return FALSE;
 		}
 
@@ -1553,8 +1550,7 @@ class we_xml_parser{
 			// Check if there are attributes.
 			if(!empty($this->nodes[$contextNode]['attributes'])){
 				// Run through the attributes.
-				foreach($this->nodes[$contextNode]['attributes'] as
-				$key => $value){
+				foreach($this->nodes[$contextNode]['attributes'] as $key => $value){
 					// Add this node to the list of selected nodes.
 					$selectedNodes[] = $contextNode . '/attribute::' . $key;
 				}
@@ -2083,7 +2079,7 @@ class we_xml_parser{
 
 			// Return the first result as a string.
 			return $nodeSet[0];
-		} else{
+		} else {
 			return (empty($args) ? $node : '');
 		}
 	}
@@ -2128,7 +2124,7 @@ class we_xml_parser{
 		if(!empty($args[2])){
 			// Return the substring.
 			return substr(strval($args[0]), $args[1] - 1, $args[2]);
-		} else{
+		} else {
 			// Return the substring.
 			return substr(strval($args[0]), $args[1] - 1);
 		}
@@ -2338,7 +2334,7 @@ class we_xml_parser{
 			return !(doubleval($args) == 0);
 		} else if(empty($args)){
 			return FALSE;
-		} else{
+		} else {
 			// Evaluate the argument as XPath expression.
 			$result = $this->evaluate($args, $node);
 
@@ -2379,7 +2375,7 @@ class we_xml_parser{
 		// Check if the node has an language attribute.
 		if(empty($this->nodes[$node]['attributes']['xml:lang'])){
 			// Run through the ancestors.
-			while(!empty($node)) {
+			while(!empty($node)){
 				// Select the parent node.
 				$node = $this->nodes[$node]['parent'];
 
@@ -2391,7 +2387,7 @@ class we_xml_parser{
 			}
 
 			return FALSE;
-		} else{
+		} else {
 			// Check if it is the requested language.
 			return (stripos($this->nodes[$node]['attributes']['xml:lang'], $args) === 0);
 		}
@@ -2516,7 +2512,7 @@ class we_xml_parser{
 
 		if(empty($data)){
 			return false;
-		} else{
+		} else {
 			$data = substr($data, 0, 256);
 		}
 

@@ -83,17 +83,19 @@ class weExportTree extends weMainTree{
 
 			$js.="		if(" . $this->topFrame . ".indexOfEntry('" . $item["id"] . "')<0){ \n";
 			foreach($item as $k => $v){
-				if(strtolower($k) == "checked")
+				if(strtolower($k) == "checked"){
 					$js.='
-							if(in_array(' . $this->topFrame . '.SelectedItems[attribs["table"]],"' . $item["id"] . '"))
+							if(in_array(' . $this->topFrame . '.SelectedItems[attribs["table"]],"' . $item["id"] . '")){
 								attribs["' . strtolower($k) . '"]=\'1\';
-							else
+							}else{
 								attribs["' . strtolower($k) . '"]=\'' . $v . '\';
+							}
 						';
-				else
+				} else {
 					$js.='
 								attribs["' . strtolower($k) . '"]=\'' . $v . '\';
 						';
+				}
 			}
 			$js.='
 						' . $this->topFrame . '.treeData.addSort(new ' . $this->topFrame . '.node(attribs));
@@ -188,7 +190,7 @@ class weExportTree extends weMainTree{
 		';
 	}
 
-	function getHTMLMultiExplorer($width=500, $height=250){
+	function getHTMLMultiExplorer($width = 500, $height = 250){
 		$js = $this->getJSTreeCode() . we_html_element::jsElement('
 			function populate(id,table){
 

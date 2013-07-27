@@ -100,11 +100,7 @@ abstract class weCustomerEI{
 		$out = '';
 		$content = '';
 		foreach($elements as $element){
-			if(is_array($element['content'])){
-				$content = self::buildXMLElement($element['content']);
-			}
-			else
-				$content = $element['content'];
+			$content = (is_array($element['content']) ? self::buildXMLElement($element['content']) : $element['content']);
 			$element = new we_baseElement($element['name'], true, $element['attributes'], $content);
 			$out.=$element->getHTML();
 		}
@@ -205,10 +201,11 @@ abstract class weCustomerEI{
 				$recs[$c] = $cp->CSVFieldName($c);
 			}
 			for($i = 0; $i < count($recs); $i++){
-				if($fieldnames)
+				if($fieldnames){
 					$nodes[$recs[$i]] = array();
-				else
+				} else {
 					$nodes[g_l('modules_customer', '[record_field]') . ' ' . ($i + 1)] = array();
+				}
 			}
 		}
 
@@ -284,7 +281,7 @@ abstract class weCustomerEI{
 					$csv->setToCharset('UTF-8');
 					$csv->parseCSV();
 					$data = $csv->CSVFetchRow();
-					while($data != FALSE) {
+					while($data != FALSE){
 						$value = array();
 						foreach($data as $kdat => $vdat){
 							$value[] = array(
@@ -340,7 +337,7 @@ abstract class weCustomerEI{
 					$exists = true;
 					$count = 0;
 					$oldname = $customer->Username;
-					while($exists) {
+					while($exists){
 						$count++;
 						$new_name = $customer->Username . $count;
 						$exists = f('SELECT ID FROM ' . CUSTOMER_TABLE . ' WHERE Username="' . $db->escape($new_name) . '" AND ID!=' . intval($customer->ID), 'ID', $db);
@@ -360,7 +357,7 @@ abstract class weCustomerEI{
 					weCustomerEI::save2File($logfile, sprintf(g_l('modules_customer', '[skip_customer]'), $customer->Username) . "\n");
 					break;
 			}
-		} else{
+		} else {
 			$ret = true;
 			$customer->save();
 		}

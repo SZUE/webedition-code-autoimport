@@ -66,21 +66,12 @@ class toolfactory_ui_controls_Tree extends we_ui_controls_Tree{
 		if(isset($Status) && $Status != ''){
 			$outClasses[] = $Status;
 		}
-		if(!empty($outClasses)){
-			$outClass = ' class=\"' . implode(' ', $outClasses) . '\" ';
-		} else
-			$outClass = '';
-		$out = 'var myobj = { ';
-		$out .= 'label: "<span title=\"' . $text . '\" ' . $outClass . ' id=\"spanText_' . $this->_id . '_' . $id . '\">' . $text . '</span>"';
-		$out .= ',';
-		$out .= 'id: "' . $id . '"';
-		$out .= ',';
-		$out .= 'text: "' . $text . '"';
-		$out .= ',';
-		$out .= 'title: "' . $id . '"';
-		$out .= '}; ';
-
-		return $out;
+		$outClass = (!empty($outClasses) ? ' class=\"' . implode(' ', $outClasses) . '\" ' : '');
+		return 'var myobj = {
+			label: "<span title=\"' . $text . '\" ' . $outClass . ' id=\"spanText_' . $this->_id . '_' . $id . '\">' . $text . '</span>",
+			id: "' . $id . '",
+			text: "' . $text . '",
+			title: "' . $id . '"}; ';
 	}
 
 	/**
@@ -96,7 +87,7 @@ class toolfactory_ui_controls_Tree extends we_ui_controls_Tree{
 			if(!weToolLookup::isInIgnoreList($_tool['name'])){
 				if(isset($_tool['text'])){
 					$name = $_tool['text'];
-				} else{
+				} else {
 					$name = $_tool['name'];
 				}
 				$items[] = array(
@@ -110,7 +101,6 @@ class toolfactory_ui_controls_Tree extends we_ui_controls_Tree{
 				);
 			}
 		}
-
 		return $items;
 	}
 

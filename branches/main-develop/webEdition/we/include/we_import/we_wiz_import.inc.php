@@ -1142,7 +1142,7 @@ HTS;
 					$CLselect->selectOption($DB_WE->f('ID'));
 				}
 			}
-		} else{
+		} else {
 			$CLselect->insertOption($optid, -1, g_l('import', '[none]'));
 		}
 
@@ -1291,16 +1291,16 @@ HTS;
 				$tblFrame->setCol(2, 1, array(), $tblSelect->getHtml());
 
 				$parts[] = array('html' => $tblFrame->getHtml(), 'space' => 0, 'noline' => 1);
-			}
-			else
+			} else {
 				$parts[] = array('html' => we_html_tools::htmlAlertAttentionBox((!$xmlWellFormed) ? g_l('import', '[not_well_formed]') : g_l('import', '[missing_child_node]'), we_html_tools::TYPE_ALERT, 530), 'space' => 0, 'noline' => 1);
-		}
-		else {
+			}
+		} else {
 			$xmlWellFormed = $hasChildNode = false;
-			if(!file_exists($_SERVER['DOCUMENT_ROOT'] . $v['import_from']))
+			if(!file_exists($_SERVER['DOCUMENT_ROOT'] . $v['import_from'])){
 				$parts[] = array('html' => we_html_tools::htmlAlertAttentionBox(g_l('import', '[file_exists]') . $_SERVER['DOCUMENT_ROOT'] . $v['import_from'], we_html_tools::TYPE_ALERT, 530), 'space' => 0, 'noline' => 1);
-			else if(!is_readable($_SERVER['DOCUMENT_ROOT'] . $v['import_from']))
+			} elseif(!is_readable($_SERVER['DOCUMENT_ROOT'] . $v['import_from'])){
 				$parts[] = array('html' => we_html_tools::htmlAlertAttentionBox(g_l('import', '[file_readable]'), we_html_tools::TYPE_ALERT, 530), 'space' => 0, 'noline' => 1);
+			}
 		}
 
 		$functions = "

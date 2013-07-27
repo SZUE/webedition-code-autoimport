@@ -54,10 +54,11 @@ class weGlossaryTree extends weMainTree{
 			treeData[eintragsIndex].open=openstatus;
 
 			if(openstatus && treeData[eintragsIndex].loaded!=1){
-				if(sort!="")
+				if(sort!=""){
 					' . $this->cmdFrame . '.location="' . $this->frameset . '?pnt=cmd&pid="+id+"&sort="+sort;
-				else
+				}else{
 					' . $this->cmdFrame . '.location="' . $this->frameset . '?pnt=cmd&pid="+id;
+				}
 			}else{
 				drawTree();
 			}

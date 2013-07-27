@@ -301,8 +301,7 @@ class we_quicktimeDocument extends we_binaryDocument{
 
 				if(isset($_REQUEST["WE_UI_DEL_CHECKBOX_" . $quicktimeName]) && $_REQUEST["WE_UI_DEL_CHECKBOX_" . $quicktimeName] == 1){
 					$_SESSION[$_quicktimeDataId]['doDelete'] = true;
-				} else
-				if($filename){
+				} elseif($filename){
 					// file is selected, check to see if it is an image
 					$ct = getContentTypeFromFile($filename);
 					if($ct == $this->ContentType){

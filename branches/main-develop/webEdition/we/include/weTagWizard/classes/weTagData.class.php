@@ -67,8 +67,7 @@ class weTagData{
 		if(file_exists(WE_INCLUDES_PATH . 'weTagWizard/we_tags/we_tag_' . $tagName . '.inc.php')){
 			require (WE_INCLUDES_PATH . 'weTagWizard/we_tags/we_tag_' . $tagName . '.inc.php');
 			$this->Exists = true;
-		} else
-		if(file_exists(WE_INCLUDES_PATH . 'weTagWizard/we_tags/custom_tags/we_tag_' . $tagName . '.inc.php')){
+		} elseif(file_exists(WE_INCLUDES_PATH . 'weTagWizard/we_tags/custom_tags/we_tag_' . $tagName . '.inc.php')){
 			require (WE_INCLUDES_PATH . 'weTagWizard/we_tags/custom_tags/we_tag_' . $tagName . '.inc.php');
 			$this->Exists = true;
 			$this->Groups[] = 'custom';

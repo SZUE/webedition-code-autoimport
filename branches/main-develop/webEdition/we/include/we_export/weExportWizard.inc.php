@@ -86,13 +86,13 @@ class weExportWizard{
 
 		if(isset($_SESSION['weS']['exportVars'])){
 			foreach($this->exportVars as $k => $v){
-				if(isset($_SESSION['weS']['exportVars'][$k]))
+				if(isset($_SESSION['weS']['exportVars'][$k])){
 					$this->exportVars[$k] = $_SESSION['weS']['exportVars'][$k];
-				else
+				} else {
 					$_SESSION['weS']['exportVars'][$k] = $v;
+				}
 			}
-		}
-		else {
+		} else {
 			$_SESSION['weS']['exportVars'] = $this->exportVars;
 		}
 	}
@@ -1517,10 +1517,7 @@ function setState(a) {
 			');
 			$select->selectOption($classname);
 
-			if(isset($_REQUEST["type"]))
-				$type = $_REQUEST["type"];
-			else
-				$type = "";
+			$type = (isset($_REQUEST["type"]) ? $_REQUEST["type"] : '');
 
 			$radio = $showdocs ? we_forms::radiobutton("classname", ($type == "classname" ? true : false), "type", g_l('export', "[classname]"), true, "defaultfont", $this->topFrame . ".type='classname'") : we_html_tools::getPixel(25, 5) . g_l('export', "[classname]");
 			return $js . we_html_tools::htmlFormElementTable(we_html_tools::getPixel(25, 5) . $select->getHtml(), $radio);

@@ -45,10 +45,11 @@ class XML_Import extends we_xml_parser{
 		$this->updateFlds($absoluteXPath);
 		$this->importElement($absoluteXPath);
 		if($this->current_table != "" && count($this->attribs) > 0){
-			if($this->current_table == CONTENT_TABLE)
+			if($this->current_table == CONTENT_TABLE){
 				$this->content_id = $this->flushCurrent();
-			else
+			} else {
 				$this->element_id = $this->flushCurrent();
+			}
 		}
 		$this->updateIDs();
 	}
@@ -60,10 +61,11 @@ class XML_Import extends we_xml_parser{
 
 	function importElement($absoluteXPath){
 		if($this->current_table != "" && count($this->attribs) > 0){
-			if($this->current_table == CONTENT_TABLE)
+			if($this->current_table == CONTENT_TABLE){
 				$this->content_id = $this->flushCurrent();
-			else
+			} else {
 				$this->element_id = $this->flushCurrent();
+			}
 		}
 
 		if($this->nodeName($absoluteXPath) == "template")
@@ -81,7 +83,7 @@ class XML_Import extends we_xml_parser{
 				if($this->current_table != "" && count($this->attribs) > 0){
 					if($this->current_table == CONTENT_TABLE){
 						$this->content_id = $this->flushCurrent();
-					} else{
+					} else {
 						$this->element_id = $this->flushCurrent();
 					}
 				}
@@ -104,10 +106,11 @@ class XML_Import extends we_xml_parser{
 		$retID = 0;
 
 		foreach($this->attribs as $att){
-			if($att["name"] == "ID")
+			if($att["name"] == "ID"){
 				$oldid = $att["data"];
-			else
+			} else {
 				$insert_arr[$att["name"]] = $att["data"];
+			}
 		}
 
 		$insert = "INSERT INTO " . $this->current_table . "(" . implode(",", array_keys($insert_arr)) . ") VALUES ('" . implode("','", $insert_arr) . "');";
@@ -126,7 +129,7 @@ class XML_Import extends we_xml_parser{
 		if($this->current_table != "" && count($this->attribs) > 0){
 			if($this->current_table == CONTENT_TABLE){
 				$this->content_id = $this->flushCurrent();
-			} else{
+			} else {
 				$this->element_id = $this->flushCurrent();
 			}
 		}
@@ -138,7 +141,7 @@ class XML_Import extends we_xml_parser{
 				$attrs = $this->getAttributes($node);
 				if($attrs["name"] == "Dat"){
 					$this->importAttrib($attrs, addslashes(base64_decode($this->getData($node))));
-				} else{
+				} else {
 					$this->importAttrib($attrs, $this->getData($node));
 				}
 			}
@@ -167,7 +170,7 @@ class XML_Import extends we_xml_parser{
 
 	function updateFlds($XPath){
 		$id = 1;
-		while($this->queryPath($XPath) != 0) {
+		while($this->queryPath($XPath) != 0){
 			$list = array("Text", "Path", "Filename");
 			$s = array();
 			$node_set = $this->evaluate($XPath . "/child::*");
@@ -187,10 +190,11 @@ class XML_Import extends we_xml_parser{
 			$dat = $s[$list[2]]["data"];
 			$arr = explode("_", $dat);
 
-			if(count($arr) != 1)
+			if(count($arr) != 1){
 				$arr[count($arr) - 1] = "_" . $id;
-			else
+			} else {
 				$arr[0].= "_" . $id;
+			}
 
 			foreach($list as $item){
 				$this->replaceData($s[$item]["node"], str_replace($dat, implode("", $arr), $s[$item]["data"]));
@@ -213,7 +217,7 @@ class XML_Import extends we_xml_parser{
 					foreach($val as $k => $v){
 						if($key == TEMPLATES_TABLE){
 							$this->db->query("SELECT ID FROM " . FILE_TABLE . " WHERE TemplateID=" . intval($k));
-							while($this->db->next_record()) {
+							while($this->db->next_record()){
 								$DB_WE->query("UPDATE " . FILE_TABLE . " SET TemplateID=" . intval($v) . " WHERE ID=" . intval($this->db->f("ID")));
 							}
 						}

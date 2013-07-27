@@ -81,8 +81,7 @@ if(!$wfchk){
 	}
 	$wfchk_html .= '</head><body onload="confirmDel()"><form name="we_form" method="post">' .
 		we_html_tools::hidden("sel", isset($_REQUEST["sel"]) ? $_REQUEST["sel"] : "") . "</form>";
-} else
-if($_REQUEST['we_cmd'][0] == "do_delete" || $_REQUEST['we_cmd'][0] == "delete_single_document"){
+} elseif($_REQUEST['we_cmd'][0] == "do_delete" || $_REQUEST['we_cmd'][0] == "delete_single_document"){
 	if(isset($_REQUEST["sel"]) && $_REQUEST["sel"]){
 		//	look which documents must be deleted.
 		$selectedItems = explode(',', $_REQUEST["sel"]);
@@ -123,8 +122,7 @@ if($_REQUEST['we_cmd'][0] == "do_delete" || $_REQUEST['we_cmd'][0] == "delete_si
 
 		if(!$hasPerm){
 			$retVal = -6;
-		} else
-		if((!we_hasPerm('ADMINISTRATOR')) && ($table == FILE_TABLE . "_cache" || $table == OBJECT_FILES_TABLE . "_cache")){ //check if mey delete cache
+		} elseif((!we_hasPerm('ADMINISTRATOR')) && ($table == FILE_TABLE . "_cache" || $table == OBJECT_FILES_TABLE . "_cache")){ //check if mey delete cache
 			$retVal = -1;
 		} else {
 

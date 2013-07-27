@@ -416,8 +416,7 @@ class we_flashDocument extends we_binaryDocument{
 
 					if(isset($_REQUEST["WE_UI_DEL_CHECKBOX_" . $flashName]) && $_REQUEST["WE_UI_DEL_CHECKBOX_" . $flashName] == 1){
 						$_SESSION[$_flashmovieDataId]['doDelete'] = true;
-					} else
-					if($filename){
+					} elseif($filename){
 						// file is selected, check to see if it is an image
 						$ct = getContentTypeFromFile($filename);
 						if($ct == $this->ContentType){

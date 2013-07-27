@@ -85,8 +85,7 @@ if($bDisplay == 0){
 	// alle Notizen
 	$out_bDisplay = 'alle Notizen';
 	$q_display = '';
-} else
-if($bDisplay == 1){
+} elseif($bDisplay == 1){
 	// nur g�ltige
 	$out_bDisplay = 'nur g�ltige';
 	$q_display = '';

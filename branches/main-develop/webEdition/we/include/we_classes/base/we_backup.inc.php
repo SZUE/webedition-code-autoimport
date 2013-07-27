@@ -31,7 +31,8 @@ define('BACKUP_TABLE', TBL_PREFIX . 'tblbackup');
 
 //FIXME: try to remove this class
 abstract class we_backup{
-	const COMPRESSION='gzip';
+
+	const COMPRESSION = 'gzip';
 
 	var $backup_db;
 	var $errors = array();
@@ -316,7 +317,7 @@ abstract class we_backup{
 			if(@filesize($file) > $this->mysql_max_packet){
 				$ok = false;
 				$this->setWarning(sprintf(g_l('backup', '[too_big_file]'), $file));
-			} else{
+			} else {
 				if(($contents = weFile::load($file)) === false){
 					$this->setError(sprintf(g_l('backup', '[can_not_open_file]'), $file));
 					return false;
@@ -364,13 +365,13 @@ abstract class we_backup{
 			$dir .= "/";
 		$d = @dir($dir);
 		if($d){
-			while(false !== ($entry = $d->read())) {
+			while(false !== ($entry = $d->read())){
 				if($entry != "." && $entry != ".."){
 					if(is_dir($dir . $entry)){
 						if($entry != "." && $entry != "..")
 							$this->putDirInDB($dir . $entry);
 					}
-					else{
+					else {
 						if(!$this->putFileInDB($dir . $entry))
 							return false;
 					}
@@ -394,7 +395,7 @@ abstract class we_backup{
 		$foo = 'DROP TABLE IF EXISTS ' . $this->backup_db->escape($noprefix) . ";$nl" .
 			'CREATE TABLE ' . $this->backup_db->escape($noprefix) . " ($nl";
 		$this->backup_db->query('SHOW FIELDS FROM ' . $this->backup_db->escape($table));
-		while($this->backup_db->next_record()) {
+		while($this->backup_db->next_record()){
 			$row = $this->backup_db->Record;
 			$foo .= "   $row[Field] $row[Type]";
 			if(isset($row["Default"]) && (!empty($row["Default"]) || $row["Default"] == "0")){
@@ -410,7 +411,7 @@ abstract class we_backup{
 		}
 		$foo = preg_replace('/,' . $nl . '$/', '', $foo);
 		$this->backup_db->query("SHOW KEYS FROM " . $this->backup_db->escape($table));
-		while($this->backup_db->next_record()) {
+		while($this->backup_db->next_record()){
 			$row = $this->backup_db->Record;
 			$key = $row['Key_name'];
 			if(($key != "PRIMARY") && ($row['Non_unique'] == 0)){
@@ -421,13 +422,13 @@ abstract class we_backup{
 			}
 			$index[$key][] = $row['Column_name'];
 		}
-		while((list($k, $v) = @each($index))) {
+		while((list($k, $v) = @each($index))){
 			$foo .= ",$nl";
 			if($k == "PRIMARY"){
 				$foo .= "   PRIMARY KEY (" . implode($v, ", ") . ")";
 			} else if(substr($k, 0, 6) == "UNIQUE"){
 				$foo .= "   UNIQUE " . substr($k, 7) . " (" . implode($v, ", ") . ")";
-			} else{
+			} else {
 				$foo .= "   KEY $k (" . implode($v, ", ") . ")";
 			}
 		}
@@ -503,7 +504,7 @@ abstract class we_backup{
 		$len = 0;
 		$finish = 0;
 		$d = @dir($rootdir);
-		while(false !== ($entry = $d->read())) {
+		while(false !== ($entry = $d->read())){
 			$count++;
 			if($entry != "." && $entry != ".." && $entry != "CVS" && $entry != "webEdition" && $this->backup_step < $count){
 				if(is_dir($rootdir . $entry)){
@@ -669,12 +670,12 @@ abstract class we_backup{
 	function printDump(){
 		$fh = @fopen($this->dumpfilename, 'rb');
 		if($fh){
-			while(!@feof($fh)) {
+			while(!@feof($fh)){
 				print @fread($fh, 52428);
 				@set_time_limit(80);
 			}
 			@fclose($fh);
-		} else{
+		} else {
 			$this->setError(sprintf(g_l('backup', "[can_not_open_file]"), $this->dumpfilename));
 			return false;
 		}
@@ -707,11 +708,8 @@ abstract class we_backup{
 				$this->dumpfilename = TEMP_PATH . '/' . $filename;
 				return true;
 			}
-			else
-				return false;
 		}
-		else
-			return false;
+		return false;
 	}
 
 	/**
@@ -725,7 +723,7 @@ abstract class we_backup{
 		$d = @dir($dir);
 		$ret = false;
 		if($d){
-			while(false !== ($entry = $d->read())) {
+			while(false !== ($entry = $d->read())){
 				if($entry == $file_name)
 					$ret = true;
 			}
@@ -775,20 +773,20 @@ abstract class we_backup{
 			$mydb = new DB_WE();
 			$mydb->query('SELECT * FROM ' . BACKUP_TABLE . ' ORDER BY IsFolder DESC, Path ASC', false, true);
 
-			while($mydb->next_record(MYSQL_ASSOC)) {
+			while($mydb->next_record(MYSQL_ASSOC)){
 				$line = $mydb->Record;
 				@set_time_limit(80);
 				if($line["IsFolder"]){
 					$dir = $_SERVER['DOCUMENT_ROOT'] . $line["Path"];
 					$sdir = str_replace("\\", "/", dirname($dir));
-					while((!file_exists($sdir)) && ($sdir != "/")) {
+					while((!file_exists($sdir)) && ($sdir != "/")){
 						we_util_File::createLocalFolder($sdir);
 						$sdir = str_replace("\\", "/", dirname($sdir));
 					}
 					if(!file_exists($dir)){
 						we_util_File::createLocalFolder($dir);
 					}
-				} else{
+				} else {
 					$sdir = str_replace("\\", "/", dirname($_SERVER['DOCUMENT_ROOT'] . $line["Path"]));
 					if(!weFile::save($_SERVER['DOCUMENT_ROOT'] . $line["Path"], $line["Data"], 'wb')){
 						$this->setError(g_l('backup', "[can_not_open_file]"), $line["Path"]);
@@ -822,12 +820,12 @@ abstract class we_backup{
 
 		if($fh){
 
-			while(!@feof($fh)) {
+			while(!@feof($fh)){
 				@set_time_limit(60);
 				$line = "";
 				$findline = false;
 
-				while($findline == false && !@feof($fh)) {
+				while($findline == false && !@feof($fh)){
 					$line .= @fgets($fh, 4096);
 					if(substr($line, -1) == "\n"){
 						$findline = true;
@@ -854,12 +852,12 @@ abstract class we_backup{
 							$buff = "";
 						}
 					}
-				} else{
+				} else {
 					$this->setError(g_l('backup', "[can_not_open_file]"), basename($filename) . "_" . $num);
 					return -1;
 				}
 			}
-		} else{
+		} else {
 			$this->setError(g_l('backup', "[can_not_open_file]"), basename($filename) . "_" . $num);
 			return -1;
 		}
@@ -885,12 +883,12 @@ abstract class we_backup{
 		$fh = fopen("$filename", "rb");
 
 		if($fh){
-			while(!@feof($fh)) {
+			while(!@feof($fh)){
 				@set_time_limit(60);
 				$line = "";
 				$findline = false;
 
-				while($findline == false && !@feof($fh)) {
+				while($findline == false && !@feof($fh)){
 					$line .= @fgets($fh, 4096);
 					if(substr($line, -1) == "\n"){
 						$findline = true;
@@ -928,10 +926,10 @@ abstract class we_backup{
 											if(defined("OBJECT_X_TABLE") && substr(strtolower($itbl), 0, 10) == strtolower(OBJECT_X_TABLE)){
 												if(preg_match("|VALUES[[:space:]]*\([[:space:]]*\'?0\'?[[:space:]]*,[[:space:]]*\'?0\'?[[:space:]]*,|i", $buff)){
 													$this->dummy[] = $buff;
-												} else{
+												} else {
 													$this->backup_db->query($buff);
 												}
-											}else{
+											} else {
 												$this->backup_db->query($buff);
 											}
 										}
@@ -941,7 +939,7 @@ abstract class we_backup{
 										}
 									}
 								}
-							} else{
+							} else {
 								$this->setWarning(g_l('backup', "[query_is_too_big]"), $this->mysql_max_packet);
 							}
 						}
@@ -950,7 +948,7 @@ abstract class we_backup{
 					}
 				}
 			}
-		} else{
+		} else {
 			$this->setError(sprintf(g_l('backup', "[can_not_open_file]"), $filename));
 			return false;
 		}
@@ -958,9 +956,9 @@ abstract class we_backup{
 		unlink($filename);
 		$tn = strtolower($ctbl . $itbl);
 
-		$this->current_description = (isset($this->description["import"]["$tn"]) && $this->description["import"]["$tn"]?
-			$this->description["import"][$tn]:
-			g_l('backup', "[working]"));
+		$this->current_description = (isset($this->description["import"]["$tn"]) && $this->description["import"]["$tn"] ?
+				$this->description["import"][$tn] :
+				g_l('backup', "[working]"));
 
 
 		if($restore_extra && !$this->restoreFiles()){
@@ -1038,7 +1036,7 @@ abstract class we_backup{
 		$this->backup_db->query("SHOW TABLES LIKE '" . $this->backup_db->escape($tab) . "';");
 		if($this->backup_db->next_record()){
 			$this->backup_db->query("SHOW COLUMNS FROM " . $this->backup_db->escape($tab) . ";");
-			while($this->backup_db->next_record()) {
+			while($this->backup_db->next_record()){
 				if(!in_array(strtolower($this->backup_db->f("Field")), $fnames)){
 					$fupdate[] = "ALTER TABLE " . $this->backup_db->escape($tab) . " ADD " . $this->backup_db->f("Field") . " " . $this->backup_db->f("Type") . " DEFAULT '" . $this->backup_db->f("Default") . "'" . ($this->backup_db->f("Null") == "YES" ? " NOT NULL" : "") . ";";
 				}
@@ -1264,7 +1262,7 @@ $this->dummy=' . var_export($this->dummy, true) . ';
 		if(($save = weFile::load($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . "tmp/" . $temp_filename, "rb")) !== false){
 			eval($save);
 			return $temp_filename;
-		} else{
+		} else {
 			return 0;
 		}
 	}
@@ -1280,7 +1278,7 @@ $this->dummy=' . var_export($this->dummy, true) . ';
 		if(copy($this->dumpfilename, $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . "download/" . $download_filename)){
 			we_util_File::insertIntoCleanUp($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . "download/" . $download_filename, time());
 			return $download_filename;
-		} else{
+		} else {
 			return '';
 		}
 	}
@@ -1294,7 +1292,7 @@ $this->dummy=' . var_export($this->dummy, true) . ';
 		$d = dir($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . "tmp");
 		$co = -1;
 		$limit = time() - 86400;
-		while(false !== ($entry = $d->read())) {
+		while(false !== ($entry = $d->read())){
 			if($entry != "." && $entry != ".." && $entry != "CVS" && !@is_dir($entry)){
 				if(filemtime($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . '/tmp/' . $entry) < $limit){
 					unlink($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . '/tmp/' . $entry);

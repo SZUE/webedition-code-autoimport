@@ -41,8 +41,7 @@ function we_tag_ifClient($attribs){
 		// for backwards compatibility
 		if(!$foo_br && $_browserOfClient == 'firefox' && in_array('mozilla', $bro)){
 			$foo_br = true;
-		} else
-		if(!$foo_br && $_browserOfClient == 'appleWebKit' && in_array('safari', $bro)){
+		} elseif(!$foo_br && $_browserOfClient == 'appleWebKit' && in_array('safari', $bro)){
 			$foo_br = true;
 		}
 	} else{

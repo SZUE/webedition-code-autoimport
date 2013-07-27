@@ -53,56 +53,55 @@ class weVotingTree extends weMainTree{
 				treeData[eintragsIndex].open=openstatus;
 
 				if(openstatus && treeData[eintragsIndex].loaded!=1){
-					if(sort!="")
+					if(sort!=""){
 						' . $this->cmdFrame . '.location="' . $this->frameset . '?pnt=cmd&pid="+id+"&sort="+sort;
-					else
+					}else{
 						' . $this->cmdFrame . '.location="' . $this->frameset . '?pnt=cmd&pid="+id;
+					}
 				}else{
 					drawTree();
 				}
 				if(openstatus==1) treeData[eintragsIndex].loaded=1;
- 			}
- 			';
+ 			}';
 	}
 
 	function getJSUpdateItem(){
 		return '
- 				function updateEntry(id,text,pid,pub){
-        			var ai = 1;
-        			while (ai <= treeData.len) {
-            			if (treeData[ai].id==id) {
-                 			treeData[ai].text=text;
-                 			treeData[ai].parentid=pid;
-                 			treeData[ai].published=pub;
-             			}
-            	 		ai++;
-        			}
-					drawTree();
- 				}
-			';
+function updateEntry(id,text,pid,pub){
+			var ai = 1;
+			while (ai <= treeData.len) {
+					if (treeData[ai].id==id) {
+							treeData[ai].text=text;
+							treeData[ai].parentid=pid;
+							treeData[ai].published=pub;
+					}
+					ai++;
+			}
+	drawTree();
+}';
 	}
 
 	function getJSTreeFunctions(){
 		return weTree::getJSTreeFunctions() . '
-				function doClick(id,typ){
-					var cmd = "";
-					if(top.content.hot == "1") {
-						if(confirm("' . g_l('modules_voting', '[save_changed_voting]') . '")) {
-							cmd = "save_voting";
-							top.content.we_cmd("save_voting");
-						} else {
-							top.content.usetHot();
-							cmd = "edit_voting";
-							var node=' . $this->topFrame . '.get(id);
-							' . $this->topFrame . '.editor.edbody.location="' . $this->frameset . '?pnt=edbody&cmd="+cmd+"&cmdid="+node.id+"&tabnr="+' . $this->topFrame . '.activ_tab;
-						}
-					} else {
-						cmd = "edit_voting";
-						var node=' . $this->topFrame . '.get(id);
-						' . $this->topFrame . '.editor.edbody.location="' . $this->frameset . '?pnt=edbody&cmd="+cmd+"&cmdid="+node.id+"&tabnr="+' . $this->topFrame . '.activ_tab;
-					}
-				}
-				' . $this->topFrame . '.loaded=1;';
+function doClick(id,typ){
+	var cmd = "";
+	if(top.content.hot == "1") {
+		if(confirm("' . g_l('modules_voting', '[save_changed_voting]') . '")) {
+			cmd = "save_voting";
+			top.content.we_cmd("save_voting");
+		} else {
+			top.content.usetHot();
+			cmd = "edit_voting";
+			var node=' . $this->topFrame . '.get(id);
+			' . $this->topFrame . '.editor.edbody.location="' . $this->frameset . '?pnt=edbody&cmd="+cmd+"&cmdid="+node.id+"&tabnr="+' . $this->topFrame . '.activ_tab;
+		}
+	} else {
+		cmd = "edit_voting";
+		var node=' . $this->topFrame . '.get(id);
+		' . $this->topFrame . '.editor.edbody.location="' . $this->frameset . '?pnt=edbody&cmd="+cmd+"&cmdid="+node.id+"&tabnr="+' . $this->topFrame . '.activ_tab;
+	}
+}
+' . $this->topFrame . '.loaded=1;';
 	}
 
 	function getJSStartTree(){

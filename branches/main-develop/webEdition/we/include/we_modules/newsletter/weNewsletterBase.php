@@ -98,7 +98,7 @@ class weNewsletterBase{
 									$hour = $value[$c]['hours'];
 									$minute = $value[$c]['minutes'];
 									$timestamp = mktime($hour, $minute, 0, $month, $day, $year);
-								} else{
+								} else {
 									$timestamp = $value[$c]['fieldvalue'];
 								}
 								$value[$c]['fieldvalue'] = $timestamp;
@@ -113,12 +113,12 @@ class weNewsletterBase{
 		}
 		$where = implode(',', $wheres);
 		$set = we_database_base::arraySetter($sets);
-		
+
 		if($this->ID == 0){
 			$this->db->query('INSERT INTO ' . $this->db->escape($this->table) . ' SET ' . $set);
 			# get ID #
 			$this->ID = $this->db->getInsertId();
-		} else{
+		} else {
 			$this->db->query('UPDATE ' . $this->table . ' SET ' . $set . ' WHERE ' . $where);
 		}
 	}
@@ -155,7 +155,7 @@ class weNewsletterBase{
 		}
 		if(stripos($_SERVER["SERVER_SOFTWARE"], "IIS") !== false || stripos($_SERVER["SERVER_SOFTWARE"], "Microsoft") !== false || stripos($_SERVER["SERVER_SOFTWARE"], "Windows") !== false || stripos($_SERVER["SERVER_SOFTWARE"], "Win32") !== false){
 			return(gethostbyname(trim($domain)) == $domain);
-		} else{
+		} else {
 			return (getmxrr(trim($domain), $mxhosts));
 		}
 		//}
@@ -179,10 +179,9 @@ class weNewsletterBase{
 				if($row != ""){
 					$arr2 = explode(",", $row);
 					if(count($arr2)){
-						if($emails_only)
-							$ret[] = $arr2[0];
-						else
-							$ret[] = array($arr2[0], (isset($arr2[1]) && trim($arr2[1]) != '') ? trim($arr2[1]) : $_default_html, isset($arr2[2]) ? trim($arr2[2]) : "", isset($arr2[3]) ? $arr2[3] : "", isset($arr2[4]) ? $arr2[4] : "", isset($arr2[5]) ? $arr2[5] : "", $group, $blocks);
+						$ret[] = ($emails_only ?
+								$arr2[0] :
+								array($arr2[0], (isset($arr2[1]) && trim($arr2[1]) != '') ? trim($arr2[1]) : $_default_html, isset($arr2[2]) ? trim($arr2[2]) : "", isset($arr2[3]) ? $arr2[3] : "", isset($arr2[4]) ? $arr2[4] : "", isset($arr2[5]) ? $arr2[5] : "", $group, $blocks));
 					}
 				}
 			}
@@ -211,7 +210,7 @@ class weNewsletterBase{
 								$ret[] = $dat[0];
 							} else if($emails_only == 2){
 								$ret[] = array(trim($dat[0]), (isset($dat[1]) && trim($dat[1]) != '') ? trim($dat[1]) : $_default_html, isset($dat[2]) ? trim($dat[2]) : "", isset($dat[3]) ? $dat[3] : "", isset($dat[4]) ? $dat[4] : "", isset($dat[5]) ? $dat[5] : "");
-							} else{
+							} else {
 								$ret[] = array(trim($dat[0]), (isset($dat[1]) && trim($dat[1]) != '') ? trim($dat[1]) : $_default_html, isset($dat[2]) ? trim($dat[2]) : "", isset($dat[3]) ? $dat[3] : "", isset($dat[4]) ? $dat[4] : "", isset($dat[5]) ? $dat[5] : "", $group, $blocks);
 							}
 						}
@@ -278,7 +277,7 @@ class weNewsletterBase{
 		reset($values);
 		$ret = '<select class="' . $cls . '" name="' . trim($name) . '" size=' . abs($size) . ' ' . ($multiple ? " multiple" : "") . ($attribs ? " $attribs" : "") . ($width ? ' style="width: ' . $width . 'px"' : '') . '>';
 		$selIndex = makeArrayFromCSV($selectedIndex);
-		while(list($value, $text) = each($values)) {
+		while(list($value, $text) = each($values)){
 			$ret .= '<option value="' . oldHtmlspecialchars($value) . '"' . (in_array((($compare == "value") ? $value : $text), $selIndex) ? " selected" : "") . (we_check_email($text) ? ' class="markValid"' : ' class="markNotValid"') . '>' . $text . "</option>";
 		}
 		$ret .= '</select>';

@@ -84,8 +84,7 @@ if($_REQUEST['we_cmd'][0] == "do_move" || $_REQUEST['we_cmd'][0] == 'move_single
 		if($retVal == -1){ //	not allowed to move document
 			$script .= 'top.toggleBusy(0);' .
 				we_message_reporting::getShowMessageCall(sprintf(g_l('alert', "[noRightsToMove]"), id_to_path($selectedItem, $table)), we_message_reporting::WE_MESSAGE_ERROR);
-		} else
-		if($retVal){ //	move files !
+		} elseif($retVal){ //	move files !
 			$notMovedItems = array();
 			foreach($selectedItems as $selectedItem){
 				moveItem($targetDirectroy, $selectedItem, $table, $notMovedItems);

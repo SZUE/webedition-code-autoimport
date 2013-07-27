@@ -64,22 +64,22 @@ class weVersion{
 
 	function loadFile($file){
 		$this->Path = stri_replace(array($_SERVER['DOCUMENT_ROOT'], SITE_DIR), '', $file);
-		if($this->linkData)
-			return $this->Data = weFile::load($file, 'rb', 8192, weFile::isCompressed($file));
-		else
-			return true;
+		return ($this->linkData ?
+				$this->Data = weFile::load($file, 'rb', 8192, weFile::isCompressed($file)) :
+				true);
 	}
 
 	function save($force = true){
 		if($this->ID){
 			$path = $_SERVER['DOCUMENT_ROOT'] . $this->Path;
-			if(file_exists($path) && !$force)
+			if(file_exists($path) && !$force){
 				return false;
+			}
 			if(!is_dir(dirname($path))){
 				we_util_File::createLocalFolderByPath(dirname($path));
 			}
 			weFile::save($_SERVER['DOCUMENT_ROOT'] . $this->Path, $this->Data, ($this->SeqN == 0 ? 'wb' : 'ab'));
-		} else{
+		} else {
 			$path = $_SERVER['DOCUMENT_ROOT'] . $this->Path;
 			if(file_exists($path) && !$force)
 				return false;

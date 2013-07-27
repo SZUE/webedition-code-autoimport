@@ -549,8 +549,7 @@ class copyFolderFrag extends taskFragment{
 									}
 								}
 							}
-						} else
-						if(substr($we_doc->elements[$k]['dat'], 0, 2) == 'a:' && is_array(
+						} elseif(substr($we_doc->elements[$k]['dat'], 0, 2) == 'a:' && is_array(
 								unserialize($we_doc->elements[$k]['dat']))){ // is a we:link field
 							$link = unserialize($we_doc->elements[$k]['dat']);
 							if(isset($link['type']) && ($link['type'] == we_base_link::TYPE_INT)){

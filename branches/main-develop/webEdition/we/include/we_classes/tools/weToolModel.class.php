@@ -72,10 +72,7 @@ class weToolModel extends weModelBase{
 
 	function pathExists($path){
 		$this->db->query('SELECT * FROM ' . $this->db->escape($this->table) . ' WHERE Path="' . $this->db->escape($path) . '" AND ID!=' . intval($this->ID));
-		if($this->db->next_record())
-			return true;
-		else
-			return false;
+		return ($this->db->next_record() ? true : false);
 	}
 
 	function isSelf(){
