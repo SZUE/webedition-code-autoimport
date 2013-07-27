@@ -308,8 +308,9 @@ class weSelectorQuery{
 	 */
 	function delQueryField($field){
 		foreach($this->fields as $key => $val){
-			if($val == $field)
+			if($val == $field){
 				unset($this->fields[$key]);
+			}
 		}
 	}
 

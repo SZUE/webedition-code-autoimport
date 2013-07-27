@@ -49,8 +49,9 @@ class weVersion{
 		$this->SeqN = 0;
 		$this->ClassName = "weVersion";
 		$this->db = new DB_WE();
-		if($id)
+		if($id){
 			$this->load($id);
+		}
 	}
 
 	function load($id, $loadData = true){
@@ -81,8 +82,9 @@ class weVersion{
 			weFile::save($_SERVER['DOCUMENT_ROOT'] . $this->Path, $this->Data, ($this->SeqN == 0 ? 'wb' : 'ab'));
 		} else {
 			$path = $_SERVER['DOCUMENT_ROOT'] . $this->Path;
-			if(file_exists($path) && !$force)
+			if(file_exists($path) && !$force){
 				return false;
+			}
 			if(!is_dir(dirname($path))){
 				we_util_File::createLocalFolderByPath(dirname($path));
 			}

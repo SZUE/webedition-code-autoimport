@@ -73,25 +73,24 @@ abstract class we_textContentDocument extends we_textDocument{
 
 			if($this->ContentType == 'text/webedition'){
 				$allUsedElements = $this->getUsedElements(true);
-if(empty($allUsedElements)){//FIXME:needed for rebuild, since tags are unintialized
-				// dont save unneeded fields in index-table
-				$fieldTypes = we_webEditionDocument::getFieldTypes($this->getTemplateCode(), false);
-				$fieldTypes = array_keys($fieldTypes, 'txt');
-				array_push($fieldTypes, 'Title', 'Description', 'Keywords');
-				foreach($fieldTypes as $field){//for #230: if variables are used in fieldnames we cannot determine these types
-					if($field[0] == '$' || $field[1] == '$'){
-						unset($fieldTypes);
-						break;
+				if(empty($allUsedElements)){//FIXME:needed for rebuild, since tags are unintialized
+					// dont save unneeded fields in index-table
+					$fieldTypes = we_webEditionDocument::getFieldTypes($this->getTemplateCode(), false);
+					$fieldTypes = array_keys($fieldTypes, 'txt');
+					array_push($fieldTypes, 'Title', 'Description', 'Keywords');
+					foreach($fieldTypes as $field){//for #230: if variables are used in fieldnames we cannot determine these types
+						if($field[0] == '$' || $field[1] == '$'){
+							unset($fieldTypes);
+							break;
+						}
 					}
+				} else {
+					array_push($allUsedElements, 'Title', 'Description', 'Keywords');
 				}
-
-}else{
-				array_push($allUsedElements, 'Title', 'Description', 'Keywords');
-}
 			}
 
 			$this->resetElements();
-			while((list($k, $v) = $this->nextElement(''))) {
+			while((list($k, $v) = $this->nextElement(''))){
 				$_dat = (isset($v['dat']) && is_string($v['dat']) && substr($v['dat'], 0, 2) == 'a:') ? unserialize($v['dat']) : (isset($v['dat']) ? $v['dat'] : '');
 				if($k[0] === '$' || $k[1] === '$' || $k == 'Charset' || empty($_dat)){
 					//skip elements whose names are variables or if element is empty
@@ -109,7 +108,7 @@ if(empty($allUsedElements)){//FIXME:needed for rebuild, since tags are unintiali
 							}
 						}
 					}
-				}elseif((!is_array($_dat) || (isset($_dat['text']) && $_dat['text'])) && isset($allUsedElements) && is_array($allUsedElements)){
+				} elseif((!is_array($_dat) || (isset($_dat['text']) && $_dat['text'])) && isset($allUsedElements) && is_array($allUsedElements)){
 //normal save of we_doc
 					if(in_array($k, $allUsedElements)){
 						if(is_array($_dat) && !empty($_dat['text'])){
@@ -150,7 +149,7 @@ if(empty($allUsedElements)){//FIXME:needed for rebuild, since tags are unintiali
 	function getMetas($code){
 		if(preg_match('|< ?title[^>]*>(.*)< ?/ ?title[^>]*>|i', $code, $regs)){
 			$title = $regs[1];
-		} else{
+		} else {
 			$title = '';
 		}
 		$tempname = weFile::saveTemp($code);
@@ -249,7 +248,7 @@ if(empty($allUsedElements)){//FIXME:needed for rebuild, since tags are unintiali
 					$this->i_initSerializedDat($sessDat);
 					$this->i_getPersistentSlotsFromDB("Path,Text,Filename,Extension,ParentID,Published,ModDate,CreatorID,ModifierID,Owners,RestrictOwners,WebUserID");
 					$this->OldPath = $this->Path;
-				} else{
+				} else {
 					$this->we_load(we_class::LOAD_MAID_DB);
 				}
 				break;
@@ -373,8 +372,9 @@ if(empty($allUsedElements)){//FIXME:needed for rebuild, since tags are unintiali
 		}
 
 		if($DoNotMark == false){
-			if(!$this->DB_WE->query('UPDATE ' . $this->DB_WE->escape($this->Table) . ' SET Published=' . intval($this->Published) . ' WHERE ID=' . intval($this->ID)))
+			if(!$this->DB_WE->query('UPDATE ' . $this->DB_WE->escape($this->Table) . ' SET Published=' . intval($this->Published) . ' WHERE ID=' . intval($this->ID))){
 				return false; // mark the document as published;
+			}
 		}
 
 		//Bug #5505
@@ -440,7 +440,7 @@ if(empty($allUsedElements)){//FIXME:needed for rebuild, since tags are unintiali
 	public function we_republish($rebuildMain = true){
 		if($this->Published){
 			return $this->we_publish(true, $rebuildMain);
-		} else{
+		} else {
 			return $this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE DID=' . intval($this->ID));
 		}
 	}
@@ -451,7 +451,7 @@ if(empty($allUsedElements)){//FIXME:needed for rebuild, since tags are unintiali
 		if(($this->ModDate > $this->Published) && $this->Published){
 			if(!we_temporaryDocument::isInTempDB($this->ID, $this->Table, $this->DB_WE)){
 				return we_temporaryDocument::save($this->ID, $this->Table, $saveArr, $this->DB_WE);
-			} else{
+			} else {
 				return we_temporaryDocument::resave($this->ID, $this->Table, $saveArr, $this->DB_WE);
 			}
 		}
@@ -473,13 +473,15 @@ if(empty($allUsedElements)){//FIXME:needed for rebuild, since tags are unintiali
 	private function i_saveTmp($write = true){
 		$saveArr = array();
 		$this->saveInSession($saveArr);
-		if(!we_temporaryDocument::save($this->ID, $this->Table, $saveArr, $this->DB_WE))
+		if(!we_temporaryDocument::save($this->ID, $this->Table, $saveArr, $this->DB_WE)){
 			return false;
-		if(!$this->i_savePersistentSlotsToDB('Path,Text,Filename,Extension,ParentID,CreatorID,ModifierID,RestrictOwners,Owners,Published,ModDate,temp_template_id,temp_category,temp_doc_type,WebUserID'))
+		}
+		if(!$this->i_savePersistentSlotsToDB('Path,Text,Filename,Extension,ParentID,CreatorID,ModifierID,RestrictOwners,Owners,Published,ModDate,temp_template_id,temp_category,temp_doc_type,WebUserID')){
 			return false;
+		}
 		if($write){
 			return $this->i_writeDocument();
-		} else{
+		} else {
 			return true;
 		}
 	}
@@ -496,7 +498,7 @@ if(empty($allUsedElements)){//FIXME:needed for rebuild, since tags are unintiali
 		$parent = dirname($realPath);
 		$parent = str_replace('\\', '/', $parent);
 		$cf = array();
-		while(!we_util_File::checkAndMakeFolder($parent, true)) {
+		while(!we_util_File::checkAndMakeFolder($parent, true)){
 			$cf[] = $parent;
 			$parent = dirname($parent);
 			$parent = str_replace('\\', '/', $parent);

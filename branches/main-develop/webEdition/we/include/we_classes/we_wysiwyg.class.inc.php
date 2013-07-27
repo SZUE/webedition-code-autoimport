@@ -1090,8 +1090,9 @@ function weWysiwygSetHiddenText(arg) {
 
 	function hasSep($rowArr){
 		foreach($rowArr as $i => $elem){
-			if($elem->classname == "we_wysiwyg_ToolbarSeparator")
+			if($elem->classname == "we_wysiwyg_ToolbarSeparator"){
 				return true;
+			}
 		}
 		return false;
 	}
@@ -1105,7 +1106,7 @@ function weWysiwygSetHiddenText(arg) {
 		}
 		$js_function = $this->isFrontendEdit ? 'open_wysiwyg_win' : 'we_cmd';
 		$param4 = !$this->isFrontendEdit ? 'value' : we_cmd_enc('frontend');
-		
+
 		return we_button::create_button("image:btn_edit_edit", "javascript:" . $js_function . "('open_wysiwyg_window', '" . $this->name . "','" . max(220, $this->width) . "', '" . $this->height . "','" . $param4 . "','" . $this->propstring . "','" . $this->className . "','" . rtrim($fns, ',') . "',
 			'" . $this->outsideWE . "','" . $tbwidth . "','" . $tbheight . "','" . $this->xml . "','" . $this->removeFirstParagraph . "','" . $this->bgcol . "','" . $this->baseHref . "','" . $this->charset . "','" . $this->cssClassesCSV . "','" . $this->Language . "','" . we_cmd_enc($this->contentCss) . "',
 			'" . $this->origName . "','" . we_cmd_enc($this->tinyParams) . "','" . we_cmd_enc($this->restrictContextmenu) . "', 'true', '" . $this->isFrontendEdit . "');", true, 25);
@@ -1553,7 +1554,7 @@ function weWysiwygSetHiddenText(arg) {
 								}
 								' : '') . '
 							});
-							' 
+							'
 						. (!$this->removeFirstParagraph ? '' : '
 							ed.onPostProcess.add(function(ed, o) {
 								o.content = o.content.replace(/<p [^>]*>|<p>/, "").replace(/<\/p>/, "").replace(/^&nbsp;$/, "");

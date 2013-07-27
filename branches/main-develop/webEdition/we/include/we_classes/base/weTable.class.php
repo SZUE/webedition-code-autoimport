@@ -47,23 +47,24 @@ class weTable{
 		$update_table = true;
 
 		if(defined("OBJECT_X_TABLE") && !$force_columns){
-			if(strtolower(substr($table, 0, 10)) == strtolower(stripTblPrefix(OBJECT_X_TABLE)))
+			if(strtolower(substr($table, 0, 10)) == strtolower(stripTblPrefix(OBJECT_X_TABLE))){
 				$update_table = false;
+			}
 		}
 
-		if(defined("CUSTOMER_TABLE") && !$force_columns){
-			if(strtolower($table) == strtolower(CUSTOMER_TABLE))
-				$update_table = false;
+		if(defined("CUSTOMER_TABLE") && !$force_columns && strtolower($table) == strtolower(CUSTOMER_TABLE)){
+			$update_table = false;
 		}
 
-		if($update_table)
+		if($update_table){
 			$this->getColumns();
+		}
 	}
 
 	function getColumns(){
 		if($this->db->isTabExist($this->table)){
 			$this->db->query("SHOW COLUMNS FROM $this->table;");
-			while($this->db->next_record()) {
+			while($this->db->next_record()){
 				$this->elements[$this->db->f("Field")] = array(
 					"Field" => $this->db->f("Field"),
 					"Type" => $this->db->f("Type"),
@@ -95,9 +96,8 @@ class weTable{
 
 			$cols[$element["Field"]] = $element["Type"] . " " . ((isset($element["Null"]) && $element["Null"] == "YES") ? "NULL " : "NOT NULL ") . ((isset($element["Extra"]) && strtolower($element["Extra"]) != "auto_increment") ? $_default_value : "") . " " . ((isset($element["Extra"])) ? $element["Extra"] : '');
 
-			if(isset($element["Key"]) && $element["Key"]){
-				if($element["Key"] == "PRI")
-					$keys[] = "PRIMARY KEY (" . $element["Field"] . ")";
+			if(isset($element["Key"]) && $element["Key"] && $element["Key"] == "PRI"){
+				$keys[] = "PRIMARY KEY (" . $element["Field"] . ")";
 			}
 		}
 
@@ -173,7 +173,7 @@ class weTableAdv extends weTable{
 		if(isset($_SESSION['weS']['weBackupVars']['options']['convert_charset']) && $_SESSION['weS']['weBackupVars']['options']['convert_charset']){
 			$doConvert = true;
 			$searchArray = array('CHARACTER SET latin1', 'COLLATE latin1_bin', 'COLLATE latin1_danish_ci', 'COLLATE latin1_general_ci', 'COLLATE latin1_general_cs', 'COLLATE latin1_german1_ci', 'COLLATE latin1_german2_ci', 'COLLATE latin1_spanish_ci', 'COLLATE latin1_swedish_ci');
-		} else{
+		} else {
 			$doConvert = false;
 		}
 		if($this->db->isTabExist($this->table)){

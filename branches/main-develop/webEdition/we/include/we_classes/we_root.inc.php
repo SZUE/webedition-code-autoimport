@@ -172,7 +172,7 @@ abstract class we_root extends we_class{
 			$bb = isset($this->{$slot}) ? $this->{$slot} : '';
 			if(!is_object($bb)){
 				$save[0][$slot] = $bb;
-			} else{
+			} else {
 				$save[0][$slot . '_class'] = serialize($bb);
 			}
 		}
@@ -209,7 +209,7 @@ abstract class we_root extends we_class{
 				$this->elements = $arr[1];
 			}
 			return true;
-		} else{
+		} else {
 			return false;
 		}
 	}
@@ -252,7 +252,7 @@ abstract class we_root extends we_class{
 
 		if($width){
 			$_attribs['style'] = 'width: ' . $width . 'px';
-		} else{
+		} else {
 			$width = 0;
 		}
 		$wecmdenc1 = we_cmd_enc("document.we_form.elements['$idname'].value");
@@ -286,7 +286,7 @@ abstract class we_root extends we_class{
 		foreach($addAttribs as $key => $value){
 			if(isset($_attribs[$key])){
 				$_attribs[$key] .= $value;
-			} else{
+			} else {
 				$_attribs[$key] = $value;
 			}
 		}
@@ -301,8 +301,9 @@ abstract class we_root extends we_class{
 	}
 
 	function formCreator($canChange, $width = 388){
-		if(!$this->CreatorID)
+		if(!$this->CreatorID){
 			$this->CreatorID = 0;
+		}
 
 		$creator = $this->CreatorID ? id_to_path($this->CreatorID, USER_TABLE, $this->DB_WE) : g_l('weClass', '[nobody]');
 
@@ -323,7 +324,7 @@ abstract class we_root extends we_class{
 			$button = we_button::create_button('edit', "javascript:we_cmd('browse_users','" . $wecmdenc1 . "','" . $wecmdenc2 . "','user',document.forms[0].elements['$idname'].value,'" . $wecmdenc5 . "')");
 
 			$out = $this->htmlFormElementTable($inputFeld, g_l('weClass', '[maincreator]'), 'left', 'defaultfont', $idfield, we_html_tools::getPixel(20, 4), $button);
-		} else{
+		} else {
 			$out = $creator;
 		}
 		return $out;
@@ -334,7 +335,7 @@ abstract class we_root extends we_class{
 			$n = 'we_' . $this->Name . '_RestrictOwners';
 			$v = $this->RestrictOwners ? true : false;
 			return we_forms::checkboxWithHidden($v ? true : false, $n, g_l('weClass', '[limitedAccess]'), false, 'defaultfont', "setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('reload_editpage');");
-		} else{
+		} else {
 			return '<table cellpadding="0" cellspacing="0" border="0"><tr><td><img src="' . TREE_IMAGE_DIR . ($this->RestrictOwners ? 'check1_disabled.gif' : 'check0_disabled.gif') . '" /></td><td class="defaultfont">&nbsp;' . g_l('weClass', "[limitedAccess]") . '</td></tr></table>';
 		}
 	}
@@ -354,7 +355,7 @@ abstract class we_root extends we_class{
 					we_forms::checkboxWithHidden(isset($ownersReadOnly[$owner]) ? $ownersReadOnly[$owner] : '', 'we_owners_read_only[' . $owner . ']', g_l('weClass', '[readOnly]'), false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);', !$canChange) .
 					'</td><td>' . ($canChange ? we_button::create_button('image:btn_function_trash', "javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('del_owner','" . $owner . "');") : '') . '</td></tr>' . "\n";
 			}
-		} else{
+		} else {
 			$content .= '<tr><td><img src="' . ICON_DIR . "user.gif" . '" width="16" height="18" /></td><td class="defaultfont">' . g_l('weClass', "[onlyOwner]") . '</td><td></td><td></td></tr>' . "\n";
 		}
 		$content .= '<tr><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(351, 2) . '</td><td>' . we_html_tools::getPixel(100, 2) . '</td><td>' . we_html_tools::getPixel(26, 2) . '</td></tr></table>' . "\n";
@@ -448,7 +449,7 @@ abstract class we_root extends we_class{
 			if(!(we_hasPerm('NEW_OBJECTFILE_FOLDER') || we_hasPerm('NEW_OBJECTFILE'))){
 				return false;
 			}
-		} else{
+		} else {
 			if(!we_hasPerm('SAVE_DOCUMENT_TEMPLATE')){
 				return false;
 			}
@@ -462,8 +463,9 @@ abstract class we_root extends we_class{
 		$ownersReadOnly = $this->OwnersReadOnly ? unserialize($this->OwnersReadOnly) : array();
 		$readers = array();
 		foreach(array_keys($ownersReadOnly) as $key){
-			if(isset($ownersReadOnly[$key]) && $ownersReadOnly[$key] == 1)
+			if(isset($ownersReadOnly[$key]) && $ownersReadOnly[$key] == 1){
 				$readers[] = $key;
+			}
 		}
 		return !we_users_util::isUserInUsers($_SESSION['user']['ID'], $readers);
 	}
@@ -506,7 +508,7 @@ abstract class we_root extends we_class{
 			$textname = 'we_' . $this->Name . '_TriggerName';
 			$idname = 'we_' . $this->Name . '_DefaultTriggerID';
 			$myid = $this->DefaultTriggerID ? $this->DefaultTriggerID : '';
-		} else{
+		} else {
 			$textname = 'we_' . $this->Name . '_TriggerName';
 			$idname = 'we_' . $this->Name . '_TriggerID';
 			$myid = $this->TriggerID ? $this->TriggerID : '';
@@ -553,7 +555,7 @@ abstract class we_root extends we_class{
 			$yuiSuggest->setContentType('folder,text/webedition');
 			$ctype = 'text/webedition';
 			$etype = FILE_TABLE;
-		} else{
+		} else {
 			$yuiSuggest->setContentType('folder,objectFile');
 			$ctype = 'objectFile';
 			$etype = OBJECT_FILES_TABLE;
@@ -620,15 +622,16 @@ abstract class we_root extends we_class{
 	/* reset the array-pointer (for use with nextElement()) */
 
 	function resetElements(){
-		if(is_array($this->elements))
+		if(is_array($this->elements)){
 			reset($this->elements);
+		}
 	}
 
 	/* returns the next element or false if the array-pointer is at the end of the array */
 
 	function nextElement($type = 'txt'){
 		if(is_array($this->elements)){
-			while($arr = each($this->elements)) {
+			while($arr = each($this->elements)){
 				if(empty($type) || (isset($arr['value']['type']) && $arr['value']['type'] == $type)){
 					return $arr;
 				}
@@ -665,7 +668,7 @@ abstract class we_root extends we_class{
 			$pid = $this->ParentID;
 			$p = '/' . $this->Text;
 			$z = 0;
-			while($pid && $z < 50) {
+			while($pid && $z < 50){
 				list($pid, $text) = getHash('SELECT ParentID,Text FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ID=' . intval($pid), $this->DB_WE);
 				$p = '/' . $text . $p;
 				$z++;
@@ -806,7 +809,7 @@ abstract class we_root extends we_class{
 		}
 		if(isset($sessDat[2])){
 			$this->NavigationItems = $sessDat[2];
-		} else{
+		} else {
 			$this->i_loadNavigationItems();
 		}
 
@@ -875,18 +878,18 @@ abstract class we_root extends we_class{
 								preg_match('|(.*)_(.*)|', $name, $regs);
 								list(, $name, $what) = $regs;
 								$dates[$name][$what] = $v2;
-							} else{
+							} else {
 								if(preg_match('/(.+)#(.+)/', $name, $regs)){
 									$this->elements[$regs[1]]['type'] = $type;
 									$this->elements[$regs[1]][$regs[2]] = $v2;
-								} else{
+								} else {
 									//FIXME: check if we can apply the correct type
 									$this->i_convertElemFromRequest('internal', $v2, $name);
 									$this->elements[$name]['dat'] = $v2;
 								}
 							}
 						}
-					} else{
+					} else {
 						$this->i_set_PersistentSlot($regs[1], $v);
 					}
 				} else if($n == 'we_owners_read_only'){
@@ -912,13 +915,13 @@ abstract class we_root extends we_class{
 			'" AND ' . CONTENT_TABLE . '.ID=' . LINK_TABLE . '.CID ' .
 			($loadBinary ? '' : ' AND ' . CONTENT_TABLE . '.IsBinary=0'));
 		$filter = array('Name', 'DID', 'Ord');
-		while($this->DB_WE->next_record()) {
+		while($this->DB_WE->next_record()){
 			$Name = $this->DB_WE->f('Name');
 			$type = $this->DB_WE->f('Type');
 
 			if($type == 'formfield'){ // Artjom garbage fix!
 				$this->elements[$Name] = unserialize($this->DB_WE->f('Dat'));
-			} else{
+			} else {
 				if($this->i_isElement($Name)){
 					foreach($this->DB_WE->Record as $k => $v){
 						if(!in_array($k, $filter) && !is_numeric($k)){
@@ -935,7 +938,7 @@ abstract class we_root extends we_class{
 	private function getLinkReplaceArray(){
 		$ret = array();
 		$this->DB_WE->query('SELECT CONCAT_WS("_",Type,Name) AS Name,CID FROM ' . LINK_TABLE . ' WHERE DID=' . $this->ID . ' AND DocumentTable="' . stripTblPrefix($this->Table) . '"');
-		while($this->DB_WE->next_record()) {
+		while($this->DB_WE->next_record()){
 			$ret[$this->DB_WE->f('Name')] = $this->DB_WE->f('CID');
 		}
 		return $ret;
@@ -1110,7 +1113,7 @@ abstract class we_root extends we_class{
 			if(f('SELECT ID  FROM  ' . $this->DB_WE->escape($this->Table) . '  WHERE ID!=' . intval($this->ID) . ' AND Text="' . $this->DB_WE->escape($this->Filename . (isset($this->Extension) ? $this->Extension : '')) . '" AND ParentID=' . intval($this->ParentID), 'ID', $this->DB_WE)){
 				$z = 0;
 				$footext = $this->Filename . '_' . $z . (isset($this->Extension) ? $this->Extension : '');
-				while(f('SELECT ID FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ID!=' . intval($this->ID) . ' AND Text="' . $this->DB_WE->escape($footext) . '" AND ParentID=' . intval($this->ParentID), 'ID', $this->DB_WE)) {
+				while(f('SELECT ID FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ID!=' . intval($this->ID) . ' AND Text="' . $this->DB_WE->escape($footext) . '" AND ParentID=' . intval($this->ParentID), 'ID', $this->DB_WE)){
 					$z++;
 					$footext = $this->Filename . '_' . $z . (isset($this->Extension) ? $this->Extension : '');
 				}
@@ -1118,11 +1121,11 @@ abstract class we_root extends we_class{
 				$this->Filename = $this->Filename . '_' . $z;
 				$this->Path = $this->getParentPath() . (($this->getParentPath() != '/') ? '/' : '') . $this->Text;
 			}
-		} else{
+		} else {
 			if(f('SELECT ID  FROM  ' . $this->DB_WE->escape($this->Table) . '  WHERE ID!=' . intval($this->ID) . ' AND Text="' . $this->DB_WE->escape($this->Text) . '" AND ParentID=' . intval($this->ParentID), 'ID', $this->DB_WE)){
 				$z = 0;
 				$footext = $this->Text . '_' . $z;
-				while(f('SELECT ID FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ID!=' . intval($this->ID) . ' AND Text="' . $this->DB_WE->escape($footext) . '" AND ParentID=' . intval($this->ParentID), 'ID', $this->DB_WE)) {
+				while(f('SELECT ID FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ID!=' . intval($this->ID) . ' AND Text="' . $this->DB_WE->escape($footext) . '" AND ParentID=' . intval($this->ParentID), 'ID', $this->DB_WE)){
 					$z++;
 					$footext = $this->Text . '_' . $z;
 				}

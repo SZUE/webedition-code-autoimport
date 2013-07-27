@@ -1156,8 +1156,9 @@ print we_message_reporting::getShowMessageCall(g_l('multiEditor', "[no_editor_le
 					if (this.getEditorType() === "cockpit") {
 						_theEditorFrame.saveSettings();
 						var _href = _theEditorFrame.location.href;
-						if (_href.charAt(_href.length - 1) === "#")
+						if (_href.charAt(_href.length - 1) === "#"){
 							_href = _href.substr(0, _href.length - 1);
+						}
 						_theEditorFrame.location.href = _href;
 						//_theEditorFrame.location.reload();
 					} else {

@@ -88,8 +88,9 @@ class we_webEditionDocument extends we_textContentDocument{
 					$GLOBALS['we_document'][$formname]->Category = $categories;
 				}
 			}
-			if($session)
+			if($session){
 				$GLOBALS['we_document'][$formname]->saveInSession($_SESSION['weS']['we_document_session_' . $formname]);
+			}
 		} else {
 			if(isset($_REQUEST['we_editDocument_ID']) && $_REQUEST['we_editDocument_ID']){
 				$GLOBALS['we_document'][$formname]->initByID($_REQUEST['we_editDocument_ID'], FILE_TABLE);

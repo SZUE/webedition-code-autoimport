@@ -537,31 +537,43 @@ extra_files_desc=new Array();';
 			320 => "backup_log"
 		);
 
-		if(defined("OBJECT_TABLE"))
+		if(defined("OBJECT_TABLE")){
 			$form_properties[11] = "handle_object";
+		}
 		$form_properties[20] = "handle_user";
-		if(defined("CUSTOMER_TABLE"))
+		if(defined("CUSTOMER_TABLE")){
 			$form_properties[25] = "handle_customer";
-		if(defined("SHOP_TABLE"))
+		}
+		if(defined("SHOP_TABLE")){
 			$form_properties[30] = "handle_shop";
-		if(defined("WORKFLOW_TABLE"))
+		}
+		if(defined("WORKFLOW_TABLE")){
 			$form_properties[35] = "handle_workflow";
-		if(defined("MESSAGING_SYSTEM"))
+		}
+		if(defined("MESSAGING_SYSTEM")){
 			$form_properties[40] = "handle_todo";
-		if(defined("NEWSLETTER_TABLE"))
+		}
+		if(defined("NEWSLETTER_TABLE")){
 			$form_properties[45] = "handle_newsletter";
-		if(defined("BANNER_TABLE"))
+		}
+		if(defined("BANNER_TABLE")){
 			$form_properties[50] = "handle_banner";
-		if(defined("SCHEDULE_TABLE"))
+		}
+		if(defined("SCHEDULE_TABLE")){
 			$form_properties[55] = "handle_schedule";
-		if(defined("EXPORT_TABLE"))
+		}
+		if(defined("EXPORT_TABLE")){
 			$form_properties[60] = "handle_export";
-		if(defined("VOTING_TABLE"))
+		}
+		if(defined("VOTING_TABLE")){
 			$form_properties[65] = "handle_voting";
-		if(defined("SPELLCHECKER"))
+		}
+		if(defined("SPELLCHECKER")){
 			$form_properties[70] = "handle_spellchecker";
-		if(defined("GLOSSARY_TABLE"))
+		}
+		if(defined("GLOSSARY_TABLE")){
 			$form_properties[75] = "handle_glossary";
+		}
 		$form_properties[12] = "handle_versions";
 		$form_properties[13] = "handle_versions_binarys";
 
@@ -1486,8 +1498,9 @@ top.body.location = "' . $this->frameset . '?pnt=body&step=4&temp_filename=' . $
 						}
 					} else {
 						$we_backup_obj->doUpdate();
-						if(is_file($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/' . $temp_filename) && $we_backup_obj->rebuild && empty($we_backup_obj->errors))
+						if(is_file($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/' . $temp_filename) && $we_backup_obj->rebuild && empty($we_backup_obj->errors)){
 							unlink($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/' . $temp_filename);
+						}
 						print we_html_element::jsElement('
 top.opener.top.we_cmd("load", "' . FILE_TABLE . '");
 top.opener.top.we_cmd("exit_delete");

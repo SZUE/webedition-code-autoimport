@@ -182,15 +182,17 @@ if($we_doc->ID){
 
 
 if(isset($we_sess_folderID) && is_array($we_sess_folderID) && (!$we_doc->ID)){
-	if($we_sess_folderID[$we_doc->Table])
+	if($we_sess_folderID[$we_doc->Table]){
 		$we_doc->setParentID($we_sess_folderID[$we_doc->Table]);
+	}
 }
 
 if($we_doc->ID == 0){
 	$we_doc->EditPageNr = getTabs($we_doc->ClassName, WE_EDITPAGE_PROPERTIES);
 } else if(isset($_SESSION['weS']['EditPageNr'])){
-	if(defined('SHOP_TABLE'))
+	if(defined('SHOP_TABLE')){
 		$we_doc->checkTabs();
+	}
 	if(in_array($_SESSION['weS']['EditPageNr'], $we_doc->EditPageNrs)){
 		$we_doc->EditPageNr = getTabs($we_doc->ClassName, $_SESSION['weS']['EditPageNr']);
 	} else{
@@ -287,8 +289,9 @@ we_html_tools::htmlTop();
 			for (var i = 0; i < arguments.length; i++) {
 				args += 'arguments[' + i + ']' + ((i < (arguments.length - 1)) ? ',' : '');
 			}
-			if (top.we_cmd)
+			if (top.we_cmd){
 				eval('top.we_cmd(' + args + ')');
+			}
 		}
 	}
 

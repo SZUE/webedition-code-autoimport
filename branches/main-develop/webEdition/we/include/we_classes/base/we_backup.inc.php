@@ -140,7 +140,7 @@ abstract class we_backup{
 				'tblorders' => SHOP_TABLE));
 		}
 
-		if(defined('WORKFLOW_TABLE'))
+		if(defined('WORKFLOW_TABLE')){
 			$this->table_map = array_merge($this->table_map, array(
 				'tblworkflowdef' => WORKFLOW_TABLE,
 				'tblworkflowstep' => WORKFLOW_STEP_TABLE,
@@ -151,8 +151,9 @@ abstract class we_backup{
 				'tblworkflowlog' => WORKFLOW_LOG_TABLE
 				)
 			);
+		}
 
-		if(defined('MSG_TODO_TABLE'))
+		if(defined('MSG_TODO_TABLE')){
 			$this->table_map = array_merge($this->table_map, array(
 				'tbltodo' => MSG_TODO_TABLE,
 				'tbltodohistory' => MSG_TODOHISTORY_TABLE,
@@ -163,8 +164,8 @@ abstract class we_backup{
 				'tblmsgsettings' => MSG_SETTINGS_TABLE
 				)
 			);
-
-		if(defined('NEWSLETTER_TABLE'))
+		}
+		if(defined('NEWSLETTER_TABLE')){
 			$this->table_map = array_merge($this->table_map, array(
 				'tblnewsletter' => NEWSLETTER_TABLE,
 				'tblnewslettergroup' => NEWSLETTER_GROUP_TABLE,
@@ -174,8 +175,9 @@ abstract class we_backup{
 				'tblnewsletterconfirm' => NEWSLETTER_CONFIRM_TABLE
 				)
 			);
+		}
 
-		if(defined('BANNER_TABLE'))
+		if(defined('BANNER_TABLE')){
 			$this->table_map = array_merge($this->table_map, array(
 				'tblbanner' => BANNER_TABLE,
 				'tblbannerclicks' => BANNER_CLICKS_TABLE,
@@ -183,13 +185,13 @@ abstract class we_backup{
 				'tblbannerviews' => BANNER_VIEWS_TABLE
 				)
 			);
-
-		if(defined('EXPORT_TABLE'))
+		}
+		if(defined('EXPORT_TABLE')){
 			$this->table_map = array_merge($this->table_map, array(
 				'tblexport' => EXPORT_TABLE
 				)
 			);
-
+		}
 		if(defined('VOTING_TABLE')){
 			$this->table_map['tblvoting'] = VOTING_TABLE;
 		}
@@ -361,19 +363,21 @@ abstract class we_backup{
 			$this->backup_db->query($q);
 		}
 		$dir = str_replace("\\", "/", $dir);
-		if(substr($dir, -1) != "/")
+		if(substr($dir, -1) != "/"){
 			$dir .= "/";
+		}
 		$d = @dir($dir);
 		if($d){
 			while(false !== ($entry = $d->read())){
 				if($entry != "." && $entry != ".."){
 					if(is_dir($dir . $entry)){
-						if($entry != "." && $entry != "..")
+						if($entry != "." && $entry != ".."){
 							$this->putDirInDB($dir . $entry);
-					}
-					else {
-						if(!$this->putFileInDB($dir . $entry))
+						}
+					} else {
+						if(!$this->putFileInDB($dir . $entry)){
 							return false;
+						}
 					}
 				}
 			}
@@ -508,9 +512,10 @@ abstract class we_backup{
 			$count++;
 			if($entry != "." && $entry != ".." && $entry != "CVS" && $entry != "webEdition" && $this->backup_step < $count){
 				if(is_dir($rootdir . $entry)){
-					if(!$this->putDirInDB($rootdir . $entry))
+					if(!$this->putDirInDB($rootdir . $entry)){
 						return -1;
-				}elseif(!$this->putFileInDB($rootdir . $entry)){
+					}
+				} elseif(!$this->putFileInDB($rootdir . $entry)){
 					return -1;
 				}
 				$len = $len + filesize($rootdir . $entry);
@@ -724,8 +729,9 @@ abstract class we_backup{
 		$ret = false;
 		if($d){
 			while(false !== ($entry = $d->read())){
-				if($entry == $file_name)
+				if($entry == $file_name){
 					$ret = true;
+				}
 			}
 			$d->close();
 		}
@@ -748,8 +754,9 @@ abstract class we_backup{
 	 * Description: This function deletes a database dump.
 	 */
 	function removeDumpFile(){
-		if(is_file($this->dumpfilename))
+		if(is_file($this->dumpfilename)){
 			@unlink($this->dumpfilename);
+		}
 
 		$this->dumpfilename = '';
 		$this->tempfilename = '';
@@ -861,8 +868,9 @@ abstract class we_backup{
 			$this->setError(g_l('backup', "[can_not_open_file]"), basename($filename) . "_" . $num);
 			return -1;
 		}
-		if($fh_temp)
+		if($fh_temp){
 			@fclose($fh_temp);
+		}
 		@fclose($fh);
 		if(defined("WORKFLOW_TABLE")){
 			$this->backup_db->query('TRUNCATE TABLE' . WORKFLOW_DOC_TABLE);
@@ -905,10 +913,11 @@ abstract class we_backup{
 
 						$ctbl = $this->isCreateQuery($buff);
 						$itbl = $this->isInsertQuery($buff);
-						if($itbl != "")
+						if($itbl != ""){
 							$ctbl = "";
-						else if($ctbl != "")
+						} else if($ctbl != ""){
 							$itbl = "";
+						}
 						$upd = array();
 						if(($ctbl != "") || ($itbl != "")){
 							if(strlen($buff) < $this->mysql_max_packet){
@@ -917,8 +926,9 @@ abstract class we_backup{
 									if(trim($clear_name) != ""){
 										$buff = str_replace($ctbl . $itbl, $clear_name, $buff);
 										if(($ctbl != "") && (strtolower(substr($buff, 0, 6)) == "create")){
-											if(defined("OBJECT_X_TABLE") && substr(strtolower($ctbl), 0, 10) != strtolower(OBJECT_X_TABLE))
+											if(defined("OBJECT_X_TABLE") && substr(strtolower($ctbl), 0, 10) != strtolower(OBJECT_X_TABLE)){
 												$this->getDiff($buff, $clear_name, $upd);
+											}
 											$this->backup_db->query("DROP TABLE IF EXISTS " . $this->backup_db->escape($clear_name) . ";");
 											$this->backup_db->query($buff);
 										}
@@ -1022,8 +1032,9 @@ abstract class we_backup{
 			} else if($br > 0){
 				$fields.=$q[$i];
 			}
-			if($br == 0 && $run)
+			if($br == 0 && $run){
 				break;
+			}
 		}
 		$parts = explode(",", $fields);
 		foreach($parts as $v){
@@ -1142,8 +1153,9 @@ abstract class we_backup{
 		$fixTable = $this->fixedTable;
 
 		foreach($this->handle_options as $hok => $hov){
-			if(!$hov)
+			if(!$hov){
 				$fixTable = array_merge($fixTable, $this->tables[$hok]);
+			}
 		}
 
 		return (in_array($table, $fixTable));

@@ -50,8 +50,9 @@ function getInfoTable($_infoArr, $name){
 			if($_i == 6 && ini_get_bool('short_open_tag')){
 				$_table->setColAttributes(5, 1, array("style" => "border:1px solid red;"));
 			}
-			if($_i == 9 && ini_get_bool('safe_mode'))
+			if($_i == 9 && ini_get_bool('safe_mode')){
 				$_table->setColAttributes(8, 1, array("style" => "border:1px solid grey;"));
+			}
 		}
 	}
 	return $_table->getHtml();

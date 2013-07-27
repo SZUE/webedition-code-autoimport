@@ -448,8 +448,9 @@ function we_submitForm(target, url) {
 	var f = self.document.we_form;
 	var sel = "";
 	for (var i = 1; i <= top.treeData.len; i++) {
-		if (top.treeData[i].checked == 1)
+		if (top.treeData[i].checked == 1) {
 			sel += (top.treeData[i].id + ",");
+		}
 	}
 	if (!sel) {
 		top.toggleBusy(0);

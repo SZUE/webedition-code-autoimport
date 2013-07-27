@@ -204,8 +204,9 @@ class weExportPreparer extends weXMLExIm{
 
 	function addToDepArray($level, $id, $ct = "", $table = ""){
 		if($ct == ""){
-			if($table == "")
+			if($table == ""){
 				$table = FILE_TABLE;
+			}
 			$ct = f('SELECT ContentType FROM ' . escape_sql_query($table) . ' WHERE ID=' . intval($id), 'ContentType', new DB_WE());
 		}
 		if($ct != ""){
@@ -388,8 +389,9 @@ class weExportPreparer extends weXMLExIm{
 			}
 
 			if($serach && $this->options["export_depth"] > $id->level){
-				if(!isset($this->analyzed[$id->ContentType]))
+				if(!isset($this->analyzed[$id->ContentType])){
 					$this->analyzed[$id->ContentType] = array();
+				}
 				if(!in_array($id->ID, $this->analyzed[$id->ContentType])){
 					$l = $id->level + 1;
 					$this->getDependent($doc, $l);
@@ -417,8 +419,9 @@ class weExportPreparer extends weXMLExIm{
 			}
 		}
 
-		if(isset($doc))
+		if(isset($doc)){
 			unset($doc);
+		}
 	}
 
 	function addToRefTable($ids){
@@ -443,16 +446,19 @@ class weExportPreparer extends weXMLExIm{
 		}
 
 		// move objects to the end of the reftable because objects should be imported after classes
-		if(defined('OBJECT_TABLE'))
+		if(defined('OBJECT_TABLE')){
 			$this->RefTable->moveItemsToEnd('objectFile');
+		}
 	}
 
 	function loadPerserves(){
 		parent::loadPerserves();
-		if(isset($_SESSION['weS']['ExImPrepare']))
+		if(isset($_SESSION['weS']['ExImPrepare'])){
 			$this->prepare = $_SESSION['weS']['ExImPrepare'];
-		if(isset($_SESSION['weS']['ExImOptions']))
+		}
+		if(isset($_SESSION['weS']['ExImOptions'])){
 			$this->options = $_SESSION['weS']['ExImOptions'];
+		}
 	}
 
 	function savePerserves(){
@@ -463,10 +469,12 @@ class weExportPreparer extends weXMLExIm{
 
 	function unsetPerserves(){
 		parent::unsetPerserves();
-		if(isset($_SESSION['weS']['ExImPrepare']))
+		if(isset($_SESSION['weS']['ExImPrepare'])){
 			unset($_SESSION['weS']['ExImPrepare']);
-		if(isset($_SESSION['weS']['ExImOptions']))
+		}
+		if(isset($_SESSION['weS']['ExImOptions'])){
 			unset($_SESSION['weS']['ExImOptions']);
+		}
 	}
 
 }

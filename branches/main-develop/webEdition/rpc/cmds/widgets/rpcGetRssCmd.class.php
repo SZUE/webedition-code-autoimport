@@ -119,8 +119,9 @@ class rpcGetRssCmd extends rpcCmd{
 		}
 
 		$aTb = array();
-		if($bTbLabel)
+		if($bTbLabel){
 			$aTb[] = g_l('cockpit', '[rss_feed]');
+		}
 		if($bTbTitel){
 			$aTb[] = (isset($_REQUEST['we_cmd'][4]) && $_REQUEST['we_cmd'][4] != "") ?
 				$_REQUEST['we_cmd'][4] :

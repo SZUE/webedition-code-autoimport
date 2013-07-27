@@ -28,7 +28,7 @@
  * @desc    This is the base class for all webEdition listviews.
  *
  */
-abstract class listviewBase {
+abstract class listviewBase{
 
 	var $DB_WE; /* Main DB Object */
 	var $name; /* name of listview */
@@ -114,8 +114,9 @@ abstract class listviewBase {
 			if($weekstart != ''){
 				$wdays = array('sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday');
 				$match = array_search($weekstart, $wdays);
-				if($match !== false)
+				if($match !== false){
 					$this->calendar_struct['weekstart'] = $match;
+				}
 			}
 		}
 	}
@@ -138,8 +139,9 @@ abstract class listviewBase {
 			$this->calendar_struct['forceFetch'] = false;
 			$calendarCount = $this->calendar_struct['calendarCount'];
 			if(($calendarCount > 0 || ($this->calendar_struct['calendar'] == 'day' && $calendarCount >= 0)) && $calendarCount <= $this->calendar_struct['numofentries']){
-				if($this->calendar_struct['date'] < 0)
+				if($this->calendar_struct['date'] < 0){
 					$this->calendar_struct['date'] = $this->calendar_struct['defaultDate'];
+				}
 				$date = $this->calendar_struct['date'];
 				$month = date('m', $date);
 				$year = date('Y', $date);
@@ -184,8 +186,9 @@ abstract class listviewBase {
 			if($calendarCount > $this->calendar_struct['numofentries']){
 				$this->calendar_struct['date'] = 0;
 			}
-			if(!$this->calendar_struct['forceFetch'])
+			if(!$this->calendar_struct['forceFetch']){
 				$this->count++;
+			}
 			$this->Record = array();
 		}
 	}
@@ -207,8 +210,9 @@ abstract class listviewBase {
 	 *
 	 */
 	function hasNextPage($parentEnd = false){
-		if(isset($this->calendar_struct['calendar']) && $this->calendar_struct['calendar'] != '')
+		if(isset($this->calendar_struct['calendar']) && $this->calendar_struct['calendar'] != ''){
 			return true;
+		}
 		if($parentEnd && isset($_REQUEST['we_lv_pend_' . $this->name])){
 			return (($this->start + $this->anz) < $_REQUEST['we_lv_pend_' . $this->name]);
 		}

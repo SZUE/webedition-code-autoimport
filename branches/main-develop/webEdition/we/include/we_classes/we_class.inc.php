@@ -171,8 +171,9 @@ abstract class we_class {
 	}
 
 	function formTextArea($elementtype, $name, $text, $rows = 10, $cols = 30, $attribs = '', $textalign = 'left', $textclass = 'defaultfont'){
-		if(!$elementtype)
+		if(!$elementtype){
 			$ps = $this->$name;
+		}
 		return $this->htmlFormElementTable($this->htmlTextArea(($elementtype ? ('we_' . $this->Name . '_' . $elementtype . "[$name]") : ('we_' . $this->Name . '_' . $name)), $rows, $cols, ($elementtype ? $this->getElement($name) : $ps), $attribs), $text, $textalign, $textclass);
 	}
 

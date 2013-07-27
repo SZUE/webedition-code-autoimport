@@ -796,7 +796,7 @@ if(!empty($_jsincludes)){
 				break;
 			case "help":
 <?php if($online_help){ ?>
-					url = "<?php echo WEBEDITION_DIR; ?>getHelp.php"+(arguments[1] ?
+					url = "<?php echo WEBEDITION_DIR; ?>getHelp.php" + (arguments[1] ?
 									"?hid=" + arguments[1] :
 									""
 									);

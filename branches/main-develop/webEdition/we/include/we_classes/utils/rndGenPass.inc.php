@@ -39,27 +39,27 @@ class rndConditionPass{
 		$this->minLen = $this->condition['caps'] + $this->condition['small'] + $this->condition['nums'] + $this->condition['specs'];
 		// Compute the Total Password Length and Store it to the Global Variable
 		$this->PasswordLength = max($this->minLen, $passLen);
-		$this->all=$this->caps.$this->small.$this->nums.$this->specs;
+		$this->all = $this->caps . $this->small . $this->nums . $this->specs;
 	}
 
 	function PassGen(){ // Function to Generate Random Passowrd
 		$i = 1;
 		$password = array();
-		while($i < $this->PasswordLength) {
+		while($i < $this->PasswordLength){
 			if($i < $this->minLen){
-				if($i < $this->condition['specs'])
+				if($i < $this->condition['specs']){
 					$this->set = $this->specs;
-				elseif($i < ($this->condition['specs'] + $this->condition['small']))
+				} elseif($i < ($this->condition['specs'] + $this->condition['small'])){
 					$this->set = $this->small;
-				elseif($i < ($this->condition['specs'] + $this->condition['small'] + $this->condition['nums']))
+				} elseif($i < ($this->condition['specs'] + $this->condition['small'] + $this->condition['nums'])){
 					$this->set = $this->nums;
-				elseif($i < ($this->condition['specs'] + $this->condition['small'] + $this->condition['nums'] + $this->condition['caps']))
+				} elseif($i < ($this->condition['specs'] + $this->condition['small'] + $this->condition['nums'] + $this->condition['caps'])){
 					$this->set = $this->caps;
-				elseif($i < ($this->condition['specs'] + $this->condition['small'] + $this->condition['nums'] + $this->condition['specs']))
+				} elseif($i < ($this->condition['specs'] + $this->condition['small'] + $this->condition['nums'] + $this->condition['specs'])){
 					$this->set = $this->specs;
-			}else{
-				if($i < $this->PasswordLength)
-					$this->set = $this->all;
+				}
+			} elseif($i < $this->PasswordLength){
+				$this->set = $this->all;
 			}
 			$tmp = $this->_getPwdChar($this->set);
 			$password[] = $tmp;

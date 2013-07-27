@@ -247,8 +247,9 @@ class XML_Export{
 	}
 
 	function update_entities($base, $extra){
-		if(!is_array($base))
+		if(!is_array($base)){
 			return false;
+		}
 
 		while($this->allow_entities) {
 			for($i = 0; $i < count($base); $i++){

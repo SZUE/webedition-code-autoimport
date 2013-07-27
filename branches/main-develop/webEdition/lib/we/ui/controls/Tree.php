@@ -167,12 +167,15 @@ class we_ui_controls_Tree extends we_ui_abstract_AbstractElement{
 				$addStatus = false;
 			}
 			foreach($nodes as &$node){
-				if($addPublished)
+				if($addPublished){
 					$node['Published'] = 1;
-				if($addStatus)
+				}
+				if($addStatus){
 					$node['Status'] = '';
-				if($node['IsFolder'])
+				}
+				if($node['IsFolder']){
 					$node['Published'] = 1;
+				}
 			}
 		}
 		//we_util_Strings::p_r($nodes);

@@ -50,8 +50,9 @@ class weModelBase{
 		foreach($tableInfo as $info){
 			$fname = $info["name"];
 			$this->persistent_slots[] = $fname;
-			if(!isset($this->$fname))
+			if(!isset($this->$fname)){
 				$this->$fname = "";
+			}
 		}
 	}
 

@@ -82,8 +82,9 @@ class we_listview extends listviewBase{
 
 		$calendar_select = '';
 		$calendar_where = '';
-		if($calendar != '')
+		if($calendar != ''){
 			$this->fetchCalendar($condition, $calendar_select, $calendar_where);
+		}
 
 		$this->defaultCondition = $condition;
 		$this->condition = $condition ? $condition : (isset($GLOBALS['we_lv_condition']) ? $GLOBALS['we_lv_condition'] : '');

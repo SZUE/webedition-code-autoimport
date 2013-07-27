@@ -71,18 +71,18 @@ class we_util_Log{
 			if($logCheck === false){
 				error_log("could write to syslog");
 				return false;
-			} else{
+			} else {
 				$writer = new Zend_Log_Writer_Stream($logCheck);
 				if($filename == "syslog"){
 					self::$_syslog = new Zend_Log($writer);
-				} else{
+				} else {
 					self::$_logfile = new Zend_Log($writer);
 				}
 			}
 		}
 		if($filename == "syslog"){
 			self::$_syslog->log($message, $errorlevel);
-		} else{
+		} else {
 			self::$_logfile->log($message, $errorlevel);
 		}
 	}
@@ -146,7 +146,7 @@ class we_util_Log{
 		}
 		if(!empty($message)){
 			$message .= ": ";
-		} else{
+		} else {
 			$message = "used: ";
 		}
 		error_log($message . round(((memory_get_usage() / 1024) / 1024), 3) . " MB, limit: " . ini_get('memory_limit'));
@@ -158,13 +158,14 @@ class we_util_Log{
 	 * if it does not exist already.
 	 */
 	public static function checkCreateLog($filename = ""){
-		if(empty($filename) || ctype_alnum($filename) === false)
+		if(empty($filename) || ctype_alnum($filename) === false){
 			return false;
+		}
 		$logPath = $_SERVER['DOCUMENT_ROOT'] . '/webEdition/log/';
 		$file = $logPath . $filename . ".php";
 		if(is_file($file) && is_writable($file)){
 			return $file;
-		} else{
+		} else {
 			if(!is_dir($logPath)){
 				if(!@mkdir($logPath)){
 					error_log("log directory not found, could not create it due to insufficient accesss rights.");
@@ -174,7 +175,7 @@ class we_util_Log{
 			$exitCode = "<?php\n exit(); \n ?>\n";
 			if(!@file_put_contents($file, $exitCode)){
 				error_log("could not create logfile due to insufficient accesss rights.");
-			} else{
+			} else {
 				return $file;
 			}
 		}

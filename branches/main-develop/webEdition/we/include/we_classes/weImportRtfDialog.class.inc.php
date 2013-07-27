@@ -63,8 +63,9 @@ function importFile(){
 	}
 
 	function getHTML(){
-		if($this->pageNr == 2)
+		if($this->pageNr == 2){
 			$this->JsOnly = true;
+		}
 		return parent::getHTML();
 	}
 

@@ -19,7 +19,6 @@
  * @package    we_app
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-
 require_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we.inc.php");
 
 /**
@@ -102,7 +101,7 @@ class we_app_Common{
 		}
 		if($nodots){
 			return str_replace(".", "", $retval);
-		} else{
+		} else {
 			return $retval;
 		}
 	}
@@ -120,7 +119,7 @@ class we_app_Common{
 		self::readConfig();
 		if(isset(self::$_config->applicationpath) && !empty(self::$_config->applicationpath)){
 			$filename = self::$_config->applicationpath . "/toc.xml";
-		} else{
+		} else {
 			$filename = $_SERVER['DOCUMENT_ROOT'] . "/webEdition/apps/toc.xml";
 		}
 		if(!is_readable($filename)){
@@ -148,7 +147,7 @@ class we_app_Common{
 		self::readConfig();
 		if(isset(self::$_config->applicationpath) && !empty(self::$_config->applicationpath)){
 			$filename = self::$_config->applicationpath . "/toc.xml";
-		} else{
+		} else {
 			$filename = $_SERVER['DOCUMENT_ROOT'] . "/webEdition/apps/toc.xml";
 		}
 		if(!is_readable($filename)){
@@ -173,7 +172,7 @@ class we_app_Common{
 		self::readConfig();
 		if(isset(self::$_config->applicationpath) && !empty(self::$_config->applicationpath)){
 			$filename = self::$_config->applicationpath . "/toc.xml";
-		} else{
+		} else {
 			$filename = $_SERVER['DOCUMENT_ROOT'] . "/webEdition/apps/toc.xml";
 		}
 		if(!is_readable($filename)){
@@ -250,14 +249,17 @@ class we_app_Common{
 		$appmanifest = self::getManifestXML($appname);
 
 		$date = @self::getAppTOCElement($appname, "date");
-		if(!$date)
+		if(!$date){
 			$date = time();
+		}
 		$installer = @self::getAppTOCElement($appname, "installer");
-		if(!$installer)
+		if(!$installer){
 			$installer = "local";
+		}
 		$active = @self::getAppTOCAttribute($appname, "active", "");
-		if(!$active)
+		if(!$active){
 			$active = "true";
+		}
 
 		$entry = new SimpleXMLElement("<application></application>");
 		$entry->addAttribute("active", $active);
@@ -342,7 +344,7 @@ class we_app_Common{
 			if(isset(self::$_config->applicationpath) && !empty(self::$_config->applicationpath)){
 				if(substr(self::$_config->applicationpath, 0, 1) != "/"){
 					$newpath = $_SERVER['DOCUMENT_ROOT'] . "/" . self::$_config->applicationpath;
-				} else{
+				} else {
 					$newpath = $_SERVER['DOCUMENT_ROOT'] . self::$_config->applicationpath;
 				}
 				if(substr($newpath, -1) != "/"){
@@ -397,7 +399,7 @@ class we_app_Common{
 			return true;
 		} else if($status == "false"){
 			return false;
-		} else{
+		} else {
 			return -1;
 		}
 	}
@@ -460,7 +462,7 @@ class we_app_Common{
 			//error_log("readable source file");
 			// seems to be a file
 			$filename = $source;
-		} else{
+		} else {
 			// seems to be an app name:
 			$filename = $_SERVER['DOCUMENT_ROOT'] . "/webEdition/apps/" . $source . "/conf/manifest.xml";
 		}
@@ -489,7 +491,7 @@ class we_app_Common{
 			//error_log("readable source file");
 			// seems to be a file
 			$filename = $source;
-		} else{
+		} else {
 			// seems to be an app name:
 			$filename = $_SERVER['DOCUMENT_ROOT'] . "/webEdition/apps/" . $source . "/conf/manifest.xml";
 		}
@@ -522,7 +524,7 @@ class we_app_Common{
 		} else if(self::isInstalled($source)){
 			// seems to be an appname
 			$filename = self::$_config->applicationpath . $source . "/conf/manifest.xml";
-		} else{
+		} else {
 			return false;
 		}
 		self::readConfig();
@@ -534,7 +536,7 @@ class we_app_Common{
 		$result = @$manifest->xpath($query);
 		if(!$result){
 			return false;
-		} else{
+		} else {
 			return (string) $result[0];
 		}
 	}
@@ -598,7 +600,7 @@ class we_app_Common{
 				$element = $entry->addChild("title", $entry);
 				$element->addAttribute($entry["lang"]);
 			}
-		} else{
+		} else {
 			$element = $entry->addChild("title", "Ohne Titel");
 			$element->addAttribute("lang", "de");
 			$element = $entry->addChild("title", "untitled application");
@@ -611,7 +613,7 @@ class we_app_Common{
 				$element = $entry->addChild("description", $entry);
 				$element->addAttribute("lang", $entry["lang"]);
 			}
-		} else{
+		} else {
 			$element = $entry->addChild("description", "keine Beschreibung vorhanden");
 			$element->addAttribute("lang", "de");
 			$element = $entry->addChild("description", "no description available");
@@ -690,19 +692,19 @@ class we_app_Common{
 				//error_log("at least one category for ".$this->_name." found.");
 				// removing default category before config merge:
 				unset(self::$_defaultManifest->info->categories);
-			} else{
+			} else {
 				//error_log("no category for ".$this->_name." found.");
 				// leaving default category in place for merge
 				// moving empty categories entity out of the way for the merge of the default category
 				unset($manifest->info->categories);
 			}
-		} else{
+		} else {
 			//error_log("no categories section for ".$this->_name." found.");
 			// nothing to do here, leaving default category in place for merge
 		}
 		if(is_null($manifest)){
 			$manifest = &self::$_defaultManifest;
-		} else{
+		} else {
 			$manifest = self::$_defaultManifest->merge($manifest);
 		}
 		self::$_defaultManifest->setReadOnly();
@@ -743,7 +745,7 @@ class we_app_Common{
 		$deactivatable = self::getManifestElement($appname, "/info/deactivatable");
 		if($deactivatable != "true"){
 			return false;
-		} else{
+		} else {
 			return true;
 		}
 	}
@@ -764,7 +766,7 @@ class we_app_Common{
 		$deactivatable = self::getManifestElement($appname, "/info/deinstallable");
 		if($deactivatable != "true"){
 			return false;
-		} else{
+		} else {
 			return true;
 		}
 	}
@@ -868,7 +870,7 @@ class we_app_Common{
 		self::readConfig();
 		if(empty($element) || !isset(self::$_config->$element)){
 			return false;
-		} else{
+		} else {
 			return self::$_config->$element;
 		}
 	}

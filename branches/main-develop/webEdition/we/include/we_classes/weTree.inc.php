@@ -572,8 +572,9 @@ function deleteEntry(id){
 function makeFoldersOpenString() {
 	var op = "";
 	for(i=1;i<=treeData.len;i++) {
-		if(treeData[i].typ == "group" && treeData[i].open == 1)
+		if(treeData[i].typ == "group" && treeData[i].open == 1){
 			op +=  treeData[i].id+",";
+			}
 	}
 	op = op.substring(0,op.length-1);
 	return op;
@@ -681,10 +682,11 @@ function draw(startEntry,zweigEintrag){
 	while (ai <= nf.len) {
 		row+=zweigEintrag;
 		var pind=indexOfEntry(nf[ai].parentid);
-		if(pind!=-1)
+		if(pind!=-1){
 			if(treeData[pind].open==1){
 				' . $draw_code . '
 			}
+		}
 		ai++;
 	}
 	return row;
@@ -748,9 +750,9 @@ if(treeData.state==treeData.tree_states["selectitem"] && (nf[ai].disabled!=1)) {
 	row+="<label style=\"cursor:pointer\" id=\"lab_"+nf[ai].id+"\""+(nf[ai].tooltip!="" ? " title=\""+nf[ai].tooltip+"\"" : "")+" class=\""+nf[ai].getlayout()+"\" onClick=\""+treeData.topFrame+".checkNode(\'img_" + nf[ai].id + "\')\">&nbsp;" + nf[ai].text +"</label>";
 
 }else{
-	if(nf[ai].disabled!=1)
+	if(nf[ai].disabled!=1){
 			row+="<a name=\'_"+nf[ai].id+"\' href=\"javascript://\"  onDblClick=\"' . $this->topFrame . '.wasdblclick=1;clearTimeout(' . $this->topFrame . '.tout);' . $this->topFrame . '.doClick(\'"+nf[ai].id+"\');return true;\" onClick=\"' . $this->topFrame . '.tout=setTimeout(\'if(' . $this->topFrame . '.wasdblclick==0) ' . $this->topFrame . '.doClick(\\\\\'"+nf[ai].id+"\\\\\'); else ' . $this->topFrame . '.wasdblclick=0;\',300);return true;\" onMouseOver=\"' . $this->topFrame . '.info(\'ID:"+nf[ai].id+"\')\" onMouseOut=\"' . $this->topFrame . '.info(\' \');\">";
-
+	}
 	row+="<label style=\"cursor:pointer\" id=\"lab_"+nf[ai].id+"\""+(nf[ai].tooltip!="" ? " title=\""+nf[ai].tooltip+"\"" : "")+" class=\""+nf[ai].getlayout()+"\">&nbsp;" + nf[ai].text +"</label>";
 	if(nf[ai].disabled!=1) row+="</a>";
 }

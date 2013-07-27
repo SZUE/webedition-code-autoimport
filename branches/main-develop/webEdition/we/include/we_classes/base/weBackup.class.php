@@ -605,8 +605,9 @@ $this->file_list=' . var_export($this->file_list, true) . ';';
 		$db->query('SHOW TABLE STATUS');
 		while($db->next_record()){
 			$noprefix = $this->getDefaultTableName($db->f("Name"));
-			if(!$this->isFixed($noprefix))
+			if(!$this->isFixed($noprefix)){
 				$all += $db->f("Rows");
+			}
 		}
 
 		$ex_files = ((int) $this->file_list_count) - ((int) count($this->file_list));

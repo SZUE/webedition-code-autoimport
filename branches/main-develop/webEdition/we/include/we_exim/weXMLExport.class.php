@@ -197,8 +197,9 @@ class weXMLExport extends weXMLExIm{
 			$ac = getAllowedClasses($db);
 			foreach($ac as $cid){
 				$path = id_to_path($cid, OBJECT_TABLE);
-				if($wsQuery != '')
+				if($wsQuery != ''){
 					$wsQuery .=' OR ';
+				}
 				$wsQuery .= " Path LIKE '" . $db->escape($path) . "/%' OR Path='" . $db->escape($path) . "'";
 			}
 		}

@@ -27,8 +27,9 @@ class rpcGetSnippetCodeCmd extends rpcCmd{
 	function execute(){
 
 		$resp = new rpcResponse();
-		if(!isset($_REQUEST['we_cmd'][1]))
+		if(!isset($_REQUEST['we_cmd'][1])){
 			exit();
+		}
 
 		$CodeWizard = new weCodeWizard();
 		if(!is_file($CodeWizard->SnippetPath . $_REQUEST['we_cmd'][1])){

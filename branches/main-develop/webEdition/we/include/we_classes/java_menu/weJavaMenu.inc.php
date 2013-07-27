@@ -76,7 +76,7 @@ class weJavaMenu{
 				if($e["parent"] == "000000"){
 					if(is_array($e["text"])){
 						$mtext = ($e["text"][$GLOBALS["WE_LANGUAGE"]] ? $e["text"][$GLOBALS["WE_LANGUAGE"]] : "");
-					} else{
+					} else {
 						$mtext = ($e["text"] ? $e["text"] : "");
 					}
 					$menus[] = array('id' => $id,
@@ -115,8 +115,9 @@ class weJavaMenu{
 							$one = false;
 						}
 						$or[$k] = implode(" && ", $and);
-						if($one && !in_array('isset($_SESSION["perms"]["' . trim($v) . '"])', $set))
+						if($one && !in_array('isset($_SESSION["perms"]["' . trim($v) . '"])', $set)){
 							$set[] = 'isset($_SESSION["perms"]["' . trim($v) . '"])';
+						}
 					}
 					$set_str = implode(" || ", $set);
 					$condition_str = implode(" || ", $or);
@@ -149,7 +150,7 @@ class weJavaMenu{
 			if($e["parent"] == "000000"){
 				if(is_array($e["text"])){
 					$mtext = ($e["text"][$GLOBALS["WE_LANGUAGE"]] ? $e["text"][$GLOBALS["WE_LANGUAGE"]] : "");
-				} else{
+				} else {
 					$mtext = ($e["text"] ? $e["text"] : "");
 				}
 				$menus[$i]["id"] = $id;
@@ -229,8 +230,9 @@ class weJavaMenu{
 							$one = false;
 						}
 						$or[$k] = implode(" && ", $and);
-						if($one && !in_array('isset($_SESSION["perms"]["' . trim($v) . '"])', $set))
+						if($one && !in_array('isset($_SESSION["perms"]["' . trim($v) . '"])', $set)){
 							$set[] = 'isset($_SESSION["perms"]["' . trim($v) . '"])';
+						}
 					}
 					$set_str = implode(" || ", $set);
 					$condition_str = implode(" || ", $or);
@@ -238,7 +240,7 @@ class weJavaMenu{
 				}
 				if(isset($e["text"]) && is_array($e["text"])){
 					$mtext = ($e["text"][$GLOBALS["WE_LANGUAGE"]] ? $e["text"][$GLOBALS["WE_LANGUAGE"]] : "");
-				} else{
+				} else {
 					$mtext = ( isset($e["text"]) ? $e["text"] : "");
 				}
 				if((!isset($e["cmd"])) && $mtext){
@@ -247,7 +249,7 @@ class weJavaMenu{
 					$this->h_pOption($men, $opt, $id, $newAst);
 				} else if($mtext){
 					$opt .= '<option' . (($e["enabled"] == 0) ? (' value="" style="{color:\'grey\'}" disabled') : (' value="' . $e["cmd"] . '"')) . '>&nbsp;&nbsp;' . $newAst . $mtext;
-				} else{
+				} else {
 					$opt .= '<option value="" disabled>&nbsp;&nbsp;' . $newAst . "--------\n";
 				}
 			}
@@ -273,8 +275,9 @@ class weJavaMenu{
 							$one = false;
 						}
 						$or[$k] = implode(" && ", $and);
-						if($one && !in_array('isset($_SESSION["perms"]["' . trim($v) . '"])', $set))
+						if($one && !in_array('isset($_SESSION["perms"]["' . trim($v) . '"])', $set)){
 							$set[] = 'isset($_SESSION["perms"]["' . trim($v) . '"])';
+						}
 					}
 					$set_str = implode(" || ", $set);
 					$condition_str = implode(" || ", $or);
@@ -282,7 +285,7 @@ class weJavaMenu{
 				}
 				if(isset($e["text"]) && is_array($e["text"])){
 					$mtext = ($e["text"][$GLOBALS["WE_LANGUAGE"]] ? $e["text"][$GLOBALS["WE_LANGUAGE"]] : "");
-				} else{
+				} else {
 					$mtext = ( isset($e["text"]) ? $e["text"] : "");
 				}
 				if((!isset($e["cmd"])) && $mtext){

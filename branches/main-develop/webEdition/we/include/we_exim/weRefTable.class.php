@@ -54,8 +54,9 @@ class RefData{
 	function match($param){
 		$match = true;
 		foreach($param as $k => $v)
-			if($k != "level" && $this->$k != $v)
+			if($k != "level" && $this->$k != $v){
 				$match = false;
+			}
 		return $match;
 	}
 
@@ -106,8 +107,9 @@ class RefTable{
 	function addToUsers($ids){
 		foreach($ids as $id){
 			$key = basename(id_to_path($id, USER_TABLE));
-			if($key)
+			if($key){
 				$this->Users[$key] = array('user' => $key, 'id' => $id);
+			}
 		}
 	}
 
@@ -119,23 +121,22 @@ class RefTable{
 				$id = f('SELECT ID FROM ' . escape_sql_query($rd->Table) . ' WHERE ID=' . intval($rd->ID) . ' ' . $q, 'ID', new DB_WE());
 				$allowed = $id ? true : false;
 			}
-			if($rd->Table == FILE_TABLE)
-				return $allowed && we_hasPerm('CAN_SEE_DOCUMENTS');
-			if($rd->Table == TEMPLATES_TABLE)
-				return $allowed && we_hasPerm('CAN_SEE_TEMPLATES');
-
-			if(defined('OBJECT_TABLE') && $rd->Table == OBJECT_TABLE)
-				return $allowed && we_hasPerm('CAN_SEE_OBJECTS');
-			if(defined('OBJECT_FILES_TABLE') && $rd->Table == OBJECT_FILES_TABLE)
-				return $allowed && we_hasPerm('CAN_SEE_OBJECTFILES');
-
-			if($rd->Table == DOC_TYPES_TABLE)
-				return $allowed && we_hasPerm('EDIT_DOCTYPE');
-			if($rd->Table == CATEGORY_TABLE)
-				return $allowed && we_hasPerm('EDIT_KATEGORIE');
-
-			if($rd->Table == NAVIGATION_TABLE)
-				return $allowed && we_hasPerm('EDIT_NAVIGATION');
+			switch($rd->Table){
+				case FILE_TABLE:
+					return $allowed && we_hasPerm('CAN_SEE_DOCUMENTS');
+				case TEMPLATES_TABLE:
+					return $allowed && we_hasPerm('CAN_SEE_TEMPLATES');
+				case (defined('OBJECT_TABLE') ? OBJECT_TABLE : 'OBJECT_TABLE'):
+					return $allowed && we_hasPerm('CAN_SEE_OBJECTS');
+				case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
+					return $allowed && we_hasPerm('CAN_SEE_OBJECTFILES');
+				case DOC_TYPES_TABLE:
+					return $allowed && we_hasPerm('EDIT_DOCTYPE');
+				case CATEGORY_TABLE:
+					return $allowed && we_hasPerm('EDIT_KATEGORIE');
+				case NAVIGATION_TABLE:
+					return $allowed && we_hasPerm('EDIT_NAVIGATION');
+			}
 		}
 		if($rd->ContentType == 'weBinary' || $rd->ContentType == 'weNavigationRule' || $rd->ContentType == 'weThumbnail'){
 			return true;
@@ -150,7 +151,7 @@ class RefTable{
 		for($i = 0; $i < count($this->Storage); $i++){
 			if($this->Storage[$i]->ContentType == $ct){
 				$moved[] = $this->Storage[$i];
-			} else{
+			} else {
 				$regular[] = $this->Storage[$i];
 			}
 		}
@@ -171,8 +172,9 @@ class RefTable{
 
 	function exists($params){
 		foreach($this->Storage as $ref){
-			if($ref->match($params))
+			if($ref->match($params)){
 				return true;
+			}
 		}
 		return false;
 	}
@@ -196,7 +198,7 @@ class RefTable{
 			$id = $this->current;
 			$this->current++;
 			return $this->Storage[$id];
-		} else{
+		} else {
 			$this->reset();
 			return null;
 		}
@@ -215,8 +217,9 @@ class RefTable{
 
 	function getRef($param){
 		foreach($this->Storage as $ref){
-			if($ref->match($param))
+			if($ref->match($param)){
 				return $ref;
+			}
 		}
 		return false;
 	}
@@ -238,8 +241,9 @@ class RefTable{
 	}
 
 	function Array2RefTable($RefArray, $update = false){
-		if(!$update)
+		if(!$update){
 			$this->Storage = array();
+		}
 		foreach($RefArray as $ref){
 			$data = new RefData();
 			foreach($ref as $k => $v){
@@ -264,3 +268,4 @@ class RefTable{
 	}
 
 }
+

@@ -142,8 +142,9 @@ switch($_REQUEST['we_cmd'][0]){
 		break;
 	case "dt_add_cat":
 		$we_doc->we_initSessDat($_SESSION['weS']['we_data'][$we_transaction]);
-		if($_REQUEST['we_cmd'][1])
+		if($_REQUEST['we_cmd'][1]){
 			$we_doc->addCat($_REQUEST['we_cmd'][1]);
+		}
 		break;
 	case "dt_delete_cat":
 		$we_doc->we_initSessDat($_SESSION['weS']['we_data'][$we_transaction]);
@@ -326,8 +327,9 @@ function doUnload() {
 
 function in_array(haystack, needle) {
 	for (var i = 0; i < haystack.length; i++) {
-		if (haystack[i] == needle)
+		if (haystack[i] == needle){
 			return true;
+		}
 	}
 	return false;
 }

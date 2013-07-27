@@ -601,8 +601,9 @@ abstract class we_database_base{
 				$this->halt("Metadata query failed.");
 			}
 		} else{
-			if(!($this->Query_ID))
+			if(!($this->Query_ID)){
 				$this->halt("No query specified.");
+			}
 		}
 		$count = $this->num_fields();
 		if(!$count){
@@ -827,8 +828,9 @@ abstract class we_database_base{
 		$zw = $this->getTableCreateArray($tab);
 		if($zw){
 			foreach($zw as $v){
-				if(trim(rtrim($v, ',')) == $key)
+				if(trim(rtrim($v, ',')) == $key){
 					return true;
+				}
 			}
 		}
 		return false;

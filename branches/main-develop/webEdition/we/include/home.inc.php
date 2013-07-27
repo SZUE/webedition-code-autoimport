@@ -197,8 +197,9 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 	?>
 			];
 			try {
-				if (_iInitCols != _iLayoutCols)
+				if (_iInitCols != _iLayoutCols){
 					return true;
+				}
 				for (var i = 0; i < _iLayoutCols; i++) {
 					var asoc = getColumnAsoc('c_' + (i + 1));
 					var asoc_len = asoc.length;
@@ -944,8 +945,9 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 			var url = '<?php echo WEBEDITION_DIR; ?>we_cmd.php?';
 			for (var i = 0; i < arguments.length; i++) {
 				url += 'we_cmd[' + i + ']=' + escape(arguments[i]);
-				if (i < (arguments.length - 1))
+				if (i < (arguments.length - 1)){
 					url += '&';
+				}
 			}
 
 			new jsWindow(url, 'browse_users', -1, -1, 500, 300, true, false, true);

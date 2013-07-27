@@ -60,8 +60,9 @@ class we_template extends we_document{
 		//$parentIDMerk = $this->ParentID;
 		if($this->ID == 0){
 			foreach($this->persistent_slots as $cur){
-				if($cur != 'elements')
+				if($cur != 'elements'){
 					$this->{$cur} = $temp->{$cur};
+				}
 			}
 			$this->CreationDate = time();
 			$this->ID = 0;
@@ -378,13 +379,15 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 	function getVariantFields(){
 		$ret = array();
 		$fields = $this->getAllVariantFields();
-		if(empty($fields))
+		if(empty($fields)){
 			return $fields;
+		}
 		$element_names = array();
 		$names = array_keys($this->elements);
 		foreach($names as $name){
-			if(substr($name, 0, 8) == 'variant_')
+			if(substr($name, 0, 8) == 'variant_'){
 				$element_names[] = substr($name, 8);
+			}
 		}
 		foreach($fields as $name => $value){
 			if(in_array($name, $element_names)){

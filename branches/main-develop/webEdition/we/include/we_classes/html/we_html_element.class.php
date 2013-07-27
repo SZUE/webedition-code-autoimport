@@ -42,8 +42,9 @@ abstract class we_html_element{
 	 */
 	static function htmlForm($attribs = array(), $content = ''){
 
-		if(!isset($attribs['name']))
+		if(!isset($attribs['name'])){
 			$attribs['name'] = 'we_form';
+		}
 		return we_baseElement::getHtmlCode(new we_baseElement('form', true, $attribs, $content));
 	}
 
@@ -56,8 +57,9 @@ abstract class we_html_element{
 	 */
 	static function htmlInput($attribs = array()){
 
-		if(!isset($attribs['class']))
+		if(!isset($attribs['class'])){
 			$attribs['class'] = 'defaultfont';
+		}
 		return we_baseElement::getHtmlCode(new we_baseElement('input', 'selfclose', $attribs));
 	}
 

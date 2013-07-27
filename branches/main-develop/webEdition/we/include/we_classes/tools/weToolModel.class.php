@@ -146,12 +146,12 @@ class weToolModel extends weModelBase{
 
 	function delete(){
 
-		if(!$this->ID)
+		if(!$this->ID){
 			return false;
-
-		if($this->IsFolder)
+		}
+		if($this->IsFolder){
 			$this->deleteChilds();
-
+		}
 		parent::delete();
 
 		return true;

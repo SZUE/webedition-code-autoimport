@@ -320,8 +320,9 @@ function enableNewFolderBut(){
 	}
 
 	function userCanSeeDir($showAll = false){
-		if(we_hasPerm('ADMINISTRATOR'))
+		if(we_hasPerm('ADMINISTRATOR')){
 			return true;
+		}
 		if(!$showAll){
 			if(!in_workspace(intval($this->dir), get_ws($this->table), $this->table, $this->db)){
 				return false;

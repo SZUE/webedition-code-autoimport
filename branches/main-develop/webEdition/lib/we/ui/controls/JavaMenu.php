@@ -87,14 +87,15 @@ class we_ui_controls_JavaMenu extends we_ui_abstract_AbstractElement{
 						$and = explode("&&", $v);
 						$one = true;
 						foreach($and as $key => $val){
-							$set[]= 'isset($_SESSION["perms"]["' . trim($val) . '"])';
+							$set[] = 'isset($_SESSION["perms"]["' . trim($val) . '"])';
 							//$and[$key]='$_SESSION["perms"]["'.trim($val).'"]';
 							$and[$key] = '(isset($_SESSION["perms"]["' . trim($val) . '"]) && $_SESSION["perms"]["' . trim($val) . '"])';
 							$one = false;
 						}
 						$or[$k] = implode(" && ", $and);
-						if($one && !in_array('isset($_SESSION["perms"]["' . trim($v) . '"])', $set))
-							$set[]= 'isset($_SESSION["perms"]["' . trim($v) . '"])';
+						if($one && !in_array('isset($_SESSION["perms"]["' . trim($v) . '"])', $set)){
+							$set[] = 'isset($_SESSION["perms"]["' . trim($v) . '"])';
+						}
 					}
 					$set_str = implode(" || ", $set);
 					$condition_str = implode(" || ", $or);
@@ -102,7 +103,7 @@ class we_ui_controls_JavaMenu extends we_ui_abstract_AbstractElement{
 				}
 				if(isset($m["text"]) && is_array($m["text"])){
 					$mtext = ($m["text"][$lang] ? $m["text"][$lang] : "#");
-				} else{
+				} else {
 					$mtext = (isset($m["text"]) ? $m["text"] : "#");
 				}
 				if(!isset($m["cmd"])){
@@ -126,7 +127,7 @@ class we_ui_controls_JavaMenu extends we_ui_abstract_AbstractElement{
 			if($e["parent"] == "000000"){
 				if(is_array($e["text"])){
 					$mtext = ($e["text"][$lang] ? $e["text"][$lang] : "");
-				} else{
+				} else {
 					$mtext = ($e["text"] ? $e["text"] : "");
 				}
 				$menus[$i]["id"] = $id;
@@ -202,14 +203,15 @@ class we_ui_controls_JavaMenu extends we_ui_abstract_AbstractElement{
 						$and = explode("&&", $v);
 						$one = true;
 						foreach($and as $key => $val){
-							$set[]= 'isset($_SESSION["perms"]["' . trim($val) . '"])';
+							$set[] = 'isset($_SESSION["perms"]["' . trim($val) . '"])';
 							//$and[$key]='$_SESSION["perms"]["'.trim($val).'"]';
 							$and[$key] = '(isset($_SESSION["perms"]["' . trim($val) . '"]) && $_SESSION["perms"]["' . trim($val) . '"])';
 							$one = false;
 						}
 						$or[$k] = implode(" && ", $and);
-						if($one && !in_array('isset($_SESSION["perms"]["' . trim($v) . '"])', $set))
-							$set[]= 'isset($_SESSION["perms"]["' . trim($v) . '"])';
+						if($one && !in_array('isset($_SESSION["perms"]["' . trim($v) . '"])', $set)){
+							$set[] = 'isset($_SESSION["perms"]["' . trim($v) . '"])';
+						}
 					}
 					$set_str = implode(" || ", $set);
 					$condition_str = implode(" || ", $or);
@@ -217,7 +219,7 @@ class we_ui_controls_JavaMenu extends we_ui_abstract_AbstractElement{
 				}
 				if(isset($e["text"]) && is_array($e["text"])){
 					$mtext = ($e["text"][$lang] ? $e["text"][$lang] : "");
-				} else{
+				} else {
 					$mtext = (isset($e["text"]) ? $e["text"] : "");
 				}
 				if((!isset($e["cmd"])) && $mtext){
@@ -226,7 +228,7 @@ class we_ui_controls_JavaMenu extends we_ui_abstract_AbstractElement{
 					self::_computeOption($men, $opt, $id, $newAst);
 				} else if($mtext){
 					$opt .= '<option' . (($e["enabled"] == 0) ? (' value="" style="{color:\'grey\'}" disabled') : (' value="' . $e["cmd"] . '"')) . '>&nbsp;&nbsp;' . $newAst . $mtext . "\n";
-				} else{
+				} else {
 					$opt .= '<option value="" disabled>&nbsp;&nbsp;' . $newAst . "--------\n";
 				}
 			}

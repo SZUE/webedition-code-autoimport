@@ -235,18 +235,21 @@ class we_app_Installer{
 	 * - check first if there is already an application installed with the same name
 	 */
 	public function install(){
-		if(empty($this->_source))
+		if(empty($this->_source)){
 			return false;
+		}
 		if(we_app_Common::isInstalled($this->_source)){
 			error_log($this->_source . " seems to be installed already. Aborting installation.");
 			return false;
 		}
 		error_log(get_class() . " - starting installation of application \"" . $this->_appname . "\"");
 
-		if(!$this->_preInstall())
+		if(!$this->_preInstall()){
 			return false;
-		if(!$this->_executeHook("preInstall"))
+		}
+		if(!$this->_executeHook("preInstall")){
 			return false;
+		}
 
 		// beginn common installation process:
 		/*
@@ -256,31 +259,39 @@ class we_app_Installer{
 		 * - remove installation files
 		 * - inserts application entry into application toc
 		 */
-		if(!$this->_installFiles())
+		if(!$this->_installFiles()){
 			return false;
-		if(!$this->_executeQueries("install"))
+		}
+		if(!$this->_executeQueries("install")){
 			return false;
-		if(!we_app_Common::rebuildAppTOC($this->_appname))
+		}
+		if(!we_app_Common::rebuildAppTOC($this->_appname)){
 			return false;
-		if(!$this->_removeInstallationFiles())
+		}
+		if(!$this->_removeInstallationFiles()){
 			return false;
+		}
 
-		if(!$this->_postInstall())
+		if(!$this->_postInstall()){
 			return false;
-		if(!$this->_executeHook("postInstall"))
+		}
+		if(!$this->_executeHook("postInstall")){
 			return false;
+		}
 		return true;
 	}
 
 	public function update(){
 		error_log("update() not implemented yet.");
-		if(true)
+		if(true){
 			return false;
-
-		if(!$this->_preUpdate())
+		}
+		if(!$this->_preUpdate()){
 			return false;
-		if(!$this->_executeHook("preUpdate"))
+		}
+		if(!$this->_executeHook("preUpdate")){
 			return false;
+		}
 
 		// beginn common update process:
 
@@ -291,10 +302,12 @@ class we_app_Installer{
 		 * - execute all sql queries
 		 */
 
-		if(!$this->_postUpdate())
+		if(!$this->_postUpdate()){
 			return false;
-		if(!$this->_executeHook("postUpdate"))
+		}
+		if(!$this->_executeHook("postUpdate")){
 			return false;
+		}
 	}
 
 	/**
@@ -324,10 +337,12 @@ class we_app_Installer{
 		} else{
 			$this->_files = simplexml_load_file($filename);
 		}
-		if(!$this->_preUninstall())
+		if(!$this->_preUninstall()){
 			return false;
-		if(!$this->_executeHook("preUninstall"))
+		}
+		if(!$this->_executeHook("preUninstall")){
 			return false;
+		}
 
 		// beginn common installation process:
 		/*
@@ -339,17 +354,16 @@ class we_app_Installer{
 		 * - remove entry from toc.xml
 		 */
 		//if(!$this->_executeQueries("uninstall")) return false;
-		if(!$this->_uninstallFiles())
+		if(!$this->_uninstallFiles()){
 			return false;
+		}
 
-		if(!$this->_postUninstall())
+		if(!$this->_postUninstall()){
 			return false;
-		if(!$this->_executeHook("postUninstall"))
+		}
+		if(!$this->_executeHook("postUninstall")||!$this->_removeAppConfig()||!we_app_Common::rebuildAppTOC($this->_appname)){
 			return false;
-		if(!$this->_removeAppConfig())
-			return false;
-		if(!we_app_Common::rebuildAppTOC($this->_appname))
-			return false;
+		}
 	}
 
 	protected function _executeHook($hook = ""){

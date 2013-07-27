@@ -197,10 +197,11 @@ class weXMLExIm{
 	}
 
 	function resetContenID(&$object){
-		if(isset($object->elements) && is_array($object->elements))
+		if(isset($object->elements) && is_array($object->elements)){
 			foreach($object->elements as $ek => $ev){
 				$object->elements[$ek]["id"] = 0;
 			}
+		}
 	}
 
 	function prepareExport($ids){
@@ -271,7 +272,7 @@ class weXMLExIm{
 					if($with_dirs){
 						$tmp[] = $v;
 					}
-				} else{
+				} else {
 					$tmp[] = $v;
 				}
 			}
@@ -285,7 +286,7 @@ class weXMLExIm{
 
 	function getQueryParents($path){
 		$out = array();
-		while($path != '/' && $path) {
+		while($path != '/' && $path){
 			$out [] = 'Path="' . $path . '"';
 			$path = dirname($path);
 		}
@@ -300,7 +301,7 @@ class weXMLExIm{
 			$wsPathArray = id_to_path($ws, $table, $db, false, true);
 			foreach($wsPathArray as $path){
 				$wsQuery[] = " Path LIKE '" . $db->escape($path) . "/%' OR " . weXMLExIm::getQueryParents($path);
-				while($path != '/' && $path) {
+				while($path != '/' && $path){
 					$parentpaths[] = $path;
 					$path = dirname($path);
 				}
@@ -324,7 +325,7 @@ class weXMLExIm{
 				$selTempl = $this->getIDs($selTempl, TEMPLATES_TABLE, false);
 				$selObjs = defined("OBJECT_FILES_TABLE") ? $this->getIDs($selObjs, OBJECT_FILES_TABLE, false) : '';
 				$selClasses = defined("OBJECT_FILES_TABLE") ? $this->getIDs($selClasses, OBJECT_TABLE, false) : '';
-			} else{
+			} else {
 				switch($art){
 					case "docs":
 						$selDocs = $this->getIDs($selDocs, FILE_TABLE);
@@ -342,7 +343,7 @@ class weXMLExIm{
 				if($dir != 0){
 					$workspace = id_to_path($dir, FILE_TABLE, $db);
 					$ws_where = ' AND (' . FILE_TABLE . ".Path LIKE '" . $db->escape($workspace) . "/%' OR " . FILE_TABLE . ".Path='" . $db->escape($workspace) . "') ";
-				} else{
+				} else {
 					$ws_where = '';
 				}
 
@@ -378,7 +379,7 @@ class weXMLExIm{
 
 			if($object->ClassName == 'we_docTypes'){
 				$ret = $object->we_save_exim();
-			} else{
+			} else {
 				$GLOBALS['we_doc'] = $object;
 				if(in_array('we_save', get_class_methods(get_class($object)))){
 					if(!$object->we_save()){

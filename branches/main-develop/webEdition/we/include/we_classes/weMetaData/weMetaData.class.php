@@ -266,8 +266,9 @@ class weMetaData{
 	 * @return bool returns false if no or invalid datatype specified
 	 */
 	protected function _getInstance($value = ''){
-		if(!$this->_valid)
+		if(!$this->_valid){
 			return false;
+		}
 		if(is_readable(WE_INCLUDES_PATH . 'we_classes/weMetaData/classes/' . $value . '.class.php')){
 			$className = 'weMetaData_' . $value;
 			$this->_instance[$value] = new $className($this->filetype);

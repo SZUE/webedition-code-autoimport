@@ -67,7 +67,7 @@ class we_html_select extends we_baseCollection{
 	function addOption($value, $text, $attribs = array()){
 		if(empty($attribs)){
 			$this->childs[] = new we_baseElement("option", true, array("value" => $value), $text);
-		} else{
+		} else {
 			$attribs["value"] = $value;
 			$this->childs[] = new we_baseElement("option", true, $attribs, $text);
 		}
@@ -102,8 +102,9 @@ class we_html_select extends we_baseCollection{
 				break;
 			}
 		}
-		if(isset($cid))
+		if(isset($cid)){
 			$this->delChild($cid);
+		}
 	}
 
 	/**
@@ -134,7 +135,7 @@ class we_html_select extends we_baseCollection{
 
 		if($over){
 			$this->childs[$optid] = $new_opt;
-		} else{
+		} else {
 			if($optid == 0){
 				$optid = -1;
 			}
@@ -143,7 +144,7 @@ class we_html_select extends we_baseCollection{
 				$array_pre[] = $new_opt;
 				$array_post = array_slice($this->childs, ($optid + 1));
 				$this->childs = array_merge($array_pre, $array_post);
-			} else{
+			} else {
 				$this->childs[] = $new_opt;
 			}
 		}
@@ -162,8 +163,9 @@ class we_html_select extends we_baseCollection{
 
 		$opt = & $this->getChild($optid);
 		$opt->setAttributes($attribs);
-		if($content != null)
+		if($content != null){
 			$opt->setContent($content);
+		}
 	}
 
 	/**

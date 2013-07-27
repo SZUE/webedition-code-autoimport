@@ -182,8 +182,9 @@ class weXMLImport extends weXMLExIm{
 					}
 					//fix Path ends
 					// set OldPath
-					if(isset($object->OldPath))
+					if(isset($object->OldPath)){
 						$object->OldPath = $object->Path;
+					}
 
 					// assign ParentID and ParentPath based on Path
 					if(isset($object->Table)){
@@ -201,9 +202,9 @@ class weXMLImport extends weXMLExIm{
 							}
 						}
 						$object->ParentID = makePath(dirname($object->Path), $object->Table, $pathids, $owner);
-						if(isset($object->ParentPath))
+						if(isset($object->ParentPath)){
 							$object->ParentPath = id_to_path($object->ParentID, $object->Table);
-
+						}
 						// insert new created folders in ref table
 						foreach($pathids as $pid){
 
@@ -302,8 +303,9 @@ class weXMLImport extends weXMLExIm{
 			$newname = ($object->ClassName == "we_docTypes" || $object->ClassName == "weNavigationRule" || $object->ClassName == "we_thumbnailEx" ?
 					$object->$prop : basename($object->$prop));
 
-			if($newid)
+			if($newid){
 				$newname = $c . "_" . $newname;
+			}
 			switch($object->ClassName){
 				case "we_docTypes":
 					$newid = f("SELECT ID FROM " . DOC_TYPES_TABLE . " WHERE DocType='" . escape_sql_query($newname) . "'", "ID", new DB_WE());
@@ -349,10 +351,12 @@ class weXMLImport extends weXMLExIm{
 				$object->Path = clearPath(dirname($object->Path) . '/' . $new_name);
 			}
 		}
-		if(isset($object->Text))
+		if(isset($object->Text)){
 			$object->Text = $new_name;
-		if(isset($object->Filename))
+		}
+		if(isset($object->Filename)){
 			$object->Filename = str_replace($object->Extension, "", $new_name);
+		}
 	}
 
 	function importNodeSet($node_id){
@@ -424,8 +428,9 @@ class weXMLImport extends weXMLExIm{
 			foreach($node_data as $k => $v){
 				$v = weContentProvider::getDecodedData($node_coding[$k], $v);
 
-				if($v != $object->$k)
+				if($v != $object->$k){
 					$object->$k = $v;
+				}
 			}
 		}
 
@@ -479,16 +484,18 @@ class weXMLImport extends weXMLExIm{
 			$userid = $object->CreatorID;
 			if($this->options['handle_owners']){
 				$userid = $this->RefTable->getNewOwnerID($userid);
-				if($userid == 0 && $this->options['owners_overwrite'] && $this->options['owners_overwrite_id'])
+				if($userid == 0 && $this->options['owners_overwrite'] && $this->options['owners_overwrite_id']){
 					$userid = $this->options['owners_overwrite_id'];
+				}
 			} else if($this->options['owners_overwrite'] && $this->options['owners_overwrite_id']){
 				$userid = $this->options['owners_overwrite_id'];
 			} else {
 				$userid = 0;
 			}
 			$object->CreatorID = $userid;
-			if(isset($object->ModifierID))
+			if(isset($object->ModifierID)){
 				$object->ModifierID = $userid;
+			}
 		}else {
 			if(isset($object->CreatorID))
 				$object->CreatorID = 0;

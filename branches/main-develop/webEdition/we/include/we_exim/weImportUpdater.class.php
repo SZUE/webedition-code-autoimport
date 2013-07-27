@@ -38,10 +38,12 @@ class weImportUpdater extends weXMLExIm{
 		if($this->debug){
 			debug("Updating object\n");
 			debug("Id:" . $object->ID . "\n");
-			if(isset($object->Path))
+			if(isset($object->Path)){
 				debug("Path:" . $object->Path . "\n");
-			if(isset($object->Table))
+			}
+			if(isset($object->Table)){
 				debug("Table:" . $object->Table . "\n");
+			}
 		}
 
 		$this->Patterns = new weSearchPatterns();

@@ -25,7 +25,7 @@
 /* the parent class of storagable webEdition classes */
 
 
-class weModuleView {
+class weModuleView{
 
 	var $db;
 	var $frameset;
@@ -77,6 +77,7 @@ class weModuleView {
 	}
 
 	function getJSTreeHeader(){
+
 	}
 
 	function getJSSubmitFunction($def_target = "edbody", $def_method = "post"){
@@ -175,10 +176,9 @@ attribs["tooltip"]="";' .
 			}
 		}
 
-		if(isset($_REQUEST['page']))
-			if(isset($_REQUEST['page'])){
-				$this->page = $_REQUEST['page'];
-			}
+		if(isset($_REQUEST['page']) && isset($_REQUEST['page'])){
+			$this->page = $_REQUEST['page'];
+		}
 	}
 
 	function new_array_splice(&$a, $start, $len = 1){

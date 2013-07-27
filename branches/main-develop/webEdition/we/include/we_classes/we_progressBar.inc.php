@@ -110,9 +110,7 @@ class we_progressBar{
 	}
 
 	function setProgress($progress = 0){
-		if($this->progress > 100)
-			$this->progress = 100;
-		$this->progress = $progress;
+		$this->progress = ($this->progress > 100 ? 100 : $progress);
 	}
 
 	function setName($name){
@@ -129,10 +127,12 @@ class we_progressBar{
 	}
 
 	function setProgresImages($image = "", $image_bg = ""){
-		if($image != "")
+		if($image != ""){
 			$this->progress_image = $image;
-		if($image_bg != "")
+		}
+		if($image_bg != ""){
 			$this->progress_image_bg = $image_bg;
+		}
 	}
 
 	function setCallback($code, $timeout){
@@ -179,8 +179,9 @@ class we_progressBar{
 		$bottom = "";
 		$temp = "";
 
-		if($this->showProgressText)
+		if($this->showProgressText){
 			$this->addText('<div id="progress_text' . $this->name . '">' . $this->progress . "%</div>", $this->progressTextPlace);
+		}
 
 		foreach($this->texts as $text){
 			switch($text["place"]){

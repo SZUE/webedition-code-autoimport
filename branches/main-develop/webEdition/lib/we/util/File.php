@@ -191,10 +191,12 @@ abstract class we_util_File{
 
 	public static function compress($file, $compression = "gzip", $destination = "", $remove = true, $writemode = "wb"){
 
-		if(!self::hasCompression($compression))
+		if(!self::hasCompression($compression)){
 			return false;
-		if($destination == "")
+		}
+		if($destination == ""){
 			$destination = $file;
+		}
 		$prefix = weFile::getComPrefix($compression);
 		$open = $prefix . "open";
 		$write = $prefix . "write";
@@ -225,8 +227,9 @@ abstract class we_util_File{
 		} else{
 			return false;
 		}
-		if($remove)
+		if($remove){
 			@unlink($file);
+		}
 		return $zfile;
 	}
 
@@ -254,8 +257,9 @@ abstract class we_util_File{
 		} else{
 			return false;
 		}
-		if($remove)
+		if($remove){
 			@unlink($gzfile);
+		}
 		return $file;
 	}
 
@@ -438,8 +442,9 @@ abstract class we_util_File{
 	}
 
 	public static function deleteLocalFolder($filename, $delAll = false){
-		if(!file_exists($filename))
+		if(!file_exists($filename)){
 			return false;
+		}
 		if($delAll){
 			$foo = (substr($filename, -1) == "/") ? $filename : ($filename . "/");
 			$d = dir($filename);

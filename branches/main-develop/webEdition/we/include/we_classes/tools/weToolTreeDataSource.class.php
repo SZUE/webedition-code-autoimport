@@ -124,8 +124,9 @@ class weToolTreeDataSource{
 			$fileds = array();
 
 			foreach($db->Record as $k => $v){
-				if(!is_numeric($k))
+				if(!is_numeric($k)){
 					$fileds[strtolower($k)] = $v;
+				}
 			}
 
 			$items[] = array_merge($fileds, $typ);

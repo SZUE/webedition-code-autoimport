@@ -58,9 +58,9 @@ class we_util_Sys_Php{
 	 */
 	public static function versionCompare($version = "", $operator = ""){
 		$currentVersion = self::version();
-		if($currentVersion === false || empty($version))
-			return false;
-		return parent::_versionCompare($version, $currentVersion, $operator);
+		return ($currentVersion === false || empty($version) ?
+				false :
+				parent::_versionCompare($version, $currentVersion, $operator));
 	}
 
 	/**
@@ -80,8 +80,9 @@ class we_util_Sys_Php{
 	 * 			returns (bool)false if value is "0", "Off" or "false"
 	 */
 	public static function ini($var = ""){
-		if(empty($var))
+		if(empty($var)){
 			return false;
+		}
 		$_value = ini_get($var);
 		switch($_value){
 			case "0":

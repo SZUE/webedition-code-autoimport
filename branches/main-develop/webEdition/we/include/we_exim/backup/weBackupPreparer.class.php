@@ -484,8 +484,9 @@ abstract class weBackupPreparer{
 				if($fp){
 					do{
 						$data = fread($fs, 8192);
-						if(strlen($data) == 0)
+						if(strlen($data) == 0){
 							break;
+						}
 						fwrite($fp, $data);
 					} while(true);
 					fclose($fp);

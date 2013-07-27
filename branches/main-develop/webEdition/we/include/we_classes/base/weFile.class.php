@@ -257,12 +257,9 @@ abstract class weFile{
 
 	static function mkpath($path){
 		$path = str_replace('\\', '/', $path);
-		if(self::hasURL($path))
-			return false;
-		if($path != ''){
-			return we_util_File::createLocalFolderByPath($path);
-		}
-		return false;
+		return (self::hasURL($path) ?
+				false :
+				($path != '' ? we_util_File::createLocalFolderByPath($path) : false));
 	}
 
 	static function hasGzip(){
@@ -383,14 +380,16 @@ abstract class weFile{
 		$gzfp = @gzopen($gzfile, 'rb');
 		if($gzfp){
 			$file = str_replace('.gz', '', $gzfile);
-			if($file == $gzfile)
+			if($file == $gzfile){
 				$file = $gzfile . 'xml';
+			}
 			$fp = @fopen($file, 'wb');
 			if($fp){
 				do{
 					$data = gzread($gzfp, 8192);
-					if(strlen($data) == 0)
+					if(strlen($data) == 0){
 						break;
+					}
 					fwrite($fp, $data);
 				} while(true);
 				fclose($fp);

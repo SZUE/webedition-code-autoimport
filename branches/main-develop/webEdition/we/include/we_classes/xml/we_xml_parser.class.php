@@ -340,9 +340,8 @@ class we_xml_parser{
 	 * @return     TRUE if the document node has child nodes, FALSE if not
 	 */
 	function hasChildNodes($absoluteXPath){
-		if(!isset($this->nodes[$absoluteXPath]['children']))
-			return FALSE;
-		return (!empty($this->nodes[$absoluteXPath]['children']));
+		return (!isset($this->nodes[$absoluteXPath]['children']) ?
+				false : (!empty($this->nodes[$absoluteXPath]['children'])));
 	}
 
 	/**
@@ -353,9 +352,7 @@ class we_xml_parser{
 	 * @see        parseXML()
 	 */
 	function hasAttributes($absoluteXPath){
-		if(!isset($this->nodes[$absoluteXPath]['attributes']))
-			return FALSE;
-		return (!empty($this->nodes[$absoluteXPath]['attributes']));
+		return (!isset($this->nodes[$absoluteXPath]['attributes']) ? false : (!empty($this->nodes[$absoluteXPath]['attributes'])));
 	}
 
 	/**
@@ -377,8 +374,9 @@ class we_xml_parser{
 		$path = $context . '/' . $nodeName;
 
 		// Set the position and the relative context.
-		if(!isset($this->nodeIds[$path]))
+		if(!isset($this->nodeIds[$path])){
 			$this->nodeIds[$path] = 0;
+		}
 		$position = ++$this->nodeIds[$path];
 		$relative = $nodeName . '[' . $position . ']';
 
@@ -390,8 +388,9 @@ class we_xml_parser{
 		$this->nodes[$newPath]['context-position'] = $position;
 
 		// Set the position for the following and preceding axis.
-		if(!isset($this->nodes[$context]['document-position']))
+		if(!isset($this->nodes[$context]['document-position'])){
 			$this->nodes[$context]['document-position'] = 0;
+		}
 
 		$this->nodes[$newPath]['document-position'] =
 			$this->nodes[$context]['document-position'] + 1;
@@ -403,8 +402,9 @@ class we_xml_parser{
 		$this->nodes[$newPath]['parent'] = $context;
 
 		// Add this element to the element count array.
-		if(!isset($this->nodes[$context]['children'][$nodeName]))
+		if(!isset($this->nodes[$context]['children'][$nodeName])){
 			$this->nodes[$context]['children'][$nodeName] = 0;
+		}
 
 		if(!$this->nodes[$context]['children'][$nodeName]){
 			// Set the default name.
@@ -524,9 +524,7 @@ class we_xml_parser{
 	 * @return     TRUE if CDATA has a CDATA section, FALSE if not
 	 */
 	function hasCdataSection($absoluteXPath){
-		if(!isset($this->nodes[$absoluteXPath]))
-			return FALSE;
-		return ($this->nodes[$absoluteXPath]['cdata-section'] > 0);
+		return (!isset($this->nodes[$absoluteXPath]) ? false : ($this->nodes[$absoluteXPath]['cdata-section'] > 0));
 	}
 
 	/**
@@ -722,8 +720,9 @@ class we_xml_parser{
 			$steps = $this->splitSteps($xPath);
 
 			// Removes the first element if it is empty.
-			if(empty($steps[0]))
+			if(empty($steps[0])){
 				array_shift($steps);
+			}
 
 			// Start to evaluate the steps.
 			$nodes = $this->evaluateStep($context, $steps);
@@ -1510,8 +1509,9 @@ class we_xml_parser{
 
 		// Get a list of all children.
 
-		if(isset($this->nodes[$contextNode]['children']))
+		if(isset($this->nodes[$contextNode]['children'])){
 			$children = $this->nodes[$contextNode]['children'];
+		}
 
 		// Check if there are children.
 		if(!empty($children)){

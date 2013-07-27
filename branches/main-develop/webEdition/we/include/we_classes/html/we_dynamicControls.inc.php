@@ -517,8 +517,9 @@ class we_dynamicControls{
 				// Go through all items of the group
 				foreach($multiboxes[$_groups_key] as $i => $c){
 
-					if(!isset($c["headline"]))
+					if(!isset($c["headline"])){
 						$c["headline"] = '';
+					}
 					$_contentTable[$main_titles[$_groups_key]] .= '
 								<tr>
 									<td></td>
