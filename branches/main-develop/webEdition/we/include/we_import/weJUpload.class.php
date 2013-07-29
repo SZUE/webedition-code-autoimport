@@ -92,8 +92,8 @@ class weJUpload{
 		return we_html_element::htmlApplet(array(
 				'name' => "JUpload",
 				'code' => "wjhk.jupload2.JUploadApplet",
-				'archive' => getServerUrl(true) . WEBEDITION_DIR . 'jupload/jupload.jar',
-				'codebase' => getServerUrl(true) . WEBEDITION_DIR . 'jupload/jupload.jar',
+				'archive' => 'jupload.jar',
+				'codebase' => getServerUrl(true) . WEBEDITION_DIR . 'jupload/',
 				'width' => $w,
 				'height' => $h,
 				), $_params . $content);
