@@ -596,7 +596,7 @@ class weXMLImport extends weXMLExIm{
 
 		if($fh){
 			while(!@feof($fh)){
-				@set_time_limit(240);
+				//@set_time_limit(240);
 				$line = "";
 				$findline = false;
 
