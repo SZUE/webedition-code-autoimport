@@ -156,7 +156,7 @@ abstract class we_rebuild{
 				} else{
 					$ret=$GLOBALS['we_doc']->we_rewrite();
 					if(!$ret){
-						t_e('err write');
+						t_e('error in writing document', $GLOBALS['we_doc']->Path);
 					}
 					$GLOBALS['we_doc']->we_republish($data['mt']);
 				}

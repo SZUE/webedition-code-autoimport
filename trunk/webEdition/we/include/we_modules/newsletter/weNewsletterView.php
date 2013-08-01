@@ -2409,8 +2409,6 @@ class weNewsletterView{
 			}
 		}
 
-		$atts = array();
-
 		$atts = $this->getAttachments($group);
 		//$_clean = $this->getCleanMail($this->newsletter->Reply);
 		$phpmail = new we_util_Mailer($this->newsletter->Test, $this->newsletter->Subject, $this->newsletter->Sender, $this->newsletter->Reply, $this->newsletter->isEmbedImages);
