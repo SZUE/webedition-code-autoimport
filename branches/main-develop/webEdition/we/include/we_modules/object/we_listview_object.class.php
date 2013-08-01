@@ -28,7 +28,7 @@
  * @desc    class for tag <we:listview type="object">
  *
  */
-class we_listview_object extends listviewBase{
+class we_listview_object extends listviewBase {
 
 	var $classID = ""; /* ID of a class */
 	var $triggerID = 0; /* ID of a document which to use for displaying thr detail page */
@@ -140,7 +140,7 @@ class we_listview_object extends listviewBase{
 
 			$_wsql = ' ' . $_obxTable . '.OF_WebUserID IN(' . $this->customers . ') ';
 			$this->DB_WE->query('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID IN(' . $this->customers . ')');
-			while($this->DB_WE->next_record()) {
+			while($this->DB_WE->next_record()){
 				$this->customerArray['cid_' . $this->DB_WE->f('ID')] = $this->DB_WE->getRecord();
 			}
 
@@ -153,7 +153,7 @@ class we_listview_object extends listviewBase{
 				$this->DB_WE->query($we_predefinedSQL);
 				$this->anz_all = $this->DB_WE->num_rows();
 				$q = $we_predefinedSQL . (($this->maxItemsPerPage > 0) ? (' LIMIT ' . $this->start . ',' . $this->maxItemsPerPage) : '');
-			} else{
+			} else {
 				$_idTail = $this->getIdQuery($_obxTable . '.OF_ID');
 
 				if($this->workspaceID != ''){
@@ -165,13 +165,13 @@ class we_listview_object extends listviewBase{
 						$cond[] = $_obxTable . '.OF_Path="' . $workspace . '"';
 					}
 					$ws_tail = empty($cond) ? '' : ' AND (' . implode(' OR ', $cond) . ') ';
-				} else{
+				} else {
 					$ws_tail = '';
 				}
 				$this->DB_WE->query('SELECT ' . $_obxTable . '.ID AS ID ' . $calendar_select . ' FROM ' . $sqlParts["tables"] . ' WHERE ' . ($this->searchable ? " " . $_obxTable . ".OF_IsSearchable=1 AND" : "") . " " . $pid_tail . " AND " . $_obxTable . ".OF_ID != 0 " . $where_lang . ($join ? " AND ($join) " : "") . $cat_tail . " " . ($sqlParts["publ_cond"] ? (" AND " . $sqlParts["publ_cond"]) : "") . " " . ($sqlParts["cond"] ? (" AND (" . $sqlParts["cond"] . ") ") : "") . $calendar_where . $ws_tail . $weDocumentCustomerFilter_tail . $webUserID_tail . $_idTail . $sqlParts['groupBy']);
 				$this->anz_all = $this->DB_WE->num_rows();
 				if($calendar != ""){
-					while($this->DB_WE->next_record()) {
+					while($this->DB_WE->next_record()){
 						$this->IDs[] = $this->DB_WE->f('ID');
 						if($calendar != ''){
 							$this->calendar_struct["storage"][$this->DB_WE->f("ID")] = (int) $this->DB_WE->f("Calendar");
@@ -186,7 +186,7 @@ class we_listview_object extends listviewBase{
 
 			if($this->customers === '*'){
 				$_idListArray = array();
-				while($this->DB_WE->next_record()) {
+				while($this->DB_WE->next_record()){
 					if(intval($this->DB_WE->f("OF_WebUserID")) > 0){
 						$_idListArray[] = $this->DB_WE->f("OF_WebUserID");
 					}
@@ -195,7 +195,7 @@ class we_listview_object extends listviewBase{
 					$_idlist = implode(',', array_unique($_idListArray));
 					$db = new DB_WE();
 					$db->query('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID IN(' . $_idlist . ')');
-					while($db->next_record()) {
+					while($db->next_record()){
 						$this->customerArray['cid_' . $db->f('ID')] = $db->Record;
 					}
 				}
@@ -203,7 +203,7 @@ class we_listview_object extends listviewBase{
 
 				$this->DB_WE->seek(0);
 			}
-		} else{
+		} else {
 			$this->anz_all = 0;
 			$this->anz = 0;
 		}
@@ -246,7 +246,7 @@ class we_listview_object extends listviewBase{
 							$joinWhere[] = $foo;
 						}
 					}
-				} else{
+				} else {
 					if(!isset($matrix[$name])){
 						$matrix[$name]["type"] = $type;
 						$matrix[$name]["table"] = $table;
@@ -362,83 +362,83 @@ class we_listview_object extends listviewBase{
 
 		$publ_cond = array();
 		foreach($tb as $t){
-			$publ_cond [] = "( $t.OF_Published > 0 OR $t.OF_ID = 0)";
+			$publ_cond [] = '(' . $t . '.OF_Published > 0 OR ' . $t . '.OF_ID = 0)';
 		}
 
 		return array(
-			"fields" => rtrim($f, ',') . ($order == ' ORDER BY RANDOM ' ? ', RAND() AS RANDOM ' : ''),
-			"order" => $order,
-			"tables" => makeCSVFromArray($tb),
-			"groupBy" => (count($tb) > 1) ? ' GROUP BY ' . OBJECT_X_TABLE . $classID . ".ID " : '',
-			"publ_cond" => empty($publ_cond) ? '' : ' ( ' . implode(' AND ', $publ_cond) . ' ) ',
-			"cond" => trim($cond)
+			'fields' => rtrim($f, ',') . ($order == ' ORDER BY RANDOM ' ? ', RAND() AS RANDOM ' : ''),
+			'order' => $order,
+			'tables' => makeCSVFromArray($tb),
+			'groupBy' => (count($tb) > 1) ? ' GROUP BY ' . OBJECT_X_TABLE . $classID . '.ID ' : '',
+			'publ_cond' => empty($publ_cond) ? '' : ' ( ' . implode(' AND ', $publ_cond) . ' ) ',
+			'cond' => trim($cond)
 		);
 	}
 
 	function next_record(){
 		$count = $this->count;
 		$fetch = false;
-		if($this->calendar_struct["calendar"] != ""){
+		if($this->calendar_struct['calendar'] != ''){
 			if($this->count < $this->anz){
 				listviewBase::next_record();
-				$count = $this->calendar_struct["count"];
-				$fetch = $this->calendar_struct["forceFetch"];
+				$count = $this->calendar_struct['count'];
+				$fetch = $this->calendar_struct['forceFetch'];
 				$this->DB_WE->Record = array();
-			} else{
+			} else {
 				return false;
 			}
 		}
 
-		if($this->calendar_struct["calendar"] == "" || $fetch){
+		if($this->calendar_struct['calendar'] == '' || $fetch){
 			$ret = $this->DB_WE->next_record();
 
 			if($ret){
-				$paramName = $this->docID ? "we_oid" : "we_objectID";
-				$this->DB_WE->Record["we_wedoc_Path"] = $this->Path . "?$paramName=" . $this->DB_WE->Record["OF_ID"];
-				$this->DB_WE->Record["we_wedoc_WebUserID"] = isset($this->DB_WE->Record["OF_WebUserID"]) ? $this->DB_WE->Record["OF_WebUserID"] : 0; // needed for ifRegisteredUserCanChange tag
-				$this->DB_WE->Record["we_WE_CUSTOMER_ID"] = $this->DB_WE->Record["we_wedoc_WebUserID"];
+				$paramName = $this->docID ? 'we_oid' : 'we_objectID';
+				$this->DB_WE->Record['we_wedoc_Path'] = $this->Path . '?' . $paramName . '=' . $this->DB_WE->Record['OF_ID'];
+				$this->DB_WE->Record['we_wedoc_WebUserID'] = isset($this->DB_WE->Record['OF_WebUserID']) ? $this->DB_WE->Record['OF_WebUserID'] : 0; // needed for ifRegisteredUserCanChange tag
+				$this->DB_WE->Record['we_WE_CUSTOMER_ID'] = $this->DB_WE->Record['we_wedoc_WebUserID'];
 				$path_parts = pathinfo($this->Path);
 				if($this->objectseourls && $this->DB_WE->Record['OF_Url'] != '' && show_SeoLinks()){
 					if(!$this->triggerID && $this->DB_WE->Record['OF_TriggerID'] != 0){
 						$path_parts = pathinfo(id_to_path($this->DB_WE->f('OF_TriggerID')));
 					}
-					$this->DB_WE->Record["we_WE_PATH"] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' .
+					$this->DB_WE->Record['we_WE_PATH'] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' .
 						(show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES != '' && $this->hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))) ?
 							'' :
 							$path_parts['filename'] . '/' ) .
 						$this->DB_WE->Record['OF_Url'];
-				} else{
+				} else {
 					if(show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES != '' && $this->hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
-						$this->DB_WE->Record["we_WE_PATH"] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . "?$paramName=" . $this->DB_WE->Record["OF_ID"];
-					} else{
-						$this->DB_WE->Record["we_WE_PATH"] = $this->Path . "?$paramName=" . $this->DB_WE->Record["OF_ID"];
+						$this->DB_WE->Record['we_WE_PATH'] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . '?' . $paramName . '=' . $this->DB_WE->Record['OF_ID'];
+					} else {
+						$this->DB_WE->Record['we_WE_PATH'] = $this->Path . '?'.$paramName.'=' . $this->DB_WE->Record['OF_ID'];
 					}
 				}
-				$this->DB_WE->Record["we_WE_TRIGGERID"] = ($this->triggerID ? $this->triggerID : intval($this->DB_WE->f("OF_TriggerID")));
-				$this->DB_WE->Record["we_WE_URL"] = $this->DB_WE->f("OF_Url");
-				$this->DB_WE->Record["we_WE_TEXT"] = $this->DB_WE->f("OF_Text");
-				$this->DB_WE->Record["we_WE_ID"] = $this->DB_WE->f("OF_ID");
-				$this->DB_WE->Record["we_wedoc_Category"] = $this->DB_WE->f("OF_Category");
-				$this->DB_WE->Record["we_WE_SHOPVARIANTS"] = 0;
-				if(isset($this->DB_WE->Record["we_weInternVariantElement"])){
-					$ShopVariants = @unserialize($this->DB_WE->Record["we_weInternVariantElement"]);
+				$this->DB_WE->Record['we_WE_TRIGGERID'] = ($this->triggerID ? $this->triggerID : intval($this->DB_WE->f('OF_TriggerID')));
+				$this->DB_WE->Record['we_WE_URL'] = $this->DB_WE->f('OF_Url');
+				$this->DB_WE->Record['we_WE_TEXT'] = $this->DB_WE->f('OF_Text');
+				$this->DB_WE->Record['we_WE_ID'] = $this->DB_WE->f('OF_ID');
+				$this->DB_WE->Record['we_wedoc_Category'] = $this->DB_WE->f('OF_Category');
+				$this->DB_WE->Record['we_WE_SHOPVARIANTS'] = 0;
+				if(isset($this->DB_WE->Record['we_weInternVariantElement'])){
+					$ShopVariants = @unserialize($this->DB_WE->Record['we_weInternVariantElement']);
 					if(is_array($ShopVariants) && count($ShopVariants) > 0){
-						$this->DB_WE->Record["we_WE_SHOPVARIANTS"] = count($ShopVariants);
+						$this->DB_WE->Record['we_WE_SHOPVARIANTS'] = count($ShopVariants);
 					}
 				}
 				// for seeMode #5317
-				$this->DB_WE->Record["we_wedoc_lastPath"] = $this->LastDocPath . "?$paramName=" . $this->DB_WE->Record["OF_ID"];
-				if($this->customers && $this->DB_WE->Record["we_wedoc_WebUserID"]){
-					if(isset($this->customerArray["cid_" . $this->DB_WE->Record["we_wedoc_WebUserID"]])){
-						foreach($this->customerArray["cid_" . $this->DB_WE->Record["we_wedoc_WebUserID"]] as $key => $value){
-							$this->DB_WE->Record["we_WE_CUSTOMER_$key"] = $value;
+				$this->DB_WE->Record['we_wedoc_lastPath'] = $this->LastDocPath . '?'.$paramName.'=' . $this->DB_WE->Record['OF_ID'];
+				if($this->customers && $this->DB_WE->Record['we_wedoc_WebUserID']){
+					if(isset($this->customerArray['cid_' . $this->DB_WE->Record['we_wedoc_WebUserID']])){
+						foreach($this->customerArray['cid_' . $this->DB_WE->Record['we_wedoc_WebUserID']] as $key => $value){
+							$this->DB_WE->Record['we_WE_CUSTOMER_'.$key] = $value;
 						}
 					}
 				}
 
 				$this->count++;
 				return true;
-			} else{
+			} else {
 				$this->stop_next_row = $this->shouldPrintEndTR();
 				if($this->cols && ($this->count <= $this->maxItemsPerPage) && !$this->stop_next_row){
 					$this->DB_WE->Record = array(
