@@ -152,14 +152,6 @@ if(!defined('WE_ERROR_LOG')){
 
 we_error_handler(false);
 
-// knock out time limit if possible
-@set_time_limit(0);
-
-// set memory limit to an equitable value if possible
-if( intval(ini_get('memory_limit')) < 128){
-	@ini_set('memory_limit', '128M');
-}
-
 // knock out identifiation and permissions
 $_SESSION['perms'] = array('ADMINISTRATOR' => true);
 $_SESSION['user']['Username'] = 1;
@@ -249,7 +241,7 @@ $long_opts = array(
 // Convert the arguments to options - check for the first argument
 if(!empty($_SERVER['argv']) && realpath($_SERVER['argv'][0]) == __FILE__){
 	$options = Console_Getopt::getOpt($args, $short_opts, $long_opts);
-} else{
+} else {
 	$options = Console_Getopt::getOpt2($args, $short_opts, $long_opts);
 }
 
@@ -314,6 +306,8 @@ if(isset($options[1][0])){
 
 // include needed libraries
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+update_time_limit(0);
+update_mem_limit(128);
 
 $_REQUEST['backup_select'] = basename($_backup_filename);
 if($_backup_filename != $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . $_REQUEST['backup_select']){
@@ -324,7 +318,7 @@ if(weBackupPreparer::prepareImport() === true){
 	if($_REQUEST['verbose']){
 		print "\nImporting from " . $_backup_filename . "...\n";
 	}
-	while(($_SESSION['weS']['weBackupVars']['offset'] < $_SESSION['weS']['weBackupVars']['offset_end'])) {
+	while(($_SESSION['weS']['weBackupVars']['offset'] < $_SESSION['weS']['weBackupVars']['offset_end'])){
 		if($_REQUEST['verbose']){
 			print '-';
 		}
@@ -337,7 +331,7 @@ if(weBackupPreparer::prepareImport() === true){
 
 	$updater = new we_updater();
 	$updater->doUpdate();
-} else{
+} else {
 	print weBackupPreparer::getErrorMessage();
 }
 

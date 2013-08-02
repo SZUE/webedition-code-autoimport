@@ -41,7 +41,7 @@ class weXMLImport extends weXMLExIm{
 
 	function import($chunk_file){
 		$db = new DB_WE();
-		@set_time_limit(0);
+		update_time_limit(0);
 
 		$objects = array();
 
@@ -596,7 +596,6 @@ class weXMLImport extends weXMLExIm{
 
 		if($fh){
 			while(!@feof($fh)){
-				//@set_time_limit(240);
 				$line = "";
 				$findline = false;
 

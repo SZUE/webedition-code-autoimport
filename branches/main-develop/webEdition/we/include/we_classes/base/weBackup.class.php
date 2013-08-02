@@ -240,7 +240,6 @@ class weBackup extends we_backup{
 		if(!is_readable($chunk_file)){
 			return false;
 		}
-		@set_time_limit(240);
 
 		$xmlBrowser = new weXMLBrowser($chunk_file);
 		$xmlBrowser->mode = "backup";
@@ -404,7 +403,6 @@ class weBackup extends we_backup{
 	 * Description: This function saves the dump to the backup directory.
 	 */
 	function printDump2BackupDir(){
-		@set_time_limit(240);
 		$backupfilename = $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . $this->filename;
 		if($this->compress != "none" && $this->compress != ""){
 			$this->dumpfilename = weFile::compress($this->dumpfilename, $this->compress);

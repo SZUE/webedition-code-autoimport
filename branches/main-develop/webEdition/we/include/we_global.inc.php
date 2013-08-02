@@ -2029,3 +2029,17 @@ function implodeJS($js){
 	list($pre, $post) = explode(';', we_html_element::jsElement(';'));
 	return preg_replace('|' . preg_quote($post, '|') . '[\n\t ]*' . preg_quote($pre, '|') . '|', "\n", $js);
 }
+
+//FIXME: remove this function and all calls to it
+function update_time_limit($newLimit){
+	if($newLimit == 0 || intval(ini_get('memory_limit')) < $newLimit){
+		@set_time_limit($newLimit);
+	}
+}
+
+//FIXME: remove this function & all calls to it
+function update_mem_limit($newLimit){
+	if(intval(ini_get('memory_limit')) < $newLimit){
+		@ini_set('memory_limit', $newLimit . 'M');
+	}
+}

@@ -41,9 +41,6 @@ if(isset($_SERVER['HTTP_HOST']) && $_SERVER['SERVER_NAME'] != $_SERVER['HTTP_HOS
 }
 
 // Set PHP flags
-if( intval(ini_get('memory_limit')) < 32){
-	@ini_set('memory_limit', '32M');
-}
 @ini_set('allow_url_fopen', '1');
 @ini_set('file_uploads', '1');
 @ini_set('session.use_trans_sid', '0');
@@ -69,6 +66,7 @@ if(!defined('WE_ERROR_HANDLER_SET')){
 }
 
 require_once (WE_INCLUDES_PATH . 'we_global.inc.php');
+update_mem_limit(32);
 
 include_once (WE_INCLUDES_PATH . 'conf/we_conf_language.inc.php');
 

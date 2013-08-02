@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weBackupWizard{
+class weBackupWizard {
 
 	const BACKUP = 1;
 	const RECOVER = 2;
@@ -1029,7 +1029,7 @@ function startStep(){
 	}
 
 	function getHTMLBackupStep3(){
-		@set_time_limit(0);
+		update_time_limit(0);
 		if(isset($_GET["backupfile"])){
 			$_filename = urldecode($_GET["backupfile"]);
 
@@ -1343,21 +1343,15 @@ top.body.location="' . $this->frameset . '?pnt=body&step=2&ok=false&do_import_af
 							break;
 						default:
 							$we_backup_obj->writeFooter();
-							$ok = $we_backup_obj->printDump2BackupDir();
+							$we_backup_obj->printDump2BackupDir();
 							$temp_filename = $we_backup_obj->saveState($temp_filename);
-							if($ok){
-								print we_html_element::jsElement('
-if(top.busy.setProgressText) top.busy.setProgressText("current_description","' . g_l('backup', "[finished]") . '");
-if(top.busy.setProgress) top.busy.setProgress(100);
-top.body.location="' . $this->frameset . '?pnt=body&step=2&ok=true&do_import_after_backup=' . $do_import_after_backup . '&temp_filename=' . $temp_filename . '";
-									');
-							} else {
-								print we_html_element::jsElement('
+
+							print we_html_element::jsElement('
 if(top.busy.setProgressText) top.busy.setProgressText("current_description","' . g_l('backup', "[finished]") . '");
 if(top.busy.setProgress) top.busy.setProgress(100);
 top.body.location="' . $this->frameset . '?pnt=body&step=2&ok=false&do_import_after_backup=' . $do_import_after_backup . '&temp_filename=' . $temp_filename . '";
 									');
-							}
+
 							break;
 					}
 					unset($we_backup_obj);

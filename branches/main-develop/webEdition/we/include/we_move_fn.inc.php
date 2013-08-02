@@ -75,7 +75,7 @@ function checkMoveItem($targetDirectoryID, $id, $table, &$items2move){
 	$items2move[] = $text;
 
 	$DB_WE->query('SELECT Text,Path FROM ' . $DB_WE->escape($table) . ' WHERE ParentID=' . intval($targetDirectoryID));
-	while($DB_WE->next_record()) {
+	while($DB_WE->next_record()){
 		// check if there is a item with the same name in the target directory
 		if(in_array($DB_WE->f('Text'), $items2move)){
 			return -2;
@@ -106,62 +106,19 @@ function moveItem($targetDirectoryID, $id, $table, &$notMovedItems){
 		return false;
 	} elseif($targetDirectoryID){
 		$row = getHash('SELECT IsFolder,Path,ID FROM ' . $DB_WE->escape($table) . ' WHERE ID=' . intval($targetDirectoryID), $DB_WE);
-		if(empty($row)|| !$row["IsFolder"]){
+		if(empty($row) || !$row["IsFolder"]){
 			return false;
 		}
 		$newPath = $row['Path'];
 		$parentID = $row['ID'];
-	} else{
+	} else {
 		$newPath = "";
 		$parentID = 0;
 	}
 
-	@set_time_limit(30);
-
 	// move Templates
 	switch($table){
 		case TEMPLATES_TABLE:
-			/*
-			  // get information about the template which has to be moved
-			  $row = getHash("SELECT Text,Path,IsFolder,Icon FROM ".$table." WHERE ID=".intval($id),$DB_WE);
-			  $fileName = $row['Text'];
-			  $oldPath = $row['Path'];
-			  $isFolder = ($row["IsFolder"] == 1 ? true : false);
-			  $icon = $row['Icon'];
-			  $item = array(
-			  'ID'	=> $id,
-			  'Text'	=> $fileName,
-			  'Path'	=> $oldPath,
-			  'Icon'	=> $icon,
-			  );
-
-			  if(sizeof($row) == 0 || $isFolder) {
-			  array_push($notMovedItems, $item);
-			  return false;
-			  }
-
-			  // move template file
-			  if(!file_exists(TEMPLATES_PATH.$oldPath)) {
-			  array_push($notMovedItems, $item);
-			  return false;
-			  }
-
-			  if(!copy(TEMPLATES_PATH.$oldPath, TEMPLATES_PATH.$newPath."/".$fileName)) {
-			  array_push($notMovedItems, $item);
-			  return false;
-			  }
-
-			  if(!unlink(TEMPLATES_PATH.$oldPath)) {
-			  array_push($notMovedItems, $item);
-			  return false;
-			  }
-
-			  // update table
-			  $q = "UPDATE ".$table." SET ParentID=".$parentID.", Path='".$newPath."/".$fileName."' WHERE ID=".intval($id);
-			  $DB_WE->query($q);
-
-			  return true;
-			 */
 			// bugfix 0001643
 			$_template = new we_template();
 			$_template->initByID($id, $_template->Table);
@@ -187,7 +144,7 @@ function moveItem($targetDirectoryID, $id, $table, &$notMovedItems){
 			$isFolder = ($row["IsFolder"] == 1 ? true : false);
 			$icon = $row['Icon'];
 			$item = array('ID' => $id, 'Text' => $fileName, 'Path' => $oldPath, 'Icon' => $icon);
-			if(empty($row)|| $isFolder){
+			if(empty($row) || $isFolder){
 				$notMovedItems[] = $item;
 				return false;
 			}
@@ -197,8 +154,7 @@ function moveItem($targetDirectoryID, $id, $table, &$notMovedItems){
 				$notMovedItems[] = $item;
 				return false;
 			}
-			if(!copy(
-					$_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $oldPath, $_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $newPath . "/" . $fileName)){
+			if(!copy($_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $oldPath, $_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $newPath . '/' . $fileName)){
 				$notMovedItems[] = $item;
 				return false;
 			}
@@ -249,7 +205,7 @@ function moveItem($targetDirectoryID, $id, $table, &$notMovedItems){
 			return true;
 
 		// move Objects
-		case (defined("OBJECT_TABLE") ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
+		case (defined('OBJECT_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
 
 			// get information about the object which has to be moved
 			$row = getHash('SELECT TableID,Path,Text,IsFolder,Icon,ContentType FROM ' . $DB_WE->escape($table) . ' WHERE ID=' . intval($id), $DB_WE);

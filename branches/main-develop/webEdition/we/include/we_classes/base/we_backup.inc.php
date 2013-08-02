@@ -310,7 +310,6 @@ abstract class we_backup{
 	 * @return     bool
 	 */
 	function putFileInDB($file){
-		@set_time_limit(80);
 		$nl = "\n";
 		$rootdir = rtrim(str_replace("\\", "/", $_SERVER['DOCUMENT_ROOT']), '/');
 		$path = substr($file, strlen($rootdir), strlen($file) - strlen($rootdir));
@@ -350,7 +349,6 @@ abstract class we_backup{
 	 * @return     bool
 	 */
 	function putDirInDB($dir){
-		@set_time_limit(80);
 		$nl = "\n";
 		$rootdir = rtrim(str_replace("\\", "/", $_SERVER['DOCUMENT_ROOT']), '/');
 		$path = substr($dir, strlen($rootdir), strlen($dir) - strlen($rootdir));
@@ -677,7 +675,7 @@ abstract class we_backup{
 		if($fh){
 			while(!@feof($fh)){
 				print @fread($fh, 52428);
-				@set_time_limit(80);
+				update_time_limit(80);
 			}
 			@fclose($fh);
 		} else {
@@ -782,7 +780,7 @@ abstract class we_backup{
 
 			while($mydb->next_record(MYSQL_ASSOC)){
 				$line = $mydb->Record;
-				@set_time_limit(80);
+				update_time_limit(80);
 				if($line["IsFolder"]){
 					$dir = $_SERVER['DOCUMENT_ROOT'] . $line["Path"];
 					$sdir = str_replace("\\", "/", dirname($dir));
@@ -828,7 +826,7 @@ abstract class we_backup{
 		if($fh){
 
 			while(!@feof($fh)){
-				@set_time_limit(60);
+				update_time_limit(60);
 				$line = "";
 				$findline = false;
 
@@ -892,7 +890,7 @@ abstract class we_backup{
 
 		if($fh){
 			while(!@feof($fh)){
-				@set_time_limit(60);
+				update_time_limit(60);
 				$line = "";
 				$findline = false;
 

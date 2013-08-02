@@ -26,7 +26,7 @@
  *
  * @todo check if needed and if, then complete it and DON'T use old stuff like DB and other
  * */
-abstract class we_util_File{
+abstract class we_util_File {
 
 	public static function load($filename, $flags = "rb", $rsize = 8192){
 		return weFile::load($filename, $flags, $rsize);
@@ -97,12 +97,12 @@ abstract class we_util_File{
 		$marker_size = strlen($marker);
 
 		if($fh){
-			while(!@feof($fh)) {
-				@set_time_limit(60);
+			while(!@feof($fh)){
+				update_time_limit(60);
 				$line = "";
 				$findline = false;
 
-				while($findline == false && !@feof($fh)) {
+				while($findline == false && !@feof($fh)){
 					$line .= @fgets($fh, 4096);
 					if(substr($line, -1) == "\n"){
 						$findline = true;
@@ -119,13 +119,9 @@ abstract class we_util_File{
 				if($fh_temp){
 					$buff .= $line;
 
-					//print substr($buff,(0-($marker_size+1)))."<br>\n";
-
-
 					$write = ($marker_size ? ((substr($buff, (0 - ($marker_size + 1))) == $marker . "\n") || (substr($buff, (0 - ($marker_size + 2))) == $marker . "\r\n")) : true);
 
 					if($write){
-						//print "WRITE<br>\n";
 						$fsize += strlen($buff);
 						fwrite($fh_temp, $buff);
 						if(($split_size && $fsize > $split_size) || ($marker_size)){
@@ -135,11 +131,11 @@ abstract class we_util_File{
 						}
 						$buff = "";
 					}
-				} else{
+				} else {
 					return -1;
 				}
 			}
-		} else{
+		} else {
 			return -1;
 		}
 		if($fh_temp && $buff){
@@ -152,13 +148,10 @@ abstract class we_util_File{
 
 	public static function mkpath($path){
 		$path = str_replace('\\', '/', $path);
-		if(self::hasURL($path)){
+		if(empty($path) || self::hasURL($path)){
 			return false;
 		}
-		if($path != ''){
-			return self::createLocalFolderByPath($path);
-		}
-		return false;
+		return self::createLocalFolderByPath($path);
 	}
 
 	public static function hasGzip(){
@@ -219,12 +212,12 @@ abstract class we_util_File{
 					}
 				} while(true);
 				$close($gzfp);
-			} else{
+			} else {
 				fclose($fp);
 				return false;
 			}
 			fclose($fp);
-		} else{
+		} else {
 			return false;
 		}
 		if($remove){
@@ -234,13 +227,13 @@ abstract class we_util_File{
 	}
 
 	public static function decompress($gzfile, $remove = true){
-		$gzfp = @gzopen($gzfile, "rb");
+		$gzfp = @gzopen($gzfile, 'rb');
 		if($gzfp){
-			$file = str_replace(".gz", "", $gzfile);
+			$file = str_replace('.gz', '', $gzfile);
 			if($file == $gzfile){
-				$file = $gzfile . "xml";
+				$file = $gzfile . 'xml';
 			}
-			if(($fp = @fopen($file, "wb"))){
+			if(($fp = @fopen($file, 'wb'))){
 				do{
 					$data = gzread($gzfp, 8192);
 					if(strlen($data) == 0){
@@ -249,12 +242,12 @@ abstract class we_util_File{
 					fwrite($fp, $data);
 				} while(true);
 				fclose($fp);
-			} else{
+			} else {
 				gzclose($gzfp);
 				return false;
 			}
 			gzclose($gzfp);
-		} else{
+		} else {
 			return false;
 		}
 		if($remove){
@@ -296,21 +289,18 @@ abstract class we_util_File{
 
 		$parent = str_replace("\\", "/", dirname($completeDirPath));
 
-		while(!self::checkAndMakeFolder($parent)) {
+		while(!self::checkAndMakeFolder($parent)){
 			$cf[] = $parent;
 			$parent = str_replace("\\", "/", dirname($parent));
 		}
 
 		for($i = (count($cf) - 1); $i >= 0; $i--){
-			$oldumask = @umask(0000);
-
 			$mod = octdec(intval(WE_NEW_FOLDER_MOD));
 
 			if(!@mkdir($cf[$i], $mod)){
 				t_e('Warning', "Could not create local Folder at File.php/createLocalFolderByPath(): '" . $cf[$i] . "'");
 				$returnValue = false;
 			}
-			@umask($oldumask);
 		}
 
 		return $returnValue;
@@ -330,62 +320,42 @@ abstract class we_util_File{
 			return true;
 		}
 
-		// if instead of the directory a file exists, we delete the file and create the directory
+// if instead of the directory a file exists, we delete the file and create the directory
 		if(file_exists($path) && (!is_dir($path))){
 			if(!we_util_File::deleteLocalFile($path)){
 				t_e('Warning', "Could not delete File '" . $path . "'");
 			}
 		}
 
-		$oldumask = @umask(0000);
-
 		$mod = octdec(intval(WE_NEW_FOLDER_MOD));
 
-		// check for directories: create it if we could no write into it:
+// check for directories: create it if we could no write into it:
 		if(!@mkdir($path, $mod, $recursive)){
-			@umask($oldumask);
 			t_e('warning', "Could not create local Folder at 'we_util_File/checkAndMakeFolder()': '" . $path . "'");
 			return false;
 		}
-		@umask($oldumask);
 		return true;
 	}
 
 	/**
 	 * checks permission to write in path $path and tries a chmod(0755)
 	 */
-	public static function checkWritePermissions($path, $mod = 0755, $nocreate = false){
+	public static function checkWritePermissions($path, $mod = 0755){
 		if(!is_file($path) && !is_dir($path)){
-			t_e('warning',"we_util_File/checkWritePermissions() - target " . $path . " does not exist");
+			t_e('warning', "target " . $path . " does not exist");
 			return false;
 		}
 		if(is_writable($path)){
 			return true;
 		}
-		$oldumask = @umask();
-		@umask(0755);
 		if(!@chmod($path, $mod)){
 			return false;
-		} else{
-			return (is_writable($path));
 		}
-		@umask($oldumask);
+		return (is_writable($path));
 	}
 
 	public static function insertIntoErrorLog($text){
 		t_e('warning', $text);
-	}
-
-	public static function getContentDirectFromDB($id, $name, $db = ""){
-		/*
-		  $db = we_io_DB::sharedAdapter();
-		  $query = $db->query("SELECT " . CONTENT_TABLE . ".Dat as Dat FROM " . LINK_TABLE . "," . CONTENT_TABLE . " WHERE " . LINK_TABLE . ".DID=? AND " . LINK_TABLE . ".CID=" . CONTENT_TABLE . ".ID AND " . LINK_TABLE . ".Name=?", array($id, $name));
-		  $res = $query->fetchColumn(0);
-		  if($res!='') {
-		  return true;
-		  }
-		  return false;
-		 */
 	}
 
 	/**
@@ -393,7 +363,7 @@ abstract class we_util_File{
 	 * please use moveFile() instead
 	 */
 	public static function renameFile($old, $new){
-		return rename($old, $new);
+		return self::moveFile($old, $new);
 	}
 
 	/**
@@ -412,11 +382,10 @@ abstract class we_util_File{
 	 */
 	public static function moveFile($old, $new){
 		if(!@rename($old, $new)){
-			if(copy($old, $new)){
-				unlink($old);
-				return true;
+			if(!copy($old, $new)){
+				return false;
 			}
-			return false;
+			unlink($old);
 		}
 		return true;
 	}
@@ -430,15 +399,14 @@ abstract class we_util_File{
 		$target = self::addTrailingSlash($target);
 		$dirname = substr(strrchr($dir, "/"), 1);
 		if(self::removeTrailingSlash($dir) == self::removeTrailingSlash($target)){
-			t_e('notice',"source and destination are the same.");
+			t_e('notice', "source and destination are the same.");
 			return true;
 		}
 		if(!@rename($dir, self::addTrailingSlash($target))){
-			t_e('warning',"could not move directory " . $dir . " to " . self::addTrailingSlash($target) . ".");
+			t_e('warning', "could not move directory " . $dir . " to " . self::addTrailingSlash($target) . ".");
 			return false;
-		} else{
-			return true;
 		}
+		return true;
 	}
 
 	public static function deleteLocalFolder($filename, $delAll = false){
@@ -448,12 +416,12 @@ abstract class we_util_File{
 		if($delAll){
 			$foo = (substr($filename, -1) == "/") ? $filename : ($filename . "/");
 			$d = dir($filename);
-			while(false !== ($entry = $d->read())) {
+			while(false !== ($entry = $d->read())){
 				if($entry != ".." && $entry != "."){
 					$path = $foo . $entry;
 					if(is_dir($path)){
 						self::deleteLocalFolder($path, 1);
-					} else{
+					} else {
 						self::deleteLocalFile($path);
 					}
 				}
@@ -474,35 +442,35 @@ abstract class we_util_File{
 	 * @param bool $nofiles does not delete any files but only empty subdirectories
 	 */
 	public static function rmdirr($path, $nofiles = false){
-		//t_e("trying to recursively delete " . $path);
+//t_e("trying to recursively delete " . $path);
 		if($nofiles && !is_dir($path)){
-			t_e('warning',"ERROR: $path is no directory");
+			t_e('warning', "ERROR: $path is no directory");
 			return false;
 		}
 		if(!file_exists($path)){
-			t_e('warning',"ERROR: could not find $path");
+			t_e('warning', "ERROR: could not find $path");
 			return false;
 		}
-		// check if it is a file or a symbolic link;
+// check if it is a file or a symbolic link;
 		if(is_file($path) || is_link($path)){
 			if($nofiles === false){
 				if(@unlink($path)){
 					return true;
 				} else {
-					t_e('warning'," unable to delete file " . $path);
+					t_e('warning', " unable to delete file " . $path);
 				}
-			} else{
-				//t_e(" -- skipping file " . $path);
+			} else {
+//t_e(" -- skipping file " . $path);
 			}
 		}
-		// loop through the folder
+// loop through the folder
 		$dir = dir($path);
-		while(false !== $entry = $dir->read()) {
+		while(false !== $entry = $dir->read()){
 			if($entry == '.' || $entry == '..'){
 				continue;
 			}
-			// Recurse
-			//t_e(" -- trying to delete folder " . $path);
+// Recurse
+//t_e(" -- trying to delete folder " . $path);
 			self::rmdirr($path . DIRECTORY_SEPARATOR . $entry);
 		}
 		$dir->close();
@@ -523,7 +491,7 @@ abstract class we_util_File{
 		}
 		$DirFileObjectsArray = array();
 		$DirFileObjects = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($directoy));
-		foreach($DirFileObjects as $name => $object){
+		foreach(array_keys($DirFileObjects) as $name){
 			if(substr($name, -2) != '/.' && substr($name, -3) != '/..'){
 				$DirFileObjectsArray[] = $name;
 			}
@@ -533,7 +501,7 @@ abstract class we_util_File{
 			$tar_object = new Archive_Tar($destinationfile, true);
 			$tar_object->setErrorHandling(PEAR_ERROR_TRIGGER, E_USER_WARNING);
 			$tar_object->createModify($DirFileObjectsArray, '', $directoy);
-		} else{
+		} else {
 //FIXME: remove include
 			include($GLOBALS['__WE_LIB_PATH__'] . DIRECTORY_SEPARATOR . 'additional' . DIRECTORY_SEPARATOR . 'archive' . DIRECTORY_SEPARATOR . 'altArchive_Tar.class.php');
 			$tar_object = new altArchive_Tar($gzfile, true);
@@ -550,7 +518,7 @@ abstract class we_util_File{
 			$tar_object = new Archive_Tar($gzfile, true);
 			$tar_object->setErrorHandling(PEAR_ERROR_TRIGGER, E_USER_WARNING);
 			$tar_object->extractModify($destination, '');
-		} else{
+		} else {
 //FIXME: remove include
 			include($GLOBALS['__WE_LIB_PATH__'] . DIRECTORY_SEPARATOR . 'additional' . DIRECTORY_SEPARATOR . 'archive' . DIRECTORY_SEPARATOR . 'altArchive_Tar.class.php');
 			$tar_object = new altArchive_Tar($gzfile, true);

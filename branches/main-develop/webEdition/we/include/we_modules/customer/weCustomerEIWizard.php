@@ -338,7 +338,6 @@ class weCustomerEIWizard{
 	}
 
 	function getHTMLExportStep5(){
-		@set_time_limit(0);
 		if(isset($_GET["exportfile"])){
 			$_filename = basename(urldecode($_GET["exportfile"]));
 

@@ -318,7 +318,7 @@ function deleteEntry($id, $table, $delR = true, $skipHook = 0, $DB_WE = ''){
 
 		we_temporaryDocument::delete($id, $table, $DB_WE);
 
-		@set_time_limit(30);
+		update_time_limit(30);
 		if(!empty($row)){
 			if($row['IsFolder']){
 				deleteFolder($id, $table, $row['Path'], $delR, $DB_WE);

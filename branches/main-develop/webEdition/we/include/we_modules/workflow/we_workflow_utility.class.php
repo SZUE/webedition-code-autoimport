@@ -300,7 +300,7 @@ class we_workflow_utility{
 		$ret = '';
 		$db->query('SELECT ' . WORKFLOW_DOC_TABLE . '.ID AS docID,' . WORKFLOW_DOC_STEP_TABLE . ".ID AS docstepID," . WORKFLOW_STEP_TABLE . ".ID AS stepID FROM " . WORKFLOW_DOC_TABLE . "," . WORKFLOW_DOC_STEP_TABLE . "," . WORKFLOW_STEP_TABLE . " WHERE " . WORKFLOW_DOC_TABLE . ".ID=" . WORKFLOW_DOC_STEP_TABLE . ".workflowDocID AND " . WORKFLOW_DOC_STEP_TABLE . ".workflowStepID=" . WORKFLOW_STEP_TABLE . ".ID AND " . WORKFLOW_DOC_STEP_TABLE . ".startDate<>0 AND (" . WORKFLOW_DOC_STEP_TABLE . ".startDate+ ROUND(" . WORKFLOW_STEP_TABLE . ".Worktime*3600))<" . time() . " AND " . WORKFLOW_DOC_STEP_TABLE . ".finishDate=0 AND " . WORKFLOW_DOC_STEP_TABLE . ".Status=" . we_workflow_documentStep::STATUS_UNKNOWN . " AND " . WORKFLOW_DOC_TABLE . ".Status=" . we_workflow_document::STATUS_UNKNOWN);
 		while($db->next_record()){
-			@set_time_limit(50);
+			update_time_limit(50);
 			$workflowDocument = new we_workflow_document($db->f('docID'));
 			$userID = $userID ? $userID : $workflowDocument->userID;
 			$_SESSION['user']['ID'] = $userID;

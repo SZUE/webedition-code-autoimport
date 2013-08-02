@@ -150,13 +150,6 @@ if(!defined('WE_ERROR_LOG')){
 
 we_error_handler(false);
 
-// knock out time limit if possible
-@set_time_limit(0);
-
-// set memory limit to an equitable value if possible
-if( intval(ini_get('memory_limit')) < 128){
-	@ini_set('memory_limit', '128M');
-}
 
 // knock out identifiation and permissions
 $_SESSION['perms'] = array('ADMINISTRATOR' => true);
@@ -171,6 +164,8 @@ if(!isset($_SERVER['SERVER_NAME'])){
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/PEAR.php");
 include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/Getopt.php");
+update_time_limit(0);
+update_mem_limit(128);
 
 // Define exit codes for errors
 define('NO_ARGS', 10);
@@ -253,7 +248,7 @@ $long_opts = array(
 // Convert the arguments to options - check for the first argument
 if(!empty($_SERVER['argv']) && realpath($_SERVER['argv'][0]) == __FILE__){
 	$options = Console_Getopt::getOpt($args, $short_opts, $long_opts);
-} else{
+} else {
 	$options = Console_Getopt::getOpt2($args, $short_opts, $long_opts);
 }
 

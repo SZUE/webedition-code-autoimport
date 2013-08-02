@@ -24,7 +24,7 @@
  */
 /* the parent class of storagable webEdition classes */
 
-class weNewsletterView{
+class weNewsletterView {
 
 	const MAILS_ALL = 0;
 	const MAILS_CUSTOMER = 1;
@@ -2402,10 +2402,8 @@ self.close();');
 
 	function getEmails($group, $select = 0, $emails_only = 0){
 
-		@set_time_limit(0);
-		if(intval(ini_get('memory_limit')) < 128){
-			@ini_set('memory_limit', '128M');
-		}
+		update_time_limit(0);
+		update_mem_limit(128);
 
 		$extern = ($select == self::MAILS_ALL || $select == self::MAILS_FILE) ? weNewsletterBase::getEmailsFromExtern($this->newsletter->groups[$group - 1]->Extern, $emails_only, $group, $this->getGroupBlocks($group)) : array();
 

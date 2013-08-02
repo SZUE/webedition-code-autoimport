@@ -56,7 +56,7 @@ class we_updater{
 						$ModifierID = $DB_WE->f("ModifierID") ? $DB_WE->f("ModifierID") : $_SESSION["user"]["ID"];
 						$db2->query("UPDATE " . $db2->escape($table) . " SET CreatorID=" . intval($CreatorID) . " , ModifierID=" . intval($ModifierID) . " , Owners='" . $db2->escape($Owners) . "' WHERE ID=" . intval($id));
 						$db2->query('DELETE FROM ' . TBL_PREFIX . ' WHERE fileID=' . intval($id));
-						@set_time_limit(30);
+						update_time_limit(30);
 					}
 				}
 			}
@@ -114,7 +114,7 @@ class we_updater{
 		$db2 = new DB_WE();
 		$db->query('SELECT ID,username,ParentID,Path FROM ' . USER_TABLE);
 		while($db->next_record()) {
-			@set_time_limit(30);
+			update_time_limit(30);
 			$id = $db->f('ID');
 			$pid = $db->f('ParentID');
 			$path = '/' . $db->f("username");

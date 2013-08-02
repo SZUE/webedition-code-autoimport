@@ -1534,7 +1534,7 @@ class weVersions{
 	function getDocContent($we_doc, $includepath = ""){
 
 		$contents = "";
-		set_time_limit(0);
+		update_time_limit(0);
 		$requestBackup = $_REQUEST;
 		$docBackup = $GLOBALS['we_doc'];
 

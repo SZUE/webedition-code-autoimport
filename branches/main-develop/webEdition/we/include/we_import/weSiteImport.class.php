@@ -1860,7 +1860,7 @@ sh' && $contentType != 'movie/quicktime'){
 	 */
 	private function _fillDirectories($importDirectory){
 
-		@set_time_limit(60);
+		update_time_limit(60);
 
 		$weDirectory = rtrim(WEBEDITION_PATH, '/');
 

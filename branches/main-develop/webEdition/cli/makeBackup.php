@@ -158,14 +158,6 @@ if(!defined('WE_ERROR_LOG')){
 we_error_handler(false);
 
 
-// knock out time limit if possible
-@set_time_limit(0);
-
-// set memory limit to an equitable value if possible
-if( intval(ini_get('memory_limit')) < 128){
-	@ini_set('memory_limit', '128M');
-}
-
 // knock out identifiation and permissions
 $_SESSION['perms'] = array();
 $_SESSION['perms']['ADMINISTRATOR'] = true;
@@ -331,6 +323,8 @@ $_REQUEST['filename'] = basename($_backup_filename);
 
 // include needed libraries
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+update_time_limit(0);
+update_mem_limit(128);
 
 if(!isset($_SESSION['weS']['weBackupVars']) || empty($_SESSION['weS']['weBackupVars'])){
 

@@ -36,7 +36,7 @@ class weXMLExport extends weXMLExIm{
 	}
 
 	function export($id, $ct, $fname, $table = "", $export_binary = true, $compression = ""){
-		@set_time_limit(0);
+		update_time_limit(0);
 		$doc = weContentProvider::getInstance($ct, $id, $table);
 		// add binary data separately to stay compatible with the new binary feature in v5.1
 		if(isset($doc->ContentType) && (

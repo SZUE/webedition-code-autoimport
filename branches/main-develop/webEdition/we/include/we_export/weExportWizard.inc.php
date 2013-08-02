@@ -750,7 +750,6 @@ function setState(a) {
 	}
 
 	function getHTMLStep50(){
-		@set_time_limit(0);
 		$preurl = getServerUrl();
 		if(isset($_GET["exportfile"])){
 			$_filename = basename(urldecode($_GET["exportfile"]));

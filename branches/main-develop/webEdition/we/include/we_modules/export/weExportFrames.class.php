@@ -478,7 +478,6 @@ class weExportFrames extends weModuleFrames{
 
 	function getHTMLCmd(){
 		$out = "";
-		@set_time_limit(0);
 		if(isset($_REQUEST["cmd"])){
 			switch($_REQUEST["cmd"]){
 				case "load":
@@ -734,7 +733,6 @@ class weExportFrames extends weModuleFrames{
 					}
 					break;
 				case 'upload':
-					@set_time_limit(0);
 					$preurl = getServerUrl();
 					if(isset($_GET["exportfile"])){
 						$_filename = basename(urldecode($_GET["exportfile"]));

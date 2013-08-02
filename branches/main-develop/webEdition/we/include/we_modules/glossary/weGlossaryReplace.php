@@ -139,7 +139,7 @@ abstract class weGlossaryReplace{
 		if($src === '' || count($replacements) == 0){
 			return $src;
 		}
-		@set_time_limit(0);
+		update_time_limit(0);
 		$src2 = preg_replace(array_keys($replacements), $replacements, ' ' . $src . ' ', 1);
 
 		if(trim($src, ' ') != trim($src2, ' ') && trim($src2, ' ') != ''){

@@ -196,7 +196,7 @@ abstract class weFile{
 
 		if($fh){
 			while(!@feof($fh)){
-				@set_time_limit(60);
+				update_time_limit(60);
 				$line = '';
 				$findline = false;
 
