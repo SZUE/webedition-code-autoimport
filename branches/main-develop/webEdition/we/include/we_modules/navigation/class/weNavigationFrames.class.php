@@ -1151,8 +1151,7 @@ function onSelectionClassChangeJS(value) {
 			$_button = we_button::create_button_table(
 					array(
 					we_button::create_button('select', $_cmd, true, 100, 22, '', '', $disabled),
-					we_button::create_button(
-						'image:btn_function_trash', 'javascript:document.we_form.elements["' . $IDName . '"].value=0;document.we_form.elements["' . $PathName . '"].value="/";', true, 27, 22)
+					we_button::create_button('image:btn_function_trash', 'javascript:document.we_form.elements["' . $IDName . '"].value=0;document.we_form.elements["' . $PathName . '"].value="/";', true, 27, 22)
 					), 10);
 			$_width = 157;
 		} else {
@@ -1163,13 +1162,15 @@ function onSelectionClassChangeJS(value) {
 		//$_input  = we_html_tools::htmlTextInput($PathName,58,$_path,'','id="yuiAcInput'.$PathName.'"','text',($this->_width_size-$_width),0);
 		$_result = we_html_element::htmlHidden(
 				array(
-					'name' => $IDName, 'value' => $IDValue, 'id' => 'yuiAcResult' . $PathName
+					'name' => $IDName,
+					'value' => $IDValue,
+					'id' => 'yuiAcResult' . $PathName
 		));
 		$yuiSuggest = & weSuggest::getInstance();
 		$yuiSuggest->setAcId($PathName);
 		$yuiSuggest->setContentType($acCTypes ? $acCTypes : $filter);
 		$yuiSuggest->setInput($PathName, $_path, array(
-			"onChange" => $this->topFrame . ".mark();"
+			'onchange' => $this->topFrame . ".mark();"
 		));
 		$yuiSuggest->setLabel($title);
 		$yuiSuggest->setMaxResults(50);

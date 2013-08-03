@@ -202,7 +202,7 @@ class weShopStatusMails{
 		if(isset($this->LanguageData['useLanguages']) && $this->LanguageData['useLanguages'] && isset($this->LanguageData['languageField']) && $this->LanguageData['languageField'] != '' && isset($cdata[$this->LanguageData['languageField']]) && $cdata[$this->LanguageData['languageField']] != ''){
 			if($pagelang != '' && isset($this->FieldsDocuments[$pagelang]) && isset($this->FieldsDocuments[$pagelang]['Date' . $was])){
 				$docID = $this->FieldsDocuments[$pagelang]['Date' . $was];
-			} else{
+			} else {
 				$docID = (isset($this->FieldsDocuments[$cdata[$this->LanguageData['languageField']]]) && isset($this->FieldsDocuments[$cdata[$this->LanguageData['languageField']]]['Date' . $was]) ?
 						$this->FieldsDocuments[$cdata[$this->LanguageData['languageField']]]['Date' . $was] :
 						$this->FieldsDocuments['default']['Date' . $was]);
@@ -210,7 +210,7 @@ class weShopStatusMails{
 			if(isset($this->LanguageData['languageField']) && $this->LanguageData['languageField'] != '' && isset($cdata[$this->LanguageData['languageField']]) && $cdata[$this->LanguageData['languageField']] != ''){
 				$UserLang = $cdata[$this->LanguageData['languageField']];
 			}
-		} else{
+		} else {
 			$docID = $this->FieldsDocuments['default']['Date' . $was];
 			if(isset($this->LanguageData['languageField']) && $this->LanguageData['languageField'] != '' && isset($cdata[$this->LanguageData['languageField']]) && $cdata[$this->LanguageData['languageField']] != ''){
 				$UserLang = $cdata[$this->LanguageData['languageField']];
@@ -234,8 +234,8 @@ class weShopStatusMails{
 			}
 			unset($_REQUEST['we_orderid']);
 			unset($_SESSION['WE_SendMail']);
-		} else{
-			t_e('Document to send as status mail is empty ID: ' . $docID);
+		} else {
+			t_e('Document to send as status mail is empty! ID: ' . $docID);
 			return false;
 		}
 
@@ -255,7 +255,7 @@ class weShopStatusMails{
 			$phpmail->setIsEmbedImages(true);
 
 			$phpmail->addHTMLPart($codes);
-			$phpmail->addTextPart(strip_tags(strtr( $codes,array('&nbsp;' => " ", '<br />' => "\n", '<br>', "\n"))));
+			$phpmail->addTextPart(strip_tags(strtr($codes, array('&nbsp;' => ' ', '<br />' => "\n", '<br>' => "\n"))));
 			$phpmail->addTo($cdata[$this->EMailData['emailField']], ( (isset($this->EMailData['titleField']) && $this->EMailData['titleField'] != '' && isset($cdata[$this->EMailData['titleField']]) && $cdata[$this->EMailData['titleField']] != '' ) ? $cdata[$this->EMailData['titleField']] . ' ' : '') . $cdata['Forename'] . ' ' . $cdata['Surname']);
 			if(isset($this->EMailData['bcc']) && $this->EMailData['bcc'] != ''){
 				$bccArray = explode(',', $this->EMailData['bcc']);
@@ -293,21 +293,20 @@ class weShopStatusMails{
 	}
 
 	function getEMailHandlerCode($was, $dateSet){
-		$datetimeform = "00.00.0000 00:00";
-		$dateform = "00.00.0000";
-		if($this->FieldsMails['Date' . $was]){
-			$EMailhandler = '<table cellpadding="0" cellspacing="0" border="0" width="99%" class="defaultfont"><tr><td class="defaultfont">' . g_l('modules_shop', '[statusmails][EMail]') . ': </td>';
-			if($_REQUEST["Mail" . $was] != $datetimeform && $_REQUEST["Mail" . $was] != ''){
-				$EMailhandler .= '<td class="defaultfont" width="150">' . $_REQUEST["Mail" . $was] . '</td>';
-				$but = we_button::create_button("image:/mail_resend", "javascript:check=confirm('" . g_l('modules_shop', '[statusmails][resent]') . "'); if (check){SendMail('" . $was . "');}");
-			} else{
-				$EMailhandler .= '<td class="defaultfont" width="150">&nbsp;</td>';
-				$but = we_button::create_button("image:/mail_send", "javascript:SendMail('" . $was . "')");
-			}
-			$EMailhandler .= '<td class="defaultfont">' . ($dateSet != $dateform ? $but : we_html_tools::getPixel(30, 15)) . '</td></tr></table>';
-		} else{
+		if(!$this->FieldsMails['Date' . $was]){
 			return we_html_tools::getPixel(30, 15);
 		}
+		$datetimeform = "00.00.0000 00:00";
+		$dateform = "00.00.0000";
+		$EMailhandler = '<table cellpadding="0" cellspacing="0" border="0" width="99%" class="defaultfont"><tr><td class="defaultfont">' . g_l('modules_shop', '[statusmails][EMail]') . ': </td>';
+		if($_REQUEST["Mail" . $was] != $datetimeform && $_REQUEST["Mail" . $was] != ''){
+			$EMailhandler .= '<td class="defaultfont" width="150">' . $_REQUEST["Mail" . $was] . '</td>';
+			$but = we_button::create_button("image:/mail_resend", "javascript:check=confirm('" . g_l('modules_shop', '[statusmails][resent]') . "'); if (check){SendMail('" . $was . "');}");
+		} else {
+			$EMailhandler .= '<td class="defaultfont" width="150">&nbsp;</td>';
+			$but = we_button::create_button("image:/mail_send", "javascript:SendMail('" . $was . "')");
+		}
+		$EMailhandler .= '<td class="defaultfont">' . ($dateSet != $dateform ? $but : we_html_tools::getPixel(30, 15)) . '</td></tr></table>';
 
 		return $EMailhandler;
 	}
@@ -324,9 +323,8 @@ class weShopStatusMails{
 				$DB_WE->query('REPLACE ' . ANZEIGE_PREFS_TABLE . ' SET strFelder = "' . $DB_WE->escape(serialize($CLFields)) . '", strDateiname ="shop_CountryLanguage"');
 			}
 			return true;
-		} else{
-			return false;
 		}
+		return false;
 	}
 
 }

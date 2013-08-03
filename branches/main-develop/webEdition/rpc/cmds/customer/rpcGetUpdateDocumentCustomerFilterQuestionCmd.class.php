@@ -25,19 +25,17 @@
 class rpcGetUpdateDocumentCustomerFilterQuestionCmd extends rpcCmd{
 
 	function execute(){
-
-
 		$resp = new rpcResponse();
 
 		// compare filter of document with fitler of folder
-		$_filterOfFolder = $this->getFilterOfFolder($_REQUEST["folderId"], $_REQUEST["table"]);
+		$_filterOfFolder = $this->getFilterOfFolder($_REQUEST['folderId'], $_REQUEST['table']);
 
-		if(isset($_REQUEST["we_transaction"])){
+		if(isset($_REQUEST['we_transaction'])){
 			$we_dt = isset($_SESSION['weS']['we_data'][$_REQUEST["we_transaction"]]) ? $_SESSION['weS']['we_data'][$_REQUEST["we_transaction"]] : "";
 		}
 
 		// filter of document
-		$_document = new $_REQUEST["classname"];
+		$_document = new $_REQUEST['classname'];
 		$_document->we_initSessDat($we_dt);
 		$_filterOfDocument = $_document->documentCustomerFilter;
 
@@ -53,7 +51,7 @@ class rpcGetUpdateDocumentCustomerFilterQuestionCmd extends rpcCmd{
 			$folder = new we_folder();
 			$folder->initByID($id, $table);
 			return $folder->documentCustomerFilter;
-		} else{
+		} else {
 			return "";
 		}
 	}

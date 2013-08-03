@@ -78,7 +78,7 @@ class rpcCmd{
 		foreach($arr as $n => $v){
 			if(is_array($v)){
 				rpcCmd::stripSlashes($arr[$n]);
-			} else{
+			} else {
 				$arr[$n] = stripslashes($v);
 			}
 		}
@@ -128,4 +128,3 @@ class rpcCmd{
 	}
 
 }
-

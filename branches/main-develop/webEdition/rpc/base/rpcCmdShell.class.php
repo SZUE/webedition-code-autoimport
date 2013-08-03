@@ -24,10 +24,10 @@
  * @package    webEdition_rpc
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-require_once("base/rpcCmd.class.php");
-require_once("base/rpcResponse.class.php");
-require_once("base/rpcView.class.php");
-require_once("base/rpcJsonView.class.php");
+require_once('base/rpcCmd.class.php');
+require_once('base/rpcResponse.class.php');
+require_once('base/rpcView.class.php');
+require_once('base/rpcJsonView.class.php');
 
 class rpcCmdShell{
 
@@ -46,7 +46,7 @@ class rpcCmdShell{
 			if(!$this->isViewAllowed($_REQUEST['view'])){
 				$this->Status = rpcCmd::STATUS_NOT_ALLOWED_VIEW;
 			}
-		} else{
+		} else {
 			$cmd['view'] = $this->CmdName;
 		}
 		if($this->Status == rpcCmd::STATUS_OK){
@@ -58,7 +58,7 @@ class rpcCmdShell{
 		$this->CmdName = $cmd['cmd'];
 		$_classname = 'rpc' . $cmd['cmd'] . 'Cmd';
 
-		$_namespace = '/' . (isset($cmd['cns']) ? "{$cmd['cns']}/" : '');
+		$_namespace = '/' . (isset($cmd['cns']) ? $cmd['cns'] . '/' : '');
 
 		$_cmdfile = (isset($cmd['tool']) && weToolLookup::isTool($cmd['tool']) ?
 				weToolLookup::getCmdInclude($_namespace, $cmd['tool'], $this->CmdName) :
@@ -80,8 +80,8 @@ class rpcCmdShell{
 
 	function getView(&$cmd){
 
-		$_classname = "rpc{$cmd["view"]}View";
-		$namespace = '/' . (isset($cmd['vns']) ? "{$cmd['vns']}/" : (isset($cmd['cns']) ? "{$cmd['cns']}/" : ''));
+		$_classname = 'rpc' . $cmd["view"] . 'View';
+		$namespace = '/' . (isset($cmd['vns']) ? $cmd['vns'] . '/' : (isset($cmd['cns']) ? $cmd['cns'] . '/' : ''));
 
 		$_viewfile = (isset($cmd['tool']) && weToolLookup::isTool($cmd['tool']) ?
 				weToolLookup::getViewInclude($this->Protocol, $namespace, $cmd['tool'], $cmd["view"]) :
