@@ -38,7 +38,15 @@ echo we_html_element::jsScript(JS_DIR . 'libs/yui/yahoo-min.js') .
 	var ajaxCallback = {
 		success: function(o) {
 			if (typeof(o.responseText) !== undefined && o.responseText !== '') {
-				eval("var result=" + o.responseText);
+				try {
+					eval("var result=" + o.responseText);
+				} catch (exp) {
+					try {
+						console.log(exp + " " + o.responseText);
+					} catch (ex) {
+
+					}
+				}
 				if (result.Success) {
 					var num_users = result.DataArray.num_users;
 					weRpcFailedCnt = 0;

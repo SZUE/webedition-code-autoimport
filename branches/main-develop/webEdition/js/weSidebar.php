@@ -21,11 +21,9 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-require_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 header("Content-Type: text/javascript");
-
 ?>
 function weSidebar() {}
 
@@ -35,11 +33,11 @@ function weSidebar() {}
 //
 
 weSidebar.load = function(url,params) {
-	var cmd = Array();
-	cmd[0] = 'loadSidebarDocument';
-	cmd[1] = url;
-	cmd[2] = params;
-	top.we_cmd(cmd[0], cmd[1],cmd[2]);
+var cmd = Array();
+cmd[0] = 'loadSidebarDocument';
+cmd[1] = url;
+cmd[2] = params;
+top.we_cmd(cmd[0], cmd[1],cmd[2]);
 
 }
 
@@ -49,51 +47,51 @@ weSidebar.load = function(url,params) {
 //
 
 weSidebar.open = function() {
-	var cmd = Array();
+var cmd = Array();
 
-	// load document if needed
-	if(typeof arguments[0] != "undefined") {
-		weSidebar.load(arguments[0]);
+// load document if needed
+if(typeof arguments[0] != "undefined") {
+weSidebar.load(arguments[0]);
 
-	} else if(arguments[0] == "default") {
-		weSidebar.load('');
+} else if(arguments[0] == "default") {
+weSidebar.load('');
 
-	}
+}
 
-	// get width of sidebar frame
-	if(typeof arguments[1] != "undefined") {
-		width = parseInt(arguments[1]);
+// get width of sidebar frame
+if(typeof arguments[1] != "undefined") {
+width = parseInt(arguments[1]);
 
-	} else {
-		width = <?php echo SIDEBAR_DEFAULT_WIDTH; ?>;
+} else {
+width = <?php echo SIDEBAR_DEFAULT_WIDTH; ?>;
 
-	}
-	if (isNaN( width ) ||  width < 100 ) {
-		width = 100;
-	}
+}
+if (isNaN( width ) ||  width < 100 ) {
+width = 100;
+}
 
-	window.setTimeout("weSidebar.resize("+width+");", 200);
+window.setTimeout("weSidebar.resize("+width+");", 200);
 
 }
 
 
 weSidebar.close = function() {
-	top.rframe.document.getElementById("bm_content_frameDiv").style.right="0px";
-	top.rframe.document.getElementById("sidebarDiv").style.width = "0px";
+top.rframe.document.getElementById("bm_content_frameDiv").style.right="0px";
+top.rframe.document.getElementById("sidebarDiv").style.width = "0px";
 
 }
 
 
 weSidebar.resize = function(width) {
-	top.rframe.document.getElementById("bm_content_frameDiv").style.right = width + "px";
-	top.rframe.document.getElementById("sidebarDiv").style.width = width + "px";
+top.rframe.document.getElementById("bm_content_frameDiv").style.right = width + "px";
+top.rframe.document.getElementById("sidebarDiv").style.width = width + "px";
 
 }
 
 
 
 weSidebar.reload = function() {
-	top.rframe.weSidebarContent.location.reload();
+top.rframe.weSidebarContent.location.reload();
 
 }
 
@@ -104,95 +102,95 @@ weSidebar.reload = function() {
 //
 
 weSidebar.openUrl = function(url) {
-	//	build command for this location
-	top.we_cmd("open_url_in_editor", url);
+//	build command for this location
+top.we_cmd("open_url_in_editor", url);
 
 }
 
 
 weSidebar.openDocument = function(obj) {
-	obj['table'] = "<?php echo FILE_TABLE; ?>";
-	obj['ct'] = (typeof obj['ct'] == "undefined" ? "text/webedition" : obj['ct']);
-	weSidebar._open(obj);
+obj['table'] = "<?php echo FILE_TABLE; ?>";
+obj['ct'] = (typeof obj['ct'] == "undefined" ? "text/webedition" : obj['ct']);
+weSidebar._open(obj);
 
 }
 
 
 weSidebar.openDocumentById = function() {
-	obj['id'] = (typeof arguments[0] == "undefined" ? 0 : arguments[0]);
-	obj['ct'] = (typeof arguments[1] == "undefined" ? "text/webedition" : arguments[1]);
-	weSidebar._open(obj);
+obj['id'] = (typeof arguments[0] == "undefined" ? 0 : arguments[0]);
+obj['ct'] = (typeof arguments[1] == "undefined" ? "text/webedition" : arguments[1]);
+weSidebar._open(obj);
 
 }
 
 
 weSidebar.openTemplate = function(obj) {
-	obj['table'] = "<?php echo TEMPLATES_TABLE; ?>";
-	obj['ct'] = "text/weTmpl";
-	weSidebar._open(obj);
+obj['table'] = "<?php echo TEMPLATES_TABLE; ?>";
+obj['ct'] = "text/weTmpl";
+weSidebar._open(obj);
 
 }
 
 
 weSidebar.openTemplateById = function() {
-	obj['id'] = (typeof arguments[0] == "undefined" ? 0 : arguments[0]);
-	weSidebar._open(obj);
+obj['id'] = (typeof arguments[0] == "undefined" ? 0 : arguments[0]);
+weSidebar._open(obj);
 
 }
 
 <?php
-if(defined("OBJECT_FILES_TABLE")) {
-?>
-weSidebar.openObject = function(obj) {
+if(defined("OBJECT_FILES_TABLE")){
+	?>
+	weSidebar.openObject = function(obj) {
 	obj['table'] = "<?php echo OBJECT_FILES_TABLE; ?>";
 	obj['ct'] = "objectFile";
 	weSidebar._open(obj);
 
-}
+	}
 
 
-weSidebar.openObjectById = function() {
+	weSidebar.openObjectById = function() {
 	obj['id'] = (typeof arguments[0] == "undefined" ? 0 : arguments[0]);
 	weSidebar._open(obj);
 
-}
+	}
 
 
-weSidebar.openClass = function(obj) {
+	weSidebar.openClass = function(obj) {
 	obj['table'] = "<?php echo OBJECT_TABLE; ?>";
 	obj['ct'] = "object";
 	weSidebar._open(obj);
 
-}
+	}
 
 
-weSidebar.openClassById = function() {
+	weSidebar.openClassById = function() {
 	obj['id'] = (typeof arguments[0] == "undefined" ? 0 : arguments[0]);
 	weSidebar._open(obj);
 
-}
+	}
 
 
-<?php
+	<?php
 } else {
-?>
-weSidebar.openObject = function(obj) {
+	?>
+	weSidebar.openObject = function(obj) {
 
-}
-
-
-weSidebar.openClass = function(obj) {
-
-}
+	}
 
 
-<?php
+	weSidebar.openClass = function(obj) {
+
+	}
+
+
+	<?php
 }
 ?>
 weSidebar.openCockpit = function() {
-	obj['ct'] = "cockpit";
-	obj['editcmd'] = "open_cockpit";
-	weSidebar._open(obj);
+obj['ct'] = "cockpit";
+obj['editcmd'] = "open_cockpit";
+weSidebar._open(obj);
 
 }
 
@@ -202,9 +200,9 @@ weSidebar.openCockpit = function() {
 //
 
 weSidebar.openNavigation = function() {
-	var cmd = Array();
-	cmd[0] = 'edit_navigation';
-	top.we_cmd(cmd[0]);
+var cmd = Array();
+cmd[0] = 'edit_navigation';
+top.we_cmd(cmd[0]);
 
 }
 
@@ -214,9 +212,9 @@ weSidebar.openNavigation = function() {
 //
 
 weSidebar.openDoctypes = function() {
-	var cmd = Array();
-	cmd[0] = 'doctypes';
-	top.we_cmd(cmd[0]);
+var cmd = Array();
+cmd[0] = 'doctypes';
+top.we_cmd(cmd[0]);
 
 }
 
@@ -225,17 +223,16 @@ weSidebar.openDoctypes = function() {
 //
 
 weSidebar._open = function(obj) {
-	table = (typeof obj['table'] == "undefined" ? "" : obj['table']);
-	id = (typeof obj['id'] == "undefined" ? "" : obj['id']);
-	ct = (typeof obj['ct'] == "undefined" ? "" : obj['ct']);
-	editcmd = (typeof obj['editcmd'] == "undefined" ? "" : obj['editcmd']);
-	dt = (typeof obj['dt'] == "undefined" ? "" : obj['dt']);
-	url = (typeof obj['url'] == "undefined" ? "" : obj['url']);
-	code = (typeof obj['code'] == "undefined" ? "" : obj['code']);
-	mode = (typeof obj['mode'] == "undefined" ? "" : obj['mode']);
-	parameters = (typeof obj['parameters'] == "undefined" ? "" : obj['parameters']);
+table = (typeof obj['table'] == "undefined" ? "" : obj['table']);
+id = (typeof obj['id'] == "undefined" ? "" : obj['id']);
+ct = (typeof obj['ct'] == "undefined" ? "" : obj['ct']);
+editcmd = (typeof obj['editcmd'] == "undefined" ? "" : obj['editcmd']);
+dt = (typeof obj['dt'] == "undefined" ? "" : obj['dt']);
+url = (typeof obj['url'] == "undefined" ? "" : obj['url']);
+code = (typeof obj['code'] == "undefined" ? "" : obj['code']);
+mode = (typeof obj['mode'] == "undefined" ? "" : obj['mode']);
+parameters = (typeof obj['parameters'] == "undefined" ? "" : obj['parameters']);
 
-	top.weEditorFrameController.openDocument(table,id,ct,editcmd,dt,url,code,mode,parameters);
+top.weEditorFrameController.openDocument(table,id,ct,editcmd,dt,url,code,mode,parameters);
 
 }
-

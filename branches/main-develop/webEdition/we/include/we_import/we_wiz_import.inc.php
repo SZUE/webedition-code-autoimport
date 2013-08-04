@@ -500,7 +500,7 @@ function set_button_state() {
 }" . $event_handler . '
 function toggle(name){
 	var con = document.getElementById(name);
-	con.style.display = (con.style.display == "none")? "":"none");
+	con.style.display = (con.style.display == "none" ? "":"none");
 }';
 
 		$_return = array('', '');

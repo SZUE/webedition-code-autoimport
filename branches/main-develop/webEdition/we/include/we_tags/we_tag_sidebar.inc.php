@@ -23,38 +23,38 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_sidebar($attribs, $content){
-	if(SIDEBAR_DISABLED == 0 && we_tag('ifNotSidebar', $attribs, $content) && we_tag('ifEditmode', $attribs, $content)){
-		$id = weTag_getAttribute('id', $attribs, 0);
-		$file = weTag_getAttribute('file', $attribs);
-		$url = weTag_getAttribute('url', $attribs);
-		$anchor = weTag_getAttribute('anchor', $attribs);
-		$width = weTag_getAttribute('width', $attribs, (defined('WE_SIDEBAR_WIDTH') ? WE_SIDEBAR_WIDTH : 300));
-		$params = weTag_getAttribute('params', $attribs);
-		if($params && strpos($params, '?') === 0){
-			$params = substr($params, 1);
-		}
-
-		removeAttribs($attribs, array('id', 'file', 'url', 'width', 'href', 'params'));
-
-		if(trim($content) == ''){
-			$content = g_l('tags', '[open_sidebar]');
-		}
-
-		$href = '#';
-		if($id == 0){
-			if($file != ''){
-				$href = "javascript:top.weSidebar.load('" . $file . "');top.weSidebar.resize(" . $width . ",'" . $params . "');";
-			} else if($url != ""){
-				$href = "javascript:top.weSidebar.load('" . $url . "');top.weSidebar.resize(" . $width . ",'" . $params . "');";
-			} else{
-				return;
-			}
-		} else{
-			$href = "javascript:top.weSidebar.open('" . $id . "', " . $width . ",'" . $params . "');";
-		}
-		$attribs['href'] = $href;
-
-		return getHtmlTag('a', $attribs, $content);
+	if(SIDEBAR_DISABLED || (we_tag('ifNotEditmode') && !defined('WE_SIDEBAR'))){
+		return 'nop';
 	}
-	return '';
+	$id = intval(weTag_getAttribute('id', $attribs, 0));
+	$file = weTag_getAttribute('file', $attribs);
+	$url = weTag_getAttribute('url', $attribs);
+	//$anchor = weTag_getAttribute('anchor', $attribs);
+	$width = weTag_getAttribute('width', $attribs, SIDEBAR_DEFAULT_WIDTH);
+	$params = weTag_getAttribute('params', $attribs);
+	if($params && strpos($params, '?') === 0){
+		$params = substr($params, 1);
+	}
+
+	removeAttribs($attribs, array('id', 'file', 'url', 'width', 'href', 'params', 'anchor'));
+
+	if(trim($content) == ''){
+		$content = g_l('tags', '[open_sidebar]');
+	}
+
+	if($id){
+		if(f('SELECT 1 AS a FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), 'a', $GLOBALS['DB_WE']) != 1){
+			return $content;
+		}
+
+		$attribs['href'] = "javascript:top.weSidebar.open('" . $id . "', " . $width . ",'" . $params . "');";
+	} else {
+		$file = (empty($file) ? $url : $file);
+		if(empty($file)){
+			return '';
+		}
+		$attribs['href'] = "javascript:top.weSidebar.load('" . $file . "');top.weSidebar.resize(" . $width . ",'" . $params . "');";
+	}
+
+	return getHtmlTag('a', $attribs, $content);
 }
