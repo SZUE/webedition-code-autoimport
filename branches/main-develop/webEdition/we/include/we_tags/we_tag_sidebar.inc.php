@@ -24,7 +24,7 @@
  */
 function we_tag_sidebar($attribs, $content){
 	if(SIDEBAR_DISABLED || (we_tag('ifNotEditmode') && !defined('WE_SIDEBAR'))){
-		return 'nop';
+		return '';
 	}
 	$id = intval(weTag_getAttribute('id', $attribs, 0));
 	$file = weTag_getAttribute('file', $attribs);
