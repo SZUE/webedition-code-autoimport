@@ -34,10 +34,7 @@ function we_tag_addDelNewsletterEmail($attribs){
 	$isSubscribe = isset($_REQUEST['we_subscribe_email__']) || isset($_REQUEST['confirmID']);
 	$isUnsubscribe = isset($_REQUEST['we_unsubscribe_email__']);
 	$doubleoptin = weTag_getAttribute('doubleoptin', $attribs, false, true);
-	$forcedoubleoptin = weTag_getAttribute('forcedoubleoptin', $attribs, false, true);
-	if($forcedoubleoptin){
-		$doubleoptin = 1;
-	}
+
 	$type = weTag_getAttribute('type', $attribs);
 	$adminmailid = intval(weTag_getAttribute('adminmailid', $attribs, 0));
 	$adminsubject = weTag_getAttribute('adminsubject', $attribs);
@@ -55,7 +52,7 @@ function we_tag_addDelNewsletterEmail($attribs){
 				$tmpAbos = makeArrayFromCSV(weTag_getAttribute('mailingList', $attribs));
 				if(empty($tmpAbos) || (strlen($tmpAbos[0]) == 0)){
 					$abos[0] = $fieldGroup . '_Ok';
-				} else{// #6100
+				} else {// #6100
 					foreach($tmpAbos as $abo){
 						$abos[] = $fieldGroup . '_' . $abo;
 					}
@@ -68,7 +65,7 @@ function we_tag_addDelNewsletterEmail($attribs){
 				}
 				break;
 		}
-	} else{
+	} else {
 		if(isset($_REQUEST['we_subscribe_list__']) && is_array($_REQUEST['we_subscribe_list__'])){
 			switch($type){
 				case 'customer':
@@ -89,7 +86,7 @@ function we_tag_addDelNewsletterEmail($attribs){
 				$GLOBALS[($isSubscribe ? 'WE_WRITENEWSLETTER_STATUS' : 'WE_REMOVENEWSLETTER_STATUS')] = weNewsletterBase::STATUS_ERROR;
 				return;
 			}
-		} else{
+		} else {
 			$GLOBALS['WE_MAILING_LIST_EMPTY'] = 1;
 			$GLOBALS[($isSubscribe ? 'WE_WRITENEWSLETTER_STATUS' : 'WE_REMOVENEWSLETTER_STATUS')] = weNewsletterBase::STATUS_ERROR;
 			return;
@@ -112,7 +109,7 @@ function we_tag_addDelNewsletterEmail($attribs){
 		if(isset($f['lists']) && $f['lists']){
 			if(strpos($f['lists'], '.')){
 				$paths = makeArrayFromCSV($f['lists']);
-			} else{
+			} else {
 				$abos = makeArrayFromCSV($f['lists']);
 				$type = 'customer';
 			}
@@ -158,13 +155,13 @@ function we_tag_addDelNewsletterEmail($attribs){
 								if(!preg_match("%[\r\n]" . $f['subscribe_mail'] . ",[^\r\n]+[\r\n]%i", $file) && !preg_match('%^' . $f['subscribe_mail'] . ",[^\r\n]+[\r\n]%i", $file)){
 									$lists[] = $p;
 								}
-							} else{
+							} else {
 								t_e('newsletter file not found');
 								$GLOBALS['WE_WRITENEWSLETTER_STATUS'] = weNewsletterBase::STATUS_ERROR; // FATAL ERROR
 								$GLOBALS['WE_REMOVENEWSLETTER_STATUS'] = weNewsletterBase::STATUS_ERROR; // FATAL ERROR
 								return;
 							}
-						}else{
+						} else {
 							t_e('newsletter file not found');
 							$GLOBALS['WE_WRITENEWSLETTER_STATUS'] = weNewsletterBase::STATUS_ERROR; // FATAL ERROR
 							$GLOBALS['WE_REMOVENEWSLETTER_STATUS'] = weNewsletterBase::STATUS_ERROR; // FATAL ERROR
@@ -181,10 +178,9 @@ function we_tag_addDelNewsletterEmail($attribs){
 				return;
 			}
 
-			$lists = implode(',',$lists);
+			$lists = implode(',', $lists);
 
 			$mailid = weTag_getAttribute('mailid', $attribs);
-			$expiredoubleoptin = weTag_getAttribute('expiredoubleoptin', $attribs, 1440) * 60; // in secs
 
 			if($mailid){
 
@@ -198,7 +194,7 @@ function we_tag_addDelNewsletterEmail($attribs){
 						'subscribe_firstname' => $f['subscribe_firstname'],
 						'subscribe_lastname' => $f['subscribe_lastname'],
 						'lists' => $lists,
-						'expires' => $expiredoubleoptin + time()
+						'expires' => 'UNIX_TIMESTAMP() + ' . weTag_getAttribute('expiredoubleoptin', $attribs, 1440) * 60 // in secs
 				)));
 
 				$id = weTag_getAttribute('id', $attribs);
@@ -269,7 +265,6 @@ function we_tag_addDelNewsletterEmail($attribs){
 					$db->next_record();
 				}
 				if(is_array($placeholderfields)){
-
 					foreach($placeholderfields as $phf){
 						$placeholderReplaceValue = ($type == 'customer') ? $db->f($phf) : '';
 						$mailtext = str_replace('####PLACEHOLDER:DB::CUSTOMER_TABLE:' . $phf . '####', $placeholderReplaceValue, $mailtext);
@@ -292,7 +287,7 @@ function we_tag_addDelNewsletterEmail($attribs){
 								$we_recipientCC[] = $_REQUEST[$cc];
 							}
 						}
-					} else{
+					} else {
 						if(we_check_email($cc)){
 							$we_recipientCC[] = $cc;
 						}
@@ -311,7 +306,7 @@ function we_tag_addDelNewsletterEmail($attribs){
 								$we_recipientBCC[] = $_REQUEST[$bcc];
 							}
 						}
-					} else{
+					} else {
 						if(we_check_email($bcc)){
 							$we_recipientBCC[] = $bcc;
 						}
@@ -320,7 +315,7 @@ function we_tag_addDelNewsletterEmail($attribs){
 				$phpmail = new we_util_Mailer($f['subscribe_mail'], $subject, $from, $from);
 				if(isset($includeimages)){
 					$phpmail->setIsEmbedImages($includeimages);
-				} else{
+				} else {
 					$phpmail->setBaseDir($basehref);
 				}
 				if(!empty($we_recipientCC)){
@@ -335,7 +330,7 @@ function we_tag_addDelNewsletterEmail($attribs){
 
 				if($f['subscribe_html']){
 					$phpmail->addHTMLPart($mailtextHTML);
-				} else{
+				} else {
 					$phpmail->addTextPart(trim($mailtext));
 				}
 				$phpmail->buildMessage();
@@ -344,11 +339,11 @@ function we_tag_addDelNewsletterEmail($attribs){
 
 				if(isset($mywedoc))
 					$GLOBALS['we_doc'] = $mywedoc;
-			}else{
+			}else {
 				$GLOBALS['WE_WRITENEWSLETTER_STATUS'] = weNewsletterBase::STATUS_ERROR;
 				return;
 			}
-		} else{ //confirmID wurde übermittelt, eine Bestätigung liegt also vor
+		} else { //confirmID wurde übermittelt, eine Bestätigung liegt also vor
 			$emailwritten = 0;
 			switch($type){
 				case 'customer':
@@ -384,7 +379,7 @@ function we_tag_addDelNewsletterEmail($attribs){
 
 					if($__id == ''){
 						$__db->query('INSERT INTO ' . CUSTOMER_TABLE . ' SET ' . we_database_base::arraySetter($fields));
-					} else{
+					} else {
 						$__db->query('UPDATE ' . CUSTOMER_TABLE . ' SET ' . we_database_base::arraySetter($fields) . ' WHERE ID=' . $__id);
 					}
 
@@ -398,7 +393,7 @@ function we_tag_addDelNewsletterEmail($attribs){
 							$__setVals = explode(',', $__customerFields[$abo]['default']);
 						} else if(isset($__customerFields['Newsletter_Ok']['default']) && !empty($__customerFields[$abo]['default'])){
 							$__setVals = explode(',', $__customerFields['Newsletter_Ok']['default']);
-						} else{
+						} else {
 							$__setVals = array('', '1');
 						}
 
@@ -423,7 +418,7 @@ function we_tag_addDelNewsletterEmail($attribs){
 							$__customerFields[$abo] = $fieldDefault;
 							$updateCustomerFields = true;
 						}
-						$__set .= $abo."='" . $__db->escape($__setVal) . "', ";
+						$__set .= $abo . "='" . $__db->escape($__setVal) . "', ";
 					}
 
 					if($updateCustomerFields){
@@ -432,73 +427,53 @@ function we_tag_addDelNewsletterEmail($attribs){
 
 					$__set .= $_customerFieldPrefs['customer_html_field'] . '= "' . $__db->escape($f["subscribe_html"]) . '"';
 					$__db->query('UPDATE ' . CUSTOMER_TABLE . ' SET ' . $__set . ' WHERE ' . $_customerFieldPrefs['customer_email_field'] . '="' . $__db->escape($f["subscribe_mail"]) . '"');
-					$__db->query('DELETE FROM ' . NEWSLETTER_CONFIRM_TABLE . " WHERE LOWER(subscribe_mail) ='" . $__db->escape(strtolower($f["subscribe_mail"])) . "'");
 					break;
 				case 'emailonly':
 					//nicht in eine Liste eintragen sondern adminmail versenden
 					$GLOBALS['WE_WRITENEWSLETTER_STATUS'] = weNewsletterBase::STATUS_SUCCESS;
-				//no break
+					_weMailNewSuccessfullNewsletterActiviation($adminmailid, $adminemail, $adminsubject, $charset, $f, weTag_getAttribute('includeimages', $attribs, false, true));
+					break;
 				case 'csv':
-					if($type == 'csv'){ //in die Liste eintragen
-						foreach($paths as $p){
-							$realPath = realpath((substr($p, 0, 1) == '/') ? ($_SERVER['DOCUMENT_ROOT'] . $p) : ($_SERVER['DOCUMENT_ROOT'] . '/' . $p));
-							if(!@file_exists(dirname($realPath)) || strpos(realpath($realPath), realpath($_SERVER['DOCUMENT_ROOT'])) === FALSE){
+					//in die Liste eintragen
+					foreach($paths as $p){
+						$realPath = realpath((substr($p, 0, 1) == '/') ? ($_SERVER['DOCUMENT_ROOT'] . $p) : ($_SERVER['DOCUMENT_ROOT'] . '/' . $p));
+						if(!@file_exists(dirname($realPath)) || strpos(realpath($realPath), realpath($_SERVER['DOCUMENT_ROOT'])) === FALSE){
+							$GLOBALS['WE_WRITENEWSLETTER_STATUS'] = weNewsletterBase::STATUS_ERROR; // FATAL ERROR
+							$GLOBALS['WE_REMOVENEWSLETTER_STATUS'] = weNewsletterBase::STATUS_ERROR; // FATAL ERROR
+							return;
+						}
+
+						$ok = true;
+
+						$lock = weFile::lock(basename(__FILE__));
+						$file = weFile::load($realPath);
+						if($file !== false){
+							if((preg_match("%[\r\n]" . $f['subscribe_mail'] . ",[^\r\n]+[\r\n]%i", $file) || preg_match('%^' . $f['subscribe_mail'] . ",[^\r\n]+[\r\n]%i", $file))){
+								$ok = false; // E-Mail schon vorhanden => Nix tun
+							}
+						}
+						if($ok){
+							$row = $f['subscribe_mail'] . ',' . $f['subscribe_html'] . ',' . $f['subscribe_salutation'] . ',' . $f['subscribe_title'] . ',' . $f['subscribe_firstname'] . ',' . $f['subscribe_lastname'] . "\n";
+							if(weFile::save($realPath, $row, 'ab+')){
+								$emailwritten++;
+								weFile::unlock($lock);
+							} else {
+								weFile::unlock($lock);
+								t_e('save of file ' . $p . ' failed');
 								$GLOBALS['WE_WRITENEWSLETTER_STATUS'] = weNewsletterBase::STATUS_ERROR; // FATAL ERROR
-								$GLOBALS['WE_REMOVENEWSLETTER_STATUS'] = weNewsletterBase::STATUS_ERROR; // FATAL ERROR
 								return;
 							}
-
-
-							$ok = true;
-
-							$file = weFile::load($realPath);
-							if($file !== false){
-								if((preg_match("%[\r\n]" . $f['subscribe_mail'] . ",[^\r\n]+[\r\n]%i", $file) || preg_match('%^' . $f['subscribe_mail'] . ",[^\r\n]+[\r\n]%i", $file))){
-									$ok = false; // E-Mail schon vorhanden => Nix tun
-								}
-							}
-							if($ok){
-								$row = $f['subscribe_mail'] . ',' . $f['subscribe_html'] . ',' . $f['subscribe_salutation'] . ',' . $f['subscribe_title'] . ',' . $f['subscribe_firstname'] . ',' . $f['subscribe_lastname'] . "\n";
-								if(weFile::save($realPath, $row, 'ab+')){
-									$emailwritten++;
-								} else{
-									t_e('save of file ' . $p . ' failed');
-									$GLOBALS['WE_WRITENEWSLETTER_STATUS'] = weNewsletterBase::STATUS_ERROR; // FATAL ERROR
-									return;
-								}
-							}
-							@chmod($path);
 						}
-						if($emailwritten == 0){
-							$GLOBALS['WE_WRITENEWSLETTER_STATUS'] = weNewsletterBase::STATUS_EMAIL_EXISTS;
-						}
+						@chmod($path);
+					}
+					if($emailwritten == 0){
+						$GLOBALS['WE_WRITENEWSLETTER_STATUS'] = weNewsletterBase::STATUS_EMAIL_EXISTS;
 					}
 
-					if($adminmailid && $adminemail){//inform admin of the new account
-						$phpmail = new we_util_Mailer($adminemail, $adminsubject, $f['subscribe_mail'], $f['subscribe_mail']);
 
-						$adminmailtextHTML = ($adminmailid > 0) && weFileExists($adminmailid, FILE_TABLE, $db) ? we_getDocumentByID($adminmailid, '', $db, $charset) : '';
-						$phpmail->setCharSet($charset);
-
-						$adminmailtextHTML = strtr($adminmailtextHTML, array(
-							'###MAIL###' => $f['subscribe_mail'],
-							'###SALUTATION###' => $f['subscribe_salutation'],
-							'###TITLE###' => $f['subscribe_title'],
-							'###FIRSTNAME###' => $f['subscribe_firstname'],
-							'###LASTNAME###' => $f['subscribe_lastname'],
-							'###HTML###' => $f['subscribe_html'],
-						));
-						$includeimages = weTag_getAttribute('includeimages', $attribs, false, true);
-						$phpmail->addHTMLPart($adminmailtextHTML);
-						if(isset($includeimages)){
-							$phpmail->setIsEmbedImages($includeimages);
-						}
-						$phpmail->buildMessage();
-						$phpmail->Send();
-					}
-
-					$db->query('DELETE FROM ' . NEWSLETTER_CONFIRM_TABLE . " WHERE subscribe_mail ='" . $db->escape($f['subscribe_mail']) . "'");
+					_weMailNewSuccessfullNewsletterActiviation($adminmailid, $adminemail, $adminsubject, $charset, $f, weTag_getAttribute('includeimages', $attribs, false, true));
 			}
+			$__db->query('DELETE FROM ' . NEWSLETTER_CONFIRM_TABLE . " WHERE LOWER(subscribe_mail) ='" . $__db->escape(strtolower($f["subscribe_mail"])) . "'");
 		}
 	}
 
@@ -568,11 +543,10 @@ function we_unsubscribeNL($db, $customer, $_customerFieldPrefs, $abos, $paths){
 				$__db->query('UPDATE ' . CUSTOMER_TABLE . ' SET ' . we_database_base::arraySetter(array_merge($__update, $fields)) . ' ' . $__where);
 			}
 		}
-	} else{
+	} else {
 
 		foreach($paths as $path){
-
-			$path = (substr($path, 0, 1) == '/') ? ($_SERVER['DOCUMENT_ROOT'] . $path) : ($_SERVER['DOCUMENT_ROOT'] . '/' . $path);
+			$path = ($_SERVER['DOCUMENT_ROOT'] . '/' . ltrim($path, '/'));
 
 			if(!@file_exists(dirname($path))){
 				t_e('file ' . $path . ' doesn\'t exist');
@@ -582,14 +556,18 @@ function we_unsubscribeNL($db, $customer, $_customerFieldPrefs, $abos, $paths){
 			}
 
 			// #4158
+			$lock = weFile::lock(basename(__FILE__));
+
 			$file = @file($path);
 			if(!$file){
+				weFile::unlock($lock);
 				continue;
 			}
 
 			$fileChanged = false;
+			$regex = '|' . preg_quote($unsubscribe_mail, '|i') . ',|';
 			foreach($file as $i => $line){
-				if(mb_substr($line, 0, mb_strlen($unsubscribe_mail) + 1) == "$unsubscribe_mail,"){
+				if(preg_match($regex, $line)){
 					$emailExists = true;
 					unset($file[$i]);
 					$fileChanged = true;
@@ -602,6 +580,7 @@ function we_unsubscribeNL($db, $customer, $_customerFieldPrefs, $abos, $paths){
 					$GLOBALS['WE_REMOVENEWSLETTER_STATUS'] = weNewsletterBase::STATUS_ERROR; // FATAL ERROR
 				}
 			}
+			weFile::unlock($lock);
 			//
 		}
 	}
@@ -614,10 +593,9 @@ function we_unsubscribeNL($db, $customer, $_customerFieldPrefs, $abos, $paths){
 }
 
 function getNewsletterFields($request, $confirmid, &$errorcode, $mail = ''){
-
 	$errorcode = weNewsletterBase::STATUS_SUCCESS;
 	if($confirmid){
-		$_h = getHash('SELECT * FROM ' . NEWSLETTER_CONFIRM_TABLE . ' WHERE confirmID = "' . escape_sql_query($confirmid) . '" AND LOWER(subscribe_mail)="' . escape_sql_query(strtolower($mail)) . '"', new DB_WE());
+		$_h = getHash('SELECT * FROM ' . NEWSLETTER_CONFIRM_TABLE . ' WHERE confirmID = "' . $GLOBALS['DB_WE']->escape($confirmid) . '" AND LOWER(subscribe_mail)="' . $GLOBALS['DB_WE']->escape(strtolower($mail)) . '"', $GLOBALS['DB_WE']);
 		if(empty($_h)){
 			$errorcode = weNewsletterBase::STATUS_CONFIRM_FAILED;
 		}
@@ -643,4 +621,31 @@ function getNewsletterFields($request, $confirmid, &$errorcode, $mail = ''){
 		'subscribe_firstname' => trim((isset($request['we_subscribe_firstname__']) ? preg_replace("|[\r\n,]|", '', filterXss($request['we_subscribe_firstname__'])) : '')),
 		'subscribe_lastname' => trim((isset($request['we_subscribe_lastname__']) ? preg_replace("|[\r\n,]|", '', filterXss($request['we_subscribe_lastname__'])) : ''))
 	);
+}
+
+function _weMailNewSuccessfullNewsletterActiviation($adminmailid, $adminemail, $adminsubject, $charset, $f, $includeimages){
+	if(!($adminmailid && $adminemail)){//inform admin of the new account
+		return;
+	}
+	$db = $GLOBALS['DB_WE'];
+	$phpmail = new we_util_Mailer($adminemail, $adminsubject, $f['subscribe_mail'], $f['subscribe_mail']);
+
+	$phpmail->setCharSet($charset);
+
+	$adminmailtextHTML = strtr(
+		(($adminmailid > 0) && weFileExists($adminmailid, FILE_TABLE, $db) ? we_getDocumentByID($adminmailid, '', $db, $charset) : '')
+		, array(
+		'###MAIL###' => $f['subscribe_mail'],
+		'###SALUTATION###' => $f['subscribe_salutation'],
+		'###TITLE###' => $f['subscribe_title'],
+		'###FIRSTNAME###' => $f['subscribe_firstname'],
+		'###LASTNAME###' => $f['subscribe_lastname'],
+		'###HTML###' => $f['subscribe_html'],
+	));
+	$phpmail->addHTMLPart($adminmailtextHTML);
+	if(isset($includeimages)){
+		$phpmail->setIsEmbedImages($includeimages);
+	}
+	$phpmail->buildMessage();
+	$phpmail->Send();
 }

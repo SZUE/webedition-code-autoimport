@@ -26,7 +26,7 @@
  *
  * @todo check if needed and if, then complete it and DON'T use old stuff like DB and other
  * */
-abstract class we_util_File {
+abstract class we_util_File{
 
 	public static function load($filename, $flags = "rb", $rsize = 8192){
 		return weFile::load($filename, $flags, $rsize);
@@ -41,26 +41,10 @@ abstract class we_util_File {
 	}
 
 	public static function save($filename, $content, $flags = "wb", $create_path = false){
-		if($filename == "" || self::hasURL($filename)){
+		if(($create_path && !self::mkpath(dirname($filename))) || (!is_writable(dirname($filename)))){
 			return false;
 		}
-		if(file_exists($filename)){
-			if(!is_writable($filename)){
-				return false;
-			}
-		} elseif(($create_path && !self::mkpath(dirname($filename))) || (!is_writable(dirname($filename)))){
-			return false;
-		}
-
-		$written = 0;
-
-		$fp = @fopen($filename, $flags);
-		if($fp){
-			$written = fwrite($fp, $content);
-			@fclose($fp);
-			return $written;
-		}
-		return false;
+		return weFile::save($filename, $content, $flags);
 	}
 
 	public static function saveTemp($content, $filename = "", $flags = "wb"){
@@ -82,76 +66,12 @@ abstract class we_util_File {
 	/**
 	 * split a file into various parts of a predefined size
 	 */
-	public static function splitFile($filename, $path, $pattern = "", $split_size = 0, $marker = ""){
-
-		if($pattern == ""){
-			$pattern = basename($filename) . "%s";
-		}
-		$buff = "";
-		$filename_tmp = "";
-		$fh = fopen($filename, "rb");
-		$num = -1;
-		$open_new = true;
-		$fsize = 0;
-
-		$marker_size = strlen($marker);
-
-		if($fh){
-			while(!@feof($fh)){
-				update_time_limit(60);
-				$line = "";
-				$findline = false;
-
-				while($findline == false && !@feof($fh)){
-					$line .= @fgets($fh, 4096);
-					if(substr($line, -1) == "\n"){
-						$findline = true;
-					}
-				}
-
-				if($open_new){
-					$num++;
-					$filename_tmp = sprintf($path . $pattern, $num);
-					$fh_temp = fopen($filename_tmp, "wb");
-					$open_new = false;
-				}
-
-				if($fh_temp){
-					$buff .= $line;
-
-					$write = ($marker_size ? ((substr($buff, (0 - ($marker_size + 1))) == $marker . "\n") || (substr($buff, (0 - ($marker_size + 2))) == $marker . "\r\n")) : true);
-
-					if($write){
-						$fsize += strlen($buff);
-						fwrite($fh_temp, $buff);
-						if(($split_size && $fsize > $split_size) || ($marker_size)){
-							$open_new = true;
-							@fclose($fh_temp);
-							$fsize = 0;
-						}
-						$buff = "";
-					}
-				} else {
-					return -1;
-				}
-			}
-		} else {
-			return -1;
-		}
-		if($fh_temp && $buff){
-			fwrite($fh_temp, $buff);
-		}
-		@fclose($fh);
-
-		return $num + 1;
+	public static function splitFile($filename, $path, $pattern = '', $split_size = 0, $marker = ''){
+		return weFile::splitFile($filename, $path, $pattern, $split_size, $marker);
 	}
 
 	public static function mkpath($path){
-		$path = str_replace('\\', '/', $path);
-		if(empty($path) || self::hasURL($path)){
-			return false;
-		}
-		return self::createLocalFolderByPath($path);
+		return weFile::mkpath($path);
 	}
 
 	public static function hasGzip(){
@@ -274,67 +194,19 @@ abstract class we_util_File {
 	}
 
 	public static function createLocalFolder($RootDir, $path = ''){
-		return self::createLocalFolderByPath($RootDir . $path);
+		return weFile::createLocalFolderByPath($RootDir . $path);
 	}
 
 	public static function createLocalFolderByPath($completeDirPath){
-
-		$returnValue = true;
-
-		if(self::checkAndMakeFolder($completeDirPath, true)){
-			return $returnValue;
-		}
-
-		$cf = array($completeDirPath);
-
-		$parent = str_replace("\\", "/", dirname($completeDirPath));
-
-		while(!self::checkAndMakeFolder($parent)){
-			$cf[] = $parent;
-			$parent = str_replace("\\", "/", dirname($parent));
-		}
-
-		for($i = (count($cf) - 1); $i >= 0; $i--){
-			$mod = octdec(intval(WE_NEW_FOLDER_MOD));
-
-			if(!@mkdir($cf[$i], $mod)){
-				t_e('Warning', "Could not create local Folder at File.php/createLocalFolderByPath(): '" . $cf[$i] . "'");
-				$returnValue = false;
-			}
-		}
-
-		return $returnValue;
+		return weFile::createLocalFolderByPath($completeDirPath);
 	}
 
 	public static function insertIntoCleanUp($path, $date){
-		$DB_WE = new DB_WE();
-		$DB_WE->query('INSERT INTO ' . CLEAN_UP_TABLE . ' SET ' . we_database_base::arraySetter(array(
-				'Path' => $DB_WE->escape($path),
-				'Date' => intval($date)
-			)) . ' ON DUPLICATE KEY UPDATE Date=' . intval($date));
+		return weFile::insertIntoCleanUp($path, $date);
 	}
 
 	public static function checkAndMakeFolder($path, $recursive = false){
-		/* if the directory exists, we have nothing to do and then we return true  */
-		if((file_exists($path) && is_dir($path)) || (strtolower(rtrim($_SERVER['DOCUMENT_ROOT'], '/')) == strtolower(rtrim($path, '/')))){
-			return true;
-		}
-
-// if instead of the directory a file exists, we delete the file and create the directory
-		if(file_exists($path) && (!is_dir($path))){
-			if(!we_util_File::deleteLocalFile($path)){
-				t_e('Warning', "Could not delete File '" . $path . "'");
-			}
-		}
-
-		$mod = octdec(intval(WE_NEW_FOLDER_MOD));
-
-// check for directories: create it if we could no write into it:
-		if(!@mkdir($path, $mod, $recursive)){
-			t_e('warning', "Could not create local Folder at 'we_util_File/checkAndMakeFolder()': '" . $path . "'");
-			return false;
-		}
-		return true;
+		weFile::checkAndMakeFolder($path, $recursive);
 	}
 
 	/**

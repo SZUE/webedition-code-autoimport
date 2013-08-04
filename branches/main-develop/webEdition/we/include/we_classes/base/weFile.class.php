@@ -124,7 +124,7 @@ abstract class weFile{
 	}
 
 	static function save($filename, $content, $flags = 'wb', $compression = ''){
-		if($filename == '' || self::hasURL($filename) || (file_exists($filename) && !is_writable($filename))){
+		if(empty($filename) || self::hasURL($filename) || (file_exists($filename) && !is_writable($filename))){
 			t_e('error writing file', $filename);
 			return false;
 		}
@@ -182,7 +182,7 @@ abstract class weFile{
 	 */
 	static function splitFile($filename, $path, $pattern = '', $split_size = 0, $marker = ''){
 
-		if($pattern == ''){
+		if(empty($pattern)){
 			$pattern = basename($filename) . '%s';
 		}
 		$buff = '';
@@ -259,7 +259,70 @@ abstract class weFile{
 		$path = str_replace('\\', '/', $path);
 		return (self::hasURL($path) ?
 				false :
-				($path != '' ? we_util_File::createLocalFolderByPath($path) : false));
+				($path != '' ? self::createLocalFolderByPath($path) : false));
+	}
+
+	public static function insertIntoCleanUp($path, $date){
+		$DB_WE = new DB_WE();
+		$DB_WE->query('INSERT INTO ' . CLEAN_UP_TABLE . ' SET ' . we_database_base::arraySetter(array(
+				'Path' => $DB_WE->escape($path),
+				'Date' => intval($date)
+			)) . ' ON DUPLICATE KEY UPDATE Date=' . intval($date));
+	}
+
+	public static function checkAndMakeFolder($path, $recursive = false){
+		/* if the directory exists, we have nothing to do and then we return true  */
+		if((file_exists($path) && is_dir($path)) || (strtolower(rtrim($_SERVER['DOCUMENT_ROOT'], '/')) == strtolower(rtrim($path, '/')))){
+			return true;
+		}
+
+// if instead of the directory a file exists, we delete the file and create the directory
+		if(file_exists($path) && (!is_dir($path))){
+			if(!we_util_File::deleteLocalFile($path)){
+				t_e('Warning', "Could not delete File '" . $path . "'");
+			}
+		}
+
+		$mod = octdec(intval(WE_NEW_FOLDER_MOD));
+
+// check for directories: create it if we could no write into it:
+		if(!@mkdir($path, $mod, $recursive)){
+			t_e('warning', "Could not create local Folder at 'we_util_File/checkAndMakeFolder()': '" . $path . "'");
+			return false;
+		}
+		return true;
+	}
+
+	public static function createLocalFolder($RootDir, $path = ''){
+		return self::createLocalFolderByPath($RootDir . $path);
+	}
+
+	public static function createLocalFolderByPath($completeDirPath){
+		$returnValue = true;
+
+		if(self::checkAndMakeFolder($completeDirPath, true)){
+			return $returnValue;
+		}
+
+		$cf = array($completeDirPath);
+
+		$parent = str_replace("\\", "/", dirname($completeDirPath));
+
+		while(!self::checkAndMakeFolder($parent)){
+			$cf[] = $parent;
+			$parent = str_replace("\\", "/", dirname($parent));
+		}
+
+		for($i = (count($cf) - 1); $i >= 0; $i--){
+			$mod = octdec(intval(WE_NEW_FOLDER_MOD));
+
+			if(!@mkdir($cf[$i], $mod)){
+				t_e('Warning', "Could not create local Folder at File.php/createLocalFolderByPath(): '" . $cf[$i] . "'");
+				$returnValue = false;
+			}
+		}
+
+		return $returnValue;
 	}
 
 	static function hasGzip(){
@@ -393,8 +456,7 @@ abstract class weFile{
 					fwrite($fp, $data);
 				} while(true);
 				fclose($fp);
-			}
-			else {
+			} else {
 				gzclose($gzfp);
 				return false;
 			}
@@ -439,6 +501,24 @@ abstract class weFile{
 			$cnt = substr_count(str_replace($_SERVER['DOCUMENT_ROOT'], '', $link), '/') - 1;
 			$destination = str_repeat('../', $cnt) . basename($destinationPath);
 			symlink($destination, $link);
+		}
+	}
+
+	static function lock($id){
+		$path = TEMP_PATH . '/' . $id . '.lck';
+		$fp = fopen($path, 'c');
+
+		//we can't cleanup file, since another instance might already access this lockfile
+		if(flock($fp, LOCK_EX, true)){
+			return $fp;
+		}
+		return false;
+	}
+
+	static function unlock($fp){
+		if($fp){
+			flock($fp, LOCK_UN);
+			fclose($fp);
 		}
 	}
 
