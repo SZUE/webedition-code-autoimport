@@ -140,6 +140,7 @@ function wetagsessionHandleFailedLogin(){
 		//don't serve user
 		if(SECURITY_LIMIT_CUSTOMER_REDIRECT){
 			$_SESSION['webuser']['loginfailed'] = we_user::MAX_LOGIN_COUNT_REACHED;
+			unset($_REQUEST['s']);
 			@include($_SERVER['DOCUMENT_ROOT'] . id_to_path(SECURITY_LIMIT_CUSTOMER_REDIRECT, FILE_TABLE));
 		} else {
 			echo CheckAndConvertISOfrontend('Dear customer, our service is currently not available. Please try again later. Thank you.<br/>' .
