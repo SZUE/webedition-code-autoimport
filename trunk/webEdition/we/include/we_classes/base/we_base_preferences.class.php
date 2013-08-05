@@ -80,18 +80,16 @@ class we_base_preferences{
 		// Read the global configuration file
 		$_file_name = WE_INCLUDES_PATH . 'conf/we_conf_global.inc.php';
 		$_file_name_backup = $_file_name . '.bak';
-		$oldContent = weFile::load($_file_name);
+		$content = $oldContent = weFile::load($_file_name);
 
 		if($file != '' && $file != $_file_name){
-			$_file_name = $file;
-			$content = weFile::load($_file_name);
+			$content = weFile::load($file);
 			//leave settings in their current state
 			foreach($leave as $settingname){
 				$content = self::changeSourceCode('define', $content, $settingname, constant($settingname), true);
 			}
-		} else{
-			$content = $oldContent;
 		}
+
 		// load & Cut closing PHP tag from configuration file
 		$content = trim(str_replace(array('?>', "\n\n\n\n", "\n\n\n"), array('', "\n\n", "\n\n"), $content), "\n ");
 		$oldContent = trim(str_replace('?>', '', $oldContent), "\n ");

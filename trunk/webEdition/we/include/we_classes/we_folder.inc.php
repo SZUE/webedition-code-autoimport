@@ -256,10 +256,7 @@ class we_folder extends we_root{
 		}
 
 		if(!$update || $objFolder){
-			if(!parent::we_save($resave)){
-				return false;
-			}
-			if(!$this->writeFolder()){
+			if(!parent::we_save($resave) || !$this->writeFolder()){
 				return false;
 			}
 		}
@@ -301,18 +298,16 @@ class we_folder extends we_root{
 
 		// Adapt tblLangLink-entries of documents and objects to the new language (all published and unpublished)
 		//$query = "SELECT ID, Language FROM " . $DB_WE->escape($this->Table) . " WHERE Path LIKE '" . $DB_WE->escape($this->Path) . "/%' AND ((Published = 0 AND ContentType = 'folder') OR (Published > 0 AND (ContentType = 'text/webEdition' OR ContentType = 'text/html' OR ContentType = 'objectFile')))";
-		$query = 'SELECT ID FROM ' . $DB_WE->escape($this->Table) . ' WHERE Path LIKE "' . $DB_WE->escape($this->Path) . '/%" AND ContentType IN ("text/webEdition","text/html","objectFile")';
 
-		if(!$DB_WE->query($query)){
+		if(!$DB_WE->query('SELECT ID FROM ' . $DB_WE->escape($this->Table) . ' WHERE Path LIKE "' . $DB_WE->escape($this->Path) . '/%" AND ContentType IN ("text/webEdition","text/html","objectFile")')){
 			return false;
 		}
 		while($DB_WE->next_record()) {
 			if($DB_WE->Record['Language'] != $language){
 				$documentTable = ($DB_WE->escape($this->Table) == FILE_TABLE) ? 'tblFile' : 'tblObjectFile';
-				$query = 'SELECT LDID, Locale FROM ' . LANGLINK_TABLE . ' WHERE DID = ' . intval($DB_WE->Record['ID']) . ' AND DocumentTable = "' . $documentTable . '"';
 				$existLangLinks = false;
 				$deleteLangLinks = false;
-				if($DB_WE2->query($query)){
+				if($DB_WE2->query('SELECT LDID, Locale FROM ' . LANGLINK_TABLE . ' WHERE DID = ' . intval($DB_WE->Record['ID']) . ' AND DocumentTable = "' . $documentTable . '"')){
 					$ldidArray = array();
 					while($DB_WE2->next_record()) {
 						$existLangLinks = true;
@@ -327,13 +322,10 @@ class we_folder extends we_root{
 							foreach($ldidArray as $ldid){
 								$didCondition .= ' OR DID = ' . intval($ldid);
 							}
-							$query = 'DELETE FROM ' . LANGLINK_TABLE . ' WHERE (' . $didCondition . ')  AND DocumentTable = "' . $documentTable . '"';
-							$DB_WE3->query($query);
+							$DB_WE3->query('DELETE FROM ' . LANGLINK_TABLE . ' WHERE (' . $didCondition . ')  AND DocumentTable = "' . $documentTable . '"');
 						} else{
-							$query = 'UPDATE ' . LANGLINK_TABLE . ' SET DLOCALE = "' . $language . '" WHERE DID = ' . intval($DB_WE->Record['ID']);
-							$DB_WE3->query($query);
-							$query = 'UPDATE ' . LANGLINK_TABLE . ' SET LOCALE = "' . $language . '" WHERE LDID = ' . intval($DB_WE->Record['ID']);
-							$DB_WE3->query($query);
+							$DB_WE3->query('UPDATE ' . LANGLINK_TABLE . ' SET DLOCALE = "' . $language . '" WHERE DID = ' . intval($DB_WE->Record['ID']));
+							$DB_WE3->query('UPDATE ' . LANGLINK_TABLE . ' SET LOCALE = "' . $language . '" WHERE LDID = ' . intval($DB_WE->Record['ID']));
 						}
 					}
 				}
@@ -341,42 +333,33 @@ class we_folder extends we_root{
 		}
 
 		// Adapt tblLangLink-entries of folders to the new language
-		$query = 'SELECT ID FROM ' . $DB_WE->escape($this->Table) . ' WHERE Path LIKE "' . $DB_WE->escape($this->Path) . '/%" AND ContentType = "folder"';
-		if(!$DB_WE->query($query)){
+		if(!$DB_WE->query('SELECT ID FROM ' . $DB_WE->escape($this->Table) . ' WHERE Path LIKE "' . $DB_WE->escape($this->Path) . '/%" AND ContentType = "folder"')){
 			return false;
 		}
 		while($DB_WE->next_record()) {
 			$documentTable = 'tblFile';
-			$query = 'DELETE FROM ' . LANGLINK_TABLE . ' WHERE DID = ' . intval($DB_WE->Record['ID']) . ' AND DocumentTable = "' . $documentTable . '" AND IsFolder > 0 AND Locale = "' . $language . '"';
-			$DB_WE2->query($query);
-			$query = 'UPDATE ' . LANGLINK_TABLE . ' SET DLOCALE = "' . $language . '" WHERE DID = ' . intval($DB_WE->Record['ID']) . ' AND DocumentTable = "' . $documentTable . '" AND IsFolder > 0';
-			$DB_WE2->query($query);
+			$DB_WE2->query('DELETE FROM ' . LANGLINK_TABLE . ' WHERE DID = ' . intval($DB_WE->Record['ID']) . ' AND DocumentTable = "' . $documentTable . '" AND IsFolder > 0 AND Locale = "' . $language . '"');
+			$DB_WE2->query('UPDATE ' . LANGLINK_TABLE . ' SET DLOCALE = "' . $language . '" WHERE DID = ' . intval($DB_WE->Record['ID']) . ' AND DocumentTable = "' . $documentTable . '" AND IsFolder > 0');
 		}
 
 		// Change language of published documents, objects
-		$query = 'UPDATE ' . $DB_WE->escape($this->Table) . ' SET Language = "' . $DB_WE->escape($this->Language) . '" WHERE Path LIKE "' . $DB_WE->escape($this->Path) . '/%" AND ((Published = 0 AND ContentType = "folder") OR (Published > 0 AND ContentType IN ("text/webEdition","text/html","objectFile")))';
-
-		if(!$DB_WE->query($query)){
+		if(!$DB_WE->query('UPDATE ' . $DB_WE->escape($this->Table) . ' SET Language = "' . $DB_WE->escape($this->Language) . '" WHERE Path LIKE "' . $DB_WE->escape($this->Path) . '/%" AND ((Published = 0 AND ContentType = "folder") OR (Published > 0 AND ContentType IN ("text/webEdition","text/html","objectFile")))')){
 			return false;
 		}
 
 		// Change Language of unpublished documents
-		$query = 'SELECT ID FROM ' . $DB_WE->escape($this->Table) . ' WHERE Path LIKE "' . $DB_WE->escape($this->Path) . '/%" AND ContentType IN ("text/webEdition","text/html","objectFile")';
-
-		if(!$DB_WE->query($query)){
+		if(!$DB_WE->query('SELECT ID FROM ' . $DB_WE->escape($this->Table) . ' WHERE Path LIKE "' . $DB_WE->escape($this->Path) . '/%" AND ContentType IN ("text/webEdition","text/html","objectFile")')){
 			return false;
 		}
 		while($DB_WE->next_record()) {
-			$query = 'SELECT DocumentObject FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentID = ' . intval($DB_WE->f('ID')) . ' AND DocTable = "' . stripTblPrefix($this->Table) . '" AND Active = 1';
-			$DocumentObject = f($query, 'DocumentObject', $DB_WE2);
+			$DocumentObject = f('SELECT DocumentObject FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentID = ' . intval($DB_WE->f('ID')) . ' AND DocTable = "' . stripTblPrefix($this->Table) . '" AND Active = 1', 'DocumentObject', $DB_WE2);
 			if($DocumentObject != ''){
 				$DocumentObject = unserialize($DocumentObject);
 				$DocumentObject[0]['Language'] = $this->Language;
 				$DocumentObject = serialize($DocumentObject);
 				$DocumentObject = str_replace("'", "\'", $DocumentObject);
 
-				$query = 'UPDATE ' . TEMPORARY_DOC_TABLE . ' SET DocumentObject="' . $DB_WE->escape($DocumentObject) . '" WHERE DocumentID=' . intval($DB_WE->f('ID')) . ' AND DocTable = "' . stripTblPrefix($this->Table) . '" AND Active = 1';
-				if(!$DB_WE2->query($query)){
+				if(!$DB_WE2->query('UPDATE ' . TEMPORARY_DOC_TABLE . ' SET DocumentObject="' . $DB_WE->escape($DocumentObject) . '" WHERE DocumentID=' . intval($DB_WE->f('ID')) . ' AND DocTable = "' . stripTblPrefix($this->Table) . '" AND Active = 1')){
 					return false;
 				}
 			}
@@ -391,9 +374,7 @@ class we_folder extends we_root{
 			$cid = $pid = f($q, 'ID', $DB_WE);
 			$_obxTable = OBJECT_X_TABLE . $cid;
 
-			$query = 'UPDATE ' . $DB_WE->escape($_obxTable) . ' SET OF_Language = "' . $DB_WE->escape($this->Language) . '" WHERE OF_Path LIKE "' . $DB_WE->escape($this->Path) . '/%" ';
-
-			if(!$DB_WE->query($query)){
+			if(!$DB_WE->query('UPDATE ' . $DB_WE->escape($_obxTable) . ' SET OF_Language = "' . $DB_WE->escape($this->Language) . '" WHERE OF_Path LIKE "' . $DB_WE->escape($this->Path) . '/%" ')){
 				return false;
 			}
 		}
@@ -707,13 +688,12 @@ class we_folder extends we_root{
 	function we_rewrite(){
 		if(parent::we_rewrite()){
 			if($this->Table == FILE_TABLE){
-				$this->we_save(1);
+				return $this->we_save(1);
 			} else{
 				return true;
 			}
-		} else{
-			return false;
-		};
+		}
+		return false;
 	}
 
 	/**
