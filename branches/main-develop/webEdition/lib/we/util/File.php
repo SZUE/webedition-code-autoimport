@@ -26,82 +26,16 @@
  *
  * @todo check if needed and if, then complete it and DON'T use old stuff like DB and other
  * */
-abstract class we_util_File{
-
-	public static function load($filename, $flags = "rb", $rsize = 8192){
-		return weFile::load($filename, $flags, $rsize);
-	}
-
-	public static function loadLine($filename, $offset = 0, $rsize = 8192, $iscompressed = 0){
-		return weFile::loadLine($filename, $offset, $rsize, $iscompressed);
-	}
-
-	public static function loadPart($filename, $offset = 0, $rsize = 8192, $iscompressed = 0){
-		return weFile::loadPart($filename, $offset, $rsize, $iscompressed);
-	}
+abstract class we_util_File extends weFile{
 
 	public static function save($filename, $content, $flags = "wb", $create_path = false){
 		if(($create_path && !self::mkpath(dirname($filename))) || (!is_writable(dirname($filename)))){
 			return false;
 		}
-		return weFile::save($filename, $content, $flags);
+		return parent::save($filename, $content, $flags);
 	}
 
-	public static function saveTemp($content, $filename = "", $flags = "wb"){
-		return weFile::saveTemp($content, $filename, $flags);
-	}
-
-	public static function delete($filename){
-		return weFile::delete($filename);
-	}
-
-	public static function hasURL($filename){
-		return ((strtolower(substr($filename, 0, 4)) == "http") || (strtolower(substr($filename, 0, 4)) == "ftp"));
-	}
-
-	public static function getUniqueId($md5 = true){
-		return weFile::getUniqueId($md5);
-	}
-
-	/**
-	 * split a file into various parts of a predefined size
-	 */
-	public static function splitFile($filename, $path, $pattern = '', $split_size = 0, $marker = ''){
-		return weFile::splitFile($filename, $path, $pattern, $split_size, $marker);
-	}
-
-	public static function mkpath($path){
-		return weFile::mkpath($path);
-	}
-
-	public static function hasGzip(){
-		return weFile::hasGzip();
-	}
-
-	public static function hasZip(){
-		return weFile::hasZip();
-	}
-
-	public static function hasBzip(){
-		return weFile::hasBzip();
-	}
-
-	public static function hasCompression($comp){
-		return weFile::hasCompression($comp);
-	}
-
-	public static function getComPrefix($compression){
-		return weFile::getComPrefix($compression);
-	}
-
-	public static function getZExtension($compression){
-		return weFile::getZExtension($compression);
-	}
-
-	public static function getCompression($filename){
-		return weFile::getCompression($filename);
-	}
-
+//FIXME:remove
 	public static function compress($file, $compression = "gzip", $destination = "", $remove = true, $writemode = "wb"){
 
 		if(!self::hasCompression($compression)){
@@ -110,7 +44,7 @@ abstract class we_util_File{
 		if($destination == ""){
 			$destination = $file;
 		}
-		$prefix = weFile::getComPrefix($compression);
+		$prefix = parent::getComPrefix($compression);
 		$open = $prefix . "open";
 		$write = $prefix . "write";
 		$close = $prefix . "close";
@@ -146,6 +80,7 @@ abstract class we_util_File{
 		return $zfile;
 	}
 
+	//FIXME:remove
 	public static function decompress($gzfile, $remove = true){
 		$gzfp = @gzopen($gzfile, 'rb');
 		if($gzfp){
@@ -176,37 +111,11 @@ abstract class we_util_File{
 		return $file;
 	}
 
-	public static function isCompressed($file, $offset = 0){
-		return weFile::isCompressed($file, $offset);
-	}
-
 	public static function saveFile($file_name, $sourceCode = ''){
 		if(!self::createLocalFolderByPath(str_replace('\\', '/', dirname($file_name)))){
 			return false;
 		}
-		$fh = @fopen($file_name, 'wb');
-		if(!$fh){
-			return false;
-		}
-		$ret = ($sourceCode ? fwrite($fh, $sourceCode) : true);
-		fclose($fh);
-		return $ret;
-	}
-
-	public static function createLocalFolder($RootDir, $path = ''){
-		return weFile::createLocalFolderByPath($RootDir . $path);
-	}
-
-	public static function createLocalFolderByPath($completeDirPath){
-		return weFile::createLocalFolderByPath($completeDirPath);
-	}
-
-	public static function insertIntoCleanUp($path, $date){
-		return weFile::insertIntoCleanUp($path, $date);
-	}
-
-	public static function checkAndMakeFolder($path, $recursive = false){
-		return weFile::checkAndMakeFolder($path, $recursive);
+		return parent::save($file_name, $sourceCode);
 	}
 
 	/**
@@ -269,7 +178,6 @@ abstract class we_util_File{
 	public static function moveDir($dir, $target){
 		$dir = self::removeTrailingSlash($dir);
 		$target = self::addTrailingSlash($target);
-		$dirname = substr(strrchr($dir, "/"), 1);
 		if(self::removeTrailingSlash($dir) == self::removeTrailingSlash($target)){
 			t_e('notice', "source and destination are the same.");
 			return true;
