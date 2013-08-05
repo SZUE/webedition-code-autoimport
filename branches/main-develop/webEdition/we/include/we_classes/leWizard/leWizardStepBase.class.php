@@ -116,14 +116,6 @@ class leWizardStepBase{
 	var $liveUpdateHttpResponse = null;
 
 	/**
-	 * PHP4 Constructor
-	 *
-	 */
-	function leWizardStepBase($Name, $WizardObj, $Language = array()){
-		$this->__construct($Name, $WizardObj, $Language);
-	}
-
-	/**
 	 * PHP5 Constructor
 	 *
 	 */
