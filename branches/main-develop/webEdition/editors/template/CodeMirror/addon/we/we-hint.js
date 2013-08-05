@@ -15,7 +15,7 @@
 			cm.setCursor(cursor);
 		}
 
-		CodeMirror.simpleHint(cm, getHint);
+		CodeMirror.showHint(cm, getHint);
 	};
 
 	var getHint = function(cm) {

@@ -566,6 +566,9 @@ switch($_SESSION['prefs']['editorMode']){
 					$parser_js[] = 'mode/javascript/javascript.js';
 					$parser_js[] = 'addon/fold/foldcode.js';
 					$parser_js[] = 'addon/edit/matchbrackets.js';
+					$parser_js[] = 'addon/hint/show-hint.js';
+					$parser_js[] = 'addon/hint/javascript-hint.js';
+					$parser_css[] = 'addon/hint/show-hint.css';
 					$mode = 'text/javascript';
 					break;
 				case 'text/weTmpl':
@@ -575,10 +578,10 @@ switch($_SESSION['prefs']['editorMode']){
 					$parser_js[] = 'addon/fold/foldcode.js';
 					$parser_js[] = 'addon/edit/matchbrackets.js';
 					if($_SESSION['prefs']['editorCodecompletion']){
-						$parser_js[] = 'addon/hint/simple-hint.js';
+						$parser_js[] = 'addon/hint/show-hint.js';
 						$parser_js[] = 'addon/we/we-hint.js';
 					}
-					$parser_css[] = 'lib/util/simple-hint.css';
+					$parser_css[] = 'addon/hint/show-hint.css';
 					$toolTip = $_SESSION['prefs']['editorTooltips'];
 					$mode = 'text/weTmpl';
 					$useCompletion = true;
@@ -593,16 +596,19 @@ switch($_SESSION['prefs']['editorMode']){
 					$parser_js[] = 'addon/fold/foldcode.js';
 					$parser_js[] = 'addon/edit/matchbrackets.js';
 					if($_SESSION['prefs']['editorCodecompletion']){
-						$parser_js[] = 'addon/hint/simple-hint.js';
+						$parser_js[] = 'addon/hint/show-hint.js';
 						$parser_js[] = 'addon/we/we-hint.js';
 					}
-					$parser_css[] = 'lib/util/simple-hint.css';
+					$parser_css[] = 'addon/hint/show-hint.css';
 					$mode = (isset($mode) ? $mode : 'application/x-httpd-php');
 					$useCompletion = true;
 					break;
 				case 'text/xml':
 					$parser_js[] = 'mode/xml/xml.js';
 					$parser_js[] = 'addon/edit/matchbrackets.js';
+					$parser_js[] = 'addon/hint/show-hint.js';
+					$parser_js[] = 'addon/hint/xml-hint.js';
+					$parser_css[] = 'addon/hint/show-hint.css';
 					$mode = 'application/xml';
 					break;
 				default:
