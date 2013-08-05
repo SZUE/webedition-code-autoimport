@@ -509,7 +509,7 @@ abstract class weFile{
 		$fp = fopen($path, 'c');
 
 		//we can't cleanup file, since another instance might already access this lockfile
-		if(flock($fp, LOCK_EX, true)){
+		if(flock($fp, LOCK_EX)){
 			return $fp;
 		}
 		return false;

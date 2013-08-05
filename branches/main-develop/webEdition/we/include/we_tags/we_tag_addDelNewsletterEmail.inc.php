@@ -445,7 +445,7 @@ function we_tag_addDelNewsletterEmail($attribs){
 
 						$ok = true;
 
-						$lock = weFile::lock(basename(__FILE__));
+						while(($lock = weFile::lock(basename(__FILE__)))==false){usleep(500000);}
 						$file = weFile::load($realPath);
 						if($file !== false){
 							if((preg_match("%[\r\n]" . $f['subscribe_mail'] . ",[^\r\n]+[\r\n]%i", $file) || preg_match('%^' . $f['subscribe_mail'] . ",[^\r\n]+[\r\n]%i", $file))){
@@ -556,7 +556,7 @@ function we_unsubscribeNL($db, $customer, $_customerFieldPrefs, $abos, $paths){
 			}
 
 			// #4158
-			$lock = weFile::lock(basename(__FILE__));
+			while(($lock = weFile::lock(basename(__FILE__)))==false){usleep(500000);}
 
 			$file = @file($path);
 			if(!$file){
