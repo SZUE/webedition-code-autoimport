@@ -206,7 +206,7 @@ abstract class we_util_File{
 	}
 
 	public static function checkAndMakeFolder($path, $recursive = false){
-		weFile::checkAndMakeFolder($path, $recursive);
+		return weFile::checkAndMakeFolder($path, $recursive);
 	}
 
 	/**
