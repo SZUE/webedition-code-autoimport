@@ -26,7 +26,9 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
 //make sure we will have at least an good timestamp
-weBackup::limitsReached('', 1);
+if(isset($_SESSION['weS']['weBackupVars']) && !empty($_SESSION['weS']['weBackupVars'])){
+	weBackup::limitsReached('', 1);
+}
 
 if(!isset($_REQUEST['cmd'])){
 	t_e('called without command');
@@ -50,7 +52,7 @@ if(($_REQUEST['cmd'] == 'export' || $_REQUEST['cmd'] == 'import') && isset($_SES
 
 		if(!isset($_SESSION['weS']['weBackupVars']['retry'])){
 			$_SESSION['weS']['weBackupVars']['retry'] = 1;
-		} else{
+		} else {
 			++$_SESSION['weS']['weBackupVars']['retry'];
 		}
 
@@ -70,6 +72,8 @@ switch($_REQUEST['cmd']){
 			$_SESSION['weS']['weBackupVars'] = array();
 
 			if(weBackupPreparer::prepareExport() === true){
+				weBackup::limitsReached('', 1);
+
 				weBackupUtil::addLog('Start backup export');
 				weBackupUtil::addLog('Export to server: ' . ($_SESSION['weS']['weBackupVars']['options']['export2server'] ? 'yes' : 'no'));
 				weBackupUtil::addLog('Export to local: ' . ($_SESSION['weS']['weBackupVars']['options']['export2send'] ? 'yes' : 'no'));
@@ -78,7 +82,7 @@ switch($_REQUEST['cmd']){
 				weBackupUtil::addLog('Export external files: ' . ($_SESSION['weS']['weBackupVars']['options']['backup_extern'] ? 'yes' : 'no'));
 				weBackupUtil::addLog('Backup steps: FAST_BACKUP');
 				weBackupUtil::writeLog();
-			} else{
+			} else {
 				weBackupUtil::writeLog();
 				die('No write permissions!');
 			}
@@ -113,10 +117,11 @@ switch($_REQUEST['cmd']){
 				} while(!empty($_SESSION['weS']['weBackupVars']['extern_files']) && weBackup::limitsReached('', microtime(true) - $start));
 				$_SESSION['weS']['weBackupVars']['close']($fh);
 			}
-		} else{
+		} else {
 			$_SESSION['weS']['weBackupVars']['backup_steps'] = 10;
 			$oldPercent = 0;
 			$_fh = $_SESSION['weS']['weBackupVars']['open']($_SESSION['weS']['weBackupVars']['backup_file'], 'ab');
+
 			do{
 				$start = microtime(true);
 				for($i = 0; $i < $_SESSION['weS']['weBackupVars']['backup_steps']; $i++){
@@ -150,7 +155,7 @@ switch($_REQUEST['cmd']){
 						}
 						run();');
 			flush();
-		} else{
+		} else {
 
 			$_files = array();
 // export spellchecker files
@@ -159,7 +164,7 @@ switch($_REQUEST['cmd']){
 
 				$_files[] = WE_SPELLCHECKER_MODULE_DIR . 'spellchecker.conf.inc.php';
 				$_dir = dir(WE_SPELLCHECKER_MODULE_PATH . 'dict');
-				while(false !== ($entry = $_dir->read())) {
+				while(false !== ($entry = $_dir->read())){
 					if($entry == '.' || $entry == '..' || (substr($entry, -4) == '.zip') || is_dir(WE_SPELLCHECKER_MODULE_PATH . 'dict/' . $entry)){
 						continue;
 					}
@@ -196,7 +201,7 @@ switch($_REQUEST['cmd']){
 				if($_SESSION['weS']['weBackupVars']['options']['export2send'] == 0){
 					rename($_SESSION['weS']['weBackupVars']['backup_file'], $_backup_filename);
 					$_SESSION['weS']['weBackupVars']['backup_file'] = $_backup_filename;
-				} else{
+				} else {
 					copy($_SESSION['weS']['weBackupVars']['backup_file'], $_backup_filename);
 				}
 			}
@@ -240,7 +245,7 @@ switch($_REQUEST['cmd']){
 				weBackupUtil::addLog('Format: ' . $_SESSION['weS']['weBackupVars']['options']['format']);
 				weBackupUtil::addLog('Use compression: ' . ($_SESSION['weS']['weBackupVars']['options']['compress'] ? 'yes' : 'no'));
 				weBackupUtil::addLog('Import external files: ' . ($_SESSION['weS']['weBackupVars']['options']['backup_extern'] ? 'yes' : 'no'));
-			} else{
+			} else {
 
 				$_err = weBackupPreparer::getErrorMessage();
 
@@ -294,12 +299,12 @@ switch($_REQUEST['cmd']){
 					weBackupUtil::writeLog();
 				} while(weBackup::limitsReached('', microtime(true) - $start));
 				weBackupFileReader::closeFile();
-			} else{
+			} else {
 				weBackupImportSql::import($_SESSION['weS']['weBackupVars']['backup_file'], $_SESSION['weS']['weBackupVars']['offset'], $_SESSION['weS']['weBackupVars']['backup_steps'], $_SESSION['weS']['weBackupVars']['options']['compress'], $_SESSION['weS']['weBackupVars']['encoding'], $_SESSION['weS']['weBackupVars']['backup_log']);
 			}
 
 			$description = weBackupUtil::getDescription($_SESSION['weS']['weBackupVars']['current_table'], 'import');
-		} else{
+		} else {
 			//make sure we_update is run on next request
 			++$_SESSION['weS']['weBackupVars']['offset'];
 		}
@@ -316,7 +321,7 @@ switch($_REQUEST['cmd']){
 
 						run();
 						');
-		} else{
+		} else {
 
 // perform update
 			$updater = new we_updater();
