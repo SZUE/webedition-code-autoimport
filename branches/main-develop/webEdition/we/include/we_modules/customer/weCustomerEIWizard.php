@@ -958,7 +958,7 @@ class weCustomerEIWizard{
 			rmdir(TEMP_PATH . "/" . $tmpdir);
 
 		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-				we_html_element::htmlHead(we_html_tools::getHtmlInnerHead(g_l('customer_modules', '[import_title]')) . STYLESHEET . we_multiIconBox::getJS()) .
+				we_html_element::htmlHead(we_html_tools::getHtmlInnerHead(g_l('modules_customer', '[import_title]')) . STYLESHEET . we_multiIconBox::getJS()) .
 				we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlCenter(
 						we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "load"), we_multiIconBox::getHTML("", "100%", $parts, 30, "", -1, "", "", false, g_l('modules_customer', '[import_step5]'))
 						)

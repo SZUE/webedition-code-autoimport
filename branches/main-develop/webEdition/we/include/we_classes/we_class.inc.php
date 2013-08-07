@@ -777,7 +777,7 @@ abstract class we_class {
 		return true;
 	}
 
-	// in this method tblLangLink.ID is used and a lot of things are obsolete => to be cleaned in 6.3.1
+	//FIXME: in this method tblLangLink.ID is used and a lot of things are obsolete => to be cleaned in 6.3.1
 	private function executeSetLanguageLink($LangLinkArray, $type, $isfolder = false, $isobject = false){
 		$db = new DB_WE();
 		if(is_array($LangLinkArray)){
