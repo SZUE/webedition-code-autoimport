@@ -65,7 +65,7 @@ class we_listview_multiobject extends listviewBase{
 	 * @param	string        $categoryids
 	 *
 	 */
-	function __construct($name, $rows = 9999999, $offset = 0, $order = "", $desc = false, $cats = "", $catOr = "", $condition = "", $triggerID = "", $cols = "", $seeMode = true, $searchable = true, $calendar = "", $datefield = "", $date = "", $weekstart = "", $categoryids = '', $customerFilterType = 'off', $docID = 0, $languages = '', $hidedirindex = false, $objectseourls = false){
+	function __construct($name, $rows = 9999999, $offset = 0, $order = "", $desc = false, $cats = "", $catOr = "", $condition = "", $triggerID = "", $cols = "", $seeMode = true, $searchable = true, $calendar = "", $datefield = "", $date = "", $weekstart = "", $categoryids = '', $customerFilterType = 'false', $docID = 0, $languages = '', $hidedirindex = false, $objectseourls = false){
 
 		parent::__construct($name, $rows, $offset, $order, $desc, $cats, $catOr, 0, $cols, $calendar, $datefield, $date, $weekstart, $categoryids, $customerFilterType);
 
@@ -166,7 +166,7 @@ class we_listview_multiobject extends listviewBase{
 
 		$cat_tail = ($this->cats || $this->categoryids ? we_category::getCatSQLTail($this->cats, $_obxTable, $this->catOr, $this->DB_WE, "OF_Category", true, $this->categoryids) : '');
 
-		$weDocumentCustomerFilter_tail = ($this->customerFilterType != 'off' && defined("CUSTOMER_FILTER_TABLE") ?
+		$weDocumentCustomerFilter_tail = ($this->customerFilterType != 'false' && defined("CUSTOMER_FILTER_TABLE") ?
 				weDocumentCustomerFilter::getConditionForListviewQuery($this) :
 				'');
 

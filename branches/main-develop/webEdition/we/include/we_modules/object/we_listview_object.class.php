@@ -37,9 +37,9 @@ class we_listview_object extends listviewBase {
 	var $Path = ""; /* internal: Path of document which to use for displaying thr detail page */
 	var $IDs = array();
 	var $searchable = true;
-	var $customerFilterType = 'off';
+	var $customerFilterType = 'false';
 	var $customers = "";
-	var $we_predefinedSQL = "";
+	var $we_predefinedSQL = '';
 	var $languages = ''; //string of Languages, separated by ,
 	var $objectseourls = false;
 	var $hidedirindex = false;
@@ -66,7 +66,7 @@ class we_listview_object extends listviewBase {
 	 * @param	string        $categoryids
 	 *
 	 */
-	function __construct($name, $rows = 9999999, $offset = 0, $order = "", $desc = false, $classID = 0, $cats = "", $catOr = "", $condition = "", $triggerID = "", $cols = "", $seeMode = true, $searchable = true, $calendar = "", $datefield = "", $date = "", $weekstart = "", $categoryids = '', $workspaceID = '', $customerFilterType = 'off', $docID = 0, $customers = "", $id = "", $we_predefinedSQL = "", $languages = '', $hidedirindex = false, $objectseourls = false){
+	function __construct($name, $rows = 9999999, $offset = 0, $order = "", $desc = false, $classID = 0, $cats = "", $catOr = "", $condition = "", $triggerID = "", $cols = "", $seeMode = true, $searchable = true, $calendar = "", $datefield = "", $date = "", $weekstart = "", $categoryids = '', $workspaceID = '', $customerFilterType = 'false', $docID = 0, $customers = "", $id = "", $we_predefinedSQL = "", $languages = '', $hidedirindex = false, $objectseourls = false){
 		parent::__construct($name, $rows, $offset, $order, $desc, $cats, $catOr, $workspaceID, $cols, $calendar, $datefield, $date, $weekstart, $categoryids, $customerFilterType, $id);
 
 		$this->classID = $classID;
@@ -130,8 +130,8 @@ class we_listview_object extends listviewBase {
 
 		$cat_tail = ($this->cats || $this->categoryids ? we_category::getCatSQLTail($this->cats, $_obxTable, $this->catOr, $this->DB_WE, "OF_Category", true, $this->categoryids) : '');
 
-		$weDocumentCustomerFilter_tail = "";
-		if($this->customerFilterType != 'off' && defined("CUSTOMER_FILTER_TABLE")){
+		$weDocumentCustomerFilter_tail = '';
+		if($this->customerFilterType != 'false' && defined("CUSTOMER_FILTER_TABLE")){
 			$weDocumentCustomerFilter_tail = weDocumentCustomerFilter::getConditionForListviewQuery($this);
 		}
 

@@ -132,7 +132,7 @@ function we_tag_listview($attribs){
 
 	$we_lv_subfolders = isset($_REQUEST['we_lv_subfolders_' . $name]) ? (bool) $_REQUEST['we_lv_subfolders_' . $name] : $subfolders;
 
-	$cfilter = weTag_getAttribute('cfilter', $attribs, 'off');
+	$cfilter = weTag_getAttribute('cfilter', $attribs, 'false');
 	$hidedirindex = weTag_getAttribute('hidedirindex', $attribs, TAGLINKS_DIRECTORYINDEX_HIDE, true);
 	$objectseourls = weTag_getAttribute('objectseourls', $attribs, TAGLINKS_OBJECTSEOURLS, true);
 	$docAttr = weTag_getAttribute('doc', $attribs, 'self');
