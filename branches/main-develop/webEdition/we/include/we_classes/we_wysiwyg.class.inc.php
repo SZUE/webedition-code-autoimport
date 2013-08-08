@@ -1097,6 +1097,10 @@ function weWysiwygSetHiddenText(arg) {
 		return false;
 	}
 
+	function getHTML($value = ''){
+		return ($this->inlineedit ? $this->getInlineHTML() : $this->getEditButtonHTML($value));
+	}
+
 	function getEditButtonHTML($value = ''){
 		list($tbwidth, $tbheight) = $this->getToolbarWidthAndHeight();
 		$tbheight += self::$editorType == 'tinyMCE' ? 18 : 0;
@@ -1112,8 +1116,26 @@ function weWysiwygSetHiddenText(arg) {
 			'" . $this->origName . "','" . we_cmd_enc($this->tinyParams) . "','" . we_cmd_enc($this->restrictContextmenu) . "', 'true', '" . $this->isFrontendEdit . "');", true, 25);
 	}
 
-	function getHTML($value = ''){
-		return ($this->inlineedit ? $this->getInlineHTML() : $this->getEditButtonHTML($value));
+	function parseInternalImageSrc($value){
+		$editValue = $value;
+		$regs = array();
+		if(preg_match_all('/src="'.we_base_link::TYPE_INT_PREFIX.'(\\d+)/i', $editValue, $regs, PREG_SET_ORDER)){
+			foreach($regs as $reg){
+				$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($reg[1]), 'Path', $GLOBALS['DB_WE']);
+				$editValue = str_ireplace('src="'.we_base_link::TYPE_INT_PREFIX . $reg[1], 'src="' . $path . "?id=" . $reg[1], $editValue);
+			}
+		}
+		if(preg_match_all('/src="'.we_base_link::TYPE_THUMB_PREFIX.'([^" ]+)/i', $editValue, $regs, PREG_SET_ORDER)){
+			foreach($regs as $reg){
+				list($imgID, $thumbID) = explode(',', $reg[1]);
+				$thumbObj = new we_thumbnail();
+				$thumbObj->initByImageIDAndThumbID($imgID, $thumbID);
+				$editValue = str_ireplace('src="'.we_base_link::TYPE_THUMB_PREFIX . $reg[1], 'src="' . $thumbObj->getOutputPath() . "?thumb=" . $reg[1], $editValue);
+				unset($thumbObj);
+			}
+		}
+
+		return $editValue;
 	}
 
 	function getToolbarRows(){
@@ -1280,23 +1302,7 @@ function weWysiwygSetHiddenText(arg) {
 
 	function getInlineHTML(){
 		$rows = $this->getToolbarRows();
-		$editValue = $this->value;
-		$regs = array();
-		if(preg_match_all('/src="'.we_base_link::TYPE_INT_PREFIX.'(\\d+)/i', $editValue, $regs, PREG_SET_ORDER)){
-			foreach($regs as $reg){
-				$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($reg[1]), 'Path', $GLOBALS['DB_WE']);
-				$editValue = str_ireplace('src="'.we_base_link::TYPE_INT_PREFIX . $reg[1], 'src="' . $path . "?id=" . $reg[1], $editValue);
-			}
-		}
-		if(preg_match_all('/src="'.we_base_link::TYPE_THUMB_PREFIX.'([^" ]+)/i', $editValue, $regs, PREG_SET_ORDER)){
-			foreach($regs as $reg){
-				list($imgID, $thumbID) = explode(',', $reg[1]);
-				$thumbObj = new we_thumbnail();
-				$thumbObj->initByImageIDAndThumbID($imgID, $thumbID);
-				$editValue = str_ireplace('src="'.we_base_link::TYPE_THUMB_PREFIX . $reg[1], 'src="' . $thumbObj->getOutputPath() . "?thumb=" . $reg[1], $editValue);
-				unset($thumbObj);
-			}
-		}
+		$editValue = $this->parseInternalImageSrc($this->value);
 
 		switch(self::$editorType){
 			case 'tinyMCE':

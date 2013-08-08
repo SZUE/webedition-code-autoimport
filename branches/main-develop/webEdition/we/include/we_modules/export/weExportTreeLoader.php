@@ -75,9 +75,11 @@ class weExportTreeLoader{
 
 			$fileds = array();
 
-			foreach($db->Record as $k => $v)
-				if(!is_numeric($k))
+			foreach($db->Record as $k => $v){
+				if(!is_numeric($k)){
 					$fileds[strtolower($k)] = $v;
+				}
+			}
 
 			$fileds["text"] = trim($tt) != "" ? $tt : $db->f("Text");
 			$items[] = array_merge($fileds, $typ);
