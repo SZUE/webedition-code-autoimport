@@ -226,28 +226,25 @@ abstract class we_forms{
 				$out .= $e->getHTML();
 			} else{
 				$e = new we_wysiwyg($name, $width, $height, '', $commands, $bgcolor, '', $class, $fontnames, (!$inwebedition), $xml, $removeFirstParagraph, $inlineedit, '', $charset, $cssClasses, $_lang, '', $showSpell, $isFrontendEdit, $buttonpos, $oldHtmlspecialchars, $contentCss, $origName, $tinyParams, $contextmenu);
-				$hiddenTextareaValue = str_replace(array("##|r##", "##|n##"), array("\r", "\n"),$value);
 
-				if(stripos($name, "we_ui") === false){
-					// Bugfix => Workarround Bug # 7445
-					$value = str_replace(array("##|r##", "##|n##"), array("\r", "\n"), (
+				if(stripos($name, "we_ui") === false){//we are in backend
+					$hiddenTextareaContent = str_replace(array("##|r##", "##|n##"), array("\r", "\n"), $e->parseInternalImageSrc($value));
+					$previewDivContent = str_replace(array("##|r##", "##|n##"), array("\r", "\n"), (
 						isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->ClassName != 'we_objectFile' && $GLOBALS['we_doc']->ClassName != 'we_object' ?
 							$GLOBALS['we_doc']->getField($attribs) :
 							parseInternalLinks($value, 0)
 						)
 					);
-					// Ende Bugfix
-				} else{
-					$value = $hiddenTextareaValue;
+				} else{//we are in frontend
+					$hiddenTextareaContent = str_replace(array("##|r##", "##|n##"), array("\r", "\n"),$value);
+					$previewDivContent = $hiddenTextareaContent;
 				}
 
-				$fieldName = '';
-				if(preg_match('|^.+\[.+\]$|i', $name)){
-					$fieldName = preg_replace('/^.+\[(.+)\]$/', '\1', $name);
-				};
-				$out .= we_html_element::htmlTextArea(array('name' => $name, 'id' => $name, 'onchange' =>'_EditorFrame.setEditorIsHot(true);', 'style' => 'display: none;'), $hiddenTextareaValue);
-				$out .= ($fieldName ? we_html_element::jsElement('tinyEditors["' . $fieldName . '"] = "' . $name . '";') : '') . 
-					($buttonTop ? '<div class="tbButtonWysiwygBorder" style="width:25px;border-bottom:0px;background-image: url(' . IMAGE_DIR . 'backgrounds/aquaBackground.gif);">' . $e->getHTML($value) . '</div>' : '') . '<div class="tbButtonWysiwygBorder ' . (empty($class) ? "" : $class . " ") . 'wetextarea tiny-wetextarea wetextarea-' . $origName . '" id="div_wysiwyg_' . $name . '" style="height:auto; width:auto">' . $value . '</div>' . ($buttonBottom ? '<div class="tbButtonWysiwygBorder" style="width:25px;border-top:0px;background-image: url(' . IMAGE_DIR . 'backgrounds/aquaBackground.gif);">' . $e->getHTML() . '</div>' : '');
+				$fieldName = preg_match('|^.+\[.+\]$|i', $name) ? preg_replace('/^.+\[(.+)\]$/', '\1', $name) : '';
+				
+				$out .= we_html_element::htmlTextArea(array('name' => $name, 'id' => $name, 'onchange' => '_EditorFrame.setEditorIsHot(true);', 'style' => 'display: none'), $hiddenTextareaContent);
+				$out .= ($fieldName ? we_html_element::jsElement('tinyEditors["' . $fieldName . '"] = "' . $name . '";') : '') .
+					($buttonTop ? '<div class="tbButtonWysiwygBorder" style="width:25px;border-bottom:0px;background-image: url(' . IMAGE_DIR . 'backgrounds/aquaBackground.gif);">' . $e->getHTML() . '</div>' : '') . '<div class="tbButtonWysiwygBorder ' . (empty($class) ? "" : $class . " ") . 'wetextarea tiny-wetextarea wetextarea-' . $origName . '" id="div_wysiwyg_' . $name . '" style="height:auto; width:auto">' . $previewDivContent . '</div>' . ($buttonBottom ? '<div class="tbButtonWysiwygBorder" style="width:25px;border-top:0px;background-image: url(' . IMAGE_DIR . 'backgrounds/aquaBackground.gif);">' . $e->getHTML() . '</div>' : '');
 			}
 		} else{
 			if($width){
