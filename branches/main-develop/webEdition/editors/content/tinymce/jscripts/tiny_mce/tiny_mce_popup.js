@@ -52,7 +52,7 @@ tinyMCEPopup.onInit.add(function(){
 	var id = "";
 
 	try{
-		id = t.document.body.id ? t.document.body.id : id;
+		id = t.document.body.id ? t.document.body.id : (t.isFullScreen ? 'weFullscreenDialog' : '');
 	} catch(err){}
 
 	var action = "registerDialog";
