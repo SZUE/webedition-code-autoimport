@@ -29,7 +29,7 @@
  *
  */
 //FIXME: is this class not ~ listview_object? why is this not the base class???
-class we_listview_multiobject extends listviewBase{
+class we_listview_multiobject extends listviewBase {
 
 	var $classID = ""; /* ID of a class */
 	var $objects = ""; /* Comma sepearated list of all objetcs to show in this listview */
@@ -80,18 +80,22 @@ class we_listview_multiobject extends listviewBase{
 				if(isset($GLOBALS['lv']->object->DB_WE->Record['we_' . $name]) && $GLOBALS['lv']->object->DB_WE->Record['we_' . $name]){
 					$data = unserialize($GLOBALS['lv']->object->DB_WE->Record['we_' . $name]);
 				}
-			} else{
-				if($GLOBALS["lv"]->ClassName == 'we_listview_shoppingCart'){
-					if(isset($GLOBALS['lv']->Record[$name]) && $GLOBALS['lv']->Record[$name]){
-						$data = unserialize($GLOBALS['lv']->Record[$name]);
-					}
-				} else{
-					if(isset($GLOBALS['lv']->DB_WE->Record['we_' . $name]) && $GLOBALS['lv']->DB_WE->Record['we_' . $name]){
-						$data = unserialize($GLOBALS['lv']->DB_WE->Record['we_' . $name]);
-					}
+			} else {
+				switch($GLOBALS["lv"]->ClassName){
+					case 'we_listview_shoppingCart':
+					case 'we_shop_listviewOrderitem':
+						if(isset($GLOBALS['lv']->Record[$name]) && $GLOBALS['lv']->Record[$name]){
+							$data = unserialize($GLOBALS['lv']->Record[$name]);
+						}
+						break;
+					default:
+						if(isset($GLOBALS['lv']->DB_WE->Record['we_' . $name]) && $GLOBALS['lv']->DB_WE->Record['we_' . $name]){
+							$data = unserialize($GLOBALS['lv']->DB_WE->Record['we_' . $name]);
+						}
+						break;
 				}
 			}
-		} else{
+		} else {
 			if($GLOBALS['we_doc']->getElement($name)){
 				$data = unserialize($GLOBALS['we_doc']->getElement($name));
 			}
@@ -144,7 +148,7 @@ class we_listview_multiobject extends listviewBase{
 
 		if($this->triggerID && show_SeoLinks()){
 			$this->Path = id_to_path($this->triggerID, FILE_TABLE, $this->DB_WE);
-		} else{
+		} else {
 			$this->Path = (isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->Path : '');
 		}
 
@@ -174,9 +178,8 @@ class we_listview_multiobject extends listviewBase{
 			$this->DB_WE->query('SELECT ' . $_obxTable . '.ID as ID ' . $calendar_select . ' FROM ' . $sqlParts['tables'] . ' WHERE ' . (!empty($this->objects) ? OBJECT_X_TABLE . $this->classID . ".OF_ID IN (" . implode(",", $this->objects) . ") AND " : '') . ($this->searchable ? " " . OBJECT_X_TABLE . $this->classID . ".OF_IsSearchable=1 AND" : "") . " " . $pid_tail . $where_lang . " AND " . OBJECT_X_TABLE . $this->classID . ".OF_ID != 0 " . ($join ? " AND ($join) " : "") . $cat_tail . " " . ($sqlParts["publ_cond"] ? (" AND " . $sqlParts["publ_cond"]) : "") . " " . ($sqlParts["cond"] ? (" AND (" . $sqlParts["cond"] . ") ") : "") . $calendar_where . $weDocumentCustomerFilter_tail . $sqlParts['groupBy']);
 			$mapping = array(); // KEY = ID -> VALUE = ROWID
 			$i = 0;
-			while($this->DB_WE->next_record()) {
-				$mapping[$this->DB_WE->Record["ID"]] = $i;
-				$i++;
+			while($this->DB_WE->next_record()){
+				$mapping[$this->DB_WE->Record["ID"]] = $i++;
 				$this->IDs[] = $this->DB_WE->f("ID");
 				if($calendar != ""){
 					$this->calendar_struct["storage"][$this->DB_WE->f("ID")] = (int) $this->DB_WE->f("Calendar");
@@ -185,7 +188,7 @@ class we_listview_multiobject extends listviewBase{
 
 			if($this->order == ''){
 				$this->anz_all = count($this->objects);
-			} else{
+			} else {
 				$this->anz_all = 0;
 				$count = array_count_values($this->objects);
 				foreach($mapping as $objid => $rowid){
@@ -201,18 +204,17 @@ class we_listview_multiobject extends listviewBase{
 
 			$mapping = array(); // KEY = ID -> VALUE = ROWID
 			$i = 0;
-			while($this->DB_WE->next_record()) {
-				$mapping[$this->DB_WE->Record["OF_ID"]] = $i;
-				$i++;
+			while($this->DB_WE->next_record()){
+				$mapping[$this->DB_WE->Record["OF_ID"]] = $i++;
 			}
 
-			if($this->order == ""){
+			if(empty($this->order)){
 				for($i = $offset; $i < min($offset + $rows, count($this->objects)); $i++){
 					if(in_array($this->objects[$i], array_keys($mapping))){
 						$this->Record[] = $mapping[$this->objects[$i]];
 					}
 				}
-			} else{
+			} else {
 				$count = array_count_values($this->objects);
 				foreach($mapping as $objid => $rowid){
 					for($i = 0; $i < $count[$objid]; $i++){
@@ -221,7 +223,7 @@ class we_listview_multiobject extends listviewBase{
 				}
 			}
 			$this->anz = count($this->Record);
-		} else{
+		} else {
 			$this->anz_all = 0;
 			$this->anz = 0;
 		}
@@ -262,7 +264,7 @@ class we_listview_multiobject extends listviewBase{
 							$joinWhere[] = $foo;
 						}
 					}
-				} else{
+				} else {
 					$matrix[$name]["type"] = $type;
 					$matrix[$name]["table"] = $table;
 					$matrix[$name]["classID"] = $classID;
@@ -386,7 +388,7 @@ class we_listview_multiobject extends listviewBase{
 				parent::next_record();
 				$fetch = $this->calendar_struct["forceFetch"];
 				$this->DB_WE->Record = array();
-			} else{
+			} else {
 				return false;
 			}
 		}
@@ -404,13 +406,13 @@ class we_listview_multiobject extends listviewBase{
 					}
 					if(show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES != '' && $this->hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
 						$this->DB_WE->Record["we_WE_PATH"] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . $this->DB_WE->Record['OF_Url'];
-					} else{
+					} else {
 						$this->DB_WE->Record["we_WE_PATH"] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . $path_parts['filename'] . '/' . $this->DB_WE->Record['OF_Url'];
 					}
-				} else{
+				} else {
 					if(show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES != '' && $this->hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
 						$this->DB_WE->Record["we_WE_PATH"] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . "?$paramName=" . $this->DB_WE->Record["OF_ID"];
-					} else{
+					} else {
 						$this->DB_WE->Record["we_WE_PATH"] = $this->Path . "?$paramName=" . $this->DB_WE->Record["OF_ID"];
 					}
 				}
@@ -424,7 +426,7 @@ class we_listview_multiobject extends listviewBase{
 				$this->DB_WE->Record["we_wedoc_lastPath"] = $this->LastDocPath . "?$paramName=" . $this->DB_WE->Record["OF_ID"];
 				$this->count++;
 				return true;
-			} else{
+			} else {
 				$this->stop_next_row = $this->shouldPrintEndTR();
 				if($this->cols && ($this->count <= $this->maxItemsPerPage) && !$this->stop_next_row){
 					$this->DB_WE->Record = array(

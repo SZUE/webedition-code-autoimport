@@ -319,8 +319,8 @@ class we_listview_object extends listviewBase{
 				$n = substr($n, 10);
 			}
 			$f .= '`' . $p['table'] . '`.`' . $p['type'] . '_' . $n . '` AS `we_' . $n2 . '`,';
-			$from[] = $p["table"];
-			$from[] = $p["table2"];
+			$from[] = $p['table'];
+			$from[] = $p['table2'];
 			if(in_array($n, $orderArr)){
 				$pos = getArrayKey($n, $orderArr);
 				$ordertmp[$pos] = '`' . $p["table"] . '`.`' . $p["type"] . '_' . $n . '`' . ($descArr[$pos] ? ' DESC' : '');
