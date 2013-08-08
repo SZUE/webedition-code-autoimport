@@ -1563,7 +1563,26 @@ function weWysiwygSetHiddenText(arg) {
 							'
 						. (!$this->removeFirstParagraph ? '' : '
 							ed.onPostProcess.add(function(ed, o) {
-								o.content = o.content.replace(/<p [^>]*>|<p>/, "").replace(/<\/p>/, "").replace(/^&nbsp;$/, "");
+								var container = document.createElement("div");
+								container.innerHTML = o.content;
+								var first = container.firstChild;
+
+								if(first.nodeName == "P"){
+									var useDiv = false, div = document.createElement("div"), attribs = ["style", "class", "dir"];
+									div.innerHTML = first.innerHTML;
+
+									for(var i=0;i<attribs.length;i++){
+										if(first.hasAttribute(attribs[i])){
+											div.setAttribute(attribs[i], first.getAttribute(attribs[i]));
+											useDiv = true; 
+										}
+									}
+									useDiv ? container.replaceChild(div, first) : container.replaceChild(document.createTextNode(first.innerHTML), first);
+
+									o.content = container.innerHTML;
+									o.content = o.content.replace(/^&nbsp;$/, "");
+								}
+								//o.content = o.content.replace(/<p [^>]*>|<p>/, "").replace(/<\/p>/, "").replace(/^&nbsp;$/, "");
 							});') .
 
 							($this->isFrontendEdit ? '' : '
