@@ -216,7 +216,7 @@ class weShopFrames extends weModuleFrames{
 				var ai = 1;
 				while (ai <= menuDaten.laenge) {
 					if ((menuDaten[ai].typ === 'root') || (menuDaten[ai].typ === 'folder'))
-						if (menuDaten[ai].name === name) {
+						if (menuDaten[ai].name == name) {
 							return ai;
 						}
 					ai++;
@@ -229,7 +229,7 @@ class weShopFrames extends weModuleFrames{
 				var ai = 1;
 				while (ai <= menuDaten.laenge) {
 					if ((menuDaten[ai].typ === 'folder') || (menuDaten[ai].typ === 'shop'))
-						if (menuDaten[ai].vorfahr === eintrag) {
+						if (menuDaten[ai].vorfahr == eintrag) {
 							nf.add(menuDaten[ai]);
 						}
 					ai++;
