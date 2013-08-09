@@ -115,8 +115,8 @@ class we_shop_Basket{
 		if(isset($array['shoppingItems']) && isset($array['cartFields'])){
 			$this->ShoppingItems = $array['shoppingItems'];
 			$this->CartFields = $array['cartFields'];
-			$this->creationTime = $array['creationTime'];
-		} else{
+			$this->creationTime = isset($array['creationTime']) ? $array['creationTime'] : time();
+		} else {
 			$this->ShoppingItems = array();
 			$this->CartFields = array();
 			$this->creationTime = time();
@@ -137,10 +137,10 @@ class we_shop_Basket{
 		if(($key = $this->getShoppingItemIndex($id, $type, $variant, $customFields))){ // item already exists
 			if($this->ShoppingItems[$key]['quantity'] + $quantity > 0){
 				$this->ShoppingItems[$key]['quantity'] += $quantity;
-			} else{
+			} else {
 				$this->Del_Item($id, $type, $variant, $customFields);
 			}
-		} else{ // add the item
+		} else { // add the item
 			$key = str_replace('.', '', uniqid('we_cart_', true));
 
 			if($quantity > 0){ // only add new item with positive number
@@ -193,7 +193,7 @@ class we_shop_Basket{
 				// unfortunately this is not made with initDocById,
 				// but its much faster -> so we use it
 				$DB_WE->query('SELECT ' . CONTENT_TABLE . '.BDID as BDID, ' . CONTENT_TABLE . '.Dat as Dat, ' . LINK_TABLE . '.Name as Name FROM ' . LINK_TABLE . ',' . CONTENT_TABLE . ' WHERE ' . LINK_TABLE . '.DID=' . intval($id) . ' AND ' . LINK_TABLE . '.CID=' . CONTENT_TABLE . '.ID AND ' . LINK_TABLE . '.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"');
-				while($DB_WE->next_record()) {
+				while($DB_WE->next_record()){
 					$tmp = ($DB_WE->f('BDID'));
 					$Record[$DB_WE->f('Name')] = $tmp ? $tmp : $DB_WE->f('Dat');
 				}
@@ -313,10 +313,10 @@ class we_shop_Basket{
 		if(($key = $this->getShoppingItemIndex($id, $type, $variant, $customFields))){ // item already in cart
 			if($quantity > 0){
 				$this->ShoppingItems[$key]['quantity'] = $quantity;
-			} else{
+			} else {
 				$this->Del_Item($id, $type, $variant, $customFields);
 			}
-		} else{ // new item
+		} else { // new item
 			$this->Add_Item($id, $quantity, $type, $variant, $customFields);
 		}
 	}
