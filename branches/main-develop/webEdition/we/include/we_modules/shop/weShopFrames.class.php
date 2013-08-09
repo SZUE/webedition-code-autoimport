@@ -166,7 +166,7 @@ class weShopFrames extends weModuleFrames{
 				var ai = 1;
 				while (ai <= menuDaten.laenge) {
 					if ((menuDaten[ai].typ === 'folder') || (menuDaten[ai].typ === 'shop'))
-						if (menuDaten[ai].name === id) {
+						if (menuDaten[ai].name == id) {
 							menuDaten[ai].text = text;
 							menuDaten[ai].published = pub;
 						}
@@ -180,7 +180,7 @@ class weShopFrames extends weModuleFrames{
 				var ind = 0;
 				while (ai <= menuDaten.laenge) {
 					if ((menuDaten[ai].typ === 'folder') || (menuDaten[ai].typ === 'shop'))
-						if (menuDaten[ai].name === id) {
+						if (menuDaten[ai].name == id) {
 							ind = ai;
 							break;
 						}
@@ -332,7 +332,7 @@ class weShopFrames extends weModuleFrames{
 			}
 
 
-			print "  menuDaten.add(new urlEntry('" . we_base_ContentTypes::LINK_ICON . "','" . $this->db->f("IntOrderID") . "'," . $this->db->f("mdate") . ",'" . $this->db->f("IntOrderID") . ". " . g_l('modules_shop', '[bestellung]') . " " . $this->db->f("orddate") . "','shop','" . SHOP_TABLE . "','" . (($this->db->f("DateShipping") > 0) ? 0 : 1) . "','" . $style . "'));\n";
+			print "  menuDaten.add(new urlEntry('" . we_base_ContentTypes::LINK_ICON . "'," . $this->db->f("IntOrderID") . "," . $this->db->f("mdate") . ",'" . $this->db->f("IntOrderID") . ". " . g_l('modules_shop', '[bestellung]') . " " . $this->db->f("orddate") . "','shop','" . SHOP_TABLE . "','" . (($this->db->f("DateShipping") > 0) ? 0 : 1) . "','" . $style . "'));\n";
 			if($this->db->f("DateShipping") <= 0){
 				if(isset(${'l' . $this->db->f("mdate")})){
 					${'l' . $this->db->f("mdate")}++;

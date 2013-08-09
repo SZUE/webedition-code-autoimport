@@ -357,7 +357,7 @@ top.content.drawEintraege();
 						$js_out = '
 top.content.menuDaten.clear();
 top.content.startloc=0;
-top.content.menuDaten.add(new top.content.self.rootEntry("0","root","root"));
+top.content.menuDaten.add(new top.content.self.rootEntry(0,"root","root"));
 						';
 
 						$entries = array();

@@ -319,10 +319,10 @@ function urlEntry(icon,name,vorfahr,text,contentType,table,published,denied) {
 
 			while($this->db->next_record()) {
 				if($this->db->f("Type") == 1){
-					$jsCode .= "  menuDaten.add(new dirEntry('folder','" . $this->db->f("ID") . "','" . $this->db->f("ParentID") . "','" . addslashes($this->db->f("Text")) . "',false,'group','" . USER_TABLE . "',1));";
+					$jsCode .= "  menuDaten.add(new dirEntry('folder'," . $this->db->f("ID") . "," . $this->db->f("ParentID") . ",'" . addslashes($this->db->f("Text")) . "',false,'group','" . USER_TABLE . "',1));";
 				} else{
 					$p = unserialize($this->db->f("Permissions"));
-					$jsCode .= "  menuDaten.add(new urlEntry('" . ($this->db->f("Type") == 2 ? 'user_alias.gif' : 'user.gif') . "','" . $this->db->f("ID") . "','" . $this->db->f("ParentID") . "','" . addslashes($this->db->f("Text")) . "','" . ($this->db->f("Type") == 2 ? 'alias' : 'user') . "','" . USER_TABLE . "','" . (isset($p["ADMINISTRATOR"]) && $p["ADMINISTRATOR"]) . "','" . $this->db->f("LoginDenied") . "'));";
+					$jsCode .= "  menuDaten.add(new urlEntry('" . ($this->db->f("Type") == 2 ? 'user_alias.gif' : 'user.gif') . "'," . $this->db->f("ID") . "," . $this->db->f("ParentID") . ",'" . addslashes($this->db->f("Text")) . "','" . ($this->db->f("Type") == 2 ? 'alias' : 'user') . "','" . USER_TABLE . "','" . (isset($p["ADMINISTRATOR"]) && $p["ADMINISTRATOR"]) . "','" . $this->db->f("LoginDenied") . "'));";
 				}
 			}
 		}

@@ -336,8 +336,8 @@ class weBannerFrames extends weModuleFrames{
 			$IsFolder = $this->db->f("IsFolder");
 
 			$out.=($IsFolder ?
-					"  menuDaten.add(new dirEntry('" . $Icon . "','" . $ID . "','" . $ParentID . "','" . $Text . "',0,'folder','" . BANNER_TABLE . "',1));" :
-					"  menuDaten.add(new urlEntry('" . $Icon . "','" . $ID . "','" . $ParentID . "','" . $Text . "','file','" . BANNER_TABLE . "',1));");
+					"  menuDaten.add(new dirEntry('" . $Icon . "'," . $ID . "," . $ParentID . ",'" . $Text . "',0,'folder','" . BANNER_TABLE . "',1));" :
+					"  menuDaten.add(new urlEntry('" . $Icon . "'," . $ID . "," . $ParentID . ",'" . $Text . "','file','" . BANNER_TABLE . "',1));");
 		}
 
 		$out.='}';
