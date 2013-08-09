@@ -61,7 +61,8 @@ class we_docSelector extends we_dirSelector{
 		}
 
 		// deal with workspaces
-		if(we_hasPerm("ADMINISTRATOR")){
+		if(we_hasPerm('ADMINISTRATOR') || ($this->table == FILE_TABLE && we_hasPerm('CAN_SELECT_OTHER_USERS_FILES')) 
+				|| (defined('OBJECT_FILES_TABLE') && $this->table == OBJECT_FILES_TABLE && we_hasPerm('CAN_SELECT_OTHER_USERS_FILES'))){
 			$wsQuery = '';
 		} else {
 			$wsQuery = '';
