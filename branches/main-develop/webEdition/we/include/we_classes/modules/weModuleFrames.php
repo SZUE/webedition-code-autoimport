@@ -360,7 +360,7 @@ class weModuleFrames{
 			var oldTreeWidth = ' . $treeDefaultWidth . ';
 
 			function toggleTree(){
-				var tDiv = self.document.getElementById("leftDiv");
+				var tDiv = self.document.getElementById("left");
 				var w = getTreeWidth();
 
 				if(tDiv.style.display == "none"){
