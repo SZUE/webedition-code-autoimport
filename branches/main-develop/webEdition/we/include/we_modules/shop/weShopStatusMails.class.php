@@ -199,19 +199,23 @@ class weShopStatusMails{
 		global $DB_WE;
 		$recipientOK = (isset($this->EMailData['emailField']) && $this->EMailData['emailField'] != '' && isset($cdata[$this->EMailData['emailField']]) && we_check_email($cdata[$this->EMailData['emailField']]));
 		$UserLang = '';
+		$field = 0;
 		if(isset($this->LanguageData['useLanguages']) && $this->LanguageData['useLanguages'] && isset($this->LanguageData['languageField']) && $this->LanguageData['languageField'] != '' && isset($cdata[$this->LanguageData['languageField']]) && $cdata[$this->LanguageData['languageField']] != ''){
 			if($pagelang != '' && isset($this->FieldsDocuments[$pagelang]) && isset($this->FieldsDocuments[$pagelang]['Date' . $was])){
 				$docID = $this->FieldsDocuments[$pagelang]['Date' . $was];
+				$field = 1;
 			} else {
 				$docID = (isset($this->FieldsDocuments[$cdata[$this->LanguageData['languageField']]]) && isset($this->FieldsDocuments[$cdata[$this->LanguageData['languageField']]]['Date' . $was]) ?
 						$this->FieldsDocuments[$cdata[$this->LanguageData['languageField']]]['Date' . $was] :
 						$this->FieldsDocuments['default']['Date' . $was]);
+				$field = '2' . $this->FieldsDocuments . ' ' . $cdata[$this->LanguageData['languageField']];
 			}
 			if(isset($this->LanguageData['languageField']) && $this->LanguageData['languageField'] != '' && isset($cdata[$this->LanguageData['languageField']]) && $cdata[$this->LanguageData['languageField']] != ''){
 				$UserLang = $cdata[$this->LanguageData['languageField']];
 			}
 		} else {
 			$docID = $this->FieldsDocuments['default']['Date' . $was];
+			$field = 3;
 			if(isset($this->LanguageData['languageField']) && $this->LanguageData['languageField'] != '' && isset($cdata[$this->LanguageData['languageField']]) && $cdata[$this->LanguageData['languageField']] != ''){
 				$UserLang = $cdata[$this->LanguageData['languageField']];
 			}
@@ -236,7 +240,7 @@ class weShopStatusMails{
 			unset($_REQUEST['we_orderid']);
 			unset($_SESSION['WE_SendMail']);
 		} else {
-			t_e('Document to send as status mail is empty! ID: ' . $docID);
+			t_e('Document to send as status mail is empty! ID: ' . $docID, $field);
 			return false;
 		}
 

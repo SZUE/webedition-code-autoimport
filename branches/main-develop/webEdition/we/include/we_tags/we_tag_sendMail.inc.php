@@ -182,7 +182,7 @@ function we_tag_sendMail($attribs, $content){
 					$phpmail->setIsUseBaseHref($useBaseHref);
 				}
 				$phpmail->setCharSet($charset);
-				if($mimetype != "text/html"){
+				if($mimetype != 'text/html'){
 					$phpmail->addTextPart(strip_tags(str_replace("&nbsp;", " ", str_replace("<br />", "\n", str_replace("<br>", "\n", $codes)))));
 				} else{
 					$phpmail->addHTMLPart($codes);
