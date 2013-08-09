@@ -117,7 +117,7 @@ class weShopFrames extends weModuleFrames{
 
 						var zusatz = (ai == nf.laenge) ? "end" : "";
 
-						if (nf[ai].offen == 0) {
+						if (nf[ai].offen === 0) {
 							fr.write("&nbsp;&nbsp;<A HREF=\"javascript:top.content.openClose('" + nf[ai].name + "',1)\" BORDER=0><IMG SRC=<?php print TREE_IMAGE_DIR; ?>auf" + zusatz + ".gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0 title=\"<?php print g_l('tree', "[open_statustext]") ?>\"></A>");
 							var zusatz2 = "";
 						} else {
@@ -155,9 +155,9 @@ class weShopFrames extends weModuleFrames{
 			}
 
 			function makeNewEntry(icon, id, pid, txt, offen, ct, tab, pub) {
-				if (table == tab) {
+				if (table === tab) {
 					if (menuDaten[indexOfEntry(pid)]) {
-						if (ct == "folder") {
+						if (ct === "folder") {
 							menuDaten.addSort(new dirEntry(icon, id, pid, txt, offen, ct, tab));
 						} else {
 							menuDaten.addSort(new urlEntry(icon, id, pid, txt, ct, tab, pub));
@@ -171,8 +171,8 @@ class weShopFrames extends weModuleFrames{
 			function updateEntry(id, text, pub) {
 				var ai = 1;
 				while (ai <= menuDaten.laenge) {
-					if ((menuDaten[ai].typ == 'folder') || (menuDaten[ai].typ == 'shop'))
-						if (menuDaten[ai].name == id) {
+					if ((menuDaten[ai].typ === 'folder') || (menuDaten[ai].typ === 'shop'))
+						if (menuDaten[ai].name === id) {
 							menuDaten[ai].text = text;
 							menuDaten[ai].published = pub;
 						}
@@ -185,8 +185,8 @@ class weShopFrames extends weModuleFrames{
 				var ai = 1;
 				var ind = 0;
 				while (ai <= menuDaten.laenge) {
-					if ((menuDaten[ai].typ == 'folder') || (menuDaten[ai].typ == 'shop'))
-						if (menuDaten[ai].name == id) {
+					if ((menuDaten[ai].typ === 'folder') || (menuDaten[ai].typ === 'shop'))
+						if (menuDaten[ai].name === id) {
 							ind = ai;
 							break;
 						}
@@ -221,8 +221,8 @@ class weShopFrames extends weModuleFrames{
 			function indexOfEntry(name) {
 				var ai = 1;
 				while (ai <= menuDaten.laenge) {
-					if ((menuDaten[ai].typ == 'root') || (menuDaten[ai].typ == 'folder'))
-						if (menuDaten[ai].name == name)
+					if ((menuDaten[ai].typ === 'root') || (menuDaten[ai].typ === 'folder'))
+						if (menuDaten[ai].name === name)
 							return ai;
 					ai++;
 				}
@@ -233,8 +233,8 @@ class weShopFrames extends weModuleFrames{
 				var nf = new container();
 				var ai = 1;
 				while (ai <= menuDaten.laenge) {
-					if ((menuDaten[ai].typ == 'folder') || (menuDaten[ai].typ == 'shop'))
-						if (menuDaten[ai].vorfahr == eintrag)
+					if ((menuDaten[ai].typ === 'folder') || (menuDaten[ai].typ === 'shop'))
+						if (menuDaten[ai].vorfahr === eintrag)
 							nf.add(menuDaten[ai]);
 					ai++;
 				}
@@ -394,9 +394,7 @@ function doUnload() {
 }
 
 function we_cmd() {
-
 	switch (arguments[0]) {
-
 		case "openOrder":
 			//TODO: check this adress: mit oder ohne tree? Bisher: left
 			if(top.content.tree.window.doClick) {
@@ -507,7 +505,7 @@ function we_cmd() {
 		}
 
 		$body = we_html_element::htmlBody(array('style' => 'position: fixed; top: 0px; left: 0px; right: 0px; bottom: 0px; border: 0px none;'), we_html_element::htmlIFrame('edheader', $this->frameset . '?pnt=edheader&home=' . $home . '&mid=' . $mid . $yearView . '&bid=' . $bid, 'position: absolute; top: 0px; left: 0px; right: 0px; height: 40px; overflow: hidden;') .
-				we_html_element::htmlIFrame('edbody', $bodyURL . '?pnt=edbody&we_transaction=' . $this->transaction, 'position: absolute; top: 40px; bottom: 0px; left: 0px; right: 0px; overflow: auto;', 'border:0px;width:100%;height:100%;overflow: auto;')
+				we_html_element::htmlIFrame('edbody', $bodyURL . '&we_transaction=' . $this->transaction, 'position: absolute; top: 40px; bottom: 0px; left: 0px; right: 0px; overflow: auto;', 'border:0px;width:100%;height:100%;overflow: auto;')
 		);
 
 		return $this->getHTMLDocument($body);
