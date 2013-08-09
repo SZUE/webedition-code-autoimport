@@ -59,7 +59,8 @@ $_we_available_modules = array(
 		'integrated' => true,
 		'alwaysActive' => true,
 		'hasSettings' => '',
-		'dependson' => ''
+		'dependson' => '',
+		'childmodule' => ''
 	),
 	'shop' => array(
 		'name' => 'shop',

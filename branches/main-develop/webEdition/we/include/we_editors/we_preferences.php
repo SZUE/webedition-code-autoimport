@@ -2092,30 +2092,30 @@ function formmailBlockOnOff() {
 			}
 			$_modInfos = weModuleInfo::getIntegratedModules();
 
-			$_html = "";
+			$_html = '';
 
 			foreach($_modInfos as $_modKey => $_modInfo){
 				if(!isset($_modInfo["alwaysActive"])){
 					$_modInfo["alwaysActive"] = null;
 				}
 				$onclick = "";
-				if($_modInfo["childmodule"] != ""){
+				if(!empty($_modInfo["childmodule"])){
 					$onclick = "if(!this.checked){document.getElementById('newconf[active_integrated_modules][" . $_modInfo["childmodule"] . "]').checked=false;}";
 				}
-				if($_modInfo["dependson"] != ""){
+				if(!empty($_modInfo["dependson"])){
 					$onclick = "if(this.checked){document.getElementById('newconf[active_integrated_modules][" . $_modInfo["dependson"] . "]').checked=true;}";
 				}
 				$_html .= we_forms::checkbox($_modKey, $_modInfo["alwaysActive"] || in_array($_modKey, $GLOBALS["_we_active_integrated_modules"]), "newconf[active_integrated_modules][$_modKey]", $_modInfo["text"], false, "defaultfont", $onclick, $_modInfo["alwaysActive"]) . ($_modInfo["alwaysActive"] ? "<input type=\"hidden\" name=\"newconf[active_integrated_modules][$_modKey]\" value=\"$_modKey\" />" : "" ) . "<br />";
 			}
 
 			$_settings = array(
-				array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[module_activation][information]'), we_html_tools::TYPE_INFO, 450, false), "space" => 0),
-				array("headline" => g_l('prefs', '[module_activation][headline]'), "html" => $_html, "space" => 200)
+				array('headline' => '', 'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[module_activation][information]'), we_html_tools::TYPE_INFO, 450, false), "space" => 0),
+				array('headline' => g_l('prefs', '[module_activation][headline]'), "html" => $_html, "space" => 200)
 			);
 
-			return create_dialog("", g_l('prefs', '[module_activation][headline]'), $_settings, -1);
+			return create_dialog('', g_l('prefs', '[module_activation][headline]'), $_settings, -1);
 
-		case "proxy":
+		case 'proxy':
 			if(!we_base_preferences::userIsAllowed('useproxy')){
 				break;
 			}
