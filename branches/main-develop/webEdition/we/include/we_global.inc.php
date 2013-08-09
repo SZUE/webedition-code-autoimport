@@ -316,7 +316,7 @@ function getHTTP($server, $url, $port = '', $username = '', $password = ''){
 	}
 }
 
-function std_numberformat($content){
+/*function std_numberformat($content){
 	if(preg_match('#.*,[0-9]*$#', $content)){
 // Deutsche Schreibweise
 		$umschreib = preg_replace('#(.*),([0-9]*)$#', '\1.\2', $content);
@@ -331,7 +331,7 @@ function std_numberformat($content){
 		return $vor . substr($content, $pos, strlen($content) - $pos);
 	}
 	return str_replace(',', '', str_replace('.', '', $content));
-}
+}*/
 
 /**
  *

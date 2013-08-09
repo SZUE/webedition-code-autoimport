@@ -84,7 +84,7 @@ function we_tag_shipping($attribs){
 				}
 			}
 		}
-		return we_util::std_numberformat($shippingCost, $num_format);
+		return we_util_Strings::formatNumber($shippingCost, $num_format);
 	}
 	return 0;
 }
