@@ -58,7 +58,7 @@ if($GLOBALS['DB_WE']->num_rows() && we_hasPerm('NO_DOCTYPE')){
 }
 // File > New > webEdition Document > Doctypes*
 $nr = 1010103;
-while($GLOBALS['DB_WE']->next_record()) {
+while($GLOBALS['DB_WE']->next_record()){
 	$we_menu[$nr++] = array(
 		'text' => str_replace(array(',', '"', '\'',), array(' ', ''), $GLOBALS['DB_WE']->f('DocType')),
 		'parent' => 1010100,
@@ -347,7 +347,7 @@ if($seeMode){
 		'perm' => 'DELETE_DOCUMENT || ADMINISTRATOR',
 		'enabled' => 1,
 	);
-} else{
+} else {
 // File > Delete > Documents
 	$we_menu[1080100] = array(
 		'text' => g_l('javaMenu_global', '[documents]'),
@@ -661,60 +661,38 @@ $z = 100;
 $buyableModules = weModuleInfo::getAllModules();
 weModuleInfo::orderModuleArray($buyableModules);
 
-$moduleList = 'schedpro|';
+//$moduleList = 'schedpro|';
 
-if(!empty($GLOBALS['_we_active_integrated_modules'])){
+foreach($buyableModules as $m){
 
-	foreach($buyableModules as $m){
-
-		if(weModuleInfo::showModuleInMenu($m['name'])){
-			// workarround (old module names) for not installed Modules WIndow
-			if($m['name'] == 'customer'){
-				$moduleList .= 'customerpro|';
-			}
-			$moduleList .= $m['name'] . '|';
-			$we_menu[3000 . $z++] = array(
-				'text' => $m['text'] . '&hellip;',
-				'parent' => 3000000,
-				'cmd' => 'edit_' . $m['name'] . '_ifthere',
-				'perm' => isset($m['perm']) ? $m['perm'] : '',
-				'enabled' => 1,
-			);
-		} else if(in_array($m['name'], $GLOBALS['_we_active_integrated_modules'])){
-			$moduleList .= $m['name'] . '|';
+	if(weModuleInfo::showModuleInMenu($m['name'])){
+		// workarround (old module names) for not installed Modules WIndow
+	/*	if($m['name'] == 'customer'){
+			$moduleList .= 'customerpro|';
 		}
-	}
+		$moduleList .= $m['name'] . '|';*/
+		$we_menu[3000 . $z++] = array(
+			'text' => $m['text'] . '&hellip;',
+			'parent' => 3000000,
+			'cmd' => 'edit_' . $m['name'] . '_ifthere',
+			'perm' => isset($m['perm']) ? $m['perm'] : '',
+			'enabled' => 1,
+		);
+	} /*else if(in_array($m['name'], $GLOBALS['_we_active_integrated_modules'])){
+		$moduleList .= $m['name'] . '|';
+	}*/
 }
 
-foreach($GLOBALS['_we_available_modules'] as $key => $val){
+/*foreach($GLOBALS['_we_available_modules'] as $key => $val){
 	//if ($val['integrated']) {
 	$moduleList .= $key . '|';
 	//}
-}
-// Modules > pagelogger
-if(WE_TRACKER_DIR){
-	$we_menu[3020000] = array(
-		'text' => 'pageLogger',
-		'parent' => 3000000,
-		'cmd' => 'we_tracker',
-		'perm' => '',
-		'enabled' => 1,
-	);
-}
+}*/
 
 // Extras
 $we_menu[4000000] = array(
 	'text' => g_l('javaMenu_global', '[extras]'),
 	'parent' => 0,
-	'enabled' => 1,
-);
-
-// Extras > Navigation
-$we_menu[4031000] = array(
-	'text' => g_l('javaMenu_global', '[navigation]') . '&hellip;',
-	'parent' => 4000000,
-	'cmd' => 'edit_navigation_ifthere',
-	'perm' => 'EDIT_NAVIGATION || ADMINISTRATOR',
 	'enabled' => 1,
 );
 
@@ -978,7 +956,7 @@ $we_menu[5100000] = array(
 );
 
 reset($GLOBALS['_we_available_modules']);
-while((list($key, $val) = each($GLOBALS['_we_available_modules']))) {
+while((list($key, $val) = each($GLOBALS['_we_available_modules']))){
 
 	if(!isset($val['integrated']) || ( in_array($val['name'], $GLOBALS['_we_active_integrated_modules']) )){
 

@@ -3,8 +3,7 @@
 abstract class weModuleInfo {
 
 	static function _orderModules($a, $b){
-    	return (strcmp($a["text"],$b["text"]));
-
+		return (strcmp($a["text"], $b["text"]));
 	}
 
 	/**
@@ -12,9 +11,8 @@ abstract class weModuleInfo {
 	 *
 	 * @param hash $array
 	 */
-	static function orderModuleArray(&$array) {
-		uasort($array, array("weModuleInfo","_orderModules"));
-
+	static function orderModuleArray(&$array){
+		uasort($array, array("weModuleInfo", "_orderModules"));
 	}
 
 	/**
@@ -22,31 +20,30 @@ abstract class weModuleInfo {
 	 *
 	 * @return hash
 	 */
-	static function getAllModules() {
+	static function getAllModules(){
 		global $_we_available_modules;
 
 		$retArr = array();
 
-		foreach ($_we_available_modules as $key => $modInfo) {
-				$retArr[$key] = $modInfo;
+		foreach($_we_available_modules as $key => $modInfo){
+			$retArr[$key] = $modInfo;
 		}
 
 		return $retArr;
 	}
-
 
 	/**
 	 * returns hash with all buyable modules
 	 *
 	 * @return hash
 	 */
-	static function getNoneIntegratedModules() {
+	static function getNoneIntegratedModules(){
 		global $_we_available_modules;
 
 		$retArr = array();
 
-		foreach ($_we_available_modules as $key => $modInfo) {
-			if ($modInfo["integrated"] == false) {
+		foreach($_we_available_modules as $key => $modInfo){
+			if($modInfo["integrated"] == false){
 				$retArr[$key] = $modInfo;
 			}
 		}
@@ -58,9 +55,9 @@ abstract class weModuleInfo {
 	 * @param string $mKey
 	 * @return boolean
 	 */
-	static function isModuleInstalled($mKey) {
+	static function isModuleInstalled($mKey){
 
-		if (in_array($mKey, $GLOBALS['_we_active_integrated_modules']) || $mKey == "editor") {
+		if(in_array($mKey, $GLOBALS['_we_active_integrated_modules']) || $mKey == "editor"){
 			return true;
 		}
 
@@ -71,19 +68,18 @@ abstract class weModuleInfo {
 	 * returns hash of all integrated modules
 	 * @return hash
 	 */
-	static function getIntegratedModules($active=null) {
+	static function getIntegratedModules($active = null){
 
 		global $_we_available_modules;
 
 		$retArr = array();
 
-		foreach ($_we_available_modules as $key => $modInfo) {
-			if ($modInfo["integrated"] == true) {
+		foreach($_we_available_modules as $key => $modInfo){
+			if($modInfo["integrated"] == true){
 
-				if ($active === null) {
+				if($active === null){
 					$retArr[$key] = $modInfo;
-
-				} else if ( in_array($key, $GLOBALS['_we_active_integrated_modules']) == $active ) {
+				} else if(in_array($key, $GLOBALS['_we_active_integrated_modules']) == $active){
 					$retArr[$key] = $modInfo;
 				}
 			}
@@ -97,28 +93,29 @@ abstract class weModuleInfo {
 	 * @param string $modulekey
 	 * @return boolean
 	 */
-	static function showModuleInMenu($modulekey) {
+	static function showModuleInMenu($modulekey){
 		global $_we_available_modules;
 		/*
-		if ($_we_available_modules[$modulekey]["integrated"]) {
+		  if ($_we_available_modules[$modulekey]["integrated"]) {
+		  return true;
+
+		  } else {
+		 */
+		// show a module, if
+		// - it is active
+		// - if it is in module window
+
+		if($_we_available_modules[$modulekey]["inModuleMenu"] && in_array($modulekey, $GLOBALS["_we_active_integrated_modules"])){
 			return true;
-
-		} else {
-		*/
-			// show a module, if
-			// - it is active
-			// - if it is in module window
-
-			if ( $_we_available_modules[$modulekey]["inModuleMenu"] && in_array($modulekey, $GLOBALS["_we_active_integrated_modules"]) ) {
-				return true;
-			}
+		}
 
 		//}
 
 		return false;
 	}
 
-	static function isActive($modul) {
-		return in_array($modul,$GLOBALS['_we_active_integrated_modules']);
+	static function isActive($modul){
+		return in_array($modul, $GLOBALS['_we_active_integrated_modules']);
 	}
+
 }
