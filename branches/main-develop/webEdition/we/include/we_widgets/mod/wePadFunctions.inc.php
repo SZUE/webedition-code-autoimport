@@ -45,8 +45,8 @@ function getDateSelector($_label, $_name, $_btn){
 	$btnDatePicker = we_button::create_button(
 			"image:date_picker", "javascript:", null, null, null, null, null, null, false, $_btn);
 	$oSelector = new we_html_table(array(
-			"cellpadding" => 0, "cellspacing" => 0, "border" => 0, "id" => $_name . "_cell"
-			), 1, 5);
+		"cellpadding" => 0, "cellspacing" => 0, "border" => 0, "id" => $_name . "_cell"
+		), 1, 5);
 	$oSelector->setCol(0, 0, array(
 		"class" => "middlefont"
 		), $_label);
@@ -85,11 +85,12 @@ function getNoteList($_sql, $bDate, $bDisplay){
 		'ValidFrom',
 		'ValidUntil'
 	);
-	while($DB_WE->next_record()) {
+	while($DB_WE->next_record()){
 		foreach($_fields as $_fld){
 			//$_notes .= we_html_element::htmlSpan(array('id'=>$_rcd.'_'.$_fld,'style'=>'display:none;'),$DB_WE->f($_fld));
-			$_fldValue = ($_fld == 'ValidUntil' && ($DB_WE->f('ValidUntil') == "3000-01-01" || $DB_WE->f('ValidUntil') == "0000-00-00") ?
-					"" : $DB_WE->f($_fld));
+			$dbf= $DB_WE->f($_fld);
+			$_fldValue = ($_fld == 'ValidUntil' && ($dbf == "3000-01-01" || $dbf == "0000-00-00" || empty($dbf)) ?
+					'' : $dbf);
 
 			$_fldValue = str_replace(array('<', '>', '\'', '"'), array('&lt;', '&gt;', '&#039;', '&quot;'), $_fldValue);
 			$_notes .= we_html_element::htmlHidden(
@@ -97,7 +98,7 @@ function getNoteList($_sql, $bDate, $bDisplay){
 						'id' => $_rcd . '_' . $_fld,
 						'style' => 'display:none;',
 						'value' => ($_fldValue)
-				));
+			));
 		}
 
 		$validity = $DB_WE->f("Valid");
@@ -120,7 +121,7 @@ function getNoteList($_sql, $bDate, $bDisplay){
 				if($today < $vFrom){
 					continue;
 				}
-			} else{
+			} else {
 				if($today < $vFrom || $today > $vTill){
 					continue;
 				}

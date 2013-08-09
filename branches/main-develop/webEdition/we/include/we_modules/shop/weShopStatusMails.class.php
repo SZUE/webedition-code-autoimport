@@ -218,6 +218,7 @@ class weShopStatusMails{
 		}
 
 		$docID = intval($docID);
+
 		if($docID && weFileExists($docID)){
 			$_SESSION['WE_SendMail'] = true;
 			$_REQUEST['we_orderid'] = $order;
@@ -241,7 +242,6 @@ class weShopStatusMails{
 
 
 		$subject = $maildoc->getElement($this->EMailData['DocumentSubjectField']);
-
 		if($subject == ''){
 			$subject = 'no subject given';
 		}

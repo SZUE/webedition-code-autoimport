@@ -467,11 +467,13 @@ function checkFooter(){
 		//allow at max 10 scheduled activities per call, in case no cron is used.
 		$maxSched = defined('SCHEDULED_BY_CRON') ? -1 : 10;
 //make sure documents don't know they are inside WE
-		$lastWEState = array(
-			'WE_MAIN_EDITMODE' => $GLOBALS['WE_MAIN_EDITMODE'],
-			'we_editmode' => $GLOBALS['we_editmode'],
-		);
-		$GLOBALS['WE_MAIN_EDITMODE'] = $GLOBALS['we_editmode'] = false;
+		if(isset($GLOBALS['WE_MAIN_EDITMODE']) || isset($GLOBALS['we_editmode'])){
+			$lastWEState = array(
+				'WE_MAIN_EDITMODE' => $GLOBALS['WE_MAIN_EDITMODE'],
+				'we_editmode' => $GLOBALS['we_editmode'],
+			);
+			$GLOBALS['WE_MAIN_EDITMODE'] = $GLOBALS['we_editmode'] = false;
+		}
 
 		while((!$hasLock || $DB_WE->lock(array(SCHEDULE_TABLE, ERROR_LOG_TABLE))) && (--$maxSched != 0) && ($rec = getHash('SELECT * FROM ' . SCHEDULE_TABLE . ' WHERE Wann<=UNIX_TIMESTAMP() AND lockedUntil<NOW() AND Active=1 ORDER BY Wann LIMIT 1', $DB_WE))){
 			$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET lockedUntil=lockedUntil+INTERVAL 1 minute WHERE DID=' . $rec['DID'] . ' AND Active=1 AND ClassName="' . $rec['ClassName'] . '" AND Type="' . $rec["Type"] . '" AND Was="' . $rec["Was"] . '" AND Wann=' . $rec['Wann']);
@@ -496,8 +498,10 @@ function checkFooter(){
 		//make sure DB is unlocked!
 		$DB_WE->unlock();
 //reset state
-		$GLOBALS['WE_MAIN_EDITMODE'] = $lastWEState['WE_MAIN_EDITMODE'];
-		$GLOBALS['we_editmode'] = $lastWEState['we_editmode'];
+		if(isset($lastWEState)){
+			$GLOBALS['WE_MAIN_EDITMODE'] = $lastWEState['WE_MAIN_EDITMODE'];
+			$GLOBALS['we_editmode'] = $lastWEState['we_editmode'];
+		}
 	}
 
 	function check_and_convert_to_sched_pro(){

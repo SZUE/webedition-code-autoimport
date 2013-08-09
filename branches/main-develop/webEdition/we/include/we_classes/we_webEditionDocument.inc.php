@@ -732,6 +732,8 @@ class we_webEditionDocument extends we_textContentDocument{
 		ob_start();
 		if(is_file($we_include)){
 			include($we_include);
+		}else{
+			t_e('File '.$we_include.' not found!');
 		}
 		$contents = ob_get_contents();
 		ob_end_clean();
