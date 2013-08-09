@@ -1560,14 +1560,15 @@ function weWysiwygSetHiddenText(arg) {
 								}
 								' : '') . '
 							});
-							'
-						. (!$this->removeFirstParagraph ? '' : '
-							ed.onPostProcess.add(function(ed, o) {
-								var container = document.createElement("div");
-								container.innerHTML = o.content;
-								var first = container.firstChild;
 
-								if(first.nodeName == "P"){
+							ed.onPostProcess.add(function(ed, o) {
+								var c = document.createElement("div");
+								c.innerHTML = o.content;
+								var first = c.firstChild;
+
+								if(first && first.innerHTML == "&nbsp;" && first == c.lastChild){
+									c.innerHTML = "";
+								} ' . (!$this->removeFirstParagraph ? '' : 'else if(first.nodeName == "P"){
 									var useDiv = false, div = document.createElement("div"), attribs = ["style", "class", "dir"];
 									div.innerHTML = first.innerHTML;
 
@@ -1577,15 +1578,19 @@ function weWysiwygSetHiddenText(arg) {
 											useDiv = true; 
 										}
 									}
-									useDiv ? container.replaceChild(div, first) : container.replaceChild(document.createTextNode(first.innerHTML), first);
-
-									o.content = container.innerHTML;
-									o.content = o.content.replace(/^&nbsp;$/, "");
+									if(useDiv){
+										c.replaceChild(div, first);
+									} else{
+										c.removeChild(first);
+										c.innerHTML = first.innerHTML + c.innerHTML;
+									}
 								}
-								//o.content = o.content.replace(/<p [^>]*>|<p>/, "").replace(/<\/p>/, "").replace(/^&nbsp;$/, "");
-							});') .
+								') . '
+								o.content = c.innerHTML;
+							});' .
 
 							($this->isFrontendEdit ? '' : '
+
 							/* set EditorFrame.setEditorIsHot(true) */
 
 							// we look for editorLevel and weEditorFrameController just once at editor init
