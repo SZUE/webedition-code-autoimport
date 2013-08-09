@@ -276,6 +276,7 @@ $l_modules_shop=array(
 		'useLanguages'=>'Nutze verschiedene <br/>Mail-Dokumente je <br/>Sprache (statt den Standard)',
 	),
 	'storniert'=>'Storniert am:',
+	'treeYearClick'=>'Umsätze des Geschäftsjahres',
 	'treeYear'=>'Jahr',
 	'ue_data'=>'Übersicht für',
 	'umsatzgesamt'=>'Umsatz gesamt',

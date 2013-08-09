@@ -276,6 +276,7 @@ $l_modules_shop=array(
 		'useLanguages'=>'Use documents<br/> depending on language <br/>(instead of default)',
 	),
 	'storniert'=>'Cancelled on:',
+	'treeYearClick'=>'Annual Turnover for',
 	'treeYear'=>'Vuosi',
 	'ue_data'=>'Yleistiedot',
 	'umsatzgesamt'=>'Yhteensä',

@@ -276,6 +276,7 @@ $l_modules_shop=array(
 		'useLanguages'=>'Use documents<br/> depending on language <br/>(instead of default)',
 	),
 	'storniert'=>'Cancelled op:',
+	'treeYearClick'=>'Annual Turnover for',
 	'treeYear'=>'Jaar',
 	'ue_data'=>'Overzicht voor',
 	'umsatzgesamt'=>'Verkoop totaal',
