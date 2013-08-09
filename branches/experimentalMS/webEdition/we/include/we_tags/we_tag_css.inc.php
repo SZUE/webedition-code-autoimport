@@ -39,10 +39,23 @@ function we_tag_css($attribs){
 
 		$attribs['rel'] = $rel;
 		$attribs['type'] = 'text/css';
-		$attribs['href'] = BASE_CSS . $url;
+		$attribs['href'] = (we_isHttps() ? '' : BASE_CSS) . $url;
 
-
-		return getHtmlTag('link', $attribs) . "\n";
+		$nolink = false;
+		$applyto = weTag_getAttribute("applyto", $attribs, defined("CSSAPPLYTO_DEFAULT") ? CSSAPPLYTO_DEFAULT : "around");
+		switch($applyto){
+			case 'around' :
+				break;
+			case 'wysiwyg' : 
+				$nolink = true;
+			case 'all' : 
+				$media = weTag_getAttribute('media', $attribs);
+				if($media == "" || $media == "screen" || $media == "all"){
+					$GLOBALS['we_doc']->addDocumentCss($attribs['href'] . "?" . time());
+				}
+				break;
+		}
+		return $nolink ? '' : getHtmlTag('link', $attribs) . "\n";
 	}
 	return '';
 }

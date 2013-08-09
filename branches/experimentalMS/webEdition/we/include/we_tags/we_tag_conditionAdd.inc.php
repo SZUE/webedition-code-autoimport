@@ -69,10 +69,11 @@ function we_tag_conditionAdd($attribs){
 				$value = $GLOBALS[$var];
 			}
 	}
-	if($exactmatch && defined('DB_COLLATION') && DB_COLLATION != ''){
-		if(strpos(DB_COLLATION, 'latin1') !== false){
+	$collate = we_database_base::getCharsetCollation();
+	if($exactmatch && $collate != ''){
+		if(strpos($collate, 'latin1') !== false){
 			$compare = 'COLLATE latin1_bin ' . $compare;
-		} elseif(strpos(DB_COLLATION, 'utf') !== false){
+		} elseif(strpos($collate, 'utf') !== false){
 			$compare = 'COLLATE utf8_bin ' . $compare;
 		}
 	}
@@ -81,11 +82,7 @@ function we_tag_conditionAdd($attribs){
 	if(strlen($field) && isset($GLOBALS['we_lv_conditionName']) && isset($GLOBALS[$GLOBALS['we_lv_conditionName']])){
 		$GLOBALS[$GLOBALS['we_lv_conditionName']] .= '(' . $field . ' ' . $compare . ' "' . $GLOBALS['DB_WE']->escape($value) . '") ';
 	} else{
-		if(preg_match('/^(.*)AND ?$/', $GLOBALS[$GLOBALS['we_lv_conditionName']])){
-			$GLOBALS[$GLOBALS['we_lv_conditionName']] .= '1 ';
-		} else{
-			$GLOBALS[$GLOBALS['we_lv_conditionName']] .= '0 ';
-		}
+		$GLOBALS[$GLOBALS['we_lv_conditionName']] .= (preg_match('/^(.*)AND ?$/', $GLOBALS[$GLOBALS['we_lv_conditionName']]) ? '1 ' : '0 ');
 	}
 	return '';
 }

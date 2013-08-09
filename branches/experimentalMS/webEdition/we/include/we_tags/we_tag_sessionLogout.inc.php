@@ -31,7 +31,6 @@ function we_tag_sessionLogout($attribs, $content){
 	$row = getHash('SELECT Path,IsFolder,IsDynamic FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), $GLOBALS['DB_WE']);
 
 	$url = (!empty($row) ? $row['Path'] . ($row['IsFolder'] ? '/' : '') : '');
-
 	$attr = we_make_attribs($attribs, 'id,_name_orig');
 
 	return '<a href="' . $url . '?we_webUser_logout=1" ' . ($attr ? $attr : '') . '>' . $content . '</a>';

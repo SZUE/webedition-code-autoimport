@@ -81,10 +81,10 @@ if((!$we_alerttext) && isset($_FILES['we_uploadedFile']) && $_FILES['we_uploaded
 			$tmp = $we_doc->ClassName;
 			$we_doc = new $tmp();
 			$we_doc->initByID($file_id, FILE_TABLE);
-		} else{
+		} else {
 			$z = 0;
 			$footext = $we_doc->Filename . "_" . $z . $we_doc->Extension;
-			while(f("SELECT ID FROM " . FILE_TABLE . " WHERE Text='" . $DB_WE->escape($footext) . "' AND ParentID='$pid'", "ID", $DB_WE)) {
+			while(f("SELECT ID FROM " . FILE_TABLE . " WHERE Text='" . $DB_WE->escape($footext) . "' AND ParentID='$pid'", "ID", $DB_WE)){
 				$z++;
 				$footext = $we_doc->Filename . "_" . $z . $we_doc->Extension;
 			}
@@ -97,10 +97,10 @@ if((!$we_alerttext) && isset($_FILES['we_uploadedFile']) && $_FILES['we_uploaded
 
 	$we_doc->setElement("type", $we_ContentType, "attrib");
 
-	$foo = explode("/", $_FILES["we_uploadedFile"]["type"]);
+	$foo = explode('/', $_FILES["we_uploadedFile"]["type"]);
 	$we_doc->setElement("data", $tempName, $foo[0]);
 
-	if($we_ContentType == "image/*"){
+	if($we_ContentType == "image/*" || $we_ContentType == "application/x-shockwave-flash"){
 		$we_size = $we_doc->getimagesize($tempName);
 		$we_doc->setElement("width", $we_size[0], "attrib");
 		$we_doc->setElement("height", $we_size[1], "attrib");
@@ -110,13 +110,11 @@ if((!$we_alerttext) && isset($_FILES['we_uploadedFile']) && $_FILES['we_uploaded
 			$we_doc->importMetaData();
 		}
 	}
-	if($we_ContentType == "application/x-shockwave-flash"){
-		$we_size = $we_doc->getimagesize($tempName);
-		$we_doc->setElement("width", $we_size[0], "attrib");
-		$we_doc->setElement("height", $we_size[1], "attrib");
-		$we_doc->setElement("origwidth", $we_size[0]);
-		$we_doc->setElement("origheight", $we_size[1]);
+	if($we_doc->Extension == '.pdf'){
+		$we_doc->setMetaDataFromFile($tempName);
 	}
+
+
 
 	$we_doc->setElement("filesize", $_FILES['we_uploadedFile']["size"], "attrib");
 	if(isset($_REQUEST["img_title"])){
@@ -128,7 +126,7 @@ if((!$we_alerttext) && isset($_FILES['we_uploadedFile']) && $_FILES['we_uploaded
 	if(isset($_REQUEST["Thumbnails"])){
 		if(is_array($_REQUEST["Thumbnails"])){
 			$we_doc->Thumbs = makeCSVFromArray($_REQUEST["Thumbnails"], true);
-		} else{
+		} else {
 			$we_doc->Thumbs = $_REQUEST["Thumbnails"];
 		}
 	}
@@ -137,11 +135,9 @@ if((!$we_alerttext) && isset($_FILES['we_uploadedFile']) && $_FILES['we_uploaded
 	$we_doc->we_save();
 	$id = $we_doc->ID;
 } else if(isset($_FILES['we_uploadedFile'])){
-	if(we_filenameNotValid($_FILES['we_uploadedFile']['name'])){
-		$we_alerttext = g_l('alert', "[we_filename_notValid]");
-	} else{
-		$we_alerttext = g_l('alert', "[wrong_file][" . $we_ContentType . ']');
-	}
+	$we_alerttext = (we_filenameNotValid($_FILES['we_uploadedFile']['name']) ?
+			g_l('alert', "[we_filename_notValid]") :
+			g_l('alert', "[wrong_file][" . (empty($we_ContentType) ? 'other' : $we_ContentType) . ']'));
 }
 
 // find out the smallest possible upload size
@@ -155,7 +151,7 @@ $buttons = we_button::position_yes_no_cancel($yes_button, null, $cancel_button);
 
 if($maxsize){
 	array_push($parts, array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(
-			sprintf(g_l('newFile', "[max_possible_size]"), round($maxsize / (1024 * 1024), 3) . "MB"), 1, 390), "space" => 0, "noline" => 1));
+			sprintf(g_l('newFile', "[max_possible_size]"), weFile::getHumanFileSize($maxsize, weFile::SZ_MB)), 1, 390), "space" => 0, "noline" => 1));
 }
 
 array_push($parts, array("headline" => "", "html" => '<input name="we_uploadedFile" TYPE="file"' . ($allowedContentTypes ? ' ACCEPT="' . $allowedContentTypes . '"' : '') . ' size="35" />', "space" => 0));
@@ -170,7 +166,7 @@ if($we_ContentType == "image/*"){
 
 	$selectedID = 0;
 	$_enabled_buttons = false;
-	while($DB_WE->next_record()) {
+	while($DB_WE->next_record()){
 		$_enabled_buttons = true;
 		$_thumbnail_counter = $DB_WE->f("ID");
 
@@ -191,24 +187,27 @@ if($we_alerttext){
 if(isset($_FILES['we_uploadedFile']) && (!$we_alerttext)){
 	if($we_doc->ID){
 		?>
-					var ref;
-					if(opener.top.opener && opener.top.opener.top.makeNewEntry) ref = opener.top.opener.top;
-					else if(opener.top.opener && opener.top.opener.top.opener && opener.top.opener.top.opener.top.makeNewEntry) ref = opener.top.opener.top.opener.top;
-					else if(opener.top.opener && opener.top.opener.top.opener && opener.top.opener.top.opener.top.opener && opener.top.opener.top.opener.top.opener.top.makeNewEntry) ref = opener.top.opener.top.opener.top.opener.top;
+		var ref;
+		if (opener.top.opener && opener.top.opener.top.makeNewEntry)
+			ref = opener.top.opener.top;
+		else if (opener.top.opener && opener.top.opener.top.opener && opener.top.opener.top.opener.top.makeNewEntry)
+			ref = opener.top.opener.top.opener.top;
+		else if (opener.top.opener && opener.top.opener.top.opener && opener.top.opener.top.opener.top.opener && opener.top.opener.top.opener.top.opener.top.makeNewEntry)
+			ref = opener.top.opener.top.opener.top.opener.top;
 
 
-					if (ref.makeNewEntry) {
-						ref.makeNewEntry("<?php print $we_doc->Icon ?>","<?php print $we_doc->ID ?>","<?php print $we_doc->ParentID ?>","<?php print $we_doc->Text ?>",1,"<?php print $we_doc->ContentType ?>","<?php print $we_doc->Table ?>");
-					}
-					opener.top.reloadDir();
-					opener.top.unselectAllFiles();
-					opener.top.addEntry("<?php print $we_doc->ID ?>","<?php print $we_doc->Icon ?>","<?php print $we_doc->Text ?>","<?php print $we_doc->IsFolder ?>","<?php print $we_doc->Path ?>");
-					opener.top.doClick(<?php print $we_doc->ID; ?>,0);
-					setTimeout('opener.top.selectFile(<?php print $we_doc->ID; ?>)',200);
+		if (ref.makeNewEntry) {
+			ref.makeNewEntry("<?php print $we_doc->Icon ?>", "<?php print $we_doc->ID ?>", "<?php print $we_doc->ParentID ?>", "<?php print $we_doc->Text ?>", 1, "<?php print $we_doc->ContentType ?>", "<?php print $we_doc->Table ?>");
+		}
+		opener.top.reloadDir();
+		opener.top.unselectAllFiles();
+		opener.top.addEntry("<?php print $we_doc->ID ?>", "<?php print $we_doc->Icon ?>", "<?php print $we_doc->Text ?>", "<?php print $we_doc->IsFolder ?>", "<?php print $we_doc->Path ?>");
+		opener.top.doClick(<?php print $we_doc->ID; ?>, 0);
+		setTimeout('opener.top.selectFile(<?php print $we_doc->ID; ?>)', 200);
 	<?php } ?>
-			setTimeout('self.close()',250);
+	setTimeout('self.close()', 250);
 <?php } ?>
-	//-->
+//-->
 </script>
 </head>
 <body class="weDialogBody" onLoad="self.focus();" ><center>
@@ -216,7 +215,7 @@ if(isset($_FILES['we_uploadedFile']) && (!$we_alerttext)){
 			<input type="hidden" name="table" value="<?php print $_REQUEST["tab"]; ?>" />
 			<input type="hidden" name="pid" value="<?php print $_REQUEST["dir"]; ?>" />
 			<input type="hidden" name="ct" value="<?php print $we_ContentType; ?>" />
-			<?php print we_multiIconBox::getHTML("", "100%", $parts, 30, $buttons, -1, "", "", false, g_l('newFile', "[import_File_from_hd_title]"), "", 560); ?>
+<?php print we_multiIconBox::getHTML("", "100%", $parts, 30, $buttons, -1, "", "", false, g_l('newFile', "[import_File_from_hd_title]"), "", 560); ?>
 		</form></center>
 </body>
 </html>

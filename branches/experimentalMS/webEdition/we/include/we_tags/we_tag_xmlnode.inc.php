@@ -80,7 +80,6 @@ function we_parse_tag_xmlnode($attribs, $content){
  * @return string
  * @param array $attribs
  * @param string $content
- * @desc Beschreibung eingeben...
  */
 function we_tag_xmlnode($attribs){
 	if(($foo = attributFehltError($attribs, "xpath", __FUNCTION__))){

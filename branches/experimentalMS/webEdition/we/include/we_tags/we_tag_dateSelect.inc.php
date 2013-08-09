@@ -23,8 +23,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_dateSelect($attribs){
-	if(($foo = attributFehltError($attribs, "name", __FUNCTION__)))
+	if(($foo = attributFehltError($attribs, "name", __FUNCTION__))){
 		return $foo;
+	}
 	$name = weTag_getAttribute("name", $attribs);
 	$class = weTag_getAttribute("class", $attribs);
 	$style = weTag_getAttribute("style", $attribs);
@@ -34,11 +35,8 @@ function we_tag_dateSelect($attribs){
 
 	$from = array();
 	$to = array();
-	$js = "";
-	$checkDate = "";
-	$minyear = "";
-	$maxyear = "";
-	if($tmp_from != "" && $tmp_to != ""){
+	$js = $checkDate = $minyear = $maxyear = '';
+	if(!empty($tmp_from) && !empty($tmp_to)){
 		$from = array(
 			'year' => substr($tmp_from, 0, 4),
 			'month' => (substr($tmp_from, 5, 2)) - 1,
@@ -151,7 +149,7 @@ function WE_checkDate_' . $name . '() {
 WE_checkDate_' . $name . '();');
 
 
-		$checkDate = "WE_checkDate_" . $name . "();";
+		$checkDate = 'WE_checkDate_' . $name . '();';
 	}
 
 	$submitonchange = weTag_getAttribute("submitonchange", $attribs, false, true);

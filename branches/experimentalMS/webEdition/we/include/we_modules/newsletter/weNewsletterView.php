@@ -2514,7 +2514,9 @@ class weNewsletterView{
 	function getEmails($group, $select = 0, $emails_only = 0){
 
 		@set_time_limit(0);
-		@ini_set("memory_limit", "128M");
+		if( intval(ini_get('memory_limit')) < 128){
+			@ini_set('memory_limit', '128M');
+		}
 
 		$extern = ($select == 0 || $select == 3) ? weNewsletterBase::getEmailsFromExtern($this->newsletter->groups[$group - 1]->Extern, $emails_only, $group, $this->getGroupBlocks($group)) : array();
 

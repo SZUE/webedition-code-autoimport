@@ -65,7 +65,7 @@ class weNavigationRule extends weModelBase{
 	}
 
 	function initByID($ruleId){
-		parent::load(intval($ruleId));
+		return parent::load(intval($ruleId));
 	}
 
 	static function getWeNavigationRule($navigationName, $navigationId, $selectionType, $folderId, $doctype, $classId, $categories, $workspaceId, $href = '', $selfCurrent = true){

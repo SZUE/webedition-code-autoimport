@@ -10,19 +10,19 @@ $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 $id = new weTagData_selectorAttribute('id', FILE_TABLE, 'text/webedition', true, '');
 $target = new weTagData_choiceAttribute('target', array(new weTagDataOption('_top', false, ''), new weTagDataOption('_parent', false, ''), new weTagDataOption('_self', false, ''), new weTagDataOption('_blank', false, '')), false, false, '');
 $confirm = new weTagData_textAttribute('confirm', false, '');
-$button = new weTagData_selectAttribute('button', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
-$hrefonly = new weTagData_selectAttribute('hrefonly', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
+$button = new weTagData_selectAttribute('button', weTagData_selectAttribute::getTrueFalse(), false, '');
+$hrefonly = new weTagData_selectAttribute('hrefonly', weTagData_selectAttribute::getTrueFalse(), false, '');
 $class = new weTagData_textAttribute('class', false, '');
 $style = new weTagData_textAttribute('style', false, '');
 $params = new weTagData_textAttribute('params', false, '');
-$hidedirindex = new weTagData_selectAttribute('hidedirindex', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
+$hidedirindex = new weTagData_selectAttribute('hidedirindex', weTagData_selectAttribute::getTrueFalse(), false, '');
 $amount = new weTagData_textAttribute('amount', false, 'shop');
-$delarticle = new weTagData_selectAttribute('delarticle', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
-$delshop = new weTagData_selectAttribute('delshop', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, 'shop');
+$delarticle = new weTagData_selectAttribute('delarticle', weTagData_selectAttribute::getTrueFalse(), false, '');
+$delshop = new weTagData_selectAttribute('delshop', weTagData_selectAttribute::getTrueFalse(), false, 'shop');
 $shopname = new weTagData_textAttribute('shopname', false, 'shop');
-$editself = new weTagData_selectAttribute('editself', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
-$delete = new weTagData_selectAttribute('delete', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
-$xml = new weTagData_selectAttribute('xml', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
+$editself = new weTagData_selectAttribute('editself', weTagData_selectAttribute::getTrueFalse(), false, '');
+$delete = new weTagData_selectAttribute('delete', weTagData_selectAttribute::getTrueFalse(), false, '');
+$xml = new weTagData_selectAttribute('xml', weTagData_selectAttribute::getTrueFalse(), false, '');
 // = new weTagData_textAttribute( 'cachelifetime', false, '');
 
 

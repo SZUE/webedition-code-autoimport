@@ -361,7 +361,7 @@ class weToolFrames extends weModuleFrames{
 			$result = 0;
 		}
 
-		return weNavigation::formatNumber($result, strtolower($GLOBALS['WE_LANGUAGE']), 2);
+		return we_util_Strings::formatNumber($result, strtolower($GLOBALS['WE_LANGUAGE']), 2);
 	}
 
 	function getHTMLPropertiesItem(){

@@ -60,7 +60,7 @@ class weTagData{
 	private $Groups = array();
 	private $Deprecated = false;
 	private $noDocuLink = false;
-	
+
 	private function __construct($tagName){
 		$this->Name = $tagName;
 		// include the selected tag, its either normal, or custom tag
@@ -95,15 +95,25 @@ class weTagData{
 		}
 
 		if($this->TypeAttribute){
-			if(!is_array($this->TypeAttribute->Options)){
+			if(!is_array($this->TypeAttribute->getOptions())){
 				t_e('Error in TypeAttribute of we:' . $this->Name);
 			} else{
+				$options = $this->TypeAttribute->getOptions();
 				if(!$this->noDocuLink){
-					foreach($this->TypeAttribute->Options as &$value){
+					foreach($options as &$value){
 						$tmp = new weTagData_cmdAttribute('TagReferenz', false, '', array('open_tagreference', strtolower($tagName) . '-' . $this->TypeAttribute->getName() . '-' . $value->Name), g_l('taged', '[tagreference_linktext]'));
 						$value->AllowedAttributes[] = $tmp;
 						if($value->Value != '-'){
 							$this->Attributes[] = $tmp;
+						}
+					}
+				}
+				//fix common error: not all type attributes are present in attributes
+				foreach($options as $value){
+					$tmp = $value->AllowedAttributes;
+					foreach($tmp as $cur){
+						if($cur != $this->TypeAttribute && !empty($cur) && !in_array($cur, $this->Attributes)){
+							$this->Attributes[] = $cur;
 						}
 					}
 				}
@@ -120,12 +130,12 @@ class weTagData{
 		if($this->TypeAttribute){
 			$this->UsedAttributes[] = $this->TypeAttribute;
 		}
-		foreach($this->Attributes as $attr){
+		foreach($this->Attributes as $pos => $attr){
 			if($attr === null){
 				continue;
 			}
 			if(!is_object($attr)){
-				t_e('Error in Attributes of we:' . $this->Name, $attr);
+				t_e('Error in Attributes of we:' . $this->Name, $attr, $pos);
 			} else if($attr->useAttribute()){
 				$this->UsedAttributes[] = $attr;
 			}
@@ -235,6 +245,19 @@ class weTagData{
 		return null;
 	}
 
+	function getAttributesForCM(){
+		$attr = array();
+
+		foreach($this->UsedAttributes as $attribute){
+			$class = get_class($attribute);
+			if(!$attribute->IsDeprecated() && $attribute->useAttribute() && $class != 'weTagData_linkAttribute' && $class != 'weTagData_cmdAttribute'){
+				$attr[] = $attribute->getName();
+			}
+		}
+		return $attr;
+		;
+	}
+
 	/**
 	 * @return string
 	 */
@@ -244,7 +267,7 @@ class weTagData{
 
 		$typeAttrib = $this->getTypeAttribute();
 
-		if(sizeof($this->UsedAttributes) > 1 || (sizeof($this->UsedAttributes) && !$typeAttrib)){
+		if(count($this->UsedAttributes) > 1 || (count($this->UsedAttributes) && !$typeAttrib)){
 
 			$ret = '<ul>';
 			foreach($this->UsedAttributes as $attribute){

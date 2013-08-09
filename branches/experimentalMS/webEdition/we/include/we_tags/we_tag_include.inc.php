@@ -49,10 +49,10 @@ function we_setBackVar($we_unique){
 			'postTagName' => isset($GLOBALS['postTagName']) ? $GLOBALS['postTagName'] : '',
 		),
 		'REQUEST' => array(
-			'pv_id' => isset($_REQUEST['pv_id']) ? $_REQUEST['pv_id'] : '',
-			'pv_tid' => isset($_REQUEST['pv_tid']) ? $_REQUEST['pv_tid'] : '',
+			'pv_id' => isset($_REQUEST['pv_id']) ? intval($_REQUEST['pv_id']) : '',
+			'pv_tid' => isset($_REQUEST['pv_tid']) ? intval($_REQUEST['pv_tid']) : '',
 			'we_cmd' => isset($_REQUEST['we_cmd']) ? $_REQUEST['we_cmd'] : '',
-		));
+	));
 
 	if(isset($GLOBALS['WE_IS_DYN'])){
 		unset($GLOBALS['WE_IS_DYN']);
@@ -112,12 +112,12 @@ function we_tag_include($attribs, $content){
 		if($name && !($id || $path)){
 			$db = new DB_WE();
 			$_name = weTag_getAttribute('_name_orig', $attribs);
-			$path = we_tag('href', array('name' => $_name, 'rootdir' => $rootdir));
-			$nint = $name . "_we_jkhdsf_int";
+			$path = we_tag('href', array('name' => $_name, 'rootdir' => $rootdir, 'hidedirindex' => 'false'));
+			$nint = $name . we_base_link::MAGIC_INT_LINK;
 			$int = ($GLOBALS['we_doc']->getElement($nint) == '') ? 0 : $GLOBALS['we_doc']->getElement($nint);
 			$intID = $GLOBALS['we_doc']->getElement($nint . 'ID');
 			if($int && $intID){
-				$ct = f('SELECT ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id) . ' AND Published>0','ContentType', $db);
+				$ct = f('SELECT ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id) . ' AND Published>0', 'ContentType', $db);
 			}
 		}
 	}
@@ -146,7 +146,7 @@ function we_tag_include($attribs, $content){
 			$content = getHTTP(getServerUrl(true), $realPath);
 		} else{
 			$realPath = $_SERVER['DOCUMENT_ROOT'] . $realPath;
-			//check Customer-Filter on static documents
+//check Customer-Filter on static documents
 			$id = intval($id ? $id : (isset($intID) ? $intID : 0));
 			if(defined('CUSTOMER_TABLE') && $id){
 				$filter = weDocumentCustomerFilter::getFilterByIdAndTable($id, FILE_TABLE);
@@ -171,19 +171,16 @@ function we_tag_include($attribs, $content){
 			$we_unique = 1;
 			$GLOBALS['we']['backVars'] = array();
 		}
-		//create empty array
+//create empty array
 		$GLOBALS['we']['backVars'][$we_unique] = array();
 
 
 		if(we_tag('ifSeeMode')){
 			if($seeMode){ //	only show link to seeMode, when id is given
-				if($id){
-					$content .= '<a href="' . $id . '" seem="include"></a>';
-				}
-				if($path){
-					$_tmpID = path_to_id($path);
-					$content .= '<a href="' . $_tmpID . '" seem="include"></a>';
-				}
+				$content .= ($id ?
+						'<a href="' . $id . '" seem="include"></a>' :
+						($path ? '<a href="' . path_to_id($path) . '" seem="include"></a>' :
+							''));
 			}
 
 			$content = preg_replace('|< */? *form[^>]*>|i', '', $content);

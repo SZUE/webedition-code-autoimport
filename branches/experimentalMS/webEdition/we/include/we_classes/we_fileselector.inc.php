@@ -37,22 +37,22 @@ class we_fileselector{
 	protected $table = FILE_TABLE;
 	var $tableSizer = '';
 	var $tableHeadlines = '';
-	var $JSCommand = "";
+	var $JSCommand = '';
 	var $JSTextName;
 	var $JSIDName;
 	protected $db;
-	var $sessionID = "";
+	var $sessionID = '';
 	protected $fields = 'ID,ParentID,Text,Path,IsFolder,Icon';
 	var $values = array();
-	var $openerFormName = "we_form";
-	protected $order = "IsFolder DESC, Text";
+	var $openerFormName = 'we_form';
+	protected $order = 'IsFolder DESC, Text';
 	protected $canSelectDir = true;
 	var $rootDirID = 0;
-	protected $filter = "";
+	protected $filter = '';
 	var $col2js;
 	protected $title = '';
 
-	function __construct($id, $table = FILE_TABLE, $JSIDName = "", $JSTextName = "", $JSCommand = "", $order = "", $sessionID = "", $rootDirID = 0, $filter = ""){
+	function __construct($id, $table = FILE_TABLE, $JSIDName = '', $JSTextName = '', $JSCommand = '', $order = '', $sessionID = '', $rootDirID = 0, $filter = ''){
 
 		if(!isset($_SESSION['weS']['we_fs_lastDir'])){
 			$_SESSION['weS']['we_fs_lastDir'] = array();
@@ -77,11 +77,11 @@ class we_fileselector{
 
 	function setDirAndID(){
 		$id = $this->id;
-		if($id == "0" && strlen($id)){
+		if($id == 0 && strlen($id)){
 			$this->setDefaultDirAndID(false);
 			return;
 		}
-		if($id != ""){
+		if($id != ''){
 			// get default Directory
 			$this->db->query('SELECT ' . $this->fields . ' FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($id));
 
@@ -89,11 +89,11 @@ class we_fileselector{
 			if($this->db->next_record()){
 				$this->values = $this->db->Record;
 
-				$this->dir = ($this->values["IsFolder"] ?
+				$this->dir = ($this->values['IsFolder'] ?
 						$id :
-						$this->values["ParentID"]);
+						$this->values['ParentID']);
 
-				$this->path = $this->values["Path"];
+				$this->path = $this->values['Path'];
 			} else{
 				$this->setDefaultDirAndID(false);
 			}
@@ -107,21 +107,22 @@ class we_fileselector{
 		$this->dir = $setLastDir ? ( isset($_SESSION['weS']['we_fs_lastDir'][$this->table]) ? intval($_SESSION['weS']['we_fs_lastDir'][$this->table]) : 0 ) : 0;
 		$this->id = $this->dir;
 
-		$this->path = "";
+		$this->path = '';
 
 		$this->values = array(
-			"ParentID" => 0,
-			"Text" => "/",
-			"Path" => "/",
-			"IsFolder" => 1
+			'ParentID' => 0,
+			'Text' => '/',
+			'Path' => '/',
+			'IsFolder' => 1
 		);
 	}
 
-	function isIDInFolder($ID, $folderID, $db = ""){
-		if($folderID == $ID)
+	function isIDInFolder($ID, $folderID, $db = ''){
+		if($folderID == $ID){
 			return true;
+		}
 		$db = ($db ? $db : new DB_WE());
-		$pid = f("SELECT ParentID FROM " . $db->escape($this->table) . " WHERE ID=" . intval($ID), "ParentID", $db);
+		$pid = f('SELECT ParentID FROM ' . $db->escape($this->table) . ' WHERE ID=' . intval($ID), 'ParentID', $db);
 		if($pid == $folderID){
 			return true;
 		} else if($pid != 0){
@@ -133,7 +134,7 @@ class we_fileselector{
 
 	function query(){
 		$this->db->query('SELECT ' . $this->fields . ' FROM ' . $this->db->escape($this->table) . ' WHERE ParentID=' . intval($this->dir) . ' ' .
-			( ($this->filter != "" ? ($this->table == CATEGORY_TABLE ? "AND IsFolder = '" . $this->db->escape($this->filter) . "' " : "AND ContentType = '" . $this->db->escape($this->filter) . "' ") : '' ) ) .
+			( ($this->filter != '' ? ($this->table == CATEGORY_TABLE ? 'AND IsFolder = "' . $this->db->escape($this->filter) . '" ' : 'AND ContentType = "' . $this->db->escape($this->filter) . '" ') : '' ) ) .
 			($this->order ? (' ORDER BY ' . $this->order) : ''));
 		$_SESSION['weS']['we_fs_lastDir'][$this->table] = $this->dir;
 	}
@@ -213,9 +214,9 @@ function closeOnEscape() {
 	function printFramesetHTML(){
 		we_html_tools::htmlTop($this->title);
 		print implodeJS(
-				we_html_element::jsScript(JS_DIR . "keyListener.js") .
+				we_html_element::jsScript(JS_DIR . 'keyListener.js') .
 				$this->getFramesetJavaScriptIncludes() .
-				we_html_element::jsElement("var weSelectorWindow = true;") .
+				we_html_element::jsElement('var weSelectorWindow = true;') .
 				$this->getFramesetJavaScriptDef() .
 				$this->getJS_keyListenerFunctions() .
 				$this->getExitClose() .
@@ -267,7 +268,7 @@ function cutText(text,l){
 				$this->printFramesetUnselectAllFilesHTML() .
 				$this->printFramesetJSFunctions() .
 				we_html_element::jsElement('self.focus();')
-			);
+		);
 		?>
 		</head>
 		<?php
@@ -313,7 +314,9 @@ function selectFile(id){
 		$startPathQuery = new DB_WE();
 		$startPathQuery->query('SELECT Path FROM ' . $startPathQuery->escape($this->table) . ' WHERE ID=' . intval($this->dir));
 		$startPath = $startPathQuery->next_record() ? $startPathQuery->f('Path') : '/';
-
+		if($this->id == 0){
+			$this->path = '/';
+		}
 		return we_html_element::jsElement('
 var currentID="' . $this->id . '";
 var currentDir="' . $this->dir . '";
@@ -324,7 +327,7 @@ var currentType="' . (isset($this->filter) ? $this->filter : "") . '";
 var startPath="' . $startPath . '";
 
 var parentID=' . intval(($this->dir ?
-						f('SELECT ParentID FROM ' . $this->table . ' WHERE ID=' . intval($this->dir), 'ParentID', $this->db) :
+						f('SELECT ParentID FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->dir), 'ParentID', $this->db) :
 						0)) . ';
 var table="' . $this->table . '";
 var order="' . $this->order . '";
@@ -424,43 +427,42 @@ function queryString(what,id,o){
 		$html = explode("\n", str_replace(array("'", 'script', '#\\\'',), array("\\'", "scr' + 'ipt", '\''), implodeJS($html)));
 		$ret = '';
 		foreach($html as $cur){
-			$ret.=(substr($cur, 0, 1) == '#' ? substr($cur, 1) : "d.writeln('" . $cur . "');") . "\n";
+			$ret.=(substr($cur, 0, 1) == '#' ? substr($cur, 1) : "d.writeln('" . rtrim($cur) . "');") . "\n";
 		}
 		return $ret;
 	}
 
 	function printFramesetJSFunctioWriteBody(){
 		?><script type="text/javascript"><!--
-					function writeBody(d){
+					function writeBody(d) {
 						d.open();
 		<?php
 		echo self::makeWriteDoc(we_html_tools::getHtmlTop('', '', '4Trans', true) . STYLESHEET_SCRIPT . '
 </head>
 <body bgcolor="white" LINK="#000000" ALINK="#000000" VLINK="#000000" leftmargin="0" marginwidth="0" topmargin="0" marginheight="0">
 <table border="0" cellpadding="0" cellspacing="0">');
-
 		?>
-				for(i=0;i < entries.length; i++){
-					d.writeln('<tr>');
-					d.writeln('<td class="selector" align="center">');
-					var link = '<a title="'+entries[i].text+'" href="javascript://"';
-					if(entries[i].isFolder){
-						link += ' onDblClick="this.blur();top.wasdblclick=1;clearTimeout(tout);top.doClick('+entries[i].ID+',1);return true;"';
+						for (i = 0; i < entries.length; i++) {
+							d.writeln('<tr>');
+							d.writeln('<td class="selector" align="center">');
+							var link = '<a title="' + entries[i].text + '" href="javascript://"';
+							if (entries[i].isFolder) {
+								link += ' onDblClick="this.blur();top.wasdblclick=1;clearTimeout(tout);top.doClick(' + entries[i].ID + ',1);return true;"';
+							}
+							link += ' onClick="this.blur();tout=setTimeout(\'if(top.wasdblclick==0){top.doClick(' + entries[i].ID + ',0);}else{top.wasdblclick=0;}\',300);return true">' + "\n";
+							d.writeln(link + '<img src="<?php print ICON_DIR; ?>' + entries[i].icon + '" width="16" height="18" border="0"></a>');
+							d.writeln('</td>');
+							d.writeln('<td class="selector" title="' + entries[i].text + '">');
+							d.writeln(link + cutText(entries[i].text, 70) + '</a>');
+							d.writeln('</td></tr>');
+							d.writeln('<tr>');
+							d.writeln('<td width="25"><?php print we_html_tools::getPixel(25, 2) ?></td>');
+							d.writeln('<td><?php print we_html_tools::getPixel(200, 2) ?></td></tr>');
+						}
+						d.writeln('</table></body>');
+						d.close();
 					}
-					link += ' onClick="this.blur();tout=setTimeout(\'if(top.wasdblclick==0){top.doClick('+entries[i].ID+',0);}else{top.wasdblclick=0;}\',300);return true">'+"\n";
-					d.writeln(link+'<img src="<?php print ICON_DIR; ?>'+entries[i].icon+'" width="16" height="18" border="0"></a>');
-					d.writeln('</td>');
-					d.writeln('<td class="selector" title="'+entries[i].text+'">');
-					d.writeln(link+cutText(entries[i].text,70)+'</a>');
-					d.writeln('</td></tr>');
-					d.writeln('<tr>');
-					d.writeln('<td width="25"><?php print we_html_tools::getPixel(25, 2) ?></td>');
-					d.writeln('<td><?php print we_html_tools::getPixel(200, 2) ?></td></tr>');
-				}
-				d.writeln('</table></body>');
-				d.close();
-			}
-			//-->
+					//-->
 		</script>
 		<?php
 	}
@@ -493,7 +495,7 @@ function clearEntries(){
 	function printFramesetJSFunctionAddEntries(){
 		$ret = '';
 		while($this->next_record()) {
-			$ret.= 'addEntry(' . $this->f("ID") . ',"' . $this->f("Icon") . '","' . $this->f("Text") . '",' . ($this->f("IsFolder") | 0) . ',"' . $this->f("Path") . '");';
+			$ret.= 'addEntry(' . $this->f("ID") . ',"' . $this->f("Icon") . '","' . addcslashes($this->f("Text"), '"') . '",' . ($this->f("IsFolder") ? $this->f("IsFolder") : 0) . ',"' . addcslashes($this->f("Path"), '"') . '");';
 		}
 		return we_html_element::jsElement($ret);
 	}
@@ -570,10 +572,10 @@ function selectIt(){
 			$c++;
 			$this->db->query('SELECT ID,Text,ParentID FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($pid));
 			if($this->db->next_record()){
-				$out = '<option value="' . $this->db->f("ID") . '"' . (($z == 0) ? ' selected' : '') . '>' . $this->db->f("Text") . '</options>' . $out;
+				$out = '<option value="' . $this->db->f('ID') . '"' . (($z == 0) ? ' selected="selected"' : '') . '>' . $this->db->f('Text') . '</option>' . $out;
 				$z++;
 			}
-			$pid = $this->db->f("ParentID");
+			$pid = $this->db->f('ParentID');
 			if($c > 500){
 				$pid = 0;
 			}
@@ -668,12 +670,12 @@ top.parentID = "' . $this->values["ParentID"] . '";
 		$ret = '';
 		$this->query();
 		while($this->next_record()) {
-			$ret.= 'top.addEntry(' . $this->f("ID") . ',"' . $this->f("Icon") . '","' . str_replace("\n", "", str_replace("\r", "", $this->f("Text"))) . '",' . $this->f("IsFolder") . ',"' . str_replace("\n", "", str_replace("\r", "", $this->f("Path"))) . '");';
+			$ret.= 'top.addEntry(' . $this->f("ID") . ',"' . $this->f("Icon") . '","' . str_replace("\n", "", str_replace("\r", "", $this->f("Text"))) . '",' . ($this->f("IsFolder") ? $this->f("IsFolder") : 0) . ',"' . str_replace("\n", "", str_replace("\r", "", $this->f("Path"))) . '");';
 		}
 		return $ret;
 	}
 
-	function printCMDWriteAndFillSelectorHTML(){
+	function printCMDWriteAndFillSelectorHTML(){t_e('A');
 		$pid = $this->dir;
 		$out = "";
 		$c = 0;

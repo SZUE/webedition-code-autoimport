@@ -278,7 +278,7 @@ EOS;
 		}
 
 		// add inline CSS
-		if(count($this->_inlineCSS) > 0){
+		if(!empty($this->_inlineCSS)){
 			$html .= "\t<style>\n";
 			foreach($this->_inlineCSS as $code){
 				$html .= $code . "\n";

@@ -62,7 +62,7 @@ $we_menu_workflow = array(
 	  $we_menu_workflow["000880"]["parent"] = "000100"; // separator
 	 */
 	array(
-		"text" => g_l('javaMenu_workflow', '[empty_log]') . "...",
+		"text" => g_l('javaMenu_workflow', '[empty_log]') . "&hellip;",
 		"parent" => "000100",
 		"cmd" => "empty_log",
 		"perm" => "EMPTY_LOG || ADMINISTRATOR",
@@ -83,13 +83,13 @@ $we_menu_workflow = array(
 		"enabled" => "1",
 	),
 	array(
-		"text" => g_l('javaMenu_workflow', '[help]') . "...",
+		"text" => g_l('javaMenu_workflow', '[help]') . "&hellip;",
 		"parent" => "001500",
 		"cmd" => "help_modules",
 		"enabled" => "1",
 	),
 	array(
-		"text" => g_l('javaMenu_workflow', '[info]') . "...",
+		"text" => g_l('javaMenu_workflow', '[info]') . "&hellip;",
 		"parent" => "001500",
 		"cmd" => "info_modules",
 		"enabled" => "1",

@@ -146,7 +146,7 @@ function pWebEdition_Frameset(){
 		$_REQUEST["SEEM_edit_include"] = true;
 		$we_cmds = "?we_cmd[0]=edit_document&";
 
-		for($i = 1; $i < sizeof($_REQUEST['we_cmd']); $i++){
+		for($i = 1; $i < count($_REQUEST['we_cmd']); $i++){
 			$we_cmds .= "we_cmd[" . $i . "]=" . $_REQUEST['we_cmd'][$i] . "&";
 		}
 		$we_cmds.='&SEEM_edit_include=true';

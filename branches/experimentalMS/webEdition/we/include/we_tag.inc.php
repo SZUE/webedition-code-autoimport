@@ -22,14 +22,11 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-//make sure this is included - but is it really needed? Isn't it done by we_show...
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-
 function we_include_tag_file($name){
 	$fn = 'we_tag_' . $name;
 
 	// as default: all tag_functions are in this file.
-	if(function_exists($fn) || $fn == 'we_tag_noCache'){
+	if(function_exists($fn)){
 		// do noting
 		return true;
 	}
@@ -267,6 +264,8 @@ function cutSimpleText($text, $len){
 	$pos = array(
 		0,
 		strrpos($text, ' '),
+		strrpos($text, '.'),
+		strrpos($text, ','),
 		strrpos($text, "\n"),
 		strrpos($text, "\t"),
 	);
@@ -274,13 +273,13 @@ function cutSimpleText($text, $len){
 	return substr($text, 0, max($pos));
 }
 
-function cutText($text, $max = 0){
+function cutText($text, $max = 0, $striphtml=false){
 	if((!$max) || (strlen($text) <= $max)){
 		return $text;
 	}
 	//no tags, simple cut off
 	if(strstr($text, '<') == FALSE){
-		return cutSimpleText($text, $max) . '...';
+		return cutSimpleText($text, $max) . ($striphtml?' ...':' &hellip;');
 	}
 
 	$ret = '';
@@ -302,7 +301,7 @@ function cutText($text, $max = 0){
 					$ret.=($len > $max ? cutSimpleText($cur[0], $max) : $cur[0]);
 					$max-=$len;
 					if($max <= 0){
-						$ret.='...';
+						$ret.=($striphtml?' ...':' &hellip;');
 					}
 				}
 				break;
@@ -322,7 +321,7 @@ function cutText($text, $max = 0){
 	}
 
 //close open tags
-	while(count($tags)) {
+	while(!empty($tags)) {
 		$ret.='</' . array_pop($tags) . '>';
 	}
 
@@ -354,17 +353,17 @@ function modulFehltError($modul, $tag){
 
 function parseError($text){
 	t_e('warning', html_entity_decode($text, ENT_QUOTES, $GLOBALS['WE_BACKENDCHARSET']), g_l('weClass', '[template]') . ': ' . we_tag_tagParser::$curFile);
-	return "<b>" . g_l('parser', '[error_in_template]') . ":</b>$text<br/>\n" . g_l('weClass', '[template]') . ': ' . we_tag_tagParser::$curFile; /* .'<?php trigger_error(\''.str_replace('\'', '"', $text).'\',E_USER_WARNING);?>'; */
+	return '<b>' . g_l('parser', '[error_in_template]') . ':</b>' . $text . "<br/>\n" . g_l('weClass', '[template]') . ': ' . we_tag_tagParser::$curFile;
 }
 
 function attributFehltError($attribs, $attr, $tag, $canBeEmpty = false){
 	$tag = str_replace(array('we_tag_', 'we_parse_tag_'), '', $tag);
 	if($canBeEmpty){
-		if(!isset($attribs[$attr]))
+		if(!isset($attribs[$attr])){
 			return parseError(sprintf(g_l('parser', '[attrib_missing2]'), $attr, $tag));
-	} else{
-		if(!isset($attribs[$attr]) || $attribs[$attr] == '')
-			return parseError(sprintf(g_l('parser', '[attrib_missing]'), $attr, $tag));
+		}
+	} elseif(!isset($attribs[$attr]) || $attribs[$attr] == ''){
+		return parseError(sprintf(g_l('parser', '[attrib_missing]'), $attr, $tag));
 	}
 	return '';
 }
@@ -394,18 +393,6 @@ function we_getInputTextInputField($name, $value, $atts){
 	$atts['value'] = oldHtmlspecialchars($value);
 
 	return getHtmlTag('input', $atts);
-}
-
-function we_getInputPasswordField($name, $value, $atts){
-	$atts['type'] = 'password';
-	$atts['name'] = $name;
-	$atts['value'] = oldHtmlspecialchars($value);
-
-	return getHtmlTag('input', $atts);
-}
-
-function we_getHiddenField($name, $value, $xml = false){
-	return '<input type="hidden" name="' . $name . '" value="' . oldHtmlspecialchars($value) . '" ' . ($xml ? ' /' : '') . '>';
 }
 
 //function we_getInputChoiceField($name, $value, $values, $atts, $mode, $valuesIsHash = false){}
@@ -466,7 +453,7 @@ function we_tag_ifSidebar(){
 }
 
 function we_tag_ifNotSidebar(){
-	return !we_tag('ifSidebar');
+	return !we_tag_ifSidebar();
 }
 
 function we_tag_ifDemo(){
@@ -547,6 +534,9 @@ function we_tag_ifNotEmpty($attribs){
 }
 
 function we_tag_ifNotEqual($attribs){
+	if(isset($attribs['_name_orig'])){
+		$attribs['name'] = $attribs['_name_orig'];
+	}
 	return !we_tag('ifEqual', $attribs);
 }
 
@@ -623,10 +613,16 @@ function we_tag_ifNotTemplate($attribs){
 }
 
 function we_tag_ifNotVar($attribs){
+	if(isset($attribs['_name_orig'])){
+		$attribs['name'] = $attribs['_name_orig'];
+	}
 	return !we_tag('ifVar', $attribs);
 }
 
 function we_tag_ifNotVarSet($attribs){
+	if(isset($attribs['_name_orig'])){
+		$attribs['name'] = $attribs['_name_orig'];
+	}
 	return !we_tag('ifVarSet', $attribs);
 }
 
@@ -667,6 +663,9 @@ function we_tag_ifUserInputNotEmpty($attribs){
 }
 
 function we_tag_ifVarNotEmpty($attribs){
+	if(isset($attribs['_name_orig'])){
+		$attribs['name'] = $attribs['_name_orig'];
+	}
 	return !we_tag('ifVarEmpty', $attribs);
 }
 
@@ -694,7 +693,6 @@ function we_tag_listviewPageNr(){
 }
 
 function we_tag_listviewPages(){
-//	$cols = $GLOBALS['lv']->cols ? $GLOBALS['lv']->cols : 1;
 	return $GLOBALS['lv']->rows ? ceil(
 			((float) $GLOBALS['lv']->anz_all - abs($GLOBALS['lv']->offset)) / ((float) $GLOBALS['lv']->maxItemsPerPage )) : 1;
 }
@@ -739,12 +737,14 @@ function we_tag_ifvotingexists(){
 //this function is used by all tags adding elements to we_lv_array
 function we_post_tag_listview(){
 	if(isset($GLOBALS['we_lv_array'])){
-		array_pop($GLOBALS['we_lv_array']);
-		if(count($GLOBALS['we_lv_array'])){
-			$GLOBALS['lv'] = clone($GLOBALS['we_lv_array'][count($GLOBALS['we_lv_array']) - 1]);
-		} else{
+		if(isset($GLOBALS['lv'])){
+			array_pop($GLOBALS['we_lv_array']);
+		}
+		if(empty($GLOBALS['we_lv_array'])){
 			unset($GLOBALS['lv']);
 			unset($GLOBALS['we_lv_array']);
+		} else{
+			$GLOBALS['lv'] = clone(end($GLOBALS['we_lv_array']));
 		}
 	}
 }

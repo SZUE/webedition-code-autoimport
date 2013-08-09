@@ -150,7 +150,7 @@ $we_menu_glossary['021000'] = array(
 );
 
 $we_menu_glossary['022000'] = array(
-	'text' => g_l('modules_glossary', '[menu_help]') . '...',
+	'text' => g_l('modules_glossary', '[menu_help]') . '&hellip;',
 	'parent' => '021000',
 	'cmd' => 'help_modules',
 	'perm' => '',
@@ -158,7 +158,7 @@ $we_menu_glossary['022000'] = array(
 );
 
 $we_menu_glossary['023000'] = array(
-	'text' => g_l('modules_glossary', '[menu_info]') . '...',
+	'text' => g_l('modules_glossary', '[menu_info]') . '&hellip;',
 	'parent' => '021000',
 	'cmd' => 'info_modules',
 	'perm' => '',

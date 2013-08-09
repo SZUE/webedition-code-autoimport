@@ -266,36 +266,33 @@ class weCustomerFrames extends weModuleFrames{
 			case 'password':
 				return we_html_tools::htmlTextInput($field, 32, $value, 32, 'onchange="top.content.setHot();" style="width:240px;" autocomplete="off" ', 'password');
 			case 'img':
+				$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['" . $field . "'].value");
+				$wecmdenc3 = we_cmd_enc("opener.refreshForm()");
 				$imgId = intval($value);
-				$out = we_document::getFieldByVal($imgId, 'img');
+				$img = new we_imageDocument();
 
-				$out = '
+				$img->LoadBinaryContent = false;
+				$img->initByID($imgId, FILE_TABLE);
+				return '
 					<table border="0" cellpadding="2" cellspacing="2" background="' . IMAGE_DIR . 'backgrounds/aquaBackground.gif" style="border: solid #006DB8 1px;">
 						<tr>
-							<td class="weEditmodeStyle" colspan="2" align="center">' . $out . '
+							<td class="weEditmodeStyle" colspan="2" align="center">' . $img->getHtml() . '
 								<input type="hidden" name="' . $field . '" value="' . $imgId . '" /></td>
 						</tr>
 						<tr>
-							<td class="weEditmodeStyle" colspan="2" align="center">';
-				//javascript:we_cmd('openDocselector', '" . $imgId . "', '" . FILE_TABLE . "', 'document.forms[\\'we_form\\'].elements[\\'" . $field . "\\'].value', '', 'opener.refreshForm()', '" . session_id() . "', '', 'image/*', " . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")
-				$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['" . $field . "'].value");
-				$wecmdenc3 = we_cmd_enc("opener.refreshForm()");
-				$out .= we_button::create_button_table(array(we_button::create_button('image:btn_select_image', "javascript:we_cmd('openDocselector', '" . $imgId . "', '" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','" . session_id() . "', '', 'image/*', " . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")", true), we_button::create_button('image:btn_function_trash', "javascript:document.we_form.elements['$field'].value='';refreshForm();", true)), 5) .
+							<td class="weEditmodeStyle" colspan="2" align="center">' .
+					we_button::create_button_table(array(we_button::create_button('image:btn_select_image', "javascript:we_cmd('openDocselector', '" . $imgId . "', '" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','" . session_id() . "', '', 'image/*', " . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")", true), we_button::create_button('image:btn_function_trash', "javascript:document.we_form.elements['$field'].value='';refreshForm();", true)), 5) .
 					'</td>
 						</tr>
 					</table>';
-
-				return $out;
-
-				break;
-
-			default: return we_html_tools::htmlTextInput($field, 32, $value, "", "onchange=\"top.content.setHot();\" style='width:240px;'");
+			default:
+				return we_html_tools::htmlTextInput($field, 32, $value, "", "onchange=\"top.content.setHot();\" style='width:240px;'");
 		}
 		return null;
 	}
 
 	function getHTMLEditorHeader(){
-		$extraJS = "var aTabs=new Array;\n";
+		$extraJS = "var aTabs=new Array;";
 
 
 		if(isset($_REQUEST['home'])){
@@ -504,7 +501,7 @@ class weCustomerFrames extends weModuleFrames{
 			$objectStr = '';
 			if($DB_WE->num_rows()){
 				$objectStr.='<table class="defaultfont" width="600">' .
-					'<tr><td>&nbsp;</td> <td><b>' . g_l('modules_customer', '[ID]') . '</b></td><td><b>' . g_l('modules_customer', '[Filename]') . '</b></td><td><b>' . g_l('modules_customer', '[Aenderungsdatum]') . '</b></td>';
+					'<tr><td>&nbsp;</td> <td><b>' . g_l('modules_customer', '[ID]') . '</b></td><td><b>' . g_l('modules_customer', '[filename]') . '</b></td><td><b>' . g_l('modules_customer', '[Aenderungsdatum]') . '</b></td>';
 				while($DB_WE->next_record()) {
 					$objectStr.='<tr>' .
 						'<td>' . we_button::create_button('image:btn_edit_edit', "javascript: if(top.opener.top.doClickDirect){top.opener.top.doClickDirect(" . $DB_WE->f('ID') . ",'" . $DB_WE->f('ContentType') . "','tblObjectFiles'); }") . '</td>' .

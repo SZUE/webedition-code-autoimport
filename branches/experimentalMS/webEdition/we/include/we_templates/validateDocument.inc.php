@@ -48,7 +48,7 @@ foreach($validationService AS $_service){
 //  get custom services from database ..
 $customServices = validation::getValidationServices('use');
 
-if(sizeof($customServices) > 0){
+if(!empty($customServices)){
 	foreach($customServices as $_cService){
 		$services['custom'][$_cService->category][] = $_cService;
 	}
@@ -62,7 +62,7 @@ $_lastArt = '';
 $_lastCat = '';
 $_hiddens = '';
 $_js = '';
-if(count($services)){
+if(!empty($services)){
 	$_select = '<select name="service" class="weSelect" style="width:350px;" onchange="switchPredefinedService(this.options[this.selectedIndex].value);">';
 	foreach($services as $art => $arr){
 		foreach($arr as $cat => $arrServices){
@@ -116,7 +116,7 @@ print STYLESHEET;
 <script type="text/javascript">
 
 
-	function we_submitForm(target,url){
+	function we_submitForm(target, url) {
 		var f = self.document.we_form;
 		f.target = target;
 		f.action = url;
@@ -125,28 +125,28 @@ print STYLESHEET;
 		f.submit();
 	}
 
-	function we_cmd(){
+	function we_cmd() {
 
 		var args = "";
 		var url = "<?php echo WEBEDITION_DIR; ?>we_cmd.php?";
 
-		for(var i = 0; i < arguments.length; i++){
-			url += "we_cmd["+i+"]="+escape(arguments[i]);
-			if(i < (arguments.length - 1)){
+		for (var i = 0; i < arguments.length; i++) {
+			url += "we_cmd[" + i + "]=" + escape(arguments[i]);
+			if (i < (arguments.length - 1)) {
 				url += "&";
 			}
 		}
-		switch(arguments[0]){
+		switch (arguments[0]) {
 			case 'checkDocument':
-				if(top.weEditorFrameController.getActiveDocumentReference().frames["1"].we_submitForm){
-					top.weEditorFrameController.getActiveDocumentReference().frames["1"].we_submitForm("validation",url);
+				if (top.weEditorFrameController.getActiveDocumentReference().frames["1"].we_submitForm) {
+					top.weEditorFrameController.getActiveDocumentReference().frames["1"].we_submitForm("validation", url);
 				}
 				break;
 			default:
-				for(var i = 0; i < arguments.length; i++){
-					args += 'arguments['+i+']' + ((i < (arguments.length-1)) ? ',' : '');
+				for (var i = 0; i < arguments.length; i++) {
+					args += 'arguments[' + i + ']' + ((i < (arguments.length - 1)) ? ',' : '');
 				}
-				eval('parent.we_cmd('+args+')');
+				eval('parent.we_cmd(' + args + ')');
 				break;
 		}
 	}
@@ -161,7 +161,7 @@ print STYLESHEET;
 
 <?php print $js; ?>
 
-	function switchPredefinedService(name){
+	function switchPredefinedService(name) {
 
 		var f = self.document.we_form;
 
@@ -175,15 +175,15 @@ print STYLESHEET;
 
 
 	}
-	function setIFrameSize(){
+	function setIFrameSize() {
 		var h = window.innerHeight ? window.innerHeight : document.body.offsetHeight;
 		var w = window.innerWidth ? window.innerWidth : document.body.offsetWidth;
-		w = Math.max(w,680);
+		w = Math.max(w, 680);
 		var iframeWidth = w - 52;
 		var validiframe = document.getElementById("validation");
-		validiframe.style.width=iframeWidth;
+		validiframe.style.width = iframeWidth;
 		if (h) { // h must be set (h!=0), if several documents are opened very fast -> editors are not loaded then => h = 0
-			validiframe.style.height=h - 185;
+			validiframe.style.height = h - 185;
 		}
 	}
 
@@ -203,7 +203,7 @@ $parts = array(
 		'</td><td>' . we_html_tools::getPixel(20, 5) . '</td><td>' .
 		we_button::create_button('edit', 'javascript:we_cmd(\'customValidationService\')', true, 100, 22, "", "", !we_hasPerm("CAN_EDIT_VALIDATION"))
 		. '</td><td>' . we_html_tools::getPixel(20, 5) . '</td><td>' .
-		we_button::create_button('ok', 'javascript:we_cmd(\'checkDocument\')', true, 100, 22, '', '', (!sizeof($services) > 0))
+		we_button::create_button('ok', 'javascript:we_cmd(\'checkDocument\')', true, 100, 22, '', '', (empty($services)))
 		. '</td></tr></table>'
 		, 'space' => 95),
 	array('html' => g_l('validation', '[result]'), 'noline' => 1, 'space' => 0),

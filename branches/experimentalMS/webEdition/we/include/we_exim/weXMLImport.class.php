@@ -26,26 +26,27 @@ class weXMLImport extends weXMLExIm{
 
 	var $nodehierarchy = array();
 
-	function weXMLImport(){
+	function __construct(){
 		$this->RefTable = new RefTable();
 		$this->destination[strtolower(FILE_TABLE)] = 0;
 		$this->destination[strtolower(TEMPLATES_TABLE)] = 0;
 		$this->destination[strtolower(DOC_TYPES_TABLE)] = 0;
-		if(defined("OBJECT_TABLE"))
+		if(defined("OBJECT_TABLE")){
 			$this->destination[strtolower(OBJECT_TABLE)] = 0;
-		if(defined("OBJECT_FILES_TABLE"))
+		}
+		if(defined("OBJECT_FILES_TABLE")){
 			$this->destination[strtolower(OBJECT_FILES_TABLE)] = 0;
+		}
 	}
 
 	function import($chunk_file){
+		$db = new DB_WE();
 		@set_time_limit(0);
 
 		$objects = array();
-		$save = false;
 
 		$data = weFile::load($chunk_file);
 		$this->xmlBrowser = new weXMLParser();
-//			$this->xmlBrowser->parse($data,$_SESSION['weXMLimportCharset']); Original , �nderung f�r Zeichensatz Wandlung
 		$this->xmlBrowser->parse($data, $this->options['xml_encoding']);
 		unset($data);
 		$this->xmlBrowser->normalize();
@@ -55,9 +56,7 @@ class weXMLImport extends weXMLExIm{
 			foreach($node_set as $node){
 				$this->xmlBrowser->seek($node);
 
-
 				if($this->handleTag($this->xmlBrowser->getNodeName($node))){
-
 					$objects[] = $this->importNodeSet($node);
 				}
 			}
@@ -70,90 +69,93 @@ class weXMLImport extends weXMLExIm{
 			if(!empty($object)){
 
 				$save = true;
-				$extra["OldID"] = isset($object->ID) ? $object->ID : 0;
-				$extra["OldParentID"] = isset($object->ParentID) ? $object->ParentID : 0;
-				$extra["OldPath"] = isset($object->Path) ? $object->Path : "";
-				$extra["OldTemplatePath"] = isset($object->TemplatePath) ? $object->TemplatePath : "";
-				$extra["Eximed"] = 1;
+				$extra = array(
+					"OldID" => isset($object->ID) ? $object->ID : 0,
+					"OldParentID" => isset($object->ParentID) ? $object->ParentID : 0,
+					"OldPath" => isset($object->Path) ? $object->Path : "",
+					"OldTemplatePath" => isset($object->TemplatePath) ? $object->TemplatePath : "",
+					"Eximed" => 1,
+				);
 
-				if(isset($object->elements))
+				if(isset($object->elements)){
 					$extra["elements"] = $object->elements;
-				if($object->ClassName == "we_docTypes")
-					$extra["ContentType"] = "doctype";
-				if($object->ClassName == "weModelBase")
-					$extra["ContentType"] = "category";
+				}
 
 				$object->ID = 0;
 				$object->Table = $this->getTable($object->ClassName);
 
-				if($object->ClassName == "we_docTypes"){
-					$dtid = f("SELECT ID FROM " . DOC_TYPES_TABLE . " WHERE DocType='" . escape_sql_query($object->DocType) . "'", "ID", new DB_WE());
-					if($dtid){
-						if($this->options["handle_collision"] == "replace"){
-							$object->ID = $dtid;
-						} else if($this->options["handle_collision"] == "rename"){
-							$this->getNewName($object, $dtid, "DocType");
-						} else{
-							$save = false;
-							continue;
+				switch($object->ClassName){
+					case "weModelBase":
+						$extra["ContentType"] = "category";
+						break;
+					case "we_docTypes":
+						$extra["ContentType"] = "doctype";
+						$dtid = f('SELECT ID FROM ' . DOC_TYPES_TABLE . ' WHERE DocType="' . $db->escape($object->DocType) . '"', 'ID', $db);
+						if($dtid){
+							if($this->options["handle_collision"] == 'replace'){
+								$object->ID = $dtid;
+							} else if($this->options["handle_collision"] == 'rename'){
+								$this->getNewName($object, $dtid, "DocType");
+							} else{
+								$save = false;
+								continue;
+							}
 						}
-					}
-				}
-
-				if($object->ClassName == "weNavigationRule"){
-					$nid = f("SELECT ID FROM " . NAVIGATION_RULE_TABLE . " WHERE NavigationName='" . escape_sql_query($object->NavigationName) . "'", "ID", new DB_WE());
-					if($nid){
-						if($this->options["handle_collision"] == "replace"){
-							$object->ID = $nid;
-						} else if($this->options["handle_collision"] == "rename"){
-							$this->getNewName($object, $nid, "NavigationName");
-						} else{
-							$save = false;
-							continue;
+						break;
+					case "weNavigationRule":
+						$nid = f('SELECT ID FROM ' . NAVIGATION_RULE_TABLE . ' WHERE NavigationName="' . $db->escape($object->NavigationName) . '"', 'ID', $db);
+						if($nid){
+							if($this->options["handle_collision"] == "replace"){
+								$object->ID = $nid;
+							} else if($this->options["handle_collision"] == "rename"){
+								$this->getNewName($object, $nid, "NavigationName");
+							} else{
+								$save = false;
+								continue;
+							}
 						}
-					}
-				}
-
-				if($object->ClassName == "we_thumbnailEx"){
-					$nid = f("SELECT ID FROM " . THUMBNAILS_TABLE . " WHERE Name='" . escape_sql_query($object->Name) . "'", "ID", new DB_WE());
-					if($nid){
-						if($this->options["handle_collision"] == "replace"){
-							$object->ID = $nid;
-						} else if($this->options["handle_collision"] == "rename"){
-							$this->getNewName($object, $nid, "Name");
-						} else{
-							$save = false;
-							continue;
+						break;
+					case "we_thumbnailEx":
+						$nid = f("SELECT ID FROM " . THUMBNAILS_TABLE . " WHERE Name='" . $db->escape($object->Name) . "'", "ID", $db);
+						if($nid){
+							if($this->options["handle_collision"] == "replace"){
+								$object->ID = $nid;
+							} else if($this->options["handle_collision"] == "rename"){
+								$this->getNewName($object, $nid, "Name");
+							} else{
+								$save = false;
+								continue;
+							}
 						}
-					}
+						break;
 				}
 
 				if(isset($object->Path)){
-
 					if(isset($object->Table) && !empty($object->Table)){
-						$prefix = "/";
-						if($object->Table == FILE_TABLE){
-							if($this->options["document_path"])
-								$prefix = id_to_path($this->options["document_path"], FILE_TABLE);
-							if($this->options["restore_doc_path"])
+						$prefix = '/';
+						switch($object->Table){
+							case FILE_TABLE:
+								if($this->options["document_path"]){
+									$prefix = id_to_path($this->options["document_path"], FILE_TABLE, $db);
+								}
+								$object->Path = $prefix . ($this->options["restore_doc_path"] ?
+										$object->Path :
+										"/" . $object->Text);
+								break;
+							case TEMPLATES_TABLE:
+								if($this->options["template_path"]){
+									$prefix = id_to_path($this->options["template_path"], TEMPLATES_TABLE, $db);
+								}
+								$object->Path = $prefix . ($this->options["restore_tpl_path"] ?
+										$object->Path :
+										"/" . $object->Text);
+								break;
+							case NAVIGATION_TABLE:
+								if($this->options["navigation_path"]){
+									$prefix = id_to_path($this->options["navigation_path"], NAVIGATION_TABLE, $db);
+								}
 								$object->Path = $prefix . $object->Path;
-							else
-								$object->Path = $prefix . "/" . $object->Text;
-						}
-
-						if($object->Table == TEMPLATES_TABLE){
-							if($this->options["template_path"])
-								$prefix = id_to_path($this->options["template_path"], TEMPLATES_TABLE);
-							if($this->options["restore_tpl_path"])
-								$object->Path = $prefix . $object->Path;
-							else
-								$object->Path = $prefix . "/" . $object->Text;
-						}
-
-						if($object->Table == NAVIGATION_TABLE){
-							if($this->options["navigation_path"])
-								$prefix = id_to_path($this->options["navigation_path"], NAVIGATION_TABLE);
-							$object->Path = $prefix . $object->Path;
+								break;
 						}
 
 
@@ -188,6 +190,16 @@ class weXMLImport extends weXMLExIm{
 						$pathids = array();
 						$_old_pid = $object->ParentID;
 						$owner = ($this->options['owners_overwrite'] && $this->options['owners_overwrite_id']) ? $this->options['owners_overwrite_id'] : 0;
+						if(defined("OBJECT_TABLE") && $object->ClassName == 'we_objectFile'){
+							//dont create Path in objects if the class doesn't exist
+							$match = array();
+							preg_match('|(/+[a-zA-Z0-9_+-\.]*)|', $object->Path, $match);
+							if(isset($match[0])){
+								if(f('SELECT 1 AS a FROM ' . OBJECT_TABLE . ' WHERE Path="' . $db->escape($match[0]) . '"', 'a', $db) !== '1'){
+									return false;
+								}
+							}
+						}
 						$object->ParentID = makePath(dirname($object->Path), $object->Table, $pathids, $owner);
 						if(isset($object->ParentPath))
 							$object->ParentPath = id_to_path($object->ParentID, $object->Table);
@@ -195,21 +207,21 @@ class weXMLImport extends weXMLExIm{
 						// insert new created folders in ref table
 						foreach($pathids as $pid){
 
-							$h = getHash("SELECT ParentID,Path FROM " . escape_sql_query($object->Table) . " WHERE ID=" . intval($pid), new DB_WE());
+							$h = getHash('SELECT ParentID,Path FROM ' . $db->escape($object->Table) . ' WHERE ID=' . intval($pid), $db);
 							if(!$this->RefTable->exists(array("ID" => $pid, "ContentType" => "folder"))){
 								$this->RefTable->add2(
 									array_merge(array(
-										"ID" => $pid,
-										"ParentID" => $h["ParentID"],
-										"Path" => $h["Path"],
-										"Table" => $object->Table,
-										"ContentType" => "folder"
+									"ID" => $pid,
+									"ParentID" => $h["ParentID"],
+									"Path" => $h["Path"],
+									"Table" => $object->Table,
+									"ContentType" => "folder"
 										), array(
-										"OldID" => ($pid == $object->ParentID) ? $_old_pid : null,
-										"OldParentID" => null,
-										"OldPath" => null,
-										"OldTemplatePath" => null,
-										"Eximed" => 0,
+									"OldID" => ($pid == $object->ParentID) ? $_old_pid : null,
+									"OldParentID" => null,
+									"OldPath" => null,
+									"OldTemplatePath" => null,
+									"Eximed" => 0,
 										)
 									)
 								);
@@ -264,7 +276,7 @@ class weXMLImport extends weXMLExIm{
 						$match = array();
 						preg_match('|(/+[a-zA-Z0-9_+-\.]*)|', $object->Path, $match);
 						if(isset($match[0])){
-							$object->TableID = f('SELECT ID FROM ' . OBJECT_TABLE . ' WHERE Path=\'' . escape_sql_query($match[0]) . '\';', 'ID', new DB_WE());
+							$object->TableID = f('SELECT ID FROM ' . OBJECT_TABLE . ' WHERE Path="' . $db->escape($match[0]) . '"', 'ID', $db);
 						}
 					}
 				}
@@ -273,7 +285,7 @@ class weXMLImport extends weXMLExIm{
 				$this->refreshOwners($object);
 
 				if($save){
-					$this->saveObject($object);
+					$save = $this->saveObject($object);
 				}
 				$this->RefTable->add($object, $extra);
 			}
@@ -346,12 +358,11 @@ class weXMLImport extends weXMLExIm{
 	}
 
 	function importNodeSet($node_id){
-
 		$i = 0;
 		$object = '';
 		$node_props = array();
-
-
+		$node_data = array();
+		$node_coding = array();
 
 		if($this->xmlBrowser->getChildren($node_id, $node_props)){
 
@@ -359,11 +370,12 @@ class weXMLImport extends weXMLExIm{
 				$this->xmlBrowser->seek($node);
 				$nodname = $this->xmlBrowser->getNodeName();
 				$noddata = $this->xmlBrowser->getNodeData();
+				$attributes = $this->xmlBrowser->getNodeAttributes();
+
 
 				if($nodname == "we:info"){
 					$this->importNodeSet($node);
 				} else if($nodname == "we:map"){
-					$attributes = $this->xmlBrowser->getNodeAttributes();
 					$this->RefTable->Users[$attributes['user']] = $attributes;
 				} else if($nodname == "we:content"){
 					$i++;
@@ -397,28 +409,22 @@ class weXMLImport extends weXMLExIm{
 						}
 					}
 					$node_data[$nodname] = $noddata;
+					$node_coding[$nodname] = (isset($attributes[weContentProvider::CODING_ATTRIBUTE]) ? $attributes[weContentProvider::CODING_ATTRIBUTE] : weContentProvider::CODING_NONE);
 				}
 			}
 		}
 
 		if(!empty($object)){
+			$reflect = new ReflectionClass($object);
+			$props = $reflect->getProperties(ReflectionProperty::IS_PRIVATE | ReflectionProperty::IS_PROTECTED);
+			foreach($props as $prop){
+				unset($node_data[$prop->getName()]);
+			}
 
 			weContentProvider::populateInstance($object, $node_data);
 
 			foreach($node_data as $k => $v){
-				if(weContentProvider::needCoding($object->ClassName, $k)){
-					$v = weContentProvider::decode($v);
-				}
-
-				if($k == 'Dat' && $object->ClassName == 'we_element' && defined('WE_SHOP_VARIANTS_ELEMENT_NAME') && $object->Name == WE_SHOP_VARIANTS_ELEMENT_NAME){
-					// exception for shop - handling arrays in content
-					// save unserialized data back
-				} else if(weContentProvider::needSerialize($object, $object->ClassName, $k)){
-					$v = unserialize($v);
-				}
-				if(!weContentProvider::noEncodingChange($object->ClassName, $k, $this->nodehierarchy, isset($object->Name) ? $object->Name : '')){
-					$v = $this->changeEncoding($v);
-				}
+				$v = weContentProvider::getDecodedData($node_coding[$k], $v);
 
 				if($v != $object->$k)
 					$object->$k = $v;
@@ -602,7 +608,7 @@ class weXMLImport extends weXMLExIm{
 						$write = false;
 						if($marker_size){
 							$write = ((substr($buff, (0 - ($marker_size + 1))) == $marker . "\n") || (substr($buff, (0 - ($marker_size + 2))) == $marker . "\r\n") || (substr($buff, (0 - ($marker2_size + 1))) == $marker2 . "\n") || (substr($buff, (0 - ($marker2_size + 2))) == $marker2 . "\r\n" ));
-						}else{
+						} else{
 							$write = true;
 						}
 
@@ -649,3 +655,4 @@ class weXMLImport extends weXMLExIm{
 	}
 
 }
+

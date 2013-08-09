@@ -62,7 +62,7 @@ class we_base_browserDetect{
 			self::$sys = self::UNKNOWN;
 		}
 		self::$detected = true;
-		self::$ua = $ua ? $ua : $_SERVER['HTTP_USER_AGENT'];
+		self::$ua = $ua ? $ua : (isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '');
 		$regs = array();
 		if(preg_match('/^([^ ]+) ([^(]*)(\([^)]+\))(.*)$/', self::$ua, $regs)){
 			$pre = $regs[1];
@@ -84,7 +84,7 @@ class we_base_browserDetect{
 						self::$br = self::JAVA;
 						self::$v = $java[1];
 					} else
-					if(preg_match('/msie (.*)$/i', trim(isset($brArr[1])?$brArr[1]:$brArr[0]), $regs) && (trim($post) == '' || preg_match('/\.net/i', $post))){ //if last condition matches this will produce a notice. $regs[1] won't be defined...
+					if(preg_match('/msie (.*)$/i', trim(isset($brArr[1])?$brArr[1]:$brArr[0]), $regs) && (trim($post) == '' || preg_match('/\.net/i', $post))){ //if last condition matches this will produce a notice. $regs[1] won't be defined
 						self::$br = self::IE;
 						self::$v = $regs[1];
 					} else

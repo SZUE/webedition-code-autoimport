@@ -57,8 +57,7 @@ function we_tag_linkToSeeMode($attribs){
 		$id = $doc->ID;
 	}
 
-	if(isset($_SESSION["webuser"]) && isset($_SESSION["webuser"]) && $_SESSION["webuser"]["registered"] && !isset(
-			$_REQUEST["we_transaction"])){
+	if(isset($_SESSION["webuser"]) && isset($_SESSION["webuser"]) && $_SESSION["webuser"]["registered"] && !isset($_REQUEST["we_transaction"])){
 		if($permission == "" || isset($_SESSION["webuser"][$permission]) && $_SESSION["webuser"][$permission]){ // Has webUser the right permissions??
 			//	check if the customer is a user, too.
 			$tmpDB = $GLOBALS['DB_WE'];

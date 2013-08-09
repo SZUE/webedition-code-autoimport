@@ -372,7 +372,7 @@ class we_thumbnail{
 	 * @param bool $realpath  if set to true, Document_ROOT will be appended before
 	 */
 	public static function getThumbDirectory($realpath = false){
-		$dir = '/' . ltrim(preg_replace('#^\.?(.*)$#', '\1', (WE_THUMBNAIL_DIRECTORY ? WE_THUMBNAIL_DIRECTORY : '/__we_thumbs__')), '/');
+		$dir = '/' . ltrim(preg_replace('#^\.?(.*)$#', '\1', (WE_THUMBNAIL_DIRECTORY ? WE_THUMBNAIL_DIRECTORY : '/_thumbnails_')), '/');
 		return ($realpath ? $_SERVER['DOCUMENT_ROOT'] : '') . $dir;
 	}
 
@@ -392,12 +392,11 @@ class we_thumbnail{
 
 		if(isset($arr) && is_array($arr) && (count($arr) >= 4) && $arr[0] && $arr[1]){
 			return $arr;
-		} else{
-			if(we_image_edit::gd_version()){
-				return we_image_edit::getimagesize($filename);
-			}
-			return $arr;
 		}
+		if(we_image_edit::gd_version()){
+			return we_image_edit::getimagesize($filename);
+		}
+		return $arr;
 	}
 
 	/**
@@ -524,7 +523,7 @@ class we_thumbnail{
 	private function useOriginalSize(){
 		$outvar = ($this->thumbMaxsize == false) && ($this->thumbFitinside == false) && (($this->imageWidth <= $this->thumbWidth) || $this->thumbWidth == 0) && (($this->imageHeight <= $this->thumbHeight) || $this->thumbHeight == 0);
 		if($this->generateSmaller){
-			$outvar = false;
+			return false;
 		}
 		return $outvar;
 	}
@@ -558,7 +557,7 @@ class we_thumbnail{
 		}
 
 		$imgdat = getHash('SELECT ID,Filename,Extension,Path FROM ' . FILE_TABLE . ' WHERE ID = ' . intval($this->imageID), $this->db);
-		if(count($imgdat) == 0){
+		if(empty($imgdat)){
 			return false;
 		}
 		$this->imageFileName = $imgdat['Filename'];
@@ -594,8 +593,7 @@ class we_thumbnail{
 	 * @private
 	 */
 	private function getBinaryData(){
-		$_p = $_SERVER['DOCUMENT_ROOT'] . $this->imagePath;
-		$this->imageData = weFile::load($_p);
+		$this->imageData = weFile::load($_SERVER['DOCUMENT_ROOT'] . $this->imagePath);
 	}
 
 	public static function deleteByThumbID($id){

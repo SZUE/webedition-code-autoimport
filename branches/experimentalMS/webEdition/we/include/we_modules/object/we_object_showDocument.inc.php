@@ -82,11 +82,11 @@ if(($_userID != 0 && $_userID != $_SESSION['user']['ID']) || (isset($_REQUEST['w
 
 		if(isset($_lastDoc['Path'])){
 
-			if(sizeof($workspaces) > 0){ // get the correct template
+			if(!empty($workspaces)){ // get the correct template
 				//	Select a matching workspace.
-				for($i = 0; $i < sizeof($workspaces); $i++){
+				foreach($workspaces as $workspace){
 
-					$workspace = id_to_path($workspaces[$i], FILE_TABLE, $tmpDB);
+					$workspace = id_to_path($workspace, FILE_TABLE, $tmpDB);
 
 					if($workspace != '' && strpos($_lastDoc['Path'], $workspace) === 0 && $tids[$i] != ''){
 

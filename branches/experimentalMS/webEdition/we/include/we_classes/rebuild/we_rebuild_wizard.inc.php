@@ -55,22 +55,22 @@ abstract class we_rebuild_wizard{
 		$pb = $WE_PB->getHTML();
 
 		$js .= we_html_element::jsElement(
-				'function showRefreshButton() {'
-				. '  prevBut = document.getElementById(\'prev\');'
-				. '  nextBut = document.getElementById(\'next\');'
-				. '  refrBut = document.getElementById(\'refresh\');'
-				. '  prevBut.style.display = \'none\';'
-				. '  nextBut.style.display = \'none\';'
-				. '  refrBut.style.display = \'\';'
-				. '}'
-				. 'function showPrevNextButton() {'
-				. '  prevBut = document.getElementById(\'prev\');'
-				. '  nextBut = document.getElementById(\'next\');'
-				. '  refrBut = document.getElementById(\'refresh\');'
-				. '  refrBut.style.display = \'none\';'
-				. '  prevBut.style.display = \'\';'
-				. '  nextBut.style.display = \'\';'
-				. '}');
+				'function showRefreshButton() {
+				  prevBut = document.getElementById("prev");
+				  nextBut = document.getElementById("next");
+				  refrBut = document.getElementById("refresh");
+				  prevBut.style.display = "none";
+				  nextBut.style.display = "none";
+				  refrBut.style.display = "";
+				}
+				function showPrevNextButton() {
+				  prevBut = document.getElementById("prev");
+				  nextBut = document.getElementById("next");
+				  refrBut = document.getElementById("refresh");
+				  refrBut.style.display = "none";
+				  prevBut.style.display = "";
+				  nextBut.style.display = "";
+				}');
 
 		$cancelButton = we_button::create_button("cancel", "javascript:top.close();");
 		$refreshButton = we_button::create_button("refresh", "javascript:parent.wizcmd.location.reload();", true, -1, -1, "", "", false, false);
@@ -100,7 +100,7 @@ abstract class we_rebuild_wizard{
 				we_html_element::htmlHead(
 					we_html_tools::getHtmlInnerHead(g_l('rebuild', "[rebuild]")) .
 					STYLESHEET .
-					($dc ? "" : we_button::create_state_changer()) . $js) .
+					($dc ? '' : we_button::create_state_changer()) . $js) .
 				we_html_element::htmlBody(array("class" => ($dc ? "weDialogBody" : "weDialogButtonsBody")), ($dc ? $pb : $content->getHtml())
 				)
 		);
@@ -112,7 +112,7 @@ abstract class we_rebuild_wizard{
 	 * @return string for now it is an empty page
 	 */
 	static function getCmd(){
-		return self::getPage(array("", ""));
+		return self::getPage(array('', ''));
 	}
 
 	/**
@@ -159,7 +159,8 @@ abstract class we_rebuild_wizard{
 			array(
 				"headline" => "",
 				"html" => we_forms::radiobutton("rebuild_documents", ($type == "rebuild_documents" && (we_hasPerm("REBUILD_ALL") || we_hasPerm("REBUILD_FILTERD"))), "type", g_l('rebuild', "[documents]"), true, "defaultfont", "setNavStatDocDisabled()", (!(we_hasPerm("REBUILD_ALL") || we_hasPerm("REBUILD_FILTERD"))), g_l('rebuild', "[txt_rebuild_documents]"), 0, 495),
-				"space" => 0)
+				"space" => 0
+			)
 		);
 
 		if(defined("OBJECT_FILES_TABLE")){
@@ -363,34 +364,34 @@ abstract class we_rebuild_wizard{
 			set_button_state();';
 		if(!(file_exists($taskFilename) && $currentTask)){
 			switch($type){
-				case "rebuild_documents":
+				case 'rebuild_documents':
 					$data = we_rebuild::getDocuments($btype, $categories, $catAnd, $doctypes, $folders, $maintable, $tmptable, $templateID);
 					break;
-				case "rebuild_thumbnails":
+				case 'rebuild_thumbnails':
 					if(!$thumbs){
-						return array($js . ";top.frames[\"wizbusy\"].showPrevNextButton();" . we_message_reporting::getShowMessageCall(g_l('rebuild', "[no_thumbs_selected]"), we_message_reporting::WE_MESSAGE_WARNING), "");
+						return array($js . ";top.frames[\"wizbusy\"].showPrevNextButton();" . we_message_reporting::getShowMessageCall(g_l('rebuild', '[no_thumbs_selected]'), we_message_reporting::WE_MESSAGE_ERROR), '');
 					}
 					$data = we_rebuild::getThumbnails($thumbs, $thumbsFolders);
 					break;
-				case "rebuild_index":
+				case 'rebuild_index':
 					$data = we_rebuild::getIndex();
 					break;
-				case "rebuild_objects":
+				case 'rebuild_objects':
 					$data = we_rebuild::getObjects();
 					break;
-				case "rebuild_navigation":
+				case 'rebuild_navigation':
 					$data = we_rebuild::getNavigation();
 					break;
-				case "rebuild_metadata":
+				case 'rebuild_metadata':
 					$data = we_rebuild::getMetadata($metaFields, $onlyEmpty, $metaFolders);
 					break;
 			}
-			if(count($data)){
+			if(!empty($data)){
 				$fr = new rebuildFragment($taskname, 1, 0, array(), $data);
 
 				return array();
 			} else{
-				return array($js . we_message_reporting::getShowMessageCall(g_l('rebuild', "[nothing_to_rebuild]"), 1) . 'top.wizbusy.showPrevNextButton();', "");
+				return array($js . we_message_reporting::getShowMessageCall(g_l('rebuild', '[nothing_to_rebuild]'), we_message_reporting::WE_MESSAGE_ERROR) . 'top.wizbusy.showPrevNextButton();', "");
 			}
 		} else{
 			$fr = new rebuildFragment($taskname, 1, 0, array());
@@ -407,14 +408,14 @@ abstract class we_rebuild_wizard{
 	 * @param boolean $catAnd if the categories should be connected with AND
 	 */
 	static function formCategory($categories, $catAnd){
-		$catAndCheck = we_forms::checkbox("1", $catAnd, "catAnd", g_l('rebuild', "[catAnd]"), false, "defaultfont", "document.we_form.btype[2].checked=true;");
+		$catAndCheck = we_forms::checkbox(1, $catAnd, "catAnd", g_l('rebuild', "[catAnd]"), false, "defaultfont", "document.we_form.btype[2].checked=true;");
 		$delallbut = we_button::create_button("delete_all", "javascript:document.we_form.btype[2].checked=true;we_cmd('del_all_cats')");
 		$addbut = we_button::create_button("add", "javascript:document.we_form.btype[2].checked=true;we_cmd('openCatselector','','" . CATEGORY_TABLE . "','','','fillIDs();opener.we_cmd(\\'add_cat\\',top.allIDs);')", false, 100, 22, "", "", (!we_hasPerm("EDIT_KATEGORIE")));
 		$butTable = we_button::create_button_table(array($delallbut, $addbut));
 		$upperTable = '<table border="0" cellpadding="0" cellspacing="0" width="495"><tr><td align="left">' . $catAndCheck . '</td><td align="right">' . $butTable . '</td></tr></table>';
 
-		$cats = new MultiDirChooser(495, $categories, "del_cat", $upperTable, "", "Icon,Path", CATEGORY_TABLE);
-		return g_l('global', "[categorys]") . "<br>" . we_html_tools::getPixel(1, 3) . "<br>" . $cats->get();
+		$cats = new MultiDirChooser(495, $categories, "del_cat", $upperTable, '', 'Icon,Path', CATEGORY_TABLE);
+		return g_l('global', "[categorys]") . '<br/>' . we_html_tools::getPixel(1, 3) . '<br/>' . $cats->get();
 	}
 
 	/**
@@ -475,9 +476,9 @@ abstract class we_rebuild_wizard{
 	static function formMetadata($metaFields, $onlyEmpty){
 		$metaDataFields = weMetaData::getDefinedMetaDataFields();
 
-		$_html = we_html_element::jsElement('document._errorMessage=' . (count($metaFields) ? '""' : '"' . addslashes(g_l('rebuild', "[noFieldsChecked]")) . '"'));
-		$_html .= we_html_tools::htmlAlertAttentionBox(g_l('rebuild', "[expl_rebuild_metadata]"), 2, 520);
-		$_html .= '<div class="defaultfont" style="margin:10px 0 5px 0;">' . g_l('rebuild', "[metadata]") . ':</div>' . "\n";
+		$_html = we_html_element::jsElement('document._errorMessage=' . (!empty($metaFields) ? '""' : '"' . addslashes(g_l('rebuild', "[noFieldsChecked]")) . '"')) .
+			we_html_tools::htmlAlertAttentionBox(g_l('rebuild', "[expl_rebuild_metadata]"), 2, 520) .
+			'<div class="defaultfont" style="margin:10px 0 5px 0;">' . g_l('rebuild', "[metadata]") . ':</div>' . "\n";
 
 		$selAllBut = we_button::create_button("selectAll", "javascript:we_cmd('select_all_fields');");
 		$deselAllBut = we_button::create_button("deselectAll", "javascript:we_cmd('deselect_all_fields');");
@@ -508,82 +509,81 @@ abstract class we_rebuild_wizard{
 	 * @return array
 	 */
 	static function getRebuildDocuments(){
-
-		$thumbsFolders = isset($_REQUEST["thumbsFolders"]) ? $_REQUEST["thumbsFolders"] : "";
-		$metaFolders = isset($_REQUEST["metaFolders"]) ? $_REQUEST["metaFolders"] : "";
-		$metaFields = isset($_REQUEST["_field"]) ? $_REQUEST["_field"] : array();
-		$thumbs = (isset($_REQUEST["thumbs"]) && is_array($_REQUEST["thumbs"])) ? makeCSVFromArray($_REQUEST["thumbs"], true) : "";
-		$type = isset($_REQUEST["type"]) ? $_REQUEST["type"] : "rebuild_documents";
-		$btype = isset($_REQUEST["btype"]) ? $_REQUEST["btype"] : "rebuild_all";
-		$categories = isset($_REQUEST["categories"]) ? $_REQUEST["categories"] : "";
-		$doctypes = (isset($_REQUEST["doctypes"]) && is_array($_REQUEST["doctypes"])) ? makeCSVFromArray($_REQUEST["doctypes"], true) : "";
-		$folders = isset($_REQUEST["folders"]) ? $_REQUEST["folders"] : "";
-		$maintable = isset($_REQUEST["maintable"]) ? $_REQUEST["maintable"] : 0;
-		$tmptable = isset($_REQUEST["tmptable"]) ? $_REQUEST["tmptable"] : 0;
-		$catAnd = isset($_REQUEST["catAnd"]) ? $_REQUEST["catAnd"] : 0;
-		$onlyEmpty = isset($_REQUEST["onlyEmpty"]) ? $_REQUEST["onlyEmpty"] : 0;
+		$thumbsFolders = isset($_REQUEST['thumbsFolders']) ? $_REQUEST['thumbsFolders'] : '';
+		$metaFolders = isset($_REQUEST['metaFolders']) ? $_REQUEST['metaFolders'] : '';
+		$metaFields = isset($_REQUEST['_field']) ? $_REQUEST['_field'] : '';
+		$thumbs = (isset($_REQUEST['thumbs']) && is_array($_REQUEST['thumbs'])) ? makeCSVFromArray($_REQUEST['thumbs'], true) : '';
+		$type = isset($_REQUEST['type']) ? $_REQUEST['type'] : 'rebuild_documents';
+		$btype = isset($_REQUEST['btype']) ? $_REQUEST['btype'] : 'rebuild_all';
+		$categories = isset($_REQUEST['categories']) ? $_REQUEST['categories'] : '';
+		$doctypes = (isset($_REQUEST['doctypes']) && is_array($_REQUEST['doctypes'])) ? makeCSVFromArray($_REQUEST['doctypes'], true) : '';
+		$folders = isset($_REQUEST['folders']) ? $_REQUEST['folders'] : '';
+		$maintable = isset($_REQUEST['maintable']) ? $_REQUEST['maintable'] : 0;
+		//$tmptable = isset($_REQUEST['tmptable']) ? $_REQUEST['tmptable'] : 0;
+		$catAnd = isset($_REQUEST['catAnd']) ? $_REQUEST['catAnd'] : 0;
+		$onlyEmpty = isset($_REQUEST['onlyEmpty']) ? $_REQUEST['onlyEmpty'] : 0;
 
 
 		$ws = get_ws(FILE_TABLE, true);
-		if($ws && strpos($ws, (",0,")) !== true && ($folders == "" || $folders == "0")){
+		if($ws && strpos($ws, (',0,')) !== true && ($folders == '' || $folders == '0')){
 			$folders = get_def_ws(FILE_TABLE);
 		}
-		$parts = array();
 
-		if($_SESSION["perms"]["ADMINISTRATOR"]){
-			$all_content = we_forms::checkbox("1", $maintable, "maintable", g_l('rebuild', "[rebuild_maintable]"), false, "defaultfont", "document.we_form.btype[0].checked=true;");
-			$all_content .= we_forms::checkbox("1", $tmptable, "tmptable", g_l('rebuild', "[rebuild_tmptable]"), false, "defaultfont", "document.we_form.btype[0].checked=true;");
-		} else{
-			$all_content = "";
-		}
+		$all_content = ($_SESSION['perms']['ADMINISTRATOR'] ?
+				we_forms::checkbox(1, $maintable, 'maintable', g_l('rebuild', '[rebuild_maintable]'), false, 'defaultfont', 'document.we_form.btype[0].checked=true;')/* .
+				  we_forms::checkbox(1, $tmptable, 'tmptable', g_l('rebuild', '[rebuild_tmptable]'), false, 'defaultfont', 'document.we_form.btype[0].checked=true;') */ :
+				'');
 
-		array_push($parts, array(
-			"headline" => "",
-			"html" => we_forms::radiobutton("rebuild_all", ($btype == "rebuild_all" && we_hasPerm("REBUILD_ALL")), "btype", g_l('rebuild', "[rebuild_all]"), true, "defaultfont", "", (!we_hasPerm("REBUILD_ALL")), g_l('rebuild', "[txt_rebuild_all]"), 0, 495, "", $all_content),
-			"space" => 0)
-		);
-
-		array_push($parts, array(
-			"headline" => "",
-			"html" => we_forms::radiobutton("rebuild_templates", ($btype == "rebuild_templates" && we_hasPerm("REBUILD_TEMPLATES")), "btype", g_l('rebuild', "[rebuild_templates]"), true, "defaultfont", "", (!we_hasPerm("REBUILD_TEMPLATES")), g_l('rebuild', "[txt_rebuild_templates]"), 0, 495),
-			"space" => 0)
-		);
-
-		$filter_content = we_rebuild_wizard::formCategory($categories, $catAnd) . '<br>' . we_html_tools::getPixel(2, 5) . "<br>" .
-			we_rebuild_wizard::formDoctypes($doctypes) . '<br>' . we_html_tools::getPixel(2, 10) . "<br>" .
+		$filter_content = we_rebuild_wizard::formCategory($categories, $catAnd) . '<br/>' . we_html_tools::getPixel(2, 5) . '<br/>' .
+			we_rebuild_wizard::formDoctypes($doctypes) . '<br/>' . we_html_tools::getPixel(2, 10) . '<br/>' .
 			we_rebuild_wizard::formFolders($folders);
 
-		$filter_content = we_forms::radiobutton("rebuild_filter", ($btype == "rebuild_filter" && we_hasPerm("REBUILD_FILTERD") || ($btype == "rebuild_all" && (!we_hasPerm("REBUILD_ALL")) && we_hasPerm("REBUILD_FILTERD"))), "btype", g_l('rebuild', "[rebuild_filter]"), true, "defaultfont", "", (!we_hasPerm("REBUILD_FILTERD")), g_l('rebuild', "[txt_rebuild_filter]"), 0, 495, "", $filter_content);
+		$filter_content = we_forms::radiobutton('rebuild_filter', ($btype == 'rebuild_filter' && we_hasPerm('REBUILD_FILTERD') || ($btype == 'rebuild_all' && (!we_hasPerm('REBUILD_ALL')) && we_hasPerm('REBUILD_FILTERD'))), 'btype', g_l('rebuild', '[rebuild_filter]'), true, 'defaultfont', '', (!we_hasPerm('REBUILD_FILTERD')), g_l('rebuild', '[txt_rebuild_filter]'), 0, 495, '', $filter_content);
 
 
-		array_push($parts, array(
-			"headline" => "",
-			"html" => $filter_content,
-			"space" => 0)
+		$parts = array(
+			array(
+				'headline' => '',
+				'html' => we_forms::radiobutton('rebuild_all', ($btype == 'rebuild_all' && we_hasPerm('REBUILD_ALL')), 'btype', g_l('rebuild', '[rebuild_all]'), true, 'defaultfont', '', (!we_hasPerm('REBUILD_ALL')), g_l('rebuild', '[txt_rebuild_all]'), 0, 495, '', $all_content),
+				'space' => 0
+			),
+			array(
+				'headline' => '',
+				'html' => we_forms::radiobutton('rebuild_templates', ($btype == 'rebuild_templates' && we_hasPerm('REBUILD_TEMPLATES')), 'btype', g_l('rebuild', '[rebuild_templates]'), true, 'defaultfont', '', (!we_hasPerm('REBUILD_TEMPLATES')), g_l('rebuild', '[txt_rebuild_templates]'), 0, 495),
+				'space' => 0
+			),
+			array(
+				'headline' => '',
+				'html' => $filter_content,
+				'space' => 0
+			)
 		);
 
-		$thumbsHidden = "";
+		$thumbsHidden = '';
 		$thumbsArray = makeArrayFromCSV($thumbs);
-		for($i = 0; $i < sizeof($thumbsArray); $i++){
-			$thumbsHidden .= we_html_element::htmlHidden(array("name" => "thumbs[$i]", "value" => $thumbsArray[$i]));
+		foreach($thumbsArray as $i => $cur){
+			$thumbsHidden .= we_html_element::htmlHidden(array('name' => 'thumbs[' . $i . ']', 'value' => $cur));
 		}
-		$metaFieldsHidden = "";
-		foreach($metaFields as $_key => $_val){
-			$metaFieldsHidden .= we_html_element::htmlHidden(array("name" => "_field[$_key]", "value" => $_val));
+
+		$metaFieldsHidden = '';
+		if(!empty($metaFields)){
+			foreach($metaFields as $_key => $_val){
+				$metaFieldsHidden .= we_html_element::htmlHidden(array('name' => '_field[' . $_key . ']', 'value' => $_val));
+			}
 		}
-		return array(we_rebuild_wizard::getPage2Js(), we_multiIconBox::getHTML("", "100%", $parts, 40, "", -1, "", "", false, g_l('rebuild', "[rebuild_documents]")) .
+		return array(we_rebuild_wizard::getPage2Js(), we_multiIconBox::getHTML('', '100%', $parts, 40, '', -1, '', '', false, g_l('rebuild', '[rebuild_documents]')) .
 			$thumbsHidden .
 			$metaFieldsHidden .
-			we_html_element::htmlHidden(array("name" => "thumbsFolders", "value" => $thumbsFolders)) .
-			we_html_element::htmlHidden(array("name" => "metaFolders", "value" => $metaFolders)) .
-			we_html_element::htmlHidden(array("name" => "metaFields", "value" => $metaFields)) .
-			we_html_element::htmlHidden(array("name" => "onlyEmpty", "value" => $onlyEmpty)) .
-			we_html_element::htmlHidden(array("name" => "folders", "value" => $folders)) .
-			we_html_element::htmlHidden(array("name" => "categories", "value" => $categories)) .
-			we_html_element::htmlHidden(array("name" => "fr", "value" => "body")) .
-			we_html_element::htmlHidden(array("name" => "type", "value" => $type)) .
-			we_html_element::htmlHidden(array("name" => "we_cmd[0]", "value" => "rebuild")) .
-			we_html_element::htmlHidden(array("name" => "step", "value" => "2")));
+			we_html_element::htmlHidden(array('name' => 'thumbsFolders', 'value' => $thumbsFolders)) .
+			we_html_element::htmlHidden(array('name' => 'metaFolders', 'value' => $metaFolders)) .
+			we_html_element::htmlHidden(array('name' => 'metaFields', 'value' => $metaFields)) .
+			we_html_element::htmlHidden(array('name' => 'onlyEmpty', 'value' => $onlyEmpty)) .
+			we_html_element::htmlHidden(array('name' => 'folders', 'value' => $folders)) .
+			we_html_element::htmlHidden(array('name' => 'categories', 'value' => $categories)) .
+			we_html_element::htmlHidden(array('name' => 'fr', 'value' => 'body')) .
+			we_html_element::htmlHidden(array('name' => 'type', 'value' => $type)) .
+			we_html_element::htmlHidden(array('name' => 'we_cmd[0]', 'value' => 'rebuild')) .
+			we_html_element::htmlHidden(array('name' => 'step', 'value' => 2)));
 	}
 
 	/**
@@ -593,16 +593,16 @@ abstract class we_rebuild_wizard{
 	 */
 	static function getRebuildThumbnails(){
 
-		$thumbsFolders = isset($_REQUEST["thumbsFolders"]) ? $_REQUEST["thumbsFolders"] : "";
-		$metaFolders = isset($_REQUEST["metaFolders"]) ? $_REQUEST["metaFolders"] : "";
-		$metaFields = isset($_REQUEST["_field"]) ? $_REQUEST["_field"] : array();
-		$thumbs = (isset($_REQUEST["thumbs"]) && is_array($_REQUEST["thumbs"])) ? makeCSVFromArray($_REQUEST["thumbs"], true) : "";
-		$type = isset($_REQUEST["type"]) ? $_REQUEST["type"] : "rebuild_documents";
-		$categories = isset($_REQUEST["categories"]) ? $_REQUEST["categories"] : "";
-		$doctypes = (isset($_REQUEST["doctypes"]) && is_array($_REQUEST["doctypes"])) ? makeCSVFromArray($_REQUEST["doctypes"], true) : "";
-		$folders = isset($_REQUEST["folders"]) ? $_REQUEST["folders"] : "";
-		$catAnd = isset($_REQUEST["catAnd"]) ? $_REQUEST["catAnd"] : 0;
-		$onlyEmpty = isset($_REQUEST["onlyEmpty"]) ? $_REQUEST["onlyEmpty"] : 0;
+		$thumbsFolders = isset($_REQUEST['thumbsFolders']) ? $_REQUEST['thumbsFolders'] : '';
+		$metaFolders = isset($_REQUEST['metaFolders']) ? $_REQUEST['metaFolders'] : '';
+		$metaFields = isset($_REQUEST['_field']) ? $_REQUEST['_field'] : array();
+		$thumbs = (isset($_REQUEST['thumbs']) && is_array($_REQUEST['thumbs'])) ? makeCSVFromArray($_REQUEST['thumbs'], true) : '';
+		$type = isset($_REQUEST['type']) ? $_REQUEST['type'] : 'rebuild_documents';
+		$categories = isset($_REQUEST['categories']) ? $_REQUEST['categories'] : '';
+		$doctypes = (isset($_REQUEST['doctypes']) && is_array($_REQUEST['doctypes'])) ? makeCSVFromArray($_REQUEST['doctypes'], true) : '';
+		$folders = isset($_REQUEST['folders']) ? $_REQUEST['folders'] : '';
+		$catAnd = isset($_REQUEST['catAnd']) ? $_REQUEST['catAnd'] : 0;
+		$onlyEmpty = isset($_REQUEST['onlyEmpty']) ? $_REQUEST['onlyEmpty'] : 0;
 
 		$ws = get_ws(FILE_TABLE, true);
 
@@ -620,62 +620,62 @@ abstract class we_rebuild_wizard{
 			$folders = makeCSVFromArray($newFolders);
 		}
 
-		if($ws && strpos($ws, (",0,")) !== true && ($thumbsFolders == "" || $thumbsFolders == "0")){
+		if($ws && strpos($ws, (',0,')) !== true && ($thumbsFolders == '' || $thumbsFolders == '0')){
 			$thumbsFolders = get_def_ws(FILE_TABLE);
 		}
 		$parts = array();
 
 		$content = we_rebuild_wizard::formThumbs($thumbs) .
-			'<br>' . we_html_tools::getPixel(2, 15) . "<br>" .
+			'<br>' . we_html_tools::getPixel(2, 15) . '<br/>' .
 			we_rebuild_wizard::formFolders($thumbsFolders, true, 520);
 
 
 
 		array_push($parts, array(
-			"headline" => "",
-			"html" => $content,
-			"space" => 0)
+			'headline' => '',
+			'html' => $content,
+			'space' => 0)
 		);
 
 
-		$dthidden = "";
+		$dthidden = '';
 		$doctypesArray = makeArrayFromCSV($doctypes);
-		for($i = 0; $i < sizeof($doctypesArray); $i++){
-			$dthidden .= we_html_element::htmlHidden(array("name" => "doctypes[$i]", "value" => $doctypesArray[$i]));
+		for($i = 0; $i < count($doctypesArray); $i++){
+			$dthidden .= we_html_element::htmlHidden(array('name' => 'doctypes[' . $i . ']', 'value' => $doctypesArray[$i]));
 		}
-		$metaFieldsHidden = "";
+		$metaFieldsHidden = '';
 		foreach($metaFields as $_key => $_val){
-			$metaFieldsHidden .= we_html_element::htmlHidden(array("name" => "_field[$_key]", "value" => $_val));
+			$metaFieldsHidden .= we_html_element::htmlHidden(array('name' => "_field[$_key]", 'value' => $_val));
 		}
-		return array(we_rebuild_wizard::getPage2Js("thumbsFolders"), we_multiIconBox::getHTML("", "100%", $parts, 40, "", -1, "", "", false, g_l('rebuild', "[rebuild_thumbnails]")) .
+		return array(we_rebuild_wizard::getPage2Js('thumbsFolders'), we_multiIconBox::getHTML('', '100%', $parts, 40, '', -1, '', '', false, g_l('rebuild', '[rebuild_thumbnails]')) .
 			$dthidden .
 			$metaFieldsHidden .
-			we_html_element::htmlHidden(array("name" => "catAnd", "value" => $catAnd)) .
-			we_html_element::htmlHidden(array("name" => "thumbsFolders", "value" => $thumbsFolders)) .
-			we_html_element::htmlHidden(array("name" => "metaFolders", "value" => $metaFolders)) .
-			we_html_element::htmlHidden(array("name" => "metaFields", "value" => $metaFields)) .
-			we_html_element::htmlHidden(array("name" => "onlyEmpty", "value" => $onlyEmpty)) .
-			we_html_element::htmlHidden(array("name" => "folders", "value" => $folders)) .
-			we_html_element::htmlHidden(array("name" => "categories", "value" => $categories)) .
-			we_html_element::htmlHidden(array("name" => "fr", "value" => "body")) .
-			we_html_element::htmlHidden(array("name" => "type", "value" => $type)) .
-			we_html_element::htmlHidden(array("name" => "we_cmd[0]", "value" => "rebuild")) .
-			we_html_element::htmlHidden(array("name" => "step", "value" => "2")));
+			we_html_element::htmlHidden(array('name' => 'catAnd', 'value' => $catAnd)) .
+			we_html_element::htmlHidden(array('name' => 'thumbsFolders', 'value' => $thumbsFolders)) .
+			we_html_element::htmlHidden(array('name' => 'metaFolders', 'value' => $metaFolders)) .
+			we_html_element::htmlHidden(array('name' => 'metaFields', 'value' => $metaFields)) .
+			we_html_element::htmlHidden(array('name' => 'onlyEmpty', 'value' => $onlyEmpty)) .
+			we_html_element::htmlHidden(array('name' => 'folders', 'value' => $folders)) .
+			we_html_element::htmlHidden(array('name' => 'categories', 'value' => $categories)) .
+			we_html_element::htmlHidden(array('name' => 'fr', 'value' => 'body')) .
+			we_html_element::htmlHidden(array('name' => 'type', 'value' => $type)) .
+			we_html_element::htmlHidden(array('name' => 'we_cmd[0]', 'value' => 'rebuild')) .
+			we_html_element::htmlHidden(array('name' => 'step', 'value' => 2)));
 	}
 
 	static function getRebuildMetadata(){
 
-		$thumbsFolders = isset($_REQUEST["thumbsFolders"]) ? $_REQUEST["thumbsFolders"] : "";
-		$metaFolders = isset($_REQUEST["metaFolders"]) ? $_REQUEST["metaFolders"] : "";
-		$onlyEmpty = isset($_REQUEST["onlyEmpty"]) ? $_REQUEST["onlyEmpty"] : 0;
-		$metaFields = isset($_REQUEST["_field"]) ? $_REQUEST["_field"] : array();
-		$thumbs = (isset($_REQUEST["thumbs"]) && is_array($_REQUEST["thumbs"])) ? makeCSVFromArray($_REQUEST["thumbs"], true) : "";
-		$type = isset($_REQUEST["type"]) ? $_REQUEST["type"] : "rebuild_documents";
-		$categories = isset($_REQUEST["categories"]) ? $_REQUEST["categories"] : "";
-		$doctypes = (isset($_REQUEST["doctypes"]) && is_array($_REQUEST["doctypes"])) ? makeCSVFromArray($_REQUEST["doctypes"], true) : "";
-		$folders = isset($_REQUEST["folders"]) ? $_REQUEST["folders"] : "";
-		$maintable = isset($_REQUEST["maintable"]) ? $_REQUEST["maintable"] : 0;
-		$catAnd = isset($_REQUEST["catAnd"]) ? $_REQUEST["catAnd"] : 0;
+		$thumbsFolders = isset($_REQUEST['thumbsFolders']) ? $_REQUEST['thumbsFolders'] : '';
+		$metaFolders = isset($_REQUEST['metaFolders']) ? $_REQUEST['metaFolders'] : '';
+		$onlyEmpty = isset($_REQUEST['onlyEmpty']) ? $_REQUEST['onlyEmpty'] : 0;
+		$metaFields = isset($_REQUEST['_field']) ? $_REQUEST['_field'] : array();
+		$thumbs = (isset($_REQUEST['thumbs']) && is_array($_REQUEST['thumbs'])) ? makeCSVFromArray($_REQUEST['thumbs'], true) : '';
+		$type = isset($_REQUEST['type']) ? $_REQUEST['type'] : 'rebuild_documents';
+		$categories = isset($_REQUEST['categories']) ? $_REQUEST['categories'] : '';
+		$doctypes = (isset($_REQUEST['doctypes']) && is_array($_REQUEST['doctypes'])) ? makeCSVFromArray($_REQUEST['doctypes'], true) : '';
+		$folders = isset($_REQUEST['folders']) ? $_REQUEST['folders'] : '';
+		$maintable = isset($_REQUEST['maintable']) ? $_REQUEST['maintable'] : 0;
+		$catAnd = isset($_REQUEST['catAnd']) ? $_REQUEST['catAnd'] : 0;
 
 		$ws = get_ws(FILE_TABLE, true);
 
@@ -693,46 +693,45 @@ abstract class we_rebuild_wizard{
 			$folders = makeCSVFromArray($newFolders);
 		}
 
-		if($ws && strpos($ws, (",0,")) !== true && ($metaFolders == "" || $metaFolders == "0")){
+		if($ws && strpos($ws, (',0,')) !== true && ($metaFolders == '' || $metaFolders == '0')){
 			$metaFolders = get_def_ws(FILE_TABLE);
 		}
-		$parts = array();
 
 		$content = we_rebuild_wizard::formMetadata($metaFields, $onlyEmpty) .
-			'<br>' . we_html_tools::getPixel(2, 15) . "<br>" .
+			we_html_element::htmlBr() . we_html_tools::getPixel(2, 15) . we_html_element::htmlBr() .
 			we_rebuild_wizard::formFolders($metaFolders, true, 520);
 
 
-
-		array_push($parts, array(
-			"headline" => "",
-			"html" => $content,
-			"space" => 0)
+		$parts = array(
+			array(
+				'headline' => '',
+				'html' => $content,
+				'space' => 0)
 		);
 
 
-		$dthidden = "";
+		$dthidden = '';
 		$doctypesArray = makeArrayFromCSV($doctypes);
-		for($i = 0; $i < sizeof($doctypesArray); $i++){
-			$dthidden .= we_html_element::htmlHidden(array("name" => "doctypes[$i]", "value" => $doctypesArray[$i]));
+		for($i = 0; $i < count($doctypesArray); $i++){
+			$dthidden .= we_html_element::htmlHidden(array('name' => 'doctypes[' . $i . ']', 'value' => $doctypesArray[$i]));
 		}
-		$thumbsHidden = "";
+		$thumbsHidden = '';
 		$thumbsArray = makeArrayFromCSV($thumbs);
-		for($i = 0; $i < sizeof($thumbsArray); $i++){
-			$thumbsHidden .= we_html_element::htmlHidden(array("name" => "thumbs[$i]", "value" => $thumbsArray[$i]));
+		for($i = 0; $i < count($thumbsArray); $i++){
+			$thumbsHidden .= we_html_element::htmlHidden(array('name' => 'thumbs[' . $i . ']', 'value' => $thumbsArray[$i]));
 		}
-		return array(we_rebuild_wizard::getPage2Js("metaFolders"), we_multiIconBox::getHTML("", "100%", $parts, 40, "", -1, "", "", false, g_l('rebuild', "[rebuild_metadata]")) .
+		return array(we_rebuild_wizard::getPage2Js('metaFolders'), we_multiIconBox::getHTML('', '100%', $parts, 40, '', -1, '', '', false, g_l('rebuild', '[rebuild_metadata]')) .
 			$dthidden .
 			$thumbsHidden .
-			we_html_element::htmlHidden(array("name" => "catAnd", "value" => $catAnd)) .
-			we_html_element::htmlHidden(array("name" => "metaFolders", "value" => $metaFolders)) .
-			we_html_element::htmlHidden(array("name" => "thumbsFolders", "value" => $thumbsFolders)) .
-			we_html_element::htmlHidden(array("name" => "folders", "value" => $folders)) .
-			we_html_element::htmlHidden(array("name" => "categories", "value" => $categories)) .
-			we_html_element::htmlHidden(array("name" => "fr", "value" => "body")) .
-			we_html_element::htmlHidden(array("name" => "type", "value" => $type)) .
-			we_html_element::htmlHidden(array("name" => "we_cmd[0]", "value" => "rebuild")) .
-			we_html_element::htmlHidden(array("name" => "step", "value" => "2")));
+			we_html_element::htmlHidden(array('name' => 'catAnd', 'value' => $catAnd)) .
+			we_html_element::htmlHidden(array('name' => 'metaFolders', 'value' => $metaFolders)) .
+			we_html_element::htmlHidden(array('name' => 'thumbsFolders', 'value' => $thumbsFolders)) .
+			we_html_element::htmlHidden(array('name' => 'folders', 'value' => $folders)) .
+			we_html_element::htmlHidden(array('name' => 'categories', 'value' => $categories)) .
+			we_html_element::htmlHidden(array('name' => 'fr', 'value' => 'body')) .
+			we_html_element::htmlHidden(array('name' => 'type', 'value' => $type)) .
+			we_html_element::htmlHidden(array('name' => 'we_cmd[0]', 'value' => 'rebuild')) .
+			we_html_element::htmlHidden(array('name' => 'step', 'value' => 2)));
 	}
 
 	/**
@@ -741,68 +740,54 @@ abstract class we_rebuild_wizard{
 	 * @return string
 	 */
 	static function getFrameset(){
-		$tail = "";
-		if(isset($_REQUEST["btype"])){
-			$tail .= "&amp;btype=" . rawurlencode($_REQUEST["btype"]);
-		}
-		if(isset($_REQUEST["type"])){
-			$tail .= "&amp;type=" . rawurlencode($_REQUEST["type"]);
-		}
-		if(isset($_REQUEST["templateID"])){
-			$tail .= "&amp;templateID=" . rawurlencode($_REQUEST["templateID"]);
-		}
-		if(isset($_REQUEST["step"])){
-			$tail .= "&amp;step=" . rawurlencode($_REQUEST["step"]);
-		}
-		if(isset($_REQUEST["responseText"])){
-			$tail .= "&amp;responseText=" . rawurlencode($_REQUEST["responseText"]);
-		}
+		$tail =
+			(isset($_REQUEST['btype']) ? '&amp;btype=' . rawurlencode($_REQUEST['btype']) : '') .
+			(isset($_REQUEST['type']) ? '&amp;type=' . rawurlencode($_REQUEST['type']) : '') .
+			(isset($_REQUEST['templateID']) ? '&amp;templateID=' . rawurlencode($_REQUEST['templateID']) : '') .
+			(isset($_REQUEST['step']) ? '&amp;step=' . rawurlencode($_REQUEST['step']) : '') .
+			(isset($_REQUEST['responseText']) ? '&amp;responseText=' . rawurlencode($_REQUEST['responseText']) : '');
 
-
-
-		$taskname = md5(session_id() . "_rebuild");
+		$taskname = md5(session_id() . '_rebuild');
 		$taskFilename = WE_FRAGMENT_PATH . $taskname;
 		if(file_exists($taskFilename)){
 			@unlink($taskFilename);
 		}
 
-		$cmdFrameHeight = (isset($_SESSION["prefs"]["debug_normal"]) && $_SESSION["prefs"]["debug_normal"] != 0) ? 30 : 0;
-
 		if($tail){
 			$fst = new we_html_frameset(array(
-					"rows" => "*,$cmdFrameHeight",
-					"framespacing" => 0,
-					"border" => 0,
-					"frameborder" => "no")
+				'rows' => '*,0',
+				'framespacing' => 0,
+				'border' => 0,
+				'frameborder' => 'no')
 			);
 
-			$fst->addFrame(array("src" => WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=rebuild&amp;fr=busy&amp;dc=1", "name" => "wizbusy"));
-			$fst->setFrameAttributes(0, array("scrolling" => "no", "onload" => "wizcmd.location='" . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=rebuild&amp;fr=body" . $tail . "';"));
+			$fst->addFrame(array('src' => WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=rebuild&amp;fr=busy&amp;dc=1', 'name' => 'wizbusy'));
+			$fst->setFrameAttributes(0, array('scrolling' => 'no', 'onload' => "wizcmd.location='" . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=rebuild&amp;fr=body" . $tail . "';"));
 
-			$fst->addFrame(array("src" => HTML_DIR . "white.html", "name" => "wizcmd"));
-			$fst->setFrameAttributes(1, array("scrolling" => "no"));
+			$fst->addFrame(array('src' => HTML_DIR . 'white.html', 'name' => 'wizcmd'));
+			$fst->setFrameAttributes(1, array('scrolling' => 'no'));
 		} else{
 			$fst = new we_html_frameset(array(
-					"rows" => '*,' . (we_base_browserDetect::isFF() ? 60 : 40) . ',' . $cmdFrameHeight,
-					"framespacing" => 0,
-					"border" => 0,
-					"frameborder" => "no")
+				'rows' => '*,' . (we_base_browserDetect::isFF() ? 60 : 40) . ',0',
+				'framespacing' => 0,
+				'border' => 0,
+				'frameborder' => 'no')
 			);
 
-			$fst->addFrame(array("src" => WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=rebuild&amp;fr=body", "name" => "wizbody"));
-			$fst->setFrameAttributes(0, array("scrolling" => "auto"));
+			$fst->addFrame(array('src' => WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=rebuild&amp;fr=body', 'name' => 'wizbody'));
+			$fst->setFrameAttributes(0, array('scrolling' => 'auto'));
 
-			$fst->addFrame(array("src" => WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=rebuild&amp;fr=busy", "name" => "wizbusy"));
-			$fst->setFrameAttributes(1, array("scrolling" => "no"));
+			$fst->addFrame(array('src' => WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=rebuild&amp;fr=busy', 'name' => 'wizbusy'));
+			$fst->setFrameAttributes(1, array('scrolling' => 'no'));
 
-			$fst->addFrame(array("src" => WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=rebuild&amp;fr=cmd", "name" => "wizcmd"));
-			$fst->setFrameAttributes(2, array("scrolling" => "no"));
+			$fst->addFrame(array('src' => WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=rebuild&amp;fr=cmd', 'name' => 'wizcmd'));
+			$fst->setFrameAttributes(2, array('scrolling' => 'no'));
 		}
 
 
 		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				we_html_element::htmlHead(
-					we_html_tools::getHtmlInnerHead(g_l('rebuild', "[rebuild]"))
+					we_html_tools::getHtmlInnerHead(g_l('rebuild', '[rebuild]'))
 				) . $fst->getHtml());
 	}
 
@@ -812,7 +797,7 @@ abstract class we_rebuild_wizard{
 	 * @return string
 	 * @param string $folders csv value with directory IDs
 	 */
-	static function getPage2Js($folders = "folders"){
+	static function getPage2Js($folders = 'folders'){
 		return
 			'function handle_event(what){
 				f = document.we_form;
@@ -984,8 +969,8 @@ abstract class we_rebuild_wizard{
 	 * @param array first element (array[0]) must be a javascript, second element (array[1]) must be the Body HTML
 	 */
 	static function getPage($contents){
-		if(!sizeof($contents)){
-			return "";
+		if(empty($contents)){
+			return '';
 		}
 		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				we_html_element::htmlHead(
@@ -1002,4 +987,3 @@ abstract class we_rebuild_wizard{
 	}
 
 }
-

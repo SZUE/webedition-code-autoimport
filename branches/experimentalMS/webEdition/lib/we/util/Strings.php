@@ -27,7 +27,8 @@
  * @package    we_util
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-class we_util_Strings{
+abstract class we_util_Strings{
+	const PRECISION = 2;
 
 	/**
 	 * Returns an unique ID
@@ -48,14 +49,14 @@ class we_util_Strings{
 	 * @return string
 	 */
 	static function makeCSVFromArray($arr, $prePostKomma = false, $sep = ","){
-		if(!count($arr)){
+		if(empty($arr)){
 			return '';
 		}
 
 		$replaceKomma = (count($arr) > 1) || ($prePostKomma == true);
 
 		if($replaceKomma){
-			for($i = 0; $i < sizeof($arr); $i++){
+			for($i = 0; $i < count($arr); $i++){
 				$arr[$i] = str_replace($sep, "###komma###", $arr[$i]);
 			}
 		}
@@ -76,7 +77,6 @@ class we_util_Strings{
 	 * @return array
 	 */
 	static function makeArrayFromCSV($csv){
-
 		$csv = str_replace("\\,", "###komma###", $csv);
 
 		if(substr($csv, 0, 1) == ","){
@@ -89,7 +89,7 @@ class we_util_Strings{
 			$foo = array();
 		} else{
 			$foo = explode(",", $csv);
-			for($i = 0; $i < sizeof($foo); $i++){
+			for($i = 0; $i < count($foo); $i++){
 				$foo[$i] = str_replace("###komma###", ",", $foo[$i]);
 			}
 		}
@@ -104,11 +104,9 @@ class we_util_Strings{
 	 * @return string
 	 */
 	static function quoteForJSString($text, $quoteForSingle = true){
-		if($quoteForSingle){
-			return str_replace('\'', '\\\'', str_replace('\\', '\\\\', $text));
-		} else{
-			return str_replace("\"", "\\\"", str_replace("\\", "\\\\", $text));
-		}
+		return ($quoteForSingle ?
+				str_replace('\'', '\\\'', str_replace('\\', '\\\\', $text)) :
+				str_replace("\"", "\\\"", str_replace("\\", "\\\\", $text)));
 	}
 
 	/**
@@ -122,29 +120,31 @@ class we_util_Strings{
 		if(strlen($path) <= $len || strlen($path) < 10)
 			return $path;
 		$l = ($len / 2) - 2;
-		return substr($path, 0, $l) . "...." . substr($path, $l * -1);
+		return substr($path, 0, $l) . '&hellip;' . substr($path, $l * -1);
 	}
 
 	/**
 	 * Returns a formatted string
 	 *
-	 * @param string vale
+	 * @param float value
 	 * @param string format
 	 * @return string
 	 */
-	static function formatnumber($value, $format){
+	static	function formatNumber($number, $format='', $precision = self::PRECISION){
 		switch($format){
+			case 'german':
+			case 'deutsch':
+				return number_format(floatval($number), $precision, ',', '.');
+			case 'french':
+				return number_format(floatval($number), $precision, ',', ' ');
+			case 'swiss':
+				return number_format(floatval($number), $precision, ',', "'");
+			case 'english':
 			default:
-			case 'german': return number_format($value, 2, ",", ".");
-				break;
-			case 'french': return number_format($value, 2, ",", " ");
-				break;
-			case 'english': return number_format($value, 2, ".", "");
-				break;
-			case 'swiss' : return number_format($value, 2, ".", "'");
-				break;
+				return number_format(floatval($number), $precision, '.', '');
 		}
 	}
+
 
 	/**
 	 * splits a version (string) to a number.

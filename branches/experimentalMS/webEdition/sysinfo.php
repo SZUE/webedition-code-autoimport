@@ -34,11 +34,7 @@ function getInfoTable($_infoArr, $name){
 
 	foreach($_infoArr as $_k => $_v){
 
-		if($_i % 2){
-			$_style = "";
-		} else{
-			$_style = "background: #D4DBFA;";
-		}
+		$_style = ($_i % 2 ? '' : "background: #D4DBFA;");
 
 		$_table->addRow(1);
 		$_table->setRow($_i, array("class" => "defaultfont", "style" => $_style . "height:20px;"));
@@ -122,24 +118,24 @@ function parseValue($name, $value){
 }
 
 function convertToMb($value){
-	return round($value / (1024 * 1024), 3) . ' MB';
+	return weFile::getHumanFileSize($value, weFile::SZ_MB);
 }
 
 function getConnectionTypes(){
 	$_connectionTypes = array();
-	if(ini_get("allow_url_fopen") == "1"){
+	if(ini_get('allow_url_fopen') == "1"){
 		$_connectionTypes[] = "fopen";
 		$_connectionTypeUsed = "fopen";
 	}
 	if(is_callable("curl_exec")){
 		$_connectionTypes[] = "curl";
-		if(sizeof($_connectionTypes) == "1"){
+		if(count($_connectionTypes) == 1){
 			$_connectionTypeUsed = "curl";
 		}
 	}
-	for($i = 0; $i < sizeof($_connectionTypes); $i++){
-		if($_connectionTypes[$i] == $_connectionTypeUsed){
-			$_connectionTypes[$i] = "<u>" . $_connectionTypes[$i] . "</u>";
+	foreach($_connectionTypes as &$con){
+		if($con == $_connectionTypeUsed){
+			$con = "<u>" . $con . "</u>";
 		}
 	}
 	return $_connectionTypes;
@@ -160,7 +156,7 @@ function getOK($message, $value){
 $_install_dir = $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR;
 
 if(strlen($_install_dir) > 35){
-	$_install_dir = substr($_install_dir, 0, 25) . '<acronym title="' . $_install_dir . '">...</acronym>' . substr($_install_dir, -10);
+	$_install_dir = substr($_install_dir, 0, 25) . '<acronym title="' . $_install_dir . '">&hellip;</acronym>' . substr($_install_dir, -10);
 }
 
 $weVersion = WE_VERSION;
@@ -177,12 +173,12 @@ if(defined("WE_VERSION_SUPP_VERSION") && WE_VERSION_SUPP_VERSION != '0')
 if(is_callable("gd_info")){
 	if(defined("GD_VERSION")){
 		$gdVersion = GD_VERSION;
-	} else{
+	} else {
 		$gdinfoArray = gd_info();
 		$gdVersion = $gdinfoArray["GD Version"];
 		unset($gdinfoArray);
 	}
-} else{
+} else {
 	$gdVersion = "";
 }
 
@@ -204,26 +200,30 @@ if(count($phpextensions) > 3){
 
 	if(in_array(strtolower('PDO'), $phpextensions) && in_array(strtolower('pdo_mysql'), $phpextensions)){//sp�ter ODER mysqli
 		$phpextensionsSDK_DB = 'PDO &amp; PDO_mysql';
-	} else{
+	} else {
 		$phpextensionsSDK_DB = getWarning(g_l('sysinfo', "[sdk_db warning]"), '-');
 	}
-} else{
+} else {
 	$phpExtensionsDetectable = false;
 	$phpextensionsSDK_DB = 'unkown';
 }
 if(in_array('suhosin', get_loaded_extensions())){
 	if(ini_get_bool('suhosin.simulation')){
 		$SuhosinText = getOK('', g_l('sysinfo', '[suhosin simulation]'));
-	} else{
+	} else {
 		if(ini_get_bool('suhosin.cookie.encrypt')){
 			$SuhosinText = getWarning(g_l('sysinfo', '[suhosin warning]'), 'on' . ' (suhosin.cookie.encrypt=on)');
-		} else{
+		} else {
 			$SuhosinText = getWarning(g_l('sysinfo', '[suhosin warning]'), 'on');
 		}
 	}
-} else{
+} else {
 	$SuhosinText = getOK('', ini_get_message('suhosin'));
 }
+
+$lockTables = $GLOBALS['DB_WE']->hasLock();
+$allowTempTables = searchtoolsearch::checkRightTempTable() == '0';
+
 $_info = array(
 	'webEdition' => array(
 		g_l('sysinfo', '[we_version]') => $weVersion,
@@ -248,13 +248,15 @@ $_info = array(
 		'safe_mode_include_dir' => ini_get_message('safe_mode_include_dir'),
 		'upload_max_filesize' => we_convertIniSizes(ini_get('upload_max_filesize')),
 		'post_max_size' => we_convertIniSizes(ini_get('post_max_size')),
-		'max_input_vars' => (ini_get('max_input_vars') < 5000 ? getWarning('>=5000', ini_get('max_input_vars')) : getOK('>=5000', ini_get_message('max_input_vars'))),
+		'max_input_vars' => (ini_get('max_input_vars') < 2000 ? getWarning('<2000', ini_get('max_input_vars')) : getOK('>=2000', ini_get_message('max_input_vars'))),
 		'session.auto_start' => (ini_get_bool('session.auto_start')) ? getWarning(g_l('sysinfo', "[session.auto_start warning]"), ini_get('session.auto_start')) : getOK('', ini_get_message('session.auto_start')),
 		'Suhosin' => $SuhosinText,
 	),
 	'MySql' => array(
 		g_l('sysinfo', '[mysql_version]') => (version_compare("5.0.0", getMysqlVer(false)) > 1) ? getWarning(sprintf(g_l('sysinfo', "[dbversion warning]"), getMysqlVer(false)), getMysqlVer(false)) : getOK('', getMysqlVer(false)),
 		'max_allowed_packet' => getMaxAllowedPacket(),
+		'lock tables' => ($lockTables ? getOK('', g_l('sysinfo', '[available]')) : getWarning('', '-')),
+		'create temporary tables' => ($allowTempTables ? getOK('', g_l('sysinfo', '[available]')) : getWarning('', '-')),
 		'Info' => $GLOBALS['DB_WE']->getInfo(),
 	),
 	'System' => array(
@@ -298,7 +300,7 @@ foreach($_info as $_k => $_v){
 
 $_parts[] = array(
 	'headline' => '',
-	'html' => '<a href="javascript:showPhpInfo();">' . g_l('sysinfo', '[more_info]') . '...</a>',
+	'html' => '<a href="javascript:showPhpInfo();">' . g_l('sysinfo', '[more_info]') . '&hellip;</a>',
 	'space' => 10
 );
 we_html_tools::htmlTop(g_l('sysinfo', '[sysinfo]'));
@@ -309,14 +311,14 @@ we_html_tools::htmlTop(g_l('sysinfo', '[sysinfo]'));
 	}
 
 	function showPhpInfo() {
-		document.getElementById("info").style.display="none";
-		document.getElementById("more").style.display="block";
+		document.getElementById("info").style.display = "none";
+		document.getElementById("more").style.display = "block";
 		document.getElementById("phpinfo").src = "phpinfo.php";
 	}
 
 	function showInfoTable() {
-		document.getElementById("info").style.display="block";
-		document.getElementById("more").style.display="none";
+		document.getElementById("info").style.display = "block";
+		document.getElementById("more").style.display = "none";
 	}
 	//-->
 </script>
@@ -339,7 +341,7 @@ print STYLESHEET;
 		$_parts = array(
 			array(
 				'headline' => '',
-				'html' => '<iframe id="phpinfo" style="width:1280px;height:530px;">' . g_l('sysinfo', '[more_info]') . '...</iframe>',
+				'html' => '<iframe id="phpinfo" style="width:1280px;height:530px;">' . g_l('sysinfo', '[more_info]') . ' &hellip;</iframe>',
 				'space' => $_space_size
 			),
 			array(

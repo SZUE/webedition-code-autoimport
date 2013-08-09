@@ -52,7 +52,7 @@ class delBackup extends taskFragment{
 				$this->alldata[] = TEMPLATES_PATH . '/' . preg_replace('/\.tmpl$/i', '.php', $this->db->f("Path")) . "," . $this->db->f("Icon");
 			}
 
-			if(!count($this->alldata)){
+			if(empty($this->alldata)){
 				print we_html_element::jsElement(
 						we_message_reporting::getShowMessageCall(g_l('backup', "[nothing_to_delete]"), we_message_reporting::WE_MESSAGE_WARNING)
 					);
@@ -70,7 +70,7 @@ class delBackup extends taskFragment{
 		$percent = round((100 / count($this->alldata)) * (1 + $this->currentTask));
 		$text = str_replace($_SERVER['DOCUMENT_ROOT'], "", clearPath($item[0]));
 		if(strlen($text) > 75){
-			$text = addslashes(substr($text, 0, 65) . '...' . substr($text, -10));
+			$text = addslashes(substr($text, 0, 65) . '&hellip;' . substr($text, -10));
 		}
 		print we_html_element::jsElement('
 			parent.delmain.setProgressText("pb1","' . sprintf(g_l('backup', "[delete_entry]"), $text) . '");

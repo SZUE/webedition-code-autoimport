@@ -58,24 +58,9 @@ class weTagData_sqlRowAttribute extends weTagData_selectAttribute{
 
 		// get options from choosen table
 		$items = array();
-		if(DB_CONNECT=='msconnect'){
-			if($this->ValueName==$this->TextName){
-				$DB_WE->query(
-				"SELECT " . $DB_WE->escape($this->ValueName) .  "
-				 FROM " . $DB_WE->escape($this->Table) . "
-				 " . ($order ? "ORDER BY $order" : ''));
-			} else {
-				$DB_WE->query(
-				"SELECT " . $DB_WE->escape($this->ValueName) . "," . $DB_WE->escape($this->TextName) . "
-				 FROM " . $DB_WE->escape($this->Table) . "
-				 " . ($order ? "ORDER BY $order" : ''));
-			}	
-		} else {
-			$DB_WE->query(
-			"SELECT " . $DB_WE->escape($this->ValueName) . "," . $DB_WE->escape($this->TextName) . "
-			 FROM " . $DB_WE->escape($this->Table) . "
-			 " . ($order ? "ORDER BY $order" : ''));
-		}
+
+		$DB_WE->query('SELECT ' . $DB_WE->escape($this->ValueName) . ',' . $DB_WE->escape($this->TextName) . ' FROM ' . $DB_WE->escape($this->Table) . ' ' . ($order ? 'ORDER BY '.$order : ''));
+
 		while($DB_WE->next_record()) {
 
 			$options[] = new weTagDataOption($DB_WE->f($this->TextName), $DB_WE->f($this->ValueName));

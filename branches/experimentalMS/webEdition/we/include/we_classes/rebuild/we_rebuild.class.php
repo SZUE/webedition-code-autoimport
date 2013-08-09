@@ -118,7 +118,7 @@ abstract class we_rebuild{
 				}
 				$tmp = $data['cn'];
 				$GLOBALS['we_doc'] = new $tmp();
-				$GLOBALS['we_doc']->initByID($data['id'], $table, we_class::LOAD_MAID_DB);
+				$GLOBALS['we_doc']->initByID($data['id'], $table, ($table == OBJECT_FILES_TABLE ? we_class::LOAD_TEMP_DB : we_class::LOAD_MAID_DB));
 				if($printIt){
 					print ('Rebuilding: ' . $GLOBALS['we_doc']->Path);
 					flush();
@@ -134,9 +134,10 @@ abstract class we_rebuild{
 				  } */
 
 
-				if($data['tt']){
-					$GLOBALS['we_doc']->we_resaveTemporaryTable();
-				}
+				/* removed: can cause data loss
+				 * if($data['tt']){
+				  $GLOBALS['we_doc']->we_resaveTemporaryTable();
+				  } */
 				if($data['mt'] || ($table == TEMPLATES_TABLE)){
 					$tmpPath = $GLOBALS['we_doc']->constructPath();
 					if($tmpPath){
@@ -153,7 +154,10 @@ abstract class we_rebuild{
 				if($data['it']){
 					$GLOBALS['we_doc']->insertAtIndex();
 				} else{
-					$GLOBALS['we_doc']->we_rewrite();
+					$ret=$GLOBALS['we_doc']->we_rewrite();
+					if(!$ret){
+						t_e('err write');
+					}
 					$GLOBALS['we_doc']->we_republish($data['mt']);
 				}
 				if($printIt){
@@ -289,6 +293,38 @@ abstract class we_rebuild{
 			);
 		}
 	}
+	private static function getDependendTemplates($db, array $done, array &$data, $mt, $tt){
+		//get other, these have to be processed in php
+		$db->query('SELECT ID,ClassName,Path,MasterTemplateID,IncludedTemplates FROM ' . TEMPLATES_TABLE . ' WHERE IsFolder=0 AND ID NOT IN (' . (empty($done) ? 0 : implode(',', $done)) . ') ORDER BY (`IncludedTemplates` = "") DESC');
+
+		$todo = array();
+		while($db->next_record(MYSQL_ASSOC)) {
+			$rec = $db->getRecord();
+			$tmp = trim($rec['IncludedTemplates'], ',');
+			$rec['IncludedTemplates'] = (empty($tmp) ? array() : array_diff(explode(',', $tmp), $done));
+			$todo[] = $rec;
+		}
+
+		$round = 0;
+		while(!empty($todo) && ++$round < 100) {
+			$preDone = array();
+			foreach($todo as $key => &$rec){
+				$rec['IncludedTemplates'] = empty($rec['IncludedTemplates']) ? $rec['IncludedTemplates'] : array_diff($rec['IncludedTemplates'], $done);
+				if(empty($rec['IncludedTemplates']) && ($rec['MasterTemplateID'] == 0 || (array_search($rec['MasterTemplateID'], $done) !== FALSE))){
+					$preDone[] = $rec;
+					$done[] = $rec['ID'];
+					unset($todo[$key]);
+				}
+			}
+			self::insertTemplatesInArray($preDone, $data, $mt, $tt);
+		}
+		if(!empty($todo)){
+			//we have conflicts
+			t_e('conflicting templates in rebuild', $todo, $done);
+			//add them even if rebuild will not succeed
+			self::insertTemplatesInArray($todo, $data, $mt, $tt);
+		}
+	}
 
 	/**
 	 * Create and returns data Array with IDs and other information for the fragmment class for rebuilding all documents and templates (Called from getDocuments())
@@ -318,8 +354,6 @@ abstract class we_rebuild{
 		if(DB_CONNECT=='msconnect'){//msconnectFIX order by entfernt
 			$db->query('SELECT ID FROM ' . TEMPLATES_TABLE . " WHERE IsFolder=0 AND MasterTemplateID=0 AND IncludedTemplates='' UNION
 			(SELECT ID FROM " . TEMPLATES_TABLE . ' WHERE IsFolder=0 AND MasterTemplateID IN (SELECT ID FROM ' . TEMPLATES_TABLE . " WHERE IsFolder=0 AND MasterTemplateID=0 AND IncludedTemplates='') AND IncludedTemplates='' )", true);
-	t_e('SELECT ID FROM ' . TEMPLATES_TABLE . " WHERE IsFolder=0 AND MasterTemplateID=0 AND IncludedTemplates='' UNION
-			(SELECT ID FROM " . TEMPLATES_TABLE . ' WHERE IsFolder=0 AND MasterTemplateID IN (SELECT ID FROM ' . TEMPLATES_TABLE . " WHERE IsFolder=0 AND MasterTemplateID=0 AND IncludedTemplates='') AND IncludedTemplates='' )");
 		} else {
 			$db->query('SELECT ID FROM ' . TEMPLATES_TABLE . ' WHERE IsFolder=0 AND MasterTemplateID=0 AND IncludedTemplates="" UNION
 			(SELECT ID FROM ' . TEMPLATES_TABLE . ' WHERE IsFolder=0 AND MasterTemplateID IN (SELECT ID FROM ' . TEMPLATES_TABLE . ' WHERE IsFolder=0 AND MasterTemplateID=0 AND IncludedTemplates="") AND IncludedTemplates="" ORDER BY LENGTH(Path))', true);
@@ -329,47 +363,8 @@ abstract class we_rebuild{
 		foreach($doneZW as $doneVal){
 			$done[]=$doneVal['ID'];
 		}
-		
-		if(DB_CONNECT=='msconnect'){
-			if(!empty($done)){
-				$db->query('SELECT ID,ClassName,Path,MasterTemplateID,IncludedTemplates FROM ' . TEMPLATES_TABLE . ' WHERE IsFolder=0 AND ID NOT IN (' . implode(',', $done) . ") ORDER BY (IncludedTemplates ) DESC");
-			} else {
-				$db->query('SELECT ID,ClassName,Path,MasterTemplateID,IncludedTemplates FROM ' . TEMPLATES_TABLE . " WHERE IsFolder=0 ORDER BY (IncludedTemplates = '') DESC");
-			}
-			
-		} else {
-		//get other, these have to be processed in php
-			$db->query('SELECT ID,ClassName,Path,MasterTemplateID,IncludedTemplates FROM ' . TEMPLATES_TABLE . ' WHERE IsFolder=0 AND ID NOT IN (' . implode(',', $done) . ') ORDER BY (`IncludedTemplates` = "") DESC');
-		}
 
-		$todo = array();
-		while($db->next_record(MYSQL_ASSOC)) {
-			$rec = $db->getRecord();
-			$tmp = trim($rec['IncludedTemplates'], ',');
-			$rec['IncludedTemplates'] = (empty($tmp) ? array() : array_diff(explode(',', $tmp), $done));
-			$todo[] = $rec;
-		}
-
-		$round = 0;
-		while(!empty($todo) && ++$round < 100) {
-			$preDone = array();
-			foreach($todo as $key => &$rec){
-				$rec['IncludedTemplates'] = array_diff($rec['IncludedTemplates'], $done);
-				if(empty($rec['IncludedTemplates']) && ($rec['MasterTemplateID'] == 0 || array_search($rec['MasterTemplateID'], $done))){
-					$preDone[] = $rec;
-					$done[] = $rec['ID'];
-					unset($todo[$key]);
-				}
-			}
-			self::insertTemplatesInArray($preDone, $data, $mt, $tt);
-		}
-		if(!empty($todo)){
-			//we have conflicts
-			t_e('conflicting templates in rebuild', $todo);
-			//add them even if rebuild will not succeed
-			self::insertTemplatesInArray($todo, $data, $mt, $tt);
-		}
-
+		self::getDependendTemplates($db, $done, $data, $mt, $tt);
 		return $data;
 	}
 
@@ -419,34 +414,21 @@ abstract class we_rebuild{
 		}
 
 		if($templateID){
+			$arr = self::getTemplAndDocIDsOfTemplate($templateID);
 
-			$arr = getTemplAndDocIDsOfTemplate($templateID);
+			if(!empty($arr['templateIDs'])){
 
-			if(count($arr['templateIDs'])){
-				$where = array();
-				foreach($arr['templateIDs'] as $tid){
-					$where[] = ' ID=' . intval($tid);
-				}
-				$where = '(' . implode(' OR ', $where) . ')';
+				//$GLOBALS['DB_WE']->query('SELECT ID,ClassName,Path FROM ' . TEMPLATES_TABLE . ' WHERE ' . $where . ' ORDER BY ID');
+				//get other, these have to be processed in php
 
-				$GLOBALS['DB_WE']->query('SELECT ID,ClassName,Path FROM ' . TEMPLATES_TABLE . ' WHERE ' . $where . ' ORDER BY ID');
-				while($GLOBALS['DB_WE']->next_record()) {
-					$data[] = array(
-						'id' => $GLOBALS['DB_WE']->f('ID'),
-						'type' => 'template',
-						'cn' => $GLOBALS['DB_WE']->f('ClassName'),
-						'mt' => 0,
-						'tt' => 0,
-						'path' => $GLOBALS['DB_WE']->f('Path'),
-						'it' => 0);
-				}
+				$GLOBALS['DB_WE']->query('SELECT ID FROM ' . TEMPLATES_TABLE . ' WHERE IsFolder=0 AND ID NOT IN (' . implode(',', $arr['templateIDs']) . ')');
+				$done = $GLOBALS['DB_WE']->getAll(true);
 
-				$_template_query = array(' TemplateID=' . $templateID);
-				foreach($arr['templateIDs'] as $tid){
-					$_template_query[] = ' TemplateID=' . intval($tid);
-				}
-				// remove last OR
-				$_template_query = '(' . implode(' OR ', $_template_query) . ')';
+				self::getDependendTemplates($GLOBALS['DB_WE'], $done, $data, 0, 0);
+
+				$tmp = $arr['templateIDs'];
+				$tmp[] = $templateID;
+				$_template_query = '( TemplateID IN (' . implode(',', $tmp) . '))';
 			} else{
 				$_template_query = '( TemplateID=' . intval($templateID) . ')';
 			}
@@ -579,7 +561,7 @@ abstract class we_rebuild{
 					'it' => 1);
 			}
 		}
-		$GLOBALS['DB_WE']->query('DELETE FROM ' . INDEX_TABLE);
+		$GLOBALS['DB_WE']->query('TRUNCATE ' . INDEX_TABLE);
 		return $data;
 	}
 
@@ -591,7 +573,7 @@ abstract class we_rebuild{
 	 * @param string $thumbsFolders csv value of directory IDs => Create Thumbs for images in these directories.
 	 */
 	public static function getThumbnails($thumbs = '', $thumbsFolders = ''){
-		if(we_hasPerm('REBUILD_THUMBS')){
+		if(!we_hasPerm('REBUILD_THUMBS')){
 			return array();
 		}
 		$data = array();
@@ -605,7 +587,7 @@ abstract class we_rebuild{
 		} else{
 			$_folders_query = '';
 		}
-		$GLOBALS['DB_WE']->query('SELECT ID,ClassName,Path,Extension FROM ' . FILE_TABLE . ' WHERE ContentType="image/*"' . ($_folders_query ? " AND $_folders_query " : '') . ' ORDER BY ID');
+		$GLOBALS['DB_WE']->query('SELECT ID,ClassName,Path,Extension FROM ' . FILE_TABLE . ' WHERE ContentType="image/*"' . ($_folders_query ? ' AND ' . $_folders_query : '') . ' ORDER BY ID');
 		while($GLOBALS['DB_WE']->next_record()) {
 			$data[] = array(
 				'id' => $GLOBALS['DB_WE']->f('ID'),
@@ -619,6 +601,66 @@ abstract class we_rebuild{
 				'it' => 0);
 		}
 		return $data;
+	}
+
+
+
+	private static function getTemplatesOfTemplate($id, &$arr){
+		$GLOBALS['DB_WE']->query('SELECT ID FROM ' . TEMPLATES_TABLE . ' WHERE MasterTemplateID=' . intval($id) . " OR IncludedTemplates LIKE '%," . intval($id) . ",%' " . (empty($arr) ? '' : 'AND ID NOT IN (' . implode($arr) . ')'));
+		$foo = $GLOBALS['DB_WE']->getAll(true);
+
+		if(empty($foo)){
+			return;
+		}
+
+		$arr = array_merge($arr, $foo);
+		if(in_array($id, $arr)){
+			return;
+		}
+
+		foreach($foo as $check){
+			self::getTemplatesOfTemplate($check, $arr);
+		}
+	}
+
+	static function getTemplAndDocIDsOfTemplate($id, $staticOnly = true, $publishedOnly = false, $PublishedAndTemp = false){
+		if(!$id){
+			return 0;
+		}
+
+		$returnIDs = array(
+			'templateIDs' => array(),
+			'documentIDs' => array(),
+		);
+
+		self::getTemplatesOfTemplate($id, $returnIDs['templateIDs']);
+
+// first we need to check if template is included within other templates
+//$GLOBALS['DB_WE']->query("SELECT ID FROM ".TEMPLATES_TABLE." WHERE MasterTemplateID=".intval($id)." OR IncludedTemplates LIKE '%,".intval($id).",%'");
+//while ($GLOBALS['DB_WE']->next_record()) {
+//	array_push($returnIDs["templateIDs"], $GLOBALS['DB_WE']->f("ID"));
+//}
+
+		$id = intval($id);
+
+// Bug Fix 6615
+		$tmpArray = $returnIDs['templateIDs'];
+		$tmpArray[] = $id;
+		$tmp = implode(',', array_filter($tmpArray));
+		unset($tmpArray);
+		$where = ' (' .
+			($PublishedAndTemp ? 'temp_template_id IN (' . $tmp . ') OR ' : '') .
+			' TemplateID IN (' . $tmp . ')' .
+			')' .
+			($staticOnly ? ' AND IsDynamic=0' : '') .
+			($publishedOnly ? ' AND Published>0' : '');
+
+		$GLOBALS['DB_WE']->query('SELECT ID FROM ' . FILE_TABLE . ' WHERE ' . $where);
+
+		while($GLOBALS['DB_WE']->next_record()) {
+			$returnIDs['documentIDs'][] = $GLOBALS['DB_WE']->f('ID');
+		}
+		return $returnIDs;
 	}
 
 }

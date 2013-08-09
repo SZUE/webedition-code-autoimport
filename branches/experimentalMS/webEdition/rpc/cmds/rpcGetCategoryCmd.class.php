@@ -38,7 +38,7 @@ class rpcGetCategoryCmd extends rpcCmd {
 			$_error[] = "Missing target for table";
 		}
 
-		if (count($_error) > 0) {
+		if (!empty($_error)) {
 			$resp->setData("error",$_error);
 		} else {
 			$part = (isset($_REQUEST['part']) && $_REQUEST['part']!="") ? $_REQUEST['part'] : "rows";

@@ -151,7 +151,7 @@ class HttpRequest{
 		foreach($this->vars as $var){
 			$tmp [] = $var['name'] . '=' . $var['value'];
 		}
-		$path = $this->http_path . (count($tmp) ? '?' . implode('&', $tmp) : '');
+		$path = $this->http_path . (!empty($tmp) ? '?' . implode('&', $tmp) : '');
 
 		$this->getHttpRequest();
 
@@ -232,8 +232,8 @@ class HttpRequest{
 		//  first build body of request, then headers
 		$body = '';
 
-		$_sizeFiles = sizeof($this->files);
-		$_sizeVars = sizeof($this->vars);
+		$_sizeFiles = count($this->files);
+		$_sizeVars = count($this->vars);
 
 		$path = $this->http_path;
 
@@ -270,7 +270,7 @@ class HttpRequest{
 				foreach($this->vars as $var){
 					$tmp[] = $var['name'] . '=' . $var['value'];
 				}
-				$path.=(count($tmp) ? '?' . implode('&', $tmp) : '');
+				$path.=(!empty($tmp) ? '?' . implode('&', $tmp) : '');
 			}
 		} else{ //  no files or vars to submit
 		}

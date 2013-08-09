@@ -36,7 +36,7 @@ class weGlossaryTreeLoader{
 
 		$Temp = explode("_", $ParentId);
 
-		if(in_array($Temp[(sizeof($Temp) - 1)], $Types)){
+		if(in_array($Temp[(count($Temp) - 1)], $Types)){
 			$Type = array_pop($Temp);
 			$Language = implode("_", $Temp);
 			return weGlossaryTreeLoader::getItemsFromDB($Language, $Type, $Offset, $Segment);

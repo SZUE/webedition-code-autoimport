@@ -44,7 +44,7 @@ function getHash($query, $DB_WE, $resultType = MYSQL_BOTH){
 }
 
 function f($query, $field, $DB_WE){
-	$h = getHash($query, $DB_WE);
+	$h = getHash($query, $DB_WE, MYSQL_ASSOC);
 	return isset($h[$field]) ? $h[$field] : '';
 }
 
@@ -55,8 +55,8 @@ function doUpdateQuery($DB_WE, $table, $hash, $where){
 	$tableInfo = $DB_WE->metadata($table);
 	$fn = array();
 	foreach($tableInfo as $f){
-		$fieldName = $f["name"];
-		if($fieldName != "ID" && isset($hash[$fieldName])){
+		$fieldName = $f['name'];
+		if($fieldName != 'ID' && isset($hash[$fieldName])){
 			$fn[$fieldName] = $hash[$fieldName];
 		}
 	}

@@ -164,7 +164,7 @@ if(isset($_REQUEST['we_dialog_args']['editname'])){
 	var found;
 	var editorObj;
 	var rangeSelection = false;
-	var currentWord="";
+	var currentWord = "";
 	var retry = 0;
 	var retryjava = 0;
 
@@ -172,7 +172,7 @@ if(isset($_REQUEST['we_dialog_args']['editname'])){
 
 		this.innerHTML;
 
-		this.getSelectedText = function(){
+		this.getSelectedText = function() {
 
 		}
 
@@ -181,13 +181,13 @@ if(isset($_REQUEST['we_dialog_args']['editname'])){
 	function setDialog() {
 <?php if($_mode == 'tinyMce'){ ?>
 			editorObj = tinyMCEPopup.editor;
-			var text = editorObj.selection.isCollapsed() ? editorObj.getContent({format : "html"}) : editorObj.selection.getContent({format : "html"});
+			var text = editorObj.selection.isCollapsed() ? editorObj.getContent({format: "html"}) : editorObj.selection.getContent({format: "html"});
 <?php } else if($_mode == 'wysiwyg'){ ?>
 			editorObj = top.opener.weWysiwygObject_<?php print $_editname ?>;
 			var text = getTextFromWysiwyg();
 <?php } else{ ?>
 			var elements = top.opener.document.getElementsByName("<?php print $_editname ?>");
-			if(elements[0]) {
+			if (elements[0]) {
 				editorObj = elements[0];
 				var text = editorObj.value;
 			}
@@ -196,7 +196,7 @@ if(isset($_REQUEST['we_dialog_args']['editname'])){
 		orginal = text;
 		editPanel = document.getElementById('preview');
 		editPanel.innerHTML = text;
-		setTimeout("setAppletCode()",1000);
+		setTimeout("setAppletCode()", 1000);
 	}
 
 	function getTextFromWysiwyg() {
@@ -205,21 +205,21 @@ if(isset($_REQUEST['we_dialog_args']['editname'])){
 			editorObj = top.opener.weWysiwygObject_<?php print $_editname ?>;
 <?php } else{ ?>
 			var elements = top.opener.document.getElementsByName("<?php print $_editname ?>");
-			if(elements[0]) {
+			if (elements[0]) {
 				editorObj = elements[0];
 			}
 <?php } ?>
 
-		if(editorObj.getSelectedText) {
+		if (editorObj.getSelectedText) {
 			text = editorObj.getSelectedText();
 			rangeSelection = true;
-		} else if(editorObj.dom.getSelectedText) {
+		} else if (editorObj.dom.getSelectedText) {
 			text = editorObj.dom.getSelectedText();
 			rangeSelection = true;
 
 		}
 
-		if(text=="") {
+		if (text == "") {
 			text = editorObj.getHTML();
 			rangeSelection = false;
 		}
@@ -227,7 +227,7 @@ if(isset($_REQUEST['we_dialog_args']['editname'])){
 		return text;
 	}
 
-	function fade(id,opacity) {
+	function fade(id, opacity) {
 		var styleObj = document.getElementById(id).style;
 		styleObj.opacity = (opacity / 100);
 		styleObj.MozOpacity = (opacity / 100);
@@ -235,24 +235,24 @@ if(isset($_REQUEST['we_dialog_args']['editname'])){
 		styleObj.filter = "alpha(opacity=" + opacity + ")";
 	}
 
-	function fadeout(id,from,step,speed) {
-		fade(id,from);
-		if(from==0) {
-			document.getElementById(id).style.display="none";
+	function fadeout(id, from, step, speed) {
+		fade(id, from);
+		if (from == 0) {
+			document.getElementById(id).style.display = "none";
 		} else {
-			setTimeout("fadeout(\""+id+"\","+(from-step)+","+step+","+speed+")",speed);
+			setTimeout("fadeout(\"" + id + "\"," + (from - step) + "," + step + "," + speed + ")", speed);
 		}
 	}
 
 	function apply() { // imi
 <?php if($_mode == 'tinyMce'){ ?>
-			if(editorObj.selection.isCollapsed()) {
+			if (editorObj.selection.isCollapsed()) {
 				editorObj.execCommand('mceSetContent', false, orginal);
 			} else {
 				editorObj.execCommand('mceInsertContent', false, orginal);
 			}
 <?php } else if($_mode == 'wysiwyg'){ ?>
-			if(rangeSelection) {
+			if (rangeSelection) {
 				editorObj.replaceText(orginal);
 			} else {
 				editorObj.setText(orginal);
@@ -264,14 +264,14 @@ if(isset($_REQUEST['we_dialog_args']['editname'])){
 
 	function spellcheck() {
 		retry = 0;
-		if(document.spellchecker.isReady()) {
+		if (document.spellchecker.isReady()) {
 			document.getElementById("statusText").innerHTML = "<?php print g_l('modules_spellchecker', '[checking]'); ?>";
 			var text = getTextOnly(orginal);
 			document.spellchecker.check(text);
-			setTimeout("findNext()",2000);
+			setTimeout("findNext()", 2000);
 		} else {
-			if(retryjava<5) {
-				setTimeout("spellcheck()",1000);
+			if (retryjava < 5) {
+				setTimeout("spellcheck()", 1000);
 				retryjava++;
 			} else {
 <?php print we_message_reporting::getShowMessageCall(g_l('modules_spellchecker', '[no_java]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
@@ -282,13 +282,13 @@ if(isset($_REQUEST['we_dialog_args']['editname'])){
 
 
 	function findNext() {
-		if(document.spellchecker.isReady()) {
+		if (document.spellchecker.isReady()) {
 
-			if(document.spellchecker.isReady()) {
+			if (document.spellchecker.isReady()) {
 
-				if(document.spellchecker.nextSuggestion()) {
+				if (document.spellchecker.nextSuggestion()) {
 
-					fadeout("spinner",80,10,10);
+					fadeout("spinner", 80, 10, 10);
 
 					document.we_form.search.value = document.spellchecker.getMisspelledWord();
 					currentWord = document.we_form.search.value;
@@ -298,10 +298,10 @@ if(isset($_REQUEST['we_dialog_args']['editname'])){
 					suggs = suggs + "";
 					var suggA = suggs.split("|");
 					document.we_form.suggestion.options.length = 0;
-					if(suggA.length>1) {
-						for(var i=0;i<suggA.length;i++) {
-							document.we_form.suggestion.options[document.we_form.suggestion.options.length] = new Option(suggA[i],suggA[i]);
-							if(i==0) {
+					if (suggA.length > 1) {
+						for (var i = 0; i < suggA.length; i++) {
+							document.we_form.suggestion.options[document.we_form.suggestion.options.length] = new Option(suggA[i], suggA[i]);
+							if (i == 0) {
 								document.we_form.suggestion.options.selectedIndex = 0;
 								document.we_form.search.value = suggA[i];
 							}
@@ -311,28 +311,28 @@ if(isset($_REQUEST['we_dialog_args']['editname'])){
 				} else {
 					disableButtons();
 
-					if(document.spellchecker.isWorking()) {
+					if (document.spellchecker.isWorking()) {
 						clearTimeout(to);
-						to = setTimeout("findNext()",500);
+						to = setTimeout("findNext()", 500);
 					} else {
 						removeHighlight();
-						if(document.getElementById("spinner").style.display!="none") {
-							fadeout("spinner",80,10,10);
+						if (document.getElementById("spinner").style.display != "none") {
+							fadeout("spinner", 80, 10, 10);
 						}
 						weButton.enable("check");
 <?php print we_message_reporting::getShowMessageCall(g_l('modules_spellchecker', '[finished]'), we_message_reporting::WE_MESSAGE_NOTICE); ?>
 					}
 				}
 			} else {
-				setTimeout("spellcheck()",500);
+				setTimeout("spellcheck()", 500);
 			}
 		}
 	}
 
 	function add() {
-		if(document.spellchecker.isReady) {
+		if (document.spellchecker.isReady) {
 			document.spellchecker.addWord(currentWord);
-			hiddenCmd.dispatch("addWord",currentWord);
+			hiddenCmd.dispatch("addWord", currentWord);
 			findNext();
 		} else {
 <?php print we_message_reporting::getShowMessageCall("A fatal error occured", we_message_reporting::WE_MESSAGE_ERROR); ?>
@@ -340,14 +340,14 @@ if(isset($_REQUEST['we_dialog_args']['editname'])){
 	}
 
 
-	function markWord(word){
+	function markWord(word) {
 		editPanel.innerHTML = orginal;
-		editPanel.innerHTML = replaceWord(editPanel.innerHTML,word);
+		editPanel.innerHTML = replaceWord(editPanel.innerHTML, word);
 
 		var first = document.getElementById("highlight0");
-		if(first) {
-			if(first.offsetTop-30>0) {
-				editPanel.scrollTop = first.offsetTop-30;
+		if (first) {
+			if (first.offsetTop - 30 > 0) {
+				editPanel.scrollTop = first.offsetTop - 30;
 			} else {
 				editPanel.scrollTop = 0;
 			}
@@ -355,9 +355,9 @@ if(isset($_REQUEST['we_dialog_args']['editname'])){
 	}
 
 	function changeWord() {
-		if(document.spellchecker.isReady()) {
+		if (document.spellchecker.isReady()) {
 			editPanel.innerHTML = orginal;
-			editPanel.innerHTML = replaceWord(editPanel.innerHTML,found,document.we_form.search.value);
+			editPanel.innerHTML = replaceWord(editPanel.innerHTML, found, document.we_form.search.value);
 			orginal = editPanel.innerHTML;
 			findNext();
 		}
@@ -377,24 +377,24 @@ if(isset($_REQUEST['we_dialog_args']['editname'])){
 
 		while (text.length > 0) {
 
-			i = textsmall.indexOf(searchsmall, i+1);
+			i = textsmall.indexOf(searchsmall, i + 1);
 			if (i < 0) {
 				replacement += text;
 				text = "";
 			} else {
 
-				var next = textsmall.substr(i + searchsmall.length,1);
-				var last = textsmall.substr(i-1,1);
+				var next = textsmall.substr(i + searchsmall.length, 1);
+				var last = textsmall.substr(i - 1, 1);
 
-				if(next.search("[a-zA-Z0-9]")==-1 && last.search("[a-zA-Z0-9]")==-1) {
+				if (next.search("[a-zA-Z0-9]") == -1 && last.search("[a-zA-Z0-9]") == -1) {
 
 					if (text.lastIndexOf(">", i) >= text.lastIndexOf("<", i)) {
 						if (textsmall.lastIndexOf("/script>", i) >= textsmall.lastIndexOf("<script", i)) {
 
-							if(arguments[2]) {
-								replacement += text.substring(0, i) +  arguments[2];
+							if (arguments[2]) {
+								replacement += text.substring(0, i) + arguments[2];
 							} else {
-								replacement += text.substring(0, i) + "<span class='highlight' id='highlight"+c+"'>" + text.substr(i, search.length) + "</span>";
+								replacement += text.substring(0, i) + "<span class='highlight' id='highlight" + c + "'>" + text.substr(i, search.length) + "</span>";
 								c++;
 							}
 
@@ -414,15 +414,15 @@ if(isset($_REQUEST['we_dialog_args']['editname'])){
 
 	function getTextOnly(text) {
 
-		var newtext  = text.replace(/(<([^>]+)>)/ig," ");
-		newtext  = newtext.replace(/\&([^; ]+);/ig," ");
-		newtext  = newtext.replace("&amp;","&");
+		var newtext = text.replace(/(<([^>]+)>)/ig, " ");
+		newtext = newtext.replace(/\&([^; ]+);/ig, " ");
+		newtext = newtext.replace("&amp;", "&");
 		return newtext;
 
 	}
 
 	function selectDict(dict) {
-		hiddenCmd.dispatch("setLangDict",dict);
+		hiddenCmd.dispatch("setLangDict", dict);
 	}
 
 	function reloadDoc() {
@@ -444,80 +444,46 @@ if(isset($_REQUEST['we_dialog_args']['editname'])){
 
 	function setAppletCode() {
 		retryjava = 0;
-		document.getElementById('appletPanel').innerHTML = '<?php print addslashes($_applet_code) ?>';
-		setTimeout("spellcheck()",1000);
+		document.getElementById('appletPanel').innerHTML = '<?php print addcslashes(str_replace("\n", '', $_applet_code), '\'') ?>';
+		setTimeout("spellcheck()", 1000);
 	}
 
 <?php
-print we_button::create_state_changer(false);
+echo we_button::create_state_changer(false);
 ?>
 
 </script>
-
-
 </head>
 
-<body class="weDialogBody" onLoad="setDialog()">
-
-	<?php
-	$_preview = '
-		<div id="preview" class="defaultfont">
-		</div>
-	';
+<body class="weDialogBody" onLoad="setDialog()"><?php
+	$_preview = '<div id="preview" class="defaultfont"></div>';
 
 
-	$_leftPanel = '
-	<div id="searchPanel">
+	$_leftPanel = '<div id="searchPanel">
 		<input class="wetextinput" name="search" id="search" />
 		<br />
 		<label for="suggestion" class="defaultfont">' . g_l('modules_spellchecker', '[suggestion]') . '</label>
 		<select name="suggestion" id="suggestion" size="5" class="wetextinput" onchange="document.we_form.search.value=this.value;">
 		</select>
-
-	</div>
-	';
+	</div>';
 
 
-	$_buttonsleft[] = we_button::create_button("ignore", "javascript:findNext();", true, 100, 22, '', '', true, false);
-	$_buttonsleft[] = we_button::create_button("change", "javascript:changeWord();", true, 100, 22, '', '', true, false);
-	$_buttonsleft[] = we_button::create_button("add", "javascript:add();", true, 100, 22, '', '', true, false);
-	$_buttonsleft[] = we_button::create_button("check", "javascript:weButton.disable(\"check\");setTimeout(\"spellcheck();\",100);", true, 100, 22, '', '', true, false);
+	$_buttonsleft = array(
+		we_button::create_button("ignore", "javascript:findNext();", true, 100, 22, '', '', true, false),
+		we_button::create_button("change", "javascript:changeWord();", true, 100, 22, '', '', true, false),
+		we_button::create_button("add", "javascript:add();", true, 100, 22, '', '', true, false),
+		we_button::create_button("check", "javascript:weButton.disable(\"check\");setTimeout(\"spellcheck();\",100);", true, 100, 22, '', '', true, false)
+	);
 
+	$_applet = '<div id="appletPanel" style="position: absolute; left:0px; top:900px; display: block; border: 0px; width: 0px; height: 0px;"></div>';
 
-
-
-	$_applet =
-		'
-		<div id="appletPanel" style="position: absolute; left:0px; top:900px; display: block; border: 0px; width: 0px; height 0px;">
-
-		</div>
-		'
-	;
-
-	$_buttons = array();
-	$_buttons[] = we_button::create_button("apply", "javascript:apply();self.close();");
-	$_buttons[] = we_button::create_button("cancel", "javascript:self.close();");
+	$_buttons = array(
+		we_button::create_button("apply", "javascript:apply();self.close();"),
+		we_button::create_button("cancel", "javascript:self.close();")
+	);
 	$_buttons_bottom = we_button::position_yes_no_cancel($_buttons[0], null, $_buttons[1]);
 
-	$_parts = array();
-
-
-	$_parts[] = array(
-		'headline' => '',
-		'html' => $_preview,
-		'space' => 0
-	);
-
-	$_parts[] = array(
-		'headline' => '',
-		'html' => $_leftPanel . implode('<div style="margin:5px;"></div>', $_buttonsleft),
-		'space' => 0
-	);
-
-
-	$_selectCode = '
-		<select name="dictSelect" id="dictSelect" size="1" onchange="selectDict(this.value)">
-	';
+	$_selectCode = '<select name="dictSelect" id="dictSelect" size="1" onchange="selectDict(this.value)">';
 
 	$_dir = dir(WE_SPELLCHECKER_MODULE_PATH . 'dict');
 	$_i = 0;
@@ -531,19 +497,28 @@ print we_button::create_state_changer(false);
 	}
 	$_dir->close();
 
-	$_selectCode .= '
-		</select>
-	';
+	$_selectCode .= '</select>';
 
-	$_parts[] = array(
-		'headline' => g_l('modules_spellchecker', '[dictionary]'),
-		'html' => $_selectCode,
-		'space' => 100
+	$_parts = array(
+		array(
+			'headline' => '',
+			'html' => $_preview,
+			'space' => 0
+		),
+		array(
+			'headline' => '',
+			'html' => $_leftPanel . implode('<div style="margin:5px;"></div>', $_buttonsleft),
+			'space' => 0
+		),
+		array(
+			'headline' => g_l('modules_spellchecker', '[dictionary]'),
+			'html' => $_selectCode,
+			'space' => 100
+		)
 	);
 
 
-	print '
-	<div id="spinner">
+	echo '<div id="spinner">
 		<center>
 			<div style="padding-top: 30%;">
 				<img src="' . IMAGE_DIR . 'spinner.gif"/><br />
@@ -555,16 +530,12 @@ print we_button::create_state_changer(false);
 	<form name="we_form" action="' . WE_SPELLCHECKER_MODULE_DIR . 'weSpellchecker.php" method="post" target="_self">
 
 	<input name="' . ($_mode == 'wysiwyg' ? 'we_dialog_args[editname]' : 'editname') . '" value="' . $_editname . '" type="hidden" />
-	<div id="mainPanel">
-	' .
-		we_multiIconBox::getHTML('', "100%", $_parts, 30, $_buttons_bottom, -1, '', '', false, g_l('modules_spellchecker', '[spellchecker]'))
-		.
-		'
+	<div id="mainPanel">' .
+	we_multiIconBox::getHTML('', "100%", $_parts, 30, $_buttons_bottom, -1, '', '', false, g_l('modules_spellchecker', '[spellchecker]')) . '
 	</div>
-	</form>
-	' . $_applet .
-		'<iframe name="hiddenCmd" id="hiddenCmd" style="position: absolute; left:0px; top:800px; display: block; border: 0px; width: 0px; height 0px;" src="' . WE_SPELLCHECKER_MODULE_DIR . 'weSpellcheckerCmd.php"></iframe>'
-	;
+	</form>' .
+	$_applet .
+	'<iframe name="hiddenCmd" id="hiddenCmd" style="position: absolute; left:0px; top:800px; display: block; border: 0px; width: 0px; height: 0px;" src="' . WE_SPELLCHECKER_MODULE_DIR . 'weSpellcheckerCmd.php"></iframe>';
 	?>
 </body>
 </html>

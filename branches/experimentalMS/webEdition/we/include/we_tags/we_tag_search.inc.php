@@ -29,10 +29,7 @@ function we_tag_search($attribs){
 	$xml = weTag_getAttribute('xml', $attribs);
 	$value = weTag_getAttribute('value', $attribs);
 
-	$searchValue = oldHtmlspecialchars(
-		str_replace(
-			'"', '', str_replace(
-				'\\"', '', (isset($_REQUEST['we_lv_search_' . $name]) ? trim($_REQUEST['we_lv_search_' . $name]) : $value))));
+	$searchValue = filterXss(str_replace(array('"', '\\"',), '', (isset($_REQUEST['we_lv_search_' . $name]) ? trim($_REQUEST['we_lv_search_' . $name]) : $value)));
 	$attsHidden = array(
 		'type' => 'hidden',
 		'xml' => $xml,
@@ -45,25 +42,28 @@ function we_tag_search($attribs){
 		case 'print':
 			return $searchValue;
 		case 'textinput':
-
 			$atts = removeAttribs($attribs, array(
 				'type', 'onchange', 'name', 'cols', 'rows'
 				));
 			$atts = array_merge(
 				$atts, array(
-				'name' => 'we_lv_search_' . $name, 'type' => 'text', 'value' => $searchValue, 'xml' => $xml
+				'name' => 'we_lv_search_' . $name,
+				'type' => 'text',
+				'value' => $searchValue,
+				'xml' => $xml
 				));
 			return getHtmlTag('input', $atts) . getHtmlTag('input', $attsHidden);
 
 		case 'textarea':
-
 			$atts = removeAttribs(
 				$attribs, array(
 				'type', 'onchange', 'name', 'size', 'maxlength', 'value'
 				));
 			$atts = array_merge(
 				$atts, array(
-				'class' => 'defaultfont', 'name' => 'we_lv_search_' . $name, 'xml' => $xml
+				'class' => 'defaultfont',
+				'name' => 'we_lv_search_' . $name,
+				'xml' => $xml
 				));
 
 			return getHtmlTag('textarea', $atts, $searchValue, true) . getHtmlTag('input', $attsHidden);

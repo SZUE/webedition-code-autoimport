@@ -28,7 +28,7 @@ class we_shop_shop{
 // $ClassName is used in we:listview_multiobject.class.php: if($GLOBALS["lv"]->ClassName == 'we_listview_shoppingCart')
 // This could be changed to: if(get_class($GLOBALS['lv']) == 'we_shop_shop')
 
-	var $ClassName = "we_listview_shoppingCart";
+	var $ClassName = 'we_listview_shoppingCart';
 	var $DB_WE;
 	var $IDs = array();
 	var $count = 0;
@@ -40,11 +40,13 @@ class we_shop_shop{
 	var $ShoppingCartKey = '';
 	var $ActItem;
 
+	const ignoredEditFields = 'ID,Username,Password,MemberSince,LastLogin,LastAccess,ParentID,Path,IsFolder,Icon,Text,Forename,Surname,AutoLogin,AutoLoginDenied,ModifiedBy,ModifyDate';
+
 	function __construct($shoppingCart){
 		if(is_object($shoppingCart)){
 			$this->ShoppingCart = $shoppingCart;
 			$this->ShoppingCartItems = $shoppingCart->getShoppingItems();
-		}else{
+		} else{
 			t_e('called with non object');
 		}
 
@@ -78,7 +80,7 @@ class we_shop_shop{
 				}
 			}
 			$this->count++;
-			$GLOBALS["we_lv_array"][(sizeof($GLOBALS["we_lv_array"]) - 1)] = clone($GLOBALS["lv"]);
+			$GLOBALS["we_lv_array"][(count($GLOBALS["we_lv_array"]) - 1)] = clone($GLOBALS["lv"]);
 			return true;
 		}
 		return false;
@@ -97,6 +99,14 @@ class we_shop_shop{
 			$ret .= "&" . WE_SHOP_ARTICLE_CUSTOM_FIELD . "[$key]=$value";
 		}
 		return $ret;
+	}
+
+	public function getDBRecord(){
+		return $this->DB_WE->getRecord();
+	}
+
+	public function getDBf($field){
+		return $this->DB_WE->f($field);
 	}
 
 }

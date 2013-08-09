@@ -47,44 +47,45 @@ class weImageDialog extends weDialog{
 		"longdesc"
 	);
 
-	function __construct(){
+	function __construct($noInternals = false){
 		parent::__construct();
 		$this->dialogTitle = g_l('wysiwyg', "[edit_image]");
+		$this->noInternals = $noInternals;
 	}
 
 	function initBySrc($src, $width = "", $height = "", $hspace = "", $vspace = "", $border = "", $alt = "", $align = "", $name = "", $class = "", $title = "", $longdesc = ""){
 		if($src){
-			$this->args["src"] = $src;
-			$tokkens = explode("?", $src);
-			$id = "";
+			$this->args['src'] = $src;
+			$tokkens = explode('?', $src);
+			$id = '';
 			$thumb = 0;
-			if(sizeof($tokkens) == 2){
-				$foo = explode("=", $tokkens[1]);
-				if(sizeof($foo) == 2){
-					if($foo[0] == "id"){
+			if(count($tokkens) == 2){
+				$foo = explode('=', $tokkens[1]);
+				if(count($foo) == 2){
+					if($foo[0] == 'id'){
 						$id = $foo[1];
-					} else if($foo[0] == "thumb"){
-						$foo = explode(",", $foo[1]);
+					} else if($foo[0] == 'thumb'){
+						$foo = explode(',', $foo[1]);
 						$id = $foo[0];
 						$thumb = $foo[1];
 					}
 				}
 			}
 			if($id){
-				$this->args["type"] = "int";
+				$this->args["type"] = we_base_link::TYPE_INT;
 				$this->args["extSrc"] = "";
 				$this->args["fileID"] = $id;
 				$this->args["fileSrc"] = $tokkens[0];
 				$this->args["thumbnail"] = $thumb;
 			} else{
-				$this->args["type"] = "ext";
+				$this->args["type"] = we_base_link::TYPE_EXT;
 				$this->args["extSrc"] = preg_replace('|^' . WEBEDITION_DIR . '|', '', preg_replace('|^' . WEBEDITION_DIR . 'we_cmd.php[^"\'#]+(#.*)$|', '\1', preg_replace('|^https?://' . $_SERVER['SERVER_NAME'] . '(/.*)$|i', '\1', $this->args["src"])));
 				$this->args["fileID"] = "";
 				$this->args["fileSrc"] = "";
 				$this->args["thumbnail"] = 0;
 			}
 		} else{
-			$this->args["type"] = "ext";
+			$this->args["type"] = we_base_link::TYPE_EXT;
 			$this->args["extSrc"] = "http://";
 		}
 		$this->initAttributes($width, $height, $hspace, $vspace, $border, $alt, $align, $name, $class, $title, $longdesc);
@@ -93,9 +94,9 @@ class weImageDialog extends weDialog{
 	function initAttributes($width = 0, $height = 0, $hspace = 0, $vspace = 0, $border = 0, $alt = "", $align = "", $name = "", $class = "", $title = "", $longdesc = ""){
 		$tokkens = explode("?", $longdesc);
 		$longdescid = "";
-		if(sizeof($tokkens) == 2){
+		if(count($tokkens) == 2){
 			$foo = explode("=", $tokkens[1]);
-			if(sizeof($foo) == 2){
+			if(count($foo) == 2){
 				if($foo[0] == "id"){
 					$longdescid = $foo[1];
 				}
@@ -114,18 +115,14 @@ class weImageDialog extends weDialog{
 		$this->args["title"] = $title;
 		$this->args["longdesc"] = $longdesc;
 		$this->args["longdescid"] = $longdescid;
-		if($longdescid){
-			$this->args["longdescsrc"] = $tokkens[0];
-		} else{
-			$this->args["longdescsrc"] = "";
-		}
+		$this->args["longdescsrc"] = ($longdesc ? $tokkens[0] : '');
 		$this->args["ratio"] = isset($_REQUEST["we_dialog_args"]["ratio"]) ? $_REQUEST["we_dialog_args"]["ratio"] : 1;
 	}
 
 	function initByFileID($fileID, $width = 0, $height = 0, $hspace = 0, $vspace = 0, $border = 0, $alt = "", $align = "", $name = "", $thumb = "", $class = "", $title = "", $longdesc = ""){
 		if($fileID){
-			$this->args["type"] = "int";
-			$this->args["extSrc"] = "";
+			$this->args["type"] = we_base_link::TYPE_INT;
+			$this->args["extSrc"] = '';
 			$this->args["fileID"] = $fileID;
 			if($thumb){
 				$thumbObj = new we_thumbnail();
@@ -170,19 +167,18 @@ class weImageDialog extends weDialog{
 		$type = $this->getHttpVar("type");
 		$thumbnail = $this->getHttpVar("thumbnail");
 
-		if(!$type)
-			$type = "ext";
+		$type = ($type ? $type : we_base_link::TYPE_EXT);
 		if($src && !$thumbnail){
 			$this->initBySrc($src, $width, $height, $hspace, $vspace, $border, $alt, $align, $name, $class, $title, $longdesc);
 		} else if($type){
 			$fileID = $this->getHttpVar("fileID");
 
 			switch($type){
-				case "ext":
+				case we_base_link::TYPE_EXT:
 					$extSrc = $this->getHttpVar("extSrc", "");
 					$this->initBySrc($extSrc, $width, $height, $hspace, $vspace, $border, $alt, $align, $name, $class, $title, $longdesc);
 					break;
-				case "int":
+				case we_base_link::TYPE_INT:
 					if(isset($_REQUEST["imgChangedCmd"]) && $_REQUEST["imgChangedCmd"] && $fileID){
 						$imgpath = $_SERVER['DOCUMENT_ROOT'] . id_to_path($fileID);
 						$imgObj = new we_imageDocument();
@@ -222,7 +218,7 @@ class weImageDialog extends weDialog{
 		$this->args["alt"] = "";
 		$this->args["align"] = "";
 		$this->args["name"] = "";
-		$this->args["type"] = "ext";
+		$this->args["type"] = we_base_link::TYPE_EXT;
 		$this->args["ratio"] = "1";
 	}
 
@@ -242,8 +238,8 @@ class weImageDialog extends weDialog{
 
 	function getDialogContentHTML(){
 		$yuiSuggest = & weSuggest::getInstance();
-		if(isset($this->args["outsideWE"]) && $this->args["outsideWE"] == "1"){
-			$extSrc = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[extSrc]", 30, (isset($this->args["extSrc"]) ? $this->args["extSrc"] : ""), "", "", "text", 410), "src", "left", "defaultfont", we_html_tools::getPixel(10, 2), "", "", "", "", 0);
+		if($this->noInternals || (isset($this->args["outsideWE"]) && $this->args["outsideWE"] == "1")){
+			$extSrc = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[extSrc]", 30, (isset($this->args["extSrc"]) ? $this->args["extSrc"] : ""), "", "", "text", 410), "", "left", "defaultfont", we_html_tools::getPixel(10, 2), "", "", "", "", 0);
 			$intSrc = "";
 			$thumbnails = "";
 
@@ -256,7 +252,7 @@ class weImageDialog extends weDialog{
 				we_button::create_button("select", "javascript:we_cmd('browse_server','" . $wecmdenc1 . "','',document.we_form.elements['we_dialog_args[extSrc]'].value,'" . $wecmdenc4 . "')"
 				) : "";
 
-			$radioBut = we_forms::radiobutton("ext", (isset($this->args["type"]) && $this->args["type"] == "ext"), "we_dialog_args[type]", g_l('wysiwyg', "[external_image]"), true, "defaultfont", "imageChanged();"
+			$radioBut = we_forms::radiobutton(we_base_link::TYPE_EXT, (isset($this->args["type"]) && $this->args["type"] == we_base_link::TYPE_EXT), "we_dialog_args[type]", g_l('wysiwyg', "[external_image]"), true, "defaultfont", "imageChanged();"
 			);
 
 			$extSrc = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[extSrc]", 30, (isset($this->args["extSrc"]) ? $this->args["extSrc"] : ""), "", ' onfocus="if(this.form.elements[\'we_dialog_args[type]\'][1].checked) { this.form.elements[\'we_dialog_args[type]\'][0].checked=true;imageChanged();}" onChange="this.form.elements[\'we_dialog_args[type]\'][0].checked=true;imageChanged();"', "text", 300), $radioBut, "left", "defaultfont", we_html_tools::getPixel(20, 2), $but, "", "", "", 0
@@ -269,7 +265,7 @@ class weImageDialog extends weDialog{
 			$but = we_button::create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['we_dialog_args[fileID]'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','','image/*'," . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");"
 			);
 
-			$radioBut = we_forms::radiobutton("int", (isset($this->args["type"]) && $this->args["type"] == "int"), "we_dialog_args[type]", g_l('wysiwyg', "[internal_image]"), true, "defaultfont", "imageChanged();");
+			$radioBut = we_forms::radiobutton(we_base_link::TYPE_INT, (isset($this->args["type"]) && $this->args["type"] == we_base_link::TYPE_INT), "we_dialog_args[type]", g_l('wysiwyg', "[internal_image]"), true, "defaultfont", "imageChanged();");
 
 			$yuiSuggest->setAcId("Image");
 			$yuiSuggest->setContentType("folder,image/*");
@@ -296,10 +292,10 @@ class weImageDialog extends weDialog{
 			$extension = count($tmp) > 1 ? '.' . $tmp[count($tmp) - 1] : '';
 			unset($_p);
 
-			if((we_image_edit::gd_version() > 0 && we_image_edit::is_imagetype_supported(isset(we_image_edit::$GDIMAGE_TYPE[strtolower($extension)]) ? we_image_edit::$GDIMAGE_TYPE[strtolower($extension)] : "") && (isset($this->args["type"]) && $this->args["type"] == "int")) || (isset($this->args['editor']) && $this->args['editor'] == "tinyMce" && !isset($_REQUEST['isTinyMCEInitialization']))){
+			if((we_image_edit::gd_version() > 0 && we_image_edit::is_imagetype_supported(isset(we_image_edit::$GDIMAGE_TYPE[strtolower($extension)]) ? we_image_edit::$GDIMAGE_TYPE[strtolower($extension)] : "") && (isset($this->args["type"]) && $this->args["type"] == we_base_link::TYPE_INT)) || (isset($this->args['editor']) && $this->args['editor'] == "tinyMce" && !isset($_REQUEST['isTinyMCEInitialization']))){
 				$thumbnails = '<select name="we_dialog_args[thumbnail]" size="1" onchange="imageChanged(true);">' .
 					'<option value="0"' . (($thumbdata == 0) ? (' selected="selected"') : "") . '>' . g_l('wysiwyg', "[nothumb]") . '</option>';
-				$this->db->query("SELECT ID,Name FROM " . THUMBNAILS_TABLE . " ORDER BY Name");
+				$this->db->query('SELECT ID,Name FROM ' . THUMBNAILS_TABLE . ' ORDER BY Name');
 				while($this->db->next_record()) {
 					$thumbnails .= '<option value="' . $this->db->f("ID") . '"' . (($thumbdata == $this->db->f("ID")) ? (' selected="selected"') : "") . '>' . $this->db->f("Name") . '</option>';
 				}
@@ -434,7 +430,9 @@ function imageChanged(wasThumbnailChange){
 	if(wasThumbnailChange != null && wasThumbnailChange){
 		document.we_form.wasThumbnailChange.value="1";
 	}
-	top.opener.tinyMCECallRegisterDialog(null,"block");
+	if(top.opener.tinyMCECallRegisterDialog) {
+		top.opener.tinyMCECallRegisterDialog(null,"block");
+	}
 	document.we_form.target="we_weImageDialog_edit_area";
 	document.we_form.we_what.value="dialog";
 	document.we_form.imgChangedCmd.value="1";

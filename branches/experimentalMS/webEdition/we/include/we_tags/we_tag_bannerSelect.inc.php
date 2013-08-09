@@ -60,7 +60,7 @@ function we_tag_bannerSelect($attribs){
 	}
 
 	if(isset($_REQUEST[$name])){
-		$GLOBALS[$name] = $_REQUEST[$name];
+		$GLOBALS[$name] = filterXss($_REQUEST[$name]);
 	}
 	return getHtmlTag('select', $newAttribs, $options, true);
 }

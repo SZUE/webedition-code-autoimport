@@ -70,7 +70,7 @@ class weModelBase{
 			$tableInfo = $this->db->metadata($this->table);
 			$data = getHash('SELECT * FROM `' . $this->table . '` WHERE ' . $this->getKeyWhere(), $this->db);
 
-			if(count($data)){
+			if(!empty($data)){
 				foreach($tableInfo as $info){
 					$fieldName = $info["name"];
 					if(in_array($fieldName, $this->persistent_slots)){

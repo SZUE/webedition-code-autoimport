@@ -47,20 +47,18 @@ class we_message_reporting{
 	 * @return string
 	 */
 	static function getShowMessageCall($message, $priority, $isJsMsg = false, $isOpener = false){
-		if($priority == self::WE_MESSAGE_INFO || $priority == self::WE_MESSAGE_FRONTEND){
-
-			if($isJsMsg){ // message is build from scripts, just print it!
-				return "alert( $message );";
-			} else{
-				return 'alert("' . str_replace(array('\\', '"'), array('\\\\', '\\"'), $message) . '");';
-			}
-		} else{
-
-			if($isJsMsg){ // message is build from scripts, just print it!
-				return ($isOpener ? 'top.opener.' : '') . 'top.we_showMessage('.$message.', '.$priority.', window);';
-			} else{
-				return ($isOpener ? 'top.opener.' : '') . 'top.we_showMessage("' . str_replace(array("\n",'\n','\\', '"','###NL###'), array('###NL###','###NL###','\\\\', '\\"','\n'), $message) . '", '.$priority.', window);';
-			}
+		switch($priority){
+			case self::WE_MESSAGE_INFO:
+			case self::WE_MESSAGE_FRONTEND:
+				return ($isJsMsg ? // message is build from scripts, just print it!
+						"alert( $message );" :
+						'alert("' . str_replace(array('\n', '\\', '"', '##NL##', '`'), array('##NL##', '\\\\', '\\"', '\n', '\"'), $message) . '");');
+				break;
+			default:
+				return ($isJsMsg ? // message is build from scripts, just print it!
+						($isOpener ? 'top.opener.' : '') . 'top.we_showMessage(' . $message . ', ' . $priority . ', window);' :
+						($isOpener ? 'top.opener.' : '') . 'top.we_showMessage("' . str_replace(array("\n", '\n', '\\', '"', '###NL###'), array('###NL###', '###NL###', '\\\\', '\\"', '\n'), $message) . '", ' . $priority . ', window);'
+					);
 		}
 	}
 

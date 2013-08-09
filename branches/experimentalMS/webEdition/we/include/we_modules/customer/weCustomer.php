@@ -67,7 +67,7 @@ class weCustomer extends weModelBase{
 		}
 	}
 
-	function loadPresistents(){
+	public function loadPresistents(){
 		$this->persistent_slots = array();
 		$tableInfo = $this->db->metadata($this->table);
 		foreach($tableInfo as $t){
@@ -249,13 +249,42 @@ class weCustomer extends weModelBase{
 					$myrow['Type']=$this->db->f("DATA_TYPE");
 				}
 				$myrow['Default']=str_replace(array("('","')",'(NULL)'),'',$this->db->f("COLUMN_DEFAULT"));
-				//$ret[$this->db->f("COLUMN_NAME")] = $this->db->Record;
+				
+				switch($myrow['Type']){
+					case 'int(11)':
+						if(empty($record['Default'])){$myrow['Default']='0';}
+						break;
+					case 'bigint(20)':
+						if(empty($record['Default'])){$myrow['Default']='0';}
+						break;
+					case 'date':
+						if(empty($record['Default'])){$myrow['Default']='0000-00-00';}
+						break;
+					case 'datetime':
+						if(empty($record['Default'])){$myrow['Default']='0000-00-00 00:00:00';}
+						break;
+				}
 				$ret[$this->db->f("COLUMN_NAME")] = $myrow;
 			}
 		} else {
 			$this->db->query('SHOW COLUMNS FROM ' . $this->db->escape($this->table));
 			while($this->db->next_record()) {
-				$ret[$this->db->f("Field")] = $this->db->Record;
+				$record=$this->db->Record;
+				switch($record['Type']){
+					case 'int(11)':
+						if(empty($record['Default'])){$record['Default']='0';}
+						break;
+					case 'bigint(20)':
+						if(empty($record['Default'])){$record['Default']='0';}
+						break;
+					case 'date':
+						if(empty($record['Default'])){$record['Default']='0000-00-00';}
+						break;
+					case 'datetime':
+						if(empty($record['Default'])){$record['Default']='0000-00-00 00:00:00';}
+						break;
+				}
+				$ret[$this->db->f("Field")] = $record;
 			}
 		}
 		return $ret;

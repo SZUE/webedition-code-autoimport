@@ -150,8 +150,11 @@ class weSelectorQuery{
 				$typeField = "ContentType";
 		}
 
-		$where = "Path REGEXP '^" . preg_quote(preg_quote($search)) . "[^/]*$'" . (isset($rootDir) && !empty($rootDir) ? " AND  (Path LIKE '" . $this->db->escape($rootDir) . "' OR Path LIKE '" . $this->db->escape($rootDir) . "%')" : "");
-		$isFolder = 1;
+		$rootOnly = $rootDir && ($search == "/" || strpos($rootDir, $search) === 0);
+		$where = $rootOnly ? "Path LIKE '" . $rootDir . "'" : 
+			"Path REGEXP '^" . preg_quote(preg_quote($search)) . "[^/]*$'" . (($rootDir) ? " AND (Path LIKE '" . $this->db->escape($rootDir) . "' OR Path LIKE '" . $this->db->escape($rootDir) . "%')" : "");
+
+		$isFolder = 0;
 		$addCT = 0;
 
 		if(isset($types) && is_array($types)){
@@ -161,15 +164,18 @@ class weSelectorQuery{
 					$types[$i] = str_replace(" ", "", $types[$i]);
 					if($types[$i] == "folder"){
 						$where .= ($i < 1 ? ' AND (' : ' OR ') . 'IsFolder=1';
+						$isFolder = 1;
 					} elseif(isset($typeField) && $typeField != ""){
 						$where .= ($i < 1 ? " AND (" : " OR ") . "$typeField='" . $this->db->escape($types[$i]) . "'";
-						$isFolder = 0;
 						$addCT = 1;
 					}
 					$where .= $i == (count($types) - 1) ? ')' : '';
 				}
 			}
+		} else{
+			$isFolder = 1;
 		}
+
 		if($addCT){
 			$this->addQueryField($typeField);
 		}
@@ -181,7 +187,7 @@ class weSelectorQuery{
 			}
 		}
 
-		$this->db->query('SELECT ' . implode(", ", $this->fields) . ' FROM ' . $this->db->escape($table) . ' WHERE ' . $where . ' ORDER BY ' . ($isFolder ? 'Path' : 'isFolder  ASC, Path') . ' ASC ' . ($limit ? ' LIMIT ' . $limit : ''));
+		$this->db->query('SELECT ' . implode(", ", $this->fields) . ' FROM ' . $this->db->escape($table) . ' WHERE ' . $where . ' ORDER BY ' . ($isFolder ? 'isFolder DESC, Path' : 'Path') . ' ASC ' . ($limit ? ' LIMIT ' . $limit : ''));
 	}
 
 	/**
@@ -233,11 +239,8 @@ class weSelectorQuery{
 				$useCreatorID = true;
 		}
 
-		if(!defined('BANNER_TABLE') || $table != BANNER_TABLE){
-			$userExtraSQL = $useExtraSQL ? $this->getUserExtraQuery($table, $useCreatorID) : '';
-		} else{
-			$userExtraSQL = '';
-		}
+		$userExtraSQL = (!defined('BANNER_TABLE') || $table != BANNER_TABLE ?
+				($useExtraSQL ? $this->getUserExtraQuery($table, $useCreatorID) : '') : '');
 
 		$this->addQueryField("Text");
 		$this->addQueryField("ParentID");
@@ -332,7 +335,7 @@ class weSelectorQuery{
 	 * @return string
 	 */
 	function getUserExtraQuery($table){
-		if((defined('NAVIGATION_TABLE') && $table == NAVIGATION_TABLE) || (defined('BANNER_TABLE') && $table == BANNER_TABLE)){
+		if((defined('NAVIGATION_TABLE') && $table == NAVIGATION_TABLE) || (defined('BANNER_TABLE') && $table == BANNER_TABLE) || $table == CATEGORY_TABLE){
 			return '';
 		}
 		$userExtraSQL = ' AND((1 ' . makeOwnersSql(false) . ') ';

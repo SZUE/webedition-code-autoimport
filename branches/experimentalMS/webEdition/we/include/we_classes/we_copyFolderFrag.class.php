@@ -528,16 +528,16 @@ class copyFolderFrag extends taskFragment{
 						if(preg_match('|(.+)_we_jkhdsf_(.+)|', $k, $regs)){ // is a we:href field
 							if(!in_array($regs[1], $hrefs)){
 								array_push($hrefs, $regs[1]);
-								$int = ((!isset($we_doc->elements[$regs[1] . '_we_jkhdsf_int']['dat'])) || $we_doc->elements[$regs[1] . '_we_jkhdsf_int']['dat'] == '') ? 0 : $we_doc->elements[$regs[1] . '_we_jkhdsf_int']['dat'];
+								$int = ((!isset($we_doc->elements[$regs[1] . we_base_link::MAGIC_INT_LINK]['dat'])) || $we_doc->elements[$regs[1] . we_base_link::MAGIC_INT_LINK]['dat'] == '') ? 0 : $we_doc->elements[$regs[1] . we_base_link::MAGIC_INT_LINK]['dat'];
 								if($int){
-									if(isset($we_doc->elements[$regs[1] . '_we_jkhdsf_intID']['dat'])){
-										$intID = $we_doc->elements[$regs[1] . '_we_jkhdsf_intID']['dat'];
+									if(isset($we_doc->elements[$regs[1] . we_base_link::MAGIC_INT_LINK_ID]['dat'])){
+										$intID = $we_doc->elements[$regs[1] . we_base_link::MAGIC_INT_LINK_ID]['dat'];
 										$path = id_to_path($intID, FILE_TABLE, $DB_WE);
 										if($this->mustChange($path)){
 											$pathTo = $this->getNewPath($path);
 											$idTo = $this->getID($pathTo, $DB_WE);
-											$we_doc->elements[$regs[1] . '_we_jkhdsf_intID']['dat'] = $idTo ? $idTo : '##WEPATH##' . $pathTo . ' ###WEPATH###';
-											$we_doc->elements[$regs[1] . '_we_jkhdsf_intPath']['dat'] = $pathTo;
+											$we_doc->elements[$regs[1] . we_base_link::MAGIC_INT_LINK_ID]['dat'] = $idTo ? $idTo : '##WEPATH##' . $pathTo . ' ###WEPATH###';
+											$we_doc->elements[$regs[1] . we_base_link::MAGIC_INT_LINK_PATH]['dat'] = $pathTo;
 										}
 									}
 								} else{
@@ -553,7 +553,7 @@ class copyFolderFrag extends taskFragment{
 						if(substr($we_doc->elements[$k]['dat'], 0, 2) == 'a:' && is_array(
 								unserialize($we_doc->elements[$k]['dat']))){ // is a we:link field
 							$link = unserialize($we_doc->elements[$k]['dat']);
-							if(isset($link['type']) && ($link['type'] == 'int')){
+							if(isset($link['type']) && ($link['type'] == we_base_link::TYPE_INT)){
 								$intID = $link['id'];
 								$path = id_to_path($intID, FILE_TABLE, $DB_WE);
 								if($this->mustChange($path)){
@@ -607,11 +607,11 @@ class copyFolderFrag extends taskFragment{
 		$db = ($db ? $db : new_DB_WE());
 
 		$n = $attribs['name'];
-		$nint = $n . '_we_jkhdsf_int';
+		$nint = $n . we_base_link::MAGIC_INT_LINK;
 		$int = $fn($nint);
 		$int = ( $int == '') ? 0 : $int;
 		if($int){
-			$nintID = $n . '_we_jkhdsf_intID';
+			$nintID = $n . we_base_link::MAGIC_INT_LINK_ID;
 			$intID = $fn($nintID);
 			return f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($intID), 'Path', $db);
 		} else{
@@ -639,7 +639,7 @@ class copyFolderFrag extends taskFragment{
 	}
 
 	function parseInternalLinks(&$text, $DB_WE){
-		if(preg_match_all('/(href|src)="document:([^" ]+)/i', $text, $regs, PREG_SET_ORDER)){
+		if(preg_match_all('/(href|src)="'.we_base_link::TYPE_INT_PREFIX.'([^" ]+)/i', $text, $regs, PREG_SET_ORDER)){
 			foreach($regs as $reg){
 				$id = $reg[2];
 
@@ -648,7 +648,7 @@ class copyFolderFrag extends taskFragment{
 					$pathTo = $this->getNewPath($path);
 					$idTo = $this->getID($pathTo, $DB_WE);
 					$idTo = $idTo ? $idTo : '##WEPATH##' . $pathTo . ' ###WEPATH###';
-					$text = preg_replace('#(href|src)="document:' . $id . '#i', $reg[1] . '="document:' . $idTo, $text);
+					$text = preg_replace('#(href|src)="'.we_base_link::TYPE_INT_PREFIX . $id . '#i', $reg[1] . '="'.we_base_link::TYPE_INT_PREFIX . $idTo, $text);
 				}
 			}
 		}

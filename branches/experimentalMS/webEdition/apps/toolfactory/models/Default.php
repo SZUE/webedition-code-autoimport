@@ -188,22 +188,22 @@ class toolfactory_models_Default extends we_app_Model{
 	 *
 	 * @param integer $loadId
 	 */
-	function load($loadId){
+	function load($id=0){
 
-		$id = $this->realNameToIntern($loadId);
+		$myid = $this->realNameToIntern($id);
 
-		$_props = weToolLookup::getToolProperties($id);
+		$_props = weToolLookup::getToolProperties($myid);
 
 		if(empty($_props)){
-			$_props = weToolLookup::getToolProperties($loadId);
-			$id = $loadId;
+			$_props = weToolLookup::getToolProperties($id);
+			$myid = $id;
 		}
 
 		foreach($_props as $_key => $_prop){
 			$this->$_key = $_prop;
 		}
 
-		$this->appconfig = we_app_Common::getManifest($id);
+		$this->appconfig = we_app_Common::getManifest($myid);
 
 		$name = isset($_props['text']) ? $_props['text'] : $_props['classname'];
 
@@ -211,16 +211,16 @@ class toolfactory_models_Default extends we_app_Model{
 
 		$this->ID = $this->Text;
 
-		$this->tags = weToolLookup::getAllToolTags($id, true);
+		$this->tags = weToolLookup::getAllToolTags($myid, true);
 
-		$this->services = weToolLookup::getAllToolServices($id, true);
+		$this->services = weToolLookup::getAllToolServices($myid, true);
 
-		$this->languages = weToolLookup::getAllToolLanguages($id, '/lang', true);
+		$this->languages = weToolLookup::getAllToolLanguages($myid, '/lang', true);
 		if(empty($this->languages)){
 			$this->languages = array('a', 'b');
 		}
 
-		$this->backupTables = weToolLookup::getBackupTables($id, true);
+		$this->backupTables = weToolLookup::getBackupTables($myid, true);
 
 		$appDir = Zend_Controller_Front::getInstance()->getParam('appDir');
 
@@ -359,7 +359,7 @@ class toolfactory_models_Default extends we_app_Model{
 				if(($_sqlFile === $_newname || $_dirSelectorFile === $_newname || $_dirSelectorClass === $_newname) && !$this->makeTable){
 
 				} else{
-					//print "Saving file " . $_newname . "...<br>";
+					//print "Saving file " . $_newname . "<br>";
 					if(stripos($_newname, '_UTF-8.inc.php') === false){
 						//$_content = utf8_encode($_content);
 					}
@@ -373,13 +373,13 @@ class toolfactory_models_Default extends we_app_Model{
 			$_sqlDump = file($_sqlDumpFile);
 			$_db = we_io_DB::sharedAdapter();
 			foreach($_sqlDump as $_sql){
-				//print "Execute query " . $_sql . "...<br>";
+				//print "Execute query " . $_sql . "<br>";
 				$_sql = str_replace('###TBLPREFIX###', TBL_PREFIX, $_sql);
 				$_db->query($_sql);
 			}
 		}
 		/* hook */
-		if($skipHook == 0){
+		if(!$skipHook){
 			$hook = new weHook('save', $this->_appName, array($this));
 			$hook->executeHook();
 		}

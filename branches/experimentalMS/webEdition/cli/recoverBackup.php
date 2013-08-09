@@ -156,7 +156,9 @@ we_error_handler(false);
 @set_time_limit(0);
 
 // set memory limit to an equitable value if possible
-@ini_set("memory_limit", "128M");
+if( intval(ini_get('memory_limit')) < 128){
+	@ini_set('memory_limit', '128M');
+}
 
 // knock out identifiation and permissions
 $_SESSION["perms"] = array();
@@ -246,7 +248,7 @@ $long_opts = array(
 );
 
 // Convert the arguments to options - check for the first argument
-if(count($_SERVER['argv']) && realpath($_SERVER['argv'][0]) == __FILE__){
+if(!empty($_SERVER['argv']) && realpath($_SERVER['argv'][0]) == __FILE__){
 	$options = Console_Getopt::getOpt($args, $short_opts, $long_opts);
 } else{
 	$options = Console_Getopt::getOpt2($args, $short_opts, $long_opts);
@@ -258,7 +260,7 @@ if(PEAR::isError($options)){
 	fwrite(STDERR, $_cliHelp . "\n");
 	exit(INVALID_OPTION);
 }
-if(count($args)){
+if(!empty($args)){
 	$_REQUEST['verbose'] = false;
 	_checkAll(false);
 	$_REQUEST['handle_extern'] = false;
@@ -325,10 +327,9 @@ if(weBackupPreparer::prepareImport() === true){
 	}
 	while(($_SESSION['weS']['weBackupVars']['offset'] < $_SESSION['weS']['weBackupVars']['offset_end'])) {
 		if($_REQUEST['verbose']){
-			print "-";
+			print '-';
 		}
-		weBackupImport::import($_SESSION['weS']['weBackupVars']['backup_file'], $_SESSION['weS']['weBackupVars']['offset'], $_SESSION['weS']['weBackupVars']['backup_steps'], $_SESSION['weS']['weBackupVars']['options']['compress'], $_SESSION['weS']['weBackupVars']['encoding'], $_SESSION['weS']['weBackupVars']['backup_log']
-		);
+		weBackupImport::import($_SESSION['weS']['weBackupVars']['backup_file'], $_SESSION['weS']['weBackupVars']['offset'], $_SESSION['weS']['weBackupVars']['backup_steps'], $_SESSION['weS']['weBackupVars']['options']['compress'], $_SESSION['weS']['weBackupVars']['encoding']);
 	}
 
 	if($_REQUEST['verbose']){

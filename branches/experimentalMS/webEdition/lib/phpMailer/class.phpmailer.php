@@ -551,7 +551,7 @@ class PHPMailer{
 			}
 		}
 
-		if(count($bad_rcpt) > 0){ // Create error message
+		if(!empty($bad_rcpt)){ // Create error message
 			for($i = 0; $i < count($bad_rcpt); $i++){
 				if($i != 0){
 					$error .= ', ';
@@ -887,9 +887,9 @@ class PHPMailer{
 
 		/* To be created automatically by mail() */
 		if($this->Mailer != 'mail'){
-			if(count($this->to) > 0){
+			if(!empty($this->to)){
 				$result .= $this->AddrAppend('To', $this->to);
-			} elseif(count($this->cc) == 0){
+			} elseif(empty($this->cc)){
 				$result .= $this->HeaderLine('To', 'undisclosed-recipients:;');
 			}
 		}
@@ -900,16 +900,16 @@ class PHPMailer{
 		$result .= $this->AddrAppend('From', $from);
 
 		/* sendmail and mail() extract Cc from the header before sending */
-		if((($this->Mailer == 'sendmail') || ($this->Mailer == 'mail')) && (count($this->cc) > 0)){
+		if((($this->Mailer == 'sendmail') || ($this->Mailer == 'mail')) && (!empty($this->cc))){
 			$result .= $this->AddrAppend('Cc', $this->cc);
 		}
 
 		/* sendmail and mail() extract Bcc from the header before sending */
-		if((($this->Mailer == 'sendmail') || ($this->Mailer == 'mail')) && (count($this->bcc) > 0)){
+		if((($this->Mailer == 'sendmail') || ($this->Mailer == 'mail')) && (!empty($this->bcc))){
 			$result .= $this->AddrAppend('Bcc', $this->bcc);
 		}
 
-		if(count($this->ReplyTo) > 0){
+		if(!empty($this->ReplyTo)){
 			$result .= $this->AddrAppend('Reply-to', $this->ReplyTo);
 		}
 
@@ -1093,7 +1093,7 @@ class PHPMailer{
 		if(count($this->attachment) < 1 && strlen($this->AltBody) < 1){
 			$this->message_type = 'plain';
 		} else{
-			if(count($this->attachment) > 0){
+			if(!empty($this->attachment)){
 				$this->message_type = 'attachments';
 			}
 			if(strlen($this->AltBody) > 0 && count($this->attachment) < 1){

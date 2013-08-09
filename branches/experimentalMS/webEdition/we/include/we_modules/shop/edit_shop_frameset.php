@@ -24,46 +24,39 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
-
 we_html_tools::htmlTop();
-
 print STYLESHEET;
 
 
 // grep the last element from the year-set, wich is the current year
-$DB_WE->query("SELECT DATE_FORMAT(DateOrder,'%Y') AS DateOrd FROM " . SHOP_TABLE . " ORDER BY DateOrd");
+$DB_WE->query('SELECT DATE_FORMAT(DateOrder,"%Y") AS DateOrd FROM ' . SHOP_TABLE . ' ORDER BY DateOrd');
 while($DB_WE->next_record()) {
 	$strs = array($DB_WE->f("DateOrd"));
 	$yearTrans = end($strs);
 }
 // print $yearTrans;
 /// config
-$DB_WE->query("SELECT strFelder from " . ANZEIGE_PREFS_TABLE . " where strDateiname = 'shop_pref'");
-$DB_WE->next_record();
-$feldnamen = explode("|", $DB_WE->f("strFelder"));
+$feldnamen = explode('|', f('SELECT strFelder FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname="shop_pref"','strFelder',$DB_WE));
 for($i = 0; $i <= 3; $i++){
 	$feldnamen[$i] = isset($feldnamen[$i]) ? $feldnamen[$i] : '';
 }
 
-$fe = explode(",", $feldnamen[3]);
+$fe = explode(',', $feldnamen[3]);
 if(empty($classid)){
 	$classid = $fe[0];
 }
-
-
 //$resultO = count ($fe);
 $resultO = array_shift($fe);
 
-$dbTitlename = "shoptitle";
 // whether the resultset is empty?
-$resultD = f("SELECT count(Name) as Anzahl FROM " . LINK_TABLE . " WHERE Name ='$dbTitlename'", 'Anzahl', $DB_WE);
+$resultD = f('SELECT count(Name) as Anzahl FROM ' . LINK_TABLE . ' WHERE Name ="'.WE_SHOP_TITLE_FIELD_NAME.'"', 'Anzahl', $DB_WE);
 
 
 $mod = isset($_REQUEST['mod']) ? $_REQUEST['mod'] : '';
 $title = '';
-foreach($GLOBALS["_we_available_modules"] as $modData){
+foreach($GLOBALS['_we_available_modules'] as $modData){
 	if($modData["name"] == $mod){
-		$title = "webEdition " . g_l('global', "[modules]") . ' - ' . $modData["text"];
+		$title = 'webEdition ' . g_l('global', "[modules]") . ' - ' . $modData["text"];
 		break;
 	}
 }
@@ -115,11 +108,11 @@ echo we_html_element::jsScript(JS_DIR . 'images.js') . we_html_element::jsScript
 
 			case "revenue_view":
 
-<?php if(($resultD > 0) && (!empty($resultO))){ //docs and objects               ?>
+<?php if(($resultD > 0) && (!empty($resultO))){ //docs and objects                ?>
 					top.content.shop_properties.location="<?php print WE_SHOP_MODULE_DIR; ?>edit_shop_editorFramesetTop.php?typ=document";
-<?php } elseif(($resultD < 1) && (!empty($resultO))){ // no docs but objects               ?>
+<?php } elseif(($resultD < 1) && (!empty($resultO))){ // no docs but objects                ?>
 					top.content.shop_properties.location="<?php print WE_SHOP_MODULE_DIR; ?>edit_shop_editorFramesetTop.php?typ=object&ViewClass=$classid";
-<?php } elseif(($resultD > 0) && (empty($resultO))){ // docs but no objects               ?>
+<?php } elseif(($resultD > 0) && (empty($resultO))){ // docs but no objects                ?>
 					top.content.shop_properties.location="<?php print WE_SHOP_MODULE_DIR; ?>edit_shop_editorFramesetTop.php?typ=document";
 <?php } ?>
 
@@ -373,7 +366,7 @@ if(we_hasPerm("EDIT_SHOP_ORDER")){
 
 			function dirEntry(icon,name,vorfahr,text,offen,contentType,table,published){this.icon=icon;this.name = name;this.vorfahr = vorfahr;this.text = text;this.typ = 'folder';this.offen = (offen ? 1 : 0);this.contentType = contentType;this.table = table;this.loaded = (offen ? 1 : 0);this.checked = false;this.published = published;return this;}
 
-			                  //changed for #6786
+			//changed for #6786
 			function urlEntry(icon,name,vorfahr,text,contentType,table,published,style){this.icon=icon;this.name = name;this.vorfahr = vorfahr; this.text = text;this.typ = 'shop';this.checked = false;this.contentType = contentType;this.table = table;this.published = published;this.st = style;return this;}
 
 			function loadData(){
@@ -388,19 +381,19 @@ if(we_hasPerm("EDIT_SHOP_ORDER")){
 $DB_WE->query("SELECT IntOrderID,DateShipping,DateConfirmation,DateCustomA,DateCustomB,DateCustomC,DateCustomD,DateCustomE,DatePayment,DateCustomF,DateCustomG,DateCancellation,DateCustomH,DateCustomI,DatecustomJ,DateFinished, DATE_FORMAT(DateOrder,'" . g_l('date', '[format][mysqlDate]') . "') as orddate, DATE_FORMAT(DateOrder,'%c%Y') as mdate FROM " . SHOP_TABLE . " GROUP BY IntOrderID ORDER BY IntID DESC");
 while($DB_WE->next_record()) {
 	//added for #6786
-    $style="color:black;font-weight:bold;";
+	$style = "color:black;font-weight:bold;";
 
-    if($DB_WE->f("DateCustomA")!='' || $DB_WE->f("DateCustomB")!='' || $DB_WE->f("DateCustomC")!='' || $DB_WE->f("DateCustomD")!='' || $DB_WE->f("DateCustomE")!='' || $DB_WE->f("DateCustomF")!='' || $DB_WE->f("DateCustomG")!='' || $DB_WE->f("DateCustomH")!='' || $DB_WE->f("DateCustomI")!='' || $DB_WE->f("DateCustomJ")!='' || $DB_WE->f("DateConfirmation")!='' || $DB_WE->f("DateShipping")!='0000-00-00 00:00:00')
-        $style="color:red;";
+	if($DB_WE->f("DateCustomA") != '' || $DB_WE->f("DateCustomB") != '' || $DB_WE->f("DateCustomC") != '' || $DB_WE->f("DateCustomD") != '' || $DB_WE->f("DateCustomE") != '' || $DB_WE->f("DateCustomF") != '' || $DB_WE->f("DateCustomG") != '' || $DB_WE->f("DateCustomH") != '' || $DB_WE->f("DateCustomI") != '' || $DB_WE->f("DateCustomJ") != '' || $DB_WE->f("DateConfirmation") != '' || $DB_WE->f("DateShipping") != '0000-00-00 00:00:00')
+		$style = "color:red;";
 
-    if($DB_WE->f("DatePayment")!='0000-00-00 00:00:00')
-        $style="color:#006699;";
+	if($DB_WE->f("DatePayment") != '0000-00-00 00:00:00')
+		$style = "color:#006699;";
 
-    if( $DB_WE->f("DateCancellation")!='' || $DB_WE->f("DateFinished")!='')
-        $style="color:black;";
+	if($DB_WE->f("DateCancellation") != '' || $DB_WE->f("DateFinished") != '')
+		$style = "color:black;";
 
 
-	print "  menuDaten.add(new urlEntry('".we_base_ContentTypes::LINK_ICON."','" . $DB_WE->f("IntOrderID") . "'," . $DB_WE->f("mdate") . ",'" . $DB_WE->f("IntOrderID") . ". " . g_l('modules_shop', '[bestellung]') . " " . $DB_WE->f("orddate") . "','shop','" . SHOP_TABLE . "','" . (($DB_WE->f("DateShipping") > 0) ? 0 : 1) . "','".$style."'));\n";
+	print "  menuDaten.add(new urlEntry('" . we_base_ContentTypes::LINK_ICON . "','" . $DB_WE->f("IntOrderID") . "'," . $DB_WE->f("mdate") . ",'" . $DB_WE->f("IntOrderID") . ". " . g_l('modules_shop', '[bestellung]') . " " . $DB_WE->f("orddate") . "','shop','" . SHOP_TABLE . "','" . (($DB_WE->f("DateShipping") > 0) ? 0 : 1) . "','" . $style . "'));\n";
 	if($DB_WE->f("DateShipping") <= 0){
 		//FIXME: remove eval
 		eval('if(isset($l' . $DB_WE->f("mdate") . ')) {$l' . $DB_WE->f("mdate") . '++;} else { $l' . $DB_WE->f("mdate") . ' = 1;}');
@@ -414,7 +407,7 @@ $year = (empty($_REQUEST["year"])) ? date("Y") : $_REQUEST["year"];
 for($f = 12; $f > 0; $f--){
 	$r = (isset(${'v' . $f . $year}) ? ${'v' . $f . $year} : '');
 	$k = (isset(${'l' . $f . $year}) ? ${'l' . $f . $year} : '');
-	echo "menuDaten.add(new dirEntry('".we_base_ContentTypes::FOLDER_ICON."',$f+''+$year,0, '" . (($f < 10) ? "0" . $f : $f) . ' ' . g_l('modules_shop', '[sl]') . " " . g_l('date', '[month][long][' . ($f - 1) . ']') . " (" . (($k > 0) ? "<b>" . $k . "</b>" : 0) . "/" . (($r > 0) ? $r : 0) . ")',0,'',''," . (($k > 0) ? 1 : 0) . "));";
+	echo "menuDaten.add(new dirEntry('" . we_base_ContentTypes::FOLDER_ICON . "',$f+''+$year,0, '" . (($f < 10) ? "0" . $f : $f) . ' ' . g_l('modules_shop', '[sl]') . " " . g_l('date', '[month][long][' . ($f - 1) . ']') . " (" . (($k > 0) ? "<b>" . $k . "</b>" : 0) . "/" . (($r > 0) ? $r : 0) . ")',0,'',''," . (($k > 0) ? 1 : 0) . "));";
 } //'".$DB_WE->f("mdate")."'
 echo "top.yearshop = '$year';";
 ?>
@@ -429,7 +422,7 @@ echo "top.yearshop = '$year';";
 
 </head>
 <?php if(we_base_browserDetect::isGecko()){ ?>
-	<frameset rows="28,38,*,<?php print ($_SESSION["prefs"]["debug_normal"] != 0) ? 100 : 0; ?>" border="0" frameborder="1" onLoad="start();">
+	<frameset rows="28,38,*,0" border="0" frameborder="1" onLoad="start();">
 		<frame src="<?php print WE_SHOP_MODULE_DIR; ?>edit_shop_header.php" name="shop_header" scrolling=no noresize/>
 		<frame src="<?php print WE_SHOP_MODULE_DIR; ?>edit_shop_iconbarHeader.php" name="shop_header_icons" scrolling=no noresize/>
 
@@ -449,7 +442,7 @@ echo "top.yearshop = '$year';";
 		<frame src="<?php print WE_SHOP_MODULE_DIR; ?>edit_shop_cmd.php" name="shop_cmd" scrolling=no noresize/>
 	</frameset>
 <?php } else{ ?>
-	<frameset rows="28,38,*,<?php print ($_SESSION["prefs"]["debug_normal"] != 0) ? 100 : 0; ?>" framespacing="0" border="0" frameborder="NO" onLoad="start();">
+	<frameset rows="28,38,*,0" framespacing="0" border="0" frameborder="NO" onLoad="start();">
 		<frame src="<?php print WE_SHOP_MODULE_DIR; ?>edit_shop_header.php" name="shop_header" scrolling=no noresize/>
 		<frame src="<?php print WE_SHOP_MODULE_DIR; ?>edit_shop_iconbarHeader.php" name="shop_header" scrolling=no noresize/>
 
@@ -467,17 +460,15 @@ echo "top.yearshop = '$year';";
 						<?php
 					}
 
-					if(isset($_REQUEST['bid'])){
-						print '<frame src="' . WE_SHOP_MODULE_DIR . 'edit_shop_editorFrameset.php?bid=' . $_REQUEST['bid'] . '" name="shop_properties" scrolling=auto/>';
-					} else{
-						print '<frame src="' . WE_SHOP_MODULE_DIR . 'edit_shop_editorFramesetTop.php?home=1" name="shop_properties" scrolling=auto/>';
-					}
+					print (isset($_REQUEST['bid']) ?
+							'<frame src="' . WE_SHOP_MODULE_DIR . 'edit_shop_editorFrameset.php?bid=' . $_REQUEST['bid'] . '" name="shop_properties" scrolling=auto/>' :
+							'<frame src="' . WE_SHOP_MODULE_DIR . 'edit_shop_editorFramesetTop.php?home=1" name="shop_properties" scrolling=auto/>');
 					?>
 				</frameset>
 			</frameset>
 			<frame src="<?php print WE_SHOP_MODULE_DIR; ?>edit_shop_cmd.php" name="shop_cmd" scrolling=no noresize/>
 		</frameset>
-	<?php } ?>
+<?php } ?>
 	<body background="<?php print IMAGE_DIR ?>backgrounds/aquaBackground.gif" style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px">
 	</body>
 </html>

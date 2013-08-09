@@ -78,10 +78,14 @@ class weExportTreeLoader{
 
 			$fileds = array();
 
-			foreach($db->Record as $k => $v)
-				if(!is_numeric($k))
+			foreach($db->Record as $k => $v){
+				if(!is_numeric($k)){
 					$fileds[strtolower($k)] = $v;
+				}
+			}
 
+			$fileds['isfolder'] = $fileds['isfolder'] ? $fileds['isfolder'] : 0;
+			$fileds['parentid'] = $fileds['parentid'] ? $fileds['parentid'] : 0;
 			$fileds["text"] = trim($tt) != "" ? $tt : $db->f("Text");
 			$items[] = array_merge($fileds, $typ);
 		}

@@ -35,6 +35,16 @@ class we_binaryDocument extends we_document{
 	 */
 	public $DocChanged = false;
 
+	/**
+	 * @var object instance of metadata reader for accessing metadata functionality
+	 */
+	private $metaDataReader = null;
+
+	/**
+	 * @var array for metadata read via $metaDataReader
+	 */
+	var $metaData = array();
+
 	/** Constructor
 	 * @return we_binaryDocument
 	 * @desc Constructor for we_binaryDocument
@@ -43,9 +53,8 @@ class we_binaryDocument extends we_document{
 		parent::__construct();
 		array_push($this->persistent_slots, 'html', 'DocChanged');
 		array_push($this->EditPageNrs, WE_EDITPAGE_PROPERTIES, WE_EDITPAGE_INFO, WE_EDITPAGE_CONTENT, WE_EDITPAGE_VERSIONS);
-
-		if(defined("CUSTOMER_TABLE")){
-			$this->EditPageNrs[]= WE_EDITPAGE_WEBUSER;
+		if(defined('CUSTOMER_TABLE')){
+			$this->EditPageNrs[] = WE_EDITPAGE_WEBUSER;
 		}
 		$this->LoadBinaryContent = true;
 	}
@@ -118,7 +127,7 @@ class we_binaryDocument extends we_document{
 			if(!we_util_File::copyFile($this->elements["data"]["dat"], $this->getRealPath())){
 				return false;
 			}
-			if($this->i_isMoved()){
+			if($this->isMoved()){
 				we_util_File::delete($this->getRealPath(true));
 				we_util_File::delete($this->getSitePath(true));
 				$this->rewriteNavigation();
@@ -134,7 +143,7 @@ class we_binaryDocument extends we_document{
 		$is_ok = false;
 		if(isset($this->elements["data"]["dat"]) && file_exists($this->elements["data"]["dat"])){
 			$is_ok = we_util_File::copyFile($this->elements["data"]["dat"], $to);
-			if($this->i_isMoved()){
+			if($this->isMoved()){
 				we_util_File::delete($old);
 			}
 		}
@@ -170,7 +179,6 @@ class we_binaryDocument extends we_document{
 			}
 			$set = array('DID' => intval($this->ID),
 				'Text' => $text,
-				'BText' => $text,
 				'Workspace' => $this->ParentPath,
 				'WorkspaceID' => intval($this->ParentID),
 				'Category' => $this->Category,
@@ -194,11 +202,35 @@ class we_binaryDocument extends we_document{
 	}
 
 	/**
+	 * create instance of weMetaData to access metadata functionality:
+	 */
+	protected function getMetaDataReader($force = false){
+		if($force){
+			if(!$this->metaDataReader){
+				$source = $this->getElement('data');
+				if(file_exists($source)){
+					$this->metaDataReader = new weMetaData($source);
+				}
+			}
+			return $this->metaDataReader;
+		} else{
+			return false;
+		}
+	}
+
+	/**
 	 * @abstract tries to read ebmedded metadata from file
 	 * @return bool false if either no metadata is available or something went wrong
 	 */
-	function getMetaData($fieldsonly = false){
-		return false;
+	function getMetaData(){
+		$_reader = $this->getMetaDataReader();
+		if($_reader){
+			$this->metaData = $_reader->getMetaData();
+			if(!is_array($this->metaData)){
+				return false;
+			}
+		}
+		return $this->metaData;
 	}
 
 	protected function i_setElementsFromHTTP(){
@@ -231,7 +263,7 @@ class we_binaryDocument extends we_document{
 
 		// second we build all input fields for them and take
 		// the elements of this imageDocument as values:
-		$_fieldcount = sizeof($_defined_fields);
+		$_fieldcount = count($_defined_fields);
 		$_fieldcounter = (int) 0; // needed for numbering the table rows
 		$_content = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0, "style" => "margin-top:4px;"), ($_fieldcount * 2), 5);
 		$_mdcontent = "";
@@ -286,24 +318,24 @@ class we_binaryDocument extends we_document{
 		$_mdtypes = array();
 
 		if($_metaData){
-			if(isset($_metaData["exif"]) && count($_metaData["exif"])){
+			if(isset($_metaData["exif"]) && !empty($_metaData["exif"])){
 				$_mdtypes[] = "Exif";
 			}
-			if(isset($_metaData["iptc"]) && count($_metaData["iptc"])){
+			if(isset($_metaData["iptc"]) && !empty($_metaData["iptc"])){
 				$_mdtypes[] = "IPTC";
+			}
+			if(isset($_metaData["pdf"]) && !empty($_metaData["pdf"])){
+				$_mdtypes[] = "PDF";
 			}
 		}
 
-		$filetype = g_l('metadata', "[filetype]") . ": ";
-		if(!empty($this->Extension)){
-			$filetype .= substr($this->Extension, 1);
-		}
+		$filetype = g_l('metadata', '[filetype]') . ': ' . (empty($this->Extension) ? '' : substr($this->Extension, 1));
 
 		$md = ($_SESSION['weS']['we_mode'] == "seem" ?
 				'' :
 				g_l('metadata', "[supported_types]") . ': ' .
 				'<a href="javascript:parent.frames[0].setActiveTab(\'tab_2\');we_cmd(\'switch_edit_page\',2,\'' . $GLOBALS['we_transaction'] . '\');">' .
-				(count($_mdtypes) > 0 ? implode(", ", $_mdtypes) : g_l('metadata', "[none]")) .
+				(count($_mdtypes) > 0 ? implode(', ', $_mdtypes) : g_l('metadata', "[none]")) .
 				'</a>');
 
 

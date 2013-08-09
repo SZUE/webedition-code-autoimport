@@ -66,7 +66,7 @@ class we_listview_object extends listviewBase{
 	 * @param	string        $categoryids
 	 *
 	 */
-	function __construct($name = "0", $rows = 9999999, $offset = 0, $order = "", $desc = false, $classID = 0, $cats = "", $catOr = "", $condition = "", $triggerID = "", $cols = "", $seeMode = true, $searchable = true, $calendar = "", $datefield = "", $date = "", $weekstart = "", $categoryids = '', $workspaceID = '', $customerFilterType = 'off', $docID = 0, $customers = "", $id = "", $we_predefinedSQL = "", $languages = '', $hidedirindex = false, $objectseourls = false){
+	function __construct($name = '0', $rows = 9999999, $offset = 0, $order = "", $desc = false, $classID = 0, $cats = "", $catOr = "", $condition = "", $triggerID = "", $cols = "", $seeMode = true, $searchable = true, $calendar = "", $datefield = "", $date = "", $weekstart = "", $categoryids = '', $workspaceID = '', $customerFilterType = 'off', $docID = 0, $customers = "", $id = "", $we_predefinedSQL = "", $languages = '', $hidedirindex = false, $objectseourls = false){
 		parent::__construct($name, $rows, $offset, $order, $desc, $cats, $catOr, $workspaceID, $cols, $calendar, $datefield, $date, $weekstart, $categoryids, $customerFilterType, $id);
 
 
@@ -346,7 +346,7 @@ if($pid_tail=='1'){$pid_tail='1=1';}
 					$ordertmp[$pos] = '`' . $p["table"] . '`.`' . $p["type"] . '_' . $n . '`' . ($descArr[$pos] ? ' DESC' : '');
 				}
 			}
-			$cond = preg_replace("/([\!\=%&\(\*\+\.\/<>|~ ])$n([\!\=%&\)\*\+\.\/<>|~ ])/", "$1" . $p["table"] . "." . $p["type"] . "_" . $n . "$2", $cond);
+			$cond = preg_replace("/([\!\=%&\(\*\+\.\/<>|~ ])$n([\!\=%&\)\*\+\.\/<>|~ ])/", "$1" . $p["table"] . ".`" . $p["type"] . "_" . $n . "`$2", $cond);
 		}
 
 		$cond = preg_replace("/'([^']*)'/e", "we_listview_object::decodeEregString('\\1')", $cond);

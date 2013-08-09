@@ -24,27 +24,25 @@
  */
 function we_tag_sidebar($attribs, $content){
 	if(SIDEBAR_DISABLED == 0 && we_tag('ifNotSidebar', $attribs, $content) && we_tag('ifEditmode', $attribs, $content)){
-		$id = weTag_getAttribute("id", $attribs, 0);
-		$file = weTag_getAttribute("file", $attribs);
-		$url = weTag_getAttribute("url", $attribs);
-		$anchor = weTag_getAttribute("anchor", $attribs);
-		$width = weTag_getAttribute("width", $attribs, (defined("WE_SIDEBAR_WIDTH") ? WE_SIDEBAR_WIDTH : 300));
+		$id = weTag_getAttribute('id', $attribs, 0);
+		$file = weTag_getAttribute('file', $attribs);
+		$url = weTag_getAttribute('url', $attribs);
+		$anchor = weTag_getAttribute('anchor', $attribs);
+		$width = weTag_getAttribute('width', $attribs, (defined('WE_SIDEBAR_WIDTH') ? WE_SIDEBAR_WIDTH : 300));
 		$params = weTag_getAttribute('params', $attribs);
-		if(isset($urladd) && strpos($urladd, '?') === 0){
-			$urladd = substr($urladd, 1);
+		if($params && strpos($params, '?') === 0){
+			$params = substr($params, 1);
 		}
 
-		removeAttribs($attribs, array(
-			'id', 'file', 'url', 'width', 'href', 'params'
-		));
+		removeAttribs($attribs, array('id', 'file', 'url', 'width', 'href', 'params'));
 
 		if(trim($content) == ''){
-			$content = g_l('tags', "[open_sidebar]");
+			$content = g_l('tags', '[open_sidebar]');
 		}
 
-		$href = "#";
+		$href = '#';
 		if($id == 0){
-			if($file != ""){
+			if($file != ''){
 				$href = "javascript:top.weSidebar.load('" . $file . "');top.weSidebar.resize(" . $width . ",'" . $params . "');";
 			} else if($url != ""){
 				$href = "javascript:top.weSidebar.load('" . $url . "');top.weSidebar.resize(" . $width . ",'" . $params . "');";
@@ -56,7 +54,7 @@ function we_tag_sidebar($attribs, $content){
 		}
 		$attribs['href'] = $href;
 
-		return getHtmlTag("a", $attribs, $content);
+		return getHtmlTag('a', $attribs, $content);
 	}
 	return '';
 }

@@ -26,7 +26,7 @@ if(defined('OBJECT_TABLE')){
 
 	// File > unpublished objects
 	$we_menu['1115000'] = array(
-		'text' => g_l('javaMenu_object', '[unpublished_objects]') . '...',
+		'text' => g_l('javaMenu_object', '[unpublished_objects]') . '&hellip;',
 		'parent' => '1000000',
 		'cmd' => 'openUnpublishedObjects',
 		'perm' => 'CAN_SEE_OBJECTFILES || ADMINISTRATOR',
@@ -35,7 +35,7 @@ if(defined('OBJECT_TABLE')){
 //  File > open
 	// File > open > Object
 	$we_menu['1030300'] = array(
-		'text' => g_l('javaMenu_object', '[open_object]') . '...',
+		'text' => g_l('javaMenu_object', '[open_object]') . '&hellip;',
 		'parent' => '1030000',
 		'cmd' => 'open_objectFile',
 		'perm' => 'CAN_SEE_OBJECTFILES || ADMINISTRATOR',
@@ -45,7 +45,7 @@ if(defined('OBJECT_TABLE')){
 
 		// File > Open > Class
 		$we_menu['1030400'] = array(
-			'text' => g_l('javaMenu_object', '[open_class]') . '...',
+			'text' => g_l('javaMenu_object', '[open_class]') . '&hellip;',
 			'parent' => '1030000',
 			'cmd' => 'open_object',
 			'perm' => 'CAN_SEE_OBJECTS || ADMINISTRATOR',
@@ -91,7 +91,6 @@ if(defined('OBJECT_TABLE')){
 			$foo = str_replace(array('"', '\''), '', $GLOBALS['DB_WE']->f('Text'));
 
 			$we_menu['1010' . $nr] = array(
-				'text' => $foo,
 				'text' => $foo,
 				'parent' => '1010800',
 				'cmd' => 'new_ClObjectFile' . $GLOBALS['DB_WE']->f('ID'),

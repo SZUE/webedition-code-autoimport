@@ -65,7 +65,7 @@ $we_menu_newsletter = array(
 		'parent' => '000100', // separator
 	),
 	array(
-		'text' => g_l('modules_newsletter', '[send]') . '...',
+		'text' => g_l('modules_newsletter', '[send]') . '&hellip;',
 		'parent' => '000100',
 		'cmd' => 'send_newsletter',
 		'perm' => 'SEND_NEWSLETTER || ADMINISTRATOR',
@@ -86,19 +86,19 @@ $we_menu_newsletter = array(
 		'enabled' => '1',
 	),
 	array(
-		'text' => g_l('modules_newsletter', '[domain_check]') . '...',
+		'text' => g_l('modules_newsletter', '[domain_check]') . '&hellip;',
 		'parent' => '002000',
 		'cmd' => 'domain_check',
 		'enabled' => '1',
 	),
 	array(
-		'text' => g_l('modules_newsletter', '[lists_overview_menu]') . '...',
+		'text' => g_l('modules_newsletter', '[lists_overview_menu]') . '&hellip;',
 		'parent' => '002000',
 		'cmd' => 'print_lists',
 		'enabled' => '1',
 	),
 	array(
-		'text' => g_l('modules_newsletter', '[show_log]') . '...',
+		'text' => g_l('modules_newsletter', '[show_log]') . '&hellip;',
 		'parent' => '002000',
 		'cmd' => 'show_log',
 		'enabled' => '1',
@@ -107,13 +107,13 @@ $we_menu_newsletter = array(
 		'parent' => '002000', // separator
 	),
 	array(
-		'text' => g_l('modules_newsletter', '[newsletter_test]') . '...',
+		'text' => g_l('modules_newsletter', '[newsletter_test]') . '&hellip;',
 		'parent' => '002000',
 		'cmd' => 'test_newsletter',
 		'enabled' => '1',
 	),
 	array(
-		'text' => g_l('modules_newsletter', '[preview]') . '...',
+		'text' => g_l('modules_newsletter', '[preview]') . '&hellip;',
 		'parent' => '002000',
 		'cmd' => 'preview_newsletter',
 		'enabled' => '1',
@@ -135,26 +135,26 @@ $we_menu_newsletter = array(
 		'parent' => '002000', // separator
 	),
 	array(
-		'text' => g_l('modules_newsletter', '[edit_file]') . '...',
+		'text' => g_l('modules_newsletter', '[edit_file]') . '&hellip;',
 		'parent' => '002000',
 		'cmd' => 'edit_file',
 		'enabled' => '1',
 	),
 	array(
-		'text' => g_l('modules_newsletter', '[black_list]') . '...',
+		'text' => g_l('modules_newsletter', '[black_list]') . '&hellip;',
 		'parent' => '002000',
 		'cmd' => 'black_list',
 		'enabled' => '1',
 	),
 	array(
-		'text' => g_l('modules_newsletter', '[clear_log]') . '...',
+		'text' => g_l('modules_newsletter', '[clear_log]') . '&hellip;',
 		'parent' => '002000',
 		'cmd' => 'clear_log',
 		'perm' => 'NEWSLETTER_SETTINGS || ADMINISTRATOR',
 		'enabled' => '1',
 	),
 	array(
-		'text' => g_l('modules_newsletter', '[settings]') . '...',
+		'text' => g_l('modules_newsletter', '[settings]') . '&hellip;',
 		'parent' => '002000',
 		'cmd' => 'newsletter_settings',
 		'perm' => 'NEWSLETTER_SETTINGS || ADMINISTRATOR',
@@ -166,13 +166,13 @@ $we_menu_newsletter = array(
 		'enabled' => '1',
 	),
 	array(
-		'text' => g_l('modules_newsletter', '[help]') . '...',
+		'text' => g_l('modules_newsletter', '[help]') . '&hellip;',
 		'parent' => '004000',
 		'cmd' => 'help_modules',
 		'enableadd' => '1',
 	),
 	array(
-		'text' => g_l('modules_newsletter', '[info]') . '...',
+		'text' => g_l('modules_newsletter', '[info]') . '&hellip;',
 		'parent' => '004000',
 		'cmd' => 'info_modules',
 		'enabled' => '1',

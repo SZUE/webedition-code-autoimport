@@ -138,7 +138,7 @@ class leWizardTemplateBase{
 				. $this->getButtonJs($CurrentStep)
 				. $this->getProgressBarJs($CurrentStep);
 
-			if(sizeof($this->_Javascripts) > 0){
+			if(!empty($this->_Javascripts)){
 				$this->_Javascripts = array_reverse($this->_Javascripts);
 				foreach($this->_Javascripts as $Javascript){
 					$Output .= $Javascript . "\n";
@@ -162,8 +162,8 @@ class leWizardTemplateBase{
 				$this->addJavascript('parent.leWizardStatus.update("' . $CurrentStep->getWizardName() . '", "' . $CurrentStep->getName() . '");');
 			}
 
-			if(sizeof($this->_Errors) > 0){
-				for($i = 0; $i < sizeof($this->_Errors); $i++){
+			if(!empty($this->_Errors)){
+				for($i = 0; $i < count($this->_Errors); $i++){
 					$this->Errors .= "<h1 class=\"error\">{$this->_Errors[$i]}</h1>\n";
 				}
 			} else{
@@ -192,7 +192,7 @@ class leWizardTemplateBase{
 				$this->addJavascript('parent.leWizardContent.replaceDescription("");');
 			}
 
-			if(sizeof($this->_Javascripts) > 0){
+			if(!empty($this->_Javascripts)){
 				$this->_Javascripts = array_reverse($this->_Javascripts);
 				$this->Javascript .= '<script type="text/javascript"><!--';
 				foreach($this->_Javascripts as $Javascript){

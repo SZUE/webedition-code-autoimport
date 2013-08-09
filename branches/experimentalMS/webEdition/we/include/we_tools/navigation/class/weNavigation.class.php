@@ -57,6 +57,7 @@ class weNavigation extends weModelBase{
 	var $DocTypeID = 0;
 	var $ClassID = 0;
 	var $Categories = array();
+	var $CatAnd = 1;
 	var $CategoryIDs = '';
 	var $Sort = array();
 	var $ShowCount = 5;
@@ -368,7 +369,7 @@ class weNavigation extends weModelBase{
 	}
 
 	function pathExists($path){
-		return f('SELECT 1 AS a FROM ' . $this->db->escape($this->table) . ' WHERE Path = \'' . $this->db->escape($path) . '\' AND ID !=' . intval($this->ID), 'a', $this->db) === '1';
+		return f('SELECT 1 AS a FROM ' . $this->db->escape($this->table) . ' WHERE Path = "' . $this->db->escape($path) . '" AND ID !=' . intval($this->ID), 'a', $this->db) === '1';
 	}
 
 	function isSelf(){
@@ -405,12 +406,12 @@ class weNavigation extends weModelBase{
 			$path = $this->Text;
 		}
 
-		$foo = getHash('SELECT Text,ParentID FROM ' . NAVIGATION_TABLE . " WHERE ID=" . intval($id), $db_tmp);
+		$foo = getHash('SELECT Text,ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($id), $db_tmp);
 		$path = '/' . (isset($foo['Text']) ? $foo['Text'] : '') . $path;
 
 		$pid = isset($foo['ParentID']) ? $foo['ParentID'] : '';
 		while($pid > 0) {
-			$db_tmp->query("SELECT Text,ParentID FROM " . NAVIGATION_TABLE . " WHERE ID=" . intval($pid));
+			$db_tmp->query("SELECT Text,ParentID FROM " . NAVIGATION_TABLE . ' WHERE ID=' . intval($pid));
 			while($db_tmp->next_record()) {
 				$path = '/' . $db_tmp->f('Text') . $path;
 				$pid = $db_tmp->f('ParentID');
@@ -420,9 +421,7 @@ class weNavigation extends weModelBase{
 	}
 
 	function saveField($name, $serialize = false){
-		$field = ($serialize ? serialize($this->$name) : $this->$name);
-
-		$this->db->query('UPDATE ' . $this->db->escape($this->table) . ' SET ' . $name . '="' . $this->db->escape($field) . '" WHERE ID=' . intval($this->ID));
+		$this->db->query('UPDATE ' . $this->db->escape($this->table) . ' SET ' . $name . '="' . $this->db->escape(($serialize ? serialize($this->$name) : $this->$name)) . '" WHERE ID=' . intval($this->ID));
 		return $this->db->affected_rows();
 	}
 
@@ -430,12 +429,12 @@ class weNavigation extends weModelBase{
 		if($this->Selection == self::SELECTION_DYNAMIC){
 			switch($this->SelectionType){
 				case self::STPYE_DOCTYPE:
-					return weDynList::getDocuments($this->DocTypeID, $this->FolderID, $this->Categories, $this->Sort, $this->ShowCount, $this->TitleField);
+					return weDynList::getDocuments($this->DocTypeID, $this->FolderID, $this->Categories, $this->CatAnd ? 'AND' : 'OR', $this->Sort, $this->ShowCount, $this->TitleField);
 				case self::STPYE_CATEGORY:
 					return weDynList::getCatgories($this->FolderID, $this->ShowCount);
 				default:
 					return $this->ClassID > 0 ? weDynList::getObjects(
-							$this->ClassID, $this->FolderID, $this->Categories, $this->Sort, $this->ShowCount, $this->TitleField) : array();
+							$this->ClassID, $this->FolderID, $this->Categories, $this->CatAnd ? 'AND' : 'OR', $this->Sort, $this->ShowCount, $this->TitleField) : array();
 			}
 		}
 	}
@@ -549,13 +548,8 @@ class weNavigation extends weModelBase{
 	function getDynamicPreview(&$storage, $rules = false){
 		$_items = array();
 
-		$_count = count($storage['items']);
-		for($i = 0; $i < $_count; $i++){
-
-			$item = $storage['items'][$i];
-
+		foreach($storage['items'] as $item){
 			if($item['ParentID'] == $this->ID){
-
 				$_nav = new weNavigation();
 				$_nav->initByRawData($item);
 				if($_nav->IsFolder || $_nav->Selection != self::SELECTION_DYNAMIC){
@@ -583,7 +577,6 @@ class weNavigation extends weModelBase{
 				}
 
 				if($_nav->IsFolder == 0 && $_nav->Selection == self::SELECTION_DYNAMIC){
-
 					$_dyn_items = $_nav->getDynamicEntries();
 					foreach($_dyn_items as $_dyn){
 
@@ -600,16 +593,17 @@ class weNavigation extends weModelBase{
 							'type' => 'item',
 							'parentid' => $_nav->ParentID,
 							'workspaceid' => $_nav->WorkspaceID,
-							'icon' => isset($storage['ids'][$_nav->IconID]) ? $storage['ids'][$_nav->IconID] : id_to_path(
-									$_nav->IconID),
+							'icon' => isset($storage['ids'][$_nav->IconID]) ? $storage['ids'][$_nav->IconID] : id_to_path($_nav->IconID),
 							'attributes' => $_nav->Attributes,
 							'customers' => weNavigationItems::getCustomerData($_nav),
+							'currentonurlpar' => $_nav->CurrentOnUrlPar,
+							'currentonanker' => $_nav->CurrentOnAnker,
 							'limitaccess' => $_nav->LimitAccess,
-							'depended' => 2
+							'depended' => 2,
 						);
 
 						if($rules){
-							$_items[(sizeof($_items) - 1)]['currentRule'] = weNavigationRule::getWeNavigationRule(
+							$_items[(count($_items) - 1)]['currentRule'] = weNavigationRule::getWeNavigationRule(
 									'defined_' . (!empty($_dyn['field']) ? $_dyn['field'] : $_dyn['text']), $_nav->ID, $_nav->SelectionType, $_nav->FolderID, $_nav->DocTypeID, $_nav->ClassID, $_nav->CategoryIDs, $_nav->WorkspaceID, $_href, false);
 						}
 					}
@@ -619,10 +613,6 @@ class weNavigation extends weModelBase{
 					$_items = array_merge($_items, $_nav->getDynamicPreview($storage, $rules));
 				}
 			}
-		}
-
-		if(!empty($_new_items)){
-			$_items = array_merge($_items, array_reverse($_new_items, true));
 		}
 
 		return $_items;
@@ -641,9 +631,8 @@ class weNavigation extends weModelBase{
 	function reorderUp(){
 		if($this->ID){
 			if($this->Ordn > 0){
-				$_db = new DB_WE();
-				$_parentid = f('SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($this->ID), 'ParentID', $_db);
-				$_db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=' . abs($this->Ordn) . ' WHERE ParentID=' . intval($_parentid) . ' AND Ordn=' . abs($this->Ordn - 1));
+				$_parentid = f('SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($this->ID), 'ParentID', $this->db);
+				$this->db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=' . abs($this->Ordn) . ' WHERE ParentID=' . intval($_parentid) . ' AND Ordn=' . abs($this->Ordn - 1));
 				$this->Ordn--;
 				$this->saveField('Ordn');
 				$this->reorder($this->ParentID);
@@ -658,8 +647,7 @@ class weNavigation extends weModelBase{
 			$_parentid = f('SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($this->ID), 'ParentID', $this->db);
 			$_num = f('SELECT COUNT(ID) as OrdCount FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($_parentid), 'OrdCount', $this->db);
 			if($this->Ordn < ($_num - 1)){
-				$_db = new DB_WE();
-				$_db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=' . abs($this->Ordn) . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Ordn=' . abs($this->Ordn + 1));
+				$this->db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=' . abs($this->Ordn) . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Ordn=' . abs($this->Ordn + 1));
 				$this->Ordn++;
 				$this->saveField('Ordn');
 				$this->reorder($this->ParentID);
@@ -719,7 +707,7 @@ class weNavigation extends weModelBase{
 					break;
 				case self::STPYE_CATEGORY:
 				case self::STPYE_CATLINK:
-					$_path = $this->LinkSelection == 'extern' ? $this->Url : ($_path = isset($storage[$_id]) ? $storage[$_id] : id_to_path($this->UrlID, FILE_TABLE));
+					$_path = $this->LinkSelection == 'extern' ? $this->Url : ($_path = isset($storage[$this->UrlID]) ? $storage[$this->UrlID] : id_to_path($this->UrlID, FILE_TABLE));
 					if(!empty($this->CatParameter)){
 						$_param = $this->CatParameter . '=' . $_id . (!empty($_param) ? '&' : '') . $_param;
 					}
@@ -742,6 +730,7 @@ class weNavigation extends weModelBase{
 							}
 						} else{
 							$_param = 'we_objectID=' . $_id . (!empty($_param) ? '&' : '') . $_param;
+							$objecttriggerid = '';
 						}
 						$_id = ($objecttriggerid ? $objecttriggerid : weDynList::getFirstDynDocument($this->WorkspaceID));
 					}
@@ -762,8 +751,9 @@ class weNavigation extends weModelBase{
 			$this->Attributes = @unserialize($this->Attributes);
 		}
 
-		$_path .= ($_param != '' ? ((strpos($_path, '?') === false ? '?' : '&amp;') . $_param) : '') .
-			(($this->CurrentOnAnker && isset($this->Attributes['anchor']) && !empty($this->Attributes['anchor'])) ? ( (strpos($_path, '?') === false ? '?' : '&amp;') . 'we_anchor=' . $this->Attributes['anchor']) : '') .
+		$_path .= ($_param != '' ? ((strpos($_path, '?') === false ? '?' : '&amp;') . $_param) : '');
+		//leave this, because of strpos
+		$_path .= (($this->CurrentOnAnker && isset($this->Attributes['anchor']) && !empty($this->Attributes['anchor'])) ? ( (strpos($_path, '?') === false ? '?' : '&amp;') . 'we_anchor=' . $this->Attributes['anchor']) : '') .
 			((isset($this->Attributes['anchor']) && !empty($this->Attributes['anchor'])) ? ('#' . $this->Attributes['anchor']) : '');
 
 		$_path = str_replace(array('&amp;', '&'), array('&', '&amp;'), $_path);
@@ -860,14 +850,14 @@ class weNavigation extends weModelBase{
 			), $string);
 
 		return str_replace(array(
-				$open,
-				$close,
-				$amp,
-				), array(
-				'<',
-				'>',
-				'&',
-				), oldHtmlspecialchars($string));
+			$open,
+			$close,
+			$amp,
+			), array(
+			'<',
+			'>',
+			'&',
+			), oldHtmlspecialchars($string));
 	}
 
 	static public function getNavCondition($id, $table){

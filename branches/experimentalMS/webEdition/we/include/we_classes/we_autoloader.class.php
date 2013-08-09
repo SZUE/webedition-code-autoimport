@@ -39,14 +39,17 @@ abstract class we_autoloader{
 	private static $domains = array(
 		'base' => 'we_classes/base',
 		'database' => 'we_classes/database',
+		'customer' => 'we_modules/customer',
+		'helpers' => 'we_classes/helpers',
 		'html' => 'we_classes/html',
+		'import' => 'we_classes/import',
 		'main' => 'we_classes/main',
 		'messaging' => 'we_modules/messaging',
 		'users' => 'we_modules/users',
 		'shop' => 'we_modules/shop',
 		'tag' => 'we_classes/tag',
-		'workflow'=>'we_modules/workflow',
-		'wysiwyg'=>'we_classes/wysiwyg',
+		'workflow' => 'we_modules/workflow',
+		'wysiwyg' => 'we_classes/wysiwyg',
 		'xml' => 'we_classes/xml',
 	);
 	private static $classes = array(
@@ -59,8 +62,6 @@ abstract class we_autoloader{
 			'copyFolderFinishFrag' => 'we_copyFolderFinishFrag.class.php',
 			'copyFolderFrag' => 'we_copyFolderFrag.class.php',
 			'CSV' => 'csv.inc.php',
-			'CSVFixImport' => 'csv.inc.php',
-			'CSVImport' => 'csv.inc.php',
 			'DB_WE' => 'database/DB_WE.inc.php', //pseudo-element which loads a wrapper, doesn't contrain a real class!
 			/* DB is never autoloaded
 			  'DB_WE' => 'database/we_database_mysql.class.inc.php',
@@ -81,7 +82,7 @@ abstract class we_autoloader{
 			'leWizardStepBase' => 'leWizard/leWizardStepBase.class.php',
 			'leWizardTemplateBase' => 'leWizard/leWizardTemplateBase.class.php',
 			'listviewBase' => 'listview/listviewBase.class.php',
-			'liveUpdateFunctions' => 'leWizard/liveUpdateFunctions.class.php',
+			'liveUpdateFunctions' => '../../../liveUpdate/classes/liveUpdateFunctions.class.php',
 			'liveUpdateHttp' => 'leWizard/liveUpdateHttp.class.php',
 			'liveUpdateHttpWizard' => 'leWizard/liveUpdateHttpWizard.class.php',
 			'liveUpdateResponse' => 'leWizard/liveUpdateResponse.class.php',
@@ -216,7 +217,6 @@ abstract class we_autoloader{
 			'weCustomer' => 'customer/weCustomer.php',
 			'weCustomerAdd' => 'customer/weCustomerAdd.php',
 			'weCustomerEI' => 'customer/weCustomerEI.php',
-			'weCustomerCSVImport' => 'customer/weCustomerEI.php',
 			'weCustomerEIWizard' => 'customer/weCustomerEIWizard.php',
 			'weCustomerFilterView' => 'customer/weCustomerFilterView.class.php',
 			'weCustomerFrames' => 'customer/weCustomerFrames.php',
@@ -445,7 +445,7 @@ abstract class we_autoloader{
 		//no we-class
 		//FIXME: this should be expected in future
 		if(substr($class_name, 0, 3) === 'we_'){
-			@list(, $domain, $class) = explode('_', $class_name);
+			@list(, $domain) = explode('_', $class_name);
 			if(!isset(self::$domains[$domain])){
 				//				t_e('Error class domain not set in autoloader!');
 			} else{

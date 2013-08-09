@@ -16,7 +16,6 @@
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -39,17 +38,13 @@ import javax.swing.text.DefaultEditorKit;
 import javax.swing.text.DefaultStyledDocument;
 import javax.swing.text.Document;
 import javax.swing.text.EditorKit;
-import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
 import javax.swing.text.StyledEditorKit;
-import javax.swing.text.TabSet;
-import javax.swing.text.TabStop;
 import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
 import javax.swing.undo.UndoManager;
 
-public class EditorPanel extends JPanel {
+public final class EditorPanel extends JPanel {
 
 	/**
 	 *
@@ -282,22 +277,25 @@ public class EditorPanel extends JPanel {
 	}
 
 	public void setTabs(JTextPane textPane, int charactersPerTab) {
-		FontMetrics fm = textPane.getFontMetrics(textPane.getFont());
-		int charWidth = fm.charWidth('w');
-		int tabWidth = charWidth * charactersPerTab;
 
-		TabStop[] tabs = new TabStop[10];
+		/* this doesn't work anymore!
+		 FontMetrics fm = textPane.getFontMetrics(textPane.getFont());
+		 int charWidth = fm.charWidth('w');
+		 int tabWidth = charWidth * charactersPerTab;
 
-		for (int j = 0; j < tabs.length; j++) {
-			int tab = j + 1;
-			tabs[j] = new TabStop(tab * tabWidth);
-		}
+		 TabStop[] tabs = new TabStop[10];
 
-		TabSet tabSet = new TabSet(tabs);
-		SimpleAttributeSet attributes = new SimpleAttributeSet();
-		StyleConstants.setTabSet(attributes, tabSet);
-		int length = textPane.getDocument().getLength();
-		textPane.getStyledDocument().setParagraphAttributes(0, length, attributes, false);
+		 for (int j = 0; j < tabs.length; j++) {
+		 int tab = j + 1;
+		 tabs[j] = new TabStop(tab * tabWidth);
+		 }
+
+		 TabSet tabSet = new TabSet(tabs);
+		 SimpleAttributeSet attributes = new SimpleAttributeSet();
+		 StyleConstants.setTabSet(attributes, tabSet);
+		 int length = textPane.getDocument().getLength();
+		 textPane.getStyledDocument().setParagraphAttributes(0, length, attributes, false);
+		 */
 	}
 
 	@Override
@@ -329,19 +327,20 @@ public class EditorPanel extends JPanel {
 	}
 
 	@Override
-	public void setSize(int width, int height){
+	public void setSize(int width, int height) {
 		System.out.println("setSize3");
 		System.out.flush();
 
-}
+	}
+
 	@Override
-	public void setSize(Dimension d){
+	public void setSize(Dimension d) {
 		System.out.println("setSize4");
 		System.out.flush();
 
-}
+	}
 
-		@Override
+	@Override
 	public void resize(int width, int height) {
 		System.out.println("resize3");
 		System.out.flush();
@@ -353,7 +352,6 @@ public class EditorPanel extends JPanel {
 		System.out.flush();
 
 	}
-
 
 	public TagSuggestor getSuggestor() {
 		return tSuggestor;

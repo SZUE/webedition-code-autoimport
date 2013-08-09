@@ -25,7 +25,7 @@
 function we_tag_votingField($attribs){
 
 	if(isset($GLOBALS['_we_voting'])){
-		$name = weTag_getAttribute('name', $attribs);
+		$name = weTag_getAttribute('_name_orig', $attribs);
 		$type = weTag_getAttribute('type', $attribs);
 		$precision = weTag_getAttribute('precision', $attribs, 0);
 		$num_format = weTag_getAttribute('num_format', $attribs);

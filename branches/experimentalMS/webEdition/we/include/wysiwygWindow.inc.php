@@ -46,43 +46,56 @@ if(isset($_REQUEST['we_cmd'][15])){
 	}
 }
 
-
 @we_html_tools::headerCtCharset('text/html', ($_REQUEST['we_cmd'][15] ? $_REQUEST['we_cmd'][15] : $defaultCharset));
 
-we_html_tools::protect();
+if(!(isset($_REQUEST['we_cmd'][23]) && $_REQUEST['we_cmd'][23] == 1 && we_cmd_dec(4) == 'frontend')){
+	we_html_tools::protect();
+}
 
-$we_dt = isset($_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][4]]) ? $_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][4]] : '';
-include (WE_INCLUDES_PATH . "we_editors/we_init_doc.inc.php");
+//$we_dt = isset($_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][4]]) ? $_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][4]] : '';
+//include (WE_INCLUDES_PATH . "we_editors/we_init_doc.inc.php");
 
 if(preg_match('%^.+_te?xt\[.+\]$%i', $_REQUEST['we_cmd'][1])){
 	$fieldName = preg_replace('/^.+_te?xt\[(.+)\]$/', '\1', $_REQUEST['we_cmd'][1]);
-} else
-if(preg_match('|^.+_input\[.+\]$|i', $_REQUEST['we_cmd'][1])){
+} else if(preg_match('|^.+_input\[.+\]$|i', $_REQUEST['we_cmd'][1])){
 	$fieldName = preg_replace('/^.+_input\[(.+)\]$/', '\1', $_REQUEST['we_cmd'][1]);
+} else if(preg_match('|^we_ui.+\[.+\]$|i', $_REQUEST['we_cmd'][1])){//we_user_input
+	$fieldName = preg_replace('/^we_ui.+\[(.+)\]$/', '\1', $_REQUEST['we_cmd'][1]);
+	$writeToFrontend = true;
 }
 
-we_html_tools::htmlTop(sprintf(g_l('wysiwyg', '[window_title]'), $fieldName), ($_REQUEST['we_cmd'][15] ? $_REQUEST['we_cmd'][15] : $defaultCharset));
+we_html_tools::htmlTop(sprintf("", $fieldName), ($_REQUEST['we_cmd'][15] ? $_REQUEST['we_cmd'][15] : $defaultCharset));
 
 if(isset($fieldName) && isset($_REQUEST["we_okpressed"]) && $_REQUEST["we_okpressed"]){
-	if(preg_match('%^(.+_te?xt)\[.+\]$%i', $_REQUEST['we_cmd'][1])){
-		$reqName = preg_replace('/^(.+_te?xt)\[.+\]$/', '\1', $_REQUEST['we_cmd'][1]);
-	} else if(preg_match('|^(.+_input)\[.+\]$|i', $_REQUEST['we_cmd'][1])){
-		$reqName = preg_replace('/^(.+_input)\[.+\]$/', '\1', $_REQUEST['we_cmd'][1]);
-	}
-	$we_doc->setElement($fieldName, $_REQUEST[$reqName][$fieldName], "input");
-	$we_doc->saveInSession($_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][4]]);
-	$newHTML = $we_doc->getField(array("name" => $fieldName));
-	echo we_html_element::jsElement(
-		'if(top.opener && top.opener.top.weEditorFrameController.getVisibleEditorFrame()){
-			if(top.opener.top.weEditorFrameController.getVisibleEditorFrame().document.getElementById("div_wysiwyg_' . $_REQUEST['we_cmd'][1] . '")){
-				top.opener.top.weEditorFrameController.getVisibleEditorFrame().document.getElementById("div_wysiwyg_' . $_REQUEST['we_cmd'][1] . '").innerHTML = "' .
-		preg_replace(
-			'|script|i', 'scr"+"ipt', str_replace("\"", "\\\"", str_replace("\r", "\\r", str_replace("\n", "\\n", $newHTML)))) . '";
-			}
-
-			//top.opener.we_cmd("reload_editpage");
+	if(!isset($writeToFrontend)){
+		if(preg_match('%^(.+_te?xt)\[.+\]$%i', $_REQUEST['we_cmd'][1])){
+			$reqName = preg_replace('/^(.+_te?xt)\[.+\]$/', '\1', $_REQUEST['we_cmd'][1]);
+		} else if(preg_match('|^(.+_input)\[.+\]$|i', $_REQUEST['we_cmd'][1])){
+			$reqName = preg_replace('/^(.+_input)\[.+\]$/', '\1', $_REQUEST['we_cmd'][1]);
 		}
-		top.close();');
+		$openerDocument = 'top.opener.top.weEditorFrameController.getVisibleEditorFrame().document';
+	} else{
+		$reqName = str_replace('[' . $fieldName . ']', '', $_REQUEST['we_cmd'][1]);
+		$openerDocument = 'top.opener.document';
+	}
+
+	$value = preg_replace('|script|i', 'scr"+"ipt', str_replace(array("\r", "\n", "'"), array("\\r", "\\n", "&#039;"), $_REQUEST[$reqName][$fieldName]));
+	$taValue = str_replace("\"", "\\\"", $value);
+	$divValue = isset($writeToFrontend) ? $taValue : str_replace("\"", "\\\"", parseInternalLinks($value, 0));
+
+	echo we_html_element::jsElement('
+		try{
+			' . $openerDocument . '.getElementById("' . $_REQUEST['we_cmd'][1] . '").value = \'' . $taValue . '\';
+		} catch(err){}
+		try{
+			' . $openerDocument . '.getElementById("div_wysiwyg_' . $_REQUEST['we_cmd'][1] . '").innerHTML = \'' . $divValue . '\';
+		} catch(err){}
+		try{
+			top.opener.top.weEditorFrameController.getVisibleEditorFrame().seeMode_dealWithLinks();
+		} catch(err){}
+
+		top.close();
+	');
 	?>
 
 	</head>
@@ -109,7 +122,7 @@ if(isset($fieldName) && isset($_REQUEST["we_okpressed"]) && $_REQUEST["we_okpres
 			  1 = name
 			  2 = width
 			  3 = height
-			  4 = transaction
+			  4 = empty
 			  5 = propstring
 			  6 = classname
 			  7 = fontnames
@@ -123,14 +136,21 @@ if(isset($fieldName) && isset($_REQUEST["we_okpressed"]) && $_REQUEST["we_okpres
 			  15 = charset
 			  16 = cssClasses
 			  17 = Language
-
+			  18 = documentCss
+			  19 = origName
+			  20 = tinyParams
+			  21 = contextmenu
+			  22 = isInPopup
+			  23 = isInFrontend
+			 *
 			 */
 
 			$e = new we_wysiwyg(
 					$_REQUEST['we_cmd'][1],
 					$_REQUEST['we_cmd'][2],
 					$_REQUEST['we_cmd'][3],
-					$we_doc->getElement($fieldName),
+					//!isset($_REQUEST['we_cmd'][22]) || !$_REQUEST['we_cmd'][22] ? $we_doc->getElement($fieldName) : '',
+					'',
 					$_REQUEST['we_cmd'][5],
 					$_REQUEST['we_cmd'][13],
 					'',
@@ -143,7 +163,17 @@ if(isset($fieldName) && isset($_REQUEST["we_okpressed"]) && $_REQUEST["we_okpres
 					$_REQUEST['we_cmd'][14],
 					$_REQUEST['we_cmd'][15],
 					$_REQUEST['we_cmd'][16],
-					$_REQUEST['we_cmd'][17]);
+					$_REQUEST['we_cmd'][17],
+					'',
+					true,
+					$_REQUEST['we_cmd'][23],
+					'top',
+					true,
+					we_cmd_dec(18),
+					we_cmd_dec(19),
+					we_cmd_dec(20),
+					we_cmd_dec(21),
+					true);
 
 			print we_wysiwyg::getHeaderHTML() . $e->getHTML() .
 				'<div style="height:8px"></div>' . we_button::position_yes_no_cancel($okBut, $cancelBut);

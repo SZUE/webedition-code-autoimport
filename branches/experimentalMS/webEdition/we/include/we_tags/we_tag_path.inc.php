@@ -24,22 +24,22 @@
  */
 function we_tag_path($attribs){
 	$db = $GLOBALS['DB_WE'];
-	$field = weTag_getAttribute("field", $attribs);
-	$dirfield = weTag_getAttribute("dirfield", $attribs, $field);
-	$index = weTag_getAttribute("index", $attribs);
+	$field = weTag_getAttribute('field', $attribs);
+	$dirfield = weTag_getAttribute('dirfield', $attribs, $field);
+	$index = weTag_getAttribute('index', $attribs);
 	$oldHtmlspecialchars = weTag_getAttribute('htmlspecialchars', $attribs, false, true);
-	$fieldforfolder = weTag_getAttribute("fieldforfolder", $attribs, false, true);
-	$docAttr = weTag_getAttribute("doc", $attribs);
-	$sep = weTag_getAttribute("separator", $attribs, "/");
-	$home = weTag_getAttribute("home", $attribs, "home");
-	$hidehome = weTag_getAttribute("hidehome", $attribs, false, true);
-	$class = weTag_getAttribute("class", $attribs);
-	$style = weTag_getAttribute("style", $attribs);
+	$fieldforfolder = weTag_getAttribute('fieldforfolder', $attribs, false, true);
+	$docAttr = weTag_getAttribute('doc', $attribs);
+	$sep = weTag_getAttribute('separator', $attribs, '/');
+	$home = weTag_getAttribute('home', $attribs, 'home');
+	$hidehome = weTag_getAttribute('hidehome', $attribs, false, true);
+	$class = weTag_getAttribute('class', $attribs);
+	$style = weTag_getAttribute('style', $attribs);
 
 	$doc = we_getDocForTag($docAttr, true);
 	$pID = $doc->ParentID;
 
-	$indexArray = $index ? explode(',', $index) : array("index.html", "index.htm", "index.php", "default.htm", "default.html", "default.php");
+	$indexArray = $index ? explode(',', $index) : array('index.html', 'index.htm', 'index.php', 'default.htm', 'default.html', 'default.php');
 
 	$class = $class ? ' class="' . $class . '"' : '';
 	$style = $style ? ' style="' . $style . '"' : '';
@@ -88,7 +88,8 @@ function we_tag_path($attribs){
 		return $path;
 	}
 
-	list($fileID, $filePath) = getHash('SELECT ID,Path FROM ' . FILE_TABLE . ' WHERE ParentID=0 AND IsFolder=0 AND (' . $q . ') AND (Published>0 AND IsSearchable=1)', $db);
+	$hash = getHash('SELECT ID,Path FROM ' . FILE_TABLE . ' WHERE ParentID=0 AND IsFolder=0 AND (' . $q . ') AND (Published>0 AND IsSearchable=1)', $db);
+	list($fileID, $filePath) = (empty($hash) ? array(0, '') : $hash);
 	if($fileID){
 		$show = f('SELECT ' . CONTENT_TABLE . '.Dat as Dat FROM ' . LINK_TABLE . ',' . CONTENT_TABLE . ' WHERE ' . LINK_TABLE . '.DID=' . intval($fileID) . ' AND ' . LINK_TABLE . '.Name="' . $db->escape($field) . '" AND ' . CONTENT_TABLE . '.ID = ' . LINK_TABLE . '.CID', 'Dat', $db);
 		if(!$show){

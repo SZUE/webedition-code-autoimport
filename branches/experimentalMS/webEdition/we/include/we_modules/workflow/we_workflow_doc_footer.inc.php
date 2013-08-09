@@ -42,7 +42,7 @@ function showWorkflowFooterForNormalMode(){
 	$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
 	$_footerTable->setColContent(0, $_col++, we_button::create_button("decline", "javascript:decline_workflow();"));
 
-	if(we_workflow_utility::isWorkflowFinished($we_doc->ID, $we_doc->Table) || ((1 + we_workflow_utility::findLastActiveStep($we_doc->ID, $we_doc->Table)) == sizeof(we_workflow_utility::getNumberOfSteps($we_doc->ID, $we_doc->Table)) && we_hasPerm("PUBLISH"))){
+	if(we_workflow_utility::isWorkflowFinished($we_doc->ID, $we_doc->Table) || ((1 + we_workflow_utility::findLastActiveStep($we_doc->ID, $we_doc->Table)) == count(we_workflow_utility::getNumberOfSteps($we_doc->ID, $we_doc->Table)) && we_hasPerm("PUBLISH"))){
 		$_publishbutton = we_button::create_button("publish", "javascript:finish_workflow();");
 	} else{
 		$_footerTable->addCol(2);
@@ -103,7 +103,7 @@ function showWorkflowFooterForSEEMMode(){
 
 		$_footerTable->addCol(2);
 		$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
-		if(we_workflow_utility::isWorkflowFinished($we_doc->ID, $we_doc->Table) || ((1 + we_workflow_utility::findLastActiveStep($we_doc->ID, $we_doc->Table)) == sizeof(we_workflow_utility::getNumberOfSteps($we_doc->ID, $we_doc->Table)) && we_hasPerm("PUBLISH"))){
+		if(we_workflow_utility::isWorkflowFinished($we_doc->ID, $we_doc->Table) || ((1 + we_workflow_utility::findLastActiveStep($we_doc->ID, $we_doc->Table)) == count(we_workflow_utility::getNumberOfSteps($we_doc->ID, $we_doc->Table)) && we_hasPerm("PUBLISH"))){
 			$_footerTable->setColContent(0, $_col++, we_button::create_button("publish", "javascript:finish_workflow();"));
 		} else{
 			$_footerTable->setColContent(0, $_col++, we_button::create_button("forward", "javascript:pass_workflow();"));
@@ -127,7 +127,7 @@ function showWorkflowFooterForSEEMMode(){
 
 		$_footerTable->addCol(2);
 		$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
-		if(we_workflow_utility::isWorkflowFinished($we_doc->ID, $we_doc->Table) || ((1 + we_workflow_utility::findLastActiveStep($we_doc->ID, $we_doc->Table)) == sizeof(we_workflow_utility::getNumberOfSteps($we_doc->ID, $we_doc->Table)) && we_hasPerm("PUBLISH"))){
+		if(we_workflow_utility::isWorkflowFinished($we_doc->ID, $we_doc->Table) || ((1 + we_workflow_utility::findLastActiveStep($we_doc->ID, $we_doc->Table)) == count(we_workflow_utility::getNumberOfSteps($we_doc->ID, $we_doc->Table)) && we_hasPerm("PUBLISH"))){
 			$_footerTable->setColContent(0, $_col++, we_button::create_button("publish", "javascript:finish_workflow();"));
 		} else{
 			$_footerTable->setColContent(0, $_col++, we_button::create_button("forward", "javascript:pass_workflow();"));
@@ -160,7 +160,7 @@ function showWorkflowFooterForSEEMMode(){
 
 		$_footerTable->addCol(2);
 		$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
-		if(we_workflow_utility::isWorkflowFinished($we_doc->ID, $we_doc->Table) || ((1 + we_workflow_utility::findLastActiveStep($we_doc->ID, $we_doc->Table)) == sizeof(we_workflow_utility::getNumberOfSteps($we_doc->ID, $we_doc->Table)) && we_hasPerm("PUBLISH"))){
+		if(we_workflow_utility::isWorkflowFinished($we_doc->ID, $we_doc->Table) || ((1 + we_workflow_utility::findLastActiveStep($we_doc->ID, $we_doc->Table)) == count(we_workflow_utility::getNumberOfSteps($we_doc->ID, $we_doc->Table)) && we_hasPerm("PUBLISH"))){
 			$_footerTable->setColContent(0, $_col++, we_button::create_button("publish", "javascript:finish_workflow();"));
 		} else{
 			$_footerTable->setColContent(0, $_col++, we_button::create_button("forward", "javascript:pass_workflow();"));

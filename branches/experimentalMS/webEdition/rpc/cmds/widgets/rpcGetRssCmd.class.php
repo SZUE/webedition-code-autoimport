@@ -38,13 +38,17 @@ class rpcGetRssCmd extends rpcCmd{
 		$bCfgCategory = (bool) $sCfgBinary{5};
 		$iNumItems = $_REQUEST['we_cmd'][2];
 		switch($iNumItems){
-			case 11: $iNumItems = 15;
+			case 11:
+				$iNumItems = 15;
 				break;
-			case 12: $iNumItems = 20;
+			case 12:
+				$iNumItems = 20;
 				break;
-			case 13: $iNumItems = 25;
+			case 13:
+				$iNumItems = 25;
 				break;
-			case 14: $iNumItems = 50;
+			case 14:
+				$iNumItems = 50;
 				break;
 		}
 		$sTbBinary = $_REQUEST['we_cmd'][3];
@@ -68,7 +72,7 @@ class rpcGetRssCmd extends rpcCmd{
 			$http_response = new HttpResponse($http_request->getHttpResponseStr());
 		}
 		$feeddata = $http_response->http_body;
-		$oRssParser = new XML_RSS($feeddata, $GLOBALS['WE_BACKENDCHARSET']); // Umstellung in der XML_RSS-Klasse: den string, und nicht die url weiterzugeben
+		$oRssParser = new XML_RSS($feeddata, null, $GLOBALS['WE_BACKENDCHARSET']); // Umstellung in der XML_RSS-Klasse: den string, und nicht die url weiterzugeben
 		$tmp = $oRssParser->parse();
 		$sRssOut = "";
 
@@ -140,7 +144,7 @@ class rpcGetRssCmd extends rpcCmd{
 		// title
 		$_title = implode(' - ', $aTb);
 		if(strlen($_title) > 50){
-			$_title = substr($_title, 0, 50) . '...';
+			$_title = substr($_title, 0, 50) . '&hellip;';
 		}
 		$resp->setData('titel', $_title);
 		$resp->setData('widgetType', "rss");
@@ -150,4 +154,3 @@ class rpcGetRssCmd extends rpcCmd{
 	}
 
 }
-

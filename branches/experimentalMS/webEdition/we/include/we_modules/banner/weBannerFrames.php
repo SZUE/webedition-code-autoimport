@@ -36,7 +36,7 @@ class weBannerFrames extends weModuleBannerFrames{
 		$this->getJSCmdCode();
 		?>
 		</head>
-		<frameset rows="32,*,<?php print ($_SESSION["prefs"]["debug_normal"] != 0) ? 100 : 0; ?>" framespacing="0" border="0" frameborder="NO" onLoad="start();">
+		<frameset rows="32,*,0" framespacing="0" border="0" frameborder="NO" onLoad="start();">
 			<frame src="<?php print WEBEDITION_DIR . "we/include/we_modules/banner/"; ?>edit_banner_header.php" name="header" scrolling="NO" noresize>
 			<frame src="<?php print WEBEDITION_DIR . "we/include/we_modules/" . $this->frameset; ?>?pnt=resize" name="resize" scrolling="NO" noresize>
 			<frame src="<?php print WEBEDITION_DIR . "we/include/we_modules/" . $this->frameset; ?>?pnt=cmd" name="cmd" scrolling="NO" noresize>

@@ -403,7 +403,7 @@ class we_ui_controls_ACSuggest{
 		$weSelfContentType = (isset($GLOBALS['we_doc']) && isset($GLOBALS['we_doc']->ContentType)) ? $GLOBALS['we_doc']->ContentType : '';
 		$weSelfID = (isset($GLOBALS['we_doc']) && isset($GLOBALS['we_doc']->ID)) ? $GLOBALS['we_doc']->ID : '';
 
-		if(is_array($this->inputfields) && !count($this->inputfields))
+		if(is_array($this->inputfields) && empty($this->inputfields))
 			return;
 
 		$safariEventListener = "";
@@ -498,7 +498,7 @@ HTS;
 				$initVars .= "	var selInputVal_" . $i . ";\n";
 				$onSelectInit = "";
 				$onSelectDecl = "";
-				if(count($this->setOnSelectFields[$i])){
+				if(!empty($this->setOnSelectFields[$i])){
 					$fildsObjId = ",\n			'fields_id': new Array(";
 					$fildsObjVal = ",\n			'fields_val': new Array(";
 					for($j = 0; $j < count($this->setOnSelectFields[$i]); $j++){

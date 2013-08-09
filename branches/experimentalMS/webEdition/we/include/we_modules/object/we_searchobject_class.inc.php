@@ -34,7 +34,7 @@ class objectsearch extends we_search{
 	function __construct(){
 		parent::__construct();
 		if(isset($sessDat) && is_array($sessDat)){
-			for($i = 0; $i <= sizeof($sessDat); $i++){
+			for($i = 0; $i <= count($sessDat); $i++){
 				if(isset($sessDat[$i])){
 					$v = $sessDat[$i];
 					$v = (get_magic_quotes_gpc() == 1) ? stripslashes($v) : $v;
@@ -45,7 +45,7 @@ class objectsearch extends we_search{
 	}
 
 	function init($sessDat = ""){
-		for($i = 0; $i <= sizeof($sessDat); $i++){
+		for($i = 0; $i <= count($sessDat); $i++){
 			if(isset($sessDat[$i])){
 				$v = $sessDat[$i];
 				$v = (get_magic_quotes_gpc() == 1) ? stripslashes($v) : $v;
@@ -54,19 +54,19 @@ class objectsearch extends we_search{
 		}
 	}
 
-	function getFields($name = "obj_searchField", $size = 1, $select = "", $Path, $multi = ""){
+	function getFields($name = 'obj_searchField', $size = 1, $select = "", $Path, $multi = ""){
 
-		$objID = f("SELECT ID FROM " . OBJECT_TABLE . " WHERE Path='" . $GLOBALS['DB_WE']->escape($Path) . "'", "ID", $GLOBALS['DB_WE']);
+		$objID = f('SELECT ID FROM ' . OBJECT_TABLE . " WHERE Path='" . $GLOBALS['DB_WE']->escape($Path) . "'", "ID", $GLOBALS['DB_WE']);
 		$opts = '';
 		$tableInfo = $GLOBALS['DB_WE']->metadata(OBJECT_X_TABLE . $objID);
 		$all = "";
-		for($i = 0; $i < sizeof($tableInfo); $i++){
+		for($i = 0; $i < count($tableInfo); $i++){
 			if($tableInfo[$i]["name"] != "ID" && substr($tableInfo[$i]["name"], 0, 3) != "OF_" && stripos($tableInfo[$i]["name"], "multiobject") !== 0 && stripos($tableInfo[$i]["name"], "object") !== 0){
 				$regs = explode('_', $tableInfo[$i]["name"], 2);
 				if(count($regs) == 2){
 					$opts .= '<option value="' . $tableInfo[$i]["name"] . '" '
 						. (($select == $tableInfo[$i]["name"]) ? "selected" : "") . '>'
-						. $regs[1] . '</option>' . "\n";
+						. $regs[1] . '</option>';
 				}
 				$all .= $tableInfo[$i]["name"] . ",";
 			} else if($tableInfo[$i]["name"] == "OF_Text"){
@@ -84,7 +84,7 @@ class objectsearch extends we_search{
 			}
 		}
 		$all = rtrim($all, ',');
-		$opts = '<option value="' . $all . '">' . g_l('modules_object', '[allFields]') . '</option>' . "\n" . $opts;
+		$opts = '<option value="' . $all . '">' . g_l('modules_object', '[allFields]') . '</option>' . $opts;
 		$onchange = (substr($select, 0, 4) != "meta" && substr($select, 0, 4) != "date" && substr($select, 0, 8) != "checkbox" ? 'onChange="changeit(this.value);"' : 'onChange="changeitanyway(this.value);"');
 		return '<select name="' . $name . '" class="weSelect" size="' . $size . '" ' . $multi . ' ' . $onchange . '>' . $opts . '</select>';
 	}
@@ -112,65 +112,60 @@ class objectsearch extends we_search{
 	}
 
 	function greenOnly($GreenOnly, $pid, $cid){
-		global $DB_WE;
 		if($GreenOnly){
-			$pid_tail = makePIDTail($pid, $cid, $DB_WE, FILE_TABLE);
+			$pid_tail = makePIDTail($pid, $cid, $GLOBALS['DB_WE'], FILE_TABLE);
 			return ' AND ' . OBJECT_X_TABLE . $cid . '.OF_Published > 0 AND ' . $pid_tail;
 		}
 	}
 
 	function getExtraWorkspace($exws, $we_extraWsLength, $id, $userWSArray){
-		if(sizeof($exws)){
-			$out = '<table border="0" cellpadding="0" cellspacing="0">';
-			for($i = 0; $i < sizeof($exws); $i++){
-				if($exws[$i] != ""){
-					if($_SESSION["perms"]["ADMINISTRATOR"]){
-						$foo = true;
-					} else{
-						$foo = in_workspace($exws[$i], $userWSArray);
-					}
-					if($foo){
-						$checkbox = '<a href="javascript:we_cmd(\'toggleExtraWorkspace\',\'' . $GLOBALS["we_transaction"] . '\',\'' . $this->db->f("ID") . '\',\'' . $exws[$i] . '\',\'' . $id . '\')"><img name="check_' . $id . '_' . $this->db->f("ID") . '" src="' . TREE_IMAGE_DIR . 'check' . (strstr($this->db->f("OF_ExtraWorkspacesSelected"), "," . $exws[$i] . ",") ? "1" : "0") . '.gif" width="16" height="18" border="0" /></a>';
-					} else{
-						$checkbox = '<img name="check_' . $id . '_' . $this->db->f("ID") . '" src="' . TREE_IMAGE_DIR . 'check' . (strstr($this->db->f("OF_ExtraWorkspacesSelected"), "," . $exws[$i] . ",") ? "1" : "0") . '_disabled.gif" width="16" height="18" border="0" />';
-					}
-					$p = id_to_path($exws[$i]);
-					$out .= '
-						<tr>
-							<td>
-								' . $checkbox . '</td>
-							<td>
-								' . we_html_tools::getPixel(5, 2) . '</td>
-							<td class="middlefont">
-								&nbsp;<a href="javascript:setWs(\'' . $p . '\',\'' . $exws[$i] . '\')" style="text-decoration:none" class="middlefont" title="' . $p . '">' . shortenPath($p, $we_extraWsLength) . '</a><td>
-						</tr>';
-				}
-			}
-			$out .= '</table>';
-		} else{
-			$out = "-";
+		if(empty($exws)){
+			return "-";
 		}
+
+		$out = '<table border="0" cellpadding="0" cellspacing="0">';
+		for($i = 0; $i < count($exws); $i++){
+			if($exws[$i] != ""){
+				if($_SESSION["perms"]["ADMINISTRATOR"]){
+					$foo = true;
+				} else{
+					$foo = in_workspace($exws[$i], $userWSArray);
+				}
+				if($foo){
+					$checkbox = '<a href="javascript:we_cmd(\'toggleExtraWorkspace\',\'' . $GLOBALS["we_transaction"] . '\',\'' . $this->db->f("ID") . '\',\'' . $exws[$i] . '\',\'' . $id . '\')"><img name="check_' . $id . '_' . $this->db->f("ID") . '" src="' . TREE_IMAGE_DIR . 'check' . (strstr($this->db->f("OF_ExtraWorkspacesSelected"), "," . $exws[$i] . ",") ? "1" : "0") . '.gif" width="16" height="18" border="0" /></a>';
+				} else{
+					$checkbox = '<img name="check_' . $id . '_' . $this->db->f("ID") . '" src="' . TREE_IMAGE_DIR . 'check' . (strstr($this->db->f("OF_ExtraWorkspacesSelected"), "," . $exws[$i] . ",") ? "1" : "0") . '_disabled.gif" width="16" height="18" border="0" />';
+				}
+				$p = id_to_path($exws[$i]);
+				$out .= '
+<tr>
+	<td>' . $checkbox . '</td>
+	<td>' . we_html_tools::getPixel(5, 2) . '</td>
+	<td class="middlefont">&nbsp;<a href="javascript:setWs(\'' . $p . '\',\'' . $exws[$i] . '\')" style="text-decoration:none" class="middlefont" title="' . $p . '">' . shortenPath($p, $we_extraWsLength) . '</a><td>
+</tr>';
+			}
+		}
+		$out .= '</table>';
 		return $out;
 	}
 
 	function getWorkspaces($foo, $we_wsLength){
-		if(sizeof($foo)){
-			$out = '<table border="0" cellpadding="0" cellspacing="0">';
-			for($i = 0; $i < sizeof($foo); $i++){
-				if($foo[$i] != ""){
-					$p = id_to_path($foo[$i]);
-					$pl = strlen($p);
-					$out .= '
-						<tr>
-							<td class="middlefont">
-								&nbsp;<a href="javascript:setWs(\'' . $p . '\',\'' . $foo[$i] . '\')" style="text-decoration:none" class="middlefont" title="' . $p . '">' . shortenPath($p, $we_wsLength) . '</a><td>
-						</tr>';
-				}
-			}
-			$out .= '</table>';
-		} else{
-			$out = "-";
+		if(empty($foo)){
+			return '-';
 		}
+		$out = '<table border="0" cellpadding="0" cellspacing="0">';
+		foreach($foo as $cur){
+			if($cur != ""){
+				$p = id_to_path($cur);
+//				$pl = strlen($p);
+				$out .= '
+<tr>
+	<td class="middlefont">
+		&nbsp;<a href="javascript:setWs(\'' . $p . '\',\'' . $cur . '\')" style="text-decoration:none" class="middlefont" title="' . $p . '">' . shortenPath($p, $we_wsLength) . '</a><td>
+</tr>';
+			}
+		}
+		$out .= '</table>';
 		return $out;
 	}
 
@@ -216,4 +211,3 @@ class objectsearch extends we_search{
 	}
 
 }
-

@@ -75,7 +75,7 @@ $we_menu_shop['200000'] = array(
 );
 
 $we_menu_shop['210000'] = array(
-	'text' => g_l('javaMenu_shop', '[shop_pref]') . '...',
+	'text' => g_l('javaMenu_shop', '[shop_pref]') . '&hellip;',
 	'parent' => '200000',
 	'cmd' => 'pref_shop',
 	'perm' => 'EDIT_SHOP_PREFS || ADMINISTRATOR',
@@ -85,7 +85,7 @@ $we_menu_shop['210000'] = array(
 $we_menu_shop['220000'] = array('parent' => '200000'); // separator
 
 $we_menu_shop['230000'] = array(
-	'text' => g_l('javaMenu_shop', '[shop_status]') . '...',
+	'text' => g_l('javaMenu_shop', '[shop_status]') . '&hellip;',
 	'parent' => '200000',
 	'cmd' => 'edit_shop_status',
 	'perm' => 'EDIT_SHOP_PREFS || ADMINISTRATOR',
@@ -93,7 +93,7 @@ $we_menu_shop['230000'] = array(
 );
 
 $we_menu_shop['240000'] = array(
-	'text' => g_l('javaMenu_shop', '[country_vat]') . '...',
+	'text' => g_l('javaMenu_shop', '[country_vat]') . '&hellip;',
 	'parent' => '200000',
 	'cmd' => 'edit_shop_vat_country',
 	'perm' => 'EDIT_SHOP_PREFS || ADMINISTRATOR',
@@ -101,7 +101,7 @@ $we_menu_shop['240000'] = array(
 );
 
 $we_menu_shop['250000'] = array(
-	'text' => g_l('javaMenu_shop', '[edit_vats]') . '...',
+	'text' => g_l('javaMenu_shop', '[edit_vats]') . '&hellip;',
 	'parent' => '200000',
 	'cmd' => 'edit_shop_vats',
 	'perm' => 'EDIT_SHOP_PREFS || ADMINISTRATOR',
@@ -109,7 +109,7 @@ $we_menu_shop['250000'] = array(
 );
 
 $we_menu_shop['260000'] = array(
-	'text' => g_l('modules_shop', '[shipping][shipping_package]') . '...',
+	'text' => g_l('modules_shop', '[shipping][shipping_package]') . '&hellip;',
 	'parent' => '200000',
 	'cmd' => 'edit_shop_shipping',
 	'perm' => 'EDIT_SHOP_PREFS || ADMINISTRATOR',
@@ -117,7 +117,7 @@ $we_menu_shop['260000'] = array(
 );
 
 $we_menu_shop['261000'] = array(
-	'text' => g_l('modules_shop', '[shipping][payment_provider]') . '...',
+	'text' => g_l('modules_shop', '[shipping][payment_provider]') . '&hellip;',
 	'parent' => '200000',
 	'cmd' => 'payment_val',
 	'perm' => 'EDIT_SHOP_PREFS || ADMINISTRATOR',
@@ -168,7 +168,7 @@ $we_menu_shop['300000'] = array(
 );
 
 $we_menu_shop['310000'] = array(
-	'text' => g_l('javaMenu_shop', '[menu_help]') . '...',
+	'text' => g_l('javaMenu_shop', '[menu_help]') . '&hellip;',
 	'parent' => '300000',
 	'cmd' => 'help_modules',
 	'perm' => 'SHOW_HELP',
@@ -176,7 +176,7 @@ $we_menu_shop['310000'] = array(
 );
 
 $we_menu_shop['320000'] = array(
-	'text' => g_l('javaMenu_shop', '[menu_info]') . '...',
+	'text' => g_l('javaMenu_shop', '[menu_info]') . '&hellip;',
 	'parent' => '300000',
 	'cmd' => 'info_modules',
 	'enabled' => '1',

@@ -29,26 +29,20 @@ function we_tag_sendMail($attribs, $content){
 
 	if(!$GLOBALS['we_doc']->InWebEdition){
 
-		$id = weTag_getAttribute("id", $attribs, ( isset($_REQUEST["ID"]) ? $_REQUEST["ID"] : ''));
+		$id = weTag_getAttribute("id", $attribs, ( isset($_REQUEST["ID"]) ? intval($_REQUEST["ID"]) : ''));
 		$from = weTag_getAttribute("from", $attribs);
 		$reply = weTag_getAttribute("reply", $attribs);
 		$recipient = weTag_getAttribute("recipient", $attribs);
-		$recipientCC = weTag_getAttribute("recipientcc", $attribs);
-		if($recipientCC === ''){
-			$recipientCC = weTag_getAttribute("recipientCC", $attribs);
-		}
-		$recipientBCC = weTag_getAttribute("recipientbcc", $attribs);
-		if($recipientBCC === ''){
-			$recipientBCC = weTag_getAttribute("recipientBCC", $attribs);
-		}
+		$recipientCC = weTag_getAttribute("recipientcc", $attribs, weTag_getAttribute("recipientCC", $attribs));
+		$recipientBCC = weTag_getAttribute("recipientbcc", $attribs, weTag_getAttribute("recipientBCC", $attribs));
 
 		$mimetype = weTag_getAttribute("mimetype", $attribs);
 		$subject = weTag_getAttribute("subject", $attribs);
 		$charset = weTag_getAttribute("charset", $attribs, "UTF-8");
 		$includeimages = weTag_getAttribute("includeimages", $attribs, false, true);
 		$useBaseHref = weTag_getAttribute("usebasehref", $attribs, true, true);
-		$useFormmailLog = weTag_getAttribute("useformmaillog", $attribs, false, true);
-		$useFormmailBlock = weTag_getAttribute("useformmailblock", $attribs, false, true);
+		$useFormmailLog = weTag_getAttribute("useformmaillog", $attribs, weTag_getAttribute("useformmailLog", $attribs, false, true), true);
+		$useFormmailBlock = weTag_getAttribute("useformmailblock", $attribs, weTag_getAttribute("useformmailblock", $attribs, false, true), true);
 		if($useFormmailBlock){
 			$useFormmailLog = true;
 		}
@@ -63,12 +57,18 @@ function we_tag_sendMail($attribs, $content){
 
 				if(strpos($to[$l], '@') === false){
 					if(isset($_SESSION["webuser"]["registered"]) && $_SESSION["webuser"]["registered"] && isset($_SESSION["webuser"][$to[$l]]) && strpos($_SESSION["webuser"][$to[$l]], '@') !== false){ //wenn man registireten Usern was senden moechte
-						$we_recipient[] = $_SESSION["webuser"][$to[$l]];
+						if(we_check_email($_SESSION["webuser"][$to[$l]])){
+							$we_recipient[] = $_SESSION["webuser"][$to[$l]];
+						}
 					} else if(isset($_REQUEST[$to[$l]]) && strpos($_REQUEST[$to[$l]], '@') !== false){ //email to friend test
-						$we_recipient[] = $_REQUEST[$to[$l]];
+						if(we_check_email($_REQUEST[$to[$l]])){
+							$we_recipient[] = $_REQUEST[$to[$l]];
+						}
 					}
 				} else{
-					$we_recipient[] = $to[$l];
+					if(we_check_email($to[$l])){
+						$we_recipient[] = $to[$l];
+					}
 				}
 			}
 
@@ -76,66 +76,71 @@ function we_tag_sendMail($attribs, $content){
 			$we_recipientCC = array();
 			for($l = 0; $l < count($toCC); $l++){
 
-				if(strpos($toCC[$l],'@') === false){
-					if(isset($_SESSION["webuser"]["registered"]) && $_SESSION["webuser"]["registered"] && isset($_SESSION["webuser"][$toCC[$l]]) && strpos($_SESSION["webuser"][$toCC[$l]],'@') !== false){ //wenn man registrierten Usern was senden moechte
-						$we_recipientCC[] = $_SESSION["webuser"][$toCC[$l]];
-					} else if(isset($_REQUEST[$toCC[$l]]) && strpos($_REQUEST[$toCC[$l]],'@') !== false){ //email to friend test
-						$we_recipientCC[] = $_REQUEST[$toCC[$l]];
+				if(strpos($toCC[$l], '@') === false){
+					if(isset($_SESSION["webuser"]["registered"]) && $_SESSION["webuser"]["registered"] && isset($_SESSION["webuser"][$toCC[$l]]) && strpos($_SESSION["webuser"][$toCC[$l]], '@') !== false){ //wenn man registrierten Usern was senden moechte
+						if(we_check_email($_SESSION["webuser"][$toCC[$l]])){
+							$we_recipientCC[] = $_SESSION["webuser"][$toCC[$l]];
+						}
+					} else if(isset($_REQUEST[$toCC[$l]]) && strpos($_REQUEST[$toCC[$l]], '@') !== false){ //email to friend test
+						if(we_check_email($_REQUEST[$toCC[$l]])){
+							$we_recipientCC[] = $_REQUEST[$toCC[$l]];
+						}
 					}
 				} else{
-					$we_recipientCC[] = $toCC[$l];
+					if(we_check_email($toCC[$l])){
+						$we_recipientCC[] = $toCC[$l];
+					}
 				}
 			}
 			$toBCC = explode(",", $recipientBCC);
 			$we_recipientBCC = array();
 			for($l = 0; $l < count($toBCC); $l++){
-
 				if(strpos($toBCC[$l], '@') === false){
 					if(isset($_SESSION["webuser"]["registered"]) && $_SESSION["webuser"]["registered"] && isset($_SESSION["webuser"][$toBCC[$l]]) && strpos($_SESSION["webuser"][$toBCC[$l]], '@') !== false){ //wenn man registrierte Usern was senden moechte
-						$we_recipientBCC[] = $_SESSION["webuser"][$toBCC[$l]];
+						if(we_check_email($_SESSION["webuser"][$toBCC[$l]])){
+							$we_recipientBCC[] = $_SESSION["webuser"][$toBCC[$l]];
+						}
 					} else if(isset($_REQUEST[$toBCC[$l]]) && strpos($_REQUEST[$toBCC[$l]], '@') !== false){ //email to friend test
-						$we_recipientBCC[] = $_REQUEST[$toBCC[$l]];
+						if(we_check_email($_REQUEST[$toBCC[$l]])){
+							$we_recipientBCC[] = $_REQUEST[$toBCC[$l]];
+						}
 					}
 				} else{
-					$we_recipientBCC[] = $toBCC[$l];
+					if(we_check_email($toBCC[$l])){
+						$we_recipientBCC[] = $toBCC[$l];
+					}
 				}
 			}
 
 			if($useFormmailLog){
-				$_ip = $_SERVER['REMOTE_ADDR'];
-				$_now = time();
-
 				// insert into log
-				$GLOBALS['DB_WE']->query("INSERT INTO " . FORMMAIL_LOG_TABLE . " (ip, unixTime) VALUES('" . $GLOBALS['DB_WE']->escape($_ip) . "', UNIX_TIMESTAMP())");
+				$GLOBALS['DB_WE']->query("INSERT INTO " . FORMMAIL_LOG_TABLE . " (ip, unixTime) VALUES('" . $GLOBALS['DB_WE']->escape($_SERVER['REMOTE_ADDR']) . "', UNIX_TIMESTAMP())");
 				if(FORMMAIL_EMPTYLOG > -1){
-					$GLOBALS['DB_WE']->query("DELETE FROM " . FORMMAIL_LOG_TABLE . " WHERE unixTime < " . intval($_now - FORMMAIL_EMPTYLOG));
+					$GLOBALS['DB_WE']->query('DELETE FROM ' . FORMMAIL_LOG_TABLE . " WHERE unixTime<(UNIX_TIMESTAMP()-" . intval(FORMMAIL_EMPTYLOG) . ')');
 				}
 
 				if($useFormmailBlock){
 
 					$_num = 0;
 					$_trials = FORMMAIL_TRIALS;
-					$_blocktime = FORMMAIL_BLOCKTIME;
 
 					// first delete all entries from blocktable which are older then now - blocktime
-					$GLOBALS['DB_WE']->query("DELETE FROM " . FORMMAIL_BLOCK_TABLE . " WHERE blockedUntil != -1 AND blockedUntil < UNIX_TIMESTAMP()");
+					$GLOBALS['DB_WE']->query('DELETE FROM ' . FORMMAIL_BLOCK_TABLE . ' WHERE blockedUntil!=-1 AND blockedUntil<UNIX_TIMESTAMP()');
 
 					// check if ip is allready blocked
-					if(f("SELECT id FROM " . FORMMAIL_BLOCK_TABLE . " WHERE ip='" . $GLOBALS['DB_WE']->escape($_ip) . "'", "id", $GLOBALS['DB_WE'])){
+					if(f('SELECT 1 AS a FROM ' . FORMMAIL_BLOCK_TABLE . " WHERE ip='" . $GLOBALS['DB_WE']->escape($_SERVER['REMOTE_ADDR']) . "'", "a", $GLOBALS['DB_WE'])){
 						$_blocked = true;
 					} else{
 
 						// ip is not blocked, so see if we need to block it
-						$GLOBALS['DB_WE']->query("SELECT * FROM " . FORMMAIL_LOG_TABLE . " WHERE unixTime > " . intval($_now - FORMMAIL_SPAN) . " AND ip='" . $GLOBALS['DB_WE']->escape($_ip) . "'");
+						$GLOBALS['DB_WE']->query('SELECT * FROM ' . FORMMAIL_LOG_TABLE . ' WHERE unixTime>(UNIX_TIMESTAMP()-' . intval(FORMMAIL_SPAN) . ") AND ip='" . $GLOBALS['DB_WE']->escape($_SERVER['REMOTE_ADDR']) . "'");
 						if($GLOBALS['DB_WE']->next_record()){
 							$_num = $GLOBALS['DB_WE']->num_rows();
 							if($_num > $_trials){
 								$_blocked = true;
-								// cleanup
-								$GLOBALS['DB_WE']->query("DELETE FROM " . FORMMAIL_BLOCK_TABLE . " WHERE ip='" . $GLOBALS['DB_WE']->escape($_ip) . "'");
 								// insert in block table
-								$blockedUntil = ($_blocktime == -1) ? -1 : intval($_now + $_blocktime);
-								$GLOBALS['DB_WE']->query("INSERT INTO " . FORMMAIL_BLOCK_TABLE . " (ip, blockedUntil) VALUES('" . $GLOBALS['DB_WE']->escape($_ip) . "', " . $blockedUntil . ")");
+								$blockedUntil = (FORMMAIL_BLOCKTIME == -1) ? -1 : '(UNIX_TIMESTAMP()+' . FORMMAIL_BLOCKTIME . ')';
+								$GLOBALS['DB_WE']->query('REPLACE INTO ' . FORMMAIL_BLOCK_TABLE . " (ip, blockedUntil) VALUES('" . $GLOBALS['DB_WE']->escape($_SERVER['REMOTE_ADDR']) . "', " . $blockedUntil . ")");
 							}
 						}
 					}
@@ -153,7 +158,7 @@ function we_tag_sendMail($attribs, $content){
 					'</html>';
 
 				exit;
-			}else{
+			} else{
 				if(!isset($_SESSION)){
 					@session_start();
 				}
@@ -161,7 +166,7 @@ function we_tag_sendMail($attribs, $content){
 				$codes = ($id > 0) && weFileExists($id, FILE_TABLE, $GLOBALS['DB_WE']) ? we_getDocumentByID($id) : '';
 				unset($_SESSION['WE_SendMail']);
 				if(!$codes){
-					t_e('Document to send via we:sendMail is empty ID: '.$id);
+					t_e('Document to send via we:sendMail is empty ID: ' . $id);
 				}
 				$phpmail = new we_util_Mailer($we_recipient, $subject, $from, $reply, $includeimages);
 				if(isset($includeimages)){

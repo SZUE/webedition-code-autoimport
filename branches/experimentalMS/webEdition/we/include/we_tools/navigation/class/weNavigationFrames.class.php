@@ -82,56 +82,23 @@ class weNavigationFrames extends weToolFrames{
 
 		$we_tabs = new we_tabs();
 
-		$we_tabs->addTab(
-			new we_tab(
-				'#',
-				g_l('navigation', '[property]'),
-				'((' . $this->topFrame . '.activ_tab==1) ? TAB_ACTIVE : TAB_NORMAL)',
-				"setTab('1');",
-				array(
-					"id" => "tab_1"
-			)));
+		$we_tabs->addTab(new we_tab('#', g_l('navigation', '[property]'), '((' . $this->topFrame . '.activ_tab==1) ? TAB_ACTIVE : TAB_NORMAL)', "setTab('1');", array("id" => "tab_1")));
 		if($this->Model->IsFolder){
-			$we_tabs->addTab(
-				new we_tab(
-					"#",
-					g_l('navigation', '[content]'),
-					'((' . $this->topFrame . '.activ_tab==2) ? TAB_ACTIVE : TAB_NORMAL)',
-					"setTab('2');",
-					array(
-						"id" => "tab_2"
-				)));
+			$we_tabs->addTab(new we_tab("#", g_l('navigation', '[content]'), '((' . $this->topFrame . '.activ_tab==2) ? TAB_ACTIVE : TAB_NORMAL)', "setTab('2');", array("id" => "tab_2")));
 		}
 
 		if(defined('CUSTOMER_TABLE') && we_hasPerm("CAN_EDIT_CUSTOMERFILTER")){
-			$we_tabs->addTab(
-				new we_tab(
-					"#",
-					g_l('navigation', '[customers]'),
-					'((' . $this->topFrame . '.activ_tab==3) ? TAB_ACTIVE : TAB_NORMAL)',
-					"setTab('3');",
-					array(
-						"id" => "tab_3"
-				)));
+			$we_tabs->addTab(new we_tab("#", g_l('navigation', '[customers]'), '((' . $this->topFrame . '.activ_tab==3) ? TAB_ACTIVE : TAB_NORMAL)', "setTab('3');", array("id" => "tab_3")));
 		}
 
 		if($this->Model->IsFolder){
-			$we_tabs->addTab(
-				new we_tab(
-					"#",
-					g_l('navigation', '[preview]'),
-					'((' . $this->topFrame . '.activ_tab=="preview") ? TAB_ACTIVE : TAB_NORMAL)',
-					"setTab('preview');",
-					array(
-						"id" => "tab_preview"
-				)));
+			$we_tabs->addTab(new we_tab("#", g_l('navigation', '[preview]'), '((' . $this->topFrame . '.activ_tab=="preview") ? TAB_ACTIVE : TAB_NORMAL)', "setTab('preview');", array("id" => "tab_preview")));
 		}
 
 		$we_tabs->onResize();
-		$tabsHead = $we_tabs->getHeader();
-		$tabsBody = $we_tabs->getJS();
-
-		$js = we_html_element::jsElement(
+		//$tabsBody = $we_tabs->getJS();
+		$tabsHead = $we_tabs->getHeader() .
+			we_html_element::jsElement(
 				($this->Model->IsFolder == 0 ? '
 				if(' . $this->View->topFrame . '.activ_tab!=1 && ' . $this->View->topFrame . '.activ_tab!=3) {
 					' . $this->View->topFrame . '.activ_tab=1;
@@ -176,25 +143,18 @@ class weNavigationFrames extends weToolFrames{
 					self.focus();
 					' . $this->topFrame . '.activ_tab=tab;
 				}
-
 				' . ($this->Model->ID ? '' : $this->topFrame . '.activ_tab=1;')
 		);
 
-		$tabsHead .= $js;
 
-		$table = new we_html_table(array(
-				"width" => "3000", "cellpadding" => "0", "cellspacing" => "0", "border" => "0"
-				), 3, 1);
+		$table = new we_html_table(array("width" => "3000", "cellpadding" => "0", "cellspacing" => "0", "border" => "0"), 3, 1);
 
 		$table->setCol(0, 0, array(), we_html_tools::getPixel(1, 3));
 
-		$table->setCol(
-			1, 0, array(
-			"valign" => "top", "class" => "small"
-			), we_html_tools::getPixel(15, 2) . we_html_element::htmlB(
+		$table->setCol(1, 0, array("valign" => "top", "class" => "small"), we_html_tools::getPixel(15, 2) . we_html_element::htmlB(
 				($this->Model->IsFolder ? g_l('navigation', '[group]') : g_l('navigation', '[entry]')) . ':&nbsp;' . str_replace(
 					'&amp;', '&', $this->Model->Text) . '<div id="mark" style="display: none;">*</div>' . we_html_tools::getPixel(1600, 19)
-			));
+		));
 
 		$extraJS = 'document.getElementById("tab_"+' . $this->topFrame . '.activ_tab).className="tabActive";';
 		$body = we_html_element::htmlBody(
@@ -207,12 +167,14 @@ class weNavigationFrames extends weToolFrames{
 				"topmargin" => "0",
 				"onload" => "setFrameSize()",
 				"onresize" => "setFrameSize()"
-				), '<div id="main" >' . we_html_tools::getPixel(100, 3) . '<div style="margin:0px;" id="headrow">&nbsp;' . we_html_element::htmlB(
-					($this->Model->IsFolder ? g_l('navigation', '[group]') : g_l('navigation', '[entry]')) . ':&nbsp;' . str_replace(
-						'&amp;', '&', $this->Model->Text) . '<div id="mark" style="display: none;">*</div>') . '</div>' . we_html_tools::getPixel(
-					100, 3) . $we_tabs->getHTML() . '</div>' . we_html_element::jsElement($extraJS))//			$js.
-		//			$table->getHtml() .
-		//			$tabsBody
+				), we_html_element::htmlDiv(array('id' => "main"), we_html_tools::getPixel(100, 3) . we_html_element::htmlDiv(array('id' => 'headrow', 'style' => "margin:0px;"), '&nbsp;' .
+						we_html_element::htmlB(($this->Model->IsFolder ? g_l('navigation', '[group]') : g_l('navigation', '[entry]')) . ':&nbsp;' .
+							str_replace('&amp;', '&', $this->Model->Text) .
+							we_html_element::htmlDiv(array('id' => 'mark', 'style' => 'display: none;'), '*'))) .
+					we_html_tools::getPixel(100, 3) . $we_tabs->getHTML() . '</div>' . we_html_element::jsElement($extraJS))//			$js.
+				//			$table->getHtml() .
+				//			$tabsBody
+			)
 		;
 
 		return $this->getHTMLDocument($body, $tabsHead);
@@ -220,15 +182,13 @@ class weNavigationFrames extends weToolFrames{
 
 	function getHTMLGeneral(){
 		$_table = new we_html_table(
-				array(
-					'border' => '0',
-					'cellpadding' => '0',
-					'cellspacing' => '0',
-					'width' => '300',
-					'style' => 'margin-top:' . $this->_margin_top . ';'
-				),
-				1,
-				3);
+			array(
+			'border' => '0',
+			'cellpadding' => '0',
+			'cellspacing' => '0',
+			'width' => '300',
+			'style' => 'margin-top:' . $this->_margin_top . ';'
+			), 1, 3);
 
 		$_table->setCol(0, 0, array(
 			'class' => 'defaultfont'
@@ -240,13 +200,12 @@ class weNavigationFrames extends weToolFrames{
 
 		unset($inp);
 
-		if(isset($this->Model->Text) && $this->Model->Text != '' && isset($this->Model->ID) && $this->Model->ID != ''){
-			$_parentid = f('SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($this->Model->ID), 'ParentID', $this->db);
-		} elseif(isset($_REQUEST['presetFolder']) && $_REQUEST['presetFolder']){
-			$_parentid = $this->Model->ParentID;
-		} else{
-			$_parentid = '0';
-		}
+		$_parentid = (isset($this->Model->Text) && $this->Model->Text != '' && isset($this->Model->ID) && $this->Model->ID != '' ?
+				f('SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($this->Model->ID), 'ParentID', $this->db) :
+				(isset($_REQUEST['presetFolder']) && $_REQUEST['presetFolder'] ?
+					$this->Model->ParentID :
+					'0'));
+
 
 		$_num = $_parentid ? f(
 				'SELECT COUNT(ID) as OrdCount FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($_parentid), 'OrdCount', new DB_WE()) : 0;
@@ -254,13 +213,11 @@ class weNavigationFrames extends weToolFrames{
 		$_table->setColContent(
 			0, 2, we_button::create_button_table(
 				array(
-				we_button::create_button(
-					'image:direction_up', 'javascript:' . $this->topFrame . '.we_cmd("move_up");', true, 100, 22, '', '', (($this->Model->Ordn > 0) ? false : true), false),
-				we_button::create_button(
-					'image:direction_down', 'javascript:' . $this->topFrame . '.we_cmd("move_down");', true, 100, 22, '', '', (($this->Model->Ordn < ($_num - 1)) ? false : true), false)
+				we_button::create_button('image:direction_up', 'javascript:' . $this->topFrame . '.we_cmd("move_up");', true, 100, 22, '', '', (($this->Model->Ordn > 0) ? false : true), false),
+				we_button::create_button('image:direction_down', 'javascript:' . $this->topFrame . '.we_cmd("move_down");', true, 100, 22, '', '', (($this->Model->Ordn < ($_num - 1)) ? false : true), false)
 				), 10, array(
 				'style' => 'margin-left: 15px'
-			)));
+		)));
 		// name and folder block
 		// icen selector block
 		$uniqname = 'weIconNaviAttrib';
@@ -291,7 +248,7 @@ class weNavigationFrames extends weToolFrames{
 				array(
 					'headline' => '',
 					'html' => $this->getHTMLChooser(
-						g_l('navigation', '[icon]'), FILE_TABLE, 0, 'IconID', $this->Model->IconID, 'IconPath', 'opener.' . $this->topFrame . '.mark()', 'image/*', false, true) . we_html_tools::getPixel($this->_width_size, 10) . '<table><tr><td>' . we_multiIconBox::getJS() . we_multiIconBox::_getButton(
+						g_l('navigation', '[icon]'), FILE_TABLE, 0, 'IconID', $this->Model->IconID, 'IconPath', 'opener.' . $this->topFrame . '.mark()', 'image/*', false, true, 'folder,image/*') . we_html_tools::getPixel($this->_width_size, 10) . '<table><tr><td>' . we_multiIconBox::getJS() . we_multiIconBox::_getButton(
 						$uniqname, "weToggleBox('$uniqname','" . addslashes(g_l('navigation', '[icon_properties_out]')) . "','" . addslashes(
 							g_l('navigation', '[icon_properties]')) . "')", $wepos, g_l('global', "[openCloseBox]")) . '</td><td><span style="cursor: pointer;" class="defaultfont" id="text_' . $uniqname . '" onClick="weToggleBox(\'' . $uniqname . '\',\'' . addslashes(
 						g_l('navigation', '[icon_properties_out]')) . '\',\'' . addslashes(
@@ -309,8 +266,6 @@ class weNavigationFrames extends weToolFrames{
 	}
 
 	function getHTMLPropertiesItem(){
-		$parts = array();
-
 		if($this->Model->Selection == weNavigation::SELECTION_DYNAMIC){
 			$_seltype = array(
 				weNavigation::STPYE_DOCTYPE => g_l('navigation', '[documents]')
@@ -329,11 +284,7 @@ class weNavigationFrames extends weToolFrames{
 			}
 			$_seltype[weNavigation::STPYE_CATLINK] = g_l('navigation', '[catLink]');
 		}
-		if(defined("OBJECT_TABLE")){
-			$_onCahngeJS = "if(document.we_form.Selection.value=='" . weNavigation::SELECTION_STATIC . "'){YAHOO.autocoml.modifySetById('yuiAcInputLinkPath','table',(this.value=='" . weNavigation::STPYE_DOCLINK . "'?'" . FILE_TABLE . "':(this.value=='" . weNavigation::STPYE_OBJLINK . "'?'" . OBJECT_TABLE . "':'" . CATEGORY_TABLE . "')));}else{};";
-		} else{
-			$_onCahngeJS = "if(document.we_form.Selection.value=='" . weNavigation::SELECTION_STATIC . "'){YAHOO.autocoml.modifySetById('yuiAcInputLinkPath','table',(this.value=='" . weNavigation::STPYE_DOCLINK . "'?'" . FILE_TABLE . "':'" . CATEGORY_TABLE . "'));}else{};";
-		}
+
 		$_selection_block = $this->Model->Depended == 1 ? $this->getHTMLDependedProfile() : $this->View->htmlHidden(
 				'CategoriesControl', (isset($_REQUEST['CategoriesCount']) ? $_REQUEST['CategoriesCount'] : 0)) . $this->View->htmlHidden(
 				'SortControl', (isset($_REQUEST['SortCount']) ? $_REQUEST['SortCount'] : 0)) . $this->View->htmlHidden(
@@ -344,8 +295,8 @@ class weNavigationFrames extends weToolFrames{
 				'Selection', array(
 				weNavigation::SELECTION_DYNAMIC => g_l('navigation', '[dyn_selection]'),
 				weNavigation::SELECTION_STATIC => g_l('navigation', '[stat_selection]')
-				), 1, $this->Model->Selection, false, 'onChange="closeAllSelection();toggle(this.value);setPresentation(this.value);setWorkspaces(\'\');' . $this->topFrame . '.mark();setCustomerFilter(this);"', 'value', $this->_width_size) . '<br />' . we_html_tools::htmlSelect(
-				'SelectionType', $_seltype, 1, $this->Model->SelectionType, false, 'onChange="onSelectionTypeChangeJS(this); closeAllType();clearFields();closeAllStats();toggle(this.value);setWorkspaces(this.value);setStaticSelection(this.value);' . $this->topFrame . '.mark();" style="width: ' . $this->_width_size . 'px; margin-top: ' . $this->_margin_top . ';"', 'value', $this->_width_size) .
+				), 1, $this->Model->Selection, false, 'onChange="closeAllSelection();toggle(this.value);setPresentation(this.value);setWorkspaces(\'\');' . $this->topFrame . '.mark();setCustomerFilter(this);onSelectionTypeChangeJS(\'' . weNavigation::STPYE_DOCTYPE . '\');"', 'value', $this->_width_size) . '<br />' . we_html_tools::htmlSelect(
+				'SelectionType', $_seltype, 1, $this->Model->SelectionType, false, 'onChange="closeAllType();clearFields();closeAllStats();toggle(this.value);setWorkspaces(this.value);onSelectionTypeChangeJS(this.value);setStaticSelection(this.value);' . $this->topFrame . '.mark();" style="width: ' . $this->_width_size . 'px; margin-top: ' . $this->_margin_top . ';"', 'value', $this->_width_size) .
 			'
 			<div id="dynamic" style="' . ($this->Model->Selection == weNavigation::SELECTION_DYNAMIC ? 'display: block;' : 'display: none;') . '">
 				' . $this->getHTMLDynamic() . '
@@ -367,28 +318,22 @@ class weNavigationFrames extends weToolFrames{
 			</div>
 		';
 
-		array_push(
-			$parts, array(
-			'headline' => g_l('navigation', '[selection]'),
-			'html' => $_selection_block,
-			'space' => $this->_space_size,
-			'noline' => 1
+		return array(
+			array(
+				'headline' => g_l('navigation', '[selection]'),
+				'html' => $_selection_block,
+				'space' => $this->_space_size,
+				'noline' => 1
 		));
-
-		return $parts;
 	}
 
 	function getHTMLPropertiesGroup(){
 		$yuiSuggest = & weSuggest::getInstance();
-		$parts = array();
 
 		$rootDirID = 0;
-		//javascript:we_cmd('openDocselector',document.we_form.elements['LinkID'].value,'" . FILE_TABLE . "','document.we_form.elements[\\'LinkID\\'].value','document.we_form.elements[\\'LinkPath\\'].value','','" . session_id() . "','$rootDirID',''," . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")
 		$wecmdenc1 = we_cmd_enc("document.we_form.elements['LinkID'].value");
 		$wecmdenc2 = we_cmd_enc("document.we_form.elements['LinkPath'].value");
-		$wecmdenc3 = '';
 		$_cmd_doc = "javascript:we_cmd('openDocselector',document.we_form.elements['LinkID'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','" . session_id() . "','$rootDirID',''," . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")";
-		//javascript:we_cmd('openDocselector',document.we_form.elements['LinkID'].value,'" . OBJECT_FILES_TABLE . "','document.we_form.elements[\\'LinkID\\'].value','document.we_form.elements[\\'LinkPath\\'].value','opener." . $this->topFrame . ".we_cmd(\"populateFolderWs\");','" . session_id() . "','$rootDirID','objectFile'," . (we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")" : ''
 		$wecmdenc1 = we_cmd_enc("document.we_form.elements['LinkID'].value");
 		$wecmdenc2 = we_cmd_enc("document.we_form.elements['LinkPath'].value");
 		$wecmdenc3 = we_cmd_enc("opener." . $this->topFrame . ".we_cmd('populateFolderWs');");
@@ -398,12 +343,10 @@ class weNavigationFrames extends weToolFrames{
 		$_button_obj = we_button::create_button('select', $_cmd_obj, true, 100, 22, '', '', false);
 
 		$_buttons = '<div id="docFolderLink" style="display: ' . ((empty($this->Model->FolderSelection) || $this->Model->FolderSelection == weNavigation::STPYE_DOCLINK) ? 'inline' : 'none') . '">' . $_button_doc . '</div><div id="objFolderLink" style="display: ' . ($this->Model->FolderSelection == weNavigation::STPYE_OBJLINK ? 'inline' : 'none') . '">' . $_button_obj . '</div>';
-		if($this->Model->LinkID == 0){
-			$_path = "";
-		} else{
-			$_path = id_to_path(
-				$this->Model->LinkID, ($this->Model->FolderSelection == weNavigation::STPYE_DOCLINK ? FILE_TABLE : (defined('OBJECT_TABLE') && $this->Model->FolderSelection == weNavigation::STPYE_OBJLINK ? OBJECT_FILES_TABLE : FILE_TABLE)));
-		}
+		$_path = ($this->Model->LinkID == 0 ?
+				'' :
+				id_to_path($this->Model->LinkID, ($this->Model->FolderSelection == weNavigation::STPYE_DOCLINK ? FILE_TABLE : (defined('OBJECT_TABLE') && $this->Model->FolderSelection == weNavigation::STPYE_OBJLINK ? OBJECT_FILES_TABLE : FILE_TABLE))));
+
 		$_seltype = array(
 			weNavigation::STPYE_DOCLINK => g_l('navigation', '[docLink]'),
 			weNavigation::STYPE_URLLINK => g_l('navigation', '[urlLink]')
@@ -419,7 +362,7 @@ class weNavigationFrames extends weToolFrames{
 		$yuiSuggest->setInput('LinkPath', $_path, array(
 			"onChange" => $this->topFrame . ".mark();"
 		));
-		$yuiSuggest->setMaxResults(10);
+		$yuiSuggest->setMaxResults(50);
 		$yuiSuggest->setMayBeEmpty(true);
 		$yuiSuggest->setResult('LinkID', $this->Model->LinkID);
 		$yuiSuggest->setSelector("Docselector");
@@ -433,7 +376,7 @@ class weNavigationFrames extends weToolFrames{
 		$_selection = '
 		<div style="display: block;">
 		' . we_html_tools::htmlSelect(
-				'FolderSelection', $_seltype, 1, $this->Model->FolderSelection, false, 'onChange="onFolderSelectionChangeJS(this);setFolderSelection(this.value);' . $this->topFrame . '.mark();" style="width: ' . $this->_width_size . 'px; margin-top: ' . $this->_margin_top . ';"', 'value', $this->_width_size) . '
+				'FolderSelection', $_seltype, 1, $this->Model->FolderSelection, false, 'onChange="onFolderSelectionChangeJS(this.value);setFolderSelection(this.value);' . $this->topFrame . '.mark();" style="width: ' . $this->_width_size . 'px; margin-top: ' . $this->_margin_top . ';"', 'value', $this->_width_size) . '
 
 		<div id="folderSelectionDiv" style="display: ' . ($this->Model->FolderSelection != weNavigation::STYPE_URLLINK ? 'block' : 'none') . ';margin-top:' . $this->_margin_top . '">' . $weAcSelector . '</div>
 
@@ -447,22 +390,21 @@ class weNavigationFrames extends weToolFrames{
 					'FolderParameter', 58, $this->Model->FolderParameter, '', 'onchange="' . $this->topFrame . '.mark();"', 'text', $this->_width_size, 0) . '<br/>' . we_forms::checkboxWithHidden(
 					$this->Model->CurrentOnUrlPar, 'CurrentOnUrlPar', g_l('navigation', '[current_on_urlpar]'), false, "defaultfont", $this->topFrame . '.mark();"'), g_l('navigation', '[parameter]'));
 
-		array_push(
-			$parts, array(
-			'headline' => g_l('navigation', '[selection]'),
-			'html' => $_selection,
-			'space' => $this->_space_size,
-			'noline' => 1
+		$parts = array(
+			array(
+				'headline' => g_l('navigation', '[selection]'),
+				'html' => $_selection,
+				'space' => $this->_space_size,
+				'noline' => 1
 		));
 
 		if(function_exists('mb_convert_encoding')){
-			array_push(
-				$parts, array(
+			$parts[] = array(
 				'headline' => g_l('navigation', '[charset]'),
 				'html' => we_html_tools::htmlAlertAttentionBox(g_l('navigation', '[charset_desc]'), 2, $this->_width_size) . $this->getHTMLCharsetTable(),
 				'space' => $this->_space_size,
 				'noline' => 1
-			));
+			);
 		}
 
 		// COPY FOLDER
@@ -480,8 +422,7 @@ class weNavigationFrames extends weToolFrames{
 		$cmd = 'opener.we_cmd("copyNaviFolder")';
 		$_cmd = "javascript:we_cmd('openNavigationDirselector',document.we_form.elements['CopyFolderID'].value,'document.we_form.CopyFolderID.value','document.we_form.CopyFolderPath.value','" . $cmd . "')";
 		$_button_copyFolder = we_button::create_button('select', $_cmd, true, 100, 22, '', '', $_disabled);
-		array_push(
-			$parts, array(
+		$parts[] = array(
 			'headline' => g_l('weClass', "[copyFolder]"),
 			'html' => we_html_element::jsElement("var selfNaviPath ='" . addslashes(
 					$this->Model->Path) . "';\nvar selfNaviId = '" . $this->Model->ID . "';") . "<div style='float:left; margin-right:20px'>" . we_html_tools::htmlAlertAttentionBox(
@@ -493,14 +434,12 @@ class weNavigationFrames extends weToolFrames{
 			)),
 			'space' => $this->_space_size,
 			'noline' => 1
-		));
+		);
 
 		return $parts;
 	}
 
 	function getHTMLDependedProfile(){
-		$parts = array();
-
 		if($this->Model->Selection == weNavigation::SELECTION_DYNAMIC){
 			$_seltype = array(
 				weNavigation::STPYE_DOCTYPE => g_l('navigation', '[documents]')
@@ -518,15 +457,13 @@ class weNavigationFrames extends weToolFrames{
 		}
 
 		$_table = new we_html_table(
-				array(
-					'width' => $this->_width_size,
-					'cellpadding' => '0',
-					'cellspacing' => '2',
-					'border' => '0',
-					'class' => 'defaultfont'
-				),
-				5,
-				2);
+			array(
+			'width' => $this->_width_size,
+			'cellpadding' => '0',
+			'cellspacing' => '2',
+			'border' => '0',
+			'class' => 'defaultfont'
+			), 5, 2);
 
 		$_table->setColContent(0, 0, g_l('navigation', '[stat_selection]'));
 
@@ -539,12 +476,9 @@ class weNavigationFrames extends weToolFrames{
 
 		if(!empty($this->Model->Url) && $this->Model->Url != 'http://'){
 			$_table->setColContent(2, 0, g_l('navigation', '[linkSelection]') . ':');
-
 			$_table->setColContent(2, 1, $this->Model->Url);
-		} else
-		if(!empty($this->Model->UrlID) && $this->Model->UrlID){
+		} elseif(!empty($this->Model->UrlID) && $this->Model->UrlID){
 			$_table->setColContent(2, 0, g_l('navigation', '[linkSelection]') . ':');
-
 			$_table->setColContent(2, 1, id_to_path($this->Model->UrlID));
 		}
 
@@ -561,51 +495,52 @@ class weNavigationFrames extends weToolFrames{
 
 		return $_table->getHtml();
 
-		$_selection_block = '
-			<div style="display: block;">
-			' . g_l('navigation', '[stat_selection]') . '<br />' . ($this->Model->SelectionType == weNavigation::STPYE_CATLINK ? g_l('navigation', '[catLink]') : ($this->Model->SelectionType == weNavigation::STPYE_DOCLINK ? g_l('navigation', '[docLink]') : g_l('navigation', '[objLink]'))) . ':' . id_to_path(
+		return '
+<div style="display: block;">' . g_l('navigation', '[stat_selection]') . '<br />' . ($this->Model->SelectionType == weNavigation::STPYE_CATLINK ? g_l('navigation', '[catLink]') : ($this->Model->SelectionType == weNavigation::STPYE_DOCLINK ? g_l('navigation', '[docLink]') : g_l('navigation', '[objLink]'))) . ':' . id_to_path(
 				$this->Model->LinkID, ($this->Model->SelectionType == weNavigation::STPYE_CATLINK ? CATEGORY_TABLE : ($this->Model->SelectionType == weNavigation::STPYE_DOCLINK ? FILE_TABLE : OBJECT_FILES_TABLE))) . '
-			</div>
-			<div>
-			' .
+</div>
+<div>' .
 			$this->Model->Parameter . '
-			</div>
-
-		';
-
-		return $_selection_block;
+</div>';
 	}
 
 	function getHTMLDynamic(){
 		$docTypes = array(
-			0 => g_l('navigation', '[no_entry]')
+			g_l('navigation', '[no_entry]')
 		);
 		$q = getDoctypeQuery($this->db);
-		$this->db->query("SELECT ID,DocType FROM " . DOC_TYPES_TABLE . " $q");
+		$this->db->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' ' . $q);
 		while($this->db->next_record()) {
 			$docTypes[$this->db->f("ID")] = $this->db->f('DocType');
 		}
 
-		$objectDirs = array();
-		$classNames = array();
-		$objectDirs = array();
-		$objectPaths = array();
+		$classID2Name = array();
+		$classID2Dir = array();
+		$classDirs = array();
+		$classDirsJS = array();
+		$classHasSubDirsJS = array();
+		$classPathsJS = array();
 		$allowedClasses = getAllowedClasses($this->db);
 
 		if(defined('OBJECT_TABLE')){
-
 			$_firstClass = 0;
-			$this->db->query('SELECT DISTINCT  ' . OBJECT_TABLE . ".ID," . OBJECT_TABLE . ".Text," . OBJECT_FILES_TABLE . ".ParentID FROM " . OBJECT_TABLE . " LEFT JOIN " . OBJECT_FILES_TABLE . " ON (" . OBJECT_TABLE . ".ID=" . OBJECT_FILES_TABLE . ".TableID)");
+			$this->db->query('SELECT DISTINCT ' . OBJECT_TABLE . '.ID,' . OBJECT_TABLE . '.Text,' . OBJECT_TABLE . '.Path,' . OBJECT_FILES_TABLE . '.ID AS classDirID FROM ' . OBJECT_TABLE . ' LEFT JOIN ' . OBJECT_FILES_TABLE . ' ON (' . OBJECT_TABLE . '.Path=' . OBJECT_FILES_TABLE . '.Path)');
 			while($this->db->next_record()) {
 				if(in_array($this->db->f('ID'), $allowedClasses)){
 					if(!$_firstClass){
 						$_firstClass = $this->db->f('ID');
 					}
-					$classNames[$this->db->f('ID')] = $this->db->f('Text');
-					$objectDirs[] = $this->db->f('ID') . ':' . intval($this->db->f('ParentID'));
-					$objectPaths[] = $this->db->f('ID') . ':"' . f(
-							'SELECT * FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($this->db->f('ParentID')), 'Path', new DB_WE()) . '"';
+					$classID2Name[$this->db->f('ID')] = $this->db->f('Text');
+					$classID2Dir[$this->db->f('classDirID')] = $this->db->f('ID');
+					$classDirs[] = $this->db->f('classDirID');
+					$classHasSubDirsJS[$this->db->f('ID')] = $this->db->f('ID') . ':false';
+					$classDirsJS[] = $this->db->f('ID') . ':' . $this->db->f('classDirID');
+					$classPathsJS[] = $this->db->f('ID') . ':"' . $this->db->f('Path') . '"';
 				}
+			}
+			$this->db->query('SELECT ID, ParentID FROM ' . OBJECT_FILES_TABLE . ' WHERE ParentID IN (' . implode(',', $classDirs) . ') AND IsFolder = 1');
+			while($this->db->next_record()) {
+				$classHasSubDirsJS[$classID2Dir[$this->db->f('ParentID')]] = $classID2Dir[$this->db->f('ParentID')] . ':true';
 			}
 		}
 
@@ -622,53 +557,48 @@ class weNavigationFrames extends weToolFrames{
 				"ASC" => g_l('navigation', '[ascending]'), "DESC" => g_l('navigation', '[descending]')
 				), 1, $_sortOrder, false, 'onchange="' . $this->topFrame . '.mark();"', "value", 120);
 
-		return we_html_element::jsElement(
-				'
-			objectDirs = {' . implode(',', $objectDirs) . '};
-			objectPaths = {' . implode(',', $objectPaths) . '};
-		') . '
-		<div style="display: block;">
-			<div id="doctype" style="' . ($this->Model->SelectionType == weNavigation::STPYE_DOCTYPE ? 'display: block' : 'display: none') . '; width: ' . $this->_width_size . ';margin-top:' . $this->_margin_top . '">
-				' . we_html_tools::htmlFormElementTable(
+		return we_html_element::jsElement('
+var classDirs = {' . implode(',', $classDirsJS) . '};
+var classPaths = {' . implode(',', $classPathsJS) . '};
+var hasClassSubDirs = {' . implode(',', $classHasSubDirsJS) . '};') . '
+
+<div style="display: block;">
+	<div id="doctype" style="' . ($this->Model->SelectionType == weNavigation::STPYE_DOCTYPE ? 'display: block' : 'display: none') . '; width: ' . $this->_width_size . ';margin-top:' . $this->_margin_top . '">' .
+			we_html_tools::htmlFormElementTable(
 				we_html_tools::htmlSelect(
 					'DocTypeID', $docTypes, 1, $this->Model->DocTypeID, false, 'onChange="clearFields();' . $this->topFrame . '.mark();"', 'value', $this->_width_size), g_l('navigation', '[doctype]')) . '
-			</div>
-			<div id="classname" style="' . ($this->Model->SelectionType == weNavigation::STPYE_CLASS ? 'display: block' : 'display: none') . '; width: ' . $this->_width_size . ';margin-top:' . $this->_margin_top . ';">
-				' . (defined('OBJECT_TABLE') ? we_html_tools::htmlFormElementTable(
+	</div>
+	<div id="classname" style="' . ($this->Model->SelectionType == weNavigation::STPYE_CLASS ? 'display: block' : 'display: none') . '; width: ' . $this->_width_size . ';margin-top:' . $this->_margin_top . ';">' .
+			(defined('OBJECT_TABLE') ? we_html_tools::htmlFormElementTable(
 					we_html_tools::htmlSelect(
-						'ClassID', $classNames, 1, $this->Model->ClassID, false, 'onChange="clearFields();document.we_form.elements[\'FolderID\'].value=objectDirs[document.we_form.elements[\'ClassID\'].options[document.we_form.elements[\'ClassID\'].selectedIndex].value];document.we_form.elements[\'FolderPath\'].value=objectPaths[document.we_form.elements[\'ClassID\'].options[document.we_form.elements[\'ClassID\'].selectedIndex].value];' . $this->topFrame . '.we_cmd(\'populateWorkspaces\');' . $this->topFrame . '.mark();"', 'value', $this->_width_size), g_l('navigation', '[class]')) . $this->getHTMLWorkspace('class', $_firstClass) : '') . '
-			</div>
-			<div id="fieldChooser" style="' . ($this->Model->SelectionType != weNavigation::STPYE_CATEGORY ? 'display: block' : 'display: none') . '; width: ' . $this->_width_size . ';margin-top: ' . $this->_margin_top . ';">
-			' . $this->getHTMLFieldChooser(
-				g_l('navigation', '[title_field]'), 'TitleField', $this->Model->TitleField, 'putTitleField', $this->Model->SelectionType, ($this->Model->SelectionType == weNavigation::STPYE_CLASS ? $this->Model->ClassID : $this->Model->DocTypeID)) . '
-			</div>
-			' . $this->getHTMLDirSelector() . '
-			<div id="catSort" style="' . ($this->Model->SelectionType != weNavigation::STPYE_CATEGORY ? 'display: block' : 'display: none') . '; width: ' . $this->_width_size . ';">
-			' . $this->getHTMLCategory() . '
-			' . $this->getHTMLFieldChooser(
-				g_l('navigation', '[sort]'), 'SortField', $_sortVal, 'putSortField', $this->Model->SelectionType, ($this->Model->SelectionType == weNavigation::STPYE_CLASS ? $this->Model->ClassID : $this->Model->DocTypeID), $_sortSelect, 120) . '
-			</div>
-			<div id="dynUrl" style="' . ($this->Model->SelectionType == weNavigation::STPYE_CATEGORY ? 'display: block' : 'display: none') . '; width: ' . $this->_width_size . ';">
-			' . $this->getHTMLLink('dynamic_') . '
-			</div>
-			<div style="width: ' . $this->_width_size . ';margin-top: ' . $this->_margin_top . ';">
-			' . we_html_tools::htmlFormElementTable(
-				we_html_tools::htmlTextInput(
-					'dynamic_Parameter', 58, $this->Model->Parameter, '', 'onchange="' . $this->topFrame . '.mark();"', 'text', $this->_width_size, 0), g_l('navigation', '[parameter]')) . '
-			</div>
-			' . $this->getHTMLCount() . '
-			' . we_button::create_button_table(
+						'ClassID', $classID2Name, 1, $this->Model->ClassID, false, 'onChange="clearFields();onSelectionClassChangeJS(this.value);"', 'value', $this->_width_size), g_l('navigation', '[class]')) . $this->getHTMLWorkspace('class', $_firstClass) : '') . '
+	</div>
+	<div id="fieldChooser" style="' . ($this->Model->SelectionType != weNavigation::STPYE_CATEGORY ? 'display: block' : 'display: none') . '; width: ' . $this->_width_size . ';margin-top: ' . $this->_margin_top . ';">' .
+			$this->getHTMLFieldChooser(g_l('navigation', '[title_field]'), 'TitleField', $this->Model->TitleField, 'putTitleField', $this->Model->SelectionType, ($this->Model->SelectionType == weNavigation::STPYE_CLASS ? $this->Model->ClassID : $this->Model->DocTypeID)) . '
+	</div>' .
+			$this->getHTMLDirSelector() . '
+	<div id="catSort" style="' . ($this->Model->SelectionType != weNavigation::STPYE_CATEGORY ? 'display: block' : 'display: none') . '; width: ' . $this->_width_size . ';">' .
+			$this->getHTMLCategory() .
+			$this->getHTMLFieldChooser(g_l('navigation', '[sort]'), 'SortField', $_sortVal, 'putSortField', $this->Model->SelectionType, ($this->Model->SelectionType == weNavigation::STPYE_CLASS ? $this->Model->ClassID : $this->Model->DocTypeID), $_sortSelect, 120) . '
+	</div>
+	<div id="dynUrl" style="' . ($this->Model->SelectionType == weNavigation::STPYE_CATEGORY ? 'display: block' : 'display: none') . '; width: ' . $this->_width_size . ';">' .
+			$this->getHTMLLink('dynamic_') . '
+	</div>
+	<div style="width: ' . $this->_width_size . ';margin-top: ' . $this->_margin_top . ';">' .
+			we_html_tools::htmlFormElementTable(
+				we_html_tools::htmlTextInput('dynamic_Parameter', 58, $this->Model->Parameter, '', 'onchange="' . $this->topFrame . '.mark();"', 'text', $this->_width_size, 0), g_l('navigation', '[parameter]')) . '
+	</div>' .
+			$this->getHTMLCount() .
+			we_button::create_button_table(
 				array(
 				we_button::create_button(
 					'preview', 'javascript:' . $this->topFrame . '.we_cmd("dyn_preview");'),
 				($this->Model->hasDynChilds() ? we_button::create_button(
 						'delete_all', 'javascript:' . $this->topFrame . '.we_cmd("depopulate");') : '')
 				)
-				, 10, array(
-				'style' => 'margin-top:20px;'
+				, 10, array('style' => 'margin-top:20px;'
 			)) . '
-		</div>
-		';
+</div>';
 	}
 
 	function getHTMLStatic($disabled = false){
@@ -685,7 +615,7 @@ class weNavigationFrames extends weToolFrames{
 		$wecmdenc1 = we_cmd_enc("document.we_form.elements['LinkID'].value");
 		$wecmdenc2 = we_cmd_enc("document.we_form.elements['LinkPath'].value");
 
-		$_cmd_doc = "javascript:we_cmd('openDocselector',document.we_form.elements['LinkID'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','" . session_id() . "','$rootDirID',''," . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")";
+		$_cmd_doc = "javascript:we_cmd('openDocselector',document.we_form.elements['LinkID'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','" . session_id() . "','" . $rootDirID . "',''," . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")";
 
 		//javascript:we_cmd('openDocselector',document.we_form.elements['LinkID'].value,'" . OBJECT_FILES_TABLE . "','document.we_form.elements[\\'LinkID\\'].value','document.we_form.elements[\\'LinkPath\\'].value','opener." . $this->topFrame . ".we_cmd(\"populateWorkspaces\");','" . session_id() . "','$rootDirID',''," . (we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")" : ''
 		$wecmdenc1 = we_cmd_enc("document.we_form.elements['LinkID'].value");
@@ -699,22 +629,19 @@ class weNavigationFrames extends weToolFrames{
 		$_button_cat = we_button::create_button('select', $_cmd_cat, true, 100, 22, '', '', $disabled);
 
 		$_buttons = '<div id="docLink" style="display: ' . ($this->Model->SelectionType == weNavigation::STPYE_DOCLINK ? 'inline' : 'none') . '">' . $_button_doc . '</div><div id="objLink" style="display: ' . ($this->Model->SelectionType == weNavigation::STPYE_OBJLINK ? 'inline' : 'none') . '">' . $_button_obj . '</div><div id="catLink" style="display: ' . ($this->Model->SelectionType == weNavigation::STPYE_CATLINK ? 'inline' : 'none') . '">' . $_button_cat . '</div>';
-		if($this->Model->LinkID == 0){
-			$_path = "";
-		} else{
-			$_path = id_to_path(
-				$this->Model->LinkID, ($this->Model->SelectionType == weNavigation::STPYE_DOCLINK ? FILE_TABLE : ($this->Model->SelectionType == weNavigation::STPYE_CATLINK ? CATEGORY_TABLE : (defined(
-							'OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : ''))));
-		}
+		$_path = ($this->Model->LinkID == 0 ?
+				'' :
+				id_to_path($this->Model->LinkID, ($this->Model->SelectionType == weNavigation::STPYE_DOCLINK ? FILE_TABLE : ($this->Model->SelectionType == weNavigation::STPYE_CATLINK ? CATEGORY_TABLE : (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : ''))))
+			);
 
 		$yuiSuggest = & weSuggest::getInstance();
-		$yuiSuggest->setAcId("LinkPath");
+		$yuiSuggest->setAcId("LinkPath", "");
 		$yuiSuggest->setContentType(
 			$this->Model->SelectionType == weNavigation::STPYE_DOCLINK ? "folder,text/xml,text/webedition,image/*,text/html,application/*,application/x-shockwave-flash,video/quicktime" : ($this->Model->SelectionType == 'folder,objectFile' ? OBJECT_FILES_TABLE : ''));
 		$yuiSuggest->setInput('LinkPath', $_path, array(
 			"onChange" => $this->topFrame . ".mark();"
 		));
-		$yuiSuggest->setMaxResults(10);
+		$yuiSuggest->setMaxResults(50);
 		$yuiSuggest->setMayBeEmpty(true);
 		$yuiSuggest->setResult('LinkID', $this->Model->LinkID);
 		$yuiSuggest->setSelector("Docselector");
@@ -730,17 +657,12 @@ class weNavigationFrames extends weToolFrames{
 		/* if($this->Model->hasDynChilds()) {
 		  return $this->getHTMLContentInfo();
 		  } */
-
-		$parts = array();
 		$_seltype = array(
 			weNavigation::STPYE_DOCTYPE => g_l('navigation', '[documents]')
 		);
 
 		if(defined("OBJECT_TABLE")){
 			$_seltype[weNavigation::STPYE_CLASS] = g_l('navigation', '[objects]');
-			$_onCahngeJS = "if(document.we_form.Selection.value=='" . weNavigation::SELECTION_STATIC . "'){YAHOO.autocoml.modifySetById('yuiAcInputLinkPath','table',(this.value=='" . weNavigation::STPYE_DOCLINK . "'?'" . FILE_TABLE . "':(this.value=='" . weNavigation::STPYE_OBJLINK . "'?'" . OBJECT_TABLE . "':'" . CATEGORY_TABLE . "')));}else{};";
-		} else{
-			$_onCahngeJS = "if(document.we_form.Selection.value=='" . weNavigation::SELECTION_STATIC . "'){YAHOO.autocoml.modifySetById('yuiAcInputLinkPath','table',(this.value=='" . weNavigation::STPYE_DOCLINK . "'?'" . FILE_TABLE . "':'" . CATEGORY_TABLE . "'));}else{};";
 		}
 
 		$_seltype[weNavigation::STPYE_CATEGORY] = g_l('navigation', '[categories]');
@@ -756,40 +678,36 @@ class weNavigationFrames extends weToolFrames{
 				'Selection', array(
 				weNavigation::SELECTION_NODYNAMIC => g_l('navigation', '[no_dyn_content]'),
 				weNavigation::SELECTION_DYNAMIC => g_l('navigation', '[dyn_content]')
-				), 1, $this->Model->Selection, false, 'style="width: ' . $this->_width_size . 'px;" onChange="toggle(\'dynamic\');setPresentation(\'dynamic\');setWorkspaces(\'\');' . $this->topFrame . '.mark();setCustomerFilter(this);"', 'value', $this->_width_size) . '
+				), 1, $this->Model->Selection, false, 'style="width: ' . $this->_width_size . 'px;" onChange="toggle(\'dynamic\');setPresentation(\'dynamic\');setWorkspaces(\'\');' . $this->topFrame . '.mark();setCustomerFilter(this);onSelectionTypeChangeJS(\'' . weNavigation::STPYE_DOCTYPE . '\');"', 'value', $this->_width_size) . '
 				</div>
 				<div id="dynamic" style="' . ($this->Model->Selection == weNavigation::SELECTION_DYNAMIC ? 'display: block;' : 'display: none;') . ';margin-top:' . $this->_margin_top . '">
 				' . we_html_tools::htmlSelect(
-				'SelectionType', $_seltype, 1, $this->Model->SelectionType, false, 'onChange="onSelectionTypeChangeJS(this); closeAllType();clearFields();toggle(this.value);setWorkspaces(this.value);setStaticSelection(this.value);' . $this->topFrame . '.mark();"', 'value', $this->_width_size) . $this->getHTMLDynamic() . '</div>
+				'SelectionType', $_seltype, 1, $this->Model->SelectionType, false, 'onChange="closeAllType();clearFields();toggle(this.value);setWorkspaces(this.value);onSelectionTypeChangeJS(this.value);setStaticSelection(this.value);' . $this->topFrame . '.mark();"', 'value', $this->_width_size) . $this->getHTMLDynamic() . '</div>
 			</div>';
 
 
-		$parts[] = array(
-			'headline' => g_l('navigation', '[content]'),
-			'html' => $_selection_block,
-			'space' => $this->_space_size
-		);
-
-		return $parts;
+		return array(
+			array(
+				'headline' => g_l('navigation', '[content]'),
+				'html' => $_selection_block,
+				'space' => $this->_space_size
+		));
 	}
 
 	function getHTMLContentInfo(){
-		$parts = array();
 		$_sort = array();
 		foreach($this->Model->Sort as $_i){
 			$_sort[] = $_i['field'] . '&nbsp;(' . ($_i['order'] == 'DESC' ? g_l('navigation', '[descending]') : g_l('navigation', '[ascending]')) . ')';
 		}
 
 		$_table = new we_html_table(
-				array(
-					'width' => $this->_width_size,
-					'cellpadding' => '0',
-					'cellspacing' => '0',
-					'border' => '0',
-					'class' => 'defaultfont'
-				),
-				9,
-				2);
+			array(
+			'width' => $this->_width_size,
+			'cellpadding' => '0',
+			'cellspacing' => '0',
+			'border' => '0',
+			'class' => 'defaultfont'
+			), 9, 2);
 
 		if($this->Model->SelectionType == weNavigation::STPYE_DOCTYPE){
 
@@ -798,8 +716,7 @@ class weNavigationFrames extends weToolFrames{
 				), g_l('navigation', '[documents]'));
 
 			if(!empty($this->Model->DocTypeID)){
-				$_dt = f(
-					'SELECT DocType FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . intval($this->Model->DocTypeID), 'DocType', new DB_WE());
+				$_dt = f('SELECT DocType FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . intval($this->Model->DocTypeID), 'DocType', new DB_WE());
 				$_table->setCol(1, 0, array(
 					'style' => 'font-weight: bold;'
 					), g_l('navigation', '[doctype]') . ':');
@@ -836,14 +753,17 @@ class weNavigationFrames extends weToolFrames{
 		$_table->setCol(4, 0, array(
 			'style' => 'font-weight: bold;'
 			), g_l('navigation', '[dir]') . ':');
-		if($this->Model->SelectionType == weNavigation::STPYE_DOCTYPE){
-			$_table->setColContent(4, 1, id_to_path($this->Model->FolderID, FILE_TABLE));
-		} else
-		if($this->Model->SelectionType == weNavigation::STPYE_CATEGORY){
-			$_table->setColContent(4, 1, id_to_path($this->Model->FolderID, CATEGORY_TABLE));
-		} else
-		if(defined('OBJECT_FILES_TABLE')){
-			$_table->setColContent(4, 1, id_to_path($this->Model->FolderID, OBJECT_FILES_TABLE));
+		switch($this->Model->SelectionType){
+			case weNavigation::STPYE_DOCTYPE:
+				$_table->setColContent(4, 1, id_to_path($this->Model->FolderID, FILE_TABLE));
+				break;
+			case weNavigation::STPYE_CATEGORY:
+				$_table->setColContent(4, 1, id_to_path($this->Model->FolderID, CATEGORY_TABLE));
+				break;
+			default:
+				if(defined('OBJECT_FILES_TABLE')){
+					$_table->setColContent(4, 1, id_to_path($this->Model->FolderID, OBJECT_FILES_TABLE));
+				}
 		}
 
 		if($this->Model->SelectionType != weNavigation::STPYE_CATEGORY){
@@ -881,35 +801,29 @@ class weNavigationFrames extends weToolFrames{
 			), g_l('navigation', '[show_count]') . ':');
 		$_table->setColContent(8, 1, $this->Model->ShowCount);
 
-		$parts[] = array(
-			'headline' => g_l('navigation', '[content]'),
-			'html' => $_table->getHTML(),
-			'space' => $this->_space_size
+		return array(
+			array(
+				'headline' => g_l('navigation', '[entries]'),
+				'html' => we_html_tools::htmlSelect('dynContent', $this->View->getItems($this->Model->ID), 20, '', false, 'style="width: ' . $this->_width_size . 'px; height: 200px;  margin: 0 0 ' . $this->_margin_bottom . ' 0;"'),
+				'space' => $this->_space_size,
+				'noline' => 0
+			),
+			array(
+				'headline' => '',
+				'html' => we_button::create_button_table(
+					array(
+						we_button::create_button('preview', 'javascript:' . $this->topFrame . '.we_cmd("dyn_preview");'),
+						we_button::create_button('refresh', 'javascript:' . $this->topFrame . '.we_cmd("populate");'),
+						we_button::create_button('delete_all', 'javascript:' . $this->topFrame . '.we_cmd("depopulate");')
+				)),
+				'space' => $this->_space_size
+			),
+			array(
+				'headline' => g_l('navigation', '[content]'),
+				'html' => $_table->getHTML(),
+				'space' => $this->_space_size
+			),
 		);
-
-		$parts[] = array(
-			'headline' => g_l('navigation', '[entries]'),
-			'html' => we_html_tools::htmlSelect(
-				'dynContent', $this->View->getItems($this->Model->ID), 20, '', false, 'style="width: ' . $this->_width_size . 'px; height: 200px;  margin: 0 0 ' . $this->_margin_bottom . ' 0;"'),
-			'space' => $this->_space_size,
-			'noline' => 0
-		);
-
-		$parts[] = array(
-			'headline' => '',
-			'html' => we_button::create_button_table(
-				array(
-					we_button::create_button(
-						'preview', 'javascript:' . $this->topFrame . '.we_cmd("dyn_preview");'),
-					we_button::create_button(
-						'refresh', 'javascript:' . $this->topFrame . '.we_cmd("populate");'),
-					we_button::create_button(
-						'delete_all', 'javascript:' . $this->topFrame . '.we_cmd("depopulate");')
-			)),
-			'space' => $this->_space_size
-		);
-
-		return $parts;
 	}
 
 	function getHTMLEditorPreview(){
@@ -992,28 +906,47 @@ class weNavigationFrames extends weToolFrames{
 
 		$_onSelectionTypeChangeJS = '
 <script type="text/javascript">
-function onSelectionTypeChangeJS(elem) {
-	if(document.we_form.Selection.value=="' . weNavigation::SELECTION_STATIC . '"){
-		';
-		if(defined("OBJECT_TABLE")){
-			$_onSelectionTypeChangeJS .= 'YAHOO.autocoml.modifySetById("yuiAcInputLinkPath","table",(elem.value=="' . weNavigation::STPYE_DOCLINK . '" || elem.value=="' . weNavigation::STPYE_DOCLINK . '" ? "' . FILE_TABLE . '":(elem.value=="' . weNavigation::STPYE_OBJLINK . '" || elem.value=="' . weNavigation::STPYE_CLASS . '" ? "' . OBJECT_TABLE . '":"' . CATEGORY_TABLE . '")));';
-		} else{
-			$_onSelectionTypeChangeJS .= 'YAHOO.autocoml.modifySetById("yuiAcInputLinkPath","table",(elem.value=="' . weNavigation::STPYE_DOCLINK . '" || elem.value=="' . weNavigation::STPYE_DOCLINK . '"? "' . FILE_TABLE . '":"' . CATEGORY_TABLE . '"));';
+function onFolderSelectionChangeJS(value) {
+	var linktype = value == "' . weNavigation::STPYE_DOCLINK . '" ? "docLink" : (value == "' . weNavigation::STPYE_CATLINK . '" ? "catLink" : (value == "' . weNavigation::STPYE_OBJLINK . '" ? "' . (defined('OBJECT_TABLE') ? 'objLink' : '') . '" : "docLink"));
+	YAHOO.autocoml.modifySetById("yuiAcInputLinkPath",{
+			table : linktype == "docLink" ? "' . FILE_TABLE . '" : (linktype == "objLink" ? "' . OBJECT_FILES_TABLE . '" : (linktype == "catLink" ? "' . CATEGORY_TABLE . '": "")),
+			cTypes : linktype == "docLink" ? "folder,text/xml,text/webedition,image/*,text/html,application/*,application/x-shockwave-flash,video/quicktime" : (linktype == "objLink" ? "folder,objectFile": "")
 		}
-		$_onSelectionTypeChangeJS .= '
+	);
+}
+
+function onSelectionTypeChangeJS(value) {
+	if(document.we_form.elements[\'Selection\'].value=="' . weNavigation::SELECTION_STATIC . '"){
+		onFolderSelectionChangeJS(value);
 	} else {
-		';
-		if(defined("OBJECT_FILES_TABLE")){
-			$_onSelectionTypeChangeJS .= 'YAHOO.autocoml.modifySetById("yuiAcInputFolderPath","table",(elem.value=="' . weNavigation::STPYE_DOCTYPE . '"?"' . FILE_TABLE . '":(elem.value=="' . weNavigation::STPYE_CLASS . '"?"' . OBJECT_FILES_TABLE . '":"' . CATEGORY_TABLE . '")));';
+		var objects = ' . defined("OBJECT_FILES_TABLE") . ';
+		if(objects == 1 && value=="' . weNavigation::STPYE_CLASS . '"){
+			document.we_form.elements[\'ClassID\'].selectedIndex = 0;
+			onSelectionClassChangeJS(document.we_form.elements[\'ClassID\'].options[0].value);
 		} else{
-			$_onSelectionTypeChangeJS .= 'YAHOO.autocoml.modifySetById("yuiAcInputFolderPath","table",(elem.value=="' . weNavigation::STPYE_DOCTYPE . '"?"' . FILE_TABLE . '":"' . CATEGORY_TABLE . '"));';
+			YAHOO.autocoml.modifySetById("yuiAcInputFolderPath",{
+					table : value == "' . weNavigation::STPYE_DOCTYPE . '" ? "' . FILE_TABLE . '" : "' . CATEGORY_TABLE . '",
+					rootDir : "",
+					mayBeEmpty : value == "' . weNavigation::STPYE_DOCTYPE . '" ? true : false
+				}
+			);
 		}
-		$_onSelectionTypeChangeJS .= '
+		YAHOO.autocoml.setValidById("yuiAcInputFolderPath");
 	}
 }
-function onFolderSelectionChangeJS(elem) {
-	YAHOO.autocoml.modifySetById("yuiAcInputLinkPath","table",(elem.value=="' . weNavigation::STPYE_DOCLINK . '"?"' . FILE_TABLE . '":"' . (defined(
-				'OBJECT_TABLE') ? OBJECT_FILES_TABLE : FILE_TABLE) . '"));
+
+function onSelectionClassChangeJS(value) {
+	YAHOO.autocoml.modifySetById("yuiAcInputFolderPath",{
+			table : "trunk_tblObjectFiles",
+			rootDir : classPaths[value],
+			mayBeEmpty : false
+		}
+	);
+	document.we_form.elements["FolderID"].value=classDirs[value];
+	document.we_form.elements["FolderPath"].value=classPaths[value];
+	document.we_form.elements["FolderPath"].disabled=!hasClassSubDirs[value];
+	' . $this->topFrame . '.we_cmd(\'populateWorkspaces\');
+	' . $this->topFrame . '.mark();
 }
 </script>';
 
@@ -1031,10 +964,9 @@ function onFolderSelectionChangeJS(elem) {
 		if($tabNr == 'preview'){
 			$out .= $this->getHTMLEditorPreview();
 		} else{
-
 			// Property tab content
-			$out .= $yuiSuggest->getYuiJsFiles();
-			$out .= we_html_element::htmlDiv(
+			$out .= $yuiSuggest->getYuiJsFiles() .
+				we_html_element::htmlDiv(
 					array(
 					'id' => 'tab1', 'style' => ($tabNr == 1 ? 'display: block;' : 'display: none')
 					), $this->View->getCommonHiddens($hiddens) .
@@ -1056,8 +988,8 @@ function onFolderSelectionChangeJS(elem) {
 						), we_multiIconBox::getHTML(
 							'', '100%', $this->getHTMLTab3(), 30, '', -1, '', '', false, $preselect)) : '');
 		}
-		$out .= $yuiSuggest->getYuiCss();
-		$out .= $yuiSuggest->getYuiJs();
+		$out .= $yuiSuggest->getYuiCss() .
+			$yuiSuggest->getYuiJs();
 		return $out;
 	}
 
@@ -1089,7 +1021,7 @@ function onFolderSelectionChangeJS(elem) {
 		}
 	}
 
-	function getHTMLChooser($title, $table = FILE_TABLE, $rootDirID = 0, $IDName = 'ID', $IDValue = '', $PathName = 'Path', $cmd = '', $filter = 'text/webedition', $disabled = false, $showtrash = false){
+	function getHTMLChooser($title, $table = FILE_TABLE, $rootDirID = 0, $IDName = 'ID', $IDValue = '', $PathName = 'Path', $cmd = '', $filter = 'text/webedition', $disabled = false, $showtrash = false, $acCTypes = ""){
 		if($IDValue == '0'){
 			$_path = '/';
 		} elseif(isset($this->Model->$IDName) && !empty($this->Model->$IDName)){
@@ -1099,7 +1031,7 @@ function onFolderSelectionChangeJS(elem) {
 			if(isset($IDValue) && $IDValue !== ""){
 				$acResponse = $acQuery->getItemById($IDValue, $table, array(
 					"IsFolder", "Path"
-					));
+				));
 				if($acResponse && $acResponse[0]['IsFolder']){
 					$_path = $acResponse[0]['IsFolder'];
 				} else{
@@ -1149,15 +1081,15 @@ function onFolderSelectionChangeJS(elem) {
 		$_result = we_html_element::htmlHidden(
 				array(
 					'name' => $IDName, 'value' => $IDValue, 'id' => 'yuiAcResult' . $PathName
-			));
+		));
 		$yuiSuggest = & weSuggest::getInstance();
 		$yuiSuggest->setAcId($PathName);
-		$yuiSuggest->setContentType($filter);
+		$yuiSuggest->setContentType($acCTypes ? $acCTypes : $filter);
 		$yuiSuggest->setInput($PathName, $_path, array(
 			"onChange" => $this->topFrame . ".mark();"
 		));
 		$yuiSuggest->setLabel($title);
-		$yuiSuggest->setMaxResults(10);
+		$yuiSuggest->setMaxResults(50);
 		$yuiSuggest->setMayBeEmpty($mayBeEmpty);
 		$yuiSuggest->setResult($IDName, $IDValue);
 		$yuiSuggest->setSelector($_selector);
@@ -1177,106 +1109,96 @@ function onFolderSelectionChangeJS(elem) {
 	}
 
 	function getHTMLCategory(){
-		$addbut = we_button::create_button(
-				"add", "javascript:we_cmd('openCatselector','','" . CATEGORY_TABLE . "','','','fillIDs();opener.addCat(top.allPaths);opener." . $this->topFrame . ".mark();')");
+		$addbut = we_button::create_button("add", "javascript:we_cmd('openCatselector','','" . CATEGORY_TABLE . "','','','fillIDs();opener.addCat(top.allPaths);opener." . $this->topFrame . ".mark();')");
 		$del_but = addslashes(
 			we_html_element::htmlImg(
 				array(
 					'src' => BUTTONS_DIR . 'btn_function_trash.gif',
 					'onclick' => 'javascript:#####placeHolder#####;' . $this->topFrame . '.mark();',
 					'style' => 'cursor: pointer; width: 27px;'
-			)));
+		)));
 
 		$variant_js = '
-			var categories_edit = new multi_edit("categories",document.we_form,0,"' . $del_but . '",' . ($this->_width_size - 10) . ',false);
-			categories_edit.addVariant();
+var categories_edit = new multi_edit("categories",document.we_form,0,"' . $del_but . '",' . ($this->_width_size - 10) . ',false);
+categories_edit.addVariant();
 
-			document.we_form.CategoriesControl.value = categories_edit.name;
+document.we_form.CategoriesControl.value = categories_edit.name;';
 
-		';
 		if(is_array($this->Model->Categories)){
 			foreach($this->Model->Categories as $cat){
 
 				$variant_js .= '
-					categories_edit.addItem();
-					categories_edit.setItem(0,(categories_edit.itemCount-1),"' . $cat . '");
-				';
+categories_edit.addItem();
+categories_edit.setItem(0,(categories_edit.itemCount-1),"' . $cat . '");';
 			}
 		}
 
-		$variant_js .= '
-			categories_edit.showVariant(0);
-		';
+		$variant_js .= 'categories_edit.showVariant(0);';
 
 		$js = we_html_element::jsElement($variant_js);
 
 		$table = new we_html_table(
-				array(
-					'id' => 'CategoriesBlock',
-					'style' => 'display: block;',
-					'cellpadding' => 0,
-					'cellspacing' => 0,
-					'border' => 0
-				),
-				5,
-				1);
+			array(
+			'id' => 'CategoriesBlock',
+			'style' => 'display: block;',
+			'cellpadding' => 0,
+			'cellspacing' => 0,
+			'border' => 0
+			), 6, 2
+		);
 
-		$table->setColContent(0, 0, we_html_tools::getPixel(5, 5));
-		$table->setCol(1, 0, array(
-			'class' => 'defaultfont'
-			), g_l('navigation', '[categories]'));
-		$table->setColContent(
-			2, 0, we_html_element::htmlDiv(
+		$table->setCol(0, 0, array('colspan' => '2'), we_html_tools::getPixel(3, 3));
+		$table->setCol(1, 0, array('colspan' => '2', 'class' => 'defaultfont'), g_l('navigation', '[categories]'));
+		$table->setCol(2, 0, array('colspan' => '2'), we_html_element::htmlDiv(
 				array(
 					'id' => 'categories',
 					'class' => 'blockWrapper',
 					'style' => 'width: ' . ($this->_width_size) . 'px; height: 60px; border: #AAAAAA solid 1px;'
-			)));
-
-		$table->setColContent(3, 0, we_html_tools::getPixel(5, 5));
-
+				)
+			)
+		);
+		$table->setCol(3, 0, array('colspan' => '2'), we_html_tools::getPixel(5, 5));
 		$table->setCol(
-			4, 0, array(
-			'colspan' => '2', 'align' => 'right'
-			), we_button::create_button_table(
-				array(
-					we_button::create_button("delete_all", "javascript:removeAllCats()"), $addbut
-			)));
+			4, 0, array('align' => 'left'), we_forms::checkboxWithHidden($this->Model->CatAnd, "CatAnd", g_l('navigation', "[catAnd]"))
+		);
+		$table->setCol(
+			4, 1, array('align' => 'right'), we_button::create_button_table(
+				array(we_button::create_button("delete_all", "javascript:removeAllCats()"), $addbut)
+			)
+		);
+		$table->setCol(5, 0, array('colspan' => '2'), we_html_tools::getPixel(3, 3));
 
-		return $table->getHtml() . $js . we_html_element::jsElement(
-				'
+		return $table->getHtml() . $js . we_html_element::jsElement('
+function removeAllCats(){
+	' . $this->topFrame . '.mark();
+	if(categories_edit.itemCount>0){
+		while(categories_edit.itemCount>0){
+			categories_edit.delItem(categories_edit.itemCount);
+		}
+	}
+}
 
-							function removeAllCats(){
-								' . $this->topFrame . '.mark();
-								if(categories_edit.itemCount>0){
-									while(categories_edit.itemCount>0){
-										categories_edit.delItem(categories_edit.itemCount);
-									}
-								}
-							}
-
-							function addCat(paths){
-								' . $this->topFrame . '.mark();
-								var path = paths.split(",");
-								var found = false;
-								var j = 0;
-								for (var i = 0; i < path.length; i++) {
-									if(path[i]!="") {
-										found = false;
-										for(j=0;j<categories_edit.itemCount;j++){
-											if(categories_edit.form.elements[categories_edit.name+"_variant0_"+categories_edit.name+"_item"+j].value == path[i]) {
-												found = true;
-											}
-										}
-										if(!found) {
-											categories_edit.addItem();
-											categories_edit.setItem(0,(categories_edit.itemCount-1),path[i]);
-										}
-									}
-								}
-								categories_edit.showVariant(0);
-							}
-					');
+function addCat(paths){
+	' . $this->topFrame . '.mark();
+	var path = paths.split(",");
+	var found = false;
+	var j = 0;
+	for (var i = 0; i < path.length; i++) {
+		if(path[i]!="") {
+			found = false;
+			for(j=0;j<categories_edit.itemCount;j++){
+				if(categories_edit.form.elements[categories_edit.name+"_variant0_"+categories_edit.name+"_item"+j].value == path[i]) {
+					found = true;
+				}
+			}
+			if(!found) {
+				categories_edit.addItem();
+				categories_edit.setItem(0,(categories_edit.itemCount-1),path[i]);
+			}
+		}
+	}
+	categories_edit.showVariant(0);
+}');
 	}
 
 	function getHTMLFieldSelector(){
@@ -1285,25 +1207,25 @@ function onFolderSelectionChangeJS(elem) {
 		$_cmd = $_REQUEST['cmd']; // js command
 		$_multi = $_REQUEST['multi']; // js command
 		$_js = we_button::create_state_changer(false) . '
-				function setFields() {
-					var list = document.we_form.fields.options;
+function setFields() {
+	var list = document.we_form.fields.options;
 
-					var fields = new Array();
-					for(i=0;i<list.length;i++){
-						if(list[i].selected){
-							fields.push(list[i].value);
-						}
-					}
-					opener.' . $_cmd . '(fields.join(","));
-					self.close();
+	var fields = new Array();
+	for(i=0;i<list.length;i++){
+		if(list[i].selected){
+			fields.push(list[i].value);
+		}
+	}
+	opener.' . $_cmd . '(fields.join(","));
+	self.close();
 
-				}
+}
 
-				function selectItem() {
-					if(document.we_form.fields.selectedIndex>-1){
-						switch_button_state("save", "save_enabled", "enabled");
-					}
-				}';
+function selectItem() {
+	if(document.we_form.fields.selectedIndex>-1){
+		switch_button_state("save", "save_enabled", "enabled");
+	}
+}';
 
 		$__fields = array();
 
@@ -1311,8 +1233,7 @@ function onFolderSelectionChangeJS(elem) {
 
 			$_db = new DB_WE();
 			$_fields = array();
-			$_templates = f(
-				'SELECT Templates FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . intval($_selection), 'Templates', $_db);
+			$_templates = f('SELECT Templates FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . intval($_selection), 'Templates', $_db);
 			$_ids = makeArrayFromCSV($_templates);
 
 			foreach($_ids as $_templateID){
@@ -1345,14 +1266,9 @@ function onFolderSelectionChangeJS(elem) {
 				'space' => 0
 			)
 		);
-		$button = we_button::position_yes_no_cancel(
-				we_button::create_button('save', 'javascript:setFields();', true, 100, 22, '', '', true, false), null, we_button::create_button('close', 'javascript:self.close();'));
+		$button = we_button::position_yes_no_cancel(we_button::create_button('save', 'javascript:setFields();', true, 100, 22, '', '', true, false), null, we_button::create_button('close', 'javascript:self.close();'));
 
-		we_button::create_button_table(
-			array(
-				we_button::create_button(
-					'save', 'javascript:setFields();', true, 100, 22, '', '', true, false), we_button::create_button('close', 'javascript:self.close();')
-		));
+		we_button::create_button_table(array(we_button::create_button('save', 'javascript:setFields();', true, 100, 22, '', '', true, false), we_button::create_button('close', 'javascript:self.close();')));
 
 		$_body = we_html_element::htmlBody(
 				array(
@@ -1367,11 +1283,9 @@ function onFolderSelectionChangeJS(elem) {
 	}
 
 	function getHTMLCount(){
-		$_code = '<div style="width: ' . $this->_width_size . '; margin-top: ' . $this->_margin_top . '">' . we_html_tools::htmlFormElementTable(
+		return '<div style="width: ' . $this->_width_size . '; margin-top: ' . $this->_margin_top . '">' . we_html_tools::htmlFormElementTable(
 				we_html_tools::htmlTextInput(
 					'ShowCount', 30, $this->Model->ShowCount, '', 'onBlur="var r=parseInt(this.value);if(isNaN(r)) this.value=' . $this->Model->ShowCount . '; else{ this.value=r; ' . $this->topFrame . '.mark();}"', 'text', $this->_width_size, 0), g_l('navigation', '[show_count]')) . '</div>';
-
-		return $_code;
 	}
 
 	function getHTMLDirSelector(){
@@ -1381,40 +1295,42 @@ function onFolderSelectionChangeJS(elem) {
 		$wecmdenc1 = we_cmd_enc("document.we_form.elements['FolderID'].value");
 		$wecmdenc2 = we_cmd_enc("document.we_form.elements['FolderPath'].value");
 		$wecmdenc3 = we_cmd_enc("opener." . $this->topFrame . ".mark();");
-		$_button_doc = we_button::create_button(
-				'select', "javascript:we_cmd('openDirselector',document.we_form.elements['FolderID'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','$rootDirID')");
-		$_countClasses = 1;
-		if(defined('OBJECT_FILES_TABLE') && $this->Model->SelectionType == weNavigation::STPYE_CLASS){
-			$_countClasses = f('SELECT COUNT(1) AS Count FROM ' . OBJECT_FILES_TABLE, 'Count', $GLOBALS['DB_WE']);
+		$_button_doc = we_button::create_button('select', "javascript:we_cmd('openDirselector',document.we_form.elements['FolderID'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','$rootDirID')");
+		$_countSubDirs = 1;
+		if(defined('OBJECT_FILES_TABLE') && ($this->Model->SelectionType == weNavigation::STPYE_CLASS || $this->Model->SelectionType == weNavigation::STPYE_OBJLINK)){
+			$_classDirID = f('SELECT ' . OBJECT_FILES_TABLE . '.ID AS classDirID FROM ' . OBJECT_TABLE . ' LEFT JOIN ' . OBJECT_FILES_TABLE . ' ON (' . OBJECT_TABLE . '.Path=' . OBJECT_FILES_TABLE . '.Path) WHERE ' . OBJECT_TABLE . '.ID=' . $this->Model->ClassID . '', 'classDirID', $this->db);
+			$_countSubDirs = f('SELECT COUNT(ID) as CountSubDirs FROM ' . OBJECT_FILES_TABLE . ' WHERE ParentID=' . $_classDirID . ' AND IsFolder=1', 'CountSubDirs', $this->db);
 		}
-		//javascript:we_cmd('openDirselector',document.we_form.elements['FolderID'].value,'" . OBJECT_FILES_TABLE . "','document.we_form.elements[\\'FolderID\\'].value','document.we_form.elements[\\'FolderPath\\'].value','opener." . $this->topFrame . ".mark();','" . session_id() . "',objectDirs[document.we_form.elements['ClassID'].options[document.we_form.elements['ClassID'].selectedIndex].value])
+		//javascript:we_cmd('openDirselector',document.we_form.elements['FolderID'].value,'" . OBJECT_FILES_TABLE . "','document.we_form.elements[\\'FolderID\\'].value','document.we_form.elements[\\'FolderPath\\'].value','opener." . $this->topFrame . ".mark();','" . session_id() . "',classDirs[document.we_form.elements['ClassID'].options[document.we_form.elements['ClassID'].selectedIndex].value])
 		$wecmdenc1 = we_cmd_enc("document.we_form.elements['FolderID'].value");
 		$wecmdenc2 = we_cmd_enc("document.we_form.elements['FolderPath'].value");
 		$wecmdenc3 = we_cmd_enc("opener." . $this->topFrame . ".mark();");
-		$_button_obj = defined('OBJECT_TABLE') ? we_button::create_button(
-				'select', "javascript:we_cmd('openDirselector',document.we_form.elements['FolderID'].value,'" . OBJECT_FILES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "',objectDirs[document.we_form.elements['ClassID'].options[document.we_form.elements['ClassID'].selectedIndex].value])", true, 100, 22, "", "", ($_countClasses ? false : true), false, "_XFolder") : '';
 
+		$_button_obj = defined('OBJECT_TABLE') ? we_button::create_button('select', "javascript:we_cmd('openDirselector',document.we_form.elements['FolderID'].value,'" . OBJECT_FILES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "',classDirs[document.we_form.elements['ClassID'].options[document.we_form.elements['ClassID'].selectedIndex].value])", true, 100, 22, "", "", ($_countSubDirs ? false : true), false, "_XFolder") : '';
 		$_button_cat = we_button::create_button('select', "javascript:we_cmd('openCatselector',document.we_form.elements['FolderID'].value,'" . CATEGORY_TABLE . "','document.we_form.elements[\\'FolderID\\'].value','document.we_form.elements[\\'FolderPath\\'].value','opener." . $this->topFrame . ".mark();','" . session_id() . "','$rootDirID')");
-
 		$_buttons = '<div id="docFolder" style="display: ' . (($this->Model->SelectionType == weNavigation::STPYE_DOCTYPE) ? 'inline' : 'none') . '">' . $_button_doc . '</div><div id="objFolder" style="display: ' . ($this->Model->SelectionType == weNavigation::STPYE_CLASS ? 'inline' : 'none') . '">' . $_button_obj . '</div><div id="catFolder" style="display: ' . ($this->Model->SelectionType == weNavigation::STPYE_CATEGORY ? 'inline' : 'none') . '">' . $_button_cat . '</div>';
 
-		$_path = id_to_path(
-			$this->Model->FolderID, (($this->Model->SelectionType == weNavigation::STPYE_DOCTYPE) ? FILE_TABLE : ($this->Model->SelectionType == weNavigation::STPYE_CATEGORY ? CATEGORY_TABLE : (defined(
-						'OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : ''))));
+		$_table = $this->Model->SelectionType == weNavigation::STPYE_DOCTYPE ? FILE_TABLE :
+			($this->Model->SelectionType == weNavigation::STPYE_CLASS ? OBJECT_FILES_TABLE :
+				($this->Model->SelectionType == weNavigation::STPYE_CATEGORY ? CATEGORY_TABLE :
+					FILE_TABLE));
+
+		$_path = id_to_path($this->Model->FolderID, $_table);
+		$_attribs = array("onChange" => $this->topFrame . ".mark();");
+		if(!$_countSubDirs){
+			$_attribs["disabled"] = "disabled";
+		}
 
 		$yuiSuggest = & weSuggest::getInstance();
-		$yuiSuggest->setAcId("FolderPath");
+		$yuiSuggest->setAcId("FolderPath", $_table == OBJECT_FILES_TABLE ? id_to_path($this->Model->ClassID, OBJECT_FILES_TABLE) : "");
 		$yuiSuggest->setContentType("folder");
-		$yuiSuggest->setInput(
-			'FolderPath', $_path, array(
-			"onChange" => $this->topFrame . ".mark();", "disabled" => ($_countClasses ? "false" : "true")
-		));
-		$yuiSuggest->setMaxResults(10);
+		$yuiSuggest->setInput('FolderPath', $_path, $_attribs);
+		$yuiSuggest->setMaxResults(50);
 		$yuiSuggest->setMayBeEmpty(true);
 		$yuiSuggest->setResult('FolderID', $this->Model->FolderID);
 		$yuiSuggest->setSelector("Dirselector");
 		$yuiSuggest->setLabel(g_l('navigation', '[dir]'));
-		$yuiSuggest->setTable($this->Model->SelectionType == weNavigation::STPYE_DOCLINK ? FILE_TABLE : ($this->Model->SelectionType == weNavigation::STPYE_OBJLINK ? OBJECT_FILES_TABLE : FILE_TABLE));
+		$yuiSuggest->setTable($_table);
 		$yuiSuggest->setWidth($this->_width_size - 120);
 		$yuiSuggest->setSelectButton($_buttons);
 
@@ -1427,10 +1343,10 @@ function onFolderSelectionChangeJS(elem) {
 
 	function getHTMLDynPreview(){
 		$_select = new we_html_select(
-				array(
-					'size' => '20',
-					'style' => 'width: 420px; height: 200; margin: ' . $this->_margin_bottom . ' 0 ' . $this->_margin_bottom . ' 0;'
-			));
+			array(
+			'size' => '20',
+			'style' => 'width: 420px; height: 200; margin: ' . $this->_margin_bottom . ' 0 ' . $this->_margin_bottom . ' 0;'
+		));
 
 		$_items = $this->Model->getDynamicEntries();
 
@@ -1442,7 +1358,7 @@ function onFolderSelectionChangeJS(elem) {
 						array(
 							'style' => 'font-weight: bold; font-style: normal; color: darkblue;',
 							'label' => $_item['field']
-					));
+				));
 				$_opt->addChild(we_html_select::getNewOption($_k, $_txt));
 				$_select->addChild($_opt);
 			} else{
@@ -1450,12 +1366,13 @@ function onFolderSelectionChangeJS(elem) {
 			}
 		}
 
-		$_parts[] = array(
-			'headline' => '',
-			'html' => we_html_tools::htmlFormElementTable(
-				$_select->getHtml(), $this->Model->SelectionType == weNavigation::STPYE_CATEGORY ? g_l('navigation', '[categories]') : ($this->Model->SelectionType == weNavigation::STPYE_CLASS ? g_l('navigation', '[objects]') : g_l('navigation', '[documents]'))),
-			'space' => 0
-		);
+		$_parts = array(
+			array(
+				'headline' => '',
+				'html' => we_html_tools::htmlFormElementTable(
+					$_select->getHtml(), $this->Model->SelectionType == weNavigation::STPYE_CATEGORY ? g_l('navigation', '[categories]') : ($this->Model->SelectionType == weNavigation::STPYE_CLASS ? g_l('navigation', '[objects]') : g_l('navigation', '[documents]'))),
+				'space' => 0
+		));
 
 		$_body = we_html_element::htmlBody(
 				array(
@@ -1477,8 +1394,7 @@ function onFolderSelectionChangeJS(elem) {
 
 			if($this->Model->SelectionType == weNavigation::STPYE_CLASS && $this->Model->ClassID){
 				$_wsid = weDynList::getWorkspacesForClass($this->Model->ClassID);
-			} else
-			if($defClassID){
+			} elseif($defClassID){
 				$_wsid = weDynList::getWorkspacesForClass($defClassID);
 			}
 
@@ -1517,13 +1433,13 @@ function onFolderSelectionChangeJS(elem) {
 		$_path = id_to_path($this->Model->UrlID);
 
 		$yuiSuggest = & weSuggest::getInstance();
-		$yuiSuggest->setAcId("UrlIDPath");
+		$yuiSuggest->setAcId($prefix . "UrlIDPath");
 		$yuiSuggest->setContentType(
 			"folder,text/xml,text/webedition,image/*,text/html,application/*,application/x-shockwave-flash,video/quicktime");
 		$yuiSuggest->setInput($prefix . 'UrlIDPath', $_path, array(
 			"onChange" => $this->topFrame . ".mark();"
 		));
-		$yuiSuggest->setMaxResults(10);
+		$yuiSuggest->setMaxResults(50);
 		$yuiSuggest->setMayBeEmpty(true);
 		$yuiSuggest->setResult($prefix . 'UrlID', $this->Model->UrlID);
 		$yuiSuggest->setSelector("Docselector");
@@ -1569,8 +1485,8 @@ function onFolderSelectionChangeJS(elem) {
 		reset($charsets);
 
 		$table = new we_html_table(array(
-				"border" => "0", "cellpadding" => "0", "cellspacing" => "0"
-				), 1, 3);
+			"border" => "0", "cellpadding" => "0", "cellspacing" => "0"
+			), 1, 3);
 		$table->setCol(0, 0, null, we_html_tools::htmlTextInput("Charset", 15, $value, '', '', 'text', 120));
 		$table->setCol(0, 1, null, we_html_tools::getPixel(2, 10, 0));
 		$table->setCol(
@@ -1581,43 +1497,44 @@ function onFolderSelectionChangeJS(elem) {
 	}
 
 	function getLangField($name, $value, $title, $width){
-		$input = we_html_tools::htmlTextInput(
-				"Attributes[$name]", 15, $value, "", 'onchange=' . $this->topFrame . '.mark(); ', "text", $width - 100);
-		$select = '<select style="width:100px;" class="weSelect" name="' . $name . '_select" size="1" onchange="' . $this->topFrame . '.mark(); this.form.elements[\'Attributes[' . $name . ']\'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;">
-						<option value=""></option>
-						<option value="en">en</option>
-						<option value="de">de</option>
-						<option value="es">es</option>
-						<option value="fi">fi</option>
-						<option value="ru">ru</option>
-						<option value="fr">fr</option>
-						<option value="nl">nl</option>
-						<option value="pl">pl</option>
-					</select>';
+		//FIXME: these values should be obtained from global settings
+		$input = we_html_tools::htmlTextInput("Attributes[$name]", 15, $value, "", 'onchange=' . $this->topFrame . '.mark(); ', "text", $width - 100);
+		$select = '
+<select style="width:100px;" class="weSelect" name="' . $name . '_select" size="1" onchange="' . $this->topFrame . '.mark(); this.form.elements[\'Attributes[' . $name . ']\'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;">
+	<option value=""></option>
+	<option value="en">en</option>
+	<option value="de">de</option>
+	<option value="es">es</option>
+	<option value="fi">fi</option>
+	<option value="ru">ru</option>
+	<option value="fr">fr</option>
+	<option value="nl">nl</option>
+	<option value="pl">pl</option>
+</select>';
 		return we_html_tools::htmlFormElementTable($input, $title, "left", "defaultfont", $select);
 	}
 
 	function getRevRelSelect($type, $value, $title){
 		$input = we_html_tools::htmlTextInput(
-				"Attributes[$type]", 15, $value, "", 'onchange=' . $this->topFrame . '.mark(); ', "text", $this->_width_size - 100);
+				"Attributes[$type]", 15, $value, '', 'onchange=' . $this->topFrame . '.mark(); ', 'text', $this->_width_size - 100);
 		$select = '<select name="' . $type . '_sel" class="weSelect" size="1" style="width:100px;" onchange="' . $this->topFrame . '.mark(); this.form.elements[\'Attributes[' . $type . ']\'].value=this.options[this.selectedIndex].text;this.selectedIndex=0;">
-		<option></option>
-		<option>contents</option>
-		<option>chapter</option>
-		<option>section</option>
-		<option>subsection</option>
-		<option>index</option>
-		<option>glossary</option>
-		<option>appendix</option>
-		<option>copyright</option>
-		<option>next</option>
-		<option>prev</option>
-		<option>start</option>
-		<option>help</option>
-		<option>bookmark</option>
-		<option>alternate</option>
-		<option>nofollow</option>
-		</select>';
+	<option></option>
+	<option>contents</option>
+	<option>chapter</option>
+	<option>section</option>
+	<option>subsection</option>
+	<option>index</option>
+	<option>glossary</option>
+	<option>appendix</option>
+	<option>copyright</option>
+	<option>next</option>
+	<option>prev</option>
+	<option>start</option>
+	<option>help</option>
+	<option>bookmark</option>
+	<option>alternate</option>
+	<option>nofollow</option>
+</select>';
 		return we_html_tools::htmlFormElementTable($input, $title, "left", "defaultfont", $select);
 	}
 
@@ -1693,58 +1610,30 @@ function onFolderSelectionChangeJS(elem) {
 
 		$_input_width = 70;
 
-		$_popup = new we_html_table(array(
-				'cellpadding' => '5', 'cellspacing' => '0'
-				), 4, 4);
+		$_popup = new we_html_table(array('cellpadding' => '5', 'cellspacing' => '0'), 4, 4);
 
-		$_popup->setCol(
-			0, 0, array(
-			'colspan' => '2'
-			), we_forms::checkboxWithHidden(
+		$_popup->setCol(0, 0, array('colspan' => '2'), we_forms::checkboxWithHidden(
 				$this->Model->getAttribute('popup_open'), 'Attributes[popup_open]', g_l('navigation', '[popup_open]'), false, "defaultfont", $this->topFrame . '.mark();"'));
-		$_popup->setCol(
-			0, 2, array(
-			'colspan' => '2'
-			), we_forms::checkboxWithHidden(
+		$_popup->setCol(0, 2, array('colspan' => '2'), we_forms::checkboxWithHidden(
 				$this->Model->getAttribute('popup_center'), 'Attributes[popup_center]', g_l('navigation', '[popup_center]'), false, "defaultfont", $this->topFrame . '.mark();"'));
 
-		$_popup->setCol(
-			1, 0, array(), we_html_tools::htmlFormElementTable(
-				we_html_tools::htmlTextInput(
+		$_popup->setCol(1, 0, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput(
 					'Attributes[popup_xposition]', 5, $this->Model->getAttribute('popup_xposition'), '', 'onchange="' . $this->topFrame . '.mark();"', 'text', $_input_width), g_l('navigation', '[popup_x]')));
-		$_popup->setCol(
-			1, 1, array(), we_html_tools::htmlFormElementTable(
-				we_html_tools::htmlTextInput(
+		$_popup->setCol(1, 1, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput(
 					'Attributes[popup_yposition]', 5, $this->Model->getAttribute('popup_yposition'), '', 'onchange="' . $this->topFrame . '.mark();"', 'text', $_input_width), g_l('navigation', '[popup_y]')));
-		$_popup->setCol(
-			1, 2, array(), we_html_tools::htmlFormElementTable(
-				we_html_tools::htmlTextInput(
+		$_popup->setCol(1, 2, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput(
 					'Attributes[popup_width]', 5, $this->Model->getAttribute('popup_width'), '', 'onchange="' . $this->topFrame . '.mark();"', 'text', $_input_width), g_l('navigation', '[popup_width]')));
 
-		$_popup->setCol(
-			1, 3, array(), we_html_tools::htmlFormElementTable(
-				we_html_tools::htmlTextInput(
+		$_popup->setCol(1, 3, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput(
 					'Attributes[popup_height]', 5, $this->Model->getAttribute('popup_height'), '', 'onchange="' . $this->topFrame . '.mark();"', 'text', $_input_width), g_l('navigation', '[popup_height]')));
 
-		$_popup->setCol(
-			2, 0, array(), we_forms::checkboxWithHidden(
-				$this->Model->getAttribute('popup_status'), 'Attributes[popup_status]', g_l('navigation', '[popup_status]'), false, "defaultfont", $this->topFrame . '.mark();"'));
-		$_popup->setCol(
-			2, 1, array(), we_forms::checkboxWithHidden(
-				$this->Model->getAttribute('popup_scrollbars'), 'Attributes[popup_scrollbars]', g_l('navigation', '[popup_scrollbars]'), false, "defaultfont", $this->topFrame . '.mark();"'));
-		$_popup->setCol(
-			2, 2, array(), we_forms::checkboxWithHidden(
-				$this->Model->getAttribute('popup_menubar'), 'Attributes[popup_menubar]', g_l('navigation', '[popup_menubar]'), false, "defaultfont", $this->topFrame . '.mark();"'));
+		$_popup->setCol(2, 0, array(), we_forms::checkboxWithHidden($this->Model->getAttribute('popup_status'), 'Attributes[popup_status]', g_l('navigation', '[popup_status]'), false, "defaultfont", $this->topFrame . '.mark();"'));
+		$_popup->setCol(2, 1, array(), we_forms::checkboxWithHidden($this->Model->getAttribute('popup_scrollbars'), 'Attributes[popup_scrollbars]', g_l('navigation', '[popup_scrollbars]'), false, "defaultfont", $this->topFrame . '.mark();"'));
+		$_popup->setCol(2, 2, array(), we_forms::checkboxWithHidden($this->Model->getAttribute('popup_menubar'), 'Attributes[popup_menubar]', g_l('navigation', '[popup_menubar]'), false, "defaultfont", $this->topFrame . '.mark();"'));
 
-		$_popup->setCol(
-			3, 0, array(), we_forms::checkboxWithHidden(
-				$this->Model->getAttribute('popup_resizable'), 'Attributes[popup_resizable]', g_l('navigation', '[popup_resizable]'), false, "defaultfont", $this->topFrame . '.mark();"'));
-		$_popup->setCol(
-			3, 1, array(), we_forms::checkboxWithHidden(
-				$this->Model->getAttribute('popup_location'), 'Attributes[popup_location]', g_l('navigation', '[popup_location]'), false, "defaultfont", $this->topFrame . '.mark();"'));
-		$_popup->setCol(
-			3, 2, array(), we_forms::checkboxWithHidden(
-				$this->Model->getAttribute('popup_toolbar'), 'Attributes[popup_toolbar]', g_l('navigation', '[popup_toolbar]'), false, "defaultfont", $this->topFrame . '.mark();"'));
+		$_popup->setCol(3, 0, array(), we_forms::checkboxWithHidden($this->Model->getAttribute('popup_resizable'), 'Attributes[popup_resizable]', g_l('navigation', '[popup_resizable]'), false, "defaultfont", $this->topFrame . '.mark();"'));
+		$_popup->setCol(3, 1, array(), we_forms::checkboxWithHidden($this->Model->getAttribute('popup_location'), 'Attributes[popup_location]', g_l('navigation', '[popup_location]'), false, "defaultfont", $this->topFrame . '.mark();"'));
+		$_popup->setCol(3, 2, array(), we_forms::checkboxWithHidden($this->Model->getAttribute('popup_toolbar'), 'Attributes[popup_toolbar]', g_l('navigation', '[popup_toolbar]'), false, "defaultfont", $this->topFrame . '.mark();"'));
 
 		$_parts[] = array(
 			'headline' => g_l('navigation', '[popup]'),
@@ -1759,11 +1648,10 @@ function onFolderSelectionChangeJS(elem) {
 	}
 
 	function getHTMLImageAttributes(){
-		$_parts = array();
 		$_input_width = 70;
 		$_img_props = new we_html_table(array(
-				'cellpadding' => '5', 'cellspacing' => '0', 'border' => '0'
-				), 4, 5);
+			'cellpadding' => '5', 'cellspacing' => '0', 'border' => '0'
+			), 4, 5);
 
 		$_img_props->setCol(
 			0, 0, array(), we_html_tools::htmlFormElementTable(
@@ -1819,8 +1707,6 @@ function onFolderSelectionChangeJS(elem) {
 	}
 
 	function getHTMLTab3(){
-
-		$parts = array();
 		$_space_size = 50;
 
 		$_filter = new weNavigationCustomerFilter();
@@ -1828,16 +1714,14 @@ function onFolderSelectionChangeJS(elem) {
 
 		$_view = new weNavigationCustomerFilterView($_filter, $this->topFrame . '.mark()', $this->_width_size);
 
-		array_push(
-			$parts, array(
-			'headline' => '',
-			'html' => $_view->getFilterHTML(
-				$this->Model->IsFolder == 0 && $this->Model->Selection == weNavigation::SELECTION_DYNAMIC),
-			'space' => $_space_size,
-			'noline' => 1
+		return array(
+			array(
+				'headline' => '',
+				'html' => $_view->getFilterHTML(
+					$this->Model->IsFolder == 0 && $this->Model->Selection == weNavigation::SELECTION_DYNAMIC),
+				'space' => $_space_size,
+				'noline' => 1
 		));
-
-		return $parts;
 	}
 
 	function getHTMLEditorFooter(){
@@ -1849,23 +1733,22 @@ function onFolderSelectionChangeJS(elem) {
 		}
 
 		$table1 = new we_html_table(array(
-				"border" => "0", "cellpadding" => "0", "cellspacing" => "0", "width" => "3000"
-				), 1, 1);
+			"border" => "0", "cellpadding" => "0", "cellspacing" => "0", "width" => "3000"
+			), 1, 1);
 		$table1->setCol(0, 0, array(
 			"nowrap" => null, "valign" => "top"
 			), we_html_tools::getPixel(1600, 10));
 
 		$table2 = new we_html_table(array(
-				"border" => "0", "cellpadding" => "0", "cellspacing" => "0", "width" => "400"
-				), 1, 2);
+			"border" => "0", "cellpadding" => "0", "cellspacing" => "0", "width" => "400"
+			), 1, 2);
 		$table2->setColContent(
 			0, 0, we_button::create_button_table(
 				array(
-				we_button::create_button(
-					"save", "javascript:we_save();", true, 100, 22, '', '', (!we_hasPerm('EDIT_NAVIGATION')))
+				we_button::create_button("save", "javascript:we_save();", true, 100, 22, '', '', (!we_hasPerm('EDIT_NAVIGATION')))
 				), 10, array(
 				'style' => 'margin-left: 15px'
-			)));
+		)));
 
 		$table2->setColContent(
 			0, 1, we_forms::checkbox(
@@ -1887,9 +1770,7 @@ function onFolderSelectionChangeJS(elem) {
 					"leftmargin" => "0",
 					"topmargin" => "0",
 					"onLoad" => "document.we_form.makeNewDoc.checked=" . $this->topFrame . ".makeNewDoc;"
-					), we_html_element::htmlForm(array(), $table1->getHtml() . $table2->getHtml())))
-
-		;
+					), we_html_element::htmlForm(array(), $table1->getHtml() . $table2->getHtml())));
 	}
 
 }

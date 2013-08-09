@@ -57,14 +57,16 @@ function we_isVarSet($name, $orig, $type, $docAttr, $property = false, $formname
 				if($property){
 					return isset($doc->$name) || isset($doc->orig);
 				} else{
-					if($type == 'href' && $doc->elements[$name . '_we_jkhdsf_int']['dat']){
-						return isset($doc->elements[$name . '_we_jkhdsf_intPath']['dat']);
+					if($type == 'href' && isset($doc->elements[$name . we_base_link::MAGIC_INT_LINK]) && $doc->elements[$name . we_base_link::MAGIC_INT_LINK]['dat']){
+						return isset($doc->elements[$name . we_base_link::MAGIC_INT_LINK_PATH]['dat']);
 					}
-					$fieldType = isset($doc->elements[$name]['type']) ? $doc->elements[$name]['type'] : '';
-					$issetElemNameDat = isset($doc->elements[$name]['dat']);
-					return ($fieldType == 'checkbox_feld' && $issetElemNameDat && $doc->elements[$name]['dat'] == 0 ?
-							false :
-							$issetElemNameDat);
+					if(isset($doc->elements[$name])){
+						$fieldType = isset($doc->elements[$name]['type']) ? $doc->elements[$name]['type'] : '';
+						$issetElemNameDat = isset($doc->elements[$name]['dat']);
+						return ($fieldType == 'checkbox_feld' && $issetElemNameDat && $doc->elements[$name]['dat'] == 0 ?
+								false :
+								$issetElemNameDat);
+					}
 				}
 			}
 			return false;

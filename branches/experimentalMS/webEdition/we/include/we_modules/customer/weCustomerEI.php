@@ -22,77 +22,63 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weCustomerEI{
+abstract class weCustomerEI{
 
-	//var $customer;
-	//var $customer_fileds=array();
-	//function weCustomerEI(){
-	//	$this->customer=new weCustomer();
-	//	$this->customer_fileds=$this->customer->getFieldsDbProperties();
-	//}
-	//option
-	//  - offset
-	//  - count
-	//  - filename (path and name)
-	//  - format
-	//  - csv_
-
-	function exportCustomers($options = array()){
-		$code = "";
-		if($options["format"] == "gxml")
-			$code = weCustomerEI::exportXML($options);
-		if($options["format"] == "csv")
-			$code = weCustomerEI::exportCSV($options);
+	public static function exportCustomers($options = array()){
+		$code = '';
+		if($options['format'] == 'gxml'){
+			$code = self::exportXML($options);
+		}
+		if($options['format'] == 'csv'){
+			$code = self::exportCSV($options);
+		}
 		// write to file
-		if($code != ""){
-			weCustomerEI::save2File($options["filename"], $code);
+		if($code != ''){
+			self::save2File($options['filename'], $code);
 		}
 	}
 
-	function getDataset($type, $filename, $arrgs = array()){
-		if($type == "gxml"){
-			return weCustomerEI::getXMLDataset($filename, $arrgs["dataset"]);
-		}
-		if($type == "csv"){
-			return weCustomerEI::getCSVDataset($filename, $arrgs["delimiter"], $arrgs["enclose"], $arrgs["lineend"], $arrgs["fieldnames"], $arrgs["charset"]);
+	public static function getDataset($type, $filename, $arrgs = array()){
+		switch($type){
+			case 'gxml':
+				return self::getXMLDataset($filename, $arrgs['dataset']);
+			case 'csv':
+				return self::getCSVDataset($filename, $arrgs['delimiter'], $arrgs['enclose'], $arrgs['lineend'], $arrgs['fieldnames'], $arrgs['charset']);
 		}
 	}
 
-	function save2File($filename, $code = "", $flags = "ab"){
-		return weFile::save($filename, $code,$flags);
+	public static function save2File($filename, $code = '', $flags = 'ab'){
+		return weFile::save($filename, $code, $flags);
 	}
 
-	function getCustomersFieldset(){
+	public static function getCustomersFieldset(){
 		$customer = new weCustomer();
 		return $customer->getFieldset();
 	}
 
-	function exportXML($options = array()){
-		global $_language;
-
-		if(isset($options["customers"]) && is_array($options["customers"])){
+	public static function exportXML($options = array()){
+		if(isset($options['customers']) && is_array($options['customers'])){
 
 			$customer = new weCustomer();
 			$fields = $customer->getFieldsDbProperties();
 
-			if(isset($options["firstexec"]) && $options["firstexec"] == -999){
+			if(isset($options['firstexec']) && $options['firstexec'] == -999){
 				$xml_out = '<?xml version="1.0" encoding="' . $GLOBALS['WE_BACKENDCHARSET'] . '" standalone="yes" ?>' . "\n";
 				$xml_out.='<webEdition>' . "\n";
+			} else{
+				$xml_out = '';
 			}
-			else
-				$xml_out = "";
 
-			foreach($options["customers"] as $cid){
+			foreach($options['customers'] as $cid){
 				if($cid){
-					$customer_xml = new we_baseCollection("customer");
+					$customer_xml = new we_baseCollection('customer');
 					$customer = new weCustomer($cid);
 					if($customer->ID){
 						foreach($fields as $k => $v){
 							if(!$customer->isProtected($k)){
-								$value = "";
 								$value = $customer->{$k};
-								if($value != "")
-									$value = ($options["cdata"] ? "<![CDATA[" . $value . "]]>" : htmlentities($value));
+								if($value != '')
+									$value = ($options['cdata'] ? '<![CDATA[' . $value . ']]>' : htmlentities($value));
 								$customer_xml->addChild(new we_baseElement($k, true, null, $value));
 							}
 						}
@@ -102,7 +88,7 @@ class weCustomerEI{
 			}
 			return $xml_out;
 		}
-		return "";
+		return '';
 	}
 
 	/* Function creates new xml element.
@@ -114,15 +100,15 @@ class weCustomerEI{
 	 */
 
 	function buildXMLElement($elements){
-		$out = "";
-		$content = "";
+		$out = '';
+		$content = '';
 		foreach($elements as $element){
-			if(is_array($element["content"])){
-				$content = weCustomerEI::buildXMLElement($element["content"]);
+			if(is_array($element['content'])){
+				$content = self::buildXMLElement($element['content']);
 			}
 			else
-				$content = $element["content"];
-			$element = new we_baseElement($element["name"], true, $element["attributes"], $content);
+				$content = $element['content'];
+			$element = new we_baseElement($element['name'], true, $element['attributes'], $content);
 			$out.=$element->getHTML();
 		}
 		return $out;
@@ -138,7 +124,7 @@ class weCustomerEI{
 			$nodeName = $xp->nodeName($node);
 			$nodeattribs = array();
 			if($xp->hasAttributes($node)){
-				$attrs = $attrs + array("@n:" => g_l('modules_customer', '[none]'));
+				$attrs = $attrs + array('@n:' => g_l('modules_customer', '[none]'));
 				$attributes = $xp->getAttributes($node);
 				foreach($attributes as $name => $value){
 					$nodeattribs[$name] = $value;
@@ -150,18 +136,17 @@ class weCustomerEI{
 	}
 
 	function exportCSV($options = array()){
-		if(isset($options["customers"]) && is_array($options["customers"])){
+		if(isset($options['customers']) && is_array($options['customers'])){
 			$customer_csv = array();
 			$customer = new weCustomer();
 			$fields = $customer->getFieldsDbProperties();
-			foreach($options["customers"] as $cid){
+			foreach($options['customers'] as $cid){
 				if($cid){
 					$customer = new weCustomer($cid);
 					if($customer->ID){
 						$customer_csv[$cid] = array();
 						foreach($fields as $k => $v){
 							if(!$customer->isProtected($k)){
-								$value = "";
 								$value = $customer->{$k};
 								$customer_csv[$cid][] = $value;
 							}
@@ -176,12 +161,12 @@ class weCustomerEI{
 					$field_names[] = $k;
 			}
 
-			$csv_out = "";
-			$enclose = trim($options["csv_enclose"]);
-			$lineend = trim($options["csv_lineend"]);
-			$delimiter = $enclose . ($options["csv_delimiter"] == "\\t" ? "\t" : trim($options["csv_delimiter"])) . $enclose;
+			$csv_out = '';
+			$enclose = trim($options['csv_enclose']);
+			$lineend = trim($options['csv_lineend']);
+			$delimiter = $enclose . ($options['csv_delimiter'] == '\t' ? "\t" : trim($options['csv_delimiter'])) . $enclose;
 
-			if($options["csv_fieldnames"]){
+			if($options['csv_fieldnames']){
 				$csv_out.=$enclose . implode($delimiter, $field_names) . $enclose . ($lineend == g_l('modules_customer', '[unix]') ? "\n" : ($lineend == g_l('modules_customer', '[mac]') ? "\r" : "\r\n"));
 			}
 
@@ -190,51 +175,32 @@ class weCustomerEI{
 			}
 
 			return $csv_out;
-
-			//return weCustomerEI::buildCSVRow($customer_csv,$options);
 		}
-		return "";
-	}
-
-	function buildCSVRow($data, $options){
-		$csv_out = "";
-		$enclose = trim($options["csv_enclose"]);
-		$lineend = trim($options["csv_lineend"]);
-		$delimiter = $enclose . ($options["csv_delimiter"] == "\\t" ? "\t" : trim($options["csv_delimiter"])) . $enclose;
-
-		if($options["csv_fieldnames"]){
-			$csv_out.=$enclose . implode($delimiter, $field_names) . $enclose . ($lineend == g_l('modules_customer', '[unix]') ? "\n" : ($lineend == g_l('modules_customer', '[mac]') ? "\r" : "\r\n"));
-		}
-
-		foreach($customer_csv as $ck => $cv){
-			$csv_out.=$enclose . implode($delimiter, $cv) . $enclose . ($lineend == g_l('modules_customer', '[unix]') ? "\n" : ($lineend == g_l('modules_customer', '[mac]') ? "\r" : "\r\n"));
-		}
-
-		return $csv_out;
+		return '';
 	}
 
 	function getCSVDataset($filename, $delimiter, $enclose, $lineend, $fieldnames, $charset){
 		if($charset == ''){
-				$charset = DEFAULT_CHARSET;
+			$charset = DEFAULT_CHARSET;
 		}
-		if($delimiter == "\\t")
+		if($delimiter == '\t'){
 			$delimiter = "\t";
+		}
 		$csvFile = $_SERVER['DOCUMENT_ROOT'] . $filename;
 		$nodes = array();
 
 		if(file_exists($csvFile) && is_readable($csvFile)){
 			$recs = array();
 
-			if($lineend == "mac"){
-				weCustomerEI::massReplace("\r", "\n", $csvFile);
+			if($lineend == 'mac'){
+				self::massReplace("\r", "\n", $csvFile);
 			}
 
-
-			$cp = new CSVImport;
+			$cp = new we_import_CSV;
 			$cp->setFile($csvFile);
 			$cp->setDelim($delimiter);
 			$cp->setFromCharset($charset);
-			$cp->setEnclosure(($enclose == "") ? "\"" : $enclose);
+			$cp->setEnclosure(($enclose == '') ? '"' : $enclose);
 			$cp->parseCSV();
 			$num = count($cp->FieldNames);
 			$recs = array();
@@ -245,7 +211,7 @@ class weCustomerEI{
 				if($fieldnames)
 					$nodes[$recs[$i]] = array();
 				else
-					$nodes[g_l('modules_customer', '[record_field]') . " " . ($i + 1)] = array();
+					$nodes[g_l('modules_customer', '[record_field]') . ' ' . ($i + 1)] = array();
 			}
 		}
 
@@ -254,8 +220,8 @@ class weCustomerEI{
 
 	function massReplace($string1, $string2, $file){
 		$contents = weFile::load($file, 'r');
-		$replacement = preg_replace("/$string1/i", $string2, $contents);
-		weFile::save($file, $content, 'w');
+		$replacement = preg_replace('/' . preg_quote($string1, '/') . '/i', $string2, $contents);
+		weFile::save($file, $contents, 'w');
 	}
 
 	function getUniqueId(){
@@ -265,85 +231,83 @@ class weCustomerEI{
 	}
 
 	function prepareImport($options){
-		global $_language;
+		$ret = array(
+			'tmp_dir' => '',
+			'file_count' => '',
+		);
 
-		$ret = array();
-		$ret["tmp_dir"] = "";
-		$ret["file_count"] = "";
+		$type = $options['type'];
+		$filename = $options['filename'];
 
-		$type = $options["type"];
-		$filename = $options["filename"];
+		switch($type){
+			case 'gxml':
+				$dataset = $options['dataset'];
+				$xml_from = $options['xml_from'];
+				$xml_to = $options['xml_to'];
 
-		if($type == "gxml"){
-			$dataset = $options["dataset"];
-			$xml_from = $options["xml_from"];
-			$xml_to = $options["xml_to"];
+				$parse = new XML_SplitFile($_SERVER['DOCUMENT_ROOT'] . $filename);
+				$parse->splitFile('*/' . $dataset, $xml_from, $xml_to);
 
-			$parse = new XML_SplitFile($_SERVER['DOCUMENT_ROOT'] . $filename);
-			$parse->splitFile("*/" . $dataset, $xml_from, $xml_to);
+				$ret['tmp_dir'] = str_replace(TEMP_PATH . '/', '', $parse->path);
+				$ret['file_count'] = $parse->fileId;
+				break;
 
-			$ret["tmp_dir"] = str_replace(TEMP_PATH . "/", "", $parse->path);
-			$ret["file_count"] = $parse->fileId;
-		} else if($type == "csv"){
-			$csv_delimiter = $options["csv_delimiter"];
-			$csv_enclose = $options["csv_enclose"];
-			$csv_fields = $options["csv_fieldnames"];
-			$csv_charset = $options["the_charset"];
-			$exim = $options["exim"];
+			case 'csv':
+				$csv_delimiter = $options['csv_delimiter'];
+				$csv_enclose = $options['csv_enclose'];
+				$csv_fields = $options['csv_fieldnames'];
+				$csv_charset = $options['the_charset'];
+				$exim = $options['exim'];
 
-			$csvFile = $_SERVER['DOCUMENT_ROOT'] . $filename;
+				$csvFile = $_SERVER['DOCUMENT_ROOT'] . $filename;
 
-			if(file_exists($csvFile) && is_readable($csvFile)){
+				if(file_exists($csvFile) && is_readable($csvFile)){
 
-				$row = 0;
-				$data = array();
-				$names = array();
-				$rows = array();
+					// create temp dir
+					$unique = weCustomerEI::getUniqueId();
+					$path = TEMP_PATH . '/' . $unique;
 
-				// create temp dir
-				$unique = weCustomerEI::getUniqueId();
-				$path = TEMP_PATH . "/" . $unique;
+					we_util_File::createLocalFolder($path);
+					$path.='/';
 
-				we_util_File::createLocalFolder($path);
-				$path.="/";
+					$fcount = 0;
+					$rootnode = array(
+						'name' => 'customer',
+						'attributes' => null,
+						'content' => array()
+					);
 
-				$fcount = 0;
-				$rootnode = array(
-					"name" => "customer",
-					"attributes" => null,
-					"content" => array()
-				);
+					$csv = new we_customer_CSVImport();
 
-				$csv = new weCustomerCSVImport();
-
-				$csv->setDelim($csv_delimiter);
-				$csv->setEnclosure($csv_enclose);
-				$csv->setHeader($csv_fields);
-				$csv->setFile($csvFile);
-				$csv->setFromCharset($csv_charset);
-				$csv->setToCharset('UTF-8');
-				$csv->parseCSV();
-				$data = $csv->CSVFetchRow();
-				while($data != FALSE) {
-					$value = array();
-					foreach($data as $kdat => $vdat){
-						$value[] = array(
-							"name" => ($csv_fields ? $csv->FieldNames[$kdat] : (str_replace(" ", "", g_l('modules_customer', '[record_field]')) . ($kdat + 1))),
-							"attributes" => null,
-							"content" => '<![CDATA[' . $vdat . ']]>'
-						);
-					}
-					$rootnode["content"] = $value;
-					$code = '<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>' . "\n";
-					$code.=weCustomerEI::buildXMLElement(array($rootnode));
-					weCustomerEI::save2File($path . "temp_$fcount.xml", $code, "wb");
-					$fcount++;
-
+					$csv->setDelim($csv_delimiter);
+					$csv->setEnclosure($csv_enclose);
+					$csv->setHeader($csv_fields);
+					$csv->setFile($csvFile);
+					$csv->setFromCharset($csv_charset);
+					$csv->setToCharset('UTF-8');
+					$csv->parseCSV();
 					$data = $csv->CSVFetchRow();
+					while($data != FALSE) {
+						$value = array();
+						foreach($data as $kdat => $vdat){
+							$value[] = array(
+								'name' => ($csv_fields ? $csv->FieldNames[$kdat] : (str_replace(' ', '', g_l('modules_customer', '[record_field]')) . ($kdat + 1))),
+								'attributes' => null,
+								'content' => '<![CDATA[' . $vdat . ']]>'
+							);
+						}
+						$rootnode['content'] = $value;
+						$code = '<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>' . "\n";
+						$code.=weCustomerEI::buildXMLElement(array($rootnode));
+						weCustomerEI::save2File($path . 'temp_' . $fcount . '.xml', $code, 'wb');
+						$fcount++;
+
+						$data = $csv->CSVFetchRow();
+					}
+					$ret['tmp_dir'] = $unique;
+					$ret['file_count'] = $fcount;
 				}
-				$ret["tmp_dir"] = $unique;
-				$ret["file_count"] = $fcount;
-			}
+				break;
 		}
 
 		return $ret;
@@ -351,13 +315,12 @@ class weCustomerEI{
 
 	function importCustomers($options = array()){
 		$ret = false;
-		$xmlfile = isset($options["xmlfile"]) ? $options["xmlfile"] : "";
-		$field_mappings = isset($options["field_mappings"]) ? $options["field_mappings"] : array();
-		$attrib_mappings = isset($options["attrib_mappings"]) ? $options["attrib_mappings"] : array();
+		$xmlfile = isset($options['xmlfile']) ? $options['xmlfile'] : '';
+		$field_mappings = isset($options['field_mappings']) ? $options['field_mappings'] : array();
+		$attrib_mappings = isset($options['attrib_mappings']) ? $options['attrib_mappings'] : array();
 
-		$same = isset($options["same"]) ? $options["same"] : "";
-		$logfile = isset($options["logfile"]) ? $options["logfile"] : "";
-
+		$same = isset($options['same']) ? $options['same'] : '';
+		$logfile = isset($options['logfile']) ? $options['logfile'] : '';
 
 		$db = new DB_WE();
 
@@ -373,30 +336,30 @@ class weCustomerEI{
 				$customer->{$fields[$node_name]} = iconv('UTF-8', DEFAULT_CHARSET, $node_value);
 		}
 
-		$existid = f("SELECT ID FROM " . CUSTOMER_TABLE . " WHERE Username='" . $db->escape($customer->Username) . "' AND ID!=" . intval($customer->ID), "ID", $db);
+		$existid = f('SELECT ID FROM ' . CUSTOMER_TABLE . ' WHERE Username="' . $db->escape($customer->Username) . '" AND ID!=' . intval($customer->ID), 'ID', $db);
 		if($existid){
 			switch($same){
-				case "rename":
+				case 'rename':
 					$exists = true;
 					$count = 0;
 					$oldname = $customer->Username;
 					while($exists) {
 						$count++;
 						$new_name = $customer->Username . $count;
-						$exists = f("SELECT ID FROM " . CUSTOMER_TABLE . " WHERE Username='" . $db->escape($new_name) . "' AND ID!=" . intval($customer->ID), "ID", $db);
+						$exists = f('SELECT ID FROM ' . CUSTOMER_TABLE . ' WHERE Username="' . $db->escape($new_name) . '" AND ID!=' . intval($customer->ID), 'ID', $db);
 					}
 					$customer->Username = $new_name;
 					$customer->save();
 					weCustomerEI::save2File($logfile, sprintf(g_l('modules_customer', '[rename_customer]'), $oldname, $customer->Username) . "\n");
 					$ret = true;
 					break;
-				case "overwrite":
+				case 'overwrite':
 					$customer->overwrite($existid);
 					weCustomerEI::save2File($logfile, sprintf(g_l('modules_customer', '[overwrite_customer]'), $customer->Username) . "\n");
 					$ret = true;
 					break;
 				default:
-				case "skip":
+				case 'skip':
 					weCustomerEI::save2File($logfile, sprintf(g_l('modules_customer', '[skip_customer]'), $customer->Username) . "\n");
 					break;
 			}
@@ -407,105 +370,6 @@ class weCustomerEI{
 
 		unlink($xmlfile);
 		return $ret;
-	}
-
-}
-
-class weCustomerCSVImport extends CSVImport{
-
-	var $hasHeader = 0;
-
-	function setHeader($hasheader){
-		$this->hasHeader = $hasheader;
-	}
-
-	function parseCSV(){
-		if($this->CSVData){
-			$akt_line = 0;
-			$akt_field = 0;
-			$akt_field_value = "";
-			$last_char = "";
-			$quote = 0;
-			$field_input = 0;
-
-			if($this->hasHeader)
-				$head_complete = 0;
-			else
-				$head_complete = 1;
-
-			$end_cc = strlen($this->CSVData);
-
-			for($cc = 0; $cc < $end_cc; $cc++){
-				$akt_char = substr($this->CSVData, $cc, 1);
-
-				if(($akt_char == $this->Enclosure) && ($last_char != "\\")){
-					$quote = !$quote;
-					$akt_char = "";
-				}
-
-				if(!$quote){
-					if($akt_char == $this->FieldDelim){
-						$field_input = !$field_input;
-						$akt_char = "";
-						$akt_field++;
-						$akt_field_value = "";
-					} else if(($akt_char == "\\") && $field_input){
-						$field_input++;
-						$quote++;
-					} else if($akt_char == $this->Enclosure){
-						$quote--;
-
-						if($field_input)
-							$field_input--;
-						else
-							$field_input++;
-					}
-					else if($akt_char == "\n"){
-						if($head_complete && (($akt_field + 1) > $this->CSVNumFields())){
-							$this->CSVError[] = "Fehler in <b>Zeile " . ($akt_line + 2) . "</b>";
-						}
-						$akt_line++;
-						$akt_field = 0;
-						if(!$head_complete)
-							$akt_line = 0;
-						$head_complete = 1;
-						$akt_char = "";
-						$akt_field_value = "";
-					}
-				}
-
-				$last_char = $akt_char;
-				if($akt_char == "\\")
-					$akt_char = "";
-				$akt_field_value .= $akt_char;
-
-				if($head_complete){
-					$this->Fields[$akt_line][$akt_field] = iconv($this->FromCharset, $this->ToCharset . '//TRANSLIT', trim($akt_field_value));
-				} else{
-					$this->FieldNames[$akt_field] = iconv($this->FromCharset, $this->ToCharset . '//TRANSLIT', trim($akt_field_value));
-				}
-			}
-
-			if(!$akt_field){
-				unset($this->Fields[$akt_line]);
-			}
-
-			$this->fetchCursor = 0;
-		} else{
-			$this->CSVError[] = "CSV data empty.";
-			return FALSE;
-		}
-	}
-
-	function CSVFetchRow(){
-		if($this->fetchCursor < $this->CSVNumRows()){
-			$r = $this->Fields[$this->fetchCursor];
-			$this->fetchCursor++;
-			return $r;
-		} else{
-			$this->CSVError[] = "No more data sets.";
-			return FALSE;
-		}
 	}
 
 }

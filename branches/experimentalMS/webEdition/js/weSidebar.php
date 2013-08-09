@@ -85,29 +85,18 @@ weSidebar.close = function() {
 
 
 weSidebar.resize = function(width) {
-	top.rframe.document.getElementById("bm_content_frameDiv").style.right=width+"px";
+	top.rframe.document.getElementById("bm_content_frameDiv").style.right = width + "px";
 	top.rframe.document.getElementById("sidebarDiv").style.width = width + "px";
 
 }
 
 
-weSidebar.reloadHeader = function() {
-	top.frames["rframe"].frames["sidebar"].frames["weSidebarHeader"].location.reload();
-
-}
-
 
 weSidebar.reload = function() {
-	top.frames["rframe"].frames["sidebar"].frames["weSidebarContent"].location.reload();
+	top.rframe.weSidebarContent.location.reload();
 
 }
 
-
-weSidebar.reloadFooter = function() {
-	top.frames["rframe"].frames["sidebar"].frames["weSidebarFooter"].location.reload();
-	//top.frames["rframe"].frames["sidebar"].frames["weSidebarFooter"].location.replace(top.frames["rframe"].frames["sidebar"].frames["weSidebarFooter"].location);
-
-}
 
 
 //

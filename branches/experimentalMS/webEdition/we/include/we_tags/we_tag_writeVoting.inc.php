@@ -43,7 +43,7 @@ function we_tag_writeVoting($attribs){
 				$_voting[$id] = array();
 			}
 			if (isset($_REQUEST[$value]) && $_REQUEST[$value]!='') {// Bug #6118: !empty geht hier nicht, da es die 0 nicht durch lässt
-				$_voting[$id][] = $_REQUEST[$value];
+				$_voting[$id][] = filterXss($_REQUEST[$value]);
 			}
 		}
 	}
@@ -51,7 +51,7 @@ function we_tag_writeVoting($attribs){
 	$addFields = array();
 	foreach($additionalFieldsArray as $field){
 		if(isset($_REQUEST[$field])){
-			$addFields[$field] = $_REQUEST[$field];
+			$addFields[$field] = filterXss($_REQUEST[$field]);
 		}
 	}
 

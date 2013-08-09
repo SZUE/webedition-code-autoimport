@@ -22,39 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-$GLOBALS['____weMetaData_IPTC_usedFields'] = array(
-	'byline_title',
-	'byline',
-	'caption_writer',
-	'caption',
-	'category',
-	'city',
-	'copyright_string',
-	'country_code',
-	'country',
-	'created_date',
-	'credit',
-	'edit_status',
-	'fixture_identifier',
-	'headline',
-	'keywords',
-	'local_caption',
-	'object_cycle',
-	'object_name',
-	'original_transmission_reference',
-	'originating_program',
-	'priority',
-	'program_version',
-	'province_state',
-	'reference_date',
-	'reference_number',
-	'reference_service',
-	'release_date',
-	'release_time',
-	'source',
-	'special_instructions',
-	'supplementary_category'
-);
 
 /**
  * @abstract implementation class of metadata reader for IPTC data
@@ -65,23 +32,23 @@ $GLOBALS['____weMetaData_IPTC_usedFields'] = array(
  */
 class weMetaData_IPTC extends weMetaData{
 
+	const usedFields = 'byline_title,byline,caption_writer,caption,category,city,copyright_string,country_code,country,created_date,credit,edit_status,fixture_identifier,headline,keywords,local_caption,object_cycle,object_name,original_transmission_reference,originating_program,priority,program_version,province_state,reference_date,reference_number,reference_service,release_date,release_time,source,special_instructions,supplementary_category';
+
 	var $accesstypes = array("read");
 
-	function __construct($filetype){
+	public function __construct($filetype){
 		$this->filetype = $filetype;
-	}
-
-	function _checkDependencies(){
-		return(is_readable(WE_INCLUDES_PATH . 'we_classes/weMetaData/lib/PEAR_IPTC.php'));
+		$this->accesstypes = array("read");
 	}
 
 	function getUsedFields(){
-		return $GLOBALS['____weMetaData_IPTC_usedFields'];
+		return explode(',', self::usedFields);
 	}
 
-	function _getMetaData($selection = ""){
-		if(!$this->_valid)
+	protected function _getMetaData($selection = ""){
+		if(!$this->_valid){
 			return false;
+		}
 
 		// seems not to work correctly so only an empty array is returned to caller:
 		$this->metadata = array();
@@ -95,7 +62,7 @@ class weMetaData_IPTC extends weMetaData{
 					$this->metadata[] = $_iptcData->getTag($value);
 				}
 			} else{
-				foreach($GLOBALS['____weMetaData_IPTC_usedFields'] as $fieldName){
+				foreach(explode(',', self::usedFields) as $fieldName){
 					$_data = $_iptcData->getTag($fieldName);
 					if(!is_null($_data)){
 						$this->metadata[$fieldName] = $_data;

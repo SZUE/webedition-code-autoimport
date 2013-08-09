@@ -23,47 +23,50 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_delete($attribs){
-	$type = weTag_getAttribute("type", $attribs, 'document');
-	$userid = weTag_getAttribute("userid", $attribs); // deprecated  use protected=true instead
-	$protected = weTag_getAttribute("protected", $attribs, false, true);
-	$admin = weTag_getAttribute("admin", $attribs);
-	$mail = weTag_getAttribute("mail", $attribs);
-	$mailfrom = weTag_getAttribute("mailfrom", $attribs);
-	$charset = weTag_getAttribute("charset", $attribs, "iso-8859-1");
-	$doctype = weTag_getAttribute("doctype", $attribs);
-	$classid = weTag_getAttribute("classid", $attribs);
-	$pid = weTag_getAttribute("pid", $attribs);
-	$forceedit = weTag_getAttribute("forceedit", $attribs, false, true);
+	$type = weTag_getAttribute('type', $attribs, 'document');
+	$userid = weTag_getAttribute('userid', $attribs); // deprecated  use protected=true instead
+	$protected = weTag_getAttribute('protected', $attribs, false, true);
+	$admin = weTag_getAttribute('admin', $attribs);
+	$mail = weTag_getAttribute('mail', $attribs);
+	$mailfrom = weTag_getAttribute('mailfrom', $attribs);
+	$charset = weTag_getAttribute('charset', $attribs, "iso-8859-1");
+	$doctype = weTag_getAttribute('doctype', $attribs);
+	$classid = weTag_getAttribute('classid', $attribs);
+	$pid = weTag_getAttribute('pid', $attribs);
+	$forceedit = weTag_getAttribute('forceedit', $attribs, false, true);
 
-	if($type == "document"){
-		if(!isset($_REQUEST["we_delDocument_ID"])){
-			return "";
-		}
-		$docID = $_REQUEST["we_delDocument_ID"];
-		$doc = new we_webEditionDocument();
-		$doc->initByID($docID);
-		$table = FILE_TABLE;
-		if($doctype){
-			$doctypeID = f('SELECT ID FROM ' . DOC_TYPES_TABLE . " WHERE DocType LIKE '" . $GLOBALS['DB_WE']->escape($doctype) . "'", 'ID', $GLOBALS['DB_WE']);
-			if($doc->DocType != $doctypeID){
-				$GLOBALS["we_" . $type . "_delete_ok"] = false;
+	switch($type){
+		case "document":
+			if(!isset($_REQUEST["we_delDocument_ID"])){
 				return '';
 			}
-		}
-	} else{
-		if(!isset($_REQUEST["we_delObject_ID"])){
-			return "";
-		}
-		$docID = $_REQUEST["we_delObject_ID"];
-		$doc = new we_objectFile();
-		$doc->initByID($docID, OBJECT_FILES_TABLE);
-		$table = OBJECT_FILES_TABLE;
-		if($classid){
-			if($doc->TableID != $classid){
-				$GLOBALS["we_" . $type . "_delete_ok"] = false;
-				return "";
+			$docID = intval($_REQUEST["we_delDocument_ID"]);
+			$doc = new we_webEditionDocument();
+			$doc->initByID($docID);
+			$table = FILE_TABLE;
+			if($doctype){
+				$doctypeID = f('SELECT ID FROM ' . DOC_TYPES_TABLE . " WHERE DocType LIKE '" . $GLOBALS['DB_WE']->escape($doctype) . "'", 'ID', $GLOBALS['DB_WE']);
+				if($doc->DocType != $doctypeID){
+					$GLOBALS["we_" . $type . "_delete_ok"] = false;
+					return '';
+				}
 			}
-		}
+			break;
+		default:
+			if(!isset($_REQUEST["we_delObject_ID"])){
+				return '';
+			}
+			$docID = intval($_REQUEST["we_delObject_ID"]);
+			$doc = new we_objectFile();
+			$doc->initByID($docID, OBJECT_FILES_TABLE);
+			$table = OBJECT_FILES_TABLE;
+			if($classid){
+				if($doc->TableID != $classid){
+					$GLOBALS["we_" . $type . "_delete_ok"] = false;
+					return "";
+				}
+			}
+			break;
 	}
 
 	if($pid){
@@ -73,17 +76,13 @@ function we_tag_delete($attribs){
 		}
 	}
 
-	$isOwner = false;
-	if($protected){
-		$isOwner = ($_SESSION["webuser"]["ID"] == $doc->WebUserID);
-	} else
-	if($userid){
-		$isOwner = ($_SESSION["webuser"]["ID"] == $doc->getElement($userid));
-	}
-	$isAdmin = false;
-	if($admin){
-		$isAdmin = isset($_SESSION["webuser"][$admin]) && $_SESSION["webuser"][$admin];
-	}
+	$isOwner = ($protected ?
+			($_SESSION["webuser"]["ID"] == $doc->WebUserID) :
+			($userid ?
+				($_SESSION["webuser"]["ID"] == $doc->getElement($userid)) : false));
+
+
+	$isAdmin = ($admin ? isset($_SESSION["webuser"][$admin]) && $_SESSION["webuser"][$admin] : false);
 
 	if($isAdmin || $isOwner || $forceedit){
 		$GLOBALS["NOT_PROTECT"] = true;

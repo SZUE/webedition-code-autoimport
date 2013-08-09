@@ -77,7 +77,6 @@ class weCustomerTreeLoader{
 		$db->query("SELECT $_formatFields $elem FROM $table $where " . (!empty($_order) ? "ORDER BY $_order" : '') . ($segment ? " LIMIT $offset,$segment;" : ";" ));
 
 		while($db->next_record()) {
-
 			$typ = array("typ" => ($db->f("IsFolder") == 1 ? "group" : "item"));
 
 			$typ["disabled"] = 0;
@@ -90,10 +89,13 @@ class weCustomerTreeLoader{
 			$fileds = array();
 
 			foreach($db->Record as $k => $v){
-				if(!is_numeric($k))
+				if(!is_numeric($k)){
 					$fileds[strtolower($k)] = $v;
+				}
 			}
 
+			$fileds['isfolder'] = $fileds['isfolder'] ? $fileds['isfolder'] : 0;
+			$fileds['parentid'] = $fileds['parentid'] ? $fileds['parentid'] : 0;
 			$fileds["text"] = oldHtmlspecialchars(trim($tt) != "" ? $tt : $db->f("Text"));
 			$items[] = array_merge($fileds, $typ);
 		}
@@ -153,14 +155,14 @@ class weCustomerTreeLoader{
 		$orderarr = array();
 
 		foreach($sort_defs as $sortdef){
-			if($sortdef["function"]){
+			if(isset($sortdef["function"]) && $sortdef["function"]){
 				$select[] = ($settings->customer->isInfoDate($sortdef["field"]) ?
 						sprintf($settings->FunctionTable[$sortdef["function"]], "FROM_UNIXTIME(" . $sortdef["field"] . ")") . " AS " . $sortdef["field"] . "_" . $sortdef["function"] :
 						sprintf($settings->FunctionTable[$sortdef["function"]], $sortdef["field"]) . " AS " . $sortdef["field"] . "_" . $sortdef["function"]);
 
-				$grouparr[] = $sortdef["field"] . "_" . $sortdef["function"];
-				$orderarr[] = $sortdef["field"] . "_" . $sortdef["function"] . " " . $sortdef["order"];
-				$orderarr[] = $sortdef["field"] . " " . $sortdef["order"];
+				$grouparr[] = $sortdef["field"] . '_' . $sortdef["function"];
+				$orderarr[] = $sortdef["field"] . '_' . $sortdef["function"] . " " . $sortdef["order"];
+				$orderarr[] = $sortdef["field"] . ' ' . $sortdef["order"];
 				if(isset($pidarr[$c])){
 					$havingarr[] = ($pidarr[$c] == g_l('modules_customer', '[no_value]') ?
 							"(" . $sortdef["field"] . "_" . $sortdef["function"] . "='' OR " . $sortdef["field"] . "_" . $sortdef["function"] . " IS NULL)" :
@@ -206,9 +208,7 @@ class weCustomerTreeLoader{
 			$_order = '';
 		}
 
-		$query = "SELECT $_formatFields ID,ParentID,Path,Text,Icon,IsFolder,Forename,Surname" . (count($select) ? "," . implode(",", $select) : "") . " FROM " . $table . " GROUP BY " . $grp . (count($grouparr) ? ($level != 0 ? ",ID" : "") : "ID") . (count($havingarr) ? " HAVING " . implode(" AND ", $havingarr) : "") . " ORDER BY " . implode(",", $orderarr) . (!empty($_order) ? (',' . $_order) : '' ) . (($level == $levelcount && $segment) ? " LIMIT $offset,$segment;" : ";");
-
-		$db->query($query);
+		$db->query("SELECT $_formatFields ID,ParentID,Path,Text,Icon,IsFolder,Forename,Surname" . (count($select) ? "," . implode(",", $select) : "") . " FROM " . $table . " GROUP BY " . $grp . (count($grouparr) ? ($level != 0 ? ",ID" : "") : "ID") . (count($havingarr) ? " HAVING " . implode(" AND ", $havingarr) : "") . " ORDER BY " . implode(",", $orderarr) . (!empty($_order) ? (',' . $_order) : '' ) . (($level == $levelcount && $segment) ? " LIMIT $offset,$segment" : ''));
 
 		$sortarr = array();
 		$foo = array();
@@ -303,7 +303,7 @@ class weCustomerTreeLoader{
 		}
 
 		if($level == $levelcount){
-			$total = f("SELECT COUNT(ID) as total " . (count($select) ? "," . implode(",", $select) : "") . " FROM " . $db->escape($table) . " GROUP BY " . $grp . (count($grouparr) ? ($level != 0 ? ",ID" : "") : "ID") . (count($havingarr) ? " HAVING " . implode(" AND ", $havingarr) : "") . " ORDER BY " . implode(",", $orderarr),'total',$db);
+			$total = f("SELECT COUNT(ID) as total " . (count($select) ? "," . implode(",", $select) : "") . " FROM " . $db->escape($table) . " GROUP BY " . $grp . (count($grouparr) ? ($level != 0 ? ",ID" : "") : "ID") . (count($havingarr) ? " HAVING " . implode(" AND ", $havingarr) : "") . " ORDER BY " . implode(",", $orderarr), 'total', $db);
 
 			$nextoffset = $offset + $segment;
 			if($segment && ($total > $nextoffset)){

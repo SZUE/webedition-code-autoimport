@@ -322,9 +322,9 @@ function we_tag_sessionField($attribs, $content){
 			$thumbnail = weTag_getAttribute('thumbnail', $attribs);
 			if($thumbnail != ''){
 				$attr['thumbnail'] = $thumbnail;
-				$imgTag = we_document::getFieldByVal($imgId, 'img', $attr);
+				$imgTag = $GLOBALS['we_doc']->getFieldByVal($imgId, 'img', $attr);
 			} else{
-				$imgTag = we_document::getFieldByVal($imgId, 'img');
+				$imgTag = $GLOBALS['we_doc']->getFieldByVal($imgId, 'img');
 			}
 
 			if($showcontrol){

@@ -61,19 +61,15 @@ class searchtoolExp extends we_search{
 	}
 
 	function evaluateExp($keyword, $options, $res_num = 0){
-
 		$keyword = $this->normalize($keyword);
-		$_tokens = $this->tokenize($keyword);
-		$_tokens = $this->translateOperators($_tokens);
+		$_tokens = $this->translateOperators($this->tokenize($keyword));
 		$_tables = $options;
 		$_condition = $this->constructCondition($_tokens);
 
 		$_result = array();
 
 		foreach($_tables as $_table){
-
-			$_query = 'SELECT * FROM ' . $_table . ' ' . $_condition;
-			$this->db->query($_query);
+			$this->db->query('SELECT * FROM ' . $_table . ' ' . $_condition);
 
 			while($this->next_record()) {
 				$_result[] = array_merge(array(
@@ -155,7 +151,6 @@ class searchtoolExp extends we_search{
 		$_tokens = $tokens;
 		foreach($_tokens as $_lop => $_slots){
 			foreach($_slots as $_key => $_value){
-
 				$tokens[$_lop][$_key] = $this->getExpression($_value);
 			}
 		}
@@ -163,11 +158,7 @@ class searchtoolExp extends we_search{
 	}
 
 	function replaceSpecChars($string){
-		$string = trim($string);
-		$string = str_replace('*', '%', $string);
-		$string = trim($string, '"');
-		$string = trim($string, "'");
-		return $string;
+		return trim(str_replace('*', '%', trim($string)), '"\'');
 	}
 
 	function getExpression($string){
@@ -213,12 +204,9 @@ class searchtoolExp extends we_search{
 
 		if(($_expr['operand1'] == 'DocType')){
 			if(strpos($_expr['operand2'], '\*') !== false){
-				$_expr['operand2'] = f(
-					'SELECT ID FROM ' . DOC_TYPES_TABLE . ' WHERE DocType LIKE "' . str_replace(
-						"*", "%", $_expr['operand2']) . '";', 'ID', new DB_WE());
+				$_expr['operand2'] = f('SELECT ID FROM ' . DOC_TYPES_TABLE . ' WHERE DocType LIKE "' . str_replace("*", "%", $_expr['operand2']) . '"', 'ID', new DB_WE());
 			} else{
-				$_expr['operand2'] = f(
-					'SELECT ID FROM ' . DOC_TYPES_TABLE . ' WHERE DocType LIKE "' . $_expr['operand2'] . '";', 'ID', new DB_WE());
+				$_expr['operand2'] = f('SELECT ID FROM ' . DOC_TYPES_TABLE . ' WHERE DocType LIKE "' . $_expr['operand2'] . '"', 'ID', new DB_WE());
 			}
 			// if operand2 is empty make some impossible condition
 			if(empty($_expr['operand2']) && ($_expr['operator'] == 'LIKE' || $_expr['operator'] == '=')){
@@ -227,8 +215,7 @@ class searchtoolExp extends we_search{
 		}
 
 		if(($_expr['operand1'] == 'Category')){
-			$_expr['operand2'] = ',' . f(
-					'SELECT ID FROM ' . CATEGORY_TABLE . ' WHERE Text="' . $_expr['operand2'] . '";', 'ID', new DB_WE()) . ',';
+			$_expr['operand2'] = ',' . f('SELECT ID FROM ' . CATEGORY_TABLE . ' WHERE Text="' . $_expr['operand2'] . '"', 'ID', new DB_WE()) . ',';
 			if($_expr['operator'] == '='){
 				$_expr['operator'] = 'LIKE';
 			}
@@ -260,8 +247,7 @@ class searchtoolExp extends we_search{
 			if($value && $option == TEMPLATES_TABLE && we_hasPerm('CAN_SEE_TEMPLATES')){
 				$_tables[] = TEMPLATES_TABLE;
 			}
-			if(defined('OBJECT_FILES_TABLE') && $value && $option == OBJECT_FILES_TABLE && we_hasPerm(
-					'CAN_SEE_OBJECTFILES')){
+			if(defined('OBJECT_FILES_TABLE') && $value && $option == OBJECT_FILES_TABLE && we_hasPerm('CAN_SEE_OBJECTFILES')){
 				$_tables[] = OBJECT_FILES_TABLE;
 			}
 			if(defined('OBJECT_TABLE') && $value && $option == OBJECT_TABLE && we_hasPerm('CAN_SEE_OBJECTS')){
@@ -285,23 +271,19 @@ class searchtoolExp extends we_search{
 				}
 			}
 			if(!empty($_word)){
-				$_conditions[] = implode(" $_log ", $_word);
+				$_conditions[] = implode(' ' . $_log . ' ', $_word);
 			}
 
-			if(count($_conditions)){
+			if(!empty($_conditions)){
 				if(empty($_condition)){
-					$_condition .= implode(" $_log ", $_conditions);
+					$_condition .= implode(' ' . $_log . ' ', $_conditions);
 				} else{
-					$_condition .= " $_log " . implode(" $_log ", $_conditions);
+					$_condition .= ' ' . $_log . ' ' . implode(' ' . $_log . ' ', $_conditions);
 				}
 			}
 		}
 
-		if($_condition != ''){
-			$_condition = " WHERE $_condition ";
-		}
-
-		return $_condition;
+		return ($_condition != '' ? ' WHERE ' . $_condition . ' ' : '');
 	}
 
 }

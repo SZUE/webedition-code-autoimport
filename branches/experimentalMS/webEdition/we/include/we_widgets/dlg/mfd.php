@@ -102,7 +102,7 @@ function delUser(iUsrId){
 }
 
 function getCsv(){
-	return getBinary('type')+';'+_oSctDate.selectedIndex+';'+_oSctNumEntries.selectedIndex+
+	return getBinary('type')+';'+_oSctDate.selectedIndex+';'+_oSctNumEntries.value+
 		';'+getBinary('display_opt')+';'+_sUsers;
 }
 
@@ -256,13 +256,9 @@ foreach($aLangDate as $k => $v){
 }
 $oSctDate->selectOption($iDate);
 
-$oChbxShowMfdBy = we_forms::checkbox(
-		$value = 0, $checked = $sDisplayOpt{0}, $name = "chbx_display_opt", $text = g_l('cockpit', '[modified_by]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0);
-$oChbxShowDate = we_forms::checkbox(
-		$value = 0, $checked = $sDisplayOpt{1}, $name = "chbx_display_opt", $text = g_l('cockpit', '[date_last_modification]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0);
-$oSctNumEntries = new we_html_select(array(
-		"name" => "sct_amount_entries", "size" => "1", "class" => "defaultfont"
-	));
+$oChbxShowMfdBy = we_forms::checkbox($value = 0, $checked = $sDisplayOpt{0}, $name = "chbx_display_opt", $text = g_l('cockpit', '[modified_by]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0);
+$oChbxShowDate = we_forms::checkbox($value = 0, $checked = $sDisplayOpt{1}, $name = "chbx_display_opt", $text = g_l('cockpit', '[date_last_modification]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0);
+$oSctNumEntries = new we_html_select(array("name" => "sct_amount_entries", "size" => "1", "class" => "defaultfont"));
 $oSctNumEntries->insertOption(0, 0, g_l('cockpit', '[all]'));
 for($iCurrEntry = 1; $iCurrEntry <= 50; $iCurrEntry++){
 	$oSctNumEntries->insertOption($iCurrEntry, $iCurrEntry, $iCurrEntry);

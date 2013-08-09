@@ -59,12 +59,9 @@ if(empty($classid)){
 }
 //$resultO = count($fe);
 $resultO = array_shift($fe);
-$dbTitlename = "shoptitle";
 
 // wether the resultset ist empty?
-$DB_WE->query("SELECT count(Name) as Anzahl FROM " . LINK_TABLE . " WHERE Name ='$dbTitlename'");
-$DB_WE->next_record();
-$resultD = $DB_WE->f("Anzahl");
+$resultD = f('SELECT count(Name) as Anzahl FROM ' . LINK_TABLE . ' WHERE Name ="' . WE_SHOP_TITLE_FIELD_NAME . '"', 'Anzahl', $DB_WE);
 
 // grep the last element from the year-set, wich is the current year
 $DB_WE->query("SELECT DATE_FORMAT(DateOrder,'%Y') AS DateOrd FROM " . SHOP_TABLE . " ORDER BY DateOrd");
@@ -105,8 +102,8 @@ $tab_body = '<div id="main" >' . we_html_tools::getPixel(100, 3) . '<div style="
 ?>
 <script type="text/javascript">
 	<!--
-	function setTab(tab){
-		switch(tab){
+	function setTab(tab) {
+		switch (tab) {
 			case 0:
 				parent.edbody.document.location = 'edit_shop_article_extend.php?typ=document';
 				break;
@@ -117,18 +114,18 @@ $tab_body = '<div id="main" >' . we_html_tools::getPixel(100, 3) . '<div style="
 <?php
 if(isset($yearTrans)){
 	?>
-						case 2:
-							parent.edbody.document.location = 'edit_shop_revenueTop.php?ViewYear=<?php print $yearTrans; ?>' // ' + top.yearshop
+				case 2:
+					parent.edbody.document.location = 'edit_shop_revenueTop.php?ViewYear=<?php print $yearTrans; ?>' // ' + top.yearshop
 
-							break;
+					break;
 	<?php
 }
 ?>
 
-				}
-			}
-			top.content.hloaded=1;
-			//-->
+		}
+	}
+	top.content.hloaded = 1;
+	//-->
 </script>
 <?php
 print $tab_head;

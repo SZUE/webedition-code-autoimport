@@ -325,9 +325,10 @@ function log_error_message($type, $message, $file, $_line, $skipBT = false){
 		if(DB_CONNECT=='msconnect'){
 			//$_query='INSERT INTO ' . $tbl . ' ("Type","Function","File","Line","Text","Backtrace","Request","Session","Global","Server") VALUES ' . "('".escape_sql_query($_type)."','".escape_sql_query($_caller)."','".escape_sql_query($_file)."',".intval($_line).",'".escape_sql_query($_text)."','".escape_sql_query($_detailedError)."','','','','' );";
 			$_query='INSERT INTO dbo.' . $tbl . '   VALUES ' . "('".escape_sql_query($_type)."','".escape_sql_query($_caller)."','".escape_sql_query($_file)."',".intval($_line).",'".escape_sql_query($_text)."','".escape_sql_query($_detailedError)."','','','','',Getdate() );";
+			$t=array($_type,$_caller,$_file,$_line,$_text,$_detailedError);
 		} else {
 		
-		  $_query = 'INSERT INTO ' . $tbl . ' SET Type="' . escape_sql_query($_type) . '",
+		$_query = 'INSERT INTO ' . $tbl . ' SET Type="' . escape_sql_query($_type) . '",
 			`Function`="' . escape_sql_query($_caller) . '",
 			File="' . escape_sql_query($_file) . '",
 			Line=' . intval($_line) . ',
@@ -337,7 +338,8 @@ function log_error_message($type, $message, $file, $_line, $skipBT = false){
 		if(isset($GLOBALS['DB_WE'])){
 			$db = new DB_WE();
 			if(!$db->query($_query)){
-				die('Cannot log error! Query failed: ' . $GLOBALS['DB_WE']->Error);
+				mail_error_message($type, 'Cannot log error! Query failed: '. $message, $file, $line, $skipBT);
+				//die('Cannot log error! Query failed: ' . $GLOBALS['DB_WE']->Error);
 			} else{
 				$id = $db->getInsertId();
 				foreach($logVars as $var){
@@ -350,7 +352,8 @@ function log_error_message($type, $message, $file, $_line, $skipBT = false){
 				or die('Cannot log error! Could not connect: ' . mysql_error());
 			mysql_select_db(DB_DATABASE, $_link) or die('Cannot log error! Could not select database.');
 			if(mysql_query($_query) === FALSE){
-				die('Cannot log error! Query failed: ' . mysql_error());
+				mail_error_message($type, 'Cannot log error! Query failed: '.$message, $file, $line, $skipBT);
+				//die('Cannot log error! Query failed: ' . mysql_error());
 			} else{
 				$id = mysql_insert_id();
 				foreach($logVars as $var){
@@ -360,7 +363,8 @@ function log_error_message($type, $message, $file, $_line, $skipBT = false){
 			mysql_close();
 		}
 	} else{
-		die('Cannot log error! Database connection not known.');
+		mail_error_message($type, 'Cannot log error! Database connection not known: '.$message, $file, $line, $skipBT);
+		//die('Cannot log error! Database connection not known.');
 	}
 }
 
@@ -392,10 +396,14 @@ function mail_error_message($type, $message, $file, $line, $skipBT = false){
 	// Log the error
 	if(defined('WE_ERROR_MAIL_ADDRESS')){
 		if(!mail(WE_ERROR_MAIL_ADDRESS, 'webEdition: ' . $ttype . ' (' . $_caller . ') [' . $_SERVER['SERVER_NAME'] . ']', $_detailedError)){
-			echo 'Cannot log error! Could not send e-mail.';
+			if(in_array($type,array('E_ERROR','E_CORE_ERROR','E_COMPILE_ERROR','E_USER_ERROR'))){
+				echo 'Cannot log error! Could not send e-mail: <pre>'.$_detailedError.'</pre>';
+			}
 		}
 	} else{
-		echo 'Cannot log error! Could not send e-mail due to no known recipient.';
+		if(in_array($type,array('E_ERROR','E_CORE_ERROR','E_COMPILE_ERROR','E_USER_ERROR'))){
+			echo 'Cannot log error! Could not send e-mail due to no known recipient: <pre>'.$_detailedError.'</pre>';
+		}
 	}
 }
 

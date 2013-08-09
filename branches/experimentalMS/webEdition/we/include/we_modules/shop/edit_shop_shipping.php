@@ -288,10 +288,10 @@ if(isset($weShipping)){ // show the shipping which must be edited
 	);
 	// foreach ...
 	// form table with every value -> cost entry
-	if(sizeof($weShipping->shipping)){
+	if(!empty($weShipping->shipping)){
 
 		$tblPart = '';
-		for($i = 0; $i < sizeof($weShipping->shipping); $i++){
+		for($i = 0; $i < count($weShipping->shipping); $i++){
 
 			$tblRowName = 'weShippingId_' . $i;
 

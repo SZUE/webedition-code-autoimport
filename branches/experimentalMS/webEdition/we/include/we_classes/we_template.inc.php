@@ -29,7 +29,7 @@ class we_template extends we_document{
 	var $MasterTemplateID = 0;
 	var $TagWizardCode; // bugfix 1502
 	var $TagWizardSelection; // bugfix 1502
-	var $IncludedTemplates = "";
+	var $IncludedTemplates = '';
 	var $doUpdateCode = true; // will be protected in later WE Versions
 
 	const TemplateHead = '<?php we_templateHead();?>';
@@ -40,15 +40,15 @@ class we_template extends we_document{
 
 	function __construct(){
 		parent::__construct();
-		$this->Icon = "we_template.gif";
+		$this->Icon = 'we_template.gif';
 		$this->Table = TEMPLATES_TABLE;
 
-		array_push($this->persistent_slots, "MasterTemplateID", "IncludedTemplates", "TagWizardCode", "TagWizardSelection");
+		array_push($this->persistent_slots, 'MasterTemplateID', 'IncludedTemplates', 'TagWizardCode', 'TagWizardSelection');
 		$this->elements["Charset"]["dat"] = DEFAULT_CHARSET;
 		array_push($this->EditPageNrs, WE_EDITPAGE_PROPERTIES, WE_EDITPAGE_INFO, WE_EDITPAGE_CONTENT, WE_EDITPAGE_PREVIEW, WE_EDITPAGE_PREVIEW_TEMPLATE, WE_EDITPAGE_VARIANTS, WE_EDITPAGE_VERSIONS);
 		$this->Published = 1;
 		$this->InWebEdition = true;
-		$this->ContentType = "text/weTmpl";
+		$this->ContentType = 'text/weTmpl';
 	}
 
 	function copyDoc($id){
@@ -57,32 +57,31 @@ class we_template extends we_document{
 		}
 		$temp = new we_template();
 		$temp->InitByID($id, TEMPLATES_TABLE);
-		$parentIDMerk = $this->ParentID;
+		//$parentIDMerk = $this->ParentID;
 		if($this->ID == 0){
-			for($i = 0; $i < sizeof($this->persistent_slots); $i++){
-				if($this->persistent_slots[$i] != "elements")
-					$this->{$this->persistent_slots[$i]} = $temp->{$this->persistent_slots[$i]};
+			foreach($this->persistent_slots as $cur){
+				if($cur != 'elements')
+					$this->{$cur} = $temp->{$cur};
 			}
 			$this->CreationDate = time();
 			$this->ID = 0;
-			$this->OldPath = "";
-			$this->Filename .= "_copy";
+			$this->OldPath = '';
+			$this->Filename .= '_copy';
 			$this->Text = $this->Filename . $this->Extension;
-			$this->setParentID($parentIDMerk);
+			//$this->setParentID($parentIDMerk);
 			$this->Path = $this->ParentPath . $this->Text;
 			$this->OldPath = $this->Path;
 		}
 		$temp->resetElements();
 		$k = $v = '';
-		while(list($k, $v) = $temp->nextElement("txt")) {
-			$this->setElement($k, $temp->getElement($k), "txt");
+		while((list($k, $v) = $temp->nextElement('txt'))) {
+			$this->setElement($k, $temp->getElement($k), 'txt');
 		}
 		$this->EditPageNr = 0;
 	}
 
-	//##################################################################### EDITOR FUNCTION ######################################################################
-
 	/* must be called from the editor-script. Returns a filename which has to be included from the global-Script */
+
 	function editor(){
 		switch($this->EditPageNr){
 			case WE_EDITPAGE_PROPERTIES:
@@ -158,7 +157,7 @@ class we_template extends we_document{
 				if($regs[1] == '/'){
 					$foo[$regs[2]] = isset($foo[$regs[2]]) ? $foo[$regs[2]] + 1 : 1;
 				} else{
-					if(sizeof($foo) == 0){
+					if(empty($foo)){
 						return $i;
 					} else if(isset($foo[$regs[2]]) && intval($foo[$regs[2]])){
 						$foo[$regs[2]] = intval($foo[$regs[2]]) - 1;
@@ -172,12 +171,12 @@ class we_template extends we_document{
 	}
 
 	private static function findIfEnd($tags, $nr){
-		if($nr == sizeof($tags)){
+		if($nr == count($tags)){
 			return -1;
 		}
 		$foo = array();
 		$regs = array();
-		for($i = $nr; $i < sizeof($tags); $i++){
+		for($i = $nr; $i < count($tags); $i++){
 			if(preg_match('%<(/?)we:if([[:alpha:]]+)( *[[:alpha:]]+ *= *"[^"]*")* */?>?%i', $tags[$i], $regs)){
 				if($regs[1] != '/'){
 					$foo[$regs[2]] = isset($foo[$regs[2]]) ? $foo[$regs[2]] + 1 : 1;
@@ -196,7 +195,7 @@ class we_template extends we_document{
 	}
 
 	private static function checkElsetags($tags){
-		for($i = 0; $i < sizeof($tags); $i++){
+		for($i = 0; $i < count($tags); $i++){
 			if(strpos($tags[$i], '<we:else') !== false){
 				$ifStart = self::findIfStart($tags, $i);
 				if($ifStart == -1){
@@ -242,11 +241,12 @@ class we_template extends we_document{
 			return $foo;
 		}
 
-		if(!DISABLE_TEMPLATE_CODE_CHECK){
+		if(!DISABLE_TEMPLATE_CODE_CHECK && $this->doUpdateCode){
 			$GLOBALS['we']['errorhandler']['shutdown'] = 'template';
 			register_shutdown_function(array($this, 'handleShutdown'), $code);
 
-			$var = create_function('', '?>' . $code . '<?php ');
+			//remove "use" since this is not allowed inside functions
+			$var = create_function('', '?>' . preg_replace('|use [\w,\s\\\\]*;|','',$code) . '<?php ');
 			if(empty($var) && ( $error = error_get_last() )){
 				$tmp = explode("\n", $code);
 				if(!is_array($tmp)){
@@ -263,10 +263,6 @@ class we_template extends we_document{
 			}
 			$GLOBALS['we']['errorhandler']['shutdown'] = 'we';
 		}
-		/* $tags = self::removeDoppel($tags);
-		  for($i=0;$i<sizeof($tags);$i++){
-		  $tp->parseTag($tags[$i],$code);
-		  } */
 
 
 		// Code must be executed every time a template is included,
@@ -344,7 +340,7 @@ class we_template extends we_document{
 	}
 
 	protected function i_writeMainDir($doc){
-		if($this->i_isMoved()){
+		if($this->isMoved()){
 			we_util_File::deleteLocalFile($this->getRealPath(true));
 		}
 		return we_util_File::saveFile($this->getRealPath(), $doc);
@@ -364,11 +360,11 @@ class we_template extends we_document{
 	 * @return boolean
 	 */
 	function canHaveVariants($checkFields = false){
-
-		if(!defined('SHOP_TABLE'))
+		if(!defined('SHOP_TABLE')){
 			return false;
+		}
 		$fieldnames = $this->getVariantFieldNames();
-		return in_array('shoptitle', $fieldnames) && in_array('shopdescription', $fieldnames);
+		return in_array(WE_SHOP_TITLE_FIELD_NAME, $fieldnames) && in_array(WE_SHOP_DESCRIPTION_FIELD_NAME, $fieldnames);
 	}
 
 	/**
@@ -439,7 +435,7 @@ class we_template extends we_document{
 				if(preg_match('|name="([^"]+)"|i', $tag, $regs) && ($tagname != "var") && ($tagname != "field")){ // name found
 					$name = $regs[1];
 
-					$size = sizeof($blocks);
+					$size = count($blocks);
 					if($size){
 						$foo = $blocks[$size - 1];
 						$blockname = $foo["name"];
@@ -463,8 +459,8 @@ class we_template extends we_document{
 					$foo = array();
 					$attribs = '';
 					preg_match_all('/([^=]+)= *("[^"]*")/', $attributes, $foo, PREG_SET_ORDER);
-					for($i = 0; $i < sizeof($foo); $i++){
-						$attribs .= '"' . trim($foo[$i][1]) . '"=>' . trim($foo[$i][2]) . ',';
+					foreach($foo as $cur){
+						$attribs .= '"' . trim($cur[1]) . '"=>' . trim($cur[2]) . ',';
 					}
 					$att = array();
 					@eval('$att = array(' . $attribs . ');');
@@ -506,8 +502,9 @@ class we_template extends we_document{
 					case "block":
 					case "list":
 					case "linklist":
-						if(sizeof($blocks))
+						if(!empty($blocks)){
 							array_pop($blocks);
+						}
 						break;
 				}
 			}
@@ -522,18 +519,18 @@ class we_template extends we_document{
 		$textname = 'MasterTemplateNameDummy';
 		$idname = 'we_' . $this->Name . '_MasterTemplateID';
 		$myid = $this->MasterTemplateID ? $this->MasterTemplateID : '';
-		$path = f("SELECT Path FROM " . $this->DB_WE->escape($table) . " WHERE ID=" . intval($myid), "Path", $this->DB_WE);
-		$alerttext = str_replace("'", "\\\\\\'", g_l('weClass', "[same_master_template]"));
+		$path = f('SELECT Path FROM ' . $this->DB_WE->escape($table) . ' WHERE ID=' . intval($myid), "Path", $this->DB_WE);
+		$alerttext = str_replace('\'', "\\\\\\'", g_l('weClass', '[same_master_template]'));
 		//javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','document.we_form.elements[\\'$idname\\'].value','document.we_form.elements[\\'$textname\\'].value','opener._EditorFrame.setEditorIsHot(true);if(currentID==$this->ID){" . we_message_reporting::getShowMessageCall($alerttext, we_message_reporting::WE_MESSAGE_ERROR) . "opener.document.we_form.elements[\\'$idname\\'].value=\'\';opener.document.we_form.elements[\\'$textname\\'].value=\\'\\';}','".session_id()."','','text/weTmpl',1)"
 		$wecmdenc1 = we_cmd_enc("document.we_form.elements['$idname'].value");
 		$wecmdenc2 = we_cmd_enc("document.we_form.elements['$textname'].value");
 		$wecmdenc3 = we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);if(currentID==$this->ID){" . we_message_reporting::getShowMessageCall($alerttext, we_message_reporting::WE_MESSAGE_ERROR) . "opener.document.we_form.elements['$idname'].value='';opener.document.we_form.elements['$textname'].value='';}");
 
-		$button = we_button::create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','','text/weTmpl',1)");
-		$trashButton = we_button::create_button("image:btn_function_trash", "javascript:document.we_form.elements['$idname'].value='';document.we_form.elements['$textname'].value='';YAHOO.autocoml.selectorSetValid('yuiAcInputMasterTemplate');_EditorFrame.setEditorIsHot(true);", true, 27, 22);
+		$button = we_button::create_button('select', "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','','text/weTmpl',1)");
+		$trashButton = we_button::create_button('image:btn_function_trash', "javascript:document.we_form.elements['$idname'].value='';document.we_form.elements['$textname'].value='';YAHOO.autocoml.selectorSetValid('yuiAcInputMasterTemplate');_EditorFrame.setEditorIsHot(true);", true, 27, 22);
 
-		$yuiSuggest->setAcId("MasterTemplate");
-		$yuiSuggest->setContentType("folder,text/weTmpl");
+		$yuiSuggest->setAcId('MasterTemplate');
+		$yuiSuggest->setContentType('folder,text/weTmpl');
 		$yuiSuggest->setInput($textname, $path);
 		$yuiSuggest->setLabel('');
 		$yuiSuggest->setMayBeEmpty(1);
@@ -553,7 +550,7 @@ class we_template extends we_document{
 		if($this->ID == 0){
 			return $paths;
 		}
-		$this->DB_WE->query("SELECT ID, Path FROM " . FILE_TABLE . " WHERE temp_template_id=" . intval($this->ID) . " OR (temp_template_id = 0 AND TemplateID = " . intval($this->ID) . ") ORDER BY Path");
+		$this->DB_WE->query('SELECT ID, Path FROM ' . FILE_TABLE . ' WHERE temp_template_id=' . intval($this->ID) . ' OR (temp_template_id=0 AND TemplateID=' . intval($this->ID) . ') ORDER BY Path');
 		while($this->DB_WE->next_record()) {
 			$paths[$this->DB_WE->f('ID')] = $this->DB_WE->f('Path') . ' (ID: ' . $this->DB_WE->f('ID') . ')';
 		}
@@ -562,13 +559,13 @@ class we_template extends we_document{
 
 	function formTemplateDocuments(){
 		if($this->ID == 0){
-			return g_l('weClass', "[no_documents]");
+			return g_l('weClass', '[no_documents]');
 		}
 		$textname = 'TemplateDocuments';
 
 		$path = $this->isUsedByDocuments();
 
-		if(sizeof($path) == 0){
+		if(empty($path)){
 			return g_l('weClass', "[no_documents]");
 		}
 
@@ -583,7 +580,7 @@ class we_template extends we_document{
 	 * @param	boolean $completeCode if true then the function returns the code of the complete template (with master template and included templates)
 	 */
 	function getTemplateCode($completeCode = true){
-		return $completeCode ? $this->getElement("completeData") : $this->getElement("data");
+		return $completeCode ? $this->getElement('completeData') : $this->getElement('data');
 	}
 
 	function _getAttribsArray($attributes){
@@ -623,7 +620,9 @@ class we_template extends we_document{
 			}
 		}
 		foreach($_tmpArr as $_tid){
-			self::getUsedTemplatesOfTemplate($_tid, $arr);
+			if($id != $_tid){
+				self::getUsedTemplatesOfTemplate($_tid, $arr);
+			}
 		}
 
 		$_tmpArr = makeArrayFromCSV($_tmplCSV);
@@ -633,11 +632,15 @@ class we_template extends we_document{
 			}
 		}
 		if($_masterTemplateID && !in_array($_masterTemplateID, $arr)){
-			self::getUsedTemplatesOfTemplate($_masterTemplateID, $arr);
+			if($_masterTemplateID != $id){
+				self::getUsedTemplatesOfTemplate($_masterTemplateID, $arr);
+			}
 		}
 
 		foreach($_tmpArr as $_tid){
-			self::getUsedTemplatesOfTemplate($_tid, $arr);
+			if($id != $_tid){
+				self::getUsedTemplatesOfTemplate($_tid, $arr);
+			}
 		}
 	}
 
@@ -645,25 +648,29 @@ class we_template extends we_document{
 		if(!$this->doUpdateCode){
 			return true;
 		}
+		static $recursiveTemplates = array();
+		if(empty($recursiveTemplates)){
+			array_push($recursiveTemplates, $this->ID);
+		}
 		$code = $this->getTemplateCode(false);
 
 		// find all we:master Tags
 		$masterTags = $regs = array();
 
-		preg_match_all("|(<we:master([^>+]*)>)\n?([\\s\\S]*?)</we:master>\n?|", $code, $regs, PREG_SET_ORDER);
+		preg_match_all('|(<we:master([^>+]*)>)\n?([\\s\\S]*?)</we:master>\n?|', $code, $regs, PREG_SET_ORDER);
 
 
 		foreach($regs as $reg){
-			$attribs = $this->_getAttribsArray(isset($reg[2]) ? $reg[2] : "");
-			$name = isset($attribs["name"]) ? $attribs["name"] : "";
+			$attribs = $this->_getAttribsArray(isset($reg[2]) ? $reg[2] : '');
+			$name = isset($attribs['name']) ? $attribs['name'] : '';
 			if($name){
 				if(!isset($masterTags[$name])){
 					$masterTags[$name] = array();
 				}
-				$masterTags[$name]["all"] = $reg[0];
-				$masterTags[$name]["startTag"] = $reg[1];
-				$masterTags[$name]["content"] = isset($reg[3]) ? $reg[3] : "";
-				$code = str_replace($reg[0], "", $code);
+				$masterTags[$name]['all'] = $reg[0];
+				$masterTags[$name]['startTag'] = $reg[1];
+				$masterTags[$name]['content'] = isset($reg[3]) ? $reg[3] : "";
+				$code = str_replace($reg[0], '', $code);
 			}
 		}
 
@@ -671,24 +678,27 @@ class we_template extends we_document{
 
 			$_templates = array();
 			self::getUsedTemplatesOfTemplate($this->MasterTemplateID, $_templates);
-			if(in_array($this->ID, $_templates)){
+			if(in_array($this->ID, $_templates) || $this->ID == $this->MasterTemplateID || in_array($this->MasterTemplateID, $recursiveTemplates)){
 				$code = g_l('parser', '[template_recursion_error]');
+				t_e(g_l('parser', '[template_recursion_error]'), 'Template ' . $this->ID . ' with same Master');
 			} else{
 				// we have a master template. => surround current template with it
 				// first get template code
+				array_push($recursiveTemplates, $this->MasterTemplateID);
 				$templObj = new we_template();
 				$templObj->initByID($this->MasterTemplateID, TEMPLATES_TABLE);
 				$masterTemplateCode = $templObj->getTemplateCode(true);
+				array_pop($recursiveTemplates);
 
 				$contentTags = array();
-				preg_match_all("|<we:content ?([^>+]*)/?>\n?|", $masterTemplateCode, $contentTags, PREG_SET_ORDER);
+				preg_match_all('|<we:content ?([^>+]*)/?>\n?|', $masterTemplateCode, $contentTags, PREG_SET_ORDER);
 
 				foreach($contentTags as $reg){
 					$all = $reg[0];
 					$attribs = $this->_getAttribsArray($reg[1]);
-					$name = isset($attribs["name"]) ? $attribs["name"] : "";
+					$name = isset($attribs['name']) ? $attribs['name'] : '';
 					if($name){
-						$we_masterTagCode = isset($masterTags[$name]["content"]) ? $masterTags[$name]["content"] : "";
+						$we_masterTagCode = isset($masterTags[$name]['content']) ? $masterTags[$name]['content'] : '';
 						$masterTemplateCode = str_replace($all, $we_masterTagCode, $masterTemplateCode);
 					} else{
 						$masterTemplateCode = str_replace($all, $code, $masterTemplateCode);
@@ -729,17 +739,20 @@ class we_template extends we_document{
 					}
 
 					// if id attribute is set and greater 0
-					if(isset($att["id"]) && intval($att["id"]) != 0){
+					if(isset($att['id']) && intval($att['id']) != 0){
 						$_templates = array();
-						self::getUsedTemplatesOfTemplate($att["id"], $_templates);
-						if(in_array($this->ID, $_templates)){
+						self::getUsedTemplatesOfTemplate($att['id'], $_templates);
+						if(in_array($this->ID, $_templates) || $att['id'] == $this->ID || in_array($att['id'], $recursiveTemplates)){
 							$code = str_replace($tag, g_l('parser', '[template_recursion_error]'), $code);
+							t_e(g_l('parser', '[template_recursion_error]'), 'Template: ' . $this->ID);
 						} else{
 							// get code of template
+							array_push($recursiveTemplates, $att['id']);
 							$templObj = new we_template();
-							$templObj->initByID($att["id"], TEMPLATES_TABLE);
-							$completeCode = (!(isset($att["included"]) && ($att["included"] == "false" || $att["included"] === "0" || $att["included"] == "off")));
+							$templObj->initByID($att['id'], TEMPLATES_TABLE);
+							$completeCode = (!(isset($att['included']) && ($att['included'] == 'false' || $att["included"] === '0' || $att['included'] == "off")));
 							$includedTemplateCode = $templObj->getTemplateCode($completeCode);
+							array_pop($recursiveTemplates);
 							// replace include tag with template code
 							$code = str_replace($tag, $includedTemplateCode, $code);
 							$this->IncludedTemplates .= ',' . intval($att["id"]);
@@ -789,7 +802,7 @@ class we_template extends we_document{
 
 	public function we_load($from = we_class::LOAD_MAID_DB){
 		parent::we_load($from);
-		$this->Extension = we_base_ContentTypes::inst()->getExtension("text/weTmpl");
+		$this->Extension = we_base_ContentTypes::inst()->getExtension('text/weTmpl');
 		$this->_updateCompleteCode();
 		if(defined('SHOP_TABLE') && isset($this->elements['allVariants'])){
 			$this->elements['allVariants']['dat'] = @unserialize($this->elements['allVariants']['dat']);

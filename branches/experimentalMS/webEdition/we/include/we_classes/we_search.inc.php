@@ -27,7 +27,7 @@ class we_search{
 	protected $db;
 	var $rows = -1;
 	var $start = 0;
-	var $order = "";
+	var $order = '';
 	var $desc = 0;
 	var $tablename;
 	var $GreenOnly;
@@ -43,12 +43,12 @@ class we_search{
 		$this->db = new DB_WE();
 	}
 
-	function init($sessDat = ""){
-		for($i = 0; $i <= sizeof($sessDat); $i++){
-			if(isset($GLOBALS["we_" . $this->Name . "_" . $sessDat[$i]])){
-				$v = $GLOBALS["we_" . $this->Name . "_" . $sessDat[$i]];
+	function init($sessDat = ''){
+		foreach($sessDat as $cur){
+			if(isset($GLOBALS['we_' . $this->Name . '_' . $cur])){
+				$v = $GLOBALS['we_' . $this->Name . '_' . $cur];
 				$v = (get_magic_quotes_gpc() == 1) ? stripslashes($v) : $v;
-				$this->$sessDat[$i] = $v;
+				$this->$cur = $v;
 			}
 		}
 	}
@@ -59,31 +59,31 @@ class we_search{
 	//																("OR","XOR")
 	//									Searchid["type"] => "START"
 	//																("IS","END","CONTAIN","<","<=",">",..)
-	function searchfor($searchname, $searchfield, $searchlocation, $tablename, $rows = -1, $start = 0, $order = "", $desc = 0){
+	function searchfor($searchname, $searchfield, $searchlocation, $tablename, $rows = -1, $start = 0, $order = '', $desc = 0){
 
 		$this->tablename = $tablename;
 		$i = 0;
-		$sql = "";
+		$sql = '';
 
 		for($i = 0; $i < count($searchfield); $i++){
 
 			if(!empty($searchname[$i])){
 				$regs = explode('_', $searchfield[$i], 2); //bug #3694
-				if((count($regs) == 2) && $regs[0] == "date"){ //bug #3694
-					$year = ($searchname[$i]['year'] && $searchname[$i]['year'] != "" ? $searchname[$i]['year'] : date("Y"));
-					$month = ($searchname[$i]['month'] && $searchname[$i]['month'] != "" ? $searchname[$i]['month'] : "");
-					$day = ($searchname[$i]['day'] && $searchname[$i]['day'] != "" ? $searchname[$i]['day'] : "");
-					$hour = ($searchname[$i]['hour'] && $searchname[$i]['hour'] != "" ? $searchname[$i]['hour'] : "");
-					$minute = ($searchname[$i]['minute'] && $searchname[$i]['minute'] != "" ? $searchname[$i]['minute'] : "");
+				if((count($regs) == 2) && $regs[0] == 'date'){ //bug #3694
+					$year = ($searchname[$i]['year'] && $searchname[$i]['year'] != '' ? $searchname[$i]['year'] : date('Y'));
+					$month = ($searchname[$i]['month'] && $searchname[$i]['month'] != '' ? $searchname[$i]['month'] : '');
+					$day = ($searchname[$i]['day'] && $searchname[$i]['day'] != '' ? $searchname[$i]['day'] : '');
+					$hour = ($searchname[$i]['hour'] && $searchname[$i]['hour'] != '' ? $searchname[$i]['hour'] : '');
+					$minute = ($searchname[$i]['minute'] && $searchname[$i]['minute'] != '' ? $searchname[$i]['minute'] : '');
 
-					$from = mktime(($hour != "" ? $hour : 0), ($minute != "" ? $minute : 0), 0, ($month != "" ? $month : 1), ($day != "" ? $day : 1), $year);
-					$till = mktime(($hour != "" ? $hour : 23), ($minute != "" ? $minute : 59), 59, ($month != "" ? $month : 12), ($day != "" ? $day : date("t", mktime(0, 0, 0, ($month != "" ? $month : 12), 1, $year))), $year);
+					$from = mktime(($hour != '' ? $hour : 0), ($minute != '' ? $minute : 0), 0, ($month != '' ? $month : 1), ($day != '' ? $day : 1), $year);
+					$till = mktime(($hour != '' ? $hour : 23), ($minute != '' ? $minute : 59), 59, ($month != '' ? $month : 12), ($day != '' ? $day : date('t', mktime(0, 0, 0, ($month != '' ? $month : 12), 1, $year))), $year);
 
 					switch($searchlocation[$i]){
-						case "<":
-						case "<=":
-						case ">":
-						case ">=":
+						case '<':
+						case '<=':
+						case '>':
+						case '>=':
 							$sql .= $this->sqlwhere($searchfield[$i], ' ' . $searchlocation[$i] . ' ' . $from . ' ', null);
 							break;
 						default :
@@ -93,25 +93,25 @@ class we_search{
 				} else{
 
 					switch($searchlocation[$i]){
-						case "END":
+						case 'END':
 							$searching = " LIKE '%" . $this->db->escape($searchname[$i]) . "' ";
 							$sql .= $this->sqlwhere($searchfield[$i], $searching, null);
 							break;
-						case "START":
+						case 'START':
 							$searching = " LIKE '" . $this->db->escape($searchname[$i]) . "%' ";
 							$sql .= $this->sqlwhere($searchfield[$i], $searching, null);
 							//$sql .= " �".$val["field"]."� LIKE �".$val["search"]."%� ";
 							break;
 
-						case "IS":
+						case 'IS':
 							$searching = " = '" . $this->db->escape($searchname[$i]) . "' ";
 							$sql .= $this->sqlwhere($searchfield[$i], $searching, null);
 							break;
-						case "<":
-						case "<=":
-						case ">":
-						case ">=":
-							$searching = " " . $searchlocation[$i] . " '" . $this->db->escape($searchname[$i]) . "' ";
+						case '<':
+						case '<=':
+						case '>':
+						case '>=':
+							$searching = ' ' . $searchlocation[$i] . " '" . $this->db->escape($searchname[$i]) . "' ";
 							$sql .= $this->sqlwhere($searchfield[$i], $searching, null);
 							break;
 						default :
@@ -132,63 +132,83 @@ class we_search{
 			$foo = makeArrayFromCSV($we_SearchField);
 			$q = array();
 			foreach($foo as $f){
-				$tmp = str_replace('.', '`.', $f);
+				$tmp = str_replace('.', '.`', $f);
 				if($tmp == $f){
-					$tmp.='`';
+					$tmp = '`' . $tmp;
 				}
-				$q [] = '`' . $tmp . '` ' . $searchlocation;
+				$q [] = $tmp . '` ' . $searchlocation;
 			}
 			return ' ' . $concat . ' ( ' . implode(' OR ', $q) . ' ) ';
 		} else{
-			$tmp = str_replace('.', '`.', $we_SearchField);
+			$tmp = str_replace('.', '.`', $we_SearchField);
 			if($tmp == $we_SearchField){
-				$tmp.='`';
+				$tmp = '`' . $tmp;
 			}
-			return ' ' . $concat . ' `' . $tmp . ' ' . $searchlocation . ' ';
+			return ' ' . $concat . ' ' . $tmp . '` ' . $searchlocation . ' ';
 		}
 	}
 
-	function countitems($where = "", $table = ""){
-		$this->table = (empty($table)) ? ((empty($this->table)) ? "" : $this->table) : $table;
+	function countitems($where = '', $table = ''){
+		$this->table = (empty($table)) ? ((empty($this->table)) ? '' : $this->table) : $table;
 
 		if(!empty($this->table)){
+
 			if(DB_CONNECT=='msconnect'){
-				$this->where = (empty($where)) ? ((empty($this->where)) ? "1=1" : $this->where) : $where;
+				$this->where = (empty($where)) ? ((empty($this->where)) ? '1=1' : $this->where) : $where;
+
+				//Fixme: Fix wrong writing of OF_Path where the string is created!
+				$this->where = str_replace(array('`', 'OF_PATH'), array('', 'OF_Path'), $this->where);
 			} else {
-				$this->where = (empty($where)) ? ((empty($this->where)) ? "1" : $this->where) : $where;
+				$this->where = (empty($where)) ? ((empty($this->where)) ? '1' : $this->where) : $where;
 			}
+
 			return f('SELECT COUNT(1) as Count FROM ' . $this->db->escape($this->table) . ' WHERE ' . $this->where, 'Count', $this->db);
 		} else{
 			return -1;
 		}
 	}
 
-	function searchquery($where = "", $get = "*", $table = "", $order = "", $limit = ""){
+	function searchquery($where = '', $get = '*', $table = '', $order = '', $limit = ''){
 
-		$this->table = (empty($table)) ? ((empty($this->table)) ? "" : $this->table) : $table;
+		$this->table = (empty($table)) ? ((empty($this->table)) ? '' : $this->table) : $table;
 
 		if(!empty($this->table)){
-			$this->where = (empty($where)) ? ((empty($this->where)) ? "" : " WHERE " . $this->where) : " WHERE " . $where;
-			$this->get = (empty($get)) ? ((empty($this->get)) ? "*" : $this->get) : $get;
+			$this->where = (empty($where)) ? ((empty($this->where)) ? '' : ' WHERE ' . $this->where) : ' WHERE ' . $where;
+			$this->get = (empty($get)) ? ((empty($this->get)) ? '*' : $this->get) : $get;
 			$this->Order = (!empty($order)) ? $order : $this->Order;
-			$order = ((empty($this->Order)) ? "" : " ORDER BY " . $this->Order);
+			$order = ((empty($this->Order)) ? '' : ' ORDER BY ' . $this->Order);
 
-			$this->limit = " " . $this->searchstart . "," . $this->anzahl . " ";
-
-			$this->limit = (empty($limit)) ? ((empty($this->limit)) ? "" : " LIMIT " . ($this->limit)) : " LIMIT " . ($limit);
-
-			//echo "SELECT ".$this->get." FROM ".$this->table." ".$this->where." ".$order." ".$this->limit;
-			$this->db->query("SELECT " . rtrim($this->get, ',') . " FROM " . $this->db->escape($this->table) . " " . $this->where . " " . $order . " " . $this->limit);
+			if(DB_CONNECT=='msconnect'){
+				$this->where = str_replace(array('`', 'OF_PATH'), array('', 'OF_Path'), $this->where);
+		
+				if($limit){
+					$limitArr = explode(',',trim($limit));
+					$searchstart = intval(trim($limitArr[0]));
+					$anzahl = intval(trim($limitArr[1]));
+				} else{
+					$searchstart = $this->searchstart;
+					$anzahl = $this->anzahl;
+				}
+				if($anzahl == 0){
+					$this->db->query('SELECT ' . rtrim($this->get, ',') . ' FROM ' . $this->db->escape($this->table) . ' ' . $this->where . ' ' . $order);
+				} else{
+					$this->db->query('SELECT ' . rtrim($this->get, ',') . ' FROM (SELECT TOP ' . ($searchstart + $anzahl) . ' *, ROW_NUMBER() OVER (' . $order . ') AS rnum FROM ' . $this->db->escape($this->table) . ' ' . $this->where . ') a WHERE rnum > ' . $searchstart);
+				}
+			} else{
+				$this->limit = ' ' . $this->searchstart . ',' . $this->anzahl . ' ';
+				$this->limit = (empty($limit)) ? ((empty($this->limit)) ? '' : ' LIMIT ' . ($this->limit)) : ' LIMIT ' . ($limit);
+				$this->db->query('SELECT ' . rtrim($this->get, ',') . ' FROM ' . $this->db->escape($this->table) . ' ' . $this->where . ' ' . $order . ' ' . $this->limit);
+			}
 		} else{
 			return -1;
 		}
 	}
 
-	function setlimit($anzahl = "", $searchstart = ""){
+	function setlimit($anzahl = '', $searchstart = ''){
 		$this->anzahl = (empty($anzahl)) ? ((empty($this->anzahl)) ? $this->defaultanzahl : $this->anzahl) : $anzahl;
-		$this->searchstart = (empty($searchstart)) ? ((empty($this->searchstart)) ? "0" : $this->searchstart) : $searchstart;
+		$this->searchstart = (empty($searchstart)) ? ((empty($this->searchstart)) ? '0' : $this->searchstart) : $searchstart;
 
-		$this->limit = " " . $this->searchstart . "," . $this->anzahl . " ";
+		$this->limit = ' ' . $this->searchstart . ',' . $this->anzahl . ' ';
 
 		return $this->limit;
 	}
@@ -250,10 +270,10 @@ class we_search{
 			}');
 	}
 
-	function getLocation($name = "locationField", $select = "", $size = 1, $sprach = array()){
+	function getLocation($name = 'locationField', $select = '', $size = 1, $sprach = array()){
 		// get Class
-		$opts = "";
-		$loc = array("CONTAIN", "IS", "START", "END", "<", "<=", ">=", ">");
+		$opts = '';
+		$loc = array('CONTAIN', 'IS', 'START', 'END', '<', '<=', '>=', '>');
 		foreach($loc as $l){
 			$opts .= '<option value="' . $l . '" ' . (($select == $l) ? "selected" : "") . '>'
 				. oldHtmlspecialchars((( isset($sprach[$l]) && $sprach[$l] ) ? $sprach[$l] : $l))
@@ -263,10 +283,10 @@ class we_search{
 		return '<select name="' . $name . '" class="weSelect" size="' . $size . '">' . $opts . '</select>';
 	}
 
-	function getLocationDate($name = "locationField", $select = "", $size = 1, $sprach = array()){
+	function getLocationDate($name = 'locationField', $select = '', $size = 1, $sprach = array()){
 		// get Class
-		$opts = "";
-		$loc = array("IS", "<", "<=", ">=", ">");
+		$opts = '';
+		$loc = array('IS', '<', '<=', '>=', '>');
 		foreach($loc as $l){
 			$opts .= '<option value="' . $l . '" ' . (($select == $l) ? "selected" : "") . '>'
 				. oldHtmlspecialchars((( isset($sprach[$l]) && $sprach[$l] ) ? $sprach[$l] : $l))
@@ -276,51 +296,43 @@ class we_search{
 		return '<select name="' . $name . '" class="weSelect" size="' . $size . '">' . $opts . '</select>';
 	}
 
-	function getLocationMeta($name = "locationField", $select = "", $size = 1, $sprach = array()){
+	function getLocationMeta($name = 'locationField', $select = '', $size = 1, $sprach = array()){
 		// get Class
-		$opts = "";
-		$loc = array("IS");
+		$opts = '';
+		$loc = array('IS');
 		foreach($loc as $l){
-			$opts .= '<option value="' . $l . '" ' . (($select == $l) ? "selected" : "") . '>'
-				. oldHtmlspecialchars((( isset($sprach[$l]) && $sprach[$l] ) ? $sprach[$l] : $l))
-				. '</option>';
+			$opts .= '<option value="' . $l . '" ' . (($select == $l) ? "selected" : "") . '>' .
+				oldHtmlspecialchars((( isset($sprach[$l]) && $sprach[$l] ) ? $sprach[$l] : $l)) .
+				'</option>';
 		}
 
 		return '<select name="' . $name . '" class="weSelect" size="' . $size . '">' . $opts . '</select>';
 	}
 
 	function getNextPrev($we_search_anzahl){
-		$out = '<table cellpadding="0" cellspacing="0" border="0">'
-			. '<tr>'
-			. '<td>';
-		if($this->searchstart){
-			$out .= we_button::create_button("back", "javascript:back();"); //bt_back
-		} else{
-			$out .= we_button::create_button("back", "", true, 100, 22, "", "", true);
-		}
+		$out = '<table cellpadding="0" cellspacing="0" border="0">
+<tr>
+	<td>' .
+			($this->searchstart ?
+				we_button::create_button('back', 'javascript:back();') : //bt_back
+				we_button::create_button('back', '', true, 100, 22, '', '', true)
+			) . '
+	</td>
+	<td>' . we_html_tools::getPixel(10, 2) . '</td>
+	<td class="defaultfont"><b>' . (($we_search_anzahl) ? $this->searchstart + 1 : 0) . '-' .
+			(($we_search_anzahl - $this->searchstart) < $this->anzahl ?
+				$we_search_anzahl :
+				$this->searchstart + $this->anzahl) .
+			' ' . g_l('global', "[from]") . ' ' . $we_search_anzahl . '</b></td>
+	<td>' . we_html_tools::getPixel(10, 2) . '</td>
+	<td>' .
+			(($this->searchstart + $this->anzahl) < $we_search_anzahl ?
+				we_button::create_button("next", "javascript:next();") : //bt_back
 
-		$out .= '</td>'
-			. '<td>' . we_html_tools::getPixel(10, 2) . '</td>'
-			. '<td class="defaultfont"><b>' . (($we_search_anzahl) ? $this->searchstart + 1 : 0) . '-';
-
-		if(($we_search_anzahl - $this->searchstart) < $this->anzahl){
-			$out .= $we_search_anzahl;
-		} else{
-			$out .= $this->searchstart + $this->anzahl;
-		}
-
-		$out .= ' ' . g_l('global', "[from]") . ' ' . $we_search_anzahl . '</b></td>'
-			. '<td>' . we_html_tools::getPixel(10, 2) . '</td>'
-			. '<td>';
-
-		if(($this->searchstart + $this->anzahl) < $we_search_anzahl){
-			$out .= we_button::create_button("next", "javascript:next();"); //bt_back
-		} else{
-			$out .= we_button::create_button("next", "", true, 100, 22, "", "", true);
-		}
-		$out .= '</td>'
-			. '<td>' . we_html_tools::getPixel(10, 2) . '</td>'
-			. '<td>';
+				we_button::create_button("next", "", true, 100, 22, "", "", true)) .
+			'</td>
+	<td>' . we_html_tools::getPixel(10, 2) . '</td>
+	<td>';
 
 		$pages = array();
 		for($i = 0; $i < ceil($we_search_anzahl / $this->anzahl); $i++){

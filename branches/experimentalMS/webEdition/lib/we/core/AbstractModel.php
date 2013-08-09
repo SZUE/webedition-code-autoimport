@@ -131,7 +131,7 @@ class we_core_AbstractModel extends we_core_AbstractObject{
 	 *
 	 * @return void
 	 */
-	public function save($skipHook=0){
+	public function save($skipHook = 0){
 		$db = we_io_DB::sharedAdapter();
 
 		// check if there is another entry with the same path
@@ -165,7 +165,7 @@ class we_core_AbstractModel extends we_core_AbstractObject{
 			}
 		}
 		/* hook */
-		if($skipHook == 0){
+		if(!$skipHook){
 			$hook = new weHook('save', $this->_appName, array($this));
 			$hook->executeHook();
 		}
@@ -176,12 +176,12 @@ class we_core_AbstractModel extends we_core_AbstractObject{
 	 *
 	 * @return void
 	 */
-	public function delete($skipHook=0){
+	public function delete($skipHook = 0){
 		$db = we_io_DB::sharedAdapter();
 		try{
 			$db->delete($this->_table, $this->_getPKCondition());
 			/* hook */
-			if($skipHook == 0){
+			if(!$skipHook){
 				$hook = new weHook('delete', $this->_appName, array($this));
 				$hook->executeHook();
 			}

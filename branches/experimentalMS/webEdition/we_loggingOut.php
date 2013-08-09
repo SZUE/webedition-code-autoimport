@@ -27,10 +27,10 @@
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
-$isIncluded = true;
+$GLOBALS['isIncluded'] = true;
 include(WE_INCLUDES_PATH . 'we_logout.inc.php');
 
-if($_REQUEST['isopener']){
+if(isset($_REQUEST['isopener']) && $_REQUEST['isopener']){
 	header("location: " . WEBEDITION_DIR . "index.php");
 }
 ?>

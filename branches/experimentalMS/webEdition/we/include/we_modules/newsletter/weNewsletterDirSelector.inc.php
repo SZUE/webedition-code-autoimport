@@ -159,7 +159,7 @@ top.selectFile(top.currentID);
 	function printFramesetJSFunctionAddEntries(){
 		$ret = '';
 		while($this->next_record()) {
-			$ret.='addEntry(' . $this->f("ID") . ',"' . $this->f("Icon") . '","' . $this->f("Text") . '",' . $this->f("IsFolder") . ',"' . $this->f("Path") . '");' . "\n";
+			$ret.='addEntry(' . $this->f("ID") . ',"' . $this->f("Icon") . '","' . addcslashes($this->f("Text"), '"') . '",' . $this->f("IsFolder") . ',"' . addcslashes($this->f("Path"), '"') . '");';
 		}
 		return we_html_element::jsElement($ret);
 	}
@@ -234,10 +234,10 @@ top.unselectAllFiles();') . '
 <body bgcolor="white" LINK="#000000" ALINK="#000000" VLINK="#000000" leftmargin="0" marginwidth="0" topmargin="0" marginheight="0">
 <form name="we_form" target="fscmd" action="' . $_SERVER["SCRIPT_NAME"] . '" onSubmit="document.we_form.we_FolderText.value=escape(document.we_form.we_FolderText_tmp.value);return true;">
 #				if(top.we_editDirID){
-	<input type="hidden" name="what" value="' . self::DORENAMEFOLDER . '" />
-	<input type="hidden" name="we_editDirID" value="#\'+top.we_editDirID+#\'" />
+<input type="hidden" name="what" value="' . self::DORENAMEFOLDER . '" />
+<input type="hidden" name="we_editDirID" value="#\'+top.we_editDirID+#\'" />
 #				}else{
-	<input type="hidden" name="what" value="' . self::CREATEFOLDER . '" />
+<input type="hidden" name="what" value="' . self::CREATEFOLDER . '" />
 #				}
 <input type="hidden" name="order" value="#\'+top.order+#\'" />
 <input type="hidden" name="rootDirID" value="' . $this->rootDirID . '" />
@@ -245,10 +245,10 @@ top.unselectAllFiles();') . '
 <input type="hidden" name="id" value="#\'+top.currentDir+#\'" />
 <table border="0" cellpadding="0" cellspacing="0" width="100%">
 #				if(makeNewFolder){
-	<tr style="background-color:#DFE9F5;">
-	<td align="center"><img src="' . ICON_DIR . we_base_ContentTypes::FOLDER_ICON . '" width="16" height="18" border="0" /></td>
-	<td><input type="hidden" name="we_FolderText" value="' . g_l('fileselector', "[new_folder_name]") . '" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="' . g_l('fileselector', "[new_folder_name]") . '"  class="wetextinput" onBlur="this.className=\'wetextinput\';" onFocus="this.className=\'wetextinputselected\'" style="width:100%" /></td>
-	</tr>
+<tr style="background-color:#DFE9F5;">
+<td align="center"><img src="' . ICON_DIR . we_base_ContentTypes::FOLDER_ICON . '" width="16" height="18" border="0" /></td>
+<td><input type="hidden" name="we_FolderText" value="' . g_l('fileselector', "[new_folder_name]") . '" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="' . g_l('fileselector', "[new_folder_name]") . '"  class="wetextinput" onBlur="this.className=\'wetextinput\';" onFocus="this.className=\'wetextinputselected\'" style="width:100%" /></td>
+</tr>
 #				}
 ');
 		?>
@@ -271,15 +271,15 @@ top.unselectAllFiles();') . '
 					d.writeln('</tr><tr><td colspan="3"><?php print we_html_tools::getPixel(2, 1); ?></td></tr>');
 				}
 		<?php echo self::makeWriteDoc('
-		<tr>
-		<td width="25">' . we_html_tools::getPixel(25, 2) . '</td>
-		<td>' . we_html_tools::getPixel(200, 2) . '</td>
-		</tr>
-		</table></form>
+<tr>
+<td width="25">' . we_html_tools::getPixel(25, 2) . '</td>
+<td>' . we_html_tools::getPixel(200, 2) . '</td>
+</tr>
+</table></form>
 #				if(makeNewFolder || top.we_editDirID){
-			<script type="text/javascript">document.we_form.we_FolderText_tmp.focus();document.we_form.we_FolderText_tmp.select();</script>
+	<script type="text/javascript">document.we_form.we_FolderText_tmp.focus();document.we_form.we_FolderText_tmp.select();</script>
 #				}
-		</body>
+</body>
 '); ?>
 				d.close();
 			}

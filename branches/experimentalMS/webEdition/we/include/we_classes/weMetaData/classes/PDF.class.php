@@ -28,27 +28,20 @@
  */
 class weMetaData_PDF extends weMetaData{
 
-	var $accesstypes = array("read", "write");
-
-	function __construct($filetype){
-		parent::__construct($filetype);
-	}
-
-	function weMetaData_PDF($filetype){
+	public function __construct($filetype){
 		$this->filetype = $filetype;
+		$this->accesstypes = array('read');
 	}
 
-	function _checkDependencies(){
-		return false;
-	}
-
-	function _getMetaData($selection = ""){
-		if(!$this->_valid)
+	protected function _getMetaData($selection = ''){
+		if(!$this->_valid){
 			return false;
+		}
 		if(is_array($selection)){
 			// fetch some
 		} else{
-			// fetch all
+			$pdf= new we_helpers_pdf2text($this->datasource);
+			$this->metadata = $pdf->getInfo();
 		}
 		return $this->metadata;
 	}

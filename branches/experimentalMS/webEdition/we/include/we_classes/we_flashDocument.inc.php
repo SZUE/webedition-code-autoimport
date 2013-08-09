@@ -27,7 +27,7 @@
 class we_flashDocument extends we_binaryDocument{
 	/* Parameternames which are placed within the object-Tag */
 
-	var $ObjectParamNames = array("align", "border", "id", "height", "hspace", "name", "width", "vspace", "only", "style");
+	var $ObjectParamNames = array('align', 'border', 'id', 'height', 'hspace', 'name', 'width', 'vspace', 'only', 'style');
 
 	function __construct(){
 		parent::__construct();
@@ -40,7 +40,7 @@ class we_flashDocument extends we_binaryDocument{
 	function editor(){
 		switch($this->EditPageNr){
 			case WE_EDITPAGE_PREVIEW:
-				return "we_templates/we_editor_flash_preview.inc.php";
+				return 'we_templates/we_editor_flash_preview.inc.php';
 			default:
 				return parent::editor();
 		}
@@ -48,12 +48,12 @@ class we_flashDocument extends we_binaryDocument{
 
 	// is not written yet
 	function initByAttribs($attribs){
-		if(isset($attribs["sizingrel"])){
-			$orig_w = (isset($attribs["width"]) ? $attribs["width"] : $this->elements["width"]["dat"]);
-			$orig_h = (isset($attribs["height"]) ? $attribs["height"] : $this->elements["height"]["dat"]);
-			$attribs["width"] = round($orig_w * $attribs["sizingrel"]);
-			$attribs["height"] = round($orig_h * $attribs["sizingrel"]);
-			unset($attribs["sizingrel"]);
+		if(isset($attribs['sizingrel'])){
+			$orig_w = (isset($attribs['width']) ? $attribs['width'] : $this->elements['width']['dat']);
+			$orig_h = (isset($attribs['height']) ? $attribs['height'] : $this->elements['height']['dat']);
+			$attribs['width'] = round($orig_w * $attribs['sizingrel']);
+			$attribs['height'] = round($orig_h * $attribs['sizingrel']);
+			unset($attribs['sizingrel']);
 		}
 		$sizingbase = (isset($attribs['sizingbase']) && $attribs['sizingbase'] != 16 ? $attribs['sizingbase'] : 16);
 		if(isset($attribs['sizingbase'])){
@@ -61,25 +61,25 @@ class we_flashDocument extends we_binaryDocument{
 		}
 
 		if(isset($attribs['sizingstyle'])){
-			$sizingstyle = ($attribs['sizingstyle'] == "none" ? false : $attribs['sizingstyle']);
+			$sizingstyle = ($attribs['sizingstyle'] == 'none' ? false : $attribs['sizingstyle']);
 			unset($attribs['sizingstyle']);
 		} else{
 			$sizingstyle = false;
 		}
 
 		if($sizingstyle){
-			$style_width = round($attribs["width"] / $sizingbase, 6);
-			$style_height = round($attribs["height"] / $sizingbase, 6);
-			$newstyle = (isset($attribs["style"]) ? $attribs["style"] : '');
+			$style_width = round($attribs['width'] / $sizingbase, 6);
+			$style_height = round($attribs['height'] / $sizingbase, 6);
+			$newstyle = (isset($attribs['style']) ? $attribs['style'] : '');
 
-			$newstyle.=";width:" . $style_width . $sizingstyle . ";height:" . $style_height . $sizingstyle . ";";
-			$attribs["style"] = $newstyle;
+			$newstyle.=';width:' . $style_width . $sizingstyle . ';height:' . $style_height . $sizingstyle . ';';
+			$attribs['style'] = $newstyle;
 			unset($attribs['width']);
 			unset($attribs['height']);
 		}
 		foreach($attribs as $a => $b){
-			if($b != ""){
-				$this->setElement($a, $b, ($a == "Pluginspage" || $a == "Codebase" ? "txt" : "attrib"));
+			if($b != ''){
+				$this->setElement($a, $b, ($a == 'Pluginspage' || $a == 'Codebase' ? 'txt' : 'attrib'));
 			}
 		}
 	}
@@ -87,98 +87,98 @@ class we_flashDocument extends we_binaryDocument{
 	/* gets the HTML for including in HTML-Docs */
 
 	function getHtml($dyn = false){
-		$_data = $this->getElement("data");
+		$_data = $this->getElement('data');
 		if($this->ID || ($_data && !is_dir($_data) && is_readable($_data))){
 
-			$pluginspage = $this->getElement("Pluginspage") ? $this->getElement("Pluginspage") : "http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash";
-			$codebase = $this->getElement("Codebase") ? $this->getElement("Codebase") : "http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,40,0";
+			$pluginspage = $this->getElement('Pluginspage') ? $this->getElement('Pluginspage') : 'http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash';
+			$codebase = $this->getElement('Codebase') ? $this->getElement('Codebase') : 'http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,40,0';
 
 			// fix. older versions of webEdition bgcolor was type txt and not attrib
-			if(isset($this->elements["bgcolor"])){
-				$this->elements["bgcolor"]["type"] = "attrib";
+			if(isset($this->elements['bgcolor'])){
+				$this->elements['bgcolor']['type'] = 'attrib';
 			}
 
 			srand((double) microtime() * 1000000);
 			$randval = rand();
 			$src = $dyn ?
-				WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=show_binaryDoc&we_cmd[1]=' . $this->ContentType . '&we_cmd[2]=' . $GLOBALS['we_transaction'] . "&rand=" . $randval :
+				WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=show_binaryDoc&we_cmd[1]=' . $this->ContentType . '&we_cmd[2]=' . $GLOBALS['we_transaction'] . '&rand=' . $randval :
 				$this->Path;
 			$attribs = array();
 			$params = array();
-			$this->html = "";
+			$this->html = '';
 
 			/*			 * ****************************************************************************
 			  /* take all attribs and seperate them in attribs, params and embeds
 			  /***************************************************************************** */
 
-			$xml = (boolean) $this->getElement("xml");
+			$xml = (boolean) $this->getElement('xml');
 
 			//   first we deal with alt-content
-			$alt = $this->getElement("alt");
+			$alt = $this->getElement('alt');
 			$altContent = '';
 			if($alt){
-				if(isset($GLOBALS['we_doc']->elements[$alt]) && isset($GLOBALS['we_doc']->elements[$alt]["type"])){
-					$altContent = $GLOBALS['we_doc']->getField(array('name' => $alt, 'xml' => $xml), $GLOBALS['we_doc']->elements[$alt]["type"]);
+				if(isset($GLOBALS['we_doc']->elements[$alt]) && isset($GLOBALS['we_doc']->elements[$alt]['type'])){
+					$altContent = $GLOBALS['we_doc']->getField(array('name' => $alt, 'xml' => $xml), $GLOBALS['we_doc']->elements[$alt]['type']);
 				}
 			}
 
 			if($xml){ //  XHTML-Version
 				$allowedAtts = $this->ObjectParamNames;
-				$filter = array("alt", 'parentid', 'startid');
+				$filter = array('alt', 'parentid', 'startid');
 
-				foreach($this->nextElement("attrib") as $k => $v){
+				foreach($this->nextElement('attrib') as $k => $v){
 
-					if(in_array($k, $allowedAtts)){ //  use as name="value"
-						$attribs[$k] = $v["dat"];
+					if(in_array($k, $allowedAtts)){ //  use as name='value'
+						$attribs[$k] = $v['dat'];
 					} else if(!in_array($k, $filter)){ //  use as <param>
-						$params[$k] = $v["dat"];
+						$params[$k] = $v['dat'];
 					}
 				}
 
 				//   needed attribs
-				$attribs["type"] = "application/x-shockwave-flash";
-				$attribs["data"] = $src;
+				$attribs['type'] = 'application/x-shockwave-flash';
+				$attribs['data'] = $src;
 			} else{ //  Normal-Version - with embed-tag
-				$filter = array("type", "alt", 'parentid', 'startid');
+				$filter = array('type', 'alt', 'parentid', 'startid');
 
 				$allowedAtts = $this->ObjectParamNames;
 
-				while(list($k, $v) = $this->nextElement("attrib")) {
+				while(list($k, $v) = $this->nextElement('attrib')) {
 
-					if(in_array($k, $allowedAtts)){ //  use as name="value"
-						$attribs[$k] = $v["dat"];
+					if(in_array($k, $allowedAtts)){ //  use as name='value'
+						$attribs[$k] = $v['dat'];
 					} else if(!in_array($k, $filter)){ //  use as <param>
-						$params[$k] = $v["dat"];
+						$params[$k] = $v['dat'];
 					}
 					if(!in_array($k, $filter)){
-						if($v["dat"] !== ""){
-							$embedAtts[$k] = $v["dat"];
+						if($v['dat'] !== ''){
+							$embedAtts[$k] = $v['dat'];
 						}
 					}
 				}
-				$attribs["classid"] = "clsid:D27CDB6E-AE6D-11cf-96B8-444553540000";
-				$attribs["codebase"] = $codebase;
+				$attribs['classid'] = 'clsid:D27CDB6E-AE6D-11cf-96B8-444553540000';
+				$attribs['codebase'] = $codebase;
 			}
 
 			//   handle with params
-			$params["movie"] = $src; //  always needed
-			$params = removeAttribs($params, array("xml", 'to', 'nameto'));
+			$params['movie'] = $src; //  always needed
+			$params = removeAttribs($params, array('xml', 'to', 'nameto'));
 
 			foreach($params AS $k => $v){
-				if($v !== ""){
-					$this->html .= getHtmlTag("param", array("name" => $k, "value" => $v, "xml" => $this->getElement("xml")));
+				if($v !== ''){
+					$this->html .= getHtmlTag('param', array('name' => $k, 'value' => $v, 'xml' => $this->getElement('xml')));
 				}
 			}
 
 			if(!$xml){ //  additional <embed tag>
-				$embedAtts["type"] = "application/x-shockwave-flash";
-				$embedAtts["pluginspage"] = $pluginspage;
-				$embedAtts["src"] = $src;
+				$embedAtts['type'] = 'application/x-shockwave-flash';
+				$embedAtts['pluginspage'] = $pluginspage;
+				$embedAtts['src'] = $src;
 
-				$this->html .= getHtmlTag("embed", $embedAtts, "", true);
+				$this->html .= getHtmlTag('embed', $embedAtts, '', true);
 			}
 
-			$this->html = getHtmlTag("object", $attribs, $this->html . $altContent);
+			$this->html = getHtmlTag('object', $attribs, $this->html . $altContent);
 			if(isset($attribs['only'])){
 				$this->html = $attribs[$attribs['only']];
 			} else if(isset($attribs['pathonly']) && $attribs['pathonly']){
@@ -274,54 +274,54 @@ class we_flashDocument extends we_binaryDocument{
 	}
 
 	function getThumbnail(){
-		$_width = $this->getElement("width");
-		$_height = $this->getElement("height");
-		$_scale = $this->getElement("scale");
-		$_hspace = $this->getElement("hspace");
-		$_vspace = $this->getElement("vspace");
-		$_name = $this->getElement("name");
-		$_play = $this->getElement("play");
-		$_quality = $this->getElement("quality");
-		$_bgcolor = $this->getElement("bgcolor");
-		$_align = $this->getElement("align");
-		$_salign = $this->getElement("salign");
-		$_loop = $this->getElement("loop");
-		$_wmode = $this->getElement("wmode");
-		$_origwidth = $this->getElement("origwidth");
-		$_origheight = $this->getElement("origheight");
+		$_width = $this->getElement('width');
+		$_height = $this->getElement('height');
+		$_scale = $this->getElement('scale');
+		$_hspace = $this->getElement('hspace');
+		$_vspace = $this->getElement('vspace');
+		$_name = $this->getElement('name');
+		$_play = $this->getElement('play');
+		$_quality = $this->getElement('quality');
+		$_bgcolor = $this->getElement('bgcolor');
+		$_align = $this->getElement('align');
+		$_salign = $this->getElement('salign');
+		$_loop = $this->getElement('loop');
+		$_wmode = $this->getElement('wmode');
+		$_origwidth = $this->getElement('origwidth');
+		$_origheight = $this->getElement('origheight');
 
-		$this->setElement("width", 150, "attrib");
-		$this->setElement("height", 100, "attrib");
-		$this->setElement("scale", "", "attrib");
-		$this->setElement("hspace", "", "attrib");
-		$this->setElement("vspace", "", "attrib");
-		$this->setElement("name", "", "attrib");
-		$this->setElement("play", "true", "attrib");
-		$this->setElement("quality", "", "attrib");
-		$this->setElement("bgcolor", "", "attrib");
-		$this->setElement("align", "", "attrib");
-		$this->setElement("salign", "", "attrib");
-		$this->setElement("loop", "", "attrib");
-		$this->setElement("wmode", "window", "attrib");
-		$this->setElement("origwidth", "", "attrib");
-		$this->setElement("origheight", "", "attrib");
+		$this->setElement('width', 150, 'attrib');
+		$this->setElement('height', 100, 'attrib');
+		$this->setElement('scale', '', 'attrib');
+		$this->setElement('hspace', '', 'attrib');
+		$this->setElement('vspace', '', 'attrib');
+		$this->setElement('name', '', 'attrib');
+		$this->setElement('play', 'true', 'attrib');
+		$this->setElement('quality', '', 'attrib');
+		$this->setElement('bgcolor', '', 'attrib');
+		$this->setElement('align', '', 'attrib');
+		$this->setElement('salign', '', 'attrib');
+		$this->setElement('loop', '', 'attrib');
+		$this->setElement('wmode', 'window', 'attrib');
+		$this->setElement('origwidth', '', 'attrib');
+		$this->setElement('origheight', '', 'attrib');
 
 		$html = $this->getHtml(true);
-		$this->setElement("width", $_width, "attrib");
-		$this->setElement("height", $_height, "attrib");
-		$this->setElement("scale", $_scale, "attrib");
-		$this->setElement("hspace", $_hspace, "attrib");
-		$this->setElement("vspace", $_vspace, "attrib");
-		$this->setElement("name", $_name, "attrib");
-		$this->setElement("play", $_play, "attrib");
-		$this->setElement("quality", $_quality, "attrib");
-		$this->setElement("bgcolor", $_bgcolor, "attrib");
-		$this->setElement("align", $_align, "attrib");
-		$this->setElement("salign", $_salign, "attrib");
-		$this->setElement("loop", $_loop, "attrib");
-		$this->setElement("wmode", $_wmode, "attrib");
-		$this->setElement("origwidth", $_origwidth, "attrib");
-		$this->setElement("origheight", $_origheight, "attrib");
+		$this->setElement('width', $_width, 'attrib');
+		$this->setElement('height', $_height, 'attrib');
+		$this->setElement('scale', $_scale, 'attrib');
+		$this->setElement('hspace', $_hspace, 'attrib');
+		$this->setElement('vspace', $_vspace, 'attrib');
+		$this->setElement('name', $_name, 'attrib');
+		$this->setElement('play', $_play, 'attrib');
+		$this->setElement('quality', $_quality, 'attrib');
+		$this->setElement('bgcolor', $_bgcolor, 'attrib');
+		$this->setElement('align', $_align, 'attrib');
+		$this->setElement('salign', $_salign, 'attrib');
+		$this->setElement('loop', $_loop, 'attrib');
+		$this->setElement('wmode', $_wmode, 'attrib');
+		$this->setElement('origwidth', $_origwidth, 'attrib');
+		$this->setElement('origheight', $_origheight, 'attrib');
 
 		return $html;
 	}
@@ -359,18 +359,18 @@ class we_flashDocument extends we_binaryDocument{
 	public function we_save($resave = 0){
 		// get original width and height of the image
 		$arr = $this->getOrigSize(true, true);
-		$origw = $this->getElement("origwidth");
-		$this->setElement("origwidth", isset($arr[0]) ? $arr[0] : 0);
-		$this->setElement("origheight", isset($arr[1]) ? $arr[1] : 0);
-		//if ($origw != $this->getElement("origwidth")){$this->DocChanged = true;}
-		if($this->getElement("width") == ""){
-			$this->setElement("width", $this->getElement("origwidth"));
+		$origw = $this->getElement('origwidth');
+		$this->setElement('origwidth', isset($arr[0]) ? $arr[0] : 0);
+		$this->setElement('origheight', isset($arr[1]) ? $arr[1] : 0);
+		//if ($origw != $this->getElement('origwidth')){$this->DocChanged = true;}
+		if($this->getElement('width') == ''){
+			$this->setElement('width', $this->getElement('origwidth'));
 		}
-		if($this->getElement("height") == ""){
-			$this->setElement("height", $this->getElement("origheight"));
+		if($this->getElement('height') == ''){
+			$this->setElement('height', $this->getElement('origheight'));
 		}
 		if($this->Icon == ''){
-			$this->Icon = we_base_ContentTypes::inst() > getIcon($this->ContentType);
+			$this->Icon = we_base_ContentTypes::inst()->getIcon($this->ContentType);
 		}
 
 		$docChanged = $this->DocChanged; // will be reseted in parent::we_save()
@@ -399,28 +399,28 @@ class we_flashDocument extends we_binaryDocument{
 	 * @return array
 	 */
 	function getOrigSize($calculateNew = false, $useOldPath = false){
-		$arr = array(0, 0, 0, "");
+		$arr = array(0, 0, 0, '');
 		if(!$this->DocChanged && $this->ID){
-			if($this->getElement("origwidth") && $this->getElement("origheight") && ($calculateNew == false)){
-				return array($this->getElement("origwidth"), $this->getElement("origheight"), 0, "");
+			if($this->getElement('origwidth') && $this->getElement('origheight') && ($calculateNew == false)){
+				return array($this->getElement('origwidth'), $this->getElement('origheight'), 0, '');
 			} else{
 				// we have to calculate the path, because maybe the document was renamed
-				$path = $this->getParentPath() . "/" . $this->Filename . $this->Extension;
+				$path = $this->getParentPath() . '/' . $this->Filename . $this->Extension;
 				return $this->getimagesize($_SERVER['DOCUMENT_ROOT'] . (($useOldPath && $this->OldPath) ? $this->OldPath : $this->Path));
 			}
-		} else if(isset($this->elements["data"]["dat"]) && $this->elements["data"]["dat"]){
-			$arr = $this->getimagesize($this->elements["data"]["dat"]);
+		} else if(isset($this->elements['data']['dat']) && $this->elements['data']['dat']){
+			$arr = $this->getimagesize($this->elements['data']['dat']);
 		}
 		return $arr;
 	}
 
-	static function checkAndPrepare($formname, $key = "we_document"){
+	static function checkAndPrepare($formname, $key = 'we_document'){
 		// check to see if there is an image to create or to change
 		if(!(isset($_FILES["we_ui_$formname"]) && is_array($_FILES["we_ui_$formname"]))){
 			return;
 		}
 
-		$webuserId = isset($_SESSION["webuser"]["ID"]) ? $_SESSION["webuser"]["ID"] : 0;
+		$webuserId = isset($_SESSION['webuser']['ID']) ? $_SESSION['webuser']['ID'] : 0;
 
 		if(isset($_FILES["we_ui_$formname"]["name"]) && is_array($_FILES["we_ui_$formname"]["name"])){
 			foreach($_FILES["we_ui_$formname"]["name"] as $flashName => $filename){

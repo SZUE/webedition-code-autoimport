@@ -24,115 +24,113 @@
 
 CodeMirror.defineMode("text/weTmpl", function(config, parserConfig) {
 	var webeditionOverlay = {
-
-		startState: function(){
+		startState: function() {
 			return {
 				insideTag: false,
-				tagName:"",
-				open:false,
-				close:false,
-				attrActive:false
+				tagName: "",
+				open: false,
+				close: false,
+				attrActive: false
 			};
 		},
 		token: function(stream, state) {
-			if(state.insideTag){
-				if(state.close){
-					if(stream.skipTo(">")){
+			if (state.insideTag) {
+				if (state.close) {
+					if (stream.skipTo(">")) {
 						stream.next();
 					}
-					state.insideTag=false;
+					state.insideTag = false;
 					return "weCloseTag weTag";
 				}
-				if(state.open){
-					if(stream.eatSpace())return null;
-					if(state.attrActive){
+				if (state.open) {
+					if (stream.eatSpace()) {
+						return null;
+					}
+					if (state.attrActive) {
 						stream.next();//consume =
-						quot=false;
-						while ((ch = stream.next()) != null){
-							switch(ch){
+						quot = false;
+						while ((ch = stream.next()) !== null && ch !== undefined) {
+							switch (ch) {
 								case "\\":
-									if(stream.peek()=="\""){
+									if (stream.peek() === "\"") {
 										stream.next();
 									}
 								case "\"":
-									if(quot){
-										state.attrActive=false;
+									if (quot) {
+										state.attrActive = false;
 										return null;
 									}
-									quot=true;
+									quot = true;
 							}
 						}
-					}else{
-						var attrName="";
-						state.attrActive=true;
-						while ((ch = stream.next()) != null){
-							switch(ch){
+					} else {
+						var attrName = "";
+						state.attrActive = true;
+						while ((ch = stream.next()) !== null && ch !== undefined) {
+							switch (ch) {
 								default:
-									attrName+=ch;
+									attrName += ch;
 									stream.eatSpace();
-									if(stream.peek()=="="){
-										return "weTagAttribute weTag_"+state.tagName+"_"+attrName;
+									if (stream.peek() === "=") {
+										return "weTagAttribute weTag_" + state.tagName + "_" + attrName;
 									}
 									continue;
 								case "/":
-									if(stream.skipTo('>')){
+									if (stream.skipTo('>')) {
 										stream.next();
 									}
 								case ">":
-									state.insideTag=false;
-									return "weTag "+attrName;
+									state.insideTag = false;
+									return "weTag " + attrName;
 							}
 						}
 					}
 				}
-				stream.skipToEnd()
+				stream.skipToEnd();
 				return null;
-			}else{
-				state.open=stream.match("<we:");
-				state.close=!state.open && stream.match("</we:");
-				state.attrActive=false;
-				if (state.open||state.close) {
-					state.insideTag=true;
-					state.tagName='';
-					while ((ch = stream.next()) != null){
-						switch(ch){
+			} else {
+				state.open = stream.match("<we:");
+				state.close = !state.open && stream.match("</we:");
+				state.attrActive = false;
+				if (state.open || state.close) {
+					state.insideTag = true;
+					state.tagName = '';
+					while ((ch = stream.next()) !== null && ch !== undefined) {
+						switch (ch) {
 							default:
-								state.tagName+=ch;
+								state.tagName += ch;
 								continue;
 							case '/':
-								if (state.open && (stream.eatSpace() | stream.peek() == ">")){
+								if (state.open && (stream.eatSpace() | stream.peek() === ">")) {
 									stream.next();
-									state.insideTag=false;
-									return "weSelfClose weTag weTag_"+state.tagName;
+									state.insideTag = false;
+									return "weSelfClose weTag weTag_" + state.tagName;
 								}
 							case '>':
-								state.insideTag=false;
-								if(state.open){
-									return "weOpenTag weTag weTag_"+state.tagName;
+								state.insideTag = false;
+								if (state.open) {
+									return "weOpenTag weTag weTag_" + state.tagName;
 								}
 								return "weCloseTag weTag";
 
 							case ' ':
 								stream.eatSpace();
-								if(stream.peek() == ">"||stream.peek() == "/"){
+								if (stream.peek() === ">" || stream.peek() === "/") {
 									continue;
 								}
-								return "weOpenTag weTag weTag_"+state.tagName;
+								return "weOpenTag weTag weTag_" + state.tagName;
 						}
-						if(ch==" "||ch=="/"||ch==">"){
-							active=false;
-						}else{
-							name+=ch;
+						if (ch === " " || ch === "/" || ch === ">") {
+							active = false;
+						} else {
+							name += ch;
 						}
 					}
-
-
-
 				}
-				if(!stream.eol()&& stream.peek()=="<"){
+				if (!stream.eol() && stream.peek() === "<") {
 					stream.next();
 				}
-				if(!stream.skipTo("<")){
+				if (!stream.skipTo("<")) {
 					stream.skipToEnd();
 				}
 				return null;

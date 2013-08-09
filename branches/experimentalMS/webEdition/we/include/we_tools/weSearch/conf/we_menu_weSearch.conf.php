@@ -115,7 +115,7 @@ $we_menu_weSearch['003000'] = array(
 );
 
 $we_menu_weSearch['003100'] = array(
-	'text' => g_l('searchtool', '[menu_help]') . '...',
+	'text' => g_l('searchtool', '[menu_help]') . '&hellip;',
 	'parent' => '003000',
 	'cmd' => 'help_tools',
 	'perm' => '',
@@ -123,7 +123,7 @@ $we_menu_weSearch['003100'] = array(
 );
 
 $we_menu_weSearch['003200'] = array(
-	'text' => g_l('searchtool', '[menu_info]') . '...',
+	'text' => g_l('searchtool', '[menu_info]') . '&hellip;',
 	'parent' => '003000',
 	'cmd' => 'info_tools',
 	'perm' => '',

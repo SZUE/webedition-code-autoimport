@@ -219,3 +219,20 @@ way to fit your requirements.
 	border-bottom: 1px solid #ffffff;
 	margin: 2px 0px 0px 0px;
 }
+
+#nav ul ul ul {
+     width: 350px !important;
+     max-height: 400px;
+     overflow: auto !important;
+     font-size: 12px;
+ }
+
+ #nav ul ul ul li {
+     white-space: nowrap;
+     clear: both;
+     width: 100% !important;
+ }
+ #nav ul ul ul li:hover, #nav ul ul ul li a:hover {
+     display: block;
+     white-space: nowrap;
+ }

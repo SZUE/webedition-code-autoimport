@@ -49,7 +49,7 @@ function we_tag_categorySelect($attribs, $content){
 	} else{
 		if($type == 'request'){
 			// Bug Fix #750
-			$values = (isset($_REQUEST[$name]) ?
+			$values = filterXss(isset($_REQUEST[$name]) ?
 					(is_array($_REQUEST[$name]) ?
 						implode(',', $_REQUEST[$name]) :
 						$_REQUEST[$name]) :

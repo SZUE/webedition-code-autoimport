@@ -162,14 +162,14 @@ function we_tag_field($attribs){
 
 	$isCalendar = (isset($GLOBALS['lv']->calendar_struct['calendar']) && $GLOBALS['lv']->calendar_struct['calendar'] != '' && $GLOBALS['lv']->isCalendarField($type));
 
-	if(!$GLOBALS['lv']->f('WE_ID') && $GLOBALS['lv']->calendar_struct['calendar'] == ''){
+	if((!$GLOBALS['lv']->f('WE_ID') && property_exists($GLOBALS['lv'],'calendar_struct')&& $GLOBALS['lv']->calendar_struct['calendar'] == '')){
 		return '';
 	}
 
 
 	switch($type){
 		case 'binary' :
-			$t = we_document::getFieldByVal($GLOBALS['lv']->f($name), $type, $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], $classid, 'listview');
+			$t = $GLOBALS['we_doc']->getFieldByVal($GLOBALS['lv']->f($name), $type, $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], $classid, 'listview');
 			switch($only){
 				case '':
 				case 'name':
@@ -195,7 +195,7 @@ function we_tag_field($attribs){
 			break;
 		case 'link' :
 			if($GLOBALS['lv']->ClassName){
-				$out = we_document::getFieldByVal($GLOBALS['lv']->f($name), 'link', $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], $classid, 'listview');
+				$out = $GLOBALS['we_doc']->getFieldByVal($GLOBALS['lv']->f($name), 'link', $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], $classid, 'listview');
 				$href = (empty($href) ? $out : $href);
 				break;
 			}
@@ -219,7 +219,10 @@ function we_tag_field($attribs){
 		case 'float' :
 		case 'checkbox' :
 			$idd = ($isImageDoc && $type == 'img' ) ? $GLOBALS['lv']->Record['wedoc_ID'] : $GLOBALS['lv']->f($name);
-			$out = ($idd == 0 ? '' : we_document::getFieldByVal($idd, $type, $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], $classid, 'listview'));
+			$out = ($idd == 0 ? '' : $GLOBALS['we_doc']->getFieldByVal($idd, $type, $attribs, ($only == 'src'), $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], $classid, 'listview'));
+			if($type == 'img' && empty($out)){
+				return '';
+			}
 			break;
 		case 'day' :
 		case 'dayname' :
@@ -279,23 +282,28 @@ function we_tag_field($attribs){
 			break;
 		case 'shopVat' :
 			if(defined('SHOP_TABLE')){
-				$normVal = we_document::getFieldByVal($GLOBALS['lv']->f(WE_SHOP_VAT_FIELD_NAME, 'txt'), $type, $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], $classid, 'listview'); // war '$GLOBALS['lv']->getElement', getElemet gibt es aber nicht in LVs, gefunden bei #4648
+				$normVal = $GLOBALS['we_doc']->getFieldByVal($GLOBALS['lv']->f(WE_SHOP_VAT_FIELD_NAME, 'txt'), $type, $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], $classid, 'listview'); // war '$GLOBALS['lv']->getElement', getElemet gibt es aber nicht in LVs, gefunden bei #4648
 
 				$out = weShopVats::getVatRateForSite($normVal);
 			}
 			break;
 		case 'href' ://#6329: fixed for lv type=document. check later for other types! #6421: field type=href in we:block
 			if(isset($GLOBALS['lv'])){
-				if($GLOBALS['lv']->ClassName == 'we_listview'){
-					$hrefArr = array();
-					$hrefArr['int'] = $GLOBALS['lv']->f($name . '_we_jkhdsf_int') ? $GLOBALS['lv']->f($name . '_we_jkhdsf_int') : $GLOBALS['lv']->f(we_tag_getPostName($name) . '_we_jkhdsf_int');
-					$hrefArr['intID'] = $GLOBALS['lv']->f($name . '_we_jkhdsf_intID') ? $GLOBALS['lv']->f($name . '_we_jkhdsf_intID') : $GLOBALS['lv']->f(we_tag_getPostName($name) . '_we_jkhdsf_intID');
-					$hrefArr['extPath'] = $GLOBALS['lv']->f($name);
-				} else if($GLOBALS['lv']->ClassName == 'we_listview_multiobject' || $GLOBALS['lv']->ClassName == 'we_listview_object' || $GLOBALS['lv']->ClassName == 'we_objecttag'){
-					$hrefArr = $GLOBALS['lv']->f($name) ? unserialize($GLOBALS['lv']->f($name)) : array();
-					if(!is_array($hrefArr)){
+				switch($GLOBALS['lv']->ClassName){
+					case 'we_listview':
 						$hrefArr = array();
-					}
+						$hrefArr['int'] = $GLOBALS['lv']->f($name . we_base_link::MAGIC_INT_LINK) ? $GLOBALS['lv']->f($name . we_base_link::MAGIC_INT_LINK) : $GLOBALS['lv']->f(we_tag_getPostName($name) . we_base_link::MAGIC_INT_LINK);
+						$hrefArr['intID'] = $GLOBALS['lv']->f($name . we_base_link::MAGIC_INT_LINK_ID) ? $GLOBALS['lv']->f($name . we_base_link::MAGIC_INT_LINK_ID) : $GLOBALS['lv']->f(we_tag_getPostName($name) . we_base_link::MAGIC_INT_LINK_ID);
+						$hrefArr['extPath'] = $GLOBALS['lv']->f($name);
+						break;
+					case 'we_listview_multiobject':
+					case 'we_listview_object':
+					case 'we_objecttag':
+						$hrefArr = $GLOBALS['lv']->f($name) ? unserialize($GLOBALS['lv']->f($name)) : array();
+						if(!is_array($hrefArr)){
+							$hrefArr = array();
+						}
+						break;
 				}
 				$out = !empty($hrefArr) ? we_document::getHrefByArray($hrefArr) : '';
 				break;
@@ -314,7 +322,7 @@ function we_tag_field($attribs){
 					$attribs['name'] = $attribs['_name_orig'];
 				}
 
-				$normVal = we_document::getFieldByVal($GLOBALS['lv']->f($name), $testtype, $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], $classid, 'listview'); // war '$GLOBALS['lv']->getElement', getElemet gibt es aber nicht inLV, #4648
+				$normVal = $GLOBALS['we_doc']->getFieldByVal($GLOBALS['lv']->f($name), $testtype, $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], $classid, 'listview'); // war '$GLOBALS['lv']->getElement', getElemet gibt es aber nicht inLV, #4648
 				if($name == 'WE_PATH'){
 					$path_parts = pathinfo($normVal);
 					if(!$GLOBALS['WE_MAIN_DOC']->InWebEdition && NAVIGATION_DIRECTORYINDEX_NAMES != '' && isset($GLOBALS['lv']->hidedirindex) && $GLOBALS['lv']->hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
@@ -330,7 +338,7 @@ function we_tag_field($attribs){
 				$dbRecord = array_keys($GLOBALS['lv']->ClassName == 'we_objecttag' ? $GLOBALS['lv']->object->getDBRecord() : $GLOBALS['lv']->getDBRecord()); // bugfix #6399
 				foreach($dbRecord as $_glob_key){
 					if(substr($_glob_key, 0, 13) == 'we_we_object_'){
-						$normVal = we_document::getFieldByVal($GLOBALS['lv']->f($name), ($usekey ? 'text' : 'select'), $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], substr($_glob_key, 13), 'listview'); // war '$GLOBALS['lv']->getElement', getElemet gibt es aber nicht in LVs, gefunden bei #4648
+						$normVal = $GLOBALS['we_doc']->getFieldByVal($GLOBALS['lv']->f($name), ($usekey ? 'text' : 'select'), $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], substr($_glob_key, 13), 'listview'); // war '$GLOBALS['lv']->getElement', getElemet gibt es aber nicht in LVs, gefunden bei #4648
 					}
 
 					if($normVal != ''){
@@ -343,7 +351,7 @@ function we_tag_field($attribs){
 
 			if($name && $name != 'we_href'){
 				if($normVal == ''){
-					$altVal = we_document::getFieldByVal($GLOBALS['lv']->f($alt), $type, $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], $classid, 'listview'); // war '$GLOBALS['lv']->getElement', getElemet gibt es aber nicht in LVs, gefunden bei #4648
+					$altVal = $GLOBALS['we_doc']->getFieldByVal($GLOBALS['lv']->f($alt), $type, $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], $classid, 'listview'); // war '$GLOBALS['lv']->getElement', getElemet gibt es aber nicht in LVs, gefunden bei #4648
 					if($altVal == ''){
 						return '';
 					}
@@ -356,7 +364,7 @@ function we_tag_field($attribs){
 					}
 					$normVal = $altVal;
 				}
-				$out = cutText(($striphtml ? strip_tags($normVal) : $normVal), $max);
+				$out = cutText(($striphtml ? strip_tags($normVal) : $normVal), $max, $striphtml);
 			} elseif($value){
 				$out = ($striphtml ? strip_tags($value) : $value);
 			} else if($striphtml){

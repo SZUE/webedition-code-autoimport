@@ -108,7 +108,7 @@ class rpcCmdShell{
 			return true;
 		}
 
-		if(count($this->Cmd->ExtraViews)){
+		if(!empty($this->Cmd->ExtraViews)){
 			return in_array($view, $this->Cmd->ExtraViews);
 		}
 

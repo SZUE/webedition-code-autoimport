@@ -71,10 +71,10 @@ class weNavigationTreeDataSource extends weToolTreeDataSource{
 
 		$where = " WHERE $wsQuery ParentID=" . intval($ParentID) . " " . $addWhere;
 		if(DB_CONNECT=='msconnect'){//msconnt limit muss bearbeteit werden + Text -> int Nr
-			$db->query("SELECT $elem, Text as Nr, ISNUMERIC(Text) as isNr from $table $where ORDER BY Ordn, isNr DESC,Nr,Text " . ($segment ? "LIMIT $offset,$segment;" : ";"));
+			$db->query("SELECT $elem, Text as Nr, ISNUMERIC(Text) as isNr from $table $where ORDER BY Ordn, isNr DESC,Nr,Text ");
 
 		} else {
-			$db->query("SELECT $elem, abs(text) as Nr, (text REGEXP '^[0-9]') as isNr from $table $where ORDER BY Ordn, isNr DESC,Nr,Text " . ($segment ? "LIMIT $offset,$segment;" : ";"));
+			$db->query("SELECT $elem, abs(text) as Nr, (text REGEXP '^[0-9]') as isNr from $table $where ORDER BY Ordn, isNr DESC,Nr,Text ");
 		}
 		$now = time();
 
@@ -100,12 +100,14 @@ class weNavigationTreeDataSource extends weToolTreeDataSource{
 			$fileds = array();
 
 			foreach($db->Record as $k => $v){
-				if(!is_numeric($k))
+				if(!is_numeric($k)){
 					$fileds[strtolower($k)] = $v;
+				}
 			}
+			$fileds['parentid'] = $fileds['parentid'] ? $fileds['parentid'] : 0;
 
 			if($db->f('IsFolder') == 0){
-				$_charset = weNavigation::findCharset($db->f('ParentID'));
+				$_charset = weNavigation::findCharset($fileds['parentid']);
 			} else{
 				$_charset = $db->f('Charset');
 			}
@@ -126,7 +128,8 @@ class weNavigationTreeDataSource extends weToolTreeDataSource{
 			}
 
 			$items[] = array_merge($fileds, $typ);
-		}
+			
+		}t_e("nav", $items);
 
 		$total = f('SELECT COUNT(1) as total FROM ' . $table . ' ' . $where, 'total', $db);
 		$nextoffset = $offset + $segment;

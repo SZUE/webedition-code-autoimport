@@ -26,7 +26,7 @@ if(str_replace(dirname($_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME']) ==
 	exit();
 }
 
-if(isset($noSess) && $noSess && !defined('NO_SESS')){
+if(isset($GLOBALS['noSess']) && $GLOBALS['noSess'] && !defined('NO_SESS')){
 	define('NO_SESS', 1);
 }
 //leave this
@@ -35,16 +35,15 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 //  Diese we_cmds werden auf den Seiten gespeichert und nicht �bergeben!!!!!
 //  Sie kommen von showDoc.php
-$id = intval(isset($_REQUEST['we_cmd'][1]) ? $_REQUEST['we_cmd'][1] : 0);
+$we_ID = intval(isset($_REQUEST['we_cmd'][1]) ? $_REQUEST['we_cmd'][1] : 0);
 $tmplID = intval(isset($_REQUEST['we_cmd'][4]) ? $_REQUEST['we_cmd'][4] : 0);
 $baseHref = addslashes(isset($_REQUEST['we_cmd'][5]) ? $_REQUEST['we_cmd'][5] : '');
 $we_editmode = addslashes(isset($_REQUEST['we_cmd'][6]) ? $_REQUEST['we_cmd'][6] : '');
 $createFromTmpFile = addslashes(isset($_REQUEST['we_cmd'][7]) ? $_REQUEST['we_cmd'][7] : '');
 
-$we_ID = $id;
 $we_Table = FILE_TABLE;
 
-$we_dt = isset($_SESSION['weS']['we_data'][$we_transaction]) ? $_SESSION['weS']['we_data'][$we_transaction] : '';
+$we_dt = isset($_SESSION['weS']['we_data'][$GLOBALS['we_transaction']]) ? $_SESSION['weS']['we_data'][$GLOBALS['we_transaction']] : '';
 
 // init document
 include (WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');

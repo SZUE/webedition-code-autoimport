@@ -27,8 +27,7 @@ if(isset($_SERVER['REDIRECT_QUERY_STRING']) && $_SERVER['REDIRECT_QUERY_STRING']
 	$zw = explode('?', $_SERVER['REQUEST_URI']);
 	parse_str($zw[1], $myRequest);
 }
-
-
+define('WE_REDIRECTED_SEO', $_SERVER['REDIRECT_URL']); //url without query string
 // get attributes
 $error404doc = (ERROR_DOCUMENT_NO_OBJECTFILE ? ERROR_DOCUMENT_NO_OBJECTFILE : 0);
 
@@ -104,10 +103,10 @@ if(!(isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'])){
 		$searchfor = $path_parts['basename'] . ($searchfor ? '/' . $searchfor : '');
 
 		//z109
-		$display = "";
+		$display = '';
 		foreach($dirindexarray as $dirindex){
 			$displaytest = $path_parts['dirname'] . $dirindex;
-			$displayidtest = intval(f('SELECT ID FROM ' . FILE_TABLE . " WHERE Path='" . escape_sql_query($displaytest) . "' LIMIT 1", "ID", $db));
+			$displayidtest = intval(f('SELECT ID FROM ' . FILE_TABLE . ' WHERE Path="' . escape_sql_query($displaytest) . '" LIMIT 1', 'ID', $db));
 			if($displayidtest){
 				$displayid = $displayidtest;
 				$display = $displaytest; //nur, wenn Datei vorhanden
@@ -119,7 +118,7 @@ if(!(isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'])){
 			if(URLENCODE_OBJECTSEOURLS){
 				$searchforInternal = str_replace('%2F', '/', urlencode($searchfor));
 			}
-			$objectid = intval(f('SELECT ID FROM ' . OBJECT_FILES_TABLE . " WHERE Url='" . $db->escape($searchforInternal) . "' LIMIT 1", "ID", $db));
+			$objectid = intval(f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE Url="' . $db->escape($searchforInternal) . '" LIMIT 1', 'ID', $db));
 			if($objectid){
 				$notfound = false;
 			}

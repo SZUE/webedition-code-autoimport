@@ -55,7 +55,7 @@ class we_docSelector extends we_dirSelector{
 					$filterQuery .= 'ContentType="' . $this->db->escape($ct) . '" OR ';
 				}
 				$filterQuery .= ' isFolder=1)';
-			} else{
+			} else {
 				$filterQuery = ' AND (ContentType="' . $this->db->escape($this->filter) . '" OR IsFolder=1 ) ';
 			}
 		}
@@ -63,7 +63,7 @@ class we_docSelector extends we_dirSelector{
 		// deal with workspaces
 		if($_SESSION["perms"]["ADMINISTRATOR"]){
 			$wsQuery = '';
-		} else{
+		} else {
 			$wsQuery = '';
 			if(get_ws($this->table)){
 				$wsQuery = getWsQueryForSelector($this->table);
@@ -97,26 +97,30 @@ class we_docSelector extends we_dirSelector{
 				($this->order ? (' ORDER BY ' . $this->order) : '')
 			);
 		}
-		if($this->table == FILE_TABLE){
-			$titleQuery = new DB_WE();
-			$titleQuery->query("SELECT a.ID, c.Dat FROM (" . FILE_TABLE . " a LEFT JOIN " . LINK_TABLE . " b ON (a.ID=b.DID)) LEFT JOIN " . CONTENT_TABLE . " c ON (b.CID=c.ID) WHERE a.ParentID=" . intval($this->dir) . " AND b.Name='Title'");
-			while($titleQuery->next_record()) {
-				$this->titles[$titleQuery->f('ID')] = $titleQuery->f('Dat');
-			}
-		} else if(defined('OBJECT_FILES_TABLE') && $this->table == OBJECT_FILES_TABLE){
-			$_path = $this->path;
-			while($_path !== "" && dirname($_path) != "\\" && dirname($_path) != "/") {
-				$_path = dirname($_path);
-			}
-			$_db = new DB_WE();
-			$_cid = f('SELECT ID FROM ' . OBJECT_TABLE . " WHERE Path='" . $_db->escape($_path) . "'", "ID", $_db);
-			$this->titleName = f("SELECT DefaultTitle FROM " . OBJECT_TABLE . " WHERE ID=" . intval($_cid), "DefaultTitle", $_db);
-			if($this->titleName && strpos($this->titleName, '_')){
-				$_db->query("SELECT OF_ID, $this->titleName FROM " . OBJECT_X_TABLE . $_cid . " WHERE OF_ParentID=" . intval($this->dir));
-				while($_db->next_record()) {
-					$this->titles[$_db->f('OF_ID')] = $_db->f($this->titleName);
+
+		$_db = new DB_WE();
+		switch($this->table){
+			case FILE_TABLE:
+
+				$_db->query('SELECT a.ID, c.Dat FROM (' . FILE_TABLE . ' a LEFT JOIN ' . LINK_TABLE . ' b ON (a.ID=b.DID)) LEFT JOIN ' . CONTENT_TABLE . ' c ON (b.CID=c.ID) WHERE a.ParentID=' . intval($this->dir) . ' AND b.Name="Title"');
+				while($_db->next_record()){
+					$this->titles[$_db->f('ID')] = $_db->f('Dat');
 				}
-			}
+				break;
+			case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
+				$_path = $this->path;
+				while($_path !== "" && dirname($_path) != "\\" && dirname($_path) != "/"){
+					$_path = dirname($_path);
+				}
+				$_cid = f('SELECT ID FROM ' . OBJECT_TABLE . " WHERE Path='" . $_db->escape($_path) . "'", "ID", $_db);
+				$this->titleName = f('SELECT DefaultTitle FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($_cid), 'DefaultTitle', $_db);
+				if($this->titleName && strpos($this->titleName, '_')){
+					$_db->query('SELECT OF_ID, ' . $this->titleName . ' FROM ' . OBJECT_X_TABLE . $_cid . ' WHERE OF_ParentID=' . intval($this->dir));
+					while($_db->next_record()){
+						$this->titles[$_db->f('OF_ID')] = $_db->f($this->titleName);
+					}
+				}
+				break;
 		}
 	}
 
@@ -320,12 +324,13 @@ function entry(ID,icon,text,isFolder,path,modDate,contentType,published,title) {
 	function printFramesetJSFunctionAddEntries(){
 		$ret = '';
 		if($this->userCanSeeDir(true)){
-			while($this->next_record()) {
+			while($this->next_record()){
 				$title = isset($this->titles[$this->f("ID")]) ? $this->titles[$this->f("ID")] : '&nbsp;';
 				$title = strip_tags(str_replace(array('\\', '"', "\n",), array('\\\\', '\"', ' '), $title));
 				$title = $title == '&nbsp;' ? '-' : oldHtmlspecialchars($title);
 				$published = ($this->table == FILE_TABLE || (defined("OBJECT_FILES_TABLE") && $this->table == OBJECT_FILES_TABLE) ? $this->f("Published") : 1);
-				$ret.= 'addEntry(' . $this->f("ID") . ',"' . $this->f("Icon") . '","' . $this->f("Text") . '",' . $this->f("IsFolder") . ',"' . $this->f("Path") . '","' . date(g_l('date', '[format][default]'), $this->f("ModDate")) . '","' . $this->f("ContentType") . '","' . $published . '","' . $title . '");';
+
+				$ret.= 'addEntry(' . $this->f("ID") . ',"' . $this->f("Icon") . '","' . addcslashes($this->f("Text"), '"') . '",' . ($this->f("IsFolder") ? 1 : 0) . ',"' . addcslashes($this->f("Path"), '"') . '","' . date(g_l('date', '[format][default]'), $this->f("ModDate")) . '","' . $this->f("ContentType") . '","' . $published . '","' . addcslashes($title, '"') . '");';
 			}
 		}
 		return we_html_element::jsElement($ret);
@@ -333,13 +338,13 @@ function entry(ID,icon,text,isFolder,path,modDate,contentType,published,title) {
 
 	function printCmdAddEntriesHTML(){
 		$ret = '';
-		$this->query();
-		while($this->next_record()) {
+		$this->query();t_e($this);
+		while($this->next_record()){
 			$title = isset($this->titles[$this->f("ID")]) ? $this->titles[$this->f("ID")] : '&nbsp;';
 			$published = $this->table == FILE_TABLE ? $this->f("Published") : 1;
 			$title = $title == '&nbsp;' ? '-' : oldHtmlspecialchars($title);
 			$title = strip_tags(str_replace(array('"', "\n\r", "\n", "\\", '°',), array('\"', ' ', ' ', "\\\\", '&deg;'), $title));
-			$ret.='top.addEntry(' . $this->f("ID") . ',"' . $this->f("Icon") . '","' . $this->f("Text") . '",' . $this->f("IsFolder") . ',"' . $this->f("Path") . '","' . date(g_l('date', '[format][default]'), $this->f("ModDate")) . '","' . $this->f("ContentType") . '","' . $published . '","' . $title . '");';
+			$ret.='top.addEntry(' . $this->f("ID") . ',"' . $this->f("Icon") . '","' . $this->f("Text") . '",' .($this->f("IsFolder") ? $this->f("IsFolder") : 0) . ',"' . $this->f("Path") . '","' . date(g_l('date', '[format][default]'), $this->f("ModDate")) . '","' . $this->f("ContentType") . '","' . $published . '","' . $title . '");';
 		}
 
 		if($this->filter != "text/weTmpl" && $this->filter != "object" && $this->filter != "objectFile" && $this->filter != "text/webedition"){
@@ -393,7 +398,7 @@ function enableNewFileBut() {
 	' . ((isset($this->ctb[$this->filter])) ? $this->ctb[$this->filter] : "") . '_enabled = switch_button_state("' . ((isset($this->ctb[$this->filter])) ? $this->ctb[$this->filter] : "") . '", "", "enabled", "image");
 	newFileState = 1;
 }';
-			} else{
+			} else {
 				return $ret . '
 function disableNewFileBut() {
 	btn_add_file_enabled = switch_button_state("btn_add_file", "", "disabled", "image");
@@ -465,7 +470,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 	<tr>
 		<td colspan="5">' . we_html_tools::getPixel(5, 5) . '</td>
 	</tr>';
-		if($this->filter == ""){
+		if($this->filter == ''){
 			$ret.= '
 	<tr>
 		<td></td>
@@ -538,7 +543,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 			return;
 		}
 
-		$result = getHash('SELECT * FROM ' . $this->table . ' WHERE ID=' . intval($this->id), $this->db);
+		$result = getHash('SELECT * FROM ' . $this->table . ' WHERE ID=' . intval($this->id), $this->db, MYSQLI_ASSOC);
 		$path = isset($result['Path']) ? $result['Path'] : "";
 		$out = we_html_tools::getHtmlTop() .
 			STYLESHEET . we_html_element::cssElement('
@@ -600,47 +605,55 @@ top.parentID = "' . $this->values["ParentID"] . '";
 <body bgcolor="white" class="defaultfont" onresize="setInfoSize()" onload="setTimeout(\'setInfoSize()\',50)">
 					';
 		if(isset($result['ContentType']) && !empty($result['ContentType'])){
-			if($this->table == FILE_TABLE && $result['ContentType'] != "folder"){
-				$query = $this->db->query("SELECT a.Name, b.Dat FROM " . LINK_TABLE . " a LEFT JOIN " . CONTENT_TABLE . " b on (a.CID = b.ID) WHERE a.DID=" . intval($this->id) . " AND NOT a.DocumentTable='tblTemplates'");
-				while($this->db->next_record()) {
-					$metainfos[$this->db->f('Name')] = $this->db->f('Dat');
-				}
-			} else if(defined("OBJECT_FILES_TABLE") && $this->table == OBJECT_FILES_TABLE && $result['ContentType'] != "folder"){
-				$_fieldnames = getHash("SELECT DefaultDesc,DefaultTitle,DefaultKeywords FROM " . OBJECT_TABLE . " WHERE ID=" . intval($result["TableID"]), $this->db);
-				$_selFields = "";
-				foreach($_fieldnames as $_key => $_val){
-					if(empty($_val) || $_val == '_') // bug #4657
-						continue;
-					if(!is_numeric($_key)){
-						if($_val == "_"){
-							$_val = "";
-						}
-						if($_val && $_key == "DefaultDesc"){
-							$_selFields .= $_val . " as Description,";
-						} else if($_key == "DefaultTitle"){
-							$_selFields .= $_val . " as Title,";
-						} else if($_val && $_key == "DefaultKeywords"){
-							$_selFields .= $_val . " as Keywords,";
-						}
-					}
-				}
-				if($_selFields){
-					$_selFields = substr($_selFields, 0, strlen($_selFields) - 1);
-					$metainfos = getHash("SELECT " . $_selFields . " FROM " . OBJECT_X_TABLE . $result["TableID"] . " WHERE OF_ID=" . intval($result["ID"]), $this->db);
-				}
-			} elseif($result['ContentType'] == "folder"){
-				$this->db->query("SELECT ID, Text, IsFolder FROM " . $this->db->escape($this->table) . " WHERE ParentID=" . intval($this->id));
+			if($result['ContentType'] == "folder"){
+				$this->db->query('SELECT ID, Text, IsFolder FROM ' . $this->db->escape($this->table) . ' WHERE ParentID=' . intval($this->id));
 				$folderFolders = array();
 				$folderFiles = array();
-				while($this->db->next_record()) {
+				while($this->db->next_record()){
 					$this->db->f('IsFolder') ? $folderFolders[$this->db->f('ID')] = $this->db->f('Text') : $folderFiles[$this->db->f('ID')] = $this->db->f('Text');
+				}
+			} else {
+				switch($this->table){
+					case FILE_TABLE:
+						$this->db->query('SELECT a.Name, b.Dat FROM ' . LINK_TABLE . ' a LEFT JOIN ' . CONTENT_TABLE . ' b on (a.CID = b.ID) WHERE a.DID=' . intval($this->id) . " AND NOT a.DocumentTable='tblTemplates'");
+						while($this->db->next_record()){
+							$metainfos[$this->db->f('Name')] = $this->db->f('Dat');
+						}
+						break;
+					case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
+						$_fieldnames = getHash('SELECT DefaultDesc,DefaultTitle,DefaultKeywords FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($result["TableID"]), $this->db, MYSQLI_ASSOC);
+						$_selFields = "";
+						foreach($_fieldnames as $_key => $_val){
+							if(empty($_val) || $_val == '_') // bug #4657
+								continue;
+							if($_val == '_'){
+								$_val = '';
+							}
+							if($_val){
+								switch($_key){
+									case "DefaultDesc":
+										$_selFields .= $_val . " as Description,";
+										break;
+									case "DefaultTitle":
+										$_selFields .= $_val . " as Title,";
+										break;
+									case "DefaultKeywords":
+										$_selFields .= $_val . " as Keywords,";
+										break;
+								}
+							}
+						}
+						if($_selFields){
+							$_selFields = substr($_selFields, 0, strlen($_selFields) - 1);
+							$metainfos = getHash('SELECT ' . $_selFields . ' FROM ' . OBJECT_X_TABLE . $result['TableID'] . ' WHERE OF_ID=' . intval($result["ID"]), $this->db);
+						}
 				}
 			}
 			switch($result['ContentType']){
-				case "image/*":
-				case "text/webedition":
-				case "text/html":
-				case "application/*":
+				case 'image/*':
+				case 'text/webedition':
+				case 'text/html':
+				case 'application/*':
 					$showPriview = $result['Published'] > 0 ? true : false;
 					break;
 
@@ -651,7 +664,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 
 			$fs = file_exists($_SERVER['DOCUMENT_ROOT'] . $result['Path']) ? filesize($_SERVER['DOCUMENT_ROOT'] . $result['Path']) : 0;
 
-			$_filesize = $fs < 1000 ? $fs . ' byte' : ($fs < 1024000 ? round(($fs / 1024), 2) . ' kb' : round(($fs / (1024 * 1024)), 2) . ' mb');
+			$_filesize = weFile::getHumanFileSize($fs);
 
 
 			if($result['ContentType'] == "image/*" && file_exists($_SERVER['DOCUMENT_ROOT'] . $result['Path'])){
@@ -659,7 +672,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 					$_imagesize = array(0, 0);
 					$_thumbpath = IMAGE_DIR . 'icons/no_image.gif';
 					$_imagepreview = "<img src='$_thumbpath' border='0' id='previewpic'><p>" . g_l('fileselector', "[image_not_uploaded]") . "</p>";
-				} else{
+				} else {
 					$_imagesize = getimagesize($_SERVER['DOCUMENT_ROOT'] . $result['Path']);
 					$_thumbpath = WEBEDITION_DIR . 'thumbnail.php?id=' . $this->id . '&size=150&path=' . str_replace($_SERVER['DOCUMENT_ROOT'], '', $result['Path']) . '&extension=' . $result['Extension'] . '&size2=200';
 					$_imagepreview = "<a href='" . $result['Path'] . "' target='_blank' align='center'><img src='$_thumbpath' border='0' id='previewpic'></a>";
@@ -674,8 +687,6 @@ top.parentID = "' . $this->values["ParentID"] . '";
 				"files" => array("headline" => g_l('fileselector', "[files]"), "data" => array()),
 				"masterTemplate" => array("headline" => g_l('weClass', "[master_template]"), "data" => array())
 			);
-
-
 
 			$_previewFields["properies"]["data"][] = array(
 				"caption" => g_l('fileselector', "[name]"),
@@ -753,9 +764,8 @@ top.parentID = "' . $this->values["ParentID"] . '";
 					"content" => $metainfos['Keywords']
 				);
 			}
-
 			switch($result['ContentType']){
-				case "image/*":
+				case 'image/*':
 					$Title = (isset($metainfos['title']) ? $metainfos['title'] : ((isset($metainfos['Title']) && isset($metainfos['useMetaTitle']) && $metainfos['useMetaTitle']) ? $metainfos['Title'] : ''));
 					$name = (isset($metainfos['name']) ? $metainfos['name'] : '');
 					$alt = (isset($metainfos['alt']) ? $metainfos['alt'] : '');
@@ -829,7 +839,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 					break;
 			}
 
-			$out .= "<table cellpadding='0' cellspacing='0' width='100%'>";
+			$out .= '<table cellpadding="0" cellspacing="0" width="100%">';
 			if(isset($_imagepreview) && $_imagepreview){
 				$out .= "<tr><td colspan='2' valign='middle' class='image' height='160' align='center' bgcolor='#EDEEED'>" . $_imagepreview . "</td></tr>";
 			}
@@ -845,7 +855,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 			}
 
 
-			$out .= "</table></div></td></tr></table>";
+			$out .= '</table></div></td></tr></table>';
 		}
 		$out .= '</body></html>';
 		echo $out;

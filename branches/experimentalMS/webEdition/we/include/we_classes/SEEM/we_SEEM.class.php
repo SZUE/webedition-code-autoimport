@@ -340,7 +340,7 @@ abstract class we_SEEM{
 		$mode = (isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_CONTENT ? "edit" : "preview");
 
 		$_REQUEST['we_transaction'] = (preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction']) ? $_REQUEST['we_transaction'] : 0);
-		for($i = 0; $i < sizeof($SEEM_LinkArray[0]); $i++){
+		for($i = 0; $i < count($SEEM_LinkArray[0]); $i++){
 
 			if(isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == "seem" && $GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_CONTENT){ //	in Super-Easy-Edit-Mode only in Editmode !!!
 				switch($SEEM_LinkArray[2][$i]){
@@ -490,7 +490,7 @@ abstract class we_SEEM{
 					$destCode = str_replace($linkArray[0][$i], "<" . $linkArray[1][$i] . "javascript://" . $linkArray[4][$i] . $javascriptCode . ">", $destCode);
 				} else{ //  Target is on the same Web-Server - open doc with webEdition.
 					if(strpos($linkArray[5][$i], WEBEDITION_DIR . 'we_cmd.php') === 0){ //  it is a command link - use open_document_with_parameters
-						//  Work with the parameters ...
+						//  Work with the parameters
 						$theParameters = "";
 
 						if($linkArray[3][$i] != ""){
@@ -507,7 +507,7 @@ abstract class we_SEEM{
 						//	This is a javascript:history link, to get back to the last document.
 						$javascriptCode = (strpos($linkArray[2][$i], "javascript") === 0 && strpos($linkArray[2][$i], "history") ?
 								' onclick="' . we_message_reporting::getShowMessageCall(g_l('SEEM', '[link_does_not_work]'), we_message_reporting::WE_MESSAGE_FRONTEND) . "\" onMouseOver=\"top.info('" . g_l('SEEM', "[info_link_does_not_work]") . "')\" onMouseOut=\"top.info('');\"" :
-								//  Check, if the current document was changed ...
+								//  Check, if the current document was changed
 								" onclick=\"if(confirm('" . g_l('SEEM', "[ext_doc_selected]") . "')){top.doExtClick('" . $linkArray[5][$i] . $linkArray[3][$i] . "');top.info(' ');} else { return false; };\" onMouseOver=\"top.info('" . g_l('SEEM', "[info_ext_doc]") . "');\" onMouseOut=\"top.info(' ')\" ");
 
 						$destCode = str_replace($linkArray[0][$i], "<" . $linkArray[1][$i] . "javascript://\"" . $linkArray[4][$i] . $javascriptCode . ">", $destCode);
@@ -674,7 +674,7 @@ abstract class we_SEEM{
 		$newArray = array();
 
 		for($i = 0; $i < count($oldArray[2]); $i++){
-			if(substr($oldArray[2][$i], 0, 1) == '#' || strpos($oldArray[2][$i], "javascript") === 0 && strpos($oldArray[2][$i], "javascript:history") === FALSE || strpos($oldArray[2][$i], "mailto") === 0 || strpos($oldArray[2][$i], "document:") === 0 || strpos($oldArray[2][$i], "object:") === 0){
+			if(substr($oldArray[2][$i], 0, 1) == '#' || strpos($oldArray[2][$i], "javascript") === 0 && strpos($oldArray[2][$i], "javascript:history") === FALSE || strpos($oldArray[2][$i], we_base_link::TYPE_MAIL_PREFIX) === 0 || strpos($oldArray[2][$i], we_base_link::TYPE_INT_PREFIX) === 0 || strpos($oldArray[2][$i], we_base_link::TYPE_OBJ_PREFIX) === 0){
 				//  this link must not be changed - so it will be removed
 			} else{
 				$newArray[0][] = $oldArray[0][$i];
@@ -746,9 +746,9 @@ abstract class we_SEEM{
 		preg_match_all('/([^&]*=[^&]*)&/U', $paraStr, $parameters);
 
 		//  now get the single attributes and remember path
-		for($j = 0; $j < sizeof($parameters[1]); $j++){
+		foreach($parameters[1] as $par){
 
-			list($key, $value) = explode('=', $parameters[1][$j]);
+			list($key, $value) = explode('=', $par);
 			if(substr($key, 0, strlen($ignor)) != $ignor){
 				$attribs[$key] = $value;
 			}
@@ -945,7 +945,7 @@ abstract class we_SEEM{
 
 				if(strpos($linkArray[5][$i], WEBEDITION_DIR . 'we_cmd.php') === 0){
 
-					//  Work with the parameters ...
+					//  Work with the parameters
 					$theParameters = "";
 
 					if($linkArray[3][$i] != ""){
@@ -953,7 +953,7 @@ abstract class we_SEEM{
 						$theParameters = self::arrayToParameters($theParametersArray, "", array('we_cmd'));
 					}
 
-					if(!isset($GLOBALS['we_doc'])){
+					if(isset($GLOBALS['we_doc'])){
 						$GLOBALS['we_doc']->ID = $_SESSION['weS']['we_data'][$theParametersArray["we_transaction"]][0]["ID"];
 					}
 

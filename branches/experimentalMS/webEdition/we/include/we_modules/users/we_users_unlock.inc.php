@@ -37,7 +37,7 @@ if($_transaction){ // clean session
 	}
 }
 
-for($i = 0; $i < sizeof($_ids); $i++){
+for($i = 0; $i < count($_ids); $i++){
 	if($_tables[$i]){
 		$queries[$_tables[$i]][] = $_ids[$i];
 	}

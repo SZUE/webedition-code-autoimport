@@ -27,7 +27,6 @@
  * @return string
  * @param array $attribs
  * @param string $content
- * @desc Beschreibung eingeben...
  */
 function we_tag_xmlfeed($attribs){
 	if(($foo = attributFehltError($attribs, 'name', __FUNCTION__)))

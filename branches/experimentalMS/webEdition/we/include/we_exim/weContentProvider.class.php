@@ -28,6 +28,7 @@ class weContentProvider{
 	const CODING_SERIALIZE = 'serial';
 	const CODING_ATTRIBUTE = 'coding';
 	const CODING_NONE = null;
+	const CODING_OLD = 'WE_OLD_CODING';
 
 	static function getInstance($we_ContentType, $ID = '', $table = ''){
 		$we_doc = '';
@@ -117,6 +118,12 @@ class weContentProvider{
 		if(!isset($object)){
 			return;
 		}
+		$reflect = new ReflectionClass($object);
+		$props = $reflect->getProperties(ReflectionProperty::IS_PRIVATE | ReflectionProperty::IS_PROTECTED);
+		foreach($props as $prop){
+			unset($content[$prop->getName()]);
+		}
+
 		foreach($content as $k => $v){
 			$object->$k = $v;
 		}
@@ -158,10 +165,15 @@ class weContentProvider{
 		}
 	}
 
-	static function needCoding($classname, $prop){
+	static function needCoding($classname, $prop, $data){
 		if($prop == 'schedArr'){
 			return true;
 		}
+
+		if($data != self::CODING_OLD){
+			return preg_match('!^[^a-zA-Z0-9]+$!', $data);
+		}
+
 		$encoded = array(
 			'we_element' => array('Dat', 'dat'),
 			'weTableItem' => array('Dat', 'strFelder', 'strSerial', 'DocumentObject',
@@ -239,7 +251,7 @@ class weContentProvider{
 				true);
 	}
 
-	static function binary2file(&$object, $file, $isWe = true){
+	static function binary2file(&$object, $file, $fwrite = 'fwrite'){
 		$attribs = '';
 		foreach($object->persistent_slots as $k => $v){
 			if($v != 'Data' && $v != 'SeqN'){
@@ -247,7 +259,7 @@ class weContentProvider{
 				if(isset($object->$v)){
 					$content = $object->$v;
 				}
-				if(self::needCoding($object->ClassName, $v)){
+				if(self::needCoding($object->ClassName, $v, $content) || self::needCdata($object->ClassName, $v, $content)){//fix for faulty parser
 					$content = self::getCDATA(self::encode($content));
 					$coding = array(self::CODING_ATTRIBUTE => self::CODING_ENCODE);
 				} else if(self::needCdata($object->ClassName, $v, $content)){
@@ -269,7 +281,7 @@ class weContentProvider{
 				}
 				$data = weFile::loadPart($path, $offset, $rsize);
 				if(!empty($data)){
-					fwrite($file, '<we:binary>' . $attribs .
+					$fwrite($file, '<we:binary>' . $attribs .
 						weXMLComposer::we_xmlElement('SeqN', $object->SeqN) .
 						weXMLComposer::we_xmlElement('Data', self::encode($data), array(self::CODING_ATTRIBUTE => self::CODING_ENCODE)) .
 						'</we:binary>' . weBackup::backupMarker . "\n");
@@ -284,15 +296,15 @@ class weContentProvider{
 		}
 	}
 
-	static function version2file(&$object, $file, $isWe = true){
+	static function version2file(&$object, $file, $fwrite = 'fwrite'){
 		$attribs = '';
-		foreach($object->persistent_slots as $k => $v){
+		foreach($object->persistent_slots as $v){
 			if($v != 'Data' && $v != 'SeqN'){
 				if(isset($object->$v)){
 					$content = $object->$v;
 				}
 				$coding = self::CODING_NONE;
-				if(self::needCoding($object->ClassName, $v)){
+				if(self::needCoding($object->ClassName, $v, $content) || self::needCdata($object->ClassName, $v, $content)){//fix for faulty parser
 					$content = self::getCDATA(self::encode($content));
 					$coding = array(self::CODING_ATTRIBUTE => self::CODING_ENCODE);
 				} else if(self::needCdata($object->ClassName, $v, $content)){
@@ -314,7 +326,7 @@ class weContentProvider{
 				$data = weFile::loadPart($path, $offset, $rsize);
 
 				if(!empty($data)){
-					fwrite($file, '<we:version>' . $attribs .
+					$fwrite($file, '<we:version>' . $attribs .
 						weXMLComposer::we_xmlElement('SeqN', $object->SeqN) .
 						weXMLComposer::we_xmlElement('Data', self::encode($data), array(self::CODING_ATTRIBUTE => self::CODING_ENCODE)) .
 						'</we:version>' . weBackup::backupMarker . "\n");
@@ -339,7 +351,7 @@ class weContentProvider{
 		return $hash[$obj];
 	}
 
-	static function object2xml(&$object, $file, $attribs = array()){
+	static function object2xml(&$object, $file, $attribs = array(), $fwrite = 'fwrite'){
 		$classname = (isset($object->Pseudo) ? $object->Pseudo : $object->ClassName);
 
 		switch($classname){
@@ -361,10 +373,10 @@ class weContentProvider{
 			case 'we_object':
 				$tableInfo = self::objectMetadata(OBJECT_X_TABLE . $object->ID);
 				$defvalues = unserialize($object->DefaultValues);
-				for($i = 0; $i < count($tableInfo); $i++){
-					$fieldname = $tableInfo[$i]['name'];
+				foreach($tableInfo as $cur){
+					$fieldname = $cur['name'];
 					if(isset($defvalues[$fieldname])){
-						$defvalues[$fieldname]['length'] = ($tableInfo[$i]['len'] > 255) ? 255 : $tableInfo[$i]['len'];
+						$defvalues[$fieldname]['length'] = ($cur['len'] > 255) ? 255 : $cur['len'];
 					}
 				}
 				$object->DefaultValues = serialize($defvalues);
@@ -381,29 +393,30 @@ class weContentProvider{
 		}
 
 
-		foreach($object->persistent_slots as $k => $v){
-			if($v != 'elements'){
-				$content = (isset($object->$v) ? $object->$v : '');
-				$coding = self::CODING_NONE;
-
-				if(self::needSerialize($object, $classname, $v)){
-					$content = serialize($content);
-					$coding = array(self::CODING_ATTRIBUTE => self::CODING_SERIALIZE);
-				}
-
-
-				if(self::needCoding($classname, $v)){
-					if(!is_array($content)){
-						$content = self::encode($content);
-						$coding = array(self::CODING_ATTRIBUTE => self::CODING_ENCODE);
-					}
-				} else if(self::needCdata($classname, $v, $content)){
-					$content = self::getCDATA($content);
-				}
-				$write.=weXMLComposer::we_xmlElement($v, $content, $coding);
+		foreach($object->persistent_slots as $v){
+			if($v == 'elements'){
+				continue;
 			}
+			$content = (isset($object->$v) ? $object->$v : '');
+			$coding = self::CODING_NONE;
+
+			if(self::needSerialize($object, $classname, $v)){
+				$content = serialize($content);
+				$coding = array(self::CODING_ATTRIBUTE => self::CODING_SERIALIZE);
+			}
+
+
+			if(self::needCoding($classname, $v, $content) || self::needCdata($classname, $v, $content)){//fix for faulty parser
+				if(!is_array($content)){
+					$content = self::encode($content);
+					$coding = array(self::CODING_ATTRIBUTE => self::CODING_ENCODE);
+				}
+			} else if(self::needCdata($classname, $v, $content)){
+				$content = self::getCDATA($content);
+			}
+			$write.=weXMLComposer::we_xmlElement($v, $content, $coding);
 		}
-		fwrite($file, $write);
+		$fwrite($file, $write);
 
 		if(isset($object->elements) && $object->ClassName != 'we_object'){
 			$elements_ids = array_keys($object->elements);
@@ -447,7 +460,7 @@ class weContentProvider{
 		}
 
 		//return $out;
-		fwrite($file, '</' . self::getTagName($object) . '>');
+		$fwrite($file, '</' . self::getTagName($object) . '>');
 	}
 
 	static function file2xml($file, $fh){
@@ -496,6 +509,18 @@ class weContentProvider{
 				return 'we_docTypes';
 			default:
 				return $contenttype;
+		}
+	}
+
+	public static function getDecodedData($type, $data){
+		switch($type){
+			case self::CODING_ENCODE:
+				return self::decode($data);
+			case self::CODING_SERIALIZE:
+				return unserialize($data);
+			case self::CODING_NONE:
+			default:
+				return $data;
 		}
 	}
 

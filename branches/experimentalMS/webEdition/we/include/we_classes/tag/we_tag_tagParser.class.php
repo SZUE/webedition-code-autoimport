@@ -156,7 +156,7 @@ class we_tag_tagParser{
 			return $tmp;
 		}
 		$this->lastpos = 0;
-		$ende = $ende ? $ende : sizeof($this->tags);
+		$ende = $ende ? $ende : count($this->tags);
 		for($ipos = $start; $ipos < $ende;){
 			//t_e($ipos,$this->tags[$ipos],$ende);
 			if($this->tags[$ipos]){
@@ -232,14 +232,14 @@ class we_tag_tagParser{
 
 		$endtagpos = $tagPos;
 		$regs = array();
-		for($i = $ipos + 1; $i < sizeof($this->tags); $i++){
+		for($i = $ipos + 1; $i < count($this->tags); $i++){
 			if(preg_match('|(< ?/ ?we ?: ?' . $tagname . '[^a-z])|i', $this->tags[$i], $regs)){
 				array_push($endtags, $regs[1]);
 				if($tagcount){
 					$tagcount--;
 				} else{
 					// found endtag
-					for($n = 0; $n < sizeof($endtags); $n++){
+					for($n = 0; $n < count($endtags); $n++){
 						$endtagpos = strpos($code, $endtags[$n], $endtagpos + 1);
 					}
 					$this->tags[$i] = '';
@@ -262,7 +262,7 @@ class we_tag_tagParser{
 		$regs = array();
 		preg_match_all('/([^=]+)=[ \t]*("[^"]*")/', $attr, $regs, PREG_SET_ORDER);
 
-		if(count($regs)){
+		if(!empty($regs)){
 			foreach($regs as $f){
 				if(!in_array($f[1], $removeAttribs)){
 					$attribs .= '"' . trim($f[1]) . '"=>' . trim($f[2]) . ',';

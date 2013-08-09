@@ -32,6 +32,7 @@ function we_tag_userInput($attribs, $content){
 	$property = weTag_getAttribute("property", $attribs, false, true);
 	$format = weTag_getAttribute("format", $attribs);
 	$checked = weTag_getAttribute("checked", $attribs, false, true);
+	$inlineedit = weTag_getAttribute("inlineedit", $attribs, true, true);
 	$value = weTag_getAttribute("value", $attribs);
 	$editable = weTag_getAttribute("editable", $attribs, true, true);
 	$autobrAttr = weTag_getAttribute("autobr", $attribs, true, true);
@@ -76,21 +77,22 @@ function we_tag_userInput($attribs, $content){
 		$object_pid = $objekt->ParentID;
 		$object_path = $objekt->Path;
 		$object_tableID = isset($objekt->TableID) ? $objekt->TableID : "";
+		$content = $objekt->getFieldByVal($orgVal, $type, $attribs, true, $object_pid, $object_path, $GLOBALS['DB_WE'], $object_tableID);
 	} else{
 		$orgVal = $value;
 		$object_pid = 0;
 		$object_path = "";
 		$object_tableID = "";
 		$isset = false;
+		$content = '';
 	}
 
-	$content = we_document::getFieldByVal($orgVal, $type, $attribs, true, $object_pid, $object_path, $GLOBALS['DB_WE'], $object_tableID);
 
 	if(!$editable && !$hidden && $type !== "img" && $type !== "binary" && $type !== "flashmovie" && $type !== "quicktime"){
 		$_hidden = getHtmlTag(
 			'input', array(
 			'type' => 'hidden', 'name' => $fieldname, 'value' => oldHtmlspecialchars($orgVal), 'xml' => $xml
-			));
+		));
 		return (($type != "hidden") ? $content : "") . $_hidden;
 	} else{
 		switch($type){
@@ -476,7 +478,7 @@ function we_tag_userInput($attribs, $content){
 					return '';
 				}
 			case "textarea" :
-				$attribs['inlineedit'] = "true"; // bugfix: 7276
+				//$attribs['inlineedit'] = "true"; // bugfix: 7276
 				$pure = weTag_getAttribute("pure", $attribs, false, true);
 				if($pure){
 					$atts = removeAttribs($attribs, array(
@@ -498,18 +500,63 @@ function we_tag_userInput($attribs, $content){
 						'width',
 						'height',
 						'fontnames',
-						'bgcolor'
-						));
+						'bgcolor',
+						'editorcss',
+						'ignoredocumentcss',
+						'buttonpos'
+					));
 					return we_getTextareaField($fieldname, $content, $atts);
 				} else{
 					echo we_html_element::jsElement('weFrontpageEdit=true;');
+
 					include_once (JS_PATH . "we_textarea_include.inc.php");
+
+					if(!$inlineedit){
+						//TODO: move js function open_wysiwyg_win to separate js file
+						echo we_html_element::jsScript(JS_DIR . 'weButton.js') . 
+							we_html_element::jsScript(JS_DIR . 'weTinyMceDialogs.js') . 
+							we_html_element::jsElement('
+							function open_wysiwyg_win(){
+								//var url = "' . WEBEDITION_DIR . 'we_cmd.php?";
+								var url = "' . WEBEDITION_DIR . 'we_cmd_frontend.php?";
+								for(var i = 0; i < arguments.length; i++) {
+								url += "we_cmd["+i+"]="+escape(arguments[i]);
+								if(i < (arguments.length - 1))
+									url += "&";
+								}
+								
+								if (window.screen) {
+									h = ((screen.height - 100) > screen.availHeight ) ? screen.height - 100 : screen.availHeight;
+									w = screen.availWidth;
+								}
+								var wyw = Math.max(arguments[2],arguments[9]);
+								wyw = wyw ? wyw : 800;
+								var wyh = parseInt(arguments[3]) +parseInt(arguments[10]);
+								wyh = wyh ? wyh : 600;
+
+								if (window.screen) {
+									var screen_height = ((screen.height - 50) > screen.availHeight ) ? screen.height - 50 : screen.availHeight;
+									screen_height = screen_height - 40;
+									var screen_width = screen.availWidth-10;
+									wyw = Math.min(screen_width, wyw);
+									wyh = Math.min(screen_height, wyh);
+								}
+								// set new width & height;
+
+								url = url.replace(/we_cmd\[2\]=[^&]+/, "we_cmd[2]=" + wyw);
+								url = url.replace(/we_cmd\[3\]=[^&]+/, "we_cmd[3]="+ (wyh-arguments[10]));
+
+								new jsWindow(url,"we_wysiwygWin",-1,-1,Math.max(220,wyw+(document.all ? 0 : ((navigator.userAgent.toLowerCase().indexOf(\'safari\') > -1) ? 20 : 4))),Math.max(100,wyh+60),true,false,true);
+								//doPostCmd(arguments,"we_wysiwygWin");
+							}
+						');
+					}
 					$autobr = $autobrAttr ? "on" : "off";
 					$showAutobr = isset($attribs["autobr"]);
 					$charset = weTag_getAttribute("charset", $attribs, "iso-8859-1");
-					//FIXME: currently use old editor
+					//FIXME: currently we use a separate preference-option for frontend editor (where tinyMCE is labelled beta)
 					$tmp = we_wysiwyg::$editorType;
-					we_wysiwyg::$editorType = 'default';
+					we_wysiwyg::$editorType = WYSIWYG_TYPE_FRONTEND == 'tinyMCE' ? 'tinyMCE' : 'default';
 					$ret = we_forms::weTextarea($fieldname, $content, $attribs, $autobr, "autobr", $showAutobr, $GLOBALS['we_doc']->getHttpPath(), false, false, $xml, $removeFirstParagraph, $charset, false, true);
 					we_wysiwyg::$editorType = $tmp;
 					return $ret;
@@ -535,7 +582,7 @@ function we_tag_userInput($attribs, $content){
 					'height',
 					'bgcolor',
 					'fontnames'
-					));
+				));
 				if((!$isset) && $checked){
 					$content = 1;
 				}
@@ -667,7 +714,7 @@ function we_tag_userInput($attribs, $content){
 					'width',
 					'height',
 					'maxlength'
-					));
+				));
 				if($values){
 
 					$values = explode(',', $values);
@@ -723,7 +770,7 @@ function we_tag_userInput($attribs, $content){
 					'height',
 					'bgcolor',
 					'fontnames'
-					));
+				));
 				return (!$isset ?
 						we_getInputRadioField($fieldname, ($checked ? $value : $value . "dummy"), $value, $atts) :
 						we_getInputRadioField($fieldname, $content, $orgVal, $atts));
@@ -760,7 +807,7 @@ function we_tag_userInput($attribs, $content){
 					'bgcolor',
 					'fontnames',
 					'maxlength'
-					));
+				));
 				$mode = weTag_getAttribute("mode", $attribs);
 				return we_html_tools::htmlInputChoiceField($fieldname, $orgVal, $values, $atts, $mode);
 			case "password" :
@@ -784,8 +831,12 @@ function we_tag_userInput($attribs, $content){
 					'height',
 					'bgcolor',
 					'fontnames'
-					));
-				return we_getInputPasswordField($fieldname, $orgVal, $atts);
+				));
+				$atts['type'] = 'password';
+				$atts['name'] = $fieldname;
+				$atts['value'] = oldHtmlspecialchars($orgVal);
+
+				return getHtmlTag('input', $atts);
 			case 'textinput':
 			default :
 				$atts = removeAttribs($attribs, array(
@@ -808,7 +859,7 @@ function we_tag_userInput($attribs, $content){
 					'height',
 					'bgcolor',
 					'fontnames'
-					));
+				));
 				return we_getInputTextInputField($fieldname, $orgVal, $atts);
 		}
 	}

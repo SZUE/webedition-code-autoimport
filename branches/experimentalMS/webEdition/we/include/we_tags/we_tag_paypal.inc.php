@@ -22,7 +22,6 @@
  * @package	 webEdition_base
  * @license	 http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once(WE_MODULES_PATH . 'shop/we_conf_shop.inc.php');
 
 /**
  * This function writes the shop data (order) to the database and send values to paypal
@@ -38,8 +37,7 @@ function we_tag_paypal($attribs){
 		return $foo;
 	}
 
-	$shopname = weTag_getAttribute('shopname', $attribs);
-	$shopname = $shopname ? $shopname : $name;
+	$shopname = weTag_getAttribute('shopname', $attribs, $name);
 	$pricename = weTag_getAttribute('pricename', $attribs);
 
 	$countrycode = weTag_getAttribute('countrycode', $attribs);
@@ -176,7 +174,7 @@ function we_tag_paypal($attribs){
 
 		switch($_GET['action']){
 
-			case 'process': // Process and order...
+			case 'process': // Process and order
 				// There should be no output at this point.  To process the POST data,
 				// the submit_paypal_post() function will output all the HTML tags which
 				// contains a FORM which is submited instantaneously using the BODY onload
@@ -226,20 +224,17 @@ function we_tag_paypal($attribs){
 						$p->add_field('charset', $charset);
 					}
 					//  determine the basket data
-					$p->add_field('item_name_' . $i, $itemTitle = (isset($item['serial']['we_shoptitle']) ? $item['serial']['we_shoptitle'] : $item['serial']['shoptitle']));
+					$p->add_field('item_name_' . $i, $itemTitle = (isset($item['serial']['we_' . WE_SHOP_TITLE_FIELD_NAME]) ? $item['serial']['we_' . WE_SHOP_TITLE_FIELD_NAME] : $item['serial'][WE_SHOP_TITLE_FIELD_NAME]));
 					$p->add_field('quantity_' . $i, $item['quantity']);
-
-					$itemPrice = (isset($item['serial']['we_' . $pricename]) ? $item['serial']['we_' . $pricename] : $item['serial'][$pricename]);
 
 					// correct price, if it has more than one "."
 					// bug #8717
-					$itemPrice = we_util::std_numberformat($itemPrice);
+					$itemPrice = we_util::std_numberformat(isset($item['serial']['we_' . $pricename]) ? $item['serial']['we_' . $pricename] : $item['serial'][$pricename]);
 
 					//seems to be gros product prices and customer do not need pay tax
 					//so we have to calculate the correct net article price
 					//bug #5701
 					if(!$useVat && !$netprices){
-						require_once(WE_SHOP_MODULE_DIR . 'weShopVats.class.php');
 						$vatId = isset($item['serial'][WE_SHOP_VAT_FIELD_NAME]) ? $item['serial'][WE_SHOP_VAT_FIELD_NAME] : 0;
 						$shopVat = weShopVats::getVatRateForSite($vatId, true, false);
 						$shopVat = (1 + ($shopVat / 100));
@@ -333,7 +328,7 @@ function we_tag_paypal($attribs){
 				$p->submit_paypal_post($formTagOnly, $messageRedirectAuto, $messageRedirectMan); // submit the fields to paypal
 				break;
 
-			case 'success': // Order was successful...
+			case 'success': // Order was successful
 				// This is where you would probably want to thank the user for their order
 				// or what have you.  The order information at this point is in POST
 				// variables.  However, you don't want to "process" the order until you
@@ -351,14 +346,14 @@ function we_tag_paypal($attribs){
 
 				break;
 
-			case 'cancel': // Order was canceled...
+			case 'cancel': // Order was canceled
 				// The order was canceled before being completed.
 
 
 
 				break;
 
-			case 'ipn': // Paypal is calling page for IPN validation...
+			case 'ipn': // Paypal is calling page for IPN validation
 				// It's important to remember that paypal calling this script.  There
 				// is no output here.  This is where you validate the IPN data and if it's
 				// valid, update your database to signify that the user has payed.  If

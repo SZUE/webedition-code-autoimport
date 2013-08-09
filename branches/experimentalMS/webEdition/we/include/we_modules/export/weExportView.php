@@ -568,23 +568,22 @@ class weExportView{
 			}
 		}
 
-		$_SESSION['weS']['ExportSession'] = serialize($this->export);
+		$_SESSION['weS']['ExportSession'] = $this->export;
 	}
 
 	function processVariables(){
 
 		if(isset($_SESSION['weS']['ExportSession'])){
-			$this->export = unserialize($_SESSION['weS']['ExportSession']);
+			$this->export = $_SESSION['weS']['ExportSession'];
 		}
 
 		if(isset($_SESSION['weS']['exportVars']))
 			unset($_SESSION['weS']['exportVars']);
 
 		if(is_array($this->export->persistent_slots)){
-			foreach($this->export->persistent_slots as $key => $val){
-				$varname = $val;
+			foreach($this->export->persistent_slots as $varname){
 				if(isset($_REQUEST[$varname])){
-					$this->export->{$val} = $_REQUEST[$varname];
+					$this->export->{$varname} = $_REQUEST[$varname];
 				}
 			}
 		}

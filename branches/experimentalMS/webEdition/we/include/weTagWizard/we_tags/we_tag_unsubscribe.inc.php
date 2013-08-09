@@ -12,4 +12,4 @@ $this->Attributes[] = new weTagData_textAttribute('value', false, '');
 $this->Attributes[] = new weTagData_textAttribute('class', false, '');
 $this->Attributes[] = new weTagData_textAttribute('style', false, '');
 $this->Attributes[] = new weTagData_textAttribute('onchange', false, '');
-$this->Attributes[] = new weTagData_selectAttribute('xml', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
+$this->Attributes[] = new weTagData_selectAttribute('xml', weTagData_selectAttribute::getTrueFalse(), false, '');

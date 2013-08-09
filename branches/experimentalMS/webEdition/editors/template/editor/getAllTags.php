@@ -25,15 +25,13 @@ require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-$xml = '<?xml version="1.0" encoding="utf-8"?>' . "\n";
-$xml .= "<tags>\n";
+header('Content-Type: text/xml');
+echo '<?xml version="1.0" encoding="utf-8"?>
+<tags>
+';
 $allWeTags = weTagWizard::getExistingWeTags();
 foreach($allWeTags as $tag){
-	$GLOBALS['TagRefURLName'] = strtolower($tag);
 	$tagData = weTagData::getTagData($tag);
-	$xml .= "\t". '<tag needsEndtag="'.($tagData->needsEndTag()? "true" : "false").'" name="' . $tagData->getName() . '" />'."\n";
+	echo  "\t". '<tag needsEndtag="'.($tagData->needsEndTag()? "true" : "false").'" name="' . $tagData->getName() . '" />'."\n";
 }
-$xml .= "</tags>\n";
-
-header('Content-Type: text/xml');
-print $xml;
+echo "</tags>\n";

@@ -448,7 +448,7 @@ class Image_Transform_Driver_GD extends Image_Transform{
 	 *
 	 * This method adds the Content-type HTTP header
 	 *
-	 * @param string $type (JPEG, PNG...);
+	 * @param string $type (JPEG, PNG);
 	 * @param int    $quality 75
 	 *
 	 * @return bool|PEAR_Error TRUE or PEAR_Error object on error

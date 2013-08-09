@@ -181,7 +181,7 @@ class weExportPreparer extends weXMLExIm{
 				foreach($patterns as $pattern){
 					if(preg_match_all($pattern, $text, $match)){
 						foreach($match[2] as $k => $include){
-							if(strpos($match[1][$k], "object:") !== false)
+							if(strpos($match[1][$k], we_base_link::TYPE_OBJ_PREFIX) !== false)
 								$this->addToDepArray($level, $include, 'objectFile');
 							else
 								$this->addToDepArray($level, $include);
@@ -401,17 +401,20 @@ class weExportPreparer extends weXMLExIm{
 			// collect owners info
 			if($this->options["handle_owners"]){
 				$uids = array();
-				if(isset($doc->CreatorID) && !in_array($doc->CreatorID, $this->RefTable->Users))
+				if(isset($doc->CreatorID) && !in_array($doc->CreatorID, $this->RefTable->Users)){
 					$uids = array($doc->CreatorID);
-				if(isset($doc->Owners))
+				}
+				if(isset($doc->Owners)){
 					$uids = array_merge($uids, makeArrayFromCSV($doc->Owners));
-				if(count($uids))
+				}
+				if(!empty($uids)){
 					$this->RefTable->addToUsers($uids);
+				}
 			}
 
 			$id = $this->RefTable->getNext();
 			$_step++;
-			if(BACKUP_STEPS < $_step){
+			if(10 < $_step){ //FIXME: removed BACKUP_STEPS, should be handled equal to backup
 				break;
 			}
 		}

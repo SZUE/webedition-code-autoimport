@@ -983,16 +983,26 @@ class weCustomerView{
 		if(is_array($this->customer->persistent_slots)){
 			foreach($this->customer->persistent_slots as $key => $val){
 				$varname = $val;
-				if($varname == 'LoginDenied'){
-					if(isset($_REQUEST[$varname])){
-						$this->customer->{$val} = '1';
-					} elseif(isset($_REQUEST['Username'])){
-						$this->customer->{$val} = '0';
-					}
-				} elseif($varname == 'Password' && isset($_REQUEST[$varname]) && $_REQUEST[$varname] == weCustomer::NOPWD_CHANGE){
-					//keep old pwd
-				} elseif(isset($_REQUEST[$varname])){
-					$this->customer->{$val} = $_REQUEST[$varname];
+				switch($varname){
+					case 'LoginDenied':
+					case 'AutoLoginDenied':
+					case 'AutoLogin':
+
+						if(isset($_REQUEST[$varname])){
+							$this->customer->{$val} = 1;
+						} elseif(isset($_REQUEST['Username'])){
+							$this->customer->{$val} = 0;
+						}
+						break;
+					case 'Password':
+						if(isset($_REQUEST[$varname]) && $_REQUEST[$varname] == weCustomer::NOPWD_CHANGE){
+							//keep old pwd
+							break;
+						}
+					default:
+						if(isset($_REQUEST[$varname])){
+							$this->customer->{$val} = $_REQUEST[$varname];
+						}
 				}
 			}
 		}
@@ -1150,7 +1160,7 @@ class weCustomerView{
 				$banche = '';
 				$fieldname = $this->customer->transFieldName($k, $banche);
 				if($banche == $old_branch && $fieldname != ''){
-					$this->db->query('ALTER TABLE ' . $this->customer->table . ' CHANGE ' . $k . ' ' . $new_branch . '_' . $fieldname . ' ' . $v['Type'] . " DEFAULT '" . $v["Default"] . "' NOT NULL;");
+					$this->db->query('ALTER TABLE ' . $this->customer->table . ' CHANGE ' . $k . ' ' . $new_branch . '_' . $fieldname . ' ' . $v['Type'] . (!empty($v["Default"])? " DEFAULT '" . $v["Default"]."'" :''). " NOT NULL;");
 				}
 			}
 		}
@@ -1231,9 +1241,12 @@ class weCustomerView{
 			$condition = ' WHERE ' . $condition;
 		}
 		$condition.=' ORDER BY Username';
+		if(DB_CONNECT=='msconnect'){
+			$this->db->query("SELECT ID, Username + ' (' + Forename + ' ' + Surname + ')' AS 'user' FROM " . $this->db->escape($this->customer->table) . $condition );
 
-		$this->db->query('SELECT ID, CONCAT(Username, " (",Forename," ",Surname,")") AS user FROM ' . $this->db->escape($this->customer->table) . $condition . " LIMIT 0,$res_num");
-
+		} else {
+			$this->db->query('SELECT ID, CONCAT(Username, " (",Forename," ",Surname,")") AS user FROM ' . $this->db->escape($this->customer->table) . $condition . " LIMIT 0,$res_num");
+		}
 		$result = array();
 		while($this->db->next_record()) {
 			$result[$this->db->f('ID')] = oldHtmlspecialchars($this->db->f('user'));

@@ -33,7 +33,7 @@ function we_tag_js($attribs){
 		$url = $row['Path'] . ($row['IsFolder'] ? '/' : '');
 
 		$attribs['type'] = 'text/javascript';
-		$attribs['src'] = BASE_JS . $url;
+		$attribs['src'] = (we_isHttps() ? '' : BASE_JS) . $url;
 
 		$attribs = removeAttribs($attribs, array('id'));
 

@@ -71,7 +71,7 @@ class leWizardCollection{
 
 			$WizardPath = dirname($_SERVER['DOCUMENT_ROOT'] . "/webEdition" . $WizardsFile) . '/';
 
-			for($i = 0; $i < sizeof($leInstallerWizards); $i++){
+			for($i = 0; $i < count($leInstallerWizards); $i++){
 				$temp = new leWizard($leInstallerWizards[$i], $WizardPath);
 
 				// array with all steps
@@ -94,7 +94,7 @@ class leWizardCollection{
 	 * @return integer
 	 */
 	function getWizardIndexByName($name){
-		for($i = 0; $i < sizeof($this->Wizards); $i++){
+		for($i = 0; $i < count($this->Wizards); $i++){
 			if($this->Wizards[$i]->Name == $name){
 				return $i;
 			}

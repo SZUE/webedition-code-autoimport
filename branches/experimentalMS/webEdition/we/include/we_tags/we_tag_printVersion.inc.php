@@ -23,12 +23,12 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_printVersion($attribs, $content){
-	if(($foo = attributFehltError($attribs, "tid", __FUNCTION__)))
+	if(($foo = attributFehltError($attribs, "tid", __FUNCTION__))){
 		return $foo;
+	}
 
 	$tid = weTag_getAttribute("tid", $attribs);
-	$triggerID = weTag_getAttribute("triggerID", $attribs); // :ATTENTION: difference between tag wizzard and program
-	$triggerID = $triggerID ? $triggerID : weTag_getAttribute("triggerid", $attribs);
+	$triggerID = weTag_getAttribute("triggerid", $attribs, weTag_getAttribute("triggerID", $attribs));
 
 	$docAttr = weTag_getAttribute("doc", $attribs);
 	if(!$docAttr){
@@ -51,7 +51,8 @@ function we_tag_printVersion($attribs, $content){
 		$hideQuery[] = session_name();
 	}
 	if(isset($_REQUEST)){
-		foreach($_REQUEST as $k => $v){
+		$tmp = filterXss($_REQUEST);
+		foreach($tmp as $k => $v){
 			if((!is_array($v)) && (!in_array($k, $hideQuery))){
 				$_query_string[$k] = $v;
 			}

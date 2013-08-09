@@ -51,54 +51,47 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js');
 </head>
 <body class="weEditorBody">
 	<?php
-
-	$_html = '<div class="weMultiIconBoxHeadline" style="margin-bottom:5px;">ID</div>' .
-		'<div style="margin-bottom:10px;">' . ($GLOBALS['we_doc']->ID ? $GLOBALS['we_doc']->ID : "-") . '</div>'.
-		'<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('weEditorInfo', "[content_type]") . '</div>' .
-		'<div style="margin-bottom:10px;">' . g_l('weEditorInfo', '[' . $GLOBALS['we_doc']->ContentType . ']') . '</div>';
+	$_html = '
+<div class="weMultiIconBoxHeadline" style="margin-bottom:5px;">ID</div>
+<div style="margin-bottom:10px;">' . ($GLOBALS['we_doc']->ID ? $GLOBALS['we_doc']->ID : "-") . '</div>
+<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('weEditorInfo', "[content_type]") . '</div>
+<div style="margin-bottom:10px;">' . g_l('weEditorInfo', '[' . $GLOBALS['we_doc']->ContentType . ']') . '</div>';
 
 
 	if($GLOBALS['we_doc']->ContentType != "folder"){
-
 		$fs = $GLOBALS['we_doc']->getFilesize();
 
 		$_html .= '<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('weEditorInfo', "[file_size]") . '</div>' .
 			'<div style="margin-bottom:10px;">' . round(($fs / 1024), 2) . "&nbsp;KB&nbsp;(" . $fs . "&nbsp;Byte)" . '</div>';
 	}
-	$parts=array(
+	$parts = array(
 		array("headline" => "",
-		"html" => $_html,
-		"space" => 140,
-		"icon" => "doclist/" . we_base_ContentTypes::inst()->getIcon($GLOBALS['we_doc']->ContentType, '', (isset($GLOBALS['we_doc']->Extension) ? $GLOBALS['we_doc']->Extension : "")),
+			"html" => $_html,
+			"space" => 140,
+			"icon" => "doclist/" . we_base_ContentTypes::inst()->getIcon($GLOBALS['we_doc']->ContentType, '', (isset($GLOBALS['we_doc']->Extension) ? $GLOBALS['we_doc']->Extension : "")),
 		)
 	);
 
 	if($GLOBALS['we_doc']->ContentType != "folder"){
+		$_html = '
+<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('weEditorInfo', "[creation_date]") . '</div>
+<div style="margin-bottom:10px;">' . date(g_l('weEditorInfo', "[date_format]"), $GLOBALS['we_doc']->CreationDate) . '</div>';
 
-		$_html = '<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('weEditorInfo', "[creation_date]") . '</div>' .
-			'<div style="margin-bottom:10px;">' . date(g_l('weEditorInfo', "[date_format]"), $GLOBALS['we_doc']->CreationDate) . '</div>';
-
-
-
-
-		if($GLOBALS['we_doc']->CreatorID){
-			$GLOBALS['DB_WE']->query("SELECT First,Second,username FROM " . USER_TABLE . " WHERE ID=" . intval($GLOBALS['we_doc']->CreatorID));
-			if($GLOBALS['DB_WE']->next_record()){
-				$_html .= '<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('modules_users', "[created_by]") . '</div>' .
-					'<div style="margin-bottom:10px;">' . $GLOBALS['DB_WE']->f("First") . ' ' . $GLOBALS['DB_WE']->f("Second") . ' (' . $GLOBALS['DB_WE']->f("username") . ')</div>';
-			}
+		if($GLOBALS['we_doc']->CreatorID && ($name = f('SELECT CONCAT(First," ",Second," (",username,")") AS name FROM ' . USER_TABLE . ' WHERE ID=' . intval($GLOBALS['we_doc']->CreatorID), 'name', $GLOBALS['DB_WE']))){
+			$_html .= '
+<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('modules_users', "[created_by]") . '</div>
+<div style="margin-bottom:10px;">' . $name . '</div>';
 		}
 
-		$_html .= '<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('weEditorInfo', "[changed_date]") . '</div>' .
-			'<div style="margin-bottom:10px;">' . date(g_l('weEditorInfo', "[date_format]"), $GLOBALS['we_doc']->ModDate) . '</div>';
+		$_html .= '
+<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('weEditorInfo', "[changed_date]") . '</div>
+<div style="margin-bottom:10px;">' . date(g_l('weEditorInfo', "[date_format]"), $GLOBALS['we_doc']->ModDate) . '</div>';
 
 
-		if($GLOBALS['we_doc']->ModifierID){
-			$GLOBALS['DB_WE']->query("SELECT First,Second,username FROM " . USER_TABLE . " WHERE ID=" . intval($GLOBALS['we_doc']->ModifierID));
-			if($GLOBALS['DB_WE']->next_record()){
-				$_html .= '<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('modules_users', "[changed_by]") . '</div>' .
-					'<div style="margin-bottom:10px;">' . $GLOBALS['DB_WE']->f("First") . ' ' . $GLOBALS['DB_WE']->f("Second") . ' (' . $GLOBALS['DB_WE']->f("username") . ')</div>';
-			}
+		if($GLOBALS['we_doc']->ModifierID && $name = f('SELECT CONCAT(First," ",Second," (",username,")") AS name FROM ' . USER_TABLE . ' WHERE ID=' . intval($GLOBALS['we_doc']->ModifierID), 'name', $GLOBALS['DB_WE'])){
+			$_html .= '
+<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('modules_users', "[changed_by]") . '</div>
+<div style="margin-bottom:10px;">' . $name . '</div>';
 		}
 
 		if($GLOBALS['we_doc']->ContentType == "text/html" || $GLOBALS['we_doc']->ContentType == "text/webedition"){
@@ -110,13 +103,13 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js');
 			}
 		}
 
-		$parts[]= array("headline" => "",
+		$parts[] = array("headline" => "",
 			"html" => $_html,
 			"space" => 140,
 			"icon" => "cal.gif"
-			);
-		if($GLOBALS['we_doc']->Table != TEMPLATES_TABLE){
+		);
 
+		if($GLOBALS['we_doc']->Table != TEMPLATES_TABLE){
 			$rp = $GLOBALS['we_doc']->getRealPath();
 			$http = $GLOBALS['we_doc']->getHttpPath();
 			$showlink = ($GLOBALS['we_doc']->ContentType == "text/html" ||
@@ -125,91 +118,91 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js');
 				$GLOBALS['we_doc']->ContentType == "application/x-shockwave-flash" ||
 				$GLOBALS['we_doc']->ContentType == "video/quicktime");
 
-			$published = true;
-			if(($GLOBALS['we_doc']->ContentType == "text/html" || $GLOBALS['we_doc']->ContentType == "text/webedition") && $GLOBALS['we_doc']->Published == 0){
-				$published = false;
-			}
+			$published = !(($GLOBALS['we_doc']->ContentType == "text/html" || $GLOBALS['we_doc']->ContentType == "text/webedition") && $GLOBALS['we_doc']->Published == 0);
 
-			$_html = '<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('weEditorInfo', "[local_path]") . '</div>' .
-				'<div style="margin-bottom:10px;">' . ($GLOBALS['we_doc']->ID == 0 || !$published ? '-' : '<span title="' . oldHtmlspecialchars($rp) . '">' . oldHtmlspecialchars(shortenPath($rp, 74)) . '</span>') . '</div>';
-			$_html .= '<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('weEditorInfo', "[http_path]") . '</div>' .
-				'<div style="margin-bottom:10px;">' . ($GLOBALS['we_doc']->ID == 0 || !$published ? '-' : ($showlink ? '<a href="' . $http . '" target="_blank" title="' . oldHtmlspecialchars($http) . '">' : '') . shortenPath($http, 74) . ($showlink ? '</a>' : '')) . '</div>';
+			$_html = '
+<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('weEditorInfo', "[local_path]") . '</div>
+<div style="margin-bottom:10px;">' . ($GLOBALS['we_doc']->ID == 0 || !$published ? '-' : '<span title="' . oldHtmlspecialchars($rp) . '">' . oldHtmlspecialchars(shortenPath($rp, 74)) . '</span>') . '</div>
+<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('weEditorInfo', "[http_path]") . '</div>
+<div style="margin-bottom:10px;">' . ($GLOBALS['we_doc']->ID == 0 || !$published ? '-' : ($showlink ? '<a href="' . $http . '" target="_blank" title="' . oldHtmlspecialchars($http) . '">' : '') . shortenPath($http, 74) . ($showlink ? '</a>' : '')) . '</div>';
 
-			$parts[]= array("headline" => "",
+			$parts[] = array("headline" => "",
 				"html" => $_html,
 				"space" => 140,
 				"icon" => "path.gif"
-
 			);
 		}
+
 		if(defined("WORKFLOW_TABLE") && $GLOBALS['we_doc']->ContentType == "text/webedition"){
-			if(we_workflow_utility::inWorkflow($GLOBALS['we_doc']->ID, $GLOBALS['we_doc']->Table)){
-				$anzeige = we_workflow_utility::getDocumentStatusInfo($GLOBALS['we_doc']->ID, $GLOBALS['we_doc']->Table);
-			} else{
-				$anzeige = we_workflow_utility::getLogButton($GLOBALS['we_doc']->ID, $GLOBALS['we_doc']->Table);
-			}
-			$parts[]= array("headline" => g_l('modules_workflow', '[workflow]'),
+			$anzeige = (we_workflow_utility::inWorkflow($GLOBALS['we_doc']->ID, $GLOBALS['we_doc']->Table) ?
+					we_workflow_utility::getDocumentStatusInfo($GLOBALS['we_doc']->ID, $GLOBALS['we_doc']->Table) :
+					we_workflow_utility::getLogButton($GLOBALS['we_doc']->ID, $GLOBALS['we_doc']->Table));
+
+			$parts[] = array("headline" => g_l('modules_workflow', '[workflow]'),
 				"html" => $anzeige,
 				"space" => 140,
 				"forceRightHeadline" => 1,
 				"icon" => "workflow.gif"
-
 			);
 		}
 
-		if($GLOBALS['we_doc']->ContentType == "image/*"){
-
-
-			$_metaData = $GLOBALS['we_doc']->getMetaData();
-
-			$_metaDataTable = '<table border="0" cellpadding="0" cellspacing="0">
-';
-
-			$_metaDataTable .= '<tr><td style="padding-bottom: 5px;" class="weMultiIconBoxHeadline" colspan="2">' . g_l('metadata', '[info_exif_data]') . '</td></tr>
-';
-			if(isset($_metaData["exif"])){
-				foreach($_metaData["exif"] as $_key => $_val){
-					$_metaDataTable .= '<tr><td style="padding:0px 5px 5px 0px;" class="defaultfont">' . oldHtmlspecialchars($_key) . ':</td><td style="padding:0px 5px 5px 0px;" class="defaultfont">' . oldHtmlspecialchars($_val) . '</td></tr>
-';
+		switch($GLOBALS['we_doc']->ContentType){
+			case 'image/*':
+				$_metaData = $GLOBALS['we_doc']->getMetaData();
+				$_metaDataTable = '
+<table border="0" cellpadding="0" cellspacing="0">
+	<tr><td style="padding-bottom: 5px;" class="weMultiIconBoxHeadline" colspan="2">' . g_l('metadata', '[info_exif_data]') . '</td></tr>';
+				if(isset($_metaData["exif"])){
+					foreach($_metaData["exif"] as $_key => $_val){
+						$_metaDataTable .= '<tr><td style="padding:0px 5px 5px 0px;" class="defaultfont">' . oldHtmlspecialchars($_key) . ':</td><td style="padding:0px 5px 5px 0px;" class="defaultfont">' . oldHtmlspecialchars($_val) . '</td></tr>';
+					}
 				}
-			}
-			if(!isset($_metaData["exif"]) || count($_metaData["exif"]) == 0){
-				$_metaDataTable .= '<tr><td style="padding:0px 5px 5px 0px;" class="defaultfont" colspan="2">' . (is_callable("exif_read_data") ? g_l('metadata', '[no_exif_data]') : g_l('metadata', '[no_exif_installed]')) . '</td></tr>
-';
-			}
-
-			$_metaDataTable .= '<tr><td style="padding:10px 0 5px 0;" class="weMultiIconBoxHeadline" colspan="2">' . g_l('metadata', '[info_iptc_data]') . '</td></tr>
-';
-			if(isset($_metaData["iptc"])){
-				foreach($_metaData["iptc"] as $_key => $_val){
-					$_metaDataTable .= '<tr><td style="padding:0px 5px 5px 0px;" class="defaultfont">' . oldHtmlspecialchars($_key) . ':</td><td style="padding:0px 5px 5px 0px;" class="defaultfont">' . oldHtmlspecialchars($_val) . '</td></tr>
-';
+				if(!isset($_metaData["exif"]) || empty($_metaData["exif"])){
+					$_metaDataTable .= '<tr><td style="padding:0px 5px 5px 0px;" class="defaultfont" colspan="2">' . (is_callable("exif_read_data") ? g_l('metadata', '[no_exif_data]') : g_l('metadata', '[no_exif_installed]')) . '</td></tr>';
 				}
-			}
-			if(!isset($_metaData["iptc"]) || count($_metaData["iptc"]) == 0){
-				$_metaDataTable .= '<tr><td style="padding:0px 5px 5px 0px;" class="defaultfont" colspan="2">' . g_l('metadata', '[no_iptc_data]') . '</td></tr>
-';
-			}
-			$_metaDataTable .= '</table>';
-			$parts[]= array("headline" => "",
+
+				$_metaDataTable .= '<tr><td style="padding:10px 0 5px 0;" class="weMultiIconBoxHeadline" colspan="2">' . g_l('metadata', '[info_iptc_data]') . '</td></tr>';
+				if(isset($_metaData["iptc"])){
+					foreach($_metaData["iptc"] as $_key => $_val){
+						$_metaDataTable .= '<tr><td style="padding:0px 5px 5px 0px;" class="defaultfont">' . oldHtmlspecialchars($_key) . ':</td><td style="padding:0px 5px 5px 0px;" class="defaultfont">' . oldHtmlspecialchars($_val) . '</td></tr>';
+					}
+				}
+				if(!isset($_metaData["iptc"]) || empty($_metaData["iptc"])){
+					$_metaDataTable .= '<tr><td style="padding:0px 5px 5px 0px;" class="defaultfont" colspan="2">' . g_l('metadata', '[no_iptc_data]') . '</td></tr>';
+				}
+				$_metaDataTable .= '</table>';
+				break;
+			case 'application/*':
+				if($GLOBALS['we_doc']->Extension == '.pdf'){
+					$metaData = $GLOBALS['we_doc']->getMetaData();
+					$_metaDataTable = '
+<table border="0" cellpadding="0" cellspacing="0">
+	<tr><td style="padding-bottom: 5px;" class="weMultiIconBoxHeadline" colspan="2">' . g_l('metadata', '[info_pdf_data]') . '</td></tr>';
+					if(!empty($metaData['pdf'])){
+						foreach($metaData['pdf'] as $key => $val){
+							$_metaDataTable .= '<tr><td style="padding:0px 5px 5px 0px;" class="defaultfont">' . oldHtmlspecialchars($key) . ':</td><td style="padding:0px 5px 5px 0px;" class="defaultfont">' . oldHtmlspecialchars($val) . '</td></tr>';
+						}
+					}
+					$_metaDataTable .= '</table>';
+					break;
+				}
+			//no break;
+			default:
+				if($GLOBALS['we_doc']->isBinary()){
+					$_metaDataTable = g_l('metadata', '[no_metadata_supported]');
+				}
+		}
+		if(isset($_metaDataTable)){
+			$parts[] = array("headline" => "",
 				"html" => $_metaDataTable,
 				"space" => 140,
 				"forceRightHeadline" => 1,
 				"icon" => "meta.gif"
-
-			);
-		} else if($GLOBALS['we_doc']->isBinary()){
-			$parts[]= array("headline" => "Metadaten",
-				"html" => g_l('metadata', '[no_metadata_supported]'),
-				"space" => 140,
-				"forceRightHeadline" => 1,
-				"icon" => "meta.gif"
-
 			);
 		}
 	}
 
-	print we_multiIconBox::getJS().
+	print we_multiIconBox::getJS() .
 		we_multiIconBox::getHTML("", "100%", $parts, 20, "", -1, "", "", false);
 	?>
 </body>

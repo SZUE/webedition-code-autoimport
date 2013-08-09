@@ -162,7 +162,9 @@ we_error_handler(false);
 @set_time_limit(0);
 
 // set memory limit to an equitable value if possible
-@ini_set("memory_limit", "128M");
+if( intval(ini_get('memory_limit')) < 128){
+	@ini_set('memory_limit', '128M');
+}
 
 // knock out identifiation and permissions
 $_SESSION["perms"] = array();
@@ -255,7 +257,7 @@ $long_opts = array(
 );
 
 // Convert the arguments to options - check for the first argument
-if(count($_SERVER['argv']) && realpath($_SERVER['argv'][0]) == __FILE__){
+if(!empty($_SERVER['argv']) && realpath($_SERVER['argv'][0]) == __FILE__){
 	$options = Console_Getopt::getOpt($args, $short_opts, $long_opts);
 } else{
 	$options = Console_Getopt::getOpt2($args, $short_opts, $long_opts);
@@ -267,7 +269,7 @@ if(PEAR::isError($options)){
 	fwrite(STDERR, $_cliHelp . "\n");
 	exit(INVALID_OPTION);
 }
-if(count($args)){
+if(!empty($args)){
 	$_REQUEST['compress'] = false;
 	$_REQUEST['verbose'] = false;
 	$_REQUEST['handle_extern'] = false;
@@ -346,7 +348,7 @@ if(!isset($_SESSION['weS']['weBackupVars']) || empty($_SESSION['weS']['weBackupV
 				print "Exporting extern files...\n";
 			}
 
-			$fh = fopen($_SESSION['weS']['weBackupVars']['backup_file'], 'ab');
+			$fh = $_SESSION['weS']['weBackupVars']['open']($_SESSION['weS']['weBackupVars']['backup_file'], 'ab');
 			if($fh){
 				foreach($_SESSION['weS']['weBackupVars']['extern_files'] as $file_to_export){
 					if($_REQUEST['verbose']){
@@ -356,14 +358,14 @@ if(!isset($_SESSION['weS']['weBackupVars']) || empty($_SESSION['weS']['weBackupV
 						weBackupUtil::exportFile($file_to_export, $fh);
 					}
 				}
-				fclose($fh);
+				$_SESSION['weS']['weBackupVars']['close']($fh);
 			}
 		}
 
 		if($_REQUEST['verbose']){
 			print "\nExporting repository\n";
 		}
-		$_fh = fopen($_SESSION['weS']['weBackupVars']['backup_file'], 'ab');
+		$_fh = $_SESSION['weS']['weBackupVars']['open']($_SESSION['weS']['weBackupVars']['backup_file'], 'ab');
 
 		while(($_SESSION['weS']['weBackupVars']['row_counter'] < $_SESSION['weS']['weBackupVars']['row_count']) || weBackupUtil::hasNextTable()) {
 			if($_REQUEST['verbose']){
@@ -376,17 +378,17 @@ if(!isset($_SESSION['weS']['weBackupVars']) || empty($_SESSION['weS']['weBackupV
 				$_SESSION['weS']['weBackupVars']['row_counter'] = $_SESSION['weS']['weBackupVars']['row_count'];
 			}
 		}
-		fclose($_fh);
+		$_SESSION['weS']['weBackupVars']['close']($_fh);
 
 		if($_SESSION['weS']['weBackupVars']['handle_options']['settings']){
-			$fh = fopen($_SESSION['weS']['weBackupVars']['backup_file'], 'ab');
+			$fh = $_SESSION['weS']['weBackupVars']['open']($_SESSION['weS']['weBackupVars']['backup_file'], 'ab');
 			if($fh){
 				$file_to_export = WE_INCLUDES_DIR . 'conf/we_conf_global.inc.php';
 				weBackupUtil::exportFile($file_to_export, $fh);
-				fclose($fh);
+				$_SESSION['weS']['weBackupVars']['close']($fh);
 			}
 		}
-		weFile::save($_SESSION['weS']['weBackupVars']['backup_file'], weBackup::weXmlExImFooter, 'ab');
+		weFile::save($_SESSION['weS']['weBackupVars']['backup_file'], weBackup::weXmlExImFooter, 'ab', $_SESSION['weS']['weBackupVars']['options']['compress']);
 
 		if(!empty($_SESSION['weS']['weBackupVars']['options']['compress'])){
 			if($_REQUEST['verbose']){

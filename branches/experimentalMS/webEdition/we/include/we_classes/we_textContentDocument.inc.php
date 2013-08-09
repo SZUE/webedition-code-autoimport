@@ -25,7 +25,7 @@
 abstract class we_textContentDocument extends we_textDocument{
 	/* Doc-Type of the document */
 
-	var $DocType = "";
+	public $DocType = '';
 
 	function __construct(){
 		parent::__construct();
@@ -97,24 +97,18 @@ abstract class we_textContentDocument extends we_textDocument{
 					}
 				} else if(!is_array($_dat)){
 					if(isset($v["type"]) && $v["type"] == "txt" && ($k != "Charset")){
-						$text .= " " . (isset($v["dat"]) ? $v["dat"] : "");
+						$text .= ' ' . (isset($v["dat"]) ? $v["dat"] : "");
 					}
 				}
 			}
 		}
-		$text = trim(strip_tags($text));
 
 		$maxDB = min(1000000, getMaxAllowedPacket($this->DB_WE) - 1024);
-		if(strlen($text) > $maxDB){
-			$text = substr($text, 0, $maxDB);
-		}
+		$text = substr(preg_replace(array("/\n+/", '/  +/'), ' ', trim(strip_tags($text))), 0, $maxDB);
 
-		$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE DID=' . intval($this->ID));
 		if($this->IsSearchable && $this->Published){
-
 			$set = array('DID' => intval($this->ID),
 				'Text' => $text,
-				'BText' => $text,
 				'Workspace' => $this->ParentPath,
 				'WorkspaceID' => intval($this->ParentID),
 				'Category' => $this->Category,
@@ -123,13 +117,14 @@ abstract class we_textContentDocument extends we_textDocument{
 				'Description' => $this->getElement("Description"),
 				'Path' => $this->Path,
 				'Language' => $this->Language);
+
 			if(DB_CONNECT=='msconnect'){
 				return $this->DB_WE->query('INSERT INTO ' . INDEX_TABLE . ' ' . we_database_base::arraySetterINSERT($set));
-			} else {
-				return $this->DB_WE->query('INSERT INTO ' . INDEX_TABLE . ' SET ' . we_database_base::arraySetter($set));
+			} else { // fixme msconnect REPLACE
+				return $this->DB_WE->query('REPLACE INTO ' . INDEX_TABLE . ' SET ' . we_database_base::arraySetter($set));
 			}
-			
 		}
+		$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE DID=' . intval($this->ID));
 		return true;
 	}
 
@@ -288,7 +283,7 @@ abstract class we_textContentDocument extends we_textDocument{
 	public function we_save($resave = 0, $skipHook = 0){
 		$this->errMsg = '';
 		$this->i_setText();
-		if($skipHook == 0){
+		if(!$skipHook){
 			$hook = new weHook('preSave', '', array($this, 'resave' => $resave));
 			$ret = $hook->executeHook();
 			//check if doc should be saved
@@ -318,12 +313,12 @@ abstract class we_textContentDocument extends we_textDocument{
 		$ret = $this->i_saveTmp(!$resave);
 		$this->OldPath = $this->Path;
 
-		if(($this->ContentType == "text/webedition" && defined('VERSIONING_TEXT_WEBEDITION') && VERSIONING_TEXT_WEBEDITION) || ($this->ContentType == "text/html" && defined('VERSIONING_TEXT_HTML') && VERSIONING_TEXT_HTML)){
+		if(($this->ContentType == 'text/webedition' && defined('VERSIONING_TEXT_WEBEDITION') && VERSIONING_TEXT_WEBEDITION) || ($this->ContentType == 'text/html' && defined('VERSIONING_TEXT_HTML') && VERSIONING_TEXT_HTML)){
 			$version->save($this);
 		}
 
 		/* hook */
-		if($skipHook == 0){
+		if(!$skipHook){
 			$hook = new weHook('save', '', array($this, 'resave' => $resave));
 			$ret = $hook->executeHook();
 			//check if doc should be saved
@@ -337,7 +332,7 @@ abstract class we_textContentDocument extends we_textDocument{
 	}
 
 	public function we_publish($DoNotMark = false, $saveinMainDB = true, $skipHook = 0){
-		if($skipHook == 0){
+		if(!$skipHook){
 			$hook = new weHook('prePublish', '', array($this));
 			$ret = $hook->executeHook();
 			//check if doc should be saved
@@ -346,6 +341,10 @@ abstract class we_textContentDocument extends we_textDocument{
 				return false;
 			}
 		}
+		$this->oldCategory = f('SELECT Category FROM ' . $this->Table . ' WHERE ID=' . $this->ID, 'Category', $this->DB_WE);
+		$oldDocType = f('SELECT DocType FROM ' . $this->Table . ' WHERE ID=' . $this->ID, 'DocType', $this->DB_WE);
+
+
 		if($saveinMainDB){
 			if(!we_root::we_save(1)){
 				return false; // calls the root function, so the document will be saved in main-db but it will not be written!
@@ -362,15 +361,15 @@ abstract class we_textContentDocument extends we_textDocument{
 		}
 
 		if($DoNotMark == false){
-			if(!$this->DB_WE->query('UPDATE ' . $this->DB_WE->escape($this->Table) . " SET Published='" . intval($this->Published) . "' WHERE ID=" . intval($this->ID)))
+			if(!$this->DB_WE->query('UPDATE ' . $this->DB_WE->escape($this->Table) . ' SET Published=' . intval($this->Published) . ' WHERE ID=' . intval($this->ID)))
 				return false; // mark the document as published;
 		}
 
 		//Bug #5505
-//		if($saveinMainDB) {
-		//FIXME: check this is needed because of filename change (is checked somewhere else) + customerfilter change (not checked yet)
+//		if($_oldPublished == 0 || $this->isMoved() || $this->Category != $this->oldCategory || $oldDocType != $this->DocType){
+		//FIXME: changes of customerFilter are missing here
 		$this->rewriteNavigation();
-//		}
+		//	}
 
 		if(isset($_SESSION['weS']['versions']['fromScheduler']) && $_SESSION['weS']['versions']['fromScheduler'] && (($this->ContentType == "text/webedition" && defined('VERSIONING_TEXT_WEBEDITION') && VERSIONING_TEXT_WEBEDITION) || ($this->ContentType == "text/html" && defined('VERSIONING_TEXT_HTML') && VERSIONING_TEXT_HTML))){
 			$version = new weVersions();
@@ -378,7 +377,7 @@ abstract class we_textContentDocument extends we_textDocument{
 		}
 
 		/* hook */
-		if($skipHook == 0){
+		if(!$skipHook){
 			$hook = new weHook('publish', '', array($this));
 			$ret = $hook->executeHook();
 			//check if doc should be saved
@@ -397,7 +396,7 @@ abstract class we_textContentDocument extends we_textDocument{
 		if(!$this->ID){
 			return false;
 		}
-		if(file_exists($this->getRealPath(true)) && !we_util_File::deleteLocalFile($this->getRealPath(!$this->i_isMoved()))){
+		if(file_exists($this->getRealPath(true)) && !we_util_File::deleteLocalFile($this->getRealPath(!$this->isMoved()))){
 			return false;
 		}
 		if(!$this->DB_WE->query('UPDATE ' . $this->DB_WE->escape($this->Table) . ' SET Published=0 WHERE ID=' . intval($this->ID))){
@@ -414,7 +413,7 @@ abstract class we_textContentDocument extends we_textDocument{
 		}
 
 		/* hook */
-		if($skipHook == 0){
+		if(!$skipHook){
 			$hook = new weHook('unpublish', '', array($this));
 			$ret = $hook->executeHook();
 			//check if doc should be saved
@@ -424,9 +423,7 @@ abstract class we_textContentDocument extends we_textDocument{
 			}
 		}
 
-		if(f('SELECT 1 AS a FROM ' . INDEX_TABLE . ' WHERE DID=' . intval($this->ID), 'a', $this->DB_WE) == 1){
-			return $this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE DID=' . intval($this->ID));
-		}
+		$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE DID=' . intval($this->ID));
 
 		return true;
 	}
@@ -435,7 +432,7 @@ abstract class we_textContentDocument extends we_textDocument{
 		if($this->Published){
 			return $this->we_publish(true, $rebuildMain);
 		} else{
-			return $this->DB_WE->query("DELETE FROM " . INDEX_TABLE . " WHERE DID=" . intval($this->ID));
+			return $this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE DID=' . intval($this->ID));
 		}
 	}
 
@@ -495,7 +492,7 @@ abstract class we_textContentDocument extends we_textDocument{
 			$parent = dirname($parent);
 			$parent = str_replace("\\", "/", $parent);
 		}
-		for($i = (sizeof($cf) - 1); $i >= 0; $i--){
+		for($i = (count($cf) - 1); $i >= 0; $i--){
 			we_util_File::createLocalFolder($cf[$i]);
 		}
 		$doc = $this->i_getDocumentToSave();

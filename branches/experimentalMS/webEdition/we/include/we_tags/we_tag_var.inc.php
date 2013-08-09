@@ -27,57 +27,43 @@ function we_tag_var($attribs){
 		return $foo;
 	}
 	$docAttr = weTag_getAttribute('doc', $attribs);
-	//$_name_orig=weTag_getAttribute("_name_orig", $attribs);
+	$name = weTag_getAttribute('name', $attribs);
+	$name_orig = weTag_getAttribute('_name_orig', $attribs);
 	$type = weTag_getAttribute('type', $attribs);
-	$oldHtmlspecialchars = weTag_getAttribute('htmlspecialchars', $attribs, false, true); // #3771
+	$htmlspecialchars = weTag_getAttribute('htmlspecialchars', $attribs, false, true); // #3771
 	$doc = we_getDocForTag($docAttr, false);
 
 	switch($type){
 		case 'session' :
-			$name = weTag_getAttribute('_name_orig', $attribs);
-			$return = (isset($_SESSION[$name])) ? $_SESSION[$name] : '';
-			return $oldHtmlspecialchars ? oldHtmlspecialchars($return) : $return;
+			$return = (isset($_SESSION[$name_orig])) ? $_SESSION[$name_orig] : '';
+			return $htmlspecialchars ? oldHtmlspecialchars($return) : $return;
 		case 'request' :
-			$name = weTag_getAttribute('_name_orig', $attribs);
-			$return = we_util::rmPhp(isset($_REQUEST[$name]) ? $_REQUEST[$name] : '');
-			return $oldHtmlspecialchars ? oldHtmlspecialchars($return) : $return;
+			$return = filterXss(we_util::rmPhp(isset($_REQUEST[$name_orig]) ? $_REQUEST[$name_orig] : ''));
+			return $htmlspecialchars ? oldHtmlspecialchars($return) : $return;
 		case 'post' :
-			$name = weTag_getAttribute('_name_orig', $attribs);
-			$return = we_util::rmPhp(isset($_POST[$name]) ? $_POST[$name] : '');
-			return $oldHtmlspecialchars ? oldHtmlspecialchars($return) : $return;
+			$return = we_util::rmPhp(isset($_POST[$name_orig]) ? $_POST[$name_orig] : '');
+			return $htmlspecialchars ? oldHtmlspecialchars($return) : $return;
 		case 'get' :
-			$name = weTag_getAttribute('_name_orig', $attribs);
-			$return = we_util::rmPhp(isset($_GET[$name]) ? $_GET[$name] : '');
-			return $oldHtmlspecialchars ? oldHtmlspecialchars($return) : $return;
+			$return = we_util::rmPhp(isset($_GET[$name_orig]) ? $_GET[$name_orig] : '');
+			return $htmlspecialchars ? oldHtmlspecialchars($return) : $return;
 		case 'global' :
-			$name = weTag_getAttribute('name', $attribs);
-			$name_orig = weTag_getAttribute('_name_orig', $attribs);
-
 			$return = (isset($GLOBALS[$name])) ? $GLOBALS[$name] : ((isset($GLOBALS[$name_orig])) ? $GLOBALS[$name_orig] : '');
-			return $oldHtmlspecialchars ? oldHtmlspecialchars($return) : $return;
+			return $htmlspecialchars ? oldHtmlspecialchars($return) : $return;
 		case 'multiobject' :
 			$data = unserialize($doc->getField($attribs, $type, true));
-			if(isset($data['objects']) && !empty($data['objects'])){
-				return implode(',', $data['objects']);
-			} else{
-				return '';
-			}
+			return (isset($data['objects']) && !empty($data['objects']) ? implode(',', $data['objects']) : '');
 
 		case 'property' :
-			$name = weTag_getAttribute('_name_orig', $attribs);
+			return (isset($GLOBALS['we_obj']) ?
+					$GLOBALS['we_obj']->$name_orig :
+					$doc->$name_orig);
 
-			if(isset($GLOBALS['we_obj'])){
-				return $GLOBALS['we_obj']->$name;
-			} else{
-				return $doc->$name;
-			}
 		case 'shopVat' :
 			if(defined('SHOP_TABLE')){
-
 				$vatId = $doc->getElement(WE_SHOP_VAT_FIELD_NAME);
 				return weShopVats::getVatRateForSite($vatId);
 			}
-			break;
+			return '';
 		case 'link' :
 			return $doc->getField($attribs, $type, false);
 		// bugfix #3634
@@ -86,17 +72,21 @@ function we_tag_var($attribs){
 			// bugfix 7557
 			// wenn die Abfrage im Aktuellen Objekt kein Erg?bnis liefert
 			// wird in den eingebundenen Objekten ?berpr?ft ob das Feld existiert
-			$name = ($type == 'select' && $normVal == '' ? weTag_getAttribute('_name_orig', $attribs) : $name);
+			$name = ($type == 'select' && $normVal == '' ? $name_orig : $name);
+			$selectKey = weTag_getAttribute('key', $attribs, false, true);
+			if($type == 'select' && $selectKey){
+				return $htmlspecialchars ? oldHtmlspecialchars($doc->getElement($name)) : $doc->getElement($name);
+			}
 
 			if(isset($doc->DefArray) && is_array($doc->DefArray)){
 				$keys = array_keys($doc->DefArray);
 				foreach($keys as $_glob_key){
 					if((substr($_glob_key, 0, 7) == 'object_' && ($rest = substr($_glob_key, 7))) || (substr($_glob_key, 0, 10) == 'we_object_' && ($rest = substr($_glob_key, 7)))){
-						$normVal = we_document::getFieldByVal($doc->getElement($name), $type, $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], $rest);
+						$normVal = $doc->getFieldByVal($doc->getElement($name), $type, $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], $rest);
 					}
 
 					if($normVal != ''){
-						return $normVal;
+						return $htmlspecialchars ? oldHtmlspecialchars($normVal) : $normVal;
 					}
 				}
 			}
@@ -105,5 +95,4 @@ function we_tag_var($attribs){
 
 			return $normVal;
 	}
-	return $var;
 }

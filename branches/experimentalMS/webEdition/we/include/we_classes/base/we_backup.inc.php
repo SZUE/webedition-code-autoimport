@@ -31,7 +31,8 @@ define('BACKUP_TABLE', TBL_PREFIX . 'tblbackup');
 
 //FIXME: try to remove this class
 abstract class we_backup{
-
+	const COMPRESSION='gzip';
+	
 	var $backup_db;
 	var $errors = array();
 	var $warnings = array();
@@ -1280,7 +1281,7 @@ $this->dummy=' . var_export($this->dummy, true) . ';
 			we_util_File::insertIntoCleanUp($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . "download/" . $download_filename, time());
 			return $download_filename;
 		} else{
-			return "";
+			return '';
 		}
 	}
 

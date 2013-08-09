@@ -49,9 +49,9 @@ class we_makenewtemplate extends we_template{
 function getObjectTags($id, $isField = false){
 	$tableInfo = we_objectFile::getSortedTableInfo($id, true);
 	$content = '<table cellpadding="2" cellspacing="0" border="1" width="400">';
-
-	for($i = 0; $i < sizeof($tableInfo); $i++){
-		if(preg_match('/(.+?)_(.*)/', $tableInfo[$i]["name"], $regs)){
+	$regs = array();
+	foreach($tableInfo as $cur){
+		if(preg_match('/(.+?)_(.*)/', $cur["name"], $regs)){
 			$content .= getTmplTableRow($regs[1], $regs[2], $isField);
 		}
 	}
@@ -93,28 +93,28 @@ function getMultiObjectTags($name){
 
 function getTemplTag($type, $name, $isField = false){
 	switch($type){
-		case "meta":
+		case 'meta':
 			return $isField ? '<we:field type="select" name="' . $name . '">' : '<we:var type="select" name="' . $name . '">';
-		case "input":
-		case "text":
-		case "int":
-		case "float":
+		case 'input':
+		case 'text':
+		case 'int':
+		case 'float':
 			return $isField ? '<we:field name="' . $name . '">' : '<we:var name="' . $name . '">';
-		case "link":
+		case 'link':
 			return $isField ? '<we:field type="link" name="' . $name . '">' : '<we:var type="link" name="' . $name . '">';
-		case "href":
+		case 'href':
 			return $isField ? '<we:field type="href" name="' . $name . '">' : '<we:var type="href" name="' . $name . '">';
-		case "img":
+		case 'img':
 			return $isField ? '<we:field type="img" name="' . $name . '">' : '<we:var type="img" name="' . $name . '">';
-		case "checkbox":
+		case 'checkbox':
 			return $isField ? '<we:field type="checkbox" name="' . $name . '">' : '<we:var type="checkbox" name="' . $name . '">';
-		case "date":
+		case 'date':
 			return $isField ? '<we:field type="date" name="' . $name . '">' : '<we:var type="date" name="' . $name . '">';
-		case "object":
+		case 'object':
 			if(!in_array($name, $GLOBALS["usedIDs"])){
 				return getObjectTags($name, $isField);
 			}
-		case "multiobject":
+		case 'multiobject':
 			return getMultiObjectTags($name);
 	}
 	return '';

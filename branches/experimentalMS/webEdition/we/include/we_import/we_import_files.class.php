@@ -48,7 +48,7 @@ class we_import_files{
 				// bugfix Workarround #700
 				if(is_numeric($_cat)){
 					$_cats[] = $_cat;
-				} else{
+				} else {
 					$_cats[] = path_to_id($_cat, CATEGORY_TABLE);
 				}
 			}
@@ -225,7 +225,7 @@ function checkButtons(){
 		// create Start Screen ##############################################################################
 
 		$wsA = makeArrayFromCSV(get_def_ws());
-		$ws = sizeof($wsA) ? $wsA[0] : 0;
+		$ws = empty($wsA) ? 0 : $wsA[0];
 		$store_id = $this->importToID ? $this->importToID : $ws;
 
 		$path = id_to_path($store_id);
@@ -252,7 +252,7 @@ function checkButtons(){
 				"headline" => g_l('importFiles', "[destination_dir]"),
 				"html" => $content,
 				"space" => 150
-			));
+		));
 
 		$content = we_html_tools::htmlAlertAttentionBox(g_l('importFiles', "[sameName_expl]"), 2, 380) .
 			we_html_tools::getPixel(200, 10) .
@@ -293,7 +293,7 @@ function checkButtons(){
 				$Thselect = g_l('importFiles', "[thumbnails]") . "<br>" . we_html_tools::getPixel(1, 3) . "<br>" . '<select class="defaultfont" name="thumbs_tmp" size="5" multiple style="width: 260px" onchange="this.form.thumbs.value=\'\';for(var i=0;i<this.options.length;i++){if(this.options[i].selected){this.form.thumbs.value +=(this.options[i].value+\',\');}};this.form.thumbs.value=this.form.thumbs.value.replace(/^(.+),$/,\'$1\');">' . "\n";
 
 				$thumbsArray = makeArrayFromCSV($this->thumbs);
-				while($GLOBALS['DB_WE']->next_record()) {
+				while($GLOBALS['DB_WE']->next_record()){
 					$Thselect .= '<option value="' . $GLOBALS['DB_WE']->f("ID") . '"' . (in_array(
 							$GLOBALS['DB_WE']->f("ID"), $thumbsArray) ? " selected" : "") . '>' . $GLOBALS['DB_WE']->f("Name") . "</option>\n";
 				}
@@ -352,7 +352,7 @@ function checkButtons(){
 					"html" => we_image_edit::qualitySelect("quality", $this->quality),
 					"space" => 150
 				);
-			} else{
+			} else {
 				$parts[] = array(
 					"headline" => "",
 					"html" => we_html_tools::htmlAlertAttentionBox(
@@ -361,7 +361,7 @@ function checkButtons(){
 				);
 			}
 			$foldAt = 3;
-		} else{
+		} else {
 			$foldAt = -1;
 		}
 		$wepos = weGetCookieVariable("but_weimportfiles");
@@ -405,11 +405,11 @@ function checkButtons(){
 					"style" => "display: none;cursor:pointer;",
 					"id" => "trash_WEFORMNUM",
 					"onclick" => "wedelRow(WEFORMNUM + 1,this)"
-			));
+		));
 		$but = str_replace("\n", " ", str_replace("\r", " ", $but));
 
 		$maxsize = getUploadMaxFilesize(false, $GLOBALS['DB_WE']);
-		$maxsize = round($maxsize / (1024 * 1024), 3) . 'MB';
+		$maxsize = weFile::getHumanFileSize($fs, weFile::SZ_MB);
 
 		$content = we_html_tools::hidden('we_cmd[0]', 'import_files') .
 			we_html_tools::hidden('cmd', 'content') . we_html_tools::hidden('step', 2) .
@@ -497,7 +497,7 @@ function checkButtons(){
 				'html' => we_html_tools::htmlAlertAttentionBox(
 					sprintf(str_replace('\n', '<br>', g_l('importFiles', '[error]')), $filelist), 1, "520", false)
 			);
-		} else{
+		} else {
 
 			$parts[] = array(
 				'html' => we_html_tools::htmlAlertAttentionBox(g_l('importFiles', '[finished]'), 2, "520", false)
@@ -537,7 +537,7 @@ function checkButtons(){
 		$cancelButton = we_button::create_button("cancel", "javascript:top.close()");
 		$closeButton = we_button::create_button("close", "javascript:top.close()");
 
-		$progressbar = "";
+		$progressbar = '';
 		$formnum = (isset($_REQUEST["weFormNum"]) ? $_REQUEST["weFormNum"] : 0);
 		$formcount = (isset($_REQUEST["weFormCount"]) ? $_REQUEST["weFormCount"] : 0);
 		$js = we_button::create_state_changer(false) . '
@@ -585,11 +585,11 @@ function next() {
 
 			$filelist = '';
 			foreach($_SESSION['weS']['WE_IMPORT_FILES_ERRORs'] as $err){
-				$filelist .= '- ' . $err["filename"] . ' => ' . g_l('importFiles', '[' . $err["error"] . ']') . '\n';
+				$filelist .= '- ' . $err["filename"] . ' => ' . $err["error"] . '\n';
 			}
 			unset($_SESSION['weS']['WE_IMPORT_FILES_ERRORs']);
 			$js .= we_message_reporting::getShowMessageCall(sprintf(g_l('importFiles', "[error]"), $filelist), we_message_reporting::WE_MESSAGE_ERROR);
-		} else{
+		} else {
 			$js .= we_message_reporting::getShowMessageCall(g_l('importFiles', "[finished]"), we_message_reporting::WE_MESSAGE_NOTICE);
 		}
 
@@ -657,8 +657,8 @@ function next() {
 		$prevNextButtons = $prevButton ? we_button::create_button_table(array($prevButton, $nextButton)) : null;
 
 		$table = new we_html_table(array(
-				"border" => "0", "cellpadding" => "0", "cellspacing" => "0", "width" => "100%"
-				), 1, 2);
+			"border" => "0", "cellpadding" => "0", "cellspacing" => "0", "width" => "100%"
+			), 1, 2);
 		$table->setCol(0, 0, null, $progressbar);
 		$table->setCol(0, 1, array(
 			"align" => "right"
@@ -718,20 +718,20 @@ function next() {
 				if($this->sameName == "rename"){
 					$z = 0;
 					$footext = $we_doc->Filename . "_" . $z . $we_doc->Extension;
-					while(f("SELECT ID FROM " . FILE_TABLE . " WHERE Text='" . $GLOBALS['DB_WE']->escape($footext) . "' AND ParentID=" . intval($this->importToID), "ID", $GLOBALS['DB_WE'])) {
+					while(f("SELECT ID FROM " . FILE_TABLE . " WHERE Text='" . $GLOBALS['DB_WE']->escape($footext) . "' AND ParentID=" . intval($this->importToID), "ID", $GLOBALS['DB_WE'])){
 						$z++;
 						$footext = $we_doc->Filename . "_" . $z . $we_doc->Extension;
 					}
 					$we_doc->Text = $footext;
 					$we_doc->Filename = $we_doc->Filename . "_" . $z;
 					$we_doc->Path = $we_doc->getParentPath() . (($we_doc->getParentPath() != "/") ? "/" : "") . $we_doc->Text;
-				} else{
+				} else {
 					return array("filename" => $_FILES['we_File']["name"], 'error' => g_l('importFiles', '[same_name]'));
 				}
 			}
 			// now change the category
 			$we_doc->Category = $this->categories;
-			if($we_ContentType == "image/*"){
+			if($we_ContentType == "image/*" || $we_ContentType == "application/x-shockwave-flash"){
 				$we_size = $we_doc->getimagesize($tempName);
 				if(is_array($we_size) && count($we_size) >= 2){
 					$we_doc->setElement("width", $we_size[0], "attrib");
@@ -740,39 +740,31 @@ function next() {
 					$we_doc->setElement("origheight", $we_size[1]);
 				}
 			}
-			if($we_ContentType == "application/x-shockwave-flash"){
-				$we_size = $we_doc->getimagesize($tempName);
-				if(is_array($we_size) && count($we_size) >= 2){
-					$we_doc->setElement("width", $we_size[0], "attrib");
-					$we_doc->setElement("height", $we_size[1], "attrib");
-					$we_doc->setElement("origwidth", $we_size[0]);
-					$we_doc->setElement("origheight", $we_size[1]);
-				}
-			}
-			$we_doc->setElement("type", $we_ContentType, "attrib");
-			$fh = @fopen($tempName, "rb");
-			if($_FILES['we_File']["size"] <= 0){
-				$_FILES['we_File']["size"] = 1;
-			}
-			if($fh){
-				if(!$we_doc->isBinary()){
-					$we_fileData = fread($fh, $_FILES['we_File']["size"]);
-				}
-				fclose($fh);
-			} else{
-				return array("filename" => $_FILES['we_File']["name"], 'error' => g_l('importFiles', '[read_file_error]'));
-			}
-			$foo = explode('/', $_FILES["we_File"]["type"]);
-			if($we_doc->isBinary()){
-				$we_doc->setElement("data", $tempName);
-			} else{
-				$we_doc->setElement("data", $we_fileData, $foo[0]);
+			if($we_doc->Extension == '.pdf'){
+				$we_doc->setMetaDataFromFile($tempName);
 			}
 
-			$we_doc->setElement("filesize", $_FILES['we_File']["size"], "attrib");
+			$we_doc->setElement('type', $we_ContentType, "attrib");
+			$fh = @fopen($tempName, 'rb');
+			if($_FILES['we_File']['size'] <= 0){
+				$_FILES['we_File']['size'] = 1;
+			}
+			if($fh){
+				if($we_doc->isBinary()){
+					$we_doc->setElement("data", $tempName);
+				} else {
+					$foo = explode('/', $_FILES["we_File"]["type"]);
+					$we_doc->setElement("data", fread($fh, $_FILES['we_File']["size"]), $foo[0]);
+				}
+				fclose($fh);
+			} else {
+				return array('filename' => $_FILES['we_File']['name'], 'error' => g_l('importFiles', '[read_file_error]'));
+			}
+
+			$we_doc->setElement('filesize', $_FILES['we_File']['size'], 'attrib');
 			$we_doc->Table = FILE_TABLE;
 			$we_doc->Published = time();
-			if($we_ContentType == "image/*"){
+			if($we_ContentType == 'image/*'){
 				$we_doc->Thumbs = $this->thumbs;
 
 				$newWidth = 0;
@@ -818,7 +810,7 @@ function next() {
 				$we_doc->importMetaData();
 			}
 			return array();
-		} else{
+		} else {
 			return array("filename" => $_FILES['we_File']["name"], "error" => g_l('importFiles', '[php_error]'));
 		}
 	}
@@ -886,7 +878,7 @@ function next() {
 					'src' => BUTTONS_DIR . 'btn_function_trash.gif',
 					'onclick' => 'javascript:#####placeHolder#####;',
 					'style' => 'cursor: pointer; width: 27px;'
-			)));
+		)));
 
 		$js = we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js');
 
@@ -908,15 +900,13 @@ categories_edit.setItem(0,(categories_edit.itemCount-1),"' . id_to_path($cat, CA
 		$js .= we_html_element::jsElement($variant_js);
 
 		$table = new we_html_table(
-				array(
-					'id' => 'CategoriesBlock',
-					'style' => 'display: block;',
-					'cellpadding' => 0,
-					'cellspacing' => 0,
-					'border' => 0
-				),
-				4,
-				1);
+			array(
+			'id' => 'CategoriesBlock',
+			'style' => 'display: block;',
+			'cellpadding' => 0,
+			'cellspacing' => 0,
+			'border' => 0
+			), 4, 1);
 
 		$table->setColContent(0, 0, we_html_tools::getPixel(5, 5));
 		$table->setColContent(
@@ -925,7 +915,7 @@ categories_edit.setItem(0,(categories_edit.itemCount-1),"' . id_to_path($cat, CA
 					'id' => 'categoriesDiv',
 					'class' => 'blockWrapper',
 					'style' => 'width: ' . ($_width_size) . 'px; height: 60px; border: #AAAAAA solid 1px;'
-			)));
+		)));
 		$table->setColContent(2, 0, we_html_tools::getPixel(5, 5));
 		$table->setCol(
 			3, 0, array(
@@ -933,7 +923,7 @@ categories_edit.setItem(0,(categories_edit.itemCount-1),"' . id_to_path($cat, CA
 			), we_button::create_button_table(
 				array(
 					we_button::create_button("delete_all", "javascript:removeAllCats()"), $addbut
-			)));
+		)));
 
 		return $table->getHtml() . $js . we_html_element::jsElement('
 function removeAllCats(){

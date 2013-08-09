@@ -26,13 +26,14 @@ class weHyperlinkDialog extends weDialog{
 
 	var $ClassName = __CLASS__;
 	var $changeableArgs = array(
-		"type", "extHref", "fileID", "href", "fileHref", "objID", "objHref", "mailHref", "target", "class",
-		"param", "anchor", "lang", "hreflang", "title", "accesskey", "tabindex", "rel", "rev"
+		'type', 'extHref', 'fileID', 'href', 'fileHref', 'objID', 'objHref', 'mailHref', 'target', 'class',
+		'param', 'anchor', 'lang', 'hreflang', 'title', 'accesskey', 'tabindex', 'rel', 'rev'
 	);
 
-	function __construct($href = "", $target = "", $fileID = 0, $objID = 0){
+	function __construct($href = '', $target = '', $fileID = 0, $objID = 0, $noInternals = false){
 		parent::__construct();
-		$this->dialogTitle = g_l('wysiwyg', "[edit_hyperlink]");
+		$this->dialogTitle = g_l('wysiwyg', '[edit_hyperlink]');
+		$this->noInternals = $noInternals;
 	}
 
 	function getDialogButtons(){
@@ -44,147 +45,146 @@ class weHyperlinkDialog extends weDialog{
 			$okBut = (($this->getBackBut() != "") && ($this->getOkBut()) != "") ? we_button::create_button_table(array($this->getBackBut(), $this->getOkBut())) : (($this->getBackBut() == "") ? $this->getOkBut() : $this->getBackBut());
 		}
 
-		return we_button::position_yes_no_cancel($okBut, "", we_button::create_button("cancel", "javascript:top.close();"));
+		return we_button::position_yes_no_cancel($okBut, '', we_button::create_button('cancel', "javascript:top.close();"));
 	}
 
 	function initByHref($href, $target = "", $class = "", $param = "", $anchor = "", $lang = "", $hreflang = "", $title = "", $accesskey = "", $tabindex = "", $rel = "", $rev = ""){
 		if($href){
 			$this->args["href"] = $href;
+			list($type, $ref) = explode(':', $this->args["href"]);
+			$type.=':';
 
 			// Object Links and internal links are not possible when outside webEdition
 			// for exmaple in the wysiwyg (Mantis Bug #138)
-			if(isset($this->args["outsideWE"]) && $this->args["outsideWE"] == 1
-				&& (
-				substr($this->args["href"], 0, 7) == "object:"
-				|| substr($this->args["href"], 0, 9) == "document:"
+			if(($this->noInternals || (isset($this->args["outsideWE"]) && $this->args["outsideWE"] == 1)) && (
+				$type == we_base_link::TYPE_OBJ_PREFIX || $type == we_base_link::TYPE_INT_PREFIX
 				)
 			){
-				$this->args["href"] = "";
+				$this->args["href"] = $type = $ref = '';
 			}
 
-			list($type, $ref) = explode(':', $this->args["href"]);
 
 			switch($type){
-				case "object":
-					$this->args["type"] = "obj";
-					$this->args["extHref"] = "";
-					$this->args["fileID"] = "";
-					$this->args["fileHref"] = "";
-					$this->args["mailHref"] = "";
-					$this->args["objID"] = $ref;
-					$this->args["objHref"] = f("SELECT Path FROM " . OBJECT_FILES_TABLE . " WHERE ID=" . intval($this->args["objID"]), "Path", $this->db);
+				case we_base_link::TYPE_OBJ_PREFIX:
+					$this->args['type'] = we_base_link::TYPE_OBJ;
+					$this->args['extHref'] = '';
+					$this->args['fileID'] = '';
+					$this->args['fileHref'] = '';
+					$this->args['mailHref'] = '';
+					$this->args['objID'] = $ref;
+					$this->args['objHref'] = f('SELECT Path FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($this->args['objID']), 'Path', $this->db);
 					break;
-				case "document":
-					$this->args["type"] = "int";
-					$this->args["extHref"] = "";
-					$this->args["fileID"] = $ref;
-					$this->args["fileHref"] = f("SELECT Path FROM " . FILE_TABLE . " WHERE ID=" . intval($this->args["fileID"]), "Path", $this->db);
-					$this->args["mailHref"] = "";
-					$this->args["objID"] = "";
-					$this->args["objHref"] = "";
+				case we_base_link::TYPE_INT_PREFIX:
+					$this->args['type'] = we_base_link::TYPE_INT;
+					$this->args['extHref'] = '';
+					$this->args['fileID'] = $ref;
+					$this->args['fileHref'] = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($this->args['fileID']), 'Path', $this->db);
+					$this->args['mailHref'] = '';
+					$this->args['objID'] = '';
+					$this->args['objHref'] = '';
 					break;
-				case "mailto":
-					$this->args["type"] = "mail";
-					$this->args["mailHref"] = preg_replace('|^([^\?#]+).*$|', '\1', $ref);
-					$this->args["extHref"] = "";
-					$this->args["fileID"] = "";
-					$this->args["fileHref"] = "";
-					$this->args["objID"] = "";
-					$this->args["objHref"] = "";
+				case we_base_link::TYPE_MAIL_PREFIX:
+					$this->args['type'] = we_base_link::TYPE_MAIL;
+					$this->args['mailHref'] = preg_replace('|^([^\?#]+).*$|', '\1', $ref);
+					$this->args['extHref'] = '';
+					$this->args['fileID'] = '';
+					$this->args['fileHref'] = '';
+					$this->args['objID'] = '';
+					$this->args['objHref'] = '';
 					break;
 				default:
-					$this->args["type"] = "ext";
-					$this->args["extHref"] = preg_replace('|^([^\?#]+).*$|', '\1', preg_replace('|^' . WEBEDITION_DIR . '|', '', preg_replace('|^' . WEBEDITION_DIR . 'we_cmd.php[^"\'#]+(#.*)$|', '\1', $this->args["href"])));
-					$this->args["fileID"] = "";
-					$this->args["fileHref"] = "";
-					$this->args["mailHref"] = "";
-					$this->args["objID"] = "";
-					$this->args["objHref"] = "";
+					$this->args['type'] = we_base_link::TYPE_EXT;
+					$this->args['extHref'] = preg_replace('|^([^\?#]+).*$|', '\1', preg_replace('|^' . WEBEDITION_DIR . '|', '', preg_replace('|^' . WEBEDITION_DIR . 'we_cmd.php[^"\'#]+(#.*)$|', '\1', $this->args["href"])));
+					$this->args['fileID'] = '';
+					$this->args['fileHref'] = '';
+					$this->args['mailHref'] = '';
+					$this->args['objID'] = '';
+					$this->args['objHref'] = '';
 			}
 		}
-		$this->args["target"] = $target;
-		$this->args["class"] = $class;
-		$this->args["param"] = str_replace("&amp;", "&", $param);
-		$this->args["anchor"] = $anchor;
-		$this->args["lang"] = $lang;
-		$this->args["hreflang"] = $hreflang;
-		$this->args["title"] = $title;
-		$this->args["accesskey"] = $accesskey;
-		$this->args["tabindex"] = $tabindex;
-		$this->args["rel"] = $rel;
-		$this->args["rev"] = $rev;
+		$this->args['target'] = $target;
+		$this->args['class'] = $class;
+		$this->args['param'] = str_replace('&amp;', '&', $param);
+		$this->args['anchor'] = $anchor;
+		$this->args['lang'] = $lang;
+		$this->args['hreflang'] = $hreflang;
+		$this->args['title'] = $title;
+		$this->args['accesskey'] = $accesskey;
+		$this->args['tabindex'] = $tabindex;
+		$this->args['rel'] = $rel;
+		$this->args['rev'] = $rev;
 	}
 
-	function initByFileID($fileID, $target = "", $class = "", $param = "", $anchor = "", $lang = "", $hreflang = "", $title = "", $accesskey = "", $tabindex = "", $rel = "", $rev = ""){
+	function initByFileID($fileID, $target = '', $class = '', $param = '', $anchor = '', $lang = '', $hreflang = '', $title = '', $accesskey = '', $tabindex = '', $rel = '', $rev = ''){
 		if($fileID){
-			$this->args["href"] = "document:" . $fileID;
-			$this->args["type"] = "int";
-			$this->args["extHref"] = "";
-			$this->args["fileID"] = $fileID;
-			$this->args["fileHref"] = f("SELECT Path FROM " . FILE_TABLE . " WHERE ID=" . intval($this->args["fileID"]), "Path", $this->db);
-			$this->args["objID"] = "";
-			$this->args["mailHref"] = "";
-			$this->args["objHref"] = "";
+			$this->args['href'] = we_base_link::TYPE_INT_PREFIX . $fileID;
+			$this->args['type'] = we_base_link::TYPE_INT;
+			$this->args['extHref'] = '';
+			$this->args['fileID'] = $fileID;
+			$this->args['fileHref'] = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($this->args['fileID']), 'Path', $this->db);
+			$this->args['objID'] = '';
+			$this->args['mailHref'] = '';
+			$this->args['objHref'] = '';
 		}
-		$this->args["target"] = $target;
-		$this->args["class"] = $class;
-		$this->args["param"] = $param;
-		$this->args["anchor"] = $anchor;
-		$this->args["lang"] = $lang;
-		$this->args["hreflang"] = $hreflang;
-		$this->args["title"] = $title;
-		$this->args["accesskey"] = $accesskey;
-		$this->args["tabindex"] = $tabindex;
-		$this->args["rel"] = $rel;
-		$this->args["rev"] = $rev;
+		$this->args['target'] = $target;
+		$this->args['class'] = $class;
+		$this->args['param'] = $param;
+		$this->args['anchor'] = $anchor;
+		$this->args['lang'] = $lang;
+		$this->args['hreflang'] = $hreflang;
+		$this->args['title'] = $title;
+		$this->args['accesskey'] = $accesskey;
+		$this->args['tabindex'] = $tabindex;
+		$this->args['rel'] = $rel;
+		$this->args['rev'] = $rev;
 	}
 
-	function initByObjectID($objID, $target = "", $class = "", $param = "", $anchor = "", $lang = "", $hreflang = "", $title = "", $accesskey = "", $tabindex = "", $rel = "", $rev = ""){
+	function initByObjectID($objID, $target = '', $class = '', $param = '', $anchor = '', $lang = '', $hreflang = '', $title = '', $accesskey = '', $tabindex = '', $rel = '', $rev = ''){
 		if($objID){
-			$this->args["href"] = "object:" . $objID;
-			$this->args["type"] = "obj";
-			$this->args["extHref"] = "";
-			$this->args["fileID"] = "";
-			$this->args["fileHref"] = "";
-			$this->args["mailHref"] = "";
-			$this->args["objID"] = $objID;
-			$this->args["objHref"] = f("SELECT Path FROM " . OBJECT_FILES_TABLE . " WHERE ID=" . intval($this->args["objID"]), "Path", $this->db);
+			$this->args['href'] = we_base_link::TYPE_OBJ_PREFIX . $objID;
+			$this->args['type'] = we_base_link::TYPE_OBJ;
+			$this->args['extHref'] = '';
+			$this->args['fileID'] = '';
+			$this->args['fileHref'] = '';
+			$this->args['mailHref'] = '';
+			$this->args['objID'] = $objID;
+			$this->args['objHref'] = f('SELECT Path FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($this->args['objID']), 'Path', $this->db);
 		}
-		$this->args["target"] = $target;
-		$this->args["class"] = $class;
-		$this->args["param"] = $param;
-		$this->args["anchor"] = $anchor;
-		$this->args["lang"] = $lang;
-		$this->args["hreflang"] = $hreflang;
-		$this->args["title"] = $title;
-		$this->args["accesskey"] = $accesskey;
-		$this->args["tabindex"] = $tabindex;
-		$this->args["rel"] = $rel;
-		$this->args["rev"] = $rev;
+		$this->args['target'] = $target;
+		$this->args['class'] = $class;
+		$this->args['param'] = $param;
+		$this->args['anchor'] = $anchor;
+		$this->args['lang'] = $lang;
+		$this->args['hreflang'] = $hreflang;
+		$this->args['title'] = $title;
+		$this->args['accesskey'] = $accesskey;
+		$this->args['tabindex'] = $tabindex;
+		$this->args['rel'] = $rel;
+		$this->args['rev'] = $rev;
 	}
 
-	function initByMailHref($mailHref, $target = "", $class = "", $param = "", $anchor = "", $lang = "", $hreflang = "", $title = "", $accesskey = "", $tabindex = "", $rel = "", $rev = ""){
+	function initByMailHref($mailHref, $target = '', $class = '', $param = '', $anchor = '', $lang = '', $hreflang = '', $title = '', $accesskey = '', $tabindex = '', $rel = '', $rev = ''){
 		if($mailHref){
-			$this->args["href"] = "mailto:" . $mailHref;
-			$this->args["type"] = "mail";
-			$this->args["extHref"] = "";
-			$this->args["fileID"] = "";
-			$this->args["fileHref"] = "";
-			$this->args["mailHref"] = $mailHref;
-			$this->args["objID"] = "";
-			$this->args["objHref"] = "";
+			$this->args['href'] = we_base_link::TYPE_MAIL_PREFIX . $mailHref;
+			$this->args['type'] = we_base_link::TYPE_MAIL;
+			$this->args['extHref'] = '';
+			$this->args['fileID'] = '';
+			$this->args['fileHref'] = '';
+			$this->args['mailHref'] = $mailHref;
+			$this->args['objID'] = '';
+			$this->args['objHref'] = '';
 		}
-		$this->args["target"] = $target;
-		$this->args["class"] = $class;
-		$this->args["param"] = $param;
-		$this->args["anchor"] = $anchor;
-		$this->args["lang"] = $lang;
-		$this->args["hreflang"] = $hreflang;
-		$this->args["title"] = $title;
-		$this->args["accesskey"] = $accesskey;
-		$this->args["tabindex"] = $tabindex;
-		$this->args["rel"] = $rel;
-		$this->args["rev"] = $rev;
+		$this->args['target'] = $target;
+		$this->args['class'] = $class;
+		$this->args['param'] = $param;
+		$this->args['anchor'] = $anchor;
+		$this->args['lang'] = $lang;
+		$this->args['hreflang'] = $hreflang;
+		$this->args['title'] = $title;
+		$this->args['accesskey'] = $accesskey;
+		$this->args['tabindex'] = $tabindex;
+		$this->args['rel'] = $rel;
+		$this->args['rev'] = $rev;
 	}
 
 	function glue_url($parsed){
@@ -202,17 +202,17 @@ class weHyperlinkDialog extends weDialog{
 
 	function initByHttp(){
 		parent::initByHttp();
-		$href = $this->getHttpVar("href");
-		$target = $this->getHttpVar("target");
-		$param = $this->getHttpVar("param");
-		$anchor = $this->getHttpVar("anchor");
-		$lang = $this->getHttpVar("lang");
-		$hreflang = $this->getHttpVar("hreflang");
-		$title = $this->getHttpVar("title");
-		$accesskey = $this->getHttpVar("accesskey");
-		$tabindex = $this->getHttpVar("tabindex");
-		$rel = $this->getHttpVar("rel");
-		$rev = $this->getHttpVar("rev");
+		$href = $this->getHttpVar('href');
+		$target = $this->getHttpVar('target');
+		$param = $this->getHttpVar('param');
+		$anchor = $this->getHttpVar('anchor');
+		$lang = $this->getHttpVar('lang');
+		$hreflang = $this->getHttpVar('hreflang');
+		$title = $this->getHttpVar('title');
+		$accesskey = $this->getHttpVar('accesskey');
+		$tabindex = $this->getHttpVar('tabindex');
+		$rel = $this->getHttpVar('rel');
+		$rev = $this->getHttpVar('rev');
 
 		if($href && (strpos($href, "?") !== false || strpos($href, "#") !== false)){
 			$urlparts = parse_url($href);
@@ -233,18 +233,18 @@ class weHyperlinkDialog extends weDialog{
 			$fileID = $this->getHttpVar("fileID", 0);
 			$objID = $this->getHttpVar("objID", 0);
 			switch($type){
-				case "ext":
-					$extHref = $this->getHttpVar("extHref", "#");
+				case we_base_link::TYPE_EXT:
+					$extHref = $this->getHttpVar('extHref', '#');
 					$this->initByHref($extHref, $target, $class, $param, $anchor, $lang, $hreflang, $title, $accesskey, $tabindex, $rel, $rev);
 					break;
-				case "int":
+				case we_base_link::TYPE_INT:
 					$this->initByFileID($fileID, $target, $class, $param, $anchor, $lang, $hreflang, $title, $accesskey, $tabindex, $rel, $rev);
 					break;
-				case "obj":
+				case we_base_link::TYPE_OBJ:
 					$this->initByObjectID($objID, $target, $class, $param, $anchor, $lang, $hreflang, $title, $accesskey, $tabindex, $rel, $rev);
 					break;
-				case "mail":
-					$mailhref = $this->getHttpVar("mailHref");
+				case we_base_link::TYPE_MAIL:
+					$mailhref = $this->getHttpVar('mailHref');
 					$this->initByMailHref($mailhref, $target, $class, $param, $anchor, $lang, $hreflang, $title, $accesskey, $tabindex, $rel, $rev);
 					break;
 			}
@@ -255,60 +255,58 @@ class weHyperlinkDialog extends weDialog{
 
 	function defaultInit(){
 		$this->args = array_merge($this->args, array(
-			"href" => "document:",
-			"type" => "int",
-			"extHref" => "",
-			"fileID" => "",
-			"fileHref" => "",
-			"objID" => "",
-			"objHref" => "",
-			"mailHref" => "",
-			"target" => "",
-			"class" => "",
-			"param" => "",
-			"anchor" => "",
-			"lang" => "",
-			"hreflang" => "",
-			"title" => "",
-			"accesskey" => "",
-			"tabindex" => "",
-			"rel" => "",
-			"rev" => "",
-			));
+			'href' => we_base_link::TYPE_INT_PREFIX,
+			'type' => we_base_link::TYPE_INT,
+			'extHref' => '',
+			'fileID' => '',
+			'fileHref' => '',
+			'objID' => '',
+			'objHref' => '',
+			'mailHref' => '',
+			'target' => '',
+			'class' => '',
+			'param' => '',
+			'anchor' => '',
+			'lang' => '',
+			'hreflang' => '',
+			'title' => '',
+			'accesskey' => '',
+			'tabindex' => '',
+			'rel' => '',
+			'rev' => '',
+		));
 	}
 
 	function getDialogContentHTML(){
 		// Initialize we_button class
 		$yuiSuggest = & weSuggest::getInstance();
 
-		$extHref = utf8_decode((substr($this->args["extHref"], 0, 1) == "#") ? "" : $this->args["extHref"]);
-		if(isset($this->args["outsideWE"]) && $this->args["outsideWE"] == 1){
+		$extHref = $this->args['extHref'] == '' ? 'http://' : (utf8_decode((substr($this->args['extHref'], 0, 1) == "#") ? '' : $this->args['extHref']));
+		if($this->noInternals || (isset($this->args['outsideWE']) && $this->args['outsideWE'] == 1)){
 
 
-			$_select_type = '<select name="we_dialog_args[type]" size="1" style="margin-bottom:5px;" onchange="changeTypeSelect(this);">
-<option value="ext"' . (($this->args["type"] == "ext") ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', "[external_link]") . '</option>
-<option value="mail"' . (($this->args["type"] == "mail") ? ' selected="selected"' : '') . '>' . g_l('wysiwyg', "[emaillink]") . '</option>
+		$_select_type = '<select name="we_dialog_args[type]" id="weDialogType" size="1" style="margin-bottom:5px;width:300px;" onchange="changeTypeSelect(this);">
+<option value="' . we_base_link::TYPE_EXT . '"' . (($this->args["type"] == we_base_link::TYPE_EXT) ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', "[external_link]") . '</option>
+<option value="' . we_base_link::TYPE_MAIL . '"' . (($this->args["type"] == we_base_link::TYPE_MAIL) ? ' selected="selected"' : '') . '>' . g_l('wysiwyg', "[emaillink]") . '</option>
 </select>';
-
 
 			$_external_link = we_html_tools::htmlTextInput("we_dialog_args[extHref]", 30, $extHref, "", '', "url", 300);
 
-
 			// INTERNAL LINK
-			$_internal_link = "";
+			$_internal_link = '';
 
 			// E-MAIL LINK
 			$_email_link = we_html_tools::htmlTextInput("we_dialog_args[mailHref]", 30, $this->args["mailHref"], "", '', "email", 300);
 
 			// OBJECT LINK
-			$_object_link = "";
+			$_object_link = '';
 		} else{
 			$_select_type = '<select name="we_dialog_args[type]" id="weDialogType" size="1" style="margin-bottom:5px;width:300px;" onchange="changeTypeSelect(this);">
-<option value="ext"' . (($this->args["type"] == "ext") ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', "[external_link]") . '</option>
-<option value="int"' . (($this->args["type"] == "int") ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', "[internal_link]") . '</option>
-<option value="mail"' . (($this->args["type"] == "mail") ? ' selected="selected"' : '') . '>' . g_l('wysiwyg', "[emaillink]") . '</option>' .
+<option value="' . we_base_link::TYPE_EXT . '"' . (($this->args["type"] == we_base_link::TYPE_EXT) ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', "[external_link]") . '</option>
+<option value="' . we_base_link::TYPE_INT . '"' . (($this->args["type"] == we_base_link::TYPE_INT) ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', "[internal_link]") . '</option>
+<option value="' . we_base_link::TYPE_MAIL . '"' . (($this->args["type"] == we_base_link::TYPE_MAIL) ? ' selected="selected"' : '') . '>' . g_l('wysiwyg', "[emaillink]") . '</option>' .
 				((defined("OBJECT_TABLE") && ($_SESSION['weS']['we_mode'] == "normal" || we_hasPerm("CAN_SEE_OBJECTFILES"))) ?
-					'<option value="obj"' . (($this->args["type"] == "obj") ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', "[objectFile]") . '</option>' :
+					'<option value="' . we_base_link::TYPE_OBJ . '"' . (($this->args["type"] == we_base_link::TYPE_OBJ) ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', "[objectFile]") . '</option>' :
 					''
 				) . '</select>';
 
@@ -317,7 +315,17 @@ class weHyperlinkDialog extends weDialog{
 			$wecmdenc1 = we_cmd_enc("document.we_form.elements['we_dialog_args[extHref]'].value");
 			$_external_select_button = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_button::create_button("select", "javascript:we_cmd('browse_server', '" . $wecmdenc1 . "', '', document.we_form.elements['we_dialog_args[extHref]'].value, '')") : "";
 
-			$_external_link = "<div style='margin-top:1px'>" . we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[extHref]", 30, $extHref ? $extHref : "http://", "", 'onchange="if(this.value==\'\'){this.value=\'http://\'}"', "url", 300), "", "left", "defaultfont", we_html_tools::getPixel(10, 1), $_external_select_button, "", "", "", 0) . "</div>";
+			$_external_link = "<div style='margin-top:1px'>" . we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[extHref]", 30, $extHref ? $extHref : "http://", "", 'onchange="if(this.value==\'\'){
+					this.value=\'http://\';
+}else{
+	var x=this.value.match(/(.*:\/\/[^#?]*)(\?([^?#]*))?(#([^?#]*))?/);
+	this.value=x[1];
+	if(x[3]!=undefined){
+		document.getElementsByName(\'we_dialog_args[param]\')[0].value=x[3];
+	}
+	if(x[5]!=undefined){
+		document.getElementsByName(\'we_dialog_args[anchor]\')[0].value=x[5];
+	}}"', "url", 300), "", "left", "defaultfont", we_html_tools::getPixel(10, 1), $_external_select_button, '', '', '', 0) . '</div>';
 
 
 			// INTERNAL LINK
@@ -373,7 +381,7 @@ class weHyperlinkDialog extends weDialog{
 
 		$_anchor = we_html_tools::htmlFormElementTable($_anchorInput, "", "left", "defaultfont", we_html_tools::getPixel(10, 1), $_anchorSel, "", "", "", 0);
 
-		$_param = we_html_tools::htmlTextInput("we_dialog_args[param]", 30, utf8_decode($this->args["param"]), "", "", "text", 300);
+		$_param = we_html_tools::htmlTextInput("we_dialog_args[param]", 30, utf8_decode($this->args["param"]), '', '', 'text', 300);
 
 		// CSS STYLE
 		$classSelect = $this->args["editor"] == 'tinyMce' ? $this->getClassSelect() :
@@ -402,7 +410,7 @@ class weHyperlinkDialog extends weDialog{
 					<td class="defaultgray" valign="top" width="100" height="20">' . g_l('weClass', "[linkType]") . '</td>
 					<td valign="top">' . $_select_type . '</td>
 				</tr>
-				<tr id="ext_tr" style="display:' . (($this->args["type"] == "ext") ? "table-row" : "none") . ';">
+				<tr id="ext_tr" style="display:' . (($this->args["type"] == we_base_link::TYPE_EXT) ? "table-row" : "none") . ';">
 					<td class="defaultgray" valign="top" width="100">' . g_l('linklistEdit', "[external_link]") . '</td><td valign="top" >' . $_external_link . '</td>
 				</tr>';
 
@@ -415,14 +423,14 @@ class weHyperlinkDialog extends weDialog{
 			}');
 
 			$table .= '
-				<tr id="int_tr" style="display:' . (($this->args["type"] == "int") ? "table-row" : "none") . ';">
+				<tr id="int_tr" style="display:' . (($this->args["type"] == we_base_link::TYPE_INT) ? "table-row" : "none") . ';">
 					<td class="defaultgray" valign="top" width="100"> ' . g_l('weClass', "[document]") . '</td>
 					<td valign="top"> ' . $autoSuggest . '</td>
 				</tr>';
 		}
 
 		$table .= '
-				<tr id="mail_tr" style="display:' . (($this->args["type"] == "mail") ? "table-row" : "none") . ';">
+				<tr id="mail_tr" style="display:' . (($this->args["type"] == we_base_link::TYPE_MAIL) ? "table-row" : "none") . ';">
 					<td class="defaultgray" valign="top" width="100">' . g_l('wysiwyg', "[emaillink]") . '</td>
 					<td valign="top">
 						' . $_email_link . '</td>
@@ -430,7 +438,7 @@ class weHyperlinkDialog extends weDialog{
 
 		if(defined("OBJECT_TABLE") && isset($_object_link)){
 			$table .= '
-				<tr id="obj_tr" style="display:' . (($this->args["type"] == "obj") ? "table-row" : "none") . ';">
+				<tr id="obj_tr" style="display:' . (($this->args["type"] == we_base_link::TYPE_OBJ) ? "table-row" : "none") . ';">
 					<td class="defaultgray" valign="top" width="100" height="0">' . g_l('contentTypes', '[objectFile]') . '</td>
 					<td valign="top">
 						' . $_object_link . '</td>
@@ -539,7 +547,7 @@ class weHyperlinkDialog extends weDialog{
 
 	function getTinyMceJS(){
 		return parent::getTinyMceJS() .
-			we_html_element::jsScript(TINYMCE_JS_DIR . 'plugins/advlink/js/advlink_init.js');
+			we_html_element::jsScript(TINYMCE_JS_DIR . 'plugins/welink/js/welink_init.js');
 	}
 
 	function getJs(){
@@ -552,7 +560,7 @@ class weHyperlinkDialog extends weDialog{
 
 				function weCheckAcFields(){
 					if(!!weFocusedField) weFocusedField.blur();
-					if(document.getElementById("weDialogType").value=="int"){
+					if(document.getElementById("weDialogType").value=="' . we_base_link::TYPE_INT . '"){
 						setTimeout("weDoCheckAcFields()",100);
 					} else {
 						document.forms["we_form"].submit();
@@ -611,7 +619,7 @@ class weHyperlinkDialog extends weDialog{
 				(isset($this->args["cssClasses"]) && $this->args["cssClasses"] ?
 					'					var classCSV = "' . $this->args["cssClasses"] . '";
 									classNames = classCSV.split(/,/);' : ($this->args["editor"] == "tinyMce" ? 'classNames = top.opener.weclassNames_tinyMce;' :
-					'					classNames = top.opener.we_classNames;')) . '
+						'					classNames = top.opener.we_classNames;')) . '
 					document.writeln(\'<select class="defaultfont" style="width:300px" name="\'+name+\'" id="\'+name+\'" size="1"\'+(onCh ? \' onChange="\'+onCh+\'"\' : \'\')+\'>\');
 					document.writeln(\'<option value="">' . g_l('wysiwyg', "[none]") . '\');
 					if(typeof(classNames) != "undefined"){

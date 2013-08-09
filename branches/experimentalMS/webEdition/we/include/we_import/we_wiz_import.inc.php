@@ -60,10 +60,11 @@ class we_wizard_import extends we_wizard{
 			$dv = array();
 		$tableInfo_sorted = we_objectFile::getSortedTableInfo($classID, true, $db);
 		$fields = array();
-		for($i = 0; $i < sizeof($tableInfo_sorted); $i++){
+		$regs = array();
+		foreach($tableInfo_sorted as $cur){
 			// bugfix 8141
-			if(preg_match('/(.+?)_(.*)/', $tableInfo_sorted[$i]["name"], $regs)){
-				array_push($fields, array("name" => $regs[2], "type" => $regs[1]));
+			if(preg_match('/(.+?)_(.*)/', $cur["name"], $regs)){
+				$fields[] = array("name" => $regs[2], "type" => $regs[1]);
 			}
 		}
 		return $fields;
@@ -136,10 +137,11 @@ class we_wizard_import extends we_wizard{
 	 * @desc returns array of attributes
 	 */
 	function parseAttributes($attr){
+		//FIXME: use tagParser
 		$attribs = "";
 		preg_match_all('/([^=]+)= *("[^"]*")/', $attr, $foo, PREG_SET_ORDER);
-		for($i = 0; $i < sizeof($foo); $i++){
-			$attribs .= '"' . trim($foo[$i][1]) . '"=>' . trim($foo[$i][2]) . ',';
+		foreach($foo as $cur){
+			$attribs .= '"' . trim($cur[1]) . '"=>' . trim($cur[2]) . ',';
 		}
 		$arrstr = "array(" . rtrim($attribs, ',') . ")";
 		eval('$arr = ' . $arrstr . ';');
@@ -179,7 +181,7 @@ class we_wizard_import extends we_wizard{
 			}
 		}
 
-		$cmd = $this->getPostGetVar('we_cmd', array("import", $defaultVal));
+		$cmd = isset($_REQUEST['we_cmd']) ? $_REQUEST['we_cmd'] : array("import", $defaultVal);
 		$expat = (function_exists("xml_parser_create")) ? true : false;
 
 		$tblFiles = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 3, 1);
@@ -278,7 +280,7 @@ class we_wizard_import extends we_wizard{
 	}
 
 	function getWXMLImportStep1(){
-		$v = $this->getPostGetVar("v", array());
+		$v = isset($_REQUEST['v']) ? $_REQUEST['v'] : array();
 		$doc_root = get_def_ws();
 		$tmpl_root = get_def_ws(TEMPLATES_TABLE);
 		$nav_root = get_def_ws(NAVIGATION_TABLE);
@@ -388,7 +390,7 @@ class we_wizard_import extends we_wizard{
 		$importLocs->setCol(2, 0, array(), we_html_tools::getPixel(1, 4));
 		$importLocs->setCol(3, 0, array(), $rdoLLocal);
 		$maxsize = getUploadMaxFilesize(false);
-		$importLocs->setCol(4, 0, array(), we_html_tools::htmlAlertAttentionBox(sprintf(g_l('import', "[filesize_local]"), round($maxsize / (1024 * 1024), 3) . "MB"), 1, "410"));
+		$importLocs->setCol(4, 0, array(), we_html_tools::htmlAlertAttentionBox(sprintf(g_l('import', "[filesize_local]"), weFile::getHumanFileSize($maxsize, weFile::SZ_MB)), 1, "410"));
 		$importLocs->setCol(5, 0, array(), we_html_tools::getPixel(1, 2));
 		$importLocs->setCol(6, 0, array(), $importFromLocal);
 
@@ -430,7 +432,7 @@ class we_wizard_import extends we_wizard{
 			if(empty($_FILES['uploaded_xml_file']['tmp_name']) || $_FILES['uploaded_xml_file']['error']){
 
 				$_upload_error = true;
-			} else{
+			} else {
 
 				$v["import_from"] = TEMP_DIR . weFile::getUniqueId() . "_w.xml";
 				move_uploaded_file($_FILES["uploaded_xml_file"]["tmp_name"], $_SERVER['DOCUMENT_ROOT'] . $v["import_from"]);
@@ -519,7 +521,7 @@ class we_wizard_import extends we_wizard{
 
 			$maxsize = getUploadMaxFilesize();
 			$_return[1] = we_html_element::jsElement($functions . ' ' .
-					we_message_reporting::getShowMessageCall(sprintf(g_l('import', '[upload_failed]'), round($maxsize / (1024 * 1024), 3) . "MB"), we_message_reporting::WE_MESSAGE_ERROR) . '
+					we_message_reporting::getShowMessageCall(sprintf(g_l('import', '[upload_failed]'), weFile::getHumanFileSize($maxsize, weFile::SZ_MB)), we_message_reporting::WE_MESSAGE_ERROR) . '
 							handle_event("previous");');
 			return $_return;
 		}
@@ -530,7 +532,7 @@ class we_wizard_import extends we_wizard{
 					we_message_reporting::getShowMessageCall(g_l('import', '[format_unknown]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 							handle_event("previous");');
 			return $_return;
-		} else{
+		} else {
 			$_xml_type = weBackupUtil::getXMLImportType($_import_file);
 			if($_xml_type == 'backup'){
 				$_return[0] = '';
@@ -538,16 +540,16 @@ class we_wizard_import extends we_wizard{
 				if(we_hasPerm('IMPORT')){
 					$_return[1] = we_html_element::jsElement('
 							' . $functions . '
-							if(confirm("' . g_l('import', '[backup_file_found]') . ' \n\n' . g_l('import', '[backup_file_found_question]') . '")){
+							if(confirm("' . str_replace('"', '\'', g_l('import', '[backup_file_found]') . ' \n\n' . g_l('import', '[backup_file_found_question]')) . '")){
 								top.opener.top.we_cmd("recover_backup");
 								top.close();
 							}
 							handle_event("previous");');
-				} else{
-					$_return[1] = we_html_element::jsElement('
-							' . $functions . '
-							' . we_message_reporting::getShowMessageCall(g_l('import', '[backup_file_found]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-							handle_event("previous");');
+				} else {
+					$_return[1] = we_html_element::jsElement(
+							$functions .
+							we_message_reporting::getShowMessageCall(g_l('import', '[backup_file_found]'), we_message_reporting::WE_MESSAGE_ERROR) .
+							'handle_event("previous");');
 				}
 				return $_return;
 			} else if($_xml_type == 'customer'){
@@ -694,23 +696,24 @@ class we_wizard_import extends we_wizard{
 			$docPath = $yuiSuggest->getHTML() . $yuiSuggest->getYuiCode();
 
 			$dir_table = new we_html_table($attribs, 2, 2);
-			if((isset($v["import_navigation"]) && !$v["import_navigation"]))
+			if((isset($v["import_navigation"]) && !$v["import_navigation"])){
 				$dir_table->setStyle('display', 'none');
+			}
 			$dir_table->setCol(0, 0, null, we_html_tools::getPixel(20, 1));
 			$dir_table->setCol(0, 1, null, we_html_tools::htmlAlertAttentionBox(g_l('import', "[navigation_desc]"), 1, "390"));
 			$dir_table->setCol(1, 1, null, $docPath);
 
 			$tbl_extra->setCol(3, 0, null, $dir_table->getHtml());
 
+			$xml_encoding = we_xml_parser::getEncoding($_import_file);
 
 			array_push($parts, array(
 				"headline" => g_l('import', "[handle_doctype_options]") . '<br>' . g_l('import', "[handle_category_options]"),
-				"html" => $tbl_extra->getHTML(),
+				"html" => '<input type="hidden" name="v[import_XMLencoding]" value="' . $xml_encoding . '" />' . $tbl_extra->getHTML(),
 				"space" => 120)
 			);
 
 
-			$xml_encoding = we_xml_parser::getEncoding($_import_file);
 			if(DEFAULT_CHARSET != '' && (DEFAULT_CHARSET == 'ISO-8859-1' || DEFAULT_CHARSET == 'UTF-8' ) && ($xml_encoding == 'ISO-8859-1' || $xml_encoding == 'UTF-8' )){
 				if(($xml_encoding != DEFAULT_CHARSET)){
 					array_push($parts, array(
@@ -719,10 +722,10 @@ class we_wizard_import extends we_wizard{
 						'space' => 120)
 					);
 				}
-			} else{
+			} else {
 				array_push($parts, array(
 					'headline' => g_l('import', '[encoding_headline]'),
-					'html' => we_forms::checkboxWithHidden((isset($v['import_ChangeEncoding']) && $v['import_ChangeEncoding']) ? true : false, 'v[import_ChangeEncoding]', g_l('import', '[encoding_noway]'), false, "defaultfont", '', true),
+					'html' => we_forms::checkboxWithHidden((isset($v['import_ChangeEncoding']) && $v['import_ChangeEncoding']) ? true : false, 'v[import_ChangeEncoding]', g_l('import', '[encoding_noway]') . '<input type="hidden" name="v[import_XMLencoding]" value="' . $xml_encoding . '" />', false, "defaultfont", '', true),
 					'space' => 120)
 				);
 			}
@@ -777,12 +780,12 @@ class we_wizard_import extends we_wizard{
 					"space" => 120
 					)
 				);
-			} else{
+			} else {
 				$hdns .= we_html_element::htmlHidden(array("name" => "v[import_owners]", "value" => "0")) .
 					we_html_element::htmlHidden(array("name" => "v[owners_overwrite]", "value" => "0")) .
 					we_html_element::htmlHidden(array("name" => "v[owners_overwrite_id]", "value" => "0"));
 			}
-		} else{
+		} else {
 			array_push($parts, array(
 				"headline" => g_l('import', "[xml_file]"),
 				"html" => we_html_tools::htmlAlertAttentionBox(g_l('import', "[invalid_wxml]"), 1, "530"),
@@ -796,7 +799,6 @@ class we_wizard_import extends we_wizard{
 	}
 
 	function getWXMLImportStep3(){
-		$this->getTMPaccess();
 
 		$functions = we_button::create_state_changer(false) . '
 
@@ -842,7 +844,7 @@ class we_wizard_import extends we_wizard{
 	function getGXMLImportStep1(){
 		global $DB_WE;
 
-		$v = $this->getPostGetVar("v", array());
+		$v = isset($_REQUEST['v']) ? $_REQUEST['v'] : array();
 
 		if(isset($v["docType"]) && $v["docType"] != -1 && isset($_REQUEST["doctypeChanged"]) && $_REQUEST["doctypeChanged"]){
 			$values = getHash("SELECT * FROM " . DOC_TYPES_TABLE . " WHERE ID='" . $v["docType"] . "'", $GLOBALS['DB_WE']);
@@ -939,7 +941,7 @@ class we_wizard_import extends we_wizard{
 							we_submit_form(f, 'wizbody', '" . $this->path . "');
 						} else {" .
 			(defined("OBJECT_TABLE") ?
-				"				if(f.elements['v[import_type]'][0].checked == true) " . we_message_reporting::getShowMessageCall(g_l('import', "[select_docType]"), we_message_reporting::WE_MESSAGE_ERROR):
+				"				if(f.elements['v[import_type]'][0].checked == true) " . we_message_reporting::getShowMessageCall(g_l('import', "[select_docType]"), we_message_reporting::WE_MESSAGE_ERROR) :
 				"				" . we_message_reporting::getShowMessageCall(g_l('import', "[select_docType]"), we_message_reporting::WE_MESSAGE_ERROR)
 			) . "
 					}
@@ -1030,24 +1032,24 @@ HTS;
 		$importLocs->setCol($_tblRow++, 0, array(), we_html_tools::getPixel(1, 4));
 		$importLocs->setCol($_tblRow++, 0, array(), $rdoLLocal);
 		$maxsize = getUploadMaxFilesize(false);
-		$importLocs->setCol($_tblRow++, 0, array(), we_html_tools::htmlAlertAttentionBox(sprintf(g_l('import', "[filesize_local]"), round($maxsize / (1024 * 1024), 3) . "MB"), 1, "410"));
+		$importLocs->setCol($_tblRow++, 0, array(), we_html_tools::htmlAlertAttentionBox(sprintf(g_l('import', "[filesize_local]"), weFile::getHumanFileSize($maxsize, weFile::SZ_MB)), 1, "410"));
 		$importLocs->setCol($_tblRow++, 0, array(), we_html_tools::getPixel(1, 2));
 		$importLocs->setCol($_tblRow++, 0, array(), $importFromLocal);
 
 		$DB_WE->query("SELECT ID,DocType FROM " . DOC_TYPES_TABLE . " Order By DocType");
 		$DTselect = new we_html_select(array(
-				"name" => "v[docType]",
-				"size" => "1",
-				"class" => "weSelect",
-				"onClick" => (defined("OBJECT_TABLE")) ? "self.document.forms['we_form'].elements['v[import_type]'][0].checked=true;" : "",
-				"onChange" => "this.form.doctypeChanged.value=1; weChangeDocType(this);",
-				"style" => "width: 300px")
+			"name" => "v[docType]",
+			"size" => "1",
+			"class" => "weSelect",
+			"onClick" => (defined("OBJECT_TABLE")) ? "self.document.forms['we_form'].elements['v[import_type]'][0].checked=true;" : "",
+			"onChange" => "this.form.doctypeChanged.value=1; weChangeDocType(this);",
+			"style" => "width: 300px")
 		);
 		$optid = 0;
 		$DTselect->insertOption($optid, -1, g_l('import', "[none]"));
 
 		$v["docType"] = isset($v["docType"]) ? $v["docType"] : -1;
-		while($DB_WE->next_record()) {
+		while($DB_WE->next_record()){
 			$optid++;
 			$DTselect->insertOption($optid, $DB_WE->f("ID"), $DB_WE->f("DocType"));
 			if($v["docType"] == $DB_WE->f("ID"))
@@ -1061,7 +1063,7 @@ HTS;
 		$idname = "noDocTypeTemplateId";
 		if(we_hasPerm("CAN_SEE_TEMPLATES")){
 			$ueberschrift = '<a href="javascript:goTemplate(document.we_form.elements[\'' . $idname . '\'].value)">' . g_l('import', "[template]") . '</a>';
-		} else{
+		} else {
 			$ueberschrift = g_l('import', "[template]");
 		}
 		$myid = (isset($v["we_TemplateID"])) ? $v["we_TemplateID"] : 0;
@@ -1075,12 +1077,12 @@ HTS;
 		$yuiSuggest = & weSuggest::getInstance();
 
 		$TPLselect = new we_html_select(array(
-				"name" => "docTypeTemplateId",
-				"size" => "1",
-				"class" => "weSelect",
-				"onClick" => (defined("OBJECT_TABLE")) ? "self.document.forms['we_form'].elements['v[import_type]'][0].checked=true;" : "",
-				//"onChange"  => "we_submit_form(self.document.forms['we_form'], 'wizbody', '".$this->path."');",
-				"style" => "width: 300px")
+			"name" => "docTypeTemplateId",
+			"size" => "1",
+			"class" => "weSelect",
+			"onClick" => (defined("OBJECT_TABLE")) ? "self.document.forms['we_form'].elements['v[import_type]'][0].checked=true;" : "",
+			//"onChange"  => "we_submit_form(self.document.forms['we_form'], 'wizbody', '".$this->path."');",
+			"style" => "width: 300px")
 		);
 
 		if($v["docType"] != -1 && count($TPLselect->childs)){
@@ -1091,13 +1093,13 @@ HTS;
 			$paths_arr = id_to_path($foo["Templates"], TEMPLATES_TABLE, "", false, true);
 
 			$optid = 0;
-			while(list(, $templateID) = each($ids_arr)) {
+			while(list(, $templateID) = each($ids_arr)){
 				$TPLselect->insertOption($optid, $templateID, $paths_arr[$optid]);
 				$optid++;
 				if(isset($v["we_TemplateID"]) && $v["we_TemplateID"] == $templateID)
 					$TPLselect->selectOption($templateID);
 			}
-		} else{
+		} else {
 			$displayDocType = "display:none";
 			$displayNoDocType = "display:block";
 		}
@@ -1151,17 +1153,17 @@ HTS;
 
 		$v["classID"] = isset($v["classID"]) ? $v["classID"] : -1;
 		$CLselect = new we_html_select(array(
-				"name" => "v[classID]",
-				"size" => "1",
-				"class" => "weSelect",
-				"onClick" => "self.document.forms['we_form'].elements['v[import_type]'][1].checked=true;",
-				"style" => "width: 150px")
+			"name" => "v[classID]",
+			"size" => "1",
+			"class" => "weSelect",
+			"onClick" => "self.document.forms['we_form'].elements['v[import_type]'][1].checked=true;",
+			"style" => "width: 150px")
 		);
 		$optid = 0;
 		$ac = makeCSVFromArray(getAllowedClasses($DB_WE));
 		if($ac){
 			$DB_WE->query('SELECT ID,Text FROM ' . OBJECT_TABLE . ' ' . ($ac ? ' WHERE ID IN(' . $ac . ') ' : '') . 'ORDER BY Text');
-			while($DB_WE->next_record()) {
+			while($DB_WE->next_record()){
 				$optid++;
 				$CLselect->insertOption($optid, $DB_WE->f("ID"), $DB_WE->f("Text"));
 				if($DB_WE->f("ID") == $v["classID"]){
@@ -1280,15 +1282,15 @@ HTS;
 			}
 			if($xmlWellFormed && $hasChildNode){
 				$rcdSelect = new we_html_select(array(
-						"name" => "we_select",
-						"size" => "1",
-						"class" => "weSelect",
-						(($isSingleNode) ? "disabled" : "style") => "",
-						"onChange" => "this.form.elements['v[to_iElem]'].value=this.options[this.selectedIndex].value; this.form.elements['v[from_iElem]'].value=1;this.form.elements['v[sct_node]'].value=this.options[this.selectedIndex].text;" .
-						"if(this.options[this.selectedIndex].value==1) {this.form.elements['v[from_iElem]'].disabled=true;this.form.elements['v[to_iElem]'].disabled=true;} else {this.form.elements['v[from_iElem]'].disabled=false;this.form.elements['v[to_iElem]'].disabled=false;}")
+					"name" => "we_select",
+					"size" => "1",
+					"class" => "weSelect",
+					(($isSingleNode) ? "disabled" : "style") => "",
+					"onChange" => "this.form.elements['v[to_iElem]'].value=this.options[this.selectedIndex].value; this.form.elements['v[from_iElem]'].value=1;this.form.elements['v[sct_node]'].value=this.options[this.selectedIndex].text;" .
+					"if(this.options[this.selectedIndex].value==1) {this.form.elements['v[from_iElem]'].disabled=true;this.form.elements['v[to_iElem]'].disabled=true;} else {this.form.elements['v[from_iElem]'].disabled=false;this.form.elements['v[to_iElem]'].disabled=false;}")
 				);
 				$optid = 0;
-				while(list($value, $text) = each($recs)) {
+				while(list($value, $text) = each($recs)){
 					if($optid == 0)
 						$firstOptVal = $text;
 					$rcdSelect->addOption($text, $value);
@@ -1317,7 +1319,7 @@ HTS;
 			else
 				array_push($parts, array("html" => we_html_tools::htmlAlertAttentionBox((!$xmlWellFormed) ? g_l('import', "[not_well_formed]") : g_l('import', "[missing_child_node]"), 1, "530"), "space" => 0, "noline" => 1));
 		}
-		else{
+		else {
 			$xmlWellFormed = $hasChildNode = false;
 			if(!file_exists($_SERVER['DOCUMENT_ROOT'] . $v["import_from"]))
 				array_push($parts, array("html" => we_html_tools::htmlAlertAttentionBox(g_l('import', "[file_exists]") . $_SERVER['DOCUMENT_ROOT'] . $v["import_from"], 1, "530"), "space" => 0, "noline" => 1));
@@ -1325,44 +1327,43 @@ HTS;
 				array_push($parts, array("html" => we_html_tools::htmlAlertAttentionBox(g_l('import', "[file_readable]"), 1, "530"), "space" => 0, "noline" => 1));
 		}
 
-		$functions = "\n" .
-			"function set_button_state() {\n" .
-			"	top.frames['wizbusy'].back_enabled=top.frames['wizbusy'].switch_button_state('back','back_enabled','enabled');\n" .
-			"	top.frames['wizbusy'].next_enabled=top.frames['wizbusy'].switch_button_state('next','next_enabled','" . (($xmlWellFormed && $hasChildNode) ? "enabled" : "disabled") . "');\n" .
-			"}\n" .
-			"function we_submit_form(f, target, url) {\n" .
-			"	f.target = target;\n" .
-			"	f.action = url;\n" .
-			"	f.method = 'post';\n" .
-			"	f.submit();\n" .
-			"}\n" .
-			"function handle_event(evt) {\n" .
-			"	var f = self.document.forms['we_form'];\n" .
-			"	switch(evt) {\n" .
-			"		case 'previous':\n" .
-			"			f.step.value = 1;\n" .
-			"			we_submit_form(f, 'wizbody', '" . $this->path . "');\n" .
-			"			break;\n" .
-			"		case 'next':\n" .
-			"			f.elements['v[from_elem]'].value = f.elements['v[from_iElem]'].value;\n" .
-			"			f.elements['v[to_elem]'].value = f.elements['v[to_iElem]'].value;\n" .
-			"			iStart = isNaN(parseInt(f.elements['v[from_iElem]'].value))? 0 : f.elements['v[from_iElem]'].value;\n" .
-			"			iEnd = isNaN(parseInt(f.elements['v[to_iElem]'].value))? 0 : f.elements['v[to_iElem]'].value;\n" .
-			"			iElements = parseInt(f.elements['we_select'].options[f.elements['we_select'].selectedIndex].value);\n" .
-			"			if ((iStart < 1) || (iStart > iElements) || (iEnd < 1) || (iEnd > iElements)) { \n" .
-			"				msg = \"" . g_l('import', "[num_elements]") . "\" +iElements;" .
-			"				" . we_message_reporting::getShowMessageCall("msg", we_message_reporting::WE_MESSAGE_ERROR, true) . "\n" .
-			"			} else {\n" .
-			"				f.elements['v[rcd]'].value = f.we_select.options[f.we_select.selectedIndex].text;\n" .
-			"				f.step.value = 3;\n" .
-			"				we_submit_form(f, 'wizbody', '" . $this->path . "');\n" .
-			"			}\n" .
-			"			break;\n" .
-			"		case 'cancel':\n" .
-			"			top.close();\n" .
-			"			break;\n" .
-			"	}\n" .
-			"}\n";
+		$functions = "
+function set_button_state() {
+	top.frames['wizbusy'].back_enabled=top.frames['wizbusy'].switch_button_state('back','back_enabled','enabled');
+	top.frames['wizbusy'].next_enabled=top.frames['wizbusy'].switch_button_state('next','next_enabled','" . (($xmlWellFormed && $hasChildNode) ? "enabled" : "disabled") . "');
+}
+function we_submit_form(f, target, url) {
+	f.target = target;
+	f.action = url;
+	f.method = 'post';
+	f.submit();
+}
+function handle_event(evt) {
+	var f = self.document.forms['we_form'];
+	switch(evt) {
+	case 'previous':
+		f.step.value = 1;
+		we_submit_form(f, 'wizbody', '" . $this->path . "');
+		break;
+	case 'next':
+		f.elements['v[from_elem]'].value = f.elements['v[from_iElem]'].value;
+		f.elements['v[to_elem]'].value = f.elements['v[to_iElem]'].value;
+		iStart = isNaN(parseInt(f.elements['v[from_iElem]'].value))? 0 : f.elements['v[from_iElem]'].value;
+		iEnd = isNaN(parseInt(f.elements['v[to_iElem]'].value))? 0 : f.elements['v[to_iElem]'].value;
+		iElements = parseInt(f.elements['we_select'].options[f.elements['we_select'].selectedIndex].value);
+		if ((iStart < 1) || (iStart > iElements) || (iEnd < 1) || (iEnd > iElements)) {
+			msg = \"" . g_l('import', "[num_elements]") . "\" +iElements;" . we_message_reporting::getShowMessageCall("msg", we_message_reporting::WE_MESSAGE_ERROR, true) . "
+		} else {
+			f.elements['v[rcd]'].value = f.we_select.options[f.we_select.selectedIndex].text;
+			f.step.value = 3;
+			we_submit_form(f, 'wizbody', '" . $this->path . "');
+		}
+		break;
+	case 'cancel':
+		top.close();
+		break;
+	}
+}";
 
 		$wepos = weGetCookieVariable("but_xml");
 		$znr = -1;
@@ -1375,7 +1376,6 @@ HTS;
 	}
 
 	function getGXMLImportStep3(){
-		$this->getTMPaccess();
 		$v = $_REQUEST["v"];
 		if(isset($v["att_pfx"]))
 			$v["att_pfx"] = base64_encode($v["att_pfx"]);
@@ -1461,7 +1461,7 @@ HTS;
 			array_push($records, "Description");
 			array_push($records, "Keywords");
 		}
-		else{
+		else {
 			$classFields = $this->getClassFields($v["classID"]);
 			foreach($classFields as $classField){
 				if($this->isTextField($classField["type"]) || $this->isNumericField($classField["type"]) || $this->isDateField($classField["type"])){
@@ -1500,25 +1500,25 @@ HTS;
 
 		reset($records);
 		$i = 0;
-		while(list(, $record) = each($records)) {
+		while(list(, $record) = each($records)){
 			$hdns .= we_html_element::htmlHidden(array("name" => "records[$i]", "value" => $record));
 			$sct_we_fields = new we_html_select(array(
-					"name" => "we_flds[$record]",
-					"size" => "1",
-					"class" => "weSelect",
-					"onClick" => "",
-					"style" => "")
+				"name" => "we_flds[$record]",
+				"size" => "1",
+				"class" => "weSelect",
+				"onClick" => "",
+				"style" => "")
 			);
 
 			reset($val_nodes);
 			$sct_we_fields->addOption("", g_l('import', "[any]"));
-			while(list($value, $text) = each($val_nodes)) {
+			while(list($value, $text) = each($val_nodes)){
 				$sct_we_fields->addOption(oldHtmlspecialchars($value), $text);
 				if(isset($we_flds[$record])){
 					if($value == $we_flds[$record])
 						$sct_we_fields->selectOption($value);
 				}
-				else{
+				else {
 					if($value == $record)
 						$sct_we_fields->selectOption($value);
 				}
@@ -1545,14 +1545,14 @@ HTS;
 
 		// Assigned record or attribute field selectors.
 		$rcdPfxSelect = new we_html_select(array(
-				"name" => "v[rcd_pfx]",
-				"size" => "1",
-				"class" => "weSelect",
-				"onClick" => "self.document.forms['we_form'].elements['v[pfx_fn]'].value=1;self.document.forms['we_form'].elements['v[rdo_filename]'][1].checked=true;",
-				"style" => "width: 150px")
+			"name" => "v[rcd_pfx]",
+			"size" => "1",
+			"class" => "weSelect",
+			"onClick" => "self.document.forms['we_form'].elements['v[pfx_fn]'].value=1;self.document.forms['we_form'].elements['v[rdo_filename]'][1].checked=true;",
+			"style" => "width: 150px")
 		);
 		reset($val_nodes);
-		while(list($value, $text) = each($val_nodes)) {
+		while(list($value, $text) = each($val_nodes)){
 			$rcdPfxSelect->addOption(oldHtmlspecialchars($value), $text);
 			if(isset($v["rcd_pfx"]))
 				if($text == $v["rcd_pfx"])
@@ -1639,69 +1639,67 @@ HTS;
 		global $DB_WE;
 		$v = $_REQUEST["v"];
 
-		$functions = we_button::create_state_changer(false) . 
-			"function we_cmd() {\n" .
-			"	var args = '';\n" .
-			"	var url = '" . WEBEDITION_DIR . "we_cmd.php?';\n" .
-			"	for(var i = 0; i < arguments.length; i++) {\n" .
-			"		url += 'we_cmd['+i+']='+escape(arguments[i]);\n" .
-			"		if(i < (arguments.length - 1)) {\n" .
-			"			url += '&';\n" .
-			"		}\n" .
-			"	}\n" .
-			"	switch (arguments[0]) {\n" .
-			"		default:\n" .
-			"			for (var i=0; i < arguments.length; i++) {\n" .
-			"				args += 'arguments['+i+']' + ((i < (arguments.length-1))? ',' : '');\n" .
-			"			}\n" .
-			"			eval('parent.we_cmd('+args+')');\n" .
-			"	}\n" .
-			"}\n" .
-			"function set_button_state() {\n" .
-			"	top.frames['wizbusy'].back_enabled = top.frames['wizbusy'].switch_button_state('back', 'back_enabled', 'enabled');\n" .
-			"	top.frames['wizbusy'].next_enabled = top.frames['wizbusy'].switch_button_state('next', 'next_enabled', 'enabled');\n" .
-			"}\n" .
-			"function we_submit_form(f, target, url) {\n" .
-			"	f.target = target;\n" .
-			"	f.action = url;\n" .
-			"	f.method = 'post';\n" .
-			"	f.submit();\n" .
-			"}\n" .
-			"function handle_event(evt) {\n" .
-			"	var f = self.document.forms['we_form'];\n" .
-			"	switch(evt) {\n" .
-			"		case 'previous':\n" .
-			"			f.step.value = 0;\n" .
-			"			top.location.href='" . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=import&we_cmd[1]=CSVImport';\n" .
-			"			break;\n" .
-			"		case 'next':\n" .
-			"			var fvalid = true;\n" .
-			"			var fs = f.elements['v[fserver]'].value;\n" .
-			"			var fl = f.elements['uploaded_csv_file'].value;\n" .
-			"			var ext = '';\n" .
-			"			if ((f.elements['v[rdofloc]'][0].checked==true) && fs!='/') {\n" .
-			"				if (fs.match(/\.\./)=='..') { " . we_message_reporting::getShowMessageCall(g_l('import', "[invalid_path]"), we_message_reporting::WE_MESSAGE_ERROR) . "break; }\n" .
-			"				ext = fs.substr(fs.length-4,4);\n" .
-			"				f.elements['v[import_from]'].value = fs;\n" .
-			"			}\n" .
-			"			else if (f.elements['v[rdofloc]'][1].checked==true && fl!='') {\n" .
-			"				ext = fl.substr(fl.length-4,4);\n" .
-			"				f.elements['v[import_from]'].value = fl;\n" .
-			"			}\n" .
-			"			else if (fs=='/' || fl=='') {\n" .
-			"				" . (we_message_reporting::getShowMessageCall(g_l('import', "[select_source_file]"), we_message_reporting::WE_MESSAGE_ERROR)) . "break;\n" .
-			"			}\n" .
-			"			if (fvalid && f.elements['v[csv_seperator]'].value=='') { fvalid=false; " . we_message_reporting::getShowMessageCall(g_l('import', "[select_seperator]"), we_message_reporting::WE_MESSAGE_ERROR) . "}\n" .
-			"			if (fvalid) {\n" .
-			"				f.step.value = 2;\n" .
-			"				we_submit_form(f, 'wizbody', '" . $this->path . "');\n" .
-			"			}\n" .
-			"			break;\n" .
-			"		case 'cancel':\n" .
-			"			top.close();\n" .
-			"			break;\n" .
-			"	}\n" .
-			"}\n";
+		$functions = we_button::create_state_changer(false) . "
+function we_cmd() {
+	var args = '';
+	var url = '" . WEBEDITION_DIR . "we_cmd.php?';
+	for(var i = 0; i < arguments.length; i++) {
+		url += 'we_cmd['+i+']='+escape(arguments[i]);
+		if(i < (arguments.length - 1)) {
+			url += '&';
+		}
+	}
+	switch (arguments[0]) {
+		default:
+			for (var i=0; i < arguments.length; i++) {
+				args += 'arguments['+i+']' + ((i < (arguments.length-1))? ',' : '');
+			}
+			eval('parent.we_cmd('+args+')');
+	}
+}
+function set_button_state() {
+	top.frames['wizbusy'].back_enabled = top.frames['wizbusy'].switch_button_state('back', 'back_enabled', 'enabled');
+	top.frames['wizbusy'].next_enabled = top.frames['wizbusy'].switch_button_state('next', 'next_enabled', 'enabled');
+}
+function we_submit_form(f, target, url) {
+	f.target = target;
+	f.action = url;
+	f.method = 'post';
+	f.submit();
+}
+function handle_event(evt) {
+	var f = self.document.forms['we_form'];
+	switch(evt) {
+		case 'previous':
+			f.step.value = 0;
+			top.location.href='" . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=import&we_cmd[1]=CSVImport';
+			break;
+		case 'next':
+			var fvalid = true;
+			var fs = f.elements['v[fserver]'].value;
+			var fl = f.elements['uploaded_csv_file'].value;
+			var ext = '';
+			if ((f.elements['v[rdofloc]'][0].checked==true) && fs!='/') {
+				if (fs.match(/\.\./)=='..') { " . we_message_reporting::getShowMessageCall(g_l('import', "[invalid_path]"), we_message_reporting::WE_MESSAGE_ERROR) . "break; }
+				ext = fs.substr(fs.length-4,4);
+				f.elements['v[import_from]'].value = fs;
+			}else if (f.elements['v[rdofloc]'][1].checked==true && fl!='') {
+				ext = fl.substr(fl.length-4,4);
+				f.elements['v[import_from]'].value = fl;
+			}else if (fs=='/' || fl=='') {" .
+			(we_message_reporting::getShowMessageCall(g_l('import', "[select_source_file]"), we_message_reporting::WE_MESSAGE_ERROR)) . "break;
+			}
+			if (fvalid && f.elements['v[csv_seperator]'].value=='') { fvalid=false; " . we_message_reporting::getShowMessageCall(g_l('import', "[select_seperator]"), we_message_reporting::WE_MESSAGE_ERROR) . "}
+			if (fvalid) {
+				f.step.value = 2;
+				we_submit_form(f, 'wizbody', '" . $this->path . "');
+			}
+			break;
+		case 'cancel':
+			top.close();
+			break;
+	}
+}";
 
 		$v["import_type"] = isset($v["import_type"]) ? $v["import_type"] : "documents";
 		/*		 * *************************************************************************************************************** */
@@ -1728,7 +1726,7 @@ HTS;
 		$importLocs->setCol($_tblRow++, 0, array(), we_html_tools::getPixel(1, 4));
 		$importLocs->setCol($_tblRow++, 0, array(), $rdoLLocal);
 		$maxsize = getUploadMaxFilesize(false);
-		$importLocs->setCol($_tblRow++, 0, array(), we_html_tools::htmlAlertAttentionBox(sprintf(g_l('import', "[filesize_local]"), round($maxsize / (1024 * 1024), 3) . "MB"), 1, "410"));
+		$importLocs->setCol($_tblRow++, 0, array(), we_html_tools::htmlAlertAttentionBox(sprintf(g_l('import', "[filesize_local]"), weFile::getHumanFileSize($maxsize, weFile::SZ_MB)), 1, "410"));
 		$importLocs->setCol($_tblRow++, 0, array(), we_html_tools::getPixel(1, 2));
 		$importLocs->setCol($_tblRow++, 0, array(), $importFromLocal);
 		/*		 * *************************************************************************************************************** */
@@ -1860,70 +1858,68 @@ HTS;
 		$DefaultStaticExt = DEFAULT_STATIC_EXT;
 
 		$functions = we_button::create_state_changer(false) . "
-	function we_cmd() {
-		var args = '';
-		var url = '" . WEBEDITION_DIR . "we_cmd.php?';
-		for(var i = 0; i < arguments.length; i++) {
-			url += 'we_cmd['+i+']='+escape(arguments[i]);
-			if(i < (arguments.length - 1)) {
-				url += '&';
-			}
-		}
-		switch (arguments[0]) {
-			default:
-				for (var i=0; i < arguments.length; i++) {
-					args += 'arguments['+i+']' + ((i < (arguments.length-1))? ',' : '');
-				}
-				eval('parent.we_cmd('+args+')');
+function we_cmd() {
+	var args = '';
+	var url = '" . WEBEDITION_DIR . "we_cmd.php?';
+	for(var i = 0; i < arguments.length; i++) {
+		url += 'we_cmd['+i+']='+escape(arguments[i]);
+		if(i < (arguments.length - 1)) {
+			url += '&';
 		}
 	}
-	function set_button_state() {
-		top.frames['wizbusy'].back_enabled = top.frames['wizbusy'].switch_button_state('back', 'back_enabled', 'enabled');
-		top.frames['wizbusy'].next_enabled = top.frames['wizbusy'].switch_button_state('next', 'next_enabled', 'enabled');
+	for (var i=0; i < arguments.length; i++) {
+		args += 'arguments['+i+']' + ((i < (arguments.length-1))? ',' : '');
 	}
-	function we_submit_form(f, target, url) {
-		f.target = target;
-		f.action = url;
-		f.method = 'post';
-		f.submit();
+	eval('parent.we_cmd('+args+')');
+}
+function set_button_state() {
+	top.frames['wizbusy'].back_enabled = top.frames['wizbusy'].switch_button_state('back', 'back_enabled', 'enabled');
+	top.frames['wizbusy'].next_enabled = top.frames['wizbusy'].switch_button_state('next', 'next_enabled', 'enabled');
+}
+function we_submit_form(f, target, url) {
+	f.target = target;
+	f.action = url;
+	f.method = 'post';
+	f.submit();
+}
+function switchExt() {
+	var a = self.document.forms['we_form'].elements;
+	if (a['v[is_dynamic]'].value==1) var changeto='" . $DefaultDynamicExt . "'; else var changeto='" . $DefaultStaticExt . "';
+	a['v[we_Extension]'].value=changeto;
+}
+function handle_event(evt) {
+	var f = self.document.forms['we_form'];
+	if(f.elements['v[import_type]']== 'documents'){
+	if(f.elements['v[docType]'].value == -1) {
+		f.elements['v[we_TemplateID]'].value = f.elements['noDocTypeTemplateId'].value;
+	} else {
+		f.elements['v[we_TemplateID]'].value = f.elements['docTypeTemplateId'].value;
 	}
-	function switchExt() {
-		var a = self.document.forms['we_form'].elements;
-		if (a['v[is_dynamic]'].value==1) var changeto='" . $DefaultDynamicExt . "'; else var changeto='" . $DefaultStaticExt . "';
-		a['v[we_Extension]'].value=changeto;
-	}
-	function handle_event(evt) {
-		var f = self.document.forms['we_form'];
-		if(f.elements['v[import_type]']== 'documents'){
-		if(f.elements['v[docType]'].value == -1) {
-			f.elements['v[we_TemplateID]'].value = f.elements['noDocTypeTemplateId'].value;
-		} else {
-			f.elements['v[we_TemplateID]'].value = f.elements['docTypeTemplateId'].value;
-	}}
+}
 	switch(evt) {
-		case 'previous':
-			f.step.value = 1;
-			we_submit_form(f, 'wizbody', '" . $this->path . "');
-			break;
-		case 'next':
-			if(f.elements['v[import_type]']== 'documents'){
-					if(!f.elements['v[we_TemplateID]'].value ) f.elements['v[we_TemplateID]'].value =f.elements['DocTypeTemplateId'].value;
-					}" - (defined("OBJECT_TABLE") ?
+	case 'previous':
+		f.step.value = 1;
+		we_submit_form(f, 'wizbody', '" . $this->path . "');
+		break;
+	case 'next':
+		if(f.elements['v[import_type]']== 'documents'){
+				if(!f.elements['v[we_TemplateID]'].value ) f.elements['v[we_TemplateID]'].value =f.elements['DocTypeTemplateId'].value;
+				}" . (defined("OBJECT_TABLE") ?
 				"			if(f.elements['v[import_from]'].value != '/' && ((f.elements['v[import_type]'][0].checked == true && f.elements['v[we_TemplateID]'].value != 0) || (f.elements['v[import_type]'][1].checked == true)))" :
 				"			if(f.elements['v[import_from]'].value != '/' && f.elements['v[we_TemplateID]'].value != 0)") . "
-				{
-					f.step.value = 3;
-					we_submit_form(f, 'wizbody', '" . $this->path . "');
-				}else {
-					if(f.elements['v[import_from]'].value == '/') " . we_message_reporting::getShowMessageCall(g_l('import', "[select_source_file]"), we_message_reporting::WE_MESSAGE_ERROR) .
+			{
+				f.step.value = 3;
+				we_submit_form(f, 'wizbody', '" . $this->path . "');
+			}else {
+				if(f.elements['v[import_from]'].value == '/') " . we_message_reporting::getShowMessageCall(g_l('import', "[select_source_file]"), we_message_reporting::WE_MESSAGE_ERROR) .
 			(defined("OBJECT_TABLE") ?
 				"				else if(f.elements['v[import_type]'][0].checked == true) " . we_message_reporting::getShowMessageCall(g_l('import', "[select_docType]"), we_message_reporting::WE_MESSAGE_ERROR) :
 				"				else " . we_message_reporting::getShowMessageCall(g_l('import', "[select_docType]"), we_message_reporting::WE_MESSAGE_ERROR)) . "
-				}
-				break;
-		case 'cancel':
-			top.close();
+			}
 			break;
+	case 'cancel':
+		top.close();
+		break;
 	}
 }";
 
@@ -1985,31 +1981,29 @@ HTS;
 		$v["import_type"] = isset($v["import_type"]) ? $v["import_type"] : "documents";
 		$wecmdenc1 = we_cmd_enc("self.frames['wizbody'].document.forms['we_form'].elements['v[store_to_id]'].value");
 		$wecmdenc2 = we_cmd_enc("self.frames['wizbody'].document.forms['we_form'].elements['v[store_to_path]'].value");
-		$wecmdenc3 = "";
 
-		$storeToButton = we_button::create_button(
-				"select", "javascript:we_cmd('openDirselector',document.we_form.elements['v[store_to_path]'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','0')"
-		);
+		$storeToButton = we_button::create_button('select', "javascript:we_cmd('openDirselector',document.we_form.elements['v[store_to_path]'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','0')");
 
 		$DB_WE->query("SELECT ID,DocType FROM " . DOC_TYPES_TABLE . " Order By DocType");
 		$DTselect = new we_html_select(array(
-				"name" => "v[docType]",
-				"size" => "1",
-				"class" => "weSelect",
-				"onClick" => (defined("OBJECT_TABLE")) ? "self.document.forms['we_form'].elements['v[import_type]'][0].checked=true;" : "",
-				"onChange" => "this.form.doctypeChanged.value=1; weChangeDocType(this);",
-				//"onChange"  => "this.form.doctypeChanged.value=1;we_submit_form(self.document.forms['we_form'], 'wizbody', '".$this->path."');",
-				"style" => "width: 300px")
+			"name" => "v[docType]",
+			"size" => "1",
+			"class" => "weSelect",
+			"onClick" => (defined("OBJECT_TABLE")) ? "self.document.forms['we_form'].elements['v[import_type]'][0].checked=true;" : "",
+			"onChange" => "this.form.doctypeChanged.value=1; weChangeDocType(this);",
+			//"onChange"  => "this.form.doctypeChanged.value=1;we_submit_form(self.document.forms['we_form'], 'wizbody', '".$this->path."');",
+			"style" => "width: 300px")
 		);
 		$optid = 0;
 		$DTselect->insertOption($optid, -1, g_l('import', "[none]"));
 
 		$v["docType"] = isset($v["docType"]) ? $v["docType"] : -1;
-		while($DB_WE->next_record()) {
+		while($DB_WE->next_record()){
 			$optid++;
 			$DTselect->insertOption($optid, $DB_WE->f("ID"), $DB_WE->f("DocType"));
-			if($v["docType"] == $DB_WE->f("ID"))
+			if($v["docType"] == $DB_WE->f("ID")){
 				$DTselect->selectOption($DB_WE->f("ID"));
+			}
 		}
 
 		$doctypeElement = we_html_tools::htmlFormElementTable($DTselect->getHTML(), g_l('import', "[doctype]"), "left", "defaultfont");
@@ -2018,11 +2012,10 @@ HTS;
 		$table = TEMPLATES_TABLE;
 		$textname = "v[we_TemplateName]";
 		$idname = "v[we_TemplateID]";
-		if(we_hasPerm("CAN_SEE_TEMPLATES")){
-			$ueberschrift = '<a href="javascript:goTemplate(document.we_form.elements[\'' . $idname . '\'].value)">' . g_l('import', "[template]") . '</a>';
-		} else{
-			$ueberschrift = g_l('import', "[template]");
-		}
+		$ueberschrift = (we_hasPerm("CAN_SEE_TEMPLATES") ?
+				'<a href="javascript:goTemplate(document.we_form.elements[\'' . $idname . '\'].value)">' . g_l('import', "[template]") . '</a>' :
+				g_l('import', "[template]"));
+
 		$myid = (isset($v["we_TemplateID"])) ? $v["we_TemplateID"] : 0;
 		$path = f("SELECT Path FROM " . $DB_WE->escape($table) . " WHERE ID=" . intval($myid), "Path", $DB_WE);
 		//javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','self.frames[\\'wizbody\\'].document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','self.frames[\\'wizbody\\'].document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','opener.top.we_cmd(\'reload_editpage\');','".session_id()."','','text/weTmpl',1)
@@ -2034,30 +2027,30 @@ HTS;
 		$yuiSuggest = & weSuggest::getInstance();
 
 		$TPLselect = new we_html_select(array(
-				"name" => "v[we_TemplateID]",
-				"size" => "1",
-				"class" => "weSelect",
-				"onClick" => "self.document.forms['we_form'].elements['v[import_type]'][0].checked=true;",
-				//"onChange"  => "we_submit_form(self.document.forms['we_form'], 'wizbody', '".$this->path."');",
-				"style" => "width: 300px")
+			"name" => "v[we_TemplateID]",
+			"size" => "1",
+			"class" => "weSelect",
+			"onClick" => "self.document.forms['we_form'].elements['v[import_type]'][0].checked=true;",
+			//"onChange"  => "we_submit_form(self.document.forms['we_form'], 'wizbody', '".$this->path."');",
+			"style" => "width: 300px")
 		);
 
 		if($v["docType"] != -1){
-			$foo = getHash("SELECT TemplateID,Templates FROM " . DOC_TYPES_TABLE . " WHERE ID =" . intval($v["docType"]), $DB_WE);
+			$foo = getHash('SELECT TemplateID,Templates FROM ' . DOC_TYPES_TABLE . ' WHERE ID =' . intval($v["docType"]), $DB_WE);
 			$ids_arr = makeArrayFromCSV($foo["Templates"]);
-			$paths_arr = id_to_path($foo["Templates"], TEMPLATES_TABLE, "", false, true);
+			$paths_arr = id_to_path($foo["Templates"], TEMPLATES_TABLE, '', false, true);
 
 
 			$optid = 0;
-			while(list(, $templateID) = each($ids_arr)) {
+			foreach($ids_arr as $templateID){
 				$TPLselect->insertOption($optid, $templateID, $paths_arr[$optid]);
-				$optid++;
+				++$optid;
 				if(isset($v["we_TemplateID"]) && $v["we_TemplateID"] == $templateID)
 					$TPLselect->selectOption($templateID);
 			}
-		} else{
-			$displayDocType = "display:none";
-			$displayNoDocType = "display:block";
+		} else {
+			$displayDocType = 'display:none';
+			$displayNoDocType = 'display:block';
 			/*
 			  $templateElement = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("v[we_TemplateName]", 30, (isset($v["we_TemplateName"])? $v["we_TemplateName"] : ""), "", " readonly", "text", 300, 0),
 			  g_l('import',"[template]"),
@@ -2067,7 +2060,6 @@ HTS;
 			  we_html_tools::getPixel(10,4),
 			  $button); */
 		}
-		$templateElement = "<div id='docTypeLayer' style='$displayDocType'>" . we_html_tools::htmlFormElementTable($TPLselect->getHTML(), g_l('import', '[template]'), "left", "defaultfont") . "</div>";
 		$yuiSuggest->setAcId("TmplPath");
 		$yuiSuggest->setContentType("folder,text/weTmpl");
 		$yuiSuggest->setInput("v[we_TemplateName]", (isset($v["we_TemplateName"]) ? $v["we_TemplateName"] : ""), array("onFocus" => "self.document.forms['we_form'].elements['v[import_type]'][0].checked=true;"));
@@ -2080,7 +2072,8 @@ HTS;
 		$yuiSuggest->setSelectButton($button, 10);
 		$yuiSuggest->setLabel(g_l('import', "[template]"));
 
-		$templateElement .= "<div id='noDocTypeLayer' style='$displayNoDocType'>" . $yuiSuggest->getHTML() . "</div>";
+		$templateElement = "<div id='docTypeLayer' style='$displayDocType'>" . we_html_tools::htmlFormElementTable($TPLselect->getHTML(), g_l('import', '[template]'), "left", "defaultfont") . "</div>
+<div id='noDocTypeLayer' style='$displayNoDocType'>" . $yuiSuggest->getHTML() . "</div>";
 
 //		$input = we_html_tools::htmlTextInput("v[store_to_path]", 30, (isset($v["store_to_path"]) ? $v["store_to_path"] : "/"), "", "", "text", 300, 0, "", false);
 //		$storeTo = we_html_tools::htmlFormElementTable($input, g_l('import',"[import_dir]"), "left", "defaultfont", we_html_tools::getPixel(10, 1), $storeToButton, "", "", "", 0);
@@ -2111,25 +2104,25 @@ HTS;
 
 		$v["classID"] = isset($v["classID"]) ? $v["classID"] : -1;
 		$CLselect = new we_html_select(array(
-				"name" => "v[classID]",
-				"size" => "1",
-				"class" => "weSelect",
-				"onClick" => "self.document.forms['we_form'].elements['v[import_type]'][1].checked=true;",
-				"style" => "width: 150px")
+			"name" => "v[classID]",
+			"size" => "1",
+			"class" => "weSelect",
+			"onClick" => "self.document.forms['we_form'].elements['v[import_type]'][1].checked=true;",
+			"style" => "width: 150px")
 		);
 		$optid = 0;
 		$ac = makeCSVFromArray(getAllowedClasses($DB_WE));
 		if($ac){
 			$DB_WE->query('SELECT ID,Text FROM ' . OBJECT_TABLE . ' ' . ($ac ? ' WHERE ID IN(' . $ac . ') ' : '') . 'ORDER BY Text');
-			while($DB_WE->next_record()) {
+			while($DB_WE->next_record()){
 				$optid++;
 				$CLselect->insertOption($optid, $DB_WE->f("ID"), $DB_WE->f("Text"));
 				if($DB_WE->f("ID") == $v["classID"])
 					$CLselect->selectOption($DB_WE->f("ID"));
 			}
-		}
-		else
+		}else {
 			$CLselect->insertOption($optid, -1, g_l('import', "[none]"));
+		}
 
 		$objClass = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 2, 2);
 		$objClass->setCol(0, 0, array("valign" => "top", "class" => "defaultgray"), g_l('import', "[class]"));
@@ -2158,28 +2151,28 @@ HTS;
 
 		$parts = array();
 		if((file_exists($_SERVER['DOCUMENT_ROOT'] . $v["import_from"]) && is_readable($_SERVER['DOCUMENT_ROOT'] . $v["import_from"]))){
-			array_push($parts, array(
+			$parts[] = array(
 				"headline" => (defined("OBJECT_TABLE")) ? $radioDocs : g_l('import', "[documents]"),
 				"html" => $yuiSuggest->getYuiFiles() . $doctypeElement . we_html_tools::getPixel(1, 4) . $templateElement . we_html_tools::getPixel(1, 4) . $storeTo . $yuiSuggest->getYuiCode() . we_html_tools::getPixel(1, 4) . $specifyDoc->getHTML() . we_html_tools::getPixel(1, 4) .
 				we_html_tools::htmlFormElementTable($docCategories, g_l('import', "[categories]"), "left", "defaultfont"),
 				"space" => 120,
-				"noline" => 1)
+				"noline" => 1
 			);
 			if(defined("OBJECT_TABLE")){
-				array_push($parts, array(
+				$parts[] = array(
 					"headline" => $radioObjs,
 					"html" => (defined("OBJECT_TABLE")) ? we_html_tools::htmlFormElementTable($CLselect->getHTML(), g_l('import', "[class]"), "left", "defaultfont") .
 						we_html_tools::getPixel(1, 4) .
 						we_html_tools::htmlFormElementTable($objCategories, g_l('import', "[categories]"), "left", "defaultfont") : "",
 					"space" => 120,
-					"noline" => 1)
+					"noline" => 1
 				);
 			}
-		} else{
+		} else {
 			if(!file_exists($_SERVER['DOCUMENT_ROOT'] . $v["import_from"])){
-				array_push($parts, array("html" => we_html_tools::htmlAlertAttentionBox(g_l('import', "[file_exists]") . $_SERVER['DOCUMENT_ROOT'] . $v["import_from"], 1, "530"), "space" => 0, "noline" => 1));
+				$parts[] = array("html" => we_html_tools::htmlAlertAttentionBox(g_l('import', "[file_exists]") . $_SERVER['DOCUMENT_ROOT'] . $v["import_from"], 1, "530"), "space" => 0, "noline" => 1);
 			} else if(!is_readable($_SERVER['DOCUMENT_ROOT'] . $v["import_from"])){
-				array_push($parts, array("html" => we_html_tools::htmlAlertAttentionBox(g_l('import', "[file_readable]"), 1, "530"), "space" => 0, "noline" => 1));
+				$parts[] = array("html" => we_html_tools::htmlAlertAttentionBox(g_l('import', "[file_readable]"), 1, "530"), "space" => 0, "noline" => 1);
 			}
 		}
 
@@ -2194,8 +2187,6 @@ HTS;
 	}
 
 	function getCSVImportStep3(){
-
-		$this->getTMPaccess();
 
 		if(isset($_REQUEST["v"]['we_TemplateName']) && ($_REQUEST["v"]['we_TemplateID'] == 0 || $_REQUEST["v"]['we_TemplateID'] == "")){
 			$_REQUEST["v"]['we_TemplateID'] = path_to_id($_REQUEST["v"]['we_TemplateName'], TEMPLATES_TABLE);
@@ -2274,29 +2265,29 @@ function handle_event(evt) {
 								// tags with text content, links and hrefs
 								case "input":
 									if(in_array("date", $this->parseAttributes($tag)))
-										array_push($dateFields, $name);
+										$dateFields[] = $name;
 								case "textarea":
 								case "href":
 								case "link":
-									array_push($records, $name);
+									$records[] = $name;
 									break;
 							}
 						}
 					}
 				}
-			} else{
+			} else {
 				array_push($records, "Title");
 				array_push($records, "Description");
 				array_push($records, "Keywords");
 			}
-		} else{
+		} else {
 			$classFields = $this->getClassFields($v["classID"]);
 			foreach($classFields as $classField){
 				if($this->isTextField($classField["type"]) || $this->isNumericField($classField["type"]) || $this->isDateField($classField["type"])){
-					array_push($records, $classField["name"]);
+					$records[] = $classField["name"];
 				}
 				if($this->isDateField($classField["type"])){
-					array_push($dateFields, $classField["name"]);
+					$dateFields[] = $classField["name"];
 				}
 			}
 		}
@@ -2304,15 +2295,18 @@ function handle_event(evt) {
 		$csvFile = $_SERVER['DOCUMENT_ROOT'] . $v["import_from"];
 		if(file_exists($csvFile) && is_readable($csvFile)){
 			switch($v["csv_enclosed"]){
-				case "double_quote": $encl = "\"";
+				case "double_quote":
+					$encl = "\"";
 					break;
-				case "single_quote": $encl = "'";
+				case "single_quote":
+					$encl = "'";
 					break;
-				case "none": $encl = "";
+				case "none":
+					$encl = "";
 					break;
 			}
 
-			$cp = new CSVImport;
+			$cp = new we_import_CSV;
 
 			$_data = weFile::loadPart($csvFile);
 
@@ -2328,10 +2322,11 @@ function handle_event(evt) {
 			}
 			$val_nodes = array();
 			for($i = 0; $i < count($recs); $i++){
-				if($v["csv_fieldnames"] && $recs[$i] != "")
+				if($v["csv_fieldnames"] && $recs[$i] != ""){
 					$val_nodes[$recs[$i]] = $recs[$i];
-				else
+				} else {
 					$val_nodes["f_" . $i] = g_l('import', "[record_field]") . ($i + 1);
+				}
 			}
 		}
 
@@ -2340,41 +2335,45 @@ function handle_event(evt) {
 
 		reset($records);
 		$i = 0;
-		while(list(, $record) = each($records)) {
+		while(list(, $record) = each($records)){
 			$hdns .= we_html_element::htmlHidden(array("name" => "records[$i]", "value" => $record));
 			$sct_we_fields = new we_html_select(array(
-					"name" => "we_flds[$record]",
-					"size" => "1",
-					"class" => "weSelect",
-					"onClick" => "",
-					"style" => "")
+				"name" => "we_flds[$record]",
+				"size" => "1",
+				"class" => "weSelect",
+				"onClick" => "",
+				"style" => "")
 			);
 			reset($val_nodes);
 			$sct_we_fields->addOption("", g_l('import', "[any]"));
-			while(list($value, $text) = each($val_nodes)) {
+			foreach($val_nodes as $value => $text){
 				$b64_value = (!isset($v["startCSVImport"])) ? base64_encode($value) : $value;
 				$sct_we_fields->addOption($b64_value, oldHtmlspecialchars($text));
 				if(isset($we_flds[$record])){
 					if($value == base64_decode($we_flds[$record])){
 						$sct_we_fields->selectOption($b64_value);
 					}
-				} else{
-					if($value == $record){
-						$sct_we_fields->selectOption($b64_value);
-					}
+				} elseif($value == $record){
+					$sct_we_fields->selectOption($b64_value);
 				}
 			}
 
-			$new_record = "";
-			if($record == "Title")
-				$new_record = g_l('import', "[we_title]");
-			if($record == "Description")
-				$new_record = g_l('import', "[we_description]");
-			if($record == "Keywords")
-				$new_record = g_l('import', "[we_keywords]");
-			array_push($rows, array(
+
+			switch($record){
+				case "Title":
+					$new_record = g_l('import', "[we_title]");
+					break;
+				case "Description":
+					$new_record = g_l('import', "[we_description]");
+					break;
+				case "Keywords":
+					$new_record = g_l('import', "[we_keywords]");
+					break;
+				default:
+					$new_record = '';
+			}
+			$rows[] = array(
 				array("dat" => ($new_record != "") ? $new_record : $record), array("dat" => $sct_we_fields->getHTML()),
-				)
 			);
 			$i++;
 		}
@@ -2386,19 +2385,19 @@ function handle_event(evt) {
 
 		// Assigned record or attribute field selectors.
 		$rcdPfxSelect = new we_html_select(array(
-				"name" => "v[rcd_pfx]",
-				"size" => "1",
-				"class" => "weSelect",
-				"onClick" => "self.document.forms['we_form'].elements['v[pfx_fn]'].value=1;self.document.forms['we_form'].elements['v[rdo_filename]'][1].checked=true;",
-				"style" => "width: 150px")
+			"name" => "v[rcd_pfx]",
+			"size" => "1",
+			"class" => "weSelect",
+			"onClick" => "self.document.forms['we_form'].elements['v[pfx_fn]'].value=1;self.document.forms['we_form'].elements['v[rdo_filename]'][1].checked=true;",
+			"style" => "width: 150px")
 		);
 
 		reset($val_nodes);
-		while(list($value, $text) = each($val_nodes)) {
+		foreach($val_nodes as $value => $text){
 			$rcdPfxSelect->addOption(oldHtmlspecialchars($value), $text);
-			if(isset($v["rcd_pfx"]))
-				if($value == $v["rcd_pfx"])
-					$rcdPfxSelect->selectOption($value);
+			if(isset($v["rcd_pfx"]) && $value == $v["rcd_pfx"]){
+				$rcdPfxSelect->selectOption($value);
+			}
 		}
 
 		$asgndFld = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 1, 1);
@@ -2421,7 +2420,7 @@ function handle_event(evt) {
 		);
 
 
-		if(count($dateFields) > 0){
+		if(!empty($dateFields)){
 			// Timestamp
 			$tStamp = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 7, 2);
 			$tStamp->setCol(0, 0, array("colspan" => 2), we_forms::radiobutton("Unix", (!isset($v["rdo_timestamp"]) ? 1 : ($v["rdo_timestamp"] == "Unix") ? 1 : 0), "v[rdo_timestamp]", g_l('import', "[uts]"), true, "defaultfont", "", 0, g_l('import', "[unix_timestamp]"), 0, 384));
@@ -2433,10 +2432,10 @@ function handle_event(evt) {
 			$tStamp->setCol(6, 0, array("width" => 25), we_html_tools::getPixel(25, 0));
 			$tStamp->setCol(6, 1, array(), we_html_tools::htmlTextInput("v[timestamp]", 30, (isset($v["timestamp"]) ? $v["timestamp"] : ""), "", "onClick=\"self.document.forms['we_form'].elements['v[rdo_timestamp]'][2].checked=true;\"", "text", 150));
 
-			array_push($parts, array(
+			$parts[] = array(
 				"headline" => g_l('import', "[format_date]"),
 				"html" => $tStamp->getHTML(),
-				"space" => 140)
+				"space" => 140
 			);
 			if(!isset($v["dateFields"])){
 				$hdns .= we_html_element::htmlHidden(array("name" => "v[dateFields]", "value" => makeCSVFromArray($dateFields)));
@@ -2458,11 +2457,10 @@ function handle_event(evt) {
 			"space" => 140)
 		);
 
-		array_push($parts, array(
+		$parts[] = array(
 			"headline" => g_l('import', "[name]"),
 			"html" => $fn->getHTML(),
 			"space" => 140
-			)
 		);
 
 		$wepos = weGetCookieVariable("but_csv");
@@ -2477,29 +2475,12 @@ function handle_event(evt) {
 
 	function formWeChooser($table = FILE_TABLE, $width = "", $rootDirID = 0, $IDName = "ID", $IDValue = "0", $Pathname = "Path", $Pathvalue = "/", $cmd = ""){
 		if($Pathvalue == ""){
-			$Pathvalue = f("SELECT Path FROM " . escape_sql_query($table) . " WHERE ID=" . intval($IDValue), "Path", new DB_WE());
+			$Pathvalue = f('SELECT Path FROM ' . escape_sql_query($table) . ' WHERE ID=' . intval($IDValue), "Path", new DB_WE());
 		}
 
 		$button = we_button::create_button("select", "javascript:we_cmd('openSelector',document.we_form.elements['$IDName'].value,'$table','document.we_form.elements[\\'$IDName\\'].value','document.we_form.elements[\\'$Pathname\\'].value','" . $cmd . "','" . session_id() . "','$rootDirID')");
 
 		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($Pathname, 30, $Pathvalue, "", 'readonly', "text", $width, 0), "", "left", "defaultfont", we_html_element::htmlHidden(array("name" => $IDName, "value" => $IDValue)), we_html_tools::getPixel(20, 4), $button);
-	}
-
-	function getTMPaccess(){
-//FIMXE: remove function
-		/* 		if(file_exists(TEMP_PATH . '.htaccess')){
-		  unlink(TEMP_PATH . '.htaccess');
-		  } */
-	}
-
-	function denyTMPaccess(){
-//FIMXE: remove function
-		/* 		if(file_exists($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . 'we/include/htaccessbase.txt')){
-		  $htaccessdata = file_get_contents($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . 'we/include/htaccessbase.txt');
-		  if(!file_exists(TEMP_PATH . '.htaccess')){
-		  file_put_contents(TEMP_PATH . '.htaccess', $htaccessdata);
-		  }
-		  } */
 	}
 
 }

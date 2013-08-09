@@ -80,14 +80,14 @@ $we_menu_voting = array(
 		'enabled' => '1',
 	),
 	array(
-		'text' => g_l('modules_voting', '[menu_help]') . '...',
+		'text' => g_l('modules_voting', '[menu_help]') . '&hellip;',
 		'parent' => '001100',
 		'cmd' => 'help_modules',
 		'perm' => '',
 		'enabled' => '1',
 	),
 	array(
-		'text' => g_l('modules_voting', '[menu_info]') . '...',
+		'text' => g_l('modules_voting', '[menu_info]') . '&hellip;',
 		'parent' => '001100',
 		'cmd' => 'info_modules',
 		'perm' => '',

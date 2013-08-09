@@ -58,8 +58,8 @@ class copyFolderFinishFrag extends copyFolderFrag{
 		$content = $templ->elements["data"]["dat"];
 
 		if(preg_match_all('/##WEPATH##([^ ]+) ###WEPATH###/i', $content, $regs, PREG_SET_ORDER)){
-			for($i = 0; $i < sizeof($regs); $i++){
-				$path = $regs[$i][1];
+			foreach($regs as $cur){
+				$path = $cur[1];
 				$id = $this->getID($path, $GLOBALS['DB_WE']);
 				$content = str_replace('##WEPATH##' . $path . ' ###WEPATH###', $id, $content);
 			}

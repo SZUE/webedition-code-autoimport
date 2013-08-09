@@ -47,9 +47,9 @@ function we_tag_order($attribs){
 	$we_orderid = $we_orderid ? $we_orderid : (isset($_REQUEST["we_orderid"]) ? $_REQUEST["we_orderid"] : 0);
 
 
-	$GLOBALS["lv"] = new we_shop_ordertag($we_orderid, $condition, $hidedirindex);
+	$GLOBALS["lv"] = new we_shop_ordertag(intval($we_orderid), $condition, $hidedirindex);
 	if(is_array($GLOBALS["we_lv_array"])){
-		array_push($GLOBALS["we_lv_array"], clone($GLOBALS["lv"]));
+		$GLOBALS["we_lv_array"][] = clone($GLOBALS["lv"]);
 	}
 	return $GLOBALS["lv"]->avail;
 }

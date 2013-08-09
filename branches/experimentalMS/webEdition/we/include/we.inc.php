@@ -41,14 +41,18 @@ if(isset($_SERVER['HTTP_HOST']) && $_SERVER['SERVER_NAME'] != $_SERVER['HTTP_HOS
 }
 
 // Set PHP flags
-@$_memlimit = intval(ini_get('memory_limit'));
-if($_memlimit < 32){
+if( intval(ini_get('memory_limit')) < 32){
 	@ini_set('memory_limit', '32M');
 }
 @ini_set('allow_url_fopen', '1');
 @ini_set('file_uploads', '1');
 @ini_set('session.use_trans_sid', '0');
 //@ini_set("arg_separator.output","&");
+//fix insecure cookies
+$cookie = session_get_cookie_params();
+//FIXME: how to handle secure connections - do we allow session upgrades?
+session_set_cookie_params($cookie['lifetime'], $cookie['path'], $cookie['domain'], $cookie['secure'], true);
+
 
 //prepare space for we-variables; $_SESSION['weS'] is set in we_session
 if(!isset($GLOBALS['we'])){
@@ -75,11 +79,11 @@ include_once (WE_INCLUDES_PATH . 'conf/we_active_integrated_modules.inc.php');
 // we_available_modules - modules and informations about integrated and none integrated modules
 // we_active_integrated_modules - all active integrated modules
 //if file corrupted try to load defaults
-if(empty($GLOBALS['_we_active_integrated_modules'])||!in_array('users',$GLOBALS['_we_active_integrated_modules'])){
+if(empty($GLOBALS['_we_active_integrated_modules']) || !in_array('users', $GLOBALS['_we_active_integrated_modules'])){
 	include_once (WE_INCLUDES_PATH . 'conf/we_active_integrated_modules.inc.php.default');
 }
 //make sure we always load users
-$GLOBALS['_we_active_integrated_modules'][]='users';
+$GLOBALS['_we_active_integrated_modules'][] = 'users';
 
 foreach($GLOBALS['_we_active_integrated_modules'] as $active){
 	if(file_exists(WE_MODULES_PATH . $active . '/we_conf_' . $active . '.inc.php')){

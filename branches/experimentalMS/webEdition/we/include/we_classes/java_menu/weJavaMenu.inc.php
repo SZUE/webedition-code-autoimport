@@ -164,11 +164,11 @@ class weJavaMenu{
 			<table cellpadding="2" cellspacing="0" border="0">
 				<tr>
 					<td><form></td>';
-		for($i = 0; $i < sizeof($menus); $i++){
+		for($i = 0; $i < count($menus); $i++){
 			$foo = $menus[$i]["code"];
 			$this->h_pOption($this->entries, $foo, $menus[$i]["id"], "");
 			$foo .= "</select>\n";
-			$out .= '<td>' . ((we_html_tools::getPixel(2, 3) . '<br>')) . $foo . '</td>' . (($i < (sizeof($menus) - 1)) ? '<td>&nbsp;&nbsp;</td>' : '');
+			$out .= '<td>' . ((we_html_tools::getPixel(2, 3) . '<br>')) . $foo . '</td>' . (($i < (count($menus) - 1)) ? '<td>&nbsp;&nbsp;</td>' : '');
 		}
 		$out .= '
 					</tr>
@@ -213,7 +213,7 @@ class weJavaMenu{
 
 	function h_pOption($men, &$opt, $p, $zweig){
 		$nf = $this->h_search($men, $p);
-		if(sizeof($nf)){
+		if(!empty($nf)){
 			foreach($nf as $id => $e){
 				$newAst = $zweig;
 				$e["enabled"] = 1;
@@ -257,7 +257,7 @@ class weJavaMenu{
 
 	function h_pCODE($men, &$opt, $p, $zweig){
 		$nf = $this->h_search($men, $p);
-		if(sizeof($nf)){
+		if(!empty($nf)){
 			foreach($nf as $id => $e){
 				$newAst = $zweig;
 				$e["enabled"] = 1;
@@ -268,14 +268,14 @@ class weJavaMenu{
 						$and = explode("&&", $v);
 						$one = true;
 						foreach($and as $key => $val){
-							array_push($set, 'isset($_SESSION["perms"]["' . trim($val) . '"])');
+							$set[] = 'isset($_SESSION["perms"]["' . trim($val) . '"])';
 							//$and[$key]='$_SESSION["perms"]["'.trim($val).'"]';
 							$and[$key] = '(isset($_SESSION["perms"]["' . trim($val) . '"]) && $_SESSION["perms"]["' . trim($val) . '"])';
 							$one = false;
 						}
 						$or[$k] = implode(" && ", $and);
 						if($one && !in_array('isset($_SESSION["perms"]["' . trim($v) . '"])', $set))
-							array_push($set, 'isset($_SESSION["perms"]["' . trim($v) . '"])');
+							$set[] = 'isset($_SESSION["perms"]["' . trim($v) . '"])';
 					}
 					$set_str = implode(" || ", $set);
 					$condition_str = implode(" || ", $or);
@@ -294,7 +294,7 @@ class weJavaMenu{
 					if(!(isset($e["enabled"]) && $e["enabled"] == 0)){
 						$opt .= '<li><a href="#void" onclick="parent.menuaction(\'' . $e["cmd"] . '\')">' . $mtext . '</a></li>';
 					}
-				} else{
+				} elseif(!(isset($e["enabled"]) && $e["enabled"] == 0)){
 					$opt .= '<li class="disabled"></li>';
 				}
 			}

@@ -23,37 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 // make accessable for others too, but use weMetaData_Exif::getUsedFields();
-$GLOBALS['____weMetaData_Exif_usedFields'] = array(
-	"Artist",
-	"ColorSpace",
-	"Copyright",
-	"DateTime",
-	"DateTimeOriginal",
-	"ExifImageLength",
-	"ExifImageWidth",
-	"ExifVersion",
-	"ExposureBiasValue",
-	"ExposureTime",
-	"FileDateTime",
-	"FileSize",
-	"FileType",
-	"Flash",
-	"FNumber",
-	"FocalLength",
-	"HostComputer",
-	"ImageDescription",
-	"Make",
-	"MeteringMode",
-	"MimeType",
-	"Model",
-	"Orientation",
-	"ResolutionUnit",
-	"Software",
-	"UserComment",
-	"XResolution",
-	"YResolution",
-	"YCbCrPositioning"
-);
 
 /**
  * @abstract implementation class of metadata reader for Exif data
@@ -64,27 +33,29 @@ $GLOBALS['____weMetaData_Exif_usedFields'] = array(
  */
 class weMetaData_Exif extends weMetaData{
 
-	var $accesstypes = array("read");
+	const usedFields = 'Artist,ColorSpace,Copyright,DateTime,DateTimeOriginal,ExifImageLength,ExifImageWidth,ExifVersion,ExposureBiasValue,ExposureTime,FileDateTime,FileSize,FileType,Flash,FNumber,FocalLength,HostComputer,ImageDescription,Make,MeteringMode,MimeType,Model,Orientation,ResolutionUnit,Software,UserComment,XResolution,YResolution,YCbCrPositioning';
 
-	function __construct($filetype){
+	public function __construct($filetype){
 		$this->filetype = $filetype;
+		$this->accesstypes = array("read");
 	}
 
 	function getUsedFields(){
-		return $GLOBALS['____weMetaData_Exif_usedFields'];
+		return explode(',', self::usedFields);
 	}
 
-	function _checkDependencies(){
+	protected function _checkDependencies(){
 		return (is_callable("exif_read_data"));
 	}
 
-	function _getMetaData($selection = ""){
-		if(!$this->_valid)
+	protected function _getMetaData($selection = ""){
+		if(!$this->_valid){
 			return false;
+		}
 		if(is_array($selection)){
-			// fetch some
+// fetch some
 		} else{
-			// fetch all
+// fetch all
 			if(@exif_imagetype($this->datasource)){
 				$_metadata = @exif_read_data($this->datasource);
 			} else{
@@ -93,12 +64,12 @@ class weMetaData_Exif extends weMetaData{
 			}
 		}
 
-		foreach($GLOBALS['____weMetaData_Exif_usedFields'] as $value){
+		foreach(explode(',',self::usedFields) as $value){
 			if(isset($_metadata[$value])){
 				$this->metadata[$value] = $_metadata[$value];
 			}
 		}
-		//$this->metadata = $_metadata;
+
 		return $this->metadata;
 	}
 

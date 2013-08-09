@@ -88,8 +88,9 @@ abstract class we_util{
 	static function rmPhp($in){
 		$out = '';
 		$starttag = strpos($in, '<?');
-		if($starttag === false)
+		if($starttag === false){
 			return $in;
+		}
 		$lastStart = 0;
 		while(!($starttag === false)) {
 			$endtag = strpos($in, '?>', $starttag);
@@ -97,17 +98,14 @@ abstract class we_util{
 			$lastStart = $endtag + 2;
 			$starttag = strpos($in, '<?', $lastStart);
 		}
-		if($lastStart < strlen($in))
+		if($lastStart < strlen($in)){
 			$out .= substr($in, $lastStart, (strlen($in) - $lastStart));
+		}
 		return $out;
 	}
 
 	static function getGlobalPath(){
-		if(isset($GLOBALS['WE_MAIN_DOC']) && isset($GLOBALS['WE_MAIN_DOC']->Path)){
-			return $GLOBALS['WE_MAIN_DOC']->Path;
-		} else{
-			return '';
-		}
+		return (isset($GLOBALS['WE_MAIN_DOC']) && isset($GLOBALS['WE_MAIN_DOC']->Path)?$GLOBALS['WE_MAIN_DOC']->Path:'');
 	}
 
 	static function html2uml($text){

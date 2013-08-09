@@ -42,9 +42,13 @@ if(isset($_REQUEST["ok"])){
 	$we_doc->elements[$name . "dhtmledit"]["dat"] = isset($_REQUEST["dhtmledit"]) ? $_REQUEST["dhtmledit"] : "";
 	$we_doc->elements[$name . "showmenus"]["dat"] = isset($_REQUEST["showmenus"]) ? $_REQUEST["showmenus"] : "";
 	$we_doc->elements[$name . "commands"]["dat"] = isset($_REQUEST["commands"]) ? $_REQUEST["commands"] : "";
+	$we_doc->elements[$name . "contextmenu"]["dat"] = isset($_REQUEST["contextmenu"]) ? $_REQUEST["contextmenu"] : "";
 	$we_doc->elements[$name . "height"]["dat"] = isset($_REQUEST["height"]) ? $_REQUEST["height"] : 50;
 	$we_doc->elements[$name . "width"]["dat"] = isset($_REQUEST["width"]) ? $_REQUEST["width"] : 200;
+	$we_doc->elements[$name . "bgcolor"]["dat"] = isset($_REQUEST["bgcolor"]) ? $_REQUEST["bgcolor"] : '';
+	$we_doc->elements[$name . "class"]["dat"] = isset($_REQUEST["class"]) ? $_REQUEST["class"] : '';
 	$we_doc->elements[$name . "cssClasses"]["dat"] = isset($_REQUEST["cssClasses"]) ? $_REQUEST["cssClasses"] : "";
+	$we_doc->elements[$name . "tinyparams"]["dat"] = isset($_REQUEST["tinyparams"]) ? $_REQUEST["tinyparams"] : '';
 	$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
 }
 
@@ -168,11 +172,24 @@ $parts[] = array(
 );
 
 
-// WIDTH & HEIGHT
+// WIDTH & HEIGHT & BGCOLOR
 $table = '<table border="0" cellpadding="0" cellspacing="0">
 	<tr>
 		<td class="defaultfont" align="right">width&nbsp;</td><td>' . we_html_tools::htmlTextInput('width', 24, $we_doc->elements[$name . "width"]["dat"], 5, '', 'number', 60, 0) . '</td>
 		<td class="defaultfont" align="right">height&nbsp;</td><td>' . we_html_tools::htmlTextInput('height', 24, $we_doc->elements[$name . "height"]["dat"], 5, '', 'number', 60, 0) . '</td>
+		<td class="defaultfont" align="right">bgcolor&nbsp;</td><td>' . we_html_tools::htmlTextInput('bgcolor', 24, $we_doc->elements[$name . "bgcolor"]["dat"], 20, '', 'text', 60, 0) . '</td>
+		<td class="defaultfont" align="right"></td><td></td>
+	</tr>
+	<tr>
+		<td>' . we_html_tools::getPixel(70, 6) . '</td>
+		<td>' . we_html_tools::getPixel(60, 6) . '</td>
+		<td>' . we_html_tools::getPixel(95, 6) . '</td>
+		<td>' . we_html_tools::getPixel(60, 6) . '</td>
+		<td>' . we_html_tools::getPixel(140, 6) . '</td>
+		<td>' . we_html_tools::getPixel(60, 6) . '</td>
+	</tr>
+	<tr>
+		<td class="defaultfont" align="right">class&nbsp;</td><td>' . we_html_tools::htmlTextInput('class', 24, $we_doc->elements[$name . "class"]["dat"], 20, '', 'text', 60, 0) . '</td>
 		<td class="defaultfont" align="right"></td><td></td>
 	</tr>
 	<tr>
@@ -209,14 +226,39 @@ $parts[] = array(
 	"space" => 0,
 );
 
-// COMMANDS
+// COMMANDS && CONTEXTMENU
 $vals = makeArrayFromCSV(",," . WE_WYSIWYG_COMMANDS);
 sort($vals);
-$select = we_html_tools::htmlSelect("tmp_commands", $vals, 1, "", false, 'onchange="var elem=document.getElementById(\'commands\'); var txt = this.options[this.selectedIndex].text; if(elem.value.indexOf(txt)==-1){elem.value=(elem.value) ? (elem.value + \',\' + txt) : txt;}this.selectedIndex=-1"');
+$select = we_html_tools::htmlSelect("tmp_commands", $vals, 1, "", false, 'onchange="var elem=document.getElementById(\'commands\'); var txt = this.options[this.selectedIndex].text; if(elem.value.split(\',\').indexOf(txt)==-1){elem.value=(elem.value) ? (elem.value + \',\' + txt) : txt;}this.selectedIndex=-1"');
+$select_cm = we_html_tools::htmlSelect("tmp_contextmenu", $vals, 1, "", false, 'onchange="var elem=document.getElementById(\'contextmenu\'); var txt = this.options[this.selectedIndex].text; if(elem.value.split(\',\').indexOf(txt)==-1){elem.value=(elem.value) ? (elem.value + \',\' + txt) : txt;}this.selectedIndex=-1"');
 
 $table = '<table border="0" cellpadding="0" cellspacing="0">
 	<tr>
 		<td class="defaultfont" valign="top" align="right">commands&nbsp;</td><td colspan="5">' . $select . '<br>' . we_class::htmlTextArea("commands", 3, 30, oldHtmlspecialchars((isset($we_doc->elements[$name . "commands"]["dat"]) ? $we_doc->elements[$name . "commands"]["dat"] : "")), 'id="commands" style="width:415px;height:50px"') . '</td>
+	</tr>
+	<tr>
+		<td>' . we_html_tools::getPixel(70, 10) . '</td>
+		<td>' . we_html_tools::getPixel(415, 10) . '</td>
+	</tr>
+	<tr>
+		<td class="defaultfont" valign="top" align="right">contextmenu&nbsp;</td><td colspan="5">' . $select_cm . '<br>' . we_class::htmlTextArea("contextmenu", 3, 30, oldHtmlspecialchars((isset($we_doc->elements[$name . "contextmenu"]["dat"]) ? $we_doc->elements[$name . "contextmenu"]["dat"] : "")), 'id="contextmenu" style="width:415px;height:50px"') . '</td>
+	</tr>
+	<tr>
+		<td>' . we_html_tools::getPixel(70, 1) . '</td>
+		<td>' . we_html_tools::getPixel(415, 1) . '</td>
+	</tr>
+</table>';
+
+$parts[] = array(
+	"headline" => "",
+	"html" => $table,
+	"space" => 0,
+);
+
+// TINYPARAMS
+$table = '<table border="0" cellpadding="0" cellspacing="0">
+	<tr>
+		<td class="defaultfont" valign="top" align="right">tinyparams&nbsp;</td><td colspan="5">' . we_html_tools::htmlTextInput('tinyparams', 24, $we_doc->elements[$name . "tinyparams"]["dat"], 1024, '', 'text', 350, 0) . '</td>
 	</tr>
 	<tr>
 		<td>' . we_html_tools::getPixel(70, 1) . '</td>

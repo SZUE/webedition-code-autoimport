@@ -46,7 +46,7 @@ class weJUpload{
 
 		$auth = getServerAuth();
 		if($auth){
-			$this->Params['specificHeaders'] = 'Authorization: Basic ' . base64_encode($auth);
+			$this->Params['specificHeaders'] = 'Authorization: Basic ' . base64_encode(rtrim($auth,'@'));
 		}
 
 		switch($GLOBALS['WE_LANGUAGE']){
@@ -93,6 +93,7 @@ class weJUpload{
 				'name' => "JUpload",
 				'code' => "wjhk.jupload2.JUploadApplet",
 				'archive' => getServerUrl(true) . WEBEDITION_DIR . 'jupload/jupload.jar',
+				'codebase' => getServerUrl(true) . WEBEDITION_DIR . 'jupload/jupload.jar',
 				'width' => $w,
 				'height' => $h,
 				), $_params . $content);

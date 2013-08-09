@@ -37,11 +37,28 @@ if(!file_exists($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/conf/we_conf
 
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
+//Check some critical PHP Setings #7243
+//FIXME: implement class sysinfo.class, for not analysing the same php settings twice (here and in sysinfo.php)
+if(isset($_SESSION['perms']['ADMINISTRATOR']) && $_SESSION['perms']['ADMINISTRATOR']){
+	$suhosinMsg = (in_array('suhosin', get_loaded_extensions())
+			&& !in_array(ini_get('suhosin.simulation'), array('1', 'on', 'yes', 'true', true))) ? 'suhosin=on\n' : '';
+
+	$maxInputMsg = !ini_get('max_input_vars') ? 'max_input_vars = 1000 (PHP default value)' :
+		(ini_get('max_input_vars') < 2000 ? 'max_input_vars = ' . ini_get('max_input_vars') : '');
+	$maxInputMsg .= $maxInputMsg ? ': >= 2000 is recommended' : $maxInputMsg;
+
+	$criticalPhpMsg = trim($maxInputMsg . $suhosinMsg);
+	if($criticalPhpMsg){
+		t_e('Critical PHP Settings found', $criticalPhpMsg);
+	}
+}
+
 //FIXME: implement resave of config files
-if(!defined('CONF_SAVED_VERSION') || (defined('CONF_SAVED_VERSION') && version_compare(WE_VERSION, CONF_SAVED_VERSION) != 0)){
+if(!defined('CONF_SAVED_VERSION') || (defined('CONF_SAVED_VERSION') && (intval(WE_SVNREV) > intval(CONF_SAVED_VERSION)))){
 	//resave config file(s)
 	we_base_preferences::check_global_config(true);
 }
+we_util_File::checkAndMakeFolder($_SERVER['DOCUMENT_ROOT'].WE_THUMBNAIL_DIRECTORY);
 
 define('LOGIN_DENIED', 4);
 define('LOGIN_OK', 2);
@@ -152,18 +169,19 @@ weNavigationCache::clean();
 //we_updater::fixInconsistentTables();
 
 //clean Error-Log-Table
+
 if(DB_CONNECT=='msconnect'){
 	
 } else {
-	$GLOBALS['DB_WE']->query('DELETE LOW_PRIORITY FROM ' . ERROR_LOG_TABLE . ' WHERE `Date` < DATE_SUB(NOW(), INTERVAL ' . ERROR_LOG_HOLDTIME . ' DAY)');
-	
+	$GLOBALS['DB_WE']->query('DELETE FROM ' . ERROR_LOG_TABLE . ' WHERE `Date` < DATE_SUB(NOW(), INTERVAL ' . ERROR_LOG_HOLDTIME . ' DAY)');	
 }
+
 $cnt = f('SELECT COUNT(1) AS a FROM ' . ERROR_LOG_TABLE, 'a', $GLOBALS['DB_WE']);
 if($cnt > ERROR_LOG_MAX_ITEM_COUNT){
 	if(DB_CONNECT=='msconnect'){
 	
 	} else {
-		$GLOBALS['DB_WE']->query('DELETE LOW_PRIORITY FROM ' . ERROR_LOG_TABLE . ' WHERE 1 ORDER BY Date LIMIT ' . ($cnt - ERROR_LOG_MAX_ITEM_THRESH));
+		$GLOBALS['DB_WE']->query('DELETE FROM ' . ERROR_LOG_TABLE . ' WHERE 1 ORDER BY Date LIMIT ' . ($cnt - ERROR_LOG_MAX_ITEM_THRESH));
 	}
 }
 

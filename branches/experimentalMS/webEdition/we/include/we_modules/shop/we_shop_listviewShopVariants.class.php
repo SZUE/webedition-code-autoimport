@@ -24,7 +24,6 @@
  */
 
 /**
- * class    we_listview_object
  * @desc    class for tag <we:listview type="shopVariants">
  *
  */
@@ -92,7 +91,7 @@ class we_shop_listviewShopVariants extends listviewBase{
 
 		$this->VariantData['Record'] = $variantData;
 
-		$this->anz_all = sizeof($this->VariantData['Record']);
+		$this->anz_all = count($this->VariantData['Record']);
 		$this->anz = min($this->rows, $this->anz_all);
 		$this->hidedirindex = $hidedirindex;
 		$this->objectseourls = $objectseourls;

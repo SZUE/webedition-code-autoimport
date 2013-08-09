@@ -75,7 +75,7 @@ class weTagData_choiceAttribute extends weTagDataAttribute{
 		$select = new we_html_select(array(
 				'onchange' => $jsSelect, 'class' => 'defaultfont selectinput'
 			));
-		$select->addOptions(sizeof($texts), $values, $texts);
+		$select->addOptions(count($texts), $values, $texts);
 
 		return '
 					<table class="attribute">

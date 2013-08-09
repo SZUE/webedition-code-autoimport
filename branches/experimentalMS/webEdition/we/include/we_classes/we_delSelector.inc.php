@@ -275,7 +275,7 @@ top.close();');
 	}
 
 	function query(){
-		$this->db->query('SELECT ' . $this->fields . ' FROM ' . $this->db->escape($this->table) . ' WHERE ParentID=' . intval($this->dir) . ' AND((1' . makeOwnersSql() . ')' .
+		$this->db->query('SELECT ' . $this->fields . ' FROM ' . $this->db->escape($this->table) . ' WHERE ParentID=' . intval($this->dir) . ' AND((1=1' . makeOwnersSql() . ')' .
 			getWsQueryForSelector($this->table, false) . ')' . ($this->order ? (' ORDER BY ' . $this->order) : '')
 		);
 	}

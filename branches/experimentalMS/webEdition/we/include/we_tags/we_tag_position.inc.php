@@ -86,7 +86,7 @@ function we_tag_position($attribs){
 						$_content = $arr;
 					}
 				}
-			}t_e($_content['position']);
+			}
 			if(isset($_content) && $_content['position']){
 				$_retPos = $_content['position'];
 			}

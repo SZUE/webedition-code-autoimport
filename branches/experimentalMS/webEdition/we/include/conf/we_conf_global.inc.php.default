@@ -33,3 +33,8 @@
  * Edit this file ONLY if you know exactly what you are doing!
  */
 
+//connection charset to db
+define('DB_SET_CHARSET', "utf8");
+
+//Default Charset
+define('DEFAULT_CHARSET', "UTF-8");

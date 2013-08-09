@@ -445,12 +445,15 @@ function showEditFooterForNormalMode(){
 
 		if(!$_ctrlElem || !$_ctrlElem['hide']){
 
+			$text = defined('SCHEDULE_TABLE') && we_schedpro::saveInScheduler($GLOBALS['we_doc']) ? 'saveInScheduler' : 'publish';
 			$_normalTable->addCol(2);
-			$_normalTable->setColContent(0, $_pos++, we_button::create_button("publish", "javascript:_EditorFrame.setEditorPublishWhenSave(true);we_save_document();"));
+			$_normalTable->setColAttributes(0, $_pos, array('id' => 'publish_' . $GLOBALS['we_doc']->ID));
+			$_normalTable->setColContent(0, $_pos++, we_button::create_button($text, "javascript:_EditorFrame.setEditorPublishWhenSave(true);we_save_document();"));
 			$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
 		}
 	}
 
+	
 	if($we_doc->IsTextContentDoc && $haspermNew){
 
 		$_ctrlElem = getControlElement('checkbox', 'makeSameDoc');
@@ -548,17 +551,16 @@ function showEditFooterForSEEMMode(){
 
 
 	//	Button scheduler
-	if(in_array(WE_EDITPAGE_SCHEDULER, $GLOBALS['we_doc']->EditPageNrs) && ($GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_CONTENT || $GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_PROPERTIES)){
-		if(defined("SCHEDULE_TABLE") && we_hasPerm("CAN_SEE_SCHEDULER")){
+	if(in_array(WE_EDITPAGE_SCHEDULER, $GLOBALS['we_doc']->EditPageNrs) && ($GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_CONTENT || $GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_PROPERTIES)&&
+		defined("SCHEDULE_TABLE") && we_hasPerm("CAN_SEE_SCHEDULER")){
 			$_seeModeTable->addCol(2);
 			$_seeModeTable->setCol(0, $_pos++, array("valign" => "top"), we_button::create_button("schedule_button", "javascript:parent.editHeader.we_cmd('switch_edit_page', " . WE_EDITPAGE_SCHEDULER . ", '" . $GLOBALS["we_transaction"] . "');"));
 			$_seeModeTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
-		}
 	}
 
 	//	Button put in workflow
-	if($GLOBALS['we_doc']->EditPageNr != WE_EDITPAGE_PROPERTIES && $GLOBALS['we_doc']->EditPageNr != WE_EDITPAGE_SCHEDULER){ // then button "workflow"
-		if(defined("WORKFLOW_TABLE") && $we_doc->IsTextContentDoc && $we_doc->ID){
+	if(/*$GLOBALS['we_doc']->EditPageNr != WE_EDITPAGE_PROPERTIES &&*/ $GLOBALS['we_doc']->EditPageNr != WE_EDITPAGE_SCHEDULER && // then button "workflow"
+		defined("WORKFLOW_TABLE") && $we_doc->IsTextContentDoc && $we_doc->ID){
 
 			$_ctrlElem = getControlElement('button', 'workflow'); //	look tag we:controlElement for details
 
@@ -567,7 +569,7 @@ function showEditFooterForSEEMMode(){
 				$_seeModeTable->setCol(0, $_pos++, array("valign" => "top"), we_button::create_button("in_workflow", "javascript:put_in_workflow();"));
 				$_seeModeTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
 			}
-		}
+		
 	}
 
 	//###########################	Special buttons for special EDITPAGE

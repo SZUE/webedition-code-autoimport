@@ -24,8 +24,6 @@
  */
 class weXMLExIm{
 
-	//var $perserves_file=array();
-
 	var $destination = array();
 	var $RefTable;
 	var $chunk_count;
@@ -249,7 +247,7 @@ class weXMLExIm{
 			$encoding = $GLOBALS['WE_BACKENDCHARSET'];
 		}
 		return '<?xml version="1.0" encoding="' . $encoding . '" standalone="yes"?>' . "\n" .
-			'<webEdition version="' . WE_VERSION . '" type="" xmlns:we="we-namespace">' . "\n";
+			'<webEdition version="' . WE_VERSION . '" type="' . $type . '" xmlns:we="we-namespace">' . "\n";
 	}
 
 	static function getFooter(){
@@ -268,12 +266,12 @@ class weXMLExIm{
 		$allow = $this->queryForAllowed($table);
 		foreach($selIDs as $v){
 			if($v){
-				$isfolder = f('SELECT IsFolder FROM ' . $table . ' WHERE ID=' . intval($v), "IsFolder", $db);
-				if($isfolder){
+				if(f('SELECT IsFolder FROM ' . $table . ' WHERE ID=' . intval($v), "IsFolder", $db)){
 					we_readChilds($v, $tmp, $table, false, $allow);
-					if($with_dirs)
+					if($with_dirs){
 						$tmp[] = $v;
-				}else{
+					}
+				} else{
 					$tmp[] = $v;
 				}
 			}
@@ -281,22 +279,17 @@ class weXMLExIm{
 		if($with_dirs){
 			return $tmp;
 		}
-		foreach($tmp as $v){
-			$isfolder = f("SELECT IsFolder FROM " . $db->escape($table) . " WHERE ID=" . intval($v), "IsFolder", $db);
-			if(!$isfolder){
-				$ret[] = $v;
-			}
-		}
-		return $ret;
+		$db->query('SELECT ID FROM ' . $db->escape($table) . ' WHERE IsFolder=0 AND ID IN(' . implode(',', $tmp) . ')');
+		return $db->getAll(true);
 	}
 
 	function getQueryParents($path){
-		$out = '';
+		$out = array();
 		while($path != '/' && $path) {
-			$out .= "Path='$path' OR ";
+			$out [] = 'Path="' . $path . '"';
 			$path = dirname($path);
 		}
-		return ($out ? substr($out, 0, strlen($out) - 3) : '');
+		return (empty($out) ? '' : implode(' OR ', $out));
 	}
 
 	function queryForAllowed($table){
@@ -320,68 +313,50 @@ class weXMLExIm{
 			}
 		}
 
-		return makeOwnersSql() . ( $wsQuery ? 'AND (' . implode(' OR ', $wsQuery) . ')' : '');
+		return 'AND (1 ' . makeOwnersSql() . ( $wsQuery ? 'OR (' . implode(' OR ', $wsQuery) . ')' : '') . ')';
 	}
 
 	function getSelectedItems($selection, $extype, $art, $type, $doctype, $classname, $categories, $dir, &$selDocs, &$selTempl, &$selObjs, &$selClasses){
-		$this->db = new DB_WE();
-		if($selection == "manual"){
+		$db = new DB_WE();
+		if($selection == 'manual'){
 			if($extype == "wxml"){
 				$selDocs = $this->getIDs($selDocs, FILE_TABLE, false);
 				$selTempl = $this->getIDs($selTempl, TEMPLATES_TABLE, false);
-				$selObjs = defined("OBJECT_FILES_TABLE") ? $this->getIDs($selObjs, OBJECT_FILES_TABLE, false) : "";
-				$selClasses = defined("OBJECT_FILES_TABLE") ? $this->getIDs($selClasses, OBJECT_TABLE, false) : "";
+				$selObjs = defined("OBJECT_FILES_TABLE") ? $this->getIDs($selObjs, OBJECT_FILES_TABLE, false) : '';
+				$selClasses = defined("OBJECT_FILES_TABLE") ? $this->getIDs($selClasses, OBJECT_TABLE, false) : '';
 			} else{
-				if($art == "docs")
-					$selDocs = $this->getIDs($selDocs, FILE_TABLE);
-				else if($art == "objects")
-					$selObjs = defined("OBJECT_FILES_TABLE") ? $this->getIDs($selObjs, OBJECT_FILES_TABLE) : "";
+				switch($art){
+					case "docs":
+						$selDocs = $this->getIDs($selDocs, FILE_TABLE);
+						break;
+					case "objects":
+						$selObjs = defined("OBJECT_FILES_TABLE") ? $this->getIDs($selObjs, OBJECT_FILES_TABLE) : "";
+						break;
+				}
 			}
+			return;
 		}
-		else{
-			if($type == "doctype"){
-				$catss = "";
-				if($categories){
-					$catids = makeCSVFromArray(makeArrayFromCSV($categories));
-					$this->db->query("SELECT Path FROM " . CATEGORY_TABLE . " WHERE ID IN (" . $catids . ");");
-					while($this->db->next_record()) {
-						$cats[] = $this->db->f("Path");
-					}
-					$catss = makeCSVFromArray($cats);
-				}
-
-				$cat_sql = ($this->cats ? we_category::getCatSQLTail($catss, FILE_TABLE, true, $this->db) : '');
-				$ws_where = "";
+		switch($type){
+			case "doctype":
+				$cat_sql = ($categories ? we_category::getCatSQLTail('', FILE_TABLE, true, $db, 'Category', true, $categories) : '');
 				if($dir != 0){
-					$workspace = id_to_path($dir, FILE_TABLE, $this->db);
-					$ws_where = " AND (" . FILE_TABLE . ".Path LIKE '" . $this->db->escape($workspace) . "/%' OR " . FILE_TABLE . ".Path='" . $this->db->escape($workspace) . "') ";
+					$workspace = id_to_path($dir, FILE_TABLE, $db);
+					$ws_where = ' AND (' . FILE_TABLE . ".Path LIKE '" . $db->escape($workspace) . "/%' OR " . FILE_TABLE . ".Path='" . $db->escape($workspace) . "') ";
+				} else{
+					$ws_where = '';
 				}
 
-				$query = 'SELECT DISTINCT ID FROM ' . FILE_TABLE . ' WHERE 1 ' . $ws_where . '  AND tblFile.IsFolder=0 AND tblFile.DocType="' . $this->db->escape($doctype) . '"' . $cat_sql;
-
-				$this->db->query($query);
-				while($this->db->next_record()) {
-					$selDocs[] = $this->db->f("ID");
-				}
-			} else{
-				if(defined("OBJECT_FILES_TABLE")){
-
-					$catss = "";
-
-					if($categories){
-						$catss = $categories;
-					}
-
+				$db->query('SELECT DISTINCT ID FROM ' . FILE_TABLE . ' WHERE 1 ' . $ws_where . '  AND tblFile.IsFolder=0 AND tblFile.DocType="' . $db->escape($doctype) . '"' . $cat_sql);
+				$selDocs = $db->getAll(true);
+				return;
+			default:
+				if(defined('OBJECT_FILES_TABLE')){
+					$cat_sql = ' ' . ($categories ? we_category::getCatSQLTail('', OBJECT_FILES_TABLE, true, $db, 'Category', true, $categories) : '');
 					$where = $this->queryForAllowed(OBJECT_FILES_TABLE);
 
-					$q = "SELECT ID FROM " . OBJECT_FILES_TABLE . " WHERE IsFolder=0 AND TableID='" . $this->db->escape($classname) . "'" . ($catss != "" ? " AND Category IN (" . $catss . ");" : '') . $where . ';';
-					$this->db->query($q);
-					$selObjs = array();
-					while($this->db->next_record()) {
-						$selObjs[] = $this->db->f("ID");
-					}
+					$db->query('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE IsFolder=0 AND TableID=' . intval($classname) . $cat_sql . $where);
+					$selObjs = $db->getAll(true);
 				}
-			}
 		}
 	}
 
@@ -394,6 +369,7 @@ class weXMLExIm{
 	}
 
 	function saveObject(&$object){
+		$ret = true;
 		if(is_object($object)){
 			// save binary data first to stay compatible with the new binary feature in v5.1
 			if(in_array("savebinarydata", get_class_methods(get_class($object)))){
@@ -401,15 +377,19 @@ class weXMLExIm{
 			}
 
 			if($object->ClassName == 'we_docTypes'){
-				$object->we_save_exim();
+				$ret = $object->we_save_exim();
 			} else{
 				$GLOBALS['we_doc'] = $object;
 				if(in_array("we_save", get_class_methods(get_class($object)))){
-					$object->we_save();
+					if(!$object->we_save()){
+						return false;
+					}
 				}
 
 				if(in_array("we_publish", get_class_methods(get_class($object)))){
-					$object->we_publish();
+					if(!$object->we_publish()){
+						return false;
+					}
 				}
 
 				if(in_array("savebinarydata", get_class_methods(get_class($object)))){
@@ -417,6 +397,7 @@ class weXMLExIm{
 				}
 			}
 		}
+		return $ret;
 	}
 
 //FIXME: splitFile,exportChunk missing - called in Backup class

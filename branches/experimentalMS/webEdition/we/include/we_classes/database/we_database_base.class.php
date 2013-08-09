@@ -154,7 +154,7 @@ abstract class we_database_base{
 	 */
 	abstract public function close();
 
-	/** get the no of rows that were affected by update/delete/replace ...
+	/** get the no of rows that were affected by update/delete/replace
 	 * @return int count of rows
 	 */
 	abstract public function affected_rows();
@@ -264,25 +264,21 @@ abstract class we_database_base{
 	 * @return bool true, if the query was successfull
 	 */
 	function query($Query_String, $allowUnion = false, $unbuffered = false){
+		if($Query_String == ''){
+			return true;
+		}
+		if(self::$Trigger_cnt){
+			$time = microtime(true);
+		}
 		if(!$this->retry){
 			$this->Errno = 0;
 			$this->Error = '';
 			$this->Row = 0;
-			if(self::$Trigger_cnt){
-				--self::$Trigger_cnt;
-				
-			}
 		}
 		/* No empty queries, please, since PHP4 chokes on them. */
-		if($Query_String == ''){
-			/* The empty query string is passed on from the constructor,
-			 * when calling the class without a query, e.g. in situations
-			 * like these: '$db = new DB_Sql_Subclass;'
-			 */
-			return true;
-		}
-		if(!$this->isConnected() && !$this->_connect())
+		if(!$this->isConnected() && !$this->_connect()){
 			return false;
+		}
 		/* we already complained in connect() about that. */
 
 // check for union This is the fastest check
@@ -313,6 +309,10 @@ abstract class we_database_base{
 				}
 
 				if(preg_match('/[\s\(`"\'\\/)]union[\s\(`\/]/i', $queryWithoutStrings)){
+					if(self::$Trigger_cnt && (defined('ERROR_LOG_TABLE') && strpos($Query_String, ERROR_LOG_TABLE) === false || !defined('ERROR_LOG_TABLE'))){
+						--self::$Trigger_cnt;
+						t_e($Query_String);
+					}
 					exit('Bad SQL statement! For security reasons, the UNION operator is not allowed within SQL statements per default! You need to set the second parameter of the query function to true if you want to use the UNION operator!');
 				}
 			}
@@ -327,8 +327,7 @@ abstract class we_database_base{
 		if(!$this->Query_ID && preg_match('/alter table|drop table/i', $Query_String)){
 			$this->_query('FLUSH TABLES');
 			$this->Query_ID = $this->_query($Query_String);
-		} else
-		if(preg_match('/insert |update|replace /i', $Query_String)){
+		} elseif(preg_match('/insert |update|replace /i', $Query_String)){
 // delete getHash DB Cache
 			getHash('', $this);
 		}
@@ -338,6 +337,35 @@ abstract class we_database_base{
 		$this->Errno = $this->errno();
 		$this->Error = $this->error();
 		$this->Row = 0;
+		if(self::$Trigger_cnt && (defined('ERROR_LOG_TABLE') && strpos($Query_String, ERROR_LOG_TABLE) === false || !defined('ERROR_LOG_TABLE'))){
+			--self::$Trigger_cnt;
+			$time = microtime(true) - $time;
+			$tmp = array(
+				'time' => $time,
+				'trigger' => self::$Trigger_cnt,
+				'errno' => $this->Errno,
+				'error' => $this->Error,
+				'affected' => $this->affected_rows(),
+				'rows' => $this->num_rows(),
+				'explain' => array()
+			);
+			if(stripos($Query_String, 'select') !== FALSE){
+				$this->free();
+				$this->Query_ID = $this->_query('EXPLAIN ' . $Query_String);
+
+				while($this->next_record(MYSQLI_ASSOC)) {
+					if(empty($tmp['explain'])){
+						$tmp['explain'][] = implode(' | ', array_keys($this->Record));
+					}
+					$tmp['explain'][] = implode(' | ', $this->Record);
+				}
+				$this->free();
+				$this->Row = 0;
+				$this->Query_ID = $this->_query($Query_String, $unbuffered);
+			}
+			t_e($Query_String, $tmp);
+		}
+
 		if(!$this->Query_ID){
 			switch($this->Errno){
 				case 2006://SERVER_GONE_ERROR
@@ -349,6 +377,9 @@ abstract class we_database_base{
 						$this->retry = false;
 						return $tmp;
 					}
+				case 0:
+					//don't know why, but ignore this
+					return true;
 				default:
 					trigger_error('MYSQL-ERROR' . "\nFehler: " . $this->Errno . "\nDetail: " . $this->Error . "\nInfo:" . $this->info() . "\nQuery: " . $Query_String, E_USER_WARNING);
 					if(defined('WE_SQL_DEBUG') && WE_SQL_DEBUG == 1){
@@ -357,7 +388,6 @@ abstract class we_database_base{
 			}
 		}
 
-# Will return nada if it fails. That's fine.
 //(bool) entfernt um Kompatibilität mit alten weDevEdge Beispiel herzustellen
 		return $this->Query_ID;
 	}
@@ -515,7 +545,7 @@ abstract class we_database_base{
 	 * is a handy setter, for executing `a`="\"b\"" set from an assoc array
 	 * @param type $arr
 	 */
-	static function arraySetter(array $arr){
+	static function arraySetter(array $arr, $imp = ','){
 		$ret = array();
 		foreach($arr as $key => $val){
 			if(is_object($val) || is_array($val)){
@@ -544,7 +574,7 @@ abstract class we_database_base{
 				$ret[] = '`' . $key . '`=' . ($escape ? '"' . escape_sql_query($val) . '"' : $val);
 			}
 		}
-		return implode(',', $ret);
+		return implode($imp, $ret);
 	}
 	static function arraySetterINSERT(array $arr){
 		$ret = array();
@@ -609,7 +639,7 @@ abstract class we_database_base{
 		 *   [0]["flags"]  field flags
 		 *   ["meta"][field name]  index of field named "field name"
 		 *   The last one is used, if you have a field name, but no index.
-		 *   Test:  if (isset($result['meta']['myfield'])) { ...
+		 *   Test:  if (isset($result['meta']['myfield'])) {
 		 */
 
 // if no $table specified, assume that we are working with a query
@@ -653,12 +683,24 @@ abstract class we_database_base{
 		return $res;
 	}
 
+	/*	 * checks if this DB connection with this user is allowed to lock a table */
+
+	public function hasLock(){
+//lock table
+		$this->lock(VALIDATION_SERVICES_TABLE, 'read');
+//select from an not locked table - must fail
+		$this->_query('SELECT 1 FROM ' . FILE_TABLE);
+		$ret = ($this->errno() > 0);
+		$this->unlock();
+		return $ret;
+	}
+
 	/**
 	 * @param $table string,array specify the tables to lock; use numeric array to lock all tables with mode; use named array with [table]=mode to lock specific modes
 	 * @param $mode string name the locking mode
 	 * @return bool true, on success
 	 */
-	function lock($table, $mode = 'write'){
+	public function lock($table, $mode = 'write'){
 		if(!$this->_connect()){
 			return false;
 		}
@@ -746,7 +788,7 @@ abstract class we_database_base{
 	}
 
 	public function addTable($tab, $cols, $keys = array()){
-		if(!is_array($cols) || !count($cols)){
+		if(!is_array($cols) || empty($cols)){
 			return;
 		}
 		$cols_sql = array();
@@ -762,19 +804,12 @@ abstract class we_database_base{
 				}
 			}
 		}
-
-		// Charset and Collation
-		$charset_collation = "";
-		if(defined('DB_CHARSET') && DB_CHARSET != '' && defined('DB_COLLATION') && DB_COLLATION != ''){
-			$Charset = DB_CHARSET;
-			$Collation = DB_COLLATION;
-			$charset_collation = ' CHARACTER SET ' . $Charset . ' COLLATE ' . $Collation;
-		}
+		
 		if(DB_CONNECT=='msconnect'){
 			return $this->query('CREATE TABLE ' . $this->escape($tab) . ' (' . implode(',', $cols_sql) . ');');	
 			t_e('msconnect: fehlende Key-Generierung');		
 		} else {
-			return $this->query('CREATE TABLE ' . $this->escape($tab) . ' (' . implode(',', $cols_sql) . ') ENGINE = MYISAM ' . $charset_collation . ';');
+			return $this->query('CREATE TABLE ' . $this->escape($tab) . ' (' . implode(',', $cols_sql) . ') ENGINE = MYISAM ' . we_database_base::getCharsetCollation() . ';');
 		}
 	}
 
@@ -855,19 +890,15 @@ abstract class we_database_base{
 	/**
 	 * checks if a key with a full key definition exists
 	 * @param type $tab table to check
-	 * @param string $key full key definition what is used in a create statement
-	 * @return string|boolean extracted key name
+	 * @param string $key name
+	 * @return boolean true if exists
 	 */
 	public function isKeyExistAtAll($tab, $key){
-		$matches = array();
-		preg_match('|.*KEY *`?([^( `]*)`? \(|', $key, $matches);
-		$key = $matches[1];
-
 		$zw = $this->getTableCreateArray($tab);
 		if($zw){
 			foreach($zw as $v){
 				if(preg_match('|.*KEY *`?' . $key . '`? \(|', $v)){
-					return $key;
+					return true;
 				}
 			}
 		}
@@ -948,6 +979,20 @@ abstract class we_database_base{
 			return $this->query('ALTER TABLE ' . $tab . ' MODIFY ' . $found . ' ' . ($newPos == 'FIRST' ? 'FIRST' : 'AFTER `' . trim($newPos, '`') . '`'));
 		}
 		return false;
+	}
+
+	public static function getCharset(){
+		return defined('DB_CHARSET') ? DB_CHARSET : '';
+	}
+
+	public static function getCollation(){
+		return defined('DB_COLLATION') ? DB_COLLATION : '';
+	}
+
+	public static function getCharsetCollation(){
+		$Charset = self::getCharset();
+		$Collation = self::getCollation();
+		return ($Charset != '' && $Collation != '' ? ' CHARACTER SET ' . $Charset . ' COLLATE ' . $Collation : '');
 	}
 
 	public function t_e_query($cnt = 1){

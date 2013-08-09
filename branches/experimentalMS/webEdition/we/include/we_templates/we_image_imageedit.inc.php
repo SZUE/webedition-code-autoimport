@@ -48,9 +48,9 @@ print STYLESHEET;
 
 		$editselect = '<select name="editmenue" size="1" onchange="var cmnd = this.options[this.selectedIndex].value; if(cmnd){if(cmnd==\'doImage_convertPNG\' || cmnd==\'doImage_convertGIF\'){_EditorFrame.setEditorIsHot(true);};we_cmd(cmnd,\'' . $we_transaction . '\');}this.selectedIndex=0"' . (($we_doc->getElement("data") && we_image_edit::is_imagetype_read_supported($_gdtype) && we_image_edit::gd_version() > 0) ? "" : ' disabled="disabled"') . '>
 <option value="">' . g_l('weClass', "[edit]") . '</option>
-<option value="image_resize">' . g_l('weClass', "[resize]") . '...</option>
-<option value="image_rotate">' . g_l('weClass', "[rotate]") . '...</option>
-<option value="image_crop">' . g_l('weClass', "[crop]") . '...</option>
+<option value="image_resize">' . g_l('weClass', "[resize]") . '&hellip;</option>
+<option value="image_rotate">' . g_l('weClass', "[rotate]") . '&hellip;</option>
+<option value="image_crop">' . g_l('weClass', "[crop]") . '&hellip;</option>
 <option value="" disabled="disabled" style="color:grey">' . g_l('weClass', "[convert]") . '</option>
 ' . ((in_array("jpg", we_image_edit::supported_image_types())) ? '<option value="image_convertJPEG">&nbsp;&nbsp;' . g_l('weClass', "[convert_jpg]") . '...</option>' : '') . '
 ' . (($_gdtype != "gif" && in_array("gif", we_image_edit::supported_image_types())) ? '<option value="doImage_convertGIF">&nbsp;&nbsp;' . g_l('weClass', "[convert_gif]") . '</option>' : '') . '

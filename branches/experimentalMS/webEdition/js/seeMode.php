@@ -21,65 +21,65 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 header("Content-Type: text/javascript");
-include_once( $_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_defines.inc.php" );
+include_once( $_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_defines.inc.php');
+include_once ($_SERVER['DOCUMENT_ROOT'] . LIB_DIR.'we/core/autoload.php');
+
 
 $useSeeModeJS = array(
 	"text/webedition" => array(WE_EDITPAGE_CONTENT),
-	"text/weTmpl" => array(WE_EDITPAGE_PREVIEW, WE_EDITPAGE_PREVIEW_TEMPLATE)
-
+	"text/weTmpl" => array(WE_EDITPAGE_PREVIEW, WE_EDITPAGE_PREVIEW_TEMPLATE),
+	"objectFile" => array(WE_EDITPAGE_CONTENT, WE_EDITPAGE_PREVIEW)
 );
 $includeJs = false;
 
 
-if ( isset($_REQUEST["EditPage"]) && isset($_REQUEST["ContentType"]) ) {
+if(isset($_REQUEST["EditPage"]) && isset($_REQUEST["ContentType"])){
 
-	if (isset($useSeeModeJS[$_REQUEST["ContentType"]])) {
-		if ( in_array( $_REQUEST["EditPage"], $useSeeModeJS[$_REQUEST["ContentType"]] ) ) {
+	if(isset($useSeeModeJS[$_REQUEST["ContentType"]])){
+		if(in_array($_REQUEST["EditPage"], $useSeeModeJS[$_REQUEST["ContentType"]])){
 			$includeJs = true;
-
 		}
 	}
 }
 unset($useSeeModeJS);
 
-if (!$includeJs) {
+if(!$includeJs){
 	exit;
 }
 ?>
 
 function seeMode_dealWithLinks() {
 
-	var _aTags = document.getElementsByTagName("a");
+var _aTags = document.getElementsByTagName("a");
 
-	for (i = 0; i < _aTags.length; i++) {
-		var _href = _aTags[i].href;
+for (i = 0; i < _aTags.length; i++) {
+var _href = _aTags[i].href;
 
-		if (	!(	_href.indexOf("javascript:") === 0
-					|| _href.indexOf("#") === 0
-					|| (_href.indexOf("#") === document.URL.length && _href === (document.URL+_aTags[i].hash))
-					|| _href.indexOf("mailto:") === 0
-					|| _href.indexOf("document:") === 0
-					|| _href.indexOf("object:") === 0
-					|| _href.indexOf("?") === 0
-					|| _href===""
-				)
-		){
-			_aTags[i].href = "javascript:seeMode_clickLink('" + _aTags[i].href + "')";
+if (	!(	_href.indexOf("javascript:") === 0
+|| _href.indexOf("#") === 0
+|| (_href.indexOf("#") === document.URL.length && _href === (document.URL+_aTags[i].hash))
+|| _href.indexOf("<?php echo we_base_link::TYPE_OBJ_PREFIX; ?>") === 0
+|| _href.indexOf("<?php echo we_base_link::TYPE_INT_PREFIX; ?>") === 0
+|| _href.indexOf("<?php echo we_base_link::TYPE_MAIL_PREFIX; ?>") === 0
+|| _href.indexOf("?") === 0
+|| _href===""
+)
+){
+_aTags[i].href = "javascript:seeMode_clickLink('" + _aTags[i].href + "')";
 
-		}
-	}
+}
+}
 }
 
 function seeMode_clickLink ( url ) {
-	top.we_cmd("open_url_in_editor", url);
+top.we_cmd("open_url_in_editor", url);
 
 }
 
 // add event-Handler, replace links after load
 if ( window.addEventListener ) {
-	window.addEventListener("load", seeMode_dealWithLinks, false);
+window.addEventListener("load", seeMode_dealWithLinks, false);
 } else if ( window.attachEvent ){
-	window.attachEvent("onload", seeMode_dealWithLinks);
+window.attachEvent("onload", seeMode_dealWithLinks);
 }

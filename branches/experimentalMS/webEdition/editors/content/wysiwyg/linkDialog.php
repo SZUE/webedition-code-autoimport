@@ -23,47 +23,55 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-if(!(isset($_REQUEST['we_dialog_args']) && isset($_REQUEST['we_dialog_args']['outsideWE']) && $_REQUEST['we_dialog_args']['outsideWE'] == 1)){
+
+$noInternals = false;
+if(!(isset($_REQUEST['we_dialog_args']) &&
+		((isset($_REQUEST['we_dialog_args']['outsideWE']) && $_REQUEST['we_dialog_args']['outsideWE'] == 1) ||
+		(isset($_REQUEST['we_dialog_args']['isFrontend']) && $_REQUEST['we_dialog_args']['isFrontend'] == 1)))){
 	we_html_tools::protect();
+} else{
+	$noInternals = true;
 }
-$dialog = new weHyperlinkDialog();
+$noInternals = $noInternals || !isset($_SESSION['user']) || !isset($_SESSION['user']['Username']) || $_SESSION['user']['Username'] == '';
+
+$dialog = new weHyperlinkDialog('', '', 0, 0, $noInternals);
 $dialog->initByHttp();
-$dialog->registerCmdFn("weDoLinkCmd");
+$dialog->registerCmdFn('weDoLinkCmd');
 print $dialog->getHTML();
 
 function weDoLinkCmd($args){
-	if((!isset($args["href"])) || $args["href"] == "http://"){
-		$args["href"] = '';
+	if((!isset($args['href'])) || $args['href'] == 'http://'){
+		$args['href'] = '';
 	}
-	$param = trim($args["param"], '?& ');
-	$anchor = trim($args["anchor"], '# ');
+	$param = trim($args['param'], '?& ');
+	$anchor = trim($args['anchor'], '# ');
 	if(!empty($param)){
 		$tmp = array();
 		parse_str($param, $tmp);
 		$param = '?' . http_build_query($tmp, null, '&');
 	}
 
-	// TODO: $args["href"] comes from weHyperlinkDialog with params and anchor: strip these elements there, not here!
-	$href = (strpos($args["href"], '?') !== false ? substr($args["href"], 0, strpos($args["href"], '?')) :
-			(strpos($args["href"], '#') === false ? $args["href"] : substr($args["href"], 0, strpos($args["href"], '#')))) . $param . ($anchor ? '#' . $anchor : '');
+	// TODO: $args['href'] comes from weHyperlinkDialog with params and anchor: strip these elements there, not here!
+	$href = (strpos($args['href'], '?') !== false ? substr($args['href'], 0, strpos($args['href'], '?')) :
+			(strpos($args['href'], '#') === false ? $args['href'] : substr($args['href'], 0, strpos($args['href'], '#')))) . $param . ($anchor ? '#' . $anchor : '');
 
-	if(!(isset($_REQUEST['we_dialog_args']['editor']) && $_REQUEST['we_dialog_args']['editor'] == "tinyMce")){
+	if(!(isset($_REQUEST['we_dialog_args']['editor']) && $_REQUEST['we_dialog_args']['editor'] == 'tinyMce')){
 		return we_html_element::jsElement(
-				'top.opener.weWysiwygObject_' . $args["editname"] . '.createLink("' . $href . '","' . $args["target"] . '","' . $args["class"] . '","' . $args["lang"] . '","' . $args["hreflang"] . '","' . $args["title"] . '","' . $args["accesskey"] . '","' . $args["tabindex"] . '","' . $args["rel"] . '","' . $args["rev"] . '");
+				'top.opener.weWysiwygObject_' . $args['editname'] . '.createLink("' . $href . '","' . $args['target'] . '","' . $args['class'] . '","' . $args['lang'] . '","' . $args['hreflang'] . '","' . $args['title'] . '","' . $args['accesskey'] . '","' . $args['tabindex'] . '","' . $args['rel'] . '","' . $args['rev'] . '");
 top.close();
 ');
 	} else{
-		if(strpos($href, 'mailto:') === 0){
-			$href = $args["href"];
-			$tmpClass = $args["class"];
+		if(strpos($href, we_base_link::TYPE_MAIL_PREFIX) === 0){
+			$href = $args['href'] . (empty($param) ? '' : $param);
+			$tmpClass = $args['class'];
 			foreach($args as &$val){
 				$val = '';
 			}
-			$args["class"] = $tmpClass;
+			$args['class'] = $tmpClass;
 		}
 
 		return weDialog::getTinyMceJS() .
-			we_html_element::jsScript(TINYMCE_JS_DIR . 'plugins/advlink/js/advlink_insert.js') .
+			we_html_element::jsScript(TINYMCE_JS_DIR . 'plugins/welink/js/welink_insert.js') .
 			'<form name="tiny_form">
 			<input type="hidden" name="href" value="' . $href . '">
 			<input type="hidden" name="target" value="' . $args["target"] . '">

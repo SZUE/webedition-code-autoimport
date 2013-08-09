@@ -67,6 +67,7 @@ class we_core_Local{
 	 * @return string
 	 */
 	public static function weLangToLocale($lang){
+		//FIXME: remove static list, use Zend instead
 		$locales = array(
 			'Deutsch' => 'de', 'English' => 'en', 'Dutch' => 'nl', 'Finnish' => 'fi', 'French' => 'fr', 'Polish' => 'pl', 'Russian' => 'ru', 'Spanish' => 'es', 'Norwegian' => 'no');
 
@@ -124,7 +125,18 @@ class we_core_Local{
 			self::$_lang = WE_WEBUSER_LANGUAGE;
 		} else{
 			if(!isset($_SESSION)){
-				Zend_Session::start();
+				if(!isset($_SERVER['TMP'])){
+					$_SERVER['TMP'] = $GLOBALS['__WE_BASE_PATH__'] . DIRECTORY_SEPARATOR . 'we' . DIRECTORY_SEPARATOR . 'zendcache';
+				}
+				try {
+					Zend_Session::start();
+                } catch(Zend_Session_Exception $e) {
+					t_e('Zend_Session start failed',$e);
+				}
+				if(!isset($_SESSION)){
+                	t_e('Zend_Session start failed');
+
+				}
 			}
 
 			if(isset($_SESSION['prefs']['Language']) && $_SESSION['prefs']['Language'] !== ''){
@@ -141,7 +153,7 @@ class we_core_Local{
 			}
 		}
 		if(self::$_lang === ''){
-			self::$_lang = 'English_UTF-8';
+			self::$_lang = 'English';
 		}
 		return self::$_lang;
 	}

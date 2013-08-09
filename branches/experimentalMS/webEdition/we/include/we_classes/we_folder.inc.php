@@ -149,7 +149,7 @@ class we_folder extends we_root{
 			$spl = explode('/', $path);
 			$folderName = array_pop($spl);
 			$p = array();
-			$anz = sizeof($spl);
+			$anz = count($spl);
 			$last_pid = 0;
 			for($i = 0; $i < $anz; $i++){
 				array_push($p, array_shift($spl));
@@ -279,7 +279,7 @@ class we_folder extends we_root{
 			$this->checkRemoteLanguage($this->Table, true); //if language changed, we
 		}
 		/* hook */
-		if($skipHook == 0){
+		if(!$skipHook){
 			$hook = new weHook('save', '', array($this, 'resave' => $resave));
 			$ret = $hook->executeHook();
 			//check if doc should be saved

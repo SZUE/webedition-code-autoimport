@@ -55,11 +55,9 @@ function we_tag_subscribe($attribs){
 				$options = '';
 				$vals = makeArrayFromCSV($values);
 				foreach($vals as $i => $v){
-					if((isset($_REQUEST["we_subscribe_list__"]) && in_array($i, $_REQUEST["we_subscribe_list__"]))){
-						$options .= getHtmlTag('option', array('value' => $i, 'selected' => 'selected'), oldHtmlspecialchars($v));
-					} else{
-						$options .= getHtmlTag('option', array('value' => $i), oldHtmlspecialchars($v));
-					}
+					$options .= ((isset($_REQUEST["we_subscribe_list__"]) && in_array($i, $_REQUEST["we_subscribe_list__"])) ?
+							getHtmlTag('option', array('value' => $i, 'selected' => 'selected'), oldHtmlspecialchars($v)) :
+							getHtmlTag('option', array('value' => $i), oldHtmlspecialchars($v)));
 				}
 				return getHtmlTag('input', array('type' => 'hidden', 'name' => 'we_use_lists__', 'value' => 1, 'xml' => $xml)) .
 					getHtmlTag('select', $newAttribs, $options, true);
@@ -80,16 +78,8 @@ function we_tag_subscribe($attribs){
 			$newAttribs = removeAttribs($attribs, array('name', 'type', 'value', 'size', 'values', 'maxlength', 'checked'));
 			$newAttribs['name'] = 'we_subscribe_html__';
 			$value = weTag_getAttribute("value", $attribs, false, true);
-			if(isset($_REQUEST["we_subscribe_html__"])){
-				$ishtml = $_REQUEST["we_subscribe_html__"];
-			} else{
-				$ishtml = isset($attribs["value"]) ? $value : 0;
-			}
-			if($values){
-				$values = makeArrayFromCSV($values);
-			} else{
-				$values = array("Text", "HTML");
-			}
+			$ishtml = (isset($_REQUEST["we_subscribe_html__"]) ? $_REQUEST["we_subscribe_html__"] : (isset($attribs["value"]) ? $value : 0));
+			$values = ($values ? makeArrayFromCSV($values) : array("Text", "HTML"));
 
 			if($ishtml){
 				$options = getHtmlTag('option', array('value' => 0), oldHtmlspecialchars($values[0])) . "\n";
@@ -106,11 +96,8 @@ function we_tag_subscribe($attribs){
 			$newAttribs['type'] = 'text';
 			$newAttribs['name'] = 'we_subscribe_firstname__';
 
-			if(isset($_REQUEST["we_subscribe_firstname__"])){
-				$newAttribs['value'] = oldHtmlspecialchars($_REQUEST["we_subscribe_firstname__"]);
-			} else{
-				$newAttribs['value'] = oldHtmlspecialchars($value);
-			}
+			$newAttribs['value'] = filterXss(isset($_REQUEST["we_subscribe_firstname__"]) ? $_REQUEST["we_subscribe_firstname__"] : $value);
+
 			return getHtmlTag('input', $newAttribs);
 
 		case "salutation":
@@ -118,18 +105,14 @@ function we_tag_subscribe($attribs){
 			if($values){
 				$newAttribs = removeAttribs($attribs, array('name', 'type', 'value', 'values', 'maxlength', 'checked'));
 				$name = 'we_subscribe_salutation__';
-				$value = isset($_REQUEST["we_subscribe_salutation__"]) ? $_REQUEST["we_subscribe_salutation__"] : $value;
-				return we_getSelectField($name, $value, $values, $newAttribs, true);//same function like <we:sessionField type="select">
+				$value = filterXss(isset($_REQUEST["we_subscribe_salutation__"]) ? $_REQUEST["we_subscribe_salutation__"] : $value);
+				return we_getSelectField($name, $value, $values, $newAttribs, true); //same function like <we:sessionField type="select">
 			} else{
 				$newAttribs = removeAttribs($attribs, array('name', 'type', 'value', 'values'));
 				$newAttribs['name'] = 'we_subscribe_salutation__';
 				$newAttribs['type'] = 'text';
+				$newAttribs['value'] = filterXss(isset($_REQUEST["we_subscribe_salutation__"]) ? $_REQUEST["we_subscribe_salutation__"] : $value);
 
-				if(isset($_REQUEST["we_subscribe_salutation__"])){
-					$newAttribs['value'] = oldHtmlspecialchars($_REQUEST["we_subscribe_salutation__"]);
-				} else{
-					$newAttribs['value'] = oldHtmlspecialchars($value);
-				}
 				return getHtmlTag('input', $newAttribs);
 			}
 
@@ -137,18 +120,14 @@ function we_tag_subscribe($attribs){
 			if($values){
 				$newAttribs = removeAttribs($attribs, array('name', 'type', 'value', 'values', 'maxlength', 'checked'));
 				$name = 'we_subscribe_title__';
-				$value = isset($_REQUEST["we_subscribe_title__"]) ? $_REQUEST["we_subscribe_title__"] : $value;
-				return we_getSelectField($name, $value, $values, $newAttribs, true);//same function like <we:sessionField type="select">
+				$value = filterXss(isset($_REQUEST["we_subscribe_title__"]) ? $_REQUEST["we_subscribe_title__"] : $value);
+				return we_getSelectField($name, $value, $values, $newAttribs, true); //same function like <we:sessionField type="select">
 			} else{
 				$newAttribs = removeAttribs($attribs, array('name', 'type', 'value', 'values'));
 				$newAttribs['name'] = 'we_subscribe_title__';
 				$newAttribs['type'] = 'text';
+				$newAttribs['value'] = filterXss(isset($_REQUEST["we_subscribe_title__"]) ? $_REQUEST["we_subscribe_title__"] : $value);
 
-				if(isset($_REQUEST["we_subscribe_title__"])){
-					$newAttribs['value'] = oldHtmlspecialchars($_REQUEST["we_subscribe_title__"]);
-				} else{
-					$newAttribs['value'] = oldHtmlspecialchars($value);
-				}
 				return getHtmlTag('input', $newAttribs); // '<input type="text" name="we_subscribe_title__"'.($attr ? " $attr" : "").($value ? ' value="'.oldHtmlspecialchars($value).'"' : '').($xml ? ' /' : '').' />';
 			}
 
@@ -157,26 +136,17 @@ function we_tag_subscribe($attribs){
 
 			$newAttribs['type'] = 'text';
 			$newAttribs['name'] = 'we_subscribe_lastname__';
+			$newAttribs['value'] = filterXss(isset($_REQUEST["we_subscribe_lastname__"]) ? $_REQUEST["we_subscribe_lastname__"] : $value);
 
-			if(isset($_REQUEST["we_subscribe_lastname__"])){
-				$newAttribs['value'] = oldHtmlspecialchars($_REQUEST["we_subscribe_lastname__"]);
-			} else{
-				$newAttribs['value'] = oldHtmlspecialchars($value);
-			}
 			return getHtmlTag('input', $newAttribs);
 
 		case "email":
 		default:
-
 			$newAttribs = removeAttribs($attribs, array('name', 'type', 'value', 'values'));
 			$newAttribs['type'] = 'text';
 			$newAttribs['name'] = 'we_subscribe_email__';
+			$newAttribs['value'] = filterXss(isset($_REQUEST["we_subscribe_email__"]) ? $_REQUEST["we_subscribe_email__"] : $value);
 
-			if(isset($_REQUEST["we_subscribe_email__"])){
-				$newAttribs['value'] = oldHtmlspecialchars($_REQUEST["we_subscribe_email__"]);
-			} else{
-				$newAttribs['value'] = oldHtmlspecialchars($value);
-			}
 			return getHtmlTag('input', $newAttribs); // '<input type="text" name="we_subscribe_email__"'.($attr ? " $attr" : "").($value ? ' value="'.oldHtmlspecialchars($value).'"' : '').($xml ? ' /' : '').' />';
 	}
 

@@ -32,6 +32,7 @@ class weBackup extends we_backup{
 
 	const backupSteps = "1,5,7,10,15,20,30,40,50,80,100,500,1000";
 	const backupMarker = '<!-- webackup -->';
+	const weXmlExImHead = '<webEdition';
 	const weXmlExImFooter = '</webEdition>';
 	const weXmlExImProtectCode = '<?php exit();?>';
 
@@ -54,8 +55,8 @@ class weBackup extends we_backup{
 
 	function __construct($handle_options = array()){
 		$this->header = '<?xml version="1.0" encoding="' . $GLOBALS['WE_BACKENDCHARSET'] . '" standalone="yes"?>' . $this->nl .
-			'<webEdition version="' . WE_VERSION . '" type="backup" xmlns:we="we-namespace">' . $this->nl;
-		$this->footer = $this->nl . '</webEdition>';
+			self::weXmlExImHead . ' version="' . WE_VERSION . '" type="backup" xmlns:we="we-namespace">' . $this->nl;
+		$this->footer = $this->nl . self::weXmlExImFooter;
 
 		$this->properties[] = 'mode';
 		$this->properties[] = 'filename';
@@ -145,7 +146,7 @@ class weBackup extends we_backup{
 				}
 
 				if($fh_temp){
-					if((substr($line, 0, 2) != "<?") && (substr($line, 0, 11) != "<webEdition") && (substr($line, 0, 12) != "</webEdition")){
+					if((substr($line, 0, 2) != "<?") && (substr($line, 0, 11) != self::weXmlExImHead) && (substr($line, 0, 12) != self::weXmlExImFooter)){
 
 						$buff.=$line;
 						if($marker_size){
@@ -172,7 +173,7 @@ class weBackup extends we_backup{
 							$buff = "";
 						}
 					} else{
-						if(((substr($line, 0, 2) == "<?") || (substr($line, 0, 11) == "<webEdition")) && $num == 0){
+						if(((substr($line, 0, 2) == "<?") || (substr($line, 0, 11) == self::weXmlExImHead)) && $num == 0){
 							$header.=$line;
 						}
 					}
@@ -205,20 +206,29 @@ class weBackup extends we_backup{
 	 * @param type $execTime
 	 * @return boolean true, if still time left
 	 */
-	public static function limitsReached($table, $execTime){
-		if(!isset($_SERVER['REQUEST_TIME'])){
-			$_SERVER['REQUEST_TIME'] = time();
-		}
+	public static function limitsReached($table, $execTime, $memMulti = 2){
 		if($table){
 			//check if at least 10 avg rows
 			$rowSz = $_SESSION['weS']['weBackupVars']['avgLen'][strtolower(stripTblPrefix($table))];
 			if(memory_get_usage(true) + 10 * $rowSz > $_SESSION['weS']['weBackupVars']['limits']['mem']){
 				return false;
 			}
+		} elseif($_SESSION['weS']['weBackupVars']['limits']['lastMem'] != 0){
+			$cur = memory_get_usage(true);
+			$diff = $cur - $_SESSION['weS']['weBackupVars']['limits']['lastMem'];
+			if($cur + $diff * $memMulti > $_SESSION['weS']['weBackupVars']['limits']['mem']){
+				return false;
+			}
+		}
+		$_SESSION['weS']['weBackupVars']['limits']['lastMem'] = memory_get_usage(true);
+
+		if($execTime == 0){
+			t_e('execTime was 0 - this should never happen - assume microtime is not working correct', $execTime);
+			$execTime = 1;
 		}
 
-		$maxTime = $_SESSION['weS']['weBackupVars']['limits']['exec'] > 32 ? 30 : $_SESSION['weS']['weBackupVars']['limits']['exec'] - 2;
-		if(time() - intval($_SERVER['REQUEST_TIME']) + 2 * $execTime > $maxTime){
+		$maxTime = $_SESSION['weS']['weBackupVars']['limits']['exec'] > 33 ? 30 : $_SESSION['weS']['weBackupVars']['limits']['exec'] - 2;
+		if(time() - intval($_SESSION['weS']['weBackupVars']['limits']['requestTime']) + 2 * $execTime > $maxTime){
 			return false;
 		}
 
@@ -250,8 +260,7 @@ class weBackup extends we_backup{
 
 			if(
 				((defined("OBJECT_TABLE") && $object->table == OBJECT_TABLE) ||
-				(defined("OBJECT_FILES_TABLE") && $object->table == OBJECT_FILES_TABLE))
-				&& $this->old_objects_deleted == 0){
+				(defined("OBJECT_FILES_TABLE") && $object->table == OBJECT_FILES_TABLE)) && $this->old_objects_deleted == 0){
 				$this->delOldTables();
 				$this->old_objects_deleted = 1;
 			}
@@ -266,7 +275,7 @@ class weBackup extends we_backup{
 
 		foreach($node_set2 as $nsv){
 			$index = $xmlBrowser->nodeName($nsv);
-			$content[$index] = (weContentProvider::needCoding($classname, $index) ?
+			$content[$index] = (weContentProvider::needCoding($classname, $index, $nsv) ?
 					weContentProvider::decode($xmlBrowser->getData($nsv)) :
 					$xmlBrowser->getData($nsv));
 		}
@@ -289,7 +298,7 @@ class weBackup extends we_backup{
 		$classname = weContentProvider::getContentTypeHandler("weBinary");
 		foreach($node_set2 as $nsv){
 			$index = $xmlBrowser->nodeName($nsv);
-			$content[$index] = (weContentProvider::needCoding($classname, $index) ?
+			$content[$index] = (weContentProvider::needCoding($classname, $index, $nsv) ?
 					weContentProvider::decode($xmlBrowser->getData($nsv)) :
 					$xmlBrowser->getData($nsv));
 		}
@@ -455,7 +464,7 @@ class weBackup extends we_backup{
 							$xmlExport->exportChunk(implode(",", $keyvalue), "weTableItem", $this->dumpfilename, $table, $this->backup_binary);
 							++$this->backup_step;
 						}
-					} while(FAST_BACKUP ? self::limitsReached($table, microtime(true) - $start) : false);
+					} while(self::limitsReached($table, microtime(true) - $start));
 				}
 				$i++;
 				if($this->backup_step < $this->table_end && $this->backup_db->num_rows() != 0){
@@ -667,7 +676,7 @@ class weBackup extends we_backup{
 			array_shift($this->file_list);
 		}
 
-		if(!count($this->file_list)){
+		if(empty($this->file_list)){
 			$this->backup_phase = 1;
 		}
 		return true;
@@ -686,7 +695,7 @@ class weBackup extends we_backup{
 			$bin = weContentProvider::getInstance('weBinary', 0);
 			$bin->Path = $file;
 
-			weContentProvider::binary2file($bin, $fh, false);
+			weContentProvider::binary2file($bin, $fh);
 			fclose($fh);
 		}
 	}
@@ -783,8 +792,7 @@ $this->file_list=' . var_export($this->file_list, true) . ';';
 	}
 
 	function getBackupQuery($table, $keys){
-		//$keys=weTableItem::getTableKey($table);
-		return 'SELECT ' . implode(",", $keys) . ' FROM ' . escape_sql_query($table) . ' LIMIT ' . intval($this->backup_step) . ',' . intval($this->backup_steps);
+		return 'SELECT `' . implode('`,`', $keys) . '` FROM ' . escape_sql_query($table) . ' LIMIT ' . intval($this->backup_step) . ',' . intval($this->backup_steps);
 	}
 
 	function delOldTables(){

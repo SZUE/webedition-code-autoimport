@@ -42,7 +42,8 @@ class we_document extends we_root{
 
 	/* Categories of the document */
 	var $Category = '';
-	var $IsSearchable = '';
+	protected $oldCategory = '';
+	var $IsSearchable = 0;
 	var $InGlossar = 0;
 	var $NavigationItems = '';
 	private $DocStream = '';
@@ -56,6 +57,9 @@ class we_document extends we_root{
 		parent::__construct();
 		array_push($this->persistent_slots, 'Extension', 'IsDynamic', 'Published', 'Category', 'IsSearchable', 'InGlossar', 'Language', 'schedArr');
 		$this->Table = FILE_TABLE;
+		if(defined('WE_SIDEBAR')){
+			$this->InWebEdition = 1;
+		}
 	}
 
 	function copyDoc($id){
@@ -66,10 +70,8 @@ class we_document extends we_root{
 			$parentIDMerk = $doc->ParentID;
 			if($this->ID == 0){
 				foreach($this->persistent_slots as $name){
-					if($name != 'elements'){
-						if(in_array($name, array_keys(get_object_vars($doc)))){
-							$this->{$name} = $doc->{$name};
-						}
+					if($name != 'elements' && in_array($name, array_keys(get_object_vars($doc)))){
+						$this->{$name} = $doc->{$name};
 					}
 				}
 				$this->Published = 0;
@@ -112,17 +114,17 @@ class we_document extends we_root{
 	function initLanguageFromParent(){
 		$ParentID = $this->ParentID;
 		$i = 0;
-		while($this->Language == '') {
+		while($this->Language == ''){
 			if($ParentID == 0 || $i > 20){
 				we_loadLanguageConfig();
 				$this->Language = self::getDefaultLanguage();
 				if($this->Language == ''){
 					$this->Language = 'de_DE';
 				}
-			} else{
+			} else {
 				$this->DB_WE->query('SELECT Language, ParentID FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ID=' . intval($ParentID));
 
-				while($this->DB_WE->next_record()) {
+				while($this->DB_WE->next_record()){
 					$ParentID = $this->DB_WE->f('ParentID');
 					$this->Language = $this->DB_WE->f('Language');
 				}
@@ -187,7 +189,7 @@ class we_document extends we_root{
 				<tr><td class="defaultfont" align="left">' . g_l('weClass', '[languageLinks]') . '</td></tr>
 			</table>' .
 				"<br/>" . $htmlzw; //.$this->htmlFormElementTable($htmlzw,g_l('weClass','[languageLinksDefaults]'),"left",	"defaultfont");	dieWerte=\''.implode(',',$langkeys).'\'; disableLangDefault(\'we_'.$this->Name.'_LangDocType\',dieWerte,this.options[this.selectedIndex].value);"
-		} else{
+		} else {
 			return '
 			<table border="0" cellpadding="0" cellspacing="0">
 				<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
@@ -222,7 +224,7 @@ class we_document extends we_root{
 					$selected = $this->Extension;
 					break;
 			}
-		} else{ //	bestehendes Dokument oder Dokument mit DocType
+		} else { //	bestehendes Dokument oder Dokument mit DocType
 			$selected = $this->Extension;
 		}
 		return $this->htmlFormElementTable(we_html_tools::getExtensionPopup('we_' . $this->Name . '_Extension', $selected, $this->Extensions, 100, 'onselect="_EditorFrame.setEditorIsHot(true);"', we_hasPerm('EDIT_DOCEXTENSION')), g_l('weClass', "[extension]"));
@@ -233,7 +235,7 @@ class we_document extends we_root{
 		if($this->ContentType == 'text/htaccess'){
 			$this->Filename = '.htaccess';
 			$filenameinput = 'disabled="disabled" ';
-		} else{
+		} else {
 			$filenameinput = '';
 		}
 		return $disable ? ('<span class="defaultfont">' . $this->Path . '</span>') : '
@@ -253,13 +255,14 @@ class we_document extends we_root{
 	}
 
 	function formMetaInfos(){
-		return '<table border="0" cellpadding="0" cellspacing="0">' .
-			'<tr><td colspan="2">' . $this->formInputField("txt", "Title", g_l('weClass', "[Title]"), 40, 508, "", "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td></tr>' .
-			'<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>' .
-			'<tr><td colspan="2">' . $this->formInputField("txt", "Description", g_l('weClass', "[Description]"), 40, 508, "", "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td></tr>' .
-			'<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>' .
-			'<tr><td colspan="2">' . $this->formInputField("txt", "Keywords", g_l('weClass', "[Keywords]"), 40, 508, "", "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td></tr>' .
-			'</table>' .
+		return '
+<table border="0" cellpadding="0" cellspacing="0">
+	<tr><td colspan="2">' . $this->formInputField("txt", "Title", g_l('weClass', "[Title]"), 40, 508, "", "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td></tr>
+	<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
+	<tr><td colspan="2">' . $this->formInputField("txt", "Description", g_l('weClass', "[Description]"), 40, 508, "", "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td></tr>
+	<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
+	<tr><td colspan="2">' . $this->formInputField("txt", "Keywords", g_l('weClass', "[Keywords]"), 40, 508, "", "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td></tr>
+</table>' .
 			($this->ContentType == 'image/*' ? $this->formCharset(true) : '');
 	}
 
@@ -362,7 +365,7 @@ class we_document extends we_root{
 				$_naviItem->IsFolder = 1;
 				$charset = $_naviItem->findCharset($_naviItem->ParentID);
 				$_naviItem->Charset = ($charset != '' ? $charset : (DEFAULT_CHARSET ? DEFAULT_CHARSET : $GLOBALS['WE_BACKENDCHARSET']));
-			} else{
+			} else {
 				$_naviItem->Selection = weNavigation::SELECTION_STATIC;
 				$_naviItem->SelectionType = weNavigation::STPYE_DOCLINK;
 			}
@@ -376,7 +379,7 @@ class we_document extends we_root{
 						$navis[$_k] = $_new_path;
 					}
 				}
-			} else{
+			} else {
 				$navis[] = $_new_path;
 			}
 
@@ -472,8 +475,8 @@ class we_document extends we_root{
 			$new_nr = $this->getMaxListArrayNr($listarray) + 1;
 			// clear value
 			$names = $this->getNamesFromContent($content);
-			for($i = 0; $i < sizeof($names); $i++){
-				$this->setElement($names[$i] . '_' . $new_nr, '');
+			foreach($names as $cur){
+				$this->setElement($cur . '_' . $new_nr, '');
 			}
 
 			for($i = count($listarray); $i > $nr; $i--){
@@ -529,7 +532,7 @@ class we_document extends we_root{
 						unset($this->elements[$key]);
 					}
 				}
-			} else{
+			} else {
 				$namesArray = $names ? explode(',', $names) : array($names);
 				foreach($namesArray as $element){
 					unset($this->elements[$element . $listarray[$nr]]);
@@ -609,13 +612,13 @@ class we_document extends we_root{
 	public function we_new(){
 		parent::we_new();
 		$this->i_setExtensions();
-		if(is_array($this->Extensions) && sizeof($this->Extensions)){
+		if(is_array($this->Extensions) && !empty($this->Extensions)){
 			$this->Extension = $this->Extensions[0];
 		}
 		if(!isset($GLOBALS['WE_IS_DYN']) && ($this->Table == FILE_TABLE || $this->Table == TEMPLATES_TABLE)){
 			if(($ws = get_ws($this->Table))){
 				$foo = makeArrayFromCSV($ws);
-				if(sizeof($foo)){
+				if(!empty($foo)){
 					$this->setParentID(intval($foo[0]));
 				}
 			}
@@ -629,11 +632,35 @@ class we_document extends we_root{
 		}
 	}
 
+	private function isVersioned(){
+		switch($this->ContentType){
+			case 'application/x-shockwave-flash':
+				return VERSIONING_FLASH;
+			case 'image/*':
+				return VERSIONING_IMAGE;
+			case 'text/weTmpl':
+				return VERSIONING_TEXT_WETMPL;
+			case 'video/quicktime':
+				return VERSIONING_QUICKTIME;
+			case 'text/js':
+				return VERSIONING_TEXT_JS;
+			case 'text/css':
+				return VERSIONING_TEXT_CSS;
+			case 'text/plain':
+				return VERSIONING_TEXT_PLAIN;
+			case 'text/xml':
+				return VERSIONING_TEXT_XML;
+			default:
+			case 'application/*':
+				return VERSIONING_SONSTIGE;
+		}
+	}
+
 	public function we_save($resave = 0, $skipHook = 0){
 		$this->errMsg = '';
 		$this->i_setText();
 
-		if($skipHook == 0){
+		if(!$skipHook){
 			$hook = new weHook('preSave', '', array($this, 'resave' => $resave));
 			$ret = $hook->executeHook();
 			//check if doc should be saved
@@ -642,9 +669,6 @@ class we_document extends we_root{
 				return false;
 			}
 		}
-		/* version */
-		//msconnect
-		//$version = new weVersions();
 
 		if(!parent::we_save($resave)){
 			return false;
@@ -659,18 +683,13 @@ class we_document extends we_root{
 			$this->resaveWeDocumentCustomerFilter();
 		}
 
-		//msconnect
-		/*
-		if(($this->ContentType == 'application/x-shockwave-flash' && defined('VERSIONING_FLASH') && VERSIONING_FLASH) || ($this->ContentType == 'image/*' && defined('VERSIONING_IMAGE') && VERSIONING_IMAGE) || ($this->ContentType == 'text/weTmpl' && defined('VERSIONING_TEXT_WETMPL') && VERSIONING_TEXT_WETMPL)//#4120 hinzugef�gt
-			|| ($this->ContentType == 'video/quicktime' && defined('VERSIONING_QUICKTIME') && VERSIONING_QUICKTIME)
-			|| ($this->ContentType == 'text/js' && defined('VERSIONING_TEXT_JS') && VERSIONING_TEXT_JS) || ($this->ContentType == 'text/css' && defined('VERSIONING_TEXT_CSS') && VERSIONING_TEXT_CSS )
-			|| ($this->ContentType == 'text/plain' && defined('VERSIONING_TEXT_PLAIN') && VERSIONING_TEXT_PLAIN) || ($this->ContentType == 'text/xml' && defined('VERSIONING_TEXT_XML') && VERSIONING_TEXT_XML) || ($this->ContentType == 'application/*' && defined('VERSIONING_SONSTIGE') && VERSIONING_SONSTIGE)){
-
+		if($this->isVersioned()){
+			$version = new weVersions();
 			$version->save($this);
 		}
-		*/
+
 		/* hook */
-		if($skipHook == 0){
+		if(!$skipHook){
 			$hook = new weHook('save', '', array($this, 'resave' => $resave));
 			$ret = $hook->executeHook();
 			//check if doc should be saved
@@ -683,7 +702,6 @@ class we_document extends we_root{
 	}
 
 	function resaveWeDocumentCustomerFilter(){
-
 		if(isset($this->documentCustomerFilter) && $this->documentCustomerFilter){
 			weDocumentCustomerFilter::saveForModel($this);
 		}
@@ -715,27 +733,17 @@ class we_document extends we_root{
 		parent::we_initSessDat($sessDat);
 		if(defined('SCHEDULE_TABLE')){
 			if(
-				isset($_REQUEST['we_' . $this->Name . '_From_day'])
-				&& isset($_REQUEST['we_' . $this->Name . '_From_month'])
-				&& isset($_REQUEST['we_' . $this->Name . '_From_year'])
-				&& isset($_REQUEST['we_' . $this->Name . '_From_hour'])
-				&& isset($_REQUEST['we_' . $this->Name . '_From_minute'])){
-				$this->From = mktime(
-					$_REQUEST['we_' . $this->Name . '_From_hour'], $_REQUEST['we_' . $this->Name . '_From_minute'], 0, $_REQUEST['we_' . $this->Name . '_From_month'], $_REQUEST['we_' . $this->Name . '_From_day'], $_REQUEST['we_' . $this->Name . '_From_year']);
+				isset($_REQUEST['we_' . $this->Name . '_From_day']) && isset($_REQUEST['we_' . $this->Name . '_From_month']) && isset($_REQUEST['we_' . $this->Name . '_From_year']) && isset($_REQUEST['we_' . $this->Name . '_From_hour']) && isset($_REQUEST['we_' . $this->Name . '_From_minute'])){
+				$this->From = mktime($_REQUEST['we_' . $this->Name . '_From_hour'], $_REQUEST['we_' . $this->Name . '_From_minute'], 0, $_REQUEST['we_' . $this->Name . '_From_month'], $_REQUEST['we_' . $this->Name . '_From_day'], $_REQUEST['we_' . $this->Name . '_From_year']);
 			}
 			if(
-				isset($_REQUEST['we_' . $this->Name . '_To_day'])
-				&& isset($_REQUEST['we_' . $this->Name . '_To_month'])
-				&& isset($_REQUEST['we_' . $this->Name . '_To_year'])
-				&& isset($_REQUEST['we_' . $this->Name . '_To_hour'])
-				&& isset($_REQUEST['we_' . $this->Name . '_To_minute'])){
-				$this->To = mktime(
-					$_REQUEST['we_' . $this->Name . '_To_hour'], $_REQUEST['we_' . $this->Name . '_To_minute'], 0, $_REQUEST['we_' . $this->Name . '_To_month'], $_REQUEST['we_' . $this->Name . '_To_day'], $_REQUEST['we_' . $this->Name . '_To_year']);
+				isset($_REQUEST['we_' . $this->Name . '_To_day']) && isset($_REQUEST['we_' . $this->Name . '_To_month']) && isset($_REQUEST['we_' . $this->Name . '_To_year']) && isset($_REQUEST['we_' . $this->Name . '_To_hour']) && isset($_REQUEST['we_' . $this->Name . '_To_minute'])){
+				$this->To = mktime($_REQUEST['we_' . $this->Name . '_To_hour'], $_REQUEST['we_' . $this->Name . '_To_minute'], 0, $_REQUEST['we_' . $this->Name . '_To_month'], $_REQUEST['we_' . $this->Name . '_To_day'], $_REQUEST['we_' . $this->Name . '_To_year']);
 			}
 		}
 		if(isset($sessDat[2])){
 			$this->NavigationItems = $sessDat[2];
-		} else{
+		} else {
 			$this->i_loadNavigationItems();
 		}
 
@@ -770,19 +778,19 @@ class we_document extends we_root{
 		$this->Text = $this->Filename . $this->Extension;
 	}
 
-	function i_isMoved(){
+	protected function isMoved(){
 		return ($this->OldPath && ($this->Path != $this->OldPath));
 	}
 
 	protected function i_writeSiteDir($doc){
-		if($this->i_isMoved()){
+		if($this->isMoved()){
 			we_util_File::deleteLocalFile($this->getSitePath(true));
 		}
 		return we_util_File::saveFile($this->getSitePath(), $doc);
 	}
 
 	protected function i_writeMainDir($doc){
-		if($this->i_isMoved()){
+		if($this->isMoved()){
 			we_util_File::deleteLocalFile($this->getRealPath(true));
 		}
 		return we_util_File::saveFile($this->getRealPath(), $doc);
@@ -797,7 +805,7 @@ class we_document extends we_root{
 	}
 
 	protected function i_writeDocument(){
-		$update = $this->i_isMoved();
+		$update = $this->isMoved();
 		$doc = $this->i_getDocumentToSave();
 		if(!($doc || $doc == '')){
 			return false;
@@ -828,13 +836,13 @@ class we_document extends we_root{
 		return f('SELECT ID FROM ' . escape_sql_query($this->Table) . " WHERE ParentID=" . intval($this->ParentID) . " AND Filename='" . escape_sql_query($this->Filename) . "' AND Extension='" . escape_sql_query($this->Extension) . "' AND ID != " . intval($this->ID), "ID", $this->DB_WE);
 	}
 
-	function getFieldByVal($val, $type, $attribs = '', $pathOnly = false, $parentID = 0, $path = '', $db = '', $classID = '', $fn = 'this'){
-
+//FIXME: parameter $attribt should be: array $attribs=array()
+	public function getFieldByVal($val, $type, $attribs = '', $pathOnly = false, $parentID = 0, $path = '', $db = '', $classID = '', $fn = 'this'){
 		$attribs = is_array($attribs) ? $attribs : array();
 		if(isset($attribs['_name_orig'])){
 			unset($attribs['_name_orig']);
 		}
-		$db = $db ? $db : new DB_WE();
+		$db = ($db ? $db : new DB_WE());
 		if((!$attribs) || (!is_array($attribs))){
 			$attribs = array();
 		}
@@ -876,11 +884,10 @@ class we_document extends we_root{
 
 				//	when width or height are given, then let the browser adjust the image
 				if(isset($attribs['width']) || isset($attribs['width'])){
-
 					unset($img->elements['height']);
 					unset($img->elements['width']);
 				}
-				if(sizeof($attribs)){
+				if(!empty($attribs)){
 					$attribs = removeAttribs($attribs, array('hyperlink', 'target'));
 					$img->initByAttribs($attribs);
 				}
@@ -888,11 +895,11 @@ class we_document extends we_root{
 					if(isset($GLOBALS['lv']->count)){
 						$img->setElement('name', $img->getElement('name') . '_' . $GLOBALS['lv']->count, 'attrib');
 						$img->Name = $img->Name . '_' . $GLOBALS['lv']->count;
-					} else{
+					} else {
 						$img->setElement('name', $img->getElement('name'), 'attrib');
 					}
 				}
-				return $pathOnly ? $img->Path : $img->getHtml();
+				return $img->getHtml(false, true, $pathOnly);
 			case 'binary':
 				$bin = new we_otherDocument();
 				if(isset($attribs['name'])){
@@ -912,7 +919,7 @@ class we_document extends we_root{
 					$val = $attribs['id'];
 				}
 				$fl->initByID($val, FILE_TABLE);
-				if(sizeof($attribs)){
+				if(!empty($attribs)){
 					$fl->initByAttribs($attribs);
 				}
 				return $pathOnly ? $fl->Path : $fl->getHtml();
@@ -925,7 +932,7 @@ class we_document extends we_root{
 					$val = $attribs['id'];
 				}
 				$fl->initByID($val, FILE_TABLE);
-				if(sizeof($attribs)){
+				if(!empty($attribs)){
 					$fl->initByAttribs($attribs);
 				}
 				return $pathOnly ? $fl->Path : $fl->getHtml();
@@ -944,7 +951,7 @@ class we_document extends we_root{
 					if((isset($GLOBALS['we_link_not_published'])) && ($GLOBALS['we_link_not_published'])){
 						unset($GLOBALS['we_link_not_published']);
 						return '';
-					} else{
+					} else {
 						return $return;
 					}
 				}
@@ -962,18 +969,16 @@ class we_document extends we_root{
 					$xml = weTag_getAttribute('xml', $attribs, (XHTML_DEFAULT), true, false);
 					$oldHtmlspecialchars = weTag_getAttribute('htmlspecialchars', $attribs, true, true);
 					if($only){
-						if($only == 'content'){
-							return self::getLinkContent($link, $parentID, $path, $db, $img, $xml, $_useName, $oldHtmlspecialchars, $hidedirindex, $objectseourls);
-						} else{
-							return isset($link[$only]) ? $link[$only] : ''; // #3636
-						}
-					} else{
+						return ($only == 'content' ?
+								self::getLinkContent($link, $parentID, $path, $db, $img, $xml, $_useName, $oldHtmlspecialchars, $hidedirindex, $objectseourls) :
+								isset($link[$only]) ? $link[$only] : ''); // #3636
+					} else {
 
 						if(($content = self::getLinkContent($link, $parentID, $path, $db, $img, $xml, $_useName, $oldHtmlspecialchars, $hidedirindex, $objectseourls))){
 
 							if(($startTag = self::getLinkStartTag($link, $attribs, $parentID, $path, $db, $img, $_useName, $hidedirindex, $objectseourls))){
 								return $startTag . $content . '</a>';
-							} else{
+							} else {
 								return $content;
 							}
 						}
@@ -995,7 +1000,7 @@ class we_document extends we_root{
 							$_min = substr($val, 14, 2);
 							$_s = substr($val, 17, 2);
 							$val = mktime($_h, $_min, $_s, $_m, $_d, $_y);
-						} else{
+						} else {
 							$val = mktime(0, 0, 0, $_m, $_d, $_y);
 						}
 					}
@@ -1009,7 +1014,7 @@ class we_document extends we_root{
 				if(isset($GLOBALS['WE_MAIN_DOC']) && $GLOBALS['WE_MAIN_DOC']->Language != 'de_DE' && is_numeric($val)){
 					$zdate = new Zend_Date($val, Zend_Date::TIMESTAMP);
 					return $zdate->toString($format, 'php', $GLOBALS['WE_MAIN_DOC']->Language);
-				} else{
+				} else {
 					include_once(WE_INCLUDES_PATH . 'we_tags/we_tag_date.inc.php');
 					$dt = new DateTime((is_numeric($val) ? '@' : '') . $val);
 					$dt->setTimeZone(new DateTimeZone(@date_default_timezone_get())); //Bug #6335
@@ -1032,17 +1037,17 @@ class we_document extends we_root{
 				$f = __FUNCTION__;
 				return $this->{$f}($val, 'text', $attribs, $pathOnly, $parentID, $path, $db, $classID, $fn);
 			case 'href':
-				return self::getHref($attribs, $db, $fn);
+				return $this->getHref($attribs, $db, $fn);
 			default:
 				parseInternalLinks($val, $parentID);
 				$retval = preg_replace('/<\?xml[^>]+>/i', '', $val);
 
-				if(isset($attribs['html']) && ($attribs['html'] == 'off' || $attribs['html'] == 'false' || $attribs['html'] == '0')){
+				if(!weTag_getAttribute('html', $attribs, true, true) && !weTag_getAttribute('wysiwyg', $attribs, false, true)){
 					$retval = strip_tags($retval, '<br>,<p>');
 				}
 
-				$_htmlspecialchars = isset($attribs['htmlspecialchars']) && ($attribs['htmlspecialchars'] == 'on' || $attribs['htmlspecialchars'] == 'true' || $attribs['htmlspecialchars'] == 'htmlspecialchars');
-				$_wysiwyg = isset($attribs['wysiwyg']) && ($attribs['wysiwyg'] == 'on' || $attribs['wysiwyg'] == 'true' || $attribs['wysiwyg'] == 'wysiwyg');
+				$_htmlspecialchars = weTag_getAttribute('htmlspecialchars', $attribs, false, true);
+				$_wysiwyg = weTag_getAttribute('wysiwyg', $attribs, false, true);
 
 				if($_htmlspecialchars && (!$_wysiwyg)){
 					$retval = preg_replace('/<br([^>]*)>/i', '#we##br\1#we##', $retval);
@@ -1057,24 +1062,8 @@ class we_document extends we_root{
 
 				if(preg_match('/^[\d.,]+$/', trim($retval))){
 					$precision = isset($attribs['precision']) ? abs($attribs['precision']) : 2;
-
-					if(isset($attribs['num_format'])){
-						$retval = we_util::std_numberformat($retval);
-						switch($attribs['num_format']){
-							default:
-							case 'german':
-								$retval = number_format($retval, $precision, ',', '.');
-								break;
-							case 'french':
-								$retval = number_format($retval, $precision, ',', ' ');
-								break;
-							case 'english':
-								$retval = number_format($retval, $precision, '.', '');
-								break;
-							case 'swiss':
-								$retval = number_format($retval, $precision, '.', '\'');
-								break;
-						}
+					if(($num = weTag_getAttribute('num_format', $attribs))){
+						$retval = we_util_Strings::formatNumber(we_util::std_numberformat($retval), $num, $precision);
 					}
 				}
 				if(weTag_getAttribute('win2iso', $attribs, false, true)){
@@ -1129,7 +1118,7 @@ class we_document extends we_root{
 				if(isset($attribs['showcontrol']) && !$attribs['showcontrol'] && isset($attribs['id']) && $attribs['id']){//bug 6433: siehe korrespondierende Änderung in we_tag_img
 					unset($attribs['showcontrol']);
 					$val = $attribs['id'];
-				} else{
+				} else {
 					$val = $this->getElement($attribs['name'], 'bdid');
 				}
 				if($val){
@@ -1146,7 +1135,7 @@ class we_document extends we_root{
 			return self::getHrefByArray($hrefArr);
 		}
 
-		return self::getFieldByVal($val, $type, $attribs, $pathOnly, isset($GLOBALS['WE_MAIN_DOC']) ? $GLOBALS['WE_MAIN_DOC']->ParentID : $this->ParentID, isset($GLOBALS['WE_MAIN_DOC']) ? $GLOBALS['WE_MAIN_DOC']->Path : $this->Path, $this->DB_WE, (isset($attribs['classid']) && isset($attribs['type']) && $attribs['type'] == 'select') ? $attribs['classid'] : (isset($this->TableID) ? $this->TableID : ''));
+		return $this->getFieldByVal($val, $type, $attribs, $pathOnly, isset($GLOBALS['WE_MAIN_DOC']) ? $GLOBALS['WE_MAIN_DOC']->ParentID : $this->ParentID, isset($GLOBALS['WE_MAIN_DOC']) ? $GLOBALS['WE_MAIN_DOC']->Path : $this->Path, $this->DB_WE, (isset($attribs['classid']) && isset($attribs['type']) && $attribs['type'] == 'select') ? $attribs['classid'] : (isset($this->TableID) ? $this->TableID : ''));
 	}
 
 	private function getValFromSrc($fn, $name){
@@ -1162,13 +1151,13 @@ class we_document extends we_root{
 	function getHref($attribs, $db = '', $fn = 'this'){
 		$db = $db ? $db : new_DB_WE();
 		$n = $attribs['name'];
-		$nint = $n . '_we_jkhdsf_int';
+		$nint = $n . we_base_link::MAGIC_INT_LINK;
 		$int = $this->getValFromSrc($fn, $nint);
 		$int = ($int == '') ? 0 : $int;
 		if($int){
-			$intID = $this->getValFromSrc($fn, $n . '_we_jkhdsf_intID');
+			$intID = $this->getValFromSrc($fn, $n . we_base_link::MAGIC_INT_LINK_ID);
 			return f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($intID), 'Path', $db);
-		} else{
+		} else {
 			return $this->getValFromSrc($fn, $n);
 		}
 	}
@@ -1178,7 +1167,7 @@ class we_document extends we_root{
 		if($int){
 			$intID = isset($hrefArr['intID']) ? $hrefArr['intID'] : 0;
 			return $intID ? id_to_path($intID) : '';
-		} else{
+		} else {
 			return isset($hrefArr['extPath']) ? $hrefArr['extPath'] : '';
 		}
 	}
@@ -1187,47 +1176,55 @@ class we_document extends we_root{
 		$db = ($db ? $db : new DB_WE());
 
 		// Bug Fix 8170&& 8166
-		if(isset($link['href']) && strlen($link['href']) >= 7 && substr($link['href'], 0, 7) == 'mailto:'){
-			$link['type'] = 'mail';
-		}
+		if(isset($link['href']) && strpos($link['href'], we_base_link::TYPE_MAIL_PREFIX) === 0){
+			$link['type'] = we_base_link::TYPE_MAIL;
 
-		if(isset($link['type']) && ($link['type'] == 'int')){
-			$id = $link['id'];
-			if($id == ''){
-				return '';
-			} else{
+			//added for #7269
+			if(isset($link['subject']) && $link['subject'] != ''){
+				$link['href'] = $link['href'] . "?subject=" . $link['subject'];
+			}
+			if(isset($link['cc']) && $link['cc'] != ''){
+				$link['href'] = $link['href'] . "&cc=" . $link['cc'];
+			}
+			if(isset($link['bcc']) && $link['bcc'] != ''){
+				$link['href'] = $link['href'] . "&bcc=" . $link['bcc'];
+			}
+		}
+		if(!isset($link['type'])){
+			return '';
+		}
+		switch($link['type']){
+			case we_base_link::TYPE_INT:
+				$id = $link['id'];
+				if($id == ''){
+					return '';
+				}
 				$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), 'Path', $db);
 				$path_parts = pathinfo($path);
-				if($hidedirindex && show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES != ''
-					&& in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
+				if($hidedirindex && show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES != '' && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
 					$path = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/';
 				}
 				if(isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->InWebEdition){
 					return $path;
-				} else{
-					if(f('SELECT Published FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), 'Published', $db)){
-						return $path;
-					} else{
-						$GLOBALS['we_link_not_published'] = 1;
-						return '';
-					}
 				}
-			}
-		} else if(isset($link['type']) && ($link['type'] == 'obj')){
-			return getHrefForObject($link['obj_id'], $parentID, $path, $db, $hidedirindex, $objectseourls);
-		} else if(isset($link['type'])){
+				if(f('SELECT Published FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), 'Published', $db)){
+					return $path;
+				}
+				$GLOBALS['we_link_not_published'] = 1;
+				return '';
 
-			if($link['href'] == 'http://'){
-				$link['href'] = '';
-			}
-			return $link['href'];
-		} else{
-			return '';
+			case we_base_link::TYPE_OBJ:
+				return getHrefForObject($link['obj_id'], $parentID, $path, $db, $hidedirindex, $objectseourls);
+			default:
+
+				if($link['href'] == 'http://'){
+					$link['href'] = '';
+				}
+				return $link['href'];
 		}
 	}
 
-	function getLinkContent($link, $parentID = 0, $path = '', $db = '', $img = '', $xml = '', $_useName = '', $oldHtmlspecialchars = false, $hidedirindex = false, $objectseourls = false){
-
+	function getLinkContent($link, $parentID = 0, $path = '', $db = '', $img = '', $xml = '', $_useName = '', $htmlspecialchars = false, $hidedirindex = false, $objectseourls = false){
 		$l_href = self::getLinkHref($link, $parentID, $path, $db, $hidedirindex, $objectseourls);
 
 		if(isset($GLOBALS['we_link_not_published']) && $GLOBALS['we_link_not_published']){
@@ -1235,50 +1232,46 @@ class we_document extends we_root{
 			return '';
 		}
 
-		if(isset($link['ctype']) && $link['ctype'] == 'int'){
-			if(!$img)
-				$img = new we_imageDocument();
-			$img->initByID($link['img_id']);
+		switch(isset($link['ctype']) ? $link['ctype'] : ''){
+			case we_base_link::CONTENT_INT:
+				$img = ($img ? $img : new we_imageDocument());
+				$img->initByID($link['img_id']);
 
-			$img_attribs = array('width' => $link['width'], 'height' => $link['height'], 'border' => $link['border'], 'hspace' => $link['hspace'], 'vspace' => $link['vspace'], 'align' => $link['align'], 'alt' => $link['alt'], 'title' => (isset($link['img_title']) ? $link['img_title'] : ''));
+				$img_attribs = array('width' => $link['width'], 'height' => $link['height'], 'border' => $link['border'], 'hspace' => $link['hspace'], 'vspace' => $link['vspace'], 'align' => $link['align'], 'alt' => $link['alt'], 'title' => (isset($link['img_title']) ? $link['img_title'] : ''));
 
-			if($_useName){ //	rollover with links ...
-				$img_attribs['name'] = $_useName;
-				$img->elements['name']['dat'] = $_useName;
-			}
-
-			if($xml){
-				$img_attribs['xml'] = 'true';
-			}
-
-			$img->initByAttribs($img_attribs);
-
-			return $img->getHtml(false, false);
-		} else if(isset($link['ctype']) && $link['ctype'] == 'ext'){
-
-			//  set default atts
-			$img_attribs = array('src' => $link['img_src'],
-				'alt' => '',
-				'xml' => $xml
-			);
-			if(isset($link['img_title'])){
-				$img_attribs['title'] = $link['img_title'];
-			}
-			//  deal with all remaining attribs
-			$img_attList = array('width', 'height', 'border', 'hspace', 'vspace', 'align', 'alt', 'name');
-			foreach($img_attList AS $k){
-				if(isset($link[$k]) && $link[$k] != ''){
-					$img_attribs[$k] = $link[$k];
+				if($_useName){ //	rollover with links ...
+					$img_attribs['name'] = $_useName;
+					$img->elements['name']['dat'] = $_useName;
 				}
-			}
-			return getHtmlTag('img', $img_attribs);
-		} else if(isset($link['ctype']) && $link['ctype'] == 'text'){
-			// Workarround => We have to find another solution
-			if($xml){
-				return oldHtmlspecialchars(html_entity_decode($link['text']));
-			} else{
-				return $oldHtmlspecialchars ? oldHtmlspecialchars($link['text']) : $link['text'];
-			}
+
+				if($xml){
+					$img_attribs['xml'] = 'true';
+				}
+
+				$img->initByAttribs($img_attribs);
+
+				return $img->getHtml(false, false);
+			case we_base_link::CONTENT_EXT:
+				//  set default atts
+				$img_attribs = array('src' => $link['img_src'],
+					'alt' => '',
+					'xml' => $xml
+				);
+				if(isset($link['img_title'])){
+					$img_attribs['title'] = $link['img_title'];
+				}
+				//  deal with all remaining attribs
+				$img_attList = array('width', 'height', 'border', 'hspace', 'vspace', 'align', 'alt', 'name');
+				foreach($img_attList AS $k){
+					if(isset($link[$k]) && $link[$k] != ''){
+						$img_attribs[$k] = $link[$k];
+					}
+				}
+				return getHtmlTag('img', $img_attribs);
+			case we_base_link::CONTENT_TEXT:
+				// Workarround => We have to find another solution
+				return (($xml || $htmlspecialchars) ?
+						oldHtmlspecialchars(html_entity_decode($link['text'])) : $link['text']);
 		}
 	}
 
@@ -1299,9 +1292,8 @@ class we_document extends we_root{
 			$_linkAttribs = array();
 
 			// define image-if necessary - handle with image-attribs
-			if(!$img){
-				$img = new we_imageDocument();
-			}
+			$img = ($img ? $img : new we_imageDocument());
+
 			//   image attribs
 			foreach($_imgAtts as $att){ //  take all attribs belonging to image inside content
 				$img_attribs[$att] = isset($link[$att]) ? $link[$att] : '';
@@ -1313,7 +1305,7 @@ class we_document extends we_root{
 			$rollOverScript = '';
 			$rollOverAttribsArr = array();
 
-			if($link['ctype'] == 'int'){
+			if($link['ctype'] == we_base_link::TYPE_INT){
 				//	set name of image dynamically
 				if($_useName){ //	we must set the name of the image -> rollover
 					$img->setElement('name', $_useName, 'dat');
@@ -1379,8 +1371,7 @@ class we_document extends we_root{
 					(isset($_popUpCtrl["jswidth"]) && $_popUpCtrl["jswidth"] != "" ?
 						'we_winOpts += (we_winOpts ? \',\' : \'\')+\'width=' . $_popUpCtrl["jswidth"] . '\';' : '') .
 					(isset($_popUpCtrl["jsheight"]) && $_popUpCtrl["jsheight"] != "" ?
-						'we_winOpts += (we_winOpts ? \',\' : \'\')+\'height=' . $_popUpCtrl["jsheight"] . '\';' : '') .
-					'we_winOpts += (we_winOpts ? \',\' : \'\')+\'status=' . (isset($_popUpCtrl["jsstatus"]) && $_popUpCtrl["jsstatus"] ? 'yes' : 'no') . '\';' .
+						'we_winOpts += (we_winOpts ? \',\' : \'\')+\'height=' . $_popUpCtrl["jsheight"] . '\';' : '') . 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'status=' . (isset($_popUpCtrl["jsstatus"]) && $_popUpCtrl["jsstatus"] ? 'yes' : 'no') . '\';' .
 					'we_winOpts += (we_winOpts ? \',\' : \'\')+\'scrollbars=' . (isset($_popUpCtrl["jsscrollbars"]) && $_popUpCtrl["jsscrollbars"] ? 'yes' : 'no') . '\';' .
 					'we_winOpts += (we_winOpts ? \',\' : \'\')+\'menubar=' . (isset($_popUpCtrl["jsmenubar"]) && $_popUpCtrl["jsmenubar"] ? 'yes' : 'no') . '\';' .
 					'we_winOpts += (we_winOpts ? \',\' : \'\')+\'resizable=' . (isset($_popUpCtrl["jsresizable"]) && $_popUpCtrl["jsresizable"] ? 'yes' : 'no') . '\';' .
@@ -1393,7 +1384,7 @@ class we_document extends we_root{
 			}
 			$_linkAttribs = removeAttribs($_linkAttribs, array('hidedirindex', 'objectseourls'));
 			return $rollOverScript . getHtmlTag('a', $_linkAttribs, '', false, true);
-		} else{
+		} else {
 			if((isset($GLOBALS["we_link_not_published"])) && ($GLOBALS["we_link_not_published"])){
 				unset($GLOBALS["we_link_not_published"]);
 			}
@@ -1435,7 +1426,7 @@ class we_document extends we_root{
 			foreach($_REQUEST as $n => $v){
 				if(preg_match('/^we_schedule_([^\[]+)$/', $n, $regs)){
 					$rest = $regs[1];
-					$nr = preg_replace('/^.+_([0-9])+$/', '\1', $rest);
+					$nr = preg_replace('/^.+_([0-9])+$/', ' \1', $rest);
 					$sw = explode('_', $rest);
 					switch($sw[0]){
 						case 'task':
@@ -1529,7 +1520,7 @@ class we_document extends we_root{
 			if($this->DB_WE->num_rows()){
 				$this->schedArr = array();
 			}
-			while($this->DB_WE->next_record()) {
+			while($this->DB_WE->next_record()){
 				$s = unserialize($this->DB_WE->f('Schedpro'));
 				if(is_array($s)){
 					$s['active'] = $this->DB_WE->f('Active');
@@ -1607,4 +1598,16 @@ class we_document extends we_root{
 		return true;
 	}
 
+	/**
+	 * @return '': this method is overwritten in we_webEditionDocument
+	 */
+	public function getDocumentCss(){
+		return '';
+	}
+
+	public function addDocumentCss($stylesheet = ''){
+		// this method is overwritten in we_webEditionDocument
+	}
+
 }
+

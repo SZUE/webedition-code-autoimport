@@ -42,7 +42,6 @@ class we_util_Mailer extends Zend_Mail{
 	protected $isEmbedImages = false;
 
 	/**
-	 * Enter description here...
 	 *
 	 * @var String
 	 */
@@ -77,14 +76,12 @@ class we_util_Mailer extends Zend_Mail{
 	protected $messageBuilt = false;
 
 	/**
-	 * Enter description here...
 	 *
 	 * @var array
 	 */
 	protected $embedImages = array('gif', 'jpg', 'jpeg', 'jpe', 'bmp', 'png', 'tif', 'tiff', 'swf', 'GIF', 'JPG', 'JPEG', 'JPE', 'BMP', 'PNG', 'TIF', 'TIFF', 'SWF');
 
 	/**
-	 * Enter description here...
 	 *
 	 * @var array
 	 */
@@ -98,7 +95,6 @@ class we_util_Mailer extends Zend_Mail{
 	protected $internal_subject = '';
 
 	/**
-	 * Enter description here...
 	 *
 	 * @param String || Array $to use Array for a list of users
 	 * @param String $subject
@@ -236,7 +232,7 @@ class we_util_Mailer extends Zend_Mail{
 	}
 
 	public function addTextPart($val){
-		$this->AltBody = $val;
+		$this->AltBody = str_replace(array("\r\n", "\r", "\n"), array("\n", "\n", "\r\n"), $val);
 	}
 
 	public function addAddressList($list){
@@ -257,11 +253,10 @@ class we_util_Mailer extends Zend_Mail{
 					// only images that from the own server will be embeded
 					if(preg_match('/^[A-z][A-z]*:\/\/' . $_SERVER['SERVER_NAME'] . '/', $url) || !preg_match('/^[A-z][A-z]*:\/\//', $url)){
 						$filename = basename($url);
-						$directory = dirname($url);
+						$directory = str_replace('..', '', dirname($url));
 						if($directory == '.'){
 							$directory = '';
 						}
-						$directory = str_replace('..', '', "$directory");
 						if(($pos = stripos($directory, $_SERVER['SERVER_NAME']))){
 							$directory = substr($directory, (strlen($_SERVER['SERVER_NAME']) + $pos), strlen($directory));
 						}
@@ -284,7 +279,7 @@ class we_util_Mailer extends Zend_Mail{
 
 							$cid = 'cid:' . $this->doaddAttachmentInline($attachmentpath);
 
-							$this->Body = preg_replace("/" . $images[1][$i] . "=\"" . preg_quote($url, '/') . "\"/Ui", $images[1][$i] . "=\"" . $cid . "\"", $this->Body);
+							$this->Body = preg_replace('/' . $images[1][$i] . '="' . preg_quote($url, '/') . '"/Ui', $images[1][$i] . '="' . $cid . '"', $this->Body);
 						}
 					}
 				}
@@ -319,12 +314,10 @@ class we_util_Mailer extends Zend_Mail{
 			}
 			$this->setBodyHtml(trim($this->Body));
 		}
-		if($this->AltBody != ''){ //Es gibt einen Text-Part
-			$this->setBodyText(trim($this->AltBody));
-		} else{
+		if($this->AltBody == ''){ //Es gibt keinen Text-Part
 			$this->parseHtml2TextPart($this->Body);
-			$this->setBodyText(trim($this->AltBody));
 		}
+		$this->setBodyText(trim($this->AltBody));
 
 		$this->messageBuilt = true;
 	}
@@ -333,15 +326,15 @@ class we_util_Mailer extends Zend_Mail{
 		$lineBreaks = array(
 			"\n" => '',
 			"\r" => '',
-			'</h1>' => "</h1>\n\n",
-			'</h2>' => "</h2>\n\n",
-			"</h3>" => "</h3>\n\n",
-			"</h4>" => "</h4>\n\n",
-			"</h5>" => "</h5>\n\n",
-			"</h6>" => "</h6>\n\n",
-			"</p>" => "</p>\n\n",
-			"</div>" => "</div>\n",
-			"</li>" => "</li>\n",
+			'</h1>' => "\n\n",
+			'</h2>' => "\n\n",
+			'</h3>' => "\n\n",
+			'</h4>' => "\n\n",
+			"</h5>" => "\n\n",
+			"</h6>" => "\n\n",
+			"</p>" => "\n\n",
+			"</div>" => "\n",
+			"</li>" => "\n",
 			"&lt;" => '<',
 			"&gt;" => '>',
 		);

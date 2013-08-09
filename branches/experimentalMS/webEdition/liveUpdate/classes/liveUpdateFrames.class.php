@@ -181,7 +181,7 @@ class liveUpdateFrames{
 		$deletedLngs = array();
 		$notDeletedLngs = array();
 
-		if(isset($_REQUEST['deleteLanguages']) && sizeof($_REQUEST['deleteLanguages'])){
+		if(isset($_REQUEST['deleteLanguages']) && !empty($_REQUEST['deleteLanguages'])){
 
 			// update prefs_table
 			$cond = '';
@@ -190,10 +190,7 @@ class liveUpdateFrames{
 				$cond .= ' OR Language="' . $GLOBALS['DB_WE']->escape($lng) . '"';
 			}
 
-			$query = 'UPDATE ' . PREFS_TABLE . " SET Language = '" . WE_LANGUAGE . "' WHERE ( 0 $cond )";
-			$GLOBALS['DB_WE']->query($query);
-
-
+			$GLOBALS['DB_WE']->query('UPDATE ' . PREFS_TABLE . ' SET value="' . WE_LANGUAGE . '" WHERE `key`="Language" AND ( 0 ' . $cond . ' )');
 
 			$liveUpdateFunc = new liveUpdateFunctions();
 			// delete folders

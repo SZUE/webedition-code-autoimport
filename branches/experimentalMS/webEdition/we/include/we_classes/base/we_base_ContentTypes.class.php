@@ -43,17 +43,25 @@ class we_base_ContentTypes{
 				'IsWebEditionFile' => true,
 				'Icon' => self::IMAGE_ICON,
 			),
+			'text/xml' => array(//this entry must stay before text/html, text/we because filetypes are not distinct
+				'Extension' => '.xml',
+				'Permission' => 'NEW_TEXT',
+				'DefaultCode' => '<?xml version="1.0" encoding="' . $charset . '" ?>',
+				'IsRealFile' => true,
+				'IsWebEditionFile' => true,
+				'Icon' => self::LINK_ICON,
+			),
 			'text/html' => array(
 				'Extension' => array('.html', '.htm', '.shtm', '.shtml', '.stm', '.php', '.jsp', '.asp', '.pl', '.cgi', '.xml', '.xsl'),
 				'Permission' => 'NEW_HTML',
-				'DefaultCode' => '<html>' . "\n\t" .
-				'<head>' . "\n\t\t" .
-				'<title></title>' . "\n\t\t" .
-				'<meta http-equiv="Content-Type" content="text/html; charset="' . $charset . '">' . "\n\t" .
-				'</head>' . "\n\t" .
-				'<body>' . "\n\t" .
-				'</body>' . "\n" .
-				'</html>',
+				'DefaultCode' => '<html>
+	<head>
+		<title></title>
+		<meta http-equiv="Content-Type" content="text/html; charset="' . $charset . '">
+	</head>
+	<body>
+	</body>
+</html>',
 				'IsWebEditionFile' => true,
 				'IsRealFile' => true,
 				'Icon' => 'html.gif',
@@ -78,11 +86,11 @@ class we_base_ContentTypes{
 	<we:charset defined="UTF-8">UTF-8</we:charset>
 </head>
 <body>
-	<article>
+	<article style="width:400px">
 		<h1><we:input type="text" name="Headline" size="60"/></h1>
 		<p><b><we:input type="date" name="Date" format="d.m.Y"/></b></p>
 		<we:ifNotEmpty match="Image">
-			<we:img name="Image" showthumbcontrol="true"/>
+			<p><we:img name="Image" showthumbcontrol="true"/></p>
 		</we:ifNotEmpty>
 		<we:textarea name="Content" width="400" height="200" autobr="true" wysiwyg="true" removefirstparagraph="false" inlineedit="true"/>
 	</article>
@@ -157,17 +165,9 @@ class we_base_ContentTypes{
 				'Icon' => 'quicktime.gif',
 			),
 			'application/*' => array(
-				'Extension' => array('.doc', '.xls', '.ppt', '.zip', '.sit', '.bin', '.hqx', '.exe'),
+				'Extension' => array('.doc', '.xls', '.ppt', '.zip', '.sit', '.bin', '.hqx', '.exe', '.pdf'),
 				'Permission' => 'NEW_SONSTIGE',
 				'DefaultCode' => '',
-				'IsRealFile' => true,
-				'IsWebEditionFile' => true,
-				'Icon' => self::LINK_ICON,
-			),
-			'text/xml' => array(
-				'Extension' => '.xml',
-				'Permission' => 'NEW_TEXT',
-				'DefaultCode' => '<?xml version="1.0" encoding="' . $charset . '" ?>',
 				'IsRealFile' => true,
 				'IsWebEditionFile' => true,
 				'Icon' => self::LINK_ICON,

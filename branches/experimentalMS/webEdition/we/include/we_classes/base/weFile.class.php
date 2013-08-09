@@ -24,6 +24,11 @@
  */
 abstract class weFile{
 
+	const SZ_HUMAN = 0;
+	const SZ_BYTE = 1;
+	const SZ_KB = 2;
+	const SZ_MB = 3;
+
 	static function load($filename, $flags = 'rb', $rsize = 8192, $iscompressed = 0){
 		if($filename == ''){
 			return false;
@@ -82,7 +87,7 @@ abstract class weFile{
 				$buffer = $read($fp, $rsize);
 				$close($fp);
 				return $buffer;
-			} else{
+			} else {
 				$close($fp);
 			}
 		}
@@ -111,31 +116,26 @@ abstract class weFile{
 				$buffer = $read($fp, $rsize);
 				$close($fp);
 				return $buffer;
-			} else{
+			} else {
 				$close($fp);
 			}
 		}
 		return false;
 	}
 
-	static function save($filename, $content, $flags = 'wb', $create_path = false){
+	static function save($filename, $content, $flags = 'wb', $compression = ''){
 		if($filename == '' || self::hasURL($filename) || (file_exists($filename) && !is_writable($filename))){
 			t_e('error writing file', $filename);
 			return false;
-		} else{
-			/* if(strpos($filename, $_SERVER['DOCUMENT_ROOT']) === FALSE){
-			  t_e('warning', 'Acess outside document_root forbidden!', $filename, $oldFile,$_SERVER['DOCUMENT_ROOT']);
-			  return;
-			  } */
-			if(($create_path && !self::mkpath(dirname($filename))) && (!is_writable(dirname($filename)))){
-				t_e('failed to create file', $filename);
-				return false;
-			}
 		}
+		$prefix = self::getComPrefix($compression);
+		$open = $prefix . 'open';
+		$write = $prefix . 'write';
+		$close = $prefix . 'close';
 
-		if(($fp = @fopen($filename, $flags))){
-			$written = fwrite($fp, $content, strlen($content));
-			@fclose($fp);
+		if(($fp = $open($filename, $flags))){
+			$written = $write($fp, $content, strlen($content));
+			@$close($fp);
 			return $written;
 		}
 		t_e('error writing file', $filename);
@@ -157,7 +157,7 @@ abstract class weFile{
 		if(!self::hasURL($filename)){
 			if(is_writable($filename)){
 				return (is_dir($filename) ? rmdir($filename) : unlink($filename));
-			} else{
+			} else {
 				return false;
 			}
 		}
@@ -195,12 +195,12 @@ abstract class weFile{
 		$marker_size = strlen($marker);
 
 		if($fh){
-			while(!@feof($fh)) {
+			while(!@feof($fh)){
 				@set_time_limit(60);
 				$line = '';
 				$findline = false;
 
-				while($findline == false && !@feof($fh)) {
+				while($findline == false && !@feof($fh)){
 					$line .= @fgets($fh, 4096);
 					if(substr($line, -1) == "\n"){
 						$findline = true;
@@ -222,7 +222,7 @@ abstract class weFile{
 
 					if($marker_size){
 						$write = ((substr($buff, (0 - ($marker_size + 1))) == $marker . "\n") || (substr($buff, (0 - ($marker_size + 2))) == $marker . "\r\n"));
-					} else{
+					} else {
 						$write = true;
 					}
 
@@ -237,11 +237,11 @@ abstract class weFile{
 						}
 						$buff = '';
 					}
-				} else{
+				} else {
 					return -1;
 				}
 			}
-		} else{
+		} else {
 			return -1;
 		}
 		if($fh_temp){
@@ -319,7 +319,7 @@ abstract class weFile{
 	static function getCompression($filename){
 		$compressions = array('gzip', 'zip', 'bzip');
 		foreach($compressions as $val){
-			if(stripos(basename($filename), '.' . weFile::getZExtension($val)) !== false){
+			if(stripos(basename($filename), '.' . self::getZExtension($val)) !== false){
 				return $val;
 			}
 		}
@@ -328,6 +328,7 @@ abstract class weFile{
 
 	static function compress($file, $compression = 'gzip', $destination = '', $remove = true, $writemode = 'wb'){
 		if(!self::hasCompression($compression)){
+			t_e('compression not available', $compression);
 			return false;
 		}
 		if($destination == ''){
@@ -338,7 +339,7 @@ abstract class weFile{
 		if(self::isCompressed($file)){
 			if($remove){
 				rename($file, $zfile);
-			} else{
+			} else {
 				copy($file, $zfile);
 			}
 			return $zfile;
@@ -364,12 +365,12 @@ abstract class weFile{
 					}
 				} while(true);
 				$close($gzfp);
-			} else{
+			} else {
 				fclose($fp);
 				return false;
 			}
 			fclose($fp);
-		} else{
+		} else {
 			return false;
 		}
 		if($remove){
@@ -394,12 +395,12 @@ abstract class weFile{
 				} while(true);
 				fclose($fp);
 			}
-			else{
+			else {
 				gzclose($gzfp);
 				return false;
 			}
 			gzclose($gzfp);
-		} else{
+		} else {
 			return false;
 		}
 		if($remove){
@@ -421,6 +422,27 @@ abstract class weFile{
 			fclose($fh);
 		}
 		return false;
+	}
+
+	static function getHumanFileSize($filesize, $type = self::SZ_HUMAN){
+		switch($type){
+			case self::SZ_BYTE:
+				return $filesize . ' Byte';
+			case self::SZ_KB:
+				return round($filesize / 1024, 1) . ' KB';
+			case self::SZ_MB:
+				return round($filesize / (1024 * 1024), 1) . ' MB';
+			default:
+			case self::SZ_HUMAN:
+				if($filesize >= 1024 && $filesize < (1024 * 1024)){
+					$_size = round($filesize / 1024, 1) . ' KB';
+				} else if($filesize >= (1024 * 1024)){
+					$_size = round($filesize / (1024 * 1024), 1) . ' MB';
+				} else {
+					$_size = $filesize . ' Byte';
+				}
+				return $_size;
+		}
 	}
 
 }

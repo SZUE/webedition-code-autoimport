@@ -32,7 +32,6 @@ function we_tag_write($attribs){
 			}
 			break;
 		default:
-		case document:
 			$type = 'document'; //make sure type is known!
 			if(($foo = attributFehltError($attribs, 'doctype', __FUNCTION__))){
 				return $foo;
@@ -46,7 +45,6 @@ function we_tag_write($attribs){
 	$triggerid = weTag_getAttribute('triggerid', $attribs, 0);
 	$charset = weTag_getAttribute('charset', $attribs, 'iso-8859-1');
 	$doctype = weTag_getAttribute('doctype', $attribs);
-	$tid = weTag_getAttribute('tid', $attribs);
 	$categories = weTag_getAttribute('categories', $attribs);
 	$classid = weTag_getAttribute('classid', $attribs);
 	$userid = weTag_getAttribute('userid', $attribs); // deprecated  use protected=true instead
@@ -67,6 +65,7 @@ function we_tag_write($attribs){
 
 		switch($type){
 			case 'document':
+				$tid = weTag_getAttribute('tid', $attribs);
 				$ok = we_webEditionDocument::initDocument($name, $tid, $doctype, $categories);
 				break;
 			case 'object':
@@ -76,36 +75,33 @@ function we_tag_write($attribs){
 		}
 
 		if($ok){
+			$isOwner = ($protected && isset($_SESSION['webuser']['ID']) ?
+					($_SESSION['webuser']['ID'] == $GLOBALS['we_' . $type][$name]->WebUserID) :
+					$userid && ($_SESSION['webuser']['ID'] == $GLOBALS['we_' . $type][$name]->getElement($userid)));
 
-			$isOwner = false;
-			if($protected && isset($_SESSION['webuser']['ID'])){
-				$isOwner = ($_SESSION['webuser']['ID'] == $GLOBALS['we_' . $type][$name]->WebUserID);
-			} else{
-				$isOwner = ($userid) && ($_SESSION['webuser']['ID'] == $GLOBALS['we_' . $type][$name]->getElement($userid));
-			}
-			$isAdmin = ($admin) && isset($_SESSION['webuser'][$admin]) && $_SESSION['webuser'][$admin];
+			$isAdmin = $admin && isset($_SESSION['webuser'][$admin]) && $_SESSION['webuser'][$admin];
 
 			if($isAdmin || ($GLOBALS['we_' . $type][$name]->ID == 0) || $isOwner || $forceedit){
 				$doWrite = true;
-				$GLOBALS['we_' . $type . '_write_ok'] = true;
 				//$newObject = ($GLOBALS['we_'.$type][$name]->ID) ? false : true;
 				if($protected){
 					if(!isset($_SESSION['webuser']['ID'])){
+						$GLOBALS['we_' . $type . '_write_ok'] = false;
 						return;
 					}
 					if(!$GLOBALS['we_' . $type][$name]->WebUserID){
 						$GLOBALS['we_' . $type][$name]->WebUserID = $_SESSION['webuser']['ID'];
 					}
-				} else{
-					if($userid){
-						if(!isset($_SESSION['webuser']['ID']))
-							return;
-						if(!$GLOBALS['we_' . $type][$name]->getElement($userid)){
-							$GLOBALS['we_' . $type][$name]->setElement($userid, $_SESSION['webuser']['ID']);
-						}
+				} elseif($userid){
+					if(!isset($_SESSION['webuser']['ID'])){
+						$GLOBALS['we_' . $type . '_write_ok'] = false;
+						return;
+					}
+					if(!$GLOBALS['we_' . $type][$name]->getElement($userid)){
+						$GLOBALS['we_' . $type][$name]->setElement($userid, $_SESSION['webuser']['ID']);
 					}
 				}
-
+				$GLOBALS['we_' . $type . '_write_ok'] = true;
 				checkAndCreateImage($name, ($type == 'document') ? 'we_document' : 'we_object');
 				checkAndCreateFlashmovie($name, ($type == 'document') ? 'we_document' : 'we_object');
 				checkAndCreateQuicktime($name, ($type == 'document') ? 'we_document' : 'we_object');
@@ -170,13 +166,13 @@ function we_tag_write($attribs){
 								break;
 							case 'increment':
 								$z = 1;
-								$footext = $objname . "_" . $z;
-								while(f("SELECT ID FROM " . OBJECT_FILES_TABLE . " WHERE Path='" . escape_sql_query(str_replace('//', '/', $GLOBALS["we_$type"][$name]->Path . "/" . $footext)) . "'", "ID", $db)) {
+								$footext = $objname . '_' . $z;
+								while(f('SELECT ID FROM ' . OBJECT_FILES_TABLE . " WHERE Path='" . escape_sql_query(str_replace('//', '/', $GLOBALS['we_' . $type][$name]->Path . "/" . $footext)) . "'", 'ID', $db)) {
 									$z++;
-									$footext = $objname . "_" . $z;
+									$footext = $objname . '_' . $z;
 								}
-								$GLOBALS["we_$type"][$name]->Path = str_replace('//', '/', $GLOBALS["we_$type"][$name]->Path . '/' . $footext);
-								$GLOBALS["we_$type"][$name]->Text = $footext;
+								$GLOBALS['we_' . $type][$name]->Path = str_replace('//', '/', $GLOBALS["we_$type"][$name]->Path . '/' . $footext);
+								$GLOBALS['we_' . $type][$name]->Text = $footext;
 								break;
 						}
 					}
@@ -256,7 +252,7 @@ function we_tag_write($attribs){
 
 function checkAndCreateFlashmovie($formname, $type = 'we_document'){
 	$webuserId = isset($_SESSION['webuser']['ID']) ? $_SESSION['webuser']['ID'] : 0;
-
+	$regs = array();
 	foreach($_REQUEST as $key => $_flashmovieDataId){
 		if(preg_match('|^WE_UI_FLASHMOVIE_DATA_ID_(.*)$|', $key, $regs)){
 
@@ -332,7 +328,7 @@ function checkAndCreateFlashmovie($formname, $type = 'we_document'){
 
 function checkAndCreateQuicktime($formname, $type = 'we_document'){
 	$webuserId = isset($_SESSION['webuser']['ID']) ? $_SESSION['webuser']['ID'] : 0;
-
+	$regs = array();
 	foreach($_REQUEST as $key => $_quicktimeDataId){
 		if(preg_match('|^WE_UI_QUICKTIME_DATA_ID_(.*)$|', $key, $regs)){
 			$_quicktimeName = $regs[1];
@@ -408,7 +404,7 @@ function checkAndCreateQuicktime($formname, $type = 'we_document'){
 
 function checkAndCreateImage($formname, $type = 'we_document'){
 	$webuserId = isset($_SESSION['webuser']['ID']) ? $_SESSION['webuser']['ID'] : 0;
-
+	$regs = array();
 	foreach($_REQUEST as $key => $_imgDataId){
 		if(preg_match('|^WE_UI_IMG_DATA_ID_(.*)$|', $key, $regs)){
 			$_imgName = $regs[1];
@@ -484,7 +480,7 @@ function checkAndCreateImage($formname, $type = 'we_document'){
 
 function checkAndCreateBinary($formname, $type = 'we_document'){
 	$webuserId = isset($_SESSION['webuser']['ID']) ? $_SESSION['webuser']['ID'] : 0;
-
+	$regs = array();
 	foreach($_REQUEST as $key => $_binaryDataId){
 		if(preg_match('|^WE_UI_BINARY_DATA_ID_(.*)$|', $key, $regs)){
 			$_binaryName = $regs[1];

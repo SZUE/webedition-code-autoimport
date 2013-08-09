@@ -31,6 +31,7 @@ $LU_Variables = array(
 	// always needed variables
 	'clientVersion' => WE_VERSION,
 	'clientSubVersion' => WE_SVNREV,
+	'clientVersionName' => (defined("WE_VERSION_NAME")) ? WE_VERSION_NAME : '',
 	'clientVersionSupp' => (defined("WE_VERSION_SUPP")) ? WE_VERSION_SUPP : '',
 	'clientVersionSuppVersion' => (defined("WE_VERSION_SUPP_VERSION")) ? WE_VERSION_SUPP_VERSION : '',
 	'clientVersionBranch' => (defined("WE_VERSION_BRANCH")) ? WE_VERSION_BRANCH : '',
@@ -38,8 +39,8 @@ $LU_Variables = array(
 	'clientPhpExtensions' => implode(',', get_loaded_extensions()),
 	'clientPcreVersion' => (defined("PCRE_VERSION")) ? PCRE_VERSION : '',
 	'clientMySQLVersion' => getMysqlVer(false),
-	'clientDBcharset' => (defined("DB_CHARSET") && DB_CHARSET != "") ? DB_CHARSET : '',
-	'clientDBcollation' => (defined("DB_COLLATION") && DB_COLLATION != "") ? DB_COLLATION : '',
+	'clientDBcharset' => we_database_base::getCharset(),
+	'clientDBcollation' => we_database_base::getCollation(),
 	'clientServerSoftware' => $_SERVER["SERVER_SOFTWARE"],
 	'clientUid' => (defined('UID') ? UID : false),
 	'clientSyslng' => WE_LANGUAGE,

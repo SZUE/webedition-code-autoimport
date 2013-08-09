@@ -84,7 +84,7 @@ abstract class we_html_tools{
 			}
 		}
 		return '<table cellpadding="0" cellspacing="0" border="0">' . ($text ? '<tr><td class="' . trim($textclass) . '" align="' . trim(
-					$textalign) . '" colspan="' . $colspan . '">' . $text . '</td></tr>' : '') . ($abstand ? ('<tr><td colspan="' . $colspan . '">' . we_html_tools::getPixel(
+					$textalign) . '" colspan="' . $colspan . '">' . $text . '</td></tr>' : '') . ($abstand ? ('<tr><td colspan="' . $colspan . '">' . self::getPixel(
 					2, $abstand) . '</td></tr>') : '') . '<tr>' . $elemOut . '</tr></table>';
 	}
 
@@ -110,8 +110,8 @@ abstract class we_html_tools{
 		));
 
 		$_table = new we_html_table(array(
-				"cellpadding" => 0, "cellspacing" => 0, "border" => 0
-				), 1, 3);
+			"cellpadding" => 0, "cellspacing" => 0, "border" => 0
+			), 1, 3);
 
 		$_inputs = array(
 			"name" => $name,
@@ -136,10 +136,10 @@ abstract class we_html_tools{
 
 		$_table->setCol(0, 0, array(
 			"class" => "defaultfont"
-			), we_html_tools::htmlTextInput(
+			), self::htmlTextInput(
 				$name, $size, $value, "", (!empty($onChange) ? 'onchange="' . $onChange . '"' : ''), "text", $width, 0, "", $disabled));
 
-		$_table->setCol(0, 1, null, we_html_tools::getPixel($abstand, 1));
+		$_table->setCol(0, 1, null, self::getPixel($abstand, 1));
 
 		$_table->setCol(0, 2, array(
 			"class" => "defaultfont"
@@ -153,7 +153,7 @@ abstract class we_html_tools{
 			($height ? ('height: ' . $height . (is_numeric($height) ? 'px' : '') . ';') : '') . '"') : '';
 		return '<input' . ($markHot ? ' onchange="if(_EditorFrame){_EditorFrame.setEditorIsHot(true);}' . $markHot . '.hot=1;"' : '') .
 			(strstr($attribs, "class=") ? "" : ' class="wetextinput"') . ' type="' . trim($type) . '" name="' . trim($name) .
-			'" size="' . abs($size) . '" value="' . oldHtmlspecialchars($value) . '"' . ($maxlength ? (' maxlength="' . abs($maxlength) . '"') : '') . ($attribs ? " $attribs" : '') . $style . ' onblur="this.className=\'wetextinput\';" onfocus="this.className=\'wetextinputselected\'"' . ($disabled ? (' disabled="true"') : '') . ' />';
+			'" size="' . intval($size) . '" value="' . oldHtmlspecialchars($value) . '"' . ($maxlength ? (' maxlength="' . intval($maxlength) . '"') : '') . ($attribs ? " $attribs" : '') . $style . ' onblur="this.className=\'wetextinput\';" onfocus="this.className=\'wetextinputselected\'"' . ($disabled ? (' disabled="true"') : '') . ' />';
 	}
 
 	static function htmlMessageBox($w, $h, $content, $headline = "", $buttons = ""){
@@ -176,15 +176,15 @@ abstract class we_html_tools{
 	}
 
 	static function htmlDialogBorder3($w, $h, $content, $headline, $class = "middlefont", $bgColor = "", $buttons = "", $id = "", $style = ""){ //content && headline are arrays
-		$anz = sizeof($headline);
+		$anz = count($headline);
 		$out = '<table' . ($id ? ' id="' . $id . '"' : '') . ($style ? ' style="' . $style . '"' : '') . ' border="0" cellpadding="0" cellspacing="0" width="' . $w . '">
 		<tr>
-		<td width="8" style="background-image:url(' . IMAGE_DIR . 'box/box_header_ol2.gif);">' . we_html_tools::getPixel(8, 21) . '</td>';
+		<td width="8" style="background-image:url(' . IMAGE_DIR . 'box/box_header_ol2.gif);">' . self::getPixel(8, 21) . '</td>';
 		// HEADLINE
 		for($f = 0; $f < $anz; $f++){
 			$out .= '<td class="' . $class . '" style="padding:1px 5px 1px 5px;background-image:url(' . IMAGE_DIR . 'box/box_header_bg2.gif);">' . $headline[$f]["dat"] . '</td>';
 		}
-		$out .= '<td width="8" style="background-image:url(' . IMAGE_DIR . 'box/box_header_or2.gif);">' . we_html_tools::getPixel(8, 21) . '</td>
+		$out .= '<td width="8" style="background-image:url(' . IMAGE_DIR . 'box/box_header_or2.gif);">' . self::getPixel(8, 21) . '</td>
 				</tr>';
 
 		//CONTENT
@@ -202,7 +202,7 @@ abstract class we_html_tools{
 			$_table->setCol(0, 0, array(
 				"colspan" => "2"
 				), $out);
-			$_table->setCol(1, 0, null, we_html_tools::getPixel($w, 5)); // row for gap between buttons and dialogborder
+			$_table->setCol(1, 0, null, self::getPixel($w, 5)); // row for gap between buttons and dialogborder
 			$_table->setCol(2, 0, array(
 				"align" => "right"
 				), $buttons);
@@ -215,7 +215,7 @@ abstract class we_html_tools{
 	static function htmlDialogBorder4Row($content, $class = "middlefont", $bgColor = ""){
 		$anz = count($content);
 		$out = '<td style="border-bottom: 1px solid silver;background-image:url(' . IMAGE_DIR . 'box/shaddowBox3_l.gif);">' .
-			we_html_tools::getPixel(8, isset($content[0]["height"]) ? $content[0]["height"] : 1) . '</td>';
+			self::getPixel(8, isset($content[0]["height"]) ? $content[0]["height"] : 1) . '</td>';
 
 		for($f = 0; $f < $anz; $f++){
 			$bgcol = $bgColor ? $bgColor : ((isset($content[$f]["bgcolor"]) && $content[$f]["bgcolor"]) ? $content[$f]["bgcolor"] : "white");
@@ -226,18 +226,18 @@ abstract class we_html_tools{
 				'</td>';
 		}
 		$out .= '<td style="border-bottom: 1px solid silver;background-image:url(' . IMAGE_DIR . 'box/shaddowBox3_r.gif);">' .
-			we_html_tools::getPixel(8, isset($content[0]["height"]) ? $content[0]["height"] : 1) . '</td>';
+			self::getPixel(8, isset($content[0]["height"]) ? $content[0]["height"] : 1) . '</td>';
 		return $out;
 	}
 
 	static function htmlDialogBorder4($w, $h, $content, $headline, $class = "middlefont", $bgColor = "", $buttons = "", $id = "", $style = ""){ //content && headline are arrays
 		$out = '<table' . ($id ? ' id="' . $id . '"' : '') . ($style ? ' style="' . $style . '"' : '') . ' border="0" cellpadding="0" cellspacing="0" width="' . $w . '">
-		<tr><td width="8" style="background-image:url(' . IMAGE_DIR . 'box/box_header_ol2.gif);">' . we_html_tools::getPixel(8, 21) . '</td>';
+		<tr><td width="8" style="background-image:url(' . IMAGE_DIR . 'box/box_header_ol2.gif);">' . self::getPixel(8, 21) . '</td>';
 		// HEADLINE
 		foreach($headline as $h){
 			$out .= '<td class="' . $class . '" style="padding:1px 5px 1px 5px;background-image:url(' . IMAGE_DIR . 'box/box_header_bg2.gif);">' . $h["dat"] . '</td>';
 		}
-		$out .= '<td width="8" style="background-image:url(' . IMAGE_DIR . 'box/box_header_or2.gif);">' . we_html_tools::getPixel(8, 21) . '</td></tr>';
+		$out .= '<td width="8" style="background-image:url(' . IMAGE_DIR . 'box/box_header_or2.gif);">' . self::getPixel(8, 21) . '</td></tr>';
 
 		//CONTENT
 		foreach($content as $c){
@@ -252,7 +252,7 @@ abstract class we_html_tools{
 			);
 			$_table = new we_html_table($attribs, 3, 1);
 			$_table->setCol(0, 0, array("colspan" => "2"), $out);
-			$_table->setCol(1, 0, null, we_html_tools::getPixel($w, 5)); // row for gap between buttons and dialogborder
+			$_table->setCol(1, 0, null, self::getPixel($w, 5)); // row for gap between buttons and dialogborder
 			$_table->setCol(2, 0, array("align" => "right"), $buttons);
 			return $_table->getHtml();
 		} else{
@@ -275,13 +275,13 @@ abstract class we_html_tools{
 		//  First input='text'
 		$textField = getHtmlTag('input', array_merge($atts, array('type' => 'text', 'name' => $name, 'value' => oldHtmlspecialchars($value))));
 
-		$opts = getHtmlTag('option', array('value' => ''), '', true) . "\n";
+		$opts = getHtmlTag('option', array('value' => ''), '', true);
 		$attsOpts = array();
 
 		if($valuesIsHash){
 			foreach($values as $_val => $_text){
 				$attsOpts['value'] = oldHtmlspecialchars($_val);
-				$opts .= getHtmlTag('option', $attsOpts, oldHtmlspecialchars($_text)) . "\n";
+				$opts .= getHtmlTag('option', $attsOpts, oldHtmlspecialchars($_text));
 			}
 		} else{
 			// options of select Menu
@@ -292,7 +292,7 @@ abstract class we_html_tools{
 
 			foreach($options as $option){
 				$attsOpts['value'] = oldHtmlspecialchars($option);
-				$opts .= getHtmlTag('option', $attsOpts, oldHtmlspecialchars($option)) . "\n";
+				$opts .= getHtmlTag('option', $attsOpts, oldHtmlspecialchars($option));
 			}
 		}
 
@@ -329,7 +329,7 @@ abstract class we_html_tools{
 				$disabled = '';
 			}
 			$out = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' .
-				we_html_tools::htmlTextInput($name, 5, $selected, "", $attribs, "text", $width / 2, "0", "top") .
+				self::htmlTextInput($name, 5, $selected, "", $attribs, "text", $width / 2, 0, "top") .
 				'</td><td><select class="weSelect" name="wetmp_' . $name . '" size=1' . $disabled . ($width ? ' style="width: ' . ($width / 2) . 'px"' : '') . ' onchange="if(typeof(_EditorFrame) != \'undefined\'){_EditorFrame.setEditorIsHot(true);}if(this.options[this.selectedIndex].text){this.form.elements[\'' . $name . '\'].value=this.options[this.selectedIndex].text;};this.selectedIndex=0"><option>';
 			foreach($extensions as $extension){
 				$out .= '<option>' . $extension . '</option>';
@@ -338,12 +338,12 @@ abstract class we_html_tools{
 			return $out;
 		} else{
 			$_ext = $extensions[0];
-			return we_html_tools::hidden($name, $_ext) . '<b class="defaultfont">' . $_ext . '</b>';
+			return self::hidden($name, $_ext) . '<b class="defaultfont">' . $_ext . '</b>';
 		}
 	}
 
 	static function pExtensionPopup($name, $selected, $extensions){
-		print we_html_tools::getExtensionPopup($name, $selected, $extensions);
+		print self::getExtensionPopup($name, $selected, $extensions);
 	}
 
 	static function getPixel($w, $h, $border = 0){
@@ -437,11 +437,12 @@ abstract class we_html_tools{
 			$hour = $time->format('G');
 			$minute = $time->format('i');
 		} else if($time){
-			$day = abs(date("j", $time));
-			$month = abs(date("n", $time));
-			$year = abs(date("Y", $time));
-			$hour = abs(date("G", $time));
-			$minute = abs(date("i", $time));
+			$time = intval($time);
+			$day = intval(date("j", $time));
+			$month = intval(date("n", $time));
+			$year = intval(date("Y", $time));
+			$hour = intval(date("G", $time));
+			$minute = intval(date("i", $time));
 		}
 
 		$_dayPos = self::we_getDayPos($format);
@@ -465,40 +466,51 @@ abstract class we_html_tools{
 			}
 			$daySelect = getHtmlTag(
 					'select', array_merge($_attsSelect, array(
-						'name' => sprintf($name, "_day"), 'id' => sprintf($name, "_day")
+					'name' => sprintf($name, "_day"), 'id' => sprintf($name, "_day")
 					)), $days, true) . '&nbsp;';
 		} else{
 			$daySelect = getHtmlTag(
 				'input', array_merge(
 					$_attsHidden, array(
-					'type' => 'hidden',
-					'name' => sprintf($name, "_day"),
-					'id' => sprintf($name, "_day"),
-					'value' => $day
-				)));
+				'type' => 'hidden',
+				'name' => sprintf($name, "_day"),
+				'id' => sprintf($name, "_day"),
+				'value' => $day
+			)));
 			$_showDay = false;
 		}
 
-		if(($format == "") || $_monthPos > -1){
+		if(($format == '') || $_monthPos > -1){
 			$months = '';
+			$monthType = (strpos($format, 'F') ? 'F' : (strpos($format, 'M') ? 'M' : 0));
 			for($i = 1; $i <= 12; $i++){
-				$_atts2 = ($time && $month == $i) ? array('selected' => 'selected') : array();
-
-				$months .= getHtmlTag('option', array_merge($_attsOption, $_atts2), sprintf("%02d", $i));
+				switch($monthType){//Bug #4095
+					case 'F':
+						$val = g_l('date', '[month][long][' . ($i - 1) . ']');
+						break;
+					case 'M':
+						$val = g_l('date', '[month][short][' . ($i - 1) . ']');
+						break;
+					default:
+						$val = sprintf("%02d", $i);
+				}
+				$_atts2 = ($time && $month == $i) ? array('selected' => 'selected', 'value' =>
+					$i) : array('value' => $i);
+				$months .= getHtmlTag('option', array_merge($_attsOption, $_atts2), $val);
 			}
 			$monthSelect = getHtmlTag(
 					'select', array_merge($_attsSelect, array(
-						'name' => sprintf($name, "_month"), 'id' => sprintf($name, "_month")
+					'name' => sprintf($name, "_month"), 'id' => sprintf($name, "_month")
 					)), $months, true) . '&nbsp;';
 		} else{
 			$monthSelect = getHtmlTag(
 				'input', array_merge(
 					$_attsHidden, array(
-					'type' => 'hidden',
-					'name' => sprintf($name, "_month"),
-					'id' => sprintf($name, "_month"),
-					'value' => $month
-				)));
+				'type' => 'hidden',
+				'name' => sprintf($name, "_month"),
+				'id' => sprintf($name, "_month"),
+				'value' => $month
+			)));
 			$_showMonth = false;
 		}
 		if(($format == "") || $_yearPos > -1){
@@ -515,17 +527,17 @@ abstract class we_html_tools{
 			}
 			$yearSelect = getHtmlTag(
 					'select', array_merge($_attsSelect, array(
-						'name' => sprintf($name, "_year"), 'id' => sprintf($name, "_year")
+					'name' => sprintf($name, "_year"), 'id' => sprintf($name, "_year")
 					)), $years, true) . '&nbsp;';
 		} else{
 			$yearSelect = getHtmlTag(
 				'input', array_merge(
 					$_attsHidden, array(
-					'type' => 'hidden',
-					'name' => sprintf($name, "_year"),
-					'id' => sprintf($name, "_year"),
-					'value' => $year
-				)));
+				'type' => 'hidden',
+				'name' => sprintf($name, "_year"),
+				'id' => sprintf($name, "_year"),
+				'value' => $year
+			)));
 			$_showYear = false;
 		}
 
@@ -537,17 +549,17 @@ abstract class we_html_tools{
 			}
 			$hourSelect = getHtmlTag(
 					'select', array_merge($_attsSelect, array(
-						'name' => sprintf($name, "_hour"), 'id' => sprintf($name, "_hour")
+					'name' => sprintf($name, "_hour"), 'id' => sprintf($name, "_hour")
 					)), $hours, true) . '&nbsp;';
 		} else{
 			$hourSelect = getHtmlTag(
 				'input', array_merge(
 					$_attsHidden, array(
-					'type' => 'hidden',
-					'name' => sprintf($name, "_hour"),
-					'id' => sprintf($name, "_hour"),
-					'value' => $hour
-				)));
+				'type' => 'hidden',
+				'name' => sprintf($name, "_hour"),
+				'id' => sprintf($name, "_hour"),
+				'value' => $hour
+			)));
 			$_showHour = false;
 		}
 
@@ -559,17 +571,17 @@ abstract class we_html_tools{
 			}
 			$minSelect = getHtmlTag(
 					'select', array_merge($_attsSelect, array(
-						'name' => sprintf($name, "_minute"), 'id' => sprintf($name, "_minute")
+					'name' => sprintf($name, "_minute"), 'id' => sprintf($name, "_minute")
 					)), $minutes, true) . '&nbsp;';
 		} else{
 			$minSelect = getHtmlTag(
 				'input', array_merge(
 					$_attsHidden, array(
-					'type' => 'hidden',
-					'name' => sprintf($name, "_minute"),
-					'id' => sprintf($name, "_minute"),
-					'value' => $minute
-				)));
+				'type' => 'hidden',
+				'name' => sprintf($name, "_minute"),
+				'id' => sprintf($name, "_minute"),
+				'value' => $minute
+			)));
 			$_showMinute = false;
 		}
 
@@ -658,7 +670,7 @@ abstract class we_html_tools{
 		return we_html_element::htmlMeta(array(
 				"http-equiv" => "content-type",
 				"content" => $content . '; charset=' . $charset
-			));
+		));
 	}
 
 	static function headerCtCharset($content, $charset){
@@ -667,7 +679,6 @@ abstract class we_html_tools{
 	}
 
 	/**
-	 * Enter description here...
 	 *
 	 * @param string $text
 	 * @param string $img
@@ -687,8 +698,8 @@ abstract class we_html_tools{
 
 
 		$content = new we_html_table(array(
-				"cellpadding" => 10, "cellspacing" => 0, "border" => 0
-				), 1, ($img != "" ? 2 : 1));
+			"cellpadding" => 10, "cellspacing" => 0, "border" => 0
+			), 1, ($img != "" ? 2 : 1));
 
 		if($img != "" && file_exists($_SERVER['DOCUMENT_ROOT'] . $img)){
 			$size = getimagesize($_SERVER['DOCUMENT_ROOT'] . $img);
@@ -698,14 +709,14 @@ abstract class we_html_tools{
 				), we_html_element::htmlImg(
 					array(
 						"src" => $img, "border" => 0, "width" => $size[0], "height" => $size[1]
-				)));
+			)));
 		}
 
 		$content->setCol(0, ($img != "" ? 1 : 0), array(
 			"class" => "defaultfont"
 			), $text);
 
-		return we_html_tools::htmlDialogLayout(
+		return self::htmlDialogLayout(
 				(empty($script) ? '' : we_html_element::jsElement($script)) . $content->getHtml()
 				, "", we_button::position_yes_no_cancel($yesButton, $noButton, $cancelButton), "99%", "0");
 	}
@@ -741,7 +752,7 @@ abstract class we_html_tools{
 				continue;
 			}
 			$ret .= '<option value="' . ($oldHtmlspecialchars ? oldHtmlspecialchars($value) : $value) . '"' . (in_array(
-					(($compare == "value") ? $value : $text), $selIndex) ? " selected" : "") . '>' . ($oldHtmlspecialchars ? oldHtmlspecialchars($text) : $text) . '</option>';
+					(($compare == "value") ? $value : $text), $selIndex) ? ' selected="selected"' : '') . '>' . ($oldHtmlspecialchars ? oldHtmlspecialchars($text) : $text) . '</option>';
 		}
 		$ret .= ($optgroup ? '</optgroup>' : '') . '</select>';
 		return $ret;
@@ -829,6 +840,10 @@ abstract class we_html_tools{
 			case 403:
 				header('HTTP/1.1 ' . $status . ' Forbidden', true, $status);
 				header('Status: ' . $status . ' Forbidden', true, $status);
+				break;
+			case 404:
+				header('HTTP/1.1 ' . $status . ' Not Found', true, $status);
+				header('Status: ' . $status . ' Not Found', true, $status);
 				break;
 			case 408:
 				header('HTTP/1.1 ' . $status . ' Request Time-out', true, $status);
