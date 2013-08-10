@@ -79,9 +79,9 @@ abstract class weTagWizard{
 		}
 		foreach($GLOBALS['tag_groups'] as $key => $tags){
 
-			for($i = 0; $i < count($tags); $i++){
-				if(in_array($tags[$i], $allTags)){
-					$taggroups[$key][] = $tags[$i];
+			foreach($tags as $tag){
+				if(in_array($tag, $allTags)){
+					$taggroups[$key][] = $tag;
 				}
 			}
 		}
