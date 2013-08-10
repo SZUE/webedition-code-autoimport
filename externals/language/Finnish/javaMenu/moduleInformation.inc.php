@@ -25,6 +25,10 @@ $l_javaMenu_moduleInformation=array(
 		'text'=>'Tehtävät/Viestintä',
 		'text_short'=>'Viesti',
 	),
+	'navigation'=>array(
+		'text'=>'Navigation',
+		'text_short'=>'Navigation',
+	),
 	'newsletter'=>array(
 		'text'=>'Uutiskirje',
 		'text_short'=>'Uutiskirje',

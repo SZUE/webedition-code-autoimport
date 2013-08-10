@@ -25,6 +25,10 @@ $l_javaMenu_moduleInformation=array(
 		'text'=>'Gestionnaire de Tâches/Messagerie',
 		'text_short'=>'Messages',
 	),
+	'navigation'=>array(
+		'text'=>'Navigation',
+		'text_short'=>'Navigation',
+	),
 	'newsletter'=>array(
 		'text'=>'Lettre d`information',
 		'text_short'=>'Lettres d`information',

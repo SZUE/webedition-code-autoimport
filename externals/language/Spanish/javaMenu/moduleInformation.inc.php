@@ -25,6 +25,10 @@ $l_javaMenu_moduleInformation=array(
 		'text'=>'Tareas/Mensajería',
 		'text_short'=>'Mensajes',
 	),
+	'navigation'=>array(
+		'text'=>'Navigation',
+		'text_short'=>'Navigation',
+	),
 	'newsletter'=>array(
 		'text'=>'Boletín Informativo',
 		'text_short'=>'Boletín Informativo',
