@@ -200,10 +200,10 @@ if(isset($GLOBALS["loginpage"]) && $GLOBALS["loginpage"]){
 		<tr>
 			<td>' . $we_login_type .
 			'</td></tr><td>' .
-			we_forms::radiobutton('normal', getValueLoginMode('normal'), 'mode', g_l('SEEM', "[start_mode_normal]"), true, "small") . '</td>
+			we_forms::radiobutton(we_base_constants::MODE_NORMAL, getValueLoginMode(we_base_constants::MODE_NORMAL), 'mode', g_l('SEEM', "[start_mode_normal]"), true, "small") . '</td>
 		</tr>
 		<tr>
-			<td>' . we_forms::radiobutton('seem', getValueLoginMode('seem'), 'mode', '<acronym title="' . g_l('SEEM', "[start_mode_seem_acronym]") . '">' . g_l('SEEM', "[start_mode_seem]") . '</acronym>', true, "small") . '</td>
+			<td>' . we_forms::radiobutton(we_base_constants::MODE_SEE, getValueLoginMode(we_base_constants::MODE_SEE), 'mode', '<acronym title="' . g_l('SEEM', "[start_MODE_SEE_acronym]") . '">' . g_l('SEEM', "[start_MODE_SEE]") . '</acronym>', true, "small") . '</td>
 		</tr>
 		</table>');
 		$_modetable->setCol(0, 1, array("align" => "right",

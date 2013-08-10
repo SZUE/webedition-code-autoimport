@@ -26,7 +26,7 @@ require_once (WE_INCLUDES_PATH . 'we_move_fn.inc.php');
 we_html_tools::protect();
 $table = $_REQUEST['we_cmd'][2];
 
-$script = "";
+$script = '';
 
 if(($table == TEMPLATES_TABLE && !we_hasPerm("MOVE_TEMPLATE")) ||
 	($table == FILE_TABLE && !we_hasPerm("MOVE_DOCUMENT")) ||
@@ -37,40 +37,40 @@ if(($table == TEMPLATES_TABLE && !we_hasPerm("MOVE_TEMPLATE")) ||
 
 $yuiSuggest = & weSuggest::getInstance();
 
-if($_REQUEST['we_cmd'][0] == "do_move" || $_REQUEST['we_cmd'][0] == 'move_single_document'){
-
-	if(isset($_REQUEST["sel"]) && $_REQUEST["sel"] && isset($_REQUEST["we_target"])){
+if($_REQUEST['we_cmd'][0] == 'do_move' || $_REQUEST['we_cmd'][0] == 'move_single_document'){
+	$db = new DB_WE();
+	if(isset($_REQUEST['sel']) && $_REQUEST['sel'] && isset($_REQUEST['we_target'])){
 
 		$targetDirectroy = $_REQUEST["we_target"];
 		// list of all item names which should be moved
 		$items2move = array();
 
 		// list of the selected items
-		$selectedItems = explode(",", $_REQUEST["sel"]);
+		$selectedItems = explode(',', $_REQUEST['sel']);
 		$retVal = 1;
 		foreach($selectedItems as $selectedItem){
 
 			// check if user is allowed to move this item
-			if(!checkIfRestrictUserIsAllowed($selectedItem, $table)){
+			if(!permissionhandler::checkIfRestrictUserIsAllowed($selectedItem, $table, $db)){
 				$retVal = -1;
 				break;
 			}
 
 			// check if item could be moved to the target directory
-			$check = checkMoveItem($targetDirectroy, $selectedItem, $table, $items2move);
+			$check = checkMoveItem($db, $targetDirectroy, $selectedItem, $table, $items2move);
 			switch($check){
 				case 1 :
 					break;
 				case -1 :
-					$message = g_l('alert', "[move_nofolder]");
+					$message = g_l('alert', '[move_nofolder]');
 					$retVal = 0;
 					break;
 				case -2 :
-					$message = g_l('alert', "[move_duplicate]");
+					$message = g_l('alert', '[move_duplicate]');
 					$retVal = 0;
 					break;
 				case -3 :
-					$message = g_l('alert', "[move_onlysametype]");
+					$message = g_l('alert', '[move_onlysametype]');
 					$retVal = 0;
 					break;
 				default :
@@ -90,12 +90,12 @@ if($_REQUEST['we_cmd'][0] == "do_move" || $_REQUEST['we_cmd'][0] == 'move_single
 				moveItem($targetDirectroy, $selectedItem, $table, $notMovedItems);
 			}
 
-			if($_SESSION['weS']['we_mode'] == "normal"){ //	only update tree when in normal mode
+			if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){ //	only update tree when in normal mode
 				$script .= moveTreeEntries($table == OBJECT_FILES_TABLE);
 			}
 
 			$script .= "top.toggleBusy(0);";
-			if($_SESSION['weS']['we_mode'] == "normal"){ //	different messages in normal or seeMode
+			if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){ //	different messages in normal or seeMode
 				if(!empty($notMovedItems)){
 					$_SESSION['weS']['move_files_nok'] = array();
 					$_SESSION['weS']["move_files_info"] = str_replace("\\n", "", sprintf(g_l('alert', "[move_of_files_failed]"), ""));
@@ -105,18 +105,18 @@ if($_REQUEST['we_cmd'][0] == "do_move" || $_REQUEST['we_cmd'][0] == 'move_single
 						);
 					}
 					$script .= 'new jsWindow("' . WEBEDITION_DIR . 'moveInfo.php","we_moveinfo",-1,-1,550,550,true,true,true);' . "\n";
-				} else{
+				} else {
 					$script .= we_message_reporting::getShowMessageCall(g_l('alert', "[move_ok]"), we_message_reporting::WE_MESSAGE_NOTICE);
 				}
 			}
-		} else{
+		} else {
 			$script .= 'top.toggleBusy(0);' .
 				we_message_reporting::getShowMessageCall($message, we_message_reporting::WE_MESSAGE_ERROR);
 		}
 	} elseif(!isset($_REQUEST["we_target"]) || !$_REQUEST["we_target"]){
 		$script .= 'top.toggleBusy(0);' .
 			we_message_reporting::getShowMessageCall(g_l('alert', "[move_no_dir]"), we_message_reporting::WE_MESSAGE_ERROR);
-	} else{
+	} else {
 		$script .= 'top.toggleBusy(0);' .
 			we_message_reporting::getShowMessageCall(g_l('alert', "[nothing_to_move]"), we_message_reporting::WE_MESSAGE_ERROR);
 	}
@@ -128,7 +128,7 @@ if($_REQUEST['we_cmd'][0] == "do_move" || $_REQUEST['we_cmd'][0] == 'move_single
 //	in seeMode return to startDocument ...
 
 
-if($_SESSION['weS']['we_mode'] == "seem"){
+if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
 	$js = ($retVal ? //	document moved -> go to seeMode startPage
 			we_message_reporting::getShowMessageCall(g_l('alert', '[move_single][return_to_start]'), we_message_reporting::WE_MESSAGE_NOTICE) . ";top.we_cmd('start_multi_editor');" :
 			we_message_reporting::getShowMessageCall(g_l('alert', '[move_single][no_delete]'), we_message_reporting::WE_MESSAGE_ERROR));
@@ -144,77 +144,78 @@ print STYLESHEET .
 ?>
 <script type="text/javascript"><!--
 	top.treeData.setstate(top.treeData.tree_states["selectitem"]);
-	if(top.treeData.table != "<?php
+	if (top.treeData.table != "<?php
 print $table;
-?>"){
-	top.treeData.table = "<?php
+?>") {
+		top.treeData.table = "<?php
 print $table;
 ?>";
-	we_cmd("load","<?php
+		we_cmd("load", "<?php
 print $table;
 ?>");
-}else{
-	we_cmd("load","<?php
+	} else {
+		we_cmd("load", "<?php
 print $table;
 ?>");
-	top.drawTree();
-}
-
-function press_ok_move() {
-
-	var sel = "";
-	for(var i=1;i<=top.treeData.len;i++){
-		if(top.treeData[i].checked==1) sel += (top.treeData[i].id+",");
+		top.drawTree();
 	}
-	if(!sel){
-		top.toggleBusy(0);
+
+	function press_ok_move() {
+
+		var sel = "";
+		for (var i = 1; i <= top.treeData.len; i++) {
+			if (top.treeData[i].checked == 1)
+				sel += (top.treeData[i].id + ",");
+		}
+		if (!sel) {
+			top.toggleBusy(0);
 <?php print we_message_reporting::getShowMessageCall(g_l('alert', '[nothing_to_move]'), we_message_reporting::WE_MESSAGE_ERROR) ?>
-		return;
-	}
-
-	// check if selected target exists
-	var acStatus = '';
-	var invalidAcFields = false;
-	acStatus = YAHOO.autocoml.checkACFields();
-	acStatusType = typeof acStatus;
-	if(acStatusType.toLowerCase() == 'object') {
-		if(acStatus.running) {
-			setTimeout('press_ok_move()',100);
-			return;
-		} else if(!acStatus.valid) {
-<?php print we_message_reporting::getShowMessageCall(g_l('weClass', "[notValidFolder]"), we_message_reporting::WE_MESSAGE_ERROR) ?>
 			return;
 		}
-	}
 
-	// close all documents before moving.
+		// check if selected target exists
+		var acStatus = '';
+		var invalidAcFields = false;
+		acStatus = YAHOO.autocoml.checkACFields();
+		acStatusType = typeof acStatus;
+		if (acStatusType.toLowerCase() == 'object') {
+			if (acStatus.running) {
+				setTimeout('press_ok_move()', 100);
+				return;
+			} else if (!acStatus.valid) {
+<?php print we_message_reporting::getShowMessageCall(g_l('weClass', "[notValidFolder]"), we_message_reporting::WE_MESSAGE_ERROR) ?>
+				return;
+			}
+		}
+
+		// close all documents before moving.
 
 
-	// no open document can be moved
-	// close all Editors with deleted documents
-	var _usedEditors =  top.weEditorFrameController.getEditorsInUse();
+		// no open document can be moved
+		// close all Editors with deleted documents
+		var _usedEditors = top.weEditorFrameController.getEditorsInUse();
 
-	var _move_table = "<?php
+		var _move_table = "<?php
 print $table;
 ?>";
-	var _move_ids = "," + sel;
+		var _move_ids = "," + sel;
 
-	var _open_move_editors = new Array();
+		var _open_move_editors = new Array();
 
-	for ( frameId in _usedEditors ) {
-		if ( _move_table == _usedEditors[frameId].getEditorEditorTable() ) {
-			_open_move_editors.push( _usedEditors[frameId] );
+		for (frameId in _usedEditors) {
+			if (_move_table == _usedEditors[frameId].getEditorEditorTable()) {
+				_open_move_editors.push(_usedEditors[frameId]);
+			}
 		}
-	}
 
-	if ( _open_move_editors.length ) {
+		if (_open_move_editors.length) {
 
-		_openDocs_Str = "";
+			_openDocs_Str = "";
 
-		for ( i=0; i<_open_move_editors.length;i++ ) {
-			_openDocs_Str += "- " + _open_move_editors[i].getEditorDocumentPath() + "\n";
+			for (i = 0; i < _open_move_editors.length; i++) {
+				_openDocs_Str += "- " + _open_move_editors[i].getEditorDocumentPath() + "\n";
 
-		}
+			}
 <?php
 switch($table){
 	case TEMPLATES_TABLE:
@@ -228,62 +229,63 @@ switch($table){
 		break;
 }
 ?>
-		if ( confirm("<?php
+			if (confirm("<?php
 printf(g_l('alert', "[move_exit_open_docs_question]"), $_type, $_type);
 ?>" + _openDocs_Str + "\n<?php
 print g_l('alert', "[move_exit_open_docs_continue]");
-?>") ) {
+?>")) {
 
-		for ( i=0; i<_open_move_editors.length;i++ ) {
-			_open_move_editors[i].setEditorIsHot(false);
-			top.weEditorFrameController.closeDocument( _open_move_editors[i].getFrameId() );
+				for (i = 0; i < _open_move_editors.length; i++) {
+					_open_move_editors[i].setEditorIsHot(false);
+					top.weEditorFrameController.closeDocument(_open_move_editors[i].getFrameId());
 
-		}
-		we_cmd('do_move','','<?php
+				}
+				we_cmd('do_move', '', '<?php
 print $table;
 ?>');
-	}
+			}
 
-} else {
+		} else {
 
-	if(confirm('<?php
+			if (confirm('<?php
 print g_l('alert', "[move]");
 ?>')) {
-	we_cmd('do_move','','<?php
+				we_cmd('do_move', '', '<?php
 print $table;
 ?>');
-}
-}
-}
+			}
+		}
+	}
 
-function we_submitForm(target,url){
-var f = self.document.we_form;
-var sel = "";
-for(var i=1;i<=top.treeData.len;i++){
-if(top.treeData[i].checked==1) sel += (top.treeData[i].id+",");
-}
-if(!sel){
-top.toggleBusy(0);
+	function we_submitForm(target, url) {
+		var f = self.document.we_form;
+		var sel = "";
+		for (var i = 1; i <= top.treeData.len; i++) {
+			if (top.treeData[i].checked == 1)
+				sel += (top.treeData[i].id + ",");
+		}
+		if (!sel) {
+			top.toggleBusy(0);
 <?php print we_message_reporting::getShowMessageCall(g_l('alert', '[nothing_to_move]'), we_message_reporting::WE_MESSAGE_ERROR) ?>
-return;
-}
+			return;
+		}
 
-sel = sel.substring(0,sel.length-1);
+		sel = sel.substring(0, sel.length - 1);
 
-f.sel.value = sel;
-f.target = target;
-f.action = url;
-f.method = "post";
-f.submit();
-}
-function we_cmd(){
-var args = "";
-for(var i = 0; i < arguments.length; i++){
-args += 'arguments['+i+']' + ((i < (arguments.length-1)) ? ',' : '');
-}
+		f.sel.value = sel;
+		f.target = target;
+		f.action = url;
+		f.method = "post";
+		f.submit();
+	}
+	function we_cmd() {
+		var args = "";
+		for (var i = 0; i < arguments.length; i++) {
+			args += 'arguments[' + i + ']' + ((i < (arguments.length - 1)) ? ',' : '');
+		}
 
-eval('parent.we_cmd('+args+')');
-}
+		eval('parent.we_cmd(' + args + ')');
+	}
 //-->
 </script>
 <?php
@@ -297,7 +299,7 @@ $ws_Id = get_def_ws($table);
 
 if($ws_Id){
 	$ws_path = id_to_path($ws_Id, $table);
-} else{
+} else {
 	$ws_Id = '0';
 	$ws_path = '/';
 }

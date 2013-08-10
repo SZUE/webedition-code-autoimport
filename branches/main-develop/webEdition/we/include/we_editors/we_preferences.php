@@ -3193,7 +3193,7 @@ setTimeout(function(){
             new jsWindow(url,"browse_server",-1,-1,840,400,true,false,true);
 			break;
 		case "openDocselector":
-			new jsWindow(url,"openDocselector",-1,-1,' . WINDOW_DOCSELECTOR_WIDTH . ',' . WINDOW_DOCSELECTOR_HEIGHT . ',true,false,true,true);
+			new jsWindow(url,"openDocselector",-1,-1,' . we_fileselector::WINDOW_DOCSELECTOR_WIDTH . ',' . we_fileselector::WINDOW_DOCSELECTOR_HEIGHT . ',true,false,true,true);
 			break;
 		case "show_formmail_log":
 			url = "' . WE_INCLUDES_DIR . 'we_editors/weFormmailLog.php"

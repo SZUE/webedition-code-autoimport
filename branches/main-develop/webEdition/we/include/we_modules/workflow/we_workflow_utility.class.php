@@ -24,9 +24,9 @@
  */
 require_once(WE_MODULES_PATH . 'workflow/we_conf_workflow.inc.php');
 
-class we_workflow_utility{
+abstract class we_workflow_utility{
 
-	function getTypeForTable($table){
+	private static function getTypeForTable($table){
 		switch($table){
 			case FILE_TABLE:
 				return '0,1';
@@ -37,7 +37,7 @@ class we_workflow_utility{
 		}
 	}
 
-	function insertDocInWorkflow($docID, $table, $workflowID, $userID, $desc){
+	public static function insertDocInWorkflow($docID, $table, $workflowID, $userID, $desc){
 		$desc = nl2br($desc);
 		$type = self::getTypeForTable($table);
 		//create new workflow document
@@ -54,7 +54,7 @@ class we_workflow_utility{
 		return false;
 	}
 
-	function approve($docID, $table, $userID, $desc, $force = false){
+	public static function approve($docID, $table, $userID, $desc, $force = false){
 		/* approve step */
 		$desc = nl2br($desc);
 		$doc = self::getWorkflowDocument($docID, $table);
@@ -71,7 +71,7 @@ class we_workflow_utility{
 
 	 */
 
-	function decline($docID, $table, $userID, $desc, $force = false){
+	public static function decline($docID, $table, $userID, $desc, $force = false){
 		//decline step
 		$desc = nl2br($desc);
 		$doc = self::getWorkflowDocument($docID, $table);
@@ -88,7 +88,7 @@ class we_workflow_utility{
 	  This function can be used to force removal
 	  of document from workflow.
 	 */
-	function removeDocFromWorkflow($docID, $table, $userID, $desc){
+	public static function removeDocFromWorkflow($docID, $table, $userID, $desc){
 		$desc = nl2br($desc);
 		$doc = self::getWorkflowDocument($docID, $table);
 		if(isset($doc->ID))
@@ -106,7 +106,7 @@ class we_workflow_utility{
 	  If workflow documnet is not defined for that document false
 	  will be returned
 	 */
-	function getWorkflowDocument($docID, $table, $status = we_workflow_document::STATUS_UNKNOWN){
+	private static function getWorkflowDocument($docID, $table, $status = we_workflow_document::STATUS_UNKNOWN){
 		$type = self::getTypeForTable($table);
 		return we_workflow_document::find($docID, $type, $status);
 	}
@@ -127,8 +127,8 @@ class we_workflow_utility{
 	  Functions tries to find workflow for defined
 	  documents parameters and returns new document object
 	 */
-	function getWorkflowDocumentForDoc($doctype = 0, $categories = "", $folder = -1){
-		$workflowID = we_workflow_workflow::getDocumentWorkflow($doctype, $categories, $folder);
+	static function getWorkflowDocumentForDoc($db, $doctype = 0, $categories = '', $folder = -1){
+		$workflowID = we_workflow_workflow::getDocumentWorkflow($doctype, $categories, $folder, $db);
 		$newDoc = new we_workflow_document();
 		$newDoc->workflowID = $workflowID;
 		$newDoc->steps = we_workflow_documentStep::__createAllSteps($workflowID);
@@ -139,50 +139,49 @@ class we_workflow_utility{
 	  Functions tries to find workflow for defined
 	  objects parametars and returns new document object
 	 */
-	function getWorkflowDocumentForObject($object, $categories = '', $folderID = 0){
-		$workflowID = we_workflow_workflow::getObjectWorkflow($object, $categories, $folderID);
+	static function getWorkflowDocumentForObject($db, $object, $categories = '', $folderID = 0){
+		$workflowID = we_workflow_workflow::getObjectWorkflow($object, $categories, $folderID, $db);
 		$newDoc = new we_workflow_document();
 		$newDoc->workflowID = $workflowID;
 		$newDoc->steps = we_workflow_documentStep::__createAllSteps($workflowID);
 		return $newDoc;
 	}
 
-	function getWorkflowName($workflowID, $table){
+	static function getWorkflowName($workflowID, $table){
 		$foo = self::getAllWorkflows(we_workflow_workflow::STATE_ACTIVE, $table);
 		return $foo[$workflowID];
 	}
 
-	function getWorkflowID($workflowName, $table){
+	static function getWorkflowID($workflowName, $table){
 		$foo = self::getAllWorkflows(we_workflow_workflow::STATE_ACTIVE, $table);
 		return array_search($workflowName, $foo);
 	}
 
-	function getAllWorkflows($status = we_workflow_workflow::STATE_ACTIVE, $table = FILE_TABLE){ // returns hash array with ID as key and Name as value
+	static function getAllWorkflows($status = we_workflow_workflow::STATE_ACTIVE, $table = FILE_TABLE){ // returns hash array with ID as key and Name as value
 		$type = self::getTypeForTable($table);
 		return we_workflow_workflow::getAllWorkflowsInfo($status, $type);
 	}
 
-	function inWorkflow($docID, $table){
+	static function inWorkflow($docID, $table){
 		$doc = self::getWorkflowDocument($docID, $table);
 		return (isset($doc->ID) && $doc->ID);
 	}
 
-	function isWorkflowFinished($docID, $table){
+	static function isWorkflowFinished($docID, $table){
 		$doc = self::getWorkflowDocument($docID, $table);
-		if(!isset($doc->ID))
-			return false;
-		$i = $doc->findLastActiveStep();
-		if(($i <= 0) || ($i < count($doc->steps) - 1) || ($doc->steps[$i]->findNumOfFinishedTasks() < count($doc->steps[$i]->tasks))){
+		if(!isset($doc->ID)){
 			return false;
 		}
-		return true;
+		$i = $doc->findLastActiveStep();
+		return (($i <= 0) || ($i < count($doc->steps) - 1) || ($doc->steps[$i]->findNumOfFinishedTasks() < count($doc->steps[$i]->tasks)) ?
+				false : true);
 	}
 
 	/**
 	  Function returns true if user is in workflow for
 	  defined documnet id, otherwise false
 	 */
-	function isUserInWorkflow($docID, $table, $userID){
+	static function isUserInWorkflow($docID, $table, $userID){
 		$doc = self::getWorkflowDocument($docID, $table);
 		if(isset($doc->ID)){
 			$i = $doc->findLastActiveStep();
@@ -200,7 +199,7 @@ class we_workflow_utility{
 	  Function returns true if user can edit
 	  defined documnet, otherwise false
 	 */
-	function canUserEditDoc($docID, $table, $userID){
+	static function canUserEditDoc($docID, $table, $userID){
 		if(we_hasPerm("ADMINISTRATOR")){
 			return true;
 		}
@@ -220,7 +219,7 @@ class we_workflow_utility{
 		return false;
 	}
 
-	function getWorkflowDocsForUser($userID, $table, $isAdmin = false, $permPublish = false, $ws = ""){
+	static function getWorkflowDocsForUser($userID, $table, $isAdmin = false, $permPublish = false, $ws = ""){
 		if($isAdmin){
 			return self::getAllWorkflowDocs($table);
 		}
@@ -238,7 +237,7 @@ class we_workflow_utility{
 		return $ids;
 	}
 
-	function getAllWorkflowDocs($table){
+	static function getAllWorkflowDocs($table){
 		$type = self::getTypeForTable($table);
 		$db = new DB_WE();
 		$ids = array();
@@ -251,7 +250,7 @@ class we_workflow_utility{
 		return $ids;
 	}
 
-	function getWorkflowDocsFromWorkspace($table, $ws){
+	private static function getWorkflowDocsFromWorkspace($table, $ws){
 		$wids = self::getAllWorkflowDocs($table);
 		$ids = array();
 
@@ -270,18 +269,16 @@ class we_workflow_utility{
 		return $ids;
 	}
 
-	function findLastActiveStep($docID, $table){
+	static function findLastActiveStep($docID, $table){
 		$doc = self::getWorkflowDocument($docID, $table);
 		if(!isset($doc->ID))
 			return false;
 		return $doc->findLastActiveStep();
 	}
 
-	function getNumberOfSteps($docID, $table){
+	static function getNumberOfSteps($docID, $table){
 		$doc = self::getWorkflowDocument($docID, $table);
-		if(!isset($doc->ID))
-			return false;
-		return $doc->steps;
+		return (!isset($doc->ID) ? false : $doc->steps);
 	}
 
 	static function getDocumentStatusInfo($docID, $table){
@@ -295,7 +292,7 @@ class we_workflow_utility{
 	  Cronjob function
 	 */
 
-	function forceOverdueDocuments($userID = 0){
+	static function forceOverdueDocuments($userID = 0){
 		$db = new DB_WE();
 		$ret = '';
 		$db->query('SELECT ' . WORKFLOW_DOC_TABLE . '.ID AS docID,' . WORKFLOW_DOC_STEP_TABLE . ".ID AS docstepID," . WORKFLOW_STEP_TABLE . ".ID AS stepID FROM " . WORKFLOW_DOC_TABLE . "," . WORKFLOW_DOC_STEP_TABLE . "," . WORKFLOW_STEP_TABLE . " WHERE " . WORKFLOW_DOC_TABLE . ".ID=" . WORKFLOW_DOC_STEP_TABLE . ".workflowDocID AND " . WORKFLOW_DOC_STEP_TABLE . ".workflowStepID=" . WORKFLOW_STEP_TABLE . ".ID AND " . WORKFLOW_DOC_STEP_TABLE . ".startDate<>0 AND (" . WORKFLOW_DOC_STEP_TABLE . ".startDate+ ROUND(" . WORKFLOW_STEP_TABLE . ".Worktime*3600))<" . time() . " AND " . WORKFLOW_DOC_STEP_TABLE . ".finishDate=0 AND " . WORKFLOW_DOC_STEP_TABLE . ".Status=" . we_workflow_documentStep::STATUS_UNKNOWN . " AND " . WORKFLOW_DOC_TABLE . ".Status=" . we_workflow_document::STATUS_UNKNOWN);
@@ -328,7 +325,7 @@ class we_workflow_utility{
 		return $ret;
 	}
 
-	function getLogButton($docID, $table){
+	static function getLogButton($docID, $table){
 		$type = self::getTypeForTable($table);
 		return we_button::create_button("logbook", "javascript:new jsWindow('" . WE_WORKFLOW_MODULE_DIR . "edit_workflow_frameset.php?pnt=log&art=" . $docID . "&type=" . $type . "','workflow_history',-1,-1,640,480,true,false,true);");
 	}

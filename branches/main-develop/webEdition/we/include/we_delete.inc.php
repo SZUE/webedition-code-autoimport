@@ -27,9 +27,8 @@ we_html_tools::protect();
 we_html_tools::htmlTop();
 print STYLESHEET;
 
-function getObjectsForDocWorkspace($id){
+function getObjectsForDocWorkspace($id, $db){
 	$ids = (is_array($id)) ? $id : array($id);
-	$db = new DB_WE();
 
 	if(!defined('OBJECT_FILES_TABLE')){
 		return array();
@@ -41,9 +40,9 @@ function getObjectsForDocWorkspace($id){
 		$where[] = 'ExtraWorkspaces LIKE "%,' . $id . ',%"';
 	}
 
-	$out = array();
 	$db->query('SELECT ID,Path FROM ' . OBJECT_FILES_TABLE . ' WHERE ' . implode(' OR ', $where));
 
+	$out = array();
 	while($db->next_record()){
 		$out[$db->f('ID')] = $db->f('Path');
 	}
@@ -90,11 +89,11 @@ if(!$wfchk){
 			'IsFolder' => 0, 'Path' => '', 'hasFiles' => 0
 		);
 		if(!empty($_REQUEST["sel"]) && !empty($selectedItems) && ($table == FILE_TABLE || $table == TEMPLATES_TABLE)){
-			$idInfos = getHash('SELECT IsFolder, Path FROM ' . $DB_WE->escape($table) . ' WHERE ID=' . intval($selectedItems[0]), $DB_WE);
+			$idInfos = getHash('SELECT IsFolder, Path FROM ' . $GLOBALS['DB_WE']->escape($table) . ' WHERE ID=' . intval($selectedItems[0]), $GLOBALS['DB_WE']);
 			if(empty($idInfos)){
 				t_e('ID ' . $selectedItems[0] . ' not present in table ' . $table);
 			} elseif($idInfos['IsFolder']){
-				$idInfos['hasFiles'] = f('SELECT ID FROM ' . $DB_WE->escape($table) . ' WHERE ParentID=' . intval($selectedItems[0]) . " AND  IsFolder = 0 AND Path LIKE '" . $DB_WE->escape($idInfos['Path']) . "%'", 'ID', $DB_WE) > 0 ? 1 : 0;
+				$idInfos['hasFiles'] = f('SELECT ID FROM ' . $GLOBALS['DB_WE']->escape($table) . ' WHERE ParentID=' . intval($selectedItems[0]) . " AND  IsFolder = 0 AND Path LIKE '" . $GLOBALS['DB_WE']->escape($idInfos['Path']) . "%'", 'ID', $GLOBALS['DB_WE']) > 0 ? 1 : 0;
 			}
 		}
 
@@ -127,7 +126,7 @@ if(!$wfchk){
 		} else {
 
 			foreach($selectedItems as $selectedItem){
-				if(!checkIfRestrictUserIsAllowed($selectedItem, $table)){
+				if(!permissionhandler::checkIfRestrictUserIsAllowed($selectedItem, $table, $GLOBALS['DB_WE'])){
 					$retVal = -1;
 					break;
 				}
@@ -207,7 +206,7 @@ if(!$wfchk){
 					}
 				}
 				if(defined("OBJECT_FILES_TABLE") && $table == FILE_TABLE){
-					$objects = getObjectsForDocWorkspace($selectedItem);
+					$objects = getObjectsForDocWorkspace($selectedItem, $GLOBALS['DB_WE']);
 					if(!empty($objects)){
 						$retVal = -3;
 						break;
@@ -216,7 +215,7 @@ if(!$wfchk){
 					$childs = array();
 
 					pushChilds($childs, $selectedItem, $table, true);
-					$objects = getObjectsForDocWorkspace($childs);
+					$objects = getObjectsForDocWorkspace($childs, $GLOBALS['DB_WE']);
 
 					if(!empty($objects)){
 						$retVal = -5;
@@ -277,7 +276,7 @@ if(!$wfchk){
 						deleteEntry($sel, $table);
 					}
 
-					if($_SESSION['weS']['we_mode'] == "normal"){ //	only update tree when in normal mode
+					if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){ //	only update tree when in normal mode
 						$script .= deleteTreeEntries(defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE);
 					}
 
@@ -345,7 +344,7 @@ if(!$wfchk){
 
 					$script .= 'top.toggleBusy(0);';
 
-					if($_SESSION['weS']['we_mode'] == 'normal'){ //	different messages in normal or seeMode
+					if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){ //	different messages in normal or seeMode
 						if(!empty($GLOBALS['we_folder_not_del'])){
 							$_SESSION['weS']['delete_files_nok'] = array();
 							$_SESSION['weS']['delete_files_info'] = str_replace('\n', '', sprintf(g_l('alert', '[folder_not_empty]'), ''));
@@ -384,7 +383,7 @@ if(!$wfchk){
 //	in seeMode return to startDocument ...
 
 
-if($_SESSION['weS']['we_mode'] == "seem"){
+if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
 	print we_html_element::htmlDocType() . we_html_element::htmlHtml(we_html_element::htmlHead(we_html_element::jsElement(
 					($retVal ? //	document deleted -> go to seeMode startPage
 						we_message_reporting::getShowMessageCall(g_l('alert', '[delete_single][return_to_start]'), we_message_reporting::WE_MESSAGE_NOTICE) . "top.we_cmd('start_multi_editor');" :

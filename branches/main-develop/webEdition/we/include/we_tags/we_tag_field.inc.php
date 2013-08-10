@@ -439,7 +439,7 @@ function we_tag_field($attribs){
 				$_linkAttribs['onclick'] = $js . ';var we_win = window.open(\'\',\'win_' . $name . '\',\'' . rtrim($newWinProps, ',') . '\');';
 				$_linkAttribs['target'] = 'win_' . $name;
 			} else { // we are in webEdition
-				if($_SESSION['weS']['we_mode'] == 'seem'){ //	we are in seeMode -> open in edit_include ?....
+				if($_SESSION['weS']['we_mode'] ==we_base_constants::MODE_SEE){ //	we are in seeMode -> open in edit_include ?....
 				}
 			}
 		}
@@ -503,8 +503,7 @@ function we_tag_field($attribs){
 
 					$path_parts = pathinfo($_SERVER['SCRIPT_NAME']);
 					if($GLOBALS['lv']->objectseourls){
-						$db = new DB_WE();
-						list($objecturl, $objecttriggerid) = getHash('SELECT  Url,TriggerID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($GLOBALS['lv']->f('OID')) . ' LIMIT 1', $db);
+						list($objecturl, $objecttriggerid) = getHash('SELECT  Url,TriggerID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($GLOBALS['lv']->f('OID')) . ' LIMIT 1', $GLOBALS['DB_WE']);
 						if($objecttriggerid){
 							$path_parts = pathinfo(id_to_path($objecttriggerid));
 						}
@@ -599,12 +598,12 @@ function we_tag_field($attribs){
 		}
 	}
 
-	if($isImageDoc && isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == 'seem' && $GLOBALS['we_doc']->InWebEdition && $GLOBALS['we_doc']->ContentType != 'text/weTmpl'){
+	if($isImageDoc && isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE && $GLOBALS['we_doc']->InWebEdition && $GLOBALS['we_doc']->ContentType != 'text/weTmpl'){
 		$out .= '<a href="' . $GLOBALS['lv']->f('WE_ID') . '" seem="edit_image"></a>';
 	}
 
 	//	Add a anchor to tell seeMode that this is an object.
-	if(isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == 'seem' &&
+	if(isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE &&
 		(isset($GLOBALS['lv']->ClassName) && $GLOBALS['lv']->ClassName == 'we_listview_object') &&
 		isset($GLOBALS['_we_listview_object_flag']) &&
 		$GLOBALS['_we_listview_object_flag'] &&

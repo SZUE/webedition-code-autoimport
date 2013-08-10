@@ -480,7 +480,7 @@ function we_tag_ifDemo(){
 }
 
 function we_tag_ifSeeMode($attribs, $content){
-	return (we_tag('ifWebEdition', $attribs, $content)) && (isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == 'seem');
+	return (we_tag('ifWebEdition', $attribs, $content)) && (isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE);
 }
 
 function we_tag_ifNotSeeMode($attribs, $content){

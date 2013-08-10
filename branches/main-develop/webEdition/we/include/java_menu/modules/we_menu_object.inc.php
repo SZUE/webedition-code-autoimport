@@ -41,7 +41,7 @@ if(defined('OBJECT_TABLE')){
 		'perm' => 'CAN_SEE_OBJECTFILES || ADMINISTRATOR',
 		'enabled' => 1,
 	);
-	if($_SESSION['weS']['we_mode'] == 'normal'){
+	if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){
 
 		// File > Open > Class
 		$we_menu[1030400] = array(
@@ -105,7 +105,7 @@ if(defined('OBJECT_TABLE')){
 	}
 
 
-	if($_SESSION['weS']['we_mode'] == 'normal'){
+	if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){
 		// separator
 		$we_menu[1010999] = array('parent' => 1010000); // separator
 		// File > Delete

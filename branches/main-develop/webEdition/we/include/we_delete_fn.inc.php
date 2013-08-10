@@ -228,60 +228,6 @@ function deleteThumbsByThumbID($id){
 	we_thumbnail::deleteByThumbID($id);
 }
 
-function checkIfRestrictUserIsAllowed($id, $table = FILE_TABLE, $DB_WE = ''){
-	$DB_WE = $DB_WE ? $DB_WE : new DB_WE();
-	$row = getHash('SELECT CreatorID,RestrictOwners,Owners,OwnersReadOnly FROM ' . $DB_WE->escape($table) . ' WHERE ID=' . intval($id), $DB_WE);
-	if((isset($row['CreatorID']) && $_SESSION['user']['ID'] == $row['CreatorID']) || $_SESSION['perms']['ADMINISTRATOR']){ //	Owner or admin
-		return true;
-	}
-
-	if($row['RestrictOwners']){ //	check which user - group has permission
-		$userArray = makeArrayFromCSV($row['Owners']);
-
-		$_allowedGroup = false;
-
-		//	check if usergroup is allowed
-		foreach($_SESSION['user']['groups'] as $nr => $_userGroup){
-			if(in_array($_userGroup, $userArray)){
-				$_allowedGroup = true;
-				break;
-			}
-		}
-		if(!in_array($_SESSION['user']['ID'], $userArray) && !$_allowedGroup){ //	user is no allowed user.
-			return false;
-		}
-
-		//	user belongs to owners of document, check if he has only read access !!!
-
-
-		if($row['OwnersReadOnly']){
-
-			$arr = unserialize($row['OwnersReadOnly']);
-			if(is_array($arr)){
-
-				if(isset($arr[$_SESSION['user']['ID']]) && $arr[$_SESSION['user']['ID']]){ //	if user is readonly user -> no delete
-					return false;
-				} else{ //	user NOT readonly and in restricted -> delete allowed
-					if(in_array($_SESSION['user']['ID'], $userArray)){
-						return true;
-					}
-				}
-				//	check if group has rights to delete
-				foreach($_SESSION['user']['groups'] as $nr => $_userGroup){ //	user is directly in first group
-					if(isset($arr[$_userGroup]) && $arr[$_userGroup]){ //	group not allowed
-						return false;
-					} else{
-						if(in_array($_userGroup, $userArray)){ //	group is NOT readonly and in restricted -> delete allowed
-							return true;
-						}
-					}
-				}
-			}
-		}
-	}
-	return true;
-}
-
 function deleteEntry($id, $table, $delR = true, $skipHook = 0, $DB_WE = ''){
 
 	$DB_WE = ($DB_WE ? $DB_WE : new DB_WE());

@@ -65,10 +65,10 @@ if(isset($_REQUEST['we_cmd'][3]) && $_REQUEST['we_cmd'][3]){
 
 			switch (arguments[0]){
 				case "openDirselector":
-					new jsWindow(url,"we_fileselector",-1,-1,' . WINDOW_DIRSELECTOR_WIDTH . ',' . WINDOW_DIRSELECTOR_HEIGHT . ',true,true,true,true);
+					new jsWindow(url,"we_fileselector",-1,-1,' . we_fileselector::WINDOW_DIRSELECTOR_WIDTH . ',' . we_fileselector::WINDOW_DIRSELECTOR_HEIGHT . ',true,true,true,true);
 					break;
 				case "openCatselector":
-					new jsWindow(url,"we_cateditor",-1,-1,' . WINDOW_CATSELECTOR_WIDTH . ',' . WINDOW_CATSELECTOR_HEIGHT . ',true,true,true,true);
+					new jsWindow(url,"we_cateditor",-1,-1,' . we_fileselector::WINDOW_CATSELECTOR_WIDTH . ',' . we_fileselector::WINDOW_CATSELECTOR_HEIGHT . ',true,true,true,true);
 					break;
 				default:
 					for(var i = 0; i < arguments.length; i++){

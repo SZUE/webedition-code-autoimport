@@ -992,7 +992,7 @@ function we_cmd(){
 
 	switch (arguments[0]){
 		case "openSelector":
-			new jsWindow(url,"we_selector",-1,-1,' . WINDOW_SELECTOR_WIDTH . ',' . WINDOW_SELECTOR_HEIGHT . ',true,true,true,true);
+			new jsWindow(url,"we_selector",-1,-1,' . self::WINDOW_SELECTOR_WIDTH . ',' . self::WINDOW_SELECTOR_HEIGHT . ',true,true,true,true);
 			break;
 		default:
 			for(var i = 0; i < arguments.length; i++){

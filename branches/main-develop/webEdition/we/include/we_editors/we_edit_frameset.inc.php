@@ -110,7 +110,7 @@ $we_doc->setDocumentControlElements();
 
 //	in SEEM-Mode the first page is the preview page.
 //	when editing an image-document we go to edit page
-if($_SESSION['weS']['we_mode'] == 'seem'){
+if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
 	if(isset($_REQUEST['SEEM_edit_include']) && $_REQUEST['SEEM_edit_include'] && $we_doc->userHasAccess() == 1){ //	Open seem_edit_include pages in edit-mode
 		$_SESSION['weS']['EditPageNr'] = WE_EDITPAGE_CONTENT;
 		$we_doc->EditPageNr = WE_EDITPAGE_CONTENT;
@@ -232,7 +232,7 @@ if(!isset($we_doc->IsClassFolder)){
 		//	#####	Lock the new file
 		//	before lock - check if user can edit the file.
 		if($we_doc->userHasAccess() == we_root::USER_HASACCESS){ //	only when user has access to file
-			if($_SESSION['weS']['we_mode'] == 'normal' || $we_doc->EditPageNr != WE_EDITPAGE_PREVIEW){
+			if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL || $we_doc->EditPageNr != WE_EDITPAGE_PREVIEW){
 				$we_doc->lockDocument();
 			}
 		}
@@ -429,7 +429,7 @@ function setOnload(){
 <?php
 $we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
 
-if($_SESSION['weS']['we_mode'] == 'seem'){
+if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
 	?>
 	<frameset onLoad="_EditorFrame.initEditorFrameData({'EditorIsLoading': false});" rows="1,*,0,40" framespacing="0" border="0" frameborder="NO" onUnload="doUnload()">
 		<frame src="<?php print we_class::url(WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=load_edit_header"); ?>" name="editHeader" noresize scrolling="no"/>

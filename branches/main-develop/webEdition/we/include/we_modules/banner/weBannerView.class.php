@@ -383,16 +383,16 @@ class weBannerView extends weBannerBase{
 					var url = "<?php print WEBEDITION_DIR; ?>we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 					switch (arguments[0]){
 						case "openSelector":
-							new jsWindow(url,"we_selector",-1,-1,<?php echo WINDOW_SELECTOR_WIDTH . "," . WINDOW_SELECTOR_HEIGHT; ?>,true,true,true,true);
+							new jsWindow(url,"we_selector",-1,-1,<?php echo we_fileselector::WINDOW_SELECTOR_WIDTH . "," . we_fileselector::WINDOW_SELECTOR_HEIGHT; ?>,true,true,true,true);
 							break;
 						case "openCatselector":
-							new jsWindow(url,"we_catselector",-1,-1,<?php echo WINDOW_CATSELECTOR_WIDTH . "," . WINDOW_CATSELECTOR_HEIGHT; ?>,true,true,true,true);
+							new jsWindow(url,"we_catselector",-1,-1,<?php echo we_fileselector::WINDOW_CATSELECTOR_WIDTH . "," . we_fileselector::WINDOW_CATSELECTOR_HEIGHT; ?>,true,true,true,true);
 							break;
 						case "openDocselector":
-							new jsWindow(url,"we_docselector",-1,-1,<?php echo WINDOW_DOCSELECTOR_WIDTH . "," . WINDOW_DOCSELECTOR_HEIGHT; ?>,true,true,true,true);
+							new jsWindow(url,"we_docselector",-1,-1,<?php echo we_fileselector::WINDOW_DOCSELECTOR_WIDTH . "," . we_fileselector::WINDOW_DOCSELECTOR_HEIGHT; ?>,true,true,true,true);
 							break;
 						case "openDirselector":
-							new jsWindow(url,"we_dirselector",-1,-1,<?php echo WINDOW_DIRSELECTOR_WIDTH . "," . WINDOW_DIRSELECTOR_HEIGHT; ?>,true,true,true,true);
+							new jsWindow(url,"we_dirselector",-1,-1,<?php echo we_fileselector::WINDOW_DIRSELECTOR_WIDTH . "," . we_fileselector::WINDOW_DIRSELECTOR_HEIGHT; ?>,true,true,true,true);
 							break;
 						case "openBannerDirselector":
 							new jsWindow(url,"we_bannerselector",-1,-1,600,350,true,true,true);

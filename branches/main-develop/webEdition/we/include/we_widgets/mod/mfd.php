@@ -91,14 +91,14 @@ if(defined("OBJECT_FILES_TABLE") && $bTypeObj && we_hasPerm('CAN_SEE_OBJECTFILES
 	$_where[] = '"' . stripTblPrefix(OBJECT_FILES_TABLE) . '"';
 	$_ws[OBJECT_FILES_TABLE] = get_ws(OBJECT_FILES_TABLE);
 }
-if(defined("TEMPLATES_TABLE") && $bTypeTpl && we_hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] != "seem"){
+if(defined("TEMPLATES_TABLE") && $bTypeTpl && we_hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE){
 	$_where[] = '"' . stripTblPrefix(TEMPLATES_TABLE) . '"';
 }
-if(defined("OBJECT_TABLE") && $bTypeCls && we_hasPerm('CAN_SEE_OBJECTS') && $_SESSION['weS']['we_mode'] != "seem"){
+if(defined("OBJECT_TABLE") && $bTypeCls && we_hasPerm('CAN_SEE_OBJECTS') && $_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE){
 	$_where[] = '"' . stripTblPrefix(OBJECT_TABLE) . '"';
 }
 
-$_whereSeem = ($_SESSION['weS']['we_mode'] == "seem") ? " AND ContentType!='folder' " : '';
+$_whereSeem = ($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE) ? " AND ContentType!='folder' " : '';
 
 $lastModified = '<table cellspacing="0" cellpadding="0" border="0">';
 $_count = 10;

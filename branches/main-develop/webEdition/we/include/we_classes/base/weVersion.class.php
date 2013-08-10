@@ -32,22 +32,21 @@ class weVersion{
 
 	var $db;
 	var $ClassName = __CLASS__;
-	var $Pseudo = "weVersion";
+	var $Pseudo = 'weVersion';
 	var $attribute_slots = array();
 	var $persistent_slots = array();
 	var $ID = 0;
-	var $Path = "";
-	var $Data = "";
+	var $Path = '';
+	var $Data = '';
 	var $SeqN = 0;
 	var $linkData = true;
 
 	function __construct($id = 0){
-		$this->Pseudo = "weVersion";
 		$this->persistent_slots = array("ID", "ClassName", "Path", "Data", "SeqN");
-		foreach($this->persistent_slots as $slot)
+		foreach($this->persistent_slots as $slot){
 			$this->$slot = "";
+		}
 		$this->SeqN = 0;
-		$this->ClassName = "weVersion";
 		$this->db = new DB_WE();
 		if($id){
 			$this->load($id);
@@ -57,10 +56,7 @@ class weVersion{
 	function load($id, $loadData = true){
 		$this->ID = $id;
 		$this->Path = f('SELECT binaryPath FROM ' . VERSIONS_TABLE . ' WHERE ID=' . intval($id), 'binaryPath', $this->db);
-		if($this->Path && $loadData){
-			return $this->loadFile($_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $this->Path);
-		}
-		return false;
+		return ($this->Path && $loadData ? $this->loadFile($_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $this->Path) : false);
 	}
 
 	function loadFile($file){

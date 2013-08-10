@@ -78,7 +78,7 @@ class we_class_folder extends we_folder{
 
 		if(is_object($this->searchclass_class)){
 			$this->searchclass = $this->searchclass_class;
-		} else{
+		} else {
 			$this->searchclass = new objectsearch();
 			$this->searchclass_class = serialize($this->searchclass);
 		}
@@ -102,7 +102,7 @@ class we_class_folder extends we_folder{
 		$id = f('SELECT ID FROM ' . $this->DB_WE->escape($tblName) . ' WHERE Path="' . $path . '" AND IsFolder=1', 'ID', $this->DB_WE);
 		if($id != ''){
 			$this->initByID($id, $tblName);
-		} else{
+		} else {
 			## Folder does not exist, so we have to create it (if user has permissons to create folders)
 			$spl = explode('/', $path);
 			$folderName = array_pop($spl);
@@ -134,7 +134,7 @@ class we_class_folder extends we_folder{
 						$folder->Path = $pa;
 						$folder->save($skipHook);
 						$last_pid = $folder->ID;
-					} else{
+					} else {
 						$last_pid = $pid;
 					}
 				}
@@ -210,7 +210,7 @@ class we_class_folder extends we_folder{
 		if($this->ID){
 			$_disabled = false;
 			$_disabledNote = '';
-		} else{
+		} else {
 			$_disabled = true;
 			$_disabledNote = ' ' . g_l('weClass', '[availableAfterSave]');
 		}
@@ -230,7 +230,7 @@ class we_class_folder extends we_folder{
 
 		if(!isset($_REQUEST['Order'])){
 			$_REQUEST['Order'] = (isset($this->Order) ? $this->Order : 'ModDate DESC');
-		} else{
+		} else {
 			$this->searchclass->Order = $_REQUEST['Order'];
 		}
 		$this->Order = $_REQUEST['Order'];
@@ -289,11 +289,11 @@ class we_class_folder extends we_folder{
 		$javascriptAll = "";
 		if($foundItems){
 
-			while($this->searchclass->next_record()) {
+			while($this->searchclass->next_record()){
 				$content[] = array(
 					array(
 						"align" => "center",
-						"dat" => ((we_hasPerm("DELETE_OBJECTFILE") || we_hasPerm("NEW_OBJECTFILE")) && checkIfRestrictUserIsAllowed($this->searchclass->f("OF_ID"), OBJECT_FILES_TABLE) ?
+						"dat" => ((we_hasPerm("DELETE_OBJECTFILE") || we_hasPerm("NEW_OBJECTFILE")) && permissionhandler::checkIfRestrictUserIsAllowed($this->searchclass->f("OF_ID"), OBJECT_FILES_TABLE, $DB_WE) ?
 							'<input type="checkbox" name="weg' . $this->searchclass->f("ID") . '" />' :
 							'<img src="' . TREE_IMAGE_DIR . 'check0_disabled.gif" />')),
 					array(
@@ -319,7 +319,7 @@ class we_class_folder extends we_folder{
 
 				$javascriptAll .= "var flo=document.we_form.elements['weg" . $this->searchclass->f("ID") . "'].checked=true;";
 			}
-		} else{
+		} else {
 			//echo "Leider nichts gefunden!";
 		}
 
@@ -348,7 +348,7 @@ class we_class_folder extends we_folder{
 
 		if(!isset($_REQUEST['Order'])){
 			$_REQUEST['Order'] = (isset($this->Order) ? $this->Order : 'OF_PATH');
-		} else{
+		} else {
 			if(stripos($_REQUEST['Order'], "ModDate") === 0 || stripos($_REQUEST['Order'], "OF_Published") === 0){
 				$_REQUEST['Order'] = 'OF_PATH';
 			}
@@ -376,17 +376,17 @@ class we_class_folder extends we_folder{
 		// get Class
 		$classArray = getHash('SELECT * FROM ' . OBJECT_TABLE . ' WHERE Path="' . $DB_WE->escape($this->ClassPath) . '"', $DB_WE);
 
-		if(isset($_REQUEST["do"]) && $_REQUEST["do"] == "delete"){
+		if(isset($_REQUEST["do"]) && $_REQUEST["do"] == 'delete'){
 			foreach(array_keys($_REQUEST) as $f){
 				if(substr($f, 0, 3) == "weg"){
 					//$this->query("");
 					$ofid = f('SELECT OF_ID FROM ' . OBJECT_X_TABLE . intval($classArray["ID"]) . ' WHERE ID=' . intval(substr($f, 3), 'OF_ID', $DB_WE));
 
-					if(checkIfRestrictUserIsAllowed($ofid, OBJECT_FILES_TABLE)){
+					if(permissionhandler::checkIfRestrictUserIsAllowed($ofid, OBJECT_FILES_TABLE, $DB_WE)){
 						$DB_WE->query('DELETE FROM ' . OBJECT_X_TABLE . intval($classArray["ID"]) . ' WHERE ID=' . intval(substr($f, 3)));
 						$DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE OID=' . intval($ofid));
 						$DB_WE->query('DELETE FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($ofid));
-						we_temporaryDocument::delete($ofid, OBJECT_FILES_TABLE);
+						we_temporaryDocument::delete($ofid, OBJECT_FILES_TABLE, $DB_WE);
 					}
 				}
 			}
@@ -406,7 +406,7 @@ class we_class_folder extends we_folder{
 		if(isset($this->searchclass->searchname)){
 			$where = '1' . $this->searchclass->searchfor($this->searchclass->searchname, $this->searchclass->searchfield, $this->searchclass->searchlocation, OBJECT_X_TABLE . $classArray["ID"], $rows = -1, $start = 0, $order = "", $desc = 0) .
 				$this->searchclass->greenOnly($this->GreenOnly, $this->WorkspaceID, $classArray["ID"]);
-		} else{
+		} else {
 			$where = '1' . $this->searchclass->greenOnly($this->GreenOnly, $this->WorkspaceID, $classArray["ID"]);
 		}
 
@@ -441,7 +441,7 @@ class we_class_folder extends we_folder{
 		if($foundItems){
 
 			$f = 0;
-			while($this->searchclass->next_record()) {
+			while($this->searchclass->next_record()){
 				/*
 				  $out .= "<pre>".sizeof($this->searchclass->Record);
 				  print_r($this->searchclass->Record);
@@ -514,7 +514,7 @@ class we_class_folder extends we_folder{
 							if($tmp != ""){
 								$publ = f("SELECT Published FROM " . OBJECT_FILES_TABLE . " WHERE ID='" . $this->searchclass->f($type[$i + 5] . "_" . $object[$i + 5]) . "'", "Published", $DB_WE);
 								$obj = '<a href="javascript:top.weEditorFrameController.openDocument(\'' . OBJECT_FILES_TABLE . '\',' . $this->searchclass->f($type[$i + 5] . "_" . $object[$i + 5]) . ',\'objectFile\');" style="text-decoration:none; ' . ($publ ? '' : 'color:red;') . '" class="defaultfont" title="' . $tmp . '">' . shortenPath(f("SELECT OF_Path FROM " . OBJECT_X_TABLE . $object[$i + 5] . " WHERE OF_ID='" . $this->searchclass->f($type[$i + 5] . "_" . $object[$i + 5]) . "'", "OF_Path", $DB_WE), $we_obectPathLength) . '</a>';
-							} else{
+							} else {
 								$obj = "&nbsp;";
 							}
 							$content[$f][$i + 5]["dat"] = $obj;
@@ -528,7 +528,7 @@ class we_class_folder extends we_folder{
 								foreach($objects as $idx => $id){
 									$content[$f][$i + 5]["dat"] .= '<a href="javascript:top.weEditorFrameController.openDocument(\'' . OBJECT_FILES_TABLE . '\',' . $id . ',\'objectFile\');" style="text-decoration:none" class="defaultfont" title="' . f("SELECT OF_Path FROM " . OBJECT_X_TABLE . $class . " WHERE OF_ID='" . $id . "'", "OF_Path", $DB_WE) . '">' . shortenPath(f("SELECT OF_Path FROM " . OBJECT_X_TABLE . $class . " WHERE OF_ID='" . $id . "'", "OF_Path", $DB_WE), $we_obectPathLength) . ".</a><br />"; //
 								}
-							} else{
+							} else {
 								$content[$f][$i + 5]["dat"] = "-";
 							}
 							break;
@@ -540,7 +540,7 @@ class we_class_folder extends we_folder{
 							if($this->searchclass->f($type[$i + 5] . '_' . $head[$i + 5]["dat"]) != '' && isset($DefaultValues[$type[$i + 5] . '_' . $head[$i + 5]["dat"]]["meta"][$this->searchclass->f($type[$i + 5] . "_" . $head[$i + 5]["dat"])])){
 								$text = $DefaultValues[$type[$i + 5] . '_' . $head[$i + 5]["dat"]]["meta"][$this->searchclass->f($type[$i + 5] . "_" . $head[$i + 5]["dat"])];
 								$content[$f][$i + 5]["dat"] = (strlen($text) > $strlen) ? substr($text, 0, $strlen) . " ..." : $text;
-							} else{
+							} else {
 								$content[$f][$i + 5]["dat"] = '&nbsp;';
 							}
 							break;
@@ -662,7 +662,7 @@ class we_class_folder extends we_folder{
 	<td>' . we_html_tools::getPixel(10, 2) . '</td>
 	<td align="right">' . $button . '</td>
 </tr>';
-			} else{
+			} else {
 				$out .= '
 <tr>
 	<td class="defaultfont">' . g_l('global', "[search]") . '</td>
@@ -1012,7 +1012,7 @@ EOF;
 			if(substr($f, 0, 3) == 'weg'){
 				$tid = intval(substr($f, 3));
 				$ofid = f('SELECT OF_ID FROM ' . OBJECT_X_TABLE . intval($classArray['ID']) . ' WHERE ID=' . $tid, 'OF_ID', $DB_WE);
-				if(checkIfRestrictUserIsAllowed($ofid, OBJECT_FILES_TABLE)){
+				if(permissionhandler::checkIfRestrictUserIsAllowed($ofid, OBJECT_FILES_TABLE, $DB_WE)){
 					$DB_WE->query('DELETE FROM ' . OBJECT_X_TABLE . intval($classArray['ID']) . ' WHERE ID=' . $tid);
 					$DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE OID=' . intval($ofid));
 					$DB_WE->query('DELETE FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($ofid));
@@ -1054,8 +1054,8 @@ EOF;
 
 		foreach(array_keys($_REQUEST) as $f){
 			if(substr($f, 0, 3) == "weg"){
-				$ofid = f("SELECT OF_ID FROM " . OBJECT_X_TABLE . $this->ClassID . ' WHERE ID=' . substr($f, 3), 'OF_ID', $DB_WE);
-				if(checkIfRestrictUserIsAllowed($ofid, OBJECT_FILES_TABLE)){
+				$ofid = f('SELECT OF_ID FROM ' . OBJECT_X_TABLE . $this->ClassID . ' WHERE ID=' . substr($f, 3), 'OF_ID', $DB_WE);
+				if(permissionhandler::checkIfRestrictUserIsAllowed($ofid, OBJECT_FILES_TABLE, $DB_WE)){
 					$obj = new we_objectFile();
 					$obj->initByID($ofid, OBJECT_FILES_TABLE);
 					$obj->getContentDataFromTemporaryDocs($ofid);
@@ -1085,8 +1085,8 @@ EOF;
 		$classArray = getHash('SELECT * FROM ' . OBJECT_TABLE . " WHERE Path='" . $this->ClassPath . "'", $DB_WE);
 		foreach(array_keys($_REQUEST) as $f){
 			if(substr($f, 0, 3) == "weg"){
-				$ofid = f("SELECT OF_ID FROM " . OBJECT_X_TABLE . $classArray["ID"] . " WHERE ID=" . substr($f, 3), 'OF_ID', $DB_WE);
-				if(checkIfRestrictUserIsAllowed($ofid, OBJECT_FILES_TABLE)){
+				$ofid = f('SELECT OF_ID FROM ' . OBJECT_X_TABLE . $classArray['ID'] . ' WHERE ID=' . substr($f, 3), 'OF_ID', $DB_WE);
+				if(permissionhandler::checkIfRestrictUserIsAllowed($ofid, OBJECT_FILES_TABLE, $DB_WE)){
 					$obj = new we_objectFile();
 					$obj->initByID($ofid, OBJECT_FILES_TABLE);
 					$obj->getContentDataFromTemporaryDocs($ofid);
@@ -1112,7 +1112,7 @@ EOF;
 		foreach(array_keys($_REQUEST) as $f){
 			if(substr($f, 0, 3) == "weg"){
 				$ofid = f('SELECT OF_ID FROM ' . OBJECT_X_TABLE . $classArray["ID"] . ' WHERE ID=' . substr($f, 3), 'OF_ID', $DB_WE);
-				if(checkIfRestrictUserIsAllowed($ofid, OBJECT_FILES_TABLE)){
+				if(permissionhandler::checkIfRestrictUserIsAllowed($ofid, OBJECT_FILES_TABLE, $DB_WE)){
 					$obj = new we_objectFile();
 					$obj->initByID($ofid, OBJECT_FILES_TABLE);
 					$obj->getContentDataFromTemporaryDocs($ofid);
@@ -1139,7 +1139,7 @@ EOF;
 			if(substr($f, 0, 3) == "weg"){
 				$ofid = f('SELECT OF_ID FROM ' . OBJECT_X_TABLE . $classArray["ID"] . " WHERE ID=" . substr($f, 3), 'OF_ID', $DB_WE);
 
-				if(checkIfRestrictUserIsAllowed($ofid, OBJECT_FILES_TABLE)){
+				if(permissionhandler::checkIfRestrictUserIsAllowed($ofid, OBJECT_FILES_TABLE, $DB_WE)){
 					$obj = new we_objectFile();
 					$obj->initByID($ofid, OBJECT_FILES_TABLE);
 					$obj->getContentDataFromTemporaryDocs($ofid);
@@ -1169,7 +1169,7 @@ EOF;
 			if(substr($f, 0, 3) == "weg"){
 				$ofid = f('SELECT OF_ID FROM ' . OBJECT_X_TABLE . $classArray["ID"] . " WHERE ID=" . substr($f, 3), 'OF_ID', $DB_WE);
 
-				if(checkIfRestrictUserIsAllowed($ofid, OBJECT_FILES_TABLE)){
+				if(permissionhandler::checkIfRestrictUserIsAllowed($ofid, OBJECT_FILES_TABLE, $DB_WE)){
 					if($publish != true){
 
 						$obj = new we_objectFile();
@@ -1184,7 +1184,7 @@ EOF;
 								. "}"
 								. "weWindow.treeData.selectnode(" . $GLOBALS['we_doc']->ID . ");";
 						}
-					} else{
+					} else {
 
 						$obj = new we_objectFile();
 						$obj->initByID($ofid, OBJECT_FILES_TABLE);

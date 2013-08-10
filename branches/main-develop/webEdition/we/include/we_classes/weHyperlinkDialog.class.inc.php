@@ -305,7 +305,7 @@ class weHyperlinkDialog extends weDialog{
 			$_select_type = '<option value="' . we_base_link::TYPE_EXT . '"' . (($this->args["type"] == we_base_link::TYPE_EXT) ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', "[external_link]") . '</option>
 <option value="' . we_base_link::TYPE_INT . '"' . (($this->args["type"] == we_base_link::TYPE_INT) ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', "[internal_link]") . '</option>
 <option value="' . we_base_link::TYPE_MAIL . '"' . (($this->args["type"] == we_base_link::TYPE_MAIL) ? ' selected="selected"' : '') . '>' . g_l('wysiwyg', "[emaillink]") . '</option>' .
-				((defined("OBJECT_TABLE") && ($_SESSION['weS']['we_mode'] == "normal" || we_hasPerm("CAN_SEE_OBJECTFILES"))) ?
+				((defined("OBJECT_TABLE") && ($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL || we_hasPerm("CAN_SEE_OBJECTFILES"))) ?
 					'<option value="' . we_base_link::TYPE_OBJ . '"' . (($this->args["type"] == we_base_link::TYPE_OBJ) ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', "[objectFile]") . '</option>' :
 					''
 				);
@@ -348,7 +348,7 @@ class weHyperlinkDialog extends weDialog{
 			$_email_link = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[mailHref]", 30, $this->args["mailHref"], "", '', "email", 300), "", "left", "defaultfont", "", "", "", "", "", 0);
 
 			// OBJECT LINK
-			if(defined("OBJECT_TABLE") && ($_SESSION['weS']['we_mode'] == "normal" || we_hasPerm("CAN_SEE_OBJECTFILES"))){
+			if(defined("OBJECT_TABLE") && ($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL || we_hasPerm("CAN_SEE_OBJECTFILES"))){
 				//javascript:we_cmd('openDocselector', document.we_form.elements['we_dialog_args[objID]'].value, '" . OBJECT_FILES_TABLE . "', 'document.we_form.elements[\\'we_dialog_args[objID]\\'].value', 'document.we_form.elements[\\'we_dialog_args[objHref]\\'].value', '', '', '', 'objectFile',".(we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1).");", false, 100, 22, "", "", !we_hasPerm("CAN_SEE_OBJECTFILES")
 				$wecmdenc1 = we_cmd_enc("document.we_form.elements['we_dialog_args[objID]'].value");
 				$wecmdenc2 = we_cmd_enc("document.we_form.elements['we_dialog_args[objHref]'].value");
@@ -583,7 +583,7 @@ function we_cmd() {
 
 	switch (arguments[0]) {
 		case "openDocselector":
-			new jsWindow(url,"we_docselector",-1,-1,' . WINDOW_DOCSELECTOR_WIDTH . ',' . WINDOW_DOCSELECTOR_HEIGHT . ',true,false,true,true);
+			new jsWindow(url,"we_docselector",-1,-1,' . we_fileselector::WINDOW_DOCSELECTOR_WIDTH . ',' . we_fileselector::WINDOW_DOCSELECTOR_HEIGHT . ',true,false,true,true);
 			break;
 
 		case "browse_server":

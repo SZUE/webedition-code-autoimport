@@ -325,17 +325,16 @@ class weWorkflowFrames extends weModuleFrames{
 		//end ex we_workflow_moduleFrames::getJSTreeCode()
 
 		$out = '
-		 <script  type="text/javascript">
 		function loadData(){
 			menuDaten.clear();';
 
 		$startloc = 0;
 
-		$out.="startloc=" . $startloc . ";\n";
-		$this->db->query("SELECT * FROM " . WORKFLOW_TABLE . " ORDER BY Text ASC");
+		$out.="startloc=" . $startloc . ";";
+		$this->db->query('SELECT * FROM ' . WORKFLOW_TABLE . ' ORDER BY Text ASC');
 		while($this->db->next_record()){
 			$this->View->workflowDef = new we_workflow_workflow();
-			$this->View->workflowDef->load($this->db->f("ID"));
+			$this->View->workflowDef->load($this->db->f('ID'));
 			$out.="  menuDaten.add(new dirEntry('folder','" . $this->View->workflowDef->ID . "','0','" . oldHtmlspecialchars(addslashes($this->View->workflowDef->Text)) . "',false,'folder','workflowDef','" . $this->View->workflowDef->Status . "'));\n";
 
 			foreach($this->View->workflowDef->documents as $k => $v){
@@ -343,9 +342,8 @@ class weWorkflowFrames extends weModuleFrames{
 			}
 		}
 
-		$out.='}
-			</script>';
-		print $out;
+		$out.='}';
+		print we_html_element::jsElement($out);
 	}
 
 	function getJSCmdCode(){
@@ -418,8 +416,6 @@ top.content.hloaded=1;
 				'marginheight' => 0,
 				'leftmargin' => 0,
 				'topmargin' => 0,
-				//'onload' => 'setFrameSize()',
-				//'onresize' => 'setFrameSize()'
 				), $mainDiv . we_html_element::jsElement('document.getElementById("tab_' . $page . '").className="tabActive";')
 		);
 

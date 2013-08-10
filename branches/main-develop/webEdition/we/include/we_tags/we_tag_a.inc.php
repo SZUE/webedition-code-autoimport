@@ -65,8 +65,7 @@ function we_tag_a($attribs, $content){
 		$url = WE_REDIRECTED_SEO;
 	} else{
 		// init variables
-		$db = new DB_WE();
-		$row = getHash('SELECT Path,IsFolder,IsDynamic FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), $db);
+		$row = getHash('SELECT Path,IsFolder,IsDynamic FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), $GLOBALS['DB_WE']);
 		$url = (isset($row['Path']) ? $row['Path'] : '') . ((isset($row['IsFolder']) && $row['IsFolder']) ? '/' : '');
 		$path_parts = pathinfo($url);
 		if($hidedirindex && show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES != '' && TAGLINKS_DIRECTORYINDEX_HIDE && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){

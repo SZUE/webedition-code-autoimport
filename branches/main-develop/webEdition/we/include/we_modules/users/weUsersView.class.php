@@ -431,7 +431,7 @@ function we_cmd() {
 			break;
 
 		case "openDirselector":
-			new jsWindow(url, "we_fileselector", -1, -1,' . WINDOW_DIRSELECTOR_WIDTH . ',' . WINDOW_DIRSELECTOR_HEIGHT . ', true, true, true, true);
+			new jsWindow(url, "we_fileselector", -1, -1,' . we_fileselector::WINDOW_DIRSELECTOR_WIDTH . ',' . we_fileselector::WINDOW_DIRSELECTOR_HEIGHT . ', true, true, true, true);
 			break;
 
 		case "select_seem_start":

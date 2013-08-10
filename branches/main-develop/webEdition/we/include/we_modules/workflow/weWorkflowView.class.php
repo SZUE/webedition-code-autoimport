@@ -120,12 +120,12 @@ class weWorkflowView extends we_workflow_base{
 			ob_end_clean();
 
 			return $out;
-		} else{
+		} else {
 			$content = '<form name="we_form" onsubmit="return false">' .
 				$this->getHiddens();
 			if($this->show){
 				$content .=$this->getDocumentInfo();
-			} else{
+			} else {
 				$content .=$this->workflowHiddens();
 
 				if($this->page == 0){
@@ -146,9 +146,9 @@ class weWorkflowView extends we_workflow_base{
 						),
 					);
 					//	Workflow-Type
-					$content .= $this->getHiddensFormOverviewPage().
+					$content .= $this->getHiddensFormOverviewPage() .
 						we_multiIconBox::getHTML('workflowProperties', '100%', $parts, 30);
-				} else{
+				} else {
 					$content .= $this->getHiddensFormPropertyPage() .
 						we_html_tools::htmlDialogLayout($this->getStepsHTML(), '');
 				}
@@ -173,7 +173,7 @@ class weWorkflowView extends we_workflow_base{
 	}
 
 	function getWorkflowSelectHTML(){
-		$vals = $this->workflowDef->getAllWorkflowsInfo();
+		$vals = we_workflow_workflow::getAllWorkflowsInfo();
 		return we_html_tools::htmlSelect('wid', $vals, 4, $this->workflowDef->ID, false, "onclick='we_cmd(\"edit_workflow\")'", "value", 200);
 	}
 
@@ -413,7 +413,7 @@ class weWorkflowView extends we_workflow_base{
 				<td>' . we_html_tools::getPixel($width, 15) . '</td>
 				<td></td>
 			</tr></table>';
-		} else{
+		} else {
 			return '<table cellpadding="0" cellspacing="0" border="0">
 			<tr>
 				<td>' . we_html_tools::getPixel(24, 15) . '</td><td></td>
@@ -433,7 +433,7 @@ class weWorkflowView extends we_workflow_base{
 		$vals = array();
 		$q = getDoctypeQuery($this->db);
 		$this->db->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' ' . $q);
-		while($this->db->next_record()) {
+		while($this->db->next_record()){
 			$v = $this->db->f('ID');
 			$t = $this->db->f('DocType');
 			$vals[$v] = $t;
@@ -516,35 +516,42 @@ class weWorkflowView extends we_workflow_base{
 		<?php
 		if(!we_hasPerm("DELETE_WORKFLOW")){
 			print we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
-		} else{
+		} else {
 			?>
-								if(top.content.editor.edbody.loaded){
-									if(!confirm("<?php print g_l('modules_workflow', '[delete_question]') ?>")) return;
-								}
-								else { <?php print we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR); ?> }
+							if (top.content.editor.edbody.loaded) {
+								if (!confirm("<?php print g_l('modules_workflow', '[delete_question]') ?>"))
+									return;
+							}
+							else {
+			<?php print we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
+						}
 
-								top.content.editor.edbody.document.we_form.wcmd.value = arguments[0];
-								top.content.editor.edbody.submitForm();
+							top.content.editor.edbody.document.we_form.wcmd.value = arguments[0];
+							top.content.editor.edbody.submitForm();
 		<?php } ?>
 						break;
 					case "save_workflow":
 		<?php
 		if(!we_hasPerm("EDIT_WORKFLOW") && !we_hasPerm("NEW_WORKFLOW")){
 			print we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
-		} else{
+		} else {
 			?>
-								if(top.content.editor.edbody.loaded){
-									top.content.editor.edbody.setStatus(top.content.editor.edfooter.document.we_form.status_workflow.value);
-									chk = top.content.editor.edbody.checkData();
-									if(!chk) return;
-									num = top.content.editor.edbody.getNumOfDocs();
-									if(num > 0)
-										if(!confirm("<?php print g_l('modules_workflow', '[save_question]') ?>")) return;
-								}
-								else { <?php print we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[nothing_to_save]'), we_message_reporting::WE_MESSAGE_ERROR); ?> }
-								top.content.editor.edbody.document.we_form.wcmd.value = arguments[0];
-								top.content.editor.edbody.submitForm();
-								top.content.usetHot();
+							if (top.content.editor.edbody.loaded) {
+								top.content.editor.edbody.setStatus(top.content.editor.edfooter.document.we_form.status_workflow.value);
+								chk = top.content.editor.edbody.checkData();
+								if (!chk)
+									return;
+								num = top.content.editor.edbody.getNumOfDocs();
+								if (num > 0)
+									if (!confirm("<?php print g_l('modules_workflow', '[save_question]') ?>"))
+										return;
+							}
+							else {
+			<?php print we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[nothing_to_save]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
+						}
+							top.content.editor.edbody.document.we_form.wcmd.value = arguments[0];
+							top.content.editor.edbody.submitForm();
+							top.content.usetHot();
 		<?php } ?>
 						break;
 					case "edit_workflow":
@@ -553,11 +560,11 @@ class weWorkflowView extends we_workflow_base{
 						top.content.editor.edbody.document.we_form.wid.value = arguments[1];
 						top.content.editor.edbody.submitForm();
 						break;
-					/*
-					case "reload_workflow":
-						top.content.tree.location.reload(true);
-						break;
-					*/
+						/*
+						 case "reload_workflow":
+						 top.content.tree.location.reload(true);
+						 break;
+						 */
 					case "empty_log":
 						new jsWindow("<?php print WE_WORKFLOW_MODULE_DIR ?>edit_workflow_frameset.php?pnt=qlog", "log_question", -1, -1, 360, 230, true, false, true);
 						break;
@@ -604,14 +611,14 @@ function we_cmd(){
 			new jsWindow(url,"browse_users",-1,-1,500,300,true,false,true);
 			break;
 		case "openDirselector":
-			new jsWindow(url,"we_fileselector",-1,-1,' . WINDOW_DIRSELECTOR_WIDTH . ',' . WINDOW_DIRSELECTOR_HEIGHT . ',true,true,true,true);
+			new jsWindow(url,"we_fileselector",-1,-1,' . we_fileselector::WINDOW_DIRSELECTOR_WIDTH . ',' . we_fileselector::WINDOW_DIRSELECTOR_HEIGHT . ',true,true,true,true);
 			break;
 		case "openCatselector":
-			new jsWindow(url,"we_catselector",-1,-1,' . WINDOW_CATSELECTOR_WIDTH . ',' . WINDOW_CATSELECTOR_HEIGHT . ',true,true,true,true);
+			new jsWindow(url,"we_catselector",-1,-1,' . we_fileselector::WINDOW_CATSELECTOR_WIDTH . ',' . we_fileselector::WINDOW_CATSELECTOR_HEIGHT . ',true,true,true,true);
 			break;
 		case "openObjselector":
 			url = "' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=openDocselector&we_cmd[8]=object&we_cmd[1]=&we_cmd[2]=' . (defined("OBJECT_TABLE") ? OBJECT_TABLE : "") . '&we_cmd[5]="+arguments[5]+"&we_cmd[9]=1";
-			new jsWindow(url,"we_objectselector",-1,-1,' . WINDOW_DOCSELECTOR_WIDTH . ',' . WINDOW_DOCSELECTOR_HEIGHT . ',true,true,true);
+			new jsWindow(url,"we_objectselector",-1,-1,' . we_fileselector::WINDOW_DOCSELECTOR_WIDTH . ',' . we_fileselector::WINDOW_DOCSELECTOR_HEIGHT . ',true,true,true);
 			break;
 		case "add_cat":
 		case "del_cat":
@@ -981,7 +988,7 @@ function checkData(){
 						} else if($newone && !we_hasPerm('NEW_WORKFLOW')){
 							print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR));
 							return;
-						} else{
+						} else {
 							if($double){
 								print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[double_name]'), we_message_reporting::WE_MESSAGE_ERROR));
 								return;
@@ -998,7 +1005,7 @@ function checkData(){
 							print '<script type="text/javascript"><!--';
 							if($newone){
 								print 'top.content.makeNewEntry("workflow_folder",' . $this->workflowDef->ID . ',0,"' . $this->workflowDef->Text . '",true,"folder","we_workflow_workflowDef","' . $this->workflowDef->Status . '");';
-							} else{
+							} else {
 								print 'top.content.updateEntry(' . $this->workflowDef->ID . ',0,"' . $this->workflowDef->Text . '","' . $this->workflowDef->Status . '");';
 							}
 							print $childs;
@@ -1024,7 +1031,7 @@ function checkData(){
 						if(!we_hasPerm('DELETE_WORKFLOW')){
 							print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR));
 							return;
-						} else{
+						} else {
 
 							$this->workflowDef = new we_workflow_workflow($_REQUEST['wid']);
 							if($this->workflowDef->delete()){
@@ -1032,7 +1039,7 @@ function checkData(){
 								print we_html_element::jsElement('
 							top.content.deleteEntry(' . $_REQUEST['wid'] . ',"folder");
 							' . we_message_reporting::getShowMessageCall($lg_l('modules_workflow', '[delete_ok]'), we_message_reporting::WE_MESSAGE_NOTICE));
-							} else{
+							} else {
 								print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[delete_nok]'), we_message_reporting::WE_MESSAGE_ERROR));
 							}
 						}
@@ -1397,11 +1404,11 @@ function checkData(){
 				if($sk > $current){
 					$finished_font = 'middlefont';
 					$notfinished_font = 'middlefontgray';
-				} else{
+				} else {
 					$finished_font = 'middlefontred';
 					$notfinished_font = 'middlefontred';
 				}
-			} else{
+			} else {
 				$finished_font = 'middlefont';
 				$notfinished_font = 'middlefontgray';
 			}
@@ -1429,7 +1436,7 @@ function checkData(){
 					$out = ($tv->Status == we_workflow_documentTask::STATUS_UNKNOWN ? '<div class="' . $notfinished_font . '">' : '<div class="' . $finished_font . '">') . $foo . "</div>";
 				} else if($sk < $current){
 					$out = '<div class="' . $finished_font . '">' . $foo . '</div>';
-				} else{
+				} else {
 					$out = '<div class="' . $notfinished_font . '">' . $foo . '</div>';
 				}
 
@@ -1558,7 +1565,7 @@ function checkData(){
 
 		if(!empty($logs)){
 			return we_html_tools::htmlDialogLayout(we_html_tools::htmlDialogBorder3(580, 300, $content, $headlines), '', $buttonsTable);
-		} else{
+		} else {
 			return we_html_tools::htmlDialogLayout('<div style="width:500px" class="middlefontgray" align="center"><center>-- ' . g_l('modules_workflow', '[log_is_empty]') . ' --</center></div>', '', we_button::create_button("close", "javascript:self.close();"));
 		}
 	}

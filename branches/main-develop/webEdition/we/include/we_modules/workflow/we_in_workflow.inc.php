@@ -24,15 +24,15 @@
 we_html_tools::protect();
 echo we_html_element::jsElement('top.opener.top.toggleBusy(0);');
 
-if($cmd == "ok"){
-	$wf_text = $_REQUEST["wf_text"];
-	$wf_select = $_REQUEST["wf_select"];
+if($cmd == 'ok'){
+	$wf_text = $_REQUEST['wf_text'];
+	$wf_select = $_REQUEST['wf_select'];
 	if(we_workflow_utility::insertDocInWorkflow($we_doc->ID, $we_doc->Table, $wf_select, $_SESSION["user"]["ID"], $wf_text)){
 		$msg = g_l('modules_workflow', '[' . stripTblPrefix($we_doc->Table) . '][in_workflow_ok]');
 		$msgType = we_message_reporting::WE_MESSAGE_NOTICE;
-		if($_SESSION['weS']['we_mode'] == "seem"){
+		if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
 			$script = "opener.top.we_cmd('switch_edit_page'," . WE_EDITPAGE_PREVIEW . ",'" . $we_transaction . "');";
-		} else if($_SESSION['weS']['we_mode'] == "normal"){
+		} else if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){
 			$script = 'opener.top.weEditorFrameController.getActiveDocumentReference().frames[3].location.reload();';
 		}
 
@@ -43,12 +43,12 @@ if($cmd == "ok"){
 		} elseif(($we_doc->EditPageNr == WE_EDITPAGE_PROPERTIES || $we_doc->EditPageNr == WE_EDITPAGE_INFO)){
 			$script .= 'opener.top.we_cmd("switch_edit_page","' . $we_doc->EditPageNr . '","' . $we_transaction . '");'; // wird in Templ eingef�gt
 		}
-	} else{
+	} else {
 		$msg = g_l('modules_workflow', '[' . stripTblPrefix($we_doc->Table) . '][in_workflow_notok]');
 		$msgType = we_message_reporting::WE_MESSAGE_ERROR;
-		if($_SESSION['weS']['we_mode'] == "seem"){
+		if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
 			$script = "opener.top.we_cmd('switch_edit_page'," . WE_EDITPAGE_PREVIEW . ",'" . $we_transaction . "');";
-		} else if($_SESSION['weS']['we_mode'] == "normal"){
+		} else if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){
 			$script = '';
 		}
 	}
@@ -61,10 +61,10 @@ print STYLESHEET;
 <body class="weDialogBody">
 	<center>
 		<?php
-		if($cmd != "ok"){
+		if($cmd != 'ok'){
 			$wfDoc = ($we_doc->Table == FILE_TABLE ?
-					we_workflow_utility::getWorkflowDocumentForDoc($we_doc->DocType, $we_doc->Category, $we_doc->ParentID) :
-					we_workflow_utility::getWorkflowDocumentForObject($we_doc->TableID, $we_doc->Category, $we_doc->ParentID));
+					we_workflow_utility::getWorkflowDocumentForDoc($GLOBALS['DB_WE'], $we_doc->DocType, $we_doc->Category, $we_doc->ParentID) :
+					we_workflow_utility::getWorkflowDocumentForObject($GLOBALS['DB_WE'], $we_doc->TableID, $we_doc->Category, $we_doc->ParentID));
 			$wfID = $wfDoc->workflowID;
 			if($wfID){
 				?>
@@ -94,7 +94,7 @@ print STYLESHEET;
 <tr>
 	<td>' . we_html_tools::getPixel(2, 5) . '</td>
 </tr>';
-					} else{
+					} else {
 						$wf_textarea = '<textarea name="wf_text" rows="7" cols="50" style="left:10px;right:10px;height:190px"></textarea>';
 						$content .= '<input type="hidden" name="wf_select" value="' . $wfID . '" />';
 					}
@@ -115,7 +115,7 @@ print STYLESHEET;
 <input type="hidden" name="we_cmd[2]" value="' . $_REQUEST['we_cmd'][2] . '" />';
 					?>
 				</form>
-			<?php } else{ ?>
+			<?php } else { ?>
 				<script type="text/javascript"><!--
 		<?php print we_message_reporting::getShowMessageCall((($we_doc->Table == FILE_TABLE) ? g_l('modules_workflow', '[no_wf_defined]') : g_l('modules_workflow', '[no_wf_defined_object]')), we_message_reporting::WE_MESSAGE_ERROR); ?>
 		top.close();

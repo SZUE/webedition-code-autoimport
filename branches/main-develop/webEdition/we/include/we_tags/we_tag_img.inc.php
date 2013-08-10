@@ -154,7 +154,7 @@ function we_tag_img($attribs){
 			);
 
 		if($showThumb){ //  only when wanted
-			$db = new DB_WE();
+			$db = $GLOBALS['DB_WE'];
 			$db->query('SELECT ID,Name FROM ' . THUMBNAILS_TABLE . ' ORDER BY Name');
 			if($db->num_rows()){
 				$thumbnails = '<select name="' . $thumbname . '" size="1" onchange="top.we_cmd(\'reload_editpage\'); _EditorFrame.setEditorIsHot(true);">' .

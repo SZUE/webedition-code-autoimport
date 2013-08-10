@@ -33,7 +33,7 @@ if($GLOBALS['we_doc']->EditPageNr != WE_EDITPAGE_WORKSPACE){
 		"icon" => "path.gif"
 	);
 
-	if($_SESSION['weS']['we_mode'] == "seem" || !we_hasPerm('CAN_SEE_OBJECTS')){ // No link to class in normal mode
+	if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE || !we_hasPerm('CAN_SEE_OBJECTS')){ // No link to class in normal mode
 		$parts[] = array(
 			"headline" => g_l('modules_object', '[class]'),
 			"html" => $GLOBALS['we_doc']->formClass(),
@@ -41,7 +41,7 @@ if($GLOBALS['we_doc']->EditPageNr != WE_EDITPAGE_WORKSPACE){
 			'noline' => true,
 			"icon" => "class.gif"
 		);
-	} else if($_SESSION['weS']['we_mode'] == "normal"){ //	Link to class in normal mode
+	} else if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){ //	Link to class in normal mode
 		$_html = '<div class="weMultiIconBoxHeadline" style="margin-bottom:5px;"><a href="javascript:top.weEditorFrameController.openDocument(\'' . OBJECT_TABLE . '\',' . $GLOBALS['we_doc']->TableID . ',\'object\');">' . g_l('modules_object', '[class]') . '</a></div>' .
 			'<div style="margin-bottom:12px;">' . $GLOBALS['we_doc']->formClass() . '</div>';
 		$_html .= '<div class="weMultiIconBoxHeadline" style="margin-bottom:5px;">' . g_l('modules_object', '[class_id]') . '</div>' .
@@ -95,7 +95,7 @@ if($GLOBALS['we_doc']->EditPageNr != WE_EDITPAGE_WORKSPACE){
 		"space" => 140,
 		"icon" => "charset.gif"
 	);
-} else{
+} else {
 
 	if($GLOBALS['we_doc']->hasWorkspaces()){ //	Show workspaces
 		$parts[] = array(
@@ -119,7 +119,7 @@ if($GLOBALS['we_doc']->EditPageNr != WE_EDITPAGE_WORKSPACE){
 			"html" => $button,
 			"space" => 140
 		);
-	} else{ //	No workspaces defined
+	} else { //	No workspaces defined
 		$parts[] = array(
 			"headline" => "",
 			"html" => g_l('modules_object', '[no_workspace_defined]'),

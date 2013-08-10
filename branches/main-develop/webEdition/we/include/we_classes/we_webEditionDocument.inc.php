@@ -264,7 +264,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		$textname = 'we_' . $this->Name . '_TemplateName';
 		$idname = 'we_' . $this->Name . '_TemplateID';
 		$ueberschrift = g_l('weClass', "[template]");
-		$ueberschriftLink = (we_hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] != 'seem' ?
+		$ueberschriftLink = (we_hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE ?
 				'<a href="javascript:goTemplate(document.we_form.elements[\'' . $idname . '\'].value)">' . g_l('weClass', "[template]") . '</a>' :
 				$ueberschrift);
 
@@ -310,7 +310,7 @@ class we_webEditionDocument extends we_textContentDocument{
 			$myid = intval($this->TemplateID ? $this->TemplateID : 0);
 			$path = ($myid ? f('SELECT Path FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . $myid, 'Path', $this->DB_WE) : '');
 
-			$ueberschrift = (we_hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] == 'normal' ?
+			$ueberschrift = (we_hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL ?
 					'<a href="javascript:goTemplate(' . $myid . ')">' . g_l('weClass', '[template]') . '</a>' :
 					g_l('weClass', '[template]'));
 
@@ -363,7 +363,7 @@ class we_webEditionDocument extends we_textContentDocument{
 			$tlist = $tlist ? ($tlist .= ',' . $this->TemplateID) : $this->TemplateID;
 			$TID = $this->TemplateID;
 		}
-		$ueberschrift = (we_hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] == 'normal' ?
+		$ueberschrift = (we_hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL ?
 				'<a href="javascript:goTemplate(document.we_form.elements[\'' . $fieldname . '\'].options[document.we_form.elements[\'' . $fieldname . '\'].selectedIndex].value)">' . g_l('weClass', "[template]") . '</a>' :
 				g_l('weClass', '[template]'));
 

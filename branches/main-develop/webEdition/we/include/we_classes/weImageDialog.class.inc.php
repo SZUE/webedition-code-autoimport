@@ -414,7 +414,7 @@ class weImageDialog extends weDialog{
 					//fill in all fields
 					$js = 'top.document.we_form["we_cmd[0]"].value = "";';
 					foreach($args as $k => $v){
-						$js .= 'if(typeof top.document.we_form["we_dialog_args[' . $k . ']"] !== "undefined") top.document.we_form["we_dialog_args[' . $k . ']"].value = "' . $v . '"; 
+						$js .= 'if(typeof top.document.we_form["we_dialog_args[' . $k . ']"] !== "undefined") top.document.we_form["we_dialog_args[' . $k . ']"].value = "' . $v . '";
 						';
 					}
 
@@ -439,7 +439,7 @@ function we_cmd(){
 	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 	switch (arguments[0]){
     case "openDocselector":
-		new jsWindow(url,"we_fileselector",-1,-1,' . WINDOW_DOCSELECTOR_WIDTH . ',' . WINDOW_DOCSELECTOR_HEIGHT . ',true,true,true,true);
+		new jsWindow(url,"we_fileselector",-1,-1,' . we_fileselector::WINDOW_DOCSELECTOR_WIDTH . ',' . we_fileselector::WINDOW_DOCSELECTOR_HEIGHT . ',true,true,true,true);
 		break;
 	case "browse_server":
 		new jsWindow(url,"browse_server",-1,-1,840,400,true,false,true);

@@ -115,13 +115,13 @@ function we_cmd() {
 	switch (arguments[0]) {
 		case 'openDirselector':
 		case 'openDocselector':
-			new jsWindow(url,'we_fileselector',-1,-1," . WINDOW_DOCSELECTOR_WIDTH . "," . WINDOW_DOCSELECTOR_HEIGHT . ",true,true,true);
+			new jsWindow(url,'we_fileselector',-1,-1," . we_fileselector::WINDOW_DOCSELECTOR_WIDTH . "," . we_fileselector::WINDOW_DOCSELECTOR_HEIGHT . ",true,true,true);
 			break;
 		case 'browse_server':
 			new jsWindow(url,'browse_server',-1,-1,840,400,true,false,true);
 			break;
 		case 'openCatselector':
-			new jsWindow(url,'we_catselector',-1,-1," . WINDOW_CATSELECTOR_WIDTH . "," . WINDOW_CATSELECTOR_HEIGHT . ",true,true,true);
+			new jsWindow(url,'we_catselector',-1,-1," . we_fileselector::WINDOW_CATSELECTOR_WIDTH . "," . we_fileselector::WINDOW_CATSELECTOR_HEIGHT . ",true,true,true);
 			break;
 		case 'add_docCat':" . $addJS . "
 			if(self.wizbody.document.forms['we_form'].elements['v[docCategories]'].value.indexOf(','+arguments[1]+',') == -1) {

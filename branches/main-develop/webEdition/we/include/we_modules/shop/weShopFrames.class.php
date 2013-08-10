@@ -27,14 +27,14 @@ class weShopFrames extends weModuleFrames{
 	var $db;
 	var $View;
 	var $frameset;
-	public $module = "shop";
+	public $module = 'shop';
 	protected $hasIconbar = true;
 	protected $useMainTree = false;
 	protected $treeDefaultWidth = 204;
 
 	function __construct($frameset){
-		parent::__construct(WE_SHOP_MODULE_DIR . "edit_shop_frameset.php");
-		$this->View = new weShopView(WE_SHOP_MODULE_DIR . "edit_shop_frameset.php", "top.content");
+		parent::__construct(WE_SHOP_MODULE_DIR . 'edit_shop_frameset.php');
+		$this->View = new weShopView(WE_SHOP_MODULE_DIR . 'edit_shop_frameset.php', 'top.content');
 	}
 
 	function getJSCmdCode(){
@@ -128,7 +128,7 @@ class weShopFrames extends weModuleFrames{
 							fr.write("<a href=\"javascript://\" onClick=\"doFolderClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\" BORDER=0>");
 		<?php } ?>
 						fr.write("<img src=<?php print TREE_IMAGE_DIR; ?>icons/folder" + zusatz2 + ".gif WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 title=\"<?php print g_l('tree', "[edit_statustext]"); ?>\">");
-		<?php if(we_hasPerm("EDIT_SHOP_ORDER")){ ?>
+		<?php if(we_hasPerm('EDIT_SHOP_ORDER')){ ?>
 							fr.write("</a>");
 			<?php
 		}
@@ -314,44 +314,44 @@ class weShopFrames extends weModuleFrames{
 		<?php
 // echo "menuDaten.add(new dirEntry('folder.gif','aaaa',0, 'Article',0,'','',".(($k>0)?1:0)."));";
 
-		$this->db->query("SELECT IntOrderID,DateShipping,DateConfirmation,DateCustomA,DateCustomB,DateCustomC,DateCustomD,DateCustomE,DatePayment,DateCustomF,DateCustomG,DateCancellation,DateCustomH,DateCustomI,DatecustomJ,DateFinished, DATE_FORMAT(DateOrder,'" . g_l('date', '[format][mysqlDate]') . "') as orddate, DATE_FORMAT(DateOrder,'%c%Y') as mdate FROM " . SHOP_TABLE . " GROUP BY IntOrderID ORDER BY IntID DESC");
+		$this->db->query("SELECT IntOrderID,DateShipping,DateConfirmation,DateCustomA,DateCustomB,DateCustomC,DateCustomD,DateCustomE,DatePayment,DateCustomF,DateCustomG,DateCancellation,DateCustomH,DateCustomI,DatecustomJ,DateFinished, DATE_FORMAT(DateOrder,'" . g_l('date', '[format][mysqlDate]') . "') as orddate, DATE_FORMAT(DateOrder,'%c%Y') as mdate FROM " . SHOP_TABLE . ' GROUP BY IntOrderID ORDER BY IntID DESC');
 		while($this->db->next_record()){
 			//added for #6786
-			$style = "color:black;font-weight:bold;";
+			$style = 'color:black;font-weight:bold;';
 
-			if($this->db->f("DateCustomA") != '' || $this->db->f("DateCustomB") != '' || $this->db->f("DateCustomC") != '' || $this->db->f("DateCustomD") != '' || $this->db->f("DateCustomE") != '' || $this->db->f("DateCustomF") != '' || $this->db->f("DateCustomG") != '' || $this->db->f("DateCustomH") != '' || $this->db->f("DateCustomI") != '' || $this->db->f("DateCustomJ") != '' || $this->db->f("DateConfirmation") != '' || ($this->db->f("DateShipping") != '0000-00-00 00:00:00' && $this->db->f("DateShipping") != '')){
-				$style = "color:red;";
+			if($this->db->f('DateCustomA') != '' || $this->db->f('DateCustomB') != '' || $this->db->f('DateCustomC') != '' || $this->db->f('DateCustomD') != '' || $this->db->f('DateCustomE') != '' || $this->db->f('DateCustomF') != '' || $this->db->f('DateCustomG') != '' || $this->db->f('DateCustomH') != '' || $this->db->f('DateCustomI') != '' || $this->db->f('DateCustomJ') != '' || $this->db->f('DateConfirmation') != '' || ($this->db->f('DateShipping') != '0000-00-00 00:00:00' && $this->db->f('DateShipping') != '')){
+				$style = 'color:red;';
 			}
 
-			if($this->db->f("DatePayment") != '0000-00-00 00:00:00' && $this->db->f("DatePayment") != ''){
-				$style = "color:#006699;";
+			if($this->db->f('DatePayment') != '0000-00-00 00:00:00' && $this->db->f('DatePayment') != ''){
+				$style = 'color:#006699;';
 			}
 
-			if($this->db->f("DateCancellation") != '' || $this->db->f("DateFinished") != ''){
-				$style = "color:black;";
+			if($this->db->f('DateCancellation') != '' || $this->db->f('DateFinished') != ''){
+				$style = 'color:black;';
 			}
 
 
 			print "  menuDaten.add(new urlEntry('" . we_base_ContentTypes::LINK_ICON . "'," . $this->db->f("IntOrderID") . "," . $this->db->f("mdate") . ",'" . $this->db->f("IntOrderID") . ". " . g_l('modules_shop', '[bestellung]') . " " . $this->db->f("orddate") . "','shop','" . SHOP_TABLE . "','" . (($this->db->f("DateShipping") > 0) ? 0 : 1) . "','" . $style . "'));\n";
-			if($this->db->f("DateShipping") <= 0){
-				if(isset(${'l' . $this->db->f("mdate")})){
-					${'l' . $this->db->f("mdate")}++;
+			if($this->db->f('DateShipping') <= 0){
+				if(isset(${'l' . $this->db->f('mdate')})){
+					${'l' . $this->db->f('mdate')}++;
 				} else {
-					${'l' . $this->db->f("mdate")} = 1;
+					${'l' . $this->db->f('mdate')} = 1;
 				}
 			}
 
 
 			//FIXME: remove eval
-			if(isset(${'v' . $this->db->f("mdate")})){
-				${'v' . $this->db->f("mdate")}++;
+			if(isset(${'v' . $this->db->f('mdate')})){
+				${'v' . $this->db->f('mdate')}++;
 			} else {
-				${'v' . $this->db->f("mdate")} = 1;
+				${'v' . $this->db->f('mdate')} = 1;
 			}
 		}
 
-		$year = (empty($_REQUEST["year"])) ? date("Y") : $_REQUEST["year"];
-//unset($_SESSION["year"]);
+		$year = (empty($_REQUEST['year'])) ? date('Y') : $_REQUEST['year'];
+//unset($_SESSION['year']);
 		for($f = 12; $f > 0; $f--){
 			$r = (isset(${'v' . $f . $year}) ? ${'v' . $f . $year} : '');
 			$k = (isset(${'l' . $f . $year}) ? ${'l' . $f . $year} : '');

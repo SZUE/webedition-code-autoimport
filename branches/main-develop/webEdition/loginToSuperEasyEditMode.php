@@ -44,7 +44,7 @@ if(isset($_POST["username"]) && isset($_POST["id"]) && isset($_POST["type"])){
 
 	if(isset($_SESSION["user"]["Username"])){ //	login ok!
 		//	we must give some information, that we start in Super-Easy-Edit-Mode
-		$_SESSION['weS']['we_mode'] = "seem";
+		$_SESSION['weS']['we_mode'] = we_base_constants::MODE_SEE;
 		$_SESSION['weS']['SEEM']["startId"] = $_POST["id"];
 		$_SESSION['weS']['SEEM']["startType"] = $_POST["type"];
 		$_SESSION['weS']['SEEM']["startPath"] = $_POST["path"];

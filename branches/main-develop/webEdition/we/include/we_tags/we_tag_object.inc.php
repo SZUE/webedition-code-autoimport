@@ -104,7 +104,7 @@ function we_tag_object($attribs){
 	}
 
 	if($GLOBALS['lv']->avail){
-		if(isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == 'seem'){
+		if(isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
 			print '<a href="' . $we_oid . '" seem="object"></a>';
 		}
 	}

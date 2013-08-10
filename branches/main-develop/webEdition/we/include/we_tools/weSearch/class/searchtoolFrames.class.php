@@ -109,7 +109,7 @@ class searchtoolFrames extends weToolFrames{
 				'id' => 'tab_1', 'style' => "display:$displayEntry"
 			)));
 		}
-		if($_SESSION['weS']['we_mode'] != 'seem' && we_hasPerm('CAN_SEE_TEMPLATES')){
+		if($_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE && we_hasPerm('CAN_SEE_TEMPLATES')){
 			$we_tabs->addTab(new we_tab(
 				'#', g_l('searchtool', '[templates]'), '((' . $this->topFrame . '.activ_tab==2) ? TAB_ACTIVE : TAB_NORMAL)', "setTab('2');", array(
 				'id' => 'tab_2', 'style' => "display:$displayEntry"

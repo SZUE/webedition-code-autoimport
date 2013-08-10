@@ -24,14 +24,14 @@
  */
 class MultiDirTemplateAndDefaultChooser extends MultiDirAndTemplateChooser{
 
-	var $lines = 3;
-	var $defaultName = "";
-	var $defaultArr = array();
+	private $defaultName = '';
+	private $defaultArr = array();
 
-	function __construct($width, $ids, $cmd_del, $addbut, $ws="", $tmplcsv="", $tmplSelectName="", $mustTemplateIDs="", $tmplWs="", $defaultName="", $defaultCSV="", $fields="Icon,Path", $table=FILE_TABLE, $css="defaultfont"){
+	function __construct($width, $ids, $cmd_del, $addbut, $ws = "", $tmplcsv = "", $tmplSelectName = "", $mustTemplateIDs = "", $tmplWs = "", $defaultName = "", $defaultCSV = "", $fields = "Icon,Path", $table = FILE_TABLE, $css = "defaultfont"){
 		$this->defaultName = $defaultName;
 		$this->defaultArr = makeArrayFromCSV($defaultCSV);
 		parent::__construct($width, $ids, $cmd_del, $addbut, $ws, $tmplcsv, $tmplSelectName, $mustTemplateIDs, $tmplWs, $fields, $table, $css);
+		$this->lines = 3;
 	}
 
 	function getRootLine($lineNr){
@@ -46,7 +46,7 @@ class MultiDirTemplateAndDefaultChooser extends MultiDirAndTemplateChooser{
 
 	function getLine($lineNr){
 
-		$editable = $this->isEditable();
+		//$editable = $this->isEditable();
 		switch($lineNr){
 			case 0:
 				return MultiDirAndTemplateChooser::getLine(0);

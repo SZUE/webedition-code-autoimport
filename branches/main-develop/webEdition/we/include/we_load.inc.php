@@ -198,7 +198,7 @@ if(isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] == "closeFolder"){
 		}
 	}
 
-	if($_SESSION['weS']['we_mode'] != "seem"){
+	if($_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE){
 		$Tree = new weMainTree("webEdition.php", "top", "top.left.tree", "top.load");
 		$treeItems = array();
 		getItems($parentFolder, $offset, $Tree->default_segment);

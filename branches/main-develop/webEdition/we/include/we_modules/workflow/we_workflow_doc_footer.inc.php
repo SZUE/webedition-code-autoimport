@@ -182,9 +182,9 @@ function showWorkflowFooterForSEEMMode(){
 
 if(we_workflow_utility::isUserInWorkflow($we_doc->ID, $we_doc->Table, $_SESSION["user"]["ID"]) || we_hasPerm("PUBLISH")){
 
-	$_table = ($_SESSION['weS']['we_mode'] == "normal" ?
+	$_table = ($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL ?
 			showWorkflowFooterForNormalMode() :
-			($_SESSION['weS']['we_mode'] == "seem" ?
+			($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE ?
 				showWorkflowFooterForSEEMMode() : ''));
 
 	$_we_form = we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), $_table);

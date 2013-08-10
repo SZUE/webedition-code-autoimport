@@ -325,7 +325,7 @@ class we_binaryDocument extends we_document{
 
 		$filetype = g_l('metadata', '[filetype]') . ': ' . (empty($this->Extension) ? '' : substr($this->Extension, 1));
 
-		$md = ($_SESSION['weS']['we_mode'] == "seem" ?
+		$md = ($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE ?
 				'' :
 				g_l('metadata', "[supported_types]") . ': ' .
 				'<a href="javascript:parent.frames[0].setActiveTab(\'tab_2\');we_cmd(\'switch_edit_page\',2,\'' . $GLOBALS['we_transaction'] . '\');">' .

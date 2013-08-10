@@ -24,61 +24,28 @@
  */
 class MultiDirChooser2 extends MultiDirChooser{
 
-	var $width = "388";
-	var $table = FILE_TABLE;
-	var $db;
-	var $db2;
-	var $ids = "";
-	var $ws = "";
-	var $wsArr = array();
-	var $cmd_del = "";
-	var $addbut = "";
-	var $css = "";
-	var $fields = "Icon,Path";
-	var $fieldsArr = array("Icon", "Path");
-	var $nr = 0;
-	var $lines = 1;
-	var $CanDelete = false;
-	var $isEditable = true;
-	var $extraDelFn = "";
-	var $thirdDelPar = "";
-	var $rowPrefix = "";
-	var $catField = "";
+	var $rowPrefix = '';
+	var $catField = '';
 
 	function __construct($width = "", $ids = "", $cmd_del = "", $addbut = "", $ws = "", $fields = "Icon,Path", $table = FILE_TABLE, $css = "defaultfont", $thirdDelPar = "", $extraDelFn = ""){
-
-		$this->db = new DB_WE();
-		$this->db2 = new DB_WE();
-		$this->width = $width;
-		$this->ids = $ids;
-		$this->table = $table;
-		$this->ws = $ws;
-		$this->wsArr = makeArrayFromCSV($ws);
-		$this->cmd_del = $cmd_del;
-		$this->addbut = $addbut;
-		$this->css = $css;
-		$this->fields = $fields;
-		$this->fieldsArr = makeArrayFromCSV($fields);
-		$this->extraDelFn = $extraDelFn;
-		$this->thirdDelPar = $thirdDelPar;
+	parent::__construct($width, $ids, $cmd_del, $addbut, $ws, $fields, $table, $css, $thirdDelPar, $extraDelFn);
 	}
 
 	function getLine($lineNr){
 		$_catFieldJS = "";
-		if($this->catField){
-			$_ids = str_replace("," . $this->db->f("ID") . ",", ",", $this->ids);
-		}
-		$_catFieldJS .= "deleteCategory('" . $this->rowPrefix . "'," . $this->db->f("ID") . "); ";
+	/*	if($this->catField){
+			$_ids = str_replace("," . $this->Record["ID"] . ",", ",", $this->ids);
+		}*/
+		$_catFieldJS .= "deleteCategory('" . $this->rowPrefix . "'," . $this->Record["ID"] . "); ";
 		switch($lineNr){
 			case 0:
-				return '<tr id="' . $this->rowPrefix . 'Cat' . $this->db->f("ID") . '">
-	<td><img src="' . ICON_DIR . $this->db->f($this->fieldsArr[0]) . '" width="16" height="18" /></td>
-	<td class="' . $this->css . '">' . $this->db->f($this->fieldsArr[1]) . '</td>
+				return '<tr id="' . $this->rowPrefix . 'Cat' . $this->Record["ID"] . '">
+	<td><img src="' . ICON_DIR . $this->Record[$this->fieldsArr[0]] . '" width="16" height="18" /></td>
+	<td class="' . $this->css . '">' . $this->Record[$this->fieldsArr[1]] . '</td>
 	<td>' . ((($this->isEditable() && $this->cmd_del) || $this->CanDelete) ?
 						we_button::create_button("image:btn_function_trash", "javascript:if(typeof(_EditorFrame)!='undefined'){_EditorFrame.setEditorIsHot(true);}" . ($this->extraDelFn ? $this->extraDelFn : "") . "; " . $_catFieldJS, true, 26) :
 						"") . '</td>
-</tr>
-';
+</tr>';
 		}
 		return '';
 	}
@@ -91,7 +58,7 @@ class MultiDirChooser2 extends MultiDirChooser{
 	<td class="' . $this->css . '">/</td>
 	<td>' . ((($this->isEditable() && $this->cmd_del) || $this->CanDelete) ?
 						we_button::create_button("image:btn_function_trash", "javascript:if(typeof(_EditorFrame)!='undefined'){_EditorFrame.setEditorIsHot(true);}" . ($this->extraDelFn ? $this->extraDelFn : "") . ";we_cmd('" . $this->cmd_del . "','0');", true, 26) :
-						"") . '</td>
+						'') . '</td>
 </tr>';
 		}
 		return '';
@@ -103,8 +70,8 @@ class MultiDirChooser2 extends MultiDirChooser{
 		$idArr = makeArrayFromCSV($this->ids);
 
 		foreach($idArr as $id){
-			$this->db->query('SELECT ID,' . $this->fields . ' FROM ' . $this->db->escape($this->table) . ' WHERE ID =' . intval($id));
-			if($this->db->next_record()){
+			$this->Record=getHash('SELECT ID,' . $this->fields . ' FROM ' . $this->db->escape($this->table) . ' WHERE ID =' . intval($id),$this->db);
+			if(!empty($this->Record)){
 				for($i = 0; $i < $this->lines; $i++){
 					$out .= $this->getLine($i);
 				}

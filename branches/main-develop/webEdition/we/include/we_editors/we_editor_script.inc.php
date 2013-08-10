@@ -308,13 +308,13 @@ if(isset($GLOBALS['we_doc'])){
 				break;
 			case "openDirselector":
 			case "openDocselector":
-				new jsWindow(url, "we_fileselector", -1, -1,<?php echo WINDOW_DOCSELECTOR_WIDTH . ", " . WINDOW_DOCSELECTOR_HEIGHT; ?>, true, true, true, true);
+				new jsWindow(url, "we_fileselector", -1, -1,<?php echo we_fileselector::WINDOW_DOCSELECTOR_WIDTH . ", " . we_fileselector::WINDOW_DOCSELECTOR_HEIGHT; ?>, true, true, true, true);
 				break;
 			case "openSelector":
 				new jsWindow(url, "we_fileselector", -1, -1, 900, 685, true, true, true, true);
 				break;
 			case "openCatselector":
-				new jsWindow(url, "we_catselector", -1, -1,<?php echo WINDOW_CATSELECTOR_WIDTH . ", " . WINDOW_CATSELECTOR_HEIGHT; ?>, true, true, true, true);
+				new jsWindow(url, "we_catselector", -1, -1,<?php echo we_fileselector::WINDOW_CATSELECTOR_WIDTH . ", " . we_fileselector::WINDOW_CATSELECTOR_HEIGHT; ?>, true, true, true, true);
 				break;
 			case "browse_server":
 				new jsWindow(url, "browse_server", -1, -1, 840, 400, true, false, true);

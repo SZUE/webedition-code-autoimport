@@ -47,7 +47,7 @@ if(we_hasPerm('CAN_SEE_DOCUMENTS')){
 		'enabled' => 1,
 	);
 }
-if($_SESSION['weS']['we_mode'] != 'seem' && we_hasPerm('CAN_SEE_TEMPLATES')){
+if($_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE && we_hasPerm('CAN_SEE_TEMPLATES')){
 	$we_menu_weSearch[400] = array(
 		'text' => g_l('searchtool', '[forTemplates]'),
 		'parent' => 200,

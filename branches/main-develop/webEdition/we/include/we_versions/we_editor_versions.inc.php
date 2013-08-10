@@ -78,7 +78,7 @@ echo we_html_element::cssLink(JS_DIR . "jscalendar/skins/aqua/theme.css") .
 <body class="weEditorBody" onUnload="doUnload()" onkeypress="javascript:if(event.keyCode==\'13\' || event.keyCode==\'3\') search(true);" onLoad="setTimeout(\'init();\',200)" onresize="sizeScrollContent();">
 <form name="we_form" onSubmit="return false;" style="padding:0px;margin:0px;">';
 
-$content = weVersionsView::getVersionsOfDoc();
+$content = weVersionsView::getVersionsOfDoc($GLOBALS['DB_WE']);
 $headline = $_view->makeHeadLines();
 $foundItems = count($content);
 

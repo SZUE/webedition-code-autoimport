@@ -1591,7 +1591,7 @@ class searchtoolView extends weToolView{
 			$this->Model->search_tables_advSearch[VERSIONS_TABLE] = 0;
 		}
 
-		if($_SESSION['weS']['we_mode'] == "seem"){
+		if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
 			$this->Model->search_tables_advSearch[TEMPLATES_TABLE] = 0;
 		} elseif(!isset($this->Model->search_tables_advSearch[TEMPLATES_TABLE])){
 			$this->Model->search_tables_advSearch[TEMPLATES_TABLE] = 0;
@@ -1601,7 +1601,7 @@ class searchtoolView extends weToolView{
 			$this->Model->search_tables_advSearch[OBJECT_FILES_TABLE] = 1;
 		}
 
-		if($_SESSION['weS']['we_mode'] == "seem"){
+		if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
 			$this->Model->search_tables_advSearch[OBJECT_TABLE] = 0;
 		} elseif(defined('OBJECT_TABLE') && !isset($this->Model->search_tables_advSearch[OBJECT_TABLE])){
 			$this->Model->search_tables_advSearch[OBJECT_TABLE] = 0;
@@ -1661,7 +1661,7 @@ class searchtoolView extends weToolView{
 					$this->Model->search_tables_advSearch[FILE_TABLE] ? true : false, 'search_tables_advSearch[' . FILE_TABLE . ']', g_l('searchtool', '[documents]'), false, 'defaultfont', ''));
 		}
 
-		if(we_hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] != "seem"){
+		if(we_hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE){
 			$_table->setCol(
 				1, 0, array(), we_forms::checkboxWithHidden(
 					$this->Model->search_tables_advSearch[TEMPLATES_TABLE] ? true : false, 'search_tables_advSearch[' . TEMPLATES_TABLE . ']', g_l('searchtool', '[templates]'), false, 'defaultfont', ''));
@@ -1673,7 +1673,7 @@ class searchtoolView extends weToolView{
 					0, 1, array(), we_forms::checkboxWithHidden(
 						$this->Model->search_tables_advSearch[OBJECT_FILES_TABLE] ? true : false, 'search_tables_advSearch[' . OBJECT_FILES_TABLE . ']', g_l('searchtool', '[objects]'), false, 'defaultfont', ''));
 			}
-			if(we_hasPerm('CAN_SEE_OBJECTS') && $_SESSION['weS']['we_mode'] != "seem"){
+			if(we_hasPerm('CAN_SEE_OBJECTS') && $_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE){
 				$_table->setCol(
 					1, 1, array(), we_forms::checkboxWithHidden(
 						$this->Model->search_tables_advSearch[OBJECT_TABLE] ? true : false, 'search_tables_advSearch[' . OBJECT_TABLE . ']', g_l('searchtool', '[classes]'), false, 'defaultfont', ''));

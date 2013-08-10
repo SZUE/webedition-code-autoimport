@@ -29,6 +29,16 @@ class we_fileselector{
 	const FOOTER = 2;
 	const BODY = 3;
 	const CMD = 4;
+	const WINDOW_SELECTOR_WIDTH = 900;
+	const WINDOW_SELECTOR_HEIGHT = 685;
+	const WINDOW_DIRSELECTOR_WIDTH = 900;
+	const WINDOW_DIRSELECTOR_HEIGHT = 600;
+	const WINDOW_DOCSELECTOR_WIDTH = 900;
+	const WINDOW_DOCSELECTOR_HEIGHT = 685;
+	const WINDOW_CATSELECTOR_WIDTH = 900;
+	const WINDOW_CATSELECTOR_HEIGHT = 638;
+	const WINDOW_DELSELECTOR_WIDTH = 900;
+	const WINDOW_DELSELECTOR_HEIGHT = 600;
 
 	var $dir = 0;
 	var $id = 0;
@@ -60,7 +70,7 @@ class we_fileselector{
 		}
 
 		$this->order = ($order ? $order : $this->order);
-		
+
 		$this->db = new DB_WE();
 		$this->id = $id;
 		$this->lastDir = isset($_SESSION['weS']['we_fs_lastDir'][$table]) ? intval($_SESSION['weS']['we_fs_lastDir'][$table]) : 0;
@@ -94,10 +104,10 @@ class we_fileselector{
 						$this->values['ParentID']);
 
 				$this->path = $this->values['Path'];
-			} else{
+			} else {
 				$this->setDefaultDirAndID(false);
 			}
-		} else{
+		} else {
 			$this->setDefaultDirAndID(true);
 		}
 	}
@@ -126,7 +136,7 @@ class we_fileselector{
 			return true;
 		} else if($pid != 0){
 			return $this->isIDInFolder($pid, $folderID);
-		} else{
+		} else {
 			return false;
 		}
 	}
@@ -273,21 +283,27 @@ function cutText(text,l){
 	}
 
 	function printFramesetUnselectFileHTML(){
+
 	}
 
 	function printFramesetSelectFilesFromHTML(){
+
 	}
 
 	function printFramesetGetFirstSelectedHTML(){
+
 	}
 
 	function printFramesetGetPositionByIDHTML(){
+
 	}
 
 	function printFramesetIsFileSelectedHTML(){
+
 	}
 
 	function printFramesetUnselectAllFilesHTML(){
+
 	}
 
 	function printFramesetSelectFileHTML(){
@@ -486,7 +502,7 @@ function clearEntries(){
 
 	function printFramesetJSFunctionAddEntries(){
 		$ret = '';
-		while($this->next_record()) {
+		while($this->next_record()){
 			$ret.= 'addEntry(' . $this->f("ID") . ',"' . $this->f("Icon") . '","' . addcslashes($this->f("Text"), '"') . '",' . ($this->f("IsFolder") | 0) . ',"' . addcslashes($this->f("Path"), '"') . '");';
 		}
 		return we_html_element::jsElement($ret);
@@ -559,7 +575,7 @@ function selectIt(){
 		$out = "";
 		$c = 0;
 		$z = 0;
-		while($pid != 0) {
+		while($pid != 0){
 			$c++;
 			$this->db->query('SELECT ID,Text,ParentID FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($pid));
 			if($this->db->next_record()){
@@ -611,7 +627,6 @@ function selectIt(){
 </table>';
 	}
 
-
 	function printHeaderLine(){
 		return '
 <table border="0" cellpadding="0" cellspacing="0" width="100%">
@@ -661,7 +676,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 	function printCmdAddEntriesHTML(){
 		$ret = '';
 		$this->query();
-		while($this->next_record()) {
+		while($this->next_record()){
 			$ret.= 'top.addEntry(' . $this->f("ID") . ',"' . $this->f("Icon") . '","' . str_replace("\n", "", str_replace("\r", "", $this->f("Text"))) . '",' . $this->f("IsFolder") . ',"' . str_replace("\n", "", str_replace("\r", "", $this->f("Path"))) . '");';
 		}
 		return $ret;
@@ -671,7 +686,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 		$pid = $this->dir;
 		$out = "";
 		$c = 0;
-		while($pid != 0) {
+		while($pid != 0){
 			$c++;
 			$this->db->query("SELECT ID,Text,ParentID FROM " . $this->db->escape($this->table) . " WHERE ID=" . intval($pid));
 
@@ -726,7 +741,6 @@ function press_ok_button() {
 	function printFooterJS(){
 		// do nothing here, overwrite!
 	}
-
 
 	function printFooterTable(){
 		$cancel_button = we_button::create_button("cancel", "javascript:top.exit_close();");

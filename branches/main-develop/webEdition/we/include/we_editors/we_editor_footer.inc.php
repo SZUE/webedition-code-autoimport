@@ -569,7 +569,7 @@ function showEditFooterForSEEMMode(){
 				$_seeModeTable->setCol(0, $_pos++, array("valign" => "top"), we_button::create_button("in_workflow", "javascript:put_in_workflow();"));
 				$_seeModeTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
 			}
-		
+
 	}
 
 	//###########################	Special buttons for special EDITPAGE
@@ -676,16 +676,16 @@ function showEditFooterForSEEMMode(){
 
 			switch($_SESSION['weS']['we_mode']){
 				default:
-				case "normal": // open footer for NormalMode
+				case we_base_constants::MODE_NORMAL: // open footer for NormalMode
 					showEditFooterForNormalMode();
 					break;
-				case "seem": // open footer for SeeMode
+				case we_base_constants::MODE_SEE: // open footer for SeeMode
 					showEditFooterForSEEMMode();
 					break;
 			}
 		} else{
 
-			if($_SESSION['weS']['we_mode'] == "seem"){
+			if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
 
 				$_noPermTable = new we_html_table(array("cellpadding" => 0,
 						"cellspacing" => 0,
@@ -722,7 +722,7 @@ function showEditFooterForSEEMMode(){
 	}
 
 	if($we_doc->IsTextContentDoc && $haspermNew){ //	$_js_permnew
-		if($_SESSION['weS']['we_mode'] != "seem" || $GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_CONTENT){ // not in SeeMode or in editmode
+		if($_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE || $GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_CONTENT){ // not in SeeMode or in editmode
 			$_ctrlElem = getControlElement('checkbox', 'makeSameDoc');
 			if(!$_ctrlElem){ //	changes for we:controlElement
 				$_js_permnew = ($we_doc->ID ? '

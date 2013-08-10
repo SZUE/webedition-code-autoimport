@@ -29,9 +29,9 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 //	are located in 2 different files. Depending on mode the correct
 //	file is included and the matching functions are included.
 
-if(!isset($_SESSION['weS']['we_mode']) || $_SESSION['weS']['we_mode'] == "normal"){ //	working in normal mode
+if(!isset($_SESSION['weS']['we_mode']) || $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){ //	working in normal mode
 	include_once(WE_INCLUDES_PATH . 'webEdition_normal.inc.php');
-} else if($_SESSION['weS']['we_mode'] == "seem"){ //	working in super-easy-edit-mode
+} else if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){ //	working in super-easy-edit-mode
 	include_once(WE_INCLUDES_PATH . 'webEdition_seem.inc.php');
 }
 
@@ -106,7 +106,7 @@ include(JS_PATH . 'weJsStrings.inc.php');
 	var weSidebar = null;
 
 	// seeMode
-	var seeMode = <?php print ($_SESSION['weS']['we_mode'] == "seem") ? "true" : "false"; ?>; // in seeMode
+	var seeMode = <?php print ($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE) ? "true" : "false"; ?>; // in seeMode
 	var seeMode_edit_include = <?php print (isset($SEEM_edit_include) && $SEEM_edit_include) ? "true" : "false"; ?>; // in edit_include mode of seeMode
 
 	var wePerms = {
@@ -497,7 +497,7 @@ if(!empty($_jsincludes)){
 				break;
 
 			case "openCatselector":
-				new jsWindow(url, "we_cateditor", -1, -1,<?php echo WINDOW_CATSELECTOR_WIDTH . ',' . WINDOW_CATSELECTOR_HEIGHT; ?>, true, true, true, true);
+				new jsWindow(url, "we_cateditor", -1, -1,<?php echo we_fileselector::WINDOW_CATSELECTOR_WIDTH . ',' . we_fileselector::WINDOW_CATSELECTOR_HEIGHT; ?>, true, true, true, true);
 				break;
 
 			case "openSidebar":
@@ -653,12 +653,12 @@ if(!empty($_jsincludes)){
 			case "open_document":
 				we_cmd("load", "<?php print FILE_TABLE; ?>");
 				url = "<?php print WEBEDITION_DIR; ?>we_cmd.php?we_cmd[0]=openDocselector&we_cmd[1]=&we_cmd[2]=<?php print FILE_TABLE; ?>&we_cmd[5]=<?php print rawurlencode("opener.top.weEditorFrameController.openDocument(table,currentID,currentType)"); ?>&we_cmd[9]=1";
-				new jsWindow(url, "we_dirChooser", -1, -1,<?php echo WINDOW_DOCSELECTOR_WIDTH . "," . WINDOW_DOCSELECTOR_HEIGHT; ?>, true, true, true, true);
+				new jsWindow(url, "we_dirChooser", -1, -1,<?php echo we_fileselector::WINDOW_DOCSELECTOR_WIDTH . "," . we_fileselector::WINDOW_DOCSELECTOR_HEIGHT; ?>, true, true, true, true);
 				break;
 			case "open_template":
 				we_cmd("load", "<?php print TEMPLATES_TABLE; ?>");
 				url = "<?php print WEBEDITION_DIR; ?>we_cmd.php?we_cmd[0]=openDocselector&we_cmd[8]=text/weTmpl&we_cmd[2]=<?php print TEMPLATES_TABLE; ?>&we_cmd[5]=<?php print rawurlencode("opener.top.weEditorFrameController.openDocument(table,currentID,currentType)"); ?>&we_cmd[9]=1";
-				new jsWindow(url, "we_dirChooser", -1, -1,<?php echo WINDOW_DOCSELECTOR_WIDTH . "," . WINDOW_DOCSELECTOR_HEIGHT; ?>, true, true, true, true);
+				new jsWindow(url, "we_dirChooser", -1, -1,<?php echo we_fileselector::WINDOW_DOCSELECTOR_WIDTH . "," . we_fileselector::WINDOW_DOCSELECTOR_HEIGHT; ?>, true, true, true, true);
 				break;
 			case "change_passwd":
 				new jsWindow(url, "we_change_passwd", -1, -1, 250, 220, true, false, true, false);
@@ -825,13 +825,13 @@ if(!empty($_jsincludes)){
 				new jsWindow("http://www.webedition.org/de/webedition-cms/versionshistorie/webedition-6/", "help_changelog", -1, -1, 960, 700, true, true, true, true);
 				break;
 			case "openSelector":
-				new jsWindow(url, "we_fileselector", -1, -1,<?php echo WINDOW_SELECTOR_WIDTH . ',' . WINDOW_SELECTOR_HEIGHT; ?>, true, true, true, true);
+				new jsWindow(url, "we_fileselector", -1, -1,<?php echo we_fileselector::WINDOW_SELECTOR_WIDTH . ',' . we_fileselector::WINDOW_SELECTOR_HEIGHT; ?>, true, true, true, true);
 				break;
 			case "openDirselector":
-				new jsWindow(url, "we_fileselector", -1, -1,<?php echo WINDOW_DIRSELECTOR_WIDTH . ',' . WINDOW_DIRSELECTOR_HEIGHT; ?>, true, true, true, true);
+				new jsWindow(url, "we_fileselector", -1, -1,<?php echo we_fileselector::WINDOW_DIRSELECTOR_WIDTH . ',' . we_fileselector::WINDOW_DIRSELECTOR_HEIGHT; ?>, true, true, true, true);
 				break;
 			case "openDocselector":
-				new jsWindow(url, "we_fileselector", -1, -1,<?php echo WINDOW_DOCSELECTOR_WIDTH . ',' . WINDOW_DOCSELECTOR_HEIGHT; ?>, true, true, true, true);
+				new jsWindow(url, "we_fileselector", -1, -1,<?php echo we_fileselector::WINDOW_DOCSELECTOR_WIDTH . ',' . we_fileselector::WINDOW_DOCSELECTOR_HEIGHT; ?>, true, true, true, true);
 				break;
 			case "setTab":
 				if (self.Vtabs && self.Vtabs.setTab && (typeof treeData !== "undefined")) {
@@ -1142,7 +1142,7 @@ if(!empty($_jsincludes)){
 				return new jsWindow(url, "exit_doc_question", -1, -1, 380, 130, true, false, true);
 				break;
 			case "openDelSelector":
-				new jsWindow(url, "we_del_selector", -1, -1,<?php echo WINDOW_DELSELECTOR_WIDTH . ',' . WINDOW_DELSELECTOR_HEIGHT; ?>, true, true, true, true);
+				new jsWindow(url, "we_del_selector", -1, -1,<?php echo we_fileselector::WINDOW_DELSELECTOR_WIDTH . ',' . we_fileselector::WINDOW_DELSELECTOR_HEIGHT; ?>, true, true, true, true);
 				break;
 			case "browse":
 				openBrowser();

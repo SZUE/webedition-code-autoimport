@@ -245,10 +245,10 @@ function we_cmd() {
 	switch (arguments[0]) {
 		case "openDocselector":
 		case "openDirselector":
-			new jsWindow(url, "we_fileselector", -1, -1,<?php echo WINDOW_DOCSELECTOR_WIDTH . ',' . WINDOW_DOCSELECTOR_HEIGHT; ?>, true, true, true, true);
+			new jsWindow(url, "we_fileselector", -1, -1,<?php echo we_fileselector::WINDOW_DOCSELECTOR_WIDTH . ',' . we_fileselector::WINDOW_DOCSELECTOR_HEIGHT; ?>, true, true, true, true);
 			break;
 		case "openCatselector":
-			new jsWindow(url, "we_catselector", -1, -1,<?php echo WINDOW_DOCSELECTOR_WIDTH . ',' . WINDOW_DOCSELECTOR_HEIGHT; ?>, true, true, true, true);
+			new jsWindow(url, "we_catselector", -1, -1,<?php echo we_fileselector::WINDOW_DOCSELECTOR_WIDTH . ',' . we_fileselector::WINDOW_DOCSELECTOR_HEIGHT; ?>, true, true, true, true);
 			break;
 		case "add_dt_template":
 		case "delete_dt_template":

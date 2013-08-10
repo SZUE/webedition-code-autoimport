@@ -106,7 +106,7 @@ class we_document extends we_root{
 	function initLanguageFromParent(){
 		$ParentID = $this->ParentID;
 		$i = 0;
-		while(empty($this->Language)) {
+		while(empty($this->Language)){
 			if($ParentID == 0 || $i > 20){
 				we_loadLanguageConfig();
 				$this->Language = self::getDefaultLanguage();
@@ -288,9 +288,7 @@ class we_document extends we_root{
 				}
 			}
 		}
-
-		$navis->diabledDelItems = makeCSVFromArray($NoDelNavis);
-		$navis->diabledDelReason = g_l('navigation', '[NoDeleteFromDocument]');
+		$navis->setDisabledDelItems(makeCSVFromArray($NoDelNavis), g_l('navigation', '[NoDeleteFromDocument]'));
 
 		if(!we_hasPerm('EDIT_NAVIGATION')){
 			$navis->isEditable = false;

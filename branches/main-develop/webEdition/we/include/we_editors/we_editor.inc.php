@@ -165,7 +165,7 @@ switch($_REQUEST['we_cmd'][0]){
 	case 'switch_edit_page':
 		$_SESSION['weS']['EditPageNr'] = $_REQUEST['we_cmd'][1];
 		$we_doc->EditPageNr = $_REQUEST['we_cmd'][1];
-		if($_SESSION['weS']['we_mode'] == 'seem'){
+		if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
 			$_insertReloadFooter = we_html_element::jsElement('try{parent.editFooter.location.reload();}catch(exception){};') . SCRIPT_BUTTONS_ONLY . STYLESHEET_BUTTONS_ONLY;
 		}
 		break;
@@ -270,7 +270,7 @@ if($_userID != 0 && $_userID != $_SESSION['user']['ID'] && $we_doc->ID){ // docu
 		require_once(WE_USERS_MODULE_PATH . 'we_users_lockmessage.inc.php');
 		exit;
 	}
-} elseif($_userID != $_SESSION['user']['ID'] && $_SESSION['weS']['we_mode'] == 'seem' && $we_doc->EditPageNr != WE_EDITPAGE_PREVIEW){
+} elseif($_userID != $_SESSION['user']['ID'] && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE && $we_doc->EditPageNr != WE_EDITPAGE_PREVIEW){
 // lock document, if in seeMode and EditMode !!, don't lock when already locked
 	$we_doc->lockDocument();
 }
@@ -539,7 +539,7 @@ if((($_REQUEST['we_cmd'][0] != 'save_document' && $_REQUEST['we_cmd'][0] != 'pub
 										$we_responseTextType = we_message_reporting::WE_MESSAGE_NOTICE;
 // SEEM, here a doc is published
 										$GLOBALS['publish_doc'] = true;
-										if($_SESSION['weS']['we_mode'] != 'seem' && ($we_doc->EditPageNr == WE_EDITPAGE_PROPERTIES || $we_doc->EditPageNr == WE_EDITPAGE_INFO || $we_doc->EditPageNr == WE_EDITPAGE_PREVIEW) && (!$_REQUEST['we_cmd'][4])){
+										if($_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE && ($we_doc->EditPageNr == WE_EDITPAGE_PROPERTIES || $we_doc->EditPageNr == WE_EDITPAGE_INFO || $we_doc->EditPageNr == WE_EDITPAGE_PREVIEW) && (!$_REQUEST['we_cmd'][4])){
 											$_REQUEST['we_cmd'][5] = 'top.we_cmd("switch_edit_page","' . $we_doc->EditPageNr . '","' . $we_transaction . '");
 _EditorFrame.getDocumentReference().frames[3].location.reload();'; // reload the footer with the buttons
 										}
@@ -610,11 +610,11 @@ _EditorFrame.getDocumentReference().frames[3].location.reload();'; // reload the
 						$we_JavaScript .= "_EditorFrame.getDocumentReference().frames[0].we_setPath('" . $we_doc->Path . "','" . $we_doc->Text . "', '" . $we_doc->ID . "');";
 //	switch to propertiy page, when user is allowed to do so.
 						switch($_SESSION['weS']['we_mode']){
-							case 'seem':
+							case we_base_constants::MODE_SEE:
 								$_showAlert = true; //	don't show confirm box in editor_save.inc
 								$_REQUEST['we_cmd'][5] = 'top.we_cmd("switch_edit_page","' . (we_hasPerm('CAN_SEE_PROPERTIES') ? WE_EDITPAGE_PROPERTIES : $we_doc->EditPageNr) . '","' . $we_transaction . '");';
 								break;
-							case 'normal':
+							case we_base_constants::MODE_NORMAL:
 								$_REQUEST['we_cmd'][5] = 'top.we_cmd("switch_edit_page","' . $we_doc->EditPageNr . '","' . $we_transaction . '");';
 								break;
 						}

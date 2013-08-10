@@ -59,16 +59,15 @@ function moveTreeEntries($dontMoveClassFolders = false){
 		}';
 }
 
-function checkMoveItem($targetDirectoryID, $id, $table, &$items2move){
-	$DB_WE = new DB_WE();
+function checkMoveItem($DB_WE, $targetDirectoryID, $id, $table, &$items2move){
 	// check if entry is a folder
 	$row = getHash('SELECT Path, Text, IsFolder FROM ' . $DB_WE->escape($table) . ' WHERE  ID=' . intval($id), $DB_WE);
-	if(empty($row) || $row["IsFolder"]){
+	if(empty($row) || $row['IsFolder']){
 		return -1;
 	}
 
-	$text = $row["Text"];
-	$temp = explode("/", $row["Path"]);
+	$text = $row['Text'];
+	$temp = explode('/', $row['Path']);
 	$rootdir = (count($temp) < 2 ? '/' : '/' . $temp[1]);
 
 	// add the item to the item names which could be moved
@@ -169,7 +168,7 @@ function moveItem($targetDirectoryID, $id, $table, &$notMovedItems){
 					$notMovedItems[] = $item;
 					return false;
 				}
-				if(!copy($_SERVER['DOCUMENT_ROOT'] . $oldPath, $_SERVER['DOCUMENT_ROOT'] . $newPath . "/" . $fileName)){
+				if(!copy($_SERVER['DOCUMENT_ROOT'] . $oldPath, $_SERVER['DOCUMENT_ROOT'] . $newPath . '/' . $fileName)){
 					$notMovedItems[] = $item;
 					return false;
 				}
@@ -243,64 +242,11 @@ function moveItem($targetDirectoryID, $id, $table, &$notMovedItems){
 			}
 
 			// update table
-			$DB_WE->query("UPDATE " . $DB_WE->escape($table) . " SET ParentID=" . intval($parentID) . ", Path='" . $DB_WE->escape($newPath) . "/" . $DB_WE->escape($fileName) . "' WHERE ID=" . intval($id));
-			$DB_WE->query("UPDATE " . OBJECT_X_TABLE . $tableID . " SET OF_ParentID=" . intval($parentID) . ", OF_Path='" . $DB_WE->escape($newPath) . "/" . $DB_WE->escape($fileName) . "' WHERE OF_ID=" . intval($id));
+			$DB_WE->query('UPDATE ' . $DB_WE->escape($table) . ' SET ParentID=' . intval($parentID) . ", Path='" . $DB_WE->escape($newPath . '/' . $fileName) . "' WHERE ID=" . intval($id));
+			$DB_WE->query('UPDATE ' . OBJECT_X_TABLE . $tableID . ' SET OF_ParentID=' . intval($parentID) . ", OF_Path='" . $DB_WE->escape($newPath . '/' . $fileName) . "' WHERE OF_ID=" . intval($id));
 
 			return true;
 	}
 
 	return false;
-}
-
-function checkIfRestrictUserIsAllowed($id, $table = FILE_TABLE, $DB_WE = ''){
-
-	$DB_WE = $DB_WE ? $DB_WE : new DB_WE();
-	$row = getHash('SELECT CreatorID,RestrictOwners,Owners,OwnersReadOnly FROM ' . $DB_WE->escape($table) . ' WHERE ID=' . intval($id), $DB_WE);
-
-	if(($_SESSION["user"]["ID"] == $row["CreatorID"]) || we_hasPerm("ADMINISTRATOR")){ //	Owner or admin
-		return true;
-	}
-
-	if($row["RestrictOwners"]){ //	check which user - group has permission
-		$userArray = makeArrayFromCSV($row["Owners"]);
-
-		$_allowedGroup = false;
-
-		//	check if usergroup is allowed
-		foreach($_SESSION['user']['groups'] as $nr => $_userGroup){
-			if(in_array($_userGroup, $userArray)){
-				$_allowedGroup = true;
-				break;
-			}
-		}
-		if(!in_array($_SESSION["user"]["ID"], $userArray) && !$_allowedGroup){ //	user is no allowed user.
-			return false;
-		}
-
-		//	user belongs to owners of document, check if he has only read access !!!
-
-
-		if($row["OwnersReadOnly"]){
-
-			$arr = unserialize($row["OwnersReadOnly"]);
-			if(is_array($arr)){
-
-				if(isset($arr[$_SESSION["user"]["ID"]]) && $arr[$_SESSION["user"]["ID"]]){ //	if user is readonly user -> no delete
-					return false;
-				} elseif(in_array($_SESSION["user"]["ID"], $userArray)){ //	user NOT readonly and in restricted -> delete allowed
-					return true;
-				}
-
-				//	check if group has rights to delete
-				foreach($_SESSION['user']['groups'] as $nr => $_userGroup){ //	user is directly in first group
-					if(isset($arr[$_userGroup]) && $arr[$_userGroup]){ //	group not allowed
-						return false;
-					} elseif(in_array($_userGroup, $userArray)){ //	group is NOT readonly and in restricted -> delete allowed
-						return true;
-					}
-				}
-			}
-		}
-	}
-	return true;
 }

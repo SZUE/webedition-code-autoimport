@@ -49,15 +49,11 @@ class weToolTreeDataSource{
 
 	function getQueryParents($path){
 		$out = "";
-		while($path != "/" && $path != "\\" && $path){
+		while($path != '/' && $path != '\\' && $path){
 			$out .= "Path='$path' OR ";
 			$path = dirname($path);
 		}
-		if($out){
-			return substr($out, 0, strlen($out) - 3);
-		} else {
-			return "";
-		}
+		return ($out ? substr($out, 0, strlen($out) - 3) : '');
 	}
 
 	function getItemsFromDB($ParentID = 0, $offset = 0, $segment = 500, $elem = 'ID,ParentID,Path,Text,Icon,IsFolder', $addWhere = '', $addOrderBy = ''){
@@ -71,7 +67,7 @@ class weToolTreeDataSource{
 		$_aWsQuery = array();
 		$parentpaths = array();
 
-		if($ws = get_ws($table)){
+		if(($ws = get_ws($table))){
 			$wsPathArray = id_to_path($ws, $table, $db, false, true);
 			foreach($wsPathArray as $path){
 				$_aWsQuery[] = " Path LIKE '" . $db->escape($path) . "/%' OR " . weToolTreeDataSource::getQueryParents($path);
@@ -156,65 +152,51 @@ class weToolTreeDataSource{
 
 	function getItemsFromFile($ParentID = 0, $offset = 0, $segment = 500, $elem = 'ID,ParentID,Path,Text,Icon,IsFolder', $addWhere = '', $addOrderBy = ''){
 
-		$file = $this->SourceName;
-
-		$items = array();
-
-
-		$items[] = array(
-			'icon' => 'link.gif',
-			'id' => 1,
-			'parentid' => 0,
-			'text' => 'Test 1',
-			'contenttype' => 'item',
-			'table' => $file,
-			'typ' => 'item',
-			'open' => 0,
-			'published' => 1,
-			'disabled' => 0,
-			'tooltip' => ''
-		);
-
-
-
-		return $items;
+		return array(
+			array(
+				'icon' => 'link.gif',
+				'id' => 1,
+				'parentid' => 0,
+				'text' => 'Test 1',
+				'contenttype' => 'item',
+				'table' => $this->SourceName,
+				'typ' => 'item',
+				'open' => 0,
+				'published' => 1,
+				'disabled' => 0,
+				'tooltip' => ''
+		));
 	}
 
 	function getCustomItems($ParentID = 0, $offset = 0, $segment = 500, $elem = 'ID,ParentID,Path,Text,Icon,IsFolder', $addWhere = '', $addOrderBy = ''){
-
-		$items = array();
-
-		$items[] = array(
-			'icon' => 'folder.gif',
-			'id' => 1,
-			'parentid' => 0,
-			'text' => 'Custom Group',
-			'contenttype' => 'item',
-			'table' => '',
-			'typ' => 'group',
-			'open' => 0,
-			'published' => 1,
-			'disabled' => 0,
-			'tooltip' => ''
+		return array(
+			array(
+				'icon' => 'folder.gif',
+				'id' => 1,
+				'parentid' => 0,
+				'text' => 'Custom Group',
+				'contenttype' => 'item',
+				'table' => '',
+				'typ' => 'group',
+				'open' => 0,
+				'published' => 1,
+				'disabled' => 0,
+				'tooltip' => ''
+			),
+			array(
+				'icon' => 'link.gif',
+				'id' => 2,
+				'parentid' => 1,
+				'text' => 'Custom Item',
+				'contenttype' => 'item',
+				'table' => '',
+				'typ' => 'item',
+				'open' => 0,
+				'published' => 1,
+				'disabled' => 0,
+				'tooltip' => ''
+			)
 		);
-
-		$items[] = array(
-			'icon' => 'link.gif',
-			'id' => 2,
-			'parentid' => 1,
-			'text' => 'Custom Item',
-			'contenttype' => 'item',
-			'table' => '',
-			'typ' => 'item',
-			'open' => 0,
-			'published' => 1,
-			'disabled' => 0,
-			'tooltip' => ''
-		);
-
-
-		return $items;
 	}
 
 }
-

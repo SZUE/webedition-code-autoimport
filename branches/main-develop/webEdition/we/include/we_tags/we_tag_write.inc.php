@@ -129,10 +129,9 @@ function we_tag_write($attribs){
 				$GLOBALS['we_' . $type][$name]->Path = $GLOBALS['we_' . $type][$name]->getPath();
 
 				if(defined('OBJECT_FILES_TABLE') && $type == 'object'){
-					$db = new DB_WE();
 					if($GLOBALS['we_' . $type][$name]->Text == ''){
 						if($objname == ''){
-							$objname = 1 + intval(f('SELECT MAX(ID) AS ID FROM ' . OBJECT_FILES_TABLE, 'ID', $db));
+							$objname = 1 + intval(f('SELECT MAX(ID) AS ID FROM ' . OBJECT_FILES_TABLE, 'ID', $GLOBALS['DB_WE']));
 						}
 					} else {
 						switch($onpredefinedname){
@@ -149,7 +148,7 @@ function we_tag_write($attribs){
 								break;
 						}
 					}
-					$objexists = f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE Path="' . $db->escape(str_replace('//', '/', $GLOBALS['we_' . $type][$name]->Path . '/' . $objname)) . '"', 'ID', $db);
+					$objexists = f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE Path="' . $GLOBALS['DB_WE']->escape(str_replace('//', '/', $GLOBALS['we_' . $type][$name]->Path . '/' . $objname)) . '"', 'ID', $GLOBALS['DB_WE']);
 					if($objexists == ''){
 						$GLOBALS['we_' . $type][$name]->Text = $objname;
 						$GLOBALS['we_' . $type][$name]->Path = str_replace('//', '/', $GLOBALS['we_' . $type][$name]->Path . '/' . $objname);
@@ -167,7 +166,7 @@ function we_tag_write($attribs){
 							case 'increment':
 								$z = 1;
 								$footext = $objname . '_' . $z;
-								while(f('SELECT ID FROM ' . OBJECT_FILES_TABLE . " WHERE Path='" . escape_sql_query(str_replace('//', '/', $GLOBALS['we_' . $type][$name]->Path . "/" . $footext)) . "'", 'ID', $db)){
+								while(f('SELECT ID FROM ' . OBJECT_FILES_TABLE . " WHERE Path='" . $GLOBALS['DB_WE']->escape(str_replace('//', '/', $GLOBALS['we_' . $type][$name]->Path . "/" . $footext)) . "'", 'ID', $GLOBALS['DB_WE'])){
 									$z++;
 									$footext = $objname . '_' . $z;
 								}
