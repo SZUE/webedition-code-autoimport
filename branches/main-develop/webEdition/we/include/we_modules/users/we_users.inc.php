@@ -27,8 +27,8 @@ class we_user{
 	const TYPE_USER = 0;
 	const TYPE_USER_GROUP = 1;
 	const TYPE_ALIAS = 2;
-	const INVALID_CREDENTIALS=1;
-	const MAX_LOGIN_COUNT_REACHED=2;
+	const INVALID_CREDENTIALS = 1;
+	const MAX_LOGIN_COUNT_REACHED = 2;
 
 	// Name of the class => important for reconstructing the class from outside the class
 	var $ClassName = __CLASS__;
@@ -238,7 +238,7 @@ class we_user{
 			$fieldName = $t['name'];
 			if($fieldName == 'UseSalt' && $useSalt > 0){
 				$val = $useSalt;
-			} else{
+			} else {
 				$val = isset($this->$fieldName) ? $this->$fieldName : 0;
 			}
 			if($fieldName != 'ID'){
@@ -305,17 +305,17 @@ class we_user{
 			$ount = 0;
 			$try_name = '@' . $foo['username'];
 			$try_text = $foo['username'];
-			while($search) {
+			while($search){
 				$this->DB_WE->query('SELECT username FROM ' . USER_TABLE . ' WHERE ID!=' . intval($this->ID) . ' AND ID!=' . intval($uorginal) . " AND username='" . $this->DB_WE->escape($try_name) . "'");
 				if(!$this->DB_WE->next_record()){
 					$search = false;
-				} else{
+				} else {
 					$try_name = $try_name . '_' . ++$ount;
 				}
 			}
 			$this->username = $try_name;
 			$this->Text = $try_text;
-		} else{
+		} else {
 			$this->Text = $this->username;
 		}
 		$this->IsFolder = ($this->Type == self::TYPE_USER_GROUP ? 1 : 0);
@@ -328,7 +328,7 @@ class we_user{
 			$this->ModifierID = $_SESSION['user']['ID'];
 			$this->CreateDate = time();
 			$this->ModifyDate = time();
-		} else{
+		} else {
 			$this->ModifierID = $_SESSION['user']['ID'];
 			$this->ModifyDate = time();
 		}
@@ -336,7 +336,7 @@ class we_user{
 		$this->createAccount();
 		if($oldpath != '' && $oldpath != '/'){
 			$this->DB_WE->query('SELECT ID,username FROM ' . USER_TABLE . " WHERE Path LIKE '" . $this->DB_WE->escape($oldpath) . "%'");
-			while($this->DB_WE->next_record()) {
+			while($this->DB_WE->next_record()){
 				$db_tmp->query('UPDATE ' . USER_TABLE . " SET Path='" . $this->getPath($this->DB_WE->f("ID")) . "' WHERE ID=" . $this->DB_WE->f("ID"));
 			}
 		}
@@ -412,7 +412,7 @@ class we_user{
 		$entries = weToolLookup::getPermissionIncludes();
 
 		$d = dir(WE_USERS_MODULE_PATH . 'perms');
-		while(($file = $d->read())) {
+		while(($file = $d->read())){
 			if(substr($file, 0, 9) == 'we_perms_'){
 				$entries[] = WE_USERS_MODULE_PATH . 'perms/' . $file;
 			}
@@ -897,7 +897,7 @@ _multiEditorreload = true;";
 				default:
 					break;
 			}
-		} else{
+		} else {
 
 			switch($settingname){
 
@@ -994,7 +994,7 @@ _multiEditorreload = true;";
 				foreach($this->preference_slots as $val){
 					if($val == 'seem_start_file' || $val == 'seem_start_type' || $val == 'seem_start_weapp'){
 						$obj = '';
-					} else{
+					} else {
 						$obj = $this->Name . '_Preference_' . $val;
 					}
 					$this->setPreference($val, (isset($_POST[$obj]) ? $_POST[$obj] : 0));
@@ -1074,7 +1074,7 @@ _multiEditorreload = true;";
 				return true;
 			case self::TYPE_USER_GROUP:
 				$this->DB_WE->query('SELECT ID FROM ' . USER_TABLE . ' WHERE ParentID=' . $this->ID);
-				while($this->DB_WE->next_record()) {
+				while($this->DB_WE->next_record()){
 					$tmpobj = new we_user();
 					$tmpobj->initFromDB($this->DB_WE->f('ID'));
 					$tmpobj->deleteMe();
@@ -1094,7 +1094,7 @@ _multiEditorreload = true;";
 		$exist = (f('SELECT 1 AS a FROM ' . USER_TABLE . " WHERE Permissions LIKE ('%\"ADMINISTRATOR\";i:1;%') AND ID!=" . $this->ID, 'a', $this->DB_WE) == '1');
 		if($exist){
 			return false;
-		} else{
+		} else {
 			if(($id = intval(f('SELECT ID FROM ' . USER_TABLE . " WHERE Permissions LIKE ('%\"ADMINISTRATOR\";s:1:\"1\";%') AND ID!=" . $this->ID, 'ID', $this->DB_WE)))){
 				print $id . we_html_element::htmlBr();
 				return false;
@@ -1113,9 +1113,9 @@ _multiEditorreload = true;";
 		$foo = getHash('SELECT username,ParentID FROM ' . USER_TABLE . ' WHERE ID=' . intval($id), $db_tmp);
 		$path = '/' . (isset($foo['username']) ? $foo['username'] : '') . $path;
 		$pid = isset($foo['ParentID']) ? $foo['ParentID'] : '';
-		while($pid > 0) {
+		while($pid > 0){
 			$db_tmp->query('SELECT username,ParentID FROM ' . USER_TABLE . ' WHERE ID=' . intval($pid));
-			while($db_tmp->next_record()) {
+			while($db_tmp->next_record()){
 				$path = '/' . $db_tmp->f('username') . $path;
 				$pid = $db_tmp->f('ParentID');
 			}
@@ -1133,7 +1133,7 @@ _multiEditorreload = true;";
 		$db_tmp = new DB_WE();
 		$this->DB_WE->query('SELECT ParentID,ParentPerms,Permissions,Alias FROM ' . USER_TABLE . ' WHERE ID=' . intval($this->ID) . ' OR Alias=' . intval($this->ID));
 		$group_permissions = array();
-		while($this->DB_WE->next_record()) {
+		while($this->DB_WE->next_record()){
 			if($this->DB_WE->f('Alias') != $this->ID){
 				$group_permissions = unserialize($this->DB_WE->f('Permissions'));
 				if(is_array($group_permissions)){
@@ -1146,7 +1146,7 @@ _multiEditorreload = true;";
 			}
 			$lpid = $this->DB_WE->f('ParentID');
 			if($this->DB_WE->f('ParentPerms')){
-				while($lpid) {
+				while($lpid){
 					$db_tmp->query('SELECT ParentID,ParentPerms,Permissions FROM ' . USER_TABLE . ' WHERE ID=' . intval($lpid));
 					if($db_tmp->next_record()){
 						$group_permissions = unserialize($db_tmp->f('Permissions'));
@@ -1157,10 +1157,10 @@ _multiEditorreload = true;";
 								}
 							}
 							$lpid = ($db_tmp->f('ParentPerms') ? $db_tmp->f('ParentID') : 0);
-						} else{
+						} else {
 							$lpid = 0;
 						}
-					} else{
+					} else {
 						$lpid = 0;
 					}
 				}
@@ -1273,7 +1273,7 @@ $this->Preferences=' . var_export($this->Preferences, true) . ';
 		$content = '<select name="' . $this->Name . '_Users" size="8" style="width:560px" onChange="if(this.selectedIndex > -1){edit_enabled = switch_button_state(\'edit\', \'edit_enabled\', \'enabled\');}else{edit_enabled = switch_button_state(\'edit\', \'edit_enabled\', \'disabled\');}" ondblclick="top.content.we_cmd(\'display_user\',document.we_form.' . $this->Name . '_Users.value)">';
 		if($this->ID){
 			$this->DB_WE->query('SELECT ID,username,Text,Type FROM ' . USER_TABLE . ' WHERE Type IN (0,2) AND ParentID=' . intval($this->ID));
-			while($this->DB_WE->next_record()) {
+			while($this->DB_WE->next_record()){
 				$content.='<option value="' . $this->DB_WE->f("ID") . '">' . (($this->DB_WE->f("Type") == 2) ? "[" : "") . $this->DB_WE->f("Text") . (($this->DB_WE->f("Type") == 2) ? "]" : "");
 			}
 		}
@@ -1382,19 +1382,19 @@ $this->Preferences=' . var_export($this->Preferences, true) . ';
 			$CreatorIDtext = ($this->DB_WE->next_record() ?
 					$this->DB_WE->f('username') . ' (' . $this->DB_WE->f('first') . ' ' . $this->DB_WE->f('second') . ')' :
 					g_l('modules_users', '[lostID]') . $this->CreatorID . g_l('modules_users', '[lostID2]'));
-		} else{
+		} else {
 			$CreatorIDtext = '-';
 		}
 		if($this->ModifierID){
 			if($this->ModifierID == $this->ID){
 				$ModifierIDtext = $this->username . ' (' . $this->First . ' ' . $this->Second . ')';
-			} else{
+			} else {
 				$this->DB_WE->query('SELECT username,First,Second FROM ' . USER_TABLE . ' WHERE ID=' . intval($this->ModifierID));
 				$ModifierIDtext = ($this->DB_WE->next_record() ?
 						$this->DB_WE->f('username') . ' (' . $this->DB_WE->f('First') . ' ' . $this->DB_WE->f('Second') . ')' :
 						g_l('modules_users', '[lostID]') . $this->ModifierID . g_l('modules_users', '[lostID2]'));
 			}
-		} else{
+		} else {
 			$ModifierIDtext = '-';
 		}
 		$_tableObj->setCol(6, 0, array('class' => 'defaultfont'), g_l('modules_users', '[CreatorID]') . ' ' . $CreatorIDtext);
@@ -1448,7 +1448,7 @@ function toggleRebuildPerm(disabledOnly) {';
 			}
 		}
 	}';
-				} else{
+				} else {
 					$handler = '
 	if (document.we_form.' . $this->Name . '_Permission_' . $pname . ') {
 		document.we_form.' . $this->Name . '_Permission_' . $pname . ".onclick = rebuildCheckboxClicked;
@@ -1652,7 +1652,7 @@ function delElement(elvalues,elem) {
 					if(count($fooA)){
 						$value = $fooA[0];
 						$path = id_to_path($value);
-					} else{
+					} else {
 						$path = '/';
 						$value = 0;
 					}
@@ -1795,7 +1795,7 @@ function delElement(elvalues,elem) {
 		//	Look which languages are installed ...
 		$_language_directory = dir(WE_INCLUDES_PATH . 'we_language');
 
-		while(false !== ($entry = $_language_directory->read())) {
+		while(false !== ($entry = $_language_directory->read())){
 			if($entry != '.' && $entry != '..'){
 				if(is_dir(WE_INCLUDES_PATH . 'we_language/' . $entry)){
 					$_language[$entry] = $entry;
@@ -1814,7 +1814,7 @@ function delElement(elvalues,elem) {
 				// Set selected extension
 				if($key == $myCompLang){
 					$_languages->selectOption($key);
-				} else{
+				} else {
 					// do nothing
 				}
 			}
@@ -2209,7 +2209,7 @@ function show_seem_chooser(val) {
 				if($tf == "Courier New"){
 					$_template_editor_font_select_box->selectOption($tf);
 				}
-			} else{
+			} else {
 				if($tf == $this->Preferences['editorFontname']){
 					$_template_editor_font_select_box->selectOption($tf);
 				}
@@ -2225,7 +2225,7 @@ function show_seem_chooser(val) {
 				if($tf == 11){
 					$_template_editor_font_sizes_select_box->selectOption($tf);
 				}
-			} else{
+			} else {
 				if($tf == $this->Preferences['editorFontsize']){
 					$_template_editor_font_sizes_select_box->selectOption($tf);
 				}
@@ -2331,7 +2331,7 @@ function show_seem_chooser(val) {
 
 		if($this->Type == self::TYPE_ALIAS){
 			$we_tabs->addTab(new we_tab('#', g_l('tabs', '[module][data]'), 'TAB_ACTIVE', 'setTab(0);'));
-		} else{
+		} else {
 			$we_tabs->addTab(new we_tab('#', g_l('tabs', '[module][data]'), ($tab == 0 ? 'TAB_ACTIVE' : 'TAB_NORMAL'), 'self.setTab(0);'));
 
 			$we_tabs->addTab(new we_tab('#', g_l('tabs', '[module][permissions]'), ($tab == 1 ? 'TAB_ACTIVE' : 'TAB_NORMAL'), 'self.setTab(1);'));
@@ -2414,13 +2414,13 @@ top.content.hloaded=1;') .
 				$passwd = md5($clearPassword . md5($username));
 				break;
 			case 2:
-		if(version_compare(PHP_VERSION, '5.3.7') >= 0){
-				$passwd = crypt($clearPassword, $password);
-		}else{
-			echo 'unable to check passwords php version to old ('.PHP_VERSION.', needed at least 5.3.7)!';
-			t_e('unable to check passwords php version to old ('.PHP_VERSION.', needed at least 5.3.7)!');
-			exit();
-		}
+				if(version_compare(PHP_VERSION, '5.3.7') >= 0){
+					$passwd = crypt($clearPassword, $password);
+				} else {
+					echo 'unable to check passwords php version to old (' . PHP_VERSION . ', needed at least 5.3.7)!';
+					t_e('unable to check passwords php version to old (' . PHP_VERSION . ', needed at least 5.3.7)!');
+					exit();
+				}
 				break;
 		}
 		return ($passwd == $password);
@@ -2437,7 +2437,7 @@ top.content.hloaded=1;') .
 			}
 			$useSalt = 2;
 			return crypt($passwd, $salt);
-		} else{
+		} else {
 			$useSalt = 1;
 			return md5($passwd . md5($username));
 		}
@@ -2455,10 +2455,11 @@ top.content.hloaded=1;') .
 		}
 		$db->query('SELECT `key`,`value` FROM ' . PREFS_TABLE . ' WHERE userID=' . intval($id));
 		//read db
-		while($db->next_record(MYSQL_ASSOC)) {
+		while($db->next_record(MYSQL_ASSOC)){
 			$ret[$db->f('key')] = $db->f('value');
 		}
 		if($login){
+			$_SESSION['prefs'] = $ret;
 			self::writePrefs($id, $db);
 		}
 		return $ret;
@@ -2477,7 +2478,7 @@ top.content.hloaded=1;') .
 			foreach($GLOBALS['configs']['user'] as $key => $vals){
 				$old[$key] = $vals[0];
 			}
-		} else{
+		} else {
 			$old = self::readPrefs($id, $db);
 			$data = $_SESSION['prefs'];
 		}
