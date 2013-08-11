@@ -98,10 +98,11 @@ if($_REQUEST['we_cmd'][0] == 'do_move' || $_REQUEST['we_cmd'][0] == 'move_single
 			if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){ //	different messages in normal or seeMode
 				if(!empty($notMovedItems)){
 					$_SESSION['weS']['move_files_nok'] = array();
-					$_SESSION['weS']["move_files_info"] = str_replace("\\n", "", sprintf(g_l('alert', "[move_of_files_failed]"), ""));
+					$_SESSION['weS']["move_files_info"] = str_replace("\\n", '', sprintf(g_l('alert', '[move_of_files_failed]'), ""));
 					foreach($notMovedItems as $item){
 						$_SESSION['weS']['move_files_nok'][] = array(
-							"icon" => $item['Icon'], "path" => $item['Path']
+							"icon" => $item['Icon'],
+							"path" => $item['Path']
 						);
 					}
 					$script .= 'new jsWindow("' . WEBEDITION_DIR . 'moveInfo.php","we_moveinfo",-1,-1,550,550,true,true,true);' . "\n";
@@ -115,10 +116,10 @@ if($_REQUEST['we_cmd'][0] == 'do_move' || $_REQUEST['we_cmd'][0] == 'move_single
 		}
 	} elseif(!isset($_REQUEST["we_target"]) || !$_REQUEST["we_target"]){
 		$script .= 'top.toggleBusy(0);' .
-			we_message_reporting::getShowMessageCall(g_l('alert', "[move_no_dir]"), we_message_reporting::WE_MESSAGE_ERROR);
+			we_message_reporting::getShowMessageCall(g_l('alert', '[move_no_dir]'), we_message_reporting::WE_MESSAGE_ERROR);
 	} else {
 		$script .= 'top.toggleBusy(0);' .
-			we_message_reporting::getShowMessageCall(g_l('alert', "[nothing_to_move]"), we_message_reporting::WE_MESSAGE_ERROR);
+			we_message_reporting::getShowMessageCall(g_l('alert', '[nothing_to_move]'), we_message_reporting::WE_MESSAGE_ERROR);
 	}
 	print we_html_element::jsScript(JS_DIR . 'windows.js') .
 		we_html_element::jsElement($script);
@@ -300,38 +301,30 @@ $ws_Id = get_def_ws($table);
 if($ws_Id){
 	$ws_path = id_to_path($ws_Id, $table);
 } else {
-	$ws_Id = '0';
+	$ws_Id = 0;
 	$ws_path = '/';
 }
 
 $textname = 'we_targetname';
 $idname = 'we_target';
 
-$yuiSuggest->setAcId("Dir");
-$yuiSuggest->setContentType("folder");
+$yuiSuggest->setAcId('Dir');
+$yuiSuggest->setContentType('folder');
 $yuiSuggest->setInput($textname, $ws_path);
 $yuiSuggest->setMaxResults(4);
 $yuiSuggest->setMayBeEmpty(false);
 $yuiSuggest->setResult(trim($idname), $ws_Id);
-$yuiSuggest->setSelector("Dirselector");
+$yuiSuggest->setSelector('Dirselector');
 $yuiSuggest->setTable($table);
 $yuiSuggest->setWidth(250);
 $yuiSuggest->setContainerWidth(360);
-$wecmdenc1 = we_cmd_enc("top.rframe.treeheader.document.we_form.elements." . $idname . ".value");
-$wecmdenc2 = we_cmd_enc("top.rframe.treeheader.document.we_form.elements." . $textname . ".value");
-$yuiSuggest->setSelectButton(
-	we_button::create_button("select", "javascript:we_cmd('openDirselector',document.we_form.elements['$idname'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','" . session_id() . "',0)"), 10);
+$wecmdenc1 = we_cmd_enc('top.rframe.treeheader.document.we_form.elements.' . $idname . '.value');
+$wecmdenc2 = we_cmd_enc('top.rframe.treeheader.document.we_form.elements.' . $textname . '.value');
+$yuiSuggest->setSelectButton(we_button::create_button("select", "javascript:we_cmd('openDirselector',document.we_form.elements['$idname'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','" . session_id() . "',0)"), 10);
 
 $weAcSelector = $yuiSuggest->getHTML();
 
-$content = '<span class="middlefont" style="padding-right:5px;padding-bottom:10px;">' . g_l('newFile', "[move_text]") . '</span>
-			<p style="margin:0px 0px 10px 0px;padding:0px;">' . $weAcSelector . '</p>';
-
-$_buttons = we_button::position_yes_no_cancel(
-		we_button::create_button("ok", "javascript:press_ok_move();"), "", we_button::create_button("quit_move", "javascript:we_cmd('exit_move','','$table')"), 10, "left");
-
-$form = we_html_tools::hidden("sel", "") . '</form>';
-
+$_buttons = we_button::position_yes_no_cancel(we_button::create_button("ok", "javascript:press_ok_move();"), "", we_button::create_button("quit_move", "javascript:we_cmd('exit_move','','$table')"), 10, "left");
 
 
 print
@@ -340,8 +333,10 @@ print
 <div style="width:460px;">
 <h1 class="big" style="padding:0px;margin:0px;">' . oldHtmlspecialchars(
 		g_l('newFile', "[title_move]")) . '</h1>
-<p class="small">' . $content . '</p>
-<div>' . $_buttons . '</div></div>' . $form .
+<p class="small"><span class="middlefont" style="padding-right:5px;padding-bottom:10px;">' . g_l('newFile', "[move_text]") . '</span>
+			<p style="margin:0px 0px 10px 0px;padding:0px;">' . $weAcSelector . '</p></p>
+<div>' . $_buttons . '</div></div>' . we_html_tools::hidden("sel", "") .
+	'</form>' .
 	$yuiSuggest->getYuiCss() .
 	$yuiSuggest->getYuiJs() .
 	'</body>

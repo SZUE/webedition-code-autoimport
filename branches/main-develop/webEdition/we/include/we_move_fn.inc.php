@@ -80,7 +80,7 @@ function checkMoveItem($DB_WE, $targetDirectoryID, $id, $table, &$items2move){
 			return -2;
 		}
 
-		if(defined("OBJECT_TABLE") && $table == OBJECT_FILES_TABLE){
+		if(defined('OBJECT_TABLE') && $table == OBJECT_FILES_TABLE){
 			// check if class directory is the same
 			if(substr($DB_WE->f('Path'), 0, strlen($rootdir) + 1) != $rootdir . '/'){
 				return -3;
@@ -101,7 +101,7 @@ function moveItem($targetDirectoryID, $id, $table, &$notMovedItems){
 	$table = addslashes($table);
 
 	// get information about the target directory
-	if(defined("OBJECT_TABLE") && $table == OBJECT_TABLE && !$targetDirectoryID){
+	if(defined('OBJECT_TABLE') && $table == OBJECT_TABLE && !$targetDirectoryID){
 		return false;
 	} elseif($targetDirectoryID){
 		$row = getHash('SELECT IsFolder,Path,ID FROM ' . $DB_WE->escape($table) . ' WHERE ID=' . intval($targetDirectoryID), $DB_WE);
@@ -111,7 +111,7 @@ function moveItem($targetDirectoryID, $id, $table, &$notMovedItems){
 		$newPath = $row['Path'];
 		$parentID = $row['ID'];
 	} else {
-		$newPath = "";
+		$newPath = '';
 		$parentID = 0;
 	}
 
@@ -185,7 +185,7 @@ function moveItem($targetDirectoryID, $id, $table, &$notMovedItems){
 				$tempOldParentID = $object->ParentID;
 				$tempNewParentID = $parentID;
 				$tempOldPath = $object->Path;
-				$tempNewPath = "" . $newPath . "/" . $fileName;
+				$tempNewPath = $newPath . '/' . $fileName;
 				$object->Path = $tempNewPath;
 				$object->ParentID = $tempNewParentID;
 				if(empty($version_exists)){
@@ -211,7 +211,7 @@ function moveItem($targetDirectoryID, $id, $table, &$notMovedItems){
 			$tableID = $row['TableID'];
 			$oldPath = $row['Path'];
 			$fileName = $row['Text'];
-			$isFolder = ($row["IsFolder"] == 1 ? true : false);
+			$isFolder = $row['IsFolder'] == 1;
 			$icon = $row['Icon'];
 			$item = array(
 				'ID' => $id, 'Text' => $fileName, 'Path' => $oldPath, 'Icon' => $icon

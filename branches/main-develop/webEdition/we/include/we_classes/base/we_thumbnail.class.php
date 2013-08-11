@@ -315,7 +315,7 @@ class we_thumbnail{
 			return self::NO_GDLIB_ERROR;
 		}
 		$tmp = explode('.', $this->imagePath);
-		$type = we_image_edit::$GDIMAGE_TYPE['.' . strtolower($tmp[count($tmp) - 1])];
+		$type = we_image_edit::$GDIMAGE_TYPE['.' . strtolower(end($tmp))];
 		if($this->useOriginalSize() && $this->outputFormat == $type){
 			return self::USE_ORIGINAL;
 		}

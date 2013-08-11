@@ -817,9 +817,9 @@ class weCustomerView extends weModuleView{
 						}
 					}
 
-					if($this->saveBranch($branch_old, $branch_new) == -5)
+					if($this->saveBranch($branch_old, $branch_new) == -5){
 						we_message_reporting::getShowMessageCall(sprintf(g_l('modules_customer', '[cannot_save_property]'), $field), we_message_reporting::WE_MESSAGE_ERROR);
-					else {
+					}else {
 						$this->customer->loadPresistents();
 						$js = '
 							opener.document.we_form.branch.value="' . g_l('modules_customer', '[other]') . '";
@@ -1113,7 +1113,7 @@ class weCustomerView extends weModuleView{
 				$banche = '';
 				$fieldname = $this->customer->transFieldName($k, $banche);
 				if($banche == $old_branch && $fieldname != ''){
-					$this->db->query('ALTER TABLE ' . $this->customer->table . ' CHANGE ' . $k . ' ' . $new_branch . '_' . $fieldname . ' ' . $v['Type'] . (!empty($v["Default"]) ? " DEFAULT '" . $v["Default"] . "'" : '') . " NOT NULL;");
+					$this->db->query('ALTER TABLE ' . $this->customer->table . ' CHANGE ' . $k . ' ' . $new_branch . '_' . $fieldname . ' ' . $v['Type'] . (!empty($v["Default"]) ? " DEFAULT '" . $v["Default"] . "'" : '') . ' NOT NULL');
 				}
 			}
 		}

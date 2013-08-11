@@ -29,6 +29,7 @@ class we_user{
 	const TYPE_ALIAS = 2;
 	const INVALID_CREDENTIALS = 1;
 	const MAX_LOGIN_COUNT_REACHED = 2;
+	const ERR_USER_PATH_NOK = -5;
 
 	// Name of the class => important for reconstructing the class from outside the class
 	var $ClassName = __CLASS__;
@@ -295,7 +296,7 @@ class we_user{
 			$ppath = ($this->ParentID == 0 ? '/' : $this->getPath($this->ParentID));
 			$dpath = $this->getPath($this->ID);
 			if(preg_match('|' . $dpath . '|', $ppath)){
-				return -5;
+				return self::ERR_USER_PATH_NOK;
 			}
 		}
 		if($this->Type == self::TYPE_ALIAS){

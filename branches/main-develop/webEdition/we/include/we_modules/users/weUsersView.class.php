@@ -25,7 +25,7 @@
 /* the parent class of storagable webEdition classes */
 
 
-class weUsersView extends weModuleView {
+class weUsersView extends weModuleView{
 
 	var $db;
 	var $frameset;
@@ -170,7 +170,7 @@ class weUsersView extends weModuleView {
 						top.content.editor.properties.we_submitForm("cmd","' . $this->frameset . '?pnt=cmd");
 					}
 					else {
-						top.content.cmd.location="' .$this->frameset . '?pnt=cmd&ucmd=display_user&uid="+arguments[1];
+						top.content.cmd.location="' . $this->frameset . '?pnt=cmd&ucmd=display_user&uid="+arguments[1];
 					}
 					break;
 				case "display_alias":
@@ -278,7 +278,7 @@ class weUsersView extends weModuleView {
 
 		return we_html_element::jsScript(JS_DIR . 'images.js') .
 			we_html_element::jsScript(JS_DIR . 'windows.js') .
-			we_html_element::jsScript(JS_DIR . 'md5.js').
+			we_html_element::jsScript(JS_DIR . 'md5.js') .
 			we_html_element::jsElement($jsCode);
 	}
 
@@ -637,7 +637,7 @@ function we_cmd(){
 						}
 					}
 					$i = 0;
-					while(isset($_REQUEST[$_REQUEST['obj_name'] . '_Workspace_' . FILE_TABLE . '_' . $i]) && !empty($_REQUEST[$_REQUEST['obj_name'] . '_Workspace_' . FILE_TABLE . '_' . $i])) {
+					while(isset($_REQUEST[$_REQUEST['obj_name'] . '_Workspace_' . FILE_TABLE . '_' . $i]) && !empty($_REQUEST[$_REQUEST['obj_name'] . '_Workspace_' . FILE_TABLE . '_' . $i])){
 						$weAcResult = $weAcQuery->getItemById($_REQUEST[$_REQUEST['obj_name'] . '_Workspace_' . FILE_TABLE . '_' . $i], FILE_TABLE, array("IsFolder"));
 						if(!is_array($weAcResult) || $weAcResult[0]['IsFolder'] == 0){
 							$isAcError = true;
@@ -646,7 +646,7 @@ function we_cmd(){
 						$i++;
 					}
 					$i = 0;
-					while(isset($_REQUEST[$_REQUEST['obj_name'] . '_Workspace_' . TEMPLATES_TABLE . '_' . $i]) && !empty($_REQUEST[$_REQUEST['obj_name'] . '_Workspace_' . TEMPLATES_TABLE . '_' . $i])) {
+					while(isset($_REQUEST[$_REQUEST['obj_name'] . '_Workspace_' . TEMPLATES_TABLE . '_' . $i]) && !empty($_REQUEST[$_REQUEST['obj_name'] . '_Workspace_' . TEMPLATES_TABLE . '_' . $i])){
 						$weAcResult = $weAcQuery->getItemById($_REQUEST[$_REQUEST['obj_name'] . '_Workspace_' . TEMPLATES_TABLE . '_' . $i], TEMPLATES_TABLE, array("IsFolder"));
 						if(!is_array($weAcResult) || $weAcResult[0]['IsFolder'] == 0){
 							$isAcError = true;
@@ -655,7 +655,7 @@ function we_cmd(){
 						$i++;
 					}
 					$i = 0;
-					while(isset($_REQUEST[$_REQUEST['obj_name'] . '_Workspace_' . NAVIGATION_TABLE . '_' . $i]) && !empty($_REQUEST[$_REQUEST['obj_name'] . '_Workspace_' . NAVIGATION_TABLE . '_' . $i])) {
+					while(isset($_REQUEST[$_REQUEST['obj_name'] . '_Workspace_' . NAVIGATION_TABLE . '_' . $i]) && !empty($_REQUEST[$_REQUEST['obj_name'] . '_Workspace_' . NAVIGATION_TABLE . '_' . $i])){
 						$weAcResult = $weAcQuery->getItemById($_REQUEST[$_REQUEST['obj_name'] . '_Workspace_' . NAVIGATION_TABLE . '_' . $i], NAVIGATION_TABLE, array("IsFolder"));
 						if(!is_array($weAcResult) || $weAcResult[0]['IsFolder'] == 0){
 							$isAcError = true;
@@ -664,7 +664,7 @@ function we_cmd(){
 						$i++;
 					}
 					if(defined("OBJECT_FILES_TABLE")){
-						while(isset($_REQUEST[$_REQUEST['obj_name'] . '_Workspace_' . OBJECT_FILES_TABLE . '_' . $i]) && !empty($_REQUEST[$_REQUEST['obj_name'] . '_Workspace_' . OBJECT_FILES_TABLE . '_' . $i])) {
+						while(isset($_REQUEST[$_REQUEST['obj_name'] . '_Workspace_' . OBJECT_FILES_TABLE . '_' . $i]) && !empty($_REQUEST[$_REQUEST['obj_name'] . '_Workspace_' . OBJECT_FILES_TABLE . '_' . $i])){
 							$weAcResult = $weAcQuery->getItemById($_REQUEST[$_REQUEST['obj_name'] . '_Workspace_' . OBJECT_FILES_TABLE . '_' . $i], OBJECT_FILES_TABLE, array("IsFolder"));
 							if(!is_array($weAcResult) || $weAcResult[0]['IsFolder'] == 0){
 								$isAcError = true;
@@ -675,7 +675,7 @@ function we_cmd(){
 					}
 
 					if(defined("NEWSLETTER_TABLE")){
-						while(isset($_REQUEST[$_REQUEST['obj_name'] . '_Workspace_' . NEWSLETTER_TABLE . '_' . $i]) && !empty($_REQUEST[$_REQUEST['obj_name'] . '_Workspace_' . NEWSLETTER_TABLE . '_' . $i])) {
+						while(isset($_REQUEST[$_REQUEST['obj_name'] . '_Workspace_' . NEWSLETTER_TABLE . '_' . $i]) && !empty($_REQUEST[$_REQUEST['obj_name'] . '_Workspace_' . NEWSLETTER_TABLE . '_' . $i])){
 							$weAcResult = $weAcQuery->getItemById($_REQUEST[$_REQUEST['obj_name'] . '_Workspace_' . NEWSLETTER_TABLE . '_' . $i], NEWSLETTER_TABLE, array("IsFolder"));
 							if(!is_array($weAcResult) || $weAcResult[0]['IsFolder'] == 0){
 								$isAcError = true;
@@ -740,13 +740,10 @@ function we_cmd(){
 							break;
 						}
 
-						if($user_object->ID){
-							$foo = getHash('SELECT ParentID FROM ' . USER_TABLE . ' WHERE ID=' . intval($user_object->ID), $user_object->DB_WE);
-						} else{
-							$foo = array(
-								"ParentID" => 0
-							);
-						}
+						$foo = ($user_object->ID ?
+								getHash('SELECT ParentID FROM ' . USER_TABLE . ' WHERE ID=' . intval($user_object->ID), $user_object->DB_WE) :
+								array("ParentID" => 0));
+
 						$ret = $user_object->saveToDB();
 						$_SESSION["user_session_data"] = $user_object->getState();
 
@@ -761,28 +758,26 @@ function we_cmd(){
 									if($user_object->ID == $_SESSION['user']['ID']){ // change preferences if user edits his own startfile
 										$_SESSION['prefs']['seem_start_file'] = $seem_start_file;
 									}
-								} else{
+								} else {
 									//	Speichere seem_start_file aus SESSION
 									$seem_start_file = $_SESSION["save_user_seem_start_file"][$_REQUEST["uid"]];
 								}
 
-								$tmp->query('REPLACE INTO ' . PREFS_TABLE . ' SET userID=' . intval($_REQUEST['uid']).',`key`="seem_start_file",`value`="' . $tmp->escape($seem_start_file).'"');
+								$tmp->query('REPLACE INTO ' . PREFS_TABLE . ' SET userID=' . intval($_REQUEST['uid']) . ',`key`="seem_start_file",`value`="' . $tmp->escape($seem_start_file) . '"');
 								unset($tmp);
 								unset($seem_start_file);
-								if(isset($_SESSION["save_user_seem_start_file"][$_REQUEST["uid"]])){
-									unset($_SESSION["save_user_seem_start_file"][$_REQUEST["uid"]]);
+								if(isset($_SESSION['save_user_seem_start_file'][$_REQUEST["uid"]])){
+									unset($_SESSION['save_user_seem_start_file'][$_REQUEST["uid"]]);
 								}
 							}
 						}
 
-						if($ret == -5){
+						if($ret == we_user::ERR_USER_PATH_NOK){
 							print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_users', "[user_path_nok]"), we_message_reporting::WE_MESSAGE_ERROR));
-						} else{
-							if($id){
-								$tree_code = 'top.content.updateEntry(' . $user_object->ID . ',' . $user_object->ParentID . ',"' . $user_object->Text . '",' . ($user_object->checkPermission("ADMINISTRATOR") ? 1 : 0) . ',' . ($user_object->LoginDenied ? 1 : 0) . ');';
-							} else{
-								$tree_code = 'top.content.makeNewEntry("user.gif",' . $user_object->ID . ',' . $user_object->ParentID . ',"' . $user_object->Text . '",false,"' . (($user_object->Type == we_user::TYPE_USER_GROUP) ? ("folder") : (($user_object->Type == we_user::TYPE_ALIAS) ? ("alias") : ("user"))) . '","' . USER_TABLE . '",' . ($user_object->checkPermission("ADMINISTRATOR") ? 1 : 0) . ',' . ($user_object->LoginDenied ? 1 : 0) . ');';
-							}
+						} else {
+							$tree_code = ($id ?
+									'top.content.updateEntry(' . $user_object->ID . ',' . $user_object->ParentID . ',"' . $user_object->Text . '",' . ($user_object->checkPermission("ADMINISTRATOR") ? 1 : 0) . ',' . ($user_object->LoginDenied ? 1 : 0) . ');' :
+									'top.content.makeNewEntry("user.gif",' . $user_object->ID . ',' . $user_object->ParentID . ',"' . $user_object->Text . '",false,"' . (($user_object->Type == we_user::TYPE_USER_GROUP) ? ("folder") : (($user_object->Type == we_user::TYPE_ALIAS) ? ("alias") : ("user"))) . '","' . USER_TABLE . '",' . ($user_object->checkPermission("ADMINISTRATOR") ? 1 : 0) . ',' . ($user_object->LoginDenied ? 1 : 0) . ');');
 
 							switch($user_object->Type){
 								case we_user::TYPE_ALIAS:
@@ -895,7 +890,7 @@ function we_cmd(){
 						$found = false;
 						$first = true;
 
-						while($search) {
+						while($search){
 							if($mpid == $pid){
 								$search = false;
 								if(!$first){
@@ -913,7 +908,7 @@ function we_cmd(){
 								($found || we_hasPerm("ADMINISTRATOR") ?
 									'top.content.we_cmd(\'display_user\',' . $_REQUEST["uid"] . ')' :
 									we_message_reporting::getShowMessageCall(g_l('alert', "[access_denied]"), we_message_reporting::WE_MESSAGE_ERROR)
-							));
+						));
 					}
 					break;
 			}
