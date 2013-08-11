@@ -102,12 +102,12 @@ class we_binaryDocument extends we_document{
 		if($this->getFilesize() == 0){
 			print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('metadata', '[file_size_0]'), we_message_reporting::WE_MESSAGE_ERROR));
 			return false;
-		} else{
+		} else {
 			if(parent::we_save($resave)){
 				$this->DocChanged = false;
 				$this->elements["data"]["dat"] = $this->getSitePath();
 				return $this->insertAtIndex();
-			} else{
+			} else {
 				return false;
 			}
 		}
@@ -132,7 +132,7 @@ class we_binaryDocument extends we_document{
 				we_util_File::delete($this->getSitePath(true));
 				$this->rewriteNavigation();
 			}
-		} else{
+		} else {
 			return false;
 		}
 
@@ -167,7 +167,7 @@ class we_binaryDocument extends we_document{
 		if(isset($this->IsSearchable) && $this->IsSearchable && $this->Published){
 			$text = "";
 			$this->resetElements();
-			while((list($k, $v) = $this->nextElement(""))) {
+			while((list($k, $v) = $this->nextElement(""))){
 				$foo = (isset($v["dat"]) && substr($v["dat"], 0, 2) == "a:") ? unserialize($v["dat"]) : "";
 				if(!is_array($foo)){
 					if(isset($v["type"]) && $v["type"] == "txt"){
@@ -207,7 +207,7 @@ class we_binaryDocument extends we_document{
 				}
 			}
 			return $this->metaDataReader;
-		} else{
+		} else {
 			return false;
 		}
 	}
@@ -352,7 +352,7 @@ class we_binaryDocument extends we_document{
 
 	function savebinarydata(){
 		$_data = $this->getElement('data');
-		if($_data && !file_exists($_data)){
+		if($_data && (strlen($_data) > 512 || !@file_exists($_data))){ //assume data>512 = binary data
 			$_path = weFile::saveTemp($_data);
 			$this->setElement('data', $_path);
 		}

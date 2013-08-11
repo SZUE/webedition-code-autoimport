@@ -31,15 +31,13 @@ if(isset($_REQUEST['we_cmd'][0])){
 	$out = '';
 
 	switch($_REQUEST['we_cmd'][0]){
-
 		case "editSource" :
-
 			$_session = session_id();
 			$_we_transaction = isset($_REQUEST['we_cmd'][2]) ? $_REQUEST['we_cmd'][2] : '';
 
 			if(isset($_SESSION['weS']['we_data'][$_we_transaction][0]['Path']) && !empty($_SESSION['weS']['we_data'][$_we_transaction][0]['Path'])){
 				$_filename = $_SESSION['weS']['we_data'][$_we_transaction][0]['Path'];
-			} else{
+			} else {
 				$_filename = isset($_REQUEST['we_cmd'][1]) ? $_REQUEST['we_cmd'][1] : '';
 			}
 
@@ -57,20 +55,18 @@ if(isset($_REQUEST['we_cmd'][0])){
 
 
 			$out = we_html_element::jsElement('
-					session = "' . session_id() . '";
-					transaction = "' . $_we_transaction . '";
-					filename = "' . addslashes($_filename) . '";
-					ct = "' . $_ct . '";
-					source = "' . base64_encode($_source) . '";
-					if (top.plugin.isLoaded && (typeof top.plugin.document.WePlugin.editSource == "function") ) {
-						top.plugin.document.WePlugin.editSource(session,transaction,filename,source,ct,"true","' . $charset . '");
-					}
-				');
+session = "' . session_id() . '";
+transaction = "' . $_we_transaction . '";
+filename = "' . addslashes($_filename) . '";
+ct = "' . $_ct . '";
+source = "' . base64_encode($_source) . '";
+if (top.plugin.isLoaded && (typeof top.plugin.document.WePlugin.editSource == "function") ) {
+	top.plugin.document.WePlugin.editSource(session,transaction,filename,source,ct,"true","' . $charset . '");
+}');
 
 			break;
 
 		case "editFile":
-
 			$_session = session_id();
 			$_we_transaction = isset($_REQUEST['we_cmd'][1]) ? $_REQUEST['we_cmd'][1] : '';
 
@@ -87,20 +83,20 @@ if(isset($_REQUEST['we_cmd'][0])){
 
 			if(file_exists($we_doc->getElement('data'))){
 				copy($we_doc->getElement('data'), $_SERVER['DOCUMENT_ROOT'] . $_tmp_file);
-			} else{
+			} else {
 				t_e("$_tmp_file not exists in " . __FILE__ . " on line " . __LINE__);
 			}
 
 
 
 			$out = we_html_element::jsElement('
-						session = "' . session_id() . '";
-						transaction = "' . $_we_transaction . '";
-						siteurl="' . getServerUrl(true) . WEBEDITION_DIR . 'showTempFile.php?file=' . $_tmp_file . '";
-						top.plugin.document.WePlugin.editFile(session,transaction,"' . addslashes($_filename) . '",siteurl,"' . $we_ContentType . '");
-					');
+session = "' . session_id() . '";
+transaction = "' . $_we_transaction . '";
+siteurl="' . getServerUrl(true) . WEBEDITION_DIR . 'showTempFile.php?file=' . $_tmp_file . '";
+top.plugin.document.WePlugin.editFile(session,transaction,"' . addslashes($_filename) . '",siteurl,"' . $we_ContentType . '");');
 
 			break;
+
 		case "setSource":
 			$transactionID = isset($_REQUEST['we_cmd'][1]) ? $_REQUEST['we_cmd'][1] : '';
 			if(isset($_SESSION['weS']['we_data'][$transactionID][0]["elements"]["data"]["dat"])){
@@ -108,8 +104,8 @@ if(isset($_REQUEST['we_cmd'][0])){
 				$_SESSION['weS']['we_data'][$transactionID][1]["data"]["dat"] = $_REQUEST['we_cmd'][2];
 
 				$out = we_html_element::jsElement('
-					var _EditorFrame = top.weEditorFrameController.getEditorFrameByTransaction("' . $transactionID . '");
-					_EditorFrame.getContentFrame().reloadContent = true;');
+var _EditorFrame = top.weEditorFrameController.getEditorFrameByTransaction("' . $transactionID . '");
+_EditorFrame.getContentFrame().reloadContent = true;');
 			}
 
 			break;
@@ -118,26 +114,23 @@ if(isset($_REQUEST['we_cmd'][0])){
 			$_we_transaction = isset($_REQUEST['we_cmd'][1]) ? $_REQUEST['we_cmd'][1] : '';
 
 			$out = we_html_element::jsElement('
-					var _EditorFrame = top.weEditorFrameController.getEditorFrameByTransaction("' . $_we_transaction . '");
-					_EditorFrame.setEditorIsHot(true);
-					if (
-						_EditorFrame.getEditorEditPageNr() == ' . WE_EDITPAGE_CONTENT . ' ||
-						_EditorFrame.getEditorEditPageNr() == ' . WE_EDITPAGE_PREVIEW . ' ||
-						_EditorFrame.getEditorEditPageNr() == ' . WE_EDITPAGE_PREVIEW_TEMPLATE . '
-					) {
-						if ( _EditorFrame.getEditorIsActive() ) { // reload active editor
-							_EditorFrame.setEditorReloadNeeded(true);
-							_EditorFrame.setEditorIsActive(true);
-						} else {
-							_EditorFrame.setEditorReloadNeeded(true);
-						}
-					}
-
-				');
-
+var _EditorFrame = top.weEditorFrameController.getEditorFrameByTransaction("' . $_we_transaction . '");
+_EditorFrame.setEditorIsHot(true);
+if (
+	_EditorFrame.getEditorEditPageNr() == ' . WE_EDITPAGE_CONTENT . ' ||
+	_EditorFrame.getEditorEditPageNr() == ' . WE_EDITPAGE_PREVIEW . ' ||
+	_EditorFrame.getEditorEditPageNr() == ' . WE_EDITPAGE_PREVIEW_TEMPLATE . '
+) {
+	if ( _EditorFrame.getEditorIsActive() ) { // reload active editor
+		_EditorFrame.setEditorReloadNeeded(true);
+		_EditorFrame.setEditorIsActive(true);
+	} else {
+		_EditorFrame.setEditorReloadNeeded(true);
+	}
+}');
 			break;
-		case "setBinary":
 
+		case "setBinary":
 			if(isset($_FILES['uploadfile']) && isset($_REQUEST['we_transaction'])){
 				$_we_transaction = (preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction']) ? $_REQUEST['we_transaction'] : 0);
 				$we_ContentType = $_REQUEST['contenttype'];
@@ -158,7 +151,7 @@ if(isset($_REQUEST['we_cmd'][0])){
 						$we_doc->setElement('width', $_dim[0], 'dat');
 						$we_doc->setElement('height', $_dim[1], 'dat');
 					}
-				} else{
+				} else {
 					$we_doc->setElement('data', $tempName, 'dat');
 				}
 
@@ -182,9 +175,9 @@ if(isset($_REQUEST['we_cmd'][0])){
 //FIXME: charset
 	print we_html_element::htmlDocType() . we_html_element::htmlHtml(
 			we_html_element::htmlHead(
-				$_meta_content_type = we_html_element::htmlMeta(array("http-equiv" => "content-type", "content" => "text/html; charset=" . $GLOBALS['WE_BACKENDCHARSET']))
+				we_html_tools::htmlMetaCtCharset('text/html', $GLOBALS['WE_BACKENDCHARSET'])
 			) .
-			we_html_element::htmlBody(array("bgcolor" => "white", "marginwidth" => 0, "marginheight" => 0, "leftmargin" => 0, "topmargin" => 0), $out
+			we_html_element::htmlBody(array('bgcolor' => 'white', 'marginwidth' => 0, 'marginheight' => 0, 'leftmargin' => 0, 'topmargin' => 0), $out
 			)
 	);
 }
