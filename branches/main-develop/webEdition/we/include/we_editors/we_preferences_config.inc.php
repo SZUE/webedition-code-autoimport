@@ -97,8 +97,8 @@ $GLOBALS['configs'] = array(
 // pageLogger Dir
 		'WE_TRACKER_DIR' => array('Directory in which pageLogger is installed', '/pageLogger'),
 		'DB_SET_CHARSET' => array('connection charset to db', 'utf8'),
-		'WYSIWYG_TYPE' => array('define used wysiwyg editor', 'default'),
-		'WYSIWYG_TYPE_FRONTEND' => array('define used wysiwyg editor in frontend', 'default'),
+		'WYSIWYG_TYPE' => array('define used wysiwyg editor', 'tinyMCE'),
+		'WYSIWYG_TYPE_FRONTEND' => array('define used wysiwyg editor in frontend', 'tinyMCE'),
 		'WE_MAILER' => array('mailer type; possible values are php and smtp', 'php'),
 		'SMTP_SERVER' => array('SMTP_SERVER', 'localhost'),
 		'SMTP_PORT' => array('SMTP server port', 25),

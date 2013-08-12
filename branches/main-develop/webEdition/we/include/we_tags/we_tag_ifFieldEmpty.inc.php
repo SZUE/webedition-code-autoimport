@@ -63,14 +63,12 @@ function we_isFieldNotEmpty($attribs){
 			return false;
 		case 'multiobject' :
 			if(isset($GLOBALS['lv'])){
-				if(isset($GLOBALS['lv']->object)){
-					$data = unserialize($GLOBALS['lv']->f($orig_match));
-				} elseif($GLOBALS['lv']->ClassName == 'we_listview_shoppingCart'){//Bug #4827
-					$data = unserialize($GLOBALS['lv']->f($match));
-				} else{
+				if(isset($GLOBALS['lv']->object) || $GLOBALS['lv']->ClassName == 'we_listview_shoppingCart'){
+					$data = unserialize($GLOBALS['lv']->object->f($orig_match));
+				} else {
 					$data = unserialize($GLOBALS['lv']->getDBf('we_' . $orig_match));
 				}
-			} else{
+			} else {
 				$data = unserialize($GLOBALS['we_doc']->getElement($orig_match));
 			}
 			if(isset($data['objects']) && is_array($data['objects']) && !empty($data['objects'])){
@@ -116,7 +114,7 @@ function we_isFieldNotEmpty($attribs){
 			if($int){ // for type = href int
 				$intID = $GLOBALS['lv']->f($match . we_base_link::MAGIC_INT_LINK_ID);
 				return ($intID > 0 ? strlen(id_to_path($intID)) > 0 : false);
-			} else{
+			} else {
 				$hreftmp = $GLOBALS['lv']->f($match);
 				if(substr($hreftmp, 0, 1) == '/' && (!file_exists($_SERVER['DOCUMENT_ROOT'] . $hreftmp))){
 					return false;
