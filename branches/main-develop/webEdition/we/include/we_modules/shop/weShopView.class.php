@@ -1827,7 +1827,9 @@ attribs["tooltip"]="";' .
 			$orderData = @unserialize($tmp);
 			$customerOrder = (isset($orderData[WE_SHOP_CART_CUSTOMER_FIELD]) ? $orderData[WE_SHOP_CART_CUSTOMER_FIELD] : array());
 
-			if(empty($strFelder)){//only data from order - return all fields, fill in unknown fields from customer-db
+			if(empty($strFelder)
+				|| (isset($strFelder['customerFields']) && empty($strFelder['customerFields']) && isset($strFelder[orderCustomerFields]) && empty($strFelder[orderCustomerFields]))){
+				//only data from order - return all fields, fill in unknown fields from customer-db
 				// default values are fields saved with order
 				return array_merge($customerDb, $customerOrder);
 			}

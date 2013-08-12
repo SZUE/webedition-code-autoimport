@@ -511,11 +511,11 @@ function we_cmd() {
 		for($i = 0; $i <= 3; $i++){
 			$feldnamen[$i] = isset($feldnamen[$i]) ? $feldnamen[$i] : '';
 		}
+		$fe = explode(',', $feldnamen[3]);
 
 		if(empty($classid)){
 			$classid = $fe[0];
 		}
-		$fe = explode(',', $feldnamen[3]);
 
 		// $resultO = count ($fe);
 		$resultO = array_shift($fe);
