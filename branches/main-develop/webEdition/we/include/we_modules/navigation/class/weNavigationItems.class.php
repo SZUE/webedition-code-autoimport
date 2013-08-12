@@ -26,7 +26,7 @@
 /**
  * collection of the navigation items
  */
-class weNavigationItems{
+class weNavigationItems {
 
 	private static $cache = array();
 	var $items;
@@ -259,15 +259,16 @@ class weNavigationItems{
 	function checkCategories($idRule, $idDoc){
 		$idsRule = makeArrayFromCSV($idRule);
 
-		if(!empty($idsRule)){
-			foreach($idsRule as $rule){
-				if(strpos($idDoc, ",$rule,") !== false){
-					return true;
-				}
-			}
-		} else {
+		if(empty($idsRule)){
 			return true;
 		}
+		
+		foreach($idsRule as $rule){
+			if(strpos($idDoc, ",$rule,") !== false){
+				return true;
+			}
+		}
+
 		return false;
 	}
 
@@ -278,6 +279,9 @@ class weNavigationItems{
 	}
 
 	function checkCurrent(&$items){
+		if(!isset($GLOBALS['WE_MAIN_DOC'])){
+			return false;
+		}
 
 		$_candidate = 0;
 		$_score = 3;
@@ -285,92 +289,87 @@ class weNavigationItems{
 		$_curr_len = 0;
 		$_ponder = 0;
 
-		$_isObject = (isset($GLOBALS['we_obj']) && isset($GLOBALS["WE_MAIN_DOC"]->TableID) && $GLOBALS["WE_MAIN_DOC"]->TableID);
+		$_isObject = (isset($GLOBALS['we_obj']) && isset($GLOBALS['WE_MAIN_DOC']->TableID) && $GLOBALS['WE_MAIN_DOC']->TableID);
 
-		if(isset($GLOBALS['WE_MAIN_DOC'])){
-
-			for($i = 0; $i < count($this->currentRules); $i++){
-
-				$_rule = $this->currentRules[$i];
-
-				$_ponder = 4;
-
-				if($_rule->SelectionType == weNavigation::STPYE_DOCTYPE && $_rule->DoctypeID){
-					if(isset($GLOBALS['WE_MAIN_DOC']->DocType) && ($_rule->DoctypeID == $GLOBALS['WE_MAIN_DOC']->DocType)){
-						$_ponder--;
-					} else {
-						$_ponder = 999; // remove from selection
-					}
-				}
-
-				if($_rule->SelectionType == weNavigation::STPYE_CLASS && $_rule->ClassID){
-					if(isset($GLOBALS["WE_MAIN_DOC"]->TableID) && ($GLOBALS["WE_MAIN_DOC"]->TableID == $_rule->ClassID)){
-						$_ponder--;
-					} else {
-						$_ponder = 999; // remove from selection
-					}
-				}
-
-				$parentPath = '';
-				if($_rule->SelectionType == weNavigation::STPYE_CLASS && $_isObject){
-
-					//$parentPath = id_to_path($_rule->WorkspaceID, FILE_TABLE);
-					$parentPath = $this->id2path($_rule->WorkspaceID);
-
-					if(!empty($wPath) && $parentPath != '/'){
-						$parentPath .= '/';
-					}
-				}
-
-				if($_rule->SelectionType == weNavigation::STPYE_DOCTYPE && !$_isObject){
-
-					//$parentPath = id_to_path($_rule->FolderID, FILE_TABLE);
-					$parentPath = $this->id2path($_rule->FolderID);
-
-					if(!empty($parentPath) && $parentPath != '/'){
-						$parentPath .= '/';
-					}
-				}
-
-				if(!empty($parentPath)){
-
-					if(strpos($GLOBALS['WE_MAIN_DOC']->Path, $parentPath) === 0){
-
-						$_ponder--;
-						$_curr_len = strlen($parentPath);
-						if($_curr_len > $_len){
-							$_len = $_curr_len;
+		foreach($this->currentRules as $_rule){
+			$_ponder = 4;
+			$parentPath = '';
+			switch($_rule->SelectionType){
+				case weNavigation::STPYE_DOCTYPE:
+					if($_rule->DoctypeID){
+						if(isset($GLOBALS['WE_MAIN_DOC']->DocType) && ($_rule->DoctypeID == $GLOBALS['WE_MAIN_DOC']->DocType)){
 							$_ponder--;
+						} else {
+							$_ponder = 999; // remove from selection
 						}
 					}
-				}
 
-				$_cats = makeArrayFromCSV($_rule->Categories);
-				if(!empty($_cats)){
-					if($this->checkCategories($_rule->Categories, $GLOBALS['WE_MAIN_DOC']->Category)){
-						$_ponder--;
-					} else {
-						$_ponder = 999; // remove from selection
-					}
-				}
+					if(!$_isObject){
+						//$parentPath = id_to_path($_rule->FolderID, FILE_TABLE);
+						$parentPath = $this->id2path($_rule->FolderID);
 
-				if($_ponder == 0){
-					$this->setCurrent($_rule->NavigationID, $_rule->SelfCurrent);
-					return true;
-				} elseif($_ponder <= $_score){
-					if(NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH){
-						$this->setCurrent($_rule->NavigationID, null);
-					} else {
-						$_score = $_ponder;
-						$_candidate = $_rule->NavigationID;
+						if(!empty($parentPath) && $parentPath != '/'){
+							$parentPath .= '/';
+						}
 					}
+					break;
+
+				case weNavigation::STPYE_CLASS:
+					if($_rule->ClassID){
+						if(isset($GLOBALS["WE_MAIN_DOC"]->TableID) && ($GLOBALS["WE_MAIN_DOC"]->TableID == $_rule->ClassID)){
+							$_ponder--;
+						} else {
+							$_ponder = 999; // remove from selection
+						}
+					}
+
+					if($_isObject){
+						//$parentPath = id_to_path($_rule->WorkspaceID, FILE_TABLE);
+						$parentPath = $this->id2path($_rule->WorkspaceID);
+
+						if(!empty($wPath) && $parentPath != '/'){
+							$parentPath .= '/';
+						}
+					}
+					break;
+			}
+
+
+			if(!empty($parentPath) && strpos($GLOBALS['WE_MAIN_DOC']->Path, $parentPath) === 0){
+				$_ponder--;
+				$_curr_len = strlen($parentPath);
+				if($_curr_len > $_len){
+					$_len = $_curr_len;
+					$_ponder--;
 				}
 			}
-			if($_candidate != 0){
-				$this->setCurrent($_candidate, null);
+
+			$_cats = makeArrayFromCSV($_rule->Categories);
+			if(!empty($_cats)){
+				if($this->checkCategories($_rule->Categories, $GLOBALS['WE_MAIN_DOC']->Category)){
+					$_ponder--;
+				} else {
+					$_ponder = 999; // remove from selection
+				}
+			}
+
+			if($_ponder == 0){
+				$this->setCurrent($_rule->NavigationID, $_rule->SelfCurrent);
 				return true;
+			} elseif($_ponder <= $_score){
+				if(NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH){
+					$this->setCurrent($_rule->NavigationID, null);
+				} else {
+					$_score = $_ponder;
+					$_candidate = $_rule->NavigationID;
+				}
 			}
 		}
+		if($_candidate != 0){
+			$this->setCurrent($_candidate, null);
+			return true;
+		}
+
 		return false;
 	}
 
@@ -413,23 +412,22 @@ class weNavigationItems{
 		}
 
 		// is last entry??
-		if(isset($useTemplate['last'])){
+		if(isset($useTemplate['last']) &&
 			// check if item is last
-			if((count($this->items['id' . $item->parentid]->items)) == $item->position){
-				return $useTemplate['last'];
-			}
+			((count($this->items['id' . $item->parentid]->items)) == $item->position)){
+			return $useTemplate['last'];
 		}
 
 		if(isset($useTemplate[$item->position])){
 			return $useTemplate[$item->position];
-		} else {
-			if($item->position % 2 === 1){
-				if(isset($useTemplate['odd'])){
-					return $useTemplate['odd'];
-				}
-			} elseif(isset($useTemplate['even'])){
-				return $useTemplate['even'];
-			}
+		}
+
+		if(isset($useTemplate['odd']) && $item->position % 2 === 1){
+			return $useTemplate['odd'];
+		}
+
+		if(isset($useTemplate['even']) && $item->position % 2 === 0){
+			return $useTemplate['even'];
 		}
 
 		if(isset($useTemplate['defaultPosition'])){
@@ -445,14 +443,9 @@ class weNavigationItems{
 		//			$itemTemplate = '<li><a href="<we:navigationField name="href">"><we:navigationField name="text"></a></li>';
 		//			$rootTemplate = '<we:navigationEntries />';
 
-
-		$folderTemplate = '<li><a href="<?php printElement( ' . we_tag_tagParser::printTag('navigationField', array("name" => "href")) . '); ?>"><?php printElement( ' . we_tag_tagParser::printTag('navigationField', array("name" => "text")) . '); ?></a><?php if(' . we_tag_tagParser::printTag('ifHasEntries') . '){ ?><ul><?php printElement( ' . we_tag_tagParser::printTag('navigationEntries') . '); ?></ul><?php } ?></li>';
-		$itemTemplate = '<li><a href="<?php printElement( ' . we_tag_tagParser::printTag('navigationField', array("name" => "href")) . '); ?>"><?php printElement( ' . we_tag_tagParser::printTag('navigationField', array("name" => "text")) . '); ?></a></li>';
-		$rootTemplate = '<?php printElement( ' . we_tag_tagParser::printTag('navigationEntries') . '); ?>';
-
-		$this->setTemplate($folderTemplate, 'folder', 'defaultLevel', 'defaultCurrent', 'defaultPosition');
-		$this->setTemplate($itemTemplate, 'item', 'defaultLevel', 'defaultCurrent', 'defaultPosition');
-		$this->setTemplate($rootTemplate, 'root', 'defaultLevel', 'defaultCurrent', 'defaultPosition');
+		$this->setTemplate('<li><a href="<?php printElement( ' . we_tag_tagParser::printTag('navigationField', array("name" => "href")) . '); ?>"><?php printElement( ' . we_tag_tagParser::printTag('navigationField', array("name" => "text")) . '); ?></a><?php if(' . we_tag_tagParser::printTag('ifHasEntries') . '){ ?><ul><?php printElement( ' . we_tag_tagParser::printTag('navigationEntries') . '); ?></ul><?php } ?></li>', 'folder', 'defaultLevel', 'defaultCurrent', 'defaultPosition');
+		$this->setTemplate('<li><a href="<?php printElement( ' . we_tag_tagParser::printTag('navigationField', array("name" => "href")) . '); ?>"><?php printElement( ' . we_tag_tagParser::printTag('navigationField', array("name" => "text")) . '); ?></a></li>', 'item', 'defaultLevel', 'defaultCurrent', 'defaultPosition');
+		$this->setTemplate('<?php printElement( ' . we_tag_tagParser::printTag('navigationEntries') . '); ?>', 'root', 'defaultLevel', 'defaultCurrent', 'defaultPosition');
 	}
 
 	function getDefaultTemplate($item){
@@ -533,11 +526,10 @@ class weNavigationItems{
 	function id2path($id){
 		if(isset($this->Storage['ids'][$id])){
 			return $this->Storage['ids'][$id];
-		} else {
-			$_path = id_to_path($id, FILE_TABLE);
-			$this->Storage['ids'][$id] = $_path;
-			return $_path;
 		}
+		$_path = id_to_path($id, FILE_TABLE);
+		$this->Storage['ids'][$id] = $_path;
+		return $_path;
 	}
 
 }
