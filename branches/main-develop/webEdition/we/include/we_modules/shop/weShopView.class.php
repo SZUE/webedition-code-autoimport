@@ -377,13 +377,8 @@ function we_cmd() {
 			t_e('unsupported Shop-Settings found');
 		}
 
-		// >>>> Getting customer data
 		$_customer = $this->getOrderCustomerData(intval($_REQUEST['bid']), $fields);
-		// <<<< End of getting customer data
-
-
-
-
+		
 		if(isset($_REQUEST['SendMail'])){
 			$weShopStatusMails->sendEMail($_REQUEST['SendMail'], $_REQUEST['bid'], $_customer);
 		}
@@ -1819,7 +1814,7 @@ attribs["tooltip"]="";' .
 					$val);
 		}
 
-		private function getOrderCustomerData($orderId, $strFelder = array()){
+		private function getOrderCustomerData($orderId, array $strFelder = array()){
 			list($customerId, $tmp) = getHash('SELECT IntCustomerID,strSerialOrder FROM ' . SHOP_TABLE . '	WHERE IntOrderID=' . intval($orderId), $this->db, MYSQL_NUM);
 			// get Customer
 			$customerDb = getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . intval($customerId), $this->db, MYSQL_ASSOC);
