@@ -24,7 +24,7 @@
  */
 /* the parent class of storagable webEdition classes */
 
-class weNewsletterView {
+class weNewsletterView{
 
 	const MAILS_ALL = 0;
 	const MAILS_CUSTOMER = 1;
@@ -2033,18 +2033,18 @@ self.close();');
 		}
 	}
 
-	function getContent($pblk = 0, $gview = 0, $hm = 0, $salutation = "", $title = "", $firstname = "", $lastname = "", $customerid = 0){
+	function getContent($pblk = 0, $gview = 0, $hm = 0, $salutation = '', $title = '', $firstname = '', $lastname = '', $customerid = 0){
 
 		$content = "";
 		$GLOBALS['we_doc'] = "";
 
-		$GLOBALS["WE_MAIL"] = "###EMAIL###";
-		$GLOBALS["WE_HTMLMAIL"] = $hm;
-		$GLOBALS["WE_TITLE"] = $title;
-		$GLOBALS["WE_SALUTATION"] = $salutation;
-		$GLOBALS["WE_FIRSTNAME"] = $firstname;
-		$GLOBALS["WE_LASTNAME"] = $lastname;
-		$GLOBALS["WE_CUSTOMERID"] = $customerid;
+		$GLOBALS['WE_MAIL'] = "###EMAIL###";
+		$GLOBALS['WE_HTMLMAIL'] = $hm;
+		$GLOBALS['WE_TITLE'] = $title;
+		$GLOBALS['WE_SALUTATION'] = $salutation;
+		$GLOBALS['WE_FIRSTNAME'] = $firstname;
+		$GLOBALS['WE_LASTNAME'] = $lastname;
+		$GLOBALS['WE_CUSTOMERID'] = $customerid;
 		$patterns = array();
 
 		if(isset($this->newsletter->blocks[$pblk])){
@@ -2053,12 +2053,13 @@ self.close();');
 			if(in_array($gview, $groups) || $gview == 0){
 				switch($block->Type){
 					case weNewsletterBlock::DOCUMENT:
-						$path = "";
 						if($block->Field != "" && $block->Field != 0){
 							$path = TEMPLATES_PATH . preg_replace('/\.tmpl$/i', '.php', id_to_path($block->Field, TEMPLATES_TABLE));
 						} else if($block->LinkID){
-							$tid = f("SELECT TemplateID FROM " . FILE_TABLE . " WHERE ID='" . $block->LinkID . "';", "TemplateID", $this->db);
-							$path = TEMPLATES_PATH . preg_replace('/\.tmpl$/i', '.php', id_to_path($tid, TEMPLATES_TABLE));
+							$p = f('SELECT t.Path FROM ' . FILE_TABLE . ' f LEFT JOIN ' . TEMPLATES_TABLE . ' t ON f.TemplateID=t.ID WHERE f.ID=' . intval($block->LinkID), "Path", $this->db);
+							$path = TEMPLATES_PATH . preg_replace('/\.tmpl$/i', '.php', $p);
+						} else {
+							$path = "";
 						}
 						if($block->LinkID && $path)
 							$content .= ($block->LinkID > 0) && weFileExists($block->LinkID) ? we_getDocumentByID($block->LinkID, $path) : 'No such File';
@@ -2071,10 +2072,9 @@ self.close();');
 						}
 						break;
 					case weNewsletterBlock::OBJECT:
-						$path = "";
-						if($block->Field != "" && $block->Field != 0){
-							$path = TEMPLATES_PATH . preg_replace('/\.tmpl$/i', '.php', id_to_path($block->Field, TEMPLATES_TABLE));
-						}
+						$path = ($block->Field != "" && $block->Field != 0 ?
+								TEMPLATES_PATH . preg_replace('/\.tmpl$/i', '.php', id_to_path($block->Field, TEMPLATES_TABLE)) : '');
+
 						if($block->LinkID && $path)
 							$content = we_getObjectFileByID($block->LinkID, $path);
 
@@ -2093,11 +2093,11 @@ self.close();');
 								$content .= strtr($block->Source, array(
 									"\r\n" => "\n",
 									"\r" => "\n",
-									"&" => "&amp;",
-									"<" => "&lt;",
-									">" => "&gt;",
-									"\n" => "<br/>",
-									"\t" => "&nbsp;&nbsp;&nbsp;",
+									'&' => '&amp;',
+									'<' => '&lt;',
+									'>' => '&gt;',
+									"\n" => '<br/>',
+									"\t" => '&nbsp;&nbsp;&nbsp;',
 								));
 							}
 						} else {

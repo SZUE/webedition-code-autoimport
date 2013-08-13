@@ -1480,28 +1480,16 @@ class weNewsletterFrames extends weModuleFrames {
 
 
 		if(!$hm){
-			print '
-				<html>
-					<head>
-					</head>
-
-					<body>
-						<form>
+			print '<html><head></head><body><form>
 							<textarea name="foo" style="width:100%;height:95%" cols="80" rows="40">' .
 				oldHtmlspecialchars(trim($content)) .
-				'</textarea>
-						</form>
-					</body>
-
-				</html>';
+				'</textarea></form></body></html>';
 		} else {
 			print $content;
 		}
 	}
 
 	function getHTMLBlackList(){
-		$arr = array();
-
 		if(isset($_REQUEST["black_list"])){
 			$this->View->settings["black_list"] = $_REQUEST["black_list"];
 		}

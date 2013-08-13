@@ -220,7 +220,7 @@ function we_tag_addDelNewsletterEmail($attribs){
 				$GLOBALS['WE_CONFIRMLINK'] = $confirmLink;
 
 				if($f['subscribe_html']){
-					$GLOBALS['WE_HTMLMAIL'] = 1;
+					$GLOBALS['WE_HTMLMAIL'] = true;
 
 					if(isset($GLOBALS['we_doc'])){
 						$mywedoc = $GLOBALS['we_doc'];
@@ -233,7 +233,7 @@ function we_tag_addDelNewsletterEmail($attribs){
 					$mailtextHTML = str_replace('###TITLE###', $f['subscribe_title'], $mailtextHTML);
 				}
 
-				$GLOBALS['WE_HTMLMAIL'] = 0;
+				$GLOBALS['WE_HTMLMAIL'] = false;
 
 				if(isset($GLOBALS['we_doc'])){
 					if(!isset($mywedoc)){
