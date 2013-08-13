@@ -110,8 +110,14 @@ class we_shop_listviewOrderitem extends listviewBase {
 				if(isset($strSerial['OF_ID'])){//Object based Article
 					$this->DB_WE->Record['articleIsObject'] = 1;
 					foreach($strSerial as $key => &$value){
-						if(!is_numeric($key) && $key != 'we_sacf' && $key != 'WE_VARIANT' && (strpos($key, 'we_') !== false) && (strpos($key, 'we_WE') === false)){ //Fix 7505 remove "&& (strpos($key, 'we_wedoc') === false)"
-							$this->DB_WE->Record[substr($key, 3)] = $value;
+						switch($key){
+							case 'we_sacf':
+							case 'WE_VARIANT':
+								continue;
+							default:
+								if(strpos($key, 'we_WE') === false){
+									$this->DB_WE->Record[substr($key, 3)] = $value; //key without "we_" because of internal problems in shop modul backend view
+								}
 						}
 					}
 					unset($value);
@@ -119,6 +125,7 @@ class we_shop_listviewOrderitem extends listviewBase {
 						$this->DB_WE->Record[$key] = $value;
 					}
 					unset($value);
+					$this->DB_WE->Record['VARIANT'] = $strSerial['WE_VARIANT'];
 					$this->DB_WE->Record['shopvat'] = $strSerial['shopvat'];
 				} else {//Document based Article
 					$this->DB_WE->Record['articleIsObject'] = 0;
