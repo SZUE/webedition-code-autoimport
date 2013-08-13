@@ -191,10 +191,11 @@ $l_modules_shop=array(
 		'CountryField'=>'Field country',
 		'ISO-Kodiert'=>'Field is ISO coded',
 		'LanguageField'=>'Field Language',
-		'customerFields'=>'Customer fields<br/>(Customer Module)',
+		'customerFields'=>'Fields shown in<br/>
+order view',
 		'customerdata'=>'Customer Data',
 		'explanation_customer_odercustomer'=>'Explanation: These data is only saved within the order, the data of the Customer Module will not be touched.',
-		'orderCustomerFields'=>'Customer fields<br/>(Order)',
+		'orderCustomerFields'=>'Use field values<br/>from order',
 	),
 	'revenue_list'=>'Annual Turnover:',
 	'saferpayAllowCollectTxt'=>'* see saferpay Manual !',

@@ -191,10 +191,12 @@ $l_modules_shop=array(
 		'CountryField'=>'Feld Land',
 		'ISO-Kodiert'=>'Feld ist ISO kodiert',
 		'LanguageField'=>'Feld Sprache',
-		'customerFields'=>'Kundenfelder<br/>(Kundenverwaltung)',
+		'customerFields'=>'Angezeigte Felder<br/>
+in der Bestellung',
 		'customerdata'=>'Kundendaten',
 		'explanation_customer_odercustomer'=>'Erklärung: Diese Daten werden nur innerhalb dieser Bestellung gespeichert, die Daten der Kundenverwaltung bleiben erhalten.',
-		'orderCustomerFields'=>'Kundenfelder<br/>(Bestellung)',
+		'orderCustomerFields'=>'Felder aus Bestellung<br/>
+übernehmen',
 	),
 	'revenue_list'=>'Umsatz im Jahr:',
 	'saferpayAllowCollectTxt'=>'* saferpay Handbuch beachten!',
