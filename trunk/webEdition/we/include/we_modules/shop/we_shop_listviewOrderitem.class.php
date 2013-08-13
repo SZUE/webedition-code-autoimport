@@ -110,7 +110,7 @@ class we_shop_listviewOrderitem extends listviewBase {
 				if(isset($strSerial['OF_ID'])){//Object based Article
 					$this->DB_WE->Record['articleIsObject'] = 1;
 					foreach($strSerial as $key => &$value){
-						if(!is_numeric($key) && $key != 'we_sacf' && $key != 'WE_VARIANT' && (strpos($key, 'we_') !== false) && (strpos($key, 'we_wedoc') === false) && (strpos($key, 'we_WE') === false)){
+						if(!is_numeric($key) && $key != 'we_sacf' && $key != 'WE_VARIANT' && (strpos($key, 'we_') !== false) && (strpos($key, 'we_WE') === false)){ //Fix 7505 remove "&& (strpos($key, 'we_wedoc') === false)"
 							$this->DB_WE->Record[substr($key, 3)] = $value;
 						}
 					}
