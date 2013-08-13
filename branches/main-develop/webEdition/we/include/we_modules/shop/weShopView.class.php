@@ -512,10 +512,10 @@ function we_cmd() {
 			<td class="defaultfont" valign="top" colspan="6" height="25">' . $_customer['Surname'] . '</td>
 		</tr>';
 			}
-
+			
 			foreach($_customer as $key => $value){
 
-				if(in_array($key, $fields['customerFields']) || in_array($key, $fields['orderCustomerFields'])){
+				if(in_array($key, $fields['customerFields'])){
 					if(($key == $CLFields['stateField'] && $CLFields['stateFieldIsISO']) || ($key == $CLFields['languageField'] && $CLFields['languageFieldIsISO'])){
 						$value = g_l('languages', '[' . $value . ']');
 					}
@@ -1822,28 +1822,17 @@ attribs["tooltip"]="";' .
 			$orderData = @unserialize($tmp);
 			$customerOrder = (isset($orderData[WE_SHOP_CART_CUSTOMER_FIELD]) ? $orderData[WE_SHOP_CART_CUSTOMER_FIELD] : array());
 
-			if(empty($strFelder)
-				|| (isset($strFelder['customerFields']) && empty($strFelder['customerFields']) && isset($strFelder[orderCustomerFields]) && empty($strFelder[orderCustomerFields]))){
+			if(empty($strFelder)){ //used only if edit customer data is selected!!!
 				//only data from order - return all fields, fill in unknown fields from customer-db
 				// default values are fields saved with order
 				return array_merge($customerDb, $customerOrder);
 			}
 
-			//make sure at least Forename + Surname is selected
-			$strFelder['customerFields'][] = 'Forename';
-			$strFelder['customerFields'][] = 'Surname';
 
-			$customer = array();
-			foreach($strFelder['customerFields'] as $field){
-				if(isset($customerDb[$field])){
-					$customer[$field] = $customerDb[$field];
-				}
-			}
+			$customer = $customerDb;
 			foreach($strFelder['orderCustomerFields'] as $field){
 				if(isset($customerOrder[$field])){
 					$customer[$field] = $customerOrder[$field];
-				} elseif(isset($customerDb[$field])){ //fallback to customerDB
-					$customer[$field] = $customerDb[$field];
 				}
 			}
 

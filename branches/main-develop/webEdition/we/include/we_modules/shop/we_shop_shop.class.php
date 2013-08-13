@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_shop_shop{
+class we_shop_shop {
 
 	const DOCUMENT = 'w';
 	const OBJECT = 'o';
@@ -44,13 +44,14 @@ class we_shop_shop{
 	var $ShoppingCartKey = '';
 	var $ActItem;
 
-	const ignoredEditFields = 'ID,Username,Password,MemberSince,LastLogin,LastAccess,ParentID,Path,IsFolder,Icon,Text,Forename,Surname,AutoLogin,AutoLoginDenied,ModifiedBy,ModifyDate';
+	const ignoredEditFields = 'ID,Username,Password,MemberSince,LastLogin,LastAccess,ParentID,Path,IsFolder,Icon,Text,AutoLogin,AutoLoginDenied,ModifiedBy,ModifyDate';
+	const ignoredExtraShowFields = 'Forename,Surname';
 
 	function __construct($shoppingCart){
 		if(is_object($shoppingCart)){
 			$this->ShoppingCart = $shoppingCart;
 			$this->ShoppingCartItems = $shoppingCart->getShoppingItems();
-		} else{
+		} else {
 			t_e('called with non object');
 		}
 
@@ -78,7 +79,7 @@ class we_shop_shop{
 				if(!is_int($key)){
 					if($key == WE_SHOP_VAT_FIELD_NAME){
 						$this->Record[$key] = $value;
-					} else{
+					} else {
 						$this->Record[preg_replace('#^we_#', '', $key)] = $value;
 					}
 				}
