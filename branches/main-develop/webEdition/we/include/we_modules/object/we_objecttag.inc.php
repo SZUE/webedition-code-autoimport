@@ -29,7 +29,7 @@ class we_objecttag{
 	var $id = 0;
 	var $triggerID = 0;
 	var $ClassName = __CLASS__;
-	private $object;
+	public $object; //TODO: make private again as soon as property is not accessed directly anymore (use public getObject())
 	var $avail = false;
 	var $hidedirindex = false;
 	var $objectseourls = false;
@@ -69,4 +69,11 @@ class we_objecttag{
 				$this->object->f($key) : '');
 	}
 
+	public function getObject(){
+		return $this->object;
+	}
+
+	public function getDB(){
+		return $this->DB_WE;
+	}
 }

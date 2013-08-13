@@ -186,9 +186,17 @@ function we_tag_listview($attribs){
 			break;
 		case 'languagelink':
 			$we_lv_langguagesdoc = we_getDocForTag($we_lv_pagelanguage);
-			$we_lv_ownlanguage = $we_lv_langguagesdoc->Language; // we do need real document/objectlanguage in both cases!
-			if($we_lv_pagelanguage == 'self' || $we_lv_pagelanguage == 'top'){
-				$we_lv_pagelanguage = $we_lv_ownlanguage;
+			$we_lv_ownlanguage = $we_lv_langguagesdoc->Language;
+
+			if(isset($GLOBALS['lv']) && ($GLOBALS['lv']->ClassName == 'we_listview_object' || $GLOBALS['lv']->ClassName == 'we_objecttag')){
+				$record = $GLOBALS['lv']->ClassName == 'we_listview_object' ? $GLOBALS['lv']->DB_WE->Record : $GLOBALS['lv']->getObject()->DB_WE->Record;
+				$we_lv_pageID = $record['OF_ID'];
+				$we_lv_linktype = 'tblObjectFile';
+				$we_lv_pagelanguage = $we_lv_pagelanguage == 'self' ? $record['OF_Language'] : ($we_lv_pagelanguage == 'top' ? $we_lv_ownlanguage : $we_lv_pagelanguage);
+				$we_lv_ownlanguage = $record['OF_Language'];
+			} else{
+				$we_lv_pagelanguage = $we_lv_pagelanguage == 'self' || $we_lv_pagelanguage == 'top' ? $we_lv_ownlanguage : we_getDocForTag($docAttr);
+
 				if(isset($we_lv_langguagesdoc->TableID) && $we_lv_langguagesdoc->TableID){
 					$we_lv_pageID = $we_lv_langguagesdoc->OF_ID;
 					$we_lv_linktype = 'tblObjectFile';
@@ -196,21 +204,9 @@ function we_tag_listview($attribs){
 					$we_lv_pageID = $we_lv_langguagesdoc->ID;
 					$we_lv_linktype = 'tblFile';
 				}
-				unset($we_lv_langguagesdoc);
-			} else {
-				$we_lv_DocAttr = $docAttr;
-				$we_lv_langguagesdoc = we_getDocForTag($we_lv_DocAttr);
-				if(isset($we_lv_langguagesdoc->TableID) && $we_lv_langguagesdoc->TableID){
-					//$we_lv_pagelanguage = $we_lv_langguagesdoc->Language;
-					$we_lv_pageID = $we_lv_langguagesdoc->OF_ID;
-					$we_lv_linktype = 'tblObjectFile';
-				} else {
-					//$we_lv_pagelanguage = $we_lv_langguagesdoc->Language;
-					$we_lv_pageID = $we_lv_langguagesdoc->ID;
-					$we_lv_linktype = 'tblFile';
-				}
-				unset($we_lv_langguagesdoc);
 			}
+			unset($we_lv_langguagesdoc);
+
 			$GLOBALS['lv'] = new we_langlink_listview($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $we_lv_linktype, $cols, $seeMode, $we_lv_se, $cfilter, $showself, $we_lv_pageID, $we_lv_pagelanguage, $we_lv_ownlanguage, $hidedirindex, $objectseourls);
 			break;
 		case 'customer':

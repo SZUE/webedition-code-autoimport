@@ -147,11 +147,9 @@ function we_tag_field($attribs){
 
 	$classid = ($classid ?
 			$classid :
-			(isset($GLOBALS['lv']) ?
-				(isset($GLOBALS['lv']->object->classID) ?
-					$GLOBALS['lv']->object->classID :
-					(isset($GLOBALS['lv']->classID) ?
-						$GLOBALS['lv']->classID : '')) :
+			(isset($GLOBALS['lv']) ? ($GLOBALS['lv']->ClassName == 'we_objecttag' && isset($GLOBALS['lv']->getObject()->classID) ? $GLOBALS['lv']->getObject()->classID : 
+				(isset($GLOBALS['lv']->object->classID) ? $GLOBALS['lv']->object->classID : 
+					(isset($GLOBALS['lv']->classID) ? $GLOBALS['lv']->classID : ''))) :
 				(isset($GLOBALS['we_doc']->TableID) ?
 					$GLOBALS['we_doc']->TableID :
 					0)));
