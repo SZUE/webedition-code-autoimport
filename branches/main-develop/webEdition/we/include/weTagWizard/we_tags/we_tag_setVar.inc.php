@@ -7,18 +7,6 @@ $this->NeedsEndTag = false;
 //$this->Module = '';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
-$this->Attributes[] = new weTagData_selectAttribute('to', array(new weTagDataOption('request'),
-	new weTagDataOption('post'),
-	new weTagDataOption('get'),
-	new weTagDataOption('global'),
-	new weTagDataOption('session'),
-	new weTagDataOption('top'),
-	new weTagDataOption('self'),
-	new weTagDataOption('object'),
-	new weTagDataOption('document'),
-	new weTagDataOption('sessionfield'),
-	), true, '');
-$this->Attributes[] = new weTagData_textAttribute('nameto', true, '');
 $this->Attributes[] = new weTagData_textAttribute('value', false, '');
 $this->Attributes[] = new weTagData_selectAttribute('from', array(new weTagDataOption('request'),
 	new weTagDataOption('post'),

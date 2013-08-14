@@ -13,14 +13,3 @@ $this->DefaultValue = '<option>#1</option>
 $this->Attributes[] = new weTagData_textAttribute('name', true, '');
 $this->Attributes[] = new weTagData_textAttribute('size', false, '');
 $this->Attributes[] = new weTagData_selectAttribute('reload', weTagData_selectAttribute::getTrueFalse(), false, '');
-$this->Attributes[] = new weTagData_selectAttribute('to', array(new weTagDataOption('screen'),
-	new weTagDataOption('request'),
-	new weTagDataOption('post'),
-	new weTagDataOption('get'),
-	new weTagDataOption('global'),
-	new weTagDataOption('session'),
-	new weTagDataOption('top'),
-	new weTagDataOption('self'),
-	new weTagDataOption('sessionfield'),
-	), false, '');
-$this->Attributes[] = new weTagData_textAttribute('nameto', false, '');

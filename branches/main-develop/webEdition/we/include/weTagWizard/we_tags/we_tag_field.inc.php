@@ -89,43 +89,29 @@ $doc = new weTagData_selectAttribute('doc', array(new weTagDataOption('self'),
 $triggerid = (defined("FILE_TABLE") ? new weTagData_selectorAttribute('triggerid', FILE_TABLE, 'text/webedition', false, '') : null);
 $usekey = new weTagData_selectAttribute('usekey', weTagData_selectAttribute::getTrueFalse(), false, '');
 
-$to = new weTagData_selectAttribute('to', array(new weTagDataOption('screen'),
-	new weTagDataOption('request'),
-	new weTagDataOption('post'),
-	new weTagDataOption('get'),
-	new weTagDataOption('global'),
-	new weTagDataOption('session'),
-	new weTagDataOption('top'),
-	new weTagDataOption('self'),
-	new weTagDataOption('sessionfield'),
-	), false, '');
-$nameto = new weTagData_textAttribute('nameto', false, '');
-
-
 $this->TypeAttribute = new weTagData_typeAttribute('type', array(
 	new weTagDataOption('-', false, '', array(), array()),
-	new weTagDataOption('text', false, '', array($name, $hyperlink, $href, $target, $num_format, $alt, $max, $striphtml, $htmlspecialchars, $triggerid, $to, $nameto), array($name)),
-	new weTagDataOption('date', false, '', array($name, $hyperlink, $href, $target, $format, $alt, $max, $htmlspecialchars, $triggerid, $to, $nameto), array($name)),
-	new weTagDataOption('img', false, '', array($name, $hyperlink, $href, $target, $thumbnail, $src, $width, $height, $border, $hspace, $vspace, $align, $onlyImg, $triggerid, $to, $nameto), array($name)),
-	new weTagDataOption('flashmovie', false, '', array($name, $width, $height, $triggerid, $to, $nameto), array($name)),
-	new weTagDataOption('href', false, '', array($name, $to, $nameto), array($name)),
-	new weTagDataOption('link', false, '', array($name, $to, $nameto), array($name)),
-	new weTagDataOption('day', false, '', array($to, $nameto), array()),
-	new weTagDataOption('dayname', false, '', array($to, $nameto), array()),
-	new weTagDataOption('week', false, '', array($to, $nameto), array()),
-	new weTagDataOption('month', false, '', array($to, $nameto), array()),
-	new weTagDataOption('monthname', false, '', array($to, $nameto), array()),
-	new weTagDataOption('year', false, '', array($to, $nameto), array()),
-	new weTagDataOption('select', false, 'object', array($name, $usekey, $htmlspecialchars, $triggerid, $to, $nameto), array($name)),
-	new weTagDataOption('binary', false, 'object', array($name, $hyperlink, $href, $target, $only, $to, $nameto), array($name)),
-	new weTagDataOption('float', false, '', array($name, $hyperlink, $href, $target, $num_format, $triggerid, $to, $nameto), array($name)),
-	new weTagDataOption('int', false, 'object', array($name, $hyperlink, $href, $target, $triggerid, $to, $nameto), array($name)),
-	new weTagDataOption('shopVat', false, '', array($to, $nameto), array()),
-	new weTagDataOption('checkbox', false, '', array($to, $nameto), array()),
-	new weTagDataOption('country', false, '', array($outputlanguage, $doc, $to, $nameto), array()),
-	new weTagDataOption('language', false, '', array($outputlanguage, $doc, $to, $nameto), array())
+	new weTagDataOption('text', false, '', array($name, $hyperlink, $href, $target, $num_format, $alt, $max, $striphtml, $htmlspecialchars, $triggerid), array($name)),
+	new weTagDataOption('date', false, '', array($name, $hyperlink, $href, $target, $format, $alt, $max, $htmlspecialchars, $triggerid), array($name)),
+	new weTagDataOption('img', false, '', array($name, $hyperlink, $href, $target, $thumbnail, $src, $width, $height, $border, $hspace, $vspace, $align, $onlyImg, $triggerid), array($name)),
+	new weTagDataOption('flashmovie', false, '', array($name, $width, $height, $triggerid, $to), array($name)),
+	new weTagDataOption('href', false, '', array($name), array($name)),
+	new weTagDataOption('link', false, '', array($name), array($name)),
+	new weTagDataOption('day', false, '', array(), array()),
+	new weTagDataOption('dayname', false, '', array(), array()),
+	new weTagDataOption('week', false, '', array(), array()),
+	new weTagDataOption('month', false, '', array(), array()),
+	new weTagDataOption('monthname', false, '', array(), array()),
+	new weTagDataOption('year', false, '', array(), array()),
+	new weTagDataOption('select', false, 'object', array($name, $usekey, $htmlspecialchars, $triggerid), array($name)),
+	new weTagDataOption('binary', false, 'object', array($name, $hyperlink, $href, $target, $only), array($name)),
+	new weTagDataOption('float', false, '', array($name, $hyperlink, $href, $target, $num_format, $triggerid), array($name)),
+	new weTagDataOption('int', false, 'object', array($name, $hyperlink, $href, $target, $triggerid), array($name)),
+	new weTagDataOption('shopVat', false, '', array(), array()),
+	new weTagDataOption('checkbox', false, '', array(), array()),
+	new weTagDataOption('country', false, '', array($outputlanguage, $doc), array()),
+	new weTagDataOption('language', false, '', array($outputlanguage, $doc), array())
 	), false, '');
 
 $this->Attributes = array($name, $classid, $hyperlink, $tid, $href, $target, $class, $style, $format, $num_format, $thumbnail, $id, $parentidname, $winprops, $alt, $max, $src,
-	$width, $height, $border, $hspace, $vspace, $align, $only, $onlyImg, $htmlspecialchars, $seeMode, $xml, $win2iso, $listviewname, $striphtml, $outputlanguage, $doc, $triggerid, $usekey,
-	$to, $nameto);
+	$width, $height, $border, $hspace, $vspace, $align, $only, $onlyImg, $htmlspecialchars, $seeMode, $xml, $win2iso, $listviewname, $striphtml, $outputlanguage, $doc, $triggerid, $usekey);

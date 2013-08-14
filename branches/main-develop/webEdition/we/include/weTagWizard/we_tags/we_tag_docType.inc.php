@@ -10,16 +10,3 @@ $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 $this->Attributes[] = new weTagData_selectAttribute('doc', array(new weTagDataOption('top'),
 	new weTagDataOption('self'),
 	), false, '');
-$this->Attributes[] = new weTagData_selectAttribute('to', array(new weTagDataOption('screen'),
-	new weTagDataOption('request'),
-	new weTagDataOption('post'),
-	new weTagDataOption('get'),
-	new weTagDataOption('global'),
-	new weTagDataOption('session'),
-	new weTagDataOption('top'),
-	new weTagDataOption('self'),
-	new weTagDataOption('sessionfield'),
-	), false, '');
-$this->Attributes[] = new weTagData_textAttribute('nameto', false, '');
-
-//$this->Attributes[] = new weTagData_textAttribute('cachelifetime', false, '');

@@ -32,14 +32,3 @@ $this->Attributes[] = new weTagData_selectAttribute('sizingstyle', array(new weT
 	new weTagDataOption('px'),
 	), false, '');
 $this->Attributes[] = new weTagData_textAttribute('sizingbase', false, '');
-$this->Attributes[] = new weTagData_selectAttribute('to', array(new weTagDataOption('screen'),
-	new weTagDataOption('request'),
-	new weTagDataOption('post'),
-	new weTagDataOption('get'),
-	new weTagDataOption('global'),
-	new weTagDataOption('session'),
-	new weTagDataOption('top'),
-	new weTagDataOption('self'),
-	new weTagDataOption('sessionfield'),
-	), false, '');
-$this->Attributes[] = new weTagData_textAttribute('nameto', false, '');

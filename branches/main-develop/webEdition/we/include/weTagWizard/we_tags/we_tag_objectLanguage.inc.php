@@ -15,16 +15,3 @@ $this->Attributes[] = new weTagData_selectAttribute('case', array(new weTagDataO
 	new weTagDataOption('uppercase'),
 	new weTagDataOption('lowercase'),
 	), false, '');
-$this->Attributes[] = new weTagData_selectAttribute('to', array(new weTagDataOption('screen'),
-	new weTagDataOption('request'),
-	new weTagDataOption('post'),
-	new weTagDataOption('get'),
-	new weTagDataOption('global'),
-	new weTagDataOption('session'),
-	new weTagDataOption('top'),
-	new weTagDataOption('self'),
-	new weTagDataOption('sessionfield'),
-	), false, '');
-$this->Attributes[] = new weTagData_textAttribute('nameto', false, '');
-
-//$this->Attributes[] = new weTagData_textAttribute('cachelifetime', false, '');

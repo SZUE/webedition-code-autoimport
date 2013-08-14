@@ -54,17 +54,7 @@ if(defined('CUSTOMER_TABLE')){
 	$doc = new weTagData_selectAttribute('doc', array(new weTagDataOption('self'),
 		new weTagDataOption('top'),
 		), false, '');
-	$to = new weTagData_selectAttribute('to', array(new weTagDataOption('screen'),
-		new weTagDataOption('request'),
-		new weTagDataOption('post'),
-		new weTagDataOption('get'),
-		new weTagDataOption('global'),
-		new weTagDataOption('session'),
-		new weTagDataOption('top'),
-		new weTagDataOption('self'),
-		new weTagDataOption('sessionfield'),
-		), false, '');
-	$nameto = new weTagData_textAttribute('nameto', false, '');
+
 	$usevalue = new weTagData_selectAttribute('usevalue', weTagData_selectAttribute::getTrueFalse(), false, '');
 	$minyear = new weTagData_textAttribute('minyear', false, '');
 	$maxyear = new weTagData_textAttribute('maxyear', false, '');
@@ -150,7 +140,7 @@ if(defined('CUSTOMER_TABLE')){
 		new weTagDataOption('radio', false, '', array($name, $checked, $value), array($name)),
 		new weTagDataOption('password', false, '', array($name, $size, $maxlength, $value), array($name)),
 		new weTagDataOption('hidden', false, 'customer', array($name, $value, $autofill, $languageautofill, $doc, $usevalue), array($name)),
-		new weTagDataOption('print', false, '', array($name, $dateformat, $ascountry, $aslanguage, $outputlanguage, $doc, $to, $nameto), array($name)),
+		new weTagDataOption('print', false, '', array($name, $dateformat, $ascountry, $aslanguage, $outputlanguage, $doc), array($name)),
 		new weTagDataOption('select', false, '', array($name, $size, $value, $values), array($name)),
 		new weTagDataOption('choice', false, '', array($name, $size, $maxlength, $value, $values), array($name)),
 		new weTagDataOption('img', false, 'customer', array($name, $value, $id, $xml, $parentid, $width, $height, $quality, $keepratio, $maximize, $bordercolor, $checkboxstyle, $inputstyle, $checkboxclass, $inputclass, $checkboxtext, $showcontrol, $thumbnail), array($name, $parentid)),
@@ -160,5 +150,5 @@ if(defined('CUSTOMER_TABLE')){
 
 	$this->Attributes = array($name, $size, $maxlength, $rows, $cols, $onchange, $choice, $checked, $value, $values, $dateformat, $xml, $id, $removefirstparagraph, $autofill,
 		$parentid, $width, $height, $quality, $keepratio, $maximize, $bordercolor, $checkboxstyle, $inputstyle, $checkboxclass, $inputclass, $checkboxtext, $showcontrol,
-		$thumbnail, $ascountry, $aslanguage, $outputlanguage, $languageautofill, $doc, $to, $nameto, $usevalue, $minyear, $maxyear, $pure, $wysiwyg, $autobr, $html, $htmlspecialchars, $php, $abbr, $spellcheck, $commands);
+		$thumbnail, $ascountry, $aslanguage, $outputlanguage, $languageautofill, $doc, $usevalue, $minyear, $maxyear, $pure, $wysiwyg, $autobr, $html, $htmlspecialchars, $php, $abbr, $spellcheck, $commands);
 }

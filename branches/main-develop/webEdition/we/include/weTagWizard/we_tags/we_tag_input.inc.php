@@ -25,17 +25,15 @@ $user = new weTagData_multiSelectorAttribute('user',USER_TABLE, 'user,folder', '
 $spellcheck = new weTagData_selectAttribute('spellcheck', weTagData_selectAttribute::getTrueFalse(), false, 'spellchecker');
 $outputlanguage = new weTagData_textAttribute('outputlanguage', false, '');
 $doc = new weTagData_selectAttribute('doc', array(new weTagDataOption('self', false, ''), new weTagDataOption('top', false, '')), false, '');
-$to = new weTagData_selectAttribute('to', array(new weTagDataOption('screen', false, ''),new weTagDataOption('request', false, ''), new weTagDataOption('post', false, ''), new weTagDataOption('get', false, ''), new weTagDataOption('global', false, ''), new weTagDataOption('session', false, ''), new weTagDataOption('top', false, ''), new weTagDataOption('self', false, ''), new weTagDataOption('sessionfield', false, '')), false, '');
-$nameto = new weTagData_textAttribute('nameto', false, '');
 
 $this->TypeAttribute = new weTagData_typeAttribute('type', array(
-	new weTagDataOption('text', false, '', array($name,$size,$maxlength,$value,$html,$php,$num_format,$precision,$user,$htmlspecialchars,$spellcheck,$to,$nameto,), array($name)),
-	new weTagDataOption('checkbox', false, '', array($name,$value,$reload,$user,$htmlspecialchars,$to,$nameto,), array($name)),
-	new weTagDataOption('date', false, '', array($name,$format,$user,$htmlspecialchars,$to,$nameto,), array($name)),
-	new weTagDataOption('choice', false, '', array($name,$size,$maxlength,$mode,$values,$reload,$seperator,$user,$htmlspecialchars,$to,$nameto,), array($name)),
-	new weTagDataOption('select', false, '', array($name,$values,$htmlspecialchars,$to,$nameto,), array($name)),
-	new weTagDataOption('country', false, '', array($name,$outputlanguage,$doc,$to,$nameto,), array($name)),
-	new weTagDataOption('language', false, '', array($name,$outputlanguage,$doc,$to,$nameto), array($name))), true, '');
+	new weTagDataOption('text', false, '', array($name,$size,$maxlength,$value,$html,$php,$num_format,$precision,$user,$htmlspecialchars,$spellcheck,), array($name)),
+	new weTagDataOption('checkbox', false, '', array($name,$value,$reload,$user,$htmlspecialchars,), array($name)),
+	new weTagDataOption('date', false, '', array($name,$format,$user,$htmlspecialchars,), array($name)),
+	new weTagDataOption('choice', false, '', array($name,$size,$maxlength,$mode,$values,$reload,$seperator,$user,$htmlspecialchars,), array($name)),
+	new weTagDataOption('select', false, '', array($name,$values,$htmlspecialchars,), array($name)),
+	new weTagDataOption('country', false, '', array($name,$outputlanguage,$doc,), array($name)),
+	new weTagDataOption('language', false, '', array($name,$outputlanguage,$doc), array($name))), true, '');
 
 $this->Attributes=array($name,$size,$maxlength,$format,$mode,$value,$values,$html,$htmlspecialchars,$php,$num_format,$precision,$win2iso,$reload,
-	$seperator,$user,$spellcheck,$outputlanguage,$doc,$to,$nameto);
+	$seperator,$user,$spellcheck,$outputlanguage,$doc);

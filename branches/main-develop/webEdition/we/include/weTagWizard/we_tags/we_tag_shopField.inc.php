@@ -26,14 +26,3 @@ $this->Attributes[] = new weTagData_choiceAttribute('checked', weTagData_selectA
 $this->Attributes[] = new weTagData_choiceAttribute('mode', array(new weTagDataOption('add'),
 	), false, false, '');
 $this->Attributes[] = new weTagData_selectAttribute('xml', weTagData_selectAttribute::getTrueFalse(), false, '');
-$this->Attributes[] = new weTagData_selectAttribute('to', array(new weTagDataOption('screen'),
-	new weTagDataOption('request'),
-	new weTagDataOption('post'),
-	new weTagDataOption('get'),
-	new weTagDataOption('global'),
-	new weTagDataOption('session'),
-	new weTagDataOption('top'),
-	new weTagDataOption('self'),
-	new weTagDataOption('sessionfield'),
-	), false, '');
-$this->Attributes[] = new weTagData_textAttribute('nameto', false, '');
