@@ -217,11 +217,11 @@ class we_thumbnail{
 		$this->thumbWidth = $thumbWidth;
 		$this->thumbHeight = $thumbHeight;
 		$this->thumbQuality = $thumbQuality;
-		$this->thumbRatio = $thumbRatio;
-		$this->thumbMaxsize = $thumbMaxsize;
-		$this->thumbInterlace = $thumbInterlace;
-		$this->thumbFitinside = $thumbFitinside;
-		$this->thumbFormat = $thumbFormat;
+		$this->thumbRatio = trim($thumbRatio) ? $thumbRatio : 0;
+		$this->thumbMaxsize = trim($thumbMaxsize) ? $thumbMaxsize : 0;
+		$this->thumbInterlace = trim($thumbInterlace) ? $thumbInterlace : 0;
+		$this->thumbFitinside = trim($thumbFitinside) ? $thumbFitinside : 0;
+		$this->thumbFormat = trim($thumbFormat);
 		$this->thumbName = $thumbName;
 		$this->imageID = $imageID;
 		$this->imageFileName = $imageFileName;
