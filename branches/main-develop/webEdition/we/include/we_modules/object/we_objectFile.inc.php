@@ -2273,7 +2273,7 @@ class we_objectFile extends we_document{
 			}
 		}
 		$this->ModDate = time();
-		$this->ModifierID = !isset($GLOBALS['we']['Scheduler_active']) && isset($_SESSION["user"]["ID"]) ? $_SESSION["user"]["ID"] : 0;
+		$this->ModifierID = !isset($GLOBALS['we']['Scheduler_active']) && isset($_SESSION['user']['ID']) ? $_SESSION['user']['ID'] : 0;
 		$this->wasUpdate = 1;
 		$this->setUrl();
 
