@@ -31,8 +31,7 @@ $reloadUrl = getServerUrl(true) . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=editThu
 if(isset($_GET['newthumbnail']) && $_GET['newthumbnail'] != ''){
 	if(we_hasPerm('ADMINISTRATOR')){
 		$DB_WE->query('INSERT INTO ' . THUMBNAILS_TABLE . ' SET Name ="' . $DB_WE->escape($_GET['newthumbnail']) . '"');
-		header('Location: ' . $reloadUrl . '&id=' . f('SELECT ID FROM ' . THUMBNAILS_TABLE . ' WHERE Name="' . $DB_WE->escape($_GET['newthumbnail']) . '"', 'ID', $DB_WE));
-		exit();
+		$_GET['id'] = f('SELECT ID FROM ' . THUMBNAILS_TABLE . ' WHERE Name="' . $DB_WE->escape($_GET['newthumbnail']) . '"', 'ID', $DB_WE);
 	}
 }
 
@@ -44,9 +43,6 @@ if(isset($_GET['deletethumbnail']) && $_GET['deletethumbnail'] != ''){
 
 		// Delete entry in database
 		$DB_WE->query('DELETE FROM ' . THUMBNAILS_TABLE . ' WHERE ID=' . intval($_GET['deletethumbnail']));
-
-		header('Location: ' . $reloadUrl);
-		exit();
 	}
 }
 
@@ -397,10 +393,10 @@ function render_dialog(){
 function getFooter(){
 	$_javascript = we_html_element::jsElement('
 function we_save() {
-	top.we_thumbnails.document.getElementById("thumbnails_dialog").style.display = "none";
-	top.we_thumbnails.document.getElementById("thumbnails_save").style.display = "";
-	top.we_thumbnails.document.we_form.save_thumbnails.value = "true";
-	top.we_thumbnails.document.we_form.submit();
+	top.document.getElementById("thumbnails_dialog").style.display = "none";
+	top.document.getElementById("thumbnails_save").style.display = "";
+	top.document.we_form.save_thumbnails.value = "true";
+	top.document.we_form.submit();
 }');
 
 	return $_javascript .
@@ -416,16 +412,14 @@ function getMainDialog(){
 					'history.back()');
 		} else{
 			save_all_values();
-
-
-			$save_javascript = we_html_element::jsElement(
-					$save_javascript . we_message_reporting::getShowMessageCall(g_l('thumbnails', '[saved]'), we_message_reporting::WE_MESSAGE_NOTICE) .
+			$save_javascript = we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('thumbnails', '[saved]'), we_message_reporting::WE_MESSAGE_NOTICE) .
 					"self.location = '" . $GLOBALS['reloadUrl'] . "&id=" . $_REQUEST["edited_id"] . "';");
 		}
 
 		return $save_javascript . build_dialog('saved');
 	} else{
-		return we_html_element::htmlForm(array('name' => 'we_form', 'method' => 'get', 'action' => $_SERVER['SCRIPT_NAME']), we_html_element::htmlHidden(array('name' => 'save_thumbnails', 'value' => 'false')) . render_dialog()) .
+
+		return we_html_element::htmlForm(array('name' => 'we_form', 'method' => 'get', 'action' => $_SERVER['SCRIPT_NAME']), we_html_element::htmlHidden(array('name' => 'we_cmd[0]', 'value' => 'editThumbs')) . we_html_element::htmlHidden(array('name' => 'save_thumbnails', 'value' => 'false')) . render_dialog()) .
 			we_html_element::jsElement('init();');
 	}
 }
