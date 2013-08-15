@@ -421,7 +421,7 @@ if (window.screen) {
 			"var we_win = window.open('" . $this->href . "','" . "we_ll_" . $this->id . "',we_winOpts);";
 
 		$attributes = removeAttribs($attributes, array(
-			'name', 'target', 'href', 'onClick', 'onclick'
+			'name', 'target', 'onClick', 'onclick'
 		));
 
 		$attributes['target'] = 'we_ll_' . $this->id;
