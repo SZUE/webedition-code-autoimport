@@ -107,8 +107,8 @@ class weToolFrames extends weModuleFrames{
 		$body = we_html_element::htmlBody(array('style' => 'background-color:grey;margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;', "onload" => "start();")
 				, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
 					, we_html_element::htmlExIFrame('header', parent::getHTMLHeader($this->toolDir . 'conf/we_menu_' . $this->toolName . '.conf.php', $this->toolName), 'position:absolute;top:0px;height:32px;left:0px;right:0px;') .
-					we_html_element::htmlIFrame('resize', $this->frameset . '?pnt=resize', 'position:absolute;top:32px;bottom:1px;left:0px;right:0px;overflow: hidden;') .
-					we_html_element::htmlIFrame('cmd', $this->frameset . '?pnt=cmd', 'position:absolute;bottom:0px;height:1px;left:0px;right:0px;overflow: hidden;')
+					we_html_element::htmlIFrame('resize', $this->frameset . '?pnt=resize' . (isset($_REQUEST['tab']) ? '&tab=' . $_REQUEST['tab'] : '') . (isset($_REQUEST['modelid']) ? '&modelid=' . $_REQUEST['modelid'] : '') . (isset($_REQUEST['sid']) ? '&sid=' . $_REQUEST['sid'] : ''), 'position:absolute;top:32px;bottom:1px;left:0px;right:0px;overflow: hidden;') .
+					we_html_element::htmlIFrame('cmd', $this->frameset . '?pnt=cmd' . (isset($_REQUEST['modelid']) ? '&modelid=' . $_REQUEST['modelid'] : ''), 'position:absolute;bottom:0px;height:1px;left:0px;right:0px;overflow: hidden;')
 		));
 
 		return $this->getHTMLDocument($body, $js);
