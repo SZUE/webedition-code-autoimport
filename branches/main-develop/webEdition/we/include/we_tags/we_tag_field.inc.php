@@ -535,7 +535,7 @@ function we_tag_field($attribs){
 							getHtmlTag('a', $_linkAttribs, $out, true) //  output of link-tag
 						);
 				} else {
-
+					$showlink = false;
 					switch(isset($GLOBALS['lv']->ClassName) ? $GLOBALS['lv']->ClassName : ''){
 						case '':
 						case 'we_listview':
@@ -546,17 +546,14 @@ function we_tag_field($attribs){
 						case 'we_listview_customer':
 							$showlink = true;
 							break;
-						case 'we_objecttag':
-							$showlink = $GLOBALS['lv']->triggerID != '0';
-							break;
 						case 'we_listview_object':
-							$showlink = (($GLOBALS['lv']->triggerID != '0') ||
-								$tid ||
-								($GLOBALS['lv']->DB_WE->f('OF_Templates') || $GLOBALS['lv']->docID)
-								);
+							$showlink = $tid || $GLOBALS['lv']->DB_WE->f('OF_Templates') || $GLOBALS['lv']->docID;
+						case 'we_objecttag':
+							$showlink = $showlink || $GLOBALS['lv']->triggerID != '0' || $triggerid;
+							$triggerid = $triggerid ? $triggerid : $GLOBALS['lv']->triggerID;
 							break;
 						case 'we_listview_multiobject':
-							$showlink = ($GLOBALS['lv']->DB_WE->f('OF_Templates') || $GLOBALS['lv']->docID);
+							$showlink = $GLOBALS['lv']->DB_WE->f('OF_Templates') || $GLOBALS['lv']->docID;
 							break;
 						default:
 							$showlink = false;
@@ -564,21 +561,32 @@ function we_tag_field($attribs){
 					}
 
 					if($showlink){
-						$tail = ($tid && $GLOBALS['lv']->ClassName == 'we_listview_object' ?
-								'&amp;we_objectTID=' . $tid :
-								'');
+						$tail = ($tid && $GLOBALS['lv']->ClassName == 'we_listview_object' ? '&amp;we_objectTID=' . $tid : '');
 
 						if(($GLOBALS['we_doc']->ClassName == 'we_objectFile') && ($GLOBALS['we_doc']->InWebEdition)){
 							$_linkAttribs['href'] = $GLOBALS['lv']->f('wedoc_lastPath') . $tail;
 						} else {
 							$path_parts = pathinfo($GLOBALS['lv']->f('WE_PATH'));
 							if($triggerid){
+							
 								$triggerpath = id_to_path($triggerid);
 								$triggerpath_parts = pathinfo($triggerpath);
+								/* Fix #7771
+								 * TODO: make all this link stuff consistent!
+								 * 
 								$_linkAttribs['href'] = ($triggerpath_parts['dirname'] != '/' ? $triggerpath_parts['dirname'] : '') . '/' .
 									(!$GLOBALS['WE_MAIN_DOC']->InWebEdition && NAVIGATION_DIRECTORYINDEX_NAMES != '' && isset($GLOBALS['lv']->hidedirindex) && $GLOBALS['lv']->hidedirindex && in_array($triggerpath_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))) ?
 										'' : $triggerpath_parts['filename'] . '/'
 									) . $GLOBALS['lv']->f('WE_URL') . $tail;
+								 * 
+								 */
+
+								$_linkAttribs['href'] = (!$GLOBALS['WE_MAIN_DOC']->InWebEdition && NAVIGATION_DIRECTORYINDEX_NAMES != '' && isset($GLOBALS['lv']->hidedirindex)
+									&& $GLOBALS['lv']->hidedirindex && in_array($triggerpath_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))) ?
+										($triggerpath_parts['dirname'] != '/' ? $triggerpath_parts['dirname'] : '') . '/' . $GLOBALS['lv']->f('WE_URL') . $tail : 
+											$triggerpath . '?we_objectID=' . $GLOBALS['lv']->DB_WE->f('OF_ID') . $tail;
+								/* End Fix '7771 */
+ 
 							} else {
 								$_linkAttribs['href'] = (show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES != '' && isset($GLOBALS['lv']->hidedirindex) && $GLOBALS['lv']->hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))) ?
 										($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' :
