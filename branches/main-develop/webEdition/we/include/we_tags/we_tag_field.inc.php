@@ -556,7 +556,6 @@ function we_tag_field($attribs){
 							$triggerid = $triggerid ? $triggerid : $GLOBALS['lv']->triggerID;
 							$showlink = $showlink || $triggerid;
 							$tailOwnId = isset($tailOwnId) ? $tailOwnId : '?we_objectID=' . $GLOBALS['lv']->getObject()->DB_WE->f('OF_ID');
-							
 							break;
 						case 'we_listview_multiobject':
 							$showlink = $GLOBALS['lv']->DB_WE->f('OF_Templates') || $GLOBALS['lv']->docID;
