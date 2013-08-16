@@ -31,7 +31,7 @@
  * @return			void
  */
 function we_tag_paypal($attribs){
-	global $DB_WE;
+	$DB_WE = $GLOBALS['DB_WE'];
 	$name = weTag_getAttribute('name', $attribs);
 	if(($foo = attributFehltError($attribs, 'pricename', __FUNCTION__))){
 		return $foo;
@@ -94,8 +94,6 @@ function we_tag_paypal($attribs){
 		 */
 
 
-		$DB_WE = !isset($DB_WE) ? new DB_WE : $DB_WE;
-
 		//	NumberFormat - currency and taxes
 		if($currency == ''){
 			$feldnamen = explode('|', f('SELECT strFelder FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname = "shop_pref"', 'strFelder', $DB_WE));
@@ -154,10 +152,10 @@ function we_tag_paypal($attribs){
 		if(isset($formField[7])){ // todo
 			if($formField[7] == 'default'){
 				$paypalURL = 'https://www.paypal.com/cgi-bin/webscr';
-			} else{
+			} else {
 				$paypalURL = 'https://www.sandbox.paypal.com/cgi-bin/webscr';
 			}
-		} else{
+		} else {
 			$paypalURL = 'https://www.paypal.com/cgi-bin/webscr';
 		}
 
@@ -202,7 +200,7 @@ function we_tag_paypal($attribs){
 					$p->add_field('currency_code', $currency);
 					if($languagecode == ''){
 						$p->add_field('lc', $lc);
-					} else{
+					} else {
 						$p->add_field('lc', $languagecode);
 					}
 					// get user details
@@ -236,11 +234,10 @@ function we_tag_paypal($attribs){
 					//bug #5701
 					if(!$useVat && !$netprices){
 						$vatId = isset($item['serial'][WE_SHOP_VAT_FIELD_NAME]) ? $item['serial'][WE_SHOP_VAT_FIELD_NAME] : 0;
-						$shopVat = weShopVats::getVatRateForSite($vatId, true, false);
-						$shopVat = (1 + ($shopVat / 100));
+						$shopVat = (1 + (weShopVats::getVatRateForSite($vatId, true, false) / 100));
 						//paypal allows only two decimal places
 						$itemPrice = round(($itemPrice / $shopVat), 2);
-					} else{
+					} else {
 						//paypal allows only two decimal places
 						$itemPrice = round($itemPrice, 2); //#6546
 					}
@@ -252,7 +249,7 @@ function we_tag_paypal($attribs){
 					$shopVat = weShopVats::getVatRateForSite($vatId, true, false);
 					if($shopVat){ // has selected or standard shop rate
 						$item['serial'][WE_SHOP_VAT_FIELD_NAME] = $shopVat;
-					} else{ // could not find any shoprates, remove field if necessary
+					} else { // could not find any shoprates, remove field if necessary
 						if(isset($shoppingItem['serial'][WE_SHOP_VAT_FIELD_NAME])){
 							unset($shoppingItem['serial'][WE_SHOP_VAT_FIELD_NAME]);
 						}
@@ -273,11 +270,8 @@ function we_tag_paypal($attribs){
 				//get the shipping costs
 				$weShippingControl = weShippingControl::getShippingControl();
 
-				if(we_tag('ifRegisteredUser')){ // check if user is registered
-					$customer = $_SESSION['webuser'];
-				} else{
-					$customer = false;
-				}
+				// check if user is registered
+				$customer = (we_tag('ifRegisteredUser') ?$_SESSION['webuser'] : false);
 
 				if($shipping == ''){
 					$cartField[WE_SHOP_SHIPPING] = array(
@@ -285,7 +279,7 @@ function we_tag_paypal($attribs){
 						'isNet' => $weShippingControl->isNet,
 						'vatRate' => $weShippingControl->vatRate
 					);
-				} else{
+				} else {
 					$cartField[WE_SHOP_SHIPPING] = array(
 						'costs' => $shipping,
 						'isNet' => $shippingIsNet,
@@ -306,7 +300,7 @@ function we_tag_paypal($attribs){
 					//seems to be gros vat rate
 					$vatRate = (1 + ($vatRate / 100));
 					$shippingFee = ($shippingCosts / $vatRate);
-				} else{
+				} else {
 					$shippingFee = $shippingCosts;
 				}
 

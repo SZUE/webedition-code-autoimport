@@ -1,12 +1,27 @@
 <FilesMatch "\.inc.php$">
-Order Allow,Deny
-Deny from all
+	<ifModule mod_authz_core>
+		Require all denied
+	</ifModule>
+	<ifModule !mod_authz_core>
+		Order Allow,Deny
+		Deny from all
+	</ifModule>
 </FilesMatch>
 <FilesMatch "\.class.php$">
-Order Allow,Deny
-Deny from all
+	<ifModule mod_authz_core>
+		Require all denied
+	</ifModule>
+	<ifModule !mod_authz_core>
+		Order Allow,Deny
+		Deny from all
+	</ifModule>
 </FilesMatch>
 <FilesMatch "\.conf.php$">
-Order Allow,Deny
-Deny from all
+	<ifModule mod_authz_core>
+		Require all denied
+	</ifModule>
+	<ifModule !mod_authz_core>
+		Order Allow,Deny
+		Deny from all
+	</ifModule>
 </FilesMatch>
