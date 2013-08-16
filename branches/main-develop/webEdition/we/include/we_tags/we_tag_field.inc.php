@@ -537,8 +537,11 @@ function we_tag_field($attribs){
 				} else {
 					$showlink = false;
 					switch(isset($GLOBALS['lv']->ClassName) ? $GLOBALS['lv']->ClassName : ''){
-						case '':
+						
 						case 'we_listview':
+							$triggerid = $triggerid ? $triggerid : $GLOBALS['lv']->triggerID;
+							$tailOwnId = '?we_documentID=' . $GLOBALS['lv']->f('wedoc_ID');
+						case '':
 						case 'we_search_listview':
 						case 'we_shop_listviewShopVariants':
 						case 'we_listview_shoppingCart':
@@ -548,9 +551,12 @@ function we_tag_field($attribs){
 							break;
 						case 'we_listview_object':
 							$showlink = $tid || $GLOBALS['lv']->DB_WE->f('OF_Templates') || $GLOBALS['lv']->docID;
+							$tailOwnId = '?we_objectID=' . $GLOBALS['lv']->DB_WE->f('OF_ID');
 						case 'we_objecttag':
-							$showlink = $showlink || $GLOBALS['lv']->triggerID != '0' || $triggerid;
 							$triggerid = $triggerid ? $triggerid : $GLOBALS['lv']->triggerID;
+							$showlink = $showlink || $triggerid;
+							$tailOwnId = isset($tailOwnId) ? $tailOwnId : '?we_objectID=' . $GLOBALS['lv']->getObject()->DB_WE->f('OF_ID');
+							
 							break;
 						case 'we_listview_multiobject':
 							$showlink = $GLOBALS['lv']->DB_WE->f('OF_Templates') || $GLOBALS['lv']->docID;
@@ -584,7 +590,7 @@ function we_tag_field($attribs){
 								$_linkAttribs['href'] = (!$GLOBALS['WE_MAIN_DOC']->InWebEdition && NAVIGATION_DIRECTORYINDEX_NAMES != '' && isset($GLOBALS['lv']->hidedirindex)
 									&& $GLOBALS['lv']->hidedirindex && in_array($triggerpath_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))) ?
 										($triggerpath_parts['dirname'] != '/' ? $triggerpath_parts['dirname'] : '') . '/' . $GLOBALS['lv']->f('WE_URL') . $tail : 
-											$triggerpath . '?we_objectID=' . $GLOBALS['lv']->DB_WE->f('OF_ID') . $tail;
+											$triggerpath . $tailOwnId . $tail;
 								/* End Fix '7771 */
  
 							} else {

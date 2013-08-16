@@ -42,6 +42,7 @@ class we_listview extends listviewBase{
 	var $customers = '';
 	var $languages = ''; //string of Languages, separated by ,
 	var $numorder = false; // #3846
+	public $triggerID = 0;
 
 	/**
 	 * we_listview()
@@ -69,7 +70,7 @@ class we_listview extends listviewBase{
 	 * @return we_listview
 	 */
 
-	function __construct($name = 0, $rows = 999999999, $offset = 0, $order = '', $desc = false, $docType = '', $cats = '', $catOr = false, $casesensitive = false, $workspaceID = 0, $contentTypes = '', $cols = '', $searchable = true, $condition = '', $calendar = '', $datefield = '', $date = '', $weekstart = '', $categoryids = '', $customerFilterType = 'false', $subfolders = true, $customers = '', $id = '', $languages = '', $numorder = false, $hidedirindex = false){
+	function __construct($name = 0, $rows = 999999999, $offset = 0, $order = '', $desc = false, $docType = '', $cats = '', $catOr = false, $casesensitive = false, $workspaceID = 0, $contentTypes = '', $cols = '', $searchable = true, $condition = '', $calendar = '', $datefield = '', $date = '', $weekstart = '', $categoryids = '', $customerFilterType = 'false', $subfolders = true, $customers = '', $id = '', $languages = '', $numorder = false, $hidedirindex = false, $triggerID = ""){
 		parent::__construct($name, $rows, $offset, $order, $desc, $cats, $catOr, $workspaceID, $cols, $calendar, $datefield, $date, $weekstart, $categoryids, $customerFilterType, $id);
 
 		$this->docType = trim($docType);
@@ -120,6 +121,7 @@ class we_listview extends listviewBase{
 		$this->numorder = $numorder;
 		$this->hidedirindex = $hidedirindex;
 		$this->order = trim($this->order);
+		$this->triggerID = $triggerID;
 		$random = false;
 
 		$order = $joins = $orderWhere = array();
