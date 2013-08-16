@@ -115,20 +115,26 @@ class we_shop_listviewOrderitem extends listviewBase {
 				if(isset($strSerial['OF_ID'])){//Object based Article
 					$this->DB_WE->Record['articleIsObject'] = 1;
 					foreach($strSerial as $key => &$value){
-						if($key == 'we_sacf' || $key == 'WE_VARIANT'){
-							continue;
+						switch($key){
+							case 'we_sacf':
+							case 'WE_VARIANT':
+								continue;
+							default:
+								if(strpos($key, 'we_WE') === false){
+									$this->DB_WE->Record[substr($key, 3)] = $value; //key without "we_" because of internal problems in shop modul backend view
+								}
 						}
-						if(strpos($key, 'we_') === 0){
-							$key = substr($key, 3);
-						}
-						if(substr($value, 0, 2) == 'a:' && $val = @unserialize($value)){
-							$this->DB_WE->Record[$key] = $val;
-						} else{
-							$this->DB_WE->Record[$key] = $value;
-						}
+						$this->DB_WE->Record[$key] = (substr($value, 0, 2) == 'a:' && $val = @unserialize($value)?$val:$value);
+						
 					}
 
 					unset($value);
+					foreach($strSerial['we_sacf'] as $key => &$value){
+						$this->DB_WE->Record[$key] = $value;
+					}
+					unset($value);
+					$this->DB_WE->Record['VARIANT'] = $strSerial['WE_VARIANT'];
+					$this->DB_WE->Record['shopvat'] = $strSerial['shopvat'];
 				} else {//Document based Article
 					$this->DB_WE->Record['articleIsObject'] = 0;
 					foreach($strSerial as $key => &$value){
