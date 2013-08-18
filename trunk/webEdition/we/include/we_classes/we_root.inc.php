@@ -46,6 +46,9 @@ abstract class we_root extends we_class{
 
 	/* Path of the File  */
 	var $Path = '';
+	
+	/* sha1 hash of the file */
+	var $Filehash = '';
 
 	/* OldPath of the File => used internal  */
 	var $OldPath = '';
@@ -55,6 +58,9 @@ abstract class we_root extends we_class{
 
 	/* Modification Date as UnixTimestamp  */
 	var $ModDate = 0;
+	
+	/* Rebuild Date as UnixTimestamp  */
+	var $RebuildDate = 0;
 
 	/* Flag which is set, when the file is a folder  */
 	var $IsFolder = 0;
@@ -90,7 +96,7 @@ abstract class we_root extends we_class{
 		parent::__construct();
 		$this->CreationDate = time();
 		$this->ModDate = time();
-		array_push($this->persistent_slots, 'OwnersReadOnly', 'ParentID', 'ParentPath', 'Text', 'Filename', 'Path', 'OldPath', 'CreationDate', 'ModDate', 'IsFolder', 'ContentType', 'Icon', 'elements', 'EditPageNr', 'CopyID', 'Owners', 'CreatorID', 'ModifierID', 'DefaultInit', 'RestrictOwners', 'WebUserID');
+		array_push($this->persistent_slots, 'OwnersReadOnly', 'ParentID', 'ParentPath', 'Text', 'Filename', 'Path', 'Filehash', 'OldPath', 'CreationDate', 'ModDate', 'RebuildDate', 'IsFolder', 'ContentType', 'Icon', 'elements', 'EditPageNr', 'CopyID', 'Owners', 'CreatorID', 'ModifierID', 'DefaultInit', 'RestrictOwners', 'WebUserID');
 	}
 
 	function makeSameNew(){
@@ -743,9 +749,11 @@ abstract class we_root extends we_class{
 			$this->ModDate = time();
 			$this->ModifierID = isset($_SESSION['user']['ID']) ? $_SESSION['user']['ID'] : 0;
 		}
+		$this->RebuildDate = time();
 		if(!parent::we_save($resave)){
 			return false;
 		}
+		$this->update_filehash();
 		$a = $this->i_saveContentDataInDB();
 		if($resave == 0 && $this->ClassName != 'we_class_folder'){
 			we_history::insertIntoHistory($this);
@@ -1159,7 +1167,29 @@ abstract class we_root extends we_class{
 	function we_rewrite(){
 		return true;
 	}
-
+	
+	function update_filehash(){
+		$this->wasUpdate = $this->ID ? 1 : 0;
+		if($this->Table==TEMPLATES_TABLE || $this->Table==FILE_TABLE){
+			if($this->Table==TEMPLATES_TABLE) {
+				if(strpos($this->Path,'.tmpl')===false){
+					$usepath= TEMPLATES_PATH.$this->Path;
+				} else {
+					$usepath= TEMPLATES_PATH.substr_replace($this->Path,'.php',-5);
+				}			
+			} else {
+				$usepath=$_SERVER['DOCUMENT_ROOT'].$this->Path;
+			}
+			if(file_exists($usepath) && is_file($usepath)){
+				$this->Filehash = sha1_file($usepath);
+			} else {
+				$this->Filehash = '';	
+			}		
+			$this->i_savePersistentSlotsToDB('Filehash,RebuildDate');
+		} 
+		return true;
+	}
+	
 	function correctFields(){
 
 	}

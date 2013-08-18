@@ -685,7 +685,6 @@ class we_webEditionDocument extends we_textContentDocument{
 		// First off correct corupted fields
 		$this->correctFields();
 
-
 		// Bug Fix #6615
 		$this->temp_template_id = $this->TemplateID;
 		$this->temp_doc_type = $this->DocType;

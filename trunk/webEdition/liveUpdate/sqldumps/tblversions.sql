@@ -9,6 +9,7 @@ CREATE TABLE ###TBLPREFIX###tblversions (
   `status` enum('saved','published','unpublished','deleted') NOT NULL,
   `version` bigint(20) unsigned NOT NULL,
   `binaryPath` varchar(255) NOT NULL,
+   Filehash varchar(40) NOT NULL default '',
   `modifications` varchar(255) NOT NULL,
   `modifierID` bigint(20) unsigned NOT NULL,
   `IP` varchar(30) NOT NULL,

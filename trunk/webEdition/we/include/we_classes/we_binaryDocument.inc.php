@@ -132,6 +132,7 @@ class we_binaryDocument extends we_document{
 				we_util_File::delete($this->getSitePath(true));
 				$this->rewriteNavigation();
 			}
+			$this->update_filehash();
 		} else{
 			return false;
 		}
