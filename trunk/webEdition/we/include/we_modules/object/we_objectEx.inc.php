@@ -192,7 +192,7 @@ class we_objectEx extends we_object{
 		return '';
 	}
 
-	function switchtypes2($type, $len){
+	function switchtypes2($type, $len=0){
 		switch($type){
 			case "meta":
 				return " VARCHAR(" . (($len > 0 && ($len < 256)) ? $len : "255") . ") NOT NULL ";
