@@ -125,7 +125,7 @@ class we_imageDocument extends we_binaryDocument{
 			while($this->DB_WE->next_record()) {
 				$thumbObj->init($this->DB_WE->f('ID'), $this->DB_WE->f('Width'), $this->DB_WE->f('Height'), $this->DB_WE->f('Ratio'), $this->DB_WE->f('Maxsize'), $this->DB_WE->f('Interlace'), false, $this->DB_WE->f('Format'), $this->DB_WE->f('Name'), $this->ID, $this->Filename, $this->Path, $this->Extension, $this->getElement('origwidth'), $this->getElement('origheight'), $this->DB_WE->f('Quality'));
 
-				if(file_exists($_SERVER['DOCUMENT_ROOT'] . $thumbObj->getOutputPath()) && $thumbObj->getOutputPath() != $this->Path){
+				if($thumbObj->exists() && $thumbObj->getOutputPath() != $this->Path){
 					$thumbs[] = $this->DB_WE->f('ID');
 				}
 			}

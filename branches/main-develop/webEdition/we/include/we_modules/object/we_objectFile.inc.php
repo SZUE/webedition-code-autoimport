@@ -1421,18 +1421,18 @@ class we_objectFile extends we_document{
 // handling thumbnails for this image
 // identifying default thumbnail of class:
 		$defvals = $this->getDefaultValueArray();
-		$thumbID = isset($defvals["img_" . $name]["defaultThumb"]) ? $defvals["img_" . $name]["defaultThumb"] : "";
+		$thumbID = isset($defvals['img_' . $name]['defaultThumb']) ? $defvals['img_' . $name]['defaultThumb'] : 0;
 // creating thumbnail only if it really exists:
 		$thumbdb = new DB_WE();
 		$thumbdb->query('SELECT ID,Name FROM ' . THUMBNAILS_TABLE);
 		$thumbs = $thumbdb->getAll();
 		array_unshift($thumbs, '');
-		if(!empty($thumbID) && isset($thumbs[$thumbID]["ID"]) && $thumbID <= count($thumbs)){
+		if(!empty($thumbID) && isset($thumbs[$thumbID]['ID']) && $thumbID <= count($thumbs)){
 			if($img->ID > 0){
 				$thumbObj = new we_thumbnail();
-				$thumbObj->initByThumbID($thumbs[$thumbID]["ID"], $img->ID, $img->Filename, $img->Path, $img->Extension, $img->getElement("origwidth"), $img->getElement("origheight"), $img->getDocument());
+				$thumbObj->initByThumbID($thumbs[$thumbID]['ID'], $img->ID, $img->Filename, $img->Path, $img->Extension, $img->getElement('origwidth'), $img->getElement('origheight'), $img->getDocument());
 				$thumbObj->createThumb();
-				$_imgSrc = $thumbObj->getOutputPath();
+				$_imgSrc = $thumbObj->getOutputPath(false, true);
 				$_imgHeight = $thumbObj->getOutputHeight();
 				$_imgWight = $thumbObj->getOutputWidth();
 			} else {
@@ -1441,7 +1441,7 @@ class we_objectFile extends we_document{
 				$_imgWight = 64;
 			}
 		} else {
-			$thumbID = "";
+			$thumbID = 0;
 		}
 
 		if(!$editable){
@@ -1451,18 +1451,17 @@ class we_objectFile extends we_document{
 		$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['" . $fname . "'].value");
 		$wecmdenc3 = we_cmd_enc("opener.top.we_cmd('reload_entry_at_object','" . $GLOBALS['we_transaction'] . "','img_" . $name . "');opener._EditorFrame.setEditorIsHot(true);opener.setScrollTo();");
 
-		$content = '<input type=hidden name="' . $fname . '" value="' . $this->getElement($name) . '" />' .
+		return ($variant ?
+				'' :
+				'<span class="weObjectPreviewHeadline"><b>' . $name . ($this->DefArray["img_" . $name]["required"] ? '*' : '') . '</b></span>' . ( isset($this->DefArray["img_$name"]['editdescription']) && $this->DefArray["img_$name"]['editdescription'] ? '<div class="objectDescription">' . $this->DefArray["img_$name"]['editdescription'] . '</div>' : we_html_element::htmlBr())
+			) .
+			'<input type=hidden name="' . $fname . '" value="' . $this->getElement($name) . '" />' .
 // show thumbnail of image if there exists one:
 			(!empty($thumbID) ?
 				'<img src="' . $_imgSrc . '" height="' . $_imgHeight . '" width="' . $_imgWight . '" />' :
 				$img->getHtml()) .
 			we_button::create_button_table(array(we_button::create_button("edit", "javascript:we_cmd('openDocselector','" . ($id != 0 ? $id : (isset($this->DefArray["img_$name"]['defaultdir']) ? $this->DefArray["img_$name"]['defaultdir'] : 0)) . "','" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','" . session_id() . "', " . (isset($this->DefArray["img_$name"]['rootdir']) && $this->DefArray["img_$name"]['rootdir'] != "" ? $this->DefArray["img_$name"]['rootdir'] : 0) . ",'image/*')"),
 				we_button::create_button("image:btn_function_trash", "javascript:we_cmd('remove_image_at_object','" . $GLOBALS['we_transaction'] . "','img_" . $name . "');setScrollTo();")));
-
-		return ($variant ?
-				'' :
-				'<span class="weObjectPreviewHeadline"><b>' . $name . ($this->DefArray["img_" . $name]["required"] ? '*' : '') . '</b></span>' . ( isset($this->DefArray["img_$name"]['editdescription']) && $this->DefArray["img_$name"]['editdescription'] ? '<div class="objectDescription">' . $this->DefArray["img_$name"]['editdescription'] . '</div>' : we_html_element::htmlBr())
-			) . $content;
 	}
 
 	function getBinaryHTML($name, $attribs, $editable = true){

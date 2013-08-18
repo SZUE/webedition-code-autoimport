@@ -1176,7 +1176,7 @@ function parseInternalLinks(&$text, $pid, $path = '', $doBaseReplace = true){
 			list($imgID, $thumbID) = explode(',', $reg[1]);
 			$thumbObj = new we_thumbnail();
 			if($thumbObj->initByImageIDAndThumbID($imgID, $thumbID)){
-				$text = str_replace('src="' . we_base_link::TYPE_THUMB_PREFIX . $reg[1] . '"', 'src="' . ($doBaseReplace ? BASE_IMG : '') . $thumbObj->getOutputPath() . '"', $text);
+				$text = str_replace('src="' . we_base_link::TYPE_THUMB_PREFIX . $reg[1] . '"', 'src="' . ($doBaseReplace ? BASE_IMG : '') . $thumbObj->getOutputPath(false,true) . '"', $text);
 			} else {
 				$text = preg_replace('|<img[^>]+src="' . we_base_link::TYPE_THUMB_PREFIX . $reg[1] . '[^>]+>|Ui', '', $text);
 			}

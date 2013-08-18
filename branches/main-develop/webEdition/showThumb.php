@@ -57,7 +57,7 @@ if(isset($_GET['u']) && isset($_GET['t']) && isset($_GET['id'])){
 
 
 		if((!$useOrig) && $we_doc->ID && ($we_doc->DocChanged == false) && file_exists($thumbObj->getOutputPath(true))){
-			$src = $thumbObj->getOutputPath(false) . '?rand=' . $randval;
+			$src = $thumbObj->getOutputPath(false, true);
 		} else {
 			$src = WEBEDITION_DIR . 'we_cmd.php?' . http_build_query(
 					array(
