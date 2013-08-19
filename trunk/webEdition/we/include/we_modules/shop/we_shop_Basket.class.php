@@ -46,14 +46,22 @@ class we_shop_Basket{
 	 */
 	public $CartFields = array();
 	public $orderID = 0;
+	private $creationTime;
+
+	function __construct(array $array){
+		$this->setCartProperties($array);
+	}
 
 	function initCartFields(){
-
 		if(isset($_REQUEST[WE_SHOP_CART_CUSTOM_FIELD]) && is_array($_REQUEST[WE_SHOP_CART_CUSTOM_FIELD])){
 			foreach($_REQUEST[WE_SHOP_CART_CUSTOM_FIELD] as $key => $value){
 				$this->CartFields[$key] = $value;
 			}
 		}
+	}
+
+	public function getCreationTime(){
+		return $this->creationTime;
 	}
 
 	/**
@@ -102,14 +110,16 @@ class we_shop_Basket{
 	 *
 	 * @param array $array
 	 */
-	function setCartProperties($array){
+	private function setCartProperties(array $array){
 
 		if(isset($array['shoppingItems']) && isset($array['cartFields'])){
 			$this->ShoppingItems = $array['shoppingItems'];
 			$this->CartFields = $array['cartFields'];
-		} else{
+			$this->creationTime = isset($array['creationTime']) ? $array['creationTime'] : time();
+		} else {
 			$this->ShoppingItems = array();
 			$this->CartFields = array();
+			$this->creationTime = time();
 		}
 	}
 
@@ -121,16 +131,16 @@ class we_shop_Basket{
 	 * @param string $type
 	 * @param string $variant
 	 */
-	function Add_Item($id, $quantity = 1, $type = 'w', $variant = '', $customFields = array()){
+	function Add_Item($id, $quantity = 1, $type = we_shop_shop::DOCUMENT, $variant = '', $customFields = array()){
 
 		// check if this item is already in the shoppingCart
 		if(($key = $this->getShoppingItemIndex($id, $type, $variant, $customFields))){ // item already exists
 			if($this->ShoppingItems[$key]['quantity'] + $quantity > 0){
 				$this->ShoppingItems[$key]['quantity'] += $quantity;
-			} else{
+			} else {
 				$this->Del_Item($id, $type, $variant, $customFields);
 			}
-		} else{ // add the item
+		} else { // add the item
 			$key = str_replace('.', '', uniqid('we_cart_', true));
 
 			if($quantity > 0){ // only add new item with positive number
@@ -175,15 +185,15 @@ class we_shop_Basket{
 	 * @return string
 	 */
 	function getserial($id, $type, $variant = false, $customFields = array()){
-		$DB_WE = new DB_WE;
+		$DB_WE = new DB_WE();
 		$Record = array();
 
 		switch($type){
-			case 'w':
+			case we_shop_shop::DOCUMENT:
 				// unfortunately this is not made with initDocById,
 				// but its much faster -> so we use it
 				$DB_WE->query('SELECT ' . CONTENT_TABLE . '.BDID as BDID, ' . CONTENT_TABLE . '.Dat as Dat, ' . LINK_TABLE . '.Name as Name FROM ' . LINK_TABLE . ',' . CONTENT_TABLE . ' WHERE ' . LINK_TABLE . '.DID=' . intval($id) . ' AND ' . LINK_TABLE . '.CID=' . CONTENT_TABLE . '.ID AND ' . LINK_TABLE . '.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"');
-				while($DB_WE->next_record()) {
+				while($DB_WE->next_record()){
 					$tmp = ($DB_WE->f('BDID'));
 					$Record[$DB_WE->f('Name')] = $tmp ? $tmp : $DB_WE->f('Dat');
 				}
@@ -214,10 +224,10 @@ class we_shop_Basket{
 					}
 				}
 				break;
-			case 'o':
+			case we_shop_shop::OBJECT:
 				$classArray = getHash('SELECT * FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($id), $DB_WE);
 
-				$olv = new we_listview_object('0', 1, 0, '', 0, $classArray['TableID'], '', '', ' ' . OBJECT_X_TABLE . $classArray["TableID"] . '.ID=' . $classArray['ObjectID']);
+				$olv = new we_listview_object(0, 1, 0, '', 0, $classArray['TableID'], '', '', ' ' . OBJECT_X_TABLE . $classArray["TableID"] . '.ID=' . $classArray['ObjectID']);
 				$olv->next_record();
 
 				$Record = $olv->DB_WE->Record;
@@ -303,10 +313,10 @@ class we_shop_Basket{
 		if(($key = $this->getShoppingItemIndex($id, $type, $variant, $customFields))){ // item already in cart
 			if($quantity > 0){
 				$this->ShoppingItems[$key]['quantity'] = $quantity;
-			} else{
+			} else {
 				$this->Del_Item($id, $type, $variant, $customFields);
 			}
-		} else{ // new item
+		} else { // new item
 			$this->Add_Item($id, $quantity, $type, $variant, $customFields);
 		}
 	}
@@ -334,7 +344,7 @@ class we_shop_Basket{
 	 * @param string $variant
 	 * @return mixed
 	 */
-	function getShoppingItemIndex($id, $type = 'w', $variant = '', $customFields = array()){
+	function getShoppingItemIndex($id, $type = we_shop_shop::DOCUMENT, $variant = '', $customFields = array()){
 
 		foreach($this->ShoppingItems as $index => $item){
 			if($item['id'] == $id && $item['type'] == $type && $item['variant'] == $variant && $customFields == $item['customFields']){

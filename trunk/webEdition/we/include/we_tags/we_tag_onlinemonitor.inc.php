@@ -45,7 +45,7 @@ function we_tag_onlinemonitor($attribs){
 
 	$GLOBALS["lv"] = new we_onlinemonitortag($we_omid, "' . $condition . '");
 	if(is_array($GLOBALS["we_lv_array"])){
-		array_push($GLOBALS["we_lv_array"], clone($GLOBALS["lv"]));
+		$GLOBALS["we_lv_array"][] = clone($GLOBALS["lv"]);
 	}
 	return $GLOBALS["lv"]->avail;
 }

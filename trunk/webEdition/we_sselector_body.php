@@ -143,7 +143,7 @@ function _cutText($text, $l){
 				if(g_l('contentTypes', '[' . $ct . ']') !== false){
 					return g_l('contentTypes', '[' . $ct . ']');
 				}
-				return "";
+				return '';
 			}
 
 			$arDir = array();
@@ -152,17 +152,16 @@ function _cutText($text, $l){
 			$ordFile = array();
 			$final = array();
 
-			if($_REQUEST["dir"] == ""){
-				$org = "/";
-			} else {
-				$org = $_REQUEST["dir"];
-			}
+			$org = ($_REQUEST["dir"] == "" ? "/" : $_REQUEST["dir"]);
+
 
 			$dir = $_SERVER['DOCUMENT_ROOT'] . $_REQUEST["dir"];
-			if($dir != "/")
+			if($dir != "/"){
 				$dir = rtrim($dir, '/');
-			if(!isset($_REQUEST["ord"]))
+			}
+			if(!isset($_REQUEST["ord"])){
 				$_REQUEST["ord"] = 10;
+			}
 			@chdir($dir);
 			$dir_obj = @dir($dir);
 
@@ -237,10 +236,10 @@ function _cutText($text, $l){
 
 
 			foreach($ordDir as $key => $value){
-				array_push($final, $arDir[$key]);
+				$final[] = $arDir[$key];
 			}
 			foreach($ordFile as $key => $value){
-				array_push($final, $arFile[$key]);
+				$final[] = $arFile[$key];
 			}
 
 			print '<script type="text/javascript"><!--
@@ -271,17 +270,17 @@ var i = 0;
 
 				$isfolder = is_dir($dir . '/' . $entry) ? true : false;
 
-				$type = $isfolder ? g_l('contentTypes', '[folder]') : getDataType($dir . "/" . $entry);
+				$type = $isfolder ? g_l('contentTypes', '[folder]') : getDataType($dir . '/' . $entry);
 
-				$indb = ($DB_WE->next_record() ? true : false);
-				if($entry == 'webEdition' || (preg_match('|^' . $_SERVER['DOCUMENT_ROOT'] . '/?webEdition/|', $dir) || (preg_match('|^' . $_SERVER['DOCUMENT_ROOT'] . '/?webEdition$|', $dir)) && (!preg_match('|^' . $_SERVER['DOCUMENT_ROOT'] . '/?webEdition/we_backup|', $dir) || $entry == "download" || $entry == 'tmp')) || $entry == WE_THUMBNAIL_DIRECTORY || $entry == $thumbFold){
+				$indb = $DB_WE->next_record() ? true : false;
+				if($entry == 'webEdition' || ((preg_match('|^' . $_SERVER['DOCUMENT_ROOT'] . '/?webEdition/|', $dir) || preg_match('|^' . $_SERVER['DOCUMENT_ROOT'] . '/?webEdition$|', $dir)) && (!preg_match('|^' . $_SERVER['DOCUMENT_ROOT'] . '/?webEdition/we_backup|', $dir) || $entry == "download" || $entry == "tmp")) || $entry == WE_THUMBNAIL_DIRECTORY || $entry == $thumbFold){
 					$indb = true;
 				}
 				if($supportDebugging){
 					$indb = false;
 				}
 				$show = ($entry != '.') && ($entry != '..') && (($_REQUEST["file"] == g_l('contentTypes', '[all_Types]')) || ($type == g_l('contentTypes', '[folder]')) || ($type == $_REQUEST["file"] || $_REQUEST["file"] == ''));
-				$bgcol = ($_REQUEST["curID"] == ($dir . "/" . $entry) && (!( isset($_REQUEST["nf"]) && $_REQUEST["nf"] == "new_folder"))) ? "#DFE9F5" : "white";
+				$bgcol = ($_REQUEST["curID"] == ($dir . '/' . $entry) && (!( isset($_REQUEST["nf"]) && $_REQUEST["nf"] == "new_folder"))) ? "#DFE9F5" : "white";
 				$onclick = "";
 				$ondblclick = "";
 				$_cursor = "cursor:default;";
@@ -349,16 +348,16 @@ var i = 0;
 		</table>
 		<?php if(( isset($_REQUEST["nf"]) && $_REQUEST["nf"] == "new_folder") || (( isset($_REQUEST["nf"]) && ($_REQUEST["nf"] == "rename_folder" || $_REQUEST["nf"] == "rename_file")) && ($set_rename))){ ?>
 			<input type="hidden" name="cmd" value="<?php print $_REQUEST["nf"]; ?>" />
-			<?php if($_REQUEST["nf"] == "rename_folder" || $_REQUEST["nf"] == "rename_file"){ ?><input type="hidden" name="sid" value="<?php print $_REQUEST["sid"] ?>" />
+	<?php if($_REQUEST["nf"] == "rename_folder" || $_REQUEST["nf"] == "rename_file"){ ?><input type="hidden" name="sid" value="<?php print $_REQUEST["sid"] ?>" />
 				<input type="hidden" name="oldtxt" value="" /><?php } ?>
 			<input type="hidden" name="pat" value="<?php print isset($_REQUEST["pat"]) ? $_REQUEST["pat"] : ""  ?>" />
-		<?php } ?>
+<?php } ?>
 	</form>
 
-	<?php if(( isset($_REQUEST["nf"]) && $_REQUEST["nf"] == "new_folder") || (( isset($_REQUEST["nf"]) && ($_REQUEST["nf"] == "rename_folder" || $_REQUEST["nf"] == "rename_file")) && ($set_rename))){ ?>
+<?php if(( isset($_REQUEST["nf"]) && $_REQUEST["nf"] == "new_folder") || (( isset($_REQUEST["nf"]) && ($_REQUEST["nf"] == "rename_folder" || $_REQUEST["nf"] == "rename_file")) && ($set_rename))){ ?>
 		<script  type="text/javascript"><!--
 		document.forms["we_form"].elements["txt"].focus();
-			document.forms["we_form"].elements["txt"].select();
+		document.forms["we_form"].elements["txt"].select();
 	<?php if($_REQUEST["nf"] == "rename_folder" || $_REQUEST["nf"] == "rename_file"){ ?>
 				document.forms["we_form"].elements["oldtxt"].value = document.forms["we_form"].elements["txt"].value;
 	<?php } ?>

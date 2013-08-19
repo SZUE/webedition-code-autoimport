@@ -32,61 +32,61 @@ $controller = Zend_Controller_Front::getInstance();
 $appName = $controller->getParam('appName');
 
 $we_menu_toolfactory = array(
-	'000100' => array(
+	100 => array(
 		'text' => $translate->_('toolfactory'),
-		'parent' => '000000',
+		'parent' => 0,
 		'perm' => '',
-		'enabled' => '1',
+		'enabled' => 1,
 	),
 	array(
 		'text' => $translate->_('New Entry'),
-		'parent' => '000100',
+		'parent' => 100,
 		'cmd' => 'app_' . $appName . '_new',
 		'perm' => 'NEW_APP_TOOLFACTORY || ADMINISTRATOR',
-		'enabled' => '1',
+		'enabled' => 1,
 	),
 	array(
 		'text' => $translate->_('Delete Entry/Group.'),
-		'parent' => '000100',
+		'parent' => 100,
 		'cmd' => 'app_' . $appName . '_checkdelete',
 		'perm' => 'DELETE_APP_TOOLFACTORY || ADMINISTRATOR',
-		'enabled' => '1',
+		'enabled' => 1,
 	),
 	array(
 		'text' => $translate->_('Generate TGZ-File from App'),
-		'parent' => '000100',
+		'parent' => 100,
 		'cmd' => 'app_' . $appName . '_generateTGZ',
 		'perm' => 'NEW_APP_TOOLFACTORY || ADMINISTRATOR',
-		'enabled' => '1',
+		'enabled' => 1,
 	),
 	array(
-		'parent' => '000100', // separator
+		'parent' => 100, // separator
 	),
 	array(
 		'text' => $translate->_('Close'),
-		'parent' => '000100',
+		'parent' => 100,
 		'cmd' => 'app_' . $appName . '_exit',
 		'perm' => '',
-		'enabled' => '1',
+		'enabled' => 1,
 	),
-	'003000' => array(
+	3000 => array(
 		'text' => $translate->_('Help'),
-		'parent' => '000000',
+		'parent' => 0,
 		'perm' => '',
-		'enabled' => '1',
+		'enabled' => 1,
 	),
 	array(
 		'text' => $translate->_('Help') . '&hellip;',
-		'parent' => '003000',
+		'parent' => 3000,
 		'cmd' => 'app_' . $appName . '_help',
 		'perm' => '',
-		'enabled' => '1',
+		'enabled' => 1,
 	),
 	array(
 		'text' => $translate->_('Info') . '&hellip;',
-		'parent' => '003000',
+		'parent' => 3000,
 		'cmd' => 'app_' . $appName . '_info',
 		'perm' => '',
-		'enabled' => '1',
+		'enabled' => 1,
 	)
 );

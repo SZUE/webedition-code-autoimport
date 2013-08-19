@@ -21,9 +21,9 @@
  * @package    webEdition_toolfactory
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
- 
+
 // include autoload function
-include_once('../../lib/we/core/autoload.php');
+require_once('../../lib/we/core/autoload.php');
 
 // include configuration
 include_once('<?php print $TOOLNAME;?>/conf/meta.conf.php');
@@ -35,7 +35,7 @@ $controller = Zend_Controller_Front::getInstance();
 $controller->setControllerDirectory('./controllers');
 
 // turn on exceptions
-$controller->throwExceptions(true); // should be turned off in production server 
+$controller->throwExceptions(true); // should be turned off in production server
 
 // disables automatic view rendering
 $controller->setParam('noViewRenderer', true);

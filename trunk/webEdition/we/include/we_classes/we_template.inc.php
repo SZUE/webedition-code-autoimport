@@ -60,8 +60,9 @@ class we_template extends we_document{
 		//$parentIDMerk = $this->ParentID;
 		if($this->ID == 0){
 			foreach($this->persistent_slots as $cur){
-				if($cur != 'elements')
+				if($cur != 'elements'){
 					$this->{$cur} = $temp->{$cur};
+				}
 			}
 			$this->CreationDate = time();
 			$this->ID = 0;
@@ -78,6 +79,9 @@ class we_template extends we_document{
 			$this->setElement($k, $temp->getElement($k), 'txt');
 		}
 		$this->EditPageNr = 0;
+		echo we_html_element::jsElement('
+var _currentEditorRootFrame = top.weEditorFrameController.getActiveDocumentReference();
+_currentEditorRootFrame.frames[2].reloadContent = true;');
 	}
 
 	/* must be called from the editor-script. Returns a filename which has to be included from the global-Script */
@@ -246,7 +250,7 @@ class we_template extends we_document{
 			register_shutdown_function(array($this, 'handleShutdown'), $code);
 
 			//remove "use" since this is not allowed inside functions
-			$var = create_function('', '?>' . preg_replace('|use [\w,\s\\\\]*;|','',$code) . '<?php ');
+			$var = create_function('', '?>' . preg_replace('|use [\w,\s\\\\]*;|', '', $code) . '<?php ');
 			if(empty($var) && ( $error = error_get_last() )){
 				$tmp = explode("\n", $code);
 				if(!is_array($tmp)){
@@ -272,11 +276,11 @@ class we_template extends we_document{
 		// echoed in templates with CacheType = document
 		$pre_code = '<?php
 	// Activate the webEdition error handler
-	include_once($_SERVER[\'DOCUMENT_ROOT\'].\'/webEdition/we/include/we_error_handler.inc.php\');
+	require_once($_SERVER[\'DOCUMENT_ROOT\'].\'/webEdition/we/include/we_error_handler.inc.php\');
 	we_error_handler(false);
 
-	include_once($_SERVER[\'DOCUMENT_ROOT\'].\'/webEdition/we/include/we_global.inc.php\');
-	include_once($_SERVER[\'DOCUMENT_ROOT\'].\'/webEdition/we/include/we_tag.inc.php\');
+	require_once($_SERVER[\'DOCUMENT_ROOT\'].\'/webEdition/we/include/we_global.inc.php\');
+	require_once($_SERVER[\'DOCUMENT_ROOT\'].\'/webEdition/we/include/we_tag.inc.php\');
 	we_templateInit();?>';
 
 
@@ -375,13 +379,15 @@ class we_template extends we_document{
 	function getVariantFields(){
 		$ret = array();
 		$fields = $this->getAllVariantFields();
-		if(empty($fields))
+		if(empty($fields)){
 			return $fields;
+		}
 		$element_names = array();
 		$names = array_keys($this->elements);
 		foreach($names as $name){
-			if(substr($name, 0, 8) == 'variant_')
+			if(substr($name, 0, 8) == 'variant_'){
 				$element_names[] = substr($name, 8);
+			}
 		}
 		foreach($fields as $name => $value){
 			if(in_array($name, $element_names)){
@@ -432,38 +438,24 @@ class we_template extends we_document{
 		foreach($tags as $tag){
 			if(preg_match('|<we:([^> /]+)|i', $tag, $regs)){ // starttag found
 				$tagname = $regs[1];
-				if(preg_match('|name="([^"]+)"|i', $tag, $regs) && ($tagname != "var") && ($tagname != "field")){ // name found
+				if(preg_match('|name="([^"]+)"|i', $tag, $regs) && ($tagname != 'var') && ($tagname != 'field')){ // name found
 					$name = $regs[1];
 
-					$size = count($blocks);
-					if($size){
-						$foo = $blocks[$size - 1];
+					if(!empty($blocks)){
+						$foo = end($blocks);
 						$blockname = $foo["name"];
-						$blocktype = $foo["type"];
-						switch($blocktype){
-							case "block":
+						switch($foo['type']){
+							case 'list':
+							case 'block':
 								$name = we_webEditionDocument::makeBlockName($blockname, $name);
 								break;
-							case "list":
-								$name = we_webEditionDocument::makeListName($blockname, $name);
-								break;
-							case "linklist":
+							case 'linklist':
 								$name = we_webEditionDocument::makeLinklistName($blockname, $name);
 								break;
 						}
 					}
 
-
-					$attributes = str_ireplace("<we:$tagname", '', $tag);
-
-					$foo = array();
-					$attribs = '';
-					preg_match_all('/([^=]+)= *("[^"]*")/', $attributes, $foo, PREG_SET_ORDER);
-					foreach($foo as $cur){
-						$attribs .= '"' . trim($cur[1]) . '"=>' . trim($cur[2]) . ',';
-					}
-					$att = array();
-					@eval('$att = array(' . $attribs . ');');
+					$att = self::_getAttribsArray(str_ireplace('<we:' . $tagname, '', $tag));
 
 					if(in_array($tagname, $variant_tags)){
 						if($tagname == 'input' && isset($att['type']) && $att['type'] == 'date' && !$includedatefield){
@@ -486,12 +478,13 @@ class we_template extends we_document{
 					}
 
 					switch($tagname){
-						case "block":
-						case "list":
-						case "linklist":
+						case 'list':
+							$tagname = 'block';
+						case 'block':
+						case 'linklist':
 							$blocks[] = array(
-								"name" => $name,
-								"type" => $tagname
+								'name' => $name,
+								'type' => $tagname
 							);
 							break;
 					}
@@ -499,9 +492,9 @@ class we_template extends we_document{
 			} else if(preg_match('|</we:([^> ]+)|i', $tag, $regs)){ // endtag found
 				$tagname = $regs[1];
 				switch($tagname){
-					case "block":
-					case "list":
-					case "linklist":
+					case 'block':
+					case 'list':
+					case 'linklist':
 						if(!empty($blocks)){
 							array_pop($blocks);
 						}
@@ -583,15 +576,9 @@ class we_template extends we_document{
 		return $completeCode ? $this->getElement('completeData') : $this->getElement('data');
 	}
 
-	function _getAttribsArray($attributes){
-		$foo = array();
-		$attribs = '';
-		preg_match_all('/([^=]+)= *("[^"]*")/', $attributes, $foo, PREG_SET_ORDER);
-		foreach($foo as $f){
-			$attribs .= '"' . trim($f[1]) . '"=>' . trim($f[2]) . ',';
-		}
+	private static function _getAttribsArray($attributes){
 		$att = array();
-		@eval('$att = array(' . $attribs . ');');
+		@eval('$att = array(' . we_tag_tagParser::parseAttribs($attributes) . ');');
 		return $att;
 	}
 
@@ -650,7 +637,7 @@ class we_template extends we_document{
 		}
 		static $recursiveTemplates = array();
 		if(empty($recursiveTemplates)){
-			array_push($recursiveTemplates, $this->ID);
+			$recursiveTemplates[] = $this->ID;
 		}
 		$code = $this->getTemplateCode(false);
 
@@ -661,7 +648,7 @@ class we_template extends we_document{
 
 
 		foreach($regs as $reg){
-			$attribs = $this->_getAttribsArray(isset($reg[2]) ? $reg[2] : '');
+			$attribs = self::_getAttribsArray(isset($reg[2]) ? $reg[2] : '');
 			$name = isset($attribs['name']) ? $attribs['name'] : '';
 			if($name){
 				if(!isset($masterTags[$name])){
@@ -684,7 +671,7 @@ class we_template extends we_document{
 			} else{
 				// we have a master template. => surround current template with it
 				// first get template code
-				array_push($recursiveTemplates, $this->MasterTemplateID);
+				$recursiveTemplates[] = $this->MasterTemplateID;
 				$templObj = new we_template();
 				$templObj->initByID($this->MasterTemplateID, TEMPLATES_TABLE);
 				$masterTemplateCode = $templObj->getTemplateCode(true);
@@ -695,7 +682,7 @@ class we_template extends we_document{
 
 				foreach($contentTags as $reg){
 					$all = $reg[0];
-					$attribs = $this->_getAttribsArray($reg[1]);
+					$attribs = self::_getAttribsArray($reg[1]);
 					$name = isset($attribs['name']) ? $attribs['name'] : '';
 					if($name){
 						$we_masterTagCode = isset($masterTags[$name]['content']) ? $masterTags[$name]['content'] : '';
@@ -718,14 +705,7 @@ class we_template extends we_document{
 			// search for include tag
 			if(preg_match('|^<we:include ([^>]+)>$|i', $tag, $regs)){ // include found
 				// get attributes of tag
-				$attributes = $regs[1];
-				$foo = array();
-				$attribs = '';
-				preg_match_all('/([^=]+)= *("[^"]*")/', $attributes, $foo, PREG_SET_ORDER);
-				foreach($foo as $f){
-					$attribs .= '"' . trim($f[1]) . '"=>' . trim($f[2]) . ',';
-				}
-				@eval('$att = array(' . $attribs . ');');
+				$att = self::_getAttribsArray($regs[1]);
 				// if type-attribute is equal to "template"
 				if(isset($att["type"]) && $att["type"] == "template"){
 
@@ -747,7 +727,7 @@ class we_template extends we_document{
 							t_e(g_l('parser', '[template_recursion_error]'), 'Template: ' . $this->ID);
 						} else{
 							// get code of template
-							array_push($recursiveTemplates, $att['id']);
+							$recursiveTemplates[] = $att['id'];
 							$templObj = new we_template();
 							$templObj->initByID($att['id'], TEMPLATES_TABLE);
 							$completeCode = (!(isset($att['included']) && ($att['included'] == 'false' || $att["included"] === '0' || $att['included'] == "off")));

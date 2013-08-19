@@ -40,7 +40,7 @@ foreach($languages as $lng){
 		$lngBox = we_forms::checkbox($lng, false, 'deleteLanguages[]', "<i>$lng (" . g_l('liveUpdate', '[languages][systemLanguage]') . ")</i>", false, 'defaultfont', '', true);
 	} else if($GLOBALS['WE_LANGUAGE'] == $lng){
 		$lngBox = we_forms::checkbox($lng, false, 'deleteLanguages[]', "<i>$lng (" . g_l('liveUpdate', '[languages][usedLanguage]') . ")</i>", false, 'defaultfont', '', true);
-	} else{
+	} else {
 		$lngBox = we_forms::checkbox($lng, false, 'deleteLanguages[]', $lng, true);
 	}
 	$languagesStr .= "
@@ -64,7 +64,7 @@ if(!empty($notDeletedLngs)){
 }
 
 if($jsAlert){
-	$jsAlert = "<script type=\"text/JavaScript\">alert(\"$jsAlert\")</script>";
+	$jsAlert = we_html_element::jsElement("alert(\"$jsAlert\")");
 }
 
 $content = '
@@ -89,7 +89,6 @@ $content = '
 </tr>
 </table>
 </form>
-' . $jsAlert . '
-';
+' . $jsAlert;
 
 print liveUpdateTemplates::getHtml(g_l('liveUpdate', '[languages][headline]'), $content);

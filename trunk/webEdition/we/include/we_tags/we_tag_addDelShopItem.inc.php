@@ -34,7 +34,7 @@ function we_tag_addDelShopItem($attribs){
 	$shopname = weTag_getAttribute('shopname', $attribs);
 	$floatquantities = weTag_getAttribute('floatquantities', $attribs, false, true);
 
-	include_once(WE_MODULES_PATH . 'shop/we_conf_shop.inc.php');
+	require_once(WE_MODULES_PATH . 'shop/we_conf_shop.inc.php');
 
 	$floatfilter = new Zend_Filter_LocalizedToNormalized();
 	if((isset($_REQUEST['shopname']) && $_REQUEST['shopname'] == $shopname) || !isset($_REQUEST['shopname']) || $_REQUEST['shopname'] == ''){

@@ -92,7 +92,7 @@ if(defined("WORKFLOW_TABLE")){
 
 print STYLESHEET .
 	we_html_element::jsScript(JS_DIR . 'windows.js');
-include_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
+require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 ?>
 </head>
 <body class="weEditorBody" onunload="doUnload()">

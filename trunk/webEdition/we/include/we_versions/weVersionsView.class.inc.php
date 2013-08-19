@@ -561,8 +561,8 @@ class weVersionsView{
 					+ "</td><td>&nbsp;</td><td><a href=\"#\">\n"
 					+ "<table id=\"date_picker_from"+rowNr+"\" class=\"weBtn\" onmouseout=\"weButton.out(this);\" onmousedown=\"weButton.down(this);\" onmouseup=\"if(weButton.up(this)){;}\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">\n"
 					+ "<tbody><tr><td class=\"weBtnLeft\"></td><td class=\"weBtnMiddle\" >"
-					+ "<img src=\"' . BUTTONS_DIR . 'icons/date_picker.gif\" class=\"weBtnImage\" />\n"
-				+ "</td><td class=\"weBtnRight\"></td></tr></tbody></table></a></td></tr></tbody></table>\n";
+					+ "<img src=\"' . BUTTONS_DIR . 'icons/date_picker.gif\" class=\"weBtnImage\" alt=\"\"/>"
+				+ "</td><td class=\"weBtnRight\"></td></tr></tbody></table></a></td></tr></tbody></table>";
 
 
 				cell = document.createElement("TD");
@@ -833,8 +833,8 @@ class weVersionsView{
 				 <tr>
 					<td>' . we_html_tools::getPixel(19, 12) . '</td>
 					<td id="eintraege_pro_seite" style="font-size:12px;width:130px;">' . g_l('versions', '[eintraege_pro_seite]') . ':</td>
-					<td class="defaultgray" style="width:70px;">' . we_html_tools::htmlSelect(
-				"anzahl", $anzahl_all, 1, $_anzahl, "", 'id="anzahl" onChange=\'this.form.elements["searchstart"].value=0;search(false);\'') . '
+					<td class="defaultgray" style="width:70px;">' .
+			we_html_tools::htmlSelect('anzahl', $anzahl_all, 1, $_anzahl, "", 'id="anzahl" onChange=\'this.form.elements["searchstart"].value=0;search(false);\'') . '
 					</td>
 					<td class="defaultfont" id="eintraege">' . g_l('versions', '[eintraege]') . '</td>
 					<td>' . self::getNextPrev($foundItems) . '</td>
@@ -872,7 +872,7 @@ class weVersionsView{
 			$thisObj = new weVersionsView();
 			$anzahl = $_SESSION['weS']['versions']['anzahl'];
 			$searchstart = $_SESSION['weS']['versions']['searchstart'];
-		} else{
+		} else {
 			$thisObj = $this;
 			$anzahl = $thisObj->searchclass->anzahl;
 			$searchstart = $thisObj->searchclass->searchstart;
@@ -920,9 +920,7 @@ class weVersionsView{
 	 * @abstract generates content for versions found
 	 * @return array with content
 	 */
-	function getVersionsOfDoc(){
-		$DB_WE = new DB_WE();
-
+	static function getVersionsOfDoc($DB_WE){
 		$thisObj = (isset($_REQUEST['we_cmd']['obj']) ? new weVersionsView() : $this);
 		$id = (isset($_REQUEST['id']) ? $_REQUEST['id'] : $GLOBALS['we_doc']->ID);
 		$table = (isset($_REQUEST['table']) ? $_REQUEST['table'] : $GLOBALS['we_doc']->Table);
@@ -945,7 +943,7 @@ class weVersionsView{
 
 			if($sortierung[0] == "modifierID"){
 				usort($_Result, array($thisObj, 'sortResultListUser' . (isset($sortierung[1]) ? 'DESC' : 'ASC')));
-			} else{
+			} else {
 				$sortText = $sortierung[0];
 				$sortHow = SORT_ASC;
 				$sort1 = array();
@@ -1011,8 +1009,7 @@ class weVersionsView{
 			array("dat" => g_l('versions', '[modifications]')),
 			array("dat" => (we_hasPerm("ADMINISTRATOR") ? '<div style="margin:0px 0px 5px 0px;" id="deleteButton">' . we_button::create_button(
 						"image:btn_function_trash", "javascript:deleteVers();") . '</div>' : '') .
-				we_forms::checkbox(
-					"1", 0, "deleteAllVersions", $markText, false, "middlefont", "checkAll();")),
+				we_forms::checkbox(1, 0, "deleteAllVersions", $markText, false, "middlefont", "checkAll();")),
 			array("dat" => we_html_tools::getPixel(1, 1)),
 			array("dat" => we_html_tools::getPixel(1, 1)),
 			array("dat" => we_html_tools::getPixel(1, 1)),

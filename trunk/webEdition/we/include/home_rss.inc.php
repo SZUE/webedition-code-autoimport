@@ -41,15 +41,14 @@ if(isset($http_response->http_headers['Location'])){//eine Weiterleitung ist akt
 }
 $feeddata = $http_response->http_body;
 
-$rss = new XML_RSS($feeddata,null, $GLOBALS['WE_BACKENDCHARSET']); // Umstellung in der XML_RSS-Klasse: den string, und nicht die url weiterzugeben
+$rss = new XML_RSS($feeddata, null, $GLOBALS['WE_BACKENDCHARSET']); // Umstellung in der XML_RSS-Klasse: den string, und nicht die url weiterzugeben
 $rss->parse();
 $rss_out = '<div id="rss">';
 foreach($rss->getItems() as $item){
-	$rss_out .= "<b>" . $item['title'] . "</b><p>" . $item['description'] . " ";
-	if(isset($item['link']) && !empty($item['link']))
-		$rss_out .= "<a href=\"" . $item['link'] . "\" target=\"_blank\">" . g_l('cockpit', '[more]') . "</a>";
-	$rss_out .= "</p>";
-	$rss_out .= we_html_tools::getPixel(1, 10) . we_html_element::htmlBr();
+	$rss_out .= "<b>" . $item['title'] . "</b><p>" . $item['description'] . " " .
+		(isset($item['link']) && !empty($item['link']) ? "<a href=\"" . $item['link'] . "\" target=\"_blank\">" . g_l('cockpit', '[more]') . "</a>" : '') .
+		"</p>" .
+		we_html_tools::getPixel(1, 10) . we_html_element::htmlBr();
 }
 $rss_out .= '</div>';
 print $rss_out .

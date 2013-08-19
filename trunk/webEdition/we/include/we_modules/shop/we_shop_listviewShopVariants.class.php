@@ -171,4 +171,3 @@ class we_shop_listviewShopVariants extends listviewBase{
 	}
 
 }
-

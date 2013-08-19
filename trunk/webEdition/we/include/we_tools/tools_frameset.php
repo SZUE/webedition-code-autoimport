@@ -25,9 +25,6 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
 
-// include autoload function
-include_once($_SERVER['DOCUMENT_ROOT'] . LIB_DIR . 'we/core/autoload.php');
-
 Zend_Loader::loadClass('we_core_Local');
 
 
@@ -75,8 +72,8 @@ if($_REQUEST['tool'] == "weSearch"){
 	}
 	//look which search is activ
 	if(isset($_REQUEST['we_cmd'][2])){
-		$table = $_REQUEST['we_cmd'][2];
-		switch($table){
+
+		switch($_REQUEST['we_cmd'][2]){
 			case FILE_TABLE:
 				$tab = 1;
 				$_SESSION['weS']['weSearch']["checkWhich"] = 1;

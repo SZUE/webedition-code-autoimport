@@ -461,10 +461,9 @@ class searchtoolView extends weToolView{
     else {
      setTimeout(\'sizeScrollContent();\', 1000);
     }';
-		}
-		else
+		} else {
 			$scrollContentFunction = "";
-
+		}
 
 		$anzahl = 0;
 
@@ -1100,8 +1099,8 @@ class searchtoolView extends weToolView{
        + "</td><td>&nbsp;</td><td><a href=\"#\">\n"
        + "<table id=\"date_picker_from"+rowNr+"\" class=\"weBtn\" onmouseout=\"weButton.out(this);\" onmousedown=\"weButton.down(this);\" onmouseup=\"if(weButton.up(this)){;}\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">\n"
        + "<tbody><tr><td class=\"weBtnLeft\"></td><td class=\"weBtnMiddle\">"
-       + "<img src=\"' . BUTTONS_DIR . 'icons/date_picker.gif\" class=\"weBtnImage\" />\n"
-       + "</td><td class=\"weBtnRight\"></td></tr></tbody></table></a></td></tr></tbody></table>\n";
+       + "<img src=\"' . BUTTONS_DIR . 'icons/date_picker.gif\" class=\"weBtnImage\" alt=\"\"/>"
+       + "</td><td class=\"weBtnRight\"></td></tr></tbody></table></a></td></tr></tbody></table>";
 
 
      cell = document.createElement("TD");
@@ -1505,11 +1504,11 @@ class searchtoolView extends weToolView{
 
 		$_table = new we_html_table(
 			array(
-			'border' => '0',
-			'cellpadding' => '2',
-			'cellspacing' => '0',
-			'width' => '500',
-			'height' => '50'
+			'border' => 0,
+			'cellpadding' => 2,
+			'cellspacing' => 0,
+			'width' => 500,
+			'height' => 50
 			), 4, 2);
 
 		switch($whichSearch){
@@ -1592,7 +1591,7 @@ class searchtoolView extends weToolView{
 			$this->Model->search_tables_advSearch[VERSIONS_TABLE] = 0;
 		}
 
-		if($_SESSION['weS']['we_mode'] == "seem"){
+		if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
 			$this->Model->search_tables_advSearch[TEMPLATES_TABLE] = 0;
 		} elseif(!isset($this->Model->search_tables_advSearch[TEMPLATES_TABLE])){
 			$this->Model->search_tables_advSearch[TEMPLATES_TABLE] = 0;
@@ -1602,7 +1601,7 @@ class searchtoolView extends weToolView{
 			$this->Model->search_tables_advSearch[OBJECT_FILES_TABLE] = 1;
 		}
 
-		if($_SESSION['weS']['we_mode'] == "seem"){
+		if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
 			$this->Model->search_tables_advSearch[OBJECT_TABLE] = 0;
 		} elseif(defined('OBJECT_TABLE') && !isset($this->Model->search_tables_advSearch[OBJECT_TABLE])){
 			$this->Model->search_tables_advSearch[OBJECT_TABLE] = 0;
@@ -1649,11 +1648,11 @@ class searchtoolView extends weToolView{
 
 		$_table = new we_html_table(
 			array(
-			'border' => '0',
-			'cellpadding' => '2',
-			'cellspacing' => '0',
-			'width' => '550',
-			'height' => '50'
+			'border' => 0,
+			'cellpadding' => 2,
+			'cellspacing' => 0,
+			'width' => 550,
+			'height' => 50
 			), 4, 3);
 
 		if(we_hasPerm('CAN_SEE_DOCUMENTS')){
@@ -1662,7 +1661,7 @@ class searchtoolView extends weToolView{
 					$this->Model->search_tables_advSearch[FILE_TABLE] ? true : false, 'search_tables_advSearch[' . FILE_TABLE . ']', g_l('searchtool', '[documents]'), false, 'defaultfont', ''));
 		}
 
-		if(we_hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] != "seem"){
+		if(we_hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE){
 			$_table->setCol(
 				1, 0, array(), we_forms::checkboxWithHidden(
 					$this->Model->search_tables_advSearch[TEMPLATES_TABLE] ? true : false, 'search_tables_advSearch[' . TEMPLATES_TABLE . ']', g_l('searchtool', '[templates]'), false, 'defaultfont', ''));
@@ -1674,7 +1673,7 @@ class searchtoolView extends weToolView{
 					0, 1, array(), we_forms::checkboxWithHidden(
 						$this->Model->search_tables_advSearch[OBJECT_FILES_TABLE] ? true : false, 'search_tables_advSearch[' . OBJECT_FILES_TABLE . ']', g_l('searchtool', '[objects]'), false, 'defaultfont', ''));
 			}
-			if(we_hasPerm('CAN_SEE_OBJECTS') && $_SESSION['weS']['we_mode'] != "seem"){
+			if(we_hasPerm('CAN_SEE_OBJECTS') && $_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE){
 				$_table->setCol(
 					1, 1, array(), we_forms::checkboxWithHidden(
 						$this->Model->search_tables_advSearch[OBJECT_TABLE] ? true : false, 'search_tables_advSearch[' . OBJECT_TABLE . ']', g_l('searchtool', '[classes]'), false, 'defaultfont', ''));
@@ -1720,8 +1719,7 @@ class searchtoolView extends weToolView{
 					$this->Model->searchFieldsDocSearch[] = "Content";
 				}
 
-				if((isset($_SESSION['weS']['weSearch']["keyword"]) && $_SESSION['weS']['weSearch']["keyword"] != "") && (isset(
-						$_REQUEST["tab"]) && $_REQUEST["tab"] == 1)){
+				if((isset($_SESSION['weS']['weSearch']["keyword"]) && $_SESSION['weS']['weSearch']["keyword"] != "") && (isset($_REQUEST["tab"]) && $_REQUEST["tab"] == 1)){
 					$this->Model->searchDocSearch[0] = ($_SESSION['weS']['weSearch']["keyword"]);
 					if($GLOBALS['WE_BACKENDCHARSET'] == "UTF-8"){
 						$this->Model->searchDocSearch[0] = utf8_encode($this->Model->searchDocSearch[0]);
@@ -2570,7 +2568,7 @@ class searchtoolView extends weToolView{
 			;
 		}
 		if(we_hasPerm('PUBLISH') && ($whichSearch == "AdvSearch" || $whichSearch == "DocSearch")){
-			$publishButtonCheckboxAll = we_forms::checkbox("1", 0, "publish_all_" . $whichSearch, "", false, "middlefont", "checkAllPubChecks('" . $whichSearch . "')");
+			$publishButtonCheckboxAll = we_forms::checkbox(1, 0, "publish_all_" . $whichSearch, "", false, "middlefont", "checkAllPubChecks('" . $whichSearch . "')");
 			$publishButton = we_button::create_button("publish", "javascript:publishDocs('" . $whichSearch . "');", true, 100, 22, "", "");
 		}
 
@@ -2835,9 +2833,9 @@ class searchtoolView extends weToolView{
 		$btnDatePicker = we_button::create_button(
 				"image:date_picker", "javascript:", null, null, null, null, null, null, false, $_btn);
 		$oSelector = new we_html_table(array(
-			"cellpadding" => "0",
-			"cellspacing" => "0",
-			"border" => "0",
+			"cellpadding" => 0,
+			"cellspacing" => 0,
+			"border" => 0,
 			"id" => $_name . "_cell"
 			), 1, 5);
 		$oSelector->setCol(0, 2, null, we_html_tools::htmlTextInput($name = $_name, $size = 55, $value, $maxlength = 10, $attribs = 'id="' . $_name . '" class="wetextinput" readonly="1"', $type = "text", $width = 100));
@@ -3114,7 +3112,7 @@ class searchtoolView extends weToolView{
 				"select", "javascript:we_cmd('openDirselector',document.we_form.elements['$folderID'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "')"));
 
 		return
-			$yuiSuggest->getYuiFiles() .
+			weSuggest::getYuiFiles() .
 			$yuiSuggest->getHTML() .
 			$yuiSuggest->getYuiCode();
 	}

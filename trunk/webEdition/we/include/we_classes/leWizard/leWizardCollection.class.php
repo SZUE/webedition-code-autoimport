@@ -59,10 +59,6 @@ class leWizardCollection{
 	 */
 	var $NextStep = null;
 
-	function leWizardCollection($WizardsFile){
-		$this->__construct($WizardsFile);
-	}
-
 	function __construct($WizardsFile){
 
 		unset($leInstallerWizards);

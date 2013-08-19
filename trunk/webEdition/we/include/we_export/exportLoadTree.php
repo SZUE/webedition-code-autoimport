@@ -63,7 +63,7 @@ if($ws = get_ws($table)){
 			$path = dirname($path);
 		}
 	}
-} else if(defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE && (!$_SESSION["perms"]["ADMINISTRATOR"])){
+} else if(defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE && (!we_hasPerm("ADMINISTRATOR"))){
 	$ac = getAllowedClasses($DB_WE);
 	foreach($ac as $cid){
 		$path = id_to_path($cid, OBJECT_TABLE);
@@ -113,7 +113,7 @@ function getItems($ParentID){
 			break;
 	}
 
-	$DB_WE = new DB_WE;
+	$DB_WE = new DB_WE();
 	$where = ' WHERE  ParentID=' . intval($ParentID) . ' AND((1' . makeOwnersSql() . ')' . $GLOBALS['wsQuery'] . ')';
 	//if($GLOBALS['table']==FILE_TABLE) $where .= " AND (ClassName='we_webEditionDocument' OR ClassName='we_folder')";
 	$elem = 'ID,ParentID,Path,Text,Icon,IsFolder,ModDate' . (($GLOBALS['table'] == FILE_TABLE || (defined("OBJECT_FILES_TABLE") && $GLOBALS['table'] == OBJECT_FILES_TABLE)) ? ",Published" : "") . ((defined("OBJECT_FILES_TABLE") && $GLOBALS['table'] == OBJECT_FILES_TABLE) ? ",IsClassFolder,IsNotEditable" : "");

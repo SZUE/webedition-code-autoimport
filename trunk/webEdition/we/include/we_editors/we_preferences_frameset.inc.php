@@ -27,7 +27,7 @@
  * *************************************************************************** */
 
 include(WE_INCLUDES_PATH . 'we_editors/we_preferences_header.inc.php');
-include_once(WE_INCLUDES_PATH . 'we_editors/we_preferences_config.inc.php');
+require_once(WE_INCLUDES_PATH . 'we_editors/we_preferences_config.inc.php');
 
 we_html_tools::protect();
 we_html_tools::htmlTop();

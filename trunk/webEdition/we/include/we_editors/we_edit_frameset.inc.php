@@ -110,7 +110,7 @@ $we_doc->setDocumentControlElements();
 
 //	in SEEM-Mode the first page is the preview page.
 //	when editing an image-document we go to edit page
-if($_SESSION['weS']['we_mode'] == 'seem'){
+if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
 	if(isset($_REQUEST['SEEM_edit_include']) && $_REQUEST['SEEM_edit_include'] && $we_doc->userHasAccess() == 1){ //	Open seem_edit_include pages in edit-mode
 		$_SESSION['weS']['EditPageNr'] = WE_EDITPAGE_CONTENT;
 		$we_doc->EditPageNr = WE_EDITPAGE_CONTENT;
@@ -182,15 +182,17 @@ if($we_doc->ID){
 
 
 if(isset($we_sess_folderID) && is_array($we_sess_folderID) && (!$we_doc->ID)){
-	if($we_sess_folderID[$we_doc->Table])
+	if($we_sess_folderID[$we_doc->Table]){
 		$we_doc->setParentID($we_sess_folderID[$we_doc->Table]);
+	}
 }
 
 if($we_doc->ID == 0){
 	$we_doc->EditPageNr = getTabs($we_doc->ClassName, WE_EDITPAGE_PROPERTIES);
 } else if(isset($_SESSION['weS']['EditPageNr'])){
-	if(defined('SHOP_TABLE'))
+	if(defined('SHOP_TABLE')){
 		$we_doc->checkTabs();
+	}
 	if(in_array($_SESSION['weS']['EditPageNr'], $we_doc->EditPageNrs)){
 		$we_doc->EditPageNr = getTabs($we_doc->ClassName, $_SESSION['weS']['EditPageNr']);
 	} else{
@@ -211,7 +213,7 @@ if($we_doc->EditPageNr === -1){ //	there is no view available for this document
 				we_html_element::jsElement('top.toggleBusy(0);') .
 				STYLESHEET
 			) .
-			we_html_element::htmlBody(array('class' => 'weDialogBody'), we_html_tools::htmlDialogLayout(we_html_tools::htmlAlertAttentionBox(g_l('alert', '[no_views][description]'), 1, 500, true), g_l('alert', '[no_views][headline]'))
+			we_html_element::htmlBody(array('class' => 'weDialogBody'), we_html_tools::htmlDialogLayout(we_html_tools::htmlAlertAttentionBox(g_l('alert', '[no_views][description]'), we_html_tools::TYPE_ALERT, 500, true), g_l('alert', '[no_views][headline]'))
 			)
 	);
 	exit;
@@ -230,7 +232,7 @@ if(!isset($we_doc->IsClassFolder)){
 		//	#####	Lock the new file
 		//	before lock - check if user can edit the file.
 		if($we_doc->userHasAccess() == we_root::USER_HASACCESS){ //	only when user has access to file
-			if($_SESSION['weS']['we_mode'] == 'normal' || $we_doc->EditPageNr != WE_EDITPAGE_PREVIEW){
+			if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL || $we_doc->EditPageNr != WE_EDITPAGE_PREVIEW){
 				$we_doc->lockDocument();
 			}
 		}
@@ -287,8 +289,9 @@ we_html_tools::htmlTop();
 			for (var i = 0; i < arguments.length; i++) {
 				args += 'arguments[' + i + ']' + ((i < (arguments.length - 1)) ? ',' : '');
 			}
-			if (top.we_cmd)
+			if (top.we_cmd){
 				eval('top.we_cmd(' + args + ')');
+			}
 		}
 	}
 
@@ -426,7 +429,7 @@ function setOnload(){
 <?php
 $we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
 
-if($_SESSION['weS']['we_mode'] == 'seem'){
+if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
 	?>
 	<frameset onLoad="_EditorFrame.initEditorFrameData({'EditorIsLoading': false});" rows="1,*,0,40" framespacing="0" border="0" frameborder="NO" onUnload="doUnload()">
 		<frame src="<?php print we_class::url(WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=load_edit_header"); ?>" name="editHeader" noresize scrolling="no"/>

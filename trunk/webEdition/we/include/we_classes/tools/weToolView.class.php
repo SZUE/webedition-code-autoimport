@@ -204,16 +204,16 @@ class weToolView{
 				var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 				switch (arguments[0]) {
 					case "openDocselector":
-						new jsWindow(url,"we_docselector",-1,-1,' . WINDOW_DOCSELECTOR_WIDTH . ',' . WINDOW_DOCSELECTOR_HEIGHT . ',true,true,true,true);
+						new jsWindow(url,"we_docselector",-1,-1,' . we_fileselector::WINDOW_DOCSELECTOR_WIDTH . ',' . we_fileselector::WINDOW_DOCSELECTOR_HEIGHT . ',true,true,true,true);
 						break;
 					case "openSelector":
-						new jsWindow(url,"we_selector",-1,-1,' . WINDOW_SELECTOR_WIDTH . ',' . WINDOW_SELECTOR_HEIGHT . ',true,true,true,true);
+						new jsWindow(url,"we_selector",-1,-1,' . we_fileselector::WINDOW_SELECTOR_WIDTH . ',' . we_fileselector::WINDOW_SELECTOR_HEIGHT . ',true,true,true,true);
 						break;
 					case "openDirselector":
-						new jsWindow(url,"we_selector",-1,-1,' . WINDOW_DIRSELECTOR_WIDTH . ',' . WINDOW_DIRSELECTOR_HEIGHT . ',true,true,true,true);
+						new jsWindow(url,"we_selector",-1,-1,' . we_fileselector::WINDOW_DIRSELECTOR_WIDTH . ',' . we_fileselector::WINDOW_DIRSELECTOR_HEIGHT . ',true,true,true,true);
 						break;
 					case "openCatselector":
-						new jsWindow(url,"we_catselector",-1,-1,' . WINDOW_CATSELECTOR_WIDTH . ',' . WINDOW_CATSELECTOR_HEIGHT . ',true,true,true,true);
+						new jsWindow(url,"we_catselector",-1,-1,' . we_fileselector::WINDOW_CATSELECTOR_WIDTH . ',' . we_fileselector::WINDOW_CATSELECTOR_HEIGHT . ',true,true,true,true);
 						break;
 					case "open' . $this->toolName . 'Dirselector":
 						url = "' . WEBEDITION_DIR . 'apps/' . $this->toolName . '/we_' . $this->toolName . 'DirSelect.php?";
@@ -294,8 +294,8 @@ class weToolView{
 	}
 
 	function processVariables(){
-		if(isset($_SESSION[$this->toolName . '_session'])){
-			$this->Model = unserialize($_SESSION[$this->toolName . '_session']);
+		if(isset($_SESSION['weS'][$this->toolName . '_session'])){
+			$this->Model = unserialize($_SESSION['weS'][$this->toolName . '_session']);
 		}
 
 		if(is_array($this->Model->persistent_slots)){

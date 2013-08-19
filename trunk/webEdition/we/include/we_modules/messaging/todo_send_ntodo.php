@@ -64,12 +64,11 @@ switch($_REQUEST["mode"]){
 }
 we_html_tools::htmlTop($heading);
 print STYLESHEET . we_html_element::jsElement('
-			top.opener.top.content.messaging_cmd.location = "' . WE_MESSAGING_MODULE_DIR . 'messaging_cmd.php?mcmd=refresh_mwork&we_transaction=' . $_REQUEST['we_transaction'] . '";');
+			top.opener.top.content.cmd.location = "' . WE_MESSAGING_MODULE_DIR . 'edit_messaging_frameset.php?pnt=cmd&mcmd=refresh_mwork&we_transaction=' . $_REQUEST['we_transaction'] . '";');
 if(!empty($res['ok'])){
 	echo we_html_element::jsElement('
         if (opener && opener.top && opener.top.content) {
 		    top.opener.top.content.update_messaging();
-		    top.opener.top.content.update_msg_quick_view();
         }');
 }
 ?>
@@ -97,7 +96,7 @@ if(!empty($res['ok'])){
 		    </tr>') . '
 	    </table>
 	';
-	echo we_html_tools::htmlDialogLayout($tbl, $heading, we_button::create_button("ok", "javascript:top.window.close()"), "100%", "30", "", "hidden");
+	echo we_html_tools::htmlDialogLayout($tbl, $heading, we_button::create_button("ok", "javascript:top.window.close()"), "100%", 30, "", "hidden");
 	?>
 </body>
 </html>

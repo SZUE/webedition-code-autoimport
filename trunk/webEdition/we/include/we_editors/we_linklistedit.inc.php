@@ -282,7 +282,7 @@ if(isset($_REQUEST['ok']) && $_REQUEST['ok']){
 	} else {
 		$ln = $we_doc->getElement($name) ? unserialize($we_doc->getElement($name)) : array();
 		if(empty($ln)){
-			$ln = array('ctype' => we_base_link::CONTENT_TEXT, 'type' => we_base_link::TYPE_INT, 'href' => 'http://', 'text' => g_l('global', '[new_link]'));
+			$ln = array('ctype' => we_base_link::CONTENT_TEXT, 'type' => we_base_link::TYPE_INT, 'href' => we_base_link::EMPTY_EXT, 'text' => g_l('global', '[new_link]'));
 		}
 		$href = isset($ln['href']) ? $ln['href'] : '';
 		if(!empty($href) && strpos($href, we_base_link::TYPE_MAIL_PREFIX) === 0){
@@ -492,7 +492,7 @@ if(isset($_REQUEST["ok"]) && $_REQUEST["ok"] && $_REQUEST['we_cmd'][0] == "edit_
 
 			switch (arguments[0]) {
 				case "openDocselector":
-					new jsWindow(url, "we_fileselector", -1, -1,<?php echo WINDOW_DOCSELECTOR_WIDTH . ',' . WINDOW_DOCSELECTOR_HEIGHT; ?>, true, true, true, true);
+					new jsWindow(url, "we_fileselector", -1, -1,<?php echo we_fileselector::WINDOW_DOCSELECTOR_WIDTH . ',' . we_fileselector::WINDOW_DOCSELECTOR_HEIGHT; ?>, true, true, true, true);
 					break;
 
 				case "browse_server":
@@ -623,22 +623,22 @@ if(isset($_REQUEST["ok"]) && $_REQUEST["ok"] && $_REQUEST['we_cmd'][0] == "edit_
 						<td colspan="9">' . we_html_tools::getPixel(2, 2) . '</td>
 					</tr>
 					<tr>
-						<td>' . we_forms::checkbox("1", $jsstatus, "jsstatus", g_l('global', "[status]"), true, "small") . '</td>
+						<td>' . we_forms::checkbox(1, $jsstatus, "jsstatus", g_l('global', "[status]"), true, "small") . '</td>
 						<td></td>
-						<td>' . we_forms::checkbox("1", $jsscrollbars, "jsscrollbars", g_l('global', "[scrollbars]"), true, "small") . '</td>
+						<td>' . we_forms::checkbox(1, $jsscrollbars, "jsscrollbars", g_l('global', "[scrollbars]"), true, "small") . '</td>
 						<td></td>
-						<td>' . we_forms::checkbox("1", $jsmenubar, "jsmenubar", g_l('global', "[menubar]"), true, "small") . '</td>
+						<td>' . we_forms::checkbox(1, $jsmenubar, "jsmenubar", g_l('global', "[menubar]"), true, "small") . '</td>
 						<td></td>
 						<td></td>
 						<td></td>
 						<td></td>
 					</tr>
 					<tr>
-						<td>' . we_forms::checkbox("1", $jsresizable, "jsresizable", g_l('global', "[resizable]"), true, "small") . '</td>
+						<td>' . we_forms::checkbox(1, $jsresizable, "jsresizable", g_l('global', "[resizable]"), true, "small") . '</td>
 						<td></td>
-						<td>' . we_forms::checkbox("1", $jslocation, "jslocation", g_l('global', "[location]"), true, "small") . '</td>
+						<td>' . we_forms::checkbox(1, $jslocation, "jslocation", g_l('global', "[location]"), true, "small") . '</td>
 						<td></td>
-						<td>' . we_forms::checkbox("1", $jstoolbar, "jstoolbar", g_l('global', "[toolbar]"), true, "small") . '</td>
+						<td>' . we_forms::checkbox(1, $jstoolbar, "jstoolbar", g_l('global', "[toolbar]"), true, "small") . '</td>
 						<td></td>
 						<td></td>
 						<td></td>
@@ -648,9 +648,9 @@ if(isset($_REQUEST["ok"]) && $_REQUEST["ok"] && $_REQUEST['we_cmd'][0] == "edit_
 		$foo = '
 				<table border="0" cellspacing="0" cellpadding="0">
 					<tr>
-						<td>' . we_forms::checkbox("1", $jswin, "jswin", g_l('global', "[open]")) . '</td>
+						<td>' . we_forms::checkbox(1, $jswin, "jswin", g_l('global', "[open]")) . '</td>
 						<td>' . we_html_tools::getPixel(10, 2) . '</td>
-						<td>' . we_forms::checkbox("1", $jscenter, "jscenter", g_l('global', "[center]"), true, "defaultfont", "if(this.checked){if(this.form.jswidth.value==''){this.form.jswidth.value='100';};if(this.form.jsheight.value==''){this.form.jsheight.value='100';};}") . '</td>
+						<td>' . we_forms::checkbox(1, $jscenter, "jscenter", g_l('global', "[center]"), true, "defaultfont", "if(this.checked){if(this.form.jswidth.value==''){this.form.jswidth.value='100';};if(this.form.jsheight.value==''){this.form.jsheight.value='100';};}") . '</td>
 					</tr>
 				</table>';
 		$jswinonoff = we_html_tools::htmlFormElementTable($jsWinProps, $foo, "left", "defaultfont", we_html_tools::getPixel(10, 2), "", "", "", "", 0);
@@ -768,7 +768,7 @@ if(isset($_REQUEST["ok"]) && $_REQUEST["ok"] && $_REQUEST['we_cmd'][0] == "edit_
 					</tr>
 ' : '') . '
 </table>',
-				'space' => '150',
+				'space' => 150,
 				'noline' => 1),
 			array('headline' => g_l('global', "[content]"),
 				'html' => '
@@ -792,18 +792,18 @@ if(isset($_REQUEST["ok"]) && $_REQUEST["ok"] && $_REQUEST['we_cmd'][0] == "edit_
 						<td>' . we_html_tools::getPixel(10, 3) . "<br>" . $imgProps . '</td>
 					</tr>
 				</table><div></div>',
-				'space' => '150'),
+				'space' => 150),
 			array('headline' => g_l('linklistEdit', "[link_anchor]"),
 				'html' => $anchor,
-				'space' => '150',
+				'space' => 150,
 				'noline' => 1),
 			array('headline' => g_l('linklistEdit', "[link_params]"),
 				'html' => $params,
-				'space' => '150',
+				'space' => 150,
 				'noline' => 1),
 			array('headline' => g_l('linklistEdit', "[link_target]"),
 				'html' => $ctarget,
-				'space' => '150')
+				'space' => 150)
 		);
 
 
@@ -817,12 +817,12 @@ if(isset($_REQUEST["ok"]) && $_REQUEST["ok"] && $_REQUEST['we_cmd'][0] == "edit_
                                 <td>' . $hreflang . '</td>
                             </tr>
 			                 </table>',
-				'space' => '150',
+				'space' => 150,
 				'noline' => 1);
 
 			$_parts[] = array('headline' => g_l('linklistEdit', '[title]'),
 				'html' => $title,
-				'space' => '150',
+				'space' => 150,
 				'noline' => 1);
 
 			$_parts[] = array('headline' => g_l('linklistEdit', '[keyboard]'),
@@ -838,7 +838,7 @@ if(isset($_REQUEST["ok"]) && $_REQUEST["ok"] && $_REQUEST['we_cmd'][0] == "edit_
                                 <td>' . $tabindex . '</td>
                             </tr>
 			                 </table>',
-				'space' => '150',
+				'space' => 150,
 				'noline' => 1);
 
 			$_parts[] = array('headline' => g_l('wysiwyg', "[relation]"),
@@ -849,19 +849,19 @@ if(isset($_REQUEST["ok"]) && $_REQUEST["ok"] && $_REQUEST['we_cmd'][0] == "edit_
                                 <td>' . $revfield . '</td>
                             </tr>
 			                 </table>',
-				'space' => '150',
+				'space' => 150,
 				'noline' => 1);
 
 			$_parts[] = array('headline' => g_l('linklistEdit', "[link_attr]"),
 				'html' => $cattribs,
-				'space' => '150');
+				'space' => 150);
 		}
 
 
 		//   Pop-Up
 		$_parts[] = array('headline' => g_l('global', "[jswin]"),
 			'html' => $jswinonoff,
-			'space' => '150');
+			'space' => 150);
 		?>
 		<form name="we_form" action="<?php print WEBEDITION_DIR; ?>we_cmd.php" method="post" onSubmit="return false">
 			<input type="hidden" name="we_cmd[0]" value="<?php print $_REQUEST['we_cmd'][0]; ?>" />

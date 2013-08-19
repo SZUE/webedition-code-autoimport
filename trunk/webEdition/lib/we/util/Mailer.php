@@ -102,7 +102,7 @@ class we_util_Mailer extends Zend_Mail{
 	 * @param String $reply
 	 * @param Bool $isEmbedImages
 	 */
-	public function __construct($to = "", $subject = "", $sender = "", $reply = "", $isEmbedImages = 0){
+	public function __construct($to = '', $subject = '', $sender = '', $reply = '', $isEmbedImages = 0){
 		$this->setCharSet($GLOBALS['WE_BACKENDCHARSET']);
 
 		switch(WE_MAILER){
@@ -134,16 +134,14 @@ class we_util_Mailer extends Zend_Mail{
 				//this should set return-path
 				$safeMode = ini_get('safe_mode');
 				$suhosin = in_array('suhosin', get_loaded_extensions());
-				if($reply != '' && !$safeMode && !$suhosin){
+				if(!empty($reply) && !$safeMode && !$suhosin){
 					$_reply = $this->parseEmailUser($reply);
 					$tr = new Zend_Mail_Transport_Sendmail('-f' . $_reply['email']);
-				} else{
+				} else {
 					$_sender = $this->parseEmailUser($sender);
-					if(isset($_sender['email']) && $_sender['email'] != '' && !$safeMode && !$suhosin){
-						$tr = new Zend_Mail_Transport_Sendmail('-f' . $_sender['email']);
-					} else{
-						$tr = new Zend_Mail_Transport_Sendmail();
-					}
+					$tr = (isset($_sender['email']) && $_sender['email'] != '' && !$safeMode && !$suhosin ?
+							new Zend_Mail_Transport_Sendmail('-f' . $_sender['email']) :
+							new Zend_Mail_Transport_Sendmail());
 				}
 				Zend_Mail::setDefaultTransport($tr);
 				break;
@@ -155,7 +153,7 @@ class we_util_Mailer extends Zend_Mail{
 				$_to = $this->parseEmailUser($_to);
 				$this->addTo($_to['email'], $_to['name']);
 			}
-		} else if($to != ""){
+		} else if($to != ''){
 			$_to = $this->parseEmailUser($to);
 			$this->addTo($_to['email'], $_to['name']);
 		}
@@ -165,7 +163,7 @@ class we_util_Mailer extends Zend_Mail{
 				$_reply = $this->parseEmailUser($_reply);
 				$this->setReplyTo($_reply['email'], $_reply['name']);
 			}
-		} else if($reply != ""){
+		} else if($reply != ''){
 			$_reply = $this->parseEmailUser($reply);
 			$this->setReplyTo($_reply['email'], $_reply['name']);
 		}
@@ -191,12 +189,15 @@ class we_util_Mailer extends Zend_Mail{
 	}
 
 	public function setBCC($toBCC){
-		if(is_array($toBCC) && count($toBCC) > 0){
+		if(empty($toBCC)){
+			return;
+		}
+		if(is_array($toBCC)){
 			foreach($toBCC as $_toBCC){
 				$_toBCC = $this->parseEmailUser($_toBCC);
 				$this->addBcc($_toBCC['email'], $_toBCC['name']);
 			}
-		} else if($toBCC != ""){
+		} else {
 			$_toBCC = $this->parseEmailUser($toBCC);
 			$this->addBcc($_toBCC['email'], $_toBCC['name']);
 		}
@@ -205,21 +206,18 @@ class we_util_Mailer extends Zend_Mail{
 	public function parseEmailUser($user){
 		if(is_array($user) && isset($user['email'])){
 			$email = trim($user['email']);
-			if(isset($user['name'])){
-				$name = $user['name'];
-			} else{
-				$name = "";
-			}
-		} else{
+			$name = (isset($user['name']) ? $user['name'] : '');
+		} else {
+			$_user = array();
 			if(preg_match("/<(.)*>/", $user, $_user)){
 				$email = substr($_user[0], 1, strpos($_user[0], ">") - 1);
 				$name = substr($user, 0, strpos($user, "<"));
-			} else{
+			} else {
 				$email = $user;
-				$name = "";
+				$name = '';
 			}
 		}
-		return array("email" => trim($email), "name" => trim($name));
+		return array('email' => trim($email), "name" => trim($name));
 	}
 
 	public function formatEMail($email, $name){
@@ -330,13 +328,13 @@ class we_util_Mailer extends Zend_Mail{
 			'</h2>' => "\n\n",
 			'</h3>' => "\n\n",
 			'</h4>' => "\n\n",
-			"</h5>" => "\n\n",
-			"</h6>" => "\n\n",
-			"</p>" => "\n\n",
-			"</div>" => "\n",
-			"</li>" => "\n",
-			"&lt;" => '<',
-			"&gt;" => '>',
+			'</h5>' => "\n\n",
+			'</h6>' => "\n\n",
+			'</p>' => "\n\n",
+			'</div>' => "\n",
+			'</li>' => "\n",
+			'&lt;' => '<',
+			'&gt;' => '>',
 		);
 
 		$textpart = preg_replace(array('/<br[^>]*>/s', '/<(ul|ol)[^>]*>/s'), array("\n", "\n\n"), strtr($html, $lineBreaks));
@@ -355,7 +353,7 @@ class we_util_Mailer extends Zend_Mail{
 			$at->filename = $filename;
 			$fileParts = pathinfo($filename);
 			$ext = $fileParts['extension'];
-			$at->type = $this->get_mime_type($ext, $filename);
+			$at->type = self::get_mime_type($ext, $filename, $attachmentpath);
 			$loc = getServerUrl() . $rep;
 			$at->location = $loc;
 			$this->inlineAtt[] = $at;
@@ -379,7 +377,7 @@ class we_util_Mailer extends Zend_Mail{
 			$at->filename = $filename;
 			$fileParts = pathinfo($filename);
 			$ext = $fileParts['extension'];
-			$at->type = $this->get_mime_type($ext, $filename);
+			$at->type = self::get_mime_type($ext, $filename, $attachmentpath);
 
 			$this->addAttachment($at);
 		}
@@ -393,7 +391,13 @@ class we_util_Mailer extends Zend_Mail{
 	 * Replacement for  finfo_file, available only for >= PHP 5.3
 	 * Da Zend Mail keinen name="yxz" übergibt, kann man den hier einfach anhängen
 	 */
-	public function get_mime_type($ext = '', $name = ''){
+	public static function get_mime_type($ext, $name, $filepath){
+		if(function_exists('finfo_open')){
+			$finfo = finfo_open(FILEINFO_MIME_TYPE);
+			$mime = finfo_file($finfo, $filepath);
+			finfo_close($finfo);
+			return $mime . '; name="' . $name . '"';
+		}
 		$mimetypes = array(
 			'hqx' => 'application/mac-binhex40',
 			'cpt' => 'application/mac-compactpro',

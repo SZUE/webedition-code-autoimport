@@ -21,7 +21,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once(WE_INCLUDES_PATH . 'we_tag.inc.php');
+require_once(WE_INCLUDES_PATH . 'we_tag.inc.php');
 
 we_html_tools::protect();
 
@@ -82,7 +82,7 @@ echo we_multiIconBox::getJs();
 </script>
 <?php
 echo we_html_element::jsScript(JS_DIR . 'windows.js');
-include_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
+require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 print STYLESHEET;
 ?>
 </head>
@@ -117,7 +117,7 @@ if($_editMode){
 		we_html_element::jsElement('objectEntry.add(document, \'' . $part['name'] . '\', null);');
 	}
 } else{
-	if($_SESSION['weS']['we_mode'] == "normal"){
+	if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){
 		$_msg = "";
 	}
 	print we_SEEM::parseDocument(we_multiIconBox::getHTML("", "100%", $parts, 30, "", -1, "", "", false));

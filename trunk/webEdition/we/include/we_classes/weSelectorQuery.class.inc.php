@@ -108,7 +108,7 @@ class weSelectorQuery{
 			$where .= $userExtraSQL;
 		}
 
-		if(count($this->condition) > 0){
+		if(!empty($this->condition)){
 			foreach($this->condition as $val){
 				$where .= ' ' . $val['queryOperator'] . " " . $val['field'] . $val['conditionOperator'] . "'" . $val['value'] . "'";
 			}
@@ -151,7 +151,7 @@ class weSelectorQuery{
 		}
 
 		$rootOnly = $rootDir && ($search == "/" || strpos($rootDir, $search) === 0);
-		$where = $rootOnly ? "Path LIKE '" . $rootDir . "'" : 
+		$where = $rootOnly ? "Path LIKE '" . $rootDir . "'" :
 			"Path REGEXP '^" . preg_quote(preg_quote($search)) . "[^/]*$'" . (($rootDir) ? " AND (Path LIKE '" . $this->db->escape($rootDir) . "' OR Path LIKE '" . $this->db->escape($rootDir) . "%')" : "");
 
 		$isFolder = 0;
@@ -181,7 +181,7 @@ class weSelectorQuery{
 		}
 		$where .= $userExtraSQL;
 
-		if(count($this->condition) > 0){
+		if(!empty($this->condition)){
 			foreach($this->condition as $val){
 				$where .= ' ' . $val['queryOperator'] . " " . $val['field'] . $val['conditionOperator'] . "'" . $this->db->escape($val['value']) . "'";
 			}
@@ -308,8 +308,9 @@ class weSelectorQuery{
 	 */
 	function delQueryField($field){
 		foreach($this->fields as $key => $val){
-			if($val == $field)
+			if($val == $field){
 				unset($this->fields[$key]);
+			}
 		}
 	}
 
@@ -342,7 +343,7 @@ class weSelectorQuery{
 
 		if(get_ws($table)){
 			$userExtraSQL .= getWsQueryForSelector($table);
-		} else if(defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE && (!$_SESSION["perms"]["ADMINISTRATOR"])){
+		} else if(defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE && (!we_hasPerm('ADMINISTRATOR'))){
 			$wsQuery = "";
 			$ac = getAllowedClasses($this->db);
 			foreach($ac as $cid){

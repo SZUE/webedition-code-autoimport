@@ -50,7 +50,7 @@ class we_listview_banner extends listviewBase{
 	 * @param   FilterDateEnd integer - Unix Timestamp
 	 *
 	 */
-	function __construct($name = "0", $rows = 999999, $order = "views DESC", $bannerID = "", $UseFilter = false, $FilterDate = 0, $FilterDateEnd = 0){
+	function __construct($name, $rows = 999999, $order = "views DESC", $bannerID = "", $UseFilter = false, $FilterDate = 0, $FilterDateEnd = 0){
 		parent::__construct($name, $rows, 0, $order);
 
 		$this->bannerID = $bannerID;

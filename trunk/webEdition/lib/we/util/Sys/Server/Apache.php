@@ -41,10 +41,10 @@ class we_util_Sys_Server_Apache extends we_util_Sys_Server{
 	public static function module($module = ""){
 		if(empty($module) || !function_exists("apache_get_modules")){
 			return false;
-		} else{
+		} else {
 			if(in_array($module, apache_get_modules())){
 				return true;
-			} else{
+			} else {
 				return false;
 			}
 		}
@@ -66,7 +66,7 @@ class we_util_Sys_Server_Apache extends we_util_Sys_Server{
 	public static function version(){
 		if(function_exists("apache_get_version")){
 			return apache_get_version();
-		} else{
+		} else {
 			return false;
 		}
 	}
@@ -81,9 +81,9 @@ class we_util_Sys_Server_Apache extends we_util_Sys_Server{
 	 */
 	public static function versionCompare($reference = "", $operator = ""){
 		$version = self::version();
-		if($version === false || empty($reference))
-			return false;
-		return parent::_versionCompare($reference, $version, $operator);
+		return ($version === false || empty($reference) ?
+				false :
+				parent::_versionCompare($reference, $version, $operator));
 	}
 
 }

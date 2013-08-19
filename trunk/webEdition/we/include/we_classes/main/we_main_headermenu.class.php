@@ -81,7 +81,7 @@ top.weSidebar = weSidebar;
 		include(WE_INCLUDES_PATH . "java_menu/we_menu.inc.php");
 		ksort($we_menu);
 		if(// menu for normalmode
-			isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == "normal"){
+			isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){
 
 			$jmenu = new weJavaMenu($we_menu, "top.load");
 		} else{ // menu for seemode
@@ -103,7 +103,7 @@ top.weSidebar = weSidebar;
 
 		if(!isset($_REQUEST["SEEM_edit_include"])){ // there is only a menu when not in seem_edit_include!
 			if(// menu for normalmode
-				isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == "normal"){
+				isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){
 
 			} else{ // menu for seemode
 				if(permissionhandler::isUserAllowedForAction("header", "with_java")){
@@ -146,7 +146,7 @@ top.weSidebar = weSidebar;
 
 
 				<?php
-				include_once(WE_INCLUDES_PATH . "jsMessageConsole/messageConsole.inc.php" );
+				require_once(WE_INCLUDES_PATH . "jsMessageConsole/messageConsole.inc.php" );
 				print createMessageConsole("mainWindow");
 				?>
 				<img src="<?php print IMAGE_DIR ?>pixel.gif" alt="" name="busy" width="20" height="19">

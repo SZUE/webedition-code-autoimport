@@ -24,37 +24,12 @@
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
-we_html_tools::htmlTop();
-print STYLESHEET;
-
-$bannerFrame = new weBannerFrames();
-$bannerFrame->View->processVariables();
-$bannerFrame->View->processCommands();
 
 $what = (isset($_REQUEST["pnt"])) ? $_REQUEST["pnt"] : "frameset";
 $mode = (isset($_REQUEST["art"])) ? $_REQUEST["art"] : 0;
 
-
-switch($what){
-	case "frameset": print $bannerFrame->getHTMLFrameset();
-		break;
-	case "header": print $bannerFrame->getHTMLHeader();
-		break;
-	case "resize": print $bannerFrame->getHTMLResize();
-		break;
-	case "left": print $bannerFrame->getHTMLLeft();
-		break;
-	case "right": print $bannerFrame->getHTMLRight();
-		break;
-	case "editor": print $bannerFrame->getHTMLEditor();
-		break;
-	case "edheader": print $bannerFrame->getHTMLEditorHeader($mode);
-		break;
-	case "edbody": print $bannerFrame->getHTMLEditorBody();
-		break;
-	case "edfooter": print $bannerFrame->getHTMLEditorFooter($mode);
-		break;
-	case "cmd": print $bannerFrame->getHTMLCmd();
-		break;
-	default:
-}
+$weFrame = new weBannerFrames(WEBEDITION_DIR . 'we/include/we_modules/banner/edit_banner_frameset.php');
+$weFrame->getHTMLDocumentHeader();
+$weFrame->View->processVariables();
+$weFrame->View->processCommands();
+$weFrame->getHTML($what, $mode);

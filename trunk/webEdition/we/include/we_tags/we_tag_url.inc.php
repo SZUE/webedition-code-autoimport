@@ -23,9 +23,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_url($attribs){
-	$foo = attributFehltError($attribs, 'id', __FUNCTION__);
-	if($foo)
+	if(($foo = attributFehltError($attribs, 'id', __FUNCTION__))){
 		return $foo;
+	}
 	static $urls = array();
 	static $objurls = array();
 	$type = weTag_getAttribute('type', $attribs, 'document');
@@ -42,7 +42,7 @@ function we_tag_url($attribs){
 			return $objurls[$id];
 		}
 	}
-	if($id == '0'){
+	if(intval($id) == 0){
 		$url = '/';
 	} else{
 		$urlNotSet = true;
@@ -62,7 +62,7 @@ function we_tag_url($attribs){
 							$GLOBALS['WE_MAIN_DOC']->Url;
 					} else{
 						$url = (show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES != '' && $hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))) ?
-								($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . '?we_objectID=' . $GLOBALS['WE_MAIN_DOC']->OF_ID :
+								($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/?we_objectID=' . $GLOBALS['WE_MAIN_DOC']->OF_ID :
 								$GLOBALS['WE_MAIN_DOC']->Path . '?we_objectID=' . $GLOBALS['WE_MAIN_DOC']->OF_ID);
 					}
 					$urlNotSet = false;
@@ -91,19 +91,14 @@ function we_tag_url($attribs){
 							'' : $path_parts['filename'] . '/' ) .
 						$row['Url'];
 				} else{
-					if(show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES != '' && $hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
-						$url = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . '?we_objectID=' . $row['ID'];
-					} else{
-						$url = id_to_path($triggerid) . '?we_objectID=' . $row['ID'];
-					}
+					$url = (show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES != '' && $hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))) ?
+							($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/?we_objectID=' . $row['ID'] :
+							id_to_path($triggerid) . '?we_objectID=' . $row['ID']
+						);
 				}
 			}
 		}
 	}
-	if($type == 'document'){
-		$urls[$id] = $url;
-	} else{
-		$objurls[$id] = $url;
-	}
+	$urls[$type . $id] = $url;
 	return $url;
 }

@@ -28,9 +28,9 @@
  * Provides a error handler for webEdition.
  */
 //essential includes, use these to allow it to be called without we "running"
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/conf/we_conf.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/conf/we_conf_global.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_db_tools.inc.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/conf/we_conf.inc.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/conf/we_conf_global.inc.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_db_tools.inc.php');
 
 
 /* * ***********************************************************************
@@ -301,7 +301,7 @@ function getVariableMax($var, $db = ''){
 }
 
 function log_error_message($type, $message, $file, $_line, $skipBT = false){
-	include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_db_tools.inc.php');
+	require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_db_tools.inc.php');
 	$_detailedError = $_caller = '-';
 	if($skipBT === false){
 		list($_detailedError, $_caller, $file, $_line) = getBacktrace(($type == E_SQL ? array('error_showDevice', 'trigger_error', 'error_handler', 'getBacktrace', 'log_error_message') : array('error_showDevice', 'error_handler', 'getBacktrace', 'log_error_message')));

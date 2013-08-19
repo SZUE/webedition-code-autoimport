@@ -1,4 +1,5 @@
 <?php
+
 //NOTE you are inside the constructor of weTagData.class.php
 
 $this->NeedsEndTag = false;
@@ -6,10 +7,26 @@ $this->NeedsEndTag = false;
 //$this->Module = '';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
-if(defined("FILE_TABLE")) { $this->Attributes[] = new weTagData_selectorAttribute('id',FILE_TABLE, 'text/css', true, ''); }
-$this->Attributes[] = new weTagData_selectAttribute('rel', array(new weTagDataOption('stylesheet', false, ''), new weTagDataOption('alternate stylesheet', false, '')), false, '');
+if(defined("FILE_TABLE")){
+	$this->Attributes[] = new weTagData_selectorAttribute('id', FILE_TABLE, 'text/css', true, '');
+}
+$this->Attributes[] = new weTagData_selectAttribute('rel', array(new weTagDataOption('stylesheet'),
+	new weTagDataOption('alternate stylesheet'),
+	), false, '');
 $this->Attributes[] = new weTagData_textAttribute('title', false, '');
-$this->Attributes[] = new weTagData_choiceAttribute('media', array(new weTagDataOption('all', false, ''), new weTagDataOption('braille', false, ''), new weTagDataOption('embossed', false, ''), new weTagDataOption('handheld', false, ''), new weTagDataOption('print', false, ''), new weTagDataOption('projection', false, ''), new weTagDataOption('screen', false, ''), new weTagDataOption('speech', false, ''), new weTagDataOption('tty', false, ''), new weTagDataOption('tv', false, '')), false,false, '');
-$this->Attributes[] = new weTagData_selectAttribute('applyto', array(new weTagDataOption('all', false, ''), new weTagDataOption('wysiwyg', false, ''), new weTagDataOption('around', false, '')),false, '');
+$this->Attributes[] = new weTagData_choiceAttribute('media', array(new weTagDataOption('all'),
+	new weTagDataOption('braille'),
+	new weTagDataOption('embossed'),
+	new weTagDataOption('handheld'),
+	new weTagDataOption('print'),
+	new weTagDataOption('projection'),
+	new weTagDataOption('screen'),
+	new weTagDataOption('speech'),
+	new weTagDataOption('tty'),
+	new weTagDataOption('tv'),
+	), false, false, '');
+$this->Attributes[] = new weTagData_selectAttribute('applyto', array(new weTagDataOption('all'),
+	new weTagDataOption('wysiwyg'),
+	new weTagDataOption('around'),
+	), false, '');
 $this->Attributes[] = new weTagData_selectAttribute('xml', weTagData_selectAttribute::getTrueFalse(), false, '');
-//$this->Attributes[] = new weTagData_textAttribute('cachelifetime', false, '');

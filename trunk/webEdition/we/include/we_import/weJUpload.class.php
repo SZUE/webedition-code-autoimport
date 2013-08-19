@@ -46,7 +46,7 @@ class weJUpload{
 
 		$auth = getServerAuth();
 		if($auth){
-			$this->Params['specificHeaders'] = 'Authorization: Basic ' . base64_encode(rtrim($auth,'@'));
+			$this->Params['specificHeaders'] = 'Authorization: Basic ' . base64_encode(rtrim($auth, '@'));
 		}
 
 		switch($GLOBALS['WE_LANGUAGE']){
@@ -83,7 +83,7 @@ class weJUpload{
 	}
 
 	function getAppletTag($content = '', $w = 300, $h = 300){
-		$_params='';
+		$_params = '';
 
 		foreach($this->Params as $name => $value){
 			$_params .= '<param name="' . $name . '" value="' . $value . '"/>';
@@ -92,8 +92,8 @@ class weJUpload{
 		return we_html_element::htmlApplet(array(
 				'name' => "JUpload",
 				'code' => "wjhk.jupload2.JUploadApplet",
-				'archive' => getServerUrl(true) . WEBEDITION_DIR . 'jupload/jupload.jar',
-				'codebase' => getServerUrl(true) . WEBEDITION_DIR . 'jupload/jupload.jar',
+				'archive' => 'jupload.jar',
+				'codebase' => getServerUrl(true) . WEBEDITION_DIR . 'jupload/',
 				'width' => $w,
 				'height' => $h,
 				), $_params . $content);

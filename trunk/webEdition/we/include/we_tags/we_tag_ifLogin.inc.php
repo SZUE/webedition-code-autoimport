@@ -23,5 +23,5 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_ifLogin(){
-	return (isset($GLOBALS["WE_LOGIN"]) && $GLOBALS["WE_LOGIN"]);
+	return (isset($GLOBALS['WE_LOGIN']) && $GLOBALS['WE_LOGIN']);
 }

@@ -22,12 +22,4 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-we_html_tools::protect();
-
-$what = isset($_REQUEST["pnt"]) ? $_REQUEST["pnt"] : "frameset";
-
-$weFrame = new weNavigationFrames();
-$weFrame->View->processVariables();
-$weFrame->View->processCommands();
-$weFrame->getHTML($what);
+//TODO: remove this (directory 'navigation' has moved to we_modules

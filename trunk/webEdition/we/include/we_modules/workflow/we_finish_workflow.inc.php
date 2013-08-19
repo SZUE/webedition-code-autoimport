@@ -44,7 +44,7 @@ if(we_workflow_utility::approve($we_doc->ID, $we_doc->Table, $_SESSION["user"]["
 			if(($we_doc->EditPageNr == WE_EDITPAGE_PROPERTIES || $we_doc->EditPageNr == WE_EDITPAGE_INFO)){
 				$_REQUEST['we_cmd'][5] = 'top.we_cmd("switch_edit_page","' . $we_doc->EditPageNr . '","' . $we_transaction . '");'; // wird in Templ eingef�gt
 			}
-			$we_JavaScript .= "top.weEditorFrameController.getActiveDocumentReference().frames[3].location.reload();_EditorFrame.setEditorDocumentId(" . $we_doc->ID . ");\n" . $we_doc->getUpdateTreeScript() . "\n";
+			$we_JavaScript .= "opener.top.weEditorFrameController.getActiveDocumentReference().frames[3].location.reload();_EditorFrame.setEditorDocumentId(" . $we_doc->ID . ");\n" . $we_doc->getUpdateTreeScript() . "\n";
 		} else{
 			$we_responseText = sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_publish_notok]'), $we_doc->Path);
 			$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;

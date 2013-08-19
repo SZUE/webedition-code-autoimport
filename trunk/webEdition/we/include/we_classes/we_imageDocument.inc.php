@@ -28,6 +28,10 @@
  */
 class we_imageDocument extends we_binaryDocument{
 
+	const ALT_FIELD = '_img_custom_alt';
+	const TITLE_FIELD = '_img_custom_title';
+	const THUMB_FIELD = '_img_custom_thumb';
+
 	/**
 	 * Comma separated value of IDs from THUMBNAILS_TABLE  This value is not stored in DB!!
 	 * @var string
@@ -121,7 +125,7 @@ class we_imageDocument extends we_binaryDocument{
 			while($this->DB_WE->next_record()) {
 				$thumbObj->init($this->DB_WE->f('ID'), $this->DB_WE->f('Width'), $this->DB_WE->f('Height'), $this->DB_WE->f('Ratio'), $this->DB_WE->f('Maxsize'), $this->DB_WE->f('Interlace'), false, $this->DB_WE->f('Format'), $this->DB_WE->f('Name'), $this->ID, $this->Filename, $this->Path, $this->Extension, $this->getElement('origwidth'), $this->getElement('origheight'), $this->DB_WE->f('Quality'));
 
-				if(file_exists($_SERVER['DOCUMENT_ROOT'] . $thumbObj->getOutputPath()) && $thumbObj->getOutputPath() != $this->Path){
+				if($thumbObj->exists() && $thumbObj->getOutputPath() != $this->Path){
 					$thumbs[] = $this->DB_WE->f('ID');
 				}
 			}
@@ -180,7 +184,7 @@ class we_imageDocument extends we_binaryDocument{
 
 		foreach($thumbsArray as $t){
 			if($t != $thumbnailID){
-				array_push($newArray, $t);
+				$newArray[] = $t;
 			}
 		}
 
@@ -198,6 +202,29 @@ class we_imageDocument extends we_binaryDocument{
 		foreach($attribs as $a => $b){
 			if(strtolower($a) != 'id' && $b != ''){
 				$this->setElement($a, $b, 'attrib');
+			}
+		}
+		$this->checkDisableEditpages();
+	}
+
+	public function initByID($ID, $Table = '', $from = we_class::LOAD_MAID_DB){
+		parent::initByID($ID, $Table, $from);
+		$this->checkDisableEditpages();
+	}
+
+	private function isSvg(){
+		return ($this->Extension == '.svg' || $this->Extension == '.svgz');
+	}
+
+	private function checkDisableEditpages(){
+		if($this->isSvg()){
+			$pos = array_search(WE_EDITPAGE_IMAGEEDIT, $this->EditPageNrs);
+			if($pos !== false){
+				unset($this->EditPageNrs[$pos]);
+			}
+			$pos = array_search(WE_EDITPAGE_THUMBNAILS, $this->EditPageNrs);
+			if($pos !== false){
+				unset($this->EditPageNrs[$pos]);
 			}
 		}
 	}
@@ -321,7 +348,7 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 	 * @param boolean $dyn
 	 * @param string $inc_href
 	 */
-	function getHtml($dyn = false, $inc_href = true, $pathOnly=false){
+	function getHtml($dyn = false, $inc_href = true, $pathOnly = false){
 		$_data = $this->getElement('data');
 		if($this->ID || ($_data && !is_dir($_data) && is_readable($_data))){
 			switch($this->getElement('LinkType')){
@@ -528,7 +555,16 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 	 * @param $filename complete path of the image
 	 */
 	function getimagesize($filename){
-		return we_thumbnail::getimagesize($filename);
+		return ($this->isSvg() ? $this->getSvgSize($filename) : we_thumbnail::getimagesize($filename));
+	}
+
+	private function getSvgSize($filename){
+		$line = weFile::load($filename, 'rb', 1000, 1);
+		$match = array();
+		return array(
+			(preg_match('|<svg[^>]*width="([^"]*)"[^>]*>|i', $line, $match) ? intval($match[1]) : ''),
+			(preg_match('|<svg[^>]*height="([^"]*)"[^>]*>|i', $line, $match) ? intval($match[1]) : ''),
+		);
 	}
 
 	/**
@@ -616,7 +652,7 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 		$yuiSuggest->setSelectButton(we_button::create_button('select', "javascript:we_cmd('openDocselector',document.we_form.elements['$longdesc_id_name'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','','text/webedition,text/plain,text/html',1)"));
 		$yuiSuggest->setTrashButton(we_button::create_button('image:btn_function_trash', "javascript:document.we_form.elements['$longdesc_id_name'].value='-1';document.we_form.elements['$longdesc_text_name'].value='';_EditorFrame.setEditorIsHot(true); YAHOO.autocoml.setValidById('" . $yuiSuggest->getInputId() . "')"));
 		$_content->setCol(7, 0, array('colspan' => 5), we_html_tools::getPixel(1, 5));
-		$_content->setCol(8, 0, array('valign' => 'bottom', 'colspan' => 5), $yuiSuggest->getYuiFiles() . $yuiSuggest->getHTML() . $yuiSuggest->getYuiCode());
+		$_content->setCol(8, 0, array('valign' => 'bottom', 'colspan' => 5), weSuggest::getYuiFiles() . $yuiSuggest->getHTML() . $yuiSuggest->getYuiCode());
 
 		// Return HTML
 		return $_content->getHtml();
@@ -659,8 +695,9 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 	}
 
 	function getThumbnail(){
-		return ($this->getElement('data') && is_readable($this->getElement('data')) ?
-				'<img src="' . WEBEDITION_DIR . 'thumbnail.php?id=' . $this->ID . '&size=150&path=' . str_replace($_SERVER['DOCUMENT_ROOT'], '', $this->getElement('data')) . '&extension=' . $this->Extension . '&size2=200" border="0" /></a>' :
+		return ($this->getElement('data') && is_readable($this->getElement('data')) ? ($this->isSvg() ?
+					'<svg id="' . weFile::getUniqueId() . '" height="150" width="150" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" ><image x="0" y="0" height="150" width="150"  xlink:href="' . str_replace($_SERVER['DOCUMENT_ROOT'], '', $this->getElement('data')) . '" /></svg>' :
+					'<img src="' . WEBEDITION_DIR . 'thumbnail.php?id=' . $this->ID . '&size=150&path=' . str_replace($_SERVER['DOCUMENT_ROOT'], '', $this->getElement('data')) . '&extension=' . $this->Extension . '&size2=200" border="0" /></a>' ) :
 				$this->getHtml());
 	}
 
@@ -726,6 +763,8 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 	 * @return string
 	 */
 	function formLink(){
+		$yuiSuggest = &weSuggest::getInstance();
+
 		$textname = 'we_' . $this->Name . '_txt[LinkPath]';
 		$idname = 'we_' . $this->Name . '_txt[LinkID]';
 		$extname = 'we_' . $this->Name . '_txt[LinkHref]';
@@ -741,19 +780,16 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 
 		$checkFlagName = 'check_' . $this->Name . '_RollOverFlag';
 
-		//javascript:we_cmd('openDocselector', document.forms['we_form'].elements['$idname'].value,'" . FILE_TABLE . "','document.forms[\'we_form\'].elements[\'$idname\'].value','document.forms[\'we_form\'].elements[\'$textname\'].value','opener._EditorFrame.setEditorIsHot(true);opener.document.we_form.elements[\\'we_".$this->Name."_txt[LinkType]\\'][2].checked=true;','',0,'',".(we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1).");
 		$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['$idname'].value");
 		$wecmdenc2 = we_cmd_enc("document.forms['we_form'].elements['$textname'].value");
 		$wecmdenc3 = we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);opener.document.we_form.elements['we_" . $this->Name . "_txt[LinkType]'][2].checked=true;");
 		$but1 = we_button::create_button('select', "javascript:we_cmd('openDocselector', document.forms['we_form'].elements['$idname'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','',0,''," . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
 
-		//javascript:we_cmd('openDocselector', document.forms['we_form'].elements['$RollOverIDName'].value,'" . FILE_TABLE . "','document.forms[\'we_form\'].elements[\'$RollOverIDName\'].value','document.forms[\'we_form\'].elements[\'$RollOverPathname\'].value','opener._EditorFrame.setEditorIsHot(true);opener.document.we_form.elements[\'$RollOverFlagName\'].value=1;opener.document.we_form.elements[\'$checkFlagName\'].checked=true;','',0,'image/*',".(we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1).");
 		$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['$RollOverIDName'].value");
 		$wecmdenc2 = we_cmd_enc("document.forms['we_form'].elements['$RollOverPathname'].value");
 		$wecmdenc3 = we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);opener.document.we_form.elements['$RollOverFlagName'].value=1;opener.document.we_form.elements['$checkFlagName'].checked=true;");
 		$but2 = we_button::create_button('select', "javascript:we_cmd('openDocselector', document.forms['we_form'].elements['$RollOverIDName'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','',0,'image/*'," . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
 
-		//javascript:formFileChooser('browse_server','document.we_form.elements[\\'$IDName\\'].value','$filter',document.we_form.elements['$IDName'].value,'$cmd');
 		$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['$extname'].value");
 		$wecmdenc4 = we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);opener.document.we_form.elements['we_" . $this->Name . "_txt[LinkType]'][1].checked=true;");
 		$butExt = we_hasPerm('CAN_SELECT_EXTERNAL_FILES') ?
@@ -763,7 +799,6 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 			$objidname = 'we_' . $this->Name . '_txt[ObjID]';
 			$objtextname = 'we_' . $this->Name . '_txt[ObjPath]';
 			$objPath = f('SELECT Path FROM ' . OBJECT_FILES_TABLE . ' WHERE ID = ' . intval($this->getElement('ObjID')), 'Path', $this->DB_WE);
-			//javascript:we_cmd('openDocselector',document.forms['we_form'].elements['$objidname'].value,'" . OBJECT_FILES_TABLE . "','document.forms[\'we_form\'].elements[\'$objidname\'].value','document.forms[\'we_form\'].elements[\'$objtextname\'].value','opener._EditorFrame.setEditorIsHot(true);opener.document.we_form.elements[\\'we_".$this->Name."_txt[LinkType]\\'][3].checked=true;','','','objectFile',".(we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1).");
 			$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['$objidname'].value");
 			$wecmdenc2 = we_cmd_enc("document.forms['we_form'].elements['$objtextname'].value");
 			$wecmdenc3 = we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);opener.document.we_form.elements['we_" . $this->Name . "_txt[LinkType]'][3].checked=true;");
@@ -798,13 +833,18 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 		$_content->setCol(3, 1, null, we_html_tools::getPixel(400, 10));
 
 		// Internal link
-		$_int_link_table = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0), 1, 3);
-
-		$_int_link_table->setCol(0, 0, null, $this->htmlTextInput($textname, 25, $linkPath, '', 'onkeydown="return false"', 'text', 280));
-		$_int_link_table->setCol(0, 1, null, we_html_tools::getPixel(20, 1));
-		$_int_link_table->setCol(0, 2, null, $this->htmlHidden($idname, $this->getElement('LinkID')) . $but1);
-
-		$_int_link = 'href' . we_html_element::htmlBr() . $_int_link_table->getHtml();
+		$yuiSuggest->setAcId('internalPath');
+		$yuiSuggest->setContentType("folder,text/webedition,image/*,text/js,text/css,text/html,application/*,video/quicktime");
+		$yuiSuggest->setInput($textname, $linkPath);
+		$yuiSuggest->setResult($idname, $this->getElement('LinkID'));
+		$yuiSuggest->setTable(FILE_TABLE);
+		$yuiSuggest->setSelectButton($but1);
+		$yuiSuggest->setMaxResults(10);
+		$yuiSuggest->setMayBeEmpty(0);
+		$yuiSuggest->setWidth(280);
+		$yuiSuggest->setSelector('Docselector');
+		$yuiSuggest->setLabel('href');
+		$_int_link = $yuiSuggest->getHTML();
 
 		$_content->setCol(4, 0, array('valign' => 'top'), we_forms::radiobutton(we_base_link::TYPE_INT, ($linkType == we_base_link::TYPE_INT), 'we_' . $this->Name . '_txt[LinkType]', g_l('weClass', '[intern]'), true, 'defaultfont', '_EditorFrame.setEditorIsHot(true);'));
 		$_content->setCol(4, 1, array('class' => 'defaultfont', 'valign' => 'top'), $_int_link);
@@ -814,13 +854,19 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 			$_content->setCol(5, 0, null, we_html_tools::getPixel(100, 10));
 			$_content->setCol(5, 1, null, we_html_tools::getPixel(400, 10));
 
-			$_obj_link_table = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0), 1, 3);
+			$yuiSuggest->setAcId('objPathLink');
+			$yuiSuggest->setContentType("folder,objectFile");
+			$yuiSuggest->setInput($objtextname, $objPath);
+			$yuiSuggest->setResult($objidname, $this->getElement('ObjID'));
+			$yuiSuggest->setTable(OBJECT_FILES_TABLE);
+			$yuiSuggest->setSelectButton($butObj);
+			$yuiSuggest->setMaxResults(10);
+			$yuiSuggest->setMayBeEmpty(0);
+			$yuiSuggest->setWidth(280);
+			$yuiSuggest->setSelector('Docselector');
+			$yuiSuggest->setLabel('href');
+			$_obj_link = $yuiSuggest->getHTML();
 
-			$_obj_link_table->setCol(0, 0, null, $this->htmlTextInput($objtextname, 25, $objPath, '', 'onkeydown="return false"', 'text', 280));
-			$_obj_link_table->setCol(0, 1, null, we_html_tools::getPixel(20, 1));
-			$_obj_link_table->setCol(0, 2, null, $this->htmlHidden($objidname, $this->getElement('ObjID')) . $butObj);
-
-			$_obj_link = 'href' . we_html_element::htmlBr() . $_obj_link_table->getHtml();
 
 			$_content->setCol(6, 0, array('valign' => 'top'), we_forms::radiobutton(we_base_link::TYPE_OBJ, ($linkType == we_base_link::TYPE_OBJ), 'we_' . $this->Name . '_txt[LinkType]', g_l('linklistEdit', '[objectFile]'), true, 'defaultfont', '_EditorFrame.setEditorIsHot(true);'));
 			$_content->setCol(6, 1, array('class' => 'defaultfont', 'valign' => 'top'), $_obj_link);
@@ -838,13 +884,18 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 		$_content->setCol((defined('OBJECT_TABLE') ? 9 : 7), 1, null, we_html_tools::getPixel(400, 20));
 
 		// Rollover image
-		$_rollover_table = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0), 1, 3);
-
-		$_rollover_table->setCol(0, 0, null, $this->htmlTextInput($RollOverPathname, 25, $RollOverPath, '', 'onkeydown="return false"', 'text', 280));
-		$_rollover_table->setCol(0, 1, null, we_html_tools::getPixel(20, 1));
-		$_rollover_table->setCol(0, 2, null, $this->htmlHidden($RollOverIDName, $RollOverID) . $but2);
-
-		$_rollover = 'href' . we_html_element::htmlBr() . $_rollover_table->getHtml();
+		$yuiSuggest->setAcId('rollOverPath');
+		$yuiSuggest->setContentType("folder,text/webedition,image/*,text/js,text/css,text/html,application/*,video/quicktime");
+		$yuiSuggest->setInput($RollOverPathname, $RollOverPath);
+		$yuiSuggest->setResult($RollOverIDName, $RollOverID);
+		$yuiSuggest->setTable(FILE_TABLE);
+		$yuiSuggest->setSelectButton($but2);
+		$yuiSuggest->setMaxResults(10);
+		$yuiSuggest->setMayBeEmpty(0);
+		$yuiSuggest->setWidth(280);
+		$yuiSuggest->setSelector('Docselector');
+		$yuiSuggest->setLabel('href');
+		$_rollover = $yuiSuggest->getHTML();
 
 		$_content->setCol((defined('OBJECT_TABLE') ? 10 : 8), 0, array('valign' => 'top'), we_forms::checkbox(1, $RollOverFlag, $checkFlagName, 'Roll Over', false, 'defaultfont', "_EditorFrame.setEditorIsHot(true); this.form.elements['$RollOverFlagName'].value = (this.checked ? 1 : 0); ") . $this->htmlHidden($RollOverFlagName, $RollOverFlag));
 		$_content->setCol((defined('OBJECT_TABLE') ? 10 : 8), 1, array('class' => 'defaultfont', 'valign' => 'top'), $_rollover);

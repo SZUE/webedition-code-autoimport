@@ -80,16 +80,13 @@ abstract class permissionhandler{
 		);
 
 		//	Is user allowed to work in normal mode or only in SEEM
-		$knownActions["work_mode"]["normal"] = array("CAN_WORK_NORMAL_MODE");
+		$knownActions["work_mode"][we_base_constants::MODE_NORMAL] = array("CAN_WORK_NORMAL_MODE");
 		$knownActions["header"]["with_java"] = array("CAN_SEE_MENUE");
 
 
 
-		if(isset($knownActions[$requestedAction][$parameter])){
-			return $knownActions[$requestedAction][$parameter];
-		} else{
-			return "none";
-		}
+		return (isset($knownActions[$requestedAction][$parameter]) ?
+				$knownActions[$requestedAction][$parameter] : 'none');
 	}
 
 	/**
@@ -108,7 +105,7 @@ abstract class permissionhandler{
 		$neededPerm = permissionhandler::getPermissionsForAction($requestedAction, $parameter);
 		//  An array is returned, check the rights.
 		if(is_array($neededPerm)){
-			foreach($neededPerm as $key => $val){
+			foreach($neededPerm as $val){
 				$allowed = true;
 				$perms = explode(',', $val);
 				foreach($perms as $perm){
@@ -123,10 +120,57 @@ abstract class permissionhandler{
 				}
 			}
 			//  no permissions are needed for this action
-		} else{
+		} else {
 			return true;
 		}
 		return false;
+	}
+
+	static function checkIfRestrictUserIsAllowed($id, $table, $DB_WE){
+		$row = getHash('SELECT CreatorID,RestrictOwners,Owners,OwnersReadOnly FROM ' . $DB_WE->escape($table) . ' WHERE ID=' . intval($id), $DB_WE);
+		if((isset($row['CreatorID']) && $_SESSION['user']['ID'] == $row['CreatorID']) || $_SESSION['perms']['ADMINISTRATOR']){ //	Owner or admin
+			return true;
+		}
+
+		if($row['RestrictOwners']){ //	check which user - group has permission
+			$userArray = makeArrayFromCSV($row['Owners']);
+
+			$_allowedGroup = false;
+
+			//	check if usergroup is allowed
+			foreach($_SESSION['user']['groups'] as $nr => $_userGroup){
+				if(in_array($_userGroup, $userArray)){
+					$_allowedGroup = true;
+					break;
+				}
+			}
+			if(!in_array($_SESSION['user']['ID'], $userArray) && !$_allowedGroup){ //	user is no allowed user.
+				return false;
+			}
+
+			//	user belongs to owners of document, check if he has only read access !!!
+			if($row['OwnersReadOnly']){
+				$arr = unserialize($row['OwnersReadOnly']);
+				if(is_array($arr)){
+
+					if(isset($arr[$_SESSION['user']['ID']]) && $arr[$_SESSION['user']['ID']]){ //	if user is readonly user -> no delete
+						return false;
+					} elseif(in_array($_SESSION['user']['ID'], $userArray)){ //	user NOT readonly and in restricted -> delete allowed
+						return true;
+					}
+
+					//	check if group has rights to delete
+					foreach($_SESSION['user']['groups'] as $nr => $_userGroup){ //	user is directly in first group
+						if(isset($arr[$_userGroup]) && $arr[$_userGroup]){ //	group not allowed
+							return false;
+						} elseif(in_array($_userGroup, $userArray)){ //	group is NOT readonly and in restricted -> delete allowed
+							return true;
+						}
+					}
+				}
+			}
+		}
+		return true;
 	}
 
 }

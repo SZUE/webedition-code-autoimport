@@ -1,6 +1,6 @@
 <?php
 
-include_once($_SERVER['DOCUMENT_ROOT'] . LIB_DIR . 'we/core/autoload.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . LIB_DIR . 'we/core/autoload.php');
 
 
 $WeWysiwygEditor = new we_ui_controls_WeWysiwygEditor();

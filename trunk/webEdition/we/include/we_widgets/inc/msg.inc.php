@@ -27,17 +27,17 @@ $oTblCont = new we_html_table(
 
 				"id" => "m_" . $iCurrId . "_inline",
 				"style" => "width:" . $iWidth . "px;",
-				"cellpadding" => "0",
-				"cellspacing" => "0",
-				"border" => "0"
+				"cellpadding" => 0,
+				"cellspacing" => 0,
+				"border" => 0
 		),
 		3,
 		3);
 $oTblCont->setCol(0, 0, array(
-	"width" => "34", "valign" => "middle", "class" => "middlefont"
+	"width" => 34, "valign" => "middle", "class" => "middlefont"
 ), $msg_button);
 $oTblCont->setCol(0, 1, array(
-	"width" => "5"
+	"width" => 5
 ), we_html_tools::getPixel(5, 1));
 $oTblCont->setCol(
 		0,
@@ -56,13 +56,13 @@ $oTblCont->setCol(
 					"id" => "msg_count"
 				), $newmsg_count) . ")"));
 $oTblCont->setCol(1, 0, array(
-	"height" => "3"
+	"height" => 3
 ), we_html_tools::getPixel(1, 3));
 $oTblCont->setCol(2, 0, array(
-	"width" => "34", "valign" => "middle", "class" => "middlefont"
+	"width" => 34, "valign" => "middle", "class" => "middlefont"
 ), $todo_button);
 $oTblCont->setCol(2, 1, array(
-	"width" => "5"
+	"width" => 5
 ), we_html_tools::getPixel(5, 1));
 $oTblCont->setCol(
 		2,

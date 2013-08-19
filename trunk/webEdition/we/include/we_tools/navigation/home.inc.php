@@ -22,13 +22,4 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-$createNavigation = we_button::create_button(
-		'new_item', "javascript:we_cmd('tool_navigation_new');", true, -1, -1, "", "", !we_hasPerm('EDIT_NAVIGATION'));
-$createNavigationGroup = we_button::create_button(
-		'new_folder', "javascript:we_cmd('tool_navigation_new_group');", true, -1, -1, "", "", !we_hasPerm('EDIT_NAVIGATION'));
-
-$content = $createNavigation . we_html_tools::getPixel(2, 14) . $createNavigationGroup;
-$tool = "navigation";
-$title = g_l('navigation', '[navigation]');
-
-include (WE_INCLUDES_PATH . 'we_tools/home.inc.php');
+//TODO: remove this (directory 'navigation' has moved to we_modules

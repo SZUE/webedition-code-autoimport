@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once(WE_MODULES_PATH . 'shop/we_conf_shop.inc.php');
+require_once(WE_MODULES_PATH . 'shop/we_conf_shop.inc.php');
 
 /**
  * This functions checks if the shops basket is not empty
@@ -32,22 +32,16 @@ include_once(WE_MODULES_PATH . 'shop/we_conf_shop.inc.php');
  * @return         bool
  */
 function we_tag_ifShopNotEmpty($attribs){
-	$foo = attributFehltError($attribs, 'shopname', __FUNCTION__);
-
-	if($foo){
-		return $foo;
+	if(($foo = attributFehltError($attribs, 'shopname', __FUNCTION__))){
+		print $foo;
+		return false;
 	}
 
 	$shopname = weTag_getAttribute('shopname', $attribs);
-
 	$basket = isset($GLOBALS[$shopname]) ? $GLOBALS[$shopname] : '';
-
 	if($basket){
-		$shoppingItems = $basket->getShoppingItems();
-		$basket_count = count($shoppingItems);
-
-		return abs($basket_count) > 0;
-	} else{
-		return false;
+		$items=$basket->getShoppingItems();
+		return !empty($items);
 	}
+	return false;
 }

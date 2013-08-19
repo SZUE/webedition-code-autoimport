@@ -22,7 +22,6 @@
  * @package    webEdition_rpc
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 class rpcPingCmd extends rpcCmd{
 
 	function execute(){
@@ -33,20 +32,32 @@ class rpcPingCmd extends rpcCmd{
 			$GLOBALS['DB_WE']->query('UPDATE ' . LOCK_TABLE . ' SET lockTime=NOW() + INTERVAL ' . (PING_TIME + PING_TOLERANZ) . ' SECOND WHERE UserID=' . intval($_SESSION["user"]["ID"]) . ' AND sessionID="' . session_id() . '"');
 		}
 
-		if(defined("MESSAGING_SYSTEM")){
+		if(defined('MESSAGING_SYSTEM')){
 			$messaging = new we_messaging($we_transaction);
 			$messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
 			$messaging->add_msgobj('we_message', 1);
 			$messaging->add_msgobj('we_todo', 1);
 
-			$resp->setData("newmsg_count", $messaging->used_msgobjs['we_message']->get_newmsg_count());
-			$resp->setData("newtodo_count", $messaging->used_msgobjs['we_todo']->get_newmsg_count());
+			$resp->setData('newmsg_count', $messaging->used_msgobjs['we_message']->get_newmsg_count());
+			$resp->setData('newtodo_count', $messaging->used_msgobjs['we_todo']->get_newmsg_count());
 		}
 
 		$users_online = new we_users_online();
 
-		$resp->setData("users", $users_online->getUsers());
-		$resp->setData("num_users", $users_online->getNumUsers());
+		$resp->setData('users', $users_online->getUsers());
+		$resp->setData('num_users', $users_online->getNumUsers());
+
+		$aDatTblPref = getPref('cockpit_dat'); // array as saved in the prefs
+		$aDat = (!empty($aDatTblPref)) ? @unserialize($aDatTblPref) : array();
+		foreach($aDat as $d){
+			foreach($d as $aProps){
+				if($aProps[0] === 'mfd'){
+					include(WE_INCLUDES_PATH . 'we_widgets/mod/mfd.php');
+					$resp->setData('mfd_data', $lastModified);
+				}
+			}
+		}
 		return $resp;
 	}
+
 }

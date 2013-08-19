@@ -3,9 +3,9 @@
 /**
  * webEdition CMS
  *
- * $Rev: 6164 $
- * $Author: mokraemer $
- * $Date: 2013-06-04 23:21:30 +0200 (Di, 04. Jun 2013) $
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -35,7 +35,7 @@ class we_base_link{
 	const CONTENT_TEXT = 'text';
 	const CONTENT_INT = 'int';
 	const CONTENT_EXT = 'ext';
-
+	const EMPTY_EXT = 'http://';
 	const TYPE_INT_PREFIX = 'document:';
 	const TYPE_MAIL_PREFIX = 'mailto:';
 	const TYPE_OBJ_PREFIX = 'object:';

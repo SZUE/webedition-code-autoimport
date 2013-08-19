@@ -31,7 +31,7 @@ $row->addElement($input);
 
 <?php if($TABLEEXISTS) { ?>
 $row->addElement(_setupDirChooser($this, $translate->_('Folder'), 'ParentID', 'ParentPath'));
-<?php } 
+<?php }
 if(!$TABLEEXISTS) { ?>
 $info = new we_ui_layout_NoteDiv();
 $info->setType("info");
@@ -80,19 +80,19 @@ $htmlPage->addJSFile('/webEdition/js/libs/yui/json-min.js');
 $htmlPage->addJSFile('/webEdition/lib/we/core/JsonRpc.js');
 
 $filenameEmptyMessage = we_util_Strings::quoteForJSString($translate->_('The name must not be empty!'), false);
-		
+
 $filenameEmptyMessageCall = we_core_MessageReporting::getShowMessageCall(
-				$filenameEmptyMessage, 
+				$filenameEmptyMessage,
 				we_core_MessageReporting::kMessageWarning
 		);
-		
+
 $folderNotValidMessage = we_util_Strings::quoteForJSString($translate->_('The folder could not be saved.'), false);
-		
+
 $folderNotValidMessageCall = we_core_MessageReporting::getShowMessageCall(
-				$folderNotValidMessage, 
+				$folderNotValidMessage,
 				we_core_MessageReporting::kMessageWarning
 		);
-		
+
 
 $js = '
 
@@ -122,11 +122,11 @@ function __updateIdEventHandler__(data, sender) {
 weEventController.register("save", __updateIdEventHandler__);
 
 
-weCmdController.register("save_body", "app_'.$appName.'_save", null, self, function(cmdObj) 
+weCmdController.register("save_body", "app_'.$appName.'_save", null, self, function(cmdObj)
 {
 
 	var form = document.we_form;
-	
+
 	if (form.Text.value === "") {
 		'. $filenameEmptyMessageCall . '
 		form.Text.focus();
@@ -139,7 +139,7 @@ weCmdController.register("save_body", "app_'.$appName.'_save", null, self, funct
 	var checkACFields = function() {
 		if(YAHOO && YAHOO.autocoml && YAHOO.autocoml.checkACFields()) {
 			if(YAHOO.autocoml.checkACFields().running) {
-				setTimeout(function(){checkACFields(), 100});
+				setTimeout(function(){checkACFields()}, 100);
 				return false;
 			}
 			else {
@@ -148,24 +148,24 @@ weCmdController.register("save_body", "app_'.$appName.'_save", null, self, funct
 					return false;
 				}
 			}
-		}	
+		}
 		return true;
 	}
-		
+
 	var acChecked = checkACFields();
-	
+
 	if(false===acChecked) {
 		return acChecked;
 	}
 
-	
+
 	return true;
 });
 
 YAHOO.util.Event.addListener(window, "unload", function(e){
 	weCmdController.unregister("save_body");
 	weEventController.unregister("save", __updateIdEventHandler__);
-}); 
+});
 
 ';
 
@@ -179,12 +179,12 @@ echo $htmlPage->getHTML();
 
 <?php if($TABLEEXISTS) { ?>
 function _setupDirChooser($view, $title, $IDName = 'ID', $PathName = 'Path') {
-	
+
 	$translate = we_core_Local::addTranslation('apps.xml');
-	
+
 	$dbTable = $view->model->getTable();
 	$parentID = $view->model->ParentID;
-	
+
 	$layoutTable = new we_ui_layout_Table();
 	$path = '/';
 	if (isset($parentID)) {
@@ -193,18 +193,18 @@ function _setupDirChooser($view, $title, $IDName = 'ID', $PathName = 'Path') {
 			$path = '/';
 		}
 	}
-	
+
 	$controller = Zend_Controller_Front::getInstance();
-	
+
 	$buttonText = $translate->_('Select');
-	
+
 	$label = new we_ui_controls_Label(array('text' => $title));
 	$label->setText($title);
 	$label->setStyle('margin-top:15px;display:block;');
 
 	$layoutTable->addElement($label, 0, 0);
 	$layoutTable->setStyle('margin-top:0px');
-	
+
 	$ac = new we_ui_controls_ACFileSelector();
 	$ac->setButtonText($buttonText);
 	$ac->setButtonTitle($buttonText);
@@ -217,7 +217,7 @@ function _setupDirChooser($view, $title, $IDName = 'ID', $PathName = 'Path') {
 	$ac->setWidth($view->inputWidth);
 	$ac->setOnChange('weEventController.fire("docChanged")');
 	$ac->setAppName($controller->getParam('appName'));
-	
+
 	$layoutTable->addElement($ac);
 
 	return $layoutTable;

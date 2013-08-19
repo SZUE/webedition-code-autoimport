@@ -30,13 +30,13 @@ $we_menu_glossary = array(
 		'text' => g_l('modules_glossary', '[glossary]'),
 		'parent' => '000000',
 		'perm' => '',
-		'enabled' => '1',
+		'enabled' => 1,
 	),
 	'002000' => array(
 		'text' => g_l('modules_glossary', '[menu_new]'),
 		'parent' => '001000',
 		'perm' => '',
-		'enabled' => '1',
+		'enabled' => 1,
 	)
 );
 $nr = 300;
@@ -47,7 +47,7 @@ foreach($langs as $key => $language){
 		'text' => $language,
 		'parent' => '002000',
 		'perm' => 'NEW_GLOSSARY || ADMINISTRATOR',
-		'enabled' => '0',
+		'enabled' => 0,
 	);
 	$parent = '00' . $nr . '0';
 
@@ -56,7 +56,7 @@ foreach($langs as $key => $language){
 		'parent' => $parent,
 		'cmd' => 'GlossaryXYZnew_glossary_abbreviationXYZ$key',
 		'perm' => 'NEW_GLOSSARY || ADMINISTRATOR',
-		'enabled' => '1',
+		'enabled' => 1,
 	);
 
 	$we_menu_glossary['00' . $nr . '2'] = array(
@@ -64,7 +64,7 @@ foreach($langs as $key => $language){
 		'parent' => $parent,
 		'cmd' => 'GlossaryXYZnew_glossary_acronymXYZ$key',
 		'perm' => 'NEW_GLOSSARY || ADMINISTRATOR',
-		'enabled' => '1',
+		'enabled' => 1,
 	);
 
 	$we_menu_glossary['00' . $nr . '3'] = array(
@@ -72,7 +72,7 @@ foreach($langs as $key => $language){
 		'parent' => $parent,
 		'cmd' => 'GlossaryXYZnew_glossary_foreignwordXYZ$key',
 		'perm' => 'NEW_GLOSSARY || ADMINISTRATOR',
-		'enabled' => '1',
+		'enabled' => 1,
 	);
 
 	$we_menu_glossary['00' . $nr . '4'] = array(
@@ -80,7 +80,7 @@ foreach($langs as $key => $language){
 		'parent' => $parent,
 		'cmd' => 'GlossaryXYZnew_glossary_linkXYZ$key',
 		'perm' => 'NEW_GLOSSARY || ADMINISTRATOR',
-		'enabled' => '1',
+		'enabled' => 1,
 	);
 
 	$we_menu_glossary['00' . $nr . '5'] = array(
@@ -88,7 +88,7 @@ foreach($langs as $key => $language){
 		'parent' => $parent,
 		'cmd' => 'GlossaryXYZnew_glossary_textreplacementXYZ$key',
 		'perm' => 'NEW_GLOSSARY || ADMINISTRATOR',
-		'enabled' => '1',
+		'enabled' => 1,
 	);
 	$nr++;
 }
@@ -98,7 +98,7 @@ $we_menu_glossary['005000'] = array(
 	'parent' => '001000',
 	'cmd' => 'save_glossary',
 	'perm' => 'EDIT_GLOSSARY || NEW_GLOSSARY || ADMINISTRATOR',
-	'enabled' => '1',
+	'enabled' => 1,
 );
 
 $we_menu_glossary['006000'] = array(
@@ -106,7 +106,7 @@ $we_menu_glossary['006000'] = array(
 	'parent' => '001000',
 	'cmd' => 'delete_glossary',
 	'perm' => 'DELETE_GLOSSARY || ADMINISTRATOR',
-	'enabled' => '1',
+	'enabled' => 1,
 );
 
 $we_menu_glossary['009500'] = array('parent' => '001000'
@@ -117,7 +117,7 @@ $we_menu_glossary['020000'] = array(
 	'parent' => '001000',
 	'cmd' => 'exit_glossary',
 	'perm' => '',
-	'enabled' => '1',
+	'enabled' => 1,
 );
 //
 // ---> Menu Options
@@ -127,7 +127,7 @@ $we_menu_glossary['010000'] = array(
 	'text' => g_l('modules_glossary', '[menu_options]'),
 	'parent' => '000000',
 	'perm' => 'ADMINISTRATOR',
-	'enabled' => '1',
+	'enabled' => 1,
 );
 
 $we_menu_glossary['012000'] = array(
@@ -135,7 +135,7 @@ $we_menu_glossary['012000'] = array(
 	'parent' => '010000',
 	'cmd' => 'glossary_settings',
 	'perm' => 'ADMINISTRATOR',
-	'enabled' => '1',
+	'enabled' => 1,
 );
 
 //
@@ -146,7 +146,7 @@ $we_menu_glossary['021000'] = array(
 	'text' => g_l('modules_glossary', '[menu_help]'),
 	'parent' => '000000',
 	'perm' => '',
-	'enabled' => '1',
+	'enabled' => 1,
 );
 
 $we_menu_glossary['022000'] = array(
@@ -154,7 +154,7 @@ $we_menu_glossary['022000'] = array(
 	'parent' => '021000',
 	'cmd' => 'help_modules',
 	'perm' => '',
-	'enabled' => '1',
+	'enabled' => 1,
 );
 
 $we_menu_glossary['023000'] = array(
@@ -162,5 +162,5 @@ $we_menu_glossary['023000'] = array(
 	'parent' => '021000',
 	'cmd' => 'info_modules',
 	'perm' => '',
-	'enabled' => '1',
+	'enabled' => 1,
 );

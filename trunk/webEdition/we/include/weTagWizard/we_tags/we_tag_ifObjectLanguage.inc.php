@@ -1,4 +1,5 @@
 <?php
+
 //NOTE you are inside the constructor of weTagData.class.php
 
 $this->NeedsEndTag = true;
@@ -7,6 +8,7 @@ $this->Module = 'object';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 $locales = array();
 foreach($GLOBALS["weFrontendLanguages"] as $lv){
-	$locales[] = new weTagDataOption($lv, false, '');
+	$locales[] = new weTagDataOption($lv);
+	;
 }
-$this->Attributes[] = new weTagData_choiceAttribute('match',$locales, false,true, '');
+$this->Attributes[] = new weTagData_choiceAttribute('match', $locales, false, true, '');

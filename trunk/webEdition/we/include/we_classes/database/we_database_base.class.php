@@ -278,7 +278,9 @@ abstract class we_database_base{
 			return false;
 		}
 		/* we already complained in connect() about that. */
-
+/*		if(stristr($Query_String, PREFS_TABLE)){
+			t_e('error #7745', $Query_String);
+		}*/
 // check for union This is the fastest check
 // if union is found in query, then take a closer look
 		if($allowUnion == false && stristr($Query_String, 'union')){
@@ -541,16 +543,17 @@ abstract class we_database_base{
 			//current hack: don't escape some used mysql functions
 			//FIXME: make this more robust to use internal mysql functions - e.g. functions object?
 			$escape = !(is_int($val) || is_float($val));
+
 			if($escape){
-				switch(strtoupper($val)){
-					case 'NOW()':
-					case 'UNIX_TIMESTAMP()':
-					case 'UNIX_TIMESTAMP(NOW())':
-					case 'CURDATE()':
-					case 'CURRENT_DATE()':
-					case 'CURRENT_TIME()':
-					case 'CURRENT_TIMESTAMP()':
-					case 'CURTIME()':
+				$tmp = explode('(', $val);
+				switch(strtoupper($tmp[0])){
+					case 'NOW':
+					case 'UNIX_TIMESTAMP':
+					case 'CURDATE':
+					case 'CURRENT_DATE':
+					case 'CURRENT_TIME':
+					case 'CURRENT_TIMESTAMP':
+					case 'CURTIME':
 					case 'NULL':
 						$escape = false;
 				}
@@ -598,8 +601,9 @@ abstract class we_database_base{
 				$this->halt("Metadata query failed.");
 			}
 		} else{
-			if(!($this->Query_ID))
+			if(!($this->Query_ID)){
 				$this->halt("No query specified.");
+			}
 		}
 		$count = $this->num_fields();
 		if(!$count){
@@ -824,8 +828,9 @@ abstract class we_database_base{
 		$zw = $this->getTableCreateArray($tab);
 		if($zw){
 			foreach($zw as $v){
-				if(trim(rtrim($v, ',')) == $key)
+				if(trim(rtrim($v, ',')) == $key){
 					return true;
+				}
 			}
 		}
 		return false;

@@ -289,7 +289,7 @@ top.selectFile(top.currentID);
 
 		if(get_ws($table)){
 			$userExtraSQL .= getWsQueryForSelector($table);
-		} else if(defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE && (!$_SESSION["perms"]["ADMINISTRATOR"])){
+		} else if(defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE && (!we_hasPerm("ADMINISTRATOR"))){
 			$wsQuery = "";
 			$ac = getAllowedClasses($this->db);
 			foreach($ac as $cid){

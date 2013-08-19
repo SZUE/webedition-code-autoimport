@@ -70,13 +70,13 @@ class we_workflow_step extends we_workflow_base{
 	 * get all workflow steps from database (STATIC)
 	 */
 	function getAllSteps($workflowID){
-		$db = new DB_WE;
+		$db = new DB_WE();
 
 		$db->query("SELECT ID FROM " . WORKFLOW_STEP_TABLE . " WHERE workflowID =" . intval($workflowID) . " ORDER BY ID");
 
 		$steps = array();
 
-		while($db->next_record()) {
+		while($db->next_record()){
 			$steps[] = new self($db->f("ID"));
 		}
 		return $steps;
@@ -85,7 +85,7 @@ class we_workflow_step extends we_workflow_base{
 	/**
 	 * Load step from database
 	 */
-	function load($id=0){
+	function load($id = 0){
 		if($id)
 			$this->ID = $id;
 		if($this->ID){
@@ -93,7 +93,7 @@ class we_workflow_step extends we_workflow_base{
 			## get tasks for step
 			$this->tasks = we_workflow_task::getAllTasks($this->ID);
 			return true;
-		} else{
+		} else {
 			return false;
 		}
 	}
@@ -117,7 +117,7 @@ class we_workflow_step extends we_workflow_base{
 		}
 
 		// !!! here we have to delete all other tasks in database except this in array
-		if(count($tasksList) > 0){
+		if(!empty($tasksList)){
 			$deletequery = 'DELETE FROM ' . WORKFLOW_TASK_TABLE . ' WHERE stepID=' . intval($this->ID) . ' AND ID NOT IN (' . join(",", $tasksList) . ')';
 			$afectedRows = $db->query($deletequery);
 		}
@@ -134,8 +134,7 @@ class we_workflow_step extends we_workflow_base{
 			parent::delete();
 			return true;
 		}
-		else
-			return false;
+		return false;
 	}
 
 }

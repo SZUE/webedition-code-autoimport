@@ -27,7 +27,6 @@ if(isset($_SERVER['SCRIPT_NAME']) && str_replace(dirname($_SERVER['SCRIPT_NAME']
 }
 
 if(!isset($_SESSION)){
-//	session_name(SESSION_NAME);
 	@session_start();
 	//FIXME: remove in 6.4; due to upgrade!
 	if(isset($_SESSION['we'])){
@@ -161,15 +160,11 @@ if(isset($_POST['username']) && isset($_POST['password'])){
 			}
 		} else{
 			$_SESSION['user']['Username'] = '';
-			foreach(array_keys($_SESSION) as $name){
-				unset($_SESSION[$name]);
-			}
+			we_user::removeOldWESession();
 		}
 	} else{
 		$_SESSION['user']['Username'] = '';
-		foreach(array_keys($_SESSION) as $name){
-			unset($_SESSION[$name]);
-		}
+		we_user::removeOldWESession();
 	}
 }
 $we_transaction = isset($_REQUEST['we_transaction']) ? $_REQUEST['we_transaction'] : md5(uniqID('', true));

@@ -34,8 +34,8 @@ class weNewsletterBase{
 	const STATUS_EMAIL_EXISTS = 1;
 	const STATUS_EMAIL_INVALID = 2;
 	const STATUS_CONFIRM_FAILED = 3;
-	const FEMALE_SALUTATION_FIELD='female_salutation';
-	const MALE_SALUTATION_FIELD='male_salutation';
+	const FEMALE_SALUTATION_FIELD = 'female_salutation';
+	const MALE_SALUTATION_FIELD = 'male_salutation';
 
 	var $db;
 	var $table;
@@ -98,7 +98,7 @@ class weNewsletterBase{
 									$hour = $value[$c]['hours'];
 									$minute = $value[$c]['minutes'];
 									$timestamp = mktime($hour, $minute, 0, $month, $day, $year);
-								} else{
+								} else {
 									$timestamp = $value[$c]['fieldvalue'];
 								}
 								$value[$c]['fieldvalue'] = $timestamp;
@@ -109,22 +109,17 @@ class weNewsletterBase{
 				}
 			}
 
-			$sets[] = $val . "='" . ($this->table == NEWSLETTER_BLOCK_TABLE ? $this->$val : $this->db->escape($this->$val)) . "'";
+			$sets[$val] = $this->$val;
 		}
-		$where = implode(",", $wheres);
-		$set = implode(",", $sets);
+		$where = implode(',', $wheres);
+		$set = we_database_base::arraySetter($sets);
 
 		if($this->ID == 0){
-
-			$query = 'INSERT INTO ' . $this->db->escape($this->table) . ' SET ' . $set;
-			$this->db->query($query);
+			$this->db->query('INSERT INTO ' . $this->db->escape($this->table) . ' SET ' . $set);
 			# get ID #
-			$this->db->query("SELECT LAST_INSERT_ID()");
-			$this->db->next_record();
-			$this->ID = $this->db->f(0);
-		} else{
-			$query = 'UPDATE ' . $this->table . ' SET ' . $set . ' WHERE ' . $where;
-			$this->db->query($query);
+			$this->ID = $this->db->getInsertId();
+		} else {
+			$this->db->query('UPDATE ' . $this->table . ' SET ' . $set . ' WHERE ' . $where);
 		}
 	}
 
@@ -160,7 +155,7 @@ class weNewsletterBase{
 		}
 		if(stripos($_SERVER["SERVER_SOFTWARE"], "IIS") !== false || stripos($_SERVER["SERVER_SOFTWARE"], "Microsoft") !== false || stripos($_SERVER["SERVER_SOFTWARE"], "Windows") !== false || stripos($_SERVER["SERVER_SOFTWARE"], "Win32") !== false){
 			return(gethostbyname(trim($domain)) == $domain);
-		} else{
+		} else {
 			return (getmxrr(trim($domain), $mxhosts));
 		}
 		//}
@@ -177,19 +172,16 @@ class weNewsletterBase{
 
 	function getEmailsFromList($emails, $emails_only = 0, $group = 0, $blocks = array()){
 		$ret = array();
-		$arr = array();
 		$_default_html = f('SELECT pref_value FROM ' . NEWSLETTER_PREFS_TABLE . ' WHERE pref_name="default_htmlmail";', 'pref_value', new DB_WE());
 		$arr = explode("\n", $emails);
-		if(count($arr)){
+		if(!empty($arr)){
 			foreach($arr as $row){
 				if($row != ""){
-					$arr2 = array();
 					$arr2 = explode(",", $row);
 					if(count($arr2)){
-						if($emails_only)
-							$ret[] = $arr2[0];
-						else
-							$ret[] = array($arr2[0], (isset($arr2[1]) && trim($arr2[1]) != '') ? trim($arr2[1]) : $_default_html, isset($arr2[2]) ? trim($arr2[2]) : "", isset($arr2[3]) ? $arr2[3] : "", isset($arr2[4]) ? $arr2[4] : "", isset($arr2[5]) ? $arr2[5] : "", $group, $blocks);
+						$ret[] = ($emails_only ?
+								$arr2[0] :
+								array($arr2[0], (isset($arr2[1]) && trim($arr2[1]) != '') ? trim($arr2[1]) : $_default_html, isset($arr2[2]) ? trim($arr2[2]) : "", isset($arr2[3]) ? $arr2[3] : "", isset($arr2[4]) ? $arr2[4] : "", isset($arr2[5]) ? $arr2[5] : "", $group, $blocks));
 					}
 				}
 			}
@@ -200,14 +192,12 @@ class weNewsletterBase{
 
 	function getEmailsFromExtern($files, $emails_only = 0, $group = 0, $blocks = array()){
 		$ret = array();
-		$arr = array();
 		$_default_html = f('SELECT pref_value FROM ' . NEWSLETTER_PREFS_TABLE . ' WHERE pref_name="default_htmlmail";', 'pref_value', new DB_WE());
 		$arr = makeArrayFromCSV($files);
-		if(count($arr)){
+		if(!empty($arr)){
 			foreach($arr as $file){
 				if(strpos($file, '..') === false){
-					$data = weFile::load($_SERVER['DOCUMENT_ROOT'] . $file);
-					$data = str_replace("\r\n", "\n", $data);
+					$data = str_replace("\r\n", "\n", weFile::load($_SERVER['DOCUMENT_ROOT'] . $file));
 					$dataArr = explode("\n", $data);
 					if(!empty($dataArr)){
 						foreach($dataArr as $value){
@@ -220,7 +210,7 @@ class weNewsletterBase{
 								$ret[] = $dat[0];
 							} else if($emails_only == 2){
 								$ret[] = array(trim($dat[0]), (isset($dat[1]) && trim($dat[1]) != '') ? trim($dat[1]) : $_default_html, isset($dat[2]) ? trim($dat[2]) : "", isset($dat[3]) ? $dat[3] : "", isset($dat[4]) ? $dat[4] : "", isset($dat[5]) ? $dat[5] : "");
-							} else{
+							} else {
 								$ret[] = array(trim($dat[0]), (isset($dat[1]) && trim($dat[1]) != '') ? trim($dat[1]) : $_default_html, isset($dat[2]) ? trim($dat[2]) : "", isset($dat[3]) ? $dat[3] : "", isset($dat[4]) ? $dat[4] : "", isset($dat[5]) ? $dat[5] : "", $group, $blocks);
 							}
 						}
@@ -242,16 +232,14 @@ class weNewsletterBase{
 	 * @return unknown
 	 */
 	function getEmailsFromExtern2($files, $emails_only = 0, $group = 0, $blocks = array(), $status = 0, &$emailkey){
-		$ret = array();
-		$arr = array();
+		$ret = $arr = array();
 		$countEMails = 0;
 		$_default_html = f('SELECT pref_value FROM ' . NEWSLETTER_PREFS_TABLE . ' WHERE pref_name="default_htmlmail";', 'pref_value', new DB_WE());
 		$arr = makeArrayFromCSV($files);
-		if(count($arr)){
+		if(!empty($arr)){
 			foreach($arr as $file){
 				if(strpos($file, '..') === false){
-					$data = weFile::load($_SERVER['DOCUMENT_ROOT'] . $file);
-					$data = str_replace("\r\n", "\n", $data);
+					$data = str_replace("\r\n", "\n", weFile::load($_SERVER['DOCUMENT_ROOT'] . $file));
 					$dataArr = explode("\n", $data);
 					if(!empty($dataArr)){
 						foreach($dataArr as $value){
@@ -267,12 +255,15 @@ class weNewsletterBase{
 								continue;
 							}
 							$emailkey[] = $countEMails - 1;
-							if($emails_only == 1){
-								$ret[] = $dat[0];
-							} else if($emails_only == 2){
-								$ret[] = array(trim($dat[0]), (isset($dat[1]) && trim($dat[1]) != '') ? trim($dat[1]) : $_default_html, isset($dat[2]) ? trim($dat[2]) : "", isset($dat[3]) ? $dat[3] : "", isset($dat[4]) ? $dat[4] : "", isset($dat[5]) ? $dat[5] : "");
-							} else{
-								$ret[] = array(trim($dat[0]), (isset($dat[1]) && trim($dat[1]) != '') ? trim($dat[1]) : $_default_html, isset($dat[2]) ? trim($dat[2]) : "", isset($dat[3]) ? $dat[3] : "", isset($dat[4]) ? $dat[4] : "", isset($dat[5]) ? $dat[5] : "", $group, $blocks);
+							switch($emails_only){
+								case 1:
+									$ret[] = $dat[0];
+									break;
+								case 2:
+									$ret[] = array(trim($dat[0]), (isset($dat[1]) && trim($dat[1]) != '') ? trim($dat[1]) : $_default_html, isset($dat[2]) ? trim($dat[2]) : "", isset($dat[3]) ? $dat[3] : "", isset($dat[4]) ? $dat[4] : "", isset($dat[5]) ? $dat[5] : "");
+									break;
+								default:
+									$ret[] = array(trim($dat[0]), (isset($dat[1]) && trim($dat[1]) != '') ? trim($dat[1]) : $_default_html, isset($dat[2]) ? trim($dat[2]) : "", isset($dat[3]) ? $dat[3] : "", isset($dat[4]) ? $dat[4] : "", isset($dat[5]) ? $dat[5] : "", $group, $blocks);
 							}
 						}
 					}
@@ -284,12 +275,12 @@ class weNewsletterBase{
 
 	function htmlSelectEmailList($name, $values, $size = 1, $selectedIndex = "", $multiple = false, $attribs = "", $compare = "value", $width = "", $cls = "defaultfont"){
 		reset($values);
-		$ret = '<select class="' . $cls . '" name="' . trim($name) . '" size=' . abs($size) . ' ' . ($multiple ? " multiple" : "") . ($attribs ? " $attribs" : "") . ($width ? ' style="width: ' . $width . 'px"' : '') . '>' . "\n";
+		$ret = '<select class="' . $cls . '" name="' . trim($name) . '" size=' . abs($size) . ' ' . ($multiple ? " multiple" : "") . ($attribs ? " $attribs" : "") . ($width ? ' style="width: ' . $width . 'px"' : '') . '>';
 		$selIndex = makeArrayFromCSV($selectedIndex);
-		while(list($value, $text) = each($values)) {
-			$ret .= '<option value="' . oldHtmlspecialchars($value) . '"' . (in_array((($compare == "value") ? $value : $text), $selIndex) ? " selected" : "") . (we_check_email($text) ? ' class="markValid"' : ' class="markNotValid"') . '>' . $text . "</option>\n";
+		while(list($value, $text) = each($values)){
+			$ret .= '<option value="' . oldHtmlspecialchars($value) . '"' . (in_array((($compare == "value") ? $value : $text), $selIndex) ? " selected" : "") . (we_check_email($text) ? ' class="markValid"' : ' class="markNotValid"') . '>' . $text . "</option>";
 		}
-		$ret .= "</select>";
+		$ret .= '</select>';
 		return $ret;
 	}
 

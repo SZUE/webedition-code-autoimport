@@ -90,7 +90,7 @@ if(isset($_REQUEST['vers_we_obj'])){
 					unset($_errorDocPath);
 				}
 				return;
-			} else{
+			} else {
 				die('Customer has no access to this document');
 			}
 		}
@@ -109,23 +109,33 @@ if(($we_include = $we_doc->editor($baseHref))){
 	if(substr(strtolower($we_include), 0, strlen($_SERVER['DOCUMENT_ROOT'])) == strtolower($_SERVER['DOCUMENT_ROOT'])){
 		if((!defined('WE_CONTENT_TYPE_SET')) && isset($we_doc->elements['Charset']['dat']) && $we_doc->elements['Charset']['dat']){ //	send charset which might be determined in template
 			define('WE_CONTENT_TYPE_SET', 1);
-			//	@ -> to aware of unproper use of this element, f. ex in include-File
-			@we_html_tools::headerCtCharset('text/html', $we_doc->elements['Charset']['dat']);
+			we_html_tools::headerCtCharset('text/html', $we_doc->elements['Charset']['dat'], true);
 		}
 
-		// --> Glossary Replacement
-		if((defined('GLOSSARY_TABLE') && (!isset($GLOBALS['WE_MAIN_DOC']) || $GLOBALS['WE_MAIN_DOC'] == $GLOBALS['we_doc'])) && (isset($we_doc->InGlossar) && $we_doc->InGlossar == 0)){
-			weGlossaryReplace::start();
-			include ($we_include);
-			weGlossaryReplace::end($GLOBALS['we_doc']->Language);
-		} else{
-			// --> NO Glossary Replacement
-			include ($we_include);
+		$urlReplace = we_folder::getUrlReplacements($GLOBALS['DB_WE']);
+// --> Glossary Replacement
+		$useGlossary = ((defined('GLOSSARY_TABLE') && (!isset($GLOBALS['WE_MAIN_DOC']) || $GLOBALS['WE_MAIN_DOC'] == $GLOBALS['we_doc'])) && (isset($we_doc->InGlossar) && $we_doc->InGlossar == 0) && weGlossaryReplace::useAutomatic());
+		$useBuffer = !empty($urlReplace) || $useGlossary;
+		if($useBuffer){
+			ob_start();
 		}
-	} else{
+		include ($we_include);
+		if($useBuffer){
+			$content = ob_get_contents();
+			ob_end_clean();
+			if($useGlossary){
+				$content = weGlossaryReplace::doReplace($content, $GLOBALS['we_doc']->Language);
+			}
+			if($urlReplace){
+				$content = preg_replace($urlReplace, array_keys($urlReplace), $content);
+			}
+
+			echo $content;
+		}
+	} else {
 		we_html_tools::protect(); //	only inside webEdition !!!
 		include(WE_INCLUDES_PATH . $we_include);
 	}
-} else{
+} else {
 	exit('Nothing to include ...');
 }

@@ -49,8 +49,9 @@ class weBinary{
 		$this->SeqN = 0;
 		$this->ClassName = "weBinary";
 		$this->db = new DB_WE();
-		if($id)
+		if($id){
 			$this->load($id);
+		}
 	}
 
 	function load($id, $loadData = true){
@@ -61,10 +62,8 @@ class weBinary{
 			if($this->Path && $loadData){
 				return $this->loadFile($this->Path);
 			}
-			return false;
 		}
-		else
-			return false;
+		return false;
 	}
 
 	function loadFile($file){

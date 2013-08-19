@@ -269,7 +269,7 @@ class CaptchaImage{
 		$this->skip = array();
 		if(!empty($skips)){
 			foreach($skips as $idx => $skip){
-				array_push($this->skip, ord($skip));
+				$this->skip[] = ord($skip);
 			}
 		}
 	}
@@ -467,16 +467,16 @@ class CaptchaImage{
 
 			$random = array();
 			if($this->style['outlinecircle']){
-				array_push($random, 'outlinecircle');
+				$random[] = 'outlinecircle';
 			}
 			if($this->style['outlinerectangle']){
-				array_push($random, 'outlinerectangle');
+				$random[] = 'outlinerectangle';
 			}
 			if($this->style['fullcircle']){
-				array_push($random, 'fullcircle');
+				$random[] = 'fullcircle';
 			}
 			if($this->style['fullrectangle']){
-				array_push($random, 'fullrectangle');
+				$random[] = 'fullrectangle';
 			}
 
 			for($i = 0; $i < $counter; $i++){
@@ -689,7 +689,7 @@ class CaptchaImage{
 					);
 				}
 
-				array_push($signs, $tmp_sign);
+				$signs[] = $tmp_sign;
 
 				$space = rand(round($this->font['size']['min'] / 2), round($this->font['size']['max'] / 2));
 

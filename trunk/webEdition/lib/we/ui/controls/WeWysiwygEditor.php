@@ -488,7 +488,7 @@ class we_ui_controls_WeWysiwygEditor extends we_ui_abstract_AbstractFormElement{
 		if($this->getHidden()){
 			$this->_style .= 'display:none;';
 		}
-		$_SESSION['WEAPP_' . $this->getAppName() . '_' . $this->getName()] = $this->getText();
+		$_SESSION['weS']['WEAPP_' . $this->getAppName() . '_' . $this->getName()] = $this->getText();
 		return '<div id="' . $this->getId() . '_Container" ' . $this->_getComputedStyleAttrib() . '>' . $html . '</div>';
 	}
 

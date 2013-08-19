@@ -462,12 +462,13 @@ abstract class weShopVariants{
 		}
 
 		foreach($variantDatArray as $variant){
-			if(is_array($variant)){
-				foreach($variant as $variantName => $variantData){
-					if($variantName == $name){
-						foreach($variantData as $elementName => $elementData){
-							$model->elements[$elementName] = $elementData;
-						}
+			if(!is_array($variant)){
+				continue;
+			}
+			foreach($variant as $variantName => $variantData){
+				if($variantName == $name){
+					foreach($variantData as $elementName => $elementData){
+						$model->elements[$elementName] = $elementData;
 					}
 				}
 			}
@@ -482,15 +483,19 @@ abstract class weShopVariants{
 	 * @param string $name
 	 */
 	public static function useVariantForShop(&$record, $name){
-		if(isset($record[WE_SHOP_VARIANTS_ELEMENT_NAME])){
-			$variantDatArray = unserialize($record[WE_SHOP_VARIANTS_ELEMENT_NAME]);
+		if(!isset($record[WE_SHOP_VARIANTS_ELEMENT_NAME])){
+			return;
+		}
+		$variantDatArray = unserialize($record[WE_SHOP_VARIANTS_ELEMENT_NAME]);
+		if(!is_array($variantDatArray)){
+			return;
+		}
 
-			foreach($variantDatArray as $i => $variant){
-				foreach($variant as $variantName => $variantData){
-					if($variantName == $name){
-						foreach($variantData as $elementName => $elementData){
-							$record[$elementName] = ($elementData['type'] == 'img' ? $elementData['bdid'] : $elementData['dat']);
-						}
+		foreach($variantDatArray as $i => $variant){
+			foreach($variant as $variantName => $variantData){
+				if($variantName == $name){
+					foreach($variantData as $elementName => $elementData){
+						$record[$elementName] = ($elementData['type'] == 'img' ? $elementData['bdid'] : $elementData['dat']);
 					}
 				}
 			}
@@ -506,16 +511,21 @@ abstract class weShopVariants{
 	 * @param we_objectFile $model
 	 */
 	public static function useVariantForShopObject(&$record, $name, $model){
-		if(isset($model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME])){
-			$variantDatArray = $model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'];
+		if(!isset($model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME])){
+			return;
+		}
+		$variantDatArray = $model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'];
 
-			foreach($variantDatArray as $variant){
-				foreach($variant as $variantName => $variantData){
-					if($variantName == $name){
-						foreach($variantData as $elementName => $elementData){
-							// fields have the prefix we_
-							$record['we_' . $elementName] = ($elementData['type'] == 'img' ? (isset($elementData['bdid']) ? $elementData['bdid'] : '') : (isset($elementData['dat']) ? $elementData['dat'] : ''));
-						}
+		if(!is_array($variantDatArray)){
+			return;
+		}
+
+		foreach($variantDatArray as $variant){
+			foreach($variant as $variantName => $variantData){
+				if($variantName == $name){
+					foreach($variantData as $elementName => $elementData){
+						// fields have the prefix we_
+						$record['we_' . $elementName] = ($elementData['type'] == 'img' ? (isset($elementData['bdid']) ? $elementData['bdid'] : '') : (isset($elementData['dat']) ? $elementData['dat'] : ''));
 					}
 				}
 			}

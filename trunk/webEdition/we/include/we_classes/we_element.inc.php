@@ -50,7 +50,7 @@ class we_element{
 		if(is_array($options)){
 			if($link_props){
 				$this->fetchLinkedOptions($options);
-			} else{
+			} else {
 				$this->fetchOptions($options);
 			}
 		}
@@ -58,7 +58,7 @@ class we_element{
 		if($link_props){
 			$this->linked = true;
 			$this->linkProps();
-		} else{
+		} else {
 			$this->persistent_slots = array_keys($options);
 		}
 	}
@@ -119,8 +119,8 @@ class we_element{
 
 	function getElement(){
 
-		if($this->linked)
-			return array(
+		return ($this->linked ?
+				array(
 				$this->Name => array(
 					"id" => $this->CID,
 					"bdid" => $this->BDID,
@@ -131,13 +131,13 @@ class we_element{
 					"type" => $this->Type,
 					"dat" => $this->Dat
 				)
-			);
-		else
-			return array(
+				) :
+				array(
 				$this->Name => array(
 					"dat" => $this->Dat,
 					"type" => $this->Type,
 					"len" => $this->Len
+				)
 				)
 			);
 	}

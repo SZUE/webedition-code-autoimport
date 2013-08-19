@@ -39,8 +39,8 @@ class weGlossaryFrameEditorFolder extends weGlossaryFrameEditor{
 
 	function Body(&$weGlossaryFrames){
 
-		$_js = $weGlossaryFrames->topFrame . '.resize.right.editor.edheader.location="' . $weGlossaryFrames->frameset . '?pnt=edheader&cmd=view_folder&cmdid=' . $_REQUEST['cmdid'] . '";'
-			. $weGlossaryFrames->topFrame . '.resize.right.editor.edfooter.location="' . $weGlossaryFrames->frameset . '?pnt=edfooter&cmd=view_folder&cmdid=' . $_REQUEST['cmdid'] . '"';
+		$_js = $weGlossaryFrames->topFrame . '.editor.edheader.location="' . $weGlossaryFrames->frameset . '?pnt=edheader&cmd=view_folder&cmdid=' . $_REQUEST['cmdid'] . '";'
+			. $weGlossaryFrames->topFrame . '.editor.edfooter.location="' . $weGlossaryFrames->frameset . '?pnt=edfooter&cmd=view_folder&cmdid=' . $_REQUEST['cmdid'] . '"';
 
 		$js = we_html_element::jsElement($_js);
 
@@ -59,11 +59,11 @@ class weGlossaryFrameEditorFolder extends weGlossaryFrameEditor{
 	function getHTMLOverview(&$weGlossaryFrames){
 
 		$_list = array(
-			'abbreviation' => g_l('modules_glossary', '[abbreviation]'),
-			'acronym' => g_l('modules_glossary', '[acronym]'),
-			'foreignword' => g_l('modules_glossary', '[foreignword]'),
-			'link' => g_l('modules_glossary', '[link]'),
-			'textreplacement' => g_l('modules_glossary', '[textreplacement]'),
+			weGlossary::TYPE_ABBREVATION => g_l('modules_glossary', '[abbreviation]'),
+			weGlossary::TYPE_ACRONYM => g_l('modules_glossary', '[acronym]'),
+			weGlossary::TYPE_FOREIGNWORD => g_l('modules_glossary', '[foreignword]'),
+			weGlossary::TYPE_LINK => g_l('modules_glossary', '[link]'),
+			weGlossary::TYPE_TEXTREPLACE => g_l('modules_glossary', '[textreplacement]'),
 		);
 
 		$language = substr($_REQUEST['cmdid'], 0, 5);
@@ -100,9 +100,9 @@ class weGlossaryFrameEditorFolder extends weGlossaryFrameEditor{
 						</tr>
 						</table>';
 
-			$headline = '<a href="javascript://" onclick="' . $this->topFrame . '.resize.right.editor.edbody.location=\'' . $weGlossaryFrames->frameset . '?pnt=edbody&cmd=view_type&cmdid=' . $_REQUEST['cmdid'] . '_' . $key . '&tabnr=\'+' . $weGlossaryFrames->topFrame . '.activ_tab;">' . g_l('modules_glossary', '[' . $key . ']') . '</a>';
+			$headline = '<a href="javascript://" onclick="' . $this->topFrame . '.editor.edbody.location=\'' . $weGlossaryFrames->frameset . '?pnt=edbody&cmd=view_type&cmdid=' . $_REQUEST['cmdid'] . '_' . $key . '&tabnr=\'+' . $weGlossaryFrames->topFrame . '.activ_tab;">' . g_l('modules_glossary', '[' . $key . ']') . '</a>';
 
-			array_push($parts, array("headline" => $headline, "html" => $content, "space" => 120));
+			$parts[] = array("headline" => $headline, "html" => $content, "space" => 120);
 		}
 
 		return $parts;

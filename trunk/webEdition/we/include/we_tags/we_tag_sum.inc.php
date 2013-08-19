@@ -30,16 +30,5 @@ function we_tag_sum($attribs){
 	$num_format = weTag_getAttribute("num_format", $attribs);
 	$result = (isset($GLOBALS["summe"][$name]) ? we_util::std_numberformat($GLOBALS["summe"][$name]) : 0);
 
-	switch($num_format){
-		case "german":
-			return number_format($result, 2, ",", ".");
-		case "french":
-			return number_format($result, 2, ",", " ");
-		case "english":
-			return number_format($result, 2, ".", "");
-		case "swiss":
-			return number_format($result, 2, ".", "'");
-		default:
-			return $result;
-	}
+	return we_util_Strings::formatNumber($result, $num_format, 2);
 }

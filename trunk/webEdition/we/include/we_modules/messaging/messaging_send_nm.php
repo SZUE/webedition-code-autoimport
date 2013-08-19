@@ -35,7 +35,7 @@ if(is_array($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']])){
 
 	$res = $messaging->send($arr);
 } else{
-	include_once(WE_MESSAGING_MODULE_PATH . "messaging_interfaces.inc.php");
+	require_once(WE_MESSAGING_MODULE_PATH . "messaging_interfaces.inc.php");
 	$errs = array();
 	$rcpts = array(urldecode($_REQUEST['rcpts_string'])); /* user names */
 	$res = msg_new_message($rcpts, $_REQUEST['mn_subject'], $_REQUEST['mn_body'], $errs);
@@ -49,14 +49,7 @@ if(!empty($res['ok'])){
 		echo we_html_element::jsElement('
                             if (opener && opener.top && opener.top.content) {
                                 opener.top.content.update_messaging();
-                                opener.top.content.update_msg_quick_view();
                             }');
-	} else{
-		echo we_html_element::jsElement('
-                            if (opener && opener.top && opener.top.content) {
-                                  opener.top.content.update_msg_quick_view();
-                            }
-                    ');
 	}
 }
 ?>
@@ -105,7 +98,7 @@ if(!empty($res['ok'])){
 	}
 
 	$tbl .= '</table>';
-	echo we_html_tools::htmlDialogLayout($tbl, g_l('modules_messaging', '[message_send]') . '...', we_button::create_button("ok", "javascript:window.close()"), "100%", "20", "", "hidden");
+	echo we_html_tools::htmlDialogLayout($tbl, g_l('modules_messaging', '[message_send]') . '...', we_button::create_button("ok", "javascript:window.close()"), "100%", 20, "", "hidden");
 	?>
 </body>
 

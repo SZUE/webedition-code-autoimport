@@ -582,7 +582,7 @@ class doclistView{
               + "</td><td>&nbsp;</td><td><a href=\"#\">\n"
               + "<table id=\"date_picker_from"+rowNr+"\" class=\"weBtn\" onmouseout=\"weButton.out(this);\" onmousedown=\"weButton.down(this);\" onmouseup=\"if(weButton.up(this)){;}\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">\n"
               + "<tbody><tr><td class=\"weBtnLeft\"></td><td class=\"weBtnMiddle\"">
-              + "<img src=\"' . BUTTONS_DIR . 'icons/date_picker.gif\" class=\"weBtnImage\" />"
+              + "<img src=\"' . BUTTONS_DIR . 'icons/date_picker.gif\" class=\"weBtnImage\" alt=\"\"/>"
               + "</td><td class=\"weBtnRight\"></td></tr></tbody></table></a></td></tr></tbody></table>";
 
 
@@ -1313,7 +1313,7 @@ class doclistView{
 		$thisObj = (isset($_REQUEST['we_cmd'] ['obj']) ? new doclistView () : $this);
 
 		if(we_hasPerm('PUBLISH')){
-			$publishButtonCheckboxAll = we_forms::checkbox("1", 0, "publish_all", "", false, "middlefont", "checkAllPubChecks()");
+			$publishButtonCheckboxAll = we_forms::checkbox(1, 0, "publish_all", "", false, "middlefont", "checkAllPubChecks()");
 			$publishButton = we_button::create_button("publish", "javascript:publishDocs();", true, 100, 22, "", "");
 		} else{
 			$publishButton = "";
@@ -1427,7 +1427,7 @@ class doclistView{
 
 	function getDateSelector($_label, $_name, $_btn, $value){
 		$btnDatePicker = we_button::create_button("image:date_picker", "javascript:", null, null, null, null, null, null, false, $_btn);
-		$oSelector = new we_html_table(array("cellpadding" => "0", "cellspacing" => "0", "border" => "0", "id" => $_name . "_cell"), 1, 5);
+		$oSelector = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0, "id" => $_name . "_cell"), 1, 5);
 		$oSelector->setCol(0, 2, null, we_html_tools::htmlTextInput($name = $_name, $size = 55, $value, $maxlength = 10, $attribs = 'id="' . $_name . '" class="wetextinput" readonly="1"', $type = "text", $width = 100));
 		$oSelector->setCol(0, 3, null, "&nbsp;");
 		$oSelector->setCol(0, 4, null, we_html_element::htmlA(array("href" => "#"), $btnDatePicker));

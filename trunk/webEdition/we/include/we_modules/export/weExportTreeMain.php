@@ -24,7 +24,7 @@
  */
 class weExportTreeMain extends weTree{
 
-	function __construct($frameset="", $topFrame="", $treeFrame="", $cmdFrame=""){
+	function __construct($frameset = "", $topFrame = "", $treeFrame = "", $cmdFrame = ""){
 
 		parent::__construct($frameset, $topFrame, $treeFrame, $cmdFrame);
 	}
@@ -44,10 +44,11 @@ class weExportTreeMain extends weTree{
 				treeData[eintragsIndex].open=openstatus;
 
 				if(openstatus && treeData[eintragsIndex].loaded!=1){
-					if(sort!="")
+					if(sort!=""){
 						' . $this->cmdFrame . '.location="' . $this->frameset . '?pnt=cmd&cmd=mainload&pid="+id+"&sort="+sort;
-					else
+					}else{
 						' . $this->cmdFrame . '.location="' . $this->frameset . '?pnt=cmd&cmd=mainload&pid="+id;
+					}
 				}else{
 					drawTree();
 				}
@@ -86,12 +87,12 @@ class weExportTreeMain extends weTree{
 							top.content.usetHot();
 							cmd = "edit_export";
 							var node=' . $this->topFrame . '.get(id);
-							' . $this->topFrame . '.resize.right.editor.edbody.location="' . $this->frameset . '?pnt=edbody&cmd="+cmd+"&cmdid="+node.id+"&tabnr="+' . $this->topFrame . '.activ_tab;
+							' . $this->topFrame . '.editor.edbody.location="' . $this->frameset . '?pnt=edbody&cmd="+cmd+"&cmdid="+node.id+"&tabnr="+' . $this->topFrame . '.activ_tab;
 						}
 					} else {
 						cmd = "edit_export";
 						var node=' . $this->topFrame . '.get(id);
-						' . $this->topFrame . '.resize.right.editor.edbody.location="' . $this->frameset . '?pnt=edbody&cmd="+cmd+"&cmdid="+node.id+"&tabnr="+' . $this->topFrame . '.activ_tab;
+						' . $this->topFrame . '.editor.edbody.location="' . $this->frameset . '?pnt=edbody&cmd="+cmd+"&cmdid="+node.id+"&tabnr="+' . $this->topFrame . '.activ_tab;
 					}
 				}
 				' . $this->topFrame . '.loaded=1;

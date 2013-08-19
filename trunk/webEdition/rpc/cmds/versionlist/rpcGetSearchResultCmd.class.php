@@ -38,7 +38,7 @@ class rpcGetSearchResultCmd extends rpcCmd {
 
 		$_REQUEST['we_cmd']['obj'] = 1;
 
-		$content = weVersionsView::getVersionsOfDoc();
+		$content = weVersionsView::getVersionsOfDoc($GLOBALS['DB_WE']);
 
 		$code = weVersionsView::tabListContent($searchstart,$anzahl,$content);
 

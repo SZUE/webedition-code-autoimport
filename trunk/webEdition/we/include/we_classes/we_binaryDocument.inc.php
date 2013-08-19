@@ -102,12 +102,12 @@ class we_binaryDocument extends we_document{
 		if($this->getFilesize() == 0){
 			print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('metadata', '[file_size_0]'), we_message_reporting::WE_MESSAGE_ERROR));
 			return false;
-		} else{
+		} else {
 			if(parent::we_save($resave)){
 				$this->DocChanged = false;
 				$this->elements["data"]["dat"] = $this->getSitePath();
 				return $this->insertAtIndex();
-			} else{
+			} else {
 				return false;
 			}
 		}
@@ -168,7 +168,7 @@ class we_binaryDocument extends we_document{
 		if(isset($this->IsSearchable) && $this->IsSearchable && $this->Published){
 			$text = "";
 			$this->resetElements();
-			while((list($k, $v) = $this->nextElement(""))) {
+			while((list($k, $v) = $this->nextElement(""))){
 				$foo = (isset($v["dat"]) && substr($v["dat"], 0, 2) == "a:") ? unserialize($v["dat"]) : "";
 				if(!is_array($foo)){
 					if(isset($v["type"]) && $v["type"] == "txt"){
@@ -208,7 +208,7 @@ class we_binaryDocument extends we_document{
 				}
 			}
 			return $this->metaDataReader;
-		} else{
+		} else {
 			return false;
 		}
 	}
@@ -253,7 +253,7 @@ class we_binaryDocument extends we_document{
 
 		// show an alert if there are none
 		if(empty($_defined_fields)){
-			return "";
+			return '';
 		}
 
 		// second we build all input fields for them and take
@@ -326,7 +326,7 @@ class we_binaryDocument extends we_document{
 
 		$filetype = g_l('metadata', '[filetype]') . ': ' . (empty($this->Extension) ? '' : substr($this->Extension, 1));
 
-		$md = ($_SESSION['weS']['we_mode'] == "seem" ?
+		$md = ($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE ?
 				'' :
 				g_l('metadata', "[supported_types]") . ': ' .
 				'<a href="javascript:parent.frames[0].setActiveTab(\'tab_2\');we_cmd(\'switch_edit_page\',2,\'' . $GLOBALS['we_transaction'] . '\');">' .
@@ -343,7 +343,7 @@ class we_binaryDocument extends we_document{
 			$this->getThumbnail() .
 			'</td></tr>
 			<tr><td colspan="2">' . we_html_tools::getPixel(4, 20) . '</td></tr>
-			<tr><td colspan="2" class="defaultfont">' . we_html_tools::htmlAlertAttentionBox(g_l('weClass', ($GLOBALS['we_doc']->getFilesize() != 0 ? "[upload_will_replace]" : "[upload_single_files]")), 1, 508) . '</td></tr>
+			<tr><td colspan="2" class="defaultfont">' . we_html_tools::htmlAlertAttentionBox(g_l('weClass', ($GLOBALS['we_doc']->getFilesize() != 0 ? "[upload_will_replace]" : "[upload_single_files]")), we_html_tools::TYPE_ALERT, 508) . '</td></tr>
 			</table>';
 	}
 
@@ -352,8 +352,8 @@ class we_binaryDocument extends we_document{
 	}
 
 	function savebinarydata(){
-		$_data = $this->getElement("data");
-		if($_data && !file_exists($_data)){
+		$_data = $this->getElement('data');
+		if($_data && (strlen($_data) > 512 || !@file_exists($_data))){ //assume data>512 = binary data
 			$_path = weFile::saveTemp($_data);
 			$this->setElement('data', $_path);
 		}

@@ -44,8 +44,7 @@ function we_tag_ifDoctype($attribs){
 
 	if(isset($doctype) && $doctype != false){
 		foreach($matchArr as $match){
-			$matchID = f('SELECT ID FROM ' . DOC_TYPES_TABLE . ' WHERE DocType="' . $GLOBALS['DB_WE']->escape($match) . '"', 'ID', $GLOBALS['DB_WE']);
-			if($matchID == $doctype){
+			if($doctype == f('SELECT ID FROM ' . DOC_TYPES_TABLE . ' WHERE DocType="' . $GLOBALS['DB_WE']->escape($match) . '"', 'ID', $GLOBALS['DB_WE'])){
 				return true;
 			}
 		}

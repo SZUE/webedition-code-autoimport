@@ -31,17 +31,16 @@ function we_tag_linkToSeeMode($attribs){
 	$xml = weTag_getAttribute("xml", $attribs);
 
 	// check for value attribute
-	$foo = attributFehltError($attribs, "value", __FUNCTION__);
-	if($foo)
+	if(($foo = attributFehltError($attribs, "value", __FUNCTION__))){
 		return $foo;
+	}
 
 	$value = weTag_getAttribute("value", $attribs);
 
 	if(isset($id) && !empty($id)){
 
 		$type = 'document';
-	} else
-	if(isset($GLOBALS['we_obj']) || $oid){ // use object if possible
+	} elseif(isset($GLOBALS['we_obj']) || $oid){ // use object if possible
 		$type = 'object';
 		if($oid){
 			$id = $oid;

@@ -38,10 +38,12 @@ class weImportUpdater extends weXMLExIm{
 		if($this->debug){
 			debug("Updating object\n");
 			debug("Id:" . $object->ID . "\n");
-			if(isset($object->Path))
+			if(isset($object->Path)){
 				debug("Path:" . $object->Path . "\n");
-			if(isset($object->Table))
+			}
+			if(isset($object->Table)){
 				debug("Table:" . $object->Table . "\n");
+			}
 		}
 
 		$this->Patterns = new weSearchPatterns();
@@ -75,7 +77,7 @@ class weImportUpdater extends weXMLExIm{
 			);
 			if($ref){
 				$object->TemplateID = $ref->ID;
-			}else if(isset($object->TemplatePath) && $object->TemplatePath){
+			} else if(isset($object->TemplatePath) && $object->TemplatePath){
 				$ref = $this->RefTable->getRef(
 					array(
 						"ID" => $object->ID,
@@ -102,10 +104,7 @@ class weImportUpdater extends weXMLExIm{
 					"ContentType" => "doctype"
 				)
 			);
-			if($ref)
-				$object->DocType = $ref->ID;
-			else
-				$object->DocType = 0;
+			$object->DocType = ($ref ? $ref->ID : 0);
 		}
 
 		if($this->debug){
@@ -189,7 +188,7 @@ class weImportUpdater extends weXMLExIm{
 						);
 						if($ref){
 							$object->elements[$k]['dat'] = $ref->ID;
-						} else{
+						} else {
 							$object->elements[$k]['dat'] = 0;
 						}
 					}
@@ -205,7 +204,7 @@ class weImportUpdater extends weXMLExIm{
 
 					if($ref){
 						$object->elements[$k]['bdid'] = $ref->ID;
-					} else{
+					} else {
 						$object->elements[$k]['bdid'] = 0;
 					}
 				}
@@ -232,7 +231,7 @@ class weImportUpdater extends weXMLExIm{
 							if($objref){
 								$objid = $objref->ID;
 								$objpath = $objref->Path;
-							} else{
+							} else {
 								$objid = path_to_id($objpath, OBJECT_FILES_TABLE);
 							}
 							if($objid){
@@ -319,7 +318,7 @@ class weImportUpdater extends weXMLExIm{
 						if(is_array($dat)){
 							$this->updateArray($dat);
 							$object->elements[$ek]["dat"] = serialize($dat);
-						} else{
+						} else {
 							if(isset($object->ContentType) && ($object->ContentType == 'text/webedition' || $object->ContentType == 'text/html')){
 								$source = $ev["dat"];
 								$this->updateSource($this->Patterns->wysiwyg_patterns['doc'], $source);
@@ -406,7 +405,7 @@ class weImportUpdater extends weXMLExIm{
 				$_new_id = path_to_id($object->ParentPath);
 				if($_new_id){
 					$object->ParentID = $_new_id;
-				} else{
+				} else {
 					$object->ParentID = 0;
 					$object->ParentPath = '/';
 				}
@@ -497,7 +496,7 @@ class weImportUpdater extends weXMLExIm{
 				if(defined('OBJECT_TABLE')){
 					$this->updateField($object, 'FolderID', OBJECT_FILES_TABLE);
 				}
-			} else{
+			} else {
 				$this->updateField($object, 'FolderID', FILE_TABLE);
 			}
 
@@ -512,7 +511,7 @@ class weImportUpdater extends weXMLExIm{
 				$_cats = $object->Categories;
 			} else if(isset($object->Categories)){
 				$_cats = makeArrayFromCSV($object->Categories);
-			} else{
+			} else {
 				$_cats = array();
 			}
 			$_new_cats = array();
@@ -525,7 +524,7 @@ class weImportUpdater extends weXMLExIm{
 				);
 				if($_ref){
 					$_new_cats[] = $_ref->ID;
-				} else{
+				} else {
 					$_new_cats[] = $_cat;
 				}
 			}
@@ -592,7 +591,7 @@ class weImportUpdater extends weXMLExIm{
 					}
 				}
 			}
-		} else{
+		} else {
 			$match = array();
 			foreach($patterns as $pattern){
 				if(preg_match_all($pattern, $source, $match)){
@@ -603,7 +602,7 @@ class weImportUpdater extends weXMLExIm{
 								$source = str_replace(
 									$match[1][$k] . $match[2][$k] . $match[3][$k], $match[1][$k] . $_new_id . $match[3][$k], $source
 								);
-							} else{
+							} else {
 								$ref = $this->RefTable->getRef(
 									array(
 										"Old" . $field => $include,

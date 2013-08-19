@@ -31,7 +31,7 @@ we_html_tools::htmlTop();
 $docroot = str_replace('\\', '/', rtrim($_SERVER['DOCUMENT_ROOT'], '/'));
 we_cmd_dec(4);
 we_cmd_dec(1);
-
+t_e('call');
 $filter = (isset($_REQUEST['we_cmd'][2]) && $_REQUEST['we_cmd'][2] != '') ? $_REQUEST['we_cmd'][2] : 'all_Types';
 $currentDir = str_replace('\\', '/', ( isset($_REQUEST['we_cmd'][3]) ?
 		($_REQUEST['we_cmd'][3] == '/' ? '' :
@@ -68,15 +68,7 @@ $rootDir = ((isset($_REQUEST['we_cmd'][5]) && $_REQUEST['we_cmd'][5] != '') ? $_
 
 	function exit_close() {
 <?php if(isset($_REQUEST['we_cmd'][1]) && $_REQUEST['we_cmd'][1] != ""){ ?>
-			var foo;
-			if (currentID) {
-				if (currentID == sitepath)
-					foo = "/";
-				else
-					foo = currentID.substring(sitepath.length);
-			} else {
-				foo = "/";
-			}
+			var foo= (!currentID ||(currentID === sitepath) ? "/" : currentID.substring(sitepath.length));
 
 			opener.<?php print $_REQUEST['we_cmd'][1] ?> = foo;
 			if (!!opener.postSelectorSelect) {

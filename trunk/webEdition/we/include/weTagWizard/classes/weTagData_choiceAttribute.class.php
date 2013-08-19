@@ -51,14 +51,10 @@ class weTagData_choiceAttribute extends weTagDataAttribute{
 	 */
 	function getCodeForTagWizard(){
 
-		$texts = array();
-		$values = array();
-
-		$texts[] = '----';
-		$values[] = '';
+		$texts = array('----');
+		$values = array('');
 
 		foreach($this->Options as $option){
-
 			$texts[] = $option->getName();
 			$values[] = htmlentities($option->Value);
 		}

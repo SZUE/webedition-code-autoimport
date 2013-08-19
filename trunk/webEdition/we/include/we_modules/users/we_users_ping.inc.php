@@ -31,24 +31,38 @@ echo we_html_element::jsScript(JS_DIR . 'libs/yui/yahoo-min.js') .
  we_html_element::jsScript(JS_DIR . 'libs/yui/connection-min.js');
 ?>
 <script  type="text/javascript">
-	<!--
+<!--
 
 	var ajaxURL = "<?php echo WEBEDITION_DIR; ?>rpc/rpc.php";
 	var weRpcFailedCnt = 0;
 	var ajaxCallback = {
 		success: function(o) {
-			if(typeof(o.responseText) != 'undefined' && o.responseText != '') {
-				eval("var result=" + o.responseText);
+			if (typeof(o.responseText) !== undefined && o.responseText !== '') {
+				try {
+					eval("var result=" + o.responseText);
+				} catch (exp) {
+					try {
+						console.log(exp + " " + o.responseText);
+					} catch (ex) {
+
+					}
+				}
 				if (result.Success) {
 					var num_users = result.DataArray.num_users;
 					weRpcFailedCnt = 0;
 					if (top.weEditorFrameController) {
 						var _ref = top.weEditorFrameController.getActiveDocumentReference();
-						if (_ref && _ref.setUsersOnline && _ref.setUsersListOnline) {
-							_ref.setUsersOnline(num_users);
-							var usersHTML = result.DataArray.users;
-							if (usersHTML) {
-								_ref.setUsersListOnline(usersHTML);
+						if (_ref) {
+							if (_ref.setUsersOnline && _ref.setUsersListOnline) {
+								_ref.setUsersOnline(num_users);
+								var usersHTML = result.DataArray.users;
+								if (usersHTML) {
+									_ref.setUsersListOnline(usersHTML);
+								}
+							}
+							mfdData = result.DataArray.mfd_data;
+							if (_ref.setMfdData && mfdData !== undefined) {
+								_ref.setMfdData(mfdData);
 							}
 						}
 					}
@@ -65,7 +79,7 @@ echo we_html_element::jsScript(JS_DIR . 'libs/yui/yahoo-min.js') .
 			}
 		},
 		failure: function(o) {
-			if(weRpcFailedCnt++ > 5){
+			if (weRpcFailedCnt++ > 5) {
 				//in this case, rpc failed 5 times, this is severe, user should be in informed!
 				alert("<?php echo g_l('global', "[unable_to_call_ping]"); ?>");
 			}
@@ -74,9 +88,9 @@ echo we_html_element::jsScript(JS_DIR . 'libs/yui/yahoo-min.js') .
 
 	function YUIdoAjax() {
 		YAHOO.util.Connect.asyncRequest('POST', ajaxURL, ajaxCallback, 'protocol=json&cmd=Ping');
-		setTimeout("YUIdoAjax()",<?php print PING_TIME; ?>*1000);
+		setTimeout("YUIdoAjax()",<?php print PING_TIME; ?> * 1000);
 	}
-	
-	setTimeout("YUIdoAjax()",<?php print PING_TIME; ?>*1000);
+
+	setTimeout("YUIdoAjax()",<?php print PING_TIME; ?> * 1000);
 	//-->
 </script>

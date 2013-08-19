@@ -22,11 +22,15 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_shop_shop{
+class we_shop_shop {
+
+	const DOCUMENT = 'w';
+	const OBJECT = 'o';
 
 //FIXME: is this classname really correct?!
 // $ClassName is used in we:listview_multiobject.class.php: if($GLOBALS["lv"]->ClassName == 'we_listview_shoppingCart')
 // This could be changed to: if(get_class($GLOBALS['lv']) == 'we_shop_shop')
+	//are you sure???
 
 	var $ClassName = 'we_listview_shoppingCart';
 	var $DB_WE;
@@ -40,13 +44,14 @@ class we_shop_shop{
 	var $ShoppingCartKey = '';
 	var $ActItem;
 
-	const ignoredEditFields = 'ID,Username,Password,MemberSince,LastLogin,LastAccess,ParentID,Path,IsFolder,Icon,Text,Forename,Surname,AutoLogin,AutoLoginDenied,ModifiedBy,ModifyDate';
+	const ignoredEditFields = 'ID,Username,Password,MemberSince,LastLogin,LastAccess,ParentID,Path,IsFolder,Icon,Text,AutoLogin,AutoLoginDenied,ModifiedBy,ModifyDate';
+	const ignoredExtraShowFields = 'Forename,Surname';
 
 	function __construct($shoppingCart){
 		if(is_object($shoppingCart)){
 			$this->ShoppingCart = $shoppingCart;
 			$this->ShoppingCartItems = $shoppingCart->getShoppingItems();
-		} else{
+		} else {
 			t_e('called with non object');
 		}
 
@@ -55,7 +60,7 @@ class we_shop_shop{
 		if(!isset($GLOBALS['we_lv_array']) || !is_array($GLOBALS['we_lv_array'])){
 			$GLOBALS['we_lv_array'] = array();
 		}
-		array_push($GLOBALS['we_lv_array'], clone($this));
+		$GLOBALS['we_lv_array'][] = clone($this);
 	}
 
 	function next_record(){
@@ -74,7 +79,7 @@ class we_shop_shop{
 				if(!is_int($key)){
 					if($key == WE_SHOP_VAT_FIELD_NAME){
 						$this->Record[$key] = $value;
-					} else{
+					} else {
 						$this->Record[preg_replace('#^we_#', '', $key)] = $value;
 					}
 				}
@@ -107,6 +112,15 @@ class we_shop_shop{
 
 	public function getDBf($field){
 		return $this->DB_WE->f($field);
+	}
+
+	static function getAllOrderYears(){
+		$GLOBALS['DB_WE']->query('SELECT DISTINCT YEAR(DateOrder) AS a FROM ' . SHOP_TABLE . ' ORDER BY a DESC');
+		$years = $GLOBALS['DB_WE']->getAll(true);
+		if(array_search(date('Y'), $years) === false){
+			array_unshift($years, date('Y'));
+		}
+		return $years;
 	}
 
 }

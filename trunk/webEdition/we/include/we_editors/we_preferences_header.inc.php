@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 $tabname = isset($_REQUEST["tabname"]) && $_REQUEST["tabname"] != "" ? $_REQUEST["tabname"] : "setting_ui";
-include_once(WE_INCLUDES_PATH . 'we_editors/we_preferences_config.inc.php');
+require_once(WE_INCLUDES_PATH . 'we_editors/we_preferences_config.inc.php');
 
 
 // generate the tabs

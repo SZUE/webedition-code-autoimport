@@ -85,8 +85,7 @@ if($bDisplay == 0){
 	// alle Notizen
 	$out_bDisplay = 'alle Notizen';
 	$q_display = '';
-} else
-if($bDisplay == 1){
+} elseif($bDisplay == 1){
 	// nur g�ltige
 	$out_bDisplay = 'nur g�ltige';
 	$q_display = '';
@@ -243,10 +242,10 @@ print we_html_element::htmlDocType() . we_html_element::htmlHtml(
 			we_html_element::jsElement(
 				$js)) . we_html_element::htmlBody(
 			array(
-			"marginwidth" => "15",
-			"marginheight" => "10",
-			"leftmargin" => "15",
-			"topmargin" => "10",
+			"marginwidth" => 15,
+			"marginheight" => 10,
+			"leftmargin" => 15,
+			"topmargin" => 10,
 			"onload" => "if(parent!=self)init();"
 			), we_html_element::htmlDiv(array(
 				"id" => "pad"

@@ -69,7 +69,7 @@ class we_rtf2html{
 		if(substr($this->fileContent, 0, 5) == "{\\rtf"){ //##TODO## have to check if this clause is correct!!!
 			$this->parseRtf();
 			$this->correctLists();
-		} else{
+		} else {
 			$this->htmlOut = preg_replace('|<\?[^>]+>|', '', $this->fileContent);
 		}
 	}
@@ -192,7 +192,7 @@ class we_rtf2html{
 
 
 		$ch = $this->getNextCh();
-		while($ch != EOF) {
+		while($ch != EOF){
 			switch($ch){
 				case '{':
 					if(substr($infocon, 0, 7) == "fonttbl"){
@@ -207,8 +207,9 @@ class we_rtf2html{
 						$tableproc = true;
 						$infocon = "";
 					}
-					if($tableproc)
+					if($tableproc){
 						$g++;
+					}
 					break;
 				case '}':
 					if($tableproc){
@@ -252,22 +253,27 @@ class we_rtf2html{
 						$this->standard = $infocon;
 						$infocon = "";
 					}
-					if($kind == 0)
-						$infocon = ""; else if($g < 3)
-						$infocon.="\\"; else
+					if($kind == 0){
+						$infocon = "";
+					} else if($g < 3){
+						$infocon.="\\";
+					} else {
 						$infocon.=" ";
+					}
 					break;
 				case "\r":
 				case "\n":
 					break;
 				default:
-					if($g < 3)
+					if($g < 3){
 						$infocon.=$ch;
+					}
 					break;
 			}
 			$ch = $this->getNextCh();
-			if($font_fin && $color_fin)
+			if($font_fin && $color_fin){
 				break;
+			}
 		}
 		$this->parseFontTable($fonttbl);
 		$this->parseColorTable($colortbl);
@@ -298,13 +304,16 @@ class we_rtf2html{
 			if(preg_match("/f([0-9]+)/", $b[0], $m)){
 				$ident = $m[1];
 			}
-			if($k == 0)
+			if($k == 0){
 				$this->dflFontIndex = $ident;
-			for($i = 1; $i < count($b); $i++)
+			}
+			for($i = 1; $i < count($b); $i++){
 				$name.=$b[$i] . " ";
+			}
 			$name = trim($name);
-			if($name != "")
+			if($name != ""){
 				$this->fontTable[$ident] = $name;
+			}
 			$ident++;
 		}
 	}
@@ -312,20 +321,23 @@ class we_rtf2html{
 	function parseColorTable($colortbl){
 		$a = array();
 		$b = array();
-		array_push($this->colorTable, $this->hexColor(0, 0, 0));
+		$this->colorTable[] = $this->hexColor(0, 0, 0);
 		$a = explode(";", $colortbl);
 		foreach($a as $k => $v){
 			if($v != ""){
 				$m = array();
-				if(preg_match("/red([0-9]+)/", $v, $m))
+				if(preg_match("/red([0-9]+)/", $v, $m)){
 					$red = $m[1];
+				}
 				$m = array();
-				if(preg_match("/green([0-9]+)/", $v, $m))
+				if(preg_match("/green([0-9]+)/", $v, $m)){
 					$green = $m[1];
+				}
 				$m = array();
-				if(preg_match("/blue([0-9]+)/", $v, $m))
+				if(preg_match("/blue([0-9]+)/", $v, $m)){
 					$blue = $m[1];
-				array_push($this->colorTable, $this->hexColor($red, $green, $blue));
+				}
+				$this->colorTable[] = $this->hexColor($red, $green, $blue);
 			}
 		}
 	}
@@ -337,7 +349,7 @@ class we_rtf2html{
 		$b = 0;
 
 		$ch = $this->getNextCh();
-		while($ch != EOF) {
+		while($ch != EOF){
 			switch($ch){
 				case '{':
 					$this->pushGroup();
@@ -346,30 +358,30 @@ class we_rtf2html{
 					$this->popGroup();
 					break;
 				case '\\':
-					if(($this->skip_group > $this->group) || ($this->skip_group == 0))
+					if(($this->skip_group > $this->group) || ($this->skip_group == 0)){
 						$this->parseControl();
+					}
 					break;
 				case "\r":
 				case "\n":
 					break;
 				default:
-					if(($this->skip_group > $this->group) || ($this->skip_group == 0))
+					if(($this->skip_group > $this->group) || ($this->skip_group == 0)){
 						$this->pasteChars($ch);
+					}
 					break;
 			}
 			$ch = $this->getNextCh();
 		}
 
-		if($this->group < 0)
-			return false;
-
-		return true;
+		return ($this->group < 0 ? false : true);
 	}
 
 	function pushGroup(){
 
-		if($this->first_control == 0)
+		if($this->first_control == 0){
 			$this->first_control = 1;
+		}
 		$this->group++;
 
 		$this->stack[$this->group] = array();
@@ -379,36 +391,39 @@ class we_rtf2html{
 	}
 
 	function popGroup(){
-		while(count($this->stack[$this->group]) != 0) {
+		while(!empty($this->stack[$this->group])){
 			$key = $this->popStack();
-			if($key == -1)
+			if($key == -1){
 				break;
-			if($this->rtf_cons[$key][3] != "")
+			}
+			if($this->rtf_cons[$key][3] != ""){
 				$this->pasteChars($this->rtf_cons[$key][3]);
-			if($key == 87)
+			}
+			if($key == 87){
 				$this->prevFont[$this->group]["index"] = $this->dflFontIndex;
-			if($key == 3)
+			}
+			if($key == 3){
 				$this->prevSize[$this->group]["index"] = 0;
-			if($key == 94)
+			}
+			if($key == 94){
 				$this->prevColor[$this->group]["index"] = 0;
+			}
 		}
-		if($this->group == $this->skip_group)
+		if($this->group == $this->skip_group){
 			$this->skip_group = 0;
+		}
 		$this->group--;
 	}
 
 	function getCurrentCh(){
-		if(isset($this->fileContent[$this->current]))
-			return $this->fileContent[$this->current];
-		else
-			return null;
+		return (isset($this->fileContent[$this->current]) ? $this->fileContent[$this->current] : null);
 	}
 
 	function getPrevCh(){
 		if($this->current > 0){
 			$this->current--;
 			return $this->getCurrentCh();
-		} else{
+		} else {
 			return false;
 		}
 	}
@@ -417,7 +432,7 @@ class we_rtf2html{
 		if($this->current < strlen($this->fileContent)){
 			$this->current++;
 			return $this->getCurrentCh();
-		} else{
+		} else {
 			return EOF;
 		}
 	}
@@ -440,12 +455,9 @@ class we_rtf2html{
 			return $this->analyzeControl($control, $para);
 		}
 
-		if($ch == "'")
-			$sfch = true;
-		else
-			$sfch = false;
+		$sfch = ($ch == "'" ? true : false);
 
-		while(($this->isletter($ch)) || ($ch == "'") || ($ch == "B")) {
+		while(($this->isletter($ch)) || ($ch == "'") || ($ch == "B")){
 			$control.=$ch;
 			$ch = $this->getNextCh();
 			if($sfch){
@@ -463,7 +475,7 @@ class we_rtf2html{
 		}
 
 		if($this->isnumber($ch)){
-			while($this->isnumber($ch)) {
+			while($this->isnumber($ch)){
 				$para.=$ch;
 				$ch = $this->getNextCh();
 			}
@@ -472,12 +484,15 @@ class we_rtf2html{
 			$ch = $this->getNextCh();
 		}
 
-		if($ch == "?")
-			$para.=$ch;#exceptions for the unicode chars which are coded like "\uN?"
-		if($neg)
+		if($ch == "?"){
+			$para.=$ch; #exceptions for the unicode chars which are coded like "\uN?"
+		}
+		if($neg){
 			$para = "-" . $para;
-		if($ch != ' ' && $ch != "?")
+		}
+		if($ch != ' ' && $ch != "?"){
 			$ch = $this->getPrevCh();
+		}
 		if($sfch && $ch == ' '){
 			$ch = $this->getPrevCh();
 		}
@@ -491,17 +506,11 @@ class we_rtf2html{
 	}
 
 	function isletter($ch){
-		if((ord($ch) > 96) && (ord($ch) < 123))
-			return true;
-		else
-			return false;
+		return ((ord($ch) > 96) && (ord($ch) < 123) ? true : false);
 	}
 
 	function isnumber($ch){
-		if((ord($ch) > 47) && (ord($ch) < 58))
-			return true;
-		else
-			return false;
+		return ((ord($ch) > 47) && (ord($ch) < 58) ? true : false);
 	}
 
 	function analyzeControl($control, $para = ""){
@@ -509,8 +518,9 @@ class we_rtf2html{
 		$last = 0;
 
 		foreach($this->rtf_cons as $key => $value){
-			if($value[0] == $control)
+			if($value[0] == $control){
 				break;
+			}
 			$last++;
 		}
 
@@ -530,8 +540,9 @@ class we_rtf2html{
 		}
 
 		$this->first_control++;
-		if($this->first_control > 1)
+		if($this->first_control > 1){
 			$this->first_control = 0;
+		}
 
 		return true;
 	}
@@ -539,26 +550,26 @@ class we_rtf2html{
 	function propParse($key, $para = ""){
 
 		if(($key == 19) || ($key == 20) || ($key == 21)){
-			array_push($this->align, $key);
+			$this->align[] = $key;
 		}
 
 		if($key == 95){
 			$pp = array_pop($this->align);
-			if($pp)
+			if($pp){
 				$this->pasteChars($this->rtf_cons[$pp][3]);
-
+			}
 			$ret = $this->popStack(0);
-			while($ret > -1) {
+			while($ret > -1){
 				$this->pasteChars($this->rtf_cons[$ret][3]);
 				$ret = $this->popStack(0);
 			}
 			$ret = $this->popStack(1);
-			while($ret > -1) {
+			while($ret > -1){
 				$this->pasteChars($this->rtf_cons[$ret][3]);
 				$ret = $this->popStack(1);
 			}
 			$ret = $this->popStack(2);
-			while($ret > -1) {
+			while($ret > -1){
 				$this->pasteChars($this->rtf_cons[$ret][3]);
 				$ret = $this->popStack(2);
 			}
@@ -579,7 +590,7 @@ class we_rtf2html{
 						$this->pasteChars(sprintf($this->rtf_cons[$key][2], $this->fontTable[$para]));
 						$this->putOnStack($key);
 						$this->dflFont = false;
-					} else{
+					} else {
 						$this->pasteChars(sprintf($this->rtf_cons[$key][2], $this->fontTable[$para]));
 						$this->putOnStack($key);
 						$this->prevFont[$this->group]["index"] = $para;
@@ -593,7 +604,7 @@ class we_rtf2html{
 						$this->putOnStack($key);
 						$this->dflColor = false;
 						$this->prevColor[$this->group]["index"] = $para;
-					} else{
+					} else {
 						$this->pasteChars(sprintf($this->rtf_cons[$key][2], $this->colorTable[$para]));
 						$this->putOnStack($key);
 						$this->prevColor[$this->group]["index"] = $para;
@@ -612,8 +623,9 @@ class we_rtf2html{
 				$this->skip_group = $this->group;
 				break;
 			case 91:
-				if($this->htmlOut != "")
+				if($this->htmlOut != ""){
 					$this->pasteChars($this->rtf_cons[$key][2]);
+				}
 				break;
 			case 42:
 			case 89:
@@ -631,7 +643,7 @@ class we_rtf2html{
 
 						$this->popStack($key);
 						$this->prevSize[$this->group]["index"] = $para;
-					} else{
+					} else {
 						$this->pasteChars(sprintf($this->rtf_cons[$key][2], $para / 2));
 						$this->putOnStack($key);
 						$this->prevSize[$this->group]["index"] = $para;
@@ -644,7 +656,7 @@ class we_rtf2html{
 						$this->pasteChars($this->rtf_cons[$key][3]);
 						$this->popStack($key);
 					}
-				} else{
+				} else {
 					if($this->rtf_cons[$key][2] != ""){
 						$this->pasteChars($this->rtf_cons[$key][2]);
 						$this->putOnStack($key);
@@ -658,12 +670,14 @@ class we_rtf2html{
 
 		$go = true;
 		switch($key){
-			case 98: if($para == "4")
-					$this->pasteChars("�");# AE
+			case 98: if($para == "4"){
+					$this->pasteChars("�"); # AE
+				}
 				$go = false;
 				break;
-			case 99: if($para == "6")
+			case 99: if($para == "6"){
 					$this->pasteChars("�");
+			}
 				if($para == "c")
 					$this->pasteChars("�");
 				if($para == "f")
@@ -686,11 +700,8 @@ class we_rtf2html{
 			case 50:
 				if($this->codepage == "1251" || $this->codepage == "1252" || $this->codepage == "10000"){
 					$this->pasteChars("&#x" . we_codeConvertor::toUnicode($this->codepage, strtoupper($para)) . ";");
-				} else{
-					if($this->standard == "mac")
-						$this->pasteChars("&#x" . we_codeConvertor::toUnicode("10000", strtoupper($para)) . ";");
-					else
-						$this->pasteChars("&#x" . we_codeConvertor::toUnicode("1252", strtoupper($para)) . ";");
+				} else {
+					$this->pasteChars("&#x" . we_codeConvertor::toUnicode(($this->standard == "mac" ? 10000 : 1252), strtoupper($para)) . ";");
 				}
 				$go = false;
 				break;
@@ -716,7 +727,7 @@ class we_rtf2html{
 			if($key == -1){
 				$ret = array_pop($this->stack[$this->group]);
 				return $ret;
-			} else{
+			} else {
 				$count = count($this->stack[$this->group]) - 1;
 				for($i = $count; $i > -1; $i--){
 					if(($key != -1) && ($this->stack[$this->group][$i] == $key)){

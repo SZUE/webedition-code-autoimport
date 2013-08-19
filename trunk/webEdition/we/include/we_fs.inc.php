@@ -38,7 +38,6 @@ switch($_REQUEST['we_cmd'][0]){
 		$rootDirID = isset($_REQUEST['we_cmd'][7]) ? $_REQUEST['we_cmd'][7] : '';
 		$filter = isset($_REQUEST['we_cmd'][8]) ? $_REQUEST['we_cmd'][8] : '';
 		$multiple = isset($_REQUEST['we_cmd'][9]) ? $_REQUEST['we_cmd'][9] : '';
-
 		break;
 	case 'openDocselector':
 		$id = isset($_REQUEST['we_cmd'][1]) ? $_REQUEST['we_cmd'][1] : '';
@@ -57,18 +56,18 @@ switch($_REQUEST['we_cmd'][0]){
 
 switch($_REQUEST['we_cmd'][0]){
 	case 'openDirselector' :
-		include_once (WEBEDITION_PATH . 'we_dirSelect.php');
+		require_once (WEBEDITION_PATH . 'we_dirSelect.php');
 		break;
 	case 'openSelector' :
-		include_once (WEBEDITION_PATH . 'we_fs.php');
+		require_once (WEBEDITION_PATH . 'we_fs.php');
 		break;
 	case 'openDocselector' :
-		include_once (WEBEDITION_PATH . 'we_docSelect.php');
+		require_once (WEBEDITION_PATH . 'we_docSelect.php');
 		break;
 	case 'openCatselector' :
-		include_once (WEBEDITION_PATH . 'we_catSelect.php');
+		require_once (WEBEDITION_PATH . 'we_catSelect.php');
 		break;
 	case 'openDelSelector' :
-		include_once (WEBEDITION_PATH . 'we_delSelect.php');
+		require_once (WEBEDITION_PATH . 'we_delSelect.php');
 		break;
 }

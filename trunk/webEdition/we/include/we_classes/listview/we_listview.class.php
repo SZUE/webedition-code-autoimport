@@ -42,6 +42,7 @@ class we_listview extends listviewBase{
 	var $customers = '';
 	var $languages = ''; //string of Languages, separated by ,
 	var $numorder = false; // #3846
+	public $triggerID = 0;
 
 	/**
 	 * we_listview()
@@ -69,7 +70,7 @@ class we_listview extends listviewBase{
 	 * @return we_listview
 	 */
 
-	function __construct($name = '0', $rows = 999999999, $offset = 0, $order = '', $desc = false, $docType = '', $cats = '', $catOr = false, $casesensitive = false, $workspaceID = '0', $contentTypes = '', $cols = '', $searchable = true, $condition = '', $calendar = '', $datefield = '', $date = '', $weekstart = '', $categoryids = '', $customerFilterType = 'off', $subfolders = true, $customers = '', $id = '', $languages = '', $numorder = false, $hidedirindex = false){
+	function __construct($name = 0, $rows = 999999999, $offset = 0, $order = '', $desc = false, $docType = '', $cats = '', $catOr = false, $casesensitive = false, $workspaceID = 0, $contentTypes = '', $cols = '', $searchable = true, $condition = '', $calendar = '', $datefield = '', $date = '', $weekstart = '', $categoryids = '', $customerFilterType = 'false', $subfolders = true, $customers = '', $id = '', $languages = '', $numorder = false, $hidedirindex = false, $triggerID = ""){
 		parent::__construct($name, $rows, $offset, $order, $desc, $cats, $catOr, $workspaceID, $cols, $calendar, $datefield, $date, $weekstart, $categoryids, $customerFilterType, $id);
 
 		$this->docType = trim($docType);
@@ -82,8 +83,9 @@ class we_listview extends listviewBase{
 
 		$calendar_select = '';
 		$calendar_where = '';
-		if($calendar != '')
+		if($calendar != ''){
 			$this->fetchCalendar($condition, $calendar_select, $calendar_where);
+		}
 
 		$this->defaultCondition = $condition;
 		$this->condition = $condition ? $condition : (isset($GLOBALS['we_lv_condition']) ? $GLOBALS['we_lv_condition'] : '');
@@ -119,6 +121,7 @@ class we_listview extends listviewBase{
 		$this->numorder = $numorder;
 		$this->hidedirindex = $hidedirindex;
 		$this->order = trim($this->order);
+		$this->triggerID = $triggerID;
 		$random = false;
 
 		$order = $joins = $orderWhere = array();
@@ -176,7 +179,7 @@ class we_listview extends listviewBase{
 				$sql_tail .= ' AND ' . FILE_TABLE . '.ContentType = "' . $this->DB_WE->escape($ct) . '"';
 			}
 		}
-		if($this->customerFilterType != 'off' && defined('CUSTOMER_FILTER_TABLE')){
+		if($this->customerFilterType != 'false' && defined('CUSTOMER_FILTER_TABLE')){
 			$sql_tail .= weDocumentCustomerFilter::getConditionForListviewQuery($this);
 		}
 
@@ -250,7 +253,7 @@ class we_listview extends listviewBase{
 
 			$q = 'SELECT ' . FILE_TABLE . '.ID as ID, ' . FILE_TABLE . '.WebUserID as WebUserID,' . ($random ? 'RAND() as RANDOM ' : $ranking . ' AS ranking ') . $calendar_select . ' FROM ' .
 				FILE_TABLE . ' LEFT JOIN ' . LINK_TABLE . ' ON ' . FILE_TABLE . '.ID=' . LINK_TABLE . '.DID LEFT JOIN ' . CONTENT_TABLE . ' ON ' . LINK_TABLE . '.CID=' . CONTENT_TABLE . '.ID LEFT JOIN ' . INDEX_TABLE . ' ON ' . INDEX_TABLE . '.DID=' . FILE_TABLE . '.ID ' . $joinstring .
-				' WHERE ' . $orderwhereString . ($this->searchable ? " " . FILE_TABLE . ".IsSearchable=1" : "1") . " $where_lang $cond_where $ws_where AND " . FILE_TABLE . ".IsFolder=0 AND " . FILE_TABLE . ".Published > 0 AND " . LINK_TABLE . ".DocumentTable='" . stripTblPrefix(FILE_TABLE) . "' AND $bedingung_sql" . (($dt != "#NODOCTYPE#") ? (" AND " . FILE_TABLE . '.DocType=' . intval($dt)) : '') . ' ' . $sql_tail . $calendar_where . ' GROUP BY ID ' . $orderstring . (($this->maxItemsPerPage > 0) ? (' LIMIT ' . abs($this->start) . ',' . abs($this->maxItemsPerPage)) : '');
+				' WHERE ' . $orderwhereString . ($this->searchable ? ' ' . FILE_TABLE . '.IsSearchable=1' : 1) . ' ' . $where_lang . ' ' . $cond_where . ' ' . $ws_where . ' AND ' . FILE_TABLE . '.IsFolder=0 AND ' . FILE_TABLE . '.Published > 0 AND ' . LINK_TABLE . '.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '" AND ' . $bedingung_sql . (($dt != "#NODOCTYPE#") ? (" AND " . FILE_TABLE . '.DocType=' . intval($dt)) : '') . ' ' . $sql_tail . $calendar_where . ' GROUP BY ID ' . $orderstring . (($this->maxItemsPerPage > 0) ? (' LIMIT ' . abs($this->start) . ',' . abs($this->maxItemsPerPage)) : '');
 		} else{
 
 			if($this->workspaceID != ''){
@@ -301,9 +304,9 @@ class we_listview extends listviewBase{
 		$q = 'SELECT ' . FILE_TABLE . '.ID as ID, ' . FILE_TABLE . '.WebUserID as WebUserID' . ($random ? ',RAND() as RANDOM' : ($this->search ? ','.$ranking . ' AS ranking' : '')) . ' FROM ' .
 			FILE_TABLE . ' LEFT JOIN ' . LINK_TABLE . ' ON ' . FILE_TABLE . '.ID=' . LINK_TABLE . '.DID LEFT JOIN ' . CONTENT_TABLE . ' ON ' . LINK_TABLE . '.CID=' . CONTENT_TABLE . '.ID' .
 			($this->search ? ' LEFT JOIN ' . INDEX_TABLE . ' ON ' . INDEX_TABLE . '.DID=' . FILE_TABLE . '.ID' : '') . $joinstring .
-			' WHERE ' . $orderwhereString . ($this->searchable ? ' ' . FILE_TABLE . '.IsSearchable=1' : '1') . " $where_lang $cond_where $ws_where AND " . FILE_TABLE . '.IsFolder=0 AND ' . FILE_TABLE . '.Published > 0 AND ' . LINK_TABLE . '.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"' .
+			' WHERE ' . $orderwhereString . ($this->searchable ? ' ' . FILE_TABLE . '.IsSearchable=1' : '1') . ' ' . $where_lang . ' ' . $cond_where . ' ' . $ws_where . ' AND ' . FILE_TABLE . '.IsFolder=0 AND ' . FILE_TABLE . '.Published > 0 AND ' . LINK_TABLE . '.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"' .
 			($this->search ? ' AND ' . $bedingung_sql : '') .
-			(($dt != "#NODOCTYPE#") ? (' AND ' . FILE_TABLE . '.DocType=' . intval($dt)) : '') . ' ' . $sql_tail . $calendar_where . ' GROUP BY ID ' . $orderstring;
+			(($dt != '#NODOCTYPE#') ? (' AND ' . FILE_TABLE . '.DocType=' . intval($dt)) : '') . ' ' . $sql_tail . $calendar_where . ' GROUP BY ID ' . $orderstring;
 		$this->DB_WE->query($q);
 		$this->anz_all = $this->DB_WE->num_rows();
 		if($calendar != ''){

@@ -133,10 +133,10 @@ class weVoting extends weModelBase{
 			$this->BlackList = makeArrayFromCSV($this->BlackList);
 			if(empty($this->LogData)){
 				$this->LogDB = true;
-			} else{
+			} else {
 				if($this->LogData == 'a:0:{}'){
 					$this->LogDB = true;
-				} else{
+				} else {
 					$this->switchToLogDataDB();
 				}
 			}
@@ -188,7 +188,7 @@ class weVoting extends weModelBase{
 				}
 				$this->Scores = serialize($temp);
 			}
-		} else{
+		} else {
 			$temp = $this->Scores;
 			unset($this->Scores);
 		}
@@ -235,7 +235,7 @@ class weVoting extends weModelBase{
 
 	function deleteChilds(){
 		$this->db->query('SELECT ID FROM ' . VOTING_TABLE . ' WHERE ParentID=' . intval($this->ID));
-		while($this->db->next_record()) {
+		while($this->db->next_record()){
 			$child = new weVoting($this->db->f('ID'));
 			$child->delete();
 		}
@@ -265,9 +265,9 @@ class weVoting extends weModelBase{
 		$path = '/' . (isset($foo['Text']) ? $foo['Text'] : '') . $path;
 
 		$pid = isset($foo['ParentID']) ? $foo['ParentID'] : '';
-		while($pid > 0) {
+		while($pid > 0){
 			$db_tmp->query('SELECT Text,ParentID FROM ' . VOTING_TABLE . ' WHERE ID=' . intval($pid));
-			while($db_tmp->next_record()) {
+			while($db_tmp->next_record()){
 				$path = '/' . $db_tmp->f('Text') . $path;
 				$pid = $db_tmp->f('ParentID');
 			}
@@ -308,13 +308,11 @@ class weVoting extends weModelBase{
 		switch($type){
 			case 'percent':
 				$total = $this->getResult('total');
-				if($total <= 0)
+				if($total <= 0){
 					return 0;
+				}
 				$_scores = isset($this->Scores[$this->answerCount]) ? $this->Scores[$this->answerCount] : 0;
-				if($total > 0 && $this->answerCount >= 0)
-					$result = round((($_scores / $total) * 100), $precision);
-				else
-					$result = 100;
+				$result = ($total > 0 && $this->answerCount >= 0 ? round((($_scores / $total) * 100), $precision) : 100);
 				break;
 			case 'total':
 				$result = array_sum($this->Scores);
@@ -432,7 +430,7 @@ class weVoting extends weModelBase{
 				if($answer > -1 && $answer < count($this->Scores)){
 					$this->Scores[$answer]++;
 				}
-			} else{
+			} else {
 				$answertext = $answer;
 				$answer = $countanswers - 1;
 				$this->Scores[$answer]++;
@@ -454,12 +452,11 @@ class weVoting extends weModelBase{
 		$this->saveField('Scores', true);
 		if($this->RevoteTime != 0){
 			if($this->RevoteControl == 1){
-				if($this->RevoteTime < 0)
-					$revotetime = 630720000; //20 years
-				else
-					$revotetime = $this->RevoteTime;
+				$revotetime = ($this->RevoteTime < 0 ?
+						630720000 : //20 years
+						$this->RevoteTime);
 				setcookie(md5('_we_voting_' . $this->ID), time(), time() + $revotetime);
-			} else{
+			} else {
 				if(!is_array($this->Revote)){
 					$this->Revote = array();
 				}
@@ -483,7 +480,7 @@ class weVoting extends weModelBase{
 		}
 		if(is_array($addfields) && !empty($addfields)){
 			$addfieldsdata = serialize($addfields);
-		} else{
+		} else {
 			$addfieldsdata = '';
 		}
 		if($this->Log)
@@ -522,12 +519,8 @@ class weVoting extends weModelBase{
 
 		if(isset($_COOKIE[md5('_we_voting_' . $this->ID)])){
 			return self::ERROR_REVOTE;
-		} else{
-			if($this->FallbackUserID){
-				return $this->canVoteUserID();
-			} else
-				return self::SUCCESS;
 		}
+		return ($this->FallbackUserID ? $this->canVoteUserID() : self::SUCCESS);
 	}
 
 	function canVoteIP(){
@@ -548,29 +541,16 @@ class weVoting extends weModelBase{
 					if(isset($revoteua[$_SERVER['REMOTE_ADDR']]) && is_array($revoteua[$_SERVER['REMOTE_ADDR']])){
 						if(in_array($_SERVER['HTTP_USER_AGENT'], $revoteua[$_SERVER['REMOTE_ADDR']])){
 							return self::ERROR_REVOTE;
-						} else{
-							if($this->FallbackUserID){
-								return $this->canVoteUserID();
-							} else
-								return self::SUCCESS;
 						}
+						return ($this->FallbackUserID ? $this->canVoteUserID() : self::SUCCESS);
 					}
 				}
 
 				return self::ERROR_REVOTE;
 			}
-			else{
-				if($this->FallbackUserID){
-					return $this->canVoteUserID();
-				} else
-					return self::SUCCESS;
-			}
-		} else{
-			if($this->FallbackUserID){
-				return $this->canVoteUserID();
-			} else
-				return self::SUCCESS;
+			return ($this->FallbackUserID ? $this->canVoteUserID() : self::SUCCESS);
 		}
+		return ($this->FallbackUserID ? $this->canVoteUserID() : self::SUCCESS);
 	}
 
 	function canVoteUserID(){
@@ -578,7 +558,7 @@ class weVoting extends weModelBase{
 
 		if(!$this->LogDB || ($userid <= 0)){
 			return self::SUCCESS;
-		} else{
+		} else {
 			$testtime = ($this->RevoteTime < 0 ? 0 : time() - $this->RevoteTime);
 
 			if(f('SELECT 1 AS a FROM `' . VOTING_LOG_TABLE . '` WHERE `' . VOTING_LOG_TABLE . '`.`voting` = ' . $this->ID . ' AND `' . VOTING_LOG_TABLE . '`.`userid` = ' . $userid . ' AND `' . VOTING_LOG_TABLE . '`.`time` > ' . $testtime, 'a', $this->db) == '1'){
@@ -626,7 +606,7 @@ class weVoting extends weModelBase{
 	function logVoting($status, $votingsession, $answer, $answertext, $successor, $additionalfields = ''){
 		if($this->LogDB){
 			$this->logVotingDB($status, $votingsession, $answer, $answertext, $successor, $additionalfields);
-		} else{
+		} else {
 			$this->LogData = unserialize($this->LogData);
 			if(!is_array($this->LogData)){
 				$this->LogData = array();
@@ -647,12 +627,12 @@ class weVoting extends weModelBase{
 		if($this->IsFolder){
 			$this->deleteGroupLogData();
 			return true;
-		} else{
+		} else {
 			if($this->LogDB){
 				$this->deleteLogDataDB();
 				$this->LogData = '';
 				$this->saveField('LogData', false);
-			} else{
+			} else {
 				$this->LogData = '';
 				$this->saveField('LogData', false);
 				$this->LogDB = true;
@@ -663,7 +643,7 @@ class weVoting extends weModelBase{
 
 	function deleteGroupLogData(){
 		$this->db->query('SELECT ID FROM ' . VOTING_TABLE . " WHERE `Path` LIKE '" . $this->Path . "%'");
-		while($this->db->next_record()) {
+		while($this->db->next_record()){
 			$child = new weVoting($this->db->f('ID'));
 			$child->deleteLogDataDB();
 		}
@@ -691,13 +671,13 @@ class weVoting extends weModelBase{
 
 		if($this->IsFolder){
 			$logQuery = 'SELECT A.*, B.* FROM `' . VOTING_TABLE . '` A, `' . VOTING_LOG_TABLE . "` B WHERE A.Path LIKE '" . $this->Path . "%' AND A.IsFolder = '0' AND A.ID = B.voting ORDER BY B.time";
-		} else{
+		} else {
 			$logQuery = 'SELECT * FROM `' . VOTING_LOG_TABLE . '` WHERE `' . VOTING_LOG_TABLE . '`.`voting` = ' . $id . ' ORDER BY time';
 		}
 
 		$this->db->query($logQuery);
 		$this->LogData = array();
-		while($this->db->next_record()) {
+		while($this->db->next_record()){
 			$this->LogData[] = array('votingsession' => $this->db->f('votingsession'), 'voting' => $this->db->f('voting'),
 				'time' => $this->db->f('time'),
 				'ip' => $this->db->f('ip'),
@@ -751,7 +731,7 @@ class weVoting extends weModelBase{
 				'successor' => $successor,
 				'additionalfields' => $additionalfields,
 				'status' => $status,
-			)));
+		)));
 
 		return true;
 	}
@@ -792,7 +772,7 @@ class weVoting extends weModelBase{
 						'successor' => '',
 						'additionalfields' => '',
 						'status' . $ld['status'],
-					)));
+				)));
 			}
 			$this->LogData = '';
 			$this->saveField('LogData', false);

@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once(WE_INCLUDES_PATH . 'we_delete_fn.inc.php');
+require_once(WE_INCLUDES_PATH . 'we_delete_fn.inc.php');
 
 $javascript = '';
 
@@ -67,7 +67,7 @@ if($javascript != ''){
 	echo we_html_element::jsElement($javascript);
 }
 
-include_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
+require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 
 print STYLESHEET .
 	'</head>
@@ -80,7 +80,7 @@ $_parts = array(
 	array('html' => $we_doc->searchProperties())
 );
 
-echo we_multiIconBox::getHTML('', '100%', $_parts, '30', '', -1, '', '', false) .
+echo we_multiIconBox::getHTML('', '100%', $_parts, 30, '', -1, '', '', false) .
  '
 
 </body>

@@ -66,10 +66,6 @@ class leWizardTemplateBase{
 	 */
 	var $UseOnlineInstallerTemplate = true;
 
-	function leWizardTemplateBase(){
-		$this->__construct();
-	}
-
 	function __construct(){
 
 	}

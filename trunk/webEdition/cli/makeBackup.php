@@ -147,7 +147,7 @@ ini_set("display_errors", 1);
 error_reporting(E_ALL);
 
 //use we-error handler; ignore if logging is disabled!
-include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_error_handler.inc.php");
+require_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_error_handler.inc.php");
 if(!defined('WE_ERROR_SHOW')){
 	define('WE_ERROR_SHOW', 1);
 }
@@ -158,18 +158,10 @@ if(!defined('WE_ERROR_LOG')){
 we_error_handler(false);
 
 
-// knock out time limit if possible
-@set_time_limit(0);
-
-// set memory limit to an equitable value if possible
-if( intval(ini_get('memory_limit')) < 128){
-	@ini_set('memory_limit', '128M');
-}
-
 // knock out identifiation and permissions
-$_SESSION["perms"] = array();
-$_SESSION["perms"]["ADMINISTRATOR"] = true;
-$_SESSION["user"]["Username"] = 1;
+$_SESSION['perms'] = array();
+$_SESSION['perms']['ADMINISTRATOR'] = true;
+$_SESSION['user']['Username'] = 1;
 
 
 if(!isset($_SERVER['SERVER_NAME'])){
@@ -331,6 +323,8 @@ $_REQUEST['filename'] = basename($_backup_filename);
 
 // include needed libraries
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+update_time_limit(0);
+update_mem_limit(128);
 
 if(!isset($_SESSION['weS']['weBackupVars']) || empty($_SESSION['weS']['weBackupVars'])){
 
@@ -371,9 +365,7 @@ if(!isset($_SESSION['weS']['weBackupVars']) || empty($_SESSION['weS']['weBackupV
 			if($_REQUEST['verbose']){
 				print "-";
 			}
-			if(weBackupExport::export(
-					$_fh, $_SESSION['weS']['weBackupVars']['offset'], $_SESSION['weS']['weBackupVars']['row_counter'], $_SESSION['weS']['weBackupVars']['backup_steps'], $_SESSION['weS']['weBackupVars']['options']['backup_binary'], $_SESSION['weS']['weBackupVars']['backup_log']
-				) === false){
+			if(weBackupExport::export($_fh, $_SESSION['weS']['weBackupVars']['offset'], $_SESSION['weS']['weBackupVars']['row_counter'], $_SESSION['weS']['weBackupVars']['backup_steps'], $_SESSION['weS']['weBackupVars']['options']['backup_binary'], $_SESSION['weS']['weBackupVars']['backup_log']) === false){
 				// force end
 				$_SESSION['weS']['weBackupVars']['row_counter'] = $_SESSION['weS']['weBackupVars']['row_count'];
 			}

@@ -23,10 +23,10 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 // File > Glossary Check
-$we_menu['1099000'] = array(
+$we_menu[1099000] = array(
 	'text' => g_l('javaMenu_glossary', '[glossary_check]'),
-	'parent' => '1000000',
+	'parent' => 1000000,
 	'cmd' => 'check_glossary',
 	'perm' => '',
-	'enabled' => '1',
+	'enabled' => 1,
 );

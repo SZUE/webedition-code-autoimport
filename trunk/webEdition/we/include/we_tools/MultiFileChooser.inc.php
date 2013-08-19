@@ -24,18 +24,21 @@
  */
 class MultiFileChooser extends MultiDirChooser{
 
-	var $diabledDelItems = "";
-	var $diabledDelReason = "";
+	private $disabledDelItems = '';
+	private $disabledDelReason = '';
 
 	function __construct($width, $ids, $cmd_del, $addbut, $cmd_edit){
-
 		parent::__construct($width, $ids, $cmd_del, $addbut);
 		$this->cmd_edit = $cmd_edit;
 	}
 
-	function get(){
+	public function setDisabledDelItems($items, $reason){
+		$this->disabledDelItems = $items;
+		$this->disabledDelReason = $reason;
+	}
 
-		$table = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0", "width" => abs($this->width - 20)), 1, 4);
+	function get(){
+		$table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0, "width" => abs($this->width - 20)), 1, 4);
 
 		$table->setCol(0, 0, array(), we_html_tools::getPixel(20, 3));
 		$table->setCol(0, 1, array(), we_html_tools::getPixel(abs($this->width - 101), 3));
@@ -59,23 +62,23 @@ class MultiFileChooser extends MultiDirChooser{
 
 				if(($this->isEditable() && $this->cmd_del) || $this->CanDelete){
 
-					if($this->diabledDelItems != ''){
-						$DisArr = makeArrayFromCSV($this->diabledDelItems);
+					if($this->disabledDelItems != ''){
+						$DisArr = makeArrayFromCSV($this->disabledDelItems);
 						if(in_array($id, $DisArr)){
 							$trash = we_button::create_button("image:btn_function_trash", "javascript:if(typeof(_EditorFrame)!='undefined')_EditorFrame.setEditorIsHot(true);" . ($this->extraDelFn ? $this->extraDelFn : "") . ";we_cmd('" . $this->cmd_del . "','$id');", true, 100, 22, "", "", true);
 
-							$table->setCol($c, 0, array("title" => $this->diabledDelReason), we_html_element::htmlImg(array("src" => ICON_DIR . (@is_dir($id) ? "folder" : "link") . ".gif", "width" => "16", "height" => "18")));
+							$table->setCol($c, 0, array("title" => $this->diabledDelReason), we_html_element::htmlImg(array("src" => ICON_DIR . (@is_dir($id) ? "folder" : "link") . ".gif", "width" => 16, "height" => 18)));
 							$table->setCol($c, 1, array("class" => $this->css, "title" => $this->diabledDelReason), $id);
-						} else{
+						} else {
 							$trash = we_button::create_button("image:btn_function_trash", "javascript:if(typeof(_EditorFrame)!='undefined')_EditorFrame.setEditorIsHot(true);" . ($this->extraDelFn ? $this->extraDelFn : "") . ";we_cmd('" . $this->cmd_del . "','$id');");
 
-							$table->setCol($c, 0, array(), we_html_element::htmlImg(array("src" => ICON_DIR . (@is_dir($id) ? "folder" : "link") . ".gif", "width" => "16", "height" => "18")));
+							$table->setCol($c, 0, array(), we_html_element::htmlImg(array("src" => ICON_DIR . (@is_dir($id) ? "folder" : "link") . ".gif", "width" => 16, "height" => 18)));
 							$table->setCol($c, 1, array("class" => $this->css), $id);
 						}
-					} else{
+					} else {
 						$trash = we_button::create_button("image:btn_function_trash", "javascript:if(typeof(_EditorFrame)!='undefined')_EditorFrame.setEditorIsHot(true);" . ($this->extraDelFn ? $this->extraDelFn : "") . ";we_cmd('" . $this->cmd_del . "','$id');");
 
-						$table->setCol($c, 0, array(), we_html_element::htmlImg(array("src" => ICON_DIR . (@is_dir($id) ? "folder" : "link") . ".gif", "width" => "16", "height" => "18")));
+						$table->setCol($c, 0, array(), we_html_element::htmlImg(array("src" => ICON_DIR . (@is_dir($id) ? "folder" : "link") . ".gif", "width" => 16, "height" => 18)));
 						$table->setCol($c, 1, array("class" => $this->css), $id);
 					}
 				}
@@ -94,16 +97,16 @@ class MultiFileChooser extends MultiDirChooser{
 
 				$c++;
 			}
-		} else{
+		} else {
 			$table->addRow();
 			$table->setCol(1, 0, array(), we_html_tools::getPixel(20, 12));
 		}
 
 
-		$table2 = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0", "width" => $this->width), 1, 1);
+		$table2 = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0, "width" => $this->width), 1, 1);
 
-		$table2->setCol(0, 0, array(), we_html_element::htmlDiv(array("style" => "background-color:white;", "class" => "multichooser", "id" => "multi_selector"), $table->getHtml())
-		);
+		$table2->setCol(0, 0, array(), we_html_element::htmlDiv(array("style" => "background-color:white;", "class" => "multichooser", "id" => "multi_selector"), $table->getHtml()));
+
 		if($this->addbut){
 			$table2->addRow(2);
 			$table2->setCol(1, 0, array(), we_html_tools::getPixel(2, 5));

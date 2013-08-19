@@ -36,7 +36,9 @@ CREATE TABLE ###TBLPREFIX###tblFile (
   WebUserID bigint(20) unsigned NOT NULL default '0',
   listview tinyint(1) unsigned NOT NULL default '0',
   InGlossar tinyint(1) unsigned NOT NULL default '0',
-  PRIMARY KEY  (ID),
+	urlMap varchar(100) NOT NULL default '',
+	PRIMARY KEY  (ID),
   KEY Path (Path),
-  KEY WebUserID (WebUserID)
+  KEY WebUserID (WebUserID),
+	KEY urlMap (urlMap)
 ) ENGINE=MyISAM;

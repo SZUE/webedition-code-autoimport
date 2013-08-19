@@ -28,11 +28,11 @@ abstract class weToolLookup{
 
 	static function getAllTools($force = false, $addInternTools = false, $includeDisabled = false){
 
-		if(!$force && !$includeDisabled && !defined('NO_SESS') && isset($_SESSION[self::REGISTRY_NAME]['meta'])){
-			return $_SESSION[self::REGISTRY_NAME]['meta'];
+		if(!$force && !$includeDisabled && !defined('NO_SESS') && isset($_SESSION['weS'][self::REGISTRY_NAME]['meta'])){
+			return $_SESSION['weS'][self::REGISTRY_NAME]['meta'];
 		}
-		if(!$force && $includeDisabled && !defined('NO_SESS') && isset($_SESSION[self::REGISTRY_NAME]['metaIncDis'])){
-			return $_SESSION[self::REGISTRY_NAME]['metaIncDis'];
+		if(!$force && $includeDisabled && !defined('NO_SESS') && isset($_SESSION['weS'][self::REGISTRY_NAME]['metaIncDis'])){
+			return $_SESSION['weS'][self::REGISTRY_NAME]['metaIncDis'];
 		}
 
 		$_tools = $_toolsDirs = array();
@@ -46,7 +46,7 @@ abstract class weToolLookup{
 		closedir($_d);
 
 		// include autoload function
-		include_once($_SERVER['DOCUMENT_ROOT'] . LIB_DIR . 'we/core/autoload.php');
+		require_once($_SERVER['DOCUMENT_ROOT'] . LIB_DIR . 'we/core/autoload.php');
 
 		$lang = isset($GLOBALS['WE_LANGUAGE']) ? $GLOBALS['WE_LANGUAGE'] : we_core_Local::getComputedUILang();
 		Zend_Loader::loadClass('we_core_Local');
@@ -93,10 +93,10 @@ abstract class weToolLookup{
 		}
 
 		if(!defined('NO_SESS') && !$includeDisabled){
-			$_SESSION[self::REGISTRY_NAME]['meta'] = $_tools;
+			$_SESSION['weS'][self::REGISTRY_NAME]['meta'] = $_tools;
 		}
 		if(!defined('NO_SESS') && $includeDisabled){
-			$_SESSION[self::REGISTRY_NAME]['metaIncDis'] = $_tools;
+			$_SESSION['weS'][self::REGISTRY_NAME]['metaIncDis'] = $_tools;
 		}
 
 		return $_tools;
@@ -119,9 +119,14 @@ abstract class weToolLookup{
 		if(isset($_REQUEST['we_cmd'][0])){
 			//FIX for charset in tools, due to not started session
 			$tmp = explode('_', $_REQUEST['we_cmd'][0]);
-			if($tmp[1] == 'weSearch' || $tmp[1] == 'navigation'){
+			if($tmp[1] == 'weSearch'){
 				$_REQUEST['tool'] = $tmp[1];
 				return 'we_tools/' . $tmp[1] . '/hook/we_phpCmdHook_' . $tmp[1] . '.inc.php';
+			}
+			//TODO: does this work after refactoring navigation as a module
+			if($tmp[1] == 'navigation'){
+				$_REQUEST['mod'] = 'navigation';
+				return 'we_modules/navigation/hook/we_phpCmdHook_' . $tmp[1] . '.inc.php';
 			}
 			$_tools = self::getAllTools(true, true);
 			foreach($_tools as $_tool){
@@ -154,8 +159,8 @@ abstract class weToolLookup{
 
 	static function getDefineInclude(){
 
-		if(!defined('NO_SESS') && isset($_SESSION[self::REGISTRY_NAME]['defineinclude'])){
-			return $_SESSION[self::REGISTRY_NAME]['defineinclude'];
+		if(!defined('NO_SESS') && isset($_SESSION['weS'][self::REGISTRY_NAME]['defineinclude'])){
+			return $_SESSION['weS'][self::REGISTRY_NAME]['defineinclude'];
 		}
 
 		$_inc = array();
@@ -166,7 +171,7 @@ abstract class weToolLookup{
 			}
 		}
 		if(!defined('NO_SESS')){
-			$_SESSION[self::REGISTRY_NAME]['defineinclude'] = $_inc;
+			$_SESSION['weS'][self::REGISTRY_NAME]['defineinclude'] = $_inc;
 		}
 
 		return $_inc;
@@ -174,8 +179,8 @@ abstract class weToolLookup{
 
 	function getExternTriggeredTasks(){
 
-		if(!defined('NO_SESS') && isset($_SESSION[self::REGISTRY_NAME]['ExternTriggeredTasks'])){
-			//return $_SESSION[self::REGISTRY_NAME]['ExternTriggeredTasks'];
+		if(!defined('NO_SESS') && isset($_SESSION['weS'][self::REGISTRY_NAME]['ExternTriggeredTasks'])){
+			//return $_SESSION['weS'][self::REGISTRY_NAME]['ExternTriggeredTasks'];
 		}
 
 		$_inc = array();
@@ -186,7 +191,7 @@ abstract class weToolLookup{
 			}
 		}
 		if(!defined('NO_SESS')){
-			$_SESSION[self::REGISTRY_NAME]['ExternTriggeredTasks'] = $_inc;
+			$_SESSION['weS'][self::REGISTRY_NAME]['ExternTriggeredTasks'] = $_inc;
 		}
 
 		return $_inc;
@@ -194,8 +199,8 @@ abstract class weToolLookup{
 
 	static function getTagDirs(){
 
-		if(!defined('NO_SESS') && isset($_SESSION[self::REGISTRY_NAME]['tagdirs'])){
-			return $_SESSION[self::REGISTRY_NAME]['tagdirs'];
+		if(!defined('NO_SESS') && isset($_SESSION['weS'][self::REGISTRY_NAME]['tagdirs'])){
+			return $_SESSION['weS'][self::REGISTRY_NAME]['tagdirs'];
 		}
 
 		$_inc = array();
@@ -206,7 +211,7 @@ abstract class weToolLookup{
 			}
 		}
 		if(!defined('NO_SESS')){
-			$_SESSION[self::REGISTRY_NAME]['tagdirs'] = $_inc;
+			$_SESSION['weS'][self::REGISTRY_NAME]['tagdirs'] = $_inc;
 		}
 
 		return $_inc;

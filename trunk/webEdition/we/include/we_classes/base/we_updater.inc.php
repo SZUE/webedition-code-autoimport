@@ -56,7 +56,7 @@ class we_updater{
 						$ModifierID = $DB_WE->f("ModifierID") ? $DB_WE->f("ModifierID") : $_SESSION["user"]["ID"];
 						$db2->query("UPDATE " . $db2->escape($table) . " SET CreatorID=" . intval($CreatorID) . " , ModifierID=" . intval($ModifierID) . " , Owners='" . $db2->escape($Owners) . "' WHERE ID=" . intval($id));
 						$db2->query('DELETE FROM ' . TBL_PREFIX . ' WHERE fileID=' . intval($id));
-						@set_time_limit(30);
+						update_time_limit(30);
 					}
 				}
 			}
@@ -66,7 +66,6 @@ class we_updater{
 		$DB_WE->query('UPDATE ' . CATEGORY_TABLE . ' SET Text=Category WHERE Text=""');
 		$DB_WE->query('UPDATE ' . CATEGORY_TABLE . ' SET Path=CONCAT("/",Category) WHERE Path=""');
 
-		//UPDATE old prefs
 		$DB_WE->query('DROP TABLE IF EXISTS ' . PREFS_TABLE . '_old');
 		if(count(getHash('SELECT * FROM ' . PREFS_TABLE . ' LIMIT 1', $GLOBALS['DB_WE'], MYSQL_ASSOC)) > 3){
 			//make a backup
@@ -104,7 +103,7 @@ class we_updater{
 			$pstr = $DB_WE->f("Permissions");
 			$perms_slot["ADMINISTRATOR"] = $pstr[0];
 			$perms_slot["PUBLISH"] = $pstr[1];
-			if(count($perms_slot) > 0){
+			if(!empty($perms_slot)){
 				$db_tmp->query('UPDATE ' . USER_TABLE . " SET Permissions='" . $db_tmp->escape(serialize($perms_slot)) . "' WHERE ID=" . intval($DB_WE->f("ID")));
 			}
 		}
@@ -115,7 +114,7 @@ class we_updater{
 		$db2 = new DB_WE();
 		$db->query('SELECT ID,username,ParentID,Path FROM ' . USER_TABLE);
 		while($db->next_record()) {
-			@set_time_limit(30);
+			update_time_limit(30);
 			$id = $db->f('ID');
 			$pid = $db->f('ParentID');
 			$path = '/' . $db->f("username");
@@ -155,7 +154,7 @@ class we_updater{
 				$query[] = 'ADD INDEX (' . $DB_WE->f('Field') . ')';
 			}
 		}
-		if(count($query) > 0){
+		if(!empty($query)){
 			$DB_WE->query('ALTER TABLE ' . $DB_WE->escape($tab) . ' ' . implode(', ', $query));
 		}
 	}
@@ -195,6 +194,7 @@ class we_updater{
 			$GLOBALS['DB_WE']->query('UPDATE ' . PREFS_TABLE . ' SET value="Deutsch" WHERE `key`="Language" AND userID IN (' . implode(',', $users) . ')');
 		}
 		$_SESSION['prefs'] = we_user::readPrefs($_SESSION['user']['ID'], $GLOBALS['DB_WE']);
+
 
 		return true;
 	}

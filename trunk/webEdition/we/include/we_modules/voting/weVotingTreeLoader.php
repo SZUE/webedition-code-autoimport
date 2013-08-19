@@ -24,11 +24,11 @@
  */
 abstract class weVotingTreeLoader{
 
-	static function getItems($pid, $offset=0, $segment=500, $sort=""){
+	static function getItems($pid, $offset = 0, $segment = 500, $sort = ""){
 		return weVotingTreeLoader::getItemsFromDB($pid, $offset, $segment);
 	}
 
-	static function getItemsFromDB($ParentID=0, $offset=0, $segment=500, $elem="ID,ParentID,Path,Text,Icon,IsFolder,RestrictOwners,Owners,Active,ActiveTime,Valid", $addWhere="", $addOrderBy=""){
+	static function getItemsFromDB($ParentID = 0, $offset = 0, $segment = 500, $elem = "ID,ParentID,Path,Text,Icon,IsFolder,RestrictOwners,Owners,Active,ActiveTime,Valid", $addWhere = "", $addOrderBy = ""){
 		$db = new DB_WE();
 		$table = VOTING_TABLE;
 
@@ -63,21 +63,19 @@ abstract class weVotingTreeLoader{
 		$db->query("SELECT " . $db->escape($elem) . ", abs(text) as Nr, (text REGEXP '^[0-9]') as isNr from " . $db->escape($table) . " $where ORDER BY isNr DESC,Nr,Text " . ($segment ? "LIMIT " . abs($offset) . "," . abs($segment) . ";" : ";" ));
 		$now = time();
 
-		while($db->next_record()) {
+		while($db->next_record()){
 
-			if($db->f('IsFolder') == 1)
-				$typ = array('typ' => 'group');
-			else
-				$typ = array('typ' => 'item');
+			$typ = array(
+				'typ' => ($db->f('IsFolder') == 1 ? 'group' : 'item'),
+				'open' => 0,
+				'disabled' => 0,
+				'tooltip' => $db->f('ID'),
+				'offset' => $offset,
+			);
 
-			$typ['open'] = 0;
-			$typ['disabled'] = 0;
-			$typ['tooltip'] = $db->f('ID');
-			$typ['offset'] = $offset;
-
-			if($db->f('IsFolder') == 0)
+			if($db->f('IsFolder') == 0){
 				$typ['published'] = ($db->f('Active') && ($db->f('ActiveTime') == 0 || ($now < $db->f('Valid')))) ? 1 : 0;
-
+			}
 			$fileds = array();
 
 			foreach($db->Record as $k => $v){

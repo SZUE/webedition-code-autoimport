@@ -27,23 +27,24 @@
  * Definition of WebEdition Newsletter Block
  *
  */
-class weNewsletterBlock extends weNewsletterBase{
+class weNewsletterBlock extends weNewsletterBase {
 // Document based Newsletter Block
-	const DOCUMENT=0;
+
+	const DOCUMENT = 0;
 // Document field based Newsletter Block
-	const DOCUMENT_FIELD=1;
+	const DOCUMENT_FIELD = 1;
 // Object based Newsletter Block
-	const OBJECT=2;
+	const OBJECT = 2;
 // Object field based Newsletter Block
-	const OBJECT_FIELD=3;
+	const OBJECT_FIELD = 3;
 // File based Newsletter Block
-	const FILE=4;
+	const FILE = 4;
 //  Text based Newsletter Block
-	const TEXT=5;
+	const TEXT = 5;
 //  Newsletter attachment
-	const ATTACHMENT=6;
+	const ATTACHMENT = 6;
 //  URL based newsletter
-	const URL=7;
+	const URL = 7;
 
 	//properties
 	var $ID;
@@ -125,9 +126,9 @@ class weNewsletterBlock extends weNewsletterBase{
 
 		$db = new DB_WE();
 
-		$db->query("SELECT ID FROM " . NEWSLETTER_BLOCK_TABLE . " WHERE NewsletterID=" . intval($newsletterID) . " ORDER BY ID");
+		$db->query('SELECT ID FROM ' . NEWSLETTER_BLOCK_TABLE . ' WHERE NewsletterID=' . intval($newsletterID) . ' ORDER BY ID');
 		$ret = array();
-		while($db->next_record()) {
+		while($db->next_record()){
 			$ret[] = new weNewsletterBlock($db->f("ID"));
 		}
 		return $ret;

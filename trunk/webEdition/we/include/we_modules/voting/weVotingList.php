@@ -61,16 +61,14 @@ class weVotingList{
 			$childs_query .= ')';
 		}
 
-		if($rows || $this->Start)
-			$limit = ' LIMIT ' . $this->Start . ',' . ($rows == 0 ? 9999999 : $rows);
-		else
-			$limit = '';
+		$limit = ($rows || $this->Start ?
+				' LIMIT ' . $this->Start . ',' . ($rows == 0 ? 9999999 : $rows) : '');
 
 		if($order != ""){
 			$order_sql = ' ORDER BY ' . $order;
 			if($desc){
 				$order_sql .= ' DESC ';
-			} else{
+			} else {
 				$order_sql .= ' ASC ';
 			}
 		}
@@ -101,7 +99,7 @@ class weVotingList{
 			$attribs["href"] = we_tag('url', array('id' => ($urlID ? $urlID : 'self'), 'hidedirindex' => 'false')) . '?' . oldHtmlspecialchars(listviewBase::we_makeQueryString("_we_vl_start_" . $this->Name . "=$foo"));
 
 			return getHtmlTag("a", $attribs, "", false, true);
-		} else{
+		} else {
 			return "";
 		}
 	}
@@ -117,7 +115,7 @@ class weVotingList{
 			$attribs["href"] = we_tag('url', array('id' => ($urlID ? $urlID : 'self'), 'hidedirindex' => 'false')) . '?' . oldHtmlspecialchars(listviewBase::we_makeQueryString("_we_vl_start_" . $this->Name . "=$foo"));
 
 			return getHtmlTag("a", $attribs, "", false, true);
-		} else{
+		} else {
 			return "";
 		}
 	}

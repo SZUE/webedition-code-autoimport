@@ -77,11 +77,11 @@ if(!empty($_REQUEST["format"])){ //	save data in arrays ..
 	//	Close window when finished
 	echo we_html_element::jsElement('self.close();');
 	exit;
-} else{
+} else {
 	$strFelder = f('SELECT strFelder FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname="shop_CountryLanguage"', 'strFelder', $DB_WE);
 	if($strFelder !== ''){
 		$CLFields = unserialize($strFelder);
-	} else{
+	} else {
 		$CLFields['stateField'] = '-';
 		$CLFields['stateFieldIsISO'] = 0;
 		$CLFields['languageField'] = '-';
@@ -118,7 +118,7 @@ $_htmlTable->setCol($_row, 0, array('class' => 'defaultfont', 'valign' => 'top')
 $_htmlTable->setColContent($_row, 1, we_html_tools::getPixel(10, 5));
 $_htmlTable->setCol($_row++, 2, array('class' => 'defaultfont'), we_html_tools::htmlTextInput('mwst', 6, $feldnamen[1]) . '&nbsp;');
 $_htmlTable->setCol($_row++, 0, array('colspan' => 3), we_html_tools::getPixel(5, 5));
-$_htmlTable->setCol($_row++, 0, array('colspan' => 3, 'class' => 'small'), we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[mwst_expl]'), 2, "100%", false, 100));
+$_htmlTable->setCol($_row++, 0, array('colspan' => 3, 'class' => 'small'), we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[mwst_expl]'), we_html_tools::TYPE_INFO, "100%", false, 100));
 $_htmlTable->setCol($_row++, 0, array('colspan' => 3), we_html_tools::getPixel(20, 15));
 
 $list = array('german' => 'german', 'english' => 'english', 'french' => 'french', 'swiss' => 'swiss');
@@ -145,14 +145,21 @@ $_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(2
 
 // look for all available fields in tblCustomer
 $DB_WE->query('SHOW FIELDS FROM ' . CUSTOMER_TABLE);
-$_availFields = array();
 
-while($DB_WE->next_record()) {
+$extraIgnore = explode(',', we_shop_shop::ignoredExtraShowFields);
+$showFields = array();
+
+while($DB_WE->next_record()){
 	if(!in_array($DB_WE->f('Field'), $ignoreFields)){
-		$_availFields[$DB_WE->f('Field')] = prepareFieldname($DB_WE->f('Field'));
+		$showFields[$DB_WE->f('Field')] = prepareFieldname($DB_WE->f('Field'));
 	}
 }
-asort($_availFields);
+asort($showFields);
+$orderFields = $showFields;
+foreach($extraIgnore as $cur){
+	unset($showFields[$cur]);
+}
+
 
 //	get the already selected fields ...
 $_entry = f('SELECT strFelder FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname="edit_shop_properties"', 'strFelder', $DB_WE);
@@ -162,18 +169,18 @@ if(($fields = @unserialize($_entry))){
 	// we have an array with following syntax:
 	// array ( 'customerFields' => array('fieldname ...',...)
 	//         'orderCustomerFields' => array('fieldname', ...) )
-} else{
+} else {
 	t_e('unsupported Shop-Settings found');
 }
 
 $_htmlTable->setCol($_row, 0, array('class' => 'defaultfont', 'valign' => 'top'), g_l('modules_shop', '[preferences][customerFields]'));
 $_htmlTable->setColContent($_row, 1, we_html_tools::getPixel(10, 5));
-$_htmlTable->setColContent($_row++, 2, we_html_tools::htmlSelect('orderfields[]', $_availFields, (count($_availFields) > 5 ? '5' : count($_availFields)), implode(",", $fields['customerFields']), true, "", "value", 280));
+$_htmlTable->setColContent($_row++, 2, we_html_tools::htmlSelect('orderfields[]', $showFields, (count($showFields) > 5 ? 5 : count($showFields)), implode(',', $fields['customerFields']), true, '', 'value', 280));
 $_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(20, 15));
 
 $_htmlTable->setCol($_row, 0, array('class' => 'defaultfont', 'valign' => 'top'), g_l('modules_shop', '[preferences][orderCustomerFields]'));
 $_htmlTable->setColContent($_row, 1, we_html_tools::getPixel(10, 5));
-$_htmlTable->setColContent($_row++, 2, we_html_tools::htmlSelect('ordercustomerfields[]', $_availFields, (count($_availFields) > 5 ? '5' : count($_availFields)), implode(",", $fields['orderCustomerFields']), true, "", "value", 280));
+$_htmlTable->setColContent($_row++, 2, we_html_tools::htmlSelect('ordercustomerfields[]', $orderFields, (count($orderFields) > 5 ? 5 : count($orderFields)), implode(',', $fields['orderCustomerFields']), true, '', 'value', 280));
 $_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(20, 15));
 
 $_htmlTable->setCol($_row, 0, array('class' => 'defaultfont', 'valign' => 'top'), g_l('modules_shop', '[preferences][CountryField]'));

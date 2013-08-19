@@ -23,30 +23,30 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_ifVotingField($attribs){
-	if(($foo = attributFehltError($attribs, "match", __FUNCTION__))){
+	if(($foo = attributFehltError($attribs, 'match', __FUNCTION__))){
 		print($foo);
 		return false;
 	}
 
-	$operator = weTag_getAttribute("operator", $attribs);
-	$match = weTag_getAttribute("match", $attribs);
+	$operator = weTag_getAttribute('operator', $attribs);
+	$match = weTag_getAttribute('match', $attribs);
 
 	$atts = removeAttribs($attribs, array('match', 'operator'));
 	$realvalue = we_tag('votingField', $atts);
 
 	switch($operator){
 		default:
-		case "equal":
+		case 'equal':
 			return $realvalue == $match;
-		case "less":
+		case 'less':
 			return intval($realvalue) < intval($match);
-		case "less|equal":
+		case 'less|equal':
 			return intval($realvalue) <= intval($match);
-		case "greater":
+		case 'greater':
 			return intval($realvalue) > intval($match);
-		case "greater|equal":
+		case 'greater|equal':
 			return intval($realvalue) >= intval($match);
-		case "contains":
+		case 'contains':
 			return (strpos($realvalue, $match) !== false);
 	}
 }

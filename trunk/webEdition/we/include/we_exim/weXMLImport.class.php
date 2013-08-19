@@ -41,7 +41,7 @@ class weXMLImport extends weXMLExIm{
 
 	function import($chunk_file){
 		$db = new DB_WE();
-		@set_time_limit(0);
+		update_time_limit(0);
 
 		$objects = array();
 
@@ -96,7 +96,7 @@ class weXMLImport extends weXMLExIm{
 								$object->ID = $dtid;
 							} else if($this->options["handle_collision"] == 'rename'){
 								$this->getNewName($object, $dtid, "DocType");
-							} else{
+							} else {
 								$save = false;
 								continue;
 							}
@@ -109,7 +109,7 @@ class weXMLImport extends weXMLExIm{
 								$object->ID = $nid;
 							} else if($this->options["handle_collision"] == "rename"){
 								$this->getNewName($object, $nid, "NavigationName");
-							} else{
+							} else {
 								$save = false;
 								continue;
 							}
@@ -122,7 +122,7 @@ class weXMLImport extends weXMLExIm{
 								$object->ID = $nid;
 							} else if($this->options["handle_collision"] == "rename"){
 								$this->getNewName($object, $nid, "Name");
-							} else{
+							} else {
 								$save = false;
 								continue;
 							}
@@ -174,7 +174,7 @@ class weXMLImport extends weXMLExIm{
 								}
 							} else if($this->options["handle_collision"] == "rename"){
 								$this->getNewName($object, $id, "Path");
-							} else{
+							} else {
 								$save = false;
 								continue;
 							}
@@ -182,8 +182,9 @@ class weXMLImport extends weXMLExIm{
 					}
 					//fix Path ends
 					// set OldPath
-					if(isset($object->OldPath))
+					if(isset($object->OldPath)){
 						$object->OldPath = $object->Path;
+					}
 
 					// assign ParentID and ParentPath based on Path
 					if(isset($object->Table)){
@@ -201,9 +202,9 @@ class weXMLImport extends weXMLExIm{
 							}
 						}
 						$object->ParentID = makePath(dirname($object->Path), $object->Table, $pathids, $owner);
-						if(isset($object->ParentPath))
+						if(isset($object->ParentPath)){
 							$object->ParentPath = id_to_path($object->ParentID, $object->Table);
-
+						}
 						// insert new created folders in ref table
 						foreach($pathids as $pid){
 
@@ -242,7 +243,7 @@ class weXMLImport extends weXMLExIm{
 								$object->Path = $_path;
 								unset($_path);
 								unset($_c);
-							} else{
+							} else {
 								$save = false;
 							}
 						}
@@ -270,7 +271,7 @@ class weXMLImport extends weXMLExIm{
 					if($ref){
 						// assign TableID and ParentID from reference
 						$object->TableID = $ref->ID;
-					} else{
+					} else {
 						//assign TableID based on Path
 						// evaluate root dir for object
 						$match = array();
@@ -299,13 +300,12 @@ class weXMLImport extends weXMLExIm{
 		do{
 			$c++;
 
-			if($object->ClassName == "we_docTypes" || $object->ClassName == "weNavigationRule" || $object->ClassName == "we_thumbnailEx")
-				$newname = $object->$prop;
-			else
-				$newname = basename($object->$prop);
+			$newname = ($object->ClassName == "we_docTypes" || $object->ClassName == "weNavigationRule" || $object->ClassName == "we_thumbnailEx" ?
+					$object->$prop : basename($object->$prop));
 
-			if($newid)
+			if($newid){
 				$newname = $c . "_" . $newname;
+			}
 			switch($object->ClassName){
 				case "we_docTypes":
 					$newid = f("SELECT ID FROM " . DOC_TYPES_TABLE . " WHERE DocType='" . escape_sql_query($newname) . "'", "ID", new DB_WE());
@@ -347,14 +347,16 @@ class weXMLImport extends weXMLExIm{
 			if($_ref){
 				$object->ParentID = $_ref->ID;
 				$object->Path = $_ref->Path . '/' . $new_name;
-			} else{
+			} else {
 				$object->Path = clearPath(dirname($object->Path) . '/' . $new_name);
 			}
 		}
-		if(isset($object->Text))
+		if(isset($object->Text)){
 			$object->Text = $new_name;
-		if(isset($object->Filename))
+		}
+		if(isset($object->Filename)){
 			$object->Filename = str_replace($object->Extension, "", $new_name);
+		}
 	}
 
 	function importNodeSet($node_id){
@@ -383,9 +385,9 @@ class weXMLImport extends weXMLExIm{
 					$content = $this->importNodeSet($node);
 					$this->xmlBrowser->gotoMark('we:content');
 					$object->elements = array_merge($object->elements, $content->getElement());
-				} else{
+				} else {
 					if($nodname == "ClassName"){
-						array_push($this->nodehierarchy, $noddata);
+						$this->nodehierarchy[] = $noddata;
 						switch($noddata){
 							case "we_object":
 								if(defined("OBJECT_TABLE")){
@@ -426,8 +428,9 @@ class weXMLImport extends weXMLExIm{
 			foreach($node_data as $k => $v){
 				$v = weContentProvider::getDecodedData($node_coding[$k], $v);
 
-				if($v != $object->$k)
+				if($v != $object->$k){
 					$object->$k = $v;
+				}
 			}
 		}
 
@@ -444,34 +447,34 @@ class weXMLImport extends weXMLExIm{
 
 				if($value == $this->options['xml_encoding']){
 					return $this->options['target_encoding'];
-				} else{
+				} else {
 					if($this->isSerialized($value)){
 						$usv = unserialize($value);
 						if(is_array($usv)){
 							foreach($usv as &$av){
 								if($this->options['xml_encoding'] == 'ISO-8859-1'){
 									$av = utf8_encode($av);
-								} else{
+								} else {
 									$av = utf8_decode($av);
 								}
 							}
 							$sv = serialize($usv);
 							return $sv;
-						} else{
+						} else {
 							return $value;
 						}
-					} else{
+					} else {
 						if($this->options['xml_encoding'] == 'ISO-8859-1'){
 							return utf8_encode($value);
-						} else{
+						} else {
 							return utf8_decode($value);
 						}
 					}
 				}
-			} else{
+			} else {
 				return $value;
 			}
-		} else{
+		} else {
 			return $value;
 		}
 	}
@@ -481,21 +484,25 @@ class weXMLImport extends weXMLExIm{
 			$userid = $object->CreatorID;
 			if($this->options['handle_owners']){
 				$userid = $this->RefTable->getNewOwnerID($userid);
-				if($userid == 0 && $this->options['owners_overwrite'] && $this->options['owners_overwrite_id'])
+				if($userid == 0 && $this->options['owners_overwrite'] && $this->options['owners_overwrite_id']){
 					$userid = $this->options['owners_overwrite_id'];
+				}
 			} else if($this->options['owners_overwrite'] && $this->options['owners_overwrite_id']){
 				$userid = $this->options['owners_overwrite_id'];
-			} else{
+			} else {
 				$userid = 0;
 			}
 			$object->CreatorID = $userid;
-			if(isset($object->ModifierID))
+			if(isset($object->ModifierID)){
 				$object->ModifierID = $userid;
-		}else{
-			if(isset($object->CreatorID))
+			}
+		} else {
+			if(isset($object->CreatorID)){
 				$object->CreatorID = 0;
-			if(isset($object->ModifierID))
+			}
+			if(isset($object->ModifierID)){
 				$object->ModifierID = 0;
+			}
 		}
 
 		if(isset($object->Owners) && ($this->options['handle_owners'] || $this->options['owners_overwrite'])){
@@ -504,16 +511,19 @@ class weXMLImport extends weXMLExIm{
 			foreach($owners as $owner){
 				if($this->options['handle_owners']){
 					$own = $this->RefTable->getNewOwnerID($owner);
-					if($own == 0 && $this->options['owners_overwrite'] && $this->options['owners_overwrite_id'])
+					if($own == 0 && $this->options['owners_overwrite'] && $this->options['owners_overwrite_id']){
 						$own = $this->options['owners_overwrite_id'];
+					}
 				} else if($this->options['owners_overwrite'] && $this->options['owners_overwrite_id']){
 					$own = $this->options['owners_overwrite_id'];
 				}
 				if(isset($own) && $own && !in_array($own, $newowners)){
-					if(!$object->CreatorID)
+					if(!$object->CreatorID){
 						$object->CreatorID = $own;
-					if(!$object->ModifierID)
+					}
+					if(!$object->ModifierID){
 						$object->ModifierID = $own;
+					}
 					$newowners[] = $own;
 				}
 			}
@@ -525,32 +535,38 @@ class weXMLImport extends weXMLExIm{
 					foreach($readonly as $key => $value){
 						if($this->options['handle_owners']){
 							$newkey = $this->RefTable->getNewOwnerID($key);
-							if($newkey == 0 && $this->options['owners_overwrite'] && $this->options['owners_overwrite_id'])
+							if($newkey == 0 && $this->options['owners_overwrite'] && $this->options['owners_overwrite_id']){
 								$newkey = $this->options['owners_overwrite_id'];
+							}
 						} else if($this->options['owners_overwrite'] && $this->options['owners_overwrite_id']){
 							$newkey = $this->options['owners_overwrite_id'];
 						}
-						if($newkey)
+						if($newkey){
 							$readonly_new[$newkey] = $value;
+						}
 					}
 					$object->OwnersReadOnly = serialize($readonly_new);
 				}
 			}
-		} else{
-			if(isset($object->Owners))
+		} else {
+			if(isset($object->Owners)){
 				$object->Owners = '';
-			if(isset($object->RestrictOwners))
+			}
+			if(isset($object->RestrictOwners)){
 				$object->RestrictOwners = 0;
-			if(isset($object->OwnersReadOnly))
+			}
+			if(isset($object->OwnersReadOnly)){
 				$object->OwnersReadOnly = serialize(array());
+			}
 		}
 	}
 
 	function splitFile($filename, $tmppath, $count){
 		global $_language;
 
-		if($filename == "")
+		if($filename == ""){
 			return -1;
+		}
 
 		$path = $tmppath;
 		$marker = weBackup::backupMarker;
@@ -561,7 +577,7 @@ class weXMLImport extends weXMLExIm{
 		$head = weFile::loadPart($filename, 0, 256, $compress == 'gzip');
 
 		$encoding = we_xml_parser::getEncoding('', $head);
-		$_SESSION['weXMLimportCharset'] = $encoding;
+		$_SESSION['weS']['weXMLimportCharset'] = $encoding;
 		$header = weXMLExIm::getHeader($encoding);
 		$footer = weXMLExIm::getFooter();
 
@@ -579,36 +595,36 @@ class weXMLImport extends weXMLExIm{
 		$marker2_size = strlen($marker2); //Backup 5089
 
 		if($fh){
-			while(!@feof($fh)) {
-				@set_time_limit(240);
+			while(!@feof($fh)){
 				$line = "";
 				$findline = false;
 
-				while($findline == false && !@feof($fh)) {
+				while($findline == false && !@feof($fh)){
 					$line .= ($compress != "none" ? @gzgets($fh, 4096) : @fgets($fh, 4096));
 					if(substr($line, -1) == "\n"){
 						$findline = true;
 					}
 				}
 
-				if($open_new && !empty($line) && trim($line) != "</webEdition>"){
+				if($open_new && !empty($line) && trim($line) != weBackup::weXmlExImFooter){
 					$num++;
 					$filename_tmp = sprintf($path . $pattern, $num);
 					$fh_temp = fopen($filename_tmp, "wb");
 					fwrite($fh_temp, $header);
-					if($num == 0)
+					if($num == 0){
 						$header = "";
+					}
 					$open_new = false;
 				}
 
 				if(isset($fh_temp) && $fh_temp){
-					if((substr($line, 0, 2) != "<?") && (substr($line, 0, 11) != "<webEdition") && (substr($line, 0, 12) != "</webEdition")){
+					if((substr($line, 0, 2) != "<?") && (substr($line, 0, 11) != weBackup::weXmlExImHead) && (substr($line, 0, 12) != weBackup::weXmlExImFooter)){
 
 						$buff.=$line;
 						$write = false;
 						if($marker_size){
 							$write = ((substr($buff, (0 - ($marker_size + 1))) == $marker . "\n") || (substr($buff, (0 - ($marker_size + 2))) == $marker . "\r\n") || (substr($buff, (0 - ($marker2_size + 1))) == $marker2 . "\n") || (substr($buff, (0 - ($marker2_size + 2))) == $marker2 . "\r\n" ));
-						} else{
+						} else {
 							$write = true;
 						}
 
@@ -627,29 +643,30 @@ class weXMLImport extends weXMLExIm{
 							}
 							$buff = "";
 						}
-					} else{
-						if(((substr($line, 0, 2) == "<?") || (substr($line, 0, 11) == "<webEdition")) && $num == 0){
+					} else {
+						if(((substr($line, 0, 2) == "<?") || (substr($line, 0, 11) == weBackup::weXmlExImHead)) && $num == 0){
 							$header.=$line;
 						}
 					}
-				} else{
+				} else {
 					return -1;
 				}
 			}
-		} else{
+		} else {
 			return -1;
 		}
-		if($fh_temp && trim($line) != "</webEdition>"){
+		if($fh_temp && trim($line) != weBackup::weXmlExImFooter){
 			if($buff){
 				@fwrite($fh_temp, $buff);
 			}
 			@fwrite($fh_temp, $footer);
 			@fclose($fh_temp);
 		}
-		if($compress != "none")
+		if($compress != "none"){
 			@gzclose($fh);
-		else
+		} else {
 			@fclose($fh);
+		}
 
 		return $num + 1;
 	}

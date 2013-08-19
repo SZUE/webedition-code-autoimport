@@ -29,6 +29,7 @@ we_html_tools::protect();
 $what = isset($_REQUEST["pnt"]) ? $_REQUEST["pnt"] : "frameset";
 
 $weFrame = new weVotingFrames();
+$weFrame->getHTMLDocumentHeader();
 $weFrame->View->processVariables();
 $weFrame->View->processCommands();
 $weFrame->getHTML($what);

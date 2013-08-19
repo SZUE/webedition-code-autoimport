@@ -25,10 +25,9 @@
 function we_parse_tag_checkForm($attribs, $content){
 	$arr = array();
 	eval('$arr = ' . (PHPLOCALSCOPE ? str_replace('$', '\$', $attribs) : $attribs) . ';'); //Bug #6516
-	if(($foo = attributFehltError($arr, 'match', __FUNCTION__)))
+	if(($foo = attributFehltError($arr, array('match' => false, 'type' => false), __FUNCTION__))){
 		return $foo;
-	if(($foo = attributFehltError($arr, 'type', __FUNCTION__)))
-		return $foo;
+	}
 
 	return '<?php printElement(' . we_tag_tagParser::printTag('checkForm', $attribs, $content, true) . '); ?>';
 }
@@ -45,14 +44,9 @@ function we_tag_checkForm($attribs, $content){
 	}
 
 	//  check required Fields
-	if(($missingAttrib = attributFehltError($attribs, "match", __FUNCTION__))){
+	if(($missingAttrib = attributFehltError($attribs, array("match" => false, 'type' => false), __FUNCTION__))){
 		print $missingAttrib;
-		return "";
-	}
-
-	if(($missingAttrib = attributFehltError($attribs, "type", __FUNCTION__))){
-		print $missingAttrib;
-		return "";
+		return '';
 	}
 
 	ob_start();

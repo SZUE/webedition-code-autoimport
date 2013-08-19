@@ -84,13 +84,13 @@ abstract class we_rebuild_wizard{
 			$prevButton = we_button::create_button("back", "javascript:parent.wizbody.handle_event('previous');", true, -1, -1, "", "", true, false);
 			$nextButton = we_button::create_button("next", "javascript:parent.wizbody.handle_event('next');", true, -1, -1, "", "", $nextbutdisabled, false);
 
-			$content2 = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0"), 1, 4);
+			$content2 = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 1, 4);
 			$content2->setCol(0, 0, array("id" => "prev", "style" => "display:table-cell; padding-left:10px;", "align" => "right"), $prevButton);
 			$content2->setCol(0, 1, array("id" => "next", "style" => "display:table-cell; padding-left:10px;", "align" => "right"), $nextButton);
 			$content2->setCol(0, 2, array("id" => "refresh", "style" => "display:none; padding-left:10px;", "align" => "right"), $refreshButton);
 			$content2->setCol(0, 3, array("id" => "cancel", "style" => "display:table-cell; padding-left:10px;", "align" => "right"), $cancelButton);
 
-			$content = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0", "width" => "100%"), 1, 2);
+			$content = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0, "width" => "100%"), 1, 2);
 			$content->setCol(0, 0, array("id" => "progr", "style" => "display:none", "align" => "left"), $pb);
 			$content->setCol(0, 1, array("align" => "right"), $content2->getHtml());
 		}
@@ -251,13 +251,13 @@ abstract class we_rebuild_wizard{
 				f.submit();
 			}
 			function set_button_state(alldis) {
-				if(top.frames["wizbusy"] && top.frames["wizbusy"].switch_button_state){
-					top.frames["wizbusy"].back_enabled = top.frames["wizbusy"].switch_button_state("back", "back_enabled", "disabled");
+				if(top.wizbusy && top.wizbusy.switch_button_state){
+					top.wizbusy.back_enabled = top.wizbusy.switch_button_state("back", "back_enabled", "disabled");
 					if(alldis){
-						top.frames["wizbusy"].next_enabled = top.frames["wizbusy"].switch_button_state("next", "next_enabled", "disabled");
-						top.frames["wizbusy"].showRefreshButton();
+						top.wizbusy.next_enabled = top.wizbusy.switch_button_state("next", "next_enabled", "disabled");
+						top.wizbusy.showRefreshButton();
 					}else{
-						top.frames["wizbusy"].next_enabled = top.frames["wizbusy"].switch_button_state("next", "next_enabled", "enabled");
+						top.wizbusy.next_enabled = top.wizbusy.switch_button_state("next", "next_enabled", "enabled");
 					}
 				}else{
 					setTimeout("set_button_state("+(alldis ? 1 : 0)+")",300);
@@ -306,7 +306,7 @@ abstract class we_rebuild_wizard{
 			we_html_element::htmlHidden(array("name" => "btype", "value" => $btype)) .
 			we_html_element::htmlHidden(array("name" => "onlyEmpty", "value" => $onlyEmpty)) .
 			we_html_element::htmlHidden(array("name" => "we_cmd[0]", "value" => "rebuild")) .
-			we_html_element::htmlHidden(array("name" => "step", "value" => "1")));
+			we_html_element::htmlHidden(array("name" => "step", "value" => 1)));
 	}
 
 	/**
@@ -354,9 +354,9 @@ abstract class we_rebuild_wizard{
 
 
 		$js = 'function set_button_state() {
-				if(top.frames["wizbusy"] && top.frames["wizbusy"].switch_button_state){
-					top.frames["wizbusy"].back_enabled = top.frames["wizbusy"].switch_button_state("back", "back_enabled", "enabled");
-					top.frames["wizbusy"].next_enabled = top.frames["wizbusy"].switch_button_state("next", "next_enabled", "enabled");
+				if(top.wizbusy && top.wizbusy.switch_button_state){
+					top.wizbusy.back_enabled = top.wizbusy.switch_button_state("back", "back_enabled", "enabled");
+					top.wizbusy.next_enabled = top.wizbusy.switch_button_state("next", "next_enabled", "enabled");
 				}else{
 					setTimeout("set_button_state()",300);
 				}
@@ -369,7 +369,7 @@ abstract class we_rebuild_wizard{
 					break;
 				case 'rebuild_thumbnails':
 					if(!$thumbs){
-						return array($js . ";top.frames[\"wizbusy\"].showPrevNextButton();" . we_message_reporting::getShowMessageCall(g_l('rebuild', '[no_thumbs_selected]'), we_message_reporting::WE_MESSAGE_ERROR), '');
+						return array($js . ';top.wizbusy.showPrevNextButton();' . we_message_reporting::getShowMessageCall(g_l('rebuild', '[no_thumbs_selected]'), we_message_reporting::WE_MESSAGE_ERROR), '');
 					}
 					$data = we_rebuild::getThumbnails($thumbs, $thumbsFolders);
 					break;
@@ -477,7 +477,7 @@ abstract class we_rebuild_wizard{
 		$metaDataFields = weMetaData::getDefinedMetaDataFields();
 
 		$_html = we_html_element::jsElement('document._errorMessage=' . (!empty($metaFields) ? '""' : '"' . addslashes(g_l('rebuild', "[noFieldsChecked]")) . '"')) .
-			we_html_tools::htmlAlertAttentionBox(g_l('rebuild', "[expl_rebuild_metadata]"), 2, 520) .
+			we_html_tools::htmlAlertAttentionBox(g_l('rebuild', "[expl_rebuild_metadata]"), we_html_tools::TYPE_INFO, 520) .
 			'<div class="defaultfont" style="margin:10px 0 5px 0;">' . g_l('rebuild', "[metadata]") . ':</div>' . "\n";
 
 		$selAllBut = we_button::create_button("selectAll", "javascript:we_cmd('select_all_fields');");
@@ -614,7 +614,7 @@ abstract class we_rebuild_wizard{
 			$foldersArray = makeArrayFromCSV($folders);
 			for($i = 0; $i < count($foldersArray); $i++){
 				if(in_workspace($foldersArray[$i], $ws)){
-					array_push($newFolders, $foldersArray[$i]);
+					$newFolders[] = $foldersArray[$i];
 				}
 			}
 			$folders = makeCSVFromArray($newFolders);
@@ -631,10 +631,10 @@ abstract class we_rebuild_wizard{
 
 
 
-		array_push($parts, array(
+		$parts[]= array(
 			'headline' => '',
 			'html' => $content,
-			'space' => 0)
+			'space' => 0
 		);
 
 
@@ -687,7 +687,7 @@ abstract class we_rebuild_wizard{
 			$foldersArray = makeArrayFromCSV($folders);
 			for($i = 0; $i < count($foldersArray); $i++){
 				if(in_workspace($foldersArray[$i], $ws)){
-					array_push($newFolders, $foldersArray[$i]);
+					$newFolders[] = $foldersArray[$i];
 				}
 			}
 			$folders = makeCSVFromArray($newFolders);
@@ -700,6 +700,7 @@ abstract class we_rebuild_wizard{
 		$content = we_rebuild_wizard::formMetadata($metaFields, $onlyEmpty) .
 			we_html_element::htmlBr() . we_html_tools::getPixel(2, 15) . we_html_element::htmlBr() .
 			we_rebuild_wizard::formFolders($metaFolders, true, 520);
+
 
 
 		$parts = array(
@@ -750,45 +751,29 @@ abstract class we_rebuild_wizard{
 		$taskname = md5(session_id() . '_rebuild');
 		$taskFilename = WE_FRAGMENT_PATH . $taskname;
 		if(file_exists($taskFilename)){
-			@unlink($taskFilename);
+			weFile::delete($taskFilename);
 		}
 
 		if($tail){
-			$fst = new we_html_frameset(array(
-				'rows' => '*,0',
-				'framespacing' => 0,
-				'border' => 0,
-				'frameborder' => 'no')
-			);
-
-			$fst->addFrame(array('src' => WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=rebuild&amp;fr=busy&amp;dc=1', 'name' => 'wizbusy'));
-			$fst->setFrameAttributes(0, array('scrolling' => 'no', 'onload' => "wizcmd.location='" . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=rebuild&amp;fr=body" . $tail . "';"));
-
-			$fst->addFrame(array('src' => HTML_DIR . 'white.html', 'name' => 'wizcmd'));
-			$fst->setFrameAttributes(1, array('scrolling' => 'no'));
+			$body = we_html_element::htmlBody(array('style' => 'background-color:grey;margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;', "onload" => "wizcmd.location='" . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=rebuild&amp;fr=body" . $tail . "';")
+					, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
+						, we_html_element::htmlIFrame('wizbusy', WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=rebuild&amp;fr=busy&amp;dc=1", 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;overflow: hidden') .
+						we_html_element::htmlIFrame('wizcmd', HTML_DIR . "white.html", 'position:absolute;bottom:0px;height:0px;left:0px;right:0px;overflow: hidden;')
+					));
 		} else{
-			$fst = new we_html_frameset(array(
-				'rows' => '*,' . (we_base_browserDetect::isFF() ? 60 : 40) . ',0',
-				'framespacing' => 0,
-				'border' => 0,
-				'frameborder' => 'no')
-			);
-
-			$fst->addFrame(array('src' => WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=rebuild&amp;fr=body', 'name' => 'wizbody'));
-			$fst->setFrameAttributes(0, array('scrolling' => 'auto'));
-
-			$fst->addFrame(array('src' => WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=rebuild&amp;fr=busy', 'name' => 'wizbusy'));
-			$fst->setFrameAttributes(1, array('scrolling' => 'no'));
-
-			$fst->addFrame(array('src' => WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=rebuild&amp;fr=cmd', 'name' => 'wizcmd'));
-			$fst->setFrameAttributes(2, array('scrolling' => 'no'));
+			$height = (we_base_browserDetect::isFF() ? 60 : 40);
+			$body = we_html_element::htmlBody(array('style' => 'background-color:grey;margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;')
+					, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
+						, we_html_element::htmlIFrame('wizbody', WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=rebuild&amp;fr=body", 'position:absolute;top:0px;bottom:' . $height . 'px;left:0px;right:0px;overflow: hidden') .
+						we_html_element::htmlIFrame('wizbusy', WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=rebuild&amp;fr=busy", 'position:absolute;height:' . $height . 'px;bottom:0px;left:0px;right:0px;overflow: hidden') .
+						we_html_element::htmlIFrame('wizcmd', WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=rebuild&amp;fr=cmd", 'position:absolute;bottom:0px;height:0px;left:0px;right:0px;overflow: hidden;')
+					));
 		}
-
 
 		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				we_html_element::htmlHead(
-					we_html_tools::getHtmlInnerHead(g_l('rebuild', '[rebuild]'))
-				) . $fst->getHtml());
+					we_html_tools::getHtmlInnerHead(g_l('rebuild', "[rebuild]")) . STYLESHEET
+				) . $body);
 	}
 
 	/**
@@ -811,9 +796,9 @@ abstract class we_rebuild_wizard{
 							' . we_message_reporting::getShowMessageCall(g_l('rebuild', "[noFieldsChecked]"), we_message_reporting::WE_MESSAGE_ERROR) . '
 							return;
 						} else {
-							top.frames["wizbusy"].back_enabled = top.frames["wizbusy"].switch_button_state("back", "back_enabled", "disabled");
-							top.frames["wizbusy"].next_enabled = top.frames["wizbusy"].switch_button_state("next", "next_enabled", "disabled");
-							top.frames["wizbusy"].showRefreshButton();
+							top.wizbusy.back_enabled = top.wizbusy.switch_button_state("back", "back_enabled", "disabled");
+							top.wizbusy.next_enabled = top.wizbusy.switch_button_state("next", "next_enabled", "disabled");
+							top.wizbusy.showRefreshButton();
 							f.step.value=2;
 							f.target="wizcmd";
 						}
@@ -827,10 +812,10 @@ abstract class we_rebuild_wizard{
 				var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 				switch (arguments[0]) {
 				case "openDirselector":
-					new jsWindow(url,"we_fileselector",-1,-1,' . WINDOW_DIRSELECTOR_WIDTH . ',' . WINDOW_DIRSELECTOR_HEIGHT . ',true,true,true,true);
+					new jsWindow(url,"we_fileselector",-1,-1,' . we_fileselector::WINDOW_DIRSELECTOR_WIDTH . ',' . we_fileselector::WINDOW_DIRSELECTOR_HEIGHT . ',true,true,true,true);
 					break;
 				case "openCatselector":
-					new jsWindow(url,"we_catselector",-1,-1,' . WINDOW_CATSELECTOR_WIDTH . ',' . WINDOW_CATSELECTOR_HEIGHT . ',true,true,true,true);
+					new jsWindow(url,"we_catselector",-1,-1,' . we_fileselector::WINDOW_CATSELECTOR_WIDTH . ',' . we_fileselector::WINDOW_CATSELECTOR_HEIGHT . ',true,true,true,true);
 					break;
 				case "add_cat":
 					var catsToAdd = makeArrayFromCSV(arguments[1]);
@@ -952,9 +937,9 @@ abstract class we_rebuild_wizard{
 				return ","+arr.join(",")+",";
 			}
 			function set_button_state() {
-				if(top.frames["wizbusy"] && top.frames["wizbusy"].switch_button_state){
-					top.frames["wizbusy"].back_enabled = top.frames["wizbusy"].switch_button_state("back", "back_enabled", "enabled");
-					top.frames["wizbusy"].next_enabled = top.frames["wizbusy"].switch_button_state("next", "next_enabled", "enabled");
+				if(top.wizbusy && top.wizbusy.switch_button_state){
+					top.wizbusy.back_enabled = top.wizbusy.switch_button_state("back", "back_enabled", "enabled");
+					top.wizbusy.next_enabled = top.wizbusy.switch_button_state("next", "next_enabled", "enabled");
 				}else{
 					setTimeout("set_button_state()",300);
 				}

@@ -56,8 +56,9 @@ class delBackup extends taskFragment{
 	function doTask(){
 		$item = makeArrayFromCSV($this->data);
 		if(!weFile::delete($item[0])){
-			if(file_exists($item[0]))
-				array_push($_SESSION['weS']['delete_files_nok'], array("icon" => (isset($item[1]) ? $item[1] : ""), "path" => $item[0]));
+			if(file_exists($item[0])){
+				$_SESSION['weS']['delete_files_nok'][] = array("icon" => (isset($item[1]) ? $item[1] : ""), "path" => $item[0]);
+			}
 		}
 		$percent = round((100 / count($this->alldata)) * (1 + $this->currentTask));
 		$text = str_replace($_SERVER['DOCUMENT_ROOT'], "", clearPath($item[0]));

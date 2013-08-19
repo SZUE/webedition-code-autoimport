@@ -27,7 +27,22 @@
  * General Definition of WebEdition Newsletter
  *
  */
-class weNewsletter extends weNewsletterBase{
+class weNewsletter extends weNewsletterBase {
+
+	const SAVE_PATH_NOK = -10;
+	const MALFORMED_SENDER = -1;
+	const MALFORMED_REPLY = -2;
+	const MALFORMED_TEST = -3;
+	const OP_EQ = 0;
+	const OP_NEQ = 1;
+	const OP_LE = 2;
+	const OP_LEQ = 3;
+	const OP_GE = 4;
+	const OP_GEQ = 5;
+	const OP_LIKE = 6;
+	const OP_CONTAINS = 7;
+	const OP_STARTS = 8;
+	const OP_ENDS = 9;
 
 	//properties
 	var $ID;
@@ -121,15 +136,13 @@ class weNewsletter extends weNewsletterBase{
 	 */
 	function save(&$message, $check = true){
 		//check addesses
-		if($check){
-			$ret = $this->checkEmails($message);
-			if($ret != 0)
-				return $ret;
+		if($check && ($ret = $this->checkEmails($message)) != 0){
+			return $ret;
 		}
 
 		if(!$this->checkParents($this->ParentID)){
 			$message = g_l('modules_newsletter', '[path_nok]');
-			return -10;
+			return self::SAVE_PATH_NOK;
 		}
 
 		if($this->IsFolder){
@@ -145,8 +158,8 @@ class weNewsletter extends weNewsletterBase{
 		parent::save();
 
 
-		$this->db->query("DELETE FROM " . NEWSLETTER_GROUP_TABLE . " WHERE NewsletterID=" . intval($this->ID));
-		$this->db->query("DELETE FROM " . NEWSLETTER_BLOCK_TABLE . " WHERE NewsletterID=" . intval($this->ID));
+		$this->db->query('DELETE FROM ' . NEWSLETTER_GROUP_TABLE . ' WHERE NewsletterID=' . intval($this->ID));
+		$this->db->query('DELETE FROM ' . NEWSLETTER_BLOCK_TABLE . ' WHERE NewsletterID=' . intval($this->ID));
 
 		foreach($this->groups as $group){
 			$group->NewsletterID = $this->ID;
@@ -202,7 +215,7 @@ class weNewsletter extends weNewsletterBase{
 	 */
 	function deleteChilds(){
 		$this->db->query("SELECT ID FROM " . NEWSLETTER_TABLE . " WHERE ParentID=" . intval($this->ID));
-		while($this->db->next_record()) {
+		while($this->db->next_record()){
 			$child = new self($this->db->f("ID"));
 			$child->delete();
 			$child = new self();
@@ -222,7 +235,7 @@ class weNewsletter extends weNewsletterBase{
 
 		$db->query("SELECT ID,Text FROM " . NEWSLETTER_TABLE . " ORDER BY ID");
 		$nl = array();
-		while($db->next_record()) {
+		while($db->next_record()){
 			$nl[$db->f("ID")] = $db->f("Text");
 		}
 		return $nl;
@@ -237,7 +250,7 @@ class weNewsletter extends weNewsletterBase{
 		if($where != -1){
 			if($where > count($this->blocks) - 1){
 				$this->blocks[] = new weNewsletterBlock();
-			} else{
+			} else {
 				$temp = array();
 				foreach($this->blocks as $k => $v){
 					if($k == $where)
@@ -246,7 +259,7 @@ class weNewsletter extends weNewsletterBase{
 				}
 				$this->blocks = $temp;
 			}
-		}else{
+		}else {
 			$this->blocks[] = new weNewsletterBlock();
 		}
 	}
@@ -309,20 +322,19 @@ class weNewsletter extends weNewsletterBase{
 
 		if(!$this->check_email($this->Sender)){
 			$malformed = $this->Sender;
-			return -1;
+			return self::MALFORMED_SENDER;
 		}
 		if(!$this->check_email($this->Reply)){
 			$malformed = $this->Reply;
-			return -2;
+			return self::MALFORMED_REPLY;
 		}
 		if(!$this->check_email($this->Test)){
 			$malformed = $this->Test;
-			return -3;
+			return self::MALFORMED_TEST;
 		}
 
 		foreach($this->groups as $k => $v){
-			$ret = $v->checkEmails($k + 1, $malformed);
-			if($ret != 0){
+			if(($ret = $v->checkEmails($k + 1, $malformed)) != 0){
 				return $ret;
 			}
 		}
@@ -355,14 +367,17 @@ class weNewsletter extends weNewsletterBase{
 	 */
 	function checkParents($id){
 		$count = 0;
-		while($id > 0) {
-			if($count > 1000)
+		while($id > 0){
+			if($count > 1000){
 				break;
-			if($id == $this->ID)
+			}
+			if($id == $this->ID){
 				return false;
+			}
 			$h = getHash("SELECT IsFolder,ParentID FROM " . NEWSLETTER_TABLE . " WHERE ID=" . $id, $this->db);
-			if($h["IsFolder"] != 1)
+			if($h["IsFolder"] != 1){
 				return false;
+			}
 			$id = $h["ParentID"];
 			$count++;
 		}
@@ -375,12 +390,12 @@ class weNewsletter extends weNewsletterBase{
 	 */
 	function fixChildsPaths(){
 
-		$dbtmp = new DB_WE;
+		$dbtmp = new DB_WE();
 		$oldpath = f("SELECT Path FROM " . NEWSLETTER_TABLE . " WHERE ID=" . intval($this->ID), "Path", $this->db);
 
 		if(trim($oldpath) != "" && trim($oldpath) != "/"){
 			$this->db->query("SELECT ID,Path FROM " . NEWSLETTER_TABLE . " WHERE Path LIKE '" . $oldpath . "%'");
-			while($this->db->next_record()) {
+			while($this->db->next_record()){
 				$dbtmp->query("UPDATE " . NEWSLETTER_TABLE . " SET Path='" . str_replace($oldpath, $this->Path, $this->db->f("Path")) . "' WHERE ID=" . $this->db->f("ID"));
 			}
 		}

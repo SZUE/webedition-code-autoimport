@@ -40,7 +40,7 @@ class we_html_table extends we_baseCollection{
 	 * @return     we_html_table
 	 */
 	function __construct(array $attribs = array(), $rows_num = 0, $cols_num = 0){
-		parent::__construct("table", true, $attribs);
+		parent::__construct('table', true, $attribs);
 		$this->addRow($rows_num);
 		$this->addCol($cols_num);
 	}
@@ -119,7 +119,7 @@ class we_html_table extends we_baseCollection{
 	 *
 	 * @return     void
 	 */
-	function setCol($rowid, $colid, $attribs = array(), $content = ""){
+	function setCol($rowid, $colid, $attribs = array(), $content = ''){
 		$row = & $this->getChild($rowid);
 		$col = & $row->getChild($colid);
 		$col->setAttributes($attribs);
@@ -193,7 +193,7 @@ class we_html_table extends we_baseCollection{
 					$j--;
 					$cols_num = count($row->childs);
 					$colspan--;
-				} else{
+				} else {
 					$col = $row->getChild($j);
 					if(in_array('colspan', array_keys($col->attribs))){
 						$colspan = $col->getAttribute('colspan');

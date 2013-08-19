@@ -36,7 +36,7 @@ class we_base_ContentTypes{
 		$this->ct = array(
 // Content Type for Images
 			'image/*' => array(
-				'Extension' => array('.gif', '.jpg', '.jpeg', '.png'),
+				'Extension' => array('.gif', '.jpg', '.jpeg', '.png','.svg','.svgz'),
 				'Permission' => 'NEW_GRAFIK',
 				'DefaultCode' => '',
 				'IsRealFile' => true,

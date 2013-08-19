@@ -21,46 +21,29 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 we_html_tools::htmlTop();
 if(!preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction'])){
 	exit();
 }
-?>
-</head>
 
-<?php if(we_base_browserDetect::isGecko()){ ?>
-	<frameset cols="180,*" border="1" frameborder="1" id="resizeframeid">
-		<frameset rows="0,*" framespacing="0" border="1" frameborder="1">
-			<frame src="<?php print HTML_DIR ?>whiteWithTopLine.html" scrolling="no"/>
-			<frame src="<?php print HTML_DIR ?>white.html" name="messaging_tree"  scrolling="aoto"/>
-		</frameset>
-		<frame src="<?php print WE_MESSAGING_MODULE_DIR ?>messaging_right.php?we_transaction=<?php echo $_REQUEST['we_transaction'] ?>" name="messaging_right"/>
-	</frameset>
-	<?php } elseif(we_base_browserDetect::isSafari()){
-	?>
-	<frameset cols="180,*" border="0" frameborder="0" id="resizeframeid">
-		<frameset rows="1,*" framespacing="0" border="0" frameborder="NO">
-			<frame src="<?php print HTML_DIR ?>whiteWithTopLine.html" scrolling="no" noresize/>
-			<frame src="<?php print HTML_DIR ?>white.html" name="messaging_tree" scrolling="no"/>
-		</frameset>
-		<frame src="<?php print WE_MESSAGING_MODULE_DIR ?>messaging_right.php?we_transaction=<?php echo $_REQUEST['we_transaction'] ?>" name="messaging_right"/>
-	</frameset>
-	<?php } else{//IE
-	?>
-	<frameset cols="180,*" border="0" frameborder="0" id="resizeframeid">
-		<frameset rows="1,*" framespacing="0" border="0" frameborder="NO">
-			<frame src="<?php print HTML_DIR ?>whiteWithTopLine.html" scrolling="no"/>
-			<frame src="<?php print HTML_DIR ?>white.html" name="messaging_tree" scrolling="no" frameborder="0"/>
-		</frameset>
-		<frame src="<?php print WE_MESSAGING_MODULE_DIR ?>messaging_right.php?we_transaction=<?php echo $_REQUEST['we_transaction'] ?>" name="messaging_right"/>
-	</frameset>
-<?php } ?>
+print weModuleFrames::getJSToggleTreeCode('messaging', 204);
+$_treewidth = isset($_COOKIE["treewidth_messaging"]) && ($_COOKIE["treewidth_messaging"] >= weTree::MinWidth) ? $_COOKIE["treewidth_users"] : 204;
 
-<noframes>
-	<body background="<?php print IMAGE_DIR ?>backgrounds/aquaBackground.gif" style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px">
-	</body>
-</noframes>
+$incDecTree = '
+	<img id="incBaum" src="' . BUTTONS_DIR . 'icons/function_plus.gif" width="9" height="12" style="position:absolute;bottom:53px;left:5px;border:1px solid grey;padding:0 1px;cursor: pointer; ' . ($_treewidth <= 30 ? 'bgcolor:grey;' : '') . '" onClick="top.content.incTree();">
+	<img id="decBaum" src="' . BUTTONS_DIR . 'icons/function_minus.gif" width="9" height="12" style="position:absolute;bottom:33px;left:5px;border:1px solid grey;padding:0 1px;cursor: pointer; ' . ($_treewidth <= 30 ? 'bgcolor:grey;' : '') . '" onClick="top.content.decTree();">
+	<img id="arrowImg" src="' . BUTTONS_DIR . 'icons/direction_' . ($_treewidth <= 30 ? 'right' : 'left') . '.gif" width="9" height="12" style="position:absolute;bottom:13px;left:5px;border:1px solid grey;padding:0 1px;cursor: pointer;" onClick="top.content.toggleTree();">
+';
 
-</html>
+print we_html_element::htmlBody(array('style' => 'background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px'),
+	we_html_element::htmlDiv(array('style' => 'position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px;'),
+		we_html_element::htmlDiv(array('id' => 'lframeDiv','style' => 'position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px;width: ' . $_treewidth . 'px;'),
+			we_html_element::htmlDiv(array('style' => 'position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px; width: ' . weTree::HiddenWidth . 'px; background-image: url(/webEdition/images/v-tabs/background.gif); background-repeat: repeat-y; border-top: 1px solid black;'), $incDecTree) .
+			we_html_element::htmlIFrame('messaging_tree', HTML_DIR . 'white.html', 'position: absolute; top: 0px; bottom: 0px; left: ' . weTree::HiddenWidth . 'px; right: 0px; border-top: 1px solid white;')
+		) .
+		we_html_element::htmlIFrame('right', WE_MESSAGING_MODULE_DIR . 'messaging_right.php?we_transaction=' . $_REQUEST['we_transaction'], 'position: absolute; top: 0px; bottom: 0px; left: ' . $_treewidth . 'px; right: 0px; width:auto; border-left: 1px solid black; overflow: hidden;')
+	)
+);

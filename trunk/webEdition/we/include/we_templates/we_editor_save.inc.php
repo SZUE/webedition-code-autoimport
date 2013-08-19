@@ -78,7 +78,7 @@ for (frameId in _usedEditors) {
 	print $_reloadJs;
 
 
-	if($_SESSION['weS']['we_mode'] != "seem"){
+	if($_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE){
 
 		$_newDocJs = "";
 
@@ -122,7 +122,7 @@ if($we_responseText){
 		print "try{ if( _EditorFrame && _EditorFrame.getEditorIsInUse() && contentEditor && contentEditor.switch_button_state) contentEditor.switch_button_state('add', 'add_enabled', 'enabled'); } catch(e) {}";
 	}
 
-	if($_SESSION['weS']['we_mode'] == "seem" && (!isset($_showAlert) || !$_showAlert)){ //	Confirm Box or alert in seeMode
+	if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE && (!isset($_showAlert) || !$_showAlert)){ //	Confirm Box or alert in seeMode
 		if(isset($GLOBALS["publish_doc"]) && $GLOBALS["publish_doc"] == true){ //	edit include and pulish then close window and reload
 			$_jsCommand .='
 			if(isEditInclude){

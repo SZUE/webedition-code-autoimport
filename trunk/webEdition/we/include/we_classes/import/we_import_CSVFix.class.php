@@ -35,8 +35,9 @@ class we_import_CSVFix extends CSV{
 	function addCSVField($name, $length, $type = ""){
 		$cursor = count($this->FieldNames);
 
-		if(!$name)
+		if(!$name){
 			$name = 'Feld ' . ($cursor + 1);
+		}
 
 		$this->FieldNames[$cursor] = $name;
 		$this->FieldLengths[$cursor] = $length;

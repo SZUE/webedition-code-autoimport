@@ -73,6 +73,7 @@ function setDir(id){
 	}
 
 	function printSetDirHTML(){
+
 		print we_html_element::jsElement('
 top.clearEntries();' .
 				$this->printCmdAddEntriesHTML() .

@@ -22,31 +22,4 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weNavigationTree extends weToolTree{
-
-	function __construct($frameset = '', $topFrame = '', $treeFrame = '', $cmdFrame = ''){
-		parent::__construct($frameset, $topFrame, $treeFrame, $cmdFrame);
-	}
-
-	function getJSTreeFunctions(){
-
-		$out = weTree::getJSTreeFunctions();
-
-		$out .= '
-				function doClick(id,typ){
-					var node=' . $this->topFrame . '.get(id);
-					' . $this->topFrame . '.resize.right.editor.edbody.we_cmd("tool_navigation_edit",node.id);
-				}
-				' . $this->topFrame . '.loaded=1;
-			';
-		return $out;
-	}
-
-	function getJSTreeCode(){
-		return parent::getJSTreeCode() . we_html_element::jsElement(
-				'
- 					drawTree.selection_table="' . NAVIGATION_TABLE . '";
- 				');
-	}
-
-}
+//TODO: remove this (directory 'navigation' has moved to we_modules

@@ -1,5 +1,2 @@
 <?php
-$this->NeedsEndTag = true;
-$this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
-$this->Groups[] = 'if_tags';
-$this->Module='voting';
+include(__DIR__ . '/we_tag_' . str_replace('Not', '', $tagName) . '.inc.php');

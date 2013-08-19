@@ -24,27 +24,27 @@
  */
 function we_tag_ifSelf($attribs){
 
-	$id = weTag_getAttribute("id", $attribs);
+	$id = weTag_getAttribute('id', $attribs);
 
 	if(!$id){
 		if(isset($GLOBALS['we_obj'])){
 			$id = $GLOBALS['we_obj']->ID;
 		} else {
-			$id = $GLOBALS["WE_MAIN_DOC"]->ID;
+			$id = $GLOBALS['WE_MAIN_DOC']->ID;
 		}
 	}
-	$type = weTag_getAttribute("doc", $attribs, weTag_getAttribute("type", $attribs));
+	$type = weTag_getAttribute('doc', $attribs, weTag_getAttribute('type', $attribs));
 
 	$ids = makeArrayFromCSV($id);
 
 	switch($type){
-		case "listview":
-			switch($GLOBALS["lv"]->ClassName){
-				case "we_listview_object":
-					return in_array($GLOBALS["lv"]->getDBf("OF_ID"), $ids);
-				case "we_search_listview":
-					return in_array($GLOBALS["lv"]->getDBf("WE_ID"), $ids);
-				case "we_shop_listviewShopVariants":
+		case 'listview':
+			switch($GLOBALS['lv']->ClassName){
+				case 'we_listview_object':
+					return in_array($GLOBALS['lv']->getDBf('OF_ID'), $ids);
+				case 'we_search_listview':
+					return in_array($GLOBALS['lv']->getDBf('WE_ID'), $ids);
+				case 'we_shop_listviewShopVariants':
 					reset($GLOBALS['lv']->Record);
 					$key = key($GLOBALS['lv']->Record);
 					if(isset($GLOBALS['we_doc']->Variant)){
@@ -53,9 +53,9 @@ function we_tag_ifSelf($attribs){
 					return ($key == $GLOBALS['lv']->DefaultName);
 
 				default:
-					return in_array($GLOBALS["lv"]->IDs[$GLOBALS["lv"]->count - 1], $ids);
+					return in_array($GLOBALS['lv']->IDs[$GLOBALS['lv']->count - 1], $ids);
 			}
-		case "self" :
+		case 'self' :
 			if(isset($GLOBALS['we']['ll'])){
 				return $GLOBALS['we']['ll']->getID() == $GLOBALS['we_doc']->ID;
 			} else {
@@ -63,9 +63,9 @@ function we_tag_ifSelf($attribs){
 			}
 		default :
 			if(isset($GLOBALS['we']['ll'])){
-				return $GLOBALS['we']['ll']->getID() == $GLOBALS["WE_MAIN_DOC"]->ID;
+				return $GLOBALS['we']['ll']->getID() == $GLOBALS['WE_MAIN_DOC']->ID;
 			} else {
-				return in_array($GLOBALS["WE_MAIN_DOC"]->ID, $ids);
+				return in_array($GLOBALS['WE_MAIN_DOC']->ID, $ids);
 			}
 	}
 }

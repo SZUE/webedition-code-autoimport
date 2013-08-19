@@ -193,7 +193,7 @@ function we_tag_sessionField($attribs, $content){
 				return we_getTextareaField('s[' . $name . ']', $orgVal, $attribs);
 			} else{
 				echo we_html_element::jsElement('weFrontpageEdit=true;');
-				include_once(JS_PATH . 'we_textarea_include.inc.php');
+				require_once(JS_PATH . 'we_textarea_include.inc.php');
 				$autobr = $autobrAttr ? 'on' : 'off';
 				$showAutobr = isset($attribs['autobr']);
 				return we_forms::weTextarea('s[' . $name . ']', $orgVal, $attribs, $autobr, 'autobr', $showAutobr, $GLOBALS['we_doc']->getHttpPath(), false, false, $xml, $removeFirstParagraph, '');
@@ -312,9 +312,9 @@ function we_tag_sessionField($attribs, $content){
 			$showcontrol = weTag_getAttribute('showcontrol', $attribs, true, true);
 			if($showcontrol){
 
-				$foo = attributFehltError($attribs, 'parentid', __FUNCTION__);
-				if($foo)
+				if(($foo = attributFehltError($attribs, 'parentid', __FUNCTION__))){
 					return $foo;
+				}
 			}
 
 			$imgId = $_SESSION['webuser']['imgtmp'][$name]['id'];

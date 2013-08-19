@@ -27,7 +27,6 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 define('WE_DEFAULT_EMAIL', 'mailserver@' . $_SERVER['SERVER_NAME']);
 define('WE_DEFAULT_SUBJECT', 'webEdition mailform');
 
-
 $_blocked = false;
 
 
@@ -112,7 +111,6 @@ function contains_newlines($str_to_test){
 }
 
 function print_error($errortext){
-
 	$headline = 'Fehler / Error';
 	$content = g_l('global', '[formmailerror]') . getHtmlTag('br') . '&#8226; ' . $errortext;
 
@@ -152,7 +150,7 @@ function ok_page(){
 		$ok_page = (get_magic_quotes_gpc() == 1) ? stripslashes($_REQUEST['ok_page']) : $_REQUEST['ok_page'];
 		redirect($ok_page);
 	} else{
-		print 'Vielen Dank, Ihre Formulardaten sind bei uns angekommen! / Thank you, we received your form data!';
+		echo 'Vielen Dank, Ihre Formulardaten sind bei uns angekommen! / Thank you, we received your form data!';
 		exit;
 	}
 }
@@ -171,7 +169,6 @@ function check_recipient($email){
 
 function check_captcha(){
 	$name = $_REQUEST['captchaname'];
-
 	return (isset($_REQUEST[$name]) && !empty($_REQUEST[$name]) ?
 			Captcha::check($_REQUEST[$name]) :
 			false);
@@ -201,7 +198,7 @@ $we_reserved = array('from', 'we_remove', 'captchaname', 'we_mode', 'charset', '
 if(isset($_REQUEST['we_remove'])){
 	$removeArr = makeArrayFromCSV($_REQUEST['we_remove']);
 	foreach($removeArr as $val){
-		array_push($we_reserved, $val);
+		$we_reserved[] = $val;
 	}
 }
 
@@ -239,18 +236,16 @@ foreach($output as $n => $v){
 	if(is_array($v)){
 		foreach($v as $n2 => $v2){
 			if(!is_array($v2)){
-				$foo = (get_magic_quotes_gpc() == 1) ? stripslashes($v2) : $v2;
+				$foo = replace_bad_str((get_magic_quotes_gpc() == 1) ? stripslashes($v2) : $v2);
 				$n = replace_bad_str($n);
 				$n2 = replace_bad_str($n2);
-				$foo = replace_bad_str($foo);
 				$we_txt .= $n . '[' . $n2 . ']: ' . $foo . "\n" . ($foo ? '' : "\n");
 				$we_html .= '<tr><td align="right"><b>' . $n . '[' . $n2 . ']:</b></td><td>' . $foo . '</td></tr>';
 			}
 		}
 	} else{
-		$foo = (get_magic_quotes_gpc() == 1) ? stripslashes($v) : $v;
+		$foo = replace_bad_str((get_magic_quotes_gpc() == 1) ? stripslashes($v) : $v);
 		$n = replace_bad_str($n);
-		$foo = replace_bad_str($foo);
 		$we_txt .= $n . ': ' . $foo . "\n" . ($foo ? '' : "\n");
 		$we_html .= '<tr><td align="right"><b>' . $n . ':</b></td><td>' . ($n == 'email' ? '<a href="mailto:' . $foo . '">' . $foo . '</a>' : $foo) . '</td></tr>';
 	}
@@ -288,27 +283,18 @@ $email = (isset($_REQUEST['email']) && $_REQUEST['email']) ?
 $subject = strip_tags((isset($_REQUEST['subject']) && $_REQUEST['subject']) ?
 		$_REQUEST['subject'] :
 		WE_DEFAULT_SUBJECT);
-
-$charset = (isset($_REQUEST['charset']) && $_REQUEST['charset']) ?
-	str_replace(array("\n", "\r"), '', $_REQUEST['charset']) :
-	$GLOBALS['WE_BACKENDCHARSET'];
-$recipient = (isset($_REQUEST['recipient']) && $_REQUEST['recipient']) ?
-	$_REQUEST['recipient'] :
-	'';
-$from = (isset($_REQUEST['from']) && $_REQUEST['from']) ?
-	$_REQUEST['from'] :
-	WE_DEFAULT_EMAIL;
+$charset = (isset($_REQUEST['charset']) && $_REQUEST['charset']) ? str_replace(array("\n", "\r"), '', $_REQUEST['charset']) : $GLOBALS['WE_BACKENDCHARSET'];
+$recipient = (isset($_REQUEST['recipient']) && $_REQUEST['recipient']) ? $_REQUEST['recipient'] : '';
+$from = (isset($_REQUEST['from']) && $_REQUEST['from']) ? $_REQUEST['from'] : WE_DEFAULT_EMAIL;
 
 $mimetype = (isset($_REQUEST['mimetype']) && $_REQUEST['mimetype']) ? $_REQUEST['mimetype'] : '';
 
 $wasSent = false;
 
 if($recipient){
-	$fromMail = (isset($_REQUEST['forcefrom']) && $_REQUEST['forcefrom'] == 'true' ? $from : $email);
-
 	$subject = preg_replace("/(\\n+|\\r+)/", '', $subject);
 	$charset = preg_replace("/(\\n+|\\r+)/", '', $charset);
-	$fromMail = preg_replace("/(\\n+|\\r+)/", '', $fromMail);
+	$fromMail = preg_replace("/(\\n+|\\r+)/", '', (isset($_REQUEST['forcefrom']) && $_REQUEST['forcefrom'] == 'true' ? $from : $email));
 	$email = preg_replace("/(\\n+|\\r+)/", '', $email);
 	$from = preg_replace("/(\\n+|\\r+)/", '', $from);
 
@@ -325,9 +311,7 @@ if($recipient){
 	$recipients = makeArrayFromCSV($recipient);
 	$senderForename = isset($_REQUEST['forename']) && $_REQUEST['forename'] != '' ? $_REQUEST['forename'] : '';
 	$senderSurname = isset($_REQUEST['surname']) && $_REQUEST['surname'] != '' ? $_REQUEST['surname'] : '';
-	$sender = ($senderForename != '' || $senderSurname != '' ?
-			$senderForename . ' ' . $senderSurname . '<' . $fromMail . '>' :
-			$fromMail);
+	$sender = ($senderForename != '' || $senderSurname != '' ? $senderForename . ' ' . $senderSurname . '<' . $fromMail . '>' : $fromMail);
 
 	$phpmail = new we_util_Mailer('', $subject, $sender);
 	$phpmail->setCharSet($charset);
@@ -336,10 +320,11 @@ if($recipient){
 
 	foreach($recipients as $recipientID){
 
-		$recipient = (is_numeric($recipientID) ?
+		$recipient = preg_replace("/(\\n+|\\r+)/", '', (is_numeric($recipientID) ?
 				f('SELECT Email FROM ' . RECIPIENTS_TABLE . ' WHERE ID=' . intval($recipientID), 'Email', $GLOBALS['DB_WE']) :
 				// backward compatible
-				$recipientID);
+				$recipientID)
+		);
 
 		if(!$recipient){
 			print_error(g_l('global', '[email_no_recipient]'));
@@ -348,8 +333,6 @@ if($recipient){
 			print_error(g_l('global', '[email_invalid]'));
 		}
 
-		$recipient = preg_replace("/(\\n+|\\r+)/", '', $recipient);
-
 		if(we_check_email($recipient) && check_recipient($recipient)){
 			$recipientsList[] = $recipient;
 		} else{
@@ -357,7 +340,7 @@ if($recipient){
 		}
 	}
 
-	if(count($recipientsList) > 0){
+	if(!empty($recipientsList)){
 		foreach($_FILES as $file){
 			if(isset($file['tmp_name']) && $file['tmp_name']){
 				$tempName = TEMP_PATH . '/' . $file['name'];
@@ -376,8 +359,6 @@ if($recipient){
 			$wasSent = true;
 		}
 	}
-
-
 
 	if((isset($_REQUEST['confirm_mail']) && $_REQUEST['confirm_mail']) && FORMMAIL_CONFIRM){
 		if($wasSent){

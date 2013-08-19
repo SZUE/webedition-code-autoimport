@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,34 +22,29 @@
  * @package    webEdition_rpc
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+class rpcDeleteVersionCmd extends rpcCmd{
 
-class rpcDeleteVersionCmd extends rpcCmd {
-
-	function execute() {
-
-		$db = new DB_WE();
-
+	function execute(){
 		$ids = array();
 
 		we_html_tools::protect();
 
-		if(isset($_REQUEST['we_cmd']["deleteVersion"]) && $_REQUEST['we_cmd']["deleteVersion"]!="") {
+		if(isset($_REQUEST['we_cmd']["deleteVersion"]) && $_REQUEST['we_cmd']["deleteVersion"] != ""){
 
 			$ids = makeArrayFromCSV($_REQUEST['we_cmd']["deleteVersion"]);
-
 		}
 
-		if(!empty($ids)) {
+		if(!empty($ids)){
 			$_SESSION['weS']['versions']['logDeleteIds'] = array();
-			foreach($ids as $k => $v) {
+			foreach($ids as $v){
 				weVersions::deleteVersion($v);
 			}
-			if(!empty($_SESSION['weS']['versions']['logDeleteIds'])) {
+			if(!empty($_SESSION['weS']['versions']['logDeleteIds'])){
 				$versionslog = new versionsLog();
-				$versionslog->saveVersionsLog($_SESSION['weS']['versions']['logDeleteIds'],versionsLog::VERSIONS_DELETE);
+				$versionslog->saveVersionsLog($_SESSION['weS']['versions']['logDeleteIds'], versionsLog::VERSIONS_DELETE);
 			}
 			unset($_SESSION['weS']['versions']['logDeleteIds']);
 		}
 	}
-}
 
+}

@@ -70,7 +70,7 @@ print STYLESHEET;
 		echo we_html_tools::hidden('mcmd', 'save_settings');
 
 		$heading = g_l('modules_messaging', '[settings]');
-		$t_vals = array('-1' => '0', '1' => '1', '2' => '2', '3' => '3', '4' => '4', '5' => '5', '10' => '10', '15' => '15', '30' => '30', '45' => '45', '60' => '60');
+		$t_vals = array('-1' => 0, '1' => 1, '2' => 2, '3' => 3, '4' => 4, '5' => 5, '10' => 10, '15' => 15, '30' => 30, '45' => 45, '60' => 60);
 		$settings = $messaging->get_settings();
 		$check_step = isset($settings['check_step']) ? $settings['check_step'] : "";
 

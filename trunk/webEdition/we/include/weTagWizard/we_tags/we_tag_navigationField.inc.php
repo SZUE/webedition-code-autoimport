@@ -1,4 +1,5 @@
 <?php
+
 //NOTE you are inside the constructor of weTagData.class.php
 
 $this->NeedsEndTag = false;
@@ -6,6 +7,65 @@ $this->Groups[] = 'navigation_tags';
 $this->Module = 'navigation';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
-$this->Attributes[] = new weTagData_selectAttribute('name', array(new weTagDataOption('name', false, ''), new weTagDataOption('display', false, ''), new weTagDataOption('text', false, ''), new weTagDataOption('href', false, ''), new weTagDataOption('icon', false, ''), new weTagDataOption('position', false, ''), new weTagDataOption('level', false, ''), new weTagDataOption('current', false, ''), new weTagDataOption('id', false, ''), new weTagDataOption('parentid', false, ''), new weTagDataOption('title', false, ''), new weTagDataOption('anchor', false, ''), new weTagDataOption('target', false, ''), new weTagDataOption('lang', false, ''), new weTagDataOption('hreflang', false, ''), new weTagDataOption('accesskey', false, ''), new weTagDataOption('tabindex', false, ''), new weTagDataOption('rel', false, ''), new weTagDataOption('rev', false, ''), new weTagDataOption('properties', false, ''), new weTagDataOption('icon_width', false, ''), new weTagDataOption('icon_height', false, ''), new weTagDataOption('icon_border', false, ''), new weTagDataOption('icon_hspace', false, ''), new weTagDataOption('icon_vspace', false, ''), new weTagDataOption('icon_align', false, ''), new weTagDataOption('icon_alt', false, ''), new weTagDataOption('icon_title', false, ''), new weTagDataOption('popup_open', false, ''), new weTagDataOption('popup_center', false, ''), new weTagDataOption('popup_xposition', false, ''), new weTagDataOption('popup_yposition', false, ''), new weTagDataOption('popup_width', false, ''), new weTagDataOption('popup_height', false, ''), new weTagDataOption('popup_toolbar', false, ''), new weTagDataOption('popup_status', false, ''), new weTagDataOption('popup_scrollbars', false, ''), new weTagDataOption('popup_menubar', false, ''), new weTagDataOption('popup_resizable', false, ''), new weTagDataOption('popup_location', false, '')), false, '');
-$this->Attributes[] = new weTagData_choiceAttribute('attributes', array(new weTagDataOption('position', false, ''), new weTagDataOption('rel', false, ''), new weTagDataOption('tabindex', false, ''), new weTagDataOption('accesskey', false, ''), new weTagDataOption('hreflang', false, ''), new weTagDataOption('lang', false, ''), new weTagDataOption('target', false, ''), new weTagDataOption('anchor', false, ''), new weTagDataOption('title', false, ''), new weTagDataOption('current', false, ''), new weTagDataOption('level', false, ''), new weTagDataOption('link', false, ''), new weTagDataOption('image', false, ''), new weTagDataOption('text', false, ''), new weTagDataOption('href', false, ''), new weTagDataOption('icon', false, ''), new weTagDataOption('rev', false, '')), false,true, '');
-$this->Attributes[] = new weTagData_selectAttribute('complete', array(new weTagDataOption('link', false, ''), new weTagDataOption('image', false, '')), false, '');
+$this->Attributes[] = new weTagData_selectAttribute('name', array(new weTagDataOption('name'),
+	new weTagDataOption('display'),
+	new weTagDataOption('text'),
+	new weTagDataOption('href'),
+	new weTagDataOption('icon'),
+	new weTagDataOption('position'),
+	new weTagDataOption('level'),
+	new weTagDataOption('current'),
+	new weTagDataOption('id'),
+	new weTagDataOption('parentid'),
+	new weTagDataOption('title'),
+	new weTagDataOption('anchor'),
+	new weTagDataOption('target'),
+	new weTagDataOption('lang'),
+	new weTagDataOption('hreflang'),
+	new weTagDataOption('accesskey'),
+	new weTagDataOption('tabindex'),
+	new weTagDataOption('rel'),
+	new weTagDataOption('rev'),
+	new weTagDataOption('properties'),
+	new weTagDataOption('icon_width'),
+	new weTagDataOption('icon_height'),
+	new weTagDataOption('icon_border'),
+	new weTagDataOption('icon_hspace'),
+	new weTagDataOption('icon_vspace'),
+	new weTagDataOption('icon_align'),
+	new weTagDataOption('icon_alt'),
+	new weTagDataOption('icon_title'),
+	new weTagDataOption('popup_open'),
+	new weTagDataOption('popup_center'),
+	new weTagDataOption('popup_xposition'),
+	new weTagDataOption('popup_yposition'),
+	new weTagDataOption('popup_width'),
+	new weTagDataOption('popup_height'),
+	new weTagDataOption('popup_toolbar'),
+	new weTagDataOption('popup_status'),
+	new weTagDataOption('popup_scrollbars'),
+	new weTagDataOption('popup_menubar'),
+	new weTagDataOption('popup_resizable'),
+	new weTagDataOption('popup_location'),
+	), false, '');
+$this->Attributes[] = new weTagData_choiceAttribute('attributes', array(new weTagDataOption('position'),
+	new weTagDataOption('rel'),
+	new weTagDataOption('tabindex'),
+	new weTagDataOption('accesskey'),
+	new weTagDataOption('hreflang'),
+	new weTagDataOption('lang'),
+	new weTagDataOption('target'),
+	new weTagDataOption('anchor'),
+	new weTagDataOption('title'),
+	new weTagDataOption('current'),
+	new weTagDataOption('level'),
+	new weTagDataOption('link'),
+	new weTagDataOption('image'),
+	new weTagDataOption('text'),
+	new weTagDataOption('href'),
+	new weTagDataOption('icon'),
+	new weTagDataOption('rev'),
+	), false, true, '');
+$this->Attributes[] = new weTagData_selectAttribute('complete', array(new weTagDataOption('link'),
+	new weTagDataOption('image'),
+	), false, '');

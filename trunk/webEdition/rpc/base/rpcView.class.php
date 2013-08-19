@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -26,8 +27,7 @@
  * Base class for views.
  *
  */
-
-class rpcView {
+class rpcView{
 
 	var $CmdShell;
 
@@ -35,7 +35,8 @@ class rpcView {
 
 	}
 
-	function setCmdShell($cmdshell) {
+	function setCmdShell($cmdshell){
 		$this->CmdShell = $cmdshell;
 	}
+
 }

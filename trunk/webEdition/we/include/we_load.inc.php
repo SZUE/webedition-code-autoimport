@@ -169,7 +169,7 @@ if(isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] == "closeFolder"){
 				$path = dirname($path);
 			}
 		}
-	} elseif(defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE && (!$_SESSION["perms"]["ADMINISTRATOR"])){
+	} elseif(defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE && (!we_hasPerm("ADMINISTRATOR"))){
 		$ac = getAllowedClasses($DB_WE);
 		foreach($ac as $cid){
 			$path = id_to_path($cid, OBJECT_TABLE);
@@ -198,8 +198,8 @@ if(isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] == "closeFolder"){
 		}
 	}
 
-	if($_SESSION['weS']['we_mode'] != "seem"){
-		$Tree = new weMainTree("webEdition.php", "top", "top.resize.left.tree", "top.load");
+	if($_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE){
+		$Tree = new weMainTree("webEdition.php", "top", "top.left.tree", "top.load");
 		$treeItems = array();
 		getItems($parentFolder, $offset, $Tree->default_segment);
 

@@ -37,7 +37,6 @@ class weSideBarFrames{
 				print $this->getHTMLContent();
 				break;
 
-			case 'frameset':
 			default:
 				print $this->getHTMLFrameset();
 				break;
@@ -67,7 +66,7 @@ class weSideBarFrames{
 					<?php echo g_l('sidebar', '[headline]'); ?>
 				</div>
 				<div id="CloseButton">
-					<img src="<?php echo IMAGE_DIR; ?>/multiTabs/close.gif" border="0" vspace="0" hspace="0" onclick="top.weSidebar.close();" onmouseover="this.src='<?php echo IMAGE_DIR; ?>/multiTabs/closeOver.gif'" onmouseout="this.src='<?php echo IMAGE_DIR; ?>/multiTabs/close.gif'" />
+					<img src="<?php echo IMAGE_DIR; ?>/multiTabs/close.gif" border="0" vspace="0" hspace="0" onclick="top.weSidebar.close();" onmouseover="this.src = '<?php echo IMAGE_DIR; ?>/multiTabs/closeOver.gif'" onmouseout="this.src = '<?php echo IMAGE_DIR; ?>/multiTabs/close.gif'" />
 				</div>
 			</div>
 			<div style="position:absolute;top:22px;left:0px;right:0px;bottom:40px;border-bottom: 1px solid black;border-top: 1px solid black;">
@@ -98,7 +97,7 @@ class weSideBarFrames{
 
 		if(!file_exists($_SERVER['DOCUMENT_ROOT'] . $file) || !is_file($_SERVER['DOCUMENT_ROOT'] . $file)){
 			$file = id_to_path(intval(SIDEBAR_DEFAULT_DOCUMENT), FILE_TABLE);
-			if($file == '' || substr($file, -1) == '/' || $file == 'default'){
+			if(empty($file) || substr($file, -1) == '/' || $file == 'default'){
 				$file = WEBEDITION_DIR . 'sidebar/default.php';
 			}
 		}
@@ -119,4 +118,3 @@ class weSideBarFrames{
 	}
 
 }
-

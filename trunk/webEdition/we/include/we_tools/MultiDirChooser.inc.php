@@ -24,28 +24,27 @@
  */
 class MultiDirChooser{
 
-	var $width = "388";
+	var $width = 388;
 	var $table = FILE_TABLE;
-	var $db;
-	var $db2;
-	var $ids = "";
-	var $ws = "";
+	protected $db;
+	var $ids = '';
+	var $ws = '';
 	var $wsArr = array();
-	var $cmd_del = "";
-	var $addbut = "";
-	var $css = "";
-	var $fields = "Icon,Path";
-	var $fieldsArr = array("Icon", "Path");
+	var $cmd_del = '';
+	var $addbut = '';
+	var $css = '';
+	var $fields = 'Icon,Path';
+	var $fieldsArr = array('Icon', 'Path');
 	var $nr = 0;
-	var $lines = 1;
+	protected $lines = 1;
 	var $CanDelete = false;
 	var $isEditable = true;
-	var $extraDelFn = "";
-	var $thirdDelPar = "";
+	var $extraDelFn = '';
+	var $thirdDelPar = '';
+	protected $Record = array();
 
 	function __construct($width, $ids, $cmd_del, $addbut, $ws = "", $fields = "Icon,Path", $table = FILE_TABLE, $css = "defaultfont", $thirdDelPar = "", $extraDelFn = ""){
 		$this->db = new DB_WE();
-		$this->db2 = new DB_WE();
 		$this->width = $width;
 		$this->ids = $ids;
 		$this->table = $table;
@@ -68,18 +67,16 @@ class MultiDirChooser{
 		switch($lineNr){
 			case 0:
 				return '<tr>
-	<td><img src="' . ICON_DIR . $this->db->f($this->fieldsArr[0]) . '" width="16" height="18" /></td>
-	<td class="' . $this->css . '">' . $this->db->f($this->fieldsArr[1]) . '</td>
+	<td><img src="' . ICON_DIR . $this->Record[$this->fieldsArr[0]] . '" width="16" height="18" /></td>
+	<td class="' . $this->css . '">' . $this->Record[$this->fieldsArr[1]] . '</td>
 	<td>' . ((($this->isEditable() && $this->cmd_del) || $this->CanDelete) ?
-						we_button::create_button("image:btn_function_trash", "javascript:if(typeof(_EditorFrame)!='undefined'){_EditorFrame.setEditorIsHot(true);}" . ($this->extraDelFn ? $this->extraDelFn : "") . ";we_cmd('" . $this->cmd_del . "','" . $this->db->f("ID") . "'" . (strlen($this->thirdDelPar) ? ",'" . $this->thirdDelPar . "'" : "") . ");") :
+						we_button::create_button("image:btn_function_trash", "javascript:if(typeof(_EditorFrame)!='undefined'){_EditorFrame.setEditorIsHot(true);}" . ($this->extraDelFn ? $this->extraDelFn : "") . ";we_cmd('" . $this->cmd_del . "','" . $this->Record["ID"] . "'" . (strlen($this->thirdDelPar) ? ",'" . $this->thirdDelPar . "'" : "") . ");") :
 						"") . '</td>
-</tr>
-';
+</tr>';
 		}
 	}
 
 	function getRootLine($lineNr){
-
 		switch($lineNr){
 			case 0:
 				return '<tr>
@@ -87,17 +84,18 @@ class MultiDirChooser{
 	<td class="' . $this->css . '">/</td>
 	<td>' . ((($this->isEditable() && $this->cmd_del) || $this->CanDelete) ?
 						we_button::create_button("image:btn_function_trash", "javascript:if(typeof(_EditorFrame)!='undefined'){_EditorFrame.setEditorIsHot(true);}" . ($this->extraDelFn ? $this->extraDelFn : "") . ";we_cmd('" . $this->cmd_del . "','0');") :
-						"") . '</td>
+						'') . '</td>
 </tr>';
 		}
 	}
 
 	function isEditable(){
 		return $this->isEditable;
-		if($this->isEditable == false)
+		if($this->isEditable == false){
 			return false;
+		}
 		if($this->ws){
-			if(!in_workspace($this->db->f("ID"), $this->ws, $this->table, $this->db2)){
+			if(!in_workspace($this->Record["ID"], $this->ws, $this->table, $this->db)){
 				return false;
 			}
 		}
@@ -106,15 +104,14 @@ class MultiDirChooser{
 
 	function get(){
 		$out = '<table border="0" cellpadding="0" cellspacing="0" width="' . abs($this->width - 20) . '">
-	<tr><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(abs($this->width - 66), 2) . '</td><td>' . we_html_tools::getPixel(26, 2) . '</td></tr>
-';
+	<tr><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(abs($this->width - 66), 2) . '</td><td>' . we_html_tools::getPixel(26, 2) . '</td></tr>';
 
 		$this->nr = 0;
 		$idArr = makeArrayFromCSV($this->ids);
 
 		foreach($idArr as $id){
-			$this->db->query("SELECT ID," . $this->fields . " FROM " . $this->db->escape($this->table) . " WHERE ID =" . intval($id));
-			if($this->db->next_record()){
+			$this->Record=  getHash('SELECT ID,' . $this->fields . ' FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($id),$this->db);
+			if(!empty($this->Record)){
 				for($i = 0; $i < $this->lines; $i++){
 					$out .= $this->getLine($i);
 				}
@@ -125,9 +122,8 @@ class MultiDirChooser{
 			}
 			$this->nr++;
 		}
-		$out .= '	<tr><td>' . we_html_tools::getPixel(20, count($idArr) ? 2 : 12) . '</td><td>' . we_html_tools::getPixel($this->width - 66, 2) . '</td><td>' . we_html_tools::getPixel(26, 2) . '</td></tr>
-</table>
-';
+		$out .= '<tr><td>' . we_html_tools::getPixel(20, count($idArr) ? 2 : 12) . '</td><td>' . we_html_tools::getPixel($this->width - 66, 2) . '</td><td>' . we_html_tools::getPixel(26, 2) . '</td></tr>
+</table>';
 
 
 		return '<table border="0" cellpadding="0" cellspacing="0" width="' . $this->width . '">

@@ -29,7 +29,7 @@ class we_users_util{
 	private static function getGroupList($id){
 		$ret = array();
 		if($id){
-			$db_tmp = new DB_WE;
+			$db_tmp = new DB_WE();
 			$db_tmp->query("SELECT ID,username WHERE ParentID=" . intval($id) . " AND Type=1");
 			while($db_tmp->next_record()) {
 				$ret[$db_tmp->f("ID")] = $db_tmp->f("username");
@@ -43,7 +43,7 @@ class we_users_util{
 
 	private static function getUserTree($id){
 		$ret = array();
-		$db_tmp = new DB_WE;
+		$db_tmp = new DB_WE();
 		$db_tmp->query("SELECT ID,username,Type WHERE ParentID=" . intval($id));
 		while($db_tmp->next_record()) {
 			$ret[$db_tmp->f("ID")]["name"] = $db_tmp->f("username");
@@ -57,7 +57,7 @@ class we_users_util{
 	}
 
 	static function isUserInUsers($uid, $users){ // $users can be a csv string or an array
-		if($_SESSION["perms"]["ADMINISTRATOR"])
+		if(we_hasPerm("ADMINISTRATOR"))
 			return true;
 		if(!is_array($users)){
 			$users = makeArrayFromCSV($users);
@@ -108,9 +108,9 @@ class we_users_util{
 
 	static function addAllUsersAndGroups($uid, &$arr){
 		$db = new DB_WE();
-		$db->query("SELECT ID,IsFolder FROM " . USER_TABLE . " WHERE ParentID=" . intval($uid));
+		$db->query('SELECT ID,IsFolder FROM ' . USER_TABLE . ' WHERE ParentID=' . intval($uid));
 		while($db->next_record()) {
-			array_push($arr, $db->f("ID"));
+			$arr[] = $db->f("ID");
 			if($db->f("IsFolder")){
 				self::addAllUsersAndGroups($db->f("ID"), $arr);
 			}

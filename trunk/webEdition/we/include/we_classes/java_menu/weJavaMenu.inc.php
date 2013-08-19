@@ -26,24 +26,22 @@ class weJavaMenu{
 
 	var $entries;
 	var $lcmdFrame = "";
-	var $width = 200;
+	var $width = 350;
 	var $height = 30;
-	var $prename = "";
+	var $menuaction = "";
 
-	function __construct($entries, $lcmdFrame = "top.load", $width = 200, $height = 30, $prename = ""){
-		$this->prename = $prename;
+	function __construct($entries, $lcmdFrame = "top.load", $menuaction = 'parent.'){
+		$this->menuaction = $menuaction;
 		if($entries){
 			$this->entries = $entries;
 			if(we_base_browserDetect::isGecko()){
-				$_SESSION[$prename . "menuentries"] = $this->entries;
+				$_SESSION['weS']['menuentries'] = $this->entries;
 			}
-		} else if(isset($_SESSION[$prename . "menuentries"])){
-			$this->entries = $_SESSION[$prename . "menuentries"];
-			unset($_SESSION[$prename . "menuentries"]);
+		} else if(isset($_SESSION['weS']["menuentries"])){
+			$this->entries = $_SESSION['weS']["menuentries"];
+			unset($_SESSION['weS']["menuentries"]);
 		}
 		$this->lcmdFrame = $lcmdFrame;
-		$this->width = $width;
-		$this->height = $height;
 	}
 
 	function printMenu($cmd = ''){
@@ -63,6 +61,7 @@ class weJavaMenu{
 				}');
 	}
 
+	//remove cmdTarget in 6.4 after Java Menu is removed
 	function getHTML($old = true, $cmdTarget = ''){
 		$showAltMenu = (isset($_SESSION['weS']['weShowAltMenu']) && $_SESSION['weS']['weShowAltMenu']) || (isset($_REQUEST["showAltMenu"]) && $_REQUEST["showAltMenu"]);
 		$_SESSION['weS']['weShowAltMenu'] = $showAltMenu;
@@ -77,7 +76,7 @@ class weJavaMenu{
 				if($e["parent"] == "000000"){
 					if(is_array($e["text"])){
 						$mtext = ($e["text"][$GLOBALS["WE_LANGUAGE"]] ? $e["text"][$GLOBALS["WE_LANGUAGE"]] : "");
-					} else{
+					} else {
 						$mtext = ($e["text"] ? $e["text"] : "");
 					}
 					$menus[] = array('id' => $id,
@@ -116,8 +115,9 @@ class weJavaMenu{
 							$one = false;
 						}
 						$or[$k] = implode(" && ", $and);
-						if($one && !in_array('isset($_SESSION["perms"]["' . trim($v) . '"])', $set))
+						if($one && !in_array('isset($_SESSION["perms"]["' . trim($v) . '"])', $set)){
 							$set[] = 'isset($_SESSION["perms"]["' . trim($v) . '"])';
+						}
 					}
 					$set_str = implode(" || ", $set);
 					$condition_str = implode(" || ", $or);
@@ -150,7 +150,7 @@ class weJavaMenu{
 			if($e["parent"] == "000000"){
 				if(is_array($e["text"])){
 					$mtext = ($e["text"][$GLOBALS["WE_LANGUAGE"]] ? $e["text"][$GLOBALS["WE_LANGUAGE"]] : "");
-				} else{
+				} else {
 					$mtext = ($e["text"] ? $e["text"] : "");
 				}
 				$menus[$i]["id"] = $id;
@@ -224,14 +224,15 @@ class weJavaMenu{
 						$and = explode("&&", $v);
 						$one = true;
 						foreach($and as $key => $val){
-							array_push($set, 'isset($_SESSION["perms"]["' . trim($val) . '"])');
+							$set[] = 'isset($_SESSION["perms"]["' . trim($val) . '"])';
 							//$and[$key]='$_SESSION["perms"]["'.trim($val).'"]';
 							$and[$key] = '(isset($_SESSION["perms"]["' . trim($val) . '"]) && $_SESSION["perms"]["' . trim($val) . '"])';
 							$one = false;
 						}
 						$or[$k] = implode(" && ", $and);
-						if($one && !in_array('isset($_SESSION["perms"]["' . trim($v) . '"])', $set))
-							array_push($set, 'isset($_SESSION["perms"]["' . trim($v) . '"])');
+						if($one && !in_array('isset($_SESSION["perms"]["' . trim($v) . '"])', $set)){
+							$set[] = 'isset($_SESSION["perms"]["' . trim($v) . '"])';
+						}
 					}
 					$set_str = implode(" || ", $set);
 					$condition_str = implode(" || ", $or);
@@ -239,7 +240,7 @@ class weJavaMenu{
 				}
 				if(isset($e["text"]) && is_array($e["text"])){
 					$mtext = ($e["text"][$GLOBALS["WE_LANGUAGE"]] ? $e["text"][$GLOBALS["WE_LANGUAGE"]] : "");
-				} else{
+				} else {
 					$mtext = ( isset($e["text"]) ? $e["text"] : "");
 				}
 				if((!isset($e["cmd"])) && $mtext){
@@ -248,7 +249,7 @@ class weJavaMenu{
 					$this->h_pOption($men, $opt, $id, $newAst);
 				} else if($mtext){
 					$opt .= '<option' . (($e["enabled"] == 0) ? (' value="" style="{color:\'grey\'}" disabled') : (' value="' . $e["cmd"] . '"')) . '>&nbsp;&nbsp;' . $newAst . $mtext;
-				} else{
+				} else {
 					$opt .= '<option value="" disabled>&nbsp;&nbsp;' . $newAst . "--------\n";
 				}
 			}
@@ -274,8 +275,9 @@ class weJavaMenu{
 							$one = false;
 						}
 						$or[$k] = implode(" && ", $and);
-						if($one && !in_array('isset($_SESSION["perms"]["' . trim($v) . '"])', $set))
+						if($one && !in_array('isset($_SESSION["perms"]["' . trim($v) . '"])', $set)){
 							$set[] = 'isset($_SESSION["perms"]["' . trim($v) . '"])';
+						}
 					}
 					$set_str = implode(" || ", $set);
 					$condition_str = implode(" || ", $or);
@@ -283,7 +285,7 @@ class weJavaMenu{
 				}
 				if(isset($e["text"]) && is_array($e["text"])){
 					$mtext = ($e["text"][$GLOBALS["WE_LANGUAGE"]] ? $e["text"][$GLOBALS["WE_LANGUAGE"]] : "");
-				} else{
+				} else {
 					$mtext = ( isset($e["text"]) ? $e["text"] : "");
 				}
 				if((!isset($e["cmd"])) && $mtext){
@@ -292,7 +294,7 @@ class weJavaMenu{
 					$opt .= '</ul></li>' . "\n";
 				} else if($mtext){
 					if(!(isset($e["enabled"]) && $e["enabled"] == 0)){
-						$opt .= '<li><a href="#void" onclick="parent.menuaction(\'' . $e["cmd"] . '\')">' . $mtext . '</a></li>';
+						$opt .= '<li><a href="#void" onclick="' . $this->menuaction . 'menuaction(\'' . $e["cmd"] . '\')">' . $mtext . '</a></li>';
 					}
 				} elseif(!(isset($e["enabled"]) && $e["enabled"] == 0)){
 					$opt .= '<li class="disabled"></li>';

@@ -25,21 +25,23 @@
 abstract class we_html_tools{
 
 	const OPTGROUP = '<!--we_optgroup-->';
+	const TYPE_NONE = 0;
+	const TYPE_ALERT = 1;
+	const TYPE_INFO = 2;
+	const TYPE_QUESTION = 3;
 
-	###### protect #################################################################
-### we_html_tools::protect()
-### protects a page. Guests can not see this page
-
+	/** we_html_tools::protect()
+	  protects a page. Guests can not see this page */
 	static function protect(array $perms = null){
 		$allow = false;
 		if($perms && is_array($perms)){
 			foreach($perms as $perm){
 				$allow|=isset($_SESSION['perms'][$perm]) && $_SESSION['perms'][$perm];
 			}
-		} else{
+		} else {
 			$allow = true;
 		}
-		if(!$allow || !isset($_SESSION["user"]) || !isset($_SESSION["user"]["Username"]) || $_SESSION["user"]["Username"] == ''){
+		if(!$allow || !isset($_SESSION['user']) || !isset($_SESSION['user']['Username']) || $_SESSION['user']['Username'] == ''){
 			print self::htmlTop() .
 				we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', '[perms_no_permissions]'), we_message_reporting::WE_MESSAGE_ERROR) . 'top.close();') .
 				'</body></html>';
@@ -63,7 +65,7 @@ abstract class we_html_tools{
 	 *
 	 * @return         string
 	 */
-	static function htmlFormElementTable($col1, $text, $textalign = "left", $textclass = "defaultfont", $col2 = "", $col3 = "", $col4 = "", $col5 = "", $col6 = "", $abstand = 1){
+	static function htmlFormElementTable($col1, $text, $textalign = 'left', $textclass = 'defaultfont', $col2 = '', $col3 = '', $col4 = '', $col5 = '', $col6 = '', $abstand = 1){
 		$colspan = 0;
 		$elemOut = '';
 
@@ -75,7 +77,7 @@ abstract class we_html_tools{
 					foreach($var as $key => $val){
 						$key == 'text' ? $colText = $val : $tmp .= ' ' . $key . '=\'' . $val . '\'';
 					}
-				} else{
+				} else {
 					$colText = $var;
 				}
 				$tmp .= '>' . $colText . '</td>';
@@ -83,72 +85,73 @@ abstract class we_html_tools{
 				$colspan++;
 			}
 		}
-		return '<table cellpadding="0" cellspacing="0" border="0">' . ($text ? '<tr><td class="' . trim($textclass) . '" align="' . trim(
-					$textalign) . '" colspan="' . $colspan . '">' . $text . '</td></tr>' : '') . ($abstand ? ('<tr><td colspan="' . $colspan . '">' . self::getPixel(
-					2, $abstand) . '</td></tr>') : '') . '<tr>' . $elemOut . '</tr></table>';
+		return '<table cellpadding="0" cellspacing="0" border="0">' .
+			($text ? '<tr><td class="' . trim($textclass) . '" align="' . trim($textalign) . '" colspan="' . $colspan . '">' . $text . '</td></tr>' : '') .
+			($abstand ? ('<tr style="height:' . $abstand . 'px"><td></td></tr>') : '') .
+			'<tr>' . $elemOut . '</tr></table>';
 	}
 
-	static function targetBox($name, $size, $width = "", $id = "", $value = "", $onChange = "", $abstand = 8, $selectboxWidth = "", $disabled = false){
-		$jsvarname = str_replace(array("[", "]"), "_", $name);
+	static function targetBox($name, $size, $width = '', $id = '', $value = '', $onChange = '', $abstand = 8, $selectboxWidth = '', $disabled = false){
+		$jsvarname = str_replace(array('[', ']'), '_', $name);
 		$_inputs = array(
-			"class" => "weSelect",
-			"name" => "sel_" . $name,
-			"onfocus" => "change$jsvarname=1;",
-			"onchange" => "if(change$jsvarname) this.form.elements['$name'].value = this.options[this.selectedIndex].text; change$jsvarname=0; this.selectedIndex = 0;" . $onChange,
-			"style" => (($selectboxWidth != "") ? ("width: " . $selectboxWidth . "px;") : "")
+			'class' => 'weSelect',
+			'name' => 'sel_' . $name,
+			'onfocus' => "change$jsvarname=1;",
+			'onchange' => "if(change$jsvarname) this.form.elements['$name'].value = this.options[this.selectedIndex].text; change$jsvarname=0; this.selectedIndex = 0;" . $onChange,
+			'style' => (($selectboxWidth != '') ? ('width: ' . $selectboxWidth . 'px;') : '')
 		);
 
 		if($disabled){
-			$_inputs["disabled"] = "true";
+			$_inputs['disabled'] = 'true';
 		}
 
 		$_target_box = new we_html_select($_inputs, 0);
 		$_target_box->addOptions(5, array(
-			"", "_top", "_parent", "_self", "_blank"
+			'', '_top', '_parent', '_self', '_blank'
 			), array(
-			"", "_top", "_parent", "_self", "_blank"
+			'', '_top', '_parent', '_self', '_blank'
 		));
 
 		$_table = new we_html_table(array(
-			"cellpadding" => 0, "cellspacing" => 0, "border" => 0
+			'cellpadding' => 0, 'cellspacing' => 0, 'border' => 0
 			), 1, 3);
 
 		$_inputs = array(
-			"name" => $name,
-			"class" => "defaultfont"
+			'name' => $name,
+			'class' => 'defaultfont'
 		);
 
 		if($width){
-			$_inputs ["style"] = 'width: ' . $width . 'px;';
+			$_inputs ['style'] = 'width: ' . $width . 'px;';
 		}
 
 		if($id){
-			$_inputs["id"] = $id;
+			$_inputs['id'] = $id;
 		}
 
 		if($value){
-			$_inputs["value"] = oldHtmlspecialchars($value);
+			$_inputs['value'] = oldHtmlspecialchars($value);
 		}
 
 		if($onChange){
-			$_inputs["onchange"] = $onChange;
+			$_inputs['onchange'] = $onChange;
 		}
 
 		$_table->setCol(0, 0, array(
-			"class" => "defaultfont"
+			'class' => 'defaultfont'
 			), self::htmlTextInput(
-				$name, $size, $value, "", (!empty($onChange) ? 'onchange="' . $onChange . '"' : ''), "text", $width, 0, "", $disabled));
+				$name, $size, $value, '', (!empty($onChange) ? 'onchange="' . $onChange . '"' : ''), 'text', $width, 0, '', $disabled));
 
 		$_table->setCol(0, 1, null, self::getPixel($abstand, 1));
 
 		$_table->setCol(0, 2, array(
-			"class" => "defaultfont"
+			'class' => 'defaultfont'
 			), $_target_box->getHtml());
 
 		return $_table->getHtml();
 	}
 
-	static function htmlTextInput($name, $size = 24, $value = "", $maxlength = "", $attribs = "", $type = "text", $width = "0", $height = "0", $markHot = "", $disabled = false){
+	static function htmlTextInput($name, $size = 24, $value = '', $maxlength = '', $attribs = '', $type = 'text', $width = 0, $height = 0, $markHot = '', $disabled = false){
 		$style = ($width || $height) ? (' style="' . ($width ? ('width: ' . $width . (is_numeric($width) ? 'px' : '') . ';') : '') .
 			($height ? ('height: ' . $height . (is_numeric($height) ? 'px' : '') . ';') : '') . '"') : '';
 		return '<input' . ($markHot ? ' onchange="if(_EditorFrame){_EditorFrame.setEditorIsHot(true);}' . $markHot . '.hot=1;"' : '') .
@@ -156,23 +159,18 @@ abstract class we_html_tools{
 			'" size="' . intval($size) . '" value="' . oldHtmlspecialchars($value) . '"' . ($maxlength ? (' maxlength="' . intval($maxlength) . '"') : '') . ($attribs ? " $attribs" : '') . $style . ' onblur="this.className=\'wetextinput\';" onfocus="this.className=\'wetextinputselected\'"' . ($disabled ? (' disabled="true"') : '') . ' />';
 	}
 
-	static function htmlMessageBox($w, $h, $content, $headline = "", $buttons = ""){
+	static function htmlMessageBox($w, $h, $content, $headline = '', $buttons = ''){
 		return '<div style="width:' . $w . 'px;height:' . $h . 'px;background-color:#F7F5F5;border: 2px solid #D7D7D7;padding:20px;">' .
 			($headline ? '<h1 class="header">' . $headline . '</h1>' : '') .
 			'<div>' . $content . '</div><div style="margin-top:20px;">' . $buttons . '</div></div>';
 	}
 
-	static function htmlDialogLayout($content, $headline, $buttons = "", $width = "100%", $marginLeft = "30", $height = "", $overflow = "auto"){
-		$parts = array(
-			array(
-				"html" => $content, "headline" => "", "space" => 0
-			)
-		);
-
-		if($buttons){
-			$buttons = '<div align="right" style="margin-left:10px;">' . $buttons . '</div>';
-		}
-		return we_multiIconBox::getHTML('', $width, $parts, $marginLeft, $buttons, -1, "", "", false, $headline, "", $height, $overflow);
+	static function htmlDialogLayout($content, $headline, $buttons = '', $width = "100%", $marginLeft = 30, $height = "", $overflow = "auto"){
+		return we_multiIconBox::getHTML('', $width, array(
+				array(
+					"html" => $content, "headline" => "", "space" => 0
+				)
+				), $marginLeft, ($buttons ? '<div align="right" style="margin-left:10px;">' . $buttons . '</div>' : ''), -1, "", "", false, $headline, "", $height, $overflow);
 	}
 
 	static function htmlDialogBorder3($w, $h, $content, $headline, $class = "middlefont", $bgColor = "", $buttons = "", $id = "", $style = ""){ //content && headline are arrays
@@ -196,23 +194,23 @@ abstract class we_html_tools{
 
 		if($buttons){
 			$attribs = array(
-				"border" => "0", "cellpadding" => "0", "cellspacing" => "0"
+				'border' => 0, 'cellpadding' => 0, 'cellspacing' => 0
 			);
 			$_table = new we_html_table($attribs, 3, 1);
 			$_table->setCol(0, 0, array(
-				"colspan" => "2"
+				'colspan' => 2
 				), $out);
 			$_table->setCol(1, 0, null, self::getPixel($w, 5)); // row for gap between buttons and dialogborder
 			$_table->setCol(2, 0, array(
-				"align" => "right"
+				'align' => 'right'
 				), $buttons);
 			return $_table->getHtml();
-		} else{
+		} else {
 			return $out;
 		}
 	}
 
-	static function htmlDialogBorder4Row($content, $class = "middlefont", $bgColor = ""){
+	static function htmlDialogBorder4Row($content, $class = 'middlefont', $bgColor = ''){
 		$anz = count($content);
 		$out = '<td style="border-bottom: 1px solid silver;background-image:url(' . IMAGE_DIR . 'box/shaddowBox3_l.gif);">' .
 			self::getPixel(8, isset($content[0]["height"]) ? $content[0]["height"] : 1) . '</td>';
@@ -248,14 +246,14 @@ abstract class we_html_tools{
 
 		if($buttons){
 			$attribs = array(
-				"border" => "0", "cellpadding" => "0", "cellspacing" => "0"
+				"border" => 0, "cellpadding" => 0, "cellspacing" => 0
 			);
 			$_table = new we_html_table($attribs, 3, 1);
-			$_table->setCol(0, 0, array("colspan" => "2"), $out);
+			$_table->setCol(0, 0, array("colspan" => 2), $out);
 			$_table->setCol(1, 0, null, self::getPixel($w, 5)); // row for gap between buttons and dialogborder
 			$_table->setCol(2, 0, array("align" => "right"), $buttons);
 			return $_table->getHtml();
-		} else{
+		} else {
 			return $out;
 		}
 	}
@@ -283,7 +281,7 @@ abstract class we_html_tools{
 				$attsOpts['value'] = oldHtmlspecialchars($_val);
 				$opts .= getHtmlTag('option', $attsOpts, oldHtmlspecialchars($_text));
 			}
-		} else{
+		} else {
 			// options of select Menu
 			$options = makeArrayFromCSV($values);
 			if(isset($atts['xml'])){
@@ -325,7 +323,7 @@ abstract class we_html_tools{
 			if(!$permission){
 				$disabled = ' disabled="disabled "';
 				$attribs .= $disabled;
-			} else{
+			} else {
 				$disabled = '';
 			}
 			$out = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' .
@@ -336,7 +334,7 @@ abstract class we_html_tools{
 			}
 			$out .= '</select></td></tr></table>';
 			return $out;
-		} else{
+		} else {
 			$_ext = $extensions[0];
 			return self::hidden($name, $_ext) . '<b class="defaultfont">' . $_ext . '</b>';
 		}
@@ -364,42 +362,42 @@ abstract class we_html_tools{
 	}
 
 	static function hidden($name, $value, $attribs = null){
-		$attribute = "";
+		$attribute = '';
 		if(isset($attribs) && is_array($attribs)){
 			foreach($attribs as $key => $val){
 				$attribute .= $key . '="' . $val . '" ';
 			}
 		} if(XHTML_DEFAULT){
 			$tagende = '/>';
-		} else{
+		} else {
 			$tagende = '>';
 		}
 		return '<input type="hidden" value="' . $value . '" name="' . $name . '" ' . $attribute . $tagende;
 	}
 
 	static function we_getDayPos($format){
-		return max(self::findChar($format, "d"), self::findChar($format, "D"), self::findChar($format, "j"));
+		return max(self::findChar($format, 'd'), self::findChar($format, 'D'), self::findChar($format, 'j'));
 	}
 
 	static function we_getMonthPos($format){
-		return max(self::findChar($format, "m"), self::findChar($format, "M"), self::findChar($format, "n"), self::findChar($format, "F"));
+		return max(self::findChar($format, 'm'), self::findChar($format, 'M'), self::findChar($format, 'n'), self::findChar($format, 'F'));
 	}
 
 	static function we_getYearPos($format){
-		return max(self::findChar($format, "y"), self::findChar($format, "Y"));
+		return max(self::findChar($format, 'y'), self::findChar($format, 'Y'));
 	}
 
 	static function we_getHourPos($format){
-		return max(self::findChar($format, "g"), self::findChar($format, "G"), self::findChar($format, "h"), self::findChar($format, "H"));
+		return max(self::findChar($format, 'g'), self::findChar($format, 'G'), self::findChar($format, 'h'), self::findChar($format, 'H'));
 	}
 
 	static function we_getMinutePos($format){
-		return self::findChar($format, "i");
+		return self::findChar($format, 'i');
 	}
 
 	static function findChar($in, $searchChar){
 		$pos = 0;
-		while(($pos = strpos($in, $searchChar, $pos)) !== FALSE) {
+		while(($pos = strpos($in, $searchChar, $pos)) !== FALSE){
 			if(substr($in, $pos - 1, 1) != '\\'){
 				return $pos;
 			}
@@ -408,16 +406,10 @@ abstract class we_html_tools{
 		return -1;
 	}
 
-	static function getDateInput2($name, $time = "", $setHot = false, $format = "", $onchange = "", $class = "weSelect", $xml = "", $minyear = "", $maxyear = "", $style = ""){
-		$_attsSelect = array();
-		$_attsOption = array();
-		$_attsHidden = array();
+	static function getDateInput2($name, $time = '', $setHot = false, $format = '', $onchange = '', $class = 'weSelect', $xml = '', $minyear = '', $maxyear = '', $style = ''){
+		$_attsSelect = $_attsOption = $_attsHidden =
+			(empty($xml) ? array() : array('xml' => $xml));
 
-		if(!empty($xml)){
-			$_attsSelect['xml'] = $xml;
-			$_attsOption['xml'] = $xml;
-			$_attsHidden['xml'] = $xml;
-		}
 		if(!empty($class)){
 			$_attsSelect['class'] = $class;
 		}
@@ -438,11 +430,11 @@ abstract class we_html_tools{
 			$minute = $time->format('i');
 		} else if($time){
 			$time = intval($time);
-			$day = intval(date("j", $time));
-			$month = intval(date("n", $time));
-			$year = intval(date("Y", $time));
-			$hour = intval(date("G", $time));
-			$minute = intval(date("i", $time));
+			$day = intval(date('j', $time));
+			$month = intval(date('n', $time));
+			$year = intval(date('Y', $time));
+			$hour = intval(date('G', $time));
+			$minute = intval(date('i', $time));
 		}
 
 		$_dayPos = self::we_getDayPos($format);
@@ -458,23 +450,23 @@ abstract class we_html_tools{
 		$_showMinute = true;
 
 		$name = preg_replace('/^(.+)]$/', '\1%s]', $name);
-		if(($format == "") || $_dayPos > -1){
+		if(empty($format) || $_dayPos > -1){
 			$days = '';
 			for($i = 1; $i <= 31; $i++){
 				$_atts2 = ($time && $day == $i) ? array('selected' => 'selected') : array();
-				$days .= getHtmlTag('option', array_merge($_attsOption, $_atts2), sprintf("%02d", $i));
+				$days .= getHtmlTag('option', array_merge($_attsOption, $_atts2), sprintf('%02d', $i));
 			}
 			$daySelect = getHtmlTag(
 					'select', array_merge($_attsSelect, array(
-					'name' => sprintf($name, "_day"), 'id' => sprintf($name, "_day")
+					'name' => sprintf($name, '_day'), 'id' => sprintf($name, '_day')
 					)), $days, true) . '&nbsp;';
-		} else{
+		} else {
 			$daySelect = getHtmlTag(
 				'input', array_merge(
 					$_attsHidden, array(
 				'type' => 'hidden',
-				'name' => sprintf($name, "_day"),
-				'id' => sprintf($name, "_day"),
+				'name' => sprintf($name, '_day'),
+				'id' => sprintf($name, '_day'),
 				'value' => $day
 			)));
 			$_showDay = false;
@@ -492,7 +484,7 @@ abstract class we_html_tools{
 						$val = g_l('date', '[month][short][' . ($i - 1) . ']');
 						break;
 					default:
-						$val = sprintf("%02d", $i);
+						$val = sprintf('%02d', $i);
 				}
 				$_atts2 = ($time && $month == $i) ? array('selected' => 'selected', 'value' =>
 					$i) : array('value' => $i);
@@ -500,99 +492,99 @@ abstract class we_html_tools{
 			}
 			$monthSelect = getHtmlTag(
 					'select', array_merge($_attsSelect, array(
-					'name' => sprintf($name, "_month"), 'id' => sprintf($name, "_month")
+					'name' => sprintf($name, '_month'), 'id' => sprintf($name, '_month')
 					)), $months, true) . '&nbsp;';
-		} else{
+		} else {
 			$monthSelect = getHtmlTag(
 				'input', array_merge(
 					$_attsHidden, array(
 				'type' => 'hidden',
-				'name' => sprintf($name, "_month"),
-				'id' => sprintf($name, "_month"),
+				'name' => sprintf($name, '_month'),
+				'id' => sprintf($name, '_month'),
 				'value' => $month
 			)));
 			$_showMonth = false;
 		}
-		if(($format == "") || $_yearPos > -1){
+		if(empty($format) || $_yearPos > -1){
 			$years = '';
-			if($minyear == ""){
+			if(empty($minyear)){
 				$minyear = 1970;
 			}
-			if($maxyear == ""){
-				$maxyear = abs(date("Y") + 100);
+			if(empty($maxyear)){
+				$maxyear = abs(date('Y') + 100);
 			}
 			for($i = $minyear; $i <= $maxyear; $i++){
 				$_atts2 = ($time && $year == $i) ? array('selected' => 'selected') : array();
-				$years .= getHtmlTag('option', array_merge($_attsOption, $_atts2), sprintf("%02d", $i));
+				$years .= getHtmlTag('option', array_merge($_attsOption, $_atts2), sprintf('%02d', $i));
 			}
 			$yearSelect = getHtmlTag(
 					'select', array_merge($_attsSelect, array(
-					'name' => sprintf($name, "_year"), 'id' => sprintf($name, "_year")
+					'name' => sprintf($name, '_year'), 'id' => sprintf($name, '_year')
 					)), $years, true) . '&nbsp;';
-		} else{
+		} else {
 			$yearSelect = getHtmlTag(
 				'input', array_merge(
 					$_attsHidden, array(
 				'type' => 'hidden',
-				'name' => sprintf($name, "_year"),
-				'id' => sprintf($name, "_year"),
+				'name' => sprintf($name, '_year'),
+				'id' => sprintf($name, '_year'),
 				'value' => $year
 			)));
 			$_showYear = false;
 		}
 
-		if(($format == "") || $_hourPos > -1){
+		if(empty($format) || $_hourPos > -1){
 			$hours = '';
 			for($i = 0; $i <= 23; $i++){
 				$_atts2 = ($time && $hour == $i) ? array('selected' => 'selected') : array();
-				$hours .= getHtmlTag('option', array_merge($_attsOption, $_atts2), sprintf("%02d", $i));
+				$hours .= getHtmlTag('option', array_merge($_attsOption, $_atts2), sprintf('%02d', $i));
 			}
 			$hourSelect = getHtmlTag(
 					'select', array_merge($_attsSelect, array(
-					'name' => sprintf($name, "_hour"), 'id' => sprintf($name, "_hour")
+					'name' => sprintf($name, '_hour'), 'id' => sprintf($name, '_hour')
 					)), $hours, true) . '&nbsp;';
-		} else{
+		} else {
 			$hourSelect = getHtmlTag(
 				'input', array_merge(
 					$_attsHidden, array(
 				'type' => 'hidden',
-				'name' => sprintf($name, "_hour"),
-				'id' => sprintf($name, "_hour"),
+				'name' => sprintf($name, '_hour'),
+				'id' => sprintf($name, '_hour'),
 				'value' => $hour
 			)));
 			$_showHour = false;
 		}
 
-		if(($format == "") || $_minutePos > -1){
+		if(empty($format) || $_minutePos > -1){
 			$minutes = '';
 			for($i = 0; $i <= 59; $i++){
 				$_atts2 = ($time && $minute == $i) ? array('selected' => 'selected') : array();
-				$minutes .= getHtmlTag('option', array_merge($_attsOption, $_atts2), sprintf("%02d", $i));
+				$minutes .= getHtmlTag('option', array_merge($_attsOption, $_atts2), sprintf('%02d', $i));
 			}
 			$minSelect = getHtmlTag(
 					'select', array_merge($_attsSelect, array(
-					'name' => sprintf($name, "_minute"), 'id' => sprintf($name, "_minute")
+					'name' => sprintf($name, '_minute'), 'id' => sprintf($name, '_minute')
 					)), $minutes, true) . '&nbsp;';
-		} else{
+		} else {
 			$minSelect = getHtmlTag(
 				'input', array_merge(
 					$_attsHidden, array(
 				'type' => 'hidden',
-				'name' => sprintf($name, "_minute"),
-				'id' => sprintf($name, "_minute"),
+				'name' => sprintf($name, '_minute'),
+				'id' => sprintf($name, '_minute'),
 				'value' => $minute
 			)));
 			$_showMinute = false;
 		}
 
 		$_datePosArray = array(
-			($_dayPos == -1) ? "d" : $_dayPos => $daySelect,
-			($_monthPos == -1) ? "m" : $_monthPos => $monthSelect,
-			($_yearPos == -1) ? "y" : $_yearPos => $yearSelect
+			($_dayPos == -1) ? 'd' : $_dayPos => $daySelect,
+			($_monthPos == -1) ? 'm' : $_monthPos => $monthSelect,
+			($_yearPos == -1) ? 'y' : $_yearPos => $yearSelect
 		);
 
 		$_timePosArray = array(
-			($_hourPos == -1) ? "h" : $_hourPos => $hourSelect, ($_minutePos == -1) ? "i" : $_minutePos => $minSelect
+			($_hourPos == -1) ? 'h' : $_hourPos => $hourSelect, ($_minutePos == -1) ? 'i' : $_minutePos => $minSelect
 		);
 
 		ksort($_datePosArray);
@@ -606,7 +598,7 @@ abstract class we_html_tools{
 				$retVal .= $foo;
 			}
 			$retVal .= '</td></tr>';
-		} else{
+		} else {
 			foreach($_datePosArray as $foo){
 				$retVal .= $foo;
 			}
@@ -617,7 +609,7 @@ abstract class we_html_tools{
 				$retVal .= $foo;
 			}
 			$retVal .= '</td></tr>';
-		} else{
+		} else {
 			foreach($_timePosArray as $foo){
 				$retVal .= $foo;
 			}
@@ -626,56 +618,66 @@ abstract class we_html_tools{
 		return $retVal;
 	}
 
+	/* 	public static function getHTMLDocument($body = '', $extraHead = '', $title){
+	  return we_html_element::htmlDocType() . we_html_element::htmlHtml(
+	  we_html_element::htmlHead(
+	  self::getHtmlInnerHead($title) . STYLESHEET . $extraHead
+	  ) . ($body ? $body : we_html_element::htmlBody())
+	  );
+	  } */
+
 	public static function htmlTop($title = 'webEdition', $charset = '', $doctype = ''){
 		self::headerCtCharset('text/html', ($charset ? $charset : $GLOBALS['WE_BACKENDCHARSET']));
 		print self::getHtmlTop($title, $charset, $doctype);
 	}
 
-	public static function getHtmlTop($title = 'webEdition', $charset = '', $doctype = '', $expand = false){
+	public static function getHtmlTop($title = 'webEdition', $charset = '', $doctype = '', $expand = false, $closeHtml = false, $closeHead = false){
 		return we_html_element::htmlDocType($doctype) .
 			we_html_element::htmlhtml(we_html_element::htmlHead(
-					self::getHtmlInnerHead($title, $charset, $expand), false)
-				, false);
+					self::getHtmlInnerHead($title, $charset, $expand), $closeHead)
+				, $closeHtml);
 	}
 
 	public static function getHtmlInnerHead($title = 'webEdition', $charset = '', $expand = false){
 		return we_html_element::htmlTitle($_SERVER['SERVER_NAME'] . ' ' . $title) .
 			we_html_element::htmlMeta(array(
-				"http-equiv" => "Expires", "content" => gmdate("D, d M Y H:i:s") . " GMT"
+				'http-equiv' => 'Expires', 'content' => gmdate('D, d M Y H:i:s') . ' GMT'
 			)) .
 			we_html_element::htmlMeta(array(
-				"http-equiv" => "Cache-Control", "content" => 'no-cache'
+				'http-equiv' => 'Cache-Control', 'content' => 'no-cache'
 			)) .
 			we_html_element::htmlMeta(array(
-				"http-equiv" => "pragma", "content" => "no-cache"
+				'http-equiv' => 'pragma', 'content' => 'no-cache'
 			)) .
 			self::htmlMetaCtCharset('text/html', ($charset ? $charset : $GLOBALS['WE_BACKENDCHARSET'])) .
 			we_html_element::htmlMeta(array(
-				"http-equiv" => "imagetoolbar", "content" => "no"
+				'http-equiv' => 'imagetoolbar', 'content' => 'no'
 			)) .
 			we_html_element::htmlMeta(array(
-				"name" => "generator", "content" => 'webEdition'
+				'name' => 'generator', 'content' => 'webEdition'
 			)) .
 			we_html_element::linkElement(array('rel' => 'SHORTCUT ICON', 'href' => IMAGE_DIR . 'webedition.ico')) .
 			($expand ?
-				we_html_element::jsElement(weFile::load(JS_PATH . "we_showMessage.js")) .
-				we_html_element::jsElement(weFile::load(JS_PATH . "attachKeyListener.js")) :
-				we_html_element::jsScript(JS_DIR . "we_showMessage.js") .
-				we_html_element::jsScript(JS_DIR . "attachKeyListener.js")
+				we_html_element::jsElement(weFile::load(JS_PATH . 'we_showMessage.js')) .
+				we_html_element::jsElement(weFile::load(JS_PATH . 'attachKeyListener.js')) :
+				we_html_element::jsScript(JS_DIR . 'we_showMessage.js') .
+				we_html_element::jsScript(JS_DIR . 'attachKeyListener.js')
 			);
 	}
 
 	static function htmlMetaCtCharset($content, $charset){
 		$GLOBALS['we']['PageCharset'] = $charset;
 		return we_html_element::htmlMeta(array(
-				"http-equiv" => "content-type",
-				"content" => $content . '; charset=' . $charset
+				'http-equiv' => 'content-type',
+				'content' => $content . '; charset=' . $charset
 		));
 	}
 
-	static function headerCtCharset($content, $charset){
+	static function headerCtCharset($content, $charset, $skipsent = false){
 		$GLOBALS['we']['PageCharset'] = $charset;
-		header('Content-Type: ' . $content . '; charset=' . $charset);
+		if(!$skipsent || ($skipsent && !headers_sent())){
+			header('Content-Type: ' . $content . '; charset=' . $charset);
+		}
 	}
 
 	/**
@@ -691,34 +693,34 @@ abstract class we_html_tools{
 	 * @param string $script
 	 * @return string
 	 */
-	static function htmlYesNoCancelDialog($text = "", $img = "", $yes = "", $no = "", $cancel = "", $yesHandler = "", $noHandler = "", $cancelHandler = "", $script = ""){
-		$cancelButton = ($cancel != "" ? we_button::create_button("cancel", "javascript:$cancelHandler") : "");
-		$noButton = ($no != "" ? we_button::create_button("no", "javascript:$noHandler") : "");
-		$yesButton = ($yes != "" ? we_button::create_button("yes", "javascript:$yesHandler") : "");
+	static function htmlYesNoCancelDialog($text = '', $img = '', $yes = '', $no = '', $cancel = '', $yesHandler = '', $noHandler = '', $cancelHandler = '', $script = ''){
+		$cancelButton = (empty($cancel) ? '' : we_button::create_button('cancel', 'javascript:' . $cancelHandler));
+		$noButton = (empty($no) ? '' : we_button::create_button('no', 'javascript:' . $noHandler));
+		$yesButton = (empty($yes) ? '' : we_button::create_button('yes', 'javascript:' . $yesHandler) );
 
 
 		$content = new we_html_table(array(
-			"cellpadding" => 10, "cellspacing" => 0, "border" => 0
-			), 1, ($img != "" ? 2 : 1));
+			'cellpadding' => 10, 'cellspacing' => 0, 'border' => 0
+			), 1, (empty($img) ? 1 : 2));
 
-		if($img != "" && file_exists($_SERVER['DOCUMENT_ROOT'] . $img)){
+		if(!empty($img) && file_exists($_SERVER['DOCUMENT_ROOT'] . $img)){
 			$size = getimagesize($_SERVER['DOCUMENT_ROOT'] . $img);
 			$content->setCol(
 				0, 0, array(
-				"valign" => "top"
+				'valign' => 'top'
 				), we_html_element::htmlImg(
 					array(
-						"src" => $img, "border" => 0, "width" => $size[0], "height" => $size[1]
+						'src' => $img, 'border' => 0, 'width' => $size[0], 'height' => $size[1]
 			)));
 		}
 
-		$content->setCol(0, ($img != "" ? 1 : 0), array(
-			"class" => "defaultfont"
+		$content->setCol(0, (empty($img) ? 0 : 1), array(
+			'class' => 'defaultfont'
 			), $text);
 
 		return self::htmlDialogLayout(
 				(empty($script) ? '' : we_html_element::jsElement($script)) . $content->getHtml()
-				, "", we_button::position_yes_no_cancel($yesButton, $noButton, $cancelButton), "99%", "0");
+				, '', we_button::position_yes_no_cancel($yesButton, $noButton, $cancelButton), '99%', 0);
 	}
 
 	static function groupArray(array $arr, $sort = true, $len = 1){
@@ -738,7 +740,7 @@ abstract class we_html_tools{
 		return $tmp;
 	}
 
-	static function htmlSelect($name, $values, $size = 1, $selectedIndex = "", $multiple = false, $attribs = "", $compare = "value", $width = "", $cls = "defaultfont", $oldHtmlspecialchars = true){
+	static function htmlSelect($name, $values, $size = 1, $selectedIndex = '', $multiple = false, $attribs = '', $compare = 'value', $width = '', $cls = 'defaultfont', $oldHtmlspecialchars = true){
 		$ret = '<select class="weSelect ' . $cls . '" name="' . trim($name) . '" size="' . abs($size) . '"' . ($multiple ? ' multiple="multiple"' : '') . ($attribs ? " $attribs" : "") . ($width ? ' style="width: ' . $width . 'px"' : '') . '>' . "\n";
 		$selIndex = makeArrayFromCSV($selectedIndex);
 		$optgroup = false;
@@ -769,19 +771,19 @@ abstract class we_html_tools{
 	  $useHtmlSpecialChars: true or false
 	 */
 
-	static function htmlAlertAttentionBox($text, $type = 0, $width = 0, $useHtmlSpecialChars = true, $clip = 0){
+	static function htmlAlertAttentionBox($text, $type = self::TYPE_NONE, $width = 0, $useHtmlSpecialChars = true, $clip = 0){
 		switch($type){
-			case 1 :
-				$icon = "alert";
+			case self::TYPE_ALERT:
+				$icon = 'alert';
 				break;
-			case 2 :
-				$icon = "info";
+			case self::TYPE_INFO:
+				$icon = 'info';
 				break;
-			case 3 :
-				$icon = "question";
+			case self::TYPE_QUESTION:
+				$icon = 'question';
 				break;
 			default :
-				$icon = "";
+				$icon = '';
 		}
 
 		$text = ($useHtmlSpecialChars) ? oldHtmlspecialchars($text, ENT_COMPAT, 'ISO-8859-1', false) : $text;

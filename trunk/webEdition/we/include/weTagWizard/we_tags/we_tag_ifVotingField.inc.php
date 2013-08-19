@@ -1,10 +1,35 @@
 <?php
+
 $this->NeedsEndTag = true;
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 $this->Groups[] = 'if_tags';
-$this->Module='voting';
+$this->Module = 'voting';
 
-$this->Attributes[] = new weTagData_selectAttribute('name', array(new weTagDataOption('question', false, ''), new weTagDataOption('answer', false, ''), new weTagDataOption('result', false, ''), new weTagDataOption('id', false, ''), new weTagDataOption('date', false, '')), true, '');
-$this->Attributes[] = new weTagData_selectAttribute('type', array(new weTagDataOption('text', false, ''), new weTagDataOption('radio', false, ''), new weTagDataOption('checkbox', false, ''), new weTagDataOption('select', false, ''), new weTagDataOption('count', false, ''), new weTagDataOption('percent', false, ''), new weTagDataOption('total', false, ''), new weTagDataOption('answer', false, ''), new weTagDataOption('voting', false, ''),new weTagDataOption('textinput', false, ''),new weTagDataOption('textarea', false, ''), new weTagDataOption('image', false, ''),new weTagDataOption('media', false, '')), false, '');
+$this->Attributes[] = new weTagData_selectAttribute('name', array(new weTagDataOption('question'),
+	new weTagDataOption('answer'),
+	new weTagDataOption('result'),
+	new weTagDataOption('id'),
+	new weTagDataOption('date'),
+	), true, '');
+$this->Attributes[] = new weTagData_selectAttribute('type', array(new weTagDataOption('text'),
+	new weTagDataOption('radio'),
+	new weTagDataOption('checkbox'),
+	new weTagDataOption('select'),
+	new weTagDataOption('count'),
+	new weTagDataOption('percent'),
+	new weTagDataOption('total'),
+	new weTagDataOption('answer'),
+	new weTagDataOption('voting'),
+	new weTagDataOption('textinput'),
+	new weTagDataOption('textarea'),
+	new weTagDataOption('image'),
+	new weTagDataOption('media'),
+	), false, '');
 $this->Attributes[] = new weTagData_textAttribute('match', true, '');
-$this->Attributes[] = new weTagData_selectAttribute('operator', array(new weTagDataOption('equal', false, ''), new weTagDataOption('less', false, ''), new weTagDataOption('less|equal', false, ''), new weTagDataOption('greater', false, ''), new weTagDataOption('greater|equal', false, ''), new weTagDataOption('contains', false, '')), false, '');
+$this->Attributes[] = new weTagData_selectAttribute('operator', array(new weTagDataOption('equal'),
+	new weTagDataOption('less'),
+	new weTagDataOption('less|equal'),
+	new weTagDataOption('greater'),
+	new weTagDataOption('greater|equal'),
+	new weTagDataOption('contains'),
+	), false, '');

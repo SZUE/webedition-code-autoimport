@@ -108,7 +108,7 @@ if(isset($_REQUEST['we_transaction'])){ //  initialise Document
 			print STYLESHEET;
 			print '</head>
                 <body>';
-			print we_html_tools::htmlAlertAttentionBox(sprintf(g_l('validation', '[connection_problems]'), $http_response->getHttp_answer()), 1, 0, false);
+			print we_html_tools::htmlAlertAttentionBox(sprintf(g_l('validation', '[connection_problems]'), $http_response->getHttp_answer()), we_html_tools::TYPE_ALERT, 0, false);
 			print '</body></html>';
 		}
 	} else{

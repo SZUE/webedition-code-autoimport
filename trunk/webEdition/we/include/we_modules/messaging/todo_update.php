@@ -38,7 +38,6 @@ $messaging = new we_messaging($_SESSION['weS']['we_data'][$_REQUEST['we_transact
 $messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
 $messaging->init($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
 
-
 if($_REQUEST['todo_status'] != $messaging->selected_message['hdrs']['status']){
 	$arr['todo_status'] = $_REQUEST['todo_status'];
 }
@@ -58,7 +57,6 @@ we_html_tools::htmlTop($heading);
 print STYLESHEET . we_html_element::jsElement('
 			if (opener && opener.top && opener.top.content) {
 				top.opener.top.content.update_messaging();
-				top.opener.top.content.update_msg_quick_view();
 			}');
 ?>
 </head>
@@ -71,7 +69,7 @@ print STYLESHEET . we_html_element::jsElement('
 							' . $res['msg'] . '</td>
 					</tr>
 				</table>';
-	echo we_html_tools::htmlDialogLayout($tbl, $heading, we_button::create_button("ok", "javascript:top.window.close()"), "100%", "30", "", "hidden");
+	echo we_html_tools::htmlDialogLayout($tbl, $heading, we_button::create_button("ok", "javascript:top.window.close()"), "100%", 30, "", "hidden");
 	?>
 </body>
 

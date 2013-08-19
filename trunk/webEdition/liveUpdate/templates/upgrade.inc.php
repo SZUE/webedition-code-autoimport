@@ -46,7 +46,6 @@ $content = '
 	<td>' . g_l('liveUpdate','[upgrade][lookForUpdate]') . '</td>
 	<td>' . $searchButton . '</td>
 </tr>
-</table>
-';
+</table>';
 
 print liveUpdateTemplates::getHtml(g_l('liveUpdate','[upgrade][headline]'), $content);

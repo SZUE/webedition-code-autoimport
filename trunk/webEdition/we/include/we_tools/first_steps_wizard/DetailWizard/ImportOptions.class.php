@@ -196,7 +196,7 @@ EOF;
 				$ImportDocuments = 1;
 				$DocumentsPathID = $_REQUEST['DocumentPathID'];
 				$DocumentsPath = id_to_path($DocumentsPathID, FILE_TABLE);
-				$_SESSION['we_fsw_document_path'] = $DocumentsPath;
+				$_SESSION['weS']['we_fsw_document_path'] = $DocumentsPath;
 
 				if(isset($_REQUEST['le_navigation_use'])){
 					$ImportNavigation = 1;

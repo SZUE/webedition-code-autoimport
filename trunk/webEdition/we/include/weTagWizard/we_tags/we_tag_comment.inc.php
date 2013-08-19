@@ -1,4 +1,5 @@
 <?php
+
 //NOTE you are inside the constructor of weTagData.class.php
 
 $this->NeedsEndTag = true;
@@ -6,4 +7,8 @@ $this->NeedsEndTag = true;
 //$this->Module = '';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
-$this->Attributes[] = new weTagData_choiceAttribute('type', array(new weTagDataOption('xml', false, ''), new weTagDataOption('html', false, ''), new weTagDataOption('js', false, ''), new weTagDataOption('php', false, '')), false,false, '');
+$this->Attributes[] = new weTagData_choiceAttribute('type', array(new weTagDataOption('xml'),
+	new weTagDataOption('html'),
+	new weTagDataOption('js'),
+	new weTagDataOption('php'),
+	), false, false, '');

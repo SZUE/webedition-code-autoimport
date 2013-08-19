@@ -31,7 +31,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
 we_html_tools::protect();
 
 if(($content = weFile::load($_REQUEST["filepath"] . '?' . urldecode($_REQUEST["paras"]))) !== false){
-	print we_SEEM::parseDocument($content, $_REQUEST["filepath"]);
+	print we_SEEM::parseDocument($content);
 } else{
 
 

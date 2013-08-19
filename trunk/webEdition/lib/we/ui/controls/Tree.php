@@ -158,21 +158,24 @@ class we_ui_controls_Tree extends we_ui_abstract_AbstractElement{
 		if(!empty($nodes)){
 			if(!array_key_exists('Published', $nodes[0])){
 				$addPublished = true;
-			} else{
+			} else {
 				$addPublished = false;
 			}
 			if(!array_key_exists('Status', $nodes[0])){
 				$addStatus = true;
-			} else{
+			} else {
 				$addStatus = false;
 			}
 			foreach($nodes as &$node){
-				if($addPublished)
+				if($addPublished){
 					$node['Published'] = 1;
-				if($addStatus)
+				}
+				if($addStatus){
 					$node['Status'] = '';
-				if($node['IsFolder'])
+				}
+				if($node['IsFolder']){
 					$node['Published'] = 1;
+				}
 			}
 		}
 		//we_util_Strings::p_r($nodes);
@@ -250,30 +253,29 @@ class we_ui_controls_Tree extends we_ui_abstract_AbstractElement{
 			$outClasses[] = $Status;
 		}
 		if(!empty($outClasses)){
-			$ClassesStr = trim(implode(' ', $outClasses,' '));
+			$ClassesStr = trim(implode(' ', $outClasses, ' '));
 		} else {
-			$ClassesStr ='';
+			$ClassesStr = '';
 		}
 
 		$doOnClick = "alert(&quot;Pub:-" . $Published . "- Status:-" . $Status . "- classes:" . $ClassesStr . "-&quot;);";
 		if(!empty($ClassesStr)){
 			$outClass = 'class=\"' . $ClassesStr . '\"';
 		} else {
-			$outClass ='';
+			$outClass = '';
 		}
 
 		return 'var myobj = { ' .
-			'label: "<span title=\"' . $id . '\" ' . $outClass . ' id=\"spanText_' . $this->_id . '_' . $id . '\">' . addslashes(oldHtmlspecialchars($text)) . '</span>"'.
-		//$out .= ',';
-		//$out .= 'href: "javascript:'.$doOnClick.'"';
-		','.
-		'id: "' . $id . '"'.
-		','.
-		'text: "' . addslashes(oldHtmlspecialchars($text)) . '"'.
-		','.
-		'title: "' . $id . '"'.
-		'}; ';
-
+			'label: "<span title=\"' . $id . '\" ' . $outClass . ' id=\"spanText_' . $this->_id . '_' . $id . '\">' . addslashes(oldHtmlspecialchars($text)) . '</span>"' .
+			//$out .= ',';
+			//$out .= 'href: "javascript:'.$doOnClick.'"';
+			',' .
+			'id: "' . $id . '"' .
+			',' .
+			'text: "' . addslashes(oldHtmlspecialchars($text)) . '"' .
+			',' .
+			'title: "' . $id . '"' .
+			'}; ';
 	}
 
 	/**
@@ -284,26 +286,15 @@ class we_ui_controls_Tree extends we_ui_abstract_AbstractElement{
 	 * @return string
 	 */
 	public function getNodeObjectSuggest($id, $text, $Classes = '', $Status = ''){
-		$doOnClick = "alert(&quot;Status:-" . $Status . "- classes:" . $Classes . "-&quot;);";
-		if($Classes != ''){
-			$outClass = 'class=\"' . $Classes . '\"';
-		} else
-			$outClass = '';
+		//$doOnClick = "alert(&quot;Status:-" . $Status . "- classes:" . $Classes . "-&quot;);";
+		$outClass = ($Classes != '' ? 'class=\"' . $Classes . '\"' : '');
 
-		$out = 'var myobj = { ';
-		$out .= 'label: "<span title=\"' . $id . '\" ' . $outClass . ' id=\"spanText_' . $this->_id . '_' . $id . '\">' . $text . '</span>"';
-		//$out .= ',';
-		//$out .= 'href: "javascript:'.$doOnClick.'"';
-		$out .= ',';
-		$out .= 'id: "' . $id . '"';
-		$out .= ',';
-		//$out .= 'text: "'.addslashes(oldHtmlspecialchars($text)).'"';
-		$out .= 'text: "' . $text . '"';
-		$out .= ',';
-		$out .= 'title: "' . $id . '"';
-		$out .= '}; ';
-
-		return $out;
+		return 'var myobj = {
+			label: "<span title=\"' . $id . '\" ' . $outClass . ' id=\"spanText_' . $this->_id . '_' . $id . '\">' . $text . '</span>",
+			id: "' . $id . '",
+			text: "' . $text . '",
+			title: "' . $id . '"
+			}; ';
 	}
 
 	/**
@@ -317,16 +308,15 @@ class we_ui_controls_Tree extends we_ui_abstract_AbstractElement{
 		$nodes = $this->getNodes();
 		if(!empty($nodes)){
 			foreach($nodes as $k => $v){
-				$out .= $this->getNodeObject($v['ID'], $v['Text'], $v['Published'], $v['Status']);
-				$out .= 'var tmpNode = new YAHOO.widget.TextNode(myobj, root, false);';
-				$out .= 'tmpNode.labelStyle = "' . $this->getTreeIconClass($v['ContentType']) . '";';
-				if($this->getTreeIconClass($v['ContentType']) !== 'folder'){
-					$out .= 'tmpNode.isLeaf = true;';
-				}
+				$out .= $this->getNodeObject($v['ID'], $v['Text'], $v['Published'], $v['Status']) .
+					'var tmpNode = new YAHOO.widget.TextNode(myobj, root, false);' .
+					'tmpNode.labelStyle = "' . $this->getTreeIconClass($v['ContentType']) . '";' .
+					($this->getTreeIconClass($v['ContentType']) !== 'folder' ? 'tmpNode.isLeaf = true;' : '');
+
 				$session = new Zend_Session_Namespace($this->_sessionName);
 				if(in_array($v['ID'], $session->openNodes) && $v['IsFolder']){
-					$out .= 'YAHOO.widget.TreeView.getNode(\'' . $this->_id . '\',tmpNode.index).toggle();';
-					$out .= 'tmpNode.labelStyle = "' . $this->getTreeIconClass('folderOpen') . '";';
+					$out .= 'YAHOO.widget.TreeView.getNode(\'' . $this->_id . '\',tmpNode.index).toggle();' .
+						'tmpNode.labelStyle = "' . $this->getTreeIconClass('folderOpen') . '";';
 				}
 			}
 		}
@@ -343,13 +333,10 @@ class we_ui_controls_Tree extends we_ui_abstract_AbstractElement{
 		$controller = Zend_Controller_Front::getInstance();
 		$appPath = $controller->getParam('appPath');
 		include($appPath . '/conf/meta.conf.php');
-		if(substr($metaInfo['datasource'], 0, 6) === 'table:' && we_io_DB::tableExists($metaInfo['maintable'])){
-			return 'table';
-		} elseif(substr($metaInfo['datasource'], 0, 7) === 'custom:'){
-			return 'custom';
-		}
-
-		return 'custom';
+		return (substr($metaInfo['datasource'], 0, 6) === 'table:' && we_io_DB::tableExists($metaInfo['maintable']) ?
+				'table' :
+				(substr($metaInfo['datasource'], 0, 7) === 'custom:' ?
+					'custom' : 'custom'));
 	}
 
 	/**
@@ -497,3 +484,4 @@ class we_ui_controls_Tree extends we_ui_abstract_AbstractElement{
 	}
 
 }
+

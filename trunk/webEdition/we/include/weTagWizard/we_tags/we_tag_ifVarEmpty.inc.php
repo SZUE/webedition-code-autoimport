@@ -8,7 +8,18 @@ $this->Groups[] = 'if_tags';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
 $this->Attributes[] = new weTagData_textAttribute('match', true, '');
-$this->Attributes[] = new weTagData_selectAttribute('doc', array(new weTagDataOption('self', false, ''), new weTagDataOption('top', false, ''), new weTagDataOption('document', false, ''), new weTagDataOption('object', false, '')), false, '');
-$this->Attributes[] = new weTagData_selectAttribute('type', array(new weTagDataOption('request', false, ''), new weTagDataOption('post', false, ''),new weTagDataOption('get', false, ''), new weTagDataOption('global', false, ''), new weTagDataOption('session', false, ''), new weTagDataOption('sessionfield', false, ''), new weTagDataOption('href', false, ''), new weTagDataOption('multiobject', false, 'object')), false, '');
+$this->Attributes[] = new weTagData_selectAttribute('doc', array(new weTagDataOption('self'),
+	new weTagDataOption('top'),
+	new weTagDataOption('document'),
+	new weTagDataOption('object'),
+	), false, '');
+$this->Attributes[] = new weTagData_selectAttribute('type', array(new weTagDataOption('request'),
+	new weTagDataOption('post'),
+	new weTagDataOption('get'),
+	new weTagDataOption('global'),
+	new weTagDataOption('session'),
+	new weTagDataOption('sessionfield'),
+	new weTagDataOption('href'),
+	new weTagDataOption('multiobject', false, 'object')), false, '');
 $this->Attributes[] = new weTagData_selectAttribute('property', weTagData_selectAttribute::getTrueFalse(), false, '');
 $this->Attributes[] = new weTagData_textAttribute('formname', false, '');

@@ -133,42 +133,43 @@ class weCustomer extends weModelBase{
 		$pre = explode('_', $real_name);
 		if(($pre[0] != $real_name) && (!in_array($pre[0], $this->protected)) && (!in_array($pre[0], $this->properties))){
 			$banche = $pre[0];
-			$field = implode("_", array_slice($pre, 1));
+			$field = implode('_', array_slice($pre, 1));
 			return $field;
 		}
 		return $real_name;
 	}
 
 	function getBranches(&$banches, &$fixed, &$other, $mysort = ''){
+		$fixed['ID'] = $this->ID; // Bug Fix #8413 + #8520
+		if(!isset($this->persistent_slots)){
+			return;
+		}
+		$orderedarray = $this->persistent_slots;
+		$sortarray = ($mysort != '' ? makeArrayFromCSV($mysort) : range(0, count($orderedarray) - 1));
 
-		$fixed["ID"] = $this->ID; // Bug Fix #8413 + #8520
-		if(isset($this->persistent_slots)){
-			$orderedarray = $this->persistent_slots;
-			$sortarray = ($mysort != '' ? makeArrayFromCSV($mysort) : range(0, count($orderedarray) - 1));
+		if(count($sortarray) != count($orderedarray)){
 
-			if(count($sortarray) != count($orderedarray)){
-
-				if(count($sortarray) == count($orderedarray) - 1){
-					$sortarray[] = max($sortarray) + 1;
-				} else{
-					$sortarray = range(0, count($orderedarray) - 1);
-				}
+			if(count($sortarray) == count($orderedarray) - 1){
+				$sortarray[] = max($sortarray) + 1;
+			} else{
+				$sortarray = range(0, count($orderedarray) - 1);
 			}
-			$orderedarray = array_combine($sortarray, $orderedarray);
-			ksort($orderedarray);
+		}
+		$orderedarray = array_combine($sortarray, $orderedarray);
+		ksort($orderedarray);
 
-			foreach($orderedarray as $per){
-				$var_value = ((!$this->isnew && isset($this->$per)) ? $var_value = $this->$per : null);
+		$branche = array();
+		foreach($orderedarray as $per){
+			$var_value = ((!$this->isnew && isset($this->$per)) ? $var_value = $this->$per : null);
 
-				$field = $this->transFieldName($per, $branche);
+			$field = $this->transFieldName($per, $branche);
 
-				if($field != $per){
-					$banches[$branche][$field] = $var_value;
-				} else if(in_array($per, $this->properties)){
-					$fixed[$per] = $var_value;
-				} else if(!in_array($per, $this->protected)){
-					$other[$per] = $var_value;
-				}
+			if($field != $per){
+				$banches[$branche][$field] = $var_value;
+			} else if(in_array($per, $this->properties)){
+				$fixed[$per] = $var_value;
+			} else if(!in_array($per, $this->protected)){
+				$other[$per] = $var_value;
 			}
 		}
 	}
@@ -196,17 +197,21 @@ class weCustomer extends weModelBase{
 			$branch = g_l('modules_customer', '[other]');
 		}
 
-		if($branch == g_l('modules_customer', '[common]')){
-			if(is_array($common)){
-				$arr = $common;
-			}
-		} else if($branch == g_l('modules_customer', '[other]')){
-			if(is_array($common)){
-				$arr = $other;
-			}
-		} else{
-			if(isset($branches[$branch]) && is_array($branches[$branch]))
-				$arr = $branches[$branch];
+		switch($branch){
+			case g_l('modules_customer', '[common]'):
+				if(is_array($common)){
+					$arr = $common;
+				}
+				break;
+			case g_l('modules_customer', '[other]'):
+				if(is_array($common)){
+					$arr = $other;
+				}
+				break;
+			default:
+				if(isset($branches[$branch]) && is_array($branches[$branch])){
+					$arr = $branches[$branch];
+				}
 		}
 
 		$ret = array();
@@ -239,19 +244,27 @@ class weCustomer extends weModelBase{
 		$ret = array();
 		$this->db->query('SHOW COLUMNS FROM ' . $this->db->escape($this->table));
 		while($this->db->next_record()) {
-			$record=$this->db->Record;
+			$record = $this->db->Record;
 			switch($record['Type']){
 				case 'int(11)':
-					if(empty($record['Default'])){$record['Default']='0';}
+					if(empty($record['Default'])){
+						$record['Default'] = '0';
+					}
 					break;
 				case 'bigint(20)':
-					if(empty($record['Default'])){$record['Default']='0';}
+					if(empty($record['Default'])){
+						$record['Default'] = '0';
+					}
 					break;
 				case 'date':
-					if(empty($record['Default'])){$record['Default']='0000-00-00';}
+					if(empty($record['Default'])){
+						$record['Default'] = '0000-00-00';
+					}
 					break;
 				case 'datetime':
-					if(empty($record['Default'])){$record['Default']='0000-00-00 00:00:00';}
+					if(empty($record['Default'])){
+						$record['Default'] = '0000-00-00 00:00:00';
+					}
 					break;
 			}
 			$ret[$this->db->f("Field")] = $record;

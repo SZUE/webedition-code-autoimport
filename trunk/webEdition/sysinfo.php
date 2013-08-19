@@ -29,7 +29,7 @@ we_html_tools::protect();
 
 function getInfoTable($_infoArr, $name){
 
-	$_table = new we_html_table(array("width" => "500", "style" => "width: 500px;", "spellspacing" => "2"), 1, 2);
+	$_table = new we_html_table(array("width" => 500, "style" => "width: 500px;", "spellspacing" => 2), 1, 2);
 	$_i = 0;
 
 	foreach($_infoArr as $_k => $_v){
@@ -50,22 +50,22 @@ function getInfoTable($_infoArr, $name){
 			if($_i == 6 && ini_get_bool('short_open_tag')){
 				$_table->setColAttributes(5, 1, array("style" => "border:1px solid red;"));
 			}
-			if($_i == 9 && ini_get_bool('safe_mode'))
+			if($_i == 9 && ini_get_bool('safe_mode')){
 				$_table->setColAttributes(8, 1, array("style" => "border:1px solid grey;"));
+			}
 		}
 	}
 	return $_table->getHtml();
 }
 
 function ini_get_bool($val){
-	$bool = ini_get($val);
-	if($val == "1"){
+	if($val == '1'){
 		return true;
 	}
-	if($val == "0"){
+	if($val == '0'){
 		return false;
 	}
-	switch(strtolower($bool)){
+	switch(strtolower(ini_get($val))){
 		case '1':
 		case 'on':
 		case 'yes':
@@ -127,7 +127,7 @@ function getConnectionTypes(){
 		$_connectionTypes[] = "fopen";
 		$_connectionTypeUsed = "fopen";
 	}
-	if(is_callable("curl_exec")){
+	if(is_callable('curl_exec')){
 		$_connectionTypes[] = "curl";
 		if(count($_connectionTypes) == 1){
 			$_connectionTypeUsed = "curl";
@@ -135,7 +135,7 @@ function getConnectionTypes(){
 	}
 	foreach($_connectionTypes as &$con){
 		if($con == $_connectionTypeUsed){
-			$con = "<u>" . $con . "</u>";
+			$con = '<u>' . $con . '</u>';
 		}
 	}
 	return $_connectionTypes;
@@ -159,15 +159,10 @@ if(strlen($_install_dir) > 35){
 	$_install_dir = substr($_install_dir, 0, 25) . '<acronym title="' . $_install_dir . '">&hellip;</acronym>' . substr($_install_dir, -10);
 }
 
-$weVersion = WE_VERSION;
-if(defined("WE_SVNREV") && WE_SVNREV != '0000'){
-
-	$weVersion .= ' (SVN-Revision: ' . WE_SVNREV . ((defined("WE_VERSION_BRANCH") && WE_VERSION_BRANCH != 'trunk') ? '|' . WE_VERSION_BRANCH : '') . ')';
-}
-if(defined("WE_VERSION_SUPP") && WE_VERSION_SUPP != '')
-	$weVersion .= ' ' . g_l('global', '[' . WE_VERSION_SUPP . ']');
-if(defined("WE_VERSION_SUPP_VERSION") && WE_VERSION_SUPP_VERSION != '0')
-	$weVersion .= WE_VERSION_SUPP_VERSION;
+$weVersion = WE_VERSION .
+	(defined("WE_SVNREV") && WE_SVNREV != '0000' ? ' (SVN-Revision: ' . WE_SVNREV . ((defined("WE_VERSION_BRANCH") && WE_VERSION_BRANCH != 'trunk') ? '|' . WE_VERSION_BRANCH : '') . ')' : '') .
+	(defined("WE_VERSION_SUPP") && WE_VERSION_SUPP != '' ? ' ' . g_l('global', '[' . WE_VERSION_SUPP . ']') : '') .
+	(defined("WE_VERSION_SUPP_VERSION") && WE_VERSION_SUPP_VERSION != '0' ? WE_VERSION_SUPP_VERSION : '');
 
 // GD_VERSION is more precise but only available in PHP 5.2.4 or newer
 if(is_callable("gd_info")){
@@ -251,6 +246,7 @@ $_info = array(
 		'max_input_vars' => (ini_get('max_input_vars') < 2000 ? getWarning('<2000', ini_get('max_input_vars')) : getOK('>=2000', ini_get_message('max_input_vars'))),
 		'session.auto_start' => (ini_get_bool('session.auto_start')) ? getWarning(g_l('sysinfo', "[session.auto_start warning]"), ini_get('session.auto_start')) : getOK('', ini_get_message('session.auto_start')),
 		'Suhosin' => $SuhosinText,
+		'display_errors' => (ini_get_bool('display_errors')) ? getWarning(g_l('sysinfo', '[display_errors warning]'), 'on') : getOK('', ini_get_message('off')),
 	),
 	'MySql' => array(
 		g_l('sysinfo', '[mysql_version]') => (version_compare("5.0.0", getMysqlVer(false)) > 1) ? getWarning(sprintf(g_l('sysinfo', "[dbversion warning]"), getMysqlVer(false)), getMysqlVer(false)) : getOK('', getMysqlVer(false)),
@@ -267,7 +263,6 @@ $_info = array(
 		g_l('sysinfo', '[pcre]') => ((defined("PCRE_VERSION")) ? ( (substr(PCRE_VERSION, 0, 1) < 7) ? getWarning(g_l('sysinfo', "[pcre warning]"), g_l('sysinfo', '[version]') . ' ' . PCRE_VERSION) : g_l('sysinfo', '[version]') . ' ' . PCRE_VERSION ) : getWarning(g_l('sysinfo', '[available]'), g_l('sysinfo', "[pcre_unkown]"))),
 		g_l('sysinfo', '[sdk_db]') => $phpextensionsSDK_DB,
 		g_l('sysinfo', '[phpext]') => (!empty($phpextensionsMissing) ? getWarning(g_l('sysinfo', "[phpext warning2]"), g_l('sysinfo', "[phpext warning]") . implode(', ', $phpextensionsMissing)) : ($phpExtensionsDetectable ? g_l('sysinfo', '[available]') : g_l('sysinfo', '[detectable warning]')) ),
-		'pear Text_Diff' => class_exists('Text_Diff', false) ? getOk('http://pear.php.net/package/Text_Diff/redirected', g_l('sysinfo', '[available]')) : getWarning('http://pear.php.net/package/Text_Diff/redirected', '-'),
 	),
 	'Deprecated' => array(
 		g_l('prefs', '[backwardcompatibility_tagloading]') => (defined('INCLUDE_ALL_WE_TAGS') && INCLUDE_ALL_WE_TAGS) ? getWarning('Deprecated', '1') : getOk('', '0'),

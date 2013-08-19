@@ -112,12 +112,12 @@ if(defined("OBJECT_FILES_TABLE") && we_hasPerm("CAN_SEE_OBJECTFILES"))
 	$dbTableType .= "<td>" . $oChbxObjs . "</td>";
 $dbTableType .= "</tr></table>";
 
-array_push($parts, array(
+$parts[] = array(
 	"headline" => g_l('cockpit', '[type]'), "html" => $dbTableType, "space" => 80
-));
-array_push($parts, array(
+);
+$parts[] = array(
 	"headline" => "", "html" => $oSelCls->getHTML(), "space" => 0
-));
+);
 
 $save_button = we_button::create_button("save", "javascript:save();", false, -1, -1);
 $preview_button = we_button::create_button("preview", "javascript:preview();", false, -1, -1);

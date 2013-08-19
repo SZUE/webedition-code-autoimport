@@ -84,7 +84,7 @@ foreach($customerTableFields as $tblField){
 	}
 }
 
-$tabStatus = new we_html_table(array("border" => "0", "cellpadding" => "2", "cellspacing" => "4"), $rows_num = 5, $cols_num = 17);
+$tabStatus = new we_html_table(array("border" => 0, "cellpadding" => 2, "cellspacing" => 4), $rows_num = 5, $cols_num = 17);
 $i = 0;
 $tabStatus->setCol($i, 0, array("class" => "defaultfont", "style" => "font-weight:bold", "nowrap" => "nowrap", "width" => 110), g_l('modules_shop', '[statusmails][fieldname]'));
 
@@ -125,7 +125,7 @@ $parts = array(
 	),
 );
 
-$tabEMail = new we_html_table(array("border" => "0", "cellpadding" => "2", "cellspacing" => "4"), $rows_num = 4, $cols_num = 6);
+$tabEMail = new we_html_table(array("border" => 0, "cellpadding" => 2, "cellspacing" => 4), $rows_num = 4, $cols_num = 6);
 $tabEMail->setCol(0, 0, array("class" => "defaultfont", "nowrap" => "nowrap", "width" => 220), g_l('modules_shop', '[statusmails][AbsenderAdresse]') .
 	'<br/>' . we_class::htmlTextInput("EMailData[address]", 30, $weShopStatusMails->EMailData['address']));
 $tabEMail->setCol(1, 0, array("class" => "defaultfont", "nowrap" => "nowrap", "width" => 220), g_l('modules_shop', '[statusmails][AbsenderName]') .
@@ -149,7 +149,7 @@ $parts[] = array(
 	'noline' => 1
 );
 $parts[] = array(
-	'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[statusmails][hintEMailDaten]'), 2, 650, false),
+	'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[statusmails][hintEMailDaten]'), we_html_tools::TYPE_INFO, 650, false),
 	'space' => 0,
 	'noline' => 1
 );
@@ -158,7 +158,7 @@ $parts[] = array(
 	'html' => $tabEMail->getHtml(),
 );
 
-$tabSprache = new we_html_table(array("border" => "0", "cellpadding" => "2", "cellspacing" => "4"), $rows_num = 2, $cols_num = 5);
+$tabSprache = new we_html_table(array("border" => 0, "cellpadding" => 2, "cellspacing" => 4), $rows_num = 2, $cols_num = 5);
 $tabSprache->setCol(0, 0, array("class" => "defaultfont", "nowrap" => "nowrap", "width" => 220), we_forms::checkboxWithHidden($weShopStatusMails->LanguageData['useLanguages'], 'LanguageData[useLanguages]', g_l('modules_shop', '[statusmails][useLanguages]'), false, "defaultfont"));
 $tabSprache->setCol(0, 2, array("class" => "defaultfont", "nowrap" => "nowrap", "width" => 220), g_l('modules_shop', '[statusmails][SprachenFeld]') . we_class::htmlSelect('LanguageData[languageField]', $selectFields, 1, $weShopStatusMails->LanguageData['languageField']) . we_forms::checkboxWithHidden($weShopStatusMails->LanguageData['languageFieldIsISO'], 'LanguageData[languageFieldIsISO]', g_l('modules_shop', '[preferences][ISO-Kodiert]'), false, "defaultfont"));
 
@@ -170,7 +170,7 @@ $parts[] = array(
 );
 $parts[] = array(
 	'space' => 0,
-	'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[statusmails][hintSprache]'), 2, 650, false),
+	'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[statusmails][hintSprache]'), we_html_tools::TYPE_INFO, 650, false),
 	'noline' => 1
 );
 $parts[] = array(
@@ -179,10 +179,10 @@ $parts[] = array(
 	'noline' => 1
 );
 $parts[] = array(
-	'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[statusmails][hintISO]'), 2, 650, false),
+	'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[statusmails][hintISO]'), we_html_tools::TYPE_INFO, 650, false),
 	'space' => 0
 );
-$tabDokumente = new we_html_table(array("border" => "0", "cellpadding" => "2", "cellspacing" => "4"), $rows_num = 2, $cols_num = 17);
+$tabDokumente = new we_html_table(array("border" => 0, "cellpadding" => 2, "cellspacing" => 4), $rows_num = 2, $cols_num = 17);
 $i = 0;
 $tabDokumente->setCol($i, 0, array("class" => "defaultfont", "style" => "font-weight:bold", "nowrap" => "nowrap", "width" => 110), g_l('modules_shop', '[statusmails][fieldname]'));
 
@@ -218,7 +218,7 @@ $parts[] = array(
 );
 $parts[] = array(
 	'space' => 0,
-	'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[statusmails][hintDokumente]'), 2, 650, false),
+	'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[statusmails][hintDokumente]'), we_html_tools::TYPE_INFO, 650, false),
 	'noline' => 1
 );
 $parts[] = array(
@@ -234,7 +234,7 @@ print we_html_element::jsElement($jsFunction) .
 	<input type="hidden" name="we_cmd[0]" value="saveShopStatusMails" />';
 
 print we_multiIconBox::getHTML(
-		'weShopStatusMails', "700", $parts, 30, we_button::position_yes_no_cancel(
+		'weShopStatusMails', 700, $parts, 30, we_button::position_yes_no_cancel(
 			we_button::create_button('save', 'javascript:we_cmd(\'save\');'), '', we_button::create_button('cancel', 'javascript:we_cmd(\'close\');')
 		), -1, '', '', false, g_l('modules_shop', '[statusmails][box_headline]'), '', '', 'scroll'
 	);

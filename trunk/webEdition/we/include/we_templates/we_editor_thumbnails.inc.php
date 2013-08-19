@@ -22,9 +22,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 we_html_tools::htmlTop();
-include_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
-print STYLESHEET;
-echo we_html_element::jsScript(JS_DIR . 'windows.js');
+require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
+echo STYLESHEET .
+ we_html_element::jsScript(JS_DIR . 'windows.js');
 ?>
 
 </head>
@@ -41,7 +41,7 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js');
 
 				if(!$_doc){
 					$parts[] = array("headline" => "",
-						"html" => we_html_tools::htmlAlertAttentionBox(g_l('thumbnails', '[no_image_uploaded]'), 2, 700),
+						"html" => we_html_tools::htmlAlertAttentionBox(g_l('thumbnails', '[no_image_uploaded]'), we_html_tools::TYPE_INFO, 700),
 						"space" => 0
 					);
 				} else if(we_image_edit::is_imagetype_read_supported($imgType)){
@@ -67,8 +67,8 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js');
 						$useOrig = $thumbObj->isOriginal();
 
 						if((!$useOrig) && $we_doc->ID && ($we_doc->DocChanged == false) && file_exists($thumbObj->getOutputPath(true))){
-							$src = $thumbObj->getOutputPath(false) . '?rand=' . $randval;
-						} else{
+							$src = $thumbObj->getOutputPath(false, true);
+						} else {
 							$src = WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=show_binaryDoc&amp;we_cmd[1]=' .
 								$we_doc->ContentType . '&amp;we_cmd[2]=' .
 								$we_transaction . '&amp;we_cmd[3]=' . ($useOrig ? "" : $thumbid) . '&amp;rand=' . $randval;
@@ -86,18 +86,18 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js');
 						);
 					}
 					$parts[] = array("headline" => "",
-						"html" => we_html_tools::htmlAlertAttentionBox(g_l('thumbnails', "[add_descriptiontext]"), 2, "700") . '<br><br>' . we_button::create_button("image:btn_add_thumbnail", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('add_thumbnail','" . $we_transaction . "');"),
+						"html" => we_html_tools::htmlAlertAttentionBox(g_l('thumbnails', "[add_descriptiontext]"), we_html_tools::TYPE_INFO, 700) . '<br><br>' . we_button::create_button("image:btn_add_thumbnail", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('add_thumbnail','" . $we_transaction . "');"),
 						"space" => 0
 					);
-				} else{
+				} else {
 					$parts[] = array("headline" => "",
-						"html" => we_html_tools::htmlAlertAttentionBox(g_l('thumbnails', "[format_not_supported]"), 2, "700"),
+						"html" => we_html_tools::htmlAlertAttentionBox(g_l('thumbnails', "[format_not_supported]"), we_html_tools::TYPE_INFO, 700),
 						"space" => 0
 					);
 				}
-			} else{
+			} else {
 				$parts[] = array("headline" => "",
-					"html" => we_html_tools::htmlAlertAttentionBox(g_l('thumbnails', "[add_description_nogdlib]"), 2, "700"),
+					"html" => we_html_tools::htmlAlertAttentionBox(g_l('thumbnails', "[add_description_nogdlib]"), we_html_tools::TYPE_INFO, 700),
 					"space" => 0
 				);
 			}

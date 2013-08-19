@@ -875,8 +875,9 @@ class we_helpers_pdf2text{
 				$max = memory_get_usage();
 			}
 		}
-		if($last)
+		if($last){
 			print('Mem usage ' . round((($max / 1024) / 1024), 3) . ' MiB' . "\n");
+		}
 	}
 
 }

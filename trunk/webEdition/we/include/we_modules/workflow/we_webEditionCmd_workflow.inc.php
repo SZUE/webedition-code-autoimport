@@ -38,7 +38,7 @@
 			break;
 	    case "new_user":
 	    case "exit_workflow":
-        case "reload_workflow":
+        //case "reload_workflow":
         case "save_workflow":
         case "new_workflow":
         case "delete_workflow":

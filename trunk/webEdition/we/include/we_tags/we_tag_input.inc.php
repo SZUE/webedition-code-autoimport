@@ -46,8 +46,7 @@ function we_tag_input($attribs, $content){
 		switch($type){
 			case 'date':
 				$d = abs($GLOBALS['we_doc']->getElement($name));
-				return we_html_tools::getDateInput2(
-						'we_' . $GLOBALS['we_doc']->Name . '_date[' . $name . ']', ($d ? $d : time()), true, $format);
+				return we_html_tools::getDateInput2('we_' . $GLOBALS['we_doc']->Name . '_date[' . $name . ']', ($d ? $d : time()), true, $format);
 			case 'checkbox':
 				$attr = we_make_attribs($attribs, 'name,value,type,_name_orig');
 				return '<input onclick="_EditorFrame.setEditorIsHot(true);this.form.elements[\'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']\'].value=(this.checked ? 1 : \'\');' . ($reload ? (';setScrollTo();top.we_cmd(\'reload_editpage\');') : '') . '" type="checkbox" name="we_' . $GLOBALS['we_doc']->Name . '_attrib_' . $name . '" value="1"' . ($attr ? " $attr" : "") . ($val ? " checked" : "") . ' /><input type="hidden" name="we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']" value="' . $val . '" />';
@@ -58,11 +57,8 @@ function we_tag_input($attribs, $content){
 				$docAttr = weTag_getAttribute('doc', $attribs, 'self');
 				$doc = we_getDocForTag($docAttr);
 				$lang = $doc->Language;
-				if($lang != ''){
-					$langcode = substr($lang, 0, 2);
-				} else{
-					$langcode = we_core_Local::weLangToLocale($GLOBALS["WE_LANGUAGE"]);
-				}
+				$langcode = ($lang != '' ? substr($lang, 0, 2) : we_core_Local::weLangToLocale($GLOBALS["WE_LANGUAGE"]));
+
 				$orgVal = $GLOBALS['we_doc']->getElement($name);
 				if(!Zend_Locale::hasCache()){
 					Zend_Locale::setCache(getWEZendCache());
@@ -106,7 +102,6 @@ function we_tag_input($attribs, $content){
 				$docAttr = weTag_getAttribute('doc', $attribs, 'self');
 				$doc = we_getDocForTag($docAttr);
 				$lang = $doc->Language;
-				$langcode = substr($lang, 0, 2);
 				$langcode = ($lang != '' ? substr($lang, 0, 2) : we_core_Local::weLangToLocale($GLOBALS["WE_LANGUAGE"]));
 
 				$frontendL = $GLOBALS['weFrontendLanguages'];
@@ -138,22 +133,19 @@ function we_tag_input($attribs, $content){
 					$tagname = 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']';
 					$vals = explode($seperator, $values);
 
-					if($mode == 'add'){
-						$onChange = "this.form.elements['$tagname'].value += ((this.form.elements['$tagname'].value ? ' ' : '')+this.options[this.selectedIndex].text);";
-					} else{
-						$onChange = "this.form.elements['$tagname'].value = this.options[this.selectedIndex].text;";
-					}
-					if($reload){
-						$onChange .= 'setScrollTo();top.we_cmd(\'reload_editpage\');';
-					}
+					$onChange = ($mode == 'add' ?
+							"this.form.elements['$tagname'].value += ((this.form.elements['$tagname'].value ? ' ' : '')+this.options[this.selectedIndex].text);" :
+							"this.form.elements['$tagname'].value = this.options[this.selectedIndex].text;") .
+						($reload ? 'setScrollTo();top.we_cmd(\'reload_editpage\');' : '');
+
 					$sel = '<select  class="defaultfont" name="we_choice_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']" size="1" onchange="' . $onChange . ';this.selectedIndex=0;_EditorFrame.setEditorIsHot(true);"><option></option>' .
 						(!empty($vals) ? '<option>' . implode("</option>\n<option>", $vals) . "</option>\n" : '') .
 						'</select>';
 				}
 				$attr = we_make_attribs($attribs, 'name,value,type,onchange,mode,values,_name_orig');
 
-				return '<input onchange="_EditorFrame.setEditorIsHot(true);" type="text" name="we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']" value="' . $val . '"' . ($attr ? " $attr" : "") . ' />' . "&nbsp;" . (isset(
-						$sel) ? $sel : '');
+				return '<input onchange="_EditorFrame.setEditorIsHot(true);" type="text" name="we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']" value="' . $val . '"' . ($attr ? " $attr" : "") . ' />' . "&nbsp;" .
+					(isset($sel) ? $sel : '');
 			case 'select':
 				//NOTE: this tag is for objects only
 				return $GLOBALS['we_doc']->getField($attribs, 'select');
@@ -172,11 +164,11 @@ function we_tag_input($attribs, $content){
 							'image:spellcheck', 'javascript:we_cmd("spellcheck","we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']")') . '</td>
 	</tr>
 </table>';
-				} else{
+				} else {
 					return '<input onchange="_EditorFrame.setEditorIsHot(true);" class="wetextinput" type="text" name="we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']" value="' . $val . '"' . ($attr ? " $attr" : "") . ' />';
 				}
 		}
-	} else{
+	} else {
 		//not-editmode
 		switch($type){
 			case 'date':
@@ -197,7 +189,7 @@ function we_tag_input($attribs, $content){
 				}
 				if($GLOBALS['we_doc']->getElement($name) == '--'){
 					return '';
-				} else{
+				} else {
 					if(!Zend_Locale::hasCache()){
 						Zend_Locale::setCache(getWEZendCache());
 					}

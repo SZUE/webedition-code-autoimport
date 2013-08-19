@@ -23,9 +23,10 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_workflow_document extends we_workflow_base{
-	const STATUS_UNKNOWN=0;
-	const STATUS_FINISHED=1;
-	const STATUS_CANCELED=2;
+
+	const STATUS_UNKNOWN = 0;
+	const STATUS_FINISHED = 1;
+	const STATUS_CANCELED = 2;
 
 	//properties
 	var $ID;
@@ -42,7 +43,7 @@ class we_workflow_document extends we_workflow_base{
 	 * Default Constructor
 	 *
 	 */
-	function __construct($wfDocument=0){
+	function __construct($wfDocument = 0){
 		parent::__construct();
 		$this->table = WORKFLOW_DOC_TABLE;
 		$this->ClassName = __CLASS__;
@@ -70,7 +71,7 @@ class we_workflow_document extends we_workflow_base{
 	/**
 	 * Load data from database
 	 */
-	function load($id=0){
+	function load($id = 0){
 		if($id)
 			$this->ID = $id;
 
@@ -94,7 +95,7 @@ class we_workflow_document extends we_workflow_base{
 		}
 	}
 
-	function approve($uID, $desc, $force=false){
+	function approve($uID, $desc, $force = false){
 		$i = $this->findLastActiveStep();
 		if($i < 0 && !$force){
 			return false;
@@ -106,7 +107,7 @@ class we_workflow_document extends we_workflow_base{
 		return $ret;
 	}
 
-	function autopublish($uID, $desc, $force=false){
+	function autopublish($uID, $desc, $force = false){
 		$i = $this->findLastActiveStep();
 		if($i < 0 && !$force){
 			return false;
@@ -117,7 +118,7 @@ class we_workflow_document extends we_workflow_base{
 			$this->document->save();
 			if($this->document->i_publInScheduleTable()){
 				$foo = $this->document->getNextPublishDate();
-			} else{
+			} else {
 				$this->document->we_publish();
 			}
 			$path = "<b>" . g_l('modules_workflow', '[' . stripTblPrefix($this->workflow->Type == 2 ? OBJECT_FILES_TABLE : FILE_TABLE) . '][messagePath]') . ':</b>&nbsp;<a href="javascript:top.opener.top.weEditorFrameController.openDocument(\'' . $this->document->Table . '\',\'' . $this->document->ID . '\',\'' . $this->document->ContentType . '\');");" >' . $this->document->Path . '</a>';
@@ -131,7 +132,7 @@ class we_workflow_document extends we_workflow_base{
 		return $ret;
 	}
 
-	function decline($uID, $desc, $force=false){
+	function decline($uID, $desc, $force = false){
 		$i = $this->findLastActiveStep();
 		if($i < 0 && !$force)
 			return false;
@@ -157,16 +158,17 @@ class we_workflow_document extends we_workflow_base{
 		$this->steps[0]->start($desc);
 	}
 
-	function nextStep($index=-1, $desc="", $uid=0){
+	function nextStep($index = -1, $desc = "", $uid = 0){
 		if($index > -1){
-			if($index < count($this->steps) - 1)
+			if($index < count($this->steps) - 1){
 				$this->steps[$index + 1]->start($desc);
-			else
+			} else {
 				$this->finishWorkflow(0, $uid);
+			}
 		}
 	}
 
-	function finishWorkflow($force=0, $uID=0){
+	function finishWorkflow($force = 0, $uID = 0){
 		if($force){
 			$this->Status = self::STATUS_CANCELED;
 			foreach($this->steps as $sk => $sv){
@@ -180,7 +182,7 @@ class we_workflow_document extends we_workflow_base{
 			//insert into document Log
 			$this->Log->logDocumentEvent($this->ID, $uID, we_workflow_log::TYPE_DOC_FINISHED_FORCE, "");
 		}
-		else{
+		else {
 			$this->Status = self::STATUS_FINISHED;
 			$this->Log->logDocumentEvent($this->ID, $uID, we_workflow_log::TYPE_DOC_FINISHED, "");
 		}
@@ -191,7 +193,7 @@ class we_workflow_document extends we_workflow_base{
 	 * Create next step or finish workflow document if last step is done
 	 *
 	 */
-	function createNextStep($stepKey, $uid=0){
+	function createNextStep($stepKey, $uid = 0){
 		if($stepKey >= count($this->steps)){
 			// no more steps, finish workflow
 			return $this->finishWorkflow(0, $uid);
@@ -247,13 +249,13 @@ class we_workflow_document extends we_workflow_base{
 	 *    return false if no workflow
 	 */
 
-	function find($documentID, $type="0,1", $status=self::STATUS_UNKNOWN){
+	function find($documentID, $type = "0,1", $status = self::STATUS_UNKNOWN){
 
 		$db = new DB_WE();
 		$db->query("SELECT " . WORKFLOW_DOC_TABLE . ".ID FROM " . WORKFLOW_DOC_TABLE . "," . WORKFLOW_TABLE . " WHERE " . WORKFLOW_DOC_TABLE . ".workflowID=" . WORKFLOW_TABLE . ".ID AND " . WORKFLOW_DOC_TABLE . ".documentID=" . intval($documentID) . " AND " . WORKFLOW_DOC_TABLE . ".Status IN (" . $db->escape($status) . ")" . ($type != "" ? " AND " . WORKFLOW_TABLE . ".Type IN (" . $db->escape($type) . ")" : "") . " ORDER BY " . WORKFLOW_DOC_TABLE . ".ID DESC");
 		if($db->next_record()){
 			return new self($db->f("ID"));
-		} else{
+		} else {
 			return false;
 		}
 	}

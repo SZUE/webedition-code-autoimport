@@ -122,10 +122,9 @@ class objectsearch extends we_search{
 		if(empty($exws)){
 			return "-";
 		}
-
-		$out = '<table border="0" cellpadding="0" cellspacing="0">';
-		for($i = 0; $i < count($exws); $i++){
-			if($exws[$i] != ""){
+			$out = '<table border="0" cellpadding="0" cellspacing="0">';
+			for($i = 0; $i < count($exws); $i++){
+				if($exws[$i] != ""){
 				if($_SESSION["perms"]["ADMINISTRATOR"]){
 					$foo = true;
 				} else{

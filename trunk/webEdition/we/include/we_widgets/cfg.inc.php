@@ -191,7 +191,7 @@ for($i = 0; $i < count($aTopRssFeeds); $i++){
 		$aTopRssFeeds[$i][$k] = base64_encode($v);
 	}
 }
-$aCfgProps[]= $aTopRssFeeds;
+//$aCfgProps[]= $aTopRssFeeds;
 
 $jsPrefs = "
 function weConf(){

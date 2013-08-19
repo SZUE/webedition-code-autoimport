@@ -1,13 +1,13 @@
 <?php
 
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/lib/we/core/autoload.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/lib/we/core/autoload.php');
 
 $IDValue = '0';
 if ($IDValue == '0') {
 	$_path = '/';
 } else {
 	$_path = we_util_Path::id2Path($IDValue,$table);
-	
+
 }
 
 $ac = new we_ui_controls_ACFileSelector();
@@ -161,7 +161,7 @@ $htmlPage = we_ui_layout_HTMLPage::getInstance();
 $htmlPage->setTitle('Samples Autocompleter');
 $htmlPage->addJSFile('/webEdition/js/windows.js');
 $htmlPage->addInlineCSS('
-body { 
+body {
 	padding:10px !important;
 }
 ');

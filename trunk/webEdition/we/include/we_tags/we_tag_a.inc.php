@@ -65,8 +65,7 @@ function we_tag_a($attribs, $content){
 		$url = WE_REDIRECTED_SEO;
 	} else{
 		// init variables
-		$db = new DB_WE();
-		$row = getHash('SELECT Path,IsFolder,IsDynamic FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), $db);
+		$row = getHash('SELECT Path,IsFolder,IsDynamic FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), $GLOBALS['DB_WE']);
 		$url = (isset($row['Path']) ? $row['Path'] : '') . ((isset($row['IsFolder']) && $row['IsFolder']) ? '/' : '');
 		$path_parts = pathinfo($url);
 		if($hidedirindex && show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES != '' && TAGLINKS_DIRECTORYINDEX_HIDE && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
@@ -93,7 +92,7 @@ function we_tag_a($attribs, $content){
 			} else{
 				//Zwei Faelle werden abgedeckt, bei denen die Objekt-ID nicht gefunden wird: (a) bei einer listview ueber shop-objekte, darin eine listview über shop-varianten, hierin der we:a-link und (b) Objekt wird ueber den objekt-tag geladen #3538
 				if((isset($GLOBALS['lv']) && get_class($GLOBALS['lv']) == 'we_shop_listviewShopVariants' && isset($GLOBALS['lv']->Model) && $GLOBALS['lv']->Model->ClassName == 'we_objectFile') || isset($GLOBALS['lv']) && get_class($GLOBALS['lv']) == 'we_objecttag'){
-					$type = 'o';
+					$type = we_shop_shop::OBJECT;
 					$idd = (get_class($GLOBALS['lv']) == 'we_shop_listviewShopVariants' ? $GLOBALS['lv']->Id : $GLOBALS['lv']->id);
 				} else{
 
@@ -106,10 +105,10 @@ function we_tag_a($attribs, $content){
 								$GLOBALS['WE_MAIN_DOC']->ID));
 					$type = (isset($GLOBALS['lv']) && isset($GLOBALS['lv']->IDs[$foo]) && $GLOBALS['lv']->IDs[$foo] != '') ?
 						(
-						(isset($GLOBALS['lv']->classID) || isset($GLOBALS['lv']->Record['OF_ID'])) ? 'o' : 'w') :
+						(isset($GLOBALS['lv']->classID) || isset($GLOBALS['lv']->Record['OF_ID'])) ? we_shop_shop::OBJECT : we_shop_shop::DOCUMENT) :
 						((isset($GLOBALS['lv']->classID)) ?
-							'o' :
-							((isset($GLOBALS['we_obj']->ID)) ? 'o' : 'w')
+							we_shop_shop::OBJECT :
+							((isset($GLOBALS['we_obj']->ID)) ? we_shop_shop::OBJECT : we_shop_shop::DOCUMENT)
 						);
 				}
 			}
@@ -128,7 +127,7 @@ function we_tag_a($attribs, $content){
 			//	preview mode in seem
 			if(isset($_REQUEST['we_transaction']) && isset(
 					$_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]['0']['ClassName']) && $_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]['0']['ClassName'] == 'we_objectFile'){
-				$type = 'o';
+				$type = we_shop_shop::OBJECT;
 			}
 
 			$shopname = weTag_getAttribute('shopname', $attribs);
@@ -163,22 +162,21 @@ function we_tag_a($attribs, $content){
 								$GLOBALS['WE_MAIN_DOC']->ID));
 					$type = (isset($GLOBALS['lv']) && isset($GLOBALS['lv']->IDs[$foo]) && $GLOBALS['lv']->IDs[$foo] != '') ?
 						((isset($GLOBALS['lv']->classID) || isset($GLOBALS['lv']->Record['OF_ID'])) ?
-							'o' :
-							'w') :
+							we_shop_shop::OBJECT :
+							we_shop_shop::DOCUMENT) :
 						((isset($GLOBALS['lv']->classID)) ?
-							'o' :
+							we_shop_shop::OBJECT :
 							((isset($GLOBALS['we_obj']->ID)) ?
-								'o' :
-								'w'));
+								we_shop_shop::OBJECT :
+								we_shop_shop::DOCUMENT));
 				}
 				//	preview mode in seem
 				if(isset($_REQUEST['we_transaction']) && isset(
 						$_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]['0']['ClassName']) && $_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]['0']['ClassName'] == 'we_objectFile'){
-					$type = 'o';
+					$type = we_shop_shop::OBJECT;
 				}
 				$urladd = ($urladd ? $urladd . '&' : '?') . 'del_shop_artikelid=' . $idd . '&type=' . $type . '&t=' . time() . $variant . $customReq . $ifShopname;
-			} else
-			if($delshop){ // emptyshop
+			} elseif($delshop){ // emptyshop
 				if(($foo = attributFehltError($attribs, 'shopname', __FUNCTION__))){
 					return $foo;
 				}

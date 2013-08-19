@@ -29,6 +29,12 @@
  */
 class weGlossary extends weModelBase{
 
+	const TYPE_LINK = 'link';
+	const TYPE_ACRONYM = 'acronym';
+	const TYPE_ABBREVATION = 'abbreviation';
+	const TYPE_FOREIGNWORD = 'foreignword';
+	const TYPE_TEXTREPLACE = 'textreplacement';
+
 	/**
 	 * Identifier of the glossayry item
 	 *
@@ -163,23 +169,23 @@ class weGlossary extends weModelBase{
 		if($GlossaryId){
 			$this->ID = $GlossaryId;
 			$this->load($GlossaryId);
-		} else{
+		} else {
 			if(isset($_REQUEST['cmd'])){
 				switch($_REQUEST['cmd']){
 					case 'new_glossary_abbreviation':
-						$this->Type = 'abbreviation';
+						$this->Type = self::TYPE_ABBREVATION;
 						break;
 					case 'new_glossary_acronym':
-						$this->Type = 'acronym';
+						$this->Type = self::TYPE_ACRONYM;
 						break;
 					case 'new_glossary_foreignword':
-						$this->Type = 'foreignword';
+						$this->Type = self::TYPE_FOREIGNWORD;
 						break;
 					case 'new_glossary_link':
-						$this->Type = 'link';
+						$this->Type = self::TYPE_LINK;
 						break;
 					case 'new_glossary_textreplacement':
-						$this->Type = 'textreplacement';
+						$this->Type = self::TYPE_TEXTREPLACE;
 						break;
 				}
 
@@ -207,17 +213,17 @@ class weGlossary extends weModelBase{
 		$GLOBALS['DB_WE']->query($Query);
 
 		$ReturnValue = array();
-		while($GLOBALS['DB_WE']->next_record()) {
+		while($GLOBALS['DB_WE']->next_record()){
 			$Item = array(
 				'Type' => $GLOBALS['DB_WE']->f("Type"),
 				'Text' => $GLOBALS['DB_WE']->f("Text"),
 				'Title' => $GLOBALS['DB_WE']->f("Title"),
 			);
 
-			if($GLOBALS['DB_WE']->f("Type") != "foreignword"){
+			if($GLOBALS['DB_WE']->f("Type") != weGlossary::TYPE_FOREIGNWORD){
 				$temp = unserialize($GLOBALS['DB_WE']->f("Attributes"));
 				$Item['Lang'] = (isset($temp['lang']) ? $temp['lang'] : '');
-			} else{
+			} else {
 				$Item['Lang'] = '';
 			}
 			$ReturnValue[] = $Item;

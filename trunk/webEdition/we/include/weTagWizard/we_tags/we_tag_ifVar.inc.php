@@ -9,6 +9,22 @@ $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
 $this->Attributes[] = new weTagData_textAttribute('name', true, '');
 $this->Attributes[] = new weTagData_textAttribute('match', true, '');
-$this->Attributes[] = new weTagData_selectAttribute('type', array(new weTagDataOption('global', false, ''), new weTagDataOption('request', false, ''), new weTagDataOption('post', false, ''), new weTagDataOption('get', false, ''), new weTagDataOption('document', false, ''), new weTagDataOption('property', false, ''), new weTagDataOption('session', false, ''), new weTagDataOption('sessionfield', false, '')), false, '');
-$this->Attributes[] = new weTagData_selectAttribute('doc', array(new weTagDataOption('self', false, ''), new weTagDataOption('top', false, '')), false, '');
-$this->Attributes[] = new weTagData_selectAttribute('operator', array(new weTagDataOption('equal', false, ''), new weTagDataOption('less', false, ''), new weTagDataOption('less|equal', false, ''), new weTagDataOption('greater', false, ''), new weTagDataOption('greater|equal', false, ''), new weTagDataOption('contains', false, '')), false, '');
+$this->Attributes[] = new weTagData_selectAttribute('type', array(new weTagDataOption('global'),
+	new weTagDataOption('request'),
+	new weTagDataOption('post'),
+	new weTagDataOption('get'),
+	new weTagDataOption('document'),
+	new weTagDataOption('property'),
+	new weTagDataOption('session'),
+	new weTagDataOption('sessionfield'),
+	), false, '');
+$this->Attributes[] = new weTagData_selectAttribute('doc', array(new weTagDataOption('self'),
+	new weTagDataOption('top'),
+	), false, '');
+$this->Attributes[] = new weTagData_selectAttribute('operator', array(new weTagDataOption('equal'),
+	new weTagDataOption('less'),
+	new weTagDataOption('less|equal'),
+	new weTagDataOption('greater'),
+	new weTagDataOption('greater|equal'),
+	new weTagDataOption('contains'),
+	), false, '');

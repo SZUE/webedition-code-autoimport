@@ -47,17 +47,17 @@ class we_io_DB{
 			list($host, $port) = explode(':', DB_HOST);
 			$DBpar['host'] = $host;
 			$DBpar['port'] = $port;
-		} else{
+		} else {
 			$DBpar['host'] = DB_HOST;
 		}
 		$charset = we_database_base::getCharset();
 		if($charset != ''){
 			if(strpos(strtolower($charset), 'utf') !== false){// es gibt alte sites, da steht UTF-8 drin, was aber falsch ist
 				$DBpar['charset'] = 'utf8';
-			} else{
+			} else {
 				$DBpar['charset'] = $charset;
 			}
-		} else{
+		} else {
 			$DBpar['charset'] = 'utf8';
 		}
 
@@ -85,10 +85,7 @@ class we_io_DB{
 	 */
 	static function tableExists($tab){
 		$_db = we_io_DB::sharedAdapter();
-		if($_db->fetchAll("SHOW TABLES LIKE '$tab';"))
-			return true;
-		else
-			return false;
+		return ($_db->fetchAll("SHOW TABLES LIKE '$tab';") ? true : false);
 	}
 
 }

@@ -22,25 +22,22 @@
  * @package    webEdition_class
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once(WE_INCLUDES_PATH . 'we_tag.inc.php');
+require_once(WE_INCLUDES_PATH . 'we_tag.inc.php');
 
 /* the parent class for documents */
 
 class we_document extends we_root{
-	/* Extension of the document */
 
+	//Extension of the document
 	var $Extension = '';
-
-	/* Array of possible filename extensions for the document */
+	//Array of possible filename extensions for the document
 	var $Extensions;
 	var $Published = 0;
 	var $Language = '';
-
-	/* If the file should only be saved in the db */
+	//If the file should only be saved in the db
 	var $IsDynamic = 0;
 	var $schedArr = array();
-
-	/* Categories of the document */
+	//Categories of the document
 	var $Category = '';
 	protected $oldCategory = '';
 	var $IsSearchable = 0;
@@ -48,11 +45,6 @@ class we_document extends we_root{
 	var $NavigationItems = '';
 	private $DocStream = '';
 
-	/*
-	 * Functions
-	 */
-
-	// Constructor
 	function __construct(){
 		parent::__construct();
 		array_push($this->persistent_slots, 'Extension', 'IsDynamic', 'Published', 'Category', 'IsSearchable', 'InGlossar', 'Language', 'schedArr');
@@ -94,7 +86,7 @@ class we_document extends we_root{
 				$this->elements[$n]['cid'] = 0;
 			}
 			$this->EditPageNr = 0;
-			$this->InWebEdition = 1;
+			$this->InWebEdition = true;
 			if(isset($this->documentCustomerFilter)){
 				$this->documentCustomerFilter = $doc->documentCustomerFilter;
 			}
@@ -107,18 +99,18 @@ class we_document extends we_root{
 	}
 
 	// returns the whole document Alias - don't remove
-	function getDocument($we_editmode = '0', $baseHref = '0', $we_transaction = ''){
+	function getDocument($we_editmode = 0, $baseHref = 0, $we_transaction = ''){
 		return $this->i_getDocument();
 	}
 
 	function initLanguageFromParent(){
 		$ParentID = $this->ParentID;
 		$i = 0;
-		while($this->Language == ''){
+		while(empty($this->Language)){
 			if($ParentID == 0 || $i > 20){
 				we_loadLanguageConfig();
 				$this->Language = self::getDefaultLanguage();
-				if($this->Language == ''){
+				if(empty($this->Language)){
 					$this->Language = 'de_DE';
 				}
 			} else {
@@ -181,21 +173,21 @@ class we_document extends we_root{
 				$langkeys[] = $langkey;
 			}
 			return '
-			<table border="0" cellpadding="0" cellspacing="0">
-				<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
-				' . $_headline . '
-				<tr><td>' . $this->htmlSelect($inputName, $_languages, 1, $value, false, " onblur=\"_EditorFrame.setEditorIsHot(true);\" onchange=\"dieWerte='" . implode(',', $langkeys) . "';showhideLangLink('we_" . $this->Name . "_LanguageDocDiv',dieWerte,this.options[this.selectedIndex].value);_EditorFrame.setEditorIsHot(true);\"", "value", 508) . '</td></tr>
-				<tr><td>' . we_html_tools::getPixel(2, 20) . '</td></tr>
-				<tr><td class="defaultfont" align="left">' . g_l('weClass', '[languageLinks]') . '</td></tr>
-			</table>' .
-				"<br/>" . $htmlzw; //.$this->htmlFormElementTable($htmlzw,g_l('weClass','[languageLinksDefaults]'),"left",	"defaultfont");	dieWerte=\''.implode(',',$langkeys).'\'; disableLangDefault(\'we_'.$this->Name.'_LangDocType\',dieWerte,this.options[this.selectedIndex].value);"
+<table border="0" cellpadding="0" cellspacing="0">
+	<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
+	' . $_headline . '
+	<tr><td>' . $this->htmlSelect($inputName, $_languages, 1, $value, false, " onblur=\"_EditorFrame.setEditorIsHot(true);\" onchange=\"dieWerte='" . implode(',', $langkeys) . "';showhideLangLink('we_" . $this->Name . "_LanguageDocDiv',dieWerte,this.options[this.selectedIndex].value);_EditorFrame.setEditorIsHot(true);\"", "value", 508) . '</td></tr>
+	<tr><td>' . we_html_tools::getPixel(2, 20) . '</td></tr>
+	<tr><td class="defaultfont" align="left">' . g_l('weClass', '[languageLinks]') . '</td></tr>
+</table>
+<br/>' . $htmlzw; //.$this->htmlFormElementTable($htmlzw,g_l('weClass','[languageLinksDefaults]'),"left",	"defaultfont");	dieWerte=\''.implode(',',$langkeys).'\'; disableLangDefault(\'we_'.$this->Name.'_LangDocType\',dieWerte,this.options[this.selectedIndex].value);"
 		} else {
 			return '
-			<table border="0" cellpadding="0" cellspacing="0">
-				<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
-				' . $_headline . '
-				<tr><td>' . $this->htmlSelect($inputName, $_languages, 1, $value, false, " onblur=\"_EditorFrame.setEditorIsHot(true);\" onchange=\"_EditorFrame.setEditorIsHot(true);\"", "value", 508) . '</td></tr>
-			</table>';
+<table border="0" cellpadding="0" cellspacing="0">
+	<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
+	' . $_headline . '
+	<tr><td>' . $this->htmlSelect($inputName, $_languages, 1, $value, false, " onblur=\"_EditorFrame.setEditorIsHot(true);\" onchange=\"_EditorFrame.setEditorIsHot(true);\"", "value", 508) . '</td></tr>
+</table>';
 		}
 	}
 
@@ -239,19 +231,19 @@ class we_document extends we_root{
 			$filenameinput = '';
 		}
 		return $disable ? ('<span class="defaultfont">' . $this->Path . '</span>') : '
-			<table border="0" cellpadding="0" cellspacing="0">
-				<tr>
-				<td>' . $this->formInputField('', 'Filename', g_l('weClass', '[filename]'), 30, 388, 255, $filenameinput . 'onChange="_EditorFrame.setEditorIsHot(true);if(self.pathOfDocumentChanged){pathOfDocumentChanged();}"') . '</td>
-					<td></td>
-					<td>' . $this->formExtension2() . '</td>
-				</tr>
-				<tr>
-					<td>' . we_html_tools::getPixel(20, 4) . '</td>
-					<td>' . we_html_tools::getPixel(20, 2) . '</td>
-					<td>' . we_html_tools::getPixel(100, 2) . '</td>
-				</tr>
-				<tr><td colspan="3">' . $this->formDirChooser(388) . '</td></tr>
-			</table>';
+<table border="0" cellpadding="0" cellspacing="0">
+	<tr>
+	<td>' . $this->formInputField('', 'Filename', g_l('weClass', '[filename]'), 30, 388, 255, $filenameinput . 'onChange="_EditorFrame.setEditorIsHot(true);if(self.pathOfDocumentChanged){pathOfDocumentChanged();}"') . '</td>
+		<td></td>
+		<td>' . $this->formExtension2() . '</td>
+	</tr>
+	<tr>
+		<td>' . we_html_tools::getPixel(20, 4) . '</td>
+		<td>' . we_html_tools::getPixel(20, 2) . '</td>
+		<td>' . we_html_tools::getPixel(100, 2) . '</td>
+	</tr>
+	<tr><td colspan="3">' . $this->formDirChooser(388) . '</td></tr>
+</table>';
 	}
 
 	function formMetaInfos(){
@@ -280,9 +272,9 @@ class we_document extends we_root{
 	function formNavigation(){
 		$delallbut = we_button::create_button('delete_all', "javascript:if(confirm('" . g_l('navigation', '[dellall_question]') . "')) we_cmd('delete_all_navi')", true, -1, -1, "", "", (we_hasPerm('EDIT_NAVIGATION') && $this->NavigationItems) ? false : true);
 
-		$addbut = we_button::create_button('add', "javascript:we_cmd('tool_navigation_edit_navi',0)", true, 100, 22, '', '', (we_hasPerm('EDIT_NAVIGATION') && $this->ID && $this->Published) ? false : true, false);
+		$addbut = we_button::create_button('add', "javascript:we_cmd('module_navigation_edit_navi',0)", true, 100, 22, '', '', (we_hasPerm('EDIT_NAVIGATION') && $this->ID && $this->Published) ? false : true, false);
 
-		$navis = new MultiFileChooser(508, $this->NavigationItems, 'delete_navi', we_button::create_button_table(array($delallbut, $addbut)), "tool_navigation_edit_navi", "Icon,Path", NAVIGATION_TABLE);
+		$navis = new MultiFileChooser(508, $this->NavigationItems, 'delete_navi', we_button::create_button_table(array($delallbut, $addbut)), "module_navigation_edit_navi", "Icon,Path", NAVIGATION_TABLE);
 		$navis->extraDelFn = 'setScrollTo();';
 		$NoDelNavis = makeArrayFromCSV($this->NavigationItems);
 		foreach($NoDelNavis as $_path){
@@ -296,9 +288,7 @@ class we_document extends we_root{
 				}
 			}
 		}
-
-		$navis->diabledDelItems = makeCSVFromArray($NoDelNavis);
-		$navis->diabledDelReason = g_l('navigation', '[NoDeleteFromDocument]');
+		$navis->setDisabledDelItems(makeCSVFromArray($NoDelNavis), g_l('navigation', '[NoDeleteFromDocument]'));
 
 		if(!we_hasPerm('EDIT_NAVIGATION')){
 			$navis->isEditable = false;
@@ -341,7 +331,7 @@ class we_document extends we_root{
 			$_ord = ($ordn == 'end' ? 10000 : (is_numeric($ordn) && $ordn > 0 ? $ordn : 0));
 
 			$_ppath = id_to_path($parentid, NAVIGATION_TABLE);
-			$_new_path = $_ppath == '/' ? $_ppath . $text : $_ppath . '/' . $text;
+			$_new_path = rtrim($_ppath, '/') . '/' . $text;
 
 			$rename = false;
 			if(empty($id)){
@@ -427,7 +417,7 @@ class we_document extends we_root{
 
 	function getParentIDFromParentPath(){
 		$f = new we_folder();
-		return (!$f->initByPath($this->ParentPath) ? -1 : $f->ID);
+		return ($f->initByPath($this->ParentPath) ? $f->ID : -1);
 	}
 
 	function addEntryToList($name, $number = 1){
@@ -452,7 +442,7 @@ class we_document extends we_root{
 
 			$listarray[] = '_' . $new_nr;
 		}
-		$this->setElement($name, serialize(array_values($listarray)));
+		$this->setElement($name, serialize(array_values($listarray)), 'block');
 	}
 
 	function getMaxListArrayNr($la){
@@ -486,7 +476,7 @@ class we_document extends we_root{
 			$listarray[$nr] = '_' . $new_nr;
 		}
 
-		$this->setElement($name, serialize(array_values($listarray)));
+		$this->setElement($name, serialize(array_values($listarray)), 'block');
 	}
 
 	function upEntryAtList($name, $nr, $number = 1){
@@ -503,7 +493,7 @@ class we_document extends we_root{
 		$listarray[$newPos] = $listarray[$nr];
 		$listarray[$nr] = $temp;
 
-		$this->setElement($name, serialize($listarray));
+		$this->setElement($name, serialize($listarray), 'block');
 	}
 
 	function downEntryAtList($name, $nr, $number = 1){
@@ -519,7 +509,7 @@ class we_document extends we_root{
 		$temp = $listarray[$newPos];
 		$listarray[$newPos] = $listarray[$nr];
 		$listarray[$nr] = $temp;
-		$this->setElement($name, serialize($listarray));
+		$this->setElement($name, serialize($listarray), 'block');
 	}
 
 	function removeEntryFromList($name, $nr, $names = '', $isBlock = false){
@@ -543,42 +533,42 @@ class we_document extends we_root{
 			}
 		}
 
-		$this->setElement($name, serialize(array_values($listarray)));
+		$this->setElement($name, serialize(array_values($listarray)), 'block');
 	}
 
 	function addLinkToLinklist($name){
 		$linklist = $this->getElement($name);
 		$ll = new we_linklist($linklist);
 		$ll->addLink();
-		$this->setElement($name, $ll->getString());
+		$this->setElement($name, $ll->getString(), 'linklist');
 	}
 
 	function upEntryAtLinklist($name, $nr){
 		$linklist = $this->getElement($name);
 		$ll = new we_linklist($linklist);
 		$ll->upLink($nr);
-		$this->setElement($name, $ll->getString());
+		$this->setElement($name, $ll->getString(), 'linklist');
 	}
 
 	function downEntryAtLinklist($name, $nr){
 		$linklist = $this->getElement($name);
 		$ll = new we_linklist($linklist);
 		$ll->downLink($nr);
-		$this->setElement($name, $ll->getString());
+		$this->setElement($name, $ll->getString(), 'linklist');
 	}
 
 	function insertLinkAtLinklist($name, $nr){
 		$linklist = $this->getElement($name);
 		$ll = new we_linklist($linklist);
 		$ll->insertLink($nr);
-		$this->setElement($name, $ll->getString());
+		$this->setElement($name, $ll->getString(), 'linklist');
 	}
 
 	function removeLinkFromLinklist($name, $nr, $names = ''){
 		$linklist = $this->getElement($name);
 		$ll = new we_linklist($linklist);
 		$ll->removeLink($nr, $names, $name);
-		$this->setElement($name, $ll->getString());
+		$this->setElement($name, $ll->getString(), 'linklist');
 	}
 
 	function changeLink($name){
@@ -601,8 +591,8 @@ class we_document extends we_root{
 
 	function remove_image($name){
 		unset($this->elements[$name]);
-		unset($this->elements[$name . '_img_custom_alt']);
-		unset($this->elements[$name . '_img_custom_title']);
+		unset($this->elements[$name . we_imageDocument::ALT_FIELD]);
+		unset($this->elements[$name . we_imageDocument::TITLE_FIELD]);
 	}
 
 	/*
@@ -757,7 +747,7 @@ class we_document extends we_root{
 
 		$this->i_setExtensions();
 
-		if($this->Language == '' && $this->Table != TEMPLATES_TABLE){
+		if(empty($this->Language) && $this->Table != TEMPLATES_TABLE){
 			$this->initLanguageFromParent();
 		}
 	}
@@ -809,7 +799,7 @@ class we_document extends we_root{
 	protected function i_writeDocument(){
 		$update = $this->isMoved();
 		$doc = $this->i_getDocumentToSave();
-		if(!($doc || $doc == '')){
+		if(!($doc || empty($doc))){
 			return false;
 		}
 		if(!$this->i_writeSiteDir($doc) || !$this->i_writeMainDir($doc)){
@@ -864,8 +854,8 @@ class we_document extends we_root{
 				$img->LoadBinaryContent = false;
 				$img->initByID($val, FILE_TABLE);
 
-				$altField = $img->Name . '_img_custom_alt';
-				$titleField = $img->Name . '_img_custom_title';
+				$altField = $img->Name . we_imageDocument::ALT_FIELD;
+				$titleField = $img->Name . we_imageDocument::TITLE_FIELD;
 
 				if(isset($GLOBALS['lv']) && isset($GLOBALS['lv']->ClassName) && $GLOBALS['lv']->ClassName == 'we_shop_listviewShopVariants'){
 
@@ -1009,16 +999,15 @@ class we_document extends we_root{
 					}
 				}
 
-				if($val == 0){
-					$val = time();
-				}
+				$val = $val ? $val : time();
+
 				$format = isset($attribs['format']) ? $attribs['format'] : g_l('date', '[format][default]');
 				//FIXME: zend part doesn't use correctDateFormat & won't work on new Dates
 				if(isset($GLOBALS['WE_MAIN_DOC']) && $GLOBALS['WE_MAIN_DOC']->Language != 'de_DE' && is_numeric($val)){
 					$zdate = new Zend_Date($val, Zend_Date::TIMESTAMP);
 					return $zdate->toString($format, 'php', $GLOBALS['WE_MAIN_DOC']->Language);
 				} else {
-					include_once(WE_INCLUDES_PATH . 'we_tags/we_tag_date.inc.php');
+					require_once(WE_INCLUDES_PATH . 'we_tags/we_tag_date.inc.php');
 					$dt = new DateTime((is_numeric($val) ? '@' : '') . $val);
 					$dt->setTimeZone(new DateTimeZone(@date_default_timezone_get())); //Bug #6335
 					return $dt->format(correctDateFormat($format, $dt));
@@ -1053,9 +1042,7 @@ class we_document extends we_root{
 				$_wysiwyg = weTag_getAttribute('wysiwyg', $attribs, false, true);
 
 				if($_htmlspecialchars && (!$_wysiwyg)){
-					$retval = preg_replace('/<br([^>]*)>/i', '#we##br\1#we##', $retval);
-					$retval = oldHtmlspecialchars($retval, ENT_QUOTES);
-					$retval = preg_replace('/#we##br([^#]*)#we##/', '<br\1>', $retval);
+					$retval = preg_replace('/#we##br([^#]*)#we##/', '<br\1>', oldHtmlspecialchars(preg_replace('/<br([^>]*)>/i', '#we##br\1#we##', $retval), ENT_QUOTES));
 				}
 				if(!weTag_getAttribute('php', $attribs, (defined('WE_PHP_DEFAULT') && WE_PHP_DEFAULT), true)){
 					$retval = we_util::rmPhp($retval);
@@ -1199,7 +1186,7 @@ class we_document extends we_root{
 		switch($link['type']){
 			case we_base_link::TYPE_INT:
 				$id = $link['id'];
-				if($id == ''){
+				if(empty($id)){
 					return '';
 				}
 				$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), 'Path', $db);
@@ -1219,11 +1206,7 @@ class we_document extends we_root{
 			case we_base_link::TYPE_OBJ:
 				return getHrefForObject($link['obj_id'], $parentID, $path, $db, $hidedirindex, $objectseourls);
 			default:
-
-				if($link['href'] == 'http://'){
-					$link['href'] = '';
-				}
-				return $link['href'];
+				return ($link['href'] == we_base_link::EMPTY_EXT ? '' : $link['href']);
 		}
 	}
 
@@ -1388,8 +1371,8 @@ class we_document extends we_root{
 			$_linkAttribs = removeAttribs($_linkAttribs, array('hidedirindex', 'objectseourls'));
 			return $rollOverScript . getHtmlTag('a', $_linkAttribs, '', false, true);
 		} else {
-			if((isset($GLOBALS["we_link_not_published"])) && ($GLOBALS["we_link_not_published"])){
-				unset($GLOBALS["we_link_not_published"]);
+			if((isset($GLOBALS['we_link_not_published'])) && ($GLOBALS['we_link_not_published'])){
+				unset($GLOBALS['we_link_not_published']);
 			}
 		}
 	}
@@ -1613,4 +1596,3 @@ class we_document extends we_root{
 	}
 
 }
-

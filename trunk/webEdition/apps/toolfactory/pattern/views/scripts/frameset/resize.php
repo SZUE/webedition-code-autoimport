@@ -12,18 +12,18 @@ $param = 	($this->tab ?
 			($this->modelId ?
 				'/modelId/' . $this->modelId :
 				'');
-			
+
 if ($client->getBrowser() == we_ui_Client::kBrowserGecko) {
 	$frameAttribs = array(
-		'cols' => '200,*', 
-		'border' => '1', 
+		'cols' => '200,*',
+		'border' => 1,
 		'id' => 'resizeframeid',
 		'frameborder' =>'',
 		'framespacing'=>''
 	);
 } else {
 	$frameAttribs = array(
-		'cols' => '200,*', 
+		'cols' => '200,*',
 		'id' => 'resizeframeid'
 	);
 }
@@ -33,14 +33,14 @@ $frameset = new we_ui_layout_Frameset($frameAttribs);
 if ($client->getBrowser() == we_ui_Client::kBrowserIE) {
 	$frameset->addFrame(array(
 		'src' => $appDir . '/index.php/frameset/left' . $param,
-		'name' => 'left', 
-		'scrolling' => 'no', 
+		'name' => 'left',
+		'scrolling' => 'no',
 		'frameborder' => 'no'
 	));
 } else {
 	$frameset->addFrame(array(
 		'src' => $appDir . '/index.php/frameset/left' . $param,
-		'name' => 'left', 
+		'name' => 'left',
 		'scrolling' => 'no'
 	));
 }

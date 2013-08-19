@@ -22,16 +22,16 @@
  * @package    webEdition_listview
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class metadatatag{
+class metadatatag {
 
-	var $DB_WE;
+	private $DB_WE;
 	var $ClassName = __CLASS__;
-	var $object = '';
+	private $object;
 	var $avail = false;
 	var $id = 0;
 
 	function __construct($name){
-		$this->DB_WE = new DB_WE;
+		$this->DB_WE = new DB_WE();
 
 		if($name){
 			$unique = md5(uniqid(__FILE__, true));
@@ -41,7 +41,7 @@ class metadatatag{
 				if(!$_value){
 					$_value = $GLOBALS['we_doc']->getElement($name);
 				}
-			} else{
+			} else {
 				$_value = $GLOBALS["lv"]->f($name);
 			}
 			$this->id = 0;
@@ -52,16 +52,19 @@ class metadatatag{
 				// is this possible
 				//TODO: check if this can happen
 			}
-			if($this->id){
-				$this->object = new we_listview($unique, 1, 0, "", false, "", "", false, false, 0, "", "", false, "", "", "", "", "", "", "off", true, "", $this->id);
-				if($this->object->next_record()){
-					$this->avail = true;
-				}
+			if(!$this->id){
+				return;
 			}
+			$this->object = new we_listview($unique, 1, 0, "", false, "", "", false, false, 0, "", "", false, "", "", "", "", "", "", "off", true, "", $this->id);
+			$this->avail = ($this->object->next_record());
 		}
 	}
 
-	function f($key){
+	public function getDBf($key){
+		return ($this->id ? $this->object->getDBf($key) : '');
+	}
+
+	public function f($key){
 		return ($this->id ? $this->object->f($key) : '');
 	}
 

@@ -221,7 +221,7 @@ class XML_Export{
 				// $document_node.= $docs[0];
 				$document_node .= "</document>\n";
 
-				array_push($this->docs_exported, $document_id);
+				$this->docs_exported[] = $document_id;
 				$nodes .= $document_node;
 			}
 
@@ -237,7 +237,7 @@ class XML_Export{
 				$template_node .= $arr[0];
 				$template_node .= "</template>\n";
 
-				array_push($this->temps_exported, $template_id);
+				$this->temps_exported[] = $template_id;
 				$nodes .= $template_node;
 			}
 		}
@@ -247,8 +247,9 @@ class XML_Export{
 	}
 
 	function update_entities($base, $extra){
-		if(!is_array($base))
+		if(!is_array($base)){
 			return false;
+		}
 
 		while($this->allow_entities) {
 			for($i = 0; $i < count($base); $i++){

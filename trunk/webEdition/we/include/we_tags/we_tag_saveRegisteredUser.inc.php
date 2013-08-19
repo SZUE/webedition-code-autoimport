@@ -26,6 +26,7 @@ function we_tag_saveRegisteredUser($attribs){
 	$default_register = f('SELECT Value FROM ' . CUSTOMER_ADMIN_TABLE . ' WHERE Name="default_saveRegisteredUser_register"', 'Value', $GLOBALS['DB_WE']) == 'true';
 	$registerallowed = (isset($attribs['register']) ? weTag_getAttribute('register', $attribs, $default_register, true) : $default_register);
 	$protected = makeArrayFromCSV(weTag_getAttribute('protected', $attribs));
+	$allowed = makeArrayFromCSV(weTag_getAttribute('allowed', $attribs));
 	$GLOBALS['we_customer_writen'] = false;
 	$GLOBALS['we_customer_written'] = false;
 	if(defined('CUSTOMER_TABLE') && isset($_REQUEST['s'])){
@@ -51,16 +52,8 @@ function we_tag_saveRegisteredUser($attribs){
 					$hook = new weHook('customer_preSave', '', array('customer' => &$_REQUEST['s'], 'from' => 'tag', 'type' => 'new', 'tagname' => 'saveRegisteredUser'));
 					$ret = $hook->executeHook();
 
-					// skip protected Fields
-					if(!empty($protected)){
-						foreach($_REQUEST['s'] as $name => $val){
-							if(in_array($name, $protected)){
-								unset($_REQUEST['s'][$name]);
-							}
-						}
-					}
 					we_saveCustomerImages();
-					$set = we_tag_saveRegisteredUser_processRequest();
+					$set = we_tag_saveRegisteredUser_processRequest($protected, $allowed);
 
 					if(!empty($set)){
 						// User in DB speichern
@@ -119,21 +112,11 @@ function we_tag_saveRegisteredUser($attribs){
 			if(f('SELECT 1 AS a FROM ' . CUSTOMER_TABLE . ' WHERE Username="' . $GLOBALS["DB_WE"]->escape($Username) . '" AND ID!=' . intval($_REQUEST['s']['ID']), 'a', $GLOBALS['DB_WE']) != '1'){ // es existiert kein anderer User mit den neuen Username oder username hat sich nicht geaendert
 				if(isset($_REQUEST['s'])){
 
-
 					$hook = new weHook('customer_preSave', '', array('customer' => &$_REQUEST['s'], 'from' => 'tag', 'type' => 'modify', 'tagname' => 'saveRegisteredUser'));
 					$ret = $hook->executeHook();
 
-					// skip protected Fields
-					if(!empty($protected)){
-						foreach($_REQUEST['s'] as $name => $val){
-							if(in_array($name, $protected)){
-								unset($_REQUEST['s'][$name]);
-							}
-						}
-					}
-
 					we_saveCustomerImages();
-					$set_a = we_tag_saveRegisteredUser_processRequest();
+					$set_a = we_tag_saveRegisteredUser_processRequest($protected, $allowed);
 
 					if(isset($_REQUEST['s']['Password']) && $_REQUEST['s']['Password'] != $_SESSION['webuser']['Password']){//bei Password�nderungen m�ssen die Autologins des Users gel�scht werden
 						$GLOBALS['DB_WE']->query('DELETE FROM ' . CUSTOMER_AUTOLOGIN_TABLE . ' WHERE WebUserID=' . intval($_REQUEST['s']['ID']));
@@ -181,7 +164,7 @@ function we_saveCustomerImages(){
 						//everything ok, now delete
 
 						$GLOBALS['NOT_PROTECT'] = true;
-						include_once(WE_INCLUDES_PATH . 'we_delete_fn.inc.php');
+						require_once(WE_INCLUDES_PATH . 'we_delete_fn.inc.php');
 						deleteEntry($imgId, FILE_TABLE);
 						$GLOBALS['NOT_PROTECT'] = false;
 						// reset image field
@@ -286,7 +269,7 @@ function we_tag_saveRegisteredUser_keepInput(){
 	}
 }
 
-function we_tag_saveRegisteredUser_processRequest(){
+function we_tag_saveRegisteredUser_processRequest($protected, $allowed){
 	$set = array();
 
 	foreach($_REQUEST['s'] as $name => $val){
@@ -303,6 +286,10 @@ function we_tag_saveRegisteredUser_processRequest(){
 			case 'ID':
 				break;
 			default:
+				if((!empty($protected) && in_array($name, $protected))||
+					(!empty($allowed) && !in_array($name, $allowed))){
+					continue;
+				}
 				$set[$name] = $val;
 				break;
 		}

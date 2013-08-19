@@ -22,11 +22,11 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weTagWizard{
+abstract class weTagWizard{
 
-	static function getExistingWeTags(){
+	static function getExistingWeTags($useDeprecated = true){
 		$retTags = array();
-		$main = self::getMainTagModules();
+		$main = self::getMainTagModules($useDeprecated);
 		foreach($main as $modulename => $tags){
 
 			if($modulename == 'basis' || $modulename == 'navigation' || in_array($modulename, $GLOBALS['_we_active_integrated_modules'])){
@@ -79,9 +79,9 @@ class weTagWizard{
 		}
 		foreach($GLOBALS['tag_groups'] as $key => $tags){
 
-			for($i = 0; $i < count($tags); $i++){
-				if(in_array($tags[$i], $allTags)){
-					$taggroups[$key][] = $tags[$i];
+			foreach($tags as $tag){
+				if(in_array($tag, $allTags)){
+					$taggroups[$key][] = $tag;
 				}
 			}
 		}
@@ -97,14 +97,16 @@ class weTagWizard{
 		return $taggroups;
 	}
 
-	static function getMainTagModules(){
+	static function getMainTagModules($useDeprecated = true){
 		$cache = getWEZendCache();
 		if(!($main = $cache->load('TagWizard_mainTags'))){
 			$main = array();
 			$tags = self::getTagsFromDir(WE_INCLUDES_PATH . 'weTagWizard/we_tags/');
 			foreach($tags as $tagname){
 				$tag = weTagData::getTagData($tagname);
-				$main[$tag->getModule()][] = $tagname;
+				if($useDeprecated || !$tag->isDeprecated()){
+					$main[$tag->getModule()][] = $tagname;
+				}
 			}
 			$cache->save($main);
 		}
@@ -115,7 +117,7 @@ class weTagWizard{
 	 * Initializes database for all tags
 	 */
 	static function initTagLists($tags){
-		$cache = getWEZendCache(24*3600);
+		$cache = getWEZendCache(24 * 3600);
 		if(($count = $cache->load('TagWizard_tagCount')) && (count($tags) == $count)){
 			return;
 		}
@@ -145,7 +147,7 @@ class weTagWizard{
 
 	//FIXME: check if custom tags are updated correctly!
 	static function getTagsWithEndTag(){
-		$cache = getWEZendCache(24*3600);
+		$cache = getWEZendCache(24 * 3600);
 		if(!($tags = $cache->load('TagWizard_needsEndTag'))){
 			self::getExistingWeTags();
 			$tags = $cache->load('TagWizard_needsEndTag');
@@ -163,7 +165,7 @@ class weTagWizard{
 	}
 
 	static function getTagsFromDir($dir){
-		$ret = array();
+		$match = $ret = array();
 		if(is_dir($dir)){
 
 			// get the custom tag-descriptions
@@ -171,7 +173,7 @@ class weTagWizard{
 
 			while(false !== ($entry = $handle->read())) {
 
-				if(preg_match("/we_tag_(.*).inc.php/", $entry, $match)){
+				if(preg_match('/we_tag_(.*).inc.php/', $entry, $match)){
 					$ret[] = $match[1];
 				}
 			}

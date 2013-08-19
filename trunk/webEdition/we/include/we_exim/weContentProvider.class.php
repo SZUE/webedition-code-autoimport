@@ -64,8 +64,9 @@ class weContentProvider{
 				break;
 			case 'weTableItem':
 				$we_doc = new weTableItem($table);
-				if(!empty($ID))
+				if(!empty($ID)){
 					$we_doc->load($ID);
+				}
 				break;
 
 			case 'weBinary':
@@ -221,8 +222,9 @@ class weContentProvider{
 	}
 
 	static function needSerialize(&$object, $classname, $prop){
-		if($prop == 'schedArr')
+		if($prop == 'schedArr'){
 			return true;
+		}
 		$serialize = array(
 			'we_object' => array('SerializedArray'),
 			'we_objectFile' => array('DefArray', 'schedArr')

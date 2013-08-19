@@ -125,7 +125,7 @@ $oRdoSort[4] = we_forms::radiobutton(
 		$value = 4, $checked = 1, $name = "rdo_sort", $text = g_l('cockpit', '[alphabetic]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $onMouseUp = "");
 
 $sort = new we_html_table(array(
-		"cellpadding" => "0", "cellspacing" => "0", "border" => "0"
+		"cellpadding" => 0, "cellspacing" => 0, "border" => 0
 		), 3, 3);
 $sort->setCol(0, 0, array(
 	"width" => 145
@@ -150,7 +150,7 @@ $oRdoDisplay[1] = we_forms::radiobutton(
 		$value = 1, $checked = 0, $name = "rdo_display", $text = g_l('cockpit', '[only_valid]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $onMouseUp = "");
 
 $display = new we_html_table(array(
-		"cellpadding" => "0", "cellspacing" => "0", "border" => "0"
+		"cellpadding" => 0, "cellspacing" => 0, "border" => 0
 		), 1, 3);
 $display->setCol(0, 0, array(
 	"width" => 145
@@ -172,7 +172,7 @@ $oRdoDate[2] = we_forms::radiobutton(
 		$value = 2, $checked = 0, $name = "rdo_date", $text = g_l('cockpit', '[by_valid_until]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $onMouseUp = "");
 
 $date = new we_html_table(array(
-		"cellpadding" => "0", "cellspacing" => "0", "border" => "0"
+		"cellpadding" => 0, "cellspacing" => 0, "border" => 0
 		), 3, 1);
 $date->setCol(0, 0, array(
 	"width" => 145
@@ -192,7 +192,7 @@ $oRdoPrio[2] = we_forms::radiobutton(
 		$value = 2, $checked = 1, $name = "rdo_prio", $text = g_l('cockpit', '[low]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $onMouseUp = "");
 
 $prio = new we_html_table(array(
-		"cellpadding" => "0", "cellspacing" => "0", "border" => "0"
+		"cellpadding" => 0, "cellspacing" => 0, "border" => 0
 		), 3, 3);
 $prio->setCol(0, 0, array(
 	"width" => 70

@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_sendMail($attribs, $content){
-	if(($foo = attributFehltError($attribs, "recipient", __FUNCTION__)) || ($foo = attributFehltError($attribs, "from", __FUNCTION__))){
+	if(($foo = attributFehltError($attribs, array("recipient" => false, 'from' => false), __FUNCTION__))){
 		return $foo;
 	}
 
@@ -182,7 +182,7 @@ function we_tag_sendMail($attribs, $content){
 					$phpmail->setIsUseBaseHref($useBaseHref);
 				}
 				$phpmail->setCharSet($charset);
-				if($mimetype != "text/html"){
+				if($mimetype != 'text/html'){
 					$phpmail->addTextPart(strip_tags(str_replace("&nbsp;", " ", str_replace("<br />", "\n", str_replace("<br>", "\n", $codes)))));
 				} else{
 					$phpmail->addHTMLPart($codes);

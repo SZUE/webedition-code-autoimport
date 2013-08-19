@@ -30,7 +30,9 @@ include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_defines.inc
 //	Insert all config files for all modules.
 include_once (WE_INCLUDES_PATH . 'conf/we_active_integrated_modules.inc.php');
 //start autoloader!
-include_once ($_SERVER['DOCUMENT_ROOT'] . LIB_DIR . 'we/core/autoload.php');
+require_once ($_SERVER['DOCUMENT_ROOT'] . LIB_DIR . 'we/core/autoload.php');
+
+//$GLOBALS['_we_active_integrated_modules'][] = 'navigation';//TODO: remove when navigation is completely implemented as a module
 
 $INCLUDE = '';
 //	In we.inc.php all names of the active modules have already been searched
@@ -128,10 +130,10 @@ if(!$INCLUDE){
 			$INCLUDE = 'we_editors/we_preferences_frameset.inc.php';
 			break;
 		case 'editThumbs':
-			$INCLUDE = 'we_editors/we_thumbnails_frameset.inc.php';
+			$INCLUDE = 'we_editors/we_thumbnails.inc.php';
 			break;
 		case 'editMetadataFields':
-			$INCLUDE = 'we_editors/we_metadata_fields/frameset.inc.php';
+			$INCLUDE = 'we_editors/we_metadata_fields/edit_metadatafields.inc.php';
 			break;
 		case 'show':
 			$FROM_WE_SHOW_DOC = true;
@@ -356,24 +358,18 @@ if($INCLUDE){
 	//  when the javascript command shall NOT be inserted (p.ex while saving the file.)
 	//	This is ONLY used in the edit-mode of the documents.
 	$cmds_no_js = array('siteImport', 'mod_home', 'import_images', 'getWeDocFromID', 'rebuild', 'open_url_in_editor', 'open_form_in_editor', 'unlock', 'edit_document', 'load_editor', 'load_edit_header', 'load_edit_footer', 'exchange', 'validateDocument', 'show');
+	require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 	if(substr($INCLUDE, 0, 5) == 'apps/'){
 		if(!defined('NO_SESS')){
 			define('NO_SESS', 1);
 		}
-		require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-		include(WEBEDITION_PATH . $INCLUDE);
+		$path = WEBEDITION_PATH;
 	} else{
-		require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-		include(WE_INCLUDES_PATH . $INCLUDE);
+		$path = WE_INCLUDES_PATH;
 	}
+	require($path . $INCLUDE);
 	//  This statement prevents the page from being reloaded
-	if(!in_array($_REQUEST['we_cmd'][0], $cmds_no_js)){
-		print we_html_element::jsElement('parent.openedWithWE = 1;');
-	}
-
-	if($_REQUEST['we_cmd'][0] == 'edit_document' || $_REQUEST['we_cmd'][0] == 'switch_edit_page' || $_REQUEST['we_cmd'][0] == 'load_editor'){
-
-		print we_html_element::jsScript(JS_DIR . 'attachKeyListener.js');
-	}
-	exit;
+	echo (!in_array($_REQUEST['we_cmd'][0], $cmds_no_js) ? we_html_element::jsElement('parent.openedWithWE = 1;') : '') .
+	($_REQUEST['we_cmd'][0] == 'edit_document' || $_REQUEST['we_cmd'][0] == 'switch_edit_page' || $_REQUEST['we_cmd'][0] == 'load_editor' ? we_html_element::jsScript(JS_DIR . 'attachKeyListener.js') : '');
 }
+exit;

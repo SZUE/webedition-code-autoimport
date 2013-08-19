@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-include_once(WE_INCLUDES_PATH . 'we_delete_fn.inc.php');
+require_once(WE_INCLUDES_PATH . 'we_delete_fn.inc.php');
 
 we_html_tools::protect();
 
@@ -77,7 +77,7 @@ if(isset($_REQUEST['mcmd']) && $_REQUEST['mcmd'] == 'delete_folders'){
 
 			$messaging->saveInSession($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
 			?>
-							top.content.messaging_cmd.location = '<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_cmd.php?we_transaction=<?php echo $_REQUEST['we_transaction'] ?>&mcmd=delete_folders&folders=<?php echo join(',', $v) ?>';
+							top.content.cmd.location = '<?php print WE_MESSAGING_MODULE_DIR; ?>edit_messaging_frameset.php?pnt=cmd&we_transaction=<?php echo $_REQUEST['we_transaction'] ?>&mcmd=delete_folders&folders=<?php echo join(',', $v) ?>';
 							top.content.we_cmd('messaging_start_view','','<?php echo isset($_REQUEST['table']) ? $_REQUEST['table'] : '' ?>');
 							//-->
 			</script>

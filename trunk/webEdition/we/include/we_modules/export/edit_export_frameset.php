@@ -27,8 +27,7 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 $what = isset($_REQUEST["pnt"]) ? $_REQUEST["pnt"] : "frameset";
 
 $weFrame=new weExportFrames();
-
+$weFrame->getHTMLDocumentHeader();
 $weFrame->View->processVariables();
 $weFrame->View->processCommands();
-
 $weFrame->getHTML($what);

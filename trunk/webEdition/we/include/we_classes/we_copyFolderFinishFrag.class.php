@@ -29,7 +29,7 @@ class copyFolderFinishFrag extends copyFolderFrag{
 		if(isset($_SESSION['weS']['WE_CREATE_TEMPLATE'])){
 			$this->alldata = array();
 			foreach($_SESSION['weS']['WE_CREATE_TEMPLATE'] as $id){
-				array_push($this->alldata, $id);
+				$this->alldata[] = $id;
 			}
 			unset($_SESSION['weS']['WE_CREATE_TEMPLATE']);
 		}

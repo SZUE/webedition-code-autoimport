@@ -204,6 +204,7 @@ class we_msg_proto extends we_class{
 		$save = array();
 		$save[0] = array();
 
+
 		foreach($this->persistent_slots as $cur){
 			$save[0][$cur] = $this->{$cur};
 		}

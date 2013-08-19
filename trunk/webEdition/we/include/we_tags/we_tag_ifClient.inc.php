@@ -41,8 +41,7 @@ function we_tag_ifClient($attribs){
 		// for backwards compatibility
 		if(!$foo_br && $_browserOfClient == 'firefox' && in_array('mozilla', $bro)){
 			$foo_br = true;
-		} else
-		if(!$foo_br && $_browserOfClient == 'appleWebKit' && in_array('safari', $bro)){
+		} elseif(!$foo_br && $_browserOfClient == 'appleWebKit' && in_array('safari', $bro)){
 			$foo_br = true;
 		}
 	} else{
@@ -51,20 +50,14 @@ function we_tag_ifClient($attribs){
 
 	$brv = $br->getBrowserVersion();
 	$foo_v = true;
-	$ver = str_replace('up', '>=', $version);
-	$ver = str_replace('down', '<', $ver);
-	$ver = str_replace('eq', '==', $ver);
+	$ver = str_replace(array('up', 'down', 'eq'), array('>=', '<', '=='), $version);
 
 	if(strpos($ver, '==') !== false){
-		eval('$foo_v = (floor($brv)' . $ver . ');');
+		eval('$foo_v = ('.floor($brv) . $ver . ');');
 	} else{
-		eval('$foo_v = ($brv' . $ver . ');');
+		eval('$foo_v = ('.$brv . $ver . ');');
 	}
-	if($system){
-		$sys = explode(',', $system);
-		$foo_sys = in_array($br->getSystem(), $sys);
-	} else{
-		$foo_sys = true;
-	}
+	$foo_sys = ($system?in_array($br->getSystem(), explode(',', $system)):true);
+
 	return $foo_br && $foo_v && $foo_sys;
 }

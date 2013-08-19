@@ -24,12 +24,11 @@
  */
 we_html_tools::protect();
 
-include_once (WE_INCLUDES_PATH . 'we_versions/version_wizard/we_versions_wizard.inc.php');
+require_once (WE_INCLUDES_PATH . 'we_versions/version_wizard/we_versions_wizard.inc.php');
 
-$fr = isset($_REQUEST["fr"]) ? $_REQUEST["fr"] : "";
+$fr = isset($_REQUEST["fr"]) ? $_REQUEST["fr"] : '';
 
 switch($fr){
-
 	case "body" :
 		print we_versions_wizard::getBody();
 		break;

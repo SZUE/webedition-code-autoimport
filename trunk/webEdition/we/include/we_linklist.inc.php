@@ -169,8 +169,7 @@ class we_linklist{
 		if(isset($jswinAttribs) && is_array($jswinAttribs) && isset($jswinAttribs["jswin"])){ //popUp
 			if($jswinAttribs["jscenter"] && $jswinAttribs["jswidth"] && $jswinAttribs["jsheight"]){
 				$js .= 'if (window.screen) {var w = ' . $jswinAttribs["jswidth"] . ';var h = ' . $jswinAttribs["jsheight"] . ';var screen_height = screen.availHeight - 70;var screen_width = screen.availWidth-10;var w = Math.min(screen_width,w);var h = Math.min(screen_height,h);var x = (screen_width - w) / 2;var y = (screen_height - h) / 2;we_winOpts = \'left=\'+x+\',top=\'+y;}else{we_winOpts=\'\';};';
-			} else
-			if($jswinAttribs["jsposx"] != "" || $jswinAttribs["jsposy"] != ""){
+			} elseif($jswinAttribs["jsposx"] != "" || $jswinAttribs["jsposy"] != ""){
 				if($jswinAttribs["jsposx"] != ""){
 					$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'left=' . $jswinAttribs["jsposx"] . '\';';
 				}
@@ -245,8 +244,9 @@ class we_linklist{
 
 	function getUrl($params = ""){
 		$id = $this->getID();
-		if($id == '')
-			return "http://";
+		if(empty($id)){
+			return we_base_link::EMPTY_EXT;
+		}
 		if(isset($this->cache[$id])){
 			$row = $this->cache[$id];
 		} else{
@@ -599,7 +599,7 @@ class we_linklist{
 	}
 
 	function addLink(){
-		array_push($this->listArray, $this->getRawLink());
+		$this->listArray[] = $this->getRawLink();
 	}
 
 	function length(){
@@ -665,7 +665,7 @@ class we_linklist{
 
 	function getRawLink(){
 		return array(
-			'href' => 'http://',
+			'href' => we_base_link::EMPTY_EXT,
 			'text' => g_l('global', '[new_link]'),
 			'target' => '',
 			'type' => we_base_link::TYPE_EXT,

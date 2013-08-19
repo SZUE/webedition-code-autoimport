@@ -53,11 +53,12 @@ class we_util_Sys_Webedition extends we_util_Sys{
 				 * @see we_util_Sys_Exception
 				 */
 				throw new we_util_sys_Exception('Could not identify webEdition version because we_version.inc.php '
-					. 'is not available.');
+				. 'is not available.');
 			}
 
-			if(!defined("WE_VERSION"))
+			if(!defined("WE_VERSION")){
 				return false;
+			}
 		}
 		return WE_VERSION;
 	}
@@ -72,9 +73,8 @@ class we_util_Sys_Webedition extends we_util_Sys{
 	 */
 	public static function versionCompare($version = "", $operator = ""){
 		$currentVersion = self::version();
-		if($currentVersion === false || empty($version))
-			return false;
-		return parent::_versionCompare($version, $currentVersion, $operator);
+		return ($currentVersion === false || empty($version) ?
+				false : parent::_versionCompare($version, $currentVersion, $operator));
 	}
 
 	/**
@@ -86,8 +86,9 @@ class we_util_Sys_Webedition extends we_util_Sys{
 	 * 		1	module installed and active
 	 */
 	public static function module($property = ""){
-		if(empty($property))
+		if(empty($property)){
 			return -1;
+		}
 
 		// all modules available for webEdition:
 		try{
@@ -114,7 +115,7 @@ class we_util_Sys_Webedition extends we_util_Sys{
 
 		if(in_array($property, $GLOBALS['_we_active_integrated_modules'])){
 			return 1;
-		} else{
+		} else {
 			return 0;
 		}
 	}
@@ -164,8 +165,9 @@ class we_util_Sys_Webedition extends we_util_Sys{
 	 * @return false (not installed) or true (installed)
 	 */
 	public static function tool($property = ""){
-		if(empty($property))
+		if(empty($property)){
 			return false;
+		}
 		$tooldir = $_SERVER['DOCUMENT_ROOT'] . "/webEdition/apps/" . $property;
 		try{
 			if(is_dir($tooldir) && is_readable($tooldir)){
@@ -199,12 +201,12 @@ class we_util_Sys_Webedition extends we_util_Sys{
 	public static function toolVersionCompare($property = "", $reference = "", $operator = ""){
 		if(empty($property) || empty($reference)){
 			return false;
-		} else{
+		} else {
 			$version = self::toolVersion($property);
 		}
 		if($version === false){
 			return false;
-		} else{
+		} else {
 			return parent::_versionCompare($reference, $version, $operator);
 		}
 	}

@@ -22,8 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-//FIXME: is this file used??
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 $parts = array(
 	array("icon" => "upload.gif", "headline" => "", "html" => $GLOBALS['we_doc']->formUpload(), "space" => 140),

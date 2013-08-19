@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_db_tools.inc.php');
+require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_db_tools.inc.php');
 
 // Database wrapper class of webEdition
 if (!defined('DB_CONNECT')){
@@ -31,11 +31,11 @@ if (!defined('DB_CONNECT')){
 switch(DB_CONNECT){
 	case 'connect':
 	case 'pconnect':
-		include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/database/we_database_mysql.class.php');
+		require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/database/we_database_mysql.class.php');
 		break;
 	case 'mysqli_connect':
 	case 'mysqli_pconnect':
-		include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/database/we_database_mysqli.class.php');
+		require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/database/we_database_mysqli.class.php');
 		if(!defined('MYSQL_BOTH')) define('MYSQL_BOTH',MYSQLI_BOTH);
 		if(!defined('MYSQL_ASSOC')) define('MYSQL_ASSOC',MYSQLI_ASSOC);
 		if(!defined('MYSQL_NUM')) define('MYSQL_NUM',MYSQLI_NUM);

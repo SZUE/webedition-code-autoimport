@@ -53,7 +53,7 @@ abstract class exportFunctions{
 
 				// Check if can create the file now
 				if(!$_continue === false){
-					weFile::save($_file_name, '<?xml version="1.0" encoding="' . DEFAULT_CHARSET . "\"?>\n<webEdition>\n");
+					weFile::save($_file_name, '<?xml version="1.0" encoding="' . DEFAULT_CHARSET . "\"?>\n".weBackup::weXmlExImHead.">\n");
 				}
 
 				break;
@@ -475,7 +475,7 @@ abstract class exportFunctions{
 							case "textarea":
 							case "href":
 							case "link":
-								array_push($_records, $_name);
+								$_records[] = $_name;
 								break;
 						}
 					}
@@ -641,7 +641,6 @@ abstract class exportFunctions{
 		$_file_name = $_file_values["filename"];
 		$_tableid = $_file_values["tableid"];
 
-
 		foreach($fields as $field){
 			switch($field["type"]){
 				case 'object':
@@ -701,7 +700,6 @@ abstract class exportFunctions{
 	 */
 	private static function exportObjectFieldNames($fields, $_file_values, $csv_delimiter, $csv_enclose, $csv_lineend){
 		$_export_success = false;
-
 
 		$_file = $_file_values["file"];
 		$_file_name = $_file_values["filename"];

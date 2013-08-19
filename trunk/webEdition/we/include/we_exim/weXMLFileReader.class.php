@@ -68,8 +68,8 @@ abstract class weXMLFileReader{
 				$end = substr($buffer, -20, 20);
 
 				// chek if line is complete
-				$iswestart = stripos($first, '<webEdition') !== false;
-				$isweend = stripos($end, '</webEdition>') !== false;
+				$iswestart = stripos($first, weBackup::weXmlExImHead) !== false;
+				$isweend = stripos($end, weBackup::weXmlExImFooter) !== false;
 				$isxml = preg_match('|<\?xml|i', $first);
 
 				$isend = preg_match("|<!-- *webackup *-->|", $buffer) || empty($buffer);

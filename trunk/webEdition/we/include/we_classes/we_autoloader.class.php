@@ -150,6 +150,8 @@ abstract class we_autoloader{
 			'weMetaData' => 'weMetaData/weMetaData.class.php',
 			'weModelBase' => 'modules/weModelBase.php',
 			'weModuleFrames' => 'modules/weModuleFrames.php',
+			'weModuleView' => 'modules/weModuleView.class.php',
+			'weModuleTree' => 'modules/weModuleTree.class.php',
 			'we_multiIconBox' => 'html/we_multiIconBox.class.inc.php',
 			'we_multiSelector' => 'we_multiSelector.inc.php',
 			'weOrderContainer' => 'js_gui/weOrderContainer.class.php',
@@ -206,8 +208,8 @@ abstract class we_autoloader{
 		'we_modules' => array(
 			'weBanner' => 'banner/weBanner.php',
 			'weBannerBase' => 'banner/weBannerBase.php',
-			'weBannerFrames' => 'banner/weBannerFrames.php',
-			'weBannerView' => 'banner/weBannerView.php',
+			'weBannerFrames' => 'banner/weBannerFrames.class.php',
+			'weBannerView' => 'banner/weBannerView.class.php',
 			'weModuleBannerFrames' => 'banner/weModuleBannerFrames.class.php',
 			'we_bannerDirSelector' => 'banner/we_bannerDirSelector.php',
 			'we_bannerSelector' => 'banner/we_bannerSelector.php',
@@ -219,11 +221,11 @@ abstract class we_autoloader{
 			'weCustomerEI' => 'customer/weCustomerEI.php',
 			'weCustomerEIWizard' => 'customer/weCustomerEIWizard.php',
 			'weCustomerFilterView' => 'customer/weCustomerFilterView.class.php',
-			'weCustomerFrames' => 'customer/weCustomerFrames.php',
+			'weCustomerFrames' => 'customer/weCustomerFrames.class.php',
 			'weCustomerSettings' => 'customer/weCustomerSettings.php',
 			'weCustomerTree' => 'customer/weCustomerTree.php',
 			'weCustomerTreeLoader' => 'customer/weCustomerTreeLoader.php',
-			'weCustomerView' => 'customer/weCustomerView.php',
+			'weCustomerView' => 'customer/weCustomerView.class.php',
 			'weDocumentCustomerFilter' => 'customer/weDocumentCustomerFilter.class.php',
 			'weDocumentCustomerFilterView' => 'customer/weDocumentCustomerFilterView.class.php',
 			'weNavigationCustomerFilter' => 'customer/weNavigationCustomerFilter.class.php',
@@ -232,10 +234,10 @@ abstract class we_autoloader{
 			'we_listview_customer' => 'customer/we_listview_customer.class.php',
 			'we_listview_onlinemonitor' => 'customer/we_listview_onlinemonitor.class.php',
 			'weExport' => 'export/weExport.php',
-			'weExportFrames' => 'export/weExportFrames.php',
+			'weExportFrames' => 'export/weExportFrames.class.php',
 			'weExportTreeLoader' => 'export/weExportTreeLoader.php',
 			'weExportTreeMain' => 'export/weExportTreeMain.php',
-			'weExportView' => 'export/weExportView.php',
+			'weExportView' => 'export/weExportView.class.php',
 			'we_exportDirSelector' => 'export/we_exportDirSelector.php',
 			'weGlossary' => 'glossary/weGlossary.php',
 			'weGlossaryCache' => 'glossary/weGlossaryCache.php',
@@ -255,6 +257,9 @@ abstract class we_autoloader{
 			'weGlossaryTreeLoader' => 'glossary/weGlossaryTreeLoader.php',
 			'weGlossaryView' => 'glossary/weGlossaryView.php',
 			'we_format' => 'messaging/messaging_format.inc.php',
+			'weMessagingFrames' => 'messaging/weMessagingFrames.php',
+			'weMessagingIconbar' => 'messaging/weMessagingIconbar.class.php',
+			'weMessagingView' => 'messaging/weMessagingView.php',
 			'we_message' => 'messaging/we_message.inc.php',
 			'we_messaging' => 'messaging/we_messaging.inc.php',
 			'we_msg_email' => 'messaging/we_msg_email.inc.php',
@@ -270,6 +275,21 @@ abstract class we_autoloader{
 			'weNewsletterTree' => 'newsletter/weNewsletterTree.php',
 			'weNewsletterTreeLoader' => 'newsletter/weNewsletterTreeLoader.php',
 			'weNewsletterView' => 'newsletter/weNewsletterView.php',
+			'weDynList' => 'navigation/class/weDynList.class.php',
+			'weNavigation' => 'navigation/class/weNavigation.class.php',
+			'weNavigationCache' => 'navigation/class/weNavigationCache.class.php',
+			'weNavigationFrames' => 'navigation/class/weNavigationFrames.class.php',
+			'weToolFramesInterim' => 'navigation/class/weToolFrames_interim.class.php',//TODO: delete when navigation is module!
+			'weNavigationItem' => 'navigation/class/weNavigationItem.class.php',
+			'weNavigationItems' => 'navigation/class/weNavigationItems.class.php',
+			'weNavigationRule' => 'navigation/class/weNavigationRule.class.php',
+			'weNavigationRuleControl' => 'navigation/class/weNavigationRuleControl.class.php',
+			'weNavigationRuleFrames' => 'navigation/class/weNavigationRuleFrames.class.php',
+			'weNavigationSettingControl' => 'navigation/class/weNavigationSettingControl.class.php',
+			'weNavigationTree' => 'navigation/class/weNavigationTree.class.php',
+			'weNavigationTreeDataSource' => 'navigation/class/weNavigationTreeDataSource.class.php',
+			'weNavigationView' => 'navigation/class/weNavigationView.class.php',
+			'we_navigationDirSelector' => 'navigation/class/we_navigationDirSelector.php',
 			'we_class_folder' => 'object/we_class_folder.inc.php',
 			'we_listview_multiobject' => 'object/we_listview_multiobject.class.php',
 			'we_listview_object' => 'object/we_listview_object.class.php',
@@ -281,6 +301,7 @@ abstract class we_autoloader{
 			'objectsearch' => 'object/we_searchobject_class.inc.php',
 			'we_schedpro' => 'schedule/we_schedpro.inc.php',
 			'paypal_class' => 'shop/paypal.class.php',
+			'weShopFrames' => 'shop/weShopFrames.class.php',
 			'weShippingControl' => 'shop/weShippingControl.class.php',
 			'weShipping' => 'shop/weShippingControl.class.php',
 			'weShopStatusMails' => 'shop/weShopStatusMails.class.php',
@@ -288,10 +309,12 @@ abstract class we_autoloader{
 			'weShopVatRule' => 'shop/weShopVatRule.class.php',
 			'weShopVats' => 'shop/weShopVats.class.php',
 			'weShopVat' => 'shop/weShopVats.class.php',
-			'weShopView' => 'shop/weShopView.php',
+			'weShopView' => 'shop/weShopView.class.php',
 			'shop' => 'shop/we_shop_shop.class.php',
 			'Basket' => 'shop/we_shop_Basket.class.php',
 			'blaettern' => 'shop/we_pager_class.inc.php',
+			'weUsersFrames' => 'users/weUsersFrames.class.php',
+			'weUsersView' => 'users/weUsersView.class.php',
 			'we_user' => 'users/we_users.inc.php',
 			'we_usersSelector' => 'users/we_usersSelector.inc.php',
 			'weVoting' => 'voting/weVoting.php',
@@ -301,6 +324,8 @@ abstract class we_autoloader{
 			'weVotingTreeLoader' => 'voting/weVotingTreeLoader.php',
 			'weVotingView' => 'voting/weVotingView.php',
 			'we_votingDirSelector' => 'voting/we_votingDirSelector.php',
+			'weWorkflowFrames' => 'workflow/weWorkflowFrames.class.php',
+			'weWorkflowView' => 'workflow/weWorkflowView.class.php',
 			'weModuleInfo' => 'weModuleInfo.class.php',
 		),
 		'we_hook/class' => array(
@@ -398,20 +423,6 @@ abstract class we_autoloader{
 			'ImportFiles' => 'first_steps_wizard/MasterWizard/ImportFiles.class.php',
 			'ImportOptions' => 'first_steps_wizard/MasterWizard/ImportOptions.class.php',
 			'Startscreen' => 'first_steps_wizard/MasterWizard/Startscreen.class.php',
-			'weDynList' => 'navigation/class/weDynList.class.php',
-			'weNavigation' => 'navigation/class/weNavigation.class.php',
-			'weNavigationCache' => 'navigation/class/weNavigationCache.class.php',
-			'weNavigationFrames' => 'navigation/class/weNavigationFrames.class.php',
-			'weNavigationItem' => 'navigation/class/weNavigationItem.class.php',
-			'weNavigationItems' => 'navigation/class/weNavigationItems.class.php',
-			'weNavigationRule' => 'navigation/class/weNavigationRule.class.php',
-			'weNavigationRuleControl' => 'navigation/class/weNavigationRuleControl.class.php',
-			'weNavigationRuleFrames' => 'navigation/class/weNavigationRuleFrames.class.php',
-			'weNavigationSettingControl' => 'navigation/class/weNavigationSettingControl.class.php',
-			'weNavigationTree' => 'navigation/class/weNavigationTree.class.php',
-			'weNavigationTreeDataSource' => 'navigation/class/weNavigationTreeDataSource.class.php',
-			'weNavigationView' => 'navigation/class/weNavigationView.class.php',
-			'we_navigationDirSelector' => 'navigation/class/we_navigationDirSelector.php',
 			'treePopup' => 'treePopup.inc.php',
 			'searchtool' => 'weSearch/class/searchtool.class.php',
 			'searchtoolExp' => 'weSearch/class/searchtoolExp.class.inc.php',
@@ -444,22 +455,29 @@ abstract class we_autoloader{
 	static public function autoload($class_name){
 		//no we-class
 		//FIXME: this should be expected in future
-		if(substr($class_name, 0, 3) === 'we_'){
-			@list(, $domain) = explode('_', $class_name);
-			if(!isset(self::$domains[$domain])){
-				//				t_e('Error class domain not set in autoloader!');
-			} else{
-				if(file_exists(WE_INCLUDES_PATH . self::$domains[$domain] . '/' . $class_name . '.class.php')){
-					include(WE_INCLUDES_PATH . self::$domains[$domain] . '/' . $class_name . '.class.php');
-					return;
+		@list($where, $domain) = explode('_', $class_name, 3);
+		switch($where){
+			case 'we':
+				@list(, $domain) = explode('_', $class_name);
+				if(!isset(self::$domains[$domain])){
+					//				t_e('Error class domain not set in autoloader!');
+				} else{
+					if(file_exists(WE_INCLUDES_PATH . self::$domains[$domain] . '/' . $class_name . '.class.php')){
+						include(WE_INCLUDES_PATH . self::$domains[$domain] . '/' . $class_name . '.class.php');
+						return;
+					}
 				}
-			}
+				break;
+			case 'Horde':
+				include(WE_LIB_PATH . 'additional/' . str_replace('_', '/', $class_name) . '.php');
+				break;
 //			return;
 		}
 
 		foreach(self::$classes as $path => $array){
 			if(array_key_exists($class_name, $array)){
-				include(WE_INCLUDES_PATH . $path . '/' . $array[$class_name]);
+				$path = (substr($path, 0, 1) == '/' ? $_SERVER['DOCUMENT_ROOT'] . $path : WE_INCLUDES_PATH . $path . '/');
+				include($path . $array[$class_name]);
 				break;
 			}
 		}

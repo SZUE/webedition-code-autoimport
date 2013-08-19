@@ -1,6 +1,5 @@
 
-
-    case "edit_shop_ifthere":
+case "edit_shop_ifthere":
     case "edit_shop":
 		new jsWindow(url,"edit_module",-1,-1,970,760,true,true,true,true);
 	break;
@@ -83,17 +82,12 @@
 		new jsWindow(url,"edit_shop_payment",-1,-1,520,720,true,false,true,false);
 	break;
 
-<?php
-    $yearshop = "2002";
-   	$z=1;
-	while($yearshop <= @date("Y")){
-       echo ' case "'."year".$yearshop.'":
-       ';
-	   $yearshop++; $z++;
-
+		<?php
+	$years = we_shop_shop::getAllOrderYears();
+	foreach($years as $cur){
+		echo 'case "year' . $cur . '":' . "\n";
 	}
-
-?>
+	?>
 
 		case "revenue_view":
         case "new_article":
@@ -102,10 +96,13 @@
  			var fo=false;
 					if(jsWindow_count){
 			for(var k=jsWindow_count-1;k>-1;k--){
-				eval("if(jsWindow"+k+"Object.ref=='edit_module'){ jsWindow"+k+"Object.wind.content.we_cmd('"+arguments[0]+"');fo=true;wind=jsWindow"+k+"Object.wind}");
+				eval("if(jsWindow"+k+"Object.ref=='edit_module'){fo=true;wind=jsWindow"+k+"Object.wind}");
 				if(fo) break;
 			}
+			if(fo){
+			wind.content.we_cmd(arguments[0]);
 			wind.focus();
+			}
 			}
 		break;
 

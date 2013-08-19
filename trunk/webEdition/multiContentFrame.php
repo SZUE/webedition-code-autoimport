@@ -60,7 +60,7 @@ include(WEBEDITION_PATH . 'multiEditor/EditorFrameController.inc.php');
 			<?php include(WEBEDITION_PATH . 'multiEditor/multiTabs.inc.php'); ?>
 		</div>
 		<div style="position:absolute;top:22px;bottom:0px;left:0px;right:0px;overflow: hidden;" id="multiEditorEditorFramesetsDiv"><?php
-			$count = (isset($_SESSION) && isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == 'seem') ? 1 : 16;
+			$count = (isset($_SESSION) && isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE) ? 1 : 32;
 
 			for($i = 0; $i < $count; $i++){
 				//'overflow:hidden;' removed to fix bug #6540

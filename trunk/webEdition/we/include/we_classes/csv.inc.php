@@ -43,7 +43,7 @@ class CSV{
 		$this->CSVFile = $file;
 		if(file_exists($this->CSVFile) && ($this->CSVFile != "none") && !empty($this->CSVFile)){
 			$this->setData(implode("", file($this->CSVFile)));
-		} else{
+		} else {
 			$this->CSVError[] = "The file " . $file . " does not exist or is empty.";
 			return FALSE;
 		}
@@ -61,7 +61,7 @@ class CSV{
 			$r = $this->Fields[$this->fetchCursor];
 			$this->fetchCursor++;
 			return $r;
-		} else{
+		} else {
 			$this->CSVError[] = "No more data sets.";
 			return FALSE;
 		}
@@ -72,8 +72,9 @@ class CSV{
 
 			if(($resultTyp == "NUM") || ($resultTyp == "BOTH")){
 				$r = $this->CSVFetchRow();
-				if($resultTyp == "NUM")
+				if($resultTyp == "NUM"){
 					return $r;
+				}
 
 				$this->fetchCursor--;
 			}
@@ -81,14 +82,14 @@ class CSV{
 
 				if(is_array($this->Fields[$this->fetchCursor])){
 					reset($this->Fields[$this->fetchCursor]);
-					while(list($field_id, $field) = each($this->Fields[$this->fetchCursor])) {
+					while(list($field_id, $field) = each($this->Fields[$this->fetchCursor])){
 						$r[$this->FieldNames[$field_id]] = $field;
 					}
 				}
 			}
 			$this->fetchCursor++;
 			return $r;
-		} else{
+		} else {
 			$this->CSVError[] = "No more data sets.";
 			return FALSE;
 		}
@@ -123,8 +124,9 @@ class CSV{
 	}
 
 	function getFieldID($search_field){
-		if(!is_array($this->FieldNames))
-			return FALSE;
+		if(!is_array($this->FieldNames)){
+			return false;
+		}
 		foreach($this->FieldNames as $field_id => $field_name){
 
 			if(trim($search_field) == trim($field_name)){
@@ -140,10 +142,11 @@ class CSV{
 		}
 	}
 
-	function isOK($error_output = TRUE){
-		if($error_output)
+	function isOK($error_output = true){
+		if($error_output){
 			$this->echoCSVError();
-		return ((!empty($this->CSVError)) ? FALSE : TRUE);
+		}
+		return ((!empty($this->CSVError)) ? false : true);
 	}
 
 	function array_merge_better($a1, $a2){
@@ -157,10 +160,10 @@ class CSV{
 
 		$newarray = $a1;
 
-		while(list($key, $val) = each($a2)) {
+		while(list($key, $val) = each($a2)){
 			if(is_array($val) && is_array($newarray[$key])){
 				$newarray[$key] = $this->array_merge_better($newarray[$key], $val);
-			} else{
+			} else {
 				$newarray[$key] = $val;
 			}
 		}

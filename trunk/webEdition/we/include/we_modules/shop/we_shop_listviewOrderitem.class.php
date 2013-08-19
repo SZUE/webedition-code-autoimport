@@ -49,7 +49,7 @@ class we_shop_listviewOrderitem extends listviewBase {
 	 * @param   $docID	   	   string - id of a document where a we:customer tag is on
 	 *
 	 */
-	function __construct($name = '0', $rows = 100000000, $offset = 0, $order = '', $desc = false, $condition = '', $cols = '', $docID = 0, $orderID = 0, $hidedirindex = false){
+	function __construct($name, $rows = 100000000, $offset = 0, $order = '', $desc = false, $condition = '', $cols = '', $docID = 0, $orderID = 0, $hidedirindex = false){
 
 		parent::__construct($name, $rows, $offset, $order, $desc, '', false, 0, $cols);
 
@@ -81,8 +81,13 @@ class we_shop_listviewOrderitem extends listviewBase {
 		}
 
 		if(!empty($this->order)){
-			if(trim($this->order) == 'ID' || trim($this->order) == 'CustomerID' || trim($this->order) == 'ArticleID' || trim($this->order) == 'Quantity' || trim($this->order) == 'Payment_Type'){
-				$this->order = 'Int' . $this->order;
+			switch(trim($this->order)){
+				case 'ID':
+				case 'CustomerID':
+				case 'ArticleID':
+				case 'Quantity':
+				case 'Payment_Type':
+					$this->order = 'Int' . $this->order;
 			}
 
 			$orderstring = ' ORDER BY ' . $this->order;
@@ -94,6 +99,7 @@ class we_shop_listviewOrderitem extends listviewBase {
 				($this->condition ? (' WHERE IntOrderID=' . $this->name . ' AND ' . $this->condition ) : ' WHERE IntOrderID=' . $this->orderID . ' ') :
 				($this->condition ? (' WHERE ' . $this->condition ) : ' '));
 
+
 		$this->DB_WE->query('SELECT 1 FROM ' . SHOP_TABLE . $where);
 		$this->anz_all = $this->DB_WE->num_rows();
 
@@ -102,8 +108,7 @@ class we_shop_listviewOrderitem extends listviewBase {
 	}
 
 	function next_record(){
-		$ret = $this->DB_WE->next_record();
-		if($ret){
+		if(($ret = $this->DB_WE->next_record(MYSQLI_ASSOC))){
 			$strSerial = @unserialize($this->DB_WE->Record['strSerial']);
 			unset($this->DB_WE->Record['strSerial']);
 			if(is_array($strSerial)){
@@ -119,7 +124,10 @@ class we_shop_listviewOrderitem extends listviewBase {
 									$this->DB_WE->Record[substr($key, 3)] = $value; //key without "we_" because of internal problems in shop modul backend view
 								}
 						}
+						$this->DB_WE->Record[$key] = (substr($value, 0, 2) == 'a:' && $val = @unserialize($value)?$val:$value);
+						
 					}
+
 					unset($value);
 					foreach($strSerial['we_sacf'] as $key => &$value){
 						$this->DB_WE->Record[$key] = $value;
@@ -142,33 +150,33 @@ class we_shop_listviewOrderitem extends listviewBase {
 						}
 					}
 					unset($value);
-					foreach($strSerial['we_sacf'] as $key => &$value){
-						$this->DB_WE->Record[$key] = $value;
-					}
-					unset($value);
-					$this->DB_WE->Record['VARIANT'] = $strSerial['WE_VARIANT'];
-					$this->DB_WE->Record['shopvat'] = $strSerial['shopvat'];
 				}
+
+				foreach($strSerial['we_sacf'] as $key => &$value){
+					$this->DB_WE->Record[$key] = $value;
+				}
+				unset($value);
+				$this->DB_WE->Record['VARIANT'] = $strSerial['WE_VARIANT'];
+				$this->DB_WE->Record["shopvat"] = $strSerial["shopvat"];
 			}
 
-			$this->DB_WE->Record['wedoc_Path'] = $this->Path . '?we_orderid=' . $this->DB_WE->Record['OrderID'] . '&we_orderitemid=' . $this->DB_WE->Record['ID'];
-			$this->DB_WE->Record['WE_PATH'] = $this->Path . '?we_orderid=' . $this->DB_WE->Record['OrderID'] . '&we_orderitemid=' . $this->DB_WE->Record['ID'];
+			$this->DB_WE->Record['wedoc_Path'] =  $this->DB_WE->Record['WE_PATH'] = $this->Path . '?we_orderid=' . $this->DB_WE->Record['OrderID'] . '&we_orderitemid=' . $this->DB_WE->Record['ID'];
 			$this->DB_WE->Record['WE_TEXT'] = $this->DB_WE->Record['ID'];
 			$this->DB_WE->Record['WE_ID'] = $this->DB_WE->Record['ID'];
 			$this->DB_WE->Record['we_wedoc_lastPath'] = $this->LastDocPath . '?we_orderid=' . $this->DB_WE->Record['OrderID'] . '&we_orderitemid=' . $this->DB_WE->Record['ID'];
 			$this->count++;
 			return true;
-		} else {
-			$this->stop_next_row = $this->shouldPrintEndTR();
-			if($this->cols && ($this->count <= $this->maxItemsPerPage) && !$this->stop_next_row){
-				$this->DB_WE->Record = array(
-					'WE_PATH' => '',
-					'WE_TEXT' => '',
-					'WE_ID' => '',
-				);
-				$this->count++;
-				return true;
-			}
+		} 
+
+		$this->stop_next_row = $this->shouldPrintEndTR();
+		if($this->cols && ($this->count <= $this->maxItemsPerPage) && !$this->stop_next_row){
+			$this->DB_WE->Record = array(
+				'WE_PATH' => '',
+				'WE_TEXT' => '',
+				'WE_ID' => '',
+			);
+			$this->count++;
+			return true;
 		}
 
 		return false;

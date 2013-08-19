@@ -150,7 +150,7 @@ class weNewsletterGroup extends weNewsletterBase{
 	}
 
 	function delallFilter(){
-		$this->Filter = "";
+		$this->Filter = '';
 		$this->aFilter = array();
 	}
 
@@ -164,7 +164,7 @@ class weNewsletterGroup extends weNewsletterBase{
 
 		$db = new DB_WE();
 
-		$db->query("SELECT ID FROM " . NEWSLETTER_GROUP_TABLE . " WHERE NewsletterID=" . intval($newsletterID) . " ORDER BY ID");
+		$db->query('SELECT ID FROM ' . NEWSLETTER_GROUP_TABLE . ' WHERE NewsletterID=' . intval($newsletterID) . ' ORDER BY ID');
 		$ret = array();
 		while($db->next_record()) {
 			$ret[] = new self($db->f("ID"));
@@ -176,8 +176,9 @@ class weNewsletterGroup extends weNewsletterBase{
 		$db = new DB_WE();
 		$ret = array();
 		$db->query('SELECT * FROM ' . NEWSLETTER_PREFS_TABLE);
-		while($db->next_record())
-			$ret[$db->f('pref_name')] = $db->f("pref_value");
+		while($db->next_record()){
+			$ret[$db->f('pref_name')] = $db->f('pref_value');
+		}
 		return $ret;
 	}
 

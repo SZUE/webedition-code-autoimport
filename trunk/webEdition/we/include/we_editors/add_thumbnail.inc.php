@@ -102,7 +102,7 @@ if(isset($we_doc->ClassName) && $we_doc->ClassName == "we_imageDocument"){
 	print STYLESHEET . "</head>";
 
 	// SELECT Box with thumbnails
-	$_thumbnails = new we_html_select(array("multiple" => "multiple", "name" => "Thumbnails", "id" => "Thumbnails", "class" => "defaultfont", "size" => "6", "style" => "width: 340px;", "onchange" => "select_thumbnails(this);"));
+	$_thumbnails = new we_html_select(array("multiple" => "multiple", "name" => "Thumbnails", "id" => "Thumbnails", "class" => "defaultfont", "size" => 6, "style" => "width: 340px;", "onchange" => "select_thumbnails(this);"));
 	$DB_WE->query("SELECT ID,Name,Format FROM " . THUMBNAILS_TABLE . " ORDER BY Name");
 
 	$_thumbnail_counter_firsttime = true;
@@ -115,7 +115,7 @@ if(isset($we_doc->ClassName) && $we_doc->ClassName == "we_imageDocument"){
 		if(!in_array($DB_WE->f("ID"), $doc_thumbs)){
 			$_enabled_buttons = true;
 			$_thumbnail_counter = $DB_WE->f("ID");
-			if(we_image_edit::is_imagetype_read_supported(we_image_edit::$GDIMAGE_TYPE[strtolower($we_doc->Extension)]) && we_image_edit::is_imagetype_supported($DB_WE->f("Format") ? $DB_WE->f("Format") : we_image_edit::$GDIMAGE_TYPE[strtolower($we_doc->Extension)])){
+			if(we_image_edit::is_imagetype_read_supported(we_image_edit::$GDIMAGE_TYPE[strtolower($we_doc->Extension)]) && we_image_edit::is_imagetype_supported(trim($DB_WE->f("Format")) ? $DB_WE->f("Format") : we_image_edit::$GDIMAGE_TYPE[strtolower($we_doc->Extension)])){
 				$_thumbnails->addOption($DB_WE->f("ID"), $DB_WE->f("Name"));
 			}
 			if($_thumbnail_counter_firsttime){
@@ -129,12 +129,12 @@ if(isset($we_doc->ClassName) && $we_doc->ClassName == "we_imageDocument"){
 
 	$editbut = we_button::create_button("edit_all_thumbs", "javascript:we_cmd('editThumbs','top.opener.location = top.opener.location;');", false);
 
-	array_push($_thumbs, array("headline" => "", "html" => $_thumbnails->getHtml() . '<p align="right">' . $editbut . '</p>', "space" => 0));
+	$_thumbs[] = array("headline" => "", "html" => $_thumbnails->getHtml() . '<p align="right">' . $editbut . '</p>', "space" => 0);
 
 
 	$iframe = '<iframe name="showthumbs" id="showthumbs" src="' . WEBEDITION_DIR . 'showThumb.php?u=' . $uniqid . '&t=' . $we_transaction . '&id=' . $selectedID . '" width="340" height="130"></iframe>';
 
-	array_push($_thumbs, array("headline" => "", "html" => $iframe, "space" => 0));
+	$_thumbs[] = array("headline" => "", "html" => $iframe, "space" => 0);
 
 	$addbut = we_button::create_button("add", "javascript:add_thumbnails();", false, -1, -1, "", "", !$_enabled_buttons, false);
 	$cancelbut = we_button::create_button("cancel", "javascript:top.close();");

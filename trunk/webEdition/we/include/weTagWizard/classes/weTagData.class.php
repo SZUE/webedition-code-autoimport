@@ -67,12 +67,11 @@ class weTagData{
 		if(file_exists(WE_INCLUDES_PATH . 'weTagWizard/we_tags/we_tag_' . $tagName . '.inc.php')){
 			require (WE_INCLUDES_PATH . 'weTagWizard/we_tags/we_tag_' . $tagName . '.inc.php');
 			$this->Exists = true;
-		} else
-		if(file_exists(WE_INCLUDES_PATH . 'weTagWizard/we_tags/custom_tags/we_tag_' . $tagName . '.inc.php')){
+		} elseif(file_exists(WE_INCLUDES_PATH . 'weTagWizard/we_tags/custom_tags/we_tag_' . $tagName . '.inc.php')){
 			require (WE_INCLUDES_PATH . 'weTagWizard/we_tags/custom_tags/we_tag_' . $tagName . '.inc.php');
 			$this->Exists = true;
 			$this->Groups[] = 'custom';
-		} else{
+		} else {
 			//Application Tags
 			$apptags = array();
 			$alltools = weToolLookup::getAllTools(true);
@@ -88,16 +87,32 @@ class weTagData{
 				require_once ($allapptags[$tagName]);
 				$this->Exists = true;
 				$this->Groups[] = 'apptags';
-			} else{
+			} else {
 				t_e('requested help entry of tag ' . $tagName . ' not found');
 				return;
 			}
 		}
 
+		if(strpos($tagName, 'if') !== 0){
+			$to = new weTagData_choiceAttribute('to', array(
+				new weTagDataOption('global'),
+				new weTagDataOption('request'),
+				new weTagDataOption('get'),
+				new weTagDataOption('post'),
+				new weTagDataOption('session'),
+				new weTagDataOption('top'),
+				new weTagDataOption('self'),
+				new weTagDataOption('block'),
+				new weTagDataOption('sessionfield'),
+				new weTagDataOption('screen'),
+				), false, false, '');
+			$nameto = new weTagData_textAttribute('nameto', false, '');
+		}
+
 		if($this->TypeAttribute){
 			if(!is_array($this->TypeAttribute->getOptions())){
 				t_e('Error in TypeAttribute of we:' . $this->Name);
-			} else{
+			} else {
 				$options = $this->TypeAttribute->getOptions();
 				if(!$this->noDocuLink){
 					foreach($options as &$value){
@@ -116,12 +131,21 @@ class weTagData{
 							$this->Attributes[] = $cur;
 						}
 					}
+					if(isset($to)){
+						$value->addTypeAttribute($to);
+						$value->addTypeAttribute($nameto);
+					}
 				}
 			}
-		} else{
+		} else {
 			if(!$this->noDocuLink){
 				$this->Attributes[] = new weTagData_cmdAttribute('TagReferenz', false, '', array('open_tagreference', strtolower($tagName)), g_l('taged', '[tagreference_linktext]')); // Bug #6341
 			}
+		}
+
+		if(isset($to)){
+			$this->Attributes[] = $to;
+			$this->Attributes[] = $nameto;
 		}
 	}
 
@@ -176,7 +200,7 @@ class weTagData{
 		static $tags = array();
 		if(isset($tags[$tagName])){
 			$tag = $tags[$tagName];
-		} else{
+		} else {
 			$tag = new weTagData($tagName);
 			if(!$tag->Exists){
 				return null;
@@ -205,7 +229,7 @@ class weTagData{
 
 			if($idPrefix){
 				$attribs[] = $attrib->getIdName();
-			} else{
+			} else {
 				$attribs[] = $attrib->getName();
 			}
 		}

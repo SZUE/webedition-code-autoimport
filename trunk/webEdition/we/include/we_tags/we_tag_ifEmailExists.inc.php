@@ -23,5 +23,5 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_ifEmailExists(){
-	return (isset($GLOBALS["WE_WRITENEWSLETTER_STATUS"])) && ($GLOBALS["WE_WRITENEWSLETTER_STATUS"] == weNewsletterBase::STATUS_EMAIL_EXISTS);
+	return (isset($GLOBALS['WE_WRITENEWSLETTER_STATUS'])) && ($GLOBALS['WE_WRITENEWSLETTER_STATUS'] == weNewsletterBase::STATUS_EMAIL_EXISTS);
 }

@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once(WE_INCLUDES_PATH . 'we_delete_fn.inc.php');
+require_once(WE_INCLUDES_PATH . 'we_delete_fn.inc.php');
 
 class delFragment extends taskFragment{
 
@@ -69,7 +69,7 @@ class delFragment extends taskFragment{
 		$alert = (empty($_SESSION['weS']['we_not_deleted_entries']) ?
 				we_message_reporting::getShowMessageCall(g_l('alert', "[delete_ok]"), we_message_reporting::WE_MESSAGE_NOTICE) :
 				we_message_reporting::getShowMessageCall(makeAlertDelFolderNotEmpty($_SESSION['weS']['we_not_deleted_entries']), we_message_reporting::WE_MESSAGE_ERROR));
-		print we_html_element::jsElement($alert . (($_SESSION['weS']['we_mode'] == "seem" && $_SESSION['weS']['we_go_seem_start']) ? 'top.opener.top.we_cmd("start_multi_editor");' : '') . 'top.close();');
+		print we_html_element::jsElement($alert . (($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE && $_SESSION['weS']['we_go_seem_start']) ? 'top.opener.top.we_cmd("start_multi_editor");' : '') . 'top.close();');
 		unset($_SESSION['weS']['todel']);
 		unset($_SESSION['weS']['we_not_deleted_entries']);
 		unset($_SESSION['weS']['we_go_seem_start']);

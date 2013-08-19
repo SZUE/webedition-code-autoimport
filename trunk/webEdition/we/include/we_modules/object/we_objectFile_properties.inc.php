@@ -26,34 +26,34 @@ $wepos = "";
 $parts = array();
 
 if($GLOBALS['we_doc']->EditPageNr != WE_EDITPAGE_WORKSPACE){
-	array_push($parts, array(
+	$parts[] = array(
 		"headline" => g_l('weClass', "[path]"),
 		"html" => $GLOBALS['we_doc']->formPath(),
 		"space" => 140,
-		"icon" => "path.gif")
+		"icon" => "path.gif"
 	);
 
-	if($_SESSION['weS']['we_mode'] == "seem" || !we_hasPerm('CAN_SEE_OBJECTS')){ // No link to class in normal mode
-		array_push($parts, array(
+	if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE || !we_hasPerm('CAN_SEE_OBJECTS')){ // No link to class in normal mode
+		$parts[] = array(
 			"headline" => g_l('modules_object', '[class]'),
 			"html" => $GLOBALS['we_doc']->formClass(),
 			"space" => 140,
 			'noline' => true,
-			"icon" => "class.gif")
+			"icon" => "class.gif"
 		);
-	} else if($_SESSION['weS']['we_mode'] == "normal"){ //	Link to class in normal mode
+	} else if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){ //	Link to class in normal mode
 		$_html = '<div class="weMultiIconBoxHeadline" style="margin-bottom:5px;"><a href="javascript:top.weEditorFrameController.openDocument(\'' . OBJECT_TABLE . '\',' . $GLOBALS['we_doc']->TableID . ',\'object\');">' . g_l('modules_object', '[class]') . '</a></div>' .
 			'<div style="margin-bottom:12px;">' . $GLOBALS['we_doc']->formClass() . '</div>';
 		$_html .= '<div class="weMultiIconBoxHeadline" style="margin-bottom:5px;">' . g_l('modules_object', '[class_id]') . '</div>' .
 			'<div style="margin-bottom:12px;">' . $GLOBALS['we_doc']->formClassId() . '</div>';
 
 
-		array_push($parts, array(
+		$parts[] = array(
 			"headline" => "",
 			"html" => $_html,
 			"space" => 140,
 			"forceRightHeadline" => 1,
-			"icon" => "class.gif")
+			"icon" => "class.gif"
 		);
 	}
 
@@ -65,65 +65,65 @@ if($GLOBALS['we_doc']->EditPageNr != WE_EDITPAGE_WORKSPACE){
 	);
 
 
-	array_push($parts, array(
+	$parts[] = array(
 		"headline" => g_l('global', "[categorys]"),
 		"html" => $GLOBALS['we_doc']->formCategory(),
 		"space" => 140,
-		"icon" => "cat.gif")
+		"icon" => "cat.gif"
 	);
 
 
-	array_push($parts, array(
+	$parts[] = array(
 		"headline" => g_l('modules_object', '[copyObject]'),
 		"html" => $GLOBALS['we_doc']->formCopyDocument(),
 		"space" => 140,
-		"icon" => "copy.gif")
+		"icon" => "copy.gif"
 	);
 
 
-	array_push($parts, array(
+	$parts[] = array(
 		"headline" => g_l('weClass', "[owners]"),
 		"html" => $GLOBALS['we_doc']->formCreatorOwners(),
 		"space" => 140,
-		"icon" => "user.gif")
+		"icon" => "user.gif"
 	);
 
 
-	array_push($parts, array(
+	$parts[] = array(
 		"headline" => g_l('weClass', "[Charset]"),
 		"html" => $GLOBALS['we_doc']->formCharset(),
 		"space" => 140,
-		"icon" => "charset.gif")
+		"icon" => "charset.gif"
 	);
-} else{
+} else {
 
 	if($GLOBALS['we_doc']->hasWorkspaces()){ //	Show workspaces
-		array_push($parts, array(
+		$parts[] = array(
 			"headline" => g_l('weClass', "[workspaces]"),
 			"html" => $GLOBALS['we_doc']->formWorkspaces(),
 			"space" => 140,
 			"noline" => 1,
-			"icon" => "workspace.gif")
+			"icon" => "workspace.gif"
 		);
-		array_push($parts, array(
+		$parts[] = array(
 			"headline" => g_l('weClass', "[extraWorkspaces]"),
 			"html" => $GLOBALS['we_doc']->formExtraWorkspaces(),
 			"space" => 140,
-			"forceRightHeadline" => 1)
+			"forceRightHeadline" => 1
 		);
 
 		$button = we_button::create_button("ws_from_class", "javascript:we_cmd('ws_from_class');_EditorFrame.setEditorIsHot(true);");
 
-		array_push($parts, array(
+		$parts[] = array(
 			"headline" => "",
 			"html" => $button,
-			"space" => 140)
+			"space" => 140
 		);
-	} else{				 //	No workspaces defined
-		array_push($parts, array(
+	} else { //	No workspaces defined
+		$parts[] = array(
 			"headline" => "",
 			"html" => g_l('modules_object', '[no_workspace_defined]'),
-			"space" => 0)
+			"space" => 0
 		);
 	}
 }

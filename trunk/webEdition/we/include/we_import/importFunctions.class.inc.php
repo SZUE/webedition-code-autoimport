@@ -204,7 +204,7 @@ abstract class importFunctions{
 		if(preg_match_all("/[$eregchars]/", $format, $matches, PREG_SET_ORDER)){
 			foreach($matches as $match){
 				if(is_array($match) && isset($match[0])){
-					array_push($replaceorder, $match[0]);
+					$replaceorder[] = $match[0];
 				}
 			}
 		}

@@ -31,4 +31,4 @@ $JSIDName = we_cmd_dec(2);
 $JSTextName = we_cmd_dec(3);
 $JSCommand = we_cmd_dec(4);
 
-include_once(WE_MODULES_PATH . 'banner/we_bannerSelect.php');
+require_once(WE_MODULES_PATH . 'banner/we_bannerSelect.php');

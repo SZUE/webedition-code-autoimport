@@ -31,17 +31,17 @@ function we_include_tag_file($name){
 		return true;
 	}
 	if(file_exists(WE_INCLUDES_PATH . 'we_tags/' . $fn . '.inc.php')){
-		include_once (WE_INCLUDES_PATH . 'we_tags/' . $fn . '.inc.php');
+		require_once (WE_INCLUDES_PATH . 'we_tags/' . $fn . '.inc.php');
 		return true;
 	}
 	if(file_exists(WE_INCLUDES_PATH . 'we_tags/custom_tags/' . $fn . '.inc.php')){
-		include_once (WE_INCLUDES_PATH . 'we_tags/custom_tags/' . $fn . '.inc.php');
+		require_once (WE_INCLUDES_PATH . 'we_tags/custom_tags/' . $fn . '.inc.php');
 		return true;
 	}
 
 	$toolinc = '';
 	if(weToolLookup::getToolTag($name, $toolinc, true)){
-		include_once ($toolinc);
+		require_once ($toolinc);
 		return true;
 	}
 	if(strpos(trim($name), 'if') === 0){ // this ifTag does not exist
@@ -74,9 +74,10 @@ function we_tag($name, $attribs = array(), $content = ''){
 		$nameTo = '';
 		$to = 'screen';
 	} else{
-		$nameTo = weTag_getAttribute("nameto", $attribs);
-		$to = weTag_getAttribute("to", $attribs, 'screen');
+		$nameTo = weTag_getAttribute('nameto', $attribs);
+		$to = weTag_getAttribute('to', $attribs, 'screen');
 		$attribs = removeAttribs($attribs, array('cachelifetime', 'comment', 'to', 'nameto', 'user'));
+
 		/* if to attribute is set, output of the tag is redirected to a variable
 		 * this makes only sense if tag output is equal to non-editmode */
 		if($to != 'screen'){
@@ -88,6 +89,9 @@ function we_tag($name, $attribs = array(), $content = ''){
 	if(isset($attribs['name'])){
 		$attribs['_name_orig'] = $attribs['name'];
 		$attribs['name'] = we_tag_getPostName($attribs['name']);
+		if($GLOBALS['we_editmode']&& get_class($GLOBALS['we_doc'])=='we_webEditionDocument'){
+			$GLOBALS['we_doc']->addUsedElement($name, $attribs['name']);
+		}
 	}
 
 	if($edMerk && $user && (!$_SESSION['perms']['ADMINISTRATOR'])){
@@ -117,27 +121,56 @@ function we_tag($name, $attribs = array(), $content = ''){
 
 ### tag utility functions ###
 
+function we_setVarArray(&$arr, $string, $value){
+	if(strpos($string, '[') === false){
+		$arr[$string] = $value;
+		return;
+	}
+	$current = &$arr;
+
+	$arr_matches = array();
+	preg_match('/[^\[\]]+/', $string, $arr_matches);
+	$first = $arr_matches[0];
+	preg_match_all('/\[([^\]]*)\]/', $string, $arr_matches, PREG_PATTERN_ORDER);
+	$arr_matches = $arr_matches[1];
+	array_unshift($arr_matches, $first);
+	$last = count($arr_matches) - 1;
+	foreach($arr_matches as $pos => $dimension){
+		if(empty($dimension)){
+			$dimension = count($current);
+		}
+		if($pos == $last){
+			$current[$dimension] = $value;
+			return;
+		}
+		if(!isset($current[$dimension])){
+			$current[$dimension] = array();
+		}
+		$current = &$current[$dimension];
+	}
+}
+
 function we_redirect_tagoutput($returnvalue, $nameTo, $to = 'screen'){
 	if(isset($GLOBALS['calculate'])){
 		$to = 'calculate';
 	}
 	switch($to){
-		case 'request' :
-			$_REQUEST[$nameTo] = $returnvalue;
+		case 'request':
+			we_setVarArray($_REQUEST, $nameTo, $returnvalue);
 			return null;
-		case 'post' :
-			$_POST[$nameTo] = $returnvalue;
+		case 'post':
+			we_setVarArray($_POST, $nameTo, $returnvalue);
 			return null;
-		case 'get' :
-			$_GET[$nameTo] = $returnvalue;
+		case 'get':
+			we_setVarArray($_GET, $nameTo, $returnvalue);
 			return null;
-		case 'global' :
-			$GLOBALS[$nameTo] = $returnvalue;
+		case 'global':
+			we_setVarArray($GLOBALS, $nameTo, $returnvalue);
 			return null;
-		case 'session' :
-			$_SESSION[$nameTo] = $returnvalue;
+		case 'session':
+			we_setVarArray($_SESSION, $nameTo, $returnvalue);
 			return null;
-		case 'top' :
+		case 'top':
 			$GLOBALS['WE_MAIN_DOC_REF']->setElement($nameTo, $returnvalue);
 			return null;
 		case 'block' :
@@ -197,15 +230,15 @@ function weTag_getParserAttribute($name, $attribs, $default = '', $isFlag = fals
 function weTag_getAttribute($name, $attribs, $default = '', $isFlag = false, $useGlobal = true){
 	$value = isset($attribs[$name]) ? $attribs[$name] : '';
 	$regs = array();
+	//FIXME: change this, it should be possible to use \$a[b][c] to get $GLOBALS['a']['b']['c']
 	if($useGlobal && !is_array($value) && preg_match('|^\\\\?\$(.+)$|', $value, $regs)){
 		$value = isset($GLOBALS[$regs[1]]) ? $GLOBALS[$regs[1]] : '';
 	}
 	if($isFlag){
 		$val = (is_string($value) ? strtolower(trim($value)) : $value);
-		$ret = (bool) $default;
-		$ret = $ret && !($val === 'false' || $val === 'off' || $val === '0' || $val === 0 || $val === false);
-		$ret = $ret || ($val === 'true' || $val === 'on' || $val === '1' || $value === $name || $val === 1 || $val === true);
-		return $ret;
+		return (((bool) $default) &&
+			!($val === 'false' || $val === 'off' || $val === '0' || $val === 0 || $val === false)) ||
+			($val === 'true' || $val === 'on' || $val === '1' || $value === $name || $val === 1 || $val === true);
 	}
 	$value = is_array($value) || strlen($value) ? $value : $default;
 
@@ -228,20 +261,6 @@ function we_getTagAttributeTagParser($name, $attribs, $default = '', $isFlag = f
 function we_getTagAttribute($name, $attribs, $default = '', $isFlag = false, $checkForFalse = false, $useGlobal = true){
 	t_e('deprecated', 'you use an old tag, which still uses function we_getTagAttribute, use weTag_getAttribute instead!');
 	return weTag_getAttribute($name, $attribs, ($isFlag ? $checkForFalse : $default), $isFlag, $useGlobal);
-}
-
-function makeEmptyTable($in){
-	preg_match_all('/<[^>]+>/i', $in, $result, PREG_SET_ORDER);
-
-	$out = '';
-	foreach($result as $res){
-		$tag = $res[0];
-
-		if(preg_match('-< ?/? ?(td|tr|table|tbody)-i', $tag)){
-			$out .= $tag;
-		}
-	}
-	return $out;
 }
 
 function we_tag_path_hasIndex($path, $indexArray){
@@ -273,13 +292,13 @@ function cutSimpleText($text, $len){
 	return substr($text, 0, max($pos));
 }
 
-function cutText($text, $max = 0, $striphtml=false){
+function cutText($text, $max = 0, $striphtml = false){
 	if((!$max) || (strlen($text) <= $max)){
 		return $text;
 	}
 	//no tags, simple cut off
 	if(strstr($text, '<') == FALSE){
-		return cutSimpleText($text, $max) . ($striphtml?' ...':' &hellip;');
+		return cutSimpleText($text, $max) . ($striphtml ? ' ...' : ' &hellip;');
 	}
 
 	$ret = '';
@@ -301,7 +320,7 @@ function cutText($text, $max = 0, $striphtml=false){
 					$ret.=($len > $max ? cutSimpleText($cur[0], $max) : $cur[0]);
 					$max-=$len;
 					if($max <= 0){
-						$ret.=($striphtml?' ...':' &hellip;');
+						$ret.=($striphtml ? ' ...' : ' &hellip;');
 					}
 				}
 				break;
@@ -312,7 +331,7 @@ function cutText($text, $max = 0, $striphtml=false){
 						if($cur[3]){//close
 							array_pop($tags);
 						} else{
-							array_push($tags, $cur[4]);
+							$tags[] = $cur[4];
 						}
 					}
 				}
@@ -329,20 +348,15 @@ function cutText($text, $max = 0, $striphtml=false){
 }
 
 function we_getDocForTag($docAttr, $maindefault = false){
-	if($maindefault){
-		switch($docAttr){
-			case 'self' :
-				return $GLOBALS['we_doc'];
-			default :
-				return $GLOBALS['WE_MAIN_DOC'];
-		}
-	} else{
-		switch($docAttr){
-			case 'top' :
-				return $GLOBALS['WE_MAIN_DOC'];
-			default :
-				return $GLOBALS['we_doc'];
-		}
+	switch($docAttr){
+		case 'self' :
+			return $GLOBALS['we_doc'];
+		case 'top' :
+			return $GLOBALS['WE_MAIN_DOC'];
+		default :
+			return ($maindefault ?
+					$GLOBALS['WE_MAIN_DOC'] :
+					$GLOBALS['we_doc']);
 	}
 }
 
@@ -356,14 +370,19 @@ function parseError($text){
 	return '<b>' . g_l('parser', '[error_in_template]') . ':</b>' . $text . "<br/>\n" . g_l('weClass', '[template]') . ': ' . we_tag_tagParser::$curFile;
 }
 
-function attributFehltError($attribs, $attr, $tag, $canBeEmpty = false){
+function attributFehltError($attribs, $attrs, $tag, $canBeEmpty = false){
 	$tag = str_replace(array('we_tag_', 'we_parse_tag_'), '', $tag);
-	if($canBeEmpty){
-		if(!isset($attribs[$attr])){
-			return parseError(sprintf(g_l('parser', '[attrib_missing2]'), $attr, $tag));
+	if(!is_array($attrs)){
+		$attrs = array($attrs => $canBeEmpty);
+	}
+	foreach($attrs as $attr => $canBeEmpty){
+		if($canBeEmpty){
+			if(!isset($attribs[$attr])){
+				return parseError(sprintf(g_l('parser', '[attrib_missing2]'), $attr, $tag));
+			}
+		} elseif(!isset($attribs[$attr]) || $attribs[$attr] == ''){
+			return parseError(sprintf(g_l('parser', '[attrib_missing]'), $attr, $tag));
 		}
-	} elseif(!isset($attribs[$attr]) || $attribs[$attr] == ''){
-		return parseError(sprintf(g_l('parser', '[attrib_missing]'), $attr, $tag));
 	}
 	return '';
 }
@@ -461,7 +480,7 @@ function we_tag_ifDemo(){
 }
 
 function we_tag_ifSeeMode($attribs, $content){
-	return (we_tag('ifWebEdition', $attribs, $content)) && (isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == 'seem');
+	return (we_tag('ifWebEdition', $attribs, $content)) && (isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE);
 }
 
 function we_tag_ifNotSeeMode($attribs, $content){
@@ -541,6 +560,10 @@ function we_tag_ifNotEqual($attribs){
 }
 
 function we_tag_ifNotFound($attribs){
+	return !we_tag('ifFound', $attribs);
+}
+
+function we_tag_ifNotIsActive($attribs){
 	return !we_tag('ifFound', $attribs);
 }
 
@@ -711,27 +734,27 @@ function we_tag_makeMail(){
 }
 
 function we_tag_ifshopexists(){
-	return defined('SHOP_TABLE');
+	return we_tag('ifIsActive', array('name' => 'shop'));
 }
 
 function we_tag_ifobjektexists(){
-	return defined('OBJECT_TABLE');
+	return we_tag('ifIsActive', array('name' => 'object'));
 }
 
 function we_tag_ifnewsletterexists(){
-	return defined('NEWSLETTER_TABLE');
+	return we_tag('ifIsActive', array('name' => 'newsletter'));
 }
 
 function we_tag_ifcustomerexists(){
-	return defined('CUSTOMER_TABLE');
+	return we_tag('ifIsActive', array('name' => 'customer'));
 }
 
 function we_tag_ifbannerexists(){
-	return defined('BANNER_TABLE');
+	return we_tag('ifIsActive', array('name' => 'banner'));
 }
 
 function we_tag_ifvotingexists(){
-	return defined('VOTING_TABLE');
+	return we_tag('ifIsActive', array('name' => 'voting'));
 }
 
 //this function is used by all tags adding elements to we_lv_array

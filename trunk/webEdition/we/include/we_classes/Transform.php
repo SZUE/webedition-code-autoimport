@@ -179,7 +179,7 @@ class Image_Transform
                                       'y'     => 20,
                                       'color' => 'red',
                                       'font'  => 'Arial.ttf',
-        							  'size'  => '12',
+        							  'size'  => 12,
         							  'angle' => 0,
                                       'resize_first' => false);
 
@@ -214,7 +214,6 @@ class Image_Transform
             }
 		}
 		    // we: driver already loaded!
-        //include_once 'Image/Transform/Driver/' . basename($driver) . '.php';
 
         $classname = "Image_Transform_Driver_{$driver}";
         if (! @class_exists($classname)) {

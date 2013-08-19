@@ -185,24 +185,7 @@ class we_flashDocument extends we_binaryDocument{
 				$this->html = $src;
 			}
 		} else{
-			if($GLOBALS['we_doc']->InWebEdition == 1){
-				/* Anzeige des No_Falsh-Bildes in der Vorschau
-				  $imgAtts["src"]    = IMAGE_DIR . 'icons/no_flashmovie.gif';
-				  $imgAtts["width"]  = 64;
-				  $imgAtts["height"] = 64;
-				  $imgAtts["border"] = 0;
-				  $imgAtts["style"] = "margin:8px 18px;";
-				  $imgAtts["alt"]    = "";
-				  $imgAtts["xml"]    = $this->getElement("xml");
-				  if(isset($this->name)){
-				  $imgAtts["name"] = $this->name;
-				  }
-				  $this->html = getHtmlTag("img", $imgAtts);
-				 */
-				$this->html = '';
-			} else{
-				$this->html = '';
-			}
+			$this->html = '';
 		}
 		return $this->html;
 	}
@@ -433,8 +416,7 @@ class we_flashDocument extends we_binaryDocument{
 
 					if(isset($_REQUEST["WE_UI_DEL_CHECKBOX_" . $flashName]) && $_REQUEST["WE_UI_DEL_CHECKBOX_" . $flashName] == 1){
 						$_SESSION[$_flashmovieDataId]['doDelete'] = true;
-					} else
-					if($filename){
+					} elseif($filename){
 						// file is selected, check to see if it is an image
 						$ct = getContentTypeFromFile($filename);
 						if($ct == $this->ContentType){

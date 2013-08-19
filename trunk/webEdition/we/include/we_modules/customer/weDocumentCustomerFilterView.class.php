@@ -123,7 +123,7 @@ class weDocumentCustomerFilterView extends weCustomerFilterView{
 
 
 
-		return $yuiSuggest->getYuiFiles() . "\n" .
+		return weSuggest::getYuiFiles() .
 			$this->getDiv($_accesControl, 'accessControlDiv', $_filter->getMode() !== weAbstractCustomerFilter::OFF, 0);
 	}
 
@@ -139,7 +139,7 @@ class weDocumentCustomerFilterView extends weCustomerFilterView{
 			<div class=\"weMultiIconBoxHeadline paddingVertical\">" . g_l('modules_customerFilter', '[apply_filter]') . "</div>
 			<table>
 			<tr>
-				<td>" . we_html_tools::htmlAlertAttentionBox(g_l('modules_customerFilter', '[apply_filter_info]'), 2, 432, false) . "</td>
+				<td>" . we_html_tools::htmlAlertAttentionBox(g_l('modules_customerFilter', '[apply_filter_info]'), we_html_tools::TYPE_INFO, 432, false) . "</td>
 				<td style=\"padding-left:17px;\">" . $_ok_button . "</td>
 			</tr>
 			</table>

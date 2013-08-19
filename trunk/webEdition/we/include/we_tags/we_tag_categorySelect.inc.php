@@ -80,7 +80,7 @@ function we_tag_categorySelect($attribs, $content){
 		if($firstentry){
 			$content .= getHtmlTag('option', array('value' => ''), $firstentry);
 		}
-		$db = new DB_WE();
+		$db = $GLOBALS['DB_WE'];
 		$dbfield = $showpath || $indent ? 'Path' : 'Category';
 		$db->query('SELECT Path,Category FROM ' . CATEGORY_TABLE . ' WHERE Path LIKE "' . $db->escape($rootdir) . '%" ORDER BY ' . $dbfield);
 		while($db->next_record()) {
