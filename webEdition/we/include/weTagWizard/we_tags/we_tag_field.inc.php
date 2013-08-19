@@ -94,7 +94,7 @@ $this->TypeAttribute = new weTagData_typeAttribute('type', array(
 	new weTagDataOption('text', false, '', array($name, $hyperlink, $href, $target, $num_format, $alt, $max, $striphtml, $htmlspecialchars, $triggerid), array($name)),
 	new weTagDataOption('date', false, '', array($name, $hyperlink, $href, $target, $format, $alt, $max, $htmlspecialchars, $triggerid), array($name)),
 	new weTagDataOption('img', false, '', array($name, $hyperlink, $href, $target, $thumbnail, $src, $width, $height, $border, $hspace, $vspace, $align, $onlyImg, $triggerid), array($name)),
-	new weTagDataOption('flashmovie', false, '', array($name, $width, $height, $triggerid, $to), array($name)),
+	new weTagDataOption('flashmovie', false, '', array($name, $width, $height, $triggerid), array($name)),
 	new weTagDataOption('href', false, '', array($name), array($name)),
 	new weTagDataOption('link', false, '', array($name), array($name)),
 	new weTagDataOption('day', false, '', array(), array()),

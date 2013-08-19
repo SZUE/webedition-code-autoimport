@@ -1888,7 +1888,7 @@ function we_templateInit(){
 			$GLOBALS['WE_MAIN_DOC_REF'] = &$GLOBALS['we_doc'];
 		}
 		if(!isset($GLOBALS['WE_MAIN_EDITMODE'])){
-			$GLOBALS['WE_MAIN_EDITMODE'] = isset($GLOBALS['we_editmode']) ? $GLOBALS['we_editmode'] : 0;
+			$GLOBALS['WE_MAIN_EDITMODE'] = isset($GLOBALS['we_editmode']) ? $GLOBALS['we_editmode'] : false;
 		}
 //check for Trigger
 		if(defined('SCHEDULE_TABLE') && (!$GLOBALS['WE_MAIN_DOC']->InWebEdition) &&
