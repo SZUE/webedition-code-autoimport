@@ -8,8 +8,10 @@ $this->NeedsEndTag = false;
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
 $this->Attributes[] = new weTagData_textAttribute('delimiter', false, '');
-$this->Attributes[] = new weTagData_selectAttribute('doc', array(new weTagDataOption('self'),
+$this->Attributes[] = new weTagData_selectAttribute('doc', array(
+	new weTagDataOption('self'),
 	new weTagDataOption('top'),
+	new weTagDataOption('listview'),
 	), false, '');
 $this->Attributes[] = new weTagData_selectAttribute('showpath', weTagData_selectAttribute::getTrueFalse(), false, '');
 $this->Attributes[] = new weTagData_textAttribute('rootdir', false, '');
