@@ -759,7 +759,7 @@ class we_document extends we_root{
 	function we_rewrite(){
 		$this->RebuildDate=time();
 		return $this->i_writeDocument();
-		
+
 	}
 
 	/*

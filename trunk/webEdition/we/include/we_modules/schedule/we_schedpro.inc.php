@@ -469,7 +469,7 @@ function checkFooter(){
 //make sure documents don't know they are inside WE
 		if(isset($GLOBALS['WE_MAIN_EDITMODE']) || isset($GLOBALS['we_editmode'])){
 			$lastWEState = array(
-				'WE_MAIN_EDITMODE' => $GLOBALS['WE_MAIN_EDITMODE'],
+				'WE_MAIN_EDITMODE' => (isset($GLOBALS['WE_MAIN_EDITMODE']) ? $GLOBALS['WE_MAIN_EDITMODE'] : $GLOBALS['we_editmode']),
 				'we_editmode' => $GLOBALS['we_editmode'],
 			);
 			$GLOBALS['WE_MAIN_EDITMODE'] = $GLOBALS['we_editmode'] = false;
