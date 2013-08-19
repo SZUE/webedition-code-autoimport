@@ -25,17 +25,18 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 switch($_REQUEST['we_cmd'][0]){
-	case "save" :
-		setUserPref("cockpit_dat", $_REQUEST['we_cmd'][1]);
+	case 'save' :
+		setUserPref('cockpit_dat', $_REQUEST['we_cmd'][1]);
+		setUserPref('cockpit_rss', $_REQUEST['we_cmd'][2]);
 		break;
-	case "add" :
+	case 'add' :
 		include_once(WE_INCLUDES_PATH . 'we_widgets/cfg.inc.php');
 
 		$aProps = array(
 			$_REQUEST['we_cmd'][1],
-			$aPrefs[$_REQUEST['we_cmd'][1]]["cls"],
-			$aPrefs[$_REQUEST['we_cmd'][1]]["res"],
-			$aPrefs[$_REQUEST['we_cmd'][1]]["csv"],
+			$aPrefs[$_REQUEST['we_cmd'][1]]['cls'],
+			$aPrefs[$_REQUEST['we_cmd'][1]]['res'],
+			$aPrefs[$_REQUEST['we_cmd'][1]]['csv'],
 		);
 		foreach($aCfgProps as $a){
 			foreach($a as $arr){
@@ -48,8 +49,9 @@ switch($_REQUEST['we_cmd'][0]){
 		$iCurrId = str_replace('m_', '', $_REQUEST['we_cmd'][2]);
 		$iWidth = $aPrefs[$aProps[0]]['width'];
 		if($aProps[0] != 'rss' && $aProps[0] != 'pad'){
-			if($aProps[0] == "msg")
+			if($aProps[0] == 'msg'){
 				$_transact = md5(uniqid(__FUNCTION__, true));
+			}
 			include_once (WE_INCLUDES_PATH . 'we_widgets/mod/' . $aProps[0] . '.php');
 		}
 		include_once (WE_INCLUDES_PATH . 'we_widgets/inc/' . $aProps[0] . '.inc.php');
@@ -67,20 +69,20 @@ function transmit(){
 		print we_html_element::htmlDocType() .
 			we_html_element::htmlHtml(
 				we_html_element::htmlHead(
-					we_html_element::cssElement("div,span{display:none;}") . we_html_element::jsElement($js)) .
+					we_html_element::cssElement('div,span{display:none;}') . we_html_element::jsElement($js)) .
 				we_html_element::htmlBody(
-					array("onload" => "transmit();"
-					), we_html_element::htmlDiv(array("id" => "content"), $oTblCont->getHtml()) .
-					we_html_element::htmlSpan(array("id" => "prefix"), $aLang[0]) .
-					we_html_element::htmlSpan(array("id" => "postfix"), $aLang[1]) .
-					we_html_element::htmlSpan(array("id" => "csv"), (isset($aProps[3]) ? $aProps[3] : ""))));
+					array('onload' => 'transmit();'
+					), we_html_element::htmlDiv(array('id' => 'content'), $oTblCont->getHtml()) .
+					we_html_element::htmlSpan(array('id' => 'prefix'), $aLang[0]) .
+					we_html_element::htmlSpan(array('id' => 'postfix'), $aLang[1]) .
+					we_html_element::htmlSpan(array('id' => 'csv'), (isset($aProps[3]) ? $aProps[3] : ''))));
 		break;
 
 	//added to fix bug #6538
 	case 'reset_home':
 		$id = intval($_SESSION['user']['ID']);
 		//delete user's cockpit preferences from db
-		$GLOBALS['DB_WE']->query('REPLACE INTO ' . PREFS_TABLE . ' (`userID`,`key`,`value`) VALUES (' . $id . ',"cockpit_dat",""),(' . $id . ',"cockpit_amount_columns","")');
+		$GLOBALS['DB_WE']->query('REPLACE INTO ' . PREFS_TABLE . ' (`userID`,`key`,`value`) VALUES (' . $id . ',"cockpit_dat",""),(' . $id . ',"cockpit_amount_columns",""),(' . $id . ',"cockpit_rss")');
 		include(WE_INCLUDES_PATH . 'home.inc.php');
 		break;
 }

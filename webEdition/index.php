@@ -40,8 +40,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 //Check some critical PHP Setings #7243
 //FIXME: implement class sysinfo.class, for not analysing the same php settings twice (here and in sysinfo.php)
 if(isset($_SESSION['perms']['ADMINISTRATOR']) && $_SESSION['perms']['ADMINISTRATOR']){
-	$suhosinMsg = (in_array('suhosin', get_loaded_extensions())
-			&& !in_array(ini_get('suhosin.simulation'), array('1', 'on', 'yes', 'true', true))) ? 'suhosin=on\n' : '';
+	$suhosinMsg = (in_array('suhosin', get_loaded_extensions()) && !in_array(ini_get('suhosin.simulation'), array(1, 'on', 'yes', 'true', true))) ? 'suhosin=on\n' : '';
 
 	$maxInputMsg = !ini_get('max_input_vars') ? 'max_input_vars = 1000 (PHP default value)' :
 		(ini_get('max_input_vars') < 2000 ? 'max_input_vars = ' . ini_get('max_input_vars') : '');
@@ -58,7 +57,7 @@ if(!defined('CONF_SAVED_VERSION') || (defined('CONF_SAVED_VERSION') && (intval(W
 	//resave config file(s)
 	we_base_preferences::check_global_config(true);
 }
-we_util_File::checkAndMakeFolder($_SERVER['DOCUMENT_ROOT'].WE_THUMBNAIL_DIRECTORY);
+we_util_File::checkAndMakeFolder($_SERVER['DOCUMENT_ROOT'] . WE_THUMBNAIL_DIRECTORY);
 
 define('LOGIN_DENIED', 4);
 define('LOGIN_OK', 2);
@@ -69,12 +68,12 @@ define('LOGIN_UNKNOWN', 0);
 $ignore_browser = isset($_REQUEST['ignore_browser']) && ($_REQUEST['ignore_browser'] === 'true');
 
 function getValueLoginMode($val){
-	$mode = isset($_COOKIE['we_mode']) ? $_COOKIE['we_mode'] : 'normal';
+	$mode = isset($_COOKIE['we_mode']) ? $_COOKIE['we_mode'] : we_base_constants::MODE_NORMAL;
 	switch($val){
-		case 'seem' :
-			return ($mode == 'seem') ? ' checked="checked"' : '';
-		case 'normal' :// start normal mode
-			return ($mode != 'seem') ? ' checked="checked"' : '';
+		case we_base_constants::MODE_SEE :
+			return ($mode == we_base_constants::MODE_SEE) ? ' checked="checked"' : '';
+		case we_base_constants::MODE_NORMAL :// start normal mode
+			return ($mode != we_base_constants::MODE_SEE) ? ' checked="checked"' : '';
 		case 'popup':
 			return (!isset($_COOKIE['we_popup']) || $_COOKIE['we_popup'] == 1);
 	}
@@ -136,23 +135,22 @@ function showMessage(message, prio, win){
 		switch (prio) {
 
 			// Notice
-			case 1:
+			case ' . we_message_reporting::WE_MESSAGE_NOTICE . ':
 				win.alert(we_string_message_reporting_notice + ":\n" + message);
 				break;
 
 			// Warning
-			case 2:
+			case ' . we_message_reporting::WE_MESSAGE_WARNING . ':
 				win.alert(we_string_message_reporting_warning + ":\n" + message);
 				break;
 
 			// Error
-			case 4:
+			case ' . we_message_reporting::WE_MESSAGE_ERROR . ':
 				win.alert(we_string_message_reporting_error + ":\n" + message);
 				break;
 		}
 	}
-}
-') .
+}') .
 		'</head>';
 }
 
@@ -186,7 +184,7 @@ if($count >= LOGIN_FAILED_NR){
 	we_html_tools::htmlTop('webEdition ');
 	print we_html_element::jsElement(
 			we_message_reporting::getShowMessageCall(sprintf(g_l('alert', '[3timesLoginError]'), LOGIN_FAILED_NR, LOGIN_FAILED_TIME), we_message_reporting::WE_MESSAGE_ERROR)
-		);
+	);
 	print '</html>';
 	exit();
 }
@@ -206,7 +204,7 @@ if(isset($GLOBALS['userLoginDenied'])){
 	setcookie('we_popup', (isset($_REQUEST['popup']) ? 1 : 0), time() + 2592000);
 } else if(isset($_POST['password']) && isset($_POST['username'])){
 	$login = LOGIN_CREDENTIALS_INVALID;
-} else{
+} else {
 	$login = LOGIN_UNKNOWN;
 	if($ignore_browser){
 		setcookie('ignore_browser', 'true', time() + 2592000); //	Cookie remembers that the incompatible mode has been selected, it will expire in one Month !!!
@@ -245,7 +243,7 @@ function getError($reason, $cookie = false){
  * CHECK FOR PROBLEMS
  * *************************************************************************** */
 
-if(isset($_POST['checkLogin']) && !count($_COOKIE)){
+if(isset($_POST['checkLogin']) && empty($_COOKIE)){
 	$_layout = getError(g_l('start', '[cookies_disabled]'));
 
 	printHeader($login, 400);
@@ -258,9 +256,9 @@ if(isset($_POST['checkLogin']) && !count($_COOKIE)){
 } else if(isset($_POST['checkLogin']) && $_POST['checkLogin'] != session_id()){
 	$_layout = getError(sprintf(g_l('start', '[phpini_problems]'), (ini_get('cfg_file_path') ? ' (' . ini_get('cfg_file_path') . ')' : '')) . we_html_element::htmlBr() . we_html_element::htmlBr() .
 		'Debug-Info:' . we_html_element::htmlBr() .
-		'submitted session id: ' . $_POST['checkLogin'] . we_html_element::htmlBr() .
+		'submitted session id: ' . filterXss($_POST['checkLogin']) . we_html_element::htmlBr() .
 		'current session id:   ' . session_id() . we_html_element::htmlBr() .
-		'login-page date:      ' . $_POST['indexDate'] .
+		'login-page date:      ' . filterXss($_POST['indexDate']) .
 		we_html_element::htmlBr() . we_html_element::htmlBr()
 	);
 	printHeader($login, 408);
@@ -329,7 +327,7 @@ if(isset($_POST['checkLogin']) && !count($_COOKIE)){
 
 	printHeader($login, 400);
 	print we_html_element::htmlBody(array('style' => 'background-color:#FFFFFF;'), $_layout->getHtml()) . '</html>';
-} else{
+} else {
 
 	/*	 * ***************************************************************************
 	 * GENERATE LOGIN
@@ -385,7 +383,7 @@ if(isset($_POST['checkLogin']) && !count($_COOKIE)){
 	$_layoutRight2 = 10;
 	$_layoutRight = ($_layoutRight1 + $_layoutRight2);
 
-	$_layouttable = new we_html_table(array('border' => '0', 'cellpadding' => '0', 'cellspacing' => '0', 'width' => 440), 4, 5);
+	$_layouttable = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0, 'width' => 440), 4, 5);
 
 	$_layouttable->setCol(0, 0, null, we_html_element::htmlImg(array('src' => IMAGE_DIR . 'info/top_left2.gif', 'width' => $_layoutLeft2, 'height' => 21)));
 	$_layouttable->setCol(0, 1, null, we_html_element::htmlImg(array('src' => IMAGE_DIR . 'info/top_left.gif', 'width' => $_layoutLeft, 'height' => 21)));
@@ -424,14 +422,14 @@ if(isset($_POST['checkLogin']) && !count($_COOKIE)){
 			//	Here the mode - SEEM or normal is saved in the SESSION!!!
 			//	Perhaps this must move to another place later.
 			//	Later we must check permissions as well!
-			if(!isset($_REQUEST['mode']) || $_REQUEST['mode'] == '' || $_REQUEST['mode'] == 'normal'){
-				if(permissionhandler::isUserAllowedForAction('work_mode', 'normal')){
-					$_SESSION['weS']['we_mode'] = 'normal';
-				} else{
+			if(!isset($_REQUEST['mode']) || $_REQUEST['mode'] == '' || $_REQUEST['mode'] == we_base_constants::MODE_NORMAL){
+				if(permissionhandler::isUserAllowedForAction('work_mode', we_base_constants::MODE_NORMAL)){
+					$_SESSION['weS']['we_mode'] = we_base_constants::MODE_NORMAL;
+				} else {
 					$_body_javascript = we_message_reporting::getShowMessageCall(g_l('SEEM', '[only_seem_mode_allowed]'), we_message_reporting::WE_MESSAGE_ERROR);
-					$_SESSION['weS']['we_mode'] = 'seem';
+					$_SESSION['weS']['we_mode'] = we_base_constants::MODE_SEE;
 				}
-			} else{
+			} else {
 				$_SESSION['weS']['we_mode'] = $_REQUEST['mode'];
 			}
 
@@ -440,10 +438,10 @@ if(isset($_POST['checkLogin']) && !count($_COOKIE)){
 					$httpCode = 303;
 					header('Location: ' . WEBEDITION_DIR . 'webEdition.php');
 					$_body_javascript = 'alert("automatic redirect disabled");';
-				} else{
+				} else {
 					$_body_javascript.='top.location="' . WEBEDITION_DIR . 'webEdition.php"';
 				}
-			} else{
+			} else {
 				$_body_javascript .= 'function open_we() {
 			var aw=' . (isset($_SESSION['prefs']['weWidth']) && $_SESSION['prefs']['weWidth'] > 0 ? $_SESSION['prefs']['weWidth'] : 8000) . ';
 			var ah=' . (isset($_SESSION['prefs']['weHeight']) && $_SESSION['prefs']['weHeight'] > 0 ? $_SESSION['prefs']['weHeight'] : 6000) . ';

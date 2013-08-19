@@ -90,8 +90,7 @@ class we_workflow_documentStep extends we_workflow_base{
 			$this->tasks = we_workflow_documentTask::__getAllTasks($this->ID);
 			return true;
 		}
-		else
-			return false;
+		return false;
 	}
 
 	/**
@@ -184,7 +183,7 @@ class we_workflow_documentStep extends we_workflow_base{
 			$workflowStep = new we_workflow_step($this->workflowStepID);
 			if($workflowStep->stepCondition == 0)
 				$this->Status = self::STATUS_APPROVED;
-			else{
+			else {
 				$num = $this->findNumOfFinishedTasks();
 				if($num == count($this->tasks)){
 					$status = true;
@@ -228,7 +227,7 @@ class we_workflow_documentStep extends we_workflow_base{
 			$workflowStep = new we_workflow_step($this->workflowStepID);
 			if($workflowStep->stepCondition == 0)
 				$this->Status = self::STATUS_APPROVED;
-			else{
+			else {
 				$num = $this->findNumOfFinishedTasks();
 				if($num == count($this->tasks)){
 					$status = true;
@@ -308,7 +307,7 @@ class we_workflow_documentStep extends we_workflow_base{
 
 		$db->query("SELECT ID FROM " . WORKFLOW_DOC_STEP_TABLE . " WHERE workflowDocID=" . intval($workflowDocumentID) . " ORDER BY ID");
 		$docSteps = array();
-		while($db->next_record()) {
+		while($db->next_record()){
 			$docSteps[] = new self($db->f("ID"));
 		}
 		return $docSteps;
@@ -323,7 +322,7 @@ class we_workflow_documentStep extends we_workflow_base{
 		$db = new DB_WE();
 		$db->query('SELECT ID FROM ' . WORKFLOW_STEP_TABLE . ' WHERE workflowID =' . intval($workflowID) . ' ORDER BY ID');
 		$docSteps = array();
-		while($db->next_record()) {
+		while($db->next_record()){
 			$docSteps[] = self::__createStep($db->f("ID"));
 		}
 		return $docSteps;
@@ -339,7 +338,7 @@ class we_workflow_documentStep extends we_workflow_base{
 			return self::__createStepFromHash($WorkflowStep);
 
 		$tmp = getHash('SELECT * FROM ' . WORKFLOW_STEP_TABLE . ' WHERE ID=' . intval($WorkflowStep) . ' ORDER BY ID', new DB_WE());
-		if(count($tmp) == 0){
+		if(empty($tmp)){
 			return false;
 		}
 		return self::__createStepFromHash($tmp);

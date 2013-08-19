@@ -29,9 +29,9 @@ function getPLogChart($vals)
 			array(
 
 					"width" => "100%",
-					"border" => "0",
-					"cellpadding" => "0",
-					"cellspacing" => "0",
+					"border" => 0,
+					"cellpadding" => 0,
+					"cellspacing" => 0,
 					"class" => "finelinebox"
 			),
 			count($vals) + 1,
@@ -71,9 +71,9 @@ function getPLogGraph($gf){
 			array(
 
 					"width" => "100%",
-					"border" => "0",
-					"cellpadding" => "0",
-					"cellspacing" => "0",
+					"border" => 0,
+					"cellpadding" => 0,
+					"cellspacing" => 0,
 					"class" => "finelinebox"
 			),
 			1,

@@ -61,7 +61,7 @@ function array_hash_construct($arr_hash, $keys, $map=""){
 			$tmp_hash[$key] = $arr_hash[$i][$key];
 		}
 
-		array_push($ret_arr, $tmp_hash);
+		$ret_arr[] = $tmp_hash;
 	}
 
 	return $ret_arr;

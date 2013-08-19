@@ -68,7 +68,7 @@ function checkDeleteFile($id, $table){
 			return !(ObjectUsedByObjectFile($id, false));
 		case TEMPLATES_TABLE:
 			$arr = we_rebuild::getTemplAndDocIDsOfTemplate($id, false, false, true);
-			return (count($arr['documentIDs']) == 0);
+			return (empty($arr["documentIDs"]));
 	}
 	return true;
 }
@@ -168,7 +168,6 @@ function deleteFile($id, $table, $path = '', $contentType = '', $DB_WE = ''){
 			$DB_WE->query('DELETE FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable = "tblFile" AND IsObject = 0 AND IsFolder = 0 AND DID = ' . intval($id));
 			$DB_WE->query('DELETE FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable = "tblFile" AND LDID = ' . intval($id));
 			break;
-
 		case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
 			$DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE OID=' . intval($id));
 			$tableID = f('SELECT TableID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($id), 'TableID', $DB_WE);
@@ -178,7 +177,6 @@ function deleteFile($id, $table, $path = '', $contentType = '', $DB_WE = ''){
 				$DB_WE->query('SELECT ID FROM ' . OBJECT_TABLE);
 				$foo = $DB_WE->getAll(true);
 				foreach($foo as $testclassID){
-
 					if($DB_WE->isColExist(OBJECT_X_TABLE . $testclassID, 'object_' . $tableID)){
 
 						//das loeschen in der DB wirkt sich nicht auf die Objekte aus, die noch nicht publiziert sind
@@ -230,66 +228,13 @@ function deleteThumbsByThumbID($id){
 	we_thumbnail::deleteByThumbID($id);
 }
 
-function checkIfRestrictUserIsAllowed($id, $table = FILE_TABLE, $DB_WE = ''){
-	$DB_WE = $DB_WE ? $DB_WE : new DB_WE();
-	$row = getHash('SELECT CreatorID,RestrictOwners,Owners,OwnersReadOnly FROM ' . $DB_WE->escape($table) . ' WHERE ID=' . intval($id), $DB_WE);
-	if((isset($row['CreatorID']) && $_SESSION['user']['ID'] == $row['CreatorID']) || $_SESSION['perms']['ADMINISTRATOR']){ //	Owner or admin
-		return true;
-	}
-
-	if($row['RestrictOwners']){ //	check which user - group has permission
-		$userArray = makeArrayFromCSV($row['Owners']);
-
-		$_allowedGroup = false;
-
-		//	check if usergroup is allowed
-		foreach($_SESSION['user']['groups'] as $nr => $_userGroup){
-			if(in_array($_userGroup, $userArray)){
-				$_allowedGroup = true;
-				break;
-			}
-		}
-		if(!in_array($_SESSION['user']['ID'], $userArray) && !$_allowedGroup){ //	user is no allowed user.
-			return false;
-		}
-
-		//	user belongs to owners of document, check if he has only read access !!!
-
-
-		if($row['OwnersReadOnly']){
-
-			$arr = unserialize($row['OwnersReadOnly']);
-			if(is_array($arr)){
-
-				if(isset($arr[$_SESSION['user']['ID']]) && $arr[$_SESSION['user']['ID']]){ //	if user is readonly user -> no delete
-					return false;
-				} else{ //	user NOT readonly and in restricted -> delete allowed
-					if(in_array($_SESSION['user']['ID'], $userArray)){
-						return true;
-					}
-				}
-				//	check if group has rights to delete
-				foreach($_SESSION['user']['groups'] as $nr => $_userGroup){ //	user is directly in first group
-					if(isset($arr[$_userGroup]) && $arr[$_userGroup]){ //	group not allowed
-						return false;
-					} else{
-						if(in_array($_userGroup, $userArray)){ //	group is NOT readonly and in restricted -> delete allowed
-							return true;
-						}
-					}
-				}
-			}
-		}
-	}
-	return true;
-}
-
 function deleteEntry($id, $table, $delR = true, $skipHook = 0, $DB_WE = ''){
 
 	$DB_WE = ($DB_WE ? $DB_WE : new DB_WE());
 	if(defined('WORKFLOW_TABLE') && ($table == FILE_TABLE || (defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE))){
-		if(we_workflow_utility::inWorkflow($id, $table))
+		if(we_workflow_utility::inWorkflow($id, $table)){
 			we_workflow_utility::removeDocFromWorkflow($id, $table, $_SESSION['user']['ID'], g_l('modules_workflow', '[doc_deleted]'));
+		}
 	}
 	if($id){
 		$row = getHash('SELECT Path,IsFolder,ContentType FROM ' . $DB_WE->escape($table) . ' WHERE ID=' . intval($id), $DB_WE);
@@ -319,7 +264,7 @@ function deleteEntry($id, $table, $delR = true, $skipHook = 0, $DB_WE = ''){
 
 		we_temporaryDocument::delete($id, $table, $DB_WE);
 
-		@set_time_limit(30);
+		update_time_limit(30);
 		if(!empty($row)){
 			if($row['IsFolder']){
 				deleteFolder($id, $table, $row['Path'], $delR, $DB_WE);

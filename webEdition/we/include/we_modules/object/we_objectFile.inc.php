@@ -73,9 +73,9 @@ class we_objectFile extends we_document{
 			$GLOBALS['we_object'] = array();
 		}
 		$GLOBALS['we_object'][$formname] = new we_objectFile();
-		if((!$session) || (!isset($_SESSION['we_object_session_' . $formname]))){
+		if((!$session) || (!isset($_SESSION['weS']['we_object_session_' . $formname]))){
 			if($session){
-				$_SESSION['we_object_session_' . $formname] = array();
+				$_SESSION['weS']['we_object_session_' . $formname] = array();
 			}
 			$GLOBALS['we_object'][$formname]->we_new();
 			if(isset($_REQUEST['we_editObject_ID']) && $_REQUEST['we_editObject_ID']){
@@ -105,14 +105,14 @@ class we_objectFile extends we_document{
 			}
 
 			if($session){
-				$GLOBALS['we_object'][$formname]->saveInSession($_SESSION['we_object_session_' . $formname]);
+				$GLOBALS['we_object'][$formname]->saveInSession($_SESSION['weS']['we_object_session_' . $formname]);
 			}
 		} else {
 			if(isset($_REQUEST['we_editObject_ID']) && $_REQUEST['we_editObject_ID']){
 				$GLOBALS['we_object'][$formname]->initByID(intval($_REQUEST['we_editObject_ID']), OBJECT_FILES_TABLE);
 			} else {
 				if($session){
-					$GLOBALS['we_object'][$formname]->we_initSessDat($_SESSION['we_object_session_' . $formname]);
+					$GLOBALS['we_object'][$formname]->we_initSessDat($_SESSION['weS']['we_object_session_' . $formname]);
 				}
 			}
 			if($classID && ($GLOBALS['we_object'][$formname]->TableID != $classID)){
@@ -178,7 +178,7 @@ class we_objectFile extends we_document{
 		we_otherDocument::checkAndPrepare($formname, 'we_object');
 
 		if($session){
-			$GLOBALS['we_object'][$formname]->saveInSession($_SESSION['we_object_session_' . $formname]);
+			$GLOBALS['we_object'][$formname]->saveInSession($_SESSION['weS']['we_object_session_' . $formname]);
 		}
 		return $GLOBALS['we_object'][$formname];
 	}
@@ -401,7 +401,7 @@ class we_objectFile extends we_document{
 		$this->restoreWorkspaces();
 		$this->elements = array();
 		$hash = getHash('SELECT Users,UsersReadOnly,RestrictUsers,DefaultCategory,DefaultText,DefaultValues,DefaultTriggerID FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), $this->DB_WE);
-		if(count($hash)){
+		if(!empty($hash)){
 // fix - the class access permissions should not be applied
 			/* if($this->DB_WE->f("Users")){
 			  $this->Owners = $this->DB_WE->f("Users");
@@ -429,10 +429,20 @@ class we_objectFile extends we_document{
 				if(strpos($text, '%ID%') !== false){
 //FIXME: this is NOT safe!!! Insert entry, and update afterwards
 					$id = 1 + intval(f('SELECT max(ID) as ID FROM ' . OBJECT_FILES_TABLE, 'ID', $this->DB_WE));
-					$text = str_replace('%ID%', '' . $id, $text);
+					$text = str_replace('%ID%', $id, $text);
 				}
-				$text = str_replace(array('%d%', '%j%', '%m%', '%y%', '%Y%', '%n%', '%h%', '%H%', '%g%', '%G%',), array(date('d'), date('j'), date('m'), date('y'), date('Y'), date('n'), date('h'), date('H'), date('g'), date('G'),), $text);
-				$this->Text = $text;
+				$this->Text = strtr($text, array(
+					'%d%' => date('d'),
+					'%j%' => date('j'),
+					'%m%' => date('m'),
+					'%y%' => date('y'),
+					'%Y%' => date('Y'),
+					'%n%' => date('n'),
+					'%h%' => date('H'),
+					'%H%' => date('H'),
+					'%g%' => date('G'),
+					'%G%' => date('G'),
+				));
 			}
 
 			if($hash['DefaultValues']){
@@ -523,7 +533,7 @@ class we_objectFile extends we_document{
 		}
 		$variationFields = weShopVariants::getAllVariationFields($this);
 
-		if(count($variationFields)){
+		if(!empty($variationFields)){
 			$i = 0;
 			while(isset($this->elements[WE_SHOP_VARIANTS_PREFIX . $i])){
 				if(!trim($this->elements[WE_SHOP_VARIANTS_PREFIX . $i++]['dat'])){
@@ -657,10 +667,10 @@ class we_objectFile extends we_document{
 		$order = makeArrayFromCSV(f('SELECT strOrder FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($tableID), 'strOrder', $db));
 		$ctable = OBJECT_X_TABLE . $tableID;
 		$tableInfo = $db->metadata($ctable);
-		$fields = array();
+		$fields = $regs = array();
 		foreach($tableInfo as $info){
 			if(preg_match('/(.+?)_(.*)/', $info["name"], $regs)){
-				if($regs[1] != "OF" && $regs[1] != "variant"){
+				if($regs[1] != 'OF' && $regs[1] != 'variant'){
 					$fields[] = array("name" => $regs[2], "type" => $regs[1], "length" => $info["len"]);
 				}
 			}
@@ -682,24 +692,25 @@ class we_objectFile extends we_document{
 		}
 		$db = ($db ? $db : new DB_WE());
 
-		$ctable = OBJECT_X_TABLE . $tableID;
-		$tableInfo = $db->metadata($ctable);
+		$tableInfo = $db->metadata(OBJECT_X_TABLE . $tableID);
 		$tableInfo2 = array();
 		foreach($tableInfo as $arr){
-			if($arr['name'] != 'input_' &&
-				$arr['name'] != 'text_' &&
-				$arr['name'] != 'int_' &&
-				$arr['name'] != 'float_' &&
-				$arr['name'] != 'date_' &&
-				$arr['name'] != 'img_' &&
-				$arr['name'] != 'object_' &&
-				$arr['name'] != 'multiobject_' &&
-				$arr['name'] != 'meta_' &&
-				(!defined('WE_SHOP_VARIANTS_ELEMENT_NAME') || $arr['name'] != 'variant_' . WE_SHOP_VARIANTS_ELEMENT_NAME )
-			){
-				$tableInfo2[] = $arr;
-			} elseif(defined('WE_SHOP_VARIANTS_ELEMENT_NAME') && $checkVariants && $arr['name'] == 'variant_' . WE_SHOP_VARIANTS_ELEMENT_NAME){
-				$variantdata = $arr;
+			switch($arr['name']){
+				case 'input_':
+				case 'text_':
+				case 'int_':
+				case 'float_':
+				case 'date_':
+				case 'img_':
+				case 'object_':
+				case 'multiobject_':
+				case 'meta_':
+					break;
+				case (defined('WE_SHOP_VARIANTS_ELEMENT_NAME') && $checkVariants ? 'variant_' . WE_SHOP_VARIANTS_ELEMENT_NAME : '-1'):
+					$variantdata = $arr;
+					break;
+				default:
+					$tableInfo2[] = $arr;
 			}
 		}
 		if($contentOnly == false){
@@ -708,7 +719,7 @@ class we_objectFile extends we_document{
 		$tableInfo_sorted = array();
 
 		$order = self::getSortArray(intval($tableID), $db);
-		$start = we_objectFile::getFirstTableInfoEntry($tableInfo2);
+		$start = self::getFirstTableInfoEntry($tableInfo2);
 		foreach($order as $o){
 			$tableInfo_sorted[] = $tableInfo2[$start + $o];
 		}
@@ -879,12 +890,12 @@ class we_objectFile extends we_document{
 		$table = OBJECT_FILES_TABLE;
 
 //	editObjectFile Button
-		if(isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == 'seem'){
+		if(isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
 			$editObjectButton = we_button::create_button('image:btn_edit_object', "javascript:top.doClickDirect('" . $myid . "','objectFile','" . OBJECT_FILES_TABLE . "');");
 			$editObjectButtonDis = we_button::create_button("image:btn_edit_object", "", true, 44, 22, "", "", true);
 			$inputWidth = 443;
 
-			$uniq = md5(uniqid(__FUNCTION__, true)); // FIXME: #6590: str_replace('.', '', uniqid("",true))
+			$uniq = md5(uniqid(__FUNCTION__, true));
 			$openCloseButton = we_multiIconBox::_getButton($uniq, "weToggleBox('$uniq','','')", "down", g_l('global', "[openCloseBox]"));
 			$openCloseButtonDis = we_html_tools::getPixel(21, 1);
 
@@ -901,7 +912,7 @@ class we_objectFile extends we_document{
 		}
 
 		if(!$editable){
-			$uniq = md5(uniqid(__FUNCTION__, true)); // FIXME: #6590: str_replace('.', '', uniqid("",true))
+			$uniq = md5(uniqid(__FUNCTION__, true));
 			$txt = $ob->Text ? $ob->Text : $name;
 			$but = we_multiIconBox::_getButton($uniq, "weToggleBox('$uniq','" . $txt . "','" . $txt . "')", "down", g_l('global', "[openCloseBox]"));
 
@@ -968,7 +979,7 @@ class we_objectFile extends we_document{
 					$path = $path ? $path : f('SELECT Path FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . $myid, 'Path', $db);
 				}
 
-				if(isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == 'seem'){
+				if(isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
 
 					$ob = new we_objectFile();
 					$ob->initByID($myid, OBJECT_FILES_TABLE);
@@ -1026,7 +1037,7 @@ class we_objectFile extends we_document{
 				$content .= $this->htmlFormElementTable(
 					$this->htmlTextInput($textname, 30, $path, 255, 'onChange="_EditorFrame.setEditorIsHot(true);" readonly ', "text", $inputWidth), '', 'left', 'defaultfont', we_html_tools::getPixel(20, 4), $buttontable);
 
-				if(isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == "seem" && $myid){
+				if(isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE && $myid){
 					$ob = new we_objectFile();
 					$ob->initByID($myid, OBJECT_FILES_TABLE);
 					$ob->DefArray = $ob->getDefaultValueArray();
@@ -1056,7 +1067,7 @@ class we_objectFile extends we_document{
 			for($f = 0; $f < $show; $f++){
 				$myid = $objects[$f];
 				if($myid){
-					$uniq = md5(uniqid(__FUNCTION__, true)); // FIXME: #6590: str_replace('.', '', uniqid("",true))
+					$uniq = md5(uniqid(__FUNCTION__, true));
 					$ob = new we_objectFile();
 					$ob->initByID($myid, OBJECT_FILES_TABLE);
 					$ob->DefArray = $ob->getDefaultValueArray();
@@ -1202,7 +1213,7 @@ class we_objectFile extends we_document{
 		$out = '';
 		$link = $this->getElement($n) ? unserialize($this->getElement($n)) : array();
 		if(is_array($link)){
-			if(!count($link)){
+			if(empty($link)){
 				$link = array("ctype" => "text", "type" => we_base_link::TYPE_EXT, "href" => "#", "text" => g_l('global', "[new_link]"));
 			}
 			$img = new we_imageDocument();
@@ -1410,18 +1421,18 @@ class we_objectFile extends we_document{
 // handling thumbnails for this image
 // identifying default thumbnail of class:
 		$defvals = $this->getDefaultValueArray();
-		$thumbID = isset($defvals["img_" . $name]["defaultThumb"]) ? $defvals["img_" . $name]["defaultThumb"] : "";
+		$thumbID = isset($defvals['img_' . $name]['defaultThumb']) ? $defvals['img_' . $name]['defaultThumb'] : 0;
 // creating thumbnail only if it really exists:
 		$thumbdb = new DB_WE();
 		$thumbdb->query('SELECT ID,Name FROM ' . THUMBNAILS_TABLE);
 		$thumbs = $thumbdb->getAll();
 		array_unshift($thumbs, '');
-		if(!empty($thumbID) && isset($thumbs[$thumbID]["ID"]) && $thumbID <= count($thumbs)){
+		if(!empty($thumbID) && isset($thumbs[$thumbID]['ID']) && $thumbID <= count($thumbs)){
 			if($img->ID > 0){
 				$thumbObj = new we_thumbnail();
-				$thumbObj->initByThumbID($thumbs[$thumbID]["ID"], $img->ID, $img->Filename, $img->Path, $img->Extension, $img->getElement("origwidth"), $img->getElement("origheight"), $img->getDocument());
+				$thumbObj->initByThumbID($thumbs[$thumbID]['ID'], $img->ID, $img->Filename, $img->Path, $img->Extension, $img->getElement('origwidth'), $img->getElement('origheight'), $img->getDocument());
 				$thumbObj->createThumb();
-				$_imgSrc = $thumbObj->getOutputPath();
+				$_imgSrc = $thumbObj->getOutputPath(false, true);
 				$_imgHeight = $thumbObj->getOutputHeight();
 				$_imgWight = $thumbObj->getOutputWidth();
 			} else {
@@ -1430,7 +1441,7 @@ class we_objectFile extends we_document{
 				$_imgWight = 64;
 			}
 		} else {
-			$thumbID = "";
+			$thumbID = 0;
 		}
 
 		if(!$editable){
@@ -1440,18 +1451,17 @@ class we_objectFile extends we_document{
 		$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['" . $fname . "'].value");
 		$wecmdenc3 = we_cmd_enc("opener.top.we_cmd('reload_entry_at_object','" . $GLOBALS['we_transaction'] . "','img_" . $name . "');opener._EditorFrame.setEditorIsHot(true);opener.setScrollTo();");
 
-		$content = '<input type=hidden name="' . $fname . '" value="' . $this->getElement($name) . '" />' .
+		return ($variant ?
+				'' :
+				'<span class="weObjectPreviewHeadline"><b>' . $name . ($this->DefArray["img_" . $name]["required"] ? '*' : '') . '</b></span>' . ( isset($this->DefArray["img_$name"]['editdescription']) && $this->DefArray["img_$name"]['editdescription'] ? '<div class="objectDescription">' . $this->DefArray["img_$name"]['editdescription'] . '</div>' : we_html_element::htmlBr())
+			) .
+			'<input type=hidden name="' . $fname . '" value="' . $this->getElement($name) . '" />' .
 // show thumbnail of image if there exists one:
 			(!empty($thumbID) ?
 				'<img src="' . $_imgSrc . '" height="' . $_imgHeight . '" width="' . $_imgWight . '" />' :
 				$img->getHtml()) .
 			we_button::create_button_table(array(we_button::create_button("edit", "javascript:we_cmd('openDocselector','" . ($id != 0 ? $id : (isset($this->DefArray["img_$name"]['defaultdir']) ? $this->DefArray["img_$name"]['defaultdir'] : 0)) . "','" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','" . session_id() . "', " . (isset($this->DefArray["img_$name"]['rootdir']) && $this->DefArray["img_$name"]['rootdir'] != "" ? $this->DefArray["img_$name"]['rootdir'] : 0) . ",'image/*')"),
 				we_button::create_button("image:btn_function_trash", "javascript:we_cmd('remove_image_at_object','" . $GLOBALS['we_transaction'] . "','img_" . $name . "');setScrollTo();")));
-
-		return ($variant ?
-				'' :
-				'<span class="weObjectPreviewHeadline"><b>' . $name . ($this->DefArray["img_" . $name]["required"] ? '*' : '') . '</b></span>' . ( isset($this->DefArray["img_$name"]['editdescription']) && $this->DefArray["img_$name"]['editdescription'] ? '<div class="objectDescription">' . $this->DefArray["img_$name"]['editdescription'] . '</div>' : we_html_element::htmlBr())
-			) . $content;
 	}
 
 	function getBinaryHTML($name, $attribs, $editable = true){
@@ -1573,7 +1583,7 @@ class we_objectFile extends we_document{
 // alle ws, welche in Klasse definiert wurden und deren Unterordner zur?ckgeben
 //$foo = makeArrayFromCSV($ClassWs);
 			$paths = id_to_path($ClassWs, FILE_TABLE, $this->DB_WE, false, true);
-			if(count($paths) > 0){
+			if(!empty($paths)){
 				$where = array();
 				if(is_array($paths)){
 					foreach($paths as $path){
@@ -1604,7 +1614,7 @@ class we_objectFile extends we_document{
 				}
 			}
 			$paths = id_to_path($out, FILE_TABLE, $this->DB_WE, false, true);
-			if(count($paths) > 0){
+			if(!empty($paths)){
 				$ClassWs = '';
 				$where = array();
 				foreach($paths as $path){
@@ -1864,13 +1874,13 @@ class we_objectFile extends we_document{
 			$tid = $this->getTemplateFromWorkspace($wsArrExtra, $tmplArrExtra, $parentID, 0);
 		}
 		if(!$tid){
-			if(count($tmplArr)){
+			if(!empty($tmplArr)){
 				$tid = $tmplArr[0];
 			}
 		}
 		if(!$tid){
 			$foo = makeArrayFromCSV(f('SELECT Templates FROM ' . OBJECT_TABLE . ' WHERE ID=' . (int) $this->TableID, 'Templates', new DB_WE()));
-			if(count($foo)){
+			if(!empty($foo)){
 				$tid = $foo[0];
 			}
 		}
@@ -1949,25 +1959,45 @@ class we_objectFile extends we_document{
 				$text = preg_replace('/%urlunique[^%]*%/', $unique, $text);
 			}
 
-			$text = str_replace(
-				array('%ID%', '%locale%', '%language%', '%country%',)
-				, array($this->ID, $this->Language, substr($this->Language, 0, 2), substr($this->Language, 4, 2),)
-				, $text);
-			$text = str_replace(
-				array('%d%', 'j%', '%m%', '%y%', '%Y%', '%n%', '%g%', '%G%', '%h%', '%H%',)
-				, array(date("d", $this->CreationDate), date("j", $this->CreationDate), date("m", $this->CreationDate), date("y", $this->CreationDate), date("Y", $this->CreationDate), date("n", $this->CreationDate), date("g", $this->CreationDate), date("G", $this->CreationDate), date("h", $this->CreationDate), date("H", $this->CreationDate),)
-				, $text);
+			$text = strtr($text, array(
+				'%ID%' => $this->ID,
+				'%locale%' => $this->Language,
+				'%language%' => substr($this->Language, 0, 2),
+				'%country%' => substr($this->Language, 4, 2),
+				'%d%' => date("d", $this->CreationDate),
+				'j%' => date("j", $this->CreationDate),
+				'%m%' => date("m", $this->CreationDate),
+				'%y%' => date("y", $this->CreationDate),
+				'%Y%' => date("Y", $this->CreationDate),
+				'%n%' => date("n", $this->CreationDate),
+				'%g%' => date("G", $this->CreationDate),
+				'%G%' => date("G", $this->CreationDate),
+				'%h%' => date("H", $this->CreationDate),
+				'%H%' => date("H", $this->CreationDate),
+				'%Md%' => date("d", $this->ModDate),
+				'%Mj%' => date("j", $this->ModDate),
+				'%Mm%' => date("m", $this->ModDate),
+				'%My%' => date("y", $this->ModDate),
+				'%MY%' => date("Y", $this->ModDate),
+				'%Mn%' => date("n", $this->ModDate),
+				'%Mg%' => date("G", $this->ModDate),
+				'%MG%' => date("G", $this->ModDate),
+				'%Mh%' => date("H", $this->ModDate),
+				'%MH%' => date("H", $this->ModDate),
+				'%Fd%' => date("d", $urlfield[0]),
+				'%Fj%' => date("j", $urlfield[0]),
+				'%Fm%' => date("m", $urlfield[0]),
+				'%Fy%' => date("y", $urlfield[0]),
+				'%FY%' => date("Y", $urlfield[0]),
+				'%Fn%' => date("n", $urlfield[0]),
+				'%Fg%' => date("G", $urlfield[0]),
+				'%FG%' => date("G", $urlfield[0]),
+				'%Fh%' => date("H", $urlfield[0]),
+				'%FH%' => date("H", $urlfield[0]),
+				'%DirSep%' => '/'
+				)
+			);
 
-			$text = str_replace(
-				array('%Md%', '%Mj%', '%Mm%', '%My%', '%MY%', '%Mn%', '%Mg%', '%MG%', '%Mh%', '%MH%',)
-				, array(date("d", $this->ModDate), date("j", $this->ModDate), date("m", $this->ModDate), date("y", $this->ModDate), date("Y", $this->ModDate), date("n", $this->ModDate), date("g", $this->ModDate), date("G", $this->ModDate), date("h", $this->ModDate), date("H", $this->ModDate))
-				, $text);
-
-			$text = str_replace(
-				array('%Fd%', '%Fj%', '%Fm%', '%Fy%', '%FY%', '%Fn%', '%Fg%', '%FG%', '%Fh%', '%FH%',)
-				, array(date("d", $urlfield[0]), date("j", $urlfield[0]), date("m", $urlfield[0]), date("y", $urlfield[0]), date("Y", $urlfield[0]), date("n", $urlfield[0]), date("g", $urlfield[0]), date("G", $urlfield[0]), date("h", $urlfield[0]), date("H", $urlfield[0]))
-				, $text);
-			$text = str_replace('%DirSep%', '/', $text);
 
 			if(strpos($text, '%Parent%') !== false){
 				$fooo = getHash('SELECT Text FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($this->ParentID), $this->DB_WE);
@@ -2242,7 +2272,7 @@ class we_objectFile extends we_document{
 			}
 		}
 		$this->ModDate = time();
-		$this->ModifierID = isset($_SESSION['user']['ID']) ? $_SESSION['user']['ID'] : 0;
+		$this->ModifierID = !isset($GLOBALS['we']['Scheduler_active']) && isset($_SESSION['user']['ID']) ? $_SESSION['user']['ID'] : 0;
 		$this->wasUpdate = 1;
 		$this->setUrl();
 
@@ -2584,7 +2614,7 @@ class we_objectFile extends we_document{
 		}
 		static $recursiveObjects = array();
 		if(empty($recursiveObjects)){
-			array_push($recursiveObjects, $this->ID);
+			$recursiveObjects[] = $this->ID;
 		}
 
 		$linkObjects = array();
@@ -2603,7 +2633,7 @@ class we_objectFile extends we_document{
 		}
 		foreach($linkObjects as $id){
 			if(!in_array($id, $recursiveObjects)){
-				array_push($recursiveObjects, $id);
+				$recursiveObjects[] = $id;
 				$tmpObj = new we_objectFile();
 				$tmpObj->initByID($id, OBJECT_FILES_TABLE, 0);
 				array_pop($recursiveObjects);
@@ -2811,7 +2841,7 @@ class we_objectFile extends we_document{
 
 	protected function i_setElementsFromHTTP(){
 		parent::i_setElementsFromHTTP();
-		if(count($_REQUEST)){
+		if(!empty($_REQUEST)){
 			$regs = array();
 			$hrefFields = false;
 			$multiobjectFields = false;

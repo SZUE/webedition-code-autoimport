@@ -66,7 +66,7 @@ if(isset($_FILES['we_uploadFile'])){
 		}
 	}
 	if(!$we_alerttext){
-		copy($tempName, str_replace("\\", "/", str_replace("//", "/", $cpat . "/" . $_FILES['we_uploadFile']["name"])));
+		copy($tempName, str_replace(array('\\', '//'), '/', $cpat . '/' . $_FILES['we_uploadFile']['name']));
 	}
 	we_util_File::deleteLocalFile($tempName);
 }
@@ -79,18 +79,18 @@ $buttons = we_button::position_yes_no_cancel($yes_button, null, $cancel_button);
 
 $content = '<table border="0" cellpadding="0" cellspacing="0">' .
 	($maxsize ? ('<tr><td>' . we_html_tools::htmlAlertAttentionBox(
-			sprintf(g_l('newFile', "[max_possible_size]"), weFile::getHumanFileSize($maxsize, weFile::SZ_MB)), 1, 390) . '</td></tr><tr><td>' . we_html_tools::getPixel(2, 10) . '</td></tr>') : '') . '
+			sprintf(g_l('newFile', "[max_possible_size]"), weFile::getHumanFileSize($maxsize, weFile::SZ_MB)), we_html_tools::TYPE_ALERT, 390) . '</td></tr><tr><td>' . we_html_tools::getPixel(2, 10) . '</td></tr>') : '') . '
 			<tr><td><input name="we_uploadFile" TYPE="file" size="35" /></td></tr><tr><td>' . we_html_tools::getPixel(2, 10) . '</td></tr>
-			<tr><td class="defaultfont">' . g_l('newFile', "[caseFileExists]") . '</td></tr><tr><td>' .
-	we_forms::radiobutton("yes", true, "overwrite", g_l('newFile', "[overwriteFile]")) .
-	we_forms::radiobutton("no", false, "overwrite", g_l('newFile', "[renameFile]")) . '</td></tr></table>';
+			<tr><td class="defaultfont">' . g_l('newFile', '[caseFileExists]') . '</td></tr><tr><td>' .
+	we_forms::radiobutton("yes", true, "overwrite", g_l('newFile', '[overwriteFile]')) .
+	we_forms::radiobutton("no", false, "overwrite", g_l('newFile', '[renameFile]')) . '</td></tr></table>';
 
-$content = we_html_tools::htmlDialogLayout($content, g_l('newFile', "[import_File_from_hd_title]"), $buttons);
+$content = we_html_tools::htmlDialogLayout($content, g_l('newFile', '[import_File_from_hd_title]'), $buttons);
 ?>
 <script type="text/javascript"><!--
 	self.focus();
 <?php if(isset($_FILES['we_uploadFile']) && (!$we_alerttext)){ ?>
-		opener.top.fscmd.selectFile('<?php print $_FILES['we_uploadFile']["name"]; ?>');
+		opener.top.fscmd.selectFile('<?php print $_FILES['we_uploadFile']['name']; ?>');
 		opener.top.fscmd.selectDir();
 		self.close();
 	<?php

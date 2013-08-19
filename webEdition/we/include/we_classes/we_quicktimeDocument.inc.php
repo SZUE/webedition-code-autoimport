@@ -174,25 +174,7 @@ class we_quicktimeDocument extends we_binaryDocument{
 			$_objectAtts = removeEmptyAttribs($_objectAtts);
 			$this->html = getHtmlTag('object', $_objectAtts, $_params . $_embed);
 		} else{
-			if($GLOBALS['we_doc']->InWebEdition == 1){
-				/* Anzeige des No_quicktime-Bildes in der Vorschau
-				  $_imgAttr['src']    = IMAGE_DIR.'icons/no_quicktime.gif';
-				  $_imgAttr['width']  = 64;
-				  $_imgAttr['height'] = 64;
-				  $_imgAttr['border'] = 0;
-				  $_imgAtts["style"] = "margin:8px 18px;";
-				  $_imgAttr['alt'] = "";
-				  $_imgAttr['xml'] = $this->getElement("xml");
-
-				  if(isset($this->name)){
-				  $_imgAttr['name'] = $this->name;
-				  }
-				  $this->html = getHtmlTag('img', $_imgAttr);
-				 */
-				$this->html = '';
-			} else{
-				$this->html = '';
-			}
+			$this->html = '';
 		}
 		return $this->html;
 	}
@@ -319,8 +301,7 @@ class we_quicktimeDocument extends we_binaryDocument{
 
 				if(isset($_REQUEST["WE_UI_DEL_CHECKBOX_" . $quicktimeName]) && $_REQUEST["WE_UI_DEL_CHECKBOX_" . $quicktimeName] == 1){
 					$_SESSION[$_quicktimeDataId]['doDelete'] = true;
-				} else
-				if($filename){
+				} elseif($filename){
 					// file is selected, check to see if it is an image
 					$ct = getContentTypeFromFile($filename);
 					if($ct == $this->ContentType){

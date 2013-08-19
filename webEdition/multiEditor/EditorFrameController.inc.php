@@ -25,11 +25,11 @@
 <script type="text/javascript"><!--
 	function we_cmd() {
 		var args = "";
-		for(var i = 0; i < arguments.length; i++) {
-			args += 'arguments['+i+']' + ( (i < (arguments.length-1)) ? ',' : '');
+		for (var i = 0; i < arguments.length; i++) {
+			args += 'arguments[' + i + ']' + ((i < (arguments.length - 1)) ? ',' : '');
 		}
-		if(top.we_cmd) {
-			eval('top.we_cmd('+args+')');
+		if (top.we_cmd) {
+			eval('top.we_cmd(' + args + ')');
 		}
 	}
 
@@ -91,19 +91,19 @@
 
 			var _frames = this.MultiEditorFramesetWindow.document.getElementsByTagName("iframe");
 
-			if ( _frames.length ) {
+			if (_frames.length) {
 
 				this.EditorFrames = new Object();
 				this.FreeEditorFrames = new Array();
 				this.EditorWindowsAmount = _frames.length;
 
-				for (i=0;i<_frames.length;i++) {
+				for (i = 0; i < _frames.length; i++) {
 					this.EditorFrames[_frames[i].id] = new EditorFrame(_frames[i], _frames[i].id);
 					this.FreeEditorFrames.push(_frames[i].id);
 
 				}
 			}
-		}
+		};
 
 		//--------------------------------------------------------------------
 		// FUNCTION:
@@ -119,8 +119,8 @@
 		//   boolean
 		//--------------------------------------------------------------------
 		this.isInitialized = function() {
-			return (this.EditorFrames != null);
-		}
+			return (this.EditorFrames !== null);
+		};
 
 		/**
 		 * FUNCTION:
@@ -150,9 +150,9 @@
 		 * RETURNS:
 		 *   nothing
 		 */
-		this.openDocument = function (table,id,ct,editcmd,dt,url,code,mode,parameters) {
+		this.openDocument = function(table, id, ct, editcmd, dt, url, code, mode, parameters) {
 
-			if (this.EditorFrames == null) {
+			if (this.EditorFrames === null) {
 				this.init();
 
 			}
@@ -168,22 +168,22 @@
 			// editcmd can be one of open_cockpit
 
 			// check if a already open document shall be opened
-			if ( _editorId = this.getEditorIdOfOpenDocument(table,id,editcmd,url) ) { // activate open tab
+			if (_editorId = this.getEditorIdOfOpenDocument(table, id, editcmd, url)) { // activate open tab
 
-				if (parameters != this.getEditorFrame(_editorId).getEditorDocumentParameters() ) {
+				if (parameters !== this.getEditorFrame(_editorId).getEditorDocumentParameters()) {
 					// re-open document
-					this.closeDocument( _editorId, "top.weEditorFrameController.openDocument(\"" + table + "\" ,\"" + id + "\",\"" + ct + "\",\"" + editcmd + "\",\"" + dt + "\",\"" + url + "\",\"" + code + "\",\"" + mode + "\",\"" + parameters + "\");" );
+					this.closeDocument(_editorId, "top.weEditorFrameController.openDocument(\"" + table + "\" ,\"" + id + "\",\"" + ct + "\",\"" + editcmd + "\",\"" + dt + "\",\"" + url + "\",\"" + code + "\",\"" + mode + "\",\"" + parameters + "\");");
 
-				} else if ( this.ActiveEditorFrameId != _editorId ){
+				} else if (this.ActiveEditorFrameId !== _editorId) {
 
 					// add to navigationHistory:
 					top.weNavigationHistory.addDocToHistory(table, id, ct, editcmd, url, parameters);
 
 					// activate in tree
-					if (top.treeData && top.treeData.table == table) {
+					if (top.treeData && top.treeData.table === table) {
 						top.treeData.selectnode(id);
 
-					} else if (top.treeData){
+					} else if (top.treeData) {
 						top.treeData.unselectnode();
 
 					}
@@ -198,7 +198,7 @@
 
 			} else { // open new frame if possible
 
-				if ( this.getNumberOfFreeWindows() > 0 ) { // if there is a free frame, use it
+				if (this.getNumberOfFreeWindows() > 0) { // if there is a free frame, use it
 
 					if (editcmd || url || id) {	// add to navigationHistory
 						top.weNavigationHistory.addDocToHistory(table, id, ct, editcmd, url, parameters);
@@ -213,36 +213,36 @@
 						top.we_cmd(editcmd);
 
 					} else if (url) {
-						we_cmd('open_extern_document',url, parameters);
+						we_cmd('open_extern_document', url, parameters);
 
 					} else if (id) { // edit_document
 
 						if (parameters) {
-							we_cmd('edit_document_with_parameters',table,id,ct,parameters);
+							we_cmd('edit_document_with_parameters', table, id, ct, parameters);
 
 						} else {
 							// instead calling the command we could also build the url and call it from here
-							we_cmd('edit_document',table,id,ct);
+							we_cmd('edit_document', table, id, ct);
 
 						}
 
 					} else {	// new_document
 
-						if(typeof(code)!="undefined" && code){ // open new document with standard code
-							we_cmd('new_document',table,id,ct,"","","","",dt,"",code);
+						if (typeof(code) !== "undefined" && code) { // open new document with standard code
+							we_cmd('new_document', table, id, ct, "", "", "", "", dt, "", code);
 
 						} else {
-							we_cmd('new_document',table,id,ct,"","","","",dt);
+							we_cmd('new_document', table, id, ct, "", "", "", "", dt);
 
 						}
 					}
 
 				} else {
 
-					if (this.EditorWindowsAmount == 1) { // only one active document here, for example SeeMode
+					if (this.EditorWindowsAmount === 1) { // only one active document here, for example SeeMode
 						// build nextCmd
 						// table,id,ct,editcmd,dt,url,code,mode
-						this.closeDocument( this.ActiveEditorFrameId, "top.weEditorFrameController.openDocument(\"" + table + "\" ,\"" + id + "\",\"" + ct + "\",\"" + editcmd + "\",\"" + dt + "\",\"" + url + "\",\"" + code + "\",\"" + mode + "\",\"" + parameters + "\");" );
+						this.closeDocument(this.ActiveEditorFrameId, "top.weEditorFrameController.openDocument(\"" + table + "\" ,\"" + id + "\",\"" + ct + "\",\"" + editcmd + "\",\"" + dt + "\",\"" + url + "\",\"" + code + "\",\"" + mode + "\",\"" + parameters + "\");");
 
 					} else {
 <?php
@@ -251,7 +251,7 @@ print we_message_reporting::getShowMessageCall(g_l('multiEditor', "[no_editor_le
 					}
 				}
 			}
-		}
+		};
 
 		/**
 		 * FUNCTION:
@@ -269,7 +269,7 @@ print we_message_reporting::getShowMessageCall(g_l('multiEditor', "[no_editor_le
 		 *   nothing
 		 */
 		this.closeDocument = function(editorId, nextCommand) {
-			if (this.EditorFrames == null) {
+			if (this.EditorFrames === null) {
 				this.init();
 
 			}
@@ -278,7 +278,7 @@ print we_message_reporting::getShowMessageCall(g_l('multiEditor', "[no_editor_le
 				nextCommand = "";
 			}
 
-			if ( top.we_cmd("eplugin_exit_doc", this.getEditorFrame(editorId).getEditorTransaction() ) ) {
+			if (top.we_cmd("eplugin_exit_doc", this.getEditorFrame(editorId).getEditorTransaction())) {
 
 				if (this.EditorFrames[editorId]) {
 
@@ -286,7 +286,7 @@ print we_message_reporting::getShowMessageCall(g_l('multiEditor', "[no_editor_le
 					if (this.getEditorFrame(editorId).getEditorIsHot()) {
 						this.showEditor(editorId);
 
-						if ( !this.getEditorFrame(editorId).EditorExitDocQuestionDialog ) { // open exit_doc_question if not already open
+						if (!this.getEditorFrame(editorId).EditorExitDocQuestionDialog) { // open exit_doc_question if not already open
 							this.getEditorFrame(editorId).EditorExitDocQuestionDialog = true;
 							this.getEditorFrame(editorId).EditorExitDocQuestionDialog = top.we_cmd("exit_doc_question", editorId, this.getEditorFrame(editorId).getEditorContentType(), nextCommand);
 
@@ -315,7 +315,7 @@ print we_message_reporting::getShowMessageCall(g_l('multiEditor', "[no_editor_le
 				}
 			}
 
-		}
+		};
 
 		/**
 		 * FUNCTION:
@@ -333,7 +333,7 @@ print we_message_reporting::getShowMessageCall(g_l('multiEditor', "[no_editor_le
 		this.doLogoutMultiEditor = function() {
 
 			// close all none Hot Editors
-			if ( this.FreeEditorFrames.length != this.EditorWindowsAmount ) {
+			if (this.FreeEditorFrames.length !== this.EditorWindowsAmount) {
 
 				_UsedEditors = this.getEditorsInUse();
 
@@ -342,28 +342,24 @@ print we_message_reporting::getShowMessageCall(g_l('multiEditor', "[no_editor_le
 					// remove all from editor-plugin
 					top.we_cmd("remove_from_editor_plugin", _UsedEditors[frameId].getEditorTransaction());
 
-					if ( !_UsedEditors[frameId].getEditorIsHot() ) {
+					if (!_UsedEditors[frameId].getEditorIsHot()) {
 						this.closeDocument(frameId);
 					}
 				}
 			}
 
 			// if all Editors are closed,
-			if ( this.FreeEditorFrames.length != this.EditorWindowsAmount ) {
-
-				if ( (this.EditorWindowsAmount - this.FreeEditorFrames.length) == 1 ) { // seeMode
+			if (this.FreeEditorFrames.length !== this.EditorWindowsAmount) {
+				if ((this.EditorWindowsAmount - this.FreeEditorFrames.length) === 1) { // seeMode
 					this.closeDocument(this.ActiveEditorFrameId, 'top.we_cmd("dologout");');
-
 				} else {
 					top.we_cmd("exit_multi_doc_question", 'dologout');
-
 				}
-
 			} else {
 				return true;
 			}
 			return false;
-		}
+		};
 
 		/**
 		 * FUNCTION:
@@ -380,17 +376,17 @@ print we_message_reporting::getShowMessageCall(g_l('multiEditor', "[no_editor_le
 		 */
 		this.closeAllDocuments = function() {
 
-			if ( top.we_cmd("editor_plugin_doc_count") == 0 || confirm("<?php print g_l('multiEditor', "[eplugin_exit_doc]"); ?>") ) {
+			if (top.we_cmd("editor_plugin_doc_count") === 0 || confirm("<?php print g_l('multiEditor', "[eplugin_exit_doc]"); ?>")) {
 
 				// close all none Hot Editors
-				if ( this.FreeEditorFrames.length != this.EditorWindowsAmount ) {
+				if (this.FreeEditorFrames.length !== this.EditorWindowsAmount) {
 
 					_UsedEditors = this.getEditorsInUse();
 
 					for (frameId in _UsedEditors) {
 						// remove from editor plugin
 						top.we_cmd("remove_from_editor_plugin", _UsedEditors[frameId].getEditorTransaction());
-						if ( !_UsedEditors[frameId].getEditorIsHot() ) {
+						if (!_UsedEditors[frameId].getEditorIsHot()) {
 							this.closeDocument(frameId);
 
 						}
@@ -398,9 +394,9 @@ print we_message_reporting::getShowMessageCall(g_l('multiEditor', "[no_editor_le
 				}
 
 				// if all Editors are closed,
-				if ( this.FreeEditorFrames.length != this.EditorWindowsAmount ) {
+				if (this.FreeEditorFrames.length !== this.EditorWindowsAmount) {
 
-					if ( (this.EditorWindowsAmount - this.FreeEditorFrames.length) == 1 ) { // only one document open
+					if ((this.EditorWindowsAmount - this.FreeEditorFrames.length) === 1) { // only one document open
 						this.closeDocument(this.ActiveEditorFrameId, 'top.we_cmd("close_all_documents");');
 
 					} else {
@@ -412,14 +408,14 @@ print we_message_reporting::getShowMessageCall(g_l('multiEditor', "[no_editor_le
 				}
 				return false;
 			}
-		}
+		};
 
 		this.closeAllButActiveDocument = function(activeId) {
 
-			if ( top.we_cmd("editor_plugin_doc_count") == 0 || confirm("<?php print g_l('multiEditor', "[eplugin_exit_doc]"); ?>") ) {
+			if (top.we_cmd("editor_plugin_doc_count") === 0 || confirm("<?php print g_l('multiEditor', "[eplugin_exit_doc]"); ?>")) {
 
 				// only do something, if more than one editor is open
-				if ( (this.EditorWindowsAmount - this.FreeEditorFrames.length) > 1  ) {
+				if ((this.EditorWindowsAmount - this.FreeEditorFrames.length) > 1) {
 					// get active id, if not given
 					if (!activeId) {
 						activeId = this.ActiveEditorFrameId;
@@ -429,7 +425,7 @@ print we_message_reporting::getShowMessageCall(g_l('multiEditor', "[no_editor_le
 					_UsedEditors = this.getEditorsInUse();
 					// remove all from editor plugin
 					for (frameId in _UsedEditors) {
-						if ( frameId != activeId ) {
+						if (frameId !== activeId) {
 							top.we_cmd("remove_from_editor_plugin", _UsedEditors[frameId].getEditorTransaction());
 
 						}
@@ -439,8 +435,8 @@ print we_message_reporting::getShowMessageCall(g_l('multiEditor', "[no_editor_le
 
 					// close all none Hot editors
 					for (frameId in _UsedEditors) {
-						if ( frameId != activeId ) {
-							if ( _UsedEditors[frameId].getEditorIsHot() ) {
+						if (frameId !== activeId) {
+							if (_UsedEditors[frameId].getEditorIsHot()) {
 								this.closeDocument(frameId, 'top.we_cmd("close_all_but_active_document", "' + activeId + '");');
 								return;
 
@@ -469,28 +465,28 @@ print we_message_reporting::getShowMessageCall(g_l('multiEditor', "[no_editor_le
 		//--------------------------------------------------------------------
 		this.closeEditorFrame = function(frameId) {
 
-			if ( this.EditorFrames[frameId] ) {
+			if (this.EditorFrames[frameId]) {
 
-				if ( this.EditorFrames[frameId].EditorType == "cockpit" ) {
+				if (this.EditorFrames[frameId].EditorType === "cockpit") {
 
 					// close all modal dialogs
 					this.EditorFrames[frameId].getDocumentReference().closeAllModalWindows();
 
-					if ( this.EditorFrames[frameId].getDocumentReference().isHot() ) {
+					if (this.EditorFrames[frameId].getDocumentReference().isHot()) {
 						// save changes, in cockpit
 						this.EditorFrames[frameId].getDocumentReference().saveSettings();
 					}
 
-				} else if ( this.EditorFrames[frameId].EditorType == "model" ) {
+				} else if (this.EditorFrames[frameId].EditorType === "model") {
 
-					if ( this.EditorFrames[frameId].getDocumentReference().closeAllModalWindows ) {
+					if (this.EditorFrames[frameId].getDocumentReference().closeAllModalWindows) {
 						this.EditorFrames[frameId].getDocumentReference().closeAllModalWindows();
 					}
 					// unlock document
-					top.we_cmd('unlock',this.EditorFrames[frameId].getEditorDocumentId(),'<?php print $_SESSION["user"]["ID"]; ?>',this.EditorFrames[frameId].getEditorEditorTable(), this.EditorFrames[frameId].getEditorTransaction());
-					top.we_cmd("remove_from_editor_plugin", this.EditorFrames[frameId].getEditorTransaction() );
+					top.we_cmd('unlock', this.EditorFrames[frameId].getEditorDocumentId(), '<?php print $_SESSION["user"]["ID"]; ?>', this.EditorFrames[frameId].getEditorEditorTable(), this.EditorFrames[frameId].getEditorTransaction());
+					top.we_cmd("remove_from_editor_plugin", this.EditorFrames[frameId].getEditorTransaction());
 
-					if ( this.getEditorFrame(frameId).EditorExitDocQuestionDialog ) {
+					if (this.getEditorFrame(frameId).EditorExitDocQuestionDialog) {
 						this.getEditorFrame(frameId).EditorExitDocQuestionDialog.close();
 						this.getEditorFrame(frameId).EditorExitDocQuestionDialog = false;
 					}
@@ -498,9 +494,9 @@ print we_message_reporting::getShowMessageCall(g_l('multiEditor', "[no_editor_le
 
 				// remove from tree, if possible
 				// deactivate in tree
-				if (	top.treeData
-					&&	top.treeData.table == this.getEditorFrame(frameId).getEditorEditorTable()
-					&&	this.ActiveEditorFrameId == frameId) {
+				if (top.treeData
+								&& top.treeData.table === this.getEditorFrame(frameId).getEditorEditorTable()
+								&& this.ActiveEditorFrameId === frameId) {
 
 					top.treeData.unselectnode();
 				}
@@ -512,76 +508,73 @@ print we_message_reporting::getShowMessageCall(g_l('multiEditor', "[no_editor_le
 				this.FreeEditorFrames.push(frameId);
 
 				// make other frame active, if the closed one was active
-				if (this.ActiveEditorFrameId == frameId) { // active frame was closed, show next.
+				if (this.ActiveEditorFrameId === frameId) { // active frame was closed, show next.
 
 					this.ActiveEditorFrameId = null;
 					var _tmpKey = null;
-					if (this.FreeEditorFrames.length != this.EditorWindowsAmount) { // there are filled frames left
+					if (this.FreeEditorFrames.length !== this.EditorWindowsAmount) { // there are filled frames left
 
 						var _reachedCurrent = false;
 						this.ActiveEditorFrameId = null;
 						for (frameKey in this.EditorFrames) {
 
-							if (!_reachedCurrent || _tmpKey == null) {
-								if ( this.EditorFrames[frameKey].getEditorIsInUse() ) {
+							if (!_reachedCurrent || _tmpKey === null) {
+								if (this.EditorFrames[frameKey].getEditorIsInUse()) {
 									_tmpKey = frameKey;
 
 								}
-								if (frameKey == frameId) {
+								if (frameKey === frameId) {
 									_reachedCurrent = true;
 
 								}
 							}
 
 						}
-						this.showEditor( _tmpKey );
+						this.showEditor(_tmpKey);
 						this.ActiveEditorFrameId = _tmpKey;
 					}
 				}
 				this.toggleFrames();
 			}
-		}
+		};
 
 		/*--------------------------------------------------------------------
-	// FUNCTION:
-	//   showEditor
-	//
-	// DESCRIPTION:
-	//   Activates the EditorFrame with the given Id
-	//
-	// ARGUMENTS:
-	//   editorId - id of the editor window
-	//
-	// RETURNS:
-	//   nothing
-	//--------------------------------------------------------------------*/
+		 // FUNCTION:
+		 //   showEditor
+		 //
+		 // DESCRIPTION:
+		 //   Activates the EditorFrame with the given Id
+		 //
+		 // ARGUMENTS:
+		 //   editorId - id of the editor window
+		 //
+		 // RETURNS:
+		 //   nothing
+		 //--------------------------------------------------------------------*/
 		this.showEditor = function(editorId) {
-
-			if (editorId != this.ActiveEditorFrameId) {
+			if (editorId !== this.ActiveEditorFrameId) {
 				// add to navigationHistory:
 				_currentEditor = this.getEditorFrame(editorId);
 
-				if ( _currentEditor.getEditorIsInUse() ) {
+				if (_currentEditor.getEditorIsInUse()) {
 
 					top.weNavigationHistory.addDocToHistory(
-
-					_currentEditor.getEditorEditorTable(),
-					_currentEditor.getEditorDocumentId(),
-					_currentEditor.getEditorContentType(),
-					_currentEditor.getEditorEditCmd(),
-					_currentEditor.getEditorUrl(),
-
-					_currentEditor.getEditorDocumentParameters()
-				);
+									_currentEditor.getEditorEditorTable(),
+									_currentEditor.getEditorDocumentId(),
+									_currentEditor.getEditorContentType(),
+									_currentEditor.getEditorEditCmd(),
+									_currentEditor.getEditorUrl(),
+									_currentEditor.getEditorDocumentParameters()
+									);
 
 					// activate tab
 					top.weMultiTabs.openTab(editorId);
 
 					// highlight tree
-					if (top.treeData && top.treeData.table == _currentEditor.getEditorEditorTable() && parseInt(_currentEditor.getEditorDocumentId()) ) {
-						top.treeData.selectnode( _currentEditor.getEditorDocumentId() );
+					if (top.treeData && top.treeData.table === _currentEditor.getEditorEditorTable() && parseInt(_currentEditor.getEditorDocumentId())) {
+						top.treeData.selectnode(_currentEditor.getEditorDocumentId());
 
-					} else if (top.treeData){
+					} else if (top.treeData) {
 						top.treeData.unselectnode();
 
 					}
@@ -589,32 +582,32 @@ print we_message_reporting::getShowMessageCall(g_l('multiEditor', "[no_editor_le
 					this.toggleFrames();
 				}
 			}
-		}
+		};
 
 		this.switchToContentEditor = function() {
 			this.getActiveEditorFrame().switchToContentEditor(2);
-		}
+		};
 
 
 		this.switchToNonContentEditor = function() {
 			this.getActiveEditorFrame().switchToContentEditor(1);
-		}
+		};
 
-		this.getVisibleEditorFrame = function () {
+		this.getVisibleEditorFrame = function() {
 			editorFrame = this.getActiveEditorFrame();
 			if (!editorFrame) {
 				return null;
 			}
 			return editorFrame.getContentEditor();
-		}
+		};
 
-		this.isEditTab = function () {
+		this.isEditTab = function() {
 			editorFrame = this.getActiveEditorFrame();
 			if (!editorFrame) {
 				return null;
 			}
-			return editorFrame.getContentEditor() == this.getActiveDocumentReference().frames[2];
-		}
+			return editorFrame.getContentEditor() === this.getActiveDocumentReference().frames[2];
+		};
 
 		//--------------------------------------------------------------------
 		// FUNCTION:
@@ -630,49 +623,49 @@ print we_message_reporting::getShowMessageCall(g_l('multiEditor', "[no_editor_le
 		//   nothing
 		//--------------------------------------------------------------------
 		this.toggleFrames = function() {
-			if(!this.isInitialized()){
+			if (!this.isInitialized()) {
 
 			}
 			//		var _colStr = "";
-			if ( !this.ActiveEditorFrameId ) {
-				first=true;
+			if (!this.ActiveEditorFrameId) {
+				first = true;
 				for (frameId in this.EditorFrames) {
 
 					if (first) {
 						this.getEditorFrame(frameId).setEmptyEditor();
 						//this.getEditorFrame(frameId).EditorFrameReference.style.display="inline";
-						this.getEditorFrame(frameId).EditorFrameReference.style.width="100%";
-						this.getEditorFrame(frameId).EditorFrameReference.style.height="100%";
-						first=false;
+						this.getEditorFrame(frameId).EditorFrameReference.style.width = "100%";
+						this.getEditorFrame(frameId).EditorFrameReference.style.height = "100%";
+						first = false;
 					} else {
 						//this.getEditorFrame(frameId).EditorFrameReference.style.display="none";
-						this.getEditorFrame(frameId).EditorFrameReference.style.height="0px";
-						this.getEditorFrame(frameId).EditorFrameReference.style.witdh="0px";
+						this.getEditorFrame(frameId).EditorFrameReference.style.height = "0px";
+						this.getEditorFrame(frameId).EditorFrameReference.style.witdh = "0px";
 					}
 				}
 
 			} else {
 				for (frameId in this.EditorFrames) {
-					if (this.ActiveEditorFrameId == frameId) {
+					if (this.ActiveEditorFrameId === frameId) {
 //						this.getEditorFrame(frameId).EditorFrameReference.style.display="inline";
-						this.getEditorFrame(frameId).EditorFrameReference.style.width="100%";
-						this.getEditorFrame(frameId).EditorFrameReference.style.height="100%";
+						this.getEditorFrame(frameId).EditorFrameReference.style.width = "100%";
+						this.getEditorFrame(frameId).EditorFrameReference.style.height = "100%";
 					} else {
-						if ( this.getEditorFrame(frameId).getEditorIsInUse() && this.getEditorFrame(frameId).EditorType != "none_webedition" && this.EditorFrames[frameId].getDocumentReference().closeAllModalWindows){
+						if (this.getEditorFrame(frameId).getEditorIsInUse() && this.getEditorFrame(frameId).EditorType !== "none_webedition" && this.EditorFrames[frameId].getDocumentReference().closeAllModalWindows) {
 							this.EditorFrames[frameId].getDocumentReference().closeAllModalWindows();
 						}
-						if ( this.getEditorFrame(frameId).EditorExitDocQuestionDialog ) {
+						if (this.getEditorFrame(frameId).EditorExitDocQuestionDialog) {
 							this.getEditorFrame(frameId).EditorExitDocQuestionDialog.close();
 							this.getEditorFrame(frameId).EditorExitDocQuestionDialog = false;
 						}
-						this.getEditorFrame(frameId).EditorFrameReference.style.height="0px";
-						this.getEditorFrame(frameId).EditorFrameReference.style.witdh="0px";
-	//					this.getEditorFrame(frameId).EditorFrameReference.style.display="none";
+						this.getEditorFrame(frameId).EditorFrameReference.style.height = "0px";
+						this.getEditorFrame(frameId).EditorFrameReference.style.witdh = "0px";
+						//					this.getEditorFrame(frameId).EditorFrameReference.style.display="none";
 					}
 				}
 			}
 			//this.MultiEditorFrameset.setAttribute("cols", _colStr);
-		}
+		};
 
 		//--------------------------------------------------------------------
 		// FUNCTION:
@@ -689,9 +682,8 @@ print we_message_reporting::getShowMessageCall(g_l('multiEditor', "[no_editor_le
 		//--------------------------------------------------------------------
 		this.getFreeWindow = function() {
 
-			if (this.EditorFrames == null) {
+			if (this.EditorFrames === null) {
 				this.init();
-
 			}
 
 			if (this.FreeEditorFrames.length > 0) {
@@ -717,44 +709,44 @@ print we_message_reporting::getShowMessageCall(g_l('multiEditor', "[no_editor_le
 		// RETURNS:
 		//   integer
 		//--------------------------------------------------------------------
-		this.getNumberOfFreeWindows = function () {
-			if(this.FreeEditorFrames == null){
+		this.getNumberOfFreeWindows = function() {
+			if (this.FreeEditorFrames === null) {
 				return 0;
 			}
 			return this.FreeEditorFrames.length;
-		}
+		};
 
 
 		this.getEditorIdOfOpenDocument = function(table, id, editcmd, url) {
 
-			if (id == 0 && !editcmd && !url) {
+			if (id === 0 && !editcmd && !url) {
 				return null;
 
 			}
-			for ( _editorId in this.EditorFrames ) {
-				if (table && id && this.getEditorEditorTable(_editorId) == table && this.getEditorDocumentId(_editorId) == id  ) { // open by id
+			for (_editorId in this.EditorFrames) {
+				if (table && id && this.getEditorEditorTable(_editorId) === table && this.getEditorDocumentId(_editorId) === id) { // open by id
 					return _editorId;
 
-				} else if ( editcmd == "open_cockpit" && this.EditorFrames[_editorId].EditorType == "cockpit" ) { // open a cmd window
+				} else if (editcmd === "open_cockpit" && this.EditorFrames[_editorId].EditorType === "cockpit") { // open a cmd window
 					return _editorId;
 
-				} else if ( url && this.EditorFrames[_editorId].EditorUrl == url) { // open with URL
+				} else if (url && this.EditorFrames[_editorId].EditorUrl === url) { // open with URL
 					return _editorId;
 
 				}
 			}
 			return null;
-		}
+		};
 
 		this.getEditorsInUse = function() {
 			var _ret = new Object();
 			for (frameId in this.EditorFrames) {
-				if ( this.EditorFrames[frameId].getEditorIsInUse() ) {
+				if (this.EditorFrames[frameId].getEditorIsInUse()) {
 					_ret[frameId] = this.EditorFrames[frameId];
 				}
 			}
 			return _ret;
-		}
+		};
 
 		//----------------------------------------
 		// getters
@@ -763,66 +755,50 @@ print we_message_reporting::getShowMessageCall(g_l('multiEditor', "[no_editor_le
 		//----------------------------------------
 
 		this.getActiveEditorFrame = function() {
-			if (this.ActiveEditorFrameId) {
-				return this.EditorFrames[this.ActiveEditorFrameId];
-			}
-			return false;
-		}
+			return (this.ActiveEditorFrameId ? this.EditorFrames[this.ActiveEditorFrameId] : false);
+		};
 
 		this.getEditorFrameByTransaction = function(theTransaction) {
-
 			for (frameId in this.EditorFrames) {
-				if ( this.EditorFrames[frameId] && (this.EditorFrames[frameId].getEditorTransaction() == theTransaction ) ) {
+				if (this.EditorFrames[frameId] && (this.EditorFrames[frameId].getEditorTransaction() === theTransaction)) {
 					return this.EditorFrames[frameId];
 				}
 			}
 			return null;
-		}
+		};
 
 		this.getEditorFrame = function(frameId) {
-
-			if (typeof(frameId) == "string" && frameId != "undefined") {
+			if (typeof(frameId) === "string" && frameId !== "undefined") {
 				return this.EditorFrames[frameId];
-
 			} else if (this.ActiveEditorFrameId) {
 				return this.EditorFrames[this.ActiveEditorFrameId];
-
 			} else {
 				return false;
 			}
-		}
+		};
 
 		this.getDocumentReferenceByTransaction = function(theTransaction) {
-
 			_win = this.getEditorFrameByTransaction(theTransaction);
-			if (_win) {
-				return _win.getDocumentReference();
+			return (_win ? _win.getDocumentReference() : false);
 
-			} else {
-				return false;
-
-			}
-		}
+		};
 
 		this.getActiveDocumentReference = function() {
-
-			if (this.EditorFrames == null) {
+			if (this.EditorFrames === null) {
 				this.init();
-
 			}
 
 			_win = this.getActiveEditorFrame();
-			return (_win?_win.getDocumentReference():false);
-		}
+			return (_win ? _win.getDocumentReference() : false);
+		};
 
 		//----------------------------------------
 		// setters
 		//----------------------------------------
 		this.setActiveEditorFrame = function(id) {
 
-			if (this.ActiveEditorFrameId != id) {
-
-				if (_oldActive = this.getEditorFrame(this.ActiveEditorFrameId)) {
+			if (this.ActiveEditorFrameId !== id) {
+				if ((_oldActive = this.getEditorFrame(this.ActiveEditorFrameId))) {
 					_oldActive.setEditorIsActive(false);
 				}
 
@@ -831,14 +807,14 @@ print we_message_reporting::getShowMessageCall(g_l('multiEditor', "[no_editor_le
 				_EditorWindow = this.getEditorFrame(id);
 				_EditorWindow.setEditorIsActive(true);
 			}
-		}
+		};
 
 		this.setEditorIsHot = function(newVal, id) {
 			_EditorWindow = this.getEditorFrame(id);
 			if (_EditorWindow) {
 				_EditorWindow.setEditorIsHot(newVal);
 			}
-		}
+		};
 
 		//----------------------------------------
 		// getters
@@ -850,52 +826,51 @@ print we_message_reporting::getShowMessageCall(g_l('multiEditor', "[no_editor_le
 				return _EditorWindow.getEditorIsHot();
 			}
 			return null;
-		}
+		};
 
-		this.getEditorTransaction = function(frameId){
-			if ( _EditorFrame = this.getEditorFrame(frameId) ) {
+		this.getEditorTransaction = function(frameId) {
+			if ((_EditorFrame = this.getEditorFrame(frameId))) {
 				return _EditorFrame.getEditorTransaction();
 			}
 			return null;
 
-		}
+		};
 
-		this.getEditorDocumentId = function(frameId){
-			if ( _EditorFrame = this.getEditorFrame(frameId) ) {
+		this.getEditorDocumentId = function(frameId) {
+			if ((_EditorFrame = this.getEditorFrame(frameId))) {
 				return _EditorFrame.getEditorDocumentId();
 			}
 			return null;
+		};
 
-		}
-
-		this.getEditorEditorTable = function(frameId){
+		this.getEditorEditorTable = function(frameId) {
 			var _EditorFrame = this.getEditorFrame(frameId);
 			return _EditorFrame.getEditorEditorTable();
 
-		}
+		};
 
-		this.getEditorIsHot = function(frameId){
+		this.getEditorIsHot = function(frameId) {
 			var _EditorFrame = this.getEditorFrame(frameId);
 			return _EditorFrame.getEditorIsHot();
 
-		}
+		};
 
-		this.getEditorEditPageNr = function(frameId){
+		this.getEditorEditPageNr = function(frameId) {
 			var _EditorFrame = this.getEditorFrame(frameId);
 			return _EditorFrame.getEditorEditPageNr();
 
-		}
+		};
 
-		this.getEditorIsActive = function(frameId){
+		this.getEditorIsActive = function(frameId) {
 			var _EditorFrame = this.getEditorFrame(frameId);
 			return _EditorFrame.getEditorIsActive(frameId);
 
-		}
+		};
 
 		this.getEditorIsInUse = function(frameId) {
 			var _EditorFrame = this.getEditorFrame(frameId);
 			return _EditorFrame.getEditorIsInUse();
-		}
+		};
 	}
 	top.weEditorFrameController = new EditorFrameController();
 
@@ -1000,16 +975,15 @@ print we_message_reporting::getShowMessageCall(g_l('multiEditor', "[no_editor_le
 			this.EditorTable = null;
 			this.EditorIsActive = false;
 			this.EditorIsInUse = false;
-		}
+		};
 
 		this.initEditorFrameData = function(obj) {
 
 			this.EditorIsInUse = true;
 
 			if (obj) {
-
 				for (eigen in obj) {
-					if ( typeof(obj[eigen]) == "boolean" ) {
+					if (typeof(obj[eigen]) === "boolean") {
 						eval("this." + eigen + " = " + obj[eigen]);
 					} else {
 						eval("this." + eigen + " = \"" + obj[eigen] + "\"");
@@ -1017,14 +991,15 @@ print we_message_reporting::getShowMessageCall(g_l('multiEditor', "[no_editor_le
 				}
 				this.updateEditorTab();
 			}
-		}
+		};
+
 
 		this.updateEditorTab = function() {
-			this.EditorDocumentText = this.EditorDocumentText.replace(/</g,"&lt;");
-			this.EditorDocumentText = this.EditorDocumentText.replace(/>/g,"&gt;");
+			this.EditorDocumentText = this.EditorDocumentText.replace(/</g, "&lt;");
+			this.EditorDocumentText = this.EditorDocumentText.replace(/>/g, "&gt;");
 			top.weMultiTabs.setText(this.FrameId, this.EditorDocumentText);
 			top.weMultiTabs.setTitle(this.FrameId, this.EditorDocumentPath);
-			if (this.EditorType == "model") {
+			if (this.EditorType === "model") {
 				top.weMultiTabs.setId(this.FrameId, "ID: " + this.EditorDocumentId);
 			} else {
 				top.weMultiTabs.setId(this.FrameId, this.EditorDocumentText);
@@ -1033,8 +1008,7 @@ print we_message_reporting::getShowMessageCall(g_l('multiEditor', "[no_editor_le
 			top.weMultiTabs.setContentType(this.FrameId, this.EditorContentType);
 			top.weMultiTabs.setLoading(this.FrameId, this.EditorIsLoading);
 			top.weMultiTabs.setModified(this.FrameId, this.EditorIsHot);
-
-		}
+		};
 
 		//--------------------------------------------------------------------
 		// FUNCTION:
@@ -1051,212 +1025,178 @@ print we_message_reporting::getShowMessageCall(g_l('multiEditor', "[no_editor_le
 		//--------------------------------------------------------------------
 		this.setEmptyEditor = function() {
 			this.EditorFrameWindow.location = "<?php print HTML_DIR ?>/blank_editor.html";
+		};
 
-		}
-
-		this.getEditorFrameWindow = function () {
+		this.getEditorFrameWindow = function() {
 			return this.EditorFrameWindow;
-
-		}
+		};
 
 		this.getDocumentReference = function() {
 			return this.getEditorFrameWindow();
-		}
+		};
 
 		this.getFrameId = function() {
 			return this.FrameId;
-		}
+		};
 
 		this.getEditorType = function() {
 			return this.EditorType;
+		};
 
-		}
-
-		this.getEditorTransaction = function(){
+		this.getEditorTransaction = function() {
 			return this.EditorTransaction;
+		};
 
-		}
-
-		this.getEditorDocumentId = function(){
+		this.getEditorDocumentId = function() {
 			return this.EditorDocumentId;
+		};
 
-		}
-
-		this.getEditorEditorTable = function(){
+		this.getEditorEditorTable = function() {
 			return this.EditorEditorTable;
+		};
 
-		}
-
-		this.getEditorIsHot = function(){
+		this.getEditorIsHot = function() {
 			return this.EditorIsHot;
-
-		}
+		};
 
 		this.getEditorEditCmd = function() {
 			return this.EditorEditCmd;
-
-		}
+		};
 
 		this.getEditorUrl = function() {
 			return this.EditorUrl;
-		}
+		};
 
 		this.getEditorDocumentParameters = function() {
 			return this.EditorDocumentParameters;
-		}
+		};
 
 		this.getEditorMakeNewDoc = function() {
 			return this.EditorMakeNewDoc;
-
-		}
+		};
 
 		this.getEditorPublishWhenSave = function() {
 			return this.EditorPublishWhenSave;
-
-		}
+		};
 
 		this.getEditorAutoRebuild = function() {
 			return this.EditorAutoRebuild;
-
-		}
+		};
 
 		this.getEditorMakeSameDoc = function() {
 			return this.EditorMakeSameDoc;
-
-		}
+		};
 
 		this.getEditorDidSetHiddenText = function() {
 			return this.EditorDidSetHiddenText;
+		};
 
-		}
-
-		this.getEditorDocumentPath = function(){
+		this.getEditorDocumentPath = function() {
 			return this.EditorDocumentPath;
+		};
 
-		}
-
-		this.getEditorDocumentText = function(){
+		this.getEditorDocumentText = function() {
 			return this.EditorDocumentText;
-		}
+		};
 
-		this.getEditorEditPageNr = function(){
+		this.getEditorEditPageNr = function() {
 			return this.EditorEditPageNr;
-
-		}
+		};
 
 		this.getEditorContentType = function() {
 			return this.EditorContentType;
-		}
+		};
 
-		this.getEditorTable = function(){
+		this.getEditorTable = function() {
 			return this.EditorTable;
+		};
 
-		}
-
-		this.getEditorIsActive = function(){
+		this.getEditorIsActive = function() {
 			return this.EditorIsActive;
-
-		}
+		};
 
 		this.getEditorIsInUse = function() {
 			return this.EditorIsInUse;
-		}
+		};
 
 		this.getEditorReloadNeeded = function() {
 			return this.EditorReloadNeeded;
-		}
+		};
 
 		this.getEditorReloadAllNeeded = function() {
 			return this.EditorReloadAllNeeded;
-		}
+		};
 
 		// setters
 		this.setEditorMakeNewDoc = function(newVal) {
 			this.EditorMakeNewDoc = newVal;
-
-		}
+		};
 
 		this.setEditorPublishWhenSave = function(newVal) {
 			this.EditorPublishWhenSave = newVal;
-
-		}
+		};
 
 		this.setEditorAutoRebuild = function(newVal) {
 			this.EditorAutoRebuild = newVal;
-
-		}
+		};
 
 		this.setEditorMakeSameDoc = function(newVal) {
 			this.EditorMakeSameDoc = newVal;
-
-		}
+		};
 
 		this.setEditorDidSetHiddenText = function(newVal) {
 			this.EditorDidSetHiddenText = newVal;
+		};
 
-		}
-
-		this.setEditorIsActive = function(newVal){
-
+		this.setEditorIsActive = function(newVal) {
 			this.EditorIsActive = newVal;
-
 			if (newVal) {
-
 				var _theEditorFrame = this.getEditorFrameWindow();
-
-				if ( this.getEditorReloadAllNeeded() ) {
-
-					if (this.getEditorType() == "cockpit") {
+				if (this.getEditorReloadAllNeeded()) {
+					if (this.getEditorType() === "cockpit") {
 						_theEditorFrame.saveSettings();
 						var _href = _theEditorFrame.location.href;
-						if(_href.charAt(_href.length-1) == "#") _href = _href.substr(0,_href.length-1);
-						_theEditorFrame.location.href=_href;
+						if (_href.charAt(_href.length - 1) === "#"){
+							_href = _href.substr(0, _href.length - 1);
+						}
+						_theEditorFrame.location.href = _href;
 						//_theEditorFrame.location.reload();
-
 					} else {
-
-						if ( _theEditorFrame.frames[0] ) {
+						if (_theEditorFrame.frames[0]) {
 							_theEditorFrame.frames[0].location.reload();
-
 						}
 						var contentEditor = editorFrame.getContentEditor();
-						if ( contentEditor ) {
+						if (contentEditor) {
 							top.we_cmd("reload_editpage");
 						}
-						if ( _theEditorFrame.frames[3] ) {
+						if (_theEditorFrame.frames[3]) {
 							_theEditorFrame.frames[3].location.reload();
 						}
 					}
 					// reload all 3 frames
 					this.setEditorReloadAllNeeded(false);
 					this.setEditorReloadNeeded(false);
-
-				} else if ( this.getEditorReloadNeeded() ) {
-
-					if (this.getEditorType() == "cockpit") {
+				} else if (this.getEditorReloadNeeded()) {
+					if (this.getEditorType() === "cockpit") {
 						_theEditorFrame.location.reload();
-
 					} else {
 						top.we_cmd("reload_editpage");
-
 					}
 					this.setEditorReloadNeeded(false);
 				}
 			}
-		}
+		};
 
-		this.setEditorEditPageNr = function(newVal){
+		this.setEditorEditPageNr = function(newVal) {
 			this.EditorEditPageNr = newVal;
+		};
 
-		}
-
-		this.setEditorDocumentId = function(newVal){
+		this.setEditorDocumentId = function(newVal) {
 			this.EditorDocumentId = newVal;
-
-		}
+		};
 
 		this.setEditorIsHot = function(newVal) {
-			var _update = this.EditorIsHot != newVal;
+			var _update = this.EditorIsHot !== newVal;
 			this.EditorIsHot = newVal;
 			if (_update) {
 				if (!this.EditorIsHot) {
@@ -1268,28 +1208,25 @@ print we_message_reporting::getShowMessageCall(g_l('multiEditor', "[no_editor_le
 				}
 				this.updateEditorTab();
 			}
-		}
+		};
 
 		this.setEditorIsLoading = function(newVal) {
-
-			var _update = this.EditorIsLoading != newVal;
+			var _update = this.EditorIsLoading !== newVal;
 			this.EditorIsLoading = newVal;
 			if (_update) {
 				this.updateEditorTab();
 			}
-		}
+		};
 
 		this.setEditorReloadNeeded = function(newVal) {
 			this.EditorReloadNeeded = newVal;
-		}
+		};
 
 		this.setEditorReloadAllNeeded = function(newVal) {
 			this.EditorReloadAllNeeded = newVal;
-		}
+		};
 
 		this.switchToContentEditor = function(nr) {
-
-
 			var framesets = this.getEditorFrameWindow().document.getElementsByTagName("FRAMESET");
 
 			var frameset = framesets[0]; //this.getEditorFrameWindow().document.getElementById("_editorFrameset");
@@ -1301,10 +1238,10 @@ print we_message_reporting::getShowMessageCall(g_l('multiEditor', "[no_editor_le
 				return null;
 			}
 			var parts = rows.split(",");
-			if (nr == 1 && parts[1] != "*") {
+			if (nr === 1 && parts[1] !== "*") {
 				parts[1] = "*";
 				parts[2] = "0";
-			} else if(nr == 2 && parts[2] != "*") {
+			} else if (nr === 2 && parts[2] !== "*") {
 				parts[2] = "*";
 				parts[1] = "0";
 			} else {
@@ -1312,8 +1249,7 @@ print we_message_reporting::getShowMessageCall(g_l('multiEditor', "[no_editor_le
 			}
 
 			frameset.rows = parts.join(",");
-
-		}
+		};
 
 		this.getContentEditorHeightForFrameNr = function(nr) {
 			var framesets = this.getEditorFrameWindow().document.getElementsByTagName("FRAMESET");
@@ -1327,17 +1263,22 @@ print we_message_reporting::getShowMessageCall(g_l('multiEditor', "[no_editor_le
 			}
 			var parts = rows.split(",");
 			return parts[nr];
-		}
+		};
 
 		this.getContentEditor = function() {
-			if (this.getContentEditorHeightForFrameNr(1) == "0") {
+			if (this.getContentEditorHeightForFrameNr(1) === "0") {
 				return this.getEditorFrameWindow().frames[2];
-			} else if (this.getContentEditorHeightForFrameNr(2) == "0") {
+			} else if (this.getContentEditorHeightForFrameNr(2) === "0") {
 				return this.getEditorFrameWindow().frames[1];
 			} else {
 				return null;
 			}
-		}
+		};
+
+		this.getContentFrame = function() {
+			return this.getEditorFrameWindow().frames[2];
+		};
+
 	}
 	//-->
 </script>

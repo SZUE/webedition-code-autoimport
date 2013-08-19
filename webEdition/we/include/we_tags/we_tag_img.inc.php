@@ -57,9 +57,9 @@ function we_tag_img($attribs){
 	$alt = '';
 	$title = '';
 
-	$altField = $name . '_img_custom_alt';
-	$titleField = $name . '_img_custom_title';
-	$thumbField = $name . '_img_custom_thumb';
+	$altField = $name . we_imageDocument::ALT_FIELD;
+	$titleField = $name . we_imageDocument::TITLE_FIELD;
+	$thumbField = $name . we_imageDocument::THUMB_FIELD;
 
 	$fname = 'we_' . $GLOBALS['we_doc']->Name . '_img[' . $name . '#bdid]';
 	$altname = 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $altField . ']';
@@ -154,7 +154,7 @@ function we_tag_img($attribs){
 			);
 
 		if($showThumb){ //  only when wanted
-			$db = new DB_WE();
+			$db = $GLOBALS['DB_WE'];
 			$db->query('SELECT ID,Name FROM ' . THUMBNAILS_TABLE . ' ORDER BY Name');
 			if($db->num_rows()){
 				$thumbnails = '<select name="' . $thumbname . '" size="1" onchange="top.we_cmd(\'reload_editpage\'); _EditorFrame.setEditorIsHot(true);">' .

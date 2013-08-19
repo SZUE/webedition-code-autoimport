@@ -57,16 +57,16 @@ if(isset($_GET['u']) && isset($_GET['t']) && isset($_GET['id'])){
 
 
 		if((!$useOrig) && $we_doc->ID && ($we_doc->DocChanged == false) && file_exists($thumbObj->getOutputPath(true))){
-			$src = $thumbObj->getOutputPath(false) . '?rand=' . $randval;
-		} else{
+			$src = $thumbObj->getOutputPath(false, true);
+		} else {
 			$src = WEBEDITION_DIR . 'we_cmd.php?' . http_build_query(
 					array(
-					'we_cmd[0]' => 'show_binaryDoc',
-					'we_cmd[1]' => $we_doc->ContentType,
-					'we_cmd[2]' => $we_transaction,
-					'we_cmd[3]' => ($useOrig ? '' : $thumbid),
-					'rand' => $randval
-					));
+						'we_cmd[0]' => 'show_binaryDoc',
+						'we_cmd[1]' => $we_doc->ContentType,
+						'we_cmd[2]' => $we_transaction,
+						'we_cmd[3]' => ($useOrig ? '' : $thumbid),
+						'rand' => $randval
+			));
 		}
 
 		$table .= '<td><image src="' . $src . '" width="' . $thumbObj->getOutputWidth() . '" height="' . $thumbObj->getOutputHeight() . '" border="0"></td>';
@@ -74,5 +74,5 @@ if(isset($_GET['u']) && isset($_GET['t']) && isset($_GET['id'])){
 
 	$table .= '</tr></table>';
 
-	print we_html_element::htmlBody(array("bgcolor" => "#ffffff", "marginwidth" => "5", "marginheight" => "5", "leftmargin" => "5", "topmargin" => "5"), $table) . "</html>";
+	print we_html_element::htmlBody(array("bgcolor" => "#ffffff", "style" => 'margin: 5px 5px 5px 5px'), $table) . "</html>";
 }

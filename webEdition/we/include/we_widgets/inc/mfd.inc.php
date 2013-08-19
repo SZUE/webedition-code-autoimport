@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,21 +22,16 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 $oTblCont = new we_html_table(array(
-	"border" => "0", "cellpadding" => "0", "cellspacing" => "0"
-), 1, 1);
+	"border" => 0, "cellpadding" => 0, "cellspacing" => 0
+	), 1, 1);
 $oTblCont->setCol(
-		0,
-		0,
-		null,
-		we_html_element::htmlDiv(
-				array(
-
-						"id" => "m_" . $iCurrId . "_inline",
-						"style" => "width:" . $iWidth . "px;height:" . ($aPrefs[$aProps[0]]["height"] - 25) . "px;overflow:auto;"
-				),
-				$lastModified));
+	0, 0, null, we_html_element::htmlDiv(
+		array(
+		'id' => 'm_' . $iCurrId . '_inline',
+		"style" => "width:" . $iWidth . "px;height:" . ($aPrefs[$aProps[0]]["height"] - 25) . "px;overflow:auto;"
+		), we_html_element::htmlDiv(array('id' => 'mfd_data'), $lastModified)
+));
 $aLang = array(
-	g_l('cockpit',"[last_modified]"), ""
+	g_l('cockpit', "[last_modified]"), ""
 );

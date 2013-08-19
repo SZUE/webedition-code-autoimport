@@ -258,7 +258,7 @@ class we_dynamicControls{
 	 *
 	 * @return     string
 	 */
-	function fold_checkbox_groups($groups, $main_titles, $titles, $item_names, $open_group = "", $filter = "", $check_permissions = false, $use_form = false, $form_name = "", $form_group_name = "", $display_check_all = false, $use_with_user_module = false, $width = "500", $bgcolor = "#DDDDDD", $seperator_color = "#EEEEEE"){
+	function fold_checkbox_groups($groups, $main_titles, $titles, $item_names, $open_group = "", $filter = "", $check_permissions = false, $use_form = false, $form_name = "", $form_group_name = "", $display_check_all = false, $use_with_user_module = false, $width = 500, $bgcolor = "#DDDDDD", $seperator_color = "#EEEEEE"){
 		// Include the needed JavaScript
 		$_content = $this->js_fold_checkbox_groups($groups, $filter, $use_with_user_module);
 
@@ -419,7 +419,7 @@ class we_dynamicControls{
 	 *
 	 * @return     string
 	 */
-	function fold_multibox_groups($groups, $main_titles, $multiboxes, $open_group = "", $filter = "", $use_form = false, $form_name = "", $form_group_name = "", $use_with_user_module = false, $width = "500", $bgcolor = "#DDDDDD", $seperator_color = "#EEEEEE"){
+	function fold_multibox_groups($groups, $main_titles, $multiboxes, $open_group = "", $filter = "", $use_form = false, $form_name = "", $form_group_name = "", $use_with_user_module = false, $width = 500, $bgcolor = "#DDDDDD", $seperator_color = "#EEEEEE"){
 		// Include the needed JavaScript
 		$_content = $this->js_fold_checkbox_groups($groups, $filter, $use_with_user_module);
 
@@ -517,8 +517,9 @@ class we_dynamicControls{
 				// Go through all items of the group
 				foreach($multiboxes[$_groups_key] as $i => $c){
 
-					if(!isset($c["headline"]))
+					if(!isset($c["headline"])){
 						$c["headline"] = '';
+					}
 					$_contentTable[$main_titles[$_groups_key]] .= '
 								<tr>
 									<td></td>

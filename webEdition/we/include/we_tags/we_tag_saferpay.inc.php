@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once(WE_MODULES_PATH . 'shop/we_conf_shop.inc.php');
+require_once(WE_MODULES_PATH . 'shop/we_conf_shop.inc.php');
 
 /**
  * This function writes the shop data (order) to the database and send values to saferpay
@@ -34,13 +34,15 @@ include_once(WE_MODULES_PATH . 'shop/we_conf_shop.inc.php');
 function we_tag_saferpay($attribs){
 	global $DB_WE;
 	$name = weTag_getAttribute('name', $attribs);
-	$foo = attributFehltError($attribs, 'pricename', __FUNCTION__);
-	if($foo)
+
+	if(($foo = attributFehltError($attribs, 'pricename', __FUNCTION__))){
 		return $foo;
-	if(!$name)
-		$foo = attributFehltError($attribs, 'shopname', __FUNCTION__);
-	if($foo)
-		return $foo;
+	}
+	if(!$name){
+		if(($foo = attributFehltError($attribs, 'shopname', __FUNCTION__))){
+			return $foo;
+		}
+	}
 
 	$shopname = weTag_getAttribute('shopname', $attribs);
 	$shopname = $shopname ? $shopname : $name;

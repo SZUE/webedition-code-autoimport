@@ -23,8 +23,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_ifNotUnsubscribe(){
-	if(isset($GLOBALS["WE_REMOVENEWSLETTER_STATUS"])){
-		return (($GLOBALS["WE_REMOVENEWSLETTER_STATUS"] != 0) ? true : false);
+	if(isset($GLOBALS['WE_REMOVENEWSLETTER_STATUS'])){
+		return (($GLOBALS['WE_REMOVENEWSLETTER_STATUS'] != 0) ? true : false);
 	}
 	return false;
 }

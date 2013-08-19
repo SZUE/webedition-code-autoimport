@@ -22,7 +22,7 @@
  * @package    webEdition_toolfactory
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once ($_SERVER['DOCUMENT_ROOT'] . LIB_DIR . 'we/core/autoload.php');
+require_once ($_SERVER['DOCUMENT_ROOT'] . LIB_DIR . 'we/core/autoload.php');
 
 $isUTF8 = $GLOBALS['WE_BACKENDCHARSET'] == 'UTF-8';
 

@@ -37,7 +37,7 @@ $bTypeCls = (bool) $sTypeBinary{3};
 $iDate = intval($aCols[1]);
 switch($iDate){
 	default:
-	break;
+		break;
 	case 1 :
 		$timestamp = 'CURDATE()';
 		break;
@@ -83,46 +83,46 @@ foreach($aUsers as $uid){
 	$_users_where[] = '"' . basename(id_to_path($uid, USER_TABLE)) . '"';
 }
 
-if($bTypeDoc && we_hasPerm('CAN_SEE_DOCUMENTS') && defined("FILE_TABLE")){
+if(defined("FILE_TABLE") && $bTypeDoc && we_hasPerm('CAN_SEE_DOCUMENTS')){
 	$_where[] = '"' . stripTblPrefix(FILE_TABLE) . '"';
 	$_ws[FILE_TABLE] = get_ws(FILE_TABLE);
 }
-if($bTypeObj && we_hasPerm('CAN_SEE_OBJECTFILES') && defined("OBJECT_FILES_TABLE")){
+if(defined("OBJECT_FILES_TABLE") && $bTypeObj && we_hasPerm('CAN_SEE_OBJECTFILES')){
 	$_where[] = '"' . stripTblPrefix(OBJECT_FILES_TABLE) . '"';
 	$_ws[OBJECT_FILES_TABLE] = get_ws(OBJECT_FILES_TABLE);
 }
-if($bTypeTpl && we_hasPerm('CAN_SEE_TEMPLATES') && defined("TEMPLATES_TABLE") && $_SESSION['weS']['we_mode'] != "seem"){
+if(defined("TEMPLATES_TABLE") && $bTypeTpl && we_hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE){
 	$_where[] = '"' . stripTblPrefix(TEMPLATES_TABLE) . '"';
 }
-if($bTypeCls && we_hasPerm('CAN_SEE_OBJECTS') && defined("OBJECT_TABLE") && $_SESSION['weS']['we_mode'] != "seem"){
+if(defined("OBJECT_TABLE") && $bTypeCls && we_hasPerm('CAN_SEE_OBJECTS') && $_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE){
 	$_where[] = '"' . stripTblPrefix(OBJECT_TABLE) . '"';
 }
 
-$_whereSeem =($_SESSION['weS']['we_mode'] == "seem")? " AND ContentType!='folder' ":'';
+$_whereSeem = ($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE) ? " AND ContentType!='folder' " : '';
 
 $lastModified = '<table cellspacing="0" cellpadding="0" border="0">';
 $_count = 10;
 $i = $j = $k = 0;
 $_db = new DB_WE();
 while($j < $iMaxItems) {
-	$DB_WE->query('SELECT DID,UserName,DocumentTable,MAX(ModDate) AS m FROM ' . HISTORY_TABLE . (!empty($_where) ? (' WHERE ' . ((count($_users_where) > 0) ? 'UserName IN (' . implode(',', $_users_where) . ') AND ' : '') . 'DocumentTable IN(' . implode(',', $_where) . ')') : '') . (isset($timestamp) ? ' AND ModDate >=' . $timestamp : '') . $_whereSeem . ' GROUP BY DID,DocumentTable  ORDER BY m DESC LIMIT ' . ($k++ * $_count) . ' , ' . ($_count));
-	$num_rows = $DB_WE->num_rows();
+	$GLOBALS['DB_WE']->query('SELECT DID,UserName,DocumentTable,MAX(ModDate) AS m FROM ' . HISTORY_TABLE . (!empty($_where) ? (' WHERE ' . ((count($_users_where) > 0) ? 'UserName IN (' . implode(',', $_users_where) . ') AND ' : '') . 'DocumentTable IN(' . implode(',', $_where) . ')') : '') . (isset($timestamp) ? ' AND ModDate >=' . $timestamp : '') . $_whereSeem . ' GROUP BY DID,DocumentTable  ORDER BY m DESC LIMIT ' . ($k++ * $_count) . ' , ' . ($_count));
+	$num_rows = $GLOBALS['DB_WE']->num_rows();
 	if($num_rows == 0){
 		break;
 	}
-	while($DB_WE->next_record()) {
-		$_table = TBL_PREFIX . $DB_WE->f('DocumentTable');
+	while($GLOBALS['DB_WE']->next_record()) {
+		$_table = TBL_PREFIX . $GLOBALS['DB_WE']->f('DocumentTable');
 		$_paths = array();
 		$_bool_ot = (defined('OBJECT_TABLE')) ? (($_table != OBJECT_TABLE) ? true : false) : true;
 		if(!we_hasPerm('ADMINISTRATOR') || ($_table != TEMPLATES_TABLE && $_bool_ot)){
 			if(isset($_ws[$_table])){
 				$_wsa = makeArrayFromCSV($_ws[$_table]);
 				foreach($_wsa as $_id){
-					$_paths[] = 'Path LIKE ("' . $DB_WE->escape(id_to_path($_id, $_table)) . '%")';
+					$_paths[] = 'Path LIKE ("' . $GLOBALS['DB_WE']->escape(id_to_path($_id, $_table)) . '%")';
 				}
 			}
 		}
-		$_hash = getHash('SELECT ID,Path,Icon,Text,ContentType,ModDate,CreatorID,Owners,RestrictOwners FROM ' . $DB_WE->escape($_table) . ' WHERE ID = ' . $DB_WE->f('DID') . (!empty($_paths) ? (' AND (' . implode(' OR ', $_paths) . ')') : '') . ' ORDER BY ModDate LIMIT 1', $_db);
+		$_hash = getHash('SELECT ID,Path,Icon,Text,ContentType,ModDate,CreatorID,Owners,RestrictOwners FROM ' . $GLOBALS['DB_WE']->escape($_table) . ' WHERE ID = ' . $GLOBALS['DB_WE']->f('DID') . (!empty($_paths) ? (' AND (' . implode(' OR ', $_paths) . ')') : '') . ' ORDER BY ModDate LIMIT 1', $_db);
 		if(!empty($_hash)){
 			$_show = true;
 			$_bool_oft = (defined('OBJECT_FILES_TABLE')) ? (($_table == OBJECT_FILES_TABLE) ? true : false) : true;
@@ -131,13 +131,14 @@ while($j < $iMaxItems) {
 				$_show = we_history::userHasPerms($_hash['CreatorID'], $_hash['Owners'], $_hash['RestrictOwners']);
 			}
 			if($_show){
-				$user = f('SELECT UserName FROM ' . HISTORY_TABLE . ' WHERE DID=' . $DB_WE->f('DID') . ' AND DocumentTable="' . $DB_WE->f('DocumentTable') . '" AND ModDate="' . $DB_WE->f('m') . '" LIMIT 1', 'UserName', $_db);
+				$user = f('SELECT UserName FROM ' . HISTORY_TABLE . ' WHERE DID=' . $GLOBALS['DB_WE']->f('DID') . ' AND DocumentTable="' . $GLOBALS['DB_WE']->f('DocumentTable') . '" AND ModDate="' . $GLOBALS['DB_WE']->f('m') . '" LIMIT 1', 'UserName', $_db);
 				if($i + 1 <= $iMaxItems){
 					++$i;
 					++$j;
+					$isOpen = f('SELECT 1 AS a FROM ' . LOCK_TABLE . ' WHERE ID=' . $GLOBALS['DB_WE']->f('DID') . ' AND tbl="' . $GLOBALS['DB_WE']->f('DocumentTable') . '"', 'a', $_db);
 					$lastModified .= '<tr><td width="20" height="20" valign="middle" nowrap><img src="' . ICON_DIR . $_hash['Icon'] . '" />' . we_html_tools::getPixel(4, 1) . '</td>' .
-						'<td valign="middle" class="middlefont">' .
-						'<a href="javascript:top.weEditorFrameController.openDocument(\'' . $_table . '\',\'' . $_hash['ID'] . '\',\'' . $_hash['ContentType'] . '\');" title="' . $_hash['Path'] . '" style="color:#000000;text-decoration:none;">' . $_hash['Path'] . "</a></td>";
+						'<td valign="middle" class="middlefont" ' . ($isOpen ? 'style="color:red;"' : '') . '>' .
+						($isOpen ? '' : '<a href="javascript:top.weEditorFrameController.openDocument(\'' . $_table . '\',\'' . $_hash['ID'] . '\',\'' . $_hash['ContentType'] . '\');" title="' . $_hash['Path'] . '" style="color:#000000;text-decoration:none;">') . $_hash['Path'] . ($isOpen ? '' : '</a>') . '</td>';
 					if($bMfdBy){
 						$lastModified .= '<td>' . we_html_tools::getPixel(5, 1) . '</td><td class="middlefont" nowrap>' . $user . (($bDateLastMfd) ? ',' : '') . '</td>';
 					}

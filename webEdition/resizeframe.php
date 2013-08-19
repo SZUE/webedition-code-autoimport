@@ -58,11 +58,12 @@ function startNormalMode(){
 		</div>
 		<?php if(!(SIDEBAR_DISABLED == 1)){ ?>
 			<div style="position:absolute;top:0px;bottom:0px;right:0px;width:<?php echo $_sidebarwidth; ?>px;border-left:1px solid black;" id="sidebarDiv">
-<?php
-$weFrame = new weSideBarFrames();
-$weFrame->getHTML('');?>
+				<?php
+				$weFrame = new weSideBarFrames();
+				$weFrame->getHTML('');
+				?>
 			</div>
-		<?php } ?>
+	<?php } ?>
 	</div>
 	<?php
 }
@@ -90,38 +91,39 @@ function startSEEMMode(){
 	?>
 	<div style="position:absolute;top:0px;bottom:0px;left:0px;right:0px;border: 0px;">
 		<div style="position:absolute;top:0px;bottom:0px;left:0px;display:none;border-right:1px solid black;" id="bframeDiv">
-			<?php include(WE_INCLUDES_PATH . 'baumFrame.inc.php'); ?>
+	<?php include(WE_INCLUDES_PATH . 'baumFrame.inc.php'); ?>
 		</div>
 		<div style="position:absolute;top:0px;bottom:0px;right:<?php echo $_sidebarwidth; ?>px;left:0px;border-left:1px solid black;overflow: hidden;" id="bm_content_frameDiv">
 			<iframe frameBorder="0" src="<?php print WEBEDITION_DIR; ?>multiContentFrame.php" name="bm_content_frame" style="border:0px;width:100%;height:100%;overflow: hidden;"></iframe>
 		</div>
-		<?php if($_sidebarwidth > 0){ ?>
+			<?php if($_sidebarwidth > 0){ ?>
 			<div style="position:absolute;top:0px;bottom:0px;right:0px;width:<?php echo $_sidebarwidth; ?>px;border-left:1px solid black;" id="sidebarDiv">
-<?php
-$weFrame = new weSideBarFrames();
-$weFrame->getHTML('');?>
+				<?php
+				$weFrame = new weSideBarFrames();
+				$weFrame->getHTML('');
+				?>
 
 			</div>
-		<?php } ?>
+	<?php } ?>
 	</div>
 	<?php
 }
 ?>
 
 <script type="text/javascript"><!--
-	function we_cmd(){
+	function we_cmd() {
 		var args = "";
-		switch(arguments[0]){
+		switch (arguments[0]) {
 			case "loadVTab":
 				var op = top.makeFoldersOpenString();
-				parent.we_cmd("load",arguments[1],0,op,top.treeData.table);
+				parent.we_cmd("load", arguments[1], 0, op, top.treeData.table);
 				break;
 			default:
 
-				for(var i = 0; i < arguments.length; i++){
-					args += 'arguments['+i+']' + ( (i < (arguments.length-1)) ? ',' : '');
+				for (var i = 0; i < arguments.length; i++) {
+					args += 'arguments[' + i + ']' + ((i < (arguments.length - 1)) ? ',' : '');
 				}
-				eval('parent.we_cmd('+args+')');
+				eval('parent.we_cmd(' + args + ')');
 		}
 	}
 
@@ -137,11 +139,11 @@ if(isset($_REQUEST["SEEM_edit_include"]) && $_REQUEST["SEEM_edit_include"]){
 	startEditIncludeMode();
 
 //  We are in SEEM-Mode
-} else if($_SESSION['weS']['we_mode'] == "seem"){
+} else if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
 	startSEEMMode();
 
 //  Open webEdition normally
-} else{
+} else {
 	echo '<body style="margin:0px;border:0px none;position:absolute;top:0px;bottom:0px;left:0px;right:0px;overflow:hidden;">';
 	startNormalMode();
 	echo '</body>';

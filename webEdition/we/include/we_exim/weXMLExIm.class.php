@@ -197,10 +197,11 @@ class weXMLExIm{
 	}
 
 	function resetContenID(&$object){
-		if(isset($object->elements) && is_array($object->elements))
+		if(isset($object->elements) && is_array($object->elements)){
 			foreach($object->elements as $ek => $ev){
 				$object->elements[$ek]["id"] = 0;
 			}
+		}
 	}
 
 	function prepareExport($ids){
@@ -247,7 +248,7 @@ class weXMLExIm{
 			$encoding = $GLOBALS['WE_BACKENDCHARSET'];
 		}
 		return '<?xml version="1.0" encoding="' . $encoding . '" standalone="yes"?>' . "\n" .
-			'<webEdition version="' . WE_VERSION . '" type="' . $type . '" xmlns:we="we-namespace">' . "\n";
+			weBackup::weXmlExImHead . ' version="' . WE_VERSION . '" type="' . $type . '" xmlns:we="we-namespace">' . "\n";
 	}
 
 	static function getFooter(){
@@ -271,7 +272,7 @@ class weXMLExIm{
 					if($with_dirs){
 						$tmp[] = $v;
 					}
-				} else{
+				} else {
 					$tmp[] = $v;
 				}
 			}
@@ -285,7 +286,7 @@ class weXMLExIm{
 
 	function getQueryParents($path){
 		$out = array();
-		while($path != '/' && $path) {
+		while($path != '/' && $path){
 			$out [] = 'Path="' . $path . '"';
 			$path = dirname($path);
 		}
@@ -300,12 +301,12 @@ class weXMLExIm{
 			$wsPathArray = id_to_path($ws, $table, $db, false, true);
 			foreach($wsPathArray as $path){
 				$wsQuery[] = " Path LIKE '" . $db->escape($path) . "/%' OR " . weXMLExIm::getQueryParents($path);
-				while($path != '/' && $path) {
+				while($path != '/' && $path){
 					$parentpaths[] = $path;
 					$path = dirname($path);
 				}
 			}
-		} else if(defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE && (!$_SESSION["perms"]["ADMINISTRATOR"])){
+		} else if(defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE && (!we_hasPerm("ADMINISTRATOR"))){
 			$ac = getAllowedClasses($db);
 			foreach($ac as $cid){
 				$path = id_to_path($cid, OBJECT_TABLE);
@@ -324,7 +325,7 @@ class weXMLExIm{
 				$selTempl = $this->getIDs($selTempl, TEMPLATES_TABLE, false);
 				$selObjs = defined("OBJECT_FILES_TABLE") ? $this->getIDs($selObjs, OBJECT_FILES_TABLE, false) : '';
 				$selClasses = defined("OBJECT_FILES_TABLE") ? $this->getIDs($selClasses, OBJECT_TABLE, false) : '';
-			} else{
+			} else {
 				switch($art){
 					case "docs":
 						$selDocs = $this->getIDs($selDocs, FILE_TABLE);
@@ -342,7 +343,7 @@ class weXMLExIm{
 				if($dir != 0){
 					$workspace = id_to_path($dir, FILE_TABLE, $db);
 					$ws_where = ' AND (' . FILE_TABLE . ".Path LIKE '" . $db->escape($workspace) . "/%' OR " . FILE_TABLE . ".Path='" . $db->escape($workspace) . "') ";
-				} else{
+				} else {
 					$ws_where = '';
 				}
 
@@ -372,28 +373,28 @@ class weXMLExIm{
 		$ret = true;
 		if(is_object($object)){
 			// save binary data first to stay compatible with the new binary feature in v5.1
-			if(in_array("savebinarydata", get_class_methods(get_class($object)))){
+			if(in_array('savebinarydata', get_class_methods(get_class($object)))){
 				$object->savebinarydata();
 			}
 
 			if($object->ClassName == 'we_docTypes'){
 				$ret = $object->we_save_exim();
-			} else{
+			} else {
 				$GLOBALS['we_doc'] = $object;
-				if(in_array("we_save", get_class_methods(get_class($object)))){
+				if(in_array('we_save', get_class_methods(get_class($object)))){
 					if(!$object->we_save()){
 						return false;
 					}
 				}
 
-				if(in_array("we_publish", get_class_methods(get_class($object)))){
+				if(in_array('we_publish', get_class_methods(get_class($object)))){
 					if(!$object->we_publish()){
 						return false;
 					}
 				}
 
-				if(in_array("savebinarydata", get_class_methods(get_class($object)))){
-					$object->setElement("data", "");
+				if(in_array('savebinarydata', get_class_methods(get_class($object)))){
+					$object->setElement('data', '');
 				}
 			}
 		}
@@ -402,3 +403,4 @@ class weXMLExIm{
 
 //FIXME: splitFile,exportChunk missing - called in Backup class
 }
+

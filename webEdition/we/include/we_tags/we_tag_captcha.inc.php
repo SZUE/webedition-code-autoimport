@@ -24,8 +24,7 @@
  */
 function we_parse_tag_captcha($attribs){
 	eval('$attribs = ' . $attribs . ';');
-	if(($foo = attributFehltError($attribs, 'width', __FUNCTION__)) ||
-		($foo = attributFehltError($attribs, 'height', __FUNCTION__))){
+	if(($foo = attributFehltError($attribs, array('width' => false, 'height' => false), __FUNCTION__))){
 		return $foo;
 	}
 
@@ -100,7 +99,7 @@ Captcha::display($image, \'' . ((isset($bgcolor) && $transparent) ? 'gif' : $typ
 		'style',
 		'stylecolor',
 		'stylenumber'
-		));
+	));
 
 	$attribs['src'] = rtrim($path, '/') . '/' . $file;
 	return '<?php printElement(' . we_tag_tagParser::printTag('captcha', $attribs) . ');?>';

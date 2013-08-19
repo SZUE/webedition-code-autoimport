@@ -30,7 +30,7 @@
  */
 class we_image_edit{
 
-	const IMAGE_CONTENT_TYPES = 'image/jpeg,image/pjpeg,image/gif,image/png,image/x-png';
+	const IMAGE_CONTENT_TYPES = 'image/jpeg,image/pjpeg,image/gif,image/png,image/x-png,image/svg-xml';
 
 	public static $GDIMAGE_TYPE = array('.gif' => 'gif', '.jpg' => 'jpg', '.jpeg' => 'jpg', '.png' => 'png');
 
@@ -572,8 +572,8 @@ class we_image_edit{
 				we_util_File::createLocalFolder($_previewDir);
 			}
 			$_thumbSrc = ($imgID ?
-					WE_THUMB_PREVIEW_DIR . $imgID . "_" . $width . "_" . $height . strtolower($outputFormat) :
-					TEMP_DIR . ($tmpName ? $tmpName : weFile::getUniqueId()) . "." . strtolower($outputFormat));
+					WE_THUMB_PREVIEW_DIR . $imgID . '_' . $width . '_' . $height . strtolower($outputFormat) :
+					TEMP_DIR . ($tmpName ? $tmpName : weFile::getUniqueId()) . '.' . strtolower($outputFormat));
 			$_thumbPath = $_SERVER['DOCUMENT_ROOT'] . $_thumbSrc;
 
 			$_thumbExists = file_exists($_thumbPath);

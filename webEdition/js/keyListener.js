@@ -232,15 +232,12 @@ function keyModuleListener( _successor ) {
 
 			if ( evt["keyCode"] == 83 ) { // S (Save)
 				if (	top.content &&
-					top.content.resize &&
-					top.content.resize.right &&
-					top.content.resize.right.editor &&
-					top.content.resize.right.editor.edfooter &&
-					typeof(top.content.resize.right.editor.edfooter.we_save ) == "function" ) {
-
-					this.cancelEvent(evt);
-					top.content.resize.right.editor.edfooter.we_save();
-					return true;
+					top.content.editor &&
+					top.content.editor.edfooter &&
+					typeof(top.content.editor.edfooter.we_save ) == "function" ) {
+						this.cancelEvent(evt);
+						top.content.editor.edfooter.we_save();
+						return true;
 				}
 			}
 		}
@@ -269,19 +266,16 @@ function keyToolListener( _successor ) {
 			if ( evt["keyCode"] == 83 ) { // S (Save)
 				if (	top.content &&
 					top.content.resize &&
-					top.content.resize.right &&
-					top.content.resize.right.editor &&
-					top.content.resize.right.editor.edfooter &&
-					typeof(top.content.resize.right.editor.edfooter.we_save ) == "function" ) {
-
-					this.cancelEvent(evt);
-					top.content.resize.right.editor.edfooter.we_save();
-					return true;
+					top.content.resize.editor &&
+					top.content.resize.editor.edfooter &&
+					typeof(top.content.resize.editor.edfooter.we_save ) == "function" ) {
+						this.cancelEvent(evt);
+						top.content.resize.editor.edfooter.we_save();
+						return true;
 				} else if (	top.content &&
 					top.content.resize &&
-					top.content.resize.right &&
-					top.content.resize.right.editor &&
-					top.content.resize.right.editor.edfooter &&
+					top.content.resize.editor &&
+					top.content.resize.editor.edfooter &&
 					top.content.weCmdController) {
 					top.content.weCmdController.fire({
 						"cmdName": "app_" + top.content.appName + "_save"
@@ -385,11 +379,11 @@ function dealWithKeyboardShortCut(evt) {
 				)
 			)
 		) {
-		//		console.log('deal'+evt['keyCode'])
+		//console.log('deal'+evt['keyCode'])
 		return keyListener.dealEvent( evt );
 
 	} else {
-		//		console.log('for'+evt['keyCode']);
+		//console.log('for'+evt['keyCode']);
 		return true;
 	// event is NOT forwarded
 	}

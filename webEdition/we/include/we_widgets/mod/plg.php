@@ -23,8 +23,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-include_once (WE_INCLUDES_PATH . 'we_widgets/inc/plg/chart.php');
-include_once ($_SERVER['DOCUMENT_ROOT'] . WE_TRACKER_DIR . "/includes/showme.inc.php");
+require_once (WE_INCLUDES_PATH . 'we_widgets/inc/plg/chart.php');
+require_once ($_SERVER['DOCUMENT_ROOT'] . WE_TRACKER_DIR . "/includes/showme.inc.php");
 
 we_html_tools::protect();
 
@@ -124,17 +124,17 @@ if($_isPrev){
 				we_html_tools::getHtmlInnerHead(g_l('cockpit', '[pagelogger]')) . STYLESHEET . we_html_element::jsElement(
 					$sJsCode)) . we_html_element::htmlBody(
 				array(
-				"marginwidth" => "15",
-				"marginheight" => "10",
-				"leftmargin" => "15",
-				"topmargin" => "10",
+				"marginwidth" => 15,
+				"marginheight" => 10,
+				"leftmargin" => 15,
+				"topmargin" => 10,
 				"onload" => "if(parent!=self)init();"
 				), we_html_element::htmlDiv(array(
 					"id" => "plg"
 					), $_pLogOut)));
 } else{
 	$_pLog = new we_html_table(array(
-			"width" => "100%", "border" => "0", "cellpadding" => "0", "cellspacing" => "0"
+			"width" => "100%", "border" => 0, "cellpadding" => 0, "cellspacing" => 0
 			), 1, 1);
 	$_pLog->setCol(0, 0, null, $_pLogOut);
 }

@@ -270,12 +270,12 @@ abstract class weBackupUtil{
 
 		$_part = weFile::loadPart($file, 0, $_part_len, $iscompr);
 
-		if(stripos($_part, '<webEdition') === false){
+		if(stripos($_part, weBackup::weXmlExImHead) === false){
 			return 'unknown';
 		}
 		$_hasbinary = false;
 		while($_found == 'unknown' && $_try < $_count) {
-			if(preg_match('/.*<webEdition.*type="backup".*>/', $_part)){
+			if(preg_match('/.*' . weBackup::weXmlExImHead . '.*type="backup".*>/', $_part)){
 				return 'backup';
 			} elseif(preg_match('/<we:(document|template|class|object|info|navigation)/i', $_part)){
 				return 'weimport';

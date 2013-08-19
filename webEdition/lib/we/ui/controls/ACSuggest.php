@@ -403,36 +403,34 @@ class we_ui_controls_ACSuggest{
 		$weSelfContentType = (isset($GLOBALS['we_doc']) && isset($GLOBALS['we_doc']->ContentType)) ? $GLOBALS['we_doc']->ContentType : '';
 		$weSelfID = (isset($GLOBALS['we_doc']) && isset($GLOBALS['we_doc']->ID)) ? $GLOBALS['we_doc']->ID : '';
 
-		if(is_array($this->inputfields) && empty($this->inputfields))
+		if(is_array($this->inputfields) && empty($this->inputfields)){
 			return;
+		}
 
 		$safariEventListener = "";
-		$doSafariOnTextfieldBlur = "";
-		$initVars = "	var ajaxMaxResponseTime = 1500;\n";
-		$initVars .= "	var ajaxResponseStep = 100;\n";
-		$initVars .= "	var ajaxResponseCT = 0;\n";
-		$initVars .= "	var countMark = 0;\n";
-		$initVars .= "	var ajaxURL = \"/webEdition/rpc/rpc.php\";\n";
-		$weFieldWS = "	/* WORKSPACES */\n";
-		$weFieldWS .= "	var weWorkspacePathArray = new Array();\n";
-		$fildsById = "\n	/* AC-FIEDS BY ID */\n";
-		$fildsById .= "	var yuiAcFieldsById = new Array()\n";
-		$fildsObj = "\n	/* AC-FIEDS */\n";
-		$fildsObj .= "	var yuiAcFields = {\n";
+		$initVars = '
+var ajaxMaxResponseTime = 1500;
+var ajaxResponseStep = 100;
+var ajaxResponseCT = 0;
+var countMark = 0;
+var ajaxURL = "/webEdition/rpc/rpc.php";';
+		/* WORKSPACES */
+		$weFieldWS = 'var weWorkspacePathArray = new Array();';
+		/* AC-FIEDS BY ID */
+		$fildsById = 'var yuiAcFieldsById = new Array();';
+		/* AC-FIEDS */
+		$fildsObj = 'var yuiAcFields = {';
 		$invalidFields = <<<HTS
-		if(parent && parent.weAutoCompetionFields && parent.weAutoCompetionFields.length>0) {
+if(parent && parent.weAutoCompetionFields && parent.weAutoCompetionFields.length>0) {
 
-			for(i=0; i< parent.weAutoCompetionFields.length; i++) {
-				if(parent.weAutoCompetionFields[i] && parent.weAutoCompetionFields[i].id && !parent.weAutoCompetionFields[i].valid) {
-					YAHOO.autocoml.markNotValid(i);
-				}
-			}
+	for(i=0; i< parent.weAutoCompetionFields.length; i++) {
+		if(parent.weAutoCompetionFields[i] && parent.weAutoCompetionFields[i].id && !parent.weAutoCompetionFields[i].valid) {
+			YAHOO.autocoml.markNotValid(i);
 		}
+	}
+}
 HTS;
 
-		$inputfields = "";
-		$tables = "";
-		$oACDS = "";
 		$oACDSInit = "";
 		$oAutoCompInit = "";
 		$oAutoCompRes = "";
@@ -453,8 +451,9 @@ HTS;
 			if(is_array($weWorkspacePathArray)){
 				$ix = 0;
 				foreach($weWorkspacePathArray as $val){
-					if($ix > 0)
+					if($ix > 0){
 						$weWorkspacePathArrayJS .= ",";
+					}
 					$weWorkspacePathArrayJS .= '"' . $val . '"';
 					$ix++;
 				}
@@ -474,22 +473,22 @@ HTS;
 
 			$fildsById .= "	yuiAcFieldsById['" . $this->inputfields[$i] . "']={'index':'$i','set':'set_$i'};\n";
 
-			$fildsObj .= ($i > 0 ? ",\n\t\t" : "\t\t") . "'set_$i': {\n";
-			$fildsObj .= "			'id' : '" . $this->inputfields[$i] . "',\n";
-			$fildsObj .= "			'old': document.getElementById('" . $this->inputfields[$i] . "').value,\n";
-			$fildsObj .= "			'selector': '" . $this->selectors[$i] . "',\n";
-			$fildsObj .= "			'sel': '',\n";
-			$fildsObj .= "			'newval': null,\n";
-			$fildsObj .= "			'run': false,\n";
-			$fildsObj .= "			'found': 0,\n";
-			$fildsObj .= "			'cType': '',\n";
-			$fildsObj .= "			'valid': true,\n";
-			$fildsObj .= "			'countMark': 0,\n";
-			$fildsObj .= "			'changed': false,\n";
-			$fildsObj .= "			'table': '" . $this->tables[$i] . "',\n";
-			$fildsObj .= "			'cTypes': '" . $this->contentTypes[$i] . "',\n";
-			$fildsObj .= "			'workspace': new Array(" . $weWorkspacePathArrayJS . "),\n";
-			$fildsObj .= "			'mayBeEmpty': " . ($this->inputMayBeEmpty[$i] ? "true" : "false");
+			$fildsObj .= ($i > 0 ? ",\n\t\t" : "\t\t") . "'set_$i': {
+				'id' : '" . $this->inputfields[$i] . "',
+				'old': document.getElementById('" . $this->inputfields[$i] . "').value,
+				'selector': '" . $this->selectors[$i] . "',
+				'sel': '',
+				'newval': null,
+				'run': false,
+				'found': 0,
+				'cType': '',
+				'valid': true,
+				'countMark': 0,
+				'changed': false,
+				'table': '" . $this->tables[$i] . "',
+				'cTypes': '" . $this->contentTypes[$i] . "',
+				'workspace': new Array(" . $weWorkspacePathArrayJS . "),
+				'mayBeEmpty': " . ($this->inputMayBeEmpty[$i] ? "true" : "false");
 			$oACDSInit .= ($i > 0 ? ", " : "") . 'oACDS_' . $i;
 			$oAutoCompInit .= ($i > 0 ? ", " : "") . 'oAutoComp_' . $i;
 			$oAutoCompRes .= "	var oAutoCompRes_$i = new Array();\n";
@@ -1105,84 +1104,83 @@ function doDebugResizeH(){
 				position:relative;
 				width:100%;
 				margin-top:-1px;
-			}\n";
-			$out .= "$containerfields {
+			}
+			$containerfields {
 				position:relative;
 				top:-2px;
 				left:0px;
 				width:100%;
 				z-index:10000;
-			}\n";
-			$out .= "$yuiAcContent";
-			$out .= "$ul {
+			}
+			$yuiAcContent
+			$ul {
 				padding:0px;
 				background-color:#fff;
-			}\n";
-			$out .= "$li {
+			}
+			$li {
 				padding:0px 0px 0px 5px;
 				cursor:default;
 				white-space:nowrap;
-			}\n";
-			$out .= "$yuAcHighlight {
+			}
+			$yuAcHighlight {
 				background:#B5D5FF;
 				height:13px;
 				overflow:hidden;
-			}\n";
-			$out .= "div.yui-ac-bd li div{
+			}
+			div.yui-ac-bd li div{
 				height:13px;
 				overflow:hidden;
 				font-size:10px;
 				font-family: Verdana, Arial, sans-serif;
-			}\n";
-			$out .= "div.yui-ac-bd li span{
+			}
+			div.yui-ac-bd li span{
 				font-size:10px;
 				font-family: Verdana, Arial, sans-serif;
-			}\n";
-			$out .= "div.yui-ac-bd ul{
+			}
+			div.yui-ac-bd ul{
 				margin:0px 0px -3px 0px;
 				padding:0px;
 				list-style:none;
-			}\n";
+			}";
 		} else{
 			$out .= "$inputfields {
 				position:relative;
 				width:100%;
-			}\n";
-			$out .= "$containerfields {
+			}
+			$containerfields {
 				position:relative;
 				top:3px;
 				left:6px;
-			}\n";
-			$out .= "$yuiAcContent";
-			$out .= "$ul {
+			}
+			$yuiAcContent
+			$ul {
 				padding:0px;
 				background-color:#fff;
 				border:1px solid #000;
-			}\n";
-			$out .= "$li {
+			}
+			$li {
 				padding:0px 0px 0px 5px;
 				cursor:default;
 				white-space:nowrap;
-			}\n";
-			$out .= "$yuAcHighlight {
+			}
+			$yuAcHighlight {
 				background:#B5D5FF;
-			}\n";
-			$out .= "div.yui-ac-bd li div{
+			}
+			div.yui-ac-bd li div{
 				font-size:10px;
 				font-family: Verdana, Arial, sans-serif;
-			}\n";
-			$out .= "div.yui-ac-bd li span{\n
-				font-size:10px;\n
+			}
+			div.yui-ac-bd li span{
+				font-size:10px;
 				font-family: Verdana, Arial, sans-serif;
-			}\n";
-			$out .= "div.yui-ac-bd ul{
+			}
+			div.yui-ac-bd ul{
 				margin:-7px;
 				margin-top:-5px;
 				padding:0px;
 				list-style:none;
-			}\n";
+			}";
 		}
-		$out .= "";
 
 		return empty($inputfields) ? "" : $out;
 	}
@@ -1497,18 +1495,18 @@ function doDebugResizeH(){
 	 * @param unknown_type $containerwidth
 	 */
 	function setAutocompleteField($inputFieldId, $containerFieldId, $table, $contentType = "", $selector = "", $maxResults = 10, $queryDelay = 0, $layerId = null, $setOnSelectFields = null, $checkFieldsValue = true, $containerwidth = "100%", $inputMayBeEmpty = true){
-		array_push($this->inputfields, $inputFieldId);
-		array_push($this->containerfields, $containerFieldId);
-		array_push($this->tables, $table);
-		array_push($this->contentTypes, $contentType);
-		array_push($this->selectors, $selector);
-		array_push($this->weMaxResults, $maxResults);
-		array_push($this->queryDelay, $queryDelay);
+		$this->inputfields[] = $inputFieldId;
+		$this->containerfields[] = $containerFieldId;
+		$this->tables[] = $table;
+		$this->contentTypes[] = $contentType;
+		$this->selectors[] = $selector;
+		$this->weMaxResults[] = $maxResults;
+		$this->queryDelay[] = $queryDelay;
 		$layerId ? array_push($this->layer, $layerId) : "";
-		array_push($this->setOnSelectFields, $setOnSelectFields);
-		array_push($this->checkFieldsValues, $checkFieldsValue);
-		array_push($this->containerwidth, $containerwidth);
-		array_push($this->inputMayBeEmpty, $inputMayBeEmpty);
+		$this->setOnSelectFields[] = $setOnSelectFields;
+		$this->checkFieldsValues[] = $checkFieldsValue;
+		$this->containerwidth[] = $containerwidth;
+		$this->inputMayBeEmpty[] = $inputMayBeEmpty;
 		switch($contentType){
 			case "dirSelector" :
 				array($this->ct, "folder");
@@ -1523,9 +1521,9 @@ function doDebugResizeH(){
 				array($this->ct, "doc");
 				break;
 		}
-		array_push($this->_doOnItemSelect, $this->doOnItemSelect);
+		$this->_doOnItemSelect[] = $this->doOnItemSelect;
 		$this->doOnItemSelect = "";
-		array_push($this->_doOnTextfieldBlur, $this->doOnTextfieldBlur);
+		$this->_doOnTextfieldBlur[] = $this->doOnTextfieldBlur;
 		$this->doOnTextfieldBlur = "";
 	}
 

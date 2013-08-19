@@ -45,8 +45,8 @@ function getDateSelector($_label, $_name, $_btn){
 	$btnDatePicker = we_button::create_button(
 			"image:date_picker", "javascript:", null, null, null, null, null, null, false, $_btn);
 	$oSelector = new we_html_table(array(
-			"cellpadding" => "0", "cellspacing" => "0", "border" => "0", "id" => $_name . "_cell"
-			), 1, 5);
+		"cellpadding" => 0, "cellspacing" => 0, "border" => 0, "id" => $_name . "_cell"
+		), 1, 5);
 	$oSelector->setCol(0, 0, array(
 		"class" => "middlefont"
 		), $_label);
@@ -85,40 +85,29 @@ function getNoteList($_sql, $bDate, $bDisplay){
 		'ValidFrom',
 		'ValidUntil'
 	);
-	while($DB_WE->next_record()) {
+	while($DB_WE->next_record()){
 		foreach($_fields as $_fld){
 			//$_notes .= we_html_element::htmlSpan(array('id'=>$_rcd.'_'.$_fld,'style'=>'display:none;'),$DB_WE->f($_fld));
-			if($_fld == 'ValidUntil' && ($DB_WE->f('ValidUntil') == "3000-01-01" || $DB_WE->f(
-					'ValidUntil') == "0000-00-00")){
-				$_fldValue = "";
-			} else{
-				$_fldValue = $DB_WE->f($_fld);
-			}
-			$_fldValue = str_replace('<', '&lt;', $_fldValue);
-			$_fldValue = str_replace('>', '&gt;', $_fldValue);
-			$_fldValue = str_replace("'", '&#039;', $_fldValue);
-			$_fldValue = str_replace('"', '&quot;', $_fldValue);
+			$dbf= $DB_WE->f($_fld);
+			$_fldValue = ($_fld == 'ValidUntil' && ($dbf == "3000-01-01" || $dbf == "0000-00-00" || empty($dbf)) ?
+					'' : $dbf);
+
+			$_fldValue = str_replace(array('<', '>', '\'', '"'), array('&lt;', '&gt;', '&#039;', '&quot;'), $_fldValue);
 			$_notes .= we_html_element::htmlHidden(
 					array(
-						'id' => $_rcd . '_' . $_fld, 'style' => 'display:none;', 'value' => ($_fldValue)
-				));
+						'id' => $_rcd . '_' . $_fld,
+						'style' => 'display:none;',
+						'value' => ($_fldValue)
+			));
 		}
 
 		$validity = $DB_WE->f("Valid");
 		switch($bDate){
 			case 1 :
-				if($validity == 'always'){
-					$showDate = '-';
-				} else{
-					$showDate = convertDate($DB_WE->f("ValidFrom"));
-				}
+				$showDate = ($validity == 'always' ? '-' : convertDate($DB_WE->f("ValidFrom")));
 				break;
 			case 2 :
-				if($validity == 'always' || $validity == 'date'){
-					$showDate = '-';
-				} else{
-					$showDate = convertDate($DB_WE->f("ValidUntil"));
-				}
+				$showDate = ($validity == 'always' || $validity == 'date' ? '-' : convertDate($DB_WE->f("ValidUntil")));
 				break;
 			default :
 				$showDate = convertDate($DB_WE->f("CreationDate"));
@@ -132,31 +121,27 @@ function getNoteList($_sql, $bDate, $bDisplay){
 				if($today < $vFrom){
 					continue;
 				}
-			} else{
+			} else {
 				if($today < $vFrom || $today > $vTill){
 					continue;
 				}
 			}
 		}
-		$showTitle = $DB_WE->f("Title");
-		$showTitle = str_replace('<', '&lt;', $showTitle);
-		$showTitle = str_replace('>', '&gt;', $showTitle);
-		$showTitle = str_replace("'", '&#039;', $showTitle);
-		$showTitle = str_replace('"', '&quot;', $showTitle);
-		$_notes .= '<tr style="cursor:pointer;" id="' . $_rcd . '_tr" onmouseover="fo=document.forms[0];if(fo.elements[\'mark\'].value==\'\'){setColor(this,' . $_rcd . ',\'#EDEDED\');}" onmouseout="fo=document.forms[0];if(fo.elements[\'mark\'].value==\'\'){setColor(this,' . $_rcd . ',\'#FFFFFF\');}" onmousedown="selectNote(' . $_rcd . ');">';
-		$_notes .= '<td width="5">' . we_html_tools::getPixel(5, 1) . '</td>';
-		$_notes .= '<td width="15" height="20" valign="middle" nowrap>' . we_html_element::htmlImg(
+		$showTitle = str_replace(array('<', '>', '\'', '"'), array('&lt;', '&gt;', '&#039;', '&quot;'), $DB_WE->f("Title"));
+		$_notes .= '<tr style="cursor:pointer;" id="' . $_rcd . '_tr" onmouseover="fo=document.forms[0];if(fo.elements[\'mark\'].value==\'\'){setColor(this,' . $_rcd . ',\'#EDEDED\');}" onmouseout="fo=document.forms[0];if(fo.elements[\'mark\'].value==\'\'){setColor(this,' . $_rcd . ',\'#FFFFFF\');}" onmousedown="selectNote(' . $_rcd . ');">
+		<td width="5">' . we_html_tools::getPixel(5, 1) . '</td>
+		<td width="15" height="20" valign="middle" nowrap>' . we_html_element::htmlImg(
 				array(
 					"src" => IMAGE_DIR . "pd/prio_" . $DB_WE->f("Priority") . ".gif",
 					"width" => 13,
 					"height" => 14
-			)) . '</td>';
-		$_notes .= '<td width="5">' . we_html_tools::getPixel(5, 1) . '</td>';
-		$_notes .= '<td width="60" valign="middle" class="middlefont" align="center">' . $showDate . '</td>';
-		$_notes .= '<td width="5">' . we_html_tools::getPixel(5, 1) . '</td>';
-		$_notes .= '<td valign="middle" class="middlefont">' . $showTitle . '</td>';
-		$_notes .= '<td width="5">' . we_html_tools::getPixel(5, 1) . '</td>';
-		$_notes .= '</tr>';
+			)) . '</td>
+		<td width="5">' . we_html_tools::getPixel(5, 1) . '</td>
+		<td width="60" valign="middle" class="middlefont" align="center">' . $showDate . '</td>
+		<td width="5">' . we_html_tools::getPixel(5, 1) . '</td>
+		<td valign="middle" class="middlefont">' . $showTitle . '</td>
+		<td width="5">' . we_html_tools::getPixel(5, 1) . '</td>
+		</tr>';
 		$_rcd++;
 	}
 	$_notes .= '</table>';
@@ -164,7 +149,7 @@ function getNoteList($_sql, $bDate, $bDisplay){
 }
 
 function getCSS(){
-	$_css = "
+	return "
 	body{
 		background-color:transparent;
 	}
@@ -227,6 +212,4 @@ function getCSS(){
 	select{
 		border:#AAAAAA solid 1px;
 	}";
-
-	return $_css;
 }

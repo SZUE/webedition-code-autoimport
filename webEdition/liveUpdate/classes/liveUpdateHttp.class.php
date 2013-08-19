@@ -42,7 +42,7 @@ class liveUpdateHttp{
 		$fh = @fopen($address, "rb");
 		if($fh){
 			$response = "";
-			while(!feof($fh)) {
+			while(!feof($fh)){
 				$response .= fgets($fh, 1024);
 			}
 			fclose($fh);
@@ -61,7 +61,7 @@ class liveUpdateHttp{
 		if(!$response){
 
 			return false;
-		} else{
+		} else {
 
 			$parameterStr = '';
 			foreach($parameters as $key => $value){
@@ -83,7 +83,7 @@ class liveUpdateHttp{
 			fputs($response, "\r\n");
 
 			$zeile = "";
-			while(!feof($response)) {
+			while(!feof($response)){
 				$zeile = $zeile . fread($response, 4096);
 			}
 			fclose($response);
@@ -139,7 +139,7 @@ class liveUpdateHttp{
 			if(ini_get('allow_url_fopen') != 1 && strtolower(ini_get('allow_url_fopen')) != "on"){
 				if(function_exists('curl_init')){
 					return 'curl';
-				} else{
+				} else {
 					return 'none';
 				}
 			}
@@ -148,27 +148,22 @@ class liveUpdateHttp{
 	}
 
 	function getHttpResponse($server, $url, $parameters = array()){
-
-		$_opt = liveUpdateHttp::getHttpOption();
-
-		if($_opt == 'fopen'){
-			return liveUpdateHttp::getFopenHttpResponse($server, $url, $parameters);
-		} else if($_opt == 'curl'){
-			return liveUpdateHttp::getCurlHttpResponse($server, $url, $parameters);
-		} else{
-			return null; // return null otherwise php error
-			return 'Server error: Unable to open URL (php configuration directive allow_url_fopen=Off)';
+		switch(liveUpdateHttp::getHttpOption()){
+			case 'fopen':
+				return liveUpdateHttp::getFopenHttpResponse($server, $url, $parameters);
+			case 'curl':
+				return liveUpdateHttp::getCurlHttpResponse($server, $url, $parameters);
+			default:
+				return null; // return null otherwise php error
+				return 'Server error: Unable to open URL (php configuration directive allow_url_fopen=Off)';
 		}
 	}
 
 	function getFopenHttpResponse($server, $url, $parameters = array()){
-
-		if(defined("WE_PROXYHOST") && WE_PROXYHOST != ""){
-
-			return liveUpdateHttp::connectProxy($server, $url, $parameters);
-		}
-
-		return liveUpdateHttp::connectFopen($server, $url, $parameters);
+		return (defined("WE_PROXYHOST") && WE_PROXYHOST != "" ?
+				liveUpdateHttp::connectProxy($server, $url, $parameters) :
+				liveUpdateHttp::connectFopen($server, $url, $parameters)
+			);
 	}
 
 	/**
@@ -177,15 +172,9 @@ class liveUpdateHttp{
 	 * @return unknown
 	 */
 	function getServerSessionForm(){
-
 		$params = '';
 		foreach($GLOBALS['LU_Variables'] as $LU_name => $LU_value){
-
-			if(is_array($LU_value)){
-				$params .= "\t<input type=\"hidden\" name=\"$LU_name\" value=\"" . urlencode(base64_encode(serialize($LU_value))) . "\" />\n";
-			} else{
-				$params .= "\t<input type=\"hidden\" name=\"$LU_name\" value=\"" . urlencode($LU_value) . "\" />\n";
-			}
+			$params .= '<input type="hidden" name="' . $LU_name . '" value="' . urlencode((is_array($LU_value) ? base64_encode(serialize($LU_value)) : $LU_value)) . '" />';
 		}
 
 		return we_html_tools::headerCtCharset('text/html', $GLOBALS['WE_BACKENDCHARSET']) . we_html_element::htmlDocType() . '<html>
@@ -204,5 +193,3 @@ class liveUpdateHttp{
 	}
 
 }
-
-?>

@@ -60,7 +60,7 @@ class we_search_listview extends listviewBase{
 	 * @param   cols   		  integer - to display a table this is the number of cols
 	 *
 	 */
-	function __construct($name = '0', $rows = 99999999, $offset = 0, $order = '', $desc = false, $docType = '', $class = 0, $cats = '', $catOr = false, $casesensitive = false, $workspaceID = 0, $triggerID = 0, $cols = '', $customerFilterType = 'off', $languages = '', $hidedirindex = false, $objectseourls = false){
+	function __construct($name, $rows = 99999999, $offset = 0, $order = '', $desc = false, $docType = '', $class = 0, $cats = '', $catOr = false, $casesensitive = false, $workspaceID = 0, $triggerID = 0, $cols = '', $customerFilterType = 'false', $languages = '', $hidedirindex = false, $objectseourls = false){
 		parent::__construct($name, $rows, $offset, $order, $desc, $cats, $catOr, $workspaceID, $cols);
 
 		$this->customerFilterType = $customerFilterType;
@@ -198,7 +198,7 @@ class we_search_listview extends listviewBase{
 			$cond = array();
 			foreach($workspaces as $id){
 				$workspace = id_to_path($id, FILE_TABLE, $this->DB_WE);
-				array_push($cond, "(" . INDEX_TABLE . ".Workspace LIKE '" . $this->DB_WE->escape($workspace) . "/%' OR " . INDEX_TABLE . ".Workspace='" . $this->DB_WE->escape($workspace) . "')");
+				$cond[] = "(" . INDEX_TABLE . ".Workspace LIKE '" . $this->DB_WE->escape($workspace) . "/%' OR " . INDEX_TABLE . ".Workspace='" . $this->DB_WE->escape($workspace) . "')";
 			}
 			$ws_where = ' AND (' . implode(' OR ', $cond) . ')';
 		} else{
@@ -206,7 +206,7 @@ class we_search_listview extends listviewBase{
 		}
 
 		$weDocumentCustomerFilter_tail = '';
-		if($this->customerFilterType != 'off' && defined("CUSTOMER_FILTER_TABLE")){
+		if($this->customerFilterType != 'false' && defined("CUSTOMER_FILTER_TABLE")){
 			$weDocumentCustomerFilter_tail = weDocumentCustomerFilter::getConditionForListviewQuery($this);
 		}
 

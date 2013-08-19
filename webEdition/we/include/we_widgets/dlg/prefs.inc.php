@@ -61,7 +61,7 @@ $oSctCls = new we_html_select(
 		array(
 
 				"name" => "sct_cls",
-				"size" => "1",
+				"size" => 1,
 				"class" => "defaultfont",
 				"style" => "width:120px;border:#AAAAAA solid 1px"
 		));
@@ -74,7 +74,7 @@ $oSctCls->insertOption(5, "yellow", g_l('cockpit','[yellow]'));
 $oSctCls->insertOption(6, "red", g_l('cockpit','[red]'));
 
 $oSelCls = new we_html_table(array(
-	"cellpadding" => "0", "cellspacing" => "0", "border" => "0"
+	"cellpadding" => 0, "cellspacing" => 0, "border" => 0
 ), 1, 2);
 $oSelCls->setCol(0, 0, array(
 	"width" => 130, "class" => "defaultfont"

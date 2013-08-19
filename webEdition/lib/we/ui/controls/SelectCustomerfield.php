@@ -58,12 +58,12 @@ class we_ui_controls_SelectCustomerfield extends we_ui_controls_Select{
 		include ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/conf/we_active_integrated_modules.inc.php");
 		if(in_array('customer', $GLOBALS['_we_active_integrated_modules'])){
 			if(file_exists(WE_MODULES_PATH . 'customer/we_conf_customer.inc.php')){
-				include_once (WE_MODULES_PATH . 'customer/we_conf_customer.inc.php');
+				require_once (WE_MODULES_PATH . 'customer/we_conf_customer.inc.php');
 				$db = new DB_WE();
-				$db->query("SHOW FIELDS FROM " . CUSTOMER_TABLE);
+				$db->query('SHOW FIELDS FROM ' . CUSTOMER_TABLE);
 				$this->addOption(0, '-');
 				while($db->next_record()) {
-					$this->addOption($db->f("Field"), $db->f("Field"));
+					$this->addOption($db->f('Field'), $db->f('Field'));
 				}
 			}
 		}

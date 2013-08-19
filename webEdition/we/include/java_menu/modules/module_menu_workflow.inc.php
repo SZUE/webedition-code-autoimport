@@ -26,28 +26,28 @@ $we_menu_workflow = array(
 	"000100" => array(
 		"text" => g_l('javaMenu_workflow', '[workflow]'),
 		"parent" => "000000",
-		"enabled" => "1",
+		"enabled" => 1,
 	),
 	array(
 		"text" => g_l('javaMenu_workflow', '[new]'),
 		"cmd" => "new_workflow",
 		"perm" => "NEW_WORKFLOW || ADMINISTRATOR",
 		"parent" => "000100",
-		"enabled" => "0",
+		"enabled" => 0,
 	),
 	array(
 		"text" => g_l('javaMenu_workflow', '[save]'),
 		"parent" => "000100",
 		"cmd" => "save_workflow",
 		"perm" => "EDIT_WORKFLOW || ADMINISTRATOR",
-		"enabled" => "0",
+		"enabled" => 0,
 	),
 	array(
 		"text" => g_l('javaMenu_workflow', '[delete]'),
 		"parent" => "000100",
 		"cmd" => "delete_workflow",
 		"perm" => "DELETE_WORKFLOW || ADMINISTRATOR",
-		"enabled" => "0",
+		"enabled" => 0,
 	),
 	array(
 		"parent" => "000100", // separator
@@ -66,7 +66,7 @@ $we_menu_workflow = array(
 		"parent" => "000100",
 		"cmd" => "empty_log",
 		"perm" => "EMPTY_LOG || ADMINISTRATOR",
-		"enabled" => "0",
+		"enabled" => 0,
 	),
 	array(
 		"parent" => "000100", // separator
@@ -75,23 +75,23 @@ $we_menu_workflow = array(
 		"text" => g_l('javaMenu_workflow', '[quit]'),
 		"parent" => "000100",
 		"cmd" => "exit_workflow",
-		"enabled" => "1",
+		"enabled" => 1,
 	),
 	'001500' => array(
 		"text" => g_l('javaMenu_workflow', '[help]'),
 		"parent" => "000000",
-		"enabled" => "1",
+		"enabled" => 1,
 	),
 	array(
 		"text" => g_l('javaMenu_workflow', '[help]') . "&hellip;",
 		"parent" => "001500",
 		"cmd" => "help_modules",
-		"enabled" => "1",
+		"enabled" => 1,
 	),
 	array(
 		"text" => g_l('javaMenu_workflow', '[info]') . "&hellip;",
 		"parent" => "001500",
 		"cmd" => "info_modules",
-		"enabled" => "1",
+		"enabled" => 1,
 	)
 );

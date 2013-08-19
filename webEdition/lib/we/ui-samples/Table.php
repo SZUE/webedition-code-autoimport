@@ -1,6 +1,6 @@
 <?php
 
-include_once($_SERVER['DOCUMENT_ROOT'] . LIB_DIR . 'we/core/autoload.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . LIB_DIR . 'we/core/autoload.php');
 
 $inp1 = new we_ui_controls_TextField(array('style' => 'margin:0 10px 10px 0', 'name' => 'test1', 'value' => 'default1', 'width' => 100));
 $inp11 = new we_ui_controls_TextField(array('style' => 'margin:0 10px 10px 0', 'name' => 'test11', 'value' => 'default11', 'width' => 100));
@@ -10,7 +10,7 @@ $inp4 = new we_ui_controls_TextField(array('name' => 'test4', 'value' => 'defaul
 
 $checkbox = new we_ui_controls_Checkbox(
 		array(
-			'value' => '1',
+			'value' => 1,
 			'checked' => true,
 			'name' => 'test',
 			'label' => 'Label 1',
@@ -22,7 +22,7 @@ $checkbox = new we_ui_controls_Checkbox(
 
 $checkbox2 = new we_ui_controls_Checkbox(
 		array(
-			'value' => '1',
+			'value' => 1,
 			'checked' => false,
 			'name' => 'test2',
 			'label' => 'Label 2',

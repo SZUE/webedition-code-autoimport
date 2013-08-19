@@ -113,11 +113,14 @@ class weMetaData{
 	function getImplementations(){
 		if(!$this->_valid){
 			return false;
+			if(empty($this->datatype)){
+				return false;
+			}
+			if(empty($this->datatype)){
+				return false;
+			}
+			return $this->datatype;
 		}
-		if(empty($this->datatype)){
-			return false;
-		}
-		return $this->datatype;
 	}
 
 	function getMetaData($selection = ''){
@@ -263,8 +266,9 @@ class weMetaData{
 	 * @return bool returns false if no or invalid datatype specified
 	 */
 	protected function _getInstance($value = ''){
-		if(!$this->_valid)
+		if(!$this->_valid){
 			return false;
+		}
 		if(is_readable(WE_INCLUDES_PATH . 'we_classes/weMetaData/classes/' . $value . '.class.php')){
 			$className = 'weMetaData_' . $value;
 			$this->_instance[$value] = new $className($this->filetype);
@@ -316,16 +320,8 @@ class weMetaData{
 	static function getDefinedMetaDataFields(){
 		// if metadataFields are not cached, we have to get them from db
 		if(!isset($GLOBALS['WE_METADATA_DEFINED_FIELDS'])){
-			$GLOBALS['WE_METADATA_DEFINED_FIELDS'] = array();
-			$GLOBALS['DB_WE']->query('SELECT * FROM ' . METADATA_TABLE . ' ORDER BY id,type');
-			while($GLOBALS['DB_WE']->next_record()) {
-				$GLOBALS['WE_METADATA_DEFINED_FIELDS'][] = array(
-					'id' => $GLOBALS['DB_WE']->f('id'),
-					'tag' => $GLOBALS['DB_WE']->f('tag'),
-					'type' => $GLOBALS['DB_WE']->f('type'),
-					'importFrom' => $GLOBALS['DB_WE']->f('importFrom')
-				);
-			}
+			$GLOBALS['DB_WE']->query('SELECT * FROM ' . METADATA_TABLE . ' ORDER BY tag');
+			$GLOBALS['WE_METADATA_DEFINED_FIELDS'] = $GLOBALS['DB_WE']->getAll();
 		}
 		return $GLOBALS['WE_METADATA_DEFINED_FIELDS'];
 	}

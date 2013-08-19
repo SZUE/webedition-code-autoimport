@@ -103,7 +103,7 @@ foreach($shortcuts as $k => $v){
 $oSctPool = new we_html_select(
 		array(
 			"name" => "sct_pool",
-			"size" => "1",
+			"size" => 1,
 			"class" => "defaultfont",
 			"onChange" => "addBtn(_fo['list11'],this.options[this.selectedIndex].text,this.options[this.selectedIndex].value,true);this.options[0].selected=true;"
 	));
@@ -118,7 +118,7 @@ $oSctList11 = new we_html_select(
 		array(
 			"multiple" => "multiple",
 			"name" => "list11",
-			"size" => "10",
+			"size" => 10,
 			"style" => "width:200px;",
 			"class" => "defaultfont",
 			"onDblClick" => "moveSelectedOptions(this.form['list11'],this.form['list21'],false);"
@@ -127,7 +127,7 @@ $oSctList21 = new we_html_select(
 		array(
 			"multiple" => "multiple",
 			"name" => "list21",
-			"size" => "10",
+			"size" => 10,
 			"style" => "width:200px;",
 			"class" => "defaultfont",
 			"onDblClick" => "moveSelectedOptions(this.form['list21'],this.form['list11'],false);"
@@ -135,10 +135,10 @@ $oSctList21 = new we_html_select(
 
 $oBtnDelete = we_button::create_button(
 		"delete", "javascript:removeOption(document.forms[0]['list11']);removeOption(document.forms[0]['list21']);", false, -1, -1, "", "", false, false);
-$oShortcutsRem = we_html_tools::htmlAlertAttentionBox(g_l('cockpit', '[sct_rem]'), 2, 420);
+$oShortcutsRem = we_html_tools::htmlAlertAttentionBox(g_l('cockpit', '[sct_rem]'), we_html_tools::TYPE_INFO, 420);
 
 $oPool = new we_html_table(array(
-		"border" => "0", "width" => 420, "cellpadding" => "0", "cellspacing" => "0"
+		"border" => 0, "width" => 420, "cellpadding" => 0, "cellspacing" => 0
 		), 3, 3);
 $oPool->setCol(0, 0, null, $oSctList11->getHTML());
 $oPool->setCol(

@@ -21,16 +21,16 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once(WE_INCLUDES_PATH . 'we_tag.inc.php');
+require_once(WE_INCLUDES_PATH . 'we_tag.inc.php');
 
 we_html_tools::protect();
 
 
-$cmd = isset($_REQUEST['we_cmd'][0]) ? $_REQUEST['we_cmd'][0] : "";
-$we_transaction = isset($_REQUEST['we_cmd'][1]) ? $_REQUEST['we_cmd'][1] : "";
+$cmd = isset($_REQUEST['we_cmd'][0]) ? $_REQUEST['we_cmd'][0] : '';
+$we_transaction = isset($_REQUEST['we_cmd'][1]) ? $_REQUEST['we_cmd'][1] : '';
 $id = isset($_REQUEST['we_cmd'][2]) ? $_REQUEST['we_cmd'][2] : false;
 
-$jsGUI = new weOrderContainer("_EditorFrame.getContentEditor()", "classEntry");
+$jsGUI = new weOrderContainer('_EditorFrame.getContentEditor()', 'classEntry');
 
 $we_doc = new we_object();
 
@@ -40,11 +40,9 @@ $we_doc->we_initSessDat($we_dt);
 //	---> Setting the Content-Type
 //
 
-if(isset($we_doc->elements["Charset"]["dat"]) && $we_doc->elements["Charset"]["dat"]){ //	send charset which might be determined in template
-	$charset = $we_doc->elements["Charset"]["dat"];
-} else{
-	$charset = DEFAULT_CHARSET;
-}
+$charset = (isset($we_doc->elements['Charset']['dat']) && $we_doc->elements['Charset']['dat']? //	send charset which might be determined in template
+	$we_doc->elements['Charset']['dat']:DEFAULT_CHARSET);
+
 we_html_tools::headerCtCharset('text/html', $charset);
 
 //
@@ -69,7 +67,7 @@ if($we_doc->CSS){
 }
 print STYLESHEET;
 
-include_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
+require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 ?>
 </head>
 
@@ -80,20 +78,20 @@ include_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 
 		case 'insert_entry_at_class':
 			if($id != false){
-				$after = array_pop(explode("_", $id));
+				$after = array_pop(explode('_', $id));
 				$afterid = $id;
 			} else{
 				$after = false;
 				$afterid = false;
 			}
 			$identifier = str_replace('.', '', uniqid('', true));
-			$uniqid = "entry_" . $identifier;
+			$uniqid = 'entry_' . $identifier;
 			$we_doc->addEntryToClass($identifier, $after);
 
-			$upbut = we_button::create_button("image:btn_direction_up", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('up_entry_at_class','" . $we_transaction . "','" . $uniqid . "');", true, 22, 22, "", "", false, false, "_" . $identifier);
-			$downbut = we_button::create_button("image:btn_direction_down", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('down_entry_at_class','" . $we_transaction . "','" . $uniqid . "');", true, 22, 22, "", "", false, false, "_" . $identifier);
-			$plusbut = we_button::create_button("image:btn_add_field", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('insert_entry_at_class','" . $we_transaction . "','" . $uniqid . "');");
-			$trashbut = we_button::create_button("image:btn_function_trash", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('delete_entry_at_class','" . $we_transaction . "','" . $uniqid . "');");
+			$upbut = we_button::create_button('image:btn_direction_up', "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('up_entry_at_class','" . $we_transaction . "','" . $uniqid . "');", true, 22, 22, "", "", false, false, "_" . $identifier);
+			$downbut = we_button::create_button('image:btn_direction_down', "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('down_entry_at_class','" . $we_transaction . "','" . $uniqid . "');", true, 22, 22, "", "", false, false, "_" . $identifier);
+			$plusbut = we_button::create_button('image:btn_add_field', "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('insert_entry_at_class','" . $we_transaction . "','" . $uniqid . "');");
+			$trashbut = we_button::create_button('image:btn_function_trash', "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('delete_entry_at_class','" . $we_transaction . "','" . $uniqid . "');");
 
 			$content = '<div id="' . $uniqid . '">
 				<a name="f' . $uniqid . '"></a>
@@ -134,55 +132,55 @@ include_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 		case 'remove_image_at_class';
 		case 'delete_link_at_class':
 		case 'change_link_at_class':
-		case "change_multiobject_at_class":
-			$identifier = array_pop(explode("_", $id));
-			$uniqid = "entry_" . $identifier;
+		case 'change_multiobject_at_class':
+			$identifier = array_pop(explode('_', $id));
+			$uniqid = 'entry_' . $identifier;
 
 			switch($cmd){
-				case "insert_meta_at_class":
+				case 'insert_meta_at_class':
 					$we_doc->addMetaToClass($_REQUEST['we_cmd'][3], $_REQUEST['we_cmd'][4]);
 					break;
-				case "delete_meta_class":
+				case 'delete_meta_class':
 					$we_doc->removeMetaFromClass($_REQUEST['we_cmd'][3], $_REQUEST['we_cmd'][4]);
 					break;
-				case "down_meta_at_class":
+				case 'down_meta_at_class':
 					$we_doc->downMetaAtClass($_REQUEST['we_cmd'][3], $_REQUEST['we_cmd'][4]);
 					break;
-				case "up_meta_at_class":
+				case 'up_meta_at_class':
 					$we_doc->upMetaAtClass($_REQUEST['we_cmd'][3], $_REQUEST['we_cmd'][4]);
 					break;
-				case "del_all_users":
+				case 'del_all_users':
 					$we_doc->del_all_users($_REQUEST['we_cmd'][3]);
 					break;
-				case "add_user_to_field":
+				case 'add_user_to_field':
 					$we_doc->add_user_to_field($_REQUEST['we_cmd'][3], $_REQUEST['we_cmd'][4]);
 					break;
-				case "del_user_from_field":
+				case 'del_user_from_field':
 					$we_doc->del_user_from_field($_REQUEST['we_cmd'][3], $_REQUEST['we_cmd'][4]);
 					break;
-				case "remove_image_at_class":
+				case 'remove_image_at_class':
 					$we_doc->remove_image($_REQUEST['we_cmd'][3]);
 					break;
-				case "delete_link_at_class":
+				case 'delete_link_at_class':
 					if(isset($we_doc->elements[$_REQUEST['we_cmd'][3]])){
 						unset($we_doc->elements[$_REQUEST['we_cmd'][3]]);
 					}
 					break;
-				case "change_link_at_class":
+				case 'change_link_at_class':
 					$we_doc->changeLink($_REQUEST['we_cmd'][3]);
 					break;
-				case "change_multiobject_at_class":
-					while($we_doc->elements[$_REQUEST['we_cmd'][3] . "count"]["dat"] > 0) {
+				case 'change_multiobject_at_class':
+					while($we_doc->elements[$_REQUEST['we_cmd'][3] . 'count']['dat'] > 0) {
 						$we_doc->removeMetaFromClass($_REQUEST['we_cmd'][3], 0);
 					}
 					$we_doc->removeMetaFromClass($_REQUEST['we_cmd'][3], 0);
 					break;
 			}
 
-			$upbut = we_button::create_button("image:btn_direction_up", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('up_entry_at_class','" . $we_transaction . "','" . $uniqid . "');", true, 22, 22, "", "", false, false, "_" . $identifier);
-			$downbut = we_button::create_button("image:btn_direction_down", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('down_entry_at_class','" . $we_transaction . "','" . $uniqid . "');", true, 22, 22, "", "", false, false, "_" . $identifier);
-			$plusbut = we_button::create_button("image:btn_add_field", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('insert_entry_at_class','" . $we_transaction . "','" . $uniqid . "');");
-			$trashbut = we_button::create_button("image:btn_function_trash", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('delete_entry_at_class','" . $we_transaction . "','" . $uniqid . "');");
+			$upbut = we_button::create_button('image:btn_direction_up', "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('up_entry_at_class','" . $we_transaction . "','" . $uniqid . "');", true, 22, 22, "", "", false, false, "_" . $identifier);
+			$downbut = we_button::create_button('image:btn_direction_down', "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('down_entry_at_class','" . $we_transaction . "','" . $uniqid . "');", true, 22, 22, "", "", false, false, "_" . $identifier);
+			$plusbut = we_button::create_button('image:btn_add_field', "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('insert_entry_at_class','" . $we_transaction . "','" . $uniqid . "');");
+			$trashbut = we_button::create_button('image:btn_function_trash', "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('delete_entry_at_class','" . $we_transaction . "','" . $uniqid . "');");
 
 			$content = '<div id="' . $uniqid . '">
 				<a name="f' . $uniqid . '"></a>
@@ -215,8 +213,8 @@ include_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 
 		case 'delete_entry_at_class':
 			if(isset($id)){
-				$identifier = array_pop(explode("_", $id));
-				$uniqid = "entry_" . $identifier;
+				$identifier = array_pop(explode('_', $id));
+				$uniqid = 'entry_' . $identifier;
 				$we_doc->removeEntryFromClass($identifier);
 				echo $jsGUI->getResponse('delete', $uniqid);
 				$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
@@ -224,11 +222,11 @@ include_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 			break;
 
 		case 'up_entry_at_class':
-			$sort = $we_doc->getElement("we_sort");
+			$sort = $we_doc->getElement('we_sort');
 
 			if(isset($id)){
-				$identifier = array_pop(explode("_", $id));
-				$uniqid = "entry_" . $identifier;
+				$identifier = array_pop(explode('_', $id));
+				$uniqid = 'entry_' . $identifier;
 				$we_doc->upEntryAtClass($identifier);
 				echo $jsGUI->getResponse('up', $uniqid);
 				$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
@@ -236,11 +234,11 @@ include_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 			break;
 
 		case 'down_entry_at_class':
-			$sort = $we_doc->getElement("we_sort");
+			$sort = $we_doc->getElement('we_sort');
 
 			if(isset($id)){
-				$identifier = array_pop(explode("_", $id));
-				$uniqid = "entry_" . $identifier;
+				$identifier = array_pop(explode('_', $id));
+				$uniqid = 'entry_' . $identifier;
 				$we_doc->downEntryAtClass($identifier);
 				echo $jsGUI->getResponse('down', $uniqid);
 				$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);

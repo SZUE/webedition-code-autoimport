@@ -27,8 +27,9 @@ header('Content-type: text/plain');
 
 we_html_tools::protect();
 
-if(!isset($_REQUEST['we_cmd'][1]) || !isset($_REQUEST['we_cmd'][2]))
+if(!isset($_REQUEST['we_cmd'][1]) || !isset($_REQUEST['we_cmd'][2])){
 	exit();
+}
 
 // protection against sql injection
 $table = preg_replace('/\s/', '', $_REQUEST['we_cmd'][2]);

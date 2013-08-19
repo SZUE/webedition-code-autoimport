@@ -58,13 +58,10 @@ class we_app_Hook{
 	 * @return requested hook properties of object $this->_hooks or false on failure
 	 */
 	public function __get($property = ""){
-		if(empty($property) || empty($this->_hooks))
-			return false;
-		if(isset($this->_hooks->$property)){
-			return false;
-		} else{
-			return $this->_hooks->$property;
-		}
+		return (empty($property) || empty($this->_hooks) ?
+				false :
+				(isset($this->_hooks->$property) ?
+					false : $this->_hooks->$property));
 	}
 
 	/**

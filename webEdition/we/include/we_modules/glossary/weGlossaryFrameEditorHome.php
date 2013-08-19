@@ -41,7 +41,7 @@ class weGlossaryFrameEditorHome{
 			'cmd' => 'home',
 			'pnt' => 'edbody',
 			'name' => 'home',
-			'value' => '0',
+			'value' => 0,
 		);
 
 		$_form = array(
@@ -59,16 +59,16 @@ class weGlossaryFrameEditorHome{
 		ob_end_clean();
 
 		$content =
-			we_html_element::jsElement($weGlossaryFrames->topFrame . '.resize.right.editor.edheader.location="' . $weGlossaryFrames->frameset . '?pnt=edheader&home=1";' .
-				$weGlossaryFrames->topFrame . '.resize.right.editor.edfooter.location="' . $weGlossaryFrames->frameset . '?pnt=edfooter&home=1";') .
+			we_html_element::jsElement($weGlossaryFrames->topFrame . '.editor.edheader.location="' . $weGlossaryFrames->frameset . '?pnt=edheader&home=1";' .
+				$weGlossaryFrames->topFrame . '.editor.edfooter.location="' . $weGlossaryFrames->frameset . '?pnt=edfooter&home=1";') .
 			$out;
 
 		$_body = array(
 			'bgcolor' => 'white',
-			'marginwidth' => '15',
-			'marginheight' => '15',
-			'leftmargin' => '15',
-			'topmargin' => '15',
+			'marginwidth' => 15,
+			'marginheight' => 15,
+			'leftmargin' => 15,
+			'topmargin' => 15,
 			'onLoad' => 'loaded=1;',
 		);
 

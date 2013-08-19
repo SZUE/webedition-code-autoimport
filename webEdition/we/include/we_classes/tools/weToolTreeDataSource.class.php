@@ -36,7 +36,7 @@ class weToolTreeDataSource{
 		}
 	}
 
-	function getItems($pid, $offset=0, $segment=500, $sort=''){
+	function getItems($pid, $offset = 0, $segment = 500, $sort = ''){
 		switch($this->SourceType){
 			case 'table' :
 				return $this->getItemsFromDB($pid, $offset, $segment);
@@ -49,18 +49,14 @@ class weToolTreeDataSource{
 
 	function getQueryParents($path){
 		$out = "";
-		while($path != "/" && $path != "\\" && $path) {
+		while($path != '/' && $path != '\\' && $path){
 			$out .= "Path='$path' OR ";
 			$path = dirname($path);
 		}
-		if($out){
-			return substr($out, 0, strlen($out) - 3);
-		} else{
-			return "";
-		}
+		return ($out ? substr($out, 0, strlen($out) - 3) : '');
 	}
 
-	function getItemsFromDB($ParentID=0, $offset=0, $segment=500, $elem='ID,ParentID,Path,Text,Icon,IsFolder', $addWhere='', $addOrderBy=''){
+	function getItemsFromDB($ParentID = 0, $offset = 0, $segment = 500, $elem = 'ID,ParentID,Path,Text,Icon,IsFolder', $addWhere = '', $addOrderBy = ''){
 
 		$db = new DB_WE();
 		$table = $this->SourceName;
@@ -71,12 +67,12 @@ class weToolTreeDataSource{
 		$_aWsQuery = array();
 		$parentpaths = array();
 
-		if($ws = get_ws($table)){
+		if(($ws = get_ws($table))){
 			$wsPathArray = id_to_path($ws, $table, $db, false, true);
 			foreach($wsPathArray as $path){
 				$_aWsQuery[] = " Path LIKE '" . $db->escape($path) . "/%' OR " . weToolTreeDataSource::getQueryParents($path);
-				while($path != '/' && $path != "\\" && $path) {
-					array_push($parentpaths, $path);
+				while($path != '/' && $path != "\\" && $path){
+					$parentpaths[] = $path;
 					$path = dirname($path);
 				}
 			}
@@ -107,27 +103,26 @@ class weToolTreeDataSource{
 		$db->query("SELECT $elem, abs(text) as Nr, (text REGEXP '^[0-9]') as isNr from " . $db->escape($table) . " $where ORDER BY isNr DESC,Nr,Text " . ($segment ? "LIMIT " . abs($offset) . "," . abs($segment) . ";" : ";" ));
 		$now = time();
 
-		while($db->next_record()) {
+		while($db->next_record()){
 
-			if($db->f('IsFolder') == 1)
-				$typ = array('typ' => 'group');
-			else
-				$typ = array('typ' => 'item');
-
-			$typ['icon'] = $db->f('Icon');
-			$typ['open'] = 0;
-			$typ['disabled'] = 0;
-			$typ['tooltip'] = $db->f('ID');
-			$typ['offset'] = $offset;
-			$typ['order'] = $db->f('Ordn');
-			$typ['published'] = 1;
-			$typ['disabled'] = 0;
+			$typ = array(
+				'typ' => ($db->f('IsFolder') == 1 ? 'group' : 'item'),
+				'icon' => $db->f('Icon'),
+				'open' => 0,
+				'disabled' => 0,
+				'tooltip' => $db->f('ID'),
+				'offset' => $offset,
+				'order' => $db->f('Ordn'),
+				'published' => 1,
+				'disabled' => 0
+			);
 
 			$fileds = array();
 
 			foreach($db->Record as $k => $v){
-				if(!is_numeric($k))
+				if(!is_numeric($k)){
 					$fileds[strtolower($k)] = $v;
+				}
 			}
 
 			$items[] = array_merge($fileds, $typ);
@@ -155,67 +150,53 @@ class weToolTreeDataSource{
 		return $items;
 	}
 
-	function getItemsFromFile($ParentID=0, $offset=0, $segment=500, $elem='ID,ParentID,Path,Text,Icon,IsFolder', $addWhere='', $addOrderBy=''){
+	function getItemsFromFile($ParentID = 0, $offset = 0, $segment = 500, $elem = 'ID,ParentID,Path,Text,Icon,IsFolder', $addWhere = '', $addOrderBy = ''){
 
-		$file = $this->SourceName;
-
-		$items = array();
-
-
-		$items[] = array(
-			'icon' => 'link.gif',
-			'id' => 1,
-			'parentid' => 0,
-			'text' => 'Test 1',
-			'contenttype' => 'item',
-			'table' => $file,
-			'typ' => 'item',
-			'open' => 0,
-			'published' => 1,
-			'disabled' => 0,
-			'tooltip' => ''
-		);
-
-
-
-		return $items;
+		return array(
+			array(
+				'icon' => 'link.gif',
+				'id' => 1,
+				'parentid' => 0,
+				'text' => 'Test 1',
+				'contenttype' => 'item',
+				'table' => $this->SourceName,
+				'typ' => 'item',
+				'open' => 0,
+				'published' => 1,
+				'disabled' => 0,
+				'tooltip' => ''
+		));
 	}
 
-	function getCustomItems($ParentID=0, $offset=0, $segment=500, $elem='ID,ParentID,Path,Text,Icon,IsFolder', $addWhere='', $addOrderBy=''){
-
-		$items = array();
-
-		$items[] = array(
-			'icon' => 'folder.gif',
-			'id' => 1,
-			'parentid' => 0,
-			'text' => 'Custom Group',
-			'contenttype' => 'item',
-			'table' => '',
-			'typ' => 'group',
-			'open' => 0,
-			'published' => 1,
-			'disabled' => 0,
-			'tooltip' => ''
+	function getCustomItems($ParentID = 0, $offset = 0, $segment = 500, $elem = 'ID,ParentID,Path,Text,Icon,IsFolder', $addWhere = '', $addOrderBy = ''){
+		return array(
+			array(
+				'icon' => 'folder.gif',
+				'id' => 1,
+				'parentid' => 0,
+				'text' => 'Custom Group',
+				'contenttype' => 'item',
+				'table' => '',
+				'typ' => 'group',
+				'open' => 0,
+				'published' => 1,
+				'disabled' => 0,
+				'tooltip' => ''
+			),
+			array(
+				'icon' => 'link.gif',
+				'id' => 2,
+				'parentid' => 1,
+				'text' => 'Custom Item',
+				'contenttype' => 'item',
+				'table' => '',
+				'typ' => 'item',
+				'open' => 0,
+				'published' => 1,
+				'disabled' => 0,
+				'tooltip' => ''
+			)
 		);
-
-		$items[] = array(
-			'icon' => 'link.gif',
-			'id' => 2,
-			'parentid' => 1,
-			'text' => 'Custom Item',
-			'contenttype' => 'item',
-			'table' => '',
-			'typ' => 'item',
-			'open' => 0,
-			'published' => 1,
-			'disabled' => 0,
-			'tooltip' => ''
-		);
-
-
-		return $items;
 	}
 
 }
-

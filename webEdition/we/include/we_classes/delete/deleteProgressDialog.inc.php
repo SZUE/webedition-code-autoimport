@@ -47,23 +47,18 @@ class deleteProgressDialog{
 	}
 
 	function frameset(){
-		$fst = new we_html_frameset(array(
-				"rows" => "*,0",
-				"framespacing" => 0,
-				"border" => 0,
-				"frameborder" => "no")
-		);
+		$body = we_html_element::htmlBody(array('style' => 'background-color:grey;margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;', "onload" => "delcmd.location='" . WEBEDITION_DIR . "delFrag.php?frame=cmd" . (isset($_REQUEST["table"]) ? ("&amp;table=" . rawurlencode($_REQUEST["table"])) : "") . "&currentID=" . rawurlencode($_REQUEST["currentID"]) . "';")
+				, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
+					, we_html_element::htmlIFrame('delmain', WEBEDITION_DIR . "delFrag.php?frame=main", 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;overflow: hidden') .
+					we_html_element::htmlIFrame('delcmd', HTML_DIR . "white.html", 'position:absolute;bottom:0px;height:0px;left:0px;right:0px;overflow: hidden;')
+				));
 
-		$fst->addFrame(array("src" => WEBEDITION_DIR . "delFrag.php?frame=main", "name" => "delmain"));
-		$fst->setFrameAttributes(0, array("scrolling" => "no", "onload" => "delcmd.location='" . WEBEDITION_DIR . "delFrag.php?frame=cmd" . (isset($_REQUEST["table"]) ? ("&amp;table=" . rawurlencode($_REQUEST["table"])) : "") . "&currentID=" . rawurlencode($_REQUEST["currentID"]) . "';"));
 
-		$fst->addFrame(array("src" => HTML_DIR . "white.html", "name" => "delcmd"));
-		$fst->setFrameAttributes(1, array("scrolling" => "no"));
 		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				we_html_element::htmlHead(
 					we_html_tools::getHtmlInnerHead(g_l('delete', "[delete]")) .
-					we_html_element::jsScript(JS_DIR . "we_showMessage.js")
-				) . $fst->getHtml());
+					we_html_element::jsScript(JS_DIR . "we_showMessage.js") . STYLESHEET
+				) . $body);
 	}
 
 	function cmd(){

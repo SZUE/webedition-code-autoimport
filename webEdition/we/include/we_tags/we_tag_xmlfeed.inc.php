@@ -29,10 +29,9 @@
  * @param string $content
  */
 function we_tag_xmlfeed($attribs){
-	if(($foo = attributFehltError($attribs, 'name', __FUNCTION__)))
+	if(($foo = attributFehltError($attribs, array('name' => false, 'url' => false), __FUNCTION__))){
 		return $foo;
-	if(($foo = attributFehltError($attribs, 'url', __FUNCTION__)))
-		return $foo;
+	}
 
 	$name = weTag_getAttribute('name', $attribs);
 	$url = weTag_getAttribute('url', $attribs);

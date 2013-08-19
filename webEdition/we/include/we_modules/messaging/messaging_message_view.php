@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-include_once(WE_MESSAGING_MODULE_PATH . "msg_html_tools.inc.php");
+require_once(WE_MESSAGING_MODULE_PATH . "msg_html_tools.inc.php");
 
 if(!preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction'])){
 	exit();
@@ -55,7 +55,7 @@ print STYLESHEET;
 </style>
 <script type="text/javascript"><!--
 	function todo_markdone() {
-		top.content.messaging_cmd.location = '<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_cmd.php?mcmd=todo_markdone&we_transaction=<?php echo $_REQUEST['we_transaction'] ?>';
+		top.content.cmd.location = '<?php print WE_MESSAGING_MODULE_DIR; ?>edit_messaging_frameset.php?pnt=cmd&mcmd=todo_markdone&we_transaction=<?php echo $_REQUEST['we_transaction'] ?>';
 	}
 	//-->
 </script>
@@ -103,11 +103,10 @@ print STYLESHEET;
 		);
 
 		if(isset($messaging->selected_message['hdrs']['ClassName']) && $messaging->selected_message['hdrs']['ClassName'] == 'we_todo' && ($h = $format->get_todo_history())){
-			array_push($parts, array("headline" => "",
+			$parts[] = array("headline" => "",
 				"html" => $format->get_todo_history(),
 				"noline" => 1,
 				"space" => 0
-				)
 			);
 		}
 	} else{ //	Message

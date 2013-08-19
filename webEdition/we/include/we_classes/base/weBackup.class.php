@@ -88,116 +88,7 @@ class weBackup extends we_backup{
 		if($this->mode == 'sql'){
 			return parent::splitFile($this->filename);
 		}
-
-		return weXMLExIm::splitFile($this->filename, $this->backup_dir_tmp, $this->backup_steps);
-
-		$path = $this->backup_dir_tmp;
-		//FIXME: use RegEx
-		$marker = weBackup::backupMarker;
-		$marker2 = '<!--webackup -->'; //Backup 5089
-		$pattern = basename($this->filename) . "_%s";
-
-
-		$this->compress = ($this->isCompressed($this->filename) ? "gzip" : "none");
-
-		$header = $this->header;
-
-		$buff = "";
-		$filename_tmp = "";
-
-		$fh = ($this->compress != "none" ?
-				@gzopen($this->filename, 'rb') :
-				@fopen($this->filename, 'rb'));
-
-		$num = -1;
-		$open_new = true;
-		$fsize = 0;
-
-		$elnum = 0;
-
-		$marker_size = strlen($marker);
-		$marker2_size = strlen($marker2); //Backup 5089
-
-		if($fh){
-			while(!@feof($fh)) {
-				@set_time_limit(240);
-				$line = "";
-				$findline = false;
-
-				while($findline == false && !@feof($fh)) {
-					$line .= ($this->compress != 'none' ?
-							@gzgets($fh, 4096) :
-							@fgets($fh, 4096));
-
-					if(substr($line, -1) == "\n"){
-						$findline = true;
-					}
-				}
-
-				if($open_new){
-					$num++;
-					$filename_tmp = sprintf($path . $pattern, $num);
-					$fh_temp = fopen($filename_tmp, 'wb');
-					fwrite($fh_temp, $header);
-					if($num == 0){
-						$header = '';
-					}
-					$open_new = false;
-				}
-
-				if($fh_temp){
-					if((substr($line, 0, 2) != "<?") && (substr($line, 0, 11) != self::weXmlExImHead) && (substr($line, 0, 12) != self::weXmlExImFooter)){
-
-						$buff.=$line;
-						if($marker_size){
-							$write = ((substr($buff, (0 - ($marker_size + 1))) == $marker . "\n") ||
-								(substr($buff, (0 - ($marker_size + 2))) == $marker . "\r\n" ) ||
-								(substr($buff, (0 - ($marker2_size + 1))) == $marker2 . "\n") ||
-								(substr($buff, (0 - ($marker2_size + 2))) == $marker2 . "\r\n" ));
-						} else{
-							$write = true;
-						}
-						if($write){
-							$fsize+=strlen($buff);
-							fwrite($fh_temp, $buff);
-							if($marker_size){
-								$elnum++;
-								if($elnum >= $this->backup_steps){
-									$elnum = 0;
-									$open_new = true;
-									fwrite($fh_temp, $this->footer);
-									@fclose($fh_temp);
-								}
-								$fsize = 0;
-							}
-							$buff = "";
-						}
-					} else{
-						if(((substr($line, 0, 2) == "<?") || (substr($line, 0, 11) == self::weXmlExImHead)) && $num == 0){
-							$header.=$line;
-						}
-					}
-				} else{
-					return -1;
-				}
-			}
-		} else{
-			return -1;
-		}
-		if($fh_temp){
-			if($buff){
-				fwrite($fh_temp, $buff);
-				fwrite($fh_temp, $this->footer);
-			}
-			@fclose($fh_temp);
-		}
-		if($this->compress != "none"){
-			@gzclose($fh);
-		} else{
-			@fclose($fh);
-		}
-
-		return $num + 1;
+		t_e('this should not happen');
 	}
 
 	/**
@@ -322,7 +213,7 @@ class weBackup extends we_backup{
 		weFile::delete($_SERVER['DOCUMENT_ROOT'] . $file);
 	}
 
-	function recoverInfo($nodeset, &$xmlBrowser){
+	/*function recoverInfo($nodeset, &$xmlBrowser){
 		$node_set2 = $xmlBrowser->getSet($nodeset);
 
 		//$classname = weContentProvider::getContentTypeHandler("weBinary");
@@ -336,22 +227,19 @@ class weBackup extends we_backup{
 					$id = $attributes["ID"];
 					$path = $attributes["Path"];
 					//$this->backup_db->query("SELECT ".FILE_TABLE.".ID AS ID,".FILE_TABLE.".TemplateID AS TemplateID,".TEMPLATES_TABLE.".Path AS TemplatePath FROM ".FILE_TABLE.",".TEMPLATES_TABLE." WHERE ".FILE_TABLE.".TemplateID=".TEMPLATES_TABLE.".ID;");
-					$this->backup_db->query('SELECT ID FROM ' . TEMPLATES_TABLE . " WHERE Path=" . $this->backup_db->escape($path));
-					if($this->backup_db->next_record()){
-						if($this->backup_db->f('ID') != $id){
-							$db2->query('UPDATE ' . FILE_TABLE . ' SET TemplateID=' . intval($this->backup_db->f("ID")) . ' WHERE TemplateID=' . intval($id));
-						}
+					$tmpId = f('SELECT ID FROM ' . TEMPLATES_TABLE . ' WHERE Path="' . $this->backup_db->escape($path) . '"', 'ID', $this->backup_db);
+					if(!empty($tmpId) && $tmpId != $id){
+						$db2->query('UPDATE ' . FILE_TABLE . ' SET TemplateID=' . intval($tmpId) . ' WHERE TemplateID=' . intval($id));
 					}
 				}
 			}
 		}
-	}
+	}*/
 
 	function recover($chunk_file){
 		if(!is_readable($chunk_file)){
 			return false;
 		}
-		@set_time_limit(240);
 
 		$xmlBrowser = new weXMLBrowser($chunk_file);
 		$xmlBrowser->mode = "backup";
@@ -426,7 +314,7 @@ class weBackup extends we_backup{
 		$num_tables = count($tables);
 		if($num_tables){
 			$i = 0;
-			while($i < $num_tables) {
+			while($i < $num_tables){
 				$table = $tables[$i];
 				$noprefix = $this->getDefaultTableName($table);
 
@@ -454,7 +342,7 @@ class weBackup extends we_backup{
 						$start = microtime(true);
 						$this->backup_db->query($this->getBackupQuery($table, $keys));
 
-						while($this->backup_db->next_record()) {
+						while($this->backup_db->next_record()){
 							$keyvalue = array();
 							foreach($keys as $key){
 								$keyvalue[] = $this->backup_db->f($key);
@@ -498,7 +386,7 @@ class weBackup extends we_backup{
 		}
 		$out = '<we:info>';
 		$this->backup_db->query('SELECT ' . implode(',', $fields) . ' FROM ' . $this->backup_db->escape($table));
-		while($this->backup_db->next_record()) {
+		while($this->backup_db->next_record()){
 			$out.='<we:map table="' . $this->getDefaultTableName($table) . '"';
 			foreach($fields as $field){
 				$out.=' ' . $field . '="' . $this->backup_db->f($field) . '"';
@@ -515,7 +403,6 @@ class weBackup extends we_backup{
 	 * Description: This function saves the dump to the backup directory.
 	 */
 	function printDump2BackupDir(){
-		@set_time_limit(240);
 		$backupfilename = $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . $this->filename;
 		if($this->compress != "none" && $this->compress != ""){
 			$this->dumpfilename = weFile::compress($this->dumpfilename, $this->compress);
@@ -603,7 +490,7 @@ class weBackup extends we_backup{
 		}
 		$thumbDir = trim(WE_THUMBNAIL_DIRECTORY, '/');
 		$d = dir($dir);
-		while(false !== ($entry = $d->read())) {
+		while(false !== ($entry = $d->read())){
 			switch($entry){
 				case '.':
 				case '..':
@@ -713,11 +600,12 @@ $this->file_list=' . var_export($this->file_list, true) . ';';
 	function getExportPercent(){
 		$all = 0;
 		$db = new DB_WE();
-		$db->query("SHOW TABLE STATUS");
-		while($db->next_record()) {
+		$db->query('SHOW TABLE STATUS');
+		while($db->next_record()){
 			$noprefix = $this->getDefaultTableName($db->f("Name"));
-			if(!$this->isFixed($noprefix))
+			if(!$this->isFixed($noprefix)){
 				$all += $db->f("Rows");
+			}
 		}
 
 		$ex_files = ((int) $this->file_list_count) - ((int) count($this->file_list));
@@ -800,7 +688,7 @@ $this->file_list=' . var_export($this->file_list, true) . ';';
 			return;
 		}
 		$this->backup_db->query("SHOW TABLE STATUS");
-		while($this->backup_db->next_record()) {
+		while($this->backup_db->next_record()){
 			$table = $this->backup_db->f("Name");
 			$name = stripTblPrefix($this->backup_db->f("Name"));
 			if(substr(strtolower($name), 0, 10) == strtolower(stripTblPrefix(OBJECT_X_TABLE)) && is_numeric(str_replace(strtolower(OBJECT_X_TABLE), '', strtolower($table)))){

@@ -82,13 +82,13 @@ class weExport extends weModelBase{
 		if(defined('OBJECT_TABLE')){
 			$this->selObjs = $this->clearExpiered($this->selObjs, OBJECT_FILES_TABLE);
 			$this->selClasses = $this->clearExpiered($this->selClasses, OBJECT_TABLE);
-		} else{
+		} else {
 			$this->selObjs = '';
 			$this->selClasses = '';
 		}
 	}
 
-	function clearExpiered($ids, $table, $idfield='ID'){
+	function clearExpiered($ids, $table, $idfield = 'ID'){
 		$idsarr = makeArrayFromCSV($ids);
 		$new = array();
 		$db = new DB_WE();
@@ -100,7 +100,7 @@ class weExport extends weModelBase{
 		return makeCSVFromArray($new);
 	}
 
-	function save($force_new=false){
+	function save($force_new = false){
 		$this->Icon = ($this->IsFolder == 1 ? we_base_ContentTypes::FOLDER_ICON : we_base_ContentTypes::LINK_ICON);
 		$sets = array();
 		$wheres = array();
@@ -122,7 +122,7 @@ class weExport extends weModelBase{
 				$this->ID = $this->db->getInsertId();
 			}
 			return $ret;
-		} else{
+		} else {
 			return $this->db->query('UPDATE ' . $this->table . ' SET ' . $set . ' WHERE ' . $where);
 		}
 
@@ -144,7 +144,7 @@ class weExport extends weModelBase{
 
 	function deleteChilds(){
 		$this->db->query("SELECT ID FROM " . EXPORT_TABLE . ' WHERE ParentID=' . intval($this->ID));
-		while($this->db->next_record()) {
+		while($this->db->next_record()){
 			$child = new weExport($this->db->f("ID"));
 			$child->delete();
 		}
@@ -193,18 +193,15 @@ class weExport extends weModelBase{
 	}
 
 	function pathExists($path){
-		$this->db->query('SELECT * FROM ' . $this->table . ' WHERE Path = \'' . $path . '\' AND ID <> \'' . $this->ID . '\';');
-		if($this->db->next_record())
-			return true;
-		else
-			return false;
+		$this->db->query('SELECT 1 FROM ' . $this->table . ' WHERE Path = "' . $path . '" AND ID!=' . intval($this->ID));
+		return ($this->db->next_record() ? true : false);
 	}
 
 	function isSelf(){
 		return strpos(clearPath(dirname($this->Path) . '/'), '/' . $this->Text . '/') !== false;
 	}
 
-	function evalPath($id=0){
+	function evalPath($id = 0){
 		$db_tmp = new DB_WE();
 		$path = "";
 		if($id == 0){
@@ -212,13 +209,13 @@ class weExport extends weModelBase{
 			$path = $this->Text;
 		}
 
-		$foo = getHash("SELECT Text,ParentID FROM " . EXPORT_TABLE . " WHERE ID='" . $id . "';", $db_tmp);
+		$foo = getHash('SELECT Text,ParentID FROM ' . EXPORT_TABLE . ' WHERE ID=' . intval($id), $db_tmp);
 		$path = "/" . (isset($foo["Text"]) ? $foo["Text"] : "") . $path;
 
 		$pid = isset($foo["ParentID"]) ? $foo["ParentID"] : "";
-		while($pid > 0) {
-			$db_tmp->query("SELECT Text,ParentID FROM " . EXPORT_TABLE . " WHERE ID='$pid'");
-			while($db_tmp->next_record()) {
+		while($pid > 0){
+			$db_tmp->query('SELECT Text,ParentID FROM ' . EXPORT_TABLE . ' WHERE ID=' . intval($pid));
+			while($db_tmp->next_record()){
 				$path = "/" . $db_tmp->f("Text") . $path;
 				$pid = $db_tmp->f("ParentID");
 			}
@@ -227,4 +224,3 @@ class weExport extends weModelBase{
 	}
 
 }
-

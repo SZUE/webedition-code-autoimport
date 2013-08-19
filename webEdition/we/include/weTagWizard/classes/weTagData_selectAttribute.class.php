@@ -42,7 +42,7 @@ class weTagData_selectAttribute extends weTagDataAttribute{
 	static function getTrueFalse(){
 		static $tmp = false;
 		if(!$tmp){
-			$tmp = array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, ''));
+			$tmp = array(new weTagDataOption('true'), new weTagDataOption('false'));
 		}
 		return $tmp;
 	}

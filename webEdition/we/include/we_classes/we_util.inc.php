@@ -47,15 +47,14 @@ abstract class we_util{
 		if(strpos($number, 'E')){ //  when number is too big, it is shown with E+xx
 			$number = number_format($number, 2, '.', '');
 		}
-		if(preg_match('|.*,[0-9]*$|', $number)){ // deutsche schreibweise
-			$tmp = explode(',', str_replace(".", "", $number));
-			$number = implode('.', $tmp);
-		} else if(preg_match('|.*\.[0-9]*$|', $number)){ // engl schreibweise
-			$number = str_replace(',', '', $number);
-		} else{
-			$number = str_replace(array(',', '.'), '', $number);
+		$match = array();
+		if(preg_match('|([0-9]*\.?[0-9]*),([0-9]*)|', $number, $match)){ // deutsche schreibweise
+			return floatval(str_replace('.', '', $match[1]) . '.' . $match[2]);
+		} else if(preg_match('|([0-9]*)\.([0-9]*)|', $number)){ // engl schreibweise
+			return floatval($number);
+		} else {
+			return floatval(str_replace(array(',', '.'), '', $number));
 		}
-		return $number;
 	}
 
 	/**
@@ -92,7 +91,7 @@ abstract class we_util{
 			return $in;
 		}
 		$lastStart = 0;
-		while(!($starttag === false)) {
+		while(!($starttag === false)){
 			$endtag = strpos($in, '?>', $starttag);
 			$out .= substr($in, $lastStart, ($starttag - $lastStart));
 			$lastStart = $endtag + 2;
@@ -105,7 +104,7 @@ abstract class we_util{
 	}
 
 	static function getGlobalPath(){
-		return (isset($GLOBALS['WE_MAIN_DOC']) && isset($GLOBALS['WE_MAIN_DOC']->Path)?$GLOBALS['WE_MAIN_DOC']->Path:'');
+		return (isset($GLOBALS['WE_MAIN_DOC']) && isset($GLOBALS['WE_MAIN_DOC']->Path) ? $GLOBALS['WE_MAIN_DOC']->Path : '');
 	}
 
 	static function html2uml($text){
@@ -125,7 +124,7 @@ abstract class we_util{
 		$db = ($db ? $db : new DB_WE());
 		$db->query('SELECT ID FROM ' . $table . ' WHERE ParentID=' . intval($folderID) . ' AND IsFolder=1');
 		$new = array();
-		while($db->next_record()) {
+		while($db->next_record()){
 			$new[] = $db->f('ID');
 		}
 		foreach($new as $cur){

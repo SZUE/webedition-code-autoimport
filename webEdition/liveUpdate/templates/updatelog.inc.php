@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,7 +22,6 @@
  * @package    webEdition_update
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 /*
  * This is the template for tab updatelog. It does not connect to the
  * updateserver
@@ -45,51 +45,50 @@
  *
  */
 
-$content = g_l('liveUpdate','[updatelog][logIsEmpty]');
+$content = g_l('liveUpdate', '[updatelog][logIsEmpty]');
 $buttons = '';
 
 /*
  * items found - show them in table
  */
-if ( $this->Data['allEntries'] ) { // entries exist
-
+if($this->Data['allEntries']){ // entries exist
 	// there are entries available -> show them in table
 	$content = '
 <form name="we_form">
-<input type="hidden" name="section" value="' . $_REQUEST['section'] .'" />
+<input type="hidden" name="section" value="' . $_REQUEST['section'] . '" />
 <input type="hidden" name="log_cmd" value="dummy" />
-<input type="hidden" name="start" value="' . $_REQUEST['start'] .'" />
+<input type="hidden" name="start" value="' . $_REQUEST['start'] . '" />
 <table class="defaultfont" width="100%">
 <tr>
-	<td>' . g_l('liveUpdate','[updatelog][entriesTotal]') . ': ' . $this->Data['amountEntries'] . '</td>
-	<td class="alignRight">' . g_l('liveUpdate','[updatelog][page]') . ' ' . (($_REQUEST['start'] / $this->Data['amountPerPage']) +1) . '/ ' . ((ceil($this->Data['amountEntries']/$this->Data['amountPerPage'])) ? ceil($this->Data['amountEntries']/$this->Data['amountPerPage']) : 1) . '</td>
+	<td>' . g_l('liveUpdate', '[updatelog][entriesTotal]') . ': ' . $this->Data['amountEntries'] . '</td>
+	<td class="alignRight">' . g_l('liveUpdate', '[updatelog][page]') . ' ' . (($_REQUEST['start'] / $this->Data['amountPerPage']) + 1) . '/ ' . ((ceil($this->Data['amountEntries'] / $this->Data['amountPerPage'])) ? ceil($this->Data['amountEntries'] / $this->Data['amountPerPage']) : 1) . '</td>
 </tr>
 </table>
 <div class="defaultfont">
-	' .	we_forms::checkbox(1, isset($_REQUEST['messages']), 'messages', "<span class=\"logMessage\">" . g_l('liveUpdate','[updatelog][legendMessages]') . " (" . $this->Data['amountMessages'] . ")</span>", false, "small", "document.we_form.submit();") . '
-	' .	we_forms::checkbox(1, isset($_REQUEST['notices']), 'notices', "<span class=\"logNotice\">" . g_l('liveUpdate','[updatelog][legendNotices]') . " (" . $this->Data['amountNotices'] . ")</span>", false, "small", "document.we_form.submit();") . '
-	' .	we_forms::checkbox(1, isset($_REQUEST['errors']), 'errors', "<span class=\"logError\">" . g_l('liveUpdate','[updatelog][legendErrors]') . " (" . $this->Data['amountErrors'] . ")</span>", false, "small", "document.we_form.submit();") . '
+	' . we_forms::checkbox(1, isset($_REQUEST['messages']), 'messages', "<span class=\"logMessage\">" . g_l('liveUpdate', '[updatelog][legendMessages]') . " (" . $this->Data['amountMessages'] . ")</span>", false, "small", "document.we_form.submit();") . '
+	' . we_forms::checkbox(1, isset($_REQUEST['notices']), 'notices', "<span class=\"logNotice\">" . g_l('liveUpdate', '[updatelog][legendNotices]') . " (" . $this->Data['amountNotices'] . ")</span>", false, "small", "document.we_form.submit();") . '
+	' . we_forms::checkbox(1, isset($_REQUEST['errors']), 'errors', "<span class=\"logError\">" . g_l('liveUpdate', '[updatelog][legendErrors]') . " (" . $this->Data['amountErrors'] . ")</span>", false, "small", "document.we_form.submit();") . '
 </div>
 <br />
 ';
 
-	if (!empty($this->Data['logEntries'])) { // entries match filter
-
+	if(!empty($this->Data['logEntries'])){ // entries match filter
 		$content .= '
 <table width="100%" class="defaultfont updateContent" id="updateLogTable">
 <tr>
-	<th>' . g_l('liveUpdate','[updatelog][date]') . '</th>
-	<th>' . g_l('liveUpdate','[updatelog][action]') . '</th>
-	<th>' . g_l('liveUpdate','[updatelog][version]') . '</th>
+	<th>' . g_l('liveUpdate', '[updatelog][date]') . '</th>
+	<th>' . g_l('liveUpdate', '[updatelog][action]') . '</th>
+	<th>' . g_l('liveUpdate', '[updatelog][version]') . '</th>
 </tr>';
 
-		foreach ($this->Data['logEntries'] as $logEntry) {
+		foreach($this->Data['logEntries'] as $logEntry){
 
-			$classStr =  ' class="logMessage"';
-			if ($logEntry['state'] == 1) {
+			if($logEntry['state'] == 1){
 				$classStr = ' class="logError"';
-			} else if ($logEntry['state'] == 2) {
+			} else if($logEntry['state'] == 2){
 				$classStr = ' class="logNotice"';
+			} else {
+				$classStr = ' class="logMessage"';
 			}
 
 			$content .= "
@@ -104,31 +103,26 @@ if ( $this->Data['allEntries'] ) { // entries exist
 		 * Add buttons for next, back and delete
 		 */
 
-			if( $_REQUEST['start'] > 0 ){	//	backbutton
-				$backButton = we_button::create_button("back", "javascript:lastEntries();");
-			} else {
-				$backButton = we_button::create_button("back", "#", true, 100, 22, "", "", true);
-			}
+		$backButton = ($_REQUEST['start'] > 0 ? //	backbutton
+				we_button::create_button("back", "javascript:lastEntries();") :
+				we_button::create_button("back", "#", true, 100, 22, "", "", true));
 
-			if( $this->Data['amountEntries'] <= $_REQUEST['start'] + $this->Data['amountPerPage'] ){	//	next_button
-				$nextButton = we_button::create_button("next", "#", true, 100, 22, "", "", true);
-			} else {
-				$nextButton = we_button::create_button("next", "javascript:nextEntries();");
-			}
+		$nextButton = ($this->Data['amountEntries'] <= $_REQUEST['start'] + $this->Data['amountPerPage'] ? //	next_button
+				we_button::create_button("next", "#", true, 100, 22, "", "", true) :
+				we_button::create_button("next", "javascript:nextEntries();"));
 
-			$deleteButton = we_button::create_button("delete", "javascript:confirmDelete();");
+		$deleteButton = we_button::create_button("delete", "javascript:confirmDelete();");
 
-			$buttons = "<table><tr><td>$deleteButton</td><td>$backButton</td><td>$nextButton</td></tr></table>";
+		$buttons = "<table><tr><td>$deleteButton</td><td>$backButton</td><td>$nextButton</td></tr></table>";
 
-			$content .= '
+		$content .= '
 </table>';
-
 	} else {
 		$content .= '
 <table class="defaultfont">
 <tr>
 	<td><br />
-		' . g_l('liveUpdate','[updatelog][noEntriesMatchFilter]') . '</td>
+		' . g_l('liveUpdate', '[updatelog][noEntriesMatchFilter]') . '</td>
 </tr>
 </table>';
 	}
@@ -138,7 +132,7 @@ if ( $this->Data['allEntries'] ) { // entries exist
 
 $jsHead = we_html_element::jsElement('
 	function confirmDelete() {
-		if (confirm("' . g_l('liveUpdate','[updatelog][confirmDelete]') . '")) {
+		if (confirm("' . g_l('liveUpdate', '[updatelog][confirmDelete]') . '")) {
 			deleteEntries();
 		}
 	}
@@ -159,4 +153,4 @@ $jsHead = we_html_element::jsElement('
 	}');
 
 
-print liveUpdateTemplates::getHtml(g_l('liveUpdate','[updatelog][headline]'), $content, $jsHead, $buttons);
+print liveUpdateTemplates::getHtml(g_l('liveUpdate', '[updatelog][headline]'), $content, $jsHead, $buttons);

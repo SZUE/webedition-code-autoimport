@@ -22,13 +22,4 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-we_html_tools::protect();
-if($_SESSION["perms"]["ADMINISTRATOR"]){
-	$GLOBALS['DB_WE']->query("UPDATE " . NAVIGATION_TABLE . " SET  LimitAccess=0, ApplyFilter=0");
-
-	print we_html_element::jsElement(
-			'top.openWindow(\'' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=rebuild&step=2&type=rebuild_navigation&responseText=' . rawurlencode(
-				g_l('navigation', '[reset_customerfilter_done_message]')) . '\',\'resave\',-1,-1,600,130,0,true);
-');
-}
+//TODO: remove this (directory 'navigation' has moved to we_modules

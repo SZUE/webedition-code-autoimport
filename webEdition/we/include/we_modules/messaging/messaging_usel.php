@@ -54,7 +54,7 @@ if(!empty($_REQUEST['mode']) && ($_REQUEST['mode'] == 'save_addrbook')){
 		$entry = explode(',', $elem);
 		foreach($entry as $val){
 			$val = urldecode($val);
-			array_push($addrbook[$i], $val);
+			$addrbook[$i][] = $val;
 		}
 		$i++;
 	}

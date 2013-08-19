@@ -30,7 +30,6 @@ function we_tag_linklist($attribs){
 	switch(weTag_getAttribute('_type', $attribs)){
 		default:
 			$name = weTag_getAttribute("name", $attribs);
-			$foo = attributFehltError($attribs, "name", __FUNCTION__);
 			$hidedirindex = weTag_getAttribute("hidedirindex", $attribs, TAGLINKS_DIRECTORYINDEX_HIDE, true);
 			$objectseourls = weTag_getAttribute("objectseourls", $attribs, TAGLINKS_OBJECTSEOURLS, true);
 			if(($foo = attributFehltError($attribs, "name", __FUNCTION__))){

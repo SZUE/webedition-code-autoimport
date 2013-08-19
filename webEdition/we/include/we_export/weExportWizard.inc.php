@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-define("EXPORT_PATH", WE_INCLUDES_DIR . "we_export/");
+define('EXPORT_PATH', WE_INCLUDES_DIR . 'we_export/');
 
 $yuiSuggest = & weSuggest::getInstance();
 
@@ -65,7 +65,7 @@ class weExportWizard{
 			"csv_enclose" => '"',
 			"csv_lineend" => "windows",
 			"csv_fieldnames" => "",
-			"csv_fields" => '0',
+			"csv_fields" => 0,
 			"cdata" => "true",
 			"RefTable" => array(),
 			"CurrentRef" => 0,
@@ -86,13 +86,13 @@ class weExportWizard{
 
 		if(isset($_SESSION['weS']['exportVars'])){
 			foreach($this->exportVars as $k => $v){
-				if(isset($_SESSION['weS']['exportVars'][$k]))
+				if(isset($_SESSION['weS']['exportVars'][$k])){
 					$this->exportVars[$k] = $_SESSION['weS']['exportVars'][$k];
-				else
+				} else {
 					$_SESSION['weS']['exportVars'][$k] = $v;
+				}
 			}
-		}
-		else{
+		} else {
 			$_SESSION['weS']['exportVars'] = $this->exportVars;
 		}
 	}
@@ -123,16 +123,15 @@ class weExportWizard{
 	function getHTMLFrameset(){
 		$args = "";
 		$_SESSION['weS']['exportVars'] = array();
-		if(isset($_REQUEST['we_cmd'][1]))
+		if(isset($_REQUEST['we_cmd'][1])){
 			$args .= "&we_cmd[1]=" . $_REQUEST['we_cmd'][1];
+		}
 		$this->Tree = new weExportTree(WE_INCLUDES_DIR . "we_export/export_frameset.php", $this->topFrame, $this->bodyFrame, $this->loadFrame);
 
-		$js = $this->getJSTop();
-		$js.=$this->Tree->getJSTreeCode();
-
-		$js.=we_html_element::jsElement('
-
-    		var step = 0;
+		$js = $this->getJSTop() .
+			$this->Tree->getJSTreeCode() .
+			we_html_element::jsElement('
+   		var step = 0;
 
 			var activetab=0;
 			var selection="auto";
@@ -168,17 +167,15 @@ class weExportWizard{
 
 		');
 
-		$frameset = new we_html_frameset(array("framespacing" => "0", "border" => "0", "frameborder" => "no"));
-		$noframeset = new we_baseElement("noframes");
-
-		$frameset->setAttributes(array("rows" => ((isset($_SESSION["prefs"]["debug_normal"]) && $_SESSION["prefs"]["debug_normal"] != 0) ? "1,*,45,60" : "1,*,45,0" ), "onLoad" => $this->bodyFrame . ".location='" . $this->frameset . "?pnt=body" . $args . "&step=' + step;"));
-		$frameset->addFrame(array("src" => $this->frameset . "?pnt=header", "name" => "header", "scrolling" => "no", "noresize" => null));
-		$frameset->addFrame(array("src" => $this->frameset . "?pnt=body" . $args, "name" => "body", "scrolling" => "auto", "noresize" => null));
-		$frameset->addFrame(array("src" => $this->frameset . "?pnt=footer", "name" => "footer", "scrolling" => "no"));
-		$frameset->addFrame(array("src" => $this->frameset . "?pnt=load", "name" => "load", "scrolling" => "no", "noresize" => null));
-
 		$head = we_html_tools::getHtmlInnerHead(g_l('export', '[title]')) . STYLESHEET . $js;
-		$body = $frameset->getHtml() . "\n" . $noframeset->getHTML();
+
+		$body = we_html_element::htmlBody(array('style' => 'background-color:grey;margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;', "onload" => $this->bodyFrame . ".location='" . $this->frameset . "?pnt=body" . $args . "&step=' + step;")
+				, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
+					, we_html_element::htmlIFrame('header', $this->frameset . "?pnt=header", 'position:absolute;top:0px;height:1px;left:0px;right:0px;overflow: hidden') .
+					we_html_element::htmlIFrame('body', $this->frameset . "?pnt=body", 'position:absolute;top:1px;bottom:45px;left:0px;right:0px;overflow: auto', 'border:0px;width:100%;height:100%;overflow: auto;') .
+					we_html_element::htmlIFrame('footer', $this->frameset . "?pnt=footer", 'position:absolute;height:45px;bottom:0px;left:0px;right:0px;overflow: hidden') .
+					we_html_element::htmlIFrame('load', $this->frameset . "?pnt=load", 'position:absolute;bottom:0px;height:0px;left:0px;right:0px;overflow: hidden;')
+		));
 
 		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				we_html_element::htmlHead($head) .
@@ -217,33 +214,30 @@ class weExportWizard{
 					self.focus();
 		');
 
-		$parts = array();
+		$parts = array(
+			/* 		array_push($parts, array(
+			  "headline"	=> g_l('export',"[we_export]"),
+			  "html"		=> we_forms::radiobutton("wxml",($extype=="wxml" && we_hasPerm("WXML_EXPORT")), "extype", g_l('export',"[wxml_export]"),true, "defaultfont", "",  !we_hasPerm("WXML_EXPORT"), g_l('export',"[txt_wxml_export]"), 0, 384),
+			  "space"		=> 120,
+			  "noline"	=> 1)
+			  ); */
 
-		/* 		array_push($parts, array(
-		  "headline"	=> g_l('export',"[we_export]"),
-		  "html"		=> we_forms::radiobutton("wxml",($extype=="wxml" && we_hasPerm("WXML_EXPORT")), "extype", g_l('export',"[wxml_export]"),true, "defaultfont", "",  !we_hasPerm("WXML_EXPORT"), g_l('export',"[txt_wxml_export]"), 0, 384),
-		  "space"		=> 120,
-		  "noline"	=> 1)
-		  ); */
-
-		array_push($parts, array(
-			"html" => we_forms::radiobutton("wxml", ($extype == "wxml" && $wexpotEnabled), "extype", g_l('export', "[wxml_export]"), true, "defaultfont", "", !$wexpotEnabled, g_l('export', "[txt_wxml_export]"), 0, 500),
-			"space" => 0,
-			"noline" => 1)
-		);
-
-
-		array_push($parts, array(
-			"html" => we_forms::radiobutton("gxml", ($extype == "gxml" && we_hasPerm("GENERICXML_EXPORT")), "extype", g_l('export', "[gxml_export]"), true, "defaultfont", "", !we_hasPerm("GENERICXML_EXPORT"), g_l('export', "[txt_gxml_export]"), 0, 500),
-			"space" => 0,
-			"noline" => 1)
+			array(
+				"html" => we_forms::radiobutton("wxml", ($extype == "wxml" && $wexpotEnabled), "extype", g_l('export', "[wxml_export]"), true, "defaultfont", "", !$wexpotEnabled, g_l('export', "[txt_wxml_export]"), 0, 500),
+				"space" => 0,
+				"noline" => 1
+			),
+			array(
+				"html" => we_forms::radiobutton("gxml", ($extype == "gxml" && we_hasPerm("GENERICXML_EXPORT")), "extype", g_l('export', "[gxml_export]"), true, "defaultfont", "", !we_hasPerm("GENERICXML_EXPORT"), g_l('export', "[txt_gxml_export]"), 0, 500),
+				"space" => 0,
+				"noline" => 1)
 		);
 
 		if(in_array("object", $GLOBALS['_we_active_integrated_modules'])){
-			array_push($parts, array(
+			$parts[] = array(
 				"html" => we_forms::radiobutton("csv", ($extype == "csv" && we_hasPerm("CSV_EXPORT")), "extype", g_l('export', "[csv_export]"), true, "defaultfont", "", !we_hasPerm("CSV_EXPORT"), g_l('export', "[txt_csv_export]"), 0, 500),
 				"space" => 0,
-				"noline" => 1)
+				"noline" => 1
 			);
 		}
 
@@ -252,7 +246,7 @@ class weExportWizard{
 				we_html_element::htmlHead(//FIXME: missing title
 					we_html_tools::getHtmlInnerHead() . STYLESHEET . $js) .
 				we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), we_html_element::htmlHidden(array("name" => "pnt", "value" => "body")) .
-						we_html_element::htmlHidden(array("name" => "step", "value" => "1")) .
+						we_html_element::htmlHidden(array("name" => "step", "value" => 1)) .
 						we_multiIconBox::getHTML("", "100%", $parts, 30, "", -1, "", "", false, g_l('export', "[title]"))
 					)
 				)
@@ -288,18 +282,15 @@ top.close();');
 
 		$selection = $this->exportVars["selection"];
 
-		$parts = array();
-
-		array_push($parts, array(
-			"html" => we_forms::radiobutton("auto", ($selection == "auto" ? true : false), "selection", g_l('export', "[auto_selection]"), true, "defaultfont", "", false, (($this->exportVars["extype"] == "csv") ? g_l('export', "[txt_auto_selection_csv]") : g_l('export', "[txt_auto_selection]")), 0, 500),
-			"space" => 0,
-			"noline" => 1)
-		);
-
-		array_push($parts, array(
-			"html" => we_forms::radiobutton("manual", ($selection == "manual" ? true : false), "selection", g_l('export', "[manual_selection]"), true, "defaultfont", "", false, (($this->exportVars["extype"] == "csv") ? g_l('export', "[txt_manual_selection_csv]") : g_l('export', "[txt_manual_selection]")), 0, 500),
-			"space" => 0,
-			"noline" => 1)
+		$parts = array(
+			array(
+				"html" => we_forms::radiobutton("auto", ($selection == "auto" ? true : false), "selection", g_l('export', "[auto_selection]"), true, "defaultfont", "", false, (($this->exportVars["extype"] == "csv") ? g_l('export', "[txt_auto_selection_csv]") : g_l('export', "[txt_auto_selection]")), 0, 500),
+				"space" => 0,
+				"noline" => 1),
+			array(
+				"html" => we_forms::radiobutton("manual", ($selection == "manual" ? true : false), "selection", g_l('export', "[manual_selection]"), true, "defaultfont", "", false, (($this->exportVars["extype"] == "csv") ? g_l('export', "[txt_manual_selection_csv]") : g_l('export', "[txt_manual_selection]")), 0, 500),
+				"space" => 0,
+				"noline" => 1)
 		);
 
 
@@ -309,7 +300,7 @@ top.close();');
 		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				we_html_element::htmlHead($head) .
 				we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), we_html_element::htmlHidden(array("name" => "pnt", "value" => "body")) .
-						we_html_element::htmlHidden(array("name" => "step", "value" => "2")) .
+						we_html_element::htmlHidden(array("name" => "step", "value" => 2)) .
 						we_html_element::htmlHidden(array("name" => "art", "value" => ($this->exportVars["extype"] == "csv" ? "objects" : "docs"))) .
 						we_multiIconBox::getHTML("", "100%", $parts, 30, "", -1, "", "", false, g_l('export', "[step1]"))
 					)
@@ -318,14 +309,14 @@ top.close();');
 	}
 
 	function getHTMLStep2(){
-		if($this->exportVars["selection"] == "auto")
+		if($this->exportVars["selection"] == "auto"){
 			return $this->getHTMLStep2a();
-		else if($this->exportVars["selection"] == "manual"){
+		} else if($this->exportVars["selection"] == "manual"){
 			/* if($this->exportVars["extype"]=="wxml") return $this->getHTMLStep3();
 			  else */
 			if($this->exportVars["extype"] == "csv"){
 				return $this->getHTMLStep1();
-			} else{
+			} else {
 				return $this->getHTMLStep2b();
 			}
 		}
@@ -343,7 +334,7 @@ top.close();');
 				var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if (i < (arguments.length - 1)){ url += "&"; }}
 				switch (arguments[0]){
 					case "openCatselector":
-						new jsWindow(url,"we_catselector",-1,-1,' . WINDOW_CATSELECTOR_WIDTH . ',' . WINDOW_CATSELECTOR_HEIGHT . ',true,true,true,true);
+						new jsWindow(url,"we_catselector",-1,-1,' . we_fileselector::WINDOW_CATSELECTOR_WIDTH . ',' . we_fileselector::WINDOW_CATSELECTOR_HEIGHT . ',true,true,true,true);
 					break;
 					case "add_cat":
 					case "del_cat":
@@ -354,15 +345,14 @@ top.close();');
 						document.we_form.submit();
 					break;
 					case "openDirselector":
-						new jsWindow(url,"we_selector",-1,-1,' . WINDOW_SELECTOR_WIDTH . ',' . WINDOW_SELECTOR_HEIGHT . ',true,true,true,true);
+						new jsWindow(url,"we_selector",-1,-1,' . we_fileselector::WINDOW_SELECTOR_WIDTH . ',' . we_fileselector::WINDOW_SELECTOR_HEIGHT . ',true,true,true,true);
 					break;
 				}
 			}
 
 		');
-		$js.=we_html_element::jsElement('
-					' . $this->footerFrame . '.location="' . $this->frameset . '?pnt=footer&step=2";
-		');
+		$js.=we_html_element::jsElement(
+				$this->footerFrame . '.location="' . $this->frameset . '?pnt=footer&step=2";');
 
 		$parts = array();
 		$showdocs = false;
@@ -373,26 +363,27 @@ top.close();');
 			if(defined("OBJECT_FILES_TABLE")){
 				$_tmp["noline"] = 1;
 			}
-			array_push($parts, $_tmp);
+			$parts[] = $_tmp;
 		}
 
-		if(!$showdocs)
+		if(!$showdocs){
 			$js.= we_html_element::jsElement($this->topFrame . ".type='classname';");
+		}
 		$hiddens = we_html_element::htmlHidden(array("name" => "pnt", "value" => "body")) .
 			we_html_element::htmlHidden(array("name" => "type", "value" => ($showdocs ? "doctype" : "classname"))) .
-			we_html_element::htmlHidden(array("name" => "step", "value" => "4"));
+			we_html_element::htmlHidden(array("name" => "step", "value" => 4));
 		if(defined("OBJECT_FILES_TABLE")){
 			$classname = $this->getHTMLObjectType(350, $showdocs);
 
-			array_push($parts, array("headline" => "", "html" => $classname, "space" => $_space));
+			$parts[] = array("headline" => "", "html" => $classname, "space" => $_space);
 		}
 
 		$category = $this->getHTMLCategory();
-		array_push($parts, array("headline" => "", "html" => $category, "space" => $_space, "noline" => 1));
+		$parts[] = array("headline" => "", "html" => $category, "space" => $_space, "noline" => 1);
 
 
 		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-				we_html_element::htmlHead(we_html_tools::getHtmlInnerHead(g_l('import', '[title]')) . STYLESHEET . $js . $yuiSuggest->getYuiCssFiles() . $yuiSuggest->getYuiJsFiles()) .
+				we_html_element::htmlHead(we_html_tools::getHtmlInnerHead(g_l('import', '[title]')) . STYLESHEET . $js . weSuggest::getYuiFiles()) .
 				we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
 						we_multiIconBox::getHTML("weExportWizard", "100%", $parts, 30, "", -1, "", "", false, g_l('export', "[step2]"))
 					) . $yuiSuggest->getYuiCss() . $yuiSuggest->getYuiJs()
@@ -408,15 +399,15 @@ top.close();');
 				$this->footerFrame . '.location="' . $this->frameset . '?pnt=footer&step=2";');
 
 		$parts = array(
-			array("headline" => "", "html" => we_forms::radiobutton("docs", ($art == "docs" ? true : ($art != "objects" ? true : false)), "art", g_l('export', "[documents]"), true, "defaultfont", $this->topFrame . ".art='docs'"), "space" => $_space, "noline" => "1")
+			array("headline" => "", "html" => we_forms::radiobutton("docs", ($art == "docs" ? true : ($art != "objects" ? true : false)), "art", g_l('export', "[documents]"), true, "defaultfont", $this->topFrame . ".art='docs'"), "space" => $_space, "noline" => 1)
 		);
 		if(defined("OBJECT_FILES_TABLE")){
-			$parts[] = array("headline" => "", "html" => we_forms::radiobutton("objects", ($art == "objects" ? true : ($art != "docs" ? true : false)), "art", g_l('export', "[objects]"), true, "defaultfont", $this->topFrame . ".art='objects'"), "space" => $_space, "noline" => "1");
+			$parts[] = array("headline" => "", "html" => we_forms::radiobutton("objects", ($art == "objects" ? true : ($art != "docs" ? true : false)), "art", g_l('export', "[objects]"), true, "defaultfont", $this->topFrame . ".art='objects'"), "space" => $_space, "noline" => 1);
 		}
 
 		$hiddens = we_html_element::htmlHidden(array("name" => "pnt", "value" => "body")) .
 			we_html_element::htmlHidden(array("name" => "selection", "value" => "manual")) .
-			we_html_element::htmlHidden(array("name" => "step", "value" => "2"));
+			we_html_element::htmlHidden(array("name" => "step", "value" => 2));
 
 		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				we_html_element::htmlHead(we_html_tools::getHtmlInnerHead(g_l('import', '[title]')) . STYLESHEET . $js) .
@@ -500,7 +491,6 @@ top.close();');
 				document.we_form.submit();
 			}');
 
-
 		$style_code = "";
 		if(isset($this->Tree->styles)){
 			foreach($this->Tree->styles as $st){
@@ -508,27 +498,11 @@ top.close();');
 			}
 		}
 
-		$header = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => "0"), 2, 9);
-		/* 		if($this->exportVars["extype"]=="wxml"){
-		  $header->setCol(0,1,array("bgcolor"=>"white"),we_html_tools::getPixel(80,2));
-		  $header->setCol(0,3,array("bgcolor"=>"white"),we_html_tools::getPixel(80,2));
-		  $header->setCol(0,5,array("bgcolor"=>"white"),we_html_tools::getPixel(80,2));
-		  $header->setCol(0,7,array("bgcolor"=>"white"),we_html_tools::getPixel(80,2));
-
-		  $header->setCol(1,0,array("bgcolor"=>"#DFE9F5"),we_html_tools::getPixel(1,1));
-		  $header->setCol(1,1,array("id"=>FILE_TABLE,"class"=>"header_small","bgcolor"=>"#DFE9F5","onclick"=>"setHead(0);","style"=>"{cursor: pointer;font-weight: bold;}"),we_html_tools::getPixel(5,2).g_l('export',"[documents]").we_html_tools::getPixel(5,2));
-		  $header->setCol(1,2,array("bgcolor"=>"grey"),we_html_tools::getPixel(2,20));
-		  $header->setCol(1,3,array("id"=>TEMPLATES_TABLE,"class"=>"header_small","bgcolor"=>"#DDDDDD","onclick"=>"setHead(1);","style"=>"{cursor: pointer;}"),we_html_tools::getPixel(5,2).g_l('export',"[templates]").we_html_tools::getPixel(5,2));
-		  $header->setCol(1,4,array("bgcolor"=>"grey"),we_html_tools::getPixel(2,20));
-		  $header->setCol(1,5,array("id"=>OBJECT_FILES_TABLE,"class"=>"header_small","bgcolor"=>"#DDDDDD","onclick"=>"setHead(2);","style"=>"{cursor: pointer;}"),we_html_tools::getPixel(5,2).g_l('export',"[objects]").we_html_tools::getPixel(5,2));
-		  $header->setCol(1,6,array("bgcolor"=>"grey"),we_html_tools::getPixel(2,20));
-		  $header->setCol(1,7,array("id"=>OBJECT_TABLE,"class"=>"header_small","bgcolor"=>"#DDDDDD","onclick"=>"setHead(3);","style"=>"{cursor: pointer;}"),we_html_tools::getPixel(5,2).g_l('export',"[classes]").we_html_tools::getPixel(5,2));
-		  $header->setCol(1,8,array("bgcolor"=>"grey"),we_html_tools::getPixel(2,20));
-		  } */
+		$header = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 2, 9);
 		$parts = array(
 			array(
 				"headline" => "",
-				"html" => we_html_tools::htmlAlertAttentionBox(g_l('export', "[select_export]"), 2, 540),
+				"html" => we_html_tools::htmlAlertAttentionBox(g_l('export', "[select_export]"), we_html_tools::TYPE_INFO, 540),
 				"space" => 0,
 				"noline" => 1
 			),
@@ -549,7 +523,7 @@ top.close();');
 				we_html_element::htmlBody(array(
 					"class" => "weDialogBody"
 					), we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), we_html_element::htmlHidden(array("name" => "pnt", "value" => "body")) .
-						we_html_element::htmlHidden(array("name" => "step", "value" => "4")) .
+						we_html_element::htmlHidden(array("name" => "step", "value" => 4)) .
 						we_html_element::htmlHidden(array("name" => "selDocs", "value" => "")) .
 						we_html_element::htmlHidden(array("name" => "selTempl", "value" => "")) .
 						we_html_element::htmlHidden(array("name" => "selObjs", "value" => (isset($_SESSION['weS']['exportVars']["selObjs"]) ? $_SESSION['weS']['exportVars']["selObjs"] : ""))) .
@@ -593,8 +567,9 @@ top.close();');
 		$export_depth = $this->exportVars["export_depth"];
 
 
-		if($filename == "")
+		if($filename == ""){
 			$filename = "weExport_" . time() . ($extype == "gxml" ? ".xml" : ".csv");
+		}
 
 		//set variables in top frame
 		$js = we_html_element::jsElement('
@@ -642,6 +617,7 @@ function setState(a) {
 ' . $this->footerFrame . '.location="' . $this->frameset . '?pnt=footer&step=4";');
 
 
+
 		$formattable = new we_html_table(array("cellpadding" => 2, "cellspacing" => 2, "border" => 0), 4, 1);
 		$formattable->setCol(0, 0, null, we_forms::checkboxWithHidden($handle_def_templates, "handle_def_templates", g_l('export', "[handle_def_templates]")));
 		$formattable->setCol(1, 0, null, we_forms::checkboxWithHidden(($handle_document_includes ? true : false), "handle_document_includes", g_l('export', "[handle_document_includes]")));
@@ -651,7 +627,7 @@ function setState(a) {
 		$parts[] = array("headline" => g_l('export', "[handle_document_options]") . we_html_element::htmlBr() . g_l('export', "[handle_template_options]"), "html" => $formattable->getHtml(), "space" => $_space);
 
 		$formattable = new we_html_table(array("cellpadding" => 2, "cellspacing" => 2, "border" => 0), 3, 1);
-		$formattable->setCol(0, 0, array("colspan" => "2"), we_forms::checkboxWithHidden(($handle_def_classes ? true : false), "handle_def_classes", g_l('export', "[handle_def_classes]")));
+		$formattable->setCol(0, 0, array("colspan" => 2), we_forms::checkboxWithHidden(($handle_def_classes ? true : false), "handle_def_classes", g_l('export', "[handle_def_classes]")));
 		$formattable->setCol(1, 0, null, we_forms::checkboxWithHidden(($handle_object_embeds ? true : false), "handle_object_embeds", g_l('export', "[handle_object_embeds]")));
 		//$formattable->setCol(2,0,null,we_forms::checkboxWithHidden(($handle_class_defs ? true : false),"handle_class_defs",g_l('export',"[handle_class_defs]")));
 
@@ -668,7 +644,7 @@ function setState(a) {
 		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				we_html_element::htmlHead(STYLESHEET . $js) .
 				we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), we_html_element::htmlHidden(array("name" => "pnt", "value" => "body")) .
-						we_html_element::htmlHidden(array("name" => "step", "value" => "7")) .
+						we_html_element::htmlHidden(array("name" => "step", "value" => 7)) .
 						we_multiIconBox::getHTML("weExportWizard", "100%", $parts, 30, "", -1, "", "", false, g_l('export', "[options]"))
 					)
 				)
@@ -711,7 +687,7 @@ function setState(a) {
 
 				$fileformattable = new we_html_table(array("cellpadding" => 2, "cellspacing" => 2, "border" => 0), 4, 1);
 
-				$_file_encoding = new we_html_select(array("name" => "csv_lineend", "size" => "1", "class" => "weSelect", "style" => "width: 254px"));
+				$_file_encoding = new we_html_select(array("name" => "csv_lineend", "size" => 1, "class" => "weSelect", "style" => "width: 254px"));
 				$_file_encoding->addOption("windows", g_l('export', "[windows]"));
 				$_file_encoding->addOption("unix", g_l('export', "[unix]"));
 				$_file_encoding->addOption("mac", g_l('export', "[mac]"));
@@ -749,7 +725,7 @@ function setState(a) {
 				we_html_element::htmlHead(STYLESHEET . "\n" . $js) .
 				we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), we_html_element::htmlHidden(array("name" => "pnt", "value" => "load")) .
 						we_html_element::htmlHidden(array("name" => "cmd", "value" => "export")) .
-						we_html_element::htmlHidden(array("name" => "step", "" => "7")) .
+						we_html_element::htmlHidden(array("name" => "step", "" => 7)) .
 						we_multiIconBox::getHTML("weExportWizard", "100%", $parts, 30, "", -1, "", "", false, g_l('export', "[step3]"))
 					)
 				)
@@ -774,7 +750,6 @@ function setState(a) {
 	}
 
 	function getHTMLStep50(){
-		@set_time_limit(0);
 		$preurl = getServerUrl();
 		if(isset($_GET["exportfile"])){
 			$_filename = basename(urldecode($_GET["exportfile"]));
@@ -790,7 +765,7 @@ function setState(a) {
 					header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 					header("Cache-Control: no-store, no-cache, must-revalidate"); // HTTP 1.1
 					header("Cache-Control: post-check=0, pre-check=0", false);
-				} else{
+				} else {
 					header("Cache-control: private, max-age=0, must-revalidate");
 				}
 
@@ -802,11 +777,11 @@ function setState(a) {
 				$_filehandler = readfile(TEMP_PATH . $_filename);
 
 				exit;
-			} else{
+			} else {
 				header("Location: " . $preurl . $this->frameset . "?pnt=body&step=99&error=download_failed");
 				exit;
 			}
-		} else{
+		} else {
 			header("Location: " . $preurl . $this->frameset . "?pnt=body&step=99&error=download_failed");
 			exit;
 		}
@@ -858,7 +833,7 @@ function setState(a) {
 		$art = $this->exportVars["art"];
 		$selection = $this->exportVars["selection"];
 
-		$table = new we_html_table(array("width" => "3000", "cellpadding" => "0", "cellspacing" => "0", "border" => "0"), 3, 1);
+		$table = new we_html_table(array("width" => '100%', "cellpadding" => 0, "cellspacing" => 0, "border" => 0), 3, 1);
 		//print $step;
 
 		if($step == 3){
@@ -934,7 +909,7 @@ function setState(a) {
 			$table->setCol(1, 0, array("valign" => "top"), we_html_tools::getPixel(15, 2));
 			$table->setCol(2, 0, array("nowrap" => "nowrap"), we_html_element::jsElement('setTimeout("we_tabInit()",500);')
 			);
-		} else if($step == 1 || $step == 2 || $step == 4)
+		} else if($step == 1 || $step == 2 || $step == 4){
 			$js2 = we_html_element::jsElement('
 				if (parent.frames.length > 0) {
 					var frmRows = parent.document.body.rows;
@@ -950,15 +925,16 @@ function setState(a) {
 					}
 				}
 		');
+		}
 
 		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				we_html_element::htmlHead(we_html_tools::getHtmlInnerHead(g_l('import', '[title]')) . STYLESHEET . $js) .
-				we_html_element::htmlBody(array("bgcolor" => "#ffffff", "background" => IMAGE_DIR . "backgrounds/header_with_black_line.gif", "marginwidth" => "0", "marginheight" => "0", "leftmargin" => "0", "topmargin" => "0"), $js2 .
+				we_html_element::htmlBody(array("bgcolor" => "#C8D8EC", "background" => IMAGE_DIR . "backgrounds/header_with_black_line.gif", "marginwidth" => 0, "marginheight" => 0, "leftmargin" => 0, "topmargin" => 0), $js2 .
 					$table->getHtml() .
 					we_html_element::htmlForm(array("name" => "we_form", "target" => "load", "action" => $this->frameset), we_html_element::htmlHidden(array("name" => "pnt", "value" => "load")) .
 						we_html_element::htmlHidden(array("name" => "cmd", "value" => "load")) .
 						we_html_element::htmlHidden(array("name" => "tab", "value" => "")) .
-						we_html_element::htmlHidden(array("name" => "pid", "value" => "0")) .
+						we_html_element::htmlHidden(array("name" => "pid", "value" => 0)) .
 						we_html_element::htmlHidden(array("name" => "openFolders", "value" => ""))
 					)
 				)
@@ -1058,7 +1034,7 @@ function setState(a) {
 			$progressbar->addText($text, 0, "current_description");
 		}
 
-		$content = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0", "width" => "100%"), 1, 2);
+		$content = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0, "width" => "100%"), 1, 2);
 		$content->setCol(0, 0, null, (isset($progressbar) ? $progressbar->getHtml() : ""));
 		$content->setCol(0, 1, array("align" => "right"), $buttons);
 
@@ -1066,7 +1042,7 @@ function setState(a) {
 				we_html_element::htmlHead(
 					we_html_tools::getHtmlInnerHead(g_l('import', '[title]')) . STYLESHEET . (isset($progressbar) ? $progressbar->getJSCode() : "")
 				) .
-				we_html_element::htmlBody(array("class" => "weDialogButtonsBody"), we_html_element::htmlForm(array(
+				we_html_element::htmlBody(array("class" => "weDialogButtonsBody", 'style' => 'overflow:hidden;'), we_html_element::htmlForm(array(
 						"name" => "we_form",
 						"method" => "post",
 						"target" => "load",
@@ -1203,7 +1179,7 @@ function setState(a) {
 
 						/* } else if ((count($finalTempl) > 0 && $extype=="wxml") || (count($finalClasses) > 0  && $extype=="wxml")) {
 						  $start_export = true; */
-					} else{
+					} else {
 						$export_error = (defined("OBJECT_TABLE") ? "nothing_selected_objs" : "nothing_selected_docs");
 					}
 
@@ -1219,7 +1195,7 @@ function setState(a) {
 
 					return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 							we_html_element::htmlHead(we_html_tools::getHtmlInnerHead(g_l('import', '[title]')) . STYLESHEET) .
-							we_html_element::htmlBody(array("bgcolor" => "#ffffff", "marginwidth" => "5", "marginheight" => "5", "leftmargin" => "5", "topmargin" => "5", "onLoad" => ($start_export ? ($this->footerFrame . ".location='" . $this->frameset . "?pnt=footer&mode=progress&step=4';document.we_form.submit()") : ($this->bodyFrame . ".location='" . $this->frameset . "?pnt=body&step=99&error=" . $export_error . "';" . $this->footerFrame . ".location='" . $this->frameset . "?pnt=footer&step=99';"))), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "load", "action" => $this->frameset), $hiddens)
+							we_html_element::htmlBody(array("bgcolor" => "#ffffff", "marginwidth" => 5, "marginheight" => 5, "leftmargin" => 5, "topmargin" => 5, "onLoad" => ($start_export ? ($this->footerFrame . ".location='" . $this->frameset . "?pnt=footer&mode=progress&step=4';document.we_form.submit()") : ($this->bodyFrame . ".location='" . $this->frameset . "?pnt=body&step=99&error=" . $export_error . "';" . $this->footerFrame . ".location='" . $this->frameset . "?pnt=footer&step=99';"))), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "load", "action" => $this->frameset), $hiddens)
 							)
 					);
 
@@ -1271,10 +1247,10 @@ function setState(a) {
 							if (top.footer.setProgress) top.footer.setProgress(' . $percent . ');
 						');
 
-					if(count($remaining_docs) > 0){
+					if(!empty($remaining_docs)){
 						$cut = array_shift($remaining_docs);
 						$_SESSION['weS']['exportVars']["finalDocs"] = $remaining_docs;
-					} else if(count($remaining_objs) > 0){
+					} else if(!empty($remaining_objs)){
 						$cut = array_shift($remaining_objs);
 						$_SESSION['weS']['exportVars']["finalObjs"] = $remaining_objs;
 					}
@@ -1282,12 +1258,12 @@ function setState(a) {
 					$hiddens = we_html_element::htmlHidden(array("name" => "pnt", "value" => "load")) .
 						we_html_element::htmlHidden(array("name" => "all", "value" => $all)) .
 						we_html_element::htmlHidden(array("name" => "cmd", "value" => "do_export"));
-					if((count($remaining_docs) > 0) || (count($remaining_objs) > 0)){
+					if((!empty($remaining_docs)) || (!empty($remaining_objs))){
 						$head = we_html_tools::getHtmlInnerHead(g_l('import', '[title]')) . STYLESHEET;
 
 						return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 								we_html_element::htmlHead($head) .
-								we_html_element::htmlBody(array("bgcolor" => "#ffffff", "marginwidth" => "5", "marginheight" => "5", "leftmargin" => "5", "topmargin" => "5", "onLoad" => "document.we_form.submit()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "load", "action" => $this->frameset), $hiddens) . $_progress_update
+								we_html_element::htmlBody(array("bgcolor" => "#ffffff", "marginwidth" => 5, "marginheight" => 5, "leftmargin" => 5, "topmargin" => 5, "onLoad" => "document.we_form.submit()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "load", "action" => $this->frameset), $hiddens) . $_progress_update
 								)
 						);
 					}
@@ -1300,10 +1276,10 @@ function setState(a) {
 							we_html_element::htmlBody(
 								array(
 									"bgcolor" => "#ffffff",
-									"marginwidth" => "5",
-									"marginheight" => "5",
-									"leftmargin" => "5",
-									"topmargin" => "5",
+									"marginwidth" => 5,
+									"marginheight" => 5,
+									"leftmargin" => 5,
+									"topmargin" => 5,
 									"onLoad" => oldHtmlspecialchars($export_local ? ($this->bodyFrame . ".location='" . $this->frameset . "?pnt=body&step=10&file_name=" . urlencode($filename) . "';" . $this->footerFrame . ".location='" . $this->frameset . "?pnt=footer&step=10';") : (we_message_reporting::getShowMessageCall(g_l('export', "[server_finished]"), we_message_reporting::WE_MESSAGE_NOTICE) . "top.close();")))), null
 					);
 
@@ -1373,13 +1349,14 @@ function setState(a) {
 						$_SESSION['weS']['exportVars']["filename"] = ($export_local ? TEMP_PATH . '/' . $filename : $_SERVER['DOCUMENT_ROOT'] . $path . $filename);
 						//FIXME set export type in getHeader
 						$ret = weFile::save($_SESSION['weS']['exportVars']["filename"], weXMLExIm::getHeader(), "wb");
-					} else{
+					} else {
 						$xmlExIm->RefTable->Array2RefTable($this->exportVars["RefTable"]);
 						$xmlExIm->RefTable->current = $this->exportVars["CurrentRef"];
 						$all = count($xmlExIm->RefTable->Storage);
 						$ref = $xmlExIm->RefTable->getNext();
-						if(!empty($ref->ID) && !empty($ref->ContentType))
+						if(!empty($ref->ID) && !empty($ref->ContentType)){
 							$xmlExIm->exportChunk($ref->ID, $ref->ContentType, $filename);
+						}
 						$exports = $xmlExIm->RefTable->current;
 					}
 
@@ -1387,6 +1364,7 @@ function setState(a) {
 					if($all != 0){
 						$percent = (int) (($exports / $all) * 100);
 					}
+
 					if($percent < 0){
 						$percent = 0;
 					} else if($percent > 100){
@@ -1407,7 +1385,7 @@ function setState(a) {
 					if($all > $exports){
 						return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 								we_html_element::htmlHead($head) .
-								we_html_element::htmlBody(array("bgcolor" => "#ffffff", "marginwidth" => "5", "marginheight" => "5", "leftmargin" => "5", "topmargin" => "5", "onLoad" => "document.we_form.submit()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "load", "action" => $this->frameset), $hiddens) . $_progress_update
+								we_html_element::htmlBody(array("bgcolor" => "#ffffff", "marginwidth" => 5, "marginheight" => 5, "leftmargin" => 5, "topmargin" => 5, "onLoad" => "document.we_form.submit()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "load", "action" => $this->frameset), $hiddens) . $_progress_update
 								)
 						);
 					}
@@ -1421,10 +1399,10 @@ function setState(a) {
 							we_html_element::htmlBody(
 								array(
 									"bgcolor" => "#ffffff",
-									"marginwidth" => "5",
-									"marginheight" => "5",
-									"leftmargin" => "5",
-									"topmargin" => "5",
+									"marginwidth" => 5,
+									"marginheight" => 5,
+									"leftmargin" => 5,
+									"topmargin" => 5,
 									"onLoad" => oldHtmlspecialchars($export_local ? ($this->bodyFrame . ".location='" . $this->frameset . "?pnt=body&step=10&file_name=" . urlencode($filename) . "';" . $this->footerFrame . ".location='" . $this->frameset . "?pnt=footer&step=10';") : ( we_message_reporting::getShowMessageCall(g_l('export', "[server_finished]"), we_message_reporting::WE_MESSAGE_NOTICE) . ";top.close();")))), null
 					);
 			}
@@ -1470,7 +1448,7 @@ function setState(a) {
 					var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if (i < (arguments.length - 1)){ url += "&"; }}
 					switch (arguments[0]) {
 						case "openDirselector":
-							new jsWindow(url,"dir_selector",-1,-1,' . WINDOW_DIRSELECTOR_WIDTH . ',' . WINDOW_DIRSELECTOR_HEIGHT . ',true,false,true true);
+							new jsWindow(url,"dir_selector",-1,-1,' . we_fileselector::WINDOW_DIRSELECTOR_WIDTH . ',' . we_fileselector::WINDOW_DIRSELECTOR_HEIGHT . ',true,false,true true);
 						break;
 					}
 				}
@@ -1490,11 +1468,12 @@ function setState(a) {
 
 		$q = getDoctypeQuery($this->db);
 		$this->db->query("SELECT ID,DocType FROM " . DOC_TYPES_TABLE . " $q");
-		$select = new we_html_select(array("name" => "doctype", "size" => "1", "class" => "weSelect", "style" => "{width: $width;}", "onChange" => ""));
+		$select = new we_html_select(array("name" => "doctype", "size" => 1, "class" => "weSelect", "style" => "{width: $width;}", "onChange" => ""));
 		$first = "";
-		while($this->db->next_record()) {
-			if($first == "")
+		while($this->db->next_record()){
+			if($first == ""){
 				$first = $this->db->f("ID");
+			}
 			$select->addOption($this->db->f("ID"), $this->db->f("DocType"));
 		}
 
@@ -1507,7 +1486,7 @@ function setState(a) {
 		$path = $dir ? f("SELECT Path FROM " . FILE_TABLE . " WHERE ID=" . intval($dir), "Path", $this->db) : "/";
 		$dir = we_html_tools::htmlFormElementTable($this->formWeChooser(FILE_TABLE, $width, 0, "dir", $dir, "Path", $path), g_l('export', "[dir]"));
 
-		$table = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0"), 3, 2);
+		$table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 3, 2);
 		$table->setColContent(0, 1, $select->getHtml());
 		$table->setColContent(1, 0, we_html_tools::getPixel(defined("OBJECT_FILES_TABLE") ? 25 : 0, 5));
 		$table->setColContent(2, 1, $dir);
@@ -1525,11 +1504,12 @@ function setState(a) {
 		if(defined("OBJECT_FILES_TABLE")){
 			$vals = array();
 			$this->db->query("SELECT ID,Text FROM " . OBJECT_TABLE);
-			$select = new we_html_select(array("name" => "classname", "class" => "weSelect", "size" => "1", "style" => "{width: $width}", "onChange" => $this->topFrame . ".classname=document.we_form.classname.options[document.we_form.classname.selectedIndex].value;"));
+			$select = new we_html_select(array("name" => "classname", "class" => "weSelect", "size" => 1, "style" => "{width: $width}", "onChange" => $this->topFrame . ".classname=document.we_form.classname.options[document.we_form.classname.selectedIndex].value;"));
 			$first = "";
-			while($this->db->next_record()) {
-				if($first == "")
+			while($this->db->next_record()){
+				if($first == ""){
 					$first = $this->db->f("ID");
+				}
 				$select->addOption($this->db->f("ID"), $this->db->f("Text"));
 			}
 
@@ -1541,14 +1521,11 @@ function setState(a) {
 			');
 			$select->selectOption($classname);
 
-			if(isset($_REQUEST["type"]))
-				$type = $_REQUEST["type"];
-			else
-				$type = "";
+			$type = (isset($_REQUEST["type"]) ? $_REQUEST["type"] : '');
 
 			$radio = $showdocs ? we_forms::radiobutton("classname", ($type == "classname" ? true : false), "type", g_l('export', "[classname]"), true, "defaultfont", $this->topFrame . ".type='classname'") : we_html_tools::getPixel(25, 5) . g_l('export', "[classname]");
 			return $js . we_html_tools::htmlFormElementTable(we_html_tools::getPixel(25, 5) . $select->getHtml(), $radio);
-		} else{
+		} else {
 			return null;
 		}
 	}
@@ -1562,7 +1539,7 @@ function setState(a) {
 						$ids = makeArrayFromCSV($_REQUEST["cat"]);
 						foreach($ids as $id){
 							if(strlen($id) && (!in_array($id, $arr))){
-								array_push($arr, $id);
+								$arr[] = $id;
 							}
 						}
 						$this->exportVars["categories"] = makeCSVFromArray($arr, true);
@@ -1572,8 +1549,9 @@ function setState(a) {
 					$arr = makeArrayFromCSV($this->exportVars["categories"]);
 					if(isset($_REQUEST["cat"])){
 						foreach($arr as $k => $v){
-							if($v == $_REQUEST["cat"])
+							if($v == $_REQUEST["cat"]){
 								array_splice($arr, $k, 1);
+							}
 						}
 						$this->exportVars["categories"] = makeCSVFromArray($arr, true);
 					}
@@ -1604,10 +1582,10 @@ function setState(a) {
 			'</td></tr></table>';
 	}
 
-	function formWeChooser($table = FILE_TABLE, $width = "", $rootDirID = 0, $IDName = "ID", $IDValue = "0", $Pathname = "Path", $Pathvalue = "/", $cmd = ""){
+	function formWeChooser($table = FILE_TABLE, $width = "", $rootDirID = 0, $IDName = "ID", $IDValue = 0, $Pathname = "Path", $Pathvalue = "/", $cmd = ""){
 		$yuiSuggest = & weSuggest::getInstance();
 		if($Pathvalue == ""){
-			$Pathvalue = f("SELECT Path FROM " . $this->db->escape($table) . " WHERE ID=" . intval($IDValue), "Path", $this->db);
+			$Pathvalue = f('SELECT Path FROM ' . $this->db->escape($table) . ' WHERE ID=' . intval($IDValue), "Path", $this->db);
 		}
 
 		//javascript:we_cmd('openDirselector',document.we_form.elements['$IDName'].value,'$table','document.we_form.elements[\\'$IDName\\'].value','document.we_form.elements[\\'$Pathname\\'].value','".$cmd."','".session_id()."','$rootDirID')
@@ -1637,7 +1615,7 @@ function setState(a) {
 		foreach($values as $k => $v)
 			$select->addOption(oldHtmlspecialchars($k), oldHtmlspecialchars($v));
 
-		$table = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0", "width" => "250"), 1, 3);
+		$table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0, "width" => 250), 1, 3);
 
 		$table->setColContent(0, 0, we_html_tools::htmlTextInput($name, $input_size, $value));
 		$table->setColContent(0, 1, we_html_tools::getPixel(10, 10));

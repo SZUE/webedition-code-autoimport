@@ -24,57 +24,50 @@
  */
 class we_schedpro{
 
+	const SCHEDULE_FROM = 1; //publish
+	const SCHEDULE_TO = 2; //park
 	const DELETE = 3;
 	const DOCTYPE = 4;
 	const CATEGORY = 5;
 	const DIR = 6;
+	const SEARCHABLE_ENABLED = 7;
+	const SEARCHABLE_DISABLED = 8;
+	const CALL = 9;
 	const TYPE_ONCE = 0;
 	const TYPE_HOUR = 1;
 	const TYPE_DAY = 2;
 	const TYPE_WEEK = 3;
 	const TYPE_MONTH = 4;
 	const TYPE_YEAR = 5;
-	const SCHEDULE_FROM = 1;
-	const SCHEDULE_TO = 2;
 
-	var $task = 1;
-	var $type = 0;
+	var $task = self::SCHEDULE_FROM;
+	var $type = self::TYPE_ONCE;
 	var $months = array();
 	var $days = array();
 	var $weekdays = array();
 	var $time = 0;
 	var $nr = 0;
-	var $CategoryIDs = "";
+	var $CategoryIDs = '';
 	var $DoctypeID = 0;
 	var $ParentID = 0;
 	var $active = 1;
 	var $doctypeAll = 0;
 
-	function __construct($s = "", $nr = 0){
+	function __construct($s = '', $nr = 0){
 		if(is_array($s)){
-			$this->task = isset($s["task"]) ? $s["task"] : 1;
-			$this->type = isset($s["type"]) ? $s["type"] : 0;
-			$this->months = isset($s["months"]) ? $s["months"] : array();
-			$this->days = isset($s["days"]) ? $s["days"] : array();
-			$this->weekdays = isset($s["weekdays"]) ? $s["weekdays"] : array();
-			$this->time = isset($s["time"]) ? $s["time"] : time();
-			$this->CategoryIDs = isset($s["CategoryIDs"]) ? $s["CategoryIDs"] : "";
-			$this->DoctypeID = isset($s["DoctypeID"]) ? $s["DoctypeID"] : 0;
-			$this->ParentID = isset($s["ParentID"]) ? $s["ParentID"] : 0;
-			$this->active = isset($s["active"]) ? $s["active"] : 1;
-			$this->doctypeAll = isset($s["doctypeAll"]) ? $s["doctypeAll"] : 0;
-		} else{
-			$this->task = 1;
-			$this->type = 0;
-			$this->months = array();
-			$this->days = array();
-			$this->weekdays = array();
+			$this->task = isset($s['task']) ? $s['task'] : $this->task;
+			$this->type = isset($s['type']) ? $s['type'] : $this->type;
+			$this->months = isset($s['months']) ? $s['months'] : $this->months;
+			$this->days = isset($s['days']) ? $s['days'] : $this->days;
+			$this->weekdays = isset($s['weekdays']) ? $s['weekdays'] : $this->weekdays;
+			$this->time = isset($s['time']) ? $s['time'] : time();
+			$this->CategoryIDs = isset($s['CategoryIDs']) ? $s['CategoryIDs'] : $this->CategoryIDs;
+			$this->DoctypeID = isset($s['DoctypeID']) ? $s['DoctypeID'] : $this->DoctypeID;
+			$this->ParentID = isset($s['ParentID']) ? $s['ParentID'] : $this->ParentID;
+			$this->active = isset($s['active']) ? $s['active'] : $this->active;
+			$this->doctypeAll = isset($s['doctypeAll']) ? $s['doctypeAll'] : $this->doctypeAll;
+		} else {
 			$this->time = time();
-			$this->CategoryIDs = "";
-			$this->DoctypeID = 0;
-			$this->ParentID = 0;
-			$this->active = 1;
-			$this->doctypeAll = 0;
 		}
 		$this->nr = $nr;
 	}
@@ -83,7 +76,7 @@ class we_schedpro{
 		$months = '<table cellpadding="0" cellspacing="0" border="0"><tr>';
 
 		for($i = 1; $i <= 12; $i++){
-			$months .= '<td>' . we_forms::checkbox("1", $this->months[$i - 1], "check_we_schedule_month" . $i . "_" . $this->nr, g_l('date', '[month][short][' . ($i - 1) . ']'), false, "defaultfont", "this.form.elements['we_schedule_month" . $i . "_" . $this->nr . "'].value=this.checked?1:0;_EditorFrame.setEditorIsHot(true)") .
+			$months .= '<td>' . we_forms::checkbox(1, $this->months[$i - 1], "check_we_schedule_month" . $i . "_" . $this->nr, g_l('date', '[month][short][' . ($i - 1) . ']'), false, "defaultfont", "this.form.elements['we_schedule_month" . $i . "_" . $this->nr . "'].value=this.checked?1:0;_EditorFrame.setEditorIsHot(true)") .
 				'<input type="hidden" name="we_schedule_month' . $i . '_' . $this->nr . '" value="' . $this->months[$i - 1] . '" /></td>';
 		}
 
@@ -96,9 +89,9 @@ class we_schedpro{
 
 		for($i = 1; $i <= 36; $i++){
 			if($i <= 31){
-				$days .= '<td>' . we_forms::checkbox("1", $this->days[$i - 1], "check_we_schedule_day" . $i . "_" . $this->nr, sprintf('%02d', $i), false, "defaultfont", "this.form.elements['we_schedule_day" . $i . "_" . $this->nr . "'].value=this.checked?1:0;_EditorFrame.setEditorIsHot(true)") .
+				$days .= '<td>' . we_forms::checkbox(1, $this->days[$i - 1], "check_we_schedule_day" . $i . "_" . $this->nr, sprintf('%02d', $i), false, "defaultfont", "this.form.elements['we_schedule_day" . $i . "_" . $this->nr . "'].value=this.checked?1:0;_EditorFrame.setEditorIsHot(true)") .
 					'<input type="hidden" name="we_schedule_day' . $i . '_' . $this->nr . '" value="' . $this->days[$i - 1] . '" /></td><td class="defaultfont">&nbsp;</td>';
-			} else{
+			} else {
 				$days .= '<td colspan="3">';
 			}
 			switch($i){
@@ -117,7 +110,7 @@ class we_schedpro{
 		$wd = '<table cellpadding="0" cellspacing="0" border="0"><tr>';
 
 		for($i = 1; $i <= 7; $i++){
-			$wd .= '<td>' . we_forms::checkbox("1", $this->weekdays[$i - 1], "check_we_schedule_wday'.$i.'_'.$this->nr.'", g_l('date', '[day][short][' . ($i - 1) . ']'), false, "defaultfont", "this.form.elements['we_schedule_wday" . $i . "_" . $this->nr . "'].value=this.checked?1:0;_EditorFrame.setEditorIsHot(true)") .
+			$wd .= '<td>' . we_forms::checkbox(1, $this->weekdays[$i - 1], "check_we_schedule_wday'.$i.'_'.$this->nr.'", g_l('date', '[day][short][' . ($i - 1) . ']'), false, "defaultfont", "this.form.elements['we_schedule_wday" . $i . "_" . $this->nr . "'].value=this.checked?1:0;_EditorFrame.setEditorIsHot(true)") .
 				'<input type="hidden" name="we_schedule_wday' . $i . '_' . $this->nr . '" value="' . $this->weekdays[$i - 1] . '" /></td><td class="defaultfont">&nbsp;</td>';
 		}
 
@@ -173,17 +166,21 @@ function checkFooter(){
 		$taskpopup = '<select class="weSelect we_schedule_task" name="we_schedule_task_' . $this->nr . '" size="1" onchange="_EditorFrame.setEditorIsHot(true);checkFooter();if(self.we_hasExtraRow_' . $this->nr . ' || this.options[this.selectedIndex].value==' . self::DOCTYPE . ' || this.options[this.selectedIndex].value==' . self::CATEGORY . ' || this.options[this.selectedIndex].value==' . self::DIR . '){ setScrollTo();we_cmd(\'reload_editpage\');}">
 <option value="' . self::SCHEDULE_FROM . '"' . (($this->task == self::SCHEDULE_FROM) ? ' selected' : '') . '>' . g_l('modules_schedule', "[task][" . self::SCHEDULE_FROM . ']') . '</option>
 <option value="' . self::SCHEDULE_TO . '"' . (($this->task == self::SCHEDULE_TO) ? ' selected' : '') . '>' . g_l('modules_schedule', "[task][" . self::SCHEDULE_TO . ']') . '</option>';
-		if((we_hasPerm("DELETE_DOCUMENT") && (!$isobj)) || (we_hasPerm("DELETE_OBJECTFILE") && $isobj)){
+		if((we_hasPerm('DELETE_DOCUMENT') && (!$isobj)) || (we_hasPerm('DELETE_OBJECTFILE') && $isobj)){
 			$taskpopup .= '<option value="' . self::DELETE . '"' . (($this->task == self::DELETE) ? ' selected' : '') . '>' . g_l('modules_schedule', "[task][" . self::DELETE . ']') . '</option>';
 		}
 		if(!$isobj){
-			$taskpopup .= '<option value="' . self::DOCTYPE . '"' . (($this->task == self::DOCTYPE) ? ' selected' : '') . '>' . g_l('modules_schedule', "[task][" . self::DOCTYPE . ']') . '</option>';
+			$taskpopup .= '<option value="' . self::DOCTYPE . '"' . (($this->task == self::DOCTYPE) ? ' selected' : '') . '>' . g_l('modules_schedule', "[task][" . self::DOCTYPE . ']') . '</option>
+<option value="' . self::CALL . '"' . (($this->task == self::CALL) ? ' selected' : '') . '>' . g_l('modules_schedule', "[task][" . self::CALL . ']') . '</option>';
 		}
 		$taskpopup .= '<option value="' . self::CATEGORY . '"' . (($this->task == self::CATEGORY) ? ' selected' : '') . '>' . g_l('modules_schedule', "[task][" . self::CATEGORY . ']') . '</option>';
-		if((we_hasPerm("MOVE_DOCUMENT") && (!$isobj)) || (we_hasPerm("MOVE_OBJECTFILE") && $isobj)){
+		if((we_hasPerm('MOVE_DOCUMENT') && (!$isobj)) || (we_hasPerm("MOVE_OBJECTFILE") && $isobj)){
 			$taskpopup .= '<option value="' . self::DIR . '"' . (($this->task == self::DIR) ? ' selected' : '') . '>' . g_l('modules_schedule', "[task][" . self::DIR . ']') . '</option>';
 		}
-		$taskpopup .= '</select>';
+		$taskpopup .= '
+<option value="' . self::SEARCHABLE_ENABLED . '"' . (($this->task == self::SEARCHABLE_ENABLED) ? ' selected' : '') . '>' . g_l('modules_schedule', "[task][" . self::SEARCHABLE_ENABLED . ']') . '</option>
+<option value="' . self::SEARCHABLE_DISABLED . '"' . (($this->task == self::SEARCHABLE_DISABLED) ? ' selected' : '') . '>' . g_l('modules_schedule', "[task][" . self::SEARCHABLE_DISABLED . ']') . '</option>
+</select>';
 		$extracont = '';
 		$extraheadl = '';
 
@@ -194,12 +191,12 @@ function checkFooter(){
 				$q = getDoctypeQuery($db);
 				$db->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' ' . $q);
 				$doctypepop = '<select class="weSelect" name="we_schedule_doctype_' . $this->nr . '" size="1" onchange="_EditorFrame.setEditorIsHot(true)">';
-				while($db->next_record()) {
+				while($db->next_record()){
 					$doctypepop .= '<option value="' . $db->f("ID") . '"' . (($this->DoctypeID == $db->f("ID")) ? ' selected="selected"' : '') . '>' . $db->f("DocType") . '</option>';
 				}
 				$doctypepop .= '</select>';
 				$checknname = md5(uniqid(__FUNCTION__, true));
-				$extracont = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' . $doctypepop . '</td><td class="defaultfont">&nbsp;&nbsp;</td><td>' . we_forms::checkbox("1", $this->doctypeAll, $checknname, g_l('modules_schedule', "[doctypeAll]")
+				$extracont = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' . $doctypepop . '</td><td class="defaultfont">&nbsp;&nbsp;</td><td>' . we_forms::checkbox(1, $this->doctypeAll, $checknname, g_l('modules_schedule', "[doctypeAll]")
 						, false, "defaultfont", "this.form.elements['we_schedule_doctypeAll_" . $this->nr . "'].value=this.checked?1:0;") .
 					'<input type="hidden" name="we_schedule_doctypeAll_' . $this->nr . '" value="' . $this->doctypeAll . '" /></td></tr></table>';
 				$extraheadl = g_l('modules_schedule', "[doctype]");
@@ -222,11 +219,11 @@ function checkFooter(){
 				$path = id_to_path($this->ParentID, $GLOBALS['we_doc']->Table);
 
 				if($GLOBALS['we_doc']->ClassName == 'we_objectFile'){
-					if($path == "/"){ //	impossible for documents
+					if($path == '/'){ //	impossible for documents
 						$path = $GLOBALS['we_doc']->RootDirPath;
 					}
 					$_rootDirID = $GLOBALS['we_doc']->rootDirID;
-				} else{
+				} else {
 					$_rootDirID = 0;
 				}
 
@@ -236,8 +233,8 @@ function checkFooter(){
 				$button = we_button::create_button('select', 'javascript:we_cmd(\'openDirselector\',document.we_form.elements[\'' . $idname . '\'].value,\'' . $GLOBALS['we_doc']->Table . '\',\'' . $wecmdenc1 . '\',\'' . $wecmdenc2 . '\',\'' . $wecmdenc3 . '\',\'' . session_id() . '\',\'' . $_rootDirID . '\')');
 
 				$yuiSuggest = & weSuggest::getInstance();
-				$yuiSuggest->setAcId("WsDir");
-				$yuiSuggest->setContentType("folder");
+				$yuiSuggest->setAcId('WsDir');
+				$yuiSuggest->setContentType('folder');
 				$yuiSuggest->setInput($textname, $path);
 				$yuiSuggest->setMaxResults(20);
 				$yuiSuggest->setMayBeEmpty(0);
@@ -247,8 +244,8 @@ function checkFooter(){
 				$yuiSuggest->setWidth(320);
 				$yuiSuggest->setSelectButton($button);
 
-				$extracont = $yuiSuggest->getYuiFiles() . $yuiSuggest->getHTML() . $yuiSuggest->getYuiCode();
-				$extraheadl = g_l('modules_schedule', "[dirctory]");
+				$extracont = weSuggest::getYuiFiles() . $yuiSuggest->getHTML() . $yuiSuggest->getYuiCode();
+				$extraheadl = g_l('modules_schedule', '[dirctory]');
 		}
 
 		$typepopup = '<select class="weSelect" name="we_schedule_type_' . $this->nr . '" size="1" onchange="_EditorFrame.setEditorIsHot(true);setScrollTo();we_cmd(\'reload_editpage\')">
@@ -265,7 +262,7 @@ function checkFooter(){
 		$table = '<table cellpadding="0" cellspacing="0" border="0">
 	<tr valign="top">
 		<td class="defaultgray">' . g_l('modules_schedule', "[task][headline]") . ':</td>
-		<td class="defaultfont"><table border="0" cellpadding="0" cellspacing="0"><tr><td>' . $taskpopup . '</td><td class="defaultfont">&nbsp;&nbsp;</td><td>' . we_forms::checkbox("1", $this->active, $checknname, g_l('modules_schedule', "[active]")
+		<td class="defaultfont"><table border="0" cellpadding="0" cellspacing="0"><tr><td>' . $taskpopup . '</td><td class="defaultfont">&nbsp;&nbsp;</td><td>' . we_forms::checkbox(1, $this->active, $checknname, g_l('modules_schedule', "[active]")
 				, false, "defaultfont", "this.form.elements['we_schedule_active_" . $this->nr . "'].value=this.checked?1:0;_EditorFrame.setEditorIsHot(true);checkFooter();") .
 			'<input type="hidden" class="we_schedule_active" name="we_schedule_active_' . $this->nr . '" value="' . $this->active . '" /></td></tr></table></td>
 		<td>' . we_button::create_button("image:btn_function_trash", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('del_schedule','" . $this->nr . "')") . '</td>
@@ -367,22 +364,22 @@ function checkFooter(){
 	}
 
 	function processSchedule($id, $schedFile, $now, $DB_WE){
-		usort($schedFile["value"], array('we_schedpro', 'weCmpSchedLast'));
-
+		usort($schedFile['value'], array('we_schedpro', 'weCmpSchedLast'));
+		$GLOBALS['we']['Scheduler_active'] = 1;
 		$doc_save = isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc'] : NULL;
 		$GLOBALS['we_doc'] = new $schedFile['ClassName']();
 		$GLOBALS['we_doc']->InitByID($id, $schedFile["table"], we_class::LOAD_SCHEDULE_DB);
-		$deleted = false;
+		$callPublish = true;
 		$changeTmpDoc = false;
 		$_SESSION['weS']['versions']['fromScheduler'] = true;
 
-		foreach($schedFile["value"] as $s){
+		foreach($schedFile['value'] as $s){
 			switch($s['task']){
 				case self::DELETE:
-					$GLOBALS["NOT_PROTECT"] = true;
-					include_once(WE_INCLUDES_PATH . 'we_delete_fn.inc.php');
+					$GLOBALS['NOT_PROTECT'] = true;
+					require_once(WE_INCLUDES_PATH . 'we_delete_fn.inc.php');
 					deleteEntry($id, $schedFile['table']);
-					$deleted = true;
+					$callPublish = false;
 					$changeTmpDoc = false;
 					break 2; //exit foreach
 
@@ -405,19 +402,36 @@ function checkFooter(){
 					$GLOBALS['we_doc']->Published = $publSave;
 					break;
 				case self::CATEGORY:
-					$GLOBALS['we_doc']->Category = $s["CategoryIDs"];
+					$GLOBALS['we_doc']->Category = $s['CategoryIDs'];
 					$changeTmpDoc = true;
 					break;
 				case self::DIR:
-					$GLOBALS['we_doc']->setParentID($s["ParentID"]);
+					$GLOBALS['we_doc']->setParentID($s['ParentID']);
 					$GLOBALS['we_doc']->Path = $GLOBALS['we_doc']->getPath();
 					$changeTmpDoc = true;
 					break;
+				case self::SEARCHABLE_ENABLED:
+					$GLOBALS['we_doc']->IsSearchable = true;
+					$changeTmpDoc = true;
+					break;
+				case self::SEARCHABLE_DISABLED:
+					$GLOBALS['we_doc']->IsSearchable = false;
+					$changeTmpDoc = true;
+					break;
+				case self::CALL:
+					require_once(WE_INCLUDES_PATH . 'we_tag.inc.php');
+					$callPublish = (count($schedFile['value']) > 1); //only if other operations pending
+					//don't show any output
+					ob_start();
+					//use we:include to call document. Note: editmode, inWE is already disabled
+					eval(we_tag('include', array('type' => 'document', 'id' => $id)));
+					ob_end_clean();
+					break;
 			}
 
-			if($s["type"] != self::TYPE_ONCE && ($nextWann = self::getNextTimestamp($s, $now))){
+			if($s['type'] != self::TYPE_ONCE && ($nextWann = self::getNextTimestamp($s, $now))){
 				$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET Wann=' . intval($nextWann) . ' WHERE Active=1 AND DID=' . intval($id) . ' AND ClassName="' . $schedFile['ClassName'] . '" AND Type="' . $s['type'] . '" AND Was="' . $s['task'] . '" AND Wann=' . $schedFile['Wann']);
-			} else{
+			} else {
 				$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET Active=0 WHERE Active=1 AND DID=' . intval($id) . ' AND ClassName="' . $schedFile['ClassName'] . '" AND Type="' . $s['type'] . '" AND Was="' . $s['task'] . '" AND Wann=' . $schedFile['Wann']);
 			}
 		}
@@ -428,7 +442,7 @@ function checkFooter(){
 			}
 		}
 
-		if(!$deleted){
+		if($callPublish){
 			$pub = ($GLOBALS['we_doc']->Published ?
 					$GLOBALS['we_doc']->we_publish() :
 					$GLOBALS['we_doc']->we_unpublish());
@@ -442,37 +456,52 @@ function checkFooter(){
 
 		$_SESSION['weS']['versions']['fromScheduler'] = false;
 
-//		$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET Active=0 WHERE DID=' . intval($id) . ' AND Wann<=' . $now . ' AND Schedpro != "" AND Active=1 AND Type="' . self::TYPE_ONCE . '"');
+		//		$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET Active=0 WHERE DID=' . intval($id) . ' AND Wann<=' . $now . ' AND Schedpro != "" AND Active=1 AND Type="' . self::TYPE_ONCE . '"');
+		unset($GLOBALS['we']['Scheduler_active']);
 	}
 
 	static function trigger_schedule(){
-		//FIXME: do we want to limit this query, if not called by cron?
 		$DB_WE = new DB_WE();
 		$now = time();
 		$hasLock = $DB_WE->hasLock();
+		//allow at max 10 scheduled activities per call, in case no cron is used.
+		$maxSched = defined('SCHEDULED_BY_CRON') ? -1 : 10;
+//make sure documents don't know they are inside WE
+		if(isset($GLOBALS['WE_MAIN_EDITMODE']) || isset($GLOBALS['we_editmode'])){
+			$lastWEState = array(
+				'WE_MAIN_EDITMODE' => $GLOBALS['WE_MAIN_EDITMODE'],
+				'we_editmode' => $GLOBALS['we_editmode'],
+			);
+			$GLOBALS['WE_MAIN_EDITMODE'] = $GLOBALS['we_editmode'] = false;
+		}
 
-		while((!$hasLock || $DB_WE->lock(array(SCHEDULE_TABLE, ERROR_LOG_TABLE))) && ($rec = getHash('SELECT * FROM ' . SCHEDULE_TABLE . ' WHERE Wann<=UNIX_TIMESTAMP() AND lockedUntil<NOW() AND Active=1 ORDER BY Wann LIMIT 1', $DB_WE))) {
+		while((!$hasLock || $DB_WE->lock(array(SCHEDULE_TABLE, ERROR_LOG_TABLE))) && (--$maxSched != 0) && ($rec = getHash('SELECT * FROM ' . SCHEDULE_TABLE . ' WHERE Wann<=UNIX_TIMESTAMP() AND lockedUntil<NOW() AND Active=1 ORDER BY Wann LIMIT 1', $DB_WE))){
 			$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET lockedUntil=lockedUntil+INTERVAL 1 minute WHERE DID=' . $rec['DID'] . ' AND Active=1 AND ClassName="' . $rec['ClassName'] . '" AND Type="' . $rec["Type"] . '" AND Was="' . $rec["Was"] . '" AND Wann=' . $rec['Wann']);
 			if($hasLock){
 				$DB_WE->unlock();
 			}
-			$s = unserialize($rec["Schedpro"]);
+			$s = unserialize($rec['Schedpro']);
 			if(is_array($s)){
-				$s["lasttime"] = self::getPrevTimestamp($s, $now);
+				$s['lasttime'] = self::getPrevTimestamp($s, $now);
 				$tmp = array(
-					"value" => array($s),
-					"ClassName" => $rec["ClassName"],
+					'value' => array($s),
+					'ClassName' => $rec['ClassName'],
 					'Wann' => $rec['Wann'],
-					"table" => $rec["ClassName"] == 'we_objectFile' ? OBJECT_FILES_TABLE : FILE_TABLE,
+					'table' => $rec['ClassName'] == 'we_objectFile' ? OBJECT_FILES_TABLE : FILE_TABLE,
 				);
 				self::processSchedule($rec['DID'], $tmp, $now, $DB_WE);
-			} else{
+			} else {
 				//data invalid, reset & make sure this is not processed the next time
 				$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET Active=0, Schedpro="' . serialize(array()) . '" WHERE DID=' . $rec['DID'] . ' AND Active=1 AND Wann=' . $rec['Wann'] . ' AND ClassName="' . $rec['ClassName'] . '" AND Type="' . $rec["Type"] . '" AND Was="' . $rec["Was"] . '"');
 			}
 		}
 		//make sure DB is unlocked!
 		$DB_WE->unlock();
+//reset state
+		if(isset($lastWEState)){
+			$GLOBALS['WE_MAIN_EDITMODE'] = $lastWEState['WE_MAIN_EDITMODE'];
+			$GLOBALS['we_editmode'] = $lastWEState['we_editmode'];
+		}
 	}
 
 	function check_and_convert_to_sched_pro(){
@@ -481,21 +510,21 @@ function checkFooter(){
 		$scheddy = array();
 
 		$DB_WE->query('SELECT * FROM ' . SCHEDULE_TABLE . ' WHERE Schedpro IS NULL OR Schedpro=""');
-		while($DB_WE->next_record()) {
+		while($DB_WE->next_record()){
 			$s = array();
 
-			$s["did"] = $DB_WE->f("DID");
-			$s["task"] = $DB_WE->f("Was");
-			$s["type"] = 0;
-			$s["months"] = array();
-			$s["days"] = array();
-			$s["weekdays"] = array();
-			$s["time"] = $DB_WE->f("Wann");
-			$s["CategoryIDs"] = "";
-			$s["DoctypeID"] = 0;
-			$s["ParentID"] = 0;
-			$s["active"] = 1;
-			$s["doctypeAll"] = 0;
+			$s['did'] = $DB_WE->f('DID');
+			$s['task'] = $DB_WE->f('Was');
+			$s['type'] = 0;
+			$s['months'] = array();
+			$s['days'] = array();
+			$s['weekdays'] = array();
+			$s['time'] = $DB_WE->f('Wann');
+			$s['CategoryIDs'] = '';
+			$s['DoctypeID'] = 0;
+			$s['ParentID'] = 0;
+			$s['active'] = 1;
+			$s['doctypeAll'] = 0;
 
 			$scheddy[] = $s;
 		}
@@ -509,19 +538,19 @@ function checkFooter(){
 		if(!$now){
 			$now = time();
 		}
-		switch($s["type"]){
+		switch($s['type']){
 			case self::TYPE_ONCE:
-				return $s["time"];
+				return $s['time'];
 			case self::TYPE_HOUR:
-				$nextTime = mktime(date("G", $now), date("i", $s["time"]), 0, date("m", $now), date("j", $now), date("Y", $now));
+				$nextTime = mktime(date('G', $now), date('i', $s['time']), 0, date('m', $now), date('j', $now), date('Y', $now));
 				return ($nextTime > $now) ? $nextTime : $nextTime + 3600; // +1 h
 			case self::TYPE_DAY:
-				$nextTime = mktime(date("G", $s["time"]), date("i", $s["time"]), 0, date("m", $now), date("j", $now), date("Y", $now));
+				$nextTime = mktime(date('G', $s['time']), date('i', $s['time']), 0, date('m', $now), date('j', $now), date('Y', $now));
 				return ($nextTime > $now ? $nextTime : $nextTime + 86400); // + 1 Tag
 			case self::TYPE_WEEK:
-				$wdayNow = date("w", $now);
-				$timeSched = mktime(date("G", $s["time"]), date("i", $s["time"]), 0, intval(date("m", $now)), date("j", $now), date("Y", $now)); // zeit fuer heutigen tag
-				if($s["weekdays"][$wdayNow] && ($timeSched > $now)){ // wenn am heutigen Tag was geschehen soll, checken ob Ereignis noch offen, wenn ja dann speichern
+				$wdayNow = date('w', $now);
+				$timeSched = mktime(date('G', $s['time']), date('i', $s['time']), 0, intval(date('m', $now)), date('j', $now), date('Y', $now)); // zeit fuer heutigen tag
+				if($s['weekdays'][$wdayNow] && ($timeSched > $now)){ // wenn am heutigen Tag was geschehen soll, checken ob Ereignis noch offen, wenn ja dann speichern
 					return $timeSched;
 				}
 				$nextday = 0;
@@ -529,7 +558,7 @@ function checkFooter(){
 				// naechst moeglicher Wochentag suchen
 				for($wd = $wdayNow + 1; $wd <= 6; $wd++){
 					$nextday++;
-					if($s["weekdays"][$wd]){
+					if($s['weekdays'][$wd]){
 						$found = true;
 						break;
 					}
@@ -537,7 +566,7 @@ function checkFooter(){
 				if(!$found){
 					for($wd = 0; $wd <= $wdayNow; $wd++){
 						$nextday++;
-						if($s["weekdays"][$wd]){
+						if($s['weekdays'][$wd]){
 							$found = true;
 							break;
 						}
@@ -545,50 +574,50 @@ function checkFooter(){
 				}
 				if($found){
 					$nextdaystamp = $now + ($nextday * 86400);
-					return mktime(date("G", $s["time"]), date("i", $s["time"]), 0, intval(date("m", $nextdaystamp)), date("j", $nextdaystamp), date("Y", $nextdaystamp));
+					return mktime(date('G', $s['time']), date('i', $s['time']), 0, intval(date('m', $nextdaystamp)), date('j', $nextdaystamp), date('Y', $nextdaystamp));
 				}
 
 				return 0;
 			case self::TYPE_MONTH:
-				$dayNow = date("j", $now);
-				$timeSched = mktime(date("G", $s["time"]), date("i", $s["time"]), 0, intval(date("m", $now)), date("j", $now), date("Y", $now)); // zeit fuer heutigen tag
-				if($s["days"][$dayNow - 1] && ($timeSched > $now)){ // wenn am heutigen Tag was geschehen soll, checken ob Ereignis noch offen, wenn ja dann speichern
+				$dayNow = date('j', $now);
+				$timeSched = mktime(date('G', $s['time']), date('i', $s['time']), 0, intval(date('m', $now)), date('j', $now), date('Y', $now)); // zeit fuer heutigen tag
+				if($s['days'][$dayNow - 1] && ($timeSched > $now)){ // wenn am heutigen Tag was geschehen soll, checken ob Ereignis noch offen, wenn ja dann speichern
 					return $timeSched;
 				}
 
 				$tomorrow = $now + 86400;
-				$dayTomorrow = date("j", $tomorrow);
+				$dayTomorrow = date('j', $tomorrow);
 
 				$trys = 0;
-				while($s["days"][$dayTomorrow - 1] == 0 && $trys <= 365) {
+				while($s['days'][$dayTomorrow - 1] == 0 && $trys <= 365){
 					$tomorrow += 86400;
-					$dayTomorrow = date("j", $tomorrow);
+					$dayTomorrow = date('j', $tomorrow);
 					$trys++;
 				}
 				return ($trys <= 365) ?
-					mktime(date("G", $s["time"]), date("i", $s["time"]), 0, intval(date("m", $tomorrow)), date("j", $tomorrow), date("Y", $tomorrow)) :
+					mktime(date('G', $s['time']), date('i', $s['time']), 0, intval(date('m', $tomorrow)), date('j', $tomorrow), date('Y', $tomorrow)) :
 					0;
 			case self::TYPE_YEAR:
-				$dayNow = date("j", $now);
-				$monthNow = intval(date("m", $now));
-				$timeSched = mktime(date("G", $s["time"]), date("i", $s["time"]), 0, intval(date("m", $now)), date("j", $now), date("Y", $now)); // zeit fuer heutigen tag
-				if($s["days"][$dayNow - 1] && $s["months"][$monthNow - 1] && ($timeSched > $now)){ // wenn am heutigen Tag was geschehen soll, checken ob Ereignis noch offen, wenn ja dann speichern
+				$dayNow = date('j', $now);
+				$monthNow = intval(date('m', $now));
+				$timeSched = mktime(date('G', $s['time']), date('i', $s['time']), 0, intval(date('m', $now)), date('j', $now), date('Y', $now)); // zeit fuer heutigen tag
+				if($s['days'][$dayNow - 1] && $s['months'][$monthNow - 1] && ($timeSched > $now)){ // wenn am heutigen Tag was geschehen soll, checken ob Ereignis noch offen, wenn ja dann speichern
 					return $timeSched;
 				}
 
 				$tomorrow = $now + 86400;
-				$dayTomorrow = date("j", $tomorrow);
-				$monthTomorrow = intval(date("m", $tomorrow));
+				$dayTomorrow = date('j', $tomorrow);
+				$monthTomorrow = intval(date('m', $tomorrow));
 
 				$trys = 0;
-				while(($s["days"][$dayTomorrow - 1] == 0 || $s["months"][$monthTomorrow - 1] == 0) && $trys <= 365) {
+				while(($s['days'][$dayTomorrow - 1] == 0 || $s['months'][$monthTomorrow - 1] == 0) && $trys <= 365){
 					$tomorrow += 86400;
-					$dayTomorrow = date("j", $tomorrow);
-					$monthTomorrow = intval(date("m", $tomorrow));
+					$dayTomorrow = date('j', $tomorrow);
+					$monthTomorrow = intval(date('m', $tomorrow));
 					$trys++;
 				}
 				return ($trys <= 365) ?
-					mktime(date("G", $s["time"]), date("i", $s["time"]), 0, intval(date("m", $tomorrow)), date("j", $tomorrow), date("Y", $tomorrow)) :
+					mktime(date('G', $s['time']), date('i', $s['time']), 0, intval(date('m', $tomorrow)), date('j', $tomorrow), date('Y', $tomorrow)) :
 					0;
 		}
 	}
@@ -597,19 +626,19 @@ function checkFooter(){
 		if(!$now){
 			$now = time();
 		}
-		switch($s["type"]){
+		switch($s['type']){
 			case self::TYPE_ONCE:
-				return $s["time"];
+				return $s['time'];
 			case self::TYPE_HOUR:
-				$nextTime = mktime(date("G", $now), date("i", $s["time"]), 0, date("m", $now), date("j", $now), date("Y", $now));
+				$nextTime = mktime(date('G', $now), date('i', $s['time']), 0, date('m', $now), date('j', $now), date('Y', $now));
 				return ($nextTime < $now ? $nextTime : $nextTime - 3600); // +1 h
 			case self::TYPE_DAY:
-				$nextTime = mktime(date("G", $s["time"]), date("i", $s["time"]), 0, date("m", $now), date("j", $now), date("Y", $now));
+				$nextTime = mktime(date('G', $s['time']), date('i', $s['time']), 0, date('m', $now), date('j', $now), date('Y', $now));
 				return ($nextTime < $now ? $nextTime : $nextTime - 86400); // + 1 Tag
 			case self::TYPE_WEEK:
-				$wdayNow = date("w", $now);
-				$timeSched = mktime(date("G", $s["time"]), date("i", $s["time"]), 0, intval(date("m", $now)), date("j", $now), date("Y", $now)); // zeit fuer heutigen tag
-				if($s["weekdays"][$wdayNow] && ($timeSched < $now)){ // wenn am heutigen Tag was geschehen soll, checken ob Ereignis noch offen, wenn ja dann speichern
+				$wdayNow = date('w', $now);
+				$timeSched = mktime(date('G', $s['time']), date('i', $s['time']), 0, intval(date('m', $now)), date('j', $now), date('Y', $now)); // zeit fuer heutigen tag
+				if($s['weekdays'][$wdayNow] && ($timeSched < $now)){ // wenn am heutigen Tag was geschehen soll, checken ob Ereignis noch offen, wenn ja dann speichern
 					return $timeSched;
 				}
 				$lastday = 0;
@@ -617,7 +646,7 @@ function checkFooter(){
 				// naechst moeglicher Wochentag suchen
 				for($wd = $wdayNow - 1; $wd >= 0; $wd--){
 					$lastday++;
-					if($s["weekdays"][$wd]){
+					if($s['weekdays'][$wd]){
 						$found = true;
 						break;
 					}
@@ -625,7 +654,7 @@ function checkFooter(){
 				if(!$found){
 					for($wd = 6; $wd >= $wdayNow; $wd--){
 						$lastday++;
-						if($s["weekdays"][$wd]){
+						if($s['weekdays'][$wd]){
 							$found = true;
 							break;
 						}
@@ -633,52 +662,52 @@ function checkFooter(){
 				}
 				if($found){
 					$lasttimestamp = $now - ($lastday * 86400);
-					$timeSched = mktime(date("G", $s["time"]), date("i", $s["time"]), 0, intval(date("m", $lasttimestamp)), date("j", $lasttimestamp), date("Y", $lasttimestamp));
+					$timeSched = mktime(date('G', $s['time']), date('i', $s['time']), 0, intval(date('m', $lasttimestamp)), date('j', $lasttimestamp), date('Y', $lasttimestamp));
 					return $timeSched;
 				}
 
 				return 0;
 			case self::TYPE_MONTH:
-				$dayNow = date("j", $now);
-				$timeSched = mktime(date("G", $s["time"]), date("i", $s["time"]), 0, intval(date("m", $now)), date("j", $now), date("Y", $now)); // zeit fuer heutigen tag
-				if($s["days"][$dayNow - 1] && ($timeSched < $now)){ // wenn am heutigen Tag was geschehen soll, checken ob Ereignis noch offen, wenn ja dann speichern
+				$dayNow = date('j', $now);
+				$timeSched = mktime(date('G', $s['time']), date('i', $s['time']), 0, intval(date('m', $now)), date('j', $now), date('Y', $now)); // zeit fuer heutigen tag
+				if($s['days'][$dayNow - 1] && ($timeSched < $now)){ // wenn am heutigen Tag was geschehen soll, checken ob Ereignis noch offen, wenn ja dann speichern
 					return $timeSched;
 				}
 
 				$yesterday = $now - 86400;
-				$dayYesterday = date("j", $yesterday);
+				$dayYesterday = date('j', $yesterday);
 
 				$trys = 0;
-				while($s["days"][$dayYesterday - 1] == 0 && $trys <= 365) {
+				while($s['days'][$dayYesterday - 1] == 0 && $trys <= 365){
 					$yesterday -= 86400;
-					$dayYesterday = date("j", $yesterday);
+					$dayYesterday = date('j', $yesterday);
 					$trys++;
 				}
 				return ($trys <= 365) ?
-					mktime(date("G", $s["time"]), date("i", $s["time"]), 0, intval(date("m", $yesterday)), date("j", $yesterday), date("Y", $yesterday)) :
+					mktime(date('G', $s['time']), date('i', $s['time']), 0, intval(date('m', $yesterday)), date('j', $yesterday), date('Y', $yesterday)) :
 					0;
 
 			case self::TYPE_YEAR:
-				$dayNow = date("j", $now);
-				$monthNow = intval(date("m", $now));
-				$timeSched = mktime(date("G", $s["time"]), date("i", $s["time"]), 0, intval(date("m", $now)), date("j", $now), date("Y", $now)); // zeit fuer heutigen tag
-				if($s["days"][$dayNow - 1] && $s["months"][$monthNow - 1] && ($timeSched < $now)){ // wenn am heutigen Tag was geschehen soll, checken ob Ereignis noch offen, wenn ja dann speichern
+				$dayNow = date('j', $now);
+				$monthNow = intval(date('m', $now));
+				$timeSched = mktime(date('G', $s['time']), date('i', $s['time']), 0, intval(date('m', $now)), date('j', $now), date('Y', $now)); // zeit fuer heutigen tag
+				if($s['days'][$dayNow - 1] && $s['months'][$monthNow - 1] && ($timeSched < $now)){ // wenn am heutigen Tag was geschehen soll, checken ob Ereignis noch offen, wenn ja dann speichern
 					return $timeSched;
 				}
 
 				$yesterday = $now - 86400;
-				$dayYesterday = date("j", $yesterday);
-				$monthYesterday = intval(date("m", $yesterday));
+				$dayYesterday = date('j', $yesterday);
+				$monthYesterday = intval(date('m', $yesterday));
 
 				$trys = 0;
-				while(($s["days"][$dayYesterday - 1] == 0 || $s["months"][$monthYesterday - 1] == 0) && $trys <= 365) {
+				while(($s['days'][$dayYesterday - 1] == 0 || $s['months'][$monthYesterday - 1] == 0) && $trys <= 365){
 					$yesterday -= 86400;
-					$dayYesterday = date("j", $yesterday);
-					$monthYesterday = intval(date("m", $yesterday));
+					$dayYesterday = date('j', $yesterday);
+					$monthYesterday = intval(date('m', $yesterday));
 					$trys++;
 				}
 				return ($trys <= 365) ?
-					mktime(date("G", $s["time"]), date("i", $s["time"]), 0, intval(date("m", $yesterday)), date("j", $yesterday), date("Y", $yesterday)) :
+					mktime(date('G', $s['time']), date('i', $s['time']), 0, intval(date('m', $yesterday)), date('j', $yesterday), date('Y', $yesterday)) :
 					0;
 		}
 	}
@@ -688,7 +717,7 @@ function checkFooter(){
 			return false;
 		}
 		foreach($object->schedArr as $s){
-			if($s["task"] == self::SCHEDULE_FROM && $s["active"]){
+			if($s['task'] == self::SCHEDULE_FROM && $s['active']){
 				return true;
 			}
 		}
@@ -700,10 +729,10 @@ function checkFooter(){
 		$db->query('DELETE FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . intval($object->ID) . ' AND ClassName="' . $db->escape($object->ClassName) . '"');
 		$makeSched = false;
 		foreach($object->schedArr as $s){
-			if($s["task"] == self::SCHEDULE_FROM && $s["active"]){
+			if($s['task'] == self::SCHEDULE_FROM && $s['active']){
 				$serializedDoc = we_temporaryDocument::load($object->ID, $object->Table, $db); // nicht noch mal unten beim Speichern serialisieren, ist bereits serialisiert #5743
 				$makeSched = true;
-			} else{
+			} else {
 				$serializedDoc = '';
 			}
 			$Wann = self::getNextTimestamp($s, time());
@@ -711,12 +740,12 @@ function checkFooter(){
 			if(!$db->query('INSERT INTO ' . SCHEDULE_TABLE . ' SET ' . we_database_base::arraySetter(array(
 						'DID' => $object->ID,
 						'Wann' => $Wann,
-						'Was' => $s["task"],
+						'Was' => $s['task'],
 						'ClassName' => $object->ClassName,
 						'SerializedData' => ($serializedDoc ? gzcompress($serializedDoc, 9) : ''),
 						'Schedpro' => serialize($s),
-						'Type' => $s["type"],
-						'Active' => $s["active"]
+						'Type' => $s['type'],
+						'Active' => $s['active']
 				)))){
 				return false;
 			}
@@ -725,11 +754,10 @@ function checkFooter(){
 	}
 
 	private static function weCmpSchedLast($a, $b){
-		if($a["lasttime"] == $b["lasttime"]){
+		if($a['lasttime'] == $b['lasttime']){
 			return 0;
 		}
-		return ($a["lasttime"] < $b["lasttime"]) ? -1 : 1;
+		return ($a['lasttime'] < $b['lasttime']) ? -1 : 1;
 	}
 
 }
-

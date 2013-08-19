@@ -23,5 +23,5 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_ifVote(){
-	return (isset($GLOBALS["_we_voting_status"]) && $GLOBALS["_we_voting_status"] == weVoting::SUCCESS);
+	return (isset($GLOBALS['_we_voting_status']) && $GLOBALS['_we_voting_status'] == weVoting::SUCCESS);
 }

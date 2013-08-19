@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,63 +22,53 @@
  * @package    webEdition_rpc
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+class rpcResetVersionCmd extends rpcCmd{
 
-class rpcResetVersionCmd extends rpcCmd {
-
-	function execute() {
+	function execute(){
 
 		$resp = new rpcResponse();
 
-		$db = new DB_WE();
+		$db = $GLOBALS['DB_WE'];
 
-		$id = $_REQUEST["id"];
+		$id = $_REQUEST['id'];
 
 		we_html_tools::protect();
 
-		if(stristr($id, ',')) {
-			$ids = explode(",", $id);
-		}
-		else {
-			$ids = array(
-			"0" => $id
+		$ids = (stristr($id, ',') ?
+				explode(',', $id) :
+				array($id)
 			);
-		}
+
 
 		$_SESSION['weS']['versions']['logResetIds'] = array();
 
-		foreach($ids as $k => $id) {
+		foreach($ids as $k => $id){
 
 			$parts = array();
 
-			if(stristr($id, '___')) {
+			if(stristr($id, '___')){
 				$parts = explode("___", $id);
 			}
 			$id = isset($parts[0]) ? $parts[0] : $id;
 			$publish = isset($parts[1]) ? $parts[1] : 0;
 
-			if(isset($_REQUEST["version"]) && $_REQUEST["version"]!=0) {
+			if(isset($_REQUEST["version"]) && $_REQUEST["version"] != 0){
 				$version = $_REQUEST["version"];
-			}
-			else {
-				$version = f("SELECT version FROM " . VERSIONS_TABLE . " WHERE ID=".intval($id),"version",$db);
+			} else{
+				$version = f("SELECT version FROM " . VERSIONS_TABLE . " WHERE ID=" . intval($id), "version", $db);
 			}
 
-			$docID = (isset($_REQUEST["documentID"]) && $_REQUEST["documentID"]!=0) ? $_REQUEST["documentID"] : "";
-			$docTable = (isset($_REQUEST["documentTable"]) && $_REQUEST["documentTable"]!=0) ? $_REQUEST["documentTable"] : "";
+			$docID = (isset($_REQUEST["documentID"]) && $_REQUEST["documentID"] != 0) ? $_REQUEST["documentID"] : "";
+			$docTable = (isset($_REQUEST["documentTable"]) && $_REQUEST["documentTable"] != 0) ? $_REQUEST["documentTable"] : "";
 
 			weVersions::resetVersion($id, $version, $publish);
-
 		}
 
-		if(!empty($_SESSION['weS']['versions']['logResetIds'])) {
+		if(!empty($_SESSION['weS']['versions']['logResetIds'])){
 			$versionslog = new versionsLog();
-			$versionslog->saveVersionsLog($_SESSION['weS']['versions']['logResetIds'],versionsLog::VERSIONS_RESET);
+			$versionslog->saveVersionsLog($_SESSION['weS']['versions']['logResetIds'], versionsLog::VERSIONS_RESET);
 		}
 		unset($_SESSION['weS']['versions']['logResetIds']);
-
-
 	}
 
-
 }
-

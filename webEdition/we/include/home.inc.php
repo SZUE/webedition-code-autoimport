@@ -52,29 +52,32 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 	$bResetProps = ($_REQUEST['we_cmd'][0] == "reset_home") ? true : false;
 	if(!$bResetProps && $iLayoutCols){
 
-		$aDatTblPref = getPref("cockpit_dat"); // array as saved in the prefs
+		$aDatTblPref = getPref('cockpit_dat'); // array as saved in the prefs
+		$aTrf = getPref('cockpit_rss');
 		$aDat = (!empty($aDatTblPref)) ? @unserialize($aDatTblPref) : $aCfgProps; //
 		$aDat = $aDat ? $aDat : $aCfgProps;
-		$aTrf = array_pop($aDat);
+		$aTrf = empty($aTrf) ? array_pop($aDat) : @unserialize($aTrf);
+		$aTrf = empty($aTrf) ? $aTopRssFeeds : $aTrf;
 		if(count($aDat) > $iLayoutCols){
-			while(count($aDat) > $iLayoutCols) {
+			while(count($aDat) > $iLayoutCols){
 				$aDelCol = array_pop($aDat);
 				foreach($aDelCol as $aShiftWidget){
 					$aDat[count($aDat) - 1][] = $aShiftWidget;
 				}
 			}
-			setUserPref("cockpit_dat", serialize($aDat));
+			setUserPref('cockpit_dat', serialize($aDat));
+			setUserPref('cockpit_rss', serialize($aTrf));
 		}
 		$iDatLen = count($aDat);
-	} else{
-
+	} else {
 		$iLayoutCols = $iDefCols;
-		$_SESSION["prefs"]["cockpit_amount_columns"] = $iDefCols;
+		$_SESSION['prefs']['cockpit_amount_columns'] = $iDefCols;
 
-		setUserPref("cockpit_amount_columns", $iDefCols);
-		setUserPref("cockpit_dat", serialize($aCfgProps));
+		setUserPref('cockpit_amount_columns', $iDefCols);
+		setUserPref('cockpit_dat', serialize($aCfgProps));
+		setUserPref('cockpit_rss', serialize($aTopRssFeeds));
 		$aDat = $aCfgProps;
-		$aTrf = array_pop($aDat);
+		$aTrf = $aTopRssFeeds;
 		$iDatLen = count($aDat);
 	}
 
@@ -83,7 +86,7 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 			if(!is_array($item)){
 				if($item == $value){
 					return true;
-				} else{
+				} else {
 					continue;
 				}
 			}
@@ -112,9 +115,7 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 		);
 
 		var quickstart = true;
-		var _iInitCols = _iLayoutCols =<?php
-	echo $iLayoutCols;
-	?>;
+		var _iInitCols = _iLayoutCols =<?php echo intval($iLayoutCols); ?>;
 		var _bDgSave = false;
 		var bInitDrag = false;
 		var oTblWidgets = null;
@@ -186,7 +187,7 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 		$count_i = count($d);
 		echo "\t\t[";
 		reset($d);
-		while((list(, $v) = each($d))) {
+		while((list(, $v) = each($d))){
 			$i++;
 			echo "{'type':'" . $v[0] . "','cls':'" . $v[1] . "','res':" . $v[2] . ",'csv':'" . $v[3] . "'}" . (($i < $count_i) ? "," : "");
 		}
@@ -195,21 +196,26 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 	}
 	?>
 			];
-			if (_iInitCols != _iLayoutCols)
-				return true;
-			for (var i = 0; i < _iLayoutCols; i++) {
-				var asoc = getColumnAsoc('c_' + (i + 1));
-				var asoc_len = asoc.length;
-				if ((typeof(dat[i]) == 'undefined' && !!asoc_len) || (typeof(dat[i]) != 'undefined' && asoc_len != dat[i].length)) {
+			try {
+				if (_iInitCols != _iLayoutCols){
 					return true;
 				}
-				for (var k = 0; k < asoc_len; k++) {
-					for (var j = 0; j < ix_len; j++) {
-						if (typeof(dat[i][k][ix[j]]) == 'undefined' || asoc[k][ix[j]] != dat[i][k][ix[j]]) {
-							return true;
+				for (var i = 0; i < _iLayoutCols; i++) {
+					var asoc = getColumnAsoc('c_' + (i + 1));
+					var asoc_len = asoc.length;
+					if ((typeof(dat[i]) == 'undefined' && !!asoc_len) || (typeof(dat[i]) != 'undefined' && asoc_len != dat[i].length)) {
+						return true;
+					}
+					for (var k = 0; k < asoc_len; k++) {
+						for (var j = 0; j < ix_len; j++) {
+							if (typeof(dat[i][k][ix[j]]) == 'undefined' || asoc[k][ix[j]] != dat[i][k][ix[j]]) {
+								return true;
+							}
 						}
 					}
 				}
+			} catch (e) {
+				//console.log("err init1");
 			}
 			if (_isHotTrf) {
 				return true;
@@ -299,10 +305,10 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 					}
 				}
 			}
-			aDat[_iLayoutCols] = new Array();
+			rss = new Array();
 			var topRssFeedsLen = _trf.length;
 			for (var i = 0; i < topRssFeedsLen; i++) {
-				aDat[_iLayoutCols][i] = [_trf[i][0], _trf[i][1]];
+				rss[i] = [_trf[i][0], _trf[i][1]];
 			}
 			if (_bDgSave) {
 				var sDg = '';
@@ -318,6 +324,7 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 
 			fo = self.document.forms['we_form'];
 			fo.elements['we_cmd[1]'].value = serialize(aDat);
+			fo.elements['we_cmd[2]'].value = serialize(rss);
 			top.YAHOO.util.Connect.setForm(fo);
 			var cObj = top.YAHOO.util.Connect.asyncRequest('POST', '<?php echo WE_INCLUDES_DIR; ?>we_widgets/cmd.php', top.weDummy);
 		}
@@ -326,8 +333,8 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 			var res = gel(id + '_res').value;
 			switch (a) {
 				case 'swap':
-					gel(id + '_res').value = (res == 0) ? 1 : 0;
-					gel(id + '_icon_resize').title = (res == 0) ? '<?php echo g_l('cockpit', "[reduce_size]") ?>' : '<?php echo g_l('cockpit', "[increase_size]"); ?>';
+					gel(id + '_res').value = (res === 0) ? 1 : 0;
+					gel(id + '_icon_resize').title = (res === 0) ? '<?php echo g_l('cockpit', "[reduce_size]") ?>' : '<?php echo g_l('cockpit', "[increase_size]"); ?>';
 					break;
 				case 'get':
 					return res;
@@ -437,9 +444,7 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 		}
 
 		function initWidget(_id) {
-
 			if (gel(_id + '_type').value == "sct") {
-
 				var _width = "100%";
 				if (resizeIdx('get', _id) == 1) {
 					_width = "48%";
@@ -655,23 +660,20 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 		 * show the spinning wheel for a widget
 		 */
 		function showLoadingSymbol(elementId) {
-	<?php
-	if(!we_base_browserDetect::isSafari()){
-		echo '
-if (!gel("rpcBusyClone_" + elementId)) { // only show ONE loading symbol per widget
+	<?php if(!we_base_browserDetect::isSafari()){ ?>
+				if (!gel("rpcBusyClone_" + elementId)) { // only show ONE loading symbol per widget
 
-var clone=gel("rpcBusy").cloneNode(true);
-var wpNode=gel(elementId+"_wrapper");
-var ctNode=gel(elementId+"_content");
+					var clone = gel("rpcBusy").cloneNode(true);
+					var wpNode = gel(elementId + "_wrapper");
+					var ctNode = gel(elementId + "_content");
 
-ctNode.style.display="none";
-wpNode.style.textAlign="center";
-wpNode.style.verticalAlign="middle";
-wpNode.insertBefore(clone,ctNode);
-clone.id="rpcBusyClone_" + elementId;
-clone.style.display="inline";
-}';
-	}
+					ctNode.style.display = "none";
+					wpNode.style.textAlign = "center";
+					wpNode.style.verticalAlign = "middle";
+					wpNode.insertBefore(clone, ctNode);
+					clone.id = "rpcBusyClone_" + elementId;
+					clone.style.display = "inline";
+				}<?php }
 	?>
 		}
 
@@ -680,14 +682,15 @@ clone.style.display="inline";
 		 * hide the spinning wheel for a widget
 		 */
 		function hideLoadingSymbol(elementId) {
-			var saf = <?php echo (we_base_browserDetect::isSafari() ? 'true' : 'false'); ?>;
+	<?php if(!we_base_browserDetect::isSafari()){ ?>
 
-			if (!saf && gel('rpcBusyClone_' + elementId)) {
-				var oWrapper = gel(elementId + '_wrapper');
-				oWrapper.style.textAlign = 'left';
-				oWrapper.style.verticalAlign = 'top';
-				gel('rpcBusyClone_' + elementId).parentNode.removeChild(gel('rpcBusyClone_' + elementId));
-			}
+				if (gel('rpcBusyClone_' + elementId)) {
+					var oWrapper = gel(elementId + '_wrapper');
+					oWrapper.style.textAlign = 'left';
+					oWrapper.style.verticalAlign = 'top';
+					gel('rpcBusyClone_' + elementId).parentNode.removeChild(gel('rpcBusyClone_' + elementId));
+				}
+	<?php } ?>
 
 		}
 
@@ -698,11 +701,12 @@ clone.style.display="inline";
 			var docIFrm, iFrmScr;
 			var oInline = gel(widgetId + '_inline'); // object-inline
 
-			var saf = <?php echo (we_base_browserDetect::isSafari() ? 'true' : 'false'); ?>;
-			if (!saf) {
-				oInline.style.display = 'block';
-			}
-			if (widgetType == 'pad') {
+	<?php
+	if(!we_base_browserDetect::isSafari()){
+		echo 'oInline.style.display = "block";';
+	}
+	?>
+			if (widgetType === 'pad') {
 				if (oInline.contentDocument) {
 					docIFrm = oInline.contentDocument;
 					iFrmScr = oInline.contentWindow;
@@ -721,9 +725,10 @@ clone.style.display="inline";
 			oContent.style.display = 'block';
 			hideLoadingSymbol(widgetId);
 
-			eval(((widgetType == 'pad') ? 'docIFrm.getElementById(widgetType)' : 'oInline') + '.innerHTML=contentData;');
-			if (widgetType == 'pad')
+			eval(((widgetType === 'pad') ? 'docIFrm.getElementById(widgetType)' : 'oInline') + '.innerHTML=contentData;');
+			if (widgetType === 'pad') {
 				iFrmScr.calendarSetup();
+			}
 			setLabel(widgetId, titel, '');
 			initWidget(widgetId);
 
@@ -758,7 +763,7 @@ clone.style.display="inline";
 				case "rss":
 					_cmdName = "GetRss";
 					break;
-	//FIXME: what about all other tools?!
+					//FIXME: what about all other tools?!
 			}
 			if (_cmdName) {
 				top.YAHOO.util.Connect.asyncRequest('GET', '<?php echo WEBEDITION_DIR; ?>rpc/rpc.php?cmd=' + _cmdName + '&cns=widgets' + args + '&weSessionId=<?php print session_id(); ?>', ajaxCallback);
@@ -767,7 +772,7 @@ clone.style.display="inline";
 
 		var ajaxCallback = {
 			success: function(o) {
-				if (typeof(o.responseText) != 'undefined' && o.responseText != '') {
+				if (typeof(o.responseText) !== undefined && o.responseText !== '') {
 					var weResponse = false;
 					try {
 						eval(o.responseText);
@@ -802,7 +807,7 @@ clone.style.display="inline";
 			// start bugfix #1145
 			var _tmpForm = document.createElement("form");
 			document.getElementsByTagName("body")[0].appendChild(_tmpForm);
-			var path = (sType != 'rss' && sType != 'pad' && sType != 'plg' && sType != 'sct') ? 'dlg/' + arguments[6] : 'mod/' + sType;
+			var path = (sType !== 'rss' && sType !== 'pad' && sType !== 'plg' && sType !== 'sct') ? 'dlg/' + arguments[6] : 'mod/' + sType;
 			_tmpForm.id = "_tmpSubmitForm";
 			_tmpForm.method = "POST";
 			_tmpForm.action = '<?php echo WE_INCLUDES_DIR; ?>we_widgets/' + path + '.php';
@@ -830,12 +835,13 @@ clone.style.display="inline";
 			var docIFrm, iFrmScr;
 			var oInline = gel(sObjId + '_inline');
 
-			var saf = <?php echo (we_base_browserDetect::isSafari() ? 'true' : 'false'); ?>;
-			if (!saf) {
-				oInline.style.display = 'block';
-			}
+	<?php
+	if(!we_base_browserDetect::isSafari()){
+		echo 'oInline.style.display = "block";';
+	}
+	?>
 
-			if (sType == 'rss' || sType == 'pad') {
+			if (sType === 'rss' || sType === 'pad') {
 				if (oInline.contentDocument) {
 					docIFrm = oInline.contentDocument;
 					iFrmScr = oInline.contentWindow;
@@ -854,9 +860,10 @@ clone.style.display="inline";
 
 			hideLoadingSymbol(sObjId);
 
-			eval(((sType == 'rss' || sType == 'pad') ? 'docIFrm.getElementById(sType)' : 'oInline') + '.innerHTML=oDoc.innerHTML;');
-			if (sType == 'pad')
+			eval(((sType === 'rss' || sType === 'pad') ? 'docIFrm.getElementById(sType)' : 'oInline') + '.innerHTML=oDoc.innerHTML;');
+			if (sType === 'pad') {
 				iFrmScr.calendarSetup();
+			}
 			setLabel(sObjId, sCsvLabel, '');
 
 			initWidget(sObjId);
@@ -906,7 +913,7 @@ clone.style.display="inline";
 			}
 		}
 	<?php
-	if(in_array_recursive('usr', $aDat) && defined("USER_TABLE")){
+	if(in_array_recursive('usr', $aDat) && defined('USER_TABLE')){
 		?>
 
 			function setUsersOnline(num) {
@@ -922,6 +929,15 @@ clone.style.display="inline";
 			}
 		<?php
 	}
+	if(in_array_recursive('mfd', $aDat) && defined('USER_TABLE')){
+		?>
+			function setMfdData(data) {
+				if (gel('mfd_data')) {
+					gel('mfd_data').innerHTML = data;
+				}
+			}
+		<?php
+	}
 	?>
 
 
@@ -929,8 +945,9 @@ clone.style.display="inline";
 			var url = '<?php echo WEBEDITION_DIR; ?>we_cmd.php?';
 			for (var i = 0; i < arguments.length; i++) {
 				url += 'we_cmd[' + i + ']=' + escape(arguments[i]);
-				if (i < (arguments.length - 1))
+				if (i < (arguments.length - 1)){
 					url += '&';
+				}
 			}
 
 			new jsWindow(url, 'browse_users', -1, -1, 500, 300, true, false, true);
@@ -941,12 +958,8 @@ clone.style.display="inline";
 	<?php
 	$aCmd = explode('_', $_REQUEST['we_cmd'][0]);
 	if($aCmd[0] == 'new'){
-		$in = array(
-			substr($aCmd[2], -3), 1, 1
-		);
-		$aDat[0] = array_merge(array_slice($aDat[0], 0, 0), array(
-			$in
-			), array_slice($aDat[0], 0));
+		$in = array(substr($aCmd[2], -3), 1, 1);
+		$aDat[0] = array_merge(array_slice($aDat[0], 0, 0), array($in), array_slice($aDat[0], 0));
 	}
 	$aDiscard = array('rss', 'pad');
 	$s1 = '';
@@ -958,9 +971,9 @@ clone.style.display="inline";
 		$iCurrCol++;
 		foreach($d as $aProps){
 			$iCurrId++;
-			if(!((($aProps[0] == 'usr' || $aProps[0] == 'msg') && !defined('USER_TABLE')) || ($aProps[0] == 'msg' && !defined(
-					'MESSAGING_SYSTEM')) || ($aProps[0] == 'plg' && (!WE_TRACKER_DIR || !file_exists(
-					$_SERVER['DOCUMENT_ROOT'] . WE_TRACKER_DIR . "/includes/showme.inc.php"))))){
+			if(!((($aProps[0] == 'usr' || $aProps[0] == 'msg') && !defined('USER_TABLE')) ||
+				($aProps[0] == 'msg' && !defined('MESSAGING_SYSTEM')) ||
+				($aProps[0] == 'plg' && (!WE_TRACKER_DIR || !file_exists($_SERVER['DOCUMENT_ROOT'] . WE_TRACKER_DIR . "/includes/showme.inc.php"))))){
 				$iWidth = ((!$aProps[2]) ? $small : $large);
 				if(!in_array($aProps[0], $aDiscard)){
 					if($aProps[0] == 'upb' && $aProps[3] == ''){
@@ -984,26 +997,26 @@ clone.style.display="inline";
 					we_html_element::jsElement("initWidget('" . 'm_' . $iCurrId . "');");
 			}
 		}
-		$s1 .= "<td id=\"c_" . $iCurrCol . "\" class=\"cls_" . $iCurrCol . (($bExtendedCol) ? "_expand" : "_collapse") . "\">" .
+		$s1 .= '<td id="c_' . $iCurrCol . '" class="cls_' . $iCurrCol . (($bExtendedCol) ? '_expand' : '_collapse') . '">' .
 			$s2 .
 			we_html_element::htmlDiv(array(
 				"class" => "wildcard"
-				), "") . "</td>\n";
+				), "") . '</td>';
 		if($iDatLen > $iCurrCol){
-			$s1 .= "<td id=\"spacer_" . $iCurrCol . "\" style=\"width: 5px;\"></td>\n";
+			$s1 .= '<td id="spacer_' . $iCurrCol . '" style="width: 5px;"></td>';
 		}
 	}
-	while($iCurrCol < $iLayoutCols) {
+	while($iCurrCol < $iLayoutCols){
 		$iCurrCol++;
-		$s1 .= "<td id=\"c_" . $iCurrCol . "\" class=\"cls_" . $iCurrCol . "_collapse\">" . we_html_element::htmlDiv(
+		$s1 .= '<td id="c_' . $iCurrCol . '" class="cls_' . $iCurrCol . '_collapse">' . we_html_element::htmlDiv(
 				array(
 				"class" => "wildcard"
-				), "") . "</td>" .
-			($iLayoutCols > $iCurrCol ? "<td>&nbsp;&nbsp;</td>" : '');
+				), "") . '</td>' .
+			($iLayoutCols > $iCurrCol ? '<td>&nbsp;&nbsp;</td>' : '');
 	}
 
 	$oTblWidgets = new we_html_table(array(
-		"cellpadding" => "0", "cellspacing" => "0", "border" => "0", "height" => "98%"
+		"cellpadding" => 0, "cellspacing" => 0, "border" => 0, "height" => "98%"
 		), 1, 1);
 	$oTblWidgets->setCol(
 		0, 0, array(
@@ -1011,7 +1024,7 @@ clone.style.display="inline";
 		), we_html_element::htmlDiv(
 			array(
 			"id" => "modules"
-			), "<table id=\"le_tblWidgets\" cellspacing=\"0\" border=\"0\">\n<tr id=\"rowWidgets\">" . $s1 . '</tr></table>'));
+			), '<table id="le_tblWidgets" cellspacing="0" border="0"><tr id="rowWidgets">' . $s1 . '</tr></table>'));
 
 	// this is the clone widget
 	$oClone = we_widget::create("clone", "_reCloneType_", null, array('', ''), "white", 0, "", 100, 60);
@@ -1019,12 +1032,9 @@ clone.style.display="inline";
 	print
 		we_html_element::htmlBody(
 			array(
-			"onload" => "_EditorFrame.initEditorFrameData({'EditorIsLoading':false});",
-			"marginwidth" => "10px",
-			"marginheight" => "10px",
-			"leftmargin" => "10px",
-			"topmargin" => "10px",
-			"class" => "bgc_white"
+			'onload' => "_EditorFrame.initEditorFrameData({'EditorIsLoading':false});",
+			'style' => 'margin: 10px 10px 10px 10px',
+			'class' => "bgc_white"
 			), we_html_element::htmlForm(
 				array(
 				"name" => "we_form"
@@ -1051,7 +1061,7 @@ clone.style.display="inline";
 				array(
 				"id" => "divClone", "style" => "position:relative;display:none;"
 				), $oClone->getHtml()));
-} else{ // no right to see cockpit!!!
+} else { // no right to see cockpit!!!
 	print
 		we_html_element::jsElement('
 		function isHot(){
@@ -1100,7 +1110,7 @@ clone.style.display="inline";
 				"class" => "defaultfont errorMessage", "style" => "width: 400px;"
 				), (we_hasPerm("CHANGE_START_DOCUMENT") && we_hasPerm("EDIT_SETTINGS") ? we_html_tools::htmlAlertAttentionBox(
 						"<strong>" . g_l('SEEM', "[question_change_startdocument]") . "</strong><br /><br />" . we_button::create_button(
-							"preferences", "javascript:top.we_cmd('openPreferences');"), 1, 0, false) : we_html_tools::htmlAlertAttentionBox(
-						"<strong>" . g_l('SEEM', "[start_with_SEEM_no_startdocument]") . "</strong>", 1, 0, false))));
+							"preferences", "javascript:top.we_cmd('openPreferences');"), we_html_tools::TYPE_ALERT, 0, false) : we_html_tools::htmlAlertAttentionBox(
+						"<strong>" . g_l('SEEM', "[start_with_SEEM_no_startdocument]") . "</strong>", we_html_tools::TYPE_ALERT, 0, false))));
 }
 echo '<iframe id="RSIFrame" name="RSIFrame" style="border:0px;width:1px;height:1px; visibility:hidden"></iframe></html>';

@@ -27,7 +27,7 @@
  *
  * Provides functions for creating html tags used in forms.
  */
-include_once (WE_INCLUDES_PATH . 'we_tag.inc.php');
+require_once (WE_INCLUDES_PATH . 'we_tag.inc.php');
 
 abstract class we_forms{
 
@@ -43,13 +43,13 @@ abstract class we_forms{
 	 *
 	 * @return     string
 	 */
-	static function checkbox($value, $checked, $name, $text, $uniqid = false, $class = 'defaultfont', $onClick = '', $disabled = false, $description = '', $type = 0, $width = 0, $html = ''){
+	static function checkbox($value, $checked, $name, $text, $uniqid = false, $class = 'defaultfont', $onClick = '', $disabled = false, $description = '', $type = we_html_tools::TYPE_NONE, $width = 0, $html = '', $style = ''){
 		// Check if we have to create a uniqe id
 		$_id = ($uniqid ? $name . '_' . md5(uniqid(__FUNCTION__, true)) : $name);
 
 		// Create HTML tags
 		return '
-			<table cellpadding="0" border="0" cellspacing="0">
+			<table cellpadding="0" border="0" cellspacing="0"' . ($style ? 'style="' . $style . '"' : '') . '>
 				<tr>
 					<td' . ($description ? ' valign="top"' : '') . '>
 						<input type="checkbox" name="' . $name . '" id="' . $_id . '" value="' . $value . '" style="cursor: pointer; outline: 0px;" ' . ($checked ? " checked=\"checked\"" : "") . ($onClick ? " onclick=\"$onClick\"" : "") . ($disabled ? " disabled=\"disabled\"" : "") . ' /></td>
@@ -70,7 +70,7 @@ abstract class we_forms{
 	 *
 	 * @return     string
 	 */
-	static function checkboxWithHidden($checked, $name, $text, $uniqid = false, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0){
+	static function checkboxWithHidden($checked, $name, $text, $uniqid = false, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = we_html_tools::TYPE_NONE, $width = 0){
 		$onClick = "this.form.elements['$name'].value=this.checked ? 1 : 0;" . $onClick;
 		return '<input type="hidden" name="' . $name . '" value="' . ($checked ? 1 : 0) . '" />' . self::checkbox(1, $checked, '_' . $name, $text, $uniqid, $class, $onClick, $disabled, $description, $type, $width);
 	}
@@ -87,7 +87,7 @@ abstract class we_forms{
 	 *
 	 * @return     string
 	 */
-	static function radiobutton($value, $checked, $name, $text, $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0, $onMouseUp = "", $extra_content = ""){
+	static function radiobutton($value, $checked, $name, $text, $uniqid = true, $class = "defaultfont", $onClick = '', $disabled = false, $description = '', $type = we_html_tools::TYPE_NONE, $width = 0, $onMouseUp = '', $extra_content = ''){
 		// Check if we have to create a uniqe id
 		$_id = $name . ($uniqid ? '_' . md5(uniqid(__FUNCTION__, true)) : '');
 
@@ -95,11 +95,9 @@ abstract class we_forms{
 		return '
 			<table cellpadding="0" border="0" cellspacing="0">
 				<tr>
-					<td class="weEditmodeStyle"' . ($description ? ' valign="top"' : '') . '>
-						<input type="radio" name="' . $name . '" id="' . $_id . '" value="' . $value . '" style="cursor: pointer;outline: 0px;" ' . ($checked ? " checked=\"checked\"" : "") . ($onMouseUp ? " onmouseup=\"$onMouseUp\"" : "") . ($onClick ? " onclick=\"$onClick\"" : "") . ($disabled ? " disabled=\"disabled\"" : "") . ' /></td>
-					<td class="weEditmodeStyle">
-						' . we_html_tools::getPixel(4, 2) . '</td>
-					<td class="weEditmodeStyle ' . $class . '" nowrap="nowrap"><label id="label_' . $_id . '" for="' . $_id . '" style="' . ($disabled ? 'color: grey; ' : 'cursor: pointer;') . 'outline: 0px;" ' . ($onMouseUp ? " onmouseup=\"" . str_replace("this.", "document.getElementById('" . $_id . "').", $onMouseUp) . "\"" : "") . '>' . $text . '</label>' . ($description ? "<br>" . we_html_tools::getPixel(1, 3) . "<br>" . we_html_tools::htmlAlertAttentionBox($description, $type, $width) : "") .
+					<td class="weEditmodeStyle"' . ($description ? ' valign="top"' : '') . '><input type="radio" name="' . $name . '" id="' . $_id . '" value="' . $value . '" style="cursor: pointer;outline: 0px;" ' . ($checked ? " checked=\"checked\"" : "") . ($onMouseUp ? " onmouseup=\"$onMouseUp\"" : "") . ($onClick ? " onclick=\"$onClick\"" : "") . ($disabled ? ' disabled="disabled"' : "") . ' /></td>
+					<td class="weEditmodeStyle">' . we_html_tools::getPixel(4, 2) . '</td>
+					<td class="weEditmodeStyle ' . $class . '" nowrap="nowrap"><label id="label_' . $_id . '" for="' . $_id . '" style="' . ($disabled ? 'color: grey; ' : 'cursor: pointer;') . 'outline: 0px;" ' . ($onMouseUp ? " onmouseup=\"" . str_replace("this.", "document.getElementById('" . $_id . "').", $onMouseUp) . "\"" : "") . '>' . $text . '</label>' . ($description ? we_html_element::htmlBr() . we_html_tools::getPixel(1, 3) . we_html_element::htmlBr() . we_html_tools::htmlAlertAttentionBox($description, $type, $width) : "") .
 			($extra_content ? (we_html_element::htmlBr() . we_html_tools::getPixel(1, 3) . we_html_element::htmlBr() . $extra_content) : "") . '</td>
 				</tr>
 			</table>';
@@ -194,11 +192,9 @@ abstract class we_forms{
 		$doc = (isset($GLOBALS['we_doc']) && $GLOBALS['we_doc'] != '' && $GLOBALS['we_doc']->ClassName == 'we_objectFile' ? 'we_doc' : 'WE_MAIN_DOC');
 		$inwebedition = ($forceinwebedition ? $forceinwebedition : (isset($GLOBALS[$doc]->InWebEdition) && $GLOBALS[$doc]->InWebEdition));
 
-		if(!$inwebedition){// we are in frontend, where default is inlineedit = true
-			$inlineedit = weTag_getAttribute('inlineedit', $attribs, true, true);
-		} else{
-			$inlineedit = weTag_getAttribute('inlineedit', $attribs, defined('INLINEEDIT_DEFAULT') ? INLINEEDIT_DEFAULT : true, true);
-		}
+		$inlineedit = // we are in frontend, where default is inlineedit = true
+			weTag_getAttribute('inlineedit', $attribs, ($inwebedition ? INLINEEDIT_DEFAULT : true), true);
+
 
 		$value = self::removeBrokenInternalLinksAndImages($value);
 

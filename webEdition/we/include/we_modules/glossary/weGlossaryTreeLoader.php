@@ -27,11 +27,11 @@ class weGlossaryTreeLoader{
 	function getItems($ParentId, $Offset = 0, $Segment = 500, $Sort = ""){
 
 		$Types = array(
-			'abbreviation',
-			'acronym',
-			'foreignword',
-			'link',
-			'textreplacement',
+			weGlossary::TYPE_ABBREVATION,
+			weGlossary::TYPE_ACRONYM,
+			weGlossary::TYPE_FOREIGNWORD,
+			weGlossary::TYPE_LINK,
+			weGlossary::TYPE_TEXTREPLACE,
 		);
 
 		$Temp = explode("_", $ParentId);
@@ -42,7 +42,7 @@ class weGlossaryTreeLoader{
 			return weGlossaryTreeLoader::getItemsFromDB($Language, $Type, $Offset, $Segment);
 		} else if(in_array($ParentId, $GLOBALS['weFrontendLanguages'])){
 			return weGlossaryTreeLoader::getTypes($ParentId);
-		} else{
+		} else {
 			return weGlossaryTreeLoader::getLanguages();
 		}
 	}
@@ -77,11 +77,11 @@ class weGlossaryTreeLoader{
 		$Items = array();
 
 		$Types = array(
-			'abbreviation' => g_l('modules_glossary', '[abbreviation]'),
-			'acronym' => g_l('modules_glossary', '[acronym]'),
-			'foreignword' => g_l('modules_glossary', '[foreignword]'),
-			'link' => g_l('modules_glossary', '[link]'),
-			'textreplacement' => g_l('modules_glossary', '[textreplacement]'),
+			weGlossary::TYPE_ABBREVATION => g_l('modules_glossary', '[abbreviation]'),
+			weGlossary::TYPE_ACRONYM => g_l('modules_glossary', '[acronym]'),
+			weGlossary::TYPE_FOREIGNWORD => g_l('modules_glossary', '[foreignword]'),
+			weGlossary::TYPE_LINK => g_l('modules_glossary', '[link]'),
+			weGlossary::TYPE_TEXTREPLACE => g_l('modules_glossary', '[textreplacement]'),
 		);
 
 		foreach($Types as $Key => $Val){
@@ -156,7 +156,7 @@ class weGlossaryTreeLoader{
 			($Segment ? 'LIMIT ' . intval($Offset) . ',' . intval($Segment) : '');
 
 		$Db->query($Query);
-		while($Db->next_record()) {
+		while($Db->next_record()){
 
 			$Item = array(
 				'id' => $Db->f('ID'),
@@ -173,19 +173,19 @@ class weGlossaryTreeLoader{
 
 			switch($Type){
 
-				case 'abbreviation':
+				case weGlossary::TYPE_ABBREVATION:
 					$Item['cmd'] = "edit_glossary_abbreviation";
 					break;
-				case 'acronym':
+				case weGlossary::TYPE_ACRONYM:
 					$Item['cmd'] = "edit_glossary_acronym";
 					break;
-				case 'foreignword':
+				case weGlossary::TYPE_FOREIGNWORD:
 					$Item['cmd'] = "edit_glossary_foreignword";
 					break;
-				case 'link':
+				case weGlossary::TYPE_LINK:
 					$Item['cmd'] = "edit_glossary_link";
 					break;
-				case 'textreplacement':
+				case weGlossary::TYPE_TEXTREPLACE:
 					$Item['cmd'] = "edit_glossary_textreplacement";
 					break;
 			}

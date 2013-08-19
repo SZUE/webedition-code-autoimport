@@ -76,7 +76,7 @@ class weCustomerTreeLoader{
 
 		$db->query("SELECT $_formatFields $elem FROM $table $where " . (!empty($_order) ? "ORDER BY $_order" : '') . ($segment ? " LIMIT $offset,$segment;" : ";" ));
 
-		while($db->next_record()) {
+		while($db->next_record()){
 
 			$typ = array("typ" => ($db->f("IsFolder") == 1 ? "group" : "item"));
 
@@ -166,15 +166,14 @@ class weCustomerTreeLoader{
 							"(" . $sortdef["field"] . "_" . $sortdef["function"] . "='' OR " . $sortdef["field"] . "_" . $sortdef["function"] . " IS NULL)" :
 							$sortdef["field"] . "_" . $sortdef["function"] . "='" . $pidarr[$c] . "'");
 				}
-			} else{
+			} else {
 				$select[] = $sortdef["field"];
 				$grouparr[] = $sortdef["field"];
 				$orderarr[] = $sortdef["field"] . " " . $sortdef["order"];
 				if(isset($pidarr[$c]) && $pidarr[$c])
-					if($pidarr[$c] == g_l('modules_customer', '[no_value]'))
-						$havingarr[] = "(" . $sortdef["field"] . "='' OR " . $sortdef["field"] . " IS NULL)";
-					else
-						$havingarr[] = $sortdef["field"] . "='" . $pidarr[$c] . "'";
+					$havingarr[] = ($pidarr[$c] == g_l('modules_customer', '[no_value]') ?
+							"(" . $sortdef["field"] . "='' OR " . $sortdef["field"] . " IS NULL)" :
+							$sortdef["field"] . "='" . $pidarr[$c] . "'");
 			}
 			$c++;
 		}
@@ -202,7 +201,7 @@ class weCustomerTreeLoader{
 			$_order = ($_formatFields != '' ?
 					implode(' ' . $settings->getSettings('default_order') . ',', $settings->formatFields) . ' ' . $settings->getSettings('default_order') :
 					'Text ' . $settings->getSettings('default_order'));
-		} else{
+		} else {
 			$_order = '';
 		}
 
@@ -214,7 +213,7 @@ class weCustomerTreeLoader{
 		$old = "0";
 		$first = true;
 
-		while($db->next_record()) {
+		while($db->next_record()){
 
 			$old = 0;
 
@@ -230,11 +229,11 @@ class weCustomerTreeLoader{
 					"icon" => we_base_ContentTypes::FOLDER_ICON,
 					"isfolder" => 1,
 					"typ" => "group",
-					"disabled" => "0",
-					"open" => "0"
+					"disabled" => 0,
+					"open" => 0
 				);
 				$check[$gname] = 1;
-			} else{
+			} else {
 				$foo = array();
 				for($i = 0; $i < $levelcount; $i++){
 					$foo[] = ($i == 0 ?
@@ -250,8 +249,8 @@ class weCustomerTreeLoader{
 								"icon" => we_base_ContentTypes::FOLDER_ICON,
 								"isfolder" => 1,
 								"typ" => "group",
-								"disabled" => "0",
-								"open" => "0"
+								"disabled" => 0,
+								"open" => 0
 							);
 							$check[$gname] = 1;
 						}
@@ -293,7 +292,7 @@ class weCustomerTreeLoader{
 						"icon" => $db->f("Icon"),
 						"isfolder" => $db->f("IsFolder"),
 						"typ" => "item",
-						"disabled" => "0",
+						"disabled" => 0,
 						"tooltip" => $db->f("ID")
 					);
 				}

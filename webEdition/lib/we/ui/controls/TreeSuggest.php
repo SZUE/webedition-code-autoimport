@@ -24,7 +24,7 @@
 /**
  * Includes autoload function
  */
-include_once (dirname(dirname(__FILE__)) . '/../../we/core/autoload.php');
+require_once (dirname(dirname(__FILE__)) . '/../../we/core/autoload.php');
 
 we_core_Permissions::protect();
 
@@ -34,10 +34,10 @@ we_core_Permissions::protect();
 $type = "application/json";
 header("Content-Type: " . $type);
 $ZW = array();
-foreach($_GET as $gKey => $gValue ){
-	$ZW[strip_tags($gKey)]=$gValue;
+foreach($_GET as $gKey => $gValue){
+	$ZW[strip_tags($gKey)] = $gValue;
 }
-$_GET=$ZW;
+$_GET = $ZW;
 
 if(isset($_GET["id"])){
 	$id = urlencode($_GET["id"]);
@@ -72,10 +72,10 @@ if(isset($sessionName) && $sessionName !== '' && isset($id) && $id !== ''){
 			if($close){
 				unset($session->openNodes[$key]);
 			}
-		} else{
+		} else {
 			//if opening node
 			if(!$close){
-				array_push($session->openNodes, $id);
+				$session->openNodes[] = $id;
 			}
 		}
 
@@ -98,8 +98,9 @@ if(isset($sessionName) && $sessionName !== '' && isset($id) && $id !== ''){
 			foreach($nodes as $k => $v){
 				$m++;
 				$response .= '"' . oldHtmlspecialchars($v['Text']) . '"';
-				if($m < $nodesCount)
+				if($m < $nodesCount){
 					$response .= ',';
+				}
 			}
 
 			$response .= '],"Id":[';
@@ -108,8 +109,9 @@ if(isset($sessionName) && $sessionName !== '' && isset($id) && $id !== ''){
 			foreach($nodes as $k => $v){
 				$m++;
 				$response .= '' . $v['ID'] . '';
-				if($m < $nodesCount)
+				if($m < $nodesCount){
 					$response .= ',';
+				}
 			}
 			/*
 			  $response .= '],"ContentType":[';
@@ -128,8 +130,9 @@ if(isset($sessionName) && $sessionName !== '' && isset($id) && $id !== ''){
 				$m++;
 				$labelType = $tree->getTreeIconClass($v['ContentType']);
 				$response .= '"' . $labelType . '"';
-				if($m < $nodesCount)
+				if($m < $nodesCount){
 					$response .= ',';
+				}
 			}
 
 			$response .= '],"Status":[';
@@ -138,8 +141,9 @@ if(isset($sessionName) && $sessionName !== '' && isset($id) && $id !== ''){
 			foreach($nodes as $k => $v){
 				$m++;
 				$response .= '"' . $v['Status'] . '"';
-				if($m < $nodesCount)
+				if($m < $nodesCount){
 					$response .= ',';
+				}
 			}
 
 			$response .= '],"Published":[';
@@ -148,8 +152,9 @@ if(isset($sessionName) && $sessionName !== '' && isset($id) && $id !== ''){
 			foreach($nodes as $k => $v){
 				$m++;
 				$response .= '"' . $v['Published'] . '"'; //we_util_Strings::p_r($v['Published']);
-				if($m < $nodesCount)
+				if($m < $nodesCount){
 					$response .= ',';
+				}
 			}
 
 			$response .= '],"Classes":[';
@@ -167,12 +172,13 @@ if(isset($sessionName) && $sessionName !== '' && isset($id) && $id !== ''){
 				if(!empty($outClasses)){
 					$ClassesStr = implode(' ', $outClasses);
 					$ClassesStr = trim($ClassesStr, ' ');
-				} else{
+				} else {
 					$ClassesStr = '';
 				}
 				$response .= '"' . $ClassesStr . '"'; //we_util_Strings::p_r($v['Published']);
-				if($m < $nodesCount)
+				if($m < $nodesCount){
 					$response .= ',';
+				}
 			}
 			$response .= '],"open":[';
 
@@ -181,11 +187,12 @@ if(isset($sessionName) && $sessionName !== '' && isset($id) && $id !== ''){
 				$m++;
 				if(in_array($v['ID'], $session->openNodes)){
 					$response .= 'true';
-				} else{
+				} else {
 					$response .= 'false';
 				}
-				if($m < $nodesCount)
+				if($m < $nodesCount){
 					$response .= ',';
+				}
 			}
 		}
 
@@ -193,10 +200,10 @@ if(isset($sessionName) && $sessionName !== '' && isset($id) && $id !== ''){
 
 		print $response;
 	}
-	else{
+	else {
 		return;
 	}
-} else{
+} else {
 	return;
 }
 ?>

@@ -43,8 +43,7 @@ if($_binary{0} && !empty($_csv)){
 		$_where[] = 'Path LIKE "' . $_path . '%" ';
 	}
 	$_query = "SELECT ID,Path,Icon,Text,ContentType FROM " . $GLOBALS['DB_WE']->escape($_table) . ' WHERE (' . implode(' OR ', $_where) . ') AND IsFolder=0' . ((!$ct["image"]) ? ' AND ContentType<>"image/*"' : '') . ';';
-} else
-if(!$_binary{0} && !empty($_csv)){
+} elseif(!$_binary{0} && !empty($_csv)){
 	list($folderID, $folderPath) = explode(",", $_csv);
 	$q_path = 'Path LIKE "' . $folderPath . '%"';
 	$q_dtTid = ($aCsv[3] != 0) ? (!$_binary{1} ? 'DocType' : 'TableID') . '="' . $aCsv[3] . '"' : '';

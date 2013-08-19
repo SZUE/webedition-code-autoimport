@@ -23,8 +23,6 @@
  */
 $tagName = $_REQUEST['we_cmd'][1];
 $openAtCursor = $_REQUEST['we_cmd'][2] === "1" ? true : false;
-$GLOBALS['TagRefURLName'] = strtolower($tagName);
-
 
 we_html_tools::protect();
 
@@ -58,41 +56,33 @@ if(($typeAttribute = $weTag->getTypeAttribute())){
 	$_typeOptions = $weTag->getTypeAttributeOptions();
 
 	if($_typeOptions){
-
-		$typeAttributeJs .= 'var typeAttributeAllows = new Object();';
+		$typeAttributeJs .= '
+var typeAttributeAllows = new Object();
+var typeAttributeRequires = new Object();';
 
 		foreach($_typeOptions as $option){
-
 			$_allowedAttribs = $option->getAllowedAttributes();
-
-			if(count($_allowedAttribs)){
-
-				$typeAttributeJs .= 'typeAttributeAllows["' . $option->getName() . '"] = new Array("';
-
-				$typeAttributeJs .= implode('","', $_allowedAttribs);
-				$typeAttributeJs .= '");';
-			} else{
+			if(empty($_allowedAttribs)){
 				$typeAttributeJs .= 'typeAttributeAllows["' . $option->getName() . '"] = new Array();';
+			} else{
+				$typeAttributeJs .= 'typeAttributeAllows["' . $option->getName() . '"] = new Array("'.
+				 implode('","', $_allowedAttribs).
+				 '");';
 			}
-		}
-
-		reset($_typeOptions);
-		$typeAttributeJs .= "var typeAttributeRequires = new Object();";
-
-		foreach($_typeOptions as $option){
 
 			$_reqAttribs = $option->getRequiredAttributes($_attributes);
-			if(!empty($_reqAttribs)){
-				$typeAttributeJs .= "typeAttributeRequires[\"" . $option->getName() . "\"] = new Array(\"";
-
-				$typeAttributeJs .= implode('","', $_reqAttribs);
-				$typeAttributeJs .= "\");";
-			} else{
+			if(empty($_reqAttribs)){
 				$typeAttributeJs .= "typeAttributeRequires[\"" . $option->getName() . "\"] = new Array();";
+			} else{
+				$typeAttributeJs .= "typeAttributeRequires[\"" . $option->getName() . "\"] = new Array(\"".
+				implode('","', $_reqAttribs).
+				 "\");";
 			}
 		}
 
-		$typeAttributeJs .= "weTagWizard.typeAttributeAllows = typeAttributeAllows;\nweTagWizard.typeAttributeRequires = typeAttributeRequires;";
+		$typeAttributeJs .= '
+weTagWizard.typeAttributeAllows = typeAttributeAllows;
+weTagWizard.typeAttributeRequires = typeAttributeRequires;';
 	}
 	$typeAttributeJs .= "weTagWizard.typeAttributeId = typeAttributeId;";
 } else{
@@ -100,9 +90,9 @@ if(($typeAttribute = $weTag->getTypeAttribute())){
 }
 // additional javascript for the individual tags - end
 // print html header of page
-print we_html_tools::htmlTop();
-print STYLESHEET;
-print we_html_element::cssLink(CSS_DIR . 'tagWizard.css') .
+print we_html_tools::htmlTop() .
+	STYLESHEET .
+	we_html_element::cssLink(CSS_DIR . 'tagWizard.css') .
 	we_html_element::jsScript(JS_DIR . 'windows.js') .
 	we_html_element::jsScript(JS_DIR . 'tagWizard.js') .
 	we_html_element::jsScript(JS_DIR . 'keyListener.js') .
@@ -114,7 +104,6 @@ function closeOnEscape() {
 }
 
 function applyOnEnter(evt) {
-
 	_elemName = "target";
 	if ( typeof(evt["srcElement"]) != "undefined" ) { // IE
 		_elemName = "srcElement";
@@ -139,7 +128,6 @@ weTagWizard.reqAttributes = reqAttributes;
 // information about the type-attribute
 ' . $typeAttributeJs . '
 function we_cmd(){
-
 	var args = "";
 	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 	switch (arguments[0]){
@@ -160,13 +148,8 @@ function we_cmd(){
 				contentEditor.document.we_form.elements["tag_edit_area"].value=strWeTag;
     			contentEditor.document.we_form.elements["tag_edit_area"].select();
     			self.close();'
-
 		) . '
-
-
-
 			} else {
-
 				if (weTagWizard.missingFields.length) {
 
 					req = "";
@@ -182,16 +165,16 @@ function we_cmd(){
 		break;
 
 		case "openDirselector":
-			new jsWindow(url,"we_fileselector",-1,-1,' . WINDOW_DIRSELECTOR_WIDTH . ',' . WINDOW_DIRSELECTOR_HEIGHT . ',true,true,true,true);
+			new jsWindow(url,"we_fileselector",-1,-1,' . we_fileselector::WINDOW_DIRSELECTOR_WIDTH . ',' . we_fileselector::WINDOW_DIRSELECTOR_HEIGHT . ',true,true,true,true);
 			break;
 		case "openDocselector":
-			new jsWindow(url,"we_fileselector",-1,-1,' . WINDOW_DOCSELECTOR_WIDTH . ',' . WINDOW_DOCSELECTOR_HEIGHT . ',true,true,true,true);
+			new jsWindow(url,"we_fileselector",-1,-1,' . we_fileselector::WINDOW_DOCSELECTOR_WIDTH . ',' . we_fileselector::WINDOW_DOCSELECTOR_HEIGHT . ',true,true,true,true);
 			break;
 		case "openSelector":
-			new jsWindow(url,"we_fileselector",-1,-1,' . WINDOW_SELECTOR_WIDTH . ',' . WINDOW_SELECTOR_HEIGHT . ',true,true,true,true);
+			new jsWindow(url,"we_fileselector",-1,-1,' . we_fileselector::WINDOW_SELECTOR_WIDTH . ',' . we_fileselector::WINDOW_SELECTOR_HEIGHT . ',true,true,true,true);
 			break;
 		case "openCatselector":
-			new jsWindow(url,"we_catselector",-1,-1,' . WINDOW_CATSELECTOR_WIDTH . ',' . WINDOW_CATSELECTOR_HEIGHT . ',true,true,true,true);
+			new jsWindow(url,"we_catselector",-1,-1,' . we_fileselector::WINDOW_CATSELECTOR_WIDTH . ',' . we_fileselector::WINDOW_CATSELECTOR_HEIGHT . ',true,true,true,true);
 			break;
 		case "browse_users":
 	        new jsWindow(url,"browse_users",-1,-1,500,300,true,false,true);
@@ -238,19 +221,17 @@ if($defaultValueCode){
 }
 
 $code = '<fieldset>
-		<div class="legend"><strong>' . g_l('taged', '[description]') . '</strong></div>
-		' . ($weTag->isDeprecated() ? '<b>Deprecated:</b> ' : '') . $weTag->getDescription() . '
-	</fieldset>' . $typeAttribCode . ' ' . $attributesCode . ' ' .
+		<div class="legend"><strong>' . g_l('taged', '[description]') . '</strong></div>' .
+	($weTag->isDeprecated() ? we_html_tools::htmlAlertAttentionBox(g_l('taged', '[deprecated][description]'), we_html_tools::TYPE_ALERT, '98%') : '') . $weTag->getDescription() .
+	'</fieldset>' . $typeAttribCode . ' ' . $attributesCode . ' ' .
 	$defaultValueCode;
-
-
 
 $_buttons = we_button::position_yes_no_cancel(
 		we_button::create_button('ok', "javascript:we_cmd('saveTag');"), null, we_button::create_button('cancel', "javascript:self.close();")
 );
 ?>
 <div id="divTagName">
-	<h1>&lt;we:<?php print $weTag->getName() . '&gt;' . ($weTag->isDeprecated() ? ' (Deprecated)' : ''); ?></h1>
+	<h1>&lt;we:<?php print $weTag->getName() . '&gt;' . ($weTag->isDeprecated() ? ' (' . g_l('taged', '[deprecated][title]') . ')' : ''); ?></h1>
 </div>
 <div id="divContent">
 	<?php print $code; ?>
@@ -262,6 +243,4 @@ $_buttons = we_button::position_yes_no_cancel(
 	</div>
 </div>
 <input type="submit" style="width:1px; height:1px; padding:0px; margin:0px; color:#fff; background-color:#fff; border:0px;" />
-
-
 </form></body></html>

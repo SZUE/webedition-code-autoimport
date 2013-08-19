@@ -24,7 +24,7 @@
  */
 function we_parse_tag_listview($attribs, $content){
 	$arr = array();
-	eval('$arr = ' . (PHPLOCALSCOPE ? str_replace('$', '\$', $attribs) : $attribs) . ';'); //Bug #6516
+	eval('$arr = ' . str_replace(array('\$', '$', '%WED%',), array('%WED%', '\$', '\$'), $attribs) . ';'); //Bug #6516
 	switch(weTag_getParserAttribute('type', $arr)){
 		default:
 		case 'document':
@@ -132,7 +132,7 @@ function we_tag_listview($attribs){
 
 	$we_lv_subfolders = isset($_REQUEST['we_lv_subfolders_' . $name]) ? (bool) $_REQUEST['we_lv_subfolders_' . $name] : $subfolders;
 
-	$cfilter = weTag_getAttribute('cfilter', $attribs, 'off');
+	$cfilter = weTag_getAttribute('cfilter', $attribs, 'false');
 	$hidedirindex = weTag_getAttribute('hidedirindex', $attribs, TAGLINKS_DIRECTORYINDEX_HIDE, true);
 	$objectseourls = weTag_getAttribute('objectseourls', $attribs, TAGLINKS_OBJECTSEOURLS, true);
 	$docAttr = weTag_getAttribute('doc', $attribs, 'self');
@@ -165,7 +165,7 @@ function we_tag_listview($attribs){
 
 	switch($type){
 		case 'document':
-			$GLOBALS['lv'] = new we_listview($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $doctype, $we_lv_cats, $we_lv_catOr, $casesensitive, $we_lv_ws, $we_lv_ct, $cols, $we_lv_se, $cond, $we_lv_calendar, $we_lv_datefield, $we_lv_date, $we_lv_weekstart, $we_lv_categoryids, $cfilter, $we_lv_subfolders, $customers, $id, $we_lv_languages, $we_lv_numorder, $hidedirindex);
+			$GLOBALS['lv'] = new we_listview($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $doctype, $we_lv_cats, $we_lv_catOr, $casesensitive, $we_lv_ws, $we_lv_ct, $cols, $we_lv_se, $cond, $we_lv_calendar, $we_lv_datefield, $we_lv_date, $we_lv_weekstart, $we_lv_categoryids, $cfilter, $we_lv_subfolders, $customers, $id, $we_lv_languages, $we_lv_numorder, $hidedirindex, $triggerid);
 			break;
 		case 'search':
 			$GLOBALS['lv'] = new we_search_listview($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $doctype, $class, $we_lv_cats, $we_lv_catOr, $casesensitive, $we_lv_ws, $triggerid, $cols, $cfilter, $we_lv_languages, $hidedirindex, $objectseourls);
@@ -178,7 +178,7 @@ function we_tag_listview($attribs){
 			}
 			if(f('SELECT 1 AS a FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($class), 'a', $GLOBALS['DB_WE']) == '1'){
 				$GLOBALS['lv'] = new we_listview_object($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $class, $we_lv_cats, $we_lv_catOr, $cond, $triggerid, $cols, $seeMode, $we_lv_se, $we_lv_calendar, $we_lv_datefield, $we_lv_date, $we_lv_weekstart, $we_lv_categoryids, $we_lv_ws, $cfilter, $docid, $customers, $id, $we_predefinedSQL, $we_lv_languages, $hidedirindex, $objectseourls);
-			} else{
+			} else {
 				t_e('warning', 'Class with id=' . intval($class) . ' does not exist');
 				unset($GLOBALS['lv']);
 				return false;
@@ -186,31 +186,27 @@ function we_tag_listview($attribs){
 			break;
 		case 'languagelink':
 			$we_lv_langguagesdoc = we_getDocForTag($we_lv_pagelanguage);
-			$we_lv_ownlanguage = $we_lv_langguagesdoc->Language; // we do need real document/objectlanguage in both cases!
-			if($we_lv_pagelanguage == 'self' || $we_lv_pagelanguage == 'top'){
-				$we_lv_pagelanguage = $we_lv_ownlanguage;
-				if(isset($we_lv_langguagesdoc->TableID) && $we_lv_langguagesdoc->TableID){
-					$we_lv_pageID = $we_lv_langguagesdoc->OF_ID;
-					$we_lv_linktype = 'tblObjectFile';
-				} else{
-					$we_lv_pageID = $we_lv_langguagesdoc->ID;
-					$we_lv_linktype = 'tblFile';
-				}
-				unset($we_lv_langguagesdoc);
+			$we_lv_ownlanguage = $we_lv_langguagesdoc->Language;
+
+			if(isset($GLOBALS['lv']) && ($GLOBALS['lv']->ClassName == 'we_listview_object' || $GLOBALS['lv']->ClassName == 'we_objecttag')){
+				$record = $GLOBALS['lv']->ClassName == 'we_listview_object' ? $GLOBALS['lv']->DB_WE->Record : $GLOBALS['lv']->getObject()->DB_WE->Record;
+				$we_lv_pageID = $record['OF_ID'];
+				$we_lv_linktype = 'tblObjectFile';
+				$we_lv_pagelanguage = $we_lv_pagelanguage == 'self' ? $record['OF_Language'] : ($we_lv_pagelanguage == 'top' ? $we_lv_ownlanguage : $we_lv_pagelanguage);
+				$we_lv_ownlanguage = $record['OF_Language'];
 			} else{
-				$we_lv_DocAttr = $docAttr;
-				$we_lv_langguagesdoc = we_getDocForTag($we_lv_DocAttr);
+				$we_lv_pagelanguage = $we_lv_pagelanguage == 'self' || $we_lv_pagelanguage == 'top' ? $we_lv_ownlanguage : we_getDocForTag($docAttr);
+
 				if(isset($we_lv_langguagesdoc->TableID) && $we_lv_langguagesdoc->TableID){
-					//$we_lv_pagelanguage = $we_lv_langguagesdoc->Language;
 					$we_lv_pageID = $we_lv_langguagesdoc->OF_ID;
 					$we_lv_linktype = 'tblObjectFile';
-				} else{
-					//$we_lv_pagelanguage = $we_lv_langguagesdoc->Language;
+				} else {
 					$we_lv_pageID = $we_lv_langguagesdoc->ID;
 					$we_lv_linktype = 'tblFile';
 				}
-				unset($we_lv_langguagesdoc);
 			}
+			unset($we_lv_langguagesdoc);
+
 			$GLOBALS['lv'] = new we_langlink_listview($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $we_lv_linktype, $cols, $seeMode, $we_lv_se, $cfilter, $showself, $we_lv_pageID, $we_lv_pagelanguage, $we_lv_ownlanguage, $hidedirindex, $objectseourls);
 			break;
 		case 'customer':
@@ -258,8 +254,8 @@ function we_tag_listview($attribs){
 			$path = weTag_getAttribute('path', $attribs);
 			$filterdatestart = weTag_getAttribute('filterdatestart', $attribs, '-1');
 			$filterdateend = weTag_getAttribute('filterdateend', $attribs, '-1');
-			$bannerid = f('SELECT ID FROM ' . BANNER_TABLE . ' WHERE PATH="' . $GLOBALS[DB_WE]->escape($path) . '"', 'ID', new DB_WE());
-			if($customer && defined('CUSTOMER_TABLE') && (!weBanner::customerOwnsBanner($_SESSION['webuser']['ID'], $bannerid))){
+			$bannerid = f('SELECT ID FROM ' . BANNER_TABLE . ' WHERE PATH="' . $GLOBALS[DB_WE]->escape($path) . '"', 'ID', $GLOBALS['DB_WE']);
+			if($customer && defined('CUSTOMER_TABLE') && (!weBanner::customerOwnsBanner($_SESSION['webuser']['ID'], $bannerid, $GLOBALS['DB_WE']))){
 				$bannerid = 0;
 			}
 			$GLOBALS['lv'] = new we_listview_banner($name, $we_rows, $order, $bannerid, $usefilter, $filterdatestart, $filterdateend);
@@ -271,12 +267,9 @@ function we_tag_listview($attribs){
 			}
 			$defaultname = weTag_getAttribute('defaultname', $attribs);
 			$docId = weTag_getAttribute('documentid', $attribs);
-			$objectId = weTag_getAttribute('objectid', $attribs);
-			if($objectId == ''){
-				if(isset($GLOBALS['lv']->ClassName) && $GLOBALS['lv']->ClassName == 'we_objecttag'){
-					$objectId = $GLOBALS['lv']->object->getDBf('OF_ID');
-				}
-				if(isset($GLOBALS['lv']->ClassName) && $GLOBALS['lv']->ClassName == 'we_listview_object'){
+			$objectId = weTag_getAttribute('objectid', $attribs, 0);
+			if($objectId == 0){
+				if(isset($GLOBALS['lv']->ClassName) && $GLOBALS['lv']->ClassName == 'we_objecttag' || isset($GLOBALS['lv']->ClassName) && $GLOBALS['lv']->ClassName == 'we_listview_object'){
 					$objectId = $GLOBALS['lv']->getDBf('OF_ID');
 				}
 			}

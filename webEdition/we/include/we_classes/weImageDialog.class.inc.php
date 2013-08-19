@@ -49,25 +49,28 @@ class weImageDialog extends weDialog{
 
 	function __construct($noInternals = false){
 		parent::__construct();
-		$this->dialogTitle = g_l('wysiwyg', "[edit_image]");
+		$this->dialogTitle = g_l('wysiwyg', '[edit_image]');
 		$this->noInternals = $noInternals;
 	}
 
 	function initBySrc($src, $width = "", $height = "", $hspace = "", $vspace = "", $border = "", $alt = "", $align = "", $name = "", $class = "", $title = "", $longdesc = ""){
-		if($src){
+		if($src){t_e("initBySrc");
 			$this->args['src'] = $src;
 			$tokkens = explode('?', $src);
 			$id = '';
 			$thumb = 0;
+
 			if(count($tokkens) == 2){
 				$foo = explode('=', $tokkens[1]);
 				if(count($foo) == 2){
 					if($foo[0] == 'id'){
 						$id = $foo[1];
+						$_fileScr = $tokkens[0];
 					} else if($foo[0] == 'thumb'){
 						$foo = explode(',', $foo[1]);
 						$id = $foo[0];
 						$thumb = $foo[1];
+						$_fileScr = id_to_path($id);
 					}
 				}
 			}
@@ -75,7 +78,7 @@ class weImageDialog extends weDialog{
 				$this->args["type"] = we_base_link::TYPE_INT;
 				$this->args["extSrc"] = "";
 				$this->args["fileID"] = $id;
-				$this->args["fileSrc"] = $tokkens[0];
+				$this->args["fileSrc"] = $_fileScr;
 				$this->args["thumbnail"] = $thumb;
 			} else{
 				$this->args["type"] = we_base_link::TYPE_EXT;
@@ -86,7 +89,7 @@ class weImageDialog extends weDialog{
 			}
 		} else{
 			$this->args["type"] = we_base_link::TYPE_EXT;
-			$this->args["extSrc"] = "http://";
+			$this->args["extSrc"] = we_base_link::EMPTY_EXT;
 		}
 		$this->initAttributes($width, $height, $hspace, $vspace, $border, $alt, $align, $name, $class, $title, $longdesc);
 	}
@@ -222,18 +225,12 @@ class weImageDialog extends weDialog{
 		$this->args["ratio"] = "1";
 	}
 
-	function getFormHTML(){
-		$hiddens = "";
-		if(isset($_REQUEST['we_cmd']) && is_array($_REQUEST['we_cmd'])){
-			foreach($_REQUEST['we_cmd'] as $k => $v){
-				$hiddens .= "<input type=\"hidden\" name=\"we_cmd[$k]\" value=\"" . rawurlencode($v) . "\" />";
-			}
-		}
-		$target = '';
-		if(!$this->JsOnly){
-			$target = ' target="we_' . $this->ClassName . '_cmd_frame"';
-		}
-		return '<form name="we_form" action="' . $_SERVER["SCRIPT_NAME"] . '" method="post"' . $target . ' onsubmit="return fsubmit(this)" >' . $hiddens;
+	/* use parent
+	function getFormHTML(){}
+	*/
+
+	function getFormJsOnSubmit(){
+		return ' onsubmit="return fsubmit(this)"';
 	}
 
 	function getDialogContentHTML(){
@@ -286,25 +283,15 @@ class weImageDialog extends weDialog{
 			$intSrc = $yuiSuggest->getHTML();
 
 			$thumbdata = (isset($this->args["thumbnail"]) ? $this->args["thumbnail"] : "");
-
-			$_p = (isset($this->args["fileSrc"]) ? $this->args["fileSrc"] : "");
-			$tmp = $_p ? explode('.', $_p) : array();
-			$extension = count($tmp) > 1 ? '.' . $tmp[count($tmp) - 1] : '';
-			unset($_p);
-
-			if((we_image_edit::gd_version() > 0 && we_image_edit::is_imagetype_supported(isset(we_image_edit::$GDIMAGE_TYPE[strtolower($extension)]) ? we_image_edit::$GDIMAGE_TYPE[strtolower($extension)] : "") && (isset($this->args["type"]) && $this->args["type"] == we_base_link::TYPE_INT)) || (isset($this->args['editor']) && $this->args['editor'] == "tinyMce" && !isset($_REQUEST['isTinyMCEInitialization']))){
-				$thumbnails = '<select name="we_dialog_args[thumbnail]" size="1" onchange="imageChanged(true);">' .
-					'<option value="0"' . (($thumbdata == 0) ? (' selected="selected"') : "") . '>' . g_l('wysiwyg', "[nothumb]") . '</option>';
-				$this->db->query('SELECT ID,Name FROM ' . THUMBNAILS_TABLE . ' ORDER BY Name');
-				while($this->db->next_record()) {
-					$thumbnails .= '<option value="' . $this->db->f("ID") . '"' . (($thumbdata == $this->db->f("ID")) ? (' selected="selected"') : "") . '>' . $this->db->f("Name") . '</option>';
-				}
-				$thumbnails .= '</select>';
-
-				$thumbnails = '<div id="selectThumbnail">' . we_html_tools::htmlFormElementTable($thumbnails, g_l('wysiwyg', "[thumbnail]")) . '</div>';
-			} else{
-				$thumbnails = '';
+			$thumbnails = '<select name="we_dialog_args[thumbnail]" size="1" onchange="imageChanged(true);">' .
+				'<option value="0"' . (($thumbdata == 0) ? (' selected="selected"') : "") . '>' . g_l('wysiwyg', "[nothumb]") . '</option>';
+			$this->db->query('SELECT ID,Name FROM ' . THUMBNAILS_TABLE . ' ORDER BY Name');
+			while($this->db->next_record()) {
+				$thumbnails .= '<option value="' . $this->db->f("ID") . '"' . (($thumbdata == $this->db->f("ID")) ? (' selected="selected"') : "") . '>' . $this->db->f("Name") . '</option>';
 			}
+			$thumbnails .= '</select>';
+			$thumbnails = '<div id="selectThumbnail" style="display: ' . $this->getDisplayThumbsSel() . '">' . we_html_tools::htmlFormElementTable($thumbnails, g_l('wysiwyg', "[thumbnail]")) . '</div>';
+
 			//javascript:we_cmd('openDocselector',document.we_form.elements['we_dialog_args[longdescid]'].value,'" . FILE_TABLE . "','document.we_form.elements[\\'we_dialog_args[longdescid]\\'].value','document.we_form.elements[\\'we_dialog_args[longdescsrc]\\'].value','','','','',".(we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1).");")
 			$wecmdenc1 = we_cmd_enc("document.we_form.elements['we_dialog_args[longdescid]'].value");
 			$wecmdenc2 = we_cmd_enc("document.we_form.elements['we_dialog_args[longdescsrc]'].value");
@@ -406,8 +393,42 @@ class weImageDialog extends weDialog{
 </table></div>' .
 				we_html_tools::hidden("imgChangedCmd", "0") . we_html_tools::hidden("wasThumbnailChange", "0") . we_html_tools::hidden("isTinyMCEInitialization", "0") .
 				we_html_tools::hidden("tinyMCEInitRatioH", "0") . we_html_tools::hidden("tinyMCEInitRatioW", "0") .
+				weSuggest::getYuiFiles() .
 				$yuiSuggest->getYuiCss() . $yuiSuggest->getYuiJs() . we_html_element::jsScript(TINYMCE_JS_DIR . 'plugins/weimage/js/image_init.js')),
 		);
+	}
+
+	private function getDisplayThumbsSel(){
+		$_p = (isset($this->args["fileSrc"]) ? $this->args["fileSrc"] : "");
+		$tmp = $_p ? explode('.', $_p) : array();
+		$extension = count($tmp) > 1 ? '.' . $tmp[count($tmp) - 1] : '';
+		unset($_p);
+
+		return (we_image_edit::gd_version() > 0 && we_image_edit::is_imagetype_supported(isset(we_image_edit::$GDIMAGE_TYPE[strtolower($extension)]) ? we_image_edit::$GDIMAGE_TYPE[strtolower($extension)] : "") && isset($this->args["type"]) && $this->args["type"] == we_base_link::TYPE_INT) ? "block" : "none";
+	}
+
+	function cmdFunction($args){
+		if (isset($this->we_cmd[0])){t_e("mal wieder called", $args);
+			switch($this->we_cmd[0]){
+				case 'update_editor':
+					//fill in all fields
+					$js = 'top.document.we_form["we_cmd[0]"].value = "";';
+					foreach($args as $k => $v){
+						$js .= 'if(typeof top.document.we_form["we_dialog_args[' . $k . ']"] !== "undefined") top.document.we_form["we_dialog_args[' . $k . ']"].value = "' . $v . '";
+						';
+					}
+
+					$js .= '
+						try{
+							top.document.getElementById("selectThumbnail").style.display = "' . $this->getDisplayThumbsSel() . '";
+						} catch(err){console.log(top.document.getElementById("selectThumbnail"));}
+					';
+
+					print we_html_tools::getHtmlTop() . we_html_element::jsElement($js) . "</head></html>";
+					break;
+				default:
+			}
+		}
 	}
 
 	function getJs(){
@@ -418,7 +439,7 @@ function we_cmd(){
 	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 	switch (arguments[0]){
     case "openDocselector":
-		new jsWindow(url,"we_fileselector",-1,-1,' . WINDOW_DOCSELECTOR_WIDTH . ',' . WINDOW_DOCSELECTOR_HEIGHT . ',true,true,true,true);
+		new jsWindow(url,"we_fileselector",-1,-1,' . we_fileselector::WINDOW_DOCSELECTOR_WIDTH . ',' . we_fileselector::WINDOW_DOCSELECTOR_HEIGHT . ',true,true,true,true);
 		break;
 	case "browse_server":
 		new jsWindow(url,"browse_server",-1,-1,840,400,true,false,true);
@@ -433,9 +454,11 @@ function imageChanged(wasThumbnailChange){
 	if(top.opener.tinyMCECallRegisterDialog) {
 		top.opener.tinyMCECallRegisterDialog(null,"block");
 	}
-	document.we_form.target="we_weImageDialog_edit_area";
-	document.we_form.we_what.value="dialog";
-	document.we_form.imgChangedCmd.value="1";
+	//document.we_form.target = "we_weImageDialog_edit_area";
+	document.we_form.target = "we_weImageDialog_cmd_frame";//TODO: send form to iFrame cmd for and for not reloading whole editor
+	document.we_form.we_what.value = "cmd";
+	document.we_form["we_cmd[0]"].value = "update_editor";
+	document.we_form.imgChangedCmd.value = "1";
 	document.we_form.submit();
 }
 
@@ -485,8 +508,7 @@ var ratiow = ' . (intval($this->args["width"] * $this->args["height"]) ? ($this-
 function fsubmit(e) {
 	return false;
 }') .
-			$yuiSuggest->getYuiJsFiles() .
-			$yuiSuggest->getYuiCssFiles();
+			weSuggest::getYuiFiles();
 	}
 
 }

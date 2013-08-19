@@ -15,4 +15,5 @@ $GLOBALS['_we_active_integrated_modules'] = array(
 	'voting',
 	'spellchecker',
 	'glossary',
+	'navigation'
 );

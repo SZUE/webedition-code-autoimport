@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,7 +22,6 @@
  * @package    webEdition_update
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 /*
  * This is the template for tab connect. It trys to connect to the server in
  * different ways.
@@ -31,11 +31,10 @@ $checkButton = we_button::create_button('next', $_SERVER['SCRIPT_NAME'] . '?sect
 
 $content = '
 <div class="defaultfont">
-	' . g_l('liveUpdate','[connect][description]') . '
+	' . g_l('liveUpdate', '[connect][description]') . '
 	<br />
 	<br />
 	' . $checkButton . '
-</div>
-';
+</div>';
 
-print liveUpdateTemplates::getHtml(g_l('liveUpdate','[connect][headline]'), $content);
+print liveUpdateTemplates::getHtml(g_l('liveUpdate', '[connect][headline]'), $content);

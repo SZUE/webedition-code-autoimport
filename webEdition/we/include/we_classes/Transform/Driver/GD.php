@@ -85,13 +85,12 @@ class Image_Transform_Driver_GD extends Image_Transform{
 	function __construct(){
 		if(!PEAR::loadExtension('gd')){
 			$this->isError(PEAR::raiseError("GD library is not available.", IMAGE_TRANSFORM_ERROR_UNSUPPORTED));
-		} else{
+		} else {
 			$types = ImageTypes();
 			if($types & IMG_PNG){
 				$this->_supported_image_types['png'] = 'rw';
 			}
-			if(($types & IMG_GIF)
-				|| function_exists('imagegif')){
+			if(($types & IMG_GIF) || function_exists('imagegif')){
 				$this->_supported_image_types['gif'] = 'rw';
 			} elseif(function_exists('imagecreatefromgif')){
 				$this->_supported_image_types['gif'] = 'r';
@@ -160,7 +159,7 @@ class Image_Transform_Driver_GD extends Image_Transform{
 			if($this->true_color){
 				$c = imagecolorresolve($this->imageHandle, $color[0], $color[1], $color[2]);
 				imagefill($new_img, 0, 0, $c);
-			} else{
+			} else {
 				imagecolorset($new_img, imagecolorat($new_img, 0, 0), $color[0], $color[1], $color[2]);
 			}
 		}
@@ -199,7 +198,7 @@ class Image_Transform_Driver_GD extends Image_Transform{
 
 		if('ttf' == substr($font, -3)){
 			ImageTTFText($this->imageHandle, $size, $angle, $x, $y, $c, $font, $text);
-		} else{
+		} else {
 			ImagePSText($this->imageHandle, $size, $angle, $x, $y, $c, $font, $text);
 		}
 		return true;
@@ -419,7 +418,7 @@ class Image_Transform_Driver_GD extends Image_Transform{
 		if($filename == ''){
 			header('Content-type: ' . $this->getMimeType($type));
 			$action = 'save image to file';
-		} else{
+		} else {
 			$action = 'output image';
 		}
 
@@ -515,14 +514,13 @@ class Image_Transform_Driver_GD extends Image_Transform{
 		if(is_null($trueColor)){
 			if(function_exists('imageistruecolor')){
 				$createtruecolor = imageistruecolor($this->imageHandle);
-			} else{
+			} else {
 				$createtruecolor = true;
 			}
-		} else{
+		} else {
 			$createtruecolor = $trueColor;
 		}
-		if($createtruecolor
-			&& function_exists('ImageCreateTrueColor')){
+		if($createtruecolor && function_exists('ImageCreateTrueColor')){
 			$new_img = @ImageCreateTrueColor($width, $height);
 		}
 		if(!$new_img){

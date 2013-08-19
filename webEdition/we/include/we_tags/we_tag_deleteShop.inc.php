@@ -23,8 +23,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_deleteShop($attribs){
-	if(($foo = attributFehltError($attribs, "shopname", __FUNCTION__)))
+	if(($foo = attributFehltError($attribs, "shopname", __FUNCTION__))){
 		return $foo;
+	}
 	if(!defined("SHOP_TABLE")){
 		return modulFehltError('Shop', __FUNCTION__);
 	}

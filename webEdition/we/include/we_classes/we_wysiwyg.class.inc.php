@@ -1076,13 +1076,13 @@ function weWysiwygSetHiddenText(arg) {
 		foreach($this->elements as $i => $elem){
 			if($elem->showMe){
 				if((!$lastSep) || ($elem->classname != "we_wysiwyg_ToolbarSeparator")){
-					array_push($this->filteredElements, $elem);
+					$this->filteredElements[] = $elem;
 				}
 				$lastSep = ($elem->classname == "we_wysiwyg_ToolbarSeparator");
 			}
 		}
 		if(!empty($this->filteredElements)){
-			if($this->filteredElements[count($this->filteredElements) - 1]->classname == "we_wysiwyg_ToolbarSeparator"){
+			if($this->filteredElements[count($this->filteredElements) - 1]->classname == 'we_wysiwyg_ToolbarSeparator'){
 				array_pop($this->filteredElements);
 			}
 		}
@@ -1090,8 +1090,9 @@ function weWysiwygSetHiddenText(arg) {
 
 	function hasSep($rowArr){
 		foreach($rowArr as $i => $elem){
-			if($elem->classname == "we_wysiwyg_ToolbarSeparator")
+			if($elem->classname == "we_wysiwyg_ToolbarSeparator"){
 				return true;
+			}
 		}
 		return false;
 	}
@@ -1145,7 +1146,7 @@ function weWysiwygSetHiddenText(arg) {
 		$rowwidth = 0;
 		while(!empty($tmpElements)) {
 			if(!$this->hasSep($rows[$rownr]) || $rowwidth <= max($this->width, $this->maxGroupWidth)){
-				array_push($rows[$rownr], array_shift($tmpElements));
+				$rows[$rownr][] = array_shift($tmpElements);
 				$rowwidth += $rows[$rownr][count($rows[$rownr]) - 1]->width;
 			} else{
 				if(!empty($rows[$rownr])){
@@ -1301,23 +1302,7 @@ function weWysiwygSetHiddenText(arg) {
 
 	function getInlineHTML(){
 		$rows = $this->getToolbarRows();
-		$editValue = $this->value;
-		$regs = array();
-		if(preg_match_all('/src="'.we_base_link::TYPE_INT_PREFIX.'(\\d+)/i', $editValue, $regs, PREG_SET_ORDER)){
-			foreach($regs as $reg){
-				$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($reg[1]), 'Path', $GLOBALS['DB_WE']);
-				$editValue = str_ireplace('src="'.we_base_link::TYPE_INT_PREFIX . $reg[1], 'src="' . $path . "?id=" . $reg[1], $editValue);
-			}
-		}
-		if(preg_match_all('/src="'.we_base_link::TYPE_THUMB_PREFIX.'([^" ]+)/i', $editValue, $regs, PREG_SET_ORDER)){
-			foreach($regs as $reg){
-				list($imgID, $thumbID) = explode(',', $reg[1]);
-				$thumbObj = new we_thumbnail();
-				$thumbObj->initByImageIDAndThumbID($imgID, $thumbID);
-				$editValue = str_ireplace('src="'.we_base_link::TYPE_THUMB_PREFIX . $reg[1], 'src="' . $thumbObj->getOutputPath() . "?thumb=" . $reg[1], $editValue);
-				unset($thumbObj);
-			}
-		}
+		$editValue = $this->parseInternalImageSrc($this->value);
 
 		switch(self::$editorType){
 			case 'tinyMCE':
@@ -1605,6 +1590,7 @@ function weWysiwygSetHiddenText(arg) {
 							});' .
 
 							($this->isFrontendEdit ? '' : '
+
 							/* set EditorFrame.setEditorIsHot(true) */
 
 							// we look for editorLevel and weEditorFrameController just once at editor init

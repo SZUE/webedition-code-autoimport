@@ -91,7 +91,7 @@ class weExportPreparer extends weXMLExIm{
 							$id = path_to_id($path);
 							if(isset($id) && $id){
 								$this->addToDepArray($level, $id);
-							} else{
+							} else {
 								$this->addToDepArray($level, $path, 'weBinary');
 							}
 						}
@@ -118,7 +118,7 @@ class weExportPreparer extends weXMLExIm{
 						$this->getNavigationRule($value, $level);
 
 						$_db->query('SELECT ID FROM ' . NAVIGATION_TABLE . ' WHERE Path LIKE "' . $_db->escape($_path) . '/%"');
-						while($_db->next_record()) {
+						while($_db->next_record()){
 							$this->addToDepArray($level, $_db->f('ID'), 'weNavigation', NAVIGATION_TABLE);
 							$this->getNavigationRule($_db->f('ID'), $level);
 						}
@@ -131,7 +131,7 @@ class weExportPreparer extends weXMLExIm{
 	function getNavigationRule($naviid, $level){
 		$_db = new DB_WE();
 		$_db->query('SELECT ID FROM ' . NAVIGATION_RULE_TABLE . ' WHERE NavigationID=' . intval($naviid));
-		while($_db->next_record()) {
+		while($_db->next_record()){
 			$this->addToDepArray($level, $_db->f('ID'), 'weNavigationRule', NAVIGATION_RULE_TABLE);
 		}
 	}
@@ -176,15 +176,16 @@ class weExportPreparer extends weXMLExIm{
 					}
 				}
 			}
-		} else{
+		} else {
 			foreach($this->PatternSearch->wysiwyg_patterns as $patterns){
 				foreach($patterns as $pattern){
 					if(preg_match_all($pattern, $text, $match)){
 						foreach($match[2] as $k => $include){
-							if(strpos($match[1][$k], we_base_link::TYPE_OBJ_PREFIX) !== false)
+							if(strpos($match[1][$k], we_base_link::TYPE_OBJ_PREFIX) !== false){
 								$this->addToDepArray($level, $include, 'objectFile');
-							else
+							} else {
 								$this->addToDepArray($level, $include);
+							}
 						}
 					}
 				}
@@ -198,16 +199,14 @@ class weExportPreparer extends weXMLExIm{
 			//try again with password
 			$path = str_replace(getServerUrl(true), '', $path);
 		}
-		if(is_readable($_SERVER['DOCUMENT_ROOT'] . $path))
-			return $path;
-		else
-			return false;
+		return (is_readable($_SERVER['DOCUMENT_ROOT'] . $path) ? $path : false);
 	}
 
-	function addToDepArray($level, $id, $ct="", $table=""){
+	function addToDepArray($level, $id, $ct = "", $table = ""){
 		if($ct == ""){
-			if($table == "")
+			if($table == ""){
 				$table = FILE_TABLE;
+			}
 			$ct = f('SELECT ContentType FROM ' . escape_sql_query($table) . ' WHERE ID=' . intval($id), 'ContentType', new DB_WE());
 		}
 		if($ct != ""){
@@ -236,7 +235,7 @@ class weExportPreparer extends weXMLExIm{
 
 		if(isset($array['obj_id']) && !empty($array['obj_id'])){
 			$ret["objs"][] = $array['obj_id'];
-		} else{
+		} else {
 			foreach($array as $key => $value){
 				if(!empty($value)){
 					if(is_array($value)){
@@ -287,13 +286,13 @@ class weExportPreparer extends weXMLExIm{
 									if(!empty($id)){
 										if($elk == "docs"){
 											$this->addToDepArray($level, $id);
-										} else{
+										} else {
 											$this->addToDepArray($level, $id, "objectFile");
 										}
 									}
 								}
 							}
-						} else{
+						} else {
 							$this->getIncludesFromWysiwyg($ev["dat"], $level);
 						}
 					}
@@ -383,15 +382,16 @@ class weExportPreparer extends weXMLExIm{
 
 		$_step = 0;
 		$id = $this->RefTable->getNext();
-		while($id) {
+		while($id){
 			$serach = in_array($id->ContentType, $serachCT);
 			if($serach || $this->options["handle_owners"]){
 				$doc = weContentProvider::getInstance($id->ContentType, $id->ID);
 			}
 
 			if($serach && $this->options["export_depth"] > $id->level){
-				if(!isset($this->analyzed[$id->ContentType]))
+				if(!isset($this->analyzed[$id->ContentType])){
 					$this->analyzed[$id->ContentType] = array();
+				}
 				if(!in_array($id->ID, $this->analyzed[$id->ContentType])){
 					$l = $id->level + 1;
 					$this->getDependent($doc, $l);
@@ -419,8 +419,9 @@ class weExportPreparer extends weXMLExIm{
 			}
 		}
 
-		if(isset($doc))
+		if(isset($doc)){
 			unset($doc);
+		}
 	}
 
 	function addToRefTable($ids){
@@ -445,16 +446,19 @@ class weExportPreparer extends weXMLExIm{
 		}
 
 		// move objects to the end of the reftable because objects should be imported after classes
-		if(defined('OBJECT_TABLE'))
+		if(defined('OBJECT_TABLE')){
 			$this->RefTable->moveItemsToEnd('objectFile');
+		}
 	}
 
 	function loadPerserves(){
 		parent::loadPerserves();
-		if(isset($_SESSION['weS']['ExImPrepare']))
+		if(isset($_SESSION['weS']['ExImPrepare'])){
 			$this->prepare = $_SESSION['weS']['ExImPrepare'];
-		if(isset($_SESSION['weS']['ExImOptions']))
+		}
+		if(isset($_SESSION['weS']['ExImOptions'])){
 			$this->options = $_SESSION['weS']['ExImOptions'];
+		}
 	}
 
 	function savePerserves(){
@@ -465,10 +469,12 @@ class weExportPreparer extends weXMLExIm{
 
 	function unsetPerserves(){
 		parent::unsetPerserves();
-		if(isset($_SESSION['weS']['ExImPrepare']))
+		if(isset($_SESSION['weS']['ExImPrepare'])){
 			unset($_SESSION['weS']['ExImPrepare']);
-		if(isset($_SESSION['weS']['ExImOptions']))
+		}
+		if(isset($_SESSION['weS']['ExImOptions'])){
 			unset($_SESSION['weS']['ExImOptions']);
+		}
 	}
 
 }

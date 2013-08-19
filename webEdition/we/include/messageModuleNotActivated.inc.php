@@ -23,8 +23,12 @@
  */
 we_html_tools::htmlTop();
 print STYLESHEET;
+?>
+</head>
 
-$content = '
+<body bgcolor="#ffffff" background="<?php print IMAGE_DIR ?>backgrounds/aquaBackground.gif"	onload="self.focus();" onBlur="setTimeout('self.close()', 500);">
+	<?php
+	echo '
 <table border="0" cellpadding="7" width="100%" class="defaultfont">
 <tr>
 	<td colspan="2"><strong>' . sprintf(
@@ -39,12 +43,6 @@ $content = '
 	</td>
 </tr>
 </table>';
-?>
-</head>
-
-<body bgcolor="#ffffff"
-			background="<?php print IMAGE_DIR ?>backgrounds/aquaBackground.gif"
-			onload="self.focus();" onBlur="setTimeout('self.close()',500);">
-				<?php print $content ?>
+	?>
 </body>
 </html>

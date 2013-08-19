@@ -257,13 +257,13 @@ function we_getImageResizeDialog(){
 
 	$buttons = we_button::position_yes_no_cancel($okbut, null, $cancelbut);
 
-	$widthInput = we_html_tools::htmlTextInput("width", "10", $width, "", 'onkeypress="return IsDigit(event,this);" onkeyup="we_keep_ratio(this,this.form.widthSelect);"', "text", 60);
-	$heightInput = we_html_tools::htmlTextInput("height", "10", $height, "", 'onkeypress="return IsDigit(event,this);" onkeyup="we_keep_ratio(this,this.form.heightSelect);"', "text", 60);
+	$widthInput = we_html_tools::htmlTextInput("width", 10, $width, "", 'onkeypress="return IsDigit(event,this);" onkeyup="we_keep_ratio(this,this.form.widthSelect);"', "text", 60);
+	$heightInput = we_html_tools::htmlTextInput("height", 10, $height, "", 'onkeypress="return IsDigit(event,this);" onkeyup="we_keep_ratio(this,this.form.heightSelect);"', "text", 60);
 
 	$widthSelect = '<select class="weSelect" size="1" name="widthSelect" onchange="we_switchPixelPercent(this.form.width,this);"><option value="pixel">' . g_l('weClass', "[pixel]") . '</option><option value="percent">' . g_l('weClass', "[percent]") . '</option></select>';
 	$heightSelect = '<select class="weSelect" size="1" name="heightSelect" onchange="we_switchPixelPercent(this.form.height,this);"><option value="pixel">' . g_l('weClass', "[pixel]") . '</option><option value="percent">' . g_l('weClass', "[percent]") . '</option></select>';
 
-	$ratio_checkbox = we_forms::checkbox("1", true, "ratio", g_l('thumbnails', "[ratio]"), false, "defaultfont", "if(this.checked){we_keep_ratio(this.form.width,this.form.widthSelect);}");
+	$ratio_checkbox = we_forms::checkbox(1, true, "ratio", g_l('thumbnails', "[ratio]"), false, "defaultfont", "if(this.checked){we_keep_ratio(this.form.width,this.form.widthSelect);}");
 
 	$_table = '<table border="0" cellpadding="2" cellspacing="0">
 	<tr>
@@ -283,7 +283,7 @@ function we_getImageResizeDialog(){
 		(($GLOBALS['we_doc']->getGDType() == "jpg") ?
 			'<br><div class="defaultfont">' . g_l('weClass', "[quality]") . '</div>' . we_image_edit::qualitySelect("quality") :
 			'');
-	array_push($_content, array("headline" => "", "html" => $_table, "space" => 0));
+	$_content[] = array("headline" => "", "html" => $_table, "space" => 0);
 	return we_multiIconBox::getHTML("", "100%", $_content, 30, $buttons, -1, "", "", false, g_l('weClass', "[resize]"));
 }
 
@@ -295,7 +295,7 @@ function we_getImageConvertDialog(){
 	$buttons = we_button::position_yes_no_cancel($okbut, null, $cancelbut);
 	$cancelbut = we_button::create_button("cancel", "javascript:top.close();");
 	$_dialog = '<div class="defaultfont">' . g_l('weClass', "[quality]") . '</div>' . we_image_edit::qualitySelect("quality");
-	array_push($_content, array("headline" => "", "html" => $_dialog, "space" => 0));
+	$_content[] = array("headline" => "", "html" => $_dialog, "space" => 0);
 
 
 	return we_multiIconBox::getHTML("", "100%", $_content, 30, $buttons, -1, "", "", false, g_l('weClass', "[convert]"));
@@ -309,16 +309,16 @@ function we_getImageRotateDialog(){
 
 	$buttons = we_button::position_yes_no_cancel($okbut, null, $cancelbut);
 
-	$_radio180 = we_forms::radiobutton("180", true, "degrees", g_l('weClass', "[rotate180]"));
-	$_radio90l = we_forms::radiobutton("90", false, "degrees", g_l('weClass', "[rotate90l]"));
-	$_radio90r = we_forms::radiobutton("270", false, "degrees", g_l('weClass', "[rotate90r]"));
+	$_radio180 = we_forms::radiobutton(180, true, "degrees", g_l('weClass', "[rotate180]"));
+	$_radio90l = we_forms::radiobutton(90, false, "degrees", g_l('weClass', "[rotate90l]"));
+	$_radio90r = we_forms::radiobutton(270, false, "degrees", g_l('weClass', "[rotate90r]"));
 
 	$_dialog = $_radio180 . $_radio90l . $_radio90r .
 		(($GLOBALS['we_doc']->getGDType() == "jpg") ?
 			'<br><div class="defaultfont">' . g_l('weClass', "[quality]") . '</div>' . we_image_edit::qualitySelect("quality") :
 			'');
 
-	array_push($_content, array("headline" => "", "html" => $_dialog, "space" => 0));
+	$_content[] = array("headline" => "", "html" => $_dialog, "space" => 0);
 
 
 	return we_multiIconBox::getHTML("", "100%", $_content, 30, $buttons, -1, "", "", false, g_l('weClass', "[rotate]"));

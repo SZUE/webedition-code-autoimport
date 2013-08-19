@@ -1,6 +1,6 @@
 <?php
 
-include_once($_SERVER['DOCUMENT_ROOT'] . LIB_DIR . 'we/core/autoload.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . LIB_DIR . 'we/core/autoload.php');
 
 $radio = new we_ui_controls_RadioButton();
 $radio->setValue('1');
@@ -15,7 +15,7 @@ $radio->setTitle('Title of Label 1');
 
 $radio2 = new we_ui_controls_RadioButton(
 		array(
-			'value' => '1',
+			'value' => 1,
 			'checked' => false,
 			'name' => 'test2',
 			'label' => 'Label 2',

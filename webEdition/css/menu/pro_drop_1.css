@@ -29,6 +29,13 @@ way to fit your requirements.
 .preload3 {
 }
 
+.menuDiv {
+	background-color: #efefef; 
+	background-image: url(/webEdition/images/java_menu/background.gif); 
+	background-repeat: repeat;
+	margin: 0px;
+}
+
 #nav {
 	padding: 0px 0px 0px 6px;
 	margin: 0px;

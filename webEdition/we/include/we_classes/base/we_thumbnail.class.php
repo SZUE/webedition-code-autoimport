@@ -217,11 +217,11 @@ class we_thumbnail{
 		$this->thumbWidth = $thumbWidth;
 		$this->thumbHeight = $thumbHeight;
 		$this->thumbQuality = $thumbQuality;
-		$this->thumbRatio = $thumbRatio;
-		$this->thumbMaxsize = $thumbMaxsize;
-		$this->thumbInterlace = $thumbInterlace;
-		$this->thumbFitinside = $thumbFitinside;
-		$this->thumbFormat = $thumbFormat;
+		$this->thumbRatio = trim($thumbRatio) ? $thumbRatio : 0;
+		$this->thumbMaxsize = trim($thumbMaxsize) ? $thumbMaxsize : 0;
+		$this->thumbInterlace = trim($thumbInterlace) ? $thumbInterlace : 0;
+		$this->thumbFitinside = trim($thumbFitinside) ? $thumbFitinside : 0;
+		$this->thumbFormat = trim($thumbFormat);
 		$this->thumbName = $thumbName;
 		$this->imageID = $imageID;
 		$this->imageFileName = $imageFileName;
@@ -315,7 +315,7 @@ class we_thumbnail{
 			return self::NO_GDLIB_ERROR;
 		}
 		$tmp = explode('.', $this->imagePath);
-		$type = we_image_edit::$GDIMAGE_TYPE['.' . strtolower($tmp[count($tmp) - 1])];
+		$type = we_image_edit::$GDIMAGE_TYPE['.' . strtolower(end($tmp))];
 		if($this->useOriginalSize() && $this->outputFormat == $type){
 			return self::USE_ORIGINAL;
 		}
@@ -405,8 +405,8 @@ class we_thumbnail{
 	 * @return string
 	 * @public
 	 */
-	public function getOutputPath($withDocumentRoot = false){
-		return ($withDocumentRoot ? $_SERVER['DOCUMENT_ROOT'] : '') . $this->outputPath;
+	public function getOutputPath($withDocumentRoot = false, $unique = false){
+		return ($withDocumentRoot ? $_SERVER['DOCUMENT_ROOT'] : '') . $this->outputPath . ((!$withDocumentRoot && $unique )? '?t=' . ($this->exists() ? filemtime($_SERVER['DOCUMENT_ROOT'] . $this->outputPath) : time()):'');
 	}
 
 	/**
@@ -463,7 +463,7 @@ class we_thumbnail{
 					we_image_edit::$GDIMAGE_TYPE[strtolower($this->imageExtension)] : "") &&
 			( (!$this->useOriginalSize()) || (!$this->hasOriginalType() ) )){
 			$this->outputPath = self::getThumbDirectory() . "/" . $this->imageID . "_" . $this->thumbID . "_" . $this->imageFileName . "." . $this->outputFormat;
-		} else{
+		} else {
 			$this->outputPath = $this->imagePath;
 		}
 	}
@@ -548,7 +548,7 @@ class we_thumbnail{
 		$this->db->query('SELECT ' . LINK_TABLE . '.Name as Name,' . CONTENT_TABLE . '.Dat as Dat  FROM ' . CONTENT_TABLE . ',' . LINK_TABLE . ' WHERE ' . LINK_TABLE . '.DID=' . intval($this->imageID) .
 			' AND ' . LINK_TABLE . '.DocumentTable="tblFile" AND ' . CONTENT_TABLE . '.ID=' . LINK_TABLE . '.CID  AND ' . CONTENT_TABLE . '.IsBinary=0');
 
-		while($this->db->next_record()) {
+		while($this->db->next_record()){
 			if($this->db->f("Name") == "origwidth"){
 				$this->imageWidth = $this->db->f("Dat");
 			} else if($this->db->f("Name") == "origheight"){
@@ -601,7 +601,7 @@ class we_thumbnail{
 		$dir_obj = @dir($thumbsdir);
 		$filestodelete = array();
 		if($dir_obj){
-			while(false !== ($entry = $dir_obj->read())) {
+			while(false !== ($entry = $dir_obj->read())){
 				if($entry != '.' && $entry != '..' && preg_match('|^[0-9]+_' . intval($id) . '_(.+)|', $entry)){
 					$filestodelete[] = $thumbsdir . "/" . $entry;
 				}
@@ -617,7 +617,7 @@ class we_thumbnail{
 		$dir_obj = @dir($thumbsdir);
 		$filestodelete = array();
 		if($dir_obj){
-			while(false !== ($entry = $dir_obj->read())) {
+			while(false !== ($entry = $dir_obj->read())){
 				if($entry != '.' && $entry != '..' && substr($entry, 0, strlen($id) + 1) == $id . "_"){
 					$filestodelete[] = $thumbsdir . '/' . $entry;
 				}
@@ -626,7 +626,7 @@ class we_thumbnail{
 		$previewDir = WE_THUMB_PREVIEW_PATH;
 		$dir_obj = @dir($previewDir);
 		if($dir_obj){
-			while(false !== ($entry = $dir_obj->read())) {
+			while(false !== ($entry = $dir_obj->read())){
 				if($entry != '.' && $entry != '..' && (substr($entry, 0, strlen($id) + 1) == $id . "_" || substr($entry, 0, strlen($id) + 1) == $id . ".")){
 					$filestodelete[] = $previewDir . '/' . $entry;
 				}

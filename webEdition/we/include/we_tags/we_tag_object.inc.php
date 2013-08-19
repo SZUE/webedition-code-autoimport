@@ -29,6 +29,10 @@ function we_parse_tag_object($attribs, $content){
 	if($name && strpos($name, ' ') !== false){
 		return parseError(sprintf(g_l('parser', '[name_with_space]'), 'object'));
 	}
+	$we_oid = weTag_getAttribute('id', $attribs, 0);
+	if(empty($we_oid) && empty($name)){
+		return attributFehltError($attribs, 'name', __FUNCTION__);
+	}
 
 	return '<?php global $lv;
 		if(' . we_tag_tagParser::printTag('object', $attribs) . '){?>' . $content . '<?php }
@@ -90,7 +94,7 @@ function we_tag_object($attribs){
 				</tr>
 			</table><?php
 		}
-	} else{
+	} else {
 
 		$we_oid = $we_oid ? $we_oid : (isset($_REQUEST['we_oid']) ? intval($_REQUEST['we_oid']) : 0);
 	}
@@ -100,7 +104,7 @@ function we_tag_object($attribs){
 	}
 
 	if($GLOBALS['lv']->avail){
-		if(isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == 'seem'){
+		if(isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
 			print '<a href="' . $we_oid . '" seem="object"></a>';
 		}
 	}

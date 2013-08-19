@@ -97,8 +97,7 @@ class weCodeWizard{
 			if($_entry == "." || $_entry == ".."){
 				// ignore these
 				// get the snippets by file if extension is xml
-			} else
-			if(!is_dir($this->SnippetPath . $SnippetDir . "/" . $_entry) && substr_compare($_entry, ".xml", -4, 4, true) == 0){
+			} elseif(!is_dir($this->SnippetPath . $SnippetDir . "/" . $_entry) && substr_compare($_entry, ".xml", -4, 4, true) == 0){
 				// get the snippet
 				$_snippet = weCodeWizardSnippet::initByXmlFile(
 						$this->SnippetPath . $SnippetDir . "/" . $_entry);
@@ -110,8 +109,7 @@ class weCodeWizard{
 				$Snippets[] = $_item;
 
 				// enter subdirectory only if depth is smaller than 2
-			} else
-			if(is_dir($this->SnippetPath . $SnippetDir . "/" . $_entry) && $Depth < 2){
+			} elseif(is_dir($this->SnippetPath . $SnippetDir . "/" . $_entry) && $Depth < 2){
 
 				$information = array();
 				$_infoFile = $this->SnippetPath . $SnippetDir . "/" . $_entry . "/" . "_information.php";
@@ -171,8 +169,7 @@ class weCodeWizard{
 					}
 				}
 				$_select .= "</optgroup>\n";
-			} else
-			if($option['type'] == 'option'){
+			} elseif($option['type'] == 'option'){
 				$_select .= "<option value=\"" . $option['value'] . "\">" . $option['name'] . "</option>\n";
 			}
 		}

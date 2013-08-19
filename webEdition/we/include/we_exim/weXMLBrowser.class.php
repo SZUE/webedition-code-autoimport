@@ -47,7 +47,7 @@ class weXMLBrowser extends we_xml_parser{
 	function saveCache($cache = '', $expire = 0){
 		if(empty($cache)){
 			$cache = $this->cache;
-		} else{
+		} else {
 			$this->cache = $cache;
 		}
 		if($expire == 0){
@@ -65,7 +65,7 @@ class weXMLBrowser extends we_xml_parser{
 	function loadCache($cache = ''){
 		if(empty($cache)){
 			$cache = $this->cache;
-		} else{
+		} else {
 			$this->cache = $cache;
 		}
 		$this->nodes = unserialize(weFile::load($cache));
@@ -93,15 +93,16 @@ class weXMLBrowser extends we_xml_parser{
 	function getSet($search){
 		$ret = array();
 		foreach($this->nodes as $key => $val){
-			if($key != "" && $key != $search && strpos($key, $search) !== false)
+			if($key != "" && $key != $search && strpos($key, $search) !== false){
 				$ret[] = $key;
+			}
 		}
 		return $ret;
 	}
 
 	function getFile($file, $timeout = 0){
 		if(file_exists(WEBEDITION_PATH . 'updateinclude/proxysettings.php')){
-			include_once(WEBEDITION_PATH . 'updateinclude/proxysettings.php');
+			require_once(WEBEDITION_PATH . 'updateinclude/proxysettings.php');
 		}
 		$url = (weFile::hasURL($file) ? getHttpOption() : 'local');
 		$this->fileName = $file;
@@ -121,7 +122,7 @@ class weXMLBrowser extends we_xml_parser{
 					$ctx = stream_context_create(array(
 						'http' => array(
 							'timeout' => 1
-						)));
+					)));
 				}
 				$content = ($timeout ? file_get_contents($file, false, $ctx) : file_get_contents($file));
 				break;
@@ -137,7 +138,7 @@ class weXMLBrowser extends we_xml_parser{
 				$_content = getCurlHttp(str_replace($_m[9], '', $file), $_m[9], array(), false, $timeout);
 				if($_content['status'] === 0){
 					$content = $_content['data'];
-				} else{
+				} else {
 					return false;
 				}
 				break;
@@ -176,14 +177,15 @@ class weXMLBrowser extends we_xml_parser{
 		fputs($file, "\r\n");
 		// start to write after http header
 		$write = false;
-		while(!feof($file)) {
+		while(!feof($file)){
 			$data = fread($file, 8192);
 			if(($pos = stripos($data, '<?xml')) !== false){
 				$data = substr($data, $pos);
 				$write = true;
 			}
-			if($write)
+			if($write){
 				$ret.=$data;
+			}
 		}
 		fclose($file);
 

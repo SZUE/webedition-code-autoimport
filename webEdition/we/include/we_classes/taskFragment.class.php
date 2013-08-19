@@ -116,8 +116,9 @@ class taskFragment{
 		$this->printHeader();
 		$this->printBodyTag($bodyAttributes);
 		for($i = 0; $i < $this->taskPerFragment; $i++){
-			if($i > 0)
+			if($i > 0){
 				$this->currentTask++; // before: currentTask was incremented with $i;
+			}
 			if($this->currentTask == $this->numberOfTasks){
 				unlink($filename);
 				$this->finish();

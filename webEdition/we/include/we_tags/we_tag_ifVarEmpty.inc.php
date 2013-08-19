@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once (WE_INCLUDES_PATH . 'we_tags/we_tag_ifVarSet.inc.php');
+require_once (WE_INCLUDES_PATH . 'we_tags/we_tag_ifVarSet.inc.php');
 
 function we_isVarNotEmpty($attribs){
 	$docAttr = weTag_getAttribute('doc', $attribs);

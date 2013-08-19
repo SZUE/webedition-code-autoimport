@@ -8,8 +8,11 @@ $this->Groups[] = 'if_tags';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 $locales = array();
 foreach($GLOBALS["weFrontendLanguages"] as $lv){
-	$locales[] = new weTagDataOption($lv, false, '');
+	$locales[] = new weTagDataOption($lv);
+	;
 }
 
-$this->Attributes[] = new weTagData_choiceAttribute('match',$locales, false,true, '');
-$this->Attributes[] = new weTagData_selectAttribute('doc', array(new weTagDataOption('top', false, ''), new weTagDataOption('self', false, '')), false, '');
+$this->Attributes[] = new weTagData_choiceAttribute('match', $locales, false, true, '');
+$this->Attributes[] = new weTagData_selectAttribute('doc', array(new weTagDataOption('top'),
+	new weTagDataOption('self'),
+	), false, '');

@@ -27,21 +27,23 @@ class weDialog{
 	 * VARIABLES
 	 * *********************************************************************** */
 
-	var $db = "";
-	var $what = "";
+	var $db = '';
+	var $what = '';
 	var $args = array();
-	var $cmdFN = "";
-	var $okJsFN = "";
-	var $dialogTitle = "";
+	var $cmdFN = '';
+	var $okJsFN = '';
+	var $dialogTitle = '';
 	var $ClassName = __CLASS__;
 	var $changeableArgs = array();
 	var $pageNr = 1;
 	var $numPages = 1;
 	var $JsOnly = false;
 	var $dialogWidth = 350;
-	var $charset = "";
+	var $charset = '';
 	var $tinyMCEPopupManagment = true;
-	private $noInternals = false;
+	protected $noInternals = false;
+	protected $we_cmd = array();
+
 
 	/*	 * ***********************************************************************
 	 * CONSTRUCTOR
@@ -74,38 +76,32 @@ class weDialog{
 
 	function initByHttp(){
 		$this->tinyMCEPopupManagment = (isset($_REQUEST["tinyMCEPopupManagment"]) && $_REQUEST["tinyMCEPopupManagment"] == "n") ? false : $this->tinyMCEPopupManagment;
-		$this->what = isset($_REQUEST["we_what"]) ? $_REQUEST["we_what"] : "";
+		$this->what = isset($_REQUEST['we_what']) ? $_REQUEST['we_what'] : '';
+		$this->we_cmd = isset($_REQUEST['we_cmd']) ? $_REQUEST['we_cmd'] : array();
 
-		if(isset($_REQUEST["we_dialog_args"]) && is_array($_REQUEST["we_dialog_args"])){
-			$this->args = $_REQUEST["we_dialog_args"];
+		if(isset($_REQUEST['we_dialog_args']) && is_array($_REQUEST['we_dialog_args'])){
+			$this->args = $_REQUEST['we_dialog_args'];
 			foreach($this->args as $key => $value){
 				$this->args[$key] = urldecode($value);
 			}
 		}
 
-		if(isset($_REQUEST["we_pageNr"])){
-			$this->pageNr = $_REQUEST["we_pageNr"];
+		if(isset($_REQUEST['we_pageNr'])){
+			$this->pageNr = $_REQUEST['we_pageNr'];
 		}
 	}
 
 	function getHTML(){
 		if($this->JsOnly){
-			$this->what = "dialog";
+			$this->what = 'dialog';
 		}
 
 		switch($this->what){
-			case "dialog":
-				return $this->getHeaderHTML(true) .
-					$this->getBodyTagHTML() .
-					$this->getDialogHTML() .
-					$this->getFooterHTML();
-			case "cmd":
+			case 'cmd':
 				return $this->getCmdHTML();
 			default:
-				return $this->getHeaderHTML() .
-					$this->getFramesetHTML() .
-					$this->getBodyTagHTML() .
-					$this->getFooterHTML();
+				return $this->getHeaderHTML(true) .
+					$this->getFramesetHTML() . '</html>';
 		}
 	}
 
@@ -117,6 +113,7 @@ class weDialog{
 		foreach($this->args as $k => $v){
 			$send[$k] = str_replace('"', '\"', $v);
 		}
+
 		if($this->cmdFN){
 			return $fn($send);
 		} else{
@@ -135,20 +132,20 @@ class weDialog{
 		}
 	}
 
-	function getQueryString($what = ""){
-		$query = "";
-		if(isset($_REQUEST['we_cmd']) && is_array($_REQUEST['we_cmd'])){
-			foreach($_REQUEST['we_cmd'] as $k => $v){
-				$query .= "we_cmd[" . rawurlencode($k) . "]=" . rawurlencode($v) . "&";
-			}
-		}
-		if(isset($this->args) && is_array($this->args)){
-			foreach($this->args as $k => $v){
-				$query .= "we_dialog_args[" . rawurlencode($k) . "]=" . rawurlencode($v) . "&";
-			}
-		}
-		return rtrim($query, '&') . ($what ? "&we_what=" . rawurlencode($what) : '');
-	}
+	/* function getQueryString($what = ''){
+	  $query = '';
+	  if(isset($_REQUEST['we_cmd']) && is_array($_REQUEST['we_cmd'])){
+	  foreach($_REQUEST['we_cmd'] as $k => $v){
+	  $query .= 'we_cmd[' . rawurlencode($k) . ']=' . rawurlencode($v) . '&';
+	  }
+	  }
+	  if(isset($this->args) && is_array($this->args)){
+	  foreach($this->args as $k => $v){
+	  $query .= 'we_dialog_args[' . rawurlencode($k) . ']=' . rawurlencode($v) . '&';
+	  }
+	  }
+	  return rtrim($query, '&') . ($what ? '&we_what=' . rawurlencode($what) : '');
+	  } */
 
 	function getFramesetHTML(){
 		return we_html_element::jsElement('
@@ -169,35 +166,35 @@ class weDialog{
 							self.we_' . $this->ClassName . '_edit_area.weDoOk();
 							break;
 					}
-				}') . '
-
-			<frameset rows="*,0" framespacing="0" border="0" frameborder="no">
-				<frame src="' . $_SERVER["SCRIPT_NAME"] . '?' . $this->getQueryString("dialog") . '&tinyMCEPopupManagment=n" name="we_' . $this->ClassName . '_edit_area" scrolling="no" noresize="noresize">
-				<frame src="' . HTML_DIR . 'white.html" name="we_' . $this->ClassName . '_cmd_frame" scrolling="no" noresize="noresize">
-			</frameset>';
+				}') .
+			we_html_element::htmlBody(array('class' => 'weDialogBody', 'style' => 'margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;', 'onunload' => 'doUnload()')
+				, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
+					, we_html_element::htmlExIFrame('navi', $this->getDialogHTML(), 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;overflow: hidden;') .
+					we_html_element::htmlIFrame('we_' . $this->ClassName . '_cmd_frame', HTML_DIR . 'white.html', 'position:absolute;height:0px;bottom:0px;left:0px;right:0px;overflow: hidden;')
+		));
 	}
 
 	function getNextBut(){
-		return we_button::create_button("next", "javascript:document.forms['0'].submit();");
+		return we_button::create_button('next', "javascript:document.forms['0'].submit();");
 	}
 
 	function getOkBut(){
-		return we_button::create_button("ok", "javascript:weDoOk();");
+		return we_button::create_button('ok', 'javascript:weDoOk();');
 	}
 
 	function getCancelBut(){
-		return we_button::create_button("cancel", "javascript:top.close();");
+		return we_button::create_button('cancel', 'javascript:top.close();');
 	}
 
 	function getbackBut(){
-		return ($this->pageNr > 1) ? we_button::create_button("back", "javascript:history.back();") . we_html_tools::getPixel(10, 2) : "";
+		return ($this->pageNr > 1) ? we_button::create_button('back', 'javascript:history.back();') . we_html_tools::getPixel(10, 2) : '';
 	}
 
 	function getDialogHTML(){
 		$dc = $this->getDialogContentHTML();
 
 		$dialogContent = (is_array($dc) ?
-				we_multiIconBox::getHTML("", "100%", $dc, 30, $this->getDialogButtons(), -1, "", "", false, $this->dialogTitle, "", $this->getDialogHeight()) :
+				we_multiIconBox::getHTML('', '100%', $dc, 30, $this->getDialogButtons(), -1, '', '', false, $this->dialogTitle, '', $this->getDialogHeight()) :
 				we_html_tools::htmlDialogLayout($dc, $this->dialogTitle, $this->getDialogButtons()));
 
 		return $this->getFormHTML() . $dialogContent .
@@ -205,30 +202,41 @@ class weDialog{
 	}
 
 	function getDialogHeight(){
-		return "";
+		return '';
 	}
 
 	function getDialogButtons(){
 		if($this->pageNr == $this->numPages && $this->JsOnly == false){
-			$okBut = ($this->getBackBut() != "") ? we_button::create_button_table(array($this->getBackBut(), we_button::create_button("ok", "form:we_form"))) : we_button::create_button("ok", "form:we_form");
+			$okBut = ($this->getBackBut() != '') ? we_button::create_button_table(array($this->getBackBut(), we_button::create_button('ok', 'form:we_form'))) : we_button::create_button('ok', 'form:we_form');
 		} else if($this->pageNr < $this->numPages){
-			$okBut = (($this->getBackBut() != "") && ($this->getNextBut()) != "") ? we_button::create_button_table(array($this->getBackBut(), $this->getNextBut())) : (($this->getBackBut() == "") ? $this->getNextBut() : $this->getBackBut());
+			$okBut = (($this->getBackBut() != '') && ($this->getNextBut()) != '') ? we_button::create_button_table(array($this->getBackBut(), $this->getNextBut())) : (($this->getBackBut() == '') ? $this->getNextBut() : $this->getBackBut());
 		} else{
-			$okBut = (($this->getBackBut() != "") && ($this->getOkBut()) != "") ? we_button::create_button_table(array($this->getBackBut(), $this->getOkBut())) : (($this->getBackBut() == "") ? $this->getOkBut() : $this->getBackBut());
+			$okBut = (($this->getBackBut() != '') && ($this->getOkBut()) != '') ? we_button::create_button_table(array($this->getBackBut(), $this->getOkBut())) : (($this->getBackBut() == '') ? $this->getOkBut() : $this->getBackBut());
 		}
-		return we_button::position_yes_no_cancel($okBut, "", $this->getCancelBut());
+		return we_button::position_yes_no_cancel($okBut, '', $this->getCancelBut());
 	}
 
 	function getFormHTML(){
 		$hiddens = "";
 		if(isset($_REQUEST['we_cmd']) && is_array($_REQUEST['we_cmd'])){
 			foreach($_REQUEST['we_cmd'] as $k => $v){
-				$hiddens .= '<input type="hidden" name="we_cmd[' . $k . ']" value="' . rawurlencode($v) . '" />';
+				//TODO: why should we loop this commands through?
+				$hiddens .= "<input type=\"hidden\" name=\"we_cmd[$k]\" value=\"" . rawurlencode($v) . "\" />";
 			}
 		}
+
+		//create some empty we_cmds to be filled by JS if needed
+		for($i= 0; $i < 4; $i++){
+			$hiddens .= isset($_REQUEST['we_cmd'][$i]) ? '' : "<input type=\"hidden\" name=\"we_cmd[$i]\" value=\"\" />";
+		}
+
 		$target = (!$this->JsOnly ? ' target="we_' . $this->ClassName . '_cmd_frame"' : '');
 
-		return '<form name="we_form" action="' . $_SERVER["SCRIPT_NAME"] . '" method="post"' . $target . '>' . $hiddens;
+		return '<form name="we_form" action="' . $_SERVER["SCRIPT_NAME"] . '" method="post"' . $target . $this->getFormJsOnSubmit() .'>' . $hiddens;
+	}
+
+	function getFormJsOnSubmit(){
+		return '';
 	}
 
 	function getHiddenArgs(){
@@ -243,11 +251,11 @@ class weDialog{
 	}
 
 	function getDialogContentHTML(){
-		return ""; // overwrite !!
+		return ''; // overwrite !!
 	}
 
 	function getHeaderHTML($printJS_Style = false){
-		return we_html_tools::htmlTop($this->dialogTitle, $this->charset) .
+		return we_html_tools::htmlTop($this->dialogTitle, $this->charset) . STYLESHEET .
 			(isset($this->args['editor']) && $this->args['editor'] == 'tinyMce' ? $this->getTinyMceJS() : '') .
 			($printJS_Style ? STYLESHEET . $this->getJs() : '') . we_html_element::cssLink(WEBEDITION_DIR . 'editors/content/tinymce/we_tinymce/weDialogCss.css') .
 			'</head>';
@@ -368,7 +376,7 @@ class weDialog{
 	}
 
 	function getClassSelect(){
-		$clSelect = new we_html_select(array("name" => "we_dialog_args[class]", "id" => "we_dialog_args[class]", "size" => "1", "style" => "width: 300px;"));
+		$clSelect = new we_html_select(array("name" => "we_dialog_args[class]", "id" => "we_dialog_args[class]", "size" => 1, "style" => "width: 300px;"));
 		$clSelect->addOption("", g_l('wysiwyg', "[none]"));
 		$classesCSV = trim($this->args["cssclasses"], ",");
 		if(!empty($classesCSV)){

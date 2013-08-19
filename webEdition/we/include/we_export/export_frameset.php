@@ -28,17 +28,8 @@ $frames = new weExportWizard(WE_INCLUDES_DIR . "we_export/export_frameset.php");
 we_html_tools::protect();
 //	Starting output .
 
-if(isset($_REQUEST["pnt"])){
-	$what = $_REQUEST["pnt"];
-} else{
-	$what = "frameset";
-}
-
-if(isset($_REQUEST["step"])){
-	$step = $_REQUEST["step"];
-}
-else
-	$step = 0;
+$what = (isset($_REQUEST["pnt"]) ? $_REQUEST["pnt"] : "frameset");
+$step = (isset($_REQUEST["step"]) ? $_REQUEST["step"] : 0);
 
 
 switch($what){

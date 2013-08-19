@@ -27,8 +27,7 @@ we_html_tools::protect();
 function we_siteimport_sort($a, $b){
 	if($a["contentType"] == "text/webedition" && $b["contentType"] != "text/webedition"){
 		return 1;
-	} else
-	if($a["contentType"] != "text/webedition" && $b["contentType"] == "text/webedition"){
+	} elseif($a["contentType"] != "text/webedition" && $b["contentType"] == "text/webedition"){
 		return -1;
 	}
 	return 0;

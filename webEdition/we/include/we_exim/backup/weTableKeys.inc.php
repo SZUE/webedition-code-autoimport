@@ -28,9 +28,9 @@ $tableKeys = array(
 	strtolower(CLEAN_UP_TABLE) => array('Path'),
 	strtolower(LINK_TABLE) => array('DID', 'CID'),
 	strtolower(PREFS_TABLE) => array('userID', 'key'),
-	strtolower(METADATA_TABLE) => array('id'),
+	strtolower(METADATA_TABLE) => array('tag'),
 	strtolower(TEMPORARY_DOC_TABLE) => array('DocTable', 'DocumentID', 'Active'),
-	strtolower(HISTORY_TABLE)=>array('DID','DocumentTable','ModDate'),
+	strtolower(HISTORY_TABLE) => array('DID', 'DocumentTable', 'ModDate'),
 );
 
 if(defined('NEWSLETTER_CONFIRM_TABLE')){

@@ -52,7 +52,7 @@ function we_tag_sessionStart($attribs){
 		$_SESSION['webuser'] = array('registered' => false);
 
 		$GLOBALS['WE_LOGOUT'] = true;
-	} else{
+	} else {
 		if(isset($_REQUEST['we_set_registeredUser']) && $GLOBALS['we_doc']->InWebEdition){
 			$_SESSION['weS']['we_set_registered'] = $_REQUEST['we_set_registeredUser'];
 		}
@@ -66,6 +66,8 @@ function we_tag_sessionStart($attribs){
 				$GLOBALS['DB_WE']->query('DELETE FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTable="tblWebUser" AND LoginDate < DATE_SUB(NOW(), INTERVAL ' . LOGIN_FAILED_HOLDTIME . ' DAY)');
 				if(!wetagsessionStartdoLogin($persistentlogins, $SessionAutologin)){
 					wetagsessionHandleFailedLogin();
+				} else {
+					$GLOBALS['DB_WE']->query('UPDATE ' . FAILED_LOGINS_TABLE . ' SET isValid="false" WHERE UserTable="tblWebUser" AND Username="' . $GLOBALS['DB_WE']->escape($_REQUEST['s']['Username']) . '"');
 				}
 			}
 			if($persistentlogins && ((isset($_SESSION['webuser']['registered']) && !$_SESSION['webuser']['registered']) || !isset($_SESSION['webuser']['registered']) ) && isset($_COOKIE['_we_autologin'])){
@@ -92,7 +94,7 @@ function we_tag_sessionStart($attribs){
 			if($_SESSION['webuser']['registered']){
 				$WebUserID = $_SESSION['webuser']['ID'];
 				$WebUserGroup = ($monitorgroupfield != '' ? $_SESSION['webuser'][$monitorgroupfield] : 'we_guest');
-			} else{
+			} else {
 				$WebUserID = 0;
 				$WebUserGroup = 'we_guest';
 			}
@@ -122,9 +124,9 @@ function we_tag_sessionStart($attribs){
 	}
 }
 
-function wetagsessionHandleFailedLogin($locked = false){
+function wetagsessionHandleFailedLogin(){
 	$_SESSION['webuser'] = array(
-		'registered' => false, 'loginfailed' => true
+		'registered' => false, 'loginfailed' => we_user::INVALID_CREDENTIALS
 	);
 	if(!isset($GLOBALS['WE_LOGIN_DENIED'])){
 		we_log_loginFailed('tblWebUser', $_REQUEST['s']['Username']);
@@ -132,13 +134,15 @@ function wetagsessionHandleFailedLogin($locked = false){
 	sleep(SECURITY_DELAY_FAILED_LOGIN);
 
 	if(
-		intval(f('SELECT count(1) AS a FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTable="tblWebUser" AND Username="' . $GLOBALS['DB_WE']->escape($_REQUEST['s']['Username']) . '" AND LoginDate >DATE_SUB(NOW(), INTERVAL ' . intval(SECURITY_LIMIT_CUSTOMER_NAME_HOURS) . ' hour)', 'a', $GLOBALS['DB_WE'])) >= intval(SECURITY_LIMIT_CUSTOMER_NAME) ||
+		intval(f('SELECT count(1) AS a FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTable="tblWebUser" AND Username="' . $GLOBALS['DB_WE']->escape($_REQUEST['s']['Username']) . '" AND isValid="true" AND LoginDate >DATE_SUB(NOW(), INTERVAL ' . intval(SECURITY_LIMIT_CUSTOMER_NAME_HOURS) . ' hour)', 'a', $GLOBALS['DB_WE'])) >= intval(SECURITY_LIMIT_CUSTOMER_NAME) ||
 		intval(f('SELECT count(1) AS a FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTable="tblWebUser" AND IP="' . $_SERVER['REMOTE_ADDR'] . '" AND LoginDate >DATE_SUB(NOW(), INTERVAL ' . intval(SECURITY_LIMIT_CUSTOMER_IP_HOURS) . ' hour)', 'a', $GLOBALS['DB_WE'])) >= intval(SECURITY_LIMIT_CUSTOMER_IP)
 	){
 		//don't serve user
 		if(SECURITY_LIMIT_CUSTOMER_REDIRECT){
+			$_SESSION['webuser']['loginfailed'] = we_user::MAX_LOGIN_COUNT_REACHED;
+			unset($_REQUEST['s']);
 			@include($_SERVER['DOCUMENT_ROOT'] . id_to_path(SECURITY_LIMIT_CUSTOMER_REDIRECT, FILE_TABLE));
-		} else{
+		} else {
 			echo CheckAndConvertISOfrontend('Dear customer, our service is currently not available. Please try again later. Thank you.<br/>' .
 				'Sehr geehrter Kunde, aus Sicherheitsgründen ist ein Login derzeit nicht möglich! Bitte probieren Sie es später noch ein mal. Vielen Dank');
 		}
@@ -149,14 +153,14 @@ function wetagsessionHandleFailedLogin($locked = false){
 function wetagsessionStartdoLogin($persistentlogins, &$SessionAutologin){
 	if($_REQUEST['s']['Username'] != ''){
 		if(
-			intval(f('SELECT count(1) AS a FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTable="tblWebUser" AND Username="' . $GLOBALS['DB_WE']->escape($_REQUEST['s']['Username']) . '" AND LoginDate >DATE_SUB(NOW(), INTERVAL ' . intval(SECURITY_LIMIT_CUSTOMER_NAME_HOURS) . ' hour)', 'a', $GLOBALS['DB_WE'])) >= intval(SECURITY_LIMIT_CUSTOMER_NAME) ||
+			intval(f('SELECT count(1) AS a FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTable="tblWebUser" AND Username="' . $GLOBALS['DB_WE']->escape($_REQUEST['s']['Username']) . '" AND isValid="true" AND LoginDate >DATE_SUB(NOW(), INTERVAL ' . intval(SECURITY_LIMIT_CUSTOMER_NAME_HOURS) . ' hour)', 'a', $GLOBALS['DB_WE'])) >= intval(SECURITY_LIMIT_CUSTOMER_NAME) ||
 			intval(f('SELECT count(1) AS a FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTable="tblWebUser" AND IP="' . $_SERVER['REMOTE_ADDR'] . '" AND LoginDate >DATE_SUB(NOW(), INTERVAL ' . intval(SECURITY_LIMIT_CUSTOMER_IP_HOURS) . ' hour)', 'a', $GLOBALS['DB_WE'])) >= intval(SECURITY_LIMIT_CUSTOMER_IP)
 		){
 			$GLOBALS['WE_LOGIN_DENIED'] = true;
 			return false;
 		}
 		$u = getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE Password!="" AND LoginDenied=0 AND Username="' . $GLOBALS['DB_WE']->escape(strtolower($_REQUEST['s']['Username'])) . '"', $GLOBALS['DB_WE']);
-		if(!empty($u) && $_REQUEST['s']['Password'] == $u['Password']){
+		if(!empty($u) && ($_REQUEST['s']['Password'] == $u['Password']) || (strpos($u['Password'], '$2y$') === 0 && we_user::comparePasswords(2, '', $_REQUEST['s']['Password'], $u['Password']))){
 			$_SESSION['webuser'] = $u;
 			$_SESSION['webuser']['registered'] = true;
 			$GLOBALS['DB_WE']->query('UPDATE ' . CUSTOMER_TABLE . ' SET LastLogin=UNIX_TIMESTAMP() WHERE ID=' . intval($_SESSION['webuser']['ID']));

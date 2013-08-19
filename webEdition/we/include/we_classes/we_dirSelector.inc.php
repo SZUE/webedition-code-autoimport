@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -91,6 +90,7 @@ class we_dirSelector extends we_multiSelector{
 	}
 
 	function printCmdHTML(){
+
 		print we_html_element::jsElement('
 top.clearEntries();' .
 				$this->printCmdAddEntriesHTML() .
@@ -272,13 +272,15 @@ function addEntry(ID,icon,text,isFolder,path,modDate){
 		return we_html_element::jsElement($ret);
 	}
 
-	function printCmdAddEntriesHTML(){
+	function cmdAddEntriesHTML(){
 		$ret = '';
 		$this->query();
+		$ret = '';
 		while($this->next_record()){
 			$ret.='top.addEntry(' . $this->f("ID") . ',"' . $this->f("Icon") . '","' . $this->f("Text") . '",' . $this->f("IsFolder") . ',"' . $this->f("Path") . '","' . date(g_l('date', '[format][default]'), (is_numeric($this->f("ModDate")) ? $this->f("ModDate") : 0)) . '");';
 		}
 		$ret.='top.fsheader.' . ($this->userCanMakeNewDir() ? 'enable' : 'disable') . 'NewFolderBut();';
+		return $ret;
 		return $ret;
 	}
 
@@ -318,8 +320,9 @@ function enableNewFolderBut(){
 	}
 
 	function userCanSeeDir($showAll = false){
-		if($_SESSION["perms"]["ADMINISTRATOR"])
+		if(we_hasPerm('ADMINISTRATOR')){
 			return true;
+		}
 		if(!$showAll){
 			if(!in_workspace(intval($this->dir), get_ws($this->table), $this->table, $this->db)){
 				return false;
@@ -329,7 +332,7 @@ function enableNewFolderBut(){
 	}
 
 	function userCanRenameFolder(){
-		if($_SESSION["perms"]["ADMINISTRATOR"]){
+		if(we_hasPerm('ADMINISTRATOR')){
 			return true;
 		}
 		if(!$this->userHasRenameFolderPerms()){
@@ -342,11 +345,10 @@ function enableNewFolderBut(){
 		if(defined("OBJECT_FILES_TABLE") && ($this->table == OBJECT_FILES_TABLE) && (!$this->dir)){
 			return false;
 		}
-		if($_SESSION["perms"]["ADMINISTRATOR"])
+		if(we_hasPerm('ADMINISTRATOR')){
 			return true;
-		if(!$this->userCanSeeDir())
-			return false;
-		if(!$this->userHasFolderPerms()){
+		}
+		if(!$this->userCanSeeDir() || !$this->userHasFolderPerms()){
 			return false;
 		}
 		return true;
@@ -620,15 +622,15 @@ top.clearEntries();';
 		$this->FolderText = rawurldecode($this->FolderText);
 		$txt = $this->FolderText;
 		if($txt == ""){
-			print we_message_reporting::getShowMessageCall(g_l('weEditor', "[folder][filename_empty]"), we_message_reporting::WE_MESSAGE_ERROR);
+			print we_message_reporting::getShowMessageCall(g_l('weEditor', '[folder][filename_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
 			//}elseif(strpos($txt,".")!==false){ entfernt fuer #4333
 			//print we_message_reporting::getShowMessageCall(g_l('weEditor',"[folder][we_filename_notAllowed]"), we_message_reporting::WE_MESSAGE_ERROR);
 		} elseif(substr($txt, -1) == '.'){ // neue Version f�r 4333 testet auf "." am ende, analog zu i_filenameNotAllowed in we_root
-			print we_message_reporting::getShowMessageCall(g_l('weEditor', "[folder][we_filename_notAllowed]"), we_message_reporting::WE_MESSAGE_ERROR);
-		} elseif(preg_match('/[^a-z0-9\._\-]/i', $txt)){ // Test auf andere verbotene Zeichen
-			print we_message_reporting::getShowMessageCall(g_l('weEditor', "[folder][we_filename_notValid]"), we_message_reporting::WE_MESSAGE_ERROR);
+			print we_message_reporting::getShowMessageCall(g_l('weEditor', '[folder][we_filename_notAllowed]'), we_message_reporting::WE_MESSAGE_ERROR);
+		} elseif(preg_match('-[<>?":|\\/*]-', $txt)){ // Test auf andere verbotene Zeichen
+			print we_message_reporting::getShowMessageCall(g_l('weEditor', '[folder][we_filename_notValid]'), we_message_reporting::WE_MESSAGE_ERROR);
 		} elseif($_REQUEST['id'] == 0 && strtolower($txt) == "webedition"){
-			print we_message_reporting::getShowMessageCall(g_l('weEditor', "[folder][we_filename_notAllowed]"), we_message_reporting::WE_MESSAGE_ERROR);
+			print we_message_reporting::getShowMessageCall(g_l('weEditor', '[folder][we_filename_notAllowed]'), we_message_reporting::WE_MESSAGE_ERROR);
 		} else {
 			$folder = (defined('OBJECT_FILES_TABLE') && $this->table == OBJECT_FILES_TABLE ? //4076
 					new we_class_folder() :
@@ -650,7 +652,7 @@ top.clearEntries();';
 				$we_responseText = sprintf(g_l('weEditor', '[folder][response_path_exists]'), $folder->Path);
 				print we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
 			} else {
-				if(preg_match('/[^a-z0-9\._\-]/i', $folder->Filename)){
+				if(preg_match('-[<>?":|\\/*]-', $folder->Filename)){
 					$we_responseText = sprintf(g_l('weEditor', '[folder][we_filename_notValid]'), $folder->Path);
 					print we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
 				} else {
@@ -701,8 +703,7 @@ top.selectFile(top.currentID);
 		return parent::getFramesetJavaScriptDef() . we_html_element::jsElement('
 var makeNewFolder=0;
 var we_editDirID="";
-var old=0;
-');
+var old=0;');
 	}
 
 	function printRenameFolderHTML(){
@@ -739,17 +740,17 @@ top.clearEntries();';
 			$folder->Filename = $txt;
 			$folder->Published = time();
 			$folder->Path = $folder->getPath();
-			$folder->ModifierID = isset($_SESSION["user"]["ID"]) ? $_SESSION["user"]["ID"] : "";
-			$this->db->query("SELECT ID,Text FROM " . $this->db->escape($this->table) . " WHERE Path='" . $this->db->escape($folder->Path) . "' AND ID != " . intval($this->we_editDirID));
+			$folder->ModifierID = isset($_SESSION['user']['ID']) ? $_SESSION['user']['ID'] : '';
+			$this->db->query('SELECT ID,Text FROM ' . $this->db->escape($this->table) . " WHERE Path='" . $this->db->escape($folder->Path) . "' AND ID != " . intval($this->we_editDirID));
 			if($this->db->next_record()){
-				$we_responseText = sprintf(g_l('weEditor', "[folder][response_path_exists]"), $folder->Path);
+				$we_responseText = sprintf(g_l('weEditor', '[folder][response_path_exists]'), $folder->Path);
 				print we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
 			} else {
-				if(preg_match('/[^a-z0-9\._\-]/i', $folder->Filename)){
-					$we_responseText = sprintf(g_l('weEditor', "[folder][we_filename_notValid]"), $folder->Path);
+				if(preg_match('-[<>?":|\\/*]-', $folder->Filename)){
+					$we_responseText = sprintf(g_l('weEditor', '[folder][we_filename_notValid]'), $folder->Path);
 					print we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
 				} else if(in_workspace($this->we_editDirID, get_ws($this->table), $this->table, $this->db)){
-					if(f('SELECT Text FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->we_editDirID), "Text", $this->db) != $txt){
+					if(f('SELECT Text FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->we_editDirID), 'Text', $this->db) != $txt){
 						$folder->we_save();
 						print 'var ref;
 if(top.opener.top.makeNewEntry) ref = top.opener.top;
@@ -797,8 +798,7 @@ top.selectFile(top.currentID);
 			}
 			$path = f('SELECT Path FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->id), "Path", $this->db);
 			$out = we_html_tools::getHtmlTop() .
-				STYLESHEET . '
-<style type="text/css">
+STYLESHEET . we_html_element::cssElement('
 	body {
 		margin:0px;
 		padding:0px;
@@ -831,8 +831,7 @@ top.selectFile(top.currentID);
 		padding:3px 6px;
 		background-color:#F2F2F1;
 	}
-</style>
-<script tyle="text/javascript">
+') . we_html_element::jsElement('
 	function setInfoSize() {
 		infoSize = document.body.clientHeight;
 		if(infoElem=document.getElementById("info")) {
@@ -854,11 +853,9 @@ top.selectFile(top.currentID);
 		if(top.fspath && top.fspath.document && top.fspath.document.body) top.fspath.document.body.innerHTML = BreadCrumb;
 		else if(weCountWriteBC<10) setTimeout(\'weWriteBreadCrumb("' . $path . '")\',100);
 		weCountWriteBC++;
-	}
-</script>
-</head>
-<body bgcolor="white" class="defaultfont" onresize="setInfoSize()" onload="setTimeout(\'setInfoSize()\',50)">
-					';
+	}') .
+				'</head>
+<body bgcolor="white" class="defaultfont" onresize="setInfoSize()" onload="setTimeout(\'setInfoSize()\',50)">';
 			if(isset($result['ContentType']) && !empty($result['ContentType'])){
 				if($this->table == FILE_TABLE && $result['ContentType'] != "folder"){
 					$query = $this->db->query('SELECT a.Name, b.Dat FROM ' . LINK_TABLE . ' a LEFT JOIN ' . CONTENT_TABLE . ' b on (a.CID = b.ID) WHERE a.DID=' . intval($this->id) . ' AND NOT a.DocumentTable="tblTemplates"');

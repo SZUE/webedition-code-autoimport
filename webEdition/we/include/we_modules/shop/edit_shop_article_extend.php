@@ -203,7 +203,7 @@ if(isset($daten)){
 			$count_expression = "";
 			$from_expression = "";
 			$where_expression = "";
-			if(count($fe) > 0){
+		if(!empty($fe)){
 				$fe_count = 0;
 
 				foreach($fe as $clId){

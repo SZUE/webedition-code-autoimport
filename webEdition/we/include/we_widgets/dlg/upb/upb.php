@@ -47,10 +47,10 @@ print we_html_element::htmlDocType() . we_html_element::htmlHtml(
 			we_html_tools::getHtmlInnerHead(g_l('cockpit', '[unpublished]')) . STYLESHEET . we_html_element::jsElement(
 				$jsCode)) . we_html_element::htmlBody(
 			array(
-			"marginwidth" => "15",
-			"marginheight" => "10",
-			"leftmargin" => "15",
-			"topmargin" => "10",
+			"marginwidth" => 15,
+			"marginheight" => 10,
+			"leftmargin" => 15,
+			"topmargin" => 10,
 			"onload" => "if(parent!=self)init();"
 			), we_html_element::htmlDiv(array(
 				"id" => "upb"

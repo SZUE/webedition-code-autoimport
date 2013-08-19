@@ -22,12 +22,13 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once(WE_MESSAGING_MODULE_PATH . "messaging_std.inc.php");
+require_once(WE_MESSAGING_MODULE_PATH . "messaging_std.inc.php");
 
 /* message object class */
 
 class we_format extends we_class{
 	/* Flag which is set when the file is not new */
+
 
 	var $Folder_ID = -1;
 	var $userid = -1;

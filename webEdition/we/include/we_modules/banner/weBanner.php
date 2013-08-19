@@ -27,7 +27,7 @@
  * General Definition of WebEdition Banner
  *
  */
-class weBanner extends weBannerBase{
+class weBanner extends weBannerBase {
 
 	const PAGE_PROPERTY = 0;
 	const PAGE_PLACEMENT = 1;
@@ -152,7 +152,7 @@ class weBanner extends weBannerBase{
 		$this->db->query('SELECT ID,abs(text) AS Nr, (text REGEXP "^[0-9]") AS isNr FROM ' . $this->table . ' ORDER BY isNr DESC,Nr,Text');
 
 		$out = array();
-		while($this->db->next_record()) {
+		while($this->db->next_record()){
 			$out[] = new weBanner($this->db->f("ID"));
 		}
 		return $out;
@@ -182,7 +182,7 @@ class weBanner extends weBannerBase{
 			$path = (substr($this->Path, -1) == "/") ? $this->Path : $this->Path . "/";
 			$this->db->query('SELECT ID FROM ' . BANNER_TABLE . ' WHERE Path LIKE "' . $this->db->escape($path) . '%"');
 			$ids = array();
-			while($this->db->next_record()) {
+			while($this->db->next_record()){
 				$ids[] = $this->db->f("ID");
 			}
 			foreach($ids as $id){
@@ -226,12 +226,12 @@ class weBanner extends weBannerBase{
 		$where .= ' AND (' . $foo . ' CategoryIDs="" ) ';
 
 		if($paths){
-			$foo=array();
+			$foo = array();
 			$pathsArray = makeArrayFromCsv($paths);
 			foreach($pathsArray as $p){
-				$foo []= 'Path LIKE "' . $db->escape($p) . '/%" OR Path = "' . $db->escape($p) . '"';
+				$foo [] = 'Path LIKE "' . $db->escape($p) . '/%" OR Path = "' . $db->escape($p) . '"';
 			}
-			$where .= ' AND ('. implode(' OR ',$foo) .') ';
+			$where .= ' AND (' . implode(' OR ', $foo) . ') ';
 		}
 
 		$where .= ' AND ( (StartOk=0 OR StartDate <= UNIX_TIMESTAMP() ) AND (EndOk=0 OR EndDate > UNIX_TIMESTAMP()) ) AND (maxShow=0 OR views<maxShow) AND (maxClicks=0 OR clicks<=maxClicks) ';
@@ -242,7 +242,7 @@ class weBanner extends weBannerBase{
 		$weight = rand(0, intval($maxweight));
 		$anz = 0;
 
-		while($anz == 0 && $weight <= $maxweight) {
+		while($anz == 0 && $weight <= $maxweight){
 			$db->query('SELECT ID, bannerID FROM ' . BANNER_TABLE . " WHERE $where AND weight <= $weight AND (TagName='' OR TagName='" . $db->escape($bannername) . "')");
 			$anz = $db->num_rows();
 			if($anz == 0){
@@ -268,7 +268,7 @@ class weBanner extends weBannerBase{
 		$imgAttr = array();
 		$db = new DB_WE();
 		$db->query('SELECT l.Name AS Name, c.Dat AS Dat FROM ' . LINK_TABLE . ' l LEFT JOIN ' . CONTENT_TABLE . ' AS c ON l.CID=c.ID WHERE l.Type="attrib" AND l.DID=' . intval($fileID));
-		while($db->next_record(MYSQL_ASSOC)) {
+		while($db->next_record(MYSQL_ASSOC)){
 			$imgAttr[$db->f('Name')] = $db->f("Dat");
 		}
 		$db->free();
@@ -291,11 +291,11 @@ class weBanner extends weBannerBase{
 				if(isset($attsImage['longdescid'])){
 					unset($attsImage['longdescid']);
 				}
-			} else{
+			} else {
 				$bannersrc = $getbanner . "?" . ($nocount ? 'nocount=' . $nocount . '&amp;' : '') . "u=$uniq&amp;bannername=" . rawurlencode($bannername) . "&amp;id=" . $bannerData["ID"] . "&amp;bid=" . $bannerData["bannerID"] . "&amp;did=" . $did . "&amp;page=" . rawurlencode($page);
 			}
 			$bannerlink = $bannerclick . "?" . ($nocount ? 'nocount=' . $nocount . '&amp;' : '') . "u=$uniq&amp;bannername=" . rawurlencode($bannername) . "&amp;id=" . $bannerData["ID"] . "&amp;did=" . $did . "&amp;page=" . rawurlencode($page);
-		} else{
+		} else {
 			$id = f('SELECT pref_value FROM ' . BANNER_PREFS_TABLE . ' WHERE pref_name="DefaultBannerID"', 'pref_value', $db);
 
 			$bannerID = f('SELECT bannerID FROM ' . BANNER_TABLE . ' WHERE ID=' . intval($id), "bannerID", $db);
@@ -304,7 +304,7 @@ class weBanner extends weBannerBase{
 				$attsImage = array_merge($attsImage, self::getImageInfos($bannerID));
 				if(isset($attsImage['longdescid']))
 					unset($attsImage['longdescid']);
-			}else{
+			}else {
 				$bannersrc = $getbanner . "?" . ($nocount ? 'nocount=' . $nocount . '&amp;' : '') . "u=$uniq&amp;bannername=" . rawurlencode($bannername) . "&amp;id=" . $id . "&amp;bid=" . $bannerID . "&amp;did=" . $did;
 				$showlink = false;
 			}
@@ -318,7 +318,7 @@ class weBanner extends weBannerBase{
 					'Referer' => $referer ? $referer : (isset($_SERVER["HTTP_REFERER"]) ? $_SERVER["HTTP_REFERER"] : ""),
 					'DID' => intval($did),
 					'Page' => $page
-				)));
+			)));
 			$db->query('UPDATE ' . BANNER_TABLE . ' SET views=views+1 WHERE ID=' . intval($id));
 		}
 
@@ -349,22 +349,23 @@ class weBanner extends weBannerBase{
 			}
 
 			return getHtmlTag('a', $linkAtts, $img);
-		} else{
+		} else {
 			return $img;
 		}
 	}
 
 	public static function getBannerURL($bid){
-		$h = getHash("SELECT IntHref,bannerIntID,bannerURL FROM " . BANNER_TABLE . " WHERE ID=" . intval($bid), $GLOBALS['DB_WE']);
-		return $h["IntHref"] ? getServerUrl() . id_to_path($h["bannerIntID"], FILE_TABLE) : $h["bannerURL"];
+		$h = getHash('SELECT IntHref,bannerIntID,bannerURL FROM ' . BANNER_TABLE . ' WHERE ID=' . intval($bid), $GLOBALS['DB_WE']);
+		return $h['IntHref'] ? getServerUrl() . id_to_path($h['bannerIntID'], FILE_TABLE) : $h['bannerURL'];
 	}
 
-	public static function customerOwnsBanner($customerID, $bannerID){
-		$res = getHash("SELECT Customers,ParentID FROM " . BANNER_TABLE . " WHERE ID=" . intval($bannerID), new DB_WE());
+	public static function customerOwnsBanner($customerID, $bannerID, $db = ''){
+		$db = ($db ? $db : new DB_WE());
+		$res = getHash('SELECT Customers,ParentID FROM ' . BANNER_TABLE . ' WHERE ID=' . intval($bannerID), $db);
 		if(strstr($res["Customers"], "," . $customerID . ",") != false){
 			return true;
 		} elseif($res["ParentID"] != 0){
-			return self::customerOwnsBanner($customerID, $res["ParentID"]);
+			return self::customerOwnsBanner($customerID, $res["ParentID"], $db);
 		}
 		return false;
 	}

@@ -261,8 +261,9 @@ function isFileSelected(id){
 		return we_html_element::jsElement('
 		function unselectAllFiles(){
 			for	(var i=0;i < entries.length; i++){
-				if(elem = top.fsbody.document.getElementById("line_"+entries[i].ID))
+				if(elem = top.fsbody.document.getElementById("line_"+entries[i].ID)){
 					elem.style.backgroundColor="white";
+				}
 			}
 			top.fsfooter.document.we_form.fname.value = "";
 		}');

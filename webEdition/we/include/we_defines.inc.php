@@ -90,6 +90,7 @@ define('TEMP_PATH', $_SERVER['DOCUMENT_ROOT'] . TEMP_DIR);
 define('WE_APPS_PATH', $_SERVER['DOCUMENT_ROOT'] . WE_APPS_DIR);
 define('WE_INCLUDES_PATH', $_SERVER['DOCUMENT_ROOT'] . WE_INCLUDES_DIR);
 define('JS_PATH', $_SERVER['DOCUMENT_ROOT'] . JS_DIR);
+define('WE_LIB_PATH', $_SERVER['DOCUMENT_ROOT'] . LIB_DIR);
 define('WE_MODULES_PATH', $_SERVER['DOCUMENT_ROOT'] . WE_MODULES_DIR);
 define('WE_THUMB_PREVIEW_PATH', $_SERVER['DOCUMENT_ROOT'] . WE_THUMB_PREVIEW_DIR);
 
@@ -99,7 +100,7 @@ define('ZENDCACHE_PATH', WEBEDITION_PATH . 'we/zendcache/');
 
 
 // Activate the webEdition error handler
-include_once (WE_INCLUDES_PATH . 'we_error_handler.inc.php');
+require_once (WE_INCLUDES_PATH . 'we_error_handler.inc.php');
 if(!defined('WE_ERROR_HANDLER_SET')){
 	we_error_handler();
 }
@@ -189,17 +190,6 @@ if(!isset($_SERVER['REQUEST_URI'])){
 		}
 	}
 }
-
-define('WINDOW_SELECTOR_WIDTH', 900);
-define('WINDOW_SELECTOR_HEIGHT', 685);
-define('WINDOW_DIRSELECTOR_WIDTH', 900);
-define('WINDOW_DIRSELECTOR_HEIGHT', 600);
-define('WINDOW_DOCSELECTOR_WIDTH', 900);
-define('WINDOW_DOCSELECTOR_HEIGHT', 685);
-define('WINDOW_CATSELECTOR_WIDTH', 900);
-define('WINDOW_CATSELECTOR_HEIGHT', 638);
-define('WINDOW_DELSELECTOR_WIDTH', 900);
-define('WINDOW_DELSELECTOR_HEIGHT', 600);
 
 $GLOBALS['WE_LANGS'] = array(
 	'de' => 'Deutsch',

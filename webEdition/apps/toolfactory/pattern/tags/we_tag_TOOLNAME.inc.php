@@ -5,5 +5,5 @@ function we_tag_<?php print $TOOLNAME;?>($attribs,$content){
     if(<?php print $ACTIVECONSTANT;?>){ //check if application is disabled
 		return "Hello <?php print $TOOLNAME;?>!";
     }
-			
+
 }

@@ -25,19 +25,21 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
 
 $appendJS = "";
-if(!(isset($_REQUEST['we_dialog_args']) && 
-		((isset($_REQUEST['we_dialog_args']['outsideWE']) && $_REQUEST['we_dialog_args']['outsideWE'] == 1) || 
+
+$noInternals = false;
+if(!(isset($_REQUEST['we_dialog_args']) &&
+		((isset($_REQUEST['we_dialog_args']['outsideWE']) && $_REQUEST['we_dialog_args']['outsideWE'] == 1) ||
 		(isset($_REQUEST['we_dialog_args']['isFrontend']) && $_REQUEST['we_dialog_args']['isFrontend'] == 1)))){
 	we_html_tools::protect();
 } else{
 	$noInternals = true;
 }
-$noInternals = $noInternals || !isset($_SESSION["user"]) || !isset($_SESSION["user"]["Username"]) || $_SESSION["user"]["Username"] == '';
+$noInternals = $noInternals || !isset($_SESSION['user']) || !isset($_SESSION['user']['Username']) || $_SESSION['user']['Username'] == '';
 
 if(defined("GLOSSARY_TABLE") && isset($_REQUEST['weSaveToGlossary']) && $_REQUEST['weSaveToGlossary'] == 1 && !$noInternals){
 	$Glossary = new weGlossary();
 	$Glossary->Language = $_REQUEST['language'];
-	$Glossary->Type = "acronym";
+	$Glossary->Type = weGlossary::TYPE_ACRONYM;
 	$Glossary->Text = trim($_REQUEST['text']);
 	$Glossary->Title = trim($_REQUEST['we_dialog_args']['title']);
 	$Glossary->Published = time();
@@ -71,7 +73,7 @@ print $appendJS;
 
 function weDoAcronymJS(){
 	return '
-if(typeof(isTinyMCE) != "undefined" && isTinyMCE === true){	
+if(typeof(isTinyMCE) != "undefined" && isTinyMCE === true){
 	WeacronymDialog.insert();
 	top.close();
 } else{

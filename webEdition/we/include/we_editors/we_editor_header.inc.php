@@ -32,7 +32,7 @@ $z = 0;
 $tab_head = 'var weTabs;';
 $tab_js = '';
 
-if($_SESSION['weS']['we_mode'] != 'seem'){ //	No tabs in Super-Easy-Edit_mode
+if($_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE){ //	No tabs in Super-Easy-Edit_mode
 	$we_tabs = new we_tabs();
 	// user has no access to file - only preview mode.
 	if($we_doc->userHasAccess() != we_root::USER_HASACCESS && $we_doc->userHasAccess() != we_root::USER_NO_SAVE){
@@ -197,12 +197,12 @@ _EditorFrame.setEditorEditPageNr(' . $we_doc->EditPageNr . ');' .
 	STYLESHEET;
 ?>
 </head>
-<body id="eHeaderBody" bgcolor="white" background="<?php print IMAGE_DIR; ?>backgrounds/header.gif" marginwidth="0" marginheight="0" leftmargin="0" topmargin="0" onLoad="setFrameSize()" onResize="setFrameSize()">
+<body id="eHeaderBody" style="background: #C8D8EC url(<?php print IMAGE_DIR; ?>backgrounds/header.gif);margin: 0px 0px 0px 0px;" onLoad="setFrameSize()" onResize="setFrameSize()">
 	<div id="main" ><?php
 		print '<div style="margin:3px 0px 3px 5px;" id="headrow">&nbsp;' . we_html_element::htmlB(str_replace(' ', '&nbsp;', g_l('contentTypes', '[' . $we_doc->ContentType . ']'))) . ': ' .
 			($we_doc->Table == FILE_TABLE && $we_doc->ID ? '<a href="javascript:top.wasdblclick=1;top.doClick(\'' . $we_doc->ID . '\');">' : '') .
-			'<span id="h_path"></span>' . ($we_doc->Table == FILE_TABLE && $we_doc->ID ? '</a>' : '') . ' (ID: <span id="h_id"></span>)</div>' .
-			($_SESSION['weS']['we_mode'] != 'seem' ?
+			'<span id="h_path"></span>' . ($we_doc->Table == FILE_TABLE && $we_doc->ID ? '</a>' : '') . ' (ID: <span id="h_id"></span>)' . ($we_doc->ContentType == 'text/webedition' && $we_doc->TemplateID && we_hasPerm('CAN_SEE_TEMPLATES') ? ' - <a href="javascript:top.weEditorFrameController.openDocument(\'' . TEMPLATES_TABLE . '\',' . $we_doc->TemplateID . ',\'text/weTmpl\');">' . g_l('weClass', '[openTemplate]') . '</a>' : '') . '</div>' .
+			($_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE ?
 				$we_tabs->getHTML() : '');
 		?></div>
 </body>

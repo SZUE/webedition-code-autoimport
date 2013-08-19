@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'] . WE_MESSAGING_MODULE_DIR . "msg_html_tools.inc.php");
+require_once($_SERVER['DOCUMENT_ROOT'] . WE_MESSAGING_MODULE_DIR . "msg_html_tools.inc.php");
 we_html_tools::protect();
 we_html_tools::htmlTop();
 
@@ -32,7 +32,7 @@ print we_html_element::jsElement('
 	function doSort(sortitem) {
 		entrstr = "";
 
-		top.content.messaging_cmd.location = "' . WE_MESSAGING_MODULE_DIR . 'messaging_cmd.php?mcmd=show_folder_content&sort=" + sortitem + entrstr + "&we_transaction=' . $_REQUEST['we_transaction'] . '";
+		top.content.cmd.location = "' . WE_MESSAGING_MODULE_DIR . 'edit_messaging_frameset.php?pnt=cmd&mcmd=show_folder_content&sort=" + sortitem + entrstr + "&we_transaction=' . $_REQUEST['we_transaction'] . '";
 	}') .
 	STYLESHEET .
 	we_html_element::cssElement('.defaultfont a {color:black; text-decoration:none}');

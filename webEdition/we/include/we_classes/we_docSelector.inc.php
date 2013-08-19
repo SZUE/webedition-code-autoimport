@@ -61,13 +61,14 @@ class we_docSelector extends we_dirSelector{
 		}
 
 		// deal with workspaces
-		if($_SESSION["perms"]["ADMINISTRATOR"]){
+		if(we_hasPerm('ADMINISTRATOR') || ($this->table == FILE_TABLE && we_hasPerm('CAN_SELECT_OTHER_USERS_FILES')) 
+				|| (defined('OBJECT_FILES_TABLE') && $this->table == OBJECT_FILES_TABLE && we_hasPerm('CAN_SELECT_OTHER_USERS_FILES'))){
 			$wsQuery = '';
 		} else {
 			$wsQuery = '';
 			if(get_ws($this->table)){
 				$wsQuery = getWsQueryForSelector($this->table);
-			} else if(defined("OBJECT_FILES_TABLE") && $this->table == OBJECT_FILES_TABLE && (!$_SESSION["perms"]["ADMINISTRATOR"])){
+			} else if(defined("OBJECT_FILES_TABLE") && $this->table == OBJECT_FILES_TABLE && (!we_hasPerm("ADMINISTRATOR"))){
 				$ac = getAllowedClasses($this->db);
 				foreach($ac as $cid){
 					$path = id_to_path($cid, OBJECT_TABLE);
@@ -342,6 +343,7 @@ function entry(ID,icon,text,isFolder,path,modDate,contentType,published,title) {
 			$ret.= 'if(top.fsheader.' . $tmp . 'NewFileBut) top.fsheader.' . $tmp . 'NewFileBut();';
 		}
 
+
 		$tmp = ($this->userCanMakeNewDir() ? 'enable' : 'disable');
 		$ret.='top.fsheader.' . $tmp . 'NewFolderBut();';
 		return $ret;
@@ -351,6 +353,7 @@ function entry(ID,icon,text,isFolder,path,modDate,contentType,published,title) {
 		return we_html_element::jsScript(JS_DIR . 'windows.js');
 	}
 
+
 	function printHeaderHeadlines(){
 		return '
 <table border="0" cellpadding="0" cellspacing="0">
@@ -358,6 +361,7 @@ function entry(ID,icon,text,isFolder,path,modDate,contentType,published,title) {
 	<tr>' . $this->tableSizer . '</tr>
 </table>';
 	}
+
 
 	function printHeaderTableExtraCols(){
 		$newFileState = $this->userCanMakeNewFile ? 1 : 0;
@@ -370,6 +374,7 @@ function entry(ID,icon,text,isFolder,path,modDate,contentType,published,title) {
 					we_button::create_button("image:btn_add_file", "javascript:top.newFile();", true, -1, 22, "", "", !$newFileState, false)) .
 				'</td>' : '');
 	}
+
 
 	function printHeaderJSDef(){
 		$ret = parent::printHeaderJSDef();
@@ -403,7 +408,7 @@ function enableNewFileBut() {
 	}
 
 	function _userCanMakeNewFile(){
-		if($_SESSION["perms"]["ADMINISTRATOR"]){
+		if(we_hasPerm("ADMINISTRATOR")){
 			return true;
 		}
 		if(!$this->userCanSeeDir()){
@@ -453,18 +458,13 @@ top.parentID = "' . $this->values["ParentID"] . '";
 	function printFooterTable(){
 		$ret = '
 <table border="0" cellpadding="0" cellspacing="0" width="100%">
-	<tr>
-		<td colspan="5"><img src="' . IMAGE_DIR . 'umr_h_small.gif" width="100%" height="2" border="0" /></td>
-	</tr>
-	<tr>
-		<td colspan="5">' . we_html_tools::getPixel(5, 5) . '</td>
-	</tr>';
+	<tr><td colspan="5"><img src="' . IMAGE_DIR . 'umr_h_small.gif" width="100%" height="2" border="0" /></td></tr>
+	<tr><td colspan="5">' . we_html_tools::getPixel(5, 5) . '</td></tr>';
 		if($this->filter == ''){
 			$ret.= '
 	<tr>
 		<td></td>
-		<td class="defaultfont">
-			<b>' . g_l('fileselector', "[type]") . '</b></td>
+		<td class="defaultfont"><b>' . g_l('fileselector', "[type]") . '</b></td>
 		<td></td>
 		<td class="defaultfont">
 			<select name="filter" class="weSelect" size="1" onchange="top.setFilter(this.options[this.selectedIndex].value)" class="defaultfont" style="width:100%">
@@ -476,9 +476,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 			</select></td>
 		<td></td>
 	</tr>
-	<tr>
-		<td colspan="5">' . we_html_tools::getPixel(5, 5) . '</td>
-	</tr>';
+	<tr><td colspan="5">' . we_html_tools::getPixel(5, 5) . '</td></tr>';
 		}
 		$buttons = we_button::position_yes_no_cancel(we_button::create_button("ok", "javascript:press_ok_button();"), null, we_button::create_button("cancel", "javascript:top.exit_close();"));
 
@@ -591,8 +589,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 		weCountWriteBC++;
 	}') . '
 </head>
-<body bgcolor="white" class="defaultfont" onresize="setInfoSize()" onload="setTimeout(\'setInfoSize()\',50)">
-					';
+<body bgcolor="white" class="defaultfont" onresize="setInfoSize()" onload="setTimeout(\'setInfoSize()\',50)">';
 		if(isset($result['ContentType']) && !empty($result['ContentType'])){
 			if($result['ContentType'] == "folder"){
 				$this->db->query('SELECT ID, Text, IsFolder FROM ' . $this->db->escape($this->table) . ' WHERE ParentID=' . intval($this->id));
@@ -833,17 +830,15 @@ top.parentID = "' . $this->values["ParentID"] . '";
 				$out .= "<tr><td colspan='2' valign='middle' class='image' height='160' align='center' bgcolor='#EDEEED'>" . $_imagepreview . "</td></tr>";
 			}
 
-			foreach($_previewFields as $_part){
-				if(count($_part["data"]) > 0){
-					$out .= "<tr><td colspan='2' class='headline'>" . $_part["headline"] . "</td></tr>";
-					foreach($_part["data"] as $z => $_row){
-						$_class = (($z % 2) == 0) ? "odd" : "even";
-						$out .= "<tr class='$_class'><td>" . $_row['caption'] . ": </td><td>" . $_row['content'] . "</td></tr>";
+					foreach($_previewFields as $_part){
+						if(!empty($_part["data"])){
+							$out .= "<tr><td colspan='2' class='headline'>" . $_part["headline"] . "</td></tr>";
+							foreach($_part["data"] as $z => $_row){
+								$_class = (($z % 2) == 0) ? "odd" : "even";
+								$out .= "<tr class='$_class'><td>" . $_row['caption'] . ": </td><td>" . $_row['content'] . "</td></tr>";
+							}
+						}
 					}
-				}
-			}
-
-
 			$out .= '</table></div></td></tr></table>';
 		}
 		$out .= '</body></html>';
@@ -948,6 +943,4 @@ function previewFolder(id) {
 	alert(id);
 }');
 	}
-
 }
-

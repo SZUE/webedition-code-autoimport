@@ -1,6 +1,6 @@
 <?php
 
-include_once($_SERVER['DOCUMENT_ROOT'] . LIB_DIR . 'we/core/autoload.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . LIB_DIR . 'we/core/autoload.php');
 
 
 $select = new we_ui_controls_Select();
@@ -30,7 +30,7 @@ $select2 = new we_ui_controls_Select(
 			'hidden' => false,
 			'onChange' => 'alert("onChange!");',
 			'title' => 'Titel 2',
-			'selectedValue' => '2',
+			'selectedValue' => 2,
 			'options' => array(
 				'1' => 'Option 1',
 				'2' => 'Option 2',
@@ -51,7 +51,7 @@ $select3 = new we_ui_controls_Select(
 			'hidden' => false,
 			'title' => 'Titel 2',
 			'width' => 150,
-			'selectedValue' => '2',
+			'selectedValue' => 2,
 			'optgroups' => array(
 				array(
 					'label' => 'group 1',
@@ -84,7 +84,7 @@ $select3 = new we_ui_controls_Select(
 		)
 );
 
-$select->addOption("7", "added Option 7");
+$select->addOption(7, "added Option 7");
 
 $addedOptions = array(
 	'8' => 'new Option 8',

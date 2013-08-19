@@ -81,22 +81,18 @@ echo we_html_element::jsScript(JS_DIR . 'images.js') . we_html_element::jsScript
 </head>
 
 <body class="weEditorBody" onUnload="doUnload()"><?php
-$parts = array();
+	$parts = array(
+		array(
+			"headline" => g_l('modules_shop', '[month][' . $month . ']') . " " . $year,
+			"html" => $info,
+			"space" => 170
+		),
+		array(
+			"headline" => g_l('modules_shop', '[stat]'),
+			"html" => $stat,
+			"space" => 170
+		)
+	);
 
-array_push($parts, array(
-	"headline" => g_l('modules_shop', '[month][' . $month . ']') . " " . $year,
-	"html" => $info,
-	"space" => 170
-	)
-);
-
-
-array_push($parts, array(
-	"headline" => g_l('modules_shop', '[stat]'),
-	"html" => $stat,
-	"space" => 170
-	)
-);
-
-print we_multiIconBox::getHTML("", "100%", $parts, 30, "", -1, "", "", false, g_l('tabs', "[module][overview]"));
-?></body></html>
+	print we_multiIconBox::getHTML("", "100%", $parts, 30, "", -1, "", "", false, g_l('tabs', "[module][overview]"));
+	?></body></html>

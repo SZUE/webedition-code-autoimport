@@ -42,8 +42,9 @@ abstract class we_html_element{
 	 */
 	static function htmlForm($attribs = array(), $content = ''){
 
-		if(!isset($attribs['name']))
+		if(!isset($attribs['name'])){
 			$attribs['name'] = 'we_form';
+		}
 		return we_baseElement::getHtmlCode(new we_baseElement('form', true, $attribs, $content));
 	}
 
@@ -56,8 +57,9 @@ abstract class we_html_element{
 	 */
 	static function htmlInput($attribs = array()){
 
-		if(!isset($attribs['class']))
+		if(!isset($attribs['class'])){
 			$attribs['class'] = 'defaultfont';
+		}
 		return we_baseElement::getHtmlCode(new we_baseElement('input', 'selfclose', $attribs));
 	}
 
@@ -71,7 +73,7 @@ abstract class we_html_element{
 	static function htmlRadioCheckbox($attribs = array()){
 		$attribs['type'] = 'checkbox';
 
-		$table = new we_html_table(array('cellpadding' => '0', 'cellspacing' => '0', 'border' => '0'), 1, 3);
+		$table = new we_html_table(array('cellpadding' => 0, 'cellspacing' => 0, 'border' => 0), 1, 3);
 		$table->setColContent(0, 0, self::htmlInput($attribs));
 		$table->setColContent(0, 1, we_html_tools::getPixel(4, 2));
 		$table->setColContent(0, 2, self::htmlLabel(array('for' => '$name', 'title' => sprintf(g_l('htmlForms', '[click_here]'), $attribs['title']), $attribs['title'])));
@@ -117,9 +119,8 @@ abstract class we_html_element{
 	}
 
 	static function cssLink($url){
-		return we_baseElement::getHtmlCode(new we_baseElement('link', false,
-					array('href' => self::getUnCache($url), 'rel' => 'styleSheet', 'type' => 'text/css')
-			));
+		return we_baseElement::getHtmlCode(new we_baseElement('link', false, array('href' => self::getUnCache($url), 'rel' => 'styleSheet', 'type' => 'text/css')
+		));
 	}
 
 	/**
@@ -227,7 +228,9 @@ abstract class we_html_element{
 	 */
 	static function htmlBody($attribs = array(), $content = ''){
 		$body = new we_baseElement('body', true, $attribs, $content);
-		$body->setStyle('margin', '0px 0px 0px 0px');
+		if(!$body->hasStyle('margin')){
+			$body->setStyle('margin', '0px 0px 0px 0px');
+		}
 		return $body->getHTML();
 	}
 
@@ -416,20 +419,23 @@ abstract class we_html_element{
 		return self::htmlDiv(array('style' => $style, 'name' => $name . 'Div', 'id' => $name . 'Div')
 				, we_baseElement::getHtmlCode(
 					new we_baseElement('iframe', true, array('name' => $name, 'id' => $name, 'frameBorder' => 0, 'src' => $src, 'style' => $iframestyle))
-				));
+		));
 	}
 
-	static function htmlExIFrame($__name, $__src, $__style){
+	static function htmlExIFrame($__name, $__src, $__style, $class = ''){
 		if(strlen($__src) > 100){
 			$tmp = $__src;
-		} else{
+		} else {
 			ob_start();
 			include $__src;
 			$tmp = ob_get_contents();
 			ob_end_clean();
 		}
-		return self::htmlDiv(array('style' => $__style, 'name' => $__name . 'Div', 'id' => $__name . 'Div')
-				, $tmp);
+		$tmpArray = array('style' => $__style, 'name' => $__name . 'Div', 'id' => $__name . 'Div');
+		if(!empty($class)){
+			$tmpArray['class'] = $class;
+		}
+		return self::htmlDiv($tmpArray, $tmp);
 	}
 
 }

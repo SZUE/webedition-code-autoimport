@@ -128,6 +128,7 @@ function setDir(id){' .
 	}
 
 	function printSetDirHTML(){
+
 		print '<script type="text/javascript"><!--
 top.clearEntries();
 ' .
@@ -135,7 +136,7 @@ top.clearEntries();
 			$this->printCMDWriteAndFillSelectorHTML() .
 			'top.fsheader.' . (intval($this->dir) == intval($this->rootDirID) ? 'disable' : 'enable') . 'RootDirButs();';
 
-		if($_SESSION["perms"]["ADMINISTRATOR"]){
+		if(we_hasPerm("ADMINISTRATOR")){
 			$go = true;
 		} else{
 			$rootID = f("SELECT ParentID FROM " . USER_TABLE . " WHERE ID='" . $_SESSION["user"]["ID"] . "'", "ParentID", $this->db);

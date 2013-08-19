@@ -137,7 +137,7 @@ while(1){
 		 weWindow = weWindow.opener.top;
 	}
 }';
-		if($_SESSION['weS']['we_mode'] == "seem"){
+		if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
 			return $s;
 		}
 

@@ -22,32 +22,9 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-/**
- * include connection with webEdition
- */
-/**
- * name of table in database where will be stored all temporary documents
- *
- *  sturcture of the table :
- *
- * CREATE TABLE TEMPRARY_DOC_TABLE (
- *   ID bigint(20) NOT NULL auto_increment,
- *   DocumentID bigint(20) NOT NULL default '0',
- *   DocumentObject longtext NOT NULL,
- *   Table varchar(64) NOT NULL,
- *   UnixTimestamp bigint(20) NOT NULL default '0',
- *   Active tinyint(1) NOT NULL default '0',
- *   PRIMARY KEY  (ID)
- * ) ENGINE=MyISAM;
- *
- */
 
 /**
  * Temporary document
- *
- * all functions on this class is static, and please use it in static form :
- *    we_temporaryDocument::function_name();
- *
  *
  * @static
  * @package WebEdition.Classes
@@ -63,10 +40,7 @@ abstract class we_temporaryDocument{
 	 * @param int documentID ID for document which will be stored in database
 	 * @param object mixed document object
 	 */
-	static function save($documentID, $table = '', $document = '', $db = ''){
-		$table = ($table ? $table : FILE_TABLE);
-
-		$db = $db ? $db : new DB_WE();
+	static function save($documentID, $table, $document, $db){
 		$documentID = intval($documentID);
 		$db->query('UPDATE ' . TEMPORARY_DOC_TABLE . ' SET Active=0 WHERE DocumentID=' . $documentID . ' AND Active=1 AND  DocTable="' . $db->escape(stripTblPrefix($table)) . '"');
 		$ret = $db->query('INSERT INTO ' . TEMPORARY_DOC_TABLE . ' SET ' .
@@ -78,17 +52,14 @@ abstract class we_temporaryDocument{
 				'DocTable' => stripTblPrefix($table))));
 		if($ret){
 			$db->query('DELETE FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentID=' . $documentID . ' AND Active=0 AND  DocTable="' . $db->escape(stripTblPrefix($table)) . '"');
-		} else{
+		} else {
 			//reset to current version
 			$db->query('UPDATE ' . TEMPORARY_DOC_TABLE . ' SET Active=1 WHERE DocumentID=' . $documentID . ' AND Active=0 AND  DocTable="' . $db->escape(stripTblPrefix($table)) . '"');
 		}
 		return $ret;
 	}
 
-	static function resave($documentID, $table = '', $document = '', $db = ''){
-		$table = ($table ? $table : FILE_TABLE);
-
-		$db = $db ? $db : new DB_WE();
+	static function resave($documentID, $table, $document, $db){
 		$docSer = $db->escape(serialize($document));
 		return $db->query('UPDATE ' . TEMPORARY_DOC_TABLE . ' SET DocumentObject="' . $docSer . '",UnixTimestamp=UNIX_TIMESTAMP() WHERE DocumentID=' . intval($documentID) . ' AND Active=1 AND  DocTable="' . $db->escape(stripTblPrefix($table)) . '"');
 	}
@@ -102,10 +73,7 @@ abstract class we_temporaryDocument{
 	 * @param int documentID Document ID
 	 * @return object mixed document object. if return value is flase, document doesn't exists in temporary table
 	 */
-	static function load($documentID, $table = '', $db = ''){
-		$table = ($table ? $table : FILE_TABLE);
-		$db = $db ? $db : new DB_WE();
-
+	static function load($documentID, $table, $db){
 		return f('SELECT DocumentObject FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentID=' . intval($documentID) . ' AND Active=1 AND  DocTable="' . $db->escape(stripTblPrefix($table)) . '"', 'DocumentObject', $db);
 	}
 
@@ -117,21 +85,14 @@ abstract class we_temporaryDocument{
 	 *
 	 * @param int documentID Document ID
 	 */
-	static function delete($documentID, $table = '', $db = ''){
-		$table = ($table ? $table : FILE_TABLE);
-		$db = $db ? $db : new DB_WE();
+	static function delete($documentID, $table, $db){
 		return $db->query('DELETE FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentID=' . intval($documentID) . ' AND  DocTable="' . $db->escape(stripTblPrefix($table)) . '"');
 	}
 
-	static function isInTempDB($id, $table = "", $db = ""){
-		$table = ($table ? $table : FILE_TABLE);
-
-		if(isset($id)){
-			$db = $db ? $db : new DB_WE();
-			return f('SELECT 1 AS a FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentID=' . intval($id) . ' AND Active=1 AND  DocTable="' . $db->escape(stripTblPrefix($table)) . '"', 'a', $db) == '1';
-		} else{
-			return false;
-		}
+	static function isInTempDB($id, $table, $db){
+		return (intval($id) > 0 ?
+				(f('SELECT 1 AS a FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentID=' . intval($id) . ' AND Active=1 AND  DocTable="' . $db->escape(stripTblPrefix($table)) . '"', 'a', $db) == '1') :
+				false);
 	}
 
 }

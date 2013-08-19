@@ -24,9 +24,9 @@
  */
 function we_tag_registeredUser($attribs){
 
-	$id = weTag_getAttribute("id", $attribs);
-	$show = weTag_getAttribute("show", $attribs);
-	$docAttr = weTag_getAttribute("doc", $attribs);
+	$id = weTag_getAttribute('id', $attribs);
+	$show = weTag_getAttribute('show', $attribs);
+	$docAttr = weTag_getAttribute('doc', $attribs);
 	$regs = array();
 	if(preg_match('|^field:(.+)$|', $id, $regs)){
 		$doc = we_getDocForTag($docAttr);
@@ -39,13 +39,13 @@ function we_tag_registeredUser($attribs){
 		unset($h['Password']);
 		if($show){
 			$foo = array();
-			preg_match_all("|%([^ ]+) ?|i", $show, $foo, PREG_SET_ORDER);
+			preg_match_all('|%([^ ]+) ?|i', $show, $foo, PREG_SET_ORDER);
 			foreach($foo as $f){
-				$show = str_replace("%" . $f[1], $h[$f[1]], $show);
+				$show = str_replace('%' . $f[1], $h[$f[1]], $show);
 			}
 			return $show;
 		} else{
-			return $h["Username"];
+			return $h['Username'];
 		}
 	}
 	return '';

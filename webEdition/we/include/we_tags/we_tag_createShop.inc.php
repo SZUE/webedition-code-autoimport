@@ -34,7 +34,7 @@ function we_tag_createShop($attribs){
 	$deleteshoponlogout = weTag_getAttribute('deleteshoponlogout', $attribs, false, true);
 	$shopname = weTag_getAttribute('shopname', $attribs);
 
-	include_once(WE_MODULES_PATH . 'shop/we_conf_shop.inc.php');
+	require_once(WE_MODULES_PATH . 'shop/we_conf_shop.inc.php');
 
 	if(!isset($_SESSION)){
 		@session_start();
@@ -47,8 +47,7 @@ function we_tag_createShop($attribs){
 		unset($_SESSION[$shopname . '_save']);
 	}
 
-	$GLOBALS[$shopname] = new we_shop_Basket();
-	$GLOBALS[$shopname]->setCartProperties((isset($_SESSION[$shopname . '_save']) ? $_SESSION[$shopname . '_save'] : array()));
+	$GLOBALS[$shopname] = new we_shop_Basket((isset($_SESSION[$shopname . '_save']) ? $_SESSION[$shopname . '_save'] : array()));
 	$GLOBALS[$shopname]->initCartFields();
 	$_SESSION[$shopname . '_save'] = $GLOBALS[$shopname]->getCartProperties();
 }

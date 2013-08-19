@@ -33,9 +33,9 @@ we_html_tools::htmlTop();
 //  and depending on fileending.
 
 if($we_doc->ContentType == 'text/css' || $we_doc->Extension == '.css'){
-	include_once(WE_INCLUDES_PATH . 'accessibility/services_css.inc.php');
+	require_once(WE_INCLUDES_PATH . 'accessibility/services_css.inc.php');
 } else{
-	include_once(WE_INCLUDES_PATH . 'accessibility/services_html.inc.php');
+	require_once(WE_INCLUDES_PATH . 'accessibility/services_html.inc.php');
 }
 
 $services = array();

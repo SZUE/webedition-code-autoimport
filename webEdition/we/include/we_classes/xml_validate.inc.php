@@ -126,7 +126,7 @@ class XML_Validate extends we_xml_parser {
 
 		// If the node_set does not contain nodes either the name of the document root does not match
 		// or there are no child nodes.
-		if (count($node_set)>0) {
+		if (!empty($node_set)) {
 			// Run through the child nodes.
 			foreach($node_set as $node) {
 				// The current node name.
@@ -236,7 +236,7 @@ class XML_Validate extends we_xml_parser {
 			if ($this->nodeName($this->root)!="webEdition") {
 				// The name of the document root does not match.
 			}
-			else if (count($this->nodes[$this->root]["children"])==0) {
+			else if (empty($this->nodes[$this->root]["children"])) {
 				// The document root does not contain any child elements.
 			}
 		}

@@ -86,8 +86,9 @@ class XML_SplitFile extends we_xml_parser{
 	function splitFile($absoluteXPath = "*/descendant::*", $start = false, $end = false, $dpth = 1){
 		// Check if a XML file was loaded, either by the constructor or by the
 		// getFile method.
-		if(!$this->parserHasContent())
+		if(!$this->parserHasContent()){
 			return FALSE;
+		}
 
 		// Save the path consisting of the temporary directory and a unique id.
 		$this->path = TEMP_PATH;
@@ -165,10 +166,10 @@ class XML_SplitFile extends we_xml_parser{
 						$xml .= (!$hasSection) ? $this->replaceEntities($text) : "<![CDATA[" . $text . "]]>";
 
 						// Add the end tag of the element.
-						if($hasText)
+						if($hasText){
 							$xml .= "</" . $tagname . ">\n";
-					}
-					else{
+						}
+					} else {
 						// Auto-close the tag.
 						$xml .= "/>\n";
 					}
@@ -200,9 +201,9 @@ class XML_SplitFile extends we_xml_parser{
 		$hFile = fopen($this->path . "/" . $file, "wb");
 
 		// Check if the file was opened correctly.
-		if(!$hFile)
+		if(!$hFile){
 			return FALSE;
-		else{
+		}else {
 			// Acquire an exclusive lock.
 			flock($hFile, LOCK_EX);
 

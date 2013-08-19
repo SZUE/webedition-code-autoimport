@@ -29,10 +29,9 @@ class weBackupSqlFileReader{
 		// set the number of lines
 		$lines = 1;
 
-		if($filename == '')
+		if($filename == ''||!is_readable($filename)){
 			return false;
-		if(!is_readable($filename))
-			return false;
+		}
 
 		if($iscompressed == 0){
 			$open = 'fopen';

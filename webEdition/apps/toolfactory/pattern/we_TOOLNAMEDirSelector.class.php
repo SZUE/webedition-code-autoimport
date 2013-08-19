@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once($_SERVER['DOCUMENT_ROOT'].LIB_DIR.'we/core/autoload.php');
+require_once($_SERVER['DOCUMENT_ROOT'].LIB_DIR.'we/core/autoload.php');
 include_once('conf/define.conf.php');
 
 class we_<?php print $TOOLNAME; ?>DirSelector extends we_dirSelector{
@@ -222,7 +222,7 @@ function addEntry(ID,icon,text,isFolder,path){
 		we_html_tools::protect();
 
 		print '<script type="text/javascript">
-		<!-- 
+		<!--
 		top.clearEntries();';
 		$this->FolderText = rawurldecode($this->FolderText);
 		$txt = '';
@@ -232,8 +232,6 @@ function addEntry(ID,icon,text,isFolder,path){
 		if($txt==''){
 			print we_message_reporting::getShowMessageCall(g_l('tools','[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR);
 		}else{
-			include_once(WE_INCLUDES_PATH.'we_classes/we_folder.inc.php');
-			//include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/apps/<?php print $TOOLNAME; ?>/class/<?php print $CLASSNAME; ?>.class.php');
 			$folder= new we_folder();
 			$folder->we_new();
 			$folder->setParentID($this->dir);
@@ -346,7 +344,7 @@ top.selectFile(top.currentID);
 
 
 	function printFramesetSelectFileHTML(){
-		
+
 ?>
 <script type="text/javascript">
 <!--

@@ -113,7 +113,7 @@ class weCustomerSettings{
 		'key', 'set', 'enum', 'default', 'where', 'group', 'by', 'order', 'add', 'column', 'table', 'index', 'constraint', 'primary',
 		'unique', 'foreign', 'change', 'modify', 'drop', 'disable', 'enable', 'charachter', 'collate', 'first', 'rename',
 		'fulltext', 'quick', 'using', 'truncate',
-		'id', 'username', 'isfolder', 'icon', 'parentid', 'membersince', 'lastlogin', 'lastaccess', 'path', 'text', 'forename', 'surname', 'logindenied,autologin,autologindenied'
+		'id', 'username', 'isfolder', 'icon', 'parentid', 'membersince', 'lastlogin', 'lastaccess', 'path', 'text', 'forename', 'surname', 'logindenied', 'autologin', 'autologindenied'
 	);
 	public $treeTextFormat = '#Text';
 	public $formatFields = array();
@@ -153,7 +153,7 @@ class weCustomerSettings{
 
 	function load($tryFromSession = true){
 		$modified = false;
-		$this->db->query('SELECT * FROM ' . $this->table);
+		$this->db->query('SELECT Name,Value FROM ' . $this->table);
 		while($this->db->next_record()) {
 			$this->properties[$this->db->f('Name')] = $this->db->f('Value');
 		}
@@ -272,7 +272,7 @@ class weCustomerSettings{
 	}
 
 	function getFieldType($name){
-		return $this->FieldAdds[$name]['type'];
+		return isset($this->FieldAdds[$name]) ? $this->FieldAdds[$name]['type'] : $this->FieldAdds['input']['type'];
 	}
 
 //returns predefined  field type
@@ -400,12 +400,12 @@ class weCustomerSettings{
 			}
 
 			$ret = array(
-				'day' => '0',
-				'month' => '0',
-				'year' => '0',
-				'hour' => '0',
-				'minute' => '0',
-				'second' => '0'
+				'day' => 0,
+				'month' => 0,
+				'year' => 0,
+				'hour' => 0,
+				'minute' => 0,
+				'second' => 0
 			);
 			foreach($date_format as $key => $val){
 				if(isset($order[$key]))

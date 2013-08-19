@@ -31,10 +31,6 @@ class leWizard{
 	var $NextStep = null;
 	var $WizardSteps = array();
 
-	function leWizard($Name, $Path){
-		$this->__construct($Name, $Path);
-	}
-
 	function __construct($Name, $Path){
 		$this->Name = $Name;
 

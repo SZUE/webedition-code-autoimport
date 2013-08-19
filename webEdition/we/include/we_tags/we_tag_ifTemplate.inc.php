@@ -38,6 +38,7 @@ function we_tag_ifTemplate($attribs){
 			$path = f('SELECT DISTINCT Path FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . intval($parentid) . ' LIMIT 1', 'Path', $GLOBALS['DB_WE']);
 			return (!empty($path) && strpos($curTempPath, $path) === 0);
 		} else {
+
 			$path = weTag_getAttribute('path', $attribs);
 			return (empty($path) ||
 				(isset($GLOBALS['we_doc']->TemplatePath) && preg_match('|^' . TEMPLATES_PATH . str_replace('\\*', '.*', preg_quote($path, '|')) . '\$|', $GLOBALS['we_doc']->TemplatePath)));

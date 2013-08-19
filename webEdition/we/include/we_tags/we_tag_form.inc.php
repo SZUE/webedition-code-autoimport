@@ -81,7 +81,7 @@ function we_tag_form($attribs){
 						'xml' => $xml,
 						'type' => 'hidden',
 						'name' => 'type',
-						'value' => ( isset($GLOBALS['lv']->classID) ? 'o' : (isset($GLOBALS['lv']->ID) ? 'w' : (isset($GLOBALS['we_doc']->ClassID) || isset($GLOBALS['we_doc']->ObjectID)) ? 'o' : 'w' )),
+						'value' => ( isset($GLOBALS['lv']->classID) ? we_shop_shop::OBJECT : (isset($GLOBALS['lv']->ID) ? we_shop_shop::DOCUMENT : (isset($GLOBALS['we_doc']->ClassID) || isset($GLOBALS['we_doc']->ObjectID)) ? we_shop_shop::OBJECT : we_shop_shop::DOCUMENT )),
 					)) . getHtmlTag(
 						'input', array(
 						'xml' => $xml,
@@ -191,7 +191,7 @@ function we_tag_form($attribs){
 			$formAttribs['onsubmit'] = $onsubmit;
 			$formAttribs['action'] = WEBEDITION_DIR . 'we_formmail.php';
 			if($id){
-				$formAttribs['action'] = ($id == 'self' ? $_SERVER['SCRIPT_NAME'] : f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), 'Path', $GLOBALS['DB_WE']));
+				$formAttribs['action'] = ($id == 'self' ? (defined('WE_REDIRECTED_SEO') ? WE_REDIRECTED_SEO : $_SERVER['SCRIPT_NAME']) : f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), 'Path', $GLOBALS['DB_WE']));
 			}
 
 

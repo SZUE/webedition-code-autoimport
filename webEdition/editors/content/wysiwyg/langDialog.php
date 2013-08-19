@@ -23,20 +23,22 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
-if(!(isset($_REQUEST['we_dialog_args']) && 
-		((isset($_REQUEST['we_dialog_args']['outsideWE']) && $_REQUEST['we_dialog_args']['outsideWE'] == 1) || 
+
+$noInternals = false;
+if(!(isset($_REQUEST['we_dialog_args']) &&
+		((isset($_REQUEST['we_dialog_args']['outsideWE']) && $_REQUEST['we_dialog_args']['outsideWE'] == 1) ||
 		(isset($_REQUEST['we_dialog_args']['isFrontend']) && $_REQUEST['we_dialog_args']['isFrontend'] == 1)))){
 	we_html_tools::protect();
 } else{
 	$noInternals = true;
 }
-$noInternals = $noInternals || !isset($_SESSION["user"]) || !isset($_SESSION["user"]["Username"]) || $_SESSION["user"]["Username"] == '';
+$noInternals = $noInternals || !isset($_SESSION['user']) || !isset($_SESSION['user']['Username']) || $_SESSION['user']['Username'] == '';
 
 $appendJS = "";
 if(defined("GLOSSARY_TABLE") && isset($_REQUEST['weSaveToGlossary']) && $_REQUEST['weSaveToGlossary'] == 1 && !$noInternals){
 	$Glossary = new weGlossary();
 	$Glossary->Language = $_REQUEST['language'];
-	$Glossary->Type = "foreignword";
+	$Glossary->Type = weGlossary::TYPE_FOREIGNWORD;
 	$Glossary->Text = trim($_REQUEST['text']);
 	$Glossary->Published = time();
 	$Glossary->setAttribute('lang', $_REQUEST['we_dialog_args']['lang']);
@@ -60,7 +62,7 @@ print $appendJS;
 
 function weDoLangJS(){
 	return '
-if(typeof(isTinyMCE) != "undefined" && isTinyMCE === true){	
+if(typeof(isTinyMCE) != "undefined" && isTinyMCE === true){
 	WelangDialog.insert();
 	top.close();
 } else{

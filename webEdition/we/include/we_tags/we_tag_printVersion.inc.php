@@ -29,16 +29,8 @@ function we_tag_printVersion($attribs, $content){
 
 	$tid = weTag_getAttribute("tid", $attribs);
 	$triggerID = weTag_getAttribute("triggerid", $attribs, weTag_getAttribute("triggerID", $attribs));
-
-	$docAttr = weTag_getAttribute("doc", $attribs);
-	if(!$docAttr){
-		$docAttr = weTag_getAttribute("type", $attribs);
-	}
-
-	$link = isset($attribs["Link"]) ? $attribs["Link"] : "";
-	if(!$link){
-		$link = isset($attribs["link"]) ? $attribs["link"] : "";
-	}
+	$docAttr = weTag_getAttribute("doc", $attribs, weTag_getAttribute("type", $attribs));
+	$link = weTag_getAttribute("Link", $attribs, weTag_getAttribute("link", $attribs));
 
 	$doc = we_getDocForTag($docAttr);
 

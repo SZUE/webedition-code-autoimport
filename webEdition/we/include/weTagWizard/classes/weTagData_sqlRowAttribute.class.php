@@ -47,22 +47,20 @@ class weTagData_sqlRowAttribute extends weTagData_selectAttribute{
 	 * @param string $textName
 	 * @param string $order
 	 */
-	function __construct($name, $table, $required = false, $valueName = 'ID', $textName = 'Text', $order = 'Text', $module = '', $description='', $deprecated=false){
+	function __construct($name, $table, $required = false, $valueName = 'ID', $textName = 'Text', $order = 'Text', $module = '', $description = '', $deprecated = false){
 
 		global $DB_WE;
 		$this->Table = $table;
 		$this->ValueName = $valueName;
 		$this->TextName = $textName ? $textName : $valueName;
 
-		$options = array();
 
 		// get options from choosen table
-		$items = array();
+		$options = array();
 
-		$DB_WE->query('SELECT ' . $DB_WE->escape($this->ValueName) . ',' . $DB_WE->escape($this->TextName) . ' FROM ' . $DB_WE->escape($this->Table) . ' ' . ($order ? 'ORDER BY '.$order : ''));
+		$DB_WE->query('SELECT ' . $DB_WE->escape($this->ValueName) . ',' . $DB_WE->escape($this->TextName) . ' FROM ' . $DB_WE->escape($this->Table) . ' ' . ($order ? 'ORDER BY ' . $order : ''));
 
 		while($DB_WE->next_record()) {
-
 			$options[] = new weTagDataOption($DB_WE->f($this->TextName), $DB_WE->f($this->ValueName));
 		}
 		parent::__construct($name, $options, $required, $module, $description, $deprecated);

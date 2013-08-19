@@ -24,7 +24,7 @@
  * for other classes and scripts and defines
  * the __autoload() function
  */
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_defines.inc.php');
+require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_defines.inc.php');
 
 // Absolute Server Path to the webEdition base directory
 $GLOBALS['__WE_BASE_PATH__'] = realpath(dirname(str_replace('\\', '/', __FILE__)) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR);
@@ -74,7 +74,7 @@ $loader->suppressNotFoundWarnings(true);
 spl_autoload_register('we_autoloader::finalLoad', true);
 
 // include configuration file of webEdition
-include_once ($GLOBALS['__WE_BASE_PATH__'] . DIRECTORY_SEPARATOR . 'we' . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'conf' . DIRECTORY_SEPARATOR . 'we_conf.inc.php');
+require_once ($GLOBALS['__WE_BASE_PATH__'] . DIRECTORY_SEPARATOR . 'we' . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'conf' . DIRECTORY_SEPARATOR . 'we_conf.inc.php');
 
 if(!defined("DATETIME_INITIALIZED")){// to prevent additional initialization if set somewhere else, i.e in we_conf.inc.php, this also allows later to make that an settings-item
 	if(!date_default_timezone_set(@date_default_timezone_get())){

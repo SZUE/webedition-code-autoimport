@@ -24,7 +24,7 @@
 we_html_tools::protect();
 $ok = false;
 
-if($_SESSION["perms"]["ADMINISTRATOR"]){
+if(we_hasPerm('ADMINISTRATOR')){
 	$we_transaction = (preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_cmd'][1]) ? $_REQUEST['we_cmd'][1] : 0);
 	// init document
 	$we_dt = $_SESSION['weS']['we_data'][$we_transaction];
@@ -36,11 +36,8 @@ if($_SESSION["perms"]["ADMINISTRATOR"]){
 
 we_html_tools::htmlTop();
 
-if($ok){
-	print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('weClass', "[grant_language_ok]"), we_message_reporting::WE_MESSAGE_NOTICE));
-} else{
-	print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('weClass', "[grant_language_notok]"), we_message_reporting::WE_MESSAGE_ERROR));
-}
+print ($ok ? we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('weClass', "[grant_language_ok]"), we_message_reporting::WE_MESSAGE_NOTICE)) :
+		we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('weClass', "[grant_language_notok]"), we_message_reporting::WE_MESSAGE_ERROR)));
 ?>
 </head>
 

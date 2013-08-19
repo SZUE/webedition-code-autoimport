@@ -109,8 +109,8 @@ $_userName = $_SESSION['user']['Username'];
 @require ($_SERVER['DOCUMENT_ROOT'] . WE_TRACKER_DIR . "/includes/showme.inc.php");
 //$_dns = getDomainList($_userName,$_md5passwd);
 //if (defined('WE_TRACKER_DIR')) {
-include_once ($_SERVER['DOCUMENT_ROOT'] . WE_TRACKER_DIR . "/includes/global.inc.php");
-include_once ($_SERVER['DOCUMENT_ROOT'] . WE_TRACKER_DIR . "/includes/db.inc.php");
+require_once ($_SERVER['DOCUMENT_ROOT'] . WE_TRACKER_DIR . "/includes/global.inc.php");
+require_once ($_SERVER['DOCUMENT_ROOT'] . WE_TRACKER_DIR . "/includes/db.inc.php");
 $pl_db = new stat_db();
 $pl_tables = new stat_tables();
 $pl_tables->build_tables();
@@ -144,8 +144,8 @@ $chbxChart[8] = we_forms::checkbox(
 		$value = 0, $checked = 0, $name = "chbx_chart", $text = g_l('cockpit', '[promo_value_tai]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0);
 
 $chart = new we_html_table(array(
-		"cellpadding" => "0", "cellspacing" => "0", "border" => "0"
-		), 13, 1);
+	"cellpadding" => 0, "cellspacing" => 0, "border" => 0
+	), 13, 1);
 $chart->setCol(0, 0, null, $sctDns);
 $chart->setCol(1, 0, null, we_html_tools::getPixel(1, 8));
 $chart->setCol(2, 0, null, $chbxChart[0]);
@@ -160,13 +160,13 @@ $chart->setCol(10, 0, null, $chbxChart[8]);
 
 $_pLog = $chart->getHTML();
 
-$parts = array();
-array_push($parts, array(
-	"headline" => g_l('cockpit', '[display]'), "html" => $_pLog, "space" => 80
-));
-array_push($parts, array(
-	"headline" => "", "html" => $oSelCls->getHTML(), "space" => 0
-));
+$parts = array(
+	array(
+		"headline" => g_l('cockpit', '[display]'), "html" => $_pLog, "space" => 80
+	),
+	array(
+		"headline" => "", "html" => $oSelCls->getHTML(), "space" => 0
+	));
 
 $save_button = we_button::create_button("save", "javascript:save();", false, -1, -1);
 $preview_button = we_button::create_button("preview", "javascript:preview();", false, -1, -1);
@@ -176,8 +176,8 @@ $sMultibox = we_multiIconBox::getJS() . we_multiIconBox::getHTML(
 		"plgProps", "100%", $parts, 30, $buttons, -1, "", "", "", g_l('cockpit', '[pagelogger]'));
 
 $_pLogProps = new we_html_table(array(
-		"border" => "0", "cellpadding" => "0", "cellspacing" => "0"
-		), 2, 1);
+	"border" => 0, "cellpadding" => 0, "cellspacing" => 0
+	), 2, 1);
 $_pLogProps->setCol(0, 0, null, $sMultibox);
 $_pLogProps->setCol(1, 0, null, we_html_tools::getPixel(1, 10));
 

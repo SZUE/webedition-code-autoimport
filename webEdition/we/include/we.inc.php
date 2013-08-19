@@ -41,9 +41,6 @@ if(isset($_SERVER['HTTP_HOST']) && $_SERVER['SERVER_NAME'] != $_SERVER['HTTP_HOS
 }
 
 // Set PHP flags
-if( intval(ini_get('memory_limit')) < 32){
-	@ini_set('memory_limit', '32M');
-}
 @ini_set('allow_url_fopen', '1');
 @ini_set('file_uploads', '1');
 @ini_set('session.use_trans_sid', '0');
@@ -69,6 +66,7 @@ if(!defined('WE_ERROR_HANDLER_SET')){
 }
 
 require_once (WE_INCLUDES_PATH . 'we_global.inc.php');
+update_mem_limit(32);
 
 include_once (WE_INCLUDES_PATH . 'conf/we_conf_language.inc.php');
 
@@ -84,10 +82,11 @@ if(empty($GLOBALS['_we_active_integrated_modules']) || !in_array('users', $GLOBA
 }
 //make sure we always load users
 $GLOBALS['_we_active_integrated_modules'][] = 'users';
+//$GLOBALS['_we_active_integrated_modules'][] = 'navigation';//TODO: remove when navigation is completely implemented as a module
 
 foreach($GLOBALS['_we_active_integrated_modules'] as $active){
 	if(file_exists(WE_MODULES_PATH . $active . '/we_conf_' . $active . '.inc.php')){
-		include_once (WE_MODULES_PATH . $active . '/we_conf_' . $active . '.inc.php');
+		require_once (WE_MODULES_PATH . $active . '/we_conf_' . $active . '.inc.php');
 	}
 }
 
@@ -133,11 +132,9 @@ if(isset($_SESSION['prefs']['Language']) && $_SESSION['prefs']['Language'] != ''
 } else{
 	$GLOBALS['WE_LANGUAGE'] = WE_LANGUAGE;
 }
-if(isset($_SESSION['prefs']['BackendCharset']) && $_SESSION['prefs']['BackendCharset'] != ''){
-	$GLOBALS['WE_BACKENDCHARSET'] = $_SESSION['prefs']['BackendCharset'];
-} else{
-	$GLOBALS['WE_BACKENDCHARSET'] = 'UTF-8';
-}
+$GLOBALS['WE_BACKENDCHARSET'] = (isset($_SESSION['prefs']['BackendCharset']) && $_SESSION['prefs']['BackendCharset'] != '' ?
+		$_SESSION['prefs']['BackendCharset'] : 'UTF-8');
+
 if(in_array('shop', $GLOBALS['_we_active_integrated_modules'])){
 	$MNEMONIC_EDITPAGES[WE_EDITPAGE_VARIANTS] = 'variants';
 }
@@ -150,7 +147,7 @@ if(!isset($GLOBALS['WE_IS_DYN'])){ //only true on dynamic frontend pages
 	include_once (WE_INCLUDES_PATH . 'define_styles.inc.php');
 	include_once (WE_INCLUDES_PATH . 'we_available_modules.inc.php');
 	//FIXME: needed by liveupdate, calls old protect directly remove in 6.4
-	include_once (WE_INCLUDES_PATH . 'we_perms.inc.php');
+	require_once (WE_INCLUDES_PATH . 'we_perms.inc.php');
 
 
 	//send header?

@@ -1,4 +1,5 @@
 <?php
+
 //NOTE you are inside the constructor of weTagData.class.php
 
 $this->NeedsEndTag = false;
@@ -12,4 +13,3 @@ $this->Attributes[] = new weTagData_textAttribute('style', false, '');
 $this->Attributes[] = new weTagData_selectAttribute('submitonchange', weTagData_selectAttribute::getTrueFalse(), false, '');
 $this->Attributes[] = new weTagData_textAttribute('start', false, '');
 $this->Attributes[] = new weTagData_textAttribute('end', false, '');
-//$this->Attributes[] = new weTagData_textAttribute('cachelifetime', false, '');

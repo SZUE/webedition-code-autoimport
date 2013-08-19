@@ -146,6 +146,10 @@ class we_baseElement{
 				break;
 			case 'bgcolor':
 				$this->setStyle('background-color', $attrib_value);
+				break;
+			case 'background':
+				$this->setStyle('background-image', 'url(' . $attrib_value . ')');
+				break;
 			default:
 				$this->attribs[$attrib_name] = $attrib_value;
 		}
@@ -153,6 +157,10 @@ class we_baseElement{
 
 	function setStyle($type, $val){
 		$this->attribs['style'][trim($type)] = trim($val);
+	}
+
+	function hasStyle($type){
+		return isset($this->attribs['style'][trim($type)]);
 	}
 
 	/**
@@ -212,7 +220,7 @@ class we_baseElement{
 				}
 			} else if($v !== ''){
 				$out.=' ' . $k . '="' . $v . '"';
-			} else{//empty attribs
+			} else {//empty attribs
 				switch($k){
 					case 'SCRIPTABLE':
 					case 'MAYSCRIPT':

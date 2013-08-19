@@ -23,8 +23,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_banner($attribs, $content){
-	if(($foo = attributFehltError($attribs, "name", __FUNCTION__)))
+	if(($foo = attributFehltError($attribs, "name", __FUNCTION__))){
 		return $foo;
+	}
 
 	$bannername = weTag_getAttribute("name", $attribs);
 	$paths = weTag_getAttribute("paths", $attribs);
@@ -79,7 +80,7 @@ function we_tag_banner($attribs, $content){
 
 	if($type == "iframe"){
 
-		// stuff for iframe  and ilayer 
+		// stuff for iframe  and ilayer
 		$newAttribs = removeAttribs($attribs, array('name', 'paths', 'type', 'target', 'link', 'clickscript', 'getscript', 'page'));
 		$newAttribs['xml'] = $xml ? "true" : "false";
 		$newAttribs['width'] = $width ? $width : 468;

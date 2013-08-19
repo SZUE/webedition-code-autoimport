@@ -29,7 +29,6 @@ $msg_cmd = "javascript:top.opener.we_cmd('messaging_start', 'message');self.clos
 $todo_cmd = "javascript:top.opener.we_cmd('messaging_start', 'todo');self.close();";
 
 $text = '';
-//msg="+newmsg_count+"&todo="+newtodo_count+"&omsg="+oldMsg+"otodo="+oldTodo
 $msg = intval($_REQUEST['msg']) - intval($_REQUEST['omsg']);
 $todo = intval($_REQUEST['todo']) - intval($_REQUEST['otodo']);
 
@@ -38,7 +37,7 @@ $text =
 	($todo > 0 ? sprintf(g_l('modules_messaging', '[newHeaderTodo]'), '<a href="' . $todo_cmd . '">' . $todo, '</a>').'<br/>' : '');
 $parts = array(
 	array(
-		"headline" => we_html_tools::htmlAlertAttentionBox($text, 2, 500, false),
+		"headline" => we_html_tools::htmlAlertAttentionBox($text, we_html_tools::TYPE_INFO, 500, false),
 		"html" => '',
 		"space" => 10,
 		"noline" => 1),

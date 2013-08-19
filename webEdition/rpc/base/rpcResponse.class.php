@@ -22,56 +22,52 @@
  * @package    webEdition_rpc
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-class rpcResponse {
+class rpcResponse{
 
 	var $Success = true;
-
 	var $Reason = '';
-
 	var $DataArray = array();
 
 	function __construct(){
 
-    }
+	}
 
-    function getStatus() {
-    	return $this->Success;
-    }
+	function getStatus(){
+		return $this->Success;
+	}
 
+	function setStatus($success){
+		$this->Success = $success;
+	}
 
-    function setStatus($success) {
-    	$this->Success = $success;
-    }
+	function getReason(){
+		return $this->Reason;
+	}
 
-    function getReason(){
-    	return $this->Reason;
-    }
+	function setReason($reason){
+		$this->Reason = $reason;
+	}
 
-    function setReason($reason){
-    	$this->Reason = $reason;
-    }
+	function addData($name, $data){
+		$this->DataArray[$name] = $data;
+	}
 
-    function addData($name,$data){
-    	$this->DataArray[$name] = $data;
-    }
+	function setData($name, $data){
+		$this->addData($name, $data);
+	}
 
+	function getData($name){
+		return isset($this->DataArray[$name]) ? $this->DataArray[$name] : "";
+	}
 
-    function setData($name,$data){
-    	$this->addData($name,$data);
-    }
+	function getDataArray(){
+		return $this->DataArray;
+	}
 
-    function getData($name){
-    	return isset($this->DataArray[$name]) ? $this->DataArray[$name] : "";
-    }
+	function merge($response){
+		$this->setStatus($response->getStatus());
+		$this->setReason($response->getReason());
+		$this->DataArray = array_merge($this->DataArray, $response->getDataArray());
+	}
 
-    function getDataArray(){
-    	return $this->DataArray;
-    }
-
-    function merge($response){
-    	$this->setStatus($response->getStatus());
-    	$this->setReason($response->getReason());
-    	$this->DataArray = array_merge($this->DataArray,$response->getDataArray());
-    }
 }

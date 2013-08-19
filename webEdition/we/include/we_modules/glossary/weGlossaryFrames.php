@@ -22,6 +22,8 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+//TEST: was it ok to abandon treefooter?
+
 class weGlossaryFrames extends weModuleFrames{
 
 	var $View;
@@ -29,84 +31,31 @@ class weGlossaryFrames extends weModuleFrames{
 	var $_space_size = 150;
 	var $_text_size = 75;
 	var $_width_size = 535;
+	public $module = "glossary";
+	protected $treeDefaultWidth = 280;
 
 	function __construct(){
-
 		parent::__construct(WE_GLOSSARY_MODULE_DIR . "edit_glossary_frameset.php");
-
 		$this->Tree = new weGlossaryTree();
 		$this->View = new weGlossaryView(WE_GLOSSARY_MODULE_DIR . "edit_glossary_frameset.php", "top.content");
-
-		$this->setupTree(GLOSSARY_TABLE, "top.content", "top.content.resize.left.tree", "top.content.cmd");
-
-		$this->module = "glossary";
-	}
-
-	function getHTML($what){
-
-		switch($what){
-
-			case "frameset":
-				print $this->getHTMLFrameset();
-				break;
-
-			case "header":
-				print $this->getHTMLHeader();
-				break;
-
-			case "resize":
-				print $this->getHTMLResize();
-				break;
-
-			case "left":
-				print $this->getHTMLLeft();
-				break;
-
-			case "right":
-				print $this->getHTMLRight();
-				break;
-
-			case "editor":
-				print $this->getHTMLEditor();
-				break;
-
-			case "edheader":
-				print $this->getHTMLEditorHeader();
-				break;
-
-			case "edbody":
-				print $this->getHTMLEditorBody();
-				break;
-
-			case "edfooter":
-				print $this->getHTMLEditorFooter();
-				break;
-
-			case "cmd":
-				print $this->getHTMLCmd();
-				break;
-
-			case "treeheader":
-				print $this->getHTMLTreeHeader();
-				break;
-
-			case "treefooter":
-				print $this->getHTMLTreeFooter();
-				break;
-
-			default:
-				t_e(__FILE__ . " unknown reference: $what");
-		}
-	}
-
-	function getHTMLFrameset(){
-
-		return weModuleFrames::getHTMLFrameset();
+		$this->setupTree(GLOSSARY_TABLE, "top.content", "top.content", "top.content.cmd");
 	}
 
 	function getJSCmdCode(){
 
 		return $this->View->getJSTop() . we_html_element::jsElement($this->Tree->getJSMakeNewEntry());
+	}
+
+	function getHTMLDocumentHeader($what = '', $mode = ''){
+		if(!($what == "edheader" || $what == "edbody" || $what == "edfooter")){
+			parent::getHTMLDocumentHeader();
+		}
+	}
+
+	function getHTMLFrameset(){
+		$extraHead = $this->Tree->getJSTreeCode() . we_html_element::jsElement($this->getJSStart());
+
+		return parent::getHTMLFrameset($extraHead);
 	}
 
 	function getHTMLEditorHeader(){
@@ -143,7 +92,7 @@ class weGlossaryFrames extends weModuleFrames{
 			if(isset($_REQUEST['cmdid']) && !preg_match('|^[0-9]|', $_REQUEST['cmdid'])){
 				$this->View->Glossary->Language = substr($_REQUEST['cmdid'], 0, 5);
 			}
-		} else{
+		} else {
 			return weGlossaryFrameEditorItem::Header($this);
 		}
 	}
@@ -182,7 +131,7 @@ class weGlossaryFrames extends weModuleFrames{
 			if(isset($_REQUEST['cmdid']) && !preg_match('|^[0-9]|', $_REQUEST['cmdid'])){
 				$this->View->Glossary->Language = substr($_REQUEST['cmdid'], 0, 5);
 			}
-		} else{
+		} else {
 			return weGlossaryFrameEditorItem::Body($this);
 		}
 	}
@@ -221,26 +170,9 @@ class weGlossaryFrames extends weModuleFrames{
 			if(isset($_REQUEST['cmdid']) && !preg_match('|^[0-9]|', $_REQUEST['cmdid'])){
 				$this->View->Glossary->Language = substr($_REQUEST['cmdid'], 0, 5);
 			}
-		} else{
+		} else {
 			return weGlossaryFrameEditorItem::Footer($this);
 		}
-	}
-
-	function getHTMLLeft(){
-
-		$frameset = new we_html_frameset(array("framespacing" => "0", "border" => "0", "frameborder" => "no"));
-		$noframeset = new we_baseElement("noframes");
-
-		$frameset->setAttributes(array("rows" => "1,*,0"));
-		$frameset->addFrame(array("src" => HTML_DIR . "whiteWithTopLine.html", "name" => "treeheader", "noresize" => null, "scrolling" => "no"));
-
-		$frameset->addFrame(array("src" => WEBEDITION_DIR . "treeMain.php", "name" => "tree", "noresize" => null, "scrolling" => "auto"));
-		$frameset->addFrame(array("src" => $this->frameset . "?pnt=treefooter", "name" => "treefooter", "noresize" => null, "scrolling" => "no"));
-
-		// set and return html code
-		$body = $frameset->getHtml() . "\n" . $noframeset->getHTML();
-
-		return $this->getHTMLDocument($body);
 	}
 
 	function getHTMLTreeHeader(){
@@ -249,7 +181,7 @@ class weGlossaryFrames extends weModuleFrames{
 
 	function getHTMLTreeFooter(){
 
-		$body = we_html_element::htmlBody(array("bgcolor" => "white", "background" => IMAGE_DIR . "edit/editfooterback.gif", "marginwidth" => "5", "marginheight" => "0", "leftmargin" => "5", "topmargin" => "0"), ""
+		$body = we_html_element::htmlBody(array("bgcolor" => "white", "background" => IMAGE_DIR . "edit/editfooterback.gif", "marginwidth" => 5, "marginheight" => 0, "leftmargin" => 5, "topmargin" => 0), ""
 		);
 
 		return $this->getHTMLDocument($body);
@@ -260,15 +192,11 @@ class weGlossaryFrames extends weModuleFrames{
 
 		if(isset($_REQUEST["pid"])){
 			$pid = $_REQUEST["pid"];
-		}
-		else
+		} else {
 			exit;
-
-		if(isset($_REQUEST["offset"])){
-			$offset = $_REQUEST["offset"];
 		}
-		else
-			$offset = 0;
+
+		$offset = (isset($_REQUEST["offset"]) ? $_REQUEST["offset"] : 0);
 
 		$rootjs = "";
 		if(!$pid)
@@ -280,7 +208,7 @@ class weGlossaryFrames extends weModuleFrames{
 		$hiddens = we_html_element::htmlHidden(array("name" => "pnt", "value" => "cmd")) .
 			we_html_element::htmlHidden(array("name" => "cmd", "value" => "no_cmd"));
 
-		$out.=we_html_element::htmlBody(array("bgcolor" => "white", "marginwidth" => "10", "marginheight" => "10", "leftmargin" => "10", "topmargin" => "10"), we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
+		$out.=we_html_element::htmlBody(array("bgcolor" => "white", "marginwidth" => 10, "marginheight" => 10, "leftmargin" => 10, "topmargin" => 10), we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
 					we_html_element::jsElement($rootjs . $this->Tree->getJSLoadTree(weGlossaryTreeLoader::getItems($pid, $offset, $this->Tree->default_segment, "")))
 				)
 		);

@@ -37,18 +37,22 @@ function doClick(id,ct){
 			setDir(id);
 			setTimeout("wasdblclick=0;",400);
 		}
-	}else{
+		}else{
 		e=top.getEntry(id);
 		if(e.isFolder){
-			if(top.currentID == id){
-				top.RenameFolder(id);
-			}
-		}else{
-			selectFile(id);
+		if(top.currentID == id){
+		top.RenameFolder(id);
 		}
+		}else{
+		selectFile(id);
+		}
+		}
+		}
+		<?php
 	}
 }');
 	}
+
 
 	function printHeaderHeadlines(){
 		return '
@@ -66,6 +70,7 @@ function doClick(id,ct){
 	}
 
 	function printFramesetJSsetDir(){
+
 		return we_html_element::jsElement('
 function setDir(id){
 	top.fscmd.location.replace(top.queryString(' . we_multiSelector::SETDIR . ',id));
@@ -73,6 +78,7 @@ function setDir(id){
 	}
 
 	function printSetDirHTML(){
+
 		print we_html_element::jsElement('
 top.clearEntries();' .
 				$this->printCmdAddEntriesHTML() .

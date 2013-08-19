@@ -97,7 +97,7 @@ class copyFolderFrag extends taskFragment{
 					$db->Record["CreateTemplateInFolderID"] = $CreateTemplateInFolderID;
 					$db->Record["OverwriteCategories"] = $OverwriteCategories;
 					$db->Record["newCategories"] = $newCategories;
-					array_push($this->alldata, $db->Record);
+					$this->alldata[] = $db->Record;
 				}
 			}
 		} else{
@@ -319,9 +319,9 @@ class copyFolderFrag extends taskFragment{
 								$newTemplateIDs = array();
 								foreach($templArray as $id){
 									if($id == $oldTemplateID){
-										array_push($newTemplateIDs, $GLOBALS['we_doc']->TemplateID);
+										$newTemplateIDs[] = $GLOBALS['we_doc']->TemplateID;
 									} else{
-										array_push($newTemplateIDs, $id);
+										$newTemplateIDs[] = $id;
 									}
 								}
 								$dt->Templates = makeCSVFromArray($newTemplateIDs);
@@ -527,7 +527,7 @@ class copyFolderFrag extends taskFragment{
 					case 'txt' :
 						if(preg_match('|(.+)_we_jkhdsf_(.+)|', $k, $regs)){ // is a we:href field
 							if(!in_array($regs[1], $hrefs)){
-								array_push($hrefs, $regs[1]);
+								$hrefs[] = $regs[1];
 								$int = ((!isset($we_doc->elements[$regs[1] . we_base_link::MAGIC_INT_LINK]['dat'])) || $we_doc->elements[$regs[1] . we_base_link::MAGIC_INT_LINK]['dat'] == '') ? 0 : $we_doc->elements[$regs[1] . we_base_link::MAGIC_INT_LINK]['dat'];
 								if($int){
 									if(isset($we_doc->elements[$regs[1] . we_base_link::MAGIC_INT_LINK_ID]['dat'])){
@@ -549,8 +549,7 @@ class copyFolderFrag extends taskFragment{
 									}
 								}
 							}
-						} else
-						if(substr($we_doc->elements[$k]['dat'], 0, 2) == 'a:' && is_array(
+						} elseif(substr($we_doc->elements[$k]['dat'], 0, 2) == 'a:' && is_array(
 								unserialize($we_doc->elements[$k]['dat']))){ // is a we:link field
 							$link = unserialize($we_doc->elements[$k]['dat']);
 							if(isset($link['type']) && ($link['type'] == we_base_link::TYPE_INT)){
@@ -708,7 +707,7 @@ class copyFolderFrag extends taskFragment{
 	function printHeader(){
 		$yuiSuggest = & weSuggest::getInstance();
 		//FIXME: missing title
-		print we_html_element::htmlHead(we_html_tools::getHtmlInnerHead() . STYLESHEET . $yuiSuggest->getYuiJsFiles() . $yuiSuggest->getYuiCssFiles() .
+		print we_html_element::htmlHead(we_html_tools::getHtmlInnerHead() . STYLESHEET . weSuggest::getYuiFiles() .
 				we_html_element::jsElement('
 function fsubmit(e) {
 	return false;
@@ -755,7 +754,7 @@ function fsubmit(e) {
 					'src' => BUTTONS_DIR . 'btn_function_trash.gif',
 					'onclick' => 'javascript:#####placeHolder#####;',
 					'style' => 'cursor: pointer; width: 27px;'
-			)));
+		)));
 
 		$js = we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js') .
 			we_html_element::jsElement('
@@ -765,15 +764,13 @@ function fsubmit(e) {
 		');
 
 		$table = new we_html_table(
-				array(
-					'id' => 'CategoriesBlock',
-					'style' => 'display: block;',
-					'cellpadding' => 0,
-					'cellspacing' => 0,
-					'border' => 0
-				),
-				5,
-				2);
+			array(
+			'id' => 'CategoriesBlock',
+			'style' => 'display: block;',
+			'cellpadding' => 0,
+			'cellspacing' => 0,
+			'border' => 0
+			), 5, 2);
 
 		$table->setCol(0, 0, array(
 			'colspan' => 2
@@ -785,7 +782,7 @@ function fsubmit(e) {
 			1, 1, array(
 			'class' => 'defaultfont'
 			), we_forms::checkbox(
-				"1", 0, 'OverwriteCategories', g_l('copyFolder', "[overwrite_categories]"), false, "defaultfont", "toggleButton();"));
+				1, 0, 'OverwriteCategories', g_l('copyFolder', "[overwrite_categories]"), false, "defaultfont", "toggleButton();"));
 		$table->setCol(
 			2, 0, array(
 			'colspan' => 2
@@ -794,7 +791,7 @@ function fsubmit(e) {
 					'id' => 'categories',
 					'class' => 'blockWrapper',
 					'style' => 'width: 488px; height: 60px; border: #AAAAAA solid 1px;'
-			)));
+		)));
 
 		$table->setCol(3, 0, array(
 			'colspan' => 2
@@ -802,11 +799,11 @@ function fsubmit(e) {
 
 		$table->setCol(
 			4, 0, array(
-			'colspan' => '2', 'align' => 'right'
+			'colspan' => 2, 'align' => 'right'
 			), we_button::create_button_table(
 				array(
 					we_button::create_button("delete_all", "javascript:removeAllCats()"), $addbut
-			)));
+		)));
 
 		return $table->getHtml() . $js;
 	}

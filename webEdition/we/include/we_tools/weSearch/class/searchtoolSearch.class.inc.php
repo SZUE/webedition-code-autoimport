@@ -189,7 +189,7 @@ class searchtoolsearch extends we_search{
 			unset($tableFields['ParentIDObj']);
 		}
 
-		if($_SESSION['weS']['we_mode'] == 'seem'){
+		if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
 			unset($tableFields['ParentIDTmpl']);
 		}
 
@@ -587,7 +587,7 @@ class searchtoolsearch extends we_search{
 							}
 						}
 					}
-					if(count($fields) == 0){
+					if(empty($fields)){
 						continue;
 					}
 					$field = array();

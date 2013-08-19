@@ -39,49 +39,49 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter{
 	 *
 	 * @var integer
 	 */
-	var $_id = 0;
+	private $_id = 0;
 
 	/**
 	 * Id of model (document or object)
 	 *
 	 * @var integer
 	 */
-	var $_modelId = 0;
+	private $_modelId = 0;
 
 	/**
 	 * DocumentType of model (eg. text/webEdition)
 	 *
 	 * @var string
 	 */
-	var $_modelType = '';
+	private $_modelType = '';
 
 	/**
 	 * Table where model is stored in db (eg. FILE_TABLE)
 	 *
 	 * @var string
 	 */
-	var $_modelTable = '';
+	private $_modelTable = '';
 
 	/**
 	 * Flag if access control is made by template or not
 	 *
 	 * @var boolean
 	 */
-	var $_accessControlOnTemplate = false;
+	private $_accessControlOnTemplate = false;
 
 	/**
 	 * Id of Document which is shown when customer is not logged in
 	 *
 	 * @var boolean
 	 */
-	var $_errorDocNoLogin = 0;
+	private $_errorDocNoLogin = 0;
 
 	/**
 	 * Id of Document which is shown when customer has no acces
 	 *
 	 * @var boolean
 	 */
-	var $_errorDocNoAccess = 0;
+	private $_errorDocNoAccess = 0;
 
 	/**
 	 * Constructor for PHP 5
@@ -131,11 +131,10 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter{
 	 * @param mixed $model
 	 * @return weDocumentCustomerFilter
 	 */
-	function getCustomerFilterFromRequest(&$model){
-
-		if($_REQUEST["wecf_mode"] == weAbstractCustomerFilter::OFF){
+	static function getCustomerFilterFromRequest(&$model){
+		if($_REQUEST['wecf_mode'] == weAbstractCustomerFilter::OFF){
 			return self::getEmptyDocumentCustomerFilter();
-		} else{
+		} else {
 			$_specificCustomers = self::getSpecificCustomersFromRequest();
 			$_blackList = self::getBlackListFromRequest();
 			$_whiteList = self::getWhiteListFromRequest();
@@ -143,7 +142,7 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter{
 
 
 			return new self(
-				intval($_REQUEST["weDocumentCustomerFilter_id"]), intval($model->ID), $model->ContentType, $model->Table, ($_REQUEST["wecf_accessControlOnTemplate"] == "onTemplate") ? 1 : 0, intval($_REQUEST["wecf_noLoginId"]), intval($_REQUEST["wecf_noAccessId"]), intval($_REQUEST["wecf_mode"]), $_specificCustomers, $_filter, $_whiteList, $_blackList
+				intval($_REQUEST['weDocumentCustomerFilter_id']), intval($model->ID), $model->ContentType, $model->Table, ($_REQUEST['wecf_accessControlOnTemplate'] == "onTemplate") ? 1 : 0, intval($_REQUEST['wecf_noLoginId']), intval($_REQUEST['wecf_noAccessId']), intval($_REQUEST['wecf_mode']), $_specificCustomers, $_filter, $_whiteList, $_blackList
 			);
 		}
 	}
@@ -184,29 +183,25 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter{
 		if($listview->customerFilterType === 'off' || $listview->customerFilterType === 'false'){
 			return '';
 		}
-		$_queryTail = "";
-		$_allowedCTs = array("text/webedition", "objectFile");
+		$_queryTail = '';
+		$_allowedCTs = array('text/webedition', 'objectFile');
 
 		// if customer is not logged in, all documents/objects with filters must be hidden
 		$_restrictedFilesForCustomer = self::_getFilesWithRestrictionsOfCustomer($listview);
 
-		if($listview->ClassName == "we_search_listview"){ // search
+		if($listview->ClassName == 'we_search_listview'){ // search
 			// build query from restricted files, regard search and normal listview
 			foreach($_restrictedFilesForCustomer as $ct => $_fileArray){
 
 				if(in_array($ct, $_allowedCTs)){
 
-					if($ct == "text/webedition"){
-						$_idField = "DID";
-					} else{
-						$_idField = "OID";
-					}
+					$_idField = ($ct == "text/webedition" ? "DID" : "OID");
 					if(!empty($_fileArray)){
 						$_queryTail .= " AND $_idField NOT IN(" . implode(", ", $_fileArray) . ")";
 					}
 				}
 			}
-		} else{
+		} else {
 
 			$_fileArray = array();
 			// build query from restricted files, regard search and normal listview
@@ -214,15 +209,13 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter{
 
 				if(in_array($ct, $_allowedCTs)){
 
-					if($ct == "text/webedition"){
-						$_idField = FILE_TABLE . ".ID";
-					} else{
-						$_idField = OBJECT_X_TABLE . $listview->classID . ".OF_ID";
-					}
+					$_idField = ($ct == 'text/webedition' ?
+							FILE_TABLE . '.ID' :
+							OBJECT_X_TABLE . $listview->classID . '.OF_ID');
 				}
 			}
 			if(!empty($_fileArray)){
-				$_queryTail = " AND $_idField NOT IN(" . implode(", ", $_fileArray) . ")";
+				$_queryTail = ' AND ' . $_idField . ' NOT IN(' . implode(', ', $_fileArray) . ')';
 			}
 		}
 		return $_queryTail;
@@ -233,7 +226,7 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter{
 	 *
 	 * @return weDocumentCustomerFilter
 	 */
-	function getEmptyDocumentCustomerFilter(){
+	static function getEmptyDocumentCustomerFilter(){
 		return new self();
 	}
 
@@ -369,7 +362,7 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter{
 			$_db->query("SELECT id, specificCustomers, whiteList, blackList FROM " . CUSTOMER_FILTER_TABLE . ' WHERE ' .
 				" specificCustomers LIKE '%," . $webUser->ID . ",%' OR whiteList LIKE '%," . $webUser->ID . ",%' OR blackList LIKE '%," . $webUser->ID . ",%'");
 
-			while($_db->next_record()) {
+			while($_db->next_record()){
 				$_sc = $_db->f('specificCustomers');
 				$_wl = $_db->f('whiteList');
 				$_bl = $_db->f('blackList');
@@ -401,7 +394,7 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter{
 	function deleteModel($modelIds = array(), $table){
 		if(!empty($modelIds)){
 			$_db = new DB_WE();
-			$_query = "DELETE FROM " . CUSTOMER_FILTER_TABLE . " WHERE
+			$_query = 'DELETE FROM ' . CUSTOMER_FILTER_TABLE . " WHERE
 				modelId IN (" . implode(", ", $modelIds) . ")
 				AND modelTable = \"" . $table . "\"
 			";
@@ -448,14 +441,14 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter{
 
 		if(!self::customerIsLogedIn()){ // visitor is not logged in
 			// Vistior is not logged in => Visitor has no Access to files with filters!
-			while($_db->next_record()) {
+			while($_db->next_record()){
 				$_filesWithRestrictionsForCustomer[$_db->f("modelType")][] = $_db->f("modelId");
 			}
-		} else{ // visitor has logged in
+		} else { // visitor has logged in
 			$_filters = array();
 			if($_db->num_rows()){
 
-				while($_db->next_record()) {
+				while($_db->next_record()){
 					$_filters[] = self::getFilterByDbHash($_db->Record);
 				}
 			}

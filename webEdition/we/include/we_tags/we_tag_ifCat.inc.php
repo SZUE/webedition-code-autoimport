@@ -30,7 +30,7 @@ function we_tag_ifCat($attribs){
 	if(strlen($categories) == 0 && strlen($category) == 0){
 		if(($foo = attributFehltError($attribs, 'categories', __FUNCTION__))){
 			print($foo);
-			return '';
+			return false;
 		}
 	}
 
@@ -38,7 +38,6 @@ function we_tag_ifCat($attribs){
 	$docAttr = weTag_getAttribute('doc', $attribs, 'self');
 
 	$match = $categories ? $categories : $category;
-	$db = $GLOBALS['DB_WE'];
 	$matchArray = makeArrayFromCSV($match);
 
 	if($docAttr == 'listview' && isset($GLOBALS['lv'])){
@@ -50,10 +49,7 @@ function we_tag_ifCat($attribs){
 	$DocCatsPaths = id_to_path($cat, CATEGORY_TABLE, $db, true, false, $parent);
 
 	foreach($matchArray as $match){
-
-		if(substr($match, 0, 1) != '/'){
-			$match = '/' . $match;
-		}
+		$match = '/' . ltrim($match, '/');
 		if($parent){
 			if(strpos($DocCatsPaths, ',' . $match . ',') !== false || strpos($DocCatsPaths, ',' . $match . '/') !== false){
 				return true;

@@ -132,7 +132,7 @@ class liveUpdateFunctions{
 	function getFilesOfDir(&$allFiles, $baseDir){
 		if(file_exists($baseDir)){
 			$dh = opendir($baseDir);
-			while(($entry = readdir($dh))) {
+			while(($entry = readdir($dh))){
 				if($entry != "" && $entry != "." && $entry != ".."){
 					$_entry = $baseDir . "/" . $entry;
 					if(!is_dir($_entry)){
@@ -164,19 +164,19 @@ class liveUpdateFunctions{
 
 		$dh = opendir($dir);
 		if($dh){
-			while(($entry = readdir($dh))) {
+			while(($entry = readdir($dh))){
 				if($entry != '' && $entry != "." && $entry != '..'){
 					$_entry = $dir . '/' . $entry;
 					if(is_dir($_entry)){
 						$this->deleteDir($_entry);
-					} else{
+					} else {
 						$this->deleteFile($_entry);
 					}
 				}
 			}
 			closedir($dh);
 			return rmdir($dir);
-		} else{
+		} else {
 			return true;
 		}
 	}
@@ -234,7 +234,7 @@ class liveUpdateFunctions{
 		if(strpos($dirPath, $dir) === 0){
 			$preDir = $dir;
 			$dir = substr($dirPath, strlen($dir));
-		} else{
+		} else {
 			$preDir = '';
 			$dir = $dirPath;
 		}
@@ -267,7 +267,7 @@ class liveUpdateFunctions{
 	function deleteFile($file){
 		if(file_exists($file)){
 			return @unlink($file);
-		} else{
+		} else {
 			return true;
 		}
 	}
@@ -301,13 +301,13 @@ class liveUpdateFunctions{
 					$this->deleteFile($source);
 					//should we handle file deletion?
 					return true;
-				} else{
+				} else {
 					return false;
 				}
-			} else{
+			} else {
 				return false;
 			}
-		} else{
+		} else {
 			return false;
 		}
 	}
@@ -356,7 +356,7 @@ class liveUpdateFunctions{
 			$newContent = ($needle ? preg_replace('/' . preg_quote($needle) . '/', $replace, $oldContent) : $replace );
 
 			return ($this->filePutContent($filePath, $newContent));
-		} else{
+		} else {
 			return false;
 		}
 		return true;
@@ -377,17 +377,12 @@ class liveUpdateFunctions{
 		return true;
 
 		if(file_exists($path)){
-
 			$code = $this->getFileContent($path);
 			/** läuft nicht durch
 			  $patchSuccess = eval('?>' . escapeshellcmd($code));
 			 */
 			$patchSuccess = eval('?>' . $code);
-			if($patchSuccess === false){
-				return false;
-			} else{
-				return true;
-			}
+			return ($patchSuccess === false ? false : true);
 		}
 		return true;
 	}
@@ -407,7 +402,7 @@ class liveUpdateFunctions{
 		$fieldsOfTable = array();
 		$db->query('DESCRIBE ' . $db->escape($tableName));
 
-		while($db->next_record()) {
+		while($db->next_record()){
 			$fieldsOfTable[$db->f('Field')] = array(
 				'Field' => $db->f('Field'),
 				'Type' => $db->f('Type'),
@@ -430,14 +425,14 @@ class liveUpdateFunctions{
 		$db = new DB_WE();
 		$keysOfTable = array();
 		$db->query('SHOW INDEX FROM ' . $db->escape($tableName));
-		while($db->next_record()) {
+		while($db->next_record()){
 			if($db->f('Key_name') == 'PRIMARY'){
 				$indexType = 'PRIMARY';
 			} else if($db->f('Comment') == 'FULLTEXT' || $db->f('Index_type') == 'FULLTEXT'){// this also depends on mysqlVersion
 				$indexType = 'FULLTEXT';
 			} else if($db->f('Non_unique') == '0'){
 				$indexType = 'UNIQUE';
-			} else{
+			} else {
 				$indexType = 'INDEX';
 			}
 
@@ -470,7 +465,7 @@ class liveUpdateFunctions{
 
 			if(($fieldInfo['Default']) != ""){
 				$default = 'DEFAULT ' . (($fieldInfo['Default']) == 'CURRENT_TIMESTAMP' ? 'CURRENT_TIMESTAMP' : '\'' . $fieldInfo['Default'] . '\'');
-			} else{
+			} else {
 				if(strtoupper($fieldInfo['Null']) == "YES"){
 					$default = ' DEFAULT NULL';
 				}
@@ -495,7 +490,7 @@ class liveUpdateFunctions{
 			if($isNew){
 				//Bug #4431, siehe unten
 				$queries[] = "ALTER TABLE `$tableName` ADD `" . $fieldInfo['Field'] . '` ' . $fieldInfo['Type'] . " $null $default $extra";
-			} else{
+			} else {
 				//Bug #4431
 				// das  mysql_real_escape_string bei $fieldInfo['Type'] f�hrt f�r enum dazu, das die ' escaped werden und ein Syntaxfehler entsteht (nicht abgeschlossene Zeichenkette
 				$queries[] = "ALTER TABLE `$tableName` CHANGE `" . $fieldInfo['Field'] . '` `' . $fieldInfo['Field'] . '` ' . $fieldInfo['Type'] . " $null $default $extra";
@@ -531,7 +526,7 @@ class liveUpdateFunctions{
 			foreach($indexes as $index){
 				if(strpos($index, '(') === false){
 					$myindexes[] = '`' . $index . '`';
-				} else{
+				} else {
 					$myindexes[] = '`' . str_replace('(', '`(', $index);
 				}
 			}
@@ -570,7 +565,7 @@ class liveUpdateFunctions{
 					}
 				}
 			}
-		} else{
+		} else {
 			$content = $this->getFileContent($path);
 			$queries = explode("/* query separator */", $content);
 			$success = true;
@@ -634,7 +629,7 @@ class liveUpdateFunctions{
 
 		if($query == '' || $db->query($query)){
 			return true;
-		} else{
+		} else {
 
 			switch($db->Errno){
 
@@ -683,7 +678,7 @@ class liveUpdateFunctions{
 								if(!($newField['Type'] == $origTable[$fieldName]['Type'] && $newField['Null'] == $origTable[$fieldName]['Null'] && $newField['Default'] == $origTable[$fieldName]['Default'] && $newField['Extra'] == $origTable[$fieldName]['Extra'])){
 									$changeFields[$fieldName] = $newField;
 								}
-							} else{ // field does not exist
+							} else { // field does not exist
 								$addFields[$fieldName] = $newField;
 							}
 						}
@@ -719,7 +714,7 @@ class liveUpdateFunctions{
 										break;
 									}
 								}
-							} else{
+							} else {
 								$addKeys[$keyName] = $indexes;
 							}
 						}
@@ -748,12 +743,12 @@ class liveUpdateFunctions{
 								}
 								if($db->query(trim($_query))){
 									$this->QueryLog['success'][] = $_query;
-								} else{
+								} else {
 									//unknown why mysql don't show correct error
 									if($db->Errno == 1062 || $db->Errno == 0){
 										$duplicate = true;
 										$this->QueryLog['tableChanged'][] = $tableName;
-									} else{
+									} else {
 										$this->QueryLog['error'][] = $db->Errno . ' ' . $db->Error . "\n-- $_query --";
 									}
 									$success = false;
@@ -778,7 +773,7 @@ class liveUpdateFunctions{
 							if(isset($SearchTempTableKeys['_temp'])){
 								$db->query(trim('ALTER TABLE ' . $db->escape($tableName) . ' DROP INDEX _temp'));
 							}
-						} else{
+						} else {
 							//$this->QueryLog['tableExists'][] = $tableName;
 						}
 
@@ -827,7 +822,7 @@ class liveUpdateFunctions{
 		//	Look which languages are installed
 		$_language_directory = dir($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_language");
 
-		while(false !== ($entry = $_language_directory->read())) {
+		while(false !== ($entry = $_language_directory->read())){
 			if($entry != "." && $entry != ".."){
 				if(is_dir($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_language/" . $entry)){
 					$_installedLanguages[] = $entry;

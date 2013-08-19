@@ -44,13 +44,15 @@ abstract class weAbstractCustomerFilter{
 	const OP_ENDS_WITH = 7;
 	const OP_CONTAINS = 8;
 	const OP_IN = 9;
+	const OP_NOT_CONTAINS = 10;
+	const OP_NOT_IN = 11;
 
 	/**
 	 * Mode. Can be OFF, ALL, SPECIFIC, FILTER
 	 *
 	 * @var integer
 	 */
-	var $_mode = self::OFF;
+	private $_mode = self::OFF;
 
 	/**
 	 * Array with customer ids. Only relevant when $_mode is SPECIFIC
@@ -64,14 +66,14 @@ abstract class weAbstractCustomerFilter{
 	 *
 	 * @var array
 	 */
-	var $_blackList = array();
+	private $_blackList = array();
 
 	/**
 	 * Array with customer ids. Only relevant when $_mode is FILTER
 	 *
 	 * @var array
 	 */
-	var $_whiteList = array();
+	private $_whiteList = array();
 
 	/**
 	 * Array with filter Settings
@@ -79,8 +81,6 @@ abstract class weAbstractCustomerFilter{
 	 * @var array
 	 */
 	var $_filter = array();
-
-	/* ################### CONSTRUCTOR #################### */
 
 	/**
 	 *
@@ -104,8 +104,6 @@ abstract class weAbstractCustomerFilter{
 			$this->setFilter($filter);
 		}
 	}
-
-	/* ##################### End of constructor ################################ */
 
 	/**
 	 * checks if customer has access with the actual filter object
@@ -149,8 +147,12 @@ abstract class weAbstractCustomerFilter{
 				return self::endsWith($_SESSION['webuser'][$key], $value);
 			case self::OP_CONTAINS:
 				return self::contains($_SESSION['webuser'][$key], $value);
+			case self::OP_NOT_CONTAINS:
+				return !self::contains($_SESSION['webuser'][$key], $value);
 			case self::OP_IN:
 				return self::in($_SESSION['webuser'][$key], $value);
+			case self::OP_NOT_IN:
+				return !self::in($_SESSION['webuser'][$key], $value);
 			default:
 				t_e('invalid customer filter op: ' . $op);
 				return false;
@@ -354,7 +356,7 @@ abstract class weAbstractCustomerFilter{
 	 *
 	 * @param integer $mode
 	 */
-	function setMode($mode){
+	public function setMode($mode){
 		$this->_mode = $mode;
 	}
 
@@ -363,7 +365,7 @@ abstract class weAbstractCustomerFilter{
 	 *
 	 * @return integer
 	 */
-	function getMode(){
+	public function getMode(){
 		return $this->_mode;
 	}
 
@@ -372,7 +374,7 @@ abstract class weAbstractCustomerFilter{
 	 *
 	 * @param array $mode
 	 */
-	function setSpecificCustomers($specificCustomers){
+	public function setSpecificCustomers($specificCustomers){
 		$this->_specificCustomers = $specificCustomers;
 	}
 
@@ -381,7 +383,7 @@ abstract class weAbstractCustomerFilter{
 	 *
 	 * @return array
 	 */
-	function getSpecificCustomers(){
+	public function getSpecificCustomers(){
 		return $this->_specificCustomers;
 	}
 
@@ -390,7 +392,7 @@ abstract class weAbstractCustomerFilter{
 	 *
 	 * @param array $mode
 	 */
-	function setBlackList($blackList){
+	public function setBlackList($blackList){
 		$this->_blackList = $blackList;
 	}
 
@@ -399,7 +401,7 @@ abstract class weAbstractCustomerFilter{
 	 *
 	 * @return array
 	 */
-	function getBlackList(){
+	public function getBlackList(){
 		return $this->_blackList;
 	}
 
@@ -408,7 +410,7 @@ abstract class weAbstractCustomerFilter{
 	 *
 	 * @param array $mode
 	 */
-	function setWhiteList($whiteList){
+	public function setWhiteList($whiteList){
 		$this->_whiteList = $whiteList;
 	}
 
@@ -417,7 +419,7 @@ abstract class weAbstractCustomerFilter{
 	 *
 	 * @return array
 	 */
-	function getWhiteList(){
+	public function getWhiteList(){
 		return $this->_whiteList;
 	}
 
@@ -426,7 +428,7 @@ abstract class weAbstractCustomerFilter{
 	 *
 	 * @param array $mode
 	 */
-	function setFilter($filter){
+	public function setFilter($filter){
 		$this->_filter = $filter;
 	}
 
@@ -435,7 +437,7 @@ abstract class weAbstractCustomerFilter{
 	 *
 	 * @return array
 	 */
-	function getFilter(){
+	public function getFilter(){
 		return $this->_filter;
 	}
 

@@ -33,9 +33,8 @@ class rpcCopyNavigationFolderCmd extends rpcCmd{
 			(strpos($_REQUEST['we_cmd'][2], $_REQUEST['we_cmd'][0]) === false || strpos($_REQUEST['we_cmd'][2], $_REQUEST['we_cmd'][0]) > 0)
 		){
 
-			$db = new DB_WE();
-			$query = "SELECT * FROM " . NAVIGATION_TABLE . " WHERE Path LIKE '" . $db->escape($_REQUEST['we_cmd'][2]) . "/%' ORDER BY Path";
-			$db->query($query);
+			$db = $GLOBALS['DB_WE'];
+			$db->query('SELECT * FROM ' . NAVIGATION_TABLE . " WHERE Path LIKE '" . $db->escape($_REQUEST['we_cmd'][2]) . "/%' ORDER BY Path");
 			$result = $db->getAll();
 			$querySet = "";
 			$query = "";
@@ -59,7 +58,7 @@ class rpcCopyNavigationFolderCmd extends rpcCmd{
 							$querySet .= ", '$val'";
 					}
 				}
-				$querySet .= ")";
+				$querySet .= ')';
 				if($row['IsFolder']){
 					if(!empty($query)){
 						$db->query('INSERT INTO ' . NAVIGATION_TABLE . ' VALUES ' . $query);

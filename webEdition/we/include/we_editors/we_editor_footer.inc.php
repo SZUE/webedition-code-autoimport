@@ -53,19 +53,19 @@ switch($we_doc->userHasAccess()){
 		break;
 
 	case we_root::FILE_NOT_IN_USER_WORKSPACE : //	file is not in workspace of user
-		include_once(WE_INCLUDES_PATH . 'we_editors/file_in_workspace_footer.inc.php');
+		require_once(WE_INCLUDES_PATH . 'we_editors/file_in_workspace_footer.inc.php');
 		exit();
 
 	case we_root::USER_NO_PERM : //	access is restricted and user has no permission
-		include_once(WE_INCLUDES_PATH . 'we_editors/file_restricted_footer.inc.php');
+		require_once(WE_INCLUDES_PATH . 'we_editors/file_restricted_footer.inc.php');
 		exit;
 
 	case we_root::FILE_LOCKED : //	file is locked by another user
-		include_once(WE_INCLUDES_PATH . 'we_editors/file_locked_footer.inc.php');
+		require_once(WE_INCLUDES_PATH . 'we_editors/file_locked_footer.inc.php');
 		exit;
 
 	case we_root::USER_NO_SAVE : //	user has not the right to save the file.
-		include_once(WE_INCLUDES_PATH . 'we_editors/file_no_save_footer.inc.php');
+		require_once(WE_INCLUDES_PATH . 'we_editors/file_no_save_footer.inc.php');
 		exit;
 }
 
@@ -453,7 +453,7 @@ function showEditFooterForNormalMode(){
 		}
 	}
 
-	
+
 	if($we_doc->IsTextContentDoc && $haspermNew){
 
 		$_ctrlElem = getControlElement('checkbox', 'makeSameDoc');
@@ -569,7 +569,7 @@ function showEditFooterForSEEMMode(){
 				$_seeModeTable->setCol(0, $_pos++, array("valign" => "top"), we_button::create_button("in_workflow", "javascript:put_in_workflow();"));
 				$_seeModeTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
 			}
-		
+
 	}
 
 	//###########################	Special buttons for special EDITPAGE
@@ -676,16 +676,16 @@ function showEditFooterForSEEMMode(){
 
 			switch($_SESSION['weS']['we_mode']){
 				default:
-				case "normal": // open footer for NormalMode
+				case we_base_constants::MODE_NORMAL: // open footer for NormalMode
 					showEditFooterForNormalMode();
 					break;
-				case "seem": // open footer for SeeMode
+				case we_base_constants::MODE_SEE: // open footer for SeeMode
 					showEditFooterForSEEMMode();
 					break;
 			}
 		} else{
 
-			if($_SESSION['weS']['we_mode'] == "seem"){
+			if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
 
 				$_noPermTable = new we_html_table(array("cellpadding" => 0,
 						"cellspacing" => 0,
@@ -722,7 +722,7 @@ function showEditFooterForSEEMMode(){
 	}
 
 	if($we_doc->IsTextContentDoc && $haspermNew){ //	$_js_permnew
-		if($_SESSION['weS']['we_mode'] != "seem" || $GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_CONTENT){ // not in SeeMode or in editmode
+		if($_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE || $GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_CONTENT){ // not in SeeMode or in editmode
 			$_ctrlElem = getControlElement('checkbox', 'makeSameDoc');
 			if(!$_ctrlElem){ //	changes for we:controlElement
 				$_js_permnew = ($we_doc->ID ? '

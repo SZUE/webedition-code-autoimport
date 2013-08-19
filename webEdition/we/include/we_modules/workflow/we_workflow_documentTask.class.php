@@ -145,7 +145,7 @@ class we_workflow_documentTask extends we_workflow_base{
 		if(is_array($WorkflowTask))
 			return we_workflow_documentTask::__createTaskFromHash($WorkflowTask);
 
-		$db = new DB_WE;
+		$db = new DB_WE();
 
 		$db->query("SELECT * FROM " . WORKFLOW_TASK_TABLE . " WHERE ID=" . intval($WorkflowTask) . " ORDER BY ID");
 		if(!$db->next_record()){

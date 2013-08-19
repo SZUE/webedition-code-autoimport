@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,19 +22,14 @@
  * @package    webEdition_update
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 /*
  * This is the template for tab connect. It trys to connect to the server in
  * different ways.
  */
 
-if ($this->State == 'true') {
-	$description = g_l('liveUpdate','[state][descriptionTrue]');
-} else {
-	$description = g_l('liveUpdate','[state][descriptionError]');
-}
-
-
+$description = ($this->State == 'true' ?
+		g_l('liveUpdate', '[state][descriptionTrue]') :
+		g_l('liveUpdate', '[state][descriptionError]'));
 
 $content = '
 <div class="defaultfont">
@@ -41,7 +37,6 @@ $content = '
 	<div class="errorDiv">
 		<code>' . $this->Message . '</code>
 	</div>
-</div>
-';
+</div>';
 
-print liveUpdateTemplates::getHtml(g_l('liveUpdate','[state][headline]'), $content);
+print liveUpdateTemplates::getHtml(g_l('liveUpdate', '[state][headline]'), $content);

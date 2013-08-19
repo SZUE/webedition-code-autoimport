@@ -103,7 +103,7 @@ default_color = "#000000";
 		if (NN4 == false)
 		    highlight_TR(id, default_color);
 
-		top.messaging_main.messaging_right.messaging_message_view.location = "<?php echo HTML_DIR?>gray.html";
+		top.editor.edbody.msg_mfv.messaging_message_view.location = "<?php echo HTML_DIR?>gray.html";
 	    } else {
 		if (NN4 == false)
 		    highlight_Elem(id, default_color, messaging_usel_main);

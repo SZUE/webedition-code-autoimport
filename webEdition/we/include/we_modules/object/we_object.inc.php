@@ -25,6 +25,14 @@
 /* a class for handling templates */
 class we_object extends we_document{
 
+	const ELEMENT_LENGHT = 'length';
+	const ELEMENT_TYPE = 'dtype';
+	const ELEMENT_WIDTH = 'width';
+	const ELEMENT_HEIGHT = 'height';
+	const ELEMENT_CLASS = 'class';
+	const ELEMENT_MAX = 'max';
+	const ELEMENT_DEFAULT = 'default';
+
 	var $ObjectID = 0;
 	var $Users = ''; // Default Owners
 	var $UsersReadOnly = ''; // For DefaultOwners
@@ -47,15 +55,15 @@ class we_object extends we_document{
 		$this->ClassName = 'we_object'; //for we_objectEx, otherwise ist will save its own classname, or needs its own constructor
 	}
 
-	/* setter for runtime variable isInApp which allows to construct Classes from within Apps */
-	/* do not access this variable directly, in later WE Versions, it will be protected */
+	// setter for runtime variable isInApp which allows to construct Classes from within Apps
+	// do not access this variable directly, in later WE Versions, it will be protected
 
 	function setIsInApp($isInApp){
 		$this->isInApp = $isInApp;
 	}
 
-	/* getter for runtime variable isInApp which allows to construct Classes from within Apps */
-	/* do not access this variable directly, in later WE Versions, it will be protected */
+	// getter for runtime variable isInApp which allows to construct Classes from within Apps
+	// do not access this variable directly, in later WE Versions, it will be protected
 
 	function getIsInApp(){
 		return $this->isInApp;
@@ -69,7 +77,7 @@ class we_object extends we_document{
 		}
 
 		$this->ModDate = time();
-		$this->ModifierID = isset($_SESSION['user']['ID']) ? $_SESSION['user']['ID'] : 0;
+		$this->ModifierID = !isset($GLOBALS['we']['Scheduler_active']) && isset($_SESSION['user']['ID']) ? $_SESSION['user']['ID'] : 0;
 
 		$this->saveToDB();
 
@@ -177,7 +185,7 @@ class we_object extends we_document{
 				$neu = explode(',', $this->elements['neuefelder']['dat']);
 				foreach($neu as $cur){
 					if(!empty($cur)){
-						$name = $this->getElement($cur . 'dtype', 'dat') . '_' . $this->getElement($cur, 'dat');
+						$name = $this->getElement($cur . self::ELEMENT_TYPE, 'dat') . '_' . $this->getElement($cur, 'dat');
 						$arrt[$name] = array(
 							'default' => isset($this->elements[$cur . 'default']['dat']) ? $this->elements[$cur . 'default']['dat'] : '',
 							'defaultThumb' => isset($this->elements[$cur . 'defaultThumb']['dat']) ? $this->elements[$cur . 'defaultThumb']['dat'] : '',
@@ -188,7 +196,7 @@ class we_object extends we_document{
 							'commands' => isset($this->elements[$cur . 'commands']['dat']) ? $this->elements[$cur . 'commands']['dat'] : '',
 							'contextmenu' => isset($this->elements[$cur . 'contextmenu']['dat']) ? $this->elements[$cur . 'contextmenu']['dat'] : '',
 							'height' => isset($this->elements[$cur . 'height']['dat']) ? $this->elements[$cur . 'height']['dat'] : '',
-							'width' => isset($this->elements[$cur . 'width']['dat']) ? $this->elements[$cur . 'width']['dat'] : '',
+							self::ELEMENT_WIDTH => isset($this->elements[$cur . self::ELEMENT_WIDTH]['dat']) ? $this->elements[$cur . self::ELEMENT_WIDTH]['dat'] : '',
 							'bgcolor' => isset($this->elements[$cur . 'bgcolor']['dat']) ? $this->elements[$cur . 'bgcolor']['dat'] : '',
 							'class' => isset($this->elements[$cur . 'class']['dat']) ? $this->elements[$cur . 'class']['dat'] : '',
 							'max' => isset($this->elements[$cur . 'max']['dat']) ? $this->elements[$cur . 'max']['dat'] : '',
@@ -235,7 +243,7 @@ class we_object extends we_document{
 						}
 						$q[] = $name . ' ' . $this->switchtypes($cur);
 						//add index for complex queries
-						if($this->getElement($cur . 'dtype', 'dat') == 'object'){
+						if($this->getElement($cur . self::ELEMENT_TYPE, 'dat') == 'object'){
 							$indexe[] = 'KEY (' . $name . ')';
 						}
 					}
@@ -245,16 +253,16 @@ class we_object extends we_document{
 			$arrt['WE_CSS_FOR_CLASS'] = $this->CSS;
 			$this->DefaultValues = serialize($arrt);
 
-			$this->DefaultTitle = isset($this->elements['title']['dat']) ? $this->getElement($this->elements['title']['dat'] . 'dtype', 'dat') . '_' . $this->getElement($this->elements['title']['dat'], 'dat') : '_';
-			$this->DefaultDesc = isset($this->elements['desc']['dat']) ? $this->getElement($this->elements['desc']['dat'] . 'dtype', 'dat') . '_' . $this->getElement($this->elements['desc']['dat'], 'dat') : '_';
-			$this->DefaultKeywords = isset($this->elements['keywords']['dat']) ? $this->getElement($this->elements['keywords']['dat'] . 'dtype', 'dat') . '_' . $this->getElement($this->elements['keywords']['dat'], 'dat') : '_';
+			$this->DefaultTitle = isset($this->elements['title']['dat']) ? $this->getElement($this->elements['title']['dat'] . self::ELEMENT_TYPE, 'dat') . '_' . $this->getElement($this->elements['title']['dat'], 'dat') : '_';
+			$this->DefaultDesc = isset($this->elements['desc']['dat']) ? $this->getElement($this->elements['desc']['dat'] . self::ELEMENT_TYPE, 'dat') . '_' . $this->getElement($this->elements['desc']['dat'], 'dat') : '_';
+			$this->DefaultKeywords = isset($this->elements['keywords']['dat']) ? $this->getElement($this->elements['keywords']['dat'] . self::ELEMENT_TYPE, 'dat') . '_' . $this->getElement($this->elements['keywords']['dat'], 'dat') : '_';
 
 
-			$this->DefaultUrlfield0 = isset($this->elements['urlfield0']['dat']) ? $this->getElement($this->elements['urlfield0']['dat'] . 'dtype', 'dat') . '_' . $this->getElement($this->elements['urlfield0']['dat'], 'dat') : '_';
-			$this->DefaultUrlfield1 = isset($this->elements['urlfield1']['dat']) ? $this->getElement($this->elements['urlfield1']['dat'] . 'dtype', 'dat') . '_' . $this->getElement($this->elements['urlfield1']['dat'], 'dat') : '_';
-			$this->DefaultUrlfield2 = isset($this->elements['urlfield2']['dat']) ? $this->getElement($this->elements['urlfield2']['dat'] . 'dtype', 'dat') . '_' . $this->getElement($this->elements['urlfield2']['dat'], 'dat') : '_';
-			$this->DefaultUrlfield3 = isset($this->elements['urlfield3']['dat']) ? $this->getElement($this->elements['urlfield3']['dat'] . 'dtype', 'dat') . '_' . $this->getElement($this->elements['urlfield3']['dat'], 'dat') : '_';
-			$this->DefaultTriggerID = isset($this->elements['triggerid']['dat']) ? $this->getElement($this->elements['triggerid']['dat'] . 'dtype', 'dat') . '_' . $this->getElement($this->elements['triggerid']['dat'], 'dat') : '0';
+			$this->DefaultUrlfield0 = isset($this->elements['urlfield0']['dat']) ? $this->getElement($this->elements['urlfield0']['dat'] . self::ELEMENT_TYPE, 'dat') . '_' . $this->getElement($this->elements['urlfield0']['dat'], 'dat') : '_';
+			$this->DefaultUrlfield1 = isset($this->elements['urlfield1']['dat']) ? $this->getElement($this->elements['urlfield1']['dat'] . self::ELEMENT_TYPE, 'dat') . '_' . $this->getElement($this->elements['urlfield1']['dat'], 'dat') : '_';
+			$this->DefaultUrlfield2 = isset($this->elements['urlfield2']['dat']) ? $this->getElement($this->elements['urlfield2']['dat'] . self::ELEMENT_TYPE, 'dat') . '_' . $this->getElement($this->elements['urlfield2']['dat'], 'dat') : '_';
+			$this->DefaultUrlfield3 = isset($this->elements['urlfield3']['dat']) ? $this->getElement($this->elements['urlfield3']['dat'] . self::ELEMENT_TYPE, 'dat') . '_' . $this->getElement($this->elements['urlfield3']['dat'], 'dat') : '_';
+			$this->DefaultTriggerID = isset($this->elements['triggerid']['dat']) ? $this->getElement($this->elements['triggerid']['dat'] . self::ELEMENT_TYPE, 'dat') . '_' . $this->getElement($this->elements['triggerid']['dat'], 'dat') : '0';
 
 
 			$this->strOrder = implode(',', $this->getElement('we_sort'));
@@ -294,7 +302,7 @@ class we_object extends we_document{
 							$q [] = ' DROP `' . $info['name'] . '` ';
 						} else {
 
-							$nam = $this->getElement($info['name'] . 'dtype', 'dat') . '_' . $this->getElement($info['name'], 'dat');
+							$nam = $this->getElement($info['name'] . self::ELEMENT_TYPE, 'dat') . '_' . $this->getElement($info['name'], 'dat');
 							$q [] = ' CHANGE `' . $info['name'] . '` `' . $nam . '` ' .
 								$this->switchtypes($info['name']);
 							//change from object is indexed to unindexed
@@ -317,7 +325,7 @@ class we_object extends we_document{
 								'commands' => $this->elements[$info['name'] . 'commands']['dat'],
 								'contextmenu' => $this->elements[$info['name'] . 'contextmenu']['dat'],
 								'height' => $this->elements[$info['name'] . 'height']['dat'],
-								'width' => $this->elements[$info['name'] . 'width']['dat'],
+								self::ELEMENT_WIDTH => $this->elements[$info['name'] . self::ELEMENT_WIDTH]['dat'],
 								'bgcolor' => $this->elements[$info['name'] . 'bgcolor']['dat'],
 								'class' => $this->elements[$info['name'] . 'class']['dat'],
 								'max' => $this->elements[$info['name'] . 'max']['dat'],
@@ -369,7 +377,7 @@ class we_object extends we_document{
 
 			foreach($neu as $cur){
 				if(isset($cur) && $cur != ''){
-					$nam = $this->getElement($cur . 'dtype', 'dat') . '_' . $this->getElement($cur, 'dat');
+					$nam = $this->getElement($cur . self::ELEMENT_TYPE, 'dat') . '_' . $this->getElement($cur, 'dat');
 					$arrt[$nam] = array(
 						'default' => isset($this->elements[$cur . 'default']['dat']) ? $this->elements[$cur . 'default']['dat'] : '',
 						'defaultThumb' => isset($this->elements[$cur . 'defaultThumb']['dat']) ? $this->elements[$cur . 'defaultThumb']['dat'] : '',
@@ -381,7 +389,7 @@ class we_object extends we_document{
 						'commands' => isset($this->elements[$cur . 'commands']['dat']) ? $this->elements[$cur . 'commands']['dat'] : '',
 						'contextmenu' => isset($this->elements[$cur . 'contextmenu']['dat']) ? $this->elements[$cur . 'contextmenu']['dat'] : '',
 						'height' => isset($this->elements[$cur . 'height']['dat']) ? $this->elements[$cur . 'height']['dat'] : 200,
-						'width' => isset($this->elements[$cur . 'width']['dat']) ? $this->elements[$cur . 'width']['dat'] : 618,
+						self::ELEMENT_WIDTH => isset($this->elements[$cur . self::ELEMENT_WIDTH]['dat']) ? $this->elements[$cur . self::ELEMENT_WIDTH]['dat'] : 618,
 						'bgcolor' => isset($this->elements[$cur . 'bgcolor']['dat']) ? $this->elements[$cur . 'bgcolor']['dat'] : '',
 						'class' => isset($this->elements[$cur . 'class']['dat']) ? $this->elements[$cur . 'class']['dat'] : '',
 						'max' => isset($this->elements[$cur . 'max']['dat']) ? $this->elements[$cur . 'max']['dat'] : '',
@@ -428,7 +436,7 @@ class we_object extends we_document{
 
 					$q [] = ' ADD `' . $nam . '` ' . $this->switchtypes($cur);
 					//add index for complex queries
-					if($this->getElement($cur . 'dtype', 'dat') == 'object'){
+					if($this->getElement($cur . self::ELEMENT_TYPE, 'dat') == 'object'){
 						$q [] = ' ADD INDEX (`' . $nam . '`)';
 					}
 				}
@@ -436,15 +444,15 @@ class we_object extends we_document{
 
 			$this->DefaultCategory = $this->Category;
 
-			$this->DefaultTitle = $this->getElement($this->elements['title']['dat'] . 'dtype', 'dat') . '_' . $this->getElement($this->elements['title']['dat'], 'dat');
-			$this->DefaultDesc = $this->getElement($this->elements['desc']['dat'] . 'dtype', 'dat') . '_' . $this->getElement($this->elements['desc']['dat'], 'dat');
-			$this->DefaultKeywords = $this->getElement($this->elements['keywords']['dat'] . 'dtype', 'dat') . '_' . $this->getElement($this->elements['keywords']['dat'], 'dat');
+			$this->DefaultTitle = $this->getElement($this->elements['title']['dat'] . self::ELEMENT_TYPE, 'dat') . '_' . $this->getElement($this->elements['title']['dat'], 'dat');
+			$this->DefaultDesc = $this->getElement($this->elements['desc']['dat'] . self::ELEMENT_TYPE, 'dat') . '_' . $this->getElement($this->elements['desc']['dat'], 'dat');
+			$this->DefaultKeywords = $this->getElement($this->elements['keywords']['dat'] . self::ELEMENT_TYPE, 'dat') . '_' . $this->getElement($this->elements['keywords']['dat'], 'dat');
 
 
-			$this->DefaultUrlfield0 = isset($this->elements['urlfield0']['dat']) ? $this->getElement($this->elements['urlfield0']['dat'] . 'dtype', 'dat') . '_' . $this->getElement($this->elements['urlfield0']['dat'], 'dat') : '_';
-			$this->DefaultUrlfield1 = isset($this->elements['urlfield1']['dat']) ? $this->getElement($this->elements['urlfield1']['dat'] . 'dtype', 'dat') . '_' . $this->getElement($this->elements['urlfield1']['dat'], 'dat') : '_';
-			$this->DefaultUrlfield2 = isset($this->elements['urlfield2']['dat']) ? $this->getElement($this->elements['urlfield2']['dat'] . 'dtype', 'dat') . '_' . $this->getElement($this->elements['urlfield2']['dat'], 'dat') : '_';
-			$this->DefaultUrlfield3 = isset($this->elements['urlfield3']['dat']) ? $this->getElement($this->elements['urlfield3']['dat'] . 'dtype', 'dat') . '_' . $this->getElement($this->elements['urlfield3']['dat'], 'dat') : '_';
+			$this->DefaultUrlfield0 = isset($this->elements['urlfield0']['dat']) ? $this->getElement($this->elements['urlfield0']['dat'] . self::ELEMENT_TYPE, 'dat') . '_' . $this->getElement($this->elements['urlfield0']['dat'], 'dat') : '_';
+			$this->DefaultUrlfield1 = isset($this->elements['urlfield1']['dat']) ? $this->getElement($this->elements['urlfield1']['dat'] . self::ELEMENT_TYPE, 'dat') . '_' . $this->getElement($this->elements['urlfield1']['dat'], 'dat') : '_';
+			$this->DefaultUrlfield2 = isset($this->elements['urlfield2']['dat']) ? $this->getElement($this->elements['urlfield2']['dat'] . self::ELEMENT_TYPE, 'dat') . '_' . $this->getElement($this->elements['urlfield2']['dat'], 'dat') : '_';
+			$this->DefaultUrlfield3 = isset($this->elements['urlfield3']['dat']) ? $this->getElement($this->elements['urlfield3']['dat'] . self::ELEMENT_TYPE, 'dat') . '_' . $this->getElement($this->elements['urlfield3']['dat'], 'dat') : '_';
 			//$this->DefaultTriggerID = isset($this->elements['triggerid']['dat']) ? $this->getElement($this->elements['triggerid']['dat'].'dtype','dat').'_'.$this->getElement($this->elements['urlfield3']['dat'],'dat') : '0';
 
 			$arrt['WE_CSS_FOR_CLASS'] = $this->CSS;
@@ -492,7 +500,7 @@ class we_object extends we_document{
 
 	function switchtypes($name){
 		$def = $this->getElement($name . 'default', 'dat');
-		switch($this->getElement($name . 'dtype', 'dat')){
+		switch($this->getElement($name . self::ELEMENT_TYPE, 'dat')){
 			case 'meta':
 				return ' VARCHAR(' . (($this->getElement($name . 'length', 'dat') > 0 && ($this->getElement($name . 'length', 'dat') < 255)) ? $this->getElement($name . 'length', 'dat') : 255) . ') NOT NULL ';
 			case 'date':
@@ -542,7 +550,7 @@ class we_object extends we_document{
 	}
 
 	function setSort(){
-		if(!$this->issetElement("we_sort")){
+		if(!$this->issetElement('we_sort')){
 			$t = we_objectFile::getSortArray($this->ID, $this->DB_WE);
 			$sort = array();
 			foreach($t as $k => $v){
@@ -551,7 +559,7 @@ class we_object extends we_document{
 				}
 				$sort[str_replace('.', '', uniqid(__FUNCTION__, true))] = $v;
 			}
-			$this->setElement("we_sort", $sort);
+			$this->setElement('we_sort', $sort);
 		}
 	}
 
@@ -564,7 +572,7 @@ class we_object extends we_document{
 			$this->save();
 			$we_responseText = sprintf(g_l('weClass', "[response_save_ok]"), $this->Path);
 			$we_responseTextType = we_message_reporting::WE_MESSAGE_NOTICE;
-			return "we_templates/we_editor_save.inc.php";
+			return 'we_templates/we_editor_save.inc.php';
 		}
 		switch($this->EditPageNr){
 			case WE_EDITPAGE_PROPERTIES:
@@ -661,13 +669,13 @@ class we_object extends we_document{
 		$gesamt = $this->getElement("Sortgesamt");
 
 		$this->elements["Sortgesamt"]["dat"] = (empty($sort) ? 0 : ++$gesamt);
-		$this->elements[$uid]["dat"] = "";
-		$this->elements[$uid . "length"]["dat"] = "";
-		$this->elements[$uid . "dtype"]["dat"] = "";
-		$this->elements[$uid . "width"]["dat"] = 618;
-		$this->elements[$uid . "height"]["dat"] = 200;
-		$this->elements[$uid . "class"]["dat"] = "";
-		$this->elements[$uid . "max"]["dat"] = "";
+		$this->elements[$uid]["dat"] = '';
+		$this->elements[$uid . self::ELEMENT_LENGHT]["dat"] = "";
+		$this->elements[$uid . self::ELEMENT_TYPE]["dat"] = "";
+		$this->elements[$uid . self::ELEMENT_WIDTH]["dat"] = 618;
+		$this->elements[$uid . self::ELEMENT_HEIGHT]["dat"] = 200;
+		$this->elements[$uid . self::ELEMENT_CLASS]["dat"] = "";
+		$this->elements[$uid . self::ELEMENT_MAX]["dat"] = "";
 		$this->elements["wholename" . $identifier]["dat"] = $uid;
 
 		if(!isset($this->elements["neuefelder"]["dat"])){
@@ -714,13 +722,13 @@ class we_object extends we_document{
 
 		unset($this->elements["wholename" . $identifier]["dat"]);
 		unset($this->elements[$uid]["dat"]);
-		unset($this->elements[$uid . "length"]["dat"]);
-		unset($this->elements[$uid . "dtype"]["dat"]);
-		unset($this->elements[$uid . "height"]["dat"]);
-		unset($this->elements[$uid . "width"]["dat"]);
-		unset($this->elements[$uid . "default"]["dat"]);
-		unset($this->elements[$uid . "class"]["dat"]);
-		unset($this->elements[$uid . "max"]["dat"]);
+		unset($this->elements[$uid . self::ELEMENT_LENGHT]["dat"]);
+		unset($this->elements[$uid . self::ELEMENT_TYPE]["dat"]);
+		unset($this->elements[$uid . self::ELEMENT_HEIGHT]["dat"]);
+		unset($this->elements[$uid . self::ELEMENT_WIDTH]["dat"]);
+		unset($this->elements[$uid . self::ELEMENT_DEFAULT]["dat"]);
+		unset($this->elements[$uid . self::ELEMENT_CLASS]["dat"]);
+		unset($this->elements[$uid . self::ELEMENT_MAX]["dat"]);
 
 
 		### move elements ####
@@ -735,7 +743,7 @@ class we_object extends we_document{
 		$this->elements["Sortgesamt"]["dat"] = count($sort);
 		### end move elements ####
 
-		$this->setElement("we_sort", (count($sort) > 0 ? $sort : array()));
+		$this->setElement("we_sort", (!empty($sort) ? $sort : array()));
 	}
 
 	function downMetaAtClass($name, $i){
@@ -801,7 +809,7 @@ class we_object extends we_document{
 		$listlen = ($this->getElement("Sortgesamt") + 1);
 		//$name = str_replace("float", "f", str_replace("int", "i",$name));
 
-		$type = ( $this->getElement($name . "dtype", "dat") != "" ) ? $this->getElement($name . "dtype", "dat") : "input";
+		$type = ( $this->getElement($name . self::ELEMENT_TYPE, "dat") != "" ) ? $this->getElement($name . self::ELEMENT_TYPE, "dat") : "input";
 		$content = '<tr>
 			<td  width="100" class="weMultiIconBoxHeadline" valign="top" >' . g_l('weClass', "[name]") . '</td>
 			<td  width="170" class="defaultfont" valign="top">';
@@ -867,7 +875,7 @@ class we_object extends we_document{
 		if(defined('SHOP_TABLE')){
 			$val["shopVat"] = g_l('modules_object', '[shopVat_field]');
 		}
-		$content .= $this->htmlSelect("we_" . $this->Name . "_input[" . $name . "dtype]", $val, 1, $type, "", 'onChange="if(this.form.elements[\'' . "we_" . $this->Name . "_input[" . $name . "default]" . '\']){this.form.elements[\'' . "we_" . $this->Name . "_input[" . $name . "default]" . '\'].value=\'\' };_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_entry_at_class\',\'' . $GLOBALS['we_transaction'] . '\',\'' . $identifier . '\'); "', "value", 388) .
+		$content .= $this->htmlSelect("we_" . $this->Name . "_input[" . $name . self::ELEMENT_TYPE . ']', $val, 1, $type, "", 'onChange="if(this.form.elements[\'' . "we_" . $this->Name . "_input[" . $name . "default]" . '\']){this.form.elements[\'' . "we_" . $this->Name . "_input[" . $name . "default]" . '\'].value=\'\' };_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_entry_at_class\',\'' . $GLOBALS['we_transaction'] . '\',\'' . $identifier . '\'); "', "value", 388) .
 			'</td></tr>';
 
 		if($type != 'shopVat' && $type != "float" && $type != "text" && $type != "country" && $type != "language" && $type != "img" && $type != "binary" && $type != "flashmovie" && $type != "quicktime" && $type != "date" && $type != "meta" && $type != "object" && $type != "link" && $type != "href" && $type != "checkbox" && $type != "multiobject"){
@@ -875,7 +883,7 @@ class we_object extends we_document{
 			$maxLengthVal = $type == 'int' ? 10 : 255;
 			$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin"  valign="top">' . g_l('modules_object', '[length]') . '</td>' .
 				'<td width="170" class="defaultfont">' .
-				$this->htmlTextInput("we_" . $this->Name . "_input[" . $name . "length]", 10, ($this->getElement($name . "length", "dat") > 0 && ($this->getElement($name . "length", "dat") < ($maxLengthVal + 1)) ? $this->getElement($name . "length", "dat") : $maxLengthVal), ($type == 'int' ? 2 : 4), 'onChange="_EditorFrame.setEditorIsHot(true);" weType="weObject_' . $type . '_length"', "text", 388) .
+				$this->htmlTextInput("we_" . $this->Name . "_input[" . $name . self::ELEMENT_LENGHT.']', 10, ($this->getElement($name . "length", "dat") > 0 && ($this->getElement($name . "length", "dat") < ($maxLengthVal + 1)) ? $this->getElement($name . "length", "dat") : $maxLengthVal), ($type == 'int' ? 2 : 4), 'onChange="_EditorFrame.setEditorIsHot(true);" weType="weObject_' . $type . '_length"', "text", 388) .
 				'</td></tr>';
 		}
 
@@ -922,7 +930,7 @@ class we_object extends we_document{
 				break;
 
 			case 'href':
-				$typeVal = $this->getElement($name . "hreftype", "dat");
+				$typeVal = $this->getElement($name . 'hreftype', 'dat');
 				$typeSelect = '<select class="weSelect" id="we_' . $this->Name . '_input[' . $name . 'hreftype]" name="we_' . $this->Name . '_input[' . $name . 'hreftype]" onchange="_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_entry_at_class\',\'' . $GLOBALS['we_transaction'] . '\',\'' . $identifier . '\');">
 			<option' . (($typeVal == we_base_link::TYPE_ALL || $typeVal == "") ? " selected" : "") . ' value="' . we_base_link::TYPE_ALL . '">all
 			<option' . (($typeVal == we_base_link::TYPE_INT) ? " selected" : "") . ' value="' . we_base_link::TYPE_INT . '">int
@@ -962,7 +970,7 @@ class we_object extends we_document{
 			case 'checkbox':
 				$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[default]') . '</td>' .
 					'<td width="170" class="defaultfont">' .
-					we_forms::checkbox("1", $this->getElement($name . "default", "dat"), "we_" . $this->Name . "_input[" . $name . "default1]", g_l('modules_object', '[checked]'), true, "defaultfont", "if(this.checked){document.we_form.elements['" . "we_" . $this->Name . "_input[" . $name . "default]" . "'].value=1;}else{ document.we_form.elements['" . "we_" . $this->Name . "_input[" . $name . "default]" . "'].value=0;}") .
+					we_forms::checkbox(1, $this->getElement($name . "default", "dat"), "we_" . $this->Name . "_input[" . $name . "default1]", g_l('modules_object', '[checked]'), true, "defaultfont", "if(this.checked){document.we_form.elements['" . "we_" . $this->Name . "_input[" . $name . "default]" . "'].value=1;}else{ document.we_form.elements['" . "we_" . $this->Name . "_input[" . $name . "default]" . "'].value=0;}") .
 					'<input type=hidden name="' . "we_" . $this->Name . "_input[" . $name . "default]" . '" value="' . $this->getElement($name . "default", "dat") . '" />' .
 					'</td></tr>';
 				break;
@@ -1155,7 +1163,7 @@ class we_object extends we_document{
 			//Pflichtfeld
 			$content .= '<tr valign="top"><td  width="100" class="defaultfont"></td>' .
 				'<td width="170" class="defaultfont">' .
-				we_forms::checkbox("1", $this->getElement($name . "required", "dat"), "we_" . $this->Name . "_input[" . $name . "required1]", g_l('global', "[required_field]"), true, "defaultfont", "if(this.checked){document.we_form.elements['" . "we_" . $this->Name . "_input[" . $name . "required]" . "'].value=1;}else{ document.we_form.elements['" . "we_" . $this->Name . "_input[" . $name . "required]" . "'].value=0;}");
+				we_forms::checkbox(1, $this->getElement($name . "required", "dat"), "we_" . $this->Name . "_input[" . $name . "required1]", g_l('global', "[required_field]"), true, "defaultfont", "if(this.checked){document.we_form.elements['" . "we_" . $this->Name . "_input[" . $name . "required]" . "'].value=1;}else{ document.we_form.elements['" . "we_" . $this->Name . "_input[" . $name . "required]" . "'].value=0;}");
 			if(defined('SHOP_TABLE')){
 				if($this->canHaveVariants() && $this->isVariantField($name)){
 					$variant = $this->getElement($name . "variant", "dat");
@@ -1298,7 +1306,7 @@ class we_object extends we_document{
 		  $yuiSuggest->setTrashButton($delbutton,5);
 		  $yuiSuggest->setAddJS("YAHOO.autocoml.init;");
 
-		  return $yuiSuggest->getYuiFiles().$yuiSuggest->getHTML().$yuiSuggest->getYuiCode();
+		  return weSuggest::getYuiFiles().$yuiSuggest->getHTML().$yuiSuggest->getYuiCode();
 		 */
 		return $this->htmlFormElementTable($this->htmlTextInput($textname, 30, $path, "", ' readonly', "text", 246, 0), "", "left", "defaultfont", $this->htmlHidden($idname, $myid), we_html_tools::getPixel(10, 4), $button, we_html_tools::getPixel(5, 4), $delbutton) . ($DoubleNames ? '<span style="color:red" >' . sprintf(g_l('modules_object', '[incObject_sameFieldname_start]'), implode(', ', $DoubleNames)) . '</span>' : '');
 	}
@@ -1757,7 +1765,7 @@ class we_object extends we_document{
 			$hiddenname = 'we_' . $this->Name . '_RestrictUsers';
 			$tmpname = 'tmpwe_' . $this->Name . '_RestrictUsers';
 			$hidden = $this->htmlHidden($hiddenname, abs($this->RestrictUsers));
-			$check = we_forms::checkbox("1", $this->RestrictUsers ? true : false, $tmpname, g_l('weClass', "[limitedAccess]"), true, "defaultfont", "_EditorFrame.setEditorIsHot(true);this.form.elements['" . $hiddenname . "'].value=(this.checked ? '1' : '0');we_cmd('reload_editpage');");
+			$check = we_forms::checkbox(1, $this->RestrictUsers ? true : false, $tmpname, g_l('weClass', "[limitedAccess]"), true, "defaultfont", "_EditorFrame.setEditorIsHot(true);this.form.elements['" . $hiddenname . "'].value=(this.checked ? '1' : '0');we_cmd('reload_editpage');");
 			return $hidden . $check;
 		} else {
 			return '<table cellpadding="0" cellspacing="0" border="0"><tr><td><img src="' . TREE_IMAGE_DIR . ($this->RestrictUsers ? 'check1_disabled.gif' : 'check0_disabled.gif') . '" /></td><td class="defaultfont">&nbsp;' . g_l('weClass', "[limitedAccess]") . '</td></tr></table>';
@@ -1819,7 +1827,7 @@ class we_object extends we_document{
 	}
 
 	function formCSS(){
-		include_once(WE_INCLUDES_PATH . 'we_tools/MultiDirChooser.inc.php');
+		require_once(WE_INCLUDES_PATH . 'we_tools/MultiDirChooser.inc.php');
 		$wecmdenc3 = we_cmd_enc("fillIDs();opener.we_cmd('add_css', top.allIDs);");
 
 		$addbut = we_button::create_button("add", "javascript:we_cmd('openDocselector', '', '" . FILE_TABLE . "','','','" . $wecmdenc3 . "','','','text/css', 1,1)");
@@ -2010,7 +2018,7 @@ class we_object extends we_document{
 				'commands' => '',
 				'contextmenu' => '',
 				'height' => 50,
-				'width' => 200,
+				self::ELEMENT_WIDTH => 200,
 				'bgcolor' => '',
 				'class' => '',
 				'cssClasses' => '',
@@ -2037,8 +2045,8 @@ class we_object extends we_document{
 
 					$this->elements[$info["name"]]["dat"] = $name;
 					$this->elements["wholename" . $this->getSortIndexByValue($f)]["dat"] = $info["name"];
-					$this->elements[$info["name"] . "length"]["dat"] = $info["len"];
-					$this->elements[$info["name"] . "dtype"]["dat"] = $type;
+					$this->elements[$info["name"] . self::ELEMENT_LENGHT]["dat"] = $info["len"];
+					$this->elements[$info["name"] . self::ELEMENT_TYPE]["dat"] = $type;
 					if(isset($vals[$info["name"]]["variant"])){
 						$this->elements[$info["name"] . "variant"]["dat"] = $vals[$info["name"]]["variant"];
 					}
@@ -2165,11 +2173,10 @@ class we_object extends we_document{
 	}
 
 	protected function i_setElementsFromHTTP(){
-		$changeData = $hrefFields = false;
+		$hrefFields = false;
 		$regs = array();
 		foreach($_REQUEST as $n => $v){
 			if(preg_match('/^we_' . preg_quote($this->Name) . '_([^\[]+)$/', $n, $regs)){
-				$changeData = true;
 				if($regs[1] == 'href'){
 					$hrefFields = true;
 					break;
@@ -2177,43 +2184,25 @@ class we_object extends we_document{
 			}
 		}
 
-		if($changeData){
-			/*
-			  //reset radio fields which can be unset
-			  if(isset($this->elements['title']['dat'])){
-			  unset($this->elements['title']['dat']);
-			  }
-			  if(isset($this->elements['desc']['dat'])){
-			  unset($this->elements['desc']['dat']);
-			  }
-			  if(isset($this->elements['keywords']['dat'])){
-			  unset($this->elements['keywords']['dat']);
-			  }
-			  if(isset($this->elements['urlfield0']['dat'])){
-			  unset($this->elements['urlfield0']['dat']);
-			  }
-			  if(isset($this->elements['urlfield1']['dat'])){
-			  unset($this->elements['urlfield1']['dat']);
-			  }
-			  if(isset($this->elements['urlfield2']['dat'])){
-			  unset($this->elements['urlfield2']['dat']);
-			  }
-			  if(isset($this->elements['urlfield3']['dat'])){
-			  unset($this->elements['urlfield3']['dat']);
-			  } */
-		}
 		parent::i_setElementsFromHTTP();
 
 		if($hrefFields){
-
 			$this->resetElements();
 			$hrefs = array();
-			while((list($k, $v) = $this->nextElement('href'))){
-
-				$realName = preg_replace('/^(.+)_we_jkhdsf_.+$/', '\1', $k);
-				$key = preg_replace('/^.+_we_jkhdsf_(.+)$/', '\1', $k);
-				if(!isset($hrefs[$realName]))
+			$matches = array();
+			while((list($k, $v) = $this->nextElement('href'))) {
+				preg_match('/^(.+)_we_jkhdsf_(.+)$/', $k, $matches);
+				list(, $realName, $key) = $matches;
+				if(($pos = strpos($realName, 'default')) != false){
+					$name = substr($realName, 0, $pos);
+					//skip if new type is not href
+					if($this->getElement($name . self::ELEMENT_TYPE, 'dat') !== 'href'){
+						continue;
+					}
+				}
+				if(!isset($hrefs[$realName])){
 					$hrefs[$realName] = array();
+				}
 				$hrefs[$realName][$key] = $v['dat'];
 			}
 			foreach($hrefs as $k => $v){
@@ -2246,7 +2235,7 @@ class we_object extends we_document{
 	 */
 	function isVariantField($field){
 		$types = array('input', 'link', 'text', 'img', 'int', 'float', 'meta', 'date', 'href'); // #6924
-		$type = ($this->getElement($field . 'dtype', 'dat') != '') ? $this->getElement($field . 'dtype', 'dat') : '';
+		$type = ($this->getElement($field . self::ELEMENT_TYPE, 'dat') != '') ? $this->getElement($field . self::ELEMENT_TYPE, 'dat') : '';
 		return in_array($type, $types);
 	}
 

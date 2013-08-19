@@ -1,7 +1,1 @@
-<?php
-
-$GLOBALS['weDefaultNavigationCacheLifetime'] = '0';
-
-$GLOBALS['weNavigationCacheDeleteAfterAdd'] = true;
-$GLOBALS['weNavigationCacheDeleteAfterEdit'] = true;
-$GLOBALS['weNavigationCacheDeleteAfterDelete'] = true;
+//TODO: remove this (directory 'navigation' has moved to we_modules

@@ -64,7 +64,7 @@ function getMultiObjectTags($name){
 		$id = $_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"]["multiobject_" . $name . "class"]["dat"];
 	} else{
 		return '';
-		$newfields = explode(",", $_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"]["neuefelder"]["dat"]);
+		$newfields = explode(',', $_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"]["neuefelder"]["dat"]);
 		foreach($newfields as $tempname){
 			if($tempname != ""){
 				if($_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"][$tempname]["dat"] == $name){
@@ -155,7 +155,7 @@ we_html_tools::htmlTop(g_l('weClass', '[generateTemplate]'));
 print we_html_element::jsScript(JS_DIR . 'windows.js') .
 	STYLESHEET;
 
-include_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
+require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 
 echo '</head><body class="weDialogBody"><form name="we_form">';
 $tmpl = new we_makenewtemplate();
@@ -167,12 +167,13 @@ $tmpl->Extension = ".tmpl";
 $tmpl->setParentID(isset($pid) ? $pid : "" );
 $tmpl->Path = $tmpl->ParentPath . (isset($filename) ? $filename : "") . ".tmpl";
 
-$usedIDs = array();
-array_push($usedIDs, $_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["ID"]);
+$usedIDs = array(
+	$_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["ID"]
+);
 
 $sort = $_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"]["we_sort"]["dat"];
 
-$count = (count($sort)) ? $_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"]["Sortgesamt"]["dat"] : 0;
+$count = (!empty($sort)) ? $_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"]["Sortgesamt"]["dat"] : 0;
 
 $content = '<html>
 	<head>
@@ -187,7 +188,7 @@ $content = '<html>
 if(!empty($sort)){
 	foreach($sort as $key => $val){
 		$name = $_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"][$_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"]["wholename" . $key]["dat"]]["dat"];
-		$type = $_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"][$_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"]["wholename" . $key]["dat"] . "dtype"]["dat"];
+		$type = $_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"][$_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"]["wholename" . $key]["dat"] . we_object::ELEMENT_TYPE]["dat"];
 
 		$content .= getTmplTableRow($type, $name);
 	}
@@ -207,7 +208,7 @@ if($_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["ID"]){
 	if(!empty($sort)){
 		foreach($sort as $key => $val){
 			$name = $_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"][$_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"]["wholename" . $key]["dat"]]["dat"];
-			$type = $_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"][$_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"]["wholename" . $key]["dat"] . "dtype"]["dat"];
+			$type = $_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"][$_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"]["wholename" . $key]["dat"] . we_object::ELEMENT_TYPE]["dat"];
 
 			$content .= getTmplTableRow($type, $name, true);
 		}
@@ -237,7 +238,7 @@ $content .= '
 </html>';
 
 
-//  $_SESSION["content"] is only used for generating a default template, it is
+//  $_SESSION['weS']["content"] is only used for generating a default template, it is
 //  used only in WE_OBJECT_MODULE_PATH/we_object_createTemplatecmd.php
 $_SESSION['weS']['content'] = $content;
 

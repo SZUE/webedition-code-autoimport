@@ -151,7 +151,7 @@ class weGlossaryCache{
 			$attributes = '';
 
 			// Language
-			if($Type == 'link'){
+			if($Type == weGlossary::TYPE_LINK){
 				$urladd = '';
 
 				if(isset($Attributes['mode'])){
@@ -162,7 +162,7 @@ class weGlossaryCache{
 
 							// Href
 							$temp['href'] = '';
-							if(isset($Attributes['ExternUrl']) && trim($Attributes['ExternUrl']) != "" && trim($Attributes['ExternUrl']) != "http://"){
+							if(isset($Attributes['ExternUrl']) && trim($Attributes['ExternUrl']) != "" && trim($Attributes['ExternUrl']) != we_base_link::EMPTY_EXT){
 								$temp['href'] .= trim($Attributes['ExternUrl']);
 							}
 
@@ -350,11 +350,11 @@ if (window.screen) {
 		}
 
 		$content = array(
-			'link' => array(),
-			'acronym' => array(),
-			'abbreviation' => array(),
-			'foreignword' => array(),
-			'textreplacement' => array(),
+			weGlossary::TYPE_LINK => array(),
+			weGlossary::TYPE_ACRONYM => array(),
+			weGlossary::TYPE_ABBREVATION => array(),
+			weGlossary::TYPE_FOREIGNWORD => array(),
+			weGlossary::TYPE_TEXTREPLACE => array(),
 		);
 
 		foreach($Items as $Text => $Value){
@@ -364,19 +364,19 @@ if (window.screen) {
 			foreach($Value as $Type => $AttributeList){
 
 				switch($Type){
-					case 'link':
+					case weGlossary::TYPE_LINK:
 						$Tag = 'a';
 						break;
-					case 'acronym':
+					case weGlossary::TYPE_ACRONYM:
 						$Tag = 'acronym';
 						break;
-					case 'abbreviation':
+					case weGlossary::TYPE_ABBREVATION:
 						$Tag = 'abbr';
 						break;
-					case 'foreignword':
+					case weGlossary::TYPE_FOREIGNWORD:
 						$Tag = 'span';
 						break;
-					case 'textreplacement':
+					case weGlossary::TYPE_TEXTREPLACE:
 						$Tag = '';
 						break;
 				}
@@ -384,7 +384,7 @@ if (window.screen) {
 				if($Tag != ''){
 					$prefix .= '<' . $Tag;
 				}
-				if($Type != 'textreplacement'){
+				if($Type != weGlossary::TYPE_TEXTREPLACE){
 					foreach($AttributeList as $Attribute => $Val){
 						$prefix .= ($Attribute == 'attribute' ? $Val : ' ' . $Attribute . '=\"' . $Val . '\"');
 					}
@@ -397,7 +397,7 @@ if (window.screen) {
 				}
 			}
 			$content[$Type]['/((<[^>]*)|([^[:alnum:]])(' . preg_quote($Text, '/') . ')([^[:alnum:]]))/e'] = '"$2"=="$1"?"$1":"${3}' . $prefix .
-				($Type != 'textreplacement' ? '$4' : '') .
+				($Type != weGlossary::TYPE_TEXTREPLACE ? '$4' : '') .
 				$postfix . '$5"';
 		}
 
@@ -410,9 +410,7 @@ if (window.screen) {
 			}
 		}
 
-		//FIXME: replace by gz'd version
-		//return weFile::save($cacheFilename, gzdeflate(serialize($content), 9));
-		return weFile::save($cacheFilename, '<?php $content=unserialize(\'' . str_replace('\'', '\\\\\'', serialize($content)) . '\');');
+		return weFile::save($cacheFilename, gzdeflate(serialize($content), 9));
 	}
 
 	/**
@@ -429,9 +427,12 @@ if (window.screen) {
 					return array();
 				}
 			}
-			include($cacheFilename);
-			//FIXME: replace by gz'd version
-			$this->content = $content; //@unserialize(@gzinflate(weFile::load($cacheFilename)));
+			if(weFile::load($cacheFilename, 'rb', 5) == '<?php'){
+				include($cacheFilename);
+				$this->content = $content;
+			} else {
+				$this->content = @unserialize(@gzinflate(weFile::load($cacheFilename)));
+			}
 		}
 		if(!empty($this->content)){
 			return $this->content[$type];
