@@ -51,7 +51,7 @@ class we_textDocument extends we_document{
 					$GLOBALS['we_file_to_delete_after_include'] = TEMP_PATH . '/' . weFile::getUniqueId() . $this->Extension;
 					we_util_File::saveFile($GLOBALS["we_file_to_delete_after_include"], $this->i_getDocument());
 					return $GLOBALS["we_file_to_delete_after_include"];
-				} else{
+				} else {
 					$GLOBALS["we_editmode"] = false;
 					return 'we_templates/we_srcTmpl.inc.php';
 				}
@@ -74,10 +74,66 @@ class we_textDocument extends we_document{
 
 	function isValidEditPage($editPageNr){
 		if($editPageNr == WE_EDITPAGE_VALIDATION){
-			return ($this->ContentType == "text/css");
+			return ($this->ContentType == 'text/css');
 		}
 
 		return parent::isValidEditPage($editPageNr);
+	}
+
+	private static function replaceWEIDs($doc){
+		$matches = array();
+		preg_match_all('|#WE:(\d+)#|', $doc, $matches);
+		$matches = array_unique($matches[1], SORT_NUMERIC);
+		foreach($matches as $match){
+			$doc = str_replace('#WE:' . $match . '#', id_to_path($match, FILE_TABLE, $GLOBALS['DB_WE']), $doc);
+		}
+		return $doc;
+	}
+
+	function getPath(){
+		if($this->ContentType == 'text/css' && ($this->Extension == '.less' || $this->Extension == '.scss')){
+			return rtrim($this->getParentPath(), '/') . '/' . ( isset($this->Filename) ? $this->Filename : '' ) . '.css';
+		}
+		return parent::getPath();
+	}
+
+	protected function i_getDocumentToSave(){
+		$doc = parent::i_getDocumentToSave();
+		switch($this->ContentType){
+			case 'text/css':
+				switch($this->Extension){
+					case '.sass':
+					case '.css':
+						break;
+					case '.less':
+						include_once(WE_LIB_PATH . 'additional/lessphp/lessc.inc.php');
+						$less = new lessc;
+						$less->setFormatter('classic');
+						try{
+							$doc = $less->compile($doc);
+						} catch (exception $e){
+							$this->errMsg = $e->getMessage();
+							return false;
+						}
+						break;
+					case '.scss':
+						include_once(WE_LIB_PATH . 'additional/scssphp/scss.inc.php');
+						$scss = new scssc();
+						$scss->setImportPaths($_SERVER['DOCUMENT_ROOT'] . $this->getParentPath());
+						try{
+							$doc = $scss->compile($doc);
+						} catch (exception $e){
+							$this->errMsg = $e->getMessage();
+							return false;
+						}
+				}
+			//no break
+			case 'text/js':
+				$doc = self::replaceWEIDs($doc);
+				break;
+			default:
+		}
+		return $doc;
 	}
 
 }
