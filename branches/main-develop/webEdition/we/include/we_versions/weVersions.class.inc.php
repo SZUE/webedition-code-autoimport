@@ -34,6 +34,7 @@ class weVersions{
 	protected $status;
 	protected $version = 1;
 	protected $binaryPath;
+	protected $Filehash;
 	protected $modifications;
 	protected $modifierID;
 	protected $IP;
@@ -128,6 +129,13 @@ class weVersions{
 	 */
 	public function getBinaryPath(){
 		return $this->binaryPath;
+	}
+	
+	/**
+	 * @return unknown
+	 */
+	public function getFilehash(){
+		return $this->Filehash;
 	}
 
 	/**
@@ -465,6 +473,13 @@ class weVersions{
 	 */
 	public function setBinaryPath($binaryPath){
 		$this->binaryPath = $binaryPath;
+	}
+	
+	/**
+	 * @param unknown_type $Filehash
+	 */
+	public function setFilehash($Filehash){
+		$this->Filehash = $Filehash;
 	}
 
 	/**
@@ -1165,6 +1180,7 @@ class weVersions{
 				break;
 			case 'binaryPath':
 				$binaryPath = '';
+				$this->Filehash = '';
 				if(!($document['ContentType'] == 'objectFile' || $document['ContentType'] == 'text/weTmpl')){
 					$documentPath = substr($document["Path"], 1);
 					$siteFile = $_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $documentPath;
@@ -1187,8 +1203,11 @@ class weVersions{
 							we_util_File::saveFile($_SERVER['DOCUMENT_ROOT'] . $binaryPath, gzencode(file_get_contents($siteFile), 9));
 						}
 					}
+					$usepath=$_SERVER['DOCUMENT_ROOT'].$binaryPath;
+					if(file_exists($usepath) && is_file($usepath)){
+						$this->Filehash = sha1_file($usepath);
+					}
 				}
-
 				$this->binaryPath = $binaryPath;
 				$entry = $binaryPath;
 				break;

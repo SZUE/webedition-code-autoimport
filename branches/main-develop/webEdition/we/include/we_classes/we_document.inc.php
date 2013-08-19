@@ -757,7 +757,9 @@ class we_document extends we_root{
 	}
 
 	function we_rewrite(){
+		$this->RebuildDate=time();
 		return $this->i_writeDocument();
+		
 	}
 
 	/*
@@ -806,6 +808,7 @@ class we_document extends we_root{
 		if($update){
 			$this->rewriteNavigation();
 		}
+		$this->update_filehash();
 		return true;
 	}
 
