@@ -26,6 +26,7 @@ $l_weEditorInfo=array(
 	'openDocument'=>'Open document',
 	'revert_publish_question'=>'Oletko varma että haluat palauttaa julkaistun version? Kaikki edellisen julkaisun jälkeen tekemäsi muutokset menetetään prosessin aikana.',
 	'text/css'=>'CSS -tyylitiedosto',
+	'text/htaccess'=>'Apache configuration file',
 	'text/html'=>'HTML -dokumentti',
 	'text/js'=>'JavaScript -tiedosto',
 	'text/php'=>'PHP -tiedosto',

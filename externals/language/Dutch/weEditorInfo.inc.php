@@ -26,6 +26,7 @@ $l_weEditorInfo=array(
 	'openDocument'=>'Open document',
 	'revert_publish_question'=>'Weet u zeker dat u de gepubliceerde versie wilt herstellen? Alle wijzigingen sinds de meest recente publicatie zullen verloren gaan in dot proces.',
 	'text/css'=>'CSS stylesheet',
+	'text/htaccess'=>'Apache configuration file',
 	'text/html'=>'HTML document',
 	'text/js'=>'JavaScript document',
 	'text/php'=>'PHP document',

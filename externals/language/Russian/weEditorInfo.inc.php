@@ -26,6 +26,7 @@ $l_weEditorInfo=array(
 	'openDocument'=>'Open document',
 	'revert_publish_question'=>'Are you sure you would like to restore the published version? All your changes since the most recent publication will be lost in the process.',
 	'text/css'=>'Стилевая таблица CSS',
+	'text/htaccess'=>'Apache configuration file',
 	'text/html'=>'Документ HTML',
 	'text/js'=>'Документ Javascript',
 	'text/php'=>'Документ PHP',

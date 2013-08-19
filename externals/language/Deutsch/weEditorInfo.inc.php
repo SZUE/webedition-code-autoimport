@@ -26,6 +26,7 @@ $l_weEditorInfo=array(
 	'openDocument'=>'Öffne Dokument zum bearbeiten',
 	'revert_publish_question'=>'Möchten Sie wirklich die veröffentlichte Version wiederherstellen? Alle Änderungen seit der letzten Veröffentlichung gehen dabei verloren.',
 	'text/css'=>'CSS-Datei',
+	'text/htaccess'=>'Apache Einstellungsdatei',
 	'text/html'=>'HTML-Datei',
 	'text/js'=>'Javascript-Datei',
 	'text/php'=>'PHP-Datei',
