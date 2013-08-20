@@ -920,7 +920,8 @@ class weVersionsView{
 	 * @abstract generates content for versions found
 	 * @return array with content
 	 */
-	static function getVersionsOfDoc($DB_WE){
+	function getVersionsOfDoc(){
+		
 		$thisObj = (isset($_REQUEST['we_cmd']['obj']) ? new weVersionsView() : $this);
 		$id = (isset($_REQUEST['id']) ? $_REQUEST['id'] : $GLOBALS['we_doc']->ID);
 		$table = (isset($_REQUEST['table']) ? $_REQUEST['table'] : $GLOBALS['we_doc']->Table);
@@ -935,7 +936,7 @@ class weVersionsView{
 		$_SESSION['weS']['versions']['foundItems'] = $resultCount;
 
 		if($resultCount > 0){
-			$sortierung = explode(" ", $_order);
+			$sortierung = explode(' ', $_order);
 
 			foreach($_versions as $k => $v){
 				$_Result[] = $_versions[$k];
@@ -963,7 +964,7 @@ class weVersionsView{
 		for($f = 0; $f < $resultCount; $f++){
 
 			$modificationText = $thisObj->getTextForMod($_versions[$f]["modifications"], $_versions[$f]["status"]);
-			$user = $_versions[$f]["modifierID"] ? id_to_path($_versions[$f]["modifierID"], USER_TABLE, $DB_WE) : g_l('versions', '[unknown]');
+			$user = $_versions[$f]["modifierID"] ? id_to_path($_versions[$f]["modifierID"], USER_TABLE, $this->db) : g_l('versions', '[unknown]');
 			$vers = $_versions[$f]["version"];
 			$disabledReset = ($_versions[$f]["active"] == 1) ? true : false;
 			if(!we_hasPerm("ADMINISTRATOR") && !we_hasPerm("RESET_VERSIONS")){
@@ -1000,8 +1001,6 @@ class weVersionsView{
 	 * @return array with headlines
 	 */
 	function makeHeadLines(){
-		$markText = g_l('versions', '[mark]');
-
 		return array(
 			array("dat" => '<a href="javascript:setOrder(\'version\');">' . g_l('versions', '[version]') . '</a> <span id="version" >' . $this->getSortImage('version') . '</span>'),
 			array("dat" => '<a href="javascript:setOrder(\'modifierID\');">' . g_l('versions', '[user]') . '</a> <span id="modifierID" >' . $this->getSortImage('modifierID') . '</span>'),
@@ -1009,7 +1008,7 @@ class weVersionsView{
 			array("dat" => g_l('versions', '[modifications]')),
 			array("dat" => (we_hasPerm("ADMINISTRATOR") ? '<div style="margin:0px 0px 5px 0px;" id="deleteButton">' . we_button::create_button(
 						"image:btn_function_trash", "javascript:deleteVers();") . '</div>' : '') .
-				we_forms::checkbox(1, 0, "deleteAllVersions", $markText, false, "middlefont", "checkAll();")),
+				we_forms::checkbox(1, 0, "deleteAllVersions",  g_l('versions', '[mark]'), false, "middlefont", "checkAll();")),
 			array("dat" => we_html_tools::getPixel(1, 1)),
 			array("dat" => we_html_tools::getPixel(1, 1)),
 			array("dat" => we_html_tools::getPixel(1, 1)),
