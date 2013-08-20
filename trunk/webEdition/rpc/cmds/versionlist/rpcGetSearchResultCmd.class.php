@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,10 +22,9 @@
  * @package    webEdition_rpc
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 class rpcGetSearchResultCmd extends rpcCmd {
 
-	function execute() {
+	function execute(){
 
 		$resp = new rpcResponse();
 
@@ -37,16 +37,15 @@ class rpcGetSearchResultCmd extends rpcCmd {
 		$searchstart = $_REQUEST['we_cmd']['searchstart'];
 
 		$_REQUEST['we_cmd']['obj'] = 1;
+		$view = new weVersionsView();
+		$content = $view->getVersionsOfDoc();
 
-		$content = weVersionsView::getVersionsOfDoc($GLOBALS['DB_WE']);
+		$code = weVersionsView::tabListContent($searchstart, $anzahl, $content);
 
-		$code = weVersionsView::tabListContent($searchstart,$anzahl,$content);
-
-		$resp->setData("data",$code) ;
+		$resp->setData("data", $code);
 
 		return $resp;
 	}
-
 
 }
 
