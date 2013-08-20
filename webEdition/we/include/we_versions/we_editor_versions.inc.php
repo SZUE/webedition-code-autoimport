@@ -34,10 +34,13 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js') .
 
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 
-echo we_html_element::cssLink(JS_DIR . "jscalendar/skins/aqua/theme.css") .
- we_html_element::jsScript(JS_DIR . "jscalendar/calendar.js") .
- we_html_element::jsScript(WE_INCLUDES_DIR . 'we_language/' . $GLOBALS["WE_LANGUAGE"] . "/calendar.js") .
- we_html_element::jsScript(JS_DIR . "jscalendar/calendar-setup.js") .
+$content = $_view->getVersionsOfDoc();
+$foundItems = count($content);
+
+echo we_html_element::cssLink(JS_DIR . 'jscalendar/skins/aqua/theme.css') .
+ we_html_element::jsScript(JS_DIR . 'jscalendar/calendar.js') .
+ we_html_element::jsScript(WE_INCLUDES_DIR . 'we_language/' . $GLOBALS["WE_LANGUAGE"] . '/calendar.js') .
+ we_html_element::jsScript(JS_DIR . 'jscalendar/calendar-setup.js') .
  $_view->getJS() .
  STYLESHEET .
  we_html_element::cssElement('
@@ -76,18 +79,10 @@ echo we_html_element::cssLink(JS_DIR . "jscalendar/skins/aqua/theme.css") .
 #deleteButton{display: none; }', array('media' => 'print')) . '
 </head>
 <body class="weEditorBody" onUnload="doUnload()" onkeypress="javascript:if(event.keyCode==\'13\' || event.keyCode==\'3\') search(true);" onLoad="setTimeout(\'init();\',200)" onresize="sizeScrollContent();">
-<form name="we_form" onSubmit="return false;" style="padding:0px;margin:0px;">';
-
-
-$content = $_view->getVersionsOfDoc();
-$headline = $_view->makeHeadLines();
-$foundItems = count($content);
-
-$_parts = array(
+<form name="we_form" onSubmit="return false;" style="padding:0px;margin:0px;">' .
+ $_view->getHTMLforVersions(array(
 	array("html" => "<div id='searchTable'>" . $_view->getBodyTop() . "</div>"),
-	array("html" => "<div id='parametersTop'>" . $_view->getParameterTop($foundItems) . "</div>" . $_view->tblList($content, $headline) . "<div id='parametersBottom'>" . $_view->getParameterBottom($foundItems) . "</div>")
-);
-
-echo $_view->getHTMLforVersions($_parts) .
+	array("html" => "<div id='parametersTop'>" . $_view->getParameterTop($foundItems) . "</div>" . $_view->tblList($content, $_view->makeHeadLines()) . "<div id='parametersBottom'>" . $_view->getParameterBottom($foundItems) . "</div>")
+)) .
  '</form>
 </body></html>';
