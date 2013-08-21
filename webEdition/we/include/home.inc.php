@@ -164,6 +164,9 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 			var oProps = new Object();
 			for (i = 1; i <= _iLayoutCols; i++) {
 				var node = gel('c_' + i);
+				if (node === null) {
+					continue;
+				}
 				for (var j = 0; j < node.childNodes.length; j++) {
 					var child = node.childNodes[j];
 					if (child.tagName == 'DIV' && child.className == 'le_widget') {
@@ -197,7 +200,7 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 	?>
 			];
 			try {
-				if (_iInitCols != _iLayoutCols){
+				if (_iInitCols != _iLayoutCols) {
 					return true;
 				}
 				for (var i = 0; i < _iLayoutCols; i++) {
@@ -545,7 +548,7 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 
 		function createWidget(typ, row, col) {
 			// for IE
-			if (typ == 'pad') {
+			if (typ === 'pad') {
 				document.getElementById('c_' + col).className = 'cls_' + col + '_expand';
 			}
 			//EOF for IE
@@ -945,7 +948,7 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 			var url = '<?php echo WEBEDITION_DIR; ?>we_cmd.php?';
 			for (var i = 0; i < arguments.length; i++) {
 				url += 'we_cmd[' + i + ']=' + escape(arguments[i]);
-				if (i < (arguments.length - 1)){
+				if (i < (arguments.length - 1)) {
 					url += '&';
 				}
 			}
