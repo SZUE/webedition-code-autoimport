@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weCustomerFrames extends weModuleFrames{
+class weCustomerFrames extends weModuleFrames {
 
 	var $View;
 	var $jsOut_fieldTypesByName;
@@ -426,7 +426,7 @@ function populateDate_' . $field . '(){
 
 		$branch = (isset($_REQUEST['branch']) && $_REQUEST['branch'] != '' ? $_REQUEST['branch'] : g_l('modules_customer', '[common]'));
 
-		$body = we_html_element::htmlBody(array('class' => 'weEditorBody', 'onLoad' => 'loaded=1', 'onunload' => 'doUnload()'), we_html_element::htmlForm(array('name' => 'we_form'), $this->View->getCommonHiddens($hiddens) . $this->getHTMLProperties($branch)));
+		$body = we_html_element::htmlBody(array('class' => 'weEditorBody', 'onLoad' => 'loaded=1', 'onunload' => 'doUnload()'), we_html_element::htmlForm(array('name' => 'we_form', 'autocomplete' => 'off'), $this->View->getCommonHiddens($hiddens) . $this->getHTMLProperties($branch)));
 
 		return $this->getHTMLDocument($body, $this->View->getJSProperty());
 	}
@@ -978,11 +978,11 @@ function populateDate_' . $field . '(){
 		$table->setCol($cur, 1, array(), we_html_tools::getPixel(5, 30));
 		$table->setCol($cur, 2, array("class" => "defaultfont"), $default_sort_view_select->getHtml());
 
-		$table->setCol(++$cur, 0, array("class" => "defaultfont"), g_l('modules_customer', '[start_year]') . ":&nbsp;");
+		$table->setCol( ++$cur, 0, array("class" => "defaultfont"), g_l('modules_customer', '[start_year]') . ":&nbsp;");
 		$table->setCol($cur, 1, array(), we_html_tools::getPixel(5, 30));
 		$table->setCol($cur, 2, array("class" => "defaultfont"), we_html_tools::htmlTextInput("start_year", 32, $this->View->settings->getSettings('start_year'), ''));
 
-		$table->setCol(++$cur, 0, array("class" => "defaultfont"), g_l('modules_customer', '[treetext_format]') . ":&nbsp;");
+		$table->setCol( ++$cur, 0, array("class" => "defaultfont"), g_l('modules_customer', '[treetext_format]') . ":&nbsp;");
 		$table->setCol($cur, 1, array(), we_html_tools::getPixel(5, 30));
 		$table->setCol($cur, 2, array("class" => "defaultfont"), we_html_tools::htmlTextInput("treetext_format", 32, $this->View->settings->getSettings('treetext_format'), ''));
 
@@ -995,7 +995,7 @@ function populateDate_' . $field . '(){
 		}
 		$default_order->selectOption($this->View->settings->getSettings('default_order'));
 
-		$table->setCol(++$cur, 0, array('class' => 'defaultfont'), g_l('modules_customer', '[default_order]') . ':&nbsp;');
+		$table->setCol( ++$cur, 0, array('class' => 'defaultfont'), g_l('modules_customer', '[default_order]') . ':&nbsp;');
 		$table->setCol($cur, 1, array(), we_html_tools::getPixel(5, 30));
 		$table->setCol($cur, 2, array('class' => 'defaultfont'), $default_order->getHtml());
 
@@ -1004,7 +1004,7 @@ function populateDate_' . $field . '(){
 		$default_saveRegisteredUser_register->addOption('true', 'true');
 		$default_saveRegisteredUser_register->selectOption($this->View->settings->getPref('default_saveRegisteredUser_register'));
 
-		$table->setCol(++$cur, 0, array('class' => 'defaultfont'), '&lt;we:saveRegisteredUser register=&quot;');
+		$table->setCol( ++$cur, 0, array('class' => 'defaultfont'), '&lt;we:saveRegisteredUser register=&quot;');
 		$table->setCol($cur, 1, array(), we_html_tools::getPixel(5, 30));
 		$table->setCol($cur, 2, array('class' => 'defaultfont'), $default_saveRegisteredUser_register->getHtml() . '&quot;/>');
 
