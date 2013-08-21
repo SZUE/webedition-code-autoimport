@@ -67,4 +67,5 @@ function getPreferencesFooter(){
 	$cancelbut = we_button::create_button('close', 'javascript:top.close()');
 
 	return we_html_element::htmlDiv(array('class' => 'weDialogButtonsBody', 'style' => 'height:100%;'), we_button::position_yes_no_cancel($okbut, '', $cancelbut, 10, '', '', 0));
+
 }
