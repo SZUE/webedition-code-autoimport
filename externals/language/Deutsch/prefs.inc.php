@@ -301,7 +301,7 @@ Zur Umstellung auf den Standard "nein" ersetzen Sie in allen Vorlagen einfach in
 		'cockpit'=>'Cockpit',
 		'countries'=>'Länder',
 		'defaultAttribs'=>'we:tag Standards',
-		'editor'=>'Editor',
+		'editor'=>'Vorlagen-Editor',
 		'email'=>'E-Mail',
 		'error_handling'=>'Fehlerbehandlung',
 		'extensions'=>'Dateierweiterungen',
