@@ -28,4 +28,3 @@ print STYLESHEET;
 
 $weView = new weShopView();
 $weView->getProperties();
-
