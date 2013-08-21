@@ -379,7 +379,7 @@ function urlEntry(icon,name,vorfahr,text,contentType,table,published,denied) {
 		$body = we_html_element::htmlBody(array('style' => 'position: fixed; top: 0px; left: 0px; right: 0px; bottom: 0px; border: 0px none;') ,
 			we_html_element::htmlIFrame('edheader', $this->frameset . '?pnt=edheader&home=1', 'position: absolute; top: 0px; left: 0px; right: 0px; height: 40px; overflow: hidden;') .
 			we_html_element::htmlIFrame('properties', WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=mod_home&mod=users', 'position: absolute; top: 40px; bottom: 40px; left: 0px; right: 0px; overflow: auto;', 'border:0px;width:100%;height:100%;overflow: auto;') .
-			we_html_element::htmlIFrame('edfooter', $this->frameset . '?pnt=edfooter&home=1' . (isset($_REQUEST['sid']) ? '&sid=' . $_REQUEST['sid'] : '&home=1') . $extraUrlParams, 'position: absolute; bottom: 0px; left: 0px; right: 0px; height: 40px; overflow: hidden;')
+			we_html_element::htmlIFrame('edfooter', $this->frameset . '?pnt=edfooter&home=1' . (isset($_REQUEST['sid']) ? '&sid=' . $_REQUEST['sid'] : '&home=1'), 'position: absolute; bottom: 0px; left: 0px; right: 0px; height: 40px; overflow: hidden;')
 		);
 
 		return $this->getHTMLDocument($body);
