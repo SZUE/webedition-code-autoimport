@@ -52,4 +52,7 @@ class we_shop_orderitemtag{
 		return ($this->id ? $this->object->f($key) : '');
 	}
 
+	public function getObject(){
+		return $this->object;
+	}
 }

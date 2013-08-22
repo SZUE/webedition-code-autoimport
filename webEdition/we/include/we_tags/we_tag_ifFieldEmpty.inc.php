@@ -62,15 +62,12 @@ function we_isFieldNotEmpty($attribs){
 			}
 			return false;
 		case 'multiobject' :
-			if(isset($GLOBALS['lv'])){
-				if(isset($GLOBALS['lv']->object) || $GLOBALS['lv']->ClassName == 'we_listview_shoppingCart'){
-					$data = unserialize($GLOBALS['lv']->object->f($orig_match));
-				} else {
-					$data = unserialize($GLOBALS['lv']->getDBf('we_' . $orig_match));
-				}
-			} else {
-				$data = unserialize($GLOBALS['we_doc']->getElement($orig_match));
-			}
+			$data = (isset($GLOBALS['lv']) ?
+					(method_exists($GLOBALS['lv'], 'getObject') || $GLOBALS['lv']->ClassName == 'we_listview_shoppingCart' ?
+						unserialize($GLOBALS['lv']->getObject()->f($orig_match)) :
+						unserialize($GLOBALS['lv']->getDBf('we_' . $orig_match))) :
+					unserialize($GLOBALS['we_doc']->getElement($orig_match)));
+
 			if(isset($data['objects']) && is_array($data['objects']) && !empty($data['objects'])){
 				$test = array_count_values($data['objects']);
 				return (count($test) > 1 || (count($test) == 1 && !isset($test[''])));
