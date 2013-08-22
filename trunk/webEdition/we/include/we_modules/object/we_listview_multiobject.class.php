@@ -75,10 +75,11 @@ class we_listview_multiobject extends listviewBase {
 			if(isset($parent_lv->DB_WE->Record['we_' . $name]) && $parent_lv->DB_WE->Record['we_' . $name]){
 				$data = unserialize($parent_lv->DB_WE->Record['we_' . $name]);
 			}
-		} elseif(isset($GLOBALS["lv"])){
-			if(isset($GLOBALS["lv"]->object)){
-				if(isset($GLOBALS['lv']->object->DB_WE->Record['we_' . $name]) && $GLOBALS['lv']->object->DB_WE->Record['we_' . $name]){
-					$data = unserialize($GLOBALS['lv']->object->DB_WE->Record['we_' . $name]);
+		} elseif(isset($GLOBALS['lv'])){
+			if(method_exists($GLOBALS['lv'], 'getObject')){
+				$obj = $GLOBALS['lv']->getObject();
+				if(isset($obj->DB_WE->Record['we_' . $name]) && $obj->DB_WE->Record['we_' . $name]){
+					$data = unserialize($obj->DB_WE->Record['we_' . $name]);
 				}
 			} else {
 				switch($GLOBALS["lv"]->ClassName){

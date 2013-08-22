@@ -68,4 +68,8 @@ class metadatatag {
 		return ($this->id ? $this->object->f($key) : '');
 	}
 
+	public function getObject(){
+		return $this->object;
+	}
+
 }
