@@ -678,7 +678,7 @@ function populateDate_' . $field . '(){
 			)
 		);
 
-		return we_html_element::htmlForm(array("name" => "we_form_treefooter"), $table->getHtml());
+		return we_html_element::htmlForm(array("name" => "we_form_treefooter","target" => "cmd"), $table->getHtml());
 	}
 
 	function getHTMLCustomerAdmin(){
