@@ -180,21 +180,28 @@ class weCustomerView extends weModuleView{
 						' . $this->topFrame . '.editor.edbody.submitForm();
 					break;
 					case "show_search":
-						' . $this->topFrame . '.treefooter.document.we_form.cmd.value=arguments[0];
+						' . $this->topFrame . '.treefooter.document.we_form_treefooter.cmd.value=arguments[0];
 						' . $this->topFrame . '.treefooter.submitForm();
 					break;
+					/*
 					case "show_customer_settings":
-						' . $this->topFrame . '.treefooter.document.we_form.cmd.value=arguments[0];
+						' . $this->topFrame . '.treefooter.document.we_form_treefooter.cmd.value=arguments[0];
 						' . $this->topFrame . '.treefooter.submitForm();
 					break;
 					case "export_customer":
-						' . $this->topFrame . '.treefooter.document.we_form.cmd.value=arguments[0];
+						' . $this->topFrame . '.treefooter.document.we_form_treefooter.cmd.value=arguments[0];
 						' . $this->topFrame . '.treefooter.submitForm();
 					break;
 					case "import_customer":
-						' . $this->topFrame . '.treefooter.document.we_form.cmd.value=arguments[0];
+						' . $this->topFrame . '.document.we_form_treefooter.cmd.value=arguments[0];
 						' . $this->topFrame . '.treefooter.submitForm();
 					break;
+					*/
+					case "show_customer_settings":
+					case "export_customer":
+					case "import_customer":
+						top.content.editor.edbody.we_cmd(arguments[0]);
+					break; 
 					case "load":
 						' . $this->topFrame . '.cmd.location="' . $this->frameset . '?pnt=cmd&pid="+arguments[1]+"&offset="+arguments[2]+"&sort="+arguments[3];
 					break;
@@ -239,6 +246,15 @@ class weCustomerView extends weModuleView{
 						document.we_form.branch.value=arguments[1];
 						submitForm();
 					break;
+					case "show_customer_settings":
+						new jsWindow("' . WE_CUSTOMER_MODULE_DIR . 'edit_customer_frameset.php?pnt=settings","customer_settings",-1,-1,570,270,true,true,true,false);
+						break;
+					case "export_customer":
+						new jsWindow("' . WE_CUSTOMER_MODULE_DIR . 'edit_customer_frameset.php?pnt=export","export_customer",-1,-1,640,600,true,true,true,false);
+						break;
+					case "import_customer":
+						new jsWindow("' . WE_CUSTOMER_MODULE_DIR . 'edit_customer_frameset.php?pnt=import","import_customer",-1,-1,640,600,true,true,true,false);
+						break;
 					default:
 						for (var i = 0; i < arguments.length; i++) {
 							args += "arguments["+i+"]" + ((i < (arguments.length-1)) ? "," : "");
