@@ -389,8 +389,8 @@ abstract class we_class {
 ##### NEWSTUFF ####
 # public ##################
 
-	public function initByID($ID, $Table = '', $from = we_class::LOAD_MAID_DB){
-		$Table = ($Table == '' ? FILE_TABLE : $Table);
+	public function initByID($ID, $Table = FILE_TABLE, $from = we_class::LOAD_MAID_DB){
+		$Table = (empty($Table) ? FILE_TABLE : $Table);
 
 		$this->ID = intval($ID);
 		$this->Table = $Table;

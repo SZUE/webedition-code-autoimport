@@ -45,9 +45,9 @@ function we_tag_a($attribs, $content){
 	$delarticle = weTag_getAttribute('delarticle', $attribs, false, true);
 	$delshop = weTag_getAttribute('delshop', $attribs, false, true);
 	$urladd = weTag_getAttribute('params', $attribs);
-	if($urladd && strpos($urladd, '?') !== 0){
-		$urladd = '?' . $urladd;
-	}
+	$param = ($urladd ? array(preg_replace('|^\?|', '', $urladd)) : array());
+
+
 
 	$edit = weTag_getAttribute('edit', $attribs);
 
@@ -63,10 +63,10 @@ function we_tag_a($attribs, $content){
 
 	if($id == 'self' && defined('WE_REDIRECTED_SEO')){
 		$url = WE_REDIRECTED_SEO;
-	} else{
+	} else {
 		// init variables
 		$row = getHash('SELECT Path,IsFolder,IsDynamic FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), $GLOBALS['DB_WE']);
-		$url = (isset($row['Path']) ? $row['Path'] : '') . ((isset($row['IsFolder']) && $row['IsFolder']) ? '/' : '');
+		$url = (empty($row) ? '' : $row['Path'] . ($row['IsFolder'] ? '/' : ''));
 		$path_parts = pathinfo($url);
 		if($hidedirindex && show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES != '' && TAGLINKS_DIRECTORYINDEX_HIDE && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
 			$url = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/';
@@ -79,8 +79,10 @@ function we_tag_a($attribs, $content){
 
 	switch($edit){
 		case 'shop':
+			if($delshop && (($foo = attributFehltError($attribs, 'shopname', __FUNCTION__)))){
+				return $foo;
+			}
 			$amount = weTag_getAttribute('amount', $attribs, 1);
-
 			$foo = (isset($GLOBALS['lv']) && $GLOBALS['lv']->ClassName != 'we_listview_multiobject' ? $GLOBALS['lv']->count - 1 : -1);
 
 			// get ID of element
@@ -89,13 +91,12 @@ function we_tag_a($attribs, $content){
 				$idd = $GLOBALS['lv']->ActItem['id'];
 				$type = $GLOBALS['lv']->ActItem['type'];
 				$customReq = $GLOBALS['lv']->getCustomFieldsAsRequest();
-			} else{
+			} else {
 				//Zwei Faelle werden abgedeckt, bei denen die Objekt-ID nicht gefunden wird: (a) bei einer listview ueber shop-objekte, darin eine listview über shop-varianten, hierin der we:a-link und (b) Objekt wird ueber den objekt-tag geladen #3538
 				if((isset($GLOBALS['lv']) && get_class($GLOBALS['lv']) == 'we_shop_listviewShopVariants' && isset($GLOBALS['lv']->Model) && $GLOBALS['lv']->Model->ClassName == 'we_objectFile') || isset($GLOBALS['lv']) && get_class($GLOBALS['lv']) == 'we_objecttag'){
 					$type = we_shop_shop::OBJECT;
 					$idd = (get_class($GLOBALS['lv']) == 'we_shop_listviewShopVariants' ? $GLOBALS['lv']->Id : $GLOBALS['lv']->id);
-				} else{
-
+				} else {
 					$idd = ((isset($GLOBALS['lv']) && isset($GLOBALS['lv']->IDs[$foo])) && $GLOBALS['lv']->IDs[$foo] != '') ?
 						$GLOBALS['lv']->IDs[$foo] :
 						((isset($GLOBALS['lv']->classID)) ?
@@ -114,15 +115,13 @@ function we_tag_a($attribs, $content){
 			}
 
 			// is it a shopVariant ????
-			$variant = '';
-			// normal variant on document
-			if(isset($GLOBALS['we_doc']->Variant)){ // normal listView or document
-				$variant = '&' . WE_SHOP_VARIANT_REQUEST . '=' . $GLOBALS['we_doc']->Variant;
-			}
-			// variant inside shoplistview!
-			if(isset($GLOBALS['lv']) && $GLOBALS['lv']->f('WE_VARIANT')){
-				$variant = '&' . WE_SHOP_VARIANT_REQUEST . '=' . $GLOBALS['lv']->f('WE_VARIANT');
-			}
+			$variant = // normal variant on document
+				(isset($GLOBALS['we_doc']->Variant) ? // normal listView or document
+					'&' . WE_SHOP_VARIANT_REQUEST . '=' . $GLOBALS['we_doc']->Variant :
+					// variant inside shoplistview!
+					(isset($GLOBALS['lv']) && $GLOBALS['lv']->f('WE_VARIANT') ?
+						'&' . WE_SHOP_VARIANT_REQUEST . '=' . $GLOBALS['lv']->f('WE_VARIANT') :
+						''));
 
 			//	preview mode in seem
 			if(isset($_REQUEST['we_transaction']) && isset(
@@ -133,17 +132,6 @@ function we_tag_a($attribs, $content){
 			$shopname = weTag_getAttribute('shopname', $attribs);
 			$ifShopname = ($shopname == '' ? '' : '&shopname=' . $shopname);
 			if($delarticle){ // delarticle
-				// is it a shopVariant ????
-				$variant = '';
-				// normal variant on document
-				if(isset($GLOBALS['we_doc']->Variant)){ // normal listView or document
-					$variant = '&' . WE_SHOP_VARIANT_REQUEST . '=' . $GLOBALS['we_doc']->Variant;
-				}
-				// variant inside shoplistview!
-				if(isset($GLOBALS['lv']) && $GLOBALS['lv']->f('WE_VARIANT')){
-					$variant = '&' . WE_SHOP_VARIANT_REQUEST . '=' . $GLOBALS['lv']->f('WE_VARIANT');
-				}
-
 				$foo = $GLOBALS['lv']->count - 1;
 
 				$customReq = '';
@@ -152,7 +140,7 @@ function we_tag_a($attribs, $content){
 					$idd = $GLOBALS['lv']->ActItem['id'];
 					$type = $GLOBALS['lv']->ActItem['type'];
 					$customReq = $GLOBALS['lv']->getCustomFieldsAsRequest();
-				} else{
+				} else {
 					$idd = (isset($GLOBALS['lv']->IDs[$foo]) && $GLOBALS['lv']->IDs[$foo] != '') ?
 						$GLOBALS['lv']->IDs[$foo] :
 						((isset($GLOBALS['lv']->classID)) ?
@@ -175,14 +163,11 @@ function we_tag_a($attribs, $content){
 						$_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]['0']['ClassName']) && $_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]['0']['ClassName'] == 'we_objectFile'){
 					$type = we_shop_shop::OBJECT;
 				}
-				$urladd = ($urladd ? $urladd . '&' : '?') . 'del_shop_artikelid=' . $idd . '&type=' . $type . '&t=' . time() . $variant . $customReq . $ifShopname;
+				$param[] = 'del_shop_artikelid=' . $idd . '&type=' . $type . '&t=' . time() . $variant . $customReq . $ifShopname;
 			} elseif($delshop){ // emptyshop
-				if(($foo = attributFehltError($attribs, 'shopname', __FUNCTION__))){
-					return $foo;
-				}
-				$urladd = ($urladd ? $urladd . '&' : '?') . 'deleteshop=1' . $ifShopname . '&t=' . time();
-			} else{ // increase/decrease amount of articles
-				$urladd = ($urladd ? $urladd . '&' : '?') . 'shop_artikelid=' . $idd . '&shop_anzahl=' . $amount . '&type=' . $type . '&t=' . time() . $variant . ($customReq ? $customReq : '') . $ifShopname;
+				$param[] = 'deleteshop=1' . $ifShopname . '&t=' . time();
+			} else { // increase/decrease amount of articles
+				$param[] = 'shop_artikelid=' . $idd . '&shop_anzahl=' . $amount . '&type=' . $type . '&t=' . time() . $variant . ($customReq ? $customReq : '') . $ifShopname;
 			}
 			break;
 
@@ -193,10 +178,10 @@ function we_tag_a($attribs, $content){
 
 			if($delete){
 				if($oid){
-					$urladd = ($urladd ? $urladd . '&' : '?') . 'we_delObject_ID=' . $oid;
+					$param[] = 'we_delObject_ID=' . $oid;
 				}
-			} else{
-				$urladd = ($urladd ? $urladd . '&' : '?') . ($oid ? 'we_editObject_ID=' . $oid : 'edit_object=1');
+			} else {
+				$param[] = ($oid ? 'we_editObject_ID=' . $oid : 'edit_object=1');
 			}
 			break;
 		case 'document':
@@ -206,20 +191,20 @@ function we_tag_a($attribs, $content){
 
 			if($delete){//FIXME: make sure only the selected object can be deleted - sth unique not user-known has to be added to prevent denial of service
 				if($did){
-					$urladd = ($urladd ? $urladd . '&' : '?') . 'we_delDocument_ID=' . $did;
+					$param[] = 'we_delDocument_ID=' . $did;
 				}
-			} else{
-				$urladd = ($urladd ? $urladd . '&' : '?') . ($did ? 'we_editDocument_ID=' . $did : 'edit_document=1');
+			} else {
+				$param[] = ($did ? 'we_editDocument_ID=' . $did : 'edit_document=1');
 			}
 			break;
 	}
 
 	if($return){
-		$urladd = ($urladd ? $urladd . '&' : '?') . 'we_returnpage=' . rawurlencode($_SERVER['SCRIPT_NAME'] . '?' . $_SERVER['QUERY_STRING']);
+		$param[] = 'we_returnpage=' . rawurlencode($_SERVER['SCRIPT_NAME'] . '?' . $_SERVER['QUERY_STRING']);
 	}
 
 	if($hrefonly){
-		return $url . $urladd;
+		return $url . (empty($param) ? '' : '?' . implode('&', $param));
 	}
 
 	//	remove unneeded attributes from array
@@ -244,7 +229,7 @@ function we_tag_a($attribs, $content){
 	if($button){ //	show button
 		$attribs['type'] = 'button';
 		$attribs['value'] = oldHtmlspecialchars($content);
-		$attribs['onclick'] = ($target ? ("var wind=window.open('','$target');wind") : 'self') . ".document.location='$url" . oldHtmlspecialchars($urladd) . "';";
+		$attribs['onclick'] = ($target ? ("var wind=window.open('','$target');wind") : 'self') . ".document.location='$url" . oldHtmlspecialchars((empty($param) ? '' : '?' . implode('&', $param))) . "';";
 
 		$attribs = removeAttribs($attribs, array('target')); //	not html - valid
 
@@ -254,8 +239,8 @@ function we_tag_a($attribs, $content){
 			$attribs['onclick'] = 'if(confirm(\'' . $confirm . '\')){' . $attribs['onclick'] . '}';
 		}
 		return getHtmlTag('input', $attribs);
-	} else{ //	show normal link
-		$attribs['href'] = $url . ($urladd ? oldHtmlspecialchars($urladd) : '');
+	} else { //	show normal link
+		$attribs['href'] = $url . (empty($param) ? '' : oldHtmlspecialchars('?' . implode('&', $param)));
 
 		if($confirm){
 			$attribs['onclick'] = 'if(confirm(\'' . $confirm . '\')){return true;}else{return false;}';
