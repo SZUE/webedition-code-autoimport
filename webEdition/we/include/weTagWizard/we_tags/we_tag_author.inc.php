@@ -6,8 +6,7 @@ $this->NeedsEndTag = false;
 //$this->Groups[] = 'if_tags';
 $this->Module = 'users';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
-$this->Attributes[] = new weTagData_choiceAttribute('type', array(
-	new weTagDataOption('username'),
+$this->Attributes[] = new weTagData_selectAttribute('type', array(new weTagDataOption('username'),
 	new weTagDataOption('forename'),
 	new weTagDataOption('surname'),
 	new weTagDataOption('name'),
@@ -23,7 +22,7 @@ $this->Attributes[] = new weTagData_choiceAttribute('type', array(
 	new weTagDataOption('fax'),
 	new weTagDataOption('mobile'),
 	new weTagDataOption('description'),
-	), false, true, ''); 
+	), false, '');
 $this->Attributes[] = new weTagData_selectAttribute('doc', array(new weTagDataOption('self'),
 	new weTagDataOption('top'),
 	), false, '');
