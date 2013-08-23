@@ -27,7 +27,8 @@ if(isset($_SERVER['REDIRECT_QUERY_STRING']) && $_SERVER['REDIRECT_QUERY_STRING']
 	$zw = explode('?', $_SERVER['REQUEST_URI']);
 	parse_str($zw[1], $myRequest);
 }
-define('WE_REDIRECTED_SEO', $_SERVER['REDIRECT_URL']); //url without query string
+
+define('WE_REDIRECTED_SEO', isset($_SERVER['REDIRECT_URL']) ? $_SERVER['REDIRECT_URL'] : isset($_SERVER['PHP_SELF']) ? $_SERVER['PHP_SELF'] : $_SERVER['SCRIPT_NAME']); //url without query string
 // get attributes
 $error404doc = (ERROR_DOCUMENT_NO_OBJECTFILE ? ERROR_DOCUMENT_NO_OBJECTFILE : 0);
 
@@ -51,7 +52,7 @@ if(isset($_SERVER['SCRIPT_URL']) && $_SERVER['SCRIPT_URL'] != ''){
 	if(strpos($_SERVER['REQUEST_URI'], '?') !== false){
 		$zw2 = explode('?', $_SERVER['REQUEST_URI']);
 		$path_parts = pathinfo($zw2[0]);
-	} else{
+	} else {
 		$path_parts = pathinfo($_SERVER['REQUEST_URI']);
 	}
 }
@@ -62,7 +63,7 @@ if(!(isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'])){
 	$objectid = 0;
 	$searchfor = '';
 	$notfound = true;
-	while($notfound && isset($path_parts['dirname']) && $path_parts['dirname'] != '/' && $path_parts['dirname'] != '\\') {
+	while($notfound && isset($path_parts['dirname']) && $path_parts['dirname'] != '/' && $path_parts['dirname'] != '\\'){
 
 		$display = $path_parts['dirname'] . DEFAULT_DYNAMIC_EXT;
 		$displayid = intval(f('SELECT ID FROM ' . FILE_TABLE . ' WHERE Path="' . $db->escape($display) . '" LIMIT 1', 'ID', $db));
@@ -91,10 +92,10 @@ if(!(isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'])){
 			$objectid = intval(f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE Url="' . $db->escape($searchforInternal) . '" LIMIT 1', 'ID', $db));
 			if($objectid){
 				$notfound = false;
-			} else{
+			} else {
 				$path_parts = pathinfo($path_parts['dirname']);
 			}
-		} else{
+		} else {
 			$path_parts = pathinfo($path_parts['dirname']);
 		}
 	}
