@@ -25,36 +25,29 @@
 class weNewsletterTreeLoader{
 
 	function getItems($pid, $offset = 0, $segment = 500, $sort = ''){
-		return weNewsletterTreeLoader::getItemsFromDB($pid, $offset, $segment);
+		return self::getItemsFromDB($pid, $offset, $segment);
 	}
 
-	function getQueryParents($path){
-		$out = "";
-		while($path != "/" && $path != "\\" && $path){
+	static function getQueryParents($path){
+		$out = '';
+		while($path != '/' && $path != '\\' && $path){
 			$out .= "Path='$path' OR ";
 			$path = dirname($path);
 		}
-		if($out){
-			return substr($out, 0, strlen($out) - 3);
-		} else {
-			return "";
-		}
+		return ($out ? substr($out, 0, strlen($out) - 3) : '');
 	}
 
 	function getItemsFromDB($ParentID = 0, $offset = 0, $segment = 500, $elem = 'ID,ParentID,Path,Text,Icon,IsFolder', $addWhere = '', $addOrderBy = ''){
 		$db = new DB_WE();
 		$table = NEWSLETTER_TABLE;
-
-		$items = array();
-
 		$wsQuery = '';
-		$_aWsQuery = array();
-		$parentpaths = array();
 
-		if($ws = get_ws($table)){
+		$items = $_aWsQuery = $parentpaths = array();
+
+		if(($ws = get_ws($table))){
 			$wsPathArray = id_to_path($ws, $table, $db, false, true);
 			foreach($wsPathArray as $path){
-				$_aWsQuery[] = " Path LIKE '$path/%' OR " . weNewsletterTreeLoader::getQueryParents($path);
+				$_aWsQuery[] = " Path LIKE '$path/%' OR " . self::getQueryParents($path);
 				while($path != "/" && $path != "\\" && $path){
 					$parentpaths[] = $path;
 					$path = dirname($path);
@@ -84,7 +77,7 @@ class weNewsletterTreeLoader{
 
 		$where = " WHERE $wsQuery ParentID=" . intval($ParentID) . " " . $addWhere;
 
-		$db->query("SELECT " . $db->escape($elem) . ", abs(text) as Nr, (text REGEXP '^[0-9]') as isNr from $table $where ORDER BY isNr DESC,Nr,Text " . ($segment ? "LIMIT $offset,$segment;" : ";" ));
+		$db->query('SELECT ' . $db->escape($elem) . ", abs(text) as Nr, (text REGEXP '^[0-9]') as isNr from $table $where ORDER BY isNr DESC,Nr,Text " . ($segment ? "LIMIT $offset,$segment;" : ";" ));
 		$now = time();
 
 		while($db->next_record()){

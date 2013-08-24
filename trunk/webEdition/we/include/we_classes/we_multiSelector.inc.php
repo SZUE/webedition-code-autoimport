@@ -109,17 +109,16 @@ var wasdblclick=false
 var tout=null
 document.onclick = weonclick;
 function weonclick(e){
-if(document.all){
-if(event.ctrlKey || event.altKey){ ctrlpressed=true;}
-if(event.shiftKey){ shiftpressed=true;}
-}else{
-if(e.altKey || e.metaKey || e.ctrlKey){ ctrlpressed=true;}
-if(e.shiftKey){ shiftpressed=true;}
-}' . ($this->multiple ? '
-if((self.shiftpressed==false) && (self.ctrlpressed==false)){top.unselectAllFiles();}' : '
-top.unselectAllFiles();') . '
-}
-') . '</head>
+	if(document.all){
+		if(event.ctrlKey || event.altKey){ ctrlpressed=true;}
+		if(event.shiftKey){ shiftpressed=true;}
+	}else{
+		if(e.altKey || e.metaKey || e.ctrlKey){ ctrlpressed=true;}
+		if(e.shiftKey){ shiftpressed=true;}
+	}' . ($this->multiple ? '
+		if((self.shiftpressed==false) && (self.ctrlpressed==false)){top.unselectAllFiles();}' : '
+		top.unselectAllFiles();') . '
+}') . '</head>
 <body bgcolor="white" LINK="#000000" ALINK="#000000" VLINK="#000000" leftmargin="0" marginwidth="0" topmargin="0" marginheight="0">
 <table border="0" cellpadding="0" cellspacing="0" width="100%">');
 		?>
@@ -259,14 +258,14 @@ function isFileSelected(id){
 
 	function printFramesetUnselectAllFilesHTML(){
 		return we_html_element::jsElement('
-		function unselectAllFiles(){
-			for	(var i=0;i < entries.length; i++){
-				if(elem = top.fsbody.document.getElementById("line_"+entries[i].ID)){
-					elem.style.backgroundColor="white";
-				}
-			}
-			top.fsfooter.document.we_form.fname.value = "";
-		}');
+function unselectAllFiles(){
+	for	(var i=0;i < entries.length; i++){
+		if(elem = top.fsbody.document.getElementById("line_"+entries[i].ID)){
+			elem.style.backgroundColor="white";
+		}
+	}
+	top.fsfooter.document.we_form.fname.value = "";
+}');
 	}
 
 	function printFramesetSelectFileHTML(){

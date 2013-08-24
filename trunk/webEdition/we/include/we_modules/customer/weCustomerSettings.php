@@ -154,7 +154,7 @@ class weCustomerSettings{
 	function load($tryFromSession = true){
 		$modified = false;
 		$this->db->query('SELECT Name,Value FROM ' . $this->table);
-		while($this->db->next_record()) {
+		while($this->db->next_record()){
 			$this->properties[$this->db->f('Name')] = $this->db->f('Value');
 		}
 
@@ -167,7 +167,7 @@ class weCustomerSettings{
 
 		if(isset($this->properties['EditSort'])){
 			$this->EditSort = $this->properties['EditSort'];
-		} else{
+		} else {
 			$orderedarray = $this->customer->persistent_slots;
 			$sortarray = range(0, count($orderedarray) - 1);
 			$this->EditSort = makeCSVFromArray($sortarray, true);
@@ -272,7 +272,7 @@ class weCustomerSettings{
 	}
 
 	function getFieldType($name){
-		return isset($this->FieldAdds[$name]) ? $this->FieldAdds[$name]['type'] : $this->FieldAdds['input']['type'];
+		return isset($this->FieldAdds[$name]) ? $this->FieldAdds[$name]['type'] : (isset($this->FieldAdds['input']) ? $this->FieldAdds['input']['type'] : '');
 	}
 
 //returns predefined  field type

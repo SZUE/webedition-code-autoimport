@@ -48,12 +48,12 @@ class weToolTreeDataSource{
 	}
 
 	function getQueryParents($path){
-		$out = "";
+		$out = array();
 		while($path != '/' && $path != '\\' && $path){
-			$out .= "Path='$path' OR ";
+			$out[]= "Path='$path'";
 			$path = dirname($path);
 		}
-		return ($out ? substr($out, 0, strlen($out) - 3) : '');
+		return implode(' OR ',$out);
 	}
 
 	function getItemsFromDB($ParentID = 0, $offset = 0, $segment = 500, $elem = 'ID,ParentID,Path,Text,Icon,IsFolder', $addWhere = '', $addOrderBy = ''){

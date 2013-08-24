@@ -25,41 +25,38 @@
 class weCustomerTreeLoader{
 
 	function getItems($pid, $offset = 0, $segment = 500, $sort = ""){
-		return ($sort != "" ?
-				weCustomerTreeLoader::getSortFromDB($pid, $sort, $offset, $segment) :
-				weCustomerTreeLoader::getItemsFromDB($pid, $offset, $segment));
+		return ($sort != '' ?
+				self::getSortFromDB($pid, $sort, $offset, $segment) :
+				self::getItemsFromDB($pid, $offset, $segment));
 	}
 
-	function getItemsFromDB($ParentID = 0, $offset = 0, $segment = 500, $elem = "ID,ParentID,Path,Text,Icon,IsFolder,Forename,Surname", $addWhere = "", $addOrderBy = ""){
+	function getItemsFromDB($ParentID = 0, $offset = 0, $segment = 500, $elem = 'ID,ParentID,Path,Text,Icon,IsFolder,Forename,Surname', $addWhere = "", $addOrderBy = ""){
 		$db = new DB_WE();
-		$table = CUSTOMER_TABLE;
-
-		$items = array();
 
 		$prevoffset = $offset - $segment;
 		$prevoffset = ($prevoffset < 0) ? 0 : $prevoffset;
-		if($offset && $segment){
-			$items[] = array(
-				"icon" => "arrowup.gif",
-				"id" => "prev_" . $ParentID,
-				"parentid" => $ParentID,
-				"text" => "display (" . $prevoffset . "-" . $offset . ")",
-				"contenttype" => "arrowup",
-				"table" => CUSTOMER_TABLE,
-				"typ" => "threedots",
-				"open" => 0,
-				"published" => 0,
-				"disabled" => 0,
-				"tooltip" => "",
-				"offset" => $prevoffset
-			);
-		}
+		$items = ($offset && $segment ?
+				array(array(
+					"icon" => "arrowup.gif",
+					"id" => "prev_" . $ParentID,
+					"parentid" => $ParentID,
+					"text" => "display (" . $prevoffset . "-" . $offset . ")",
+					"contenttype" => "arrowup",
+					"table" => CUSTOMER_TABLE,
+					"typ" => "threedots",
+					"open" => 0,
+					"published" => 0,
+					"disabled" => 0,
+					"tooltip" => "",
+					"offset" => $prevoffset
+				)) : array());
+
 
 		$settings = new weCustomerSettings();
 		$settings->load();
 
 
-		$where = ' WHERE ParentID=' . intval($ParentID) . " " . $addWhere;
+		$where = ' WHERE ParentID=' . intval($ParentID) . ' ' . $addWhere;
 
 		$_formatFields = implode(',', $settings->formatFields);
 		if($_formatFields != ''){
@@ -74,15 +71,17 @@ class weCustomerTreeLoader{
 					'Text ' . $settings->getSettings('default_order'));
 		}
 
-		$db->query("SELECT $_formatFields $elem FROM $table $where " . (!empty($_order) ? "ORDER BY $_order" : '') . ($segment ? " LIMIT $offset,$segment;" : ";" ));
+		$db->query('SELECT ' . $_formatFields . ' ' . $elem . ' FROM ' . CUSTOMER_TABLE . ' ' . $where . ' ' . (!empty($_order) ? 'ORDER BY ' . $_order : '') . ($segment ? " LIMIT $offset,$segment;" : ";" ));
 
 		while($db->next_record()){
 
-			$typ = array("typ" => ($db->f("IsFolder") == 1 ? "group" : "item"));
+			$typ = array(
+				'typ' => ($db->f("IsFolder") == 1 ? "group" : "item"),
+				'disabled' => 0,
+				'tooltip' => $db->f("ID"),
+				'offset' => $offset,
+			);
 
-			$typ["disabled"] = 0;
-			$typ["tooltip"] = $db->f("ID");
-			$typ["offset"] = $offset;
 
 			$ttrow = $db->Record;
 			eval('$tt = "' . $settings->treeTextFormat . '";');
@@ -98,7 +97,7 @@ class weCustomerTreeLoader{
 			$items[] = array_merge($fileds, $typ);
 		}
 
-		$total = f('SELECT COUNT(1) as total FROM ' . $table . ' ' . $where, 'total', $db);
+		$total = f('SELECT COUNT(1) as total FROM ' . CUSTOMER_TABLE . ' ' . $where, 'total', $db);
 		$nextoffset = $offset + $segment;
 		if($segment && ($total > $nextoffset)){
 			$items[] = array(
@@ -121,14 +120,8 @@ class weCustomerTreeLoader{
 
 	function getSortFromDB($pid, $sort, $offset = 0, $segment = 500){
 		$db = new DB_WE();
-		$table = CUSTOMER_TABLE;
 
-		$fieldarr = array();
-
-		$havingarr = array();
-		$sort_defs = array();
-		$pidarr = array();
-		$check = array();
+		$havingarr = $sort_defs = $pidarr = $check = array();
 		$level = 0;
 
 		$notroot = (preg_match('|\{.\}|', $pid)) ? true : false;
@@ -137,7 +130,6 @@ class weCustomerTreeLoader{
 
 		if($pid || $notroot){
 			$pidarr = explode("-|-", $pid);
-			$tmp = "";
 		}
 
 		$settings = new weCustomerSettings();
@@ -148,9 +140,7 @@ class weCustomerTreeLoader{
 		}
 
 		$c = 0;
-		$select = array();
-		$grouparr = array();
-		$orderarr = array();
+		$select = $grouparr = $orderarr = array();
 
 		foreach($sort_defs as $sortdef){
 			if(isset($sortdef["function"]) && $sortdef["function"]){
@@ -186,7 +176,7 @@ class weCustomerTreeLoader{
 
 		if($level != 0){
 			for($i = 1; $i < $level; $i++){
-				$grp.="," . $grouparr[$i];
+				$grp.=',' . $grouparr[$i];
 			}
 		}
 
@@ -205,12 +195,11 @@ class weCustomerTreeLoader{
 			$_order = '';
 		}
 
-		$db->query("SELECT $_formatFields ID,ParentID,Path,Text,Icon,IsFolder,Forename,Surname" . (count($select) ? "," . implode(",", $select) : "") . " FROM " . $table . " GROUP BY " . $grp . (count($grouparr) ? ($level != 0 ? ",ID" : "") : "ID") . (count($havingarr) ? " HAVING " . implode(" AND ", $havingarr) : "") . " ORDER BY " . implode(",", $orderarr) . (!empty($_order) ? (',' . $_order) : '' ) . (($level == $levelcount && $segment) ? " LIMIT $offset,$segment" : ''));
+		$db->query('SELECT ' . $_formatFields . ' ID,ParentID,Path,Text,Icon,IsFolder,Forename,Surname' . (count($select) ? ',' . implode(',', $select) : '') . ' FROM ' . CUSTOMER_TABLE . ' GROUP BY ' . $grp . (count($grouparr) ? ($level != 0 ? ',ID' : '') : 'ID') . (count($havingarr) ? ' HAVING ' . implode(' AND ', $havingarr) : '') . ' ORDER BY ' . implode(',', $orderarr) . (!empty($_order) ? (',' . $_order) : '' ) . (($level == $levelcount && $segment) ? " LIMIT $offset,$segment" : ''));
 
-		$sortarr = array();
 		$foo = array();
-		$gname = "";
-		$old = "0";
+		$gname = '';
+		$old = '0';
 		$first = true;
 
 		while($db->next_record()){
@@ -257,9 +246,9 @@ class weCustomerTreeLoader{
 					}
 					$old = $gname;
 				}
-				$gname = implode("-|-", $foo);
+				$gname = implode('-|-', $foo);
 				if($level == $levelcount){
-					$tt = "";
+					$tt = '';
 					$ttrow = $db->Record;
 					eval('$tt = "' . $settings->treeTextFormat . '";');
 
@@ -300,7 +289,7 @@ class weCustomerTreeLoader{
 		}
 
 		if($level == $levelcount){
-			$total = f("SELECT COUNT(ID) as total " . (count($select) ? "," . implode(",", $select) : "") . " FROM " . $db->escape($table) . " GROUP BY " . $grp . (count($grouparr) ? ($level != 0 ? ",ID" : "") : "ID") . (count($havingarr) ? " HAVING " . implode(" AND ", $havingarr) : "") . " ORDER BY " . implode(",", $orderarr), 'total', $db);
+			$total = f('SELECT COUNT(ID) as total ' . (count($select) ? ',' . implode(',', $select) : '') . ' FROM ' . CUSTOMER_TABLE . ' GROUP BY ' . $grp . (count($grouparr) ? ($level != 0 ? ",ID" : "") : "ID") . (count($havingarr) ? " HAVING " . implode(" AND ", $havingarr) : "") . " ORDER BY " . implode(",", $orderarr), 'total', $db);
 
 			$nextoffset = $offset + $segment;
 			if($segment && ($total > $nextoffset)){
