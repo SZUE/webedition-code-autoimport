@@ -316,22 +316,22 @@ function getHTTP($server, $url, $port = '', $username = '', $password = ''){
 	}
 }
 
-/*function std_numberformat($content){
-	if(preg_match('#.*,[0-9]*$#', $content)){
-// Deutsche Schreibweise
-		$umschreib = preg_replace('#(.*),([0-9]*)$#', '\1.\2', $content);
-		$pos = strrpos($content, ',');
-		$vor = str_replace('.', '', substr($umschreib, 0, $pos));
-		return $vor . substr($umschreib, $pos, strlen($umschreib) - $pos);
-	} elseif(preg_match('#.*\.[0-9]*$#', $content)){
-// Englische Schreibweise
-		$pos = strrpos($content, '.');
-		$vor = substr($content, 0, $pos);
-		$vor = str_replace(',', '', str_replace('.', '', $vor));
-		return $vor . substr($content, $pos, strlen($content) - $pos);
-	}
-	return str_replace(',', '', str_replace('.', '', $content));
-}*/
+/* function std_numberformat($content){
+  if(preg_match('#.*,[0-9]*$#', $content)){
+  // Deutsche Schreibweise
+  $umschreib = preg_replace('#(.*),([0-9]*)$#', '\1.\2', $content);
+  $pos = strrpos($content, ',');
+  $vor = str_replace('.', '', substr($umschreib, 0, $pos));
+  return $vor . substr($umschreib, $pos, strlen($umschreib) - $pos);
+  } elseif(preg_match('#.*\.[0-9]*$#', $content)){
+  // Englische Schreibweise
+  $pos = strrpos($content, '.');
+  $vor = substr($content, 0, $pos);
+  $vor = str_replace(',', '', str_replace('.', '', $vor));
+  return $vor . substr($content, $pos, strlen($content) - $pos);
+  }
+  return str_replace(',', '', str_replace('.', '', $content));
+  } */
 
 /**
  *
@@ -452,13 +452,13 @@ function oldHtmlspecialchars($string, $flags = -1, $encoding = 'ISO-8859-1', $do
  * @param mixed $var
  * @return mixed
  */
-function filterXss($var){
+function filterXss($var, $type = 'string'){
 	if(!is_array($var)){
-		return oldHtmlspecialchars(strip_tags($var));
+		return ($type == 'string' ? oldHtmlspecialchars(strip_tags($var)) : intval($var));
 	}
 	$ret = array();
 	foreach($var as $key => $val){
-		$ret[oldHtmlspecialchars(strip_tags($key))] = filterXss($val);
+		$ret[oldHtmlspecialchars(strip_tags($key))] = filterXss($val, $type);
 	}
 	return $ret;
 }
@@ -1176,7 +1176,7 @@ function parseInternalLinks(&$text, $pid, $path = '', $doBaseReplace = true){
 			list($imgID, $thumbID) = explode(',', $reg[1]);
 			$thumbObj = new we_thumbnail();
 			if($thumbObj->initByImageIDAndThumbID($imgID, $thumbID)){
-				$text = str_replace('src="' . we_base_link::TYPE_THUMB_PREFIX . $reg[1] . '"', 'src="' . ($doBaseReplace ? BASE_IMG : '') . $thumbObj->getOutputPath(false,true) . '"', $text);
+				$text = str_replace('src="' . we_base_link::TYPE_THUMB_PREFIX . $reg[1] . '"', 'src="' . ($doBaseReplace ? BASE_IMG : '') . $thumbObj->getOutputPath(false, true) . '"', $text);
 			} else {
 				$text = preg_replace('|<img[^>]+src="' . we_base_link::TYPE_THUMB_PREFIX . $reg[1] . '[^>]+>|Ui', '', $text);
 			}
