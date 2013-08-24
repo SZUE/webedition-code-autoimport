@@ -533,7 +533,7 @@ abstract class we_database_base{
 	public function getAllFirst($useArray = true){
 		$ret = array();
 		while($this->next_record(MYSQL_NUM)){
-			$ret[array_shift($this->Record)] = ($useArray ? $this->Record : $this->Record[0]);
+			$ret[array_shift($this->Record)] = ($useArray ? $this->Record : current($this->Record));
 		}
 		return $ret;
 	}
