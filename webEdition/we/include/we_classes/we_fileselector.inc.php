@@ -572,7 +572,7 @@ function selectIt(){
 
 	function printHeaderOptions(){
 		$pid = $this->dir;
-		$out = "";
+		$out = '';
 		$c = 0;
 		$z = 0;
 		while($pid != 0){

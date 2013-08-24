@@ -278,9 +278,9 @@ abstract class we_database_base{
 			return false;
 		}
 		/* we already complained in connect() about that. */
-/*		if(stristr($Query_String, PREFS_TABLE)){
-			t_e('error #7745', $Query_String);
-		}*/
+		/* 		if(stristr($Query_String, PREFS_TABLE)){
+		  t_e('error #7745', $Query_String);
+		  } */
 // check for union This is the fastest check
 // if union is found in query, then take a closer look
 		if($allowUnion == false && stristr($Query_String, 'union')){
@@ -353,7 +353,7 @@ abstract class we_database_base{
 				$this->free();
 				$this->Query_ID = $this->_query('EXPLAIN ' . $Query_String);
 
-				while($this->next_record(MYSQLI_ASSOC)) {
+				while($this->next_record(MYSQLI_ASSOC)){
 					if(empty($tmp['explain'])){
 						$tmp['explain'][] = implode(' | ', array_keys($this->Record));
 					}
@@ -453,7 +453,7 @@ abstract class we_database_base{
 	function table_names($like = ''){
 		$this->query('SHOW TABLES' . (($like != '') ? ' LIKE "' . $like . '"' : ''));
 		$return = array();
-		while($this->next_record()) {
+		while($this->next_record()){
 			$return[] = array(
 				"table_name" => $this->f(0),
 				"tablespace_name" => $this->Database,
@@ -505,7 +505,7 @@ abstract class we_database_base{
 		if($this->_seek($pos)){
 			$this->Row = $pos;
 			return true;
-		} else{
+		} else {
 			$this->halt("seek($pos) failed: result has " . $this->num_rows() . " rows");
 
 			/* half assed attempt to save the day,
@@ -524,8 +524,16 @@ abstract class we_database_base{
 	 */
 	public function getAll($single = false, $resultType = MYSQL_ASSOC){
 		$ret = array();
-		while($this->next_record($resultType)) {
+		while($this->next_record($resultType)){
 			$ret[] = ($single ? current($this->Record) : $this->Record);
+		}
+		return $ret;
+	}
+
+	public function getAllFirst(){
+		$ret = array();
+		while($this->next_record(MYSQL_NUM)){
+			$ret[array_shift($this->Record)] = $this->Record;
 		}
 		return $ret;
 	}
@@ -600,7 +608,7 @@ abstract class we_database_base{
 			if(!$this->query('SELECT * FROM `' . $table . '` LIMIT 1')){
 				$this->halt("Metadata query failed.");
 			}
-		} else{
+		} else {
 			if(!($this->Query_ID)){
 				$this->halt("No query specified.");
 			}
@@ -659,7 +667,7 @@ abstract class we_database_base{
 						$key . ' ' . $value);
 			}
 			$query = implode(',', $query);
-		} else{
+		} else {
 			$query = $table . ' ' . $mode;
 		}
 //always lock Errlog-Table
