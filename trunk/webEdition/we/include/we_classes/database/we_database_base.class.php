@@ -530,10 +530,10 @@ abstract class we_database_base{
 		return $ret;
 	}
 
-	public function getAllFirst(){
+	public function getAllFirst($useArray = true){
 		$ret = array();
 		while($this->next_record(MYSQL_NUM)){
-			$ret[array_shift($this->Record)] = $this->Record;
+			$ret[array_shift($this->Record)] = ($useArray ? $this->Record : $this->Record[0]);
 		}
 		return $ret;
 	}
