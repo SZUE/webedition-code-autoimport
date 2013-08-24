@@ -889,33 +889,33 @@ class we_class_folder extends we_folder{
 		$modulepath = WE_OBJECT_MODULE_DIR;
 
 		$ret = <<<EOF
-		function sub(){
-			document.we_form_search.target="load";
-			document.getElementsByName("SearchStart")[0].value=0;
-			document.we_form_search.action="{$modulepath}search_submit.php";
-			document.we_form_search.todo.value="search";
-			document.we_form_search.submit();
+function sub(){
+	document.we_form_search.target="load";
+	document.getElementsByName("SearchStart")[0].value=0;
+	document.we_form_search.action="{$modulepath}search_submit.php";
+	document.we_form_search.todo.value="search";
+	document.we_form_search.submit();
 
 
-		}
+}
 
-		function newinput(){
-			document.we_form_search.target='load';
-			document.we_form_search.action='{$modulepath}search_submit.php';
-			document.we_form_search.todo.value="add";
-			document.we_form_search.submit();
-		}
+function newinput(){
+	document.we_form_search.target='load';
+	document.we_form_search.action='{$modulepath}search_submit.php';
+	document.we_form_search.todo.value="add";
+	document.we_form_search.submit();
+}
 
-		function del(pos){
-			document.we_form_search.target='load';
-			document.we_form_search.action='{$modulepath}search_submit.php';
-			document.we_form_search.todo.value="delete";
-			document.we_form_search.position.value=pos;
-			document.we_form_search.submit();
-		}
+function del(pos){
+	document.we_form_search.target='load';
+	document.we_form_search.action='{$modulepath}search_submit.php';
+	document.we_form_search.todo.value="delete";
+	document.we_form_search.position.value=pos;
+	document.we_form_search.submit();
+}
 
 
-		function changeit(f){
+function changeit(f){
 EOF;
 		$objID = f("SELECT ID FROM " . OBJECT_TABLE . " WHERE Path='" . $DB_WE->escape($this->Path) . "'", "ID", $DB_WE);
 		if($objID){
@@ -923,36 +923,36 @@ EOF;
 
 			for($i = 0; $i < count($tableInfo); $i++){
 //fixme: explode?
-				if(substr($tableInfo[$i]["name"], 0, 5) == "meta_"){
+				$type = explode('_', $tableInfo[$i]["name"]);
+				switch($type[0]){
+					case 'meta':
 
-					$ret.= "
-			if(f=='" . $tableInfo[$i]["name"] . "'){
-				document.we_form_search.target='load';
-				document.we_form_search.action='{$modulepath}search_submit.php';
-				document.we_form_search.todo.value='changemeta';
-				document.we_form_search.submit();
-			}
-		";
-				} else if(substr($tableInfo[$i]["name"], 0, 5) == "date_"){
-
-					$ret.= "
-			if(f=='" . $tableInfo[$i]["name"] . "'){
-				document.we_form_search.target='load';
-				document.we_form_search.action='{$modulepath}search_submit.php';
-				document.we_form_search.todo.value='changedate';
-				document.we_form_search.submit();
-			}
-		";
-				} else if(substr($tableInfo[$i]["name"], 0, 9) == "checkbox_"){
-
-					$ret.= "
-			if(f=='" . $tableInfo[$i]["name"] . "'){
-				document.we_form_search.target='load';
-				document.we_form_search.action='{$modulepath}search_submit.php';
-				document.we_form_search.todo.value='changecheckbox';
-				document.we_form_search.submit();
-			}
-		";
+						$ret.= "
+if(f=='" . $tableInfo[$i]["name"] . "'){
+	document.we_form_search.target='load';
+	document.we_form_search.action='{$modulepath}search_submit.php';
+	document.we_form_search.todo.value='changemeta';
+	document.we_form_search.submit();
+}";
+						break;
+					case 'date':
+						$ret.= "
+if(f=='" . $tableInfo[$i]["name"] . "'){
+	document.we_form_search.target='load';
+	document.we_form_search.action='{$modulepath}search_submit.php';
+	document.we_form_search.todo.value='changedate';
+	document.we_form_search.submit();
+}";
+						break;
+					case 'checkbox':
+						$ret.= "
+if(f=='" . $tableInfo[$i]["name"] . "'){
+	document.we_form_search.target='load';
+	document.we_form_search.action='{$modulepath}search_submit.php';
+	document.we_form_search.todo.value='changecheckbox';
+	document.we_form_search.submit();
+}";
+						break;
 				}
 			}
 		}
@@ -960,12 +960,12 @@ EOF;
 
 		}
 
-		function changeitanyway(f){
-				document.we_form_search.target='load';
-				document.we_form_search.action='{$modulepath}search_submit.php';
-				document.we_form_search.todo.value="changemeta";
-				document.we_form_search.submit();
-		}
+function changeitanyway(f){
+		document.we_form_search.target='load';
+		document.we_form_search.action='{$modulepath}search_submit.php';
+		document.we_form_search.todo.value="changemeta";
+		document.we_form_search.submit();
+}
 EOF;
 
 		return we_html_element::jsElement($ret);
@@ -1029,21 +1029,21 @@ EOF;
 		}
 
 		return $javascript . "
-			top.drawTree();
+top.drawTree();
 
-			// close all Editors with deleted documents
-			var _usedEditors =  top.weEditorFrameController.getEditorsInUse();
+// close all Editors with deleted documents
+var _usedEditors =  top.weEditorFrameController.getEditorsInUse();
 
-			var _delete_table = '" . OBJECT_FILES_TABLE . "';
-			var _delete_Ids = '," . implode(",", $deletedItems) . ",';
+var _delete_table = '" . OBJECT_FILES_TABLE . "';
+var _delete_Ids = '," . implode(",", $deletedItems) . ",';
 
-			for ( frameId in _usedEditors ) {
+for ( frameId in _usedEditors ) {
 
-				if ( _delete_table == _usedEditors[frameId].getEditorEditorTable() && (_delete_Ids.indexOf( ',' + _usedEditors[frameId].getEditorDocumentId() + ',' ) != -1) ) {
-					_usedEditors[frameId].setEditorIsHot(false);
-					top.weEditorFrameController.closeDocument(frameId);
-				}
-			}";
+	if ( _delete_table == _usedEditors[frameId].getEditorEditorTable() && (_delete_Ids.indexOf( ',' + _usedEditors[frameId].getEditorDocumentId() + ',' ) != -1) ) {
+		_usedEditors[frameId].setEditorIsHot(false);
+		top.weEditorFrameController.closeDocument(frameId);
+	}
+}";
 	}
 
 	function copyWSfromClass(){
@@ -1136,7 +1136,7 @@ EOF;
 		// get Class
 		$classArray = getHash('SELECT * FROM ' . OBJECT_TABLE . " WHERE Path='" . $this->ClassPath . "'", $DB_WE);
 		foreach(array_keys($_REQUEST) as $f){
-			if(substr($f, 0, 3) == "weg"){
+			if(substr($f, 0, 3) == 'weg'){
 				$ofid = f('SELECT OF_ID FROM ' . OBJECT_X_TABLE . $classArray["ID"] . " WHERE ID=" . substr($f, 3), 'OF_ID', $DB_WE);
 
 				if(permissionhandler::checkIfRestrictUserIsAllowed($ofid, OBJECT_FILES_TABLE, $DB_WE)){
@@ -1166,7 +1166,7 @@ EOF;
 		// get Class
 		$classArray = getHash('SELECT * FROM ' . OBJECT_TABLE . " WHERE Path='" . $this->ClassPath . "'", $DB_WE);
 		foreach(array_keys($_REQUEST) as $f){
-			if(substr($f, 0, 3) == "weg"){
+			if(substr($f, 0, 3) == 'weg'){
 				$ofid = f('SELECT OF_ID FROM ' . OBJECT_X_TABLE . $classArray["ID"] . " WHERE ID=" . substr($f, 3), 'OF_ID', $DB_WE);
 
 				if(permissionhandler::checkIfRestrictUserIsAllowed($ofid, OBJECT_FILES_TABLE, $DB_WE)){
@@ -1176,13 +1176,13 @@ EOF;
 						$obj->initByID($ofid, OBJECT_FILES_TABLE);
 
 						if($obj->we_unpublish()){
-							$javascript .= "_EditorFrame = top.weEditorFrameController.getActiveEditorFrame();"
+							$javascript .= "_EditorFrame = top.weEditorFrameController.getActiveEditorFrame();" .
 								//.	"_EditorFrame.setEditorDocumentId(".$obj->ID.");\n"
-								. $obj->getUpdateTreeScript(false)
-								. "if(top.treeData.table!='" . OBJECT_FILES_TABLE . "') {"
-								. "top.rframe.we_cmd('loadVTab', '" . OBJECT_FILES_TABLE . "', 0);"
-								. "}"
-								. "weWindow.treeData.selectnode(" . $GLOBALS['we_doc']->ID . ");";
+								$obj->getUpdateTreeScript(false) . "
+if(top.treeData.table!='" . OBJECT_FILES_TABLE . "') {
+	 top.rframe.we_cmd('loadVTab', '" . OBJECT_FILES_TABLE . "', 0);
+}
+weWindow.treeData.selectnode(" . $GLOBALS['we_doc']->ID . ");";
 						}
 					} else {
 
@@ -1192,13 +1192,13 @@ EOF;
 						$obj->getContentDataFromTemporaryDocs($ofid);
 
 						if($obj->we_publish()){
-							$javascript .= "_EditorFrame = top.weEditorFrameController.getActiveEditorFrame();"
+							$javascript .= "_EditorFrame = top.weEditorFrameController.getActiveEditorFrame();" .
 								//.	"_EditorFrame.setEditorDocumentId(".$obj->ID.");\n"
-								. $obj->getUpdateTreeScript(false)
-								. "if(top.treeData.table!='" . OBJECT_FILES_TABLE . "') {"
-								. "top.rframe.we_cmd('loadVTab', '" . OBJECT_FILES_TABLE . "', 0);"
-								. "}"
-								. "weWindow.treeData.selectnode(" . $GLOBALS['we_doc']->ID . ");";
+								$obj->getUpdateTreeScript(false) . "
+if(top.treeData.table!='" . OBJECT_FILES_TABLE . "') {
+	top.rframe.we_cmd('loadVTab', '" . OBJECT_FILES_TABLE . "', 0);
+}
+weWindow.treeData.selectnode(" . $GLOBALS['we_doc']->ID . ");";
 						}
 					}
 				}
@@ -1206,6 +1206,10 @@ EOF;
 		}
 
 		return $javascript;
+	}
+
+	function i_pathNotValid(){
+		return parent::i_pathNotValid() || $this->ParentID == 0 || $this->ParentPath == '/';
 	}
 
 }

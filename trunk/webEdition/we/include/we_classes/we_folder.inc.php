@@ -236,9 +236,6 @@ class we_folder extends we_root{
 		$objFolder = (defined('OBJECT_FILES_TABLE') && $this->Table == OBJECT_FILES_TABLE);
 		if($objFolder){
 			$this->ClassName = 'we_class_folder';
-			if($this->ParentID==0){
-				return false;
-			}
 		}
 		$update = ($this->OldPath != '' && $this->OldPath != $this->Path);
 		if($update && !$objFolder){
