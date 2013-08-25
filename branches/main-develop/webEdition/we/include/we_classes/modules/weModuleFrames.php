@@ -151,7 +151,7 @@ class weModuleFrames{
 
 	function getHTMLHeader($_menuFile, $_module){
 		include($_menuFile);
-		require_once(WE_INCLUDES_PATH . "jsMessageConsole/messageConsole.inc.php" );
+		require_once(WE_INCLUDES_PATH . 'jsMessageConsole/messageConsole.inc.php' );
 
 		$lang_arr = "we_menu_" . $_module;
 		$jmenu = new weJavaMenu($$lang_arr, 'top.opener.top.load', '');
@@ -160,7 +160,7 @@ class weModuleFrames{
 
 		$table = new we_html_table(array("width" => "100%", "cellpadding" => 0, "cellspacing" => 0, "border" => 0), 1, 2);
 		$table->setCol(0, 0, array("align" => "left", "valign" => "top"), $menu);
-		$table->setCol(0, 1, array("align" => "right", "valign" => "top"), createMessageConsole("moduleFrame"));
+		$table->setCol(0, 1, array("align" => "right", "valign" => "top"), we_main_headermenu::createMessageConsole('moduleFrame'));
 
 		return we_html_element::htmlDiv(array('class' => 'menuDiv'), $table->getHtml());
 	}
