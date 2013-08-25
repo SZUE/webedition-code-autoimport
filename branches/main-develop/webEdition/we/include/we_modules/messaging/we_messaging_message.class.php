@@ -53,7 +53,7 @@ class we_messaging_message extends we_msg_proto{
 
 	function __construct(){
 		parent::__construct();
-		$this->ClassName='we_message';
+		$this->ClassName = 'we_message';
 		$this->Name = 'message_' . md5(uniqid(__FILE__, true));
 		$this->persistent_slots = array('ClassName', 'Name', 'ID', 'Table', 'Folder_ID', 'selected_message', 'sortorder', 'last_sortfield', 'available_folders', 'search_folder_ids', 'search_fields');
 	}
@@ -72,7 +72,7 @@ class we_messaging_message extends we_msg_proto{
 
 		if(!empty($init_folders)){
 			$this->DB_WE->query('SELECT ID, obj_type FROM ' . MSG_FOLDERS_TABLE . ' WHERE UserID=' . intval($this->userid) . ' AND msg_type=' . $this->sql_class_nr . ' AND (obj_type=' . $this->DB_WE->escape(implode(' OR obj_type=', $init_folders)) . ')');
-			while($this->DB_WE->next_record()) {
+			while($this->DB_WE->next_record()){
 				$this->default_folders[$this->DB_WE->f('obj_type')] = $this->DB_WE->f('ID');
 			}
 		}
@@ -151,7 +151,7 @@ class we_messaging_message extends we_msg_proto{
 		foreach($items as $item){
 			$tmp = array();
 			$this->DB_WE->query('SELECT ParentID, msg_type, obj_type, headerDate, headerSubject, headerUserID, headerFrom, Priority, MessageText, seenStatus, tag FROM ' . $this->table . ' WHERE ID=' . intval($item) . ' AND UserID=' . intval($this->userid));
-			while($this->DB_WE->next_record()) {
+			while($this->DB_WE->next_record()){
 				$tmp['ParentID'] = isset($this->DB_WE->Record['ParentID']) ? $this->DB_WE->Record['ParentID'] : 'NULL';
 				$tmp['msg_type'] = $this->DB_WE->f('msg_type');
 				$tmp['obj_type'] = $this->DB_WE->f('obj_type');
@@ -217,7 +217,7 @@ class we_messaging_message extends we_msg_proto{
 						$results['failed'][] = $rcpt;
 						continue;
 					}
-				} else{
+				} else {
 					$results['err'][] = g_l('modules_messaging', '[no_inbox_folder]');
 					$results['failed'][] = $rcpt;
 					continue;
@@ -288,7 +288,7 @@ class we_messaging_message extends we_msg_proto{
 
 		$seen_ids = array();
 
-		while($this->DB_WE->next_record()) {
+		while($this->DB_WE->next_record()){
 			if(!($this->DB_WE->f('seenStatus') & we_msg_proto::STATUS_SEEN)){
 				$seen_ids[] = $this->DB_WE->f('ID');
 			}
@@ -333,7 +333,7 @@ class we_messaging_message extends we_msg_proto{
 
 		$read_ids = array();
 
-		while($this->DB_WE->next_record()) {
+		while($this->DB_WE->next_record()){
 			if(!($this->DB_WE->f('seenStatus') & we_msg_proto::STATUS_READ))
 				$read_ids[] = $this->DB_WE->f('ID');
 

@@ -943,7 +943,6 @@ self.close();';
 
 	function processVariables(){
 		if(isset($_SESSION['weS']['customer_session'])){
-
 			$this->customer = unserialize($_SESSION['weS']['customer_session']);
 		}
 

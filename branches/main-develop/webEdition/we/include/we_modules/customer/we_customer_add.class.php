@@ -23,6 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 abstract class we_customer_add{
+
 	static function getHTMLSortEditor(&$pob){
 		$branch = $pob->getHTMLBranchSelect();
 		$branch->setOptionVT(1, g_l('modules_customer', '[other]'), g_l('modules_customer', '[other]'));
@@ -233,7 +234,7 @@ function setScrollTo(){
 			' . $pob->getJSSubmitFunction("sort_admin");
 	}
 
-public static	function getJSSearch(&$pob){
+	public static function getJSSearch(&$pob){
 
 		return '
 function doUnload() {
@@ -295,16 +296,21 @@ function we_cmd(){
 		$colspan = 4;
 
 		for($i = 0; $i < $count; $i++){
-			if(isset($_REQUEST['branch_' . $i]))
+			if(isset($_REQUEST['branch_' . $i])){
 				$search_arr['branch_' . $i] = $_REQUEST['branch_' . $i];
-			if(isset($_REQUEST['field_' . $i]))
+			}
+			if(isset($_REQUEST['field_' . $i])){
 				$search_arr['field_' . $i] = $_REQUEST['field_' . $i];
-			if(isset($_REQUEST['operator_' . $i]))
+			}
+			if(isset($_REQUEST['operator_' . $i])){
 				$search_arr['operator_' . $i] = $_REQUEST['operator_' . $i];
-			if(isset($_REQUEST['value_' . $i]))
+			}
+			if(isset($_REQUEST['value_' . $i])){
 				$search_arr['value_' . $i] = $_REQUEST['value_' . $i];
-			if(isset($_REQUEST['logic_' . $i]))
+			}
+			if(isset($_REQUEST['logic_' . $i])){
 				$search_arr['logic_' . $i] = $_REQUEST['logic_' . $i];
+			}
 		}
 
 
@@ -389,7 +395,7 @@ function we_cmd(){
 			"6" => "LIKE"
 		);
 
-		$where = "";
+		$where = '';
 
 		for($i = 0; $i < $count; $i++){
 			if(isset($keywords["field_" . $i])){
@@ -405,7 +411,7 @@ function we_cmd(){
 
 	static function getHTMLTreeHeader(&$pob){
 		$select = $pob->getHTMLSortSelect();
-		$select->setAttributes(array("OnChange" => "applySort();", "style" => "width:150px"));
+		$select->setAttributes(array('onchange' => 'applySort();', 'style' => 'width:150px'));
 		$select->selectOption($pob->View->settings->getSettings('default_sort_view'));
 
 		$table1 = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0, "width" => '100%'), 1, 1);
@@ -418,21 +424,12 @@ function we_cmd(){
 		$table->setCol(0, 1, array("nowrap" => null, "class" => "small"), we_button::create_button("image:btn_function_reload", "javascript:applySort();"));
 		$table->setCol(0, 2, array("nowrap" => null, "class" => "small"), we_button::create_button("image:btn_edit_edit", "javascript:we_cmd('show_sort_admin')"));
 
-		$hiddens = we_html_element::htmlHidden(array("name" => "pnt", "value" => "treeheader")) .
-			we_html_element::htmlHidden(array("name" => "pid", "value" => 0)) .
-			we_html_element::htmlHidden(array("name" => "cmd", "value" => "no_cmd"));
-
-
-		$content = we_html_element::htmlForm(array("name" => "we_form_treeheader"), $hiddens .
+		return we_html_element::htmlForm(array("name" => "we_form_treeheader"), we_html_element::htmlHidden(array("name" => "pnt", "value" => "treeheader")) .
+				we_html_element::htmlHidden(array("name" => "pid", "value" => 0)) .
+				we_html_element::htmlHidden(array("name" => "cmd", "value" => "no_cmd")) .
 				$table1->getHtml() .
 				$table->getHtml()
 		);
-		return $content;
-		$body = we_html_element::htmlBody(array('style' => 'overflow:hidden', "background" => IMAGE_DIR . "backgrounds/header_with_black_line.gif", "marginwidth" => "5", "marginheight" => "5", "leftmargin" => "5", "topmargin" => "5"), $content
-		);
-
-		//return $pob->getHTMLDocument($body);
-		return we_html_element::htmlDiv(array('style' => 'overflow:hidden; position: absolute; margin: 5px 0 0 0', 'background' => IMAGE_DIR . 'backgrounds/header_with_black_line.gif'), $content);
 	}
 
 }

@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weCustomerFrames extends weModuleFrames {
+class weCustomerFrames extends weModuleFrames{
 
 	var $View;
 	var $jsOut_fieldTypesByName;
@@ -347,17 +347,16 @@ function populateDate_' . $field . '(){
 			$branchCount++;
 		}
 		$tabs->addTab(new we_tab('#', g_l('modules_customer', '[other]'), 'TAB_NORMAL', "setTab('" . g_l('modules_customer', '[other]') . "');", array("id" => "other")));
-		$extraJS .= "aTabs['" . g_l('modules_customer', '[other]') . "']='other';";
 		$tabs->addTab(new we_tab("#", g_l('modules_customer', '[all]'), 'TAB_NORMAL', "setTab('" . g_l('modules_customer', '[all]') . "');", array("id" => "all")));
-		$extraJS .= "aTabs['" . g_l('modules_customer', '[all]') . "']='all';";
+		$extraJS .= "aTabs['" . g_l('modules_customer', '[other]') . "']='other';" .
+			"aTabs['" . g_l('modules_customer', '[all]') . "']='all';";
 //((top.content.activ_tab=="' . g_l('modules_customer','[other]') . '") ? TAB_ACTIVE : TAB_NORMAL)
 		$js = we_html_element::jsElement('
-				function setTab(tab) {
-					' . $this->topFrame . '.activ_tab=tab;
-					parent.edbody.we_cmd(\'switchPage\',tab);
-				}
-				top.content.hloaded = 1;
-		');
+function setTab(tab) {
+	' . $this->topFrame . '.activ_tab=tab;
+	parent.edbody.we_cmd(\'switchPage\',tab);
+}
+top.content.hloaded = 1;');
 
 		if(defined('SHOP_TABLE')){
 			$tabs->addTab(new we_tab("#", g_l('modules_customer', '[orderTab]'), 'TAB_NORMAL', "setTab('" . g_l('modules_customer', '[orderTab]') . "');", array("id" => "orderTab")));
@@ -372,9 +371,8 @@ function populateDate_' . $field . '(){
 
 
 		$tabs->onResize();
-		$tabsHead = $tabs->getHeader();
-		$tabsBody = $tabs->getJS();
-		$tabsHead .= $js;
+		$tabsHead = $tabs->getHeader() . $js;
+		//$tabsBody = $tabs->getJS();
 
 		$table = new we_html_table(array("width" => '100%', "cellpadding" => 0, "cellspacing" => 0, "border" => 0), 3, 1);
 		$table->setCol(0, 0, array(), we_html_tools::getPixel(1, 3));
@@ -485,24 +483,25 @@ function populateDate_' . $field . '(){
 //FIXME: add button to reset failed logins
 
 								$tmp = 'YAHOO.util.Connect.asyncRequest( "GET", "' . WEBEDITION_DIR . 'rpc/rpc.php?cmd=ResetFailedCustomerLogins&cns=customer&custid=' . $this->View->customer->ID . '", ajaxCallbackResetLogins );';
-								$but = we_html_element::jsElement('var ajaxCallbackResetLogins = {
-													success: function(o) {
-					if(typeof(o.responseText) != undefined && o.responseText != "") {
-						var weResponse = false;
-						try {
-							eval( "var weResponse = "+o.responseText );
-							if ( weResponse ) {
-								if (weResponse["DataArray"]["data"] == "true") {
+								$but = we_html_element::jsElement('
+var ajaxCallbackResetLogins = {
+									success: function(o) {
+	if(typeof(o.responseText) != undefined && o.responseText != "") {
+		var weResponse = false;
+		try {
+			eval( "var weResponse = "+o.responseText );
+			if ( weResponse ) {
+				if (weResponse["DataArray"]["data"] == "true") {
 
-									document.getElementById("FailedCustomerLogins").innerText=weResponse["DataArray"]["value"];
-								}
-							}
-						} catch (exc){}
-					}
-				},
-				failure: function(o) {
+					document.getElementById("FailedCustomerLogins").innerText=weResponse["DataArray"]["value"];
+				}
+			}
+		} catch (exc){}
+	}
+},
+failure: function(o) {
 
-				}}') .
+}}') .
 									we_button::create_button('reset', 'javascript:' . $tmp);
 								$table->setCol($c / 2, $c % 2, array('class' => 'defaultfont'), we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(array('class' => 'defaultgray'), $but)));
 								break;
@@ -567,14 +566,12 @@ function populateDate_' . $field . '(){
 					$objectStr.='<table class="defaultfont" width="600">' .
 						'<tr><td>&nbsp;</td> <td><b>' . g_l('modules_customer', '[ID]') . '</b></td><td><b>' . g_l('modules_customer', '[filename]') . '</b></td><td><b>' . g_l('modules_customer', '[Aenderungsdatum]') . '</b></td>';
 					while($DB_WE->next_record()){
-						$objectStr.='<tr>' .
-							'<td>' . we_button::create_button('image:btn_edit_edit', "javascript: if(top.opener.top.doClickDirect){top.opener.top.doClickDirect(" . $DB_WE->f('ID') . ",'" . $DB_WE->f('ContentType') . "','" . OBJECT_FILES_TABLE . "'); }") . '</td>' .
-							'<td>' . $DB_WE->f('ID') . '</td>' .
-							'<td title="' . $DB_WE->f('Path') . '">' . $DB_WE->f('Text') . '</td>' .
-							'<td class="' .
-							($DB_WE->f('Published') ? ($DB_WE->f('ModDate') > $DB_WE->f('Published') ? 'changeddefaultfont' : 'defaultfont') : 'npdefaultfont')
-							. '">' . date('d.m.Y H:i', $DB_WE->f('ModDate')) . '</td>' .
-							'</tr>';
+						$objectStr.='<tr>
+	<td>' . we_button::create_button('image:btn_edit_edit', "javascript: if(top.opener.top.doClickDirect){top.opener.top.doClickDirect(" . $DB_WE->f('ID') . ",'" . $DB_WE->f('ContentType') . "','" . OBJECT_FILES_TABLE . "'); }") . '</td>
+	<td>' . $DB_WE->f('ID') . '</td>
+	<td title="' . $DB_WE->f('Path') . '">' . $DB_WE->f('Text') . '</td>
+	<td class="' . ($DB_WE->f('Published') ? ($DB_WE->f('ModDate') > $DB_WE->f('Published') ? 'changeddefaultfont' : 'defaultfont') : 'npdefaultfont') . '">' . date('d.m.Y H:i', $DB_WE->f('ModDate')) . '</td>
+</tr>';
 					}
 					$objectStr.='</table>';
 				} else {
@@ -678,7 +675,7 @@ function populateDate_' . $field . '(){
 			)
 		);
 
-		return we_html_element::htmlForm(array("name" => "we_form_treefooter","target" => "cmd"), $table->getHtml());
+		return we_html_element::htmlForm(array("name" => "we_form_treefooter", "target" => "cmd"), $table->getHtml());
 	}
 
 	function getHTMLCustomerAdmin(){
@@ -978,11 +975,11 @@ function populateDate_' . $field . '(){
 		$table->setCol($cur, 1, array(), we_html_tools::getPixel(5, 30));
 		$table->setCol($cur, 2, array("class" => "defaultfont"), $default_sort_view_select->getHtml());
 
-		$table->setCol( ++$cur, 0, array("class" => "defaultfont"), g_l('modules_customer', '[start_year]') . ":&nbsp;");
+		$table->setCol(++$cur, 0, array("class" => "defaultfont"), g_l('modules_customer', '[start_year]') . ":&nbsp;");
 		$table->setCol($cur, 1, array(), we_html_tools::getPixel(5, 30));
 		$table->setCol($cur, 2, array("class" => "defaultfont"), we_html_tools::htmlTextInput("start_year", 32, $this->View->settings->getSettings('start_year'), ''));
 
-		$table->setCol( ++$cur, 0, array("class" => "defaultfont"), g_l('modules_customer', '[treetext_format]') . ":&nbsp;");
+		$table->setCol(++$cur, 0, array("class" => "defaultfont"), g_l('modules_customer', '[treetext_format]') . ":&nbsp;");
 		$table->setCol($cur, 1, array(), we_html_tools::getPixel(5, 30));
 		$table->setCol($cur, 2, array("class" => "defaultfont"), we_html_tools::htmlTextInput("treetext_format", 32, $this->View->settings->getSettings('treetext_format'), ''));
 
@@ -995,7 +992,7 @@ function populateDate_' . $field . '(){
 		}
 		$default_order->selectOption($this->View->settings->getSettings('default_order'));
 
-		$table->setCol( ++$cur, 0, array('class' => 'defaultfont'), g_l('modules_customer', '[default_order]') . ':&nbsp;');
+		$table->setCol(++$cur, 0, array('class' => 'defaultfont'), g_l('modules_customer', '[default_order]') . ':&nbsp;');
 		$table->setCol($cur, 1, array(), we_html_tools::getPixel(5, 30));
 		$table->setCol($cur, 2, array('class' => 'defaultfont'), $default_order->getHtml());
 
@@ -1004,7 +1001,7 @@ function populateDate_' . $field . '(){
 		$default_saveRegisteredUser_register->addOption('true', 'true');
 		$default_saveRegisteredUser_register->selectOption($this->View->settings->getPref('default_saveRegisteredUser_register'));
 
-		$table->setCol( ++$cur, 0, array('class' => 'defaultfont'), '&lt;we:saveRegisteredUser register=&quot;');
+		$table->setCol(++$cur, 0, array('class' => 'defaultfont'), '&lt;we:saveRegisteredUser register=&quot;');
 		$table->setCol($cur, 1, array(), we_html_tools::getPixel(5, 30));
 		$table->setCol($cur, 2, array('class' => 'defaultfont'), $default_saveRegisteredUser_register->getHtml() . '&quot;/>');
 
