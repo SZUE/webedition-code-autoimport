@@ -25,7 +25,7 @@
 abstract class weVotingTreeLoader{
 
 	static function getItems($pid, $offset = 0, $segment = 500, $sort = ""){
-		return weVotingTreeLoader::getItemsFromDB($pid, $offset, $segment);
+		return self::getItemsFromDB($pid, $offset, $segment);
 	}
 
 	static function getItemsFromDB($ParentID = 0, $offset = 0, $segment = 500, $elem = "ID,ParentID,Path,Text,Icon,IsFolder,RestrictOwners,Owners,Active,ActiveTime,Valid", $addWhere = "", $addOrderBy = ""){
@@ -54,9 +54,6 @@ abstract class weVotingTreeLoader{
 				"offset" => $prevoffset
 			);
 		}
-
-
-
 
 		$where = " WHERE ParentID=" . intval($ParentID) . " " . $addWhere . $owners_sql;
 

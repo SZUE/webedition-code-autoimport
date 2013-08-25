@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weNavigationFrames extends weModuleFrames{
+class weNavigationFrames extends weModuleFrames {
 
 //class weNavigationFrames extends weToolFramesInterim {
 
@@ -120,17 +120,19 @@ class weNavigationFrames extends weModuleFrames{
 		return $this->View->getJSTop() . we_html_element::jsElement($this->Tree->getJSMakeNewEntry());
 	}
 
+	function getHTMLDocumentHeader(){
+		if(!empty($this->Model->Charset)){
+			we_html_tools::headerCtCharset('text/html', $this->Model->Charset);
+		}
+		print we_html_tools::getHtmlTop($this->module, $this->Model->Charset);
+	}
+
 	/**
 	 * Frame for tabs
 	 *
 	 * @return string
 	 */
 	function getHTMLEditorHeader(){
-
-		if(!empty($this->Model->Charset)){
-			we_html_tools::headerCtCharset('text/html', $this->Model->Charset);
-		}
-
 		if(isset($_REQUEST['home'])){
 			return $this->getHTMLDocument(
 					we_html_element::htmlBody(

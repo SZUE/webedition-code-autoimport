@@ -34,16 +34,16 @@ class weGlossaryTreeLoader{
 			weGlossary::TYPE_TEXTREPLACE,
 		);
 
-		$Temp = explode("_", $ParentId);
+		$Temp = explode('_', $ParentId);
 
 		if(in_array($Temp[(count($Temp) - 1)], $Types)){
 			$Type = array_pop($Temp);
-			$Language = implode("_", $Temp);
-			return weGlossaryTreeLoader::getItemsFromDB($Language, $Type, $Offset, $Segment);
+			$Language = implode('_', $Temp);
+			return self::getItemsFromDB($Language, $Type, $Offset, $Segment);
 		} else if(in_array($ParentId, $GLOBALS['weFrontendLanguages'])){
-			return weGlossaryTreeLoader::getTypes($ParentId);
+			return self::getTypes($ParentId);
 		} else {
-			return weGlossaryTreeLoader::getLanguages();
+			return self::getLanguages();
 		}
 	}
 
@@ -156,7 +156,7 @@ class weGlossaryTreeLoader{
 			($Segment ? 'LIMIT ' . intval($Offset) . ',' . intval($Segment) : '');
 
 		$Db->query($Query);
-		while($Db->next_record()){
+		while($Db->next_record(MYSQLI_ASSOC)){
 
 			$Item = array(
 				'id' => $Db->f('ID'),
@@ -168,7 +168,7 @@ class weGlossaryTreeLoader{
 				'tooltip' => $Db->f('ID'),
 				'offset' => $Offset,
 				'published' => ($Db->f('Published') > 0 ? true : false),
-				"icon" => $Db->f('Icon'),
+				'icon' => $Db->f('Icon'),
 			);
 
 			switch($Type){
@@ -191,9 +191,7 @@ class weGlossaryTreeLoader{
 			}
 
 			foreach($Db->Record as $Key => $Val){
-				if(!is_numeric($Key)){
-					$Item[strtolower($Key)] = (strtolower($Key) == "text" ? oldHtmlspecialchars($Val) : $Val);
-				}
+				$Item[strtolower($Key)] = (strtolower($Key) == "text" ? oldHtmlspecialchars($Val) : $Val);
 			}
 
 			$Items[] = $Item;
@@ -203,8 +201,8 @@ class weGlossaryTreeLoader{
 
 		$NextOffset = $Offset + $Segment;
 		if($Segment && ($Total > $NextOffset)){
-			$Item = array(
-				"id" => "next_" . $Language . "_" . $Type,
+			$Items[] = array(
+				"id" => 'next_' . $Language . "_" . $Type,
 				"parentid" => $Language . "_" . $Type,
 				"text" => "display (" . $NextOffset . "-" . ($NextOffset + $Segment) . ")",
 				"contenttype" => "arrowdown",
@@ -216,8 +214,6 @@ class weGlossaryTreeLoader{
 				"tooltip" => "",
 				"offset" => $NextOffset,
 			);
-
-			$Items[] = $Item;
 		}
 
 		return $Items;

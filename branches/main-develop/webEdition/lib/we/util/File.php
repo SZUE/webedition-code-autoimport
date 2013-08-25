@@ -115,7 +115,7 @@ abstract class we_util_File extends weFile{
 		if(!self::createLocalFolderByPath(str_replace('\\', '/', dirname($file_name)))){
 			return false;
 		}
-		return parent::save($file_name, $sourceCode);
+		return parent::save($file_name, $sourceCode) !== false;
 	}
 
 	/**

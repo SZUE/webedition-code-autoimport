@@ -2219,7 +2219,7 @@ class we_objectFile extends we_document{
 	}
 
 	function i_pathNotValid(){
-		return parent::i_pathNotValid() || ($this->ParentID == 0 || $this->ParentPath == '/' || strpos($this->Path, $this->RootDirPath) !== 0);
+		return parent::i_pathNotValid() || $this->ParentID == 0 || $this->ParentPath == '/' || strpos($this->Path, $this->RootDirPath) !== 0;
 	}
 
 	public function we_save($resave = 0, $skipHook = 0){

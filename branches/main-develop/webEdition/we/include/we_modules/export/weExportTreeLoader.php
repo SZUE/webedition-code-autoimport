@@ -25,7 +25,7 @@
 class weExportTreeLoader{
 
 	function getItems($pid, $offset = 0, $segment = 500, $sort = ""){
-		return weExportTreeLoader::getItemsFromDB($pid, $offset, $segment);
+		return self::getItemsFromDB($pid, $offset, $segment);
 	}
 
 	function getItemsFromDB($ParentID = 0, $offset = 0, $segment = 500, $elem = "ID,ParentID,Path,Text,Icon,IsFolder", $addWhere = "", $addOrderBy = ""){
@@ -52,9 +52,6 @@ class weExportTreeLoader{
 				"offset" => $prevoffset
 			);
 		}
-
-
-
 
 		$where = " WHERE ParentID=" . intval($ParentID) . " " . $addWhere;
 

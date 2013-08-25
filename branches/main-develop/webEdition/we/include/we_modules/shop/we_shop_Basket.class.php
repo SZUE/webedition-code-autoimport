@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_shop_Basket{
+class we_shop_Basket {
 
 	//FIXME: this is set back to public due to some shop restrictions, see #6530, #6954
 	/**
@@ -226,8 +226,12 @@ class we_shop_Basket{
 				break;
 			case we_shop_shop::OBJECT:
 				$classArray = getHash('SELECT * FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($id), $DB_WE);
+				if(empty($classArray)){
+					t_e('fatal shop error', $id, $_REQUEST);
+					return array();
+				}
 
-				$olv = new we_listview_object(0, 1, 0, '', 0, $classArray['TableID'], '', '', ' ' . OBJECT_X_TABLE . $classArray["TableID"] . '.ID=' . $classArray['ObjectID']);
+				$olv = new we_listview_object(0, 1, 0, '', 0, $classArray['TableID'], '', '', ' ' . OBJECT_X_TABLE . $classArray['TableID'] . '.ID=' . $classArray['ObjectID']);
 				$olv->next_record();
 
 				$Record = $olv->DB_WE->Record;
@@ -250,7 +254,7 @@ class we_shop_Basket{
 				if(!empty($customFields)){
 					foreach($customFields as $name => $value){
 						$Record[$name] = $value;
-						$Record['we_WE_PATH'] .= '&amp;' . WE_SHOP_ARTICLE_CUSTOM_FIELD . "[$name]=$value";
+						$Record['we_WE_PATH'] .= '&amp;' . WE_SHOP_ARTICLE_CUSTOM_FIELD . '[' . $name . ']=' . $value;
 					}
 				}
 

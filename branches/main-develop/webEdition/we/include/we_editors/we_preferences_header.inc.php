@@ -54,3 +54,4 @@ function getPreferencesCSS(){
 function getPreferencesHeader(){
 	return '<div id="main" >' . $GLOBALS['we_tabs']->getHTML() . '</div>';
 }
+
