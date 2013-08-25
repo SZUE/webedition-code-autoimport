@@ -151,7 +151,6 @@ class weModuleFrames{
 
 	function getHTMLHeader($_menuFile, $_module){
 		include($_menuFile);
-		require_once(WE_INCLUDES_PATH . 'jsMessageConsole/messageConsole.inc.php' );
 
 		$lang_arr = "we_menu_" . $_module;
 		$jmenu = new weJavaMenu($$lang_arr, 'top.opener.top.load', '');

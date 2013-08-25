@@ -29,10 +29,6 @@ function we_tag_sessionStart($attribs){
 
 	if(!isset($_SESSION)){
 		@session_start();
-		//FIXME: remove in 6.4; due to upgrade!
-		if(isset($_SESSION['we'])){
-			unset($_SESSION['we']);
-		}
 	}
 
 	if(!defined('CUSTOMER_TABLE')){
@@ -56,7 +52,7 @@ function we_tag_sessionStart($attribs){
 		if(isset($_REQUEST['we_set_registeredUser']) && $GLOBALS['we_doc']->InWebEdition){
 			$_SESSION['weS']['we_set_registered'] = $_REQUEST['we_set_registeredUser'];
 		}
-		if(!isset($GLOBALS['we_editmode']) || !$GLOBALS['we_editmode']){
+		if(!(isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'])){
 			if(!isset($_SESSION['webuser'])){
 				$_SESSION['webuser'] = array(
 					'registered' => false
@@ -84,40 +80,28 @@ function we_tag_sessionStart($attribs){
 			$monitorgroupfield = weTag_getAttribute('monitorgroupfield', $attribs);
 			$docAttr = weTag_getAttribute('monitordoc', $attribs);
 			$doc = we_getDocForTag($docAttr, false);
-			$PageID = $doc->ID;
-			$ObjectID = 0;
-			$SessionID = session_id();
-			$SessionIp = (!empty($_SERVER['REMOTE_ADDR'])) ? oldHtmlspecialchars((string) $_SERVER['REMOTE_ADDR']) : '';
 
-			$Browser = (!empty($_SERVER['HTTP_USER_AGENT'])) ? oldHtmlspecialchars((string) $_SERVER['HTTP_USER_AGENT']) : '';
-			$Referrer = (!empty($_SERVER['HTTP_REFERER'])) ? oldHtmlspecialchars((string) $_SERVER['HTTP_REFERER']) : '';
-			if($_SESSION['webuser']['registered']){
-				$WebUserID = $_SESSION['webuser']['ID'];
-				$WebUserGroup = ($monitorgroupfield != '' ? $_SESSION['webuser'][$monitorgroupfield] : 'we_guest');
-			} else {
-				$WebUserID = 0;
-				$WebUserGroup = 'we_guest';
-			}
-			$WebUserDescription = '';
+			$WebUserID = ($_SESSION['webuser']['registered'] ? $_SESSION['webuser']['ID'] : 0);
+			$WebUserGroup = ($_SESSION['webuser']['registered'] && !empty($monitorgroupfield) ? $_SESSION['webuser'][$monitorgroupfield] : 'we_guest');
 
 			$GLOBALS['DB_WE']->query('INSERT INTO ' . CUSTOMER_SESSION_TABLE . ' SET ' .
 				we_database_base::arraySetter(array(
-					'SessionID' => $SessionID,
-					'SessionIp' => $SessionIp,
+					'SessionID' => session_id(),
+					'SessionIp' => (empty($_SERVER['REMOTE_ADDR']) ? '' : oldHtmlspecialchars((string) $_SERVER['REMOTE_ADDR'])),
 					'WebUserID' => $WebUserID,
 					'WebUserGroup' => $WebUserGroup,
-					'WebUserDescription' => $WebUserDescription,
-					'Browser' => $Browser,
-					'Referrer' => $Referrer,
+					'WebUserDescription' => '',
+					'Browser' => (!empty($_SERVER['HTTP_USER_AGENT']) ? oldHtmlspecialchars((string) $_SERVER['HTTP_USER_AGENT']) : ''),
+					'Referrer' => (!empty($_SERVER['HTTP_REFERER']) ? oldHtmlspecialchars((string) $_SERVER['HTTP_REFERER']) : ''),
 					'LastLogin' => 'NOW()',
-					'PageID' => $PageID,
-					'ObjectID' => $ObjectID,
+					'PageID' => $doc->ID,
+					'ObjectID' => 0,
 					'SessionAutologin' => $SessionAutologin
 				)) . ' ON DUPLICATE KEY UPDATE ' . we_database_base::arraySetter(array(
-					'PageID' => $PageID,
-					'WebUserID' => intval($WebUserID),
+					'PageID' => $doc->ID,
+					'WebUserID' => $WebUserID,
 					'WebUserGroup' => $WebUserGroup,
-					'WebUserDescription' => $WebUserDescription,
+					'WebUserDescription' => '',
 			)));
 		}
 		return '';
