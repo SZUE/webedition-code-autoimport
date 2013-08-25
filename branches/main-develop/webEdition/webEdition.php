@@ -48,7 +48,7 @@ if(!isset($SEEM_edit_include) || !$SEEM_edit_include){
 
 
 //	check session
-we_html_tools::protect();
+we_html_tools::protect(null, WEBEDITION_DIR . 'index.php');
 
 cleanTempFiles();
 /* $sn = SERVER_NAME;

@@ -32,7 +32,7 @@ abstract class we_html_tools{
 
 	/** we_html_tools::protect()
 	  protects a page. Guests can not see this page */
-	static function protect(array $perms = null){
+	static function protect(array $perms = null, $redirect = ''){
 		$allow = false;
 		if($perms && is_array($perms)){
 			foreach($perms as $perm){
@@ -42,9 +42,10 @@ abstract class we_html_tools{
 			$allow = true;
 		}
 		if(!$allow || !isset($_SESSION['user']) || !isset($_SESSION['user']['Username']) || $_SESSION['user']['Username'] == ''){
+			self::setHttpCode(401);
 			print self::htmlTop() .
-				we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', '[perms_no_permissions]'), we_message_reporting::WE_MESSAGE_ERROR) . 'top.close();') .
-				'</body></html>';
+				we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', '[perms_no_permissions]'), we_message_reporting::WE_MESSAGE_ERROR) . ($redirect ? 'document.location = "' . $redirect . '"' : 'top.close();')) .
+				'</head><body></body></html>';
 			exit();
 		}
 	}
