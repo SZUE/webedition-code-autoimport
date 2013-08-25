@@ -35,7 +35,7 @@ class weCustomerFrames extends weModuleFrames {
 		parent::__construct(WE_CUSTOMER_MODULE_DIR . 'edit_customer_frameset.php');
 		$this->Tree = new weCustomerTree();
 		$this->setupTree(CUSTOMER_TABLE, "top.content", "top.content", "top.content.cmd");
-		$this->View = new weCustomerView(WE_CUSTOMER_MODULE_DIR . "edit_customer_frameset.php", "top.content");
+		$this->View = new we_customer_view(WE_CUSTOMER_MODULE_DIR . "edit_customer_frameset.php", "top.content");
 	}
 
 	function getHTMLDocumentHeader($what = '', $mode = ''){
@@ -472,7 +472,7 @@ function populateDate_' . $field . '(){
 								$table->setCol($c / 2, $c % 2, array('class' => 'defaultfont'), we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(array('class' => 'defaultgray'), we_forms::checkbox(1, $pv, 'AutoLogin', g_l('modules_customer', '[autologin_request]'), false, 'defaultfont', 'top.content.setHot();')), $this->View->settings->getPropertyTitle($pk)));
 								break;
 							case 'Password':
-								$table->setCol($c / 2, $c % 2, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($pk, 32, weCustomer::NOPWD_CHANGE, '', "onchange=\"top.content.setHot();\" ", 'password', "240px"), $this->View->settings->getPropertyTitle($pk)));
+								$table->setCol($c / 2, $c % 2, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($pk, 32, we_customer_customer::NOPWD_CHANGE, '', "onchange=\"top.content.setHot();\" ", 'password', "240px"), $this->View->settings->getPropertyTitle($pk)));
 								break;
 							case 'Username':
 								$inputattribs = ' id="yuiAcInputPathName" onblur="parent.edheader.setPathName(this.value); parent.edheader.setTitlePath()"';
@@ -660,7 +660,7 @@ function populateDate_' . $field . '(){
 	}
 
 	function getHTMLTreeHeader(){
-		return weCustomerAdd::getHTMLTreeHeader($this);
+		return we_customer_add::getHTMLTreeHeader($this);
 	}
 
 	function getHTMLTreeFooter(){
@@ -836,7 +836,7 @@ function populateDate_' . $field . '(){
 	}
 
 	function getHTMLSortEditor(){
-		return weCustomerAdd::getHTMLSortEditor($this);
+		return we_customer_add::getHTMLSortEditor($this);
 	}
 
 	function getHTMLSearch(){//TODO: this is popup search editor: make separate frameset for popups!
@@ -858,7 +858,7 @@ function populateDate_' . $field . '(){
 		$select = new we_html_select(array('name' => 'search_result', 'style' => 'width:550px;', 'onDblClick' => 'opener.' . $this->topFrame . ".we_cmd('edit_customer',document.we_form.search_result.options[document.we_form.search_result.selectedIndex].value)", "size" => 20));
 
 		if($mode){
-			weCustomerAdd::getHTMLSearch($this, $search, $select);
+			we_customer_add::getHTMLSearch($this, $search, $select);
 		} else {
 			$search->setCol(1, 0, array(), we_html_tools::htmlTextInput('keyword', 80, (isset($_REQUEST['keyword']) ? $_REQUEST['keyword'] : ''), '', 'onchange=""', 'text', '550px')
 			);

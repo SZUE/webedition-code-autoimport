@@ -28,7 +28,7 @@ define("CSV_LINEEND", "windows");
 define("CSV_FIELDS", "0");
 define("THE_CHARSET", "UTF-8");
 
-class weCustomerEIWizard{
+class we_customer_EIWizard{
 
 	var $frameset;
 	var $db;
@@ -852,8 +852,8 @@ class weCustomerEIWizard{
 			$arrgs["dataset"] = $dataset;
 		}
 
-		$nodes = weCustomerEI::getDataset($type, $filename, $arrgs);
-		$records = weCustomerEI::getCustomersFieldset();
+		$nodes = we_customer_EI::getDataset($type, $filename, $arrgs);
+		$records = we_customer_EI::getCustomersFieldset();
 
 		if($type == "gxml"){
 			$tableheader = array(array("dat" => g_l('modules_customer', '[we_flds]')), array("dat" => g_l('modules_customer', '[rcd_flds]')), array("dat" => g_l('import', "[attributes]")));
@@ -1298,7 +1298,7 @@ class weCustomerEIWizard{
 							$options["csv_lineend"] = $csv_lineend;
 							$options["csv_fieldnames"] = $csv_fieldnames;
 						}
-						weCustomerEI::exportCustomers($options);
+						we_customer_EI::exportCustomers($options);
 					}
 
 					$hiddens.=we_html_element::htmlHidden(array("name" => "art", "value" => "export")) .
@@ -1342,7 +1342,7 @@ class weCustomerEIWizard{
 					if($file_format == "gxml"){
 
 						$file_name = $_SERVER['DOCUMENT_ROOT'] . $path . '/' . $filename;
-						weCustomerEI::save2File($file_name, weBackup::weXmlExImFooter);
+						we_customer_EI::save2File($file_name, weBackup::weXmlExImFooter);
 					}
 
 					$head = we_html_tools::getHtmlInnerHead(g_l('modules_customer', '[export_title]')) . STYLESHEET;
@@ -1432,7 +1432,7 @@ class weCustomerEIWizard{
 						$options["xml_to"] = $xml_to;
 					}
 
-					$filesnum = weCustomerEI::prepareImport($options);
+					$filesnum = we_customer_EI::prepareImport($options);
 
 					$hiddens = we_html_element::htmlHidden(array("name" => "pnt", "value" => "eiload")) .
 						we_html_element::htmlHidden(array("name" => "art", "value" => "import")) .
@@ -1470,7 +1470,7 @@ class weCustomerEIWizard{
 					$same = isset($_REQUEST["same"]) ? $_REQUEST["same"] : "rename";
 					$impno = isset($_REQUEST["impno"]) ? $_REQUEST["impno"] : 0;
 
-					if(weCustomerEI::importCustomers(array(
+					if(we_customer_EI::importCustomers(array(
 							"xmlfile" => TEMP_PATH . "/$tmpdir/temp_$fstart.xml",
 							"field_mappings" => $field_mappings,
 							"att_mappings" => $att_mappings,

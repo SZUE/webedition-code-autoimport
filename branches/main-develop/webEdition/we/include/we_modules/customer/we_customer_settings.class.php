@@ -29,7 +29,7 @@
 define('DATE_FORMAT', 'Y-m-d H:i:s');
 define('DATE_ONLY_FORMAT', 'Y-m-d');
 
-class weCustomerSettings{
+class we_customer_settings{
 
 	private $db;
 	private $table = CUSTOMER_ADMIN_TABLE;
@@ -121,7 +121,7 @@ class weCustomerSettings{
 	function __construct(){
 		$this->db = new DB_WE();
 		//$this->table = CUSTOMER_ADMIN_TABLE;
-		$this->customer = new weCustomer();
+		$this->customer = new we_customer_customer();
 		$this->properties = array(
 			'default_saveRegisteredUser_register' => 'false',
 		);

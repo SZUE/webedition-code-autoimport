@@ -29,7 +29,7 @@ $mode = isset($_REQUEST['art']) ? $_REQUEST['art'] : 0;
 $ExImport = $weFrame = null;
 
 if($what == 'export' || $what == 'eibody' || $what == 'eifooter' || $what == 'eiload' || $what == 'import' || $what == 'eiupload'){
-	$ExImport = new weCustomerEIWizard();
+	$ExImport = new we_customer_EIWizard();
 	$step = (isset($_REQUEST['step']) ? $_REQUEST['step'] : 0);
 	$ExImport->getHTML($what, $mode, $step);
 } else{

@@ -32,7 +32,7 @@ class we_shop_shop {
 // This could be changed to: if(get_class($GLOBALS['lv']) == 'we_shop_shop')
 	//are you sure???
 
-	var $ClassName = 'we_listview_shoppingCart';
+	//var $ClassName = 'we_listview_shoppingCart';
 	var $DB_WE;
 	var $IDs = array();
 	var $count = 0;

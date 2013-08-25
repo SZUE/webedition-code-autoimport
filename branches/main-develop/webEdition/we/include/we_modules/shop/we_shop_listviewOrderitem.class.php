@@ -24,7 +24,7 @@
  */
 
 /**
- * class    we_listview_customer
+ * class    we_shop_listviewOrderitem
  * @desc    class for tag <we:listview type="banner">
  *
  */
@@ -125,7 +125,7 @@ class we_shop_listviewOrderitem extends listviewBase {
 								}
 						}
 						$this->DB_WE->Record[$key] = (substr($value, 0, 2) == 'a:' && $val = @unserialize($value)?$val:$value);
-						
+
 					}
 
 					unset($value);
@@ -166,7 +166,7 @@ class we_shop_listviewOrderitem extends listviewBase {
 			$this->DB_WE->Record['we_wedoc_lastPath'] = $this->LastDocPath . '?we_orderid=' . $this->DB_WE->Record['OrderID'] . '&we_orderitemid=' . $this->DB_WE->Record['ID'];
 			$this->count++;
 			return true;
-		} 
+		}
 
 		$this->stop_next_row = $this->shouldPrintEndTR();
 		if($this->cols && ($this->count <= $this->maxItemsPerPage) && !$this->stop_next_row){

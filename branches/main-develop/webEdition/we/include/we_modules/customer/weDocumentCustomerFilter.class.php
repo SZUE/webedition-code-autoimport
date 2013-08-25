@@ -351,7 +351,7 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter{
 	/**
 	 * Call this function, if customer is deleted
 	 *
-	 * @param weCustomer $webUser
+	 * @param we_customer_customer $webUser
 	 */
 	function deleteWebUser(&$webUser){
 

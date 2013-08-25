@@ -82,8 +82,8 @@ class we_listview_multiobject extends listviewBase {
 					$data = unserialize($obj->DB_WE->Record['we_' . $name]);
 				}
 			} else {
-				switch($GLOBALS["lv"]->ClassName){
-					case 'we_listview_shoppingCart':
+				switch(get_class($GLOBALS["lv"])){
+					case 'we_shop_shop':
 					case 'we_shop_listviewOrderitem':
 						if(isset($GLOBALS['lv']->Record[$name]) && $GLOBALS['lv']->Record[$name]){
 							$data = unserialize($GLOBALS['lv']->Record[$name]);

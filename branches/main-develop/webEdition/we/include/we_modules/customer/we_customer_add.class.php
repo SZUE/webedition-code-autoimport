@@ -22,11 +22,8 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weCustomerAdd{
-
-	var $db;
-
-	function getHTMLSortEditor(&$pob){
+abstract class we_customer_add{
+	static function getHTMLSortEditor(&$pob){
 		$branch = $pob->getHTMLBranchSelect();
 		$branch->setOptionVT(1, g_l('modules_customer', '[other]'), g_l('modules_customer', '[other]'));
 
@@ -170,7 +167,7 @@ class weCustomerAdd{
 		return $pob->getHTMLDocument($out);
 	}
 
-	function getJSSortAdmin(&$pob){
+	public static function getJSSortAdmin(&$pob){
 		return '
 function doUnload() {
 	if (!!jsWindow_count) {
@@ -236,7 +233,7 @@ function setScrollTo(){
 			' . $pob->getJSSubmitFunction("sort_admin");
 	}
 
-	function getJSSearch(&$pob){
+public static	function getJSSearch(&$pob){
 
 		return '
 function doUnload() {
@@ -286,7 +283,7 @@ function we_cmd(){
 		' . $pob->getJSSubmitFunction("search");
 	}
 
-	function getHTMLSearch(&$pob, &$search, &$select){
+	public static function getHTMLSearch(&$pob, &$search, &$select){
 		$count = $_REQUEST['count'];
 
 		$operators = array('=', '<>', '<', '<=', '>', '>=', 'LIKE');
@@ -374,14 +371,14 @@ function we_cmd(){
 			) . '</td><td>&nbsp;</td></tr></table>'
 		);
 		$max_res = $pob->View->settings->getMaxSearchResults();
-		$result = (!empty($search_arr) && $_REQUEST["search"] ? weCustomerAdd::getAdvSearchResults($search_arr, $count, $max_res) : array());
+		$result = (!empty($search_arr) && $_REQUEST["search"] ? self::getAdvSearchResults($search_arr, $count, $max_res) : array());
 
 		foreach($result as $id => $text){
 			$select->addOption($id, $text);
 		}
 	}
 
-	function getAdvSearchResults($keywords, $count, $res_num){
+	static function getAdvSearchResults($keywords, $count, $res_num){
 		$operators = array(
 			"0" => "=",
 			"1" => "<>",
@@ -406,7 +403,7 @@ function we_cmd(){
 		return $this->db->getAllFirst(false);
 	}
 
-	function getHTMLTreeHeader(&$pob){
+	static function getHTMLTreeHeader(&$pob){
 		$select = $pob->getHTMLSortSelect();
 		$select->setAttributes(array("OnChange" => "applySort();", "style" => "width:150px"));
 		$select->selectOption($pob->View->settings->getSettings('default_sort_view'));

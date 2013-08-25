@@ -63,7 +63,7 @@ function we_isFieldNotEmpty($attribs){
 			return false;
 		case 'multiobject' :
 			$data = (isset($GLOBALS['lv']) ?
-					(method_exists($GLOBALS['lv'], 'getObject') || $GLOBALS['lv']->ClassName == 'we_listview_shoppingCart' ?
+					(method_exists($GLOBALS['lv'], 'getObject') || get_class($GLOBALS['lv']) == 'we_shop_shop' ?
 						unserialize($GLOBALS['lv']->getObject()->f($orig_match)) :
 						unserialize($GLOBALS['lv']->getDBf('we_' . $orig_match))) :
 					unserialize($GLOBALS['we_doc']->getElement($orig_match)));
@@ -74,7 +74,7 @@ function we_isFieldNotEmpty($attribs){
 			}
 			return false;
 		case 'object' : //Bug 3837: erstmal die Klasse rausfinden um auf den Eintrag we_we_object_X zu kommen
-			if($GLOBALS['lv']->ClassName == 'we_listview'){ // listview/document with objects included using we:object
+			if(get_class($GLOBALS['lv']) == 'we_listview'){ // listview/document with objects included using we:object
 				return (bool) $GLOBALS['lv']->f($match);
 			}
 			$match = strpos($orig_match, '/') === false ? $orig_match : substr(strrchr($orig_match, '/'), 1);
@@ -91,16 +91,18 @@ function we_isFieldNotEmpty($attribs){
 		case 'int':
 			return intval($GLOBALS['lv']->f($match)) !== 0;
 		case 'href' :
-			if($GLOBALS['lv']->ClassName == 'we_listview_object' || $GLOBALS['lv']->ClassName == 'we_objecttag'){
-				$hrefArr = $GLOBALS['lv']->f($match) ? unserialize($GLOBALS['lv']->f($match)) : array();
-				if(!is_array($hrefArr)){
-					$hrefArr = array();
-				}
-				$hreftmp = trim(we_document::getHrefByArray($hrefArr));
-				if(substr($hreftmp, 0, 1) == '/' && (!file_exists($_SERVER['DOCUMENT_ROOT'] . $hreftmp))){
-					return false;
-				}
-				return (bool) $hreftmp;
+			switch(get_class($GLOBALS['lv'])){
+				case 'we_listview_object':
+				case 'we_objecttag':
+					$hrefArr = $GLOBALS['lv']->f($match) ? unserialize($GLOBALS['lv']->f($match)) : array();
+					if(!is_array($hrefArr)){
+						$hrefArr = array();
+					}
+					$hreftmp = trim(we_document::getHrefByArray($hrefArr));
+					if(substr($hreftmp, 0, 1) == '/' && (!file_exists($_SERVER['DOCUMENT_ROOT'] . $hreftmp))){
+						return false;
+					}
+					return (bool) $hreftmp;
 			}
 
 			// we must check $match . we_base_link::MAGIC_INT_LINK for block-Postfix instead of $match (which exists only for href type = ext): #6422

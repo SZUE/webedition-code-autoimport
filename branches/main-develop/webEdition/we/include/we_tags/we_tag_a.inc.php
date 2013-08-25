@@ -83,7 +83,7 @@ function we_tag_a($attribs, $content){
 				return $foo;
 			}
 			$amount = weTag_getAttribute('amount', $attribs, 1);
-			$foo = (isset($GLOBALS['lv']) && $GLOBALS['lv']->ClassName != 'we_listview_multiobject' ? $GLOBALS['lv']->count - 1 : -1);
+			$foo = (isset($GLOBALS['lv']) && get_class($GLOBALS['lv']) != 'we_listview_multiobject' ? $GLOBALS['lv']->count - 1 : -1);
 
 			// get ID of element
 			$customReq = '';

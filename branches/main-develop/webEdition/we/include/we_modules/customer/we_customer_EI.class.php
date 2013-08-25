@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-abstract class weCustomerEI{
+abstract class we_customer_EI{
 
 	public static function exportCustomers($options = array()){
 		$code = '';
@@ -52,14 +52,14 @@ abstract class weCustomerEI{
 	}
 
 	public static function getCustomersFieldset(){
-		$customer = new weCustomer();
+		$customer = new we_customer_customer();
 		return $customer->getFieldset();
 	}
 
 	public static function exportXML($options = array()){
 		if(isset($options['customers']) && is_array($options['customers'])){
 
-			$customer = new weCustomer();
+			$customer = new we_customer_customer();
 			$fields = $customer->getFieldsDbProperties();
 
 			$xml_out = (isset($options['firstexec']) && $options['firstexec'] == -999 ?
@@ -69,7 +69,7 @@ abstract class weCustomerEI{
 			foreach($options['customers'] as $cid){
 				if($cid){
 					$customer_xml = new we_baseCollection('customer');
-					$customer = new weCustomer($cid);
+					$customer = new we_customer_customer($cid);
 					if($customer->ID){
 						foreach($fields as $k => $v){
 							if(!$customer->isProtected($k)){
@@ -131,11 +131,11 @@ abstract class weCustomerEI{
 	function exportCSV($options = array()){
 		if(isset($options['customers']) && is_array($options['customers'])){
 			$customer_csv = array();
-			$customer = new weCustomer();
+			$customer = new we_customer_customer();
 			$fields = $customer->getFieldsDbProperties();
 			foreach($options['customers'] as $cid){
 				if($cid){
-					$customer = new weCustomer($cid);
+					$customer = new we_customer_customer($cid);
 					if($customer->ID){
 						$customer_csv[$cid] = array();
 						foreach($fields as $k => $v){
@@ -258,7 +258,7 @@ abstract class weCustomerEI{
 				if(file_exists($csvFile) && is_readable($csvFile)){
 
 					// create temp dir
-					$unique = weCustomerEI::getUniqueId();
+					$unique = self::getUniqueId();
 					$path = TEMP_PATH . '/' . $unique;
 
 					we_util_File::createLocalFolder($path);
@@ -292,8 +292,8 @@ abstract class weCustomerEI{
 						}
 						$rootnode['content'] = $value;
 						$code = '<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>' . "\n";
-						$code.=weCustomerEI::buildXMLElement(array($rootnode));
-						weCustomerEI::save2File($path . 'temp_' . $fcount . '.xml', $code, 'wb');
+						$code.=self::buildXMLElement(array($rootnode));
+						self::save2File($path . 'temp_' . $fcount . '.xml', $code, 'wb');
 						$fcount++;
 
 						$data = $csv->CSVFetchRow();
@@ -318,7 +318,7 @@ abstract class weCustomerEI{
 
 		$db = new DB_WE();
 
-		$customer = new weCustomer();
+		$customer = new we_customer_customer();
 		$xp = new we_xml_parser($xmlfile);
 
 		$fields = array_flip($field_mappings);
@@ -344,17 +344,17 @@ abstract class weCustomerEI{
 					}
 					$customer->Username = $new_name;
 					$customer->save();
-					weCustomerEI::save2File($logfile, sprintf(g_l('modules_customer', '[rename_customer]'), $oldname, $customer->Username) . "\n");
+					self::save2File($logfile, sprintf(g_l('modules_customer', '[rename_customer]'), $oldname, $customer->Username) . "\n");
 					$ret = true;
 					break;
 				case 'overwrite':
 					$customer->overwrite($existid);
-					weCustomerEI::save2File($logfile, sprintf(g_l('modules_customer', '[overwrite_customer]'), $customer->Username) . "\n");
+					self::save2File($logfile, sprintf(g_l('modules_customer', '[overwrite_customer]'), $customer->Username) . "\n");
 					$ret = true;
 					break;
 				default:
 				case 'skip':
-					weCustomerEI::save2File($logfile, sprintf(g_l('modules_customer', '[skip_customer]'), $customer->Username) . "\n");
+					self::save2File($logfile, sprintf(g_l('modules_customer', '[skip_customer]'), $customer->Username) . "\n");
 					break;
 			}
 		} else {

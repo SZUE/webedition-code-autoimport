@@ -188,22 +188,25 @@ function we_tag_listview($attribs){
 			$we_lv_langguagesdoc = we_getDocForTag($we_lv_pagelanguage);
 			$we_lv_ownlanguage = $we_lv_langguagesdoc->Language;
 
-			if(isset($GLOBALS['lv']) && ($GLOBALS['lv']->ClassName == 'we_listview_object' || $GLOBALS['lv']->ClassName == 'we_objecttag')){
-				$record = $GLOBALS['lv']->ClassName == 'we_listview_object' ? $GLOBALS['lv']->DB_WE->Record : $GLOBALS['lv']->getObject()->DB_WE->Record;
-				$we_lv_pageID = $record['OF_ID'];
-				$we_lv_linktype = 'tblObjectFile';
-				$we_lv_pagelanguage = $we_lv_pagelanguage == 'self' ? $record['OF_Language'] : ($we_lv_pagelanguage == 'top' ? $we_lv_ownlanguage : $we_lv_pagelanguage);
-				$we_lv_ownlanguage = $record['OF_Language'];
-			} else{
-				$we_lv_pagelanguage = $we_lv_pagelanguage == 'self' || $we_lv_pagelanguage == 'top' ? $we_lv_ownlanguage : we_getDocForTag($docAttr);
-
-				if(isset($we_lv_langguagesdoc->TableID) && $we_lv_langguagesdoc->TableID){
-					$we_lv_pageID = $we_lv_langguagesdoc->OF_ID;
+			switch(isset($GLOBALS['lv']) ? get_class($GLOBALS['lv']) : ''){
+				case 'we_listview_object':
+				case 'we_objecttag':
+					$record = get_class($GLOBALS['lv']) == 'we_listview_object' ? $GLOBALS['lv']->DB_WE->Record : $GLOBALS['lv']->getObject()->DB_WE->Record;
+					$we_lv_pageID = $record['OF_ID'];
 					$we_lv_linktype = 'tblObjectFile';
-				} else {
-					$we_lv_pageID = $we_lv_langguagesdoc->ID;
-					$we_lv_linktype = 'tblFile';
-				}
+					$we_lv_pagelanguage = $we_lv_pagelanguage == 'self' ? $record['OF_Language'] : ($we_lv_pagelanguage == 'top' ? $we_lv_ownlanguage : $we_lv_pagelanguage);
+					$we_lv_ownlanguage = $record['OF_Language'];
+					break;
+				default:
+					$we_lv_pagelanguage = $we_lv_pagelanguage == 'self' || $we_lv_pagelanguage == 'top' ? $we_lv_ownlanguage : we_getDocForTag($docAttr);
+
+					if(isset($we_lv_langguagesdoc->TableID) && $we_lv_langguagesdoc->TableID){
+						$we_lv_pageID = $we_lv_langguagesdoc->OF_ID;
+						$we_lv_linktype = 'tblObjectFile';
+					} else {
+						$we_lv_pageID = $we_lv_langguagesdoc->ID;
+						$we_lv_linktype = 'tblFile';
+					}
 			}
 			unset($we_lv_langguagesdoc);
 
@@ -214,11 +217,11 @@ function we_tag_listview($attribs){
 				print modulFehltError('Customer', __FUNCTION__ . ' type="customer"');
 				return;
 			}
-			$GLOBALS['lv'] = new we_listview_customer($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $cond, $cols, $docid, $hidedirindex);
+			$GLOBALS['lv'] = new we_customer_listview($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $cond, $cols, $docid, $hidedirindex);
 			break;
 		case 'onlinemonitor':
 			if(defined('CUSTOMER_SESSION_TABLE')){
-				$GLOBALS['lv'] = new we_listview_onlinemonitor($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $cond, $cols, $docid, $lastaccesslimit, $lastloginlimit, $hidedirindex);
+				$GLOBALS['lv'] = new we_customer_onlinemonitor($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $cond, $cols, $docid, $lastaccesslimit, $lastloginlimit, $hidedirindex);
 				break;
 			}
 			print modulFehltError('Customer', __FUNCTION__ . ' type="onlinemonitor"');
@@ -269,8 +272,10 @@ function we_tag_listview($attribs){
 			$docId = weTag_getAttribute('documentid', $attribs);
 			$objectId = weTag_getAttribute('objectid', $attribs, 0);
 			if($objectId == 0){
-				if(isset($GLOBALS['lv']->ClassName) && $GLOBALS['lv']->ClassName == 'we_objecttag' || isset($GLOBALS['lv']->ClassName) && $GLOBALS['lv']->ClassName == 'we_listview_object'){
-					$objectId = $GLOBALS['lv']->getDBf('OF_ID');
+				switch(isset($GLOBALS['lv']) ? get_class($GLOBALS['lv']) : ''){
+					case 'we_objecttag':
+					case 'we_listview_object':
+						$objectId = $GLOBALS['lv']->getDBf('OF_ID');
 				}
 			}
 			$GLOBALS['lv'] = new we_shop_listviewShopVariants($name, $we_rows, $defaultname, $docId, $objectId, $we_offset, $hidedirindex, $objectseourls);

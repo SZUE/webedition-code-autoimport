@@ -27,7 +27,7 @@
  * General Definition of WebEdition Customer
  *
  */
-class weCustomer extends weModelBase{
+class we_customer_customer extends weModelBase{
 
 	const NOPWD_CHANGE = '__WE__PWD_NO_CHANGE';
 

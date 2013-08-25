@@ -24,13 +24,12 @@
  */
 
 /**
- * class    we_listview_customer
+ * class    we_listview_onlinemonitor
  * @desc    class for tag
  *
  */
-class we_listview_onlinemonitor extends listviewBase{
+class we_customer_onlinemonitor extends listviewBase{
 
-	var $ClassName = __CLASS__;
 	var $condition = '';
 	var $Path = '';
 	var $docID = 0;

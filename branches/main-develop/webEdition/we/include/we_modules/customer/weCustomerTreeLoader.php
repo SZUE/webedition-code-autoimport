@@ -52,7 +52,7 @@ class weCustomerTreeLoader{
 				)) : array());
 
 
-		$settings = new weCustomerSettings();
+		$settings = new we_customer_settings();
 		$settings->load();
 
 
@@ -132,7 +132,7 @@ class weCustomerTreeLoader{
 			$pidarr = explode("-|-", $pid);
 		}
 
-		$settings = new weCustomerSettings();
+		$settings = new we_customer_settings();
 		$settings->load(false);
 
 		if(isset($settings->SortView[$sort])){

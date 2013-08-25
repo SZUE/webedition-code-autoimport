@@ -24,7 +24,7 @@
  */
 
 /**
- * class    we_listview_customer
+ * class    we_shop_listviewOrder
  * @desc    class for tag <we:listview type="banner">
  *
  */

@@ -24,7 +24,7 @@
  */
 /* the parent class of storagable webEdition classes */
 
-class weCustomerView extends weModuleView{
+class we_customer_view extends weModuleView{
 
 	//private $db;
 	var $frameset;
@@ -42,8 +42,8 @@ class weCustomerView extends weModuleView{
 		$this->db = new DB_WE();
 		$this->setFramesetName($frameset);
 		$this->setTopFrame($topframe);
-		$this->customer = new weCustomer();
-		$this->settings = new weCustomerSettings();
+		$this->customer = new we_customer_customer();
+		$this->settings = new we_customer_settings();
 		$this->settings->customer = & $this->customer;
 		$this->settings->load();
 	}
@@ -80,452 +80,443 @@ class weCustomerView extends weModuleView{
 			}
 		}
 
-		$js = '
-			var get_focus = 1;
-			var activ_tab = 0;
-			var hot= 0;
-			var scrollToVal=0;
+		return we_html_element::jsScript(JS_DIR . 'windows.js') . we_html_element::jsElement('
+var get_focus = 1;
+var activ_tab = 0;
+var hot= 0;
+var scrollToVal=0;
 
-			function setHot() {
-				hot = "1";
+function setHot() {
+	hot = "1";
+}
+
+parent.document.title = "' . $title . '";
+
+function usetHot() {
+	hot = "0";
+}
+
+function doUnload() {
+	if (!!jsWindow_count) {
+		for (i = 0; i < jsWindow_count; i++) {
+			eval("jsWindow" + i + "Object.close()");
+		}
+	}
+}
+
+function we_cmd() {
+	var args = "";
+	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
+	if(hot == "1" && arguments[0] != "save_customer") {
+		if(confirm("' . g_l('modules_customer', '[save_changed_customer]') . '")) {
+			arguments[0] = "save_customer";
+		} else {
+			top.content.usetHot();
+		}
+	}
+	switch (arguments[0]) {
+		case "exit_customer":
+			if(hot != "1") {
+				eval(\'top.opener.top.we_cmd("exit_modules")\');
 			}
-
-			parent.document.title = "' . $title . '";
-
-			function usetHot() {
-				hot = "0";
+			break;
+		case "new_customer":
+			if(' . $this->topFrame . '.editor.edbody.loaded) {
+				' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value = arguments[0];
+				' . $this->topFrame . '.editor.edbody.document.we_form.cmdid.value = arguments[1];
+				' . $this->topFrame . '.editor.edbody.submitForm();
+			} else {
+				setTimeout(\'we_cmd("new_customer");\', 10);
 			}
+			break;
 
-			function doUnload() {
-				if (!!jsWindow_count) {
-					for (i = 0; i < jsWindow_count; i++) {
-						eval("jsWindow" + i + "Object.close()");
-					}
-				}
-			}
-
-			function we_cmd() {
-				var args = "";
-				var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
-				if(hot == "1" && arguments[0] != "save_customer") {
-					if(confirm("' . g_l('modules_customer', '[save_changed_customer]') . '")) {
-						arguments[0] = "save_customer";
-					} else {
-						top.content.usetHot();
-					}
-				}
-				switch (arguments[0]) {
-					case "exit_customer":
-						if(hot != "1") {
-							eval(\'top.opener.top.we_cmd("exit_modules")\');
-						}
-						break;
-					case "new_customer":
-						if(' . $this->topFrame . '.editor.edbody.loaded) {
-							' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value = arguments[0];
-							' . $this->topFrame . '.editor.edbody.document.we_form.cmdid.value = arguments[1];
+		case "delete_customer":
+			if(top.content.editor.edbody.document.we_form.cmd.value=="home") return;
+			' . (!we_hasPerm("DELETE_CUSTOMER") ?
+					('
+				' . we_message_reporting::getShowMessageCall(g_l('modules_customer', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR) . '
+			') :
+					('
+					if (' . $this->topFrame . '.editor.edbody.loaded) {
+						if (confirm("' . g_l('modules_customer', '[delete_alert]') . '")) {
+							' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value=arguments[0];
 							' . $this->topFrame . '.editor.edbody.submitForm();
-						} else {
-							setTimeout(\'we_cmd("new_customer");\', 10);
 						}
-						break;
+					} else {
+						' . we_message_reporting::getShowMessageCall(g_l('modules_customer', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR) . '
+					}
 
-					case "delete_customer":
-						if(top.content.editor.edbody.document.we_form.cmd.value=="home") return;
-						' . (!we_hasPerm("DELETE_CUSTOMER") ?
-				('
-							' . we_message_reporting::getShowMessageCall(g_l('modules_customer', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-						') :
-				('
-								if (' . $this->topFrame . '.editor.edbody.loaded) {
-									if (confirm("' . g_l('modules_customer', '[delete_alert]') . '")) {
-										' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value=arguments[0];
-										' . $this->topFrame . '.editor.edbody.submitForm();
-									}
-								} else {
-									' . we_message_reporting::getShowMessageCall(g_l('modules_customer', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-								}
+			')) . '
+			break;
 
-						')) . '
-						break;
+		case "save_customer":
+			if(top.content.editor.edbody.document.we_form.cmd.value=="home") return;
+			' . ((!we_hasPerm("EDIT_CUSTOMER") && !we_hasPerm("NEW_CUSTOMER")) ?
+					('
+				' . we_message_reporting::getShowMessageCall(g_l('modules_customer', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR) . '
+			') :
+					('
 
-					case "save_customer":
-						if(top.content.editor.edbody.document.we_form.cmd.value=="home") return;
-						' . ((!we_hasPerm("EDIT_CUSTOMER") && !we_hasPerm("NEW_CUSTOMER")) ?
-				('
-							' . we_message_reporting::getShowMessageCall(g_l('modules_customer', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-						') :
-				('
+					if (' . $this->topFrame . '.editor.edbody.loaded) {
+							' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value=arguments[0];
+							' . $this->topFrame . '.editor.edbody.submitForm();
+					} else {
+						' . we_message_reporting::getShowMessageCall(g_l('modules_customer', '[nothing_to_save]'), we_message_reporting::WE_MESSAGE_ERROR) . '
+					}
+			')) . '
+			top.content.usetHot();
+			break;
 
-								if (' . $this->topFrame . '.editor.edbody.loaded) {
-										' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value=arguments[0];
-										' . $this->topFrame . '.editor.edbody.submitForm();
-								} else {
-									' . we_message_reporting::getShowMessageCall(g_l('modules_customer', '[nothing_to_save]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-								}
-						')) . '
-						top.content.usetHot();
-						break;
-
-					case "edit_customer":
-						' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value=arguments[0];
-						' . $this->topFrame . '.editor.edbody.document.we_form.cmdid.value=arguments[1];
-						' . $this->topFrame . '.editor.edbody.submitForm();
-					break;
-					case "show_admin":
-					case "show_sort_admin":
-						if(' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value=="home") ' . $this->topFrame . '.editor.edbody.document.we_form.home.value="1";
-						' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value=arguments[0];
-						' . $this->topFrame . '.editor.edbody.document.we_form.cmdid.value=arguments[1];
-						' . $this->topFrame . '.editor.edbody.submitForm();
-					break;
-					case "show_search":
-					case "show_customer_settings":
-					case "export_customer":
-					case "import_customer":
-						' . $this->topFrame . '.editor.edbody.we_cmd(arguments[0]);
-					break;
-					case "load":
-						' . $this->topFrame . '.cmd.location="' . $this->frameset . '?pnt=cmd&pid="+arguments[1]+"&offset="+arguments[2]+"&sort="+arguments[3];
-					break;
-					default:
-						for (var i = 0; i < arguments.length; i++) {
-							args += "arguments["+i+"]" + ((i < (arguments.length-1)) ? "," : "");
-						}
-						eval("top.opener.top.we_cmd(" + args + ")");
-				}
-			}';
-
-		return we_html_element::jsScript(JS_DIR . 'windows.js') . we_html_element::jsElement($js);
+		case "edit_customer":
+			' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value=arguments[0];
+			' . $this->topFrame . '.editor.edbody.document.we_form.cmdid.value=arguments[1];
+			' . $this->topFrame . '.editor.edbody.submitForm();
+		break;
+		case "show_admin":
+		case "show_sort_admin":
+			if(' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value=="home") ' . $this->topFrame . '.editor.edbody.document.we_form.home.value="1";
+			' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value=arguments[0];
+			' . $this->topFrame . '.editor.edbody.document.we_form.cmdid.value=arguments[1];
+			' . $this->topFrame . '.editor.edbody.submitForm();
+		break;
+		case "show_search":
+		case "show_customer_settings":
+		case "export_customer":
+		case "import_customer":
+			' . $this->topFrame . '.editor.edbody.we_cmd(arguments[0]);
+		break;
+		case "load":
+			' . $this->topFrame . '.cmd.location="' . $this->frameset . '?pnt=cmd&pid="+arguments[1]+"&offset="+arguments[2]+"&sort="+arguments[3];
+		break;
+		default:
+			for (var i = 0; i < arguments.length; i++) {
+				args += "arguments["+i+"]" + ((i < (arguments.length-1)) ? "," : "");
+			}
+			eval("top.opener.top.we_cmd(" + args + ")");
+	}
+}');
 	}
 
 	function getJSProperty(){
-		$out = we_html_element::jsScript(JS_DIR . 'windows.js');
+		return we_html_element::jsScript(JS_DIR . 'windows.js') .
+			we_html_element::jsElement('
+var loaded=0;
 
-		$js = '
-			var loaded=0;
+function doUnload() {
+	if (!!jsWindow_count) {
+		for (i = 0; i < jsWindow_count; i++) {
+			eval("jsWindow" + i + "Object.close()");
+		}
+	}
+}
 
-			function doUnload() {
-				if (!!jsWindow_count) {
-					for (i = 0; i < jsWindow_count; i++) {
-						eval("jsWindow" + i + "Object.close()");
-					}
-				}
+function we_cmd() {
+	var args = "";
+	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
+
+	switch (arguments[0]) {
+		case "browse_users":
+			new jsWindow(url,"browse_users",-1,-1,500,300,true,false,true);
+		break;
+		case "openDocselector":
+			new jsWindow(url,"we_fileselector",-1,-1,' . we_fileselector::WINDOW_DOCSELECTOR_WIDTH . ',' . we_fileselector::WINDOW_DOCSELECTOR_HEIGHT . ',true,true,true,true);
+		break;
+		case "switchPage":
+			document.we_form.cmd.value=arguments[0];
+			document.we_form.branch.value=arguments[1];
+			submitForm();
+		break;
+		case "show_search":
+			keyword = top.content.we_form_treefooter.keyword.value;
+			new jsWindow("' . WE_CUSTOMER_MODULE_DIR . 'edit_customer_frameset.php?pnt=search&search=1&keyword=" + keyword,"search",-1,-1,650,600,true,true,true,false);
+			break;
+		case "show_customer_settings":
+			new jsWindow("' . WE_CUSTOMER_MODULE_DIR . 'edit_customer_frameset.php?pnt=settings","customer_settings",-1,-1,570,270,true,true,true,false);
+			break;
+		case "export_customer":
+			new jsWindow("' . WE_CUSTOMER_MODULE_DIR . 'edit_customer_frameset.php?pnt=export","export_customer",-1,-1,640,600,true,true,true,false);
+			break;
+		case "import_customer":
+			new jsWindow("' . WE_CUSTOMER_MODULE_DIR . 'edit_customer_frameset.php?pnt=import","import_customer",-1,-1,640,600,true,true,true,false);
+			break;
+		default:
+			for (var i = 0; i < arguments.length; i++) {
+				args += "arguments["+i+"]" + ((i < (arguments.length-1)) ? "," : "");
 			}
+			eval("top.content.we_cmd("+args+")");
+	}
+}
 
-			function we_cmd() {
-				var args = "";
-				var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
+function setMultiSelectData(name,max){
+	var tmp="";
+	for (var i=0; i<max; ++i){
+		var val=document.getElementsByName(name+"_multi_"+i)[0];
+		if(val.checked){
+			tmp+=val.value+",";
+		}
+	}
+	tmp=tmp.substr(0,tmp.length-1);
+	document.getElementsByName(name)[0].value=tmp;
+	top.content.setHot();
+}
 
-				switch (arguments[0]) {
-					case "browse_users":
-						new jsWindow(url,"browse_users",-1,-1,500,300,true,false,true);
-					break;
-					case "openDocselector":
-						new jsWindow(url,"we_fileselector",-1,-1,' . we_fileselector::WINDOW_DOCSELECTOR_WIDTH . ',' . we_fileselector::WINDOW_DOCSELECTOR_HEIGHT . ',true,true,true,true);
-					break;
-					case "switchPage":
-						document.we_form.cmd.value=arguments[0];
-						document.we_form.branch.value=arguments[1];
-						submitForm();
-					break;
-					case "show_search":
-						keyword = top.content.we_form_treefooter.keyword.value;
-						new jsWindow("' . WE_CUSTOMER_MODULE_DIR . 'edit_customer_frameset.php?pnt=search&search=1&keyword=" + keyword,"search",-1,-1,650,600,true,true,true,false);
-						break;
-					case "show_customer_settings":
-						new jsWindow("' . WE_CUSTOMER_MODULE_DIR . 'edit_customer_frameset.php?pnt=settings","customer_settings",-1,-1,570,270,true,true,true,false);
-						break;
-					case "export_customer":
-						new jsWindow("' . WE_CUSTOMER_MODULE_DIR . 'edit_customer_frameset.php?pnt=export","export_customer",-1,-1,640,600,true,true,true,false);
-						break;
-					case "import_customer":
-						new jsWindow("' . WE_CUSTOMER_MODULE_DIR . 'edit_customer_frameset.php?pnt=import","import_customer",-1,-1,640,600,true,true,true,false);
-						break;
-					default:
-						for (var i = 0; i < arguments.length; i++) {
-							args += "arguments["+i+"]" + ((i < (arguments.length-1)) ? "," : "");
-						}
-						eval("top.content.we_cmd("+args+")");
-				}
-			}
+function formatDate(date,format){
 
-			function setMultiSelectData(name,max){
-				var tmp="";
-				for (var i=0; i<max; ++i){
-					var val=document.getElementsByName(name+"_multi_"+i)[0];
-					if(val.checked){
-						tmp+=val.value+",";
-					}
-				}
-				tmp=tmp.substr(0,tmp.length-1);
-				document.getElementsByName(name)[0].value=tmp;
-				top.content.setHot();
-			}
+	var daynum=date.getDate();
+	var day=daynum.toString();
+	if(format.search("d")!=-1)
+		if(daynum<10) day="0"+day;
 
-			function formatDate(date,format){
+	format=format.replace("d",day);
+	format=format.replace("j",day);
 
-				var daynum=date.getDate();
-				var day=daynum.toString();
-				if(format.search("d")!=-1)
-					if(daynum<10) day="0"+day;
+	var monthnum=date.getMonth()+1;
+	var month=monthnum.toString();
+	if(format.search("m")!=-1)
+		if(monthnum<10) month="0"+month;
 
-				format=format.replace("d",day);
-				format=format.replace("j",day);
+	format=format.replace("m",month);
+	format=format.replace("n",month);
 
-				var monthnum=date.getMonth()+1;
-				var month=monthnum.toString();
-				if(format.search("m")!=-1)
-					if(monthnum<10) month="0"+month;
+	format=format.replace("Y",date.getFullYear());
+	var yearnum=date.getYear();
+	var year=yearnum.toString();
+	format=format.replace("y",year.substr(2,2));
 
-				format=format.replace("m",month);
-				format=format.replace("n",month);
+	var hournum=date.getHours();
+	var hour=hournum.toString();
+	if(format.search("H")!=-1)
+		if(hournum<10) hour="0"+hour;
 
-				format=format.replace("Y",date.getFullYear());
-				var yearnum=date.getYear();
-				var year=yearnum.toString();
-				format=format.replace("y",year.substr(2,2));
+	format=format.replace("H",hour);
+	format=format.replace("G",hour);
 
-				var hournum=date.getHours();
-				var hour=hournum.toString();
-				if(format.search("H")!=-1)
-					if(hournum<10) hour="0"+hour;
+	var minnum=date.getMinutes();
+	var min=minnum.toString();
+	if(minnum<10) min="0"+min;
 
-				format=format.replace("H",hour);
-				format=format.replace("G",hour);
-
-				var minnum=date.getMinutes();
-				var min=minnum.toString();
-				if(minnum<10) min="0"+min;
-
-				format=format.replace("i",min);
+	format=format.replace("i",min);
 
 
-				/*var secnum=date.getSeconds();
-				var sec=secnum.toString();
-				if(secnum<10) sec="0"+sec;*/
+	/*var secnum=date.getSeconds();
+	var sec=secnum.toString();
+	if(secnum<10) sec="0"+sec;*/
 
-				var sec="00";
+	var sec="00";
 
-				format=format.replace("s",sec);
+	format=format.replace("s",sec);
 
-				format=format.replace(/\\\/g,"");
+	format=format.replace(/\\\/g,"");
 
-				return format;
-			}
+	return format;
+}
 
-			function refreshForm(){
-				if(document.we_form.cmd.value!="home"){
-					we_cmd("switchPage",' . $this->topFrame . '.activ_tab);
-					' . $this->topFrame . '.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->customer->Text) . '";
-				}
-			}
-			' . $this->getJSSubmitFunction();
-
-		$out.=we_html_element::jsElement($js);
-		return $out;
+function refreshForm(){
+	if(document.we_form.cmd.value!="home"){
+		we_cmd("switchPage",' . $this->topFrame . '.activ_tab);
+		' . $this->topFrame . '.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->customer->Text) . '";
+	}
+}' . $this->getJSSubmitFunction());
 	}
 
 	function getJSSortAdmin(){
-		return weCustomerAdd::getJSSortAdmin($this);
+		return we_customer_add::getJSSortAdmin($this);
 	}
 
 	function getJSAdmin(){
-		return
-			'
-			function doUnload() {
-				if (!!jsWindow_count) {
-					for (i = 0; i < jsWindow_count; i++) {
-						eval("jsWindow" + i + "Object.close()");
-					}
+		return '
+function doUnload() {
+	if (!!jsWindow_count) {
+		for (i = 0; i < jsWindow_count; i++) {
+			eval("jsWindow" + i + "Object.close()");
+		}
+	}
+}
+
+function we_cmd(){
+	var args = "";
+	var url = "' . $this->frameset . '?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
+
+	switch (arguments[0]) {
+		case "open_add_field":
+			var branch=document.we_form.branch.value;
+			url = "' . $this->frameset . '?pnt=field_editor&art=add&branch="+branch;
+			new jsWindow(url,"field_editor",-1,-1,380,250,true,false,true);
+		break;
+		case "open_edit_field":
+			var field=document.we_form.fields_select.value;
+			var branch=document.we_form.branch.value;
+			if(field=="") {
+				' . we_message_reporting::getShowMessageCall(g_l('modules_customer', '[no_field]'), we_message_reporting::WE_MESSAGE_ERROR) . '
+			} else{
+					url = "' . $this->frameset . '?pnt=field_editor&art=edit&field="+field+"&branch="+branch;
+					new jsWindow(url,"field_editor",-1,-1,380,250,true,false,true);
+			}
+		break;
+		case "delete_field":
+			var field=document.we_form.fields_select.value;
+			if(field=="") {
+			 ' . we_message_reporting::getShowMessageCall(g_l('modules_customer', '[no_field]'), we_message_reporting::WE_MESSAGE_ERROR) . '
+			} else{
+				if(confirm("' . g_l('modules_customer', '[del_fild_question]') . '")){
+					document.we_form.cmd.value=arguments[0];
+					submitForm();
 				}
 			}
-
-			function we_cmd(){
-				var args = "";
-				var url = "' . $this->frameset . '?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
-
-				switch (arguments[0]) {
-					case "open_add_field":
-						var branch=document.we_form.branch.value;
-						url = "' . $this->frameset . '?pnt=field_editor&art=add&branch="+branch;
-						new jsWindow(url,"field_editor",-1,-1,380,250,true,false,true);
-					break;
-					case "open_edit_field":
-						var field=document.we_form.fields_select.value;
-						var branch=document.we_form.branch.value;
-						if(field=="") {
-							' . we_message_reporting::getShowMessageCall(g_l('modules_customer', '[no_field]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-						} else{
-								url = "' . $this->frameset . '?pnt=field_editor&art=edit&field="+field+"&branch="+branch;
-								new jsWindow(url,"field_editor",-1,-1,380,250,true,false,true);
-						}
-					break;
-					case "delete_field":
-						var field=document.we_form.fields_select.value;
-						if(field=="") {
-						 ' . we_message_reporting::getShowMessageCall(g_l('modules_customer', '[no_field]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-						} else{
-							if(confirm("' . g_l('modules_customer', '[del_fild_question]') . '")){
-								document.we_form.cmd.value=arguments[0];
-								submitForm();
-							}
-						}
-					break;
-					case "reset_edit_order":
-						var field=document.we_form.fields_select.value;
-						var branch=document.we_form.branch.value;
-							if(confirm("' . g_l('modules_customer', '[reset_edit_order_question]') . '")){
-								document.we_form.cmd.value=arguments[0];
-								submitForm();
-							}
-					break;
-					case "move_field_up":
-						var field=document.we_form.fields_select.value;
-						var branch=document.we_form.branch.value;
-						if(field=="") {
-							' . we_message_reporting::getShowMessageCall(g_l('modules_customer', '[no_field]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-						} else{
-								document.we_form.cmd.value=arguments[0];
-								submitForm();
-						}
-					break;
-					case "move_field_down":
-						var field=document.we_form.fields_select.value;
-						var branch=document.we_form.branch.value;
-						if(field=="") {
-							' . we_message_reporting::getShowMessageCall(g_l('modules_customer', '[no_field]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-						} else{
-								document.we_form.cmd.value=arguments[0];
-								submitForm();
-						}
-					break;
-					case "open_edit_branch":
-						var branch=document.we_form.branch_select.options[document.we_form.branch_select.selectedIndex].text;
-						if(branch=="") {
-							' . we_message_reporting::getShowMessageCall(g_l('modules_customer', '[no_branch]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-						} else if(branch=="' . g_l('modules_customer', '[other]') . '") {
-							' . we_message_reporting::getShowMessageCall(g_l('modules_customer', '[branch_no_edit]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-						} else{
-								url = "' . $this->frameset . '?pnt=branch_editor&art=edit&&branch="+branch;
-								new jsWindow(url,"field_editor",-1,-1,380,250,true,false,true);
-						}
-					break;
-					case "save_branch":
-					case "save_field":
-						var field_name=document.we_form.name.value;
-						if(field_name=="" || field_name.match(/[^a-zA-Z0-9\_]/)!=null){
-							' . we_message_reporting::getShowMessageCall(g_l('modules_customer', '[we_fieldname_notValid]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-						}
-						else{
-							document.we_form.cmd.value=arguments[0];
-							submitForm("field_editor");
-						}
-					break;
-					default:
-						for (var i = 0; i < arguments.length; i++) {
-							args += \'arguments[\'+i+\']\' + ((i < (arguments.length-1)) ? \',\' : \'\');
-						}
-						eval(\'top.content.we_cmd(\'+args+\')\');
+		break;
+		case "reset_edit_order":
+			var field=document.we_form.fields_select.value;
+			var branch=document.we_form.branch.value;
+				if(confirm("' . g_l('modules_customer', '[reset_edit_order_question]') . '")){
+					document.we_form.cmd.value=arguments[0];
+					submitForm();
 				}
+		break;
+		case "move_field_up":
+			var field=document.we_form.fields_select.value;
+			var branch=document.we_form.branch.value;
+			if(field=="") {
+				' . we_message_reporting::getShowMessageCall(g_l('modules_customer', '[no_field]'), we_message_reporting::WE_MESSAGE_ERROR) . '
+			} else{
+					document.we_form.cmd.value=arguments[0];
+					submitForm();
 			}
-
-			function selectBranch(){
-				var f=document.we_form;
-				var txt=f.branch;
-				var sel=f.branch_select.options[f.branch_select.selectedIndex].text;
-
-				f.cmd.value="switchBranch";
-				txt.value=sel;
-				submitForm();
-
+		break;
+		case "move_field_down":
+			var field=document.we_form.fields_select.value;
+			var branch=document.we_form.branch.value;
+			if(field=="") {
+				' . we_message_reporting::getShowMessageCall(g_l('modules_customer', '[no_field]'), we_message_reporting::WE_MESSAGE_ERROR) . '
+			} else{
+					document.we_form.cmd.value=arguments[0];
+					submitForm();
 			}
+		break;
+		case "open_edit_branch":
+			var branch=document.we_form.branch_select.options[document.we_form.branch_select.selectedIndex].text;
+			if(branch=="") {
+				' . we_message_reporting::getShowMessageCall(g_l('modules_customer', '[no_branch]'), we_message_reporting::WE_MESSAGE_ERROR) . '
+			} else if(branch=="' . g_l('modules_customer', '[other]') . '") {
+				' . we_message_reporting::getShowMessageCall(g_l('modules_customer', '[branch_no_edit]'), we_message_reporting::WE_MESSAGE_ERROR) . '
+			} else{
+					url = "' . $this->frameset . '?pnt=branch_editor&art=edit&&branch="+branch;
+					new jsWindow(url,"field_editor",-1,-1,380,250,true,false,true);
+			}
+		break;
+		case "save_branch":
+		case "save_field":
+			var field_name=document.we_form.name.value;
+			if(field_name=="" || field_name.match(/[^a-zA-Z0-9\_]/)!=null){
+				' . we_message_reporting::getShowMessageCall(g_l('modules_customer', '[we_fieldname_notValid]'), we_message_reporting::WE_MESSAGE_ERROR) . '
+			}
+			else{
+				document.we_form.cmd.value=arguments[0];
+				submitForm("field_editor");
+			}
+		break;
+		default:
+			for (var i = 0; i < arguments.length; i++) {
+				args += \'arguments[\'+i+\']\' + ((i < (arguments.length-1)) ? \',\' : \'\');
+			}
+			eval(\'top.content.we_cmd(\'+args+\')\');
+	}
+}
 
-			function saveField(){
-				document.we_form.cmd.value="save_field";
-				submitForm();
-			}' .
+function selectBranch(){
+	var f=document.we_form;
+	var txt=f.branch;
+	var sel=f.branch_select.options[f.branch_select.selectedIndex].text;
+
+	f.cmd.value="switchBranch";
+	txt.value=sel;
+	submitForm();
+
+}
+
+function saveField(){
+	document.we_form.cmd.value="save_field";
+	submitForm();
+}' .
 			$this->getJSSubmitFunction("customer_admin");
 	}
 
 	function getJSTreeHeader(){
 		return '
-			function applySort(){
-				document.we_form_treeheader.pnt.value="cmd";
-				document.we_form_treeheader.cmd.value="applySort";
-				submitForm("", "", "", "we_form_treeheader");
-			}
+function applySort(){
+	document.we_form_treeheader.pnt.value="cmd";
+	document.we_form_treeheader.cmd.value="applySort";
+	submitForm("", "", "", "we_form_treeheader");
+}
 
-			function addSorting(sortname) {
-				var found=false;
-				len = document.we_form_treeheader.sort.options.length;
-				for(i=0;i<len;i++) {
-					if(document.we_form_treeheader.sort.options[i].value==sortname){
-						found = true;
-					}
-				}
-				if(!found){
-					document.we_form_treeheader.sort.options[len] = new Option(sortname,sortname);
-				}
+function addSorting(sortname) {
+	var found=false;
+	len = document.we_form_treeheader.sort.options.length;
+	for(i=0;i<len;i++) {
+		if(document.we_form_treeheader.sort.options[i].value==sortname){
+			found = true;
+		}
+	}
+	if(!found){
+		document.we_form_treeheader.sort.options[len] = new Option(sortname,sortname);
+	}
 
-			}
+}
 
-			/*
-			//obsolete after removing treeheader frame
-			function doUnload() {
-				if (!!jsWindow_count) {
-					for (i = 0; i < jsWindow_count; i++) {
-						eval("jsWindow" + i + "Object.close()");
-					}
-				}
-			}
-			*/
+/*
+//obsolete after removing treeheader frame
+function doUnload() {
+	if (!!jsWindow_count) {
+		for (i = 0; i < jsWindow_count; i++) {
+			eval("jsWindow" + i + "Object.close()");
+		}
+	}
+}
+*/
 
-			/*
-			//this function was used to loop treeheader.we_cmd() to content.we_cmd: obsolete, because all treeheader-JS was moved to content
-			function we_cmd(){
-				var args = "";
-				var url = "' . $this->frameset . '?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
-				switch (arguments[0]) {
-					default:
-						for (var i = 0; i < arguments.length; i++) {
-							args += \'arguments[\'+i+\']\' + ((i < (arguments.length-1)) ? \',\' : \'\');
-						}
-						eval(\'top.content.we_cmd(\'+args+\')\')//da;
-				}
+/*
+//this function was used to loop treeheader.we_cmd() to content.we_cmd: obsolete, because all treeheader-JS was moved to content
+function we_cmd(){
+	var args = "";
+	var url = "' . $this->frameset . '?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
+	switch (arguments[0]) {
+		default:
+			for (var i = 0; i < arguments.length; i++) {
+				args += \'arguments[\'+i+\']\' + ((i < (arguments.length-1)) ? \',\' : \'\');
 			}
-			*/' .
+			eval(\'top.content.we_cmd(\'+args+\')\')//da;
+	}
+}
+*/' .
 			$this->getJSSubmitFunction('cmd', 'post', 'we_form_treeheader');
 	}
 
 	function getJSSearch(){
-		return weCustomerAdd::getJSSearch($this);
+		return we_customer_add::getJSSearch($this);
 	}
 
 	function getJSSettings(){
 		return '
-			function doUnload() {
-				if (!!jsWindow_count) {
-					for (i = 0; i < jsWindow_count; i++) {
-						eval("jsWindow" + i + "Object.close()");
-					}
-				}
-			}
-
-			function we_cmd(){
-				var args = "";
-				var url = "' . $this->frameset . '?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
-				switch (arguments[0]) {
-					case "save_settings":
-						document.we_form.cmd.value=arguments[0];
-						submitForm();
-					break;
-					default:
-				}
+function doUnload() {
+	if (!!jsWindow_count) {
+		for (i = 0; i < jsWindow_count; i++) {
+			eval("jsWindow" + i + "Object.close()");
 		}
+	}
+}
 
-		self.focus();
-	' . $this->getJSSubmitFunction("customer_settings");
+function we_cmd(){
+	var args = "";
+	var url = "' . $this->frameset . '?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
+	switch (arguments[0]) {
+		case "save_settings":
+			document.we_form.cmd.value=arguments[0];
+			submitForm();
+		break;
+		default:
+	}
+}
+
+self.focus();' . $this->getJSSubmitFunction("customer_settings");
 	}
 
 	/* use parent
@@ -536,7 +527,7 @@ class weCustomerView extends weModuleView{
 		if(isset($_REQUEST['cmd'])){
 			switch($_REQUEST['cmd']){
 				case 'new_customer':
-					$this->customer = new weCustomer();
+					$this->customer = new we_customer_customer();
 					$this->settings->initCustomerWithDefaults($this->customer);
 					print we_html_element::jsElement(
 							$this->topFrame . '.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->customer->Text) . '";' .
@@ -544,7 +535,7 @@ class weCustomerView extends weModuleView{
 					);
 					break;
 				case 'edit_customer':
-					$this->customer = new weCustomer($_REQUEST["cmdid"]);
+					$this->customer = new we_customer_customer($_REQUEST["cmdid"]);
 					print we_html_element::jsElement(
 							$this->topFrame . '.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->customer->Text) . '";' .
 							$this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";'
@@ -584,21 +575,20 @@ class weCustomerView extends weModuleView{
 					//FIXME: what if save failes (e.g. Hooks?)
 					$this->customer->save();
 
-					$tt = '';
 					$ttrow = getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . intval($this->customer->ID), $this->db);
 					//needed, because format is php code
 					eval('$tt="' . $this->settings->treeTextFormat . '";');
 					$tt = addslashes($tt != '' ? $tt : $this->customer->Text);
 					if($newone){
 						$js = '
-									var attribs = new Array();
-									attribs["icon"]=\'' . $this->customer->Icon . '\';
-									attribs["id"]=\'' . $this->customer->ID . '\';
-									attribs["typ"]=\'item\';
-									attribs["parentid"]=\'0\';
-									attribs["text"]=\'' . $tt . '\';
-									attribs["disable"]=\'0\';
-									attribs["tooltip"]=\'' . (($this->customer->Forename != "" || $this->customer->Surname != "") ? $this->customer->Forename . "&nbsp;" . $this->customer->Surname : "") . '\';' .
+var attribs = new Array();
+attribs["icon"]=\'' . $this->customer->Icon . '\';
+attribs["id"]=\'' . $this->customer->ID . '\';
+attribs["typ"]=\'item\';
+attribs["parentid"]=\'0\';
+attribs["text"]=\'' . $tt . '\';
+attribs["disable"]=\'0\';
+attribs["tooltip"]=\'' . (($this->customer->Forename != "" || $this->customer->Surname != "") ? $this->customer->Forename . "&nbsp;" . $this->customer->Surname : "") . '\';' .
 							$this->topFrame . '.treeData.addSort(new ' . $this->topFrame . '.node(attribs));';
 						$js .= $this->topFrame . '.applySort();';
 					} else {
@@ -614,7 +604,7 @@ class weCustomerView extends weModuleView{
 				case 'delete_customer':
 					$oldid = $this->customer->ID;
 					$this->customer->delete();
-					$this->customer = new weCustomer();
+					$this->customer = new we_customer_customer();
 
 					print we_html_element::jsElement(
 							we_message_reporting::getShowMessageCall(g_l('modules_customer', '[customer_deleted]'), we_message_reporting::WE_MESSAGE_NOTICE) .
@@ -809,7 +799,6 @@ class weCustomerView extends weModuleView{
 					}
 
 					if($branch_new != $branch_old){
-						$arr = array();
 						$arr = $this->customer->getBranchesNames();
 
 						if(in_array($branch_new, $arr)){
@@ -825,20 +814,19 @@ class weCustomerView extends weModuleView{
 					} else {
 						$this->customer->loadPresistents();
 						$js = '
-							opener.document.we_form.branch.value="' . g_l('modules_customer', '[other]') . '";
-							opener.submitForm();
-							opener.opener.document.we_form.branch.value="' . g_l('modules_customer', '[common]') . '";
-							opener.opener.refreshForm();
-							close();';
+opener.document.we_form.branch.value="' . g_l('modules_customer', '[other]') . '";
+opener.submitForm();
+opener.opener.document.we_form.branch.value="' . g_l('modules_customer', '[common]') . '";
+opener.opener.refreshForm();
+close();';
 					}
 					print we_html_element::jsElement($js);
 
 					break;
 				case 'show_sort_admin':
 					$js = '
-						url ="' . WE_CUSTOMER_MODULE_DIR . 'edit_customer_frameset.php?pnt=sort_admin";
-						new jsWindow(url,"sort_admin",-1,-1,750,500,true,true,true,true);
-					';
+url ="' . WE_CUSTOMER_MODULE_DIR . 'edit_customer_frameset.php?pnt=sort_admin";
+new jsWindow(url,"sort_admin",-1,-1,750,500,true,true,true,true);';
 					print we_html_element::jsScript(JS_DIR . 'windows.js');
 					print we_html_element::jsElement($js);
 
@@ -878,18 +866,18 @@ class weCustomerView extends weModuleView{
 					}
 
 					$js = we_message_reporting::getShowMessageCall(g_l('modules_customer', '[sort_saved]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
-							var selected = opener.' . $this->topFrame . '.document.we_form_treeheader.sort.selectedIndex;
-							opener.' . $this->topFrame . '.document.we_form_treeheader.sort.options.length=0;
-							' . $_sorting . '
+var selected = opener.' . $this->topFrame . '.document.we_form_treeheader.sort.selectedIndex;
+opener.' . $this->topFrame . '.document.we_form_treeheader.sort.options.length=0;
+' . $_sorting . '
 
-							if(selected<opener.' . $this->topFrame . '.document.we_form_treeheader.sort.options.length){
-								opener.' . $this->topFrame . '.document.we_form_treeheader.sort.selectedIndex = selected;
-							} else {
-								opener.' . $this->topFrame . '.document.we_form_treeheader.sort.selectedIndex = opener.' . $this->topFrame . '.document.we_form_treeheader.sort.options.length-1;
-							}
+if(selected<opener.' . $this->topFrame . '.document.we_form_treeheader.sort.options.length){
+	opener.' . $this->topFrame . '.document.we_form_treeheader.sort.selectedIndex = selected;
+} else {
+	opener.' . $this->topFrame . '.document.we_form_treeheader.sort.selectedIndex = opener.' . $this->topFrame . '.document.we_form_treeheader.sort.options.length-1;
+}
 
-							opener.' . $this->topFrame . '.applySort();
-							self.close();';
+opener.' . $this->topFrame . '.applySort();
+self.close();';
 					print we_html_element::jsScript(JS_DIR . "we_showMessage.js") .
 						we_html_element::jsElement($js);
 					break;
@@ -943,8 +931,8 @@ class weCustomerView extends weModuleView{
 					} else {
 						$js = we_message_reporting::getShowMessageCall(g_l('modules_customer', '[settings_not_saved]'), we_message_reporting::WE_MESSAGE_NOTICE);
 					}
-					print we_html_element::jsScript(JS_DIR . 'we_showMessage.js') .
-						we_html_element::jsElement($js);
+					echo we_html_element::jsScript(JS_DIR . 'we_showMessage.js') .
+					we_html_element::jsElement($js);
 					break;
 				default:
 			}
@@ -960,7 +948,7 @@ class weCustomerView extends weModuleView{
 		}
 
 		if(isset($_REQUEST['sid'])){
-			$this->customer = new weCustomer(addslashes($_REQUEST['sid']));
+			$this->customer = new we_customer_customer(addslashes($_REQUEST['sid']));
 			$_SESSION['weS']['customer_session'] = serialize($this->customer);
 		}
 		if(is_array($this->customer->persistent_slots)){
@@ -972,7 +960,7 @@ class weCustomerView extends weModuleView{
 					} elseif(isset($_REQUEST['Username'])){
 						$this->customer->{$val} = '0';
 					}
-				} elseif($varname == 'Password' && isset($_REQUEST[$varname]) && $_REQUEST[$varname] == weCustomer::NOPWD_CHANGE){
+				} elseif($varname == 'Password' && isset($_REQUEST[$varname]) && $_REQUEST[$varname] == we_customer_customer::NOPWD_CHANGE){
 					//keep old pwd
 				} elseif(isset($_REQUEST[$varname])){
 					$this->customer->{$val} = $_REQUEST[$varname];
@@ -995,11 +983,10 @@ class weCustomerView extends weModuleView{
 
 				for($i = 0; $i < $counter; $i++){
 
-					if(isset($_REQUEST['sort_' . $i]) && $_REQUEST['sort_' . $i] != ''){
-						$sort_name = $_REQUEST['sort_' . $i];
-					} else {
-						$sort_name = g_l('modules_customer', '[sort_name]') . '_' . $i;
-					}
+					$sort_name = (isset($_REQUEST['sort_' . $i]) && $_REQUEST['sort_' . $i] != '' ?
+							$_REQUEST['sort_' . $i] :
+							g_l('modules_customer', '[sort_name]') . '_' . $i);
+
 
 					$fcounter = (isset($_REQUEST['fcounter_' . $i]) ? $_REQUEST['fcounter_' . $i] : 1);
 
@@ -1142,41 +1129,31 @@ class weCustomerView extends weModuleView{
 		}
 
 		$arr = explode(' ', strToLower($keyword));
-		$sWhere = '';
-		$ranking = '0';
+		$array = array(
+			'AND' => array($arr[0]),
+			'OR' => array(),
+			'AND NOT' => array()
+		);
 
-		$first = '';
-		$array = array();
-
-		$array['AND'] = array();
-		$array['OR'] = array();
-		$array['AND NOT'] = array();
-
-		$array['AND'][] = $arr[0];
 
 		for($i = 1; $i < count($arr); $i++){
-			if(($arr[$i] == 'and') || ($arr[$i] == 'or') || ($arr[$i] == 'not')){
-				switch($arr[$i]){
-					case 'not':
-						$i++;
-						$array['AND NOT'][count($array['NOT'])] = $arr[$i];
-						break;
-					case 'and':
-						$i++;
-						$array['AND'][count($array['AND'])] = $arr[$i];
-						break;
-					case'or':
-						$i++;
-						$array['OR'][count($array['OR'])] = $arr[$i];
-						break;
-					default:
-						$array['AND'][count($array['AND'])] = $arr[$i];
-				}
+			switch($arr[$i]){
+				case 'not':
+					$i++;
+					$array['AND NOT'][count($array['NOT'])] = $arr[$i];
+					break;
+				case 'and':
+					$i++;
+					$array['AND'][count($array['AND'])] = $arr[$i];
+					break;
+				case'or':
+					$i++;
+					$array['OR'][count($array['OR'])] = $arr[$i];
+					break;
+				default:
 			}
 		}
-		$main_condition = '';
 		$condition = '';
-		$op = false;
 
 		foreach($array as $ak => $av){
 			foreach($av as $value){
@@ -1185,20 +1162,13 @@ class weCustomerView extends weModuleView{
 					if(!$this->customer->isProtected($field) && $field != "Password")
 						$conditionarr[] = "$field LIKE '%$value%'";
 				}
-				if($condition != ''){
-					$condition.=" $ak (" . implode(' OR ', $conditionarr) . ')';
-				} else {
-					$condition.=' (' . implode(' OR ', $conditionarr) . ')';
-				}
+				$condition.=(empty($condition) ?
+						' (' . implode(' OR ', $conditionarr) . ')' :
+						' ' . $ak . ' (' . implode(' OR ', $conditionarr) . ')');
 			}
 		}
 
-		if($condition != ''){
-			$condition = ' WHERE ' . $condition;
-		}
-		$condition.=' ORDER BY Username';
-
-		$this->db->query('SELECT ID, CONCAT(Username, " (",Forename," ",Surname,")") AS user FROM ' . $this->db->escape($this->customer->table) . $condition . " LIMIT 0,$res_num");
+		$this->db->query('SELECT ID, CONCAT(Username, " (",Forename," ",Surname,")") AS user FROM ' . $this->db->escape($this->customer->table) . (empty($condition) ? '' : ' WHERE ' . $condition) . ' ORDER BY Username' . " LIMIT 0,$res_num");
 		return array_map('oldHtmlspecialchars', $this->db->getAllFirst(false));
 	}
 

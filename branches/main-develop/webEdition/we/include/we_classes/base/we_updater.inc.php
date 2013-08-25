@@ -215,9 +215,8 @@ class we_updater{
 				$DB_WE->query("INSERT INTO " . CUSTOMER_ADMIN_TABLE . "(Name,Value) VALUES('SortView','');");
 				$DB_WE->query("INSERT INTO " . CUSTOMER_ADMIN_TABLE . "(Name,Value) VALUES('Prefs','');");
 
-				include(WE_MODULES_PATH . 'customer/weCustomerSettings.php');
-				$settings = new weCustomerSettings();
-				$settings->customer = new weCustomer();
+				$settings = new we_customer_settings();
+				$settings->customer = new we_customer_customer();
 				$fields = $settings->customer->getFieldsDbProperties();
 				$_keys = array_keys($fields);
 				foreach($_keys as $name){

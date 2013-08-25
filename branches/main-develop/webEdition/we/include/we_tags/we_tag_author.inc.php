@@ -33,7 +33,7 @@ function we_tag_author($attribs){
 	switch($docAttr){
 		case 'listview' :
 			$authorID = '';
-			switch($GLOBALS['lv']->ClassName){
+			switch(get_class($GLOBALS['lv'])){
 				case 'we_listview_object'://listview type=object
 					$objID = $GLOBALS['lv']->getDBf('OF_ID');
 					break;

@@ -42,7 +42,7 @@ class we_customertag{
 		$this->hidedirindex = $hidedirindex;
 		$unique = md5(uniqid(__FILE__, true));
 
-		$this->object = new we_listview_customer($unique, 1, 0, "", 0, "(ID='" . intval($this->id) . "')" . ($condition ? " AND $condition" : ""), "", 0, $hidedirindex);
+		$this->object = new we_customer_listview($unique, 1, 0, "", 0, "(ID='" . intval($this->id) . "')" . ($condition ? " AND $condition" : ""), "", 0, $hidedirindex);
 		$this->avail = $this->object->next_record();
 	}
 
