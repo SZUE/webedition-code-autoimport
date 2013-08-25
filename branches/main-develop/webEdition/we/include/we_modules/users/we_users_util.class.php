@@ -22,18 +22,15 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-require_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
-
 class we_users_util{
 
 	private static function getGroupList($id){
 		$ret = array();
 		if($id){
 			$db_tmp = new DB_WE();
-			$db_tmp->query("SELECT ID,username WHERE ParentID=" . intval($id) . " AND Type=1");
-			while($db_tmp->next_record()) {
+			$db_tmp->query('SELECT ID,username WHERE ParentID=' . intval($id) . ' AND Type=1');
+			while($db_tmp->next_record()){
 				$ret[$db_tmp->f("ID")] = $db_tmp->f("username");
-				$section = array();
 				$section = self::getGroupList($db_tmp->f("ID"));
 				$ret = array_merge($ret, $section);
 			}
@@ -44,12 +41,11 @@ class we_users_util{
 	private static function getUserTree($id){
 		$ret = array();
 		$db_tmp = new DB_WE();
-		$db_tmp->query("SELECT ID,username,Type WHERE ParentID=" . intval($id));
-		while($db_tmp->next_record()) {
+		$db_tmp->query('SELECT ID,username,Type WHERE ParentID=' . intval($id));
+		while($db_tmp->next_record()){
 			$ret[$db_tmp->f("ID")]["name"] = $db_tmp->f("username");
 			$ret[$db_tmp->f("ID")]["ParentID"] = $id;
 			$ret[$db_tmp->f("ID")]["Type"] = $db_tmp->f("Type");
-			$section = array();
 			$section = self::getUserTree($db_tmp->f("ID"));
 			$ret = array_merge($ret, $section);
 		}
@@ -65,7 +61,7 @@ class we_users_util{
 
 		if(in_array($uid, $users)){
 			return true;
-		} else{
+		} else {
 			$db = new DB_WE();
 
 			$aliases = we_getAliases($uid, $db);
@@ -101,7 +97,7 @@ class we_users_util{
 			return true;
 		} else if($pid != 0){
 			return self::isUserInGroup($pid, $groupID);
-		} else{
+		} else {
 			return false;
 		}
 	}
@@ -109,7 +105,7 @@ class we_users_util{
 	static function addAllUsersAndGroups($uid, &$arr){
 		$db = new DB_WE();
 		$db->query('SELECT ID,IsFolder FROM ' . USER_TABLE . ' WHERE ParentID=' . intval($uid));
-		while($db->next_record()) {
+		while($db->next_record()){
 			$arr[] = $db->f("ID");
 			if($db->f("IsFolder")){
 				self::addAllUsersAndGroups($db->f("ID"), $arr);
@@ -131,28 +127,16 @@ class we_users_util{
 	}
 
 	static function getUsersForDocWorkspace($id, $wsField = "workSpace"){
-
 		$db = new DB_WE();
-		if(is_array($id)){
-			$ids = $id;
-		} else{
-			$ids = array($id);
-		}
+		$ids = (is_array($id) ? $id : array($id));
 
 		$where = array();
 		foreach($ids as $id){
 			$where[] = $wsField . ' LIKE "%,' . $id . ',%"';
 		}
 
-		$out = array();
-
 		$db->query('SELECT ID,username FROM ' . USER_TABLE . ' WHERE ' . implode(' OR ', $where));
-
-		while($db->next_record()) {
-			$out[$db->f('ID')] = $db->f('username');
-		}
-
-		return $out;
+		return $db->getAllFirst(false);
 	}
 
 }

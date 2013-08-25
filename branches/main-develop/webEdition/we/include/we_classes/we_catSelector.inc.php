@@ -634,11 +634,8 @@ function setDir(id){
 
 	function renameChildrenPath($id, $db = ''){
 		$db = $db ? $db : new DB_WE();
-		$updates = array();
 		$db->query('SELECT ID,IsFolder FROM ' . CATEGORY_TABLE . ' WHERE ParentID=' . intval($id));
-		while($db->next_record()){
-			$updates[$db->f('ID')] = $db->f('IsFolder');
-		}
+		$updates = $db->getAllFirst(false);
 		foreach($updates as $curId => $IsFolder){
 			$db->query('UPDATE ' . CATEGORY_TABLE . ' SET Path=CONCAT((SELECT Path FROM ' . CATEGORY_TABLE . ' WHERE ID=' . intval($id) . '),"/",Text) WHERE ID=' . $curId);
 			if($IsFolder){

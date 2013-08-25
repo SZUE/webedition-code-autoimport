@@ -184,7 +184,7 @@ class weCustomerView extends weModuleView{
 					case "export_customer":
 					case "import_customer":
 						' . $this->topFrame . '.editor.edbody.we_cmd(arguments[0]);
-					break; 
+					break;
 					case "load":
 						' . $this->topFrame . '.cmd.location="' . $this->frameset . '?pnt=cmd&pid="+arguments[1]+"&offset="+arguments[2]+"&sort="+arguments[3];
 					break;
@@ -822,7 +822,7 @@ class weCustomerView extends weModuleView{
 
 					if($this->saveBranch($branch_old, $branch_new) == -5){
 						we_message_reporting::getShowMessageCall(sprintf(g_l('modules_customer', '[cannot_save_property]'), $field), we_message_reporting::WE_MESSAGE_ERROR);
-					}else {
+					} else {
 						$this->customer->loadPresistents();
 						$js = '
 							opener.document.we_form.branch.value="' . g_l('modules_customer', '[other]') . '";
@@ -1199,13 +1199,7 @@ class weCustomerView extends weModuleView{
 		$condition.=' ORDER BY Username';
 
 		$this->db->query('SELECT ID, CONCAT(Username, " (",Forename," ",Surname,")") AS user FROM ' . $this->db->escape($this->customer->table) . $condition . " LIMIT 0,$res_num");
-
-		$result = array();
-		while($this->db->next_record()){
-			$result[$this->db->f('ID')] = oldHtmlspecialchars($this->db->f('user'));
-		}
-
-		return $result;
+		return array_map('oldHtmlspecialchars', $this->db->getAllFirst(false));
 	}
 
 }

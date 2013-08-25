@@ -22,12 +22,11 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weUsersFrames extends weModuleFrames {
+class weUsersFrames extends weModuleFrames{
 
 	var $db;
 	var $View;
 	var $frameset;
-
 	public $module = "users";
 	protected $useMainTree = false;
 	protected $treeFooterHeight = 40;
@@ -283,10 +282,11 @@ function urlEntry(icon,name,vorfahr,text,contentType,table,published,denied) {
 }
 		';
 
+		/*
 		function readChilds($pid){//is this ever called?
 			$db_temp = new DB_WE();
 			$db_temp->query('SELECT ID,username,ParentID,Type,Permissions FROM ' . USER_TABLE . ' WHERE Type=1 AND ParentID=' . intval($pid) . " ORDER BY username ASC");
-			while($db_temp->next_record()) {
+			while($db_temp->next_record()){
 				$GLOBALS['entries'][$db_temp->f("ID")]["username"] = $db_temp->f("username");
 				$GLOBALS['entries'][$db_temp->f("ID")]["ParentID"] = $db_temp->f("ParentID");
 				$GLOBALS['entries'][$db_temp->f("ID")]["Type"] = $db_temp->f("Type");
@@ -295,7 +295,7 @@ function urlEntry(icon,name,vorfahr,text,contentType,table,published,denied) {
 					readChilds($db_temp->f("ID"));
 				}
 			}
-		}
+		}*/
 
 		$jsCode .= '
 		function loadData() {
@@ -307,7 +307,7 @@ function urlEntry(icon,name,vorfahr,text,contentType,table,published,denied) {
 			if(we_hasPerm("ADMINISTRATOR")){
 				$parent_path = '/';
 				$startloc = 0;
-			} else{
+			} else {
 				$foo = getHash('SELECT Path,ParentID FROM ' . USER_TABLE . ' WHERE ID=' . intval($_SESSION["user"]["ID"]), $this->db);
 				$parent_path = str_replace("\\", "/", dirname($foo["Path"]));
 				$startloc = $foo["ParentID"];
@@ -317,10 +317,10 @@ function urlEntry(icon,name,vorfahr,text,contentType,table,published,denied) {
 
 			$this->db->query('SELECT ID,ParentID,Text,Type,Permissions,LoginDenied FROM ' . USER_TABLE . " WHERE Path LIKE '" . $this->db->escape($parent_path) . "%' ORDER BY Text ASC");
 
-			while($this->db->next_record()) {
+			while($this->db->next_record()){
 				if($this->db->f("Type") == 1){
 					$jsCode .= "  menuDaten.add(new dirEntry('folder'," . $this->db->f("ID") . "," . $this->db->f("ParentID") . ",'" . addslashes($this->db->f("Text")) . "',false,'group','" . USER_TABLE . "',1));";
-				} else{
+				} else {
 					$p = unserialize($this->db->f("Permissions"));
 					$jsCode .= "  menuDaten.add(new urlEntry('" . ($this->db->f("Type") == 2 ? 'user_alias.gif' : 'user.gif') . "'," . $this->db->f("ID") . "," . $this->db->f("ParentID") . ",'" . addslashes($this->db->f("Text")) . "','" . ($this->db->f("Type") == 2 ? 'alias' : 'user') . "','" . USER_TABLE . "','" . (isset($p["ADMINISTRATOR"]) && $p["ADMINISTRATOR"]) . "','" . $this->db->f("LoginDenied") . "'));";
 				}
@@ -353,7 +353,7 @@ function urlEntry(icon,name,vorfahr,text,contentType,table,published,denied) {
 	}
 
 	/* use parent
-	function getHTMLLeft(){}
+	  function getHTMLLeft(){}
 	 *
 	 */
 
@@ -376,10 +376,9 @@ function urlEntry(icon,name,vorfahr,text,contentType,table,published,denied) {
 	}
 
 	function getHTMLEditor(){//TODO: Throw out the the exeption for properties/edbody and use parent
-		$body = we_html_element::htmlBody(array('style' => 'position: fixed; top: 0px; left: 0px; right: 0px; bottom: 0px; border: 0px none;') ,
-			we_html_element::htmlIFrame('edheader', $this->frameset . '?pnt=edheader&home=1', 'position: absolute; top: 0px; left: 0px; right: 0px; height: 40px; overflow: hidden;') .
-			we_html_element::htmlIFrame('properties', WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=mod_home&mod=users', 'position: absolute; top: 40px; bottom: 40px; left: 0px; right: 0px; overflow: auto;', 'border:0px;width:100%;height:100%;overflow: auto;') .
-			we_html_element::htmlIFrame('edfooter', $this->frameset . '?pnt=edfooter&home=1' . (isset($_REQUEST['sid']) ? '&sid=' . $_REQUEST['sid'] : '&home=1'), 'position: absolute; bottom: 0px; left: 0px; right: 0px; height: 40px; overflow: hidden;')
+		$body = we_html_element::htmlBody(array('style' => 'position: fixed; top: 0px; left: 0px; right: 0px; bottom: 0px; border: 0px none;'), we_html_element::htmlIFrame('edheader', $this->frameset . '?pnt=edheader&home=1', 'position: absolute; top: 0px; left: 0px; right: 0px; height: 40px; overflow: hidden;') .
+				we_html_element::htmlIFrame('properties', WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=mod_home&mod=users', 'position: absolute; top: 40px; bottom: 40px; left: 0px; right: 0px; overflow: auto;', 'border:0px;width:100%;height:100%;overflow: auto;') .
+				we_html_element::htmlIFrame('edfooter', $this->frameset . '?pnt=edfooter&home=1' . (isset($_REQUEST['sid']) ? '&sid=' . $_REQUEST['sid'] : '&home=1'), 'position: absolute; bottom: 0px; left: 0px; right: 0px; height: 40px; overflow: hidden;')
 		);
 
 		return $this->getHTMLDocument($body);
@@ -387,12 +386,11 @@ function urlEntry(icon,name,vorfahr,text,contentType,table,published,denied) {
 
 	function getHTMLEditorHeader(){
 		if(isset($_REQUEST['home'])){//FIXME: find one working condition
-			print we_html_element::htmlBody(array('style' => 'background-color:#F0EFF0;'),'');
-		} else{
+			print we_html_element::htmlBody(array('style' => 'background-color:#F0EFF0;'), '');
+		} else {
 			$user_object = new we_user();
 			$user_object->setState($_SESSION["user_session_data"]);
-			print we_html_element::htmlBody(array('style' => 'background:white url(' . IMAGE_DIR . 'backgrounds/header_with_black_line.gif); margin-top: 0; margin-left: 0;'),
-				$user_object->formHeader(isset($_REQUEST["tab"]) ? $_REQUEST["tab"] : 0));
+			print we_html_element::htmlBody(array('style' => 'background:white url(' . IMAGE_DIR . 'backgrounds/header_with_black_line.gif); margin-top: 0; margin-left: 0;'), $user_object->formHeader(isset($_REQUEST["tab"]) ? $_REQUEST["tab"] : 0));
 		}
 	}
 
@@ -404,15 +402,15 @@ function urlEntry(icon,name,vorfahr,text,contentType,table,published,denied) {
 		}
 		print $this->View->getJSProperty();
 
-		$_content = we_html_element::htmlHidden($attribs = array("name" => "ucmd", "value" => "",)).
-			we_html_element::htmlHidden($attribs = array("name" => "tab", "value" => isset($_REQUEST["tab"]) ? intval($_REQUEST["tab"]) : "",)).
-			we_html_element::htmlHidden($attribs = array("name" => "oldtab", "value" => isset($_REQUEST["tab"]) ? intval($_REQUEST["tab"]) : 0,)).
-			we_html_element::htmlHidden($attribs = array("name" => "perm_branch", "value" => (isset($_REQUEST["perm_branch"]) && $_REQUEST["perm_branch"]) ? oldHtmlspecialchars($_REQUEST["perm_branch"]) : 0,)).
-			we_html_element::htmlHidden($attribs = array("name" => "old_perm_branch", "value" => (isset($_REQUEST["perm_branch"]) && $_REQUEST["perm_branch"]) ? oldHtmlspecialchars($_REQUEST["perm_branch"]) : 0,)).
-			we_html_element::htmlHidden($attribs = array("name" => "obj_name", "value" => $user_object->Name,)).
-			we_html_element::htmlHidden($attribs = array("name" => "uid", "value" => $user_object->ID,)).
-			we_html_element::htmlHidden($attribs = array("name" => "ctype", "value" => isset($_REQUEST["ctype"]) ? oldHtmlspecialchars($_REQUEST["ctype"]) : "",)).
-			we_html_element::htmlHidden($attribs = array("name" => "ctable", "value" => isset($_REQUEST["ctable"]) ? oldHtmlspecialchars($_REQUEST["ctable"]) : "",)).
+		$_content = we_html_element::htmlHidden($attribs = array("name" => "ucmd", "value" => "",)) .
+			we_html_element::htmlHidden($attribs = array("name" => "tab", "value" => isset($_REQUEST["tab"]) ? intval($_REQUEST["tab"]) : "",)) .
+			we_html_element::htmlHidden($attribs = array("name" => "oldtab", "value" => isset($_REQUEST["tab"]) ? intval($_REQUEST["tab"]) : 0,)) .
+			we_html_element::htmlHidden($attribs = array("name" => "perm_branch", "value" => (isset($_REQUEST["perm_branch"]) && $_REQUEST["perm_branch"]) ? oldHtmlspecialchars($_REQUEST["perm_branch"]) : 0,)) .
+			we_html_element::htmlHidden($attribs = array("name" => "old_perm_branch", "value" => (isset($_REQUEST["perm_branch"]) && $_REQUEST["perm_branch"]) ? oldHtmlspecialchars($_REQUEST["perm_branch"]) : 0,)) .
+			we_html_element::htmlHidden($attribs = array("name" => "obj_name", "value" => $user_object->Name,)) .
+			we_html_element::htmlHidden($attribs = array("name" => "uid", "value" => $user_object->ID,)) .
+			we_html_element::htmlHidden($attribs = array("name" => "ctype", "value" => isset($_REQUEST["ctype"]) ? oldHtmlspecialchars($_REQUEST["ctype"]) : "",)) .
+			we_html_element::htmlHidden($attribs = array("name" => "ctable", "value" => isset($_REQUEST["ctable"]) ? oldHtmlspecialchars($_REQUEST["ctable"]) : "",)) .
 			we_html_element::htmlHidden($attribs = array("name" => "sd", "value" => 0,));
 
 		if($user_object){
@@ -426,8 +424,7 @@ function urlEntry(icon,name,vorfahr,text,contentType,table,published,denied) {
 			$_content .= $user_object->formDefinition(isset($_REQUEST["tab"]) ? $_REQUEST["tab"] : "", isset($_REQUEST["perm_branch"]) ? $_REQUEST["perm_branch"] : 0);
 		}
 
-		$_content .= $yuiSuggest->getYuiCss();
-		$_content .= $yuiSuggest->getYuiJs();
+		$_content .= $yuiSuggest->getYuiCss() . $yuiSuggest->getYuiJs();
 
 		$_form_attribs = array(
 			'name' => 'we_form',

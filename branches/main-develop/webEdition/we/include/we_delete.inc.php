@@ -41,13 +41,7 @@ function getObjectsForDocWorkspace($id, $db){
 	}
 
 	$db->query('SELECT ID,Path FROM ' . OBJECT_FILES_TABLE . ' WHERE ' . implode(' OR ', $where));
-
-	$out = array();
-	while($db->next_record()){
-		$out[$db->f('ID')] = $db->f('Path');
-	}
-
-	return $out;
+	return $db->getAllFirst(false);
 }
 
 $table = $_REQUEST['we_cmd'][2];

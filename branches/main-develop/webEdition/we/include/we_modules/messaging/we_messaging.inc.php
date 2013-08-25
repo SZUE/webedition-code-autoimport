@@ -30,7 +30,6 @@ require_once(WE_MESSAGING_MODULE_PATH . "messaging_std.inc.php");
 class we_messaging extends we_class{
 	/* Flag which is set when the file is not new */
 
-
 	var $we_transact;
 	var $Folder_ID = -1;
 	var $userid = -1;
@@ -112,7 +111,7 @@ class we_messaging extends we_class{
 
 		if($recover == 1){
 			$c->init(isset($this->we_transact[$objname]) ? $this->we_transact[$objname] : '');
-		} else{
+		} else {
 			$this->used_msgobjs_names[] = $objname;
 
 			if(!isset($c->msgclass_type) || $c->msgclass_type == we_msg_email::TYPE_SEND_RECEIVE){
@@ -189,7 +188,7 @@ class we_messaging extends we_class{
 		foreach($arr as $elem){
 			if(isset($ret[$elem['ClassName']]) && is_array($ret[$elem['ClassName']])){
 				$ret[$elem['ClassName']][] = $elem['ID'];
-			} else{
+			} else {
 				$ret[$elem['ClassName']] = array((string) $elem['ID']);
 			}
 		}
@@ -313,7 +312,7 @@ class we_messaging extends we_class{
 			$cn = $this->selected_set[$offset]['hdrs']['ClassName'];
 			if(isset($s_hash[$cn]) && is_array($s_hash[$cn])){
 				$s_hash[$cn][] = array('ID' => $id, 'hdrs' => $this->selected_set[$offset]['int_hdrs']);
-			} else{
+			} else {
 				$s_hash[$cn] = array(array('ID' => $id, 'hdrs' => $this->selected_set[$offset]['int_hdrs']));
 			}
 		}
@@ -327,7 +326,7 @@ class we_messaging extends we_class{
 					array_splice($this->selected_set, array_ksearch('ID', $id, $this->selected_set), 1);
 					$this->update_last_id();
 				}
-			} else{
+			} else {
 				echo "Couldn't delete Message ID=" . $val['ID'] . '<br>';
 			}
 		}
@@ -345,7 +344,7 @@ class we_messaging extends we_class{
 			//  Check if there are already saved settings for this user in the DB
 			if($this->DB_WE->num_rows($this->DB_WE->query("SELECT * FROM " . MSG_SETTINGS_TABLE . " WHERE strKey=\"check_step\" AND UserID=\"" . $this->userid . "\"")) > 0){
 				$this->DB_WE->query('UPDATE ' . MSG_SETTINGS_TABLE . ' SET strVal="' . $this->DB_WE->escape($settings['check_step']) . '" WHERE strKey="check_step" AND UserID=' . intval($this->userid) . ' LIMIT 1');
-			} else{
+			} else {
 				$this->DB_WE->query("INSERT INTO " . MSG_SETTINGS_TABLE . " (UserID, strKey, strVal) VALUES(" . intval($this->userid) . ", 'check_step', '" . $settings['check_step'] . "')");
 			}
 		}
@@ -354,23 +353,13 @@ class we_messaging extends we_class{
 	}
 
 	function get_settings(){
-		$settings = array();
-
 		$this->DB_WE->query('SELECT strKey, strVal FROM ' . MSG_SETTINGS_TABLE . ' WHERE UserID=' . intval($this->userid));
-		while($this->DB_WE->next_record()) {
-			$settings[$this->DB_WE->f('strKey')] = $this->DB_WE->f('strVal');
-		}
-
-		return $settings;
+		return $this->DB_WE->getAllFirst(false);
 	}
 
 	function get_subfolder_count($id, $classname = ''){
 		$classname = $this->available_folders[array_ksearch('ID', $id, $this->available_folders)]['ClassName'];
-		if(isset($classname)){
-			return $this->used_msgobjs[$classname]->get_subfolder_count($id);
-		} else{
-			return -1;
-		}
+		return (isset($classname) ? $this->used_msgobjs[$classname]->get_subfolder_count($id) : -1);
 	}
 
 	function set_search_settings($search_fields, $search_folder_ids){
@@ -492,7 +481,7 @@ class we_messaging extends we_class{
 		$ret = array();
 
 		$this->DB_WE->query('SELECT strMsgType, strID, strAlias FROM ' . MSG_ADDRBOOK_TABLE . ' WHERE UserID=' . intval($this->userid));
-		while($this->DB_WE->next_record()) {
+		while($this->DB_WE->next_record()){
 			$ret[] = array($this->DB_WE->f('strMsgType'), $this->DB_WE->f('strID'), $this->DB_WE->f('strAlias'));
 		}
 
@@ -511,7 +500,7 @@ class we_messaging extends we_class{
 		$classname = $this->available_folders[array_ksearch('ID', $folderid, $this->available_folders)]['ClassName'];
 		if(isset($classname)){
 			return $this->used_msgobjs[$classname]->get_count($folderid);
-		} else{
+		} else {
 			return -1;
 		}
 	}
@@ -529,7 +518,7 @@ class we_messaging extends we_class{
 			$cn = $this->available_folders[array_ksearch('ID', $f_id, $this->available_folders)]['ClassName'];
 			if(isset($s_hash[$cn]) && is_array($s_hash[$cn])){
 				$s_hash[$cn][] = (string) $f_id;
-			} else{
+			} else {
 				$s_hash[$cn] = array((string) $f_id);
 			}
 		}
@@ -572,7 +561,7 @@ class we_messaging extends we_class{
 			if(($this->last_sortfield != $this->sortfield) || $this->sortorder != 'desc'){
 				usort($this->selected_set, array($this, 'cmp_desc'));
 				$this->sortorder = 'desc';
-			} else{
+			} else {
 				usort($this->selected_set, array($this, 'cmp_asc'));
 				$this->sortorder = 'asc';
 			}
@@ -589,7 +578,7 @@ class we_messaging extends we_class{
 		if(empty($classname)){
 			$this->sortfield = $this->sf2sh[$this->active_msgobj->get_sortfield($id)];
 			$this->sortorder = $this->sf2sh[$this->active_msgobj->get_sortorder()];
-		} else{
+		} else {
 			$this->sortfield = $this->sf2sf[$this->used_msgobjs[$classname]->get_sortfield($id)];
 			$this->sortorder = $this->sf2sf[$this->used_msgobjs[$classname]->get_sortorder()];
 		}
@@ -636,7 +625,7 @@ class we_messaging extends we_class{
 			}
 		} else if(isset($addr_is_email) && $addr_is_email){
 			$rcpt_info['msg_obj'] = 'we_msg_email';
-		} else{
+		} else {
 			$rcpt_info['msg_obj'] = 'we_message';
 		}
 
@@ -684,7 +673,7 @@ class we_messaging extends we_class{
 				$this->sort_set();
 				$this->save_sortstuff($this->Folder_ID, array_key_by_val($sortfield, $this->sf2sh), $this->sortorder);
 			}
-		} else{
+		} else {
 			$this->selected_set = array();
 			$this->last_id = -1;
 			$search_cond = array();
@@ -705,16 +694,16 @@ class we_messaging extends we_class{
 						$cn = $afolder['ClassName'];
 						if(isset($s_hash[$cn]) && is_array($s_hash[$cn])){
 							$s_hash[$cn][] = $afolder['ID'];
-						} else{
+						} else {
 							$s_hash[$cn] = array($afolder['ID']);
 						}
 					}
-				} else{
+				} else {
 					foreach($this->search_folder_ids as $sfolder){
 						$cn = $this->available_folders[array_ksearch('ID', $sfolder, $this->available_folders)]['ClassName'];
 						if(isset($s_hash[$cn]) && is_array($s_hash[$cn])){
 							$s_hash[$cn][] = $sfolder;
-						} else{
+						} else {
 							$s_hash[$cn] = array("$sfolder");
 						}
 					}
@@ -727,7 +716,7 @@ class we_messaging extends we_class{
 					$this->selected_set = array_merge($this->selected_set, $this->used_msgobjs[$m_key]->get_msg_set($arr));
 					$this->update_last_id();
 				}
-			} else{
+			} else {
 				/* 		if (empty($sortfield))
 				  $this->init_sortstuff($id, '');
 				  else
@@ -737,7 +726,7 @@ class we_messaging extends we_class{
 				//		echo "ID=$id<br>\n";
 				if(array_ksearch('ID', $id, $this->available_folders) != "-1"){
 					$o = $this->used_msgobjs[$this->available_folders[array_ksearch('ID', $id, $this->available_folders)]['ClassName']];
-				} else{
+				} else {
 					$o = null;
 				}
 				$arr = array('folder_id' => $id, 'last_id' => $this->last_id);
@@ -816,7 +805,7 @@ class we_messaging extends we_class{
 
 			$ret[] = $id;
 			$ret[] = g_l('modules_messaging', '[folder_created]');
-		} else{
+		} else {
 			$ret = -1;
 			$ret[] = g_l('modules_messaging', '[folder_create_error]');
 		}
@@ -851,7 +840,7 @@ class we_messaging extends we_class{
 			$this->available_folders[$ind]['ParentID'] = $parent_folder;
 			$ret[] = 1;
 			$ret[] = g_l('modules_messaging', '[folder_modified]');
-		} else{
+		} else {
 			$ret[] = -1;
 			$ret[] = g_l('modules_messaging', '[folder_change_failed]');
 		}

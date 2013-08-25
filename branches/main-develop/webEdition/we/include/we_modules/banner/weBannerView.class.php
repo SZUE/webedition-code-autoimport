@@ -85,7 +85,7 @@ class weBannerView extends weBannerBase{
 			include(WE_MODULES_PATH . 'home.inc.php');
 			$out = ob_get_contents();
 			ob_end_clean();
-		} else{
+		} else {
 			$out = STYLESHEET . $this->getJSProperty() . weSuggest::getYuiJsFiles() . '
 				</head>
 				<body class="weEditorBody" onload="loaded=1;" onunload="doUnload()">
@@ -108,7 +108,7 @@ class weBannerView extends weBannerBase{
 							"headline" => g_l('modules_banner', '[path]'),
 							"html" => $this->formPath(),
 							"space" => 120
-						));
+					));
 					$znr = -1;
 					if(!$this->banner->IsFolder){
 						$parts[] = array(
@@ -243,81 +243,90 @@ class weBannerView extends weBannerBase{
 				hot = "0";
 			}
 
-			function we_cmd(){
+			function we_cmd() {
 				var args = "";
-				var url = "<?php print WEBEDITION_DIR; ?>we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
-				if(hot == "1" && arguments[0] != "save_banner") {
-					if(confirm("<?php print g_l('modules_banner', '[save_changed_banner]') ?>")) {
+				var url = "<?php print WEBEDITION_DIR; ?>we_cmd.php?";
+				for (var i = 0; i < arguments.length; i++) {
+					url += "we_cmd[" + i + "]=" + escape(arguments[i]);
+					if (i < (arguments.length - 1)) {
+						url += "&";
+					}
+				}
+				if (hot == "1" && arguments[0] != "save_banner") {
+					if (confirm("<?php print g_l('modules_banner', '[save_changed_banner]') ?>")) {
 						arguments[0] = "save_banner";
 					} else {
 						top.content.usetHot();
 					}
 				}
-				switch (arguments[0]){
+				switch (arguments[0]) {
 					case "exit_banner":
-						if(hot != "1") {
+						if (hot != "1") {
 							eval('top.opener.top.we_cmd(\'exit_modules\')');
 						}
 						break;
 					case "new_banner":
-						if(top.content.editor.edbody.loaded){
-							top.content.editor.edbody.document.we_form.ncmd.value=arguments[0];
+						if (top.content.editor.edbody.loaded) {
+							top.content.editor.edbody.document.we_form.ncmd.value = arguments[0];
 							top.content.editor.edbody.submitForm();
 						}
-						else setTimeout('we_cmd("new_banner");',10);
+						else
+							setTimeout('we_cmd("new_banner");', 10);
 						break;
 					case "new_bannergroup":
-						if(top.content.editor.edbody.loaded){
-							top.content.editor.edbody.document.we_form.ncmd.value=arguments[0];
+						if (top.content.editor.edbody.loaded) {
+							top.content.editor.edbody.document.we_form.ncmd.value = arguments[0];
 							top.content.editor.edbody.submitForm();
 						}
-						else setTimeout('we_cmd("new_bannergroup");',10);
+						else
+							setTimeout('we_cmd("new_bannergroup");', 10);
 						break;
 					case "delete_banner":
 		<?php
 		if(!we_hasPerm("DELETE_BANNER")){
 			print we_message_reporting::getShowMessageCall(g_l('modules_banner', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
-		} else{
+		} else {
 			?>
-								if(top.content.editor.edbody.loaded && top.content.editor.edbody.we_is_home==undefined){
-									if(!confirm("<?php print g_l('modules_banner', '[delete_question]') ?>")) return;
-								}
-								else {
-			<?php print we_message_reporting::getShowMessageCall(g_l('modules_banner', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_WARNING); ?>
+							if (top.content.editor.edbody.loaded && top.content.editor.edbody.we_is_home == undefined) {
+								if (!confirm("<?php print g_l('modules_banner', '[delete_question]') ?>"))
 									return;
-								}
-								top.content.editor.edbody.document.we_form.ncmd.value=arguments[0];
-								top.content.editor.edbody.submitForm();
+							}
+							else {
+			<?php print we_message_reporting::getShowMessageCall(g_l('modules_banner', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_WARNING); ?>
+								return;
+							}
+							top.content.editor.edbody.document.we_form.ncmd.value = arguments[0];
+							top.content.editor.edbody.submitForm();
 		<?php } ?>
 						break;
 					case "save_banner":
 		<?php if(we_hasPerm("EDIT_BANNER") || we_hasPerm("NEW_BANNER")){ ?>
-							if(top.content.editor.edbody.loaded && top.content.editor.edbody.we_is_home==undefined){
-								if(!top.content.editor.edbody.checkData()){
+							if (top.content.editor.edbody.loaded && top.content.editor.edbody.we_is_home == undefined) {
+								if (!top.content.editor.edbody.checkData()) {
 									return;
 								}
-							}else{
+							} else {
 			<?php print we_message_reporting::getShowMessageCall(g_l('modules_banner', '[nothing_to_save]'), we_message_reporting::WE_MESSAGE_WARNING); ?>
-									return;
-								}
+								return;
+							}
 
-								top.content.editor.edbody.document.we_form.ncmd.value=arguments[0];
-								top.content.editor.edbody.submitForm();
+							top.content.editor.edbody.document.we_form.ncmd.value = arguments[0];
+							top.content.editor.edbody.submitForm();
 		<?php } ?>
 						top.content.usetHot();
 						break;
 					case "edit_banner":
-						top.content.editor.edbody.document.we_form.ncmd.value=arguments[0];
-						top.content.editor.edbody.document.we_form.bid.value=arguments[1];
+						top.content.editor.edbody.document.we_form.ncmd.value = arguments[0];
+						top.content.editor.edbody.document.we_form.bid.value = arguments[1];
 						top.content.editor.edbody.submitForm();
 						break;
 					default:
-						for(var i = 0; i < arguments.length; i++) {
-							args += 'arguments['+i+']' + ((i < (arguments.length-1)) ? ',' : '');
+						for (var i = 0; i < arguments.length; i++) {
+							args += 'arguments[' + i + ']' + ((i < (arguments.length - 1)) ? ',' : '');
 						}
-						eval('top.opener.top.we_cmd('+args+')');
-					}
+						eval('top.opener.top.we_cmd(' + args + ')');
 				}
+			}
 		</script>
 		<?php
 	}
@@ -326,27 +335,33 @@ class weBannerView extends weBannerBase{
 		?>
 		<script type="text/javascript">
 
-				function doUnload() {
-					if (!!jsWindow_count) {
-						for (i = 0; i < jsWindow_count; i++) {
-							eval("jsWindow" + i + "Object.close()");
-						}
+			function doUnload() {
+				if (!!jsWindow_count) {
+					for (i = 0; i < jsWindow_count; i++) {
+						eval("jsWindow" + i + "Object.close()");
 					}
 				}
+			}
 
-				function we_cmd(){
-					var args = "";
-					var url = "<?php print WEBEDITION_DIR; ?>we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
-					switch (arguments[0]){
-						case "empty_log":
-							break;
-						default:
-							for(var i = 0; i < arguments.length; i++){
-								args += 'arguments['+i+']' + ((i < (arguments.length-1)) ? ',' : '');
-							}
-							eval('parent.edbody.we_cmd('+args+')');
+			function we_cmd() {
+				var args = "";
+				var url = "<?php print WEBEDITION_DIR; ?>we_cmd.php?";
+				for (var i = 0; i < arguments.length; i++) {
+					url += "we_cmd[" + i + "]=" + escape(arguments[i]);
+					if (i < (arguments.length - 1)) {
+						url += "&";
 					}
 				}
+				switch (arguments[0]) {
+					case "empty_log":
+						break;
+					default:
+						for (var i = 0; i < arguments.length; i++) {
+							args += 'arguments[' + i + ']' + ((i < (arguments.length - 1)) ? ',' : '');
+						}
+						eval('parent.edbody.we_cmd(' + args + ')');
+				}
+			}
 		</script>
 		<?php
 	}
@@ -354,12 +369,12 @@ class weBannerView extends weBannerBase{
 	function getJSCmd(){
 		?>
 		<script type="text/javascript">
-				function submitForm(){
-					var f = self.document.we_form;
-					f.target = "cmd";
-					f.method = "post";
-					f.submit();
-				}
+			function submitForm() {
+				var f = self.document.we_form;
+				f.target = "cmd";
+				f.method = "post";
+				f.submit();
+			}
 		</script>
 		<?php
 	}
@@ -368,87 +383,99 @@ class weBannerView extends weBannerBase{
 		echo we_html_element::jsScript(JS_DIR . 'windows.js');
 		?>
 		<script type="text/javascript">
-				var loaded;
+			var loaded;
 
-				function doUnload() {
-					if (!!jsWindow_count) {
-						for (i = 0; i < jsWindow_count; i++) {
-							eval("jsWindow" + i + "Object.close()");
-						}
+			function doUnload() {
+				if (!!jsWindow_count) {
+					for (i = 0; i < jsWindow_count; i++) {
+						eval("jsWindow" + i + "Object.close()");
 					}
 				}
+			}
 
-				function we_cmd(){
-					var args = "";
-					var url = "<?php print WEBEDITION_DIR; ?>we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
-					switch (arguments[0]){
-						case "openSelector":
-							new jsWindow(url,"we_selector",-1,-1,<?php echo we_fileselector::WINDOW_SELECTOR_WIDTH . "," . we_fileselector::WINDOW_SELECTOR_HEIGHT; ?>,true,true,true,true);
-							break;
-						case "openCatselector":
-							new jsWindow(url,"we_catselector",-1,-1,<?php echo we_fileselector::WINDOW_CATSELECTOR_WIDTH . "," . we_fileselector::WINDOW_CATSELECTOR_HEIGHT; ?>,true,true,true,true);
-							break;
-						case "openDocselector":
-							new jsWindow(url,"we_docselector",-1,-1,<?php echo we_fileselector::WINDOW_DOCSELECTOR_WIDTH . "," . we_fileselector::WINDOW_DOCSELECTOR_HEIGHT; ?>,true,true,true,true);
-							break;
-						case "openDirselector":
-							new jsWindow(url,"we_dirselector",-1,-1,<?php echo we_fileselector::WINDOW_DIRSELECTOR_WIDTH . "," . we_fileselector::WINDOW_DIRSELECTOR_HEIGHT; ?>,true,true,true,true);
-							break;
-						case "openBannerDirselector":
-							new jsWindow(url,"we_bannerselector",-1,-1,600,350,true,true,true);
-							break;
-						case "switchPage":
-							document.we_form.ncmd.value=arguments[0];
-							document.we_form.page.value=arguments[1];
+			function we_cmd() {
+				var args = "";
+				var url = "<?php print WEBEDITION_DIR; ?>we_cmd.php?";
+				for (var i = 0; i < arguments.length; i++) {
+					url += "we_cmd[" + i + "]=" + escape(arguments[i]);
+					if (i < (arguments.length - 1)) {
+						url += "&";
+					}
+				}
+				switch (arguments[0]) {
+					case "openSelector":
+						new jsWindow(url, "we_selector", -1, -1,<?php echo we_fileselector::WINDOW_SELECTOR_WIDTH . "," . we_fileselector::WINDOW_SELECTOR_HEIGHT; ?>, true, true, true, true);
+						break;
+					case "openCatselector":
+						new jsWindow(url, "we_catselector", -1, -1,<?php echo we_fileselector::WINDOW_CATSELECTOR_WIDTH . "," . we_fileselector::WINDOW_CATSELECTOR_HEIGHT; ?>, true, true, true, true);
+						break;
+					case "openDocselector":
+						new jsWindow(url, "we_docselector", -1, -1,<?php echo we_fileselector::WINDOW_DOCSELECTOR_WIDTH . "," . we_fileselector::WINDOW_DOCSELECTOR_HEIGHT; ?>, true, true, true, true);
+						break;
+					case "openDirselector":
+						new jsWindow(url, "we_dirselector", -1, -1,<?php echo we_fileselector::WINDOW_DIRSELECTOR_WIDTH . "," . we_fileselector::WINDOW_DIRSELECTOR_HEIGHT; ?>, true, true, true, true);
+						break;
+					case "openBannerDirselector":
+						new jsWindow(url, "we_bannerselector", -1, -1, 600, 350, true, true, true);
+						break;
+					case "switchPage":
+						document.we_form.ncmd.value = arguments[0];
+						document.we_form.page.value = arguments[1];
+						submitForm();
+						break;
+					case "add_cat":
+					case "del_cat":
+					case "del_all_cats":
+					case "add_file":
+					case "del_file":
+					case "del_all_files":
+					case "add_folder":
+					case "del_folder":
+					case "del_customer":
+					case "del_all_customers":
+					case "del_all_folders":
+					case "add_customer":
+						document.we_form.ncmd.value = arguments[0];
+						document.we_form.ncmdvalue.value = arguments[1];
+						submitForm();
+						break;
+					case "delete_stat":
+						if (confirm("<?php print g_l('modules_banner', '[deleteStatConfirm]'); ?>")) {
+							document.we_form.ncmd.value = arguments[0];
 							submitForm();
-							break;
-						case "add_cat":
-						case "del_cat":
-						case "del_all_cats":
-						case "add_file":
-						case "del_file":
-						case "del_all_files":
-						case "add_folder":
-						case "del_folder":
-						case "del_customer":
-						case "del_all_customers":
-						case "del_all_folders":
-						case "add_customer":
-							document.we_form.ncmd.value=arguments[0];
-							document.we_form.ncmdvalue.value=arguments[1];
-							submitForm();
-							break;
-						case "delete_stat":
-							if(confirm("<?php print g_l('modules_banner', '[deleteStatConfirm]'); ?>")){
-								document.we_form.ncmd.value=arguments[0];
-								submitForm();
-							}
-							break;
-						default:
-							for(var i = 0; i < arguments.length; i++){
-								args += 'arguments['+i+']' + ((i < (arguments.length-1)) ? ',' : '');
-							}
-							eval('top.content.we_cmd('+args+')');
 						}
-					}
+						break;
+					default:
+						for (var i = 0; i < arguments.length; i++) {
+							args += 'arguments[' + i + ']' + ((i < (arguments.length - 1)) ? ',' : '');
+						}
+						eval('top.content.we_cmd(' + args + ')');
+				}
+			}
 
-					function submitForm(){
-						var f = self.document.we_form;
-						if(arguments[0]) f.target = arguments[0];
-						else f.target = "edbody";
-						if(arguments[1]) f.action = arguments[1];
-						else f.action = "";
-						if(arguments[2]) f.method = arguments[2];
-						else f.method = "post";
+			function submitForm() {
+				var f = self.document.we_form;
+				if (arguments[0])
+					f.target = arguments[0];
+				else
+					f.target = "edbody";
+				if (arguments[1])
+					f.action = arguments[1];
+				else
+					f.action = "";
+				if (arguments[2])
+					f.method = arguments[2];
+				else
+					f.method = "post";
 
-						f.submit();
-					}
-					function checkData(){
+				f.submit();
+			}
+			function checkData() {
 
-						return true;
-					}
+				return true;
+			}
 
-					self.focus();
+			self.focus();
 		</script>
 		<?php
 	}
@@ -673,7 +700,7 @@ class weBannerView extends weBannerBase{
 						if(!we_hasPerm("DELETE_BANNER")){
 							print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_banner', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR));
 							return;
-						} else{
+						} else {
 
 							$this->banner = new weBanner($_REQUEST["bid"]);
 							if($this->banner->delete()){
@@ -683,7 +710,7 @@ class weBannerView extends weBannerBase{
 							' . we_message_reporting::getShowMessageCall(($this->banner->IsFolder ? g_l('modules_banner', '[delete_group_ok]') : g_l('modules_banner', '[delete_ok]')), we_message_reporting::WE_MESSAGE_NOTICE) . '
 							top.content.we_cmd("new_banner");
 							');
-							} else{
+							} else {
 								print we_html_element::jsElement(we_message_reporting::getShowMessageCall(($this->banner->IsFolder ? g_l('modules_banner', '[delete_group_nok]') : g_l('modules_banner', '[delete_nok]')), we_message_reporting::WE_MESSAGE_ERROR));
 							}
 						}
@@ -748,12 +775,8 @@ class weBannerView extends weBannerBase{
 
 	function getSettings(){
 		$db = new DB_WE();
-		$ret = array();
-		$db->query('SELECT * FROM ' . BANNER_PREFS_TABLE);
-		while($db->next_record()) {
-			$ret[$db->f('pref_name')] = $db->f('pref_value');
-		}
-		return $ret;
+		$db->query('SELECT pref_name,pref_value FROM ' . BANNER_PREFS_TABLE);
+		return $db->getAllFirst(false);
 	}
 
 	function saveSettings($settings){
@@ -772,7 +795,7 @@ class weBannerView extends weBannerBase{
 		$query = 'SELECT ' . CONTENT_TABLE . '.Dat AS templateCode, ' . LINK_TABLE . '.DID AS DID FROM ' . CONTENT_TABLE . "," . LINK_TABLE . " WHERE " . LINK_TABLE . ".DocumentTable='" . stripTblPrefix(TEMPLATES_TABLE) . "' AND " . LINK_TABLE . ".CID=" . CONTENT_TABLE . ".ID AND " . CONTENT_TABLE . ".Dat LIKE '%<we:banner %'  ";
 		$this->db->query($query);
 		$foo = array();
-		while($this->db->next_record()) {
+		while($this->db->next_record()){
 			preg_match_all("|(<we:banner [^>]+>)|U", $this->db->f('templateCode'), $foo, PREG_SET_ORDER);
 			foreach($foo as $cur){
 				$wholeTag = $cur[1];
@@ -832,7 +855,7 @@ class weBannerView extends weBannerBase{
 		$this->db->query("SELECT DocType,ID FROM " . DOC_TYPES_TABLE . " ORDER BY DocType");
 
 		$doctypesArr = makeArrayFromCSV($this->banner->DoctypeIDs);
-		while($this->db->next_record()) {
+		while($this->db->next_record()){
 			$dt .= '<option value="' . $this->db->f("ID") . '"' . (in_array($this->db->f("ID"), $doctypesArr) ? ' selected' : '') . '>' . $this->db->f("DocType") . '</option>' . "\n";
 		}
 		$dt .= '</select>';
@@ -885,7 +908,7 @@ class weBannerView extends weBannerBase{
 				array("dat" => $GLOBALS["lv"]->getAllrate() . "%", "align" => "right")
 			)
 		);
-		while($GLOBALS["lv"]->next_record()) {
+		while($GLOBALS["lv"]->next_record()){
 			$rows[] = array(
 				array("dat" => ($GLOBALS["lv"]->f("page") ? '' : '<a href="' . $GLOBALS["lv"]->f("WE_PATH") . '" target="_blank">') . $GLOBALS["lv"]->f("WE_PATH") . ($GLOBALS["lv"]->f("page") ? '' : '</a>'), FILE_TABLE),
 				array("dat" => $GLOBALS["lv"]->f("views")),

@@ -181,16 +181,12 @@ $versionOld = '';
 if(!empty($oldDoc)){
 	$versionOld = ' AND version!=' . intval($oldDoc['version']);
 }
-$versions = array();
-$_db->query('SELECT ID,version, timestamp FROM ' . VERSIONS_TABLE . ' WHERE documentID=' . intval($newDoc['documentID']) . " AND documentTable='" . $_db->escape($newDoc['documentTable']) . "' AND version!=" . intval($newDoc['version']) . ' ' . $versionOld . "  ORDER BY version ASC");
-while($_db->next_record()){
-	$versions[$_db->f("ID")]['version'] = $_db->f("version");
-	$versions[$_db->f("ID")]['timestamp'] = date("d.m.y - H:i:s", $_db->f("timestamp"));
-}
+$_db->query('SELECT ID,version, DATE_FORMAT(timestamp,"' . g_l('weEditorInfo', '[mysql_date_format]') . '") AS timestamp FROM ' . VERSIONS_TABLE . ' WHERE documentID=' . intval($newDoc['documentID']) . " AND documentTable='" . $_db->escape($newDoc['documentTable']) . "' AND version!=" . intval($newDoc['version']) . ' ' . $versionOld . "  ORDER BY version ASC");
+$versions = $_db->getAllFirst(true, MYSQLI_ASSOC);
 
-$_versions_time_days->addOption("", g_l('versions', '[pleaseChoose]'));
+$_versions_time_days->addOption('', g_l('versions', '[pleaseChoose]'));
 foreach($versions as $k => $v){
-	$txt = g_l('versions', '[version]') . " " . $v['version'] . " " . g_l('versions', '[from]') . " " . $v['timestamp'];
+	$txt = g_l('versions', '[version]') . ' ' . $v['version'] . " " . g_l('versions', '[from]') . ' ' . $v['timestamp'];
 	$_versions_time_days->addOption($k, $txt);
 }
 

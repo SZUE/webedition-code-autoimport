@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -798,7 +799,7 @@ top.selectFile(top.currentID);
 			}
 			$path = f('SELECT Path FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->id), "Path", $this->db);
 			$out = we_html_tools::getHtmlTop() .
-STYLESHEET . we_html_element::cssElement('
+				STYLESHEET . we_html_element::cssElement('
 	body {
 		margin:0px;
 		padding:0px;
@@ -859,9 +860,7 @@ STYLESHEET . we_html_element::cssElement('
 			if(isset($result['ContentType']) && !empty($result['ContentType'])){
 				if($this->table == FILE_TABLE && $result['ContentType'] != "folder"){
 					$query = $this->db->query('SELECT a.Name, b.Dat FROM ' . LINK_TABLE . ' a LEFT JOIN ' . CONTENT_TABLE . ' b on (a.CID = b.ID) WHERE a.DID=' . intval($this->id) . ' AND NOT a.DocumentTable="tblTemplates"');
-					while($this->db->next_record()){
-						$metainfos[$this->db->f('Name')] = $this->db->f('Dat');
-					}
+					$metainfos = $this->db->getAllFirst(false);
 				} elseif($this->table == FILE_TABLE && $result['ContentType'] = 'folder'){
 					$query = $this->db->query('SELECT ID, Text, IsFolder FROM ' . $this->db->escape($this->table) . ' WHERE ParentID=' . intval($this->id));
 					$folderFolders = array();

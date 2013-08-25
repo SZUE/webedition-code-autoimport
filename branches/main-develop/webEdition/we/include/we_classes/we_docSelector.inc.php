@@ -61,8 +61,7 @@ class we_docSelector extends we_dirSelector{
 		}
 
 		// deal with workspaces
-		if(we_hasPerm('ADMINISTRATOR') || ($this->table == FILE_TABLE && we_hasPerm('CAN_SELECT_OTHER_USERS_FILES')) 
-				|| (defined('OBJECT_FILES_TABLE') && $this->table == OBJECT_FILES_TABLE && we_hasPerm('CAN_SELECT_OTHER_USERS_FILES'))){
+		if(we_hasPerm('ADMINISTRATOR') || ($this->table == FILE_TABLE && we_hasPerm('CAN_SELECT_OTHER_USERS_FILES')) || (defined('OBJECT_FILES_TABLE') && $this->table == OBJECT_FILES_TABLE && we_hasPerm('CAN_SELECT_OTHER_USERS_FILES'))){
 			$wsQuery = '';
 		} else {
 			$wsQuery = '';
@@ -94,6 +93,7 @@ class we_docSelector extends we_dirSelector{
 			case FILE_TABLE:
 
 				$_db->query('SELECT a.ID, c.Dat FROM (' . FILE_TABLE . ' a LEFT JOIN ' . LINK_TABLE . ' b ON (a.ID=b.DID)) LEFT JOIN ' . CONTENT_TABLE . ' c ON (b.CID=c.ID) WHERE a.ParentID=' . intval($this->dir) . ' AND b.Name="Title"');
+
 				while($_db->next_record()){
 					$this->titles[$_db->f('ID')] = $_db->f('Dat');
 				}
@@ -353,7 +353,6 @@ function entry(ID,icon,text,isFolder,path,modDate,contentType,published,title) {
 		return we_html_element::jsScript(JS_DIR . 'windows.js');
 	}
 
-
 	function printHeaderHeadlines(){
 		return '
 <table border="0" cellpadding="0" cellspacing="0">
@@ -361,7 +360,6 @@ function entry(ID,icon,text,isFolder,path,modDate,contentType,published,title) {
 	<tr>' . $this->tableSizer . '</tr>
 </table>';
 	}
-
 
 	function printHeaderTableExtraCols(){
 		$newFileState = $this->userCanMakeNewFile ? 1 : 0;
@@ -374,7 +372,6 @@ function entry(ID,icon,text,isFolder,path,modDate,contentType,published,title) {
 					we_button::create_button("image:btn_add_file", "javascript:top.newFile();", true, -1, 22, "", "", !$newFileState, false)) .
 				'</td>' : '');
 	}
-
 
 	function printHeaderJSDef(){
 		$ret = parent::printHeaderJSDef();
@@ -602,9 +599,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 				switch($this->table){
 					case FILE_TABLE:
 						$this->db->query('SELECT a.Name, b.Dat FROM ' . LINK_TABLE . ' a LEFT JOIN ' . CONTENT_TABLE . ' b on (a.CID = b.ID) WHERE a.DID=' . intval($this->id) . " AND NOT a.DocumentTable='tblTemplates'");
-						while($this->db->next_record()){
-							$metainfos[$this->db->f('Name')] = $this->db->f('Dat');
-						}
+						$metainfos = $this->db->getAllFirst(false);
 						break;
 					case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
 						$_fieldnames = getHash('SELECT DefaultDesc,DefaultTitle,DefaultKeywords FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($result["TableID"]), $this->db, MYSQLI_ASSOC);
@@ -830,15 +825,15 @@ top.parentID = "' . $this->values["ParentID"] . '";
 				$out .= "<tr><td colspan='2' valign='middle' class='image' height='160' align='center' bgcolor='#EDEEED'>" . $_imagepreview . "</td></tr>";
 			}
 
-					foreach($_previewFields as $_part){
-						if(!empty($_part["data"])){
-							$out .= "<tr><td colspan='2' class='headline'>" . $_part["headline"] . "</td></tr>";
-							foreach($_part["data"] as $z => $_row){
-								$_class = (($z % 2) == 0) ? "odd" : "even";
-								$out .= "<tr class='$_class'><td>" . $_row['caption'] . ": </td><td>" . $_row['content'] . "</td></tr>";
-							}
-						}
+			foreach($_previewFields as $_part){
+				if(!empty($_part["data"])){
+					$out .= "<tr><td colspan='2' class='headline'>" . $_part["headline"] . "</td></tr>";
+					foreach($_part["data"] as $z => $_row){
+						$_class = (($z % 2) == 0) ? "odd" : "even";
+						$out .= "<tr class='$_class'><td>" . $_row['caption'] . ": </td><td>" . $_row['content'] . "</td></tr>";
 					}
+				}
+			}
 			$out .= '</table></div></td></tr></table>';
 		}
 		$out .= '</body></html>';
@@ -943,4 +938,5 @@ function previewFolder(id) {
 	alert(id);
 }');
 	}
+
 }

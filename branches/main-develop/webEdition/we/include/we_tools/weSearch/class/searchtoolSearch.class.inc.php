@@ -249,26 +249,16 @@ class searchtoolsearch extends we_search{
 	function getDoctypes(){
 		$_db = new DB_WE();
 
-		$q = getDoctypeQuery($_db);
-		$vals = array();
-
-		$_db->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' ' . $q);
-		while($_db->next_record()){
-			$vals[$_db->f('ID')] = $_db->f('DocType');
-		}
-
-		return $vals;
+		$_db->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' ' . getDoctypeQuery($_db));
+		return $_db->getAllFirst(false);
 	}
 
 	function searchInTitle($keyword, $table){
-
-		$titles = array();
 		$_db2 = new DB_WE();
 		//first check published documents
 		$_db2->query('SELECT a.DID FROM ' . LINK_TABLE . ' a LEFT JOIN ' . CONTENT_TABLE . " b on (a.CID = b.ID) WHERE a.Name='Title' AND b.Dat LIKE '%" . $_db2->escape(trim($keyword)) . "%' AND NOT a.DocumentTable!='" . TEMPLATES_TABLE . "'");
-		while($_db2->next_record()){
-			$titles[] = $_db2->f('DID');
-		}
+		$titles = $_db2->getAll(true);
+
 		//check unpublished documents
 		$_db2->query('SELECT DocumentID, DocumentObject  FROM ' . TEMPORARY_DOC_TABLE . " WHERE DocTable = 'tblFile' AND Active = 1 AND DocumentObject LIKE '%" . $_db2->escape(trim($keyword)) . "%'");
 		while($_db2->next_record()){

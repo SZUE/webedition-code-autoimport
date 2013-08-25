@@ -158,11 +158,7 @@ class we_workflow_workflow extends we_workflow_base{
 		$db = new DB_WE();
 
 		$db->query('SELECT ID,Text FROM ' . WORKFLOW_TABLE . ' WHERE Status IN (' . $status . ') AND Type IN (' . $type . ') ORDER BY Text');
-		$wfs = array();
-		while($db->next_record()){
-			$wfs[$db->f('ID')] = $db->f('Text');
-		}
-		return $wfs;
+		return $db->getAllFirst(false);
 	}
 
 	/**

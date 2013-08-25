@@ -46,7 +46,7 @@ abstract class we_root extends we_class{
 
 	/* Path of the File  */
 	var $Path = '';
-	
+
 	/* sha1 hash of the file */
 	var $Filehash = '';
 
@@ -58,7 +58,7 @@ abstract class we_root extends we_class{
 
 	/* Modification Date as UnixTimestamp  */
 	var $ModDate = 0;
-	
+
 	/* Rebuild Date as UnixTimestamp  */
 	var $RebuildDate = 0;
 
@@ -944,12 +944,8 @@ abstract class we_root extends we_class{
 	}
 
 	private function getLinkReplaceArray(){
-		$ret = array();
 		$this->DB_WE->query('SELECT CONCAT_WS("_",Type,Name) AS Name,CID FROM ' . LINK_TABLE . ' WHERE DID=' . $this->ID . ' AND DocumentTable="' . stripTblPrefix($this->Table) . '"');
-		while($this->DB_WE->next_record()){
-			$ret[$this->DB_WE->f('Name')] = $this->DB_WE->f('CID');
-		}
-		return $ret;
+		return $this->DB_WE->getAllFirst(false);
 	}
 
 	function i_saveContentDataInDB(){
@@ -1171,7 +1167,7 @@ abstract class we_root extends we_class{
 	function we_rewrite(){
 		return true;
 	}
-	
+
 	function update_filehash(){
 		$this->wasUpdate = $this->ID ? 1 : 0;
 		if($this->Table==TEMPLATES_TABLE || $this->Table==FILE_TABLE){
@@ -1180,20 +1176,20 @@ abstract class we_root extends we_class{
 					$usepath= TEMPLATES_PATH.$this->Path;
 				} else {
 					$usepath= TEMPLATES_PATH.substr_replace($this->Path,'.php',-5);
-				}			
+				}
 			} else {
 				$usepath=$_SERVER['DOCUMENT_ROOT'].$this->Path;
 			}
 			if(file_exists($usepath) && is_file($usepath)){
 				$this->Filehash = sha1_file($usepath);
 			} else {
-				$this->Filehash = '';	
-			}		
+				$this->Filehash = '';
+			}
 			$this->i_savePersistentSlotsToDB('Filehash,RebuildDate');
-		} 
+		}
 		return true;
 	}
-	
+
 	function correctFields(){
 
 	}

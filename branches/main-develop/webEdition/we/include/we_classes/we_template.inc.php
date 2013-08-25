@@ -538,16 +538,11 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 	}
 
 	private function isUsedByDocuments(){
-		$paths = array();
-
 		if($this->ID == 0){
-			return $paths;
+			return array();
 		}
-		$this->DB_WE->query('SELECT ID, Path FROM ' . FILE_TABLE . ' WHERE temp_template_id=' . intval($this->ID) . ' OR (temp_template_id=0 AND TemplateID=' . intval($this->ID) . ') ORDER BY Path');
-		while($this->DB_WE->next_record()) {
-			$paths[$this->DB_WE->f('ID')] = $this->DB_WE->f('Path') . ' (ID: ' . $this->DB_WE->f('ID') . ')';
-		}
-		return $paths;
+		$this->DB_WE->query('SELECT ID, CONCAT(Path," (ID: ",ID,")") FROM ' . FILE_TABLE . ' WHERE temp_template_id=' . intval($this->ID) . ' OR (temp_template_id=0 AND TemplateID=' . intval($this->ID) . ') ORDER BY Path');
+		return $this->DB_WE->getAllFirst(false);
 	}
 
 	function formTemplateDocuments(){

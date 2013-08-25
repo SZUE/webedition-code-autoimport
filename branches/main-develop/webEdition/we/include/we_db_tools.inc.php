@@ -43,9 +43,9 @@ function getHash($query, $DB_WE, $resultType = MYSQL_BOTH){
 	return $cache[$query];
 }
 
-function f($query, $field, $DB_WE){
+function f($query, $field, $DB_WE, $emptyValue = ''){
 	$h = getHash($query, $DB_WE, MYSQL_ASSOC);
-	return isset($h[$field]) ? $h[$field] : '';
+	return isset($h[$field]) ? $h[$field] : $emptyValue;
 }
 
 function doUpdateQuery($DB_WE, $table, $hash, $where){

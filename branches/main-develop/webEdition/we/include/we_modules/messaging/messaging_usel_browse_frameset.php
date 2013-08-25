@@ -357,9 +357,10 @@ echo we_html_element::jsScript(JS_DIR . 'images.js') .
 
 <?php
 
-function readChilds($pid){
+/*function readChilds($pid){
 	$db_temp = new DB_WE();
-	$db_temp->query("SELECT ID,username,ParentID,Type,Permissions FROM " . USER_TABLE . " WHERE  ParentID=" . intval($pid) . " ORDER BY username ASC");
+	$db_temp->query('SELECT ID,username,ParentID,Type,Permissions FROM ' . USER_TABLE . ' WHERE  ParentID=' . intval($pid) . ' ORDER BY username ASC');
+//FIXME: use ->getAllFirst(true); => this uses to many db connections
 	while($db_temp->next_record()){
 		$GLOBALS['entries'][$db_temp->f("ID")]["username"] = $db_temp->f("username");
 		$GLOBALS['entries'][$db_temp->f("ID")]["ParentID"] = $db_temp->f("ParentID");
@@ -369,7 +370,7 @@ function readChilds($pid){
 			readChilds($db_temp->f("ID"));
 		}
 	}
-}
+}*/
 
 $entries = array();
 $DB_WE->query("SELECT ID,ParentID,username,Permissions,Type FROM " . USER_TABLE . " ORDER BY username ASC");

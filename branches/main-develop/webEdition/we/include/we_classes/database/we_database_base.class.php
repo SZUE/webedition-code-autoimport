@@ -530,9 +530,9 @@ abstract class we_database_base{
 		return $ret;
 	}
 
-	public function getAllFirst($useArray = true){
+	public function getAllFirst($useArray = true, $resultType = MYSQL_NUM){
 		$ret = array();
-		while($this->next_record(MYSQL_NUM)){
+		while($this->next_record($resultType)){
 			$ret[array_shift($this->Record)] = ($useArray ? $this->Record : current($this->Record));
 		}
 		return $ret;

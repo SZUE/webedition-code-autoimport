@@ -146,14 +146,11 @@ class weVersionsSearch{
 					}
 				}
 				if(!empty($modConst)){
-					$modifications = array();
 					$ids = array();
 					$_ids = array();
-					$this->db->query('SELECT ID, modifications FROM ' . VERSIONS_TABLE . " WHERE modifications!=''");
+					$this->db->query('SELECT ID, modifications FROM ' . VERSIONS_TABLE . ' WHERE modifications!=""');
+					$modifications = array_map('makeArrayFromCSV', $this->db->getAllFirst(false));
 
-					while($this->db->next_record()){
-						$modifications[$this->db->f('ID')] = makeArrayFromCSV($this->db->f('modifications'));
-					}
 					$m = 0;
 					foreach($modConst as $k => $v){
 						foreach($modifications as $key => $val){

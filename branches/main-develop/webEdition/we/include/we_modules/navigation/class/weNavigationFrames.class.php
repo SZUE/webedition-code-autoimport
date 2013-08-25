@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weNavigationFrames extends weModuleFrames {
+class weNavigationFrames extends weModuleFrames{
 
 //class weNavigationFrames extends weToolFramesInterim {
 
@@ -587,8 +587,7 @@ function setTab(tab) {
 		$docTypes = array(
 			g_l('navigation', '[no_entry]')
 		);
-		$q = getDoctypeQuery($this->db);
-		$this->db->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' ' . $q);
+		$this->db->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' ' . getDoctypeQuery($this->db));
 		while($this->db->next_record()){
 			$docTypes[$this->db->f("ID")] = $this->db->f('DocType');
 		}

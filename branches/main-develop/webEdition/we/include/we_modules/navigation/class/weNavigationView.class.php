@@ -1193,15 +1193,10 @@ class weNavigationView{
 	}
 
 	function getItems($id){
-
-		$_items = array();
 		$_db = new DB_WE();
 
 		$_db->query('SELECT ID,Text FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($id) . ' AND Depended=1 ORDER BY Ordn;');
-		while($_db->next_record()) {
-			$_items[$_db->f('ID')] = $_db->f('Text');
-		}
-		return $_items;
+		return $_db->getAllFirst(false);
 	}
 
 }

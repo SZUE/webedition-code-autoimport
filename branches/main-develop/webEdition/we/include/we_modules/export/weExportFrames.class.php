@@ -291,36 +291,26 @@ class weExportFrames extends weModuleFrames{
 		);
 
 		$js = we_html_element::jsElement('
+function closeAllSelection(){
+	var elem = document.getElementById("auto");
+	elem.style.display = "none";
+	elem = document.getElementById("manual");
+	elem.style.display = "none";
+}
+function closeAllType(){
+	var elem = document.getElementById("doctype");
+	elem.style.display = "none";
+	' . (defined("OBJECT_TABLE") ? '
+	elem = document.getElementById("classname");
+	elem.style.display = "none";' : '') . '
+}');
 
-			function closeAllSelection(){
-				var elem = document.getElementById("auto");
-				elem.style.display = "none";
-				elem = document.getElementById("manual");
-				elem.style.display = "none";
-			}
-			function closeAllType(){
-				var elem = document.getElementById("doctype");
-				elem.style.display = "none";
-				' . (defined("OBJECT_TABLE") ? '
-				elem = document.getElementById("classname");
-				elem.style.display = "none";' : '') . '
-			}
+		$this->db->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' ' . getDoctypeQuery($this->db));
+		$docTypes = $this->db->getAllFirst(false);
 
-		');
-
-		$docTypes = array();
-		$q = getDoctypeQuery($this->db);
-		$this->db->query("SELECT ID,DocType FROM " . DOC_TYPES_TABLE . " $q");
-		while($this->db->next_record()){
-			$docTypes[$this->db->f("ID")] = $this->db->f("DocType");
-		}
-
-		if(defined("OBJECT_TABLE")){
-			$classNames = array();
-			$this->db->query("SELECT ID,Text FROM " . OBJECT_TABLE);
-			while($this->db->next_record()){
-				$classNames[$this->db->f("ID")] = $this->db->f("Text");
-			}
+		if(defined('OBJECT_TABLE')){
+			$this->db->query('SELECT ID,Text FROM ' . OBJECT_TABLE);
+			$classNames= $this->db->getAllFirst(false);
 		}
 
 		$FolderPath = $this->View->export->Folder ? f("SELECT Path FROM " . FILE_TABLE . " WHERE ID=" . intval($this->View->export->Folder), "Path", $this->db) : "/";

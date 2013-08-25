@@ -230,15 +230,10 @@ class weNewsletter extends weNewsletterBase {
 	 * @return array
 	 */
 	function getAllNewsletter(){
-
 		$db = new DB_WE();
 
-		$db->query("SELECT ID,Text FROM " . NEWSLETTER_TABLE . " ORDER BY ID");
-		$nl = array();
-		while($db->next_record()){
-			$nl[$db->f("ID")] = $db->f("Text");
-		}
-		return $nl;
+		$db->query('SELECT ID,Text FROM ' . NEWSLETTER_TABLE . ' ORDER BY ID');
+		return $db->getAllFirst(false);
 	}
 
 	/**

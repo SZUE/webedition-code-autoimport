@@ -374,11 +374,11 @@ function we_cmd(){
 			) . '</td><td>&nbsp;</td></tr></table>'
 		);
 		$max_res = $pob->View->settings->getMaxSearchResults();
-		$result = array();
-		if(!empty($search_arr) && $_REQUEST["search"])
-			$result = weCustomerAdd::getAdvSearchResults($search_arr, $count, $max_res);
-		foreach($result as $id => $text)
+		$result = (!empty($search_arr) && $_REQUEST["search"] ? weCustomerAdd::getAdvSearchResults($search_arr, $count, $max_res) : array());
+
+		foreach($result as $id => $text){
 			$select->addOption($id, $text);
+		}
 	}
 
 	function getAdvSearchResults($keywords, $count, $res_num){
@@ -392,30 +392,18 @@ function we_cmd(){
 			"6" => "LIKE"
 		);
 
-		$select = ' ID,CONCAT(Username, " (",Forename," ",Surname,")") AS user';
 		$where = "";
 
 		for($i = 0; $i < $count; $i++){
 			if(isset($keywords["field_" . $i])){
 				$keywords["field_" . $i] = str_replace(g_l('modules_customer', '[common]') . "_", "", $keywords["field_" . $i]);
-				//$select.=",".$keywords["field_".$i];
 			}
 			if(isset($keywords["field_" . $i]) && isset($keywords["operator_" . $i]) && isset($keywords["value_" . $i]))
 				$where.=(isset($keywords["logic_" . $i]) ? " " . $keywords["logic_" . $i] . " " : "") . $keywords["field_" . $i] . " " . $operators[$keywords["operator_" . $i]] . " '" . (is_numeric($keywords["value_" . $i]) ? $keywords["value_" . $i] : $this->db->escape($keywords["value_" . $i])) . "'";
 		}
 
-		if($where == ""){
-			$where = 0;
-		}
-
-		$this->db->query('SELECT ' . $select . ' FROM ' . CUSTOMER_TABLE . ' WHERE ' . $where . ' ORDER BY Text LIMIT 0,' . $res_num);
-
-		$result = array();
-		while($this->db->next_record()) {
-			$result[$this->db->f("ID")] = $this->db->f("user");
-		}
-
-		return $result;
+		$this->db->query('SELECT ID,CONCAT(Username, " (",Forename," ",Surname,")") AS user FROM ' . CUSTOMER_TABLE . ' WHERE ' . (empty($where) ? 0 : $where) . ' ORDER BY Text LIMIT 0,' . $res_num);
+		return $this->db->getAllFirst(false);
 	}
 
 	function getHTMLTreeHeader(&$pob){
@@ -439,12 +427,11 @@ function we_cmd(){
 
 
 		$content = we_html_element::htmlForm(array("name" => "we_form_treeheader"), $hiddens .
-					$table1->getHtml() .
-					$table->getHtml()
-				);
+				$table1->getHtml() .
+				$table->getHtml()
+		);
 		return $content;
-		$body = we_html_element::htmlBody(array('style' => 'overflow:hidden', "background" => IMAGE_DIR . "backgrounds/header_with_black_line.gif", "marginwidth" => "5", "marginheight" => "5", "leftmargin" => "5", "topmargin" => "5"),
-			$content
+		$body = we_html_element::htmlBody(array('style' => 'overflow:hidden', "background" => IMAGE_DIR . "backgrounds/header_with_black_line.gif", "marginwidth" => "5", "marginheight" => "5", "leftmargin" => "5", "topmargin" => "5"), $content
 		);
 
 		//return $pob->getHTMLDocument($body);

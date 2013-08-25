@@ -27,7 +27,7 @@
  * General Definition of WebEdition Banner
  *
  */
-class weBanner extends weBannerBase {
+class weBanner extends weBannerBase{
 
 	const PAGE_PROPERTY = 0;
 	const PAGE_PLACEMENT = 1;
@@ -265,14 +265,9 @@ class weBanner extends weBannerBase {
 	}
 
 	private static function getImageInfos($fileID){
-		$imgAttr = array();
 		$db = new DB_WE();
 		$db->query('SELECT l.Name AS Name, c.Dat AS Dat FROM ' . LINK_TABLE . ' l LEFT JOIN ' . CONTENT_TABLE . ' AS c ON l.CID=c.ID WHERE l.Type="attrib" AND l.DID=' . intval($fileID));
-		while($db->next_record(MYSQL_ASSOC)){
-			$imgAttr[$db->f('Name')] = $db->f("Dat");
-		}
-		$db->free();
-		return ($imgAttr);
+		return $db->getAllFirst(false);
 	}
 
 	public static function getBannerCode($did, $paths, $target, $width, $height, $dt, $cats, $bannername, $link = true, $referer = "", $bannerclick = "/webEdition/bannerclick.php", $getbanner = "/webEdition/getBanner.php", $type = "", $page = "", $nocount = false, $xml = false){

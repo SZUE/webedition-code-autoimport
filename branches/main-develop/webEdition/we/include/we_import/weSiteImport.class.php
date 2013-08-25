@@ -716,11 +716,8 @@ class weSiteImport{
 		$_select = we_html_tools::htmlSelect("maxSize", $maxarray, 1, $this->maxSize, false, "", "value", 150);
 		$_maxSize = we_html_tools::htmlFormElementTable($_select, g_l('siteimport', "[maxSize]"));
 
-		$thumbsarray = array();
-		$GLOBALS['DB_WE']->query("SELECT ID,Name FROM " . THUMBNAILS_TABLE . " ORDER BY Name");
-		while($GLOBALS['DB_WE']->next_record()){
-			$thumbsarray[$GLOBALS['DB_WE']->f("ID")] = $GLOBALS['DB_WE']->f("Name");
-		}
+		$GLOBALS['DB_WE']->query('SELECT ID,Name FROM ' . THUMBNAILS_TABLE . ' ORDER BY Name');
+		$thumbsarray = $GLOBALS['DB_WE']->getAllFirst(false);
 		$_select = we_html_tools::htmlSelect("thumbs[]", $thumbsarray, 5, $this->thumbs, true, "", "value", 150);
 		$_thumbs = we_html_tools::htmlFormElementTable($_select, g_l('importFiles', "[thumbnails]"));
 

@@ -267,7 +267,7 @@ class weCustomer extends weModelBase{
 					}
 					break;
 			}
-			$ret[$this->db->f("Field")] = $record;
+			$ret[$this->db->f('Field')] = $record;
 		}
 
 		return $ret;

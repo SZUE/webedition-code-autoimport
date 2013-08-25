@@ -174,12 +174,8 @@ class weNewsletterGroup extends weNewsletterBase{
 
 	static function getSettings(){
 		$db = new DB_WE();
-		$ret = array();
-		$db->query('SELECT * FROM ' . NEWSLETTER_PREFS_TABLE);
-		while($db->next_record()){
-			$ret[$db->f('pref_name')] = $db->f('pref_value');
-		}
-		return $ret;
+		$db->query('SELECT pref_name,pref_value FROM ' . NEWSLETTER_PREFS_TABLE);
+		return $db->getAllFirst(false);
 	}
 
 }

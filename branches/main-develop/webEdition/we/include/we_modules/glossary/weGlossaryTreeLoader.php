@@ -22,9 +22,9 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weGlossaryTreeLoader{
+abstract class weGlossaryTreeLoader{
 
-	function getItems($ParentId, $Offset = 0, $Segment = 500, $Sort = ""){
+	public static function getItems($ParentId, $Offset = 0, $Segment = 500, $Sort = ''){
 
 		$Types = array(
 			weGlossary::TYPE_ABBREVATION,
@@ -47,7 +47,7 @@ class weGlossaryTreeLoader{
 		}
 	}
 
-	function getLanguages(){
+	private static function getLanguages(){
 
 		$Items = array();
 
@@ -72,7 +72,7 @@ class weGlossaryTreeLoader{
 		return $Items;
 	}
 
-	function getTypes($Language){
+	private static function getTypes($Language){
 
 		$Items = array();
 
@@ -123,7 +123,7 @@ class weGlossaryTreeLoader{
 		return $Items;
 	}
 
-	function getItemsFromDB($Language, $Type, $Offset = 0, $Segment = 500){
+	private static function getItemsFromDB($Language, $Type, $Offset = 0, $Segment = 500){
 
 		$Db = new DB_WE();
 
@@ -191,7 +191,7 @@ class weGlossaryTreeLoader{
 			}
 
 			foreach($Db->Record as $Key => $Val){
-				$Item[strtolower($Key)] = (strtolower($Key) == "text" ? oldHtmlspecialchars($Val) : $Val);
+				$Item[strtolower($Key)] = (strtolower($Key) == 'text' ? oldHtmlspecialchars($Val) : $Val);
 			}
 
 			$Items[] = $Item;

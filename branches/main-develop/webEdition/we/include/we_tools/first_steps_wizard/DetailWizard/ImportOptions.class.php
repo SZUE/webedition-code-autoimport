@@ -121,10 +121,9 @@ class ImportOptions extends leWizardStepBase{
 		}
 
 		$_db = new DB_WE();
-		$_db->query(
-			'SELECT * FROM ' . NAVIGATION_TABLE . ' WHERE IsFolder=1 ' . (!empty($_wrkNavi) ? ' AND (ID IN (' . implode(
-					',', $_wrkNavi) . ') OR (' . implode(' OR ', $_condition) . '))' : '') . ' ORDER BY Path;');
-		while($_db->next_record()) {
+		$_db->query('SELECT ID,Path FROM ' . NAVIGATION_TABLE . ' WHERE IsFolder=1 ' . (!empty($_wrkNavi) ? ' AND (ID IN (' . implode(',', $_wrkNavi) . ') OR (' . implode(' OR ', $_condition) . '))' : '') . ' ORDER BY Path');
+
+		while($_db->next_record()){
 			$_dirs[$_db->f('ID')] = $_db->f('Path');
 		}
 
