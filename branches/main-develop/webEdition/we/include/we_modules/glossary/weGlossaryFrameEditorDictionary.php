@@ -87,7 +87,7 @@ class weGlossaryFrameEditorDictionary extends weGlossaryFrameEditor{
 					</tr>
 					<tr>
 						<td>
-							' . we_html_element::htmlTextarea(array('name' => 'Dictionary', 'cols' => 60, 'rows' => 20, 'style' => 'width:520px;'), implode("\n", weGlossary::getDictionary($language))) . '</td>
+							' . we_html_element::htmlTextarea(array('name' => 'Dictionary', 'cols' => 60, 'rows' => 20, 'style' => 'width:520px;'), implode("\n", we_glossary_glossary::getDictionary($language))) . '</td>
 					</tr>
 				</table>';
 

@@ -22,15 +22,15 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weCustomerTreeLoader{
+abstract class we_customer_treeLoader{
 
-	function getItems($pid, $offset = 0, $segment = 500, $sort = ""){
+	static function getItems($pid, $offset = 0, $segment = 500, $sort = ""){
 		return ($sort != '' ?
 				self::getSortFromDB($pid, $sort, $offset, $segment) :
 				self::getItemsFromDB($pid, $offset, $segment));
 	}
 
-	function getItemsFromDB($ParentID = 0, $offset = 0, $segment = 500, $elem = 'ID,ParentID,Path,Text,Icon,IsFolder,Forename,Surname', $addWhere = "", $addOrderBy = ""){
+	private static function getItemsFromDB($ParentID = 0, $offset = 0, $segment = 500, $elem = 'ID,ParentID,Path,Text,Icon,IsFolder,Forename,Surname', $addWhere = "", $addOrderBy = ""){
 		$db = new DB_WE();
 
 		$prevoffset = $offset - $segment;
@@ -118,7 +118,7 @@ class weCustomerTreeLoader{
 		return $items;
 	}
 
-	function getSortFromDB($pid, $sort, $offset = 0, $segment = 500){
+	private static function getSortFromDB($pid, $sort, $offset = 0, $segment = 500){
 		$db = new DB_WE();
 
 		$havingarr = $sort_defs = $pidarr = $check = array();

@@ -41,4 +41,3 @@ switch($_REQUEST['we_cmd'][0]){
 		$INCLUDE = 'we_modules/banner/we_bannercode.php';
 		break;
 }
-

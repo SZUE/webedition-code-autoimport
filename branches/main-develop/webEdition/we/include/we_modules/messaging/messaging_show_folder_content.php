@@ -153,7 +153,7 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js') . we_html_element::jsScrip
 </head>
 <body leftmargin="7" topmargin="5" marginwidth="7" marginheight="5" bgcolor="#ffffff">
 <?php
-$messaging = new we_messaging($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
+$messaging = new we_messaging_messaging($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
 $messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
 $messaging->init($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
 ?><table width="99%" cellpadding="0" cellspacing="0" border="0"><?php

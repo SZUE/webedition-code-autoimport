@@ -28,7 +28,7 @@ if(!preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction'])){
 	exit();
 }
 
-$messaging = new we_messaging($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
+$messaging = new we_messaging_messaging($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
 $messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
 $messaging->init($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
 $messaging->get_mv_data($_REQUEST["id"]);
@@ -38,7 +38,7 @@ if(empty($messaging->selected_message)){
 	exit;
 }
 
-$format = new we_format('view', $messaging->selected_message);
+$format = new we_messaging_format('view', $messaging->selected_message);
 $format->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
 
 we_html_tools::htmlTop();

@@ -24,7 +24,7 @@
  */
 /* the parent class of storagable webEdition classes */
 
-class weBannerView extends weBannerBase{
+class we_banner_view extends we_banner_base{
 
 	// settings array; format settings[setting_name]=settings_value
 	var $settings = array();
@@ -40,12 +40,12 @@ class weBannerView extends weBannerBase{
 
 	public function __construct(){
 		parent::__construct();
-		$this->banner = new weBanner();
+		$this->banner = new we_banner_banner();
 		$this->page = 0;
 		$this->settings = $this->getSettings();
-		$this->pageFields[weBanner::PAGE_PROPERTY] = array("Text", "ParentID", "bannerID", "bannerUrl", "bannerIntID", "IntHref", "IsDefault", "IsActive", "StartOk", "EndOk", "StartDate", "EndDate");
-		$this->pageFields[weBanner::PAGE_PLACEMENT] = array("DoctypeIDs", "TagName");
-		$this->pageFields[weBanner::PAGE_STATISTICS] = array();
+		$this->pageFields[we_banner_banner::PAGE_PROPERTY] = array("Text", "ParentID", "bannerID", "bannerUrl", "bannerIntID", "IntHref", "IsDefault", "IsActive", "StartOk", "EndOk", "StartDate", "EndDate");
+		$this->pageFields[we_banner_banner::PAGE_PLACEMENT] = array("DoctypeIDs", "TagName");
+		$this->pageFields[we_banner_banner::PAGE_STATISTICS] = array();
 		$yuiSuggest = & weSuggest::getInstance();
 	}
 
@@ -99,7 +99,7 @@ class weBannerView extends weBannerBase{
 			$wepos = "";
 			$itsname = "";
 			switch($this->page){
-				case weBanner::PAGE_PROPERTY:
+				case we_banner_banner::PAGE_PROPERTY:
 					$out .= $this->htmlHidden("UseFilter", $this->UseFilter) .
 						$this->htmlHidden("FilterDate", $this->FilterDate) .
 						$this->htmlHidden("FilterDateEnd", $this->FilterDateEnd);
@@ -136,7 +136,7 @@ class weBannerView extends weBannerBase{
 					$closeText = g_l('weClass', "[lessProps]");
 					$wepos = weGetCookieVariable("but_weBannerProp");
 					break;
-				case weBanner::PAGE_PLACEMENT:
+				case we_banner_banner::PAGE_PLACEMENT:
 					$out .= $this->htmlHidden("UseFilter", $this->UseFilter) .
 						$this->htmlHidden("FilterDate", $this->FilterDate) .
 						$this->htmlHidden("FilterDateEnd", $this->FilterDateEnd);
@@ -172,7 +172,7 @@ class weBannerView extends weBannerBase{
 					$closeText = g_l('weClass', "[lessProps]");
 					$wepos = weGetCookieVariable("but_$itsname");
 					break;
-				case weBanner::PAGE_STATISTICS:
+				case we_banner_banner::PAGE_STATISTICS:
 					$headline = g_l('tabs', "[module][statistics]");
 					$parts = array(
 						array(
@@ -492,7 +492,7 @@ class weBannerView extends weBannerBase{
 					break;
 				case "new_banner":
 					$this->page = 0;
-					$this->banner = new weBanner();
+					$this->banner = new we_banner_banner();
 					print we_html_element::jsElement('
 					top.content.editor.edheader.location="edit_banner_frameset.php?pnt=edheader&page=' . $this->page . '&txt=' . $this->banner->Path . '&isFolder=' . $this->banner->IsFolder . '";
 					top.content.editor.edfooter.location="edit_banner_frameset.php?pnt=edfooter";
@@ -500,7 +500,7 @@ class weBannerView extends weBannerBase{
 					break;
 				case "new_bannergroup":
 					$this->page = 0;
-					$this->banner = new weBanner(0, 1);
+					$this->banner = new we_banner_banner(0, 1);
 					print we_html_element::jsElement('
 					top.content.editor.edheader.location="edit_banner_frameset.php?pnt=edheader&page=' . $this->page . '&txt=' . $this->banner->Path . '&isFolder=' . $this->banner->IsFolder . '";
 					top.content.editor.edfooter.location="edit_banner_frameset.php?pnt=edfooter";
@@ -516,7 +516,7 @@ class weBannerView extends weBannerBase{
 					break;
 				case "edit_banner":
 					if(isset($_REQUEST["bid"])){
-						$this->banner = new weBanner($_REQUEST["bid"]);
+						$this->banner = new we_banner_banner($_REQUEST["bid"]);
 					}
 					if($this->banner->IsFolder){
 						$this->page = 0;
@@ -702,9 +702,9 @@ class weBannerView extends weBannerBase{
 							return;
 						} else {
 
-							$this->banner = new weBanner($_REQUEST["bid"]);
+							$this->banner = new we_banner_banner($_REQUEST["bid"]);
 							if($this->banner->delete()){
-								$this->banner = new weBanner(0, $this->banner->IsFolder);
+								$this->banner = new we_banner_banner(0, $this->banner->IsFolder);
 								print we_html_element::jsElement('
 							top.content.deleteEntry(' . $_REQUEST["bid"] . ',"' . ($this->banner->IsFolder ? 'folder' : 'file') . '");
 							' . we_message_reporting::getShowMessageCall(($this->banner->IsFolder ? g_l('modules_banner', '[delete_group_ok]') : g_l('modules_banner', '[delete_ok]')), we_message_reporting::WE_MESSAGE_NOTICE) . '
@@ -889,7 +889,7 @@ class weBannerView extends weBannerBase{
 	</tr>
 </table>';
 
-		$GLOBALS["lv"] = new we_listview_banner(0, 99999999, $this->Order, $this->banner->ID, $this->UseFilter, $this->FilterDate, $this->FilterDateEnd + 86399);
+		$GLOBALS["lv"] = new we_banner_listview(0, 99999999, $this->Order, $this->banner->ID, $this->UseFilter, $this->FilterDate, $this->FilterDateEnd + 86399);
 		$pathlink = '<a href="javascript:top.content.setHot();if(this.document.we_form.elements[\'order\'].value==\'path\'){this.document.we_form.elements[\'order\'].value=\'path desc\';}else{this.document.we_form.elements[\'order\'].value=\'path\';}we_cmd(\'switchPage\',\'' . $this->page . '\');">' . g_l('modules_banner', '[page]') . '</a>';
 		$viewslink = '<a href="javascript:top.content.setHot();if(this.document.we_form.elements[\'order\'].value==\'views desc\'){this.document.we_form.elements[\'order\'].value=\'views\';}else{this.document.we_form.elements[\'order\'].value=\'views desc\';}we_cmd(\'switchPage\',\'' . $this->page . '\');">' . g_l('modules_banner', '[views]') . '</a>';
 		$clickslink = '<a href="javascript:top.content.setHot();if(this.document.we_form.elements[\'order\'].value==\'clicks desc\'){this.document.we_form.elements[\'order\'].value=\'clicks\';}else{this.document.we_form.elements[\'order\'].value=\'clicks desc\';}we_cmd(\'switchPage\',\'' . $this->page . '\');">' . g_l('modules_banner', '[clicks]') . '</a>';

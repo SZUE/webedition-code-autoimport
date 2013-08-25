@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weGlossaryTree extends weMainTree{
+class we_glossary_tree extends weMainTree{
 
 	function __construct($frameset = "", $topFrame = "", $treeFrame = "", $cmdFrame = ""){
 

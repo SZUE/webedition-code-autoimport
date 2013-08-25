@@ -404,7 +404,7 @@ class we_updater{
 	static function updateGlossar(){
 		//FIXME: remove after 7.0
 		foreach($GLOBALS['weFrontendLanguages'] as $lang){
-			$cache = new weGlossaryCache($lang);
+			$cache = new we_glossary_cache($lang);
 			$cache->write();
 		}
 	}

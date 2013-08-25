@@ -27,7 +27,7 @@
  * General Definition of WebEdition Banner
  *
  */
-class weBanner extends weBannerBase{
+class we_banner_banner extends we_banner_base{
 
 	const PAGE_PROPERTY = 0;
 	const PAGE_PLACEMENT = 1;
@@ -153,7 +153,7 @@ class weBanner extends weBannerBase{
 
 		$out = array();
 		while($this->db->next_record()){
-			$out[] = new weBanner($this->db->f("ID"));
+			$out[] = new we_banner_banner($this->db->f("ID"));
 		}
 		return $out;
 	}

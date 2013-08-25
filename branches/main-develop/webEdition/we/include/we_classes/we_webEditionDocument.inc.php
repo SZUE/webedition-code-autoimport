@@ -843,11 +843,11 @@ if (!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 				$doc = $this->i_getDocument();
 				$urlReplace = we_folder::getUrlReplacements($GLOBALS['DB_WE']);
 // --> Glossary Replacement
-				$useGlossary = ((defined('GLOSSARY_TABLE') && (!isset($GLOBALS['WE_MAIN_DOC']) || $GLOBALS['WE_MAIN_DOC'] == $GLOBALS['we_doc'])) && (isset($we_doc->InGlossar) && $we_doc->InGlossar == 0) && weGlossaryReplace::useAutomatic());
+				$useGlossary = ((defined('GLOSSARY_TABLE') && (!isset($GLOBALS['WE_MAIN_DOC']) || $GLOBALS['WE_MAIN_DOC'] == $GLOBALS['we_doc'])) && (isset($we_doc->InGlossar) && $we_doc->InGlossar == 0) && we_glossary_replace::useAutomatic());
 
 				// --> Glossary Replacement
 				if($useGlossary){
-					$doc = weGlossaryReplace::doReplace($doc, $this->Language);
+					$doc = we_glossary_replace::doReplace($doc, $this->Language);
 				}
 				if($urlReplace){
 					$doc = preg_replace($urlReplace, array_keys($urlReplace), $doc);

@@ -33,7 +33,7 @@ class rpcPingCmd extends rpcCmd{
 		}
 
 		if(defined('MESSAGING_SYSTEM')){
-			$messaging = new we_messaging($we_transaction);
+			$messaging = new we_messaging_messaging($we_transaction);
 			$messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
 			$messaging->add_msgobj('we_message', 1);
 			$messaging->add_msgobj('we_todo', 1);

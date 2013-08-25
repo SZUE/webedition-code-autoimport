@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_bannerDirSelector extends we_dirSelector{
+class we_banner_DirSelector extends we_dirSelector{
 
 	var $fields = 'ID,ParentID,Text,Path,IsFolder,Icon';
 

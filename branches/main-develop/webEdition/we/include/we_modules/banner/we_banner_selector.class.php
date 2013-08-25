@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_bannerSelector extends we_multiSelector{
+class we_banner_selector extends we_multiSelector{
 
 	function __construct($id, $JSIDName = "", $JSTextName = "", $JSCommand = "", $order = ""){
 		parent::__construct($id, BANNER_TABLE, $JSIDName, $JSTextName, $JSCommand, $order);

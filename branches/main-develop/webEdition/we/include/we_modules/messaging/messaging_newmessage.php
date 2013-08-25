@@ -31,7 +31,7 @@ if(!preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction'])){
 	exit();
 }
 
-$messaging = new we_messaging($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
+$messaging = new we_messaging_messaging($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
 $messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
 $messaging->init($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
 
@@ -85,13 +85,13 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js');
 <body class="weDialogBody" onLoad="document.compose_form.mn_body.focus()" onUnload="doUnload();">
 <?php
 if($_REQUEST["mode"] == 're'){
-	$compose = new we_format('re', $messaging->selected_message);
+	$compose = new we_messaging_format('re', $messaging->selected_message);
 	$heading = g_l('modules_messaging', '[reply_message]');
 } else{
 	if(substr($_REQUEST["mode"], 0, 2) == 'u_'){
 		$_u = str_replace(substr($_REQUEST["mode"], 0, 2), '', $_REQUEST["mode"]);
 	}
-	$compose = new we_format('new');
+	$compose = new we_messaging_format('new');
 	$heading = g_l('modules_messaging', '[new_message]');
 }
 

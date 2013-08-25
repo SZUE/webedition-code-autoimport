@@ -36,9 +36,9 @@ $noInternals = $noInternals || !isset($_SESSION['user']) || !isset($_SESSION['us
 
 $appendJS = "";
 if(defined("GLOSSARY_TABLE") && isset($_REQUEST['weSaveToGlossary']) && $_REQUEST['weSaveToGlossary'] == 1 && !$noInternals){
-	$Glossary = new weGlossary();
+	$Glossary = new we_glossary_glossary();
 	$Glossary->Language = $_REQUEST['language'];
-	$Glossary->Type = weGlossary::TYPE_FOREIGNWORD;
+	$Glossary->Type = we_glossary_glossary::TYPE_FOREIGNWORD;
 	$Glossary->Text = trim($_REQUEST['text']);
 	$Glossary->Published = time();
 	$Glossary->setAttribute('lang', $_REQUEST['we_dialog_args']['lang']);

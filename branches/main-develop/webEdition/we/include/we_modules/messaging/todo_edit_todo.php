@@ -27,7 +27,7 @@ we_html_tools::protect();
 
 we_html_tools::htmlTop(g_l('modules_messaging', '[wintitle]'));
 
-$messaging = new we_messaging($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
+$messaging = new we_messaging_messaging($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
 $messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
 $messaging->init($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
 
@@ -77,13 +77,13 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js');
 <body class="weDialogBody" <?php echo ($mode == 'reject' ? '' : 'onLoad="document.compose_form.mn_subject.focus()"') ?> onUnload="doUnload();">
 <?php
 if($mode == 'forward'){
-	$compose = new we_format('forward', $messaging->selected_message);
+	$compose = new we_messaging_format('forward', $messaging->selected_message);
 	$heading = g_l('modules_messaging', '[forward_todo]');
 } else if($mode == 'reject'){
-	$compose = new we_format('reject', $messaging->selected_message);
+	$compose = new we_messaging_format('reject', $messaging->selected_message);
 	$heading = g_l('modules_messaging', '[reject_todo]');
 } else{
-	$compose = new we_format('new');
+	$compose = new we_messaging_format('new');
 	$heading = g_l('modules_messaging', '[new_todo]');
 }
 $compose->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);

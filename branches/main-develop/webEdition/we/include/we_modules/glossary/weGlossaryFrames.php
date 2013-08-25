@@ -36,8 +36,8 @@ class weGlossaryFrames extends weModuleFrames{
 
 	function __construct(){
 		parent::__construct(WE_GLOSSARY_MODULE_DIR . "edit_glossary_frameset.php");
-		$this->Tree = new weGlossaryTree();
-		$this->View = new weGlossaryView(WE_GLOSSARY_MODULE_DIR . "edit_glossary_frameset.php", "top.content");
+		$this->Tree = new we_glossary_tree();
+		$this->View = new we_glossary_view(WE_GLOSSARY_MODULE_DIR . "edit_glossary_frameset.php", "top.content");
 		$this->setupTree(GLOSSARY_TABLE, "top.content", "top.content", "top.content.cmd");
 	}
 
@@ -209,7 +209,7 @@ class weGlossaryFrames extends weModuleFrames{
 			we_html_element::htmlHidden(array("name" => "cmd", "value" => "no_cmd"));
 
 		$out.=we_html_element::htmlBody(array("bgcolor" => "white", "marginwidth" => 10, "marginheight" => 10, "leftmargin" => 10, "topmargin" => 10), we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
-					we_html_element::jsElement($rootjs . $this->Tree->getJSLoadTree(weGlossaryTreeLoader::getItems($pid, $offset, $this->Tree->default_segment, "")))
+					we_html_element::jsElement($rootjs . $this->Tree->getJSLoadTree(we_glossary_treeLoader::getItems($pid, $offset, $this->Tree->default_segment, "")))
 				)
 		);
 

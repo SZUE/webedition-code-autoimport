@@ -32,7 +32,7 @@ we_html_tools::protect();
 
 we_html_tools::htmlTop(g_l('modules_messaging', '[wintitle]') . ' - Update Status');
 
-$messaging = new we_messaging($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
+$messaging = new we_messaging_messaging($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
 $messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
 $messaging->init($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
 
@@ -56,7 +56,7 @@ function do_confirm() {
 <body class="weDialogBody"  onUnload="doUnload();">
 <?php
 $heading = g_l('modules_messaging', '[todo_status_update]');
-$compose = new we_format('update', $messaging->selected_message);
+$compose = new we_messaging_format('update', $messaging->selected_message);
 $compose->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
 ?>
 	<form action="<?php print WE_MESSAGING_MODULE_DIR; ?>todo_update.php" name="update_todo_form" method="post">

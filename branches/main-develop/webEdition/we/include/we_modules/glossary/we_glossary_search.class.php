@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weGlossarySearch{
+class we_glossary_search{
 
 	/**
 	 * Database Object DB_WE

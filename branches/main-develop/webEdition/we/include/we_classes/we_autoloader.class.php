@@ -38,8 +38,10 @@ abstract class we_autoloader{
 
 	private static $domains = array(
 		'base' => 'we_classes/base',
+		'banner' => 'we_modules/banner',
 		'database' => 'we_classes/database',
 		'customer' => 'we_modules/customer',
+		'glossary' => 'we_modules/glossary',
 		'helpers' => 'we_classes/helpers',
 		'html' => 'we_classes/html',
 		'import' => 'we_classes/import',
@@ -206,20 +208,12 @@ abstract class we_autoloader{
 			'XML_Validate' => 'xml_validate.inc.php',
 		),
 		'we_modules' => array(
-			'weBanner' => 'banner/weBanner.php',
-			'weBannerBase' => 'banner/weBannerBase.php',
 			'weBannerFrames' => 'banner/weBannerFrames.class.php',
-			'weBannerView' => 'banner/weBannerView.class.php',
 			'weModuleBannerFrames' => 'banner/weModuleBannerFrames.class.php',
-			'we_bannerDirSelector' => 'banner/we_bannerDirSelector.php',
-			'we_bannerSelector' => 'banner/we_bannerSelector.php',
-			'we_listview_banner' => 'banner/we_listview_banner.inc.php',
 			'copyWeDocumentCustomerFilterFrag' => 'customer/copyWeDocumentCustomerFilter.inc.php',
 			'weAbstractCustomerFilter' => 'customer/weAbstractCustomerFilter.class.php',
 			'weCustomerFilterView' => 'customer/weCustomerFilterView.class.php',
 			'weCustomerFrames' => 'customer/weCustomerFrames.class.php',
-			'weCustomerTree' => 'customer/weCustomerTree.php',
-			'weCustomerTreeLoader' => 'customer/weCustomerTreeLoader.php',
 			'weDocumentCustomerFilter' => 'customer/weDocumentCustomerFilter.class.php',
 			'weDocumentCustomerFilterView' => 'customer/weDocumentCustomerFilterView.class.php',
 			'weNavigationCustomerFilter' => 'customer/weNavigationCustomerFilter.class.php',
@@ -231,8 +225,6 @@ abstract class we_autoloader{
 			'weExportTreeMain' => 'export/weExportTreeMain.php',
 			'weExportView' => 'export/weExportView.class.php',
 			'we_exportDirSelector' => 'export/we_exportDirSelector.php',
-			'weGlossary' => 'glossary/weGlossary.php',
-			'weGlossaryCache' => 'glossary/weGlossaryCache.php',
 			'weGlossaryFrameEditor' => 'glossary/weGlossaryFrameEditor.php',
 			'weGlossaryFrameEditorDictionary' => 'glossary/weGlossaryFrameEditorDictionary.php',
 			'weGlossaryFrameEditorException' => 'glossary/weGlossaryFrameEditorException.php',
@@ -241,23 +233,12 @@ abstract class we_autoloader{
 			'weGlossaryFrameEditorItem' => 'glossary/weGlossaryFrameEditorItem.php',
 			'weGlossaryFrameEditorType' => 'glossary/weGlossaryFrameEditorType.php',
 			'weGlossaryFrames' => 'glossary/weGlossaryFrames.php',
-			'weGlossaryReplace' => 'glossary/weGlossaryReplace.php',
-			'weGlossarySearch' => 'glossary/weGlossarySearch.php',
-			'weGlossarySettingControl' => 'glossary/weGlossarySettingControl.class.php',
 			'weGlossarySettingFrames' => 'glossary/weGlossarySettingFrames.php',
-			'weGlossaryTree' => 'glossary/weGlossaryTree.php',
-			'weGlossaryTreeLoader' => 'glossary/weGlossaryTreeLoader.php',
-			'weGlossaryView' => 'glossary/weGlossaryView.php',
-			'we_format' => 'messaging/messaging_format.inc.php',
 			'weMessagingFrames' => 'messaging/weMessagingFrames.php',
 			'weMessagingIconbar' => 'messaging/weMessagingIconbar.class.php',
-			'weMessagingView' => 'messaging/weMessagingView.php',
-			'we_message' => 'messaging/we_message.inc.php',
-			'we_messaging' => 'messaging/we_messaging.inc.php',
 			'we_msg_email' => 'messaging/we_msg_email.inc.php',
 			'we_msg_proto' => 'messaging/we_msg_proto.inc.php',
 			'we_msg_update' => 'messaging/we_msg_update.inc.php',
-			'we_todo' => 'messaging/we_todo.inc.php',
 			'weNewsletter' => 'newsletter/weNewsletter.php',
 			'weNewsletterBase' => 'newsletter/weNewsletterBase.php',
 			'weNewsletterBlock' => 'newsletter/weNewsletterBlock.php',
@@ -271,7 +252,7 @@ abstract class we_autoloader{
 			'weNavigation' => 'navigation/class/weNavigation.class.php',
 			'weNavigationCache' => 'navigation/class/weNavigationCache.class.php',
 			'weNavigationFrames' => 'navigation/class/weNavigationFrames.class.php',
-			'weToolFramesInterim' => 'navigation/class/weToolFrames_interim.class.php',//TODO: delete when navigation is module!
+			'weToolFramesInterim' => 'navigation/class/weToolFrames_interim.class.php', //TODO: delete when navigation is module!
 			'weNavigationItem' => 'navigation/class/weNavigationItem.class.php',
 			'weNavigationItems' => 'navigation/class/weNavigationItems.class.php',
 			'weNavigationRule' => 'navigation/class/weNavigationRule.class.php',
@@ -453,7 +434,7 @@ abstract class we_autoloader{
 				@list(, $domain) = explode('_', $class_name);
 				if(!isset(self::$domains[$domain])){
 					//				t_e('Error class domain not set in autoloader!');
-				} else{
+				} else {
 					if(file_exists(WE_INCLUDES_PATH . self::$domains[$domain] . '/' . $class_name . '.class.php')){
 						include(WE_INCLUDES_PATH . self::$domains[$domain] . '/' . $class_name . '.class.php');
 						return;

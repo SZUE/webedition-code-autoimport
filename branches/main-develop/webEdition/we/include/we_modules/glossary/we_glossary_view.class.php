@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weGlossaryView{
+class we_glossary_view{
 
 	/**
 	 * Database Instance
@@ -95,29 +95,29 @@ class weGlossaryView{
 	 */
 	function __construct($FrameSet = "", $TopFrame = "top.content"){
 		$this->Db = new DB_WE();
-		$this->Glossary = new weGlossary();
+		$this->Glossary = new we_glossary_glossary();
 
 		if(isset($_REQUEST['cmd'])){
 			switch($_REQUEST['cmd']){
 
 				case 'new_glossary_abbreviation':
-					$this->Glossary->Type = weGlossary::TYPE_ABBREVATION;
+					$this->Glossary->Type = we_glossary_glossary::TYPE_ABBREVATION;
 					break;
 
 				case 'new_glossary_acronym':
-					$this->Glossary->Type = weGlossary::TYPE_ACRONYM;
+					$this->Glossary->Type = we_glossary_glossary::TYPE_ACRONYM;
 					break;
 
 				case 'new_glossary_foreignword':
-					$this->Glossary->Type = weGlossary::TYPE_FOREIGNWORD;
+					$this->Glossary->Type = we_glossary_glossary::TYPE_FOREIGNWORD;
 					break;
 
 				case 'new_glossary_link':
-					$this->Glossary->Type = weGlossary::TYPE_LINK;
+					$this->Glossary->Type = we_glossary_glossary::TYPE_LINK;
 					break;
 
 				case 'new_glossary_textreplacement':
-					$this->Glossary->Type = weGlossary::TYPE_TEXTREPLACE;
+					$this->Glossary->Type = we_glossary_glossary::TYPE_TEXTREPLACE;
 					break;
 			}
 		} elseif(isset($_REQUEST['type'])){
@@ -463,7 +463,7 @@ class weGlossaryView{
 							);
 						break;
 					}
-					$this->Glossary = new weGlossary();
+					$this->Glossary = new we_glossary_glossary();
 					$this->Glossary->Type = array_pop(explode("_", $_REQUEST["cmd"], 4));
 
 					print we_html_element::jsElement('
@@ -485,7 +485,7 @@ class weGlossaryView{
 						$_REQUEST['pnt'] = 'edbody';
 						break;
 					}
-					$this->Glossary = new weGlossary($_REQUEST["cmdid"]);
+					$this->Glossary = new we_glossary_glossary($_REQUEST["cmdid"]);
 
 					print we_html_element::jsElement('
 						' . $this->TopFrame . '.editor.edheader.location="' . $this->FrameSet . '?pnt=edheader&text=' . urlencode($this->Glossary->Text) . '";
@@ -537,7 +537,7 @@ class weGlossaryView{
 
 					$language = substr($_REQUEST['cmdid'], 0, 5);
 
-					weGlossary::editException($language, $_REQUEST['Exception']);
+					we_glossary_glossary::editException($language, $_REQUEST['Exception']);
 
 					print we_html_element::jsElement(
 							we_message_reporting::getShowMessageCall(g_l('modules_glossary', "[save_ok]"), we_message_reporting::WE_MESSAGE_NOTICE)
@@ -549,11 +549,11 @@ class weGlossaryView{
 					if(isset($_REQUEST['Exception'])){
 						$language = substr($_REQUEST['cmdid'], 0, 5);
 
-						weGlossary::editException($language, $_REQUEST['Exception']);
+						we_glossary_glossary::editException($language, $_REQUEST['Exception']);
 						break;
 					}
 					$this->Glossary->Text = $_REQUEST[$_REQUEST['Type']]['Text'];
-					if($this->Glossary->Type != weGlossary::TYPE_FOREIGNWORD){
+					if($this->Glossary->Type != we_glossary_glossary::TYPE_FOREIGNWORD){
 						$this->Glossary->Title = $_REQUEST[$_REQUEST['Type']]['Title'];
 					}
 					if(isset($_REQUEST[$_REQUEST['Type']]['Attributes'])){
@@ -662,7 +662,7 @@ class weGlossaryView{
 						// --> Save to Cache
 						//
 
-						$Cache = new weGlossaryCache($this->Glossary->Language);
+						$Cache = new we_glossary_cache($this->Glossary->Language);
 						$Cache->write();
 						unset($Cache);
 
@@ -691,7 +691,7 @@ class weGlossaryView{
 							// --> Save to Cache
 							//
 
-							$Cache = new weGlossaryCache($this->Glossary->Language);
+							$Cache = new we_glossary_cache($this->Glossary->Language);
 							$Cache->write();
 							unset($Cache);
 
@@ -699,7 +699,7 @@ class weGlossaryView{
 							// --> Save to Cache End
 							//
 
-							$this->Glossary = new weGlossary();
+							$this->Glossary = new we_glossary_glossary();
 							$_REQUEST['home'] = '1';
 							$_REQUEST['pnt'] = 'edbody';
 						} else{

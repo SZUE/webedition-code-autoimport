@@ -29,7 +29,7 @@ class weGlossarySettingFrames{
 
 	function __construct(){
 		$this->Frameset = WE_MODULES_DIR . 'glossary/edit_glossary_settings_frameset.php';
-		$this->Controller = new weGlossarySettingControl();
+		$this->Controller = new we_glossary_settingControl();
 		$this->db = new DB_WE();
 	}
 
@@ -57,9 +57,9 @@ class weGlossarySettingFrames{
 	}
 
 	function getHTMLContent(){
-		$configFile = WE_GLOSSARY_MODULE_PATH . weGlossaryReplace::configFile;
+		$configFile = WE_GLOSSARY_MODULE_PATH . we_glossary_replace::configFile;
 		if(!file_exists($configFile) || !is_file($configFile)){
-			weGlossarySettingControl::saveSettings(true);
+			we_glossary_settingControl::saveSettings(true);
 		}
 		include($configFile);
 

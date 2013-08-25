@@ -22,11 +22,11 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-require_once(WE_MESSAGING_MODULE_PATH . "messaging_std.inc.php");
+require_once(WE_MESSAGING_MODULE_PATH . 'messaging_std.inc.php');
 require_once(WE_MESSAGING_MODULE_PATH . 'we_conf_messaging.inc.php');
 /* todo object class */
 
-class we_todo extends we_msg_proto{
+class we_messaging_todo extends we_msg_proto{
 
 	/* Flag which is set when the file is not new */
 	var $selected_message = array();

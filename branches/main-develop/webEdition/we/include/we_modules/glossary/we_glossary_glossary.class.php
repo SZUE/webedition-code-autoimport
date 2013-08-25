@@ -27,7 +27,7 @@
  * General Definition of WebEdition Glossary
  *
  */
-class weGlossary extends weModelBase{
+class we_glossary_glossary extends weModelBase{
 
 	const TYPE_LINK = 'link';
 	const TYPE_ACRONYM = 'acronym';
@@ -159,7 +159,7 @@ class weGlossary extends weModelBase{
 	 * PHP 4 Constructor
 	 *
 	 * @param integer $glossaryID
-	 * @return weGlossary
+	 * @return we_glossary_glossary
 	 * @desc Could load a glossary item if $GlossaryId is not 0
 	 */
 	function __construct($GlossaryId = 0){
@@ -220,7 +220,7 @@ class weGlossary extends weModelBase{
 				'Title' => $GLOBALS['DB_WE']->f("Title"),
 			);
 
-			if($GLOBALS['DB_WE']->f("Type") != weGlossary::TYPE_FOREIGNWORD){
+			if($GLOBALS['DB_WE']->f("Type") != we_glossary_glossary::TYPE_FOREIGNWORD){
 				$temp = unserialize($GLOBALS['DB_WE']->f("Attributes"));
 				$Item['Lang'] = (isset($temp['lang']) ? $temp['lang'] : '');
 			} else {
@@ -371,7 +371,7 @@ class weGlossary extends weModelBase{
 	 * @return boolean
 	 */
 	function isSelf(){
-		$Text = weGlossary::escapeChars($this->Text);
+		$Text = we_glossary_glossary::escapeChars($this->Text);
 		return strpos(htmlentities(clearPath(dirname($this->Path)) . '/'), '/' . $Text . '/') !== false;
 	}
 
@@ -422,15 +422,15 @@ class weGlossary extends weModelBase{
 			return true;
 		}
 
-		$items = weGlossary::getException($language);
+		$items = we_glossary_glossary::getException($language);
 		$items[] = $entry;
 		$items = implode("\n", $items);
 
-		return weGlossary::editException($language, $items);
+		return we_glossary_glossary::editException($language, $items);
 	}
 
 	function editException($language, $entries){
-		$fileName = weGlossary::getExceptionFilename($language);
+		$fileName = we_glossary_glossary::getExceptionFilename($language);
 
 		$content = '';
 		$items = explode("\n", $entries);
@@ -446,7 +446,7 @@ class weGlossary extends weModelBase{
 	}
 
 	function getException($language){
-		$fileName = weGlossary::getExceptionFilename($language);
+		$fileName = we_glossary_glossary::getExceptionFilename($language);
 
 		if(file_exists($fileName) && is_file($fileName)){
 			return file($fileName);

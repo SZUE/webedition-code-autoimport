@@ -22,12 +22,12 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-require_once(WE_MESSAGING_MODULE_PATH . "messaging_std.inc.php");
+require_once(WE_MESSAGING_MODULE_PATH . 'messaging_std.inc.php');
 
 
 /* messaging object class */
 
-class we_messaging extends we_class{
+class we_messaging_messaging extends we_class{
 	/* Flag which is set when the file is not new */
 
 	var $we_transact;

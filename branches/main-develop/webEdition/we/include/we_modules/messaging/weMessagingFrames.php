@@ -45,7 +45,7 @@ class weMessagingFrames extends weModuleFrames{
 		$this->transaction = $reqTransaction;
 		$this->weTransaction = &$weTransaction;
 		$this->viewclass = $viewclass;
-		$this->View = new weMessagingView(WE_MESSAGING_MODULE_DIR . "edit_messaging_frameset.php", "top.content", $this->transaction, $this->weTransaction);
+		$this->View = new we_messaging_view(WE_MESSAGING_MODULE_DIR . "edit_messaging_frameset.php", "top.content", $this->transaction, $this->weTransaction);
 	}
 
 	function getHTML($what){
@@ -790,7 +790,7 @@ function msg_start() {
 	function getHTMLFrameset(){
 		$this->transaction = &$this->weTransaction;
 
-		$this->messaging = new we_messaging($_SESSION['weS']['we_data'][$this->transaction]);
+		$this->messaging = new we_messaging_messaging($_SESSION['weS']['we_data'][$this->transaction]);
 		$this->messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
 
 		if(!$this->messaging->check_folders()){

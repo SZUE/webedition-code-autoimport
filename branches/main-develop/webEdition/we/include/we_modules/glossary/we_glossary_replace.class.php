@@ -22,14 +22,14 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-abstract class weGlossaryReplace{
+abstract class we_glossary_replace{
 
 	const configFile = 'we_conf_glossary_settings.inc.php';
 
 	public static function useAutomatic(){
 		$configFile = WE_GLOSSARY_MODULE_PATH . self::configFile;
 		if(!file_exists($configFile) || !is_file($configFile)){
-			weGlossarySettingControl::saveSettings(true);
+			we_glossary_settingControl::saveSettings(true);
 		}
 		include_once($configFile);
 
@@ -46,7 +46,7 @@ abstract class weGlossaryReplace{
 	public static function replace($content, $language){
 		$configFile = WE_GLOSSARY_MODULE_PATH . self::configFile;
 		if(!file_exists($configFile) || !is_file($configFile)){
-			weGlossarySettingControl::saveSettings(true);
+			we_glossary_settingControl::saveSettings(true);
 		}
 		include_once($configFile);
 
@@ -71,13 +71,13 @@ abstract class weGlossaryReplace{
 		}
 		$matches = array();
 		// get the words to replace
-		$cache = new weGlossaryCache($language);
+		$cache = new we_glossary_cache($language);
 		$replace = array(
-			'<span ' => $cache->get(weGlossary::TYPE_FOREIGNWORD),
-			'<abbr ' => $cache->get(weGlossary::TYPE_ABBREVATION),
-			'<acronym ' => $cache->get(weGlossary::TYPE_ACRONYM),
-			'<a ' => $cache->get(weGlossary::TYPE_LINK),
-			'' => $cache->get(weGlossary::TYPE_TEXTREPLACE)
+			'<span ' => $cache->get(we_glossary_glossary::TYPE_FOREIGNWORD),
+			'<abbr ' => $cache->get(we_glossary_glossary::TYPE_ABBREVATION),
+			'<acronym ' => $cache->get(we_glossary_glossary::TYPE_ACRONYM),
+			'<a ' => $cache->get(we_glossary_glossary::TYPE_LINK),
+			'' => $cache->get(we_glossary_glossary::TYPE_TEXTREPLACE)
 		);
 		unset($cache);
 

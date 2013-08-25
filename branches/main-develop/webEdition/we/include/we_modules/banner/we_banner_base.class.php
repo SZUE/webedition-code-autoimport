@@ -26,7 +26,7 @@
 /**
  * Document Definition base class
  */
-abstract class weBannerBase{
+abstract class we_banner_base{
 
 	var $uid;
 	var $db;

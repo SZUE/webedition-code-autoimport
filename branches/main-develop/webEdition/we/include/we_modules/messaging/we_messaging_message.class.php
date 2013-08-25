@@ -26,7 +26,7 @@ require_once(WE_MESSAGING_MODULE_PATH . "messaging_std.inc.php");
 
 /* message object class */
 
-class we_message extends we_msg_proto{
+class we_messaging_message extends we_msg_proto{
 	/* Flag which is set when the file is not new */
 
 	var $selected_message = array();

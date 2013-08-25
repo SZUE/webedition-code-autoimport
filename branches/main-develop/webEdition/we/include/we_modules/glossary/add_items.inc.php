@@ -131,21 +131,21 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 	$Text = str_replace("&nbsp;", " ", $Text);
 	$Text = preg_replace(array("/[\t]+/", "/[ ]+/"), " ", $Text);
 
-	$ExceptionListFilename = weGlossary::getExceptionFilename($Language);
+	$ExceptionListFilename = we_glossary_glossary::getExceptionFilename($Language);
 
 	if(!file_exists($ExceptionListFilename)){
-		weGlossary::editException($Language, "");
+		we_glossary_glossary::editException($Language, "");
 	}
 
-	$ExceptionList = weGlossary::getException($Language);
-	$PublishedEntries = weGlossary::getEntries($Language, 'published');
+	$ExceptionList = we_glossary_glossary::getException($Language);
+	$PublishedEntries = we_glossary_glossary::getEntries($Language, 'published');
 	foreach($PublishedEntries as $Key => $Value){
 		$ExceptionList[] = $Value['Text'];
 	}
-	$UnpublishedEntries = weGlossary::getEntries($Language, 'unpublished');
+	$UnpublishedEntries = we_glossary_glossary::getEntries($Language, 'unpublished');
 	$List = array();
 	foreach($UnpublishedEntries as $Key => $Value){
-		if($UnpublishedEntries[$Key]['Type'] != weGlossary::TYPE_LINK){
+		if($UnpublishedEntries[$Key]['Type'] != we_glossary_glossary::TYPE_LINK){
 			$List[] = $Value;
 		}
 	}
@@ -339,9 +339,9 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 //
 		} else if($_REQUEST['we_cmd'][1] == 'prepare'){
 
-			$configFile = WE_GLOSSARY_MODULE_PATH . weGlossaryReplace::configFile;
+			$configFile = WE_GLOSSARY_MODULE_PATH . we_glossary_replace::configFile;
 			if(!file_exists($configFile) || !is_file($configFile)){
-				weGlossarySettingControl::saveSettings(true);
+				we_glossary_settingControl::saveSettings(true);
 			}
 			include($configFile);
 
@@ -367,10 +367,10 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 			}
 			$Modes['ignore'] = g_l('modules_glossary', '[ignore]');
 			if(we_hasPerm("NEW_GLOSSARY")){
-				$Modes[weGlossary::TYPE_ABBREVATION] = g_l('modules_glossary', '[abbreviation]');
-				$Modes[weGlossary::TYPE_ACRONYM] = g_l('modules_glossary', '[acronym]');
-				$Modes[weGlossary::TYPE_FOREIGNWORD] = g_l('modules_glossary', '[foreignword]');
-				$Modes[weGlossary::TYPE_TEXTREPLACE] = g_l('modules_glossary', '[textreplacement]');
+				$Modes[we_glossary_glossary::TYPE_ABBREVATION] = g_l('modules_glossary', '[abbreviation]');
+				$Modes[we_glossary_glossary::TYPE_ACRONYM] = g_l('modules_glossary', '[acronym]');
+				$Modes[we_glossary_glossary::TYPE_FOREIGNWORD] = g_l('modules_glossary', '[foreignword]');
+				$Modes[we_glossary_glossary::TYPE_TEXTREPLACE] = g_l('modules_glossary', '[textreplacement]');
 			}
 			if(we_hasPerm("EDIT_GLOSSARY_DICTIONARY")){
 				$Modes['exception'] = g_l('modules_glossary', '[to_exceptionlist]');
@@ -650,7 +650,7 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 
 				function disableItem(id, value) {
 					switch (value) {
-						case <?php echo weGlossary::TYPE_FOREIGNWORD;?>:
+						case <?php echo we_glossary_glossary::TYPE_FOREIGNWORD;?>:
 							document.getElementById('title_' + id).disabled = true;
 							document.getElementById('lang_' + id).disabled = false;
 							document.getElementById('title_' + id).style.display = 'inline';
@@ -691,8 +691,8 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 						title = document.getElementById('title_' + i).value;
 						lang = document.getElementById('lang_' + i).value;
 						switch (type) {
-							case <?php echo weGlossary::TYPE_ABBREVATION;?>:
-							case <?php echo weGlossary::TYPE_ACRONYM;?>:
+							case <?php echo we_glossary_glossary::TYPE_ABBREVATION;?>:
+							case <?php echo we_glossary_glossary::TYPE_ACRONYM;?>:
 								if (title === '') {
 									document.getElementById('title_' + i).focus();
 	<?php print we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[please_insert_title]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
@@ -704,7 +704,7 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 									return false;
 								}
 								break;
-							case <?php echo weGlossary::TYPE_FOREIGNWORD;?>:
+							case <?php echo we_glossary_glossary::TYPE_FOREIGNWORD;?>:
 								if (lang === '') {
 									document.getElementById('lang_' + i).focus();
 	<?php print we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[please_insert_language]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
@@ -855,7 +855,7 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 					foreach($_REQUEST['item'] as $Key => $Entry){
 
 						if($Entry['type'] == "exception"){
-							weGlossary::addToException($Language, $Key);
+							we_glossary_glossary::addToException($Language, $Key);
 						} elseif($Entry['type'] == "ignore"){
 
 						} elseif($Entry['type'] == "correct"){
@@ -873,7 +873,7 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 						} elseif($Entry['type'] == "dictionary"){
 							$AddJs .= "AddWords += '" . addslashes($Key) . ",'\n";
 						} elseif($Entry['type'] != ""){
-							$Glossary = new weGlossary();
+							$Glossary = new we_glossary_glossary();
 							$Glossary->Path = "/" . $Language . "/" . $Entry['type'] . "/" . $Key;
 							$Glossary->IsFolder = 0;
 							$Glossary->Icon = "";
@@ -901,7 +901,7 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 				// --> Actualize to Cache
 				//
 
-	$Cache = new weGlossaryCache($Language);
+	$Cache = new we_glossary_cache($Language);
 				$Cache->write();
 				unset($Cache);
 

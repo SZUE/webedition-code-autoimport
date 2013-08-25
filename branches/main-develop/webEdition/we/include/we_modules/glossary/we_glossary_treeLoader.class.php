@@ -22,16 +22,16 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-abstract class weGlossaryTreeLoader{
+abstract class we_glossary_treeLoader{
 
 	public static function getItems($ParentId, $Offset = 0, $Segment = 500, $Sort = ''){
 
 		$Types = array(
-			weGlossary::TYPE_ABBREVATION,
-			weGlossary::TYPE_ACRONYM,
-			weGlossary::TYPE_FOREIGNWORD,
-			weGlossary::TYPE_LINK,
-			weGlossary::TYPE_TEXTREPLACE,
+			we_glossary_glossary::TYPE_ABBREVATION,
+			we_glossary_glossary::TYPE_ACRONYM,
+			we_glossary_glossary::TYPE_FOREIGNWORD,
+			we_glossary_glossary::TYPE_LINK,
+			we_glossary_glossary::TYPE_TEXTREPLACE,
 		);
 
 		$Temp = explode('_', $ParentId);
@@ -77,11 +77,11 @@ abstract class weGlossaryTreeLoader{
 		$Items = array();
 
 		$Types = array(
-			weGlossary::TYPE_ABBREVATION => g_l('modules_glossary', '[abbreviation]'),
-			weGlossary::TYPE_ACRONYM => g_l('modules_glossary', '[acronym]'),
-			weGlossary::TYPE_FOREIGNWORD => g_l('modules_glossary', '[foreignword]'),
-			weGlossary::TYPE_LINK => g_l('modules_glossary', '[link]'),
-			weGlossary::TYPE_TEXTREPLACE => g_l('modules_glossary', '[textreplacement]'),
+			we_glossary_glossary::TYPE_ABBREVATION => g_l('modules_glossary', '[abbreviation]'),
+			we_glossary_glossary::TYPE_ACRONYM => g_l('modules_glossary', '[acronym]'),
+			we_glossary_glossary::TYPE_FOREIGNWORD => g_l('modules_glossary', '[foreignword]'),
+			we_glossary_glossary::TYPE_LINK => g_l('modules_glossary', '[link]'),
+			we_glossary_glossary::TYPE_TEXTREPLACE => g_l('modules_glossary', '[textreplacement]'),
 		);
 
 		foreach($Types as $Key => $Val){
@@ -173,19 +173,19 @@ abstract class weGlossaryTreeLoader{
 
 			switch($Type){
 
-				case weGlossary::TYPE_ABBREVATION:
+				case we_glossary_glossary::TYPE_ABBREVATION:
 					$Item['cmd'] = "edit_glossary_abbreviation";
 					break;
-				case weGlossary::TYPE_ACRONYM:
+				case we_glossary_glossary::TYPE_ACRONYM:
 					$Item['cmd'] = "edit_glossary_acronym";
 					break;
-				case weGlossary::TYPE_FOREIGNWORD:
+				case we_glossary_glossary::TYPE_FOREIGNWORD:
 					$Item['cmd'] = "edit_glossary_foreignword";
 					break;
-				case weGlossary::TYPE_LINK:
+				case we_glossary_glossary::TYPE_LINK:
 					$Item['cmd'] = "edit_glossary_link";
 					break;
-				case weGlossary::TYPE_TEXTREPLACE:
+				case we_glossary_glossary::TYPE_TEXTREPLACE:
 					$Item['cmd'] = "edit_glossary_textreplacement";
 					break;
 			}

@@ -24,11 +24,11 @@
  */
 
 /**
- * class    we_listview_banner
+ * class
  * @desc    class for tag <we:listview type="banner">
  *
  */
-class we_listview_banner extends listviewBase{
+class we_banner_listview extends listviewBase{
 
 	var $ClassName = __CLASS__;
 	var $allviews = 0;

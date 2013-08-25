@@ -59,11 +59,11 @@ class weGlossaryFrameEditorFolder extends weGlossaryFrameEditor{
 	function getHTMLOverview(&$weGlossaryFrames){
 
 		$_list = array(
-			weGlossary::TYPE_ABBREVATION => g_l('modules_glossary', '[abbreviation]'),
-			weGlossary::TYPE_ACRONYM => g_l('modules_glossary', '[acronym]'),
-			weGlossary::TYPE_FOREIGNWORD => g_l('modules_glossary', '[foreignword]'),
-			weGlossary::TYPE_LINK => g_l('modules_glossary', '[link]'),
-			weGlossary::TYPE_TEXTREPLACE => g_l('modules_glossary', '[textreplacement]'),
+			we_glossary_glossary::TYPE_ABBREVATION => g_l('modules_glossary', '[abbreviation]'),
+			we_glossary_glossary::TYPE_ACRONYM => g_l('modules_glossary', '[acronym]'),
+			we_glossary_glossary::TYPE_FOREIGNWORD => g_l('modules_glossary', '[foreignword]'),
+			we_glossary_glossary::TYPE_LINK => g_l('modules_glossary', '[link]'),
+			we_glossary_glossary::TYPE_TEXTREPLACE => g_l('modules_glossary', '[textreplacement]'),
 		);
 
 		$language = substr($_REQUEST['cmdid'], 0, 5);

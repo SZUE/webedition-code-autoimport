@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weGlossarySettingControl{
+class we_glossary_settingControl{
 
 	function processCommands(){
 		if(isset($_REQUEST['cmd'])){
@@ -63,7 +63,7 @@ class weGlossarySettingControl{
 
 EOF;
 
-		return weFile::save(WE_GLOSSARY_MODULE_PATH . weGlossaryReplace::configFile, $code, 'w+');
+		return weFile::save(WE_GLOSSARY_MODULE_PATH . we_glossary_replace::configFile, $code, 'w+');
 	}
 
 }

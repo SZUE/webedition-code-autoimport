@@ -31,7 +31,7 @@ class weBannerFrames extends weModuleFrames{
 
 	function __construct($frameset){
 		parent::__construct($frameset);
-		$this->View = new weBannerView();
+		$this->View = new we_banner_view();
 	}
 
 	function getHTML($what = '', $mode = ''){
@@ -385,9 +385,9 @@ class weBannerFrames extends weModuleFrames{
 			we_html_element::jsElement('
 				function setTab(tab){
 					switch(tab){
-						case ' . weBanner::PAGE_PROPERTY . ':
-						case ' . weBanner::PAGE_PLACEMENT . ':
-						case ' . weBanner::PAGE_STATISTICS . ':
+						case ' . we_banner_banner::PAGE_PROPERTY . ':
+						case ' . we_banner_banner::PAGE_PLACEMENT . ':
+						case ' . we_banner_banner::PAGE_STATISTICS . ':
 							top.content.editor.edbody.we_cmd("switchPage",tab);
 							break;
 					}

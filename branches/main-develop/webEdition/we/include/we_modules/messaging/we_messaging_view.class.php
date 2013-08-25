@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 /* the parent class of storagable webEdition classes */
-class weMessagingView extends weModuleView {
+class we_messaging_view extends weModuleView {
 
 	var $db;
 	var $frameset;
@@ -164,7 +164,7 @@ class weMessagingView extends weModuleView {
 			$this->transaction = (preg_match('|^([a-f0-9]){32}$|i', $this->transaction) ? $this->transaction : 0);
 		}
 
-		$this->messaging = new we_messaging($_SESSION['weS']['we_data'][$this->transaction]);
+		$this->messaging = new we_messaging_messaging($_SESSION['weS']['we_data'][$this->transaction]);
 		$this->messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
 		$this->messaging->init($_SESSION['weS']['we_data'][$this->transaction]);
 

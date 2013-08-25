@@ -342,7 +342,7 @@ if((($_REQUEST['we_cmd'][0] != 'save_document' && $_REQUEST['we_cmd'][0] != 'pub
 //
 
 	if(defined('GLOSSARY_TABLE') && ((isset($GLOBALS['we_editmode']) && !$GLOBALS['we_editmode']) || !isset($GLOBALS['we_editmode'])) && isset($we_doc->InGlossar) && $we_doc->InGlossar == 0){
-		$contents = weGlossaryReplace::replace($contents, $we_doc->Language);
+		$contents = we_glossary_replace::replace($contents, $we_doc->Language);
 	}
 
 
@@ -696,8 +696,8 @@ _EditorFrame.getDocumentReference().frames[3].location.reload();'; // reload the
 
 // --> Start Glossary Replacement
 
-					$useGlossary = ((defined('GLOSSARY_TABLE') && (!isset($GLOBALS['WE_MAIN_DOC']) || $GLOBALS['WE_MAIN_DOC'] == $GLOBALS['we_doc'])) && (isset($we_doc->InGlossar) && $we_doc->InGlossar == 0) && weGlossaryReplace::useAutomatic());
-					echo ($useGlossary ? weGlossaryReplace::doReplace($tmpCntnt, $GLOBALS['we_doc']->Language) : $tmpCntnt);
+					$useGlossary = ((defined('GLOSSARY_TABLE') && (!isset($GLOBALS['WE_MAIN_DOC']) || $GLOBALS['WE_MAIN_DOC'] == $GLOBALS['we_doc'])) && (isset($we_doc->InGlossar) && $we_doc->InGlossar == 0) && we_glossary_replace::useAutomatic());
+					echo ($useGlossary ? we_glossary_replace::doReplace($tmpCntnt, $GLOBALS['we_doc']->Language) : $tmpCntnt);
 				} else {
 					print $contents;
 				}

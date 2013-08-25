@@ -258,10 +258,10 @@ function we_tag_listview($attribs){
 			$filterdatestart = weTag_getAttribute('filterdatestart', $attribs, '-1');
 			$filterdateend = weTag_getAttribute('filterdateend', $attribs, '-1');
 			$bannerid = f('SELECT ID FROM ' . BANNER_TABLE . ' WHERE PATH="' . $GLOBALS[DB_WE]->escape($path) . '"', 'ID', $GLOBALS['DB_WE']);
-			if($customer && defined('CUSTOMER_TABLE') && (!weBanner::customerOwnsBanner($_SESSION['webuser']['ID'], $bannerid, $GLOBALS['DB_WE']))){
+			if($customer && defined('CUSTOMER_TABLE') && (!we_banner_banner::customerOwnsBanner($_SESSION['webuser']['ID'], $bannerid, $GLOBALS['DB_WE']))){
 				$bannerid = 0;
 			}
-			$GLOBALS['lv'] = new we_listview_banner($name, $we_rows, $order, $bannerid, $usefilter, $filterdatestart, $filterdateend);
+			$GLOBALS['lv'] = new we_banner_listview($name, $we_rows, $order, $bannerid, $usefilter, $filterdatestart, $filterdateend);
 			break;
 		case 'shopVariant':
 			if(!defined('SHOP_TABLE')){

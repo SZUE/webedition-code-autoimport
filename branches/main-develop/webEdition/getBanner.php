@@ -47,7 +47,7 @@ $xml = (isset($_GET["xml"]) && $_GET["xml"]) ? true : false;
 $c = isset($_GET["c"]) ? $_GET["c"] : 0;
 
 if($type && $type != "pixel"){
-	$code = weBanner::getBannerCode($did, $paths, $target, $width, $height, $dt, $cats, $bannername, $link, $referer, $bannerclick, getServerUrl() . $_SERVER['SCRIPT_NAME'], $type, $page, $nocount, $xml);
+	$code = we_banner_banner::getBannerCode($did, $paths, $target, $width, $height, $dt, $cats, $bannername, $link, $referer, $bannerclick, getServerUrl() . $_SERVER['SCRIPT_NAME'], $type, $page, $nocount, $xml);
 }
 switch($type){
 	case "js":
@@ -63,7 +63,7 @@ switch($type){
 		break;
 	default:
 		if(!$id){
-			$bannerData = weBanner::getBannerData($did, $paths, $dt, $cats, $bannername, $GLOBALS['DB_WE']);
+			$bannerData = we_banner_banner::getBannerData($did, $paths, $dt, $cats, $bannername, $GLOBALS['DB_WE']);
 			$id = $bannerData["ID"];
 			$bid = $bannerData["bannerID"];
 		}

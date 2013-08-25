@@ -84,7 +84,7 @@ class weGlossaryFrameEditorException extends weGlossaryFrameEditor{
 					</tr>
 					<tr>
 						<td>
-							' . we_html_element::htmlTextarea(array('name' => 'Exception', 'cols' => 60, 'rows' => 20, 'style' => 'width:520px;'), implode("", weGlossary::getException($language))) . '</td>
+							' . we_html_element::htmlTextarea(array('name' => 'Exception', 'cols' => 60, 'rows' => 20, 'style' => 'width:520px;'), implode("", we_glossary_glossary::getException($language))) . '</td>
 					</tr>
 				</table>';
 

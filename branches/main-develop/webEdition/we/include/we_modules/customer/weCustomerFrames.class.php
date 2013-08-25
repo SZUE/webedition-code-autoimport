@@ -33,7 +33,7 @@ class weCustomerFrames extends weModuleFrames {
 
 	function __construct(){
 		parent::__construct(WE_CUSTOMER_MODULE_DIR . 'edit_customer_frameset.php');
-		$this->Tree = new weCustomerTree();
+		$this->Tree = new we_customer_tree();
 		$this->setupTree(CUSTOMER_TABLE, "top.content", "top.content", "top.content.cmd");
 		$this->View = new we_customer_view(WE_CUSTOMER_MODULE_DIR . "edit_customer_frameset.php", "top.content");
 	}
@@ -829,7 +829,7 @@ function populateDate_' . $field . '(){
 
 		return $this->getHTMLDocument(
 				we_html_element::htmlBody(array("bgcolor" => "white", "marginwidth" => 10, "marginheight" => 10, "leftmargin" => 10, "topmargin" => 10), we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
-						we_html_element::jsElement($rootjs . $this->Tree->getJSLoadTree(weCustomerTreeLoader::getItems($pid, $offset, $this->Tree->default_segment, ($sort ? $_REQUEST["sort"] : ''))))
+						we_html_element::jsElement($rootjs . $this->Tree->getJSLoadTree(we_customer_treeLoader::getItems($pid, $offset, $this->Tree->default_segment, ($sort ? $_REQUEST["sort"] : ''))))
 					)
 				)
 		);

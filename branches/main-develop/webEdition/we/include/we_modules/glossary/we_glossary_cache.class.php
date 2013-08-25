@@ -27,7 +27,7 @@
  * this class implements the cache functionality for the glossary
  *
  */
-class weGlossaryCache{
+class we_glossary_cache{
 
 	/**
 	 * language of the cache
@@ -151,7 +151,7 @@ class weGlossaryCache{
 			$attributes = '';
 
 			// Language
-			if($Type == weGlossary::TYPE_LINK){
+			if($Type == we_glossary_glossary::TYPE_LINK){
 				$urladd = '';
 
 				if(isset($Attributes['mode'])){
@@ -350,11 +350,11 @@ if (window.screen) {
 		}
 
 		$content = array(
-			weGlossary::TYPE_LINK => array(),
-			weGlossary::TYPE_ACRONYM => array(),
-			weGlossary::TYPE_ABBREVATION => array(),
-			weGlossary::TYPE_FOREIGNWORD => array(),
-			weGlossary::TYPE_TEXTREPLACE => array(),
+			we_glossary_glossary::TYPE_LINK => array(),
+			we_glossary_glossary::TYPE_ACRONYM => array(),
+			we_glossary_glossary::TYPE_ABBREVATION => array(),
+			we_glossary_glossary::TYPE_FOREIGNWORD => array(),
+			we_glossary_glossary::TYPE_TEXTREPLACE => array(),
 		);
 
 		foreach($Items as $Text => $Value){
@@ -364,19 +364,19 @@ if (window.screen) {
 			foreach($Value as $Type => $AttributeList){
 
 				switch($Type){
-					case weGlossary::TYPE_LINK:
+					case we_glossary_glossary::TYPE_LINK:
 						$Tag = 'a';
 						break;
-					case weGlossary::TYPE_ACRONYM:
+					case we_glossary_glossary::TYPE_ACRONYM:
 						$Tag = 'acronym';
 						break;
-					case weGlossary::TYPE_ABBREVATION:
+					case we_glossary_glossary::TYPE_ABBREVATION:
 						$Tag = 'abbr';
 						break;
-					case weGlossary::TYPE_FOREIGNWORD:
+					case we_glossary_glossary::TYPE_FOREIGNWORD:
 						$Tag = 'span';
 						break;
-					case weGlossary::TYPE_TEXTREPLACE:
+					case we_glossary_glossary::TYPE_TEXTREPLACE:
 						$Tag = '';
 						break;
 				}
@@ -384,7 +384,7 @@ if (window.screen) {
 				if($Tag != ''){
 					$prefix .= '<' . $Tag;
 				}
-				if($Type != weGlossary::TYPE_TEXTREPLACE){
+				if($Type != we_glossary_glossary::TYPE_TEXTREPLACE){
 					foreach($AttributeList as $Attribute => $Val){
 						$prefix .= ($Attribute == 'attribute' ? $Val : ' ' . $Attribute . '=\"' . $Val . '\"');
 					}
@@ -397,7 +397,7 @@ if (window.screen) {
 				}
 			}
 			$content[$Type]['/((<[^>]*)|([^[:alnum:]])(' . preg_quote($Text, '/') . ')([^[:alnum:]]))/e'] = '"$2"=="$1"?"$1":"${3}' . $prefix .
-				($Type != weGlossary::TYPE_TEXTREPLACE ? '$4' : '') .
+				($Type != we_glossary_glossary::TYPE_TEXTREPLACE ? '$4' : '') .
 				$postfix . '$5"';
 		}
 

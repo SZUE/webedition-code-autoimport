@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weCustomerTree extends weTree{
+class we_customer_tree extends weTree{
 
 	function __construct($frameset = '', $topFrame = '', $treeFrame = '', $cmdFrame = ''){
 		parent::__construct($frameset, $topFrame, $treeFrame, $cmdFrame);
@@ -36,9 +36,7 @@ class weCustomerTree extends weTree{
 	}
 
 	function getJSCustomDraw(){
-
 		return array_merge(parent::getJSCustomDraw(), array(
-
 		"sort" => '
 var newAst = zweigEintrag;
 var zusatz = (ai == nf.laenge) ? "end" : "";

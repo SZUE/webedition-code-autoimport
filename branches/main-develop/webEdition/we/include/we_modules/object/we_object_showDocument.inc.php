@@ -251,7 +251,7 @@ if(isset($_SESSION['weS']['we_data'][$we_transaction]['0']['InWebEdition']) && $
 	//
 		$urlReplace = we_folder::getUrlReplacements($GLOBALS['DB_WE']);
 // --> Glossary Replacement
-	$useGlossary = ((defined('GLOSSARY_TABLE') && (!isset($GLOBALS['WE_MAIN_DOC']) || $GLOBALS['WE_MAIN_DOC'] == $GLOBALS['we_doc'])) && (isset($we_doc->InGlossar) && $we_doc->InGlossar == 0) && weGlossaryReplace::useAutomatic());
+	$useGlossary = ((defined('GLOSSARY_TABLE') && (!isset($GLOBALS['WE_MAIN_DOC']) || $GLOBALS['WE_MAIN_DOC'] == $GLOBALS['we_doc'])) && (isset($we_doc->InGlossar) && $we_doc->InGlossar == 0) && we_glossary_replace::useAutomatic());
 	$useBuffer = !empty($urlReplace) || $useGlossary;
 	if($useBuffer){
 		ob_start();
@@ -261,7 +261,7 @@ if(isset($_SESSION['weS']['we_data'][$we_transaction]['0']['InWebEdition']) && $
 		$content = ob_get_contents();
 		ob_end_clean();
 		if($useGlossary){
-			$content = weGlossaryReplace::doReplace($content, $GLOBALS['we_doc']->Language);
+			$content = we_glossary_replace::doReplace($content, $GLOBALS['we_doc']->Language);
 		}
 		if($urlReplace){
 			$content = preg_replace($urlReplace, array_keys($urlReplace), $content);

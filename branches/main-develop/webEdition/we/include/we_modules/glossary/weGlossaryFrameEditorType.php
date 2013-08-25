@@ -44,7 +44,7 @@ class weGlossaryFrameEditorType extends weGlossaryFrameEditor{
 		$Type = array_pop($Temp);
 		$Language = implode("_", $Temp);
 
-		$Cache = new weGlossaryCache($Language);
+		$Cache = new we_glossary_cache($Language);
 
 		if(isset($_REQUEST['do']) && isset($_REQUEST['ID']) && !empty($_REQUEST['ID'])){
 
@@ -109,7 +109,7 @@ class weGlossaryFrameEditorType extends weGlossaryFrameEditor{
 			$Where .= " AND Published > 0";
 		}
 
-		$Search = new weGlossarySearch(GLOSSARY_TABLE);
+		$Search = new we_glossary_search(GLOSSARY_TABLE);
 		$Search->setFields(array("*"));
 		$Search->setLimit($Offset, $Rows);
 		$Search->setOrder($Order, $Sort);
@@ -223,18 +223,18 @@ class weGlossaryFrameEditorType extends weGlossaryFrameEditor{
 
 		switch($Type){
 
-			case weGlossary::TYPE_ABBREVATION:
-			case weGlossary::TYPE_ACRONYM:
+			case we_glossary_glossary::TYPE_ABBREVATION:
+			case we_glossary_glossary::TYPE_ACRONYM:
 				$headline[3] = array(
 					'dat' => g_l('modules_glossary', '[announced_word]'),
 				);
 				break;
 
-			case weGlossary::TYPE_FOREIGNWORD:
-			case weGlossary::TYPE_TEXTREPLACE:
+			case we_glossary_glossary::TYPE_FOREIGNWORD:
+			case we_glossary_glossary::TYPE_TEXTREPLACE:
 				break;
 
-			case weGlossary::TYPE_LINK:
+			case we_glossary_glossary::TYPE_LINK:
 				$headline[3] = array(
 					'dat' => g_l('modules_glossary', '[link_mode]'),
 				);
@@ -281,8 +281,8 @@ class weGlossaryFrameEditorType extends weGlossaryFrameEditor{
 			$values = unserialize($Search->getField('Attributes'));
 			switch($Type){
 
-				case weGlossary::TYPE_ABBREVATION:
-				case weGlossary::TYPE_ACRONYM:
+				case we_glossary_glossary::TYPE_ABBREVATION:
+				case we_glossary_glossary::TYPE_ACRONYM:
 					$temp[3] = array(
 						'dat' => ($Search->getField('Title') != "" ? oldHtmlspecialchars($Search->getField('Title')) : "-"),
 						'height' => 25,
@@ -291,11 +291,11 @@ class weGlossaryFrameEditorType extends weGlossaryFrameEditor{
 					);
 					break;
 
-				case weGlossary::TYPE_FOREIGNWORD:
-				case weGlossary::TYPE_TEXTREPLACE:
+				case we_glossary_glossary::TYPE_FOREIGNWORD:
+				case we_glossary_glossary::TYPE_TEXTREPLACE:
 					break;
 
-				case weGlossary::TYPE_LINK:
+				case we_glossary_glossary::TYPE_LINK:
 					$url = "";
 					switch($values['mode']){
 						case 'intern':
