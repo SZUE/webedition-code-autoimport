@@ -26,7 +26,6 @@ class searchtoolFrames extends weToolFrames{
 
 	function __construct(){
 		$this->toolName = 'weSearch';
-		$this->toolClassName = 'searchtool';
 		$this->toolUrl = WE_INCLUDES_DIR . 'we_tools/' . $this->toolName . '/';
 		$this->toolDir = $_SERVER['DOCUMENT_ROOT'] . $this->toolUrl;
 
@@ -51,10 +50,7 @@ class searchtoolFrames extends weToolFrames{
 
 		$offset = (isset($_REQUEST['offset']) ? $_REQUEST['offset'] : 0);
 
-		$_class = $this->toolClassName . 'TreeDataSource';
-		include_once ($this->toolDir . 'class/' . $_class . '.class.php');
-
-		$_loader = new $_class($this->TreeSource);
+		$_loader = new searchtoolTreeDataSource($this->TreeSource);
 
 		$rootjs = (!$pid ?
 				$this->Tree->topFrame . '.treeData.clear();' .

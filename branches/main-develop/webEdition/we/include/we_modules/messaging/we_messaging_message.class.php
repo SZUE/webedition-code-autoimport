@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-require_once(WE_MESSAGING_MODULE_PATH . "messaging_std.inc.php");
+require_once(WE_MESSAGING_MODULE_PATH . 'messaging_std.inc.php');
 
 /* message object class */
 
@@ -53,6 +53,7 @@ class we_messaging_message extends we_msg_proto{
 
 	function __construct(){
 		parent::__construct();
+		$this->ClassName='we_message';
 		$this->Name = 'message_' . md5(uniqid(__FILE__, true));
 		$this->persistent_slots = array('ClassName', 'Name', 'ID', 'Table', 'Folder_ID', 'selected_message', 'sortorder', 'last_sortfield', 'available_folders', 'search_folder_ids', 'search_fields');
 	}

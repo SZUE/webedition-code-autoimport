@@ -34,7 +34,6 @@ class weNavigationFrames extends weModuleFrames{
 	var $Model;
 	public $module = 'navigation';
 	public $toolName = 'navigation';
-	public $toolClassName = 'weNavigation';
 	public $Table = NAVIGATION_TABLE;
 	public $TreeSource = '';
 	protected $treeDefaultWidth = 220;
@@ -96,10 +95,8 @@ class weNavigationFrames extends weModuleFrames{
 
 		$pid = $_REQUEST["pid"];
 		$offset = (isset($_REQUEST["offset"]) ? $_REQUEST["offset"] : 0);
-		$_class = $this->toolClassName . 'TreeDataSource';
-		include_once( $this->toolDir . 'class/' . $_class . '.class.php');
 
-		$_loader = new $_class($this->TreeSource);
+		$_loader = new weNavigationTreeDataSource($this->TreeSource);
 
 		$rootjs = (!$pid ?
 				$this->Tree->topFrame . '.treeData.clear();' .

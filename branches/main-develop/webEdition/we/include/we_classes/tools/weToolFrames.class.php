@@ -386,7 +386,6 @@ function we_save() {
 		$pid = $_REQUEST["pid"];
 		$offset = (isset($_REQUEST["offset"]) ? $_REQUEST["offset"] : 0);
 		$_class = $this->toolClassName . 'TreeDataSource';
-		include_once( $this->toolDir . 'class/' . $_class . '.class.php');
 
 		$_loader = new $_class($this->TreeSource);
 
