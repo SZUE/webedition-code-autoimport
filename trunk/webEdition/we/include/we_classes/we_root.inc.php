@@ -1173,8 +1173,8 @@ abstract class we_root extends we_class{
 	}
 	
 	function update_filehash(){
-		$this->wasUpdate = $this->ID ? 1 : 0;
 		if($this->Table==TEMPLATES_TABLE || $this->Table==FILE_TABLE){
+			$this->wasUpdate = $this->ID ? 1 : 0;
 			if($this->Table==TEMPLATES_TABLE) {
 				if(strpos($this->Path,'.tmpl')===false){
 					$usepath= TEMPLATES_PATH.$this->Path;
