@@ -177,10 +177,10 @@ function deleteFile($id, $table, $path = '', $contentType = '', $DB_WE = ''){
 				$DB_WE->query('SELECT ID FROM ' . OBJECT_TABLE);
 				$foo = $DB_WE->getAll(true);
 				foreach($foo as $testclassID){
-					if($DB_WE->isColExist(OBJECT_X_TABLE . $testclassID, 'object_' . $tableID)){
+					if($DB_WE->isColExist(OBJECT_X_TABLE . $testclassID, we_object::QUERY_PREFIX . $tableID)){
 
 						//das loeschen in der DB wirkt sich nicht auf die Objekte aus, die noch nicht publiziert sind
-						$DB_WE->query('SELECT OF_ID FROM ' . OBJECT_X_TABLE . $testclassID . ' WHERE object_' . $tableID . '= ' . intval($id));
+						$DB_WE->query('SELECT OF_ID FROM ' . OBJECT_X_TABLE . $testclassID . ' WHERE ' . we_object::QUERY_PREFIX. $tableID . '= ' . intval($id));
 						$foos = $DB_WE->getAll(true);
 						foreach($foos as $affectedobjectsID){
 							$obj = new we_objectFile();
@@ -194,7 +194,7 @@ function deleteFile($id, $table, $path = '', $contentType = '', $DB_WE = ''){
 								$obj->we_publish(0, 1, 1);
 							}
 						}
-						$DB_WE->query('UPDATE ' . OBJECT_X_TABLE . $testclassID . ' SET object_' . $tableID . '=0 WHERE object_' . $tableID . '= ' . intval($id));
+						$DB_WE->query('UPDATE ' . OBJECT_X_TABLE . $testclassID . ' SET ' . we_object::QUERY_PREFIX . $tableID . '=0 WHERE ' . we_object::QUERY_PREFIX . $tableID . '= ' . intval($id));
 					}
 				}
 				// Fast Fix for deleting entries from tblLangLink: #5840

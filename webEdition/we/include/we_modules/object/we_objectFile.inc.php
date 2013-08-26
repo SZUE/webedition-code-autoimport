@@ -702,7 +702,7 @@ class we_objectFile extends we_document{
 				case 'float_':
 				case 'date_':
 				case 'img_':
-				case 'object_':
+				case we_object::QUERY_PREFIX:
 				case 'multiobject_':
 				case 'meta_':
 					break;
@@ -929,7 +929,7 @@ class we_objectFile extends we_document{
 
 		$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['$idname'].value");
 		$wecmdenc2 = we_cmd_enc("document.forms['we_form'].elements['$textname'].value");
-		$wecmdenc3 = we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);opener.top.we_cmd('change_objectlink','" . $GLOBALS['we_transaction'] . "','object_" . $pid . "');");
+		$wecmdenc3 = we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);opener.top.we_cmd('change_objectlink','" . $GLOBALS['we_transaction'] . "','" .we_object::QUERY_PREFIX . $pid . "');");
 
 		$_buttons = array(
 			we_button::create_button('select', "javascript:we_cmd('openDocselector',document.forms['we_form'].elements['$idname'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','$pid','objectFile'," . (we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")")
@@ -943,12 +943,12 @@ class we_objectFile extends we_document{
 			$_buttons[] = $_but;
 		}
 
-		$_buttons[] = we_button::create_button("image:btn_function_trash", "javascript:document.forms['we_form'].elements['$idname'].value=0;document.forms['we_form'].elements['$textname'].value='';_EditorFrame.setEditorIsHot(true);top.we_cmd('reload_entry_at_object','" . $GLOBALS['we_transaction'] . "','object_" . $pid . "')");
+		$_buttons[] = we_button::create_button("image:btn_function_trash", "javascript:document.forms['we_form'].elements['$idname'].value=0;document.forms['we_form'].elements['$textname'].value='';_EditorFrame.setEditorIsHot(true);top.we_cmd('reload_entry_at_object','" . $GLOBALS['we_transaction'] . "','".we_object::QUERY_PREFIX . $pid . "')");
 
 		$button = we_button::create_button_table($_buttons, 5);
 
 		return $this->htmlFormElementTable(
-				$this->htmlTextInput($textname, 30, $path, "", ' readonly', "text", $inputWidth, 0), '<span class="weObjectPreviewHeadline">' . $name . ($this->DefArray["object_" . $ObjectID]["required"] ? "*" : "") . '</span>' . ($npubl ? '' : ' <span style="color:red">' . g_l('modules_object', '[not_published]') . '</span>') . ( isset($this->DefArray["object_$ObjectID"]['editdescription']) && $this->DefArray["object_$ObjectID"]['editdescription'] ? '<div class="objectDescription">' . $this->DefArray["object_$ObjectID"]['editdescription'] . '</div>' : we_html_element::htmlBr() ), "left", "defaultfont", $this->htmlHidden($idname, $myid), we_html_tools::getPixel(5, 4), $button) .
+				$this->htmlTextInput($textname, 30, $path, "", ' readonly', "text", $inputWidth, 0), '<span class="weObjectPreviewHeadline">' . $name . ($this->DefArray[we_object::QUERY_PREFIX. $ObjectID]["required"] ? "*" : "") . '</span>' . ($npubl ? '' : ' <span style="color:red">' . g_l('modules_object', '[not_published]') . '</span>') . ( isset($this->DefArray[we_object::QUERY_PREFIX.$ObjectID]['editdescription']) && $this->DefArray[we_object::QUERY_PREFIX.$ObjectID]['editdescription'] ? '<div class="objectDescription">' . $this->DefArray[we_object::QUERY_PREFIX.$ObjectID]['editdescription'] . '</div>' : we_html_element::htmlBr() ), "left", "defaultfont", $this->htmlHidden($idname, $myid), we_html_tools::getPixel(5, 4), $button) .
 			$objectpreview;
 	}
 
@@ -2506,8 +2506,8 @@ class we_objectFile extends we_document{
 		$this->DB_WE->query('SELECT ID FROM ' . OBJECT_TABLE);
 		$foo = $this->DB_WE->getAll(true);
 		foreach($foo as $testclassID){
-			if($this->DB_WE->isColExist(OBJECT_X_TABLE . $testclassID, "object_" . $this->TableID)){
-				$this->DB_WE->query('UPDATE ' . OBJECT_X_TABLE . $testclassID . ' SET object_' . $this->TableID . '="0" WHERE object_' . $this->TableID . '= ' . $this->ID);
+			if($this->DB_WE->isColExist(OBJECT_X_TABLE . $testclassID, we_object::QUERY_PREFIX . $this->TableID)){
+				$this->DB_WE->query('UPDATE ' . OBJECT_X_TABLE . $testclassID . ' SET '. we_object::QUERY_PREFIX. $this->TableID . '=0 WHERE '.we_object::QUERY_PREFIX . $this->TableID . '= ' . $this->ID);
 			}
 		}
 

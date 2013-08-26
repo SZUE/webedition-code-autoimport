@@ -130,7 +130,7 @@ class weImportUpdater extends weXMLExIm{
 		}
 
 		// update class for embedded object
-		if(isset($object->ClassName) && ($object->ClassName == "we_object") && preg_match('|object_([0-9])+|', implode(',', array_keys($object->SerializedArray)))){
+		if(isset($object->ClassName) && ($object->ClassName == "we_object") && preg_match('|' . we_object::QUERY_PREFIX . '([0-9])+|', implode(',', array_keys($object->SerializedArray)))){
 			$this->updateObjectModuleData($object);
 		}
 
@@ -242,9 +242,9 @@ class weImportUpdater extends weXMLExIm{
 								$new_elements['we_object_' . $ref->ID] = array('type' => 'object', 'len' => 22, 'dat' => $objid);
 								$new_elements['we_object_' . $ref->ID . '_path'] = array('type' => 'object', 'len' => 22, 'dat' => $objpath);
 
-								if(isset($object->DefArray['object_' . $regs[1]])){
-									$del_defs[] = 'object_' . $regs[1];
-									$new_defs['object_' . $ref->ID] = $object->DefArray['object_' . $regs[1]];
+								if(isset($object->DefArray[we_object::QUERY_PREFIX . $regs[1]])){
+									$del_defs[] = we_object::QUERY_PREFIX . $regs[1];
+									$new_defs[we_object::QUERY_PREFIX . $ref->ID] = $object->DefArray[we_object::QUERY_PREFIX . $regs[1]];
 								}
 							}
 						}
@@ -264,8 +264,8 @@ class weImportUpdater extends weXMLExIm{
 					}
 				}
 
-				if(isset($object->ClassName) && ($object->ClassName == "we_object") && preg_match('|object_([0-9])+([a-zA-Z]*[0-9]*)|', $k, $regs)){
-					if(count($regs) > 2 && isset($object->elements['object_' . $regs[1] . $regs[2]])){
+				if(isset($object->ClassName) && ($object->ClassName == "we_object") && preg_match('|'.we_object::QUERY_PREFIX.'([0-9])+([a-zA-Z]*[0-9]*)|', $k, $regs)){
+					if(count($regs) > 2 && isset($object->elements[we_object::QUERY_PREFIX . $regs[1] . $regs[2]])){
 						$ref = $this->RefTable->getRef(
 							array(
 								'OldID' => $regs[1],
@@ -273,8 +273,8 @@ class weImportUpdater extends weXMLExIm{
 							)
 						);
 						if($ref){
-							$object->elements['object_' . $ref->ID . $regs[2]] = array_merge_recursive($object->elements['object_' . $regs[1] . $regs[2]]);
-							unset($object->elements['object_' . $regs[1] . $regs[2]]);
+							$object->elements[we_object::QUERY_PREFIX . $ref->ID . $regs[2]] = array_merge_recursive($object->elements[we_object::QUERY_PREFIX . $regs[1] . $regs[2]]);
+							unset($object->elements[we_object::QUERY_PREFIX . $regs[1] . $regs[2]]);
 						}
 					}
 				}
@@ -365,14 +365,14 @@ class weImportUpdater extends weXMLExIm{
 
 	function updateObjectModuleData(&$object){
 
-		if(isset($object->ClassName) && ($object->ClassName == "we_object") && preg_match('|object_([0-9])+|', implode(',', array_keys($object->SerializedArray)))){
+		if(isset($object->ClassName) && ($object->ClassName == "we_object") && preg_match('|'.we_object::QUERY_PREFIX.'([0-9])+|', implode(',', array_keys($object->SerializedArray)))){
 			if($this->debug){
 				debug("Updating object module data...\n");
 			}
 			$new = array();
 			$del = array();
 			foreach($object->SerializedArray as $elkey => $elvalue){
-				if(preg_match('|object_([0-9])+|', $elkey, $regs)){
+				if(preg_match('|'.we_object::QUERY_PREFIX.'([0-9])+|', $elkey, $regs)){
 					if(count($regs) > 1){
 						$ref = $this->RefTable->getRef(
 							array(
@@ -381,7 +381,7 @@ class weImportUpdater extends weXMLExIm{
 							)
 						);
 						if($ref){
-							$new['object_' . $ref->ID] = array_merge_recursive($object->SerializedArray[$elkey]);
+							$new[we_object::QUERY_PREFIX . $ref->ID] = array_merge_recursive($object->SerializedArray[$elkey]);
 						}
 						$del[] = $elkey;
 					}

@@ -241,7 +241,7 @@ class we_listview_object extends listviewBase {
 						$matrix["we_object_" . $name]["table2"] = OBJECT_X_TABLE . $name;
 						$matrix["we_object_" . $name]["classID"] = $classID;
 						$foo = $this->fillMatrix($matrix, $name, $db);
-						$joinWhere[] = OBJECT_X_TABLE . $classID . '.object_' . $name . '=' . OBJECT_X_TABLE . $name . '.OF_ID';
+						$joinWhere[] = OBJECT_X_TABLE . $classID . we_object::QUERY_PREFIX . $name . '=' . OBJECT_X_TABLE . $name . '.OF_ID';
 						if($foo){
 							$joinWhere[] = $foo;
 						}
