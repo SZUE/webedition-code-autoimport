@@ -73,7 +73,7 @@ class weTagDataOption{
 	 */
 	function getAssoziation(){
 		return array(
-			"$this->Value" => "$this->Name"
+			$this->Value => $this->Name
 		);
 	}
 
