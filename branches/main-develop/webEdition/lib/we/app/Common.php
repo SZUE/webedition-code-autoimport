@@ -28,7 +28,7 @@ require_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we.inc.php");
  * @package    we_app
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-class we_app_Common{
+class we_app_Common {
 	/*
 	 * some class variables:
 	 */
@@ -362,7 +362,7 @@ class we_app_Common{
 	/**
 	 * checks if there is already an application with the name $name installed on this system
 	 */
-	public static function isInstalled($appname = ""){
+	public static function isInstalled($appname){
 		if(empty($appname)){
 			return false;
 		}
@@ -370,18 +370,18 @@ class we_app_Common{
 		$config = self::readConfig();
 		$apps = self::readAppTOC(true);
 
-		$path = $config->applicationpath . $appname . "/";
+		$path = $config->applicationpath . $appname . '/';
 		if(is_dir($path)){
 			//error_log("directory $path found.");
 			if(is_readable($path . "conf/manifest.xml")){
 				foreach($apps->applications->application as $app){
-					if($app->name == $appname){
+					if(is_object($app) && $app->name == $appname){
 						return true;
 					}
 				}
 			}
 		}
-		error_log(get_class() . " - application " . $appname . " does not seem to be installed.");
+		error_log(get_class() . ' - application ' . $appname . ' does not seem to be installed.');
 		return false;
 	}
 
@@ -391,16 +391,13 @@ class we_app_Common{
 	public static function isActive($appname = ""){
 		$tocentry = self::getAppTOCEntry($appname);
 
-		$status = "";
-		if($tocentry->name == $appname){
-			$status = @$tocentry["active"];
-		}
-		if($status == "true"){
-			return true;
-		} else if($status == "false"){
-			return false;
-		} else {
-			return -1;
+		switch(($tocentry->name == $appname ? @$tocentry["active"] : '')){
+			case "true":
+				return true;
+			case "false":
+				return false;
+			default:
+				return -1;
 		}
 	}
 
@@ -415,12 +412,7 @@ class we_app_Common{
 			return false;
 		}
 		$entry = self::getAppTOCEntry($appname);
-		if($entry === false){
-			return false;
-		} else if(isset($entry->$element)){
-			return $entry->$element;
-		}
-		return false;
+		return ($entry === false || !isset($entry->$element) ? false : $entry->$element);
 	}
 
 	/**
@@ -458,23 +450,15 @@ class we_app_Common{
 			//error_log("source empty");
 			return false;
 		}
-		if(is_readable($source)){
-			//error_log("readable source file");
-			// seems to be a file
-			$filename = $source;
-		} else {
-			// seems to be an app name:
-			$filename = $_SERVER['DOCUMENT_ROOT'] . "/webEdition/apps/" . $source . "/conf/manifest.xml";
-		}
-		if(!is_readable($filename)){
-			//error_log("file $filename not readable");
-			return false;
-		}
-		if(!$xml = @simplexml_load_file($filename)){
-			//error_log("could not read xml file");
-			return false;
-		}
-		return $xml;
+		$filename = (is_readable($source) ?
+				//error_log("readable source file");
+				// seems to be a file
+				$source :
+				// seems to be an app name:
+				WE_APPS_PATH . $source . '/conf/manifest.xml');
+
+		return (!is_readable($filename) || (!$xml = simplexml_load_file($filename)) ?
+				false : $xml);
 	}
 
 	/**
@@ -487,23 +471,15 @@ class we_app_Common{
 			//error_log("source empty");
 			return false;
 		}
-		if(is_readable($source)){
-			//error_log("readable source file");
-			// seems to be a file
-			$filename = $source;
-		} else {
-			// seems to be an app name:
-			$filename = $_SERVER['DOCUMENT_ROOT'] . "/webEdition/apps/" . $source . "/conf/manifest.xml";
-		}
-		if(!is_readable($filename)){
-			//error_log("file $filename not readable");
-			return false;
-		}
-		if(!$zc = new Zend_Config_Xml($filename, null, true)){
-			//error_log("could not read xml file");
-			return false;
-		}
-		return $zc;
+		$filename = (is_readable($source) ?
+				//error_log("readable source file");
+				// seems to be a file
+				$source :
+				WE_APPS_PATH . $source . '/conf/manifest.xml');
+
+		return (!is_readable($filename) || (!$zc = new Zend_Config_Xml($filename, null, true)) ?
+				//error_log("could not read xml file");
+				false : $zc);
 	}
 
 	/**
@@ -534,11 +510,7 @@ class we_app_Common{
 			$query = "/manifest" . $query;
 		}
 		$result = @$manifest->xpath($query);
-		if(!$result){
-			return false;
-		} else {
-			return (string) $result[0];
-		}
+		return (!$result ? false : (string) $result[0]);
 	}
 
 	/**
@@ -764,11 +736,7 @@ class we_app_Common{
 
 		// 1. check first if the application is      deinstallable
 		$deactivatable = self::getManifestElement($appname, "/info/deinstallable");
-		if($deactivatable != "true"){
-			return false;
-		} else {
-			return true;
-		}
+		return !($deactivatable != "true");
 	}
 
 	/**
@@ -866,13 +834,10 @@ class we_app_Common{
 	/**
 	 * returns a specified config value or false
 	 */
-	public static function getConfigElement($element = ""){
+	public static function getConfigElement($element = ''){
 		self::readConfig();
-		if(empty($element) || !isset(self::$_config->$element)){
-			return false;
-		} else {
-			return self::$_config->$element;
-		}
+		return(empty($element) || !isset(self::$_config->$element) ?
+				false : self::$_config->$element);
 	}
 
 }

@@ -32,6 +32,7 @@ class we_object extends we_document{
 	const ELEMENT_CLASS = 'class';
 	const ELEMENT_MAX = 'max';
 	const ELEMENT_DEFAULT = 'default';
+	const QUERY_PREFIX = 'object_';
 
 	var $ObjectID = 0;
 	var $Users = ''; // Default Owners
@@ -113,7 +114,7 @@ class we_object extends we_document{
 			'elements' => array('Charset' => array('dat' => $this->elements['Charset']['dat'])),
 		);
 
-		$this->wasUpdate = $this->ID ? true : false;
+		$this->wasUpdate = $this->ID > 0;
 		if(isset($this->elements['Defaultanzahl']['dat'])){
 			$this->DefaultText = '';
 
@@ -306,9 +307,9 @@ class we_object extends we_document{
 							$q [] = ' CHANGE `' . $info['name'] . '` `' . $nam . '` ' .
 								$this->switchtypes($info['name']);
 							//change from object is indexed to unindexed
-							if((strpos($info['name'], 'object_') === 0) && (strpos($nam, 'object_') !== 0) && (strpos($info['flags'], 'multiple_key') !== false)){
+							if((strpos($info['name'], self::QUERY_PREFIX) === 0) && (strpos($nam, self::QUERY_PREFIX) !== 0) && (strpos($info['flags'], 'multiple_key') !== false)){
 								$q[] = ' DROP KEY `' . $info['name'] . '` ';
-							} else if((strpos($info['name'], 'object_') !== 0) && (strpos($nam, 'object_') === 0) && (strpos($info['flags'], 'multiple_key') === false)){
+							} else if((strpos($info['name'], self::QUERY_PREFIX) !== 0) && (strpos($nam, self::QUERY_PREFIX) === 0) && (strpos($info['flags'], 'multiple_key') === false)){
 								$q[] = ' ADD INDEX (`' . $info['name'] . '`) ';
 							}
 
@@ -545,7 +546,7 @@ class we_object extends we_document{
 	function ModifyPathInformation($parentID){
 		$this->setParentID($parentID);
 		$this->Path = $this->getPath();
-		$this->wasUpdate = 1;
+		$this->wasUpdate = true;
 		$this->i_savePersistentSlotsToDB('Text,Path,ParentID');
 	}
 
@@ -883,7 +884,7 @@ class we_object extends we_document{
 			$maxLengthVal = $type == 'int' ? 10 : 255;
 			$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin"  valign="top">' . g_l('modules_object', '[length]') . '</td>' .
 				'<td width="170" class="defaultfont">' .
-				$this->htmlTextInput("we_" . $this->Name . "_input[" . $name . self::ELEMENT_LENGHT.']', 10, ($this->getElement($name . "length", "dat") > 0 && ($this->getElement($name . "length", "dat") < ($maxLengthVal + 1)) ? $this->getElement($name . "length", "dat") : $maxLengthVal), ($type == 'int' ? 2 : 4), 'onChange="_EditorFrame.setEditorIsHot(true);" weType="weObject_' . $type . '_length"', "text", 388) .
+				$this->htmlTextInput("we_" . $this->Name . "_input[" . $name . self::ELEMENT_LENGHT . ']', 10, ($this->getElement($name . "length", "dat") > 0 && ($this->getElement($name . "length", "dat") < ($maxLengthVal + 1)) ? $this->getElement($name . "length", "dat") : $maxLengthVal), ($type == 'int' ? 2 : 4), 'onChange="_EditorFrame.setEditorIsHot(true);" weType="weObject_' . $type . '_length"', "text", 388) .
 				'</td></tr>';
 		}
 
@@ -2190,7 +2191,7 @@ class we_object extends we_document{
 			$this->resetElements();
 			$hrefs = array();
 			$matches = array();
-			while((list($k, $v) = $this->nextElement('href'))) {
+			while((list($k, $v) = $this->nextElement('href'))){
 				preg_match('/^(.+)_we_jkhdsf_(.+)$/', $k, $matches);
 				list(, $realName, $key) = $matches;
 				if(($pos = strpos($realName, 'default')) != false){

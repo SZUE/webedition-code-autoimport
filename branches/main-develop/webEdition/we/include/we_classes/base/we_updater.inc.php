@@ -281,7 +281,7 @@ class we_updater{
 					$GLOBALS['DB_WE']->addCol($_table, 'OF_Language', 'VARCHAR(5) DEFAULT NULL', ' AFTER OF_WebUserID ');
 				}
 				//add indices to all objects
-				self::updateUnindexedCols($_table, 'object_%');
+				self::updateUnindexedCols($_table, we_object::QUERY_PREFIX . '%');
 				$key = 'KEY OF_WebUserID (OF_WebUserID)';
 				if(!$GLOBALS['DB_WE']->isKeyExistAtAll($_table, 'OF_WebUserID')){
 					$GLOBALS['DB_WE']->addKey($_table, $key);

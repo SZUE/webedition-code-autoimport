@@ -757,9 +757,8 @@ class we_document extends we_root{
 	}
 
 	function we_rewrite(){
-		$this->RebuildDate=time();
+		$this->RebuildDate = time();
 		return $this->i_writeDocument();
-
 	}
 
 	/*
@@ -1593,6 +1592,19 @@ class we_document extends we_root{
 
 	public function addDocumentCss($stylesheet = ''){
 		// this method is overwritten in we_webEditionDocument
+	}
+
+	protected function update_filehash(){
+		if($this->Table == TEMPLATES_TABLE || $this->Table == FILE_TABLE){
+			$this->wasUpdate = $this->ID > 0;
+			if($this->Table == TEMPLATES_TABLE){
+				$usepath = (strpos($this->Path, '.tmpl') === false ? TEMPLATES_PATH . $this->Path : TEMPLATES_PATH . substr_replace($this->Path, '.php', -5));
+			} else {
+				$usepath = $_SERVER['DOCUMENT_ROOT'] . $this->Path;
+			}
+			$this->Filehash = (file_exists($usepath) && is_file($usepath) ? sha1_file($usepath) : '');
+			$this->i_savePersistentSlotsToDB('Filehash,RebuildDate');
+		}
 	}
 
 }

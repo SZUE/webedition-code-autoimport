@@ -30,7 +30,7 @@ class we_objectEx extends we_object{
 	);
 
 	function saveToDB(){
-		$this->wasUpdate = $this->ID ? true : false;
+		$this->wasUpdate = $this->ID > 0;
 
 		$this->i_savePersistentSlotsToDB();
 		$ctable = OBJECT_X_TABLE . intval($this->ID);
@@ -100,7 +100,7 @@ class we_objectEx extends we_object{
 			$this->DB_WE->query('DELETE FROM ' . $ctable . ' WHERE OF_ID=0 OR ID=0');
 			$this->DB_WE->query('INSERT INTO ' . $ctable . ' SET OF_ID=0');
 			////// resave the line O to O.....
-		} else{
+		} else {
 			$this->SerializedArray = unserialize($this->DefaultValues);
 
 			$noFields = array('WorkspaceFlag', 'elements', 'WE_CSS_FOR_CLASS');
@@ -129,7 +129,7 @@ class we_objectEx extends we_object{
 							$alter[$fieldname] = $fieldname . $type;
 						}
 					}
-				} else{
+				} else {
 					if(!empty($type)){
 						$add[$fieldname] = $fieldname . $type;
 						if($isObject){
@@ -192,7 +192,7 @@ class we_objectEx extends we_object{
 		return '';
 	}
 
-	function switchtypes2($type, $len=0){
+	function switchtypes2($type, $len = 0){
 		switch($type){
 			case "meta":
 				return " VARCHAR(" . (($len > 0 && ($len < 256)) ? $len : "255") . ") NOT NULL ";
@@ -318,19 +318,20 @@ class we_objectEx extends we_object{
 		}
 		return $defaultArr;
 	}
-	
+
 	function renameField($name, $newname){
 		$ctable = OBJECT_X_TABLE . intval($this->ID);
 		$this->wasUpdate = true;
 		$this->SerializedArray = unserialize($this->DefaultValues);
 		$type = $this->getFieldPrefix($name);
-		$this->SerializedArray[$type.'_'.$newname] = $this->SerializedArray[$type.'_'.$name];
-		unset($this->SerializedArray[$type.'_'.$name]);
-		$this->DefaultValues=serialize($this->SerializedArray);
-		$this->DB_WE->query('ALTER TABLE ' . $ctable . ' CHANGE ' . $type.'_'.$name . ' ' .$type.'_'.$newname .' '. $this->switchtypes2($type));
+		$this->SerializedArray[$type . '_' . $newname] = $this->SerializedArray[$type . '_' . $name];
+		unset($this->SerializedArray[$type . '_' . $name]);
+		$this->DefaultValues = serialize($this->SerializedArray);
+		$this->DB_WE->query('ALTER TABLE ' . $ctable . ' CHANGE ' . $type . '_' . $name . ' ' . $type . '_' . $newname . ' ' . $this->switchtypes2($type));
 		unset($this->elements);
-		$this->i_savePersistentSlotsToDB();;
-		$this->i_getContentData();		
+		$this->i_savePersistentSlotsToDB();
+		;
+		$this->i_getContentData();
 	}
 
 	function addField($name, $type = '', $default = ''){
@@ -342,12 +343,12 @@ class we_objectEx extends we_object{
 			$arrOrder = explode(',', $this->strOrder);
 			$arrOrder[] = max($arrOrder) + 1;
 			$this->strOrder = implode(',', $arrOrder);
-		} else{
+		} else {
 			$this->strOrder = '';
 		}
 		if(isset($this->isAddFieldNoSave) && $this->isAddFieldNoSave){
 			return true;
-		} else{
+		} else {
 			return $this->saveToDB(true);
 		}
 	}
@@ -384,7 +385,7 @@ class we_objectEx extends we_object{
 			$this->strOrder = implode(',', $arrOrder);
 			if(isset($this->isDropFieldNoSave) && $this->isDropFieldNoSave){
 				return true;
-			} else{
+			} else {
 				return $this->saveToDB(true);
 			}
 		}
@@ -405,11 +406,11 @@ class we_objectEx extends we_object{
 						unset($defaultArr[$delkey]);
 					}
 				}
-			} else{
+			} else {
 				$defaultArr = $this->getDefaultArray($name, $newtype, $default);
 			}
 			$this->SerializedArray[$type . '_' . $name] = $defaultArr;
-		} else{
+		} else {
 			unset($this->SerializedArray[$type . '_' . $name]);
 			if($default != '' && is_array($default)){
 				foreach($default as $k => $v){
@@ -420,7 +421,7 @@ class we_objectEx extends we_object{
 						unset($defaultArr[$delkey]);
 					}
 				}
-			} else{
+			} else {
 				$defaultArr = $this->getDefaultArray($newtype, $default);
 			}
 			$this->SerializedArray[$newtype . '_' . $name] = $defaultArr;
@@ -429,7 +430,7 @@ class we_objectEx extends we_object{
 
 		if(isset($this->isModifyFieldNoSave) && $this->isModifyFieldNoSave){
 			return true;
-		} else{
+		} else {
 			return $this->saveToDB(true);
 		}
 	}
@@ -461,7 +462,7 @@ class we_objectEx extends we_object{
 					}
 					$this->DB_WE->query('ALTER TABLE ' . $ctable . ' MODIFY COLUMN ' . $ovalname . ' ' . $type . ' AFTER ' . $last);
 					$last = $ovalname;
-				} else{
+				} else {
 					t_e('warning', 'we_ObjectEx::setOrder ' . $ctable . ' (' . $this->Text . ') Field not found: Field: ' . $ovalname);
 				}
 			}
@@ -476,7 +477,7 @@ class we_objectEx extends we_object{
 				$zw = $this->getFieldPrefix($oval) . '_' . $oval;
 				if($zw){
 					$neworder[] = $zw;
-				} else{
+				} else {
 					t_e('warning', 'we_ObjectEx::setOrder: ' . $ctable . ' (' . $this->Text . ')  No Field-Prefix found in for ' . $oval);
 				}
 			}
@@ -484,11 +485,11 @@ class we_objectEx extends we_object{
 				if(count($neworder) > count($consider)){
 					$thedifference = array_diff($neworder, $consider);
 					t_e('warning', 'we_ObjectEx::setOrder: ' . $ctable . ' (' . $this->Text . ')  Order-Array (' . count($neworder) . ') has larger length than generated Fields Array (' . count($consider) . '), Missing: (' . implode(',', $thedifference) . ') Order-Array:(' . implode(',', $neworder) . ') Fields-Array:(' . implode(',', $consider) . ') ');
-				} else{
+				} else {
 					$thedifference = array_diff($consider, $neworder);
 					t_e('warning', 'we_ObjectEx::setOrder: ' . $ctable . ' (' . $this->Text . ')  Order-Array (' . count($neworder) . ') has smaller length than generated Fields Array (' . count($consider) . '), Missing: (' . implode(',', $thedifference) . ') Order-Array:(' . implode(',', $neworder) . ') Fields-Array:(' . implode(',', $consider) . ') ');
 				}
-			} else{
+			} else {
 				$neworder = array_flip($neworder);
 				$theorder = array();
 				foreach($consider as $ck => $cv){
@@ -544,7 +545,7 @@ class we_objectEx extends we_object{
 				}
 			}
 			return $isOK;
-		} else{
+		} else {
 			t_e('warning', 'we_ObjectEx::checkFields: ' . $ctable . ' (' . $this->Text . ') different field count - not recoverable bei resetOrder strOrder');
 		}
 	}

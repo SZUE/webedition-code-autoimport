@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-abstract class weToolLookup{
+abstract class weToolLookup {
 
 	const REGISTRY_NAME = 'weToolsRegistry';
 
@@ -40,7 +40,7 @@ abstract class weToolLookup{
 		$_bd = $_SERVER['DOCUMENT_ROOT'] . '/webEdition/apps';
 		$_d = opendir($_bd);
 
-		while(($_entry = readdir($_d))) {
+		while(($_entry = readdir($_d))){
 			$_toolsDirs[] = $_bd . '/' . $_entry;
 		}
 		closedir($_d);
@@ -66,8 +66,8 @@ abstract class weToolLookup{
 					}
 					$metaInfo['text'] = oldHtmlspecialchars($langStr);
 					if(!$includeDisabled && isset($metaInfo['appdisabled']) && $metaInfo['appdisabled']){
-
-					} else{
+						
+					} else {
 						$_tools[] = $metaInfo;
 					}
 					unset($metaInfo);
@@ -119,14 +119,14 @@ abstract class weToolLookup{
 		if(isset($_REQUEST['we_cmd'][0])){
 			//FIX for charset in tools, due to not started session
 			$tmp = explode('_', $_REQUEST['we_cmd'][0]);
-			if($tmp[1] == 'weSearch'){
-				$_REQUEST['tool'] = $tmp[1];
-				return 'we_tools/' . $tmp[1] . '/hook/we_phpCmdHook_' . $tmp[1] . '.inc.php';
-			}
-			//TODO: does this work after refactoring navigation as a module
-			if($tmp[1] == 'navigation'){
-				$_REQUEST['mod'] = 'navigation';
-				return 'we_modules/navigation/hook/we_phpCmdHook_' . $tmp[1] . '.inc.php';
+			switch(isset($tmp[1]) ? $tmp[1] : ''){
+				case 'weSearch':
+					$_REQUEST['tool'] = $tmp[1];
+					return 'we_tools/' . $tmp[1] . '/hook/we_phpCmdHook_' . $tmp[1] . '.inc.php';
+				case 'navigation':
+					//TODO: does this work after refactoring navigation as a module
+					$_REQUEST['mod'] = 'navigation';
+					return 'we_modules/navigation/hook/we_phpCmdHook_' . $tmp[1] . '.inc.php';
 			}
 			$_tools = self::getAllTools(true, true);
 			foreach($_tools as $_tool){
@@ -260,7 +260,7 @@ abstract class weToolLookup{
 		$_tooldir = $toolFolder . $toolname . $subdir;
 		if(self::isTool($toolname, $includeDisabled) && is_dir($_tooldir)){
 			$_d = opendir($_tooldir);
-			while(($_entry = readdir($_d))) {
+			while(($_entry = readdir($_d))){
 				if(is_dir($_tooldir . '/' . $_entry) && stristr($_entry, '.') === FALSE){
 					$_tagname = we_core_Local::localeToWeLang($_entry);
 					$_founds[$_tagname] = $_tooldir . '/' . $_entry . '/default.xml';
@@ -277,7 +277,7 @@ abstract class weToolLookup{
 		$_tooldir = $toolFolder . $toolname . $subdir;
 		if(self::isTool($toolname, $includeDisabled) && is_dir($_tooldir)){
 			$_d = opendir($_tooldir);
-			while(($_entry = readdir($_d))) {
+			while(($_entry = readdir($_d))){
 				if(!is_dir($_tooldir . '/' . $_entry) && stripos($_entry, $filematch) !== false){
 					$_tagname = str_replace(array($rem_before, $rem_after), '', $_entry);
 					$_founds[$_tagname] = $_tooldir . '/' . $_entry;
@@ -394,7 +394,7 @@ abstract class weToolLookup{
 		if(file_exists($baseDir)){
 
 			$dh = opendir($baseDir);
-			while(($entry = readdir($dh))) {
+			while(($entry = readdir($dh))){
 
 				if($entry != '' && $entry != '.' && $entry != '..'){
 
@@ -418,7 +418,7 @@ abstract class weToolLookup{
 		if(file_exists($baseDir)){
 
 			$dh = opendir($baseDir);
-			while(($entry = readdir($dh))) {
+			while(($entry = readdir($dh))){
 
 				if($entry != '' && $entry != '.' && $entry != '..' && strtolower($entry != 'cvs')){
 
