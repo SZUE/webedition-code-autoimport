@@ -46,7 +46,7 @@ abstract class we_root extends we_class{
 
 	/* Path of the File  */
 	var $Path = '';
-	
+
 	/* sha1 hash of the file */
 	var $Filehash = '';
 
@@ -58,7 +58,7 @@ abstract class we_root extends we_class{
 
 	/* Modification Date as UnixTimestamp  */
 	var $ModDate = 0;
-	
+
 	/* Rebuild Date as UnixTimestamp  */
 	var $RebuildDate = 0;
 
@@ -145,7 +145,7 @@ abstract class we_root extends we_class{
 	function ModifyPathInformation($parentID){
 		$this->setParentID($parentID);
 		$this->Path = $this->getPath();
-		$this->wasUpdate = 1;
+		$this->wasUpdate = true;
 		$this->we_save(); //i_savePersistentSlotsToDB("Filename,Extension,Text,Path,ParentID");
 		$this->modifyChildrenPath(); // only on folders, because on other classes this function is empty
 	}
@@ -1164,36 +1164,17 @@ abstract class we_root extends we_class{
 	}
 
 	function we_resaveMainTable(){
-		$this->wasUpdate = 1;
+		$this->wasUpdate = true;
 		return we_root::we_save(1, 1);
 	}
 
 	function we_rewrite(){
 		return true;
 	}
-	
-	function update_filehash(){
-		if($this->Table==TEMPLATES_TABLE || $this->Table==FILE_TABLE){
-			$this->wasUpdate = $this->ID ? 1 : 0;
-			if($this->Table==TEMPLATES_TABLE) {
-				if(strpos($this->Path,'.tmpl')===false){
-					$usepath= TEMPLATES_PATH.$this->Path;
-				} else {
-					$usepath= TEMPLATES_PATH.substr_replace($this->Path,'.php',-5);
-				}			
-			} else {
-				$usepath=$_SERVER['DOCUMENT_ROOT'].$this->Path;
-			}
-			if(file_exists($usepath) && is_file($usepath)){
-				$this->Filehash = sha1_file($usepath);
-			} else {
-				$this->Filehash = '';	
-			}		
-			$this->i_savePersistentSlotsToDB('Filehash,RebuildDate');
-		} 
-		return true;
+
+	protected function update_filehash(){
 	}
-	
+
 	function correctFields(){
 
 	}

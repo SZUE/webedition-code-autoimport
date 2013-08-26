@@ -114,7 +114,7 @@ class we_object extends we_document{
 			'elements' => array('Charset' => array('dat' => $this->elements['Charset']['dat'])),
 		);
 
-		$this->wasUpdate = $this->ID ? true : false;
+		$this->wasUpdate = $this->ID > 0;
 		if(isset($this->elements['Defaultanzahl']['dat'])){
 			$this->DefaultText = '';
 
@@ -546,7 +546,7 @@ class we_object extends we_document{
 	function ModifyPathInformation($parentID){
 		$this->setParentID($parentID);
 		$this->Path = $this->getPath();
-		$this->wasUpdate = 1;
+		$this->wasUpdate = true;
 		$this->i_savePersistentSlotsToDB('Text,Path,ParentID');
 	}
 
@@ -884,7 +884,7 @@ class we_object extends we_document{
 			$maxLengthVal = $type == 'int' ? 10 : 255;
 			$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin"  valign="top">' . g_l('modules_object', '[length]') . '</td>' .
 				'<td width="170" class="defaultfont">' .
-				$this->htmlTextInput("we_" . $this->Name . "_input[" . $name . self::ELEMENT_LENGHT.']', 10, ($this->getElement($name . "length", "dat") > 0 && ($this->getElement($name . "length", "dat") < ($maxLengthVal + 1)) ? $this->getElement($name . "length", "dat") : $maxLengthVal), ($type == 'int' ? 2 : 4), 'onChange="_EditorFrame.setEditorIsHot(true);" weType="weObject_' . $type . '_length"', "text", 388) .
+				$this->htmlTextInput("we_" . $this->Name . "_input[" . $name . self::ELEMENT_LENGHT . ']', 10, ($this->getElement($name . "length", "dat") > 0 && ($this->getElement($name . "length", "dat") < ($maxLengthVal + 1)) ? $this->getElement($name . "length", "dat") : $maxLengthVal), ($type == 'int' ? 2 : 4), 'onChange="_EditorFrame.setEditorIsHot(true);" weType="weObject_' . $type . '_length"', "text", 388) .
 				'</td></tr>';
 		}
 
@@ -2191,7 +2191,7 @@ class we_object extends we_document{
 			$this->resetElements();
 			$hrefs = array();
 			$matches = array();
-			while((list($k, $v) = $this->nextElement('href'))) {
+			while((list($k, $v) = $this->nextElement('href'))){
 				preg_match('/^(.+)_we_jkhdsf_(.+)$/', $k, $matches);
 				list(, $realName, $key) = $matches;
 				if(($pos = strpos($realName, 'default')) != false){
