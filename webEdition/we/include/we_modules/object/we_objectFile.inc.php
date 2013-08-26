@@ -2179,7 +2179,7 @@ class we_objectFile extends we_document{
 		if(!parent::we_save(1) || !$this->ObjectID){
 			return false;
 		}
-		$this->wasUpdate = 1;
+		$this->wasUpdate = true;
 		return $this->i_saveTmp();
 	}
 
@@ -2273,7 +2273,7 @@ class we_objectFile extends we_document{
 		}
 		$this->ModDate = time();
 		$this->ModifierID = !isset($GLOBALS['we']['Scheduler_active']) && isset($_SESSION['user']['ID']) ? $_SESSION['user']['ID'] : 0;
-		$this->wasUpdate = 1;
+		$this->wasUpdate = true;
 		$this->setUrl();
 
 		if(!$resave && $_resaveWeDocumentCustomerFilter){
@@ -2317,7 +2317,7 @@ class we_objectFile extends we_document{
 	function ModifyPathInformation($parentID){
 		$this->setParentID($parentID);
 		$this->Path = $this->getPath();
-		$this->wasUpdate = 1;
+		$this->wasUpdate = true;
 		$this->i_savePersistentSlotsToDB('Text,Path,ParentID');
 		$this->i_saveTmp();
 		$this->insertAtIndex();

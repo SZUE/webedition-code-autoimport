@@ -312,7 +312,7 @@ abstract class we_textContentDocument extends we_textDocument{
 		if($resave == 0){
 			$this->ModifierID = !isset($GLOBALS['we']['Scheduler_active']) && isset($_SESSION['user']['ID']) ? $_SESSION['user']['ID'] : 0;
 			$this->ModDate = time();
-			$this->wasUpdate = 1;
+			$this->wasUpdate = true;
 			we_history::insertIntoHistory($this);
 			$this->resaveWeDocumentCustomerFilter();
 		}
@@ -461,7 +461,7 @@ abstract class we_textContentDocument extends we_textDocument{
 	function ModifyPathInformation($parentID){
 		$this->setParentID($parentID);
 		$this->Path = $this->getPath();
-		$this->wasUpdate = 1;
+		$this->wasUpdate = true;
 		$this->i_savePersistentSlotsToDB('Filename,Extension,Text,Path,ParentID');
 		$this->we_resaveTemporaryTable();
 		$this->insertAtIndex();

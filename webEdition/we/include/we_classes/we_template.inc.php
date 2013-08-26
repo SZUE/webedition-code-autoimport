@@ -773,7 +773,7 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 	}
 
 	public function we_publish(){
-		if(defined("VERSIONS_CREATE_TMPL") && VERSIONS_CREATE_TMPL){
+		if(VERSIONS_CREATE_TMPL){
 			$version = new weVersions();
 			$version->save($this, "published");
 		}
