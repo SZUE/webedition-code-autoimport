@@ -121,8 +121,7 @@ $_tab_1 =
 	 <form name="we_form" target="hiddenCmd" method="post" action="' . WE_SPELLCHECKER_MODULE_DIR . 'weSpellcheckerCmd.php">
 	 <input type="hidden" name="cmd[0]" value="saveSettings" />
 	 <div id="dictTable">
-	 	<div id="selector" class="blockWrapper" style="width: 400px; height: 320px; border: 1px solid #AFB0AF;margin-bottom: 5px;background-color:#f6f6f6 ! important;">
-		</div>
+	 	<div id="selector" class="blockWrapper" style="width: 400px; height: 320px; border: 1px solid #AFB0AF;margin-bottom: 5px;background-color:#f6f6f6 ! important;"></div>
 
 		<div id="dictSelector" style="display: none; width: 400px; height: 220px;background-color: silver;">
 			<div id="appletPanel"></div>
@@ -220,14 +219,12 @@ $_applet_code2 = we_html_element::htmlApplet(array(
 
 	function setVisible(id,visible){
 		var elem = document.getElementById(id);
-		if(visible==true) elem.style.display = "block";
-		else elem.style.display = "none";
+		elem.style.display = (visible==true?"block":"none");
 	}
 
 	function toggle(id){
 		var elem = document.getElementById(id);
-		if(elem.style.display == "none") elem.style.display = "block";
-		else elem.style.display = "none";
+		elem.style.display = (elem.style.display == "none"?"block":"none");
 	}
 
 	function showDictSelector() {

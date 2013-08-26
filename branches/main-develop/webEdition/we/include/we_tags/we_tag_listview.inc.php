@@ -159,7 +159,7 @@ function we_tag_listview($attribs){
 	if($type == 'document' || $type == 'search'){
 		$we_lv_doctype = $doctype;
 		if($we_lv_doctype == 'we_doc' && $GLOBALS['we_doc']->DocType){
-			$we_lv_doctype = f('SELECT DocType FROM ' . DOC_TYPES_TABLE . ' WHERE ID="' . $GLOBALS['we_doc']->DocType . '"', 'DocType', $GLOBALS['DB_WE']);
+			$we_lv_doctype = f('SELECT DocType FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . intval($GLOBALS['we_doc']->DocType), 'DocType', $GLOBALS['DB_WE']);
 		}
 	}
 

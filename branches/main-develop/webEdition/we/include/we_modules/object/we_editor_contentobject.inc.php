@@ -21,43 +21,23 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-//
-//	---> Includes
-//
-
 require_once(WE_INCLUDES_PATH . 'we_tag.inc.php');
 
 we_html_tools::protect();
 
-//
 //	---> Setting the Content-Type
-//
 
-if(isset($we_doc->elements["Charset"]["dat"]) && $we_doc->elements["Charset"]["dat"]){ //	send charset which might be determined in template
-	$charset = $we_doc->elements["Charset"]["dat"];
-} else{
-	$charset = DEFAULT_CHARSET;
-}
+$charset = (isset($we_doc->elements["Charset"]["dat"]) && $we_doc->elements["Charset"]["dat"] ? //	send charset which might be determined in template
+		$we_doc->elements["Charset"]["dat"] : DEFAULT_CHARSET);
+
 we_html_tools::headerCtCharset('text/html', $charset);
-
-//
-//	---> initialize some vars
-//
-
-$jsGUI = new weOrderContainer("_EditorFrame.getContentEditor()", "classEntry");
-$parts = array();
-
-
-//
-//	---> Output the HTML Header
-//
-
 we_html_tools::htmlTop('', $charset, 5);
 
-//
-//	---> Loading the Stylesheets
-//
+//	---> initialize some vars
+$jsGUI = new weOrderContainer("_EditorFrame.getContentEditor()", "classEntry");
 
+
+//	---> Loading the Stylesheets
 if($we_doc->CSS){
 	$cssArr = makeArrayFromCSV($we_doc->CSS);
 	foreach($cssArr as $cs){
@@ -70,26 +50,24 @@ if($we_doc->CSS){
 print STYLESHEET;
 
 
-//
 //	---> Loading some Javascript
-//
 
 echo we_html_element::jsScript(JS_DIR . 'windows.js');
 ?>
 <script  type="text/javascript">
 	<!--
-	function we_checkObjFieldname(i){
-		if(i.value.search(/^([a-zA-Z0-9_+-])*$/)){
+	function we_checkObjFieldname(i) {
+		if (i.value.search(/^([a-zA-Z0-9_+-])*$/)) {
 <?php print we_message_reporting::getShowMessageCall(g_l('modules_object', '[fieldNameNotValid]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
 			i.focus();
 			i.select();
 			i.value = i.getAttribute("oldValue");
-		}else if(i.value=='Title' || i.value=='Description'){
+		} else if (i.value === 'Title' || i.value === 'Description') {
 <?php print we_message_reporting::getShowMessageCall(g_l('modules_object', '[fieldNameNotTitleDesc]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
 			i.focus();
 			i.select();
 			i.value = i.getAttribute("oldValue");
-		}else if(i.value.length==0){
+		} else if (i.value.length === 0) {
 <?php print we_message_reporting::getShowMessageCall(g_l('modules_object', '[fieldNameEmpty]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
 			//		i.focus(); # 1052
 			//		i.select();
@@ -101,7 +79,7 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js');
 	//-->
 </script>
 <?php
-echo $jsGUI->getJS(WEBEDITION_DIR . "js");
+echo $jsGUI->getJS(WEBEDITION_DIR . 'js');
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 ?>
 
@@ -109,71 +87,69 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 
 <body onUnload="doUnload()" class="weEditorBody">
 	<form name="we_form" method="post"><?php
-echo we_class::hiddenTrans();
+		echo we_class::hiddenTrans();
 
-if($we_doc->ID){
-	$ctable = OBJECT_X_TABLE . $we_doc->ID;
-	$tableInfo = $DB_WE->metadata($ctable);
-}
+		if($we_doc->ID){
+			$ctable = OBJECT_X_TABLE . $we_doc->ID;
+			$tableInfo = $DB_WE->metadata($ctable);
+		}
 
-$sort = $we_doc->getElement("we_sort");
-$count = $we_doc->getElement("Sortgesamt");
+		$sort = $we_doc->getElement("we_sort");
+		$count = $we_doc->getElement("Sortgesamt");
 
-$uniquename = md5(uniqid(__FILE__, true));
-$width = 800;
+		$uniquename = md5(uniqid(__FILE__, true));
+		$width = 800;
 
-$we_transaction = (preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction']) ? $_REQUEST['we_transaction'] : 0);
+		$we_transaction = (preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction']) ? $_REQUEST['we_transaction'] : 0);
 
-echo we_multiIconBox::_getBoxStart("100%", $uniquename) .
- $jsGUI->getContainer(array()) .
- '<div id="' . $uniquename . '_div">
+		echo we_multiIconBox::_getBoxStart("100%", $uniquename) .
+		$jsGUI->getContainer(array()) .
+		'<div id="' . $uniquename . '_div">
  <table style="margin-left:30px;" cellpadding="0" cellspacing="0" border="0">
  <tr>
  <td valign="top"></td>
  <td class="defaultfont">' .
- we_button::create_button("image:btn_add_field", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('insert_entry_at_class','" . $_REQUEST['we_transaction'] . "');") .
- '</td>
+		we_button::create_button("image:btn_add_field", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('insert_entry_at_class','" . $_REQUEST['we_transaction'] . "');") .
+		'</td>
  </tr>
  <tr>
  <td>' . we_html_tools::getPixel(0, 15) . '</td>
  <td></td>
  </tr>
  </table>
- </div>';
+ </div>'.
+			we_multiIconBox::_getBoxEnd('100%');
 
-echo we_multiIconBox::_getBoxEnd("100%");
+		for($i = 0; $i <= $count && !empty($sort); $i++){
+			$identifier = $we_doc->getSortIndex($i);
+			$uniqid = "entry_" . $identifier;
 
-for($i = 0; $i <= $count && !empty($sort); $i++){
-	$identifier = $we_doc->getSortIndex($i);
-	$uniqid = "entry_" . $identifier;
+			$upbut = we_button::create_button("image:btn_direction_up", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('up_entry_at_class','" . $we_transaction . "','" . $uniqid . "');", true, 22, 22, "", "", false, false, "_" . $identifier);
+			$downbut = we_button::create_button("image:btn_direction_down", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('down_entry_at_class','" . $we_transaction . "','" . $uniqid . "');", true, 22, 22, "", "", false, false, "_" . $identifier);
+			$plusbut = we_button::create_button("image:btn_add_field", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('insert_entry_at_class','" . $we_transaction . "','" . $uniqid . "');");
+			$trashbut = we_button::create_button("image:btn_function_trash", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('delete_entry_at_class','" . $we_transaction . "','" . $uniqid . "');");
 
-	$upbut = we_button::create_button("image:btn_direction_up", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('up_entry_at_class','" . $we_transaction . "','" . $uniqid . "');", true, 22, 22, "", "", false, false, "_" . $identifier);
-	$downbut = we_button::create_button("image:btn_direction_down", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('down_entry_at_class','" . $we_transaction . "','" . $uniqid . "');", true, 22, 22, "", "", false, false, "_" . $identifier);
-	$plusbut = we_button::create_button("image:btn_add_field", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('insert_entry_at_class','" . $we_transaction . "','" . $uniqid . "');");
-	$trashbut = we_button::create_button("image:btn_function_trash", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('delete_entry_at_class','" . $we_transaction . "','" . $uniqid . "');");
-
-	echo '
+			echo '
 <div id="' . $uniqid . '">
 <a name="f' . $uniqid . '"></a>
 <table style="margin-left:30px;" cellpadding="0" cellspacing="0" border="0">
 <tr>
 <td class="defaultfont" width="600">
 <table cellpadding="6" cellspacing="0" border="0">' .
-	$we_doc->getFieldHTML($we_doc->getElement("wholename" . $identifier), $uniqid) .
-	'</table>
+			$we_doc->getFieldHTML($we_doc->getElement("wholename" . $identifier), $uniqid) .
+			'</table>
 		</td>
 		<td width="150" class = "defaultfont" valign="top">' .
-	we_button::create_button_table(array($plusbut, $upbut, $downbut, $trashbut), 5) .
-	'</td>
+			we_button::create_button_table(array($plusbut, $upbut, $downbut, $trashbut), 5) .
+			'</td>
 		</tr>
 		</table>
-		<div style="border-top: 1px solid #AFB0AF;margin:10px 0 10px 0;clear:both;">' . we_html_tools::getPixel(1, 1) . '</div>' . we_html_tools::getPixel(2, 10) .
-	'</div>' .
-	we_html_element::jsElement('classEntry.add(document, \'' . $uniqid . '\', null);') .
-	$jsGUI->getDisableButtonJS();
-}
-?>
+		<div style="border-top: 1px solid #AFB0AF;margin:10px 0 10px 0;clear:both;"></div>' . we_html_tools::getPixel(2, 10) .
+			'</div>' .
+			we_html_element::jsElement('classEntry.add(document, \'' . $uniqid . '\', null);') .
+			$jsGUI->getDisableButtonJS();
+		}
+		?>
 	</form>
 </body>
-
 </html>

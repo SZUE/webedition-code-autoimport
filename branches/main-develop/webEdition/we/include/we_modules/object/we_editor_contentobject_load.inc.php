@@ -112,7 +112,7 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 				'</td>
 				</tr>
 				</table>
-				<div style="border-top: 1px solid #AFB0AF;margin:10px 0 10px 0;clear:both;">' . we_html_tools::getPixel(1, 1) . '</div>' . we_html_tools::getPixel(2, 10) .
+				<div style="border-top: 1px solid #AFB0AF;margin:10px 0 10px 0;clear:both;"></div>' . we_html_tools::getPixel(2, 10) .
 				'</div>
 				</div>';
 
@@ -202,7 +202,7 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 				'</td>
 			</tr>
 			</table>
-			<div style="border-top: 1px solid #AFB0AF;margin:10px 0 10px 0;clear:both;">' . we_html_tools::getPixel(1, 1) . '</div>' . we_html_tools::getPixel(2, 10) .
+			<div style="border-top: 1px solid #AFB0AF;margin:10px 0 10px 0;clear:both;"></div>' . we_html_tools::getPixel(2, 10) .
 				'</div>
 				</div>';
 
@@ -249,7 +249,5 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 			break;
 	}
 	?>
-
 </body>
-
 </html>
