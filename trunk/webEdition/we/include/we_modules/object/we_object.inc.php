@@ -32,6 +32,7 @@ class we_object extends we_document{
 	const ELEMENT_CLASS = 'class';
 	const ELEMENT_MAX = 'max';
 	const ELEMENT_DEFAULT = 'default';
+	const QUERY_PREFIX = 'object_';
 
 	var $ObjectID = 0;
 	var $Users = ''; // Default Owners
@@ -306,9 +307,9 @@ class we_object extends we_document{
 							$q [] = ' CHANGE `' . $info['name'] . '` `' . $nam . '` ' .
 								$this->switchtypes($info['name']);
 							//change from object is indexed to unindexed
-							if((strpos($info['name'], 'object_') === 0) && (strpos($nam, 'object_') !== 0) && (strpos($info['flags'], 'multiple_key') !== false)){
+							if((strpos($info['name'], self::QUERY_PREFIX) === 0) && (strpos($nam, self::QUERY_PREFIX) !== 0) && (strpos($info['flags'], 'multiple_key') !== false)){
 								$q[] = ' DROP KEY `' . $info['name'] . '` ';
-							} else if((strpos($info['name'], 'object_') !== 0) && (strpos($nam, 'object_') === 0) && (strpos($info['flags'], 'multiple_key') === false)){
+							} else if((strpos($info['name'], self::QUERY_PREFIX) !== 0) && (strpos($nam, self::QUERY_PREFIX) === 0) && (strpos($info['flags'], 'multiple_key') === false)){
 								$q[] = ' ADD INDEX (`' . $info['name'] . '`) ';
 							}
 
