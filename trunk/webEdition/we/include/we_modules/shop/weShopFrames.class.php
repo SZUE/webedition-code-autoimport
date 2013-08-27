@@ -595,7 +595,7 @@ top.content.hloaded = 1;
 		$tab_body_content = '<div id="main" >' . we_html_tools::getPixel(100, 3) . '<div style="margin:0px;padding-left:10px;" id="headrow"><nobr><b>' . str_replace(" ", "&nbsp;", $textPre) . ':&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">' . str_replace(" ", "&nbsp;", $textPost) . '</b></span></nobr></div>' . we_html_tools::getPixel(100, 3) .
 			$we_tabs->getHTML() .
 			'</div>';
-		$tab_body = we_html_element::htmlBody(array("bgcolor" => "#FFFFFF", "background" => IMAGE_DIR . "backgrounds/header_with_black_line.gif"), $tab_body_content);
+		$tab_body = we_html_element::htmlBody(array("onresize" => "setFrameSize()", "onload" => "setFrameSize()", "bgcolor" => "#FFFFFF", "background" => IMAGE_DIR . "backgrounds/header_with_black_line.gif"), $tab_body_content);
 
 		return $this->getHTMLDocument($tab_body, $tab_head);
 	}

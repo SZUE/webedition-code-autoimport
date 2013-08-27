@@ -375,11 +375,12 @@ function urlEntry(icon,name,vorfahr,text,contentType,table,published,denied) {
 		return we_html_element::htmlForm(array("name" => "we_form_treefooter"), $table->getHtml());
 	}
 
-	function getHTMLEditor(){//TODO: Throw out the the exeption for properties/edbody and use parent
+	//TODO: change we_cmd.php?we_cmd[0]=mod_home&mod=users' to $this->frameset . '?pnt=edbody&home=1'
+	function getHTMLEditor(){
 		$body = we_html_element::htmlBody(array('style' => 'position: fixed; top: 0px; left: 0px; right: 0px; bottom: 0px; border: 0px none;') ,
 			we_html_element::htmlIFrame('edheader', $this->frameset . '?pnt=edheader&home=1', 'position: absolute; top: 0px; left: 0px; right: 0px; height: 40px; overflow: hidden;') .
-			we_html_element::htmlIFrame('properties', WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=mod_home&mod=users', 'position: absolute; top: 40px; bottom: 40px; left: 0px; right: 0px; overflow: auto;', 'border:0px;width:100%;height:100%;overflow: auto;') .
-			we_html_element::htmlIFrame('edfooter', $this->frameset . '?pnt=edfooter&home=1' . (isset($_REQUEST['sid']) ? '&sid=' . $_REQUEST['sid'] : '&home=1'), 'position: absolute; bottom: 0px; left: 0px; right: 0px; height: 40px; overflow: hidden;')
+			we_html_element::htmlIFrame('edbody', WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=mod_home&mod=users', 'position: absolute; top: 40px; bottom: 40px; left: 0px; right: 0px; overflow: auto;', 'border:0px;width:100%;height:100%;overflow: auto;') .
+			we_html_element::htmlIFrame('edfooter', $this->frameset . '?pnt=edfooter&home=1' . (isset($_REQUEST['sid']) ? '&sid=' . $_REQUEST['sid'] : '&home=1'), 'position: absolute; bottom: 0px; left: 0px; right: 0px; height: 40px; overflow: hidden;', 'width:100%; overflow: hidden')
 		);
 
 		return $this->getHTMLDocument($body);
@@ -391,7 +392,7 @@ function urlEntry(icon,name,vorfahr,text,contentType,table,published,denied) {
 		} else{
 			$user_object = new we_user();
 			$user_object->setState($_SESSION["user_session_data"]);
-			print we_html_element::htmlBody(array('style' => 'background:white url(' . IMAGE_DIR . 'backgrounds/header_with_black_line.gif); margin-top: 0; margin-left: 0;'),
+			print we_html_element::htmlBody(array('onresize' => 'setFrameSize()', 'onload' => 'setFrameSize()', 'style' => 'background:white url(' . IMAGE_DIR . 'backgrounds/header_with_black_line.gif); margin-top: 0; margin-left: 0;'),
 				$user_object->formHeader(isset($_REQUEST["tab"]) ? $_REQUEST["tab"] : 0));
 		}
 	}
