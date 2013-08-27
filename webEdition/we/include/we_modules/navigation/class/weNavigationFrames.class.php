@@ -225,8 +225,8 @@ function setTab(tab) {
 				"marginheight" => 0,
 				"leftmargin" => 0,
 				"topmargin" => 0,
-				//"onload" => "setFrameSize()",
-				//"onresize" => "setFrameSize()"
+				"onload" => "setFrameSize()",
+				"onresize" => "setFrameSize()"
 				), we_html_element::htmlDiv(array('id' => "main"), we_html_tools::getPixel(100, 3) . we_html_element::htmlDiv(array('id' => 'headrow', 'style' => "margin:0px;"), '&nbsp;' .
 						we_html_element::htmlB(($this->Model->IsFolder ? g_l('navigation', '[group]') : g_l('navigation', '[entry]')) . ':&nbsp;' .
 							str_replace('&amp;', '&', $this->Model->Text) .

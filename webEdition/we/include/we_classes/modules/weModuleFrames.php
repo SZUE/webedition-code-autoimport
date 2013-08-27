@@ -233,13 +233,13 @@ class weModuleFrames{
 		//to be overridden
 	}
 
-	function getHTMLEditor($extraUrlParams = ''){
-		$body = we_html_element::htmlBody(array('style' => 'position: fixed; top: 0px; left: 0px; right: 0px; bottom: 0px; border: 0px none;'), we_html_element::htmlIFrame('edheader', $this->frameset . '?pnt=edheader' . (isset($_REQUEST['sid']) ? '&sid=' . $_REQUEST['sid'] : '&home=1') . $extraUrlParams, 'position: absolute; top: 0px; left: 0px; right: 0px; height: 40px; overflow: hidden;') .
+	function getHTMLEditor($extraUrlParams = '', $extraHead = ''){
+		$body = we_html_element::htmlBody(array('style' => 'position: fixed; top: 0px; left: 0px; right: 0px; bottom: 0px; border: 0px none;'), we_html_element::htmlIFrame('edheader', $this->frameset . '?pnt=edheader' . (isset($_REQUEST['sid']) ? '&sid=' . $_REQUEST['sid'] : '&home=1') . $extraUrlParams, 'position: absolute; top: 0px; left: 0px; right: 0px; height: 40px; overflow: hidden;', 'width: 100%; overflow: hidden') .
 				we_html_element::htmlIFrame('edbody', $this->frameset . '?pnt=edbody' . (isset($_REQUEST['sid']) ? '&sid=' . $_REQUEST['sid'] : '&home=1') . $extraUrlParams, 'position: absolute; top: 40px; bottom: 40px; left: 0px; right: 0px; overflow: auto;', 'border:0px;width:100%;height:100%;overflow: auto;') .
-				we_html_element::htmlIFrame('edfooter', $this->frameset . '?pnt=edfooter' . (isset($_REQUEST['sid']) ? '&sid=' . $_REQUEST['sid'] : '&home=1') . $extraUrlParams, 'position: absolute; bottom: 0px; left: 0px; right: 0px; height: 40px; overflow: hidden;')
+				we_html_element::htmlIFrame('edfooter', $this->frameset . '?pnt=edfooter' . (isset($_REQUEST['sid']) ? '&sid=' . $_REQUEST['sid'] : '&home=1') . $extraUrlParams, 'position: absolute; bottom: 0px; left: 0px; right: 0px; height: 40px; overflow: hidden;', 'width: 100%; overflow: hidden')
 		);
 
-		return $this->getHTMLDocument($body);
+		return $this->getHTMLDocument($body, $extraHead = '');
 	}
 
 	function getHTMLEditorHeader(){

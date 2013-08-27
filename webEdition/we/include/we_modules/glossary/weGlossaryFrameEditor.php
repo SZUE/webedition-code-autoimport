@@ -30,7 +30,7 @@ class weGlossaryFrameEditor{
 		//$bodyContent = '<div id="main" >' . we_html_tools::getPixel(100,3) . '<div style="margin:0 0 0 5px;" id="headrow">' .we_html_element::htmlB($title) . "</div>" . we_html_tools::getPixel(100,3) . $we_tabs->getHTML() . '</div>';
 		$bodyContent = '<div id="main" >' . we_html_tools::getPixel(100, 3) . '<div style="margin:0px;padding-left:10px;" id="headrow"><nobr><b>' . str_replace(" ", "&nbsp;", $titlePre) . ':&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">' . str_replace(" ", "&nbsp;", $titlePost) . '</b></span></nobr></div>' . we_html_tools::getPixel(100, 3) . $we_tabs->getHTML() . '</div>';
 
-		$body = we_html_element::htmlBody(array("bgcolor" => "#C8D8EC", "background" => IMAGE_DIR . "backgrounds/header_with_black_line.gif", "marginwidth" => 0, "marginheight" => 0, "leftmargin" => 0, "topmargin" => 0), $bodyContent
+		$body = we_html_element::htmlBody(array("onresize" => "setFrameSize()", "onload" => "setFrameSize()", "bgcolor" => "#C8D8EC", "background" => IMAGE_DIR . "backgrounds/header_with_black_line.gif", "marginwidth" => 0, "marginheight" => 0, "leftmargin" => 0, "topmargin" => 0), $bodyContent
 				//$table->getHtml() .
 				//$tabsBody
 		);
