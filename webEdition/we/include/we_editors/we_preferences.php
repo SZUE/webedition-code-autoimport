@@ -1114,6 +1114,12 @@ function build_dialog($selected_setting = 'ui'){
 			$WE_PHP_DEFAULT->addOption(1, 'true');
 			$WE_PHP_DEFAULT->selectOption(get_value('WE_PHP_DEFAULT') ? 1 : 0);
 
+			//   select xhtml_default in we:tags
+			$_xhtml_setting = new we_html_select(array('name' => 'newconf[XHTML_DEFAULT]', 'class' => 'weSelect'));
+			$_xhtml_setting->addOption(0, 'false');
+			$_xhtml_setting->addOption(1, 'true');
+			$_xhtml_setting->selectOption(get_value('XHTML_DEFAULT') ? 1 : 0);
+
 			/**
 			 * inlineedit setting
 			 */
@@ -1155,6 +1161,7 @@ function build_dialog($selected_setting = 'ui'){
 
 			$_settings = array(
 				array('headline' => g_l('prefs', '[default_php_setting]'), 'html' => $WE_PHP_DEFAULT->getHtml(), 'space' => 200),
+				array('headline' => g_l('prefs', '[xhtml_default]'), 'html' => $_xhtml_setting->getHtml(), 'space' => 200),
 				array('headline' => g_l('prefs', '[inlineedit_default]'), 'html' => $INLINEEDIT_DEFAULT->getHtml(), 'space' => 200),
 				array('headline' => g_l('prefs', '[removefirstparagraph_default]'), 'html' => $REMOVEFIRSTPARAGRAPH_DEFAULT->getHtml(), 'space' => 200),
 				array('headline' => g_l('prefs', '[showinputs_default]'), 'html' => $SHOWINPUTS_DEFAULT->getHtml(), 'space' => 200),
@@ -2681,13 +2688,6 @@ function formmailBlockOnOff() {
                 document.forms[0][field].value = (val ? 1 : 0);
             }');
 
-			//   select xhtml_default in we:tags
-			$_xhtml_setting = new we_html_select(array('name' => 'newconf[XHTML_DEFAULT]', 'class' => 'weSelect'));
-			$_xhtml_setting->addOption(0, 'false');
-			$_xhtml_setting->addOption(1, 'true');
-
-			$_xhtml_setting->selectOption(get_value('XHTML_DEFAULT') ? 1 : 0);
-
 			//  activate xhtml_debug
 			$_xhtml_debug = we_forms::checkbox(1, get_value('XHTML_DEBUG'), 'setXhtml_debug', g_l('prefs', '[xhtml_debug_html]'), false, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[XHTML_DEBUG]\');disable_xhtml_fields(this.checked, mainXhtmlFields);disable_xhtml_fields((document.forms[0][\'setXhtml_show_wrong\'].checked && this.checked), showXhtmlFields);') .
 				we_html_tools::hidden('newconf[XHTML_DEBUG]', get_value('XHTML_DEBUG'));
@@ -2713,8 +2713,6 @@ function formmailBlockOnOff() {
 				we_html_tools::hidden('newconf[xhtml_show_wrong_error_log]', get_value('xhtml_show_wrong_error_log'));
 
 			$_settings = array(
-				array('html' => g_l('prefs', '[xhtml_default]'), 'space' => 0, 'noline' => 1),
-				array('html' => $_xhtml_setting->getHtml(), 'space' => 200),
 				array('html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[xhtml_debug_explanation]'), we_html_tools::TYPE_INFO, 450), 'space' => 0, 'noline' => 1),
 				array('headline' => g_l('prefs', '[xhtml_debug_headline]'), 'html' => $_xhtml_debug, 'space' => 200, 'noline' => 1),
 				array('html' => $_xhtml_remove_wrong, 'space' => 200),
