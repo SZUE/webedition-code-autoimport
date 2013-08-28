@@ -191,25 +191,22 @@ function wetagsessionStartdoAutoLogin(){
 		$hook = new weHook('customer_preLogin', '', array('customer' => &$_REQUEST['s'], 'type' => 'autoLogin', 'tagname' => 'sessionStart'));
 		$hook->executeHook();
 
-		$a = f('SELECT WebUserID FROM ' . CUSTOMER_AUTOLOGIN_TABLE . ' WHERE AutoLoginID="' . $GLOBALS['DB_WE']->escape(sha1($autologinSeek)) . '"', 'WebUserID', $GLOBALS['DB_WE']);
-		if(!empty($a)){
-			$u = getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE LoginDenied=0 AND AutoLoginDenied=0 AND Password!="" AND ID=' . intval($a), $GLOBALS['DB_WE']);
-			if(!empty($u)){
-				$_SESSION['webuser'] = $u;
-				$_SESSION['webuser']['registered'] = true;
-				$_SESSION['webuser']['AutoLoginID'] = uniqid(hexdec(substr(session_id(), 0, 8)), true);
-				$GLOBALS['DB_WE']->query('UPDATE ' . CUSTOMER_AUTOLOGIN_TABLE . ' SET ' . we_database_base::arraySetter(array(
-							'AutoLoginID' => sha1($_SESSION['webuser']['AutoLoginID']),
-							'LastIp' => $_SERVER['REMOTE_ADDR'],
-						)) . ' WHERE WebUserID=' . intval($_SESSION['webuser']['ID']) . ' AND AutoLoginID="' . $GLOBALS['DB_WE']->escape(sha1($autologinSeek)) . '"'
-				);
+		$u = getHash('SELECT u.* FROM ' . CUSTOMER_TABLE . ' u LEFT JOIN ' . CUSTOMER_AUTOLOGIN_TABLE . ' c ON u.ID=c.WebUserID WHERE u.LoginDenied=0 AND u.AutoLoginDenied=0 AND u.Password!="" AND c.AutoLoginID="' . $GLOBALS['DB_WE']->escape(sha1($autologinSeek)) . '"', $GLOBALS['DB_WE']);
+		if(!empty($u)){
+			$_SESSION['webuser'] = $u;
+			$_SESSION['webuser']['registered'] = true;
+			$_SESSION['webuser']['AutoLoginID'] = uniqid(hexdec(substr(session_id(), 0, 8)), true);
+			$GLOBALS['DB_WE']->query('UPDATE ' . CUSTOMER_AUTOLOGIN_TABLE . ' SET ' . we_database_base::arraySetter(array(
+						'AutoLoginID' => sha1($_SESSION['webuser']['AutoLoginID']),
+						'LastIp' => $_SERVER['REMOTE_ADDR'],
+					)) . ' WHERE WebUserID=' . intval($_SESSION['webuser']['ID']) . ' AND AutoLoginID="' . $GLOBALS['DB_WE']->escape(sha1($autologinSeek)) . '"'
+			);
 
-				setcookie('_we_autologin', $_SESSION['webuser']['AutoLoginID'], (time() + CUSTOMER_AUTOLOGIN_LIFETIME), '/');
-				$GLOBALS['WE_LOGIN'] = true;
-				$hook = new weHook('customer_Login', '', array('customer' => &$_SESSION['webuser'], 'type' => 'autoLogin', 'tagname' => 'sessionStart'));
-				$hook->executeHook();
-				return true;
-			}
+			setcookie('_we_autologin', $_SESSION['webuser']['AutoLoginID'], (time() + CUSTOMER_AUTOLOGIN_LIFETIME), '/');
+			$GLOBALS['WE_LOGIN'] = true;
+			$hook = new weHook('customer_Login', '', array('customer' => &$_SESSION['webuser'], 'type' => 'autoLogin', 'tagname' => 'sessionStart'));
+			$hook->executeHook();
+			return true;
 		}
 	}
 
