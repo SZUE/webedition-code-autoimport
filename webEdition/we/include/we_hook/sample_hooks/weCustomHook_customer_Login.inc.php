@@ -31,10 +31,11 @@
  * When using the WE-APP WE:Hookmanagement, this is done automatically by the WE-APP
  *
  * @param array $param
+ * 
  */
 function weCustomHook_customer_Login($param){
 	$hookHandler = $param['hookHandler'];
-	$data = $param['customer'];
+	$data = &$param['customer']; //contains $_SESSION['webuser'] data
 	switch($param['type']){
 		case 'normal':
 		case 'autoLogin':
