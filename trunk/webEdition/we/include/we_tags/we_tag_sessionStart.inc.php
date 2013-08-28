@@ -71,7 +71,7 @@ function we_tag_sessionStart($attribs){
 					wetagsessionHandleFailedLogin();
 				} else {
 					$GLOBALS['DB_WE']->query('UPDATE ' . FAILED_LOGINS_TABLE . ' SET isValid="false" WHERE UserTable="tblWebUser" AND Username="' . $GLOBALS['DB_WE']->escape($_REQUEST['s']['Username']) . '"');
-					$hook = new weHook('customer_Login', '', array('customer' => &$_REQUEST['s'], 'type' => 'normal', 'tagname' => 'sessionStart'));
+					$hook = new weHook('customer_Login', '', array('customer' => &$_SESSION['webuser'], 'type' => 'normal', 'tagname' => 'sessionStart'));
 					$hook->executeHook();
 				}
 			}
@@ -206,7 +206,7 @@ function wetagsessionStartdoAutoLogin(){
 
 				setcookie('_we_autologin', $_SESSION['webuser']['AutoLoginID'], (time() + CUSTOMER_AUTOLOGIN_LIFETIME), '/');
 				$GLOBALS['WE_LOGIN'] = true;
-				$hook = new weHook('customer_Login', '', array('customer' => &$_REQUEST['s'], 'type' => 'autoLogin', 'tagname' => 'sessionStart'));
+				$hook = new weHook('customer_Login', '', array('customer' => &$_SESSION['webuser'], 'type' => 'autoLogin', 'tagname' => 'sessionStart'));
 				$hook->executeHook();
 				return true;
 			}
