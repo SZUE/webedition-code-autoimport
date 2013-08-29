@@ -719,7 +719,7 @@ print we_message_reporting::getShowMessageCall(g_l('multiEditor', "[no_editor_le
 
 		this.getEditorIdOfOpenDocument = function(table, id, editcmd, url) {
 
-			if (id === 0 && !editcmd && !url) {
+			if (id === "0" && !editcmd && !url) {
 				return null;
 
 			}
@@ -1192,7 +1192,7 @@ print we_message_reporting::getShowMessageCall(g_l('multiEditor', "[no_editor_le
 		};
 
 		this.setEditorDocumentId = function(newVal) {
-			this.EditorDocumentId = newVal;
+			this.EditorDocumentId = newVal.toString();
 		};
 
 		this.setEditorIsHot = function(newVal) {
