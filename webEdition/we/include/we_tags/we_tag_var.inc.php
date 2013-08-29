@@ -81,7 +81,7 @@ function we_tag_var($attribs){
 			if(isset($doc->DefArray) && is_array($doc->DefArray)){
 				$keys = array_keys($doc->DefArray);
 				foreach($keys as $_glob_key){
-					if((substr($_glob_key, 0, strlen(we_object::QUERY_PREFIX)) == we_object::QUERY_PREFIX && ($rest = substr($_glob_key, strlen(we_object::QUERY_PREFIX)))) || (substr($_glob_key, 0, 10) == 'we_object_' && ($rest = substr($_glob_key, 7)))){
+					if((strpos($_glob_key, we_object::QUERY_PREFIX) === 0 && ($rest = substr($_glob_key, strlen(we_object::QUERY_PREFIX)))) || (strpos($_glob_key, 'we_object_') === 0 && ($rest = substr($_glob_key, 10)))){
 						$normVal = $doc->getFieldByVal($doc->getElement($name), $type, $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], $rest);
 					}
 
