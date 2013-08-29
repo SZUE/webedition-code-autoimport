@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weNewsletterFrames extends weModuleFrames {
+class weNewsletterFrames extends weModuleFrames{
 
 	var $multibox_width = 950;
 	var $def_width = 450;
@@ -758,38 +758,45 @@ class weNewsletterFrames extends weModuleFrames {
 		$addbut = we_button::create_button("add", "javascript:we_cmd('browse_server','fileselect','','/','" . $wecmdenc4 . "');");
 
 
-		$buttons = (we_hasPerm("CAN_SELECT_EXTERNAL_FILES")) ?
+		$buttons = (we_hasPerm('CAN_SELECT_EXTERNAL_FILES')) ?
 			array($delallbut, $addbut) :
 			array($delallbut);
 		$cats = new MultiFileChooser($this->def_width, $this->View->newsletter->groups[$group]->Extern, "del_file", we_button::create_button_table($buttons), "edit_file");
 
-		$cats->extraDelFn = "document.we_form.ngroup.value=$group";
-		return $this->View->htmlHidden("fileselect", "") .
+		$cats->extraDelFn = 'document.we_form.ngroup.value=' . $group;
+		return $this->View->htmlHidden('fileselect', '') .
 			$cats->get();
 	}
 
 	function getHTMLCustomerFilter($group){
 		$custfields = array();
 
-		foreach($this->View->customers_fields as $fk => $fv){
-			if($fv != "ParentID" && $fv != "IsFolder" && $fv != "Path" && $fv != "Text" && $fv != "Icon"){
-				$custfields[$fv] = $fv;
+		foreach($this->View->customers_fields as $fv){
+			switch($fv){
+				case 'ParentID':
+				case 'IsFolder':
+				case 'Path':
+				case 'Text' :
+				case 'Icon':
+					continue;
+				default:
+					$custfields[$fv] = $fv;
 			}
 		}
 
 		$operators = array(
-			weNewsletter::OP_EQ => "=",
-			weNewsletter::OP_NEQ => "<>",
-			weNewsletter::OP_LE => "<",
-			weNewsletter::OP_LEQ => "<=",
-			weNewsletter::OP_GE => ">",
-			weNewsletter::OP_GEQ => ">=",
+			weNewsletter::OP_EQ => '=',
+			weNewsletter::OP_NEQ => '<>',
+			weNewsletter::OP_LE => '<',
+			weNewsletter::OP_LEQ => '<=',
+			weNewsletter::OP_GE => '>',
+			weNewsletter::OP_GEQ => '>=',
 			weNewsletter::OP_CONTAINS => g_l('modules_newsletter', '[operator][contains]'),
 			weNewsletter::OP_STARTS => g_l('modules_newsletter', '[operator][startWith]'),
 			weNewsletter::OP_ENDS => g_l('modules_newsletter', '[operator][endsWith]'),
-			weNewsletter::OP_LIKE => "LIKE",
+			weNewsletter::OP_LIKE => 'LIKE',
 		);
-		$logic = array("AND" => g_l('modules_newsletter', '[logic][and]'), "OR" => g_l('modules_newsletter', '[logic][or]'));
+		$logic = array('AND' => g_l('modules_newsletter', '[logic][and]'), "OR" => g_l('modules_newsletter', '[logic][or]'));
 		$hours = array();
 		for($i = 0; $i < 24; $i++){
 			$hours[] = ($i <= 9 ? '0' : '') . $i;

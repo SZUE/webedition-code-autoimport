@@ -683,12 +683,6 @@ foreach($buyableModules as $m){
 	}*/
 }
 
-/*foreach($GLOBALS['_we_available_modules'] as $key => $val){
-	//if ($val['integrated']) {
-	$moduleList .= $key . '|';
-	//}
-}*/
-
 // Extras
 $we_menu[4000000] = array(
 	'text' => g_l('javaMenu_global', '[extras]'),

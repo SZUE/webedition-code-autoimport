@@ -1823,6 +1823,7 @@ function g_l_encodeArray($tmp){
  * @param $omitErrors boolean don't throw an error on non-existent entry
  */
 function g_l($name, $specific, $omitErrors = false){
+	//t_e($name,$specific,$GLOBALS['we']['PageCharset'] , $GLOBALS['WE_BACKENDCHARSET']);
 	$charset = (isset($_SESSION['user']) && isset($_SESSION['user']['isWeSession']) ?
 //inside we
 			(isset($GLOBALS['we']['PageCharset']) ? $GLOBALS['we']['PageCharset'] : $GLOBALS['WE_BACKENDCHARSET']) :
