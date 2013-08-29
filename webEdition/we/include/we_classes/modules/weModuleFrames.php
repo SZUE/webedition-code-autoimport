@@ -69,13 +69,12 @@ class weModuleFrames{
 
 	function getHTMLDocument($body, $extraHead = ''){
 		/*
-		  return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-		  we_html_element::htmlHead(
-		  we_html_tools::getHtmlInnerHead($this->module) . STYLESHEET . $extraHead
-		  ) . $body
-		  );
-		 *
-		 */
+		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
+			we_html_element::htmlHead(we_html_tools::getHtmlInnerHead($this->module) . 
+			STYLESHEET . $extraHead) . $body
+		);
+		*
+		*/
 		//this is not nice, but it works for the moment...
 		return STYLESHEET . $extraHead .
 			we_html_element::jsScript(JS_DIR . 'libs/yui/yahoo-min.js') .
