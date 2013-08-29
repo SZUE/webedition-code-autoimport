@@ -64,7 +64,7 @@ class weGlossaryFrameEditorHome{
 			$out;
 
 		$_body = array(
-			'bgcolor' => 'white',
+			'bgcolor' => '#F0EFF0',
 			'marginwidth' => 15,
 			'marginheight' => 15,
 			'leftmargin' => 15,

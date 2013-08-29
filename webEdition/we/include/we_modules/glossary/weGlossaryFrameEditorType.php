@@ -33,7 +33,7 @@ class weGlossaryFrameEditorType extends weGlossaryFrameEditor{
 
 		$title .= g_l('modules_glossary', '[' . array_pop(explode("_", $_REQUEST['cmdid'])) . ']');
 
-		return weGlossaryFrameEditorType::buildHeader($weGlossaryFrames, $we_tabs, g_l('modules_glossary', '[type]'), g_l('modules_glossary', '[' . array_pop(explode("_", $_REQUEST['cmdid'])) . ']'));
+		return self::buildHeader($weGlossaryFrames, $we_tabs, g_l('modules_glossary', '[type]'), g_l('modules_glossary', '[' . array_pop(explode("_", $_REQUEST['cmdid'])) . ']'));
 	}
 
 	function Body(&$weGlossaryFrames){
@@ -158,12 +158,12 @@ class weGlossaryFrameEditorType extends weGlossaryFrameEditor{
 		// ---> end of javascript
 		// ---> build content
 
-		$content = weGlossaryFrameEditorType::getHTMLPreferences($weGlossaryFrames, $Search, $Type, $Language);
+		$content = self::getHTMLPreferences($weGlossaryFrames, $Search, $Type, $Language);
 
 		if($Search->countItems()){
-			$content .= weGlossaryFrameEditorType::getHTMLPrevNext($weGlossaryFrames, $Search);
-			$content .= weGlossaryFrameEditorType::getHTMLSearchResult($weGlossaryFrames, $Search, $Language, $Type);
-			$content .= weGlossaryFrameEditorType::getHTMLPrevNext($weGlossaryFrames, $Search, true);
+			$content .= self::getHTMLPrevNext($weGlossaryFrames, $Search);
+			$content .= self::getHTMLSearchResult($weGlossaryFrames, $Search, $Language, $Type);
+			$content .= self::getHTMLPrevNext($weGlossaryFrames, $Search, true);
 		} else {
 			$content .= '
 		<table border="0" cellpadding="0" cellspacing="0">
@@ -196,12 +196,12 @@ class weGlossaryFrameEditorType extends weGlossaryFrameEditor{
 
 		$content = $js . $out;
 
-		return weGlossaryFrameEditorType::buildBody($weGlossaryFrames, $content);
+		return self::buildBody($weGlossaryFrames, $content);
 	}
 
 	function Footer(&$weGlossaryFrames){
 
-		return weGlossaryFrameEditorType::buildFooter($weGlossaryFrames, "");
+		return self::buildFooter($weGlossaryFrames, "");
 	}
 
 	function getHTMLSearchResult(&$weGlossaryFrames, &$Search, $Language, $Type){

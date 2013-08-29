@@ -60,7 +60,7 @@ class weGlossaryFrameEditorItem extends weGlossaryFrameEditor{
 		}
 
 
-		return weGlossaryFrameEditorItem::buildHeader($weGlossaryFrames, $we_tabs, $title, ($weGlossaryFrames->View->Glossary->ID != 0 ? oldHtmlspecialchars($weGlossaryFrames->View->Glossary->Text) : g_l('modules_glossary', '[menu_new]')) . '<div id="mark" style="display: none;">*</div>');
+		return self::buildHeader($weGlossaryFrames, $we_tabs, $title, ($weGlossaryFrames->View->Glossary->ID != 0 ? oldHtmlspecialchars($weGlossaryFrames->View->Glossary->Text) : g_l('modules_glossary', '[menu_new]')) . '<div id="mark" style="display: none;">*</div>');
 	}
 
 	function Body(&$weGlossaryFrames){
@@ -224,7 +224,7 @@ class weGlossaryFrameEditorItem extends weGlossaryFrameEditor{
 
 		$out .= we_html_element::jsElement($js);
 
-		return weGlossaryFrameEditorItem::buildBody($weGlossaryFrames, $out);
+		return self::buildBody($weGlossaryFrames, $out);
 	}
 
 	function Footer(&$weGlossaryFrames){
@@ -273,7 +273,7 @@ class weGlossaryFrameEditorItem extends weGlossaryFrameEditor{
 
 		$form = we_html_element::htmlForm(array(), $table2->getHtml() . $js);
 
-		return weGlossaryFrameEditorItem::buildFooter($weGlossaryFrames, $form);
+		return self::buildFooter($weGlossaryFrames, $form);
 	}
 
 	function getHTMLTabProperties(&$weGlossaryFrames){
@@ -325,11 +325,11 @@ class weGlossaryFrameEditorItem extends weGlossaryFrameEditor{
 		$parts[] = $item;
 
 
-		$html = weGlossaryFrameEditorItem::getHTMLAbbreviation($weGlossaryFrames) .
-			weGlossaryFrameEditorItem::getHTMLAcronym($weGlossaryFrames) .
-			weGlossaryFrameEditorItem::getHTMLForeignWord($weGlossaryFrames) .
-			weGlossaryFrameEditorItem::getHTMLLink($weGlossaryFrames) .
-			weGlossaryFrameEditorItem::getHTMLTextReplacement($weGlossaryFrames);
+		$html = self::getHTMLAbbreviation($weGlossaryFrames) .
+			self::getHTMLAcronym($weGlossaryFrames) .
+			self::getHTMLForeignWord($weGlossaryFrames) .
+			self::getHTMLLink($weGlossaryFrames) .
+			self::getHTMLTextReplacement($weGlossaryFrames);
 
 		$item = array(
 			"headline" => g_l('modules_glossary', '[selection]'),
@@ -339,7 +339,7 @@ class weGlossaryFrameEditorItem extends weGlossaryFrameEditor{
 		);
 		$parts[] = $item;
 
-		$items = weGlossaryFrameEditorItem::getHTMLLinkAttributes($weGlossaryFrames);
+		$items = self::getHTMLLinkAttributes($weGlossaryFrames);
 		$parts = array_merge($parts, $items);
 
 		return $parts;
@@ -389,7 +389,7 @@ class weGlossaryFrameEditorItem extends weGlossaryFrameEditor{
 					</tr>
 					<tr>
 						<td>
-							' . weGlossaryFrameEditorItem::getLangField("abbreviation[Attributes][lang]", $_language, $language, 520) . '</td>
+							' . self::getLangField("abbreviation[Attributes][lang]", $_language, $language, 520) . '</td>
 					</tr>
 				</table>
 				</div>';
@@ -441,7 +441,7 @@ class weGlossaryFrameEditorItem extends weGlossaryFrameEditor{
 					</tr>
 					<tr>
 						<td>
-							' . weGlossaryFrameEditorItem::getLangField("acronym[Attributes][lang]", $_language, $language, 520) . '</td>
+							' . self::getLangField("acronym[Attributes][lang]", $_language, $language, 520) . '</td>
 					</tr>
 				</table>';
 
@@ -478,7 +478,7 @@ class weGlossaryFrameEditorItem extends weGlossaryFrameEditor{
 					</tr>
 					<tr>
 						<td>
-							' . weGlossaryFrameEditorItem::getLangField("foreignword[Attributes][lang]", $_language, $language, 520) . '</td>
+							' . self::getLangField("foreignword[Attributes][lang]", $_language, $language, 520) . '</td>
 					</tr>
 				</table>';
 
@@ -570,10 +570,10 @@ class weGlossaryFrameEditorItem extends weGlossaryFrameEditor{
 					</tr>
 				</table>';
 
-		$content .= weGlossaryFrameEditorItem::getHTMLIntern($weGlossaryFrames);
-		$content .= weGlossaryFrameEditorItem::getHTMLExtern($weGlossaryFrames);
-		$content .= weGlossaryFrameEditorItem::getHTMLObject($weGlossaryFrames);
-		$content .= weGlossaryFrameEditorItem::getHTMLCategory($weGlossaryFrames);
+		$content .= self::getHTMLIntern($weGlossaryFrames);
+		$content .= self::getHTMLExtern($weGlossaryFrames);
+		$content .= self::getHTMLObject($weGlossaryFrames);
+		$content .= self::getHTMLCategory($weGlossaryFrames);
 
 		return $pre . $content . $post;
 	}
@@ -887,8 +887,8 @@ class weGlossaryFrameEditorItem extends weGlossaryFrameEditor{
 			'noline' => 1
 		);
 
-		$_lang = weGlossaryFrameEditorItem::getLangField('link[Attributes][lang]', $weGlossaryFrames->View->Glossary->getAttribute('lang'), g_l('modules_glossary', '[link_language]'), 520);
-		$_hreflang = weGlossaryFrameEditorItem::getLangField('link[Attributes][hreflang]', $weGlossaryFrames->View->Glossary->getAttribute('hreflang'), g_l('modules_glossary', '[href_language]'), 520);
+		$_lang = self::getLangField('link[Attributes][lang]', $weGlossaryFrames->View->Glossary->getAttribute('lang'), g_l('modules_glossary', '[link_language]'), 520);
+		$_hreflang = self::getLangField('link[Attributes][hreflang]', $weGlossaryFrames->View->Glossary->getAttribute('hreflang'), g_l('modules_glossary', '[href_language]'), 520);
 
 		$_parts[] = array(
 			'headline' => g_l('modules_glossary', '[language]'),
@@ -913,8 +913,8 @@ class weGlossaryFrameEditorItem extends weGlossaryFrameEditor{
 			'noline' => 1
 		);
 
-		$_relfield = weGlossaryFrameEditorItem::getRevRel('link[Attributes][rel]', $weGlossaryFrames->View->Glossary->getAttribute('rel'), 'rel', 520);
-		$_revfield = weGlossaryFrameEditorItem::getRevRel('link[Attributes][rev]', $weGlossaryFrames->View->Glossary->getAttribute('rev'), 'rev', 520);
+		$_relfield = self::getRevRel('link[Attributes][rel]', $weGlossaryFrames->View->Glossary->getAttribute('rel'), 'rel', 520);
+		$_revfield = self::getRevRel('link[Attributes][rev]', $weGlossaryFrames->View->Glossary->getAttribute('rev'), 'rev', 520);
 
 		$_parts[] = array(
 			'headline' => g_l('modules_glossary', '[relation]'),
