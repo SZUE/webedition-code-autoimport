@@ -3,10 +3,6 @@
 /**
  * webEdition CMS
  *
- * $Rev$
- * $Author$
- * $Date$
- *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,7 +21,7 @@
 
 /**
  * if hook execution is enabled this function will be executed
- * when saving a document, template, object or class
+ * when publishing a document, template, object or class
  * The array $param has all information about the respective document.
  *
  * IMPORTANT!
@@ -36,13 +32,11 @@
  *
  * @param array $param
  */
-function weCustomHook_save($param){
+function weCustomHook_customer_preLogin($param){
 	$hookHandler = $param['hookHandler'];
-	$resave = $param['resave'];
-	$obj = $param[0];
-	switch(get_class($obj)){
-		
+	$data = &$param['customer']; //contains $_REQUEST['s'] which is the submitted login-data
+	switch($param['type']){
+		case 'normal':
+		case 'autoLogin':
 	}
-	//don't save, with err msg
-	//$hookHandler->setErrorString('I don\'t like you! Go away.');
 }

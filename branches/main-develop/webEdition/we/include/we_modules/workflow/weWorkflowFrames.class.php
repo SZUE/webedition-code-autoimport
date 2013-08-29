@@ -410,6 +410,8 @@ top.content.hloaded=1;
 		);
 
 		$body = we_html_element::htmlBody(array(
+				'onresize' => 'setFrameSize()', 
+				'onload' => 'setFrameSize()', 
 				'bgcolor' => 'white',
 				'background' => IMAGE_DIR . 'backgrounds/header_with_black_line.gif',
 				'marginwidth' => 0,

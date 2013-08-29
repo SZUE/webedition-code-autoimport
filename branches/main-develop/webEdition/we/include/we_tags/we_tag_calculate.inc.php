@@ -42,21 +42,21 @@ function we_tag_calculate($attribs, $content){
 			$content = ob_get_contents();
 			ob_end_clean();
 			unset($GLOBALS['calculate']);
-			$sum = weTag_getAttribute("sum", $attribs);
-			$num_format = weTag_getAttribute("num_format", $attribs);
-			$print = weTag_getAttribute("print", $attribs, true, true);
-			@eval('$result = (' . (trim($content)?$content:0) . ') ;');
+			$sum = weTag_getAttribute('sum', $attribs);
+			$num_format = weTag_getAttribute('num_format', $attribs);
+			$print = weTag_getAttribute('print', $attribs, true, true);
+			@eval('$result = (' . (trim($content) ? $content : 0) . ') ;');
 			if(!isset($result)){
 				$result = 0;
 			}
 
 			if(!empty($sum)){
-				if(!isset($GLOBALS["summe"][$sum])){
-					$GLOBALS["summe"][$sum] = 0;
+				if(!isset($GLOBALS['summe'][$sum])){
+					$GLOBALS['summe'][$sum] = 0;
 				}
-				$GLOBALS["summe"][$sum] += $result;
+				$GLOBALS['summe'][$sum] += $result;
 			}
-			return ($print ? ($num_format?we_util_Strings::formatNumber($result, $num_format):$result) : '');
+			return ($print ? ($num_format ? we_util_Strings::formatNumber($result, $num_format) : $result) : '');
 		default:
 			return attributFehltError($attribs, '_type', __FUNCTION__);
 	}

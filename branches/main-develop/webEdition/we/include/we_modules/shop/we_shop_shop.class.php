@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_shop_shop {
+class we_shop_shop{
 
 	const DOCUMENT = 'w';
 	const OBJECT = 'o';
@@ -92,10 +92,7 @@ class we_shop_shop {
 	}
 
 	function f($key){
-		if(isset($this->Record[$key])){
-			return $this->Record[$key];
-		}
-		return '';
+		return (isset($this->Record[$key]) ? $this->Record[$key] : '');
 	}
 
 	function getCustomFieldsAsRequest(){

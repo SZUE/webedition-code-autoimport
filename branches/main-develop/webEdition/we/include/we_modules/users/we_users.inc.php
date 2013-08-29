@@ -652,8 +652,8 @@ class we_user{
 							}
 
 							// Editor Module User
-							if (top.content.editor.properties) {
-								top.content.editor.properties.location = top.content.editor.properties.location +'?tab=" . abs($_REQUEST['tab']) . "&perm_branch='+top.content.editor.properties.opened_group;
+							if (top.content.editor.edbody) {
+								top.content.editor.edbody.location = top.content.editor.edbody.location +'?tab=" . abs($_REQUEST['tab']) . "&perm_branch='+top.content.editor.edbody.opened_group;
 							}
 
 							// Save Module User
@@ -700,8 +700,8 @@ if (top.content.editor.edheader) {
 }
 
 // Editor Module User
-if (top.content.editor.properties) {
-	top.content.editor.properties.location = top.content.editor.properties.location +'?tab=" . abs($_REQUEST['tab']) . "&perm_branch='+top.content.editor.properties.opened_group;
+if (top.content.editor.edbody) {
+	top.content.editor.edbody.location = top.content.editor.edbody.location +'?tab=" . abs($_REQUEST['tab']) . "&perm_branch='+top.content.editor.edbody.opened_group;
 }
 
 // Save Module User
@@ -1686,13 +1686,13 @@ function delElement(elvalues,elem) {
 
 				switch($k){
 					case (defined('NEWSLETTER_TABLE') ? NEWSLETTER_TABLE : 'NEWSLETTER_TABLE'):
-						$button = we_button::create_button('select', "javascript:we_cmd('openNewsletterDirselector',document.forms[0]." . $obj_names . "_" . $key . ".value,'document.we_form." . $obj_names . "_" . $key . ".value','document.we_form." . $obj_names . "_" . $key . "_Text.value','opener.top.content.editor.properties.setValues(" . $setValue . ")','" . session_id() . "','" . (isset($_REQUEST["rootDirID"]) ? $_REQUEST["rootDirID"] : "") . "' )");
+						$button = we_button::create_button('select', "javascript:we_cmd('openNewsletterDirselector',document.forms[0]." . $obj_names . "_" . $key . ".value,'document.we_form." . $obj_names . "_" . $key . ".value','document.we_form." . $obj_names . "_" . $key . "_Text.value','opener.top.content.editor.edbody.setValues(" . $setValue . ")','" . session_id() . "','" . (isset($_REQUEST["rootDirID"]) ? $_REQUEST["rootDirID"] : "") . "' )");
 						break;
 					case NAVIGATION_TABLE:
-						$button = we_button::create_button('select', "javascript:we_cmd('openNavigationDirselector',document.forms[0]." . $obj_names . "_" . $key . ".value,'document.we_form." . $obj_names . "_" . $key . ".value','document.we_form." . $obj_names . "_" . $key . "_Text.value','opener.top.content.editor.properties.setValues(" . $setValue . ")','" . session_id() . "','" . (isset($_REQUEST["rootDirID"]) ? $_REQUEST["rootDirID"] : "") . "' )");
+						$button = we_button::create_button('select', "javascript:we_cmd('openNavigationDirselector',document.forms[0]." . $obj_names . "_" . $key . ".value,'document.we_form." . $obj_names . "_" . $key . ".value','document.we_form." . $obj_names . "_" . $key . "_Text.value','opener.top.content.editor.edbody.setValues(" . $setValue . ")','" . session_id() . "','" . (isset($_REQUEST["rootDirID"]) ? $_REQUEST["rootDirID"] : "") . "' )");
 						break;
 					default:
-						$button = we_button::create_button('select', "javascript:we_cmd('openDirselector',document.forms[0]." . $obj_names . "_" . $key . ".value,'" . $k . "','document.we_form." . $obj_names . "_" . $key . ".value','document.we_form." . $obj_names . "_" . $key . "_Text.value','opener.top.content.editor.properties.setValues(" . $setValue . ")','" . session_id() . "','" . (isset($_REQUEST["rootDirID"]) ? $_REQUEST["rootDirID"] : "") . "' )");
+						$button = we_button::create_button('select', "javascript:we_cmd('openDirselector',document.forms[0]." . $obj_names . "_" . $key . ".value,'" . $k . "','document.we_form." . $obj_names . "_" . $key . ".value','document.we_form." . $obj_names . "_" . $key . "_Text.value','opener.top.content.editor.edbody.setValues(" . $setValue . ")','" . session_id() . "','" . (isset($_REQUEST["rootDirID"]) ? $_REQUEST["rootDirID"] : "") . "' )");
 				}
 
 				$yuiSuggest = & weSuggest::getInstance();
@@ -1878,8 +1878,8 @@ function select_seem_start() {
 
 		eval(\"if(top.opener.top.jsWindow\" + k + \"Object){\" +
 			 \"	if(top.opener.top.jsWindow\" + k + \"Object.ref == 'edit_module'){\" +
-			 \"		myWind = top.opener.top.jsWindow\" + k + \"Object.wind.content.editor.properties;\" +
-			 \"		myWindStr = 'top.jsWindow\" + k + \"Object.wind.content.editor.properties';\" +
+			 \"		myWind = top.opener.top.jsWindow\" + k + \"Object.wind.content.editor.edbody;\" +
+			 \"		myWindStr = 'top.jsWindow\" + k + \"Object.wind.content.editor.edbody';\" +
 			 \"	}\" +
 			 \"}\");
 		if(myWind){
@@ -2365,23 +2365,23 @@ var activeTab = 0;
 function setTab(tab) {
 	switch(tab) {
 		case 0:
-			top.content.editor.properties.switchPage(0);
+			top.content.editor.edbody.switchPage(0);
 			activeTab = 0;
 			break;
 		case 1:
-			if(top.content.editor.properties.switchPage(1)==false){
+			if(top.content.editor.edbody.switchPage(1)==false){
 				setTimeout("resetTabs()",50);
 			}
 			activeTab = 1;
 			break;
 		case 2:
-			if(top.content.editor.properties.switchPage(2)==false) {
+			if(top.content.editor.edbody.switchPage(2)==false) {
 				setTimeout("resetTabs()",50);
 			}
 			activeTab = 2;
 			break;
 		case 3:
-			if(top.content.editor.properties.switchPage(3)==false) {
+			if(top.content.editor.edbody.switchPage(3)==false) {
 				setTimeout("resetTabs()",50);
 			}
 			activeTab = 3;
@@ -2390,7 +2390,7 @@ function setTab(tab) {
 }
 
 function resetTabs(){
-		top.content.editor.properties.document.we_form.tab.value = 0;
+		top.content.editor.edbody.document.we_form.tab.value = 0;
 		top.content.editor.edheader.tabCtrl.setActiveTab(0);
 }
 

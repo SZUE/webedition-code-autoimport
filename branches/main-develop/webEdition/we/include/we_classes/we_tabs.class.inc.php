@@ -257,6 +257,10 @@ function setFrameSize(){
 			var tabsHeight = document.getElementById('main').offsetHeight $heightPlus;
 			document.getElementById('naviDiv').style.height = tabsHeight+"px";
 			document.getElementById('contentDiv').style.top = tabsHeight+"px";
+		}else if(parent.document.getElementById("edheaderDiv")){
+			var tabsHeight = document.getElementById('main').offsetHeight $heightPlus;
+			parent.document.getElementById('edheaderDiv').style.height = tabsHeight+"px";
+			parent.document.getElementById('edbodyDiv').style.top = tabsHeight+"px";
 		}else if(parent.document.getElementsByName('editHeaderDiv').length>0){
 			var tabsHeight = document.getElementById('main').offsetHeight $heightPlus;
 			var tmp=parent.document.getElementsByName("editHeaderDiv");
@@ -264,14 +268,14 @@ function setFrameSize(){
 			nList[0].style.height = tabsHeight+"px";
 			nList[1].style.top = tabsHeight+"px";
 			nList[2].style.top = tabsHeight+"px";
-		}else{
-		//FIXME: remove this if frames are obsolete
-		var fs = parent.document.getElementsByTagName("FRAMESET")[0];
-		//document.getElementById('main').style.overflow = "hidden";
-		var tabsHeight = document.getElementById('main').offsetHeight $heightPlus;
-		var fsRows = fs.rows.split(',');
-		fsRows[0] = tabsHeight;
-		fs.rows =  fsRows.join(",");
+		}else if(parent.document.getElementsByTagName("FRAMESET")){
+			//FIXME: remove this if frames are obsolete
+			var fs = parent.document.getElementsByTagName("FRAMESET")[0];
+			//document.getElementById('main').style.overflow = "hidden";
+			var tabsHeight = document.getElementById('main').offsetHeight $heightPlus;
+			var fsRows = fs.rows.split(',');
+			fsRows[0] = tabsHeight;
+			fs.rows =  fsRows.join(",");
 		}
 	} else {
 		setTimeout("setFrameSize()",100);
