@@ -43,6 +43,8 @@ class weCustomerFrames extends weModuleFrames {
 		if(!($mode == 'export' && isset($_REQUEST["step"]) && $_REQUEST["step"] == 5)){
 			print we_html_tools::headerCtCharset('text/html', DEFAULT_CHARSET);
 			print we_html_tools::htmlTop('', DEFAULT_CHARSET);
+		} else{
+			parent::getHTMLDocumentHeader();
 		}
 	}
 

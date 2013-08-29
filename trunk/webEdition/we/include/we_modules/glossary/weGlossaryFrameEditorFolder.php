@@ -34,7 +34,7 @@ class weGlossaryFrameEditorFolder extends weGlossaryFrameEditor{
 
 		$title .= $frontendL[substr($_REQUEST['cmdid'], 0, 5)];
 
-		return weGlossaryFrameEditorFolder::buildHeader($weGlossaryFrames, $we_tabs, g_l('modules_glossary', '[folder]'), $frontendL[substr($_REQUEST['cmdid'], 0, 5)]);
+		return self::buildHeader($weGlossaryFrames, $we_tabs, g_l('modules_glossary', '[folder]'), $frontendL[substr($_REQUEST['cmdid'], 0, 5)]);
 	}
 
 	function Body(&$weGlossaryFrames){
@@ -44,16 +44,16 @@ class weGlossaryFrameEditorFolder extends weGlossaryFrameEditor{
 
 		$js = we_html_element::jsElement($_js);
 
-		$out = we_html_element::htmlDiv(array('id' => 'tab1', 'style' => ''), we_multiIconBox::getHTML('', "100%", weGlossaryFrameEditorFolder::getHTMLOverview($weGlossaryFrames), 30, '', -1, '', '', false));
+		$out = we_html_element::htmlDiv(array('id' => 'tab1', 'style' => ''), we_multiIconBox::getHTML('', "100%", self::getHTMLOverview($weGlossaryFrames), 30, '', -1, '', '', false));
 
 		$content = $js . $out;
 
-		return weGlossaryFrameEditorFolder::buildBody($weGlossaryFrames, $content);
+		return self::buildBody($weGlossaryFrames, $content);
 	}
 
 	function Footer(&$weGlossaryFrames){
 
-		return weGlossaryFrameEditorFolder::buildFooter($weGlossaryFrames, "");
+		return self::buildFooter($weGlossaryFrames, "");
 	}
 
 	function getHTMLOverview(&$weGlossaryFrames){
