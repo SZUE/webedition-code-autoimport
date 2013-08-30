@@ -36,6 +36,7 @@ class we_core_Permissions{
 	 * @return boolean
 	 */
 	static function hasPerm($perm){
+		require_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_global.inc.php");
 		return we_hasPerm(strtoupper($perm));
 	}
 
