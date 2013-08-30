@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-abstract class weGlossaryReplace{
+abstract class weGlossaryReplace {
 
 	const configFile = 'we_conf_glossary_settings.inc.php';
 
@@ -34,7 +34,6 @@ abstract class weGlossaryReplace{
 		include_once($configFile);
 
 		return (isset($GLOBALS['weGlossaryAutomaticReplacement']) && $GLOBALS['weGlossaryAutomaticReplacement']);
-
 	}
 
 	/**
@@ -120,7 +119,7 @@ abstract class weGlossaryReplace{
 			$before = $piece;
 		}
 
-		$replBody = str_replace('@@@we@@@', '\'', $replBody);
+		$replBody = strtr($replBody, array('@@@we@@@' => '\''));
 		if(isset($matches[1])){
 			return str_replace($srcBody, $replBody, $src);
 		} else {

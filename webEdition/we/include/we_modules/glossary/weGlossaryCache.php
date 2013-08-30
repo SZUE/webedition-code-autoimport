@@ -27,7 +27,7 @@
  * this class implements the cache functionality for the glossary
  *
  */
-class weGlossaryCache{
+class weGlossaryCache {
 
 	/**
 	 * language of the cache
@@ -279,7 +279,7 @@ class weGlossaryCache{
 				// popup_open
 				if(isset($Attributes['popup_open']) && $Attributes['popup_open'] == 1){
 
-					$temp['onclick'] = "var we_winOpts = '';";
+					$temp['onclick'] = 'var we_winOpts = \'\';';
 
 					// popup_width
 					$width = (isset($Attributes['popup_width']) && trim($Attributes['popup_width']) != '' ?
@@ -305,25 +305,25 @@ if (window.screen) {
 	var h = Math.min(screen_height,h);
 	var x = (screen_width - w) / 2;
 	var y = (screen_height - h) / 2;
-	we_winOpts = "left="+x+",top="+y;
+	we_winOpts = \'left=\'+x+\',top=\'+y;
 } else {
-	we_winOpts="";
+	we_winOpts=\'\';
 }';
 					} else {
 
 						// popup_xposition
-						if(isset($Attributes['popup_xposition']) && trim($Attributes['popup_xposition']) != ""){
+						if(isset($Attributes['popup_xposition']) && trim($Attributes['popup_xposition']) != ''){
 							$temp['onclick'] .= "we_winOpts += (we_winOpts ? ',' : '')+'left=" . trim($Attributes['popup_xposition']) . "';";
 						}
 
 						// popup_yposition
-						if(isset($Attributes['popup_yposition']) && trim($Attributes['popup_yposition']) != ""){
+						if(isset($Attributes['popup_yposition']) && trim($Attributes['popup_yposition']) != ''){
 							$temp['onclick'] .= "we_winOpts += (we_winOpts ? ',' : '')+'top=" . trim($Attributes['popup_yposition']) . "';";
 						}
 					}
 
 					// popup_width
-					$temp['onclick'] .= "we_winOpts += (we_winOpts ? ',' : '')+'width=" . $width . "';" .
+					$temp['onclick'] .=strtr("we_winOpts += (we_winOpts ? ',' : '')+'width=" . $width . "';" .
 						// popup_height
 						"we_winOpts += (we_winOpts ? ',' : '')+'height=" . $height . "';" .
 						// popup_status
@@ -338,9 +338,7 @@ if (window.screen) {
 						"we_winOpts += (we_winOpts ? ',' : '')+'location=" . (isset($Attributes['popup_location']) && $Attributes['popup_location'] == 1 ? 'yes' : 'no') . "';" .
 						// popup_toolbar
 						"we_winOpts += (we_winOpts ? ',' : '')+'toolbar=" . (isset($Attributes['popup_toolbar']) && $Attributes['popup_toolbar'] == 1 ? 'yes' : 'no') . "';" .
-						"var we_win = window.open('" . $temp['href'] . "','we_test',we_winOpts);";
-
-					$temp['onclick'] = str_replace("'", '@@@we@@@', $temp['onclick']);
+						"var we_win = window.open('" . $temp['href'] . "','we_test',we_winOpts);", array('\'' => '@@@we@@@'));
 
 					$temp['href'] = '#';
 				}
