@@ -2433,7 +2433,7 @@ top.content.hloaded=1;') .
 		$WE_SALTCHARS = './0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
 		if(version_compare(PHP_VERSION, '5.3.7') >= 0){
-			$salt = '$2y$' . sprintf('%02d', $strength) . '$'; //15 rounds
+			$salt = '$2y$' . sprintf('%02d', $strength) . '$';
 			for($i = 0; $i <= 21; $i++){
 				$tmp_str = str_shuffle($WE_SALTCHARS);
 				$salt .= $tmp_str[0];
