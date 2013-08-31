@@ -30,45 +30,41 @@ function we_tag_shopVat($attribs){
 	$type = weTag_getAttribute('type', $attribs, 'select');
 	$id = weTag_getAttribute('id', $attribs);
 
-
 	if($id){
-
 		$shopVat = weShopVats::getShopVATById($id);
 		if($shopVat){
 			return $shopVat->vat;
 		}
-	} else{
+	}
 
+	// in webEdition - EditMode
+	$allVats = weShopVats::getAllShopVATs();
+	$values = array();
 
-		// in webEdition - EditMode
-		$allVats = weShopVats::getAllShopVATs();
-		$values = array();
+	$standardVal = '';
 
-		$standardVal = '';
+	foreach($allVats as $id => $shopVat){
+		$values[$id] = $shopVat->vat . ' - ' . $shopVat->text;
+		if($shopVat->standard){
 
-		foreach($allVats as $id => $shopVat){
-			$values[$id] = $shopVat->vat . ' - ' . $shopVat->text;
-			if($shopVat->standard){
-
-				$standardId = $id;
-				$standardVal = $shopVat->vat;
-			}
+			$standardId = $id;
+			$standardVal = $shopVat->vat;
 		}
+	}
 
-		$attribs['name'] = WE_SHOP_VAT_FIELD_NAME;
-		$val = oldHtmlspecialchars(isset($GLOBALS['we_doc']->elements[$name]["dat"]) ? $GLOBALS['we_doc']->getElement($name) : $standardId);
+	$attribs['name'] = WE_SHOP_VAT_FIELD_NAME;
+	$val = oldHtmlspecialchars(isset($GLOBALS['we_doc']->elements[$name]['dat']) ? $GLOBALS['we_doc']->getElement($name) : $standardId);
 
-		// use a defined name for this
-		if($GLOBALS['we_editmode']){
+	// use a defined name for this
+	if($GLOBALS['we_editmode']){
 
-			switch($type){
-				default:
-					$fieldname = 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']';
-					return $GLOBALS['we_doc']->htmlSelect($fieldname, $values, 1, $val);
-					break;
-			}
-		} else{
-			return ( isset($allVats[$val]) ? $allVats[$val]->vat : $standardVal );
+		switch($type){
+			default:
+				$fieldname = 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']';
+				return $GLOBALS['we_doc']->htmlSelect($fieldname, $values, 1, $val);
+				break;
 		}
+	} else {
+		return ( isset($allVats[$val]) ? $allVats[$val]->vat : $standardVal );
 	}
 }
