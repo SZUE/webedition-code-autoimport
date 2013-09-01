@@ -64,6 +64,7 @@ class weModuleFrames{
 	}
 
 	function getHTMLDocumentHeader(){
+		we_html_tools::headerCtCharset('text/html', $GLOBALS['WE_BACKENDCHARSET']);
 		print we_html_tools::getHtmlTop($this->module);
 	}
 
