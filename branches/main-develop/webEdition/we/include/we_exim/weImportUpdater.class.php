@@ -130,7 +130,7 @@ class weImportUpdater extends weXMLExIm{
 		}
 
 		// update class for embedded object
-		if(isset($object->ClassName) && ($object->ClassName == "we_object") && preg_match('|' . we_object::QUERY_PREFIX . '([0-9])+|', implode(',', array_keys($object->SerializedArray)))){
+		if(isset($object->ClassName) && ($object->ClassName == 'we_object') && preg_match('|' . we_object::QUERY_PREFIX . '([0-9])+|', implode(',', array_keys($object->SerializedArray)))){
 			$this->updateObjectModuleData($object);
 		}
 

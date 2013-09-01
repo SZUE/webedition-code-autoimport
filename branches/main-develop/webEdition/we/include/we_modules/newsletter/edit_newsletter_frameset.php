@@ -26,22 +26,22 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
 
-$what = (isset($_REQUEST["pnt"]) ? $_REQUEST["pnt"] : 'frameset');
-$mode = (isset($_REQUEST["art"]) ? $_REQUEST["art"] : 0);
+$what = (isset($_REQUEST['pnt']) ? $_REQUEST['pnt'] : 'frameset');
+$mode = (isset($_REQUEST['art']) ? $_REQUEST['art'] : 0);
 
 $newsletterFrame = new weNewsletterFrames();
-$newsletterFrame->getHTMLDocumentHeader($what, $mode);
+echo $newsletterFrame->getHTMLDocumentHeader($what, $mode);
 
-if(isset($_REQUEST["inid"])){
-	$newsletterFrame->View->newsletter = new weNewsletter($_REQUEST["inid"]);
+if(isset($_REQUEST['inid'])){
+	$newsletterFrame->View->newsletter = new weNewsletter($_REQUEST['inid']);
 } else{
 	switch($what){
-		case "export_csv_mes":
-		case "newsletter_settings":
-		case "qsend":
-		case "eedit":
-		case "black_list":
-		case "upload_csv":
+		case 'export_csv_mes':
+		case 'newsletter_settings':
+		case 'qsend':
+		case 'eedit':
+		case 'black_list':
+		case 'upload_csv':
 			break;
 		default:
 			$newsletterFrame->View->processVariables();

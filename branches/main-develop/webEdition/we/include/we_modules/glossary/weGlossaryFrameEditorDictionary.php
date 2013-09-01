@@ -34,7 +34,7 @@ class weGlossaryFrameEditorDictionary extends weGlossaryFrameEditor{
 		$frontendL = getWeFrontendLanguagesForBackend();
 		$title = g_l('modules_glossary', '[dictionary]') . ":&nbsp;" . $frontendL[substr($_REQUEST['cmdid'], 0, 5)];
 
-		return weGlossaryFrameEditorDictionary::buildHeader($weGlossaryFrames, $we_tabs, g_l('modules_glossary', '[dictionary]'), $frontendL[substr($_REQUEST['cmdid'], 0, 5)]);
+		return self::buildHeader($weGlossaryFrames, $we_tabs, g_l('modules_glossary', '[dictionary]'), $frontendL[substr($_REQUEST['cmdid'], 0, 5)]);
 	}
 
 	function Body(&$weGlossaryFrames){
@@ -47,9 +47,9 @@ class weGlossaryFrameEditorDictionary extends weGlossaryFrameEditor{
 
 		$js = we_html_element::jsElement($_js);
 
-		$out = $js . we_html_element::htmlDiv(array('id' => 'tab1', 'style' => ($tabNr == 1 ? '' : 'display: none')), we_multiIconBox::getHTML('weMultibox', "100%", weGlossaryFrameEditorDictionary::getHTMLTabProperties($weGlossaryFrames), 30, '', -1, '', '', false));
+		$out = $js . we_html_element::htmlDiv(array('id' => 'tab1', 'style' => ($tabNr == 1 ? '' : 'display: none')), we_multiIconBox::getHTML('weMultibox', "100%", self::getHTMLTabProperties($weGlossaryFrames), 30, '', -1, '', '', false));
 
-		return weGlossaryFrameEditorDictionary::buildBody($weGlossaryFrames, $out);
+		return self::buildBody($weGlossaryFrames, $out);
 	}
 
 	function Footer(&$weGlossaryFrames){
@@ -67,7 +67,7 @@ class weGlossaryFrameEditorDictionary extends weGlossaryFrameEditor{
 
 		$form = we_html_element::htmlForm(array(), $table2->getHtml());
 
-		return weGlossaryFrameEditorDictionary::buildFooter($weGlossaryFrames, $form);
+		return self::buildFooter($weGlossaryFrames, $form);
 	}
 
 	function getHTMLTabProperties(&$weGlossaryFrames){

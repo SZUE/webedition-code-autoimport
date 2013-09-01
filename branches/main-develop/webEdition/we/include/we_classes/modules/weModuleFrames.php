@@ -64,15 +64,15 @@ class weModuleFrames{
 	}
 
 	function getHTMLDocumentHeader(){
-		print we_html_tools::getHtmlTop($this->module);
+		we_html_tools::headerCtCharset('text/html', $GLOBALS['WE_BACKENDCHARSET']);
+		return we_html_tools::getHtmlTop($this->module);
 	}
 
 	function getHTMLDocument($body, $extraHead = ''){
 		/*
 		  return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-		  we_html_element::htmlHead(
-		  we_html_tools::getHtmlInnerHead($this->module) . STYLESHEET . $extraHead
-		  ) . $body
+		  we_html_element::htmlHead(we_html_tools::getHtmlInnerHead($this->module) .
+		  STYLESHEET . $extraHead) . $body
 		  );
 		 *
 		 */

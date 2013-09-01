@@ -22,11 +22,11 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 we_html_tools::protect();
-if(!(isset($GLOBALS["we_print_not_htmltop"]) && $GLOBALS["we_print_not_htmltop"])){
+if(!(isset($GLOBALS['we_print_not_htmltop']) && $GLOBALS['we_print_not_htmltop'])){
 	we_html_tools::htmlTop();
 }
 print STYLESHEET .
-	we_html_element::jsScript(JS_DIR . "attachKeyListener.js");
+	we_html_element::jsScript(JS_DIR . 'attachKeyListener.js');
 
 $mod = str_replace(array('.', '/', '\\'), '', (isset($_REQUEST["mod"]) ? $_REQUEST["mod"] : (isset($GLOBALS["mod"]) ? $GLOBALS["mod"] : "")));
 

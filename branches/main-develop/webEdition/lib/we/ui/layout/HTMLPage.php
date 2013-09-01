@@ -34,6 +34,7 @@ Zend_Loader::loadClass('we_ui_abstract_AbstractElement');
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 class we_ui_layout_HTMLPage extends we_ui_abstract_AbstractElement{
+
 	/**
 	 * title tag
 	 *
@@ -128,7 +129,7 @@ class we_ui_layout_HTMLPage extends we_ui_abstract_AbstractElement{
 	 */
 
 	public static function getInstance(){
-		static $__instance=NULL;
+		static $__instance = NULL;
 		if($__instance === NULL){
 			$__instance = new self();
 		}

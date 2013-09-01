@@ -45,7 +45,7 @@ class weExportFrames extends weModuleFrames{
 
 	function getHTMLDocumentHeader($what = '', $mode = ''){
 		if(!($what == "cmd" || $what == "load")){
-			parent::getHTMLDocumentHeader();
+			return parent::getHTMLDocumentHeader();
 		}
 	}
 

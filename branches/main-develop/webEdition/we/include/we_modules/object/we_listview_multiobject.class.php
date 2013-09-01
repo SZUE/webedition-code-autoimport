@@ -29,14 +29,14 @@
  *
  */
 //FIXME: is this class not ~ listview_object? why is this not the base class???
-class we_listview_multiobject extends listviewBase {
+class we_listview_multiobject extends listviewBase{
 
-	var $classID = ""; /* ID of a class */
-	var $objects = ""; /* Comma sepearated list of all objetcs to show in this listview */
+	var $classID = ''; /* ID of a class */
+	var $objects = ''; /* Comma sepearated list of all objetcs to show in this listview */
 	var $triggerID = 0; /* ID of a document which to use for displaying thr detail page */
-	var $condition = ""; /* condition string (like SQL) */
+	var $condition = ''; /* condition string (like SQL) */
 	var $ClassName = __CLASS__;
-	var $Path = ""; /* internal: Path of document which to use for displaying thr detail page */
+	var $Path = ''; /* internal: Path of document which to use for displaying thr detail page */
 	var $IDs = array();
 	var $searchable = true;
 	var $languages = ''; //string of Languages, separated by ,
@@ -147,11 +147,10 @@ class we_listview_multiobject extends listviewBase {
 			$this->order .= ' DESC';
 		}
 
-		if($this->triggerID && show_SeoLinks()){
-			$this->Path = id_to_path($this->triggerID, FILE_TABLE, $this->DB_WE);
-		} else {
-			$this->Path = (isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->Path : '');
-		}
+		$this->Path = ($this->triggerID && show_SeoLinks() ?
+				id_to_path($this->triggerID, FILE_TABLE, $this->DB_WE) :
+				(isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->Path : ''));
+
 
 		// IMPORTANT for seeMode !!!! #5317
 		$this->LastDocPath = (isset($_SESSION['weS']['last_webEdition_document']) ? $_SESSION['weS']['last_webEdition_document']['Path'] : '');
@@ -260,7 +259,7 @@ class we_listview_multiobject extends listviewBase {
 						$matrix["we_object_" . $name]["table"] = $table;
 						$matrix["we_object_" . $name]["classID"] = $classID;
 						$foo = $this->fillMatrix($matrix, $name, $db);
-						$joinWhere[] = OBJECT_X_TABLE . $classID . we_object::QUERY_PREFIX . $name . '=' . OBJECT_X_TABLE . $name . '.OF_ID';
+						$joinWhere[] = OBJECT_X_TABLE . $classID . '.' . we_object::QUERY_PREFIX . $name . '=' . OBJECT_X_TABLE . $name . '.OF_ID';
 						if($foo){
 							$joinWhere[] = $foo;
 						}

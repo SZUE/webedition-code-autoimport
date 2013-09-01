@@ -34,7 +34,7 @@ if($what == 'export' || $what == 'eibody' || $what == 'eifooter' || $what == 'ei
 	echo $ExImport->getHTML($what, $mode, $step);
 } else{
 	$weFrame = new weCustomerFrames();
-	$weFrame->getHTMLDocumentHeader($what, $mode);
+	echo $weFrame->getHTMLDocumentHeader($what, $mode);
 	$weFrame->View->processVariables();
 	$weFrame->View->processCommands();
 	echo $weFrame->getHTML($what, $mode);

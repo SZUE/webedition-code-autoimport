@@ -117,7 +117,7 @@ class weNavigationFrames extends weModuleFrames{
 		if(!empty($this->Model->Charset)){
 			we_html_tools::headerCtCharset('text/html', $this->Model->Charset);
 		}
-		print we_html_tools::getHtmlTop($this->module, $this->Model->Charset);
+		return we_html_tools::getHtmlTop($this->module, $this->Model->Charset);
 	}
 
 	/**

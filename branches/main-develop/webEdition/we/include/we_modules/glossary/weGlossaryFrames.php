@@ -46,12 +46,6 @@ class weGlossaryFrames extends weModuleFrames{
 		return $this->View->getJSTop() . we_html_element::jsElement($this->Tree->getJSMakeNewEntry());
 	}
 
-	function getHTMLDocumentHeader($what = '', $mode = ''){
-		if(!($what == "edheader" || $what == "edbody" || $what == "edfooter")){
-			parent::getHTMLDocumentHeader();
-		}
-	}
-
 	function getHTMLFrameset(){
 		$extraHead = $this->Tree->getJSTreeCode() . we_html_element::jsElement($this->getJSStart());
 

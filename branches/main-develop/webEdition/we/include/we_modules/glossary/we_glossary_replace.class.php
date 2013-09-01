@@ -120,7 +120,7 @@ abstract class we_glossary_replace{
 			$before = $piece;
 		}
 
-		$replBody = str_replace('@@@we@@@', '\'', $replBody);
+		$replBody = strtr($replBody, array('@@@we@@@' => '\''));
 		if(isset($matches[1])){
 			return str_replace($srcBody, $replBody, $src);
 		} else {

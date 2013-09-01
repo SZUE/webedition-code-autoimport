@@ -31,7 +31,7 @@ print STYLESHEET;
 $what = (isset($_REQUEST["pnt"])) ? $_REQUEST["pnt"] : "frameset";
 
 $weFrame = new weShopFrames(WE_SHOP_MODULE_DIR . 'edit_shop_frameset.php');
-$weFrame->getHTMLDocumentHeader();
+echo $weFrame->getHTMLDocumentHeader();
 //$weFrame->View->processVariables();
 $weFrame->View->processCommands();
 echo $weFrame->getHTML($what);

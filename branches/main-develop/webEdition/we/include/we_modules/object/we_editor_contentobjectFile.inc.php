@@ -63,7 +63,7 @@ if($GLOBALS['we_doc']->CSS){
 $we_doc = $GLOBALS['we_doc'];
 
 $jsGUI = new weOrderContainer("_EditorFrame.getContentEditor()", "objectEntry");
-echo $jsGUI->getJS(WEBEDITION_DIR . "js");
+echo $jsGUI->getJS(JS_DIR);
 
 echo we_multiIconBox::getJs();
 ?>

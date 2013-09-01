@@ -32,7 +32,7 @@ class weGlossaryFrameEditorException extends weGlossaryFrameEditor{
 		$frontendL = getWeFrontendLanguagesForBackend();
 		$title = g_l('modules_glossary', '[exception]') . ":&nbsp;" . (isset($frontendL[substr($_REQUEST['cmdid'], 0, 5)]) ? $frontendL[substr($_REQUEST['cmdid'], 0, 5)] : "-");
 
-		return weGlossaryFrameEditorException::buildHeader($weGlossaryFrames, $we_tabs, g_l('modules_glossary', '[exception]'), (isset($frontendL[substr($_REQUEST['cmdid'], 0, 5)]) ? $frontendL[substr($_REQUEST['cmdid'], 0, 5)] : "-"));
+		return self::buildHeader($weGlossaryFrames, $we_tabs, g_l('modules_glossary', '[exception]'), (isset($frontendL[substr($_REQUEST['cmdid'], 0, 5)]) ? $frontendL[substr($_REQUEST['cmdid'], 0, 5)] : "-"));
 	}
 
 	function Body(&$weGlossaryFrames){
@@ -46,7 +46,7 @@ class weGlossaryFrameEditorException extends weGlossaryFrameEditor{
 
 		$out = $js . we_html_element::htmlDiv(array('id' => 'tab1', 'style' => ($tabNr == 1 ? '' : 'display: none')), we_multiIconBox::getHTML('weMultibox', "100%", weGlossaryFrameEditorException::getHTMLTabProperties($weGlossaryFrames), 30, '', -1, '', '', false));
 
-		return weGlossaryFrameEditorException::buildBody($weGlossaryFrames, $out);
+		return self::buildBody($weGlossaryFrames, $out);
 	}
 
 	function Footer(&$weGlossaryFrames){
@@ -64,7 +64,7 @@ class weGlossaryFrameEditorException extends weGlossaryFrameEditor{
 
 		$form = we_html_element::htmlForm(array(), $table2->getHtml());
 
-		return weGlossaryFrameEditorException::buildFooter($weGlossaryFrames, $form);
+		return self::buildFooter($weGlossaryFrames, $form);
 	}
 
 	function getHTMLTabProperties(&$weGlossaryFrames){

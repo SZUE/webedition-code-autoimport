@@ -1112,7 +1112,7 @@ function submitForm() {
 							$shopVat = weShopVats::getShopVATById($serialDoc[WE_SHOP_VAT_FIELD_NAME]);
 						}
 
-						if(isset($shopVat) && $shopVat){
+						if(isset($shopVat)){
 							$serialDoc[WE_SHOP_VAT_FIELD_NAME] = $shopVat->vat;
 						} elseif($standardVat){
 							$serialDoc[WE_SHOP_VAT_FIELD_NAME] = $standardVat->vat;

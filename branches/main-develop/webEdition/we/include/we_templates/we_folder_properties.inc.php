@@ -39,7 +39,7 @@ if($we_doc->Table == FILE_TABLE && we_hasPerm('CAN_COPY_FOLDERS') || (defined('O
 	$parts[]= array('icon' => 'copy.gif', 'headline' => g_l('weClass', '[copyFolder]'), "html" => $GLOBALS['we_doc']->formCopyDocument(), "space" => 140);
 }
 
-$wepos = weGetCookieVariable("but_weDirProp");
+$wepos = weGetCookieVariable('but_weDirProp');
 $znr = 4;
 if($we_doc->Table == FILE_TABLE || (defined('OBJECT_FILES_TABLE') && $we_doc->Table == OBJECT_FILES_TABLE)){
 	$parts[]= array("icon" => "user.gif", "headline" => g_l('weClass', "[owners]")
@@ -54,4 +54,4 @@ if(count($parts) == 1){
 }
 
 print we_multiIconBox::getJS().
-we_multiIconBox::getHTML("weDirProp", "100%", $parts, 20);
+we_multiIconBox::getHTML('weDirProp', '100%', $parts, 20);
