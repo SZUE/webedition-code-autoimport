@@ -39,8 +39,23 @@ class weNewsletterFrames extends weModuleFrames{
 	}
 
 	function getHTMLDocumentHeader($what = '', $mode = ''){
-		if($what != "send" && $what != "send_body" && $what != "send_cmd" && $what != "preview" && $what != "eemail" && $what != "clear_log" && $what != "export_csv_mes" && $what != "qsend" && $what != "qsave1"){
-			parent::getHTMLDocumentHeader();
+		switch($what){
+			case 'send':
+			case 'send_body':
+			case 'send_cmd':
+			//case 'edbody':
+			case 'preview':
+			case 'black_list':
+			case 'newsletter_settings':
+			case 'eemail':
+			case 'edit_file':
+			case 'clear_log':
+			case 'export_csv_mes':
+			case 'qsend':
+			case 'qsave1':
+				return;
+			default:
+				echo parent::getHTMLDocumentHeader();
 		}
 	}
 
