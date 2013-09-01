@@ -32,4 +32,4 @@ $weFrame = new weBannerFrames(WEBEDITION_DIR . 'we/include/we_modules/banner/edi
 $weFrame->getHTMLDocumentHeader();
 $weFrame->View->processVariables();
 $weFrame->View->processCommands();
-$weFrame->getHTML($what, $mode);
+echo $weFrame->getHTML($what, $mode);

@@ -34,4 +34,4 @@ $weFrame = new weWorkflowFrames();
 $weFrame->getHTMLDocumentHeader();
 $weFrame->View->processVariables();
 $weFrame->View->processCommands();
-$weFrame->getHTML($what, $mode, $type);
+echo $weFrame->getHTML($what, $mode, $type);

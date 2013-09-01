@@ -33,4 +33,4 @@ $weFrame = new searchtoolFrames();
 
 $weFrame->View->processVariables();
 $weFrame->View->processCommands();
-$weFrame->getHTML($what);
+echo $weFrame->getHTML($what);

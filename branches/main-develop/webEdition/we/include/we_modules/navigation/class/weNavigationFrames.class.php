@@ -56,19 +56,15 @@ class weNavigationFrames extends weModuleFrames{
 	function getHTML($what){
 		switch($what){
 			case 'preview' :
-				print $this->getHTMLEditorBody();
-				break;
+				return $this->getHTMLEditorBody();
 			case 'previewIframe' :
-				print $this->getHTMLEditorPreviewIframe();
-				break;
+				return $this->getHTMLEditorPreviewIframe();
 			case 'fields' :
-				print $this->getHTMLFieldSelector();
-				break;
+				return $this->getHTMLFieldSelector();
 			case 'dyn_preview' :
-				print $this->getHTMLDynPreview();
-				break;
+				return $this->getHTMLDynPreview();
 			default :
-				parent::getHTML($what);
+				return parent::getHTML($what);
 		}
 	}
 
@@ -140,17 +136,17 @@ class weNavigationFrames extends weModuleFrames{
 
 		$we_tabs = new we_tabs();
 
-		$we_tabs->addTab(new we_tab('#', g_l('navigation', '[property]'), '((' . $this->topFrame . '.activ_tab==1) ? TAB_ACTIVE : TAB_NORMAL)', "setTab('1');", array("id" => "tab_1")));
+		$we_tabs->addTab(new we_tab('#', g_l('navigation', '[property]'), '((' . $this->topFrame . '.activ_tab==1) ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('1');", array("id" => "tab_1")));
 		if($this->Model->IsFolder){
-			$we_tabs->addTab(new we_tab("#", g_l('navigation', '[content]'), '((' . $this->topFrame . '.activ_tab==2) ? TAB_ACTIVE : TAB_NORMAL)', "setTab('2');", array("id" => "tab_2")));
+			$we_tabs->addTab(new we_tab("#", g_l('navigation', '[content]'), '((' . $this->topFrame . '.activ_tab==2) ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('2');", array("id" => "tab_2")));
 		}
 
 		if(defined('CUSTOMER_TABLE') && we_hasPerm("CAN_EDIT_CUSTOMERFILTER")){
-			$we_tabs->addTab(new we_tab("#", g_l('navigation', '[customers]'), '((' . $this->topFrame . '.activ_tab==3) ? TAB_ACTIVE : TAB_NORMAL)', "setTab('3');", array("id" => "tab_3")));
+			$we_tabs->addTab(new we_tab("#", g_l('navigation', '[customers]'), '((' . $this->topFrame . '.activ_tab==3) ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('3');", array("id" => "tab_3")));
 		}
 
 		if($this->Model->IsFolder){
-			$we_tabs->addTab(new we_tab("#", g_l('navigation', '[preview]'), '((' . $this->topFrame . '.activ_tab=="preview") ? TAB_ACTIVE : TAB_NORMAL)', "setTab('preview');", array("id" => "tab_preview")));
+			$we_tabs->addTab(new we_tab("#", g_l('navigation', '[preview]'), '((' . $this->topFrame . '.activ_tab=="preview") ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('preview');", array("id" => "tab_preview")));
 		}
 
 		$we_tabs->onResize();
@@ -706,7 +702,7 @@ var hasClassSubDirs = {' . implode(',', $classHasSubDirsJS) . '};') . '
 		$_button_doc = we_button::create_button('select', $_cmd_doc, true, 100, 22, '', '', $disabled) .
 			we_button::create_button('open', 'javascript:openToEdit("' . FILE_TABLE . '",document.we_form.elements["LinkID"].value,"")', true, 100, 22, '', '', $disabled, false, '_navigation_doc');
 		$_button_obj = we_button::create_button('select', $_cmd_obj, true, 100, 22, '', '', $disabled) .
-			(defined('OBJECT_TABLE') ? we_button::create_button('open', 'javascript:openToEdit("' . OBJECT_FILES_TABLE . '",document.we_form.elements["LinkID"].value,"")', true, 100, 22, '', '', $disabled,false,'_navigation_obj') : '');
+			(defined('OBJECT_TABLE') ? we_button::create_button('open', 'javascript:openToEdit("' . OBJECT_FILES_TABLE . '",document.we_form.elements["LinkID"].value,"")', true, 100, 22, '', '', $disabled, false, '_navigation_obj') : '');
 		$_button_cat = we_button::create_button('select', $_cmd_cat, true, 100, 22, '', '', $disabled);
 
 		$_buttons = '<div id="docLink" style="display: ' . ($this->Model->SelectionType == weNavigation::STPYE_DOCLINK ? 'inline' : 'none') . '">' . $_button_doc . '</div><div id="objLink" style="display: ' . ($this->Model->SelectionType == weNavigation::STPYE_OBJLINK ? 'inline' : 'none') . '">' . $_button_obj . '</div><div id="catLink" style="display: ' . ($this->Model->SelectionType == weNavigation::STPYE_CATLINK ? 'inline' : 'none') . '">' . $_button_cat . '</div>';

@@ -101,24 +101,24 @@ class searchtoolFrames extends weToolFrames{
 		//tabs for entries
 		if(we_hasPerm('CAN_SEE_DOCUMENTS')){
 			$we_tabs->addTab(new we_tab(
-				'#', g_l('searchtool', '[documents]'), '((' . $this->topFrame . '.activ_tab==1) ? TAB_ACTIVE : TAB_NORMAL)', "setTab('1');", array(
+				'#', g_l('searchtool', '[documents]'), '((' . $this->topFrame . '.activ_tab==1) ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('1');", array(
 				'id' => 'tab_1', 'style' => "display:$displayEntry"
 			)));
 		}
 		if($_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE && we_hasPerm('CAN_SEE_TEMPLATES')){
 			$we_tabs->addTab(new we_tab(
-				'#', g_l('searchtool', '[templates]'), '((' . $this->topFrame . '.activ_tab==2) ? TAB_ACTIVE : TAB_NORMAL)', "setTab('2');", array(
+				'#', g_l('searchtool', '[templates]'), '((' . $this->topFrame . '.activ_tab==2) ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('2');", array(
 				'id' => 'tab_2', 'style' => "display:$displayEntry"
 			)));
 		}
 		$we_tabs->addTab(new we_tab(
-			'#', g_l('searchtool', '[advSearch]'), '((' . $this->topFrame . '.activ_tab==3) ? TAB_ACTIVE : TAB_NORMAL)', "setTab('3');", array(
+			'#', g_l('searchtool', '[advSearch]'), '((' . $this->topFrame . '.activ_tab==3) ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('3');", array(
 			'id' => 'tab_3', 'style' => "display:$displayEntry"
 		)));
 
 		//tabs for folders
 		$we_tabs->addTab(new we_tab(
-			'#', g_l('searchtool', '[properties]'), '((' . $this->topFrame . '.activ_tab==4) ? TAB_ACTIVE : TAB_NORMAL)', "setTab('4');", array(
+			'#', g_l('searchtool', '[properties]'), '((' . $this->topFrame . '.activ_tab==4) ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('4');", array(
 			'id' => 'tab_4', 'style' => "display:$displayFolder"
 		)));
 

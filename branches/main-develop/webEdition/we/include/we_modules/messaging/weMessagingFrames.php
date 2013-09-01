@@ -55,10 +55,9 @@ class weMessagingFrames extends weModuleFrames{
 		}
 		switch($what){
 			case "msg_fv_headers":
-				print $this->getHTMLFvHeaders();
-				break;
+				return $this->getHTMLFvHeaders();
 			default:
-				parent::getHTML($what);
+				return parent::getHTML($what);
 		}
 	}
 

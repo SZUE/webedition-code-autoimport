@@ -29,7 +29,7 @@ class weGlossaryFrameEditorDictionary extends weGlossaryFrameEditor{
 
 		$we_tabs = new we_tabs();
 		t_e('notice', 'cmdid', $_REQUEST['cmdid']);
-		$we_tabs->addTab(new we_tab("#", g_l('modules_glossary', '[dictionary]'), 'TAB_ACTIVE', "setTab('1');"));
+		$we_tabs->addTab(new we_tab("#", g_l('modules_glossary', '[dictionary]'), we_tab::ACTIVE, "setTab('1');"));
 
 		$frontendL = getWeFrontendLanguagesForBackend();
 		$title = g_l('modules_glossary', '[dictionary]') . ":&nbsp;" . $frontendL[substr($_REQUEST['cmdid'], 0, 5)];

@@ -34,4 +34,4 @@ $weFrame = new weUsersFrames(WE_USERS_MODULE_DIR . 'edit_user_frameset.php');
 $weFrame->getHTMLDocumentHeader();
 $weFrame->View->processVariables();
 $weFrame->View->processCommands();
-$weFrame->getHTML($what);
+echo $weFrame->getHTML($what);

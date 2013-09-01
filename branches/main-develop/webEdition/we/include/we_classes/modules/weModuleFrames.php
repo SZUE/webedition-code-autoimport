@@ -90,43 +90,33 @@ class weModuleFrames{
 
 	function getHTML($what = ''){
 		switch($what){
-			case "frameset":
-				print $this->getHTMLFrameset();
-				break;
-			case "iconbar":
-				print $this->getHTMLIconbar();
-				break;
-			case "editor":
-				print $this->getHTMLEditor();
-				break;
-			case "edheader":
-				print $this->getHTMLEditorHeader();
-				break;
-			case "edbody":
-				print $this->getHTMLEditorBody();
-				break;
-			case "edfooter":
-				print $this->getHTMLEditorFooter();
-				break;
-			case "cmd":
-				print $this->getHTMLCmd();
-				break;
-			case "tree":
-				print $this->getHTMLTree();
-			case "treeheader":
-				print $this->getHTMLTreeHeader();
-				break;
-			case "treefooter":
-				print $this->getHTMLTreeFooter();
-				break;
-			case "search":
-				print $this->getHTMLSearch();
-				break;
+			case 'frameset':
+				return $this->getHTMLFrameset();
+			case 'iconbar':
+				return $this->getHTMLIconbar();
+			case 'editor':
+				return $this->getHTMLEditor();
+			case 'edheader':
+				return $this->getHTMLEditorHeader();
+			case 'edbody':
+				return $this->getHTMLEditorBody();
+			case 'edfooter':
+				return $this->getHTMLEditorFooter();
+			case 'cmd':
+				return $this->getHTMLCmd();
+			case 'tree':
+				return $this->getHTMLTree();
+			case 'treeheader':
+				return $this->getHTMLTreeHeader();
+			case 'treefooter':
+				return $this->getHTMLTreeFooter();
+			case 'search':
+				return $this->getHTMLSearch();
 			case 'exit_doc_question':
-				print $this->getHTMLExitQuestion();
-				break;
+				return $this->getHTMLExitQuestion();
 			default:
-				t_e(__FILE__ . " unknown reference: $what");
+				t_e(__FILE__ . ' unknown reference: ' . $what);
+				return '';
 		}
 	}
 

@@ -24,10 +24,14 @@
  */
 class we_tab{
 
+	const ACTIVE = 'TAB_ACTIVE';
+	const NORMAL = 'TAB_NORMAL';
+	const DISABLED = 'TAB_DISABLED';
+
 	private $tab;
 
-	function __construct($href, $text, $status = 'TAB_NORMAL', $jscmd = '', $attribs = array()){
-		$class = ($status == 'TAB_ACTIVE' ? 'tabActive' : 'tabNormal');
+	function __construct($href, $text, $status = self::NORMAL, $jscmd = '', $attribs = array()){
+		$class = ($status == self::ACTIVE ? 'tabActive' : 'tabNormal');
 		$att = '';
 		if(isset($attribs) && is_array($attribs)){
 			foreach($attribs as $key => $val){

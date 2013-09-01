@@ -27,7 +27,7 @@ class weGlossaryFrameEditorType extends weGlossaryFrameEditor{
 	function Header(&$weGlossaryFrames){
 		$we_tabs = new we_tabs();
 
-		$we_tabs->addTab(new we_tab("#", g_l('modules_glossary', '[overview]'), 'TAB_ACTIVE', "setTab('1');"));
+		$we_tabs->addTab(new we_tab("#", g_l('modules_glossary', '[overview]'), we_tab::ACTIVE, "setTab('1');"));
 
 		$title = g_l('modules_glossary', '[type]') . ":&nbsp;";
 

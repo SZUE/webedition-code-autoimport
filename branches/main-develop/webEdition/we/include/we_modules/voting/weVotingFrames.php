@@ -40,27 +40,22 @@ class weVotingFrames extends weModuleFrames{
 	function getHTML($what){
 		switch($what){
 			case "export_csv":
-				print $this->getHTMLExportCsvMessage();
-				break;
+				return $this->getHTMLExportCsvMessage();
 			case "exportGroup_csv":
-				print $this->getHTMLExportGroupCsvMessage();
-				break;
+				return $this->getHTMLExportGroupCsvMessage();
 			case "reset_ipdata":
-				print $this->getHTMLResetIPData();
-				break;
+				return $this->getHTMLResetIPData();
 			case "reset_logdata":
-				print $this->getHTMLResetLogData();
-				break;
-			case "show_log": if($this->View->voting->LogDB){
-					print $this->getHTMLShowLogNew();
-				} else {
-					print $this->getHTMLShowLogOld();
-				}break;
+				return $this->getHTMLResetLogData();
+			case "show_log":
+				if($this->View->voting->LogDB){
+					return $this->getHTMLShowLogNew();
+				}
+				return $this->getHTMLShowLogOld();
 			case "delete_log":
-				print $this->getHTMLDeleteLog();
-				break;
+				return $this->getHTMLDeleteLog();
 			default:
-				parent::getHTML($what);
+				return parent::getHTML($what);
 		}
 	}
 
@@ -82,13 +77,13 @@ class weVotingFrames extends weModuleFrames{
 
 		$we_tabs = new we_tabs();
 
-		$we_tabs->addTab(new we_tab("#", g_l('modules_voting', '[property]'), '((' . $this->topFrame . '.activ_tab==1) ? TAB_ACTIVE : TAB_NORMAL)', "setTab('1');", array("id" => "tab_1")));
+		$we_tabs->addTab(new we_tab("#", g_l('modules_voting', '[property]'), '((' . $this->topFrame . '.activ_tab==1) ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('1');", array("id" => "tab_1")));
 		if(!$this->View->voting->IsFolder){
-			$we_tabs->addTab(new we_tab("#", g_l('modules_voting', '[inquiry]'), '((' . $this->topFrame . '.activ_tab==2) ? TAB_ACTIVE : TAB_NORMAL)', "setTab('2');", array("id" => "tab_2")));
-			$we_tabs->addTab(new we_tab("#", g_l('modules_voting', '[options]'), '((' . $this->topFrame . '.activ_tab==3) ? TAB_ACTIVE : TAB_NORMAL)', "setTab('3');", array("id" => "tab_3")));
+			$we_tabs->addTab(new we_tab("#", g_l('modules_voting', '[inquiry]'), '((' . $this->topFrame . '.activ_tab==2) ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('2');", array("id" => "tab_2")));
+			$we_tabs->addTab(new we_tab("#", g_l('modules_voting', '[options]'), '((' . $this->topFrame . '.activ_tab==3) ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('3');", array("id" => "tab_3")));
 
 			if($this->View->voting->ID)
-				$we_tabs->addTab(new we_tab("#", g_l('modules_voting', '[result]'), '((' . $this->topFrame . '.activ_tab==4) ? TAB_ACTIVE : TAB_NORMAL)', "setTab('4');", array("id" => "tab_4")));
+				$we_tabs->addTab(new we_tab("#", g_l('modules_voting', '[result]'), '((' . $this->topFrame . '.activ_tab==4) ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('4');", array("id" => "tab_4")));
 		}
 
 		$we_tabs->onResize();

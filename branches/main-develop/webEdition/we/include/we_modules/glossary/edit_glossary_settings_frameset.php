@@ -33,4 +33,4 @@ $weFrame = new weGlossarySettingFrames();
 $weFrame->Controller->processVariables();
 $weFrame->Controller->processCommands();
 
-$weFrame->getHTML($what);
+echo $weFrame->getHTML($what);

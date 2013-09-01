@@ -30,4 +30,4 @@ $weFrame=new weExportFrames();
 $weFrame->getHTMLDocumentHeader();
 $weFrame->View->processVariables();
 $weFrame->View->processCommands();
-$weFrame->getHTML($what);
+echo $weFrame->getHTML($what);

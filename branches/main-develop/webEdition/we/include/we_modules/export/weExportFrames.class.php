@@ -52,16 +52,13 @@ class weExportFrames extends weModuleFrames{
 	function getHTML($what){
 		switch($what){
 			case "load":
-				print $this->getHTMLCmd();
-				break;
+				return $this->getHTMLCmd();
 			case "treeheader":
-				print $this->getHTMLTreeHeader();
-				break;
+				return $this->getHTMLTreeHeader();
 			case "treefooter":
-				print $this->getHTMLTreeFooter();
-				break;
+				return $this->getHTMLTreeFooter();
 			default:
-				parent::getHTML($what);
+				return parent::getHTML($what);
 		}
 	}
 
@@ -85,10 +82,10 @@ class weExportFrames extends weModuleFrames{
 		}
 
 		$we_tabs = new we_tabs();
-		$we_tabs->addTab(new we_tab("#", g_l('export', '[property]'), '((' . $this->topFrame . '.activ_tab==1) ? TAB_ACTIVE : TAB_NORMAL)', "setTab('1');", array("id" => "tab_1")));
+		$we_tabs->addTab(new we_tab("#", g_l('export', '[property]'), '((' . $this->topFrame . '.activ_tab==1) ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('1');", array("id" => "tab_1")));
 		if($this->View->export->IsFolder == 0){
-			$we_tabs->addTab(new we_tab("#", g_l('export', '[options]'), '((' . $this->topFrame . '.activ_tab==2) ? TAB_ACTIVE : TAB_NORMAL)', "setTab('2');", array("id" => "tab_2")));
-			$we_tabs->addTab(new we_tab("#", g_l('export', '[log]'), '((' . $this->topFrame . '.activ_tab==3) ? TAB_ACTIVE : TAB_NORMAL)', "setTab('3');", array("id" => "tab_3")));
+			$we_tabs->addTab(new we_tab("#", g_l('export', '[options]'), '((' . $this->topFrame . '.activ_tab==2) ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('2');", array("id" => "tab_2")));
+			$we_tabs->addTab(new we_tab("#", g_l('export', '[log]'), '((' . $this->topFrame . '.activ_tab==3) ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('3');", array("id" => "tab_3")));
 		}
 
 		$we_tabs->onResize();
@@ -310,7 +307,7 @@ function closeAllType(){
 
 		if(defined('OBJECT_TABLE')){
 			$this->db->query('SELECT ID,Text FROM ' . OBJECT_TABLE);
-			$classNames= $this->db->getAllFirst(false);
+			$classNames = $this->db->getAllFirst(false);
 		}
 
 		$FolderPath = $this->View->export->Folder ? f("SELECT Path FROM " . FILE_TABLE . " WHERE ID=" . intval($this->View->export->Folder), "Path", $this->db) : "/";

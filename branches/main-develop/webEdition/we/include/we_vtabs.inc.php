@@ -101,7 +101,7 @@ echo we_html_element::jsScript(JS_DIR . 'images.js') .
 $i = 0;
 foreach($vtab as $tab => $val){
 	echo 'case "' . constant($tab) . '":
-		we_tabs[' . $i++ . '].setState(TAB_ACTIVE,false,we_tabs);
+		we_tabs[' . $i++ . '].setState(' . we_tab::ACTIVE . ',false,we_tabs);
 		break;
 		';
 }
@@ -118,8 +118,8 @@ foreach($vtab as $tab => $val){
 	$file = WE_INCLUDES_DIR . $val['file'];
 	$tmp[] = ($val['show'] ?
 			($useSvg ?
-				'new we_tab("#",\'' . str_replace(array('REPLACE', '#ID#', "\n"), array($val['desc'], ++$id, ''), $svg['normal']) . '\', \'' . str_replace(array('REPLACE', '#ID#', "\n"), array($val['desc'], ++$id, ''), $svg['active']) . '\', \'' . str_replace(array('REPLACE', '#ID#', "\n"), array($val['desc'], ++$id, ''), $svg['disabled']) . '\', ' . $val['size'][0] . ',' . $val['size'][1] . ' ,' . ($val['show'] ? 'TAB_NORMAL' : 'TAB_DISABLED') . ', "if(top.deleteMode){we_cmd(\'exit_delete\', \'' . constant($tab) . '\');};treeOut();we_cmd(\'loadVTab\', \'' . constant($tab) . '\' ,0);",true)' :
-				'new we_tab("#","' . $file . '_normal.gif", "' . $file . '_active.gif", "' . $file . '_disabled.gif", ' . $val['size'][0] . ',' . $val['size'][1] . ' ,' . ($val['show'] ? 'TAB_ACTIVE' : 'TAB_DISABLED') . ', "if(top.deleteMode){we_cmd(\'exit_delete\', \'' . constant($tab) . '\');};treeOut();we_cmd(\'loadVTab\', \'' . constant($tab) . '\' ,0);")') :
+				'new we_tab("#",\'' . str_replace(array('REPLACE', '#ID#', "\n"), array($val['desc'], ++$id, ''), $svg['normal']) . '\', \'' . str_replace(array('REPLACE', '#ID#', "\n"), array($val['desc'], ++$id, ''), $svg['active']) . '\', \'' . str_replace(array('REPLACE', '#ID#', "\n"), array($val['desc'], ++$id, ''), $svg['disabled']) . '\', ' . $val['size'][0] . ',' . $val['size'][1] . ' ,' . ($val['show'] ? we_tab::NORMAL : we_tab::DISABLED) . ', "if(top.deleteMode){we_cmd(\'exit_delete\', \'' . constant($tab) . '\');};treeOut();we_cmd(\'loadVTab\', \'' . constant($tab) . '\' ,0);",true)' :
+				'new we_tab("#","' . $file . '_normal.gif", "' . $file . '_active.gif", "' . $file . '_disabled.gif", ' . $val['size'][0] . ',' . $val['size'][1] . ' ,' . ($val['show'] ? we_tab::ACTIVE : we_tab::DISABLED) . ', "if(top.deleteMode){we_cmd(\'exit_delete\', \'' . constant($tab) . '\');};treeOut();we_cmd(\'loadVTab\', \'' . constant($tab) . '\' ,0);")') :
 			'');
 }
 echo implode(',', $tmp);
@@ -164,7 +164,7 @@ echo implode(',', $tmp);
 	}
 	//-->
 </script>
-<div style="position:absolute;top:8px;left:5px;z-index:10;<?php echo $useSvg ? "border-left:1px solid #909090;border-bottom:1px solid #909090;" : "border-top:1px solid black;"  ?>text-decoration:none ">
+<div style="position:absolute;top:8px;left:5px;z-index:10;<?php echo $useSvg ? "border-left:1px solid #909090;border-bottom:1px solid #909090;" : "border-top:1px solid black;" ?>text-decoration:none ">
 	<script type="text/javascript"><!--
 		for (var i = 0; i < we_tabs.length; i++) {
 			we_tabs[i].write();

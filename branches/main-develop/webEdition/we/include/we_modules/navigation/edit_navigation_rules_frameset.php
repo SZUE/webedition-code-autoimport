@@ -30,4 +30,4 @@ $what = isset($_REQUEST["pnt"]) ? $_REQUEST["pnt"] : "frameset";
 $weFrame = new weNavigationRuleFrames();
 $weFrame->Controller->processVariables();
 $weFrame->Controller->processCommands();
-$weFrame->getHTML($what);
+echo $weFrame->getHTML($what);

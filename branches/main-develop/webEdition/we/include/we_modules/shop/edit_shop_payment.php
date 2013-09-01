@@ -235,6 +235,4 @@ echo we_html_element::jsElement('self.focus();') . '
 
 <form name="we_form" method="post" style="margin-top:16px;">
 ' . $frame . '</form>
-
-
 </body></html>';

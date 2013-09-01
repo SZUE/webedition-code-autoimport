@@ -37,13 +37,11 @@ class weBannerFrames extends weModuleFrames{
 	function getHTML($what = '', $mode = ''){
 		switch($what){
 			case "edheader":
-				print $this->getHTMLEditorHeader($mode);
-				break;
+				return $this->getHTMLEditorHeader($mode);
 			case "edfooter":
-				print $this->getHTMLEditorFooter($mode);
-				break;
+				return $this->getHTMLEditorFooter($mode);
 			default:
-				parent::getHTML($what);
+				return parent::getHTML($what);
 		}
 	}
 
@@ -122,7 +120,7 @@ class weBannerFrames extends weModuleFrames{
 						if (nf[ai].name != -1) {
 							fr.write("<a name='_" + nf[ai].name + "' href=\"javascript://\" onClick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\" BORDER=0>");
 						}
-						fr.write("<IMG SRC=<?php print TREE_IMAGE_DIR; ?>icons/" + nf[ai].icon + " WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 alt=\"<?php #print g_l('tree',"[edit_statustext]");          ?>\">");
+						fr.write("<IMG SRC=<?php print TREE_IMAGE_DIR; ?>icons/" + nf[ai].icon + " WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 alt=\"<?php #print g_l('tree',"[edit_statustext]");           ?>\">");
 						fr.write("</a>");
 						fr.write("&nbsp;<a name='_" + nf[ai].name + "' href=\"javascript://\" onClick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">" + (parseInt(nf[ai].published) ? "" : "") + nf[ai].text + (parseInt(nf[ai].published) ? "" : "") + "</A>&nbsp;&nbsp;<BR>\n");
 					} else {
@@ -131,14 +129,14 @@ class weBannerFrames extends weModuleFrames{
 						var zusatz = (ai == nf.laenge) ? "end" : "";
 
 						if (nf[ai].offen == 0) {
-							fr.write("&nbsp;&nbsp;<A href=\"javascript:top.content.openClose('" + nf[ai].name + "',1)\" BORDER=0><IMG SRC=<?php print TREE_IMAGE_DIR; ?>auf" + zusatz + ".gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0 Alt=\"<?php #print g_l('tree',"[open_statustext]")          ?>\"></A>");
+							fr.write("&nbsp;&nbsp;<A href=\"javascript:top.content.openClose('" + nf[ai].name + "',1)\" BORDER=0><IMG SRC=<?php print TREE_IMAGE_DIR; ?>auf" + zusatz + ".gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0 Alt=\"<?php #print g_l('tree',"[open_statustext]")           ?>\"></A>");
 							var zusatz2 = "";
 						} else {
-							fr.write("&nbsp;&nbsp;<A href=\"javascript:top.content.openClose('" + nf[ai].name + "',0)\" BORDER=0><IMG SRC=<?php print TREE_IMAGE_DIR; ?>zu" + zusatz + ".gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0 Alt=\"<?php #print g_l('tree',"[close_statustext]")          ?>\"></A>");
+							fr.write("&nbsp;&nbsp;<A href=\"javascript:top.content.openClose('" + nf[ai].name + "',0)\" BORDER=0><IMG SRC=<?php print TREE_IMAGE_DIR; ?>zu" + zusatz + ".gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0 Alt=\"<?php #print g_l('tree',"[close_statustext]")           ?>\"></A>");
 							var zusatz2 = "open";
 						}
 						fr.write("<a name='_" + nf[ai].name + "' href=\"javascript://\" onClick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\" BORDER=0>");
-						fr.write("<IMG SRC=<?php print TREE_IMAGE_DIR; ?>icons/" + nf[ai].icon.replace(/\.gif/, "") + zusatz2 + ".gif WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 Alt=\"<?php #print g_l('tree',"[edit_statustext]");          ?>\">");
+						fr.write("<IMG SRC=<?php print TREE_IMAGE_DIR; ?>icons/" + nf[ai].icon.replace(/\.gif/, "") + zusatz2 + ".gif WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 Alt=\"<?php #print g_l('tree',"[edit_statustext]");           ?>\">");
 						fr.write("</a>");
 						fr.write("<A name='_" + nf[ai].name + "' HREF=\"javascript://\" onClick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">");
 						fr.write("&nbsp;<b>" + nf[ai].text + "</b>");
@@ -368,12 +366,12 @@ class weBannerFrames extends weModuleFrames{
 		$we_tabs = new we_tabs();
 
 		if($isFolder == 0){
-			$we_tabs->addTab(new we_tab("#", g_l('tabs', "[module][properties]"), ($page == 0 ? "TAB_ACTIVE" : "TAB_NORMAL"), "setTab(0);"));
-			$we_tabs->addTab(new we_tab("#", g_l('tabs', "[module][placement]"), ($page == 1 ? "TAB_ACTIVE" : "TAB_NORMAL"), "setTab(1);"));
-			$we_tabs->addTab(new we_tab("#", g_l('tabs', "[module][statistics]"), ($page == 2 ? "TAB_ACTIVE" : "TAB_NORMAL"), "setTab(2);"));
+			$we_tabs->addTab(new we_tab("#", g_l('tabs', "[module][properties]"), ($page == 0 ? we_tab::ACTIVE : we_tab::NORMAL), "setTab(0);"));
+			$we_tabs->addTab(new we_tab("#", g_l('tabs', "[module][placement]"), ($page == 1 ? we_tab::ACTIVE : we_tab::NORMAL), "setTab(1);"));
+			$we_tabs->addTab(new we_tab("#", g_l('tabs', "[module][statistics]"), ($page == 2 ? we_tab::ACTIVE : we_tab::NORMAL), "setTab(2);"));
 		} else {
 
-			$we_tabs->addTab(new we_tab("#", g_l('tabs', "[module][properties]"), "TAB_ACTIVE", "setTab(0);"));
+			$we_tabs->addTab(new we_tab("#", g_l('tabs', "[module][properties]"), we_tab::ACTIVE, "setTab(0);"));
 		}
 
 		$we_tabs->onResize('header');

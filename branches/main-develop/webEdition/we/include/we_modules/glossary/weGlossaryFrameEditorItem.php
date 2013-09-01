@@ -30,30 +30,30 @@ class weGlossaryFrameEditorItem extends weGlossaryFrameEditor{
 
 		switch($weGlossaryFrames->View->Glossary->Type){
 			case we_glossary_glossary::TYPE_ABBREVATION:
-				$we_tabs->addTab(new we_tab("#", g_l('modules_glossary', '[property]'), 'TAB_ACTIVE', "setTab('1');"));
+				$we_tabs->addTab(new we_tab("#", g_l('modules_glossary', '[property]'), we_tab::ACTIVE, "setTab('1');"));
 
 				$title = g_l('modules_glossary', '[abbreviation]');
 				break;
 
 			case we_glossary_glossary::TYPE_ACRONYM:
-				$we_tabs->addTab(new we_tab("#", g_l('modules_glossary', '[property]'), 'TAB_ACTIVE', "setTab('1');"));
+				$we_tabs->addTab(new we_tab("#", g_l('modules_glossary', '[property]'), we_tab::ACTIVE, "setTab('1');"));
 
 				$title = g_l('modules_glossary', '[acronym]');
 				break;
 
 			case we_glossary_glossary::TYPE_FOREIGNWORD:
-				$we_tabs->addTab(new we_tab("#", g_l('modules_glossary', '[property]'), 'TAB_ACTIVE', "setTab('1');"));
+				$we_tabs->addTab(new we_tab("#", g_l('modules_glossary', '[property]'), we_tab::ACTIVE, "setTab('1');"));
 
 				$title = g_l('modules_glossary', '[foreignword]');
 				break;
 
 			case we_glossary_glossary::TYPE_LINK:
-				$we_tabs->addTab(new we_tab("#", g_l('modules_glossary', '[property]'), 'TAB_ACTIVE', "setTab('1');"));
+				$we_tabs->addTab(new we_tab("#", g_l('modules_glossary', '[property]'), we_tab::ACTIVE, "setTab('1');"));
 
 				$title = g_l('modules_glossary', '[link]');
 				break;
 			case we_glossary_glossary::TYPE_TEXTREPLACE:
-				$we_tabs->addTab(new we_tab("#", g_l('modules_glossary', '[property]'), 'TAB_ACTIVE', "setTab('1');"));
+				$we_tabs->addTab(new we_tab("#", g_l('modules_glossary', '[property]'), we_tab::ACTIVE, "setTab('1');"));
 
 				$title = g_l('modules_glossary', '[textreplacement]');
 				break;

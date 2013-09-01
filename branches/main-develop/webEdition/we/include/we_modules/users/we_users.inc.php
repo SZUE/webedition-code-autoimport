@@ -2333,15 +2333,15 @@ function show_seem_chooser(val) {
 		$we_tabs = new we_tabs();
 
 		if($this->Type == self::TYPE_ALIAS){
-			$we_tabs->addTab(new we_tab('#', g_l('tabs', '[module][data]'), 'TAB_ACTIVE', 'setTab(0);'));
+			$we_tabs->addTab(new we_tab('#', g_l('tabs', '[module][data]'), we_tab::ACTIVE, 'setTab(0);'));
 		} else {
-			$we_tabs->addTab(new we_tab('#', g_l('tabs', '[module][data]'), ($tab == 0 ? 'TAB_ACTIVE' : 'TAB_NORMAL'), 'self.setTab(0);'));
+			$we_tabs->addTab(new we_tab('#', g_l('tabs', '[module][data]'), ($tab == 0 ? we_tab::ACTIVE : we_tab::NORMAL), 'self.setTab(0);'));
 
-			$we_tabs->addTab(new we_tab('#', g_l('tabs', '[module][permissions]'), ($tab == 1 ? 'TAB_ACTIVE' : 'TAB_NORMAL'), 'self.setTab(1);'));
-			$we_tabs->addTab(new we_tab('#', g_l('tabs', '[module][workspace]'), ($tab == 2 ? 'TAB_ACTIVE' : 'TAB_NORMAL'), 'self.setTab(2);'));
+			$we_tabs->addTab(new we_tab('#', g_l('tabs', '[module][permissions]'), ($tab == 1 ? we_tab::ACTIVE : we_tab::NORMAL), 'self.setTab(1);'));
+			$we_tabs->addTab(new we_tab('#', g_l('tabs', '[module][workspace]'), ($tab == 2 ? we_tab::ACTIVE : we_tab::NORMAL), 'self.setTab(2);'));
 
 			if($this->Type == self::TYPE_USER){
-				$we_tabs->addTab(new we_tab('#', g_l('tabs', '[module][preferences]'), ($tab == 3 ? 'TAB_ACTIVE' : 'TAB_NORMAL'), 'self.setTab(3);'));
+				$we_tabs->addTab(new we_tab('#', g_l('tabs', '[module][preferences]'), ($tab == 3 ? we_tab::ACTIVE : we_tab::NORMAL), 'self.setTab(3);'));
 			}
 		}
 

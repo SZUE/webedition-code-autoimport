@@ -1595,16 +1595,20 @@ class we_document extends we_root{
 	}
 
 	protected function update_filehash(){
-		if($this->Table == TEMPLATES_TABLE || $this->Table == FILE_TABLE){
-			$this->wasUpdate = $this->ID > 0;
-			if($this->Table == TEMPLATES_TABLE){
-				$usepath = (strpos($this->Path, '.tmpl') === false ? TEMPLATES_PATH . $this->Path : TEMPLATES_PATH . substr_replace($this->Path, '.php', -5));
-			} else {
-				$usepath = $_SERVER['DOCUMENT_ROOT'] . $this->Path;
-			}
-			$this->Filehash = (file_exists($usepath) && is_file($usepath) ? sha1_file($usepath) : '');
-			$this->i_savePersistentSlotsToDB('Filehash,RebuildDate');
+		switch($this->Table){
+			default:
+				return;
+			case TEMPLATES_TABLE:
+			case FILE_TABLE:
 		}
+		$this->wasUpdate = $this->ID > 0;
+		$usepath = ($this->Table == TEMPLATES_TABLE ?
+				(strpos($this->Path, '.tmpl') === false ? TEMPLATES_PATH . $this->Path : TEMPLATES_PATH . substr_replace($this->Path, '.php', -5)) :
+				$_SERVER['DOCUMENT_ROOT'] . $this->Path
+			);
+
+		$this->Filehash = (file_exists($usepath) && is_file($usepath) ? sha1_file($usepath) : '');
+		$this->i_savePersistentSlotsToDB('Filehash,RebuildDate');
 	}
 
 }

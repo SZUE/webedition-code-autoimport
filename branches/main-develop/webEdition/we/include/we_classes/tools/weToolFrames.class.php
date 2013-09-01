@@ -39,49 +39,36 @@ class weToolFrames extends weModuleFrames{
 	function getHTML($what){
 		switch($what){
 			case 'frameset':
-				print $this->getHTMLFrameset();
-				break;
+				return $this->getHTMLFrameset();
 			case 'header':
-				print $this->getHTMLHeader();
-				break;
+				return $this->getHTMLHeader();
 			case 'resize':
-				print $this->getHTMLResize();
-				break;
+				return $this->getHTMLResize();
 			case 'left':
-				print $this->getHTMLLeft();
-				break;
+				return $this->getHTMLLeft();
 			case 'right':
-				print $this->getHTMLRight();
-				break;
+				return $this->getHTMLRight();
 			case 'editor':
-				print $this->getHTMLEditor();
-				break;
+				return $this->getHTMLEditor();
 			case 'edheader':
-				print $this->getHTMLEditorHeader();
-				break;
+				return $this->getHTMLEditorHeader();
 			case 'edbody':
-				print $this->getHTMLEditorBody();
-				break;
+				return $this->getHTMLEditorBody();
 			case 'edfooter':
-				print $this->getHTMLEditorFooter();
-				break;
+				return $this->getHTMLEditorFooter();
 			case 'cmd':
-				print $this->getHTMLCmd();
-				break;
+				return $this->getHTMLCmd();
 			case 'treeheader':
-				print $this->getHTMLTreeHeader();
-				break;
+				return $this->getHTMLTreeHeader();
 			case 'treefooter':
-				print $this->getHTMLTreeFooter();
-				break;
+				return $this->getHTMLTreeFooter();
 			case 'treeconst':
-				print $this->Tree->getHTMLContruct();
-				break;
+				return $this->Tree->getHTMLContruct();
 			case 'exit_doc_question':
-				print $this->getHTMLExitQuestion();
-				break;
+				return $this->getHTMLExitQuestion();
 			default:
 				t_e(__FILE__ . " unknown reference: $what");
+				return '';
 		}
 	}
 
@@ -209,7 +196,7 @@ class weToolFrames extends weModuleFrames{
 		}
 
 		$we_tabs = new we_tabs();
-		$we_tabs->addTab(new we_tab('#', g_l('tools', '[properties]'), '((' . $this->topFrame . '.activ_tab==1) ? TAB_ACTIVE : TAB_NORMAL)', "setTab('1');", array("id" => "tab_1")));
+		$we_tabs->addTab(new we_tab('#', g_l('tools', '[properties]'), '((' . $this->topFrame . '.activ_tab==1) ? ' . we_tab::ACTIVE . ': ' . we_tab::NORMAL . ')', "setTab('1');", array("id" => "tab_1")));
 
 		$we_tabs->onResize();
 

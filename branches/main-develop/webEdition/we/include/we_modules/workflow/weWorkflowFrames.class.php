@@ -35,21 +35,15 @@ class weWorkflowFrames extends weModuleFrames{
 	function getHTML($what = '', $mode = 0, $type = 0){
 		switch($what){
 			case "edheader":
-				print $this->getHTMLEditorHeader($mode);
-				break;
+				return $this->getHTMLEditorHeader($mode);
 			case "edfooter":
-				print $this->getHTMLEditorFooter($mode);
-				break;
-
+				return $this->getHTMLEditorFooter($mode);
 			case "qlog":
-				print $this->getHTMLLogQuestion();
-				break;
-
+				return $this->getHTMLLogQuestion();
 			case "log":
-				print $this->getHTMLLog($mode, $type);
-				break;
+				return $this->getHTMLLog($mode, $type);
 			default:
-				parent::getHTML($what);
+				return parent::getHTML($what);
 		}
 	}
 
@@ -371,10 +365,10 @@ class weWorkflowFrames extends weModuleFrames{
 		$we_tabs = new we_tabs();
 
 		if($mode == 0){
-			$we_tabs->addTab(new we_tab("#", g_l('tabs', "[module][properties]"), "TAB_NORMAL", "setTab(0);", array("id" => "tab_0")));
-			$we_tabs->addTab(new we_tab("#", g_l('tabs', "[module][overview]"), "TAB_NORMAL", "setTab(1);", array("id" => "tab_1")));
+			$we_tabs->addTab(new we_tab("#", g_l('tabs', "[module][properties]"), we_tab::NORMAL, "setTab(0);", array("id" => "tab_0")));
+			$we_tabs->addTab(new we_tab("#", g_l('tabs', "[module][overview]"), we_tab::NORMAL, "setTab(1);", array("id" => "tab_1")));
 		} else {
-			$we_tabs->addTab(new we_tab("#", g_l('tabs', "[editor][information]"), "TAB_ACTIVE", "//", array("id" => "tab_0")));
+			$we_tabs->addTab(new we_tab("#", g_l('tabs', "[editor][information]"), we_tab::ACTIVE, "//", array("id" => "tab_0")));
 		}
 
 		$we_tabs->onResize();
@@ -410,8 +404,8 @@ top.content.hloaded=1;
 		);
 
 		$body = we_html_element::htmlBody(array(
-				'onresize' => 'setFrameSize()', 
-				'onload' => 'setFrameSize()', 
+				'onresize' => 'setFrameSize()',
+				'onload' => 'setFrameSize()',
 				'bgcolor' => 'white',
 				'background' => IMAGE_DIR . 'backgrounds/header_with_black_line.gif',
 				'marginwidth' => 0,

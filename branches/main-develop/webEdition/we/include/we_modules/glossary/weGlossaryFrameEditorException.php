@@ -27,7 +27,7 @@ class weGlossaryFrameEditorException extends weGlossaryFrameEditor{
 	function Header(&$weGlossaryFrames){
 
 		$we_tabs = new we_tabs();
-		$we_tabs->addTab(new we_tab("#", g_l('modules_glossary', '[exception]'), 'TAB_ACTIVE', "setTab('1');"));
+		$we_tabs->addTab(new we_tab("#", g_l('modules_glossary', '[exception]'), we_tab::ACTIVE, "setTab('1');"));
 
 		$frontendL = getWeFrontendLanguagesForBackend();
 		$title = g_l('modules_glossary', '[exception]') . ":&nbsp;" . (isset($frontendL[substr($_REQUEST['cmdid'], 0, 5)]) ? $frontendL[substr($_REQUEST['cmdid'], 0, 5)] : "-");

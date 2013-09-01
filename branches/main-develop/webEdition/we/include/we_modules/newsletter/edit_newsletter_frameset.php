@@ -49,18 +49,18 @@ if(isset($_REQUEST["inid"])){
 }
 
 switch($what){
-	case "export_csv_mes":
-	case "preview":
-	case "domain_check":
-	case "newsletter_settings":
-	case "show_log":
-	case "print_lists":
-	case "qsend":
-	case "eedit":
-	case "black_list":
+	case 'export_csv_mes':
+	case 'preview':
+	case 'domain_check':
+	case 'newsletter_settings':
+	case 'show_log':
+	case 'print_lists':
+	case 'qsend':
+	case 'eedit':
+	case 'black_list':
 		break;
 	default:
 		$newsletterFrame->View->processCommands();
 }
 
-$newsletterFrame->getHTML($what, $mode);
+echo $newsletterFrame->getHTML($what, $mode);

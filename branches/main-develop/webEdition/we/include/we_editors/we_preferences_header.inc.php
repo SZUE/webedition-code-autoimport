@@ -32,7 +32,7 @@ $we_tabs = new we_tabs();
 
 foreach($GLOBALS['tabs'] as $name => $perm){
 	if(empty($perm) || we_hasPerm($perm)){
-		$we_tabs->addTab(new we_tab("#", g_l('prefs', '[tab][' . $name . ']'), ($tabname == 'setting_' . $name ? 'TAB_ACTIVE' : 'TAB_NORMAL'), "top.we_cmd('" . $name . "');"));
+		$we_tabs->addTab(new we_tab("#", g_l('prefs', '[tab][' . $name . ']'), ($tabname == 'setting_' . $name ? we_tab::ACTIVE : we_tab::NORMAL), "top.we_cmd('" . $name . "');"));
 	}
 }
 
