@@ -78,6 +78,7 @@ $l_javaMenu_global=array(
 	'rss_reader'=>'RSS Reader',
 	'save'=>'Save',
 	'search'=>'Search',
+	'shop_dashboard'=>'',
 	'shortcuts'=>'Shortcuts',
 	'showerrorlog'=>'Errorlog',
 	'sidebar'=>'Sidebar',

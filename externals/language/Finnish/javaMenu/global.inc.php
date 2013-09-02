@@ -78,6 +78,7 @@ $l_javaMenu_global=array(
 	'rss_reader'=>'RSS lukija',
 	'save'=>'Tallenna',
 	'search'=>'Etsi',
+	'shop_dashboard'=>'',
 	'shortcuts'=>'Oikopolut',
 	'showerrorlog'=>'Errorlog',
 	'sidebar'=>'Sivupalkki',

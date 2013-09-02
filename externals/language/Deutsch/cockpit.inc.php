@@ -135,6 +135,7 @@ $l_cockpit=array(
 		'revenue'=>'Umsatz',
 		'revenue_order'=>'Umsatz je Bestellung',
 		'revenue_target'=>'Umsatzziel',
+		'target_in'=>'Ziel in',
 		'unpayed'=>'Davon unbezahlt',
 	),
 	'shop_dashborad'=>array(
@@ -151,6 +152,7 @@ $l_cockpit=array(
 	'strongest_visitor_hour'=>'Stärkste Stunde',
 	'templates'=>'Vorlagen',
 	'this_month'=>'diesen Monat',
+	'this_week'=>'diese Woche',
 	'this_year'=>'dieses Jahr',
 	'title'=>'Titel',
 	'title_empty'=>'Bitte geben Sie einen Titel an!',
@@ -185,5 +187,4 @@ $l_cockpit=array(
 	'visitors_yesterday_unique'=>'Davon Unique',
 	'white'=>'weiss',
 	'yellow'=>'gelb',
-	''=>'diese Woche',
-;
+);
