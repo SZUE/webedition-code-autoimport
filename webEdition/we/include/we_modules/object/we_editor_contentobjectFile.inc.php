@@ -35,7 +35,6 @@ we_html_tools::headerCtCharset('text/html', $charset);
 
 $_editMode = (isset($_previewMode) && $_previewMode == 1 ? 0 : 1);
 $parts = $GLOBALS['we_doc']->getFieldsHTML($_editMode);
-
 if(is_array($GLOBALS['we_doc']->DefArray)){
 	foreach($GLOBALS['we_doc']->DefArray as $n => $v){
 		if(is_array($v)){
@@ -124,6 +123,5 @@ if($_editMode){
 }
 ?>
 	</form>
-</body><?php echo we_html_element::jsElement('setTimeout("doScrollTo();",100);'); ?>
-
+</body><?php echo we_html_element::jsElement('setTimeout("doScrollTo();",100);');?>
 </html>

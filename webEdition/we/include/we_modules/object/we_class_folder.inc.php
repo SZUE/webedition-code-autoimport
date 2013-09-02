@@ -459,7 +459,7 @@ class we_class_folder extends we_folder{
 									$type[$i + 5] = $regs[1];
 									$i++;
 									break;
-								case "multiobject":
+								case we_objectFile::TYPE_MULTIOBJECT:
 									$headline[$i + 5]["dat"] = '<table border="0" cellpadding="0" cellspacing="0" class="defaultfont"><tr><td>' . $regs[2] . '</td><td></td></tr></table>';
 									$head[$i + 5]["dat"] = $regs[2];
 									$type[$i + 5] = $regs[1];
@@ -519,7 +519,7 @@ class we_class_folder extends we_folder{
 							}
 							$content[$f][$i + 5]["dat"] = $obj;
 							break;
-						case "multiobject":
+						case we_objectFile::TYPE_MULTIOBJECT:
 							$temp = unserialize($this->searchclass->f($type[$i + 5] . "_" . $head[$i + 5]["dat"]));
 							if(is_array($temp['objects']) && !empty($temp['objects'])){
 								$objects = $temp['objects'];

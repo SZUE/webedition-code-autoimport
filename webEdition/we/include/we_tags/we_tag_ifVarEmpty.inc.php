@@ -77,7 +77,7 @@ function we_isVarNotEmpty($attribs){
 							$attribs['_name_orig'] = $match_orig;
 							$foo = $doc->getField($attribs, $type, true);
 							break;
-						case 'multiobject' :
+						case 'multiobject':
 							//FIXME: this makes no sense
 							$attribs['name'] = $match;
 							$attribs['_name_orig'] = $match_orig;

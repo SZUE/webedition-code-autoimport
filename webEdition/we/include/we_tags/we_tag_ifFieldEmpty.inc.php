@@ -61,7 +61,7 @@ function we_isFieldNotEmpty($attribs){
 				}
 			}
 			return false;
-		case 'multiobject' :
+		case 'multiobject':
 			$data = (isset($GLOBALS['lv']) ?
 					(method_exists($GLOBALS['lv'], 'getObject') || $GLOBALS['lv']->ClassName == 'we_listview_shoppingCart' ?
 						unserialize($GLOBALS['lv']->getObject()->f($orig_match)) :
