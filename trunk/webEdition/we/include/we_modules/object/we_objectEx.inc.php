@@ -221,7 +221,7 @@ class we_objectEx extends we_object{
 				return " DOUBLE DEFAULT NULL ";
 			case "object":
 				return " BIGINT(20) DEFAULT '0' NOT NULL ";
-			case "multiobject":
+			case we_objectFile::TYPE_MULTIOBJECT:
 				return " TEXT NOT NULL ";
 			case 'shopVat':
 				return ' TEXT NOT NULL';
@@ -306,7 +306,7 @@ class we_objectEx extends we_object{
 			case 'int':
 				$defaultArr['meta'] = array($type . '_' . $name . 'defaultkey0' => '');
 				break;
-			case 'multiobject':
+			case we_objectFile::TYPE_MULTIOBJECT:
 				$defaultArr['meta'] = array('');
 				break;
 		}

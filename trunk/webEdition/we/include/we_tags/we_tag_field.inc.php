@@ -233,7 +233,7 @@ function we_tag_field($attribs){
 			$out = listviewBase::getCalendarField($GLOBALS['lv']->calendar_struct['calendar'], $type);
 			break;
 
-		case 'multiobject' :
+		case 'multiobject':
 			$temp = unserialize($GLOBALS['lv']->DB_WE->Record['we_' . $name]);
 			$out = (isset($temp['objects']) && !empty($temp['objects']) ? implode(',', $temp['objects']) : '');
 			break;

@@ -234,7 +234,7 @@ class we_object extends we_document{
 						//  First time a field is added
 						for($f = 0; $f <= ( isset($this->elements[$cur . 'count']['dat']) ? $this->elements[$cur . 'count']['dat'] : 0 ); $f++){
 							$_val = (isset($this->elements[$cur . 'defaultvalue' . $f]['dat']) && $this->elements[$cur . 'defaultvalue' . $f]['dat'] != $cur . 'defaultvalue' . $f) ? $this->elements[$cur . 'defaultvalue' . $f]['dat'] : '';
-							if(substr($name, 0, 12) == 'multiobject_'){
+							if(substr($name, 0, 12) == we_objectFile::TYPE_MULTIOBJECT.'_'){
 								$arrt[$name]['meta'][] = $_val;
 							} else {
 								if(isset($this->elements[$cur . 'defaultkey' . $f]['dat'])){
@@ -361,7 +361,7 @@ class we_object extends we_document{
 											$arrt[$nam]['meta'] = array();
 										}
 										$_val = (isset($this->elements[$info['name'] . 'defaultvalue' . $f]) && $this->elements[$info['name'] . 'defaultvalue' . $f] != $info['name'] . 'defaultvalue' . $f ) ? $this->elements[$info['name'] . 'defaultvalue' . $f]['dat'] : '';
-										if(substr($nam, 0, 12) == 'multiobject_'){
+										if(substr($nam, 0, 12) == we_objectFile::TYPE_MULTIOBJECT.'_'){
 											$arrt[$nam]['meta'][] = $_val;
 										} else {
 											$arrt[$nam]['meta'][$this->elements[$info['name'] . 'defaultkey' . $f]['dat']] = $_val;
@@ -424,7 +424,7 @@ class we_object extends we_document{
 						if((!isset($arrt[$nam]['meta'])) || (!is_array($arrt[$nam]['meta']))){
 							$arrt[$nam]['meta'] = array();
 						}
-						if(substr($nam, 0, 12) == 'multiobject_'){
+						if(substr($nam, 0, 12) == we_objectFile::TYPE_MULTIOBJECT.'_'){
 							$arrt[$nam]['meta'][] = $_val;
 						} else {
 							if(isset($this->elements[$cur . 'defaultkey' . $f]['dat'])){
@@ -530,7 +530,7 @@ class we_object extends we_document{
 				return ' DOUBLE DEFAULT NULL ';
 			case 'object':
 				return ' BIGINT(20) DEFAULT "0" NOT NULL ';
-			case 'multiobject':
+			case we_objectFile::TYPE_MULTIOBJECT:
 				return ' TEXT NOT NULL ';
 			case 'shopVat':
 				return ' TEXT NOT NULL';
@@ -871,7 +871,7 @@ class we_object extends we_document{
 			"country" => g_l('modules_object', '[country_field]'),
 			"language" => g_l('modules_object', '[language_field]'),
 			"object" => g_l('modules_object', '[objectFile_field]'),
-			"multiobject" => g_l('modules_object', '[multiObjectFile_field]'),
+			we_objectFile::TYPE_MULTIOBJECT => g_l('modules_object', '[multiObjectFile_field]'),
 		);
 		if(defined('SHOP_TABLE')){
 			$val["shopVat"] = g_l('modules_object', '[shopVat_field]');
@@ -879,7 +879,7 @@ class we_object extends we_document{
 		$content .= $this->htmlSelect("we_" . $this->Name . "_input[" . $name . self::ELEMENT_TYPE . ']', $val, 1, $type, "", 'onChange="if(this.form.elements[\'' . "we_" . $this->Name . "_input[" . $name . "default]" . '\']){this.form.elements[\'' . "we_" . $this->Name . "_input[" . $name . "default]" . '\'].value=\'\' };_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_entry_at_class\',\'' . $GLOBALS['we_transaction'] . '\',\'' . $identifier . '\'); "', "value", 388) .
 			'</td></tr>';
 
-		if($type != 'shopVat' && $type != "float" && $type != "text" && $type != "country" && $type != "language" && $type != "img" && $type != "binary" && $type != "flashmovie" && $type != "quicktime" && $type != "date" && $type != "meta" && $type != "object" && $type != "link" && $type != "href" && $type != "checkbox" && $type != "multiobject"){
+		if($type != 'shopVat' && $type != "float" && $type != "text" && $type != "country" && $type != "language" && $type != "img" && $type != "binary" && $type != "flashmovie" && $type != "quicktime" && $type != "date" && $type != "meta" && $type != "object" && $type != "link" && $type != "href" && $type != "checkbox" && $type != we_objectFile::TYPE_MULTIOBJECT){
 			// Length
 			$maxLengthVal = $type == 'int' ? 10 : 255;
 			$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin"  valign="top">' . g_l('modules_object', '[length]') . '</td>' .
@@ -889,7 +889,7 @@ class we_object extends we_document{
 		}
 
 		switch($type){
-			case 'multiobject':
+			case we_objectFile::TYPE_MULTIOBJECT:
 				$content .= '<tr>' .
 					'<td  width="100" class="weMultiIconBoxHeadlineThin" valign="top" >' . g_l('contentTypes', '[object]') . '</td>' .
 					'<td  width="170" class="defaultfont" valign="top">';
@@ -912,11 +912,11 @@ class we_object extends we_document{
 				if(!isset($this->elements[$name . "class"]["dat"]) || $this->elements[$name . "class"]["dat"] == ""){
 					$this->setElement($name . "class", array_shift(array_flip($vals)));
 				}
-				$content .= $this->htmlSelect("we_" . $this->Name . "_multiobject[" . $name . "class]", $vals, 1, $this->getElement($name . 'class', "dat"), "", 'onChange="if(this.form.elements[\'' . "we_" . $this->Name . "_input[" . $name . "default]" . '\']){this.form.elements[\'' . "we_" . $this->Name . "_input[" . $name . "default]" . '\'].value=\'\' };_EditorFrame.setEditorIsHot(true);we_cmd(\'change_multiobject_at_class\',\'' . $GLOBALS['we_transaction'] . '\',\'' . $identifier . '\',\'' . $name . '\')"', "value", 388) .
+				$content .= $this->htmlSelect("we_" . $this->Name . '_'.we_objectFile::TYPE_MULTIOBJECT.'[' . $name . "class]", $vals, 1, $this->getElement($name . 'class', "dat"), "", 'onchange="if(this.form.elements[\'' . "we_" . $this->Name . "_input[" . $name . "default]" . '\']){this.form.elements[\'' . "we_" . $this->Name . "_input[" . $name . "default]" . '\'].value=\'\' };_EditorFrame.setEditorIsHot(true);we_cmd(\'change_multiobject_at_class\',\'' . $GLOBALS['we_transaction'] . '\',\'' . $identifier . '\',\'' . $name . '\')"', "value", 388) .
 					'</td></tr>
 						<tr valign="top">
 						<td  width="100" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[max_objects]') . '</td>
-						<td class="defaultfont"><nobr>' . $this->htmlTextInput("we_" . $this->Name . "_multiobject[" . $name . "max]", 5, $this->getElement($name . "max", "dat"), 3, 'onChange="_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_entry_at_class\',\'' . $GLOBALS['we_transaction'] . '\',\'' . ($identifier) . '\');"', "text", 50) . ' (' . g_l('modules_object', '[no_maximum]') . ')</nobr></td>
+						<td class="defaultfont"><nobr>' . $this->htmlTextInput("we_" . $this->Name . '_'.we_objectFile::TYPE_MULTIOBJECT.'[' . $name . "max]", 5, $this->getElement($name . "max", "dat"), 3, 'onChange="_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_entry_at_class\',\'' . $GLOBALS['we_transaction'] . '\',\'' . ($identifier) . '\');"', "text", 50) . ' (' . g_l('modules_object', '[no_maximum]') . ')</nobr></td>
 					</tr>
 						<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[default]') . '</td>
 						<td width="170" class="defaultfont"><table border="0">';
