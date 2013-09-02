@@ -123,6 +123,23 @@ $l_cockpit=array(
 	'rss_top_feeds'=>'RSS-syötteet',
 	'sct_rem'=>'Voit järjestellä pikakuvakkeet kahteen sarakkeeseen.',
 	'select_buttons'=>'Lisää nappeja',
+	
+	'shop_dashboard'=>array(
+		'articles_order'=>'',
+		'cnt_articles'=>'',
+		'cnt_new_customer'=>'',
+		'cnt_order'=>'',
+		'headline'=>'',
+		'order_value_order'=>'',
+		'payed'=>'',
+		'revenue'=>'',
+		'revenue_order'=>'',
+		'revenue_target'=>'',
+		'unpayed'=>'',
+	),
+	'shop_dashborad'=>array(
+		'kpi'=>'',
+	),
 	'shortcuts'=>'Pikakuvakkeet',
 	'show_edit_titlebar'=>'Näytä otsikon muokkaus',
 	'show_edit_toprssfeeds'=>'Näytä RSS-syötteiden muokkaus',
@@ -133,6 +150,8 @@ $l_cockpit=array(
 	'strongest_visitor_day'=>'Eniten päivittäisiä kävijöitä',
 	'strongest_visitor_hour'=>'Eniten kävijöitä tunnilla',
 	'templates'=>'Sivupohjat',
+	'this_month'=>'this month',
+	'this_year'=>'this year',
 	'title'=>'Otsikko',
 	'title_empty'=>'Kirjoita otsikko',
 	'today'=>'tänään',
@@ -166,4 +185,5 @@ $l_cockpit=array(
 	'visitors_yesterday_unique'=>'Uniikit kävijät',
 	'white'=>'valkoinen',
 	'yellow'=>'keltainen',
-);
+	''=>'this week',
+;

@@ -123,6 +123,23 @@ $l_cockpit=array(
 	'rss_top_feeds'=>'Top RSS-Feeds',
 	'sct_rem'=>'You can arrange your shortcut buttons in two columns.',
 	'select_buttons'=>'Add buttons',
+	
+	'shop_dashboard'=>array(
+		'articles_order'=>'',
+		'cnt_articles'=>'',
+		'cnt_new_customer'=>'',
+		'cnt_order'=>'',
+		'headline'=>'',
+		'order_value_order'=>'',
+		'payed'=>'',
+		'revenue'=>'',
+		'revenue_order'=>'',
+		'revenue_target'=>'',
+		'unpayed'=>'',
+	),
+	'shop_dashborad'=>array(
+		'kpi'=>'',
+	),
 	'shortcuts'=>'Shortcuts',
 	'show_edit_titlebar'=>'Show edit titlebar',
 	'show_edit_toprssfeeds'=>'Show edit Top RSS-Feeds',
@@ -133,6 +150,8 @@ $l_cockpit=array(
 	'strongest_visitor_day'=>'Strongest visitor day',
 	'strongest_visitor_hour'=>'Strongest visitor hour',
 	'templates'=>'Templates',
+	'this_month'=>'this month',
+	'this_year'=>'this year',
 	'title'=>'Title',
 	'title_empty'=>'Please enter the title!',
 	'today'=>'today',
@@ -166,4 +185,5 @@ $l_cockpit=array(
 	'visitors_yesterday_unique'=>'Visitors unique',
 	'white'=>'white',
 	'yellow'=>'yellow',
-);
+	''=>'this week',
+;

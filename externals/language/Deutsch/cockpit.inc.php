@@ -1,7 +1,7 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_cockpit=array(
-	'Snapshot'=>'Schnappschuß',
+	'Snapshot'=>'Schnappschuss',
 	'all'=>'Alle',
 	'all_notes'=>'alle Notizen',
 	'all_selected'=>'Alle ausgewählt',
@@ -123,6 +123,23 @@ $l_cockpit=array(
 	'rss_top_feeds'=>'Top RSS-Feeds',
 	'sct_rem'=>'Sie können sich Ihre Shortcut-Schaltflächen in zwei Spalten anordnen.',
 	'select_buttons'=>'Schaltflächen hinzufügen',
+	
+	'shop_dashboard'=>array(
+		'articles_order'=>'Artikel/Bestellung',
+		'cnt_articles'=>'Bestellte Artikel',
+		'cnt_new_customer'=>'Anzahl Neukunden',
+		'cnt_order'=>'Anzahl Bestellungen',
+		'headline'=>'Shop Dashboard',
+		'order_value_order'=>'Bestellwert/Bestellung',
+		'payed'=>'Davon bezahlt',
+		'revenue'=>'Umsatz',
+		'revenue_order'=>'Umsatz je Bestellung',
+		'revenue_target'=>'Umsatzziel',
+		'unpayed'=>'Davon unbezahlt',
+	),
+	'shop_dashborad'=>array(
+		'kpi'=>'Kennzahlen',
+	),
 	'shortcuts'=>'Schnellzugriff',
 	'show_edit_titlebar'=>'Anpassen der Widget Titelleiste einblenden',
 	'show_edit_toprssfeeds'=>'Bearbeiten der Top RSS-Feed Liste einblenden',
@@ -133,6 +150,8 @@ $l_cockpit=array(
 	'strongest_visitor_day'=>'Stärkster Tag',
 	'strongest_visitor_hour'=>'Stärkste Stunde',
 	'templates'=>'Vorlagen',
+	'this_month'=>'diesen Monat',
+	'this_year'=>'dieses Jahr',
 	'title'=>'Titel',
 	'title_empty'=>'Bitte geben Sie einen Titel an!',
 	'today'=>'heute',
@@ -166,4 +185,5 @@ $l_cockpit=array(
 	'visitors_yesterday_unique'=>'Davon Unique',
 	'white'=>'weiss',
 	'yellow'=>'gelb',
-);
+	''=>'diese Woche',
+;

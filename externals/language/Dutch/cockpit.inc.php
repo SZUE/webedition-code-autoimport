@@ -123,6 +123,23 @@ $l_cockpit=array(
 	'rss_top_feeds'=>'Beste RSS-Feeds',
 	'sct_rem'=>'U kunt de snelkoppelingen rangschikken in twee kolommen.',
 	'select_buttons'=>'Voeg knoppen toe',
+	
+	'shop_dashboard'=>array(
+		'articles_order'=>'',
+		'cnt_articles'=>'',
+		'cnt_new_customer'=>'',
+		'cnt_order'=>'',
+		'headline'=>'',
+		'order_value_order'=>'',
+		'payed'=>'',
+		'revenue'=>'',
+		'revenue_order'=>'',
+		'revenue_target'=>'',
+		'unpayed'=>'',
+	),
+	'shop_dashborad'=>array(
+		'kpi'=>'',
+	),
 	'shortcuts'=>'Snelkoppelingen',
 	'show_edit_titlebar'=>'Toon wijzig titelbalk',
 	'show_edit_toprssfeeds'=>'Toon wijzig beste RSS-Feeds',
@@ -133,6 +150,8 @@ $l_cockpit=array(
 	'strongest_visitor_day'=>'Dag met meeste bezoekers',
 	'strongest_visitor_hour'=>'Best bezochte uur',
 	'templates'=>'Sjablonen',
+	'this_month'=>'this month',
+	'this_year'=>'this year',
 	'title'=>'Titel',
 	'title_empty'=>'Voer a.u.b. de titel in',
 	'today'=>'vandaag',
@@ -166,4 +185,5 @@ $l_cockpit=array(
 	'visitors_yesterday_unique'=>'Bezoekers uniek',
 	'white'=>'wit',
 	'yellow'=>'geel',
-);
+	''=>'this week',
+;
