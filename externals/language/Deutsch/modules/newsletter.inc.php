@@ -185,6 +185,16 @@ $l_modules_newsletter=array(
 	'reject_save_malformed'=>'Newsletter nicht speichern, falls die E-Mail-Adresse ungültig ist.',
 	'reply'=>'Antwortadresse',
 	'reply_same'=>'Wie Absenderadresse',
+	
+	'reporting'=>array(
+		'mailing_advice_not_success'=>'Nicht alle E-Mail-Adressen wurden beliefert.',
+		'mailing_all_emails'=>'Für den Versand vorgesehene Empfänger:',
+		'mailing_emails_are_black'=>'In Schwarzer Liste enthalten:',
+		'mailing_emails_nok'=>'Nicht überprüfbare Domains:',
+		'mailing_emails_success'=>'Erfolgreich versandt:',
+		'mailing_send_at'=>'Mailing versandt am:',
+		'tab'=>'Auswertung',
+	),
 	'retry'=>'Wiederholen',
 	'rfc_email_check'=>'Prüfung nach RFC 3696.<br/>ACHTUNG: Diese Prüfung kann unter Umständen den Server erheblich verlangsamen',
 	'salutation'=>'Anrede',

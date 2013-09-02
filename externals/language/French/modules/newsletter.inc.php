@@ -185,6 +185,16 @@ $l_modules_newsletter=array(
 	'reject_save_malformed'=>'Ne pas enregister la lettere, si une adresse-E-Mail est invalide.',
 	'reply'=>'Adresse de Réponse',
 	'reply_same'=>'Égal à l`adresse déstinataire',
+	
+	'reporting'=>array(
+		'mailing_advice_not_success'=>'Mail-order failed for some subscribers.',
+		'mailing_all_emails'=>'Planned subscribers for mail-order:',
+		'mailing_emails_are_black'=>'Included in black list:',
+		'mailing_emails_nok'=>'Domains not verified:',
+		'mailing_emails_success'=>'Sent successfully:',
+		'mailing_send_at'=>'Mailing sent on:',
+		'tab'=>'Report',
+	),
 	'retry'=>'Répéter',
 	'rfc_email_check'=>'Validate conform to rfc 3696.<br/>WARNIGN: This validation can take heavy influence on the speed of your server.',
 	'salutation'=>'Titre',
