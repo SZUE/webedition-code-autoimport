@@ -242,10 +242,10 @@ class we_object extends we_document{
 								}
 							}
 						}
-						$q[] = $name . ' ' . $this->switchtypes($cur);
+						$q[] = '`'.$name . '` ' . $this->switchtypes($cur);
 						//add index for complex queries
 						if($this->getElement($cur . self::ELEMENT_TYPE, 'dat') == 'object'){
-							$indexe[] = 'KEY (' . $name . ')';
+							$indexe[] = 'KEY (`' . $name . '`)';
 						}
 					}
 				}
