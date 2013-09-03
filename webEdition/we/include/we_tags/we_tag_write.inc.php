@@ -44,7 +44,6 @@ function we_tag_write($attribs){
 	$publish = weTag_getAttribute('publish', $attribs, false, true);
 	$triggerid = weTag_getAttribute('triggerid', $attribs, 0);
 	$charset = weTag_getAttribute('charset', $attribs, 'iso-8859-1');
-	$doctype = weTag_getAttribute('doctype', $attribs);
 	$categories = weTag_getAttribute('categories', $attribs);
 	$classid = weTag_getAttribute('classid', $attribs);
 	$userid = weTag_getAttribute('userid', $attribs); // deprecated  use protected=true instead
@@ -66,6 +65,7 @@ function we_tag_write($attribs){
 		switch($type){
 			case 'document':
 				$tid = weTag_getAttribute('tid', $attribs);
+				$doctype = weTag_getAttribute('doctype', $attribs);
 				$ok = we_webEditionDocument::initDocument($name, $tid, $doctype, $categories);
 				break;
 			case 'object':

@@ -133,7 +133,7 @@ class we_objectFile extends we_document{
 
 		if(isset($_REQUEST['we_ui_' . $formname]) && is_array($_REQUEST['we_ui_' . $formname])){
 			$dates = array();
-
+			$regs=array();
 			foreach($_REQUEST['we_ui_' . $formname] as $n => $v){
 				if(preg_match('/^we_date_([a-zA-Z0-9_]+)_(day|month|year|minute|hour)$/', $n, $regs)){
 					$dates[$regs[1]][$regs[2]] = $v;
