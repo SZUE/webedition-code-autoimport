@@ -86,11 +86,8 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 			if(!is_array($item)){
 				if($item == $value){
 					return true;
-				} else {
-					continue;
 				}
-			}
-			if(in_array($value, $item)){
+			}elseif(in_array($value, $item)){
 				return true;
 			} elseif(in_array_recursive($value, $item)){
 				return true;
