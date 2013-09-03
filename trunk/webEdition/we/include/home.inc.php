@@ -333,8 +333,8 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 			var res = gel(id + '_res').value;
 			switch (a) {
 				case 'swap':
-					gel(id + '_res').value = (res === 0) ? 1 : 0;
-					gel(id + '_icon_resize').title = (res === 0) ? '<?php echo g_l('cockpit', "[reduce_size]") ?>' : '<?php echo g_l('cockpit', "[increase_size]"); ?>';
+					gel(id + '_res').value = (res == 0) ? 1 : 0;
+					gel(id + '_icon_resize').title = (res == 0) ? '<?php echo g_l('cockpit', "[reduce_size]") ?>' : '<?php echo g_l('cockpit', "[increase_size]"); ?>';
 					break;
 				case 'get':
 					return res;
