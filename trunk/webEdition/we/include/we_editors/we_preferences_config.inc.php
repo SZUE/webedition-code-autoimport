@@ -195,9 +195,9 @@ $GLOBALS['configs'] = array(
 		//current url for rss feed
 		'cockpit_rss_feed_url' => array(''),
 		'editorMode' => array('codemirror2'),
-		'editorCodecompletion' => array(serialize(array())),
+		'editorCodecompletion' => array(serialize(array('WE' => 1, 'htmlTag' => 1, 'html5Tag' => 1))),
 		'editorCommentFontcolor' => array(null),
-		'editorDocuintegration' => array(0),
+		'editorDocuintegration' => array(1),
 		'editorFont' => array(null),
 		'editorFontname' => array(null),
 		'editorFontsize' => array(null),
