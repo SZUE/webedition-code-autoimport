@@ -896,7 +896,7 @@ function build_dialog($selected_setting = 'ui'){
 					$yuiSuggest->setResult('seem_start_document', $_document_id);
 					$yuiSuggest->setSelector('Docselector');
 					$yuiSuggest->setWidth(150);
-					$yuiSuggest->setSelectButton(we_button::create_button('select', 'javascript:select_seem_start()', true, 100, 22, '', '', get_value('WE_SEEM'), false), 10);
+					$yuiSuggest->setSelectButton(we_button::create_button('select', 'javascript:select_seem_start()', true, 100, 22, '', '', false, false), 10);
 					$yuiSuggest->setContainerWidth(259);
 
 					$_seem_document_chooser = we_button::create_button_table(array($yuiSuggest->getHTML()), 0, array('id' => 'seem_start_document', 'style' => 'display:none'));
@@ -917,7 +917,7 @@ function build_dialog($selected_setting = 'ui'){
 					$yuiSuggest->setSelector('Docselector');
 					$yuiSuggest->setTable(OBJECT_FILES_TABLE);
 					$yuiSuggest->setWidth(150);
-					$yuiSuggest->setSelectButton(we_button::create_button('select', 'javascript:select_seem_start()', true, 100, 22, '', '', get_value('WE_SEEM'), false), 10);
+					$yuiSuggest->setSelectButton(we_button::create_button('select', 'javascript:select_seem_start()', true, 100, 22, '', '', false, false), 10);
 					$yuiSuggest->setContainerWidth(259);
 
 					$_seem_object_chooser = we_button::create_button_table(array($yuiSuggest->getHTML()), 0, array('id' => 'seem_start_object', 'style' => 'display:none'));
