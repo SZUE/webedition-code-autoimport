@@ -981,10 +981,7 @@ abstract class we_backup{
 	 * Description: This function removes a backup from the database.
 	 */
 	function removeBackup(){
-
-		$updater = new we_updater();
-
-		$this->backup_db->query("DROP TABLE IF EXISTS " . BACKUP_TABLE);
+		$this->backup_db->query('DROP TABLE IF EXISTS ' . BACKUP_TABLE);
 
 		//import dummys
 		if(is_array($this->dummy)){
@@ -992,19 +989,10 @@ abstract class we_backup{
 				$this->backup_db->query($query);
 			}
 		}
-
-		$updater->updateTables();
-		if($this->handle_options["users"]){
-			$updater->updateUsers();
-		}
-		if($this->handle_options["customers"]){
-			$updater->updateCustomers();
-		}
-		if(!$this->handle_options["temporary"]){
+		we_updater::doUpdate();
+		if(!$this->handle_options['temporary']){
 			$this->backup_db->query('TRUNCATE TABLE ' . TEMPORARY_DOC_TABLE);
 		}
-		$updater->updateScheduler();
-		$updater->updateNewsletter();
 	}
 
 	/**
@@ -1034,11 +1022,17 @@ abstract class we_backup{
 				break;
 			}
 		}
-		$parts = explode(",", $fields);
+		$parts = explode(',', $fields);
 		foreach($parts as $v){
-			$sub_parts = explode(" ", trim($v));
-			if($sub_parts[0] != "" && $sub_parts[0] != "PRIMARY" && $sub_parts[0] != "UNIQUE" && $sub_parts[0] != "KEY"){
-				$fnames[] = strtolower($sub_parts[0]);
+			$sub_parts = explode(' ', trim($v));
+			switch($sub_parts[0]){
+				case '':
+				case 'PRIMARY':
+				case 'UNIQUE':
+				case 'KEY':
+					break;
+				default:
+					$fnames[] = strtolower($sub_parts[0]);
 			}
 		}
 
