@@ -43,8 +43,8 @@ class we_dirSelector extends we_multiSelector{
 		switch($this->table){
 			case FILE_TABLE:
 			case TEMPLATES_TABLE:
-			case (defined('OBJECT_FILES_TABLE') ? 'OBJECT_FILES_TABLE' : OBJECT_FILES_TABLE):
-			case (defined('OBJECT_TABLE') ? 'OBJECT_TABLE' : OBJECT_TABLE):
+			case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
+			case (defined('OBJECT_TABLE') ? OBJECT_TABLE : 'OBJECT_TABLE'):
 				$this->fields.= ',ModDate,RestrictOwners,Owners,OwnersReadOnly,CreatorID';
 				break;
 			default:
