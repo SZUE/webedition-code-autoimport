@@ -70,7 +70,7 @@ function we_tag_write($attribs){
 				break;
 			case 'object':
 				$parentid = weTag_getAttribute('parentid', $attribs);
-				$ok = we_objectFile::initObject(intval($classid), $name, $categories, intval($parentid));
+				$ok = we_objectFile::initObject(intval($classid), $name, $categories, intval($parentid), true);
 				break;
 		}
 

@@ -68,14 +68,14 @@ class we_objectFile extends we_document{
 		array_push($this->EditPageNrs, WE_EDITPAGE_PROPERTIES, WE_EDITPAGE_INFO, WE_EDITPAGE_CONTENT, WE_EDITPAGE_WORKSPACE, WE_EDITPAGE_PREVIEW, WE_EDITPAGE_VARIANTS, WE_EDITPAGE_VERSIONS, WE_EDITPAGE_SCHEDULER);
 	}
 
-	public static function initObject($classID, $formname = 'we_global_form', $categories = '', $parentid = 0){
+	public static function initObject($classID, $formname = 'we_global_form', $categories = '', $parentid = 0, $wewrite = false){
 		$session = isset($GLOBALS['WE_SESSION_START']) && $GLOBALS['WE_SESSION_START'];
 
 		if(!(isset($GLOBALS['we_object']) && is_array($GLOBALS['we_object']))){
 			$GLOBALS['we_object'] = array();
 		}
 		$GLOBALS['we_object'][$formname] = new we_objectFile();
-		if((!$session) || (!isset($_SESSION['weS']['we_object_session_' . $formname]))){
+		if((!$session) || (!isset($_SESSION['weS']['we_object_session_' . $formname])) || $wewrite){
 			if($session){
 				$_SESSION['weS']['we_object_session_' . $formname] = array();
 			}
@@ -91,18 +91,16 @@ class we_objectFile extends we_document{
 					$categories = makeIDsFromPathCVS($categories, CATEGORY_TABLE);
 					$GLOBALS['we_object'][$formname]->Category = $categories;
 				}
-			}
+				if($parentid){
+					// check if parentid is in correct folder ...
+					$parentfolder = new we_class_folder();
+					$parentfolder->initByID($parentid, OBJECT_FILES_TABLE);
 
-			// save parentid
-			if($parentid){
-				// check if parentid is in correct folder ...
-				$parentfolder = new we_class_folder();
-				$parentfolder->initByID($parentid, OBJECT_FILES_TABLE);
-
-				if(($GLOBALS['we_object'][$formname]->ParentPath == $parentfolder->Path) ||
-						strpos($parentfolder->Path . '/', $GLOBALS['we_object'][$formname]->ParentPath) === 0){
-					$GLOBALS['we_object'][$formname]->ParentID = $parentfolder->ID;
-					$GLOBALS['we_object'][$formname]->Path = $parentfolder->Path . '/' . $GLOBALS['we_object'][$formname]->Filename;
+					if(($GLOBALS['we_object'][$formname]->ParentPath == $parentfolder->Path) ||
+							strpos($parentfolder->Path . '/', $GLOBALS['we_object'][$formname]->ParentPath) === 0){
+						$GLOBALS['we_object'][$formname]->ParentID = $parentfolder->ID;
+						$GLOBALS['we_object'][$formname]->Path = $parentfolder->Path . '/' . $GLOBALS['we_object'][$formname]->Filename;
+					}
 				}
 			}
 
