@@ -46,7 +46,7 @@ function we_tag_ifCat($attribs){
 		$doc = we_getDocForTag($docAttr);
 		$cat = $doc->Category;
 	}
-	$DocCatsPaths = id_to_path($cat, CATEGORY_TABLE, $db, true, false, $parent);
+	$DocCatsPaths = id_to_path($cat, CATEGORY_TABLE, $GLOBALS['DB_WE'], true, false, $parent);
 
 	foreach($matchArray as $match){
 		$match = '/' . ltrim($match, '/');
