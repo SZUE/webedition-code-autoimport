@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-require_once (WE_INCLUDES_PATH . 'we_tools/weSearch/conf/meta.conf.php');
+require (WE_INCLUDES_PATH . 'we_tools/weSearch/conf/meta.conf.php');
 
 $we_menu_weSearch = array(
 	100 => array(

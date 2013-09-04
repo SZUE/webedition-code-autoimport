@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include (WE_INCLUDES_PATH . 'we_tools/weSearch/conf/meta.conf.php');
+require (WE_INCLUDES_PATH . 'we_tools/weSearch/conf/meta.conf.php');
 
 ?>
     case "tool_weSearch_edit":
