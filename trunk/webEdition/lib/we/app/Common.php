@@ -390,8 +390,8 @@ class we_app_Common {
 	 */
 	public static function isActive($appname = ""){
 		$tocentry = self::getAppTOCEntry($appname);
-
-		switch(($tocentry->name == $appname ? @$tocentry["active"] : '')){
+		
+		switch(($tocentry && $tocentry->name == $appname ? @$tocentry["active"] : '')){
 			case "true":
 				return true;
 			case "false":
