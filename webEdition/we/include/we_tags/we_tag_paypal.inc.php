@@ -198,11 +198,8 @@ function we_tag_paypal($attribs){
 					$p->add_field('cancel_return', $this_script . '?action=cancel');
 					$p->add_field('notify_url', $this_script . '?action=ipn');
 					$p->add_field('currency_code', $currency);
-					if($languagecode == ''){
-						$p->add_field('lc', $lc);
-					} else {
-						$p->add_field('lc', $languagecode);
-					}
+					$p->add_field('lc', ($languagecode == '' ? $lc : $languagecode));
+
 					// get user details
 					$p->add_field('first_name', $sendForename);
 					$p->add_field('last_name', $sendSurname);
@@ -271,21 +268,20 @@ function we_tag_paypal($attribs){
 				$weShippingControl = weShippingControl::getShippingControl();
 
 				// check if user is registered
-				$customer = (we_tag('ifRegisteredUser') ?$_SESSION['webuser'] : false);
+				$customer = (we_tag('ifRegisteredUser') ? $_SESSION['webuser'] : false);
 
-				if($shipping == ''){
-					$cartField[WE_SHOP_SHIPPING] = array(
+				$cartField[WE_SHOP_SHIPPING] = ($shipping == '' ?
+						array(
 						'costs' => $weShippingControl->getShippingCostByOrderValue($summit, $customer),
 						'isNet' => $weShippingControl->isNet,
 						'vatRate' => $weShippingControl->vatRate
-					);
-				} else {
-					$cartField[WE_SHOP_SHIPPING] = array(
+						) :
+						array(
 						'costs' => $shipping,
 						'isNet' => $shippingIsNet,
 						'vatRate' => $shippingVatRate
-					);
-				}
+				));
+
 				$shippingCosts = $cartField[WE_SHOP_SHIPPING]['costs'];
 				$isNet = $cartField[WE_SHOP_SHIPPING]['isNet'];
 				$vatRate = $cartField[WE_SHOP_SHIPPING]['vatRate'];
