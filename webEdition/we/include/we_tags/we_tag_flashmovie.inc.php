@@ -23,25 +23,21 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_flashmovie($attribs){
-	if(($foo = attributFehltError($attribs, "name", __FUNCTION__))){
+	if(($foo = attributFehltError($attribs, 'name', __FUNCTION__))){
 		return $foo;
 	}
 	$name = weTag_getAttribute("name", $attribs);
 	$showcontrol = weTag_getAttribute("showcontrol", $attribs, true, true);
-	$showflash = weTag_getAttribute("showflash", $attribs, true, true);
+	$showflash = weTag_getAttribute('showflash', $attribs, true, true);
 
-	$id = $GLOBALS['we_doc']->getElement($name, "bdid");
-	$id = $id ? $id : weTag_getAttribute("id", $attribs);
+	$id = $GLOBALS['we_doc']->getElement($name, 'bdid');
+	$id = $id ? $id : weTag_getAttribute('id', $attribs);
 	if(isset($attribs['showcontrol']) && !$showcontrol && weTag_getAttribute("id", $attribs)){//bug 6433: später wird so ohne weiteres gar nicht mehr auf die id zurückgegriffen
 		$id = weTag_getAttribute("id", $attribs);
 		$attribs['id'] = $id; //siehe korrespondierende Änderung in we:document::getField
 		$attribs['showcontrol'] = $showcontrol; //sicherstellen das es boolean iost
 	}
 	$fname = 'we_' . $GLOBALS['we_doc']->Name . '_img[' . $name . '#bdid]';
-	$wmode = weTag_getAttribute("wmode", $attribs, "window");
-	$startid = weTag_getAttribute("startid", $attribs);
-	$parentid = weTag_getAttribute("parentid", $attribs, "0");
-
 
 	$attribs = removeAttribs($attribs, array('showflash'));
 
@@ -50,6 +46,8 @@ function we_tag_flashmovie($attribs){
 			$GLOBALS['we_doc']->getField($attribs, "flashmovie") );
 
 	if($showcontrol && $GLOBALS['we_editmode']){
+		$startid = weTag_getAttribute("startid", $attribs);
+		$parentid = weTag_getAttribute("parentid", $attribs, "0");
 		// Create "Edit Flash" button
 		//				"javascript:we_cmd('openDocselector','" . ($id != "" ? $id : $startid) . "', '" . FILE_TABLE . "', 'document.forms[\'we_form\'].elements[\'" . $fname . "\'].value', '', 'opener.setScrollTo();opener.top.we_cmd(\'reload_editpage\');opener._EditorFrame.setEditorIsHot(true);', '" . session_id() . "'," .$parentid. ", 'application/x-shockwave-flash', " . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")",
 		$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['" . $fname . "'].value");
@@ -62,17 +60,17 @@ function we_tag_flashmovie($attribs){
 		// Create HTML output
 
 
-		$out = "
-			<table border=\"0\" cellpadding=\"0\" cellspacing=\"2\" background=\"" . IMAGE_DIR . "backgrounds/aquaBackground.gif\" style=\"border: solid #006DB8 1px;\">
+		return '
+			<table border="0" cellpadding="0" cellspacing="2" background="' . IMAGE_DIR . 'backgrounds/aquaBackground.gif" style="border: solid #006DB8 1px;">
 				<tr>
-					<td class=\"weEditmodeStyle\">$out
-						<input type=\"hidden\" name=\"$fname\" value=\"" . $GLOBALS['we_doc']->getElement($name, "bdid") . "\" /></td>
+					<td class="weEditmodeStyle">' . $out . '
+						<input type="hidden" name="' . $fname . '" value="' . $GLOBALS['we_doc']->getElement($name, "bdid") . '" /></td>
 				</tr>
 				<tr>
-					<td class=\"weEditmodeStyle\" align=\"center\">" .
+					<td class="weEditmodeStyle" align="center">' .
 			we_button::create_button_table(array(
 				$flash_button, $clear_button
-				), 5) . "</td></tr></table>";
+				), 5) . '</td></tr></table>';
 	}
 	//	When in SEEM - Mode add edit-Button to tag - textarea
 	return $out;

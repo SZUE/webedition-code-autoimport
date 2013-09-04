@@ -196,48 +196,54 @@ abstract class we_backup{
 			$this->table_map['tblvoting'] = VOTING_TABLE;
 		}
 
-		$this->tables['settings'] = array('tblprefs', 'tblrecipients', 'tblvalidationservices');
-		$this->tables['configuration'] = array();
-
-		$this->tables['users'] = array('tbluser');
-		$this->tables['customers'] = array('tblwebuser', 'tblwebadmin');
-		$this->tables['shop'] = array('tblanzeigeprefs', 'tblorders');
-		$this->tables['workflow'] = array(
-			'tblworkflowdef', 'tblworkflowstep', 'tblworkflowtask',
-			'tblworkflowdoc', 'tblworkflowdocstep', 'tblworkflowdoctask',
-			'tblworkflowlog'
-		);
-		$this->tables['todo'] = array(
-			'tbltodo', 'tbltodohistory', 'tblmessages', 'tblmsgaccounts',
-			'tblmsgaddrbook', 'tblmsgfolders', 'tblmsgsettings'
-		);
-		$this->tables['newsletter'] = array(
-			'tblnewsletter', 'tblnewslettergroup',
-			'tblnewsletterblock', 'tblnewsletterlog',
-			'tblnewsletterprefs', 'tblnewsletterconfirm'
-		);
-		$this->tables['temporary'] = array('tbltemporarydoc');
-
-		$this->tables['banner'] = array(
-			'tblbanner', 'tblbannerclicks',
-			'tblbannerprefs', 'tblbannerviews'
-		);
-
-		$this->tables['schedule'] = array(
-			'tblschedule'
-		);
-
-		$this->tables['export'] = array(
-			'tblexport'
-		);
-
-		$this->tables['voting'] = array(
-			'tblvoting'
+		$this->tables = array(
+			'settings' => array('tblprefs', 'tblrecipients', 'tblvalidationservices'),
+			'configuration' => array(),
+			'users' => array('tbluser'),
+			'customers' => array('tblwebuser', 'tblwebadmin'),
+			'shop' => array('tblanzeigeprefs', 'tblorders'),
+			'workflow' => array(
+				'tblworkflowdef', 'tblworkflowstep', 'tblworkflowtask',
+				'tblworkflowdoc', 'tblworkflowdocstep', 'tblworkflowdoctask',
+				'tblworkflowlog'
+			),
+			'todo' => array(
+				'tbltodo', 'tbltodohistory', 'tblmessages', 'tblmsgaccounts',
+				'tblmsgaddrbook', 'tblmsgfolders', 'tblmsgsettings'
+			),
+			'newsletter' => array(
+				'tblnewsletter', 'tblnewslettergroup',
+				'tblnewsletterblock', 'tblnewsletterlog',
+				'tblnewsletterprefs', 'tblnewsletterconfirm'
+			),
+			'temporary' => array('tbltemporarydoc'),
+			'banner' => array(
+				'tblbanner', 'tblbannerclicks',
+				'tblbannerprefs', 'tblbannerviews'
+			),
+			'schedule' => array(
+				'tblschedule'
+			),
+			'export' => array(
+				'tblexport'
+			),
+			'voting' => array(
+				'tblvoting'
+			),
 		);
 
-		$this->description['import'][strtolower(CONTENT_TABLE)] = g_l('backup', '[import_content]');
-		$this->description['import'][strtolower(FILE_TABLE)] = g_l('backup', '[import_files]');
-		$this->description['import'][strtolower(DOC_TYPES_TABLE)] = g_l('backup', '[import_doctypes]');
+		$this->description = array(
+			'import' => array(
+				strtolower(CONTENT_TABLE) => g_l('backup', '[import_content]'),
+				strtolower(FILE_TABLE) => g_l('backup', '[import_files]'),
+				strtolower(DOC_TYPES_TABLE) => g_l('backup', '[import_doctypes]'),
+			),
+			'export' => array(
+				strtolower(CONTENT_TABLE) => g_l('backup', '[export_content]'),
+				strtolower(FILE_TABLE) => g_l('backup', '[export_files]'),
+				strtolower(DOC_TYPES_TABLE) => g_l('backup', '[export_doctypes]'),
+			)
+		);
 		if(isset($this->handle_options['users']) && $this->handle_options['users']){
 			$this->description['import'][strtolower(USER_TABLE)] = g_l('backup', '[import_user_data]');
 		}
@@ -256,9 +262,6 @@ abstract class we_backup{
 		$this->description['import'][strtolower(LINK_TABLE)] = g_l('backup', '[import_links]');
 		$this->description['import'][strtolower(INDEX_TABLE)] = g_l('backup', '[import_indexes]');
 
-		$this->description['export'][strtolower(CONTENT_TABLE)] = g_l('backup', '[export_content]');
-		$this->description['export'][strtolower(FILE_TABLE)] = g_l('backup', '[export_files]');
-		$this->description['export'][strtolower(DOC_TYPES_TABLE)] = g_l('backup', '[export_doctypes]');
 		if(isset($this->handle_options['users']) && $this->handle_options['users']){
 			$this->description['export'][strtolower(USER_TABLE)] = g_l('backup', '[export_user_data]');
 		}
@@ -1036,12 +1039,12 @@ abstract class we_backup{
 			}
 		}
 
-		$this->backup_db->query("SHOW TABLES LIKE '" . $this->backup_db->escape($tab) . "';");
+		$this->backup_db->query("SHOW TABLES LIKE '" . $this->backup_db->escape($tab) . "'");
 		if($this->backup_db->next_record()){
-			$this->backup_db->query("SHOW COLUMNS FROM " . $this->backup_db->escape($tab) . ";");
+			$this->backup_db->query('SHOW COLUMNS FROM ' . $this->backup_db->escape($tab));
 			while($this->backup_db->next_record()){
 				if(!in_array(strtolower($this->backup_db->f("Field")), $fnames)){
-					$fupdate[] = "ALTER TABLE " . $this->backup_db->escape($tab) . " ADD " . $this->backup_db->f("Field") . " " . $this->backup_db->f("Type") . " DEFAULT '" . $this->backup_db->f("Default") . "'" . ($this->backup_db->f("Null") == "YES" ? " NOT NULL" : "") . ";";
+					$fupdate[] = "ALTER TABLE " . $this->backup_db->escape($tab) . ' ADD ' . $this->backup_db->f("Field") . ' ' . $this->backup_db->f("Type") . " DEFAULT '" . $this->backup_db->f("Default") . "'" . ($this->backup_db->f("Null") == "YES" ? " NOT NULL" : '');
 				}
 			}
 		}
