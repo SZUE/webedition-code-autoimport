@@ -66,7 +66,7 @@ function we_tag_write($attribs){
 			case 'document':
 				$tid = weTag_getAttribute('tid', $attribs);
 				$doctype = weTag_getAttribute('doctype', $attribs);
-				$ok = we_webEditionDocument::initDocument($name, $tid, $doctype, $categories);
+				$ok = we_webEditionDocument::initDocument($name, $tid, $doctype, $categories, true);
 				break;
 			case 'object':
 				$parentid = weTag_getAttribute('parentid', $attribs);
