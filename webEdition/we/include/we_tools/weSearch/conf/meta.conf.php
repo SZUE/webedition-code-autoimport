@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-require (WE_INCLUDES_PATH . 'we_tools/weSearch/conf/define.conf.php');
+require_once (WE_INCLUDES_PATH . 'we_tools/weSearch/conf/define.conf.php');
 
 $metaInfo = array(
 	'name' => 'weSearch',

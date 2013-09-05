@@ -29,7 +29,7 @@
 if(isset($_SERVER["DOCUMENT" . "_ROOT"]) && substr($_SERVER['DOCUMENT_ROOT'], -1) == "/"){
 	$_SERVER["DOCUMENT" . "_ROOT"] = substr($_SERVER['DOCUMENT_ROOT'], 0, -1);
 }
-include_once (WE_INCLUDES_PATH . 'we_tools/weSearch/conf/define.conf.php');
+require_once (WE_INCLUDES_PATH . 'we_tools/weSearch/conf/define.conf.php');
 
 class searchtool extends weToolModel{
 

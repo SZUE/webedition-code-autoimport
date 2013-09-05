@@ -73,6 +73,12 @@ class we_helpers_pdf2text{
 		if(defined('DEBUG') && strstr(DEBUG, 'tree')){
 			print_r($this->data);
 		}
+		if(!$this->root){
+			if(defined('DEBUG')){
+				echo 'no root found';
+			}
+			return '';
+		}
 		$this->setFontTables();
 		defined('DEBUG') && $this->mem();
 		$this->getAllPageObjects(trim($this->data[$this->root]['Pages'], self::TRIM_LIST));
