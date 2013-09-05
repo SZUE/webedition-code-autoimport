@@ -15,7 +15,7 @@
 			cm.setCursor(cursor);
 		}
 
-		CodeMirror.showHint(cm, getHint, {closeCharacters: /[\s()\[\]{};>,]/});
+		CodeMirror.showHint(cm, getHint, {closeCharacters: /[()\[\]{};>,]/});
 	};
 
 	var getHint = function(cm) {
