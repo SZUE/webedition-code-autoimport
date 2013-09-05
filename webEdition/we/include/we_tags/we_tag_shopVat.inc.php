@@ -42,6 +42,7 @@ function we_tag_shopVat($attribs){
 	$values = array();
 
 	$standardVal = '';
+	$standardId = 0;
 
 	foreach($allVats as $id => $shopVat){
 		$values[$id] = $shopVat->vat . ' - ' . $shopVat->text;
