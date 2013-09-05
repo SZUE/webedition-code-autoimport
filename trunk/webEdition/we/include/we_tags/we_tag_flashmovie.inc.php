@@ -43,11 +43,11 @@ function we_tag_flashmovie($attribs){
 
 	$out = ($GLOBALS['we_editmode'] && !$showflash ?
 			'' :
-			$GLOBALS['we_doc']->getField($attribs, "flashmovie") );
+			$GLOBALS['we_doc']->getField($attribs, 'flashmovie') );
 
 	if($showcontrol && $GLOBALS['we_editmode']){
-		$startid = weTag_getAttribute("startid", $attribs);
-		$parentid = weTag_getAttribute("parentid", $attribs, "0");
+		$startid = weTag_getAttribute('startid', $attribs);
+		$parentid = weTag_getAttribute('parentid', $attribs, 0);
 		// Create "Edit Flash" button
 		//				"javascript:we_cmd('openDocselector','" . ($id != "" ? $id : $startid) . "', '" . FILE_TABLE . "', 'document.forms[\'we_form\'].elements[\'" . $fname . "\'].value', '', 'opener.setScrollTo();opener.top.we_cmd(\'reload_editpage\');opener._EditorFrame.setEditorIsHot(true);', '" . session_id() . "'," .$parentid. ", 'application/x-shockwave-flash', " . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")",
 		$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['" . $fname . "'].value");

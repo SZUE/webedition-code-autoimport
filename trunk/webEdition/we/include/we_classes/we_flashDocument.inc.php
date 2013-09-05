@@ -48,35 +48,31 @@ class we_flashDocument extends we_binaryDocument{
 
 	// is not written yet
 	function initByAttribs($attribs){
-		if(isset($attribs['sizingrel'])){
-			$orig_w = (isset($attribs['width']) ? $attribs['width'] : $this->elements['width']['dat']);
-			$orig_h = (isset($attribs['height']) ? $attribs['height'] : $this->elements['height']['dat']);
-			$attribs['width'] = round($orig_w * $attribs['sizingrel']);
-			$attribs['height'] = round($orig_h * $attribs['sizingrel']);
-			unset($attribs['sizingrel']);
+		$sizingrel = weTag_getAttribute('sizingrel', $attribs, 0);
+		if(!empty($sizingrel)){
+			$orig_w = weTag_getAttribute('width', $attribs, $this->elements['width']['dat']);
+			$orig_h = weTag_getAttribute('height', $attribs, $this->elements['height']['dat']);
+			$attribs['width'] = round($orig_w * $sizingrel);
+			$attribs['height'] = round($orig_h * $sizingrel);
 		}
-		$sizingbase = (isset($attribs['sizingbase']) && $attribs['sizingbase'] != 16 ? $attribs['sizingbase'] : 16);
-		if(isset($attribs['sizingbase'])){
-			unset($attribs['sizingbase']);
-		}
-
-		if(isset($attribs['sizingstyle'])){
-			$sizingstyle = ($attribs['sizingstyle'] == 'none' ? false : $attribs['sizingstyle']);
-			unset($attribs['sizingstyle']);
-		} else{
+		$sizingbase = weTag_getAttribute('sizingbase', $attribs, 16);
+		$sizingstyle = weTag_getAttribute('sizingstyle', $attribs, false);
+		if($sizingstyle == 'none'){
 			$sizingstyle = false;
 		}
-
+		$removeAttribs = array('sizingrel', 'sizingbase', 'sizingstyle', 'xml');
 		if($sizingstyle){
 			$style_width = round($attribs['width'] / $sizingbase, 6);
 			$style_height = round($attribs['height'] / $sizingbase, 6);
-			$newstyle = (isset($attribs['style']) ? $attribs['style'] : '');
-
-			$newstyle.=';width:' . $style_width . $sizingstyle . ';height:' . $style_height . $sizingstyle . ';';
-			$attribs['style'] = $newstyle;
-			unset($attribs['width']);
-			unset($attribs['height']);
+			$attribs['style'] = (isset($attribs['style']) ? $attribs['style'] : '') . ';width:' . $style_width . $sizingstyle . ';height:' . $style_height . $sizingstyle . ';';
+			$removeAttribs[] = 'width';
+			$removeAttribs[] = 'height';
 		}
+
+		$attribs = removeAttribs($attribs, $removeAttribs);
+		$xml = weTag_getAttribute('xml', $attribs, XHTML_DEFAULT, true);
+
+
 		foreach($attribs as $a => $b){
 			if($b != ''){
 				$this->setElement($a, $b, ($a == 'Pluginspage' || $a == 'Codebase' ? 'txt' : 'attrib'));
@@ -138,12 +134,12 @@ class we_flashDocument extends we_binaryDocument{
 				//   needed attribs
 				$attribs['type'] = 'application/x-shockwave-flash';
 				$attribs['data'] = $src;
-			} else{ //  Normal-Version - with embed-tag
+			} else { //  Normal-Version - with embed-tag
 				$filter = array('type', 'alt', 'parentid', 'startid');
 
 				$allowedAtts = $this->ObjectParamNames;
 
-				while(list($k, $v) = $this->nextElement('attrib')) {
+				while(list($k, $v) = $this->nextElement('attrib')){
 
 					if(in_array($k, $allowedAtts)){ //  use as name='value'
 						$attribs[$k] = $v['dat'];
@@ -184,7 +180,7 @@ class we_flashDocument extends we_binaryDocument{
 			} else if(isset($attribs['pathonly']) && $attribs['pathonly']){
 				$this->html = $src;
 			}
-		} else{
+		} else {
 			$this->html = '';
 		}
 		return $this->html;
@@ -325,7 +321,7 @@ class we_flashDocument extends we_binaryDocument{
 
 		if(isset($arr) && is_array($arr) && (count($arr) >= 4) && $arr[0] && $arr[1]){
 			return $arr;
-		} else{
+		} else {
 			if(we_image_edit::gd_version()){
 				return we_image_edit::getimagesize($filename);
 			}
@@ -386,7 +382,7 @@ class we_flashDocument extends we_binaryDocument{
 		if(!$this->DocChanged && $this->ID){
 			if($this->getElement('origwidth') && $this->getElement('origheight') && ($calculateNew == false)){
 				return array($this->getElement('origwidth'), $this->getElement('origheight'), 0, '');
-			} else{
+			} else {
 				// we have to calculate the path, because maybe the document was renamed
 				$path = $this->getParentPath() . '/' . $this->Filename . $this->Extension;
 				return $this->getimagesize($_SERVER['DOCUMENT_ROOT'] . (($useOldPath && $this->OldPath) ? $this->OldPath : $this->Path));
