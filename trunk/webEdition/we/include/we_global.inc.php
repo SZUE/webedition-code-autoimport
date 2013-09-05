@@ -1572,6 +1572,8 @@ function getHtmlTag($element, $attribs = array(), $content = '', $forceEndTag = 
 			$attribs = removeAttribs($attribs, $removeAttribs);
 
 			validateXhtmlAttribs($element, $attribs, $xhtmlType, $showWrong, XHTML_REMOVE_WRONG);
+		} else {
+			$attribs = removeAttribs($attribs, $removeAttribs);
 		}
 	} else {
 //	default at the moment is xhtml-style
