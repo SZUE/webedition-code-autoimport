@@ -69,9 +69,8 @@ class we_flashDocument extends we_binaryDocument{
 			$removeAttribs[] = 'height';
 		}
 
+		$this->setElement('xml', weTag_getAttribute('xml', $attribs, XHTML_DEFAULT, true));
 		$attribs = removeAttribs($attribs, $removeAttribs);
-		$xml = weTag_getAttribute('xml', $attribs, XHTML_DEFAULT, true);
-
 
 		foreach($attribs as $a => $b){
 			if($b != ''){
