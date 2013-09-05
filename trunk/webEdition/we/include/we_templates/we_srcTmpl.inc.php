@@ -666,8 +666,9 @@ var CMoptions = { //these are the CodeMirror options
 	lineWrapping:' . ((isset($_SESSION['weS']["we_wrapcheck"]) && $_SESSION['weS']["we_wrapcheck"]) ? 'true' : 'false') . ',
 	autoCloseTags: ' . ($_SESSION['prefs']['editorDocuintegration'] ? 'true' : 'false') . ', // use object with indentTags to indent these tags
 	autofocus: true,
+	closeCharacters: /[()\[\]{};>,]/,
 	extraKeys: {' . ($hasCompletion ? '
-							  "\' \'": function(cm) { CodeMirror.weHint(cm, \' \'); },
+							  "Space": function(cm) { CodeMirror.weHint(cm, \' \'); },
 							  "\'<\'": function(cm) { CodeMirror.weHint(cm, \'<\'); },
 							  "Ctrl-Space": function(cm) { CodeMirror.weHint(cm, \'\'); }' : ''
 						) . '
