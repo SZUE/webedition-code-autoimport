@@ -70,7 +70,7 @@ class we_flashDocument extends we_binaryDocument{
 		}
 
 		$this->setElement('xml', weTag_getAttribute('xml', $attribs, XHTML_DEFAULT, true));
-		$attribs = removeAttribs($attribs, $removeAttribs);
+		$attribs = removeAttribs($attribs, $removeAttribs, 'attrib');
 
 		foreach($attribs as $a => $b){
 			if($b != ''){
