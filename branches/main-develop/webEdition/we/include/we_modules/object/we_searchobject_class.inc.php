@@ -61,26 +61,33 @@ class objectsearch extends we_search{
 		$tableInfo = $GLOBALS['DB_WE']->metadata(OBJECT_X_TABLE . $objID);
 		$all = "";
 		for($i = 0; $i < count($tableInfo); $i++){
-			if($tableInfo[$i]["name"] != "ID" && substr($tableInfo[$i]["name"], 0, 3) != "OF_" && stripos($tableInfo[$i]["name"], "multiobject") !== 0 && stripos($tableInfo[$i]["name"], "object") !== 0){
+			if($tableInfo[$i]["name"] != 'ID' && substr($tableInfo[$i]["name"], 0, 3) != "OF_" && stripos($tableInfo[$i]["name"], we_objectFile::TYPE_MULTIOBJECT) !== 0 && stripos($tableInfo[$i]["name"], "object") !== 0){
 				$regs = explode('_', $tableInfo[$i]["name"], 2);
 				if(count($regs) == 2){
 					$opts .= '<option value="' . $tableInfo[$i]["name"] . '" '
-						. (($select == $tableInfo[$i]["name"]) ? "selected" : "") . '>'
-						. $regs[1] . '</option>';
+							. (($select == $tableInfo[$i]["name"]) ? "selected" : "") . '>'
+							. $regs[1] . '</option>';
 				}
 				$all .= $tableInfo[$i]["name"] . ",";
-			} else if($tableInfo[$i]["name"] == "OF_Text"){
-				$opts .= '<option value="' . $tableInfo[$i]["name"] . '" ' . (($select == $tableInfo[$i]["name"]) ? "selected" : "") . '>' . g_l('modules_object', '[objectname]') . '</option>' . "\n";
-				$all .= $tableInfo[$i]["name"] . ",";
-			} else if($tableInfo[$i]["name"] == "OF_Path"){
-				$opts .= '<option value="' . $tableInfo[$i]["name"] . '" ' . (($select == $tableInfo[$i]["name"]) ? "selected" : "") . '>' . g_l('modules_object', '[objectpath]') . '</option>' . "\n";
-				$all .= $tableInfo[$i]["name"] . ",";
-			} else if($tableInfo[$i]["name"] == "OF_ID"){
-				$opts .= '<option value="' . $tableInfo[$i]["name"] . '" ' . (($select == $tableInfo[$i]["name"]) ? "selected" : "") . '>' . g_l('modules_object', '[objectid]') . '</option>' . "\n";
-				$all .= $tableInfo[$i]["name"] . ",";
-			} else if($tableInfo[$i]["name"] == "OF_Url"){
-				$opts .= '<option value="' . $tableInfo[$i]["name"] . '" ' . (($select == $tableInfo[$i]["name"]) ? "selected" : "") . '>' . g_l('modules_object', '[objecturl]') . '</option>' . "\n";
-				$all .= $tableInfo[$i]["name"] . ",";
+			} else {
+				switch($tableInfo[$i]["name"]){
+					case 'OF_Text':
+						$opts .= '<option value="' . $tableInfo[$i]["name"] . '" ' . (($select == $tableInfo[$i]["name"]) ? "selected" : "") . '>' . g_l('modules_object', '[objectname]') . '</option>' . "\n";
+						$all .= $tableInfo[$i]["name"] . ",";
+						break;
+					case 'OF_Path':
+						$opts .= '<option value="' . $tableInfo[$i]["name"] . '" ' . (($select == $tableInfo[$i]["name"]) ? "selected" : "") . '>' . g_l('modules_object', '[objectpath]') . '</option>' . "\n";
+						$all .= $tableInfo[$i]["name"] . ",";
+						break;
+					case 'OF_ID':
+						$opts .= '<option value="' . $tableInfo[$i]["name"] . '" ' . (($select == $tableInfo[$i]["name"]) ? "selected" : "") . '>' . g_l('modules_object', '[objectid]') . '</option>' . "\n";
+						$all .= $tableInfo[$i]["name"] . ",";
+						break;
+					case 'OF_Url':
+						$opts .= '<option value="' . $tableInfo[$i]["name"] . '" ' . (($select == $tableInfo[$i]["name"]) ? "selected" : "") . '>' . g_l('modules_object', '[objecturl]') . '</option>' . "\n";
+						$all .= $tableInfo[$i]["name"] . ",";
+						break;
+				}
 			}
 		}
 		$all = rtrim($all, ',');
@@ -122,17 +129,17 @@ class objectsearch extends we_search{
 		if(empty($exws)){
 			return "-";
 		}
-			$out = '<table border="0" cellpadding="0" cellspacing="0">';
-			for($i = 0; $i < count($exws); $i++){
-				if($exws[$i] != ""){
+		$out = '<table border="0" cellpadding="0" cellspacing="0">';
+		for($i = 0; $i < count($exws); $i++){
+			if($exws[$i] != ""){
 				if($_SESSION["perms"]["ADMINISTRATOR"]){
 					$foo = true;
-				} else{
+				} else {
 					$foo = in_workspace($exws[$i], $userWSArray);
 				}
 				if($foo){
 					$checkbox = '<a href="javascript:we_cmd(\'toggleExtraWorkspace\',\'' . $GLOBALS["we_transaction"] . '\',\'' . $this->db->f("ID") . '\',\'' . $exws[$i] . '\',\'' . $id . '\')"><img name="check_' . $id . '_' . $this->db->f("ID") . '" src="' . TREE_IMAGE_DIR . 'check' . (strstr($this->db->f("OF_ExtraWorkspacesSelected"), "," . $exws[$i] . ",") ? "1" : "0") . '.gif" width="16" height="18" border="0" /></a>';
-				} else{
+				} else {
 					$checkbox = '<img name="check_' . $id . '_' . $this->db->f("ID") . '" src="' . TREE_IMAGE_DIR . 'check' . (strstr($this->db->f("OF_ExtraWorkspacesSelected"), "," . $exws[$i] . ",") ? "1" : "0") . '_disabled.gif" width="16" height="18" border="0" />';
 				}
 				$p = id_to_path($exws[$i]);

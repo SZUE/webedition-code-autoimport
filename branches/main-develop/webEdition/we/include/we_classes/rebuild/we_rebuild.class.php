@@ -108,7 +108,7 @@ abstract class we_rebuild{
 				}
 				$tmp = $data['cn'];
 				$GLOBALS['we_doc'] = new $tmp();
-				$GLOBALS['we_doc']->initByID($data['id'], $table, ($table == OBJECT_FILES_TABLE ? we_class::LOAD_TEMP_DB : we_class::LOAD_MAID_DB));
+				$GLOBALS['we_doc']->initByID($data['id'], $table, (defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE ? we_class::LOAD_TEMP_DB : we_class::LOAD_MAID_DB));
 				if($printIt){
 					print ('Rebuilding: ' . $GLOBALS['we_doc']->Path);
 					flush();

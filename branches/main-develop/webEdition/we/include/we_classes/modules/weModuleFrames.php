@@ -198,7 +198,7 @@ class weModuleFrames{
 
 			return we_html_element::htmlDiv(array(
 					'id' => 'tree',
-					'style' => 'position: absolute; top: ' . $this->treeHeaderHeight . 'px; bottom: ' . $this->treeFooterHeight . 'px; left: 0px; width: 100%; background: #F3F7FF',
+					'style' => 'overflow:scroll;position: absolute; top: ' . $this->treeHeaderHeight . 'px; bottom: ' . $this->treeFooterHeight . 'px; left: 0px; width: 100%; background: #F3F7FF',
 					'link' => '#000000',
 					'alink' => '#000000',
 					'vlink' => '#000000',

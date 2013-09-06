@@ -351,15 +351,15 @@ abstract class we_root extends we_class{
 		$ownersReadOnly = $this->OwnersReadOnly ? unserialize($this->OwnersReadOnly) : array();
 
 		$content = '<table border="0" cellpadding="0" cellspacing="0" width="370">' .
-			'<tr><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(351, 2) . '</td><td>' . we_html_tools::getPixel(100, 2) . '</td><td>' . we_html_tools::getPixel(26, 2) . '</td></tr>' . "\n";
+				'<tr><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(351, 2) . '</td><td>' . we_html_tools::getPixel(100, 2) . '</td><td>' . we_html_tools::getPixel(26, 2) . '</td></tr>' . "\n";
 		if(count($owners)){
 			foreach($owners as $owner){
 				$foo = getHash('SELECT ID,Path,Icon from ' . USER_TABLE . ' WHERE ID=' . intval($owner), $this->DB_WE);
 				$icon = isset($foo['Icon']) ? ICON_DIR . $foo['Icon'] : ICON_DIR . 'user.gif';
 				$_path = isset($foo['Path']) ? $foo['Path'] : '';
 				$content .= '<tr><td><img src="' . $icon . '" width="16" height="18" /></td><td class="defaultfont">' . $_path . '</td><td>' .
-					we_forms::checkboxWithHidden(isset($ownersReadOnly[$owner]) ? $ownersReadOnly[$owner] : '', 'we_owners_read_only[' . $owner . ']', g_l('weClass', '[readOnly]'), false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);', !$canChange) .
-					'</td><td>' . ($canChange ? we_button::create_button('image:btn_function_trash', "javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('del_owner','" . $owner . "');") : '') . '</td></tr>' . "\n";
+						we_forms::checkboxWithHidden(isset($ownersReadOnly[$owner]) ? $ownersReadOnly[$owner] : '', 'we_owners_read_only[' . $owner . ']', g_l('weClass', '[readOnly]'), false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);', !$canChange) .
+						'</td><td>' . ($canChange ? we_button::create_button('image:btn_function_trash', "javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('del_owner','" . $owner . "');") : '') . '</td></tr>' . "\n";
 			}
 		} else {
 			$content .= '<tr><td><img src="' . ICON_DIR . "user.gif" . '" width="16" height="18" /></td><td class="defaultfont">' . g_l('weClass', "[onlyOwner]") . '</td><td></td><td></td></tr>' . "\n";
@@ -374,7 +374,7 @@ abstract class we_root extends we_class{
 		$wecmdenc2 = we_cmd_enc("document.forms['we_form'].elements['$textname'].value");
 		$wecmdenc5 = we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);opener.setScrollTo();fillIDs();opener.we_cmd('add_owner',top.allIDs);");
 		$addbut = $canChange ?
-			$this->htmlHidden($idname, '') . $this->htmlHidden($textname, '') . we_button::create_button('add', "javascript:we_cmd('browse_users','" . $wecmdenc1 . "','" . $wecmdenc2 . "','',document.forms[0].elements['$idname'].value,'" . $wecmdenc5 . "','','',1);") : "";
+				$this->htmlHidden($idname, '') . $this->htmlHidden($textname, '') . we_button::create_button('add', "javascript:we_cmd('browse_users','" . $wecmdenc1 . "','" . $wecmdenc2 . "','',document.forms[0].elements['$idname'].value,'" . $wecmdenc5 . "','','',1);") : "";
 
 		$content = '<table border="0" cellpadding="0" cellspacing="0" width="500">
 <tr><td><div class="multichooser">' . $content . '</div></td></tr>
@@ -712,7 +712,7 @@ abstract class we_root extends we_class{
 	}
 
 	function editor(){
-
+		
 	}
 
 	function getParentIDFromParentPath(){
@@ -868,11 +868,19 @@ abstract class we_root extends we_class{
 
 	protected function i_setElementsFromHTTP(){
 		// do not set REQUEST VARS into the document
-		if(isset($_REQUEST['we_cmd'][0])){
-			if(($_REQUEST['we_cmd'][0] == 'switch_edit_page' && isset($_REQUEST['we_cmd'][3])) || ($_REQUEST['we_cmd'][0] == 'save_document' && isset($_REQUEST['we_cmd'][7]) && $_REQUEST['we_cmd'][7] == 'save_document')){
-				return true;
-			}
+		switch(isset($_REQUEST['we_cmd'][0]) ? $_REQUEST['we_cmd'][0] : ''){
+			case 'switch_edit_page':
+				if(isset($_REQUEST['we_cmd'][3])){
+					return true;
+				}
+				break;
+			case 'save_document':
+				if(isset($_REQUEST['we_cmd'][7]) && $_REQUEST['we_cmd'][7] == 'save_document'){
+					return true;
+				}
+				break;
 		}
+
 		$regs = array();
 		if(!empty($_REQUEST)){
 			$dates = array();
@@ -919,9 +927,9 @@ abstract class we_root extends we_class{
 	protected function i_getContentData($loadBinary = 0){
 
 		$this->DB_WE->query('SELECT * FROM ' . CONTENT_TABLE . ',' . LINK_TABLE . ' WHERE ' . LINK_TABLE . '.DID=' . intval($this->ID) .
-			' AND ' . LINK_TABLE . '.DocumentTable="' . $this->DB_WE->escape(stripTblPrefix($this->Table)) .
-			'" AND ' . CONTENT_TABLE . '.ID=' . LINK_TABLE . '.CID ' .
-			($loadBinary ? '' : ' AND ' . CONTENT_TABLE . '.IsBinary=0'));
+				' AND ' . LINK_TABLE . '.DocumentTable="' . $this->DB_WE->escape(stripTblPrefix($this->Table)) .
+				'" AND ' . CONTENT_TABLE . '.ID=' . LINK_TABLE . '.CID ' .
+				($loadBinary ? '' : ' AND ' . CONTENT_TABLE . '.IsBinary=0'));
 		$filter = array('Name', 'DID', 'Ord');
 		while($this->DB_WE->next_record()){
 			$Name = $this->DB_WE->f('Name');
@@ -1056,8 +1064,8 @@ abstract class we_root extends we_class{
 	function i_fileExtensionNotValid(){
 		if(isset($this->Extension)){
 			$ext = (substr($this->Extension, 0, 1) == '.' ?
-					substr($this->Extension, 1) :
-					$this->Extension);
+							substr($this->Extension, 1) :
+							$this->Extension);
 
 			return !(preg_match('/^[a-zA-Z0-9]+$/iD', $ext) || $ext == '');
 		}
@@ -1169,10 +1177,11 @@ abstract class we_root extends we_class{
 	}
 
 	protected function update_filehash(){
+		
 	}
 
 	function correctFields(){
-
+		
 	}
 
 	public function we_republish(){
@@ -1270,7 +1279,7 @@ abstract class we_root extends we_class{
 	}
 
 	function insertAtIndex(){
-
+		
 	}
 
 	/**
@@ -1290,7 +1299,7 @@ abstract class we_root extends we_class{
 	}
 
 	public function revert_published(){
-
+		
 	}
 
 	public function isBinary(){

@@ -47,14 +47,14 @@ class we_updater{
 		if(!empty($tables)){
 			$DB_WE->query('SELECT * FROM ' . TBL_PREFIX . 'tblOwner');
 			while($DB_WE->next_record()) {
-				$table = $DB_WE->f("DocumentTable");
+				$table = $DB_WE->f('DocumentTable');
 				if($table == TEMPLATES_TABLE || $table == FILE_TABLE){
-					$id = $DB_WE->f("fileID");
+					$id = $DB_WE->f('fileID');
 					if($table && $id){
 						$Owners = ($DB_WE->f("OwnerID") && ($DB_WE->f("OwnerID") != $DB_WE->f("CreatorID"))) ? ("," . $DB_WE->f("OwnerID") . ",") : "";
 						$CreatorID = $DB_WE->f("CreatorID") ? $DB_WE->f("CreatorID") : $_SESSION["user"]["ID"];
 						$ModifierID = $DB_WE->f("ModifierID") ? $DB_WE->f("ModifierID") : $_SESSION["user"]["ID"];
-						$db2->query("UPDATE " . $db2->escape($table) . " SET CreatorID=" . intval($CreatorID) . " , ModifierID=" . intval($ModifierID) . " , Owners='" . $db2->escape($Owners) . "' WHERE ID=" . intval($id));
+						$db2->query('UPDATE ' . $db2->escape($table) . " SET CreatorID=" . intval($CreatorID) . " , ModifierID=" . intval($ModifierID) . " , Owners='" . $db2->escape($Owners) . "' WHERE ID=" . intval($id));
 						$db2->query('DELETE FROM ' . TBL_PREFIX . ' WHERE fileID=' . intval($id));
 						update_time_limit(30);
 					}
@@ -196,38 +196,6 @@ class we_updater{
 		$_SESSION['prefs'] = we_user::readPrefs($_SESSION['user']['ID'], $GLOBALS['DB_WE']);
 
 
-		return true;
-	}
-
-	static function updateCustomers(){
-		global $DB_WE;
-
-		if(defined("CUSTOMER_TABLE")){
-			if(!$GLOBALS['DB_WE']->isTabExist(CUSTOMER_ADMIN_TABLE)){
-				$cols = array(
-					"Name" => "VARCHAR(255) NOT NULL",
-					"Value" => "TEXT NOT NULL"
-				);
-
-				$GLOBALS['DB_WE']->addTable(CUSTOMER_ADMIN_TABLE, $cols);
-
-				$DB_WE->query("INSERT INTO " . CUSTOMER_ADMIN_TABLE . "(Name,Value) VALUES('FieldAdds','');");
-				$DB_WE->query("INSERT INTO " . CUSTOMER_ADMIN_TABLE . "(Name,Value) VALUES('SortView','');");
-				$DB_WE->query("INSERT INTO " . CUSTOMER_ADMIN_TABLE . "(Name,Value) VALUES('Prefs','');");
-
-				$settings = new we_customer_settings();
-				$settings->customer = new we_customer_customer();
-				$fields = $settings->customer->getFieldsDbProperties();
-				$_keys = array_keys($fields);
-				foreach($_keys as $name){
-					if(!$settings->customer->isProtected($name) && !$settings->customer->isProperty($name)){
-						$settings->FieldAdds[$name]["type"] = "input";
-						$settings->FieldAdds[$name]["default"] = "";
-					}
-				}
-				$settings->save();
-			}
-		}
 		return true;
 	}
 

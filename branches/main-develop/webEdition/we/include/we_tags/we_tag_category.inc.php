@@ -44,11 +44,11 @@ function we_tag_category($attribs){
 			case 'we_listview_object' :
 				$catIDs = $GLOBALS['lv']->f("wedoc_Category");
 				break;
-			case 'we_search_listview' :
-				$catIDs = $GLOBALS['lv']->f("wedoc_Category");
+			case 'we_search_listview':
+				$catIDs = $GLOBALS['lv']->f('wedoc_Category');
 				break;
 			default :
-				$catIDs = $GLOBALS['lv']->f("wedoc_Category");
+				$catIDs = $GLOBALS['lv']->f('wedoc_Category');
 		}
 	} else{
 		$doc = we_getDocForTag($docAttr, false);

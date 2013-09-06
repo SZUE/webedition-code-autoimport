@@ -72,8 +72,9 @@ class we_listview_multiobject extends listviewBase{
 		$data = 0;
 		if(isset($GLOBALS['we_lv_array']) && count($GLOBALS['we_lv_array']) > 1){
 			$parent_lv = $GLOBALS['we_lv_array'][(count($GLOBALS['we_lv_array']) - 1)];
-			if(isset($parent_lv->DB_WE->Record['we_' . $name]) && $parent_lv->DB_WE->Record['we_' . $name]){
-				$data = unserialize($parent_lv->DB_WE->Record['we_' . $name]);
+			($parent_lv->ClassName == 'we_shop_listviewOrderitem') ? $prefix = '' : $prefix = 'we_'; //Fix #7873
+			if(isset($parent_lv->DB_WE->Record[$prefix . $name]) && $parent_lv->DB_WE->Record[$prefix . $name]){
+				$data = unserialize($parent_lv->DB_WE->Record[$prefix . $name]);
 			}
 		} elseif(isset($GLOBALS['lv'])){
 			if(method_exists($GLOBALS['lv'], 'getObject')){

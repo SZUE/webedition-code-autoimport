@@ -492,10 +492,12 @@ switch($_SESSION['prefs']['editorMode']){
 				$allWeTags = weTagWizard::getExistingWeTags($css); //only load deprecated tags if css is requested
 				foreach($allWeTags as $tagName){
 					$weTag = weTagData::getTagData($tagName);
-					if($css){
-						$ret.='.cm-weTag_' . $tagName . ':hover:after {content: "' . str_replace('"', '\'', html_entity_decode($weTag->getDescription(), null, $GLOBALS['WE_BACKENDCHARSET'])) . '";}';
-					} else {
-						$allTags['we:' . $tagName] = array('we' => $weTag->getAttributesForCM());
+					if($weTag){
+						if($css){
+							$ret.='.cm-weTag_' . $tagName . ':hover:after {content: "' . str_replace('"', '\'', html_entity_decode($weTag->getDescription(), null, $GLOBALS['WE_BACKENDCHARSET'])) . '";}';
+						} else {
+							$allTags['we:' . $tagName] = array('we' => $weTag->getAttributesForCM());
+						}
 					}
 				}
 			}
@@ -666,8 +668,9 @@ var CMoptions = { //these are the CodeMirror options
 	lineWrapping:' . ((isset($_SESSION['weS']["we_wrapcheck"]) && $_SESSION['weS']["we_wrapcheck"]) ? 'true' : 'false') . ',
 	autoCloseTags: ' . ($_SESSION['prefs']['editorDocuintegration'] ? 'true' : 'false') . ', // use object with indentTags to indent these tags
 	autofocus: true,
+	closeCharacters: /[()\[\]{};>,]/,
 	extraKeys: {' . ($hasCompletion ? '
-							  "\' \'": function(cm) { CodeMirror.weHint(cm, \' \'); },
+							  "Space": function(cm) { CodeMirror.weHint(cm, \' \'); },
 							  "\'<\'": function(cm) { CodeMirror.weHint(cm, \'<\'); },
 							  "Ctrl-Space": function(cm) { CodeMirror.weHint(cm, \'\'); }' : ''
 						) . '

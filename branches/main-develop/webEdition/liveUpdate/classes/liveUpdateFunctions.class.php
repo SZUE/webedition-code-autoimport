@@ -820,11 +820,11 @@ class liveUpdateFunctions{
 		//	Get all installed Languages
 		$_installedLanguages = array();
 		//	Look which languages are installed
-		$_language_directory = dir($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_language");
+		$_language_directory = dir($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language');
 
 		while(false !== ($entry = $_language_directory->read())){
-			if($entry != "." && $entry != ".."){
-				if(is_dir($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_language/" . $entry)){
+			if($entry != '.' && $entry != '..'){
+				if(is_dir($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $entry)){
 					$_installedLanguages[] = $entry;
 				}
 			}

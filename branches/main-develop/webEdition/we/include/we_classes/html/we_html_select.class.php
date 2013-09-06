@@ -180,11 +180,16 @@ class we_html_select extends we_baseCollection{
 			$this->unselectAllOptions();
 		}
 		foreach($this->childs as $k => $v){
-			if($v->attribs["value"] == $value){
+			//fix #7912
+			$equal = (is_bool($v->attribs["value"]) || is_bool($value)) ? $v->attribs["value"] == $value :
+				(string)$v->attribs["value"] == (string)$value;
+
+			if($equal){
 				$this->setOption($k, array("selected" => 'selected'));
 				return true;
 			}
 		}
+
 		return false;
 	}
 

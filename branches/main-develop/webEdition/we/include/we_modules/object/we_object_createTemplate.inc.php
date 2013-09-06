@@ -60,8 +60,8 @@ function getObjectTags($id, $isField = false){
 }
 
 function getMultiObjectTags($name){
-	if(isset($_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"]["multiobject_" . $name . "class"]["dat"])){
-		$id = $_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"]["multiobject_" . $name . "class"]["dat"];
+	if(isset($_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"][we_objectFile::TYPE_MULTIOBJECT. '_' . $name . "class"]["dat"])){
+		$id = $_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"][we_objectFile::TYPE_MULTIOBJECT.'_' . $name . "class"]["dat"];
 	} else{
 		return '';
 		$newfields = explode(',', $_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"]["neuefelder"]["dat"]);
@@ -114,14 +114,14 @@ function getTemplTag($type, $name, $isField = false){
 			if(!in_array($name, $GLOBALS["usedIDs"])){
 				return getObjectTags($name, $isField);
 			}
-		case 'multiobject':
+		case we_objectFile::TYPE_MULTIOBJECT:
 			return getMultiObjectTags($name);
 	}
 	return '';
 }
 
 function getTmplTableRow($type, $name, $isField = false){
-	if($type == "multiobject"){
+	if($type == we_objectFile::TYPE_MULTIOBJECT){
 		if($isField){
 			$open = '<we:ifFieldNotEmpty match="' . $name . '" type="' . $type . '">';
 			$close = "</we:ifFieldNotEmpty>";

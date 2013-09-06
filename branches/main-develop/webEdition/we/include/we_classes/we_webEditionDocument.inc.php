@@ -62,7 +62,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		$this->ContentType = 'text/webedition';
 	}
 
-	public static function initDocument($formname = 'we_global_form', $tid = 0, $doctype = '', $categories = ''){
+	public static function initDocument($formname = 'we_global_form', $tid = 0, $doctype = '', $categories = '', $wewrite = false){
 		//  check if a <we:sessionStart> Tag was before
 		$session = isset($GLOBALS['WE_SESSION_START']) && $GLOBALS['WE_SESSION_START'];
 
@@ -70,7 +70,7 @@ class we_webEditionDocument extends we_textContentDocument{
 			$GLOBALS['we_document'] = array();
 		}
 		$GLOBALS['we_document'][$formname] = new we_webEditionDocument();
-		if((!$session) || (!isset($_SESSION['weS']['we_document_session_' . $formname]))){
+		if((!$session) || (!isset($_SESSION['weS']['we_document_session_' . $formname])) || $wewrite){
 			if($session){
 				$_SESSION['weS']['we_document_session_' . $formname] = array();
 			}

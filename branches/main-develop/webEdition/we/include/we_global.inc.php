@@ -1535,26 +1535,29 @@ function clearPath($path){
  */
 function getHtmlTag($element, $attribs = array(), $content = '', $forceEndTag = false, $onlyStartTag = false){
 	require_once (WE_INCLUDES_PATH . 'we_tag.inc.php');
-//	default at the moment is xhtml-style
-	$_xmlClose = false;
 
 //	take values given from the tag - later from preferences.
 	$xhtml = weTag_getAttribute('xml', $attribs, XHTML_DEFAULT, true);
 
-// at the moment only transitional is supported
-	$xhtmlType = weTag_getAttribute('xmltype', $attribs, 'transitional');
-
 //	remove x(ht)ml-attributs
-	$attribs = removeAttribs($attribs, array('xml', 'xmltype', 'to', 'nameto', '_name_orig'));
+	$removeAttribs = array('xml', 'xmltype', 'to', 'nameto', '_name_orig');
 
-	if($element == 'img' && defined('HIDENAMEATTRIBINWEIMG_DEFAULT') && HIDENAMEATTRIBINWEIMG_DEFAULT && (!isset($GLOBALS['WE_MAIN_DOC']) || !$GLOBALS['WE_MAIN_DOC']->InWebEdition)){
-		$attribs = removeAttribs($attribs, array('name'));
-	}
-	if($element == 'a' && defined('HIDENAMEATTRIBINWEIMG_DEFAULT') && HIDENAMEATTRIBINWEIMG_DEFAULT && (!isset($GLOBALS['WE_MAIN_DOC']) || !$GLOBALS['WE_MAIN_DOC']->InWebEdition)){
-		$attribs = removeAttribs($attribs, array('name'));
-	}
-	if($element == 'form' && defined('HIDENAMEATTRIBINWEFORM_DEFAULT') && HIDENAMEATTRIBINWEFORM_DEFAULT && (!isset($GLOBALS['WE_MAIN_DOC']) || !$GLOBALS['WE_MAIN_DOC']->InWebEdition)){
-		$attribs = removeAttribs($attribs, array('name'));
+	switch($element){
+		case 'img':
+			if(defined('HIDENAMEATTRIBINWEIMG_DEFAULT') && HIDENAMEATTRIBINWEIMG_DEFAULT && (!isset($GLOBALS['WE_MAIN_DOC']) || !$GLOBALS['WE_MAIN_DOC']->InWebEdition)){
+				$removeAttribs[] = 'name';
+			}
+			break;
+		case 'a':
+			if(defined('HIDENAMEATTRIBINWEIMG_DEFAULT') && HIDENAMEATTRIBINWEIMG_DEFAULT && (!isset($GLOBALS['WE_MAIN_DOC']) || !$GLOBALS['WE_MAIN_DOC']->InWebEdition)){
+				$removeAttribs[] = 'name';
+			}
+			break;
+		case 'form':
+			if(defined('HIDENAMEATTRIBINWEFORM_DEFAULT') && HIDENAMEATTRIBINWEFORM_DEFAULT && (!isset($GLOBALS['WE_MAIN_DOC']) || !$GLOBALS['WE_MAIN_DOC']->InWebEdition)){
+				$removeAttribs[] = 'name';
+			}
+			break;
 	}
 	if($xhtml){ //	xhtml, check if and what we shall debug
 		$_xmlClose = true;
@@ -1564,25 +1567,31 @@ function getHtmlTag($element, $attribs = array(), $content = '', $forceEndTag = 
 
 			$showWrong = (isset($_SESSION['prefs']['xhtml_show_wrong']) && $_SESSION['prefs']['xhtml_show_wrong'] && isset(
 					$GLOBALS['we_doc']) && $GLOBALS['we_doc']->InWebEdition); //  check if XML_SHOW_WRONG is true (user) - only in webEdition
-
+// at the moment only transitional is supported
+			$xhtmlType = weTag_getAttribute('xmltype', $attribs, 'transitional');
+			$attribs = removeAttribs($attribs, $removeAttribs);
 
 			validateXhtmlAttribs($element, $attribs, $xhtmlType, $showWrong, XHTML_REMOVE_WRONG);
+		} else {
+			$attribs = removeAttribs($attribs, $removeAttribs);
 		}
+	} else {
+//	default at the moment is xhtml-style
+		$_xmlClose = false;
+		$attribs = removeAttribs($attribs, $removeAttribs);
 	}
 
-	$_tag = '<' . $element;
+	$tag = '<' . $element;
 
 	foreach($attribs as $k => $v){
-		$_tag .= ' ' . ($k == 'link_attribute' ? // Bug #3741
+		$tag .= ' ' . ($k == 'link_attribute' ? // Bug #3741
 				$v :
 				str_replace('pass_', '', $k) . '="' . $v . '"');
 	}
-	if($content != '' || $forceEndTag){ //	use endtag
-		$_tag .= '>' . $content . '</' . $element . '>';
-	} else { //	xml style or not
-		$_tag .= ( ($_xmlClose && !$onlyStartTag) ? ' />' : '>');
-	}
-	return $_tag;
+	return $tag . ($content != '' || $forceEndTag ? //	use endtag
+			'>' . $content . '</' . $element . '>' :
+//	xml style or not
+			( ($_xmlClose && !$onlyStartTag) ? ' />' : '>'));
 }
 
 /**

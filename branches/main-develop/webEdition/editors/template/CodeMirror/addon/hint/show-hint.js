@@ -57,7 +57,7 @@
       CodeMirror.signal(data, "shown");
 
       var debounce = null, completion = this, finished;
-      var closeOn = this.options.closeCharacters || /[\s()\[\]{};:>,]/;
+      var closeOn = this.options.closeCharacters || /[()\[\]{};>,]/;
       var startPos = this.cm.getCursor(), startLen = this.cm.getLine(startPos.line).length;
 
       function done() {
