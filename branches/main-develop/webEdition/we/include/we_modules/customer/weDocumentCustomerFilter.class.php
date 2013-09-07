@@ -195,9 +195,9 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter{
 
 				if(in_array($ct, $_allowedCTs)){
 
-					$_idField = ($ct == "text/webedition" ? "DID" : "OID");
+					$_idField = ($ct == 'text/webedition' ? 'DID' : 'OID');
 					if(!empty($_fileArray)){
-						$_queryTail .= " AND $_idField NOT IN(" . implode(", ", $_fileArray) . ")";
+						$_queryTail .= ' AND ' . $_idField . ' NOT IN(' . implode(', ', $_fileArray) . ')';
 					}
 				}
 			}
@@ -239,23 +239,23 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter{
 	 * @static
 	 * @return boolean
 	 */
-	function filterAreQual($filter1 = "", $filter2 = "", $applyCheck = false){
+	function filterAreQual($filter1 = '', $filter2 = '', $applyCheck = false){
 
-		if($filter1 === ""){
+		if($filter1 === ''){
 			$filter1 = self::getEmptyDocumentCustomerFilter();
 		}
-		if($filter2 === ""){
+		if($filter2 === ''){
 			$filter2 = self::getEmptyDocumentCustomerFilter();
 		}
 
 		$checkFields = array('modelTable', 'accessControlOnTemplate', 'errorDocNoLogin', 'errorDocNoAccess', 'mode', 'specificCustomers', 'filter', 'whiteList', 'blackList');
 		if(!$applyCheck){
-			$checkFields[] = "modelId";
-			$checkFields[] = "modelType";
+			$checkFields[] = 'modelId';
+			$checkFields[] = 'modelType';
 		}
 
 		for($i = 0; $i < count($checkFields); $i++){
-			$_fn = "get" . ucfirst($checkFields[$i]);
+			$_fn = 'get' . ucfirst($checkFields[$i]);
 			if($filter1->$_fn($i) != $filter2->$_fn($i)){
 				return false;
 			}
@@ -305,13 +305,13 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter{
 
 			if($_docCustomerFilter->getMode() != weAbstractCustomerFilter::OFF && $model->ID){ // only save if its is active
 				$_filter = $_docCustomerFilter->getFilter();
-				$_filter = !empty($_filter) ? serialize($_filter) : "";
+				$_filter = !empty($_filter) ? serialize($_filter) : '';
 				$_specificCustomers = $_docCustomerFilter->getSpecificCustomers();
-				$_specificCustomers = !empty($_specificCustomers) ? makeCSVFromArray($_specificCustomers, true) : "";
+				$_specificCustomers = !empty($_specificCustomers) ? makeCSVFromArray($_specificCustomers, true) : '';
 				$_blackList = $_docCustomerFilter->getBlackList();
-				$_blackList = !empty($_blackList) ? makeCSVFromArray($_blackList, true) : "";
+				$_blackList = !empty($_blackList) ? makeCSVFromArray($_blackList, true) : '';
 				$_whiteList = $_docCustomerFilter->getWhiteList();
-				$_whiteList = !empty($_whiteList) ? makeCSVFromArray($_whiteList, true) : "";
+				$_whiteList = !empty($_whiteList) ? makeCSVFromArray($_whiteList, true) : '';
 
 				$_query = 'REPLACE INTO ' . CUSTOMER_FILTER_TABLE . ' SET ' . we_database_base::arraySetter(array(
 						'modelId' => $model->ID,
@@ -357,33 +357,13 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter{
 
 		if($webUser->ID){
 			$_db = new DB_WE();
-			$_db2 = new DB_WE();
-
-			$_db->query("SELECT id, specificCustomers, whiteList, blackList FROM " . CUSTOMER_FILTER_TABLE . ' WHERE ' .
-				" specificCustomers LIKE '%," . $webUser->ID . ",%' OR whiteList LIKE '%," . $webUser->ID . ",%' OR blackList LIKE '%," . $webUser->ID . ",%'");
-
-			while($_db->next_record()){
-				$_sc = $_db->f('specificCustomers');
-				$_wl = $_db->f('whiteList');
-				$_bl = $_db->f('blackList');
-
-				$_sc = str_replace("," . $webUser->ID . ",", ",", $_sc);
-				if($_sc == ",")
-					$_sc = "";
-
-				$_wl = str_replace("," . $webUser->ID . ",", ",", $_wl);
-				if($_wl == ",")
-					$_wl = "";
-
-				$_bl = str_replace("," . $webUser->ID . ",", ",", $_bl);
-				if($_bl == ",")
-					$_bl = "";
-
-				$_db2->query("UPDATE " . CUSTOMER_FILTER_TABLE . " SET specificCustomers='$_sc', whiteList='$_wl', blackList='$_bl' WHERE id=" . intval($_db->f('id')));
-			}
-
+			$_db->query('UPDATE ' . CUSTOMER_FILTER_TABLE . ' SET specificCustomers=REPLACE(specificCustomers,",' . $webUser->ID . ',",",") WHERE specificCustomers LIKE "%,' . $webUser->ID . ',%"');
+			$_db->query('UPDATE ' . CUSTOMER_FILTER_TABLE . ' SET specificCustomers="" WHERE specificCustomers=","');
+			$_db->query('UPDATE ' . CUSTOMER_FILTER_TABLE . ' SET whiteList=REPLACE(whiteList,",' . $webUser->ID . ',",",") WHERE whiteList LIKE "%,' . $webUser->ID . ',%"');
+			$_db->query('UPDATE ' . CUSTOMER_FILTER_TABLE . ' SET whiteList="" WHERE whiteList=","');
+			$_db->query('UPDATE ' . CUSTOMER_FILTER_TABLE . ' SET blackList=REPLACE(blackList,",' . $webUser->ID . ',",",") WHERE blackList LIKE "%,' . $webUser->ID . ',%"');
+			$_db->query('UPDATE ' . CUSTOMER_FILTER_TABLE . ' SET blackList="" WHERE blackList=","');
 			unset($_db);
-			unset($_db2);
 		}
 	}
 
@@ -391,14 +371,10 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter{
 	 * Deletes all filters for given modelIds of table
 	 * call this, when several models are deleted
 	 */
-	function deleteModel($modelIds = array(), $table){
+	function deleteModel(array $modelIds, $table){
 		if(!empty($modelIds)){
 			$_db = new DB_WE();
-			$_query = 'DELETE FROM ' . CUSTOMER_FILTER_TABLE . " WHERE
-				modelId IN (" . implode(", ", $modelIds) . ")
-				AND modelTable = \"" . $table . "\"
-			";
-			$_db->query($_query);
+			$_db->query('DELETE FROM ' . CUSTOMER_FILTER_TABLE . ' WHERE	modelId IN (' . implode(', ', $modelIds) . ')	AND modelTable = "' . $table . '"');
 			unset($_db);
 		}
 	}

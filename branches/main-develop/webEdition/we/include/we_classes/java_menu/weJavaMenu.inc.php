@@ -25,10 +25,10 @@
 class weJavaMenu{
 
 	var $entries;
-	var $lcmdFrame = "";
+	var $lcmdFrame = '';
 	var $width = 350;
 	var $height = 30;
-	var $menuaction = "";
+	var $menuaction = '';
 
 	function __construct($entries, $lcmdFrame = "top.load", $menuaction = 'parent.'){
 		$this->menuaction = $menuaction;
@@ -39,7 +39,6 @@ class weJavaMenu{
 	}
 
 	function printMenu($cmd = ''){
-
 		print $this->getCode(true, $cmd);
 	}
 
@@ -50,9 +49,9 @@ class weJavaMenu{
 	function getJS(){
 		return we_html_element::jsScript(JS_DIR . 'attachKeyListener.js') .
 			we_html_element::jsElement('
-				function menuaction(cmd) {
-					' . $this->lcmdFrame . '.location.replace("' . getServerUrl() . WEBEDITION_DIR . 'we_lcmd.php?we_cmd[0]="+cmd);
-				}');
+function menuaction(cmd) {
+	' . $this->lcmdFrame . '.location.replace("' . getServerUrl() . WEBEDITION_DIR . 'we_lcmd.php?we_cmd[0]="+cmd);
+}');
 	}
 
 	//remove cmdTarget in 6.4 after Java Menu is removed
@@ -64,16 +63,14 @@ class weJavaMenu{
 			$out = '<span class="preload1"></span><span class="preload2"></span><span class="preload3"></span><span class="preload4"></span>' .
 				'<ul id="nav">';
 			$menus = array();
-
 			foreach($this->entries as $id => $e){
+				if($e['parent'] == 0){
+					$mtext = (is_array($e['text']) ?
+							($e['text'][$GLOBALS['WE_LANGUAGE']] ? $e['text'][$GLOBALS['WE_LANGUAGE']] : '') :
+							($e['text'] ? $e['text'] : ''));
 
-				if($e["parent"] == "000000"){
-					if(is_array($e["text"])){
-						$mtext = ($e["text"][$GLOBALS["WE_LANGUAGE"]] ? $e["text"][$GLOBALS["WE_LANGUAGE"]] : "");
-					} else {
-						$mtext = ($e["text"] ? $e["text"] : "");
-					}
-					$menus[] = array('id' => $id,
+					$menus[] = array(
+						'id' => $id,
 						'code' => '<li class="top" onmouseover="topMenuHover(this)"><div class="top_div" onclick="topMenuClick(this)"><a href="#void" class="top_link"><span class="down">' . $mtext . '</span></a><ul class="sub">',
 					);
 				}
@@ -93,30 +90,7 @@ class weJavaMenu{
 		if(!$showAltMenu){
 			$i = 0;
 			foreach($this->entries as $id => $m){
-				if(we_hasPerm('ADMINISTRATOR')){
-					$m['enabled'] = 1;
-				}
-				if(!we_hasPerm('ADMINISTRATOR') && (isset($m["perm"]) && $m["perm"]) != ""){
-					$set = array();
-					$or = explode("||", $m["perm"]);
-					foreach($or as $k => $v){
-						$and = explode("&&", $v);
-						$one = true;
-						foreach($and as $key => $val){
-							$set[] = 'isset($_SESSION["perms"]["' . trim($val) . '"])';
-							//$and[$key]='$_SESSION["perms"]["'.trim($val).'"]';
-							$and[$key] = '(isset($_SESSION["perms"]["' . trim($val) . '"]) && $_SESSION["perms"]["' . trim($val) . '"])';
-							$one = false;
-						}
-						$or[$k] = implode(" && ", $and);
-						if($one && !in_array('isset($_SESSION["perms"]["' . trim($v) . '"])', $set)){
-							$set[] = 'isset($_SESSION["perms"]["' . trim($v) . '"])';
-						}
-					}
-					$set_str = implode(" || ", $set);
-					$condition_str = implode(" || ", $or);
-					eval('if(' . $set_str . '){ if(' . $condition_str . ') $m["enabled"]=1; else $m["enabled"]=0;}');
-				}
+				$m['enabled'] = isset($m['perm']) ? self::isEnabled($m['perm']) : 1;
 				$mtext = (isset($m["text"]) && is_array($m["text"]) ?
 						($m["text"][$GLOBALS["WE_LANGUAGE"]] ? $m["text"][$GLOBALS["WE_LANGUAGE"]] : "#") :
 						(isset($m["text"]) ? $m["text"] : "#"));
@@ -124,10 +98,13 @@ class weJavaMenu{
 				if(!isset($m["cmd"])){
 					$m["cmd"] = "#";
 				}
-				$out .= (isset($m["enabled"]) && $m["enabled"] ?
-						'<param name="entry' . $i . '" value="' . $id . ',' . $m["parent"] . ',' . $m["cmd"] . ',' . $mtext . ',' . ( (isset($m["enabled"]) && $m["enabled"] ) ? $m["enabled"] : "0") . '">' :
-						'<param name="entry' . $i . '" value="' . $id . ',' . $m["parent"] . ',0,' . $mtext . ',0"/>');
+				if(isset($m['hide']) && $m['hide']){
 
+				} else {
+					$out .= (isset($m["enabled"]) && $m["enabled"] ?
+							'<param name="entry' . $i . '" value="' . $id . ',' . $m["parent"] . ',' . $m["cmd"] . ',' . $mtext . ',' . ( (isset($m["enabled"]) && $m["enabled"] ) ? $m["enabled"] : "0") . '">' :
+							'<param name="entry' . $i . '" value="' . $id . ',' . $m["parent"] . ',0,' . $mtext . ',0"/>');
+				}
 				$i++;
 			}
 		}
@@ -141,15 +118,15 @@ class weJavaMenu{
 			this.selectedIndex=0;';
 		$i = 0;
 		foreach($this->entries as $id => $e){
-			if($e["parent"] == "000000"){
-				if(is_array($e["text"])){
-					$mtext = ($e["text"][$GLOBALS["WE_LANGUAGE"]] ? $e["text"][$GLOBALS["WE_LANGUAGE"]] : "");
-				} else {
-					$mtext = ($e["text"] ? $e["text"] : "");
-				}
-				$menus[$i]["id"] = $id;
-				$menus[$i]["code"] = '<select class="defaultfont" style="font-size: 9px;font-family:arial;" onChange="' . $onCh . '" size="1"><option value="">' . $mtext . "\n";
-				$i++;
+			if($e['parent'] == 0){
+				$mtext = (is_array($e["text"]) ?
+						($e["text"][$GLOBALS["WE_LANGUAGE"]] ? $e["text"][$GLOBALS["WE_LANGUAGE"]] : "") :
+						($e["text"] ? $e["text"] : ""));
+
+				$menus[] = array(
+					"id" => $id,
+					"code" => '<select class="defaultfont" style="font-size: 9px;font-family:arial;" onChange="' . $onCh . '" size="1"><option value="">' . $mtext,
+				);
 			}
 		}
 
@@ -195,103 +172,84 @@ class weJavaMenu{
 		return $out;
 	}
 
-	function h_search($men, $p){
+	static function h_search($men, $p){
 		$container = array();
 		foreach($men as $id => $e){
-			if($e["parent"] == $p){
+			if($e['parent'] == $p){
 				$container[$id] = $e;
 			}
 		}
 		return $container;
 	}
 
+	static function isEnabled($perm){
+		$enabled = 0;
+		$or = explode('||', $perm);
+		foreach($or as $v){
+			$and = explode('&&', $v);
+			$eand = 1;
+			foreach($and as $val){
+				$eand&=we_hasPerm(trim($val));
+			}
+			$enabled|=$eand;
+			if($enabled){
+				return true;
+			}
+		}
+		return $enabled;
+	}
+
 	function h_pOption($men, &$opt, $p, $zweig){
-		$nf = $this->h_search($men, $p);
+		$nf = self::h_search($men, $p);
 		if(!empty($nf)){
 			foreach($nf as $id => $e){
 				$newAst = $zweig;
-				$e["enabled"] = 1;
-				if(isset($e["perm"])){
-					$set = array();
-					$or = explode("||", $e["perm"]);
-					foreach($or as $k => $v){
-						$and = explode("&&", $v);
-						$one = true;
-						foreach($and as $key => $val){
-							$set[] = 'isset($_SESSION["perms"]["' . trim($val) . '"])';
-							//$and[$key]='$_SESSION["perms"]["'.trim($val).'"]';
-							$and[$key] = '(isset($_SESSION["perms"]["' . trim($val) . '"]) && $_SESSION["perms"]["' . trim($val) . '"])';
-							$one = false;
-						}
-						$or[$k] = implode(" && ", $and);
-						if($one && !in_array('isset($_SESSION["perms"]["' . trim($v) . '"])', $set)){
-							$set[] = 'isset($_SESSION["perms"]["' . trim($v) . '"])';
-						}
+				$e['enabled'] = isset($e['perm']) ? self::isEnabled($e['perm']) : 1;
+				$mtext = (isset($e['text']) && is_array($e['text']) ?
+						($e['text'][$GLOBALS['WE_LANGUAGE']] ? $e['text'][$GLOBALS['WE_LANGUAGE']] : '') :
+						( isset($e['text']) ? $e['text'] : ''));
+
+				if(isset($e['hide']) && $e['hide']){
+
+				} else {
+					if((!isset($e["cmd"])) && $mtext){
+						$opt .= '<option value="" disabled>&nbsp;&nbsp;' . $newAst . $mtext . "&nbsp;&gt;";
+						$newAst = $newAst . "&nbsp;&nbsp;";
+						$this->h_pOption($men, $opt, $id, $newAst);
+					} else if($mtext){
+						$opt .= '<option' . (($e["enabled"] == 0) ? (' value="" style="{color:\'grey\'}" disabled') : (' value="' . $e["cmd"] . '"')) . '>&nbsp;&nbsp;' . $newAst . $mtext;
+					} else {
+						$opt .= '<option value="" disabled>&nbsp;&nbsp;' . $newAst . "--------\n";
 					}
-					$set_str = implode(" || ", $set);
-					$condition_str = implode(" || ", $or);
-					eval('if(' . $set_str . '){ if(' . $condition_str . ') $e["enabled"]=1; else $e["enabled"]=0;}');
-				}
-				if(isset($e["text"]) && is_array($e["text"])){
-					$mtext = ($e["text"][$GLOBALS["WE_LANGUAGE"]] ? $e["text"][$GLOBALS["WE_LANGUAGE"]] : "");
-				} else {
-					$mtext = ( isset($e["text"]) ? $e["text"] : "");
-				}
-				if((!isset($e["cmd"])) && $mtext){
-					$opt .= '<option value="" disabled>&nbsp;&nbsp;' . $newAst . $mtext . "&nbsp;&gt;\n";
-					$newAst = $newAst . "&nbsp;&nbsp;";
-					$this->h_pOption($men, $opt, $id, $newAst);
-				} else if($mtext){
-					$opt .= '<option' . (($e["enabled"] == 0) ? (' value="" style="{color:\'grey\'}" disabled') : (' value="' . $e["cmd"] . '"')) . '>&nbsp;&nbsp;' . $newAst . $mtext;
-				} else {
-					$opt .= '<option value="" disabled>&nbsp;&nbsp;' . $newAst . "--------\n";
 				}
 			}
 		}
 	}
 
 	function h_pCODE($men, &$opt, $p, $zweig){
-		$nf = $this->h_search($men, $p);
+		$nf = self::h_search($men, $p);
 		if(!empty($nf)){
 			foreach($nf as $id => $e){
 				$newAst = $zweig;
-				$e["enabled"] = 1;
-				if(isset($e["perm"])){
-					$set = array();
-					$or = explode("||", $e["perm"]);
-					foreach($or as $k => $v){
-						$and = explode("&&", $v);
-						$one = true;
-						foreach($and as $key => $val){
-							$set[] = 'isset($_SESSION["perms"]["' . trim($val) . '"])';
-							//$and[$key]='$_SESSION["perms"]["'.trim($val).'"]';
-							$and[$key] = '(isset($_SESSION["perms"]["' . trim($val) . '"]) && $_SESSION["perms"]["' . trim($val) . '"])';
-							$one = false;
-						}
-						$or[$k] = implode(" && ", $and);
-						if($one && !in_array('isset($_SESSION["perms"]["' . trim($v) . '"])', $set)){
-							$set[] = 'isset($_SESSION["perms"]["' . trim($v) . '"])';
-						}
-					}
-					$set_str = implode(" || ", $set);
-					$condition_str = implode(" || ", $or);
-					eval('if(' . $set_str . '){ if(' . $condition_str . ') $e["enabled"]=1; else $e["enabled"]=0;}');
-				}
-				if(isset($e["text"]) && is_array($e["text"])){
-					$mtext = ($e["text"][$GLOBALS["WE_LANGUAGE"]] ? $e["text"][$GLOBALS["WE_LANGUAGE"]] : "");
+				$e['enabled'] = isset($e['perm']) ? self::isEnabled($e['perm']) : 1;
+				$mtext = (isset($e['text']) && is_array($e['text']) ?
+						($e['text'][$GLOBALS['WE_LANGUAGE']] ? $e['text'][$GLOBALS['WE_LANGUAGE']] : '') :
+						(isset($e['text']) ? $e['text'] : ''));
+
+				if(isset($e['hide']) && $e['hide']){
+
 				} else {
-					$mtext = ( isset($e["text"]) ? $e["text"] : "");
-				}
-				if((!isset($e["cmd"])) && $mtext){
-					$opt .= '<li><a class="fly" href="#void">' . $mtext . '</a><ul>' . "\n";
-					$this->h_pCODE($men, $opt, $id, $newAst);
-					$opt .= '</ul></li>' . "\n";
-				} else if($mtext){
-					if(!(isset($e["enabled"]) && $e["enabled"] == 0)){
-						$opt .= '<li><a href="#void" onclick="' . $this->menuaction . 'menuaction(\'' . $e["cmd"] . '\')">' . $mtext . '</a></li>';
+					if((!(isset($e['cmd']) && $e['cmd'])) && $mtext){
+						$opt .= '<li><a class="fly" href="#void">' . $mtext . '</a><ul>' . "\n";
+						$this->h_pCODE($men, $opt, $id, $newAst);
+						$opt .= '</ul></li>' . "\n";
+					} else if($mtext){
+						if(!(isset($e['enabled']) && $e['enabled'] == 0)){
+							$opt .= '<li><a href="#void" onclick="' . $this->menuaction . 'menuaction(\'' . $e["cmd"] . '\')">' . $mtext . '</a></li>';
+						}
+					} elseif(!(isset($e['enabled']) && $e['enabled'] == 0)){
+						$opt .= '<li class="disabled"></li>';
 					}
-				} elseif(!(isset($e["enabled"]) && $e["enabled"] == 0)){
-					$opt .= '<li class="disabled"></li>';
 				}
 			}
 		}
