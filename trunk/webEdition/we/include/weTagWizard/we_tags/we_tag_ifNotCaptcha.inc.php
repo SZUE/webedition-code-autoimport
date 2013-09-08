@@ -1,2 +1,2 @@
 <?php
-include(__DIR__ . '/we_tag_' . str_replace('Not', '', $tagName) . '.inc.php');
+include(WE_INCLUDES_DIR . '/weTagWizard/we_tags' . str_replace('Not', '', $tagName) . '.inc.php');
