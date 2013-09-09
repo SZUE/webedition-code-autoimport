@@ -234,7 +234,7 @@ class we_object extends we_document{
 						//  First time a field is added
 						for($f = 0; $f <= ( isset($this->elements[$cur . 'count']['dat']) ? $this->elements[$cur . 'count']['dat'] : 0 ); $f++){
 							$_val = (isset($this->elements[$cur . 'defaultvalue' . $f]['dat']) && $this->elements[$cur . 'defaultvalue' . $f]['dat'] != $cur . 'defaultvalue' . $f) ? $this->elements[$cur . 'defaultvalue' . $f]['dat'] : '';
-							if(substr($name, 0, 12) == we_objectFile::TYPE_MULTIOBJECT.'_'){
+							if(substr($name, 0, 12) == we_objectFile::TYPE_MULTIOBJECT . '_'){
 								$arrt[$name]['meta'][] = $_val;
 							} else {
 								if(isset($this->elements[$cur . 'defaultkey' . $f]['dat'])){
@@ -242,9 +242,9 @@ class we_object extends we_document{
 								}
 							}
 						}
-						$q[] = '`'.$name . '` ' . $this->switchtypes($cur);
+						$q[] = '`' . $name . '` ' . $this->switchtypes($cur);
 						//add index for complex queries
-						if($this->getElement($cur . self::ELEMENT_TYPE, 'dat') == 'object'){
+						if($this->getElement($cur . self::ELEMENT_TYPE, 'dat') == we_objectFile::TYPE_OBJECT){
 							$indexe[] = 'KEY (`' . $name . '`)';
 						}
 					}
@@ -361,7 +361,7 @@ class we_object extends we_document{
 											$arrt[$nam]['meta'] = array();
 										}
 										$_val = (isset($this->elements[$info['name'] . 'defaultvalue' . $f]) && $this->elements[$info['name'] . 'defaultvalue' . $f] != $info['name'] . 'defaultvalue' . $f ) ? $this->elements[$info['name'] . 'defaultvalue' . $f]['dat'] : '';
-										if(substr($nam, 0, 12) == we_objectFile::TYPE_MULTIOBJECT.'_'){
+										if(substr($nam, 0, 12) == we_objectFile::TYPE_MULTIOBJECT . '_'){
 											$arrt[$nam]['meta'][] = $_val;
 										} else {
 											$arrt[$nam]['meta'][$this->elements[$info['name'] . 'defaultkey' . $f]['dat']] = $_val;
@@ -424,7 +424,7 @@ class we_object extends we_document{
 						if((!isset($arrt[$nam]['meta'])) || (!is_array($arrt[$nam]['meta']))){
 							$arrt[$nam]['meta'] = array();
 						}
-						if(substr($nam, 0, 12) == we_objectFile::TYPE_MULTIOBJECT.'_'){
+						if(substr($nam, 0, 12) == we_objectFile::TYPE_MULTIOBJECT . '_'){
 							$arrt[$nam]['meta'][] = $_val;
 						} else {
 							if(isset($this->elements[$cur . 'defaultkey' . $f]['dat'])){
@@ -437,7 +437,7 @@ class we_object extends we_document{
 
 					$q [] = ' ADD `' . $nam . '` ' . $this->switchtypes($cur);
 					//add index for complex queries
-					if($this->getElement($cur . self::ELEMENT_TYPE, 'dat') == 'object'){
+					if($this->getElement($cur . self::ELEMENT_TYPE, 'dat') == we_objectFile::TYPE_OBJECT){
 						$q [] = ' ADD INDEX (`' . $nam . '`)';
 					}
 				}
@@ -502,37 +502,37 @@ class we_object extends we_document{
 	function switchtypes($name){
 		$def = $this->getElement($name . 'default', 'dat');
 		switch($this->getElement($name . self::ELEMENT_TYPE, 'dat')){
-			case 'meta':
+			case we_objectFile::TYPE_META:
 				return ' VARCHAR(' . (($this->getElement($name . 'length', 'dat') > 0 && ($this->getElement($name . 'length', 'dat') < 255)) ? $this->getElement($name . 'length', 'dat') : 255) . ') NOT NULL ';
-			case 'date':
+			case we_objectFile::TYPE_DATE:
 				return ' INT(11) NOT NULL ';
-			case 'input':
+			case we_objectFile::TYPE_INPUT:
 				return ' VARCHAR(' . (($this->getElement($name . 'length', 'dat') > 0 && ($this->getElement($name . 'length', 'dat') < 4096)) ? $this->getElement($name . 'length', 'dat') : 255) . ') NOT NULL ';
-			case 'country':
-			case 'language':
+			case we_objectFile::TYPE_COUNTRY:
+			case we_objectFile::TYPE_LANGUAGE:
 				return ' VARCHAR(2) NOT NULL ';
-			case 'link':
+			case we_objectFile::TYPE_LINK:
 			case we_objectFile::TYPE_HREF:
 				return ' TEXT NOT NULL ';
-			case 'text':
+			case we_objectFile::TYPE_TEXT:
 				return ' LONGTEXT NOT NULL ';
 				break;
-			case 'img':
-			case 'flashmovie':
-			case 'quicktime':
-			case 'binary':
+			case we_objectFile::TYPE_IMG:
+			case we_objectFile::TYPE_FLASHMOVIE:
+			case we_objectFile::TYPE_QUICKTIME:
+			case we_objectFile::TYPE_BINARY:
 				return ' INT(11) DEFAULT "0" NOT NULL ';
-			case 'checkbox':
+			case we_objectFile::TYPE_CHECKBOX:
 				return ' INT(1) DEFAULT "' . ($this->getElement($name . 'default', 'dat') == 1 ? '1' : '0') . '" NOT NULL ';
-			case 'int':
+			case we_objectFile::TYPE_INT:
 				return ' INT(' . (($this->getElement($name . 'length', 'dat') > 0 && ($this->getElement($name . 'length', 'dat') < 256)) ? $this->getElement($name . 'length', 'dat') : '11') . ') DEFAULT NULL ';
-			case 'float':
+			case we_objectFile::TYPE_FLOAT:
 				return ' DOUBLE DEFAULT NULL ';
-			case 'object':
+			case we_objectFile::TYPE_OBJECT:
 				return ' BIGINT(20) DEFAULT "0" NOT NULL ';
 			case we_objectFile::TYPE_MULTIOBJECT:
 				return ' TEXT NOT NULL ';
-			case 'shopVat':
+			case we_objectFile::TYPE_SHOPVAT:
 				return ' TEXT NOT NULL';
 			default:
 				return '';
@@ -810,12 +810,12 @@ class we_object extends we_document{
 		$listlen = ($this->getElement("Sortgesamt") + 1);
 		//$name = str_replace("float", "f", str_replace("int", "i",$name));
 
-		$type = ( $this->getElement($name . self::ELEMENT_TYPE, "dat") != "" ) ? $this->getElement($name . self::ELEMENT_TYPE, "dat") : "input";
+		$type = ( $this->getElement($name . self::ELEMENT_TYPE, "dat") != "" ) ? $this->getElement($name . self::ELEMENT_TYPE, "dat") : we_objectFile::TYPE_INPUT;
 		$content = '<tr>
 			<td  width="100" class="weMultiIconBoxHeadline" valign="top" >' . g_l('weClass', "[name]") . '</td>
 			<td  width="170" class="defaultfont" valign="top">';
 
-		if($type == 'object'){
+		if($type == we_objectFile::TYPE_OBJECT){
 			$vals = array();
 			$all = $this->DB_WE->table_names(OBJECT_X_TABLE . '%');
 			$count = 0;
@@ -837,7 +837,7 @@ class we_object extends we_document{
 		} else {
 
 			$foo = $this->getElement($name, "dat");
-			if($type == 'shopVat'){
+			if($type == we_objectFile::TYPE_SHOPVAT){
 				$foo = WE_SHOP_VAT_FIELD_NAME;
 				$content .= we_html_tools::hidden("we_" . $this->Name . "_input[$name]", $foo) .
 					$this->htmlTextInput("tmp" . WE_SHOP_VAT_FIELD_NAME, 40, $foo, 52, ' readonly="readonly" disabled="disabled"', "text", 388);
@@ -855,37 +855,55 @@ class we_object extends we_document{
 		<td width="170" class="defaultfont"  valign="top">';
 
 		$val = array(
-			"input" => g_l('modules_object', '[input_field]'),
-			"text" => g_l('modules_object', '[textarea_field]'),
-			"date" => g_l('modules_object', '[date_field]'),
-			"img" => g_l('modules_object', '[img_field]'),
-			"checkbox" => g_l('modules_object', '[checkbox_field]'),
-			"int" => g_l('modules_object', '[int_field]'),
-			"float" => g_l('modules_object', '[float_field]'),
-			"meta" => g_l('modules_object', '[meta_field]'),
-			"link" => g_l('modules_object', '[link_field]'),
+			we_objectFile::TYPE_INPUT=> g_l('modules_object', '[input_field]'),
+			we_objectFile::TYPE_TEXT => g_l('modules_object', '[textarea_field]'),
+			we_objectFile::TYPE_DATE => g_l('modules_object', '[date_field]'),
+			we_objectFile::TYPE_IMG => g_l('modules_object', '[img_field]'),
+			we_objectFile::TYPE_CHECKBOX => g_l('modules_object', '[checkbox_field]'),
+			we_objectFile::TYPE_INT=> g_l('modules_object', '[int_field]'),
+			we_objectFile::TYPE_FLOAT => g_l('modules_object', '[float_field]'),
+			we_objectFile::TYPE_META => g_l('modules_object', '[meta_field]'),
+			we_objectFile::TYPE_LINK => g_l('modules_object', '[link_field]'),
 			we_objectFile::TYPE_HREF => g_l('modules_object', '[href_field]'),
-			"binary" => g_l('modules_object', '[binary_field]'),
-			"flashmovie" => g_l('modules_object', '[flashmovie_field]'),
-			"quicktime" => g_l('modules_object', '[quicktime_field]'),
-			"country" => g_l('modules_object', '[country_field]'),
-			"language" => g_l('modules_object', '[language_field]'),
-			"object" => g_l('modules_object', '[objectFile_field]'),
+			we_objectFile::TYPE_BINARY => g_l('modules_object', '[binary_field]'),
+			we_objectFile::TYPE_FLASHMOVIE => g_l('modules_object', '[flashmovie_field]'),
+			we_objectFile::TYPE_QUICKTIME => g_l('modules_object', '[quicktime_field]'),
+			we_objectFile::TYPE_COUNTRY => g_l('modules_object', '[country_field]'),
+			we_objectFile::TYPE_LANGUAGE => g_l('modules_object', '[language_field]'),
+			we_objectFile::TYPE_OBJECT => g_l('modules_object', '[objectFile_field]'),
 			we_objectFile::TYPE_MULTIOBJECT => g_l('modules_object', '[multiObjectFile_field]'),
 		);
 		if(defined('SHOP_TABLE')){
-			$val["shopVat"] = g_l('modules_object', '[shopVat_field]');
+			$val[we_objectFile::TYPE_SHOPVAT] = g_l('modules_object', '[shopVat_field]');
 		}
 		$content .= $this->htmlSelect("we_" . $this->Name . "_input[" . $name . self::ELEMENT_TYPE . ']', $val, 1, $type, "", 'onChange="if(this.form.elements[\'' . "we_" . $this->Name . "_input[" . $name . "default]" . '\']){this.form.elements[\'' . "we_" . $this->Name . "_input[" . $name . "default]" . '\'].value=\'\' };_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_entry_at_class\',\'' . $GLOBALS['we_transaction'] . '\',\'' . $identifier . '\'); "', "value", 388) .
 			'</td></tr>';
 
-		if($type != 'shopVat' && $type != "float" && $type != "text" && $type != "country" && $type != "language" && $type != "img" && $type != "binary" && $type != "flashmovie" && $type != "quicktime" && $type != "date" && $type != "meta" && $type != "object" && $type != "link" && $type != we_objectFile::TYPE_HREF && $type != "checkbox" && $type != we_objectFile::TYPE_MULTIOBJECT){
-			// Length
-			$maxLengthVal = $type == 'int' ? 10 : 255;
-			$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin"  valign="top">' . g_l('modules_object', '[length]') . '</td>' .
-				'<td width="170" class="defaultfont">' .
-				$this->htmlTextInput("we_" . $this->Name . "_input[" . $name . self::ELEMENT_LENGHT . ']', 10, ($this->getElement($name . "length", "dat") > 0 && ($this->getElement($name . "length", "dat") < ($maxLengthVal + 1)) ? $this->getElement($name . "length", "dat") : $maxLengthVal), ($type == 'int' ? 2 : 4), 'onChange="_EditorFrame.setEditorIsHot(true);" weType="weObject_' . $type . '_length"', "text", 388) .
-				'</td></tr>';
+		switch($type){
+			case we_objectFile::TYPE_SHOPVAT:
+			case we_objectFile::TYPE_FLOAT:
+			case we_objectFile::TYPE_TEXT:
+			case we_objectFile::TYPE_COUNTRY:
+			case we_objectFile::TYPE_LANGUAGE:
+			case we_objectFile::TYPE_IMG:
+			case we_objectFile::TYPE_BINARY:
+			case we_objectFile::TYPE_FLASHMOVIE:
+			case we_objectFile::TYPE_QUICKTIME:
+			case we_objectFile::TYPE_DATE:
+			case we_objectFile::TYPE_META:
+			case we_objectFile::TYPE_OBJECT:
+			case we_objectFile::TYPE_LINK:
+			case we_objectFile::TYPE_HREF:
+			case we_objectFile::TYPE_CHECKBOX:
+			case we_objectFile::TYPE_MULTIOBJECT:
+				break;
+			default:
+				// Length
+				$maxLengthVal = $type == we_objectFile::TYPE_INT ? 10 : 255;
+				$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin"  valign="top">' . g_l('modules_object', '[length]') . '</td>' .
+					'<td width="170" class="defaultfont">' .
+					$this->htmlTextInput("we_" . $this->Name . "_input[" . $name . self::ELEMENT_LENGHT . ']', 10, ($this->getElement($name . "length", "dat") > 0 && ($this->getElement($name . "length", "dat") < ($maxLengthVal + 1)) ? $this->getElement($name . "length", "dat") : $maxLengthVal), ($type == we_objectFile::TYPE_INT ? 2 : 4), 'onChange="_EditorFrame.setEditorIsHot(true);" weType="weObject_' . $type . '_length"', "text", 388) .
+					'</td></tr>';
 		}
 
 		switch($type){
@@ -912,11 +930,11 @@ class we_object extends we_document{
 				if(!isset($this->elements[$name . "class"]["dat"]) || $this->elements[$name . "class"]["dat"] == ""){
 					$this->setElement($name . "class", array_shift(array_flip($vals)));
 				}
-				$content .= $this->htmlSelect("we_" . $this->Name . '_'.we_objectFile::TYPE_MULTIOBJECT.'[' . $name . "class]", $vals, 1, $this->getElement($name . 'class', "dat"), "", 'onchange="if(this.form.elements[\'' . "we_" . $this->Name . "_input[" . $name . "default]" . '\']){this.form.elements[\'' . "we_" . $this->Name . "_input[" . $name . "default]" . '\'].value=\'\' };_EditorFrame.setEditorIsHot(true);we_cmd(\'change_multiobject_at_class\',\'' . $GLOBALS['we_transaction'] . '\',\'' . $identifier . '\',\'' . $name . '\')"', "value", 388) .
+				$content .= $this->htmlSelect("we_" . $this->Name . '_' . we_objectFile::TYPE_MULTIOBJECT . '[' . $name . "class]", $vals, 1, $this->getElement($name . 'class', "dat"), "", 'onchange="if(this.form.elements[\'' . "we_" . $this->Name . "_input[" . $name . "default]" . '\']){this.form.elements[\'' . "we_" . $this->Name . "_input[" . $name . "default]" . '\'].value=\'\' };_EditorFrame.setEditorIsHot(true);we_cmd(\'change_multiobject_at_class\',\'' . $GLOBALS['we_transaction'] . '\',\'' . $identifier . '\',\'' . $name . '\')"', "value", 388) .
 					'</td></tr>
 						<tr valign="top">
 						<td  width="100" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[max_objects]') . '</td>
-						<td class="defaultfont"><nobr>' . $this->htmlTextInput("we_" . $this->Name . '_'.we_objectFile::TYPE_MULTIOBJECT.'[' . $name . "max]", 5, $this->getElement($name . "max", "dat"), 3, 'onChange="_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_entry_at_class\',\'' . $GLOBALS['we_transaction'] . '\',\'' . ($identifier) . '\');"', "text", 50) . ' (' . g_l('modules_object', '[no_maximum]') . ')</nobr></td>
+						<td class="defaultfont"><nobr>' . $this->htmlTextInput("we_" . $this->Name . '_' . we_objectFile::TYPE_MULTIOBJECT . '[' . $name . "max]", 5, $this->getElement($name . "max", "dat"), 3, 'onChange="_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_entry_at_class\',\'' . $GLOBALS['we_transaction'] . '\',\'' . ($identifier) . '\');"', "text", 50) . ' (' . g_l('modules_object', '[no_maximum]') . ')</nobr></td>
 					</tr>
 						<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[default]') . '</td>
 						<td width="170" class="defaultfont"><table border="0">';
@@ -968,14 +986,14 @@ class we_object extends we_document{
 			  $this->setElement($name."default","");
 			  }
 			 */
-			case 'checkbox':
+			case we_objectFile::TYPE_CHECKBOX:
 				$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[default]') . '</td>' .
 					'<td width="170" class="defaultfont">' .
 					we_forms::checkbox(1, $this->getElement($name . "default", "dat"), "we_" . $this->Name . "_input[" . $name . "default1]", g_l('modules_object', '[checked]'), true, "defaultfont", "if(this.checked){document.we_form.elements['" . "we_" . $this->Name . "_input[" . $name . "default]" . "'].value=1;}else{ document.we_form.elements['" . "we_" . $this->Name . "_input[" . $name . "default]" . "'].value=0;}") .
 					'<input type=hidden name="' . "we_" . $this->Name . "_input[" . $name . "default]" . '" value="' . $this->getElement($name . "default", "dat") . '" />' .
 					'</td></tr>';
 				break;
-			case 'img':
+			case we_objectFile::TYPE_IMG:
 				$content .= '<tr><td  width="100" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[rootdir]') . '</td>' .
 					'<td width="170" class="defaultfont"  valign="top">' .
 					$this->formDirChooser(267, 0, FILE_TABLE, "ParentPath", "input[" . $name . "rootdir]", "", $this->getElement($name . "rootdir", "dat"), $identifier) .
@@ -989,7 +1007,7 @@ class we_object extends we_document{
 					$this->getImageHTML($name . "default", $this->getElement($name . "default", "dat"), $identifier) .
 					'</td></tr>';
 				break;
-			case 'flashmovie':
+			case we_objectFile::TYPE_FLASHMOVIE:
 				$content .= '<tr><td  width="100" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[rootdir]') . '</td>' .
 					'<td width="170" class="defaultfont"  valign="top">' .
 					$this->formDirChooser(267, 0, FILE_TABLE, "ParentPath", "input[" . $name . "rootdir]", "", $this->getElement($name . "rootdir", "dat"), $identifier) .
@@ -1003,7 +1021,7 @@ class we_object extends we_document{
 					$this->getFlashmovieHTML($name . "default", $this->getElement($name . "default", "dat"), $identifier) .
 					'</td></tr>';
 				break;
-			case 'quicktime':
+			case we_objectFile::TYPE_QUICKTIME:
 				$content .= '<tr><td  width="100" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[rootdir]') . '</td>' .
 					'<td width="170" class="defaultfont"  valign="top">' .
 					$this->formDirChooser(267, 0, FILE_TABLE, "ParentPath", "input[" . $name . "rootdir]", "", $this->getElement($name . "rootdir", "dat"), $identifier) .
@@ -1017,7 +1035,7 @@ class we_object extends we_document{
 					$this->getQuicktimeHTML($name . "default", $this->getElement($name . "default", "dat"), $identifier) .
 					'</td></tr>';
 				break;
-			case 'binary':
+			case we_objectFile::TYPE_BINARY:
 				$content .= '<tr><td  width="100" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[rootdir]') . '</td>' .
 					'<td width="170" class="defaultfont"  valign="top">' .
 					$this->formDirChooser(267, 0, FILE_TABLE, "ParentPath", "input[" . $name . "rootdir]", "", $this->getElement($name . "rootdir", "dat"), $identifier) .
@@ -1031,7 +1049,7 @@ class we_object extends we_document{
 					$this->getBinaryHTML($name . "default", $this->getElement($name . "default", "dat"), $identifier) .
 					'</td></tr>';
 				break;
-			case 'date':
+			case we_objectFile::TYPE_DATE:
 
 				$d = abs($this->getElement($name . "default", "dat"));
 				$dd = abs($this->getElement($name . "defaultThumb", "dat"));
@@ -1042,19 +1060,19 @@ class we_object extends we_document{
 					'</td></tr>';
 
 				break;
-			case 'text':
+			case we_objectFile::TYPE_TEXT:
 				$content .= '<tr><td  width="100" class="weMultiIconBoxHeadlineThin"  valign="top">' . g_l('modules_object', '[default]') . '</td>' .
 					'<td width="170" class="defaultfont"  valign="top">' .
 					$this->dhtmledit($name, $identifier) .
 					'</td></tr>';
 				break;
-			case 'object':
+			case we_objectFile::TYPE_OBJECT:
 				$content .= '<tr><td  width="100" class="weMultiIconBoxHeadlineThin"  valign="top">' . g_l('modules_object', '[default]') . '</td>' .
 					'<td width="170" class="defaultfont"  valign="top">' .
 					$this->getObjectFieldHTML($name, isset($attribs) ? $attribs : "") .
 					'</td></tr>';
 				break;
-			case 'meta':
+			case we_objectFile::TYPE_META:
 				$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[default]') . '</td>' .
 					'<td width="170" class="defaultfont"><table border="0"><tr><td class="defaultfont">Key</td><td class="defaultfont">Value</td><td></td></tr>';
 				if(!isset($this->elements[$name . "count"]["dat"])){
@@ -1089,25 +1107,25 @@ class we_object extends we_document{
 				}
 				$content .= '</table></td></tr>';
 				break;
-			case 'country':
+			case we_objectFile::TYPE_COUNTRY:
 				$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[default]') . '</td>' .
 					'<td width="170" class="defaultfont">' .
 					$this->htmlTextInput("we_" . $this->Name . "_country[" . $name . "default]", 40, $this->getElement($name . "default", "dat"), 10, 'onChange="_EditorFrame.setEditorIsHot(true);" weType="' . $type . '"', "text", 388) .
 					'</td></tr>';
 				break;
-			case 'language':
+			case we_objectFile::TYPE_LANGUAGE:
 				$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[default]') . '</td>' .
 					'<td width="170" class="defaultfont">' .
 					$this->htmlTextInput("we_" . $this->Name . "_language[" . $name . "default]", 40, $this->getElement($name . "default", "dat"), 15, 'onChange="_EditorFrame.setEditorIsHot(true);" weType="' . $type . '"', "text", 388) .
 					'</td></tr>';
 				break;
-			case 'link':
+			case we_objectFile::TYPE_LINK:
 				$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[default]') . '</td>' .
 					'<td width="170" class="defaultfont">' .
 					$this->htmlLinkInput($name, $identifier) .
 					'</td></tr>';
 				break;
-			case 'shopVat':
+			case we_objectFile::TYPE_SHOPVAT:
 				$values = array();
 				if(defined('SHOP_TABLE')){
 					$allVats = weShopVats::getAllShopVATs();
@@ -1128,13 +1146,13 @@ class we_object extends we_document{
 
 				$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[default]') . '</td>' .
 					'<td width="170" class="defaultfont">' .
-					$this->htmlTextInput("we_" . $this->Name . "_input[" . $name . "default]", 40, $this->getElement($name . "default", "dat"), ($type == 'int' ? 10 : ($type == 'float' ? 19 : 255)), 'onChange="_EditorFrame.setEditorIsHot(true);" weType="' . $type . '"', "text", 388) .
+					$this->htmlTextInput("we_" . $this->Name . "_input[" . $name . "default]", 40, $this->getElement($name . "default", "dat"), ($type == we_objectFile::TYPE_INT ? 10 : ($type == we_objectFile::TYPE_FLOAT ? 19 : 255)), 'onChange="_EditorFrame.setEditorIsHot(true);" weType="' . $type . '"', "text", 388) .
 					'</td></tr>';
 				break;
 		}
 
 
-		if($type == "text" || $type == "input" || $type == "meta" || $type == "link" || $type == we_objectFile::TYPE_HREF){
+		if($type == we_objectFile::TYPE_TEXT || $type == we_objectFile::TYPE_INPUT || $type == we_objectFile::TYPE_META || $type == we_objectFile::TYPE_LINK || $type == we_objectFile::TYPE_HREF){
 			$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin"></td>' .
 				'<td width="170" class="defaultfont">' .
 				// TITEL
@@ -1146,10 +1164,10 @@ class we_object extends we_document{
 				'</td></tr>';
 		}
 
-		if($type == "text" || $type == "input" || $type == "date"){
+		if($type == we_objectFile::TYPE_TEXT || $type == we_objectFile::TYPE_INPUT || $type == we_objectFile::TYPE_DATE){
 			$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin"></td>' .
 				'<td width="170" class="defaultfont">';
-			if($type == "date"){
+			if($type == we_objectFile::TYPE_DATE){
 				$content .= we_forms::radiobutton($name, (($this->getElement("urlfield0", "dat") == $name) ? 1 : 0), "we_" . $this->Name . "_input[urlfield0]", g_l('weClass', "[urlfield0]"), true, "defaultfont", "if(this.waschecked){this.checked=false;this.waschecked=false;}_EditorFrame.setEditorIsHot(true);", false, "", 0, 0, "if(this.checked){this.waschecked=true}");
 			} else {
 				$content .= we_forms::radiobutton($name, (($this->getElement("urlfield1", "dat") == $name) ? 1 : 0), "we_" . $this->Name . "_input[urlfield1]", g_l('weClass', "[urlfield1]"), true, "defaultfont", "if(this.waschecked){this.checked=false;this.waschecked=false;}_EditorFrame.setEditorIsHot(true);", false, "", 0, 0, "if(this.checked){this.waschecked=true}") .
@@ -1160,7 +1178,7 @@ class we_object extends we_document{
 		}
 
 
-		if($type != "checkbox"){
+		if($type != we_objectFile::TYPE_CHECKBOX){
 			//Pflichtfeld
 			$content .= '<tr valign="top"><td  width="100" class="defaultfont"></td>' .
 				'<td width="170" class="defaultfont">' .
@@ -2132,7 +2150,7 @@ class we_object extends we_document{
 					$usedNames[] = $foo;
 				} else {
 					switch($this->getElement($this->getElement('wholename' . $this->getSortIndex($i)) . 'dtype', 'dat')){
-						case 'object':
+						case we_objectFile::TYPE_OBJECT:
 							return f('SELECT Path FROM ' . OBJECT_TABLE . ' WHERE ID=' . $foo, 'Path', $this->DB_WE);
 						default:
 							return $foo;
@@ -2180,7 +2198,7 @@ class we_object extends we_document{
 			$hrefFields = false;
 
 			foreach(array_keys($_REQUEST) as $n){
-				if(preg_match('/^we_' . $this->Name . '_('.  we_objectFile::TYPE_HREF.')$/', $n, $regs)){
+				if(preg_match('/^we_' . $this->Name . '_(' . we_objectFile::TYPE_HREF . ')$/', $n, $regs)){
 					${$regs[1] . 'Fields'}|=true;
 				}
 			}
@@ -2199,7 +2217,6 @@ class we_object extends we_document{
 				}
 			}
 		}
-
 	}
 
 	public function we_save($resave = 0, $skipHook = 0){
@@ -2225,7 +2242,7 @@ class we_object extends we_document{
 	 * @param	$field - the name of the field
 	 */
 	function isVariantField($field){
-		$types = array('input', 'link', 'text', 'img', 'int', 'float', 'meta', 'date', we_objectFile::TYPE_HREF); // #6924
+		$types = array(we_objectFile::TYPE_INPUT, we_objectFile::TYPE_LINK, we_objectFile::TYPE_TEXT, we_objectFile::TYPE_IMG, we_objectFile::TYPE_INT, we_objectFile::TYPE_FLOAT, we_objectFile::TYPE_META, we_objectFile::TYPE_DATE, we_objectFile::TYPE_HREF); // #6924
 		$type = ($this->getElement($field . self::ELEMENT_TYPE, 'dat') != '') ? $this->getElement($field . self::ELEMENT_TYPE, 'dat') : '';
 		return in_array($type, $types);
 	}

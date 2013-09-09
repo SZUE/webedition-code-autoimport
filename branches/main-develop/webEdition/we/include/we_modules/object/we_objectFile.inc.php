@@ -24,8 +24,24 @@
  */
 class we_objectFile extends we_document{
 
-	const TYPE_MULTIOBJECT = 'multiobject';
+	const TYPE_BINARY = 'binary';
+	const TYPE_CHECKBOX = 'checkbox';
+	const TYPE_COUNTRY = 'country';
+	const TYPE_DATE = 'date';
+	const TYPE_FLASHMOVIE = 'flashmovie';
+	const TYPE_FLOAT = 'float';
 	const TYPE_HREF = 'href';
+	const TYPE_IMG = 'img';
+	const TYPE_INPUT = 'input';
+	const TYPE_INT = 'int';
+	const TYPE_LANGUAGE = 'language';
+	const TYPE_LINK = 'link';
+	const TYPE_META = 'meta';
+	const TYPE_MULTIOBJECT = 'multiobject';
+	const TYPE_OBJECT = 'object';
+	const TYPE_QUICKTIME = 'quicktime';
+	const TYPE_SHOPVAT = 'shopVat';
+	const TYPE_TEXT = 'text';
 	const HREF_INFIX = 'we_jkhdsf';
 
 	var $TableID = 0;
@@ -274,7 +290,7 @@ class we_objectFile extends we_document{
 		if(LANGLINK_SUPPORT){
 			$htmlzw = '';
 			foreach($_languages as $langkey => $lang){
-				$LDID = intval(f('SELECT LDID FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="tblObjectFile" AND DID=' . (int) $this->ID . ' AND Locale="' . $langkey . '"', 'LDID', $this->DB_WE));
+				$LDID = intval(f('SELECT LDID FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="tblObjectFile" AND DID=' . intval($this->ID) . ' AND Locale="' . $langkey . '"', 'LDID', $this->DB_WE));
 				$divname = 'we_' . $this->Name . '_LanguageDocDiv[' . $langkey . ']';
 				$htmlzw.= '<div id="' . $divname . '" ' . ($this->Language == $langkey ? ' style="display:none" ' : '') . '>' . $this->formLanguageDocument($lang, $langkey, $LDID, $this->Table, $this->rootDirID) . '</div>';
 				$langkeys[] = $langkey;
@@ -335,7 +351,7 @@ class we_objectFile extends we_document{
 			$this->TableID = count($ac) ? $ac[0] : 0;
 		}
 		$ws = get_ws();
-		$foo = getHash('SELECT Workspaces,DefaultWorkspaces,Templates FROM ' . OBJECT_TABLE . ' WHERE ID=' . (int) $this->TableID, $this->DB_WE);
+		$foo = getHash('SELECT Workspaces,DefaultWorkspaces,Templates FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), $this->DB_WE);
 		$def_ws = isset($foo['DefaultWorkspaces']) ? $foo['DefaultWorkspaces'] : '';
 		$owsCSV = isset($foo['Workspaces']) ? $foo['Workspaces'] : '';
 		$otmplsCSV = isset($foo['Templates']) ? $foo['Templates'] : '';
@@ -460,7 +476,7 @@ class we_objectFile extends we_document{
 							$type = $foo[0];
 							unset($foo[0]);
 							$name = implode('_', $foo);
-							$n = ($type == 'object' ? 'we_object_' . $name : (isset($name) ? $name : ''));
+							$n = ($type == self::TYPE_OBJECT ? 'we_object_' . $name : (isset($name) ? $name : ''));
 							$this->setElement($n, isset($field['default']) ? $field['default'] : '', $type, 0, (isset($field['autobr']) && $field['autobr'] == 'on') ? 'on' : 'off');
 							if($type == self::TYPE_MULTIOBJECT){
 								$temp = array(
@@ -488,7 +504,7 @@ class we_objectFile extends we_document{
 			if(is_array($v) && isset($v['required']) && $v['required']){
 				list($type, $name) = explode('_', $n, 2);
 				switch($type){
-					case 'object':
+					case self::TYPE_OBJECT:
 						$val = $this->getElement('we_object_' . $name);
 						break;
 					case self::TYPE_MULTIOBJECT:
@@ -507,18 +523,18 @@ class we_objectFile extends we_document{
 							$val = ($_empty ? 0 : 1);
 						}
 						break;
-					case 'checkbox':
+					case self::TYPE_CHECKBOX:
 						$val = $this->getElement($name);
 						break;
-					case 'meta':
+					case self::TYPE_META:
 						$val = $this->getElement($name);
 						break;
 					default:
 						$val = $this->geFieldValue($name, $type);
 				}
-				if((strlen($val) == 0) || (($type == 'object' || $type == self::TYPE_MULTIOBJECT || $type == 'checkbox' || $type == 'img') && ($val == '0'))){
-					if($type == 'object'){
-						$name = f('SELECT Text FROM ' . OBJECT_TABLE . ' WHERE ID=' . (int) $name, 'Text', $this->DB_WE);
+				if((strlen($val) == 0) || (($type == self::TYPE_OBJECT || $type == self::TYPE_MULTIOBJECT || $type == self::TYPE_CHECKBOX || $type == self::TYPE_IMG) && ($val == '0'))){
+					if($type == self::TYPE_OBJECT){
+						$name = f('SELECT Text FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($name), 'Text', $this->DB_WE);
 					}
 					return $name;
 				}
@@ -696,15 +712,15 @@ class we_objectFile extends we_document{
 		$tableInfo2 = array();
 		foreach($tableInfo as $arr){
 			switch($arr['name']){
-				case 'input_':
-				case 'text_':
-				case 'int_':
-				case 'float_':
-				case 'date_':
-				case 'img_':
+				case self::TYPE_INPUT . '_':
+				case self::TYPE_TEXT . '_':
+				case self::TYPE_INT . '_':
+				case self::TYPE_FLOAT . '_':
+				case self::TYPE_DATE . '_':
+				case self::TYPE_IMG . '_':
 				case we_object::QUERY_PREFIX:
 				case self::TYPE_MULTIOBJECT . '_':
-				case 'meta_':
+				case self::TYPE_META . '_':
 					break;
 				case (defined('WE_SHOP_VARIANTS_ELEMENT_NAME') && $checkVariants ? 'variant_' . WE_SHOP_VARIANTS_ELEMENT_NAME : '-1'):
 					$variantdata = $arr;
@@ -741,51 +757,51 @@ class we_objectFile extends we_document{
 
 	function getFieldHTML($name, $type, $attribs, $editable = true, $variant = false){
 		switch($type){
-			case 'input':
+			case self::TYPE_INPUT:
 				return $this->getInputFieldHTML($name, $attribs, $editable, $variant);
-			case 'country':
+			case self::TYPE_COUNTRY:
 				return $this->getCountryFieldHTML($name, $attribs, $editable, $variant);
-			case 'language':
+			case self::TYPE_LANGUAGE:
 				return $this->getLanguageFieldHTML($name, $attribs, $editable, $variant);
 			case self::TYPE_HREF:
 				return $this->getHrefFieldHTML($name, $attribs, $editable, $variant);
-			case 'link':
+			case self::TYPE_LINK:
 				return $this->htmlLinkInput($name, $attribs, $editable);
-			case 'text':
+			case self::TYPE_TEXT:
 				return $this->getTextareaHTML($name, $attribs, $editable, $variant);
-			case 'img':
+			case self::TYPE_IMG:
 				return $this->getImageHTML($name, $attribs, $editable, $variant);
-			case 'binary':
+			case self::TYPE_BINARY:
 				return $this->getBinaryHTML($name, $attribs, $editable);
-			case 'flashmovie':
+			case self::TYPE_FLASHMOVIE:
 				return $this->getFlashmovieHTML($name, $attribs, $editable);
-			case 'quicktime':
+			case self::TYPE_QUICKTIME:
 				return $this->getQuicktimeHTML($name, $attribs, $editable);
-			case 'date':
+			case self::TYPE_DATE:
 				return $this->getDateFieldHTML($name, $attribs, $editable, $variant);
-			case 'checkbox':
+			case self::TYPE_CHECKBOX:
 				return $this->getCheckboxFieldHTML($name, $attribs, $editable, $variant);
-			case 'int':
+			case self::TYPE_INT:
 				return $this->getIntFieldHTML($name, $attribs, $editable, $variant);
-			case 'float':
+			case self::TYPE_FLOAT:
 				return $this->getFloatFieldHTML($name, $attribs, $editable, $variant);
-			case 'object':
+			case self::TYPE_OBJECT:
 				return $this->getObjectFieldHTML($name, $attribs, $editable);
 			case self::TYPE_MULTIOBJECT:
 				return $this->getMultiObjectFieldHTML($name, $attribs, $editable);
-			case 'meta':
+			case self::TYPE_META:
 				return $this->getMetaFieldHTML($name, $attribs, $editable, $variant);
-			case 'shopVat':
+			case self::TYPE_SHOPVAT:
 				return $this->getShopVatFieldHtml($name, $attribs, $editable);
 		}
 	}
 
 	function getElementByType($name, $type, $attribs){
 		switch($type){
-			case 'text':
-			case 'input':
-			case 'country':
-			case 'language':
+			case self::TYPE_TEXT:
+			case self::TYPE_INPUT:
+			case self::TYPE_COUNTRY:
+			case self::TYPE_LANGUAGE:
 				return $this->getElement($name);
 			case self::TYPE_HREF:
 				$hrefArr = $this->getElement($name) ? unserialize($this->getElement($name)) : array();
@@ -793,14 +809,14 @@ class we_objectFile extends we_document{
 					$hrefArr = array();
 				}
 				return parent::getHrefByArray($hrefArr);
-			case 'link':
+			case self::TYPE_LINK:
 				return $this->htmlLinkInput($name, $attribs, false, false);
-			case 'date':
+			case self::TYPE_DATE:
 				return $this->getElement($name);
-			case 'float':
-			case 'int':
+			case self::TYPE_FLOAT:
+			case self::TYPE_INT:
 				return strlen($this->getElement($name)) ? $this->getElement($name) : '';
-			case 'meta':
+			case self::TYPE_META:
 				return $this->getElement($name);
 			default:
 				return $this->getElement($name);
@@ -808,7 +824,7 @@ class we_objectFile extends we_document{
 	}
 
 	function getFieldsHTML($editable, $asString = false){
-		$foo = getHash('SELECT strOrder,DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . (int) $this->TableID, $this->DB_WE);
+		$foo = getHash('SELECT strOrder,DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), $this->DB_WE);
 
 		$dv = $foo['DefaultValues'] ? unserialize($foo['DefaultValues']) : array();
 		if(!is_array($dv)){
@@ -1545,13 +1561,13 @@ class we_objectFile extends we_document{
 				if(preg_match('/(.+?)_(.*)/', $cur["name"], $regs)){
 					if($regs[1] != "OF"){
 						$name = $regs[2];
-						if($regs[1] == "object"){
+						if($regs[1] == self::TYPE_OBJECT){
 							$name = "we_object_" . $name;
 						}
 //						if($regs[1] == "multiobject"){
 //							$this->elements[$name]["class"] = $db->f($tableInfo[$i]["name"]);
 //						}
-						if($regs[1] == "img"){
+						if($regs[1] == self::TYPE_IMG){
 							$this->elements[$name]["bdid"] = $db->f($cur["name"]);
 						}
 						$this->elements[$name]["dat"] = $db->f($cur["name"]);
@@ -1877,7 +1893,7 @@ class we_objectFile extends we_document{
 			}
 		}
 		if(!$tid){
-			$foo = makeArrayFromCSV(f('SELECT Templates FROM ' . OBJECT_TABLE . ' WHERE ID=' . (int) $this->TableID, 'Templates', new DB_WE()));
+			$foo = makeArrayFromCSV(f('SELECT Templates FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), 'Templates', new DB_WE()));
 			if(!empty($foo)){
 				$tid = $foo[0];
 			}
@@ -1894,7 +1910,7 @@ class we_objectFile extends we_document{
 					$hrefArr = array();
 				}
 				return parent::getHrefByArray($hrefArr);
-			case "link":
+			case self::TYPE_LINK:
 				$link = $elem ? unserialize($elem) : array();
 				if(is_array($link)){
 					$img = new we_imageDocument();
@@ -1902,7 +1918,7 @@ class we_objectFile extends we_document{
 				} else {
 					return '';
 				}
-			case "meta":
+			case self::TYPE_META:
 				if(!$this->DefArray){
 					$this->DefArray = $this->getDefaultValueArray();
 				}
@@ -2037,26 +2053,26 @@ class we_objectFile extends we_document{
 			if(isset($v["dat"]) && !empty($v["dat"])){
 				switch(isset($v['type']) ? $v['type'] : ''){
 					default:
-					case 'object':
+					case self::TYPE_OBJECT:
 					case self::TYPE_MULTIOBJECT:
-					case 'language':
+					case self::TYPE_LANGUAGE:
 					case self::TYPE_HREF:
 						//not handled
 						break;
-					case 'date':
+					case self::TYPE_DATE:
 						$text .= ' ' . date(g_l('date', '[format][default]'), $v["dat"]);
 						break;
-					case 'int':
+					case self::TYPE_INT:
 						$text.=' ' . intval($v["dat"]);
 						break;
-					case 'float':
+					case self::TYPE_FLOAT:
 						$text.=' ' . floatval($v["dat"]);
 						break;
 
-					case 'meta'://FIXME: meta returns the key not the value
-					case 'input':
+					case self::TYPE_META://FIXME: meta returns the key not the value
+					case self::TYPE_INPUT:
 					case 'txt':
-					case 'text':
+					case self::TYPE_TEXT:
 						if(strpos($v["dat"], 'a:') === 0){
 							//link/href
 							$tmp = @unserialize($v["dat"]);
@@ -2234,7 +2250,7 @@ class we_objectFile extends we_document{
 		$dv = $foo['DefaultValues'] ? unserialize($foo["DefaultValues"]) : array();
 
 		foreach($this->elements as $n => $elem){
-			if(isset($elem["type"]) && $elem["type"] == "text"){
+			if(isset($elem["type"]) && $elem["type"] == self::TYPE_TEXT){
 				if(isset($dv["text_$n"]["xml"]) && $dv["text_$n"]["xml"] == "on"){
 //$elem["dat"] = we_xhtmlConverter::correct_HTML_source($elem["dat"],true);
 					$this->elements[$n] = $elem;
@@ -2621,7 +2637,7 @@ class we_objectFile extends we_document{
 		foreach($tableInfo as $cur){
 			if(preg_match('/(.+?)_(.*)/', $cur["name"], $regs)){
 				if($regs[1] != 'OF'){
-					if($regs[1] == 'object'){
+					if($regs[1] == self::TYPE_OBJECT){
 						$id = $this->getElement('we_' . $cur['name']);
 						if($id)
 							$linkObjects[] = $id;
@@ -2636,7 +2652,7 @@ class we_objectFile extends we_document{
 				$tmpObj->initByID($id, OBJECT_FILES_TABLE, 0);
 				array_pop($recursiveObjects);
 				foreach($tmpObj->elements as $n => $elem){
-					if($elem['type'] != 'object' && $n != 'Title' && $n != 'Description'){
+					if($elem['type'] != self::TYPE_OBJECT && $n != 'Title' && $n != 'Description'){
 						if(!isset($this->elements[$n])){
 							$this->elements[$n] = $elem;
 						}
@@ -2662,7 +2678,7 @@ class we_objectFile extends we_document{
 				if(count($regs) > 1){
 					if($regs[0] != "OF"){
 						$realname = $regs[1];
-						$name = ($regs[0] == 'object' ? 'we_object_' : '') . $realname;
+						$name = ($regs[0] == self::TYPE_OBJECT ? 'we_object_' : '') . $realname;
 						$this->elements[$name] = array(
 							'dat' => $db->f($cur["name"]),
 							'type' => $regs[0],
@@ -2671,7 +2687,7 @@ class we_objectFile extends we_document{
 //						if($regs[0] == "multiobject"){
 //							$this->elements[$name]["class"] = $db->f($tableInfo[$i]["name"]);
 //						}
-						if($regs[0] == "img"){
+						if($regs[0] == self::TYPE_IMG){
 							$this->elements[$name]["bdid"] = $db->f($cur["name"]);
 						}
 					}
@@ -2753,8 +2769,6 @@ class we_objectFile extends we_document{
 		$ctable = OBJECT_X_TABLE . $this->TableID;
 
 		$tableInfo = $this->DB_WE->metadata($ctable);
-		$foo = f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . $this->TableID, 'DefaultValues', $this->DB_WE);
-		$defVal = ($foo ? unserialize($foo) : array());
 
 		if($this->wasUpdate && $this->ExtraWorkspacesSelected){
 			$ews = makeArrayFromCSV($this->ExtraWorkspacesSelected);
@@ -2780,7 +2794,7 @@ class we_objectFile extends we_document{
 				if($regs[0] == 'OF'){
 					$data[$cur['name']] = (isset($this->$name) ? $this->$name : '');
 				} else {
-					$name = ($regs[0] == 'object') ? ('we_object_' . $name) : $name;
+					$name = ($regs[0] == self::TYPE_OBJECT) ? ('we_object_' . $name) : $name;
 					$data[$cur['name']] = $this->getElement($name);
 				}
 			}
@@ -2845,7 +2859,7 @@ class we_objectFile extends we_document{
 			$multiobjectFields = false;
 
 			foreach(array_keys($_REQUEST) as $n){
-				if(preg_match('/^we_' . $this->Name . '_('.self::TYPE_HREF.'|' . self::TYPE_MULTIOBJECT . ')$/', $n, $regs)){
+				if(preg_match('/^we_' . $this->Name . '_(' . self::TYPE_HREF . '|' . self::TYPE_MULTIOBJECT . ')$/', $n, $regs)){
 					${$regs[1] . 'Fields'}|=true;
 				}
 			}
@@ -2936,11 +2950,9 @@ class we_objectFile extends we_document{
 		$object = new we_object();
 		$object->initByID($this->TableID, OBJECT_TABLE);
 
-		if($checkFields){
-			return $object->canHaveVariants() && count($object->getVariantFields());
-		} else {
-			return $object->canHaveVariants();
-		}
+		return ($checkFields ?
+				$object->canHaveVariants() && count($object->getVariantFields()) :
+				$object->canHaveVariants());
 	}
 
 	public function initByID($we_ID, $we_Table = OBJECT_FILES_TABLE, $from = we_class::LOAD_MAID_DB){
