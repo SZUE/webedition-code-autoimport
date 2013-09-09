@@ -29,7 +29,6 @@ require_once(WE_MESSAGING_MODULE_PATH . 'messaging_std.inc.php');
 class we_messaging_format extends we_class{
 	/* Flag which is set when the file is not new */
 
-
 	var $Folder_ID = -1;
 	var $userid = -1;
 	var $username = '';
@@ -125,15 +124,6 @@ class we_messaging_format extends we_class{
 		}
 	}
 
-	function userid_to_username($id){
-		$db2 = new DB_WE();
-		$db2->query('SELECT username FROM ' . USER_TABLE . ' WHERE ID=' . intval($id));
-		if($db2->next_record())
-			return $db2->f('username');
-
-		return g_l('modules_messaging', '[userid_not_found]');
-	}
-
 	function get_date(){
 		$ret = '';
 		switch($this->mode){
@@ -171,7 +161,7 @@ class we_messaging_format extends we_class{
 		if($this->msg_obj == 'we_todo'){
 			if(!empty($this->sel_msg['hdrs']['Assigner'])){
 				$ret = $this->sel_msg['hdrs']['Assigner'];
-			} else{
+			} else {
 				$ret = $this->sel_msg['hdrs']['From'];
 			}
 		}
@@ -282,7 +272,7 @@ class we_messaging_format extends we_class{
 			case 'update':
 				if(isset($this->sel_msg['hdrs']['Content_Type']) && $this->sel_msg['hdrs']['Content_Type'] == 'html'){
 					$ret .= $this->sel_msg['body']['MessageText'];
-				} else{
+				} else {
 					if($this->highlight_quoting){
 						$lines = explode("\n", isset($this->sel_msg['body']['MessageText']) ? $this->sel_msg['body']['MessageText'] : "");
 						foreach($lines as $line){
@@ -294,7 +284,7 @@ class we_messaging_format extends we_class{
 							} while(is_integer($pos) && $pos == $len * $l && $l < $this->quote_levels);
 							$ret .= '<span class="quote_lvl_' . $l . '">' . nl2br(oldHtmlspecialchars($line)) . '</span>';
 						}
-					} else{
+					} else {
 						$ret .= nl2br(oldHtmlspecialchars($this->sel_msg['body']['MessageText']));
 					}
 				}
@@ -317,7 +307,6 @@ class we_messaging_format extends we_class{
 		}
 
 		$ret = '';
-
 		foreach($this->sel_msg['body']['History'] as $c){
 			$hist_str = '';
 			switch($c['action']){
@@ -332,9 +321,9 @@ class we_messaging_format extends we_class{
 				default:
 					break;
 			}
-			$ret .= '<span class="todo_hist_hdr">--- ' . $this->userid_to_username($c['from_userid']) . ' -- ' . date(g_l('date', '[format][default]'), $c['date']) . ' -- ' . $hist_str . "</span><br>\n";
+			$ret .= '<span class="todo_hist_hdr">--- ' . we_user::getUsername($c['from_userid'], $this->DB_WE) . ' -- ' . date(g_l('date', '[format][default]'), $c['date']) . ' -- ' . $hist_str . '</span><br>';
 			if(!empty($c['comment'])){
-				$ret .= nl2br(oldHtmlspecialchars($c['comment'])) . "<br><br>\n";
+				$ret .= nl2br(oldHtmlspecialchars($c['comment'])) . '<br><br>';
 			}
 		}
 

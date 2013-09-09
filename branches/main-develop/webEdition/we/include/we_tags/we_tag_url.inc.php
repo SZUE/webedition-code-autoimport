@@ -42,7 +42,7 @@ function we_tag_url($attribs){
 			return $objurls[$id];
 		}
 	}
-	if(intval($id) == 0){
+	if($id != 'self' && $id != 'top' && intval($id) == 0){
 		$url = '/';
 	} else{
 		$urlNotSet = true;

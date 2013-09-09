@@ -271,7 +271,7 @@ abstract class we_util_File extends weFile{
 		}
 		$DirFileObjectsArray = array();
 		$DirFileObjects = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($directoy));
-		foreach(array_keys($DirFileObjects) as $name){
+		foreach($DirFileObjects as $name => $object){
 			if(substr($name, -2) != '/.' && substr($name, -3) != '/..'){
 				$DirFileObjectsArray[] = $name;
 			}

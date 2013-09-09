@@ -108,12 +108,6 @@ class we_messaging_todo extends we_msg_proto{
 
 	/* Methods dealing with USER_TABLE and other userstuff */
 
-	function userid_to_username($id, $db = ''){
-		$db = $db ? $db : new DB_WE();
-		$user = f('SELECT username FROM ' . USER_TABLE . ' WHERE ID=' . intval($id), 'username', $db);
-		return $user ? $user : g_l('modules_messaging', '[userid_not_found]');
-	}
-
 	function username_to_userid($username, $db = ''){
 		$db = $db ? $db : new DB_WE();
 		$id = f('SELECT ID FROM ' . USER_TABLE . ' WHERE username="' . $db->escape($username) . '"', 'ID', $db);
@@ -130,17 +124,6 @@ class we_messaging_todo extends we_msg_proto{
 		$cnt = f('SELECT COUNT(1) AS c FROM ' . $this->DB_WE->escape($this->table) . ' WHERE ParentID=' . intval($folder_id) . ' AND obj_type=' . we_msg_proto::TODO_NR . ' AND msg_type=' . $this->sql_class_nr . ' AND UserID=' . intval($this->userid), 'c', $this->DB_WE);
 		return $cnt === '' ? -1 : $cnt;
 	}
-
-	/* 	function get_userids_by_nick($nick){
-	  $ret_ids = array();
-
-	  $db2 = new DB_WE();
-	  $db2->query('SELECT ID FROM ' . USER_TABLE . ' WHERE username LIKE "%' . $db2->escape($nick) . '%" OR First LIKE "%' . $db2->escape($nick) . '%" OR Second LIKE "%' . $db2->escape($nick) . '%"');
-	  while($db2->next_record())
-	  $ret_ids[] = $db2->f('ID');
-
-	  return $ret_ids;
-	  } */
 
 	function format_from_line($userid){
 		$tmp = getHash('SELECT First, Second, username FROM ' . USER_TABLE . ' WHERE ID=' . intval($userid), new DB_WE());
@@ -313,14 +296,14 @@ class we_messaging_todo extends we_msg_proto{
 		$rej_folder = f('SELECT ID FROM ' . MSG_FOLDERS_TABLE . ' WHERE obj_type=' . we_msg_proto::FOLDER_REJECT . ' AND UserID=' . intval($msg['int_hdrs']['_from_userid']), 'ID', $this->DB_WE);
 		if(empty($rej_folder)){
 			$results['err'][] = g_l('modules_messaging', '[no_reject_folder]');
-			$results['failed'][] = $this->userid_to_username($msg['int_hdrs']['_from_userid'], $this->DB_WE);
+			$results['failed'][] = we_user::getUsername($msg['int_hdrs']['_from_userid'], $this->DB_WE);
 			return $results;
 		}
 
 		$tmpId = f('SELECT ID FROM ' . $this->DB_WE->escape($this->table) . ' WHERE Properties=' . we_msg_proto::TODO_PROP_IMMOVABLE . ' AND ID=' . intval($msg['int_hdrs']['_ID']), 'ID', $this->DB_WE);
 		if($tmpId == $msg['int_hdrs']['_ID']){
 			$results['err'][] = g_l('modules_messaging', '[todo_no_reject]');
-			$results['failed'][] = $this->userid_to_username($msg['int_hdrs']['_from_userid'], $this->DB_WE);
+			$results['failed'][] = we_user::getUsername($msg['int_hdrs']['_from_userid'], $this->DB_WE);
 			return $results;
 		}
 
@@ -328,7 +311,7 @@ class we_messaging_todo extends we_msg_proto{
 		$this->history_update($msg['int_hdrs']['_ID'], $msg['int_hdrs']['_from_userid'], $this->userid, $data['body'], we_msg_proto::ACTION_REJECT);
 
 		$results['err'][] = '';
-		$results['ok'][] = $this->userid_to_username($msg['int_hdrs']['_from_userid'], $this->DB_WE);
+		$results['ok'][] = we_user::getUsername($msg['int_hdrs']['_from_userid'], $this->DB_WE);
 
 		return $results;
 	}
@@ -338,7 +321,7 @@ class we_messaging_todo extends we_msg_proto{
 			return;
 		}
 
-		$id_str = 'ID=' . implode(', ID=', $items);
+		$id_str = 'ID IN (' . implode(',', $items) . ')';
 		$this->DB_WE->query('UPDATE ' . $this->DB_WE->escape($this->table) . ' SET ParentID=' . intval($target_fid) . ' WHERE (' . $this->DB_WE->escape($id_str) . ') AND UserID=' . intval($this->userid));
 
 		return 1;

@@ -596,30 +596,8 @@ class we_messaging_messaging extends we_class{
 		}
 	}
 
-	/* Methods dealing with USER_TABLE and other userstuff */
-
-	function userid_to_username($id){
-		$db2 = new DB_WE();
-		$db2->query('SELECT username FROM ' . USER_TABLE . ' WHERE ID=' . intval($id));
-		if($db2->next_record()){
-			return $db2->f('username');
-		}
-
-		return g_l('modules_messaging', '[userid_not_found]');
-	}
-
 	function get_header($id, $headername){
 		return $this->selected_message[$headername];
-	}
-
-	function get_userid($username){
-		$username = trim($username);
-		$this->DB_WE->query('SELECT ID FROM ' . USER_TABLE . ' WHERE username="' . $this->DB_WE->escape($username) . '"');
-		if($this->DB_WE->next_record()){
-			return $this->DB_WE->f('ID');
-		}
-
-		return -1;
 	}
 
 	function get_recipient_info($r, &$rcpt_info, $msgobj_name = ''){

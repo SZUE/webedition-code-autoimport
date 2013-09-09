@@ -1245,8 +1245,8 @@ $this->Preferences=' . var_export($this->Preferences, true) . ';
 
 		$_tableObj = new we_html_table($_attr, 5, 1);
 
-		$_username = /*($this->ID) ?
-			we_html_tools::htmlFormElementTable('<b class="defaultfont">' . $this->username . '</b><input type="hidden" id="yuiAcInputPathName" value="' . ($this->username) . '">', g_l('modules_users', "[group_name]")) :*/
+		$_username = /* ($this->ID) ?
+			  we_html_tools::htmlFormElementTable('<b class="defaultfont">' . $this->username . '</b><input type="hidden" id="yuiAcInputPathName" value="' . ($this->username) . '">', g_l('modules_users', "[group_name]")) : */
 			$this->getUserfield("username", "group_name", "text", 255, false, 'id="yuiAcInputPathName" onblur="parent.frames[0].setPathName(this.value); parent.frames[0].setTitlePath();"');
 		$_description = '<textarea name="' . $this->Name . '_Description" cols="25" rows="5" style="width:560px" class="defaultfont" onChange="top.content.setHot();">' . $this->Description . '</textarea>';
 		$parent_name = f('SELECT Path FROM ' . USER_TABLE . ' WHERE ID=' . intval($this->ParentID), 'Path', $this->DB_WE);
@@ -2398,6 +2398,17 @@ top.content.hloaded=1;') .
 			$tab_header .
 			'<div id="main" >' . we_html_tools::getPixel(100, 3) . '<div style="margin:0px;padding-left:10px;" id="headrow"><nobr><b>' . str_replace(" ", "&nbsp;", $headline1) . '&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">' . str_replace(" ", "&nbsp;", (empty($this->Path) ? $this->getPath($this->ParentID) : $this->Path)) . '</b></span></nobr></div>' . we_html_tools::getPixel(100, 3) . $we_tabs->getHTML() . '</div>' .
 			$tab_body;
+	}
+
+	public static function getUsername($id, $db = ''){
+		$db = $db ? $db : new DB_WE();
+		$user = f('SELECT username FROM ' . USER_TABLE . ' WHERE ID=' . intval($id), 'username', $db);
+		return $user ? $user : g_l('modules_messaging', '[userid_not_found]');
+	}
+
+	public static function getUserID($username, $db){
+		$uid = f('SELECT ID FROM ' . USER_TABLE . ' WHERE username="' . $db->escape(trim($username)) . '"', 'ID', $db);
+		return $uid ? $uid : -1;
 	}
 
 	/**

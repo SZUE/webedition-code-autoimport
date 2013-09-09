@@ -79,11 +79,6 @@ class we_messaging_message extends we_msg_proto{
 	}
 
 	//FIXME: put following 2 methods out of the class (same goes for we_todo.inc.php)
-	/* Methods dealing with USER_TABLE and other userstuff */
-	function userid_to_username($id){
-		$user = f('SELECT username FROM ' . USER_TABLE . ' WHERE ID=' . intval($id), 'username', new DB_WE());
-		return $user ? $user : g_l('modules_messaging', '[userid_not_found]');
-	}
 
 	function username_to_userid($username){
 		$id = f('SELECT ID FROM ' . USER_TABLE . ' WHERE username="' . $this->DB_WE->escape($username) . '"', 'ID', new DB_WE());
@@ -99,17 +94,6 @@ class we_messaging_message extends we_msg_proto{
 	function get_count($folder_id){
 		return f('SELECT COUNT(1) AS c FROM ' . $this->table . ' WHERE ParentID = ' . intval($folder_id) . ' AND obj_type = ' . we_msg_proto::MESSAGE_NR . ' AND msg_type = ' . intval($this->sql_class_nr) . ' AND UserID = ' . intval($this->userid), 'c', $this->DB_WE);
 	}
-
-	/* 	function get_userids_by_nick($nick){
-	  $ret_ids = array();
-
-	  $DB2 = new DB_WE();
-	  $DB2->query('SELECT ID FROM ' . USER_TABLE . ' WHERE username LIKE "%' . $DB2->escape($nick) . '%" OR First LIKE "%' . $DB2->escape($nick) . '%" OR Second LIKE "%' . $DB2->escape($nick) . '%"');
-	  while($DB2->next_record())
-	  $ret_ids[] = $DB2->f('ID');
-
-	  return $ret_ids;
-	  } */
 
 	function create_folder($name, $parent){
 		return parent::create_folder($name, $parent);

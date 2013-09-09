@@ -396,12 +396,7 @@ abstract class listviewBase{
 		}
 
 		$attribs['href'] = we_tag('url', array('id' => ($urlID ? $urlID : 'top'), 'hidedirindex' => $this->hidedirindex));
-		if(strpos($attribs['href'], '?') === false){
-			$attribs['href'] = $attribs['href'] . '?';
-		} else {
-			$attribs['href'] = $attribs['href'] . '&';
-		}
-		$attribs['href'] = $attribs['href'] . $tmp_href;
+		$attribs['href'] .= (strpos($attribs['href'], '?') === false ? '?' : '&') . $tmp_href;
 		if($only){
 			$this->close_a = false;
 			return (isset($attribs[$only]) ? $attribs[$only] : '');

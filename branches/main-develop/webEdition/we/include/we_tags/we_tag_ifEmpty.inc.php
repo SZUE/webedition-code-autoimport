@@ -77,7 +77,7 @@ function we_isNotEmpty($attribs){
 	return (bool) ($doc->getElement($match) != '') || $doc->getElement($match, 'bdid');
 }
 
-function we_tag_ifEmpty($attribs, $content){
+function we_tag_ifEmpty($attribs){
 	if(($foo = attributFehltError($attribs, 'match', __FUNCTION__))){
 		print($foo);
 		return '';
