@@ -25,6 +25,9 @@
 class we_objectFile extends we_document{
 
 	const TYPE_MULTIOBJECT = 'multiobject';
+	const TYPE_HREF = 'href';
+	const HREF_INFIX = 'we_jkhdsf';
+	
 
 	var $TableID = 0;
 	var $ObjectID = 0;
@@ -2851,20 +2854,16 @@ class we_objectFile extends we_document{
 
 			if($hrefFields){
 				$this->resetElements();
-				$hrefs = array();
-				$realName = $key = '';
-				while((list($k, $v) = $this->nextElement('href'))){
-					if(strstr($k, '_we_jkhdsf_') === FALSE){
-						continue;
+				$empty = array('int' => '1', 'intID' => '', 'intPath' => '', 'extPath' => '');
+				$match = array();
+				foreach($_REQUEST['we_' . $this->Name . '_' . self::TYPE_HREF] as $k => $val){
+					if(preg_match('|^(.+)_' . self::HREF_INFIX . '_(.+)$|', $k, $match)){
+						$hrefs[$match[1]][$match[2]]= $val;
 					}
-					list($realName, $key) = explode('_we_jkhdsf_', $k);
-					if(!isset($hrefs[$realName])){
-						$hrefs[$realName] = array();
-					}
-					$hrefs[$realName][$key] = $v['dat'];
 				}
 				foreach($hrefs as $k => $v){
-					$this->setElement($k, serialize($v));
+					$href = array_merge($empty, $v);
+					$this->setElement($k, serialize($href), self::TYPE_HREF);
 				}
 			}
 
