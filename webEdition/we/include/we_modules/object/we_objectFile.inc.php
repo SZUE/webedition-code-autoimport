@@ -747,7 +747,7 @@ class we_objectFile extends we_document{
 				return $this->getCountryFieldHTML($name, $attribs, $editable, $variant);
 			case 'language':
 				return $this->getLanguageFieldHTML($name, $attribs, $editable, $variant);
-			case 'href':
+			case self::TYPE_HREF:
 				return $this->getHrefFieldHTML($name, $attribs, $editable, $variant);
 			case 'link':
 				return $this->htmlLinkInput($name, $attribs, $editable);
@@ -787,7 +787,7 @@ class we_objectFile extends we_document{
 			case 'country':
 			case 'language':
 				return $this->getElement($name);
-			case 'href':
+			case self::TYPE_HREF:
 				$hrefArr = $this->getElement($name) ? unserialize($this->getElement($name)) : array();
 				if(!is_array($hrefArr)){
 					$hrefArr = array();
@@ -1137,7 +1137,7 @@ class we_objectFile extends we_document{
 			$nint = $n . we_base_link::MAGIC_INT_LINK;
 			$nintID = $n . we_base_link::MAGIC_INT_LINK_ID;
 			$nintPath = $n . we_base_link::MAGIC_INT_LINK_PATH;
-			$nextPath = $n . '_we_jkhdsf_extPath';
+			$nextPath = $n . we_base_link::MAGIC_INT_LINK_EXTPATH;
 
 			$attr = ' size="20" ';
 
@@ -1175,7 +1175,7 @@ class we_objectFile extends we_document{
 			) . '<td>' .
 			($intID_elem_Name ?
 				'<input type="hidden" name="' . $intID_elem_Name . '" value="' . $intID . '"><input type="text" name="' . $Path_elem_Name . '" value="' . $path . '" ' . $attr . ' readonly="readonly" />' :
-				'<input' . ($showRadio ? ' onChange="this.form.elements[\'' . $int_elem_Name . '\'][' . ($intID_elem_Name ? 0 : 1) . '].checked=true;"' : '' ) . ' type="text" name="' . $Path_elem_Name . '" value="' . $path . '" ' . $attr . ' />'
+				'<input' . ($showRadio ? ' onchange="this.form.elements[\'' . $int_elem_Name . '\'][' . ($intID_elem_Name ? 0 : 1) . '].checked=true;"' : '' ) . ' type="text" name="' . $Path_elem_Name . '" value="' . $path . '" ' . $attr . ' />'
 			);
 
 		if($intID_elem_Name){
@@ -1191,7 +1191,6 @@ class we_objectFile extends we_document{
 			$trashbut = we_button::create_button('image:btn_function_trash', "javascript:document.we_form.elements['" . $Path_elem_Name . "'].value='';_EditorFrame.setEditorIsHot(true);");
 			$wecmdenc1 = we_cmd_enc("document.forms[0].elements['$Path_elem_Name'].value");
 			$wecmdenc4 = we_cmd_enc("if (opener.opener != null){opener.opener._EditorFrame.setEditorIsHot(true);}else{opener._EditorFrame.setEditorIsHot(true);}" . ($showRadio ? "opener.document.we_form.elements['$int_elem_Name'][1].checked=true;" : ""));
-//			t_e($directory, $file);
 			$but = (!we_hasPerm('CAN_SELECT_EXTERNAL_FILES') ? '' : (
 					we_button::create_button('select', "javascript:we_cmd('browse_server','" . $wecmdenc1 . "','" . (($directory && $file) ? 'filefolder' : ($file ? '' : 'folder')) . "',document.forms[0].elements['$Path_elem_Name'].value,'" . $wecmdenc4 . "')")
 					));
@@ -1889,7 +1888,7 @@ class we_objectFile extends we_document{
 	function geFieldValue($t, $f){
 		$elem = $this->getElement($t);
 		switch($f){
-			case "href":
+			case self::TYPE_HREF:
 				$hrefArr = $elem ? unserialize($elem) : array();
 				if(!is_array($hrefArr)){
 					$hrefArr = array();
@@ -2041,7 +2040,7 @@ class we_objectFile extends we_document{
 					case 'object':
 					case self::TYPE_MULTIOBJECT:
 					case 'language':
-					case 'href':
+					case self::TYPE_HREF:
 						//not handled
 						break;
 					case 'date':
@@ -2846,7 +2845,7 @@ class we_objectFile extends we_document{
 			$multiobjectFields = false;
 
 			foreach(array_keys($_REQUEST) as $n){
-				if(preg_match('/^we_' . $this->Name . '_(href|' . self::TYPE_MULTIOBJECT . ')$/', $n, $regs)){
+				if(preg_match('/^we_' . $this->Name . '_('.self::TYPE_HREF.'|' . self::TYPE_MULTIOBJECT . ')$/', $n, $regs)){
 					${$regs[1] . 'Fields'}|=true;
 				}
 			}

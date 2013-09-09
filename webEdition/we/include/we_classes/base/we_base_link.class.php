@@ -27,6 +27,7 @@ class we_base_link{
 	const MAGIC_INT_LINK = '_we_jkhdsf_int';
 	const MAGIC_INT_LINK_ID = '_we_jkhdsf_intID';
 	const MAGIC_INT_LINK_PATH = '_we_jkhdsf_intPath';
+	const MAGIC_INT_LINK_EXTPATH = '_we_jkhdsf_extPath';
 	const TYPE_INT = 'int';
 	const TYPE_EXT = 'ext';
 	const TYPE_MAIL = 'mail';
