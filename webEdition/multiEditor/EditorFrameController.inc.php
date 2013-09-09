@@ -724,7 +724,7 @@ print we_message_reporting::getShowMessageCall(g_l('multiEditor', "[no_editor_le
 
 			}
 			for (_editorId in this.EditorFrames) {
-				if (table && id && this.getEditorEditorTable(_editorId) === table && this.getEditorDocumentId(_editorId) === id) { // open by id
+				if (table && id && this.getEditorEditorTable(_editorId) === table && this.getEditorDocumentId(_editorId) == id) { // open by id
 					return _editorId;
 
 				} else if (editcmd === "open_cockpit" && this.EditorFrames[_editorId].EditorType === "cockpit") { // open a cmd window
