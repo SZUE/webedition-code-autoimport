@@ -345,9 +345,9 @@ function we_tag_addDelNewsletterEmail($attribs){
 			}
 		} else { //confirmID wurde übermittelt, eine Bestätigung liegt also vor
 			$emailwritten = 0;
+			$__db = new DB_WE();
 			switch($type){
 				case 'customer':
-					$__db = new DB_WE();
 					$__id = f('SELECT ID FROM ' . CUSTOMER_TABLE . ' WHERE ' . $_customerFieldPrefs['customer_email_field'] . '="' . $__db->escape($f['subscribe_mail']) . '"', 'ID', $__db);
 					if($__id == ''){
 						$GLOBALS['WE_NEWSUBSCRIBER_PASSWORD'] = substr(md5(time()), 4, 8);
@@ -445,7 +445,9 @@ function we_tag_addDelNewsletterEmail($attribs){
 
 						$ok = true;
 
-						while(($lock = weFile::lock(basename(__FILE__)))==false){usleep(500000);}
+						while(($lock = weFile::lock(basename(__FILE__))) == false){
+							usleep(500000);
+						}
 						$file = weFile::load($realPath);
 						if($file !== false){
 							if((preg_match("%[\r\n]" . $f['subscribe_mail'] . ",[^\r\n]+[\r\n]%i", $file) || preg_match('%^' . $f['subscribe_mail'] . ",[^\r\n]+[\r\n]%i", $file))){
@@ -556,7 +558,9 @@ function we_unsubscribeNL($db, $customer, $_customerFieldPrefs, $abos, $paths){
 			}
 
 			// #4158
-			while(($lock = weFile::lock(basename(__FILE__)))==false){usleep(500000);}
+			while(($lock = weFile::lock(basename(__FILE__))) == false){
+				usleep(500000);
+			}
 
 			$file = @file($path);
 			if(!$file){
