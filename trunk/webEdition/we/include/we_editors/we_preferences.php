@@ -1737,7 +1737,7 @@ for(i=0;i<elements.length; ++i){
 				array('class' => 'editor editor_java', 'headline' => g_l('prefs', '[editor_highlight_colors]'), 'html' => $_template_editor_font_color_checkbox . $_template_editor_font_color_table, 'space' => 150),
 				array('class' => 'editor editor_codemirror2', 'headline' => g_l('prefs', '[editor_linenumbers]'), 'html' => $_template_editor_linenumbers_code, 'space' => 150),
 				array('class' => 'editor editor_codemirror2', 'headline' => g_l('prefs', '[editor_highlightLine]'), 'html' => $_template_editor_highlightLine_code, 'space' => 150),
-				array('class' => 'editor editor_codemirror2', 'headline' => g_l('prefs', '[editor_tabstop]'), 'html' => $_template_editor_tabstop_code, 'space' => 150),
+				array('class' => 'editor editor_codemirror2 editor_textarea', 'headline' => g_l('prefs', '[editor_tabstop]'), 'html' => $_template_editor_tabstop_code, 'space' => 150),
 				array('class' => 'editor editor_codemirror2', 'headline' => g_l('prefs', '[editor_autoindent]'), 'html' => $_template_editor_autoIndent_code, 'space' => 150),
 				array('class' => 'editor editor_codemirror2', 'headline' => g_l('prefs', '[editor_completion]'), 'html' => $_template_editor_codecompletion_code, 'space' => 150),
 				array('class' => 'editor editor_codemirror2', 'headline' => g_l('prefs', '[editor_tooltips]'), 'html' => $_template_editor_tooltips_code . $_template_editor_tooltip_font_specify_code . $_template_editor_tooltip_font_specify_table, 'space' => 150),
