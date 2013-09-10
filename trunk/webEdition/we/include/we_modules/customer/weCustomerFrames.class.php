@@ -485,6 +485,7 @@ function populateDate_' . $field . '(){
 							case 'resetFailed':
 //FIXME: add button to reset failed logins
 
+								
 								$tmp = 'YAHOO.util.Connect.asyncRequest( "GET", "' . WEBEDITION_DIR . 'rpc/rpc.php?cmd=ResetFailedCustomerLogins&cns=customer&custid=' . $this->View->customer->ID . '", ajaxCallbackResetLogins );';
 								$but = we_html_element::jsElement('var ajaxCallbackResetLogins = {
 													success: function(o) {
