@@ -1890,6 +1890,7 @@ function handle_event(evt) {
 		} else {
 			f.elements['v[we_TemplateID]'].value = f.elements['docTypeTemplateId'].value;
 	}}
+	}
 	switch(evt) {
 		case 'previous':
 			f.step.value = 1;
