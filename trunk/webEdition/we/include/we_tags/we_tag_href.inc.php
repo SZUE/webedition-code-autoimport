@@ -152,25 +152,25 @@ function we_tag_href($attribs){
 			$yuiSuggest->setWidth(150);
 
 			return
-				'<table cellpadding="0" cellspacing="2" style="border: solid #006DB8 1px;background-image:url(' . IMAGE_DIR . 'backgrounds/aquaBackground.gif);">
-					<tr>
-						<td class="weEditmodeStyle">' . we_forms::radiobutton(1, $int, $int_elem_Name, $span . g_l('tags', "[int_href]") . ":</span>") . '</td>
-						<td class="weEditmodeStyle">' .
+				'<table cellspacing="2" style="padding:0px;border: solid #006DB8 1px;background-image:url(' . IMAGE_DIR . 'backgrounds/aquaBackground.gif);">
+<tr>
+	<td class="weEditmodeStyle">' . we_forms::radiobutton(1, $int, $int_elem_Name, $span . g_l('tags', '[int_href]') . ":</span>") . '</td>
+	<td class="weEditmodeStyle">' .
 //				'<input type="hidden" name="' . $ext_elem_Name . '" /><input type="hidden" name="' . $intID_elem_Name . '" value="' . $intID . '" /><input type="text" name="' . $intPath_elem_Name . '" value="' . $intPath . '" ' . $attr . ' readonly /></td>'.
 				$yuiSuggest->getHTML() . '</td>
-					<td class="weEditmodeStyle">' . we_html_tools::getPixel(8, 1) . '</td>
-				  <td class="weEditmodeStyle">' . $but . '</td>
-				  <td class="weEditmodeStyle">' . $open . '</td>
-				  <td class="weEditmodeStyle">' . $trashbut . '</td>
-						</tr>
-					<tr>
-						<td class="weEditmodeStyle">' . we_forms::radiobutton(0, !$int, $int_elem_Name, $span . g_l('tags', "[ext_href]") . ":</span>") . '</td>
-						<td class="weEditmodeStyle"><input onchange="this.form.elements[\'' . $int_elem_Name . '\'][1].checked = true;" type="text" name="we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']" value="' . $extPath . '" ' . $attr . ' /></td>
-						<td class="weEditmodeStyle">' . we_html_tools::getPixel(8, 1) . '</td>
-						<td class="weEditmodeStyle">' . $but2 . '</td>
-						<td class="weEditmodeStyle">' . $trashbut2 . '</td>
-					</tr>
-				</table>' .
+	<td class="weEditmodeStyle">' . we_html_tools::getPixel(8, 1) . '</td>
+	<td class="weEditmodeStyle">' . $but . '</td>
+	<td class="weEditmodeStyle">' . $open . '</td>
+	<td class="weEditmodeStyle">' . $trashbut . '</td>
+	</tr>
+<tr>
+	<td class="weEditmodeStyle">' . we_forms::radiobutton(0, !$int, $int_elem_Name, $span . g_l('tags', "[ext_href]") . ":</span>") . '</td>
+	<td class="weEditmodeStyle"><input onchange="this.form.elements[\'' . $int_elem_Name . '\'][1].checked = true;" type="text" name="we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']" value="' . $extPath . '" ' . $attr . ' /></td>
+	<td class="weEditmodeStyle">' . we_html_tools::getPixel(8, 1) . '</td>
+	<td class="weEditmodeStyle">' . $but2 . '</td>
+	<td class="weEditmodeStyle">' . $trashbut2 . '</td>
+</tr>
+</table>' .
 				($include && $include_path && file_exists($include_path) ? '<?php include("' . $include_path . '"); ?>' : '');
 
 		case we_base_link::TYPE_INT:
@@ -195,32 +195,32 @@ function we_tag_href($attribs){
 			$yuiSuggest->setTable(FILE_TABLE);
 			$yuiSuggest->setWidth(150);
 
-			return '<table cellpadding="0" cellspacing="2" style="border: solid #006DB8 1px;background-image:url(' . IMAGE_DIR . 'backgrounds/aquaBackground.gif)">
-					<tr>
-						<td class="weEditmodeStyle defaultfont" style="white-space:nowrap;"><input type="hidden" name="' . $int_elem_Name . '" value="1" />' . $span . g_l('tags', "[int_href]") . ':</span></td>
-						<td class="weEditmodeStyle">' .
+			return '<table cellspacing="2" style="padding:0px;border: solid #006DB8 1px;background-image:url(' . IMAGE_DIR . 'backgrounds/aquaBackground.gif)">
+	<tr>
+		<td class="weEditmodeStyle defaultfont" style="white-space:nowrap;"><input type="hidden" name="' . $int_elem_Name . '" value="1" />' . $span . g_l('tags', "[int_href]") . ':</span></td>
+		<td class="weEditmodeStyle">' .
 //				'<input type="hidden" name="' . $ext_elem_Name . '" /><input type="hidden" name="' . $intID_elem_Name . '" value="' . $intID . '" /><input type="text" name="' . $intPath_elem_Name . '" value="' . $intPath . '" ' . $attr . ' readonly /></td>'.
 				$yuiSuggest->getHTML() . '</td>
-					<td class="weEditmodeStyle">' . we_html_tools::getPixel(8, 1) . '</td>
-				  <td class="weEditmodeStyle">' . $but . '</td>
-				  <td class="weEditmodeStyle">' . $open . '</td>
-				  <td class="weEditmodeStyle">' . $trashbut . '</td>
-				</tr>
-				</table>' .
+	<td class="weEditmodeStyle">' . we_html_tools::getPixel(8, 1) . '</td>
+	<td class="weEditmodeStyle">' . $but . '</td>
+	<td class="weEditmodeStyle">' . $open . '</td>
+	<td class="weEditmodeStyle">' . $trashbut . '</td>
+</tr>
+</table>' .
 				($include && $include_path && file_exists($include_path) ? '<?php include("' . $include_path . '"); ?>' : '');
 		case we_base_link::TYPE_EXT:
 			$ext_elem_Name = 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']';
 
 			$trashbut2 = we_button::create_button("image:btn_function_trash", "javascript:document.we_form.elements['" . $ext_elem_Name . "'].value = ''; _EditorFrame.setEditorIsHot(true)", true);
-			$but2 = (we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ?
+			$but2 = (we_hasPerm('CAN_SELECT_EXTERNAL_FILES') ?
 					((($directory && $file) || $file) ?
-						we_button::create_button("select", "javascript:we_cmd('browse_server', 'document.forms[0].elements[\\'$ext_elem_Name\\'].value', '" . (($directory && $file) ? "filefolder" : "") . "', document.forms[0].elements['$ext_elem_Name'].value, 'opener._EditorFrame.setEditorIsHot(true);', '" . $rootdir . "')") :
-						we_button::create_button("select", "javascript:we_cmd('browse_server', 'document.forms[0].elements[\\'$ext_elem_Name\\'].value', 'folder', document.forms[0].elements['$ext_elem_Name'].value, 'opener._EditorFrame.setEditorIsHot(true);', '" . $rootdir . "')")
+						we_button::create_button('select', "javascript:we_cmd('browse_server', 'document.forms[0].elements[\\'$ext_elem_Name\\'].value', '" . (($directory && $file) ? "filefolder" : "") . "', document.forms[0].elements['$ext_elem_Name'].value, 'opener._EditorFrame.setEditorIsHot(true);', '" . $rootdir . "')") :
+						we_button::create_button('select', "javascript:we_cmd('browse_server', 'document.forms[0].elements[\\'$ext_elem_Name\\'].value', 'folder', document.forms[0].elements['$ext_elem_Name'].value, 'opener._EditorFrame.setEditorIsHot(true);', '" . $rootdir . "')")
 					) :
 					'');
 
 
-			return '<table cellpadding="0" cellspacing="2" style="border: solid #006DB8 1px;background-image:url(' . IMAGE_DIR . 'backgrounds/aquaBackground.gif)">
+			return '<table cellspacing="2" style="padding:0px;border: solid #006DB8 1px;background-image:url(' . IMAGE_DIR . 'backgrounds/aquaBackground.gif)">
 					<tr>
 						<td class="weEditmodeStyle defaultfont" style="white-space:nowrap;"><input type="hidden" name="' . $int_elem_Name . '" value="0" />' . $span . g_l('tags', '[ext_href]') . ':</span></td>
 						<td class="weEditmodeStyle"><input type="text" name="we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']" value="' . $extPath . '" ' . $attr . ' /></td>
