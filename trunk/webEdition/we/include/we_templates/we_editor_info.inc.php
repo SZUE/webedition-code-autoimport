@@ -154,7 +154,7 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js');
 			case 'image/*':
 				$_metaData = $GLOBALS['we_doc']->getMetaData();
 				$_metaDataTable = '
-<table border="0" cellpadding="0" cellspacing="0">
+<table style="border:0px;padding:0px;" cellspacing="0">
 	<tr><td style="padding-bottom: 5px;" class="weMultiIconBoxHeadline" colspan="2">' . g_l('metadata', '[info_exif_data]') . '</td></tr>';
 				if(isset($_metaData["exif"])){
 					foreach($_metaData["exif"] as $_key => $_val){
@@ -180,7 +180,7 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js');
 				if($GLOBALS['we_doc']->Extension == '.pdf'){
 					$metaData = $GLOBALS['we_doc']->getMetaData();
 					$_metaDataTable = '
-<table border="0" cellpadding="0" cellspacing="0">
+<table style="border:0px;padding:0px;" cellspacing="0">
 	<tr><td style="padding-bottom: 5px;" class="weMultiIconBoxHeadline" colspan="2">' . g_l('metadata', '[info_pdf_data]') . '</td></tr>';
 					if(!empty($metaData['pdf'])){
 						foreach($metaData['pdf'] as $key => $val){

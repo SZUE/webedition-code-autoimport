@@ -330,7 +330,7 @@ function we_tag_sessionField($attribs, $content){
 			if($showcontrol){
 				$checked = '';
 
-				return '<table border="0" cellpadding="2" cellspacing="2" style="border: solid ' . $bordercolor . ' 1px;">
+				return '<table cellpadding="2" cellspacing="2" style="border: solid ' . $bordercolor . ' 1px;">
 					<tr>
 						<td class="weEditmodeStyle" colspan="2" align="center">' .
 					$imgTag . '
@@ -343,7 +343,7 @@ function we_tag_sessionField($attribs, $content){
 					</tr>
 					<tr>
 						<td class="weEditmodeStyle" colspan="2" align="left">
-							<table border="0" cellpadding="0" cellspacing="0">
+							<table style="border:0px;" cellpadding="0" cellspacing="0">
 								<tr>
 									<td style="padding-right: 5px;">
 										<input style="border:0px solid black;" type="checkbox" id="WE_SF_DEL_CHECKBOX_' . $name . '" name="WE_SF_DEL_CHECKBOX_' . $name . '" value="1" ' . $checked . '/>

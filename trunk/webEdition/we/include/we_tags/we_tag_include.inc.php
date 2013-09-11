@@ -99,16 +99,14 @@ function we_tag_include($attribs){
 	if(we_tag('ifEditmode', array())){
 		if($name && !($id || $path)){
 			$type = weTag_getAttribute('kind', $attribs);
-			$_tmpspan = '<span style="color: white;font-size:' .
-				((we_base_browserDetect::isMAC()) ? '11px' : ((we_base_browserDetect::isUNIX()) ? '13px' : '12px')) . ';font-family:' .
-				g_l('css', '[font_family]') . ';">';
+			$style = 'color: white;font-size:' . ((we_base_browserDetect::isMAC()) ? '11px' : ((we_base_browserDetect::isUNIX()) ? '13px' : '12px')) . ';font-family:' . g_l('css', '[font_family]') . ';';
 			$_name = weTag_getAttribute('_name_orig', $attribs);
-			echo '<table style="background: #006DB8;" border="0" cellpadding="0" cellspacing="0"><tr><td style="padding: 3px;">' . $_tmpspan . '&nbsp;' . g_l('tags', '[include_file]') . '</span></td></tr><tr><td>' .
+			echo '<table style="background: #006DB8;border:0px;padding:0px;"><tr><td style="padding: 3px;'.$style.'">' . '&nbsp;' . g_l('tags', '[include_file]') . '</td></tr><tr><td>' .
 			we_tag('href', array('name' => $_name, 'rootdir' => $rootdir, 'type' => $type)) .
 			'</td></tr></table>';
 			return '';
 		}
-	} else{//notEditmode
+	} else {//notEditmode
 		if($name && !($id || $path)){
 			$db = $GLOBALS['DB_WE'];
 			$_name = weTag_getAttribute('_name_orig', $attribs);
@@ -134,7 +132,7 @@ function we_tag_include($attribs){
 				return '';
 			}
 			list($realPath, $ct) = $tmp;
-		} else{
+		} else {
 			$realPath = $path;
 		}
 		if($realPath == ''){
@@ -144,7 +142,7 @@ function we_tag_include($attribs){
 		// check early if there is a document - if not the rest is never needed
 		if($gethttp){
 			$content = getHTTP(getServerUrl(true), $realPath);
-		} else{
+		} else {
 			$realPath = $_SERVER['DOCUMENT_ROOT'] . $realPath;
 			if(!file_exists($realPath)){
 				return '';
@@ -167,7 +165,7 @@ function we_tag_include($attribs){
 		if(isset($GLOBALS['we']['backVars']) && count($GLOBALS['we']['backVars'])){
 			end($GLOBALS['we']['backVars']);
 			$we_unique = key($GLOBALS['we']['backVars']) + 1;
-		} else{
+		} else {
 			$we_unique = 1;
 			$GLOBALS['we']['backVars'] = array();
 		}
