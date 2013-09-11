@@ -1161,7 +1161,7 @@ class we_objectFile extends we_document{
 						self::hrefRow('', 0, $ext_elem_Name, $extPath, $attr, $int_elem_Name, true, $int, '', $file, $directory);
 			}
 			return ($variant ? '' : '<span class="weObjectPreviewHeadline"><b>' . $n . ($this->DefArray['href_' . $n]['required'] ? '*' : '') . '</b></span>' . (isset($this->DefArray["href_" . $n]['editdescription']) && $this->DefArray["href_" . $n]['editdescription'] ? '<div class="objectDescription">' . $this->DefArray["href_" . $n]['editdescription'] . '</div>' : we_html_element::htmlBr() )) .
-				'<table border="0" cellpadding="0" cellspacing="0" background="' . IMAGE_DIR . 'backgrounds/aquaBackground.gif">' . $out . '</table>';
+				'<table cellpadding="0" cellspacing="0" style="border:0px;background-image:url(' . IMAGE_DIR . 'backgrounds/aquaBackground.gif);">' . $out . '</table>';
 		}
 		return $this->getPreviewView($n, parent::getHrefByArray($hrefArr));
 	}

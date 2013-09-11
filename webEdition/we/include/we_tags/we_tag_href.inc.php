@@ -152,7 +152,7 @@ function we_tag_href($attribs){
 			$yuiSuggest->setWidth(150);
 
 			return
-				'<table border="0" cellpadding="0" cellspacing="2" background="' . IMAGE_DIR . 'backgrounds/aquaBackground.gif" style="border: solid #006DB8 1px;">
+				'<table cellpadding="0" cellspacing="2" style="border: solid #006DB8 1px;background-image:url(' . IMAGE_DIR . 'backgrounds/aquaBackground.gif);">
 					<tr>
 						<td class="weEditmodeStyle">' . we_forms::radiobutton(1, $int, $int_elem_Name, $span . g_l('tags', "[int_href]") . ":</span>") . '</td>
 						<td class="weEditmodeStyle">' .
@@ -195,9 +195,9 @@ function we_tag_href($attribs){
 			$yuiSuggest->setTable(FILE_TABLE);
 			$yuiSuggest->setWidth(150);
 
-			return '<table border="0" cellpadding="0" cellspacing="2" background="' . IMAGE_DIR . 'backgrounds/aquaBackground.gif" style="border: solid #006DB8 1px;">
+			return '<table cellpadding="0" cellspacing="2" style="border: solid #006DB8 1px;background-image:url(' . IMAGE_DIR . 'backgrounds/aquaBackground.gif)">
 					<tr>
-						<td class="weEditmodeStyle defaultfont" nowrap="nowrap"><input type="hidden" name="' . $int_elem_Name . '" value="1" />' . $span . g_l('tags', "[int_href]") . ':</span></td>
+						<td class="weEditmodeStyle defaultfont" style="white-space:nowrap;"><input type="hidden" name="' . $int_elem_Name . '" value="1" />' . $span . g_l('tags', "[int_href]") . ':</span></td>
 						<td class="weEditmodeStyle">' .
 //				'<input type="hidden" name="' . $ext_elem_Name . '" /><input type="hidden" name="' . $intID_elem_Name . '" value="' . $intID . '" /><input type="text" name="' . $intPath_elem_Name . '" value="' . $intPath . '" ' . $attr . ' readonly /></td>'.
 				$yuiSuggest->getHTML() . '</td>
@@ -220,9 +220,9 @@ function we_tag_href($attribs){
 					'');
 
 
-			return '<table border="0" cellpadding="0" cellspacing="2" background="' . IMAGE_DIR . 'backgrounds/aquaBackground.gif" style="border: solid #006DB8 1px;">
+			return '<table cellpadding="0" cellspacing="2" style="border: solid #006DB8 1px;background-image:url(' . IMAGE_DIR . 'backgrounds/aquaBackground.gif)">
 					<tr>
-						<td class="weEditmodeStyle defaultfont" nowrap="nowrap"><input type="hidden" name="' . $int_elem_Name . '" value="0" />' . $span . g_l('tags', '[ext_href]') . ':</span></td>
+						<td class="weEditmodeStyle defaultfont" style="white-space:nowrap;"><input type="hidden" name="' . $int_elem_Name . '" value="0" />' . $span . g_l('tags', '[ext_href]') . ':</span></td>
 						<td class="weEditmodeStyle"><input type="text" name="we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']" value="' . $extPath . '" ' . $attr . ' /></td>
 						<td class="weEditmodeStyle">' . we_html_tools::getPixel(8, 1) . '</td>
 						<td class="weEditmodeStyle">' . $but2 . '</td>

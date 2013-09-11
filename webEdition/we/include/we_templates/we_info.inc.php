@@ -196,7 +196,7 @@ if(isset($GLOBALS["loginpage"]) && $GLOBALS["loginpage"]){
 		}
 
 		// if button is between these radio boces, they can not be reachable with <tab>
-		$_modetable->setCol(0, 0, array(), '<table border="0" cellpadding="0" cellspacing="0">
+		$_modetable->setCol(0, 0, array(), '<table style="border:0px;padding:0px;" cellspacing="0">
 		<tr>
 			<td>' . $we_login_type .
 			'</td></tr><td>' .

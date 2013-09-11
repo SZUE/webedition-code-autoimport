@@ -688,7 +688,7 @@ window.orignalTemplateContent=document.getElementById("editarea").value.replace(
 			$code = $we_doc->getDocumentCode();
 		}
 
-		$maineditor = '<table border="0" cellpadding="0" cellspacing="0" width="95%"><tr><td>';
+		$maineditor = '<table style="border:0px;padding:0px;width:95%" cellspacing="0"><tr><td>';
 
 		if($_useJavaEditor){
 			$maineditor .= we_getJavaEditorCode($code);
@@ -705,7 +705,7 @@ window.orignalTemplateContent=document.getElementById("editarea").value.replace(
          </tr>
          <tr>
             <td align="left">' .
-			we_html_tools::getPixel(2, 10) . '<br><table cellpadding="0" cellspacing="0" border="0" width="100%">
+			we_html_tools::getPixel(2, 10) . '<br><table cellspacing="0" style="border:0px;width:100%;padding:0px;">
 	    <tr>
 <td align="left" class="defaultfont">' .
 			(substr($_SESSION['prefs']['editorMode'], 0, 10) == 'codemirror' ? '
@@ -916,7 +916,7 @@ window.orignalTemplateContent=document.getElementById("editarea").value.replace(
 				//return false;
 			}') .
 				'
-		<table id="wizardTable" style="width: 700px;" class="defaultfont" border="0" cellpadding="0" cellspacing="0">
+		<table id="wizardTable" style="width: 700px;border:0px;padding:0px;" class="defaultfont" cellspacing="0">
 		<tr>
 			<td align="right">' . $groupselect . '</td>
 		</tr>
@@ -932,12 +932,12 @@ window.orignalTemplateContent=document.getElementById("editarea").value.replace(
 			<td>' . we_html_tools::getPixel(5, 5) . '</td>
 		</tr>
 	</table>
-	<table id="wizardTableButtons" class="defaultfont" border="0" cellpadding="0" cellspacing="0" >
+	<table id="wizardTableButtons" class="defaultfont" style="border:0px;padding:0px;" cellspacing="0" >
 		<tr>
 			<td id="tagSelectColButtons" style="width: 250px;"></td>
 			<td id="spacerColButtons" style="width: 50px;"></td>
 			<td id="tagAreaColButtons" style="width: 100%;" align="right">
-				<table border="0" cellpadding="0" cellspacing="0">
+				<table style="border:0px;padding:0px;" cellspacing="0">
 				<tr>
 				<td style="padding-right:10px;">' . $selectallbut . '</td>
 					<td style="padding-right:10px;">' . $prependbut . '</td>

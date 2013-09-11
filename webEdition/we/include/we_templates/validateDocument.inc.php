@@ -196,7 +196,7 @@ $parts = array(
 	array('html' => g_l('validation', '[description]'), 'space' => 0),
 	array('headline' => g_l('validation', '[service]'),
 		'html' =>
-		'<table border="0" cellpadding="0" cellspacing="0">
+		'<table style="border:0px;padding:0px;" cellspacing="0">
                                  <tr><td class="defaultfont">' .
 		$_select .
 		$_hiddens .

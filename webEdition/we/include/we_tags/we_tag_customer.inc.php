@@ -72,7 +72,7 @@ function we_tag_customer($attribs){
 
 		if($GLOBALS['we_editmode']){
 			?>
-			<table border="0" cellpadding="0" cellspacing="0" background="<?php print IMAGE_DIR ?>backgrounds/aquaBackground.gif">
+			<table cellpadding="0" cellspacing="0" style="border:0px;background-image:url(<?php echo IMAGE_DIR;?>backgrounds/aquaBackground.gif);">
 				<tr>
 					<td style="padding:0 6px;"><span style="color: black; font-size: 12px; font-family: Verdana, sans-serif"><b><?php print $_showName; ?></b></span></td>
 					<td><?php print we_html_tools::hidden($idname, $we_cid) ?></td>

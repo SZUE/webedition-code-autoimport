@@ -156,7 +156,7 @@ function we_tag_input($attribs, $content){
 				$attr = we_make_attribs($attribs, 'name,value,type,html,_name_orig');
 
 				if(defined('SPELLCHECKER') && $spellcheck == 'true'){
-					return '<table border="0" cellpadding="0" cellspacing="0" background="' . IMAGE_DIR . 'backgrounds/aquaBackground.gif">
+					return '<table cellpadding="0" cellspacing="0" style="background-image:url(' . IMAGE_DIR . 'backgrounds/aquaBackground.gif);border:0px;">
 	<tr>
 			<td class="weEditmodeStyle"><input onchange="_EditorFrame.setEditorIsHot(true);" class="wetextinput" type="text" name="we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']" value="' . $val . '"' . ($attr ? " $attr" : "") . ' /></td>
 			<td class="weEditmodeStyle">' . we_html_tools::getPixel(6, 4) . '</td>
