@@ -1928,8 +1928,7 @@ function we_templateInit(){
 function we_templateHead(){
 	if(isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode']){
 		print STYLESHEET_BUTTONS_ONLY . SCRIPT_BUTTONS_ONLY .
-			we_html_element::jsScript(JS_DIR . 'windows.js') . weSuggest::getYuiFiles() .
-			we_html_element::cssElement('.weMarkInputError, input:invalid {background-color: #ff8888 ! important;}');
+			we_html_element::jsScript(JS_DIR . 'windows.js') . weSuggest::getYuiFiles();
 		require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 	}
 }

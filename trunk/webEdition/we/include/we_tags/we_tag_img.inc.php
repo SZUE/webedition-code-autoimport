@@ -119,15 +119,15 @@ function we_tag_img($attribs){
 	}
 
 	if(!$id && (!$GLOBALS['we_editmode'])){
-		return "";
+		return '';
 	}
 	if(!$id){
-		$id = "";
+		$id = '';
 	}
 
 	if($showcontrol && $GLOBALS['we_editmode']){
 		$out = '
-<table cellpadding="2" cellspacing="2" style="background-image:url(' . IMAGE_DIR . 'backgrounds/aquaBackground.gif);border: solid #006DB8 1px;">
+<table cellpadding="2" cellspacing="2" class="weEditTable">
 	<tr>
 		<td class="weEditmodeStyle" colspan="2" align="center">' . $out . '
 			<input onchange="_EditorFrame.setEditorIsHot(true);" type="hidden" name="' . $fname . '" value="' . $id . '" />

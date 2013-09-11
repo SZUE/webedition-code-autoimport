@@ -24,15 +24,27 @@
 we_html_tools::protect();
 ?>
 <style type="text/css">
+	.weMarkInputError, input:invalid {
+		background-color: #ff8888 ! important;
+	}
 	.weEditmodeStyle {
 		border: 0px ! important;
 	}
-
+	.weEditTable{
+		border: solid #006DB8 1px;
+		background-image:url(<?php echo IMAGE_DIR;?>backgrounds/aquaBackground.gif);
+		color: black;
+		font-size:' . ((we_base_browserDetect::isMAC()) ? "11px" : ((we_base_browserDetect::isUNIX()) ? "13px" : "12px")) . ';
+		font-family:' . g_l('css', '[font_family]') . ';
+	}
+	.weEditTable td{
+	
+	}
 </style>
 <?php
 // Dreamweaver RPC Command ShowPreparedPreview
 // disable javascript errors
-if(isset($_REQUEST["cmd"]) && $_REQUEST['cmd'] == "ShowPreparedPreview"){
+if(isset($_REQUEST["cmd"]) && $_REQUEST['cmd'] == 'ShowPreparedPreview'){
 
 	print we_html_element::jsElement("
 
@@ -52,7 +64,6 @@ if(isset($_REQUEST["cmd"]) && $_REQUEST['cmd'] == "ShowPreparedPreview"){
 
 	if (window.addEventListener) {
 		window.addEventListener('load', we_rpc_dw_onload);
-
 	} else {
 		window.attachEvent('onload', we_rpc_dw_onload);
 
