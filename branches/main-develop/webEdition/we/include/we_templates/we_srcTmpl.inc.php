@@ -682,11 +682,11 @@ window.orignalTemplateContent=document.getElementById("editarea").value.replace(
 			return $maineditor;
 		}
 
-		$wrap = (isset($_SESSION['weS']["we_wrapcheck"]) && $_SESSION['weS']["we_wrapcheck"]) ? "virtual" : "off";
+		$wrap = (isset($_SESSION['weS']['we_wrapcheck']) && $_SESSION['weS']['we_wrapcheck']) ? 'virtual' : 'off';
 
 		$code = $we_doc->getElement("data");
 
-		if($we_doc->ClassName == "we_htmlDocument"){
+		if($we_doc->ClassName == 'we_htmlDocument'){
 			$code = $we_doc->getDocumentCode();
 		}
 
@@ -695,7 +695,9 @@ window.orignalTemplateContent=document.getElementById("editarea").value.replace(
 		if($_useJavaEditor){
 			$maineditor .= we_getJavaEditorCode($code);
 		} else {
-			$maineditor .= '<textarea id="editarea" style="width: 100%; height: ' . (($_SESSION["prefs"]["editorHeight"] != 0) ? $_SESSION["prefs"]["editorHeight"] : "320") . 'px;' . (($_SESSION["prefs"]["editorFont"] == 1) ? " font-family: " . $_SESSION["prefs"]["editorFontname"] . "; font-size: " . $_SESSION["prefs"]["editorFontsize"] . "px;" : "") . '" id="data" name="we_' . $we_doc->Name . '_txt[data]" wrap="' . $wrap . '" ' . ((!we_base_browserDetect::isGecko() && (!isset($_SESSION['weS']["we_wrapcheck"]) || !$_SESSION['weS']["we_wrapcheck"] )) ? '' : ' rows="20" cols="80"') . ' onhange="_EditorFrame.setEditorIsHot(true);" ' . ($_SESSION['prefs']['editorMode'] == 'codemirror2' ? '' : (we_base_browserDetect::isIE() || we_base_browserDetect::isOpera() ? 'onkeydown="return wedoKeyDown(this,event.keyCode);"' : 'onkeypress="return wedoKeyDown(this,event.keyCode);"')) . '>'
+			$maineditor .= '<textarea id="editarea" style="width: 100%; height: ' . (($_SESSION["prefs"]["editorHeight"] != 0) ? $_SESSION["prefs"]["editorHeight"] : "320") . 'px;' . (($_SESSION["prefs"]["editorFont"] == 1) ? " font-family: " . $_SESSION["prefs"]["editorFontname"] . "; font-size: " . $_SESSION["prefs"]["editorFontsize"] . "px;" : "") .
+				'-moz-tab-size:' . $_SESSION['prefs']['editorTabSize'] . '; -o-tab-size:' . $_SESSION['prefs']['editorTabSize'] . '; -webkit-tab-size:' . $_SESSION['prefs']['editorTabSize'] . '; tab-size:' . $_SESSION['prefs']['editorTabSize'] . ';' .
+				'" id="data" name="we_' . $we_doc->Name . '_txt[data]" wrap="' . $wrap . '" ' . ((!we_base_browserDetect::isGecko() && (!isset($_SESSION['weS']["we_wrapcheck"]) || !$_SESSION['weS']["we_wrapcheck"] )) ? '' : ' rows="20" cols="80"') . ' onchange="_EditorFrame.setEditorIsHot(true);" ' . ($_SESSION['prefs']['editorMode'] == 'codemirror2' ? '' : (we_base_browserDetect::isIE() || we_base_browserDetect::isOpera() ? 'onkeydown="return wedoKeyDown(this,event.keyCode);"' : 'onkeypress="return wedoKeyDown(this,event.keyCode);"')) . '>'
 				. oldHtmlspecialchars($code) . '</textarea>';
 			if($_SESSION['prefs']['editorMode'] == 'codemirror2'){ //Syntax-Highlighting
 				$maineditor .= we_getCodeMirror2Code();

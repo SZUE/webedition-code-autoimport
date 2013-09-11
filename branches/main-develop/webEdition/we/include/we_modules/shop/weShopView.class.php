@@ -517,7 +517,7 @@ function we_cmd() {
 
 				if(in_array($key, $fields['customerFields'])){
 					if(($key == $CLFields['stateField'] && $CLFields['stateFieldIsISO']) || ($key == $CLFields['languageField'] && $CLFields['languageFieldIsISO'])){
-						$value = g_l('languages', '[' . $value . ']');
+						$value = g_l('languages', '[' . strtolower($value) . ']');
 					}
 					$customerFieldTable .='
 		<tr height="25">
