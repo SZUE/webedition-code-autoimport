@@ -95,7 +95,7 @@ function we_tag_formfield($attribs){
 			$tmp_select .= '<option value="' . $k . '"' . (($k == $type_sel) ? ' selected="selected"' : '') . '>' . $k . '</option>' . "\n";
 		}
 		$tmp_select .= '</select>';
-		$tbl = '<table width="223" style="padding:4px;border:0px;background-image:url(' . IMAGE_DIR . 'backgrounds/aquaBackground.gif);">
+		$tbl = '<table width="223" style="padding:4px;border:0px;" class="weEditTable">
 	<tr>
 		<td class="weEditmodeStyle" width="62" style="color: black; font-size: 12px; font-family: Verdana, sans-serif" align="right"><nobr>' . g_l('global', "[name]") . ':&nbsp;</nobr></td>
 		<td class="weEditmodeStyle" width="161"><input type="text" name="' . $nameprefix . 'ffname]" value="' . $ffname . '" size="24" /></td>

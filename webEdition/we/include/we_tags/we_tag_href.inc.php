@@ -152,7 +152,7 @@ function we_tag_href($attribs){
 			$yuiSuggest->setWidth(150);
 
 			return
-				'<table cellspacing="2" style="padding:0px;border: solid #006DB8 1px;background-image:url(' . IMAGE_DIR . 'backgrounds/aquaBackground.gif);">
+				'<table cellspacing="2" style="padding:0px;" class="weEditTable">
 <tr>
 	<td class="weEditmodeStyle">' . we_forms::radiobutton(1, $int, $int_elem_Name, $span . g_l('tags', '[int_href]') . ":</span>") . '</td>
 	<td class="weEditmodeStyle">' .
@@ -195,7 +195,7 @@ function we_tag_href($attribs){
 			$yuiSuggest->setTable(FILE_TABLE);
 			$yuiSuggest->setWidth(150);
 
-			return '<table cellspacing="2" style="padding:0px;border: solid #006DB8 1px;background-image:url(' . IMAGE_DIR . 'backgrounds/aquaBackground.gif)">
+			return '<table cellspacing="2" style="padding:0px;" class="weEditTable">
 	<tr>
 		<td class="weEditmodeStyle defaultfont" style="white-space:nowrap;"><input type="hidden" name="' . $int_elem_Name . '" value="1" />' . $span . g_l('tags', "[int_href]") . ':</span></td>
 		<td class="weEditmodeStyle">' .
@@ -220,7 +220,7 @@ function we_tag_href($attribs){
 					'');
 
 
-			return '<table cellspacing="2" style="padding:0px;border: solid #006DB8 1px;background-image:url(' . IMAGE_DIR . 'backgrounds/aquaBackground.gif)">
+			return '<table cellspacing="2" style="padding:0px;" class="weEditTable">
 					<tr>
 						<td class="weEditmodeStyle defaultfont" style="white-space:nowrap;"><input type="hidden" name="' . $int_elem_Name . '" value="0" />' . $span . g_l('tags', '[ext_href]') . ':</span></td>
 						<td class="weEditmodeStyle"><input type="text" name="we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']" value="' . $extPath . '" ' . $attr . ' /></td>
