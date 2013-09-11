@@ -101,7 +101,7 @@ abstract class we_rebuild_wizard{
 					we_html_tools::getHtmlInnerHead(g_l('rebuild', "[rebuild]")) .
 					STYLESHEET .
 					($dc ? '' : we_button::create_state_changer()) . $js) .
-				we_html_element::htmlBody(array("class" => ($dc ? "weDialogBody" : "weDialogButtonsBody")), ($dc ? $pb : $content->getHtml())
+				we_html_element::htmlBody(array('style'=>'overflow:hidden',"class" => ($dc ? "weDialogBody" : "weDialogButtonsBody")), ($dc ? $pb : $content->getHtml())
 				)
 		);
 	}
