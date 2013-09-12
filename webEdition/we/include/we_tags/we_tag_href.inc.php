@@ -165,7 +165,7 @@ function we_tag_href($attribs){
 	</tr>
 <tr>
 	<td class="weEditmodeStyle">' . we_forms::radiobutton(0, !$int, $int_elem_Name, $span . g_l('tags', "[ext_href]") . ":</span>") . '</td>
-	<td class="weEditmodeStyle"><input onchange="this.form.elements[\'' . $int_elem_Name . '\'][1].checked = true;" type="text" name="we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']" value="' . $extPath . '" ' . $attr . ' /></td>
+	<td class="weEditmodeStyle"><input onchange="this.form.elements[\'' . $int_elem_Name . '\'][1].checked = true;" type="text" name="we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']" placeholder="http://example.org" value="' . $extPath . '" ' . $attr . ' /></td>
 	<td class="weEditmodeStyle">' . we_html_tools::getPixel(8, 1) . '</td>
 	<td class="weEditmodeStyle">' . $but2 . '</td>
 	<td class="weEditmodeStyle">' . $trashbut2 . '</td>
@@ -223,7 +223,7 @@ function we_tag_href($attribs){
 			return '<table cellspacing="2" style="padding:0px;" class="weEditTable">
 					<tr>
 						<td class="weEditmodeStyle defaultfont" style="white-space:nowrap;"><input type="hidden" name="' . $int_elem_Name . '" value="0" />' . $span . g_l('tags', '[ext_href]') . ':</span></td>
-						<td class="weEditmodeStyle"><input type="text" name="we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']" value="' . $extPath . '" ' . $attr . ' /></td>
+						<td class="weEditmodeStyle"><input type="text" name="we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']" placeholder="http://example.org" value="' . $extPath . '" ' . $attr . ' /></td>
 						<td class="weEditmodeStyle">' . we_html_tools::getPixel(8, 1) . '</td>
 						<td class="weEditmodeStyle">' . $but2 . '</td>
 						<td class="weEditmodeStyle">' . $trashbut2 . '</td>
