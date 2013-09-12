@@ -159,7 +159,7 @@ $ac10->setAppName('navigation');
 
 $htmlPage = we_ui_layout_HTMLPage::getInstance();
 $htmlPage->setTitle('Samples Autocompleter');
-$htmlPage->addJSFile('/webEdition/js/windows.js');
+$htmlPage->addJSFile(JS_DIR.'windows.js');
 $htmlPage->addInlineCSS('
 body {
 	padding:10px !important;

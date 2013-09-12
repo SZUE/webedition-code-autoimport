@@ -5,9 +5,9 @@ $appName = $controller->getParam('appName');
 
 $page = we_ui_layout_HTMLPage::getInstance();
 
-$page->addJSFile('/webEdition/js/windows.js');
-$page->addJSFile('/webEdition/js/we_showMessage.js');
-$page->addJSFile('/webEdition/js/images.js');
+$page->addJSFile(JS_DIR.'windows.js');
+$page->addJSFile(JS_DIR.'we_showMessage.js');
+$page->addJSFile(JS_DIR.'images.js');
 
 
 $nodes = array();
@@ -26,7 +26,7 @@ if($table!="") {
 
 $InfoField = new we_ui_layout_Div();
 $InfoField->setId('infoField');
-$InfoField->setStyle('position:absolute;bottom:0px;height:40px;background:url(/webEdition/images/edit/editfooterback.gif);left:0px;width:100%;margin:0px;');
+$InfoField->setStyle('position:absolute;bottom:0px;height:40px;background:url('.IMAGE_DIR.'edit/editfooterback.gif);left:0px;width:100%;margin:0px;');
 
 $InfoFieldId = new we_ui_layout_Div();
 $InfoFieldId->setId('infoFieldId');

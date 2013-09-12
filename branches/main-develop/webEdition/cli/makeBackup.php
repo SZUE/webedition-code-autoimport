@@ -167,10 +167,9 @@ $_SESSION['user']['Username'] = 1;
 if(!isset($_SERVER['SERVER_NAME'])){
 	$_SERVER['SERVER_NAME'] = $SERVER_NAME;
 }
+// include needed libraries
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
-
-include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/PEAR.php");
-include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/Getopt.php");
 
 // Define exit codes for errors
 define('NO_ARGS', 10);
@@ -321,8 +320,6 @@ if(isset($options[1][0])){
 
 $_REQUEST['filename'] = basename($_backup_filename);
 
-// include needed libraries
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 update_time_limit(0);
 update_mem_limit(128);
 

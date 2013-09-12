@@ -53,6 +53,6 @@ $page->setBodyAttributes(array('class'=>'weMenuBody'));
 $page->addElement($table);
 		
 // needed for menu !!
-$page->addJSFile('/webEdition/js/attachKeyListener.js');
+$page->addJSFile(JS_DIR. 'attachKeyListener.js');
 
 echo $page->getHTML();

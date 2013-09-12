@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weSiteImport{
+class weSiteImport {
 
 	var $step = 0;
 	var $cmd = '';
@@ -53,7 +53,7 @@ class weSiteImport{
 	var $quality = 8;
 	var $degrees = 0;
 	var $_postProcess;
-	var $excludeddirs = array('/webEdition');
+	var $excludeddirs = array(WEBEDITION_DIR, WE_THUMBNAIL_DIRECTORY);
 
 	/**
 	 * Constructor of Class
@@ -403,8 +403,8 @@ class weSiteImport{
 	 * @return	int
 	 */
 	private function _getIndexOfValues($values, $name){
-		for($i = 0; $i < count($values); $i++){
-			if($values[$i]["name"] == $name){
+		foreach($values as $i => $cur){
+			if($cur["name"] == $name){
 				return $i;
 			}
 		}

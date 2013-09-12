@@ -75,7 +75,7 @@ z-index				: 3;
 float 				: left;
 width				: 9px;
 height				: 602px;
-background-image	: url('/webEdition/images/first_steps_wizard/left.gif');
+background-image	: url('<?php echo IMAGE_DIR;?>first_steps_wizard/left.gif');
 z-index				: 3;
 }
 
@@ -161,7 +161,7 @@ overflow			: hidden;
 border-width		: 0px 0px 1px 0px;
 border-style		: none none solid none;
 border-color		: #000000;
-background-image	: url('/webEdition/images/first_steps_wizard/emoticon.gif');
+background-image	: url('<?php echo IMAGE_DIR;?>first_steps_wizard/emoticon.gif');
 background-position	: right;
 background-repeat	: no-repeat;
 z-index				: 3;

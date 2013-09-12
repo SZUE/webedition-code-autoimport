@@ -356,7 +356,7 @@ class toolfactory_service_Cmd extends we_app_service_AbstractCmd{
 				'Security Error: Model Ids are not the same! Id must fit the id of the model stored in the session!',
 				we_service_ErrorCodes::kModelIdsNotTheSame);
 		}
-		we_util_File::compressDirectoy($_SERVER['DOCUMENT_ROOT'] . "/webEdition/apps/" . $model->classname, $_SERVER['DOCUMENT_ROOT'] . "/webEdition/apps/" . $model->classname . "_" . $model->appconfig->info->version . ".tgz");
+		we_util_File::compressDirectoy(WE_APPS_PATH . $model->classname, WE_APPS_PATH . $model->classname . "_" . $model->appconfig->info->version . ".tgz");
 
 		return true;
 	}

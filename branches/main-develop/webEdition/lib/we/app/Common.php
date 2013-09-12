@@ -120,7 +120,7 @@ class we_app_Common {
 		if(isset(self::$_config->applicationpath) && !empty(self::$_config->applicationpath)){
 			$filename = self::$_config->applicationpath . "/toc.xml";
 		} else {
-			$filename = $_SERVER['DOCUMENT_ROOT'] . "/webEdition/apps/toc.xml";
+			$filename = WE_APPS_PATH . "toc.xml";
 		}
 		if(!is_readable($filename)){
 			return false;
@@ -148,7 +148,7 @@ class we_app_Common {
 		if(isset(self::$_config->applicationpath) && !empty(self::$_config->applicationpath)){
 			$filename = self::$_config->applicationpath . "/toc.xml";
 		} else {
-			$filename = $_SERVER['DOCUMENT_ROOT'] . "/webEdition/apps/toc.xml";
+			$filename = WE_APPS_PATH . "toc.xml";
 		}
 		if(!is_readable($filename)){
 			return false;
@@ -173,7 +173,7 @@ class we_app_Common {
 		if(isset(self::$_config->applicationpath) && !empty(self::$_config->applicationpath)){
 			$filename = self::$_config->applicationpath . "/toc.xml";
 		} else {
-			$filename = $_SERVER['DOCUMENT_ROOT'] . "/webEdition/apps/toc.xml";
+			$filename = WE_APPS_PATH. "toc.xml";
 		}
 		if(!is_readable($filename)){
 			return false;
@@ -226,7 +226,7 @@ class we_app_Common {
 		// We insert the new element as root (child of the document)
 		$doc->appendChild($root);
 
-		file_put_contents($_SERVER['DOCUMENT_ROOT'] . "/webEdition/apps/toc.xml", $doc->saveXML());
+		file_put_contents(WE_APPS_PATH . "toc.xml", $doc->saveXML());
 		self::readAppTOCsxmle(true);
 		self::readAppTOC(true);
 	}
@@ -320,7 +320,7 @@ class we_app_Common {
 		$output .= "</toc>\n";
 		//error_log($output);
 		// need to do it this way because the SimpleXML Object would not produce a complete and valid xml file
-		file_put_contents($_SERVER['DOCUMENT_ROOT'] . "/webEdition/apps/toc.xml", $output);
+		file_put_contents(WE_APPS_PATH . "toc.xml", $output);
 	}
 
 	/**
@@ -642,7 +642,7 @@ class we_app_Common {
 			return false;
 		}
 		self::getDefaultManifest();
-		$filename = $_SERVER['DOCUMENT_ROOT'] . '/webEdition/apps/' . $application . '/conf/manifest.xml';
+		$filename =WE_APPS_PATH . $application . '/conf/manifest.xml';
 		if(!is_readable($filename)){
 			error_log('Could not find the application\'s manifest file from application "' . $application . '". Using default values for this application.');
 			return false;

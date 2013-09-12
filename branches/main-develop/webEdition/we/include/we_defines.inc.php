@@ -64,6 +64,7 @@ define('WE_INCLUDES_DIR', WEBEDITION_DIR . 'we/include/');
 define('TEMPLATES_DIR', WEBEDITION_DIR . 'we/templates');
 define('TEMP_DIR', WEBEDITION_DIR . 'we/tmp/');
 define('WE_MODULES_DIR', WE_INCLUDES_DIR . 'we_modules/');
+define('CSS_DIR', '/webEdition/css/');
 
 
 define('WE_APPS_DIR', WEBEDITION_DIR . 'apps/');

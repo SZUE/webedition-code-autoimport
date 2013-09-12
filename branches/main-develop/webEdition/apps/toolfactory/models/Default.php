@@ -282,7 +282,7 @@ class toolfactory_models_Default extends we_app_Model{
 		}
 		$WEVERSION = we_util_Strings::version2number(WE_VERSION, false);
 		$SDKVERSION = we_util_Strings::version2number(WE_VERSION, false);
-		$_templateDir = $_SERVER['DOCUMENT_ROOT'] . '/webEdition/apps/toolfactory/pattern';
+		$_templateDir = WE_APPS_PATH.'toolfactory/pattern';
 
 		$_toolDir = $GLOBALS['__WE_APP_URL__'] . '/' . $TOOLNAME . '/';
 

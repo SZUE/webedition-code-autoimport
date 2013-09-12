@@ -95,7 +95,6 @@ class we_ui_controls_SelectObjectfield extends we_ui_controls_Select{
 	 * @return string
 	 */
 	public function getOptionsHTML(){
-		include ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/conf/we_active_integrated_modules.inc.php");
 		if(in_array('object', $GLOBALS['_we_active_integrated_modules'])){
 
 			if(file_exists(WE_MODULES_PATH . 'object/we_conf_object.inc.php')){
