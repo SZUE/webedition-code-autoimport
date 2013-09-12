@@ -179,7 +179,7 @@ top.content.hloaded = 1;');
 			$we_tabs->addTab(new we_tab("#", sprintf(g_l('modules_newsletter', '[mailing_list]'), ""), (($page == 1) ? "TAB_ACTIVE" : "TAB_NORMAL"), "self.setTab(1);"));
 			$we_tabs->addTab(new we_tab("#", g_l('modules_newsletter', '[edit]'), (($page == 2) ? "TAB_ACTIVE" : "TAB_NORMAL"), "self.setTab(2);"));
 			//if($this->View->newsletter->ID){ // zusaetzlicher tab fuer auswertung
-				$we_tabs->addTab(new we_tab("#", g_l('modules_newsletter', '[reporting][tab]'), (($page == 3) ? "TAB_ACTIVE" : "TAB_NORMAL"), "self.setTab(3);"));
+			$we_tabs->addTab(new we_tab("#", g_l('modules_newsletter', '[reporting][tab]'), (($page == 3) ? "TAB_ACTIVE" : "TAB_NORMAL"), "self.setTab(3);"));
 			//}
 		}
 
@@ -347,7 +347,7 @@ top.content.hloaded = 1;');
 
 	function getHTMLLog(){
 		$content = "";
-		$this->View->db->query('SELECT * FROM ' . NEWSLETTER_LOG_TABLE . ' WHERE NewsletterID=' . $this->View->newsletter->ID . ((isset($_REQUEST['newsletterStatus']) && $_REQUEST['newsletterStatus'] !="") ? ' AND Log =' . $_REQUEST['newsletterStatus'] : '') . ((isset($_REQUEST['newsletterStartTime']) && isset($_REQUEST['newsletterEndTime']) && $_REQUEST['newsletterStartTime'] > 0 && $_REQUEST['newsletterEndTime'] > 0) ? ' AND LogTime BETWEEN '.$_REQUEST['newsletterStartTime'].' AND '.$_REQUEST['newsletterEndTime'] : '') . ' ORDER BY LogTime DESC');
+		$this->View->db->query('SELECT * FROM ' . NEWSLETTER_LOG_TABLE . ' WHERE NewsletterID=' . $this->View->newsletter->ID . ((isset($_REQUEST['newsletterStatus']) && $_REQUEST['newsletterStatus'] != "") ? ' AND Log =' . $_REQUEST['newsletterStatus'] : '') . ((isset($_REQUEST['newsletterStartTime']) && isset($_REQUEST['newsletterEndTime']) && $_REQUEST['newsletterStartTime'] > 0 && $_REQUEST['newsletterEndTime'] > 0) ? ' AND LogTime BETWEEN ' . $_REQUEST['newsletterStartTime'] . ' AND ' . $_REQUEST['newsletterEndTime'] : '') . ' ORDER BY LogTime DESC');
 
 		while($this->View->db->next_record()){
 			$log = g_l('modules_newsletter', '[' . $this->View->db->f("Log") . ']');
@@ -376,64 +376,64 @@ top.content.hloaded = 1;');
 	 */
 
 	function getHTMLReporting(){
-		
+
 		function getPercent($total, $value, $precision = 0){
 			$result = ($total ? round(($value * 100) / $total, $precision) : 0);
 			return we_util_Strings::formatNumber($result, strtolower($GLOBALS['WE_LANGUAGE']));
 		}
-		
+
 		$content = "";
 		$parts = array();
-		
+
 		$this->View->db->query('SELECT * FROM ' . NEWSLETTER_LOG_TABLE . ' WHERE NewsletterID=' . $this->View->newsletter->ID . ' AND Log != \'log_save_newsletter\' AND (Log = \'log_start_send\' OR Log = \'log_end_send\') ORDER BY LogTime ASC');
 
 		$newsletterMailOrders = array();
 		$newsletterMailOrdersCnt = 0;
 		while($this->View->db->next_record()){
 			if($this->View->db->f("Log") == "log_start_send"){
-				$newsletterMailOrdersCnt ++;
+				$newsletterMailOrdersCnt++;
 				$newsletterMailOrders[$newsletterMailOrdersCnt]['start_send'] = $this->View->db->f("LogTime");
-			}else{
+			} else {
 				$newsletterMailOrders[$newsletterMailOrdersCnt]['end_send'] = $this->View->db->f("LogTime");
 			}
 		}
-		
+
 		foreach($newsletterMailOrders as $newsletterMailOrder){
-			
+
 			$table = new we_html_table(array('cellpadding' => 3, 'cellspacing' => 0, 'border' => 0, 'class' => 'defaultfont', 'style' => 'width: 588px'), 1, 5);
-			
-			$this->View->db->query('SELECT Log,count(*) FROM ' . NEWSLETTER_LOG_TABLE . ' WHERE NewsletterID=' . $this->View->newsletter->ID . ' AND (Log != \'log_start_send\' AND Log != \'log_end_send\') AND LogTime BETWEEN ' . $newsletterMailOrder['start_send'].' AND ' .$newsletterMailOrder['end_send'] .' GROUP BY Log');
-			
+
+			$this->View->db->query('SELECT Log,count(*) FROM ' . NEWSLETTER_LOG_TABLE . ' WHERE NewsletterID=' . $this->View->newsletter->ID . ' AND (Log != \'log_start_send\' AND Log != \'log_end_send\') AND LogTime BETWEEN ' . $newsletterMailOrder['start_send'] . ' AND ' . $newsletterMailOrder['end_send'] . ' GROUP BY Log');
+
 			$results = array();
 			while($this->View->db->next_record(MYSQL_NUM)){
 				$rec = $this->View->db->getRecord();
 				$results[array_shift($rec)] = current($rec);
 			}
-			
+
 			$allRecipients = array_sum($results);
 			$key = $newsletterMailOrder['start_send']; //for html and js
-			
-			/*process bar blocked by blacklist*/
-			$allBlockedByBlacklist = (array_key_exists("email_is_black",$results) ? $results['email_is_black'] : 0);
+
+			/* process bar blocked by blacklist */
+			$allBlockedByBlacklist = (array_key_exists("email_is_black", $results) ? $results['email_is_black'] : 0);
 			$percentBlockedByBlacklist = getPercent($allRecipients, $allBlockedByBlacklist, 2);
-				
+
 			$pbByB = new we_progressBar($percentBlockedByBlacklist);
 			$pbByB->setName('blacklist' . $key);
 			$pbByB->setStudWidth(10);
 			$pbByB->setStudLen(150);
-		
+
 			$table->addRow();
 			$table->setColContent(1, 0, we_html_element::htmlSpan(array('id' => 'blacklist_' . $key), g_l('modules_newsletter', '[reporting][mailing_emails_are_black]')));
 			$table->setColContent(1, 1, $pbByB->getJS() . $pbByB->getHTML());
-			$table->setCol(1, 2, array("style"=>"padding: 0 5px 0 5px;"),we_html_element::htmlSpan(array('id' => 'blacklist_total','style'=>'color:'.(($allBlockedByBlacklist > 0) ? 'red' : 'green').';'),$allBlockedByBlacklist));
-			$table->setCol(1, 3, array("style"=>"padding: 0 5px 0 5px;"), we_html_element::htmlImg(array("src" => IMAGE_DIR . "icons/" . (($allBlockedByBlacklist == 0) ? "valid.gif" : "invalid.gif"))));
+			$table->setCol(1, 2, array("style" => "padding: 0 5px 0 5px;"), we_html_element::htmlSpan(array('id' => 'blacklist_total', 'style' => 'color:' . (($allBlockedByBlacklist > 0) ? 'red' : 'green') . ';'), $allBlockedByBlacklist));
+			$table->setCol(1, 3, array("style" => "padding: 0 5px 0 5px;"), we_html_element::htmlImg(array("src" => IMAGE_DIR . "icons/" . (($allBlockedByBlacklist == 0) ? "valid.gif" : "invalid.gif"))));
 			//todo: statt show black list, sollte show_log begrenzt auf Log=email_is_black + $start_send + start_end
-			$table->setCol(1,4,array('style' => 'width: 35px'),(($allBlockedByBlacklist == 0) ? '' : we_button::position_yes_no_cancel(we_button::create_button("image:btn_function_view", "javascript:top.opener.top.load.location.replace('/webEdition/we_lcmd.php?we_cmd[0]=black_list')"))));
-			
-			/*process bar blocked by domain check*/
-			$allBlockedByDomainCheck = (array_key_exists("domain_nok",$results) ? $results['domain_nok'] : 0);
+			$table->setCol(1, 4, array('style' => 'width: 35px'), (($allBlockedByBlacklist == 0) ? '' : we_button::position_yes_no_cancel(we_button::create_button("image:btn_function_view", "javascript:top.opener.top.load.location.replace('" . WEBEDITION_DIR . "we_lcmd.php?we_cmd[0]=black_list')"))));
+
+			/* process bar blocked by domain check */
+			$allBlockedByDomainCheck = (array_key_exists("domain_nok", $results) ? $results['domain_nok'] : 0);
 			$percentBlockedByDomain = getPercent($allRecipients, $allBlockedByDomainCheck, 2);
-			
+
 			$pbBbD = new we_progressBar($percentBlockedByDomain);
 			$pbBbD->setName('domain' . $key);
 			$pbBbD->setStudWidth(10);
@@ -442,15 +442,15 @@ top.content.hloaded = 1;');
 			$table->addRow();
 			$table->setColContent(2, 0, we_html_element::htmlSpan(array('id' => 'domain_' . $key), g_l('modules_newsletter', '[reporting][mailing_emails_nok]')));
 			$table->setColContent(2, 1, $pbBbD->getJS() . $pbBbD->getHTML());
-			$table->setCol(2, 2, array("style"=>"padding: 0 5px 0 5px;"), we_html_element::htmlSpan(array('id' => 'domain_total','style'=>'color:'.(($allBlockedByDomainCheck > 0) ? 'red' : 'green').';'),$allBlockedByDomainCheck));
-			$table->setCol(2, 3, array("style"=>"padding: 0 5px 0 5px;"), we_html_element::htmlImg(array("src" => IMAGE_DIR . "icons/" . (($allBlockedByDomainCheck == 0) ? "valid.gif" : "invalid.gif"))));
+			$table->setCol(2, 2, array("style" => "padding: 0 5px 0 5px;"), we_html_element::htmlSpan(array('id' => 'domain_total', 'style' => 'color:' . (($allBlockedByDomainCheck > 0) ? 'red' : 'green') . ';'), $allBlockedByDomainCheck));
+			$table->setCol(2, 3, array("style" => "padding: 0 5px 0 5px;"), we_html_element::htmlImg(array("src" => IMAGE_DIR . "icons/" . (($allBlockedByDomainCheck == 0) ? "valid.gif" : "invalid.gif"))));
 			//todo: statt domain, sollte show_log begrenzt auf Log=domain_nok + $start_send + start_end
-			$table->setCol(2,4,array('style' => 'width: 35px'),(($allBlockedByDomainCheck == 0) ? '' : we_button::position_yes_no_cancel(we_button::create_button("image:btn_function_view", "javascript:top.opener.top.load.location.replace('/webEdition/we_lcmd.php?we_cmd[0]=domain_check')"))));
-			
-			/*process bar all clear recipients*/
-			$allClearRecipients = (array_key_exists("mail_sent",$results) ? $results['mail_sent'] : 0);
+			$table->setCol(2, 4, array('style' => 'width: 35px'), (($allBlockedByDomainCheck == 0) ? '' : we_button::position_yes_no_cancel(we_button::create_button("image:btn_function_view", "javascript:top.opener.top.load.location.replace('" . WEBEDITION_DIR . "we_lcmd.php?we_cmd[0]=domain_check')"))));
+
+			/* process bar all clear recipients */
+			$allClearRecipients = (array_key_exists("mail_sent", $results) ? $results['mail_sent'] : 0);
 			$percentClearRecipients = getPercent($allRecipients, $allClearRecipients, 2);
-			
+
 			$pbCR = new we_progressBar($percentClearRecipients);
 			$pbCR->setName('recipients' . $key);
 			$pbCR->setStudWidth(10);
@@ -459,21 +459,20 @@ top.content.hloaded = 1;');
 			$table->addRow();
 			$table->setColContent(3, 0, we_html_element::htmlSpan(array('id' => 'recipients_' . $key), g_l('modules_newsletter', '[reporting][mailing_emails_success]')));
 			$table->setColContent(3, 1, $pbCR->getJS() . $pbCR->getHTML());
-			$table->setCol(3, 2, array("style"=>"padding: 0 5px 0 5px;"), we_html_element::htmlSpan(array('id' => 'recipients_total','style'=>'color:'.(($allClearRecipients <= 0) ? 'red' : 'green').';'),$allClearRecipients));
-			$table->setCol(3, 3, array("style"=>"padding: 0 5px 0 5px;"), we_html_element::htmlImg(array("src" => IMAGE_DIR . (($allClearRecipients == $allRecipients) ? "icons/valid.gif" : "alert_tiny.gif"),"title"=>(($allClearRecipients < $allRecipients) ? g_l('modules_newsletter', '[reporting][mailing_advice_not_success]') : ''))));
+			$table->setCol(3, 2, array("style" => "padding: 0 5px 0 5px;"), we_html_element::htmlSpan(array('id' => 'recipients_total', 'style' => 'color:' . (($allClearRecipients <= 0) ? 'red' : 'green') . ';'), $allClearRecipients));
+			$table->setCol(3, 3, array("style" => "padding: 0 5px 0 5px;"), we_html_element::htmlImg(array("src" => IMAGE_DIR . (($allClearRecipients == $allRecipients) ? "icons/valid.gif" : "alert_tiny.gif"), "title" => (($allClearRecipients < $allRecipients) ? g_l('modules_newsletter', '[reporting][mailing_advice_not_success]') : ''))));
 			//todo: statt show_log, sollte show_log begrenzt auf Log=email_sent + $start_send + start_end
-			$table->setCol(3,4,array('style' => 'width: 35px'),we_button::position_yes_no_cancel(we_button::create_button("image:btn_function_view", "javascript:top.opener.top.load.location.replace('/webEdition/we_lcmd.php?we_cmd[0]=show_log')")));
-			
-			/*total recipients*/
+			$table->setCol(3, 4, array('style' => 'width: 35px'), we_button::position_yes_no_cancel(we_button::create_button("image:btn_function_view", "javascript:top.opener.top.load.location.replace('" . WEBEDITION_DIR . "we_lcmd.php?we_cmd[0]=show_log')")));
+
+			/* total recipients */
 			$table->addRow();
 			$table->setColContent(4, 0, we_html_element::htmlB(g_l('modules_newsletter', '[reporting][mailing_all_emails]')));
-			$table->setCol(4, 2, array('colspan' => 2,"style"=>"padding: 0 5px 0 5px;"), we_html_element::htmlB($allRecipients));
-			
+			$table->setCol(4, 2, array('colspan' => 2, "style" => "padding: 0 5px 0 5px;"), we_html_element::htmlB($allRecipients));
+
 			$parts[] = array(
-				"headline" => g_l('modules_newsletter', '[reporting][mailing_send_at]') .'&nbsp;'. date(g_l('weEditorInfo', "[date_format_sec]"), $key),
+				"headline" => g_l('modules_newsletter', '[reporting][mailing_send_at]') . '&nbsp;' . date(g_l('weEditorInfo', "[date_format_sec]"), $key),
 				"html" => $table->getHTML() . we_html_element::htmlBr()
 			);
-			
 		}
 
 		return $parts;

@@ -413,7 +413,7 @@ var ajaxMaxResponseTime = 1500;
 var ajaxResponseStep = 100;
 var ajaxResponseCT = 0;
 var countMark = 0;
-var ajaxURL = "/webEdition/rpc/rpc.php";';
+var ajaxURL = "' . WEBEDITION_DIR . 'rpc/rpc.php";';
 		/* WORKSPACES */
 		$weFieldWS = 'var weWorkspacePathArray = new Array();';
 		/* AC-FIEDS BY ID */
@@ -1073,7 +1073,7 @@ function doDebugResizeH(){
 			if($client->getBrowser() == we_ui_Client::kBrowserIE){
 				$width = $this->containerwidth[$i] - 4;
 				$overflow = 'overflow:hidden;';
-			} else{
+			} else {
 				$width = $this->containerwidth[$i] - 8;
 				$overflow = '';
 			}
@@ -1142,7 +1142,7 @@ function doDebugResizeH(){
 				padding:0px;
 				list-style:none;
 			}";
-		} else{
+		} else {
 			$out .= "$inputfields {
 				position:relative;
 				width:100%;
@@ -1342,7 +1342,7 @@ function doDebugResizeH(){
 	function setInputId($val = ''){
 		if($val == ''){
 			$this->inputId = "yuiAcInput" . $this->acId;
-		} else{
+		} else {
 			$this->inputId = $val;
 		}
 	}

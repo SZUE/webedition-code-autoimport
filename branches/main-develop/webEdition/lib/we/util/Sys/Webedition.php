@@ -47,7 +47,7 @@ class we_util_Sys_Webedition extends we_util_Sys{
 	public static function version(){
 		if(!defined("WE_VERSION")){
 			try{
-				include_once $_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_version.php";
+				include_once WE_INCLUDES_PATH . 'we_version.php';
 			} catch (Exception $e){
 				/**
 				 * @see we_util_Sys_Exception
@@ -92,7 +92,7 @@ class we_util_Sys_Webedition extends we_util_Sys{
 
 		// all modules available for webEdition:
 		try{
-			include_once $_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_available_modules.inc.php";
+			include_once WE_INCLUDES_PATH. 'we_available_modules.inc.php';
 		} catch (Exception $e){
 			/**
 			 * @see we_util_Sys_Exception
@@ -147,7 +147,7 @@ class we_util_Sys_Webedition extends we_util_Sys{
 	 */
 	public static function modulesAvailable(){
 		try{
-			include_once $_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_available_modules.inc.php";
+			include_once WE_INCLUDES_PATH . "we_available_modules.inc.php";
 		} catch (Exception $e){
 			/**
 			 * @see we_util_Sys_Exception
@@ -168,7 +168,7 @@ class we_util_Sys_Webedition extends we_util_Sys{
 		if(empty($property)){
 			return false;
 		}
-		$tooldir = $_SERVER['DOCUMENT_ROOT'] . "/webEdition/apps/" . $property;
+		$tooldir = WE_APPS_PATH . $property;
 		try{
 			if(is_dir($tooldir) && is_readable($tooldir)){
 				return true;

@@ -27,35 +27,35 @@
 require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_defines.inc.php');
 
 // Absolute Server Path to the webEdition base directory
-$GLOBALS['__WE_BASE_PATH__'] = realpath(dirname(str_replace('\\', '/', __FILE__)) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR);
+$GLOBALS['__WE_BASE_PATH__'] = WEBEDITION_PATH;
 
 // Absolute Server Path to the lib directory
-$GLOBALS['__WE_LIB_PATH__'] = $GLOBALS['__WE_BASE_PATH__'] . DIRECTORY_SEPARATOR . 'lib';
+$GLOBALS['__WE_LIB_PATH__'] = WE_LIB_PATH;
 
 // Absolute Server Path to the apps directory
-$GLOBALS['__WE_APP_PATH__'] = $GLOBALS['__WE_BASE_PATH__'] . DIRECTORY_SEPARATOR . 'apps';
+$GLOBALS['__WE_APP_PATH__'] = WE_APPS_PATH;
 
 // Absolute Server Path to the apps directory
-$GLOBALS['__WE_CMS_PATH__'] = $GLOBALS['__WE_BASE_PATH__'] . DIRECTORY_SEPARATOR . 'cms';
+$GLOBALS['__WE_CMS_PATH__'] = WEBEDITION_PATH . 'cms';
 
 // Absolute URL to the webEdition base directory (eg. "/webEdition")
-$GLOBALS['__WE_BASE_URL__'] = '/' . basename(str_replace('\\', '/', $GLOBALS['__WE_BASE_PATH__']));
+$GLOBALS['__WE_BASE_URL__'] = WEBEDITION_DIR;
 
 // Absolute URL to the lib directory (eg. "/webEdition/lib")
-$GLOBALS['__WE_LIB_URL__'] = $GLOBALS['__WE_BASE_URL__'] . '/lib';
+$GLOBALS['__WE_LIB_URL__'] = LIB_DIR;
 
 // Absolute URL to the apps directory (eg. "/webEdition/apps")
-$GLOBALS['__WE_APP_URL__'] = $GLOBALS['__WE_BASE_URL__'] . '/apps';
+$GLOBALS['__WE_APP_URL__'] = WE_APPS_DIR;
 
 // Absolute URL to the apps directory (eg. "/webEdition/apps")
-$GLOBALS['__WE_CMS_URL__'] = $GLOBALS['__WE_BASE_URL__'] . '/cms';
+$GLOBALS['__WE_CMS_URL__'] = WEBEDITION_DIR . 'cms';
 
 // add __WE_LIB_PATH__ and __WE_APP_PATH__ to the include_path
-if(ini_set('include_path', $GLOBALS['__WE_LIB_PATH__'] . PATH_SEPARATOR . $GLOBALS['__WE_APP_PATH__'] . PATH_SEPARATOR . ini_get('include_path'))===FALSE){
+if(ini_set('include_path', WE_LIB_PATH . PATH_SEPARATOR . WE_APPS_PATH . PATH_SEPARATOR . ini_get('include_path')) === FALSE){
 	t_e('unable to add webEdition to include path! Expect Problems!');
 }
 
-require_once($GLOBALS['__WE_BASE_PATH__'] . DIRECTORY_SEPARATOR . 'we' . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'we_classes' . DIRECTORY_SEPARATOR . 'we_autoloader.class.php');
+require_once(WE_INCLUDES_PATH . 'we_classes/we_autoloader.class.php');
 
 //make we_autoloader the first autoloader
 $ret = spl_autoload_register('we_autoloader::autoload', false, true);
@@ -74,7 +74,7 @@ $loader->suppressNotFoundWarnings(true);
 spl_autoload_register('we_autoloader::finalLoad', true);
 
 // include configuration file of webEdition
-require_once ($GLOBALS['__WE_BASE_PATH__'] . DIRECTORY_SEPARATOR . 'we' . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'conf' . DIRECTORY_SEPARATOR . 'we_conf.inc.php');
+require_once (WE_INCLUDES_PATH . 'conf/we_conf.inc.php');
 
 if(!defined("DATETIME_INITIALIZED")){// to prevent additional initialization if set somewhere else, i.e in we_conf.inc.php, this also allows later to make that an settings-item
 	if(!date_default_timezone_set(@date_default_timezone_get())){
@@ -83,5 +83,5 @@ if(!defined("DATETIME_INITIALIZED")){// to prevent additional initialization if 
 	define("DATETIME_INITIALIZED", "1");
 }
 if(!isset($_SERVER['TMP'])){
-	$_SERVER['TMP'] = $GLOBALS['__WE_BASE_PATH__'] . DIRECTORY_SEPARATOR . 'we' . DIRECTORY_SEPARATOR . 'zendcache';
+	$_SERVER['TMP'] = WEBEDITION_PATH . 'we/zendcache';
 }

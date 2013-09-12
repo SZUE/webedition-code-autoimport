@@ -188,7 +188,7 @@ class toolfactory_models_Default extends we_app_Model{
 	 *
 	 * @param integer $loadId
 	 */
-	function load($id=0){
+	function load($id = 0){
 
 		$myid = $this->realNameToIntern($id);
 
@@ -224,7 +224,7 @@ class toolfactory_models_Default extends we_app_Model{
 
 		$appDir = Zend_Controller_Front::getInstance()->getParam('appDir');
 
-		$permFile = $_SERVER['DOCUMENT_ROOT'] . $GLOBALS['__WE_APP_URL__'] . '/' . $_props['name'] . '/conf/permission.conf.php';
+		$permFile = WE_APPS_PATH . $_props['name'] . '/conf/permission.conf.php';
 
 		if(file_exists($permFile)){
 			include ($permFile);
@@ -255,7 +255,7 @@ class toolfactory_models_Default extends we_app_Model{
 	function save($skipHook = 0){
 
 		$text = oldHtmlspecialchars($this->Text, ENT_NOQUOTES);
-		include_once($GLOBALS['__WE_BASE_PATH__'] . DIRECTORY_SEPARATOR . 'we' . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'we_version.php');
+		include_once(WE_INCLUDES_PATH . 'we_version.php');
 
 		$TOOLNAMELANG = $text;
 		$TOOLNAME = $this->classname;
@@ -267,7 +267,7 @@ class toolfactory_models_Default extends we_app_Model{
 		if($DATASOURCE == 'table:' . $this->maintable){
 			$TABLEEXISTS = true;
 			$this->makeTable = true;
-		} else{
+		} else {
 			$TABLEEXISTS = false;
 			$this->makeTable = false;
 		}
@@ -276,15 +276,15 @@ class toolfactory_models_Default extends we_app_Model{
 		if($this->makePerms){
 			$PERMISSIONCONDITION = 'USE_APP_' . strtoupper($this->classname);
 			$DELETECONDITION = 'DELETE_APP_' . strtoupper($this->classname);
-		} else{
+		} else {
 			$PERMISSIONCONDITION = '';
 			$DELETECONDITION = '';
 		}
 		$WEVERSION = we_util_Strings::version2number(WE_VERSION, false);
 		$SDKVERSION = we_util_Strings::version2number(WE_VERSION, false);
-		$_templateDir = WE_APPS_PATH.'toolfactory/pattern';
+		$_templateDir = WE_APPS_PATH . 'toolfactory/pattern';
 
-		$_toolDir = $GLOBALS['__WE_APP_URL__'] . '/' . $TOOLNAME . '/';
+		$_toolDir = WE_APPS_DIR . $TOOLNAME . '/';
 
 		$_files = array();
 
@@ -292,9 +292,9 @@ class toolfactory_models_Default extends we_app_Model{
 
 		foreach($_files as $_file){
 
-			$_newname = str_replace($_templateDir, $_SERVER['DOCUMENT_ROOT'] . $GLOBALS['__WE_APP_URL__'] . "/" . $TOOLNAME, $_file);
+			$_newname = str_replace($_templateDir, WE_APPS_PATH . $TOOLNAME, $_file);
 			$_newname = dirname($_newname) . '/' . $this->getNewFileName(basename($_newname), $TOOLNAME, $CLASSNAME);
-			$length = strlen($_SERVER['DOCUMENT_ROOT'] . $GLOBALS['__WE_APP_URL__']);
+			$length = strlen(WE_APPS_PATH);
 			$replaceString = substr($_newname, $length);
 			$_newname = str_replace($replaceString, $this->getNewFileName($replaceString, $TOOLNAME, $CLASSNAME), $_newname);
 
@@ -317,7 +317,7 @@ class toolfactory_models_Default extends we_app_Model{
 						ob_end_clean();
 						$_content = str_replace('{$TOOLNAME}', $TOOLNAME, $_content);
 						$_content = str_replace('{$TOOLNAMELANG}', $TOOLNAMELANG, $_content);
-					} else{
+					} else {
 						$_content = weFile::load($_file);
 					}
 					if($_ext == '.xml'){
@@ -331,7 +331,7 @@ class toolfactory_models_Default extends we_app_Model{
 						$_content = str_replace('{$WEVERSION}', $WEVERSION, $_content);
 						$_content = str_replace('{$SDKVERSION}', $SDKVERSION, $_content);
 					}
-				} else{
+				} else {
 					$_content = '<?php' . PHP_EOL;
 					ob_start();
 					include($_file);
@@ -353,12 +353,12 @@ class toolfactory_models_Default extends we_app_Model{
 					}
 				}
 
-				$_dirSelectorFile = $_SERVER['DOCUMENT_ROOT'] . $GLOBALS['__WE_APP_URL__'] . '/' . $TOOLNAME . '/we_' . $TOOLNAME . 'DirSelect.php';
-				$_dirSelectorClass = $_SERVER['DOCUMENT_ROOT'] . $GLOBALS['__WE_APP_URL__'] . '/' . $TOOLNAME . '/we_' . $TOOLNAME . 'DirSelector.class.php';
-				$_sqlFile = $_SERVER['DOCUMENT_ROOT'] . $GLOBALS['__WE_APP_URL__'] . '/' . $TOOLNAME . '/' . $TOOLNAME . '.sql';
+				$_dirSelectorFile = WE_APPS_PATH . $TOOLNAME . '/we_' . $TOOLNAME . 'DirSelect.php';
+				$_dirSelectorClass = WE_APPS_PATH . $TOOLNAME . '/we_' . $TOOLNAME . 'DirSelector.class.php';
+				$_sqlFile = WE_APPS_PATH . $TOOLNAME . '/' . $TOOLNAME . '.sql';
 				if(($_sqlFile === $_newname || $_dirSelectorFile === $_newname || $_dirSelectorClass === $_newname) && !$this->makeTable){
 
-				} else{
+				} else {
 					//print "Saving file " . $_newname . "<br>";
 					if(stripos($_newname, '_UTF-8.inc.php') === false){
 						//$_content = utf8_encode($_content);
@@ -369,7 +369,7 @@ class toolfactory_models_Default extends we_app_Model{
 		}
 
 		if($this->makeTable){
-			$_sqlDumpFile = $_SERVER['DOCUMENT_ROOT'] . $GLOBALS['__WE_APP_URL__'] . '/' . $TOOLNAME . '/' . $TOOLNAME . '.sql';
+			$_sqlDumpFile = WE_APPS_PATH . $TOOLNAME . '/' . $TOOLNAME . '.sql';
 			$_sqlDump = file($_sqlDumpFile);
 			$_db = we_io_DB::sharedAdapter();
 			foreach($_sqlDump as $_sql){
@@ -401,7 +401,7 @@ class toolfactory_models_Default extends we_app_Model{
 		$_dn = dirname($file);
 		$_bn = basename($file);
 
-		if($_bn != $this->Text . '.sql' && $_bn != 'permission.conf.php' && $_bn != 'backup.conf.php' && $_dn != $_SERVER['DOCUMENT_ROOT'] . $GLOBALS['__WE_APP_URL__'] . '/' . $this->Text . '/tagwizard' && $_dn != $_SERVER['DOCUMENT_ROOT'] . $GLOBALS['__WE_APP_URL__'] . '/' . $this->Text . '/tags' && $_dn != $_SERVER['DOCUMENT_ROOT'] . $GLOBALS['__WE_APP_URL__'] . '/' . $this->Text . '/service/cmds' && $_dn != $_SERVER['DOCUMENT_ROOT'] . $GLOBALS['__WE_APP_URL__'] . '/' . $this->Text . '/service/views/json' && $_dn != $_SERVER['DOCUMENT_ROOT'] . $GLOBALS['__WE_APP_URL__'] . '/' . $this->Text . '/service/views/text'){
+		if($_bn != $this->Text . '.sql' && $_bn != 'permission.conf.php' && $_bn != 'backup.conf.php' && $_dn != WE_APPS_PATH . $this->Text . '/tagwizard' && $_dn != WE_APPS_PATH . $this->Text . '/tags' && $_dn != WE_APPS_PATH . $this->Text . '/service/cmds' && $_dn != WE_APPS_PATH . $this->Text . '/service/views/json' && $_dn != WE_APPS_PATH . $this->Text . '/service/views/text'){
 			return true;
 		}
 
@@ -412,18 +412,18 @@ class toolfactory_models_Default extends we_app_Model{
 			return true;
 		}
 
-		if($this->makeTags && ($_dn == $_SERVER['DOCUMENT_ROOT'] . $GLOBALS['__WE_APP_URL__'] . '/' . $this->Text . '/tags')){
+		if($this->makeTags && ($_dn == WE_APPS_PATH . $this->Text . '/tags')){
 			return true;
 		}
-		if($this->makeTags && ($_dn == $_SERVER['DOCUMENT_ROOT'] . $GLOBALS['__WE_APP_URL__'] . '/' . $this->Text . '/tagwizard')){
-			return true;
-		}
-
-		if($this->makeServices && ($_dn == $_SERVER['DOCUMENT_ROOT'] . $GLOBALS['__WE_APP_URL__'] . '/' . $this->Text . '/service/cmds' || $_dn == $_SERVER['DOCUMENT_ROOT'] . $GLOBALS['__WE_APP_URL__'] . '/' . $this->Text . '/service/views')){
+		if($this->makeTags && ($_dn == WE_APPS_PATH . $this->Text . '/tagwizard')){
 			return true;
 		}
 
-		if($this->makeServices && ($_dn == $_SERVER['DOCUMENT_ROOT'] . $GLOBALS['__WE_APP_URL__'] . '/' . $this->Text . '/service/views/text' || $_dn == $_SERVER['DOCUMENT_ROOT'] . $GLOBALS['__WE_APP_URL__'] . '/' . $this->Text . '/service/views/json')){
+		if($this->makeServices && ($_dn == WE_APPS_PATH . $this->Text . '/service/cmds' || $_dn == WE_APPS_PATH . $this->Text . '/service/views')){
+			return true;
+		}
+
+		if($this->makeServices && ($_dn == WE_APPS_PATH . $this->Text . '/service/views/text' || $_dn == WE_APPS_PATH . $this->Text . '/service/views/json')){
 			return true;
 		}
 
@@ -443,7 +443,7 @@ class toolfactory_models_Default extends we_app_Model{
 		// comma not allowed because it causes broken webEdition navigation
 		if(stripos($this->Text, ',') === false){
 			return false;
-		} else{
+		} else {
 			return true;
 		}
 	}

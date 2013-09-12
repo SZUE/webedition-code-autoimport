@@ -173,16 +173,16 @@ class we_ui_controls_ACFileSelector extends we_ui_abstract_AbstractFormElement{
 		$this->addJSFile(we_ui_abstract_AbstractElement::computeJSURL('we_ui_controls_TextField'));
 		$this->addJSFiles($this->_buttonObj->getJSFiles());
 
-		$this->addJSFile($GLOBALS['__WE_BASE_URL__'] . '/js/libs/yui/yahoo-min.js');
-		$this->addJSFile($GLOBALS['__WE_BASE_URL__'] . '/js/libs/yui/event-min.js');
-		$this->addJSFile($GLOBALS['__WE_BASE_URL__'] . '/js/libs/yui/dom-min.js');
-		$this->addJSFile($GLOBALS['__WE_BASE_URL__'] . '/js/libs/yui/datasource-min.js');
-		$this->addJSFile($GLOBALS['__WE_BASE_URL__'] . '/js/libs/yui/connection-min.js');
-		$this->addJSFile($GLOBALS['__WE_BASE_URL__'] . '/js/libs/yui/animation-min.js');
-		$this->addJSFile($GLOBALS['__WE_BASE_URL__'] . '/js/libs/yui/json-min.js');
-		$this->addJSFile($GLOBALS['__WE_BASE_URL__'] . '/js/libs/yui/autocomplete-min.js');
-		$this->addJSFile($GLOBALS['__WE_BASE_URL__'] . '/lib/we/core/JsonRpc.js');
-		$this->addJSFile($GLOBALS['__WE_BASE_URL__'] . '/js/utils/we_cmd_encode.js');
+		$this->addJSFile(JS_DIR . 'libs/yui/yahoo-min.js');
+		$this->addJSFile(JS_DIR . 'libs/yui/event-min.js');
+		$this->addJSFile(JS_DIR . 'libs/yui/dom-min.js');
+		$this->addJSFile(JS_DIR . 'libs/yui/datasource-min.js');
+		$this->addJSFile(JS_DIR . 'libs/yui/connection-min.js');
+		$this->addJSFile(JS_DIR . 'libs/yui/animation-min.js');
+		$this->addJSFile(JS_DIR . 'libs/yui/json-min.js');
+		$this->addJSFile(JS_DIR . 'libs/yui/autocomplete-min.js');
+		$this->addJSFile(LIB_DIR . 'we/core/JsonRpc.js');
+		$this->addJSFile(JS_DIR . 'utils/we_cmd_encode.js');
 	}
 
 	/**
@@ -431,7 +431,7 @@ class we_ui_controls_ACFileSelector extends we_ui_abstract_AbstractFormElement{
 		if($countCTs === 1 && $contentTypesArray[0] === 'folder'){
 			$this->setSelector('dirSelector');
 			$selector = '"openDirselector"';
-		} else{
+		} else {
 			$this->setSelector('docSelector');
 			$selector = '"openDocselector"';
 		}
@@ -446,8 +446,8 @@ class we_ui_controls_ACFileSelector extends we_ui_abstract_AbstractFormElement{
 		if($this->getTable() != ''){
 			$table = '"' . (defined('TBL_PREFIX') ? TBL_PREFIX : '') . $this->getTable() . '"';
 			$onClick = 'we_ui_controls_ACFileSelector.openSelector(' . $selector . ',' . $idFieldNameInteger . ',' . $table . ',' . $idFieldNameString . ',' . $pathFieldName . ', ' . $onChange . ',"","","' . $contentTypesString . '");';
-		} else{
-			$onClick = 'we_ui_controls_ACFileSelector.openSelector("browse_server",' . $pathFieldName . ', "'.$contentTypesString.'","'.$this->getFolderPathValue().'","");';
+		} else {
+			$onClick = 'we_ui_controls_ACFileSelector.openSelector("browse_server",' . $pathFieldName . ', "' . $contentTypesString . '","' . $this->getFolderPathValue() . '","");';
 		}
 		return $onClick;
 	}
@@ -522,7 +522,7 @@ class we_ui_controls_ACFileSelector extends we_ui_abstract_AbstractFormElement{
 
 		if($this->_scope != ""){
 			$page = $this->_scope;
-		} else{
+		} else {
 			$page = we_ui_layout_HTMLPage::getInstance();
 		}
 

@@ -25,7 +25,7 @@ $htmlPage->addJSFile(LIB_DIR . 'we/core/JsonRpc.js');
 $appconfig = we_app_Common::getManifest($metaInfo['classname']);
 
 
-include_once($GLOBALS['__WE_BASE_PATH__']. DIRECTORY_SEPARATOR .'we'. DIRECTORY_SEPARATOR .'include'. DIRECTORY_SEPARATOR.'we_version.php');
+include_once(WE_INCLUDES_PATH .'we_version.php');
 $html = '<h2 style="text-align:center">'.$translate->_($metaInfo['name']).'</h2>';
 $htmlPage->addHTML($html);
 

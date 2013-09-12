@@ -270,7 +270,7 @@ class we_banner_banner extends we_banner_base{
 		return $db->getAllFirst(false);
 	}
 
-	public static function getBannerCode($did, $paths, $target, $width, $height, $dt, $cats, $bannername, $link = true, $referer = "", $bannerclick = "/webEdition/bannerclick.php", $getbanner = "/webEdition/getBanner.php", $type = "", $page = "", $nocount = false, $xml = false){
+	public static function getBannerCode($did, $paths, $target, $width, $height, $dt, $cats, $bannername, $link = true, $referer = "", $bannerclick = '/webEdition/bannerclick.php', $getbanner = "/webEdition/getBanner.php", $type = "", $page = "", $nocount = false, $xml = false){
 		$db = new DB_WE();
 		$bannerData = self::getBannerData($did, $paths, $dt, $cats, $bannername, $db);
 		$uniq = md5(uniqid(__FUNCTION__, true));

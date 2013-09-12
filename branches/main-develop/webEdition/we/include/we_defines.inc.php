@@ -26,7 +26,7 @@ function we_stripslashes(&$arr){
 	foreach($arr as $n => $v){
 		if(is_array($v)){
 			we_stripslashes($arr[$n]);
-		} else{
+		} else {
 			$arr[$n] = stripslashes($v);
 		}
 	}
@@ -38,7 +38,7 @@ if((get_magic_quotes_gpc() == 1)){
 			if(is_array($v)){
 				we_stripslashes($v);
 				$_REQUEST[$n] = $v;
-			} else{
+			} else {
 				$_REQUEST[$n] = stripslashes($v);
 			}
 		}
@@ -64,7 +64,7 @@ define('WE_INCLUDES_DIR', WEBEDITION_DIR . 'we/include/');
 define('TEMPLATES_DIR', WEBEDITION_DIR . 'we/templates');
 define('TEMP_DIR', WEBEDITION_DIR . 'we/tmp/');
 define('WE_MODULES_DIR', WE_INCLUDES_DIR . 'we_modules/');
-define('CSS_DIR', '/webEdition/css/');
+define('CSS_DIR', WEBEDITION_DIR . 'css/');
 
 
 define('WE_APPS_DIR', WEBEDITION_DIR . 'apps/');
@@ -182,7 +182,7 @@ if(!isset($_SERVER['REQUEST_URI'])){
 	if(!isset($_SERVER['HTTP_REQUEST_URI'])){
 		if(isset($_SERVER['SCRIPT_NAME'])){
 			$_SERVER['HTTP_REQUEST_URI'] = $_SERVER['SCRIPT_NAME'];
-		} else{
+		} else {
 			$_SERVER['HTTP_REQUEST_URI'] = $_SERVER['PHP_SELF'];
 		}
 

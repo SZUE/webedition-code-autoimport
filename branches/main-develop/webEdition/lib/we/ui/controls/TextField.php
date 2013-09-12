@@ -37,6 +37,7 @@ class we_ui_controls_TextField extends we_ui_abstract_AbstractInputElement{
 	/**
 	 * Default class name for text input fields
 	 */
+
 	const kTextInputClassNormal = 'we_ui_controls_TextInput';
 
 	/**
@@ -105,8 +106,8 @@ class we_ui_controls_TextField extends we_ui_abstract_AbstractInputElement{
 
 		// add needed JS Files
 		$this->addJSFile(we_ui_abstract_AbstractElement::computeJSURL(__CLASS__));
-		$this->addJSFile($GLOBALS['__WE_BASE_URL__'] . '/js/libs/yui/yahoo-min.js');
-		$this->addJSFile($GLOBALS['__WE_BASE_URL__'] . '/js/libs/yui/dom-min.js');
+		$this->addJSFile(JS_DIR . 'libs/yui/yahoo-min.js');
+		$this->addJSFile(JS_DIR . 'libs/yui/dom-min.js');
 	}
 
 	/**
@@ -141,7 +142,7 @@ class we_ui_controls_TextField extends we_ui_abstract_AbstractInputElement{
 	 * @return string
 	 */
 	protected function _renderHTML(){
-		if ($this->getHidden()) {
+		if($this->getHidden()){
 			$this->_style .= " ;display:none;";
 		}
 		return '<input' . $this->_getNonBooleanAttribs('id,name,value,maxlength,size,type,onChange,title') .

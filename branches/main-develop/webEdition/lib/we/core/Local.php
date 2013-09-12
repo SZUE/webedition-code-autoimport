@@ -126,7 +126,7 @@ class we_core_Local{
 		} else{
 			if(!isset($_SESSION)){
 				if(!isset($_SERVER['TMP'])){
-					$_SERVER['TMP'] = $GLOBALS['__WE_BASE_PATH__'] . DIRECTORY_SEPARATOR . 'we' . DIRECTORY_SEPARATOR . 'zendcache';
+					$_SERVER['TMP'] = WEBEDITION_PATH. 'we/zendcache';
 				}
 				try {
 					Zend_Session::start();
@@ -187,11 +187,11 @@ class we_core_Local{
 	 */
 	public static function addTranslation($file, $appName = ''){
 		$locale = self::getLocale();
-		$path = ($appName === '') ? ($GLOBALS['__WE_BASE_PATH__'] . '/lang/' . $locale . '/' . $file) : ($GLOBALS['__WE_APP_PATH__'] . '/' . $appName . '/lang/' . $locale . '/' . $file);
+		$path = ($appName === '') ? (WEBEDITION_PATH . '/lang/' . $locale . '/' . $file) : (WE_APPS_PATH . '/' . $appName . '/lang/' . $locale . '/' . $file);
 		if(!file_exists($path)){
 			if(defined('WE_LANGUAGE')){
 				$locale = self::weLangToLocale(WE_LANGUAGE);
-				$path = ($appName === '') ? ($GLOBALS['__WE_BASE_PATH__'] . '/lang/' . $locale . '/' . $file) : ($GLOBALS['__WE_APP_PATH__'] . '/' . $appName . '/lang/' . $locale . '/' . $file);
+				$path = ($appName === '') ? (WEBEDITION_PATH . '/lang/' . $locale . '/' . $file) : (WE_APPS_PATH . '/' . $appName . '/lang/' . $locale . '/' . $file);
 			}
 		}
 

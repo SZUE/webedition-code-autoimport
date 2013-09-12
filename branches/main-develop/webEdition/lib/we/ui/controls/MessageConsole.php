@@ -37,6 +37,7 @@ class we_ui_controls_MessageConsole extends we_ui_abstract_AbstractElement{
 	/**
 	 * class for HeaderFont
 	 */
+
 	const kHeaderFontClass = 'we_ui_controls_MessageConsoleHeaderText';
 
 	/**
@@ -69,8 +70,8 @@ class we_ui_controls_MessageConsole extends we_ui_abstract_AbstractElement{
 		parent::__construct($properties);
 
 		// add needed JS Files
-		$this->addJSFile($GLOBALS['__WE_BASE_URL__'] . '/js/messageConsoleImages.js');
-		$this->addJSFile($GLOBALS['__WE_BASE_URL__'] . '/js/messageConsoleView.js');
+		$this->addJSFile(JS_DIR . 'messageConsoleImages.js');
+		$this->addJSFile(JS_DIR . 'messageConsoleView.js');
 
 		// add needed CSS Files
 		$this->addCSSFile(we_ui_layout_Themes::computeCSSURL(__CLASS__));
@@ -111,7 +112,7 @@ EOS;
 		$iconClassNormal = self::kHeaderIconNormalClass;
 		$iconClassOver = self::kHeaderIconOverClass;
 
-		$imgPath = $GLOBALS['__WE_BASE_URL__'] . '/images/messageConsole/notice.gif';
+		$imgPath = IMAGE_DIR . 'messageConsole/notice.gif';
 		return <<<EOHTML
 
 <div>

@@ -37,6 +37,7 @@ class we_ui_controls_DateTime extends we_ui_abstract_AbstractInputElement{
 	/**
 	 * Default class name for text input fields
 	 */
+
 	const kDateTimeClas = 'we_ui_controls_DateTime';
 
 
@@ -148,8 +149,8 @@ class we_ui_controls_DateTime extends we_ui_abstract_AbstractInputElement{
 
 		// add needed JS Files
 		$this->addJSFile(we_ui_abstract_AbstractElement::computeJSURL(__CLASS__));
-		$this->addJSFile($GLOBALS['__WE_BASE_URL__'] . '/js/libs/yui/yahoo-min.js');
-		$this->addJSFile($GLOBALS['__WE_BASE_URL__'] . '/js/libs/yui/dom-min.js');
+		$this->addJSFile(JS_DIR . 'libs/yui/yahoo-min.js');
+		$this->addJSFile(JS_DIR . 'libs/yui/dom-min.js');
 	}
 
 	/**
@@ -184,7 +185,7 @@ class we_ui_controls_DateTime extends we_ui_abstract_AbstractInputElement{
 	 * @param bool $wert if set to false, time() is used to initialise empty or 0 timestamps, set to true, the value is set at mid-day, to ease comparisson
 	 * @return void
 	 */
-	public function setInitOnNoon($wert=false){
+	public function setInitOnNoon($wert = false){
 		$this->_InitOnNoon = $wert;
 	}
 
@@ -194,7 +195,7 @@ class we_ui_controls_DateTime extends we_ui_abstract_AbstractInputElement{
 	 * @param bool $wert if set to false, time() is used to initialise empty or 0 timestamps, set to true, the day before the current day is used
 	 * @return void
 	 */
-	public function setInitDayBefore($wert=false){
+	public function setInitDayBefore($wert = false){
 		$this->_InitDayBefore = $wert;
 	}
 
@@ -527,7 +528,7 @@ class we_ui_controls_DateTime extends we_ui_abstract_AbstractInputElement{
 				$codes[$this->_getYearPos()] .='<option value="' . $i . '" ' . ($i == $stamp['year'] ? ' selected="selected" ' : '') . '>' . $i . '</option>';
 			}
 			$codes[$this->_getYearPos()] .='</select></td>';
-		} else{
+		} else {
 			$code .= '<td><input type="hidden" id="' . $this->getYearsId() . '" value="' . $stamp['year'] . '" /></td>';
 		}
 		if($this->_getMonthPos()){
@@ -536,7 +537,7 @@ class we_ui_controls_DateTime extends we_ui_abstract_AbstractInputElement{
 				$codes[$this->_getMonthPos()] .='<option value="' . ($i < 10 ? '0' : '') . $i . '" ' . ($i == $stamp['mon'] ? ' selected="selected" ' : '') . '>' . ($i < 10 ? '0' : '') . $i . '</option>';
 			}
 			$codes[$this->_getMonthPos()] .='</select></td>';
-		} else{
+		} else {
 			$code .= '<td><input type="hidden" id="' . $this->getMonthsId() . '" value="' . ($stamp['mon'] < 10 ? '0' : '') . $stamp['mon'] . '" /></td>';
 		}
 		if($this->_getDayPos()){
@@ -545,7 +546,7 @@ class we_ui_controls_DateTime extends we_ui_abstract_AbstractInputElement{
 				$codes[$this->_getDayPos()] .='<option value="' . ($i < 10 ? '0' : '') . $i . '" ' . ($i == $stamp['mday'] ? ' selected="selected" ' : '') . '>' . ($i < 10 ? '0' : '') . $i . '</option>';
 			}
 			$codes[$this->_getDayPos()] .='</select></td>';
-		} else{
+		} else {
 			$code .= '<td><input type="hidden" id="' . $this->getDaysId() . '" value="' . ($stamp['mday'] < 10 ? '0' : '') . $stamp['mday'] . '" /></td>';
 		}
 		if($this->_getHourPos()){
@@ -554,7 +555,7 @@ class we_ui_controls_DateTime extends we_ui_abstract_AbstractInputElement{
 				$codes[$this->_getHourPos()] .='<option value="' . ($i < 10 ? '0' : '') . $i . '" ' . ($i == $stamp['hours'] ? ' selected="selected" ' : '') . '>' . ($i < 10 ? '0' : '') . $i . '</option>';
 			}
 			$codes[$this->_getHourPos()] .='</select></td>';
-		} else{
+		} else {
 			$code .= '<td><input type="hidden" id="' . $this->getHoursId() . '" value="' . ($stamp['hours'] < 10 ? '0' : '') . $stamp['hours'] . '" /></td>';
 		}
 		if($this->_getMinutePos()){
@@ -563,7 +564,7 @@ class we_ui_controls_DateTime extends we_ui_abstract_AbstractInputElement{
 				$codes[$this->_getMinutePos()] .='<option value="' . ($i < 10 ? '0' : '') . $i . '" ' . ($i == $stamp['minutes'] ? ' selected="selected" ' : '') . '>' . ($i < 10 ? '0' : '') . $i . '</option>';
 			}
 			$codes[$this->_getMinutePos()] .='</select></td>';
-		} else{
+		} else {
 			$code .= '<td><input type="hidden" id="' . $this->getMinutesId() . '" value="' . ($stamp['minutes'] < 10 ? '0' : '') . $stamp['minutes'] . '" /></td>';
 		}
 		if($this->_getSecondPos()){
@@ -572,7 +573,7 @@ class we_ui_controls_DateTime extends we_ui_abstract_AbstractInputElement{
 				$codes[$this->_getSecondPos()] .='<option value="' . ($i < 10 ? '0' : '') . $i . '" ' . ($i == $stamp['seconds'] ? ' selected="selected" ' : '') . '>' . ($i < 10 ? '0' : '') . $i . '</option>';
 			}
 			$codes[$this->_getSecondPos()] .='</select></td>';
-		} else{
+		} else {
 			$code .= '<td><input type="hidden" id="' . $this->getSecondsId() . '" value="' . ($stamp['seconds'] < 10 ? '0' : '') . $stamp['seconds'] . '" /></td>';
 		}
 		ksort($codes);
