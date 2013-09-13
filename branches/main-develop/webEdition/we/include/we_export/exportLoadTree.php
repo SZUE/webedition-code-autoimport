@@ -64,7 +64,7 @@ if($ws = get_ws($table)){
 		}
 	}
 } else if(defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE && (!permissionhandler::hasPerm("ADMINISTRATOR"))){
-	$ac = getAllowedClasses($DB_WE);
+	$ac = we_users_util::getAllowedClasses($DB_WE);
 	foreach($ac as $cid){
 		$path = id_to_path($cid, OBJECT_TABLE);
 		$wsQuery[] = 'Path LIKE "' . $DB_WE->escape($path) . '/%"';

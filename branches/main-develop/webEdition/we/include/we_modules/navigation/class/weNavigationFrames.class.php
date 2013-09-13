@@ -592,7 +592,7 @@ function setTab(tab) {
 		$classDirsJS = array();
 		$classHasSubDirsJS = array();
 		$classPathsJS = array();
-		$allowedClasses = getAllowedClasses($this->db);
+		$allowedClasses = we_users_util::getAllowedClasses($this->db);
 
 		if(defined('OBJECT_TABLE')){
 			$_firstClass = 0;

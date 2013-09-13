@@ -795,7 +795,7 @@ while($GLOBALS['DB_WE']->next_record()){
 
 if(defined('OBJECT_TABLE')){
 	// object from which class
-	$ac = makeCSVFromArray(getAllowedClasses($GLOBALS['DB_WE']));
+	$ac = makeCSVFromArray(we_users_util::getAllowedClasses($GLOBALS['DB_WE']));
 	if($ac){
 		$GLOBALS['DB_WE']->query('SELECT ID,Text FROM ' . OBJECT_TABLE . ' ' . ($ac ? ' WHERE ID IN(' . $ac . ') ' : '') . 'ORDER BY Text');
 		$nr = 801;

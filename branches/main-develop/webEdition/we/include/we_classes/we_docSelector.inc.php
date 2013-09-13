@@ -68,7 +68,7 @@ class we_docSelector extends we_dirSelector{
 			if(get_ws($this->table)){
 				$wsQuery = getWsQueryForSelector($this->table);
 			} else if(defined("OBJECT_FILES_TABLE") && $this->table == OBJECT_FILES_TABLE && (!permissionhandler::hasPerm("ADMINISTRATOR"))){
-				$ac = getAllowedClasses($this->db);
+				$ac = we_users_util::getAllowedClasses($this->db);
 				foreach($ac as $cid){
 					$path = id_to_path($cid, OBJECT_TABLE);
 					$wsQuery .= " Path LIKE '" . $this->db->escape($path) . "/%' OR Path='" . $this->db->escape($path) . "' OR ";

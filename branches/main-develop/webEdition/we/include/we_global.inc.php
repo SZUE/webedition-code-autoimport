@@ -47,44 +47,6 @@ function correctUml($in){
 	return str_replace(array('ä', 'ö', 'ü', 'Ä', 'Ö', 'Ü', 'ß'), array('ae', 'oe', 'ue', 'Ae', 'Oe', 'Ue', 'ss'), $in);
 }
 
-function getAllowedClasses($db = ''){
-	$db = ($db ? $db : new DB_WE());
-	$out = array();
-	if(!defined('OBJECT_FILES_TABLE')){
-		return '';
-	}
-	$ws = get_ws();
-	$ofWs = get_ws(OBJECT_FILES_TABLE);
-	$ofWsArray = makeArrayFromCSV(id_to_path($ofWs, OBJECT_FILES_TABLE));
-	if(intval($ofWs) == 0){
-		$ofWs = 0;
-	}
-	if(intval($ws) == 0){
-		$ws = 0;
-	}
-	$db->query('SELECT ID,Workspaces,Path FROM ' . OBJECT_TABLE . ' WHERE IsFolder=0');
-
-	while($db->next_record()){
-		$path = $db->f('Path');
-		if(!$ws || $_SESSION['perms']['ADMINISTRATOR'] || (!$db->f('Workspaces')) || in_workspace($db->f('Workspaces'), $ws, FILE_TABLE, '', true)){
-			$path2 = $path . '/';
-			if(!$ofWs || $_SESSION['perms']['ADMINISTRATOR']){
-				$out[] = $db->f('ID');
-			} else {
-
-// object Workspace check (New since Version 4.x)
-				foreach($ofWsArray as $w){
-					if($w == $db->f('Path') || (strlen($w) >= strlen($path2) && substr($w, 0, strlen($path2)) == ($path2))){
-						$out[] = $db->f('ID');
-						break;
-					}
-				}
-			}
-		}
-	}
-
-	return $out;
-}
 
 function weFileExists($id, $table = FILE_TABLE, $db = ''){
 	$id = intval($id);

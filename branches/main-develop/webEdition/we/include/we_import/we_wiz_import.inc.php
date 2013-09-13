@@ -1133,7 +1133,7 @@ HTS;
 			'style' => 'width: 150px')
 		);
 		$optid = 0;
-		$ac = makeCSVFromArray(getAllowedClasses($DB_WE));
+		$ac = makeCSVFromArray(we_users_util::getAllowedClasses($DB_WE));
 		if($ac){
 			$DB_WE->query('SELECT ID,Text FROM ' . OBJECT_TABLE . ' ' . ($ac ? ' WHERE ID IN(' . $ac . ') ' : '') . 'ORDER BY Text');
 			while($DB_WE->next_record()){
@@ -2104,7 +2104,7 @@ HTS;
 			"style" => "width: 150px")
 		);
 		$optid = 0;
-		$ac = makeCSVFromArray(getAllowedClasses($DB_WE));
+		$ac = makeCSVFromArray(we_users_util::getAllowedClasses($DB_WE));
 		if($ac){
 			$DB_WE->query('SELECT ID,Text FROM ' . OBJECT_TABLE . ' ' . ($ac ? ' WHERE ID IN(' . $ac . ') ' : '') . 'ORDER BY Text');
 			while($DB_WE->next_record()){

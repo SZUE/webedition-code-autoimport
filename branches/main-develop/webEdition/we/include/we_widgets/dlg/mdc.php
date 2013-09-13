@@ -115,7 +115,7 @@ $cls = new we_html_select(
 	));
 $optid = 0;
 $cls->insertOption($optid, 0, g_l('cockpit', "[no_entry]"));
-$ac = makeCSVFromArray(getAllowedClasses($DB_WE));
+$ac = makeCSVFromArray(we_users_util::getAllowedClasses($DB_WE));
 if($ac){
 	$DB_WE->query('SELECT ID,Text FROM ' . OBJECT_TABLE . ' ' . ($ac ? ' WHERE ID IN(' . $ac . ') ' : '') . 'ORDER BY Text');
 	while($DB_WE->next_record()){

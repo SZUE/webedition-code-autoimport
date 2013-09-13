@@ -345,7 +345,7 @@ class weSelectorQuery{
 			$userExtraSQL .= getWsQueryForSelector($table);
 		} else if(defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE && (!permissionhandler::hasPerm('ADMINISTRATOR'))){
 			$wsQuery = "";
-			$ac = getAllowedClasses($this->db);
+			$ac = we_users_util::getAllowedClasses($this->db);
 			foreach($ac as $cid){
 				$path = id_to_path($cid, OBJECT_TABLE);
 				$wsQuery .= ' Path LIKE "' . $this->db->escape($path) . '/%" OR Path="' . $this->db->escape($path) . '" OR ';

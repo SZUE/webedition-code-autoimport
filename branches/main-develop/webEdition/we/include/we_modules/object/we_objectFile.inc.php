@@ -77,7 +77,7 @@ class we_objectFile extends we_document{
 			array_push($this->persistent_slots, 'FromOk', 'ToOk', 'From', 'To');
 		}
 		if(!isset($GLOBALS['WE_IS_DYN'])){
-			$ac = $this->getAllowedClasses();
+			$ac = we_users_util::getAllowedClasses($this->DB_WE);
 			$this->AllowedClasses = makeCSVFromArray($ac);
 		}
 		if(defined('CUSTOMER_TABLE')){
@@ -1583,7 +1583,7 @@ class we_objectFile extends we_document{
 		if($_SESSION['perms']['ADMINISTRATOR']){
 			return true;
 		}
-		$ac = $this->getAllowedClasses();
+		$ac = we_users_util::getAllowedClasses($this->DB_WE);
 		return count($ac);
 	}
 
@@ -1851,10 +1851,6 @@ class we_objectFile extends we_document{
 		}
 
 		$this->ExtraTemplates = makeCSVFromArray($tempArr, true);
-	}
-
-	function getAllowedClasses(){
-		return getAllowedClasses($this->DB_WE);
 	}
 
 	function getTemplateFromWorkspace($wsArr, $tmplArr, $parentID, $mode = 0){
@@ -2554,7 +2550,7 @@ class we_objectFile extends we_document{
 			}
 		} else if(isset($GLOBALS["we_EDITOR"]) && $GLOBALS["we_EDITOR"] && $this->DefaultInit == false && (!$this->ID)){
 			if(!$this->TableID){
-				$ac = $this->getAllowedClasses();
+				$ac = we_users_util::getAllowedClasses($this->DB_WE);
 				$this->AllowedClasses = makeCSVFromArray($ac);
 				$this->TableID = $ac[0];
 			}

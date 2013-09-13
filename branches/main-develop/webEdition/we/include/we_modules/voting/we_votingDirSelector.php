@@ -7,8 +7,7 @@
  * $Author$
  * $Date$
  *
- * This source is part of webEdition CMS. webEdition CMS is
- * free software; you can redistribute it and/or modify
+ * This source we_users_util::can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or
  * any later version.
@@ -291,7 +290,7 @@ top.selectFile(top.currentID);
 			$userExtraSQL .= getWsQueryForSelector($table);
 		} else if(defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE && (!permissionhandler::hasPerm("ADMINISTRATOR"))){
 			$wsQuery = "";
-			$ac = getAllowedClasses($this->db);
+			$ac = we_users_util::getAllowedClasses($this->db);
 			foreach($ac as $cid){
 				$path = id_to_path($cid, OBJECT_TABLE);
 				$wsQuery .= " Path LIKE '$path/%' OR Path='$path' OR ";
