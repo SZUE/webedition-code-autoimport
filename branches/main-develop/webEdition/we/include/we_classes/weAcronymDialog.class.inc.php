@@ -89,7 +89,7 @@ class weAcronymDialog extends weDialog{
 <tr><td>' . $lang . '</td></tr>
 </table>
 ';
-		if(defined("GLOSSARY_TABLE") && we_hasPerm("NEW_GLOSSARY") && !$this->noInternals){
+		if(defined("GLOSSARY_TABLE") && permissionhandler::hasPerm("NEW_GLOSSARY") && !$this->noInternals){
 			$table .= we_html_tools::hidden("weSaveToGlossary", 0);
 			$table .= we_html_tools::hidden("language", isset($_REQUEST['language']) && $_REQUEST['language'] != "" ? $_REQUEST['language'] : $GLOBALS['weDefaultFrontendLanguage']);
 			$table .= we_html_tools::hidden("text", "");
@@ -104,7 +104,7 @@ class weAcronymDialog extends weDialog{
 		$buttons = array();
 		$buttons[] = $trashbut;
 
-		if(defined("GLOSSARY_TABLE") && we_hasPerm("NEW_GLOSSARY") && !$this->noInternals){
+		if(defined("GLOSSARY_TABLE") && permissionhandler::hasPerm("NEW_GLOSSARY") && !$this->noInternals){
 			$glossarybut = we_button::create_button("to_glossary", "javascript:weSaveToGlossaryFn();", true, 100);
 			$buttons[] = $glossarybut;
 		}

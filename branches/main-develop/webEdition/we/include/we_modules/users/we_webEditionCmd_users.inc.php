@@ -26,7 +26,7 @@
 
 ?>
 	case "browse_users":
-            <?php if(we_hasPerm("NEW_USER") || we_hasPerm("NEW_GROUP") || we_hasPerm("SAVE_USER")|| we_hasPerm("SAVE_GROUP") || we_hasPerm("DELETE_USER") || we_hasPerm("DELETE_GROUP")){?>
+            <?php if(permissionhandler::hasPerm("NEW_USER") || permissionhandler::hasPerm("NEW_GROUP") || permissionhandler::hasPerm("SAVE_USER")|| permissionhandler::hasPerm("SAVE_GROUP") || permissionhandler::hasPerm("DELETE_USER") || permissionhandler::hasPerm("DELETE_GROUP")){?>
 	        new jsWindow(url,"browse_users",-1,-1,500,300,true,false,true);
              <?php }else{
              	print we_message_reporting::getShowMessageCall(g_l('alert',"[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR);
@@ -34,7 +34,7 @@
 	break;
         case "edit_users":
         case "edit_users_ifthere":
-            <?php if(we_hasPerm("NEW_USER") || we_hasPerm("SAVE_USER") || we_hasPerm("NEW_GROUP") || we_hasPerm("SAVE_GROUP") || we_hasPerm("DELETE_USER") || we_hasPerm("DELETE_GROUP")){?>
+            <?php if(permissionhandler::hasPerm("NEW_USER") || permissionhandler::hasPerm("SAVE_USER") || permissionhandler::hasPerm("NEW_GROUP") || permissionhandler::hasPerm("SAVE_GROUP") || permissionhandler::hasPerm("DELETE_USER") || permissionhandler::hasPerm("DELETE_GROUP")){?>
                 new jsWindow(url,"edit_module",-1,-1,970,760,true,true,true,true);
             <?php }else{
             	print we_message_reporting::getShowMessageCall(g_l('alert',"[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR);
@@ -48,7 +48,7 @@
         case "exit_users":
         case "delete_user":
 	case "new_organization":
-         <?php if(we_hasPerm("EDIT_USER")){?>
+         <?php if(permissionhandler::hasPerm("EDIT_USER")){?>
              var fo=false;
 					if(jsWindow_count){
              for(var k=jsWindow_count-1;k>-1;k--){
@@ -62,7 +62,7 @@
           }?>
         break;
         case "doctypes":
-            <?php if(we_hasPerm("CAN_SEE_TEMPLATES")){?>
+            <?php if(permissionhandler::hasPerm("CAN_SEE_TEMPLATES")){?>
                 new jsWindow(url,"doctypes",-1,-1,720,670,true,true,true);
             <?php }else{
 				print we_message_reporting::getShowMessageCall(g_l('alert',"[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR);

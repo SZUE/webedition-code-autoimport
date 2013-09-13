@@ -54,7 +54,7 @@ class we_shop_functions{
 			while($GLOBALS['DB_WE']->next_record()) {
 
 				$orderStr .= '<tr>';
-				if(we_hasPerm("EDIT_SHOP_ORDER")){
+				if(permissionhandler::hasPerm("EDIT_SHOP_ORDER")){
 					$orderStr .= ($sameModul ?
 							('<td>' . we_button::create_button('image:btn_edit_edit', 'javascript:top.content.editor.location = \'' . WE_SHOP_MODULE_DIR . 'edit_shop_frameset.php?pnt=editor&bid=' . $GLOBALS['DB_WE']->f('IntOrderID') . '\';') . '</td>') :
 							('<td>' . we_button::create_button('image:btn_edit_edit', 'javascript:top.document.location = \'' . WE_MODULES_DIR . 'show_frameset.php?mod=shop&bid=' . $GLOBALS['DB_WE']->f('IntOrderID') . '\';') . '</td>')

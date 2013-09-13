@@ -32,12 +32,12 @@ $topFrame = (isset($_REQUEST['we_cmd'][4]) ? $_REQUEST['we_cmd'][4] : "top");
 
 $table = isset($_REQUEST['we_cmd'][1]) ? $_REQUEST['we_cmd'][1] : FILE_TABLE;
 
-if($table == FILE_TABLE && !we_hasPerm("CAN_SEE_DOCUMENTS")){
-	if(we_hasPerm("CAN_SEE_TEMPLATES")){
+if($table == FILE_TABLE && !permissionhandler::hasPerm("CAN_SEE_DOCUMENTS")){
+	if(permissionhandler::hasPerm("CAN_SEE_TEMPLATES")){
 		$table = TEMPLATES_TABLE;
-	} else if(defined('OBJECT_FILES_TABLE') && we_hasPerm("CAN_SEE_OBJECTFILES")){
+	} else if(defined('OBJECT_FILES_TABLE') && permissionhandler::hasPerm("CAN_SEE_OBJECTFILES")){
 		$table = OBJECT_FILES_TABLE;
-	} else if(defined('OBJECT_TABLE') && we_hasPerm("CAN_SEE_OBJECTS")){
+	} else if(defined('OBJECT_TABLE') && permissionhandler::hasPerm("CAN_SEE_OBJECTS")){
 		$table = OBJECT_TABLE;
 	}
 }
@@ -63,7 +63,7 @@ if($ws = get_ws($table)){
 			$path = dirname($path);
 		}
 	}
-} else if(defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE && (!we_hasPerm("ADMINISTRATOR"))){
+} else if(defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE && (!permissionhandler::hasPerm("ADMINISTRATOR"))){
 	$ac = getAllowedClasses($DB_WE);
 	foreach($ac as $cid){
 		$path = id_to_path($cid, OBJECT_TABLE);
@@ -92,29 +92,29 @@ function getItems($ParentID){
 
 	switch($GLOBALS['table']){
 		case FILE_TABLE:
-			if(!we_hasPerm("CAN_SEE_DOCUMENTS")){
+			if(!permissionhandler::hasPerm("CAN_SEE_DOCUMENTS")){
 				return 0;
 			}
 			break;
 		case TEMPLATES_TABLE:
-			if(!we_hasPerm("CAN_SEE_TEMPLATES")){
+			if(!permissionhandler::hasPerm("CAN_SEE_TEMPLATES")){
 				return 0;
 			}
 			break;
 		case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
-			if(!we_hasPerm("CAN_SEE_OBJECTFILES")){
+			if(!permissionhandler::hasPerm("CAN_SEE_OBJECTFILES")){
 				return 0;
 			}
 			break;
 		case (defined('OBJECT_TABLE') ? OBJECT_TABLE : 'OBJECT_TABLE'):
-			if(!we_hasPerm("CAN_SEE_OBJECTS")){
+			if(!permissionhandler::hasPerm("CAN_SEE_OBJECTS")){
 				return 0;
 			}
 			break;
 	}
 
 	$DB_WE = new DB_WE();
-	$where = ' WHERE  ParentID=' . intval($ParentID) . ' AND((1' . makeOwnersSql() . ')' . $GLOBALS['wsQuery'] . ')';
+	$where = ' WHERE  ParentID=' . intval($ParentID) . ' AND((1' . we_users_util::makeOwnersSql() . ')' . $GLOBALS['wsQuery'] . ')';
 	//if($GLOBALS['table']==FILE_TABLE) $where .= " AND (ClassName='we_webEditionDocument' OR ClassName='we_folder')";
 	$elem = 'ID,ParentID,Path,Text,Icon,IsFolder,ModDate' . (($GLOBALS['table'] == FILE_TABLE || (defined("OBJECT_FILES_TABLE") && $GLOBALS['table'] == OBJECT_FILES_TABLE)) ? ",Published" : "") . ((defined("OBJECT_FILES_TABLE") && $GLOBALS['table'] == OBJECT_FILES_TABLE) ? ",IsClassFolder,IsNotEditable" : "");
 

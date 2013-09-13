@@ -343,7 +343,7 @@ class weVoting extends weModelBase{
 
 	function isAllowedForUser(){
 
-		if($this->RestrictOwners == 0 || we_hasPerm('ADMINISTRATOR') || in_array($_SESSION['user']['ID'], $this->Owners)){
+		if($this->RestrictOwners == 0 || permissionhandler::hasPerm('ADMINISTRATOR') || in_array($_SESSION['user']['ID'], $this->Owners)){
 			return true;
 		}
 
@@ -362,7 +362,7 @@ class weVoting extends weModelBase{
 
 	function getOwnersSql(){
 		$owners_sql = '';
-		if(!we_hasPerm('ADMINISTRATOR')){
+		if(!permissionhandler::hasPerm('ADMINISTRATOR')){
 			$userids = array(
 				$_SESSION['user']['ID']
 			);

@@ -40,7 +40,7 @@ if($_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE){ //	No tabs in Su
 			$we_tabs->addTab(new we_tab("#", g_l('weClass', "[preview]"), (($we_doc->EditPageNr == WE_EDITPAGE_PREVIEW) ? we_tab::ACTIVE : we_tab::NORMAL), "we_cmd('switch_edit_page'," . WE_EDITPAGE_PREVIEW . ",'" . $we_transaction . "');", array("id" => "tab_" . WE_EDITPAGE_PREVIEW)));
 		}
 	} else{ //	show tabs according to permissions
-		if(in_array(WE_EDITPAGE_PROPERTIES, $we_doc->EditPageNrs) && we_hasPerm("CAN_SEE_PROPERTIES")){
+		if(in_array(WE_EDITPAGE_PROPERTIES, $we_doc->EditPageNrs) && permissionhandler::hasPerm("CAN_SEE_PROPERTIES")){
 			$we_tabs->addTab(new we_tab("#", g_l('weClass', "[tab_properties]"), (($we_doc->EditPageNr == WE_EDITPAGE_PROPERTIES) ? we_tab::ACTIVE : we_tab::NORMAL), "we_cmd('switch_edit_page'," . WE_EDITPAGE_PROPERTIES . ",'" . $we_transaction . "');", array("id" => "tab_" . WE_EDITPAGE_PROPERTIES)));
 		}
 		if(in_array(WE_EDITPAGE_CONTENT, $we_doc->EditPageNrs)){
@@ -64,7 +64,7 @@ if($_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE){ //	No tabs in Su
 			$we_tabs->addTab(new we_tab("#", g_l('weClass', "[workspace]"), (($we_doc->EditPageNr == WE_EDITPAGE_CFWORKSPACE) ? we_tab::ACTIVE : we_tab::NORMAL), "we_cmd('switch_edit_page'," . WE_EDITPAGE_CFWORKSPACE . ",'" . $we_transaction . "');", array("id" => "tab_" . WE_EDITPAGE_CFWORKSPACE)));
 		}
 
-		if(in_array(WE_EDITPAGE_INFO, $we_doc->EditPageNrs) && we_hasPerm("CAN_SEE_INFO")){
+		if(in_array(WE_EDITPAGE_INFO, $we_doc->EditPageNrs) && permissionhandler::hasPerm("CAN_SEE_INFO")){
 			$we_tabs->addTab(new we_tab("#", g_l('weClass', "[information]"), (($we_doc->EditPageNr == WE_EDITPAGE_INFO) ? we_tab::ACTIVE : we_tab::NORMAL), "we_cmd('switch_edit_page'," . WE_EDITPAGE_INFO . ",'" . $we_transaction . "');", array("id" => "tab_" . WE_EDITPAGE_INFO)));
 		}
 
@@ -96,24 +96,24 @@ if($_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE){ //	No tabs in Su
 		  }
 		 */
 
-		if(we_hasPerm("CAN_SEE_SCHEDULER") && weModuleInfo::isActive("schedule") && in_array(WE_EDITPAGE_SCHEDULER, $we_doc->EditPageNrs) && $we_doc->ContentType != "folder"){
+		if(permissionhandler::hasPerm("CAN_SEE_SCHEDULER") && weModuleInfo::isActive("schedule") && in_array(WE_EDITPAGE_SCHEDULER, $we_doc->EditPageNrs) && $we_doc->ContentType != "folder"){
 			$we_tabs->addTab(new we_tab("#", g_l('weClass', "[scheduler]"), (($we_doc->EditPageNr == WE_EDITPAGE_SCHEDULER) ? we_tab::ACTIVE : we_tab::NORMAL), "we_cmd('switch_edit_page'," . WE_EDITPAGE_SCHEDULER . ",'" . $we_transaction . "');", array("id" => "tab_" . WE_EDITPAGE_SCHEDULER)));
 		}
-		if((in_array(WE_EDITPAGE_VALIDATION, $we_doc->EditPageNrs) && ($we_doc->ContentType == 'text/webedition' || $we_doc->ContentType == 'text/css' || $we_doc->ContentType == 'text/html' )) && we_hasPerm("CAN_SEE_VALIDATION")){
+		if((in_array(WE_EDITPAGE_VALIDATION, $we_doc->EditPageNrs) && ($we_doc->ContentType == 'text/webedition' || $we_doc->ContentType == 'text/css' || $we_doc->ContentType == 'text/html' )) && permissionhandler::hasPerm("CAN_SEE_VALIDATION")){
 			$we_tabs->addTab(new we_tab("#", g_l('weClass', "[validation]"), (($we_doc->EditPageNr == WE_EDITPAGE_VALIDATION) ? we_tab::ACTIVE : we_tab::NORMAL), "we_cmd('switch_edit_page'," . WE_EDITPAGE_VALIDATION . ",'" . $we_transaction . "');", array("id" => "tab_" . WE_EDITPAGE_VALIDATION)));
 		}
 
-		if(in_array(WE_EDITPAGE_WEBUSER, $we_doc->EditPageNrs) && (we_hasPerm("CAN_EDIT_CUSTOMERFILTER") || we_hasPerm("CAN_CHANGE_DOCS_CUSTOMER"))){
+		if(in_array(WE_EDITPAGE_WEBUSER, $we_doc->EditPageNrs) && (permissionhandler::hasPerm("CAN_EDIT_CUSTOMERFILTER") || permissionhandler::hasPerm("CAN_CHANGE_DOCS_CUSTOMER"))){
 			$we_tabs->addTab(new we_tab("#", g_l('weClass', "[webUser]"), (($we_doc->EditPageNr == WE_EDITPAGE_WEBUSER) ? we_tab::ACTIVE : we_tab::NORMAL), "we_cmd('switch_edit_page'," . WE_EDITPAGE_WEBUSER . ",'" . $we_transaction . "');", array("id" => "tab_" . WE_EDITPAGE_WEBUSER)));
 		}
 
-		if(we_hasPerm("SEE_VERSIONS") && in_array(WE_EDITPAGE_VERSIONS, $we_doc->EditPageNrs)){
+		if(permissionhandler::hasPerm("SEE_VERSIONS") && in_array(WE_EDITPAGE_VERSIONS, $we_doc->EditPageNrs)){
 			$we_tabs->addTab(new we_tab("#", g_l('weClass', "[version]"), (($we_doc->EditPageNr == WE_EDITPAGE_VERSIONS) ? we_tab::ACTIVE : we_tab::NORMAL), "we_cmd('switch_edit_page'," . WE_EDITPAGE_VERSIONS . ",'" . $we_transaction . "');", array("id" => "tab_" . WE_EDITPAGE_VERSIONS)));
 		}
 
 		$we_doc->we_initSessDat($we_dt);
 
-		if((in_array(WE_EDITPAGE_VARIANTS, $we_doc->EditPageNrs) && ($we_doc->canHaveVariants(($we_doc->ContentType == 'text/webedition' || $we_doc->ContentType == 'objectFile')) )) && we_hasPerm("CAN_EDIT_VARIANTS")){
+		if((in_array(WE_EDITPAGE_VARIANTS, $we_doc->EditPageNrs) && ($we_doc->canHaveVariants(($we_doc->ContentType == 'text/webedition' || $we_doc->ContentType == 'objectFile')) )) && permissionhandler::hasPerm("CAN_EDIT_VARIANTS")){
 			$we_tabs->addTab(new we_tab("#", g_l('weClass', "[variants]"), (($we_doc->EditPageNr == WE_EDITPAGE_VARIANTS) ? we_tab::ACTIVE : we_tab::NORMAL), "we_cmd('switch_edit_page'," . WE_EDITPAGE_VARIANTS . ",'" . $we_transaction . "');", array("id" => "tab_" . WE_EDITPAGE_VARIANTS)));
 		}
 
@@ -202,7 +202,7 @@ _EditorFrame.setEditorEditPageNr(' . $we_doc->EditPageNr . ');' .
 		print '<div style="margin:3px 0px 3px 5px;" id="headrow">&nbsp;' . we_html_element::htmlB(str_replace(' ', '&nbsp;', g_l('contentTypes', '[' . $we_doc->ContentType . ']'))) . ': ' .
 			($we_doc->Table == FILE_TABLE && $we_doc->ID ? '<a href="javascript:top.wasdblclick=1;top.doClick(\'' . $we_doc->ID . '\');">' : '') .
 			'<span id="h_path"></span>' . ($we_doc->Table == FILE_TABLE && $we_doc->ID ? '</a>' : '') . ' (ID: <span id="h_id"></span>)' .
-			($we_doc->ContentType == 'text/webedition' && $we_doc->TemplateID && we_hasPerm('CAN_SEE_TEMPLATES') ? ' - <a style="font-weight:bold;color:#006699" href="javascript:top.weEditorFrameController.openDocument(\'' . TEMPLATES_TABLE . '\',' . $we_doc->TemplateID . ',\'text/weTmpl\');">' . g_l('weClass', '[openTemplate]') . '</a>' : '') . '</div>' .
+			($we_doc->ContentType == 'text/webedition' && $we_doc->TemplateID && permissionhandler::hasPerm('CAN_SEE_TEMPLATES') ? ' - <a style="font-weight:bold;color:#006699" href="javascript:top.weEditorFrameController.openDocument(\'' . TEMPLATES_TABLE . '\',' . $we_doc->TemplateID . ',\'text/weTmpl\');">' . g_l('weClass', '[openTemplate]') . '</a>' : '') . '</div>' .
 			($_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE ?
 				$we_tabs->getHTML() : '');
 		?></div>

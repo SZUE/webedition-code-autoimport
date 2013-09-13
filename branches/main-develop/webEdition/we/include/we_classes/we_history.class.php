@@ -40,7 +40,7 @@ abstract class we_history{
 		if(!$restricted){
 			return true;
 		}
-		if(we_isOwner($owners) || we_isOwner($creatorid)){
+		if(we_users_util::isOwner($owners) || we_users_util::isOwner($creatorid)){
 			return true;
 		}
 		return false;

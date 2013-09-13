@@ -5,7 +5,7 @@ include_once(WE_SPELLCHECKER_MODULE_PATH . '/spellchecker.conf.inc.php');
 
 we_html_tools::protect();
 
-if(!we_hasPerm('SPELLCHECKER_ADMIN')){
+if(!permissionhandler::hasPerm('SPELLCHECKER_ADMIN')){
 	print we_html_element::jsElement(
 			we_message_reporting::getShowMessageCall(g_l('alert', '[access_denied]'), we_message_reporting::WE_MESSAGE_ERROR) .
 			'self.close();

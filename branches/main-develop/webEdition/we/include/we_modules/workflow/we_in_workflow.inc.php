@@ -82,7 +82,7 @@ print STYLESHEET;
 
 					$content = '<table border="0" cellpadding="0" cellspacing="0">';
 
-					if(we_hasPerm("PUBLISH")){
+					if(permissionhandler::hasPerm("PUBLISH")){
 						$wf_textarea = '<textarea name="wf_text" rows="5" cols="50" style="left:10px;right:10px;height:150px;"></textarea>';
 						$content .= '
 <tr>

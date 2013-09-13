@@ -35,7 +35,7 @@ $_menuItems = weToolLookup::getAllTools(true, true);
 foreach($_menuItems as $_menuItem){
 	$text = $_menuItem["text"];
 	if($_menuItem["name"] == 'toolfactory'){
-		if(we_hasPerm($_menuItem['startpermission'])){
+		if(permissionhandler::hasPerm($_menuItem['startpermission'])){
 			$we_tabs->addTab(new we_tab("#", $text, ( isset($_REQUEST['tool']) && $_REQUEST['tool'] == $_menuItem["name"] ? we_tab::ACTIVE: we_tab::NORMAL), "openTool('" . $_menuItem["name"] . "');", array("id" => $_menuItem["name"])));
 		}
 	}
@@ -55,7 +55,7 @@ foreach($_menuItems as $_menuItem){
 		$we_tabs->heightPlus = -30;
 	} else{
 		if($text != g_l('searchtool', "[weSearch]") && $text != g_l('navigation', "[navigation]") && $_menuItem["name"] != 'toolfactory'){
-			if(we_hasPerm($_menuItem['startpermission'])){
+			if(permissionhandler::hasPerm($_menuItem['startpermission'])){
 				$we_tabs->addTab(new we_tab("#", $text, ( isset($_REQUEST['tool']) && $_REQUEST['tool'] == $_menuItem["name"] ? we_tab::ACTIVE : we_tab::NORMAL), "openTool('" . $_menuItem["name"] . "');", array("id" => $_menuItem["name"])));
 			}
 		}

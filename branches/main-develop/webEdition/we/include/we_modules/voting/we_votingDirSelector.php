@@ -83,7 +83,7 @@ class we_votingDirSelector extends we_dirSelector{
 	}
 
 	function printHeaderTableExtraCols(){
-		$makefolderState = we_hasPerm("NEW_VOTING");
+		$makefolderState = permissionhandler::hasPerm("NEW_VOTING");
 		return '<td width="10">' . we_html_tools::getPixel(10, 10) . '</td><td width="40">' .
 			we_html_element::jsElement('makefolderState=' . $makefolderState . ';') .
 			we_button::create_button("image:btn_new_dir", "javascript:if(makefolderState==1){top.drawNewFolder();}", true, -1, 22, "", "", $makefolderState ? false : true) .
@@ -285,11 +285,11 @@ top.selectFile(top.currentID);
 	}
 
 	static function getUserExtraQuery($table, $useCreatorID = true){
-		$userExtraSQL = ' AND ((1 ' . makeOwnersSql(false) . ') ';
+		$userExtraSQL = ' AND ((1 ' . we_users_util::makeOwnersSql(false) . ') ';
 
 		if(get_ws($table)){
 			$userExtraSQL .= getWsQueryForSelector($table);
-		} else if(defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE && (!we_hasPerm("ADMINISTRATOR"))){
+		} else if(defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE && (!permissionhandler::hasPerm("ADMINISTRATOR"))){
 			$wsQuery = "";
 			$ac = getAllowedClasses($this->db);
 			foreach($ac as $cid){

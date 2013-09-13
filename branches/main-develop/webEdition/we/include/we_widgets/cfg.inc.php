@@ -36,7 +36,7 @@ $sc2 = array();
 $shortCuts_left = array();
 $shortCuts_right = array();
 
-if(defined('FILE_TABLE') && we_hasPerm('CAN_SEE_DOCUMENTS')){
+if(defined('FILE_TABLE') && permissionhandler::hasPerm('CAN_SEE_DOCUMENTS')){
 	$shortCuts_left[] = 'open_document';
 	$shortCuts_left[] = 'new_document';
 	$shortCutsDocs = '1';
@@ -45,36 +45,36 @@ if(defined('FILE_TABLE') && we_hasPerm('CAN_SEE_DOCUMENTS')){
 }
 
 if(defined('TEMPLATES_TABLE')){
-	$shortCutsTemplates = (we_hasPerm('CAN_SEE_TEMPLATES')) ? '1' : '0';
-	if(we_hasPerm('NEW_TEMPLATE')){
+	$shortCutsTemplates = (permissionhandler::hasPerm('CAN_SEE_TEMPLATES')) ? '1' : '0';
+	if(permissionhandler::hasPerm('NEW_TEMPLATE')){
 		$shortCuts_left[] = 'new_template';
 	}
 } else{
 	$shortCutsTemplates = '0';
 }
 $shortCuts_left[] = 'new_directory';
-if(defined('FILE_TABLE') && we_hasPerm('CAN_SEE_DOCUMENTS')){
+if(defined('FILE_TABLE') && permissionhandler::hasPerm('CAN_SEE_DOCUMENTS')){
 	$shortCuts_left[] = 'unpublished_pages';
 }
-if(defined('OBJECT_FILES_TABLE') && we_hasPerm('CAN_SEE_OBJECTFILES')){
+if(defined('OBJECT_FILES_TABLE') && permissionhandler::hasPerm('CAN_SEE_OBJECTFILES')){
 	$shortCuts_right[] = 'unpublished_objects';
 	$shortCutsObjects = '1';
 } else{
 	$shortCutsObjects = '0';
 }
-if(defined('OBJECT_FILES_TABLE') && we_hasPerm('NEW_OBJECTFILE')){
+if(defined('OBJECT_FILES_TABLE') && permissionhandler::hasPerm('NEW_OBJECTFILE')){
 	$shortCuts_right[] = 'new_object';
 }
 
 if(defined('OBJECT_TABLE')){
-	$shortCutsClasses = (we_hasPerm('CAN_SEE_OBJECTS')) ? '1' : '0';
-	if(we_hasPerm('NEW_OBJECT')){
+	$shortCutsClasses = (permissionhandler::hasPerm('CAN_SEE_OBJECTS')) ? '1' : '0';
+	if(permissionhandler::hasPerm('NEW_OBJECT')){
 		$shortCuts_right[] = 'new_class';
 	}
 } else{
 	$shortCutsClasses = '0';
 }
-if(we_hasPerm('EDIT_SETTINGS')){
+if(permissionhandler::hasPerm('EDIT_SETTINGS')){
 	$shortCuts_right[] = 'preferences';
 }
 

@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-$createBanner = we_button::create_button("new_banner", "javascript:top.opener.top.we_cmd('new_banner');", true, -1, -1, "", "", !we_hasPerm("NEW_BANNER"));
-$createGroup = we_button::create_button("new_bannergroup", "javascript:top.opener.top.we_cmd('new_bannergroup');", true, -1, -1, "", "", !we_hasPerm("NEW_BANNER"));
+$createBanner = we_button::create_button("new_banner", "javascript:top.opener.top.we_cmd('new_banner');", true, -1, -1, "", "", !permissionhandler::hasPerm("NEW_BANNER"));
+$createGroup = we_button::create_button("new_bannergroup", "javascript:top.opener.top.we_cmd('new_bannergroup');", true, -1, -1, "", "", !permissionhandler::hasPerm("NEW_BANNER"));
 $content = $createBanner . we_html_tools::getPixel(2, 14) . $createGroup;
 $modimage = "banner.gif";

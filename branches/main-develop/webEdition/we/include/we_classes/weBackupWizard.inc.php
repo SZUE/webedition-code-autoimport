@@ -883,7 +883,7 @@ self.focus();');
 
 		$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', "[export_location]"), we_html_tools::TYPE_INFO, 600, false), "space" => 0, "noline" => 1);
 		$parts[] = array("headline" => "", "html" => we_forms::checkbox(1, true, "export_server", g_l('backup', "[export_location_server]"), false, "defaultfont", "doClick(1)"), "space" => 70, "noline" => 1);
-		$parts[] = array("headline" => "", "html" => we_forms::checkbox(1, false, "export_send", g_l('backup', "[export_location_send]"), false, "defaultfont", "doClick(2)", (!we_hasPerm("EXPORT"))), "space" => 70);
+		$parts[] = array("headline" => "", "html" => we_forms::checkbox(1, false, "export_send", g_l('backup', "[export_location_send]"), false, "defaultfont", "doClick(2)", (!permissionhandler::hasPerm("EXPORT"))), "space" => 70);
 		$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', "[export_options]"), we_html_tools::TYPE_INFO, 600, false), "space" => 0, "noline" => 1);
 
 		$docheck = '';

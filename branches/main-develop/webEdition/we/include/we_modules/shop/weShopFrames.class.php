@@ -92,23 +92,23 @@ class weShopFrames extends weModuleFrames{
 						} else {
 							fr.write("&nbsp;&nbsp;<IMG SRC=<?php print TREE_IMAGE_DIR; ?>kreuzung.gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0>");
 						}
-		<?php if(we_hasPerm("EDIT_SHOP_ORDER")){ ?> // make  in tree clickable
+		<?php if(permissionhandler::hasPerm("EDIT_SHOP_ORDER")){ ?> // make  in tree clickable
 							if (nf[ai].name !== -1) {
 								fr.write("<a href=\"javascript://\" onClick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\" BORDER=0>");
 							}
 		<?php } ?>
 						fr.write("<IMG SRC=<?php print TREE_IMAGE_DIR; ?>icons/" + nf[ai].icon + " WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 title=\"<?php print g_l('tree', "[edit_statustext]"); ?>\">");
-		<?php if(we_hasPerm("EDIT_SHOP_ORDER")){ ?>
+		<?php if(permissionhandler::hasPerm("EDIT_SHOP_ORDER")){ ?>
 							fr.write("</a>");
 		<?php } ?>
 						fr.write("&nbsp;");
-		<?php if(we_hasPerm("EDIT_SHOP_ORDER")){ ?> // make orders in tree clickable
+		<?php if(permissionhandler::hasPerm("EDIT_SHOP_ORDER")){ ?> // make orders in tree clickable
 							fr.write("<a href=\"javascript://\" onClick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">");
 
 		<?php } ?>
 						//changed for #6786
 						fr.write("<span style='" + nf[ai].st + "'>" + nf[ai].text + "</span>");
-		<?php if(we_hasPerm('EDIT_SHOP_ORDER')){ ?>
+		<?php if(permissionhandler::hasPerm('EDIT_SHOP_ORDER')){ ?>
 							fr.write("</a>");
 		<?php } ?>
 						fr.write("&nbsp;&nbsp;<BR>\n");
@@ -124,20 +124,20 @@ class weShopFrames extends weModuleFrames{
 							fr.write("&nbsp;&nbsp;<a href=\"javascript:top.content.openClose('" + nf[ai].name + "',0)\" border=0><img src=<?php print TREE_IMAGE_DIR; ?>zu" + zusatz + ".gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0 title=\"<?php print g_l('tree', "[close_statustext]") ?>\"></a>");
 							var zusatz2 = "open";
 						}
-		<?php if(we_hasPerm("EDIT_SHOP_ORDER")){ ?>
+		<?php if(permissionhandler::hasPerm("EDIT_SHOP_ORDER")){ ?>
 							fr.write("<a href=\"javascript://\" onClick=\"doFolderClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\" BORDER=0>");
 		<?php } ?>
 						fr.write("<img src=<?php print TREE_IMAGE_DIR; ?>icons/folder" + zusatz2 + ".gif WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 title=\"<?php print g_l('tree', "[edit_statustext]"); ?>\">");
-		<?php if(we_hasPerm('EDIT_SHOP_ORDER')){ ?>
+		<?php if(permissionhandler::hasPerm('EDIT_SHOP_ORDER')){ ?>
 							fr.write("</a>");
 			<?php
 		}
-		if(we_hasPerm("EDIT_SHOP_ORDER")){
+		if(permissionhandler::hasPerm("EDIT_SHOP_ORDER")){
 			?> // make the month in tree clickable
 							fr.write("<a href=\"javascript://\" onClick=\"doFolderClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">");
 		<?php } ?>
 						fr.write("&nbsp;" + (parseInt(nf[ai].published) ? " <b>" : "") + nf[ai].text + (parseInt(nf[ai].published) ? " </b>" : ""));
-		<?php if(we_hasPerm('EDIT_SHOP_ORDER')){ ?>
+		<?php if(permissionhandler::hasPerm('EDIT_SHOP_ORDER')){ ?>
 							fr.write("</a>");
 		<?php } ?>
 						fr.write("&nbsp;&nbsp;<br/>");
@@ -436,8 +436,8 @@ function we_cmd() {
 		$c = 0;
 		$iconBarTable = new we_html_table(array("border" => 0, "cellpadding" => 6, "cellspacing" => 0, "style" => "margin-left:8px"), 1, 4);
 
-		$iconBarTable->setCol(0, $c++, null, we_button::create_button("image:btn_shop_extArt", "javascript:top.opener.top.we_cmd('new_article')", true, -1, -1, "", "", !we_hasPerm("NEW_USER")));
-		$iconBarTable->setCol(0, $c++, null, we_button::create_button("image:btn_shop_delOrd", "javascript:top.opener.top.we_cmd('delete_shop')", true, -1, -1, "", "", !we_hasPerm("NEW_USER")));
+		$iconBarTable->setCol(0, $c++, null, we_button::create_button("image:btn_shop_extArt", "javascript:top.opener.top.we_cmd('new_article')", true, -1, -1, "", "", !permissionhandler::hasPerm("NEW_USER")));
+		$iconBarTable->setCol(0, $c++, null, we_button::create_button("image:btn_shop_delOrd", "javascript:top.opener.top.we_cmd('delete_shop')", true, -1, -1, "", "", !permissionhandler::hasPerm("NEW_USER")));
 
 		if($resultD > 0){
 			$iconBarTable->addCol();
@@ -447,8 +447,8 @@ function we_cmd() {
 			$iconBarTable->setCol(0, $c++, null, we_button::create_button("image:btn_shop_sum", "javascript:top.content.editor.location=' edit_shop_frameset.php?pnt=editor&top=1&typ=object&ViewClass=$classid '", true));
 		}
 
-		$iconBarTable->setCol(0, $c++, null, we_button::create_button("image:btn_shop_pref", "javascript:top.opener.top.we_cmd('pref_shop')", true, -1, -1, "", "", !we_hasPerm("NEW_USER")));
-		$iconBarTable->setCol(0, $c++, null, we_button::create_button("image:btn_payment_val", "javascript:top.opener.top.we_cmd('payment_val')", true, -1, -1, "", "", !we_hasPerm("NEW_USER")));
+		$iconBarTable->setCol(0, $c++, null, we_button::create_button("image:btn_shop_pref", "javascript:top.opener.top.we_cmd('pref_shop')", true, -1, -1, "", "", !permissionhandler::hasPerm("NEW_USER")));
+		$iconBarTable->setCol(0, $c++, null, we_button::create_button("image:btn_payment_val", "javascript:top.opener.top.we_cmd('payment_val')", true, -1, -1, "", "", !permissionhandler::hasPerm("NEW_USER")));
 
 		if($headline){
 			$iconBarTable->addCol();

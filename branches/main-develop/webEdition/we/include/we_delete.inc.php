@@ -91,21 +91,21 @@ if(!$wfchk){
 			}
 		}
 
-		if(we_hasPerm("ADMINISTRATOR")){
+		if(permissionhandler::hasPerm("ADMINISTRATOR")){
 			$hasPerm = true;
 		} else {
 			switch($table){
 				case FILE_TABLE:
-					$hasPerm = (($idInfos['IsFolder'] && we_hasPerm("DELETE_DOC_FOLDER") && !$idInfos['hasFiles']) || (!$idInfos['IsFolder'] && we_hasPerm("DELETE_DOCUMENT")));
+					$hasPerm = (($idInfos['IsFolder'] && permissionhandler::hasPerm("DELETE_DOC_FOLDER") && !$idInfos['hasFiles']) || (!$idInfos['IsFolder'] && permissionhandler::hasPerm("DELETE_DOCUMENT")));
 					break;
 				case TEMPLATES_TABLE:
-					$hasPerm = (($idInfos['IsFolder'] && we_hasPerm("DELETE_TEMP_FOLDER") && !$idInfos['hasFiles']) || (!$idInfos['IsFolder'] && we_hasPerm("DELETE_TEMPLATE")));
+					$hasPerm = (($idInfos['IsFolder'] && permissionhandler::hasPerm("DELETE_TEMP_FOLDER") && !$idInfos['hasFiles']) || (!$idInfos['IsFolder'] && permissionhandler::hasPerm("DELETE_TEMPLATE")));
 					break;
 				case OBJECT_FILES_TABLE:
-					$hasPerm = (we_hasPerm("DELETE_OBJECTFILE"));
+					$hasPerm = (permissionhandler::hasPerm("DELETE_OBJECTFILE"));
 					break;
 				case OBJECT_TABLE:
-					$hasPerm = ($idInfos['IsFolder'] && we_hasPerm("DELETE_OBJECT"));
+					$hasPerm = ($idInfos['IsFolder'] && permissionhandler::hasPerm("DELETE_OBJECT"));
 					break;
 				default:
 					$hasPerm = false;
@@ -115,7 +115,7 @@ if(!$wfchk){
 
 		if(!$hasPerm){
 			$retVal = -6;
-		} elseif((!we_hasPerm('ADMINISTRATOR')) && ($table == FILE_TABLE . "_cache" || $table == OBJECT_FILES_TABLE . "_cache")){ //check if mey delete cache
+		} elseif((!permissionhandler::hasPerm('ADMINISTRATOR')) && ($table == FILE_TABLE . "_cache" || $table == OBJECT_FILES_TABLE . "_cache")){ //check if mey delete cache
 			$retVal = -1;
 		} else {
 
@@ -391,31 +391,31 @@ if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
 if($_REQUEST['we_cmd'][0] != "delete_single_document"){ // no select mode in delete_single_document
 	switch($table){
 		/* case FILE_TABLE . "_cache":
-		  if(we_hasPerm("ADMINISTRATOR")){
+		  if(permissionhandler::hasPerm("ADMINISTRATOR")){
 		  print 'top.treeData.setstate(top.treeData.tree_states["selectitem"]);';
 		  }
 		  break; */
 		case FILE_TABLE:
-			if(we_hasPerm("DELETE_DOC_FOLDER") && we_hasPerm("DELETE_DOCUMENT")){
+			if(permissionhandler::hasPerm("DELETE_DOC_FOLDER") && permissionhandler::hasPerm("DELETE_DOCUMENT")){
 				print 'top.treeData.setstate(top.treeData.tree_states["select"]);';
-			} elseif(we_hasPerm("DELETE_DOCUMENT")){
+			} elseif(permissionhandler::hasPerm("DELETE_DOCUMENT")){
 				print 'top.treeData.setstate(top.treeData.tree_states["selectitem"]);';
 			}
 			break;
 		case TEMPLATES_TABLE:
-			if(we_hasPerm("DELETE_TEMP_FOLDER") && we_hasPerm("DELETE_TEMPLATE")){
+			if(permissionhandler::hasPerm("DELETE_TEMP_FOLDER") && permissionhandler::hasPerm("DELETE_TEMPLATE")){
 				print 'top.treeData.setstate(top.treeData.tree_states["select"]);';
-			} elseif(we_hasPerm("DELETE_TEMPLATE")){
+			} elseif(permissionhandler::hasPerm("DELETE_TEMPLATE")){
 				print 'top.treeData.setstate(top.treeData.tree_states["selectitem"]);';
 			}
 			break;
 		case (defined("OBJECT_FILES_TABLE") ? OBJECT_FILES_TABLE : 1):
-			if(we_hasPerm("DELETE_OBJECTFILE")){
+			if(permissionhandler::hasPerm("DELETE_OBJECTFILE")){
 				print 'top.treeData.setstate(top.treeData.tree_states["select"]);';
 			}
 			break;
 		case (defined("OBJECT_FILES_TABLE") ? OBJECT_FILES_TABLE . "_cache" : 2):
-			if(we_hasPerm("ADMINISTRATOR")){
+			if(permissionhandler::hasPerm("ADMINISTRATOR")){
 				print 'top.treeData.setstate(top.treeData.tree_states["selectitem"]);';
 			}
 			break;

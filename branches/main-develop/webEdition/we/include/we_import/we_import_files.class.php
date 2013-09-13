@@ -269,7 +269,7 @@ function checkButtons(){
 		// categoryselector
 
 
-		if(we_hasPerm("EDIT_KATEGORIE")){
+		if(permissionhandler::hasPerm("EDIT_KATEGORIE")){
 
 			$parts[] = array(
 				'headline' => g_l('global', "[categorys]") . '',
@@ -278,7 +278,7 @@ function checkButtons(){
 			);
 		}
 
-		if(we_hasPerm("NEW_GRAFIK")){
+		if(permissionhandler::hasPerm("NEW_GRAFIK")){
 			$parts[] = array(
 				'headline' => g_l('importFiles', "[metadata]") . '',
 				'html' => we_forms::checkboxWithHidden(
@@ -569,7 +569,7 @@ function weCheckAC(j){
 function next() {
 	if(!weCheckAC(1)) return false;
 	if (top.imgimportcontent.document.getElementById("start") && top.imgimportcontent.document.getElementById("start").style.display != "none") {
-		' . (we_hasPerm('EDIT_KATEGORIE') ? 'top.imgimportcontent.selectCategories();' : '') . '
+		' . (permissionhandler::hasPerm('EDIT_KATEGORIE') ? 'top.imgimportcontent.selectCategories();' : '') . '
 		top.imgimportcontent.document.we_startform.submit();
 	} else {
 		if(weFormNum == weFormCount && weFormNum != 0){
@@ -679,7 +679,7 @@ function next() {
 
 	function importFile(){
 		if(isset($_FILES['we_File']) && strlen($_FILES['we_File']["tmp_name"])){
-			if(!we_hasPerm(we_base_ContentTypes::inst()->getPermission(getContentTypeFromFile($_FILES['we_File']["name"])))){
+			if(!permissionhandler::hasPerm(we_base_ContentTypes::inst()->getPermission(getContentTypeFromFile($_FILES['we_File']["name"])))){
 				return array(
 					"filename" => $_FILES['we_File']["name"], "error" => "no_perms"
 				);

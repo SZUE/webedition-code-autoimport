@@ -293,19 +293,19 @@ top.unselectAllFiles();') . '
 	}
 
 	function userCanRenameFolder(){
-		return we_hasPerm('EDIT_NEWSLETTER');
+		return permissionhandler::hasPerm('EDIT_NEWSLETTER');
 	}
 
 	function userCanMakeNewDir(){
-		return we_hasPerm('NEW_NEWSLETTER');
+		return permissionhandler::hasPerm('NEW_NEWSLETTER');
 	}
 
 	function userHasRenameFolderPerms(){
-		return we_hasPerm('EDIT_NEWSLETTER');
+		return permissionhandler::hasPerm('EDIT_NEWSLETTER');
 	}
 
 	function userHasFolderPerms(){
-		return we_hasPerm('NEW_NEWSLETTER');
+		return permissionhandler::hasPerm('NEW_NEWSLETTER');
 	}
 
 }

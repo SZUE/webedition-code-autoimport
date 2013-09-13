@@ -177,7 +177,7 @@ class searchtoolsearch extends we_search{
 			unset($tableFields['MasterTemplateID']);
 		}
 
-		if(!we_hasPerm('CAN_SEE_DOCUMENTS')){
+		if(!permissionhandler::hasPerm('CAN_SEE_DOCUMENTS')){
 			unset($tableFields['ParentIDDoc']);
 		}
 
@@ -185,7 +185,7 @@ class searchtoolsearch extends we_search{
 			unset($tableFields['ParentIDObj']);
 		}
 
-		if(!we_hasPerm('CAN_SEE_OBJECTFILES')){
+		if(!permissionhandler::hasPerm('CAN_SEE_OBJECTFILES')){
 			unset($tableFields['ParentIDObj']);
 		}
 
@@ -193,7 +193,7 @@ class searchtoolsearch extends we_search{
 			unset($tableFields['ParentIDTmpl']);
 		}
 
-		if(!we_hasPerm('CAN_SEE_TEMPLATES')){
+		if(!permissionhandler::hasPerm('CAN_SEE_TEMPLATES')){
 			unset($tableFields['ParentIDTmpl']);
 			unset($tableFields['temp_template_id']);
 			unset($tableFields['MasterTemplateID']);
@@ -249,7 +249,7 @@ class searchtoolsearch extends we_search{
 	function getDoctypes(){
 		$_db = new DB_WE();
 
-		$_db->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' ' . getDoctypeQuery($_db));
+		$_db->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' ' . we_docTypes::getDoctypeQuery($_db));
 		return $_db->getAllFirst(false);
 	}
 

@@ -434,7 +434,7 @@ abstract class we_root extends we_class{
 	  the user is one of the restricted users
 	 */
 	function userHasPerms(){
-		if($_SESSION['perms']['ADMINISTRATOR'] || !$this->RestrictOwners || we_isOwner($this->Owners) || we_isOwner($this->CreatorID)){
+		if($_SESSION['perms']['ADMINISTRATOR'] || !$this->RestrictOwners || we_users_util::isOwner($this->Owners) || we_users_util::isOwner($this->CreatorID)){
 			return true;
 		}
 		return false;
@@ -444,7 +444,7 @@ abstract class we_root extends we_class{
 		if($_SESSION['perms']['ADMINISTRATOR']){
 			return true;
 		}
-		return we_isOwner($this->CreatorID);
+		return we_users_util::isOwner($this->CreatorID);
 	}
 
 	function userCanSave(){
@@ -452,11 +452,11 @@ abstract class we_root extends we_class{
 			return true;
 		}
 		if(defined('OBJECT_TABLE') && ($this->Table == OBJECT_FILES_TABLE)){
-			if(!(we_hasPerm('NEW_OBJECTFILE_FOLDER') || we_hasPerm('NEW_OBJECTFILE'))){
+			if(!(permissionhandler::hasPerm('NEW_OBJECTFILE_FOLDER') || permissionhandler::hasPerm('NEW_OBJECTFILE'))){
 				return false;
 			}
 		} else {
-			if(!we_hasPerm('SAVE_DOCUMENT_TEMPLATE')){
+			if(!permissionhandler::hasPerm('SAVE_DOCUMENT_TEMPLATE')){
 				return false;
 			}
 		}
@@ -478,7 +478,7 @@ abstract class we_root extends we_class{
 
 	function formCopyDocument(){
 		$idname = 'we_' . $this->Name . '_CopyID';
-		//javascript:we_cmd('openDocselector',document.forms['we_form'].elements['$idname'].value,'$table','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','top.opener._EditorFrame.setEditorIsHot(true);','".session_id()."','$rootDir','objectFile',".(we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1).")
+		//javascript:we_cmd('openDocselector',document.forms['we_form'].elements['$idname'].value,'$table','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','top.opener._EditorFrame.setEditorIsHot(true);','".session_id()."','$rootDir','objectFile',".(permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1).")
 		$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['" . $idname . "'].value");
 		$wecmdenc3 = we_cmd_enc("opener._EditorFrame.setEditorIsHot(true); opener.top.we_cmd('copyDocument', currentID);");
 		$but = we_button::create_button("select", "javascript:we_cmd('openDocselector', document.forms[0].elements['" . $idname . "'].value, '" . $this->Table . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','" . session_id() . "', '0', '" . $this->ContentType . "',1);");
@@ -574,7 +574,7 @@ abstract class we_root extends we_class{
 		$button = we_button::create_button('select', "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','" . $rootDirID . "','" . $ctype . "',1)");
 		$trashButton = we_button::create_button("image:btn_function_trash", "javascript:document.we_form.elements['$idname'].value='-1';document.we_form.elements['$textname'].value='';YAHOO.autocoml.selectorSetValid('yuiAcInput" . $ackeyshort . "');_EditorFrame.setEditorIsHot(true);", true, 27, 22);
 		$openbutton = we_button::create_button("image:edit_edit", "javascript:if(document.we_form.elements['$idname'].value){top.doClickDirect(document.we_form.elements['$idname'].value,'" . $ctype . "','" . $etype . "'); }");
-		if(isset($this->DocType) && $this->DocType && we_hasPerm("NEW_WEBEDITIONSITE")){
+		if(isset($this->DocType) && $this->DocType && permissionhandler::hasPerm("NEW_WEBEDITIONSITE")){
 			$LDcoType = f('SELECT LDID FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="tblDocTypes" AND DID=' . $this->DocType . ' AND Locale="' . $langkey . '"', 'LDID', new DB_WE());
 			if($LDcoType){
 				$createbutton = we_button::create_button("image:add_doc", "javascript:top.we_cmd('new','" . FILE_TABLE . "','','text/webedition','" . $LDcoType . "');");
@@ -712,7 +712,7 @@ abstract class we_root extends we_class{
 	}
 
 	function editor(){
-		
+
 	}
 
 	function getParentIDFromParentPath(){
@@ -1177,11 +1177,11 @@ abstract class we_root extends we_class{
 	}
 
 	protected function update_filehash(){
-		
+
 	}
 
 	function correctFields(){
-		
+
 	}
 
 	public function we_republish(){
@@ -1211,7 +1211,7 @@ abstract class we_root extends we_class{
 			return self::USER_NO_SAVE;
 		}
 
-		if(we_isOwner($this->CreatorID) || we_isOwner($this->Owners)){ //	user is creator/owner of doc - all is allowed.
+		if(we_users_util::isOwner($this->CreatorID) || we_users_util::isOwner($this->Owners)){ //	user is creator/owner of doc - all is allowed.
 			return self::USER_HASACCESS;
 		}
 
@@ -1279,7 +1279,7 @@ abstract class we_root extends we_class{
 	}
 
 	function insertAtIndex(){
-		
+
 	}
 
 	/**
@@ -1299,7 +1299,7 @@ abstract class we_root extends we_class{
 	}
 
 	public function revert_published(){
-		
+
 	}
 
 	public function isBinary(){

@@ -735,7 +735,7 @@ function build_dialog($selected_setting = 'ui'){
 										break;
 									}
 								}
-								parent.opener.top.we_cmd('openDocselector',document.getElementsByName('newconf[SIDEBAR_DEFAULT_DOCUMENT]').value,'" . FILE_TABLE . "',myWindStr + '.content.document.getElementsByName(\'newconf[SIDEBAR_DEFAULT_DOCUMENT]\')[0].value',myWindStr + '.content.document.getElementsByName(\'ui_sidebar_file_name\')[0].value','','" . session_id() . "', '', 'text/webedition'," . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");
+								parent.opener.top.we_cmd('openDocselector',document.getElementsByName('newconf[SIDEBAR_DEFAULT_DOCUMENT]').value,'" . FILE_TABLE . "',myWindStr + '.content.document.getElementsByName(\'newconf[SIDEBAR_DEFAULT_DOCUMENT]\')[0].value',myWindStr + '.content.document.getElementsByName(\'ui_sidebar_file_name\')[0].value','','" . session_id() . "', '', 'text/webedition'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");
 							}
 
 							function select_seem_start() {
@@ -759,7 +759,7 @@ function build_dialog($selected_setting = 'ui'){
 						(defined("OBJECT_FILES_TABLE") ?
 							"parent.opener.top.we_cmd('openDocselector', document.getElementsByName('seem_start_object')[0].value, '" . OBJECT_FILES_TABLE . "', myWindStr + '.content.document.getElementsByName(\'seem_start_object\')[0].value', myWindStr + '.content.document.getElementsByName(\'seem_start_object_name\')[0].value', '', '" . session_id() . "', '', 'objectFile',1);" : '') .
 						"} else {
-									parent.opener.top.we_cmd('openDocselector', document.getElementsByName('seem_start_document')[0].value, '" . FILE_TABLE . "', myWindStr + '.content.document.getElementsByName(\'seem_start_document\')[0].value', myWindStr + '.content.document.getElementsByName(\'seem_start_document_name\')[0].value', '', '" . session_id() . "', '', 'text/webedition'," . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");
+									parent.opener.top.we_cmd('openDocselector', document.getElementsByName('seem_start_document')[0].value, '" . FILE_TABLE . "', myWindStr + '.content.document.getElementsByName(\'seem_start_document\')[0].value', myWindStr + '.content.document.getElementsByName(\'seem_start_document_name\')[0].value', '', '" . session_id() . "', '', 'text/webedition'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");
 								}
 							}
 							function show_seem_chooser(val) {
@@ -876,14 +876,14 @@ function build_dialog($selected_setting = 'ui'){
 				$permitedStartTypes = array('');
 				$_start_type->addOption(0, '-');
 				$_seem_cockpit_selectordummy = "<div id='selectordummy' style='height:" . (we_base_browserDetect::isIE() ? '33px' : '24px') . ";'>&nbsp;</div>";
-				if(we_hasPerm('CAN_SEE_QUICKSTART')){
+				if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 					$_start_type->addOption('cockpit', g_l('prefs', '[seem_start_type_cockpit]'));
 					$showStartType = true;
 					$permitedStartTypes[] = 'cockpit';
 				}
 
 				$_seem_document_chooser = '';
-				if(we_hasPerm('CAN_SEE_DOCUMENTS')){
+				if(permissionhandler::hasPerm('CAN_SEE_DOCUMENTS')){
 					$_start_type->addOption('document', g_l('prefs', '[seem_start_type_document]'));
 					$showStartType = true;
 					// Build SEEM select start document chooser
@@ -903,7 +903,7 @@ function build_dialog($selected_setting = 'ui'){
 					$permitedStartTypes[] = 'document';
 				}
 				$_seem_object_chooser = '';
-				if(defined('OBJECT_FILES_TABLE') && we_hasPerm('CAN_SEE_OBJECTFILES')){
+				if(defined('OBJECT_FILES_TABLE') && permissionhandler::hasPerm('CAN_SEE_OBJECTFILES')){
 					$_start_type->addOption('object', g_l('prefs', '[seem_start_type_object]'));
 					$showStartType = true;
 					// Build SEEM select start object chooser
@@ -926,7 +926,7 @@ function build_dialog($selected_setting = 'ui'){
 				$_start_weapp = new we_html_select(array('name' => 'newconf[seem_start_weapp]', 'class' => 'weSelect', 'id' => 'seem_start_weapp', 'onchange' => 'top.content.setHot();'));
 				$_tools = weToolLookup::getAllTools(true, false);
 				foreach($_tools as $_tool){
-					if(!$_tool['appdisabled'] && we_hasPerm($_tool['startpermission'])){
+					if(!$_tool['appdisabled'] && permissionhandler::hasPerm($_tool['startpermission'])){
 						$_start_weapp->addOption($_tool['name'], $_tool['text']);
 					}
 				}
@@ -1098,7 +1098,7 @@ function build_dialog($selected_setting = 'ui'){
 			return create_dialog('', g_l('prefs', '[tab][ui]'), $_settings, -1, '', '', '', (isset($_needed_JavaScript) ? $_needed_JavaScript : ''));
 
 		case 'defaultAttribs':
-			if(!we_hasPerm('ADMINISTRATOR')){
+			if(!permissionhandler::hasPerm('ADMINISTRATOR')){
 				break;
 			}
 
@@ -1760,7 +1760,7 @@ for(i=0;i<elements.length; ++i){
 				// Generate needed JS
 				$_needed_JavaScript = we_html_element::jsElement('
 var hot = false;
-' . (!we_hasPerm("CHANGE_START_DOCUMENT") ? we_button::create_state_changer(false) : "") . "
+' . (!permissionhandler::hasPerm("CHANGE_START_DOCUMENT") ? we_button::create_state_changer(false) : "") . "
 function set_state_edit_delete_recipient() {
 	var p = document.forms[0].elements[\"we_recipient\"];
 	var i = p.length;
@@ -2172,7 +2172,7 @@ function formmailBlockOnOff() {
 			/*			 * *******************************************************************
 			 * ATTRIBS
 			 * ******************************************************************* */
-			if(!we_hasPerm("ADMINISTRATOR")){
+			if(!permissionhandler::hasPerm("ADMINISTRATOR")){
 				break;
 			}
 
@@ -2232,7 +2232,7 @@ function formmailBlockOnOff() {
 			return create_dialog("", g_l('prefs', '[tab][advanced]'), $_settings, -1, '', '', null, isset($_needed_JavaScript) ? $_needed_JavaScript : '');
 
 		case "system":
-			if(!we_hasPerm("ADMINISTRATOR")){
+			if(!permissionhandler::hasPerm("ADMINISTRATOR")){
 				break;
 			}
 
@@ -2333,11 +2333,11 @@ function formmailBlockOnOff() {
 			if(we_image_edit::gd_version() > 0){ //  gd lib ist installiert
 				$wecmdenc1 = we_cmd_enc("document.forms[0].elements['newconf[WE_THUMBNAIL_DIRECTORY]'].value");
 				$wecmdenc4 = '';
-				$_but = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_button::create_button("select", "javascript:we_cmd('browse_server', '" . $wecmdenc1 . "', 'folder', document.forms[0].elements['newconf[WE_THUMBNAIL_DIRECTORY]'].value, '')") : "";
+				$_but = permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_button::create_button("select", "javascript:we_cmd('browse_server', '" . $wecmdenc1 . "', 'folder', document.forms[0].elements['newconf[WE_THUMBNAIL_DIRECTORY]'].value, '')") : "";
 				$_inp = we_html_tools::htmlTextInput("newconf[WE_THUMBNAIL_DIRECTORY]", 12, get_value("WE_THUMBNAIL_DIRECTORY"), "", "", "text", 125);
 				$_thumbnail_dir = we_button::create_button_table(array($_inp, $_but));
 			} else { //  gd lib ist nicht installiert
-				$_but = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_button::create_button("select", "#", true, 100, 22, '', '', true) : "";
+				$_but = permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_button::create_button("select", "#", true, 100, 22, '', '', true) : "";
 				$_inp = we_html_tools::htmlTextInput("newconf[WE_THUMBNAIL_DIRECTORY]", 12, get_value("WE_THUMBNAIL_DIRECTORY"), "", "", "text", 125, 0, '', true);
 				$_thumbnail_dir = we_button::create_button_table(array($_inp, $_but)) . '<br/>' . g_l('thumbnails', "[add_description_nogdlib]");
 			}
@@ -2347,7 +2347,7 @@ function formmailBlockOnOff() {
 			 */
 			$wecmdenc1 = we_cmd_enc("document.forms[0].elements['newconf[WE_TRACKER_DIR]'].value");
 			$wecmdenc4 = '';
-			$_but = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_button::create_button("select", "javascript:we_cmd('browse_server', '" . $wecmdenc1 . "', 'folder', document.forms[0].elements['newconf[WE_TRACKER_DIR]'].value, '')") : "";
+			$_but = permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_button::create_button("select", "javascript:we_cmd('browse_server', '" . $wecmdenc1 . "', 'folder', document.forms[0].elements['newconf[WE_TRACKER_DIR]'].value, '')") : "";
 			$_inp = we_html_tools::htmlTextInput("newconf[WE_TRACKER_DIR]", 12, get_value("WE_TRACKER_DIR"), "", "", "text", 125);
 			$_we_tracker_dir = we_button::create_button_table(array($_inp, $_but));
 
@@ -2407,7 +2407,7 @@ function formmailBlockOnOff() {
 			/*			 * *******************************************************************
 			 * ATTRIBS
 			 * ******************************************************************* */
-			if(!we_hasPerm("ADMINISTRATOR")){
+			if(!permissionhandler::hasPerm("ADMINISTRATOR")){
 				break;
 			}
 			$_needed_JavaScript = "";
@@ -2513,7 +2513,7 @@ function formmailBlockOnOff() {
 			return create_dialog('', g_l('prefs', '[tab][seolinks]'), $_settings, -1, '', '', null, $_needed_JavaScript);
 
 		case 'error_handling':
-			if(!we_hasPerm('ADMINISTRATOR')){
+			if(!permissionhandler::hasPerm('ADMINISTRATOR')){
 				break;
 			}
 
@@ -2660,7 +2660,7 @@ function formmailBlockOnOff() {
 		 * Validation (XHTML)
 		 * ******************************************************************* */
 		case 'validation':
-			if(!we_hasPerm('ADMINISTRATOR')){
+			if(!permissionhandler::hasPerm('ADMINISTRATOR')){
 				break;
 			}
 
@@ -2726,7 +2726,7 @@ function formmailBlockOnOff() {
 			return create_dialog('', g_l('prefs', '[tab][validation]'), $_settings, -1, '', '', null, $js);
 
 		case 'security':
-			if(!we_hasPerm('ADMINISTRATOR')){
+			if(!permissionhandler::hasPerm('ADMINISTRATOR')){
 				return;
 			}
 			$customer_table = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0, 'id' => 'customer_table'), 9, 10);
@@ -2785,7 +2785,7 @@ function formmailBlockOnOff() {
 				array('headline' => '', 'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[mailer_information]'), we_html_tools::TYPE_INFO, 450, false), 'space' => 0)
 			);
 
-			if(we_hasPerm('ADMINISTRATOR')){
+			if(permissionhandler::hasPerm('ADMINISTRATOR')){
 				$_emailSelect = we_html_tools::htmlSelect('newconf[WE_MAILER]', array('php' => g_l('prefs', '[mailer_php]'), 'smtp' => g_l('prefs', '[mailer_smtp]')), 1, get_value('WE_MAILER'), false, "onchange=\"var el = document.getElementById('smtp_table').style; if(this.value=='smtp') el.display='block'; else el.display='none';\"", 'value', 300, 'defaultfont');
 
 				$_smtp_table = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0, 'id' => 'smtp_table', 'width' => 300, 'style' => 'display: ' . ((get_value('WE_MAILER') == 'php') ? 'none' : 'block') . ';'), 9, 3);
@@ -2824,7 +2824,7 @@ function formmailBlockOnOff() {
 			return create_dialog('settings_email', g_l('prefs', '[email]'), $_settings);
 
 		case 'versions':
-			if(!we_hasPerm('ADMINISTRATOR')){
+			if(!permissionhandler::hasPerm('ADMINISTRATOR')){
 				break;
 			}
 

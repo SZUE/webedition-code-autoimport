@@ -283,7 +283,7 @@ class we_banner_view extends we_banner_base{
 						break;
 					case "delete_banner":
 		<?php
-		if(!we_hasPerm("DELETE_BANNER")){
+		if(!permissionhandler::hasPerm("DELETE_BANNER")){
 			print we_message_reporting::getShowMessageCall(g_l('modules_banner', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
 		} else {
 			?>
@@ -300,7 +300,7 @@ class we_banner_view extends we_banner_base{
 		<?php } ?>
 						break;
 					case "save_banner":
-		<?php if(we_hasPerm("EDIT_BANNER") || we_hasPerm("NEW_BANNER")){ ?>
+		<?php if(permissionhandler::hasPerm("EDIT_BANNER") || permissionhandler::hasPerm("NEW_BANNER")){ ?>
 							if (top.content.editor.edbody.loaded && top.content.editor.edbody.we_is_home == undefined) {
 								if (!top.content.editor.edbody.checkData()) {
 									return;
@@ -636,10 +636,10 @@ class we_banner_view extends we_banner_base{
 						$exist = false;
 						$double = f('SELECT COUNT(1) AS Count FROM ' . BANNER_TABLE . " WHERE Text='" . $this->db->escape($this->banner->Text) . "' AND ParentID=" . intval($this->banner->ParentID) . ($newone ? '' : ' AND ID!=' . intval($this->banner->ID)), 'Count', $this->db);
 						$acQuery = new weSelectorQuery();
-						if(!we_hasPerm("EDIT_BANNER") && !we_hasPerm("NEW_BANNER")){
+						if(!permissionhandler::hasPerm("EDIT_BANNER") && !permissionhandler::hasPerm("NEW_BANNER")){
 							print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_banner', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR));
 							return;
-						} elseif($newone && !we_hasPerm("NEW_BANNER")){
+						} elseif($newone && !permissionhandler::hasPerm("NEW_BANNER")){
 							print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_banner', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR));
 							return;
 						} elseif($this->banner->Text == ""){
@@ -697,7 +697,7 @@ class we_banner_view extends we_banner_base{
 					break;
 				case "delete_banner":
 					if(isset($_REQUEST["bid"])){
-						if(!we_hasPerm("DELETE_BANNER")){
+						if(!permissionhandler::hasPerm("DELETE_BANNER")){
 							print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_banner', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR));
 							return;
 						} else {

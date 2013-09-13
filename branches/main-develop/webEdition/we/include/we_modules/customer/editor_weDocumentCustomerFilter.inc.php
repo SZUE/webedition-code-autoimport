@@ -27,7 +27,7 @@ $parts = array();
 $_space_size = 120;
 
 
-if($we_doc->ClassName != "we_imageDocument" && we_hasPerm("CAN_EDIT_CUSTOMERFILTER")){
+if($we_doc->ClassName != "we_imageDocument" && permissionhandler::hasPerm("CAN_EDIT_CUSTOMERFILTER")){
 	$_filter = $we_doc->documentCustomerFilter;
 	if(!$_filter){
 		$_filter = weDocumentCustomerFilter::getEmptyDocumentCustomerFilter();
@@ -44,7 +44,7 @@ if($we_doc->ClassName != "we_imageDocument" && we_hasPerm("CAN_EDIT_CUSTOMERFILT
 
 $parts[] = array(
 	'headline' => g_l('modules_customer', '[one_customer]'),
-	'html' => formWebuser(we_hasPerm("CAN_CHANGE_DOCS_CUSTOMER"), 434),
+	'html' => formWebuser(permissionhandler::hasPerm("CAN_CHANGE_DOCS_CUSTOMER"), 434),
 	'space' => $_space_size
 );
 

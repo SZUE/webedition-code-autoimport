@@ -123,19 +123,19 @@ class RefTable{
 			}
 			switch($rd->Table){
 				case FILE_TABLE:
-					return $allowed && we_hasPerm('CAN_SEE_DOCUMENTS');
+					return $allowed && permissionhandler::hasPerm('CAN_SEE_DOCUMENTS');
 				case TEMPLATES_TABLE:
-					return $allowed && we_hasPerm('CAN_SEE_TEMPLATES');
+					return $allowed && permissionhandler::hasPerm('CAN_SEE_TEMPLATES');
 				case (defined('OBJECT_TABLE') ? OBJECT_TABLE : 'OBJECT_TABLE'):
-					return $allowed && we_hasPerm('CAN_SEE_OBJECTS');
+					return $allowed && permissionhandler::hasPerm('CAN_SEE_OBJECTS');
 				case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
-					return $allowed && we_hasPerm('CAN_SEE_OBJECTFILES');
+					return $allowed && permissionhandler::hasPerm('CAN_SEE_OBJECTFILES');
 				case DOC_TYPES_TABLE:
-					return $allowed && we_hasPerm('EDIT_DOCTYPE');
+					return $allowed && permissionhandler::hasPerm('EDIT_DOCTYPE');
 				case CATEGORY_TABLE:
-					return $allowed && we_hasPerm('EDIT_KATEGORIE');
+					return $allowed && permissionhandler::hasPerm('EDIT_KATEGORIE');
 				case NAVIGATION_TABLE:
-					return $allowed && we_hasPerm('EDIT_NAVIGATION');
+					return $allowed && permissionhandler::hasPerm('EDIT_NAVIGATION');
 			}
 		}
 		if($rd->ContentType == 'weBinary' || $rd->ContentType == 'weNavigationRule' || $rd->ContentType == 'weThumbnail'){

@@ -46,19 +46,7 @@ class we_util_Sys_Webedition extends we_util_Sys{
 	 */
 	public static function version(){
 		if(!defined("WE_VERSION")){
-			try{
-				include_once WE_INCLUDES_PATH . 'we_version.php';
-			} catch (Exception $e){
-				/**
-				 * @see we_util_Sys_Exception
-				 */
-				throw new we_util_sys_Exception('Could not identify webEdition version because we_version.inc.php '
-				. 'is not available.');
-			}
-
-			if(!defined("WE_VERSION")){
-				return false;
-			}
+			return false;
 		}
 		return WE_VERSION;
 	}
@@ -92,7 +80,7 @@ class we_util_Sys_Webedition extends we_util_Sys{
 
 		// all modules available for webEdition:
 		try{
-			include_once WE_INCLUDES_PATH. 'we_available_modules.inc.php';
+			include_once WE_INCLUDES_PATH . 'we_available_modules.inc.php';
 		} catch (Exception $e){
 			/**
 			 * @see we_util_Sys_Exception
@@ -106,12 +94,6 @@ class we_util_Sys_Webedition extends we_util_Sys{
 
 		// integrated modules (free of charge, can be deactivated in webEdition preferences):
 		// users, schedule, editor, banner, export, voting, spellchecker, glossary
-		try{
-			include_once(WE_INCLUDES_PATH . "conf/we_active_integrated_modules.inc.php");
-		} catch (Exception $e){
-			throw new we_util_sys_Exception('could not read module information from we_active_integrated_modules.inc.php.');
-			return -1;
-		}
 
 		if(in_array($property, $GLOBALS['_we_active_integrated_modules'])){
 			return 1;

@@ -513,85 +513,12 @@ function we_hasPerm($perm){
 	return permissionhandler::hasPerm($perm);
 }
 
-function we_userCanEditModule($modName){
-	$one = false;
-	$set = array();
-	$enable = 1;
-	if(we_hasPerm('ADMINISTRATOR')){
-		return true;
-	}
-//FIXME: remove eval + change code
-	foreach($GLOBALS['_we_available_modules'] as $m){
-		if($m['name'] == $modName){
-
-			$p = isset($m['perm']) ? $m['perm'] : '';
-			$or = explode('||', $p);
-			foreach($or as $k => $v){
-				$and = explode('&&', $v);
-				$one = true;
-				foreach($and as &$val){
-					$set[] = 'isset($_SESSION[\'perms\'][\'' . trim($val) . '\'])';
-					$val = '$_SESSION[\'perms\'][\'' . trim($val) . '\']';
-					$one = false;
-				}
-				$or[$k] = implode(' && ', $and);
-				if($one && !in_array('isset($_SESSION[\'perms\'][\'' . trim($v) . '\'])', $set)){
-					$set[] = 'isset($_SESSION[\'perms\'][\'' . trim($v) . '\'])';
-				}
-			}
-			$set_str = implode(' || ', $set);
-			$condition_str = implode(' || ', $or);
-			eval('if ((' . $set_str . ')&&(' . $condition_str . ')) { $enable=1; } else { $enable=0; }');
-			return $enable;
-		}
-	}
-	return true;
-}
-
-function makeOwnersSql($useCreatorID = true){
-	if($_SESSION['perms']['ADMINISTRATOR']){
-		return '';
-	}
-	$aliases = we_getAliases($_SESSION['user']['ID'], $GLOBALS['DB_WE']);
-	$aliases[] = $_SESSION['user']['ID'];
-	$q = array();
-	if($useCreatorID){
-		$q[] = 'CreatorID IN ("' . implode('","', $aliases) . '")';
-	}
-	foreach($aliases as $id){
-		$q [] = 'Owners LIKE "%,' . intval($id) . ',%"';
-	}
-	$groups = array($_SESSION['user']['ID']);
-	we_getParentIDs(USER_TABLE, $_SESSION['user']['ID'], $groups, $GLOBALS['DB_WE']);
-	foreach($aliases as $id){
-		we_getParentIDs(USER_TABLE, $id, $groups, $GLOBALS['DB_WE']);
-	}
-
-	foreach($groups as $id){
-		$q[] = "Owners LIKE '%," . intval($id) . ",%'";
-	}
-	return ' AND ( RestrictOwners=0 OR (RestrictOwners=1 AND (' . implode(' OR ', $q) . '))) ';
-}
-
 function we_getParentIDs($table, $id, &$ids, $db = ''){
 	$db = $db ? $db : new DB_WE();
 	while(($pid = f('SELECT ParentID FROM ' . $table . ' WHERE ID=' . intval($id), 'ParentID', $db)) > 0){
 		$id = $pid; // #5836
 		$ids[] = $id;
 	}
-}
-
-function we_getAliases($id, $db = ''){
-	$foo = f('SELECT GROUP_CONCAT(ID) AS IDS FROM ' . USER_TABLE . ' WHERE Alias=' . intval($id), 'IDS', ($db ? $db : new DB_WE()));
-	return $foo ? explode(',', $foo) : array();
-}
-
-function we_isOwner($csvOwners){
-	if($_SESSION['perms']['ADMINISTRATOR']){
-		return true;
-	}
-	$ownersArray = makeArrayFromCSV($csvOwners);
-	return (in_array($_SESSION['user']['ID'], $ownersArray)) || we_users_util::isUserInUsers($_SESSION['user']['ID'], $csvOwners);
 }
 
 function makeArrayFromCSV($csv){
@@ -695,30 +622,6 @@ function in_workspace($IDs, $wsIDs, $table = FILE_TABLE, $db = '', $objcheck = f
 		}
 	}
 	return false;
-}
-
-function userIsOwnerCreatorOfParentDir($folderID, $tab){
-	if(($tab != FILE_TABLE && $tab != OBJECT_FILES_TABLE) ||
-		($_SESSION['perms']['ADMINISTRATOR'] || ($folderID == 0))){
-		return true;
-	}
-	$db = new DB_WE();
-	$tmp = getHash('SELECT RestrictOwners,Owners,CreatorID FROM ' . $tab . ' WHERE ID=' . intval($folderID), $db);
-	if(!count($tmp)){
-		return true;
-	}
-	if($tmp['RestrictOwners']){
-		$ownersArr = makeArrayFromCSV($tmp['Owners']);
-		foreach($ownersArr as $uid){
-			we_users_util::addAllUsersAndGroups($uid, $ownersArr);
-		}
-		$ownersArr[] = $tmp['CreatorID'];
-		$ownersArr = array_unique($ownersArr);
-		return (in_array($_SESSION['user']['ID'], $ownersArr));
-	} else {
-		$pid = f('SELECT ParentID FROM ' . $tab . ' WHERE ID=' . intval($folderID), 'ParentID', $db);
-		return userIsOwnerCreatorOfParentDir($pid, $tab);
-	}
 }
 
 function path_to_id($path, $table = FILE_TABLE){
@@ -1034,119 +937,6 @@ function t_e($type = 'warning'){
 	}
 }
 
-function getHrefForObject($id, $pid, $path = '', $DB_WE = '', $hidedirindex = false, $objectseourls = false){
-	if(!$id){
-		return '';
-	}
-
-	if(!$path){
-		$path = $_SERVER['SCRIPT_NAME'];
-	}
-	$DB_WE = ($DB_WE ? $DB_WE : new DB_WE());
-
-	$foo = getHash('SELECT Published,Workspaces, ExtraWorkspacesSelected,TriggerID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($id), $DB_WE);
-	if(empty($foo)){
-		return '';
-	}
-
-// check if object is published.
-	if(!$GLOBALS['we_doc']->InWebEdition && !$foo['Published']){
-		$GLOBALS['we_link_not_published'] = 1;
-		return '';
-	}
-
-	$showLink = false;
-
-	if($foo['Workspaces']){
-		if($foo['TriggerID']){
-			if(in_workspace($foo['TriggerID'], $foo['Workspaces'], FILE_TABLE, $DB_WE)){
-				$showLink = true;
-			}
-			if(in_workspace($foo['TriggerID'], $foo['ExtraWorkspacesSelected'], FILE_TABLE, $DB_WE)){
-				$showLink = true;
-			}
-		} else {
-			if(in_workspace($pid, $foo['Workspaces'], FILE_TABLE, $DB_WE)){
-				$showLink = true;
-			} else {
-				if($foo['ExtraWorkspacesSelected']){
-					if(in_workspace($pid, $foo['ExtraWorkspacesSelected'], FILE_TABLE, $DB_WE)){
-						$showLink = true;
-					}
-				}
-			}
-		}
-	}
-	if($showLink){
-		$path = ($foo['TriggerID'] ? id_to_path($foo['TriggerID']) : getNextDynDoc($path, $pid, $foo['Workspaces'], $foo['ExtraWorkspacesSelected'], $DB_WE));
-		if(!$path){
-			return '';
-		}
-
-		if(!((isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode']) || (isset($GLOBALS['WE_MAIN_EDITMODE']) && $GLOBALS['WE_MAIN_EDITMODE'])) && $hidedirindex){
-			$path_parts = pathinfo($path);
-			if(show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES != '' && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
-				$path = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/';
-			}
-		}
-		if(show_SeoLinks() && $objectseourls){
-
-			$objectdaten = getHash('SELECT  Url,TriggerID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($id) . ' LIMIT 1', $DB_WE);
-			$objecturl = $objectdaten['Url'];
-			$objecttriggerid = $objectdaten['TriggerID'];
-			if($objecttriggerid){
-				$path_parts = pathinfo(id_to_path($objecttriggerid));
-			}
-		} else {
-			$objecturl = '';
-		}
-		$pidstr = '';
-		if($pid){
-			$pidstr = '?pid=' . intval($pid);
-		}
-		if($objectseourls && $objecturl != ''){
-			return ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' .
-				($hidedirindex && show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES != '' && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))) ?
-					'' :
-					$path_parts['filename'] . '/' ) .
-				$objecturl . $pidstr;
-		} else {
-			return $path . '?we_objectID=' . intval($id) . str_replace('?', '&amp;', $pidstr);
-		}
-	} else {
-		if($foo['Workspaces']){
-			$fooArr = makeArrayFromCSV($foo['Workspaces']);
-			$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE Published > 0 AND ContentType="text/webedition" AND IsDynamic=1 AND Path LIKE "' . $DB_WE->escape(id_to_path($fooArr[0], FILE_TABLE, $DB_WE)) . '%"', 'Path', $DB_WE);
-			return ($path ? $path . '?we_objectID=' . intval($id) . '&pid=' . intval($pid) : '');
-		}
-	}
-	return '';
-}
-
-function getNextDynDoc($path, $pid, $ws1, $ws2, $DB_WE = ''){
-	$DB_WE = ($DB_WE ? $DB_WE : new DB_WE());
-	if(f('SELECT IsDynamic FROM ' . FILE_TABLE . ' WHERE Path="' . $DB_WE->escape($path) . '" LIMIT 1', 'IsDynamic', $DB_WE)){
-		return $path;
-	}
-	$arr1 = makeArrayFromCSV(id_to_path($ws1, FILE_TABLE, $DB_WE));
-	$arr2 = makeArrayFromCSV(id_to_path($ws2, FILE_TABLE, $DB_WE));
-	$arr3 = makeArrayFromCSV($ws1);
-	$arr4 = makeArrayFromCSV($ws2);
-	foreach($arr1 as $i => $ws){
-		if(in_workspace($pid, $arr3[$i])){
-			$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE Published > 0 AND ContentType="text/webedition" AND IsDynamic=1 AND Path LIKE "' . $DB_WE->escape($ws) . '%" LIMIT 1', 'Path', $DB_WE);
-			if($path){
-				return $path;
-			}
-		}
-	}
-	foreach($arr2 as $i => $ws)
-		if(in_workspace($pid, $arr4[$i])){
-			return f('SELECT Path FROM ' . FILE_TABLE . ' WHERE Published > 0 AND ContentType="text/webedition" AND IsDynamic=1 AND Path LIKE "' . $DB_WE->escape($ws) . '%" LIMIT 1', 'Path', $DB_WE);
-		}
-	return '';
-}
-
 function parseInternalLinks(&$text, $pid, $path = '', $doBaseReplace = true){
 	$doBaseReplace&=we_isHttps();
 	$DB_WE = new DB_WE();
@@ -1183,7 +973,7 @@ function parseInternalLinks(&$text, $pid, $path = '', $doBaseReplace = true){
 	if(defined('OBJECT_TABLE')){
 		if(preg_match_all('/href="' . we_base_link::TYPE_OBJ_PREFIX . '(\d+)(\??)("|[^"]+")/i', $text, $regs, PREG_SET_ORDER)){
 			foreach($regs as $reg){
-				$href = getHrefForObject($reg[1], $pid, $path, "", WYSIWYGLINKS_DIRECTORYINDEX_HIDE, WYSIWYGLINKS_OBJECTSEOURLS);
+				$href = we_objectFile::getHref($reg[1], $pid, $path, "", WYSIWYGLINKS_DIRECTORYINDEX_HIDE, WYSIWYGLINKS_OBJECTSEOURLS);
 				if(isset($GLOBALS['we_link_not_published'])){
 					unset($GLOBALS['we_link_not_published']);
 				}
@@ -1402,35 +1192,6 @@ function getRequestVar($name, $default, $yescode = '', $nocode = ''){
 		}
 		return $default;
 	}
-}
-
-/**
- * Converts a given number in a via array specified system.
- * as default a number is converted in the matching chars 0->^,1->a,2->b, ...
- * other systems can simply set via the parameter $chars for example -> array(0,1)
- * for bin-system
- *
- * @return string
- * @param int $value
- * @param array[optional] $chars
- * @param string[optional] $str
- */
-function number2System($value, $chars = array(), $str = ''){
-
-	if(!(is_array($chars) && count($chars) > 1)){ //	in case of error take default-array
-		$chars = array('^', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z');
-	}
-	$base = count($chars);
-
-//	get some information about the numbers:
-	$_rest = $value % $base;
-	$_result = ($value - $_rest) / $base;
-
-//	1. Deal with the rest
-	$str = $chars[$_rest] . $str;
-
-//	2. Deal with remaining result
-	return ($_result > 0 ? number2System($_result, $chars, $str) : $str);
 }
 
 /**
@@ -1658,47 +1419,6 @@ function new_array_splice(&$a, $start, $len = 1){
 		foreach($ks as $k)
 			unset($a[$k]);
 	}
-}
-
-/**
- * Returns "where query" for Doctypes depending on which workspace the user have
- *
- * @param	object	$db
- *
- *
- * @return         string
- */
-function getDoctypeQuery($db = ''){
-	$db = $db ? $db : new DB_WE();
-
-	$paths = array();
-	$ws = get_ws(FILE_TABLE);
-	if($ws){
-		$b = makeArrayFromCSV($ws);
-		if(WE_DOCTYPE_WORKSPACE_BEHAVIOR == 0){
-			foreach($b as $k => $v){
-				$db->query('SELECT ID,Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($v));
-				while($db->next_record()){
-					$paths[] = '(ParentPath = "' . $db->escape($db->f('Path')) . '" || ParentPath LIKE "' . $db->escape($db->f('Path')) . '/%")';
-				}
-			}
-			if(is_array($paths) && count($paths) > 0){
-				return 'WHERE (' . implode(' OR ', $paths) . ' OR ParentPath="") ORDER BY DocType';
-			}
-		} else {
-			foreach($b as $k => $v){
-				$_tmp_path = id_to_path($v);
-				while($_tmp_path && $_tmp_path != '/'){
-					$paths[] = '"' . $db->escape($_tmp_path) . '"';
-					$_tmp_path = dirname($_tmp_path);
-				}
-			}
-			if(is_array($paths) && count($paths) > 0){
-				return 'WHERE ParentPath IN (' . implode(',', $paths) . ',"")  ORDER BY DocType';
-			}
-		}
-	}
-	return (is_array($paths) && count($paths) > 0 ? 'WHERE ((' . implode(' OR ', $paths) . ') OR ParentPath="")' : '') . ' ORDER BY DocType';
 }
 
 function we_loadLanguageConfig(){

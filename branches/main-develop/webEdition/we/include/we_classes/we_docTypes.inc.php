@@ -55,7 +55,7 @@ class we_docTypes extends we_class{
 		foreach($idArr as $id){
 			$path = id_to_path($id, TEMPLATES_TABLE);
 			if($id && $path){
-				$newIdArr[]= $id;
+				$newIdArr[] = $id;
 			}
 		}
 		$this->Templates = makeCSVFromArray($newIdArr);
@@ -64,7 +64,7 @@ class we_docTypes extends we_class{
 			if(isset($_REQUEST["we_" . $this->Name . "_LangDocType"])){
 				$this->setLanguageLink($_REQUEST["we_" . $this->Name . "_LangDocType"], 'tblDocTypes');
 			}
-		} else{
+		} else {
 			//if language changed, we must delete eventually existing entries in tblLangLink, even if !LANGLINK_SUPPORT!
 			$this->checkRemoteLanguage($this->Table, false);
 		}
@@ -103,18 +103,18 @@ class we_docTypes extends we_class{
 
 		$ParentID = $this->ParentID;
 		$i = 0;
-		while($this->Language == "") {
+		while($this->Language == ""){
 			if($ParentID == 0 || $i > 20){
 				we_loadLanguageConfig();
 				$this->Language = $GLOBALS['weDefaultFrontendLanguage'];
 				if($this->Language == ""){
 					$this->Language = "de_DE";
 				}
-			} else{
+			} else {
 				$Query = "SELECT Language, ParentID FROM " . $this->DB_WE->escape($this->Table) . " WHERE ID = " . intval($ParentID);
 				$this->DB_WE->query($Query);
 
-				while($this->DB_WE->next_record()) {
+				while($this->DB_WE->next_record()){
 					$ParentID = $this->DB_WE->f("ParentID");
 					$this->Language = $this->DB_WE->f("Language");
 				}
@@ -147,13 +147,13 @@ class we_docTypes extends we_class{
 			$html = $this->htmlFormElementTable($this->htmlSelect($inputName, $_languages, 1, $value, false, 'onchange="dieWerte=\'' . implode(',', $langkeys) . '\'; disableLangDefault(\'we_' . $this->Name . '_LangDocType\',dieWerte,this.options[this.selectedIndex].value);"', "value", 521), g_l('weClass', '[language]'), "left", "defaultfont");
 			$html .= "<br/>" . $this->htmlFormElementTable($htmlzw, g_l('weClass', '[languageLinksDefaults]'), 'left', 'defaultfont');
 			return $html;
-		} else{
+		} else {
 			return $this->htmlFormElementTable($this->htmlSelect($inputName, $_languages, 1, $value, false, "", "value", 521), g_l('weClass', '[language]'), "left", "defaultfont");
 		}
 	}
 
 	function formCategory(){
-		$addbut = we_button::create_button("add", "javascript:we_cmd('openCatselector', '', '" . CATEGORY_TABLE . "', '', '', 'fillIDs();opener.we_cmd(\\'dt_add_cat\\', top.allIDs);')", false, 92, 22, "", "", (!we_hasPerm("EDIT_KATEGORIE")));
+		$addbut = we_button::create_button("add", "javascript:we_cmd('openCatselector', '', '" . CATEGORY_TABLE . "', '', '', 'fillIDs();opener.we_cmd(\\'dt_add_cat\\', top.allIDs);')", false, 92, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
 
 		$cats = new MultiDirChooser(521, $this->Category, "dt_delete_cat", $addbut, "", "Icon,Path", CATEGORY_TABLE);
 		return $this->htmlFormElementTable($cats->get(), g_l('weClass', "[category]"));
@@ -245,10 +245,9 @@ class we_docTypes extends we_class{
 	 */
 	function formDocTypes2($arrHide = array()){
 		$vals = array();
-		$q = getDoctypeQuery($this->DB_WE);
-		$this->DB_WE->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' ' . $q);
+		$this->DB_WE->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' ' . we_docTypes::getDoctypeQuery($this->DB_WE));
 
-		while($this->DB_WE->next_record()) {
+		while($this->DB_WE->next_record()){
 			$v = $this->DB_WE->f("ID");
 			$t = $this->DB_WE->f("DocType");
 			if(in_array($t, $arrHide)){
@@ -261,10 +260,9 @@ class we_docTypes extends we_class{
 
 	function formDocTypes3($headline, $langkey, $derDT = 0){
 		$vals = array();
-		$q = getDoctypeQuery($this->DB_WE);
-		$this->DB_WE->query("SELECT ID,DocType FROM " . DOC_TYPES_TABLE . " $q");
+		$this->DB_WE->query("SELECT ID,DocType FROM " . DOC_TYPES_TABLE . ' ' . self::getDoctypeQuery($this->DB_WE));
 		$vals[0] = g_l('weClass', '[nodoctype]');
-		while($this->DB_WE->next_record()) {
+		while($this->DB_WE->next_record()){
 			$v = $this->DB_WE->f("ID");
 			$t = $this->DB_WE->f("DocType");
 			$vals[$v] = $t;
@@ -383,5 +381,45 @@ function switchExt(){
 		return we_button::create_button("delete_doctype", "javascript:we_cmd('deleteDocType', '" . $this->ID . "')");
 	}
 
-}
+	/**
+	 * Returns "where query" for Doctypes depending on which workspace the user have
+	 *
+	 * @param	object	$db
+	 *
+	 *
+	 * @return         string
+	 */
+	public static function getDoctypeQuery($db = ''){
+		$db = $db ? $db : new DB_WE();
 
+		$paths = array();
+		$ws = get_ws(FILE_TABLE);
+		if($ws){
+			$b = makeArrayFromCSV($ws);
+			if(WE_DOCTYPE_WORKSPACE_BEHAVIOR == 0){
+				foreach($b as $k => $v){
+					$db->query('SELECT ID,Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($v));
+					while($db->next_record()){
+						$paths[] = '(ParentPath = "' . $db->escape($db->f('Path')) . '" || ParentPath LIKE "' . $db->escape($db->f('Path')) . '/%")';
+					}
+				}
+				if(is_array($paths) && count($paths) > 0){
+					return 'WHERE (' . implode(' OR ', $paths) . ' OR ParentPath="") ORDER BY DocType';
+				}
+			} else {
+				foreach($b as $k => $v){
+					$_tmp_path = id_to_path($v);
+					while($_tmp_path && $_tmp_path != '/'){
+						$paths[] = '"' . $db->escape($_tmp_path) . '"';
+						$_tmp_path = dirname($_tmp_path);
+					}
+				}
+				if(is_array($paths) && count($paths) > 0){
+					return 'WHERE ParentPath IN (' . implode(',', $paths) . ',"")  ORDER BY DocType';
+				}
+			}
+		}
+		return (is_array($paths) && count($paths) > 0 ? 'WHERE ((' . implode(' OR ', $paths) . ') OR ParentPath="")' : '') . ' ORDER BY DocType';
+	}
+
+}

@@ -189,7 +189,7 @@ function menuaction(cmd) {
 			$and = explode('&&', $v);
 			$eand = 1;
 			foreach($and as $val){
-				$eand&=we_hasPerm(trim($val));
+				$eand&=permissionhandler::hasPerm(trim($val));
 			}
 			$enabled|=$eand;
 			if($enabled){

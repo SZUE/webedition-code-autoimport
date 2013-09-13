@@ -73,20 +73,20 @@ switch($we_doc->userHasAccess()){
 //	preparations of needed vars
 we_html_tools::htmlTop();
 
-$showPubl = we_hasPerm("PUBLISH") && $we_doc->userCanSave() && $we_doc->IsTextContentDoc;
+$showPubl = permissionhandler::hasPerm("PUBLISH") && $we_doc->userCanSave() && $we_doc->IsTextContentDoc;
 $reloadPage = (($showPubl || $we_doc->ContentType == 'text/weTmpl') && (!$we_doc->ID)) ? true : false;
 $haspermNew = false;
 
 //	Check permissions for buttons
 switch($we_doc->ContentType){
 	case "text/html":
-		$haspermNew = we_hasPerm("NEW_HTML");
+		$haspermNew = permissionhandler::hasPerm("NEW_HTML");
 		break;
 	case "text/webedition":
-		$haspermNew = we_hasPerm("NEW_WEBEDITIONSITE");
+		$haspermNew = permissionhandler::hasPerm("NEW_WEBEDITIONSITE");
 		break;
 	case "objectFile":
-		$haspermNew = we_hasPerm("NEW_OBJECTFILE");
+		$haspermNew = permissionhandler::hasPerm("NEW_OBJECTFILE");
 		break;
 }
 
@@ -468,14 +468,14 @@ function showEditFooterForNormalMode(){
 
 	switch($we_doc->ContentType){
 		case "text/weTmpl":
-			if(we_hasPerm("NEW_WEBEDITIONSITE") || we_hasPerm("ADMINISTRATOR")){
+			if(permissionhandler::hasPerm("NEW_WEBEDITIONSITE") || permissionhandler::hasPerm("ADMINISTRATOR")){
 				$_normalTable->addCol(2);
 				$_normalTable->setColContent(0, $_pos++, we_forms::checkbox("makeNewDoc", false, "makeNewDoc", g_l('global', "[we_new_doc_after_save]"), false, "defaultfont", "_EditorFrame.setEditorMakeNewDoc( (this.checked) ? true : false );"));
 				$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
 			}
 			break;
 		case "object":
-			if(we_hasPerm("NEW_OBJECTFILE") || we_hasPerm("ADMINISTRATOR")){
+			if(permissionhandler::hasPerm("NEW_OBJECTFILE") || permissionhandler::hasPerm("ADMINISTRATOR")){
 				$_normalTable->addCol(2);
 				$_normalTable->setColContent(0, $_pos++, we_forms::checkbox("makeNewDoc", false, "makeNewDoc", g_l('modules_object', '[we_new_doc_after_save]'), false, "defaultfont", "_EditorFrame.setEditorMakeNewDoc( (this.checked) ? true : false );"));
 				$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
@@ -552,7 +552,7 @@ function showEditFooterForSEEMMode(){
 
 	//	Button scheduler
 	if(in_array(WE_EDITPAGE_SCHEDULER, $GLOBALS['we_doc']->EditPageNrs) && ($GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_CONTENT || $GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_PROPERTIES)&&
-		defined("SCHEDULE_TABLE") && we_hasPerm("CAN_SEE_SCHEDULER")){
+		defined("SCHEDULE_TABLE") && permissionhandler::hasPerm("CAN_SEE_SCHEDULER")){
 			$_seeModeTable->addCol(2);
 			$_seeModeTable->setCol(0, $_pos++, array("valign" => "top"), we_button::create_button("schedule_button", "javascript:parent.editHeader.we_cmd('switch_edit_page', " . WE_EDITPAGE_SCHEDULER . ", '" . $GLOBALS["we_transaction"] . "');"));
 			$_seeModeTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
@@ -651,7 +651,7 @@ function showEditFooterForSEEMMode(){
 	//
 	//	4. show delete button to delete this document, not in edit_include-window
 	//
-		$canDelete = ( (!isset($_REQUEST['SEEM_edit_include']) || $_REQUEST['SEEM_edit_include'] == 'false') && (($we_doc->ClassName == "we_objectFile") ? we_hasPerm("DELETE_OBJECTFILE") : we_hasPerm("DELETE_DOCUMENT")));
+		$canDelete = ( (!isset($_REQUEST['SEEM_edit_include']) || $_REQUEST['SEEM_edit_include'] == 'false') && (($we_doc->ClassName == "we_objectFile") ? permissionhandler::hasPerm("DELETE_OBJECTFILE") : permissionhandler::hasPerm("DELETE_DOCUMENT")));
 	if($canDelete){
 		$_ctrlElem = getControlElement('button', 'delete'); //	look tag we:controlElement for details
 		if(!$_ctrlElem || !$_ctrlElem['hide']){

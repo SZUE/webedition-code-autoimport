@@ -1155,7 +1155,7 @@ class doclistView{
 			$Icon = we_base_ContentTypes::inst()->getIcon($_result [$f] ["ContentType"], we_base_ContentTypes::LINK_ICON, $ext);
 
 			if($view == 0){
-				$publishCheckbox = (!$showPubCheckbox) ? (($_result[$f]["ContentType"] == "text/webedition" || $_result[$f]["ContentType"] == "text/html" || $_result[$f]["ContentType"] == "objectFile") && we_hasPerm('PUBLISH')) ? we_forms::checkbox($_result[$f]["docID"] . "_" . $_result[$f]["docTable"], 0, "publish_docs_doclist", "", false, "middlefont", "") : we_html_tools::getPixel(20, 10)  : '';
+				$publishCheckbox = (!$showPubCheckbox) ? (($_result[$f]["ContentType"] == "text/webedition" || $_result[$f]["ContentType"] == "text/html" || $_result[$f]["ContentType"] == "objectFile") && permissionhandler::hasPerm('PUBLISH')) ? we_forms::checkbox($_result[$f]["docID"] . "_" . $_result[$f]["docTable"], 0, "publish_docs_doclist", "", false, "middlefont", "") : we_html_tools::getPixel(20, 10)  : '';
 
 				$content [$f] [0] ["dat"] = $publishCheckbox;
 				$content [$f] [1] ["dat"] = '<img src="' . ICON_DIR . $Icon . '" border="0" width="16" height="18" />';
@@ -1312,7 +1312,7 @@ class doclistView{
 	function getSearchParameterBottom($foundItems){
 		$thisObj = (isset($_REQUEST['we_cmd'] ['obj']) ? new doclistView () : $this);
 
-		if(we_hasPerm('PUBLISH')){
+		if(permissionhandler::hasPerm('PUBLISH')){
 			$publishButtonCheckboxAll = we_forms::checkbox(1, 0, "publish_all", "", false, "middlefont", "checkAllPubChecks()");
 			$publishButton = we_button::create_button("publish", "javascript:publishDocs();", true, 100, 22, "", "");
 		} else{

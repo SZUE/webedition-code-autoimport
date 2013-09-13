@@ -35,7 +35,7 @@ if($bTypeDoc && $bTypeObj){
 	if(defined("FILE_TABLE")){
 		$tbls[] = FILE_TABLE;
 	}
-	if(defined("OBJECT_FILES_TABLE") && we_hasPerm("CAN_SEE_OBJECTFILES")){
+	if(defined("OBJECT_FILES_TABLE") && permissionhandler::hasPerm("CAN_SEE_OBJECTFILES")){
 		$tbls[] = OBJECT_FILES_TABLE;
 	}
 } else {
@@ -53,7 +53,7 @@ foreach($tbls as $table){
 	$myWfDocsCSV = "";
 	if(defined("WORKFLOW_TABLE")){
 		$myWfDocsArray = we_workflow_utility::getWorkflowDocsForUser(
-				$_SESSION["user"]["ID"], $table, we_hasPerm("ADMINISTRATOR"), we_hasPerm("PUBLISH"), ($table == $_objectFilesTable) ? "" : get_ws($table));
+				$_SESSION["user"]["ID"], $table, permissionhandler::hasPerm("ADMINISTRATOR"), permissionhandler::hasPerm("PUBLISH"), ($table == $_objectFilesTable) ? "" : get_ws($table));
 		$myWfDocsCSV = makeCSVFromArray($myWfDocsArray);
 		$wfDocsArray = we_workflow_utility::getAllWorkflowDocs($table);
 		$wfDocsCSV = makeCSVFromArray($wfDocsArray);

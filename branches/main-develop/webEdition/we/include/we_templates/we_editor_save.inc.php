@@ -83,9 +83,9 @@ for (frameId in _usedEditors) {
 		$_newDocJs = "";
 
 		//	JS, when not in seem
-		$isTmpl = $we_doc->ContentType == "text/weTmpl" && (we_hasPerm("NEW_WEBEDITIONSITE") || we_hasPerm("ADMINISTRATOR"));
+		$isTmpl = $we_doc->ContentType == "text/weTmpl" && (permissionhandler::hasPerm("NEW_WEBEDITIONSITE") || permissionhandler::hasPerm("ADMINISTRATOR"));
 		if(!$isTmpl){
-			$isObject = $we_doc->ContentType == "object" && (we_hasPerm("NEW_OBJECTFILE") || we_hasPerm("ADMINISTRATOR"));
+			$isObject = $we_doc->ContentType == "object" && (permissionhandler::hasPerm("NEW_OBJECTFILE") || permissionhandler::hasPerm("ADMINISTRATOR"));
 		}
 		if($isTmpl){
 			$_newDocJs .= 'if( _EditorFrame.getEditorMakeNewDoc() == true ) {' .

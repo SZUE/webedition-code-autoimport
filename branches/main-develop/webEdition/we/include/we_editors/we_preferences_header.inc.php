@@ -31,7 +31,7 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_preferences_config.inc.php');
 $we_tabs = new we_tabs();
 
 foreach($GLOBALS['tabs'] as $name => $perm){
-	if(empty($perm) || we_hasPerm($perm)){
+	if(empty($perm) || permissionhandler::hasPerm($perm)){
 		$we_tabs->addTab(new we_tab("#", g_l('prefs', '[tab][' . $name . ']'), ($tabname == 'setting_' . $name ? we_tab::ACTIVE : we_tab::NORMAL), "top.we_cmd('" . $name . "');"));
 	}
 }

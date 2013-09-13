@@ -93,7 +93,7 @@ echo we_html_element::cssLink(WEBEDITION_DIR . 'css/global.php');
 
 			showSidebarText(g_l('sidebar', '[default]'));
 
-			if(we_hasPerm('ADMINISTRATOR')){
+			if(permissionhandler::hasPerm('ADMINISTRATOR')){
 				showSidebarText(g_l('sidebar', '[admin]'));
 			}
 			?>

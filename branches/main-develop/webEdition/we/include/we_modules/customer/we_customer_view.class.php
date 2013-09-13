@@ -132,7 +132,7 @@ function we_cmd() {
 
 		case "delete_customer":
 			if(top.content.editor.edbody.document.we_form.cmd.value=="home") return;
-			' . (!we_hasPerm("DELETE_CUSTOMER") ?
+			' . (!permissionhandler::hasPerm("DELETE_CUSTOMER") ?
 					('
 				' . we_message_reporting::getShowMessageCall(g_l('modules_customer', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 			') :
@@ -151,7 +151,7 @@ function we_cmd() {
 
 		case "save_customer":
 			if(top.content.editor.edbody.document.we_form.cmd.value=="home") return;
-			' . ((!we_hasPerm("EDIT_CUSTOMER") && !we_hasPerm("NEW_CUSTOMER")) ?
+			' . ((!permissionhandler::hasPerm("EDIT_CUSTOMER") && !permissionhandler::hasPerm("NEW_CUSTOMER")) ?
 					('
 				' . we_message_reporting::getShowMessageCall(g_l('modules_customer', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 			') :

@@ -97,7 +97,7 @@ if(isset($_REQUEST['we_cmd'][1])){
 			break;
 	}
 }
-if($_needPerm != '' && !we_hasPerm($_needPerm)){
+if($_needPerm != '' && !permissionhandler::hasPerm($_needPerm)){
 	include(WE_INCLUDES_PATH . 'weInfoPages/weNoPerms.inc.php');
 	exit();
 }

@@ -329,7 +329,7 @@ if(isset($daten)){
 					array(
 						'html' => '<table cellpadding="2" cellspacing="0" width="100%" border="0">' .
 						'<tr><td class="defaultfont">' . g_l('modules_shop', '[noRecordAlert]') . '</td></tr>' .
-						'<tr><td class="defaultfont">' . we_button::create_button("image:btn_shop_pref", "javascript:top.opener.top.we_cmd('pref_shop')", true, -1, -1, "", "", !we_hasPerm("NEW_USER")) . '</td></tr>' .
+						'<tr><td class="defaultfont">' . we_button::create_button("image:btn_shop_pref", "javascript:top.opener.top.we_cmd('pref_shop')", true, -1, -1, "", "", !permissionhandler::hasPerm("NEW_USER")) . '</td></tr>' .
 						'</table>',
 						'space' => 0
 					)

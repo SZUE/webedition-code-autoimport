@@ -33,7 +33,7 @@ if($GLOBALS['we_doc']->EditPageNr != WE_EDITPAGE_WORKSPACE){
 		"icon" => "path.gif"
 	);
 
-	if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE || !we_hasPerm('CAN_SEE_OBJECTS')){ // No link to class in normal mode
+	if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE || !permissionhandler::hasPerm('CAN_SEE_OBJECTS')){ // No link to class in normal mode
 		$parts[] = array(
 			"headline" => g_l('modules_object', '[class]'),
 			"html" => $GLOBALS['we_doc']->formClass(),

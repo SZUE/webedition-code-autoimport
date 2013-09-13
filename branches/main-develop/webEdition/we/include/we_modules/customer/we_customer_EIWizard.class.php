@@ -1592,7 +1592,7 @@ class we_customer_EIWizard{
 		$wecmdenc4 = we_cmd_enc(str_replace('\\', '', $cmd));
 		$button = we_button::create_button("select", "javascript:formFileChooser('browse_server','" . $wecmdenc1 . "','$filter',document.we_form.elements['$IDName'].value,'" . $wecmdenc4 . "');");
 
-		return $js . we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($IDName, 30, $IDValue, "", ' readonly', "text", $width, 0), "", "left", "defaultfont", "", we_html_tools::getPixel(20, 4), we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? $button : "");
+		return $js . we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($IDName, 30, $IDValue, "", ' readonly', "text", $width, 0), "", "left", "defaultfont", "", we_html_tools::getPixel(20, 4), permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? $button : "");
 	}
 
 	/* creates the DirectoryChoooser field with the "browse"-Button. Clicking on the Button opens the fileselector */
@@ -1686,7 +1686,7 @@ class we_customer_EIWizard{
 		$addbut = we_button::create_button("add", "javascript:selector_cmd('openSelector','','" . CUSTOMER_TABLE . "','','','fillIDs();opener." . $this->bodyFrame . ".selector_cmd(\\'add_customer\\',top.allIDs);')");
 		$custs = new MultiDirChooser(400, (isset($_REQUEST["customers"]) ? $_REQUEST["customers"] : ""), "del_customer", we_button::create_button_table(array($delallbut, $addbut)), "", "Icon,Path", CUSTOMER_TABLE);
 
-		if(!we_hasPerm("EDIT_KATEGORIE")){
+		if(!permissionhandler::hasPerm("EDIT_KATEGORIE")){
 			$custs->isEditable = false;
 		}
 		return $js . $hiddens . $custs->get();

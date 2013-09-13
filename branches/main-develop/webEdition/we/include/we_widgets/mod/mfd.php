@@ -83,18 +83,18 @@ foreach ($aUsers as $uid) {
 	$_users_where[] = '"' . basename(id_to_path($uid, USER_TABLE)) . '"';
 }
 
-if (defined("FILE_TABLE") && $bTypeDoc && we_hasPerm('CAN_SEE_DOCUMENTS')) {
+if (defined("FILE_TABLE") && $bTypeDoc && permissionhandler::hasPerm('CAN_SEE_DOCUMENTS')) {
 	$_where[] = '"' . stripTblPrefix(FILE_TABLE) . '"';
 	$_ws[FILE_TABLE] = get_ws(FILE_TABLE);
 }
-if (defined("OBJECT_FILES_TABLE") && $bTypeObj && we_hasPerm('CAN_SEE_OBJECTFILES')) {
+if (defined("OBJECT_FILES_TABLE") && $bTypeObj && permissionhandler::hasPerm('CAN_SEE_OBJECTFILES')) {
 	$_where[] = '"' . stripTblPrefix(OBJECT_FILES_TABLE) . '"';
 	$_ws[OBJECT_FILES_TABLE] = get_ws(OBJECT_FILES_TABLE);
 }
-if (defined("TEMPLATES_TABLE") && $bTypeTpl && we_hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE) {
+if (defined("TEMPLATES_TABLE") && $bTypeTpl && permissionhandler::hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE) {
 	$_where[] = '"' . stripTblPrefix(TEMPLATES_TABLE) . '"';
 }
-if (defined("OBJECT_TABLE") && $bTypeCls && we_hasPerm('CAN_SEE_OBJECTS') && $_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE) {
+if (defined("OBJECT_TABLE") && $bTypeCls && permissionhandler::hasPerm('CAN_SEE_OBJECTS') && $_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE) {
 	$_where[] = '"' . stripTblPrefix(OBJECT_TABLE) . '"';
 }
 
@@ -114,7 +114,7 @@ while ($j < $iMaxItems) {
 		$_table = TBL_PREFIX . $GLOBALS['DB_WE']->f('DocumentTable');
 		$_paths = array();
 		$_bool_ot = (defined('OBJECT_TABLE')) ? (($_table != OBJECT_TABLE) ? true : false) : true;
-		if (!we_hasPerm('ADMINISTRATOR') || ($_table != TEMPLATES_TABLE && $_bool_ot)) {
+		if (!permissionhandler::hasPerm('ADMINISTRATOR') || ($_table != TEMPLATES_TABLE && $_bool_ot)) {
 			if (isset($_ws[$_table])) {
 				$_wsa = makeArrayFromCSV($_ws[$_table]);
 				foreach ($_wsa as $_id) {

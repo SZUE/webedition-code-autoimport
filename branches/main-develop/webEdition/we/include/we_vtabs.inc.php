@@ -50,25 +50,25 @@ $svg = array(
 $vtab = array(
 	'FILE_TABLE' => array(
 		'file' => 'we_language/' . $GLOBALS["WE_LANGUAGE"] . '/v-tabs/documents',
-		'show' => we_hasPerm('CAN_SEE_DOCUMENTS') || we_hasPerm('ADMINISTRATOR'),
+		'show' => permissionhandler::hasPerm('CAN_SEE_DOCUMENTS') || permissionhandler::hasPerm('ADMINISTRATOR'),
 		'size' => array(19, 83),
 		'desc' => g_l('global', '[documents]'),
 	),
 	'TEMPLATES_TABLE' => array(
 		'file' => 'we_language/' . $GLOBALS['WE_LANGUAGE'] . '/v-tabs/templates',
-		'show' => we_hasPerm('CAN_SEE_TEMPLATES'),
+		'show' => permissionhandler::hasPerm('CAN_SEE_TEMPLATES'),
 		'size' => array(19, 83),
 		'desc' => g_l('global', '[templates]'),
 	),
 	'OBJECT_FILES_TABLE' => array(
 		'file' => 'we_language/' . $GLOBALS["WE_LANGUAGE"] . '/v-tabs/objects',
-		'show' => defined('OBJECT_TABLE') && we_hasPerm('CAN_SEE_OBJECTFILES'),
+		'show' => defined('OBJECT_TABLE') && permissionhandler::hasPerm('CAN_SEE_OBJECTFILES'),
 		'size' => array(19, 83),
 		'desc' => g_l('global', '[objects]'),
 	),
 	'OBJECT_TABLE' => array(
 		'file' => 'we_language/' . $GLOBALS["WE_LANGUAGE"] . '/v-tabs/classes',
-		'show' => defined('OBJECT_TABLE') && we_hasPerm("CAN_SEE_OBJECTS"),
+		'show' => defined('OBJECT_TABLE') && permissionhandler::hasPerm("CAN_SEE_OBJECTS"),
 		'size' => array(19, 83),
 		'desc' => g_l('javaMenu_object', '[classes]'),
 	)

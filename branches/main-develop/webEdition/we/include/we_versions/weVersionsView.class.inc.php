@@ -926,7 +926,7 @@ function delRow(id) {
 			$user = $_versions[$f]["modifierID"] ? id_to_path($_versions[$f]["modifierID"], USER_TABLE, $this->db) : g_l('versions', '[unknown]');
 			$vers = $_versions[$f]["version"];
 			$disabledReset = ($_versions[$f]["active"] == 1) ? true : false;
-			if(!we_hasPerm("ADMINISTRATOR") && !we_hasPerm("RESET_VERSIONS")){
+			if(!permissionhandler::hasPerm("ADMINISTRATOR") && !permissionhandler::hasPerm("RESET_VERSIONS")){
 				$disabledReset = true;
 			}
 			$fromScheduler = ($_versions[$f]["fromScheduler"]) ? g_l('versions', '[fromScheduler]') : "";
@@ -941,7 +941,7 @@ function delRow(id) {
 					($fromScheduler != '' ? $fromScheduler : '') .
 					($fromImport != '' ? $fromImport : '') .
 					($resetFromVersion != '' ? $resetFromVersion : '')),
-				array("dat" => (we_hasPerm("ADMINISTRATOR")) ? we_forms::checkbox($_versions[$f]["ID"], 0, "deleteVersion", "", false, "defaultfont", "") : ""),
+				array("dat" => (permissionhandler::hasPerm("ADMINISTRATOR")) ? we_forms::checkbox($_versions[$f]["ID"], 0, "deleteVersion", "", false, "defaultfont", "") : ""),
 				array("dat" => "<span class='printShow'>" . we_button::create_button("reset", "javascript:resetVersion('" . $_versions[$f]["ID"] . "','" . $_versions[$f]["documentID"] . "','" . $_versions[$f]["version"] . "','" . $_versions[$f]["documentTable"] . "');", true, 100, 22, "", "", $disabledReset) . "</span>"),
 				array("dat" => "<span class='printShow'>" . we_button::create_button("preview", "javascript:previewVersion('" . $_versions[$f]["ID"] . "');") . "</span>" . we_html_tools::getPixel(1, 1)),
 				array("dat" => "<span class='printShow'>" .
@@ -965,7 +965,7 @@ function delRow(id) {
 			array("dat" => '<a href="javascript:setOrder(\'modifierID\');">' . g_l('versions', '[user]') . '</a> <span id="modifierID" >' . $this->getSortImage('modifierID') . '</span>'),
 			array("dat" => '<a href="javascript:setOrder(\'timestamp\');">' . g_l('versions', '[modTime]') . '</a> <span id="timestamp" >' . $this->getSortImage('timestamp') . '</span>'),
 			array("dat" => g_l('versions', '[modifications]')),
-			array("dat" => (we_hasPerm("ADMINISTRATOR") ? '<div style="margin:0px 0px 5px 0px;" id="deleteButton">' . we_button::create_button(
+			array("dat" => (permissionhandler::hasPerm("ADMINISTRATOR") ? '<div style="margin:0px 0px 5px 0px;" id="deleteButton">' . we_button::create_button(
 						"image:btn_function_trash", "javascript:deleteVers();") . '</div>' : '') .
 				we_forms::checkbox(1, 0, "deleteAllVersions", g_l('versions', '[mark]'), false, "middlefont", "checkAll();")),
 			array("dat" => we_html_tools::getPixel(1, 1)),

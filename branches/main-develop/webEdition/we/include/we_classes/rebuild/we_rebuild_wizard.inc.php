@@ -75,7 +75,7 @@ abstract class we_rebuild_wizard{
 		$cancelButton = we_button::create_button("cancel", "javascript:top.close();");
 		$refreshButton = we_button::create_button("refresh", "javascript:parent.wizcmd.location.reload();", true, -1, -1, "", "", false, false);
 
-		$nextbutdisabled = !(we_hasPerm("REBUILD_ALL") || we_hasPerm("REBUILD_FILTERD") || we_hasPerm("REBUILD_OBJECTS") || we_hasPerm("REBUILD_INDEX") || we_hasPerm("REBUILD_THUMBS") || we_hasPerm("REBUILD_META"));
+		$nextbutdisabled = !(permissionhandler::hasPerm("REBUILD_ALL") || permissionhandler::hasPerm("REBUILD_FILTERD") || permissionhandler::hasPerm("REBUILD_OBJECTS") || permissionhandler::hasPerm("REBUILD_INDEX") || permissionhandler::hasPerm("REBUILD_THUMBS") || permissionhandler::hasPerm("REBUILD_META"));
 
 		if($dc){
 			$buttons = we_button::create_button_table(array($refreshButton, $cancelButton), 10);
@@ -137,17 +137,17 @@ abstract class we_rebuild_wizard{
 		if(isset($_REQUEST["type"])){
 			$type = $_REQUEST["type"];
 		} else{
-			if(we_hasPerm("REBUILD_ALL") || we_hasPerm("REBUILD_FILTERD")){
+			if(permissionhandler::hasPerm("REBUILD_ALL") || permissionhandler::hasPerm("REBUILD_FILTERD")){
 				$type = "rebuild_documents";
-			} else if(defined("OBJECT_FILES_TABLE") && we_hasPerm("REBUILD_OBJECTS")){
+			} else if(defined("OBJECT_FILES_TABLE") && permissionhandler::hasPerm("REBUILD_OBJECTS")){
 				$type = "rebuild_objects";
-			} else if(we_hasPerm("REBUILD_INDEX")){
+			} else if(permissionhandler::hasPerm("REBUILD_INDEX")){
 				$type = "rebuild_index";
-			} else if(we_hasPerm("REBUILD_THUMBS")){
+			} else if(permissionhandler::hasPerm("REBUILD_THUMBS")){
 				$type = "rebuild_thumbnails";
-			} else if(we_hasPerm("REBUILD_NAVIGATION")){
+			} else if(permissionhandler::hasPerm("REBUILD_NAVIGATION")){
 				$type = "rebuild_navigation";
-			} else if(we_hasPerm("REBUILD_META")){
+			} else if(permissionhandler::hasPerm("REBUILD_META")){
 				$type = "rebuild_metadata";
 			} else{
 				$type = "";
@@ -158,7 +158,7 @@ abstract class we_rebuild_wizard{
 		$parts = array(
 			array(
 				"headline" => "",
-				"html" => we_forms::radiobutton("rebuild_documents", ($type == "rebuild_documents" && (we_hasPerm("REBUILD_ALL") || we_hasPerm("REBUILD_FILTERD"))), "type", g_l('rebuild', "[documents]"), true, "defaultfont", "setNavStatDocDisabled()", (!(we_hasPerm("REBUILD_ALL") || we_hasPerm("REBUILD_FILTERD"))), g_l('rebuild', "[txt_rebuild_documents]"), 0, 495),
+				"html" => we_forms::radiobutton("rebuild_documents", ($type == "rebuild_documents" && (permissionhandler::hasPerm("REBUILD_ALL") || permissionhandler::hasPerm("REBUILD_FILTERD"))), "type", g_l('rebuild', "[documents]"), true, "defaultfont", "setNavStatDocDisabled()", (!(permissionhandler::hasPerm("REBUILD_ALL") || permissionhandler::hasPerm("REBUILD_FILTERD"))), g_l('rebuild', "[txt_rebuild_documents]"), 0, 495),
 				"space" => 0
 			)
 		);
@@ -167,25 +167,25 @@ abstract class we_rebuild_wizard{
 
 			$parts[] = array(
 				"headline" => "",
-				"html" => we_forms::radiobutton("rebuild_objects", ($type == "rebuild_objects" && we_hasPerm("REBUILD_OBJECTS")), "type", g_l('rebuild', "[rebuild_objects]"), true, "defaultfont", "setNavStatDocDisabled()", (!we_hasPerm("REBUILD_OBJECTS")), g_l('rebuild', "[txt_rebuild_objects]"), 0, 495),
+				"html" => we_forms::radiobutton("rebuild_objects", ($type == "rebuild_objects" && permissionhandler::hasPerm("REBUILD_OBJECTS")), "type", g_l('rebuild', "[rebuild_objects]"), true, "defaultfont", "setNavStatDocDisabled()", (!permissionhandler::hasPerm("REBUILD_OBJECTS")), g_l('rebuild', "[txt_rebuild_objects]"), 0, 495),
 				"space" => 0
 			);
 		}
 
 		$parts[] = array(
 			"headline" => "",
-			"html" => we_forms::radiobutton("rebuild_index", ($type == "rebuild_index" && we_hasPerm("REBUILD_INDEX")), "type", g_l('rebuild', "[rebuild_index]"), true, "defaultfont", "setNavStatDocDisabled()", (!we_hasPerm("REBUILD_INDEX")), g_l('rebuild', "[txt_rebuild_index]"), 0, 495),
+			"html" => we_forms::radiobutton("rebuild_index", ($type == "rebuild_index" && permissionhandler::hasPerm("REBUILD_INDEX")), "type", g_l('rebuild', "[rebuild_index]"), true, "defaultfont", "setNavStatDocDisabled()", (!permissionhandler::hasPerm("REBUILD_INDEX")), g_l('rebuild', "[txt_rebuild_index]"), 0, 495),
 			"space" => 0
 		);
 
 		$parts[] = array(
 			"headline" => "",
-			"html" => we_forms::radiobutton("rebuild_thumbnails", ($type == "rebuild_thumbnails" && we_hasPerm("REBUILD_THUMBS")), "type", g_l('rebuild', "[thumbnails]"), true, "defaultfont", "setNavStatDocDisabled()", (we_image_edit::gd_version() == 0 || (!we_hasPerm("REBUILD_THUMBS"))), g_l('rebuild', "[txt_rebuild_thumbnails]"), 0, 495),
+			"html" => we_forms::radiobutton("rebuild_thumbnails", ($type == "rebuild_thumbnails" && permissionhandler::hasPerm("REBUILD_THUMBS")), "type", g_l('rebuild', "[thumbnails]"), true, "defaultfont", "setNavStatDocDisabled()", (we_image_edit::gd_version() == 0 || (!permissionhandler::hasPerm("REBUILD_THUMBS"))), g_l('rebuild', "[txt_rebuild_thumbnails]"), 0, 495),
 			"space" => 0
 		);
 
 		$_navRebuildHTML = '<div>' .
-			we_forms::radiobutton("rebuild_navigation", ($type == "rebuild_navigation" && we_hasPerm("REBUILD_NAVIGATION")), "type", g_l('rebuild', "[navigation]"), false, "defaultfont", "setNavStatDocDisabled()", !we_hasPerm("REBUILD_NAVIGATION"), g_l('rebuild', "[txt_rebuild_navigation]"), 0, 495) .
+			we_forms::radiobutton("rebuild_navigation", ($type == "rebuild_navigation" && permissionhandler::hasPerm("REBUILD_NAVIGATION")), "type", g_l('rebuild', "[navigation]"), false, "defaultfont", "setNavStatDocDisabled()", !permissionhandler::hasPerm("REBUILD_NAVIGATION"), g_l('rebuild', "[txt_rebuild_navigation]"), 0, 495) .
 			'</div><div style="padding:10px 20px;">' .
 			we_forms::checkbox(1, false, 'rebuildStaticAfterNavi', g_l('rebuild', "[rebuildStaticAfterNaviCheck]"), false, 'defaultfont', '', true, g_l('rebuild', "[rebuildStaticAfterNaviHint]"), 0, 475) .
 			'</div>';
@@ -208,11 +208,11 @@ abstract class we_rebuild_wizard{
 
 		$parts[] = array(
 			"headline" => "",
-			"html" => we_forms::radiobutton("rebuild_metadata", ($type == "rebuild_metadata" && we_hasPerm("REBUILD_META")), "type", g_l('rebuild', "[metadata]"), true, "defaultfont", "setNavStatDocDisabled()", (!we_hasPerm("REBUILD_META")) || $_rebuildMetaDisabled, g_l('rebuild', "[txt_rebuild_metadata]"), 0, 495),
+			"html" => we_forms::radiobutton("rebuild_metadata", ($type == "rebuild_metadata" && permissionhandler::hasPerm("REBUILD_META")), "type", g_l('rebuild', "[metadata]"), true, "defaultfont", "setNavStatDocDisabled()", (!permissionhandler::hasPerm("REBUILD_META")) || $_rebuildMetaDisabled, g_l('rebuild', "[txt_rebuild_metadata]"), 0, 495),
 			"space" => 0
 		);
 
-		$allbutdisabled = !(we_hasPerm("REBUILD_ALL") || we_hasPerm("REBUILD_FILTERD") || we_hasPerm("REBUILD_OBJECTS") || we_hasPerm("REBUILD_INDEX") || we_hasPerm("REBUILD_THUMBS") || we_hasPerm("REBUILD_META"));
+		$allbutdisabled = !(permissionhandler::hasPerm("REBUILD_ALL") || permissionhandler::hasPerm("REBUILD_FILTERD") || permissionhandler::hasPerm("REBUILD_OBJECTS") || permissionhandler::hasPerm("REBUILD_INDEX") || permissionhandler::hasPerm("REBUILD_THUMBS") || permissionhandler::hasPerm("REBUILD_META"));
 
 
 		$js =
@@ -410,7 +410,7 @@ abstract class we_rebuild_wizard{
 	static function formCategory($categories, $catAnd){
 		$catAndCheck = we_forms::checkbox(1, $catAnd, "catAnd", g_l('rebuild', "[catAnd]"), false, "defaultfont", "document.we_form.btype[2].checked=true;");
 		$delallbut = we_button::create_button("delete_all", "javascript:document.we_form.btype[2].checked=true;we_cmd('del_all_cats')");
-		$addbut = we_button::create_button("add", "javascript:document.we_form.btype[2].checked=true;we_cmd('openCatselector','','" . CATEGORY_TABLE . "','','','fillIDs();opener.we_cmd(\\'add_cat\\',top.allIDs);')", false, 100, 22, "", "", (!we_hasPerm("EDIT_KATEGORIE")));
+		$addbut = we_button::create_button("add", "javascript:document.we_form.btype[2].checked=true;we_cmd('openCatselector','','" . CATEGORY_TABLE . "','','','fillIDs();opener.we_cmd(\\'add_cat\\',top.allIDs);')", false, 100, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
 		$butTable = we_button::create_button_table(array($delallbut, $addbut));
 		$upperTable = '<table border="0" cellpadding="0" cellspacing="0" width="495"><tr><td align="left">' . $catAndCheck . '</td><td align="right">' . $butTable . '</td></tr></table>';
 
@@ -538,18 +538,18 @@ abstract class we_rebuild_wizard{
 			we_rebuild_wizard::formDoctypes($doctypes) . '<br/>' . we_html_tools::getPixel(2, 10) . '<br/>' .
 			we_rebuild_wizard::formFolders($folders);
 
-		$filter_content = we_forms::radiobutton('rebuild_filter', ($btype == 'rebuild_filter' && we_hasPerm('REBUILD_FILTERD') || ($btype == 'rebuild_all' && (!we_hasPerm('REBUILD_ALL')) && we_hasPerm('REBUILD_FILTERD'))), 'btype', g_l('rebuild', '[rebuild_filter]'), true, 'defaultfont', '', (!we_hasPerm('REBUILD_FILTERD')), g_l('rebuild', '[txt_rebuild_filter]'), 0, 495, '', $filter_content);
+		$filter_content = we_forms::radiobutton('rebuild_filter', ($btype == 'rebuild_filter' && permissionhandler::hasPerm('REBUILD_FILTERD') || ($btype == 'rebuild_all' && (!permissionhandler::hasPerm('REBUILD_ALL')) && permissionhandler::hasPerm('REBUILD_FILTERD'))), 'btype', g_l('rebuild', '[rebuild_filter]'), true, 'defaultfont', '', (!permissionhandler::hasPerm('REBUILD_FILTERD')), g_l('rebuild', '[txt_rebuild_filter]'), 0, 495, '', $filter_content);
 
 
 		$parts = array(
 			array(
 				'headline' => '',
-				'html' => we_forms::radiobutton('rebuild_all', ($btype == 'rebuild_all' && we_hasPerm('REBUILD_ALL')), 'btype', g_l('rebuild', '[rebuild_all]'), true, 'defaultfont', '', (!we_hasPerm('REBUILD_ALL')), g_l('rebuild', '[txt_rebuild_all]'), 0, 495, '', $all_content),
+				'html' => we_forms::radiobutton('rebuild_all', ($btype == 'rebuild_all' && permissionhandler::hasPerm('REBUILD_ALL')), 'btype', g_l('rebuild', '[rebuild_all]'), true, 'defaultfont', '', (!permissionhandler::hasPerm('REBUILD_ALL')), g_l('rebuild', '[txt_rebuild_all]'), 0, 495, '', $all_content),
 				'space' => 0
 			),
 			array(
 				'headline' => '',
-				'html' => we_forms::radiobutton('rebuild_templates', ($btype == 'rebuild_templates' && we_hasPerm('REBUILD_TEMPLATES')), 'btype', g_l('rebuild', '[rebuild_templates]'), true, 'defaultfont', '', (!we_hasPerm('REBUILD_TEMPLATES')), g_l('rebuild', '[txt_rebuild_templates]'), 0, 495),
+				'html' => we_forms::radiobutton('rebuild_templates', ($btype == 'rebuild_templates' && permissionhandler::hasPerm('REBUILD_TEMPLATES')), 'btype', g_l('rebuild', '[rebuild_templates]'), true, 'defaultfont', '', (!permissionhandler::hasPerm('REBUILD_TEMPLATES')), g_l('rebuild', '[txt_rebuild_templates]'), 0, 495),
 				'space' => 0
 			),
 			array(

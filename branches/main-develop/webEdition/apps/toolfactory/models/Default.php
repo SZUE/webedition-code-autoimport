@@ -255,7 +255,6 @@ class toolfactory_models_Default extends we_app_Model{
 	function save($skipHook = 0){
 
 		$text = oldHtmlspecialchars($this->Text, ENT_NOQUOTES);
-		include_once(WE_INCLUDES_PATH . 'we_version.php');
 
 		$TOOLNAMELANG = $text;
 		$TOOLNAME = $this->classname;

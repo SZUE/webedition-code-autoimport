@@ -948,7 +948,7 @@ class we_objectFile extends we_document{
 		$wecmdenc3 = we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);opener.top.we_cmd('change_objectlink','" . $GLOBALS['we_transaction'] . "','" . we_object::QUERY_PREFIX . $pid . "');");
 
 		$_buttons = array(
-			we_button::create_button('select', "javascript:we_cmd('openDocselector',document.forms['we_form'].elements['$idname'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','$pid','objectFile'," . (we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")")
+			we_button::create_button('select', "javascript:we_cmd('openDocselector',document.forms['we_form'].elements['$idname'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','$pid','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")")
 		);
 
 		if(($_but = $myid ? $editObjectButton : $editObjectButtonDis)){
@@ -1025,7 +1025,7 @@ class we_objectFile extends we_document{
 				$wecmdenc2 = we_cmd_enc("document.forms['we_form'].elements['$textname'].value");
 				$wecmdenc3 = we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);if(currentID==" . $this->ID . "){" . we_message_reporting::getShowMessageCall($alerttext, we_message_reporting::WE_MESSAGE_ERROR) . "opener.document.we_form.elements['$idname'].value='';opener.document.we_form.elements['$textname'].value='';;};" . $reloadEntry);
 
-				$selectObject = we_button::create_button("select", "javascript:we_cmd('openDocselector',document.forms['we_form'].elements['$idname'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','$rootDir','objectFile'," . (we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")");
+				$selectObject = we_button::create_button("select", "javascript:we_cmd('openDocselector',document.forms['we_form'].elements['$idname'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','$rootDir','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")");
 
 				$upbut = we_button::create_button('image:btn_direction_up', "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('up_meta_at_object','" . $GLOBALS['we_transaction'] . "','" . self::TYPE_MULTIOBJECT . '_' . $name . "','" . ($f) . "')");
 				$upbutDis = we_button::create_button('image:btn_direction_up', "#", true, -1, -1, "", "", true);
@@ -1200,14 +1200,14 @@ class we_objectFile extends we_document{
 			$wecmdenc2 = we_cmd_enc("document.forms['we_form'].elements['$Path_elem_Name'].value");
 			$wecmdenc3 = we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);" . ($showRadio ? "opener.document.we_form.elements['$int_elem_Name'][0].checked=true;" : "") . str_replace('\\', '', $extraCmd));
 			$but = (($directory && $file) || $file ?
-					we_button::create_button('select', "javascript:we_cmd('openDocselector',document.forms[0].elements['$intID_elem_Name'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "',0,''," . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ",''," . ($directory ? 0 : 1) . ");") :
+					we_button::create_button('select', "javascript:we_cmd('openDocselector',document.forms[0].elements['$intID_elem_Name'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "',0,''," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ",''," . ($directory ? 0 : 1) . ");") :
 					we_button::create_button('select', "javascript:we_cmd('openDirselector',document.forms[0].elements['$intID_elem_Name'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "',0);")
 				);
 		} else {
 			$trashbut = we_button::create_button('image:btn_function_trash', "javascript:document.we_form.elements['" . $Path_elem_Name . "'].value='';_EditorFrame.setEditorIsHot(true);");
 			$wecmdenc1 = we_cmd_enc("document.forms[0].elements['$Path_elem_Name'].value");
 			$wecmdenc4 = we_cmd_enc("if (opener.opener != null){opener.opener._EditorFrame.setEditorIsHot(true);}else{opener._EditorFrame.setEditorIsHot(true);}" . ($showRadio ? "opener.document.we_form.elements['$int_elem_Name'][1].checked=true;" : ""));
-			$but = (!we_hasPerm('CAN_SELECT_EXTERNAL_FILES') ? '' : (
+			$but = (!permissionhandler::hasPerm('CAN_SELECT_EXTERNAL_FILES') ? '' : (
 					we_button::create_button('select', "javascript:we_cmd('browse_server','" . $wecmdenc1 . "','" . (($directory && $file) ? 'filefolder' : ($file ? '' : 'folder')) . "',document.forms[0].elements['$Path_elem_Name'].value,'" . $wecmdenc4 . "')")
 					));
 		}
@@ -2911,7 +2911,7 @@ class we_objectFile extends we_document{
 		if($_SESSION['perms']['ADMINISTRATOR']){
 			return true;
 		}
-		if(!we_hasPerm('CAN_SEE_OBJECTFILES')){
+		if(!permissionhandler::hasPerm('CAN_SEE_OBJECTFILES')){
 			return false;
 		}
 		if(!$this->RestrictOwners){
@@ -2932,7 +2932,7 @@ class we_objectFile extends we_document{
 	 * @desc	checks if the user has the right to see an objectfile
 	 */
 	function userHasPerms(){
-		return ($_SESSION['perms']['ADMINISTRATOR'] || we_hasPerm('CAN_SEE_OBJECTFILES') || (!$this->RestrictOwners) || we_isOwner($this->Owners) || we_isOwner($this->CreatorID));
+		return ($_SESSION['perms']['ADMINISTRATOR'] || permissionhandler::hasPerm('CAN_SEE_OBJECTFILES') || (!$this->RestrictOwners) || we_users_util::isOwner($this->Owners) || we_users_util::isOwner($this->CreatorID));
 	}
 
 	/**
@@ -3093,6 +3093,118 @@ class we_objectFile extends we_document{
 
 		$this->DB_WE->query('SELECT DISTINCT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ' . implode(' OR ', $queries));
 		return $this->DB_WE->getAll(true);
+	}
+
+	public static function getHref($id, $pid, $path = '', $DB_WE = '', $hidedirindex = false, $objectseourls = false){
+		if(!$id){
+			return '';
+		}
+
+		if(!$path){
+			$path = $_SERVER['SCRIPT_NAME'];
+		}
+		$DB_WE = ($DB_WE ? $DB_WE : new DB_WE());
+
+		$foo = getHash('SELECT Published,Workspaces, ExtraWorkspacesSelected,TriggerID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($id), $DB_WE);
+		if(empty($foo)){
+			return '';
+		}
+
+// check if object is published.
+		if(!$GLOBALS['we_doc']->InWebEdition && !$foo['Published']){
+			$GLOBALS['we_link_not_published'] = 1;
+			return '';
+		}
+
+		$showLink = false;
+
+		if($foo['Workspaces']){
+			if($foo['TriggerID']){
+				if(in_workspace($foo['TriggerID'], $foo['Workspaces'], FILE_TABLE, $DB_WE)){
+					$showLink = true;
+				}
+				if(in_workspace($foo['TriggerID'], $foo['ExtraWorkspacesSelected'], FILE_TABLE, $DB_WE)){
+					$showLink = true;
+				}
+			} else {
+				if(in_workspace($pid, $foo['Workspaces'], FILE_TABLE, $DB_WE)){
+					$showLink = true;
+				} else {
+					if($foo['ExtraWorkspacesSelected']){
+						if(in_workspace($pid, $foo['ExtraWorkspacesSelected'], FILE_TABLE, $DB_WE)){
+							$showLink = true;
+						}
+					}
+				}
+			}
+		}
+		if($showLink){
+			$path = ($foo['TriggerID'] ? id_to_path($foo['TriggerID']) : self::getNextDynDoc($path, $pid, $foo['Workspaces'], $foo['ExtraWorkspacesSelected'], $DB_WE));
+			if(!$path){
+				return '';
+			}
+
+			if(!((isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode']) || (isset($GLOBALS['WE_MAIN_EDITMODE']) && $GLOBALS['WE_MAIN_EDITMODE'])) && $hidedirindex){
+				$path_parts = pathinfo($path);
+				if(show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES != '' && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
+					$path = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/';
+				}
+			}
+			if(show_SeoLinks() && $objectseourls){
+
+				$objectdaten = getHash('SELECT  Url,TriggerID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($id) . ' LIMIT 1', $DB_WE);
+				$objecturl = $objectdaten['Url'];
+				$objecttriggerid = $objectdaten['TriggerID'];
+				if($objecttriggerid){
+					$path_parts = pathinfo(id_to_path($objecttriggerid));
+				}
+			} else {
+				$objecturl = '';
+			}
+			$pidstr = '';
+			if($pid){
+				$pidstr = '?pid=' . intval($pid);
+			}
+			if($objectseourls && $objecturl != ''){
+				return ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' .
+					($hidedirindex && show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES != '' && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))) ?
+						'' :
+						$path_parts['filename'] . '/' ) .
+					$objecturl . $pidstr;
+			} else {
+				return $path . '?we_objectID=' . intval($id) . str_replace('?', '&amp;', $pidstr);
+			}
+		} else {
+			if($foo['Workspaces']){
+				$fooArr = makeArrayFromCSV($foo['Workspaces']);
+				$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE Published > 0 AND ContentType="text/webedition" AND IsDynamic=1 AND Path LIKE "' . $DB_WE->escape(id_to_path($fooArr[0], FILE_TABLE, $DB_WE)) . '%"', 'Path', $DB_WE);
+				return ($path ? $path . '?we_objectID=' . intval($id) . '&pid=' . intval($pid) : '');
+			}
+		}
+		return '';
+	}
+
+	private static function getNextDynDoc($path, $pid, $ws1, $ws2, $DB_WE){
+		if(f('SELECT IsDynamic FROM ' . FILE_TABLE . ' WHERE Path="' . $DB_WE->escape($path) . '" LIMIT 1', 'IsDynamic', $DB_WE)){
+			return $path;
+		}
+		$arr1 = makeArrayFromCSV(id_to_path($ws1, FILE_TABLE, $DB_WE));
+		$arr2 = makeArrayFromCSV(id_to_path($ws2, FILE_TABLE, $DB_WE));
+		$arr3 = makeArrayFromCSV($ws1);
+		$arr4 = makeArrayFromCSV($ws2);
+		foreach($arr1 as $i => $ws){
+			if(in_workspace($pid, $arr3[$i])){
+				$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE Published > 0 AND ContentType="text/webedition" AND IsDynamic=1 AND Path LIKE "' . $DB_WE->escape($ws) . '%" LIMIT 1', 'Path', $DB_WE);
+				if($path){
+					return $path;
+				}
+			}
+		}
+		foreach($arr2 as $i => $ws)
+			if(in_workspace($pid, $arr4[$i])){
+				return f('SELECT Path FROM ' . FILE_TABLE . ' WHERE Published > 0 AND ContentType="text/webedition" AND IsDynamic=1 AND Path LIKE "' . $DB_WE->escape($ws) . '%" LIMIT 1', 'Path', $DB_WE);
+			}
+		return '';
 	}
 
 }

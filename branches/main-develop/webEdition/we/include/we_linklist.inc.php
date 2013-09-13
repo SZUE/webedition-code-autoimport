@@ -90,7 +90,7 @@ class we_linklist{
 			case we_base_link::TYPE_MAIL:
 				return $this->getHref();
 			case we_base_link::TYPE_OBJ:
-				$link = getHrefForObject(
+				$link = we_objectFile::getHref(
 					$this->getObjID(), $GLOBALS["WE_MAIN_DOC"]->ParentID, $GLOBALS["WE_MAIN_DOC"]->Path, $this->db, $this->hidedirindex, $this->objectseourls);
 				if(isset($GLOBALS["we_link_not_published"])){
 					unset($GLOBALS["we_link_not_published"]);

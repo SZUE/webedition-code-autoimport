@@ -43,7 +43,7 @@ uasort($GLOBALS['_we_available_modules'], "order_available_modules");
 foreach($GLOBALS['_we_available_modules'] as $_menuItem){
 	if((isset($_menuItem["inModuleMenu"]) && $_menuItem["inModuleMenu"]) || (isset($_menuItem["inModuleWindow"]) && $_menuItem["inModuleWindow"])){
 		if(in_array($_menuItem["name"], $GLOBALS['_we_active_integrated_modules'])){ //	MODULE INSTALLED
-			if(we_userCanEditModule($_menuItem["name"])){
+			if(we_users_util::canEditModule($_menuItem["name"])){
 				$we_tabs->addTab(new we_tab("#", $_menuItem["text"], ( isset($_REQUEST["mod"]) && $_REQUEST["mod"] == $_menuItem["name"] ? we_tab::ACTIVE: we_tab::NORMAL), "openModule('" . $_menuItem["name"] . "');", array("id" => $_menuItem["name"])));
 			}
 		}

@@ -331,7 +331,7 @@ class searchtoolView extends weToolView{
 				g_l('tools', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR) . '
      return;
     }
-    ' . (!we_hasPerm("DELETE_" . strtoupper($this->toolName)) ? (we_message_reporting::getShowMessageCall(
+    ' . (!permissionhandler::hasPerm("DELETE_" . strtoupper($this->toolName)) ? (we_message_reporting::getShowMessageCall(
 					g_l('tools', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)) : ('
         if (' . $this->topFrame . '.resize.right.editor.edbody.loaded) {
 
@@ -1607,23 +1607,23 @@ class searchtoolView extends weToolView{
 			$this->Model->search_tables_advSearch[OBJECT_TABLE] = 0;
 		}
 
-		if(!we_hasPerm('CAN_SEE_DOCUMENTS')){
+		if(!permissionhandler::hasPerm('CAN_SEE_DOCUMENTS')){
 			$this->Model->search_tables_advSearch[FILE_TABLE] = 0;
 		}
 
-		if(!we_hasPerm('SEE_VERSIONS')){
+		if(!permissionhandler::hasPerm('SEE_VERSIONS')){
 			$this->Model->search_tables_advSearch[VERSIONS_TABLE] = 0;
 		}
 
-		if(!we_hasPerm('CAN_SEE_TEMPLATES')){
+		if(!permissionhandler::hasPerm('CAN_SEE_TEMPLATES')){
 			$this->Model->search_tables_advSearch[TEMPLATES_TABLE] = 0;
 		}
 
-		if(!we_hasPerm('CAN_SEE_OBJECTFILES') && defined("OBJECT_FILES_TABLE")){
+		if(!permissionhandler::hasPerm('CAN_SEE_OBJECTFILES') && defined("OBJECT_FILES_TABLE")){
 			$this->Model->search_tables_advSearch[OBJECT_FILES_TABLE] = 0;
 		}
 
-		if(!we_hasPerm('CAN_SEE_OBJECTS') && defined("OBJECT_TABLE")){
+		if(!permissionhandler::hasPerm('CAN_SEE_OBJECTS') && defined("OBJECT_TABLE")){
 			$this->Model->search_tables_advSearch[OBJECT_TABLE] = 0;
 		}
 
@@ -1655,32 +1655,32 @@ class searchtoolView extends weToolView{
 			'height' => 50
 			), 4, 3);
 
-		if(we_hasPerm('CAN_SEE_DOCUMENTS')){
+		if(permissionhandler::hasPerm('CAN_SEE_DOCUMENTS')){
 			$_table->setCol(
 				0, 0, array(), we_forms::checkboxWithHidden(
 					$this->Model->search_tables_advSearch[FILE_TABLE] ? true : false, 'search_tables_advSearch[' . FILE_TABLE . ']', g_l('searchtool', '[documents]'), false, 'defaultfont', ''));
 		}
 
-		if(we_hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE){
+		if(permissionhandler::hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE){
 			$_table->setCol(
 				1, 0, array(), we_forms::checkboxWithHidden(
 					$this->Model->search_tables_advSearch[TEMPLATES_TABLE] ? true : false, 'search_tables_advSearch[' . TEMPLATES_TABLE . ']', g_l('searchtool', '[templates]'), false, 'defaultfont', ''));
 		}
 
 		if(defined('OBJECT_TABLE')){
-			if(we_hasPerm('CAN_SEE_OBJECTFILES')){
+			if(permissionhandler::hasPerm('CAN_SEE_OBJECTFILES')){
 				$_table->setCol(
 					0, 1, array(), we_forms::checkboxWithHidden(
 						$this->Model->search_tables_advSearch[OBJECT_FILES_TABLE] ? true : false, 'search_tables_advSearch[' . OBJECT_FILES_TABLE . ']', g_l('searchtool', '[objects]'), false, 'defaultfont', ''));
 			}
-			if(we_hasPerm('CAN_SEE_OBJECTS') && $_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE){
+			if(permissionhandler::hasPerm('CAN_SEE_OBJECTS') && $_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE){
 				$_table->setCol(
 					1, 1, array(), we_forms::checkboxWithHidden(
 						$this->Model->search_tables_advSearch[OBJECT_TABLE] ? true : false, 'search_tables_advSearch[' . OBJECT_TABLE . ']', g_l('searchtool', '[classes]'), false, 'defaultfont', ''));
 			}
 		}
 
-		if(we_hasPerm('SEE_VERSIONS')){
+		if(permissionhandler::hasPerm('SEE_VERSIONS')){
 			$_table->setCol(
 				0, 2, array(), we_forms::checkboxWithHidden(
 					$this->Model->search_tables_advSearch[VERSIONS_TABLE] ? true : false, 'search_tables_advSearch[' . VERSIONS_TABLE . ']', g_l('versions', '[versions]'), false, 'defaultfont', ''));
@@ -2312,7 +2312,7 @@ class searchtoolView extends weToolView{
 					foreach($foundInVersions as $k){
 
 						$resetDisabled = false;
-						if(!we_hasPerm('RESET_VERSIONS')){
+						if(!permissionhandler::hasPerm('RESET_VERSIONS')){
 							$resetDisabled = true;
 						}
 
@@ -2356,7 +2356,7 @@ class searchtoolView extends weToolView{
 				}
 				$docExists = f("SELECT ID FROM " . escape_sql_query($_result[$f]["docTable"]) . " WHERE ID=" . intval($_result[$f]["docID"]), "ID", $DB_WE);
 
-				$publishCheckbox = (!$showPubCheckbox) ? (($_result[$f]["ContentType"] == "text/webedition" || $_result[$f]["ContentType"] == "text/html" || $_result[$f]["ContentType"] == "objectFile") && we_hasPerm(
+				$publishCheckbox = (!$showPubCheckbox) ? (($_result[$f]["ContentType"] == "text/webedition" || $_result[$f]["ContentType"] == "text/html" || $_result[$f]["ContentType"] == "objectFile") && permissionhandler::hasPerm(
 						'PUBLISH') && $docExists != "") ? we_forms::checkbox(
 							$_result[$f]["docID"] . "_" . $_result[$f]["docTable"], 0, "publish_docs_" . $whichSearch, "", false, "middlefont", "") : we_html_tools::getPixel(20, 10)  : '';
 
@@ -2563,11 +2563,11 @@ class searchtoolView extends weToolView{
 		$resetButton = "";
 		$publishButton = "";
 		$publishButtonCheckboxAll = "";
-		if(we_hasPerm('RESET_VERSIONS') && $whichSearch == "AdvSearch"){
+		if(permissionhandler::hasPerm('RESET_VERSIONS') && $whichSearch == "AdvSearch"){
 			$resetButton = we_button::create_button("reset", "javascript:resetVersions();", true, 100, 22, "", "");
 			;
 		}
-		if(we_hasPerm('PUBLISH') && ($whichSearch == "AdvSearch" || $whichSearch == "DocSearch")){
+		if(permissionhandler::hasPerm('PUBLISH') && ($whichSearch == "AdvSearch" || $whichSearch == "DocSearch")){
 			$publishButtonCheckboxAll = we_forms::checkbox(1, 0, "publish_all_" . $whichSearch, "", false, "middlefont", "checkAllPubChecks('" . $whichSearch . "')");
 			$publishButton = we_button::create_button("publish", "javascript:publishDocs('" . $whichSearch . "');", true, 100, 22, "", "");
 		}

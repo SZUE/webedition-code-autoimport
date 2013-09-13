@@ -176,7 +176,7 @@ class weNavigationView{
 							' . we_message_reporting::getShowMessageCall(g_l('navigation', "[nothing_to_delete]"), we_message_reporting::WE_MESSAGE_ERROR) . '
 							return;
 						} }
-						' . (!we_hasPerm("DELETE_NAVIGATION") ?
+						' . (!permissionhandler::hasPerm("DELETE_NAVIGATION") ?
 				(
 				we_message_reporting::getShowMessageCall(g_l('navigation', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR)
 				) :
@@ -712,7 +712,7 @@ class weNavigationView{
 			switch($_REQUEST['cmd']){
 				case 'module_navigation_new':
 				case 'module_navigation_new_group':
-					if(!we_hasPerm('EDIT_NAVIGATION')){
+					if(!permissionhandler::hasPerm('EDIT_NAVIGATION')){
 						print we_html_element::jsElement(
 								we_message_reporting::getShowMessageCall(g_l('navigation', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR)
 						);
@@ -727,7 +727,7 @@ class weNavigationView{
 					');
 					break;
 				case 'module_navigation_edit':
-					if(!we_hasPerm('EDIT_NAVIGATION')){
+					if(!permissionhandler::hasPerm('EDIT_NAVIGATION')){
 						print we_html_element::jsElement(
 								we_message_reporting::getShowMessageCall(g_l('navigation', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR)
 						);
@@ -758,7 +758,7 @@ class weNavigationView{
 					');
 					break;
 				case 'module_navigation_save':
-					if(!we_hasPerm('EDIT_NAVIGATION') && !we_hasPerm('EDIT_NAVIGATION')){
+					if(!permissionhandler::hasPerm('EDIT_NAVIGATION') && !permissionhandler::hasPerm('EDIT_NAVIGATION')){
 						print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('navigation', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR));
 						break;
 					}
@@ -878,7 +878,7 @@ class weNavigationView{
 
 					print we_html_element::jsScript(JS_DIR . 'we_showMessage.js');
 
-					if(!we_hasPerm("DELETE_NAVIGATION")){
+					if(!permissionhandler::hasPerm("DELETE_NAVIGATION")){
 						print we_html_element::jsElement(
 								we_message_reporting::getShowMessageCall(g_l('navigation', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR)
 						);

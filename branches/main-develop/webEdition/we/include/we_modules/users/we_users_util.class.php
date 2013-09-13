@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_users_util{
+abstract class we_users_util{
 
 	private static function getGroupList($id){
 		$ret = array();
@@ -53,7 +53,7 @@ class we_users_util{
 	}
 
 	static function isUserInUsers($uid, $users){ // $users can be a csv string or an array
-		if(we_hasPerm("ADMINISTRATOR"))
+		if(permissionhandler::hasPerm("ADMINISTRATOR"))
 			return true;
 		if(!is_array($users)){
 			$users = makeArrayFromCSV($users);
@@ -64,7 +64,7 @@ class we_users_util{
 		} else {
 			$db = new DB_WE();
 
-			$aliases = we_getAliases($uid, $db);
+			$aliases = self::getAliases($uid, $db);
 			foreach($aliases as $aid){
 				if(in_array($aid, $users)){
 					return true;
@@ -89,17 +89,15 @@ class we_users_util{
 		return false;
 	}
 
-	static function isUserInGroup($uid, $groupID, $db = ""){
-		if(!$db)
-			$db = new DB_WE();
-		$pid = f("SELECT ParentID FROM " . USER_TABLE . " WHERE ID=" . intval($uid), "ParentID", $db);
+	static function isUserInGroup($uid, $groupID, $db = ''){
+		$db = $db ? $db : new DB_WE();
+		$pid = f('SELECT ParentID FROM ' . USER_TABLE . ' WHERE ID=' . intval($uid), "ParentID", $db);
 		if($pid == $groupID){
 			return true;
 		} else if($pid != 0){
 			return self::isUserInGroup($pid, $groupID);
-		} else {
-			return false;
 		}
+		return false;
 	}
 
 	static function addAllUsersAndGroups($uid, &$arr){
@@ -137,6 +135,103 @@ class we_users_util{
 
 		$db->query('SELECT ID,username FROM ' . USER_TABLE . ' WHERE ' . implode(' OR ', $where));
 		return $db->getAllFirst(false);
+	}
+
+	static function getAliases($id, $db = ''){
+		$foo = f('SELECT GROUP_CONCAT(ID) AS IDS FROM ' . USER_TABLE . ' WHERE Alias=' . intval($id), 'IDS', ($db ? $db : new DB_WE()));
+		return $foo ? explode(',', $foo) : array();
+	}
+
+	public static function isOwner($csvOwners){
+		if($_SESSION['perms']['ADMINISTRATOR']){
+			return true;
+		}
+		$ownersArray = makeArrayFromCSV($csvOwners);
+		return (in_array($_SESSION['user']['ID'], $ownersArray)) || self::isUserInUsers($_SESSION['user']['ID'], $csvOwners);
+	}
+
+	public static function userIsOwnerCreatorOfParentDir($folderID, $tab){
+		if(($tab != FILE_TABLE && $tab != OBJECT_FILES_TABLE) ||
+			($_SESSION['perms']['ADMINISTRATOR'] || ($folderID == 0))){
+			return true;
+		}
+		$db = new DB_WE();
+		$tmp = getHash('SELECT RestrictOwners,Owners,CreatorID FROM ' . $tab . ' WHERE ID=' . intval($folderID), $db);
+		if(!count($tmp)){
+			return true;
+		}
+		if($tmp['RestrictOwners']){
+			$ownersArr = makeArrayFromCSV($tmp['Owners']);
+			foreach($ownersArr as $uid){
+				we_users_util::addAllUsersAndGroups($uid, $ownersArr);
+			}
+			$ownersArr[] = $tmp['CreatorID'];
+			$ownersArr = array_unique($ownersArr);
+			return (in_array($_SESSION['user']['ID'], $ownersArr));
+		} else {
+			$pid = f('SELECT ParentID FROM ' . $tab . ' WHERE ID=' . intval($folderID), 'ParentID', $db);
+			return self::userIsOwnerCreatorOfParentDir($pid, $tab);
+		}
+	}
+
+	public static function canEditModule($modName){
+		$one = false;
+		$set = array();
+		$enable = 1;
+		if(permissionhandler::hasPerm('ADMINISTRATOR')){
+			return true;
+		}
+//FIXME: remove eval + change code
+		foreach($GLOBALS['_we_available_modules'] as $m){
+			if($m['name'] == $modName){
+
+				$p = isset($m['perm']) ? $m['perm'] : '';
+				$or = explode('||', $p);
+				foreach($or as $k => $v){
+					$and = explode('&&', $v);
+					$one = true;
+					foreach($and as &$val){
+						$set[] = 'isset($_SESSION[\'perms\'][\'' . trim($val) . '\'])';
+						$val = '$_SESSION[\'perms\'][\'' . trim($val) . '\']';
+						$one = false;
+					}
+					$or[$k] = implode(' && ', $and);
+					if($one && !in_array('isset($_SESSION[\'perms\'][\'' . trim($v) . '\'])', $set)){
+						$set[] = 'isset($_SESSION[\'perms\'][\'' . trim($v) . '\'])';
+					}
+				}
+				$set_str = implode(' || ', $set);
+				$condition_str = implode(' || ', $or);
+				eval('if ((' . $set_str . ')&&(' . $condition_str . ')) { $enable=1; } else { $enable=0; }');
+				return $enable;
+			}
+		}
+		return true;
+	}
+
+	public static function makeOwnersSql($useCreatorID = true){
+		if($_SESSION['perms']['ADMINISTRATOR']){
+			return '';
+		}
+		$aliases = we_getAliases($_SESSION['user']['ID'], $GLOBALS['DB_WE']);
+		$aliases[] = $_SESSION['user']['ID'];
+		$q = array();
+		if($useCreatorID){
+			$q[] = 'CreatorID IN ("' . implode('","', $aliases) . '")';
+		}
+		foreach($aliases as $id){
+			$q [] = 'Owners LIKE "%,' . intval($id) . ',%"';
+		}
+		$groups = array($_SESSION['user']['ID']);
+		we_getParentIDs(USER_TABLE, $_SESSION['user']['ID'], $groups, $GLOBALS['DB_WE']);
+		foreach($aliases as $id){
+			we_getParentIDs(USER_TABLE, $id, $groups, $GLOBALS['DB_WE']);
+		}
+
+		foreach($groups as $id){
+			$q[] = "Owners LIKE '%," . intval($id) . ",%'";
+		}
+		return ' AND ( RestrictOwners=0 OR (RestrictOwners=1 AND (' . implode(' OR ', $q) . '))) ';
 	}
 
 }

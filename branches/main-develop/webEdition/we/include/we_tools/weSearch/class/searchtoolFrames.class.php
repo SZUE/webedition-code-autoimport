@@ -99,13 +99,13 @@ class searchtoolFrames extends weToolFrames{
 		}
 
 		//tabs for entries
-		if(we_hasPerm('CAN_SEE_DOCUMENTS')){
+		if(permissionhandler::hasPerm('CAN_SEE_DOCUMENTS')){
 			$we_tabs->addTab(new we_tab(
 				'#', g_l('searchtool', '[documents]'), '((' . $this->topFrame . '.activ_tab==1) ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('1');", array(
 				'id' => 'tab_1', 'style' => "display:$displayEntry"
 			)));
 		}
-		if($_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE && we_hasPerm('CAN_SEE_TEMPLATES')){
+		if($_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE && permissionhandler::hasPerm('CAN_SEE_TEMPLATES')){
 			$we_tabs->addTab(new we_tab(
 				'#', g_l('searchtool', '[templates]'), '((' . $this->topFrame . '.activ_tab==2) ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('2');", array(
 				'id' => 'tab_2', 'style' => "display:$displayEntry"
@@ -237,7 +237,7 @@ class searchtoolFrames extends weToolFrames{
 		$_but_table = we_button::create_button_table(
 				array(
 				we_button::create_button(
-					'save', 'javascript:we_save();', true, 100, 22, '', '', (!we_hasPerm('EDIT_NAVIGATION')))
+					'save', 'javascript:we_save();', true, 100, 22, '', '', (!permissionhandler::hasPerm('EDIT_NAVIGATION')))
 				), 10, array(
 				'style' => 'margin-left: 15px;margin-top:10px;'
 		));

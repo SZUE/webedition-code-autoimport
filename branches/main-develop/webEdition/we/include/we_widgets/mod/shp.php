@@ -85,7 +85,7 @@ $numberformat = $feldnamen[2];
 $classid = (isset($feldnamen[3]) ? $feldnamen[3] : '');
 $defaultVat = !empty($feldnamen[1]) ? ($feldnamen[1]) : 0;
 
-if(defined("WE_SHOP_MODULE_DIR") && we_hasPerm("CAN_SEE_SHOP")){
+if(defined("WE_SHOP_MODULE_DIR") && permissionhandler::hasPerm("CAN_SEE_SHOP")){
 	$queryShop = ' FROM ' . SHOP_TABLE . '	WHERE ' . $queryShopDateCondtion;
 	
 	$total = $payed = $unpayed = 0;
@@ -158,7 +158,7 @@ if(defined("WE_SHOP_MODULE_DIR") && we_hasPerm("CAN_SEE_SHOP")){
 	}
 }
 
-if(defined("CUSTOMER_TABLE") && we_hasPerm("CAN_SEE_CUSTOMER")){
+if(defined("CUSTOMER_TABLE") && permissionhandler::hasPerm("CAN_SEE_CUSTOMER")){
 	$queryCustomer = ' FROM ' . CUSTOMER_TABLE . '	WHERE ' . $timestampCustomer;
 	
 	if(($maxRowsCustomer = f('SELECT COUNT(1) AS a ' . $queryCustomer, 'a', $DB_WE))){

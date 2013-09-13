@@ -59,12 +59,6 @@ require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_defines.inc
 //start autoloader!
 require_once ($_SERVER['DOCUMENT_ROOT'] . LIB_DIR . 'we/core/autoload.php');
 
-// Activate the webEdition error handler
-require_once (WE_INCLUDES_PATH . 'we_error_handler.inc.php');
-if(!defined('WE_ERROR_HANDLER_SET')){
-	we_error_handler();
-}
-
 require_once (WE_INCLUDES_PATH . 'we_global.inc.php');
 update_mem_limit(32);
 

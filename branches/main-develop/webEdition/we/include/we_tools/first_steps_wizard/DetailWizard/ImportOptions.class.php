@@ -110,7 +110,7 @@ class ImportOptions extends leWizardStepBase{
 			'0' => '/'
 		);
 		$_wrkNavi = '';
-		if(!we_hasPerm('ADMINISTRATOR')){
+		if(!permissionhandler::hasPerm('ADMINISTRATOR')){
 			$_wrkNavi = makeArrayFromCSV(
 				f('SELECT workSpaceNav FROM ' . USER_TABLE . ' WHERE ID=' . intval($_SESSION['user']['ID']), 'workSpaceNav', new DB_WE()));
 			$_condition = array();

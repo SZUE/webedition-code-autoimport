@@ -418,7 +418,7 @@ abstract class weBackupPreparer{
 
 		switch($format){
 			case 'weimport':
-				if(we_hasPerm('WXML_IMPORT')){
+				if(permissionhandler::hasPerm('WXML_IMPORT')){
 					return we_html_element::jsElement('
 							if(confirm("' . str_replace('"', '\'', g_l('backup', '[import_file_found]') . ' \n\n' . g_l('backup', '[import_file_found_question]')) . '")){
 								top.opener.top.we_cmd("import");

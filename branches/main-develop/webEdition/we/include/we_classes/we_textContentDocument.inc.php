@@ -209,16 +209,14 @@ abstract class we_textContentDocument extends we_textDocument{
 	}
 
 	function formDocType2($width = 300, $disable = false){
-		$q = getDoctypeQuery($this->DB_WE);
-
 		if($disable){
 			$name = ($this->DocType ? f('SELECT DocType FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . intval($this->DocType), 'DocType', $this->DB_WE) : g_l('weClass', '[nodoctype]'));
 			return g_l('weClass', '[doctype]') . we_html_element::htmlBr() . $name;
 		}
-		return $this->formSelect2('', $width, 'DocType', DOC_TYPES_TABLE, 'ID', 'DocType', g_l('weClass', '[doctype]'), $q, 1, $this->DocType, false, (($this->DocType !== '') ?
+		return $this->formSelect2('', $width, 'DocType', DOC_TYPES_TABLE, 'ID', 'DocType', g_l('weClass', '[doctype]'), we_docTypes::getDoctypeQuery($this->DB_WE), 1, $this->DocType, false, (($this->DocType !== '') ?
 					"if(confirm('" . g_l('weClass', '[doctype_changed_question]') . "')){we_cmd('doctype_changed');};" :
 					"we_cmd('doctype_changed');") .
-				"_EditorFrame.setEditorIsHot(true);", "", "left", "defaultfont", "", we_button::create_button("edit", "javascript:top.we_cmd('doctypes')", false, -1, -1, "", "", (!we_hasPerm("EDIT_DOCTYPE"))), ((we_hasPerm("NO_DOCTYPE") || ($this->ID && $this->DocType == "") ) ) ? array("", g_l('weClass', "[nodoctype]")) : "");
+				"_EditorFrame.setEditorIsHot(true);", "", "left", "defaultfont", "", we_button::create_button("edit", "javascript:top.we_cmd('doctypes')", false, -1, -1, "", "", (!permissionhandler::hasPerm("EDIT_DOCTYPE"))), ((permissionhandler::hasPerm("NO_DOCTYPE") || ($this->ID && $this->DocType == "") ) ) ? array("", g_l('weClass', "[nodoctype]")) : "");
 	}
 
 	function formDocTypeTempl(){

@@ -219,8 +219,8 @@ class weWorkflowView extends we_workflow_base{
 	}
 
 	function getCategoryHTML(){
-		$delallbut = we_button::create_button('delete_all', "javascript:top.content.setHot();we_cmd('del_all_cats')", false, 100, 22, "", "", (!we_hasPerm("EDIT_KATEGORIE")));
-		$addbut = we_button::create_button('add', "javascript:top.content.setHot();we_cmd('openCatselector','','" . CATEGORY_TABLE . "','','','fillIDs();opener.we_cmd(\\'add_cat\\',top.allIDs);')", false, 100, 22, "", "", (!we_hasPerm("EDIT_KATEGORIE")));
+		$delallbut = we_button::create_button('delete_all', "javascript:top.content.setHot();we_cmd('del_all_cats')", false, 100, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
+		$addbut = we_button::create_button('add', "javascript:top.content.setHot();we_cmd('openCatselector','','" . CATEGORY_TABLE . "','','','fillIDs();opener.we_cmd(\\'add_cat\\',top.allIDs);')", false, 100, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
 
 		$cats = new MultiDirChooser(495, $this->workflowDef->Categories, 'del_cat', we_button::create_button_table(array($delallbut, $addbut)), "", "Icon,Path", CATEGORY_TABLE, "defaultfont", "", "top.content.setHot();");
 
@@ -228,8 +228,8 @@ class weWorkflowView extends we_workflow_base{
 	}
 
 	function getObjCategoryHTML(){
-		$delallbut = we_button::create_button('delete_all', "javascript:top.content.setHot();we_cmd('del_all_objcats')", false, 100, 22, "", "", (!we_hasPerm("EDIT_KATEGORIE")));
-		$addbut = we_button::create_button('add', "javascript:top.content.setHot();we_cmd('openCatselector','','" . CATEGORY_TABLE . "','','','fillIDs();opener.we_cmd(\\'add_objcat\\',top.allIDs);')", false, 100, 22, "", "", (!we_hasPerm("EDIT_KATEGORIE")));
+		$delallbut = we_button::create_button('delete_all', "javascript:top.content.setHot();we_cmd('del_all_objcats')", false, 100, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
+		$addbut = we_button::create_button('add', "javascript:top.content.setHot();we_cmd('openCatselector','','" . CATEGORY_TABLE . "','','','fillIDs();opener.we_cmd(\\'add_objcat\\',top.allIDs);')", false, 100, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
 
 		$cats = new MultiDirChooser(495, $this->workflowDef->ObjCategories, "del_objcat", we_button::create_button_table(array($delallbut, $addbut)), "", "Icon,Path", CATEGORY_TABLE, "defaultfont", "", "top.content.setHot();");
 
@@ -237,10 +237,10 @@ class weWorkflowView extends we_workflow_base{
 	}
 
 	function getObjectHTML(){
-		$delallbut = we_button::create_button('delete_all', "javascript:top.content.setHot();we_cmd('del_all_objects')", false, 100, 22, "", "", (!we_hasPerm("EDIT_KATEGORIE")));
-		//javascript:we_cmd('openDocselector',document.forms['we_form'].elements['$idname'].value,'$table','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','top.opener._EditorFrame.setEditorIsHot(true);','".session_id()."','$rootDir','objectFile',".(we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1).")
+		$delallbut = we_button::create_button('delete_all', "javascript:top.content.setHot();we_cmd('del_all_objects')", false, 100, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
+		//javascript:we_cmd('openDocselector',document.forms['we_form'].elements['$idname'].value,'$table','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','top.opener._EditorFrame.setEditorIsHot(true);','".session_id()."','$rootDir','objectFile',".(permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1).")
 		$wecmdenc3 = we_cmd_enc("opener.we_cmd('add_object',top.currentID);");
-		$addbut = we_button::create_button('add', "javascript:top.content.setHot();we_cmd('openObjselector','','" . OBJECT_TABLE . "','','','" . $wecmdenc3 . "')", false, 100, 22, "", "", (!we_hasPerm("EDIT_KATEGORIE")));
+		$addbut = we_button::create_button('add', "javascript:top.content.setHot();we_cmd('openObjselector','','" . OBJECT_TABLE . "','','','" . $wecmdenc3 . "')", false, 100, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
 
 		$cats = new MultiDirChooser(495, $this->workflowDef->Objects, "del_object", we_button::create_button_table(array($delallbut, $addbut)), "", "Icon,Path", OBJECT_TABLE, "defaultfont", "", "top.content.setHot();");
 
@@ -431,8 +431,7 @@ class weWorkflowView extends we_workflow_base{
 		$pop = '';
 
 		$vals = array();
-		$q = getDoctypeQuery($this->db);
-		$this->db->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' ' . $q);
+		$this->db->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' ' . we_docTypes::getDoctypeQuery($this->db));
 		while($this->db->next_record()){
 			$v = $this->db->f('ID');
 			$t = $this->db->f('DocType');
@@ -514,7 +513,7 @@ class weWorkflowView extends we_workflow_base{
 						break;
 					case "delete_workflow":
 		<?php
-		if(!we_hasPerm("DELETE_WORKFLOW")){
+		if(!permissionhandler::hasPerm("DELETE_WORKFLOW")){
 			print we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
 		} else {
 			?>
@@ -532,7 +531,7 @@ class weWorkflowView extends we_workflow_base{
 						break;
 					case "save_workflow":
 		<?php
-		if(!we_hasPerm("EDIT_WORKFLOW") && !we_hasPerm("NEW_WORKFLOW")){
+		if(!permissionhandler::hasPerm("EDIT_WORKFLOW") && !permissionhandler::hasPerm("NEW_WORKFLOW")){
 			print we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
 		} else {
 			?>
@@ -982,10 +981,10 @@ function checkData(){
 						$exist = false;
 						$double = intval(f('SELECT COUNT(1) AS Count FROM ' . WORKFLOW_TABLE . " WHERE Text='" . $this->db->escape($this->workflowDef->Text) . "'" . ($newone ? '' : ' AND ID!=' . intval($this->workflowDef->ID)), 'Count', $this->db));
 
-						if(!we_hasPerm('EDIT_WORKFLOW') && !we_hasPerm('NEW_WORKFLOW')){
+						if(!permissionhandler::hasPerm('EDIT_WORKFLOW') && !permissionhandler::hasPerm('NEW_WORKFLOW')){
 							print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR));
 							return;
-						} else if($newone && !we_hasPerm('NEW_WORKFLOW')){
+						} else if($newone && !permissionhandler::hasPerm('NEW_WORKFLOW')){
 							print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR));
 							return;
 						} else {
@@ -1028,7 +1027,7 @@ function checkData(){
 					break;
 				case 'delete_workflow':
 					if(isset($_REQUEST['wid'])){
-						if(!we_hasPerm('DELETE_WORKFLOW')){
+						if(!permissionhandler::hasPerm('DELETE_WORKFLOW')){
 							print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR));
 							return;
 						} else {

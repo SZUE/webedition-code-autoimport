@@ -22,6 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-$createWf = we_button::create_button("new_workflow", "javascript:top.opener.top.we_cmd('new_workflow');", true, -1, -1, "", "", !we_hasPerm("NEW_WORKFLOW"));
+$createWf = we_button::create_button("new_workflow", "javascript:top.opener.top.we_cmd('new_workflow');", true, -1, -1, "", "", !permissionhandler::hasPerm("NEW_WORKFLOW"));
 $content = $createWf;
 $modimage = "workflow.gif";

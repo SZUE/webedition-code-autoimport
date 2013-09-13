@@ -27,7 +27,7 @@ we_html_tools::protect();
 
 
 $_parts = array();
-if(we_hasPerm("BACKUPLOG")){
+if(permissionhandler::hasPerm("BACKUPLOG")){
 	$_parts[] = array(
 		'headline' => g_l('backup', "[view_log]"),
 		'html' => '',

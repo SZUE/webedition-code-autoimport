@@ -190,7 +190,7 @@ class weExportWizard{
 	}
 
 	function getHTMLStep0(){
-		$wexpotEnabled = (we_hasPerm('NEW_EXPORT') || we_hasPerm('DELETE_EXPORT') || we_hasPerm('EDIT_EXPORT') || we_hasPerm('MAKE_EXPORT'));
+		$wexpotEnabled = (permissionhandler::hasPerm('NEW_EXPORT') || permissionhandler::hasPerm('DELETE_EXPORT') || permissionhandler::hasPerm('EDIT_EXPORT') || permissionhandler::hasPerm('MAKE_EXPORT'));
 
 		$extype = $this->exportVars["extype"];
 
@@ -198,9 +198,9 @@ class weExportWizard{
 			$extype = "wxml";
 			if(!$wexpotEnabled){
 				$extype = "gxml";
-				if(!we_hasPerm("GENERICXML_EXPORT")){
+				if(!permissionhandler::hasPerm("GENERICXML_EXPORT")){
 					$extype = "csv";
-					if(!we_hasPerm("CSV_EXPORT")){
+					if(!permissionhandler::hasPerm("CSV_EXPORT")){
 						$extype = "";
 					}
 				}
@@ -217,7 +217,7 @@ class weExportWizard{
 		$parts = array(
 			/* 		array_push($parts, array(
 			  "headline"	=> g_l('export',"[we_export]"),
-			  "html"		=> we_forms::radiobutton("wxml",($extype=="wxml" && we_hasPerm("WXML_EXPORT")), "extype", g_l('export',"[wxml_export]"),true, "defaultfont", "",  !we_hasPerm("WXML_EXPORT"), g_l('export',"[txt_wxml_export]"), 0, 384),
+			  "html"		=> we_forms::radiobutton("wxml",($extype=="wxml" && permissionhandler::hasPerm("WXML_EXPORT")), "extype", g_l('export',"[wxml_export]"),true, "defaultfont", "",  !permissionhandler::hasPerm("WXML_EXPORT"), g_l('export',"[txt_wxml_export]"), 0, 384),
 			  "space"		=> 120,
 			  "noline"	=> 1)
 			  ); */
@@ -228,14 +228,14 @@ class weExportWizard{
 				"noline" => 1
 			),
 			array(
-				"html" => we_forms::radiobutton("gxml", ($extype == "gxml" && we_hasPerm("GENERICXML_EXPORT")), "extype", g_l('export', "[gxml_export]"), true, "defaultfont", "", !we_hasPerm("GENERICXML_EXPORT"), g_l('export', "[txt_gxml_export]"), 0, 500),
+				"html" => we_forms::radiobutton("gxml", ($extype == "gxml" && permissionhandler::hasPerm("GENERICXML_EXPORT")), "extype", g_l('export', "[gxml_export]"), true, "defaultfont", "", !permissionhandler::hasPerm("GENERICXML_EXPORT"), g_l('export', "[txt_gxml_export]"), 0, 500),
 				"space" => 0,
 				"noline" => 1)
 		);
 
 		if(in_array("object", $GLOBALS['_we_active_integrated_modules'])){
 			$parts[] = array(
-				"html" => we_forms::radiobutton("csv", ($extype == "csv" && we_hasPerm("CSV_EXPORT")), "extype", g_l('export', "[csv_export]"), true, "defaultfont", "", !we_hasPerm("CSV_EXPORT"), g_l('export', "[txt_csv_export]"), 0, 500),
+				"html" => we_forms::radiobutton("csv", ($extype == "csv" && permissionhandler::hasPerm("CSV_EXPORT")), "extype", g_l('export', "[csv_export]"), true, "defaultfont", "", !permissionhandler::hasPerm("CSV_EXPORT"), g_l('export', "[txt_csv_export]"), 0, 500),
 				"space" => 0,
 				"noline" => 1
 			);
@@ -1433,7 +1433,7 @@ function setState(a) {
 		$wecmdenc4 = '';
 		$button = we_button::create_button("select", "javascript:formFileChooser('browse_server','" . $wecmdenc1 . "','$filter',document.we_form.elements['$IDName'].value);");
 
-		return $js . we_html_tools::htmlFormElementTable(we_html_tools::getPixel(5, 5) . we_html_tools::htmlTextInput($IDName, 42, $IDValue, "", ' readonly', "text", $width, 0), "", "left", "defaultfont", "", we_html_tools::getPixel(20, 4), we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? $button : "");
+		return $js . we_html_tools::htmlFormElementTable(we_html_tools::getPixel(5, 5) . we_html_tools::htmlTextInput($IDName, 42, $IDValue, "", ' readonly', "text", $width, 0), "", "left", "defaultfont", "", we_html_tools::getPixel(20, 4), permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? $button : "");
 	}
 
 	/* creates the DirectoryChoooser field with the "browse"-Button. Clicking on the Button opens the fileselector */
@@ -1466,8 +1466,7 @@ function setState(a) {
 		$pop = "";
 		$vals = array();
 
-		$q = getDoctypeQuery($this->db);
-		$this->db->query("SELECT ID,DocType FROM " . DOC_TYPES_TABLE . " $q");
+		$this->db->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' '.we_docTypes::getDoctypeQuery($this->db));
 		$select = new we_html_select(array("name" => "doctype", "size" => 1, "class" => "weSelect", "style" => "{width: $width;}", "onChange" => ""));
 		$first = "";
 		while($this->db->next_record()){
@@ -1574,7 +1573,7 @@ function setState(a) {
 		$addbut = we_button::create_button("add", "javascript:we_cmd('openCatselector','','" . CATEGORY_TABLE . "','','','fillIDs();opener." . $this->bodyFrame . ".we_cmd(\\'add_cat\\',top.allIDs);')");
 		$cats = new MultiDirChooser(350, $this->exportVars["categories"], "del_cat", we_button::create_button_table(array($delallbut, $addbut)), "", "Icon,Path", CATEGORY_TABLE);
 
-		if(!we_hasPerm("EDIT_KATEGORIE")){
+		if(!permissionhandler::hasPerm("EDIT_KATEGORIE")){
 			$cats->isEditable = false;
 		}
 		return '<table border="0"  cellpadding="0" cellspacing="0"><tr><td>' . (defined("OBJECT_FILES_TABLE") ? we_html_tools::getPixel(25, 2) : "") . '</td><td>' .

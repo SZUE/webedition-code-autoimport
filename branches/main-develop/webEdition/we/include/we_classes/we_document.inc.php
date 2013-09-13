@@ -219,7 +219,7 @@ class we_document extends we_root{
 		} else { //	bestehendes Dokument oder Dokument mit DocType
 			$selected = $this->Extension;
 		}
-		return $this->htmlFormElementTable(we_html_tools::getExtensionPopup('we_' . $this->Name . '_Extension', $selected, $this->Extensions, 100, 'onselect="_EditorFrame.setEditorIsHot(true);"', we_hasPerm('EDIT_DOCEXTENSION')), g_l('weClass', "[extension]"));
+		return $this->htmlFormElementTable(we_html_tools::getExtensionPopup('we_' . $this->Name . '_Extension', $selected, $this->Extensions, 100, 'onselect="_EditorFrame.setEditorIsHot(true);"', permissionhandler::hasPerm('EDIT_DOCEXTENSION')), g_l('weClass', "[extension]"));
 	}
 
 	function formPath(){
@@ -263,16 +263,16 @@ class we_document extends we_root{
 		$addbut = we_button::create_button('add', "javascript:we_cmd('openCatselector','','" . CATEGORY_TABLE . "','','','opener.setScrollTo();fillIDs();opener.top.we_cmd(\\'add_cat\\',top.allIDs);')");
 		$cats = new MultiDirChooser(508, $this->Category, "delete_cat", we_button::create_button_table(array($delallbut, $addbut)), "", "Icon,Path", CATEGORY_TABLE);
 		$cats->extraDelFn = 'setScrollTo();';
-		if(!we_hasPerm('EDIT_KATEGORIE')){
+		if(!permissionhandler::hasPerm('EDIT_KATEGORIE')){
 			$cats->isEditable = false;
 		}
 		return $cats->get();
 	}
 
 	function formNavigation(){
-		$delallbut = we_button::create_button('delete_all', "javascript:if(confirm('" . g_l('navigation', '[dellall_question]') . "')) we_cmd('delete_all_navi')", true, -1, -1, "", "", (we_hasPerm('EDIT_NAVIGATION') && $this->NavigationItems) ? false : true);
+		$delallbut = we_button::create_button('delete_all', "javascript:if(confirm('" . g_l('navigation', '[dellall_question]') . "')) we_cmd('delete_all_navi')", true, -1, -1, "", "", (permissionhandler::hasPerm('EDIT_NAVIGATION') && $this->NavigationItems) ? false : true);
 
-		$addbut = we_button::create_button('add', "javascript:we_cmd('module_navigation_edit_navi',0)", true, 100, 22, '', '', (we_hasPerm('EDIT_NAVIGATION') && $this->ID && $this->Published) ? false : true, false);
+		$addbut = we_button::create_button('add', "javascript:we_cmd('module_navigation_edit_navi',0)", true, 100, 22, '', '', (permissionhandler::hasPerm('EDIT_NAVIGATION') && $this->ID && $this->Published) ? false : true, false);
 
 		$navis = new MultiFileChooser(508, $this->NavigationItems, 'delete_navi', we_button::create_button_table(array($delallbut, $addbut)), "module_navigation_edit_navi", "Icon,Path", NAVIGATION_TABLE);
 		$navis->extraDelFn = 'setScrollTo();';
@@ -290,7 +290,7 @@ class we_document extends we_root{
 		}
 		$navis->setDisabledDelItems(makeCSVFromArray($NoDelNavis), g_l('navigation', '[NoDeleteFromDocument]'));
 
-		if(!we_hasPerm('EDIT_NAVIGATION')){
+		if(!permissionhandler::hasPerm('EDIT_NAVIGATION')){
 			$navis->isEditable = false;
 			$navis->CanDelete = false;
 		}
@@ -1203,7 +1203,7 @@ class we_document extends we_root{
 				return '';
 
 			case we_base_link::TYPE_OBJ:
-				return getHrefForObject($link['obj_id'], $parentID, $path, $db, $hidedirindex, $objectseourls);
+				return we_objectFile::getHref($link['obj_id'], $parentID, $path, $db, $hidedirindex, $objectseourls);
 			default:
 				return ($link['href'] == we_base_link::EMPTY_EXT ? '' : $link['href']);
 		}

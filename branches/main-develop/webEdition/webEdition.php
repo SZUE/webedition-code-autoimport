@@ -1403,13 +1403,13 @@ pWebEdition_JSwe_cmds();
 		self.TreeInfo = self.rframe;
 <?php
 $_table_to_load = "";
-if(we_hasPerm("CAN_SEE_DOCUMENTS")){
+if(permissionhandler::hasPerm("CAN_SEE_DOCUMENTS")){
 	$_table_to_load = FILE_TABLE;
-} else if(we_hasPerm("CAN_SEE_TEMPLATES")){
+} else if(permissionhandler::hasPerm("CAN_SEE_TEMPLATES")){
 	$_table_to_load = TEMPLATES_TABLE;
-} else if(defined("OBJECT_FILES_TABLE") && we_hasPerm("CAN_SEE_OBJECTFILES")){
+} else if(defined("OBJECT_FILES_TABLE") && permissionhandler::hasPerm("CAN_SEE_OBJECTFILES")){
 	$_table_to_load = OBJECT_FILES_TABLE;
-} else if(defined("OBJECT_TABLE") && we_hasPerm("CAN_SEE_OBJECTS")){
+} else if(defined("OBJECT_TABLE") && permissionhandler::hasPerm("CAN_SEE_OBJECTS")){
 	$_table_to_load = OBJECT_TABLE;
 }
 

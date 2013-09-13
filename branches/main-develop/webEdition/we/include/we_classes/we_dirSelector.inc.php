@@ -105,7 +105,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 	}
 
 	function query(){
-		$this->db->query('SELECT ' . $this->fields . ' FROM ' . $this->db->escape($this->table) . ' WHERE IsFolder=1 AND ParentID=' . intval($this->dir) . ' AND((1' . makeOwnersSql() . ') ' .
+		$this->db->query('SELECT ' . $this->fields . ' FROM ' . $this->db->escape($this->table) . ' WHERE IsFolder=1 AND ParentID=' . intval($this->dir) . ' AND((1' . we_users_util::makeOwnersSql() . ') ' .
 			getWsQueryForSelector($this->table) . ')' . ($this->order ? (' ORDER BY ' . $this->order) : ''));
 	}
 
@@ -321,7 +321,7 @@ function enableNewFolderBut(){
 	}
 
 	function userCanSeeDir($showAll = false){
-		if(we_hasPerm('ADMINISTRATOR')){
+		if(permissionhandler::hasPerm('ADMINISTRATOR')){
 			return true;
 		}
 		if(!$showAll){
@@ -329,11 +329,11 @@ function enableNewFolderBut(){
 				return false;
 			}
 		}
-		return userIsOwnerCreatorOfParentDir($this->dir, $this->table);
+		return we_users_util::userIsOwnerCreatorOfParentDir($this->dir, $this->table);
 	}
 
 	function userCanRenameFolder(){
-		if(we_hasPerm('ADMINISTRATOR')){
+		if(permissionhandler::hasPerm('ADMINISTRATOR')){
 			return true;
 		}
 		if(!$this->userHasRenameFolderPerms()){
@@ -346,7 +346,7 @@ function enableNewFolderBut(){
 		if(defined("OBJECT_FILES_TABLE") && ($this->table == OBJECT_FILES_TABLE) && (!$this->dir)){
 			return false;
 		}
-		if(we_hasPerm('ADMINISTRATOR')){
+		if(permissionhandler::hasPerm('ADMINISTRATOR')){
 			return true;
 		}
 		if(!$this->userCanSeeDir() || !$this->userHasFolderPerms()){
@@ -358,7 +358,7 @@ function enableNewFolderBut(){
 	function userHasRenameFolderPerms(){
 		switch($this->table){
 			case FILE_TABLE:
-				if(!we_hasPerm("CHANGE_DOC_FOLDER_PATH")){
+				if(!permissionhandler::hasPerm("CHANGE_DOC_FOLDER_PATH")){
 					return false;
 				}
 				break;
@@ -370,17 +370,17 @@ function enableNewFolderBut(){
 
 		switch($this->table){
 			case FILE_TABLE:
-				if(!we_hasPerm("NEW_DOC_FOLDER")){
+				if(!permissionhandler::hasPerm("NEW_DOC_FOLDER")){
 					return false;
 				}
 				break;
 			case TEMPLATES_TABLE:
-				if(!we_hasPerm("NEW_TEMP_FOLDER")){
+				if(!permissionhandler::hasPerm("NEW_TEMP_FOLDER")){
 					return false;
 				}
 				break;
 			case (defined("OBJECT_FILES_TABLE") ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
-				if(!we_hasPerm("NEW_OBJECTFILE_FOLDER")){
+				if(!permissionhandler::hasPerm("NEW_OBJECTFILE_FOLDER")){
 					return false;
 				}
 				break;
@@ -708,7 +708,7 @@ var old=0;');
 	}
 
 	function printRenameFolderHTML(){
-		if(userIsOwnerCreatorOfParentDir($this->we_editDirID, $this->table) && in_workspace($this->we_editDirID, get_ws($this->table), $this->table, $this->db)){
+		if(we_users_util::userIsOwnerCreatorOfParentDir($this->we_editDirID, $this->table) && in_workspace($this->we_editDirID, get_ws($this->table), $this->table, $this->db)){
 			print '<script type="text/javascript"><!--
 top.clearEntries();
 top.we_editDirID=' . $this->we_editDirID . ';' .

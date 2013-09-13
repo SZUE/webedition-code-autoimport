@@ -44,7 +44,7 @@ function we_cmd() {
 	switch (arguments[0]) {
 END_OF_SCRIPT;
 foreach($GLOBALS['tabs'] as $name => $perm){
-	if(empty($perm) || we_hasPerm($perm)){
+	if(empty($perm) || permissionhandler::hasPerm($perm)){
 		$_javascript.='case "' . $name . '":' . "\n";
 	}
 }

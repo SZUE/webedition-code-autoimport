@@ -98,8 +98,8 @@ $docTypes = array(
 	0 => g_l('cockpit', "[no_entry]")
 );
 
-$DB_WE->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' '.getDoctypeQuery($DB_WE));
-while($DB_WE->next_record()) {
+$DB_WE->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' ' . we_docTypes::getDoctypeQuery($DB_WE));
+while($DB_WE->next_record()){
 	$docTypes[$DB_WE->f("ID")] = $DB_WE->f("DocType");
 }
 $doctypeElement = we_html_tools::htmlFormElementTable(
@@ -118,7 +118,7 @@ $cls->insertOption($optid, 0, g_l('cockpit', "[no_entry]"));
 $ac = makeCSVFromArray(getAllowedClasses($DB_WE));
 if($ac){
 	$DB_WE->query('SELECT ID,Text FROM ' . OBJECT_TABLE . ' ' . ($ac ? ' WHERE ID IN(' . $ac . ') ' : '') . 'ORDER BY Text');
-	while($DB_WE->next_record()) {
+	while($DB_WE->next_record()){
 		$optid++;
 		$cls->insertOption($optid, $DB_WE->f("ID"), $DB_WE->f("Text"));
 		if($DB_WE->f("ID") == -1){
@@ -129,7 +129,7 @@ if($ac){
 
 function getHTMLCategory(){
 	$addbut = we_button::create_button(
-			"add", "javascript:we_cmd('openCatselector','','" . CATEGORY_TABLE . "','','','fillIDs();opener.addCat(top.allPaths);')", false, 100, 22, "", "", (!we_hasPerm("EDIT_KATEGORIE")));
+			"add", "javascript:we_cmd('openCatselector','','" . CATEGORY_TABLE . "','','','fillIDs();opener.addCat(top.allPaths);')", false, 100, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
 	$del_but = addslashes(
 		we_html_element::htmlImg(
 			array(
@@ -395,10 +395,10 @@ $divStatic = we_html_element::htmlDiv(
 			), $tree->getHTMLMultiExplorer(420, 180)) . "<iframe name=\"cmd\" src=\"about:blank\" style=\"visibility:hidden; width: 0px; height: 0px;\"></iframe>");
 
 $captions = array();
-if(we_hasPerm("CAN_SEE_DOCUMENTS")){
+if(permissionhandler::hasPerm("CAN_SEE_DOCUMENTS")){
 	$captions[FILE_TABLE] = g_l('export', "[documents]");
 }
-if(defined("OBJECT_FILES_TABLE") && we_hasPerm("CAN_SEE_OBJECTFILES")){
+if(defined("OBJECT_FILES_TABLE") && permissionhandler::hasPerm("CAN_SEE_OBJECTFILES")){
 	$captions[OBJECT_FILES_TABLE] = g_l('export', "[objects]");
 }
 

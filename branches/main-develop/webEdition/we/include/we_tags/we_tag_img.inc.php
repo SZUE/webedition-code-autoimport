@@ -194,7 +194,7 @@ function we_tag_img($attribs){
 				array(
 				$_editButton,
 				we_button::create_button(
-					"image:btn_select_image", "javascript:we_cmd('openDocselector', '" . ($id != "" ? $id : $startid) . "', '" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','" . session_id() . "'," . $parentid . ",'image/*', " . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")", true),
+					"image:btn_select_image", "javascript:we_cmd('openDocselector', '" . ($id != "" ? $id : $startid) . "', '" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','" . session_id() . "'," . $parentid . ",'image/*', " . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")", true),
 				we_button::create_button(
 					"image:btn_function_trash", "javascript:we_cmd('remove_image', '" . $name . "')", true)
 				), 5) . '</td></tr></table>';

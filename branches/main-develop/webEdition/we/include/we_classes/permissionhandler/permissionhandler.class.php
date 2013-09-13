@@ -115,7 +115,7 @@ abstract class permissionhandler{
 				$allowed = true;
 				$perms = explode(',', $val);
 				foreach($perms as $perm){
-					if(!we_hasPerm($perm)){
+					if(!permissionhandler::hasPerm($perm)){
 						$allowed = false;
 						break;
 					}

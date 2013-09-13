@@ -25,7 +25,7 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
-if(we_hasPerm("administrator")){
+if(permissionhandler::hasPerm("administrator")){
 
 	if(isset($_REQUEST['clearlog']) && $_REQUEST['clearlog'] == 1){
 		$GLOBALS['DB_WE']->query('TRUNCATE ' . FORMMAIL_BLOCK_TABLE);

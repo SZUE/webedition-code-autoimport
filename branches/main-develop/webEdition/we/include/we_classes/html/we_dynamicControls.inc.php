@@ -370,7 +370,7 @@ class we_dynamicControls{
 						$_group_item_key = $_group_item_values['perm'];
 						$_group_item_value = $_group_item_values['value'];
 
-						if(($check_permissions && we_hasPerm($_group_item_key)) || !$check_permissions){
+						if(($check_permissions && permissionhandler::hasPerm($_group_item_key)) || !$check_permissions){
 							// Display the items of the group
 							$_contentTable[$main_titles[$_groups_key]] .= '
 								<tr>

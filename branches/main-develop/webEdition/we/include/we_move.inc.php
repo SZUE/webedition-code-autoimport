@@ -28,9 +28,9 @@ $table = $_REQUEST['we_cmd'][2];
 
 $script = '';
 
-if(($table == TEMPLATES_TABLE && !we_hasPerm("MOVE_TEMPLATE")) ||
-	($table == FILE_TABLE && !we_hasPerm("MOVE_DOCUMENT")) ||
-	(defined("OBJECT_TABLE") && $table == OBJECT_TABLE && !we_hasPerm("MOVE_OBJECTFILES"))){
+if(($table == TEMPLATES_TABLE && !permissionhandler::hasPerm("MOVE_TEMPLATE")) ||
+	($table == FILE_TABLE && !permissionhandler::hasPerm("MOVE_DOCUMENT")) ||
+	(defined("OBJECT_TABLE") && $table == OBJECT_TABLE && !permissionhandler::hasPerm("MOVE_OBJECTFILES"))){
 	require_once (WE_USERS_MODULE_PATH . 'we_users_permmessage.inc.php');
 	exit();
 }

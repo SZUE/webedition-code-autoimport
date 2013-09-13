@@ -43,7 +43,7 @@ $we_menu_weSearch = array(
 		'cmd' => 'tool_' . $metaInfo['name'] . '_new_forDocuments',
 		'perm' => 'EDIT_NAVIGATION || ADMINISTRATOR',
 		'enabled' => 1,
-		'hide' => !we_hasPerm('CAN_SEE_DOCUMENTS')
+		'hide' => !permissionhandler::hasPerm('CAN_SEE_DOCUMENTS')
 	),
 	array(
 		'text' => g_l('searchtool', '[forTemplates]'),
@@ -51,7 +51,7 @@ $we_menu_weSearch = array(
 		'cmd' => 'tool_' . $metaInfo['name'] . '_new_forTemplates',
 		'perm' => 'EDIT_NAVIGATION || ADMINISTRATOR',
 		'enabled' => 1,
-		'hide' => !($_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE && we_hasPerm('CAN_SEE_TEMPLATES'))
+		'hide' => !($_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE && permissionhandler::hasPerm('CAN_SEE_TEMPLATES'))
 	),
 	array(
 		'text' => g_l('searchtool', '[forObjects]'),
@@ -59,7 +59,7 @@ $we_menu_weSearch = array(
 		'cmd' => 'tool_' . $metaInfo['name'] . '_new_forObjects',
 		'perm' => 'EDIT_NAVIGATION || ADMINISTRATOR',
 		'enabled' => 1,
-		'hide' => (defined('OBJECT_FILES_TABLE') && defined('OBJECT_TABLE') && we_hasPerm('CAN_SEE_OBJECTFILES'))
+		'hide' => (defined('OBJECT_FILES_TABLE') && defined('OBJECT_TABLE') && permissionhandler::hasPerm('CAN_SEE_OBJECTFILES'))
 	),
 	array(
 		'text' => g_l('searchtool', '[menu_advSearch]'),

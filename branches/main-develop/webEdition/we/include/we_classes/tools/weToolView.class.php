@@ -140,7 +140,7 @@ class weToolView{
 							' . we_message_reporting::getShowMessageCall(g_l('tools', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 							return;
 						}
-						' . (!we_hasPerm("DELETE_" . strtoupper($this->toolName)) ?
+						' . (!permissionhandler::hasPerm("DELETE_" . strtoupper($this->toolName)) ?
 				(
 				we_message_reporting::getShowMessageCall(g_l('tools', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
 				) :

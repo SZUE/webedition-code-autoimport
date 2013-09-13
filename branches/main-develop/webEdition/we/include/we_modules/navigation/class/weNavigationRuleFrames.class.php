@@ -137,8 +137,7 @@ return we_html_tools::htmlTop(g_l('navigation', '[menu_highlight_rules]')) . STY
 		$docTypes = array(
 			0 => g_l('navigation', '[no_entry]')
 		);
-		$q = getDoctypeQuery($this->db);
-		$this->db->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' ' . $q);
+		$this->db->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' ' . we_docTypes::getDoctypeQuery($this->db));
 		while($this->db->next_record()) {
 			$docTypes[$this->db->f('ID')] = $this->db->f('DocType');
 		}

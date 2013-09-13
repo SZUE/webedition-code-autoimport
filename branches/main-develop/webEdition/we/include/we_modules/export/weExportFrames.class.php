@@ -173,7 +173,7 @@ class weExportFrames extends weModuleFrames{
 		$table2->setCol(0, $col++, array("nowrap" => null), we_html_tools::getPixel(5, 5));
 
 		if($this->View->export->IsFolder == 0){
-			$table2->setCol(0, $col++, array("nowrap" => null), we_button::create_button("export", "javascript:top.content.we_cmd('start_export')", true, 100, 22, '', '', !we_hasPerm("MAKE_EXPORT"))
+			$table2->setCol(0, $col++, array("nowrap" => null), we_button::create_button("export", "javascript:top.content.we_cmd('start_export')", true, 100, 22, '', '', !permissionhandler::hasPerm("MAKE_EXPORT"))
 			);
 		}
 
@@ -302,7 +302,7 @@ function closeAllType(){
 	elem.style.display = "none";' : '') . '
 }');
 
-		$this->db->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' ' . getDoctypeQuery($this->db));
+		$this->db->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' ' . we_docTypes::getDoctypeQuery($this->db));
 		$docTypes = $this->db->getAllFirst(false);
 
 		if(defined('OBJECT_TABLE')){
@@ -490,7 +490,7 @@ function closeAllType(){
 					}
 					break;
 				case "do_export":
-					if(!we_hasPerm("MAKE_EXPORT")){
+					if(!permissionhandler::hasPerm("MAKE_EXPORT")){
 						$out = we_html_element::jsElement(
 								we_message_reporting::getShowMessageCall(g_l('export', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR)
 						);
@@ -786,7 +786,7 @@ function closeAllType(){
 		$wecmdenc1 = we_cmd_enc("document.we_form.elements['$IDName'].value");
 		$button = we_button::create_button("select", "javascript:top.content.setHot();formFileChooser('browse_server','" . $wecmdenc1 . "','$filter',document.we_form.elements['$IDName'].value);");
 
-		return $js . we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($IDName, 42, $IDValue, "", ' readonly onChange="' . $this->topFrame . '.hot=1;"', "text", $width, 0), "", "left", "defaultfont", "", we_html_tools::getPixel(20, 4), we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? $button : "");
+		return $js . we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($IDName, 42, $IDValue, "", ' readonly onChange="' . $this->topFrame . '.hot=1;"', "text", $width, 0), "", "left", "defaultfont", "", we_html_tools::getPixel(20, 4), permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? $button : "");
 	}
 
 	function formWeChooser($table = FILE_TABLE, $width = '', $rootDirID = 0, $IDName = 'ID', $IDValue = 0, $Pathname = 'Path', $Pathvalue = '/', $cmd = ''){
@@ -854,7 +854,7 @@ function closeAllType(){
 
 		$cats = new MultiDirChooser($this->_width_size, $this->View->export->Categorys, "del_cat", we_button::create_button_table(array($delallbut, $addbut)), "", "Icon,Path", CATEGORY_TABLE);
 
-		if(!we_hasPerm("EDIT_KATEGORIE")){
+		if(!permissionhandler::hasPerm("EDIT_KATEGORIE")){
 			$cats->isEditable = false;
 		}
 		return $hiddens . we_html_tools::htmlFormElementTable($cats->get(), g_l('export', "[categories]"), "left", "defaultfont");

@@ -275,7 +275,7 @@ class we_glossary_view{
 							' . we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 							return;
 						}
-						' . (!we_hasPerm("DELETE_GLOSSARY") ?
+						' . (!permissionhandler::hasPerm("DELETE_GLOSSARY") ?
 				(
 				we_message_reporting::getShowMessageCall(g_l('modules_glossary', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR)
 				) :
@@ -322,7 +322,7 @@ class we_glossary_view{
 					case "edit_glossary_foreignword":
 					case "edit_glossary_link":
 					case "edit_glossary_textreplacement":
-						' . (!we_hasPerm("EDIT_GLOSSARY") ? we_message_reporting::getShowMessageCall(g_l('modules_glossary', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR) . 'return;' : '') . '
+						' . (!permissionhandler::hasPerm("EDIT_GLOSSARY") ? we_message_reporting::getShowMessageCall(g_l('modules_glossary', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR) . 'return;' : '') . '
 						' . $this->TopFrame . '.hot=0;
 						' . $this->TopFrame . '.editor.edbody.document.we_form.cmd.value=arguments[0];
 						' . $this->TopFrame . '.editor.edbody.document.we_form.cmdid.value=arguments[1];
@@ -457,7 +457,7 @@ class we_glossary_view{
 				case "new_glossary_foreignword":
 				case "new_glossary_link":
 				case "new_glossary_textreplacement":
-					if(!we_hasPerm("NEW_GLOSSARY")){
+					if(!permissionhandler::hasPerm("NEW_GLOSSARY")){
 						print we_html_element::jsElement(
 								we_message_reporting::getShowMessageCall(g_l('modules_glossary', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR)
 							);
@@ -477,7 +477,7 @@ class we_glossary_view{
 				case "edit_glossary_foreignword":
 				case "edit_glossary_link":
 				case "edit_glossary_textreplacement":
-					if(!we_hasPerm("EDIT_GLOSSARY")){
+					if(!permissionhandler::hasPerm("EDIT_GLOSSARY")){
 						print we_html_element::jsElement(
 								we_message_reporting::getShowMessageCall(g_l('modules_glossary', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR)
 							);
@@ -562,7 +562,7 @@ class we_glossary_view{
 						$this->Glossary->Attributes = '';
 					}
 
-					if(!we_hasPerm("NEW_GLOSSARY") && !we_hasPerm("EDIT_GLOSSARY")){
+					if(!permissionhandler::hasPerm("NEW_GLOSSARY") && !permissionhandler::hasPerm("EDIT_GLOSSARY")){
 						print we_html_element::jsElement(
 								we_message_reporting::getShowMessageCall(g_l('modules_glossary', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR)
 							);
@@ -675,7 +675,7 @@ class we_glossary_view{
 
 				case "delete_glossary":
 
-					if(!we_hasPerm("DELETE_GLOSSARY")){
+					if(!permissionhandler::hasPerm("DELETE_GLOSSARY")){
 						print we_html_element::jsElement(
 								we_message_reporting::getShowMessageCall(g_l('modules_glossary', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR)
 							);

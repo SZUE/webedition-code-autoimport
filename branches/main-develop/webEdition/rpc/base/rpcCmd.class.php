@@ -65,7 +65,7 @@ class rpcCmd{
 		if(!empty($this->Permissions)){
 
 			foreach($this->Permissions as $perm){
-				if(!we_hasPerm($perm)){
+				if(!permissionhandler::hasPerm($perm)){
 					$this->Status = self::STATUS_NO_PERMISSION;
 				}
 			}

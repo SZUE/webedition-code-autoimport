@@ -22,9 +22,9 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-$createUser = we_button::create_button("create_user", "javascript:top.opener.top.we_cmd('new_user');", true, -1, -1, "", "", !we_hasPerm("NEW_USER"));
+$createUser = we_button::create_button("create_user", "javascript:top.opener.top.we_cmd('new_user');", true, -1, -1, "", "", !permissionhandler::hasPerm("NEW_USER"));
 $createAlias = $createGroup = "";
-$createGroup = we_button::create_button("create_group", "javascript:top.opener.top.we_cmd('new_group');", true, -1, -1, "", "", !we_hasPerm("NEW_GROUP"));
-$createAlias = we_button::create_button("create_alias", "javascript:top.opener.top.we_cmd('new_alias');", true, -1, -1, "", "", !we_hasPerm("NEW_ALIAS"));
+$createGroup = we_button::create_button("create_group", "javascript:top.opener.top.we_cmd('new_group');", true, -1, -1, "", "", !permissionhandler::hasPerm("NEW_GROUP"));
+$createAlias = we_button::create_button("create_alias", "javascript:top.opener.top.we_cmd('new_alias');", true, -1, -1, "", "", !permissionhandler::hasPerm("NEW_ALIAS"));
 $content = $createUser . we_html_tools::getPixel(2, 14) . $createGroup . we_html_tools::getPixel(2, 14) . $createAlias;
 $modimage = "user.gif";

@@ -394,7 +394,7 @@ class weNavigation extends weModelBase{
 
 	function isAllowedForUser(){
 		return true;
-		/* 		if (we_hasPerm('ADMINISTRATOR'))
+		/* 		if (permissionhandler::hasPerm('ADMINISTRATOR'))
 		  return true; */
 	}
 

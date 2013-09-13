@@ -303,7 +303,7 @@ top.content.hloaded = 1;');
 
 			$table2->setCol(0, 0, array("nowrap" => null), we_html_tools::getPixel(15, 5));
 
-			$table2->setCol(0, 1, array("nowrap" => null), ((we_hasPerm("NEW_NEWSLETTER") || we_hasPerm("EDIT_NEWSLETTER")) ?
+			$table2->setCol(0, 1, array("nowrap" => null), ((permissionhandler::hasPerm("NEW_NEWSLETTER") || permissionhandler::hasPerm("EDIT_NEWSLETTER")) ?
 					we_button::create_button("save", "javascript:we_save()") :
 					""
 				)
@@ -317,7 +317,7 @@ top.content.hloaded = 1;');
 				$table2->setCol(0, 6, array("nowrap" => null), we_html_tools::getPixel(5, 5));
 				$table2->setCol(0, 7, array("nowrap" => null), we_button::create_button("preview", "javascript:we_cmd('popPreview')"));
 				$table2->setCol(0, 8, array("nowrap" => null), we_html_tools::getPixel(5, 5));
-				$table2->setCol(0, 9, array("nowrap" => null), (we_hasPerm("SEND_NEWSLETTER") ?
+				$table2->setCol(0, 9, array("nowrap" => null), (permissionhandler::hasPerm("SEND_NEWSLETTER") ?
 						we_button::create_button("send", "javascript:we_cmd('popSend')") :
 						""
 					)
@@ -776,7 +776,7 @@ top.content.hloaded = 1;');
 			$values[weNewsletterBlock::OBJECT_FIELD] = g_l('modules_newsletter', '[newsletter_type_3]');
 		}
 
-		if(we_hasPerm("NEWSLETTER_FILES")){
+		if(permissionhandler::hasPerm("NEWSLETTER_FILES")){
 			$values[weNewsletterBlock::FILE] = g_l('modules_newsletter', '[newsletter_type_4]');
 		}
 		$values[weNewsletterBlock::TEXT] = g_l('modules_newsletter', '[newsletter_type_5]');
@@ -861,7 +861,7 @@ top.content.hloaded = 1;');
 		$addbut = we_button::create_button("add", "javascript:we_cmd('browse_server','fileselect','','/','" . $wecmdenc4 . "');");
 
 
-		$buttons = (we_hasPerm('CAN_SELECT_EXTERNAL_FILES')) ?
+		$buttons = (permissionhandler::hasPerm('CAN_SELECT_EXTERNAL_FILES')) ?
 			array($delallbut, $addbut) :
 			array($delallbut);
 		$cats = new MultiFileChooser($this->def_width, $this->View->newsletter->groups[$group]->Extern, "del_file", we_button::create_button_table($buttons), "edit_file");
@@ -1130,12 +1130,12 @@ top.content.hloaded = 1;');
 					break;
 
 				case weNewsletterBlock::OBJECT:
-					$content.=we_html_tools::htmlFormElementTable($this->View->formWeChooser(OBJECT_FILES_TABLE, 320, 0, "block" . $counter . "_LinkID", $block->LinkID, "block" . $counter . "_LinkPath", "", "opener.top.content.hot=1;", (we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1), $this->weAutoCompleter, "folder,objectFile"), g_l('modules_newsletter', '[block_object]')) .
+					$content.=we_html_tools::htmlFormElementTable($this->View->formWeChooser(OBJECT_FILES_TABLE, 320, 0, "block" . $counter . "_LinkID", $block->LinkID, "block" . $counter . "_LinkPath", "", "opener.top.content.hot=1;", (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1), $this->weAutoCompleter, "folder,objectFile"), g_l('modules_newsletter', '[block_object]')) .
 						we_html_tools::htmlFormElementTable($this->View->formWeChooser(TEMPLATES_TABLE, 320, 0, "block" . $counter . "_Field", (!is_numeric($block->Field) ? 0 : $block->Field), "block" . $counter . "_FieldPath", "", "opener.top.content.hot=1;", "", $this->weAutoCompleter, "folder,text/weTmpl"), g_l('modules_newsletter', '[block_template]'));
 					break;
 
 				case weNewsletterBlock::OBJECT_FIELD:
-					$content.=we_html_tools::htmlFormElementTable($this->View->formWeChooser(OBJECT_FILES_TABLE, 320, 0, "block" . $counter . "_LinkID", $block->LinkID, "block" . $counter . "_LinkPath", "", "opener.we_cmd(\'switchPage\',2);opener.top.content.hot=1;", (we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1), $this->weAutoCompleter, "folder,objectFile"), g_l('modules_newsletter', '[block_object]'));
+					$content.=we_html_tools::htmlFormElementTable($this->View->formWeChooser(OBJECT_FILES_TABLE, 320, 0, "block" . $counter . "_LinkID", $block->LinkID, "block" . $counter . "_LinkPath", "", "opener.we_cmd(\'switchPage\',2);opener.top.content.hot=1;", (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1), $this->weAutoCompleter, "folder,objectFile"), g_l('modules_newsletter', '[block_object]'));
 
 					if($block->LinkID){
 						$values = $this->View->getFields($block->LinkID, OBJECT_FILES_TABLE);

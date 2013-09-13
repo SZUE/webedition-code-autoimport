@@ -339,11 +339,11 @@ class weSelectorQuery{
 		if((defined('NAVIGATION_TABLE') && $table == NAVIGATION_TABLE) || (defined('BANNER_TABLE') && $table == BANNER_TABLE) || $table == CATEGORY_TABLE){
 			return '';
 		}
-		$userExtraSQL = ' AND((1 ' . makeOwnersSql(false) . ') ';
+		$userExtraSQL = ' AND((1 ' . we_users_util::makeOwnersSql(false) . ') ';
 
 		if(get_ws($table)){
 			$userExtraSQL .= getWsQueryForSelector($table);
-		} else if(defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE && (!we_hasPerm('ADMINISTRATOR'))){
+		} else if(defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE && (!permissionhandler::hasPerm('ADMINISTRATOR'))){
 			$wsQuery = "";
 			$ac = getAllowedClasses($this->db);
 			foreach($ac as $cid){

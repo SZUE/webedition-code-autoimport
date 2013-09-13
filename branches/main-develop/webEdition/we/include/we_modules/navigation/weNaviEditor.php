@@ -40,7 +40,7 @@ $_navi = new weNavigation($_id);
 $_wrkNavi = array();
 $_db = new DB_WE();
 
-if(!we_hasPerm('ADMINISTRATOR')){
+if(!permissionhandler::hasPerm('ADMINISTRATOR')){
 	if(($_ws = get_ws(NAVIGATION_TABLE))){ // #5836: Use function get_ws()
 		$_wrkNavi = makeArrayFromCSV($_ws);
 	}

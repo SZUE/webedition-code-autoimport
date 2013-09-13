@@ -122,22 +122,22 @@ if($sType{0} == "0" && $sType{1} == "0" && $sType{2} == "0" && $sType{3} == "0")
 	$sType = "1111";
 }
 
-if(defined("CUSTOMER_TABLE") && we_hasPerm("CAN_SEE_CUSTOMER")){
+if(defined("CUSTOMER_TABLE") && permissionhandler::hasPerm("CAN_SEE_CUSTOMER")){
 	$oChbxCustomer = we_forms::checkbox(
-			$value = 0, $checked = $sType{1}, $name = "chbx_type", $text = g_l('cockpit','[shop_dashboard][cnt_new_customer]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = !(defined("CUSTOMER_TABLE") && we_hasPerm('CAN_SEE_CUSTOMER')), $description = "", $type = 0, $width = 0);
+			$value = 0, $checked = $sType{1}, $name = "chbx_type", $text = g_l('cockpit','[shop_dashboard][cnt_new_customer]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = !(defined("CUSTOMER_TABLE") && permissionhandler::hasPerm('CAN_SEE_CUSTOMER')), $description = "", $type = 0, $width = 0);
 } else{
 	$oChbxCustomer = "";
 }
 
-if(defined("WE_SHOP_MODULE_DIR") && we_hasPerm("CAN_SEE_SHOP")){
+if(defined("WE_SHOP_MODULE_DIR") && permissionhandler::hasPerm("CAN_SEE_SHOP")){
 	$oChbxOrders = we_forms::checkbox(
-			$value = 0, $checked = $sType{0}, $name = "chbx_type", $text = g_l('cockpit','[shop_dashboard][cnt_order]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = !(defined('WE_SHOP_MODULE_DIR') && we_hasPerm("CAN_SEE_SHOP")), $description = "", $type = 0, $width = 0);
+			$value = 0, $checked = $sType{0}, $name = "chbx_type", $text = g_l('cockpit','[shop_dashboard][cnt_order]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = !(defined('WE_SHOP_MODULE_DIR') && permissionhandler::hasPerm("CAN_SEE_SHOP")), $description = "", $type = 0, $width = 0);
 	$oChbxAverageOrder = we_forms::checkbox(
-			$value = 0, $checked = $sType{2}, $name = "chbx_type", $text = g_l('cockpit','[shop_dashboard][revenue_order]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = !(defined("WE_SHOP_MODULE_DIR") && we_hasPerm('CAN_SEE_SHOP')), $description = "", $type = 0, $width = 0);
+			$value = 0, $checked = $sType{2}, $name = "chbx_type", $text = g_l('cockpit','[shop_dashboard][revenue_order]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = !(defined("WE_SHOP_MODULE_DIR") && permissionhandler::hasPerm('CAN_SEE_SHOP')), $description = "", $type = 0, $width = 0);
 	$oChbxTarget = we_forms::checkbox(
-			$value = 0, $checked = $sType{3}, $name = "chbx_type", $text = g_l('cockpit','[shop_dashboard][revenue_target]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = !(defined("WE_SHOP_MODULE_DIR") && we_hasPerm('CAN_SEE_SHOP')), $description = "", $type = 0, $width = 0);
+			$value = 0, $checked = $sType{3}, $name = "chbx_type", $text = g_l('cockpit','[shop_dashboard][revenue_target]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = !(defined("WE_SHOP_MODULE_DIR") && permissionhandler::hasPerm('CAN_SEE_SHOP')), $description = "", $type = 0, $width = 0);
 			
-	//$revenueTarget = we_forms::textinput($value = "",$name = "input_revenueTarget", $text = "Umsatzziel", $uniqid = true, $class = "defaultfont",$onClick = "", $disabled = !(defined("WE_SHOP_MODULE_DIR") && we_hasPerm('CAN_SEE_SHOP'), $description = "", $type = 0, $width = 255);
+	//$revenueTarget = we_forms::textinput($value = "",$name = "input_revenueTarget", $text = "Umsatzziel", $uniqid = true, $class = "defaultfont",$onClick = "", $disabled = !(defined("WE_SHOP_MODULE_DIR") && permissionhandler::hasPerm('CAN_SEE_SHOP'), $description = "", $type = 0, $width = 255);
 } else{
 	$oChbxOrders = "";
 	$oChbxAverageOrder = "";

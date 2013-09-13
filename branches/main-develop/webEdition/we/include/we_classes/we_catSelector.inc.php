@@ -122,7 +122,7 @@ class we_catSelector extends we_multiSelector{
 	}
 
 	function userCanEditCat(){
-		return we_hasPerm("EDIT_KATEGORIE");
+		return permissionhandler::hasPerm("EDIT_KATEGORIE");
 	}
 
 	function userCanChangeCat(){
@@ -163,7 +163,7 @@ function disableDelBut(){
 	changeCatState = 0;
 }
 function enableDelBut(){
-' . (we_hasPerm("EDIT_KATEGORIE") ? '
+' . (permissionhandler::hasPerm("EDIT_KATEGORIE") ? '
 	btn_function_trash_enabled = switch_button_state("btn_function_trash", "btn_function_trash_enabled", "enabled", "image");
 	changeCatState = 1;
 ' : '') . '
@@ -466,12 +466,12 @@ function doClick(id,ct){
 			setDir(id);
 			setTimeout("wasdblclick=0;",400);
 		}else if(top.currentID == id){' .
-				(we_hasPerm("EDIT_KATEGORIE") ? '
+				(permissionhandler::hasPerm("EDIT_KATEGORIE") ? '
 				top.RenameEntry(id);' : '') . '
 		}
 	}else{
 		if(top.currentID == id && (!fsbody.ctrlpressed)){' .
-				(we_hasPerm("EDIT_KATEGORIE") ? '
+				(permissionhandler::hasPerm("EDIT_KATEGORIE") ? '
 				top.RenameEntry(id);' : '') . '
 
 		}else{

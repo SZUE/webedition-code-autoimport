@@ -118,7 +118,7 @@ function create_dialog($name, $title, $content, $expand = -1, $show_text = '', $
  */
 function save_all_values(){
 	//SAVE METADATA FIELDS TO DB
-	if(we_hasPerm('ADMINISTRATOR')){
+	if(permissionhandler::hasPerm('ADMINISTRATOR')){
 		// save all fields
 		$GLOBALS['DB_WE']->query('TRUNCATE TABLE ' . METADATA_TABLE);
 		if(isset($_REQUEST['metadataTag']) && is_array($_REQUEST['metadataTag'])){

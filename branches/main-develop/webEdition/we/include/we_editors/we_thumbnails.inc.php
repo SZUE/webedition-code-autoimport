@@ -29,7 +29,7 @@ $reloadUrl = getServerUrl(true) . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=editThu
 
 // Check if we need to create a new thumbnail
 if(isset($_GET['newthumbnail']) && $_GET['newthumbnail'] != ''){
-	if(we_hasPerm('ADMINISTRATOR')){
+	if(permissionhandler::hasPerm('ADMINISTRATOR')){
 		$DB_WE->query('INSERT INTO ' . THUMBNAILS_TABLE . ' SET Name ="' . $DB_WE->escape($_GET['newthumbnail']) . '"');
 		$_GET['id'] = f('SELECT ID FROM ' . THUMBNAILS_TABLE . ' WHERE Name="' . $DB_WE->escape($_GET['newthumbnail']) . '"', 'ID', $DB_WE);
 	}
@@ -37,7 +37,7 @@ if(isset($_GET['newthumbnail']) && $_GET['newthumbnail'] != ''){
 
 // Check if we need to delete a thumbnail
 if(isset($_GET['deletethumbnail']) && $_GET['deletethumbnail'] != ''){
-	if(we_hasPerm('ADMINISTRATOR')){
+	if(permissionhandler::hasPerm('ADMINISTRATOR')){
 		// Delete thumbnails in filesystem
 		we_thumbnail::deleteByThumbID($_GET['deletethumbnail']);
 
@@ -122,7 +122,7 @@ function remember_value(array &$setArray, $settingvalue, $settingname){
 function save_all_values(){
 	global $DB_WE;
 
-	if(we_hasPerm('ADMINISTRATOR')){
+	if(permissionhandler::hasPerm('ADMINISTRATOR')){
 		$setArray = array('Date' => 'UNIX_TIMESTAMP()');
 		// Update settings
 		remember_value($setArray, isset($_REQUEST['thumbnail_name']) ? $_REQUEST['thumbnail_name'] : null, 'Name');
@@ -213,7 +213,7 @@ function build_dialog($selected_setting = 'ui'){
 					}
 
 					function delete_thumbnail() {" .
-				((we_hasPerm('ADMINISTRATOR')) ?
+				((permissionhandler::hasPerm('ADMINISTRATOR')) ?
 					"var deletion = confirm('" . sprintf(g_l('thumbnails', '[delete_prompt]'), f('SELECT Name FROM ' . THUMBNAILS_TABLE . ' WHERE ID=' . intval($_GET['id']), 'Name', $DB_WE)) . "');
 
 							if (deletion == true) {

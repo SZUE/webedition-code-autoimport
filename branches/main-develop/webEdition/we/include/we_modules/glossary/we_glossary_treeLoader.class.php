@@ -102,7 +102,7 @@ abstract class we_glossary_treeLoader{
 			$Items[] = $Item;
 		}
 
-		if(we_hasPerm("EDIT_GLOSSARY_DICTIONARY")){
+		if(permissionhandler::hasPerm("EDIT_GLOSSARY_DICTIONARY")){
 			$Item = array(
 				'id' => $Language . "_exception",
 				'parentid' => $Language,

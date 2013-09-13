@@ -303,8 +303,8 @@ function urlEntry(icon,name,vorfahr,text,contentType,table,published,denied) {
 		';
 
 		$entries = array();
-		if(we_hasPerm("NEW_USER") || we_hasPerm("NEW_GROUP") || we_hasPerm("SAVE_USER") || we_hasPerm("SAVE_GROUP") || we_hasPerm("DELETE_USER") || we_hasPerm("DELETE_GROUP")){
-			if(we_hasPerm("ADMINISTRATOR")){
+		if(permissionhandler::hasPerm("NEW_USER") || permissionhandler::hasPerm("NEW_GROUP") || permissionhandler::hasPerm("SAVE_USER") || permissionhandler::hasPerm("SAVE_GROUP") || permissionhandler::hasPerm("DELETE_USER") || permissionhandler::hasPerm("DELETE_GROUP")){
+			if(permissionhandler::hasPerm("ADMINISTRATOR")){
 				$parent_path = '/';
 				$startloc = 0;
 			} else {

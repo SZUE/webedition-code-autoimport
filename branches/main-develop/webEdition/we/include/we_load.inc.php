@@ -63,7 +63,7 @@ if(isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] == "closeFolder"){
 	function getItems($ParentID, $offset = 0, $segment = 0){
 		global $table, $openFolders, $parentpaths, $wsQuery, $treeItems;
 
-		if(($table == TEMPLATES_TABLE && !we_hasPerm("CAN_SEE_TEMPLATES")) || ($table == FILE_TABLE && !we_hasPerm("CAN_SEE_DOCUMENTS"))){
+		if(($table == TEMPLATES_TABLE && !permissionhandler::hasPerm("CAN_SEE_TEMPLATES")) || ($table == FILE_TABLE && !permissionhandler::hasPerm("CAN_SEE_DOCUMENTS"))){
 			return 0;
 		}
 		$prevoffset = $offset - $segment;
@@ -90,7 +90,7 @@ if(isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] == "closeFolder"){
 		$DB_WE = new DB_WE();
 		$tmp = array_filter($openFolders);
 		$tmp[] = $ParentID;
-		$where = ' WHERE  ID!=' . intval($ParentID) . ' AND ParentID IN(' . implode(',', $tmp) . ') AND ((1' . makeOwnersSql() . ') ' . $wsQuery . ')';
+		$where = ' WHERE  ID!=' . intval($ParentID) . ' AND ParentID IN(' . implode(',', $tmp) . ') AND ((1' . we_users_util::makeOwnersSql() . ') ' . $wsQuery . ')';
 
 		$elem = "ID,ParentID,Path,Text,IsFolder,Icon,ModDate" .
 			(($table == FILE_TABLE || (defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE)) ? ",Published" : "") .
@@ -169,7 +169,7 @@ if(isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] == "closeFolder"){
 				$path = dirname($path);
 			}
 		}
-	} elseif(defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE && (!we_hasPerm("ADMINISTRATOR"))){
+	} elseif(defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE && (!permissionhandler::hasPerm("ADMINISTRATOR"))){
 		$ac = getAllowedClasses($DB_WE);
 		foreach($ac as $cid){
 			$path = id_to_path($cid, OBJECT_TABLE);

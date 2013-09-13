@@ -136,12 +136,12 @@ class weExportView{
 						}
 				        break;
 					case "new_export_group":
-						' . (!we_hasPerm("NEW_EXPORT") ? we_message_reporting::getShowMessageCall(g_l('export', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR) . 'return;' : '') . '
+						' . (!permissionhandler::hasPerm("NEW_EXPORT") ? we_message_reporting::getShowMessageCall(g_l('export', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR) . 'return;' : '') . '
 						if(' . $this->editorBodyFrame . '.loaded) {
 							' . $this->editorBodyForm . '.IsFolder.value = 1;
 						}
 					case "new_export":
-						' . (!we_hasPerm("NEW_EXPORT") ? we_message_reporting::getShowMessageCall(g_l('export', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR) . 'return;' : '') . '
+						' . (!permissionhandler::hasPerm("NEW_EXPORT") ? we_message_reporting::getShowMessageCall(g_l('export', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR) . 'return;' : '') . '
 						if(' . $this->editorBodyFrame . '.loaded) {
 							' . $this->editorBodyForm . '.cmd.value = arguments[0];
 							' . $this->editorBodyForm . '.cmdid.value = arguments[1];
@@ -154,7 +154,7 @@ class weExportView{
 					break;
 					case "delete_export":
 						if(' . $this->editorBodyForm . '.cmd.value=="home") return;
-						' . (!we_hasPerm("DELETE_EXPORT") ?
+						' . (!permissionhandler::hasPerm("DELETE_EXPORT") ?
 				(
 				print we_message_reporting::getShowMessageCall(g_l('export', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR)
 				) :
@@ -180,7 +180,7 @@ class weExportView{
 									' . we_message_reporting::getShowMessageCall(g_l('export', "[must_save]"), we_message_reporting::WE_MESSAGE_ERROR) . '
 									break;
 								}
-								' . (!we_hasPerm("NEW_EXPORT") ? we_message_reporting::getShowMessageCall(g_l('export', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR) . 'return;' : ''
+								' . (!permissionhandler::hasPerm("NEW_EXPORT") ? we_message_reporting::getShowMessageCall(g_l('export', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR) . 'return;' : ''
 			) . '
 								if (' . $this->topFrame . '.editor.edheader.setTab) ' . $this->topFrame . '.editor.edheader.setActiveTab("tab_3");
 								if (' . $this->topFrame . '.editor.edheader.setTab) ' . $this->topFrame . '.editor.edheader.setTab(3);
@@ -188,7 +188,7 @@ class weExportView{
 								if (' . $this->editorBodyFrame . '.clearLog) ' . $this->editorBodyFrame . '.clearLog();
 								if (' . $this->editorBodyFrame . '.addLog) ' . $this->editorBodyFrame . '.addLog("' . addslashes(we_html_tools::getPixel(10, 10)) . '<br>");
 					case "save_export":
-						' . (!we_hasPerm("NEW_EXPORT") ? we_message_reporting::getShowMessageCall(g_l('export', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR) . 'return;' : ''
+						' . (!permissionhandler::hasPerm("NEW_EXPORT") ? we_message_reporting::getShowMessageCall(g_l('export', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR) . 'return;' : ''
 			) . '
 						if(' . $this->editorBodyForm . '.cmd.value=="home") return;
 
@@ -220,7 +220,7 @@ class weExportView{
 					break;
 
 					case "edit_export":
-						' . (!we_hasPerm("EDIT_EXPORT") ? we_message_reporting::getShowMessageCall(g_l('export', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR) . 'return;' : ''
+						' . (!permissionhandler::hasPerm("EDIT_EXPORT") ? we_message_reporting::getShowMessageCall(g_l('export', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR) . 'return;' : ''
 			) . '
 						' . $this->topFrame . '.hot=0;
 						' . $this->editorBodyForm . '.cmd.value=arguments[0];
@@ -398,7 +398,7 @@ class weExportView{
 		if(isset($_REQUEST["cmd"])){
 			switch($_REQUEST["cmd"]){
 				case "new_export":
-					if(!we_hasPerm("NEW_EXPORT")){
+					if(!permissionhandler::hasPerm("NEW_EXPORT")){
 						print we_html_element::jsElement(
 								we_message_reporting::getShowMessageCall(g_l('export', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR)
 							);
@@ -413,7 +413,7 @@ class weExportView{
 
 					break;
 				case "new_export_group":
-					if(!we_hasPerm("NEW_EXPORT")){
+					if(!permissionhandler::hasPerm("NEW_EXPORT")){
 						print we_html_element::jsElement(
 								we_message_reporting::getShowMessageCall(g_l('export', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR)
 							);
@@ -429,7 +429,7 @@ class weExportView{
 					}
 					break;
 				case "edit_export":
-					if(!we_hasPerm("EDIT_EXPORT")){
+					if(!permissionhandler::hasPerm("EDIT_EXPORT")){
 						print we_html_element::jsElement(
 								we_message_reporting::getShowMessageCall(g_l('export', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR)
 							);
@@ -444,7 +444,7 @@ class weExportView{
 					}
 					break;
 				case "save_export":
-					if(!we_hasPerm("NEW_EXPORT")){
+					if(!permissionhandler::hasPerm("NEW_EXPORT")){
 						print we_html_element::jsElement(
 								we_message_reporting::getShowMessageCall(g_l('export', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR)
 							);
@@ -537,7 +537,7 @@ class weExportView{
 					}
 					break;
 				case "delete_export":
-					if(!we_hasPerm("DELETE_EXPORT")){
+					if(!permissionhandler::hasPerm("DELETE_EXPORT")){
 						print we_html_element::jsElement(
 								we_message_reporting::getShowMessageCall(g_l('export', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR)
 							);

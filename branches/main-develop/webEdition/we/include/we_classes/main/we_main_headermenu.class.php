@@ -31,7 +31,6 @@ class we_main_headermenu{
 	 * @return string
 	 */
 	public static function createMessageConsole($consoleName = 'NoName'){
-
 		return we_html_element::jsScript(JS_DIR . 'messageConsoleImages.js') .
 			we_html_element::jsScript(JS_DIR . 'messageConsoleView.js') .
 			we_html_element::jsElement('
@@ -140,12 +139,12 @@ top.weSidebar = weSidebar;
 		$jmenu = self::getMenu();
 		$navigationButtons = array();
 
-		if(!isset($_REQUEST["SEEM_edit_include"])){ // there is only a menu when not in seem_edit_include!
+		if(!isset($_REQUEST['SEEM_edit_include'])){ // there is only a menu when not in seem_edit_include!
 			if(// menu for normalmode
 				isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){
 
 			} else { // menu for seemode
-				if(permissionhandler::isUserAllowedForAction("header", "with_java")){
+				if(permissionhandler::isUserAllowedForAction('header', 'with_java')){
 
 				} else {
 //  no menu in this case !

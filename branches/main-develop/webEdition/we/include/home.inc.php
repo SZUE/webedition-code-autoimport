@@ -47,7 +47,7 @@ print STYLESHEET .
 	text-decoration:none;
 }') . we_html_element::jsScript(JS_DIR . '/utils/prototypes.js');
 
-if(we_hasPerm("CAN_SEE_QUICKSTART")){
+if(permissionhandler::hasPerm("CAN_SEE_QUICKSTART")){
 	$iLayoutCols = isset($_SESSION["prefs"]["cockpit_amount_columns"]) ? $_SESSION["prefs"]["cockpit_amount_columns"] : 3;
 	$bResetProps = ($_REQUEST['we_cmd'][0] == "reset_home") ? true : false;
 	if(!$bResetProps && $iLayoutCols){
@@ -1108,7 +1108,7 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 			), we_html_element::htmlDiv(
 				array(
 				"class" => "defaultfont errorMessage", "style" => "width: 400px;"
-				), (we_hasPerm("CHANGE_START_DOCUMENT") && we_hasPerm("EDIT_SETTINGS") ? we_html_tools::htmlAlertAttentionBox(
+				), (permissionhandler::hasPerm("CHANGE_START_DOCUMENT") && permissionhandler::hasPerm("EDIT_SETTINGS") ? we_html_tools::htmlAlertAttentionBox(
 						"<strong>" . g_l('SEEM', "[question_change_startdocument]") . "</strong><br /><br />" . we_button::create_button(
 							"preferences", "javascript:top.we_cmd('openPreferences');"), we_html_tools::TYPE_ALERT, 0, false) : we_html_tools::htmlAlertAttentionBox(
 						"<strong>" . g_l('SEEM', "[start_with_SEEM_no_startdocument]") . "</strong>", we_html_tools::TYPE_ALERT, 0, false))));

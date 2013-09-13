@@ -61,13 +61,13 @@ class we_docSelector extends we_dirSelector{
 		}
 
 		// deal with workspaces
-		if(we_hasPerm('ADMINISTRATOR') || ($this->table == FILE_TABLE && we_hasPerm('CAN_SELECT_OTHER_USERS_FILES')) || (defined('OBJECT_FILES_TABLE') && $this->table == OBJECT_FILES_TABLE && we_hasPerm('CAN_SELECT_OTHER_USERS_FILES'))){
+		if(permissionhandler::hasPerm('ADMINISTRATOR') || ($this->table == FILE_TABLE && permissionhandler::hasPerm('CAN_SELECT_OTHER_USERS_FILES')) || (defined('OBJECT_FILES_TABLE') && $this->table == OBJECT_FILES_TABLE && permissionhandler::hasPerm('CAN_SELECT_OTHER_USERS_FILES'))){
 			$wsQuery = '';
 		} else {
 			$wsQuery = '';
 			if(get_ws($this->table)){
 				$wsQuery = getWsQueryForSelector($this->table);
-			} else if(defined("OBJECT_FILES_TABLE") && $this->table == OBJECT_FILES_TABLE && (!we_hasPerm("ADMINISTRATOR"))){
+			} else if(defined("OBJECT_FILES_TABLE") && $this->table == OBJECT_FILES_TABLE && (!permissionhandler::hasPerm("ADMINISTRATOR"))){
 				$ac = getAllowedClasses($this->db);
 				foreach($ac as $cid){
 					$path = id_to_path($cid, OBJECT_TABLE);
@@ -82,7 +82,7 @@ class we_docSelector extends we_dirSelector{
 			}
 		}
 		$this->db->query('SELECT ' . $this->fields . ' FROM ' . $this->db->escape($this->table) . ' WHERE ParentID=' . intval($this->dir) . ' AND((1 ' .
-			makeOwnersSql() . ')' .
+			we_users_util::makeOwnersSql() . ')' .
 			$wsQuery . ')' .
 			$filterQuery . //$publ_q.
 			($this->order ? (' ORDER BY ' . $this->order) : '')
@@ -405,28 +405,28 @@ function enableNewFileBut() {
 	}
 
 	function _userCanMakeNewFile(){
-		if(we_hasPerm("ADMINISTRATOR")){
+		if(permissionhandler::hasPerm("ADMINISTRATOR")){
 			return true;
 		}
 		if(!$this->userCanSeeDir()){
 			return false;
 		}
 		if($this->filter == "image/*" || $this->filter == "video/quicktime" || $this->filter == "application/x-shockwave-flash"){
-			if(!we_hasPerm($this->ctp[$this->filter])){
+			if(!permissionhandler::hasPerm($this->ctp[$this->filter])){
 				return false;
 			}
 		} elseif(!
 			(
-			we_hasPerm("NEW_GRAFIK") ||
-			we_hasPerm("NEW_QUICKTIME") ||
-			we_hasPerm("NEW_HTML") ||
-			we_hasPerm("NEW_JS") ||
-			we_hasPerm("NEW_CSS") ||
-			we_hasPerm("NEW_TEXT") ||
-			we_hasPerm("NEW_HTACCESS") ||
-			we_hasPerm("NEW_FLASH") ||
-			we_hasPerm("NEW_SONSTIGE") ||
-			we_hasPerm('FILE_IMPORT')
+			permissionhandler::hasPerm("NEW_GRAFIK") ||
+			permissionhandler::hasPerm("NEW_QUICKTIME") ||
+			permissionhandler::hasPerm("NEW_HTML") ||
+			permissionhandler::hasPerm("NEW_JS") ||
+			permissionhandler::hasPerm("NEW_CSS") ||
+			permissionhandler::hasPerm("NEW_TEXT") ||
+			permissionhandler::hasPerm("NEW_HTACCESS") ||
+			permissionhandler::hasPerm("NEW_FLASH") ||
+			permissionhandler::hasPerm("NEW_SONSTIGE") ||
+			permissionhandler::hasPerm('FILE_IMPORT')
 			)
 		){
 			return false;

@@ -27,8 +27,8 @@ include_once (WE_INCLUDES_PATH . 'we_widgets/dlg/prefs.inc.php');
 we_html_tools::protect();
 $_disableNew = true;
 $_cmdNew = "javascript:top.we_cmd('new','" . FILE_TABLE . "','','text/webedition');";
-if(we_hasPerm("NEW_WEBEDITIONSITE")){
-	if(we_hasPerm("NO_DOCTYPE")){
+if(permissionhandler::hasPerm("NEW_WEBEDITIONSITE")){
+	if(permissionhandler::hasPerm("NO_DOCTYPE")){
 		$_disableNew = false;
 	} else{
 		$q = "ORDER BY DocType";
@@ -67,31 +67,31 @@ if(defined("OBJECT_TABLE")){
 
 $shortcuts = array();
 
-if(defined('FILE_TABLE') && we_hasPerm('CAN_SEE_DOCUMENTS')){
+if(defined('FILE_TABLE') && permissionhandler::hasPerm('CAN_SEE_DOCUMENTS')){
 	$shortcuts['open_document'] = g_l('button', '[open_document][value]');
 }
-if(defined('FILE_TABLE') && we_hasPerm('CAN_SEE_DOCUMENTS') && !$_disableNew){
+if(defined('FILE_TABLE') && permissionhandler::hasPerm('CAN_SEE_DOCUMENTS') && !$_disableNew){
 	$shortcuts['new_document'] = g_l('button', '[new_document][value]');
 }
-if(defined('TEMPLATES_TABLE') && we_hasPerm('NEW_TEMPLATE')){
+if(defined('TEMPLATES_TABLE') && permissionhandler::hasPerm('NEW_TEMPLATE')){
 	$shortcuts['new_template'] = g_l('button', '[new_template][value]');
 }
-if(we_hasPerm('NEW_DOC_FOLDER')){
+if(permissionhandler::hasPerm('NEW_DOC_FOLDER')){
 	$shortcuts['new_directory'] = g_l('button', '[new_directory][value]');
 }
-if(defined('FILE_TABLE') && we_hasPerm('CAN_SEE_DOCUMENTS')){
+if(defined('FILE_TABLE') && permissionhandler::hasPerm('CAN_SEE_DOCUMENTS')){
 	$shortcuts['unpublished_pages'] = g_l('button', '[unpublished_pages][value]');
 }
-if(defined('OBJECT_FILES_TABLE') && we_hasPerm('CAN_SEE_OBJECTFILES') && !$_disableObjects){
+if(defined('OBJECT_FILES_TABLE') && permissionhandler::hasPerm('CAN_SEE_OBJECTFILES') && !$_disableObjects){
 	$shortcuts['unpublished_objects'] = g_l('button', '[unpublished_objects][value]');
 }
-if(defined('OBJECT_FILES_TABLE') && we_hasPerm('NEW_OBJECTFILE') && !$_disableObjects){
+if(defined('OBJECT_FILES_TABLE') && permissionhandler::hasPerm('NEW_OBJECTFILE') && !$_disableObjects){
 	$shortcuts['new_object'] = g_l('button', '[new_object][value]');
 }
-if(defined('OBJECT_TABLE') && we_hasPerm('NEW_OBJECT')){
+if(defined('OBJECT_TABLE') && permissionhandler::hasPerm('NEW_OBJECT')){
 	$shortcuts['new_class'] = g_l('button', '[new_class][value]');
 }
-if(we_hasPerm("EDIT_SETTINGS")){
+if(permissionhandler::hasPerm("EDIT_SETTINGS")){
 	$shortcuts['preferences'] = g_l('button', '[preferences][value]');
 }
 

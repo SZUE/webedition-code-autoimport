@@ -154,7 +154,7 @@ class weVotingView extends weModuleView{
 							' . we_message_reporting::getShowMessageCall(g_l('modules_voting', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 							return;
 						}
-						' . (!we_hasPerm("DELETE_VOTING") ?
+						' . (!permissionhandler::hasPerm("DELETE_VOTING") ?
 				(
 				we_message_reporting::getShowMessageCall(g_l('modules_voting', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
 				) :
@@ -203,7 +203,7 @@ class weVotingView extends weModuleView{
 						break;
 
 					case "edit_voting":
-						' . (!we_hasPerm("EDIT_VOTING") ? we_message_reporting::getShowMessageCall(g_l('modules_voting', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR) . 'return;' : '') . '
+						' . (!permissionhandler::hasPerm("EDIT_VOTING") ? we_message_reporting::getShowMessageCall(g_l('modules_voting', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR) . 'return;' : '') . '
 						' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value=arguments[0];
 						' . $this->topFrame . '.editor.edbody.document.we_form.cmdid.value=arguments[1];
 						' . $this->topFrame . '.editor.edbody.document.we_form.tabnr.value=' . $this->topFrame . '.activ_tab;
@@ -373,7 +373,7 @@ class weVotingView extends weModuleView{
 					break;
 				case "new_voting":
 				case "new_voting_group":
-					if(!we_hasPerm("NEW_VOTING")){
+					if(!permissionhandler::hasPerm("NEW_VOTING")){
 						print we_html_element::jsElement(
 								we_message_reporting::getShowMessageCall(g_l('modules_voting', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
 						);
@@ -387,7 +387,7 @@ class weVotingView extends weModuleView{
 					');
 					break;
 				case "edit_voting":
-					if(!we_hasPerm("EDIT_VOTING")){
+					if(!permissionhandler::hasPerm("EDIT_VOTING")){
 						print we_html_element::jsElement(
 								we_message_reporting::getShowMessageCall(g_l('modules_voting', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
 						);
@@ -411,7 +411,7 @@ class weVotingView extends weModuleView{
 							$this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";');
 					break;
 				case "save_voting":
-					if(!we_hasPerm("NEW_VOTING") && !we_hasPerm("EDIT_VOTING")){
+					if(!permissionhandler::hasPerm("NEW_VOTING") && !permissionhandler::hasPerm("EDIT_VOTING")){
 						print we_html_element::jsElement(
 								we_message_reporting::getShowMessageCall(g_l('modules_voting', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
 						);
@@ -530,7 +530,7 @@ class weVotingView extends weModuleView{
 					break;
 				case "delete_voting":
 
-					if(!we_hasPerm("DELETE_VOTING")){
+					if(!permissionhandler::hasPerm("DELETE_VOTING")){
 						print we_html_element::jsElement(
 								we_message_reporting::getShowMessageCall(g_l('modules_voting', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
 						);

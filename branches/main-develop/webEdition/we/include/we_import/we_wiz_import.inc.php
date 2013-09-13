@@ -32,14 +32,14 @@ class we_wizard_import extends we_wizard{
 
 	function formCategory($obj, $categories){
 		$js = (defined('OBJECT_TABLE')) ? "opener.wizbody.document.we_form.elements[\\'v[import_type]\\'][0].checked=true;" : "";
-		$addbut = we_button::create_button('add', "javascript:top.we_cmd('openCatselector','','" . CATEGORY_TABLE . "','','','" . $js . "fillIDs();opener.top.we_cmd(\\'add_" . $obj . "Cat\\',top.allIDs);')", false, 100, 22, "", "", (!we_hasPerm("EDIT_KATEGORIE")));
+		$addbut = we_button::create_button('add', "javascript:top.we_cmd('openCatselector','','" . CATEGORY_TABLE . "','','','" . $js . "fillIDs();opener.top.we_cmd(\\'add_" . $obj . "Cat\\',top.allIDs);')", false, 100, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
 		$cats = new MultiDirChooser(410, $categories, 'delete_' . $obj . 'Cat', $addbut, '', 'Icon,Path', CATEGORY_TABLE);
 		return $cats->get();
 	}
 
 	function formCategory2($obj, $categories){
 		$js = (defined('OBJECT_TABLE')) ? "opener.wizbody.document.we_form.elements[\\'v[import_type]\\'][0].checked=true;" : "";
-		$addbut = we_button::create_button('add', "javascript:top.we_cmd('openCatselector','','" . CATEGORY_TABLE . "','','','" . $js . "fillIDs();opener.top.we_cmd(\\'add_" . $obj . "Cat\\',top.allIDs);')", false, 100, 22, "", "", (!we_hasPerm("EDIT_KATEGORIE")));
+		$addbut = we_button::create_button('add', "javascript:top.we_cmd('openCatselector','','" . CATEGORY_TABLE . "','','','" . $js . "fillIDs();opener.top.we_cmd(\\'add_" . $obj . "Cat\\',top.allIDs);')", false, 100, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
 		$cats = new MultiDirChooser2(410, $categories, 'delete_' . $obj . 'Cat', $addbut, '', 'Icon,Path', CATEGORY_TABLE);
 		$cats->setRowPrefix($obj);
 		$cats->setCatField("self.document.forms['we_form'].elements['v[" . $obj . "Categories]']");
@@ -159,15 +159,15 @@ class we_wizard_import extends we_wizard{
 		$defaultVal = 'import_files';
 
 
-		if(!we_hasPerm('FILE_IMPORT')){
+		if(!permissionhandler::hasPerm('FILE_IMPORT')){
 			$defaultVal = 'siteImport';
-			if(!we_hasPerm('SITE_IMPORT')){
+			if(!permissionhandler::hasPerm('SITE_IMPORT')){
 				$defaultVal = 'WXMLImport';
-				if(!we_hasPerm('WXML_IMPORT')){
+				if(!permissionhandler::hasPerm('WXML_IMPORT')){
 					$defaultVal = 'GXMLImport';
-					if(!we_hasPerm('GENERICXML_IMPORT')){
+					if(!permissionhandler::hasPerm('GENERICXML_IMPORT')){
 						$defaultVal = 'CSVImport';
-						if(!we_hasPerm('CSV_IMPORT')){
+						if(!permissionhandler::hasPerm('CSV_IMPORT')){
 							$defaultVal = '';
 						}
 					}
@@ -179,18 +179,18 @@ class we_wizard_import extends we_wizard{
 		$expat = (function_exists('xml_parser_create')) ? true : false;
 
 		$tblFiles = new we_html_table(array('cellpadding' => 0, 'cellspacing' => 0, 'border' => 0), 3, 1);
-		$tblFiles->setCol(0, 0, array(), we_forms::radiobutton('file_import', ($cmd[1] == 'import_files'), 'type', g_l('import', '[file_import]'), true, 'defaultfont', '', !we_hasPerm('FILE_IMPORT'), g_l('import', '[txt_file_import]'), 0, 384));
+		$tblFiles->setCol(0, 0, array(), we_forms::radiobutton('file_import', ($cmd[1] == 'import_files'), 'type', g_l('import', '[file_import]'), true, 'defaultfont', '', !permissionhandler::hasPerm('FILE_IMPORT'), g_l('import', '[txt_file_import]'), 0, 384));
 		$tblFiles->setCol(1, 0, array(), we_html_tools::getPixel(0, 4));
-		$tblFiles->setCol(2, 0, array(), we_forms::radiobutton('site_import', ($cmd[1] == 'siteImport'), 'type', g_l('import', '[site_import]'), true, 'defaultfont', '', !we_hasPerm('SITE_IMPORT'), g_l('import', '[txt_site_import]'), 0, 384));
+		$tblFiles->setCol(2, 0, array(), we_forms::radiobutton('site_import', ($cmd[1] == 'siteImport'), 'type', g_l('import', '[site_import]'), true, 'defaultfont', '', !permissionhandler::hasPerm('SITE_IMPORT'), g_l('import', '[txt_site_import]'), 0, 384));
 		$tblData = new we_html_table(array('cellpadding' => 0, 'cellspacing' => 0, 'border' => 0), 5, 1);
-		$tblData->setCol(0, 0, array(), we_forms::radiobutton('WXMLImport', ($cmd[1] == 'WXMLImport'), 'type', g_l('import', '[wxml_import]'), true, 'defaultfont', '', (!we_hasPerm('WXML_IMPORT') || !$expat), ($expat ? g_l('import', '[txt_wxml_import]') : g_l('import', '[add_expat_support]')), 0, 384));
+		$tblData->setCol(0, 0, array(), we_forms::radiobutton('WXMLImport', ($cmd[1] == 'WXMLImport'), 'type', g_l('import', '[wxml_import]'), true, 'defaultfont', '', (!permissionhandler::hasPerm('WXML_IMPORT') || !$expat), ($expat ? g_l('import', '[txt_wxml_import]') : g_l('import', '[add_expat_support]')), 0, 384));
 		$tblData->setCol(1, 0, array(), we_html_tools::getPixel(0, 4));
-		$tblData->setCol(2, 0, array(), we_forms::radiobutton('GXMLImport', ($cmd[1] == 'GXMLImport'), 'type', g_l('import', '[gxml_import]'), true, 'defaultfont', '', (!we_hasPerm('GENERICXML_IMPORT') || !$expat), ($expat) ? g_l('import', '[txt_gxml_import]') : g_l('import', '[add_expat_support]'), 0, 384));
+		$tblData->setCol(2, 0, array(), we_forms::radiobutton('GXMLImport', ($cmd[1] == 'GXMLImport'), 'type', g_l('import', '[gxml_import]'), true, 'defaultfont', '', (!permissionhandler::hasPerm('GENERICXML_IMPORT') || !$expat), ($expat) ? g_l('import', '[txt_gxml_import]') : g_l('import', '[add_expat_support]'), 0, 384));
 		$tblData->setCol(3, 0, array(), we_html_tools::getPixel(0, 4));
-		$tblData->setCol(4, 0, array(), we_forms::radiobutton('CSVImport', ($cmd[1] == 'CSVImport'), 'type', g_l('import', '[csv_import]'), true, 'defaultfont', '', !we_hasPerm('CSV_IMPORT'), g_l('import', '[txt_csv_import]'), 0, 384));
+		$tblData->setCol(4, 0, array(), we_forms::radiobutton('CSVImport', ($cmd[1] == 'CSVImport'), 'type', g_l('import', '[csv_import]'), true, 'defaultfont', '', !permissionhandler::hasPerm('CSV_IMPORT'), g_l('import', '[txt_csv_import]'), 0, 384));
 
 		$tblTemplates = new we_html_table(array('cellpadding' => 0, 'cellspacing' => 0, 'border' => 0), 1, 1);
-		$tblTemplates->setCol(0, 0, array(), we_forms::radiobutton('template_import', ($cmd[1] == 'import_templates'), 'type', g_l('import', '[template_import]'), true, 'defaultfont', '', !we_hasPerm('ADMINISTRATOR'), g_l('import', '[txt_template_import]'), 0, 384));
+		$tblTemplates->setCol(0, 0, array(), we_forms::radiobutton('template_import', ($cmd[1] == 'import_templates'), 'type', g_l('import', '[template_import]'), true, 'defaultfont', '', !permissionhandler::hasPerm('ADMINISTRATOR'), g_l('import', '[txt_template_import]'), 0, 384));
 
 
 		$parts = array(
@@ -368,7 +368,7 @@ class we_wizard_import extends we_wizard{
 			}";
 
 		$wecmdenc1 = we_cmd_enc("self.wizbody.document.forms['we_form'].elements['v[fserver]'].value");
-		$importFromButton = (we_hasPerm("CAN_SELECT_EXTERNAL_FILES")) ? we_button::create_button("select", "javascript: self.document.forms['we_form'].elements['v[rdofloc]'][0].checked=true;we_cmd('browse_server', '" . $wecmdenc1 . "', '', document.forms['we_form'].elements['v[fserver]'].value)") : "";
+		$importFromButton = (permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES")) ? we_button::create_button("select", "javascript: self.document.forms['we_form'].elements['v[rdofloc]'][0].checked=true;we_cmd('browse_server', '" . $wecmdenc1 . "', '', document.forms['we_form'].elements['v[fserver]'].value)") : "";
 		$inputLServer = we_html_tools::htmlTextInput("v[fserver]", 30, (isset($v["fserver"]) ? $v["fserver"] : "/"), 255, "readonly", "text", 300);
 		$importFromServer = we_html_tools::htmlFormElementTable($inputLServer, "", "left", "defaultfont", we_html_tools::getPixel(10, 1), $importFromButton, "", "", "", 0);
 
@@ -524,7 +524,7 @@ function toggle(name){
 			if($_xml_type == 'backup'){
 				$_return[0] = '';
 
-				if(we_hasPerm('IMPORT')){
+				if(permissionhandler::hasPerm('IMPORT')){
 					$_return[1] = we_html_element::jsElement('
 							' . $functions . '
 if(confirm("' . str_replace('"', '\'', g_l('import', '[backup_file_found]') . ' \n\n' . g_l('import', '[backup_file_found_question]')) . '")){
@@ -988,7 +988,7 @@ HTS;
 		$v['import_type'] = isset($v['import_type']) ? $v['import_type'] : 'documents';
 		//javascript:formFileChooser('browse_server','document.we_form.elements[\\'$IDName\\'].value','$filter',document.we_form.elements['$IDName'].value,'$cmd');
 		$wecmdenc1 = we_cmd_enc("self.wizbody.document.forms['we_form'].elements['v[fserver]'].value");
-		$importFromButton = (we_hasPerm('CAN_SELECT_EXTERNAL_FILES')) ? we_button::create_button('select', "javascript: self.document.forms['we_form'].elements['v[rdofloc]'][0].checked=true;we_cmd('browse_server', '" . $wecmdenc1 . "', '', document.forms['we_form'].elements['v[fserver]'].value);") : "";
+		$importFromButton = (permissionhandler::hasPerm('CAN_SELECT_EXTERNAL_FILES')) ? we_button::create_button('select', "javascript: self.document.forms['we_form'].elements['v[rdofloc]'][0].checked=true;we_cmd('browse_server', '" . $wecmdenc1 . "', '', document.forms['we_form'].elements['v[fserver]'].value);") : "";
 		$inputLServer = we_html_tools::htmlTextInput('v[fserver]', 30, (isset($v['fserver']) ? $v['fserver'] : '/'), 255, 'readonly', 'text', 300);
 		$importFromServer = we_html_tools::htmlFormElementTable($inputLServer, '', 'left', 'defaultfont', we_html_tools::getPixel(10, 1), $importFromButton, '', '', '', 0);
 
@@ -1037,7 +1037,7 @@ HTS;
 		$table = TEMPLATES_TABLE;
 		$textname = 'v[we_TemplateName]';
 		$idname = 'noDocTypeTemplateId';
-		if(we_hasPerm('CAN_SEE_TEMPLATES')){
+		if(permissionhandler::hasPerm('CAN_SEE_TEMPLATES')){
 			$ueberschrift = '<a href="javascript:goTemplate(document.we_form.elements[\'' . $idname . '\'].value)">' . g_l('import', "[template]") . '</a>';
 		} else {
 			$ueberschrift = g_l('import', '[template]');
@@ -1688,7 +1688,7 @@ function handle_event(evt) {
 		$v['import_type'] = isset($v['import_type']) ? $v['import_type'] : 'documents';
 		/*		 * *************************************************************************************************************** */
 		$wecmdenc1 = we_cmd_enc("self.wizbody.document.forms['we_form'].elements['v[fserver]'].value");
-		$importFromButton = (we_hasPerm('CAN_SELECT_EXTERNAL_FILES')) ? we_button::create_button('select', "javascript:we_cmd('browse_server', '" . $wecmdenc1 . "', '', document.forms['we_form'].elements['v[fserver]'].value)") : "";
+		$importFromButton = (permissionhandler::hasPerm('CAN_SELECT_EXTERNAL_FILES')) ? we_button::create_button('select', "javascript:we_cmd('browse_server', '" . $wecmdenc1 . "', '', document.forms['we_form'].elements['v[fserver]'].value)") : "";
 		$inputLServer = we_html_tools::htmlTextInput('v[fserver]', 30, (isset($v['fserver']) ? $v['fserver'] : '/'), 255, "readonly onClick=\"self.document.forms['we_form'].elements['v[rdofloc]'][0].checked=true;\"", "text", 300);
 		$importFromServer = we_html_tools::htmlFormElementTable($inputLServer, '', 'left', 'defaultfont', we_html_tools::getPixel(10, 1), $importFromButton, "", "", "", 0);
 
@@ -2007,7 +2007,7 @@ HTS;
 		$table = TEMPLATES_TABLE;
 		$textname = "v[we_TemplateName]";
 		$idname = "v[we_TemplateID]";
-		$ueberschrift = (we_hasPerm("CAN_SEE_TEMPLATES") ?
+		$ueberschrift = (permissionhandler::hasPerm("CAN_SEE_TEMPLATES") ?
 				'<a href="javascript:goTemplate(document.we_form.elements[\'' . $idname . '\'].value)">' . g_l('import', "[template]") . '</a>' :
 				g_l('import', "[template]"));
 
