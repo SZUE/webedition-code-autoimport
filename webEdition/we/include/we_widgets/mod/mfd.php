@@ -135,7 +135,7 @@ while ($j < $iMaxItems) {
 				if ($i + 1 <= $iMaxItems) {
 					++$i;
 					++$j;
-					$isOpen = f('SELECT 1 AS a FROM ' . LOCK_TABLE . ' WHERE ID=' . $GLOBALS['DB_WE']->f('DID') . ' AND tbl="' . $GLOBALS['DB_WE']->f('DocumentTable') . '"', 'a', $_db);
+					$isOpen = f('SELECT 1 AS a FROM ' . LOCK_TABLE . ' WHERE ID=' . $GLOBALS['DB_WE']->f('DID') . ' AND tbl="' . $GLOBALS['DB_WE']->f('DocumentTable') . '" AND UserID!=' . $_SESSION['user']['ID'], 'a', $_db);
 					$lastModified .= '<tr><td width="20" height="20" valign="middle" nowrap><img src="' . ICON_DIR . $_hash['Icon'] . '" />' . we_html_tools::getPixel(4, 1) . '</td>' .
 							'<td valign="middle" class="middlefont" ' . ($isOpen ? 'style="color:red;"' : '') . '>' .
 							($isOpen ? '' : '<a href="javascript:top.weEditorFrameController.openDocument(\'' . $_table . '\',\'' . $_hash['ID'] . '\',\'' . $_hash['ContentType'] . '\');" title="' . $_hash['Path'] . '" style="color:#000000;text-decoration:none;">') . $_hash['Path'] . ($isOpen ? '' : '</a>') . '</td>';
