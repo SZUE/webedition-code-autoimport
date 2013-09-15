@@ -1575,7 +1575,7 @@ function weWysiwygSetHiddenText(arg) {
 									for(var i=0;i<attribs.length;i++){
 										if(first.hasAttribute(attribs[i])){
 											div.setAttribute(attribs[i], first.getAttribute(attribs[i]));
-											useDiv = true; 
+											useDiv = true;
 										}
 									}
 									if(useDiv){
@@ -1678,9 +1678,9 @@ function weWysiwygSetHiddenText(arg) {
 
 				$min_w = 0;
 				$row_w = 0;
-				$pixelrow = '<tr><td background="' . IMAGE_DIR . 'backgrounds/aquaBackground.gif" class="tbButtonWysiwygDefaultStyle tbButtonWysiwygBackground">' . we_html_tools::getPixel($this->width, 2) . '</td></tr>';
+				$pixelrow = '<tr><td style="background-image:url(' . IMAGE_DIR . 'backgrounds/aquaBackground.gif);" class="tbButtonWysiwygDefaultStyle tbButtonWysiwygBackground">' . we_html_tools::getPixel($this->width, 2) . '</td></tr>';
 				$linerow = '<tr><td ><div class="tbButtonsHR" class="tbButtonWysiwygDefaultStyle"></div></td></tr>';
-				$out = we_html_element::jsElement('var weLastPopupMenu = null; var wefoo = "' . $this->ref . 'edit"; wePopupMenuArray[wefoo] = new Array();') . '<table id="' . $this->ref . 'edit_table" border="0" cellpadding="0" cellspacing="0" width="' . $this->width . '" class="tbButtonWysiwygDefaultStyle"><tr><td  background="' . IMAGE_DIR . 'backgrounds/aquaBackground.gif" class="tbButtonWysiwygDefaultStyle tbButtonWysiwygBackground">';
+				$out = we_html_element::jsElement('var weLastPopupMenu = null; var wefoo = "' . $this->ref . 'edit"; wePopupMenuArray[wefoo] = new Array();') . '<table id="' . $this->ref . 'edit_table" border="0" cellpadding="0" cellspacing="0" width="' . $this->width . '" class="tbButtonWysiwygDefaultStyle"><tr><td  style="background-image:url(' . IMAGE_DIR . 'backgrounds/aquaBackground.gif);" class="tbButtonWysiwygDefaultStyle tbButtonWysiwygBackground">';
 				foreach($rows as $r=>$curRow){
 					$out .= '<table border="0" cellpadding="0" cellspacing="0" class="tbButtonWysiwygDefaultStyle"><tr>';
 					foreach($curRow as $curCol){
@@ -1689,7 +1689,7 @@ function weWysiwygSetHiddenText(arg) {
 					}
 					$min_w = max($min_w, $row_w);
 					$row_w = 0;
-					$out .= '</tr></table></td></tr>' . (($r < count($rows) - 1) ? $linerow : $pixelrow) . '<tr><td ' . (($r < (count($rows) - 1)) ? (' bgcolor="white"  background="' . IMAGE_DIR . 'backgrounds/aquaBackground.gif"') : '') . ' class="tbButtonWysiwygDefaultStyle' . (($r < (count($rows) - 1)) ? ' tbButtonWysiwygBackground' : '') . '">';
+					$out .= '</tr></table></td></tr>' . (($r < count($rows) - 1) ? $linerow : $pixelrow) . '<tr><td ' . (($r < (count($rows) - 1)) ? (' style="background-image:url(' . IMAGE_DIR . 'backgrounds/aquaBackground.gif);"') : '') . ' class="tbButtonWysiwygDefaultStyle' . (($r < (count($rows) - 1)) ? ' tbButtonWysiwygBackground' : '') . '">';
 				}
 
 				$realWidth = max($min_w, $this->width);

@@ -26,7 +26,7 @@ print STYLESHEET;
 ?>
 </head>
 
-<body bgcolor="#ffffff" background="<?php print IMAGE_DIR ?>backgrounds/aquaBackground.gif"	onload="self.focus();" onBlur="setTimeout('self.close()', 500);">
+<body bgcolor="#ffffff" style="background-image:url(<?php echo IMAGE_DIR; ?>backgrounds/aquaBackground.gif);"	onload="self.focus();" onblur="setTimeout('self.close()', 500);">
 	<?php
 	echo '
 <table border="0" cellpadding="7" width="100%" class="defaultfont">

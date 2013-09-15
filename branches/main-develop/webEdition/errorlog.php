@@ -37,54 +37,53 @@ function getInfoTable($_infoArr){
 	$trans = array('Error type' => 'Type', 'Error message' => 'Text', 'Script name' => 'File', 'Line number' => 'Line', 'Backtrace' => 'Backtrace',
 		'Request' => 'Request', 'Server' => 'Server', 'Session' => 'Session', 'Global' => 'Global');
 	return '
-			<table align="center" bgcolor="#FFFFFF" cellpadding="4" cellspacing="0" style="border: 1px solid #265da6;" width="610">
+			<table class="error" align="center">
   <colgroup>
   <col width="10%"/>
   <col width="90%" />
   </colgroup>
-  <tr bgcolor="#f7f7f7" valign="top">
-  	<td nowrap="nowrap" style="border-bottom: 1px solid #265da6; border-right: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><b>#' . $_infoArr['ID'] . '</b></font></td>
-    <td  style="border-bottom: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2">' . $_infoArr['Date'] . '</font></td>
+  <tr class="first">
+  	<td class="left">#' . $_infoArr['ID'] . '</td>
+    <td class="right">' . $_infoArr['Date'] . '</td>
   </tr>' . '
-  <tr valign="top">
-    <td nowrap="nowrap" style="border-bottom: 1px solid #265da6; border-right: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><b>Error type:</b></font></td>
-    <td style="border-bottom: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><i>' . $_infoArr['Type'] . '</i></font></td>
+  <tr>
+    <td class="left">Error type:</td>
+    <td class="right">' . $_infoArr['Type'] . '</td>
   </tr>
-  <tr valign="top">
-    <td  style="border-bottom: 1px solid #265da6; border-right: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><b>Error message:</b></font></td>
-    <td style="border-bottom: 1px solid #265da6;"><pre>' . $_infoArr['Text'] . '</pre></td>
+  <tr>
+    <td class="left">Error message:</td>
+    <td ><pre>' . $_infoArr['Text'] . '</pre></td>
   </tr>
-  <tr valign="top">
-    <td nowrap="nowrap" style="border-bottom: 1px solid #265da6; border-right: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><b>Script name:</b></font></td>
-    <td style="border-bottom: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><i>' . $_infoArr['File'] . '</i></font></td>
+  <tr>
+    <td class="left">Script name:</td>
+    <td class="right">' . $_infoArr['File'] . '</td>
   </tr>
-  <tr valign="top">
-    <td nowrap="nowrap" style="border-bottom: 1px solid #265da6; border-right: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><b>Line number:</b></font></td>
-    <td style="border-bottom: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><i>' . $_infoArr['Line'] . '</i></font></td>
+  <tr>
+    <td class="left">Line number:</td>
+    <td class="right">' . $_infoArr['Line'] . '</td>
   </tr>
-  <tr valign="top">
-    <td nowrap="nowrap" style="border-bottom: 1px solid #265da6;border-right: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><b>Backtrace</b></font></td>
-    <td style="border-bottom: 1px solid #265da6;"><pre>' . $_infoArr['Backtrace'] . '
+  <tr>
+    <td class="left">Backtrace</td>
+    <td class="right"><pre>' . $_infoArr['Backtrace'] . '
       </pre></td>
   </tr>
-  <tr valign="top">
-    <td nowrap="nowrap" style="border-bottom: 1px solid #265da6;border-right: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><b>Request</b></font></td>
-    <td style="border-bottom: 1px solid #265da6;"><pre>' . $_infoArr['Request'] . '</pre></td>
+  <tr>
+    <td class="left">Request</td>
+    <td class="right"><pre>' . $_infoArr['Request'] . '</pre></td>
   </tr>
-  <tr valign="top">
-    <td nowrap="nowrap" style="border-right: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><b>Server</b></font></td>
-    <td style="border-bottom: 1px solid #265da6;"><pre>' . $_infoArr['Server'] . '</pre></td>
+  <tr>
+    <td class="left">Server</td>
+    <td class="right"><pre>' . $_infoArr['Server'] . '</pre></td>
   </tr>
-  <tr valign="top">
-    <td nowrap="nowrap" style="border-bottom: 1px solid #265da6;border-right: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><b>Session</b></font></td>
-    <td style="border-bottom: 1px solid #265da6;"><pre>' . $_infoArr['Session'] . '
+  <tr>
+    <td class="left">Session</td>
+    <td class="right"><pre>' . $_infoArr['Session'] . '
       </pre></td>
   </tr>
-  <tr valign="top">
-    <td nowrap="nowrap" style="border-bottom: 1px solid #265da6;border-right: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><b>Global</b></font></td>
-    <td ><pre>' . $_infoArr['Global'] . '</pre></td>
+  <tr>
+    <td class="left">Global</td>
+    <td class="right"><pre>' . $_infoArr['Global'] . '</pre></td>
   </tr>
-
 </table>';
 }
 
@@ -146,7 +145,35 @@ echo we_html_element::jsScript(JS_DIR . 'keyListener.js') .
 		return true;
 	}
 ') .
- STYLESHEET;
+ STYLESHEET . we_html_element::cssElement('
+table.error{
+	 background-color:#FFFFFF;
+	 border: 1px solid #265da6;
+	 width:610px;
+}
+table.error tr.first{
+	background-color:#f7f7f7;
+}
+table.error tr{
+	vertical-align:top;
+}
+table.error td{
+	padding:4px;
+	border-bottom: 1px solid #265da6;
+	font-family:' . g_l('css', '[font_family]') . ';
+}
+table.error td.left{
+	white-space:nowrap;
+	border-right: 1px solid #265da6;
+	font-weight: bold;
+}
+table.error td.right{
+	font-style:italic;
+}
+table.error td pre{
+	font-style:normal;
+}
+	 ');
 ?>
 </head>
 

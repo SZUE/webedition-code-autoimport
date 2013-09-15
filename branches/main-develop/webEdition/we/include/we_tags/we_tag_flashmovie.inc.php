@@ -61,7 +61,7 @@ function we_tag_flashmovie($attribs){
 
 
 		return '
-			<table border="0" cellpadding="0" cellspacing="2" background="' . IMAGE_DIR . 'backgrounds/aquaBackground.gif" style="border: solid #006DB8 1px;">
+			<table cellpadding="0" cellspacing="2" class="weEditTable">
 				<tr>
 					<td class="weEditmodeStyle">' . $out . '
 						<input type="hidden" name="' . $fname . '" value="' . $GLOBALS['we_doc']->getElement($name, "bdid") . '" /></td>

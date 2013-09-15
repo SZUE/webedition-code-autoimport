@@ -122,7 +122,6 @@ function switch_button_state(element, button, state, type) {
 		return true;
 	} else if (state == "disabled") {
 		weButton.disable(element);
-		return false;
 	}
 
 	return false;
@@ -184,7 +183,6 @@ function switch_button_state(element, button, state, type) {
 				$width = $tmp;
 			}
 		} else{
-			//quickfix for image button width;
 			//set width for image button if given width has not default value
 			$width = ($width == self::WIDTH ? 0 : $width);
 		}

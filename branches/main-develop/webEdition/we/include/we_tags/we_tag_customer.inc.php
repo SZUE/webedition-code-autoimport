@@ -72,9 +72,9 @@ function we_tag_customer($attribs){
 
 		if($GLOBALS['we_editmode']){
 			?>
-			<table border="0" cellpadding="0" cellspacing="0" background="<?php print IMAGE_DIR ?>backgrounds/aquaBackground.gif">
+			<table cellpadding="0" cellspacing="0" style="border:0px;" class="weEditTable">
 				<tr>
-					<td style="padding:0 6px;"><span style="color: black; font-size: 12px; font-family: Verdana, sans-serif"><b><?php print $_showName; ?></b></span></td>
+					<td style="padding:0 6px;"><b><?php print $_showName; ?></b></td>
 					<td><?php print we_html_tools::hidden($idname, $we_cid) ?></td>
 					<td><?php print we_html_tools::htmlTextInput($textname, $size, $path, '', ' readonly', 'text', 0, 0); ?></td>
 					<td><?php we_html_tools::getPixel(6, 4); ?></td>

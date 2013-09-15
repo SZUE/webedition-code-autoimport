@@ -100,7 +100,6 @@ if((!$we_alerttext) && isset($_FILES['we_uploadedFile']) && $_FILES['we_uploaded
 	$foo = explode('/', $_FILES['we_uploadedFile']['type']);
 	$we_doc->setElement('data', $tempName, $foo[0]);
 
-	t_e('here', $we_ContentType);
 	if($we_ContentType == 'image/*' || $we_ContentType == 'application/x-shockwave-flash'){
 		$we_size = $we_doc->getimagesize($tempName);
 		$we_doc->setElement('width', $we_size[0], 'attrib');

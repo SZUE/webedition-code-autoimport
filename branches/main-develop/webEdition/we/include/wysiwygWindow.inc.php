@@ -110,7 +110,7 @@ if(isset($fieldName) && isset($_REQUEST["we_okpressed"]) && $_REQUEST["we_okpres
 		we_html_element::jsElement('top.focus();');
 		?>
 	</head>
-	<body marginwidth="0" marginheight="0" leftmargin="0" topmargin="0" background="<?php print IMAGE_DIR . 'backgrounds/aquaBackground.gif'; ?>">
+	<body marginwidth="0" marginheight="0" leftmargin="0" topmargin="0" style="background-image:url(<?php echo IMAGE_DIR;?>backgrounds/aquaBackground.gif);">
 		<form action="<?php print $_SERVER['SCRIPT_NAME']; ?>" name="we_form" method="post">
 			<input type="hidden" name="we_okpressed" value="1" />
 			<?php

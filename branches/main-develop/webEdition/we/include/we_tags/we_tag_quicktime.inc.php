@@ -57,14 +57,13 @@ function we_tag_quicktime($attribs){
 		$quicktime_button = we_button::create_button("image:btn_edit_quicktime", "javascript:we_cmd('openDocselector','" . ($id != "" ? $id : $startid) . "', '" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','" . session_id() . "'," . $parentid . ", 'video/quicktime', " . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")", true);
 		$clear_button = we_button::create_button("image:btn_function_trash", "javascript:we_cmd('remove_image', '" . $name . "')", true);
 
-		$out = "
-			<table border=\"0\" cellpadding=\"0\" cellspacing=\"2\" background=\"" . IMAGE_DIR . "backgrounds/aquaBackground.gif\" style=\"border: solid #006DB8 1px;\">
+		$out = '
+			<table cellpadding="0" cellspacing="2"  class="weEditTable">
 				<tr>
-					<td class=\"weEditmodeStyle\">$out
-						<input type=\"hidden\" name=\"$fname\" value=\"" . $GLOBALS['we_doc']->getElement($name, "bdid") . "\"></td>
+					<td class="weEditmodeStyle">' . $out . '<input type="hidden" name="' . $fname . '" value="' . $GLOBALS['we_doc']->getElement($name, "bdid") . '"></td>
 				</tr>
 				<tr>
-					<td class=\"weEditmodeStyle\" align=\"center\">" .
+					<td class="weEditmodeStyle" align="center">' .
 			we_button::create_button_table(array(
 				$quicktime_button, $clear_button
 				), 5) . "</td></tr></table>";

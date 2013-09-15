@@ -77,7 +77,7 @@ echo STYLESHEET .
 
 						$delbut = we_button::create_button("image:btn_function_trash", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('del_thumb','" . $thumbid . "');", true, 30);
 
-						$thumbnail = '<table border="0" cellpadding="0" cellspacing="0" width="570"><tr><td width="538"><img src="' . $src . '" width="' . $thumbObj->getOutputWidth() .
+						$thumbnail = '<table cellspacing="0" style="boder:0px;padding:0x;width:570px;"><tr><td width="538"><img src="' . $src . '" width="' . $thumbObj->getOutputWidth() .
 							'" height="' . $thumbObj->getOutputHeight() . '" border="0" /></td><td width="10">' . we_html_tools::getPixel(10, 2) . '</td><td width="22">' . $delbut . '</td></tr></table>';
 
 						$parts[] = array("headline" => $thumbObj->getThumbName(),
