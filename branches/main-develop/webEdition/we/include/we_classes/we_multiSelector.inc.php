@@ -120,7 +120,7 @@ function weonclick(e){
 		top.unselectAllFiles();') . '
 }') . '</head>
 <body bgcolor="white" LINK="#000000" ALINK="#000000" VLINK="#000000" leftmargin="0" marginwidth="0" topmargin="0" marginheight="0">
-<table border="0" cellpadding="0" cellspacing="0" width="100%">');
+<table style="border-spacing: 0px;border-style:none;width:100%" cellpadding="0">');
 		?>
 				for(i=0;i < entries.length; i++){
 					var onclick = ' onClick="weonclick(<?php echo (we_base_browserDetect::isIE() ? "this" : "event") ?>);tout=setTimeout(\'if(top.wasdblclick==0){top.doClick('+entries[i].ID+',0);}else{top.wasdblclick=0;}\',300);return true;"';

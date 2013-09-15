@@ -61,7 +61,7 @@ function we_tag_flashmovie($attribs){
 
 
 		return '
-			<table cellpadding="0" cellspacing="2" class="weEditTable">
+			<table class="weEditTable spacing2 padding0">
 				<tr>
 					<td class="weEditmodeStyle">' . $out . '
 						<input type="hidden" name="' . $fname . '" value="' . $GLOBALS['we_doc']->getElement($name, "bdid") . '" /></td>

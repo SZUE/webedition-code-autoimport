@@ -127,7 +127,7 @@ function we_tag_img($attribs){
 
 	if($showcontrol && $GLOBALS['we_editmode']){
 		$out = '
-<table cellpadding="2" cellspacing="2" class="weEditTable">
+<table class="weEditTable padding2 spacing2">
 	<tr>
 		<td class="weEditmodeStyle" colspan="2" align="center">' . $out . '
 			<input onchange="_EditorFrame.setEditorIsHot(true);" type="hidden" name="' . $fname . '" value="' . $id . '" />
@@ -136,7 +136,7 @@ function we_tag_img($attribs){
 			($showinputs ? //  only when wanted
 				'<tr>
 		            <td class="weEditmodeStyle" align="center" colspan="2" style="width: 180px;">
-		            <table style="border:0px;padding:0px;" cellspacing="0">
+		            <table class="weEditTable padding0 spacing0 border0">
                     <tr>
                         <td class="weEditmodeStyle" style="color: black; font-size: 12px; font-family: ' . g_l('css', '[font_family]') . ';">' . g_l('weClass', "[alt_kurz]") . ':&nbsp;</td>
                         <td class="weEditmodeStyle">' . we_html_tools::htmlTextInput($altname, 16, $alt, '', 'onchange="_EditorFrame.setEditorIsHot(true);"') . '</td>
@@ -166,7 +166,7 @@ function we_tag_img($attribs){
 				$out .= '
 	<tr>
 		<td class="weEditmodeStyle" align="center" colspan="2" style="width: 180px;">
-			<table style="border:0px;padding:0px;" cellspacing="0">
+			<table class="weEditTable padding0 spacing0 border0">
 								<tr>
 										<td class="weEditmodeStyle" style="color: black; font-size: 12px; font-family: ' . g_l('css', '[font_family]') . ';">' . g_l('weClass', "[thumbnails]") . ':&nbsp;</td>
 										<td class="weEditmodeStyle">' . $thumbnails . '</td>

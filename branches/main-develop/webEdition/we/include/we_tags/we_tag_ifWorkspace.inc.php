@@ -29,7 +29,7 @@ function we_tag_ifWorkspace($attribs){
 	$id = explode(',', weTag_getAttribute('id', $attribs));
 
 	if($required_path){
-		$required_path = array(substr($required_path, 0, 1) != '/' ? '/' . $required_path : $required_path);
+		$required_path = array('/' . ltrim($required_path, '/'));
 	}
 
 	if(!$required_path){

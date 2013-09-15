@@ -37,7 +37,7 @@ class we_<?php print $TOOLNAME; ?>DirSelector extends we_dirSelector{
 	}
 
   	function printHeaderHeadlines(){
-		print '			<table border="0" cellpadding="0" cellspacing="0" width="550">
+		print '			<table style="border-spacing: 0px;border-style:none;width:550px;" cellpadding="0">
 				<tr>
 					<td>'.we_html_tools::getPixel(25,14).'</td>
 					<td class="selector"colspan="2"><b><a href="#" onClick="javascript:top.orderIt(\'IsFolder DESC, Text\');">'.g_l('tools','[name]').'</a></b></td>

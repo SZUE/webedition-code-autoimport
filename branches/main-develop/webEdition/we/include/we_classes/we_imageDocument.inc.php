@@ -100,7 +100,7 @@ class we_imageDocument extends we_binaryDocument{
 		if(!$this->DocChanged && $this->ID){
 			if($this->getElement('origwidth') && $this->getElement('origheight') && ($calculateNew == false)){
 				return array($this->getElement('origwidth'), $this->getElement('origheight'), 0, '');
-			} else{
+			} else {
 				// we have to calculate the path, because maybe the document was renamed
 				$path = $this->getParentPath() . '/' . $this->Filename . $this->Extension;
 				return we_thumbnail::getimagesize($_SERVER['DOCUMENT_ROOT'] . (($useOldPath && $this->OldPath) ? $this->OldPath : $this->Path));
@@ -122,7 +122,7 @@ class we_imageDocument extends we_binaryDocument{
 			$this->DB_WE->query('SELECT * FROM ' . THUMBNAILS_TABLE);
 			$thumbObj = new we_thumbnail();
 
-			while($this->DB_WE->next_record()) {
+			while($this->DB_WE->next_record()){
 				$thumbObj->init($this->DB_WE->f('ID'), $this->DB_WE->f('Width'), $this->DB_WE->f('Height'), $this->DB_WE->f('Ratio'), $this->DB_WE->f('Maxsize'), $this->DB_WE->f('Interlace'), false, $this->DB_WE->f('Format'), $this->DB_WE->f('Name'), $this->ID, $this->Filename, $this->Path, $this->Extension, $this->getElement('origwidth'), $this->getElement('origheight'), $this->DB_WE->f('Quality'));
 
 				if($thumbObj->exists() && $thumbObj->getOutputPath() != $this->Path){
@@ -131,7 +131,7 @@ class we_imageDocument extends we_binaryDocument{
 			}
 
 			$this->Thumbs = makeCSVFromArray($thumbs, true);
-		} else{
+		} else {
 			$thumbs = makeArrayFromCSV($this->Thumbs);
 		}
 		return $thumbs;
@@ -270,7 +270,7 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 				'onmouseover' => 'if (this.firstChild) { this.firstChild.src = we' . $this->getElement('name') . 'Over.src; }',
 				'onmouseout' => 'if (this.firstChild) { this.firstChild.src = we' . $this->getElement('name') . 'Out.src;}',
 			);
-		} else{
+		} else {
 			return array();
 		}
 	}
@@ -362,7 +362,7 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 					$id = $this->getElement('ObjID');
 					if(isset($GLOBALS['WE_MAIN_DOC'])){
 						$pid = $GLOBALS['WE_MAIN_DOC']->ParentID;
-					} else{
+					} else {
 						$pidCvs = f('SELECT Workspaces FROM ' . OBJECT_FILES_TABLE . ' WHERE ID = ' . intval($id), 'Workspaces', $this->DB_WE);
 						$foo = makeArrayFromCSV($pidCvs);
 						$pid = (empty($foo) ? 0 : $foo[0]);
@@ -393,7 +393,7 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 						// open a file
 						intval(filectime($_SERVER['DOCUMENT_ROOT'] . $img_path)) > intval($thumbObj->getDate())){
 //						$create = false;
-					} else{
+					} else {
 						$thumbObj->createThumb();
 					}
 
@@ -436,7 +436,7 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 			if(isset($this->elements['sizingstyle'])){
 				$sizingstyle = ($this->elements['sizingstyle']['dat'] == 'none' ? false : $this->elements['sizingstyle']['dat']);
 				unset($this->elements['sizingstyle']);
-			} else{
+			} else {
 				$sizingstyle = false;
 			}
 
@@ -481,7 +481,7 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 				$attribs['alt'] = ' ';
 			}
 
-			while((list($k, $v) = $this->nextElement('attrib'))) {
+			while((list($k, $v) = $this->nextElement('attrib'))){
 				if(!in_array($k, $filter)){
 					if(isset($v['dat']) && $v['dat'] != ''){
 						$attribs[$k] = $v['dat'];
@@ -500,10 +500,10 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 			}
 
 			if((isset($href) && $href) && (isset($inc_href) && $inc_href)){ //  use link with rollover
-				$_aAtts=array(
+				$_aAtts = array(
 					'href' => $href,
-					'title'=>$attribs['title'],
-					);
+					'title' => $attribs['title'],
+				);
 
 				if($target){
 					$_aAtts['target'] = $target;
@@ -518,12 +518,12 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 				$_aAtts = array_merge($_aAtts, $_roAttribs);
 
 				$this->html = ( trim($ro_script) . getHtmlTag('a', $_aAtts, getHtmlTag('img', $attribs)) );
-			} else{
+			} else {
 				$this->html = (defined('WE_EDIT_IMAGE')) ?
 					we_image_crop::getJS() . we_image_crop::getCSS() . we_image_crop::getCrop($attribs) :
 					getHtmlTag('img', $attribs);
 			}
-		} else{
+		} else {
 			if($pathOnly){
 				//be compatible
 				return '';
@@ -715,7 +715,7 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 
 		// first we fetch all defined metadata fields from tblMetadata:
 		$GLOBALS['DB_WE']->query('SELECT tag,type,importFrom FROM ' . METADATA_TABLE);
-		while($GLOBALS['DB_WE']->next_record()) {
+		while($GLOBALS['DB_WE']->next_record()){
 			list($_fieldName, $_fieldType, $_importFrom) = $GLOBALS['DB_WE']->getRecord();
 			$_fieldType = $_fieldType ? $_fieldType : 'textfield';
 
@@ -914,20 +914,15 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 	}
 
 	function formMetaInfos(){
-		$content = '<table border="0" cellpadding="0" cellspacing="0">
-	<tr><td colspan="2">' . $this->formInputField("txt", "Title", g_l('weClass', '[Title]'), 40, 508, '', "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td></tr>
+		return '<table style="border-spacing: 0px;border-style:none;" cellpadding="0">
+	<tr><td colspan="2">' . $this->formInputField('txt', 'Title', g_l('weClass', '[Title]'), 40, 508, '', "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td></tr>
 	<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
-	<tr><td colspan="2">' . $this->formInputField("txt", "Description", g_l('weClass', '[Description]'), 40, 508, '', "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td></tr>
+	<tr><td colspan="2">' . $this->formInputField('txt', 'Description', g_l('weClass', '[Description]'), 40, 508, '', "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td></tr>
 	<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
-	<tr><td colspan="2">' . $this->formInputField("txt", "Keywords", g_l('weClass', '[Keywords]'), 40, 508, '', "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td></tr>
+	<tr><td colspan="2">' . $this->formInputField('txt', 'Keywords', g_l('weClass', '[Keywords]'), 40, 508, '', "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td></tr>
 	<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
-</table>';
-
-		if($this->ContentType == 'image/*'){
-			$content .= $this->formCharset(true);
-		}
-
-		return $content;
+</table>' .
+			($this->ContentType == 'image/*' ? $this->formCharset(true) : '');
 	}
 
 	static function checkAndPrepare($formname, $key = 'we_document'){

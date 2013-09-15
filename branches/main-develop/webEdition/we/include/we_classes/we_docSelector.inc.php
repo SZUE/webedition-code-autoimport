@@ -232,7 +232,7 @@ function weonclick(e){
 #	}
 }') . '</head>
 <body bgcolor="white" LINK="#000000" ALINK="#000000" VLINK="#000000" leftmargin="0" marginwidth="0" topmargin="0" marginheight="0"#\'+((makeNewFolder || top.we_editDirID) ? #\' onload="document.we_form.we_FolderText_tmp.focus();document.we_form.we_FolderText_tmp.select();"#\' : "")+#\'>
-<form name="we_form" target="fscmd" action="' . $_SERVER["SCRIPT_NAME"] . '" onSubmit="document.we_form.we_FolderText.value=escape(document.we_form.we_FolderText_tmp.value);return true;">
+<form name="we_form" target="fscmd" action="' . $_SERVER["SCRIPT_NAME"] . '" onsubmit="document.we_form.we_FolderText.value=escape(document.we_form.we_FolderText_tmp.value);return true;">
 #if(we_editDirID){
 	<input type="hidden" name="what" value="' . self::DORENAMEFOLDER . '" />
 	<input type="hidden" name="we_editDirID" value="#\'+top.we_editDirID+#\'" />

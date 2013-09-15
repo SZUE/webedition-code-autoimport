@@ -39,7 +39,7 @@ print STYLESHEET;
 ?>
 </head>
 <body class="weEditorBody" onUnload="doUnload()">
-	<form name="we_form" method="post" onSubmit="return false;"><?php
+	<form name="we_form" method="post" action="" onsubmit="return false;"><?php
 		echo we_class::hiddenTrans();
 		$implementYuiAC = false;
 		switch($we_doc->ContentType){

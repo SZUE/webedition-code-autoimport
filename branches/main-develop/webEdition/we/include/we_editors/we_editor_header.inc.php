@@ -39,7 +39,7 @@ if($_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE){ //	No tabs in Su
 		if(in_array(WE_EDITPAGE_PREVIEW, $we_doc->EditPageNrs)){
 			$we_tabs->addTab(new we_tab("#", g_l('weClass', "[preview]"), (($we_doc->EditPageNr == WE_EDITPAGE_PREVIEW) ? we_tab::ACTIVE : we_tab::NORMAL), "we_cmd('switch_edit_page'," . WE_EDITPAGE_PREVIEW . ",'" . $we_transaction . "');", array("id" => "tab_" . WE_EDITPAGE_PREVIEW)));
 		}
-	} else{ //	show tabs according to permissions
+	} else { //	show tabs according to permissions
 		if(in_array(WE_EDITPAGE_PROPERTIES, $we_doc->EditPageNrs) && permissionhandler::hasPerm("CAN_SEE_PROPERTIES")){
 			$we_tabs->addTab(new we_tab("#", g_l('weClass', "[tab_properties]"), (($we_doc->EditPageNr == WE_EDITPAGE_PROPERTIES) ? we_tab::ACTIVE : we_tab::NORMAL), "we_cmd('switch_edit_page'," . WE_EDITPAGE_PROPERTIES . ",'" . $we_transaction . "');", array("id" => "tab_" . WE_EDITPAGE_PROPERTIES)));
 		}
@@ -124,9 +124,8 @@ if($_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE){ //	No tabs in Su
 
 	$we_tabs->onResize('editHeader');
 	$tab_head = $we_tabs->getHeader();
-	$tab_js = $we_tabs->getJS();
-	$tab_js .= $we_tabs->getJSRebuildTabs();
-} else{
+	$tab_js = $we_tabs->getJS() . $we_tabs->getJSRebuildTabs();
+} else {
 	$tab_head = we_html_element::jsElement($tab_head . 'function setFrameSize(){}');
 }
 

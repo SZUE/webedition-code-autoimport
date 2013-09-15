@@ -66,7 +66,7 @@ print
 
 
 <body class="weDialogBody"<?php if($_REQUEST['we_cmd'][0]){ ?> onLoad="init()"<?php } ?>>
-	<form name="we_form" onSubmit="<?php if(!$_REQUEST['we_cmd'][0]){ ?>setColor();<?php } ?>return
+	<form name="we_form" action="" onsubmit="<?php if(!$_REQUEST['we_cmd'][0]){ ?>setColor();<?php } ?>return
 	false">
 		<?php
 		$colortable = '<table border="1" bordercolor="SILVER" bordercolorlight="WHITE" bordercolordark="BLACK" cellspacing="0" cellpadding="0">

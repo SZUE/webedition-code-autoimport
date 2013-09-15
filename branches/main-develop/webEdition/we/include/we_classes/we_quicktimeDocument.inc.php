@@ -180,7 +180,7 @@ class we_quicktimeDocument extends we_binaryDocument{
 	}
 
 	function formProperties(){
-		return '<table border="0" cellpadding="0" cellspacing="0">
+		return '<table style="border-spacing: 0px;border-style:none" cellpadding="0">
 	<tr valign="top">
 		<td>' . $this->formInput2(155, "width", 10, "attrib", "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
 		<td>' . we_html_tools::getPixel(18, 2) . '</td>
@@ -232,7 +232,7 @@ class we_quicktimeDocument extends we_binaryDocument{
 	}
 
 	function formOther(){
-		return '<table border="0" cellpadding="0" cellspacing="0">
+		return '<table style="border-spacing: 0px;border-style:none" cellpadding="0">
 	<tr valign="top">
 		<td>' . $this->formInputField("txt", "Pluginspage", "Pluginspage", 24, 388, "", "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
 	</tr>

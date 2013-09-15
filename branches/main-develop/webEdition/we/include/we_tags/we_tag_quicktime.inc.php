@@ -58,7 +58,7 @@ function we_tag_quicktime($attribs){
 		$clear_button = we_button::create_button("image:btn_function_trash", "javascript:we_cmd('remove_image', '" . $name . "')", true);
 
 		$out = '
-			<table cellpadding="0" cellspacing="2"  class="weEditTable">
+			<table class="weEditTable padding0 spacing2">
 				<tr>
 					<td class="weEditmodeStyle">' . $out . '<input type="hidden" name="' . $fname . '" value="' . $GLOBALS['we_doc']->getElement($name, "bdid") . '"></td>
 				</tr>

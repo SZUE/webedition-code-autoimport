@@ -662,7 +662,7 @@ class we_objectFile extends we_document{
 		return '
 			<table border="0" cellpadding="0" cellspacing="0">
 				' . $_headline . '
-				<tr><td>' . $this->htmlTextInput($inputName, 24, $this->Charset) . '</td><td></td><td>' . $this->htmlSelect('we_tmp_' . $this->Name . '_select[' . $name . ']', $_charsets, 1, $this->Charset, false, "  onblur=_EditorFrame.setEditorIsHot(true);document.forms[0].elements['" . $inputName . "'].value=this.options[this.selectedIndex].value;top.we_cmd(\"reload_editpage\"); onchange=_EditorFrame.setEditorIsHot(true);document.forms[0].elements['" . $inputName . "'].value=this.options[this.selectedIndex].value;top.we_cmd(\"reload_editpage\");", "value", 330) . '</td></tr>
+				<tr><td>' . $this->htmlTextInput($inputName, 24, $this->Charset) . '</td><td></td><td>' . $this->htmlSelect('we_tmp_' . $this->Name . '_select[' . $name . ']', $_charsets, 1, $this->Charset, false, ' onblur="_EditorFrame.setEditorIsHot(true);document.forms[0].elements[\'' . $inputName . '\'].value=this.options[this.selectedIndex].value;top.we_cmd(\'reload_editpage\');" onchange="_EditorFrame.setEditorIsHot(true);document.forms[0].elements[\'' . $inputName . '\'].value=this.options[this.selectedIndex].value;top.we_cmd(\'reload_editpage\');"', 'value', 330) . '</td></tr>
 			</table>';
 	}
 

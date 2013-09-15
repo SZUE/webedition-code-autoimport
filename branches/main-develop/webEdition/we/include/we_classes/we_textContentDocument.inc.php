@@ -221,7 +221,7 @@ abstract class we_textContentDocument extends we_textDocument{
 
 	function formDocTypeTempl(){
 		return '
-<table border="0" cellpadding="0" cellspacing="0">
+<table style="border-spacing: 0px;border-style:none" cellpadding="0">
 	<tr><td class="defaultfont" align="left">' . $this->formDocType2(388, $this->Published) . '</td></tr>
 	<tr><td>' . we_html_tools::getPixel(2, 6) . '</td></tr>
 	<tr><td>' . $this->formIsSearchable() . '</td></tr>

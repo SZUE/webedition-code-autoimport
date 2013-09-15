@@ -225,7 +225,7 @@ class we_webEditionDocument extends we_textContentDocument{
 				true);
 
 		return '
-<table border="0" cellpadding="0" cellspacing="0">
+<table style="border-spacing: 0px;border-style:none;" cellpadding="0">
 	<tr>
 		<td colspan="3" class="defaultfont" align="left">
 			' . $this->formDocType2(388, ($this->Published > 0)) . '</td>
@@ -245,7 +245,7 @@ class we_webEditionDocument extends we_textContentDocument{
 	</tr>
 	<tr>
 		<td colspan="3">
-			<table border="0" cellpadding="0" cellspacing="0">
+			<table style="border-spacing: 0px;border-style:none" cellpadding="0">
 				<tr>
 					<td>' . $this->formIsDynamic(100, $disable) . '</td>
 					<td class="defaultfont">&nbsp;</td>
@@ -402,7 +402,7 @@ class we_webEditionDocument extends we_textContentDocument{
 
 		//	if a meta-tag is set all information are in array $GLOBALS["meta"]
 		return '
-<table border="0" cellpadding="0" cellspacing="0">
+<table style="border-spacing: 0px;border-style:none" cellpadding="0">
 	<tr>
 		<td colspan="2">' . $this->formInputField("txt", "Title", g_l('weClass', "[Title]"), 40, 508, "", "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
 	</tr>
@@ -463,11 +463,11 @@ class we_webEditionDocument extends we_textContentDocument{
 			$chars = $_charsetHandler->getCharsetsByArray($chars);
 
 			//	Last step: get Information about the charsets
-			$retSelect = $this->htmlSelect('we_tmp_' . $name, $chars, 1, $value, false, " onblur=_EditorFrame.setEditorIsHot(true);document.forms[0].elements['" . $inputName . "'].value=this.options[this.selectedIndex].value; onchange=\"_EditorFrame.setEditorIsHot(true);document.forms[0].elements['" . $inputName . "'].value=this.options[this.selectedIndex].value;\"", "value", "254");
+			$retSelect = $this->htmlSelect('we_tmp_' . $name, $chars, 1, $value, false, ' onblur="_EditorFrame.setEditorIsHot(true);document.forms[0].elements[\'' . $inputName . '\'].value=this.options[this.selectedIndex].value;" onchange="_EditorFrame.setEditorIsHot(true);document.forms[0].elements[\'' . $inputName . '\'].value=this.options[this.selectedIndex].value;"', 'value', 254);
 
 			return '<tr><td colspan="2">' . we_html_tools::getPixel(2, 4) . '</td></tr>
 <tr><td>
-	<table border="0" cellpadding="0" cellspacing="0">
+	<table style="border-spacing: 0px;border-style:none" cellpadding="0">
 		<tr><td colspan="2" class="defaultfont">' . g_l('weClass', "[Charset]") . '</td>
 		<tr><td>' . $retInput . '</td><td>' . $retSelect . '</td></tr>
 	</table>
@@ -476,7 +476,7 @@ class we_webEditionDocument extends we_textContentDocument{
 			//getCharsets
 			return '<tr><td colspan="2">' . we_html_tools::getPixel(2, 4) . '</td></tr>
 <tr><td>
-	<table border="0" cellpadding="0" cellspacing="0">
+	<table style="border-spacing: 0px;border-style:none" cellpadding="0">
 		<tr><td colspan="2" class="defaultfont">' . g_l('weClass', "[Charset]") . '</td>
 		<tr><td>' . $this->htmlTextInput("dummi", 40, g_l('charset', "[error][no_charset_tag]"), "", " readonly disabled", "text", 254) . '</td><td>' . $this->htmlSelect("dummi2", array(g_l('charset', "[error][no_charset_available]")), 1, DEFAULT_CHARSET, false, "disabled ", "value", "254") . '</td></tr>
 	</table>

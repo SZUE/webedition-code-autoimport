@@ -863,7 +863,7 @@ if(isset($_REQUEST["ok"]) && $_REQUEST["ok"] && $_REQUEST['we_cmd'][0] == "edit_
 			'html' => $jswinonoff,
 			'space' => 150);
 		?>
-		<form name="we_form" action="<?php print WEBEDITION_DIR; ?>we_cmd.php" method="post" onSubmit="return false">
+		<form name="we_form" action="<?php print WEBEDITION_DIR; ?>we_cmd.php" method="post" onsubmit="return false">
 			<input type="hidden" name="we_cmd[0]" value="<?php print $_REQUEST['we_cmd'][0]; ?>" />
 			<?php
 			if(isset($ll) && $ll){

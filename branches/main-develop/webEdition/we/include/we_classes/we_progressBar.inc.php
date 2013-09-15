@@ -171,13 +171,7 @@ class we_progressBar{
 	}
 
 	function getHTML(){
-		$out = "";
-
-		$left = "";
-		$right = "";
-		$top = "";
-		$bottom = "";
-		$temp = "";
+		$left = $right = $top = $bottom = '';
 
 		if($this->showProgressText){
 			$this->addText('<div id="progress_text' . $this->name . '">' . $this->progress . "%</div>", $this->progressTextPlace);
@@ -186,15 +180,15 @@ class we_progressBar{
 		foreach($this->texts as $text){
 			switch($text["place"]){
 				case 0:
-					$top.='<td ' . ($text["name"] != "" ? 'id="' . $text["name"] . $this->name . '" ' : "") . 'class="' . $text["class"] . '" style="color:' . $text["color"] . ';' . ($text["bold"] ? "font-weight:bold" : "" ) . '">' . $text["text"] . '</td>';
-					$top.='<td>' . we_html_tools::getPixel(5, $text["height"]) . '</td>';
+					$top.='<td ' . ($text["name"] != "" ? 'id="' . $text["name"] . $this->name . '" ' : "") . 'class="' . $text["class"] . '" style="color:' . $text["color"] . ';' . ($text["bold"] ? "font-weight:bold" : "" ) . '">' . $text["text"] . '</td>' .
+						'<td>' . we_html_tools::getPixel(5, $text["height"]) . '</td>';
 					break;
 				case 1:
 					$right.='<td ' . ($text["name"] != "" ? 'id="' . $text["name"] . $this->name . '" ' : "") . 'class="' . $text["class"] . '" style="color:' . $text["color"] . ';' . ($text["bold"] ? "font-weight:bold" : "" ) . '">' . $text["text"] . '</td>';
 					break;
 				case 2:
-					$bottom.='<td ' . ($text["name"] != "" ? 'id="' . $text["name"] . $this->name . '" ' : "") . 'class="' . $text["class"] . '" style="color:' . $text["color"] . ';' . ($text["bold"] ? "font-weight:bold" : "" ) . '">' . $text["text"] . '</td>';
-					$bottom.='<td>' . we_html_tools::getPixel(5, $text["height"]) . '</td>';
+					$bottom.='<td ' . ($text["name"] != "" ? 'id="' . $text["name"] . $this->name . '" ' : "") . 'class="' . $text["class"] . '" style="color:' . $text["color"] . ';' . ($text["bold"] ? "font-weight:bold" : "" ) . '">' . $text["text"] . '</td>' .
+						'<td>' . we_html_tools::getPixel(5, $text["height"]) . '</td>';
 					break;
 				case 3:
 					$left.='<td ' . ($text["name"] != "" ? 'id="' . $text["name"] . $this->name . '" ' : "") . 'class="' . $text["class"] . '" style="color:' . $text["color"] . ';' . ($text["bold"] ? "font-weight:bold" : "" ) . '">' . $text["text"] . '</td>';
@@ -206,31 +200,18 @@ class we_progressBar{
 		$progress_len = ($this->stud_len / 100) * $this->progress;
 		$rest_len = $this->stud_len - $progress_len;
 
-		if($top != ""){
-			$out.='<table border="0" cellpadding="0" cellspacing="0">' . "\r\n";
-			$out.='<tr>' . $top . "</tr>\r\n";
-			$out.="</table>";
-		}
-
-		$out.='<table border="0" cellpadding="0" cellspacing="0">' . "\r\n";
-		$out.='<tr>' . ($left != "" ? $left . "<td>" . we_html_tools::getPixel(5, 1) . "</td>" : "");
-
-		if($this->orientation == 1){
-			$out.='<td><table border="0" cellpadding="0" cellspacing="0">' . ($this->showBack ? '<tr><td><img name="progress_image_bg" src="' . $this->progress_image_bg . '" height="' . $rest_len . '" width="' . $this->stud_width . '" /></td></tr>' : "") . '<tr><td><img  name="progress_image" src="' . $this->progress_image . '" height="' . $progress_len . '" width="' . $this->stud_width . '" /></td></tr></table></td>';
-		} else {
-			$out.='<td><img name="progress_image' . $this->name . '" src="' . $this->progress_image . '" width="' . $progress_len . '" height="' . $this->stud_width . '" /></td>' . ($this->showBack ? '<td><img  name="progress_image_bg' . $this->name . '" src="' . $this->progress_image_bg . '" width="' . $rest_len . '" height="' . $this->stud_width . '" /></td>' : "");
-		}
-
-		$out.=($right != "" ? "<td>" . we_html_tools::getPixel(5, 1) . "</td>" . $right : "") . "</tr>";
-		$out.="</table>";
-
-		if($bottom != ""){
-			$out.='<table border="0" cellpadding="0" cellspacing="0">' . "\r\n";
-			$out.='<tr>' . $bottom . "</tr>\r\n";
-			$out.="</table>";
-		}
-
-		return $out;
+		return
+			(empty($top) ? '' : '<table style="border-spacing: 0px;border-style:none;" cellpadding="0"><tr>' . $top . '</tr></table>') .
+			'<table style="border-spacing: 0px;border-style:none;" cellpadding="0" >
+			<tr>' . ($left != '' ? $left . '<td>' . we_html_tools::getPixel(5, 1) . '</td>' : '') .
+			($this->orientation == 1 ?
+				'<td><table border="0" cellpadding="0" cellspacing="0">' . ($this->showBack ? '<tr><td><img name="progress_image_bg" src="' . $this->progress_image_bg . '" height="' . $rest_len . '" width="' . $this->stud_width . '" /></td></tr>' : "") . '<tr><td><img  name="progress_image" src="' . $this->progress_image . '" height="' . $progress_len . '" width="' . $this->stud_width . '" /></td></tr></table></td>' :
+				'<td><img name="progress_image' . $this->name . '" src="' . $this->progress_image . '" width="' . $progress_len . '" height="' . $this->stud_width . '" /></td>' . ($this->showBack ? '<td><img  name="progress_image_bg' . $this->name . '" src="' . $this->progress_image_bg . '" width="' . $rest_len . '" height="' . $this->stud_width . '" /></td>' : "")
+			) .
+			($right != "" ? "<td>" . we_html_tools::getPixel(5, 1) . "</td>" . $right : "") .
+			'</tr></table>' .
+			(empty($bottom) ? '' :
+				'<table style="border-spacing: 0px;border-style:none;" cellpadding="0"><tr>' . $bottom . '</tr></table>');
 	}
 
 }

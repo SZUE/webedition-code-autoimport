@@ -669,7 +669,7 @@ var CMoptions = { //these are the CodeMirror options
 	autoCloseTags: ' . ($_SESSION['prefs']['editorDocuintegration'] ? 'true' : 'false') . ', // use object with indentTags to indent these tags
 	autofocus: true,
 	closeCharacters: /[()\[\]{};>,]/,
-	extraKeys: {' . ($hasCompletion ? '
+	extraKeys: {' . ($hasCompletion && $useCompletion ? '
 							  "Space": function(cm) { CodeMirror.weHint(cm, \' \'); },
 							  "\'<\'": function(cm) { CodeMirror.weHint(cm, \'<\'); },
 							  "Ctrl-Space": function(cm) { CodeMirror.weHint(cm, \'\'); }' : ''
