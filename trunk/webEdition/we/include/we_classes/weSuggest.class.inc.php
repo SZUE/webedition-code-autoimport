@@ -858,10 +858,8 @@ function doDebugResizeH(){
 			$layer .= ($i > 0 ? ", " : "") . "#" . $this->layer[$i];
 			$layerZ .= "#" . $this->layer[$i] . " {z-index:" . (9010 - $i) . ";}";
 		}
-		$out = "
-<style type=\"text/css\">\n";
 		if(we_base_browserDetect::isIE()){
-			$out .= (!empty($layer) ? "	$layerZ" : '') . "
+			$out = (!empty($layer) ? "	$layerZ" : '') . "
 	$inputfields { width:100%; }
 	$containerfields {position:relative; top:0px !important;margin-top:8px; width:100%; z-index:10000 }
 	$yuiAcContent
@@ -874,8 +872,8 @@ function doDebugResizeH(){
 	div.yui-ac-bd ul, div.yui-ac-bd ui{ margin:-5px; margin-top:-5px; padding:0px; list-style:none; font-family: Verdana, Arial, sans-serif; font-size: 10px;}
 	div.yuiAcLayer { margin:0px; padding:0px;}
 ";
-		} else{
-			$out .= (!empty($layer) ?
+		} else {
+			$out = (!empty($layer) ?
 					"	$layer {position:relative;margin-bottom:1.5em;width:100%;}/* set width of widget here*/" .
 					$layerZ :
 					'') . "
@@ -889,27 +887,42 @@ function doDebugResizeH(){
 	$yuAcHighlight {background:#B5D5FF;}
 	div.yui-ac-bd ul, div.yui-ac-bd li{ margin:0px; padding:0px; list-style:none; font-family: Verdana, Arial, sans-serif; font-size: 10px; line-height:11px}
 	div.yui-ac-bd ul, div.yui-ac-bd ui{ margin:-7px; margin-top:-5px; padding:0px; list-style:none; font-family: Verdana, Arial, sans-serif; font-size: 10px;}
-	div.yuiAcLayer { margin:0px; padding:0px;}
-";
+	div.yuiAcLayer { margin:0px; padding:0px;}";
 		}
-		$out .= "</style>
-";
-		return empty($inputfields) ? "" : $out;
+		return empty($inputfields) ? "" : we_html_element::cssElement($out, true);
 	}
 
 	function getHTML(){
 		$selectButtonSpace = $this->selectButtonSpace + $this->width - 1;
-		$inputId = empty($this->inputId) ? "yuiAcInput" . $this->acId : $this->inputId;
-		$resultId = empty($this->resultId) ? "yuiAcResult" . $this->acId : $this->resultId;
+		$inputId = empty($this->inputId) ? 'yuiAcInput' . $this->acId : $this->inputId;
+		$resultId = empty($this->resultId) ? 'yuiAcResult' . $this->acId : $this->resultId;
 		$containerWidth = (empty($this->containerWidth) ? $this->width : $this->containerWidth);
 
 		$this->setAutocompleteField($inputId, "yuiAcContainer" . $this->acId, $this->table, $this->contentType, $this->selector, $this->maxResults, 0, "yuiAcLayer" . $this->acId, array($resultId), $this->checkFieldValue, (we_base_browserDetect::isIE() ? $containerWidth : ($containerWidth - 8)), $this->mayBeEmpty, $this->rootDir);
 		$inputField = $this->_htmlTextInput($this->inputName, 30, $this->inputValue, "", 'id="' . $inputId . '" ' . $this->inputAttribs, "text", $this->width, 0, "", $this->inputDisabled);
 		$resultField = we_html_tools::hidden($this->resultName, $this->resultValue, array('id' => $resultId));
-		$autoSuggest = "<div id=\"yuiAcLayer{$this->acId}\" class=\"yuiAcLayer\">" . $inputField . "<div id=\"yuiAcContainer{$this->acId}\"></div></div>";
+		$autoSuggest = '<div id="yuiAcLayer' . $this->acId . '" class="yuiAcLayer">' . $inputField . '<div id="yuiAcContainer' . $this->acId . '"></div></div>';
 
 		$html = we_html_tools::htmlFormElementTable(
-				array("text" => $resultField . $autoSuggest . ($this->selectButton ? we_html_tools::getPixel($selectButtonSpace, 4) : ''), "valign" => "top", "style" => "height:10px"), $this->label, "left", "defaultfont", ($this->selectButton ? array("text" => "<div style=''>" . $this->selectButton . "</div>", "valign" => "top") : ''), we_html_tools::getPixel($this->trashButtonSpace, 4), (empty($this->trashButton) ? '' : array("text" => "<div style='margin-right:" . $this->trashButtonSpace . "px'>" . $this->trashButton . "</div>", "valign" => "top")), (empty($this->openButton) ? "" : array("text" => "<div style='margin-right:" . $this->openButtonSpace . "px'>" . $this->openButton . '</div>', "valign" => "top")), (empty($this->createButton) ? "" : array("text" => "<div style='margin-right:" . $this->createButtonSpace . "px'>" . $this->createButton . "</div>", "valign" => "top"))
+				array(
+				"text" => $resultField . $autoSuggest . ($this->selectButton ? we_html_tools::getPixel($selectButtonSpace, 4) : ''),
+				"valign" => "top",
+				"style" => "height:10px"), $this->label, 'left', 'defaultfont', (
+				$this->selectButton ?
+					array("text" => "<div style=''>" . $this->selectButton . "</div>", "valign" => "top") :
+					''
+				), we_html_tools::getPixel($this->trashButtonSpace, 4), (
+				empty($this->trashButton) ?
+					'' :
+					array("text" => "<div style='margin-right:" . $this->trashButtonSpace . "px'>" . $this->trashButton . "</div>", "valign" => "top")
+				), (
+				empty($this->openButton) ?
+					'' :
+					array("text" => "<div style='margin-right:" . $this->openButtonSpace . "px'>" . $this->openButton . '</div>', "valign" => "top")
+				), (
+				empty($this->createButton) ?
+					'' :
+					array("text" => "<div style='margin-right:" . $this->createButtonSpace . "px'>" . $this->createButton . "</div>", "valign" => "top"))
 		);
 
 		$this->acId = '';
@@ -947,9 +960,7 @@ function doDebugResizeH(){
 		return '<input type="' . trim($type) . '" name="' . trim($name) . '" size="' . abs($size) . '" value="' . oldHtmlspecialchars($value) . '" ' . ($maxlength ? (' maxlength="' . abs($maxlength) . '"') : '') . $attribs . $style . ' />';
 	}
 
-	/*	 * ************************************************************* */
-	/*                             setter                           */
-	/*	 * ************************************************************* */
+	//setter
 
 	function setAcId($val, $rootDir = ""){
 		$this->acId = $val;
@@ -1042,7 +1053,7 @@ function doDebugResizeH(){
 			if(!isset($_onchange)){
 				$this->inputAttribs .= ' onchange="' . ($markHot ? 'if(_EditorFrame){_EditorFrame.setEditorIsHot(true);hot=1}; ' : '') . '" ';
 			}
-		} else{
+		} else {
 			$this->inputAttribs = 'class="wetextinput" onblur="weInputAppendClass(this, \'wetextinput\'); weInputRemoveClass(this, \'wetextinputselected\');" onfocus="weInputAppendClass(this, \'wetextinputselected\'); weInputRemoveClass(this, \'wetextinput\');" onchange="' . ($markHot ? 'if(_EditorFrame){_EditorFrame.setEditorIsHot(true);hot=1;}' : '') . '" ';
 		}
 		if($this->inputId == ''){
@@ -1054,7 +1065,7 @@ function doDebugResizeH(){
 	function setInputId($val = ''){
 		if($val == ''){
 			$this->inputId = "yuiAcInput" . $this->acId;
-		} else{
+		} else {
 			$this->inputId = $val;
 		}
 	}
