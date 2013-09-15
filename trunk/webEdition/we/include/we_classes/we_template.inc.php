@@ -75,7 +75,7 @@ class we_template extends we_document{
 		}
 		$temp->resetElements();
 		$k = $v = '';
-		while((list($k, $v) = $temp->nextElement('txt'))) {
+		while((list($k, $v) = $temp->nextElement('txt'))){
 			$this->setElement($k, $temp->getElement($k), 'txt');
 		}
 		$this->EditPageNr = 0;
@@ -160,12 +160,12 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 			if(preg_match('%<(/?)we:if([[:alpha:]]+)( *[[:alpha:]]+ *= *"[^"]*")* */?>?%i', $tags[$i], $regs)){
 				if($regs[1] == '/'){
 					$foo[$regs[2]] = isset($foo[$regs[2]]) ? $foo[$regs[2]] + 1 : 1;
-				} else{
+				} else {
 					if(empty($foo)){
 						return $i;
 					} else if(isset($foo[$regs[2]]) && intval($foo[$regs[2]])){
 						$foo[$regs[2]] = intval($foo[$regs[2]]) - 1;
-					} else{
+					} else {
 						return $i;
 					}
 				}
@@ -184,12 +184,12 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 			if(preg_match('%<(/?)we:if([[:alpha:]]+)( *[[:alpha:]]+ *= *"[^"]*")* */?>?%i', $tags[$i], $regs)){
 				if($regs[1] != '/'){
 					$foo[$regs[2]] = isset($foo[$regs[2]]) ? $foo[$regs[2]] + 1 : 1;
-				} else{
+				} else {
 					if(empty($foo)){
 						return $i;
 					} else if(isset($foo[$regs[2]]) && intval($foo[$regs[2]])){
 						$foo[$regs[2]] = intval($foo[$regs[2]]) - 1;
-					} else{
+					} else {
 						return $i;
 					}
 				}
@@ -295,11 +295,11 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 			$code = str_replace(array('__WE_?__WE__', '__WE_=__WE__'), array('?>', '=>'), $code);
 			$code = str_ireplace(array('</head>', '</body>'), array(self::TemplateHead . '</head>', self::TemplatePostContent . '</body>'), $code);
 		} else if(!$this->hasStartAndEndTag('html', $code) && !$this->hasStartAndEndTag('head', $code) && !$this->hasStartAndEndTag('body', $code)){
-			$code = '<?php if( (!isset($GLOBALS[\'WE_HTML_HEAD_BODY\']) || !$GLOBALS[\'WE_HTML_HEAD_BODY\'] ) && (isset($GLOBALS[\'we_editmode\']) && $GLOBALS[\'we_editmode\'])){  $GLOBALS["WE_HTML_HEAD_BODY"] = true; ?>'.we_html_element::htmlDocType().'<html><head><title></title>' . self::TemplateHead . '</head>
-<body <?php if(isset($GLOBALS[\'we_editmode\']) && $GLOBALS[\'we_editmode\']) print \' onUnload="doUnload()"\'; ?>>
-' . self::TemplatePreContent . '<?php } ?>' . $code . '<?php if((!isset($GLOBALS[\'WE_HTML_HEAD_BODY\']) || !$GLOBALS[\'WE_HTML_HEAD_BODY\'] ) && (isset($GLOBALS[\'we_editmode\']) && $GLOBALS[\'we_editmode\'])){ ?>' . self::TemplatePostContent . '
-</body></html><?php $GLOBALS[\'WE_HTML_HEAD_BODY\'] = true; } ?>';
-		} else{
+			$code = '<?php if((isset($GLOBALS[\'we_editmode\']) && $GLOBALS[\'we_editmode\']) && (!isset($GLOBALS[\'WE_HTML_HEAD_BODY\']) || !$GLOBALS[\'WE_HTML_HEAD_BODY\'] )){  $GLOBALS["WE_HTML_HEAD_BODY"] = true; ?>' . we_html_element::htmlDocType() . '<html><head><title>WE</title>' . self::TemplateHead . '</head>
+<body <?php if(isset($GLOBALS[\'we_editmode\']) && $GLOBALS[\'we_editmode\']) print \' onunload="doUnload()"\'; ?>><?php } ?>
+' . self::TemplatePreContent  . $code . self::TemplatePostContent . '<?php if((isset($GLOBALS[\'we_editmode\']) && $GLOBALS[\'we_editmode\'])&&($GLOBALS[\'we_templatePreContent\']==0) ){ ?>' . '
+</body></html><?php }?>';
+		} else {
 			return parseError(g_l('parser', '[html_tags]')) . '<?php exit();?><!-- current parsed template code for debugging -->' . $code;
 		}
 		$code = str_replace(array('exit(', 'die(', 'exit;'), array('we_TemplateExit(', 'we_TemplateExit(', 'we_TemplateExit();'), $code);
@@ -460,7 +460,7 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 					if(in_array($tagname, $variant_tags)){
 						if($tagname == 'input' && isset($att['type']) && $att['type'] == 'date' && !$includedatefield){
 							// do nothing
-						} else{
+						} else {
 							$out[$name] = array(
 								'type' => $tagname,
 								'attributes' => $att
@@ -544,7 +544,7 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 			return $paths;
 		}
 		$this->DB_WE->query('SELECT ID, Path FROM ' . FILE_TABLE . ' WHERE temp_template_id=' . intval($this->ID) . ' OR (temp_template_id=0 AND TemplateID=' . intval($this->ID) . ') ORDER BY Path');
-		while($this->DB_WE->next_record()) {
+		while($this->DB_WE->next_record()){
 			$paths[$this->DB_WE->f('ID')] = $this->DB_WE->f('Path') . ' (ID: ' . $this->DB_WE->f('ID') . ')';
 		}
 		return $paths;
@@ -668,7 +668,7 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 			if(in_array($this->ID, $_templates) || $this->ID == $this->MasterTemplateID || in_array($this->MasterTemplateID, $recursiveTemplates)){
 				$code = g_l('parser', '[template_recursion_error]');
 				t_e(g_l('parser', '[template_recursion_error]'), 'Template ' . $this->ID . ' with same Master');
-			} else{
+			} else {
 				// we have a master template. => surround current template with it
 				// first get template code
 				$recursiveTemplates[] = $this->MasterTemplateID;
@@ -687,7 +687,7 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 					if($name){
 						$we_masterTagCode = isset($masterTags[$name]['content']) ? $masterTags[$name]['content'] : '';
 						$masterTemplateCode = str_replace($all, $we_masterTagCode, $masterTemplateCode);
-					} else{
+					} else {
 						$masterTemplateCode = str_replace($all, $code, $masterTemplateCode);
 					}
 				}
@@ -725,7 +725,7 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 						if(in_array($this->ID, $_templates) || $att['id'] == $this->ID || in_array($att['id'], $recursiveTemplates)){
 							$code = str_replace($tag, g_l('parser', '[template_recursion_error]'), $code);
 							t_e(g_l('parser', '[template_recursion_error]'), 'Template: ' . $this->ID);
-						} else{
+						} else {
 							// get code of template
 							$recursiveTemplates[] = $att['id'];
 							$templObj = new we_template();
@@ -756,7 +756,7 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 				$this->elements['allVariants']['type'] = 'variants';
 				$this->elements['allVariants']['dat'] = serialize($this->readAllVariantFields($this->elements['completeData']['dat']));
 			}
-		} else{
+		} else {
 			$this->doUpdateCode = false;
 		}
 		$_ret = parent::we_save($resave);
