@@ -87,7 +87,7 @@ abstract class we_html_tools{
 		}
 		return '<table cellpadding="0" cellspacing="0" border="0">' .
 			($text ? '<tr><td class="' . trim($textclass) . '" align="' . trim($textalign) . '" colspan="' . $colspan . '">' . $text . '</td></tr>' : '') .
-			($abstand ? ('<tr style="height:' . $abstand . 'px"><td></td></tr>') : '') .
+			($abstand ? ('<tr style="height:' . $abstand . 'px"><td colspan="' . $colspan . '"></td></tr>') : '') .
 			'<tr>' . $elemOut . '</tr></table>';
 	}
 
@@ -591,30 +591,28 @@ abstract class we_html_tools{
 		ksort($_timePosArray);
 
 		$retVal = '<table cellpadding="0" cellspacing="0" border="0">';
+			$retVal .= '<tr><td>';
 		if($_showDay || $_showMonth || $_showYear){
 
-			$retVal .= '<tr><td>';
 			foreach($_datePosArray as $foo){
 				$retVal .= $foo;
 			}
-			$retVal .= '</td></tr>';
 		} else {
 			foreach($_datePosArray as $foo){
 				$retVal .= $foo;
 			}
 		}
 		if($_showHour || $_showMinute){
-			$retVal .= '<tr><td>';
+			$retVal .= '</td></tr><tr><td>';
 			foreach($_timePosArray as $foo){
 				$retVal .= $foo;
 			}
-			$retVal .= '</td></tr>';
 		} else {
 			foreach($_timePosArray as $foo){
 				$retVal .= $foo;
 			}
 		}
-		$retVal .= '</table>';
+			$retVal .= '</td></tr></table>';
 		return $retVal;
 	}
 

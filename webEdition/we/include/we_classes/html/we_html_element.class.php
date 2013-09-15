@@ -30,7 +30,7 @@
  *
  * Description: Provides functions for creating html tags
  */
-abstract class we_html_element {
+abstract class we_html_element{
 
 	/**
 	 * Function generates html code for html form
@@ -89,8 +89,13 @@ abstract class we_html_element {
 	 *
 	 * @return		string
 	 */
-	static function cssElement($content = '', $attribs = array()){
-		$attribs['type'] = 'text/css';
+	static function cssElement($content = '', $local = false){
+		$attribs = array(
+			'type' => 'text/css'
+		);
+		if($local){
+			$attribs['scoped'] = 'scoped';
+		}
 		return we_baseElement::getHtmlCode(new we_baseElement('style', true, $attribs, $content));
 	}
 

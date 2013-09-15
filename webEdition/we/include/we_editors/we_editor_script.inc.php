@@ -32,16 +32,18 @@ we_html_tools::protect();
 	}
 	.weEditTable{
 		border: solid #006DB8 1px;
-		background-image:url(<?php echo IMAGE_DIR;?>backgrounds/aquaBackground.gif);
+		background-image:url(<?php echo IMAGE_DIR; ?>backgrounds/aquaBackground.gif);
 		color: black;
-		font-size:' . ((we_base_browserDetect::isMAC()) ? "11px" : ((we_base_browserDetect::isUNIX()) ? "13px" : "12px")) . ';
-		font-family:' . g_l('css', '[font_family]') . ';
+		font-size: <?php echo ((we_base_browserDetect::isMAC()) ? "11px" : ((we_base_browserDetect::isUNIX()) ? "13px" : "12px")); ?>;
+		font-family: <?php echo g_l('css', '[font_family]'); ?>;
 	}
 	.weEditTable td{
-	
+
 	}
 </style>
 <?php
+echo we_wysiwyg::getHeaderHTML();
+
 // Dreamweaver RPC Command ShowPreparedPreview
 // disable javascript errors
 if(isset($_REQUEST["cmd"]) && $_REQUEST['cmd'] == 'ShowPreparedPreview'){
