@@ -49,7 +49,7 @@ abstract class we_forms{
 
 		// Create HTML tags
 		return '
-			<table cellpadding="0" border="0" cellspacing="0"' . ($style ? 'style="' . $style . '"' : '') . '>
+			<table cellpadding="0" style="border-spacing: 0px;border-style:none;' . $style . '">
 				<tr>
 					<td' . ($description ? ' valign="top"' : '') . '>
 						<input type="checkbox" name="' . $name . '" id="' . $_id . '" value="' . $value . '" style="cursor: pointer; outline: 0px;" ' . ($checked ? " checked=\"checked\"" : "") . ($onClick ? " onclick=\"$onClick\"" : "") . ($disabled ? " disabled=\"disabled\"" : "") . ' /></td>
@@ -72,7 +72,7 @@ abstract class we_forms{
 	 */
 	static function checkboxWithHidden($checked, $name, $text, $uniqid = false, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = we_html_tools::TYPE_NONE, $width = 0){
 		$onClick = "this.form.elements['$name'].value=this.checked ? 1 : 0;" . $onClick;
-		return '<input type="hidden" name="' . $name . '" value="' . ($checked ? 1 : 0) . '" />' . self::checkbox(1, $checked, '_' . $name, $text, $uniqid, $class, $onClick, $disabled, $description, $type, $width);
+		return '<input type="hidden" name="' . $name . '" value="' . ($checked ? 1 : 0) . '" />' . self::checkbox(1, $checked, 'check_' . $name, $text, $uniqid, $class, $onClick, $disabled, $description, $type, $width);
 	}
 
 	/**
@@ -93,7 +93,7 @@ abstract class we_forms{
 
 		// Create HTML tags
 		return '
-			<table cellpadding="0" border="0" cellspacing="0">
+			<table style="border-spacing: 0px;border-style:none" cellpadding="0">
 				<tr>
 					<td class="weEditmodeStyle"' . ($description ? ' valign="top"' : '') . '><input type="radio" name="' . $name . '" id="' . $_id . '" value="' . $value . '" style="cursor: pointer;outline: 0px;" ' . ($checked ? " checked=\"checked\"" : "") . ($onMouseUp ? " onmouseup=\"$onMouseUp\"" : "") . ($onClick ? " onclick=\"$onClick\"" : "") . ($disabled ? ' disabled="disabled"' : "") . ' /></td>
 					<td class="weEditmodeStyle">' . we_html_tools::getPixel(4, 2) . '</td>

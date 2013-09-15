@@ -34,11 +34,24 @@ we_html_tools::protect();
 		border: solid #006DB8 1px;
 		background-image:url(<?php echo IMAGE_DIR; ?>backgrounds/aquaBackground.gif);
 		color: black;
-		font-size: <?php echo ((we_base_browserDetect::isMAC()) ? "11px" : ((we_base_browserDetect::isUNIX()) ? "13px" : "12px")); ?>;
+		font-size: <?php echo ((we_base_browserDetect::isMAC()) ? '11px' : ((we_base_browserDetect::isUNIX()) ? '13px' : '12px')); ?>;
 		font-family: <?php echo g_l('css', '[font_family]'); ?>;
 	}
-	.weEditTable td{
+	.spacing0{
+		border-spacing: 0px;
+	}
+	.spacing2{
+		border-spacing: 2px;
+	}
 
+	.padding0 td{
+		padding: 0px;
+	}
+	.padding2 td{
+		padding: 2px;
+	}
+	.border0{
+		border-style: none;
 	}
 </style>
 <?php

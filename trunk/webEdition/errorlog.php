@@ -105,7 +105,7 @@ function getNavButtons($size, $start){
 		$nextDiv = $start + $div;
 		$prevDiv = $start - $div;
 
-		return '<table style="margin-top: 10px;" border="0" cellpadding="0" cellspacing="0"><tr><td>' .
+		return '<table style="margin-top: 10px;border-style:none;" cellpadding="0" cellspacing="0"><tr><td>' .
 			we_button::create_button("first", WEBEDITION_DIR . 'errorlog.php?start=' . ($size - 1), true, we_button::WIDTH, we_button::HEIGHT, "", "", ($next >= $size)) . '</td><td>' .
 			we_button::getButton("-" . $div, 'btn', "window.location.href='" . WEBEDITION_DIR . "errorlog.php?start=" . $nextDiv . "';", we_button::WIDTH, '', ($nextDiv >= $size)) . '</td><td>' .
 			we_button::create_button("back", WEBEDITION_DIR . 'errorlog.php?start=' . $next, true, we_button::WIDTH, we_button::HEIGHT, "", "", ($next >= $size)) .

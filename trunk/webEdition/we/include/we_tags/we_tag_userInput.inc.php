@@ -140,7 +140,7 @@ function we_tag_userInput($attribs, $content){
 
 					$checked = (isset($_SESSION[$_imgDataId]["doDelete"]) && $_SESSION[$_imgDataId]["doDelete"]) ? ' checked' : '';
 
-					return '<table cellpadding="2" cellspacing="2" style="border: solid ' . $bordercolor . ' 1px;">
+					return '<table class="weEditTable padding2 spacing2" style="border: solid ' . $bordercolor . ' 1px;">
 						<tr>
 							<td class="weEditmodeStyle" colspan="2" align="center">' . $imgTag . '
 								<input type="hidden" name="WE_UI_IMG_DATA_ID_' . $name . '" value="' . $_imgDataId . '" /></td>
@@ -152,7 +152,7 @@ function we_tag_userInput($attribs, $content){
 						</tr>
 						<tr>
 							<td class="weEditmodeStyle" colspan="2" align="left">
-								<table style="border:0px;padding:0px;" cellspacing="0">
+								<table class="weEditTable padding0 spacing0 border0">
 									<tr>
 										<td style="padding-right: 5px;">
 											<input style="border:0px solid black;" type="checkbox" id="WE_UI_DEL_CHECKBOX_' . $name . '" name="WE_UI_DEL_CHECKBOX_' . $name . '" value="1" ' . $checked . '/>
@@ -231,7 +231,7 @@ function we_tag_userInput($attribs, $content){
 
 					$checked = (isset($_SESSION[$_flashmovieDataId]["doDelete"]) && $_SESSION[$_flashmovieDataId]["doDelete"] ? ' checked' : '');
 
-					return '<table cellpadding="2" cellspacing="2" style="border: solid ' . $bordercolor . ' 1px;">
+					return '<table class="weEditTable padding2 spacing2" style="border: solid ' . $bordercolor . ' 1px;">
 						<tr>
 							<td class="weEditmodeStyle" colspan="2" align="center">' . $flashmovieTag . '
 								<input type="hidden" name="WE_UI_FLASHMOVIE_DATA_ID_' . $name . '" value="' . $_flashmovieDataId . '" /></td>
@@ -243,7 +243,7 @@ function we_tag_userInput($attribs, $content){
 						</tr>
 						<tr>
 							<td class="weEditmodeStyle" colspan="2" align="left">
-								<table style="border:0px;padding:0px;" cellspacing="0">
+								<table class="weEditTable padding0 spacing0 border0">
 									<tr>
 										<td style="padding-right: 5px;">
 											<input style="border:0px solid black;" type="checkbox" id="WE_UI_DEL_CHECKBOX_' . $name . '" name="WE_UI_DEL_CHECKBOX_' . $name . '" value="1" ' . $checked . '/>
@@ -323,7 +323,7 @@ function we_tag_userInput($attribs, $content){
 
 					$checked = (isset($_SESSION[$_quicktimeDataId]["doDelete"]) && $_SESSION[$_quicktimeDataId]["doDelete"] ? ' checked' : '');
 
-					return '<table cellpadding="2" cellspacing="2" style="border: solid ' . $bordercolor . ' 1px;">
+					return '<table class="weEditTable padding2 spacing2" style="border: solid ' . $bordercolor . ' 1px;">
 						<tr>
 							<td class="weEditmodeStyle" colspan="2" align="center">' . $quicktimeTag . '
 								<input type="hidden" name="WE_UI_QUICKTIME_DATA_ID_' . $name . '" value="' . $_quicktimeDataId . '" /></td>
@@ -335,7 +335,7 @@ function we_tag_userInput($attribs, $content){
 						</tr>
 						<tr>
 							<td class="weEditmodeStyle" colspan="2" align="left">
-								<table style="border:0px;padding:0px;" cellspacing="0">
+								<table class="weEditTable padding0 spacing0 border0">
 									<tr>
 										<td style="padding-right: 5px;">
 											<input style="border:0px solid black;" type="checkbox" id="WE_UI_DEL_CHECKBOX_' . $name . '" name="WE_UI_DEL_CHECKBOX_' . $name . '" value="1" ' . $checked . '/>
@@ -415,7 +415,7 @@ function we_tag_userInput($attribs, $content){
 
 					$checked = (isset($_SESSION[$_binaryDataId]["doDelete"]) && $_SESSION[$_binaryDataId]["doDelete"] ? ' checked' : '');
 
-					return '<table cellpadding="2" cellspacing="2" style="border: solid ' . $bordercolor . ' 1px;">
+					return '<table class="weEditTable padding2 spacing2" style="border: solid ' . $bordercolor . ' 1px;">
 						<tr>
 							<td class="weEditmodeStyle" colspan="2" align="center">' . $imgTag . '
 								<input type="hidden" name="WE_UI_BINARY_DATA_ID_' . $name . '" value="' . $_binaryDataId . '" /></td>
@@ -427,7 +427,7 @@ function we_tag_userInput($attribs, $content){
 						</tr>
 						<tr>
 							<td class="weEditmodeStyle" colspan="2" align="left">
-								<table style="border:0px;padding:0px;" cellspacing="0">
+								<table class="weEditTable padding0 spacing0 border0">
 									<tr>
 										<td style="padding-right: 5px;">
 											<input style="border:0px solid black;" type="checkbox" id="WE_UI_DEL_CHECKBOX_' . $name . '" name="WE_UI_DEL_CHECKBOX_' . $name . '" value="1" ' . $checked . '/>

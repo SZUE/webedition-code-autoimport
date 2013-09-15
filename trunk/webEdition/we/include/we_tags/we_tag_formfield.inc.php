@@ -109,7 +109,7 @@ function we_tag_formfield($attribs){
 			$tbl .= '	<tr>
 		<td class="weEditmodeStyle" width="62" style="color: black; font-size: 12px; font-family: Verdana, sans-serif" align="right"><nobr>' . g_l('global', "[attributes]") . ':&nbsp;</nobr></td>
 		<td class="weEditmodeStyle" width="161">
-			<table style="border:0px;" cellspacing="0">
+			<table class="weEditTable spacing0 border0">
 				<tr>';
 
 			foreach($ff as $f => $m){

@@ -810,7 +810,7 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement{
 		if($this->getImagePath() === ""){
 			$buttonHTML .= '<div' . $this->_getComputedClassAttrib($classLeft) . ' style="height:' . $this->_height . 'px"></div><div style="width:' . $this->getWidth() . 'px;height:' . $this->getHeight() . 'px;"' . $this->_getComputedClassAttrib($classMiddle) . '>';
 		}
-		$buttonHTML .= '<table border="0" id="table_' . $this->getId() . '" cellpadding="0" cellspacing="0" class="' . $tblClass . '"><tr>';
+		$buttonHTML .= '<table id="table_' . $this->getId() . '" cellpadding="0" style="border-style:none;border-spacing: 0px;" class="' . $tblClass . '"><tr>';
 
 		if($this->getIcon() !== '' || $this->getImagePath() !== ''){
 			$image = '';

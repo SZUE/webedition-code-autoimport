@@ -666,7 +666,7 @@ function showEditFooterForSEEMMode(){
 ?>
 
 <body style="background-color:#f0f0f0; background-image: url('<?php print EDIT_IMAGE_DIR ?>editfooterback.gif');background-repeat:repeat;margin:10px 0px 10px 0px">
-	<form name="we_form"<?php if(isset($we_doc->IsClassFolder) && $we_doc->IsClassFolder){ ?> onSubmit="sub();return false;"<?php } ?>>
+	<form name="we_form" action=""<?php if(isset($we_doc->IsClassFolder) && $we_doc->IsClassFolder){ ?> onsubmit="sub();return false;"<?php } ?>>
 		<input type="hidden" name="sel" value="<?php print $we_doc->ID; ?>" />
 		<?php
 		$_SESSION['weS']['seemForOpenDelSelector']['ID'] = $we_doc->ID;

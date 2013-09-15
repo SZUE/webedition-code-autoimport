@@ -152,7 +152,7 @@ function we_tag_href($attribs){
 	}
 
 	return
-		'<table cellspacing="2" style="padding:0px;" class="weEditTable">' .
+		'<table class="weEditTable padding0 spacing2">' .
 		($type == we_base_link::TYPE_ALL || $type == we_base_link::TYPE_INT ? '
 <tr>
 	<td class="weEditmodeStyle">' . ($type == we_base_link::TYPE_ALL ? we_forms::radiobutton(1, $int, $int_elem_Name, $span . g_l('tags', '[int_href]') . ':</span>') : $span . g_l('tags', '[int_href]') . ':</span><input type="hidden" name="' . $int_elem_Name . '" value="1" />' ) . '</td>

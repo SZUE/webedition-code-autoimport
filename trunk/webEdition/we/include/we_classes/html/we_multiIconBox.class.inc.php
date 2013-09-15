@@ -53,7 +53,7 @@ abstract class we_multiIconBox{
 						'<span style="cursor: pointer;" class="defaultfont" id="text_' . $uniqname . '" onClick="' . ($delegate ? $delegate : "" ) . ';weToggleBox(\'' . $uniqname . '\',\'' . addslashes($foldDown) . '\',\'' . addslashes($foldRight) . '\');">' . ($displayAtStartup ? $foldDown : $foldRight) . '</span>'
 						), 10, array('style' => 'margin-left:' . $marginLeft . 'px;')
 					) .
-					'<br/><table id="table_' . $uniqname . '" width="100%" cellpadding="0" cellspacing="0" border="0" style="' . ($displayAtStartup ? '' : 'display:none') . '"><tr><td>';
+					'<br/><table id="table_' . $uniqname . '" width="100%" cellpadding="0" style="border-spacing: 0px;border-style:none;' . ($displayAtStartup ? '' : 'display:none') . '"><tr><td>';
 			}
 
 			$_forceRightHeadline = (isset($c["forceRightHeadline"]) && $c["forceRightHeadline"]);
@@ -276,7 +276,7 @@ abstract class we_multiIconBox{
 	}
 
 	static function _getBoxStartHeadline($width, $headline, $uniqname, $marginLeft = 0, $overflow = "auto"){
-		return '<table border="0" cellspacing="0" cellpadding="0" style="margin-top:10px;width:' . $width . (is_numeric($width) ? 'px' : '') . '; overflow:' . $overflow . '">
+		return '<table cellpadding="0" style="border-spacing: 0px;border-style:none;margin-top:10px;width:' . $width . (is_numeric($width) ? 'px' : '') . '; overflow:' . $overflow . '">
 	<tr>
 		<td style="padding-left:' . $marginLeft . 'px;padding-bottom:10px;" class="weDialogHeadline">' . $headline . '</td>
 	</tr>
@@ -293,7 +293,7 @@ abstract class we_multiIconBox{
 		} else{
 			$wp = $w;
 		}
-		return '<table width="' . $w . '" border="0" cellspacing="0" cellpadding="0" style="margin-top:10px;width:' . $wp . ';">
+		return '<table cellpadding="0" style="border-spacing: 0px;border-style:none;margin-top:10px;width:' . $wp . ';">
 	<tr>
 		<td class="defaultfont"><b>' . we_html_tools::getPixel($w, 2) . '</b></td>
 	</tr>
@@ -312,7 +312,7 @@ abstract class we_multiIconBox{
 	}
 
 	static function _getButton($name, $cmd, $state = "right", $title = ""){
-		return we_html_element::jsElement('weSetCookieVariable("but_' . $name . '","' . $state . '");var btn_direction_' . $name . '_mouse_event = false;') . '<table cellpadding="0" cellspacing="0" border="0" style="cursor: pointer; width: 21px;" id="btn_direction_' . $name . '_table" onmouseover="window.status=\'\';return true;"  onmouseup="document.getElementById(\'btn_direction_' . $name . '_middle\').style.background = \'url(' . BUTTONS_DIR . 'btn_direction_\'+weGetCookieVariable(\'but_' . $name . '\')+\'.gif)\';btn_direction_' . $name . '_mouse_event = false;' . $cmd . ';"><tr title="' . $title . '" style="height: 22px;"><td align="center" id="btn_direction_' . $name . '_middle" style="background-image:url(' . BUTTONS_DIR . '/btn_direction_' . $state . '.gif);width: 21px;white-space:nowrap;">' . we_html_tools::getPixel(21, 22) . '</td></tr></table>';
+		return we_html_element::jsElement('weSetCookieVariable("but_' . $name . '","' . $state . '");var btn_direction_' . $name . '_mouse_event = false;') . '<table cellpadding="0" style="border-spacing: 0px;border-style:none;cursor: pointer; width: 21px;" id="btn_direction_' . $name . '_table" onmouseover="window.status=\'\';return true;"  onmouseup="document.getElementById(\'btn_direction_' . $name . '_middle\').style.background = \'url(' . BUTTONS_DIR . 'btn_direction_\'+weGetCookieVariable(\'but_' . $name . '\')+\'.gif)\';btn_direction_' . $name . '_mouse_event = false;' . $cmd . ';"><tr title="' . $title . '" style="height: 22px;"><td align="center" id="btn_direction_' . $name . '_middle" style="background-image:url(' . BUTTONS_DIR . '/btn_direction_' . $state . '.gif);width: 21px;white-space:nowrap;">' . we_html_tools::getPixel(21, 22) . '</td></tr></table>';
 	}
 
 }

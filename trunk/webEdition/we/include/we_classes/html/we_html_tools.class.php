@@ -85,7 +85,7 @@ abstract class we_html_tools{
 				$colspan++;
 			}
 		}
-		return '<table cellpadding="0" cellspacing="0" border="0">' .
+		return '<table style="border-spacing: 0px;border-style:none" cellpadding="0">' .
 			($text ? '<tr><td class="' . trim($textclass) . '" align="' . trim($textalign) . '" colspan="' . $colspan . '">' . $text . '</td></tr>' : '') .
 			($abstand ? ('<tr style="height:' . $abstand . 'px"><td colspan="' . $colspan . '"></td></tr>') : '') .
 			'<tr>' . $elemOut . '</tr></table>';
@@ -175,7 +175,7 @@ abstract class we_html_tools{
 
 	static function htmlDialogBorder3($w, $h, $content, $headline, $class = "middlefont", $bgColor = "", $buttons = "", $id = "", $style = ""){ //content && headline are arrays
 		$anz = count($headline);
-		$out = '<table' . ($id ? ' id="' . $id . '"' : '') . ($style ? ' style="' . $style . '"' : '') . ' border="0" cellpadding="0" cellspacing="0" width="' . $w . '">
+		$out = '<table' . ($id ? ' id="' . $id . '"' : '') . ' style="border-spacing: 0px;border-style:none;width:' . $w . 'px;' . $style . '" cellpadding="0">
 		<tr>
 		<td width="8" style="background-image:url(' . IMAGE_DIR . 'box/box_header_ol2.gif);">' . self::getPixel(8, 21) . '</td>';
 		// HEADLINE
@@ -229,7 +229,7 @@ abstract class we_html_tools{
 	}
 
 	static function htmlDialogBorder4($w, $h, $content, $headline, $class = "middlefont", $bgColor = "", $buttons = "", $id = "", $style = ""){ //content && headline are arrays
-		$out = '<table' . ($id ? ' id="' . $id . '"' : '') . ($style ? ' style="' . $style . '"' : '') . ' border="0" cellpadding="0" cellspacing="0" width="' . $w . '">
+		$out = '<table' . ($id ? ' id="' . $id . '"' : '') . 'style="border-spacing: 0px;border-style:none;width:' . $w . 'px;' . $style . '" cellpadding="0">
 		<tr><td width="8" style="background-image:url(' . IMAGE_DIR . 'box/box_header_ol2.gif);">' . self::getPixel(8, 21) . '</td>';
 		// HEADLINE
 		foreach($headline as $h){
@@ -305,7 +305,7 @@ abstract class we_html_tools{
 		$atts['size'] = isset($atts['size']) ? $atts['size'] : 1;
 		$atts = removeAttribs($atts, array('size')); //  remove size for choice
 		$selectMenue = getHtmlTag('select', $atts, $opts, true);
-		return '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' . $textField . '</td><td>' . $selectMenue . '</td></tr></table>';
+		return '<table style="border-spacing: 0px;border-style:none;" cellpadding="0"><tr><td>' . $textField . '</td><td>' . $selectMenue . '</td></tr></table>';
 	}
 
 	static function gifButton($name, $href, $language = "Deutsch", $alt = "", $width = "", $height = "", $onClick = "", $bname = "", $target = "", $disabled = false){
@@ -326,7 +326,7 @@ abstract class we_html_tools{
 			} else {
 				$disabled = '';
 			}
-			$out = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' .
+			$out = '<table style="border-spacing: 0px;border-style:none;" cellpadding="0"><tr><td>' .
 				self::htmlTextInput($name, 5, $selected, "", $attribs, "text", $width / 2, 0, "top") .
 				'</td><td><select class="weSelect" name="wetmp_' . $name . '" size=1' . $disabled . ($width ? ' style="width: ' . ($width / 2) . 'px"' : '') . ' onchange="if(typeof(_EditorFrame) != \'undefined\'){_EditorFrame.setEditorIsHot(true);}if(this.options[this.selectedIndex].text){this.form.elements[\'' . $name . '\'].value=this.options[this.selectedIndex].text;};this.selectedIndex=0"><option>';
 			foreach($extensions as $extension){
@@ -590,8 +590,7 @@ abstract class we_html_tools{
 		ksort($_datePosArray);
 		ksort($_timePosArray);
 
-		$retVal = '<table cellpadding="0" cellspacing="0" border="0">';
-			$retVal .= '<tr><td>';
+		$retVal = '<table style="border-spacing: 0px;border-style:none;" cellpadding="0"><tr><td>';
 		if($_showDay || $_showMonth || $_showYear){
 
 			foreach($_datePosArray as $foo){
@@ -612,7 +611,7 @@ abstract class we_html_tools{
 				$retVal .= $foo;
 			}
 		}
-			$retVal .= '</td></tr></table>';
+		$retVal .= '</td></tr></table>';
 		return $retVal;
 	}
 
