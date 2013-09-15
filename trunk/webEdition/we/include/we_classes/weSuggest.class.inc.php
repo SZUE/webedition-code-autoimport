@@ -157,7 +157,7 @@ class weSuggest{
 		if(defined('WE_SUGGEST_JS')){
 			return '';
 		}
-		define('WE_SUGGEST_JS',1);
+		define('WE_SUGGEST_JS', 1);
 		/**
 		 * @todo 	1. value
 		 * 			2. table
