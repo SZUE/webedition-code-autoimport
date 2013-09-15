@@ -1907,7 +1907,6 @@ function we_templateInit(){
 		){
 			we_schedpro::trigger_schedule();
 		}
-
 		$GLOBALS['WE_DOC_ParentID'] = $GLOBALS['we_doc']->ParentID;
 		$GLOBALS['WE_DOC_Path'] = $GLOBALS['we_doc']->Path;
 		$GLOBALS['WE_DOC_IsDynamic'] = $GLOBALS['we_doc']->IsDynamic;
@@ -1917,11 +1916,9 @@ function we_templateInit(){
 		$GLOBALS['TITLE'] = $GLOBALS['we_doc']->getElement('Title');
 		$GLOBALS['KEYWORDS'] = $GLOBALS['we_doc']->getElement('Keywords');
 		$GLOBALS['DESCRIPTION'] = $GLOBALS['we_doc']->getElement('Description');
-		$GLOBALS['CHARSET'] = $GLOBALS['we_doc']->getElement('Charset');
 //check if CHARSET is valid
-		if(!in_array($GLOBALS['CHARSET'], charsetHandler::getAvailCharsets())){
-			$GLOBALS['CHARSET'] = DEFAULT_CHARSET;
-		}
+		$charset = $GLOBALS['we_doc']->getElement('Charset');
+		$GLOBALS['CHARSET'] = (!in_array($charset, charsetHandler::getAvailCharsets()) ? DEFAULT_CHARSET : $charset);
 	}
 }
 
@@ -1943,11 +1940,8 @@ function we_templatePreContent(){
 
 function we_templatePostContent(){
 	if(isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'] && (--$GLOBALS['we_templatePreContent']) == 0){
-		$yuiSuggest = & weSuggest::getInstance();
 		//FIXME: check this new field to determine if all data has been transmitted
-		print '<input type="hidden" name="we_complete_request" value="1"/></form>' .
-			$yuiSuggest->getYuiCss() .
-			$yuiSuggest->getYuiJs();
+		print '<input type="hidden" name="we_complete_request" value="1"/></form>';
 	}
 }
 
