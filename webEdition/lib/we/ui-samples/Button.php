@@ -182,7 +182,7 @@ $htmlPage->addHTML('<div><a href="javascript:we_ui_controls_Button.show(&quot;' 
 $htmlPage->addHTML("<br/><br/>");
 
 $htmlPage->addHTML("<br/>submit form<br/><br/>");
-$htmlPage->addHTML('<form name="myForm" action="" method="post" onSubmit="alert(\'onSubmit do something\');">');
+$htmlPage->addHTML('<form name="myForm" action="" method="post" onsubmit="alert(\'onSubmit do something\');">');
 $inp = new we_ui_controls_TextField(array('name' => 'test', 'value' => 'default', 'width' => 100));
 $htmlPage->addElement($inp);
 $htmlPage->addHTML("<br/><br/>");

@@ -47,7 +47,7 @@ print $headCal .
 
 <body class="weEditorBody" onUnload="doUnload()" onkeypress="javascript:if(event.keyCode==\'13\' || event.keyCode==\'3\') search(true);" onLoad="setTimeout(\'init();\',200)" onresize="sizeScrollContent();">
 <div id="mouseOverDivs_doclist"></div>
-<form name="we_form" onSubmit="return false;" style="padding:0px;margin:0px;">';
+<form name="we_form" action="" onsubmit="return false;" style="padding:0px;margin:0px;">';
 
 $content = $_view->searchProperties();
 $headline = $_view->makeHeadLines();

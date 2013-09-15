@@ -72,7 +72,7 @@ function we_tag_customer($attribs){
 
 		if($GLOBALS['we_editmode']){
 			?>
-			<table cellpadding="0" cellspacing="0" style="border:0px;" class="weEditTable">
+			<table style="border-style:none;" class="weEditTable spacing0 padding0">
 				<tr>
 					<td style="padding:0 6px;"><b><?php print $_showName; ?></b></td>
 					<td><?php print we_html_tools::hidden($idname, $we_cid) ?></td>
