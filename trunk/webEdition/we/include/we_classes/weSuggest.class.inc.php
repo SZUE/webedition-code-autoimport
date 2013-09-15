@@ -154,6 +154,10 @@ class weSuggest{
 	 * @return String
 	 */
 	function getYuiJs(){
+		if(defined('WE_SUGGEST_JS')){
+			return '';
+		}
+		define('WE_SUGGEST_JS',1);
 		/**
 		 * @todo 	1. value
 		 * 			2. table
