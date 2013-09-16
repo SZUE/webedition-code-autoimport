@@ -174,6 +174,7 @@ function we_redirect_tagoutput($returnvalue, $nameTo, $to = 'screen'){
 			$GLOBALS['WE_MAIN_DOC_REF']->setElement($nameTo, $returnvalue);
 			return null;
 		case 'block' :
+			$nameTo = we_tag_getPostName($nameTo);
 		case 'self' :
 			$GLOBALS['we_doc']->setElement($nameTo, $returnvalue);
 			return null;

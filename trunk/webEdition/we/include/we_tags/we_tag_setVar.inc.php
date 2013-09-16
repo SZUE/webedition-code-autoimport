@@ -39,9 +39,7 @@ function we_tag_setVar($attribs){
 	$formnameFrom = weTag_getAttribute('formnamefrom', $attribs, 'we_global_form');
 	if(isset($attribs['value'])){
 		$valueFrom = weTag_getAttribute('value', $attribs);
-	} else{
-
-		$valueFrom = '';
+	} else {
 		switch($from){
 			case 'request' :
 				$valueFrom = isset($_REQUEST[$nameFrom]) ? $_REQUEST[$nameFrom] : '';
@@ -61,44 +59,27 @@ function we_tag_setVar($attribs){
 			case 'top' :
 				if($propertyFrom){
 					$valueFrom = isset($GLOBALS['WE_MAIN_DOC']->$nameFrom) ? $GLOBALS['WE_MAIN_DOC']->$nameFrom : '';
-				} else{
-					if($typeFrom == 'href'){
-						$valueFrom = isset($GLOBALS['WE_MAIN_DOC']->elements[$nameFrom . we_base_link::MAGIC_INT_LINK]) ? $GLOBALS['WE_MAIN_DOC']->getField(
-								array(
-								'name' => $nameFrom
-								), $typeFrom, true) : '';
-					} else{
-						$valueFrom = isset($GLOBALS['WE_MAIN_DOC']->elements[$nameFrom]) ? $GLOBALS['WE_MAIN_DOC']->getField(
-								array(
-								'name' => $nameFrom
-								), $typeFrom, true) : '';
-					}
+				} else {
+					$valueFrom = isset($GLOBALS['WE_MAIN_DOC']->elements[$nameFrom . ($typeFrom == 'href' ? we_base_link::MAGIC_INT_LINK : '')]) ?
+						$GLOBALS['WE_MAIN_DOC']->getField(array('name' => $nameFrom), $typeFrom, true) :
+						'';
 				}
 				break;
 			case 'self' :
 				if($propertyFrom){
 					$valueFrom = isset($GLOBALS['we_doc']->$nameFrom) ? $GLOBALS['we_doc']->$nameFrom : '';
-				} else{
-					if($typeFrom == 'href'){
-						$valueFrom = isset($GLOBALS['we_doc']->elements[$nameFrom . we_base_link::MAGIC_INT_LINK]) ? $GLOBALS['we_doc']->getField(
-								array(
-								'name' => $nameFrom
-								), $typeFrom, true) : '';
-					} else{
-						$valueFrom = isset($GLOBALS['we_doc']->elements[$nameFrom]) ? $GLOBALS['we_doc']->getField(
-								array(
-								'name' => $nameFrom
-								), $typeFrom, true) : '';
-					}
+				} else {
+					$valueFrom = isset($GLOBALS['we_doc']->elements[$nameFrom . ($typeFrom == 'href' ? we_base_link::MAGIC_INT_LINK : '')]) ?
+						$GLOBALS['we_doc']->getField(array('name' => $nameFrom), $typeFrom, true) :
+						'';
 				}
 				break;
 			case 'object' :
 			case 'document' :
 				if($propertyFrom){
 					$valueFrom = isset($GLOBALS['we_' . $from][$formnameFrom]->$nameFrom) ? $GLOBALS['we_' . $from][$formnameFrom]->$nameFrom : '';
-				} else{
-					$valueFrom = isset($GLOBALS['we_' . $from][$formnameFrom]->elements[$nameFrom]) ? $GLOBALS['we_' . $from][$formnameFrom]->getElement(
-							$nameFrom) : '';
+				} else {
+					$valueFrom = isset($GLOBALS['we_' . $from][$formnameFrom]->elements[$nameFrom]) ? $GLOBALS['we_' . $from][$formnameFrom]->getElement($nameFrom) : '';
 				}
 				break;
 			case 'sessionfield' :
@@ -111,9 +92,7 @@ function we_tag_setVar($attribs){
 				if(!isset($GLOBALS['lv'])){
 					return parseError(g_l('parser', '[setVar_lv_not_in_lv]'));
 				}
-				$valueFrom = we_tag('field', array(
-					'name' => $nameFrom, 'type' => $typeFrom
-				));
+				$valueFrom = we_tag('field', array('name' => $nameFrom, 'type' => $typeFrom));
 				break;
 			case 'block' :
 				$nameFrom = we_tag_getPostName($nameFrom);
@@ -131,55 +110,31 @@ function we_tag_setVar($attribs){
 			case 'listdir' :
 				$valueFrom = isset($GLOBALS['we_position']['listdir'][$nameFrom]) ? $GLOBALS['we_position']['listdir'][$nameFrom] : '';
 				break;
+			default:
+				$valueFrom = '';
 		}
 	}
 	if($striptags){
 		$valueFrom = strip_tags($valueFrom);
 	}
 	switch($to){
-		case 'request' :
-			$_REQUEST[$nameTo] = $valueFrom;
-			break;
-		case 'post' :
-			$_POST[$nameTo] = $valueFrom;
-			break;
-		case 'get' :
-			$_GET[$nameTo] = $valueFrom;
-			break;
-		case 'global' :
-			$GLOBALS[$nameTo] = $valueFrom;
-			break;
-		case 'session' :
-			$_SESSION[$nameTo] = $valueFrom;
-			break;
-		case 'top' :
-			if($propertyTo){
-				$GLOBALS['WE_MAIN_DOC_REF']->$nameTo = $valueFrom;
-			} else{
-				$GLOBALS['WE_MAIN_DOC_REF']->setElement($nameTo, $valueFrom);
-			}
-			break;
-		case 'block' :
-			$nameTo = we_tag_getPostName($nameTo);
-		case 'self' :
-			if($propertyTo){
-				$GLOBALS['we_doc']->$nameTo = $valueFrom;
-			} else{
-				$GLOBALS['we_doc']->setElement($nameTo, $valueFrom);
-			}
-			break;
 		case 'object' :
 		case 'document' :
 			if($propertyTo){
 				if(isset($GLOBALS['we_' . $to][$formnameTo]))
 					$GLOBALS['we_' . $to][$formnameTo]->$nameTo = $valueFrom;
-			} else{
+			} else {
 				if(isset($GLOBALS['we_' . $to][$formnameTo]))
 					$GLOBALS['we_' . $to][$formnameTo]->setElement($nameTo, $valueFrom);
 			}
 			break;
-		case 'sessionfield' :
-			if(isset($_SESSION['webuser'][$nameTo]))
-				$_SESSION['webuser'][$nameTo] = $valueFrom;
+		case 'top' :
+		case 'self' :
+			if($propertyTo){
+				$GLOBALS[($to == 'top' ? 'WE_MAIN_DOC_REF' : 'we_doc')]->$nameTo = $valueFrom;
+				break;
+			}
+		default:
+			we_redirect_tagoutput($valueFrom, $nameTo, $to);
 	}
 }
