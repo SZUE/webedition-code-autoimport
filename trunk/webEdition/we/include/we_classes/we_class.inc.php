@@ -331,47 +331,36 @@ abstract class we_class{
 		if($firstEntry){
 			$vals[$firstEntry[0]] = $firstEntry[1];
 		}
-		$this->DB_WE->query('SELECT ' . $val . ',' . $txt . ' FROM ' . $this->DB_WE->escape($table) . ' ' . $sqlTail);
-		while($this->DB_WE->next_record()){
+		$this->DB_WE->query('SELECT ' . $this->DB_WE->escape($val) . ',' . $this->DB_WE->escape($txt) . ' FROM ' . $this->DB_WE->escape($table) . ' ' . $sqlTail);
+		while($this->DB_WE->next_record(MYSQL_ASSOC)){
 			$v = $this->DB_WE->f($val);
 			$t = $this->DB_WE->f($txt);
 			$vals[$v] = $t;
 		}
 		$vals = we_html_tools::groupArray($vals, false, 1);
-		$myname = $elementtype ? ('we_' . $this->Name . '_' . $elementtype . "[$name]") : ('we_' . $this->Name . '_' . $name);
+		$myname = $elementtype ? ('we_' . $this->Name . '_' . $elementtype . '[' . $name . ']') : ('we_' . $this->Name . '_' . $name);
 
 
-		if($multiple){
-			$onChange.= ";var we_sel='';for(i=0;i<this.options.length;i++){if(this.options[i].selected){we_sel += (this.options[i].value + ',');};};if(we_sel){we_sel=we_sel.substring(0,we_sel.length-1)};this.form.elements['" . $myname . "'].value=we_sel;";
-			if(!$elementtype){
-				$ps = $this->$name;
-			}
-			$pop = $this->htmlSelect($myname . 'Tmp', $vals, $size, ($elementtype ? $this->getElement($name) : $ps), $multiple, "onChange=\"$onChange\" " . $attribs, "value", $width);
-
-			if($precode || $postcode){
-				$pop = '<table border="0" cellpadding="0" cellspacing="0"><tr>' . ($precode ? ("<td>$precode</td><td>" . we_html_tools::getPixel($gap, 2) . "</td>") : "") . '<td>' . $pop . '</td>' . ($postcode ? ("<td>" . we_html_tools::getPixel($gap, 2) . "</td><td>$postcode</td>") : "") . '</tr></table>';
-			}
-
-			return $this->htmlHidden($myname, $selectedIndex) . $this->htmlFormElementTable($pop, $text, $textalign, $textclass);
-		} else {
-			if(!$elementtype){
-				$ps = $this->$name;
-			}
-			$pop = $this->htmlSelect($myname, $vals, $size, ($elementtype ? $this->getElement($name) : $ps), $multiple, "onChange=\"$onChange\" " . $attribs, "value", $width);
-			if($precode || $postcode){
-				$pop = '<table border="0" cellpadding="0" cellspacing="0"><tr>' . ($precode ? ("<td>$precode</td><td>" . we_html_tools::getPixel($gap, 2) . "</td>") : "") . '<td>' . $pop . '</td>' . ($postcode ? ("<td>" . we_html_tools::getPixel($gap, 2) . "</td><td>$postcode</td>") : "") . '</tr></table>';
-			}
-			return $this->htmlFormElementTable($pop, $text, $textalign, $textclass);
+		if(!$elementtype){
+			$ps = $this->$name;
 		}
+		$pop = $this->htmlSelect($myname . ($multiple ? 'Tmp' : ''), $vals, $size, ($elementtype ? $this->getElement($name) : $ps), $multiple, 'onchange="' .
+			$onChange . ($multiple ? ";var we_sel='';for(i=0;i<this.options.length;i++){if(this.options[i].selected){we_sel += (this.options[i].value + ',');};};if(we_sel){we_sel=we_sel.substring(0,we_sel.length-1)};this.form.elements['" . $myname . "'].value=we_sel;" : '') . '" ' .
+			$attribs, 'value', $width);
+
+		if($precode || $postcode){
+			$pop = '<table border="0" cellpadding="0" cellspacing="0"><tr>' . ($precode ? ('<td>' . $precode . '</td><td>' . we_html_tools::getPixel($gap, 2) . '</td>') : '') . '<td>' . $pop . '</td>' . ($postcode ? ('<td>' . we_html_tools::getPixel($gap, 2) . '</td><td>' . $postcode . '</td>') : '') . '</tr></table>';
+		}
+		return ($multiple ? $this->htmlHidden($myname, $selectedIndex) : '') . $this->htmlFormElementTable($pop, $text, $textalign, $textclass);
 	}
 
-	function formSelect4($elementtype, $width, $name, $table, $val, $txt, $text, $sqlTail = "", $size = 1, $selectedIndex = "", $multiple = false, $onChange = "", $attribs = "", $textalign = "left", $textclass = "defaultfont", $precode = "", $postcode = "", $firstEntry = ""){
+	function formSelect4($elementtype, $width, $name, $table, $val, $txt, $text, $sqlTail = '', $size = 1, $selectedIndex = '', $multiple = false, $onChange = '', $attribs = '', $textalign = 'left', $textclass = 'defaultfont', $precode = '', $postcode = '', $firstEntry = '', $gap = 20){
 		$vals = array();
 		if($firstEntry){
 			$vals[$firstEntry[0]] = $firstEntry[1];
 		}
-		$this->DB_WE->query('SELECT * FROM ' . $this->DB_WE->escape($table) . ' ' . $sqlTail);
-		while($this->DB_WE->next_record()){
+		$this->DB_WE->query('SELECT ' . $this->DB_WE->escape($val) . ',' . $this->DB_WE->escape($txt) . ' FROM ' . $this->DB_WE->escape($table) . ' ' . $sqlTail);
+		while($this->DB_WE->next_record(MYSQL_ASSOC)){
 			$v = $this->DB_WE->f($val);
 			$t = $this->DB_WE->f($txt);
 			$vals[$v] = $t;
@@ -382,8 +371,11 @@ abstract class we_class{
 		if(!$elementtype){
 			$ps = $this->$name;
 		}
-		$pop = $this->htmlSelect($myname, $vals, $size, $selectedIndex, $multiple, "onChange=\"$onChange\" " . $attribs, 'value', $width);
-		return $this->htmlFormElementTable(($precode ? $precode : '') . $pop . ($postcode ? $postcode : ''), $text, $textalign, $textclass);
+		$pop = $this->htmlSelect($myname, $vals, $size, $selectedIndex, $multiple, 'onchange="' . $onChange . '" ' . $attribs, 'value', $width);
+		if($precode || $postcode){
+			$pop = '<table border="0" cellpadding="0" cellspacing="0"><tr>' . ($precode ? ('<td>' . $precode . '</td><td>' . we_html_tools::getPixel($gap, 2) . '</td>') : '') . '<td>' . $pop . '</td>' . ($postcode ? ('<td>' . we_html_tools::getPixel($gap, 2) . '</td><td>' . $postcode . '</td>') : '') . '</tr></table>';
+		}
+		return $this->htmlFormElementTable($pop, $text, $textalign, $textclass);
 	}
 
 ##### NEWSTUFF ####

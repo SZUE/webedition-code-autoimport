@@ -200,10 +200,21 @@ _EditorFrame.setEditorEditPageNr(' . $we_doc->EditPageNr . ');' .
 	<div id="main" ><?php
 		print '<div style="margin:3px 0px 3px 5px;" id="headrow">&nbsp;' . we_html_element::htmlB(str_replace(' ', '&nbsp;', g_l('contentTypes', '[' . $we_doc->ContentType . ']'))) . ': ' .
 			($we_doc->Table == FILE_TABLE && $we_doc->ID ? '<a href="javascript:top.wasdblclick=1;top.doClick(\'' . $we_doc->ID . '\');">' : '') .
-			'<span id="h_path"></span>' . ($we_doc->Table == FILE_TABLE && $we_doc->ID ? '</a>' : '') . ' (ID: <span id="h_id"></span>)' .
-			($we_doc->ContentType == 'text/webedition' && $we_doc->TemplateID && we_hasPerm('CAN_SEE_TEMPLATES') ? ' - <a style="font-weight:bold;color:#006699" href="javascript:top.weEditorFrameController.openDocument(\'' . TEMPLATES_TABLE . '\',' . $we_doc->TemplateID . ',\'text/weTmpl\');">' . g_l('weClass', '[openTemplate]') . '</a>' : '') . '</div>' .
-			($_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE ?
-				$we_tabs->getHTML() : '');
+			'<span id="h_path"></span>' . ($we_doc->Table == FILE_TABLE && $we_doc->ID ? '</a>' : '') . ' (ID: <span id="h_id"></span>)';
+		switch($we_doc->ContentType){
+			case 'text/webedition':
+				if($we_doc->TemplateID && we_hasPerm('CAN_SEE_TEMPLATES')){
+					echo ' - <a style="font-weight:bold;color:#006699" href="javascript:top.weEditorFrameController.openDocument(\'' . TEMPLATES_TABLE . '\',' . $we_doc->TemplateID . ',\'text/weTmpl\');">' . g_l('weClass', '[openTemplate]') . '</a>';
+				}
+				break;
+			case 'text/weTmpl':
+				if($we_doc->MasterTemplateID){
+					echo ' - <a style="font-weight:bold;color:#006699" href="javascript:top.weEditorFrameController.openDocument(\'' . TEMPLATES_TABLE . '\',' . $we_doc->MasterTemplateID . ',\'text/weTmpl\');">' . g_l('weClass', '[openMasterTemplate]') . '</a>';
+				}
+			default:
+		}
+		echo '</div>' . ($_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE ?
+			$we_tabs->getHTML() : '');
 		?></div>
 </body>
 </html>
