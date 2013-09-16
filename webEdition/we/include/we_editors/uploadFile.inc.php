@@ -104,8 +104,7 @@ if($we_doc->ContentType == "image/*"){
 $content .= '</table>';
 
 
-$_buttons = we_button::position_yes_no_cancel(we_button::create_button("upload", "javascript:document.forms[0].submit();"), "", we_button::create_button("cancel", "javascript:self.close();")
-);
+$_buttons = we_button::position_yes_no_cancel(we_button::create_button("upload", "javascript:document.forms[0].submit();"), "", we_button::create_button("cancel", "javascript:self.close();"));
 ?>
 
 
