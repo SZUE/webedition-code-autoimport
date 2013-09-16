@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_user{
+class we_user {
 
 	const TYPE_USER = 0;
 	const TYPE_USER_GROUP = 1;
@@ -30,6 +30,9 @@ class we_user{
 	const INVALID_CREDENTIALS = 1;
 	const MAX_LOGIN_COUNT_REACHED = 2;
 	const ERR_USER_PATH_NOK = -5;
+	const SALT_NONE = 0;
+	const SALT_MD5 = 1;
+	const SALT_CRYPT = 2;
 
 	// Name of the class => important for reconstructing the class from outside the class
 	var $ClassName = __CLASS__;
@@ -90,17 +93,15 @@ class we_user{
 	// Description
 	var $Description = '';
 	// User Prefrences
-	var $Preferences = array(
-		'use_jupload' => 0,
-	);
+	var $Preferences = array();
 	var $Text = '';
 	var $Path = '';
 	var $Alias = '';
 	var $Icon = 'user.gif';
-	var $CreatorID = '';
-	var $CreateDate = '';
-	var $ModifierID = '';
-	var $ModifyDate = '';
+	var $CreatorID = 0;
+	var $CreateDate = 0;
+	var $ModifierID = 0;
+	var $ModifyDate = 0;
 	// Ping flag
 	var $Ping = 0;
 	// Documents workspaces
@@ -155,8 +156,8 @@ class we_user{
 	// Extensions array
 	var $extensions_slots = array();
 	// Preferences array
-	var $preference_slots = array('sizeOpt', 'weWidth', 'weHeight', 'usePlugin', 'autostartPlugin', 'promptPlugin', 'Language', 'BackendCharset', 'seem_start_file', 'seem_start_type', 'seem_start_weapp', 'editorSizeOpt', 'editorWidth', 'editorHeight', 'editorFontname', 'editorFontsize', 'editorFont', 'default_tree_count', 'force_glossary_action', 'force_glossary_check', 'cockpit_amount_columns', 'cockpit_amount_last_documents', 'cockpit_rss_feed_url', 'use_jupload', 'editorMode');
-	var $UseSalt = 1;
+	private $preference_slots = array('sizeOpt', 'weWidth', 'weHeight', 'usePlugin', 'autostartPlugin', 'promptPlugin', 'Language', 'BackendCharset', 'seem_start_file', 'seem_start_type', 'seem_start_weapp', 'editorSizeOpt', 'editorWidth', 'editorHeight', 'editorFontname', 'editorFontsize', 'editorFont', 'default_tree_count', 'force_glossary_action', 'force_glossary_check', 'cockpit_amount_columns', 'cockpit_amount_last_documents', 'cockpit_rss_feed_url', 'use_jupload', 'editorMode');
+	private $UseSalt = self::SALT_CRYPT;
 
 	// Constructor
 	function __construct(){
@@ -229,7 +230,7 @@ class we_user{
 	function savePersistentSlotsInDB(){
 		$this->ModDate = time();
 		$tableInfo = $this->DB_WE->metadata($this->Table);
-		$useSalt = 0;
+		$useSalt = self::SALT_NONE;
 		if($this->clearpasswd !== ''){
 			$this->passwd = self::makeSaltedPassword($useSalt, $this->username, $this->clearpasswd);
 		}
@@ -353,8 +354,7 @@ class we_user{
 			return '';
 		}
 
-		$save_javascript =
-			'var _multiEditorreload = false;' .
+		$save_javascript = 'var _multiEditorreload = false;' .
 			$this->rememberPreference(isset($this->Preferences['Language']) ? $this->Preferences['Language'] : null, 'Language') .
 			$this->rememberPreference(isset($this->Preferences['BackendCharset']) ? $this->Preferences['BackendCharset'] : null, 'BackendCharset') .
 			$this->rememberPreference(isset($this->Preferences['default_tree_count']) ? $this->Preferences['default_tree_count'] : null, 'default_tree_count');
@@ -1950,7 +1950,7 @@ function show_seem_chooser(val) {
 			case 'weapp':
 				$_seem_start_type = 'weapp';
 				if($this->Preferences['seem_start_file'] != 0){
-
+					
 				}
 				break;
 			// Document
@@ -2421,15 +2421,15 @@ top.content.hloaded=1;') .
 	static function comparePasswords($useSalt, $username, $password, $clearPassword){
 		switch($useSalt){
 			default:
-			case 0:
+			case self::SALT_NONE:
 				$passwd = md5($clearPassword);
 				break;
-			case 1:
+			case self::SALT_MD5:
 				$passwd = md5($clearPassword . md5($username));
 				break;
-			case 2:
+			case self::SALT_CRYPT:
 				if(version_compare(PHP_VERSION, '5.3.7') >= 0){
-					$passwd = crypt($clearPassword, $password);
+					$passwd = crypt($passwd = substr($clearPassword, 0, 64), $password);
 				} else {
 					echo 'unable to check passwords php version to old (' . PHP_VERSION . ', needed at least 5.3.7)!';
 					t_e('unable to check passwords php version to old (' . PHP_VERSION . ', needed at least 5.3.7)!');
@@ -2442,17 +2442,17 @@ top.content.hloaded=1;') .
 
 	static function makeSaltedPassword(&$useSalt, $username, $passwd, $strength = 15){
 		$WE_SALTCHARS = './0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-
+		$passwd = substr($passwd, 0, 64);
 		if(version_compare(PHP_VERSION, '5.3.7') >= 0){
 			$salt = '$2y$' . sprintf('%02d', $strength) . '$';
 			for($i = 0; $i <= 21; $i++){
 				$tmp_str = str_shuffle($WE_SALTCHARS);
 				$salt .= $tmp_str[0];
 			}
-			$useSalt = 2;
+			$useSalt = self::SALT_CRYPT;
 			return crypt($passwd, $salt);
 		} else {
-			$useSalt = 1;
+			$useSalt = self::SALT_MD5;
 			return md5($passwd . md5($username));
 		}
 	}
