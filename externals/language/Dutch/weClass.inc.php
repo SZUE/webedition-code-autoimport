@@ -126,6 +126,7 @@ $l_weClass=array(
 	'noresize'=>'Geen vergroting',
 	'notValidFolder'=>'De gekozen directory is niet geldig!',
 	'onlyOwner'=>'Alleen maker',
+	'openMasterTemplate'=>'Open master template',
 	'openTemplate'=>'open template',
 	'origheight'=>'o.H.',
 	'origwidth'=>'o.B.',

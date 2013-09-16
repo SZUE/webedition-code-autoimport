@@ -126,6 +126,7 @@ $l_weClass=array(
 	'noresize'=>'Nicht ändern',
 	'notValidFolder'=>'Das angegebene Verzeichnis ist ungültig!',
 	'onlyOwner'=>'Nur Hauptbesitzer',
+	'openMasterTemplate'=>'Hauptvorlage öffnen',
 	'openTemplate'=>'Vorlage öffnen',
 	'origheight'=>'o.H.',
 	'origwidth'=>'o.B.',

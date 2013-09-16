@@ -126,6 +126,7 @@ $l_weClass=array(
 	'noresize'=>'Säilytä alkuperäinen koko',
 	'notValidFolder'=>'Valittu hakemisto on virheellinen!',
 	'onlyOwner'=>'Vain omistaja',
+	'openMasterTemplate'=>'Open master template',
 	'openTemplate'=>'open template',
 	'origheight'=>'o.K.',
 	'origwidth'=>'o.L.',
