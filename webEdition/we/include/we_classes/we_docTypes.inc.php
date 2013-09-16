@@ -55,7 +55,7 @@ class we_docTypes extends we_class{
 		foreach($idArr as $id){
 			$path = id_to_path($id, TEMPLATES_TABLE);
 			if($id && $path){
-				$newIdArr[]= $id;
+				$newIdArr[] = $id;
 			}
 		}
 		$this->Templates = makeCSVFromArray($newIdArr);
@@ -64,7 +64,7 @@ class we_docTypes extends we_class{
 			if(isset($_REQUEST["we_" . $this->Name . "_LangDocType"])){
 				$this->setLanguageLink($_REQUEST["we_" . $this->Name . "_LangDocType"], 'tblDocTypes');
 			}
-		} else{
+		} else {
 			//if language changed, we must delete eventually existing entries in tblLangLink, even if !LANGLINK_SUPPORT!
 			$this->checkRemoteLanguage($this->Table, false);
 		}
@@ -103,18 +103,18 @@ class we_docTypes extends we_class{
 
 		$ParentID = $this->ParentID;
 		$i = 0;
-		while($this->Language == "") {
+		while($this->Language == ""){
 			if($ParentID == 0 || $i > 20){
 				we_loadLanguageConfig();
 				$this->Language = $GLOBALS['weDefaultFrontendLanguage'];
 				if($this->Language == ""){
 					$this->Language = "de_DE";
 				}
-			} else{
+			} else {
 				$Query = "SELECT Language, ParentID FROM " . $this->DB_WE->escape($this->Table) . " WHERE ID = " . intval($ParentID);
 				$this->DB_WE->query($Query);
 
-				while($this->DB_WE->next_record()) {
+				while($this->DB_WE->next_record()){
 					$ParentID = $this->DB_WE->f("ParentID");
 					$this->Language = $this->DB_WE->f("Language");
 				}
@@ -147,7 +147,7 @@ class we_docTypes extends we_class{
 			$html = $this->htmlFormElementTable($this->htmlSelect($inputName, $_languages, 1, $value, false, 'onchange="dieWerte=\'' . implode(',', $langkeys) . '\'; disableLangDefault(\'we_' . $this->Name . '_LangDocType\',dieWerte,this.options[this.selectedIndex].value);"', "value", 521), g_l('weClass', '[language]'), "left", "defaultfont");
 			$html .= "<br/>" . $this->htmlFormElementTable($htmlzw, g_l('weClass', '[languageLinksDefaults]'), 'left', 'defaultfont');
 			return $html;
-		} else{
+		} else {
 			return $this->htmlFormElementTable($this->htmlSelect($inputName, $_languages, 1, $value, false, "", "value", 521), g_l('weClass', '[language]'), "left", "defaultfont");
 		}
 	}
@@ -197,7 +197,7 @@ class we_docTypes extends we_class{
 	}
 
 	function formName(){
-		return $this->formInputField("", "DocType", "", 24, 520, 32);
+		return $this->formInputField('', 'DocType', '', 24, 520, 32);
 	}
 
 	function formDocTypeTemplates(){
@@ -248,7 +248,7 @@ class we_docTypes extends we_class{
 		$q = getDoctypeQuery($this->DB_WE);
 		$this->DB_WE->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' ' . $q);
 
-		while($this->DB_WE->next_record()) {
+		while($this->DB_WE->next_record()){
 			$v = $this->DB_WE->f("ID");
 			$t = $this->DB_WE->f("DocType");
 			if(in_array($t, $arrHide)){
@@ -262,14 +262,14 @@ class we_docTypes extends we_class{
 	function formDocTypes3($headline, $langkey, $derDT = 0){
 		$vals = array();
 		$q = getDoctypeQuery($this->DB_WE);
-		$this->DB_WE->query("SELECT ID,DocType FROM " . DOC_TYPES_TABLE . " $q");
+		$this->DB_WE->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' ' . $q);
 		$vals[0] = g_l('weClass', '[nodoctype]');
-		while($this->DB_WE->next_record()) {
+		while($this->DB_WE->next_record()){
 			$v = $this->DB_WE->f("ID");
 			$t = $this->DB_WE->f("DocType");
 			$vals[$v] = $t;
 		}
-		return we_html_tools::htmlFormElementTable($this->htmlSelect("we_" . $this->Name . "_LangDocType[" . $langkey . "]", $vals, 1, $derDT, false, ($langkey == $this->Language ? ' disabled="disabled" ' : '') . 'style="width:328px" onChange=""'), $headline, "left", "defaultfont");
+		return we_html_tools::htmlFormElementTable($this->htmlSelect('we_' . $this->Name . "_LangDocType[" . $langkey . "]", $vals, 1, $derDT, false, ($langkey == $this->Language ? ' disabled="disabled" ' : '') . 'style="width:328px" onChange=""'), $headline, "left", "defaultfont");
 	}
 
 	function formDirChooser($width = 100){
@@ -303,39 +303,37 @@ class we_docTypes extends we_class{
 	/* creates the Template PopupMenue */
 
 	function formTemplatePopup($width = 100){
-		$tlist = ($this->TemplateID != "" ? $this->TemplateID : '');
-		if($this->Templates != ""){
+		$tlist = (empty($this->TemplateID) ? '' : $this->TemplateID);
+		if(!empty($this->Templates)){
 			$tlist.=',' . $this->Templates;
 		}
 		$tlist = implode(',', array_unique(explode(',', $tlist)));
-		$sqlTeil = 'WHERE IsFolder=0 ' . ($tlist != '' ?
-				"AND ID IN($tlist)" :
-				'');
-		return $this->formSelect2("", $width, "TemplateID", TEMPLATES_TABLE, "ID", "Path", g_l('weClass', "[standard_template]"), $sqlTeil, 1, $this->TemplateID, false, "", "", "left", "defaultfont", "", "", array(0, g_l('weClass', "[none]")));
+		$sqlTeil = 'WHERE IsFolder=0 ' . (empty($tlist) ? '' : 'AND ID IN(' . $tlist . ')' );
+		return $this->formSelect2('', $width, 'TemplateID', TEMPLATES_TABLE, 'ID', 'Path', g_l('weClass', '[standard_template]'), $sqlTeil, 1, $this->TemplateID, false, "", "", "left", "defaultfont", "", "", array(0, g_l('weClass', "[none]")));
 	}
 
 	// return DocumentType HTML
-	function formDocTypeDropDown($selected = -1, $width = 200, $onChange = ""){
+	function formDocTypeDropDown($selected = -1, $width = 200, $onChange = ''){
 		$this->DocType = $selected;
 		return $this->formSelect2(
-				"", // element type
+				'', // element type
 				$width, // width
-				"DocType", // name
+				'DocType', // name
 				DOC_TYPES_TABLE, // table
-				"ID", // value in DB
-				"DocType", // txt in DB
-				g_l('weClass', "[doctype]"), // text
-				"ORDER BY DocType", // sql Part
+				'ID', // value in DB
+				'DocType', // txt in DB
+				g_l('weClass', '[doctype]'), // text
+				'ORDER BY DocType', // sql Part
 				1, // size
 				$selected, // selectedIndex
 				false, // multiply
 				$onChange, // on change part
-				"", // attribs
-				"left", // textalign
-				"defaultfont", // textclass
-				"", // pre code
-				"", // postcode
-				array(-1, g_l('weClass', "[nodoctype]")) // first element
+				'', // attribs
+				'left', // textalign
+				'defaultfont', // textclass
+				'', // pre code
+				'', // postcode
+				array(-1, g_l('weClass', '[nodoctype]')) // first element
 		);
 	}
 

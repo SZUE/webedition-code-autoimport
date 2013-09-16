@@ -244,7 +244,7 @@ if(isset($GLOBALS['we_doc'])){
 	}
 
 	function goTemplate(tid) {
-		if (tid) {
+		if (tid>0) {
 			top.weEditorFrameController.openDocument("<?php print TEMPLATES_TABLE ?>", tid, "text/weTmpl");
 		}
 	}

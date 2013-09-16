@@ -221,7 +221,7 @@ class we_webEditionDocument extends we_textContentDocument{
 
 	function formDocTypeTempl(){
 		$disable = (we_hasPerm('EDIT_DOCEXTENSION') ?
-				(($this->ContentType == "text/html" || $this->ContentType == "text/webedition") && $this->Published) :
+				(($this->ContentType == 'text/html' || $this->ContentType == 'text/webedition') && $this->Published) :
 				true);
 
 		return '
@@ -263,34 +263,31 @@ class we_webEditionDocument extends we_textContentDocument{
 		$table = TEMPLATES_TABLE;
 		$textname = 'we_' . $this->Name . '_TemplateName';
 		$idname = 'we_' . $this->Name . '_TemplateID';
-		$ueberschrift = g_l('weClass', "[template]");
-		$ueberschriftLink = (we_hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE ?
-				'<a href="javascript:goTemplate(document.we_form.elements[\'' . $idname . '\'].value)">' . g_l('weClass', "[template]") . '</a>' :
-				$ueberschrift);
+		$ueberschrift = g_l('weClass', '[template]');
 
 		if($this->TemplateID > 0){
-			$styleTemplateLabel = "display:none";
-			$styleTemplateLabelLink = "display:inline";
+			$styleTemplateLabel = 'display:none';
+			$styleTemplateLabelLink = 'display:inline';
 		} else {
-			$styleTemplateLabel = "display:inline";
-			$styleTemplateLabelLink = "display:none";
+			$styleTemplateLabel = 'display:inline';
+			$styleTemplateLabelLink = 'display:none';
 		}
-		$myid = $this->TemplateID ? $this->TemplateID : "";
-		$path = f("SELECT Path FROM " . $this->DB_WE->escape($table) . " WHERE ID=" . intval($myid), "Path", $this->DB_WE);
+		$myid = $this->TemplateID ? $this->TemplateID : '';
+		$path = f('SELECT Path FROM ' . $this->DB_WE->escape($table) . ' WHERE ID=' . intval($myid), 'Path', $this->DB_WE);
 		//javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','document.we_form.elements[\\'$idname\\'].value','document.we_form.elements[\\'$textname\\'].value','opener._EditorFrame.setEditorIsHot(true);;opener.top.we_cmd(\'reload_editpage\');','".session_id()."','','text/weTmpl',1)");
 		$wecmdenc1 = we_cmd_enc("document.we_form.elements['$idname'].value");
 		$wecmdenc2 = we_cmd_enc("document.we_form.elements['$textname'].value");
 		$wecmdenc3 = we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);opener.top.we_cmd('reload_editpage');");
 
-		$button = we_button::create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','','text/weTmpl',1)");
-		$yuiSuggest->setAcId("Template");
-		$yuiSuggest->setContentType("folder,text/weTmpl");
+		$button = we_button::create_button('select', "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','','text/weTmpl',1)");
+		$yuiSuggest->setAcId('Template');
+		$yuiSuggest->setContentType('folder,text/weTmpl');
 		$yuiSuggest->setInput($textname, $path);
-		$yuiSuggest->setLabel("<span id='TemplateLabel' style='" . $styleTemplateLabel . "'>" . $ueberschrift . "</span><span id='TemplateLabelLink' style='" . $styleTemplateLabelLink . "'>" . $ueberschriftLink . "</span>");
+		$yuiSuggest->setLabel("<span id='TemplateLabel' style='" . $styleTemplateLabel . "'>" . $ueberschrift . "</span><span id='TemplateLabelLink' style='" . $styleTemplateLabelLink . "'>" . $ueberschrift . "</span>");
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(1);
 		$yuiSuggest->setResult($idname, $myid);
-		$yuiSuggest->setSelector("Docselector");
+		$yuiSuggest->setSelector('Docselector');
 		$yuiSuggest->setTable($table);
 		$yuiSuggest->setWidth(388);
 		$yuiSuggest->setSelectButton($button);
@@ -303,8 +300,7 @@ class we_webEditionDocument extends we_textContentDocument{
 	// creates the Template PopupMenue
 	function formTemplatePopup($leftsize, $disable){
 		if($this->DocType){
-			$this->DB_WE->query('SELECT Templates FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . intval($this->DocType));
-			$templateFromDoctype = $this->DB_WE->getAll(true);
+			$templateFromDoctype = f('SELECT Templates FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . intval($this->DocType) . ' LIMIT 1', 'Templates', $this->DB_WE);
 		}
 		if($disable){
 			$myid = intval($this->TemplateID ? $this->TemplateID : 0);
@@ -316,10 +312,16 @@ class we_webEditionDocument extends we_textContentDocument{
 
 			if($this->DocType){
 				return (empty($templateFromDoctype) ?
-						$ueberschrift . we_html_element::htmlBr() . $path :
+						$this->htmlFormElementTable($path, g_l('weClass', '[template]'), 'left', 'defaultfont') :
 						$this->xformTemplatePopup(388));
 			}
-			return $ueberschrift . we_html_element::htmlBr() . $path;
+			$pop = (we_hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL ?
+					'<table border="0" cellpadding="0" cellspacing="0"><tr><td>' . $path . '</td><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' .
+					we_button::create_button('edit', 'javascript:goTemplate(' . $myid . ')') .
+					'</td></tr></table>' :
+					$path);
+
+			return $this->htmlFormElementTable($pop, g_l('weClass', '[template]'), 'left', 'defaultfont');
 		}
 
 		if($this->DocType){
@@ -360,12 +362,11 @@ class we_webEditionDocument extends we_textContentDocument{
 			$tlist = makeCSVFromArray($foo);
 		}
 		if($this->TemplateID){
-			$tlist = $tlist ? ($tlist .= ',' . $this->TemplateID) : $this->TemplateID;
+			$tlist = $tlist ? ($tlist . ',' . $this->TemplateID) : $this->TemplateID;
 			$TID = $this->TemplateID;
 		}
-		$ueberschrift = (we_hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL ?
-				'<a href="javascript:goTemplate(document.we_form.elements[\'' . $fieldname . '\'].options[document.we_form.elements[\'' . $fieldname . '\'].selectedIndex].value)">' . g_l('weClass', "[template]") . '</a>' :
-				g_l('weClass', '[template]'));
+
+		$openButton = (we_hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL ? we_button::create_button('edit', 'javascript:goTemplate(document.we_form.elements[\'' . $fieldname . '\'].options[document.we_form.elements[\'' . $fieldname . '\'].selectedIndex].value)') : '');
 
 		if(!empty($tlist)){
 			$foo = array();
@@ -376,10 +377,9 @@ class we_webEditionDocument extends we_textContentDocument{
 				}
 			}
 			$tlist = $foo ? implode(',', $foo) : -1;
-			return $this->formSelect4('', $width, 'TemplateID', TEMPLATES_TABLE, 'ID', 'Path', $ueberschrift, ' WHERE ID IN (' . $tlist . ') AND IsFolder=0 ORDER BY Path', 1, $TID, false, "we_cmd('template_changed');_EditorFrame.setEditorIsHot(true);", "", "left", "defaultfont", "", "", array(0, ""));
-		} else {
-			return $this->formSelect2('', $width, 'TemplateID', TEMPLATES_TABLE, 'ID', 'Path', $ueberschrift, 'WHERE IsFolder=0 ORDER BY Path ', 1, $this->TemplateID, false, "_EditorFrame.setEditorIsHot(true);");
+			return $this->formSelect4('', $width, 'TemplateID', TEMPLATES_TABLE, 'ID', 'Path', g_l('weClass', '[template]'), ' WHERE ID IN (' . $tlist . ') AND IsFolder=0 ORDER BY Path', 1, $TID, false, "we_cmd('template_changed');_EditorFrame.setEditorIsHot(true);", '', 'left', 'defaultfont', '', $openButton, array(0, ''));
 		}
+		return $this->formSelect2('', $width, 'TemplateID', TEMPLATES_TABLE, 'ID', 'Path', g_l('weClass', '[template]'), 'WHERE IsFolder=0 ORDER BY Path ', 1, $this->TemplateID, false, '_EditorFrame.setEditorIsHot(true);', '', 'left', 'defaultfont', '', $openButton);
 	}
 
 	/**
@@ -732,8 +732,8 @@ class we_webEditionDocument extends we_textContentDocument{
 		ob_start();
 		if(is_file($we_include)){
 			include($we_include);
-		}else{
-			t_e('File '.$we_include.' not found!');
+		} else {
+			t_e('File ' . $we_include . ' not found!');
 		}
 		$contents = ob_get_contents();
 		ob_end_clean();
