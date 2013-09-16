@@ -59,7 +59,7 @@ abstract class importFunctions{
 			if($conflict == 'rename'){
 				$z = 0;
 				$footext = $GLOBALS['we_doc']->Filename . "_" . $z . $GLOBALS['we_doc']->Extension;
-				while(f("SELECT ID FROM " . FILE_TABLE . " WHERE Text='" . $GLOBALS['DB_WE']->escape($footext) . "' AND ParentID=" . intval($GLOBALS['we_doc']->ParentID), "ID", $GLOBALS['DB_WE'])) {
+				while(f("SELECT ID FROM " . FILE_TABLE . " WHERE Text='" . $GLOBALS['DB_WE']->escape($footext) . "' AND ParentID=" . intval($GLOBALS['we_doc']->ParentID), "ID", $GLOBALS['DB_WE'])){
 					$z++;
 					$footext = $GLOBALS['we_doc']->Filename . "_" . $z . $GLOBALS['we_doc']->Extension;
 				}
@@ -69,7 +69,7 @@ abstract class importFunctions{
 				$GLOBALS['we_doc']->Path = $GLOBALS['we_doc']->getParentPath() . (($GLOBALS['we_doc']->getParentPath() != "/") ? "/" : "") . $GLOBALS['we_doc']->Text;
 			} else if($conflict == 'replace'){
 				$GLOBALS['we_doc']->initById($file_id);
-			} else{
+			} else {
 				return true;
 			}
 		}
@@ -93,7 +93,7 @@ abstract class importFunctions{
 		// PUBLISH OR EXIT
 		if($publish){
 			return $GLOBALS['we_doc']->we_publish();
-		} else{
+		} else {
 			return true;
 		}
 	}
@@ -134,13 +134,13 @@ abstract class importFunctions{
 				} else if($conflict == 'rename'){
 					$z = 0;
 					$footext = $object->Text . "_" . $z;
-					while(f("SELECT ID FROM " . OBJECT_FILES_TABLE . " WHERE Text='" . $GLOBALS['DB_WE']->escape($footext) . "' AND ParentID=" . intval($object->ParentID), "ID", $GLOBALS['DB_WE'])) {
+					while(f("SELECT ID FROM " . OBJECT_FILES_TABLE . " WHERE Text='" . $GLOBALS['DB_WE']->escape($footext) . "' AND ParentID=" . intval($object->ParentID), "ID", $GLOBALS['DB_WE'])){
 						$z++;
 						$footext = $object->Text . "_" . $z;
 					}
 					$object->Text = $footext;
 					$object->Path = $object->getParentPath() . (($object->getParentPath() != "/") ? "/" : "") . $object->Text;
-				} else{
+				} else {
 					return true;
 				}
 			}
@@ -157,7 +157,7 @@ abstract class importFunctions{
 		// PUBLISH OR EXIT
 		if($publish){
 			return $object->we_publish();
-		} else{
+		} else {
 			return true;
 		}
 	}
@@ -168,12 +168,12 @@ abstract class importFunctions{
 	 * @desc corrects the filename if it contains invalid chars
 	 */
 	static function correctFilename($filename, $allowPath = false){
-		$filename = str_replace(array(' ', 'ä', 'ö', 'ü', 'Ä', 'Ö', 'Ü', 'ß'), array('-', 'ae', 'oe', 'ue', 'Ae', 'Oe', 'Ue', 'ss'), $filename);
+		$filename = strtr($filename, array(' ' => '-', 'ä' => 'ae', 'ö' => 'oe', 'ü' => 'ue', 'Ä' => 'Ae', 'Ö' => 'Oe', 'Ü' => 'Ue', 'ß' => 'ss'));
 		$filename = preg_replace('%[^a-z0-9\._+-' . ($allowPath ? '/' : '') . ']%i', '', $filename);
-		if(strlen($filename) > 100){
+		if(!$allowPath && strlen($filename) > 100){
 			$filename = substr($filename, 0, 100);
 		}
-		return strlen($filename) ? trim($filename, '/') : "newfile";
+		return empty($filename) ? 'newfile' : trim($filename, '/');
 	}
 
 	/**
@@ -258,7 +258,7 @@ abstract class importFunctions{
 			}
 
 			return mktime(
-					$outarray["hour"], $outarray["minute"], $outarray["second"], $outarray["month"], $outarray["day"], $outarray["year"]
+				$outarray["hour"], $outarray["minute"], $outarray["second"], $outarray["month"], $outarray["day"], $outarray["year"]
 			);
 		}
 		return 0;

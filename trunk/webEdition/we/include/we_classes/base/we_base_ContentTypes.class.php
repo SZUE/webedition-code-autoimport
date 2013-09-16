@@ -36,7 +36,8 @@ class we_base_ContentTypes{
 		$this->ct = array(
 // Content Type for Images
 			'image/*' => array(
-				'Extension' => array('.gif', '.jpg', '.jpeg', '.png','.svg','.svgz'),
+				'Extension' => array('.gif', '.jpg', '.jpeg', '.png', '.svg', '.svgz'),
+				'ExtensionIsFilename' => false,
 				'Permission' => 'NEW_GRAFIK',
 				'DefaultCode' => '',
 				'IsRealFile' => true,
@@ -45,6 +46,7 @@ class we_base_ContentTypes{
 			),
 			'text/xml' => array(//this entry must stay before text/html, text/we because filetypes are not distinct
 				'Extension' => '.xml',
+				'ExtensionIsFilename' => false,
 				'Permission' => 'NEW_TEXT',
 				'DefaultCode' => '<?xml version="1.0" encoding="' . $charset . '" ?>',
 				'IsRealFile' => true,
@@ -53,6 +55,7 @@ class we_base_ContentTypes{
 			),
 			'text/html' => array(
 				'Extension' => array('.html', '.htm', '.shtm', '.shtml', '.stm', '.php', '.jsp', '.asp', '.pl', '.cgi', '.xml', '.xsl'),
+				'ExtensionIsFilename' => false,
 				'Permission' => 'NEW_HTML',
 				'DefaultCode' => '<html>
 	<head>
@@ -68,6 +71,7 @@ class we_base_ContentTypes{
 			),
 			'text/webedition' => array(
 				'Extension' => array('.html', '.htm', '.shtm', '.shtml', '.stm', '.php', '.jsp', '.asp', '.pl', '.cgi', '.xml'),
+				'ExtensionIsFilename' => false,
 				'Permission' => 'NEW_WEBEDITIONSITE',
 				'DefaultCode' => '',
 				'IsWebEditionFile' => true,
@@ -76,6 +80,7 @@ class we_base_ContentTypes{
 			),
 			'text/weTmpl' => array(
 				'Extension' => '.tmpl',
+				'ExtensionIsFilename' => false,
 				'Permission' => 'NEW_TEMPLATE',
 				'DefaultCode' => '<!DOCTYPE HTML>
 <html dir="ltr" lang="<we:pageLanguage type="language" doc="top" />">
@@ -102,6 +107,7 @@ class we_base_ContentTypes{
 			),
 			'text/js' => array(
 				'Extension' => '.js',
+				'ExtensionIsFilename' => false,
 				'Permission' => 'NEW_JS',
 				'DefaultCode' => '',
 				'IsRealFile' => true,
@@ -110,6 +116,7 @@ class we_base_ContentTypes{
 			),
 			'text/css' => array(
 				'Extension' => array('.css', '.less', '.scss', '.sass'),
+				'ExtensionIsFilename' => false,
 				'Permission' => 'NEW_CSS',
 				'DefaultCode' => '',
 				'IsRealFile' => true,
@@ -117,7 +124,8 @@ class we_base_ContentTypes{
 				'Icon' => 'css.gif',
 			),
 			'text/htaccess' => array(
-				'Extension' => '',
+				'Extension' => '.htaccess',
+				'ExtensionIsFilename' => true,
 				'Permission' => 'NEW_HTACCESS',
 				'DefaultCode' => '',
 				'IsRealFile' => true,
@@ -126,6 +134,7 @@ class we_base_ContentTypes{
 			),
 			'text/plain' => array(
 				'Extension' => '.txt',
+				'ExtensionIsFilename' => false,
 				'Permission' => 'NEW_TEXT',
 				'DefaultCode' => '',
 				'IsRealFile' => true,
@@ -134,6 +143,7 @@ class we_base_ContentTypes{
 			),
 			'folder' => array(
 				'Extension' => '',
+				'ExtensionIsFilename' => false,
 				'Permission' => '',
 				'DefaultCode' => '',
 				'IsRealFile' => false,
@@ -142,6 +152,7 @@ class we_base_ContentTypes{
 			),
 			'class_folder' => array(
 				'Extension' => '',
+				'ExtensionIsFilename' => false,
 				'Permission' => '',
 				'DefaultCode' => '',
 				'IsRealFile' => false,
@@ -150,6 +161,7 @@ class we_base_ContentTypes{
 			),
 			'application/x-shockwave-flash' => array(
 				'Extension' => '.swf',
+				'ExtensionIsFilename' => false,
 				'Permission' => 'NEW_FLASH',
 				'DefaultCode' => '',
 				'IsRealFile' => true,
@@ -158,6 +170,7 @@ class we_base_ContentTypes{
 			),
 			'video/quicktime' => array(
 				'Extension' => array('.mov', '.moov', '.qt'),
+				'ExtensionIsFilename' => false,
 				'Permission' => 'NEW_QUICKTIME',
 				'DefaultCode' => '',
 				'IsRealFile' => true,
@@ -166,6 +179,7 @@ class we_base_ContentTypes{
 			),
 			'application/*' => array(
 				'Extension' => array('.doc', '.xls', '.ppt', '.zip', '.sit', '.bin', '.hqx', '.exe', '.pdf'),
+				'ExtensionIsFilename' => false,
 				'Permission' => 'NEW_SONSTIGE',
 				'DefaultCode' => '',
 				'IsRealFile' => true,
@@ -174,6 +188,7 @@ class we_base_ContentTypes{
 			),
 			'object' => array(
 				'Extension' => '',
+				'ExtensionIsFilename' => false,
 				'Permission' => '',
 				'DefaultCode' => '',
 				'IsRealFile' => false,
@@ -182,6 +197,7 @@ class we_base_ContentTypes{
 			),
 			'objectFile' => array(
 				'Extension' => '',
+				'ExtensionIsFilename' => false,
 				'Permission' => '',
 				'DefaultCode' => '',
 				'IsRealFile' => false,
@@ -235,13 +251,13 @@ class we_base_ContentTypes{
 				default:
 					return 'prog.gif';
 			}
-		} else{
+		} else {
 			return isset($this->ct[$name]) ? $this->ct[$name]['Icon'] : $default;
 		}
 	}
 
 	public function getExtension($name){
-		return isset($this->ct[$name]) ? $this->ct[$name]['Extension'] : '';
+		return isset($this->ct[$name]) && !$this->ct[$name] ['ExtensionIsFilename'] ? $this->ct[$name]['Extension'] : '';
 	}
 
 	public function isWEFile($name){

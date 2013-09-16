@@ -30,5 +30,5 @@ if(!isset($_REQUEST['csid'])){
 
 	$import_object = new we_import_files();
 
-	print $import_object->getHTML();
+	echo $import_object->getHTML();
 }
