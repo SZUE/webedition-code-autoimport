@@ -21,9 +21,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-
 ?>
 	case "browse_users":
             <?php if(we_hasPerm("NEW_USER") || we_hasPerm("NEW_GROUP") || we_hasPerm("SAVE_USER")|| we_hasPerm("SAVE_GROUP") || we_hasPerm("DELETE_USER") || we_hasPerm("DELETE_GROUP")){?>
