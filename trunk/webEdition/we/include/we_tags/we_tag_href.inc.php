@@ -148,7 +148,7 @@ function we_tag_href($attribs){
 		$yuiSuggest->setResult($intID_elem_Name, $intID);
 		$yuiSuggest->setSelector('Docselector');
 		$yuiSuggest->setTable(FILE_TABLE);
-		$yuiSuggest->setWidth(150);
+		$yuiSuggest->setWidth(we_base_browserDetect::isFF() ? 136 : 151);
 	}
 
 	return
