@@ -214,6 +214,7 @@ $GLOBALS['configs'] = array(
 		'editorTooltipFont' => array(null),
 		'editorTooltipFontname' => array(null),
 		'editorTooltipFontsize' => array(null),
+		'editorWrap' => array(0),
 		'message_reporting' => array(7),
 		'xhtml_show_wrong' => array(null),
 		'xhtml_show_wrong_text' => array(null),

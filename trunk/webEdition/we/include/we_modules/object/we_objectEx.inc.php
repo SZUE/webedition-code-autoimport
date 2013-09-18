@@ -87,7 +87,7 @@ class we_objectEx extends we_object{
 			$this->DB_WE->query('CREATE TABLE ' . $ctable . ' (' . $q . ',' . implode(',', $indexe) . ') ENGINE = MYISAM ' . we_database_base::getCharsetCollation());
 
 			//dummy eintrag schreiben
-			$this->DB_WE->query('INSERT INTO ' . $ctable . ' (OF_ID) VALUES (0)');
+			$this->DB_WE->query('INSERT INTO ' . $ctable . ' SET OF_ID=0');
 
 
 			// folder in object schreiben
