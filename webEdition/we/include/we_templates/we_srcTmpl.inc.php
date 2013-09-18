@@ -38,7 +38,7 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 print STYLESHEET;
 
 $_useJavaEditor = ($_SESSION['prefs']['editorMode'] == 'java');
-if(isset($_SESSION['weS']["we_wrapcheck"])){
+if(!isset($_SESSION['weS']['we_wrapcheck'])){
 	$_SESSION['weS']['we_wrapcheck'] = $_SESSION['prefs']['editorWrap'];
 }
 ?>
