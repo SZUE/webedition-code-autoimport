@@ -177,8 +177,8 @@ switch($_SESSION['prefs']['editorMode']){
 					editor = CodeMirror.fromTextArea(document.getElementById("editarea"), CMoptions);
 					sizeEditor();
 		<?php if($_SESSION['prefs']['editorHighlightCurrentLine']){ ?>
-						//highlight current line
 						hlLine = editor.addLineClass(0, "background", "activeline");
+						//highlight current line
 						editor.on("cursorActivity", function() {
 							var cur = editor.getLineHandle(editor.getCursor().line);
 							if (cur != hlLine) {
@@ -186,6 +186,9 @@ switch($_SESSION['prefs']['editorMode']){
 								hlLine = editor.addLineClass(cur, "background", "activeline");
 							}
 						});
+		<?php }else{ //FIX for CM which doesn't display lines beyond 27 if this line is missing.... ?>
+						hlLine = editor.addLineClass(0, "background", "");
+		
 		<?php } ?>
 					editor.on("change", function() {
 						//this wil save content from CodeMirror2 to our original <textarea>.
