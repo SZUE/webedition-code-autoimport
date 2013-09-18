@@ -106,8 +106,8 @@ class we_textDocument extends we_document{
 					case '.css':
 						break;
 					case '.less':
-						include_once(WE_LIB_PATH . 'additional/lessphp/lessc.inc.php');
-						$less = new lessc;
+						$less = new we_helpers_lessc();
+						$less->setCurrentPath($this->getParentPath());
 						$less->setFormatter('classic');
 						try{
 							$doc = $less->compile($doc);
