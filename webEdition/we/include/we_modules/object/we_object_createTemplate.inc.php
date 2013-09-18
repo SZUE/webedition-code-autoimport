@@ -74,7 +74,7 @@ function getMultiObjectTags($name){
 			}
 		}
 		if(!isset($temp)){
-			return "";
+			return '';
 		}
 		$id = $_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"][$temp . "class"]["dat"];
 	}
@@ -95,6 +95,7 @@ function getTemplTag($type, $name, $isField = false){
 	switch($type){
 		case 'meta':
 			return $isField ? '<we:field type="select" name="' . $name . '">' : '<we:var type="select" name="' . $name . '">';
+		default:
 		case 'input':
 		case 'text':
 		case 'int':
