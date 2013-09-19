@@ -134,7 +134,7 @@ abstract class permissionhandler{
 
 	static function checkIfRestrictUserIsAllowed($id, $table, $DB_WE){
 		$row = getHash('SELECT CreatorID,RestrictOwners,Owners,OwnersReadOnly FROM ' . $DB_WE->escape($table) . ' WHERE ID=' . intval($id), $DB_WE);
-		if((isset($row['CreatorID']) && $_SESSION['user']['ID'] == $row['CreatorID']) || $_SESSION['perms']['ADMINISTRATOR']){ //	Owner or admin
+		if((isset($row['CreatorID']) && $_SESSION['user']['ID'] == $row['CreatorID']) || permissionhandler::hasPerm('ADMINISTRATOR')){ //	Owner or admin
 			return true;
 		}
 
