@@ -390,8 +390,8 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 					if($thumbObj->isOriginal()){
 //						$create = false;
 					} elseif((!$thumbObj->isOriginal()) && file_exists($_SERVER['DOCUMENT_ROOT'] . $img_path) &&
-						// open a file
-						intval(filectime($_SERVER['DOCUMENT_ROOT'] . $img_path)) > intval($thumbObj->getDate())){
+							// open a file
+							intval(filectime($_SERVER['DOCUMENT_ROOT'] . $img_path)) > intval($thumbObj->getDate())){
 //						$create = false;
 					} else {
 						$thumbObj->createThumb();
@@ -401,8 +401,10 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 //					$this->setElement('width', $thumbObj->getOutputWidth(), 'attrib');
 //					$this->setElement('height', $thumbObj->getOutputHeight(), 'attrib');
 					//no need to set width+height, since img has its scale
-					unset($this->elements['width']);
-					unset($this->elements['height']);
+					if(!isset($attribs['only'])){//leave only if we want to knoe the size
+						unset($this->elements['width']);
+						unset($this->elements['height']);
+					}
 				}
 			}
 
@@ -415,11 +417,11 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 			srand((double) microtime() * 1000000);
 			$randval = rand();
 			$src = $dyn ?
-				WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=show_binaryDoc&we_cmd[1]=' .
-				$this->ContentType . '&we_cmd[2]=' .
-				$GLOBALS['we_transaction'] . '&rand=' . $randval :
-				($this->getElement('LinkType') == we_base_link::TYPE_INT ? (we_isHttps() ? '' : BASE_IMG) : '') .
-				$img_path;
+					WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=show_binaryDoc&we_cmd[1]=' .
+					$this->ContentType . '&we_cmd[2]=' .
+					$GLOBALS['we_transaction'] . '&rand=' . $randval :
+					($this->getElement('LinkType') == we_base_link::TYPE_INT ? (we_isHttps() ? '' : BASE_IMG) : '') .
+					$img_path;
 
 			if(isset($this->elements['sizingrel'])){
 				$this->setElement('width', round($this->elements['width']['dat'] * $this->elements['sizingrel']['dat']), 'attrib');
@@ -520,8 +522,8 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 				$this->html = ( trim($ro_script) . getHtmlTag('a', $_aAtts, getHtmlTag('img', $attribs)) );
 			} else {
 				$this->html = (defined('WE_EDIT_IMAGE')) ?
-					we_image_crop::getJS() . we_image_crop::getCSS() . we_image_crop::getCrop($attribs) :
-					getHtmlTag('img', $attribs);
+						we_image_crop::getJS() . we_image_crop::getCSS() . we_image_crop::getCrop($attribs) :
+						getHtmlTag('img', $attribs);
 			}
 		} else {
 			if($pathOnly){
@@ -588,8 +590,8 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 		$_content = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0), 12, 5);
 
 		// Row 1
-		$_content->setCol(0, 0, null, $this->formInputInfo2(155, 'width', 10, 'attrib', 'onChange="_EditorFrame.setEditorIsHot(true);"', "origwidth"));
-		$_content->setCol(0, 2, null, $this->formInputInfo2(155, 'height', 10, 'attrib', 'onChange="_EditorFrame.setEditorIsHot(true);"', "origheight"));
+		$_content->setCol(0, 0, null, $this->formInputInfo2(155, 'width', 10, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"', "origwidth"));
+		$_content->setCol(0, 2, null, $this->formInputInfo2(155, 'height', 10, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"', "origheight"));
 		$_content->setCol(0, 4, null, $this->formInput2(155, 'border', 10, 'attrib', 'onChange="_EditorFrame.setEditorIsHot(true);"'));
 
 		$_content->setCol(0, 1, null, we_html_tools::getPixel(18, 1));
@@ -696,9 +698,9 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 
 	function getThumbnail(){
 		return ($this->getElement('data') && is_readable($this->getElement('data')) ? ($this->isSvg() ?
-					'<svg id="' . weFile::getUniqueId() . '" height="150" width="150" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" ><image x="0" y="0" height="150" width="150"  xlink:href="' . str_replace($_SERVER['DOCUMENT_ROOT'], '', $this->getElement('data')) . '" /></svg>' :
-					'<img src="' . WEBEDITION_DIR . 'thumbnail.php?id=' . $this->ID . '&size=150&path=' . str_replace($_SERVER['DOCUMENT_ROOT'], '', $this->getElement('data')) . '&extension=' . $this->Extension . '&size2=200" border="0" /></a>' ) :
-				$this->getHtml());
+								'<svg id="' . weFile::getUniqueId() . '" height="150" width="150" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" ><image x="0" y="0" height="150" width="150"  xlink:href="' . str_replace($_SERVER['DOCUMENT_ROOT'], '', $this->getElement('data')) . '" /></svg>' :
+								'<img src="' . WEBEDITION_DIR . 'thumbnail.php?id=' . $this->ID . '&size=150&path=' . str_replace($_SERVER['DOCUMENT_ROOT'], '', $this->getElement('data')) . '&extension=' . $this->Extension . '&size2=200" border="0" /></a>' ) :
+						$this->getHtml());
 	}
 
 	protected function getMetaDataReader($force = false){
@@ -793,7 +795,7 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 		$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['$extname'].value");
 		$wecmdenc4 = we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);opener.document.we_form.elements['we_" . $this->Name . "_txt[LinkType]'][1].checked=true;");
 		$butExt = permissionhandler::hasPerm('CAN_SELECT_EXTERNAL_FILES') ?
-			we_button::create_button('select', "javascript:we_cmd('browse_server','" . $wecmdenc1 . "','',document.forms['we_form'].elements['$extname'].value,'" . $wecmdenc4 . "')") : "";
+				we_button::create_button('select', "javascript:we_cmd('browse_server','" . $wecmdenc1 . "','',document.forms['we_form'].elements['$extname'].value,'" . $wecmdenc4 . "')") : "";
 
 		if(defined('OBJECT_TABLE')){
 			$objidname = 'we_' . $this->Name . '_txt[ObjID]';
@@ -922,7 +924,7 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 	<tr><td colspan="2">' . $this->formInputField('txt', 'Keywords', g_l('weClass', '[Keywords]'), 40, 508, '', "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td></tr>
 	<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
 </table>' .
-			($this->ContentType == 'image/*' ? $this->formCharset(true) : '');
+				($this->ContentType == 'image/*' ? $this->formCharset(true) : '');
 	}
 
 	static function checkAndPrepare($formname, $key = 'we_document'){
@@ -956,7 +958,7 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 								}
 
 								$tmp_Filename = $imgName . '_' . weFile::getUniqueId() . '_' .
-									preg_replace('/[^A-Za-z0-9._-]/', '', $_FILES['we_ui_' . $formname]['name'][$imgName]);
+										preg_replace('/[^A-Za-z0-9._-]/', '', $_FILES['we_ui_' . $formname]['name'][$imgName]);
 
 								if($imgId){
 									$_SESSION[$_imgDataId]['id'] = $imgId;
@@ -964,13 +966,13 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 
 								$_SESSION[$_imgDataId]['fileName'] = preg_replace('#^(.+)\..+$#', '\\1', $tmp_Filename);
 								$_SESSION[$_imgDataId]['extension'] = (strpos($tmp_Filename, '.') > 0) ?
-									preg_replace('#^.+(\..+)$#', '\\1', $tmp_Filename) : '';
+										preg_replace('#^.+(\..+)$#', '\\1', $tmp_Filename) : '';
 								$_SESSION[$_imgDataId]['text'] = $_SESSION[$_imgDataId]['fileName'] . $_SESSION[$_imgDataId]['extension'];
 
 								//image needs to be scaled
 								if((isset(
-										$_SESSION[$_imgDataId]['width']) && $_SESSION[$_imgDataId]['width']) || (isset(
-										$_SESSION[$_imgDataId]['height']) && $_SESSION[$_imgDataId]['height'])){
+												$_SESSION[$_imgDataId]['width']) && $_SESSION[$_imgDataId]['width']) || (isset(
+												$_SESSION[$_imgDataId]['height']) && $_SESSION[$_imgDataId]['height'])){
 									$imageData = weFile::load($_SESSION[$_imgDataId]['serverPath']);
 									$thumb = new we_thumbnail();
 									$thumb->init('dummy', $_SESSION[$_imgDataId]['width'], $_SESSION[$_imgDataId]['height'], $_SESSION[$_imgDataId]['keepratio'], $_SESSION[$_imgDataId]['maximize'], false, false, '', 'dummy', 0, '', '', $_SESSION[$_imgDataId]['extension'], $we_size[0], $we_size[1], $imageData, '', $_SESSION[$_imgDataId]['quality']);

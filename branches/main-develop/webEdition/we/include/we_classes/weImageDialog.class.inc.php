@@ -408,7 +408,7 @@ class weImageDialog extends weDialog{
 	}
 
 	function cmdFunction($args){
-		if (isset($this->we_cmd[0])){t_e("mal wieder called", $args);
+		if (isset($this->we_cmd[0])){
 			switch($this->we_cmd[0]){
 				case 'update_editor':
 					//fill in all fields

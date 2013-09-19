@@ -606,11 +606,11 @@ abstract class we_database_base{
 // result
 		if($table){
 			if(!$this->query('SELECT * FROM `' . $table . '` LIMIT 1')){
-				$this->halt("Metadata query failed.");
+				$this->halt('Metadata query failed.');
 			}
 		} else {
 			if(!($this->Query_ID)){
-				$this->halt("No query specified.");
+				$this->halt('No query specified.');
 			}
 		}
 		$count = $this->num_fields();

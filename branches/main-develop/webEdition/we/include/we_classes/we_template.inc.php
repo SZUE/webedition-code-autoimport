@@ -297,7 +297,7 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 		} else if(!$this->hasStartAndEndTag('html', $code) && !$this->hasStartAndEndTag('head', $code) && !$this->hasStartAndEndTag('body', $code)){
 			$code = '<?php if((isset($GLOBALS[\'we_editmode\']) && $GLOBALS[\'we_editmode\']) && (!isset($GLOBALS[\'WE_HTML_HEAD_BODY\']) || !$GLOBALS[\'WE_HTML_HEAD_BODY\'] )){  $GLOBALS["WE_HTML_HEAD_BODY"] = true; ?>' . we_html_element::htmlDocType() . '<html><head><title>WE</title>' . self::TemplateHead . '</head>
 <body <?php if(isset($GLOBALS[\'we_editmode\']) && $GLOBALS[\'we_editmode\']) print \' onunload="doUnload()"\'; ?>><?php } ?>
-' . self::TemplatePreContent  . $code . self::TemplatePostContent . '<?php if((isset($GLOBALS[\'we_editmode\']) && $GLOBALS[\'we_editmode\'])&&($GLOBALS[\'we_templatePreContent\']==0) ){ ?>' . '
+' . self::TemplatePreContent . $code . self::TemplatePostContent . '<?php if((isset($GLOBALS[\'we_editmode\']) && $GLOBALS[\'we_editmode\'])&&($GLOBALS[\'we_templatePreContent\']==0) ){ ?>' . '
 </body></html><?php }?>';
 		} else {
 			return parseError(g_l('parser', '[html_tags]')) . '<?php exit();?><!-- current parsed template code for debugging -->' . $code;
@@ -520,7 +520,8 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 		$wecmdenc3 = we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);if(currentID==$this->ID){" . we_message_reporting::getShowMessageCall($alerttext, we_message_reporting::WE_MESSAGE_ERROR) . "opener.document.we_form.elements['$idname'].value='';opener.document.we_form.elements['$textname'].value='';}");
 
 		$button = we_button::create_button('select', "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','','text/weTmpl',1)");
-		$trashButton = we_button::create_button('image:btn_function_trash', "javascript:document.we_form.elements['$idname'].value='';document.we_form.elements['$textname'].value='';YAHOO.autocoml.selectorSetValid('yuiAcInputMasterTemplate');_EditorFrame.setEditorIsHot(true);", true, 27, 22);
+		$openButton = we_button::create_button( 'edit', 'javascript:goTemplate(document.we_form.elements[\'we_' . $GLOBALS['we_doc']->Name . '_MasterTemplateID\'].value)');
+		$trashButton = we_button::create_button(we_button::WE_IMAGE_BUTTON_IDENTIFY . 'btn_function_trash', "javascript:document.we_form.elements['$idname'].value='';document.we_form.elements['$textname'].value='';YAHOO.autocoml.selectorSetValid('yuiAcInputMasterTemplate');_EditorFrame.setEditorIsHot(true);", true, 27, 22);
 
 		$yuiSuggest->setAcId('MasterTemplate');
 		$yuiSuggest->setContentType('folder,text/weTmpl');
@@ -528,12 +529,12 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 		$yuiSuggest->setLabel('');
 		$yuiSuggest->setMayBeEmpty(1);
 		$yuiSuggest->setResult($idname, $myid);
-		$yuiSuggest->setSelector("Docselector");
+		$yuiSuggest->setSelector('Docselector');
 		$yuiSuggest->setTable($table);
 		$yuiSuggest->setWidth(388);
 		$yuiSuggest->setSelectButton($button);
 		$yuiSuggest->setTrashButton($trashButton);
-
+		$yuiSuggest->setOpenButton($openButton);
 		return $yuiSuggest->getHTML();
 	}
 

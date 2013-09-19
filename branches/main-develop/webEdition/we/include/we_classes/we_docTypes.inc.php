@@ -197,7 +197,7 @@ class we_docTypes extends we_class{
 	}
 
 	function formName(){
-		return $this->formInputField("", "DocType", "", 24, 520, 32);
+		return $this->formInputField('', 'DocType', '', 24, 520, 32);
 	}
 
 	function formDocTypeTemplates(){
@@ -267,7 +267,7 @@ class we_docTypes extends we_class{
 			$t = $this->DB_WE->f("DocType");
 			$vals[$v] = $t;
 		}
-		return we_html_tools::htmlFormElementTable($this->htmlSelect("we_" . $this->Name . "_LangDocType[" . $langkey . "]", $vals, 1, $derDT, false, ($langkey == $this->Language ? ' disabled="disabled" ' : '') . 'style="width:328px" onChange=""'), $headline, "left", "defaultfont");
+		return we_html_tools::htmlFormElementTable($this->htmlSelect('we_' . $this->Name . "_LangDocType[" . $langkey . "]", $vals, 1, $derDT, false, ($langkey == $this->Language ? ' disabled="disabled" ' : '') . 'style="width:328px" onChange=""'), $headline, "left", "defaultfont");
 	}
 
 	function formDirChooser($width = 100){
@@ -301,39 +301,37 @@ class we_docTypes extends we_class{
 	/* creates the Template PopupMenue */
 
 	function formTemplatePopup($width = 100){
-		$tlist = ($this->TemplateID != "" ? $this->TemplateID : '');
-		if($this->Templates != ""){
+		$tlist = (empty($this->TemplateID) ? '' : $this->TemplateID);
+		if(!empty($this->Templates)){
 			$tlist.=',' . $this->Templates;
 		}
 		$tlist = implode(',', array_unique(explode(',', $tlist)));
-		$sqlTeil = 'WHERE IsFolder=0 ' . ($tlist != '' ?
-				"AND ID IN($tlist)" :
-				'');
-		return $this->formSelect2("", $width, "TemplateID", TEMPLATES_TABLE, "ID", "Path", g_l('weClass', "[standard_template]"), $sqlTeil, 1, $this->TemplateID, false, "", "", "left", "defaultfont", "", "", array(0, g_l('weClass', "[none]")));
+		$sqlTeil = 'WHERE IsFolder=0 ' . (empty($tlist) ? '' : 'AND ID IN(' . $tlist . ')' );
+		return $this->formSelect2('', $width, 'TemplateID', TEMPLATES_TABLE, 'ID', 'Path', g_l('weClass', '[standard_template]'), $sqlTeil, 1, $this->TemplateID, false, "", "", "left", "defaultfont", "", "", array(0, g_l('weClass', "[none]")));
 	}
 
 	// return DocumentType HTML
-	function formDocTypeDropDown($selected = -1, $width = 200, $onChange = ""){
+	function formDocTypeDropDown($selected = -1, $width = 200, $onChange = ''){
 		$this->DocType = $selected;
 		return $this->formSelect2(
-				"", // element type
+				'', // element type
 				$width, // width
-				"DocType", // name
+				'DocType', // name
 				DOC_TYPES_TABLE, // table
-				"ID", // value in DB
-				"DocType", // txt in DB
-				g_l('weClass', "[doctype]"), // text
-				"ORDER BY DocType", // sql Part
+				'ID', // value in DB
+				'DocType', // txt in DB
+				g_l('weClass', '[doctype]'), // text
+				'ORDER BY DocType', // sql Part
 				1, // size
 				$selected, // selectedIndex
 				false, // multiply
 				$onChange, // on change part
-				"", // attribs
-				"left", // textalign
-				"defaultfont", // textclass
-				"", // pre code
-				"", // postcode
-				array(-1, g_l('weClass', "[nodoctype]")) // first element
+				'', // attribs
+				'left', // textalign
+				'defaultfont', // textclass
+				'', // pre code
+				'', // postcode
+				array(-1, g_l('weClass', '[nodoctype]')) // first element
 		);
 	}
 

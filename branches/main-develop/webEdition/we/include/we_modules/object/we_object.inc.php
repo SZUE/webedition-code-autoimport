@@ -273,11 +273,8 @@ class we_object extends we_document{
 
 			$ctable = OBJECT_X_TABLE . ($this->ID);
 
-			// Charset and Collation
-			$charset_collation = we_database_base::getCharsetCollation();
-
 			$this->DB_WE->delTable($ctable);
-			$this->DB_WE->query('CREATE TABLE ' . $ctable . ' (' . implode(',', $q) . ', ' . implode(',', $indexe) . ') ENGINE = MYISAM ' . $charset_collation);
+			$this->DB_WE->query('CREATE TABLE ' . $ctable . ' (' . implode(',', $q) . ', ' . implode(',', $indexe) . ') ENGINE = MYISAM ' . we_database_base::getCharsetCollation());
 
 			//dummy eintrag schreiben
 			$this->DB_WE->query('INSERT INTO ' . $ctable . ' (OF_ID) VALUES (0)');

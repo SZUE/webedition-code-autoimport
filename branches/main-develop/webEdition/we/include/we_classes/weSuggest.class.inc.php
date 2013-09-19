@@ -881,7 +881,7 @@ function doDebugResizeH(){
 					"	$layer {position:relative;margin-bottom:1.5em;width:100%;}/* set width of widget here*/" .
 					$layerZ :
 					'') . "
-	$inputfields {position:absolute;width:100%; margin-top:1px} /* abs for ie quirks */
+	$inputfields {position:absolute;width:100%; margin-top:-2px} /* abs for ie quirks */
 	$containerfields {position:absolute;top:30px !important;}
 	$yuiAcContent
 	$ysearchquery {position:absolute;right:10px;color:#808080;z-index:10;}
