@@ -829,7 +829,7 @@ class we_objectFile extends we_document{
 
 			$realName = $field['type'] . '_' . $field['name'];
 			$edMerk = $editable;
-			if(!((!$dv[$realName]['users']) || $_SESSION['perms']['ADMINISTRATOR'] || we_users_util::isUserInUsers($_SESSION['user']['ID'], $dv[$realName]['users']))){
+			if(!((!$dv[$realName]['users']) || we_hasPerm('ADMINISTRATOR') || we_users_util::isUserInUsers($_SESSION['user']['ID'], $dv[$realName]['users']))){
 				$editable = false;
 			}
 
@@ -1564,7 +1564,7 @@ class we_objectFile extends we_document{
 	}
 
 	function canMakeNew(){
-		if($_SESSION['perms']['ADMINISTRATOR']){
+		if(we_hasPerm('ADMINISTRATOR')){
 			return true;
 		}
 		$ac = $this->getAllowedClasses();
@@ -1577,7 +1577,7 @@ class we_objectFile extends we_document{
 		}
 		$userWs = get_ws(FILE_TABLE);
 // wenn User Admin ist oder keine Workspaces zugeteilt wurden
-		if($_SESSION['perms']['ADMINISTRATOR'] || ((!$userWs) && $all)){
+		if(we_hasPerm('ADMINISTRATOR') || ((!$userWs) && $all)){
 // alle ws, welche in Klasse definiert wurden und deren Unterordner zur?ckgeben
 //$foo = makeArrayFromCSV($ClassWs);
 			$paths = id_to_path($ClassWs, FILE_TABLE, $this->DB_WE, false, true);
@@ -2894,7 +2894,7 @@ class we_objectFile extends we_document{
 
 	function userCanSave(){
 
-		if($_SESSION['perms']['ADMINISTRATOR']){
+		if(we_hasPerm('ADMINISTRATOR')){
 			return true;
 		}
 		if(!we_hasPerm('CAN_SEE_OBJECTFILES')){
@@ -2918,7 +2918,7 @@ class we_objectFile extends we_document{
 	 * @desc	checks if the user has the right to see an objectfile
 	 */
 	function userHasPerms(){
-		if($_SESSION['perms']['ADMINISTRATOR']){
+		if(we_hasPerm('ADMINISTRATOR')){
 			return true;
 		}
 		if(!we_hasPerm('CAN_SEE_OBJECTFILES')){
