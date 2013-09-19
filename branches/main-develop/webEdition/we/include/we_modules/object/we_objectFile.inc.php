@@ -845,7 +845,7 @@ class we_objectFile extends we_document{
 
 			$realName = $field['type'] . '_' . $field['name'];
 			$edMerk = $editable;
-			if(!((!$dv[$realName]['users']) || we_hasPerm('ADMINISTRATOR') || we_users_util::isUserInUsers($_SESSION['user']['ID'], $dv[$realName]['users']))){
+			if(!((!$dv[$realName]['users']) || permissionhandler::hasPerm('ADMINISTRATOR') || we_users_util::isUserInUsers($_SESSION['user']['ID'], $dv[$realName]['users']))){
 				$editable = false;
 			}
 
@@ -1580,7 +1580,7 @@ class we_objectFile extends we_document{
 	}
 
 	function canMakeNew(){
-		if(we_hasPerm('ADMINISTRATOR')){
+		if(permissionhandler::hasPerm('ADMINISTRATOR')){
 			return true;
 		}
 		$ac = we_users_util::getAllowedClasses($this->DB_WE);
@@ -1593,7 +1593,7 @@ class we_objectFile extends we_document{
 		}
 		$userWs = get_ws(FILE_TABLE);
 // wenn User Admin ist oder keine Workspaces zugeteilt wurden
-		if(we_hasPerm('ADMINISTRATOR') || ((!$userWs) && $all)){
+		if(permissionhandler::hasPerm('ADMINISTRATOR') || ((!$userWs) && $all)){
 // alle ws, welche in Klasse definiert wurden und deren Unterordner zur?ckgeben
 //$foo = makeArrayFromCSV($ClassWs);
 			$paths = id_to_path($ClassWs, FILE_TABLE, $this->DB_WE, false, true);
@@ -2904,7 +2904,7 @@ class we_objectFile extends we_document{
 
 	function userCanSave(){
 
-		if(we_hasPerm('ADMINISTRATOR')){
+		if(permissionhandler::hasPerm('ADMINISTRATOR')){
 			return true;
 		}
 		if(!permissionhandler::hasPerm('CAN_SEE_OBJECTFILES')){
@@ -2928,7 +2928,7 @@ class we_objectFile extends we_document{
 	 * @desc	checks if the user has the right to see an objectfile
 	 */
 	function userHasPerms(){
-		return ($_SESSION['perms']['ADMINISTRATOR'] || permissionhandler::hasPerm('CAN_SEE_OBJECTFILES') || (!$this->RestrictOwners) || we_users_util::isOwner($this->Owners) || we_users_util::isOwner($this->CreatorID));
+		return (permissionhandler::hasPerm('ADMINISTRATOR') || permissionhandler::hasPerm('CAN_SEE_OBJECTFILES') || (!$this->RestrictOwners) || we_users_util::isOwner($this->Owners) || we_users_util::isOwner($this->CreatorID));
 	}
 
 	/**

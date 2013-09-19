@@ -110,13 +110,13 @@ include(JS_PATH . 'weJsStrings.inc.php');
 	var seeMode_edit_include = <?php print (isset($SEEM_edit_include) && $SEEM_edit_include) ? "true" : "false"; ?>; // in edit_include mode of seeMode
 
 	var wePerms = {
-		"ADMINISTRATOR": <?php echo we_hasPerm("ADMINISTRATOR")?1:0; ?>,
-		"DELETE_DOCUMENT": <?php echo we_hasPerm("DELETE_DOCUMENT")?1:0; ?>,
-		"DELETE_TEMPLATE": <?php echo we_hasPerm("DELETE_TEMPLATE")?1:0; ?>,
-		"DELETE_OBJECT": <?php echo we_hasPerm("DELETE_OBJECT")?1:0; ?>,
-		"DELETE_OBJECTFILE": <?php echo we_hasPerm("DELETE_OBJECTFILE")?1:0; ?>,
-		"DELETE_DOC_FOLDER": <?php echo we_hasPerm("DELETE_DOC_FOLDER")?1:0; ?>,
-		"DELETE_TEMP_FOLDER": <?php echo we_hasPerm("DELETE_TEMP_FOLDER")?1:0; ?>
+		"ADMINISTRATOR": <?php echo permissionhandler::hasPerm("ADMINISTRATOR")?1:0; ?>,
+		"DELETE_DOCUMENT": <?php echo permissionhandler::hasPerm("DELETE_DOCUMENT")?1:0; ?>,
+		"DELETE_TEMPLATE": <?php echo permissionhandler::hasPerm("DELETE_TEMPLATE")?1:0; ?>,
+		"DELETE_OBJECT": <?php echo permissionhandler::hasPerm("DELETE_OBJECT")?1:0; ?>,
+		"DELETE_OBJECTFILE": <?php echo permissionhandler::hasPerm("DELETE_OBJECTFILE")?1:0; ?>,
+		"DELETE_DOC_FOLDER": <?php echo permissionhandler::hasPerm("DELETE_DOC_FOLDER")?1:0; ?>,
+		"DELETE_TEMP_FOLDER": <?php echo permissionhandler::hasPerm("DELETE_TEMP_FOLDER")?1:0; ?>
 	};
 	/*##################### messaging function #####################*/
 
@@ -528,18 +528,18 @@ if(!empty($_jsincludes)){
 
 				if (eTable === "") {
 					hasPerm = false;
-				} else if (<?php echo (we_hasPerm("ADMINISTRATOR") ? 'true' : 'false'); ?>) {
+				} else if (<?php echo (permissionhandler::hasPerm("ADMINISTRATOR") ? 'true' : 'false'); ?>) {
 					hasPerm = true;
 				} else if (isFolder) {
 					switch (eTable) {
 						case "<?php echo FILE_TABLE; ?>":
-							hasPerm = <?php echo (we_hasPerm('DELETE_DOC_FOLDER') ? 'true' : 'false'); ?>;
+							hasPerm = <?php echo (permissionhandler::hasPerm('DELETE_DOC_FOLDER') ? 'true' : 'false'); ?>;
 							break;
 						case "<?php echo TEMPLATES_TABLE; ?>":
-							hasPerm = <?php echo (we_hasPerm('DELETE_TEMP_FOLDER') ? 'true' : 'false'); ?>;
+							hasPerm = <?php echo (permissionhandler::hasPerm('DELETE_TEMP_FOLDER') ? 'true' : 'false'); ?>;
 							break;
 						case "<?php echo defined("OBJECT_FILES_TABLE") ? OBJECT_FILES_TABLE : -1; ?>":
-							hasPerm = <?php echo (we_hasPerm('DELETE_OBJECTFILE') ? 'true' : 'false'); ?>;
+							hasPerm = <?php echo (permissionhandler::hasPerm('DELETE_OBJECTFILE') ? 'true' : 'false'); ?>;
 							break;
 						default:
 							hasPerm = false;
@@ -547,19 +547,19 @@ if(!empty($_jsincludes)){
 				} else {
 					switch (eTable) {
 						case "<?php echo FILE_TABLE; ?>":
-							hasPerm = <?php echo (we_hasPerm('DELETE_DOCUMENT') ? 'true' : 'false'); ?>;
+							hasPerm = <?php echo (permissionhandler::hasPerm('DELETE_DOCUMENT') ? 'true' : 'false'); ?>;
 							break;
 						case "<?php echo TEMPLATES_TABLE; ?>":
-							hasPerm = <?php echo (we_hasPerm('DELETE_TEMPLATE') ? 'true' : 'false'); ?>;
+							hasPerm = <?php echo (permissionhandler::hasPerm('DELETE_TEMPLATE') ? 'true' : 'false'); ?>;
 							if (wePerms.DELETE_TEMPLATE) {
 								hasPerm = true;
 							}
 							break;
 						case "<?php echo defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : -1; ?>":
-							hasPerm = <?php echo (we_hasPerm('DELETE_OBJECTFILE') ? 'true' : 'false'); ?>;
+							hasPerm = <?php echo (permissionhandler::hasPerm('DELETE_OBJECTFILE') ? 'true' : 'false'); ?>;
 							break;
 						case "<?php echo defined('OBJECT_FILES_TABLE') ? OBJECT_TABLE : -2; ?>":
-							hasPerm = <?php echo (we_hasPerm('DELETE_OBJECT') ? 'true' : 'false'); ?>;
+							hasPerm = <?php echo (permissionhandler::hasPerm('DELETE_OBJECT') ? 'true' : 'false'); ?>;
 							break;
 						default:
 							hasPerm = false;
@@ -587,18 +587,18 @@ if(!empty($_jsincludes)){
 
 				if (eTable === "") {
 					hasPerm = false;
-				} else if (<?php echo (we_hasPerm("ADMINISTRATOR") ? 'true' : 'false'); ?>) {
+				} else if (<?php echo (permissionhandler::hasPerm("ADMINISTRATOR") ? 'true' : 'false'); ?>) {
 					hasPerm = true;
 				} else if (isFolder) {
 					switch (eTable) {
 						case "<?php echo FILE_TABLE; ?>":
-							hasPerm = <?php echo (we_hasPerm('DELETE_DOC_FOLDER') ? 'true' : 'false'); ?>;
+							hasPerm = <?php echo (permissionhandler::hasPerm('DELETE_DOC_FOLDER') ? 'true' : 'false'); ?>;
 							break;
 						case "<?php echo TEMPLATES_TABLE; ?>":
-							hasPerm = <?php echo (we_hasPerm('DELETE_TEMP_FOLDER') ? 'true' : 'false'); ?>;
+							hasPerm = <?php echo (permissionhandler::hasPerm('DELETE_TEMP_FOLDER') ? 'true' : 'false'); ?>;
 							break;
 						case "<?php echo defined("OBJECT_FILES_TABLE") ? OBJECT_FILES_TABLE : -1; ?>":
-							hasPerm = <?php echo (we_hasPerm('DELETE_OBJECTFILE') ? 'true' : 'false'); ?>;
+							hasPerm = <?php echo (permissionhandler::hasPerm('DELETE_OBJECTFILE') ? 'true' : 'false'); ?>;
 							break;
 						default:
 							hasPerm = false;
@@ -606,19 +606,19 @@ if(!empty($_jsincludes)){
 				} else {
 					switch (eTable) {
 						case "<?php echo FILE_TABLE; ?>":
-							hasPerm = <?php echo (we_hasPerm('DELETE_DOCUMENT') ? 'true' : 'false'); ?>;
+							hasPerm = <?php echo (permissionhandler::hasPerm('DELETE_DOCUMENT') ? 'true' : 'false'); ?>;
 							break;
 						case "<?php echo TEMPLATES_TABLE; ?>":
-							hasPerm = <?php echo (we_hasPerm('DELETE_TEMPLATE') ? 'true' : 'false'); ?>;
+							hasPerm = <?php echo (permissionhandler::hasPerm('DELETE_TEMPLATE') ? 'true' : 'false'); ?>;
 							if (wePerms.DELETE_TEMPLATE) {
 								hasPerm = true;
 							}
 							break;
 						case "<?php echo defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : -1; ?>":
-							hasPerm = <?php echo (we_hasPerm('DELETE_OBJECTFILE') ? 'true' : 'false'); ?>;
+							hasPerm = <?php echo (permissionhandler::hasPerm('DELETE_OBJECTFILE') ? 'true' : 'false'); ?>;
 							break;
 						case "<?php echo defined('OBJECT_FILES_TABLE') ? OBJECT_TABLE : -2; ?>":
-							hasPerm = <?php echo (we_hasPerm('DELETE_OBJECT') ? 'true' : 'false'); ?>;
+							hasPerm = <?php echo (permissionhandler::hasPerm('DELETE_OBJECT') ? 'true' : 'false'); ?>;
 							break;
 						default:
 							hasPerm = false;

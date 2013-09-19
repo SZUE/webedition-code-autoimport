@@ -730,7 +730,7 @@ function uniqueCSV($csv, $prePost = false){
 
 function get_ws($table = FILE_TABLE, $prePostKomma = false){
 	if(isset($_SESSION) && isset($_SESSION['perms'])){
-		if($_SESSION['perms']['ADMINISTRATOR']){
+		if(permissionhandler::hasPerm('ADMINISTRATOR')){
 			return '';
 		}
 		if($_SESSION['user']['workSpace'] && isset($_SESSION['user']['workSpace'][$table]) && $_SESSION['user']['workSpace'][$table] != ''){
@@ -772,7 +772,7 @@ function we_readChilds($pid, &$childlist, $tab, $folderOnly = true, $where = '',
 }
 
 function getWsQueryForSelector($tab, $includingFolders = true){
-	if($_SESSION['perms']['ADMINISTRATOR']){
+	if(permissionhandler::hasPerm('ADMINISTRATOR')){
 		return '';
 	}
 
@@ -813,7 +813,7 @@ function get_def_ws($table = FILE_TABLE, $prePostKomma = false){
 	if(!get_ws($table, $prePostKomma)){ // WORKARROUND
 		return '';
 	}
-	if($_SESSION['perms']['ADMINISTRATOR']){
+	if(permissionhandler::hasPerm('ADMINISTRATOR')){
 		return '';
 	}
 	$ws = '';

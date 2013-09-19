@@ -1157,9 +1157,7 @@ _multiEditorreload = true;";
 				}
 			}
 		}
-		//FIXME:
-		//return (isset($user_permissions['ADMINISTRATOR']) && $user_permissions['ADMINISTRATOR'] ? array('ADMINISTRATOR' => 1) : array_filter($user_permissions));
-		return $user_permissions;
+		return (isset($user_permissions['ADMINISTRATOR']) && $user_permissions['ADMINISTRATOR'] ? array('ADMINISTRATOR' => 1) : array_filter($user_permissions));
 	}
 
 	function getState(){

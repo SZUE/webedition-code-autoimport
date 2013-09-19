@@ -132,7 +132,7 @@ class objectsearch extends we_search{
 		$out = '<table border="0" cellpadding="0" cellspacing="0">';
 		for($i = 0; $i < count($exws); $i++){
 			if($exws[$i] != ""){
-				if(we_hasPerm("ADMINISTRATOR")){
+				if(permissionhandler::hasPerm("ADMINISTRATOR")){
 					$foo = true;
 				} else {
 					$foo = in_workspace($exws[$i], $userWSArray);

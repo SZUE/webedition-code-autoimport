@@ -36,7 +36,7 @@ abstract class we_html_tools{
 		$allow = false;
 		if($perms && is_array($perms)){
 			foreach($perms as $perm){
-				$allow|=isset($_SESSION['perms'][$perm]) && $_SESSION['perms'][$perm];
+				$allow|=permissionhandler::hasPerm($perm);
 			}
 		} else {
 			$allow = true;

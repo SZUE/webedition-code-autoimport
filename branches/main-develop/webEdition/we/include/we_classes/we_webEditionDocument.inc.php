@@ -315,7 +315,7 @@ class we_webEditionDocument extends we_textContentDocument{
 						$this->htmlFormElementTable($path, g_l('weClass', '[template]'), 'left', 'defaultfont') :
 						$this->xformTemplatePopup(388));
 			}
-			$pop = (we_hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL ?
+			$pop = (permissionhandler::hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL ?
 					'<table border="0" cellpadding="0" cellspacing="0"><tr><td>' . $path . '</td><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' .
 					we_button::create_button('edit', 'javascript:goTemplate(' . $myid . ')') .
 					'</td></tr></table>' :
@@ -366,7 +366,7 @@ class we_webEditionDocument extends we_textContentDocument{
 			$TID = $this->TemplateID;
 		}
 
-		$openButton = (we_hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL ? we_button::create_button('edit', 'javascript:goTemplate(document.we_form.elements[\'' . $fieldname . '\'].options[document.we_form.elements[\'' . $fieldname . '\'].selectedIndex].value)') : '');
+		$openButton = (permissionhandler::hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL ? we_button::create_button('edit', 'javascript:goTemplate(document.we_form.elements[\'' . $fieldname . '\'].options[document.we_form.elements[\'' . $fieldname . '\'].selectedIndex].value)') : '');
 
 		if(!empty($tlist)){
 			$foo = array();

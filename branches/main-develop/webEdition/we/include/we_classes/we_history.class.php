@@ -34,16 +34,7 @@ abstract class we_history{
 	const MAX = 5;
 
 	static function userHasPerms($creatorid, $owners, $restricted){
-		if($_SESSION['perms']['ADMINISTRATOR']){
-			return true;
-		}
-		if(!$restricted){
-			return true;
-		}
-		if(we_users_util::isOwner($owners) || we_users_util::isOwner($creatorid)){
-			return true;
-		}
-		return false;
+		return (permissionhandler::hasPerm('ADMINISTRATOR') || !$restricted || we_users_util::isOwner($owners) || we_users_util::isOwner($creatorid));
 	}
 
 	static function insertIntoHistory(&$object, $action = 'save', $user = ''){
@@ -55,11 +46,11 @@ abstract class we_history{
 		}
 		$user = (isset($GLOBALS['we']['Scheduler_active']) ? 'Scheduler' : '');
 		$db->query('REPLACE INTO ' . HISTORY_TABLE . ' SET ' . we_database_base::arraySetter(array(
-				'DID' => intval($object->ID),
-				'DocumentTable' => $table,
-				'ContentType' => $object->ContentType,
-				'Act' => $action,
-				'UserName' => ($user ? $user : (isset($_SESSION['user']['Username']) ? $_SESSION['user']['Username'] : (isset($_SESSION['webuser']['Username']) ? $_SESSION['webuser']['Username'] : 'Unknown'))),
+					'DID' => intval($object->ID),
+					'DocumentTable' => $table,
+					'ContentType' => $object->ContentType,
+					'Act' => $action,
+					'UserName' => ($user ? $user : (isset($_SESSION['user']['Username']) ? $_SESSION['user']['Username'] : (isset($_SESSION['webuser']['Username']) ? $_SESSION['webuser']['Username'] : 'Unknown'))),
 		)));
 	}
 

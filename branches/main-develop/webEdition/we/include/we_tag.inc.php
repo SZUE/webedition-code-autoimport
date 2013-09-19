@@ -94,7 +94,7 @@ function we_tag($name, $attribs = array(), $content = ''){
 		}
 	}
 
-	if($edMerk && $user && (!$_SESSION['perms']['ADMINISTRATOR'])){
+	if($edMerk && $user && (!permissionhandler::hasPerm('ADMINISTRATOR'))){
 		if(!in_array($_SESSION['user']['Username'], makeArrayFromCSV($user))){
 			$GLOBALS['we_editmode'] = false;
 		}

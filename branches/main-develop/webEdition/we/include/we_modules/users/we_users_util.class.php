@@ -143,7 +143,7 @@ abstract class we_users_util{
 	}
 
 	public static function isOwner($csvOwners){
-		if($_SESSION['perms']['ADMINISTRATOR']){
+		if(permissionhandler::hasPerm('ADMINISTRATOR')){
 			return true;
 		}
 		$ownersArray = makeArrayFromCSV($csvOwners);
@@ -152,7 +152,7 @@ abstract class we_users_util{
 
 	public static function userIsOwnerCreatorOfParentDir($folderID, $tab){
 		if(($tab != FILE_TABLE && $tab != OBJECT_FILES_TABLE) ||
-			($_SESSION['perms']['ADMINISTRATOR'] || ($folderID == 0))){
+			(permissionhandler::hasPerm('ADMINISTRATOR') || ($folderID == 0))){
 			return true;
 		}
 		$db = new DB_WE();
@@ -210,7 +210,7 @@ abstract class we_users_util{
 	}
 
 	public static function makeOwnersSql($useCreatorID = true){
-		if($_SESSION['perms']['ADMINISTRATOR']){
+		if(permissionhandler::hasPerm('ADMINISTRATOR')){
 			return '';
 		}
 		$aliases = we_getAliases($_SESSION['user']['ID'], $GLOBALS['DB_WE']);
@@ -253,9 +253,9 @@ abstract class we_users_util{
 
 		while($db->next_record()){
 			$path = $db->f('Path');
-			if(!$ws || $_SESSION['perms']['ADMINISTRATOR'] || (!$db->f('Workspaces')) || in_workspace($db->f('Workspaces'), $ws, FILE_TABLE, '', true)){
+			if(!$ws || permissionhandler::hasPerm('ADMINISTRATOR') || (!$db->f('Workspaces')) || in_workspace($db->f('Workspaces'), $ws, FILE_TABLE, '', true)){
 				$path2 = $path . '/';
-				if(!$ofWs || $_SESSION['perms']['ADMINISTRATOR']){
+				if(!$ofWs || permissionhandler::hasPerm('ADMINISTRATOR')){
 					$out[] = $db->f('ID');
 				} else {
 

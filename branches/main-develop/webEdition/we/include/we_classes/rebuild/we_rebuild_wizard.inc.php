@@ -529,7 +529,7 @@ abstract class we_rebuild_wizard{
 			$folders = get_def_ws(FILE_TABLE);
 		}
 
-		$all_content = ($_SESSION['perms']['ADMINISTRATOR'] ?
+		$all_content = (permissionhandler::hasPerm('ADMINISTRATOR') ?
 				we_forms::checkbox(1, $maintable, 'maintable', g_l('rebuild', '[rebuild_maintable]'), false, 'defaultfont', 'document.we_form.btype[0].checked=true;')/* .
 				  we_forms::checkbox(1, $tmptable, 'tmptable', g_l('rebuild', '[rebuild_tmptable]'), false, 'defaultfont', 'document.we_form.btype[0].checked=true;') */ :
 				'');
