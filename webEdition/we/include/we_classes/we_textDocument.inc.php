@@ -111,7 +111,7 @@ class we_textDocument extends we_document{
 						$less->setFormatter('classic');
 						try{
 							$doc = $less->compile($doc);
-						} catch (exception $e){
+						}catch(exception $e){
 							$this->errMsg = $e->getMessage();
 							return false;
 						}
@@ -119,10 +119,10 @@ class we_textDocument extends we_document{
 					case '.scss':
 						include_once(WE_LIB_PATH . 'additional/scssphp/scss.inc.php');
 						$scss = new scssc();
-						$scss->setImportPaths($_SERVER['DOCUMENT_ROOT'] . $this->getParentPath());
+						$scss->setImportPaths(array('', $_SERVER['DOCUMENT_ROOT'] . $this->getParentPath(), $_SERVER['DOCUMENT_ROOT']));
 						try{
 							$doc = $scss->compile($doc);
-						} catch (exception $e){
+						}catch(exception $e){
 							$this->errMsg = $e->getMessage();
 							return false;
 						}

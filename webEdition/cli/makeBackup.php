@@ -159,8 +159,7 @@ we_error_handler(false);
 
 
 // knock out identifiation and permissions
-$_SESSION['perms'] = array();
-$_SESSION['perms']['ADMINISTRATOR'] = true;
+$_SESSION['perms'] = array('ADMINISTRATOR' => true);
 $_SESSION['user']['Username'] = 1;
 
 
@@ -251,7 +250,7 @@ $long_opts = array(
 // Convert the arguments to options - check for the first argument
 if(!empty($_SERVER['argv']) && realpath($_SERVER['argv'][0]) == __FILE__){
 	$options = Console_Getopt::getOpt($args, $short_opts, $long_opts);
-} else{
+} else {
 	$options = Console_Getopt::getOpt2($args, $short_opts, $long_opts);
 }
 
@@ -361,7 +360,7 @@ if(!isset($_SESSION['weS']['weBackupVars']) || empty($_SESSION['weS']['weBackupV
 		}
 		$_fh = $_SESSION['weS']['weBackupVars']['open']($_SESSION['weS']['weBackupVars']['backup_file'], 'ab');
 
-		while(($_SESSION['weS']['weBackupVars']['row_counter'] < $_SESSION['weS']['weBackupVars']['row_count']) || weBackupUtil::hasNextTable()) {
+		while(($_SESSION['weS']['weBackupVars']['row_counter'] < $_SESSION['weS']['weBackupVars']['row_count']) || weBackupUtil::hasNextTable()){
 			if($_REQUEST['verbose']){
 				print "-";
 			}
