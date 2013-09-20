@@ -81,7 +81,7 @@ abstract class we_rebuild{
 				}
 				break;
 			default:
-				switch($data["type"]){
+				switch($data['type']){
 					case 'document':
 						if(!file_exists(WE_INCLUDES_PATH . 'we_classes/' . $data['cn'] . '.inc.php')){
 							// it has to be an object
@@ -380,7 +380,7 @@ abstract class we_rebuild{
 			foreach($_foo as $folderID){
 				$_foldersList[] = makeCSVFromArray(we_util::getFoldersInFolder($folderID));
 			}
-			$_folders_query = '( ParentID IN(' . implode(',', $_foldersList) . ') )';
+			$_folders_query = '( ParentID IN(' . implode(',', $_foldersList) . '))';
 		}
 
 		if($templateID){
@@ -398,9 +398,9 @@ abstract class we_rebuild{
 
 				$tmp = $arr['templateIDs'];
 				$tmp[] = $templateID;
-				$_template_query = '( TemplateID IN (' . implode(',', $tmp) . '))';
+				$_template_query = '(TemplateID IN (' . implode(',', $tmp) . '))';
 			} else {
-				$_template_query = '( TemplateID=' . intval($templateID) . ')';
+				$_template_query = '(TemplateID=' . intval($templateID) . ')';
 			}
 		}
 
@@ -409,7 +409,7 @@ abstract class we_rebuild{
 			($_folders_query ? ' AND ' . $_folders_query . ' ' : '') .
 			($_template_query ? ' AND ' . $_template_query . ' ' : '');
 
-		$GLOBALS['DB_WE']->query('SELECT ID,ClassName,Path FROM ' . FILE_TABLE . ' WHERE IsDynamic=0 AND Published > 0 AND ContentType="text/webedition" ' . $query . ' ORDER BY LENGTH(Path)');
+		$GLOBALS['DB_WE']->query('SELECT ID,ClassName,Path FROM ' . FILE_TABLE . ' WHERE IsDynamic=0 AND Published>0 AND ContentType IN("text/webedition","text/css","text/js") ' . $query . ' ORDER BY LENGTH(Path)');
 		while($GLOBALS['DB_WE']->next_record()){
 			$data[] = array(
 				'id' => $GLOBALS['DB_WE']->f('ID'),
