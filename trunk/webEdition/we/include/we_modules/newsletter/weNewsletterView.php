@@ -36,7 +36,7 @@ class weNewsletterView{
 	var $settings = array();
 	//default newsletter
 	var $newsletter;
-	//wat page is currentlly displed 0-properties(default);1-overview;
+	//wat page is currentlly displayed 0-properties(default);1-overview;
 	var $page = 0;
 	var $get_import = 0;
 	var $hiddens = array('ID');
@@ -51,10 +51,7 @@ class weNewsletterView{
 	function __construct(){
 		$this->db = new DB_WE();
 		$this->newsletter = new weNewsletter();
-
-
 		$this->frameset = WE_NEWSLETTER_MODULE_DIR . 'edit_newsletter_frameset.php';
-
 		$this->settings = self::getSettings();
 
 		if(defined('CUSTOMER_TABLE')){
@@ -1962,7 +1959,7 @@ self.close();');
 			$sval->NewsletterID = $this->newsletter->ID;
 
 			foreach($sval->persistents as $per){
-				$varname = "block" . $skey . "_" . $per;
+				$varname = 'block' . $skey . '_' . $per;
 
 				if(isset($_REQUEST[$varname])){
 					$sval->$per = $_REQUEST[$varname];
@@ -1979,7 +1976,7 @@ self.close();');
 			"min" => $min,
 			"sec" => $seconds - ($min * 60)
 		);
-		$ret["min"] = $ret["min"] - ($ret["hour"] * 60);
+		$ret["min"] -= ($ret["hour"] * 60);
 		return $ret;
 	}
 
