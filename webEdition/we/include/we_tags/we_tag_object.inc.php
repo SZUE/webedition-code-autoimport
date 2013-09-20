@@ -29,9 +29,9 @@ function we_parse_tag_object($attribs, $content){
 	if($name && strpos($name, ' ') !== false){
 		return parseError(sprintf(g_l('parser', '[name_with_space]'), 'object'));
 	}
-	$we_oid = weTag_getAttribute('id', $attribs, 0);
+	$we_oid = weTag_getAttribute('id', $arr, 0);
 	if(empty($we_oid) && empty($name)){
-		return attributFehltError($attribs, 'name', __FUNCTION__);
+		return attributFehltError($arr, 'name', __FUNCTION__);
 	}
 
 	return '<?php global $lv;

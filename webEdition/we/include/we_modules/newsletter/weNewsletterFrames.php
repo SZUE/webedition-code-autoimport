@@ -27,12 +27,12 @@ class weNewsletterFrames extends weModuleFrames{
 	var $multibox_width = 950;
 	var $def_width = 450;
 	var $weAutoColpleter;
-	public $module = "newsletter";
+	public $module = 'newsletter';
 
 	function __construct(){
-		parent::__construct(WE_NEWSLETTER_MODULE_DIR . "edit_newsletter_frameset.php");
+		parent::__construct(WE_NEWSLETTER_MODULE_DIR . 'edit_newsletter_frameset.php');
 		$this->View = new weNewsletterView();
-		$this->View->setFrames("top.content", "top.content.tree", "top.content.cmd");
+		$this->View->setFrames('top.content', 'top.content.tree', 'top.content.cmd');
 		$this->Tree = new weNewsletterTree();
 		$this->setupTree(NEWSLETTER_TABLE, "top.content", "top.content", "top.content.cmd");
 		$this->weAutoColpleter = & weSuggest::getInstance();

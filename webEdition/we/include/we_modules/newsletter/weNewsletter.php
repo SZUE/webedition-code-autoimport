@@ -27,7 +27,7 @@
  * General Definition of WebEdition Newsletter
  *
  */
-class weNewsletter extends weNewsletterBase {
+class weNewsletter extends weNewsletterBase{
 
 	const SAVE_PATH_NOK = -10;
 	const MALFORMED_SENDER = -1;
@@ -45,26 +45,26 @@ class weNewsletter extends weNewsletterBase {
 	const OP_ENDS = 9;
 
 	//properties
-	var $ID;
-	var $ParentID;
-	var $IsFolder;
-	var $Text;
-	var $Path;
-	var $Icon;
-	var $Subject;
-	var $Sender;
-	var $Reply;
-	var $Attachments;
-	var $Customers;
-	var $Emails;
-	var $Test;
-	var $Step;
-	var $Offset;
-	var $Charset = "";
+	var $ID = 0;
+	var $ParentID = 0;
+	var $IsFolder = 0;
+	var $Text = '';
+	var $Path = '/';
+	var $Icon = 'newsletter.gif';
+	var $Subject = '';
+	var $Sender = '';
+	var $Reply = '';
+	var $Attachments = '';
+	var $Customers = '';
+	var $Emails = '';
+	var $Test = '';
+	var $Step = 0;
+	var $Offset = 0;
+	var $Charset = '';
 	var $log = array();
 	var $blocks = array();
 	var $groups = array();
-	var $isEmbedImages;
+	var $isEmbedImages = '';
 
 	/**
 	 * Default Constructor
@@ -74,32 +74,13 @@ class weNewsletter extends weNewsletterBase {
 	 * @return weNewsletter
 	 */
 	function __construct($newsletterID = 0){
-
 		parent::__construct();
 
 		$this->table = NEWSLETTER_TABLE;
-		array_push($this->persistents, "ID", "ParentID", "Text", "Path", "Icon", "Subject", "Sender", "Reply", "Test", "Step", "Offset", "IsFolder", "Charset", "isEmbedImages");
+		array_push($this->persistents, 'ID', 'ParentID', 'Text', 'Path', 'Icon', 'Subject', 'Sender', 'Reply', 'Test', 'Step', 'Offset', 'IsFolder', 'Charset', 'isEmbedImages');
 
-		$this->ID = 0;
-		$this->ParentID = 0;
-		$this->IsFolder = 0;
-		$this->Text = "";
-		$this->Path = "/";
-		$this->Icon = "newsletter.gif";
-		$this->Subject = "";
-		$this->Sender = "";
-		$this->Reply = "";
-		$this->Attachments = "";
-		$this->Customers = "";
-		$this->Emails = "";
-		$this->Test = "";
-		$this->isEmbedImages = "";
-		$this->Step = 0;
-		$this->Offset = 0;
+
 		$this->Charset = $GLOBALS['WE_BACKENDCHARSET'];
-		$this->log = array();
-		$this->blocks = array();
-		$this->groups = array();
 
 		$this->addBlock();
 		$this->addGroup();
@@ -123,8 +104,9 @@ class weNewsletter extends weNewsletterBase {
 		$this->Subject = stripslashes($this->Subject);
 		$this->groups = weNewsletterGroup::__getAllGroups($newsletterID);
 		$this->blocks = weNewsletterBlock::__getAllBlocks($newsletterID);
-		if($this->Charset == "")
+		if(empty($this->Charset)){
 			$this->Charset = $GLOBALS['WE_BACKENDCHARSET'];
+		}
 	}
 
 	/**
@@ -150,8 +132,9 @@ class weNewsletter extends weNewsletterBase {
 			$this->fixChildsPaths();
 		}
 
-		if($this->Step != 0 || $this->Offset != 0)
+		if($this->Step != 0 || $this->Offset != 0){
 			$this->addLog("log_campagne_reset");
+		}
 		$this->Step = 0;
 		$this->Offset = 0;
 
@@ -183,7 +166,7 @@ class weNewsletter extends weNewsletterBase {
 			$block->Html = stripslashes($block->Html);
 		}
 
-		$this->addLog("log_save_newsletter");
+		$this->addLog('log_save_newsletter');
 		return 0;
 	}
 
@@ -214,9 +197,9 @@ class weNewsletter extends weNewsletterBase {
 	 *
 	 */
 	function deleteChilds(){
-		$this->db->query("SELECT ID FROM " . NEWSLETTER_TABLE . " WHERE ParentID=" . intval($this->ID));
+		$this->db->query('SELECT ID FROM ' . NEWSLETTER_TABLE . ' WHERE ParentID=' . intval($this->ID));
 		while($this->db->next_record()){
-			$child = new self($this->db->f("ID"));
+			$child = new self($this->db->f('ID'));
 			$child->delete();
 			$child = new self();
 		}
@@ -230,15 +213,10 @@ class weNewsletter extends weNewsletterBase {
 	 * @return array
 	 */
 	function getAllNewsletter(){
-
 		$db = new DB_WE();
 
-		$db->query("SELECT ID,Text FROM " . NEWSLETTER_TABLE . " ORDER BY ID");
-		$nl = array();
-		while($db->next_record()){
-			$nl[$db->f("ID")] = $db->f("Text");
-		}
-		return $nl;
+		$db->query('SELECT ID,Text FROM ' . NEWSLETTER_TABLE . ' ORDER BY ID');
+		return $db->getAllFirst(false);
 	}
 
 	/**
@@ -297,10 +275,12 @@ class weNewsletter extends weNewsletterBase {
 		foreach($this->blocks as $bk => $block){
 			$arr = makeArrayFromCSV($block->Groups);
 			foreach($arr as $k => $v){
-				if($v == $link)
+				if($v == $link){
 					$arr[$k] = -1;
-				if($v > $link)
+				}
+				if($v > $link){
 					$arr[$k] = $v - 1;
+				}
 			}
 			foreach($arr as $k => $v){
 				if($v == -1){
@@ -347,8 +327,10 @@ class weNewsletter extends weNewsletterBase {
 	 * @param string $log
 	 * @param string $param
 	 */
-	function addLog($log, $param = ""){
-		$this->db->query("INSERT INTO " . NEWSLETTER_LOG_TABLE . "(NewsletterID,LogTime,Log,Param) VALUES(" . intval($this->ID) . ",UNIX_TIMESTAMP(),'" . $this->db->escape($log) . "','" . $this->db->escape($param) . "');");
+	function addLog($log, $param = ''){
+		$this->db->query('INSERT INTO ' . NEWSLETTER_LOG_TABLE . ' SET ' . we_database_base::arraySetter(array(
+				'NewsletterID' => $this->ID, 'LogTime' => 'UNIX_TIMESTAMP()', 'Log' => $log, 'Param' => $param
+		)));
 	}
 
 	/**
@@ -356,7 +338,7 @@ class weNewsletter extends weNewsletterBase {
 	 *
 	 */
 	function clearLog(){
-		$this->db->query("DELETE FROM " . NEWSLETTER_LOG_TABLE . " WHERE NewsletterID=" . intval($this->ID));
+		$this->db->query('DELETE FROM ' . NEWSLETTER_LOG_TABLE . ' WHERE NewsletterID=' . intval($this->ID));
 	}
 
 	/**
@@ -391,12 +373,12 @@ class weNewsletter extends weNewsletterBase {
 	function fixChildsPaths(){
 
 		$dbtmp = new DB_WE();
-		$oldpath = f("SELECT Path FROM " . NEWSLETTER_TABLE . " WHERE ID=" . intval($this->ID), "Path", $this->db);
+		$oldpath = f('SELECT Path FROM ' . NEWSLETTER_TABLE . ' WHERE ID=' . intval($this->ID), "Path", $this->db);
 
-		if(trim($oldpath) != "" && trim($oldpath) != "/"){
-			$this->db->query("SELECT ID,Path FROM " . NEWSLETTER_TABLE . " WHERE Path LIKE '" . $oldpath . "%'");
+		if(trim($oldpath) != '' && trim($oldpath) != '/'){
+			$this->db->query('SELECT ID,Path FROM ' . NEWSLETTER_TABLE . " WHERE Path LIKE '" . $oldpath . "%'");
 			while($this->db->next_record()){
-				$dbtmp->query("UPDATE " . NEWSLETTER_TABLE . " SET Path='" . str_replace($oldpath, $this->Path, $this->db->f("Path")) . "' WHERE ID=" . $this->db->f("ID"));
+				$dbtmp->query('UPDATE ' . NEWSLETTER_TABLE . " SET Path='" . str_replace($oldpath, $this->Path, $this->db->f("Path")) . "' WHERE ID=" . $this->db->f("ID"));
 			}
 		}
 	}

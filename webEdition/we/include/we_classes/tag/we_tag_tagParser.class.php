@@ -256,15 +256,16 @@ class we_tag_tagParser{
 	public static function parseAttribs($attr){
 		//remove comment-attribute (should never be seen), and obsolete cachelifetime
 		$removeAttribs = array('cachelifetime', 'comment');
-
+//FIXME: always return array!!!
 		$attribs = '';
 		$regs = array();
-		preg_match_all('/([^=]+)=[ \t]*("[^"]*")/', $attr, $regs, PREG_SET_ORDER);
+		preg_match_all('/([^=]+)=[ \t]*"([^"]*)"/', $attr, $regs, PREG_SET_ORDER);
 
 		if(!empty($regs)){
 			foreach($regs as $f){
 				if(!in_array($f[1], $removeAttribs)){
-					$attribs .= '"' . trim($f[1]) . '"=>' . trim($f[2]) . ',';
+					$val = $f[2];
+					$attribs .= '"' . trim($f[1]) . '"=>' . ($val == 'true' || $val == 'false' || is_numeric($val) ? $val : '"'.$val.'"') . ',';
 				}
 			}
 		}
@@ -368,7 +369,7 @@ class we_tag_tagParser{
 			$code = substr($code, 0, $tagPos) .
 				$content .
 				substr($code, (isset($endeEndTagPos) ? $endeEndTagPos : $endeStartTag));
-		} elseif(substr($tagname, 0, 2) == "if" && $tagname != "ifNoJavaScript"){
+		} elseif(substr($tagname, 0, 2) == 'if' && $tagname != 'ifNoJavaScript'){
 			if(!isset($endeEndTagPos)){
 				return parseError(sprintf(g_l('parser', '[selfclosingIf]'), $tagname));
 			}
@@ -400,7 +401,7 @@ class we_tag_tagParser{
 	public static function printArray($array){
 		$ret = '';
 		foreach($array as $key => $val){
-			$ret.='\'' . $key . '\'=>\'' . $val . '\',';
+			$ret.='\'' . $key . '\'=>' . (is_numeric($val) || $val == 'true' || $val == 'false' ? $val : '\'' . $val . '\'') . ',';
 		}
 		return 'array(' . $ret . ')';
 	}
