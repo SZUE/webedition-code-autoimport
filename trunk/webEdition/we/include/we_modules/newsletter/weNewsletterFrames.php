@@ -25,6 +25,7 @@
 class weNewsletterFrames extends weModuleFrames{
 
 	const def_width = 450;
+
 	var $weAutoColpleter;
 
 	function __construct(){
@@ -473,20 +474,16 @@ class weNewsletterFrames extends weModuleFrames{
 		$out.=we_html_element::htmlBr() .
 			we_html_element::htmlDiv(array("class" => "defaultfont"), $tab1 . we_html_element::htmlB(g_l('modules_newsletter', '[sum_all]') . ":" . $c)) .
 			we_html_element::htmlBr();
-		print self::getHTMLDocument('<body class="weDialogBody">' .
-			we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "onload" => "self.focus()"), we_html_tools::htmlDialogLayout(
-					we_html_element::htmlBr() .
-					we_html_element::htmlDiv(array("class" => "blockwrapper", "style" => "width: 588px; height: 500px; border:1px #dce6f2 solid;"), $out) .
-					we_html_element::htmlBr(), g_l('modules_newsletter', '[lists_overview]'), we_button::create_button("close", "javascript:self.close();")
-				)
-			) .
-			'</body>',we_html_element::jsElement("self.focus();"));
+		echo self::getHTMLDocument(we_html_element::htmlBody(array('class' => 'weDialogBody'), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "onload" => "self.focus()"), we_html_tools::htmlDialogLayout(
+							we_html_element::htmlBr() .
+							we_html_element::htmlDiv(array("class" => "blockwrapper", "style" => "width: 588px; height: 500px; border:1px #dce6f2 solid;"), $out) .
+							we_html_element::htmlBr(), g_l('modules_newsletter', '[lists_overview]'), we_button::create_button("close", "javascript:self.close();")
+						)
+				)), we_html_element::jsElement('self.focus();'));
 		flush();
 	}
 
 	function getHTMLDCheck(){
-		print we_html_element::jsElement("self.focus();");
-
 		$tab1 = "&nbsp;&nbsp;&nbsp;";
 		$tab2 = $tab1 . $tab1;
 		$tab3 = $tab1 . $tab1 . $tab1;
@@ -519,15 +516,12 @@ class weNewsletterFrames extends weModuleFrames{
 		$out.=we_html_element::htmlBr() .
 			we_html_element::htmlDiv(array("class" => "defaultfont"), $tab1 . we_html_element::htmlB(g_l('modules_newsletter', '[domain_check_ends]'))) .
 			we_html_element::htmlBr();
-		print '</head><body class="weDialogBody">' .
-			we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "onload" => "self.focus()"), we_html_tools::htmlDialogLayout(
-					we_html_element::htmlBr() .
-					we_html_element::htmlDiv(array("class" => "blockwrapper", "style" => "width: 588px; height: 500px; border:1px #dce6f2 solid;"), $out) .
-					we_html_element::htmlBr(), g_l('modules_newsletter', '[lists_overview]'), we_button::create_button("close", "javascript:self.close();")
-				)
-			) .
-			we_html_element::jsElement("self.focus();") .
-			'</body></html>';
+		echo self::getHTMLDocument(we_html_element::htmlBody(array('class' => 'weDialogBody'), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "onload" => "self.focus()"), we_html_tools::htmlDialogLayout(
+						we_html_element::htmlBr() .
+						we_html_element::htmlDiv(array("class" => "blockwrapper", "style" => "width: 588px; height: 500px; border:1px #dce6f2 solid;"), $out) .
+						we_html_element::htmlBr(), g_l('modules_newsletter', '[lists_overview]'), we_button::create_button("close", "javascript:self.close();")
+					)
+			)), we_html_element::jsElement('self.focus();'));
 		flush();
 	}
 
