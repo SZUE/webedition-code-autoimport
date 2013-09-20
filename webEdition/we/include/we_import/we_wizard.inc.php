@@ -192,15 +192,15 @@ function we_cmd() {
 		);
 	}
 
-	function getWizBody($type = "", $step = 0, $mode = 0){
+	function getWizBody($type = '', $step = 0, $mode = 0){
 		$a = array(
-			"name" => "we_form"
+			'name' => 'we_form'
 		);
-		if($type == "GXMLImport" && $step == 1){
-			$a["onSubmit"] = "return false;";
+		if($type == 'GXMLImport' && $step == 1){
+			$a["onsubmit"] = 'return false;';
 		}
 		if($step == 1){
-			$a["enctype"] = "multipart/form-data";
+			$a["enctype"] = 'multipart/form-data';
 		}
 		$_step = 'get' . $type . 'Step' . $step;
 		list($js, $content) = $this->$_step();
@@ -248,9 +248,8 @@ function finish(rebuild) {
 	}
 }
 
-					top.wizcmd.cycle();
-					top.wizcmd.we_import(1,-2' . ((isset($_REQUEST['type']) && $_REQUEST['type'] == 'WXMLImport') ? ',1' : '') . ');
-			'
+top.wizcmd.cycle();
+top.wizcmd.we_import(1,-2' . ((isset($_REQUEST['type']) && $_REQUEST['type'] == 'WXMLImport') ? ',1' : '') . ');'
 			);
 		}
 

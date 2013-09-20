@@ -1692,7 +1692,7 @@ function handle_event(evt) {
 		$inputLServer = we_html_tools::htmlTextInput('v[fserver]', 30, (isset($v['fserver']) ? $v['fserver'] : '/'), 255, "readonly onClick=\"self.document.forms['we_form'].elements['v[rdofloc]'][0].checked=true;\"", "text", 300);
 		$importFromServer = we_html_tools::htmlFormElementTable($inputLServer, '', 'left', 'defaultfont', we_html_tools::getPixel(10, 1), $importFromButton, "", "", "", 0);
 
-		$inputLLocal = we_html_tools::htmlTextInput('uploaded_csv_file', 30, '', 255, "accept=\"text/xml\" onClick=\"" . "self.document.forms['we_form'].elements['v[rdofloc]'][1].checked=true;\"" . "\"", "file");
+		$inputLLocal = we_html_tools::htmlTextInput('uploaded_csv_file', 30, '', 255, "accept=\"text/csv\" onclick=\"" . "self.document.forms['we_form'].elements['v[rdofloc]'][1].checked=true;\"" . "\"", "file");
 		$importFromLocal = we_html_tools::htmlFormElementTable($inputLLocal, '', 'left', 'defaultfont', we_html_tools::getPixel(10, 1), "", "", "", "", 0);
 
 		$rdoLServer = we_forms::radiobutton('lServer', (isset($v['rdofloc'])) ? ($v['rdofloc'] == 'lServer') : 1, 'v[rdofloc]', g_l('import', '[fileselect_server]'));
@@ -1984,8 +1984,8 @@ HTS;
 			'name' => 'v[docType]',
 			'size' => 1,
 			'class' => 'weSelect',
-			'onClick' => (defined('OBJECT_TABLE')) ? "self.document.forms['we_form'].elements['v[import_type]'][0].checked=true;" : '',
-			'onChange' => "this.form.doctypeChanged.value=1; weChangeDocType(this);",
+			'onclick' => (defined('OBJECT_TABLE')) ? "self.document.forms['we_form'].elements['v[import_type]'][0].checked=true;" : '',
+			'onchange' => "this.form.doctypeChanged.value=1; weChangeDocType(this);",
 			//"onChange"  => "this.form.doctypeChanged.value=1;we_submit_form(self.document.forms['we_form'], 'wizbody', '".$this->path."');",
 			'style' => 'width: 300px')
 		);
@@ -2164,8 +2164,10 @@ HTS;
 		} else {
 			if(!file_exists($_SERVER['DOCUMENT_ROOT'] . $v["import_from"])){
 				$parts[] = array("html" => we_html_tools::htmlAlertAttentionBox(g_l('import', "[file_exists]") . $_SERVER['DOCUMENT_ROOT'] . $v["import_from"], we_html_tools::TYPE_ALERT, 530), "space" => 0, "noline" => 1);
+				$functions.='top.wizbusy.switch_button_state("next","next","disabled");';
 			} else if(!is_readable($_SERVER['DOCUMENT_ROOT'] . $v["import_from"])){
 				$parts[] = array("html" => we_html_tools::htmlAlertAttentionBox(g_l('import', "[file_readable]"), we_html_tools::TYPE_ALERT, 530), "space" => 0, "noline" => 1);
+				$functions.='top.wizbusy.switch_button_state("next","next","disabled");';
 			}
 		}
 
@@ -2174,7 +2176,7 @@ HTS;
 			we_html_element::jsScript(JS_DIR . "libs/yui/event-min.js") .
 			we_html_element::jsScript(JS_DIR . "libs/yui/connection-min.js") .
 			$hdns .
-			we_multiIconBox::getHTML("csv", "100%", $parts, 30, "", -1, "", "", false, g_l('import', "[csv_import]"));
+			we_multiIconBox::getHTML('csv', "100%", $parts, 30, "", -1, "", "", false, g_l('import', "[csv_import]"));
 
 		return array($functions, $content);
 	}
@@ -2226,7 +2228,7 @@ function handle_event(evt) {
 		f.mode.value=1;
 		f.elements['v[mode]'].value=1;
 		f.elements['v[startCSVImport]'].value=1;
-						top.wizbusy.next_enabled = top.wizbusy.switch_button_state('next', 'next_enabled', 'disabled');
+		top.wizbusy.next_enabled = top.wizbusy.switch_button_state('next', 'next_enabled', 'disabled');
 		we_submit_form(f, 'wizbody', '" . $this->path . "?mode=1');
 		break;
 	case 'cancel':
