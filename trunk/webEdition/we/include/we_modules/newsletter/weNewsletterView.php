@@ -39,23 +39,19 @@ class weNewsletterView{
 	//wat page is currentlly displed 0-properties(default);1-overview;
 	var $page = 0;
 	var $get_import = 0;
-	var $hiddens = array();
+	var $hiddens = array('ID');
 	var $customers_fields;
 	var $frameset;
 	var $topFrame;
 	var $treeFrame;
 	var $cmdFrame;
+	protected $show_import_box = -1;
+	protected $show_export_box = -1;
 
 	function __construct(){
 		$this->db = new DB_WE();
 		$this->newsletter = new weNewsletter();
 
-		$this->hiddens[] = 'ID';
-
-		$this->page = 0;
-
-		$this->show_import_box = -1;
-		$this->show_export_box = -1;
 
 		$this->frameset = WE_NEWSLETTER_MODULE_DIR . 'edit_newsletter_frameset.php';
 
