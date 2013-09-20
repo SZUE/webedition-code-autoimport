@@ -51,13 +51,13 @@ class weImportUpdater extends weXMLExIm{
 		if(isset($object->MasterTemplateID) && $object->MasterTemplateID){
 			$ref = $this->RefTable->getRef(
 				array(
-					"OldID" => $object->MasterTemplateID,
-					"ContentType" => "text/weTmpl"
+					'OldID' => $object->MasterTemplateID,
+					'ContentType' => 'text/weTmpl'
 				)
 			);
 			if($ref){
 				$object->MasterTemplateID = $ref->ID;
-				$object->_updateCompleteCode();
+				$object->_updateCompleteCode(true);
 			}
 		}
 

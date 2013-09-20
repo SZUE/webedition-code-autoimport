@@ -74,6 +74,7 @@ function we_tag_sessionStart($attribs){
 					$hook = new weHook('customer_Login', '', array('customer' => &$_SESSION['webuser'], 'type' => 'normal', 'tagname' => 'sessionStart'));
 					$hook->executeHook();
 				}
+				unset($_REQUEST['s']['Password']);
 			}
 			if($persistentlogins && ((isset($_SESSION['webuser']['registered']) && !$_SESSION['webuser']['registered']) || !isset($_SESSION['webuser']['registered']) ) && isset($_COOKIE['_we_autologin'])){
 				if(!wetagsessionStartdoAutoLogin()){
