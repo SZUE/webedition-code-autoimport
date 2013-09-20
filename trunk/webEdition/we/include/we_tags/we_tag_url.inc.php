@@ -27,24 +27,17 @@ function we_tag_url($attribs){
 		return $foo;
 	}
 	static $urls = array();
-	static $objurls = array();
 	$type = weTag_getAttribute('type', $attribs, 'document');
 	$id = weTag_getAttribute('id', $attribs);
 	$triggerid = weTag_getAttribute('triggerid', $attribs, '0');
 	$hidedirindex = weTag_getAttribute('hidedirindex', $attribs, TAGLINKS_DIRECTORYINDEX_HIDE, true);
 	$objectseourls = weTag_getAttribute('objectseourls', $attribs, TAGLINKS_OBJECTSEOURLS, true);
-	if($type == 'document'){
-		if(isset($urls[$id])){ // do only work you have never done before
-			return $urls[$id];
-		}
-	} else{
-		if(isset($objurls[$id])){ // do only work you have never done before
-			return $objurls[$id];
-		}
+	if(is_numeric($id) && (isset($urls[$type . $id]))){ // do only work you have never done before
+		return $urls[$type . $id];
 	}
 	if($id != 'self' && $id != 'top' && intval($id) == 0){
 		$url = '/';
-	} else{
+	} else {
 		$urlNotSet = true;
 		if(($id == 'self' || $id == 'top') && $type == 'document'){
 			$doc = we_getDocForTag($id, true); // check if we should use the top document or the  included document
@@ -60,7 +53,7 @@ function we_tag_url($attribs){
 							(show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES != '' && $hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))) ?
 								'' : $path_parts['filename'] . '/') .
 							$GLOBALS['WE_MAIN_DOC']->Url;
-					} else{
+					} else {
 						$url = (show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES != '' && $hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))) ?
 								($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/?we_objectID=' . $GLOBALS['WE_MAIN_DOC']->OF_ID :
 								$GLOBALS['WE_MAIN_DOC']->Path . '?we_objectID=' . $GLOBALS['WE_MAIN_DOC']->OF_ID);
@@ -68,7 +61,7 @@ function we_tag_url($attribs){
 					$urlNotSet = false;
 				}
 			}
-		} else{
+		} else {
 			$testid = $id;
 		}
 		if($urlNotSet){
@@ -79,7 +72,7 @@ function we_tag_url($attribs){
 				if(show_SeoLinks() && $hidedirindex && NAVIGATION_DIRECTORYINDEX_NAMES != '' && TAGLINKS_DIRECTORYINDEX_HIDE && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
 					$url = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/';
 				}
-			} else{
+			} else {
 				$row = getHash('SELECT ID,Url,TriggerID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($testid), $GLOBALS['DB_WE']);
 				if(!$triggerid){
 					$triggerid = ($row['TriggerID'] ? $row['TriggerID'] : $GLOBALS['WE_MAIN_DOC']->ID);
@@ -90,7 +83,7 @@ function we_tag_url($attribs){
 						(show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES != '' && $hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))) ?
 							'' : $path_parts['filename'] . '/' ) .
 						$row['Url'];
-				} else{
+				} else {
 					$url = (show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES != '' && $hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))) ?
 							($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/?we_objectID=' . $row['ID'] :
 							id_to_path($triggerid) . '?we_objectID=' . $row['ID']
