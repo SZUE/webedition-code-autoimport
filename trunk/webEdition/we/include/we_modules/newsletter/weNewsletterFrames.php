@@ -475,11 +475,11 @@ class weNewsletterFrames extends weModuleFrames{
 			we_html_element::htmlDiv(array("class" => "defaultfont"), $tab1 . we_html_element::htmlB(g_l('modules_newsletter', '[sum_all]') . ":" . $c)) .
 			we_html_element::htmlBr();
 		echo self::getHTMLDocument(we_html_element::htmlBody(array('class' => 'weDialogBody'), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "onload" => "self.focus()"), we_html_tools::htmlDialogLayout(
-							we_html_element::htmlBr() .
-							we_html_element::htmlDiv(array("class" => "blockwrapper", "style" => "width: 588px; height: 500px; border:1px #dce6f2 solid;"), $out) .
-							we_html_element::htmlBr(), g_l('modules_newsletter', '[lists_overview]'), we_button::create_button("close", "javascript:self.close();")
-						)
-				)), we_html_element::jsElement('self.focus();'));
+						we_html_element::htmlBr() .
+						we_html_element::htmlDiv(array("class" => "blockwrapper", "style" => "width: 588px; height: 500px; border:1px #dce6f2 solid;"), $out) .
+						we_html_element::htmlBr(), g_l('modules_newsletter', '[lists_overview]'), we_button::create_button("close", "javascript:self.close();")
+					)
+			)), we_html_element::jsElement('self.focus();'));
 		flush();
 	}
 
@@ -692,37 +692,37 @@ class weNewsletterFrames extends weModuleFrames{
 	function getHTMLBox($w, $h, $content, $headline = "", $width = 120, $height = 2){
 		$headline = str_replace(" ", "&nbsp;", $headline);
 
-		return ($headline ?
-				'<table cellpadding="0" cellspacing="0" border="0">
-					<tr>
-						<td>' . we_html_tools::getPixel(24, $height) . '</td>
-						<td>' . we_html_tools::getPixel($width, $height) . '</td>
-						<td></td>
-					</tr>
-					<tr>
-						<td></td>
-						<td valign="top" class="defaultgray">' . $headline . '</td>
-						<td>' . $content . '</td>
-					</tr>
-					<tr>
-						<td>' . we_html_tools::getPixel(24, $height) . '</td>
-						<td>' . we_html_tools::getPixel($width, $height) . '</td>
-						<td></td>
-					</tr>
-				</table>' :
-				'<table cellpadding="0" cellspacing="0" border="0">
-					<tr>
-						<td>' . we_html_tools::getPixel(24, $height) . '</td>
-						<td></td>
-					</tr>
-					<tr>
-						<td></td>
-						<td>' . $content . '</td>
-					</tr>
-					<tr>
-						<td>' . we_html_tools::getPixel(24, $height) . '</td>
-						<td></td>
-					</tr></table>'
+		return ($headline ? '
+<table cellpadding="0" cellspacing="0" border="0">
+	<tr>
+		<td>' . we_html_tools::getPixel(24, $height) . '</td>
+		<td>' . we_html_tools::getPixel($width, $height) . '</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td></td>
+		<td valign="top" class="defaultgray">' . $headline . '</td>
+		<td>' . $content . '</td>
+	</tr>
+	<tr>
+		<td>' . we_html_tools::getPixel(24, $height) . '</td>
+		<td>' . we_html_tools::getPixel($width, $height) . '</td>
+		<td></td>
+	</tr>
+</table>' : '
+<table cellpadding="0" cellspacing="0" border="0">
+	<tr>
+		<td>' . we_html_tools::getPixel(24, $height) . '</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td></td>
+		<td>' . $content . '</td>
+	</tr>
+	<tr>
+		<td>' . we_html_tools::getPixel(24, $height) . '</td>
+		<td></td>
+</tr></table>'
 			);
 	}
 
