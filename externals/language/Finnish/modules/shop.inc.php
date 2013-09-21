@@ -22,6 +22,7 @@ $l_modules_shop=array(
 	'admin_permissions'=>'Järjestelmänvalvoja',
 	'anual'=>'Vuosi',
 	'anzahl'=>'Määrä',
+	'artCanceled'=>'canceled',
 	'artCreateAlt'=>'Lajittelu luontipäivän mukaan',
 	'artCreate'=>'Luontipäivä',
 	'artHasAlt'=>'Lajittele muunnelmien mukaan (on muunnelmia/ei ole muunnelmia)',

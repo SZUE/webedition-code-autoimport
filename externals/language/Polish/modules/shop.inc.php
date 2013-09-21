@@ -22,6 +22,7 @@ $l_modules_shop=array(
 	'admin_permissions'=>'Administrator',
 	'anual'=>'Rok',
 	'anzahl'=>'Liczba',
+	'artCanceled'=>'canceled',
 	'artCreateAlt'=>'Sortuj wg daty stworzenia',
 	'artCreate'=>'Sporządzono dn.',
 	'artHasAlt'=>'Sortuj wg wariantu istnieje/nie istnieje',
