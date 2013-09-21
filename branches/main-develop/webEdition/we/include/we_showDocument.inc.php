@@ -25,7 +25,7 @@
 if(str_replace(dirname($_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME']) == str_replace(dirname(__FILE__), '', __FILE__)){
 	exit();
 }
-
+//FIXME:remove
 if(isset($GLOBALS['noSess']) && $GLOBALS['noSess'] && !defined('NO_SESS')){
 	define('NO_SESS', 1);
 }

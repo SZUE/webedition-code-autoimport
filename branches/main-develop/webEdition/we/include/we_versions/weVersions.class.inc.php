@@ -130,7 +130,7 @@ class weVersions{
 	public function getBinaryPath(){
 		return $this->binaryPath;
 	}
-	
+
 	/**
 	 * @return unknown
 	 */
@@ -474,7 +474,7 @@ class weVersions{
 	public function setBinaryPath($binaryPath){
 		$this->binaryPath = $binaryPath;
 	}
-	
+
 	/**
 	 * @param unknown_type $Filehash
 	 */
@@ -1609,7 +1609,7 @@ class weVersions{
 			}
 		}else {
 			ob_start();
-			$noSess = true;
+			if(!defined('NO_SESS')){define('NO_SESS', 1);}
 			$GLOBALS['WE_IS_DYN'] = 1;
 			$we_transaction = '';
 			$we_ContentType = $we_doc->ContentType;

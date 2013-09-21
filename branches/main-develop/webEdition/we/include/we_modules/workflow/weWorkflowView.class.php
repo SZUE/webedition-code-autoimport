@@ -108,7 +108,7 @@ class weWorkflowView extends we_workflow_base{
 	}
 
 	function getProperties(){
-		if(isset($_REQUEST['home']) && $_REQUEST['home']){ //TODO: find a better solution fpr this!
+		if(isset($_REQUEST['home']) && $_REQUEST['home']){ //TODO: find a better solution for this!
 			$GLOBALS['we_print_not_htmltop'] = true;
 			$GLOBALS['we_head_insert'] = $this->getPropertyJS();
 			$GLOBALS['we_body_insert'] = '<form name="we_form">';
@@ -263,7 +263,6 @@ class weWorkflowView extends we_workflow_base{
 	}
 
 	function getStepsHTML(){
-		$headline = array();
 		$content = array();
 
 		$ids = '';

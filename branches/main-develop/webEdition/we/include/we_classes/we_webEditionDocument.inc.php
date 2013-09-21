@@ -815,7 +815,7 @@ class we_webEditionDocument extends we_textContentDocument{
 			$data[0]["InWebEdition"] = false;
 
 			return '<?php
-$GLOBALS[\'noSess\'] = true;
+if(!defined(\'NO_SESS\')){define(\'NO_SESS\',1);}
 $GLOBALS[\'WE_IS_DYN\'] = 1;
 $GLOBALS[\'we_transaction\'] = \'\';
 $GLOBALS[\'we_ContentType\'] = \'text/webedition\';

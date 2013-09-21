@@ -32,63 +32,63 @@ if(isset($GLOBALS['we_ContentType']) && !isset($we_ContentType)){
 if((!isset($we_ContentType)) && ((!isset($we_dt)) || (!is_array($we_dt)) || (!$we_dt[0]['ClassName'])) && isset($we_ID) && $we_ID && isset($we_Table) && $we_Table){
 	$we_ContentType = f('SELECT ContentType FROM ' . $GLOBALS['DB_WE']->escape($we_Table) . ' WHERE ID=' . intval($we_ID), 'ContentType', $GLOBALS['DB_WE']);
 }
-if(isset($we_ContentType) && $we_ContentType != ''){
-	switch($we_ContentType){
-		case 'application/x-shockwave-flash':
-			$we_doc = new we_flashDocument();
-			break;
-		case 'video/quicktime':
-			$we_doc = new we_quicktimeDocument();
-			break;
-		case 'image/*':
-			$we_doc = new we_imageDocument();
-			break;
-		case 'folder':
-			$we_doc = new we_folder();
-			break;
-		case 'class_folder':
-			$we_doc = new we_class_folder();
-			break;
-		case 'text/weTmpl':
-			$we_doc = new we_template();
-			break;
-		case 'text/webedition':
-			$we_doc = new we_webEditionDocument();
-			break;
-		case 'text/html':
-			$we_doc = new we_htmlDocument();
-			break;
-		case 'text/xml':
-		case 'text/js':
-		case 'text/css':
-		case 'text/plain':
-		case 'text/htaccess':
-			$we_doc = new we_textDocument();
-			break;
-		case 'application/*':
-			$we_doc = new we_otherDocument();
-			break;
-		default:
-			$moduleDir = we_getModuleNameByContentType($we_ContentType);
-			if($moduleDir != ''){
-				$moduleDir .= '/';
-			}
 
-			if(file_exists(WE_MODULES_PATH . $moduleDir . 'we_' . $we_ContentType . '.inc.php')){
-				$we_doc = 'we_' . $we_ContentType;
-				$we_doc = new $we_doc();
-			} else{
-				t_e('Can NOT initialize document of type -' . $we_ContentType . '- ' . WE_MODULES_PATH . $moduleDir . 'we_' . $we_ContentType . '.inc.php');
-				exit(1);
-			}
-	}
-} else{
-	if(isset($we_dt[0]['ClassName']) && $we_dt[0]['ClassName']){
-		$we_doc = $we_dt[0]['ClassName'];
-		$we_doc = new $we_doc();
-	} else{
+switch(isset($we_ContentType) ? $we_ContentType : ''){
+	case 'application/x-shockwave-flash':
+		$we_doc = new we_flashDocument();
+		break;
+	case 'video/quicktime':
+		$we_doc = new we_quicktimeDocument();
+		break;
+	case 'image/*':
+		$we_doc = new we_imageDocument();
+		break;
+	case 'folder':
+		$we_doc = new we_folder();
+		break;
+	case 'class_folder':
+		$we_doc = new we_class_folder();
+		break;
+	case 'text/weTmpl':
+		$we_doc = new we_template();
+		break;
+	case 'text/webedition':
 		$we_doc = new we_webEditionDocument();
-	}
+		break;
+	case 'text/html':
+		$we_doc = new we_htmlDocument();
+		break;
+	case 'text/xml':
+	case 'text/js':
+	case 'text/css':
+	case 'text/plain':
+	case 'text/htaccess':
+		$we_doc = new we_textDocument();
+		break;
+	case 'application/*':
+		$we_doc = new we_otherDocument();
+		break;
+	case '':
+		if(isset($we_dt[0]['ClassName']) && $we_dt[0]['ClassName']){
+			$we_doc = $we_dt[0]['ClassName'];
+			$we_doc = new $we_doc();
+		} else {
+			$we_doc = new we_webEditionDocument();
+		}
+		break;
+	default:
+		$moduleDir = we_getModuleNameByContentType($we_ContentType);
+		if($moduleDir != ''){
+			$moduleDir .= '/';
+		}
+
+		if(file_exists(WE_MODULES_PATH . $moduleDir . 'we_' . $we_ContentType . '.inc.php')){
+			$we_doc = 'we_' . $we_ContentType;
+			$we_doc = new $we_doc();
+		} else {
+			t_e('Can NOT initialize document of type -' . $we_ContentType . '- ' . WE_MODULES_PATH . $moduleDir . 'we_' . $we_ContentType . '.inc.php');
+			exit(1);
+		}
 }
 if(isset($we_ID)){
 	$we_doc->initByID($we_ID, $we_Table, ( (isset($GLOBALS['FROM_WE_SHOW_DOC']) && $GLOBALS['FROM_WE_SHOW_DOC']) || (isset($GLOBALS['WE_RESAVE']) && $GLOBALS['WE_RESAVE']) ) ? we_class::LOAD_MAID_DB : we_class::LOAD_TEMP_DB);
@@ -96,7 +96,7 @@ if(isset($we_ID)){
 	$we_doc->we_initSessDat($we_dt);
 //	in some templates we must disable some EDIT_PAGES and disable some buttons
 	$we_doc->executeDocumentControlElements();
-} else{
+} else {
 	$we_doc->ContentType = $we_ContentType;
 	$we_doc->Table = (isset($we_Table) && $we_Table) ? $we_Table : FILE_TABLE;
 	$we_doc->we_new();
