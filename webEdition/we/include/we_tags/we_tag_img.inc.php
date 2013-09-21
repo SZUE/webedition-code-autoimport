@@ -106,7 +106,7 @@ function we_tag_img($attribs){
 			$attribs['src'] = IMAGE_DIR . 'icons/no_image.gif';
 			$attribs['style'] = 'width:64px;height:64px;border-style:none;';
 			$attribs['alt'] = 'no-img';
-			$attribs = removeAttribs($attribs, array('thumbnail'));
+			$attribs = removeAttribs($attribs, array('thumbnail','only'));
 			$out = getHtmlTag('img', $attribs);
 		} else {
 			$out = ''; //no_image war noch in der Vorscha sichtbar

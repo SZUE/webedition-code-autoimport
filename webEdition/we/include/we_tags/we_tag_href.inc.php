@@ -140,7 +140,7 @@ function we_tag_href($attribs){
 	$trashbut2 = we_button::create_button(we_button::WE_IMAGE_BUTTON_IDENTIFY . 'btn_function_trash', "javascript:document.we_form.elements['" . $ext_elem_Name . "'].value = ''; _EditorFrame.setEditorIsHot(true);", true);
 	if($type == we_base_link::TYPE_ALL || $type == we_base_link::TYPE_INT){
 		$yuiSuggest = &weSuggest::getInstance();
-		$yuiSuggest->setAcId($name . 'selector');
+		$yuiSuggest->setAcId($name . weFile::getUniqueId());
 		$yuiSuggest->setContentType('folder,text/webedition');
 		$yuiSuggest->setInput($intPath_elem_Name, $intPath);
 		$yuiSuggest->setMaxResults(10);
@@ -154,7 +154,7 @@ function we_tag_href($attribs){
 	return
 		'<table class="weEditTable padding0 spacing2">' .
 		($type == we_base_link::TYPE_ALL || $type == we_base_link::TYPE_INT ? '
-<tr>
+<tr> 
 	<td class="weEditmodeStyle">' . ($type == we_base_link::TYPE_ALL ? we_forms::radiobutton(1, $int, $int_elem_Name, $span . g_l('tags', '[int_href]') . ':</span>') : $span . g_l('tags', '[int_href]') . ':</span><input type="hidden" name="' . $int_elem_Name . '" value="1" />' ) . '</td>
 	<td class="weEditmodeStyle" style="width:170px">' . $yuiSuggest->getHTML(). $yuiSuggest->getYuiCode().'</td>
 	<td class="weEditmodeStyle">' . $but . '</td>

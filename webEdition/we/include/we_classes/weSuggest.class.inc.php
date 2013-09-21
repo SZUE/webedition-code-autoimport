@@ -154,10 +154,6 @@ class weSuggest{
 	 * @return String
 	 */
 	function getYuiJs(){
-		if(defined('WE_SUGGEST_JS')){
-			return '';
-		}
-		define('WE_SUGGEST_JS', 1);
 		/**
 		 * @todo 	1. value
 		 * 			2. table
@@ -798,8 +794,8 @@ function weInputInArray(arr, val) {
 }
 
 {$this->addJS}
-
-/********************************************************/
+");
+/*******************************************************
 var weShowDebug = true;
 var debugsizeW=145;
 var debugsizeH='100%';
@@ -829,7 +825,7 @@ function doDebugResizeH(){
 	<div align='center'><button onclick='document.getElementById(\"debug\").innerHTML=\"\"'>clear</button><button id='DebugResizeW' onclick='doDebugResizeW()'>&gt;</button><button id='DebugResizeH' onclick='doDebugResizeH()'>A</button></div><hr>
 	<div id='debug'></div>
 </div>
-	";
+	";*/
 	}
 
 	/**
