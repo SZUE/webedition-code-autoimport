@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weBackupWizard {
+class weBackupWizard{
 
 	const BACKUP = 1;
 	const RECOVER = 2;
