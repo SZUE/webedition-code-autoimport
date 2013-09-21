@@ -161,7 +161,7 @@ $queryCondtion = 'YEAR(DateOrder)=' . $selectedYear . ($selectedMonth > 0 ? ' AN
 
 $query = ' FROM ' . SHOP_TABLE . '	WHERE ' . $queryCondtion;
 if(($maxRows = f('SELECT COUNT(1) AS a ' . $query, 'a', $DB_WE))){
-	$total = $payed = $unpayed = 0;
+	$total = $payed = $unpayed = $canceled = 0;
 
 	$amountOrders = f('SELECT COUNT(distinct IntOrderID) AS a ' . $query, 'a', $DB_WE);
 	//$unpayedOrders = f('SELECT COUNT(distinct IntOrderID) AS a ' . $query . ' AND ISNULL(DatePayment)', 'a', $DB_WE);
@@ -170,7 +170,7 @@ if(($maxRows = f('SELECT COUNT(1) AS a ' . $query, 'a', $DB_WE))){
 
 	//get table entries
 	$orderRows = array();
-	$DB_WE->query('SELECT strSerial,strSerialOrder,IntOrderID,IntCustomerID,IntArticleID,IntQuantity,DatePayment,DateOrder,DATE_FORMAT(DateOrder, "%d.%m.%Y") AS formatDateOrder, DATE_FORMAT(DatePayment, "%d.%m.%Y") AS formatDatePayment,Price ' . $query . ' ORDER BY ' . (isset($_REQUEST['orderBy']) && $_REQUEST['orderBy'] ? $_REQUEST['orderBy'] : 'IntOrderID') . ' LIMIT ' . ($actPage * $nrOfPage) . ',' . $nrOfPage);
+	$DB_WE->query('SELECT strSerial,strSerialOrder,IntOrderID,IntCustomerID,IntArticleID,IntQuantity,DatePayment,DateOrder,DateCancellation,DATE_FORMAT(DateOrder, "%d.%m.%Y") AS formatDateOrder, DATE_FORMAT(DatePayment, "%d.%m.%Y") AS formatDatePayment, DATE_FORMAT(DateCancellation, "%d.%m.%Y") AS formatDateCancellation, Price ' . $query . ' ORDER BY ' . (isset($_REQUEST['orderBy']) && $_REQUEST['orderBy'] ? $_REQUEST['orderBy'] : 'IntOrderID') . ' LIMIT ' . ($actPage * $nrOfPage) . ',' . $nrOfPage);
 	while($DB_WE->next_record()) {
 
 		// for the articlelist, we need also all these article, so sve them in array
@@ -187,8 +187,10 @@ if(($maxRows = f('SELECT COUNT(1) AS a ' . $query, 'a', $DB_WE))){
 			'IntQuantity' => $DB_WE->f('IntQuantity'),
 			'DatePayment' => $DB_WE->f('DatePayment'),
 			'DateOrder' => $DB_WE->f('DateOrder'),
+			'DateCancellation' => $DB_WE->f('DateCancellation'),
 			'formatDateOrder' => $DB_WE->f('formatDateOrder'), // also for ordering
 			'formatDatePayment' => $DB_WE->f('formatDatePayment'), // also for ordering
+			'formatDateCancellation' => $DB_WE->f('formatDateCancellation'), // also for ordering
 			'Price' => $DB_WE->f('Price'), // also for ordering
 			WE_SHOP_TITLE_FIELD_NAME => (isset($shopArticleObject[WE_SHOP_TITLE_FIELD_NAME]) ? $shopArticleObject[WE_SHOP_TITLE_FIELD_NAME] : $shopArticleObject['we_' . WE_SHOP_TITLE_FIELD_NAME]), // also for ordering
 			'orderArray' => $orderData,
@@ -199,7 +201,7 @@ if(($maxRows = f('SELECT COUNT(1) AS a ' . $query, 'a', $DB_WE))){
 	// first of all calculate complete revenue of this year -> important check vats as well.
 	$cur = 0;
 	while($maxRows > $cur) {
-		$DB_WE->query('SELECT strSerial,strSerialOrder,(Price*IntQuantity) AS actPrice,(!ISNULL(DatePayment) && DatePayment>0) AS payed ' . $query . ' LIMIT ' . $cur . ',1000');
+		$DB_WE->query('SELECT strSerial,strSerialOrder,(Price*IntQuantity) AS actPrice,(!ISNULL(DatePayment) && DatePayment>0) AS payed, (!ISNULL(DateCancellation) && DateCancellation>0) AS canceled  ' . $query . ' LIMIT ' . $cur . ',1000');
 		$cur+=1000;
 		while($DB_WE->next_record()) {
 
@@ -241,19 +243,27 @@ if(($maxRows = f('SELECT COUNT(1) AS a ' . $query, 'a', $DB_WE))){
 
 					// calculate vats to prices if neccessary
 					if($pricesAreNet){
-						$articleVatArray[$articleVat] += ($actPrice * $articleVat / 100);
+						if($DB_WE->f('canceled') == 0){ // #7896 but not, if order is canceled
+							$articleVatArray[$articleVat] += ($actPrice * $articleVat / 100);
+						}
 						$actPrice += ($actPrice * $articleVat / 100);
 					} else{
-						$articleVatArray[$articleVat] += ($actPrice * $articleVat / (100 + $articleVat));
+						if($DB_WE->f('canceled') == 0){ // #7896 but not, if order is canceled
+							$articleVatArray[$articleVat] += ($actPrice * $articleVat / (100 + $articleVat));
+						}
 					}
 				}
 			}
-			$total += $actPrice;
 
-			if($DB_WE->f('payed') == 0){
-				$payed += $actPrice;
-			} else{
-				$unpayed += $actPrice;
+			if($DB_WE->f('canceled') > 0){ //#7896
+				$canceled += $actPrice;
+			}else{
+				$total += $actPrice;
+				if($DB_WE->f('payed') > 0){
+					$payed += $actPrice;
+				}else{
+					$unpayed += $actPrice;
+				}
 			}
 		}
 	}
@@ -342,7 +352,7 @@ if(($maxRows = f('SELECT COUNT(1) AS a ' . $query, 'a', $DB_WE))){
 			array('dat' => we_util_Strings::formatNumber($orderRow['Price']) . $waehr),
 			array('dat' => $orderRow['formatDateOrder']),
 			array('dat' => $orderRow['IntArticleID']),
-			array('dat' => ($orderRow['DatePayment'] != 0 ? $orderRow['formatDatePayment'] : '<span class="npshopContentfontR">' . g_l('modules_shop', '[artNPay]') . '</span>')),
+			array('dat' => ($orderRow['DatePayment'] != 0 ? $orderRow['formatDatePayment'] : ( $orderRow['DateCancellation'] != 0 ? '<span class="npshopContentfontR">' . g_l('modules_shop', '[artCanceled]') . '</span>' : '<span class="npshopContentfontR">' . g_l('modules_shop', '[artNPay]') . '</span>'))),
 		);
 	}
 
