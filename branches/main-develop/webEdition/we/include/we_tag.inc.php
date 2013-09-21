@@ -233,6 +233,9 @@ function weTag_getAttribute($name, $attribs, $default = '', $isFlag = false, $us
 	$regs = array();
 	//FIXME: change this, it should be possible to use \$a[b][c] to get $GLOBALS['a']['b']['c']
 	if($useGlobal && !is_array($value) && preg_match('|^\\\\?\$(.+)$|', $value, $regs)){
+//	if($useGlobal && !is_array($value) && preg_match('|^\\\\?\$([^\[\]]+)(.*)$|', $value, $regs)){
+		//(\[[^\]]+\])*
+
 		$value = isset($GLOBALS[$regs[1]]) ? $GLOBALS[$regs[1]] : '';
 	}
 	if($isFlag){

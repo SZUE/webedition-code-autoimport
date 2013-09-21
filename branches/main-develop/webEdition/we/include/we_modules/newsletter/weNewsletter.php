@@ -102,8 +102,9 @@ class weNewsletter extends weNewsletterBase{
 		$this->Subject = stripslashes($this->Subject);
 		$this->groups = weNewsletterGroup::__getAllGroups($newsletterID);
 		$this->blocks = weNewsletterBlock::__getAllBlocks($newsletterID);
-		if($this->Charset == '')
+		if(empty($this->Charset)){
 			$this->Charset = $GLOBALS['WE_BACKENDCHARSET'];
+		}
 	}
 
 	/**
@@ -129,8 +130,9 @@ class weNewsletter extends weNewsletterBase{
 			$this->fixChildsPaths();
 		}
 
-		if($this->Step != 0 || $this->Offset != 0)
+		if($this->Step != 0 || $this->Offset != 0){
 			$this->addLog('log_campagne_reset');
+		}
 		$this->Step = 0;
 		$this->Offset = 0;
 
@@ -271,10 +273,12 @@ class weNewsletter extends weNewsletterBase{
 		foreach($this->blocks as $bk => $block){
 			$arr = makeArrayFromCSV($block->Groups);
 			foreach($arr as $k => $v){
-				if($v == $link)
+				if($v == $link){
 					$arr[$k] = -1;
-				if($v > $link)
+				}
+				if($v > $link){
 					$arr[$k] = $v - 1;
+				}
 			}
 			foreach($arr as $k => $v){
 				if($v == -1){

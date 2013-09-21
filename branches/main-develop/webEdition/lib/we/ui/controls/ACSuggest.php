@@ -1014,8 +1014,8 @@ function weInputInArray(arr, val) {
 }
 
 {$this->addJS}
-
-/********************************************************/
+";
+/********************************************************
 var weShowDebug = true;
 var debugsizeW=145;
 var debugsizeH='100%';
@@ -1046,8 +1046,8 @@ function doDebugResizeH(){
 <div style='display:none; position:absolute; top:0px; width:145px; height:100%; background:yellow; border: 1px solid red; color:red; z-index:10000' id='damd'>
 	<div align='center'><button onclick='document.getElementById(\"debug\").innerHTML=\"\"'>clear</button><button id='DebugResizeW' onclick='doDebugResizeW()'>&gt;</button><button id='DebugResizeH' onclick='doDebugResizeH()'>A</button></div><hr>
 	<div id='debug'></div>
-</div>
-	";
+</div>*/
+
 		return $out;
 	}
 

@@ -520,7 +520,7 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 		$wecmdenc3 = we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);if(currentID==$this->ID){" . we_message_reporting::getShowMessageCall($alerttext, we_message_reporting::WE_MESSAGE_ERROR) . "opener.document.we_form.elements['$idname'].value='';opener.document.we_form.elements['$textname'].value='';}");
 
 		$button = we_button::create_button('select', "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','','text/weTmpl',1)");
-		$openButton = we_button::create_button( 'edit', 'javascript:goTemplate(document.we_form.elements[\'we_' . $GLOBALS['we_doc']->Name . '_MasterTemplateID\'].value)');
+		$openButton = we_button::create_button('edit', 'javascript:goTemplate(document.we_form.elements[\'we_' . $GLOBALS['we_doc']->Name . '_MasterTemplateID\'].value)');
 		$trashButton = we_button::create_button(we_button::WE_IMAGE_BUTTON_IDENTIFY . 'btn_function_trash', "javascript:document.we_form.elements['$idname'].value='';document.we_form.elements['$textname'].value='';YAHOO.autocoml.selectorSetValid('yuiAcInputMasterTemplate');_EditorFrame.setEditorIsHot(true);", true, 27, 22);
 
 		$yuiSuggest->setAcId('MasterTemplate');
@@ -631,10 +631,15 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 		if(!$this->doUpdateCode){
 			return true;
 		}
-		static $recursiveTemplates = array();
+		static $cnt=0;
+		static $recursiveTemplates;
+		if($cnt==0){
+			$recursiveTemplates= array();
+		}
 		if(empty($recursiveTemplates)){
 			$recursiveTemplates[] = $this->ID;
 		}
+		++$cnt;
 		$code = $this->getTemplateCode(false);
 
 		// find all we:master Tags
@@ -663,7 +668,7 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 			self::getUsedTemplatesOfTemplate($this->MasterTemplateID, $_templates);
 			if(in_array($this->ID, $_templates) || $this->ID == $this->MasterTemplateID || in_array($this->MasterTemplateID, $recursiveTemplates)){
 				$code = g_l('parser', '[template_recursion_error]');
-				t_e(g_l('parser', '[template_recursion_error]'), 'Template ' . $this->ID . ' with same Master');
+				t_e(g_l('parser', '[template_recursion_error]'), 'Template ' . $this->ID, 'Mastertemplate: ' . $this->MasterTemplateID, 'Templates of Master: ' . implode(',', $_templates), 'already processed: ' . implode(',', $recursiveTemplates));
 			} else {
 				// we have a master template. => surround current template with it
 				// first get template code
@@ -703,14 +708,14 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 				// get attributes of tag
 				$att = self::_getAttribsArray($regs[1]);
 				// if type-attribute is equal to "template"
-				if(isset($att["type"]) && $att["type"] == "template"){
+				if(isset($att['type']) && $att['type'] == 'template'){
 
 					// if path is set - look for the id of the template
-					if(isset($att["path"]) && $att["path"]){
+					if(isset($att['path']) && $att['path']){
 						// get id of template
 						$templId = path_to_id($att['path'], TEMPLATES_TABLE);
 						if($templId){
-							$att["id"] = $templId;
+							$att['id'] = $templId;
 						}
 					}
 
@@ -720,7 +725,7 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 						self::getUsedTemplatesOfTemplate($att['id'], $_templates);
 						if(in_array($this->ID, $_templates) || $att['id'] == $this->ID || in_array($att['id'], $recursiveTemplates)){
 							$code = str_replace($tag, g_l('parser', '[template_recursion_error]'), $code);
-							t_e(g_l('parser', '[template_recursion_error]'), 'Template: ' . $this->ID);
+							t_e(g_l('parser', '[template_recursion_error]'), 'Template ' . $this->ID, 'Included Template: ' . $att['id'], 'Templates of include: ' . implode(',', $_templates), 'already processed: ' . implode(',', $recursiveTemplates));
 						} else {
 							// get code of template
 							$recursiveTemplates[] = $att['id'];
@@ -731,7 +736,7 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 							array_pop($recursiveTemplates);
 							// replace include tag with template code
 							$code = str_replace($tag, $includedTemplateCode, $code);
-							$this->IncludedTemplates .= ',' . intval($att["id"]);
+							$this->IncludedTemplates .= ',' . intval($att['id']);
 						}
 					}
 				}
@@ -740,13 +745,14 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 		if(strlen($this->IncludedTemplates) > 0){
 			$this->IncludedTemplates .= ',';
 		}
-		$this->setElement("completeData", $code);
+		$this->setElement('completeData', $code);
+		--$cnt;
 	}
 
 	public function we_save($resave = 0, $updateCode = 1){
 		$this->Extension = we_base_ContentTypes::inst()->getExtension('text/weTmpl');
 		if($updateCode){
-			$this->_updateCompleteCode();
+			$this->_updateCompleteCode(true);
 			if(defined('SHOP_TABLE')){
 				$this->elements['allVariants'] = array();
 				$this->elements['allVariants']['type'] = 'variants';

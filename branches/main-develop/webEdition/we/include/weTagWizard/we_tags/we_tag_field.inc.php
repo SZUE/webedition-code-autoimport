@@ -10,16 +10,20 @@ $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 $name = new weTagData_choiceAttribute('name', array(new weTagDataOption('WE_PATH'),
 	new weTagDataOption('WE_ID'),
 	new weTagDataOption('WE_TEXT'),
+	new weTagDataOption('WE_URL'),
+	new weTagDataOption('WE_CUSTOMER_ID'),
+	new weTagDataOption('WE_TRIGGERID'),
 	new weTagDataOption('wedoc_CreationDate'),
 	new weTagDataOption('wedoc_ModDate'),
 	new weTagDataOption('wedoc_Published'),
 	new weTagDataOption('wedoc_ParentID'),
 	new weTagDataOption('wedoc_Text'),
-	new weTagDataOption('WE_SHOPVARIANTS'),
+	new weTagDataOption('wedoc_Category'),
+	new weTagDataOption('WE_SHOPVARIANTS', false, 'shop'),
 	), false, false, '');
-$classid = (defined("OBJECT_TABLE") ? new weTagData_selectorAttribute('classid', OBJECT_TABLE, 'object', false, '') : null);
+$classid = (defined('OBJECT_TABLE') ? new weTagData_selectorAttribute('classid', OBJECT_TABLE, 'object', false, '') : null);
 $hyperlink = new weTagData_selectAttribute('hyperlink', weTagData_selectAttribute::getTrueFalse(), false, '');
-$tid = (defined("TEMPLATES_TABLE") ? new weTagData_selectorAttribute('tid', TEMPLATES_TABLE, 'text/weTmpl', false, '') : null);
+$tid = (defined('TEMPLATES_TABLE') ? new weTagData_selectorAttribute('tid', TEMPLATES_TABLE, 'text/weTmpl', false, '') : null);
 $href = new weTagData_textAttribute('href', false, '');
 $target = new weTagData_choiceAttribute('target', array(new weTagDataOption('_top'),
 	new weTagDataOption('_parent'),
