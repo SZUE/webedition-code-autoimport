@@ -22,12 +22,12 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-define("NEWSLETTER_TABLE", TBL_PREFIX . "tblNewsletter");
-define("NEWSLETTER_BLOCK_TABLE", TBL_PREFIX . "tblNewsletterBlock");
-define("NEWSLETTER_CONFIRM_TABLE", TBL_PREFIX . "tblNewsletterConfirm");
-define("NEWSLETTER_GROUP_TABLE", TBL_PREFIX . "tblNewsletterGroup");
-define("NEWSLETTER_LOG_TABLE", TBL_PREFIX . "tblNewsletterLog");
-define("NEWSLETTER_PREFS_TABLE", TBL_PREFIX . "tblNewsletterPrefs");
+define('NEWSLETTER_TABLE', TBL_PREFIX . 'tblNewsletter');
+define('NEWSLETTER_BLOCK_TABLE', TBL_PREFIX . 'tblNewsletterBlock');
+define('NEWSLETTER_CONFIRM_TABLE', TBL_PREFIX . 'tblNewsletterConfirm');
+define('NEWSLETTER_GROUP_TABLE', TBL_PREFIX . 'tblNewsletterGroup');
+define('NEWSLETTER_LOG_TABLE', TBL_PREFIX . 'tblNewsletterLog');
+define('NEWSLETTER_PREFS_TABLE', TBL_PREFIX . 'tblNewsletterPrefs');
 
-define("WE_NEWSLETTER_MODULE_DIR", WE_MODULES_DIR . "newsletter/");
-define("WE_NEWSLETTER_CACHE_DIR", $_SERVER['DOCUMENT_ROOT'] . WE_NEWSLETTER_MODULE_DIR . '/cache/');
+define('WE_NEWSLETTER_MODULE_DIR', WE_MODULES_DIR . 'newsletter/');
+define('WE_NEWSLETTER_CACHE_DIR', $_SERVER['DOCUMENT_ROOT'] . WE_NEWSLETTER_MODULE_DIR . '/cache/');

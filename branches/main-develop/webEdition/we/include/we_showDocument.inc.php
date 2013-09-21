@@ -25,15 +25,14 @@
 if(str_replace(dirname($_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME']) == str_replace(dirname(__FILE__), '', __FILE__)){
 	exit();
 }
-//FIXME:remove
-if(isset($GLOBALS['noSess']) && $GLOBALS['noSess'] && !defined('NO_SESS')){
+if(!defined('NO_SESS')){
 	define('NO_SESS', 1);
 }
 //leave this
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 
-//  Diese we_cmds werden auf den Seiten gespeichert und nicht �bergeben!!!!!
+//  Diese we_cmds werden auf den Seiten gespeichert und nicht übergeben!!!!!
 //  Sie kommen von showDoc.php
 $we_ID = intval(isset($_REQUEST['we_cmd'][1]) ? $_REQUEST['we_cmd'][1] : 0);
 $tmplID = intval(isset($_REQUEST['we_cmd'][4]) ? $_REQUEST['we_cmd'][4] : 0);
@@ -72,10 +71,6 @@ if(isset($_REQUEST['vers_we_obj'])){
 	// call session_start to init session, otherwise NO customer can exist
 	if(!isset($_SESSION)){
 		@session_start();
-		//FIXME: remove in 6.4; due to upgrade!
-		if(isset($_SESSION['we'])){
-			unset($_SESSION['we']);
-		}
 	}
 
 	if(($_visitorHasAccess = $we_doc->documentCustomerFilter->accessForVisitor($we_doc))){
@@ -102,8 +97,6 @@ $we_doc->EditPageNr = $we_editmode ? WE_EDITPAGE_CONTENT : WE_EDITPAGE_PREVIEW;
 if($tmplID && ($we_doc->ContentType == 'text/webedition')){ // if the document should displayed with an other template
 	$we_doc->setTemplateID($tmplID);
 }
-
-//$we_doc->setCache();
 
 if(($we_include = $we_doc->editor($baseHref))){
 	if(substr(strtolower($we_include), 0, strlen($_SERVER['DOCUMENT_ROOT'])) == strtolower($_SERVER['DOCUMENT_ROOT'])){

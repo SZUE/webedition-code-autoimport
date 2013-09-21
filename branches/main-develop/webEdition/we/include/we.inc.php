@@ -74,8 +74,6 @@ include_once (WE_INCLUDES_PATH . 'conf/we_active_integrated_modules.inc.php');
 if(empty($GLOBALS['_we_active_integrated_modules']) || !in_array('users', $GLOBALS['_we_active_integrated_modules'])){
 	include_once (WE_INCLUDES_PATH . 'conf/we_active_integrated_modules.inc.php.default');
 }
-//make sure we always load users
-$GLOBALS['_we_active_integrated_modules'][] = 'users';
 //$GLOBALS['_we_active_integrated_modules'][] = 'navigation';//TODO: remove when navigation is completely implemented as a module
 
 foreach($GLOBALS['_we_active_integrated_modules'] as $active){
@@ -102,7 +100,7 @@ if(!defined('NO_SESS')){
 
 if(defined('WE_WEBUSER_LANGUAGE')){
 	$GLOBALS['WE_LANGUAGE'] = WE_WEBUSER_LANGUAGE;
-} else{
+} else {
 	$sid = '';
 }
 //set new sessionID from dw-extension
@@ -116,28 +114,19 @@ if(!session_id() && !isset($GLOBALS['FROM_WE_SHOW_DOC']) && !defined('NO_SESS'))
 //	session_name(SESSION_NAME);
 	@session_start();
 }
-if(isset($_SESSION['prefs']['Language']) && $_SESSION['prefs']['Language'] != ''){
-	if(is_dir(WE_INCLUDES_PATH . 'we_language/' . $_SESSION['prefs']['Language'])){
-		$GLOBALS['WE_LANGUAGE'] = $_SESSION['prefs']['Language'];
-	} else{ //  bugfix #4229
-		$GLOBALS['WE_LANGUAGE'] = WE_LANGUAGE;
-		$_SESSION['prefs']['Language'] = WE_LANGUAGE;
-	}
-} else{
+if(isset($_SESSION['prefs']['Language']) && !empty($_SESSION['prefs']['Language'])){
+	$GLOBALS['WE_LANGUAGE'] = (is_dir(WE_INCLUDES_PATH . 'we_language/' . $_SESSION['prefs']['Language']) ?
+			$_SESSION['prefs']['Language'] :
+			//  bugfix #4229
+			($_SESSION['prefs']['Language'] = WE_LANGUAGE));
+} else {
 	$GLOBALS['WE_LANGUAGE'] = WE_LANGUAGE;
 }
-$GLOBALS['WE_BACKENDCHARSET'] = (isset($_SESSION['prefs']['BackendCharset']) && $_SESSION['prefs']['BackendCharset'] != '' ?
-		$_SESSION['prefs']['BackendCharset'] : 'UTF-8');
-
-if(in_array('shop', $GLOBALS['_we_active_integrated_modules'])){
-	$MNEMONIC_EDITPAGES[WE_EDITPAGE_VARIANTS] = 'variants';
-}
-if(in_array('customer', $GLOBALS['_we_active_integrated_modules'])){
-	$MNEMONIC_EDITPAGES[WE_EDITPAGE_WEBUSER] = 'customer';
-}
-
 
 if(!isset($GLOBALS['WE_IS_DYN'])){ //only true on dynamic frontend pages
+	$GLOBALS['WE_BACKENDCHARSET'] = (isset($_SESSION['prefs']['BackendCharset']) && $_SESSION['prefs']['BackendCharset'] != '' ?
+			$_SESSION['prefs']['BackendCharset'] : 'UTF-8');
+
 	include_once (WE_INCLUDES_PATH . 'define_styles.inc.php');
 	include_once (WE_INCLUDES_PATH . 'we_available_modules.inc.php');
 	//FIXME: needed by liveupdate, calls old protect directly remove in 6.4
@@ -176,7 +165,7 @@ if(!isset($GLOBALS['WE_IS_DYN'])){ //only true on dynamic frontend pages
 			default:
 				$header = true;
 		}
-	} else{
+	} else {
 		$header = !((isset($GLOBALS['show_stylesheet']) && $GLOBALS['show_stylesheet']));
 	}
 

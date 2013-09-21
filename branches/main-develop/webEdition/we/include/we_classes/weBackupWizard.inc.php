@@ -1323,7 +1323,7 @@ top.busy.location="' . $this->frameset . '?pnt=busy";' .
 					$ret = $we_backup_obj->makeBackup();
 					$temp_filename = $we_backup_obj->saveState($temp_filename);
 
-					$do_import_after_backup = (isset($_REQUEST["do_import_after_backup"]) && $_REQUEST["do_import_after_backup"]) ? 1 : 0;
+					$do_import_after_backup = (isset($_REQUEST['do_import_after_backup']) && $_REQUEST['do_import_after_backup']) ? 1 : 0;
 
 					switch($ret){
 						case 1:
@@ -1374,7 +1374,7 @@ function setLocation(loc){
 top.busy.location="' . $this->frameset . '?pnt=busy";' .
 								we_message_reporting::getShowMessageCall(sprintf(g_l('backup', "[cannot_save_tmpfile]"), BACKUP_DIR), we_message_reporting::WE_MESSAGE_ERROR)
 						);
-						return "";
+						return '';
 					}
 
 					$handle_options = array(

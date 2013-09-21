@@ -28,10 +28,6 @@ if(isset($_SERVER['SCRIPT_NAME']) && str_replace(dirname($_SERVER['SCRIPT_NAME']
 
 if(!isset($_SESSION)){
 	@session_start();
-	//FIXME: remove in 6.4; due to upgrade!
-	if(isset($_SESSION['we'])){
-		unset($_SESSION['we']);
-	}
 }
 if(!isset($_SESSION['weS'])){
 	$_SESSION['weS'] = array();

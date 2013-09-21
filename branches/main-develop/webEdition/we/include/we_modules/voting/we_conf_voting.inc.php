@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-define("VOTING_TABLE", TBL_PREFIX . "tblvoting");
-define("VOTING_LOG_TABLE", TBL_PREFIX . "tblvotinglog");
+define('VOTING_TABLE', TBL_PREFIX . 'tblvoting');
+define('VOTING_LOG_TABLE', TBL_PREFIX . 'tblvotinglog');
 
-define("WE_VOTING_MODULE_DIR", WE_MODULES_DIR . "voting/");
+define('WE_VOTING_MODULE_DIR', WE_MODULES_DIR . 'voting/');

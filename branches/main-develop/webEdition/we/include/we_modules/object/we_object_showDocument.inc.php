@@ -30,6 +30,7 @@ if(!defined('NO_SESS')){
 	define('NO_SESS', 1);
 }
 
+
 //leave this
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
@@ -178,10 +179,6 @@ if(isset($GLOBALS['we_obj']) && $GLOBALS['we_obj']->documentCustomerFilter && !i
 	// call session_start to init session, otherwise NO customer can exist
 	if(!isset($_SESSION)){
 		@session_start();
-		//FIXME: remove in 6.4; due to upgrade!
-		if(isset($_SESSION['we'])){
-			unset($_SESSION['we']);
-		}
 	}
 
 	if(($_visitorHasAccess = $GLOBALS['we_obj']->documentCustomerFilter->accessForVisitor($GLOBALS['we_obj']))){
@@ -192,9 +189,11 @@ if(isset($GLOBALS['we_obj']) && $GLOBALS['we_obj']->documentCustomerFilter && !i
 			$_errorDocId = $GLOBALS['we_obj']->documentCustomerFilter->getErrorDoc($_visitorHasAccess);
 
 			if(($_errorDocPath = id_to_path($_errorDocId, FILE_TABLE))){ // use given document instead !
+				if($_errorDocId){
+					unset($_errorDocId);
 				@include($_SERVER['DOCUMENT_ROOT'] . $_errorDocPath);
 				unset($_errorDocPath);
-				unset($_errorDocId);
+				}
 				return;
 			} else {
 				die('Customer has no access to this document');

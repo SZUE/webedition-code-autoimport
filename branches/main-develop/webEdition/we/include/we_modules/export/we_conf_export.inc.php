@@ -22,7 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-define("EXPORT_TABLE", TBL_PREFIX . "tblexport");
+define('EXPORT_TABLE', TBL_PREFIX . 'tblexport');
 
-define("WE_EXPORT_MODULE_DIR", WE_MODULES_DIR . "export/");
-
+define('WE_EXPORT_MODULE_DIR', WE_MODULES_DIR . 'export/');
