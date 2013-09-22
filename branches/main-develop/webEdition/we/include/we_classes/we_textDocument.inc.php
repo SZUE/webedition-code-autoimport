@@ -29,40 +29,38 @@ class we_textDocument extends we_document{
 	function __construct(){
 		parent::__construct();
 		array_push($this->EditPageNrs, WE_EDITPAGE_PROPERTIES, WE_EDITPAGE_INFO, WE_EDITPAGE_CONTENT, WE_EDITPAGE_VALIDATION, WE_EDITPAGE_VERSIONS);
-		$this->elements["Charset"]["dat"] = DEFAULT_CHARSET;
+		$this->elements['Charset']['dat'] = DEFAULT_CHARSET;
 		$this->Icon = we_base_ContentTypes::LINK_ICON;
 	}
 
 	/* must be called from the editor-script. Returns a filename which has to be included from the global-Script */
 
-	function editor($baseHref = true){
-		$GLOBALS["we_baseHref"] = $baseHref ? getServerUrl(true) . $this->Path : "";
-
+	function editor(){
 		switch($this->EditPageNr){
 			case WE_EDITPAGE_PROPERTIES:
-				return "we_templates/we_editor_properties.inc.php";
+				return 'we_templates/we_editor_properties.inc.php';
 			case WE_EDITPAGE_INFO:
-				return "we_templates/we_editor_info.inc.php";
+				return 'we_templates/we_editor_info.inc.php';
 			case WE_EDITPAGE_CONTENT:
-				$GLOBALS["we_editmode"] = true;
-				return "we_templates/we_srcTmpl.inc.php";
+				$GLOBALS['we_editmode'] = true;
+				return 'we_templates/we_srcTmpl.inc.php';
 			case WE_EDITPAGE_PREVIEW:
-				if($GLOBALS["we_EDITOR"]){
+				if($GLOBALS['we_EDITOR']){
 					$GLOBALS['we_file_to_delete_after_include'] = TEMP_PATH . '/' . weFile::getUniqueId() . $this->Extension;
-					we_util_File::saveFile($GLOBALS["we_file_to_delete_after_include"], $this->i_getDocument());
-					return $GLOBALS["we_file_to_delete_after_include"];
+					we_util_File::saveFile($GLOBALS['we_file_to_delete_after_include'], $this->i_getDocument());
+					return $GLOBALS['we_file_to_delete_after_include'];
 				} else {
-					$GLOBALS["we_editmode"] = false;
+					$GLOBALS['we_editmode'] = false;
 					return 'we_templates/we_srcTmpl.inc.php';
 				}
 			case WE_EDITPAGE_VALIDATION:
-				return "we_templates/validateDocument.inc.php";
+				return 'we_templates/validateDocument.inc.php';
 			case WE_EDITPAGE_VERSIONS:
-				return "we_versions/we_editor_versions.inc.php";
+				return 'we_versions/we_editor_versions.inc.php';
 			default:
 				$this->EditPageNr = WE_EDITPAGE_PROPERTIES;
 				$_SESSION['weS']['EditPageNr'] = WE_EDITPAGE_PROPERTIES;
-				return "we_templates/we_editor_properties.inc.php";
+				return 'we_templates/we_editor_properties.inc.php';
 		}
 		return $this->TemplatePath;
 	}
@@ -111,7 +109,7 @@ class we_textDocument extends we_document{
 						$less->setFormatter('classic');
 						try{
 							$doc = $less->compile($doc);
-						}catch(exception $e){
+						} catch (exception $e){
 							$this->errMsg = $e->getMessage();
 							return false;
 						}
@@ -122,7 +120,7 @@ class we_textDocument extends we_document{
 						$scss->setImportPaths(array('', $_SERVER['DOCUMENT_ROOT'] . $this->getParentPath(), $_SERVER['DOCUMENT_ROOT']));
 						try{
 							$doc = $scss->compile($doc);
-						}catch(exception $e){
+						} catch (exception $e){
 							$this->errMsg = $e->getMessage();
 							return false;
 						}

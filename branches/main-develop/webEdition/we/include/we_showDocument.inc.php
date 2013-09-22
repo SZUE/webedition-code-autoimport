@@ -36,9 +36,9 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 //  Sie kommen von showDoc.php
 $we_ID = intval(isset($_REQUEST['we_cmd'][1]) ? $_REQUEST['we_cmd'][1] : 0);
 $tmplID = intval(isset($_REQUEST['we_cmd'][4]) ? $_REQUEST['we_cmd'][4] : 0);
-$baseHref = addslashes(isset($_REQUEST['we_cmd'][5]) ? $_REQUEST['we_cmd'][5] : '');
+//these come from external!
 $we_editmode = addslashes(isset($_REQUEST['we_cmd'][6]) ? $_REQUEST['we_cmd'][6] : '');
-$createFromTmpFile = addslashes(isset($_REQUEST['we_cmd'][7]) ? $_REQUEST['we_cmd'][7] : '');
+//$createFromTmpFile = addslashes(isset($_REQUEST['we_cmd'][7]) ? $_REQUEST['we_cmd'][7] : '');
 
 $we_Table = FILE_TABLE;
 
@@ -92,13 +92,14 @@ if(isset($_REQUEST['vers_we_obj'])){
 	}
 }
 
+//FIXME: is this relevant at this point?!
 $we_doc->EditPageNr = $we_editmode ? WE_EDITPAGE_CONTENT : WE_EDITPAGE_PREVIEW;
 
 if($tmplID && ($we_doc->ContentType == 'text/webedition')){ // if the document should displayed with an other template
 	$we_doc->setTemplateID($tmplID);
 }
 
-if(($we_include = $we_doc->editor($baseHref))){
+if(($we_include = $we_doc->editor())){
 	if(substr(strtolower($we_include), 0, strlen($_SERVER['DOCUMENT_ROOT'])) == strtolower($_SERVER['DOCUMENT_ROOT'])){
 		if((!defined('WE_CONTENT_TYPE_SET')) && isset($we_doc->elements['Charset']['dat']) && $we_doc->elements['Charset']['dat']){ //	send charset which might be determined in template
 			define('WE_CONTENT_TYPE_SET', 1);
@@ -112,7 +113,7 @@ if(($we_include = $we_doc->editor($baseHref))){
 		if($useBuffer){
 			ob_start();
 		}
-		include ($we_include);
+		include($we_include);
 		if($useBuffer){
 			$content = ob_get_contents();
 			ob_end_clean();

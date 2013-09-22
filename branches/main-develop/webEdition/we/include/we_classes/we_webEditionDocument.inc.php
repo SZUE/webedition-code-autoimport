@@ -167,13 +167,12 @@ class we_webEditionDocument extends we_textContentDocument{
 		$this->IsDynamic = $IsDynamic;
 	}
 
-	function editor($baseHref = true){
-		$GLOBALS["we_baseHref"] = $baseHref ? getServerUrl(true) . $this->Path : '';
+	function editor(){
 		switch($this->EditPageNr){
 			case WE_EDITPAGE_PROPERTIES:
 				return 'we_templates/we_editor_properties.inc.php';
 			case WE_EDITPAGE_INFO:
-				if(isset($GLOBALS["WE_MAIN_DOC"])){
+				if(isset($GLOBALS['WE_MAIN_DOC'])){
 					$GLOBALS["WE_MAIN_DOC"]->InWebEdition = true; //Bug 3417
 				}
 				return 'we_templates/we_editor_info.inc.php';
@@ -191,7 +190,7 @@ class we_webEditionDocument extends we_textContentDocument{
 			case WE_EDITPAGE_WEBUSER:
 				return 'we_modules/customer/editor_weDocumentCustomerFilter.inc.php';
 			default:
-				return parent::editor($baseHref);
+				return parent::editor();
 		}
 		return preg_replace('/.tmpl$/i', '.php', $this->TemplatePath); // .tmpl mod
 	}
@@ -725,10 +724,6 @@ class we_webEditionDocument extends we_textContentDocument{
 		$this->InWebEdition = false;
 		$this->EditPageNr = WE_EDITPAGE_PREVIEW;
 		$we_include = $includepath ? $includepath : $this->editor();
-		if(isset($GLOBALS['we_baseHref'])){
-			$basehrefMerk = $GLOBALS['we_baseHref'];
-			unset($GLOBALS['we_baseHref']);
-		}
 		ob_start();
 		if(is_file($we_include)){
 			include($we_include);
@@ -737,10 +732,6 @@ class we_webEditionDocument extends we_textContentDocument{
 		}
 		$contents = ob_get_contents();
 		ob_end_clean();
-		if(isset($basehrefMerk)){
-			$GLOBALS['we_baseHref'] = $basehrefMerk;
-			unset($basehrefMerk);
-		}
 		$this->EditPageNr = $editpageSave;
 		$this->InWebEdition = $inWebEditonSave;
 
@@ -817,7 +808,7 @@ class we_webEditionDocument extends we_textContentDocument{
 			return '<?php
 if(!defined(\'NO_SESS\')){define(\'NO_SESS\',1);}
 $GLOBALS[\'WE_IS_DYN\'] = 1;
-$GLOBALS[\'we_transaction\'] = \'\';
+$GLOBALS[\'we_transaction\'] = 0;
 $GLOBALS[\'we_ContentType\'] = \'text/webedition\';
 $_REQUEST[\'we_cmd\'] = array();
 

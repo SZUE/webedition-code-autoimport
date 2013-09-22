@@ -39,8 +39,7 @@ abstract class we_textContentDocument extends we_textDocument{
 		array_push($this->EditPageNrs, WE_EDITPAGE_PREVIEW, WE_EDITPAGE_SCHEDULER);
 	}
 
-	function editor($baseHref = true){
-		$GLOBALS['we_baseHref'] = $baseHref ? getServerUrl() . $this->Path : '';
+	function editor(){
 		switch($this->EditPageNr){
 			case WE_EDITPAGE_SCHEDULER:
 				return 'we_modules/schedule/we_editor_schedpro.inc.php';
@@ -48,7 +47,7 @@ abstract class we_textContentDocument extends we_textDocument{
 				return 'we_templates/validateDocument.inc.php';
 				break;
 			default:
-				return parent::editor($baseHref);
+				return parent::editor();
 		}
 	}
 
