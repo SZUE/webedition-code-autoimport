@@ -53,7 +53,7 @@ class weImageDialog extends weDialog{
 		$this->noInternals = $noInternals;
 	}
 
-	function initBySrc($src, $width = "", $height = "", $hspace = "", $vspace = "", $border = "", $alt = "", $align = "", $name = "", $class = "", $title = "", $longdesc = ""){
+	function initBySrc($src, $width = 0, $height = 0, $hspace = 0, $vspace = 0, $border = 0, $alt = '', $align = '', $name = '', $class = '', $title = '', $longdesc = ''){
 		if($src){
 			$this->args['src'] = $src;
 			$tokkens = explode('?', $src);
@@ -94,111 +94,111 @@ class weImageDialog extends weDialog{
 		$this->initAttributes($width, $height, $hspace, $vspace, $border, $alt, $align, $name, $class, $title, $longdesc);
 	}
 
-	function initAttributes($width = 0, $height = 0, $hspace = 0, $vspace = 0, $border = 0, $alt = "", $align = "", $name = "", $class = "", $title = "", $longdesc = ""){
-		$tokkens = explode("?", $longdesc);
-		$longdescid = "";
+	function initAttributes($width = 0, $height = 0, $hspace = 0, $vspace = 0, $border = 0, $alt = '', $align = '', $name = '', $class = '', $title = '', $longdesc = ''){
+		$tokkens = explode('?', $longdesc);
+		$longdescid = '';
 		if(count($tokkens) == 2){
-			$foo = explode("=", $tokkens[1]);
+			$foo = explode('=', $tokkens[1]);
 			if(count($foo) == 2){
-				if($foo[0] == "id"){
+				if($foo[0] == 'id'){
 					$longdescid = $foo[1];
 				}
 			}
 		}
 
-		$this->args["width"] = $width;
-		$this->args["height"] = $height;
-		$this->args["hspace"] = $hspace;
-		$this->args["vspace"] = $vspace;
-		$this->args["border"] = $border;
-		$this->args["alt"] = $alt;
-		$this->args["align"] = $align;
-		$this->args["name"] = $name;
-		$this->args["class"] = $class;
-		$this->args["title"] = $title;
-		$this->args["longdesc"] = $longdesc;
-		$this->args["longdescid"] = $longdescid;
-		$this->args["longdescsrc"] = ($longdesc ? $tokkens[0] : '');
-		$this->args["ratio"] = isset($_REQUEST["we_dialog_args"]["ratio"]) ? $_REQUEST["we_dialog_args"]["ratio"] : 1;
+		$this->args['width'] = $width;
+		$this->args['height'] = $height;
+		$this->args['hspace'] = $hspace;
+		$this->args['vspace'] = $vspace;
+		$this->args['border'] = $border;
+		$this->args['alt'] = $alt;
+		$this->args['align'] = $align;
+		$this->args['name'] = $name;
+		$this->args['class'] = $class;
+		$this->args['title'] = $title;
+		$this->args['longdesc'] = $longdesc;
+		$this->args['longdescid'] = $longdescid;
+		$this->args['longdescsrc'] = ($longdesc ? $tokkens[0] : '');
+		$this->args['ratio'] = isset($_REQUEST['we_dialog_args']['ratio']) ? $_REQUEST['we_dialog_args']['ratio'] : 1;
 	}
 
-	function initByFileID($fileID, $width = 0, $height = 0, $hspace = 0, $vspace = 0, $border = 0, $alt = "", $align = "", $name = "", $thumb = "", $class = "", $title = "", $longdesc = ""){
+	function initByFileID($fileID, $width = 0, $height = 0, $hspace = 0, $vspace = 0, $border = 0, $alt = '', $align = '', $name = '', $thumb = '', $class = '', $title = '', $longdesc = ''){
 		if($fileID){
-			$this->args["type"] = we_base_link::TYPE_INT;
-			$this->args["extSrc"] = '';
-			$this->args["fileID"] = $fileID;
+			$this->args['type'] = we_base_link::TYPE_INT;
+			$this->args['extSrc'] = '';
+			$this->args['fileID'] = $fileID;
 			if($thumb){
 				$thumbObj = new we_thumbnail();
 				$thumbObj->initByImageIDAndThumbID($fileID, $thumb);
 				$thumbpath = $thumbObj->getOutputPath();
-				$this->args["thumbnail"] = $thumb;
-				$this->args["fileSrc"] = id_to_path($fileID);
-				$this->args["src"] = $thumbpath . "?thumb=" . $fileID . "," . $thumb;
+				$this->args['thumbnail'] = $thumb;
+				$this->args['fileSrc'] = id_to_path($fileID);
+				$this->args['src'] = $thumbpath . '?thumb=' . $fileID . ',' . $thumb;
 				$width = $thumbObj->getOutputWidth();
 				$height = $thumbObj->getOutputHeight();
 				unset($thumbObj);
 			} else{
-				$this->args["thumbnail"] = '';
-				$this->args["fileSrc"] = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($this->args["fileID"]), "Path", $this->db);
-				$this->args["src"] = $this->args["fileSrc"] . '?id=' . $fileID;
+				$this->args['thumbnail'] = '';
+				$this->args['fileSrc'] = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($this->args['fileID']), 'Path', $this->db);
+				$this->args['src'] = $this->args['fileSrc'] . '?id=' . $fileID;
 			}
-			$this->args["ratio"] = "1";
+			$this->args['ratio'] = 1;
 		}
 		$this->initAttributes($width, $height, $hspace, $vspace, $border, $alt, $align, $name, $class, $title, $longdesc);
 	}
 
 	function initByHttp(){
 		weDialog::initByHttp();
-		$src = $this->getHttpVar("src");
-		$width = $this->getHttpVar("width");
-		$height = $this->getHttpVar("height");
-		$hspace = $this->getHttpVar("hspace");
-		$vspace = $this->getHttpVar("vspace");
-		$class = $this->getHttpVar("class");
-		$title = $this->getHttpVar("title");
-		$longdescsrc = $this->getHttpVar("longdescsrc");
-		$longdescid = $this->getHttpVar("longdescid");
+		$src = $this->getHttpVar('src');
+		$width = $this->getHttpVar('width');
+		$height = $this->getHttpVar('height');
+		$hspace = $this->getHttpVar('hspace');
+		$vspace = $this->getHttpVar('vspace');
+		$class = $this->getHttpVar('class');
+		$title = $this->getHttpVar('title');
+		$longdescsrc = $this->getHttpVar('longdescsrc');
+		$longdescid = $this->getHttpVar('longdescid');
 		if($longdescsrc && $longdescid){
-			$longdesc = $longdescsrc . "?id=" . $longdescid;
+			$longdesc = $longdescsrc . '?id=' . $longdescid;
 		} else{
-			$longdesc = $this->getHttpVar("longdesc");
+			$longdesc = $this->getHttpVar('longdesc');
 		}
-		$border = $this->getHttpVar("border");
-		$alt = $this->getHttpVar("alt");
-		$align = $this->getHttpVar("align");
-		$name = $this->getHttpVar("name");
-		$type = $this->getHttpVar("type");
-		$thumbnail = $this->getHttpVar("thumbnail");
+		$border = $this->getHttpVar('border');
+		$alt = $this->getHttpVar('alt');
+		$align = $this->getHttpVar('align');
+		$name = $this->getHttpVar('name');
+		$type = $this->getHttpVar('type');
+		$thumbnail = $this->getHttpVar('thumbnail');
 
 		$type = ($type ? $type : we_base_link::TYPE_EXT);
 		if($src && !$thumbnail){
 			$this->initBySrc($src, $width, $height, $hspace, $vspace, $border, $alt, $align, $name, $class, $title, $longdesc);
 		} else if($type){
-			$fileID = $this->getHttpVar("fileID");
+			$fileID = $this->getHttpVar('fileID');
 
 			switch($type){
 				case we_base_link::TYPE_EXT:
-					$extSrc = $this->getHttpVar("extSrc", "");
+					$extSrc = $this->getHttpVar('extSrc', '');
 					$this->initBySrc($extSrc, $width, $height, $hspace, $vspace, $border, $alt, $align, $name, $class, $title, $longdesc);
 					break;
 				case we_base_link::TYPE_INT:
-					if(isset($_REQUEST["imgChangedCmd"]) && $_REQUEST["imgChangedCmd"] && $fileID){
+					if(isset($_REQUEST['imgChangedCmd']) && $_REQUEST['imgChangedCmd'] && $fileID){
 						$imgpath = $_SERVER['DOCUMENT_ROOT'] . id_to_path($fileID);
 						$imgObj = new we_imageDocument();
 						$imgObj->initByID($fileID);
 
-						$preserveData = ($_REQUEST["wasThumbnailChange"] || $_REQUEST["isTinyMCEInitialization"]);
-						$width = $imgObj->getElement("width");
-						$height = $imgObj->getElement("height");
-						$alt = $preserveData ? $alt : $imgObj->getElement("alt");
-						$hspace = $preserveData ? $hspace : $imgObj->getElement("hspace");
-						$vspace = $preserveData ? $vspace : $imgObj->getElement("vspace");
-						$title = $preserveData ? $title : $imgObj->getElement("title");
-						$name = $preserveData ? $name : $imgObj->getElement("name");
-						$align = $preserveData ? $align : $imgObj->getElement("align");
-						$border = $preserveData ? $border : $imgObj->getElement("border");
-						$longdesc = $preserveData ? $longdesc : ($imgObj->getElement("longdescid") ? (id_to_path($imgObj->getElement("longdescid")) . "?id=" . $imgObj->getElement("longdescid")) : $longdesc);
-						$alt = $preserveData ? $alt : f("SELECT " . CONTENT_TABLE . ".Dat as Dat FROM " . CONTENT_TABLE . "," . LINK_TABLE . " WHERE " . LINK_TABLE . ".CID=" . CONTENT_TABLE . ".ID AND " . LINK_TABLE . ".DocumentTable='" . stripTblPrefix(FILE_TABLE) . "' AND " . LINK_TABLE . ".DID=" . intval($fileID) . " AND " . LINK_TABLE . ".Name='alt'", "Dat", $this->db);
+						$preserveData = ($_REQUEST['wasThumbnailChange'] || $_REQUEST['isTinyMCEInitialization']);
+						$width = $imgObj->getElement('width');
+						$height = $imgObj->getElement('height');
+						$alt = $preserveData ? $alt : $imgObj->getElement('alt');
+						$hspace = $preserveData ? $hspace : $imgObj->getElement('hspace');
+						$vspace = $preserveData ? $vspace : $imgObj->getElement('vspace');
+						$title = $preserveData ? $title : $imgObj->getElement('title');
+						$name = $preserveData ? $name : $imgObj->getElement('name');
+						$align = $preserveData ? $align : $imgObj->getElement('align');
+						$border = $preserveData ? $border : $imgObj->getElement('border');
+						$longdesc = $preserveData ? $longdesc : ($imgObj->getElement('longdescid') ? (id_to_path($imgObj->getElement('longdescid')) . '?id=' . $imgObj->getElement('longdescid')) : $longdesc);
+						$alt = $preserveData ? $alt : f('SELECT ' . CONTENT_TABLE . '.Dat as Dat FROM ' . CONTENT_TABLE . ',' . LINK_TABLE . ' WHERE ' . LINK_TABLE . '.CID=' . CONTENT_TABLE . '.ID AND ' . LINK_TABLE . ".DocumentTable='" . stripTblPrefix(FILE_TABLE) . "' AND " . LINK_TABLE . ".DID=" . intval($fileID) . " AND " . LINK_TABLE . ".Name='alt'", "Dat", $this->db);
 					}
 					$this->initByFileID($fileID, $width, $height, $hspace, $vspace, $border, $alt, $align, $name, $thumbnail, $class, $title, $longdesc);
 					break;
@@ -209,20 +209,20 @@ class weImageDialog extends weDialog{
 	}
 
 	function defaultInit(){
-		$this->args["src"] = "";
-		$this->args["width"] = "";
-		$this->args["height"] = "";
-		$this->args["hspace"] = "";
-		$this->args["vspace"] = "";
-		$this->args["class"] = "";
-		$this->args["title"] = "";
-		$this->args["longdesc"] = "";
-		$this->args["border"] = "";
-		$this->args["alt"] = "";
-		$this->args["align"] = "";
-		$this->args["name"] = "";
-		$this->args["type"] = we_base_link::TYPE_EXT;
-		$this->args["ratio"] = "1";
+		$this->args['src'] = '';
+		$this->args['width'] = 0;
+		$this->args['height'] = 0;
+		$this->args['hspace'] = 0;
+		$this->args['vspace'] = 0;
+		$this->args['class'] = '';
+		$this->args['title'] = '';
+		$this->args['longdesc'] = '';
+		$this->args['border'] = 0;
+		$this->args['alt'] = '';
+		$this->args['align'] = '';
+		$this->args['name'] = '';
+		$this->args['type'] = we_base_link::TYPE_EXT;
+		$this->args['ratio'] = 1;
 	}
 
 	/* use parent
@@ -235,12 +235,12 @@ class weImageDialog extends weDialog{
 
 	function getDialogContentHTML(){
 		$yuiSuggest = & weSuggest::getInstance();
-		if($this->noInternals || (isset($this->args["outsideWE"]) && $this->args["outsideWE"] == "1")){
+		if($this->noInternals || (isset($this->args['outsideWE']) && $this->args['outsideWE'] == 1)){
 			$extSrc = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[extSrc]", 30, (isset($this->args["extSrc"]) ? $this->args["extSrc"] : ""), "", "", "text", 410), "", "left", "defaultfont", we_html_tools::getPixel(10, 2), "", "", "", "", 0);
-			$intSrc = "";
-			$thumbnails = "";
+			$intSrc = '';
+			$thumbnails = '';
 
-			$_longdesc = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[longdesc]", 30, str_replace('"', '&quot;', (isset($this->args["longdesc"]) ? $this->args["longdesc"] : "")), "", '', "text", 520), g_l('weClass', "[longdesc_text]"));
+			$_longdesc = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('we_dialog_args[longdesc]', 30, str_replace('"', '&quot;', (isset($this->args["longdesc"]) ? $this->args["longdesc"] : "")), "", '', "text", 520), g_l('weClass', "[longdesc_text]"));
 		} else{
 			//javascript:we_cmd('browse_server','document.we_form.elements[\\'we_dialog_args[extSrc]\\'].value','',document.we_form.elements['we_dialog_args[extSrc]'].value,'opener.document.we_form.elements[\\'we_dialog_args[type]\\'][0].checked=true;opener.imageChanged();')
 			$wecmdenc1 = we_cmd_enc("document.we_form.elements['we_dialog_args[extSrc]'].value");
