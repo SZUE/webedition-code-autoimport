@@ -188,7 +188,7 @@ switch($_SESSION['prefs']['editorMode']){
 						});
 		<?php }else{ //FIX for CM which doesn't display lines beyond 27 if this line is missing.... ?>
 						hlLine = editor.addLineClass(0, "background", "");
-		
+
 		<?php } ?>
 					editor.on("change", function() {
 						//this wil save content from CodeMirror2 to our original <textarea>.
@@ -666,8 +666,9 @@ var CMoptions = { //these are the CodeMirror options
 	tabSize: ' . intval($_SESSION['prefs']['editorTabSize']) . ',
 	indentUnit: ' . intval($_SESSION['prefs']['editorTabSize']) . ',
 	matchBrackets: true,
-	workTime: 300,
-	workDelay: 800,
+/*	workTime: 300,
+	workDelay: 800,*/
+	dragDrop: false,
 	height: ' . intval(($_SESSION["prefs"]["editorHeight"] != 0) ? $_SESSION["prefs"]["editorHeight"] : 320) . ',
 	lineWrapping:' . ($_SESSION['weS']['we_wrapcheck'] ? 'true' : 'false') . ',
 	autoCloseTags: ' . ($_SESSION['prefs']['editorDocuintegration'] ? 'true' : 'false') . ', // use object with indentTags to indent these tags
