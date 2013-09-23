@@ -54,7 +54,7 @@ class weImageDialog extends weDialog{
 	}
 
 	function initBySrc($src, $width = "", $height = "", $hspace = "", $vspace = "", $border = "", $alt = "", $align = "", $name = "", $class = "", $title = "", $longdesc = ""){
-		if($src){t_e("initBySrc");
+		if($src){
 			$this->args['src'] = $src;
 			$tokkens = explode('?', $src);
 			$id = '';
