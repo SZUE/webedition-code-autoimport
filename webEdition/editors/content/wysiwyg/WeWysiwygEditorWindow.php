@@ -35,7 +35,7 @@ if(isset($fieldName) && isset($_REQUEST["we_okpressed"]) && $_REQUEST["we_okpres
 	$newHTMLencA = base64_encode(oldHtmlspecialchars($newHTMLoldA));
 	$newHTMLencB = base64_encode($newHTMLoldB);
 	?>
-	<script language="JavaScript" type="text/javascript">
+	<script type="text/javascript">
 		if (opener.document.getElementById('<?php print $_REQUEST["we_cmd"][1]; ?>')) {
 			opener.we_ui_controls_WeWysiwygEditor.setData('<?php print $_REQUEST["we_cmd"][1]; ?>', '<?php print $newHTMLencA; ?>');
 		}
