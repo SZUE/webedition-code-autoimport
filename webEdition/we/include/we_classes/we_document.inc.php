@@ -1380,24 +1380,8 @@ class we_document extends we_root{
 	 * functions for scheduler pro
 	 */
 
-	function createEmptySchedule(){
-		return array(
-			'task' => 1,
-			'type' => 0,
-			'months' => array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
-			'days' => array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
-			'weekdays' => array(0, 0, 0, 0, 0, 0, 0),
-			'time' => time(),
-			'CategoryIDs' => '',
-			'DoctypeID' => 0,
-			'ParentID' => 0,
-			'active' => 1,
-			'doctypeAll' => 0,
-		);
-	}
-
 	function add_schedule(){
-		$this->schedArr[] = $this->createEmptySchedule();
+		$this->schedArr[] = we_schedpro::getEmptyEntry();
 	}
 
 	function del_schedule($nr){
@@ -1411,8 +1395,11 @@ class we_document extends we_root{
 			foreach($_REQUEST as $n => $v){
 				if(preg_match('/^we_schedule_([^\[]+)$/', $n, $regs)){
 					$rest = $regs[1];
-					$nr = preg_replace('/^.+_([0-9])+$/', ' \1', $rest);
 					$sw = explode('_', $rest);
+					$nr = end($sw);
+					if(!isset($this->schedArr[$nr])){
+						$this->schedArr[$nr] = array();
+					}
 					switch($sw[0]){
 						case 'task':
 							$this->schedArr[$nr]['task'] = $v;
@@ -1433,25 +1420,20 @@ class we_document extends we_root{
 							$this->schedArr[$nr]['ParentID'] = $v;
 							break;
 						case 'time':
-							$rest = substr($rest, 5);
-							$foo = preg_replace('/^([^_]+)_[0-9]+$/', '\1', $rest);
-							if(!(isset($dates[$nr]) && is_array($dates[$nr]))){
+							if((!isset($dates[$nr]) || !is_array($dates[$nr]))){
 								$dates[$nr] = array();
 							}
-							$dates[$nr][$foo] = $v;
+							$dates[$nr][$sw[1]] = $v;
 							break;
 						default:
 							if(substr($sw[0], 0, 5) == 'month'){
-								$rest = substr($sw[0], 5);
-								$d = preg_replace('/^([^_]+)_[0-9]+$/', '\1', $rest);
+								$d = intval(substr($sw[0], 5));
 								$this->schedArr[$nr]['months'][$d - 1] = $v;
 							} else if(substr($sw[0], 0, 3) == 'day'){
-								$rest = substr($sw[0], 3);
-								$d = preg_replace('/^([^_]+)_[0-9]+$/', '\1', $rest);
+								$d = intval(substr($sw[0], 3));
 								$this->schedArr[$nr]['days'][$d - 1] = $v;
 							} else if(substr($sw[0], 0, 4) == 'wday'){
-								$rest = substr($sw[0], 4);
-								$d = preg_replace('/^([^_]+)_[0-9]+$/', '\1', $rest);
+								$d = intval(substr($sw[0], 4));
 								$this->schedArr[$nr]['weekdays'][$d - 1] = $v;
 							}
 					}
@@ -1513,6 +1495,7 @@ class we_document extends we_root{
 				}
 			}
 		}
+		t_e($this->schedArr);
 	}
 
 	/**
