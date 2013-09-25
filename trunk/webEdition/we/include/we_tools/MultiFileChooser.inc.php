@@ -67,8 +67,8 @@ class MultiFileChooser extends MultiDirChooser{
 						if(in_array($id, $DisArr)){
 							$trash = we_button::create_button("image:btn_function_trash", "javascript:if(typeof(_EditorFrame)!='undefined')_EditorFrame.setEditorIsHot(true);" . ($this->extraDelFn ? $this->extraDelFn : "") . ";we_cmd('" . $this->cmd_del . "','$id');", true, 100, 22, "", "", true);
 
-							$table->setCol($c, 0, array("title" => $this->disbledDelReason), we_html_element::htmlImg(array("src" => ICON_DIR . (@is_dir($id) ? "folder" : "link") . ".gif", "width" => 16, "height" => 18)));
-							$table->setCol($c, 1, array("class" => $this->css, "title" => $this->disbledDelReason), $id);
+							$table->setCol($c, 0, array("title" => $this->disabledDelReason), we_html_element::htmlImg(array("src" => ICON_DIR . (@is_dir($id) ? "folder" : "link") . ".gif", "width" => 16, "height" => 18)));
+							$table->setCol($c, 1, array("class" => $this->css, "title" => $this->disabledDelReason), $id);
 						} else {
 							$trash = we_button::create_button("image:btn_function_trash", "javascript:if(typeof(_EditorFrame)!='undefined')_EditorFrame.setEditorIsHot(true);" . ($this->extraDelFn ? $this->extraDelFn : "") . ";we_cmd('" . $this->cmd_del . "','$id');");
 
