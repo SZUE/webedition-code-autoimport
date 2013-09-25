@@ -1495,7 +1495,6 @@ class we_document extends we_root{
 				}
 			}
 		}
-		t_e($this->schedArr);
 	}
 
 	/**
