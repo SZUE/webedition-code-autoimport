@@ -121,11 +121,10 @@ class we_flashDocument extends we_binaryDocument{
 				$allowedAtts = $this->ObjectParamNames;
 				$filter = array('alt', 'parentid', 'startid');
 
-				foreach($this->nextElement('attrib') as $k => $v){
-
-					if(in_array($k, $allowedAtts)){ //  use as name='value'
+				while(list($k, $v) = $this->nextElement('attrib')){
+					if(in_array($k, $allowedAtts, true)){ //  use as name='value'
 						$attribs[$k] = $v['dat'];
-					} else if(!in_array($k, $filter)){ //  use as <param>
+					} else if(!in_array($k, $filter, true) && isset($v['dat'])){ //  use as <param>
 						$params[$k] = $v['dat'];
 					}
 				}
@@ -159,7 +158,7 @@ class we_flashDocument extends we_binaryDocument{
 			$params['movie'] = $src; //  always needed
 			$params = removeAttribs($params, array('xml', 'to', 'nameto'));
 
-			foreach($params AS $k => $v){
+			foreach($params as $k => $v){
 				if($v !== ''){
 					$this->html .= getHtmlTag('param', array('name' => $k, 'value' => $v, 'xml' => $this->getElement('xml')));
 				}
