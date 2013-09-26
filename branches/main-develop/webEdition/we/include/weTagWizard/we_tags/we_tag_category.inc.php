@@ -25,3 +25,4 @@ $this->Attributes[] = new weTagData_textAttribute('onlyindir', false, '');
 $this->Attributes[] = (defined('CATEGORY_TABLE') ? new weTagData_selectorAttribute('id', CATEGORY_TABLE, '', false, '') : null);
 $this->Attributes[] = new weTagData_textAttribute('separator', false, '');
 $this->Attributes[] = new weTagData_textAttribute('name', false, '');
+$this->Attributes[] = new weTagData_selectAttribute('multiple', weTagData_selectAttribute::getTrueFalse(), false, '');
