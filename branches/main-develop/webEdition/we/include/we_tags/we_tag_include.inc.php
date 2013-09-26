@@ -81,7 +81,6 @@ function we_tag_include($attribs){
 	$id = weTag_getAttribute('id', $attribs);
 	$path = weTag_getAttribute('path', $attribs);
 	$name = weTag_getAttribute('name', $attribs);
-	$rootdir = weTag_getAttribute('rootdir', $attribs, '/');
 	$gethttp = weTag_getAttribute('gethttp', $attribs, false, true);
 	$seeMode = weTag_getAttribute((isset($attribs['seem']) ? 'seem' : 'seeMode'), $attribs, true, true);
 	$isDynamic = true;
@@ -100,7 +99,7 @@ function we_tag_include($attribs){
 			$description = weTag_getAttribute('description', $attribs, g_l('tags', '[include_file]'));
 
 			echo '<table style="background: #006DB8;border:0px;padding:0px;"><tr><td style="padding: 3px;' . $style . '">' . '&nbsp;' . $description . '</td></tr><tr><td>' .
-			we_tag('href', array('name' => $_name, 'rootdir' => $rootdir, 'type' => $type)) .
+			we_tag('href', array('name' => $_name, 'rootdir' => weTag_getAttribute('rootdir', $attribs, '/'), 'startid' => weTag_getAttribute('startid', $attribs, 0), 'type' => $type)) .
 			'</td></tr></table>';
 			return '';
 		}
@@ -108,7 +107,7 @@ function we_tag_include($attribs){
 		if($name && !($id || $path)){
 			$db = $GLOBALS['DB_WE'];
 			$_name = weTag_getAttribute('_name_orig', $attribs);
-			$path = we_tag('href', array('name' => $_name, 'rootdir' => $rootdir, 'hidedirindex' => 'false'));
+			$path = we_tag('href', array('name' => $_name, 'hidedirindex' => 'false'));
 			$nint = $name . we_base_link::MAGIC_INT_LINK;
 			$int = ($GLOBALS['we_doc']->getElement($nint) == '') ? 0 : $GLOBALS['we_doc']->getElement($nint);
 			$intID = $GLOBALS['we_doc']->getElement($nint . 'ID');
