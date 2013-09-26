@@ -22,10 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_parse_tag_include($attribs){
-	return '<?php eval(' . we_tag_tagParser::printTag('include', $attribs) . ');?>';
-}
-
 function we_setBackVar($we_unique){
 	$GLOBALS['we']['backVars'][$we_unique] = array(
 		'we_doc' => clone($GLOBALS['we_doc']),
@@ -103,7 +99,7 @@ function we_tag_include($attribs){
 			$_name = weTag_getAttribute('_name_orig', $attribs);
 			$description = weTag_getAttribute('description', $attribs, g_l('tags', '[include_file]'));
 
-			echo '<table style="background: #006DB8;border:0px;padding:0px;"><tr><td style="padding: 3px;'.$style.'">' . '&nbsp;' . $description . '</td></tr><tr><td>' .
+			echo '<table style="background: #006DB8;border:0px;padding:0px;"><tr><td style="padding: 3px;' . $style . '">' . '&nbsp;' . $description . '</td></tr><tr><td>' .
 			we_tag('href', array('name' => $_name, 'rootdir' => $rootdir, 'type' => $type)) .
 			'</td></tr></table>';
 			return '';
@@ -161,35 +157,38 @@ function we_tag_include($attribs){
 					}
 				}
 			}
-			$content = file_get_contents($realPath);
 		}
 
 		if(isset($GLOBALS['we']['backVars']) && count($GLOBALS['we']['backVars'])){
 			end($GLOBALS['we']['backVars']);
 			$we_unique = key($GLOBALS['we']['backVars']) + 1;
+//create empty array
+			$GLOBALS['we']['backVars'][$we_unique] = array();
 		} else {
 			$we_unique = 1;
-			$GLOBALS['we']['backVars'] = array();
-		}
-//create empty array
-		$GLOBALS['we']['backVars'][$we_unique] = array();
-
-
-		if(we_tag('ifSeeMode')){
-			if($seeMode){ //	only show link to seeMode, when id is given
-				$content .= ($id ?
-						'<a href="' . $id . '" seem="include"></a>' :
-						($path ? '<a href="' . path_to_id($path) . '" seem="include"></a>' :
-							''));
-			}
-
-			$content = preg_replace('|< */? *form[^>]*>|i', '', $content);
+			$GLOBALS['we']['backVars'] = array(
+				$we_unique => array()
+			);
 		}
 
-//FIXME: change eval to simple include, if not http; or move http-include to tmp-folder & include
-		return 'we_setBackVar(' . $we_unique . ');' .
-			'eval(\'?>' . str_replace('\'', "\'", $content) . '\');' .
-			'we_resetBackVar(' . $we_unique . ');';
+		we_setBackVar($we_unique);
+		ob_start();
+		if(isset($content)){
+			eval('?>' . $content);
+		} else {
+			include($realPath);
+		}
+		$content = ob_get_contents();
+		ob_end_clean();
+		we_resetBackVar($we_unique);
+		return (we_tag('ifSeeMode') ?
+				preg_replace('|< */? *form[^>]*>|i', '', $content . ($seeMode ? //	only show link to seeMode, when id is given
+						($id ?
+							'<a href="' . $id . '" seem="include"></a>' :
+							($path ? '<a href="' . path_to_id($path) . '" seem="include"></a>' :
+								'')) :
+						'')) :
+				$content);
 	}
 	return '';
 }
