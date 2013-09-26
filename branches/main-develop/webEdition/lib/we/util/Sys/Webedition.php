@@ -78,28 +78,13 @@ class we_util_Sys_Webedition extends we_util_Sys{
 			return -1;
 		}
 
-		// all modules available for webEdition:
-		try{
-			include_once WE_INCLUDES_PATH . 'we_available_modules.inc.php';
-		} catch (Exception $e){
-			/**
-			 * @see we_util_Sys_Exception
-			 */
-			throw new we_util_sys_Exception('could not read module information from we_available_modules.inc.php.');
-			return -1;
-		}
-		if(!in_array($property, $_we_available_modules)){
+		if(!weModuleInfo::isModuleInstalled($property)){
 			return -1;
 		}
 
 		// integrated modules (free of charge, can be deactivated in webEdition preferences):
 		// users, schedule, editor, banner, export, voting, spellchecker, glossary
-
-		if(in_array($property, $GLOBALS['_we_active_integrated_modules'])){
-			return 1;
-		} else {
-			return 0;
-		}
+		return (weModuleInfo::isActive($property) ? 1 : 0);
 	}
 
 	/**
@@ -128,16 +113,7 @@ class we_util_Sys_Webedition extends we_util_Sys{
 	 * @return array a list of all available webEdition modules or (bool)false, if an error occured
 	 */
 	public static function modulesAvailable(){
-		try{
-			include_once WE_INCLUDES_PATH . "we_available_modules.inc.php";
-		} catch (Exception $e){
-			/**
-			 * @see we_util_Sys_Exception
-			 */
-			throw new we_util_sys_Exception('could not read module information from we_available_modules.inc.php.');
-			return false;
-		}
-		return $_we_available_modules;
+		return weModuleInfo::getAllModules();
 	}
 
 	/**

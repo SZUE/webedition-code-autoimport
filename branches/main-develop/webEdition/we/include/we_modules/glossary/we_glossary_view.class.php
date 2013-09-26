@@ -190,13 +190,8 @@ class we_glossary_view{
 
 	function getJSTop(){
 		$mod = isset($_REQUEST['mod']) ? $_REQUEST['mod'] : '';
-		$title = '';
-		foreach($GLOBALS["_we_available_modules"] as $modData){
-			if($modData["name"] == $mod){
-				$title = "webEdition " . g_l('global', "[modules]") . ' - ' . $modData["text"];
-				break;
-			}
-		}
+		$modData = weModuleInfo::getModuleData($mod);
+		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' .$modData['text'] : '';
 		$js = '
 			var get_focus = 1;
 			var activ_tab = 1;

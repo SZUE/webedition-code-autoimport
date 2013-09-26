@@ -233,7 +233,7 @@ class weExportWizard{
 				"noline" => 1)
 		);
 
-		if(in_array("object", $GLOBALS['_we_active_integrated_modules'])){
+		if(weModuleInfo::isActive("object")){
 			$parts[] = array(
 				"html" => we_forms::radiobutton("csv", ($extype == "csv" && permissionhandler::hasPerm("CSV_EXPORT")), "extype", g_l('export', "[csv_export]"), true, "defaultfont", "", !permissionhandler::hasPerm("CSV_EXPORT"), g_l('export', "[txt_csv_export]"), 0, 500),
 				"space" => 0,

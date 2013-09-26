@@ -2117,7 +2117,7 @@ function formmailBlockOnOff() {
 				if(!empty($_modInfo["dependson"])){
 					$onclick = "if(this.checked){document.getElementById('newconf[active_integrated_modules][" . $_modInfo["dependson"] . "]').checked=true;}";
 				}
-				$_html .= we_forms::checkbox($_modKey, $_modInfo["alwaysActive"] || in_array($_modKey, $GLOBALS["_we_active_integrated_modules"]), "newconf[active_integrated_modules][$_modKey]", $_modInfo["text"], false, "defaultfont", $onclick, $_modInfo["alwaysActive"]) . ($_modInfo["alwaysActive"] ? "<input type=\"hidden\" name=\"newconf[active_integrated_modules][$_modKey]\" value=\"$_modKey\" />" : "" ) . "<br />";
+				$_html .= we_forms::checkbox($_modKey, $_modInfo["alwaysActive"] || weModuleInfo::isActive($_modKey), "newconf[active_integrated_modules][$_modKey]", $_modInfo["text"], false, "defaultfont", $onclick, $_modInfo["alwaysActive"]) . ($_modInfo["alwaysActive"] ? "<input type=\"hidden\" name=\"newconf[active_integrated_modules][$_modKey]\" value=\"$_modKey\" />" : "" ) . "<br />";
 			}
 
 			$_settings = array(

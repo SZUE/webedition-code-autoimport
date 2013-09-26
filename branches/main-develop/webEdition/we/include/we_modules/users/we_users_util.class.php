@@ -182,31 +182,31 @@ abstract class we_users_util{
 			return true;
 		}
 //FIXME: remove eval + change code
-		foreach($GLOBALS['_we_available_modules'] as $m){
-			if($m['name'] == $modName){
+		$m = weModuleInfo::getModuleData($modName);
 
-				$p = isset($m['perm']) ? $m['perm'] : '';
-				$or = explode('||', $p);
-				foreach($or as $k => $v){
-					$and = explode('&&', $v);
-					$one = true;
-					foreach($and as &$val){
-						$set[] = 'isset($_SESSION[\'perms\'][\'' . trim($val) . '\'])';
-						$val = '$_SESSION[\'perms\'][\'' . trim($val) . '\']';
-						$one = false;
-					}
-					$or[$k] = implode(' && ', $and);
-					if($one && !in_array('isset($_SESSION[\'perms\'][\'' . trim($v) . '\'])', $set)){
-						$set[] = 'isset($_SESSION[\'perms\'][\'' . trim($v) . '\'])';
-					}
-				}
-				$set_str = implode(' || ', $set);
-				$condition_str = implode(' || ', $or);
-				eval('if ((' . $set_str . ')&&(' . $condition_str . ')) { $enable=1; } else { $enable=0; }');
-				return $enable;
+		if(empty($m)){
+			return true;
+		}
+
+		$p = isset($m['perm']) ? $m['perm'] : '';
+		$or = explode('||', $p);
+		foreach($or as $k => $v){
+			$and = explode('&&', $v);
+			$one = true;
+			foreach($and as &$val){
+				$set[] = 'isset($_SESSION[\'perms\'][\'' . trim($val) . '\'])';
+				$val = '$_SESSION[\'perms\'][\'' . trim($val) . '\']';
+				$one = false;
+			}
+			$or[$k] = implode(' && ', $and);
+			if($one && !in_array('isset($_SESSION[\'perms\'][\'' . trim($v) . '\'])', $set)){
+				$set[] = 'isset($_SESSION[\'perms\'][\'' . trim($v) . '\'])';
 			}
 		}
-		return true;
+		$set_str = implode(' || ', $set);
+		$condition_str = implode(' || ', $or);
+		eval('if ((' . $set_str . ')&&(' . $condition_str . ')) { $enable=1; } else { $enable=0; }');
+		return $enable;
 	}
 
 	public static function makeOwnersSql($useCreatorID = true){

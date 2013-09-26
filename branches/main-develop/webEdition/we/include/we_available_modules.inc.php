@@ -200,3 +200,4 @@ $_we_available_modules = array(
 		'childmodule' => ''
 	),
 );
+return $_we_available_modules;

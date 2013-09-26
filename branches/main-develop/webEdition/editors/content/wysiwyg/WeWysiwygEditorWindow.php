@@ -29,20 +29,18 @@ if(isset($fieldName) && isset($_REQUEST["we_okpressed"]) && $_REQUEST["we_okpres
 
 	$newHTML = $_REQUEST[$fieldName];
 	$_SESSION['weS']['WEAPP_' . $_REQUEST['we_cmd'][0] . '_' . $_REQUEST['we_cmd'][1]] = $newHTML;
-	$newHTMLoldA = preg_replace(
-		'|script|i', 'scr"+"ipt', $newHTML);
-	$newHTMLoldB = preg_replace(
-		'|script|i', 'scr"+"ipt', parseInternalLinks($newHTML, 0));
+	$newHTMLoldA = preg_replace('|(</?)script([^>]*>)|i', '\\1scr"+"ipt\\2', $newHTML);
+	$newHTMLoldB = preg_replace('|(</?)script([^>]*>)|i', '\\1scr"+"ipt\\2', parseInternalLinks($newHTML, 0));
 
 	$newHTMLencA = base64_encode(oldHtmlspecialchars($newHTMLoldA));
 	$newHTMLencB = base64_encode($newHTMLoldB);
 	?>
-	<script language="JavaScript" type="text/javascript">
-		if (opener.document.getElementById('<?php print $_REQUEST["we_cmd"][1]; ?>')){
-			opener.we_ui_controls_WeWysiwygEditor.setData('<?php print $_REQUEST["we_cmd"][1]; ?>','<?php print $newHTMLencA; ?>');
+	<script type="text/javascript">
+		if (opener.document.getElementById('<?php print $_REQUEST["we_cmd"][1]; ?>')) {
+			opener.we_ui_controls_WeWysiwygEditor.setData('<?php print $_REQUEST["we_cmd"][1]; ?>', '<?php print $newHTMLencA; ?>');
 		}
-		if (opener.document.getElementById('<?php print $_REQUEST["we_cmd"][1]; ?>_View')){
-			opener.we_ui_controls_WeWysiwygEditor.setDataView('<?php print $_REQUEST["we_cmd"][1]; ?>','<?php print $newHTMLencB; ?>');
+		if (opener.document.getElementById('<?php print $_REQUEST["we_cmd"][1]; ?>_View')) {
+			opener.we_ui_controls_WeWysiwygEditor.setDataView('<?php print $_REQUEST["we_cmd"][1]; ?>', '<?php print $newHTMLencB; ?>');
 		}
 
 
@@ -52,7 +50,7 @@ if(isset($fieldName) && isset($_REQUEST["we_okpressed"]) && $_REQUEST["we_okpres
 	</head>
 	<body marginwidth="0" marginheight="0" leftmargin="0" topmargin="0">
 		<?php
-	} else{
+	} else {
 		$cancelBut = we_button::create_button("cancel", "javascript:top.close()");
 		$okBut = we_button::create_button("ok", "javascript:weWysiwygSetHiddenText();document.we_form.submit();");
 
@@ -60,7 +58,7 @@ if(isset($fieldName) && isset($_REQUEST["we_okpressed"]) && $_REQUEST["we_okpres
 			we_html_element::jsScript(JS_DIR . 'windows.js') . we_html_element::jsElement('top.focus();');
 		?>
 	</head>
-	<body marginwidth="0" marginheight="0" leftmargin="0" topmargin="0" style="background-image:url(<?php echo IMAGE_DIR;?>backgrounds/aquaBackground.gif);">
+	<body marginwidth="0" marginheight="0" leftmargin="0" topmargin="0" style="background-image:url(<?php echo IMAGE_DIR; ?>backgrounds/aquaBackground.gif);">
 		<form action="<?php print $_SERVER['SCRIPT_NAME']; ?>" name="we_form" method="post">
 			<input type="hidden" name="we_okpressed" value="1" />
 			<?php
@@ -91,26 +89,25 @@ if(isset($fieldName) && isset($_REQUEST["we_okpressed"]) && $_REQUEST["we_okpres
 			 */
 
 			$e = new we_wysiwyg(
-					$_REQUEST['we_cmd'][1], //$name,
-					$_REQUEST['we_cmd'][2], //$width,
-					$_REQUEST['we_cmd'][3], //$height
-					$_SESSION['weS']['WEAPP_' . $_REQUEST['we_cmd'][0] . '_' . $_REQUEST['we_cmd'][1]], //value
-					$_REQUEST['we_cmd'][5], //$propstring
-					$_REQUEST['we_cmd'][13], //$bgcol
-					"", //$fullscreen
-					$_REQUEST['we_cmd'][6], //$className
-					'arial; helvetica; sans-serif,courier new; courier; mono,geneva; arial; helvetica; sans-serif,georgia; times new roman; times; serif,tahoma,times new roman; times; serif,verdana; arial; helvetica; sans-serif,wingdings', //$_REQUEST['we_cmd'][7], fontnames ,
-					$_REQUEST['we_cmd'][8], //$outsideWE=false
-					true, //dies ist xml
-					false, //$removeFirstParagraph=true
-					true, //$inlineedit=true
-					'', //$baseHref
-					'UTF-8',
-					$_REQUEST["we_cmd"][14], //$cssClasses
-					'', // $_REQUEST["we_cmd"][15], $Language=""
-					'', //test
-					$_REQUEST["we_cmd"][17], //$spell
-					false //frontendEdit
+				$_REQUEST['we_cmd'][1], //$name,
+				$_REQUEST['we_cmd'][2], //$width,
+				$_REQUEST['we_cmd'][3], //$height
+				$_SESSION['weS']['WEAPP_' . $_REQUEST['we_cmd'][0] . '_' . $_REQUEST['we_cmd'][1]], //value
+				$_REQUEST['we_cmd'][5], //$propstring
+				$_REQUEST['we_cmd'][13], //$bgcol
+				"", //$fullscreen
+				$_REQUEST['we_cmd'][6], //$className
+				'arial; helvetica; sans-serif,courier new; courier; mono,geneva; arial; helvetica; sans-serif,georgia; times new roman; times; serif,tahoma,times new roman; times; serif,verdana; arial; helvetica; sans-serif,wingdings', //$_REQUEST['we_cmd'][7], fontnames ,
+				$_REQUEST['we_cmd'][8], //$outsideWE=false
+				true, //dies ist xml
+				false, //$removeFirstParagraph=true
+				true, //$inlineedit=true
+				'', //$baseHref
+				'UTF-8', $_REQUEST["we_cmd"][14], //$cssClasses
+				'', // $_REQUEST["we_cmd"][15], $Language=""
+				'', //test
+				$_REQUEST["we_cmd"][17], //$spell
+				false //frontendEdit
 			);
 
 			print we_wysiwyg::getHeaderHTML() . $e->getHTML() .

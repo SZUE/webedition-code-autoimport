@@ -33,7 +33,6 @@ class weMessagingFrames extends weModuleFrames{
 	public $weTransaction;
 	protected $messaging;
 	public $viewclass;
-
 	public $module = "messaging";
 	protected $hasIconbar = true;
 	protected $useMainTree = false;
@@ -70,13 +69,8 @@ class weMessagingFrames extends weModuleFrames{
 	function getJSTreeCode(){ //TODO: move to new class weUsersTree (extends weModulesTree)
 		//TODO: title nach View->getJSTop()
 		$mod = isset($_REQUEST['mod']) ? $_REQUEST['mod'] : '';
-		$title = '';
-		foreach($GLOBALS["_we_available_modules"] as $modData){
-			if($modData["name"] == $mod){
-				$title = "webEdition " . g_l('global', "[modules]") . ' - ' . $modData["text"];
-				break;
-			}
-		}
+		$modData = weModuleInfo::getModuleData($mod);
+		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' . $modData['text'] : '';
 
 		$jsOut = '
 var loaded = 0;
@@ -193,7 +187,7 @@ function cb_incstate() {
 			$jsOut .= '
 		we_cmd("show_folder_content", ' . $f['ID'] . ');
 			';
-		} else{
+		} else {
 			$jsOut .= '
 		drawEintraege();
 			';
@@ -769,7 +763,7 @@ function loadData() {
 				$jsOut .= '
 	menuDaten.add(new dirEntry("' . $iconbasename . '.gif",' . $folder['ID'] . ',' . $folder['ParentID'] . ',"' . $folder['Name'] . ' - (' . $this->messaging->get_message_count($folder['ID'], '') . ')",false,"parent_Folder","' . MESSAGES_TABLE . '", ' . $sf_cnt . ', "' . $iconbasename . '", "' . $folder['view_class'] . '"));
 				';
-			} else{
+			} else {
 				$jsOut .= '
 	menuDaten.add(new urlEntry("' . $iconbasename . '.gif",' . $folder['ID'] . ',' . $folder['ParentID'] . ',"' . $folder['Name'] . ' - (' . $this->messaging->get_message_count($folder['ID'], '') . ')","leaf_Folder","' . MESSAGES_TABLE . '", "' . $iconbasename . '", "' . $folder['view_class'] . '"));
 				';
@@ -807,13 +801,8 @@ function msg_start() {
 
 		//TODO: move to a better place: jsTop()
 		$mod = isset($_REQUEST['mod']) ? $_REQUEST['mod'] : '';
-		$title = '';
-		foreach($GLOBALS["_we_available_modules"] as $modData){
-			if($modData["name"] == $mod){
-				$title = "webEdition " . g_l('global', "[modules]") . ' - ' . $modData["text"];
-				break;
-			}
-		}
+		$modData = weModuleInfo::getModuleData($mod);
+		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' .$modData['text'] : '';
 
 		$extraHead = $this->getJSCmdCode() .
 			we_html_element::jsScript(JS_DIR . 'messaging_std.js') .
@@ -839,9 +828,8 @@ function msg_start() {
 	}
 
 	function getHTMLEditor(){
-		$body = we_html_element::htmlBody(array('style' => 'position: fixed; top: 0px; left: 0px; right: 0px; bottom: 0px; border: 0px none;') ,
-			we_html_element::htmlIFrame('edheader', $this->frameset . '?pnt=edheader&we_transaction=' . $this->transaction, 'position: absolute; top: 0px; left: 0px; right: 0px; height: 35px; overflow: hidden;', 'width: 100%; overflow: hidden') .
-			we_html_element::htmlIFrame('edbody', $this->frameset . '?pnt=edbody&we_transaction=' . $this->transaction, 'position: absolute; top: 35px; bottom: 0px; left: 0px; right: 0px; overflow: auto;', 'border:0px;width:100%;height:100%;overflow: auto;')
+		$body = we_html_element::htmlBody(array('style' => 'position: fixed; top: 0px; left: 0px; right: 0px; bottom: 0px; border: 0px none;'), we_html_element::htmlIFrame('edheader', $this->frameset . '?pnt=edheader&we_transaction=' . $this->transaction, 'position: absolute; top: 0px; left: 0px; right: 0px; height: 35px; overflow: hidden;', 'width: 100%; overflow: hidden') .
+				we_html_element::htmlIFrame('edbody', $this->frameset . '?pnt=edbody&we_transaction=' . $this->transaction, 'position: absolute; top: 35px; bottom: 0px; left: 0px; right: 0px; overflow: auto;', 'border:0px;width:100%;height:100%;overflow: auto;')
 		);
 
 		return $this->getHTMLDocument($body);

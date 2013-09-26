@@ -158,7 +158,7 @@ function deleteFile($id, $table, $path = '', $contentType = '', $DB_WE = ''){
 			$DB_WE->query('UPDATE ' . CONTENT_TABLE . ' SET BDID=0 WHERE BDID=' . intval($id));
 			$DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE DID=' . intval($id));
 
-			if(in_array('schedule', $GLOBALS['_we_active_integrated_modules'])){ //	Delete entries from schedule as well
+			if(weModuleInfo::isActive('schedule')){ //	Delete entries from schedule as well
 				$DB_WE->query('DELETE FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . intval($id) . ' AND ClassName !="we_objectFile"');
 			}
 
@@ -201,7 +201,7 @@ function deleteFile($id, $table, $path = '', $contentType = '', $DB_WE = ''){
 				$DB_WE->query('DELETE FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable = "tblObjectFile" AND DID = ' . intval($id));
 				$DB_WE->query('DELETE FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable = "tblObjectFile" AND LDID = ' . intval($id));
 			}
-			if(in_array('schedule', $GLOBALS['_we_active_integrated_modules'])){ //	Delete entries from schedule as well
+			if(weModuleInfo::isActive('schedule')){ //	Delete entries from schedule as well
 				$DB_WE->query('DELETE FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . intval($id) . ' AND ClassName="we_objectFile"');
 			}
 			break;

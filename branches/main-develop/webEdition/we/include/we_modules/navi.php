@@ -30,21 +30,16 @@ $we_tabs = new we_tabs();
 
 $name = array();
 
-//	First sort the array after the text.
-function order_available_modules($a, $b){
-	return (strcmp($a["text"], $b["text"]));
-}
-
-//$GLOBALS['_we_active_integrated_modules'][] = 'navigation';//TODO: remove when implemented completely
-
-uasort($GLOBALS['_we_available_modules'], "order_available_modules");
+//TODO: remove when implemented completely
+$mods = weModuleInfo::getAllModules();
+weModuleInfo::orderModuleArray($mods);
 //END TODO
 
-foreach($GLOBALS['_we_available_modules'] as $_menuItem){
+foreach($mods as $_menuItem){
 	if((isset($_menuItem["inModuleMenu"]) && $_menuItem["inModuleMenu"]) || (isset($_menuItem["inModuleWindow"]) && $_menuItem["inModuleWindow"])){
-		if(in_array($_menuItem["name"], $GLOBALS['_we_active_integrated_modules'])){ //	MODULE INSTALLED
+		if(weModuleInfo::isActive($_menuItem["name"])){ //	MODULE INSTALLED
 			if(we_users_util::canEditModule($_menuItem["name"])){
-				$we_tabs->addTab(new we_tab("#", $_menuItem["text"], ( isset($_REQUEST["mod"]) && $_REQUEST["mod"] == $_menuItem["name"] ? we_tab::ACTIVE: we_tab::NORMAL), "openModule('" . $_menuItem["name"] . "');", array("id" => $_menuItem["name"])));
+				$we_tabs->addTab(new we_tab("#", $_menuItem["text"], ( isset($_REQUEST["mod"]) && $_REQUEST["mod"] == $_menuItem["name"] ? we_tab::ACTIVE : we_tab::NORMAL), "openModule('" . $_menuItem["name"] . "');", array("id" => $_menuItem["name"])));
 			}
 		}
 	}

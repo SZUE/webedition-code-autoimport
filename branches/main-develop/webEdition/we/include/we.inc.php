@@ -128,6 +128,7 @@ if(!isset($GLOBALS['WE_IS_DYN'])){ //only true on dynamic frontend pages
 			$_SESSION['prefs']['BackendCharset'] : 'UTF-8');
 
 	include_once (WE_INCLUDES_PATH . 'define_styles.inc.php');
+	//FIXME: remove
 	include_once (WE_INCLUDES_PATH . 'we_available_modules.inc.php');
 	//FIXME: needed by liveupdate, calls old protect directly remove in 6.4
 	require_once (WE_INCLUDES_PATH . 'we_perms.inc.php');

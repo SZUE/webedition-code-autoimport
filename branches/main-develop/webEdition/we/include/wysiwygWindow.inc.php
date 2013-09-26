@@ -79,7 +79,7 @@ if(isset($fieldName) && isset($_REQUEST["we_okpressed"]) && $_REQUEST["we_okpres
 		$openerDocument = 'top.opener.document';
 	}
 
-	$value = preg_replace('|script|i', 'scr"+"ipt', str_replace(array("\r", "\n", "'"), array("\\r", "\\n", "&#039;"), $_REQUEST[$reqName][$fieldName]));
+	$value = preg_replace('|(</?)script([^>]*>)|i', '\\1scr"+"ipt\\2', str_replace(array("\r", "\n", "'"), array("\\r", "\\n", '&#039;'), $_REQUEST[$reqName][$fieldName]));
 	$taValue = str_replace("\"", "\\\"", $value);
 	$divValue = isset($writeToFrontend) ? $taValue : str_replace("\"", "\\\"", parseInternalLinks($value, 0));
 

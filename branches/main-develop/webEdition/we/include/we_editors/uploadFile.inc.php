@@ -29,7 +29,7 @@ $allowedContentTypes = '';
 $error = false;
 
 $maxsize = getUploadMaxFilesize(false);
-$we_maxfilesize_text = sprintf(g_l('newFile', '[max_possible_size]'), weFile::getHumanFileSize($fs, weFile::SZ_MB));
+$we_maxfilesize_text = sprintf(g_l('newFile', '[max_possible_size]'), weFile::getHumanFileSize($maxsize, weFile::SZ_MB));
 
 
 we_html_tools::htmlTop(g_l('newFile', "[import_File_from_hd_title]"));

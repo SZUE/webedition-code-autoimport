@@ -69,7 +69,7 @@ class we_schedpro{
 		} else {
 			$this->time = time();
 		}
-		$this->nr = $nr;
+		$this->nr = intval($nr);
 	}
 
 	function getMonthsHTML(){
@@ -360,7 +360,7 @@ function checkFooter(){
 				break;
 		}
 		$table .= '</table>';
-		return we_html_element::jsElement('var we_hasExtraRow_' . $this->nr . '=' . ($extracont ? 'true' : 'false')) . $table;
+		return we_html_element::jsElement('var we_hasExtraRow_' . intval($this->nr) . '=' . ($extracont ? 'true' : 'false')) . $table;
 	}
 
 	function processSchedule($id, $schedFile, $now, $DB_WE){
@@ -620,6 +620,22 @@ function checkFooter(){
 					mktime(date('G', $s['time']), date('i', $s['time']), 0, intval(date('m', $tomorrow)), date('j', $tomorrow), date('Y', $tomorrow)) :
 					0;
 		}
+	}
+
+	static function getEmptyEntry(){
+		return array(
+			'task' => 1,
+			'type' => 0,
+			'months' => array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+			'days' => array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+			'weekdays' => array(0, 0, 0, 0, 0, 0, 0),
+			'time' => time(),
+			'CategoryIDs' => '',
+			'DoctypeID' => 0,
+			'ParentID' => 0,
+			'active' => 1,
+			'doctypeAll' => 0,
+		);
 	}
 
 	function getPrevTimestamp($s, $now = 0){

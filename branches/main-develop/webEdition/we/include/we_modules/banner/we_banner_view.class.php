@@ -224,13 +224,8 @@ class we_banner_view extends we_banner_base{
 			}
 		<?php
 		$mod = isset($_REQUEST['mod']) ? $_REQUEST['mod'] : '';
-		$title = '';
-		foreach($GLOBALS["_we_available_modules"] as $modData){
-			if($modData["name"] == $mod){
-				$title = $modData["text"];
-				break;
-			}
-		}
+		$modData = weModuleInfo::getModuleData($mod);
+		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' .$modData['text'] : '';
 		?>
 
 			parent.document.title = "webEdition <?php print g_l('global', "[modules]") . ' - ' . $title; ?>";

@@ -1,9 +1,17 @@
 <?php
 
-abstract class weModuleInfo {
+abstract class weModuleInfo{
+
+	private static $we_available_modules = '';
+
+	private static function init(){
+		if(empty(self::$we_available_modules)){
+			self::$we_available_modules = include(WE_INCLUDES_PATH . 'we_available_modules.inc.php');
+		}
+	}
 
 	static function _orderModules($a, $b){
-		return (strcmp($a["text"], $b["text"]));
+		return (strcmp($a['text'], $b['text']));
 	}
 
 	/**
@@ -12,7 +20,7 @@ abstract class weModuleInfo {
 	 * @param hash $array
 	 */
 	static function orderModuleArray(&$array){
-		uasort($array, array("weModuleInfo", "_orderModules"));
+		uasort($array, array('weModuleInfo', '_orderModules'));
 	}
 
 	/**
@@ -21,15 +29,8 @@ abstract class weModuleInfo {
 	 * @return hash
 	 */
 	static function getAllModules(){
-		global $_we_available_modules;
-
-		$retArr = array();
-
-		foreach($_we_available_modules as $key => $modInfo){
-			$retArr[$key] = $modInfo;
-		}
-
-		return $retArr;
+		self::init();
+		return clone(self::$we_available_modules);
 	}
 
 	/**
@@ -38,12 +39,12 @@ abstract class weModuleInfo {
 	 * @return hash
 	 */
 	static function getNoneIntegratedModules(){
-		global $_we_available_modules;
+		self::init();
 
 		$retArr = array();
 
-		foreach($_we_available_modules as $key => $modInfo){
-			if($modInfo["integrated"] == false){
+		foreach(self::$we_available_modules as $key => $modInfo){
+			if($modInfo['integrated'] == false){
 				$retArr[$key] = $modInfo;
 			}
 		}
@@ -56,12 +57,8 @@ abstract class weModuleInfo {
 	 * @return boolean
 	 */
 	static function isModuleInstalled($mKey){
-
-		if(in_array($mKey, $GLOBALS['_we_active_integrated_modules']) || $mKey == "editor"){
-			return true;
-		}
-
-		return false;
+		self::init();
+		return (in_array($mKey, self::$we_available_modules) || $mKey == 'editor');
 	}
 
 	/**
@@ -69,17 +66,16 @@ abstract class weModuleInfo {
 	 * @return hash
 	 */
 	static function getIntegratedModules($active = null){
-
-		global $_we_available_modules;
+		self::init();
 
 		$retArr = array();
 
-		foreach($_we_available_modules as $key => $modInfo){
-			if($modInfo["integrated"] == true){
+		foreach(self::$we_available_modules as $key => $modInfo){
+			if($modInfo['integrated'] == true){
 
 				if($active === null){
 					$retArr[$key] = $modInfo;
-				} else if(in_array($key, $GLOBALS['_we_active_integrated_modules']) == $active){
+				} else if(self::isActive($key) == $active){
 					$retArr[$key] = $modInfo;
 				}
 			}
@@ -94,18 +90,12 @@ abstract class weModuleInfo {
 	 * @return boolean
 	 */
 	static function showModuleInMenu($modulekey){
-		global $_we_available_modules;
-		/*
-		  if ($_we_available_modules[$modulekey]["integrated"]) {
-		  return true;
-
-		  } else {
-		 */
+		self::init();
 		// show a module, if
 		// - it is active
 		// - if it is in module window
 
-		if($_we_available_modules[$modulekey]["inModuleMenu"] && in_array($modulekey, $GLOBALS["_we_active_integrated_modules"])){
+		if(self::$we_available_modules[$modulekey]["inModuleMenu"] && self::isActive($modulekey)){
 			return true;
 		}
 
@@ -115,7 +105,15 @@ abstract class weModuleInfo {
 	}
 
 	static function isActive($modul){
+		self::init();
 		return in_array($modul, $GLOBALS['_we_active_integrated_modules']);
+	}
+
+	static function getModuleData($module){
+		self::init();
+		if(isset(self::$we_available_modules[$module])){
+			return self::$we_available_modules[$module];
+		}
 	}
 
 }

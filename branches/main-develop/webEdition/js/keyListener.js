@@ -21,7 +21,7 @@
  * parent class for the keylistener, this is implemented with the design pattern:
  * "chain of responsibility"
  */
-function keyBoardListener( _successor ) {
+function keyBoardListener(_successor) {
 
 	/**
 	 * element of type keyBoardListener to forward action if needed
@@ -33,7 +33,7 @@ function keyBoardListener( _successor ) {
 	 * @param {Event} evt
 	 */
 	this.dealEvent = function(evt) {
-		alert( "You MUST overwrite the function dealEvent!!" );
+		alert("You MUST overwrite the function dealEvent!!");
 		return this.next(evt);
 
 	}
@@ -54,7 +54,7 @@ function keyBoardListener( _successor ) {
 	 */
 	this.cancelEvent = function(evt) {
 
-		if ( document.attachEvent ) {
+		if (document.attachEvent) {
 			evt.returnValue = false;
 
 		} else {
@@ -86,16 +86,16 @@ function keyBoardListener( _successor ) {
  *
  * @param {keyBoardListener} _successor
  */
-function keyDialogListener( _successor ){
+function keyDialogListener(_successor) {
 
 	this.successor = (_successor ? _successor : null);
 	this.dealEvent = function(evt) {
 
 
 		// does function closeOnEscape exist!!
-		if ( typeof( top.closeOnEscape ) == "function" && evt.keyCode == "27") {	// ESCAPE
+		if (typeof(top.closeOnEscape) == "function" && evt.keyCode == "27") {	// ESCAPE
 
-			if ( top.closeOnEscape() ) {
+			if (top.closeOnEscape()) {
 				this.cancelEvent(evt);
 				top.close();
 				return true;
@@ -103,8 +103,8 @@ function keyDialogListener( _successor ){
 		}
 
 		// does function applyOnEnter exist?
-		if ( typeof( top.applyOnEnter ) == "function" && evt.keyCode == "13") {	// ENTER
-			if ( top.applyOnEnter( evt ) ) {
+		if (typeof(top.applyOnEnter) == "function" && evt.keyCode == "13") {	// ENTER
+			if (top.applyOnEnter(evt)) {
 				this.cancelEvent(evt);
 				return true;
 			}
@@ -112,7 +112,8 @@ function keyDialogListener( _successor ){
 
 		return this.next(evt);
 	}
-};
+}
+;
 keyDialogListener.prototype = new keyBoardListener();
 
 /**
@@ -125,14 +126,14 @@ keyDialogListener.prototype = new keyBoardListener();
  *
  * @param {keyBoardListener} _successor
  */
-function keyDialogSaveListener( _successor ){
+function keyDialogSaveListener(_successor) {
 
 	this.successor = (_successor ? _successor : null);
 	this.dealEvent = function(evt) {
 
-		if ( evt["ctrlKey"] ) {
-			if ( typeof( top.saveOnKeyBoard ) == "function" && evt["keyCode"] == 83 ) { // S (Save)
-				if ( top.saveOnKeyBoard() ) {
+		if (evt["ctrlKey"]) {
+			if (typeof(top.saveOnKeyBoard) == "function" && evt["keyCode"] == 83) { // S (Save)
+				if (top.saveOnKeyBoard()) {
 					this.cancelEvent(evt);
 					return true;
 				}
@@ -141,7 +142,8 @@ function keyDialogSaveListener( _successor ){
 
 		return this.next(evt);
 	}
-};
+}
+;
 keyDialogSaveListener.prototype = new keyBoardListener();
 
 /**
@@ -155,35 +157,35 @@ keyDialogSaveListener.prototype = new keyBoardListener();
  *
  * @param {keyBoardListener} _successor
  */
-function keyEditorListener( _successor ) {
+function keyEditorListener(_successor) {
 	this.successor = (_successor ? _successor : null);
 
 	this.dealEvent = function(evt) {
 		_editor = false;
-		_editorType="";
+		_editorType = "";
 
 		// check if an editor is open
-		if ( typeof( top.weEditorFrameController ) != "undefined" ) {
+		if (top.weEditorFrameController !== undefined) {
 			_activeEditorFrame = top.weEditorFrameController.getActiveEditorFrame();
-			if(top.weEditorFrameController.getActiveDocumentReference()) {
-				_editorType=_activeEditorFrame.getEditorType();
-				if ( _activeEditorFrame.getEditorType() == "model" ) {
+			if (top.weEditorFrameController.getActiveDocumentReference()) {
+				_editorType = _activeEditorFrame.getEditorType();
+				if (_activeEditorFrame.getEditorType() == "model") {
 					_editor = true;
 				}
 			}
 		}
 
-		if ( _editor && ( evt["ctrlKey"] ) ) { // || evt["metaKey"] when target bug is solved by Safari
-			switch(evt["keyCode"]){
+		if (_editor && (evt["ctrlKey"])) { // || evt["metaKey"] when target bug is solved by Safari
+			switch (evt["keyCode"]) {
 				case 83: //S
-					if(evt["shiftKey"] ) { // SHIFT + S (Publish)
+					if (evt["shiftKey"]) { // SHIFT + S (Publish)
 						self.focus(); // focus, to avoid a too late onchange of editor
 						this.cancelEvent(evt);
 						_activeEditorFrame.setEditorPublishWhenSave(true);
 						if (typeof(_activeEditorFrame.getEditorFrameWindow().frames[3].we_save_document) == "function") {
 							_activeEditorFrame.getEditorFrameWindow().frames[3].we_save_document();
 						}
-					}else{// S (Save)
+					} else {// S (Save)
 						self.focus();  // focus, to avoid a too late onchange of editor
 						this.cancelEvent(evt);
 						_activeEditorFrame.setEditorPublishWhenSave(false);
@@ -197,14 +199,14 @@ function keyEditorListener( _successor ) {
 				case 115: // W, F4 (closing a tab)
 					self.focus();  // focus, to avoid a too late onchange of editor
 					this.cancelEvent(evt);
-					top.weEditorFrameController.closeDocument( _activeEditorFrame.getFrameId() );
+					top.weEditorFrameController.closeDocument(_activeEditorFrame.getFrameId());
 					return true;
 			}
 		}
-		if ( evt["keyCode"] == 87 || evt["keyCode"] == 115 ) { // W, F4 (closing a tab)
-			if(_editorType=="cockpit"){
+		if (evt["keyCode"] == 87 || evt["keyCode"] == 115) { // W, F4 (closing a tab)
+			if (_editorType == "cockpit") {
 				self.focus();  // focus, to avoid a too late onchange of editor
-				top.weEditorFrameController.closeDocument( _activeEditorFrame.getFrameId() );
+				top.weEditorFrameController.closeDocument(_activeEditorFrame.getFrameId());
 			}
 			this.cancelEvent(evt);
 			return true;
@@ -223,21 +225,21 @@ keyEditorListener.prototype = new keyBoardListener();
  *
  * @param {keyBoardListener} _successor
  */
-function keyModuleListener( _successor ) {
+function keyModuleListener(_successor) {
 	this.successor = (_successor ? _successor : null);
 
 	this.dealEvent = function(evt) {
 
-		if ( typeof( top.weModuleWindow ) != "undefined" && ( evt["ctrlKey"] ) ) { // || evt["metaKey"] when target bug is solved by Safari
+		if (top.weModuleWindow !== undefined && (evt["ctrlKey"])) { // || evt["metaKey"] when target bug is solved by Safari
 
-			if ( evt["keyCode"] == 83 ) { // S (Save)
-				if (	top.content &&
-					top.content.editor &&
-					top.content.editor.edfooter &&
-					typeof(top.content.editor.edfooter.we_save ) == "function" ) {
-						this.cancelEvent(evt);
-						top.content.editor.edfooter.we_save();
-						return true;
+			if (evt["keyCode"] == 83) { // S (Save)
+				if (top.content &&
+								top.content.editor &&
+								top.content.editor.edfooter &&
+								typeof(top.content.editor.edfooter.we_save) == "function") {
+					this.cancelEvent(evt);
+					top.content.editor.edfooter.we_save();
+					return true;
 				}
 			}
 		}
@@ -258,25 +260,25 @@ keyModuleListener.prototype = new keyBoardListener();
  * @param {keyBoardListener} _successor
  */
 
-function keyToolListener( _successor ) {
+function keyToolListener(_successor) {
 	this.successor = (_successor ? _successor : null);
 
 	this.dealEvent = function(evt) {
-		if ( typeof( top.weToolWindow ) != "undefined" && ( evt["ctrlKey"] ) ) { // || evt["metaKey"] when target bug is solved by Safari
-			if ( evt["keyCode"] == 83 ) { // S (Save)
-				if (	top.content &&
-					top.content.resize &&
-					top.content.resize.editor &&
-					top.content.resize.editor.edfooter &&
-					typeof(top.content.resize.editor.edfooter.we_save ) == "function" ) {
-						this.cancelEvent(evt);
-						top.content.resize.editor.edfooter.we_save();
-						return true;
-				} else if (	top.content &&
-					top.content.resize &&
-					top.content.resize.editor &&
-					top.content.resize.editor.edfooter &&
-					top.content.weCmdController) {
+		if (top.weToolWindow !== undefined && (evt["ctrlKey"])) { // || evt["metaKey"] when target bug is solved by Safari
+			if (evt["keyCode"] == 83) { // S (Save)
+				if (top.content &&
+								top.content.resize &&
+								top.content.resize.editor &&
+								top.content.resize.editor.edfooter &&
+								typeof(top.content.resize.editor.edfooter.we_save) == "function") {
+					this.cancelEvent(evt);
+					top.content.resize.editor.edfooter.we_save();
+					return true;
+				} else if (top.content &&
+								top.content.resize &&
+								top.content.resize.editor &&
+								top.content.resize.editor.edfooter &&
+								top.content.weCmdController) {
 					top.content.weCmdController.fire({
 						"cmdName": "app_" + top.content.appName + "_save"
 					});
@@ -296,17 +298,17 @@ keyToolListener.prototype = new keyBoardListener();
  *
  * @param {keyBoardListener} _successor
  */
-function keyTagWizardListener( _successor ) {
+function keyTagWizardListener(_successor) {
 	this.successor = (_successor ? _successor : null);
 	this.dealEvent = function(evt) {
 
-		if ( evt["keyCode"] == 73 ) { // I (Open Tag-Wizard Prompt)
+		if (evt["keyCode"] == 73) { // I (Open Tag-Wizard Prompt)
 
-			if ( typeof( top.weEditorFrameController ) != "undefined" ) {
+			if (top.weEditorFrameController !== undefined) {
 				_activeEditorFrame = top.weEditorFrameController.getActiveEditorFrame();
 
 				if (_activeEditorFrame.getEditorContentType() == "text/weTmpl" &&
-					typeof(_activeEditorFrame.getEditorFrameWindow().frames[3].tagGroups['alltags']) != "undefined" ) {
+								_activeEditorFrame.getEditorFrameWindow().frames[3].tagGroups['alltags'] !== undefined) {
 
 					_activeEditorFrame.getEditorFrameWindow().frames[3].openTagWizardPrompt();
 					this.cancelEvent(evt);
@@ -329,19 +331,21 @@ keyTagWizardListener.prototype = new keyBoardListener();
  *
  * @param {keyBoardListener} _successor
  */
-function keyReloadListener( _successor ) {
+function keyReloadListener(_successor) {
 	this.successor = (_successor ? _successor : null);
 	this.dealEvent = function(evt) {
 
-		if ( typeof( top.weEditorFrameController ) != "undefined" ) {
-			if ( evt["ctrlKey"] || evt["metaKey"] ) {
+		if (top.weEditorFrameController !== undefined) {
+			if (evt["ctrlKey"] || evt["metaKey"]) {
 
-				if ( evt["keyCode"] == 82 ) { // R Reload
+				if ((evt["keyCode"] == 82) || // R Reload
+								(evt["keyCode"] == 90))//Z Back
+				{
 					this.cancelEvent(evt);
 					return true;
 				}
 			}
-			if ( evt["keyCode"]	== 116) { // F5
+			if (evt["keyCode"] == 116) { // F5
 				this.cancelEvent(evt);
 				return true;
 			}
@@ -354,7 +358,7 @@ keyReloadListener.prototype = new keyBoardListener();
 
 
 // build the CoR
-var keyListener = new keyEditorListener( new keyModuleListener( new keyToolListener( new keyDialogListener( new keyDialogSaveListener( new keyTagWizardListener( new keyReloadListener( ) ) ) ) ) ) );
+var keyListener = new keyEditorListener(new keyModuleListener(new keyToolListener(new keyDialogListener(new keyDialogSaveListener(new keyTagWizardListener(new keyReloadListener( )))))));
 
 /**
  * Receives all Keyboard Events and forwards them, if required
@@ -366,26 +370,26 @@ function dealWithKeyboardShortCut(evt) {
 	// This function receives all events, when a key is pressed and forwards the event to
 	// the first keyboardlistener ("chain of responsibility")
 	if (
-		evt["keyCode"]	== "27"			// ESCAPE
-		|| evt["keyCode"]	== "13"			// ENTER
-		|| evt["keyCode"]	== "116"		// F5 - works only in FF
+					evt["keyCode"] == 27			// ESCAPE
+					|| evt["keyCode"] == 13			// ENTER
+					|| evt["keyCode"] == 116		// F5 - works only in FF
 
-		|| ( 	 // ctrl-key for windows, meta-key for mac
-			(evt["ctrlKey"] ||	evt["metaKey"] )
+					|| (// ctrl-key for windows, meta-key for mac
+					(evt["ctrlKey"] || evt["metaKey"])
 
-			&& ( evt["keyCode"] != 17 // don't forward only CTRL
-				&& evt["keyCode"] != 67 //Strg-C
-				&& evt["keyCode"] != 86 //Strg-V
-				)
-			)
-		) {
+					&& (evt["keyCode"] != 17 // don't forward only CTRL
+					&& evt["keyCode"] != 67 //Strg-C
+					&& evt["keyCode"] != 86 //Strg-V
+					)
+					)
+					) {
 		//console.log('deal'+evt['keyCode'])
-		return keyListener.dealEvent( evt );
+		return keyListener.dealEvent(evt);
 
 	} else {
 		//console.log('for'+evt['keyCode']);
 		return true;
-	// event is NOT forwarded
+		// event is NOT forwarded
 	}
 }
 top.dealWithKeyboardShortCut = dealWithKeyboardShortCut;

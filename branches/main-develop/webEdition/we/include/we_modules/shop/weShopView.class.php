@@ -92,13 +92,8 @@ class weShopView{
 
 
 		$mod = isset($_REQUEST['mod']) ? $_REQUEST['mod'] : '';
-		$title = '';
-		foreach($GLOBALS['_we_available_modules'] as $modData){
-			if($modData["name"] == $mod){
-				$title = 'webEdition ' . g_l('global', "[modules]") . ' - ' . $modData["text"];
-				break;
-			}
-		}
+		$modData = weModuleInfo::getModuleData($mod);
+		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' .$modData['text'] : '';
 
 		$out = '
 var hot = 0;

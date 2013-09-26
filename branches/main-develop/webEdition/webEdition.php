@@ -110,13 +110,13 @@ include(JS_PATH . 'weJsStrings.inc.php');
 	var seeMode_edit_include = <?php print (isset($SEEM_edit_include) && $SEEM_edit_include) ? "true" : "false"; ?>; // in edit_include mode of seeMode
 
 	var wePerms = {
-		"ADMINISTRATOR": <?php echo permissionhandler::hasPerm("ADMINISTRATOR")?1:0; ?>,
-		"DELETE_DOCUMENT": <?php echo permissionhandler::hasPerm("DELETE_DOCUMENT")?1:0; ?>,
-		"DELETE_TEMPLATE": <?php echo permissionhandler::hasPerm("DELETE_TEMPLATE")?1:0; ?>,
-		"DELETE_OBJECT": <?php echo permissionhandler::hasPerm("DELETE_OBJECT")?1:0; ?>,
-		"DELETE_OBJECTFILE": <?php echo permissionhandler::hasPerm("DELETE_OBJECTFILE")?1:0; ?>,
-		"DELETE_DOC_FOLDER": <?php echo permissionhandler::hasPerm("DELETE_DOC_FOLDER")?1:0; ?>,
-		"DELETE_TEMP_FOLDER": <?php echo permissionhandler::hasPerm("DELETE_TEMP_FOLDER")?1:0; ?>
+		"ADMINISTRATOR": <?php echo permissionhandler::hasPerm("ADMINISTRATOR") ? 1 : 0; ?>,
+		"DELETE_DOCUMENT": <?php echo permissionhandler::hasPerm("DELETE_DOCUMENT") ? 1 : 0; ?>,
+		"DELETE_TEMPLATE": <?php echo permissionhandler::hasPerm("DELETE_TEMPLATE") ? 1 : 0; ?>,
+		"DELETE_OBJECT": <?php echo permissionhandler::hasPerm("DELETE_OBJECT") ? 1 : 0; ?>,
+		"DELETE_OBJECTFILE": <?php echo permissionhandler::hasPerm("DELETE_OBJECTFILE") ? 1 : 0; ?>,
+		"DELETE_DOC_FOLDER": <?php echo permissionhandler::hasPerm("DELETE_DOC_FOLDER") ? 1 : 0; ?>,
+		"DELETE_TEMP_FOLDER": <?php echo permissionhandler::hasPerm("DELETE_TEMP_FOLDER") ? 1 : 0; ?>
 	};
 	/*##################### messaging function #####################*/
 
@@ -462,15 +462,16 @@ if(defined('MESSAGING_SYSTEM')){
 
 foreach($GLOBALS['_we_active_integrated_modules'] as $mod){
 	if(file_exists(WE_MODULES_PATH . $mod . '/we_webEditionCmd_' . $mod . '.inc.php')){
-		@include_once(WE_MODULES_PATH . $mod . '/we_webEditionCmd_' . $mod . '.inc.php');
+		include_once(WE_MODULES_PATH . $mod . '/we_webEditionCmd_' . $mod . '.inc.php');
 	}
 }{ // deal with uninstalled modules
-	foreach($GLOBALS['_we_available_modules'] as $m){
+	$mods = weModuleInfo::getAllModules();
+	foreach($mods as $m){
 		echo 'case "edit_' . $m["name"] . '_ifthere":';
 	}
 	echo '
-						new jsWindow(url,"module_info",-1,-1,380,250,true,true,true);
-							break;';
+		new jsWindow(url,"module_info",-1,-1,380,250,true,true,true);
+		break;';
 }
 
 $_jsincludes = weToolLookup::getJsCmdInclude();

@@ -32,8 +32,6 @@ include_once (WE_INCLUDES_PATH . 'conf/we_active_integrated_modules.inc.php');
 //start autoloader!
 require_once ($_SERVER['DOCUMENT_ROOT'] . LIB_DIR . 'we/core/autoload.php');
 
-//$GLOBALS['_we_active_integrated_modules'][] = 'navigation';//TODO: remove when navigation is completely implemented as a module
-
 $INCLUDE = '';
 //	In we.inc.php all names of the active modules have already been searched
 //	so we only have to use the array $GLOBALS['_we_active_integrated_modules']
@@ -330,14 +328,15 @@ if(!$INCLUDE){
 			//	so we only have to use the array $_we_active_integrated_modules
 
 			$foo = false;
-			foreach($_we_available_modules as $m){
-				if(isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] == 'edit_' . $m['name'] . '_ifthere' && (!in_array($m['name'], $GLOBALS['_we_active_integrated_modules']))){
-
-					$foo = true;
-					$_moduleName = $m['text_short'];
-					$INCLUDE = 'messageModuleNotActivated.inc.php';
-
-					break;
+			if(isset($_REQUEST['we_cmd'][0])){
+				$mods = weModuleInfo::getAllModules();
+				foreach($mods as $m){
+					if($_REQUEST['we_cmd'][0] == 'edit_' . $m['name'] . '_ifthere' && !weModuleInfo::isActive($m['name'])){
+						$foo = true;
+						$_moduleName = $m['text_short'];
+						$INCLUDE = 'messageModuleNotActivated.inc.php';
+						break;
+					}
 				}
 			}
 			if($foo == false){
@@ -364,7 +363,7 @@ if($INCLUDE){
 			define('NO_SESS', 1);
 		}
 		$path = WEBEDITION_PATH;
-	} else{
+	} else {
 		$path = WE_INCLUDES_PATH;
 	}
 	require($path . $INCLUDE);

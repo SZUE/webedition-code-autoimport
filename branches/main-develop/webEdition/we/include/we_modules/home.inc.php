@@ -33,15 +33,8 @@ $mod = str_replace(array('.', '/', '\\'), '', (isset($_REQUEST["mod"]) ? $_REQUE
 $we_head_insert = isset($GLOBALS["we_head_insert"]) ? $GLOBALS["we_head_insert"] : "";
 $we_body_insert = isset($GLOBALS["we_body_insert"]) ? $GLOBALS["we_body_insert"] : "";
 
-$title = "";
-
-
-foreach($GLOBALS["_we_available_modules"] as $modData){
-	if($modData["name"] == $mod){
-		$title = $modData["text"];
-		break;
-	}
-}
+$modData = weModuleInfo::getModuleData($mod);
+$title = isset($modData['text']) ? $modData['text'] : '';
 
 
 $_row = 0;
@@ -89,6 +82,6 @@ $_y_we3 = $_y_table_back + 116;
 	<div id="tabelle"><?php print $_starttable->getHtml(); ?></div>
 	<div id="hintergrund"><img src="<?php print IMAGE_DIR . "startscreen/we_startbox_modul.gif" ?>" width="251" height="220" /></div>
 	<div id="modimage"><img src="<?php print IMAGE_DIR . "startscreen/" . $modimage; ?>" width="335" height="329" /></div>
-	<?php print $we_body_insert . we_html_element::jsElement('var we_is_home = 1;'); ?>
+		<?php print $we_body_insert . we_html_element::jsElement('var we_is_home = 1;'); ?>
 </body>
 </html>
