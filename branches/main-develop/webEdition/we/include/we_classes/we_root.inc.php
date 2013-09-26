@@ -712,9 +712,9 @@ abstract class we_root extends we_class{
 		return 0;
 	}
 
-	/*function makeHrefByID($id){
-		return f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), 'Path', $this->DB_WE);
-	}*/
+	/* function makeHrefByID($id){
+	  return f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), 'Path', $this->DB_WE);
+	  } */
 
 	function save($resave = 0, $skipHook = 0){
 		return $this->we_save($resave, $skipHook);
@@ -883,19 +883,25 @@ abstract class we_root extends we_class{
 						$type = $regs[1];
 						foreach($v as $name => $v2){
 							$v2 = we_util::cleanNewLine($v2);
-							if($type == 'date'){
-								preg_match('|(.*)_(.*)|', $name, $regs);
-								list(, $name, $what) = $regs;
-								$dates[$name][$what] = $v2;
-							} else {
-								if(preg_match('/(.+)#(.+)/', $name, $regs)){
-									$this->elements[$regs[1]]['type'] = $type;
-									$this->elements[$regs[1]][$regs[2]] = $v2;
-								} else {
-									//FIXME: check if we can apply the correct type
-									$this->i_convertElemFromRequest('internal', $v2, $name);
-									$this->elements[$name]['dat'] = $v2;
-								}
+							switch($type){
+								case 'date':
+									preg_match('|(.*)_(.*)|', $name, $regs);
+									list(, $name, $what) = $regs;
+									$dates[$name][$what] = $v2;
+									break;
+								case 'category'://from we:category
+									$this->setElement($name, (is_array($v2) ? implode(',', $v2) : $v2));
+									break;
+								default:
+									if(preg_match('/(.+)#(.+)/', $name, $regs)){
+										$this->elements[$regs[1]]['type'] = $type;
+										$this->elements[$regs[1]][$regs[2]] = $v2;
+									} else {
+										//FIXME: check if we can apply the correct type
+										$this->i_convertElemFromRequest('internal', $v2, $name);
+										$this->elements[$name]['dat'] = $v2;
+									}
+									break;
 							}
 						}
 					} else {

@@ -24,7 +24,7 @@
  */
 function we_tag_categorySelect($attribs, $content){
 	$name = weTag_getAttribute('name', $attribs);
-	$isuserinput = (strlen($name) == 0);
+	$isuserinput = empty($name);
 	$name = $isuserinput ? 'we_ui_' . $GLOBALS['WE_FORM'] . '_categories' : $name;
 
 	$type = weTag_getAttribute('type', $attribs);
@@ -46,7 +46,7 @@ function we_tag_categorySelect($attribs, $content){
 			$values = $objekt->Category;
 		}
 		$valuesArray = makeArrayFromCSV(id_to_path($values, CATEGORY_TABLE));
-	} else{
+	} else {
 		if($type == 'request'){
 			// Bug Fix #750
 			$values = filterXss(isset($_REQUEST[$name]) ?
@@ -54,7 +54,7 @@ function we_tag_categorySelect($attribs, $content){
 						implode(',', $_REQUEST[$name]) :
 						$_REQUEST[$name]) :
 					'');
-		} else{
+		} else {
 			// Bug Fix #750
 			$values = (isset($GLOBALS[$name]) && is_array($GLOBALS[$name])) ?
 				implode(',', $GLOBALS[$name]) :
@@ -69,7 +69,7 @@ function we_tag_categorySelect($attribs, $content){
 	if($multiple){
 		$attribs['name'] .= '[]';
 		$attribs['multiple'] = 'multiple';
-	} else{
+	} else {
 		$attribs = removeAttribs($attribs, array('size', 'multiple'));
 	}
 
@@ -82,26 +82,22 @@ function we_tag_categorySelect($attribs, $content){
 		}
 		$db = $GLOBALS['DB_WE'];
 		$dbfield = $showpath || $indent ? 'Path' : 'Category';
-		$db->query('SELECT Path,Category FROM ' . CATEGORY_TABLE . ' WHERE Path LIKE "' . $db->escape($rootdir) . '%" ORDER BY ' . $dbfield);
-		while($db->next_record()) {
+		$valueField = (weTag_getAttribute('fromTag', $attribs, false, true) ? 'ID' : 'Path');
+		$db->query('SELECT ID,Path,Category FROM ' . CATEGORY_TABLE . ' WHERE ' . ($rootdir == '/' ? 1 : ' Path LIKE "' . $db->escape($rootdir) . '%"') . ' ORDER BY ' . $dbfield);
+		while($db->next_record()){
 			$deep = count(explode('/', $db->f('Path'))) - 2;
-			$field = $db->f($dbfield);
-			if($rootdir && ($rootdir != '/') && $showpath){
-				$field = preg_replace('|^' . preg_quote($rootdir) . '|', '', $field);
-			}
+			$field = ($rootdir && ($rootdir != '/') && $showpath ?
+					preg_replace('|^' . preg_quote($rootdir, '|') . '|', '', $db->f($dbfield)) :
+					$db->f($dbfield));
+
 			if($field){
-				if(in_array($db->f('Path'), $valuesArray)){
-					$content .= getHtmlTag('option', array(
-						'value' => $db->f('Path'), 'selected' => 'selected'
-						), str_repeat($indent, $deep) . $field);
-				} else{
-					$content .= getHtmlTag('option', array(
-						'value' => $db->f('Path')
-						), str_repeat($indent, $deep) . $field);
-				}
+				$content .= getHtmlTag('option', array(
+					'value' => $db->f($valueField),
+					(in_array($db->f($valueField), $valuesArray) ? 'selected' : null) => 'selected'
+					), str_repeat($indent, $deep) . $field);
 			}
 		}
-	} else{
+	} else {
 		foreach($valuesArray as $catPaths){
 			if(stripos($content, '<option>') !== false){
 				$content = preg_replace('/<option>' . preg_quote($catPaths) . '( ?[<\n\r\t])/i', '<option selected="selected">' . $catPaths . '\1', $content);
