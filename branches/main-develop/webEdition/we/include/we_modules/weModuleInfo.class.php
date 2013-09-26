@@ -30,7 +30,7 @@ abstract class weModuleInfo{
 	 */
 	static function getAllModules(){
 		self::init();
-		return clone(self::$we_available_modules);
+		return self::$we_available_modules;
 	}
 
 	/**
