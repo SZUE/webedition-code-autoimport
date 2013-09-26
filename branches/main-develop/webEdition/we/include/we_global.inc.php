@@ -937,7 +937,7 @@ function parseInternalLinks(&$text, $pid, $path = '', $doBaseReplace = true){
 	if(defined('OBJECT_TABLE')){
 		if(preg_match_all('/href="' . we_base_link::TYPE_OBJ_PREFIX . '(\d+)(\??)("|[^"]+")/i', $text, $regs, PREG_SET_ORDER)){
 			foreach($regs as $reg){
-				$href = we_objectFile::getHref($reg[1], $pid, $path, "", WYSIWYGLINKS_DIRECTORYINDEX_HIDE, WYSIWYGLINKS_OBJECTSEOURLS);
+				$href = we_objectFile::getObjectHref($reg[1], $pid, $path, "", WYSIWYGLINKS_DIRECTORYINDEX_HIDE, WYSIWYGLINKS_OBJECTSEOURLS);
 				if(isset($GLOBALS['we_link_not_published'])){
 					unset($GLOBALS['we_link_not_published']);
 				}

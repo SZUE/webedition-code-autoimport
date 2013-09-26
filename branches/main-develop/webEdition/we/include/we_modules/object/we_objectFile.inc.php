@@ -3091,7 +3091,7 @@ class we_objectFile extends we_document{
 		return $this->DB_WE->getAll(true);
 	}
 
-	public static function getHref($id, $pid, $path = '', $DB_WE = '', $hidedirindex = false, $objectseourls = false){
+	public static function getObjectHref($id, $pid, $path = '', $DB_WE = '', $hidedirindex = false, $objectseourls = false){
 		if(!$id){
 			return '';
 		}

@@ -369,7 +369,7 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 					}
 
 					$path = isset($GLOBALS['WE_MAIN_DOC']) ? $GLOBALS['WE_MAIN_DOC']->Path : '';
-					$href = we_objectFile::getHref($this->getElement('ObjID'), $pid, $path, $this->DB_WE);
+					$href = we_objectFile::getObjectHref($this->getElement('ObjID'), $pid, $path, $this->DB_WE);
 					if(isset($GLOBALS['we_link_not_published'])){
 						unset($GLOBALS['we_link_not_published']);
 					}
