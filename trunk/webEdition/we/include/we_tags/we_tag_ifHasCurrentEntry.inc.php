@@ -28,8 +28,8 @@ function we_tag_ifHasCurrentEntry(){
 		$element = end($GLOBALS['weNavigationItemArray']);
 
 		if(!empty($element->items)){
-			foreach($element->items as $key => $value){
-				if($value->containsCurrent == 'true'){
+			foreach($element->items as $value){
+				if($value->containsCurrent == true){
 					return true;
 				}
 			}

@@ -28,6 +28,8 @@
  */
 class weNavigationItem{
 
+	const DEFAULT_CURRENT = 'defaultCurrent';
+
 	var $id;
 	var $icon;
 	var $docid;
@@ -40,9 +42,9 @@ class weNavigationItem{
 	var $type;
 	var $level;
 	var $position;
-	var $current = 'false';
-	var $containsCurrent = 'false';
-	private $visible = 'true';
+	var $current = false;
+	var $containsCurrent = false;
+	private $visible = true;
 	var $CurrentOnUrlPar = '0';
 	var $CurrentOnAnker = '0';
 	//attributes
@@ -99,13 +101,13 @@ class weNavigationItem{
 
 				$__id = path_to_id($__path, FILE_TABLE);
 				if($__id){
-					$this->visible = (f('SELECT 1 AS a FROM ' . FILE_TABLE . ' WHERE ID=' . intval($__id) . ' AND Published>0', 'a', $db) == 1 ? 'true' : 'false');
+					$this->visible = (f('SELECT 1 AS a FROM ' . FILE_TABLE . ' WHERE ID=' . intval($__id) . ' AND Published>0', 'a', $db) == 1);
 				}
 				if(NAVIGATION_DIRECTORYINDEX_HIDE && NAVIGATION_DIRECTORYINDEX_NAMES != ''){
 					$mypath = id_to_path($this->docid, FILE_TABLE);
 					$mypath_parts = pathinfo($mypath);
 					if(in_array($mypath_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
-						$this->visible = ( f('SELECT 1 AS a FROM ' . FILE_TABLE . ' WHERE ID=' . intval($this->docid) . ' AND Published>0', 'a', $db) == 1 ? 'true' : 'false');
+						$this->visible = ( f('SELECT 1 AS a FROM ' . FILE_TABLE . ' WHERE ID=' . intval($this->docid) . ' AND Published>0', 'a', $db) == 1);
 					}
 				}
 				break;
@@ -113,13 +115,13 @@ class weNavigationItem{
 			// #6916
 			case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
 				$__id = $this->docid;
-				$this->visible = (f('SELECT 1 AS a FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($__id) . ' AND Published>0', 'a', $db) == 1 ? 'true' : 'false');
+				$this->visible = (f('SELECT 1 AS a FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($__id) . ' AND Published>0', 'a', $db) == 1);
 
 				if(NAVIGATION_DIRECTORYINDEX_HIDE && NAVIGATION_DIRECTORYINDEX_NAMES != ''){
 					$mypath = id_to_path($this->docid, OBJECT_FILES_TABLE);
 					$mypath_parts = pathinfo($mypath);
 					if(in_array($mypath_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
-						$this->visible = (f('SELECT 1 AS a FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($this->docid) . ' AND Published>0', 'a', $db) == 1 ? 'true' : 'false');
+						$this->visible = (f('SELECT 1 AS a FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($this->docid) . ' AND Published>0', 'a', $db) == 1);
 					}
 				}
 				break;
@@ -135,7 +137,7 @@ class weNavigationItem{
 
 	function setCurrent(&$weNavigationItems, $self = true){
 		if($self){
-			$this->current = 'true';
+			$this->current = true;
 		}
 
 		if(isset($weNavigationItems->items['id' . $this->parentid]) && $this->level != 0){
@@ -146,7 +148,7 @@ class weNavigationItem{
 
 	function unsetCurrent(&$weNavigationItems, $self = true){
 		if($self){
-			$this->current = 'false';
+			$this->current = false;
 		}
 
 		if(isset($weNavigationItems->items['id' . $this->parentid]) && $this->level != 0){
@@ -159,11 +161,11 @@ class weNavigationItem{
 	}
 
 	function setContainsCurrent(){
-		$this->containsCurrent = 'true';
+		$this->containsCurrent = true;
 	}
 
 	function unsetContainsCurrent(){
-		$this->containsCurrent = 'false';
+		$this->containsCurrent = false;
 	}
 
 	function isCurrent($weNavigationItems){
@@ -197,7 +199,9 @@ class weNavigationItem{
 				}
 				if($allfound){
 					$this->setCurrent($weNavigationItems);
-				} elseif($this->current == 'true'){
+					t_e('set');
+				} elseif($this->current == true){
+					t_e('unset');
 					$this->unsetCurrent($weNavigationItems);
 				}
 				return $allfound;
@@ -220,22 +224,22 @@ class weNavigationItem{
 			$this->setCurrent($weNavigationItems);
 			return true;
 		}
-		if($this->current == 'true'){
+		if($this->current == true){
 			$this->unsetCurrent($weNavigationItems);
 		}
 		return false;
 	}
 
 	public function isVisible(){
-		if($this->visible == 'false'){
+		if($this->visible == false){
 			return false;
 		}
 
 		if(defined('CUSTOMER_TABLE') && $this->limitaccess){ // only init filter if access is limited
 			$_filter = new weNavigationCustomerFilter();
 			$_filter->initByNavItem($this);
-			$this->visible = ($_filter->customerHasAccess() ? 'true' : 'false');
-			return ($this->visible == 'true');
+			$this->visible = $_filter->customerHasAccess();
+			return ($this->visible);
 		}
 		return true;
 	}
