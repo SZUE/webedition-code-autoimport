@@ -70,8 +70,8 @@ class MultiDirChooser{
 	<td><img src="' . ICON_DIR . $this->Record[$this->fieldsArr[0]] . '" width="16" height="18" /></td>
 	<td class="' . $this->css . '">' . $this->Record[$this->fieldsArr[1]] . '</td>
 	<td>' . ((($this->isEditable() && $this->cmd_del) || $this->CanDelete) ?
-						we_button::create_button("image:btn_function_trash", "javascript:if(typeof(_EditorFrame)!='undefined'){_EditorFrame.setEditorIsHot(true);}" . ($this->extraDelFn ? $this->extraDelFn : "") . ";we_cmd('" . $this->cmd_del . "','" . $this->Record["ID"] . "'" . (strlen($this->thirdDelPar) ? ",'" . $this->thirdDelPar . "'" : "") . ");") :
-						"") . '</td>
+						we_button::create_button('image:btn_function_trash', "javascript:if(typeof(_EditorFrame)!='undefined'){_EditorFrame.setEditorIsHot(true);}" . ($this->extraDelFn ? $this->extraDelFn : "") . ";we_cmd('" . $this->cmd_del . "','" . $this->Record["ID"] . "'" . (strlen($this->thirdDelPar) ? ",'" . $this->thirdDelPar . "'" : "") . ");") :
+						'') . '</td>
 </tr>';
 		}
 	}
@@ -91,7 +91,8 @@ class MultiDirChooser{
 
 	function isEditable(){
 		return $this->isEditable;
-		if($this->isEditable == false){
+
+		/*if($this->isEditable == false){
 			return false;
 		}
 		if($this->ws){
@@ -99,7 +100,7 @@ class MultiDirChooser{
 				return false;
 			}
 		}
-		return true;
+		return true;*/
 	}
 
 	function get(){

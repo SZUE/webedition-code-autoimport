@@ -685,14 +685,8 @@ function submitForm() {
 	}
 
 	function processCommands(){
-		$_header_sent = false;
 
 		if(isset($_REQUEST["cmd"])){
-
-			if(!empty($this->Model->Charset) && $_REQUEST['cmd'] != 'new_navigation'){
-				we_html_tools::headerCtCharset('text/html', $this->Model->Charset);
-				$_header_sent = true;
-			}
 
 			switch($_REQUEST['cmd']){
 				case 'module_navigation_new':
@@ -719,10 +713,6 @@ function submitForm() {
 					}
 
 					$this->Model = new weNavigation($_REQUEST['cmdid']);
-
-					if(!empty($this->Model->Charset) && !$_header_sent){
-						//we_html_tools::headerCtCharset('text/html', $this->Model->Charset);
-					}
 
 					if(!$this->Model->isAllowedForUser()){
 						print we_html_element::jsElement(
