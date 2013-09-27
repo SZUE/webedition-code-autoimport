@@ -404,6 +404,8 @@ class weNavigationItems{
 			$useTemplate = $useTemplate[$item->current];
 		} elseif(isset($useTemplate[weNavigationItem::DEFAULT_CURRENT])){
 			$useTemplate = $useTemplate[weNavigationItem::DEFAULT_CURRENT];
+		} else {
+			return $this->getDefaultTemplate($item);
 		}
 
 		// is last entry??
@@ -448,7 +450,7 @@ class weNavigationItems{
 	}
 
 	function writeNavigation($depth = false){
-		$GLOBALS['weNavigationObject'] = & $this;
+		$GLOBALS['weNavigationObject'] = &$this;
 
 		if(isset($this->items['id' . $this->rootItem]) && (get_class($this->items['id' . $this->rootItem]) == 'weNavigationItem')){
 			if($this->items['id' . $this->rootItem]->type == 'folder' && $depth !== false){
