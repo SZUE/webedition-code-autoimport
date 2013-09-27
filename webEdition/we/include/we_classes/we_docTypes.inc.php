@@ -307,7 +307,7 @@ class we_docTypes extends we_class{
 		if(!empty($this->Templates)){
 			$tlist.=',' . $this->Templates;
 		}
-		$tlist = implode(',', array_unique(explode(',', $tlist)));
+		$tlist = implode(',', array_filter(array_unique(explode(',', $tlist))));
 		$sqlTeil = 'WHERE IsFolder=0 ' . (empty($tlist) ? '' : 'AND ID IN(' . $tlist . ')' );
 		return $this->formSelect2('', $width, 'TemplateID', TEMPLATES_TABLE, 'ID', 'Path', g_l('weClass', '[standard_template]'), $sqlTeil, 1, $this->TemplateID, false, "", "", "left", "defaultfont", "", "", array(0, g_l('weClass', "[none]")));
 	}
