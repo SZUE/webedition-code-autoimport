@@ -26,7 +26,7 @@
 /**
  * collection of the navigation items
  */
-class weNavigationItems {
+class weNavigationItems{
 
 	private static $cache = array();
 	var $items;
@@ -34,6 +34,7 @@ class weNavigationItems {
 	var $rootItem = 0;
 	var $hasCurrent = false;
 	var $currentRules = array();
+	private $Storage = array(); //FIXME: make this static
 
 	function getCustomerData($navi){
 		$_customer = array(
@@ -74,7 +75,7 @@ class weNavigationItems {
 
 		$this->rootItem = $_navigation->ID;
 
-		// set defaultTemplates
+// set defaultTemplates
 		$this->setDefaultTemplates();
 
 		$this->readItemsFromDb($this->rootItem);
@@ -85,7 +86,7 @@ class weNavigationItems {
 
 		$_new_items = self::getStaticSavedDynamicItems($_navigation);
 
-		// fetch the new items in item array
+// fetch the new items in item array
 		$_depended = array();
 		foreach($_items as $k => $v){
 			if($v['depended'] == 1 && $v['parentid'] == $_navigation->ID){
@@ -151,7 +152,7 @@ class weNavigationItems {
 
 	function loopAllRules($id){
 		if(!$this->hasCurrent){
-			// add defined rules
+// add defined rules
 			$newRules = weNavigationRuleControl::getAllNavigationRules();
 
 			foreach($newRules as $_rule){
@@ -191,7 +192,7 @@ class weNavigationItems {
 		}
 		unset($navigationRulesStorage);
 
-		foreach($this->items as $_k => &$_item){
+		foreach($this->items as &$_item){
 			if(strtolower(get_class($_item)) == 'wenavigationitem'){
 				$this->hasCurrent = ($_item->isCurrent($this));
 			}
@@ -215,7 +216,7 @@ class weNavigationItems {
 				'ID' => 0, 'Path' => '/'
 		));
 
-		// set defaultTemplates
+// set defaultTemplates
 		$this->setDefaultTemplates();
 
 		$this->items['id' . $_navigation->ID] = new weNavigationItem(
@@ -240,7 +241,7 @@ class weNavigationItems {
 					$this->hasCurrent = true;
 				}
 
-				// add currentRules
+// add currentRules
 				if(isset($_item['currentRule'])){
 					$this->currentRules[] = $_item['currentRule'];
 				}
@@ -249,10 +250,10 @@ class weNavigationItems {
 
 		$this->loopAllRules($_navigation->ID);
 
-		//make avail in cache
+//make avail in cache
 		self::$cache[$parentid] = $this->items;
 
-		//reduce Memory consumption!
+//reduce Memory consumption!
 		$this->Storage = array();
 	}
 
@@ -262,7 +263,7 @@ class weNavigationItems {
 		if(empty($idsRule)){
 			return true;
 		}
-		
+
 		foreach($idsRule as $rule){
 			if(strpos($idDoc, ",$rule,") !== false){
 				return true;
@@ -305,7 +306,6 @@ class weNavigationItems {
 					}
 
 					if(!$_isObject){
-						//$parentPath = id_to_path($_rule->FolderID, FILE_TABLE);
 						$parentPath = $this->id2path($_rule->FolderID);
 
 						if(!empty($parentPath) && $parentPath != '/'){
@@ -316,7 +316,7 @@ class weNavigationItems {
 
 				case weNavigation::STPYE_CLASS:
 					if($_rule->ClassID){
-						if(isset($GLOBALS["WE_MAIN_DOC"]->TableID) && ($GLOBALS["WE_MAIN_DOC"]->TableID == $_rule->ClassID)){
+						if(isset($GLOBALS['WE_MAIN_DOC']->TableID) && ($GLOBALS["WE_MAIN_DOC"]->TableID == $_rule->ClassID)){
 							$_ponder--;
 						} else {
 							$_ponder = 999; // remove from selection
@@ -324,12 +324,7 @@ class weNavigationItems {
 					}
 
 					if($_isObject){
-						//$parentPath = id_to_path($_rule->WorkspaceID, FILE_TABLE);
-						$parentPath = $this->id2path($_rule->WorkspaceID);
-
-						if(!empty($wPath) && $parentPath != '/'){
-							$parentPath .= '/';
-						}
+						$parentPath = rtrim($this->id2path($_rule->WorkspaceID), '/') . '/';
 					}
 					break;
 			}
@@ -402,18 +397,18 @@ class weNavigationItems {
 			return $this->getDefaultTemplate($item);
 		}
 
-		// get correct Level
+// get correct Level
 		$useTemplate = $this->templates[$item->type][(isset($this->templates[$item->type][$item->level]) ? $item->level : 'defaultLevel')];
-		// get correct position
+// get correct position
 		if(isset($useTemplate[$item->current])){
 			$useTemplate = $useTemplate[$item->current];
-		} elseif(isset($useTemplate['defaultCurrent'])){
-			$useTemplate = $useTemplate['defaultCurrent'];
+		} elseif(isset($useTemplate[weNavigationItem::DEFAULT_CURRENT])){
+			$useTemplate = $useTemplate[weNavigationItem::DEFAULT_CURRENT];
 		}
 
-		// is last entry??
+// is last entry??
 		if(isset($useTemplate['last']) &&
-			// check if item is last
+// check if item is last
 			((count($this->items['id' . $item->parentid]->items)) == $item->position)){
 			return $useTemplate['last'];
 		}
@@ -438,18 +433,18 @@ class weNavigationItems {
 	}
 
 	function setDefaultTemplates(){
-		// the default templates should look like this
-		//			$folderTemplate = '<li><a href="<we:navigationField name="href">"><we:navigationField name="text"></a><ul><we:navigationEntries /></ul></li>';
-		//			$itemTemplate = '<li><a href="<we:navigationField name="href">"><we:navigationField name="text"></a></li>';
-		//			$rootTemplate = '<we:navigationEntries />';
+// the default templates should look like this
+//			$folderTemplate = '<li><a href="<we:navigationField name="href">"><we:navigationField name="text"></a><ul><we:navigationEntries /></ul></li>';
+//			$itemTemplate = '<li><a href="<we:navigationField name="href">"><we:navigationField name="text"></a></li>';
+//			$rootTemplate = '<we:navigationEntries />';
 
-		$this->setTemplate('<li><a href="<?php printElement( ' . we_tag_tagParser::printTag('navigationField', array("name" => "href")) . '); ?>"><?php printElement( ' . we_tag_tagParser::printTag('navigationField', array("name" => "text")) . '); ?></a><?php if(' . we_tag_tagParser::printTag('ifHasEntries') . '){ ?><ul><?php printElement( ' . we_tag_tagParser::printTag('navigationEntries') . '); ?></ul><?php } ?></li>', 'folder', 'defaultLevel', 'defaultCurrent', 'defaultPosition');
-		$this->setTemplate('<li><a href="<?php printElement( ' . we_tag_tagParser::printTag('navigationField', array("name" => "href")) . '); ?>"><?php printElement( ' . we_tag_tagParser::printTag('navigationField', array("name" => "text")) . '); ?></a></li>', 'item', 'defaultLevel', 'defaultCurrent', 'defaultPosition');
-		$this->setTemplate('<?php printElement( ' . we_tag_tagParser::printTag('navigationEntries') . '); ?>', 'root', 'defaultLevel', 'defaultCurrent', 'defaultPosition');
+		$this->setTemplate('<li><a href="<?php printElement( ' . we_tag_tagParser::printTag('navigationField', array("name" => "href")) . '); ?>"><?php printElement( ' . we_tag_tagParser::printTag('navigationField', array("name" => "text")) . '); ?></a><?php if(' . we_tag_tagParser::printTag('ifHasEntries') . '){ ?><ul><?php printElement( ' . we_tag_tagParser::printTag('navigationEntries') . '); ?></ul><?php } ?></li>', 'folder', 'defaultLevel', weNavigationItem::DEFAULT_CURRENT, 'defaultPosition');
+		$this->setTemplate('<li><a href="<?php printElement( ' . we_tag_tagParser::printTag('navigationField', array("name" => "href")) . '); ?>"><?php printElement( ' . we_tag_tagParser::printTag('navigationField', array("name" => "text")) . '); ?></a></li>', 'item', 'defaultLevel', weNavigationItem::DEFAULT_CURRENT, 'defaultPosition');
+		$this->setTemplate('<?php printElement( ' . we_tag_tagParser::printTag('navigationEntries') . '); ?>', 'root', 'defaultLevel', weNavigationItem::DEFAULT_CURRENT, 'defaultPosition');
 	}
 
 	function getDefaultTemplate($item){
-		return $this->templates[$item->type]['defaultLevel']['defaultCurrent']['defaultPosition'];
+		return $this->templates[$item->type]['defaultLevel'][weNavigationItem::DEFAULT_CURRENT]['defaultPosition'];
 	}
 
 	function writeNavigation($depth = false){
@@ -457,8 +452,8 @@ class weNavigationItems {
 
 		if(isset($this->items['id' . $this->rootItem]) && (get_class($this->items['id' . $this->rootItem]) == 'weNavigationItem')){
 			if($this->items['id' . $this->rootItem]->type == 'folder' && $depth !== false){
-				// if initialised by id => root item is on lvl0 -> therefore decrease depth
-				// this is to make it equal init by id, parentid
+// if initialised by id => root item is on lvl0 -> therefore decrease depth
+// this is to make it equal init by id, parentid
 				$depth--;
 			}
 			return $this->items['id' . $this->rootItem]->writeItem($this, $depth);
