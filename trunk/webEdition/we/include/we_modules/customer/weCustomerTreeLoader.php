@@ -145,12 +145,12 @@ class weCustomerTreeLoader{
 		foreach($sort_defs as $sortdef){
 			if(isset($sortdef["function"]) && $sortdef["function"]){
 				$select[] = ($settings->customer->isInfoDate($sortdef["field"]) ?
-						sprintf($settings->FunctionTable[$sortdef["function"]], "FROM_UNIXTIME(" . $sortdef["field"] . ")") . " AS " . $sortdef["field"] . "_" . $sortdef["function"] :
-						sprintf($settings->FunctionTable[$sortdef["function"]], $sortdef["field"]) . " AS " . $sortdef["field"] . "_" . $sortdef["function"]);
+						sprintf($settings->FunctionTable[$sortdef['function']], 'FROM_UNIXTIME(' . $sortdef["field"] . ')') . " AS " . $sortdef["field"] . "_" . $sortdef["function"] :
+						sprintf($settings->FunctionTable[$sortdef['function']], $sortdef["field"]) . " AS " . $sortdef["field"] . "_" . $sortdef["function"]);
 
-				$grouparr[] = $sortdef["field"] . '_' . $sortdef["function"];
-				$orderarr[] = $sortdef["field"] . '_' . $sortdef["function"] . " " . $sortdef["order"];
-				$orderarr[] = $sortdef["field"] . ' ' . $sortdef["order"];
+				$grouparr[] = $sortdef['field'] . '_' . $sortdef['function'];
+				$orderarr[] = $sortdef['field'] . '_' . $sortdef['function'] . " " . $sortdef['order'];
+				$orderarr[] = $sortdef['field'] . ' ' . $sortdef['order'];
 				if(isset($pidarr[$c])){
 					$havingarr[] = ($pidarr[$c] == g_l('modules_customer', '[no_value]') ?
 							"(" . $sortdef["field"] . "_" . $sortdef["function"] . "='' OR " . $sortdef["field"] . "_" . $sortdef["function"] . " IS NULL)" :

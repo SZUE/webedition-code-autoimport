@@ -92,25 +92,25 @@ class weCustomerAdd{
 				$function->setAttributes(array("name" => "function_" . $counter . "_" . $fcounter, "class" => "weSelect",));
 
 				$function->delAllOptions();
-				$function->addOption("", "");
-				foreach($pob->View->settings->FunctionTable as $ftk => $ftv){
-					if(isset($sort["field"]) && $pob->View->settings->isFunctionForField($ftk, $sort["field"])){
-						$function->addOption($ftk, $ftk);
+				$function->addOption('', '');
+				foreach(array_keys($pob->View->settings->FunctionTable) as $ftk){
+					if(isset($sort["field"]) /* && $pob->View->settings->isFunctionForField($ftk, $sort["field"]) */){
+						$function->addOption($ftk, g_l('modules_customer', '[filter][' . $ftk . ']'));
 					}
 				}
 
-				if(isset($sort["function"])){
-					$function->selectOption($sort["function"]);
+				if(isset($sort['function'])){
+					$function->selectOption($sort['function']);
 				}
 
-				$order->setAttributes(array("name" => "order_" . $counter . "_" . $fcounter, "class" => "weSelect",));
-				$order->selectOption($sort["order"]);
+				$order->setAttributes(array('name' => 'order_' . $counter . '_' . $fcounter, 'class' => 'weSelect',));
+				$order->selectOption($sort['order']);
 
 				$row_num = $fcounter + 1;
 				$sort_table->addRow();
 				$sort_table->setCol($row_num, 0, array("class" => "defaultfont"), $branch->getHtml());
 				$sort_table->setCol($row_num, 1, array("class" => "defaultfont"), $field->getHtml());
-				//$sort_table->setCol($row_num, 2, array("class" => "defaultfont"), $function->getHtml());
+				$sort_table->setCol($row_num, 2, array("class" => "defaultfont"), $function->getHtml());
 				$sort_table->setCol($row_num, 3, array("class" => "defaultfont"), $order->getHtml());
 				$sort_table->setCol($row_num, 4, array("class" => "defaultfont"), we_button::create_button("image:btn_function_trash", "javascript:we_cmd('del_sort_field','$k',$fcounter)", true, 30));
 
@@ -411,7 +411,7 @@ function we_cmd(){
 		$this->db->query('SELECT ' . $select . ' FROM ' . CUSTOMER_TABLE . ' WHERE ' . $where . ' ORDER BY Text LIMIT 0,' . $res_num);
 
 		$result = array();
-		while($this->db->next_record()) {
+		while($this->db->next_record()){
 			$result[$this->db->f("ID")] = $this->db->f("user");
 		}
 
@@ -439,12 +439,11 @@ function we_cmd(){
 
 
 		$content = we_html_element::htmlForm(array("name" => "we_form_treeheader"), $hiddens .
-					$table1->getHtml() .
-					$table->getHtml()
-				);
+				$table1->getHtml() .
+				$table->getHtml()
+		);
 		return $content;
-		$body = we_html_element::htmlBody(array('style' => 'overflow:hidden', "background" => IMAGE_DIR . "backgrounds/header_with_black_line.gif", "marginwidth" => "5", "marginheight" => "5", "leftmargin" => "5", "topmargin" => "5"),
-			$content
+		$body = we_html_element::htmlBody(array('style' => 'overflow:hidden', "background" => IMAGE_DIR . "backgrounds/header_with_black_line.gif", "marginwidth" => "5", "marginheight" => "5", "leftmargin" => "5", "topmargin" => "5"), $content
 		);
 
 		//return $pob->getHTMLDocument($body);
