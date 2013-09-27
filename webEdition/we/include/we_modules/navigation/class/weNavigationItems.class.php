@@ -26,7 +26,7 @@
 /**
  * collection of the navigation items
  */
-class weNavigationItems {
+class weNavigationItems{
 
 	private static $cache = array();
 	var $items;
@@ -191,7 +191,7 @@ class weNavigationItems {
 		}
 		unset($navigationRulesStorage);
 
-		foreach($this->items as $_k => &$_item){
+		foreach($this->items as &$_item){
 			if(strtolower(get_class($_item)) == 'wenavigationitem'){
 				$this->hasCurrent = ($_item->isCurrent($this));
 			}
@@ -262,7 +262,7 @@ class weNavigationItems {
 		if(empty($idsRule)){
 			return true;
 		}
-		
+
 		foreach($idsRule as $rule){
 			if(strpos($idDoc, ",$rule,") !== false){
 				return true;
@@ -316,7 +316,7 @@ class weNavigationItems {
 
 				case weNavigation::STPYE_CLASS:
 					if($_rule->ClassID){
-						if(isset($GLOBALS["WE_MAIN_DOC"]->TableID) && ($GLOBALS["WE_MAIN_DOC"]->TableID == $_rule->ClassID)){
+						if(isset($GLOBALS['WE_MAIN_DOC']->TableID) && ($GLOBALS["WE_MAIN_DOC"]->TableID == $_rule->ClassID)){
 							$_ponder--;
 						} else {
 							$_ponder = 999; // remove from selection
@@ -324,12 +324,7 @@ class weNavigationItems {
 					}
 
 					if($_isObject){
-						//$parentPath = id_to_path($_rule->WorkspaceID, FILE_TABLE);
-						$parentPath = $this->id2path($_rule->WorkspaceID);
-
-						if(!empty($wPath) && $parentPath != '/'){
-							$parentPath .= '/';
-						}
+						$parentPath = rtrim($this->id2path($_rule->WorkspaceID), '/') . '/';
 					}
 					break;
 			}
@@ -407,8 +402,8 @@ class weNavigationItems {
 		// get correct position
 		if(isset($useTemplate[$item->current])){
 			$useTemplate = $useTemplate[$item->current];
-		} elseif(isset($useTemplate['defaultCurrent'])){
-			$useTemplate = $useTemplate['defaultCurrent'];
+		} elseif(isset($useTemplate[weNavigationItem::DEFAULT_CURRENT])){
+			$useTemplate = $useTemplate[weNavigationItem::DEFAULT_CURRENT];
 		}
 
 		// is last entry??
@@ -443,13 +438,13 @@ class weNavigationItems {
 		//			$itemTemplate = '<li><a href="<we:navigationField name="href">"><we:navigationField name="text"></a></li>';
 		//			$rootTemplate = '<we:navigationEntries />';
 
-		$this->setTemplate('<li><a href="<?php printElement( ' . we_tag_tagParser::printTag('navigationField', array("name" => "href")) . '); ?>"><?php printElement( ' . we_tag_tagParser::printTag('navigationField', array("name" => "text")) . '); ?></a><?php if(' . we_tag_tagParser::printTag('ifHasEntries') . '){ ?><ul><?php printElement( ' . we_tag_tagParser::printTag('navigationEntries') . '); ?></ul><?php } ?></li>', 'folder', 'defaultLevel', 'defaultCurrent', 'defaultPosition');
-		$this->setTemplate('<li><a href="<?php printElement( ' . we_tag_tagParser::printTag('navigationField', array("name" => "href")) . '); ?>"><?php printElement( ' . we_tag_tagParser::printTag('navigationField', array("name" => "text")) . '); ?></a></li>', 'item', 'defaultLevel', 'defaultCurrent', 'defaultPosition');
-		$this->setTemplate('<?php printElement( ' . we_tag_tagParser::printTag('navigationEntries') . '); ?>', 'root', 'defaultLevel', 'defaultCurrent', 'defaultPosition');
+		$this->setTemplate('<li><a href="<?php printElement( ' . we_tag_tagParser::printTag('navigationField', array("name" => "href")) . '); ?>"><?php printElement( ' . we_tag_tagParser::printTag('navigationField', array("name" => "text")) . '); ?></a><?php if(' . we_tag_tagParser::printTag('ifHasEntries') . '){ ?><ul><?php printElement( ' . we_tag_tagParser::printTag('navigationEntries') . '); ?></ul><?php } ?></li>', 'folder', 'defaultLevel', weNavigationItem::DEFAULT_CURRENT, 'defaultPosition');
+		$this->setTemplate('<li><a href="<?php printElement( ' . we_tag_tagParser::printTag('navigationField', array("name" => "href")) . '); ?>"><?php printElement( ' . we_tag_tagParser::printTag('navigationField', array("name" => "text")) . '); ?></a></li>', 'item', 'defaultLevel', weNavigationItem::DEFAULT_CURRENT, 'defaultPosition');
+		$this->setTemplate('<?php printElement( ' . we_tag_tagParser::printTag('navigationEntries') . '); ?>', 'root', 'defaultLevel', weNavigationItem::DEFAULT_CURRENT, 'defaultPosition');
 	}
 
 	function getDefaultTemplate($item){
-		return $this->templates[$item->type]['defaultLevel']['defaultCurrent']['defaultPosition'];
+		return $this->templates[$item->type]['defaultLevel'][weNavigationItem::DEFAULT_CURRENT]['defaultPosition'];
 	}
 
 	function writeNavigation($depth = false){

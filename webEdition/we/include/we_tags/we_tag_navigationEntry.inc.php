@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_parse_tag_navigationEntry($attribs, $content){
-	return '<?php printElement(' . we_tag_tagParser::printTag('navigationEntry', $attribs, str_replace(array('global $lv;','$','\\\\$'), array('','\\$','\\$'), $content), true) . ');?>';
+	return '<?php printElement(' . we_tag_tagParser::printTag('navigationEntry', $attribs, str_replace(array('global $lv;', '$', '\\\\$'), array('', '\\$', '\\$'), $content), true) . ');?>';
 }
 
 function we_tag_navigationEntry($attribs, $content){
@@ -35,7 +35,10 @@ function we_tag_navigationEntry($attribs, $content){
 	$navigationName = weTag_getAttribute('navigationname', $attribs, 'default');
 	$type = weTag_getAttribute('type', $attribs);
 	$level = weTag_getAttribute('level', $attribs, 'defaultLevel');
-	$current = weTag_getAttribute('current', $attribs, 'defaultCurrent');
+	$current = (weTag_getAttribute('current', $attribs, weNavigationItem::DEFAULT_CURRENT) != weNavigationItem::DEFAULT_CURRENT ?
+			weTag_getAttribute('current', $attribs, false, true) :
+			weNavigationItem::DEFAULT_CURRENT);
+
 	$positions = makeArrayFromCSV(weTag_getAttribute('position', $attribs, 'defaultPosition'));
 
 	foreach($positions as $position){
