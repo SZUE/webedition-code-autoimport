@@ -889,7 +889,7 @@ function doDebugResizeH(){
 	div.yui-ac-bd ul, div.yui-ac-bd ui{ margin:-7px; margin-top:-5px; padding:0px; list-style:none; font-family: Verdana, Arial, sans-serif; font-size: 10px;}
 	div.yuiAcLayer { margin:0px; padding:0px;}";
 		}
-		return empty($inputfields) ? "" : we_html_element::cssElement($out, true);
+		return empty($inputfields) ? "" : we_html_element::cssElement($out, array('scoped' => 'scoped'));
 	}
 
 	function getHTML(){
