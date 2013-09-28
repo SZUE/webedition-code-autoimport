@@ -72,9 +72,9 @@ class we_customer_settings{
 		'DESC' => 'DESC'
 	);
 	public $FunctionTable = array(
-		'ALPH1' => 'UPPER(SUBSTRING(%s,1,1))',
-		'ALPH2' => 'UPPER(SUBSTRING(%s,1,2))',
-		'ALPH3' => 'UPPER(SUBSTRING(%s,1,3))',
+		'FIRSTCHAR' => 'UPPER(SUBSTRING(%s,1,1))',
+		/*'ALPH2' => 'UPPER(SUBSTRING(%s,1,2))',
+		'ALPH3' => 'UPPER(SUBSTRING(%s,1,3))',*/
 		'MINUTE' => 'DATE_FORMAT(%s,\'%%i\')',
 		'HOUR' => 'DATE_FORMAT(%s,\'%%H\')',
 		'DAY' => 'DAYOFMONTH(%s)',
@@ -88,9 +88,9 @@ class we_customer_settings{
 		'QUARTER' => 'QUARTER(%s)'
 	);
 	private $TypeFunction = array(
-		'ALPH1' => 'input,select,textarea,password',
-		'ALPH2' => 'input,select,textarea,password',
-		'ALPH3' => 'input,select,textarea,password',
+		'FIRSTCHAR' => 'input,select,textarea,password',
+		/*'ALPH2' => 'input,select,textarea,password',
+		'ALPH3' => 'input,select,textarea,password',*/
 		'MINUTE' => 'date',
 		'HOUR' => 'date',
 		'DAY' => 'date',

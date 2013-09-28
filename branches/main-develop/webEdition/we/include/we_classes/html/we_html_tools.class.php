@@ -753,9 +753,9 @@ abstract class we_html_tools{
 
 	private static function parseAttribs($attribs){
 		$attr = $matches = array();
-		preg_match_all('|(\w+)\s*=\s*"([^"]*)"|', $attribs, $matches, PREG_SET_ORDER);
+		preg_match_all('|(\w+)\s*=\s*(["\'])([^\2]*)\2|U', $attribs, $matches, PREG_SET_ORDER);
 		foreach($matches as $match){
-			$attr[$match[1]] = $match[2];
+			$attr[$match[1]] = ($match[2] == '\'' ? str_replace('"', '\"', $match[3]) : $match[3]);
 		}
 		return $attr;
 	}
@@ -787,7 +787,7 @@ abstract class we_html_tools{
 				'name' => trim($name),
 				'size' => abs($size),
 				($multiple ? 'multiple' : '') => 'multiple',
-				($width ? 'width': '') => ($width ? $width : '')
+				($width ? 'width' : '') => ($width ? $width : '')
 					), $attribs
 				), $ret);
 	}

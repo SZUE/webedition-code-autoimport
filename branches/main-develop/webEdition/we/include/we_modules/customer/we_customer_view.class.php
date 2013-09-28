@@ -73,7 +73,7 @@ class we_customer_view extends weModuleView{
 	function getJSTop(){
 		$mod = isset($_REQUEST['mod']) ? $_REQUEST['mod'] : '';
 		$modData = weModuleInfo::getModuleData($mod);
-		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' .$modData['text'] : '';
+		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' . $modData['text'] : '';
 
 		return we_html_element::jsScript(JS_DIR . 'windows.js') . we_html_element::jsElement('
 var get_focus = 1;
@@ -577,13 +577,13 @@ self.focus();' . $this->getJSSubmitFunction("customer_settings");
 					if($newone){
 						$js = '
 var attribs = new Array();
-attribs["icon"]=\'' . $this->customer->Icon . '\';
-attribs["id"]=\'' . $this->customer->ID . '\';
-attribs["typ"]=\'item\';
-attribs["parentid"]=\'0\';
-attribs["text"]=\'' . $tt . '\';
-attribs["disable"]=\'0\';
-attribs["tooltip"]=\'' . (($this->customer->Forename != "" || $this->customer->Surname != "") ? $this->customer->Forename . "&nbsp;" . $this->customer->Surname : "") . '\';' .
+attribs["icon"]="' . $this->customer->Icon . '";
+attribs["id"]="' . $this->customer->ID . '";
+attribs["typ"]="item";
+attribs["parentid"]="0";
+attribs["text"]="' . $tt . '";
+attribs["disable"]="0";
+attribs["tooltip"]="' . (($this->customer->Forename != "" || $this->customer->Surname != "") ? $this->customer->Forename . "&nbsp;" . $this->customer->Surname : "") . '";' .
 							$this->topFrame . '.treeData.addSort(new ' . $this->topFrame . '.node(attribs));';
 						$js .= $this->topFrame . '.applySort();';
 					} else {
@@ -946,7 +946,7 @@ self.close();';
 			$_SESSION['weS']['customer_session'] = serialize($this->customer);
 		}
 		if(is_array($this->customer->persistent_slots)){
-			foreach($this->customer->persistent_slots as $key => $val){
+			foreach($this->customer->persistent_slots as $val){
 				$varname = $val;
 				if($varname == 'LoginDenied'){
 					if(isset($_REQUEST[$varname])){
@@ -966,47 +966,46 @@ self.close();';
 			$this->page = $_REQUEST['page'];
 		}
 
-		if(isset($_REQUEST['pnt']))
-			if($_REQUEST['pnt'] == 'sort_admin'){
+		if(isset($_REQUEST['pnt']) && $_REQUEST['pnt'] == 'sort_admin'){
 
-				$counter = (isset($_REQUEST['counter']) ? $_REQUEST['counter'] : -1);
+			$counter = (isset($_REQUEST['counter']) ? $_REQUEST['counter'] : -1);
 
-				if($counter > -1){
-					$this->settings->SortView = array();
+			if($counter > -1){
+				$this->settings->SortView = array();
+			}
+
+			for($i = 0; $i < $counter; $i++){
+
+				$sort_name = (isset($_REQUEST['sort_' . $i]) && $_REQUEST['sort_' . $i] != '' ?
+						$_REQUEST['sort_' . $i] :
+						g_l('modules_customer', '[sort_name]') . '_' . $i);
+
+
+				$fcounter = (isset($_REQUEST['fcounter_' . $i]) ? $_REQUEST['fcounter_' . $i] : 1);
+
+				if($fcounter > -1){
+					$this->settings->SortView[$sort_name] = array();
 				}
-
-				for($i = 0; $i < $counter; $i++){
-
-					$sort_name = (isset($_REQUEST['sort_' . $i]) && $_REQUEST['sort_' . $i] != '' ?
-							$_REQUEST['sort_' . $i] :
-							g_l('modules_customer', '[sort_name]') . '_' . $i);
-
-
-					$fcounter = (isset($_REQUEST['fcounter_' . $i]) ? $_REQUEST['fcounter_' . $i] : 1);
-
-					if($fcounter > -1){
-						$this->settings->SortView[$sort_name] = array();
+				for($j = 0; $j < $fcounter; $j++){
+					$new = array();
+					if(isset($_REQUEST['branch_' . $i . '_' . $j])){
+						$new['branch'] = $_REQUEST['branch_' . $i . '_' . $j];
 					}
-					for($j = 0; $j < $fcounter; $j++){
-						$new = array();
-						if(isset($_REQUEST['branch_' . $i . '_' . $j])){
-							$new['branch'] = $_REQUEST['branch_' . $i . '_' . $j];
-						}
-						if(isset($_REQUEST['field_' . $i . '_' . $j])){
-							$new['field'] = ($new['branch'] == g_l('modules_customer', '[common]') ?
-									str_replace(g_l('modules_customer', '[common]') . '_', '', $_REQUEST['field_' . $i . '_' . $j]) :
-									$_REQUEST['field_' . $i . '_' . $j]);
-						}
-						if(isset($_REQUEST['function_' . $i . '_' . $j])){
-							$new['function'] = $_REQUEST['function_' . $i . '_' . $j];
-						}
-						if(isset($_REQUEST['order_' . $i . '_' . $j])){
-							$new['order'] = $_REQUEST['order_' . $i . '_' . $j];
-						}
-						$this->settings->SortView[$sort_name][$j] = $new;
+					if(isset($_REQUEST['field_' . $i . '_' . $j])){
+						$new['field'] = ($new['branch'] == g_l('modules_customer', '[common]') ?
+								str_replace(g_l('modules_customer', '[common]') . '_', '', $_REQUEST['field_' . $i . '_' . $j]) :
+								$_REQUEST['field_' . $i . '_' . $j]);
 					}
+					if(isset($_REQUEST['function_' . $i . '_' . $j])){
+						$new['function'] = $_REQUEST['function_' . $i . '_' . $j];
+					}
+					if(isset($_REQUEST['order_' . $i . '_' . $j])){
+						$new['order'] = $_REQUEST['order_' . $i . '_' . $j];
+					}
+					$this->settings->SortView[$sort_name][$j] = $new;
 				}
 			}
+		}
 	}
 
 	function getFieldProperties($field){

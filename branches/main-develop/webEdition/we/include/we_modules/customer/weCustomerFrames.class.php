@@ -675,7 +675,7 @@ failure: function(o) {
 		$branch_select = (isset($_REQUEST["branch_select"]) ? $_REQUEST["branch"] : g_l('modules_customer', '[other]'));
 
 		$select = $this->getHTMLBranchSelect(false);
-		$select->setAttributes(array("name" => "branch_select", "class" => "weSelect", "onChange" => "selectBranch()", "style" => "width:150px;"));
+		$select->setAttributes(array("name" => "branch_select", "class" => 'weSelect', 'onchange' => "selectBranch()", "style" => "width:150px;"));
 		$select->selectOption($branch_select);
 
 		$fields = $this->getHTMLFieldsSelect($branch);
