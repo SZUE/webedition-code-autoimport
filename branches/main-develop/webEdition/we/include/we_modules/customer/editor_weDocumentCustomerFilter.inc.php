@@ -106,7 +106,7 @@ function formWebuser($canChange, $width = 388){
 
 	$_trashBut = we_button::create_button("image:btn_function_trash", "javascript:document.we_form.elements['$idname'].value=0;document.we_form.elements['$textname'].value='';_EditorFrame.setEditorIsHot(true);");
 	/*
-	  $out = $GLOBALS['we_doc']->htmlFormElementTable($inputFeld,
+	  $out = we_html_tools::htmlFormElementTable($inputFeld,
 	  g_l('modules_customer','[connected_with_customer]'),
 	  "left",
 	  "defaultfont",

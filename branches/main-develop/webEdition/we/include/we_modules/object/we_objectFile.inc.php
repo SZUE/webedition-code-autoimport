@@ -963,7 +963,7 @@ class we_objectFile extends we_document{
 
 		$button = we_button::create_button_table($_buttons, 5);
 
-		return $this->htmlFormElementTable(
+		return we_html_tools::htmlFormElementTable(
 				$this->htmlTextInput($textname, 30, $path, "", ' readonly', "text", $inputWidth, 0), '<span class="weObjectPreviewHeadline">' . $name . ($this->DefArray[we_object::QUERY_PREFIX . $ObjectID]["required"] ? "*" : "") . '</span>' . ($npubl ? '' : ' <span style="color:red">' . g_l('modules_object', '[not_published]') . '</span>') . ( isset($this->DefArray[we_object::QUERY_PREFIX . $ObjectID]['editdescription']) && $this->DefArray[we_object::QUERY_PREFIX . $ObjectID]['editdescription'] ? '<div class="objectDescription">' . $this->DefArray[we_object::QUERY_PREFIX . $ObjectID]['editdescription'] . '</div>' : we_html_element::htmlBr() ), "left", "defaultfont", $this->htmlHidden($idname, $myid), we_html_tools::getPixel(5, 4), $button) .
 			$objectpreview;
 	}
@@ -981,7 +981,7 @@ class we_objectFile extends we_document{
 			$f = 1;
 
 			$text = '<span class="weObjectPreviewHeadline">' . $name . ($this->DefArray[self::TYPE_MULTIOBJECT . '_' . $name]["required"] ? "*" : "") . '</span>' . ( isset($this->DefArray[self::TYPE_MULTIOBJECT . "_$name"]['editdescription']) && $this->DefArray[self::TYPE_MULTIOBJECT . "_$name"]['editdescription'] ? '<div class="objectDescription">' . $this->DefArray[self::TYPE_MULTIOBJECT . "_$name"]['editdescription'] . '</div>' : we_html_element::htmlBr() );
-			$content = $this->htmlFormElementTable('', $text);
+			$content = we_html_tools::htmlFormElementTable('', $text);
 
 			for($f = 0; $f < $show; $f++){
 				$textname = 'we_' . $this->Name . '_txt[' . $name . '_path' . $f . ']';
@@ -1049,7 +1049,7 @@ class we_objectFile extends we_document{
 						), 5
 				);
 
-				$content .= $this->htmlFormElementTable(
+				$content .= we_html_tools::htmlFormElementTable(
 					$this->htmlTextInput($textname, 30, $path, 255, 'onchange="_EditorFrame.setEditorIsHot(true);" readonly ', 'text', $inputWidth), '', 'left', 'defaultfont', we_html_tools::getPixel(20, 4), $buttontable);
 
 				if(isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE && $myid){

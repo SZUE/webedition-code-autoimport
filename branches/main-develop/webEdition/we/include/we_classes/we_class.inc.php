@@ -136,11 +136,10 @@ abstract class we_class{
 		}
 		$formname = 'we_' . $this->Name . '_' . $type . '[' . $name . ']';
 		$out = $this->htmlHidden($formname, $this->getElement($name)) . '<table cellpadding="0" cellspacing="0" border="1"><tr><td' . ($value ? (' bgcolor="' . $value . '"') : '') . '><a href="javascript:setScrollTo();we_cmd(\'openColorChooser\',\'' . $formname . '\',document.we_form.elements[\'' . $formname . '\'].value);">' . we_html_tools::getPixel($width, $height) . '</a></td></tr></table>';
-		return g_l('weClass', '[' . $name . ']', true) !== false ? $this->htmlFormElementTable($out, g_l('weClass', '[' . $name . ']')) : $out;
+		return g_l('weClass', '[' . $name . ']', true) !== false ? we_html_tools::htmlFormElementTable($out, g_l('weClass', '[' . $name . ']')) : $out;
 	}
 
-	/* creates a select field for entering Data that will be stored at the $elements Array */
-
+	/** creates a select field for entering Data that will be stored at the $elements Array */
 	function formSelectElement($name, $values, $type = 'txt', $size = 1){
 		$out = '<select class="defaultfont" name="we_' . $this->Name . '_' . $type . '[' . $name . ']' . '" size="' . $size . '">' . "\n";
 		$value = $this->getElement($name);
@@ -149,32 +148,25 @@ abstract class we_class{
 			$out .= '<option value="' . $val . '"' . (($val == $value) ? " selected" : "") . '>' . $txt . "</option>\n";
 		}
 		$out .= '</select>';
-		return $this->htmlFormElementTable($out, g_l('weClass', '[' . $name . ']'));
+		return we_html_tools::htmlFormElementTable($out, g_l('weClass', '[' . $name . ']'));
 	}
 
 	function formTextInput($elementtype, $name, $text, $size = 24, $maxlength = '', $attribs = '', $textalign = 'left', $textclass = 'defaultfont'){
 		if(!$elementtype){
 			$ps = $this->$name;
 		}
-		return $this->htmlFormElementTable($this->htmlTextInput(($elementtype ? ('we_' . $this->Name . '_' . $elementtype . "[$name]") : ('we_' . $this->Name . '_' . $name)), $size, ($elementtype ? $this->getElement($name) : $ps), $maxlength, $attribs), $text, $textalign, $textclass);
+		return we_html_tools::htmlFormElementTable($this->htmlTextInput(($elementtype ? ('we_' . $this->Name . '_' . $elementtype . "[$name]") : ('we_' . $this->Name . '_' . $name)), $size, ($elementtype ? $this->getElement($name) : $ps), $maxlength, $attribs), $text, $textalign, $textclass);
 	}
 
 	function formInputField($elementtype, $name, $text, $size, $width, $maxlength = '', $attribs = '', $textalign = 'left', $textclass = 'defaultfont'){
 		if(!$elementtype){
 			$ps = $this->$name;
 		}
-		return $this->htmlFormElementTable($this->htmlTextInput(($elementtype ? ('we_' . $this->Name . '_' . $elementtype . "[$name]") : ('we_' . $this->Name . '_' . $name)), $size, ($elementtype && $this->getElement($name) != '' ? $this->getElement($name) : (isset($GLOBALS['meta'][$name]) ? $GLOBALS['meta'][$name]['default'] : (isset($ps) ? $ps : '') )), $maxlength, $attribs, 'text', $width), $text, $textalign, $textclass);
+		return we_html_tools::htmlFormElementTable($this->htmlTextInput(($elementtype ? ('we_' . $this->Name . '_' . $elementtype . '[' . $name . ']') : ('we_' . $this->Name . '_' . $name)), $size, ($elementtype && $this->getElement($name) != '' ? $this->getElement($name) : (isset($GLOBALS['meta'][$name]) ? $GLOBALS['meta'][$name]['default'] : (isset($ps) ? $ps : '') )), $maxlength, $attribs, 'text', $width), $text, $textalign, $textclass);
 	}
 
-	function formPasswordInput($elementtype, $name, $text, $size = 24, $maxlength = '', $attribs = '', $textalign = 'left', $textclass = 'defaultfont'){
-		return $this->htmlFormElementTable($this->htmlPasswordInput(($elementtype ? ('we_' . $this->Name . '_' . $elementtype . "[$name]") : ('we_' . $this->Name . '_' . $name)), $size, '', $maxlength, $attribs), $text, $textalign, $textclass);
-	}
-
-	function formTextArea($elementtype, $name, $text, $rows = 10, $cols = 30, $attribs = '', $textalign = 'left', $textclass = 'defaultfont'){
-		if(!$elementtype){
-			$ps = $this->$name;
-		}
-		return $this->htmlFormElementTable($this->htmlTextArea(($elementtype ? ('we_' . $this->Name . '_' . $elementtype . "[$name]") : ('we_' . $this->Name . '_' . $name)), $rows, $cols, ($elementtype ? $this->getElement($name) : $ps), $attribs), $text, $textalign, $textclass);
+	function formTextArea($elementtype, $name, $text, $rows = 10, $cols = 30, array $attribs = array(), $textalign = 'left', $textclass = 'defaultfont'){
+		return we_html_tools::htmlFormElementTable(self::htmlTextArea(($elementtype ? ('we_' . $this->Name . '_' . $elementtype . "[$name]") : ('we_' . $this->Name . '_' . $name)), $rows, $cols, $this->getElement($name), $attribs), $text, $textalign, $textclass);
 	}
 
 	function formSelect($elementtype, $name, $table, $val, $txt, $text, $sqlTail = '', $size = 1, $selectedIndex = '', $multiple = false, $attribs = '', $textalign = 'left', $textclass = 'defaultfont', $precode = '', $postcode = '', $firstEntry = ''){
@@ -193,7 +185,7 @@ abstract class we_class{
 			$ps = $this->$name;
 		}
 		$pop = $this->htmlSelect(($elementtype ? ('we_' . $this->Name . '_' . $elementtype . "[$name]") : ('we_' . $this->Name . '_' . $name)), $vals, $size, ($elementtype ? $this->getElement($name) : $ps), $multiple, $attribs);
-		return $this->htmlFormElementTable(($precode ? $precode : '') . $pop . ($postcode ? $postcode : ''), $text, $textalign, $textclass);
+		return we_html_tools::htmlFormElementTable(($precode ? $precode : '') . $pop . ($postcode ? $postcode : ''), $text, $textalign, $textclass);
 	}
 
 	function formSelectFromArray($elementtype, $name, $vals, $text, $size = 1, $selectedIndex = '', $multiple = false, $attribs = '', $textalign = 'left', $textclass = 'defaultfont', $precode = '', $postcode = '', $firstEntry = ''){
@@ -201,63 +193,26 @@ abstract class we_class{
 			$ps = $this->$name;
 		}
 		$pop = $this->htmlSelect2(($elementtype ? ('we_' . $this->Name . '_' . $elementtype . "[$name]") : ('we_' . $this->Name . '_' . $name)), $vals, $size, ($elementtype ? $this->getElement($name) : $ps), $multiple, $attribs);
-		return $this->htmlFormElementTable(($precode ? $precode : '') . $pop . ($postcode ? $postcode : ''), $text, $textalign, $textclass);
+		return we_html_tools::htmlFormElementTable(($precode ? $precode : '') . $pop . ($postcode ? $postcode : ''), $text, $textalign, $textclass);
 	}
 
 	function htmlTextInput($name, $size = 24, $value = '', $maxlength = '', $attribs = '', $type = 'text', $width = 0, $height = 0){
 		return we_html_tools::htmlTextInput($name, $size, $value, $maxlength, $attribs, $type, $width, $height);
 	}
 
-	function htmlHidden($name, $value = '', $params = null){
-		//we_html_element::htmlHidden(array('name'=>trim($name),value=>oldHtmlspecialchars($value)));
-		return '<input type="hidden" name="' . trim($name) . '" value="' . oldHtmlspecialchars($value) . '" ' . $params . ' />';
+	function htmlHidden($name, $value = ''){
+		return we_html_element::htmlHidden(array('name' => trim($name), value => oldHtmlspecialchars($value)));
 	}
 
-	function htmlPasswordInput($name, $size = 24, $value = '', $maxlength = '', $attribs = ''){
-		return $this->htmlTextInput($name, $size, $value, $maxlength, $attribs, 'password');
-	}
-
-	function htmlTextArea($name, $rows = 10, $cols = 30, $value = '', $attribs = ''){
-		return '<textarea class="defaultfont" name="' . trim($name) . '" rows="' . abs($rows) . '" cols="' . abs($cols) . '"' . ($attribs ? " $attribs" : '') . '>' . ($value ? (oldHtmlspecialchars($value)) : '') . '</textarea>';
-	}
-
-	function htmlRadioButton($name, $value, $checked = false, $attribs = '', $text = '', $textalign = 'left', $textclass = 'defaultfont', $type = 'radio', $width = ''){
-		$v = $value;
-		return ( $text ?
-				('<table cellpadding="0" cellspacing="0" border="0"' . ($width ? " width=$width" : '') . '><tr>' . (($textalign == 'left') ?
-					('<td class="' . $textclass . '">' . $text . '&nbsp;</td><td>') :
-					'<td>')
-				) :
-				''
-			) . '<input type="' . trim($type) . '" name="' . trim($name) . '" value="' . $v . '"' . ($attribs ? " $attribs" : '') . ($checked ? ' checked' : '') . ' />' .
-			( $text ?
-				( (($textalign == 'right') ?
-					('</td><td class="' . $textclass . '">&nbsp;' . $text . '</td>') :
-					'</td>'
-				) . '</tr></table>'
-				) :
-				''
-			);
-	}
-
-	function htmlCheckBox($name, $value, $checked = false, $attribs = '', $text = '', $textalign = 'left', $textclass = 'defaultfont'){
-		$v = $value;
-		$type = 'checkbox';
-		return ( $text ?
-				('<table cellpadding="0" cellspacing="0" border="0"><tr>' . (($textalign == 'left') ?
-					('<td class="' . $textclass . '">' . $text . '&nbsp;</td><td>') :
-					'<td>')
-				) :
-				''
-			) . '<input type="' . trim($type) . '" name="' . trim($name) . '" value="' . $v . '"' . ($attribs ? " $attribs" : '') . ($checked ? " checked" : "") . ' />' .
-			( $text ?
-				( (($textalign == 'right') ?
-					('</td><td class="' . $textclass . '">&nbsp;' . $text . '</td>') :
-					'</td>'
-				) . '</tr></table>'
-				) :
-				''
-			);
+	static function htmlTextArea($name, $rows = 10, $cols = 30, $value = '', array $attribs = array()){
+		return we_html_element::htmlTextArea(
+				array_merge(array(
+				'name' => trim($name),
+				'class' => 'defaultfont wetextarea',
+				'rows' => abs($rows),
+				'cols' => abs($cols),
+				$attribs)
+				), ($value ? (oldHtmlspecialchars($value)) : ''));
 	}
 
 	function htmlSelect($name, $values, $size = 1, $selectedIndex = '', $multiple = false, $attribs = '', $compare = 'value', $width = 0){
@@ -287,31 +242,32 @@ abstract class we_class{
 
 	// this function doesn't split selectedIndex
 	function htmlSelect2($name, $values, $size = 1, $selectedIndex = '', $multiple = false, $attribs = '', $compare = 'value', $width = ''){
-		reset($values);
 		$ret = '<select id="' . trim($name) . '" class="weSelect defaultfont" name="' . trim($name) . '" size="' . abs($size) . '"' . ($multiple ? " multiple" : "") . ($attribs ? " $attribs" : "") . ($width ? ' style="width: ' . $width . 'px"' : '') . '>';
-		while(list($value, $text) = each($values)){
+		foreach($values as $value => $text){
 			$ret .= '<option value="' . oldHtmlspecialchars($value) . '"' . (($selectedIndex == (($compare == 'value') ? $value : $text)) ? ' selected="selected"' : '') . '>' . $text . '</option>';
 		}
 		$ret .= '</select>';
 		return $ret;
 	}
 
-	function htmlFormElementTable($element, $text, $textalign = 'left', $textclass = 'defaultfont', $col2 = '', $col3 = '', $col4 = '', $col5 = '', $col6 = ''){
-		return we_html_tools::htmlFormElementTable($element, $text, $textalign, $textclass, $col2, $col3, $col4, $col5, $col6);
-	}
-
 	############## new fns
 	/* creates a select field for entering Data that will be stored at the $elements Array */
 
-	function formSelectElement2($width, $name, $values, $type = 'txt', $size = 1, $attribs = ''){
-		$out = '<select class="defaultfont" name="we_' . $this->Name . "_" . $type . "[$name]" . '" size="' . $size . '"' . ($width ? ' style="width: ' . $width . 'px"' : '') . ($attribs ? " $attribs" : '') . '>' . "\n";
+	function formSelectElement2($width, $name, $values, $type = 'txt', $size = 1, array $attribs = array()){
+		$out = '';
 		$value = $this->getElement($name);
-		reset($values);
 		foreach($values as $val => $txt){
 			$out .= '<option value="' . $val . '"' . (($val == $value) ? ' selected' : '') . '>' . $txt . '</option>';
 		}
-		$out .= '</select>';
-		return $this->htmlFormElementTable($out, g_l('weClass', '[' . $name . ']'));
+
+		return we_html_tools::htmlFormElementTable(
+				we_html_element::htmlSelect(array_merge(array(
+					'class' => "defaultfont",
+					'name' => 'we_' . $this->Name . '_' . $type . "[$name]",
+					'size' => $size,
+					'width' => $width,
+						), $attribs), $out)
+				, g_l('weClass', '[' . $name . ']'));
 	}
 
 	function formInput2($width, $name, $size = 25, $type = 'txt', $attribs = ''){
@@ -351,7 +307,7 @@ abstract class we_class{
 		if($precode || $postcode){
 			$pop = '<table border="0" cellpadding="0" cellspacing="0"><tr>' . ($precode ? ('<td>' . $precode . '</td><td>' . we_html_tools::getPixel($gap, 2) . '</td>') : '') . '<td>' . $pop . '</td>' . ($postcode ? ('<td>' . we_html_tools::getPixel($gap, 2) . '</td><td>' . $postcode . '</td>') : '') . '</tr></table>';
 		}
-		return ($multiple ? $this->htmlHidden($myname, $selectedIndex) : '') . $this->htmlFormElementTable($pop, $text, $textalign, $textclass);
+		return ($multiple ? $this->htmlHidden($myname, $selectedIndex) : '') . we_html_tools::htmlFormElementTable($pop, $text, $textalign, $textclass);
 	}
 
 	function formSelect4($elementtype, $width, $name, $table, $val, $txt, $text, $sqlTail = '', $size = 1, $selectedIndex = '', $multiple = false, $onChange = '', $attribs = '', $textalign = 'left', $textclass = 'defaultfont', $precode = '', $postcode = '', $firstEntry = '', $gap = 20){
@@ -375,7 +331,7 @@ abstract class we_class{
 		if($precode || $postcode){
 			$pop = '<table border="0" cellpadding="0" cellspacing="0"><tr>' . ($precode ? ('<td>' . $precode . '</td><td>' . we_html_tools::getPixel($gap, 2) . '</td>') : '') . '<td>' . $pop . '</td>' . ($postcode ? ('<td>' . we_html_tools::getPixel($gap, 2) . '</td><td>' . $postcode . '</td>') : '') . '</tr></table>';
 		}
-		return $this->htmlFormElementTable($pop, $text, $textalign, $textclass);
+		return we_html_tools::htmlFormElementTable($pop, $text, $textalign, $textclass);
 	}
 
 ##### NEWSTUFF ####
@@ -733,8 +689,7 @@ abstract class we_class{
 								print we_html_element::htmlDocType() . we_html_element::htmlHtml(we_html_element::htmlHead(we_html_element::jsElement($_js)));
 								return true;
 							}
-						}//!isfolder
-						else {
+						} else {//!isfolder
 							$double = f('SELECT DID FROM ' . LANGLINK_TABLE . " WHERE DocumentTable = '" . $type . "' AND DLocale = '" . $ownLocale . "' AND Locale = '" . $locale . "' AND LDID = " . intval($LDID) . " AND IsObject = " . intval($isobject) . " AND IsFolder = 1", 'DID', $this->DB_WE);
 
 							if($double == 0){

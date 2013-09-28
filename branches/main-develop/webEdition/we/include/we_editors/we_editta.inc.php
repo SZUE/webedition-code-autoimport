@@ -212,7 +212,7 @@ $parts[] = array(
 // CLASSES
 $table = '<table border="0" cellpadding="0" cellspacing="0">
 	<tr>
-		<td class="defaultfont" valign="top" align="right">classes&nbsp;</td><td colspan="5">' . we_class::htmlTextArea("cssClasses", 3, 30, oldHtmlspecialchars((isset($we_doc->elements[$name . "cssClasses"]["dat"]) ? $we_doc->elements[$name . "cssClasses"]["dat"] : "")), 'style="width:415px;height:50px"') . '</td>
+		<td class="defaultfont" valign="top" align="right">classes&nbsp;</td><td colspan="5">' . we_class::htmlTextArea("cssClasses", 3, 30, oldHtmlspecialchars((isset($we_doc->elements[$name . "cssClasses"]["dat"]) ? $we_doc->elements[$name . "cssClasses"]["dat"] : "")), array('style'=>"width:415px;height:50px")) . '</td>
 	</tr>
 	<tr>
 		<td>' . we_html_tools::getPixel(70, 1) . '</td>
@@ -234,14 +234,14 @@ $select_cm = we_html_tools::htmlSelect("tmp_contextmenu", $vals, 1, "", false, '
 
 $table = '<table border="0" cellpadding="0" cellspacing="0">
 	<tr>
-		<td class="defaultfont" valign="top" align="right">commands&nbsp;</td><td colspan="5">' . $select . '<br>' . we_class::htmlTextArea("commands", 3, 30, oldHtmlspecialchars((isset($we_doc->elements[$name . "commands"]["dat"]) ? $we_doc->elements[$name . "commands"]["dat"] : "")), 'id="commands" style="width:415px;height:50px"') . '</td>
+		<td class="defaultfont" valign="top" align="right">commands&nbsp;</td><td colspan="5">' . $select . '<br>' . we_class::htmlTextArea("commands", 3, 30, oldHtmlspecialchars((isset($we_doc->elements[$name . "commands"]["dat"]) ? $we_doc->elements[$name . "commands"]["dat"] : "")), array('id'=>"commands", 'style'=>"width:415px;height:50px")) . '</td>
 	</tr>
 	<tr>
 		<td>' . we_html_tools::getPixel(70, 10) . '</td>
 		<td>' . we_html_tools::getPixel(415, 10) . '</td>
 	</tr>
 	<tr>
-		<td class="defaultfont" valign="top" align="right">contextmenu&nbsp;</td><td colspan="5">' . $select_cm . '<br>' . we_class::htmlTextArea("contextmenu", 3, 30, oldHtmlspecialchars((isset($we_doc->elements[$name . "contextmenu"]["dat"]) ? $we_doc->elements[$name . "contextmenu"]["dat"] : "")), 'id="contextmenu" style="width:415px;height:50px"') . '</td>
+		<td class="defaultfont" valign="top" align="right">contextmenu&nbsp;</td><td colspan="5">' . $select_cm . '<br>' . we_class::htmlTextArea("contextmenu", 3, 30, oldHtmlspecialchars((isset($we_doc->elements[$name . "contextmenu"]["dat"]) ? $we_doc->elements[$name . "contextmenu"]["dat"] : "")), array('id'=>"contextmenu", 'style'=>"width:415px;height:50px")) . '</td>
 	</tr>
 	<tr>
 		<td>' . we_html_tools::getPixel(70, 1) . '</td>

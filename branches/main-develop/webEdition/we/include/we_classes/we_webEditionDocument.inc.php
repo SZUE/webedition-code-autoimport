@@ -311,7 +311,7 @@ class we_webEditionDocument extends we_textContentDocument{
 
 			if($this->DocType){
 				return (empty($templateFromDoctype) ?
-						$this->htmlFormElementTable($path, g_l('weClass', '[template]'), 'left', 'defaultfont') :
+						we_html_tools::htmlFormElementTable($path, g_l('weClass', '[template]'), 'left', 'defaultfont') :
 						$this->xformTemplatePopup(388));
 			}
 			$pop = (permissionhandler::hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL ?
@@ -320,7 +320,7 @@ class we_webEditionDocument extends we_textContentDocument{
 					'</td></tr></table>' :
 					$path);
 
-			return $this->htmlFormElementTable($pop, g_l('weClass', '[template]'), 'left', 'defaultfont');
+			return we_html_tools::htmlFormElementTable($pop, g_l('weClass', '[template]'), 'left', 'defaultfont');
 		}
 
 		if($this->DocType){

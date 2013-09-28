@@ -135,20 +135,8 @@ abstract class we_html_element{
 	 *
 	 * @return		string
 	 */
-	static function linkElement($attribs = array()){
+	static function linkElement(array $attribs = array()){
 		return we_baseElement::getHtmlCode(new we_baseElement('link', 'selfclose', $attribs));
-	}
-
-	/**
-	 * Function generates html code for html font element
-	 *
-	 * @param		$attribs								array			(optional)
-	 * @param		$content								string			(optional)
-	 *
-	 * @return		string
-	 */
-	static function htmlFont($attribs = array(), $content = ''){
-		return we_baseElement::getHtmlCode(new we_baseElement('font', true, $attribs, $content));
 	}
 
 	/**
@@ -159,8 +147,12 @@ abstract class we_html_element{
 	 *
 	 * @return		string
 	 */
-	static function htmlSpan($attribs = array(), $content = ''){
+	static function htmlSpan(array $attribs = array(), $content = ''){
 		return we_baseElement::getHtmlCode(new we_baseElement('span', true, $attribs, $content));
+	}
+
+	static function htmlSelect(array $attribs = array(), $content = ''){
+		return we_baseElement::getHtmlCode(new we_baseElement('select', true, $attribs, $content));
 	}
 
 	/**
@@ -353,6 +345,10 @@ abstract class we_html_element{
 	 */
 	static function htmlTextArea($attribs = array(), $content = ''){
 		return we_baseElement::getHtmlCode(new we_baseElement('textarea', true, $attribs, $content));
+	}
+
+	static function htmlOption($attribs = array(), $content = ''){
+		return we_baseElement::getHtmlCode(new we_baseElement('option', true, $attribs, $content));
 	}
 
 	/**

@@ -101,7 +101,7 @@ class weWorkflowView extends we_workflow_base{
 
 	function workflowHiddens(){
 		$out = '';
-		foreach($this->hiddens as $key => $val){
+		foreach($this->hiddens as $val){
 			$out.=$this->htmlHidden($this->uid . '_' . $val, (in_array($val, $this->workflowDef->persistents) ? $this->workflowDef->$val : $this->$val));
 		}
 		return $out;

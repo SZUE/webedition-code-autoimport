@@ -68,7 +68,7 @@ if(isset($_REQUEST['we_cmd']) && $_REQUEST['we_cmd'][0] == 'saveShopStatusMails'
 	// initialise the vatRule by request
 	$weShopStatusMails = weShopStatusMails::initByRequest($_REQUEST);
 	$weShopStatusMails->save();
-} else{
+} else {
 
 	$weShopStatusMails = weShopStatusMails::getShopStatusMails();
 }
@@ -109,7 +109,9 @@ foreach(weShopStatusMails::$StatusFields as $fieldkey => $fieldname){
 $i++;
 $tabStatus->setCol($i, 0, array("class" => "defaultfont", "style" => "font-weight:bold", "nowrap" => "nowrap"), g_l('modules_shop', '[statusmails][EMailssenden]'));
 foreach(weShopStatusMails::$StatusFields as $fieldkey => $fieldname){
-	$tabStatus->setCol($i, $fieldkey + 1, array("class" => "defaultfont", "nowrap" => "nowrap"), we_class::htmlRadioButton('FieldsMails[' . $fieldname . ']', 0, ($weShopStatusMails->FieldsMails[$fieldname] == 0 ? '1' : '0'), '', g_l('modules_shop', '[statusmails][EMailssendenNein]'), 'right') . we_class::htmlRadioButton('FieldsMails[' . $fieldname . ']', 1, ($weShopStatusMails->FieldsMails[$fieldname] == 1 ? '1' : '0'), '', g_l('modules_shop', '[statusmails][EMailssendenHand]'), 'right') . we_class::htmlRadioButton('FieldsMails[' . $fieldname . ']', 2, ($weShopStatusMails->FieldsMails[$fieldname] == 2 ? '1' : '0'), '', g_l('modules_shop', '[statusmails][EMailssendenAuto]'), 'right'));
+	$tabStatus->setCol($i, $fieldkey + 1, array("class" => "defaultfont", "nowrap" => "nowrap"), we_forms::radioButton(0, ($weShopStatusMails->FieldsMails[$fieldname] == 0 ? '1' : '0'), 'FieldsMails[' . $fieldname . ']', g_l('modules_shop', '[statusmails][EMailssendenNein]')) .
+		we_forms::radioButton(1, ($weShopStatusMails->FieldsMails[$fieldname] == 1 ? '1' : '0'), 'FieldsMails[' . $fieldname . ']', g_l('modules_shop', '[statusmails][EMailssendenHand]')) .
+		we_forms::radioButton(2, ($weShopStatusMails->FieldsMails[$fieldname] == 2 ? '1' : '0'), 'FieldsMails[' . $fieldname . ']', g_l('modules_shop', '[statusmails][EMailssendenAuto]')));
 }
 $parts = array(
 	array(
@@ -237,7 +239,7 @@ print we_multiIconBox::getHTML(
 		'weShopStatusMails', 700, $parts, 30, we_button::position_yes_no_cancel(
 			we_button::create_button('save', 'javascript:we_cmd(\'save\');'), '', we_button::create_button('cancel', 'javascript:we_cmd(\'close\');')
 		), -1, '', '', false, g_l('modules_shop', '[statusmails][box_headline]'), '', '', 'scroll'
-	);
+);
 
 
 print '</form>

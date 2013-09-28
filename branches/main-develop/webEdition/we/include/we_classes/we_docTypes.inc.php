@@ -144,11 +144,10 @@ class we_docTypes extends we_class{
 				$htmlzw.= $this->formDocTypes3($lang, $langkey, $LDID);
 				$langkeys[] = $langkey;
 			}
-			$html = $this->htmlFormElementTable($this->htmlSelect($inputName, $_languages, 1, $value, false, 'onchange="dieWerte=\'' . implode(',', $langkeys) . '\'; disableLangDefault(\'we_' . $this->Name . '_LangDocType\',dieWerte,this.options[this.selectedIndex].value);"', "value", 521), g_l('weClass', '[language]'), "left", "defaultfont");
-			$html .= "<br/>" . $this->htmlFormElementTable($htmlzw, g_l('weClass', '[languageLinksDefaults]'), 'left', 'defaultfont');
-			return $html;
+			return we_html_tools::htmlFormElementTable($this->htmlSelect($inputName, $_languages, 1, $value, false, 'onchange="dieWerte=\'' . implode(',', $langkeys) . '\'; disableLangDefault(\'we_' . $this->Name . '_LangDocType\',dieWerte,this.options[this.selectedIndex].value);"', "value", 521), g_l('weClass', '[language]'), "left", "defaultfont").
+			"<br/>" . we_html_tools::htmlFormElementTable($htmlzw, g_l('weClass', '[languageLinksDefaults]'), 'left', 'defaultfont');
 		} else {
-			return $this->htmlFormElementTable($this->htmlSelect($inputName, $_languages, 1, $value, false, "", "value", 521), g_l('weClass', '[language]'), "left", "defaultfont");
+			return we_html_tools::htmlFormElementTable($this->htmlSelect($inputName, $_languages, 1, $value, false, "", "value", 521), g_l('weClass', '[language]'), "left", "defaultfont");
 		}
 	}
 
@@ -156,7 +155,7 @@ class we_docTypes extends we_class{
 		$addbut = we_button::create_button("add", "javascript:we_cmd('openCatselector', '', '" . CATEGORY_TABLE . "', '', '', 'fillIDs();opener.we_cmd(\\'dt_add_cat\\', top.allIDs);')", false, 92, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
 
 		$cats = new MultiDirChooser(521, $this->Category, "dt_delete_cat", $addbut, "", "Icon,Path", CATEGORY_TABLE);
-		return $this->htmlFormElementTable($cats->get(), g_l('weClass', "[category]"));
+		return we_html_tools::htmlFormElementTable($cats->get(), g_l('weClass', "[category]"));
 	}
 
 	function addCat($id){
@@ -295,7 +294,7 @@ class we_docTypes extends we_class{
 
 	function formExtension($width = 100){
 		$exts = we_base_ContentTypes::inst()->getExtension('text/webedition');
-		return $this->htmlFormElementTable(we_html_tools::getExtensionPopup('we_' . $this->Name . '_Extension', $this->Extension, $exts, $width), g_l('weClass', "[extension]"));
+		return we_html_tools::htmlFormElementTable(we_html_tools::getExtensionPopup('we_' . $this->Name . '_Extension', $this->Extension, $exts, $width), g_l('weClass', "[extension]"));
 	}
 
 	/* creates the Template PopupMenue */
@@ -368,7 +367,7 @@ function switchExt(){
 		for($i = 0; $i < count(g_l('weClass', "[subdir]")); $i++){
 			$vals[] = g_l('weClass', "[subdir][" . $i . ']');
 		}
-		return $this->htmlFormElementTable($this->htmlSelect('we_' . $this->Name . '_SubDir', $vals, $size = 1, $this->SubDir, false, "", "value", $width), g_l('weClass', "[subdirectory]"));
+		return we_html_tools::htmlFormElementTable($this->htmlSelect('we_' . $this->Name . '_SubDir', $vals, $size = 1, $this->SubDir, false, "", "value", $width), g_l('weClass', "[subdirectory]"));
 	}
 
 	function formNewDocType(){

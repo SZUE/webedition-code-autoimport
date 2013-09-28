@@ -66,7 +66,7 @@ class we_quicktimeDocument extends we_binaryDocument{
 		if(isset($attribs['sizingstyle'])){
 			$sizingstyle = ($attribs['sizingstyle'] == "none" ? false : $attribs['sizingstyle']);
 			unset($attribs['sizingstyle']);
-		} else{
+		} else {
 			$sizingstyle = false;
 		}
 
@@ -99,7 +99,7 @@ class we_quicktimeDocument extends we_binaryDocument{
 			$pluginspage = $this->getElement("Pluginspage") ? $this->getElement("Pluginspage") : "http://www.apple.com/quicktime/download/";
 			$codebase = $this->getElement("Codebase") ? $this->getElement("Codebase") : "http://www.apple.com/qtactivex/qtplugin.cab";
 
-			 // first we make valid object-tag
+			// first we make valid object-tag
 			srand((double) microtime() * 1000000);
 			$randval = rand();
 			$src = $dyn ?
@@ -114,7 +114,7 @@ class we_quicktimeDocument extends we_binaryDocument{
 			}
 
 			$this->resetElements();
-			while(list($k, $v) = $this->nextElement("attrib")) {
+			while(list($k, $v) = $this->nextElement("attrib")){
 				if(in_array($k, $this->ObjectParamNames)){
 					$_objectAtts[$k] = $v["dat"];
 				}
@@ -137,7 +137,7 @@ class we_quicktimeDocument extends we_binaryDocument{
 				$_objectAtts['data'] = $src;
 
 				$this->resetElements();
-				while(list($k, $v) = $this->nextElement("attrib")) {
+				while(list($k, $v) = $this->nextElement("attrib")){
 					if(!in_array($k, $filter) && !in_array($k, $this->ObjectParamNames)){
 
 						if($v["dat"] != ""){ //  dont use empty params
@@ -148,7 +148,7 @@ class we_quicktimeDocument extends we_binaryDocument{
 						}
 					}
 				}
-			} else{ //  object tag and embed
+			} else { //  object tag and embed
 				$_objectAtts['classid'] = 'clsid:02BF25D5-8C17-4B23-BC80-D3488ABDDC6B';
 				$_objectAtts['codebase'] = $codebase;
 				//   we need embed as well
@@ -159,7 +159,7 @@ class we_quicktimeDocument extends we_binaryDocument{
 				$_embedAtts['src'] = $src;
 
 				$this->resetElements();
-				while(list($k, $v) = $this->nextElement("attrib")) {
+				while(list($k, $v) = $this->nextElement("attrib")){
 					if(!in_array($k, $filter) && $v["dat"] != ""){
 
 						if($v["dat"] != ""){ //  dont use empty params
@@ -173,7 +173,7 @@ class we_quicktimeDocument extends we_binaryDocument{
 			}
 			$_objectAtts = removeEmptyAttribs($_objectAtts);
 			$this->html = getHtmlTag('object', $_objectAtts, $_params . $_embed);
-		} else{
+		} else {
 			$this->html = '';
 		}
 		return $this->html;
@@ -194,7 +194,7 @@ class we_quicktimeDocument extends we_binaryDocument{
 				"0.5" => "0,5x",
 				"2" => "2x",
 				"4" => "4x"
-				), "attrib", 1, "onChange=\"_EditorFrame.setEditorIsHot(true);\""
+				), "attrib", 1, array('onchange' => '_EditorFrame.setEditorIsHot(true);')
 			) . '</td>
 	</tr>
 	<tr valign="top">
@@ -211,9 +211,9 @@ class we_quicktimeDocument extends we_binaryDocument{
 		<td colspan="5">' . we_html_tools::getPixel(2, 5) . '</td>
 	</tr>
 	<tr valign="top">
-		<td>' . $this->formSelectElement2(155, "autoplay", array("" => g_l('global', '[true]'), "false" => g_l('global', '[false]')), "attrib", 1, "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
+		<td>' . $this->formSelectElement2(155, "autoplay", array("" => g_l('global', '[true]'), "false" => g_l('global', '[false]')), "attrib", 1, array('onchange' => '_EditorFrame.setEditorIsHot(true);')) . '</td>
 		<td>' . we_html_tools::getPixel(18, 2) . '</td>
-		<td>' . $this->formSelectElement2(155, "controller", array("" => g_l('global', '[true]'), "false" => g_l('global', '[false]')), "attrib", 1, "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
+		<td>' . $this->formSelectElement2(155, "controller", array("" => g_l('global', '[true]'), "false" => g_l('global', '[false]')), "attrib", 1, array('onchange' => '_EditorFrame.setEditorIsHot(true);')) . '</td>
 		<td>' . we_html_tools::getPixel(18, 2) . '</td>
 		<td>' . $this->formColor(155, "bgcolor", 25, "attrib") . '</td>
 	</tr>
@@ -221,11 +221,11 @@ class we_quicktimeDocument extends we_binaryDocument{
 		<td colspan="5">' . we_html_tools::getPixel(2, 5) . '</td>
 	</tr>
 	<tr valign="top">
-		<td>' . $this->formSelectElement2(155, "volume", array("100" => "", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100), "attrib", 1, "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
+		<td>' . $this->formSelectElement2(155, "volume", array("100" => "", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100), "attrib", 1, array('onchange'=>'_EditorFrame.setEditorIsHot(true);')) . '</td>
 		<td>' . we_html_tools::getPixel(18, 2) . '</td>
-		<td>' . $this->formSelectElement2(155, "hidden", array("true" => g_l('global', '[true]'), "" => g_l('global', '[false]')), "attrib", 1, "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
+		<td>' . $this->formSelectElement2(155, "hidden", array("true" => g_l('global', '[true]'), "" => g_l('global', '[false]')), "attrib", 1, array('onchange'=>"_EditorFrame.setEditorIsHot(true);")) . '</td>
 		<td>' . we_html_tools::getPixel(18, 2) . '</td>
-		<td>' . $this->formSelectElement2(155, "loop", array("" => g_l('global', '[true]'), "false" => g_l('global', '[false]')), "attrib", 1, "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
+		<td>' . $this->formSelectElement2(155, "loop", array("" => g_l('global', '[true]'), "false" => g_l('global', '[false]')), "attrib", 1, array('onchange'=>"_EditorFrame.setEditorIsHot(true);")) . '</td>
 	</tr>
 </table>
 ';

@@ -329,7 +329,7 @@ abstract class we_root extends we_class{
 			$wecmdenc5 = we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);");
 			$button = we_button::create_button('edit', "javascript:we_cmd('browse_users','" . $wecmdenc1 . "','" . $wecmdenc2 . "','user',document.forms[0].elements['$idname'].value,'" . $wecmdenc5 . "')");
 
-			$out = $this->htmlFormElementTable($inputFeld, g_l('weClass', '[maincreator]'), 'left', 'defaultfont', $idfield, we_html_tools::getPixel(20, 4), $button);
+			$out = we_html_tools::htmlFormElementTable($inputFeld, g_l('weClass', '[maincreator]'), 'left', 'defaultfont', $idfield, we_html_tools::getPixel(20, 4), $button);
 		} else {
 			$out = $creator;
 		}
@@ -380,7 +380,7 @@ abstract class we_root extends we_class{
 <tr><td><div class="multichooser">' . $content . '</div></td></tr>
 ' . ($canChange ? '<tr><td align="right">' . we_html_tools::getPixel(2, 8) . '<br>' . we_button::create_button_table(array($delallbut, $addbut)) . '</td></tr>' : "") . '</table>';
 
-		return $this->htmlFormElementTable($content, g_l('weClass', '[otherowners]'), 'left', 'defaultfont');
+		return we_html_tools::htmlFormElementTable($content, g_l('weClass', '[otherowners]'), 'left', 'defaultfont');
 	}
 
 	function formCreatorOwners(){

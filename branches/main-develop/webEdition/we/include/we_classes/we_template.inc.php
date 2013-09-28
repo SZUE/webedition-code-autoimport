@@ -560,7 +560,7 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 
 		$button = we_button::create_button("open", "javascript:top.weEditorFrameController.openDocument('" . FILE_TABLE . "', document.we_form.elements['TemplateDocuments'].value, 'text/webedition');");
 		$foo = $this->htmlSelect($textname, $path, 1, "", false, "", "value", 388);
-		return $this->htmlFormElementTable($foo, "", "left", "defaultfont", "", we_html_tools::getPixel(20, 4), $button);
+		return we_html_tools::htmlFormElementTable($foo, "", "left", "defaultfont", "", we_html_tools::getPixel(20, 4), $button);
 	}
 
 	/**
