@@ -106,7 +106,9 @@ class we_baseElement{
 		$widthHeightNotInStyle = $this->tag_name == 'applet' ? true : false;
 		if(is_array($attribs)){
 			foreach($attribs as $k => $v){
-				$this->setAttribute($k, $v, $widthHeightNotInStyle);
+				if(!empty($k)){
+					$this->setAttribute($k, $v, $widthHeightNotInStyle);
+				}
 			}
 		}
 	}
@@ -233,6 +235,7 @@ class we_baseElement{
 					case 'readonly':
 					case 'checked':
 					case 'selected':
+						t_e($k,$v);
 						$out.=' ' . $k . '="' . $k . '"';
 						break;
 					default:

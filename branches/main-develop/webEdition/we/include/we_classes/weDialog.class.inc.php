@@ -273,73 +273,73 @@ class weDialog{
 
 	function getJs(){
 		return we_html_element::jsScript(JS_DIR . 'windows.js') . we_html_element::jsElement('
-				var isGecko = ' . (we_base_browserDetect::isGecko() ? 'true' : 'false') . ';
-				var textareaFocus = false;
-				' . (we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera() ? '
-					document.addEventListener("keyup",doKeyDown,true);' : 'document.onkeydown = doKeyDown;') . '
+var isGecko = ' . (we_base_browserDetect::isGecko() ? 'true' : 'false') . ';
+var textareaFocus = false;
+' . (we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera() ? '
+	document.addEventListener("keyup",doKeyDown,true);' : 'document.onkeydown = doKeyDown;') . '
 
-				function doKeyDown(e) {
-					var key;
+function doKeyDown(e) {
+	var key;
 
 ' . (we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera() ? 'key = e.keyCode;' : 'key = event.keyCode;') . '
 
-					switch (key) {
-						case 27:
-							top.close();
-							break;' .
-				($this->pageNr == $this->numPages && $this->JsOnly ? '
-								case 13:
-									if (!textareaFocus) {
-										weDoOk();
-									}
-									break;' : '') .
-				'	}
-				}
-
-				function weDoOk() {' .
-				($this->pageNr == $this->numPages && $this->JsOnly ? '
-							if (!textareaFocus) {
-								' . $this->getOkJs() . '
-							}' : '') .
-				'
-				}
-
-				function IsDigit(e) {
-					var key;
-
-					if (e.charCode == undefined) {
-						key = event.keyCode;
-					} else {
-						key = e.charCode;
+	switch (key) {
+		case 27:
+			top.close();
+			break;' .
+($this->pageNr == $this->numPages && $this->JsOnly ? '
+				case 13:
+					if (!textareaFocus) {
+						weDoOk();
 					}
+					break;' : '') .
+'	}
+}
 
-					return (((key >= 48) && (key <= 57)) || (key == 0) || (key == 13)  || (key == 8) || (key <= 63235 && key >= 63232) || (key == 63272));
-				}
+function weDoOk() {' .
+($this->pageNr == $this->numPages && $this->JsOnly ? '
+			if (!textareaFocus) {
+				' . $this->getOkJs() . '
+			}' : '') .
+'
+}
 
-				function openColorChooser(name,value) {
-					var win = new jsWindow("colorDialog.php?we_dialog_args[type]=dialog&we_dialog_args[name]="+escape(name)+"&we_dialog_args[color]="+escape(value),"colordialog",-1,-1,400,380,true,false,true,false);
-				}
+function IsDigit(e) {
+	var key;
 
-				function IsDigitPercent(e) {
-					var key;
-					if (e.charCode == undefined) {
-						key = event.keyCode;
-					} else {
-						key = e.charCode;
-					}
+	if (e.charCode == undefined) {
+		key = event.keyCode;
+	} else {
+		key = e.charCode;
+	}
 
-					return (((key >= 48) && (key <= 57)) || (key == 37) || (key == 0) || (key == 46)  || (key == 101)  || (key == 109)  || (key == 13)  || (key == 8) || (key <= 63235 && key >= 63232) || (key == 63272));
-				}
+	return (((key >= 48) && (key <= 57)) || (key == 0) || (key == 13)  || (key == 8) || (key <= 63235 && key >= 63232) || (key == 63272));
+}
 
-				function doUnload() {
-					if (jsWindow_count) {
-						for (i = 0; i < jsWindow_count; i++) {
-							eval("jsWindow" + i + "Object.close()");
-						}
-					}
-				}
+function openColorChooser(name,value) {
+	var win = new jsWindow("colorDialog.php?we_dialog_args[type]=dialog&we_dialog_args[name]="+escape(name)+"&we_dialog_args[color]="+escape(value),"colordialog",-1,-1,400,380,true,false,true,false);
+}
 
-				self.focus();');
+function IsDigitPercent(e) {
+	var key;
+	if (e.charCode == undefined) {
+		key = event.keyCode;
+	} else {
+		key = e.charCode;
+	}
+
+	return (((key >= 48) && (key <= 57)) || (key == 37) || (key == 0) || (key == 46)  || (key == 101)  || (key == 109)  || (key == 13)  || (key == 8) || (key <= 63235 && key >= 63232) || (key == 63272));
+}
+
+function doUnload() {
+	if (jsWindow_count) {
+		for (i = 0; i < jsWindow_count; i++) {
+			eval("jsWindow" + i + "Object.close()");
+		}
+	}
+}
+
+self.focus();');
 	}
 
 	function formColor($size, $name, $value, $width = ""){
@@ -347,7 +347,7 @@ class weDialog{
 	}
 
 	function getBodyTagHTML(){
-		return '<body ' . (!$this->tinyMCEPopupManagment ? 'id="weDialogInnerFrame" ' : '') . 'class="weDialogBody" onUnload="doUnload()">';
+		return '<body ' . (!$this->tinyMCEPopupManagment ? 'id="weDialogInnerFrame" ' : '') . 'class="weDialogBody" onunload="doUnload()">';
 	}
 
 	function getFooterHTML(){

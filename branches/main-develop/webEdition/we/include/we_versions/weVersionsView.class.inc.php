@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weVersionsView {
+class weVersionsView{
 
 	public $db;
 	public $version;
@@ -793,7 +793,7 @@ function delRow(id) {
 	<td>' . we_html_tools::getPixel(19, 12) . '</td>
 	<td id="eintraege_pro_seite" style="font-size:12px;width:130px;">' . g_l('versions', '[eintraege_pro_seite]') . ':</td>
 	<td class="defaultgray" style="width:70px;">' .
-			we_html_tools::htmlSelect('anzahl', $anzahl_all, 1, $_anzahl, "", 'id="anzahl" onChange=\'this.form.elements["searchstart"].value=0;search(false);\'') . '
+			we_html_tools::htmlSelect('anzahl', $anzahl_all, 1, $_anzahl, "", array('id' => "anzahl", 'onchange' => 'this.form.elements[\'searchstart\'].value=0;search(false);')) . '
 	</td>
 	<td class="defaultfont" id="eintraege">' . g_l('versions', '[eintraege]') . '</td>
 	<td>' . self::getNextPrev($foundItems) . '</td>
@@ -859,8 +859,7 @@ function delRow(id) {
 
 		$page = ceil($searchstart / $anzahl) * $anzahl;
 
-		$select = we_html_tools::htmlSelect(
-				"page", $pages, 1, $page, false, "id='pageselect' onChange=\"this.form.elements['searchstart'].value = this.value; search(false);\"");
+		$select = we_html_tools::htmlSelect("page", $pages, 1, $page, false, array('id' => 'pageselect', 'onchange' => 'this.form.elements[\'searchstart\'].value=this.value;search(false);'));
 
 		if(!isset($_REQUEST['we_cmd']['setInputSearchstart'])){
 			if(!defined("searchstart")){

@@ -271,7 +271,7 @@ if(isset($_REQUEST['maxsel'])){
 </script>
 <?php print STYLESHEET; ?>
 </head>
-<body class="weDialogBody" onload="doOnLoad()" onUnload="doUnload();">
+<body class="weDialogBody" onload="doOnLoad()" onunload="doUnload();">
 	<form name="usel">
 		<?php
 		$tbl = '  <table cellspacing="6">

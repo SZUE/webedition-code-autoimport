@@ -72,7 +72,7 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 print STYLESHEET .
 	'</head>
 
-<body class="weEditorBody" onUnload="doUnload()">';
+<body class="weEditorBody" onunload="doUnload()">';
 
 
 $_parts = array(

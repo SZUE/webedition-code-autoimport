@@ -82,7 +82,7 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js');
 </script>
 </head>
 
-<body class="weDialogBody" onLoad="document.compose_form.mn_body.focus()" onUnload="doUnload();">
+<body class="weDialogBody" onload="document.compose_form.mn_body.focus()" onunload="doUnload();">
 <?php
 if($_REQUEST["mode"] == 're'){
 	$compose = new we_messaging_format('re', $messaging->selected_message);

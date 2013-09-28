@@ -86,7 +86,7 @@ print STYLESHEET;
 ?>
 </head>
 
-<body class="weEditorBody" onUnload="doUnload()">
+<body class="weEditorBody" onunload="doUnload()">
 	<form name="we_form" method="post"><?php
 echo we_class::hiddenTrans();
 

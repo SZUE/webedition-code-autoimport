@@ -251,7 +251,7 @@ $parts[] = array(
 	'space' => 200,
 	'html' => '<table border="0" cellpadding="0" cellpsacing="0" class="defaultfont">
 	<tr>
-		<td>' . we_class::htmlSelect('editShipping', $selectFields, 4, (isset($_REQUEST['weShippingId']) ? $_REQUEST['weShippingId'] : ''), false, 'onchange="document.location=\'' . $_SERVER['SCRIPT_NAME'] . '?we_cmd[0]=editShipping&weShippingId=\' + this.options[this.selectedIndex].value;"', 'value', 200) . '</td>
+		<td>' . we_class::htmlSelect('editShipping', $selectFields, 4, (isset($_REQUEST['weShippingId']) ? $_REQUEST['weShippingId'] : ''), false, array('onchange' => 'document.location=\'' . $_SERVER['SCRIPT_NAME'] . '?we_cmd[0]=editShipping&weShippingId=\' + this.options[this.selectedIndex].value;'), 'value', 200) . '</td>
 		<td width="10"></td>
 		<td valign="top">'
 	. we_button::create_button("new_entry", 'javascript:we_cmd(\'newEntry\');') .

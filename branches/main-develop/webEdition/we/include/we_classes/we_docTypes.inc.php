@@ -144,7 +144,7 @@ class we_docTypes extends we_class{
 				$htmlzw.= $this->formDocTypes3($lang, $langkey, $LDID);
 				$langkeys[] = $langkey;
 			}
-			return we_html_tools::htmlFormElementTable($this->htmlSelect($inputName, $_languages, 1, $value, false, 'onchange="dieWerte=\'' . implode(',', $langkeys) . '\'; disableLangDefault(\'we_' . $this->Name . '_LangDocType\',dieWerte,this.options[this.selectedIndex].value);"', "value", 521), g_l('weClass', '[language]'), "left", "defaultfont").
+			return we_html_tools::htmlFormElementTable($this->htmlSelect($inputName, $_languages, 1, $value, false, array('onchange'=>'dieWerte=\'' . implode(',', $langkeys) . '\'; disableLangDefault(\'we_' . $this->Name . '_LangDocType\',dieWerte,this.options[this.selectedIndex].value);'), "value", 521), g_l('weClass', '[language]'), "left", "defaultfont").
 			"<br/>" . we_html_tools::htmlFormElementTable($htmlzw, g_l('weClass', '[languageLinksDefaults]'), 'left', 'defaultfont');
 		} else {
 			return we_html_tools::htmlFormElementTable($this->htmlSelect($inputName, $_languages, 1, $value, false, "", "value", 521), g_l('weClass', '[language]'), "left", "defaultfont");
@@ -254,7 +254,7 @@ class we_docTypes extends we_class{
 			}
 			$vals[$v] = $t;
 		}
-		return $this->htmlSelect("DocTypes", $vals, 8, $this->ID, false, 'style="width:328px" onChange="we_cmd(\'change_docType\',this.options[this.selectedIndex].value)"');
+		return $this->htmlSelect("DocTypes", $vals, 8, $this->ID, false, array('style'=>"width:328px", 'onchange'=>'we_cmd(\'change_docType\',this.options[this.selectedIndex].value)'));
 	}
 
 	function formDocTypes3($headline, $langkey, $derDT = 0){

@@ -662,7 +662,7 @@ class we_objectFile extends we_document{
 		return '
 			<table border="0" cellpadding="0" cellspacing="0">
 				' . $_headline . '
-				<tr><td>' . $this->htmlTextInput($inputName, 24, $this->Charset) . '</td><td></td><td>' . $this->htmlSelect('we_tmp_' . $this->Name . '_select[' . $name . ']', $_charsets, 1, $this->Charset, false, ' onblur="_EditorFrame.setEditorIsHot(true);document.forms[0].elements[\'' . $inputName . '\'].value=this.options[this.selectedIndex].value;top.we_cmd(\'reload_editpage\');" onchange="_EditorFrame.setEditorIsHot(true);document.forms[0].elements[\'' . $inputName . '\'].value=this.options[this.selectedIndex].value;top.we_cmd(\'reload_editpage\');"', 'value', 330) . '</td></tr>
+				<tr><td>' . $this->htmlTextInput($inputName, 24, $this->Charset) . '</td><td></td><td>' . $this->htmlSelect('we_tmp_' . $this->Name . '_select[' . $name . ']', $_charsets, 1, $this->Charset, false, array('onblur' => '_EditorFrame.setEditorIsHot(true);document.forms[0].elements[\'' . $inputName . '\'].value=this.options[this.selectedIndex].value;top.we_cmd(\'reload_editpage\');', 'onchange' => '_EditorFrame.setEditorIsHot(true);document.forms[0].elements[\'' . $inputName . '\'].value=this.options[this.selectedIndex].value;top.we_cmd(\'reload_editpage\');'), 'value', 330) . '</td></tr>
 			</table>';
 	}
 
@@ -1050,7 +1050,7 @@ class we_objectFile extends we_document{
 				);
 
 				$content .= we_html_tools::htmlFormElementTable(
-					$this->htmlTextInput($textname, 30, $path, 255, 'onchange="_EditorFrame.setEditorIsHot(true);" readonly ', 'text', $inputWidth), '', 'left', 'defaultfont', we_html_tools::getPixel(20, 4), $buttontable);
+						$this->htmlTextInput($textname, 30, $path, 255, 'onchange="_EditorFrame.setEditorIsHot(true);" readonly ', 'text', $inputWidth), '', 'left', 'defaultfont', we_html_tools::getPixel(20, 4), $buttontable);
 
 				if(isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE && $myid){
 					$ob = new we_objectFile();
@@ -1696,7 +1696,7 @@ class we_objectFile extends we_document{
 			foreach($values as $key => $val){
 				$foo[$key] = $val;
 			}
-			$addbut = we_html_tools::htmlSelect($textname, $foo, 1, '', false, 'onChange="_EditorFrame.setEditorIsHot(true);we_cmd(\'add_workspace\',this.options[this.selectedIndex].value);"');
+			$addbut = we_html_tools::htmlSelect($textname, $foo, 1, '', false, array('onchange' => '_EditorFrame.setEditorIsHot(true);we_cmd(\'add_workspace\',this.options[this.selectedIndex].value);'));
 		}
 		$obj = new MultiDirAndTemplateChooser(450, $this->Workspaces, 'del_workspace', $addbut, get_ws(FILE_TABLE), $this->Templates, "we_" . $this->Name . "_Templates", $ts, get_ws(TEMPLATES_TABLE));
 
@@ -1803,7 +1803,7 @@ class we_objectFile extends we_document{
 			foreach($values as $key => $val){
 				$foo[$key] = $val;
 			}
-			$addbut = we_html_tools::htmlSelect($textname, $foo, 1, "", false, 'onChange="_EditorFrame.setEditorIsHot(true);we_cmd(\'add_extraworkspace\',this.options[this.selectedIndex].value);"');
+			$addbut = we_html_tools::htmlSelect($textname, $foo, 1, "", false, array('onchange' => '_EditorFrame.setEditorIsHot(true);we_cmd(\'add_extraworkspace\',this.options[this.selectedIndex].value);'));
 		}
 
 		$obj = new MultiDirAndTemplateChooser(450, $this->ExtraWorkspaces, "del_extraworkspace", $addbut, get_ws(FILE_TABLE), $this->ExtraTemplates, "we_" . $this->Name . "_ExtraTemplates", $ts, get_ws(TEMPLATES_TABLE));

@@ -32,7 +32,7 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 print STYLESHEET;
 ?>
 </head>
-<body class="weEditorBody" onUnload="doUnload()">
+<body class="weEditorBody" onunload="doUnload()">
 	<form name="we_form" method="post" onsubmit="return false;"><?php
 echo we_class::hiddenTrans();
 

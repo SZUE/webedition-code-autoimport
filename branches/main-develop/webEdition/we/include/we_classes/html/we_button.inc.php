@@ -169,7 +169,7 @@ function switch_button_state(element, button, state, type) {
 		// Check if the button is a text button or an image button
 		if(strpos($name, self::WE_IMAGE_BUTTON_IDENTIFY) === false){ // Button is NOT an image
 			$_button_name = ($uniqid ? 'we' . $name . '_' . md5(uniqid(__FUNCTION__, true)) : $name) . $suffix;
-		} else{ // Button is an image - create a unique name
+		} else { // Button is an image - create a unique name
 			$_button_pure_name = substr($name, (strpos($name, self::WE_IMAGE_BUTTON_IDENTIFY) + strlen(self::WE_IMAGE_BUTTON_IDENTIFY)));
 			$_button_name = ($uniqid ? 'we' . substr($name, (strpos($name, self::WE_IMAGE_BUTTON_IDENTIFY) + strlen(self::WE_IMAGE_BUTTON_IDENTIFY))) . '_' . md5(uniqid(__FUNCTION__, true)) : substr($name, (strpos($name, self::WE_IMAGE_BUTTON_IDENTIFY) + strlen(self::WE_IMAGE_BUTTON_IDENTIFY))) . $suffix);
 		}
@@ -182,7 +182,7 @@ function switch_button_state(element, button, state, type) {
 			if(!empty($tmp) && ($width == self::WIDTH)){
 				$width = $tmp;
 			}
-		} else{
+		} else {
 			//set width for image button if given width has not default value
 			$width = ($width == self::WIDTH ? 0 : $width);
 		}
@@ -203,14 +203,14 @@ function switch_button_state(element, button, state, type) {
 
 				// Now assign the link string
 				$cmd .= $_button_link;
-			} else{ // Buttons target will be a JavaScript
+			} else { // Buttons target will be a JavaScript
 				// Get content of JavaScript
 				$_javascript_content = substr($href, (strpos($href, self::WE_JS_BUTTON_IDENTIFY) + strlen(self::WE_JS_BUTTON_IDENTIFY)));
 
 				// Render link
 				$cmd .= $_javascript_content;
 			}
-		} else{ // Button will be used in a form
+		} else { // Button will be used in a form
 			// Check if the button shall call the onSubmit event
 			if(strpos($href, self::WE_SUBMIT_BUTTON_IDENTIFY) === false){ // Button shall not call the onSubmit event
 				// Get name of form
@@ -218,7 +218,7 @@ function switch_button_state(element, button, state, type) {
 
 				// Render link
 				$cmd .= 'document.' . $_form_name . '.submit();return false;';
-			} else{ // Button must call the onSubmit event
+			} else { // Button must call the onSubmit event
 				// Set variable for Form:Submit behaviour
 				$_add_form_submit_dummy = true;
 
@@ -231,7 +231,7 @@ function switch_button_state(element, button, state, type) {
 		}
 
 		$value = (strpos($name, self::WE_IMAGE_BUTTON_IDENTIFY) === false) ? g_l('button', '[' . $name . '][value]') . ($opensDialog ? '&hellip;' : '') :
-			'<img src="' . BUTTONS_DIR . 'icons/' . str_replace('btn_', '', $_button_pure_name) . '.gif" class="weBtnImage" alt="" />';
+			we_html_element::htmlImg(array('src' => BUTTONS_DIR . 'icons/' . str_replace('btn_', '', $_button_pure_name) . '.gif', 'class' => 'weBtnImage'));
 
 		$title = '';
 		// Check if the button will a text button or an image button
@@ -240,7 +240,7 @@ function switch_button_state(element, button, state, type) {
 			if(!empty($tmp) && $alt){
 				$title = $tmp;
 			}
-		} else{
+		} else {
 			$tmp = g_l('button', '[' . $_button_pure_name . '][alt]', true);
 			//ignore missing alt attribute
 			if(!empty($tmp) && $alt){

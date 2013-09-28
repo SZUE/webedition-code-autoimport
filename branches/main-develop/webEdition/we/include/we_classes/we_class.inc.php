@@ -254,19 +254,11 @@ abstract class we_class{
 	/* creates a select field for entering Data that will be stored at the $elements Array */
 
 	function formSelectElement2($width, $name, $values, $type = 'txt', $size = 1, array $attribs = array()){
-		$out = '';
-		$value = $this->getElement($name);
-		foreach($values as $val => $txt){
-			$out .= '<option value="' . $val . '"' . (($val == $value) ? ' selected' : '') . '>' . $txt . '</option>';
-		}
-
 		return we_html_tools::htmlFormElementTable(
-				we_html_element::htmlSelect(array_merge(array(
-					'class' => "defaultfont",
-					'name' => 'we_' . $this->Name . '_' . $type . "[$name]",
-					'size' => $size,
+				we_html_tools::html_select('we_' . $this->Name . '_' . $type . "[$name]", $size, $values, $this->getElement($name), array_merge(array(
+					'class' => 'defaultfont',
 					'width' => $width,
-						), $attribs), $out)
+						), $attribs))
 				, g_l('weClass', '[' . $name . ']'));
 	}
 
@@ -276,7 +268,7 @@ abstract class we_class{
 
 	/* creates a text-input field for entering Data that will be stored at the $elements Array and shows information from another Element */
 
-	function formInputInfo2($width, $name, $size, $type = 'txt', $attribs = '', $infoname){
+	function formInputInfo2($width, $name, $size, $type = 'txt', $attribs = '', $infoname = ''){
 		$info = $this->getElement($infoname);
 		$infotext = ' (' . (g_l('weClass', '[' . $infoname . ']') != false ? g_l('weClass', '[' . $infoname . ']') : $infoname) . ': ' . $info . ')';
 		return $this->formInputField($type, $name, (g_l('weClass', '[' . $name . ']') !== false ? g_l('weClass', '[' . $name . ']') : $name) . $infotext, $size, $width, '', $attribs);

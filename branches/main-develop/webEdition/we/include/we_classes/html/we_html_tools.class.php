@@ -259,13 +259,17 @@ abstract class we_html_tools{
 		}
 	}
 
-	static function html_select($name, $size, $vals, $value = "", $onchange = ""){
-		$out = '<select class="weSelect" name="' . $name . '" size="' . $size . '"' . ($onchange ? ' onchange="' . $onchange . '"' : '') . ">\n";
-		reset($vals);
+	static function html_select($name, $size, $vals, $value = '', $onchange = '', array $attribs = array()){
+		$out = '';
 		foreach($vals as $v => $t){
-			$out .= '<option value="' . oldHtmlspecialchars($v) . '"' . (($v == $value) ? ' selected' : '') . '>' . $t . '</option>';
+			$out .= '<option value="' . oldHtmlspecialchars($v) . '"' . (($v == $value) ? ' selected="selected"' : '') . '>' . $t . '</option>';
 		}
-		return $out . '</select>';
+		return we_html_element::htmlSelect(array_merge(array(
+				'class' => 'weSelect',
+				'name' => $name,
+				'size' => $size,
+				'onchange' => ($onchange ? $onchange : '')
+					), $attribs), $out);
 	}
 
 	static function htmlInputChoiceField($name, $value, $values, $atts, $mode, $valuesIsHash = false){
@@ -296,30 +300,39 @@ abstract class we_html_tools{
 		}
 
 		// select menu
-		$onchange = ($mode == 'add' ? 'this.form.elements[\'' . $name . '\'].value += ((this.form.elements[\'' . $name . '\'].value ? \' \' : \'\') + this.options[this.selectedIndex].value);' : 'this.form.elements[\'' . $name . '\'].value=this.options[this.selectedIndex].value;');
 
 		if(isset($atts['id'])){ //  use another ID!!!!
 			$atts['id'] = 'tmp_' . $atts['id'];
 		}
-		$atts['onchange'] = $onchange . 'this.selectedIndex=0;';
+		$atts['onchange'] = 'this.form.elements[\'' . $name . '\'].value' . ($mode == 'add' ?
+				' += ((this.form.elements[\'' . $name . '\'].value ? \' \' : \'\') + this.options[this.selectedIndex].value);' :
+				'=this.options[this.selectedIndex].value;'
+			) . 'this.selectedIndex=0;';
 		$atts['name'] = 'tmp_' . $name;
-		$atts['size'] = isset($atts['size']) ? $atts['size'] : 1;
+		//$atts['size'] = isset($atts['size']) ? $atts['size'] : 1;
 		$atts = removeAttribs($atts, array('size')); //  remove size for choice
 		$selectMenue = getHtmlTag('select', $atts, $opts, true);
 		return '<table style="border-spacing: 0px;border-style:none;" cellpadding="0"><tr><td>' . $textField . '</td><td>' . $selectMenue . '</td></tr></table>';
 	}
 
 	static function gifButton($name, $href, $language = "Deutsch", $alt = "", $width = "", $height = "", $onClick = "", $bname = "", $target = "", $disabled = false){
-		$img = '<img src="' . IMAGE_DIR . 'buttons/' . $name . ($disabled ? "_d" : "") . ($language ? '_' : '') . $language . '.gif"' . ($width ? ' width="' . $width . '"' : '') . ($height ? ' height="' . $height . '"' : '') . ($bname ? ' name="' . $bname . '"' : '') . ' border="0" alt="' . $alt . '">';
+		$img =
+			we_html_element::htmlImg(array(
+				'src' => IMAGE_DIR . 'buttons/' . $name . ($disabled ? '_d' : "") . ($language ? '_' : '') . $language . '.gif',
+				'style' => ($width ? ' width:' . $width . 'px;' : '') . ($height ? ' height:' . $height . 'px' : ''),
+				'alt' => $alt,
+				'border' => 0,
+				'name' => ($bname ? $bname : '')
+		));
 
 		return ($disabled ?
 				$img : ($href ?
-					'<a href="' . $href . '" onMouseOver="window.status=\'' . $alt . '\';return true;" onMouseOut="window.status=\'\';return true;"' . ($onClick ? ' onClick="' . $onClick . '"' : '') . ($target ? (' target="' . $target . '"') : '') . '>' . $img . '</a>' :
+					'<a href="' . $href . '" onmouseover="window.status=\'' . $alt . '\';return true;" onmouseout="window.status=\'\';return true;"' . ($onClick ? ' onclick="' . $onClick . '"' : '') . ($target ? (' target="' . $target . '"') : '') . '>' . $img . '</a>' :
 					'<input type="image" src="' . IMAGE_DIR . 'buttons/' . $name . ($language ? '_' : '') . $language . '.gif"' . ($width ? ' width="' . $width . '"' : '') . ($height ? ' height="' . $height . '"' : '') . ' border="0" alt="' . $alt . '"' . ($onClick ? ' onClick="' . $onClick . '"' : '') . ($bname ? ' name="' . $bname . '"' : '') . ' />'
 				));
 	}
 
-	static function getExtensionPopup($name, $selected, $extensions, $width = "", $attribs = "", $permission = true){
+	static function getExtensionPopup($name, $selected, $extensions, $width = '', $attribs = '', $permission = true){
 		if((isset($extensions)) && (count($extensions) > 1)){
 			if(!$permission){
 				$disabled = ' disabled="disabled "';
@@ -738,8 +751,17 @@ abstract class we_html_tools{
 		return $tmp;
 	}
 
-	static function htmlSelect($name, $values, $size = 1, $selectedIndex = '', $multiple = false, $attribs = '', $compare = 'value', $width = '', $cls = 'defaultfont', $oldHtmlspecialchars = true){
-		$ret = '<select class="weSelect ' . $cls . '" name="' . trim($name) . '" size="' . abs($size) . '"' . ($multiple ? ' multiple="multiple"' : '') . ($attribs ? " $attribs" : "") . ($width ? ' style="width: ' . $width . 'px"' : '') . '>' . "\n";
+	private static function parseAttribs($attribs){
+		$attr = $matches = array();
+		preg_match_all('|(\w+)\s*=\s*"([^"]*)"|', $attribs, $matches, PREG_SET_ORDER);
+		foreach($matches as $match){
+			$attr[$match[1]] = $match[2];
+		}
+		return $attr;
+	}
+
+	static function htmlSelect($name, $values, $size = 1, $selectedIndex = '', $multiple = false, $attribs = array(), $compare = 'value', $width = 0, $cls = 'defaultfont', $oldHtmlspecialchars = true){
+		$ret = '';
 		$selIndex = makeArrayFromCSV($selectedIndex);
 		$optgroup = false;
 		foreach($values as $value => $text){
@@ -754,8 +776,20 @@ abstract class we_html_tools{
 			$ret .= '<option value="' . ($oldHtmlspecialchars ? oldHtmlspecialchars($value) : $value) . '"' . (in_array(
 					(($compare == "value") ? $value : $text), $selIndex) ? ' selected="selected"' : '') . '>' . ($oldHtmlspecialchars ? oldHtmlspecialchars($text) : $text) . '</option>';
 		}
-		$ret .= ($optgroup ? '</optgroup>' : '') . '</select>';
-		return $ret;
+		$ret .= ($optgroup ? '</optgroup>' : '');
+
+		if(!is_array($attribs)){
+			$attribs = self::parseAttribs($attribs);
+		}
+
+		return we_html_element::htmlSelect(array_merge(array(
+				'class' => 'weSelect ' . $cls,
+				'name' => trim($name),
+				'size' => abs($size),
+				($multiple ? 'multiple' : '') => 'multiple',
+				($width ? 'width': '') => ($width ? $width : '')
+					), $attribs
+				), $ret);
 	}
 
 	/* displays a grey box with text and an icon
@@ -809,9 +843,9 @@ abstract class we_html_tools{
 			$text = $smalltext;
 		}
 
-		if(strpos($width, "%") === false){
+		if(strpos($width, '%') === false){
 			$width = intval($width);
-			if(!we_base_browserDetect::isIE() && $width > 10){
+			if($width > 10 && !we_base_browserDetect::isIE()){
 				$width -= 10;
 			}
 		}

@@ -50,6 +50,6 @@ if(isset($_REQUEST["cid"])){
 }
 ?>
 </head>
-<body class="weEditorBody" onUnload="doUnload()">
+<body class="weEditorBody" onunload="doUnload()">
 	<?php print we_html_tools::htmlDialogLayout($Bestelldaten, g_l('modules_shop', '[order_liste]') . "&nbsp;" . $Kundenname); ?>
 </body></html>

@@ -74,7 +74,7 @@ $_parts = array(
 
 echo STYLESHEET .
  '</head>
-<body class="weEditorBody" onUnload="doUnload()">' .
+<body class="weEditorBody" onunload="doUnload()">' .
  we_multiIconBox::getHTML('', '100%', $_parts, 30, '', -1, '', '', false) .
  '</body>
 </html>';

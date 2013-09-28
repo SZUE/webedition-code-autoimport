@@ -433,7 +433,7 @@ function urlEntry(icon,name,vorfahr,text,contentType,table,published,denied) {
 		);
 
 		$_form = we_html_element::htmlForm($_form_attribs, $_content);
-		print we_html_element::htmlBody(array('class' => 'weEditorBody', 'onload' => 'loaded=1;', 'onUnload' => 'doUnload()'), $_form);
+		print we_html_element::htmlBody(array('class' => 'weEditorBody', 'onload' => 'loaded=1;', 'onunload' => 'doUnload()'), $_form);
 	}
 
 	function getHTMLEditorFooter(){

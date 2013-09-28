@@ -80,7 +80,7 @@ echo we_html_element::jsScript(JS_DIR . 'images.js') . we_html_element::jsScript
 ?>
 </head>
 
-<body class="weEditorBody" onUnload="doUnload()"><?php
+<body class="weEditorBody" onunload="doUnload()"><?php
 	$parts = array(
 		array(
 			"headline" => g_l('modules_shop', '[month][' . $month . ']') . " " . $year,

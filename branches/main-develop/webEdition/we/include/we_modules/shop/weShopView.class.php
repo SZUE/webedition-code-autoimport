@@ -964,7 +964,7 @@ function we_cmd() {
 			</script>
 
 			</head>
-			<body class="weEditorBody" onUnload="doUnload()">
+			<body class="weEditorBody" onunload="doUnload()">
 
 				<?php
 				$parts = array(array(

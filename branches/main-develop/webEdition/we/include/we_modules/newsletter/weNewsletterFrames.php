@@ -774,7 +774,7 @@ top.content.hloaded = 1;');
 		$values[weNewsletterBlock::ATTACHMENT] = g_l('modules_newsletter', '[newsletter_type_6]');
 		$values[weNewsletterBlock::URL] = g_l('modules_newsletter', '[newsletter_type_7]');
 
-		return we_html_tools::htmlSelect($name, $values, 1, $selected, false, 'style="width:440;" onChange="we_cmd(\'switchPage\',2);"', "value", 315, "defaultfont");
+		return we_html_tools::htmlSelect($name, $values, 1, $selected, false, array('style' => "width:440;", 'onChange' => 'we_cmd(\'switchPage\',2);'), "value", 315, "defaultfont");
 	}
 
 	function getHTMLBox($w, $h, $content, $headline = "", $width = 120, $height = 2){
@@ -916,7 +916,7 @@ top.content.hloaded = 1;');
 				}
 
 				$table->addRow();
-				$table->setCol($c, 0, array(), we_html_tools::htmlSelect("filter_fieldname_" . $group . "_" . $k, $custfields, 1, $v["fieldname"], false, 'onChange="top.content.hot=1;changeFieldValue(this.val,\'filter_fieldvalue_' . $group . '_' . $k . '\');"', "value", "170"));
+				$table->setCol($c, 0, array(), we_html_tools::htmlSelect("filter_fieldname_" . $group . "_" . $k, $custfields, 1, $v["fieldname"], false, array('onchange' => 'top.content.hot=1;changeFieldValue(this.val,\'filter_fieldvalue_' . $group . '_' . $k . '\');'), "value", "170"));
 				$table->setCol($c, 1, array(), we_html_tools::htmlSelect("filter_operator_" . $group . "_" . $k, $operators, 1, $v["operator"], false, 'onChange="top.content.hot=1;"', "value", "80"));
 				if($v['fieldname'] == "MemberSince" || $v['fieldname'] == "LastLogin" || $v['fieldname'] == "LastAccess"){
 					$table->setCol($c, 2, array("id" => "td_value_fields_" . $group . "_" . $k), $this->getDateSelector("", "filter_fieldvalue_" . $group . "_" . $k, "_from_" . $group . "_" . $k, isset($v["fieldvalue"]) && $v["fieldvalue"] != "" ? !stristr($v["fieldvalue"], ".") ? @date("d.m.Y", $v["fieldvalue"]) : $v["fieldvalue"]  : ""));

@@ -712,7 +712,7 @@ class we_class_folder extends we_folder{
 		</tr>
 		<tr>
 			<td class="defaultgray">' . g_l('modules_objectClassfoldersearch', '[Ansicht]') . '</td>
-			<td>' . we_html_tools::htmlSelect("Anzahl", $values, 1, $this->searchclass->anzahl, "", 'onChange=\'this.form.elements["SearchStart"].value=0;we_cmd("reload_editpage");\'') .
+			<td>' . we_html_tools::htmlSelect("Anzahl", $values, 1, $this->searchclass->anzahl, "", array('onchange' => 'this.form.elements[\'SearchStart\'].value=0;we_cmd(\'reload_editpage\');')) .
 			we_html_tools::hidden("Order", $this->searchclass->Order) .
 			we_html_tools::hidden("do", "") .
 			'</td>

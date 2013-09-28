@@ -59,7 +59,7 @@ abstract class we_multiIconBox{
 			$_forceRightHeadline = (isset($c["forceRightHeadline"]) && $c["forceRightHeadline"]);
 
 			$icon = (isset($c["icon"]) && $c["icon"] ?
-					'<img src="' . IMAGE_DIR . 'icons/' . $c["icon"] . '" alt="" style="margin-left:20px;" />' :
+					we_html_element::htmlImg(array('src' => IMAGE_DIR . 'icons/' . $c["icon"], 'style' => "margin-left:20px;")) :
 					'');
 			$headline = (isset($c["headline"]) && $c["headline"] ?
 					'<div id="headline_' . $uniqname . '_' . $i . '" class="weMultiIconBoxHeadline" style="margin-bottom:10px;">' . $c["headline"] . '</div>' :
@@ -87,8 +87,8 @@ abstract class we_multiIconBox{
 					</div>' . (we_base_browserDetect::isIE() ? '<br/>' : '') .
 				($i < (count($content) - 1) && (!isset($c["noline"])) ?
 					'<div style="border-top: 1px solid #AFB0AF;margin:10px 0 10px 0;clear:both;"></div>' :
-					'<div style="margin:10px 0;clear:both;"></div>').
-				(isset($c['class'])?'</div>':'');
+					'<div style="margin:10px 0;clear:both;"></div>') .
+				(isset($c['class']) ? '</div>' : '');
 		}
 
 		if($foldAtNr >= 0 && $foldAtNr < count($content)){
@@ -101,7 +101,7 @@ abstract class we_multiIconBox{
 			//ignore height, replace by bottom:
 			return '<div style="overflow:' . $overflow . ';position:absolute;width:100%;' . ($height ? 'height:' . $height . 'px;' : 'bottom:40px;') . 'top:0px;left:0px;">' . $boxHTML . '</div>
 				<div style="left:0px;height:40px;background-image: url(' . IMAGE_DIR . 'edit/editfooterback.gif);position:absolute;bottom:0px;width:100%"><div style="padding: 10px 10px 0 0;">' . $buttons . '</div></div>';
-		} else{
+		} else {
 			return $boxHTML;
 		}
 	}
@@ -290,7 +290,7 @@ abstract class we_multiIconBox{
 	static function _getBoxStart($w, $uniqname){
 		if(strpos($w, "%") === false){
 			$wp = abs($w) . "px";
-		} else{
+		} else {
 			$wp = $w;
 		}
 		return '<table cellpadding="0" style="border-spacing: 0px;border-style:none;margin-top:10px;width:' . $wp . ';">

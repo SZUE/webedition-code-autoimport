@@ -53,7 +53,7 @@ function do_confirm() {
 //-->
 </script>
 </head>
-<body class="weDialogBody"  onUnload="doUnload();">
+<body class="weDialogBody" onunload="doUnload();">
 <?php
 $heading = g_l('modules_messaging', '[todo_status_update]');
 $compose = new we_messaging_format('update', $messaging->selected_message);

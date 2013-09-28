@@ -35,7 +35,7 @@ class weFullscreenEditDialog extends weDialog{
 	}
 
 	function getDialogContentHTML(){
-		$e = new we_wysiwyg("we_dialog_args[src]", $this->args["screenWidth"] - 90, $this->args["screenHeight"] - 200, '', $this->args["propString"], $this->args["bgcolor"], $this->args["editname"], $this->args["className"], $this->args["outsideWE"], $this->args["outsideWE"], $this->args["xml"], $this->args["removeFirstParagraph"], true, $this->args["baseHref"], $this->args["charset"], $this->args["cssClasses"], $this->args['language'], '', true, false, 'top', true, $this->args["contentCss"], $this->args["origName"], $this->args["tinyParams"],$this->args["contextmenu"]);
+		$e = new we_wysiwyg("we_dialog_args[src]", $this->args["screenWidth"] - 90, $this->args["screenHeight"] - 200, '', $this->args["propString"], $this->args["bgcolor"], $this->args["editname"], $this->args["className"], $this->args["outsideWE"], $this->args["outsideWE"], $this->args["xml"], $this->args["removeFirstParagraph"], true, $this->args["baseHref"], $this->args["charset"], $this->args["cssClasses"], $this->args['language'], '', true, false, 'top', true, $this->args["contentCss"], $this->args["origName"], $this->args["tinyParams"], $this->args["contextmenu"]);
 		return we_wysiwyg::getHeaderHTML() . we_html_element::jsElement('isFullScreen = true;') . $e->getHTML();
 	}
 
@@ -46,69 +46,69 @@ class weFullscreenEditDialog extends weDialog{
 
 	function getJs(){
 		return we_html_element::jsScript(JS_DIR . 'windows.js') . we_html_element::jsElement('
-				var isGecko = ' . (we_base_browserDetect::isGecko() ? 'true' : 'false') . ';
-				var textareaFocus = false;
+var isGecko = ' . (we_base_browserDetect::isGecko() ? 'true' : 'false') . ';
+var textareaFocus = false;
 
-				' . (we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera() ? 'document.addEventListener("keyup",doKeyDown,true);' : 'document.onkeydown = doKeyDown;') . '
+' . (we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera() ? 'document.addEventListener("keyup",doKeyDown,true);' : 'document.onkeydown = doKeyDown;') . '
 
-				function doKeyDown(e) {
-					var ' . (we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera() ? 'key = e.keyCode;' : 'key = event.keyCode;') . '
+function doKeyDown(e) {
+	var ' . (we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera() ? 'key = e.keyCode;' : 'key = event.keyCode;') . '
 
-					switch (key) {
-						case 27:
-							top.close();
-							break;
-					}
-				}
-
-				function weDoOk() {
-					if(typeof(isTinyMCE) != "undefined" && isTinyMCE === true){
-						WefullscreenDialog.writeback();
-						top.close();
-					} else{' .
-							($this->pageNr == $this->numPages && $this->JsOnly ? '
-							if (!textareaFocus) {
-								' . $this->getOkJs() . '
-							}' : '') . '
-					}
-				}
-
-		function IsDigit(e) {
-					var ' . (we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera() ? 'key = e.charCode;' : 'key = event.keyCode;') . '
-					return (((key >= 48) && (key <= 57)) || (key == 0) || (key == 13));
-				}
-
-				function openColorChooser(name,value) {
-					var win = new jsWindow("colorDialog.php?we_dialog_args[type]=dialog&we_dialog_args[name]="+escape(name)+"&we_dialog_args[color]="+escape(value),"colordialog",-1,-1,400,380,true,false,true,false);
-				}
-
-				function IsDigitPercent(e) {
-					var ' . (we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera() ? 'key = e.charCode;' : 'key = event.keyCode;') . '
-
-					return (((key >= 48) && (key <= 57)) || (key == 37) || (key == 0)  || (key == 13));
-				}
-
-				function doUnload() {
-					if (jsWindow_count) {
-						for (i = 0; i < jsWindow_count; i++) {
-							eval("jsWindow" + i + "Object.close()");
-						}
-					}
-				}
-
-				self.focus();');
+	switch (key) {
+		case 27:
+			top.close();
+			break;
 	}
-	
+}
+
+function weDoOk() {
+	if(typeof(isTinyMCE) != "undefined" && isTinyMCE === true){
+		WefullscreenDialog.writeback();
+		top.close();
+	} else{' .
+				($this->pageNr == $this->numPages && $this->JsOnly ? '
+			if (!textareaFocus) {
+				' . $this->getOkJs() . '
+			}' : '') . '
+	}
+}
+
+function IsDigit(e) {
+	var ' . (we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera() ? 'key = e.charCode;' : 'key = event.keyCode;') . '
+	return (((key >= 48) && (key <= 57)) || (key == 0) || (key == 13));
+}
+
+function openColorChooser(name,value) {
+	var win = new jsWindow("colorDialog.php?we_dialog_args[type]=dialog&we_dialog_args[name]="+escape(name)+"&we_dialog_args[color]="+escape(value),"colordialog",-1,-1,400,380,true,false,true,false);
+}
+
+function IsDigitPercent(e) {
+	var ' . (we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera() ? 'key = e.charCode;' : 'key = event.keyCode;') . '
+
+	return (((key >= 48) && (key <= 57)) || (key == 37) || (key == 0)  || (key == 13));
+}
+
+function doUnload() {
+	if (jsWindow_count) {
+		for (i = 0; i < jsWindow_count; i++) {
+			eval("jsWindow" + i + "Object.close()");
+		}
+	}
+}
+
+self.focus();');
+	}
+
 	function getOkBut(){
 		return we_button::create_button("ok", "javascript:top.opener.tinyMCECallRegisterDialog({},'unregisterDialog');weDoOk();");
 	}
-	
+
 	function getCancelBut(){
 		return we_button::create_button("cancel", "javascript:top.opener.tinyMCECallRegisterDialog({},'unregisterDialog');top.close();");
 	}
-	
+
 	function getBodyTagHTML(){
-		return '<body id="weFullscreenDialog" class="weDialogBody" onUnload="doUnload()" onbeforeunload="top.opener.tinyMCECallRegisterDialog({},\'unregisterDialog\')" >';
+		return '<body id="weFullscreenDialog" class="weDialogBody" onunload="doUnload()" onbeforeunload="top.opener.tinyMCECallRegisterDialog({},\'unregisterDialog\')" >';
 	}
 
 }

@@ -29,25 +29,25 @@ print STYLESHEET;
 ?>
 <script type="text/javascript"><!--
 
-	function we_cmd(){
+	function we_cmd() {
 
 		var args = "";
 		var url = "<?php echo WEBEDITION_DIR; ?>we_cmd.php?";
-		for(var i = 0; i < arguments.length; i++){
-			url += "we_cmd["+i+"]="+escape(arguments[i]);
-			if(i < (arguments.length - 1)){
+		for (var i = 0; i < arguments.length; i++) {
+			url += "we_cmd[" + i + "]=" + escape(arguments[i]);
+			if (i < (arguments.length - 1)) {
 				url += "&";
 			}
 		}
 
-		switch (arguments[0]){
+		switch (arguments[0]) {
 
 			case "customValidationService":
 				self.we_submitForm(url);
 				we_cmd("reload_editpage");
 				break;
 			case "reload_editpage":
-				if(top.opener.top.weEditorFrameController.getActiveDocumentReference().frames["1"].we_cmd){
+				if (top.opener.top.weEditorFrameController.getActiveDocumentReference().frames["1"].we_cmd) {
 					top.opener.top.weEditorFrameController.getActiveDocumentReference().frames["1"].we_cmd("reload_editpage");
 				}
 				window.focus();
@@ -56,15 +56,15 @@ print STYLESHEET;
 				window.close();
 				break;
 			default :
-				for(var i = 0; i < arguments.length; i++){
-					args += 'arguments['+i+']' + ((i < (arguments.length-1)) ? ',' : '');
+				for (var i = 0; i < arguments.length; i++) {
+					args += 'arguments[' + i + ']' + ((i < (arguments.length - 1)) ? ',' : '');
 				}
-				eval('top.opener.we_cmd('+args+')');
+				eval('top.opener.we_cmd(' + args + ')');
 				break;
 		}
 	}
 
-	function we_submitForm(url){
+	function we_submitForm(url) {
 
 		var f = self.document.we_form;
 
@@ -90,12 +90,12 @@ print STYLESHEET;
 				if($selectedService = validation::saveService($_service)){
 					print we_html_element::jsElement(
 							we_message_reporting::getShowMessageCall(g_l('validation', '[edit_service][saved_success]'), we_message_reporting::WE_MESSAGE_NOTICE)
-						);
-				} else{
+					);
+				} else {
 					$selectedService = $_service;
 					print we_html_element::jsElement(
 							we_message_reporting::getShowMessageCall(g_l('validation', '[edit_service][saved_failure]') . (isset($GLOBALS['errorMessage']) ? '\n' . $GLOBALS['errorMessage'] : ''), we_message_reporting::WE_MESSAGE_ERROR)
-						);
+					);
 				}
 				break;
 			case 'deleteService':
@@ -103,12 +103,12 @@ print STYLESHEET;
 				if(validation::deleteService($_service)){
 					print we_html_element::jsElement(
 							we_message_reporting::getShowMessageCall(g_l('validation', '[edit_service][delete_success]'), we_message_reporting::WE_MESSAGE_NOTICE)
-						);
-				} else{
+					);
+				} else {
 					print we_html_element::jsElement(
 							we_message_reporting::getShowMessageCall(g_l('validation', '[edit_service][delete_failure]'), WE_MESSAGE_ERR
 							)
-						);
+					);
 				}
 				break;
 			case 'selectService';
@@ -141,7 +141,7 @@ print STYLESHEET;
 		}
 		$hiddenFields = we_html_tools::hidden('id', $selectedService->id) .
 			we_html_tools::hidden('art', 'custom');
-	} else{
+	} else {
 		$hiddenFields = we_html_tools::hidden('art', 'custom');
 		$selectArr = array();
 	}
@@ -151,14 +151,14 @@ print STYLESHEET;
 
 	//  table with new and delete
 	$_table = '<table>
-    <tr><td>' . we_html_tools::htmlSelect('validationService', $selectArr, 5, (isset($selectedService) ? $selectedService->getName() : ''), false, 'onchange=we_cmd(\'customValidationService\',\'selectService\');', "value", 320) . '</td>
+    <tr><td>' . we_html_tools::htmlSelect('validationService', $selectArr, 5, (isset($selectedService) ? $selectedService->getName() : ''), false, array('onchange' => 'we_cmd(\'customValidationService\',\'selectService\');'), "value", 320) . '</td>
         <td>' . we_html_tools::getPixel(10, 2) . '</td>
         <td valign="top">' . we_button::create_button('new_service', 'javascript:we_cmd(\'customValidationService\',\'newService\');')
 		. '<div style="height:10px;"></div>'
 		. we_button::create_button('delete', 'javascript:we_cmd(\'customValidationService\',\'deleteService\');', true, 100, 22, '', '', (empty($services))) . '
         </td>
     </tr>
-    </table>'.
+    </table>' .
 		$hiddenFields;
 
 	$parts = array(
@@ -182,3 +182,4 @@ print STYLESHEET;
 	print '<form name="we_form" onsubmit="return false;">' . we_multiIconBox::getHTML('weDocValidation', '100%', $parts, 30, we_button::position_yes_no_cancel(we_button::create_button('save', 'javascript:we_cmd(\'customValidationService\',\'saveService\');', true, 100, 22, '', '', (empty($services))), we_button::create_button('cancel', 'javascript:we_cmd(\'close\');')), -1, '', '', false, g_l('validation', '[adjust_service]'))
 		. '</form>' .
 		'</body></html>';
+

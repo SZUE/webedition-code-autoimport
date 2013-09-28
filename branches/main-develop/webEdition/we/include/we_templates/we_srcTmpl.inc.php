@@ -432,7 +432,7 @@ switch($_SESSION['prefs']['editorMode']){
 	//-->
 </script>
 </head>
-<body class="weEditorBody" style="overflow:hidden;" onLoad="setTimeout('initEditor()', 200);" onUnload="doUnload();
+<body class="weEditorBody" style="overflow:hidden;" onload="setTimeout('initEditor()', 200);" onunload="doUnload();
 		parent.editorScrollPosTop = getScrollPosTop();
 		parent.editorScrollPosLeft = getScrollPosLeft();" <?php
 //FIXME: no resize for IE!

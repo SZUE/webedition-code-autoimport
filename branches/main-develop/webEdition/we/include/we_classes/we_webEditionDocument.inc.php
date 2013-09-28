@@ -462,7 +462,7 @@ class we_webEditionDocument extends we_textContentDocument{
 			$chars = $_charsetHandler->getCharsetsByArray($chars);
 
 			//	Last step: get Information about the charsets
-			$retSelect = $this->htmlSelect('we_tmp_' . $name, $chars, 1, $value, false, ' onblur="_EditorFrame.setEditorIsHot(true);document.forms[0].elements[\'' . $inputName . '\'].value=this.options[this.selectedIndex].value;" onchange="_EditorFrame.setEditorIsHot(true);document.forms[0].elements[\'' . $inputName . '\'].value=this.options[this.selectedIndex].value;"', 'value', 254);
+			$retSelect = $this->htmlSelect('we_tmp_' . $name, $chars, 1, $value, false, array('onblur' => '_EditorFrame.setEditorIsHot(true);document.forms[0].elements[\'' . $inputName . '\'].value=this.options[this.selectedIndex].value;', 'onchange' => '_EditorFrame.setEditorIsHot(true);document.forms[0].elements[\'' . $inputName . '\'].value=this.options[this.selectedIndex].value;'), 'value', 254);
 
 			return '<tr><td colspan="2">' . we_html_tools::getPixel(2, 4) . '</td></tr>
 <tr><td>

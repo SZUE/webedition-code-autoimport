@@ -138,7 +138,7 @@ print STYLESHEET;
 ?>
 </head>
 
-<body onUnload="window_closed();" class="weEditorBody" onLoad="self.focus();" onBlur="self.focus();">
+<body onunload="window_closed();" class="weEditorBody" onload="self.focus();" onblur="self.focus();">
 <?php print we_html_tools::htmlYesNoCancelDialog(g_l('alert', '[' . stripTblPrefix($_documentTable) . '][exit_doc_question]'), IMAGE_DIR . "alert.gif", true, true, true, $yesCmd, $noCmd, $cancelCmd); ?>
 </body>
 

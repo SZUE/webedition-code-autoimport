@@ -56,7 +56,7 @@ if(isset($_REQUEST["ok"])){
 	$js = 'opener._EditorFrame.setEditorIsHot(true);'
 		. 'opener.we_cmd("reload_entry_at_class","' . $we_transaction . '", "' . $nr . '");'
 		. 'top.close();';
-} else{
+} else {
 	$js = 'function okFn(){'
 		. 'document.forms[0].submit();'
 		. '}';
@@ -212,7 +212,7 @@ $parts[] = array(
 // CLASSES
 $table = '<table border="0" cellpadding="0" cellspacing="0">
 	<tr>
-		<td class="defaultfont" valign="top" align="right">classes&nbsp;</td><td colspan="5">' . we_class::htmlTextArea("cssClasses", 3, 30, oldHtmlspecialchars((isset($we_doc->elements[$name . "cssClasses"]["dat"]) ? $we_doc->elements[$name . "cssClasses"]["dat"] : "")), array('style'=>"width:415px;height:50px")) . '</td>
+		<td class="defaultfont" valign="top" align="right">classes&nbsp;</td><td colspan="5">' . we_class::htmlTextArea("cssClasses", 3, 30, oldHtmlspecialchars((isset($we_doc->elements[$name . "cssClasses"]["dat"]) ? $we_doc->elements[$name . "cssClasses"]["dat"] : "")), array('style' => "width:415px;height:50px")) . '</td>
 	</tr>
 	<tr>
 		<td>' . we_html_tools::getPixel(70, 1) . '</td>
@@ -229,19 +229,19 @@ $parts[] = array(
 // COMMANDS && CONTEXTMENU
 $vals = makeArrayFromCSV(",," . WE_WYSIWYG_COMMANDS);
 sort($vals);
-$select = we_html_tools::htmlSelect("tmp_commands", $vals, 1, "", false, 'onchange="var elem=document.getElementById(\'commands\'); var txt = this.options[this.selectedIndex].text; if(elem.value.split(\',\').indexOf(txt)==-1){elem.value=(elem.value) ? (elem.value + \',\' + txt) : txt;}this.selectedIndex=-1"');
-$select_cm = we_html_tools::htmlSelect("tmp_contextmenu", $vals, 1, "", false, 'onchange="var elem=document.getElementById(\'contextmenu\'); var txt = this.options[this.selectedIndex].text; if(elem.value.split(\',\').indexOf(txt)==-1){elem.value=(elem.value) ? (elem.value + \',\' + txt) : txt;}this.selectedIndex=-1"');
+$select = we_html_tools::htmlSelect("tmp_commands", $vals, 1, "", false, array('onchange' => 'var elem=document.getElementById(\'commands\'); var txt = this.options[this.selectedIndex].text; if(elem.value.split(\',\').indexOf(txt)==-1){elem.value=(elem.value) ? (elem.value + \',\' + txt) : txt;}this.selectedIndex=-1'));
+$select_cm = we_html_tools::htmlSelect("tmp_contextmenu", $vals, 1, "", false, array('onchange' => 'var elem=document.getElementById(\'contextmenu\'); var txt = this.options[this.selectedIndex].text; if(elem.value.split(\',\').indexOf(txt)==-1){elem.value=(elem.value) ? (elem.value + \',\' + txt) : txt;}this.selectedIndex=-1'));
 
 $table = '<table border="0" cellpadding="0" cellspacing="0">
 	<tr>
-		<td class="defaultfont" valign="top" align="right">commands&nbsp;</td><td colspan="5">' . $select . '<br>' . we_class::htmlTextArea("commands", 3, 30, oldHtmlspecialchars((isset($we_doc->elements[$name . "commands"]["dat"]) ? $we_doc->elements[$name . "commands"]["dat"] : "")), array('id'=>"commands", 'style'=>"width:415px;height:50px")) . '</td>
+		<td class="defaultfont" valign="top" align="right">commands&nbsp;</td><td colspan="5">' . $select . '<br>' . we_class::htmlTextArea("commands", 3, 30, oldHtmlspecialchars((isset($we_doc->elements[$name . "commands"]["dat"]) ? $we_doc->elements[$name . "commands"]["dat"] : "")), array('id' => "commands", 'style' => "width:415px;height:50px")) . '</td>
 	</tr>
 	<tr>
 		<td>' . we_html_tools::getPixel(70, 10) . '</td>
 		<td>' . we_html_tools::getPixel(415, 10) . '</td>
 	</tr>
 	<tr>
-		<td class="defaultfont" valign="top" align="right">contextmenu&nbsp;</td><td colspan="5">' . $select_cm . '<br>' . we_class::htmlTextArea("contextmenu", 3, 30, oldHtmlspecialchars((isset($we_doc->elements[$name . "contextmenu"]["dat"]) ? $we_doc->elements[$name . "contextmenu"]["dat"] : "")), array('id'=>"contextmenu", 'style'=>"width:415px;height:50px")) . '</td>
+		<td class="defaultfont" valign="top" align="right">contextmenu&nbsp;</td><td colspan="5">' . $select_cm . '<br>' . we_class::htmlTextArea("contextmenu", 3, 30, oldHtmlspecialchars((isset($we_doc->elements[$name . "contextmenu"]["dat"]) ? $we_doc->elements[$name . "contextmenu"]["dat"] : "")), array('id' => "contextmenu", 'style' => "width:415px;height:50px")) . '</td>
 	</tr>
 	<tr>
 		<td>' . we_html_tools::getPixel(70, 1) . '</td>
