@@ -393,7 +393,7 @@ function closeAllType(){
 
 		$parts[] = array(
 			"headline" => g_l('export', "[export_depth]"),
-			"html" => we_html_tools::htmlAlertAttentionBox(g_l('export', '[txt_exportdeep_options]'), we_html_tools::TYPE_INFO, $this->_width_size) . '<br>' . we_html_element::htmlLabel(null, g_l('export', "[to_level]")) . we_html_tools::getPixel(5, 5) . we_html_tools::htmlTextInput("ExportDepth", 10, $this->View->export->ExportDepth, "", "onBlur=\"var r=parseInt(this.value);if(isNaN(r)) this.value=" . $this->View->export->ExportDepth . "; else{ this.value=r; " . $this->topFrame . ".hot=1;}\"", "text", 50),
+			"html" => we_html_tools::htmlAlertAttentionBox(g_l('export', '[txt_exportdeep_options]'), we_html_tools::TYPE_INFO, $this->_width_size) . '<br>' . we_html_element::htmlLabel(array(), g_l('export', "[to_level]")) . we_html_tools::getPixel(5, 5) . we_html_tools::htmlTextInput("ExportDepth", 10, $this->View->export->ExportDepth, "", "onBlur=\"var r=parseInt(this.value);if(isNaN(r)) this.value=" . $this->View->export->ExportDepth . "; else{ this.value=r; " . $this->topFrame . ".hot=1;}\"", "text", 50),
 			"space" => $this->_space_size
 		);
 

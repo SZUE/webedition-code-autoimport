@@ -357,9 +357,9 @@ top.content.hloaded = 1;');
 
 		$js = we_html_element::jsElement("self.focus();");
 		$body = we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), we_html_tools::htmlDialogLayout(
-						we_html_element::htmlDiv(null, we_html_tools::getPixel(10, 5)) .
+						we_html_element::htmlDiv(array(), we_html_tools::getPixel(10, 5)) .
 						we_html_element::htmlDiv(array("class" => "blockwrapper", "style" => "width: 588px; height: 500px; border:1px #dce6f2 solid;"), $content) .
-						we_html_element::htmlDiv(null, we_html_tools::getPixel(10, 15)), g_l('modules_newsletter', '[show_log]'), we_button::create_button("close", "javascript:self.close();")
+						we_html_element::htmlDiv(array(), we_html_tools::getPixel(10, 15)), g_l('modules_newsletter', '[show_log]'), we_button::create_button("close", "javascript:self.close();")
 					)
 				)
 		);

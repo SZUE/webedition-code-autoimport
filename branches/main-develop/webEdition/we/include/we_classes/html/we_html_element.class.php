@@ -92,9 +92,6 @@ abstract class we_html_element{
 	public static function cssElement($content = '', array $attribs = array()){
 		$attribs['type'] = 'text/css';
 
-		/* if($local){
-		  $attribs['scoped'] = 'scoped';
-		  } */
 		return we_baseElement::getHtmlCode(new we_baseElement('style', true, $attribs, $content));
 	}
 
