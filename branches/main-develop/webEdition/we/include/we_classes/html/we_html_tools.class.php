@@ -743,7 +743,7 @@ abstract class we_html_tools{
 		$selIndex = makeArrayFromCSV($selectedIndex);
 		$optgroup = false;
 		foreach($values as $value => $text){
-			if($text == self::OPTGROUP){
+			if($text == self::OPTGROUP || $value == self::OPTGROUP){
 				if($optgroup){
 					$ret .= '</optgroup>';
 				}
