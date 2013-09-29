@@ -30,6 +30,7 @@ class we_customer_tree extends weTree{
 		$this->setStyles(array(
 			'.item {color: black; font-size: ' . (((we_base_browserDetect::isUNIX()) ? "11px" : "9px")) . '; font-family: ' . g_l('css', '[font_family]') . ';}',
 			'.item a { text-decoration:none;}',
+			'.loginDenied {color:red;}',
 			'.group {color: black; font-weight: bold; font-size: ' . (((we_base_browserDetect::isUNIX()) ? "11px" : "9px")) . '; font-family: ' . g_l('css', '[font_family]') . ';}',
 			'.group a { text-decoration:none;}',
 		));
@@ -50,7 +51,7 @@ row+="&nbsp;&nbsp;<a href=\"javascript:"+oc_js+" border=0><img src="+oc_img+" wi
 row+="<a name=\'_"+nf[ai].id+"\' href=\"javascript://\" onClick=\""+oc_js+";return true;\" border=0>";
 row+="<img src=' . $this->tree_image_dir . 'icons/"+nf[ai].icon+" width=16 height=18 align=absmiddle border=0 Alt=\"\">";
 row+="</a>";
-row+="<a name=\'_"+nf[ai].id+"\' href=\"javascript://\" onClick=\""+oc_js+";return true;\">";
+row+="<a name=\'_"+nf[ai].id+"\' href=\"javascript://\" onclick=\""+oc_js+";return true;\">";
 row+="<label style=\"cursor:pointer\" id=\"lab_"+nf[ai].id+"\" class=\""+treeData.node_layout[nf[ai].state]+"\">&nbsp;" + nf[ai].text+"</label>";
 row+="</a>";
 row+="&nbsp;&nbsp;<br>\n";
@@ -88,7 +89,7 @@ if(nf[ai].disabled!=1){
 	row+="</a>";
 	row+="<a name=\'_"+nf[ai].id+"\' href=\"javascript:"+oc_js+"\">";
 }
-row+="<label style=\"cursor:pointer\" id=\"lab_"+nf[ai].id+"\" class=\""+nf[ai].getlayout()+"\">&nbsp;" + nf[ai].text+"</label>";
+row+="<label style=\"cursor:pointer;\" id=\"lab_"+nf[ai].id+"\" class=\""+nf[ai].getlayout()+"\">&nbsp;" + nf[ai].text+"</label>";
 if(nf[ai].disabled!=1){
 	row+="</a>";
 }
@@ -176,6 +177,7 @@ function startTree(){
 			$this->getJSStartTree();
 	}
 
+
 	function getJSLoadTree($treeItems){
 		$days = array(
 			'Sunday' => 0,
@@ -235,4 +237,16 @@ function showSegment(){
 }';
 	}
 
-}
+	function getJSGetLayout(){
+		return '
+function getLayout(){
+		if(this.typ=="threedots") return treeData.node_layouts["threedots"];
+		var layout_key=(this.typ=="group" ? "group" : "item");
+
+
+		return treeData.node_layouts[layout_key]+(this.typ=="item" && this.published==1 ? " loginDenied" : "");
+}';
+	}
+
+
+	}

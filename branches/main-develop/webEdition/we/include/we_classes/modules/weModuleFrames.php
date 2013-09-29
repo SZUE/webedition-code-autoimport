@@ -240,7 +240,7 @@ class weModuleFrames{
 
 	function getHTMLEditorFooter($btn_cmd, $extraHead = ''){
 		if(isset($_REQUEST['home'])){
-			return $this->getHTMLDocument(we_html_element::htmlBody(array("bgcolor" => "EFf0EF"), ""));
+			return $this->getHTMLDocument(we_html_element::htmlBody(array("bgcolor" => "#EFf0EF"), ""));
 		}
 
 		$extraHead .= we_html_element::jsElement('

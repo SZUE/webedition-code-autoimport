@@ -420,7 +420,7 @@ top.content.hloaded=1;
 
 	function getHTMLEditorFooter($mode = 0){
 		if(isset($_REQUEST["home"])){
-			return $this->getHTMLDocument(we_html_element::htmlBody(array("bgcolor" => "EFF0EF"), ""));
+			return $this->getHTMLDocument(we_html_element::htmlBody(array("bgcolor" => "#EFF0EF"), ""));
 		}
 
 		$extraHead = we_html_element::jsElement('

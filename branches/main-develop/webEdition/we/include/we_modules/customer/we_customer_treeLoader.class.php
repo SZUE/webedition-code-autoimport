@@ -45,7 +45,7 @@ abstract class we_customer_treeLoader{
 					"table" => CUSTOMER_TABLE,
 					"typ" => "threedots",
 					"open" => 0,
-					"published" => 0,
+					"published" => 1,
 					"disabled" => 0,
 					"tooltip" => "",
 					"offset" => $prevoffset
@@ -58,13 +58,14 @@ abstract class we_customer_treeLoader{
 
 		$where = ' WHERE ParentID=' . intval($ParentID) . ' ' . $addWhere;
 
-		$db->query('SELECT ' . $settings->treeTextFormatSQL . ' AS treeFormat, ' . $elem . ' FROM ' . CUSTOMER_TABLE . ' ' . $where . ' ' . self::getSortOrder($settings) . ($segment ? " LIMIT $offset,$segment;" : ";" ));
+		$db->query('SELECT ' . $settings->treeTextFormatSQL . ' AS treeFormat, ' . $elem . ',LoginDenied FROM ' . CUSTOMER_TABLE . ' ' . $where . ' ' . self::getSortOrder($settings) . ($segment ? " LIMIT $offset,$segment;" : ";" ));
 
 		while($db->next_record(MYSQLI_ASSOC)){
 
 			$typ = array(
 				'typ' => ($db->f("IsFolder") == 1 ? "group" : "item"),
 				'disabled' => 0,
+				'published'=>$db->f('LoginDenied'),
 				'tooltip' => $db->f("ID"),
 				'offset' => $offset,
 			);
@@ -153,7 +154,7 @@ abstract class we_customer_treeLoader{
 
 		$grp = implode(',', array_slice($grouparr, 0, $level + 1));
 
-		$db->query('SELECT ' . $settings->treeTextFormatSQL . ' AS treeFormat,ID,ParentID,Path,Text,Icon,IsFolder,Forename,Surname' . (empty($select) ? '' : ',' . implode(',', $select) ) . ' FROM ' . CUSTOMER_TABLE . ' GROUP BY ' . $grp . (count($grouparr) ? ($level != 0 ? ',ID' : '') : 'ID') . (count($havingarr) ? ' HAVING ' . implode(' AND ', $havingarr) : '') . ' ORDER BY ' . implode(',', $orderarr) . self::getSortOrder($settings, ',') . (($level == $levelcount && $segment) ? " LIMIT $offset,$segment" : ''));
+		$db->query('SELECT ' . $settings->treeTextFormatSQL . ' AS treeFormat,ID,ParentID,Path,Text,Icon,IsFolder,LoginDenied,Forename,Surname' . (empty($select) ? '' : ',' . implode(',', $select) ) . ' FROM ' . CUSTOMER_TABLE . ' GROUP BY ' . $grp . (count($grouparr) ? ($level != 0 ? ',ID' : '') : 'ID') . (count($havingarr) ? ' HAVING ' . implode(' AND ', $havingarr) : '') . ' ORDER BY ' . implode(',', $orderarr) . self::getSortOrder($settings, ',') . (($level == $levelcount && $segment) ? " LIMIT $offset,$segment" : ''));
 
 		$items = $foo = array();
 		$gname = '';
@@ -221,7 +222,7 @@ abstract class we_customer_treeLoader{
 								'table' => CUSTOMER_TABLE,
 								'typ' => "threedots",
 								'open' => 0,
-								'published' => 0,
+								'published' => 1,
 								'disabled' => 0,
 								'tooltip' => "",
 								'offset' => $prevoffset
@@ -232,12 +233,13 @@ abstract class we_customer_treeLoader{
 					$items[] = array(
 						'id' => $db->f("ID"),
 						'parentid' => str_replace("\'", "*****quot*****", $gname),
-						'path' => "",
+						'path' => '',
 						'text' => oldHtmlspecialchars($tt),
 						'icon' => $db->f("Icon"),
 						'isfolder' => $db->f("IsFolder"),
 						'typ' => "item",
 						'disabled' => 0,
+						'published'=>$db->f('LoginDenied'),
 						'tooltip' => $db->f("ID")
 					);
 				}
