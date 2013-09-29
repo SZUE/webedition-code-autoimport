@@ -30,8 +30,9 @@ abstract class we_customer_add{
 
 
 		$order = new we_html_select(array('name' => 'order', 'style' => 'width:90px;'));
-		foreach($pob->View->settings->OrderTable as $ord)
+		foreach($pob->View->settings->OrderTable as $ord){
 			$order->addOption($ord, $ord);
+		}
 
 		$function = new we_html_select(array('name' => 'function', 'style' => 'width:130'));
 
@@ -51,7 +52,6 @@ abstract class we_customer_add{
 
 
 			foreach($sorts as $sort){
-
 				if(!$sort["branch"]){
 					$branches_names = $pob->View->customer->getBranchesNames();
 					$sort["branch"] = (isset($branches_names[0]) ?
@@ -65,7 +65,7 @@ abstract class we_customer_add{
 				$field = $pob->getHTMLFieldsSelect($sort["branch"]);
 				$field->setAttributes(array("name" => "field_" . $counter . "_" . $fcounter, "style" => "width:180px;", "class" => "weSelect", "onChange" => "we_cmd('selectBranch')"));
 
-				$fields_names = array_keys($this->View->customer->getFieldsNames($sort["branch"]));
+				$fields_names = array_keys($pob->View->customer->getFieldsNames($sort["branch"]));
 				if($sort["branch"] == g_l('modules_customer', '[common]') || $sort["branch"] == g_l('modules_customer', '[other]')){
 					foreach($fields_names as $fnk => $fnv)
 						$fields_names[$fnk] = str_replace($sort["branch"] . "_", "", $fields_names[$fnk]);
@@ -221,14 +221,14 @@ function we_cmd(){
 }
 
 function doScrollTo(){
-	if(opener.' . $this->topFrame . '.scrollToVal){
-		window.scrollTo(0,opener.' . $this->topFrame . '.scrollToVal);
-		opener.' . $this->topFrame . '.scrollToVal=0;
+	if(opener.' . $pob->topFrame . '.scrollToVal){
+		window.scrollTo(0,opener.' . $pob->topFrame . '.scrollToVal);
+		opener.' . $pob->topFrame . '.scrollToVal=0;
 	}
 }
 
 function setScrollTo(){
-		opener.' . $this->topFrame . '.scrollToVal=' . (we_base_browserDetect::isIE() ? 'document.body.scrollTop' : 'pageYOffset') . ';
+		opener.' . $pob->topFrame . '.scrollToVal=' . (we_base_browserDetect::isIE() ? 'document.body.scrollTop' : 'pageYOffset') . ';
 }
 
 			' . $pob->getJSSubmitFunction("sort_admin");
@@ -402,11 +402,11 @@ function we_cmd(){
 				$keywords["field_" . $i] = str_replace(g_l('modules_customer', '[common]') . "_", "", $keywords["field_" . $i]);
 			}
 			if(isset($keywords["field_" . $i]) && isset($keywords["operator_" . $i]) && isset($keywords["value_" . $i]))
-				$where.=(isset($keywords["logic_" . $i]) ? " " . $keywords["logic_" . $i] . " " : "") . $keywords["field_" . $i] . " " . $operators[$keywords["operator_" . $i]] . " '" . (is_numeric($keywords["value_" . $i]) ? $keywords["value_" . $i] : $this->db->escape($keywords["value_" . $i])) . "'";
+				$where.=(isset($keywords["logic_" . $i]) ? " " . $keywords["logic_" . $i] . " " : "") . $keywords["field_" . $i] . " " . $operators[$keywords["operator_" . $i]] . " '" . (is_numeric($keywords["value_" . $i]) ? $keywords["value_" . $i] : $pob->db->escape($keywords["value_" . $i])) . "'";
 		}
 
-		$this->db->query('SELECT ID,CONCAT(Username, " (",Forename," ",Surname,")") AS user FROM ' . CUSTOMER_TABLE . ' WHERE ' . (empty($where) ? 0 : $where) . ' ORDER BY Text LIMIT 0,' . $res_num);
-		return $this->db->getAllFirst(false);
+		$pob->db->query('SELECT ID,CONCAT(Username, " (",Forename," ",Surname,")") AS user FROM ' . CUSTOMER_TABLE . ' WHERE ' . (empty($where) ? 0 : $where) . ' ORDER BY Text LIMIT 0,' . $res_num);
+		return $pob->db->getAllFirst(false);
 	}
 
 	static function getHTMLTreeHeader(&$pob){

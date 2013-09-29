@@ -570,10 +570,7 @@ self.focus();' . $this->getJSSubmitFunction("customer_settings");
 					//FIXME: what if save failes (e.g. Hooks?)
 					$this->customer->save();
 
-					$ttrow = getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . intval($this->customer->ID), $this->db);
-					//needed, because format is php code
-					eval('$tt="' . $this->settings->treeTextFormat . '";');
-					$tt = addslashes($tt != '' ? $tt : $this->customer->Text);
+					$tt = addslashes(f('SELECT ' . $this->settings->treeTextFormatSQL . ' AS treeFormat FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . intval($this->customer->ID), 'treeFormat', $this->db));
 					if($newone){
 						$js = '
 var attribs = new Array();

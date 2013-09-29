@@ -59,7 +59,11 @@ switch($_REQUEST['we_cmd'][0]){
 		require_once (WEBEDITION_PATH . 'we_dirSelect.php');
 		break;
 	case 'openSelector' :
-		require_once (WEBEDITION_PATH . 'we_fs.php');
+		if($table == CUSTOMER_TABLE){
+			require_once (WEBEDITION_PATH . 'we_customerSelect.php');
+		} else {
+			require_once (WEBEDITION_PATH . 'we_fs.php');
+		}
 		break;
 	case 'openDocselector' :
 		require_once (WEBEDITION_PATH . 'we_docSelect.php');

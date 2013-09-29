@@ -136,9 +136,8 @@ class we_fileselector{
 			return true;
 		} else if($pid != 0){
 			return $this->isIDInFolder($pid, $folderID);
-		} else {
-			return false;
 		}
+		return false;
 	}
 
 	function query(){
@@ -443,34 +442,34 @@ function queryString(what,id,o){
 	function printFramesetJSFunctioWriteBody(){
 		?><script type="text/javascript"><!--
 					function writeBody(d) {
-						d.open();
+				d.open();
 		<?php
 		echo self::makeWriteDoc(we_html_tools::getHtmlTop('', '', '4Trans', true) . STYLESHEET_SCRIPT . '
 </head>
 <body bgcolor="white" LINK="#000000" ALINK="#000000" VLINK="#000000" leftmargin="0" marginwidth="0" topmargin="0" marginheight="0">
 <table border="0" cellpadding="0" cellspacing="0">');
 		?>
-						for (i = 0; i < entries.length; i++) {
-							d.writeln('<tr>');
-							d.writeln('<td class="selector" align="center">');
-							var link = '<a title="' + entries[i].text + '" href="javascript://"';
-							if (entries[i].isFolder) {
-								link += ' onDblClick="this.blur();top.wasdblclick=1;clearTimeout(tout);top.doClick(' + entries[i].ID + ',1);return true;"';
-							}
-							link += ' onClick="this.blur();tout=setTimeout(\'if(top.wasdblclick==0){top.doClick(' + entries[i].ID + ',0);}else{top.wasdblclick=0;}\',300);return true">' + "\n";
-							d.writeln(link + '<img src="<?php print ICON_DIR; ?>' + entries[i].icon + '" width="16" height="18" border="0"></a>');
-							d.writeln('</td>');
-							d.writeln('<td class="selector" title="' + entries[i].text + '">');
-							d.writeln(link + cutText(entries[i].text, 70) + '</a>');
-							d.writeln('</td></tr>');
-							d.writeln('<tr>');
-							d.writeln('<td width="25"><?php print we_html_tools::getPixel(25, 2) ?></td>');
-							d.writeln('<td><?php print we_html_tools::getPixel(200, 2) ?></td></tr>');
-						}
-						d.writeln('</table></body>');
-						d.close();
+				for (i = 0; i < entries.length; i++) {
+					d.writeln('<tr>');
+					d.writeln('<td class="selector" align="center">');
+					var link = '<a title="' + entries[i].text + '" href="javascript://"';
+					if (entries[i].isFolder) {
+						link += ' onDblClick="this.blur();top.wasdblclick=1;clearTimeout(tout);top.doClick(' + entries[i].ID + ',1);return true;"';
 					}
-					//-->
+					link += ' onClick="this.blur();tout=setTimeout(\'if(top.wasdblclick==0){top.doClick(' + entries[i].ID + ',0);}else{top.wasdblclick=0;}\',300);return true">' + "\n";
+					d.writeln(link + '<img src="<?php print ICON_DIR; ?>' + entries[i].icon + '" width="16" height="18" border="0"></a>');
+					d.writeln('</td>');
+					d.writeln('<td class="selector" title="' + entries[i].text + '">');
+					d.writeln(link + cutText(entries[i].text, 70) + '</a>');
+					d.writeln('</td></tr>');
+					d.writeln('<tr>');
+					d.writeln('<td width="25"><?php print we_html_tools::getPixel(25, 2) ?></td>');
+					d.writeln('<td><?php print we_html_tools::getPixel(200, 2) ?></td></tr>');
+				}
+				d.writeln('</table></body>');
+				d.close();
+			}
+			//-->
 		</script>
 		<?php
 	}
@@ -503,7 +502,7 @@ function clearEntries(){
 	function printFramesetJSFunctionAddEntries(){
 		$ret = '';
 		while($this->next_record()){
-			$ret.= 'addEntry(' . $this->f("ID") . ',"' . $this->f("Icon") . '","' . addcslashes($this->f("Text"), '"') . '",' . ($this->f("IsFolder") | 0) . ',"' . addcslashes($this->f("Path"), '"') . '");';
+			$ret.= 'addEntry(' . $this->f('ID') . ',"' . $this->f('Icon') . '","' . addcslashes($this->f('Text'), '"') . '",' . ($this->f('IsFolder') | 0) . ',"' . addcslashes($this->f('Path'), '"') . '");';
 		}
 		return we_html_element::jsElement($ret);
 	}
@@ -639,13 +638,11 @@ function selectIt(){
 	function printHeaderJS(){
 		return we_button::create_state_changer(false) . '
 function disableRootDirButs(){
-
 	root_dir_enabled = switch_button_state("root_dir", "root_dir_enabled", "disabled");
 	btn_fs_back_enabled = switch_button_state("btn_fs_back", "back_enabled", "disabled", "image");
 	rootDirButsState = 0;
 }
 function enableRootDirButs(){
-
 	root_dir_enabled = switch_button_state("root_dir", "root_dir_enabled", "enabled");
 	btn_fs_back_enabled = switch_button_state("btn_fs_back", "back_enabled", "enabled", "image");
 	rootDirButsState = 1;
@@ -665,7 +662,7 @@ function enableRootDirButs(){
 top.clearEntries();' .
 				$this->printCmdAddEntriesHTML() .
 				$this->printCMDWriteAndFillSelectorHTML() .
-				(intval($this->dir) == 0 ?
+				(($this->dir) == 0 ?
 					'top.fsheader.disableRootDirButs();' :
 					'top.fsheader.enableRootDirButs();') .
 				'top.currentPath = "' . $this->path . '";
@@ -684,16 +681,16 @@ top.parentID = "' . $this->values["ParentID"] . '";
 
 	function printCMDWriteAndFillSelectorHTML(){
 		$pid = $this->dir;
-		$out = "";
+		$out = '';
 		$c = 0;
 		while($pid != 0){
 			$c++;
-			$this->db->query("SELECT ID,Text,ParentID FROM " . $this->db->escape($this->table) . " WHERE ID=" . intval($pid));
+			$this->db->query('SELECT ID,Text,ParentID FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($pid));
 
 			if($this->db->next_record()){
-				$out = 'top.fsheader.addOption("' . $this->db->f("Text") . '",' . $this->db->f("ID") . ');' . $out;
+				$out = 'top.fsheader.addOption("' . $this->db->f('Text') . '",' . $this->db->f('ID') . ');' . $out;
 			}
-			$pid = $this->db->f("ParentID");
+			$pid = $this->db->f('ParentID');
 			if($c > 500){
 				$pid = 0;
 			}

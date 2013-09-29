@@ -73,8 +73,8 @@ class we_customer_settings{
 	);
 	public $FunctionTable = array(
 		'FIRSTCHAR' => 'UPPER(SUBSTRING(%s,1,1))',
-		/*'ALPH2' => 'UPPER(SUBSTRING(%s,1,2))',
-		'ALPH3' => 'UPPER(SUBSTRING(%s,1,3))',*/
+		/* 'ALPH2' => 'UPPER(SUBSTRING(%s,1,2))',
+		  'ALPH3' => 'UPPER(SUBSTRING(%s,1,3))', */
 		'MINUTE' => 'DATE_FORMAT(%s,\'%%i\')',
 		'HOUR' => 'DATE_FORMAT(%s,\'%%H\')',
 		'DAY' => 'DAYOFMONTH(%s)',
@@ -89,8 +89,8 @@ class we_customer_settings{
 	);
 	private $TypeFunction = array(
 		'FIRSTCHAR' => 'input,select,textarea,password',
-		/*'ALPH2' => 'input,select,textarea,password',
-		'ALPH3' => 'input,select,textarea,password',*/
+		/* 'ALPH2' => 'input,select,textarea,password',
+		  'ALPH3' => 'input,select,textarea,password', */
 		'MINUTE' => 'date',
 		'HOUR' => 'date',
 		'DAY' => 'date',
@@ -111,11 +111,11 @@ class we_customer_settings{
 		'procedure', 'for', 'update', 'lock', 'in', 'share', 'mode', 'insert', 'alter', 'grant', 'option', 'to', 'require',
 		'none', 'revoke', 'privileges', 'password', 'low_priority', 'delayed', 'ignore', 'values', 'on', 'duplicate',
 		'key', 'set', 'enum', 'default', 'where', 'group', 'by', 'order', 'add', 'column', 'table', 'index', 'constraint', 'primary',
-		'unique', 'foreign', 'change', 'modify', 'drop', 'disable', 'enable', 'charachter', 'collate', 'first', 'rename',
+		'unique', 'foreign', 'change', 'modify', 'drop', 'disable', 'enable', 'character', 'collate', 'first', 'rename',
 		'fulltext', 'quick', 'using', 'truncate',
 		'id', 'username', 'isfolder', 'icon', 'parentid', 'membersince', 'lastlogin', 'lastaccess', 'path', 'text', 'forename', 'surname', 'logindenied', 'autologin', 'autologindenied'
 	);
-	public $treeTextFormat = '#Text';
+	public $treeTextFormatSQL = '';
 	public $formatFields = array();
 
 	function __construct(){
@@ -197,16 +197,16 @@ class we_customer_settings{
 				$this->Prefs[$k] = $v;
 			}
 		}
-		$this->formatFields = array();
-		$this->treeTextFormat = $this->Prefs['treetext_format'];
+
+		$this->treeTextFormatSQL = 'COALESCE(NULLIF(TRIM(CONCAT("' . $this->Prefs['treetext_format'] . '")),""),Text)';
 		$field_names = $this->customer->getFieldsDbProperties();
 		$field_names = array_keys($field_names);
 
 		foreach($field_names as $fieldname){
-			if(preg_match('|#' . $fieldname . '|', $this->treeTextFormat)){
+			if(strpos($this->treeTextFormatSQL, '#' . $fieldname)!==false){
 				$this->formatFields[] = $fieldname;
 			}
-			$this->treeTextFormat = str_replace('#' . $fieldname, '".$ttrow["' . $fieldname . '"]."', $this->treeTextFormat);
+			$this->treeTextFormatSQL = str_replace('#' . $fieldname, '",`' . $fieldname . '`,"', $this->treeTextFormatSQL);
 		}
 
 		if($modified){

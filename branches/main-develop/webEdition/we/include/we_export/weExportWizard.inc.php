@@ -639,7 +639,7 @@ function setState(a) {
 
 		$parts[] = array("headline" => g_l('export', "[handle_doctype_options]"), "html" => $formattable->getHtml(), "space" => $_space);
 
-		$parts[] = array("headline" => g_l('export', "[export_depth]"), "html" => we_html_element::htmlLabel(null, g_l('export', "[to_level]")) . we_html_tools::getPixel(5, 5) . we_html_tools::htmlTextInput("export_depth", 10, $export_depth, "", "", "text", 50), "space" => $_space);
+		$parts[] = array("headline" => g_l('export', "[export_depth]"), "html" => we_html_element::htmlLabel(array(), g_l('export', "[to_level]")) . we_html_tools::getPixel(5, 5) . we_html_tools::htmlTextInput("export_depth", 10, $export_depth, "", "", "text", 50), "space" => $_space);
 
 		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				we_html_element::htmlHead(STYLESHEET . $js) .

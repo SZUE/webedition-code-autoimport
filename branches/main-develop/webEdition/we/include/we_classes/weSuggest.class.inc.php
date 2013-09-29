@@ -787,37 +787,37 @@ function weInputInArray(arr, val) {
 
 {$this->addJS}
 ");
-/*******************************************************
-var weShowDebug = true;
-var debugsizeW=145;
-var debugsizeH='100%';
-function debug(text){
-}
-function doDebugResizeW(){
-	if(debugsizeW<600) {
-		debugsize=600;
-		document.getElementById('DebugResizeW').innerHTML='&lt;';
-	} else {
-		debugsize=145;
-		document.getElementById('DebugResizeW').innerHTML='&gt;';
-	}
-	document.getElementById('damd').style.width=debugsize;
-}
-function doDebugResizeH(){
-	if(debugsizeH=='30px') {
-		debugsizeH='100%';
-		document.getElementById('DebugResizeH').innerHTML='A';
-	} else {
-		debugsizeH='30px';
-		document.getElementById('DebugResizeH').innerHTML='V';
-	}
-	document.getElementById('damd').style.height=debugsizeH;
-}") . "
-<div style='display:none; position:absolute; top:0px; width:145px; height:100%; background:yellow; border: 1px solid red; color:red; z-index:10000' id='damd'>
-	<div align='center'><button onclick='document.getElementById(\"debug\").innerHTML=\"\"'>clear</button><button id='DebugResizeW' onclick='doDebugResizeW()'>&gt;</button><button id='DebugResizeH' onclick='doDebugResizeH()'>A</button></div><hr>
-	<div id='debug'></div>
-</div>
-	";*/
+		/*		 * *****************************************************
+		  var weShowDebug = true;
+		  var debugsizeW=145;
+		  var debugsizeH='100%';
+		  function debug(text){
+		  }
+		  function doDebugResizeW(){
+		  if(debugsizeW<600) {
+		  debugsize=600;
+		  document.getElementById('DebugResizeW').innerHTML='&lt;';
+		  } else {
+		  debugsize=145;
+		  document.getElementById('DebugResizeW').innerHTML='&gt;';
+		  }
+		  document.getElementById('damd').style.width=debugsize;
+		  }
+		  function doDebugResizeH(){
+		  if(debugsizeH=='30px') {
+		  debugsizeH='100%';
+		  document.getElementById('DebugResizeH').innerHTML='A';
+		  } else {
+		  debugsizeH='30px';
+		  document.getElementById('DebugResizeH').innerHTML='V';
+		  }
+		  document.getElementById('damd').style.height=debugsizeH;
+		  }") . "
+		  <div style='display:none; position:absolute; top:0px; width:145px; height:100%; background:yellow; border: 1px solid red; color:red; z-index:10000' id='damd'>
+		  <div align='center'><button onclick='document.getElementById(\"debug\").innerHTML=\"\"'>clear</button><button id='DebugResizeW' onclick='doDebugResizeW()'>&gt;</button><button id='DebugResizeH' onclick='doDebugResizeH()'>A</button></div><hr>
+		  <div id='debug'></div>
+		  </div>
+		  "; */
 	}
 
 	/**
@@ -881,7 +881,7 @@ function doDebugResizeH(){
 	div.yui-ac-bd ul, div.yui-ac-bd ui{ margin:-7px; margin-top:-5px; padding:0px; list-style:none; font-family: Verdana, Arial, sans-serif; font-size: 10px;}
 	div.yuiAcLayer { margin:0px; padding:0px;}";
 		}
-		return empty($inputfields) ? "" : we_html_element::cssElement($out, true);
+		return empty($inputfields) ? "" : we_html_element::cssElement($out, array('scoped' => 'scoped'));
 	}
 
 	function getHTML(){

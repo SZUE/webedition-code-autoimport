@@ -202,9 +202,9 @@ function entry(ID,icon,text,isFolder,path){
 
 	function printFramesetJSFunctionAddEntry(){
 		return we_html_element::jsElement('
-		function addEntry(ID,icon,text,isFolder,path){
-		entries[entries.length] = new entry(ID,icon,text,isFolder,path);
-		}');
+function addEntry(ID,icon,text,isFolder,path){
+	entries[entries.length] = new entry(ID,icon,text,isFolder,path);
+}');
 	}
 
 	function printFramesetJSFunctionAddEntries(){
