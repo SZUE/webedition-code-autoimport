@@ -25,6 +25,7 @@
 function we_tag_ifClient($attribs){
 	$version = weTag_getAttribute('version', $attribs);
 	$browser = weTag_getAttribute('browser', $attribs);
+	$operator = weTag_getAttribute('operator', $attribs);
 	$system = weTag_getAttribute('system', $attribs);
 
 	if($version){
@@ -43,21 +44,43 @@ function we_tag_ifClient($attribs){
 			$foo_br = true;
 		} elseif(!$foo_br && $_browserOfClient == 'appleWebKit' && in_array('safari', $bro)){
 			$foo_br = true;
+		} else {
+			$foo_br = false;
 		}
-	} else{
+	} else {
 		$foo_br = true;
 	}
 
 	$brv = $br->getBrowserVersion();
-	$foo_v = true;
-	$ver = str_replace(array('up', 'down', 'eq'), array('>=', '<', '=='), $version);
+	switch($operator){
+		case 'equal':
+			$foo_v = (floor($brv) == floor($version));
+			break;
+		case 'less':
+			$foo_v = ($brv < $version);
+			break;
+		case 'less|equal':
+			$foo_v = ($brv <= $version);
+			break;
+		case 'greater':
+			$foo_v = ($brv > $version);
+			break;
+		case 'greater|equal':
+			$foo_v = ($brv >= $version);
+			break;
+		default://old behaviour
+			$foo_v = true;
 
-	if(strpos($ver, '==') !== false){
-		eval('$foo_v = ('.floor($brv) . $ver . ');');
-	} else{
-		eval('$foo_v = ('.$brv . $ver . ');');
+			$ver = str_replace(array('up', 'down', 'eq'), array('>=', '<', '=='), $version);
+
+			if(strpos($ver, '==') !== false){
+				eval('$foo_v = (' . floor($brv) . $ver . ');');
+			} else {
+				eval('$foo_v = (' . $brv . $ver . ');');
+			}
+			break;
 	}
-	$foo_sys = ($system?in_array($br->getSystem(), explode(',', $system)):true);
+	$foo_sys = ($system ? in_array($br->getSystem(), explode(',', $system)) : true);
 
 	return $foo_br && $foo_v && $foo_sys;
 }
