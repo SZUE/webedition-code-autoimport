@@ -140,8 +140,8 @@ function we_tag_href($attribs){
 	$trashbut2 = we_button::create_button(we_button::WE_IMAGE_BUTTON_IDENTIFY . 'btn_function_trash', "javascript:document.we_form.elements['" . $ext_elem_Name . "'].value = ''; _EditorFrame.setEditorIsHot(true);", true);
 	if($type == we_base_link::TYPE_ALL || $type == we_base_link::TYPE_INT){
 		$yuiSuggest = &weSuggest::getInstance();
-		$yuiSuggest->setAcId($name . weFile::getUniqueId());
-		$yuiSuggest->setContentType('folder,text/webedition');
+		$yuiSuggest->setAcId($name . weFile::getUniqueId(), $rootdir);
+		$yuiSuggest->setContentType('folder,text/webedition,image/*,text/js,text/css,text/html,application/*,video/quicktime');
 		$yuiSuggest->setInput($intPath_elem_Name, $intPath);
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(1);

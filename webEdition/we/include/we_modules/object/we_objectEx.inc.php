@@ -117,7 +117,7 @@ class we_objectEx extends we_object{
 					continue;
 
 				$fieldtype = $this->getFieldType($arr[0]);
-				$len = (isset($value['length']) ? ($fieldtype == 'string' ? ($value['length'] > 1023 ? 1023 : $value['length']) : $value['length']) : 0);
+				$len = (isset($value['length']) ? $value['length'] : 0);
 				$type = $this->switchtypes2($arr[0], $len);
 				$isObject = ($arr[0] == 'object');
 
