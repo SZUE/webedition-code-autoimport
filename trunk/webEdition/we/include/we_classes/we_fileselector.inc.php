@@ -65,8 +65,7 @@ class we_fileselector{
 	function __construct($id, $table = FILE_TABLE, $JSIDName = '', $JSTextName = '', $JSCommand = '', $order = '', $sessionID = '', $rootDirID = 0, $filter = ''){
 
 		if(!isset($_SESSION['weS']['we_fs_lastDir'])){
-			$_SESSION['weS']['we_fs_lastDir'] = array();
-			$_SESSION['weS']['we_fs_lastDir'][$table] = 0;
+			$_SESSION['weS']['we_fs_lastDir'] = array($table => 0);
 		}
 
 		$this->order = ($order ? $order : $this->order);
@@ -443,34 +442,34 @@ function queryString(what,id,o){
 	function printFramesetJSFunctioWriteBody(){
 		?><script type="text/javascript"><!--
 					function writeBody(d) {
-						d.open();
+				d.open();
 		<?php
 		echo self::makeWriteDoc(we_html_tools::getHtmlTop('', '', '4Trans', true) . STYLESHEET_SCRIPT . '
 </head>
 <body bgcolor="white" LINK="#000000" ALINK="#000000" VLINK="#000000" leftmargin="0" marginwidth="0" topmargin="0" marginheight="0">
 <table border="0" cellpadding="0" cellspacing="0">');
 		?>
-						for (i = 0; i < entries.length; i++) {
-							d.writeln('<tr>');
-							d.writeln('<td class="selector" align="center">');
-							var link = '<a title="' + entries[i].text + '" href="javascript://"';
-							if (entries[i].isFolder) {
-								link += ' onDblClick="this.blur();top.wasdblclick=1;clearTimeout(tout);top.doClick(' + entries[i].ID + ',1);return true;"';
-							}
-							link += ' onClick="this.blur();tout=setTimeout(\'if(top.wasdblclick==0){top.doClick(' + entries[i].ID + ',0);}else{top.wasdblclick=0;}\',300);return true">' + "\n";
-							d.writeln(link + '<img src="<?php print ICON_DIR; ?>' + entries[i].icon + '" width="16" height="18" border="0"></a>');
-							d.writeln('</td>');
-							d.writeln('<td class="selector" title="' + entries[i].text + '">');
-							d.writeln(link + cutText(entries[i].text, 70) + '</a>');
-							d.writeln('</td></tr>');
-							d.writeln('<tr>');
-							d.writeln('<td width="25"><?php print we_html_tools::getPixel(25, 2) ?></td>');
-							d.writeln('<td><?php print we_html_tools::getPixel(200, 2) ?></td></tr>');
-						}
-						d.writeln('</table></body>');
-						d.close();
+				for (i = 0; i < entries.length; i++) {
+					d.writeln('<tr>');
+					d.writeln('<td class="selector" align="center">');
+					var link = '<a title="' + entries[i].text + '" href="javascript://"';
+					if (entries[i].isFolder) {
+						link += ' onDblClick="this.blur();top.wasdblclick=1;clearTimeout(tout);top.doClick(' + entries[i].ID + ',1);return true;"';
 					}
-					//-->
+					link += ' onClick="this.blur();tout=setTimeout(\'if(top.wasdblclick==0){top.doClick(' + entries[i].ID + ',0);}else{top.wasdblclick=0;}\',300);return true">' + "\n";
+					d.writeln(link + '<img src="<?php print ICON_DIR; ?>' + entries[i].icon + '" width="16" height="18" border="0"></a>');
+					d.writeln('</td>');
+					d.writeln('<td class="selector" title="' + entries[i].text + '">');
+					d.writeln(link + cutText(entries[i].text, 70) + '</a>');
+					d.writeln('</td></tr>');
+					d.writeln('<tr>');
+					d.writeln('<td width="25"><?php print we_html_tools::getPixel(25, 2) ?></td>');
+					d.writeln('<td><?php print we_html_tools::getPixel(200, 2) ?></td></tr>');
+				}
+				d.writeln('</table></body>');
+				d.close();
+			}
+			//-->
 		</script>
 		<?php
 	}

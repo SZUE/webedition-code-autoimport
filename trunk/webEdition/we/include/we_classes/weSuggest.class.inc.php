@@ -191,15 +191,7 @@ class weSuggest{
 			}
 HTS;
 
-		$oACDSInit = "";
-		$oAutoCompInit = "";
-		$oAutoCompRes = "";
-		$declare = "";
-		$onSelect = "";
-		$onBlur = "";
-		$onFocus = "";
-		$doAjax = "";
-		$weAcFields = "";
+		$oACDSInit = $oAutoCompInit = $oAutoCompRes = $declare = $onSelect = $onBlur = $onFocus = $doAjax = $weAcFields = '';
 		$postData = 'protocol=text&cmd=SelectorGetSelectedId';
 		// loop fields
 		for($i = 0; $i < count($this->inputfields); $i++){
@@ -552,7 +544,15 @@ HTS;
 				oAutoComp_' . $i . '.formatResult = function(oResultItem, sQuery) {
 					var sKey = oResultItem[0];
 					var nQuantity = oResultItem[1];
-					var sKeyQuery = sKey.substr(0, sQuery.length);
+					var sKeyQuery = sKey.substring(0, sQuery.length);
+					if(sQuery.length>10){
+						var path=sKeyQuery.split("/");
+						var pPart="/"+path[path.length-1];
+						if(pPart.length>' . intval($this->width / 15) . '){
+							pPart=pPart.substring(pPart.length-10,pPart.length);
+						}
+						sKeyQuery ="&hellip;"+pPart;
+					}
 					var sKeyRemainder = sKey.substr(sQuery.length);
 					oAutoCompRes_' . $i . '[sKeyQuery] = oResultItem[2];
 					var aMarkup = ["<div id=\'ysearchresult\'><div class=\'ysearchquery\'>",
@@ -1179,7 +1179,7 @@ function doDebugResizeH(){
 	 * @param unknown_type $checkFieldsValue
 	 * @param unknown_type $containerwidth
 	 */
-	function setAutocompleteField($inputFieldId, $containerFieldId, $table, $contentType = "", $selector = "", $maxResults = 10, $queryDelay = 0, $layerId = null, $setOnSelectFields = null, $checkFieldsValue = true, $containerwidth = "100%", $inputMayBeEmpty = 'true', $rootDir = ''){
+	function setAutocompleteField($inputFieldId, $containerFieldId, $table, $contentType = '', $selector = '', $maxResults = 10, $queryDelay = 0, $layerId = null, $setOnSelectFields = null, $checkFieldsValue = true, $containerwidth = "100%", $inputMayBeEmpty = 'true', $rootDir = ''){
 		$this->inputfields[] = $inputFieldId;
 		$this->containerfields[] = $containerFieldId;
 		$this->tables[] = $table;
