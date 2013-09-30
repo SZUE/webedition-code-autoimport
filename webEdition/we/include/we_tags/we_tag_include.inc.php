@@ -22,9 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_parse_tag_include($attribs){
-	return '<?php eval(' . we_tag_tagParser::printTag('include', $attribs) . ');?>';
-}
 
 function we_setBackVar($we_unique){
 	$GLOBALS['we']['backVars'][$we_unique] = array(
@@ -85,7 +82,6 @@ function we_tag_include($attribs){
 	$id = weTag_getAttribute('id', $attribs);
 	$path = weTag_getAttribute('path', $attribs);
 	$name = weTag_getAttribute('name', $attribs);
-	$rootdir = weTag_getAttribute('rootdir', $attribs, '/');
 	$gethttp = weTag_getAttribute('gethttp', $attribs, false, true);
 	$seeMode = weTag_getAttribute((isset($attribs['seem']) ? 'seem' : 'seeMode'), $attribs, true, true);
 	$isDynamic = true;
@@ -96,21 +92,25 @@ function we_tag_include($attribs){
 		return '';
 	}
 
-	if(we_tag('ifEditmode', array())){
+	if(we_tag('ifEditmode')){
+
 		if($name && !($id || $path)){
 			$type = weTag_getAttribute('kind', $attribs);
 			$style = 'color: white;font-size:' . ((we_base_browserDetect::isMAC()) ? '11px' : ((we_base_browserDetect::isUNIX()) ? '13px' : '12px')) . ';font-family:' . g_l('css', '[font_family]') . ';';
 			$_name = weTag_getAttribute('_name_orig', $attribs);
-			echo '<table style="background: #006DB8;border:0px;padding:0px;"><tr><td style="padding: 3px;'.$style.'">' . '&nbsp;' . g_l('tags', '[include_file]') . '</td></tr><tr><td>' .
-			we_tag('href', array('name' => $_name, 'rootdir' => $rootdir, 'type' => $type)) .
+			$description = weTag_getAttribute('description', $attribs, g_l('tags', '[include_file]'));
+
+			echo '<table style="background: #006DB8;border:0px;padding:0px;"><tr><td style="padding: 3px;' . $style . '">' . '&nbsp;' . $description . '</td></tr><tr><td>' .
+			we_tag('href', array('name' => $_name, 'rootdir' => weTag_getAttribute('rootdir', $attribs, '/'), 'startid' => weTag_getAttribute('startid', $attribs, 0), 'type' => $type)) .
 			'</td></tr></table>';
 			return '';
 		}
 	} else {//notEditmode
+
 		if($name && !($id || $path)){
 			$db = $GLOBALS['DB_WE'];
 			$_name = weTag_getAttribute('_name_orig', $attribs);
-			$path = we_tag('href', array('name' => $_name, 'rootdir' => $rootdir, 'hidedirindex' => 'false'));
+			$path = we_tag('href', array('name' => $_name, 'hidedirindex' => 'false'));
 			$nint = $name . we_base_link::MAGIC_INT_LINK;
 			$int = ($GLOBALS['we_doc']->getElement($nint) == '') ? 0 : $GLOBALS['we_doc']->getElement($nint);
 			$intID = $GLOBALS['we_doc']->getElement($nint . 'ID');
@@ -145,6 +145,7 @@ function we_tag_include($attribs){
 		} else {
 			$realPath = $_SERVER['DOCUMENT_ROOT'] . $realPath;
 			if(!file_exists($realPath)){
+
 				return '';
 			}
 			//check Customer-Filter on static documents
@@ -159,35 +160,38 @@ function we_tag_include($attribs){
 					}
 				}
 			}
-			$content = file_get_contents($realPath);
 		}
 
 		if(isset($GLOBALS['we']['backVars']) && count($GLOBALS['we']['backVars'])){
 			end($GLOBALS['we']['backVars']);
 			$we_unique = key($GLOBALS['we']['backVars']) + 1;
+//create empty array
+			$GLOBALS['we']['backVars'][$we_unique] = array();
 		} else {
 			$we_unique = 1;
-			$GLOBALS['we']['backVars'] = array();
+			$GLOBALS['we']['backVars'] = array(
+				$we_unique => array()
+			);
 		}
-//create empty array
-		$GLOBALS['we']['backVars'][$we_unique] = array();
 
-
-		if(we_tag('ifSeeMode')){
-			if($seeMode){ //	only show link to seeMode, when id is given
-				$content .= ($id ?
+		we_setBackVar($we_unique);
+		ob_start();
+		if(isset($content)){
+			eval('?>' . $content);
+		} else {
+			include($realPath);
+		}
+		$content = ob_get_contents();
+		ob_end_clean();
+		we_resetBackVar($we_unique);
+		return (we_tag('ifSeeMode') ?
+				preg_replace('|< */? *form[^>]*>|i', '', $content . ($seeMode ? //	only show link to seeMode, when id is given
+						($id ?
 						'<a href="' . $id . '" seem="include"></a>' :
 						($path ? '<a href="' . path_to_id($path) . '" seem="include"></a>' :
-							''));
-			}
-
-			$content = preg_replace('|< */? *form[^>]*>|i', '', $content);
-		}
-
-//FIXME: change eval to simple include, if not http; or move http-include to tmp-folder & include
-		return 'we_setBackVar(' . $we_unique . ');' .
-			'eval(\'?>' . str_replace('\'', "\'", $content) . '\');' .
-			'we_resetBackVar(' . $we_unique . ');';
+								'')) :
+						'')) :
+				$content);
 	}
 	return '';
 }
