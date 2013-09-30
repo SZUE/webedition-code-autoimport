@@ -91,7 +91,7 @@ function we_tag_include($attribs){
 		return '';
 	}
 
-	if(we_tag('ifEditmode', array())){
+	if(we_tag('ifEditmode')){
 		if($name && !($id || $path)){
 			$type = weTag_getAttribute('kind', $attribs);
 			$style = 'color: white;font-size:' . ((we_base_browserDetect::isMAC()) ? '11px' : ((we_base_browserDetect::isUNIX()) ? '13px' : '12px')) . ';font-family:' . g_l('css', '[font_family]') . ';';

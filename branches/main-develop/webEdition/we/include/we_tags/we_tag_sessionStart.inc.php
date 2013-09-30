@@ -150,7 +150,7 @@ function wetagsessionStartdoLogin($persistentlogins, &$SessionAutologin){
 			return false;
 		}
 		$u = getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE Password!="" AND LoginDenied=0 AND Username="' . $GLOBALS['DB_WE']->escape(strtolower($_REQUEST['s']['Username'])) . '"', $GLOBALS['DB_WE'], MYSQLI_ASSOC);
-		if(!empty($u) && ($_REQUEST['s']['Password'] === $u['Password']) || (strpos($u['Password'], '$2y$') === 0 && we_user::comparePasswords(2, $_REQUEST['s']['Username'], $u['Password'], $_REQUEST['s']['Password']))){
+		if(!empty($u) && ($_REQUEST['s']['Password'] === $u['Password']) || (strpos($u['Password'], '$2y$') === 0 && we_user::comparePasswords(we_user::SALT_CRYPT, $_REQUEST['s']['Username'], $u['Password'], $_REQUEST['s']['Password']))){
 			$_SESSION['webuser'] = $u;
 			$_SESSION['webuser']['registered'] = true;
 			$GLOBALS['DB_WE']->query('UPDATE ' . CUSTOMER_TABLE . ' SET LastLogin=UNIX_TIMESTAMP() WHERE ID=' . intval($_SESSION['webuser']['ID']));

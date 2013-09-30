@@ -544,7 +544,15 @@ HTS;
 				oAutoComp_' . $i . '.formatResult = function(oResultItem, sQuery) {
 					var sKey = oResultItem[0];
 					var nQuantity = oResultItem[1];
-					var sKeyQuery = sKey.substr(0, sQuery.length);
+					var sKeyQuery = sKey.substring(0, sQuery.length);
+					if(sQuery.length>10){
+						var path=sKeyQuery.split("/");
+						var pPart="/"+path[path.length-1];
+						if(pPart.length>' . intval($this->width / 15) . '){
+							pPart=pPart.substring(pPart.length-10,pPart.length);
+						}
+						sKeyQuery ="&hellip;"+pPart;
+					}
 					var sKeyRemainder = sKey.substr(sQuery.length);
 					oAutoCompRes_' . $i . '[sKeyQuery] = oResultItem[2];
 					var aMarkup = ["<div id=\'ysearchresult\'><div class=\'ysearchquery\'>",
