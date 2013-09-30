@@ -22,6 +22,9 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+function we_parse_tag_include($attribs){
+	return '<?php eval(' . we_tag_tagParser::printTag('include', $attribs) . ');?>';
+}
 
 function we_setBackVar($we_unique){
 	$GLOBALS['we']['backVars'][$we_unique] = array(
@@ -57,8 +60,7 @@ function we_setBackVar($we_unique){
 	if(isset($GLOBALS['postTagName'])){
 		unset($GLOBALS['postTagName']);
 	}
-	unset($_REQUEST['pv_id']);
-	unset($_REQUEST['pv_tid']);
+	unset($_REQUEST['pv_id'], $_REQUEST['pv_tid']);
 }
 
 function we_resetBackVar($we_unique){
@@ -106,7 +108,6 @@ function we_tag_include($attribs){
 			return '';
 		}
 	} else {//notEditmode
-
 		if($name && !($id || $path)){
 			$db = $GLOBALS['DB_WE'];
 			$_name = weTag_getAttribute('_name_orig', $attribs);
@@ -139,9 +140,10 @@ function we_tag_include($attribs){
 			return '';
 		}
 
+		$isSeemode = (we_tag('ifSeeMode'));
 		// check early if there is a document - if not the rest is never needed
 		if($gethttp){
-			$content = getHTTP(getServerUrl(true), $realPath);
+			$content = ($isSeemode ? getHTTP(getServerUrl(true), $realPath) : 'echo getHTTP(getServerUrl(true), \'' . $realPath . '\');');
 		} else {
 			$realPath = $_SERVER['DOCUMENT_ROOT'] . $realPath;
 			if(!file_exists($realPath)){
@@ -160,12 +162,12 @@ function we_tag_include($attribs){
 					}
 				}
 			}
+			$content = ($isSeemode ? file_get_contents($realPath) : 'include(\'' . $realPath . '\');');
 		}
 
 		if(isset($GLOBALS['we']['backVars']) && count($GLOBALS['we']['backVars'])){
 			end($GLOBALS['we']['backVars']);
 			$we_unique = key($GLOBALS['we']['backVars']) + 1;
-//create empty array
 			$GLOBALS['we']['backVars'][$we_unique] = array();
 		} else {
 			$we_unique = 1;
@@ -174,24 +176,19 @@ function we_tag_include($attribs){
 			);
 		}
 
-		we_setBackVar($we_unique);
-		ob_start();
-		if(isset($content)){
-			eval('?>' . $content);
-		} else {
-			include($realPath);
-		}
-		$content = ob_get_contents();
-		ob_end_clean();
-		we_resetBackVar($we_unique);
-		return (we_tag('ifSeeMode') ?
-				preg_replace('|< */? *form[^>]*>|i', '', $content . ($seeMode ? //	only show link to seeMode, when id is given
-						($id ?
+		return 'we_setBackVar(' . $we_unique . ');' .
+			($isSeemode ? //extra stuff in seemode
+				'eval(\'?>' . addcslashes(preg_replace('|< */? *form[^>]*>|i', '', $content), '\'') .
+				($seeMode ? //	only show link to seeMode, when id is given
+					($id ?
 						'<a href="' . $id . '" seem="include"></a>' :
 						($path ? '<a href="' . path_to_id($path) . '" seem="include"></a>' :
-								'')) :
-						'')) :
-				$content);
+							'')) : '')
+				. '\');' :
+				//no seemode
+				$content
+			) .
+			'we_resetBackVar(' . $we_unique . ');';
 	}
 	return '';
 }
