@@ -65,8 +65,7 @@ class we_fileselector{
 	function __construct($id, $table = FILE_TABLE, $JSIDName = '', $JSTextName = '', $JSCommand = '', $order = '', $sessionID = '', $rootDirID = 0, $filter = ''){
 
 		if(!isset($_SESSION['weS']['we_fs_lastDir'])){
-			$_SESSION['weS']['we_fs_lastDir'] = array();
-			$_SESSION['weS']['we_fs_lastDir'][$table] = 0;
+			$_SESSION['weS']['we_fs_lastDir'] = array($table => 0);
 		}
 
 		$this->order = ($order ? $order : $this->order);

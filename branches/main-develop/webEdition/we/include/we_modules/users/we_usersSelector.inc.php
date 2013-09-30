@@ -24,7 +24,7 @@
  */
 class we_usersSelector extends we_multiSelector{
 
-	function __construct($id, $table = FILE_TABLE, $JSIDName = "", $JSTextName = "", $JSCommand = "", $order = "", $sessionID = "", $rootDirID = 0, $filter = "", $multiple = true){
+	function __construct($id, $table = USER_TABLE, $JSIDName = '', $JSTextName = '', $JSCommand = '', $order = '', $sessionID = '', $rootDirID = 0, $filter = '', $multiple = true){
 
 		parent::__construct($id, $table, $JSIDName, $JSTextName, $JSCommand, $order, $sessionID, $rootDirID, $multiple, $filter);
 		$this->title = g_l('fileselector', '[userSelector][title]');
@@ -36,21 +36,22 @@ class we_usersSelector extends we_multiSelector{
 	function setDefaultDirAndID($setLastDir){
 		$this->dir = $setLastDir ? (isset($_SESSION['weS']['we_fs_lastDir'][$this->table]) ? intval($_SESSION['weS']['we_fs_lastDir'][$this->table]) : 0 ) : 0;
 		$foo = getHash('SELECT IsFolder,Text,Path FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->dir), $this->db);
-		if(isset($foo["IsFolder"]) && $foo["IsFolder"] && $this->dir){
-			$this->values = array("ParentID" => $this->dir,
-				"Text" => $foo["Text"],
-				"Path" => $foo["Path"],
-				"IsFolder" => 1);
-			$this->path = $foo["Path"];
+		if(isset($foo['IsFolder']) && $foo['IsFolder'] && $this->dir){
+			$this->values = array(
+				'ParentID' => $this->dir,
+				'Text' => $foo['Text'],
+				'Path' => $foo['Path'],
+				'IsFolder' => 1);
+			$this->path = $foo['Path'];
 			$this->id = $this->dir;
-		} else{
+		} else {
 			$this->dir = 0;
 			$this->values = array(
-				"ParentID" => 0,
-				"Text" => "",
-				"Path" => "",
-				"IsFolder" => 1);
-			$this->path = "";
+				'ParentID' => 0,
+				'Text' => '',
+				'Path' => '',
+				'IsFolder' => 1);
+			$this->path = '';
 			$this->id = 0;
 		}
 	}
@@ -79,31 +80,31 @@ class we_usersSelector extends we_multiSelector{
 	}
 
 	function getFsQueryString($what){
-		return $_SERVER["SCRIPT_NAME"] . "?what=$what&table=" . $this->table . "&id=" . $this->id . "&order=" . $this->order . "&filter=" . $this->filter;
+		return $_SERVER['SCRIPT_NAME'] . "?what=$what&table=" . $this->table . "&id=" . $this->id . "&order=" . $this->order . "&filter=" . $this->filter;
 	}
 
 	function query(){
 		switch($this->filter){
-			case "group":
-				$q = " AND IsFolder=1 ";
+			case 'group':
+				$q = ' AND IsFolder=1 ';
 				break;
-			case "noalias":
-				$q = " AND Alias='0' ";
+			case 'noalias':
+				$q = ' AND Alias=0 ';
 				break;
 			default:
-				$q = "";
+				$q = '';
 		}
 		//if(!$_SESSION["perms"]["ADMINISTRATOR"]){
-		//	$upid = f("SELECT ParentID FROM ".USER_TABLE." WHERE ID='".$_SESSION["user"]["ID"]."'","ParentID",$this->db);
-		//	if($upid) $upath = f("SELECT Path FROM ".USER_TABLE." WHERE ID='".$upid."'","Path",$this->db);
+		//	$upid = f("SELECT ParentID FROM ".$this->table." WHERE ID='".$_SESSION["user"]["ID"]."'","ParentID",$this->db);
+		//	if($upid) $upath = f("SELECT Path FROM ".$this->table." WHERE ID='".$upid."'","Path",$this->db);
 		//	else $upath = "/";
 		//}else{
-		$upath = "";
+		$upath = '';
 		//}
-		$this->db->query("SELECT " . $this->db->escape($this->fields) . " FROM " .
+		$this->db->query('SELECT ' . $this->db->escape($this->fields) . ' FROM ' .
 			$this->db->escape($this->table) .
-			" WHERE ParentID='" . $this->db->escape($this->dir) . "'" .
-			($upath ? " AND Path LIKE '" . $this->db->escape($upath) . "%' " : "") .
+			' WHERE ParentID=' . intval($this->dir) .
+			($upath ? ' AND Path LIKE "' . $this->db->escape($upath) . '%" ' : '') .
 			$q . ($this->order ? (' ORDER BY ' . $this->db->escape($this->order)) : ''));
 	}
 
@@ -111,50 +112,46 @@ class we_usersSelector extends we_multiSelector{
 		return we_html_element::jsElement('
 function queryString(what,id,o){
 	if(!o) o=top.order;
-	return \''.$_SERVER["SCRIPT_NAME"].'?what=\'+what+\'&table='.$this->table.'&id=\'+id+"&order="+o+"&filter='.$this->filter.'";
+	return \'' . $_SERVER["SCRIPT_NAME"] . '?what=\'+what+\'&table=' . $this->table . '&id=\'+id+"&order="+o+"&filter=' . $this->filter . '";
 }');
-
 	}
 
 	function printFramesetJSsetDir(){
 		return we_html_element::jsElement('
 function setDir(id){' .
-($this->filter == "user" ? '
+				($this->filter == "user" ? '
 	currentDir = id;
 	top.fscmd.location.replace(top.queryString(' . we_fileselector::CMD . ',id));' : '
 	top.fscmd.location.replace(top.queryString(' . we_multiSelector::SETDIR . ',id));'
-) . '
+				) . '
 }');
 	}
 
 	function printSetDirHTML(){
-		print '<script type="text/javascript"><!--
-top.clearEntries();
-' .
+		$js = 'top.clearEntries();' .
 			$this->printCmdAddEntriesHTML() .
 			$this->printCMDWriteAndFillSelectorHTML() .
 			'top.fsheader.' . (intval($this->dir) == intval($this->rootDirID) ? 'disable' : 'enable') . 'RootDirButs();';
 
 		if(permissionhandler::hasPerm("ADMINISTRATOR")){
 			$go = true;
-		} else{
-			$rootID = f("SELECT ParentID FROM " . USER_TABLE . " WHERE ID='" . $_SESSION["user"]["ID"] . "'", "ParentID", $this->db);
-			$rootPath = f("SELECT Path FROM " . USER_TABLE . " WHERE ID='" . $rootID . "'", "Path", $this->db);
-			$go = (f("SELECT 1 AS a FROM " . USER_TABLE . " WHERE ID='" . $this->dir . "' AND Path LIKE '" . $rootPath . "%'", 'a', $this->db) == '1');
+		} else {
+			$rootID = f('SELECT ParentID FROM ' . $this->table . ' WHERE ID=' . intval($_SESSION["user"]["ID"]), 'ParentID', $this->db);
+			$rootPath = f('SELECT Path FROM ' . $this->table . ' WHERE ID=' . intval($rootID), 'Path', $this->db);
+			$go = (f('SELECT 1 AS a FROM ' . $this->table . ' WHERE ID=' . intval($this->dir) . ' AND Path LIKE "' . $rootPath . '%"', 'a', $this->db) == '1');
 		}
 		if($go){
 			if($this->id == 0){
 				$this->path = '/';
 			}
-			print 'top.currentPath = "' . $this->path . '";
+			$js.= 'top.currentPath = "' . $this->path . '";
 top.currentID = "' . $this->id . '";
 top.fsfooter.document.we_form.fname.value = "' . $this->values["Text"] . '";';
 		}
 		$_SESSION['weS']['we_fs_lastDir'][$this->table] = $this->dir;
-		print 'top.currentDir = "' . $this->dir . '";
-top.parentID = "' . $this->values["ParentID"] . '";
-//-->
-</script>';
+		$js.= 'top.currentDir = "' . $this->dir . '";
+top.parentID = "' . $this->values["ParentID"] . '";';
+		echo we_html_element::jsElement($js);
 	}
 
 	function printFramesetSelectFileHTML(){
@@ -162,9 +159,9 @@ top.parentID = "' . $this->values["ParentID"] . '";
 function selectFile(id){
 	if(id){
 		e=top.getEntry(id);' .
-	($this->filter == "user" ? '
+				($this->filter == "user" ? '
 			if(!e.isFolder){' : ''
-	) . '
+				) . '
 				if( top.fsfooter.document.we_form.fname.value != e.text &&
 					top.fsfooter.document.we_form.fname.value.indexOf(e.text+",") == -1 &&
 					top.fsfooter.document.we_form.fname.value.indexOf(","+e.text+",") == -1 &&
@@ -177,9 +174,9 @@ function selectFile(id){
 				top.fsbody.document.getElementById("line_"+id).style.backgroundColor="#DFE9F5";
 				currentPath = e.path;
 				currentID = id;' .
-	($this->filter == "user" ? '
+				($this->filter == "user" ? '
 			}' : ''
-	) . '
+				) . '
 
 	}else{
 		top.fsfooter.document.we_form.fname.value = "";
@@ -227,14 +224,13 @@ function selectFile(id){
 
 	function printFooterJSDef(){
 		return we_html_element::jsElement("
-		function press_ok_button() {
-			if(document.we_form.fname.value==''&&top.currentType!='group'){
-				top.exit_close();
-			}else{
-				top.exit_open();
-			};
-		}
-		");
+function press_ok_button() {
+	if(document.we_form.fname.value==''&&top.currentType!='group'){
+		top.exit_close();
+	}else{
+		top.exit_open();
+	};
+}");
 	}
 
 }

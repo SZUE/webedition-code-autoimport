@@ -46,7 +46,7 @@ function we_tag_writeShopData($attribs){
 	$shopname = weTag_getAttribute('shopname', $attribs);
 	$shopname = $shopname ? $shopname : $name;
 	$pricename = weTag_getAttribute('pricename', $attribs);
-	$shipping = weTag_getAttribute('shipping', $attribs);
+	$shipping = floatval(str_replace(',', '.', weTag_getAttribute('shipping', $attribs)));
 	$shippingIsNet = weTag_getAttribute('shippingisnet', $attribs, false, true);
 	$shippingVatRate = weTag_getAttribute('shippingvatrate', $attribs);
 	$netprices = weTag_getAttribute('netprices', $attribs, true, true);
