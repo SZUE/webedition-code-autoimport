@@ -124,7 +124,8 @@ function we_tag_href($attribs){
 
 	$trashbut = we_button::create_button('image:btn_function_trash', "javascript:document.we_form.elements['" . $intID_elem_Name . "'].value = ''; document.we_form.elements['" . $intPath_elem_Name . "'].value = ''; _EditorFrame.setEditorIsHot(true);" . (($include || $reload) ? "setScrollTo(); top.we_cmd('reload_editpage');" : ''), true);
 	$span = '<span style="color: black;font-size:' . ((we_base_browserDetect::isMAC()) ? "11px" : ((we_base_browserDetect::isUNIX()) ? "13px" : "12px")) . ';font-family:' . g_l('css', '[font_family]') . ';">';
-	$attr = we_make_attribs($attribs, 'name,value,type,onkeydown,onKeyDown,_name_orig');
+	$attr = we_make_attribs($attribs, 'name,value,type,onkeydown,onKeyDown,_name_orig,size');
+	$size = 7 * intval(weTag_getAttribute('size', $attribs, 20));
 
 	$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['$intID_elem_Name'].value");
 	$wecmdenc2 = we_cmd_enc("document.forms['we_form'].elements['$intPath_elem_Name'].value");
@@ -148,7 +149,7 @@ function we_tag_href($attribs){
 		$yuiSuggest->setResult($intID_elem_Name, $intID);
 		$yuiSuggest->setSelector('Docselector');
 		$yuiSuggest->setTable(FILE_TABLE);
-		$yuiSuggest->setWidth(we_base_browserDetect::isFF() ? 136 : 151);
+		$yuiSuggest->setWidth($size);
 	}
 
 	return
@@ -164,7 +165,7 @@ function we_tag_href($attribs){
 		($type == we_base_link::TYPE_ALL || $type == we_base_link::TYPE_EXT ? '
 <tr>
 	<td class="weEditmodeStyle">' . ($type == we_base_link::TYPE_ALL ? we_forms::radiobutton(0, !$int, $int_elem_Name, $span . g_l('tags', '[ext_href]') . ':</span>') : $span . g_l('tags', '[ext_href]') . ':</span><input type="hidden" name="' . $int_elem_Name . '" value="0" />') . '</td>
-	<td class="weEditmodeStyle" style="width:170px"><input ' . ($type == we_base_link::TYPE_ALL ? 'onchange="this.form.elements[\'' . $int_elem_Name . '\'][1].checked = true;"' : '') . ' type="text" name="we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']" placeholder="http://example.org" value="' . $extPath . '" ' . $attr . ' /></td>
+	<td class="weEditmodeStyle" style="width:170px"><input style="width:' . ($size) . 'px;"' . ($type == we_base_link::TYPE_ALL ? 'onchange="this.form.elements[\'' . $int_elem_Name . '\'][1].checked = true;"' : '') . ' type="text" name="we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']" placeholder="http://example.org" value="' . $extPath . '" ' . $attr . ' /></td>
 	<td class="weEditmodeStyle">' . $but2 . '</td>
 	<td class="weEditmodeStyle">' . $trashbut2 . '</td>
 </tr>' : '') . '
