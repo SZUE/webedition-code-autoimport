@@ -241,7 +241,7 @@ class we_objectFile extends we_document{
 	}
 
 	private static function getObjectRootPathOfObjectWorkspace($classDir, $classId, $db = ''){
-		$db = ($db ? $db : new DB_WE());
+		$db = ($db ? : new DB_WE());
 		$classDir = rtrim($classDir, '/');
 		$rootId = $classId;
 		$cnt = 1;
@@ -706,7 +706,7 @@ class we_objectFile extends we_document{
 		if(!$tableID){
 			return array();
 		}
-		$db = ($db ? $db : new DB_WE());
+		$db = ($db ? : new DB_WE());
 
 		$tableInfo = $db->metadata(OBJECT_X_TABLE . $tableID);
 		$tableInfo2 = array();

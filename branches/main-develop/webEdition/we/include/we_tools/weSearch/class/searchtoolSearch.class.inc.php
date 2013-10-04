@@ -623,13 +623,13 @@ class searchtoolsearch extends we_search{
 
 //FIXME path is only implemented for filetable
 	function insertInTempTable($where = '', $table = '', $path = ''){
-		$this->table = (empty($table)) ? ((empty($this->table)) ? '' : $this->table) : $table;
+		$this->table = ($table ? : ($this->table ? : ''));
 
 		if(empty($this->table)){
 			return;
 		}
 
-		$this->where = (empty($where)) ? ((empty($this->where)) ? ' WHERE 1 ' : ' WHERE ' . $this->where) : ' WHERE ' . $where;
+		$this->where = ' WHERE ' . ($where ? : ($this->where ? : ' 1 '));
 
 		switch($this->table){
 			case FILE_TABLE:

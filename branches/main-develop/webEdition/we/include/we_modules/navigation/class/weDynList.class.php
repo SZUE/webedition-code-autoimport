@@ -146,8 +146,7 @@ abstract class weDynList{
 			$_order[] = $_sort['field'] . ' ' . $_sort['order'];
 		}
 		$categories = is_array($categories) ? $categories : makeArrayFromCSV($categories);
-		$_fieldset = self::getObjData(
-				$_select, $classid, id_to_path($dirid, OBJECT_FILES_TABLE), $categories, $catlogic, array(), $_order, 0, $count);
+		$_fieldset = self::getObjData($_select, $classid, id_to_path($dirid, OBJECT_FILES_TABLE), $categories, $catlogic, array(), $_order, 0, $count);
 		$_ids = array();
 
 		while($_fieldset->next_record()){
@@ -155,8 +154,7 @@ abstract class weDynList{
 			$_ids[] = array(
 				'id' => $_fieldset->Record['OF_ID'],
 				'text' => $_fieldset->Record['OF_Text'],
-				'field' => weNavigation::encodeSpecChars(
-					!empty($_fieldset->Record[$field]) ? $_fieldset->Record[$field] : '')
+				'field' => weNavigation::encodeSpecChars($_fieldset->Record[$field] ? : '')
 			);
 		}
 

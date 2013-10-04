@@ -225,7 +225,7 @@ class we_listview_object extends listviewBase{
 	}
 
 	function fillMatrix(&$matrix, $classID, $db = ''){
-		$db = ($db ? $db : new DB_WE());
+		$db = ($db ? : new DB_WE());
 		$table = OBJECT_X_TABLE . $classID;
 		$joinWhere = array();
 		$regs = array();

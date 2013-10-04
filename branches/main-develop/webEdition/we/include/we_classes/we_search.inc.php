@@ -90,7 +90,7 @@ class we_search{
 							$sql .= $this->sqlwhere($searchfield[$i], ' BETWEEN ' . $from . ' AND ' . $till . ' ', null);
 							break;
 					}
-				} else{
+				} else {
 
 					switch($searchlocation[$i]){
 						case 'END':
@@ -139,7 +139,7 @@ class we_search{
 				$q [] = $tmp . '` ' . $searchlocation;
 			}
 			return ' ' . $concat . ' ( ' . implode(' OR ', $q) . ' ) ';
-		} else{
+		} else {
 			$tmp = str_replace('.', '.`', $we_SearchField);
 			if($tmp == $we_SearchField){
 				$tmp = '`' . $tmp;
@@ -149,19 +149,19 @@ class we_search{
 	}
 
 	function countitems($where = '', $table = ''){
-		$this->table = (empty($table)) ? ((empty($this->table)) ? '' : $this->table) : $table;
+		$this->table = ($table ? : ($this->table ? : ''));
 
 		if(!empty($this->table)){
-			$this->where = (empty($where)) ? ((empty($this->where)) ? '1' : $this->where) : $where;
+			$this->where = ($where ? : ($this->where ? : '1'));
 			return f('SELECT COUNT(1) as Count FROM ' . $this->db->escape($this->table) . ' WHERE ' . $this->where, 'Count', $this->db);
-		} else{
+		} else {
 			return -1;
 		}
 	}
 
 	function searchquery($where = '', $get = '*', $table = '', $order = '', $limit = ''){
 
-		$this->table = (empty($table)) ? ((empty($this->table)) ? '' : $this->table) : $table;
+		$this->table = ($table ? : ($this->table? : ''));
 
 		if(!empty($this->table)){
 			$this->where = (empty($where)) ? ((empty($this->where)) ? '' : ' WHERE ' . $this->where) : ' WHERE ' . $where;
@@ -171,17 +171,17 @@ class we_search{
 
 			$this->limit = ' ' . $this->searchstart . ',' . $this->anzahl . ' ';
 
-			$this->limit = (empty($limit)) ? ((empty($this->limit)) ? '' : ' LIMIT ' . ($this->limit)) : ' LIMIT ' . ($limit);
+			$this->limit = ' LIMIT ' . ($limit ? : $this->limit);
 
 			$this->db->query('SELECT ' . rtrim($this->get, ',') . ' FROM ' . $this->db->escape($this->table) . ' ' . $this->where . ' ' . $order . ' ' . $this->limit);
-		} else{
+		} else {
 			return -1;
 		}
 	}
 
 	function setlimit($anzahl = '', $searchstart = ''){
-		$this->anzahl = (empty($anzahl)) ? ((empty($this->anzahl)) ? $this->defaultanzahl : $this->anzahl) : $anzahl;
-		$this->searchstart = (empty($searchstart)) ? ((empty($this->searchstart)) ? '0' : $this->searchstart) : $searchstart;
+		$this->anzahl = ($anzahl ? : ($this->anzahl ? : $this->defaultanzahl));
+		$this->searchstart = ($searchstart ? : ($this->searchstart ? : '0'));
 
 		$this->limit = ' ' . $this->searchstart . ',' . $this->anzahl . ' ';
 

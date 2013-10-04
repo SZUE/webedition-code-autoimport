@@ -129,7 +129,7 @@ class we_fileselector{
 		if($folderID == $ID){
 			return true;
 		}
-		$db = ($db ? $db : new DB_WE());
+		$db = ($db ? : new DB_WE());
 		$pid = f('SELECT ParentID FROM ' . $db->escape($this->table) . ' WHERE ID=' . intval($ID), 'ParentID', $db);
 		if($pid == $folderID){
 			return true;

@@ -368,7 +368,7 @@ switch($_SESSION['prefs']['editorMode']){
 	}
 
 	function getCharset() {
-		return "<?php print !empty($we_doc->elements['Charset']['dat']) ? $we_doc->elements['Charset']['dat'] : $GLOBALS['WE_BACKENDCHARSET']; ?>";
+		return "<?php print $we_doc->elements['Charset']['dat'] ? : $GLOBALS['WE_BACKENDCHARSET']; ?>";
 	}
 
 	// ############ CodeMirror Functions ################

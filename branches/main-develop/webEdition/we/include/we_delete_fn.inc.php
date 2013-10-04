@@ -51,7 +51,7 @@ function checkDeleteFolder($id, $table){
 
 	$DB_WE = $GLOBALS['DB_WE'];
 	$DB_WE->query('SELECT ID FROM ' . $DB_WE->escape($table) . ' WHERE ParentID=' . intval($id));
-	while($DB_WE->next_record()) {
+	while($DB_WE->next_record()){
 		if(!checkDeleteEntry($DB_WE->f('ID'), $table)){
 			return false;
 		}
@@ -80,13 +80,13 @@ function makeAlertDelFolderNotEmpty($folders){
 function deleteFolder($id, $table, $path = '', $delR = true, $DB_WE = ''){
 	$isTemplateFolder = ($table == TEMPLATES_TABLE);
 
-	$DB_WE = ($DB_WE ? $DB_WE : new DB_WE());
+	$DB_WE = ($DB_WE ? : new DB_WE());
 	$path = $path ? $path : f('SELECT Path FROM ' . $DB_WE->escape($table) . ' WHERE ID=' . intval($id), 'Path', $DB_WE);
 
 	if($delR){ // recursive delete
 		$DB_WE->query('SELECT ID FROM ' . $DB_WE->escape($table) . ' WHERE ParentID=' . intval($id));
 		$toDeleteArray = array();
-		while($DB_WE->next_record()) {
+		while($DB_WE->next_record()){
 			$toDeleteArray[] = $DB_WE->f('ID');
 		}
 		foreach($toDeleteArray as $toDelete){
@@ -133,7 +133,7 @@ function deleteFolder($id, $table, $path = '', $delR = true, $DB_WE = ''){
 }
 
 function deleteFile($id, $table, $path = '', $contentType = '', $DB_WE = ''){
-	$DB_WE = $DB_WE ? $DB_WE : new DB_WE();
+	$DB_WE = $DB_WE ? : new DB_WE();
 
 	$isTemplateFile = ($table == TEMPLATES_TABLE);
 
@@ -180,7 +180,7 @@ function deleteFile($id, $table, $path = '', $contentType = '', $DB_WE = ''){
 					if($DB_WE->isColExist(OBJECT_X_TABLE . $testclassID, we_object::QUERY_PREFIX . $tableID)){
 
 						//das loeschen in der DB wirkt sich nicht auf die Objekte aus, die noch nicht publiziert sind
-						$DB_WE->query('SELECT OF_ID FROM ' . OBJECT_X_TABLE . $testclassID . ' WHERE ' . we_object::QUERY_PREFIX. $tableID . '= ' . intval($id));
+						$DB_WE->query('SELECT OF_ID FROM ' . OBJECT_X_TABLE . $testclassID . ' WHERE ' . we_object::QUERY_PREFIX . $tableID . '= ' . intval($id));
 						$foos = $DB_WE->getAll(true);
 						foreach($foos as $affectedobjectsID){
 							$obj = new we_objectFile();
@@ -230,7 +230,7 @@ function deleteThumbsByThumbID($id){
 
 function deleteEntry($id, $table, $delR = true, $skipHook = 0, $DB_WE = ''){
 
-	$DB_WE = ($DB_WE ? $DB_WE : new DB_WE());
+	$DB_WE = ($DB_WE ? : new DB_WE());
 	if(defined('WORKFLOW_TABLE') && ($table == FILE_TABLE || (defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE))){
 		if(we_workflow_utility::inWorkflow($id, $table)){
 			we_workflow_utility::removeDocFromWorkflow($id, $table, $_SESSION['user']['ID'], g_l('modules_workflow', '[doc_deleted]'));
@@ -268,7 +268,7 @@ function deleteEntry($id, $table, $delR = true, $skipHook = 0, $DB_WE = ''){
 		if(!empty($row)){
 			if($row['IsFolder']){
 				deleteFolder($id, $table, $row['Path'], $delR, $DB_WE);
-			} else{
+			} else {
 				deleteFile($id, $table, $row['Path'], $row['ContentType'], $DB_WE);
 			}
 		}

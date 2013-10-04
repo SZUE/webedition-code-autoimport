@@ -55,9 +55,9 @@ if(permissionhandler::hasPerm("CAN_SEE_QUICKSTART")){
 		$aDatTblPref = getPref('cockpit_dat'); // array as saved in the prefs
 		$aTrf = getPref('cockpit_rss');
 		$aDat = (!empty($aDatTblPref)) ? @unserialize($aDatTblPref) : $aCfgProps; //
-		$aDat = $aDat ? $aDat : $aCfgProps;
+		$aDat = $aDat ? : $aCfgProps;
 		$aTrf = empty($aTrf) ? array_pop($aDat) : @unserialize($aTrf);
-		$aTrf = empty($aTrf) ? $aTopRssFeeds : $aTrf;
+		$aTrf = $aTrf ? : $aTopRssFeeds;
 		if(count($aDat) > $iLayoutCols){
 			while(count($aDat) > $iLayoutCols){
 				$aDelCol = array_pop($aDat);
@@ -87,7 +87,7 @@ if(permissionhandler::hasPerm("CAN_SEE_QUICKSTART")){
 				if($item == $value){
 					return true;
 				}
-			}elseif(in_array($value, $item)){
+			} elseif(in_array($value, $item)){
 				return true;
 			} elseif(in_array_recursive($value, $item)){
 				return true;

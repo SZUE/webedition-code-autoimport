@@ -84,7 +84,7 @@ if((!$we_alerttext) && isset($_FILES['we_uploadedFile']) && $_FILES['we_uploaded
 		} else {
 			$z = 0;
 			$footext = $we_doc->Filename . '_' . $z . $we_doc->Extension;
-			while(f('SELECT ID FROM ' . FILE_TABLE . " WHERE Text='" . $DB_WE->escape($footext) . "' AND ParentID='$pid'", 'ID', $DB_WE)) {
+			while(f('SELECT ID FROM ' . FILE_TABLE . " WHERE Text='" . $DB_WE->escape($footext) . "' AND ParentID='$pid'", 'ID', $DB_WE)){
 				$z++;
 				$footext = $we_doc->Filename . '_' . $z . $we_doc->Extension;
 			}
@@ -137,7 +137,7 @@ if((!$we_alerttext) && isset($_FILES['we_uploadedFile']) && $_FILES['we_uploaded
 } else if(isset($_FILES['we_uploadedFile'])){
 	$we_alerttext = (we_filenameNotValid($_FILES['we_uploadedFile']['name']) ?
 			g_l('alert', '[we_filename_notValid]') :
-			g_l('alert', '[wrong_file][' . (empty($we_ContentType) ? 'other' : $we_ContentType) . ']'));
+			g_l('alert', '[wrong_file][' . ($we_ContentType ? : 'other' ) . ']'));
 }
 
 // find out the smallest possible upload size
@@ -215,7 +215,7 @@ if(isset($_FILES['we_uploadedFile']) && (!$we_alerttext)){
 			<input type="hidden" name="table" value="<?php print $_REQUEST["tab"]; ?>" />
 			<input type="hidden" name="pid" value="<?php print $_REQUEST["dir"]; ?>" />
 			<input type="hidden" name="ct" value="<?php print $we_ContentType; ?>" />
-<?php print we_multiIconBox::getHTML("", "100%", $parts, 30, $buttons, -1, "", "", false, g_l('newFile', "[import_File_from_hd_title]"), "", 560); ?>
+			<?php print we_multiIconBox::getHTML("", "100%", $parts, 30, $buttons, -1, "", "", false, g_l('newFile', "[import_File_from_hd_title]"), "", 560); ?>
 		</form></center>
 </body>
 </html>

@@ -741,7 +741,7 @@ function checkFooter(){
 	}
 
 	static function publInScheduleTable($object, $db = ''){
-		$db = $db ? $db : new DB_WE();
+		$db = $db ? : new DB_WE();
 		$db->query('DELETE FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . intval($object->ID) . ' AND ClassName="' . $db->escape($object->ClassName) . '"');
 		$makeSched = false;
 		foreach($object->schedArr as $s){

@@ -88,7 +88,7 @@ class weContentProvider{
 			default:
 				switch($we_ContentType){
 					case 'folder':
-						$we_Table = empty($table) ? FILE_TABLE : $table;
+						$we_Table = $table ? : FILE_TABLE;
 						break;
 					case 'text/weTmpl':
 						$we_Table = TEMPLATES_TABLE;
@@ -235,7 +235,7 @@ class weContentProvider{
 			return true;
 		} else if(isset($serialize[$classname])){
 			return in_array($prop, $serialize[$classname]);
-		} else{
+		} else {
 			return false;
 		}
 	}
@@ -427,14 +427,14 @@ class weContentProvider{
 				if($object->ClassName == 'weTable' || $object->ClassName == 'weTableAdv'){
 					if($object->ClassName == 'weTable'){
 						$contentObj = new we_element(false, $object->elements[$ck]);
-					} else{
+					} else {
 						array_unshift($object->elements[$ck], ' ');
 						$contentObj = new we_element(false, $object->elements[$ck]);
 						foreach($object->elements[$ck] as $okey => $ov){
 							$contentObj->$okey = trim($ov);
 						};
 					}
-				} else{
+				} else {
 					$options = array(
 						'ClassName' => 'we_element',
 						'Name' => $ck,

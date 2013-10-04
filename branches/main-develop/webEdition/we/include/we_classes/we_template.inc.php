@@ -594,7 +594,7 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 
 	static function getUsedTemplatesOfTemplate($id, &$arr){
 		$hash = getHash('SELECT IncludedTemplates, MasterTemplateID FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . intval($id), $GLOBALS['DB_WE']);
-		list($_tmplCSV, $_masterTemplateID) = (empty($hash) ? array('', 0) : $hash);
+		list($_tmplCSV, $_masterTemplateID) = ($hash ? : array('', 0));
 
 		$_tmpArr = makeArrayFromCSV($_tmplCSV);
 		foreach($_tmpArr as $_tid){

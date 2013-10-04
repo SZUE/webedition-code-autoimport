@@ -741,7 +741,7 @@ class we_object extends we_document{
 		$this->elements["Sortgesamt"]["dat"] = count($sort);
 		### end move elements ####
 
-		$this->setElement("we_sort", (!empty($sort) ? $sort : array()));
+		$this->setElement("we_sort", ($sort ? : array()));
 	}
 
 	function downMetaAtClass($name, $i){
@@ -2183,7 +2183,7 @@ class we_object extends we_document{
 				}
 			}
 		}
-		return (empty($doubleNames) ? false : $doubleNames);
+		return ($doubleNames ? : false);
 	}
 
 	protected function i_writeDocument(){

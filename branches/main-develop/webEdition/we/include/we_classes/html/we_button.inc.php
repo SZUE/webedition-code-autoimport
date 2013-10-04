@@ -313,7 +313,7 @@ function switch_button_state(element, button, state, type) {
 	 */
 	static function position_yes_no_cancel($yes_button, $no_button = null, $cancel_button = null, $gap = 10, $align = '', $attribs = array(), $aligngap = 0){
 		//	Create default attributes for table
-		$align = empty($align) ? 'right' : $align;
+		$align = $align? : 'right';
 		$attr = array(
 			'style' => 'border-style:none; padding-top:0px;padding-bottom:0px;padding-left:' . ($align == 'left' ? $aligngap : 0) . 'px;padding-right:' . ($align == 'right' ? $aligngap : 0) . 'px;border-spacing:0px;',
 			'align' => $align,

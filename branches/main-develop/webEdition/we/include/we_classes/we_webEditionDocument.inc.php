@@ -1105,7 +1105,7 @@ if (!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 	}
 
 	public function addDocumentCss($stylesheet = ''){
-		$this->DocumentCss .= empty($this->DocumentCss) ? $stylesheet : ',' . $stylesheet;
+		$this->DocumentCss .= (empty($this->DocumentCss) ? '' : ',') . $stylesheet;
 	}
 
 	public function getDocumentCss(){

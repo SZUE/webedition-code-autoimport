@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-abstract class weFile {
+abstract class weFile{
 
 	const SZ_HUMAN = 0;
 	const SZ_BYTE = 1;
@@ -392,7 +392,7 @@ abstract class weFile {
 			return false;
 		}
 
-		$zfile = (empty($destination) ? $file : $destination) . '.' . self::getZExtension($compression);
+		$zfile = ($destination ? : $file) . '.' . self::getZExtension($compression);
 
 		if(self::isCompressed($file)){
 			if($remove){

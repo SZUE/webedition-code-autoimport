@@ -830,7 +830,7 @@ class we_document extends we_root{
 		if(isset($attribs['_name_orig'])){
 			unset($attribs['_name_orig']);
 		}
-		$db = ($db ? $db : new DB_WE());
+		$db = ($db ? : new DB_WE());
 		if((!$attribs) || (!is_array($attribs))){
 			$attribs = array();
 		}
@@ -1134,7 +1134,7 @@ class we_document extends we_root{
 	}
 
 	function getHref($attribs, $db = '', $fn = 'this'){
-		$db = $db ? $db : new_DB_WE();
+		$db = $db ? : new_DB_WE();
 		$n = $attribs['name'];
 		$nint = $n . we_base_link::MAGIC_INT_LINK;
 		$int = $this->getValFromSrc($fn, $nint);
@@ -1158,7 +1158,7 @@ class we_document extends we_root{
 	}
 
 	function getLinkHref($link, $parentID, $path, $db = '', $hidedirindex = false, $objectseourls = false){
-		$db = ($db ? $db : new DB_WE());
+		$db = ($db ? : new DB_WE());
 
 		// Bug Fix 8170&& 8166
 		if(isset($link['href']) && strpos($link['href'], we_base_link::TYPE_MAIL_PREFIX) === 0){

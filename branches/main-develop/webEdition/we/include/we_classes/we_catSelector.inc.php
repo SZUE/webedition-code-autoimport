@@ -149,10 +149,10 @@ function disableNewBut(){
 	btn_new_dir_enabled = switch_button_state("btn_new_dir", "new_directory_enabled", "disabled", "image");
 	btn_add_cat_enabled = switch_button_state("btn_add_cat", "newCategorie_enabled", "disabled", "image");
 }
-function enableNewBut(){'.
-			($this->userCanEditCat() ?'
+function enableNewBut(){' .
+			($this->userCanEditCat() ? '
 	btn_new_dir_enabled = switch_button_state("btn_new_dir", "new_directory_enabled", "enabled", "image");
-	btn_add_cat_enabled = switch_button_state("btn_add_cat", "newCategorie_enabled", "enabled", "image");':'').'
+	btn_add_cat_enabled = switch_button_state("btn_add_cat", "newCategorie_enabled", "enabled", "image");' : '') . '
 }
 function disableDelBut(){
 	btn_function_trash_enabled = switch_button_state("btn_function_trash", "btn_function_trash_enabled", "disabled", "image");
@@ -629,7 +629,7 @@ function setDir(id){
 	}
 
 	function renameChildrenPath($id, $db = ''){
-		$db = $db ? $db : new DB_WE();
+		$db = $db ? : new DB_WE();
 		$db->query('SELECT ID,IsFolder FROM ' . CATEGORY_TABLE . ' WHERE ParentID=' . intval($id));
 		$updates = $db->getAllFirst(false);
 		foreach($updates as $curId => $IsFolder){

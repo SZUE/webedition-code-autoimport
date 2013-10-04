@@ -328,7 +328,7 @@ function we_cmd() {
 		$numberformat = $feldnamen[2];
 		$classid = (isset($feldnamen[3]) ? $feldnamen[3] : '');
 		$classIds = makeArrayFromCSV($classid);
-		$mwst = (!empty($feldnamen[1])) ? (($feldnamen[1])) : '';
+		$mwst = ($feldnamen[1] ? : '');
 		$notInc = 'tblTemplates';
 
 		$da = '%d.%m.%Y';

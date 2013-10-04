@@ -44,7 +44,7 @@ function we_tag_author($attribs){
 					$oid = f('SELECT OID FROM ' . INDEX_TABLE . ' WHERE DID=' . intval($GLOBALS['lv']->getDBf('WE_ID')) . ' OR OID=' . intval($GLOBALS['lv']->getDBf('WE_ID')), 'OID', $GLOBALS['DB_WE']);
 					if($oid > 0){//object
 						$objID = $GLOBALS['lv']->getDBf('WE_ID');
-					} else{//document
+					} else {//document
 						$docID = $GLOBALS['lv']->getDBf('WE_ID');
 					}
 					break;
@@ -76,10 +76,10 @@ function we_tag_author($attribs){
 			return trim($foo['Second']);
 		case 'name' :
 			$out = trim(($foo['First'] ? ($foo['First'] . ' ') : '') . $foo['Second']);
-			return empty($out) ? $foo['Username'] : $out;
+			return $out ? : $foo['Username'];
 		case 'initials' :
 			$out = trim(($foo['First'] ? $foo['First']{0} : '') . ($foo['Second'] ? $foo['Second']{0} : ''));
-			return empty($out) ? $foo['Username'] : $out;
+			return $out ? : $foo['Username'];
 		case 'salutation':
 			return trim($foo['Salutation']);
 		case 'email':

@@ -171,7 +171,7 @@ class weVoting extends weModelBase{
 			}
 		}
 
-		$this->ParentID = !empty($this->ParentID) ? $this->ParentID : 0;
+		$this->ParentID = $this->ParentID ? : 0;
 		if(isset($_SESSION['user']['ID']) && ($this->RestrictOwners && empty($this->Owners) || !in_array($_SESSION['user']['ID'], $this->Owners)))
 			$this->Owners[] = $_SESSION['user']['ID'];
 

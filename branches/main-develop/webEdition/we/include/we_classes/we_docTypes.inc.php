@@ -300,7 +300,7 @@ class we_docTypes extends we_class{
 	/* creates the Template PopupMenue */
 
 	function formTemplatePopup($width = 100){
-		$tlist = (empty($this->TemplateID) ? '' : $this->TemplateID);
+		$tlist = ($this->TemplateID ? : '' );
 		if(!empty($this->Templates)){
 			$tlist.=',' . $this->Templates;
 		}

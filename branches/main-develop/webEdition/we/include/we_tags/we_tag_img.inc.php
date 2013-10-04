@@ -32,13 +32,8 @@ function we_tag_img($attribs){
 	$parentid = weTag_getAttribute('parentid', $attribs, 0);
 	$showcontrol = weTag_getAttribute('showcontrol', $attribs, true, true);
 	$showThumb = weTag_getAttribute('showthumbcontrol', $attribs, false, true);
-	$showimage = weTag_getAttribute('showimage', $attribs, true, true);
-	$showinputs = weTag_getAttribute('showinputs', $attribs, SHOWINPUTS_DEFAULT, true);
 
-
-	$id = $GLOBALS['we_doc']->getElement($name, 'bdid');
-	$id = $id ? $id : $GLOBALS['we_doc']->getElement($name);
-	$id = $id ? $id : weTag_getAttribute('id', $attribs);
+	$id = $GLOBALS['we_doc']->getElement($name, 'bdid')? : ($GLOBALS['we_doc']->getElement($name)? : weTag_getAttribute('id', $attribs));
 
 	if(isset($attribs['showcontrol']) && !$showcontrol && weTag_getAttribute('id', $attribs)){//bug 6433: später wird so ohne weiteres gar nicht mehr auf die id zurückgegriffen
 		$id = weTag_getAttribute('id', $attribs);
@@ -76,11 +71,11 @@ function we_tag_img($attribs){
 
 	// images can now have custom attribs
 	if(!(isset($_REQUEST['we_cmd'][0]) &&
-			$_REQUEST['we_cmd'][0] == 'reload_editpage' &&
-			(isset($_REQUEST['we_cmd'][1]) && $name == $_REQUEST['we_cmd'][1]) &&
-			isset($_REQUEST['we_cmd'][2]) &&
-			$_REQUEST['we_cmd'][2] == 'change_image') &&
-			isset($GLOBALS['we_doc']->elements[$altField])){ // if no other image is selected.
+		$_REQUEST['we_cmd'][0] == 'reload_editpage' &&
+		(isset($_REQUEST['we_cmd'][1]) && $name == $_REQUEST['we_cmd'][1]) &&
+		isset($_REQUEST['we_cmd'][2]) &&
+		$_REQUEST['we_cmd'][2] == 'change_image') &&
+		isset($GLOBALS['we_doc']->elements[$altField])){ // if no other image is selected.
 		$alt = $GLOBALS['we_doc']->getElement($altField);
 		$title = $GLOBALS['we_doc']->getElement($titleField);
 		if($showThumb){
@@ -91,22 +86,22 @@ function we_tag_img($attribs){
 	} elseif(isset($GLOBALS['we_doc'])){
 		$altattr = $GLOBALS['we_doc']->getElement($altField);
 		$titleattr = $GLOBALS['we_doc']->getElement($titleField);
-		$altattr == "" ? "" : $attribs['alt'] = $altattr;
-		$titleattr == "" ? "" : $attribs['title'] = $titleattr;
+		$altattr == '' ? '' : $attribs['alt'] = $altattr;
+		$titleattr == '' ? '' : $attribs['title'] = $titleattr;
 		if($showThumb){
 			$thumbattr = $GLOBALS['we_doc']->getElement($thumbField);
 			$attribs['thumbnail'] = $thumbattr;
 		}
 	}
 
-	if($GLOBALS['we_editmode'] && !$showimage){
+	if($GLOBALS['we_editmode'] && !weTag_getAttribute('showimage', $attribs, true, true)){
 		$out = '';
 	} elseif(!$id){
 		if($GLOBALS['we_editmode'] && $GLOBALS['we_doc']->InWebEdition){
 			$attribs['src'] = IMAGE_DIR . 'icons/no_image.gif';
 			$attribs['style'] = 'width:64px;height:64px;border-style:none;';
 			$attribs['alt'] = 'no-img';
-			$attribs = removeAttribs($attribs, array('thumbnail','only'));
+			$attribs = removeAttribs($attribs, array('thumbnail', 'only'));
 			$out = getHtmlTag('img', $attribs);
 		} else {
 			$out = ''; //no_image war noch in der Vorscha sichtbar
@@ -130,8 +125,8 @@ function we_tag_img($attribs){
 			<input onchange="_EditorFrame.setEditorIsHot(true);" type="hidden" name="' . $fname . '" value="' . $id . '" />
 		</td>
 	</tr>' .
-				($showinputs ? //  only when wanted
-						'
+			(weTag_getAttribute('showinputs', $attribs, SHOWINPUTS_DEFAULT, true) ? //  only when wanted
+				'
 	<tr>
 		<td class="weEditmodeStyle" align="center" colspan="2" style="width: 180px;">
 			<table class="weEditTable padding0 spacing0 border0">
@@ -150,14 +145,14 @@ function we_tag_img($attribs){
 			</table>
 		</td>
 	</tr>' : ''
-				);
+			);
 
 		if($showThumb){ //  only when wanted
 			$db = $GLOBALS['DB_WE'];
 			$db->query('SELECT ID,Name FROM ' . THUMBNAILS_TABLE . ' ORDER BY Name');
 			if($db->num_rows()){
 				$thumbnails = '<select name="' . $thumbname . '" size="1" onchange="top.we_cmd(\'reload_editpage\'); _EditorFrame.setEditorIsHot(true);">' .
-						'<option value=""' . (($thumbattr == '') ? (' selected="selected"') : "") . '></option>';
+					'<option value=""' . (($thumbattr == '') ? (' selected="selected"') : "") . '></option>';
 				while($db->next_record()){
 					$thumbnails .= '<option value="' . $db->f("Name") . '"' . (($thumbattr == $db->f("Name")) ? (' selected="selected"') : "") . '>' . $db->f("Name") . '</option>';
 				}
@@ -180,20 +175,20 @@ function we_tag_img($attribs){
 		<td class="weEditmodeStyle" colspan="2" align="center">';
 
 		$_editButton = (empty($id) ? // disable edit_image_button
-						we_button::create_button("image:btn_edit_image", "#", false, 100, 20, "", "", true) :
-						//	show edit_image_button
-						//	we use hardcoded Content-Type - because it must be an image -> <we:img  >
-						we_button::create_button("image:btn_edit_image", "javascript:top.doClickDirect($id,'image/*', '" . FILE_TABLE . "'  )"));
+				we_button::create_button("image:btn_edit_image", "#", false, 100, 20, "", "", true) :
+				//	show edit_image_button
+				//	we use hardcoded Content-Type - because it must be an image -> <we:img  >
+				we_button::create_button("image:btn_edit_image", "javascript:top.doClickDirect($id,'image/*', '" . FILE_TABLE . "'  )"));
 
 		$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['" . $fname . "'].value");
 		$wecmdenc3 = we_cmd_enc("opener.setScrollTo(); opener._EditorFrame.setEditorIsHot(true); opener.top.we_cmd('reload_editpage','" . $name . "','change_image'); opener.top.hot = 1;");
 
 		$out .= we_button::create_button_table(
-						array(
-					$_editButton,
-					we_button::create_button("image:btn_select_image", "javascript:we_cmd('openDocselector', '" . ($id != "" ? $id : $startid) . "', '" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','" . session_id() . "'," . $parentid . ",'image/*', " . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")", true),
-					we_button::create_button("image:btn_function_trash", "javascript:we_cmd('remove_image', '" . $name . "')", true)
-						), 5) . '</td></tr></table>';
+				array(
+				$_editButton,
+				we_button::create_button("image:btn_select_image", "javascript:we_cmd('openDocselector', '" . ($id != "" ? $id : $startid) . "', '" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','" . session_id() . "'," . $parentid . ",'image/*', " . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")", true),
+				we_button::create_button("image:btn_function_trash", "javascript:we_cmd('remove_image', '" . $name . "')", true)
+				), 5) . '</td></tr></table>';
 	}
 	return $out;
 }

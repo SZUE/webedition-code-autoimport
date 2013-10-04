@@ -165,7 +165,7 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter{
 	 * @return weDocumentCustomerFilter
 	 */
 	static function getFilterByIdAndTable($id, $table, $db = ''){
-		$db = ($db ? $db : new DB_WE());
+		$db = ($db ? : new DB_WE());
 		$hash = getHash('SELECT * FROM ' . CUSTOMER_FILTER_TABLE . ' WHERE modelTable="' . $db->escape(stripTblPrefix($table)) . '" AND modelId = ' . intval($id), $db);
 		if(!empty($hash)){
 			return self::getFilterByDbHash($hash);
@@ -343,7 +343,7 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter{
 	 */
 	function deleteForModel(&$model, $db = ''){
 		if($model->ID){
-			$_db = ($db ? $db : new DB_WE());
+			$_db = ($db ? : new DB_WE());
 			$_db->query('DELETE FROM ' . CUSTOMER_FILTER_TABLE . ' WHERE modelId=' . $model->ID . ' AND modelType="' . $model->ContentType . '" AND modelTable="' . stripTblPrefix($model->Table) . '"');
 		}
 	}

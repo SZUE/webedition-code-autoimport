@@ -27,7 +27,7 @@
  * General Definition of WebEdition Banner
  *
  */
-class we_banner_banner extends we_banner_base{
+class weBanner extends weBannerBase {
 
 	const PAGE_PROPERTY = 0;
 	const PAGE_PLACEMENT = 1;
@@ -153,7 +153,7 @@ class we_banner_banner extends we_banner_base{
 
 		$out = array();
 		while($this->db->next_record()){
-			$out[] = new we_banner_banner($this->db->f("ID"));
+			$out[] = new weBanner($this->db->f("ID"));
 		}
 		return $out;
 	}
@@ -265,12 +265,17 @@ class we_banner_banner extends we_banner_base{
 	}
 
 	private static function getImageInfos($fileID){
+		$imgAttr = array();
 		$db = new DB_WE();
 		$db->query('SELECT l.Name AS Name, c.Dat AS Dat FROM ' . LINK_TABLE . ' l LEFT JOIN ' . CONTENT_TABLE . ' AS c ON l.CID=c.ID WHERE l.Type="attrib" AND l.DID=' . intval($fileID));
-		return $db->getAllFirst(false);
+		while($db->next_record(MYSQL_ASSOC)){
+			$imgAttr[$db->f('Name')] = $db->f("Dat");
+		}
+		$db->free();
+		return ($imgAttr);
 	}
 
-	public static function getBannerCode($did, $paths, $target, $width, $height, $dt, $cats, $bannername, $link = true, $referer = "", $bannerclick = '/webEdition/bannerclick.php', $getbanner = "/webEdition/getBanner.php", $type = "", $page = "", $nocount = false, $xml = false){
+	public static function getBannerCode($did, $paths, $target, $width, $height, $dt, $cats, $bannername, $link = true, $referer = "", $bannerclick = "/webEdition/bannerclick.php", $getbanner = "/webEdition/getBanner.php", $type = "", $page = "", $nocount = false, $xml = false){
 		$db = new DB_WE();
 		$bannerData = self::getBannerData($did, $paths, $dt, $cats, $bannername, $db);
 		$uniq = md5(uniqid(__FUNCTION__, true));

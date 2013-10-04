@@ -32,8 +32,8 @@ function we_parse_tag_object($attribs, $content){
 
 	$we_oid = weTag_getAttribute('id', $arr, 0);
 	if(empty($we_oid) && empty($name)){
-				return attributFehltError($arr, 'name', __FUNCTION__);
-			}
+		return attributFehltError($arr, 'name', __FUNCTION__);
+	}
 
 	return '<?php global $lv;
 		if(' . we_tag_tagParser::printTag('object', $attribs) . '){?>' . $content . '<?php }
@@ -98,7 +98,7 @@ function we_tag_object($attribs){
 	} else {
 		$we_oid = $we_oid ? $we_oid : (isset($_REQUEST['we_oid']) ? intval($_REQUEST['we_oid']) : 0);
 	}
-	$GLOBALS['lv'] = new we_objecttag($classid, $we_oid, $triggerid, (empty($searchable) ? false : $searchable), $condition, $hidedirindex, $objectseourls);
+	$GLOBALS['lv'] = new we_objecttag($classid, $we_oid, $triggerid, ($searchable ? : false), $condition, $hidedirindex, $objectseourls);
 	if(is_array($GLOBALS['we_lv_array'])){
 		$GLOBALS['we_lv_array'][] = clone($GLOBALS['lv']);
 	}

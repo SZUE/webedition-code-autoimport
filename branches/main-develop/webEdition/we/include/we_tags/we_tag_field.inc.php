@@ -186,12 +186,12 @@ function we_tag_field($attribs){
 					$out = $t[5];
 					break;
 			}
-			$href = (empty($href) ? $t[1] : $href);
+			$href = ($href ? : $t[1]);
 			break;
 		case 'link' :
 			if(is_object($GLOBALS['lv'])){
 				$out = $GLOBALS['we_doc']->getFieldByVal($GLOBALS['lv']->f($name), 'link', $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], $classid, 'listview');
-				$href = (empty($href) ? $out : $href);
+				$href = ($href ? : $out);
 				break;
 			}
 		case 'img' :

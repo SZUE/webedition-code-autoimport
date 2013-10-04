@@ -808,15 +808,15 @@ class weVotingFrames extends weModuleFrames{
 		$wecmdenc2 = we_cmd_enc("document.we_form.elements['ParentPath'].value");
 		$wecmdenc3 = we_cmd_enc("top.opener._EditorFrame.setEditorIsHot(true);");
 		$button = we_button::create_button('select', "javascript:top.content.setHot(); we_cmd('openVotingDirselector',document.we_form.elements['ParentID'].value,'" . $wecmdenc1 . "','" . $wecmdenc2 . "','')");
-		$width = "416";
+		$width = 416;
 
 		$yuiSuggest = & weSuggest::getInstance();
-		$yuiSuggest->setAcId("PathGroup");
+		$yuiSuggest->setAcId('PathGroup');
 		$yuiSuggest->setContentType("folder");
-		$yuiSuggest->setInput("ParentPath", $path, 'onchange=top.content.setHot();');
+		$yuiSuggest->setInput('ParentPath', $path, 'onchange=top.content.setHot();');
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(true);
-		$yuiSuggest->setResult("ParentID", (empty($this->View->voting->ParentID) ? 0 : $this->View->voting->ParentID));
+		$yuiSuggest->setResult('ParentID', ($this->View->voting->ParentID ? : 0));
 		$yuiSuggest->setSelector("Dirselector");
 		$yuiSuggest->setTable(VOTING_TABLE);
 		$yuiSuggest->setWidth($width);

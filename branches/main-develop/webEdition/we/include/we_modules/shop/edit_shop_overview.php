@@ -50,13 +50,13 @@ $f = 0;
 
 
 $DB_WE->query("SELECT IntOrderID, Price, IntQuantity, DateShipping,DatePayment FROM " . SHOP_TABLE . " WHERE DateOrder >= '$year" . (($month < 10) ? "0" . $month : $month) . "01000000' and DateOrder <= '$year" . (($month < 10) ? "0" . $month : $month) . date("t", mktime(0, 0, 0, $month, 1, $year)) . "000000' ORDER BY IntOrderID");
-while($DB_WE->next_record()) {
+while($DB_WE->next_record()){
 	if($DB_WE->f("DatePayment") != 0){
 		if(!isset($bezahlt)){
 			$bezahlt = 0;
 		}
 		$bezahlt += ($DB_WE->f("IntQuantity") * $DB_WE->f("Price")); //bezahlt
-	} else{
+	} else {
 		if(!isset($unbezahlt)){
 			$unbezahlt = 0;
 		}
@@ -66,14 +66,14 @@ while($DB_WE->next_record()) {
 	if(isset($orderid) ? $DB_WE->f("IntOrderID") != $orderid : $DB_WE->f("IntOrderID")){
 		if($DB_WE->f("DateShipping") != 0){
 			$r++; //bearbeitet
-		} else{
+		} else {
 			$f++; //unbearbeitet
 		}
 	}
 	$orderid = $DB_WE->f("IntOrderID");
 }
 
-$mwst = (!empty($mwst)) ? $mwst : 1;
+$mwst = ($mwst ?: 1);
 $info = g_l('modules_shop', '[anzahl]') . ": <b>" . ($f + $r) . "</b><br>" . g_l('modules_shop', '[unbearb]') . ": " . (($f) ? $f : "0");
 $stat = g_l('modules_shop', '[umsatzgesamt]') . ": <b>" . we_util_Strings::formatNumber(($bezahlt + $unbezahlt) * $mwst) . " $waehr </b><br><br>" . g_l('modules_shop', '[schonbezahlt]') . ": " . we_util_Strings::formatNumber($bezahlt * $mwst) . " $waehr <br>" . g_l('modules_shop', '[unbezahlt]') . ": " . we_util_Strings::formatNumber($unbezahlt * $mwst) . " $waehr";
 echo we_html_element::jsScript(JS_DIR . 'images.js') . we_html_element::jsScript(JS_DIR . 'windows.js');

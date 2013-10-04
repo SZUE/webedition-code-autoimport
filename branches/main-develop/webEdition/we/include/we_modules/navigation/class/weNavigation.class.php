@@ -210,7 +210,7 @@ class weNavigation extends weModelBase{
 			$_ord_count = f('SELECT COUNT(ID) as OrdCount FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ParentID) . ';', 'OrdCount', $this->db);
 			if($this->ID == 0){
 				$this->Ordn = $_ord_count;
-			} else{
+			} else {
 				if($this->Ordn > ($_ord_count - 1)){
 					$this->Ordn = $_ord_count;
 				}
@@ -235,7 +235,7 @@ class weNavigation extends weModelBase{
 			$this->BlackList = makeCSVFromArray($this->BlackList, true);
 			$this->Customers = makeCSVFromArray($this->Customers, true);
 			$this->CustomerFilter = serialize($this->CustomerFilter);
-		} else{
+		} else {
 			$_cus_paths = array();
 			$_bl_paths = array();
 			$_wl_paths = array();
@@ -283,7 +283,7 @@ class weNavigation extends weModelBase{
 		if($rebuild){
 			//cache is written on demand, just make sure current entry is deleted
 			weNavigationCache::delCacheNavigationEntry($this->ID);
-		} else{
+		} else {
 			weNavigationCache::delNavigationTree($this->ID);
 			if(isset($_oldPid) && $_oldPid != $this->ParentID){
 				weNavigationCache::delNavigationTree($this->ParentID);
@@ -331,7 +331,7 @@ class weNavigation extends weModelBase{
 
 	function deleteChilds(){
 		$this->db->query('SELECT ID FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ID));
-		while($this->db->next_record()) {
+		while($this->db->next_record()){
 			$child = new weNavigation($this->db->f("ID"));
 			$child->delete();
 		}
@@ -339,7 +339,7 @@ class weNavigation extends weModelBase{
 
 	function deleteStaticChilds(){
 		$this->db->query('SELECT ID FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ID) . ' AND Selection="' . self::SELECTION_STATIC . '" ');
-		while($this->db->next_record()) {
+		while($this->db->next_record()){
 			$child = new weNavigation($this->db->f("ID"));
 			$child->delete();
 		}
@@ -376,7 +376,7 @@ class weNavigation extends weModelBase{
 		if($this->ID){
 			$_count = 0;
 			$_parentid = $this->ParentID;
-			while($_parentid != 0) {
+			while($_parentid != 0){
 				if($_parentid == $this->ID){
 					return true;
 				}
@@ -387,7 +387,7 @@ class weNavigation extends weModelBase{
 				}
 			}
 			return false;
-		} else{
+		} else {
 			return false;
 		}
 	}
@@ -410,9 +410,9 @@ class weNavigation extends weModelBase{
 		$path = '/' . (isset($foo['Text']) ? $foo['Text'] : '') . $path;
 
 		$pid = isset($foo['ParentID']) ? $foo['ParentID'] : '';
-		while($pid > 0) {
+		while($pid > 0){
 			$db_tmp->query("SELECT Text,ParentID FROM " . NAVIGATION_TABLE . ' WHERE ID=' . intval($pid));
-			while($db_tmp->next_record()) {
+			while($db_tmp->next_record()){
 				$path = '/' . $db_tmp->f('Text') . $path;
 				$pid = $db_tmp->f('ParentID');
 			}
@@ -444,7 +444,7 @@ class weNavigation extends weModelBase{
 
 		$this->db->query('SELECT ID,Path,Text,Ordn FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ID) . ' ORDER BY Ordn;');
 
-		while($this->db->next_record()) {
+		while($this->db->next_record()){
 			$_items[] = array(
 				'id' => $this->db->f('ID'),
 				'path' => $this->db->f('Path'),
@@ -461,7 +461,7 @@ class weNavigation extends weModelBase{
 
 		$this->db->query('SELECT ID,Ordn FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ID) . ' AND IsFolder=0 AND Depended=1 ORDER BY Ordn;');
 
-		while($this->db->next_record()) {
+		while($this->db->next_record()){
 			$_items[] = array(
 				'id' => $this->db->f('ID'),
 				'ordn' => $this->db->f('Ordn')
@@ -488,7 +488,7 @@ class weNavigation extends weModelBase{
 			$_navigation->LinkID = $_item['id'];
 			$_navigation->Ordn = isset($_items[$_k]) ? $_items[$_k]['ordn'] : $_k;
 			$_navigation->Depended = 1;
-			$_navigation->Text = !empty($_item['field']) ? $_item['field'] : $_item['text'];
+			$_navigation->Text = $_item['field'] ? : $_item['text'];
 			$_navigation->IconID = $this->IconID;
 
 			$_navigation->Url = $this->Url;
@@ -584,9 +584,9 @@ class weNavigation extends weModelBase{
 						$_items[] = array(
 							'id' => $_nav->ID . '_' . $_dyn['id'],
 							//'text'=>str_replace('&amp;','&',!empty($_dyn['field']) ? $_dyn['field'] : $_dyn['text']),
-							'name' => !empty($_dyn['field']) ? $_dyn['field'] : $_dyn['text'],
-							'text' => !empty($_dyn['field']) ? $_dyn['field'] : $_dyn['text'],
-							'display' => !empty($_dyn['display']) ? $_dyn['display'] : "",
+							'name' => $_dyn['field'] ? : $_dyn['text'],
+							'text' => $_dyn['field'] ? : $_dyn['text'],
+							'display' => $_dyn['display'] ? : '',
 							'docid' => $_dyn['id'],
 							'table' => (($_nav->SelectionType == self::STPYE_CLASS || $_nav->SelectionType == self::STPYE_OBJLINK) ? OBJECT_FILES_TABLE : FILE_TABLE),
 							'href' => $_href,
@@ -604,7 +604,7 @@ class weNavigation extends weModelBase{
 
 						if($rules){
 							$_items[(count($_items) - 1)]['currentRule'] = weNavigationRule::getWeNavigationRule(
-									'defined_' . (!empty($_dyn['field']) ? $_dyn['field'] : $_dyn['text']), $_nav->ID, $_nav->SelectionType, $_nav->FolderID, $_nav->DocTypeID, $_nav->ClassID, $_nav->CategoryIDs, $_nav->WorkspaceID, $_href, false);
+									'defined_' . ($_dyn['field'] ? : $_dyn['text']), $_nav->ID, $_nav->SelectionType, $_nav->FolderID, $_nav->DocTypeID, $_nav->ClassID, $_nav->CategoryIDs, $_nav->WorkspaceID, $_href, false);
 						}
 					}
 				}
@@ -622,7 +622,7 @@ class weNavigation extends weModelBase{
 		$_count = 0;
 		$_db = new DB_WE();
 		$_db->query('SELECT ID FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($pid) . ' ORDER BY Ordn');
-		while($_db->next_record()) {
+		while($_db->next_record()){
 			$this->db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=' . abs($_count) . ' WHERE ID=' . intval($_db->f('ID')));
 			$_count++;
 		}
@@ -677,11 +677,11 @@ class weNavigation extends weModelBase{
 							if($objecturl == ''){
 								$_param = 'we_objectID=' . $this->LinkID . (!empty($_param) ? '&' : '') . $_param;
 							}
-						} else{
+						} else {
 							$_param = 'we_objectID=' . $this->LinkID . (!empty($_param) ? '&' : '') . $_param;
 						}
 						$_id = ($objecttriggerid ? $objecttriggerid : weDynList::getFirstDynDocument($this->FolderWsID));
-					} else{
+					} else {
 						$_id = $this->LinkID;
 					}
 					$_path = isset($storage[$_id]) ? $storage[$_id] : id_to_path($_id, FILE_TABLE);
@@ -694,7 +694,7 @@ class weNavigation extends weModelBase{
 					}
 					break;
 			}
-		} else{
+		} else {
 			$_id = ($id ? $id : $this->LinkID);
 
 			$_path = '';
@@ -721,14 +721,14 @@ class weNavigation extends weModelBase{
 							if(isset($objectdaten['Url'])){
 								$objecturl = $objectdaten['Url'];
 								$objecttriggerid = $objectdaten['TriggerID'];
-							} else{
+							} else {
 								$objecturl = '';
 								$objecttriggerid = '';
 							}
 							if($objecturl == ''){
 								$_param = 'we_objectID=' . $_id . (!empty($_param) ? '&' : '') . $_param;
 							}
-						} else{
+						} else {
 							$_param = 'we_objectID=' . $_id . (!empty($_param) ? '&' : '') . $_param;
 							$objecttriggerid = '';
 						}
@@ -770,7 +770,7 @@ class weNavigation extends weModelBase{
 		$_db = new DB_WE();
 		if($this->ID){
 			$_db->query('SELECT ID FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Ordn>=' . abs($num) . ' ORDER BY Ordn');
-			while($_db->next_record()) {
+			while($_db->next_record()){
 				$this->db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=' . abs($_db->f('Ordn') + 1) . ' WHERE ID=' . intval($_db->f('ID')));
 			}
 			$this->Ordn = $num;
@@ -786,7 +786,7 @@ class weNavigation extends weModelBase{
 			$pid = 0;
 		}
 		$_db = new DB_WE();
-		while(empty($_charset)) {
+		while(empty($_charset)){
 			$_hash = getHash('SELECT ParentID,Charset FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($pid), $_db);
 			if(isset($_hash['ParentID'])){
 				if(isset($_hash['Charset']) && !empty($_hash['Charset'])){
@@ -799,7 +799,7 @@ class weNavigation extends weModelBase{
 					break;
 				}
 				$_count++;
-			} else{
+			} else {
 				break;
 			}
 		}

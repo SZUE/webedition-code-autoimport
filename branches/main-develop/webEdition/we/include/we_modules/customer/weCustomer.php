@@ -27,7 +27,7 @@
  * General Definition of WebEdition Customer
  *
  */
-class we_customer_customer extends weModelBase{
+class weCustomer extends weModelBase{
 
 	const NOPWD_CHANGE = '__WE__PWD_NO_CHANGE';
 
@@ -267,7 +267,7 @@ class we_customer_customer extends weModelBase{
 					}
 					break;
 			}
-			$ret[$this->db->f('Field')] = $record;
+			$ret[$this->db->f("Field")] = $record;
 		}
 
 		return $ret;
