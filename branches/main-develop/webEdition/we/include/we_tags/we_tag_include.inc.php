@@ -82,7 +82,6 @@ function we_tag_include($attribs){
 	$name = weTag_getAttribute('name', $attribs);
 	$gethttp = weTag_getAttribute('gethttp', $attribs, false, true);
 	$seeMode = weTag_getAttribute((isset($attribs['seem']) ? 'seem' : 'seeMode'), $attribs, true, true);
-	$isDynamic = true;
 
 	if((!$id) && (!$path) && (!$name)){
 		t_e('we:include - missing id, path or name');
@@ -140,9 +139,9 @@ function we_tag_include($attribs){
 		if($gethttp){
 			$content = ($isSeemode ? getHTTP(getServerUrl(true), $realPath) : 'echo getHTTP(getServerUrl(true), \'' . $realPath . '\');');
 		} else {
-			$realPath = $_SERVER['DOCUMENT_ROOT'] . $realPath;
+			$realPath = $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '..' . $realPath; //(symlink) webEdition always points to the REAL DOC-Root!
 			if(!file_exists($realPath)){
-
+				//t_e('include of', 'id:' . $id . ',path:' . $path . ',name:' . $name, ' doesn\'t exist');
 				return '';
 			}
 			//check Customer-Filter on static documents

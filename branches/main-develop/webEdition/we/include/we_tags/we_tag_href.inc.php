@@ -32,14 +32,14 @@ function we_tag_href($attribs){
 	$include = weTag_getAttribute('include', $attribs, false, true);
 	$reload = weTag_getAttribute('reload', $attribs, false, true);
 	$rootdir = weTag_getAttribute('rootdir', $attribs, '/');
-	$seeMode = weTag_getAttribute((isset($attribs['seem']) ? 'seem' : 'seeMode'), $attribs, true, true);
+//	$seeMode = weTag_getAttribute((isset($attribs['seem']) ? 'seem' : 'seeMode'), $attribs, true, true);
 
 
 	$file = weTag_getAttribute('file', $attribs, true, true);
 	$directory = weTag_getAttribute('directory', $attribs, false, true);
 	$attribs = removeAttribs($attribs, array('rootdir', 'file', 'directory'));
 
-	if($GLOBALS['we_doc']->ClassName == 'we_objectFile'){
+	if(get_class($GLOBALS['we_doc']) == 'we_objectFile'){
 		$hrefArr = $GLOBALS['we_doc']->getElement($name) ? unserialize($GLOBALS['we_doc']->getElement($name)) : array();
 		if(!is_array($hrefArr)){
 			$hrefArr = array();
@@ -50,10 +50,8 @@ function we_tag_href($attribs){
 	$nint = $name . we_base_link::MAGIC_INT_LINK;
 	$nintID = $name . we_base_link::MAGIC_INT_LINK_ID;
 	$nintPath = $name . we_base_link::MAGIC_INT_LINK_PATH;
-	$extPath = $GLOBALS['we_doc']->getElement($name);
-
 	// we have to use a html_entity_decode first in case a user has set &amp, &uuml; by himself
-	$extPath = !empty($extPath) ? oldHtmlspecialchars(html_entity_decode($extPath)) : $extPath;
+	$extPath = oldHtmlspecialchars(html_entity_decode($GLOBALS['we_doc']->getElement($name)));
 
 	switch($type){
 		case we_base_link::TYPE_INT:
@@ -73,7 +71,7 @@ function we_tag_href($attribs){
 
 			if($int){
 				$href = $intPath;
-				$include_path = $href ? $_SERVER['DOCUMENT_ROOT'] . '/' . $href : '';
+				$include_path = $href ? $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '..' . $href : ''; //(symlink) webEdition always points to the REAL DOC-Root!
 				$path_parts = pathinfo($href);
 				if($hidedirindex && show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES != '' && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
 					$href = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/';
@@ -84,7 +82,7 @@ function we_tag_href($attribs){
 		case we_base_link::TYPE_EXT:
 			$int = false;
 			$href = $extPath;
-			$include_path = $href ? $_SERVER['DOCUMENT_ROOT'] . '/' . $href : '';
+			$include_path = $href ? $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '..' . $href : ''; //(symlink) webEdition always points to the REAL DOC-Root!
 			break;
 	}
 
@@ -124,7 +122,8 @@ function we_tag_href($attribs){
 
 	$trashbut = we_button::create_button('image:btn_function_trash', "javascript:document.we_form.elements['" . $intID_elem_Name . "'].value = ''; document.we_form.elements['" . $intPath_elem_Name . "'].value = ''; _EditorFrame.setEditorIsHot(true);" . (($include || $reload) ? "setScrollTo(); top.we_cmd('reload_editpage');" : ''), true);
 	$span = '<span style="color: black;font-size:' . ((we_base_browserDetect::isMAC()) ? "11px" : ((we_base_browserDetect::isUNIX()) ? "13px" : "12px")) . ';font-family:' . g_l('css', '[font_family]') . ';">';
-	$attr = we_make_attribs($attribs, 'name,value,type,onkeydown,onKeyDown,_name_orig');
+	$attr = we_make_attribs($attribs, 'name,value,type,onkeydown,onKeyDown,_name_orig,size');
+	$size = 7 * intval(weTag_getAttribute('size', $attribs, 20));
 
 	$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['$intID_elem_Name'].value");
 	$wecmdenc2 = we_cmd_enc("document.forms['we_form'].elements['$intPath_elem_Name'].value");
@@ -148,7 +147,7 @@ function we_tag_href($attribs){
 		$yuiSuggest->setResult($intID_elem_Name, $intID);
 		$yuiSuggest->setSelector('Docselector');
 		$yuiSuggest->setTable(FILE_TABLE);
-		$yuiSuggest->setWidth(we_base_browserDetect::isFF() ? 136 : 151);
+		$yuiSuggest->setWidth($size);
 	}
 
 	return
@@ -164,7 +163,7 @@ function we_tag_href($attribs){
 		($type == we_base_link::TYPE_ALL || $type == we_base_link::TYPE_EXT ? '
 <tr>
 	<td class="weEditmodeStyle">' . ($type == we_base_link::TYPE_ALL ? we_forms::radiobutton(0, !$int, $int_elem_Name, $span . g_l('tags', '[ext_href]') . ':</span>') : $span . g_l('tags', '[ext_href]') . ':</span><input type="hidden" name="' . $int_elem_Name . '" value="0" />') . '</td>
-	<td class="weEditmodeStyle" style="width:170px"><input ' . ($type == we_base_link::TYPE_ALL ? 'onchange="this.form.elements[\'' . $int_elem_Name . '\'][1].checked = true;"' : '') . ' type="text" name="we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']" placeholder="http://example.org" value="' . $extPath . '" ' . $attr . ' /></td>
+	<td class="weEditmodeStyle" style="width:170px"><input style="width:' . ($size) . 'px;"' . ($type == we_base_link::TYPE_ALL ? 'onchange="this.form.elements[\'' . $int_elem_Name . '\'][1].checked = true;"' : '') . ' type="text" name="we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']" placeholder="http://example.org" value="' . $extPath . '" ' . $attr . ' /></td>
 	<td class="weEditmodeStyle">' . $but2 . '</td>
 	<td class="weEditmodeStyle">' . $trashbut2 . '</td>
 </tr>' : '') . '

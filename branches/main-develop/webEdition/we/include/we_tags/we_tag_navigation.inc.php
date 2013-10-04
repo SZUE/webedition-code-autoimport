@@ -33,9 +33,9 @@ function we_tag_navigation($attribs){
 		$GLOBALS['we_navigation'][$name]->initByNavigationObject($showRoot);
 	} else{
 		$realId = ($id ? $id : ($parentid != -1 ? $parentid : 0));
-		if(!$GLOBALS['we_navigation'][$name]->initFromCache($realId, false)){
+		$showRoot = ($id ? true : ($parentid == -1));
+		if(!$GLOBALS['we_navigation'][$name]->initFromCache($realId, $showRoot)){ 
 			//make sure we use cache next time!
-			$showRoot = ($id ? true : ($parentid == -1));
 			$GLOBALS['we_navigation'][$name]->initById($realId, false, $showRoot);
 			weNavigationCache::saveCacheNavigation($realId, $GLOBALS['we_navigation'][$name]);
 		}

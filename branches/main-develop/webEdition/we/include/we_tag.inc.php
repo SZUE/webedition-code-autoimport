@@ -73,7 +73,7 @@ function we_tag($name, $attribs = array(), $content = ''){
 		$attribs = removeAttribs($attribs, array('cachelifetime', 'comment', 'user'));
 		$nameTo = '';
 		$to = 'screen';
-	} else{
+	} else {
 		$nameTo = weTag_getAttribute('nameto', $attribs);
 		$to = weTag_getAttribute('to', $attribs, 'screen');
 		$attribs = removeAttribs($attribs, array('cachelifetime', 'comment', 'to', 'nameto', 'user'));
@@ -89,7 +89,7 @@ function we_tag($name, $attribs = array(), $content = ''){
 	if(isset($attribs['name'])){
 		$attribs['_name_orig'] = $attribs['name'];
 		$attribs['name'] = we_tag_getPostName($attribs['name']);
-		if($GLOBALS['we_editmode']&& get_class($GLOBALS['we_doc'])=='we_webEditionDocument'){
+		if($GLOBALS['we_editmode'] && get_class($GLOBALS['we_doc']) == 'we_webEditionDocument'){
 			$GLOBALS['we_doc']->addUsedElement($name, $attribs['name']);
 		}
 	}
@@ -201,10 +201,26 @@ function printElement($code){
 	if(isset($code)){
 		if(strpos($code, '<?') !== FALSE){
 			eval('?>' . str_replace(array('<?php', '?>'), array('<?php ', ' ?>'), $code));
-		} else{
+		} else {
 			echo $code;
 		}
 	}
+}
+
+function getArrayValue($name, $arrayIndex){
+	if(!isset($GLOBALS[$name])){
+		return '';
+	}
+	$var = $GLOBALS[$name];
+	$arr_matches = array();
+	preg_match_all('/\[([^\]]*)\]/', $arrayIndex, $arr_matches, PREG_PATTERN_ORDER);
+	foreach($arr_matches[1] as $cur){
+		if(!isset($var[$cur])){
+			return '';
+		}
+		$var = $var[$cur];
+	}
+	return $var;
 }
 
 /**
@@ -231,12 +247,10 @@ function weTag_getParserAttribute($name, $attribs, $default = '', $isFlag = fals
 function weTag_getAttribute($name, $attribs, $default = '', $isFlag = false, $useGlobal = true){
 	$value = isset($attribs[$name]) ? $attribs[$name] : '';
 	$regs = array();
-	//FIXME: change this, it should be possible to use \$a[b][c] to get $GLOBALS['a']['b']['c']
-	if($useGlobal && !is_array($value) && preg_match('|^\\\\?\$(.+)$|', $value, $regs)){
-//	if($useGlobal && !is_array($value) && preg_match('|^\\\\?\$([^\[\]]+)(.*)$|', $value, $regs)){
-		//(\[[^\]]+\])*
-
-		$value = isset($GLOBALS[$regs[1]]) ? $GLOBALS[$regs[1]] : '';
+	if($useGlobal && !is_array($value) && preg_match('|^\\\\?\$(.+)(\[.*\])?|', $value, $regs)){
+		$value = (isset($regs[2]) ?
+				getArrayValue($regs[1], $regs[2]) :
+				(isset($GLOBALS[$regs[1]]) ? $GLOBALS[$regs[1]] : ''));
 	}
 	if($isFlag){
 		$val = (is_string($value) ? strtolower(trim($value)) : $value);
@@ -334,7 +348,7 @@ function cutText($text, $max = 0, $striphtml = false){
 					if(!$cur[6]){//!selfclosing
 						if($cur[3]){//close
 							array_pop($tags);
-						} else{
+						} else {
 							$tags[] = $cur[4];
 						}
 					}
@@ -344,7 +358,7 @@ function cutText($text, $max = 0, $striphtml = false){
 	}
 
 //close open tags
-	while(!empty($tags)) {
+	while(!empty($tags)){
 		$ret.='</' . array_pop($tags) . '>';
 	}
 
@@ -455,7 +469,7 @@ function we_getSelectField($name, $value, $values, $attribs = array(), $addMissi
 		if($option == $value){
 			$content .= getHtmlTag('option', array('value' => $option, 'selected' => 'selected'), $option, true);
 			$isin = 1;
-		} else{
+		} else {
 			$content .= getHtmlTag('option', array('value' => $option), $option, true);
 		}
 	}
@@ -770,7 +784,7 @@ function we_post_tag_listview(){
 		if(empty($GLOBALS['we_lv_array'])){
 			unset($GLOBALS['lv']);
 			unset($GLOBALS['we_lv_array']);
-		} else{
+		} else {
 			$GLOBALS['lv'] = clone(end($GLOBALS['we_lv_array']));
 		}
 	}
