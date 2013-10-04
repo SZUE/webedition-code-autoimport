@@ -32,7 +32,7 @@ function we_tag_href($attribs){
 	$include = weTag_getAttribute('include', $attribs, false, true);
 	$reload = weTag_getAttribute('reload', $attribs, false, true);
 	$rootdir = weTag_getAttribute('rootdir', $attribs, '/');
-	$seeMode = weTag_getAttribute((isset($attribs['seem']) ? 'seem' : 'seeMode'), $attribs, true, true);
+//	$seeMode = weTag_getAttribute((isset($attribs['seem']) ? 'seem' : 'seeMode'), $attribs, true, true);
 
 	if($rootdir[0] != '/'){
 		$rootdirid = $rootdir;
@@ -52,7 +52,7 @@ function we_tag_href($attribs){
 	$directory = weTag_getAttribute('directory', $attribs, false, true);
 	$attribs = removeAttribs($attribs, array('rootdir', 'file', 'directory'));
 
-	if($GLOBALS['we_doc']->ClassName == 'we_objectFile'){
+	if(get_class($GLOBALS['we_doc']) == 'we_objectFile'){
 		$hrefArr = $GLOBALS['we_doc']->getElement($name) ? unserialize($GLOBALS['we_doc']->getElement($name)) : array();
 		if(!is_array($hrefArr)){
 			$hrefArr = array();
@@ -63,10 +63,8 @@ function we_tag_href($attribs){
 	$nint = $name . we_base_link::MAGIC_INT_LINK;
 	$nintID = $name . we_base_link::MAGIC_INT_LINK_ID;
 	$nintPath = $name . we_base_link::MAGIC_INT_LINK_PATH;
-	$extPath = $GLOBALS['we_doc']->getElement($name);
-
 	// we have to use a html_entity_decode first in case a user has set &amp, &uuml; by himself
-	$extPath = !empty($extPath) ? oldHtmlspecialchars(html_entity_decode($extPath)) : $extPath;
+	$extPath = oldHtmlspecialchars(html_entity_decode($GLOBALS['we_doc']->getElement($name)));
 
 	switch($type){
 		case we_base_link::TYPE_INT:
@@ -87,7 +85,7 @@ function we_tag_href($attribs){
 
 			if($int){
 				$href = $intPath;
-				$include_path = $href ? $_SERVER['DOCUMENT_ROOT'] . '/' . $href : '';
+				$include_path = $href ? $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '..' . $href : ''; //(symlink) webEdition always points to the REAL DOC-Root!
 				$path_parts = pathinfo($href);
 				if($hidedirindex && show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES != '' && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
 					$href = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/';
@@ -98,7 +96,7 @@ function we_tag_href($attribs){
 		case we_base_link::TYPE_EXT:
 			$int = false;
 			$href = $extPath;
-			$include_path = $href ? $_SERVER['DOCUMENT_ROOT'] . '/' . $href : '';
+			$include_path = $href ? $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '..' . $href : ''; //(symlink) webEdition always points to the REAL DOC-Root!
 			break;
 	}
 
