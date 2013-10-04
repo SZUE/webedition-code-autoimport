@@ -1112,7 +1112,7 @@ class we_document extends we_root{
 			default:
 				$val = $this->getElement(isset($attribs['name']) ? $attribs['name'] : '');
 		}
-		if($type == 'href' && ((isset($this->TableID) && $this->TableID) || ($this->ClassName == 'we_objectFile'))){
+		if($type == 'href' && ((isset($this->TableID) && $this->TableID) || (get_class($this) == 'we_objectFile'))){
 			$hrefArr = $val ? unserialize($val) : array();
 			if(!is_array($hrefArr)){
 				return '';

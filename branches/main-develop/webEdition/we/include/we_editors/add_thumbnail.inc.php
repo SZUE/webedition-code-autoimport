@@ -35,66 +35,64 @@ $we_dt = isset($_SESSION['weS']['we_data'][$we_transaction]) ? $_SESSION['weS'][
 include(WE_INCLUDES_PATH . "we_editors/we_init_doc.inc.php");
 $_thumbs = array();
 
-if(isset($we_doc->ClassName) && $we_doc->ClassName == "we_imageDocument"){
+if(get_class($we_doc) == 'we_imageDocument'){
 
 	we_html_tools::htmlTop(g_l('weClass', "[thumbnails]"));
 	print we_html_element::jsElement('
-	function select_thumbnails(sel){
+function select_thumbnails(sel){
 
-		var thumbs = "";
+	var thumbs = "";
 
-		for(var i=0; i<sel.options.length; i++){
-			if(sel.options[i].selected){
-				thumbs += (sel.options[i].value + ",");
+	for(var i=0; i<sel.options.length; i++){
+		if(sel.options[i].selected){
+			thumbs += (sel.options[i].value + ",");
+		}
+	}
+
+	if(thumbs.length){
+		thumbs = "," + thumbs;
+		add_enabled = switch_button_state("add", "add_enabled", "enabled");
+	}else{
+		add_enabled = switch_button_state("add", "add_enabled", "disabled");
+	}
+
+	self.showthumbs.location = "' . WEBEDITION_DIR . 'showThumb.php?u=' . $uniqid . '&t=' . $we_transaction . '&id="+escape(thumbs);
+
+}
+
+function add_thumbnails(){
+	sel = document.getElementById("Thumbnails");
+	var thumbs = "";
+	for(var i=0; i<sel.options.length; i++){
+		if(sel.options[i].selected){
+			thumbs += (sel.options[i].value + ",");
+		}
+	}
+
+	if(thumbs.length){
+		thumbs = "," + thumbs;
+		opener.we_cmd("do_add_thumbnails",thumbs);
+	}
+
+	self.close();
+
+}
+
+function we_cmd(){
+	var args = "";
+	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
+
+	switch (arguments[0]){
+		case "editThumbs":
+			new jsWindow(url, "thumbnails", -1, -1, 500, 550, true, true, true);
+			break;
+		default:
+			for(var i = 0; i < arguments.length; i++){
+				args += \'arguments[\'+i+\']\' + ((i < (arguments.length-1)) ? \',\' : \'\');
 			}
-		}
-
-		if(thumbs.length){
-			thumbs = "," + thumbs;
-			add_enabled = switch_button_state("add", "add_enabled", "enabled");
-		}else{
-			add_enabled = switch_button_state("add", "add_enabled", "disabled");
-		}
-
-		self.showthumbs.location = "' . WEBEDITION_DIR . 'showThumb.php?u=' . $uniqid . '&t=' . $we_transaction . '&id="+escape(thumbs);
-
+			eval(\'parent.we_cmd(\'+args+\')\');
 	}
-
-	function add_thumbnails(){
-		sel = document.getElementById("Thumbnails");
-		var thumbs = "";
-		for(var i=0; i<sel.options.length; i++){
-			if(sel.options[i].selected){
-				thumbs += (sel.options[i].value + ",");
-			}
-		}
-
-		if(thumbs.length){
-			thumbs = "," + thumbs;
-			opener.we_cmd("do_add_thumbnails",thumbs);
-		}
-
-		self.close();
-
-	}
-
-	function we_cmd(){
-		var args = "";
-		var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
-
-		switch (arguments[0]){
-			case "editThumbs":
-				new jsWindow(url, "thumbnails", -1, -1, 500, 550, true, true, true);
-				break;
-			default:
-				for(var i = 0; i < arguments.length; i++){
-					args += \'arguments[\'+i+\']\' + ((i < (arguments.length-1)) ? \',\' : \'\');
-				}
-				eval(\'parent.we_cmd(\'+args+\')\');
-		}
-	}
-
-') . we_button::create_state_changer();
+}') . we_button::create_state_changer();
 
 	print we_html_element::jsScript(JS_DIR . 'windows.js');
 

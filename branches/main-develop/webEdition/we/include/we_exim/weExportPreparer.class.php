@@ -303,7 +303,7 @@ class weExportPreparer extends weXMLExIm{
 			}
 		}
 
-		if($object->ClassName == "we_template"){
+		if(get_class($object) == "we_template"){
 			$tlinked = array();
 			if($this->options["handle_def_templates"] && $object->MasterTemplateID){
 				$this->addToDepArray($level, $object->MasterTemplateID, 'text/weTmpl');

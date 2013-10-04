@@ -33,9 +33,9 @@ function we_tag_ifDoctype($attribs){
 
 	if($docAttr == 'listview' && isset($GLOBALS['lv'])){
 		$doctype = $GLOBALS['lv']->f('wedoc_DocType');
-	} else{
+	} else {
 		$doc = we_getDocForTag($docAttr);
-		if($doc->ClassName == 'we_template'){
+		if(get_class($doc) == 'we_template'){
 			return false;
 		}
 		$doctype = $doc->DocType;

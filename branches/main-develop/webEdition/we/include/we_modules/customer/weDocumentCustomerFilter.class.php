@@ -189,7 +189,7 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter{
 		// if customer is not logged in, all documents/objects with filters must be hidden
 		$_restrictedFilesForCustomer = self::_getFilesWithRestrictionsOfCustomer($listview);
 
-		if($listview->ClassName == 'we_search_listview'){ // search
+		if(get_class($listview) == 'we_search_listview'){ // search
 			// build query from restricted files, regard search and normal listview
 			foreach($_restrictedFilesForCustomer as $ct => $_fileArray){
 

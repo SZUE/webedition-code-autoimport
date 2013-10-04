@@ -218,7 +218,7 @@ function checkFooter(){
 				$myid = $this->ParentID;
 				$path = id_to_path($this->ParentID, $GLOBALS['we_doc']->Table);
 
-				if($GLOBALS['we_doc']->ClassName == 'we_objectFile'){
+				if(get_class($GLOBALS['we_doc']) == 'we_objectFile'){
 					if($path == '/'){ //	impossible for documents
 						$path = $GLOBALS['we_doc']->RootDirPath;
 					}

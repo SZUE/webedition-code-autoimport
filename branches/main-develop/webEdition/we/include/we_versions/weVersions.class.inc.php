@@ -945,7 +945,7 @@ class weVersions{
 
 		//if folder was saved don' make versions (if path was changed of folder)
 		if(isset($GLOBALS['we_doc']->ClassName)){
-			if($GLOBALS['we_doc']->ClassName == "we_folder" || $GLOBALS['we_doc']->ClassName == "we_class_folder"){
+			if(get_class($GLOBALS['we_doc']) == "we_folder" || get_class($GLOBALS['we_doc']) == "we_class_folder"){
 				return false;
 			}
 		}
@@ -1203,7 +1203,7 @@ class weVersions{
 							we_util_File::saveFile($_SERVER['DOCUMENT_ROOT'] . $binaryPath, gzencode(file_get_contents($siteFile), 9));
 						}
 					}
-					$usepath=$_SERVER['DOCUMENT_ROOT'].$binaryPath;
+					$usepath = $_SERVER['DOCUMENT_ROOT'] . $binaryPath;
 					if(file_exists($usepath) && is_file($usepath)){
 						$this->Filehash = sha1_file($usepath);
 					}

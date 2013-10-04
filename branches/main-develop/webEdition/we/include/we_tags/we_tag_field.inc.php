@@ -573,7 +573,7 @@ function we_tag_field($attribs){
 					if($showlink){
 						$tail = ($tid && get_class($GLOBALS['lv']) == 'we_listview_object' ? '&amp;we_objectTID=' . $tid : '');
 
-						if(($GLOBALS['we_doc']->ClassName == 'we_objectFile') && ($GLOBALS['we_doc']->InWebEdition)){
+						if((get_class($GLOBALS['we_doc'])== 'we_objectFile') && ($GLOBALS['we_doc']->InWebEdition)){
 							$_linkAttribs['href'] = $GLOBALS['lv']->f('wedoc_lastPath') . $tail;
 						} else {
 							$path_parts = pathinfo($GLOBALS['lv']->f('WE_PATH'));

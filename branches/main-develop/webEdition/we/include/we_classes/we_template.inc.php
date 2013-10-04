@@ -631,10 +631,10 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 		if(!$this->doUpdateCode){
 			return true;
 		}
-		static $cnt=0;
+		static $cnt = 0;
 		static $recursiveTemplates;
-		if($cnt==0){
-			$recursiveTemplates= array();
+		if($cnt == 0){
+			$recursiveTemplates = array();
 		}
 		if(empty($recursiveTemplates)){
 			$recursiveTemplates[] = $this->ID;
@@ -685,12 +685,11 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 					$all = $reg[0];
 					$attribs = self::_getAttribsArray($reg[1]);
 					$name = isset($attribs['name']) ? $attribs['name'] : '';
-					if($name){
-						$we_masterTagCode = isset($masterTags[$name]['content']) ? $masterTags[$name]['content'] : '';
-						$masterTemplateCode = str_replace($all, $we_masterTagCode, $masterTemplateCode);
-					} else {
-						$masterTemplateCode = str_replace($all, $code, $masterTemplateCode);
-					}
+					$masterTemplateCode = str_replace($all, ($name ?
+							(isset($masterTags[$name]['content']) ?
+								$masterTags[$name]['content'] :
+								'') :
+							$code), $masterTemplateCode);
 				}
 
 				$code = str_replace('</we:content>', '', $masterTemplateCode);

@@ -152,10 +152,10 @@ abstract class we_forms{
 		$buttonBottom = false;
 
 		//first prepare stylesheets from textarea-attribute editorcss (templates) or class-css (classes): csv of ids. then (if document) get document-css, defined by we:css
-		$contentCss = (isset($GLOBALS['we_doc']) && ($GLOBALS['we_doc']->ClassName == 'we_objectFile' || $GLOBALS['we_doc']->ClassName == 'we_object')) ? $GLOBALS['we_doc']->CSS :
-			((isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->ClassName == 'we_webEditionDocument') ? weTag_getAttribute('editorcss', $attribs) : '');
+		$contentCss = (isset($GLOBALS['we_doc']) && (get_class($GLOBALS['we_doc']) == 'we_objectFile' || get_class($GLOBALS['we_doc']) == 'we_object')) ? $GLOBALS['we_doc']->CSS :
+			((isset($GLOBALS['we_doc']) && get_class($GLOBALS['we_doc']) == 'we_webEditionDocument') ? weTag_getAttribute('editorcss', $attribs) : '');
 		$contentCss = !empty($contentCss) ? implode('?' . time() . ',', id_to_path(trim($contentCss, ', '), FILE_TABLE, '', false, true)) . '?' . time() : '';
-		$contentCss = (isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->ClassName == 'we_webEditionDocument' && !$ignoredocumentcss) ? trim($GLOBALS['we_doc']->getDocumentCss() . ',' . $contentCss, ',') :
+		$contentCss = (isset($GLOBALS['we_doc']) && get_class($GLOBALS['we_doc']) == 'we_webEditionDocument' && !$ignoredocumentcss) ? trim($GLOBALS['we_doc']->getDocumentCss() . ',' . $contentCss, ',') :
 			$contentCss;
 
 		if($buttonpos){
@@ -189,7 +189,7 @@ abstract class we_forms{
 			}
 		}
 		$importrtf = weTag_getAttribute('importrtf', $attribs, false, true);
-		$doc = (isset($GLOBALS['we_doc']) && $GLOBALS['we_doc'] != '' && $GLOBALS['we_doc']->ClassName == 'we_objectFile' ? 'we_doc' : 'WE_MAIN_DOC');
+		$doc = (isset($GLOBALS['we_doc']) && $GLOBALS['we_doc'] != '' && get_class($GLOBALS['we_doc']) == 'we_objectFile' ? 'we_doc' : 'WE_MAIN_DOC');
 		$inwebedition = ($forceinwebedition ? $forceinwebedition : (isset($GLOBALS[$doc]->InWebEdition) && $GLOBALS[$doc]->InWebEdition));
 
 		$inlineedit = // we are in frontend, where default is inlineedit = true
@@ -220,7 +220,7 @@ abstract class we_forms{
 			if($inlineedit){
 				$e = new we_wysiwyg($name, $width, $height, $value, $commands, $bgcolor, '', $class, $fontnames, (!$inwebedition), $xml, $removeFirstParagraph, $inlineedit, '', $charset, $cssClasses, $_lang, '', $showSpell, $isFrontendEdit, $buttonpos, $oldHtmlspecialchars, $contentCss, $origName, $tinyParams, $contextmenu);
 				$out .= $e->getHTML();
-			} else{
+			} else {
 				$e = new we_wysiwyg($name, $width, $height, '', $commands, $bgcolor, '', $class, $fontnames, (!$inwebedition), $xml, $removeFirstParagraph, $inlineedit, '', $charset, $cssClasses, $_lang, '', $showSpell, $isFrontendEdit, $buttonpos, $oldHtmlspecialchars, $contentCss, $origName, $tinyParams, $contextmenu);
 
 				if(stripos($name, "we_ui") === false){//we are in backend
@@ -231,7 +231,7 @@ abstract class we_forms{
 							parseInternalLinks($value, 0)
 						)
 					);
-				} else{//we are in frontend
+				} else {//we are in frontend
 					$hiddenTextareaContent = str_replace(array("##|r##", "##|n##"), array("\r", "\n"), parseInternalLinks($value, 0));
 					$previewDivContent = $hiddenTextareaContent;
 				}
@@ -242,7 +242,7 @@ abstract class we_forms{
 				$out .= ($fieldName ? we_html_element::jsElement('tinyEditors["' . $fieldName . '"] = "' . $name . '";') : '') .
 					($buttonTop ? '<div class="tbButtonWysiwygBorder" style="width:25px;border-bottom:0px;background-image: url(' . IMAGE_DIR . 'backgrounds/aquaBackground.gif);">' . $e->getHTML(we_wysiwyg::$editorType == 'tinyMCE' ? '' : $hiddenTextareaContent) . '</div>' : '') . '<div class="tbButtonWysiwygBorder ' . (empty($class) ? "" : $class . " ") . 'wetextarea tiny-wetextarea wetextarea-' . $origName . '" id="div_wysiwyg_' . $name . '" style="height:auto; width:auto">' . $previewDivContent . '</div>' . ($buttonBottom ? '<div class="tbButtonWysiwygBorder" style="width:25px;border-top:0px;background-image: url(' . IMAGE_DIR . 'backgrounds/aquaBackground.gif);">' . $e->getHTML(we_wysiwyg::$editorType == 'tinyMCE' ? '' : $hiddenTextareaContent) . '</div>' : '');
 			}
-		} else{
+		} else {
 			if($width){
 				$style[] = "width:$width;";
 			}
@@ -255,7 +255,7 @@ abstract class we_forms{
 				$value = str_replace(array('<?', '<script', '</script', '\\', "\n", "\r", '"'), array('##|lt;?##', '<##scr#ipt##', '</##scr#ipt##', '\\\\', '\n', '\r', '\\"'), $value);
 				$out .= we_html_element::jsElement('new we_textarea("' . $name . '","' . $value . '","' . $cols . '","' . $rows . '","' . $width . '","' . $height . '","' . $autobr . '","' . $autobrName . '",' . ($showAutobr ? ($hideautobr ? "false" : "true") : "false") . ',' . ($importrtf ? "true" : "false") . ',"' . $GLOBALS["WE_LANGUAGE"] . '","' . $class . '","' . implode(';', $style) . '","' . $wrap . '","onkeydown","' . ($xml ? "true" : "false") . '","' . $id . '",' . ((defined('SPELLCHECKER') && $showSpell) ? "true" : "false") . ',"' . $origName . '");') .
 					'<noscript><textarea name="' . $name . '"' . ($tabindex ? ' tabindex="' . $tabindex . '"' : '') . ($cols ? ' cols="' . $cols . '"' : '') . ($rows ? ' rows="' . $rows . '"' : '') . (!empty($style) ? ' style="' . implode(';', $style) . '"' : '') . ' class="' . ($class ? $class . " " : "") . 'wetextarea wetextarea-' . $origName . '"' . ($id ? ' id="' . $id . '"' : '') . '>' . oldHtmlspecialchars($clearval) . '</textarea></noscript>';
-			} else{
+			} else {
 				$out .= '<textarea name="' . $name . '"' . ($tabindex ? ' tabindex="' . $tabindex . '"' : '') . ($cols ? ' cols="' . $cols . '"' : '') . ($rows ? ' rows="' . $rows . '"' : '') . (!empty($style) ? ' style="' . implode(';', $style) . '"' : '') . ' class="' . ($class ? $class . " " : "") . 'wetextarea wetextarea-' . $origName . '"' . ($id ? ' id="' . $id . '"' : '') . '>' . oldHtmlspecialchars($value) . '</textarea>';
 			}
 		}

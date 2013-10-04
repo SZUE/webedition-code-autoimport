@@ -33,13 +33,11 @@ $we_dt = isset($_SESSION['weS']['we_data'][$we_transaction]) ? $_SESSION['weS'][
 include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
 
 
-if(isset($we_doc->ClassName) && $we_doc->ClassName == "we_imageDocument"){
+if(get_class($we_doc) == "we_imageDocument"){
 
 	we_html_tools::htmlTop();
 
-	print we_html_element::jsScript(JS_DIR . 'we_showMessage.js') . '
-<script type="text/javascript"><!--
-
+	print we_html_element::jsScript(JS_DIR . 'we_showMessage.js') .we_html_element::jsElement('
 document.onkeyup = function(e) {
 	var e = (typeof(event) != "undefined") ? event : e;
 	if (e.keyCode == 13) {
@@ -49,22 +47,19 @@ document.onkeyup = function(e) {
 	}
 }
 
-' . "\nself.focus();\n";
+self.focus();');
 
 	switch($_REQUEST['we_cmd'][0]){
 		case "image_resize":
-			print we_getImageResizeDialogJS();
+			print we_html_element::jsElement(we_getImageResizeDialogJS());
 			break;
 		case "image_convertJPEG":
-			print we_getImageConvertDialogJS();
+			print we_html_element::jsElement(we_getImageConvertDialogJS());
 			break;
 		case "image_rotate":
-			print we_getImageRotateDialogJS();
+			print we_html_element::jsElement(we_getImageRotateDialogJS());
 			break;
 	}
-
-	print "//-->\n</script>\n";
-
 
 	print STYLESHEET . "</head>";
 

@@ -115,7 +115,7 @@ if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
 		$_SESSION['weS']['EditPageNr'] = WE_EDITPAGE_CONTENT;
 		$we_doc->EditPageNr = WE_EDITPAGE_CONTENT;
 	} else{
-		if($we_doc->ClassName == 'we_imageDocument'){
+		if(get_class($we_doc) == 'we_imageDocument'){
 			$_SESSION['weS']['EditPageNr'] = WE_EDITPAGE_CONTENT;
 			$we_doc->EditPageNr = WE_EDITPAGE_CONTENT;
 		} else{
