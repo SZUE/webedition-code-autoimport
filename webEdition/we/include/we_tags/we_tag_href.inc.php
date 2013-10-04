@@ -155,7 +155,7 @@ function we_tag_href($attribs){
 		($type == we_base_link::TYPE_ALL || $type == we_base_link::TYPE_INT ? '
 <tr>
 	<td class="weEditmodeStyle">' . ($type == we_base_link::TYPE_ALL ? we_forms::radiobutton(1, $int, $int_elem_Name, $span . g_l('tags', '[int_href]') . ':</span>') : $span . g_l('tags', '[int_href]') . ':</span><input type="hidden" name="' . $int_elem_Name . '" value="1" />' ) . '</td>
-	<td class="weEditmodeStyle" style="width:' . ($size + 20) . 'px">' . $yuiSuggest->getHTML() . $yuiSuggest->getYuiCode() . '</td>
+	<td class="weEditmodeStyle" style="width:' . ($size + 20) . 'px">' . $yuiSuggest->getHTML() .  '</td>
 	<td class="weEditmodeStyle">' . $but . '</td>
 	<td class="weEditmodeStyle">' . $open . '</td>
 	<td class="weEditmodeStyle">' . $trashbut . '</td>
