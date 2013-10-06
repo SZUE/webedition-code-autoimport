@@ -119,14 +119,14 @@ function makePIDTail($pid, $cid, $db = '', $table = FILE_TABLE){
 		$pid_tail[] = OBJECT_X_TABLE . $cid . '.OF_Workspaces LIKE "%,' . $pid . ',%" OR ' . OBJECT_X_TABLE . $cid . '.OF_ExtraWorkspacesSelected LIKE "%,' . $pid . ',%"';
 	}
 	return (empty($pid_tail) ? 1 :
-					' (' . implode(' OR ', $pid_tail) . ') '
-			);
+			' (' . implode(' OR ', $pid_tail) . ') '
+		);
 }
 
 function we_getCatsFromDoc($doc, $tokken = ',', $showpath = false, $db = '', $rootdir = '/', $catfield = '', $onlyindir = ''){
 	return (isset($doc->Category) ?
-					we_getCatsFromIDs($doc->Category, $tokken, $showpath, $db, $rootdir, $catfield, $onlyindir) :
-					'');
+			we_getCatsFromIDs($doc->Category, $tokken, $showpath, $db, $rootdir, $catfield, $onlyindir) :
+			'');
 }
 
 function we_getCatsFromIDs($catIDs, $tokken = ',', $showpath = false, $db = '', $rootdir = '/', $catfield = '', $onlyindir = '', $asArray = false){
@@ -201,8 +201,8 @@ function getCurlHttp($server, $path, $files = array(), $header = false, $timeout
 	);
 	$parsedurl = parse_url($server);
 	$protocol = (isset($parsedurl['scheme']) ?
-					$parsedurl['scheme'] . '://' :
-					'http://');
+			$parsedurl['scheme'] . '://' :
+			'http://');
 
 	$port = (isset($parsedurl['port']) ? ':' . $parsedurl['port'] : '');
 	$_pathA = explode('?', $path);
@@ -511,8 +511,8 @@ function we_make_attribs($attribs, $doNotUse = ''){
 
 function we_hasPerm($perm){
 	return (isset($_SESSION['perms']['ADMINISTRATOR']) && $_SESSION['perms']['ADMINISTRATOR']) ||
-			((isset($_SESSION['perms'][$perm]) && $_SESSION['perms'][$perm]) ||
-			(!isset($_SESSION['perms'][$perm])));
+		((isset($_SESSION['perms'][$perm]) && $_SESSION['perms'][$perm]) ||
+		(!isset($_SESSION['perms'][$perm])));
 }
 
 function we_userCanEditModule($modName){
@@ -667,7 +667,7 @@ function in_parentID($id, $pid, $table = FILE_TABLE, $db = ''){
 			return false;
 		}
 		$found[] = $p;
-	}while(($p = f('SELECT ParentID FROM ' . $table . ' WHERE ID=' . intval($p), 'ParentID', $db)));
+	} while(($p = f('SELECT ParentID FROM ' . $table . ' WHERE ID=' . intval($p), 'ParentID', $db)));
 	return false;
 }
 
@@ -701,7 +701,7 @@ function in_workspace($IDs, $wsIDs, $table = FILE_TABLE, $db = '', $objcheck = f
 
 function userIsOwnerCreatorOfParentDir($folderID, $tab){
 	if(($tab != FILE_TABLE && $tab != OBJECT_FILES_TABLE) ||
-			($_SESSION['perms']['ADMINISTRATOR'] || ($folderID == 0))){
+		($_SESSION['perms']['ADMINISTRATOR'] || ($folderID == 0))){
 		return true;
 	}
 	$db = new DB_WE();
@@ -790,7 +790,7 @@ function getHashArrayFromCSV($csv, $firstEntry, $db = ''){
 	$IDArr = makeArrayFromCSV($csv);
 	$out = $firstEntry ? array(
 		'0' => $firstEntry
-			) : array();
+		) : array();
 	foreach($IDArr as $id){
 		if(strlen($id) && ($path = id_to_path($id, FILE_TABLE, $db))){
 			$out[$id] = $path;
@@ -1109,10 +1109,10 @@ function getHrefForObject($id, $pid, $path = '', $DB_WE = '', $hidedirindex = fa
 		}
 		if($objectseourls && $objecturl != ''){
 			return ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' .
-					($hidedirindex && show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES != '' && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))) ?
-							'' :
-							$path_parts['filename'] . '/' ) .
-					$objecturl . $pidstr;
+				($hidedirindex && show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES != '' && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))) ?
+					'' :
+					$path_parts['filename'] . '/' ) .
+				$objecturl . $pidstr;
 		} else {
 			return $path . '?we_objectID=' . intval($id) . str_replace('?', '&amp;', $pidstr);
 		}
@@ -1192,8 +1192,8 @@ function parseInternalLinks(&$text, $pid, $path = '', $doBaseReplace = true){
 				}
 				if($href){
 					$text = ($reg[2] == '?' ?
-									str_replace('href="' . we_base_link::TYPE_OBJ_PREFIX . $reg[1] . '?', 'href="' . $href . '&amp;', $text) :
-									str_replace('href="' . we_base_link::TYPE_OBJ_PREFIX . $reg[1] . $reg[2] . $reg[3], 'href="' . $href . $reg[2] . $reg[3], $text));
+							str_replace('href="' . we_base_link::TYPE_OBJ_PREFIX . $reg[1] . '?', 'href="' . $href . '&amp;', $text) :
+							str_replace('href="' . we_base_link::TYPE_OBJ_PREFIX . $reg[1] . $reg[2] . $reg[3], 'href="' . $href . $reg[2] . $reg[3], $text));
 				} else {
 					$text = preg_replace(array('|<a [^>]*href="' . we_base_link::TYPE_OBJ_PREFIX . $reg[1] . '"[^>]*>(.*)</a>|Ui',
 						'|<a [^>]*href="' . we_base_link::TYPE_OBJ_PREFIX . $reg[1] . '"[^>]*>|Ui',), array('\1'), $text);
@@ -1368,7 +1368,7 @@ function getServerProtocol($slash = false){
 
 function getServerAuth(){
 	$pwd = rawurlencode(defined('HTTP_USERNAME') ? HTTP_USERNAME : (isset($_SERVER['PHP_AUTH_USER']) ? $_SERVER['PHP_AUTH_USER'] : '')) . ':' .
-			rawurlencode(defined('HTTP_PASSWORD') ? HTTP_PASSWORD : (isset($_SERVER['PHP_AUTH_PW']) ? $_SERVER['PHP_AUTH_PW'] : '')) . '@';
+		rawurlencode(defined('HTTP_PASSWORD') ? HTTP_PASSWORD : (isset($_SERVER['PHP_AUTH_PW']) ? $_SERVER['PHP_AUTH_PW'] : '')) . '@';
 	return (strlen($pwd) > 3) ? $pwd : '';
 }
 
@@ -1447,8 +1447,8 @@ function number2System($value, $chars = array(), $str = ''){
  */
 function getPref($name){
 	return (isset($_SESSION['prefs'][$name]) ?
-					$_SESSION['prefs'][$name] :
-					(defined($name) ? constant($name) : ''));
+			$_SESSION['prefs'][$name] :
+			(defined($name) ? constant($name) : ''));
 }
 
 /**
@@ -1567,7 +1567,7 @@ function getHtmlTag($element, $attribs = array(), $content = '', $forceEndTag = 
 			require_once (WE_INCLUDES_PATH . 'validation/xhtml.inc.php');
 
 			$showWrong = (isset($_SESSION['prefs']['xhtml_show_wrong']) && $_SESSION['prefs']['xhtml_show_wrong'] && isset(
-							$GLOBALS['we_doc']) && $GLOBALS['we_doc']->InWebEdition); //  check if XML_SHOW_WRONG is true (user) - only in webEdition
+					$GLOBALS['we_doc']) && $GLOBALS['we_doc']->InWebEdition); //  check if XML_SHOW_WRONG is true (user) - only in webEdition
 // at the moment only transitional is supported
 			$xhtmlType = weTag_getAttribute('xmltype', $attribs, 'transitional');
 			$attribs = removeAttribs($attribs, $removeAttribs);
@@ -1586,13 +1586,13 @@ function getHtmlTag($element, $attribs = array(), $content = '', $forceEndTag = 
 
 	foreach($attribs as $k => $v){
 		$tag .= ' ' . ($k == 'link_attribute' ? // Bug #3741
-						$v :
-						str_replace('pass_', '', $k) . '="' . $v . '"');
+				$v :
+				str_replace('pass_', '', $k) . '="' . $v . '"');
 	}
 	return $tag . ($content != '' || $forceEndTag ? //	use endtag
-					'>' . $content . '</' . $element . '>' :
+			'>' . $content . '</' . $element . '>' :
 //	xml style or not
-					( ($_xmlClose && !$onlyStartTag) ? ' />' : '>'));
+			( ($_xmlClose && !$onlyStartTag) ? ' />' : '>'));
 }
 
 /**
@@ -1721,8 +1721,8 @@ function getWeFrontendLanguagesForBackend(){
 	foreach($GLOBALS['weFrontendLanguages'] as $Locale){
 		$temp = explode('_', $Locale);
 		$la[$Locale] = (count($temp) == 1 ?
-						CheckAndConvertISObackend(Zend_Locale::getTranslation($temp[0], 'language', $targetLang) . ' ' . $Locale) :
-						CheckAndConvertISObackend(Zend_Locale::getTranslation($temp[0], 'language', $targetLang) . ' (' . Zend_Locale::getTranslation($temp[1], 'territory', $targetLang) . ') ' . $Locale));
+				CheckAndConvertISObackend(Zend_Locale::getTranslation($temp[0], 'language', $targetLang) . ' ' . $Locale) :
+				CheckAndConvertISObackend(Zend_Locale::getTranslation($temp[0], 'language', $targetLang) . ' (' . Zend_Locale::getTranslation($temp[1], 'territory', $targetLang) . ') ' . $Locale));
 	}
 	return $la;
 }
@@ -1741,7 +1741,7 @@ $GLOBALS[\'weFrontendLanguages\'] = array(
 );
 
 $GLOBALS[\'weDefaultFrontendLanguage\'] = \'' . $default . '\';'
-					, 'w+'
+			, 'w+'
 	);
 }
 
@@ -1819,8 +1819,8 @@ function CheckAndConvertISObackend($utf8data){
 function g_l_encodeArray($tmp){
 	$charset = (isset($_SESSION['user']) && isset($_SESSION['user']['isWeSession']) ? $GLOBALS['WE_BACKENDCHARSET'] : (isset($GLOBALS['CHARSET']) ? $GLOBALS['CHARSET'] : $GLOBALS['WE_BACKENDCHARSET']));
 	return (is_array($tmp) ?
-					array_map('g_l_encodeArray', $tmp) :
-					mb_convert_encoding($tmp, $charset, 'UTF-8'));
+			array_map('g_l_encodeArray', $tmp) :
+			mb_convert_encoding($tmp, $charset, 'UTF-8'));
 }
 
 /**
@@ -1836,9 +1836,9 @@ function g_l($name, $specific, $omitErrors = false){
 	//t_e($name,$specific,$GLOBALS['we']['PageCharset'] , $GLOBALS['WE_BACKENDCHARSET']);
 	$charset = (isset($_SESSION['user']) && isset($_SESSION['user']['isWeSession']) ?
 //inside we
-					(isset($GLOBALS['we']['PageCharset']) ? $GLOBALS['we']['PageCharset'] : $GLOBALS['WE_BACKENDCHARSET']) :
+			(isset($GLOBALS['we']['PageCharset']) ? $GLOBALS['we']['PageCharset'] : $GLOBALS['WE_BACKENDCHARSET']) :
 //front-end
-					(isset($GLOBALS['CHARSET']) && $GLOBALS['CHARSET'] ? $GLOBALS['CHARSET'] : DEFAULT_CHARSET) );
+			(isset($GLOBALS['CHARSET']) && $GLOBALS['CHARSET'] ? $GLOBALS['CHARSET'] : DEFAULT_CHARSET) );
 //cache last accessed lang var
 	static $cache = array();
 //echo $name.$specific;
@@ -1846,11 +1846,11 @@ function g_l($name, $specific, $omitErrors = false){
 		$tmp = getVarArray($cache["l_$name"], $specific);
 		if(!($tmp === false)){
 			return ($charset != 'UTF-8' ?
-							(is_array($tmp) ?
-									array_map('g_l_encodeArray', $tmp) :
-									mb_convert_encoding($tmp, $charset, 'UTF-8')
-							) :
-							$tmp);
+					(is_array($tmp) ?
+						array_map('g_l_encodeArray', $tmp) :
+						mb_convert_encoding($tmp, $charset, 'UTF-8')
+					) :
+					$tmp);
 		}
 	}
 	$file = WE_INCLUDES_PATH . 'we_language/' . $GLOBALS['WE_LANGUAGE'] . '/' . str_replace('_', '/', $name) . '.inc.php';
@@ -1861,11 +1861,11 @@ function g_l($name, $specific, $omitErrors = false){
 		if($tmp !== false){
 			$cache['l_' . $name] = ${'l_' . $name};
 			return ($charset != 'UTF-8' ?
-							(is_array($tmp) ?
-									array_map('g_l_encodeArray', $tmp) :
-									mb_convert_encoding($tmp, $charset, 'UTF-8')
-							) :
-							$tmp);
+					(is_array($tmp) ?
+						array_map('g_l_encodeArray', $tmp) :
+						mb_convert_encoding($tmp, $charset, 'UTF-8')
+					) :
+					$tmp);
 		} else {
 			if(!$omitErrors){
 				t_e('notice', 'Requested lang entry l_' . $name . $specific . ' not found in ' . $file . ' !');
@@ -1903,8 +1903,8 @@ function we_templateInit(){
 		}
 //check for Trigger
 		if(defined('SCHEDULE_TABLE') && (!$GLOBALS['WE_MAIN_DOC']->InWebEdition) &&
-				(SCHEDULER_TRIGGER == SCHEDULER_TRIGGER_PREDOC) &&
-				(!isset($GLOBALS['we']['backVars']) || (isset($GLOBALS['we']['backVars']) && count($GLOBALS['we']['backVars']) == 0)) //on first call this variable is unset, so we're not inside an include
+			(SCHEDULER_TRIGGER == SCHEDULER_TRIGGER_PREDOC) &&
+			(!isset($GLOBALS['we']['backVars']) || (isset($GLOBALS['we']['backVars']) && count($GLOBALS['we']['backVars']) == 0)) //on first call this variable is unset, so we're not inside an include
 		){
 			we_schedpro::trigger_schedule();
 		}
@@ -1926,7 +1926,7 @@ function we_templateInit(){
 function we_templateHead(){
 	if(isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode']){
 		print STYLESHEET_BUTTONS_ONLY . SCRIPT_BUTTONS_ONLY .
-				we_html_element::jsScript(JS_DIR . 'windows.js') . weSuggest::getYuiFiles();
+			we_html_element::jsScript(JS_DIR . 'windows.js') . weSuggest::getYuiFiles();
 		require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 	}
 }
@@ -1934,16 +1934,16 @@ function we_templateHead(){
 function we_templatePreContent(){
 	if(isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'] && !isset($GLOBALS['we_templatePreContent'])){
 		print '<form name="we_form" action="" method="post" onsubmit="return false;">' .
-				we_class::hiddenTrans();
+			we_class::hiddenTrans();
 		$GLOBALS['we_templatePreContent'] = (isset($GLOBALS['we_templatePreContent']) ? $GLOBALS['we_templatePreContent'] + 1 : 1);
 	}
 }
 
 function we_templatePostContent(){
 	if(isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'] && (--$GLOBALS['we_templatePreContent']) == 0){
-			$yuiSuggest = &weSuggest::getInstance();
+		$yuiSuggest = &weSuggest::getInstance();
 		//FIXME: check this new field to determine if all data has been transmitted
-		print $yuiSuggest->getYuiCode() .'<input type="hidden" name="we_complete_request" value="1"/></form>';
+		print $yuiSuggest->getYuiCode() . '<input type="hidden" name="we_complete_request" value="1"/></form>';
 	}
 }
 
@@ -1959,8 +1959,8 @@ function we_templatePost(){
 	}
 //check for Trigger
 	if(defined('SCHEDULE_TABLE') && (!$GLOBALS['WE_MAIN_DOC']->InWebEdition) &&
-			(SCHEDULER_TRIGGER == SCHEDULER_TRIGGER_POSTDOC) &&
-			(!isset($GLOBALS['we']['backVars']) || (isset($GLOBALS['we']['backVars']) && count($GLOBALS['we']['backVars']) == 0))//not inside an included Doc
+		(SCHEDULER_TRIGGER == SCHEDULER_TRIGGER_POSTDOC) &&
+		(!isset($GLOBALS['we']['backVars']) || (isset($GLOBALS['we']['backVars']) && count($GLOBALS['we']['backVars']) == 0))//not inside an included Doc
 	){ //is set to Post or not set (new default)
 		we_schedpro::trigger_schedule();
 	}
@@ -1968,9 +1968,9 @@ function we_templatePost(){
 
 function show_SeoLinks(){
 	return (
-			!(SEOINSIDE_HIDEINWEBEDITION && $GLOBALS['WE_MAIN_DOC']->InWebEdition) &&
-			!(SEOINSIDE_HIDEINEDITMODE && (isset($GLOBALS['we_editmode']) && ($GLOBALS['we_editmode']) || (isset($GLOBALS['WE_MAIN_EDITMODE']) && $GLOBALS['WE_MAIN_EDITMODE'])))
-			);
+		!(SEOINSIDE_HIDEINWEBEDITION && $GLOBALS['WE_MAIN_DOC']->InWebEdition) &&
+		!(SEOINSIDE_HIDEINEDITMODE && (isset($GLOBALS['we_editmode']) && ($GLOBALS['we_editmode']) || (isset($GLOBALS['WE_MAIN_EDITMODE']) && $GLOBALS['WE_MAIN_EDITMODE'])))
+		);
 }
 
 function we_TemplateExit($param = 0){
@@ -2016,12 +2016,12 @@ function cleanWEZendCache(){
 function we_log_loginFailed($table, $user){
 	$db = $GLOBALS['DB_WE'];
 	$db->query('INSERT INTO ' . FAILED_LOGINS_TABLE . ' SET ' . we_database_base::arraySetter(array(
-				'UserTable' => $table,
-				'Username' => $user,
-				'IP' => $_SERVER['REMOTE_ADDR'],
-				'Servername' => $_SERVER['SERVER_NAME'],
-				'Port' => $_SERVER['SERVER_PORT'],
-				'Script' => $_SERVER['SCRIPT_NAME']
+			'UserTable' => $table,
+			'Username' => $user,
+			'IP' => $_SERVER['REMOTE_ADDR'],
+			'Servername' => $_SERVER['SERVER_NAME'],
+			'Port' => $_SERVER['SERVER_PORT'],
+			'Script' => $_SERVER['SCRIPT_NAME']
 	)));
 }
 
