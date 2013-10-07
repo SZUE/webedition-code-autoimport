@@ -77,7 +77,7 @@ function we_tag_href($attribs){
 			$intPath = $ct = '';
 
 			if($intID){
-				$foo = getHash('SELECT Path,ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($intID), $GLOBALS['DB_WE']);
+				$foo = getHash('SELECT Path,ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($intID), $GLOBALS['DB_WE'], MYSQL_NUM);
 				if(!empty($foo)){
 					list($intPath, $ct) = $foo;
 				}
@@ -101,7 +101,7 @@ function we_tag_href($attribs){
 	}
 
 	if(!$GLOBALS['we_editmode']){
-		if($int && defined('CUSTOMER_TABLE') && $intID){
+		if($int && defined('CUSTOMER_TABLE') && $intID && weTag_getAttribute('customerFilter', $attribs, true, true)){
 			$filter = weDocumentCustomerFilter::getFilterByIdAndTable($intID, FILE_TABLE);
 
 			if(is_object($filter)){
