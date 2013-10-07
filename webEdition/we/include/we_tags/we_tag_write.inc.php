@@ -244,8 +244,8 @@ function we_tag_write($attribs){
 		}
 	}
 	if(isset($GLOBALS['WE_SESSION_START']) && $GLOBALS['WE_SESSION_START']){
-		unset($_SESSION['we_' . $type . '_session_' . $name]);
-		$GLOBALS['we_' . $type . '_session_' . $name] = array();
+		unset($_SESSION['weS']['we_' . $type . '_session_' . $name]);
+		$GLOBALS['weS']['we_' . $type . '_session_' . $name] = array();
 	}
 }
 
