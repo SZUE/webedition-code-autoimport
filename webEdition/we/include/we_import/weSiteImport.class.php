@@ -218,7 +218,7 @@ class weSiteImport{
 							$records[$name] = 'text';
 							break;
 						case 'input' :
-							$attribs = self::_parseAttributes(preg_replace('/^<we:[^ ]+ /i', '', $tag));
+							$attribs = we_tag_tagParser::makeArrayFromAttribs(preg_replace('/^<we:[^ ]+ /i', '', $tag));
 							$type = isset($attribs['type']) ? $attribs['type'] : 'text';
 							switch($type){
 								case 'text' :
@@ -241,19 +241,6 @@ class weSiteImport{
 		$records['Keywords'] = 'text';
 		$records['Charset'] = 'text';
 		return $records;
-	}
-
-	/**
-	 * converts attributes of an tag (string) into an hash array
-	 *
-	 * @param	string	$attr attributes of the tag in string form (a="b" c="d" ...)
-	 *
-	 * @return	array
-	 */
-	private static function _parseAttributes($attr){
-		$arr = array();
-		@eval('$arr = array(' . we_tag_tagParser::parseAttribs($attr) . ');');
-		return $arr;
 	}
 
 	/**

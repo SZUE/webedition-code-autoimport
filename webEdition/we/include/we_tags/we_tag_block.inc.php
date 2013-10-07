@@ -32,7 +32,7 @@
   }
  */
 
-function we_parse_tag_block($attribs, $content){
+function we_parse_tag_block($attribs, $content, array $attr){
 	$GLOBALS['blkCnt'] = (isset($GLOBALS['blkCnt']) ? $GLOBALS['blkCnt'] + 1 : 0);
 	$arr = array();
 	eval('$arr = ' . (PHPLOCALSCOPE ? str_replace('$', '\$', $attribs) : $attribs) . ';'); //Bug #6516
@@ -41,7 +41,7 @@ function we_parse_tag_block($attribs, $content){
 	}
 
 	//cleanup content
-	while(strpos($content, '\$') !== false) {
+	while(strpos($content, '\$') !== false){
 		$content = str_replace('\$', '$', $content);
 	}
 	$blockName = weTag_getParserAttribute('name', $arr);
@@ -54,7 +54,7 @@ function we_parse_tag_block($attribs, $content){
 		$content = str_replace(array('=>', '?>'), array('#####PHPCALSSARROW####', '#####PHPENDBRACKET####'), $content);
 		$content = preg_replace('|(< ?td[^>]*>)(.*< ?/ ?td[^>]*>)|si', '$1' . $ctlPre . '$block_' . $name . $ctlPost . '$2', $content, 1);
 		$content = str_replace(array('#####PHPCALSSARROW####', '#####PHPENDBRACKET####'), array('=>', '?>'), $content);
-	} else{
+	} else {
 		$content = $ctlPre . '$block_' . $name . $ctlPost . $content;
 	}
 //	}
@@ -125,12 +125,12 @@ function we_tag_block($attribs){
 		if($limit > 0 && $listlen > $limit){
 			$listlen = $limit;
 		}
-	} else{
+	} else {
 		if($limit && $limit > 0){
 			$diff = $limit - $listlen;
 			if($diff > 0){
 				$show = min($show, $diff);
-			} else{
+			} else {
 				$show = 0;
 			}
 		}
@@ -168,7 +168,7 @@ function we_tag_blockControls($attribs){
 			}
 			$selectb .= '</select>';
 			$tabArray[] = $selectb;
-		} else{
+		} else {
 			$tabArray[] = we_button::create_button('image:btn_add_listelement', "javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('insert_entry_at_list','" . $attribs['name'] . "','" . $attribs['pos'] . "',1)", true, 100, 22, '', '', ($attribs['ctlShow'] > 0 ? false : true));
 			$jsSelector = '1';
 		}
@@ -185,7 +185,7 @@ function we_tag_blockControls($attribs){
 		$tabArray[] = we_button::create_button('image:btn_function_trash', "javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('delete_list','" . $attribs['name'] . "','" . $attribs['pos'] . "','" . $GLOBALS['postTagName'] . "',1)");
 
 		return we_button::create_button_table($tabArray, 5);
-	} else{
+	} else {
 
 		if($attribs['ctlShowSelect'] && $attribs['ctlShow'] > 0){
 			$selectb = '<select name="' . $attribs['ctlName'] . '_00">';
@@ -196,7 +196,7 @@ function we_tag_blockControls($attribs){
 			$plusbut = we_button::create_button('image:btn_add_listelement', "javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('add_entry_to_list','" . $attribs['name'] . "',document.we_form.elements['" . $attribs['ctlName'] . "_00'].options[document.we_form.elements['" . $attribs['ctlName'] . "_00'].selectedIndex].text);", true, 100, 22, '', '', ($attribs['ctlShow'] > 0 ? false : true));
 
 			$plusbut = we_button::create_button_table(array($plusbut, $selectb));
-		} else{
+		} else {
 			$plusbut = we_button::create_button('image:btn_add_listelement', "javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('add_entry_to_list','" . $attribs['name'] . "',1)", true, 100, 22, '', '', ($attribs['ctlShow'] > 0 ? false : true));
 		}
 

@@ -24,8 +24,7 @@
  */
 require_once ($_SERVER['DOCUMENT_ROOT'] . LIB_DIR . 'we/util/Strings.php');
 
-function we_parse_tag_addPercent($attribs, $content){
-	eval('$attribs = ' . $attribs . ';');
+function we_parse_tag_addPercent($a, $content,array $attribs){
 	$attribs['_type'] = 'stop';
 	return '<?php ' . we_tag_tagParser::printTag('addPercent', array('_type' => 'start')) . ';?>' . $content . '<?php printElement(' . we_tag_tagParser::printTag('addPercent', $attribs) . ');?>';
 }

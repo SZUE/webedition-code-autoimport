@@ -22,9 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_parse_tag_charset($attribs, $content){
-	return '<?php printElement(' . we_tag_tagParser::printTag('charset', $attribs, $content, true) . ');?>';
-}
 
 function we_tag_charset($attribs, $content){
 	$defined = weTag_getAttribute('defined', $attribs);

@@ -22,9 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_parse_tag_checkForm($attribs, $content){
-	$arr = array();
-	eval('$arr = ' . (PHPLOCALSCOPE ? str_replace('$', '\$', $attribs) : $attribs) . ';'); //Bug #6516
+function we_parse_tag_checkForm($attribs, $content, array $arr){
 	if(($foo = attributFehltError($arr, array('match' => false, 'type' => false), __FUNCTION__))){
 		return $foo;
 	}
@@ -74,7 +72,7 @@ function we_tag_checkForm($attribs, $content){
 				$content, we_message_reporting::WE_MESSAGE_FRONTEND) . '
             }
         ';
-	} else{
+	} else {
 		$jsOnError = we_message_reporting::getShowMessageCall($content, we_message_reporting::WE_MESSAGE_FRONTEND);
 	}
 
@@ -84,7 +82,7 @@ function we_tag_checkForm($attribs, $content){
 		$jsMandatory = '//  check mandatory
         var required = new Array("' . implode('", "', $_fields) . '");
         missingReq = weCheckFormMandatory(formular, required);';
-	} else{
+	} else {
 		$jsMandatory = '';
 	}
 
@@ -93,7 +91,7 @@ function we_tag_checkForm($attribs, $content){
 		$jsEmail = '//  validate emails
         var email = new Array("' . implode('", "', $_emails) . '");
         wrongEmail = weCheckFormEmail(formular, email);';
-	} else{
+	} else {
 		$jsEmail = '';
 	}
 
@@ -107,7 +105,7 @@ function we_tag_checkForm($attribs, $content){
         var password = new Array("' . implode('", "', $_pwFields) . '");
         pwError = weCheckFormPassword(formular, password);
         ';
-	} else{
+	} else {
 		$jsPasword = '';
 	}
 
@@ -118,14 +116,14 @@ function we_tag_checkForm($attribs, $content){
 			$jsTag = we_tag('js', array('id' => $jsIncludePath, 'xml' => $xml));
 			if($jsTag){
 				$jsEventHandler = $jsTag;
-			} else{
+			} else {
 				$jsEventHandler = '';
 				return parseError(g_l('parser', '[checkForm_jsIncludePath_not_found]'));
 			}
-		} else{
+		} else {
 			$jsEventHandler = we_html_element::jsScript($jsIncludePath);
 		}
-	} else{
+	} else {
 		$jsEventHandler = we_html_element::jsScript(JS_DIR . 'external/weCheckForm.js');
 	}
 

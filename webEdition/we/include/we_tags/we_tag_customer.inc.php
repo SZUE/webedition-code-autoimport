@@ -22,10 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_parse_tag_customer($attribs, $content){
-	$arr = array();
-	eval('$arr = ' . (PHPLOCALSCOPE ? str_replace('$', '\$', $attribs) : $attribs) . ';'); //Bug #6516
-
+function we_parse_tag_customer($attribs, $content, array $arr){
 	$name = weTag_getParserAttribute('name', $arr);
 	if($name && strpos($name, ' ') !== false){
 		return parseError(sprintf(g_l('parser', '[name_with_space]'), 'customer'));
@@ -84,7 +81,7 @@ function we_tag_customer($attribs){
 				</tr>
 			</table><?php
 		}
-	} else{
+	} else {
 
 		$we_cid = $we_cid ? $we_cid : (isset($_REQUEST['we_cid']) ? $_REQUEST['we_cid'] : 0);
 	}

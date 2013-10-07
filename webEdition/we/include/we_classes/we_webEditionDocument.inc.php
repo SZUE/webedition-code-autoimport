@@ -895,9 +895,7 @@ if (!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 			$_tags = we_tag_tagParser::itemize_we_tag('we:controlElement', $templatecode);
 			//	we need all given tags ...
 
-			$_size = count($_tags[0]);
-
-			if($_size > 0){
+			if(!empty($_tags[0])){
 
 				if(!in_array('controlElement', $this->persistent_slots)){
 					$this->persistent_slots[] = 'controlElement';
@@ -907,8 +905,8 @@ if (!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 
 				$_ctrlArray = array();
 
-				for($i = 0; $i < $_size; $i++){ //	go through all matches
-					$_tagAttribs = makeArrayFromAttribs($_tags[2][$i]);
+				foreach($_tags[2] as $cur){ //	go through all matches
+					$_tagAttribs = we_tag_tagParser::makeArrayFromAttribs($cur);
 
 					$_type = weTag_getAttribute('type', $_tagAttribs);
 					$_name = weTag_getAttribute('name', $_tagAttribs);
@@ -954,7 +952,7 @@ if (!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 				$_tags = we_tag_tagParser::itemize_we_tag('we:hidePages', $templatecode);
 
 				// here we only take the FIRST tag
-				$_tagAttribs = makeArrayFromAttribs($_tags[2][0]);
+				$_tagAttribs = we_tag_tagParser::makeArrayFromAttribs($_tags[2][0]);
 
 				$_pages = weTag_getAttribute('pages', $_tagAttribs);
 

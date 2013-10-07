@@ -22,8 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_parse_tag_captcha($attribs){
-	eval('$attribs = ' . $attribs . ';');
+function we_parse_tag_captcha($a, $c, array $attribs){
 	if(($foo = attributFehltError($attribs, array('width' => false, 'height' => false), __FUNCTION__))){
 		return $foo;
 	}

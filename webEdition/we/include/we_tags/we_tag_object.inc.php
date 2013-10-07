@@ -22,9 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_parse_tag_object($attribs, $content){
-	$arr = array();
-	eval('$arr = ' . (PHPLOCALSCOPE ? str_replace('$', '\$', $attribs) : $attribs) . ';'); //Bug #6516
+function we_parse_tag_object($attribs, $content, array $arr){
 	$name = weTag_getParserAttribute('name', $arr);
 	if($name && strpos($name, ' ') !== false){
 		return parseError(sprintf(g_l('parser', '[name_with_space]'), 'object'));
@@ -32,8 +30,8 @@ function we_parse_tag_object($attribs, $content){
 
 	$we_oid = weTag_getAttribute('id', $arr, 0);
 	if(empty($we_oid) && empty($name)){
-				return attributFehltError($arr, 'name', __FUNCTION__);
-			}
+		return attributFehltError($arr, 'name', __FUNCTION__);
+	}
 
 	return '<?php global $lv;
 		if(' . we_tag_tagParser::printTag('object', $attribs) . '){?>' . $content . '<?php }
