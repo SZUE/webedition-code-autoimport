@@ -894,7 +894,7 @@ function we_readParents($id, &$parentlist, $tab, $match = 'ContentType', $matchv
 
 function we_readChilds($pid, &$childlist, $tab, $folderOnly = true, $where = '', $match = 'ContentType', $matchvalue = 'folder', $db = ''){
 	$db = $db ? $db : new DB_WE();
-	$db->query('SELECT ID,' . $db->escape($match) . ' FROM ' . $db->escape($tab) . ' WHERE ' . ($folderOnly ? ' IsFolder=1 AND ' : '') . 'ParentID=' . intval($pid) . $where);
+	$db->query('SELECT ID,' . $db->escape($match) . ' FROM ' . $db->escape($tab) . ' WHERE ' . ($folderOnly ? ' IsFolder=1 AND ' : '') . 'ParentID=' . intval($pid) . ' ' . $where);
 	$todo = array();
 	while($db->next_record()){
 		if($db->f($match) == $matchvalue){
