@@ -22,9 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_parse_tag_listview($attribs, $content){
-	$arr = array();
-	eval('$arr = ' . str_replace(array('\$', '$', '%WED%',), array('%WED%', '\$', '\$'), $attribs) . ';'); //Bug #6516
+function we_parse_tag_listview($attribs, $content, array $arr){
 	switch(weTag_getParserAttribute('type', $arr)){
 		default:
 		case 'document':
@@ -193,7 +191,7 @@ function we_tag_listview($attribs){
 				$we_lv_linktype = 'tblObjectFile';
 				$we_lv_pagelanguage = $we_lv_pagelanguage == 'self' ? $record['OF_Language'] : ($we_lv_pagelanguage == 'top' ? $we_lv_ownlanguage : $we_lv_pagelanguage);
 				$we_lv_ownlanguage = $record['OF_Language'];
-			} else{
+			} else {
 				$we_lv_pagelanguage = $we_lv_pagelanguage == 'self' || $we_lv_pagelanguage == 'top' ? $we_lv_ownlanguage : we_getDocForTag($docAttr);
 
 				if(isset($we_lv_langguagesdoc->TableID) && $we_lv_langguagesdoc->TableID){

@@ -253,11 +253,16 @@ class we_tag_tagParser{
 		return array(FALSE, FALSE);
 	}
 
-	public static function parseAttribs($attr){
+	public static function makeArrayFromAttribs($attr){
+		$arr = array();
+		@eval('$arr = array(' . self::parseAttribs($attr) . ');');
+		return $arr;
+	}
+
+	public static function parseAttribs($attr, $asArray = false){
 		//remove comment-attribute (should never be seen), and obsolete cachelifetime
 		$removeAttribs = array('cachelifetime', 'comment');
-//FIXME: always return array!!!
-		$attribs = '';
+		$attribs = array();
 		$regs = array();
 		preg_match_all('/([^=]+)=[ \t]*"([^"]*)"/', $attr, $regs, PREG_SET_ORDER);
 
@@ -265,11 +270,15 @@ class we_tag_tagParser{
 			foreach($regs as $f){
 				if(!in_array($f[1], $removeAttribs)){
 					$val = $f[2];
-					$attribs .= '"' . trim($f[1]) . '"=>' . ($val == 'true' || $val == 'false' || is_numeric($val) ? $val : '"'.$val.'"') . ',';
+					if($asArray){
+						$attribs[trim($f[1])] = $val;
+					} else {
+						$attribs[] = '"' . trim($f[1]) . '"=>' . ($val == 'true' || $val == 'false' || is_numeric($val) ? $val : '"' . $val . '"') . ',';
+					}
 				}
 			}
 		}
-		return rtrim($attribs, ',');
+		return ($asArray ? $attribs : implode(',', $attribs));
 	}
 
 	private function parseTag(&$code, $ipos){
@@ -298,16 +307,20 @@ class we_tag_tagParser{
 		preg_match('%</?we:[[:alnum:]_-]+[ \t\n\r]*(.*)' . $regs[4] . $regs[5] . '%msi', $regs[0], $regs);
 		$attr = trim($regs[1]);
 
-		//FIXME: remove?!
-		if(preg_match('|name[ \t]*=[ \t]*"([^"]*)"|i', $attr, $regs)){
-			if(!$regs[1]){
+		$attribs = self::parseAttribs((PHPLOCALSCOPE ?
+					str_replace('\$', '$', $attr) : //#6330
+					$attr)
+				, true);
+		$attr = self::printArray($attribs);
+
+		if(isset($attribs['name'])){
+			$len = strlen($attribs['name']);
+			if($len == 0){
 				print parseError(sprintf(g_l('parser', '[name_empty]'), $tagname));
-			} elseif(strlen($regs[1]) > 255){
+			} elseif($len > 255){
 				print parseError(sprintf(g_l('parser', '[name_to_long]'), $tagname));
 			}
 		}
-
-		$attribs = self::parseAttribs($attr);
 
 		if(!function_exists('we_tag_' . $tagname)){
 			$ret = we_include_tag_file($tagname);
@@ -353,19 +366,14 @@ class we_tag_tagParser{
 			}
 		}
 
-		if(PHPLOCALSCOPE){
-			$attribs = str_replace('\$', '$', 'array(' . rtrim($attribs, ',') . ')'); //#6330
-			//t_e($tag, $tagPos, $endeStartTag, $endTagPos, $ipos, $content,$this->tags);
-		} else {
-			$attribs = 'array(' . rtrim($attribs, ',') . ')';
-		}
+		//t_e($tag, $tagPos, $endeStartTag, $endTagPos, $ipos, $content,$this->tags);
 		$parseFn = 'we_parse_tag_' . $tagname;
 		if(function_exists($parseFn)){
 			/* call specific function for parsing this tag
 			 * $attribs is the attribs string, $content is content of this tag
 			 * return value is parsed again and inserted
 			 */
-			$content = $parseFn($attribs, $content);
+			$content = $parseFn($attr, $content, $attribs);
 			$code = substr($code, 0, $tagPos) .
 				$content .
 				substr($code, (isset($endeEndTagPos) ? $endeEndTagPos : $endeStartTag));
@@ -374,19 +382,19 @@ class we_tag_tagParser{
 				return parseError(sprintf(g_l('parser', '[selfclosingIf]'), $tagname));
 			}
 			$code = substr($code, 0, $tagPos) .
-				'<?php if(' . self::printTag($tagname, $attribs) . '){ ?>' .
+				'<?php if(' . self::printTag($tagname, $attr) . '){ ?>' .
 				$content .
 				'<?php } ?>' .
 				substr($code, $endeEndTagPos);
 		} else {
-			// Tag besitzt Endtag
-			if($content){
-				$code = substr($code, 0, $tagPos) . '<?php printElement(' . self::printTag($tagname, $attribs, $content, true) . '); ?>' . substr(
-						$code, $endeEndTagPos);
-			} else {
-				$code = substr($code, 0, $tagPos) . '<?php printElement(' . self::printTag($tagname, $attribs) . '); ?>' . substr(
-						$code, (isset($endeEndTagPos) ? $endeEndTagPos : $endeStartTag));
-			}
+
+			$code = substr($code, 0, $tagPos) . '<?php printElement(' .
+				($content ?
+					// Tag besitzt Endtag
+					self::printTag($tagname, $attr, $content, true) . '); ?>' :
+					// Tag ohne Endtag
+					self::printTag($tagname, $attr) . '); ?>'
+				) . substr($code, (isset($endeEndTagPos) ? $endeEndTagPos : $endeStartTag));
 		}
 		return (isset($endTagNo) ? ($endTagNo - $ipos) : 1);
 	}

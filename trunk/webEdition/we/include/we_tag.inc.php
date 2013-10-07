@@ -291,12 +291,6 @@ function we_tag_path_hasIndex($path, $indexArray){
 	return false;
 }
 
-function makeArrayFromAttribs($attr){
-	$arr = array();
-	@eval('$arr = array(' . we_tag_tagParser::parseAttribs($attr) . ');');
-	return $arr;
-}
-
 function cutSimpleText($text, $len){
 	$text = substr($text, 0, $len);
 	$pos = array(

@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_parse_tag_answers($attribs, $content){
-	if(!defined("VOTING_TABLE")){
+	if(!defined('VOTING_TABLE')){
 		return modulFehltError('Voting', __FUNCTION__);
 	}
 	return '<?php while(' . we_tag_tagParser::printTag('answers', $attribs) . '){?>' . $content . '<?php }?>';

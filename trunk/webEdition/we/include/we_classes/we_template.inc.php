@@ -455,7 +455,7 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 						}
 					}
 
-					$att = self::_getAttribsArray(str_ireplace('<we:' . $tagname, '', $tag));
+					$att = we_tag_tagParser::makeArrayFromAttribs(str_ireplace('<we:' . $tagname, '', $tag));
 
 					if(in_array($tagname, $variant_tags)){
 						if($tagname == 'input' && isset($att['type']) && $att['type'] == 'date' && !$includedatefield){
@@ -563,9 +563,9 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 			return g_l('weClass', "[no_documents]");
 		}
 
-		$button = we_button::create_button("open", "javascript:top.weEditorFrameController.openDocument('" . FILE_TABLE . "', document.we_form.elements['TemplateDocuments'].value, 'text/webedition');");
-		$foo = $this->htmlSelect($textname, $path, 1, "", false, "", "value", 388);
-		return $this->htmlFormElementTable($foo, "", "left", "defaultfont", "", we_html_tools::getPixel(20, 4), $button);
+		$button = we_button::create_button('open', "javascript:top.weEditorFrameController.openDocument('" . FILE_TABLE . "', document.we_form.elements['TemplateDocuments'].value, 'text/webedition');");
+		$foo = $this->htmlSelect($textname, $path, 1, '', false, '', 'value', 388);
+		return $this->htmlFormElementTable($foo, '', 'left', 'defaultfont', '', we_html_tools::getPixel(20, 4), $button);
 	}
 
 	/**
@@ -575,12 +575,6 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 	 */
 	function getTemplateCode($completeCode = true){
 		return $completeCode ? $this->getElement('completeData') : $this->getElement('data');
-	}
-
-	private static function _getAttribsArray($attributes){
-		$att = array();
-		@eval('$att = array(' . we_tag_tagParser::parseAttribs($attributes) . ');');
-		return $att;
 	}
 
 	/* setter for runtime variable doUpdateCode which allows save a class without rebuilding everything -> for later rebuild
@@ -654,7 +648,7 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 
 
 		foreach($regs as $reg){
-			$attribs = self::_getAttribsArray(isset($reg[2]) ? $reg[2] : '');
+			$attribs = we_tag_tagParser::makeArrayFromAttribs(isset($reg[2]) ? $reg[2] : '');
 			$name = isset($attribs['name']) ? $attribs['name'] : '';
 			if($name){
 				if(!isset($masterTags[$name])){
@@ -688,7 +682,7 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 
 				foreach($contentTags as $reg){
 					$all = $reg[0];
-					$attribs = self::_getAttribsArray($reg[1]);
+					$attribs = we_tag_tagParser::makeArrayFromAttribs($reg[1]);
 					$name = isset($attribs['name']) ? $attribs['name'] : '';
 					if($name){
 						$we_masterTagCode = isset($masterTags[$name]['content']) ? $masterTags[$name]['content'] : '';
@@ -711,7 +705,7 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 			// search for include tag
 			if(preg_match('|^<we:include ([^>]+)>$|i', $tag, $regs)){ // include found
 				// get attributes of tag
-				$att = self::_getAttribsArray($regs[1]);
+				$att = we_tag_tagParser::makeArrayFromAttribs($regs[1]);
 				// if type-attribute is equal to "template"
 				if(isset($att['type']) && $att['type'] == 'template'){
 

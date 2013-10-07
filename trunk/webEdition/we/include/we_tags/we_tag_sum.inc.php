@@ -23,12 +23,12 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_sum($attribs){
-	if(($foo = attributFehltError($attribs, "name", __FUNCTION__))){
+	if(($foo = attributFehltError($attribs, 'name', __FUNCTION__))){
 		return $foo;
 	}
 	$name = weTag_getAttribute('_name_orig', $attribs);
-	$num_format = weTag_getAttribute("num_format", $attribs);
-	$result = (isset($GLOBALS["summe"][$name]) ? we_util::std_numberformat($GLOBALS["summe"][$name]) : 0);
+	$num_format = weTag_getAttribute('num_format', $attribs);
+	$result = (isset($GLOBALS['summe'][$name]) ? we_util::std_numberformat($GLOBALS['summe'][$name]) : 0);
 
 	return we_util_Strings::formatNumber($result, $num_format, 2);
 }

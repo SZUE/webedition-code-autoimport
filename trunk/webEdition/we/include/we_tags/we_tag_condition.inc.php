@@ -22,8 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_parse_tag_condition($attribs, $content){
-	eval('$attribs = ' . $attribs . ';');
+function we_parse_tag_condition($a, $content, array $attribs){
 	$attribs['_type'] = 'start';
 	return '<?php ' . we_tag_tagParser::printTag('condition', $attribs) . ';?>' . $content . '<?php ' . we_tag_tagParser::printTag('condition', array('_type' => 'stop')) . ';?>';
 }

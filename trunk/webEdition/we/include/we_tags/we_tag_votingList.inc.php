@@ -22,8 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_parse_tag_votingList($attribs, $content){
-	eval('$attribs = ' . $attribs . ';');
+function we_parse_tag_votingList($a, $content, array $attribs){
 	if(($foo = attributFehltError($attribs, 'name', __FUNCTION__))){
 		return $foo;
 	}
