@@ -101,7 +101,7 @@ function we_tag_href($attribs){
 	}
 
 	if(!$GLOBALS['we_editmode']){
-		if($int && defined('CUSTOMER_TABLE') && $intID && weTag_getAttribute('customerFilter', $attribs, true, true)){
+		if($int && defined('CUSTOMER_TABLE') && $intID && weTag_getAttribute('cfilter', $attribs, true, true)){
 			$filter = weDocumentCustomerFilter::getFilterByIdAndTable($intID, FILE_TABLE);
 
 			if(is_object($filter)){
