@@ -254,12 +254,13 @@ class we_tag_tagParser{
 	}
 
 	public static function makeArrayFromAttribs($attr){
+		//FIXME: is this not equal to self::parseAttribs($attr, true)??
 		$arr = array();
-		@eval('$arr = array(' . self::parseAttribs($attr) . ');');
+		@eval('$arr = array(' . self::parseAttribs($attr, false) . ');');
 		return $arr;
 	}
 
-	public static function parseAttribs($attr, $asArray = false){
+	private static function parseAttribs($attr, $asArray){
 		//remove comment-attribute (should never be seen), and obsolete cachelifetime
 		$removeAttribs = array('cachelifetime', 'comment');
 		$attribs = array();
@@ -273,7 +274,7 @@ class we_tag_tagParser{
 					if($asArray){
 						$attribs[trim($f[1])] = $val;
 					} else {
-						$attribs[] = '"' . trim($f[1]) . '"=>' . ($val == 'true' || $val == 'false' || is_numeric($val) ? $val : '"' . $val . '"') . ',';
+						$attribs[] = '"' . trim($f[1]) . '"=>' . ($val == 'true' || $val == 'false' || is_numeric($val) ? $val : '"' . $val . '"');
 					}
 				}
 			}
@@ -407,11 +408,12 @@ class we_tag_tagParser{
 	}
 
 	public static function printArray($array){
-		$ret = '';
+		$ret = array();
 		foreach($array as $key => $val){
-			$ret.='\'' . $key . '\'=>' . (is_numeric($val) || $val == 'true' || $val == 'false' ? $val : '\'' . $val . '\'') . ',';
+			$quotes = ((strpos($val, '$') !== FALSE) || (strpos($val, '\'') !== FALSE) ? '"' : '\'');
+			$ret[] = '\'' . $key . '\'=>' . (is_numeric($val) || $val == 'true' || $val == 'false' ? $val : $quotes . $val . $quotes);
 		}
-		return 'array(' . $ret . ')';
+		return 'array(' . implode(',', $ret) . ')';
 	}
 
 }
