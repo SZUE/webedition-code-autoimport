@@ -22,58 +22,23 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_parse_tag_xmlnode($attribs, $content){
-	$arr = array();
-	eval('$arr = ' . (PHPLOCALSCOPE ? str_replace('$', '\$', $attribs) : $attribs) . ';'); //Bug #6516
-	//fixme code zum umleiten fehlt noch 6495
+function we_parse_tag_xmlnode($attribs, $content, array $arr){
 	$to = weTag_getParserAttribute('to', $arr, 'screen');
-	$nameTo = weTag_getParserAttribute("nameto", $arr);
-	$printend = ';';
-	switch($to){
-		case "screen" :
-			$printstart = 'print ';
-			break;
-		case "request" :
-			$printstart = '$_REQUEST["' . $nameTo . '"] = ';
-			break;
-		case "post" :
-			$printstart = '$_POST["' . $nameTo . '"] = ';
-			break;
-		case "get" :
-			$printstart = '$_GET["' . $nameTo . '"] = ';
-			break;
-		case "global" :
-			$printstart = '$GLOBALS["' . $nameTo . '"] = ';
-			break;
-		case "session" :
-			$printstart = '$_SESSION["' . $nameTo . '"] = ';
-			break;
-		case "top" :
-			$printstart = '$GLOBALS["WE_MAIN_DOC"]->setElement(' . $nameTo . ',';
-			$printend = ');';
-			break;
-		case "self" :
-			$printstart = '$GLOBALS["we_doc"]->setElement(' . $nameTo . ',';
-			$printend = ');';
-			break;
+	$nameTo = weTag_getParserAttribute('nameto', $arr);
 
-		case "sessionfield" :
-			$printstart = 'if(isset($_SESSION["webuser"]["' . $nameTo . '"]))$_SESSION["webuser"]["' . $nameTo . '"] = ';
-			break;
-	}
 	$unq = '$_xmlnode' . md5(uniqid(__FUNCTION__, true));
 	return '<?php ' . $unq . '=' . we_tag_tagParser::printTag('xmlnode', $attribs) . ';
-		while(' . $unq . '->next()){
-			if(  ' . $unq . '->hasChild() ){
-			$GLOBALS[\'xsuperparent\']=' . $unq . '->getNode();?>' . $content . '<?php
-			}else{
-			   ' . $printstart . $unq . '->getFeedData()' . $printend . '
-			}
-			//array_pop($GLOBALS["xstack"]);  //ausgeblendet wegen 6339 und beobachtetem Verhalten, das immer maximal zwei Sachen angeziegt wurden
-			// fix me
-			// wann kann man was aus dem Array löschen?
-		}
-		unset(' . $unq . ');?>';
+while(' . $unq . '->next()){
+	if(  ' . $unq . '->hasChild() ){
+		$GLOBALS[\'xsuperparent\']=' . $unq . '->getNode();?>' . $content . '<?php
+	}else{
+		 echo we_redirect_tagoutput(' . $unq . '->getFeedData(),\'' . $nameTo . '\',\'' . $to . '\');
+	}
+	//array_pop($GLOBALS["xstack"]);  //ausgeblendet wegen 6339 und beobachtetem Verhalten, das immer maximal zwei Sachen angeziegt wurden
+	// fix me
+	// wann kann man was aus dem Array löschen?
+}
+unset(' . $unq . ');?>';
 }
 
 /**
@@ -97,7 +62,7 @@ function we_tag_xmlnode($attribs){
 	if($pind_name < 0){
 		$pind_name = 0;
 		$parent_name = '';
-	} else{
+	} else {
 		$parent_name = $GLOBALS["xstack"][$pind_name];
 	}
 
@@ -113,12 +78,12 @@ function we_tag_xmlnode($attribs){
 		$feed_name = new weXMLBrowser($url);
 		$GLOBALS["xpaths"][$ind_name]["url"] = $url;
 		$got_name = true;
-	} else{
+	} else {
 		if($feed){
 			$feed_name = $GLOBALS["xmlfeeds"][$feed];
 			$GLOBALS["xpaths"][$ind_name]["feed"] = $feed;
 			$got_name = true;
-		} else{
+		} else {
 			$got_name = false;
 			$c_name = 0;
 
@@ -164,7 +129,7 @@ function we_tag_xmlnode($attribs){
 		}
 		if(!empty($nodes_name)){
 			$got_name = true;
-		} else{
+		} else {
 			$got_name = true;
 		}
 	}
@@ -188,7 +153,7 @@ class _we_tag_xmlnode_struct{
 	function next(){
 		if($this->init){
 			return next($this->nodes_name) !== FALSE;
-		} else{
+		} else {
 			$this->init = true;
 			return reset($this->nodes_name) !== FALSE;
 		}

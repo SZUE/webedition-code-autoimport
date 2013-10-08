@@ -128,13 +128,15 @@ function we_setVarArray(&$arr, $string, $value){
 	}
 	$current = &$arr;
 
-	$arr_matches = array();
-	preg_match('/[^\[\]]+/', $string, $arr_matches);
-	$first = $arr_matches[0];
-	preg_match_all('/\[([^\]]*)\]/', $string, $arr_matches, PREG_PATTERN_ORDER);
-	$arr_matches = $arr_matches[1];
-	array_unshift($arr_matches, $first);
+	/* 	$arr_matches = array();
+	  preg_match('/[^\[\]]+/', $string, $arr_matches);
+	  $first = $arr_matches[0];
+	  preg_match_all('/\[([^\]]*)\]/', $string, $arr_matches, PREG_PATTERN_ORDER);
+	  $arr_matches = $arr_matches[1];
+	  array_unshift($arr_matches, $first); */
+	$arr_matches = preg_split('/\]\[|\[|\]/', $string);
 	$last = count($arr_matches) - 1;
+	unset($arr_matches[$last--]); //preg split has an empty element at the end
 	foreach($arr_matches as $pos => $dimension){
 		if(empty($dimension)){
 			$dimension = count($current);
@@ -208,13 +210,12 @@ function printElement($code){
 }
 
 function getArrayValue($name, $arrayIndex){
-	if(!isset($GLOBALS[$name])){
-		return '';
-	}
-	$var = $GLOBALS[$name];
-	$arr_matches = array();
-	preg_match_all('/\[([^\]]*)\]/', $arrayIndex, $arr_matches, PREG_PATTERN_ORDER);
-	foreach($arr_matches[1] as $cur){
+	$var = $GLOBALS;
+	$arr_matches = preg_split('/\]\[|\[|\]/', $arrayIndex);
+	unset($arr_matches[count($arr_matches) - 1]);
+	$arr_matches[0] = $name;
+	//$arr_matches = reg_match_all('/\[([^\]]*)\]/', $arrayIndex);
+	foreach($arr_matches as $cur){
 		if(!isset($var[$cur])){
 			return '';
 		}
@@ -288,12 +289,6 @@ function we_tag_path_hasIndex($path, $indexArray){
 		}
 	}
 	return false;
-}
-
-function makeArrayFromAttribs($attr){
-	$arr = array();
-	@eval('$arr = array(' . we_tag_tagParser::parseAttribs($attr) . ');');
-	return $arr;
 }
 
 function cutSimpleText($text, $len){

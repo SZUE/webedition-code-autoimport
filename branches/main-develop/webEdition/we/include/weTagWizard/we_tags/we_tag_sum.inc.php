@@ -12,3 +12,4 @@ $this->Attributes[] = new weTagData_choiceAttribute('num_format', array(new weTa
 	new weTagDataOption('english'),
 	new weTagDataOption('swiss'),
 	), false, false, '');
+$this->Attributes[] = new weTagData_textAttribute('decimals', true, '');

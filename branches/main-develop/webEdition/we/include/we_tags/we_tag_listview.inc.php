@@ -22,9 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_parse_tag_listview($attribs, $content){
-	$arr = array();
-	eval('$arr = ' . str_replace(array('\$', '$', '%WED%',), array('%WED%', '\$', '\$'), $attribs) . ';'); //Bug #6516
+function we_parse_tag_listview($attribs, $content, array $arr){
 	switch(weTag_getParserAttribute('type', $arr)){
 		default:
 		case 'document':

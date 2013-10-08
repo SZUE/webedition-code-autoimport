@@ -854,9 +854,9 @@ function weInputInArray(arr, val) {
 			$li .= ($i > 0 ? ", " : "") . "#" . $this->containerfields[$i] . " li";
 			$yuAcHighlight .= ($i > 0 ? ", " : "") . "#" . $this->containerfields[$i] . " li.yui-ac-highlight";
 		}
-		for($i = 0; $i < count($this->layer); $i++){
-			$layer .= ($i > 0 ? ", " : "") . "#" . $this->layer[$i];
-			$layerZ .= "#" . $this->layer[$i] . " {z-index:" . (9010 - $i) . ";}";
+		foreach($this->layer as $i => $cur){
+			$layer .= ($i > 0 ? ", " : "") . "#" . $cur;
+			$layerZ .= "#" . $cur . " {z-index:" . (9010 - $i) . ";}";
 		}
 		if(we_base_browserDetect::isIE()){
 			$out = (!empty($layer) ? "	$layerZ" : '') . "

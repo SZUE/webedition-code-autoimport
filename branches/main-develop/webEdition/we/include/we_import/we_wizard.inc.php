@@ -634,11 +634,12 @@ top.wizbusy.setProgress(Math.floor(((" . $v['cid'] . "+1)/" . (int) (2 * $v["num
 							$loop = 0;
 							$firstNode = "";
 							foreach($nodeSet as $node){
-								if($loop == 0)
+								if($loop == 0){
 									$firstNode = $node; $loop++;
+								}
 								$list = $xp->getAttributes($node);
 								$flag = true;
-								$decAttrs = $this->parseAttributes(base64_decode($attributes[$records[$c]]));
+								$decAttrs = we_tag_tagParser::makeArrayFromAttribs(base64_decode($attributes[$records[$c]]));
 								foreach($decAttrs as $key => $value){
 									if(!isset($list[$key]) || $list[$key] != $value)
 										$flag = false;

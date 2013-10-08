@@ -133,17 +133,6 @@ class we_wizard_import extends we_wizard{
 	}
 
 	/**
-	 * @return array
-	 * @param string $attr
-	 * @desc returns array of attributes
-	 */
-	function parseAttributes($attr){
-		$att = array();
-		@eval('$att = array(' . we_tag_tagParser::parseAttribs($attr) . ');');
-		return $att;
-	}
-
-	/**
 	 * @param string $string1
 	 * @param string $string2
 	 * @param string $file
@@ -1423,7 +1412,7 @@ function handle_event(evt) {
 						switch($tagname){
 							// tags with text content, links and hrefs
 							case 'input':
-								if(in_array('date', $this->parseAttributes($tag)))
+								if(in_array('date', we_tag_tagParser::makeArrayFromAttribs($tag)))
 									$dateFields[] = $name;
 							case 'textarea':
 							case 'href':
@@ -2258,7 +2247,7 @@ function handle_event(evt) {
 							switch($tagname){
 								// tags with text content, links and hrefs
 								case "input":
-									if(in_array("date", $this->parseAttributes($tag)))
+									if(in_array("date", we_tag_tagParser::makeArrayFromAttribs($tag)))
 										$dateFields[] = $name;
 								case "textarea":
 								case "href":

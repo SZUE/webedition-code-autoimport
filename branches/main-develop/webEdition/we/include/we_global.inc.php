@@ -47,7 +47,6 @@ function correctUml($in){
 	return str_replace(array('ä', 'ö', 'ü', 'Ä', 'Ö', 'Ü', 'ß'), array('ae', 'oe', 'ue', 'Ae', 'Oe', 'Ue', 'ss'), $in);
 }
 
-
 function weFileExists($id, $table = FILE_TABLE, $db = ''){
 	$id = intval($id);
 	if($id == 0){
@@ -757,7 +756,7 @@ function we_readParents($id, &$parentlist, $tab, $match = 'ContentType', $matchv
 
 function we_readChilds($pid, &$childlist, $tab, $folderOnly = true, $where = '', $match = 'ContentType', $matchvalue = 'folder', $db = ''){
 	$db = $db ? : new DB_WE();
-	$db->query('SELECT ID,' . $db->escape($match) . ' FROM ' . $db->escape($tab) . ' WHERE ' . ($folderOnly ? ' IsFolder=1 AND ' : '') . 'ParentID=' . intval($pid) . $where);
+	$db->query('SELECT ID,' . $db->escape($match) . ' FROM ' . $db->escape($tab) . ' WHERE ' . ($folderOnly ? ' IsFolder=1 AND ' : '') . 'ParentID=' . intval($pid) . ' ' . $where);
 	$todo = array();
 	while($db->next_record()){
 		if($db->f($match) == $matchvalue){
@@ -899,7 +898,6 @@ function t_e($type = 'warning'){
 		trigger_error(implode("\n---------------------------------------------------\n", $data), $type);
 	}
 }
-
 
 function parseInternalLinks(&$text, $pid, $path = '', $doBaseReplace = true){
 	$doBaseReplace&=we_isHttps();
@@ -1622,8 +1620,9 @@ function we_templatePreContent(){
 
 function we_templatePostContent(){
 	if(isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'] && (--$GLOBALS['we_templatePreContent']) == 0){
+		$yuiSuggest = &weSuggest::getInstance();
 		//FIXME: check this new field to determine if all data has been transmitted
-		print '<input type="hidden" name="we_complete_request" value="1"/></form>';
+		print $yuiSuggest->getYuiCode() . '<input type="hidden" name="we_complete_request" value="1"/></form>';
 	}
 }
 

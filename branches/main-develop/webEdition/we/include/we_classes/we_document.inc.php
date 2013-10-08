@@ -1298,7 +1298,7 @@ class we_document extends we_root{
 			// Link-Attribs
 			//   1st attribs-string from link dialog ! These are already used in content ...
 			if(isset($link['attribs'])){
-				$_linkAttribs = array_merge(makeArrayFromAttribs($link['attribs']), $_linkAttribs);
+				$_linkAttribs = array_merge(we_tag_tagParser::makeArrayFromAttribs($link['attribs']), $_linkAttribs);
 			}
 
 			//   2nd take all atts given in link-array - from function we_tag_link()

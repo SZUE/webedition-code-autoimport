@@ -21,3 +21,4 @@ $this->Attributes[] = new weTagData_selectAttribute('hidedirindex', weTagData_se
 $this->Attributes[] = new weTagData_textAttribute('user', false, 'users');
 $this->Attributes[] = new weTagData_textAttribute('rootdir', false, '');
 $this->Attributes[] = new weTagData_selectorAttribute('startid', FILE_TABLE, weTagData_selectorAttribute::FOLDER, false, '');
+$this->Attributes[] = new weTagData_selectAttribute('cfilter', weTagData_selectAttribute::getTrueFalse(), false, '');

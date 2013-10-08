@@ -18,7 +18,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-function we_parse_tag_content($attribs, $content) {
+function we_parse_tag_content($a, $content) {
 	//this tag is ignored!
 	return $content;
 }

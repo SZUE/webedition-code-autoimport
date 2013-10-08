@@ -35,7 +35,7 @@ function we_tag_ifSelf($attribs){
 	}
 	$type = weTag_getAttribute('doc', $attribs, weTag_getAttribute('type', $attribs));
 
-	$ids = makeArrayFromCSV($id);
+	$ids = explode(',',$id);
 
 	switch($type){
 		case 'listview':

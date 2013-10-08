@@ -267,7 +267,7 @@ class weXMLExIm{
 		$allow = $this->queryForAllowed($table);
 		foreach($selIDs as $v){
 			if($v){
-				if(f('SELECT IsFolder FROM ' . $table . ' WHERE ID=' . intval($v), "IsFolder", $db)){
+				if(f('SELECT IsFolder FROM ' . $table . ' WHERE ID=' . intval($v), 'IsFolder', $db)){
 					we_readChilds($v, $tmp, $table, false, $allow);
 					if($with_dirs){
 						$tmp[] = $v;
@@ -280,7 +280,7 @@ class weXMLExIm{
 		if($with_dirs){
 			return $tmp;
 		}
-		$db->query('SELECT ID FROM ' . $db->escape($table) . ' WHERE IsFolder=0 AND ID IN(' . implode(',', $tmp) . ')');
+		$db->query('SELECT ID FROM ' . $db->escape($table) . ' WHERE IsFolder=0 AND ID IN(' . ($tmp ? implode(',', $tmp) : '0') . ')');
 		return $db->getAll(true);
 	}
 

@@ -140,7 +140,7 @@ class we_linklist{
 		$hidedirindex = $this->getHidedirindex();
 		$objectseourls = $this->getObjectseourls();
 
-		$lattribs = makeArrayFromAttribs($attribs);
+		$lattribs = we_tag_tagParser::makeArrayFromAttribs($attribs);
 
 		$lattribs['target'] = $target;
 		$lattribs['title'] = $title;
