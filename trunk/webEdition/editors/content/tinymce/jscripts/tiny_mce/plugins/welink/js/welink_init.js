@@ -29,6 +29,7 @@ function init() {
 	if(elm != null && elm.nodeName == "A"){
 		action = "update";
 	}
+	addClassesToList('we_dialog_args[class]', 'advlink_styles');
 
 	if(action == "update" && inst.isWeLinkInitialized === false && formObj){
 		inst.isWeLinkInitialized = true;
@@ -41,7 +42,6 @@ function init() {
 
 		formObj.elements['we_dialog_args[title]'].value = inst.dom.getAttrib(elm, 'title');
 		formObj.elements['we_dialog_args[target]'].value = inst.dom.getAttrib(elm, 'target');
-		//formObj.elements['we_dialog_args[class]'].value = inst.dom.getAttrib(elm, 'class');
 		formObj.elements['we_dialog_args[rel]'].value = inst.dom.getAttrib(elm, 'rel');
 		formObj.elements['we_dialog_args[lang]'].value = inst.dom.getAttrib(elm, 'lang');
 		formObj.elements['we_dialog_args[hreflang]'].value = inst.dom.getAttrib(elm, 'hreflang');
@@ -112,18 +112,64 @@ function getUrlParts(url) {
 	return new Array(u, anch, param);
 }
 
+function addClassesToList(list_id, specific_option) {
+	var styleSelectElm = document.getElementById(list_id);
+	var styles = tinyMCEPopup.getParam('theme_advanced_styles', false);
+	styles = tinyMCEPopup.getParam(specific_option, styles);
+
+	//TODO: Do not write classes in weDialog, so we do not need to delete them here...
+	for (var i=1; i <= styleSelectElm.length; i++) {
+		styleSelectElm.remove(i);
+	}
+
+	if (styles) {
+		var stylesAr = styles.split(';');
+
+		for (var i=0; i<stylesAr.length; i++) {
+			if (stylesAr != "") {
+				var key, value;
+
+				key = stylesAr[i].split('=')[0];
+				value = stylesAr[i].split('=')[1];
+
+				styleSelectElm.options[styleSelectElm.length] = new Option(key, value);
+			}
+		}
+	} else {
+		tinymce.each(tinyMCEPopup.editor.dom.getClasses(), function(o) {
+			styleSelectElm.options[styleSelectElm.length] = new Option(o.title || o['class'], o['class']);
+		});
+	}
+}
+
 function selectOptionByValue(form, selName, val) {
 	if(typeof(form)=='undefined' || typeof(form.elements[selName]) == 'undefined' && typeof(val) == 'undefined'){
 		return;
 	}
-	for(var i=1; i < form.elements[selName].options.length; i++){
-		if(form.elements[selName].options[i].value == val){
-			form.elements[selName].options[i].selected = true;
-		} else{
-			form.elements[selName].options[i].selected = false;
+	
+	var i;
+	if(val == ''){
+		form.elements[selName].options[0].selected = true;
+		for(i=1; i < form.elements[selName].options.length; i++){
+				form.elements[selName].options[i].selected = false;
+		}
+	} else {
+		var found = false;
+		for(i=1; i < form.elements[selName].options.length; i++){
+			if(form.elements[selName].options[i].value == val){
+				form.elements[selName].options[i].selected = true;
+				found = true;
+			} else{
+				form.elements[selName].options[i].selected = false;
+			}
+		}
+		if(!found){
+			//i++;
+			form.elements[selName].options[i] = new Option('--------------------------------------', '');
+			form.elements[selName].options[i+1] = new Option(val, val);
+			form.elements[selName].options[i+1].selected = true;
 		}
 	}
-	
 }
 
 // more functions from tinyMCE
