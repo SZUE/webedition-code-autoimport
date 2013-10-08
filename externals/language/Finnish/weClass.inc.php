@@ -133,6 +133,7 @@ $l_weClass=array(
 	'other'=>'Muut',
 	'otherowners'=>'Salli käyttö seuraaville käyttäjille',
 	'owners'=>'Omistajat',
+	'parseFile'=>'Parse file',
 	'path'=>'Polku',
 	'percent'=>'Prosentti',
 	'percent_height_tmp'=>'Korkeus %',

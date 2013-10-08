@@ -133,6 +133,7 @@ $l_weClass=array(
 	'other'=>'Divers',
 	'otherowners'=>'Accès pour les utilisateur suivant:',
 	'owners'=>'Propriétaire',
+	'parseFile'=>'Parse file',
 	'path'=>'Chemin',
 	'percent'=>'Pourcent',
 	'percent_height_tmp'=>'Hauteur en %',

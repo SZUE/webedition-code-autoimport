@@ -133,6 +133,7 @@ $l_weClass=array(
 	'other'=>'Sonstige',
 	'otherowners'=>'Zugriff für folgende Benutzer',
 	'owners'=>'Besitzer',
+	'parseFile'=>'Datei von Parser verarbeiten lassen',
 	'path'=>'Pfad',
 	'percent'=>'Prozent',
 	'percent_height_tmp'=>'Höhe in %',
