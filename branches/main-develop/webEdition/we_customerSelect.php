@@ -3,9 +3,9 @@
 /**
  * webEdition CMS
  *
- * $Rev: 4705 $
- * $Author: arminschulz $
- * $Date: 2012-07-15 10:59:02 +0200 (So, 15. Jul 2012) $
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
