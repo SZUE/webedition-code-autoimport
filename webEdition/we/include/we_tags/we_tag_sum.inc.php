@@ -28,7 +28,9 @@ function we_tag_sum($attribs){
 	}
 	$name = weTag_getAttribute('_name_orig', $attribs);
 	$num_format = weTag_getAttribute('num_format', $attribs);
+	$decimals = intval(weTag_getAttribute('decimals', $attribs, 2));
+
 	$result = (isset($GLOBALS['summe'][$name]) ? we_util::std_numberformat($GLOBALS['summe'][$name]) : 0);
 
-	return we_util_Strings::formatNumber($result, $num_format, is_float($result) ? 0 : 2);
+	return we_util_Strings::formatNumber($result, $num_format, $decimals);
 }
