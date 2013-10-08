@@ -141,6 +141,8 @@ onclick="' . $this->editor->ref . 'Obj.click(\'' . $this->cmd . '\');" /></div>'
 			case "hr":
 			case "fullscreen":
 				return !$this->editor->getIsFrontendEdit() && we_wysiwyg::$editorType == 'tinyMCE' && parent::hasProp('', $contextMenu);
+			case "template":
+				return we_wysiwyg::$editorType == 'tinyMCE' && parent::hasProp('', $contextMenu);
 			default:
 				return parent::hasProp('', $contextMenu);
 		}

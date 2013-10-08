@@ -100,6 +100,7 @@ $commands = new weTagData_choiceAttribute('commands', array(new weTagDataOption(
 	new weTagDataOption('superscript'),
 	new weTagDataOption('underline'),
 	new weTagDataOption('table'),
+	new weTagDataOption('template'),
 	new weTagDataOption('undo'),
 	new weTagDataOption('unlink'),
 	new weTagDataOption('visibleborders'),
@@ -181,6 +182,7 @@ $contextmenu = new weTagData_choiceAttribute('contextmenu', array(new weTagDataO
 	new weTagDataOption('superscript'),
 	new weTagDataOption('underline'),
 	new weTagDataOption('table'),
+	new weTagDataOption('template'),
 	new weTagDataOption('undo'),
 	new weTagDataOption('unlink'),
 	new weTagDataOption('visibleborders'),
@@ -202,12 +204,13 @@ $buttonpos = new weTagData_choiceAttribute('buttonpos', array(new weTagDataOptio
 $win2iso = new weTagData_selectAttribute('win2iso', weTagData_selectAttribute::getTrueFalse(), false, '');
 $classes = new weTagData_textAttribute('classes', false, '');
 $spellcheck = new weTagData_selectAttribute('spellcheck', weTagData_selectAttribute::getTrueFalse(), false, 'spellchecker');
-$tinyparams = new weTagData_textAttribute('tinyparams', false, '');
+$templates = new weTagData_textAttribute('tinyparams', false, '');
+$tinyparams = new weTagData_textAttribute('templates', false, '');
 //$this->Attributes[] = new weTagData_textAttribute('cachelifetime', false, '');
 
 $this->TypeAttribute = new weTagData_typeAttribute('wysiwyg', array(
-	new weTagDataOption('true', false, '', array($name, $cols, $rows, $autobr, $width, $height, $class, $bgcolor, $editorcss, $ignoredocumentcss, $htmlspecialchars, $commands, $contextmenu, $fontnames, $abbr, $removefirstparagraph, $inlineedit, $buttonpos, $win2iso, $classes, $spellcheck, $tinyparams), array($name)),
+	new weTagDataOption('true', false, '', array($name, $cols, $rows, $autobr, $width, $height, $class, $bgcolor, $editorcss, $ignoredocumentcss, $htmlspecialchars, $commands, $contextmenu, $fontnames, $abbr, $removefirstparagraph, $inlineedit, $buttonpos, $win2iso, $classes, $spellcheck, $templates, $tinyparams), array($name)),
 	new weTagDataOption('false', false, '', array($name, $cols, $rows, $class, $autobr, $html, $htmlspecialchars, $php, $abbr, $spellcheck), array($name))), false, '');
 
 $this->Attributes = array($name, $cols, $rows, $class, $autobr, $importrtf, $width, $height, $bgcolor, $editorcss, $ignoredocumentcss, $html, $htmlspecialchars, $php, $commands, $contextmenu, $fontnames, $xml, $abbr,
-	$removefirstparagraph, $inlineedit, $buttonpos, $win2iso, $classes, $spellcheck, $tinyparams);
+	$removefirstparagraph, $inlineedit, $buttonpos, $win2iso, $classes, $spellcheck, $templates, $tinyparams);
