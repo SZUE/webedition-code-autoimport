@@ -283,6 +283,7 @@ class we_objectEx extends we_object{
 			'max' => '',
 			'cssClasses' => '',
 			'tinyparams' => '',
+			'templates' => '',
 			'xml' => '',
 			'removefirstparagraph' => '',
 			'showmenus' => '',
