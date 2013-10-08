@@ -30,7 +30,7 @@ $l_modules_customerFilter=array(
 	'mode_specific'=>'Vain valituilla asiakkailla on pääsyoikeus',
 	'not_contains'=>'does not contain',
 	'not_equal'=>'eri kuin (!=)',
-	'not_in'=>'is none of',
+	'not_in'=>'is none of (list)',
 	'starts_with'=>'alkaa',
 	'white_list'=>'Valkealista (näillä asiakkailla on aina pääsyoikeus):',
 );

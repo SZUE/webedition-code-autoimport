@@ -20,7 +20,7 @@ $l_modules_customerFilter=array(
 	'equal'=>'gleich (=)',
 	'greater'=>'größer (>)',
 	'greater_equal'=>'größer gleich (>=)',
-	'in'=>'ist eins von',
+	'in'=>'ist eins von (Liste)',
 	'less'=>'kleiner (<)',
 	'less_equal'=>'kleiner gleich (<=)',
 	'mode_all'=>'Alle angemeldeten Kunden haben Zugriff',
@@ -30,7 +30,7 @@ $l_modules_customerFilter=array(
 	'mode_specific'=>'Nur bestimmte Kunden haben Zugriff',
 	'not_contains'=>'enthält nicht',
 	'not_equal'=>'nicht gleich (!=)',
-	'not_in'=>'ist keins von',
+	'not_in'=>'ist keins von (Liste)',
 	'starts_with'=>'beginnt mit',
 	'white_list'=>'Weiße Liste (diese Kunden haben immer Zugriff):',
 );

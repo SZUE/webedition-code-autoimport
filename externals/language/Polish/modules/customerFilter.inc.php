@@ -20,7 +20,7 @@ $l_modules_customerFilter=array(
 	'equal'=>'equal (=)',
 	'greater'=>'greater then (>)',
 	'greater_equal'=>'greater equal (>=)',
-	'in'=>'is one of',
+	'in'=>'is one of (list)',
 	'less'=>'less then (<)',
 	'less_equal'=>'less equal (<=)',
 	'mode_all'=>'All logged in customers have access',
@@ -30,7 +30,7 @@ $l_modules_customerFilter=array(
 	'mode_specific'=>'Only selected customers have access',
 	'not_contains'=>'does not contain',
 	'not_equal'=>'not equal (!=)',
-	'not_in'=>'is none of',
+	'not_in'=>'is none of (list)',
 	'starts_with'=>'starts with',
 	'white_list'=>'White list (these customers have always access):',
 );
