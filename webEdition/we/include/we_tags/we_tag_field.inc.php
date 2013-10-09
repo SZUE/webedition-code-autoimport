@@ -560,6 +560,9 @@ function we_tag_field($attribs){
 						case 'we_listview_multiobject':
 							$showlink = $GLOBALS['lv']->DB_WE->f('OF_Templates') || $GLOBALS['lv']->docID;
 							break;
+						case 'we_shop_listviewOrder'://listview type="order"
+							$showlink = !empty($triggerid);
+							break;
 						default:
 							$showlink = false;
 							break;

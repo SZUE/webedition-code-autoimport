@@ -110,9 +110,9 @@ $aPrefs['shp'] = array(
 	'height' => 210,
 	'res' => 0,
 	'cls' => 'lightCyan',
-	'csv' => '1111;5;1000;',
+	'csv' => '1111;3;10000;',
 	'dlgHeight' => 435,
-	'isResizable' => 1
+	'isResizable' => 0
 );
 $aPrefs['msg'] = array(
 	'width' => $small,

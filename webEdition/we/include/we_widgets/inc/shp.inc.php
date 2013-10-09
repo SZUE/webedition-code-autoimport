@@ -34,5 +34,5 @@ $oTblCont->setCol(
 		), we_html_element::htmlDiv(array('id' => 'shp_data'), $shopDashboard)
 ));
 $aLang = array(
-	g_l('cockpit', '[shop_dashboard][headline]').'&nbsp;'.$interval, ""
+	g_l('cockpit', '[shop_dashboard][headline]').':&nbsp;'.$interval, ""
 );
