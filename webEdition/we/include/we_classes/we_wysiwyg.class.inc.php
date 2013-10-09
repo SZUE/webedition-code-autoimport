@@ -950,7 +950,7 @@ function weWysiwygSetHiddenText(arg) {
 			if(!$this->hasSep($rows[$rownr]) || $rowwidth <= max($width, $maxGroupWidth)){
 			//TinyMCE: There is a 5px border on the left, another 5px on the right looks nicer, and buttons/blocks of buttons have a 1 px border on the left and right = 12px
 				$rows[$rownr][] = array_shift($tmpElements);
-				$rowwidth += $rows[$rownr][count($rows[$rownr]) - 1]->width;t_e("draufsetzen", $rowwidth, $rows[$rownr][count($rows[$rownr]) - 1]->cmd);
+				$rowwidth += $rows[$rownr][count($rows[$rownr]) - 1]->width;
 			} else {
 				if(!empty($rows[$rownr])){
 					if($rows[$rownr][count($rows[$rownr]) - 1]->classname == "we_wysiwyg_ToolbarSeparator"){
