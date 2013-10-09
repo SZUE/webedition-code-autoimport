@@ -640,6 +640,18 @@ if(WE_TRACKER_DIR &&
 	);
 }
 
+//ToDo: nummerirung identisch mit pageLogger!!!
+// Cockpit > new Widget > Shop
+if(defined('WE_SHOP_MODULE_DIR')){
+	$we_menu[2020900] = array(
+		'text' => g_l('javaMenu_global', '[shop_dashboard]'),
+		'parent' => 2020000,
+		'cmd' => 'new_widget_shp',
+		'perm' => '',
+		'enabled' => we_hasPerm('CAN_SEE_QUICKSTART'),
+	);
+}
+
 // Cockpit > new Widget > default settings
 $we_menu[2030000] = array(
 	'text' => g_l('javaMenu_global', '[default_settings]'),
