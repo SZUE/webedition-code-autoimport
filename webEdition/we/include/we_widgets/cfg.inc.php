@@ -105,6 +105,15 @@ $aPrefs['mfd'] = array(
 	'dlgHeight' => 435,
 	'isResizable' => 1
 );
+$aPrefs['shp'] = array(
+	'width' => $large,
+	'height' => 210,
+	'res' => 0,
+	'cls' => 'lightCyan',
+	'csv' => '1111;5;1000;',
+	'dlgHeight' => 435,
+	'isResizable' => 1
+);
 $aPrefs['msg'] = array(
 	'width' => $small,
 	'height' => 100,
