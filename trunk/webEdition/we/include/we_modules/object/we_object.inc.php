@@ -1160,7 +1160,7 @@ class we_object extends we_document{
 		}
 
 
-		if($type != "checkbox"){
+		if($type != 'checkbox'){
 			//Pflichtfeld
 			$content .= '<tr valign="top"><td  width="100" class="defaultfont"></td>' .
 				'<td width="170" class="defaultfont">' .

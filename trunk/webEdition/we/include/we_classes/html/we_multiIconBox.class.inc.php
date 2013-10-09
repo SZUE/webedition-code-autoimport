@@ -37,7 +37,7 @@ abstract class we_multiIconBox{
 	 * @param	$headline			string
 	 * @return	string
 	 */
-	static function getHTML($name, $width, $content, $marginLeft = 0, $buttons = "", $foldAtNr = -1, $foldRight = "", $foldDown = "", $displayAtStartup = false, $headline = "", $delegate = "", $height = 0, $overflow = "auto"){
+	static function getHTML($name, $width, $content, $marginLeft = 0, $buttons = '', $foldAtNr = -1, $foldRight = '', $foldDown = '', $displayAtStartup = false, $headline = "", $delegate = "", $height = 0, $overflow = "auto"){
 		$uniqname = $name ? $name : md5(uniqid(__FILE__, true));
 
 		$out = (isset($headline) && $headline != '') ?
@@ -45,6 +45,9 @@ abstract class we_multiIconBox{
 			we_multiIconBox::_getBoxStart($width, $uniqname);
 
 		foreach($content as $i => $c){
+			if($c === null){
+				continue;
+			}
 			$out.=(isset($c['class']) ? '<div class="' . $c['class'] . '">' : '');
 
 			if($i == $foldAtNr && $foldAtNr < count($content)){ // only if the folded items contain stuff.
@@ -87,8 +90,8 @@ abstract class we_multiIconBox{
 					</div>' . (we_base_browserDetect::isIE() ? '<br/>' : '') .
 				($i < (count($content) - 1) && (!isset($c["noline"])) ?
 					'<div style="border-top: 1px solid #AFB0AF;margin:10px 0 10px 0;clear:both;"></div>' :
-					'<div style="margin:10px 0;clear:both;"></div>').
-				(isset($c['class'])?'</div>':'');
+					'<div style="margin:10px 0;clear:both;"></div>') .
+				(isset($c['class']) ? '</div>' : '');
 		}
 
 		if($foldAtNr >= 0 && $foldAtNr < count($content)){
@@ -101,7 +104,7 @@ abstract class we_multiIconBox{
 			//ignore height, replace by bottom:
 			return '<div style="overflow:' . $overflow . ';position:absolute;width:100%;' . ($height ? 'height:' . $height . 'px;' : 'bottom:40px;') . 'top:0px;left:0px;">' . $boxHTML . '</div>
 				<div style="left:0px;height:40px;background-image: url(' . IMAGE_DIR . 'edit/editfooterback.gif);position:absolute;bottom:0px;width:100%"><div style="padding: 10px 10px 0 0;">' . $buttons . '</div></div>';
-		} else{
+		} else {
 			return $boxHTML;
 		}
 	}
@@ -290,7 +293,7 @@ abstract class we_multiIconBox{
 	static function _getBoxStart($w, $uniqname){
 		if(strpos($w, "%") === false){
 			$wp = abs($w) . "px";
-		} else{
+		} else {
 			$wp = $w;
 		}
 		return '<table cellpadding="0" style="border-spacing: 0px;border-style:none;margin-top:10px;width:' . $wp . ';">
