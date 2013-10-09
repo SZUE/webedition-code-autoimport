@@ -126,10 +126,12 @@ $l_cockpit=array(
 	
 	'shop_dashboard'=>array(
 		'articles_order'=>'Artikel/Bestellung',
+		'canceled_order'=>'Stornierte Bestellungen',
 		'cnt_articles'=>'Bestellte Artikel',
 		'cnt_new_customer'=>'Anzahl Neukunden',
 		'cnt_order'=>'Anzahl Bestellungen',
 		'headline'=>'Shop Dashboard',
+		'kpi'=>'Kennzahlen',
 		'order_value_order'=>'Bestellwert/Bestellung',
 		'payed'=>'Davon bezahlt',
 		'revenue'=>'Umsatz',
@@ -137,9 +139,6 @@ $l_cockpit=array(
 		'revenue_target'=>'Umsatzziel',
 		'target_in'=>'Ziel in',
 		'unpayed'=>'Davon unbezahlt',
-	),
-	'shop_dashborad'=>array(
-		'kpi'=>'Kennzahlen',
 	),
 	'shortcuts'=>'Schnellzugriff',
 	'show_edit_titlebar'=>'Anpassen der Widget Titelleiste einblenden',

@@ -126,10 +126,12 @@ $l_cockpit=array(
 	
 	'shop_dashboard'=>array(
 		'articles_order'=>'Count articles/order',
+		'canceled_order'=>'Canceled orders',
 		'cnt_articles'=>'Ordered articles',
 		'cnt_new_customer'=>'Number of new customers',
 		'cnt_order'=>'Number of orders',
 		'headline'=>'Shop dashboard',
+		'kpi'=>'KPI',
 		'order_value_order'=>'Order value/order',
 		'payed'=>'Payed',
 		'revenue'=>'Sales',
@@ -137,9 +139,6 @@ $l_cockpit=array(
 		'revenue_target'=>'Revenue target',
 		'target_in'=>'Target in',
 		'unpayed'=>'Unpayed',
-	),
-	'shop_dashborad'=>array(
-		'kpi'=>'KPI',
 	),
 	'shortcuts'=>'Shortcuts',
 	'show_edit_titlebar'=>'Show edit titlebar',
