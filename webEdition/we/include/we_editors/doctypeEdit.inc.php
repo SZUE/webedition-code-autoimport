@@ -47,14 +47,14 @@ switch($_REQUEST['we_cmd'][0]){
 			$we_response_type = we_message_reporting::WE_MESSAGE_ERROR;
 			$we_JavaScript = "";
 			$we_show_response = 1;
-		} else{
+		} else {
 			$GLOBALS['DB_WE']->query('SELECT ID FROM ' . DOC_TYPES_TABLE . ' WHERE DocType="' . $GLOBALS['DB_WE']->escape($we_doc->DocType) . '"');
 			if(($GLOBALS['DB_WE']->next_record()) && ($we_doc->ID != $GLOBALS['DB_WE']->f("ID"))){
 				$we_responseText = sprintf(g_l('weClass', "[doctype_save_nok_exist]"), $we_doc->DocType);
 				$we_response_type = we_message_reporting::WE_MESSAGE_ERROR;
 				$we_JavaScript = "";
 				$we_show_response = 1;
-			} else{
+			} else {
 				$we_JavaScript = 'opener.top.makefocus = self;' .
 					we_main_headermenu::getMenuReloadCode();
 
@@ -63,7 +63,7 @@ switch($_REQUEST['we_cmd'][0]){
 					$we_responseText = sprintf(g_l('weClass', "[doctype_save_ok]"), $we_doc->DocType);
 					$we_response_type = we_message_reporting::WE_MESSAGE_NOTICE;
 					$we_show_response = 1;
-				} else{
+				} else {
 					print "ERROR";
 				}
 			}
@@ -81,37 +81,37 @@ switch($_REQUEST['we_cmd'][0]){
 			$we_response_type = we_message_reporting::WE_MESSAGE_ERROR;
 			break;
 		}
-		$name = f("SELECT DocType FROM " . DOC_TYPES_TABLE . " WHERE ID=" . intval($_REQUEST['we_cmd'][1]), 'DocType', $GLOBALS['DB_WE']);
+		$name = f('SELECT DocType FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . intval($_REQUEST['we_cmd'][1]), 'DocType', $GLOBALS['DB_WE']);
 		$del = false;
 		if($name){
-			$GLOBALS['DB_WE']->query("SELECT 1 FROM " . FILE_TABLE . " WHERE DocType=" . intval($_REQUEST['we_cmd'][1]) . " OR temp_doc_type=" . $GLOBALS['DB_WE']->escape($_REQUEST['we_cmd'][1]));
+			$GLOBALS['DB_WE']->query('SELECT 1 FROM ' . FILE_TABLE . ' WHERE DocType=' . intval($_REQUEST['we_cmd'][1]) . ' OR temp_doc_type=' . $GLOBALS['DB_WE']->escape($_REQUEST['we_cmd'][1]));
 			if(!$GLOBALS['DB_WE']->next_record()){
-				$GLOBALS['DB_WE']->query("DELETE FROM " . DOC_TYPES_TABLE . " WHERE ID=" . intval($_REQUEST['we_cmd'][1]));
+				$GLOBALS['DB_WE']->query('DELETE FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . intval($_REQUEST['we_cmd'][1]));
 
 				// Fast Fix for deleting entries from tblLangLink: #5840
-				$GLOBALS['DB_WE']->query("DELETE FROM " . LANGLINK_TABLE . " WHERE DocumentTable='tblDocTypes' AND (DID=" . intval($_REQUEST["we_cmd"][1]) . ' OR LDID=' . intval($_REQUEST["we_cmd"][1]) . ')');
+				$GLOBALS['DB_WE']->query('DELETE FROM ' . LANGLINK_TABLE . " WHERE DocumentTable='tblDocTypes' AND (DID=" . intval($_REQUEST["we_cmd"][1]) . ' OR LDID=' . intval($_REQUEST["we_cmd"][1]) . ')');
 
-				$we_responseText = g_l('weClass', "[doctype_delete_ok]");
+				$we_show_response = 1;
 				$we_response_type = we_message_reporting::WE_MESSAGE_NOTICE;
-				$we_responseText = sprintf($we_responseText, $name);
+				$we_responseText = sprintf(g_l('weClass', "[doctype_delete_ok]"), $name);
 				unset($_REQUEST['we_cmd'][1]);
 				$del = true;
-			} else{
-				$we_responseText = g_l('weClass', "[doctype_delete_nok]");
+			} else {
+				$we_show_response = 1;
 				$we_response_type = we_message_reporting::WE_MESSAGE_ERROR;
-				$we_responseText = sprintf($we_responseText, $name);
+				$we_responseText = sprintf(g_l('weClass', "[doctype_delete_nok]"), $name);
 			}
 			if($del){
 				$id = f('SELECT ID FROM ' . DOC_TYPES_TABLE . " ORDER BY DocType", 'ID', $GLOBALS['DB_WE']);
 				if($id){
 					$we_doc->initByID($id, DOC_TYPES_TABLE);
 				}
-			} else{
+			} else {
 				$we_doc->initByID($_REQUEST['we_cmd'][1], DOC_TYPES_TABLE);
 			}
 		}
 		break;
-	case "add_dt_template":
+	case 'add_dt_template':
 		$we_doc->we_initSessDat($_SESSION['weS']['we_data'][$we_transaction]);
 		$foo = makeArrayFromCSV($we_doc->Templates);
 		$ids = makeArrayFromCSV($_REQUEST['we_cmd'][1]);
@@ -122,7 +122,7 @@ switch($_REQUEST['we_cmd'][0]){
 		}
 		$we_doc->Templates = makeCSVFromArray($foo);
 		break;
-	case "delete_dt_template":
+	case 'delete_dt_template':
 		$we_doc->we_initSessDat($_SESSION['weS']['we_data'][$we_transaction]);
 		$foo = makeArrayFromCSV($we_doc->Templates);
 		if($_REQUEST['we_cmd'][1] && (in_array($_REQUEST['we_cmd'][1], $foo))){
@@ -132,11 +132,7 @@ switch($_REQUEST['we_cmd'][0]){
 			}
 		}
 		if($we_doc->TemplateID == $_REQUEST['we_cmd'][1]){
-			if(!empty($foo)){
-				$we_doc->TemplateID = $foo[0];
-			} else{
-				$we_doc->TemplateID = 0;
-			}
+			$we_doc->TemplateID = (!empty($foo) ? $foo[0] : 0);
 		}
 		$we_doc->Templates = makeCSVFromArray($foo);
 		break;
@@ -153,13 +149,10 @@ switch($_REQUEST['we_cmd'][0]){
 		}
 		break;
 	default:
-		if(isset($_REQUEST['we_cmd'][1])){
-			$id = $_REQUEST['we_cmd'][1];
-		} else{
-			$q = getDoctypeQuery($GLOBALS['DB_WE']);
-			$q = "SELECT ID FROM " . DOC_TYPES_TABLE . " $q";
-			$id = f($q, "ID", $GLOBALS['DB_WE']);
-		}
+		$id = (isset($_REQUEST['we_cmd'][1]) ?
+				$_REQUEST['we_cmd'][1] :
+				f('SELECT ID FROM ' . DOC_TYPES_TABLE . ' ' . getDoctypeQuery($GLOBALS['DB_WE']), "ID", $GLOBALS['DB_WE']));
+
 		if($id){
 			$we_doc->initByID($id, DOC_TYPES_TABLE);
 		}
@@ -185,7 +178,7 @@ if($we_show_response){
 if($_REQUEST['we_cmd'][0] == "deleteDocType"){
 	if(!we_hasPerm("EDIT_DOCTYPE")){
 		print we_message_reporting::getShowMessageCall(g_l('alert', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR);
-	} else{
+	} else {
 		?>
 		if (confirm("<?php printf(g_l('weClass', "[doctype_delete_prompt]"), $we_doc->DocType); ?>")) {
 			we_cmd("deleteDocTypeok", "<?php print $_REQUEST['we_cmd'][1]; ?>");
@@ -259,12 +252,8 @@ function we_cmd() {
 			break;
 		case "newDocType":
 <?php
-$dtNames = "";
-$GLOBALS['DB_WE']->query('SELECT DocType FROM ' . DOC_TYPES_TABLE . ' ORDER BY DocType');
-while($GLOBALS['DB_WE']->next_record()) {
-	$dtNames .= '\'' . str_replace('\'', '\\\'', $GLOBALS['DB_WE']->f("DocType")) . '\',';
-}
-$dtNames = rtrim($dtNames, ',');
+$GLOBALS['DB_WE']->query('SELECT CONCAT("\'",REPLACE(DocType,"\'","\\\\\'"),"\'") FROM ' . DOC_TYPES_TABLE . ' ORDER BY DocType');
+$dtNames = implode(',', $GLOBALS['DB_WE']->getAll(true));
 print 'var docTypeNames = new Array(' . $dtNames . ');';
 ?>
 
@@ -327,7 +316,7 @@ function doUnload() {
 
 function in_array(haystack, needle) {
 	for (var i = 0; i < haystack.length; i++) {
-		if (haystack[i] == needle){
+		if (haystack[i] == needle) {
 			return true;
 		}
 	}
@@ -387,7 +376,7 @@ function disableLangDefault(allnames, allvalues, deselect) {
 				"html" => $GLOBALS['we_doc']->formDocTypeDefaults(),
 				"space" => 120
 			);
-		} else{
+		} else {
 			$parts[] = array("headline" => "",
 				"html" => $GLOBALS['we_doc']->formNewDocType(),
 				"space" => 0
