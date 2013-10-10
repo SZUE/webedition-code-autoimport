@@ -38,8 +38,8 @@ class weModelBase{
 	/**
 	 * Default Constructor
 	 */
-	function __construct($table){
-		$this->db = new DB_WE();
+	function __construct($table, $db){
+		$this->db = $db;
 		$this->table = $table;
 		$this->loadPresistents();
 	}
