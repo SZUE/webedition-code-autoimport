@@ -42,19 +42,19 @@ function we_tag_setVar($attribs){
 	} else {
 		switch($from){
 			case 'request' :
-				$valueFrom = isset($_REQUEST[$nameFrom]) ? $_REQUEST[$nameFrom] : '';
+				$valueFrom = getArrayValue($_REQUEST, null, $nameFrom);
 				break;
 			case 'post' :
-				$valueFrom = isset($_POST[$nameFrom]) ? $_POST[$nameFrom] : '';
+				$valueFrom = getArrayValue($_POST, null, $nameFrom);
 				break;
 			case 'get' :
-				$valueFrom = isset($_GET[$nameFrom]) ? $_GET[$nameFrom] : '';
+				$valueFrom = getArrayValue($_GET, null, $nameFrom);
 				break;
 			case 'global' :
-				$valueFrom = isset($GLOBALS[$nameFrom]) ? $GLOBALS[$nameFrom] : '';
+				$valueFrom = getArrayValue($GLOBALS, null, $nameFrom);
 				break;
 			case 'session' :
-				$valueFrom = isset($_SESSION[$nameFrom]) ? $_SESSION[$nameFrom] : '';
+				$valueFrom = getArrayValue($_SESSION, null, $nameFrom);
 				break;
 			case 'top' :
 				if($propertyFrom){
@@ -76,11 +76,10 @@ function we_tag_setVar($attribs){
 				break;
 			case 'object' :
 			case 'document' :
-				if($propertyFrom){
-					$valueFrom = isset($GLOBALS['we_' . $from][$formnameFrom]->$nameFrom) ? $GLOBALS['we_' . $from][$formnameFrom]->$nameFrom : '';
-				} else {
-					$valueFrom = isset($GLOBALS['we_' . $from][$formnameFrom]->elements[$nameFrom]) ? $GLOBALS['we_' . $from][$formnameFrom]->getElement($nameFrom) : '';
-				}
+				$valueFrom = ($propertyFrom ?
+						(isset($GLOBALS['we_' . $from][$formnameFrom]->$nameFrom) ? $GLOBALS['we_' . $from][$formnameFrom]->$nameFrom : '') :
+						(isset($GLOBALS['we_' . $from][$formnameFrom]->elements[$nameFrom]) ? $GLOBALS['we_' . $from][$formnameFrom]->getElement($nameFrom) : ''));
+
 				break;
 			case 'sessionfield' :
 				$valueFrom = isset($_SESSION['webuser'][$nameFrom]) ? $_SESSION['webuser'][$nameFrom] : '';

@@ -35,19 +35,19 @@ function we_tag_var($attribs){
 
 	switch($type){
 		case 'session' :
-			$return = (isset($_SESSION[$name_orig])) ? $_SESSION[$name_orig] : '';
+			$return = getArrayValue($_SESSION, null, $name_orig);
 			return $htmlspecialchars ? oldHtmlspecialchars($return) : $return;
 		case 'request' :
-			$return = filterXss(we_util::rmPhp(isset($_REQUEST[$name_orig]) ? $_REQUEST[$name_orig] : ''));
+			$return = filterXss(we_util::rmPhp(getArrayValue($_REQUEST, null, $name_orig)));
 			return $htmlspecialchars ? oldHtmlspecialchars($return) : $return;
 		case 'post' :
-			$return = we_util::rmPhp(isset($_POST[$name_orig]) ? $_POST[$name_orig] : '');
+			$return = we_util::rmPhp(getArrayValue($_POST, null, $name_orig));
 			return $htmlspecialchars ? oldHtmlspecialchars($return) : $return;
 		case 'get' :
-			$return = we_util::rmPhp(isset($_GET[$name_orig]) ? $_GET[$name_orig] : '');
+			$return = we_util::rmPhp(getArrayValue($_GET, null, $name_orig));
 			return $htmlspecialchars ? oldHtmlspecialchars($return) : $return;
 		case 'global' :
-			$return = (isset($GLOBALS[$name])) ? $GLOBALS[$name] : ((isset($GLOBALS[$name_orig])) ? $GLOBALS[$name_orig] : '');
+			$return = getArrayValue($GLOBALS, null, $name_orig);
 			return $htmlspecialchars ? oldHtmlspecialchars($return) : $return;
 		case 'multiobject' :
 			$data = unserialize($doc->getField($attribs, $type, true));
