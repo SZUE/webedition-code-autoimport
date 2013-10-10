@@ -517,7 +517,7 @@ function we_cmd() {
 
 				if(in_array($key, $fields['customerFields'])){
 					if(($key == $CLFields['stateField'] && $CLFields['stateFieldIsISO'])){
-						$value = g_l('countries', '[' . strtolower($value) . ']');
+						$value = g_l('countries', '[' . strtoupper($value) . ']');
 					} elseif($key == $CLFields['languageField'] && $CLFields['languageFieldIsISO']){
 						$value = g_l('languages', '[' . strtolower($value) . ']');
 					}
