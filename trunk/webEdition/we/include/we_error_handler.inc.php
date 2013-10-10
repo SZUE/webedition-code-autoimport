@@ -331,8 +331,7 @@ function log_error_message($type, $message, $file, $_line, $skipBT = false){
 		if(isset($GLOBALS['DB_WE'])){
 			$db = new DB_WE();
 			if(!$db->query($_query)){
-				mail_error_message($type, 'Cannot log error! Query failed: '. $message, $file, $line, $skipBT);
-				//die('Cannot log error! Query failed: ' . $GLOBALS['DB_WE']->Error);
+				mail_error_message($type, 'Cannot log error! Query failed: '. $message, $file, $_line, $skipBT);
 			} else{
 				$id = $db->getInsertId();
 				foreach($logVars as $var){
