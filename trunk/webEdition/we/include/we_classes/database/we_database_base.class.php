@@ -29,8 +29,8 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/conf/we_conf.in
 abstract class we_database_base{
 
 	private static $pool = array();
-	private static $conCount = 0;
-	private static $linkCount = 0;
+	protected static $conCount = 0;
+	protected static $linkCount = 0;
 	//states if we have lost connection and try again
 	private $retry = false;
 	/* link handles */
@@ -174,8 +174,8 @@ abstract class we_database_base{
 	public function __construct(){
 		//make lazy connections, only the first one is executed instantly
 		if(!self::$linkCount){
-			$this->connect();
 			self::$linkCount++;
+			$this->connect();
 		}
 		self::$conCount++;
 	}
@@ -212,7 +212,7 @@ abstract class we_database_base{
 	 */
 	protected function _connect(){
 		$this->Link_ID = array_pop(self::$pool);
-		if(!$this->Link_ID || !$this->ping()){
+		if(!$this->isConnected()){
 			self::$linkCount++;
 			$this->connect();
 		}
@@ -499,7 +499,7 @@ abstract class we_database_base{
 	 */
 	public function seek($pos = 0){
 		if(!$this->Query_ID){
-			$this->halt("seek called with no query pending.");
+			$this->halt('seek called with no query pending.');
 			return false;
 		}
 		if($this->_seek($pos)){
@@ -620,11 +620,11 @@ abstract class we_database_base{
 
 		for($i = 0; $i < $count; $i++){
 			$res[$i] = array(
-				"table" => $this->field_table($i),
-				"name" => $this->field_name($i),
-				"type" => $this->field_type($i),
-				"len" => $this->field_len($i),
-				"flags" => $this->field_flags($i),
+				'table' => $this->field_table($i),
+				'name' => $this->field_name($i),
+				'type' => $this->field_type($i),
+				'len' => $this->field_len($i),
+				'flags' => $this->field_flags($i),
 			);
 		}
 		if($full){
@@ -656,7 +656,7 @@ abstract class we_database_base{
 	 * @return bool true, on success
 	 */
 	public function lock($table, $mode = 'write'){
-		if(!$this->_connect()){
+		if(!$this->isConnected() && !$this->_connect()){
 			return false;
 		}
 		if(is_array($table)){
@@ -682,7 +682,7 @@ abstract class we_database_base{
 	 * @return bool true, on success
 	 */
 	function unlock(){
-		if(!$this->_connect()){
+		if(!$this->isConnected() && !$this->_connect()){
 			return false;
 		}
 		return $this->_query('unlock tables');

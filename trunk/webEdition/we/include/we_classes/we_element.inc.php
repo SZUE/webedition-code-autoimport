@@ -26,27 +26,31 @@ class we_element{
 
 	var $ClassName = __CLASS__;
 	var $DID = 0;
-	var $Name = "";
-	var $Type = "";
+	var $Name = '';
+	var $Type = '';
 	var $CID = 0;
 	var $BDID = 0;
-	var $Dat = "";
+	var $Dat = '';
 	var $IsBinary = 0;
 	var $AutoBR = 0;
 	var $LangugeID = 0;
 	var $Len = 0;
-	var $link_attribs = array("DID", "Name", "Type");
-	var $content_attribs = array("CID", "BDID", "Dat", "IsBinary", "AutoBR", "LanguageID");
-	var $persistent_slots = array("ClassName", "Name", "Type", "BDID", "Dat", "IsBinary", "AutoBR", "LanguageID");
+	var $link_attribs = array('DID', 'Name', 'Type');
+	var $content_attribs = array('CID', 'BDID', 'Dat', 'IsBinary', 'AutoBR', 'LanguageID');
+	var $persistent_slots = array('ClassName', 'Name', 'Type', 'BDID', 'Dat', 'IsBinary', 'AutoBR', 'LanguageID');
 	var $Link;
 	var $Content;
 	var $linked = false;
+	static $db = '';
 
 	function __construct($link_props = true, $options = array()){
+		if(self::$db == ''){
+			self::$db = new DB_WE();
+		}
 		$this->DID = 0;
-		$this->Link = new weModelBase(LINK_TABLE);
-		$this->Link->setKeys(array("DID", "CID"));
-		$this->Content = new weModelBase(CONTENT_TABLE);
+		$this->Link = new weModelBase(LINK_TABLE, self::$db);
+		$this->Link->setKeys(array('DID', 'CID'));
+		$this->Content = new weModelBase(CONTENT_TABLE, self::$db);
 		if(is_array($options)){
 			if($link_props){
 				$this->fetchLinkedOptions($options);

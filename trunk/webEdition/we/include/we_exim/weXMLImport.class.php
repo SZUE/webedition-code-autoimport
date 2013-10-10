@@ -50,7 +50,7 @@ class weXMLImport extends weXMLExIm{
 		$this->xmlBrowser->parse($data, $this->options['xml_encoding']);
 		unset($data);
 		$this->xmlBrowser->normalize();
-
+		$node_set = array();
 		if($this->xmlBrowser->getChildren(0, $node_set)){
 
 			foreach($node_set as $node){
@@ -355,7 +355,7 @@ class weXMLImport extends weXMLExIm{
 			$object->Text = $new_name;
 		}
 		if(isset($object->Filename)){
-			$object->Filename = str_replace($object->Extension, "", $new_name);
+			$object->Filename = str_replace($object->Extension, '', $new_name);
 		}
 	}
 
@@ -375,43 +375,47 @@ class weXMLImport extends weXMLExIm{
 				$attributes = $this->xmlBrowser->getNodeAttributes();
 
 
-				if($nodname == "we:info"){
-					$this->importNodeSet($node);
-				} else if($nodname == "we:map"){
-					$this->RefTable->Users[$attributes['user']] = $attributes;
-				} else if($nodname == "we:content"){
-					$i++;
-					$this->xmlBrowser->addMark('we:content');
-					$content = $this->importNodeSet($node);
-					$this->xmlBrowser->gotoMark('we:content');
-					$object->elements = array_merge($object->elements, $content->getElement());
-				} else {
-					if($nodname == "ClassName"){
-						$this->nodehierarchy[] = $noddata;
-						switch($noddata){
-							case "we_object":
-								if(defined("OBJECT_TABLE")){
-									$object = new we_objectEx();
-								}
-								break;
-							case "we_objectFile":
-								if(defined("OBJECT_FILES_TABLE")){
-									$object = new we_objectFile();
-								}
-								break;
-							case "we_class_folder": //Bug 3857 sonderbehandlung hinzugef�gt, da es sonst hier beim letzten else zum Absturz kommt, es wird nichts geladen, da eigentlich alles geladen ist
-								break;
-							case "weNavigation":
-							case 'weNavigationRule':
-							case 'we_thumbnailEx':
-							case "weBinary":
-							default:
-								$object = new $noddata();
-								break;
+				switch($nodname){
+					case 'we:info':
+						$this->importNodeSet($node);
+						break;
+					case 'we:map':
+						$this->RefTable->Users[$attributes['user']] = $attributes;
+						break;
+					case 'we:content':
+						$i++;
+						$this->xmlBrowser->addMark('we:content');
+						$content = $this->importNodeSet($node);
+						$this->xmlBrowser->gotoMark('we:content');
+						$object->elements = array_merge($object->elements, $content->getElement());
+						break;
+					default:
+						if($nodname == 'ClassName'){
+							$this->nodehierarchy[] = $noddata;
+							switch($noddata){
+								case "we_object":
+									if(defined("OBJECT_TABLE")){
+										$object = new we_objectEx();
+									}
+									break;
+								case "we_objectFile":
+									if(defined("OBJECT_FILES_TABLE")){
+										$object = new we_objectFile();
+									}
+									break;
+								case 'we_class_folder': //Bug 3857 sonderbehandlung hinzugef�gt, da es sonst hier beim letzten else zum Absturz kommt, es wird nichts geladen, da eigentlich alles geladen ist
+									break;
+								case 'weNavigation':
+								case 'weNavigationRule':
+								case 'we_thumbnailEx':
+								case 'weBinary':
+								default:
+									$object = new $noddata();
+									break;
+							}
 						}
-					}
-					$node_data[$nodname] = $noddata;
-					$node_coding[$nodname] = (isset($attributes[weContentProvider::CODING_ATTRIBUTE]) ? $attributes[weContentProvider::CODING_ATTRIBUTE] : weContentProvider::CODING_NONE);
+						$node_data[$nodname] = $noddata;
+						$node_coding[$nodname] = (isset($attributes[weContentProvider::CODING_ATTRIBUTE]) ? $attributes[weContentProvider::CODING_ATTRIBUTE] : weContentProvider::CODING_NONE);
 				}
 			}
 		}
@@ -447,36 +451,28 @@ class weXMLImport extends weXMLExIm{
 
 				if($value == $this->options['xml_encoding']){
 					return $this->options['target_encoding'];
-				} else {
-					if($this->isSerialized($value)){
-						$usv = unserialize($value);
-						if(is_array($usv)){
-							foreach($usv as &$av){
-								if($this->options['xml_encoding'] == 'ISO-8859-1'){
-									$av = utf8_encode($av);
-								} else {
-									$av = utf8_decode($av);
-								}
-							}
-							$sv = serialize($usv);
-							return $sv;
-						} else {
-							return $value;
-						}
-					} else {
-						if($this->options['xml_encoding'] == 'ISO-8859-1'){
-							return utf8_encode($value);
-						} else {
-							return utf8_decode($value);
-						}
-					}
 				}
-			} else {
-				return $value;
+				if($this->isSerialized($value)){
+					$usv = unserialize($value);
+					if(is_array($usv)){
+						foreach($usv as &$av){
+							if($this->options['xml_encoding'] == 'ISO-8859-1'){
+								$av = utf8_encode($av);
+							} else {
+								$av = utf8_decode($av);
+							}
+						}
+						$sv = serialize($usv);
+						return $sv;
+					}
+					return $value;
+				}
+				return ($this->options['xml_encoding'] == 'ISO-8859-1' ?
+						utf8_encode($value) :
+						utf8_decode($value));
 			}
-		} else {
-			return $value;
 		}
+		return $value;
 	}
 
 	function refreshOwners(&$object){
@@ -562,8 +558,6 @@ class weXMLImport extends weXMLExIm{
 	}
 
 	function splitFile($filename, $tmppath, $count){
-		global $_language;
-
 		if($filename == ""){
 			return -1;
 		}
@@ -672,4 +666,3 @@ class weXMLImport extends weXMLExIm{
 	}
 
 }
-
