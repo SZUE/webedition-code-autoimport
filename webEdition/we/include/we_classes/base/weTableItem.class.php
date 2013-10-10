@@ -31,7 +31,7 @@
  */
 class weTableItem extends weModelBase{
 
-	var $Pseudo = "weTableItem";
+	var $Pseudo = 'weTableItem';
 	var $attribute_slots = array();
 
 	function __construct($table){
