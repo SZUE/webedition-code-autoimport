@@ -583,6 +583,17 @@ if(defined('MESSAGING_SYSTEM')){
 	);
 }
 
+// Cockpit > new Widget > Shop
+if(weModuleInfo::showModuleInMenu('shop')){
+	$we_menu[2020350] = array(
+		'text' => g_l('javaMenu_global', '[shop_dashboard]'),
+		'parent' => 2020000,
+		'cmd' => 'new_widget_shp',
+		'perm' => 'NEW_SHOP_ARTICLE || DELETE_SHOP_ARTICLE || EDIT_SHOP_ORDER || DELETE_SHOP_ORDER || EDIT_SHOP_PREFS || ADMINISTRATOR',
+		'enabled' => we_hasPerm('CAN_SEE_QUICKSTART'),
+	);
+}
+
 // Cockpit > new Widget > online users
 $we_menu[2020400] = array(
 	'text' => g_l('javaMenu_global', '[users_online]'),
@@ -635,18 +646,6 @@ if(WE_TRACKER_DIR &&
 		'text' => g_l('javaMenu_global', '[pagelogger]'),
 		'parent' => 2020000,
 		'cmd' => 'new_widget_plg',
-		'perm' => '',
-		'enabled' => we_hasPerm('CAN_SEE_QUICKSTART'),
-	);
-}
-
-//ToDo: nummerirung identisch mit pageLogger!!!
-// Cockpit > new Widget > Shop
-if(defined('WE_SHOP_MODULE_DIR')){
-	$we_menu[2020900] = array(
-		'text' => g_l('javaMenu_global', '[shop_dashboard]'),
-		'parent' => 2020000,
-		'cmd' => 'new_widget_shp',
 		'perm' => '',
 		'enabled' => we_hasPerm('CAN_SEE_QUICKSTART'),
 	);
