@@ -2739,5 +2739,13 @@ self.close();');
 		return weFile::save($filename, $content);
 	}
 
+	public function getShowImportBox(){
+		return $this->show_import_box;
+	}
+
+	public function getShowExportBox(){
+		return $this->show_export_box;
+	}
+
 }
 
