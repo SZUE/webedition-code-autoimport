@@ -1034,7 +1034,7 @@ class weNewsletterFrames extends weModuleFrames{
 		$table->setCol(4, 0, array("colspan" => 3), we_button::create_button_table(array($importbut, $exportbut)));
 
 		// Import dialog
-		if($this->View->show_import_box == $group){
+		if($this->View->getShowImportBox() == $group){
 			$ok = we_button::create_button("ok", "javascript:we_cmd('import_csv')");
 			$cancel = we_button::create_button("cancel", "javascript:we_cmd('reset_import');");
 
@@ -1082,7 +1082,7 @@ class weNewsletterFrames extends weModuleFrames{
 		}
 
 		// Export dialog
-		if($this->View->show_export_box == $group){
+		if($this->View->getShowExportBox() == $group){
 			$ok = we_button::create_button("ok", "javascript:we_cmd('export_csv')");
 			$cancel = we_button::create_button("cancel", "javascript:we_cmd('reset_import');");
 
