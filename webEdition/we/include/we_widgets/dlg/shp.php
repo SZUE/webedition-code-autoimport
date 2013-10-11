@@ -42,6 +42,7 @@ function init(){
 	_oCsv_=opener.gel(_sObjId+'_csv')
 	_sInitCsv_=_oCsv_.value;
 	_oSctDate=_fo.elements['sct_date'];
+	_oRevenueTarget = _fo.elements['revenueTarget'];
 	_fo.elements['revenueTarget'].value=_sInitNum;
 	initPrefs();
 	//alert('form: ' + _fo.name);
@@ -64,7 +65,7 @@ function getCsv(){
 
 function refresh(bRender){
 	if(bRender)_sLastPreviewCsv=getCsv();
-	opener.rpc(getBinary('type'),_oSctDate.selectedIndex,_sObjId,_sShpInc);
+	opener.rpc(getBinary('type'),_oSctDate.selectedIndex,_oRevenueTarget.value,'','',_sObjId,_sShpInc);
 }
 
 function save(){
@@ -105,7 +106,7 @@ function preview(){
 
 function exit_close(){
 	if(_bPrev&&_sInitCsv_!=_sLastPreviewCsv){
-		var aCsv=_sInitCsv_.split(';');
+		var aCsv=_sInitCsv_.split(';');//there are no aCsv[3],aCsv[4]: maybe set '' instead?
 		opener.rpc(aCsv[0],aCsv[1],aCsv[2],aCsv[3],aCsv[4],_sObjId,_sShpInc);
 	}
 	exitPrefs();
