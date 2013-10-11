@@ -47,6 +47,7 @@ switch($_REQUEST['we_cmd'][0]){
 			}
 		}
 		$iCurrId = str_replace('m_', '', $_REQUEST['we_cmd'][2]);
+		$newSCurrId = $_REQUEST['we_cmd'][2];
 		$iWidth = $aPrefs[$aProps[0]]['width'];
 		if($aProps[0] != 'rss' && $aProps[0] != 'pad'){
 			if($aProps[0] == 'msg'){

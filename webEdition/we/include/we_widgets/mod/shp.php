@@ -29,6 +29,7 @@ we_html_tools::protect();
 if(!isset($aCols[5])){
 	$aCols = explode(';', $aProps[3]);
 }
+
 $sKPIs = $aCols[0];
 $bOrders = (bool) $sKPIs{0};
 $bCustomer = (bool) $sKPIs{1};
@@ -189,8 +190,9 @@ if($bTarget){
 			greenFrom: ".($sRevenueTarget*1.1).", greenTo: ".($sRevenueTarget*2).",
 			minorTicks: 5
 		};
-		//var chart_div = parent.document.getElementById('chart_div') || document.getElementById('chart_div')
-		var chart = new google.visualization.Gauge(parent.document.getElementById('chart_div') || document.getElementById('chart_div'));
+
+		chart_div = top.weEditorFrameController.getActiveEditorFrame().EditorFrameWindow.document.getElementById('" . $newSCurrId . "_chart_div');
+		var chart = new google.visualization.Gauge(chart_div);
 		chart.draw(data, options);
 	}
 </script>";
@@ -290,6 +292,6 @@ $shopDashboard .= '</div>';
 
 if($bTarget){
 	$shopDashboard .= '<div style="width:40%;float:right;"><b>'.g_l('cockpit','[shop_dashboard][revenue_target]').'&nbsp;'.we_util_Strings::formatNumber($sRevenueTarget,$numberformat) .'&nbsp;'. $currency.'</b>';
-	$shopDashboard .= we_html_element::htmlDiv(array("id" => "chart_div"),'');
+	$shopDashboard .= we_html_element::htmlDiv(array("id" => $newSCurrId . "_chart_div"),'');
 	$shopDashboard .= '</div><br style="clear:both;"/>';
 }

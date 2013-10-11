@@ -97,7 +97,7 @@ $aPrefs['rss'] = array(
 	'isResizable' => 1
 );
 $aPrefs['mfd'] = array(
-	'width' => $small,
+	'width' => $large,
 	'height' => 210,
 	'res' => 1,
 	'cls' => 'lightCyan',
