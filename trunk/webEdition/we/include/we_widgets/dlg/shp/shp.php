@@ -25,10 +25,11 @@
 // widget LAST MODIFIED
 
 $aCols = $_REQUEST['we_cmd'];
+$newSCurrId = $_REQUEST['we_cmd'][5];
 require_once('../../mod/shp.php');
 
 $sJsCode = "
-var _sObjId='" . $_REQUEST['we_cmd'][5] . "';
+var _sObjId='" . $newSCurrId . "';
 var _sType='shp';
 var _sTb='" . g_l('cockpit', '[shop_dashboard][headline]').':&nbsp;'. $interval . "';
 
