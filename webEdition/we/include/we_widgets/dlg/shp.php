@@ -134,7 +134,7 @@ if(defined("WE_SHOP_MODULE_DIR") && we_hasPerm("CAN_SEE_SHOP")){
 	$oChbxOrders = we_forms::checkbox(
 			$value = 0, $checked = $sType{0}, $name = "chbx_type", $text = g_l('cockpit','[shop_dashboard][cnt_order]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = !(defined('WE_SHOP_MODULE_DIR') && we_hasPerm("CAN_SEE_SHOP")), $description = "", $type = 0, $width = 0);
 	$oChbxAverageOrder = we_forms::checkbox(
-			$value = 0, $checked = $sType{2}, $name = "chbx_type", $text = g_l('cockpit','[shop_dashboard][revenue_order]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = !(defined("WE_SHOP_MODULE_DIR") && we_hasPerm('CAN_SEE_SHOP')), $description = "", $type = 0, $width = 0);
+			$value = 0, $checked = $sType{2}, $name = "chbx_type", $text = g_l('cockpit','[shop_dashboard][revenue]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = !(defined("WE_SHOP_MODULE_DIR") && we_hasPerm('CAN_SEE_SHOP')), $description = "", $type = 0, $width = 0);
 	$oChbxTarget = we_forms::checkbox(
 			$value = 0, $checked = $sType{3}, $name = "chbx_type", $text = g_l('cockpit','[shop_dashboard][revenue_target]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = !(defined("WE_SHOP_MODULE_DIR") && we_hasPerm('CAN_SEE_SHOP')), $description = "", $type = 0, $width = 0);
 			
