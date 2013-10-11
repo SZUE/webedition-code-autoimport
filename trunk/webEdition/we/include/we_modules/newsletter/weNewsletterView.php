@@ -2080,7 +2080,7 @@ self.close();');
 						break;
 					case weNewsletterBlock::TEXT:
 						if($hm){
-							if(!empty($block->Htm)){
+							if(!empty($block->Html)){
 								$content .= $block->Html;
 							} else {
 								$content .= strtr($block->Source, array(
