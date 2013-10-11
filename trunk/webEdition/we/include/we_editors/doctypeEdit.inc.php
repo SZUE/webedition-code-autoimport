@@ -402,4 +402,3 @@ function disableLangDefault(allnames, allvalues, deselect) {
 
 <?php
 $we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
-
