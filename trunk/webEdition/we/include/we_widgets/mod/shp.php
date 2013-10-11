@@ -172,112 +172,111 @@ $shopDashboard = "";
 
 if($bTarget){
 	$shopDashboard .= "<script type='text/javascript' src='https://www.google.com/jsapi'></script>
-	    <script type='text/javascript'>
-	      google.load('visualization', '1', {packages:['gauge']});
-	      google.setOnLoadCallback(drawChart);
-	      function drawChart() {
-	        var data = google.visualization.arrayToDataTable([
-	          ['Label', 'Value'],
-	          ['Ziel in ".$currency."', ".we_util_Strings::formatNumber($total)."],
-	        ]);
-	
-	        var options = {
-	          width: 300, height: 170,
-	          max: ".($sRevenueTarget*2).",
-	          redFrom: 0, redTo: ".($sRevenueTarget*0.9).",
-	          yellowFrom: ".($sRevenueTarget*0.9).", yellowTo: ".($sRevenueTarget*1.1).",
-	          greenFrom: ".($sRevenueTarget*1.1).", greenTo: ".($sRevenueTarget*2).",
-	          minorTicks: 5
-	        };
-	
-	        var chart = new google.visualization.Gauge(document.getElementById('chart_div'));
-	        chart.draw(data, options);
-	      }
-	    </script>";
-}
+<script type='text/javascript'>
+	google.load('visualization', '1', {packages:['gauge']});
+	google.setOnLoadCallback(drawChart);
+	function drawChart() {
+		var data = google.visualization.arrayToDataTable([
+			['Label', 'Value'],
+			['Ziel in ".$currency."', ".we_util_Strings::formatNumber($total)."],
+		]);
 
+		var options = {
+			width: 300, height: 170,
+			max: ".($sRevenueTarget*2).",
+			redFrom: 0, redTo: ".($sRevenueTarget*0.9).",
+			yellowFrom: ".($sRevenueTarget*0.9).", yellowTo: ".($sRevenueTarget*1.1).",
+			greenFrom: ".($sRevenueTarget*1.1).", greenTo: ".($sRevenueTarget*2).",
+			minorTicks: 5
+		};
+		//var chart_div = parent.document.getElementById('chart_div') || document.getElementById('chart_div')
+		var chart = new google.visualization.Gauge(parent.document.getElementById('chart_div') || document.getElementById('chart_div'));
+		chart.draw(data, options);
+	}
+</script>";
+}
 
 $shopDashboard .= '<div style="width:60%;float:left;">';
 
 $shopDashboardTable = new we_html_table(array('border' => '0', 'cellpadding' => '0', 'cellspacing' => '0'), 1, 3);
 $i = 0;
 
-//1. row
 if($bOrders){
+	//1. row
 	$shopDashboardTable->addRow();
 	$shopDashboardTable->setCol($i, 0, array("class" => "middlefont"), we_html_element::htmlB(g_l('cockpit','[shop_dashboard][cnt_order]').we_html_tools::getPixel(5, 1)));
 	$shopDashboardTable->setCol($i, 1, array(), we_html_tools::getPixel(10, 1));
 	$shopDashboardTable->setCol($i, 2, array("class" => "middlefont","align"=>"right"), we_html_element::htmlB(($amountOrders > 0 ? $amountOrders : 0)));
 	$i++;
+
+	//2. row
+	$shopDashboardTable->addRow();
+	$shopDashboardTable->setCol($i, 0, array("class" => "middlefont","style"=>"color:red;"), g_l('cockpit','[shop_dashboard][canceled_order]').we_html_tools::getPixel(5, 1));
+	$shopDashboardTable->setCol($i, 1, array(), we_html_tools::getPixel(10, 1));
+	$shopDashboardTable->setCol($i, 2, array("class" => "middlefont","align"=>"right","style"=>"color:red;"),($amountCanceledOrders > 0 ? $amountCanceledOrders : 0));
+	$i++;
+
+	//3. row
+	$shopDashboardTable->addRow();
+	$shopDashboardTable->setCol($i, 0, array("class" => "middlefont"), g_l('cockpit','[shop_dashboard][cnt_articles]').we_html_tools::getPixel(5, 1));
+	$shopDashboardTable->setCol($i, 1, array(), we_html_tools::getPixel(10, 1));
+	$shopDashboardTable->setCol($i, 2, array("class" => "middlefont","align"=>"right"),($amountArticles > 0 ? $amountArticles : 0));
+	$i++;
+
+	//4. row
+	$shopDashboardTable->addRow();
+	$shopDashboardTable->setCol($i, 0, array("class" => "middlefont"), g_l('cockpit','[shop_dashboard][articles_order]'));
+	$shopDashboardTable->setCol($i, 1, array(), we_html_tools::getPixel(10, 1));
+	$shopDashboardTable->setCol($i, 2, array("class" => "middlefont","align"=>"right"), ($amountArticles > 0 ? we_util_Strings::formatNumber($amountArticles/($amountOrders-$amountCanceledOrders),$numberformat) : 0));
+	$i++;
+
+	//5. row
+	$shopDashboardTable->addRow();
+	$shopDashboardTable->setCol($i, 0, array("class" => "middlefont"), "&nbsp;");
+	$shopDashboardTable->setCol($i, 1, array(), we_html_tools::getPixel(10, 1));
+	$shopDashboardTable->setCol($i, 2, array("class" => "middlefont"), "&nbsp;");
+	$i++;
 }
 
-//2. row
-$shopDashboardTable->addRow();
-$shopDashboardTable->setCol($i, 0, array("class" => "middlefont","style"=>"color:red;"), g_l('cockpit','[shop_dashboard][canceled_order]').we_html_tools::getPixel(5, 1));
-$shopDashboardTable->setCol($i, 1, array(), we_html_tools::getPixel(10, 1));
-$shopDashboardTable->setCol($i, 2, array("class" => "middlefont","align"=>"right","style"=>"color:red;"),($amountCanceledOrders > 0 ? $amountCanceledOrders : 0));
-$i++;
-
-//3. row
-$shopDashboardTable->addRow();
-$shopDashboardTable->setCol($i, 0, array("class" => "middlefont"), g_l('cockpit','[shop_dashboard][cnt_articles]').we_html_tools::getPixel(5, 1));
-$shopDashboardTable->setCol($i, 1, array(), we_html_tools::getPixel(10, 1));
-$shopDashboardTable->setCol($i, 2, array("class" => "middlefont","align"=>"right"),($amountArticles > 0 ? $amountArticles : 0));
-$i++;
-
-//4. row
-$shopDashboardTable->addRow();
-$shopDashboardTable->setCol($i, 0, array("class" => "middlefont"), g_l('cockpit','[shop_dashboard][articles_order]'));
-$shopDashboardTable->setCol($i, 1, array(), we_html_tools::getPixel(10, 1));
-$shopDashboardTable->setCol($i, 2, array("class" => "middlefont","align"=>"right"), ($amountArticles > 0 ? we_util_Strings::formatNumber($amountArticles/($amountOrders-$amountCanceledOrders),$numberformat) : 0));
-$i++;
-
-//5. row
-$shopDashboardTable->addRow();
-$shopDashboardTable->setCol($i, 0, array("class" => "middlefont"), "&nbsp;");
-$shopDashboardTable->setCol($i, 1, array(), we_html_tools::getPixel(10, 1));
-$shopDashboardTable->setCol($i, 2, array("class" => "middlefont"), "&nbsp;");
-$i++;
-
-//6. row
-$shopDashboardTable->addRow();
-$shopDashboardTable->setCol($i, 0, array("class" => "middlefont"), we_html_element::htmlB(g_l('cockpit','[shop_dashboard][revenue]')));
-$shopDashboardTable->setCol($i, 1, array(), we_html_tools::getPixel(10, 1));
-$shopDashboardTable->setCol($i, 2, array("class" => "middlefont","align"=>"right"), we_html_element::htmlB(we_util_Strings::formatNumber($total,$numberformat). '&nbsp;'. $currency));
-$i++;
-
-//7. row
-$shopDashboardTable->addRow();
-$shopDashboardTable->setCol($i, 0, array("class" => "middlefont","style"=>"color:green;"), g_l('cockpit','[shop_dashboard][payed]'));
-$shopDashboardTable->setCol($i, 1, array(), we_html_tools::getPixel(10, 1));
-$shopDashboardTable->setCol($i, 2, array("class" => "middlefont","align"=>"right","style"=>"color:green;"), we_util_Strings::formatNumber($payed,$numberformat). '&nbsp;'. $currency);
-$i++;
-
-//8. row
-$shopDashboardTable->addRow();
-$shopDashboardTable->setCol($i, 0, array("class" => "middlefont","style"=>"color:red;"), g_l('cockpit','[shop_dashboard][unpayed]'));
-$shopDashboardTable->setCol($i, 1, array(), we_html_tools::getPixel(10, 1));
-$shopDashboardTable->setCol($i, 2, array("class" => "middlefont","align"=>"right","style"=>"color:red;"), we_util_Strings::formatNumber($unpayed,$numberformat). '&nbsp;'. $currency);
-$i++;
-
-//9. row
 if($bAverageOrder){
+	//6. row
+	$shopDashboardTable->addRow();
+	$shopDashboardTable->setCol($i, 0, array("class" => "middlefont"), we_html_element::htmlB(g_l('cockpit','[shop_dashboard][revenue]')));
+	$shopDashboardTable->setCol($i, 1, array(), we_html_tools::getPixel(10, 1));
+	$shopDashboardTable->setCol($i, 2, array("class" => "middlefont","align"=>"right"), we_html_element::htmlB(we_util_Strings::formatNumber($total,$numberformat). '&nbsp;'. $currency));
+	$i++;
+
+	//7. row
+	$shopDashboardTable->addRow();
+	$shopDashboardTable->setCol($i, 0, array("class" => "middlefont","style"=>"color:green;"), g_l('cockpit','[shop_dashboard][payed]'));
+	$shopDashboardTable->setCol($i, 1, array(), we_html_tools::getPixel(10, 1));
+	$shopDashboardTable->setCol($i, 2, array("class" => "middlefont","align"=>"right","style"=>"color:green;"), we_util_Strings::formatNumber($payed,$numberformat). '&nbsp;'. $currency);
+	$i++;
+
+	//8. row
+	$shopDashboardTable->addRow();
+	$shopDashboardTable->setCol($i, 0, array("class" => "middlefont","style"=>"color:red;"), g_l('cockpit','[shop_dashboard][unpayed]'));
+	$shopDashboardTable->setCol($i, 1, array(), we_html_tools::getPixel(10, 1));
+	$shopDashboardTable->setCol($i, 2, array("class" => "middlefont","align"=>"right","style"=>"color:red;"), we_util_Strings::formatNumber($unpayed,$numberformat). '&nbsp;'. $currency);
+	$i++;
+
+	//9. row
 	$shopDashboardTable->addRow();
 	$shopDashboardTable->setCol($i, 0, array("class" => "middlefont"), g_l('cockpit','[shop_dashboard][order_value_order]'));
 	$shopDashboardTable->setCol($i, 1, array(), we_html_tools::getPixel(10, 1));
 	$shopDashboardTable->setCol($i, 2, array("class" => "middlefont","align"=>"right"), ($amountOrders > 0 ? we_util_Strings::formatNumber($total/$amountOrders,$numberformat) : 0). '&nbsp;'. $currency);
 	$i++;
+
+	//10. row
+	$shopDashboardTable->addRow();
+	$shopDashboardTable->setCol($i, 0, array("class" => "middlefont"), "&nbsp;");
+	$shopDashboardTable->setCol($i, 1, array(), we_html_tools::getPixel(10, 1));
+	$shopDashboardTable->setCol($i, 2, array("class" => "middlefont"), "&nbsp;");
+	$i++;
 }
 
-//10. row
-$shopDashboardTable->addRow();
-$shopDashboardTable->setCol($i, 0, array("class" => "middlefont"), "&nbsp;");
-$shopDashboardTable->setCol($i, 1, array(), we_html_tools::getPixel(10, 1));
-$shopDashboardTable->setCol($i, 2, array("class" => "middlefont"), "&nbsp;");
-$i++;
-
-//11. row
 if($bCustomer){
+	//11. row
 	$shopDashboardTable->addRow();
 	$shopDashboardTable->setCol($i, 0, array("class" => "middlefont"), we_html_element::htmlB(g_l('cockpit','[shop_dashboard][cnt_new_customer]')));
 	$shopDashboardTable->setCol($i, 1, array(), we_html_tools::getPixel(10, 1));
@@ -288,6 +287,7 @@ if($bCustomer){
 $shopDashboard .= $shopDashboardTable->getHtml();
 
 $shopDashboard .= '</div>';
+
 if($bTarget){
 	$shopDashboard .= '<div style="width:40%;float:right;"><b>'.g_l('cockpit','[shop_dashboard][revenue_target]').'&nbsp;'.we_util_Strings::formatNumber($sRevenueTarget,$numberformat) .'&nbsp;'. $currency.'</b>';
 	$shopDashboard .= we_html_element::htmlDiv(array("id" => "chart_div"),'');
