@@ -251,7 +251,7 @@ function weTag_getParserAttribute($name, $attribs, $default = '', $isFlag = fals
 function weTag_getAttribute($name, $attribs, $default = '', $isFlag = false, $useGlobal = true){
 	$value = isset($attribs[$name]) ? $attribs[$name] : '';
 	$regs = array();
-	if($useGlobal && !is_array($value) && preg_match('|^\\\\?\$(.+)(\[.*\])?|', $value, $regs)){
+	if($useGlobal && !is_array($value) && preg_match('|^\\\\?\$([^\[]+)(\[.*\])?|', $value, $regs)){
 		$value = (isset($regs[2]) ?
 				getArrayValue($GLOBALS, $regs[1], $regs[2]) :
 				(isset($GLOBALS[$regs[1]]) ? $GLOBALS[$regs[1]] : ''));
