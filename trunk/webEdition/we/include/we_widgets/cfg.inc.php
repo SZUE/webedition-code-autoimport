@@ -107,7 +107,7 @@ $aPrefs['mfd'] = array(
 );
 $aPrefs['shp'] = array(
 	'width' => $large,
-	'height' => 210,
+	'height' => 212,
 	'res' => 0,
 	'cls' => 'lightCyan',
 	'csv' => '1111;3;10000;',
