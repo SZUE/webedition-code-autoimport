@@ -29,6 +29,7 @@ $l_cockpit=array(
 	'config_pad'=>'Konfiguration Notizen',
 	'content_encoded'=>'Enkodierter Inhalt',
 	'copyright'=>'Copyright ©',
+	'customer'=>'Kundenverwaltung',
 	'date'=>'Datum',
 	'date_empty'=>'Bitte geben das Gültigkeitsdatum an!',
 	'date_last_modification'=>'Datum der letzten Bearbeitung',

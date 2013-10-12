@@ -29,6 +29,7 @@ $l_cockpit=array(
 	'config_pad'=>'Configuratie notities',
 	'content_encoded'=>'Geëncodeerde gegevens',
 	'copyright'=>'Copyright &copy;',
+	'customer'=>'',
 	'date'=>'Datum',
 	'date_empty'=>'Please enter the validity date!',
 	'date_last_modification'=>'Datum van laatste wijziging',

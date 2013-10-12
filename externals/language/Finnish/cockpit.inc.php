@@ -29,6 +29,7 @@ $l_cockpit=array(
 	'config_pad'=>'Muistiinpanojen asetukset',
 	'content_encoded'=>'Enkoodattu data',
 	'copyright'=>'Copyright &copy;',
+	'customer'=>'',
 	'date'=>'Päivämäärä',
 	'date_empty'=>'Please enter the validity date!',
 	'date_last_modification'=>'Edellisen muokkauksen päiväys',

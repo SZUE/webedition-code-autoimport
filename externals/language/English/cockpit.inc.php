@@ -29,6 +29,7 @@ $l_cockpit=array(
 	'config_pad'=>'Configuration notes',
 	'content_encoded'=>'Encoded data',
 	'copyright'=>'Copyright &copy;',
+	'customer'=>'',
 	'date'=>'Date',
 	'date_empty'=>'Please enter the validity date!',
 	'date_last_modification'=>'Date of last modification',
