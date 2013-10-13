@@ -594,6 +594,17 @@ if(weModuleInfo::showModuleInMenu('shop')){
 	);
 }
 
+// Cockpit > new Widget > Failed Logins
+if(weModuleInfo::showModuleInMenu('customer')){
+	$we_menu[2020360] = array(
+		'text' => g_l('javaMenu_global', '[kv_failedLogins]'),
+		'parent' => 2020000,
+		'cmd' => 'new_widget_fdl',
+		'perm' => 'EDIT_CUSTOMER || NEW_CUSTOMER || ADMINISTRATOR',
+		'enabled' => we_hasPerm('CAN_SEE_QUICKSTART'),
+	);
+}
+
 // Cockpit > new Widget > online users
 $we_menu[2020400] = array(
 	'text' => g_l('javaMenu_global', '[users_online]'),

@@ -123,6 +123,15 @@ $aPrefs['msg'] = array(
 	'dlgHeight' => 140,
 	'isResizable' => 1
 );
+$aPrefs['fdl'] = array(
+	'width' => $large,
+	'height' => 210,
+	'res' => 0,
+	'cls' => 'orange',
+	'csv' => '',
+	'dlgHeight' => 435,
+	'isResizable' => 0
+);
 $aPrefs['usr'] = array(
 	'width' => $small,
 	'height' => 210,
