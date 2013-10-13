@@ -97,7 +97,7 @@ function we_tag_include($attribs){
 			$description = weTag_getAttribute('description', $attribs, g_l('tags', '[include_file]'));
 
 			echo '<table style="background: #006DB8;border:0px;padding:0px;"><tr><td style="padding: 3px;' . $style . '">' . '&nbsp;' . $description . '</td></tr><tr><td>' .
-			we_tag('href', array('name' => $_name, 'rootdir' => weTag_getAttribute('rootdir', $attribs, '/'), 'startid' => weTag_getAttribute('startid', $attribs, 0), 'type' => $type)) .
+			we_tag('href', array('name' => $_name, 'rootdir' => weTag_getAttribute('rootdir', $attribs, '/'), 'startid' => weTag_getAttribute('startid', $attribs, 0), 'type' => $type, 'size' => weTag_getAttribute('size', $attribs, 50))) .
 			'</td></tr></table>';
 			return '';
 		}

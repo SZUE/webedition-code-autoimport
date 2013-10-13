@@ -142,6 +142,7 @@ if(isset($fieldName) && isset($_REQUEST["we_okpressed"]) && $_REQUEST["we_okpres
 			  21 = contextmenu
 			  22 = isInPopup
 			  23 = isInFrontend
+			  24 = templates
 			 *
 			 */
 
@@ -172,7 +173,9 @@ if(isset($fieldName) && isset($_REQUEST["we_okpressed"]) && $_REQUEST["we_okpres
 					we_cmd_dec(19),
 					we_cmd_dec(20),
 					we_cmd_dec(21),
-					true);
+					true, 
+					$_REQUEST['we_cmd'][24]
+				);
 
 			print we_wysiwyg::getHeaderHTML() . $e->getHTML() .
 				'<div style="height:8px"></div>' . we_button::position_yes_no_cancel($okBut, $cancelBut);

@@ -1,4 +1,4 @@
-<?php
+	<?php
 
 /**
  * webEdition CMS
@@ -122,8 +122,8 @@ function we_tag_href($attribs){
 
 	$trashbut = we_button::create_button('image:btn_function_trash', "javascript:document.we_form.elements['" . $intID_elem_Name . "'].value = ''; document.we_form.elements['" . $intPath_elem_Name . "'].value = ''; _EditorFrame.setEditorIsHot(true);" . (($include || $reload) ? "setScrollTo(); top.we_cmd('reload_editpage');" : ''), true);
 	$span = '<span style="color: black;font-size:' . ((we_base_browserDetect::isMAC()) ? "11px" : ((we_base_browserDetect::isUNIX()) ? "13px" : "12px")) . ';font-family:' . g_l('css', '[font_family]') . ';">';
-	$attr = we_make_attribs($attribs, 'name,value,type,onkeydown,onKeyDown,_name_orig,size');
-	$size = 7 * intval(weTag_getAttribute('size', $attribs, 20));
+	$attr = we_make_attribs($attribs, 'name,value,type,onkeydown,onKeyDown');
+	$size = 5 * intval(weTag_getAttribute('size', $attribs, 20));
 
 	$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['$intID_elem_Name'].value");
 	$wecmdenc2 = we_cmd_enc("document.forms['we_form'].elements['$intPath_elem_Name'].value");

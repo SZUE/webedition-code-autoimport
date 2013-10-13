@@ -520,6 +520,13 @@ $we_menu = array(
 		'perm' => 'CAN_SEE_QUICKSTART',
 		'hide' => !defined('MESSAGING_SYSTEM')
 	),
+	array(// Cockpit > new Widget > Shop
+		'text' => g_l('javaMenu_global', '[shop_dashboard]'),
+		'parent' => 2020000,
+		'cmd' => 'new_widget_shp',
+		'perm' => 'CAN_SEE_QUICKSTART || NEW_SHOP_ARTICLE || DELETE_SHOP_ARTICLE || EDIT_SHOP_ORDER || DELETE_SHOP_ORDER || EDIT_SHOP_PREFS',
+		'hide' => !defined('SHOP_TABLE')
+	),
 	array(// Cockpit > new Widget > online users
 		'text' => g_l('javaMenu_global', '[users_online]'),
 		'parent' => 2020000,
@@ -790,7 +797,6 @@ while($GLOBALS['DB_WE']->next_record()){
 		break;
 	}
 }
-
 
 
 if(defined('OBJECT_TABLE')){

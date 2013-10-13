@@ -209,11 +209,14 @@ function printElement($code){
 	}
 }
 
-function getArrayValue($name, $arrayIndex){
-	$var = $GLOBALS;
+function getArrayValue($var, $name, $arrayIndex){
 	$arr_matches = preg_split('/\]\[|\[|\]/', $arrayIndex);
-	unset($arr_matches[count($arr_matches) - 1]);
-	$arr_matches[0] = $name;
+	if(count($arr_matches) > 1){
+		unset($arr_matches[count($arr_matches) - 1]);
+	}
+	if($name !== null){
+		$arr_matches[0] = $name;
+	}
 	//$arr_matches = reg_match_all('/\[([^\]]*)\]/', $arrayIndex);
 	foreach($arr_matches as $cur){
 		if(!isset($var[$cur])){
@@ -248,9 +251,9 @@ function weTag_getParserAttribute($name, $attribs, $default = '', $isFlag = fals
 function weTag_getAttribute($name, $attribs, $default = '', $isFlag = false, $useGlobal = true){
 	$value = isset($attribs[$name]) ? $attribs[$name] : '';
 	$regs = array();
-	if($useGlobal && !is_array($value) && preg_match('|^\\\\?\$(.+)(\[.*\])?|', $value, $regs)){
+	if($useGlobal && !is_array($value) && preg_match('|^\\\\?\$([^\[]+)(\[.*\])?|', $value, $regs)){
 		$value = (isset($regs[2]) ?
-				getArrayValue($regs[1], $regs[2]) :
+				getArrayValue($GLOBALS, $regs[1], $regs[2]) :
 				(isset($GLOBALS[$regs[1]]) ? $GLOBALS[$regs[1]] : ''));
 	}
 	if($isFlag){

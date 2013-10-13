@@ -22,7 +22,7 @@ class we_wysiwyg_ToolbarSeparator extends we_wysiwyg_ToolbarElement{
 	var $classname = __CLASS__;
 
 	function __construct($editor, $width = 3, $height = 22){
-		$width = we_wysiwyg::$editorType == 'tinyMCE' ? 6 : $width; // correct value: 5: imi
+		$width = we_wysiwyg::$editorType == 'tinyMCE' ? 5 : $width; //TinyMCE: 3px separator + 1px block-border on both sides
 		parent::__construct($editor, "", $width, $height);
 	}
 

@@ -24,8 +24,8 @@ class we_wysiwyg_ToolbarButton extends we_wysiwyg_ToolbarElement{
 	var $tooltiptext = "";
 	var $imgSrc = "";
 
-	function __construct($editor, $cmd, $imgSrc, $tooltiptext = "", $width = 25, $height = 22){
-		$width = we_wysiwyg::$editorType == 'tinyMCE' ? 21 : $width; // correct value: 20 : imi
+	function __construct($editor, $cmd, $imgSrc, $tooltiptext = "", $width = 22, $height = 22){
+		$width = we_wysiwyg::$editorType != 'tinyMCE' ? 25 : $width; //block of n buttons = n*22px + 2px left and right border of block
 		parent::__construct($editor, $cmd, $width, $height);
 		if(we_wysiwyg::$editorType != 'tinyMCE'){
 			$this->tooltiptext = $tooltiptext;
@@ -141,6 +141,8 @@ onclick="' . $this->editor->ref . 'Obj.click(\'' . $this->cmd . '\');" /></div>'
 			case "hr":
 			case "fullscreen":
 				return !$this->editor->getIsFrontendEdit() && we_wysiwyg::$editorType == 'tinyMCE' && parent::hasProp('', $contextMenu);
+			case "template":
+				return we_wysiwyg::$editorType == 'tinyMCE' && parent::hasProp('', $contextMenu);
 			default:
 				return parent::hasProp('', $contextMenu);
 		}

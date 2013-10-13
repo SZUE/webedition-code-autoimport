@@ -164,12 +164,11 @@ function setTab(tab) {
 		case 2:
 			top.content.editor.edbody.we_cmd("switchPage",2);
 			break;
+
 		case 3: //Tab Auswertung
 			top.content.editor.edbody.we_cmd("switchPage",3);
 			break;
-	}
-}
-top.content.hloaded = 1;');
+					}
 
 		$we_tabs = new we_tabs();
 
@@ -347,7 +346,7 @@ top.content.hloaded = 1;');
 
 	function getHTMLLog(){
 		$content = "";
-		$this->View->db->query('SELECT * FROM ' . NEWSLETTER_LOG_TABLE . ' WHERE NewsletterID=' . $this->View->newsletter->ID . ((isset($_REQUEST['newsletterStatus']) && $_REQUEST['newsletterStatus'] != "") ? ' AND Log =' . $_REQUEST['newsletterStatus'] : '') . ((isset($_REQUEST['newsletterStartTime']) && isset($_REQUEST['newsletterEndTime']) && $_REQUEST['newsletterStartTime'] > 0 && $_REQUEST['newsletterEndTime'] > 0) ? ' AND LogTime BETWEEN ' . $_REQUEST['newsletterStartTime'] . ' AND ' . $_REQUEST['newsletterEndTime'] : '') . ' ORDER BY LogTime DESC');
+		$this->View->db->query('SELECT * FROM ' . NEWSLETTER_LOG_TABLE . ' WHERE NewsletterID=' . $this->View->newsletter->ID . ((isset($_REQUEST['newsletterStatus']) && $_REQUEST['newsletterStatus'] !="") ? ' AND Log =' . $_REQUEST['newsletterStatus'] : '') . ((isset($_REQUEST['newsletterStartTime']) && isset($_REQUEST['newsletterEndTime']) && $_REQUEST['newsletterStartTime'] > 0 && $_REQUEST['newsletterEndTime'] > 0) ? ' AND LogTime BETWEEN ' . $_REQUEST['newsletterStartTime'] . ' AND ' . $_REQUEST['newsletterEndTime'] : '') . ' ORDER BY LogTime DESC');
 
 		while($this->View->db->next_record()){
 			$log = g_l('modules_newsletter', '[' . $this->View->db->f("Log") . ']');
@@ -371,10 +370,10 @@ top.content.hloaded = 1;');
 		return $this->getHTMLDocument($body, $js);
 	}
 
+
 	/*
 	 * Grafische Aufbereitung des Versandlogs im Tab "Auswertung"
 	 */
-
 	function getHTMLReporting(){
 
 		function getPercent($total, $value, $precision = 0){
@@ -389,6 +388,7 @@ top.content.hloaded = 1;');
 
 		$newsletterMailOrders = array();
 		$newsletterMailOrdersCnt = 0;
+
 		while($this->View->db->next_record()){
 			if($this->View->db->f("Log") == "log_start_send"){
 				$newsletterMailOrdersCnt++;
@@ -399,9 +399,7 @@ top.content.hloaded = 1;');
 		}
 
 		foreach($newsletterMailOrders as $newsletterMailOrder){
-
 			$table = new we_html_table(array('cellpadding' => 3, 'cellspacing' => 0, 'border' => 0, 'class' => 'defaultfont', 'style' => 'width: 588px'), 1, 5);
-
 			$this->View->db->query('SELECT Log,count(*) FROM ' . NEWSLETTER_LOG_TABLE . ' WHERE NewsletterID=' . $this->View->newsletter->ID . ' AND (Log != \'log_start_send\' AND Log != \'log_end_send\') AND LogTime BETWEEN ' . $newsletterMailOrder['start_send'] . ' AND ' . $newsletterMailOrder['end_send'] . ' GROUP BY Log');
 
 			$results = array();
@@ -431,7 +429,7 @@ top.content.hloaded = 1;');
 			$table->setCol(1, 4, array('style' => 'width: 35px'), (($allBlockedByBlacklist == 0) ? '' : we_button::position_yes_no_cancel(we_button::create_button("image:btn_function_view", "javascript:top.opener.top.load.location.replace('" . WEBEDITION_DIR . "we_lcmd.php?we_cmd[0]=black_list')"))));
 
 			/* process bar blocked by domain check */
-			$allBlockedByDomainCheck = (array_key_exists("domain_nok", $results) ? $results['domain_nok'] : 0);
+			$allBlockedByDomainCheck = (array_key_exists("domain_nok",$results) ? $results['domain_nok'] : 0);
 			$percentBlockedByDomain = getPercent($allRecipients, $allBlockedByDomainCheck, 2);
 
 			$pbBbD = new we_progressBar($percentBlockedByDomain);
@@ -463,12 +461,12 @@ top.content.hloaded = 1;');
 			$table->setCol(3, 3, array("style" => "padding: 0 5px 0 5px;"), we_html_element::htmlImg(array("src" => IMAGE_DIR . (($allClearRecipients == $allRecipients) ? "icons/valid.gif" : "alert_tiny.gif"), "title" => (($allClearRecipients < $allRecipients) ? g_l('modules_newsletter', '[reporting][mailing_advice_not_success]') : ''))));
 			//todo: statt show_log, sollte show_log begrenzt auf Log=email_sent + $start_send + start_end
 			$table->setCol(3, 4, array('style' => 'width: 35px'), we_button::position_yes_no_cancel(we_button::create_button("image:btn_function_view", "javascript:top.opener.top.load.location.replace('" . WEBEDITION_DIR . "we_lcmd.php?we_cmd[0]=show_log')")));
-
-			/* total recipients */
+			
+			/*total recipients*/
 			$table->addRow();
 			$table->setColContent(4, 0, we_html_element::htmlB(g_l('modules_newsletter', '[reporting][mailing_all_emails]')));
-			$table->setCol(4, 2, array('colspan' => 2, "style" => "padding: 0 5px 0 5px;"), we_html_element::htmlB($allRecipients));
-
+			$table->setCol(4, 2, array('colspan' => 2,"style"=>"padding: 0 5px 0 5px;"), we_html_element::htmlB($allRecipients));
+			
 			$parts[] = array(
 				"headline" => g_l('modules_newsletter', '[reporting][mailing_send_at]') . '&nbsp;' . date(g_l('weEditorInfo', "[date_format_sec]"), $key),
 				"html" => $table->getHTML() . we_html_element::htmlBr()
@@ -1010,7 +1008,7 @@ top.content.hloaded = 1;');
 		$table->setCol(4, 0, array("colspan" => 3), we_button::create_button_table(array($importbut, $exportbut)));
 
 		// Import dialog
-		if($this->View->show_import_box == $group){
+		if($this->View->getShowImportBox() == $group){
 			$ok = we_button::create_button("ok", "javascript:we_cmd('import_csv')");
 			$cancel = we_button::create_button("cancel", "javascript:we_cmd('reset_import');");
 
@@ -1058,7 +1056,7 @@ top.content.hloaded = 1;');
 		}
 
 		// Export dialog
-		if($this->View->show_export_box == $group){
+		if($this->View->getShowExportBox() == $group){
 			$ok = we_button::create_button("ok", "javascript:we_cmd('export_csv')");
 			$cancel = we_button::create_button("cancel", "javascript:we_cmd('reset_import');");
 
@@ -1455,7 +1453,7 @@ top.content.hloaded = 1;');
 					we_multiIconBox::getHTML('', "100%", $this->getHTMLReporting(), 30, '', -1, '', '', false) .
 					$this->weAutoCompleter->getYuiCss() .
 					$this->weAutoCompleter->getYuiJs();
-		}
+	}
 
 		$body = we_html_element::htmlBody(array("onload" => "self.loaded=1;if(self.doScrollTo){self.doScrollTo();}; setHeaderTitle();", "class" => "weEditorBody", "onunload" => "doUnload()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "onsubmit" => "return false;"), $out
 				)

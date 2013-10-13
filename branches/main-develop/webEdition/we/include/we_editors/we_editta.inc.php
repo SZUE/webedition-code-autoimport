@@ -49,6 +49,7 @@ if(isset($_REQUEST["ok"])){
 	$we_doc->elements[$name . "class"]["dat"] = isset($_REQUEST["class"]) ? $_REQUEST["class"] : '';
 	$we_doc->elements[$name . "cssClasses"]["dat"] = isset($_REQUEST["cssClasses"]) ? $_REQUEST["cssClasses"] : "";
 	$we_doc->elements[$name . "tinyparams"]["dat"] = isset($_REQUEST["tinyparams"]) ? $_REQUEST["tinyparams"] : '';
+	$we_doc->elements[$name . "templates"]["dat"] = isset($_REQUEST["templates"]) ? $_REQUEST["templates"] : '';
 	$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
 }
 
@@ -215,8 +216,8 @@ $table = '<table border="0" cellpadding="0" cellspacing="0">
 		<td class="defaultfont" valign="top" align="right">classes&nbsp;</td><td colspan="5">' . we_class::htmlTextArea("cssClasses", 3, 30, oldHtmlspecialchars((isset($we_doc->elements[$name . "cssClasses"]["dat"]) ? $we_doc->elements[$name . "cssClasses"]["dat"] : "")), array('style' => "width:415px;height:50px")) . '</td>
 	</tr>
 	<tr>
-		<td>' . we_html_tools::getPixel(70, 1) . '</td>
-		<td>' . we_html_tools::getPixel(415, 1) . '</td>
+		<td>' . we_html_tools::getPixel(90, 1) . '</td>
+		<td>' . we_html_tools::getPixel(395, 1) . '</td>
 	</tr>
 </table>';
 
@@ -237,15 +238,15 @@ $table = '<table border="0" cellpadding="0" cellspacing="0">
 		<td class="defaultfont" valign="top" align="right">commands&nbsp;</td><td colspan="5">' . $select . '<br>' . we_class::htmlTextArea("commands", 3, 30, oldHtmlspecialchars((isset($we_doc->elements[$name . "commands"]["dat"]) ? $we_doc->elements[$name . "commands"]["dat"] : "")), array('id' => "commands", 'style' => "width:415px;height:50px")) . '</td>
 	</tr>
 	<tr>
-		<td>' . we_html_tools::getPixel(70, 10) . '</td>
-		<td>' . we_html_tools::getPixel(415, 10) . '</td>
+		<td>' . we_html_tools::getPixel(90, 10) . '</td>
+		<td>' . we_html_tools::getPixel(395, 10) . '</td>
 	</tr>
 	<tr>
 		<td class="defaultfont" valign="top" align="right">contextmenu&nbsp;</td><td colspan="5">' . $select_cm . '<br>' . we_class::htmlTextArea("contextmenu", 3, 30, oldHtmlspecialchars((isset($we_doc->elements[$name . "contextmenu"]["dat"]) ? $we_doc->elements[$name . "contextmenu"]["dat"] : "")), array('id' => "contextmenu", 'style' => "width:415px;height:50px")) . '</td>
 	</tr>
 	<tr>
-		<td>' . we_html_tools::getPixel(70, 1) . '</td>
-		<td>' . we_html_tools::getPixel(415, 1) . '</td>
+		<td>' . we_html_tools::getPixel(90, 1) . '</td>
+		<td>' . we_html_tools::getPixel(395, 1) . '</td>
 	</tr>
 </table>';
 
@@ -261,8 +262,26 @@ $table = '<table border="0" cellpadding="0" cellspacing="0">
 		<td class="defaultfont" valign="top" align="right">tinyparams&nbsp;</td><td colspan="5">' . we_html_tools::htmlTextInput('tinyparams', 24, $we_doc->elements[$name . "tinyparams"]["dat"], 1024, '', 'text', 350, 0) . '</td>
 	</tr>
 	<tr>
-		<td>' . we_html_tools::getPixel(70, 1) . '</td>
-		<td>' . we_html_tools::getPixel(415, 1) . '</td>
+		<td>' . we_html_tools::getPixel(90, 1) . '</td>
+		<td>' . we_html_tools::getPixel(395, 1) . '</td>
+	</tr>
+</table>';
+
+$parts[] = array(
+	"headline" => "",
+	"html" => $table,
+	"space" => 0,
+);
+
+// TINY-TEMPLATES
+$table = '<table border="0" cellpadding="0" cellspacing="0">
+	<tr>
+		<td class="defaultfont" valign="top" align="right">templates&nbsp;</td>
+		<td colspan="5">' . we_html_tools::htmlTextInput('templates', 24, $we_doc->elements[$name . "templates"]["dat"], 1024, '', 'text', 350, 0) . '</td>
+	</tr>
+	<tr>
+		<td>' . we_html_tools::getPixel(90, 1) . '</td>
+		<td>' . we_html_tools::getPixel(395, 1) . '</td>
 	</tr>
 </table>';
 

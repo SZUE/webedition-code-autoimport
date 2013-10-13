@@ -243,7 +243,7 @@ class weXMLParser{
 		return false;
 	}
 
-	function getChildren($node_id, &$children){
+	function getChildren($node_id, array &$children){
 
 		$this->addMark('getChildren');
 

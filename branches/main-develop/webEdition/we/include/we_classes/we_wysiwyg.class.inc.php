@@ -43,6 +43,7 @@ class we_wysiwyg{
 	private $filteredElements = array();
 	private $bgcol = '';
 	private $tinyParams = '';
+	private $templates = '';
 	private $fullscreen = '';
 	private $className = '';
 	private $fontnamesCSV = '';
@@ -69,7 +70,7 @@ class we_wysiwyg{
 	private $isInPopup = false;
 	public static $editorType = WYSIWYG_TYPE; //FIXME: remove after old editor is removed
 
-	function __construct($name, $width, $height, $value = '', $propstring = '', $bgcol = '', $fullscreen = '', $className = '', $fontnames = '', $outsideWE = false, $xml = false, $removeFirstParagraph = true, $inlineedit = true, $baseHref = '', $charset = '', $cssClasses = '', $Language = '', $test = '', $spell = true, $isFrontendEdit = false, $buttonpos = 'top', $oldHtmlspecialchars = true, $contentCss = '', $origName = '', $tinyParams = '', $contextmenu = '', $isInPopup = false){
+	function __construct($name, $width, $height, $value = '', $propstring = '', $bgcol = '', $fullscreen = '', $className = '', $fontnames = '', $outsideWE = false, $xml = false, $removeFirstParagraph = true, $inlineedit = true, $baseHref = '', $charset = '', $cssClasses = '', $Language = '', $test = '', $spell = true, $isFrontendEdit = false, $buttonpos = 'top', $oldHtmlspecialchars = true, $contentCss = '', $origName = '', $tinyParams = '', $contextmenu = '', $isInPopup = false, $templates = ''){
 		$this->propstring = $propstring ? ',' . $propstring . ',' : '';
 		$this->restrictContextmenu = $contextmenu ? ',' . $contextmenu . ',' : '';
 		$this->createContextmenu = trim($contextmenu, " ,'") == 'false' ? false : true;
@@ -81,6 +82,7 @@ class we_wysiwyg{
 		$this->origName = $origName;
 		$this->bgcol = (self::$editorType != 'tinyMCE' && empty($bgcol)) ? 'white' : $bgcol;
 		$this->tinyParams = str_replace('\'', '"', trim($tinyParams, ' ,'));
+		$this->templates = trim($templates, ',');
 		$this->xml = $xml;
 		if(self::$editorType == 'tinyMCE'){
 			$this->xml = $this->xml ? "xhtml" : "html";
@@ -144,7 +146,7 @@ class we_wysiwyg{
 		$this->baseHref = $baseHref ? $baseHref : we_util::getGlobalPath();
 		$this->charset = $charset;
 
-		$this->width = (self::$editorType == 'tinyMCE' ? $width - 20 : $width); //imi
+		$this->width = $width;
 		$this->height = $height;
 		$this->ref = preg_replace('%[^0-9a-zA-Z_]%', '', $this->name);
 		$this->hiddenValue = $value;
@@ -184,6 +186,7 @@ class we_wysiwyg{
 			}
 		}
 		$this->maxGroupWidth = max($w, $this->maxGroupWidth);
+		$this->maxGroupWidth += self::$editorType == 'tinyMCE' ? 2 : 0;
 	}
 
 	static function getHeaderHTML($loadDialogRegistry = false){
@@ -482,7 +485,7 @@ function weWysiwygSetHiddenText(arg) {
 
 		// the following are tinyMCE only
 		if(self::$editorType == 'tinyMCE'){
-			array_push($arr, 'absolute', 'blockquote', 'cite', 'del', 'emotions', 'hr', 'ins', 'insertdate', 'insertlayer', 'inserttime', 'ltr', 'movebackward', 'moveforward', 'nonbreaking', 'pastetext', 'pasteword', 'replace', 'rtl', 'search', 'styleprops'
+			array_push($arr, 'absolute', 'blockquote', 'cite', 'del', 'emotions', 'hr', 'ins', 'insertdate', 'insertlayer', 'inserttime', 'ltr', 'movebackward', 'moveforward', 'nonbreaking', 'pastetext', 'pasteword', 'replace', 'rtl', 'search', 'styleprops', 'template'
 			);
 		}
 
@@ -539,11 +542,13 @@ function weWysiwygSetHiddenText(arg) {
 
 		$this->elements = array(
 			new we_wysiwyg_ToolbarSelect(
-				$this, "formatblock", g_l('wysiwyg', "[format]"), $formatblockArr, 120
+				$this, "formatblock", g_l('wysiwyg', "[format]"), $formatblockArr, self::$editorType == 'tinyMCE' ? 92 : 120
 			),
+			self::$editorType == 'tinyMCE' && $this->width < 194 ? new we_wysiwyg_ToolbarSeparator($this) : '',
 			new we_wysiwyg_ToolbarSelect(
-				$this, "fontname", g_l('wysiwyg', "[fontname]"), $this->fontnames, 120
+				$this, "fontname", g_l('wysiwyg', "[fontname]"), $this->fontnames, self::$editorType == 'tinyMCE' ? 92 : 120
 			),
+			new we_wysiwyg_ToolbarSeparator($this),
 			new we_wysiwyg_ToolbarSelect(
 				$this, 'fontsize', g_l('wysiwyg', '[fontsize]'), we_base_browserDetect::isSafari() ? array(
 					'8px' => '8px',
@@ -574,10 +579,11 @@ function weWysiwygSetHiddenText(arg) {
 					5 => 5,
 					6 => 6,
 					7 => 7
-					), 120
+					), self::$editorType == 'tinyMCE' ? 92 : 120
 			),
+			self::$editorType == 'tinyMCE' && $this->width < 194 ? new we_wysiwyg_ToolbarSeparator($this) : '',
 			new we_wysiwyg_ToolbarSelect(
-				$this, "applystyle", g_l('wysiwyg', "[css_style]"), array(), 120
+				$this, "applystyle", g_l('wysiwyg', "[css_style]"), array(), self::$editorType == 'tinyMCE' ? 92 : 120
 			),
 			new we_wysiwyg_ToolbarSeparator($this),
 			new we_wysiwyg_ToolbarButton(
@@ -633,10 +639,10 @@ function weWysiwygSetHiddenText(arg) {
 			),
 			new we_wysiwyg_ToolbarSeparator($this),
 			new we_wysiwyg_ToolbarButton(
-				$this, "forecolor", $this->_imagePath . "setforecolor.gif", g_l('wysiwyg', "[fore_color]")
+				$this, "forecolor", $this->_imagePath . "setforecolor.gif", g_l('wysiwyg', "[fore_color]"), 32
 			),
 			new we_wysiwyg_ToolbarButton(
-				$this, "backcolor", $this->_imagePath . "setbackcolor.gif", g_l('wysiwyg', "[back_color]")
+				$this, "backcolor", $this->_imagePath . "setbackcolor.gif", g_l('wysiwyg', "[back_color]"), 32
 			),
 			new we_wysiwyg_ToolbarSeparator($this),
 			new we_wysiwyg_ToolbarButton(
@@ -653,10 +659,10 @@ function weWysiwygSetHiddenText(arg) {
 			),
 			new we_wysiwyg_ToolbarSeparator($this),
 			new we_wysiwyg_ToolbarButton(
-				$this, "insertunorderedlist", $this->_imagePath . "unorderlist.gif", g_l('wysiwyg', "[unordered_list]")
+				$this, "insertunorderedlist", $this->_imagePath . "unorderlist.gif", g_l('wysiwyg', "[unordered_list]"), 32
 			),
 			new we_wysiwyg_ToolbarButton(
-				$this, "insertorderedlist", $this->_imagePath . "orderlist.gif", g_l('wysiwyg', "[ordered_list]")
+				$this, "insertorderedlist", $this->_imagePath . "orderlist.gif", g_l('wysiwyg', "[ordered_list]"), 32
 			),
 			new we_wysiwyg_ToolbarButton(
 				$this, "indent", $this->_imagePath . "indent.gif", g_l('wysiwyg', "[indent]")
@@ -735,7 +741,7 @@ function weWysiwygSetHiddenText(arg) {
 				$this, "editrow", "", // tinyMCE only: we do not need icon or tooltip
 				""
 			),
-			//new we_wysiwyg_ToolbarSeparator($this),
+			self::$editorType == 'tinyMCE' ? new we_wysiwyg_ToolbarSeparator($this) : '',
 			new we_wysiwyg_ToolbarButton(
 				$this, "insertcolumnleft", $this->_imagePath . "insertcol_left.gif", g_l('wysiwyg', "[insertcolumnleft]")
 			),
@@ -743,18 +749,19 @@ function weWysiwygSetHiddenText(arg) {
 				$this, "insertcolumnright", $this->_imagePath . "insertcol_right.gif", g_l('wysiwyg', "[insertcolumnright]")
 			),
 			new we_wysiwyg_ToolbarButton(
+				$this, "deletecol", $this->_imagePath . "deletecols.gif", g_l('wysiwyg', "[deletecol]")
+			),
+			self::$editorType == 'tinyMCE' ? new we_wysiwyg_ToolbarSeparator($this) : '',
+			new we_wysiwyg_ToolbarButton(
 				$this, "insertrowabove", $this->_imagePath . "insertrow_above.gif", g_l('wysiwyg', "[insertrowabove]")
 			),
 			new we_wysiwyg_ToolbarButton(
 				$this, "insertrowbelow", $this->_imagePath . "insertrow_below.gif", g_l('wysiwyg', "[insertrowbelow]")
 			),
-			//new we_wysiwyg_ToolbarSeparator($this),
-			new we_wysiwyg_ToolbarButton(
-				$this, "deletecol", $this->_imagePath . "deletecols.gif", g_l('wysiwyg', "[deletecol]")
-			),
 			new we_wysiwyg_ToolbarButton(
 				$this, "deleterow", $this->_imagePath . "deleterows.gif", g_l('wysiwyg', "[deleterow]")
 			),
+			self::$editorType == 'tinyMCE' ? new we_wysiwyg_ToolbarSeparator($this) : '',
 			new we_wysiwyg_ToolbarButton(
 				$this, "deletetable", "", // tinyMCE only: we do not need icon or tooltip
 				""
@@ -845,9 +852,13 @@ function weWysiwygSetHiddenText(arg) {
 		$this->elements[] = new we_wysiwyg_ToolbarButton(
 			$this, "editsource", $this->_imagePath . "editsourcecode.gif", g_l('wysiwyg', "[edit_sourcecode]")
 		);
+		$this->elements[] = new we_wysiwyg_ToolbarButton(
+				$this, "template", "", // tinyMCE only: we do not need icon or tooltip
+				""
+		);
 	}
 
-	function getWidthOfElem($startPos, $end){
+	function getWidthOfElem($startPos, $end){//TODO: throw out if obsolete
 		$w = 0;
 		for($i = $startPos; $i <= $end; $i++){
 			$w += $this->filteredElements[$i]->width;
@@ -897,7 +908,7 @@ function weWysiwygSetHiddenText(arg) {
 
 		return we_button::create_button("image:btn_edit_edit", "javascript:" . $js_function . "('open_wysiwyg_window', '" . $this->name . "','" . max(220, $this->width) . "', '" . $this->height . "','" . $param4 . "','" . $this->propstring . "','" . $this->className . "','" . rtrim($fns, ',') . "',
 			'" . $this->outsideWE . "','" . $tbwidth . "','" . $tbheight . "','" . $this->xml . "','" . $this->removeFirstParagraph . "','" . $this->bgcol . "','" . $this->baseHref . "','" . $this->charset . "','" . $this->cssClassesCSV . "','" . $this->Language . "','" . we_cmd_enc($this->contentCss) . "',
-			'" . $this->origName . "','" . we_cmd_enc($this->tinyParams) . "','" . we_cmd_enc($this->restrictContextmenu) . "', 'true', '" . $this->isFrontendEdit . "');", true, 25);
+			'" . $this->origName . "','" . we_cmd_enc($this->tinyParams) . "','" . we_cmd_enc($this->restrictContextmenu) . "', 'true', '" . $this->isFrontendEdit . "','" . $this->templates . "');", true, 25);
 	}
 
 	function parseInternalImageSrc($value){
@@ -923,13 +934,21 @@ function weWysiwygSetHiddenText(arg) {
 	}
 
 	function getToolbarRows(){
+		$width = $this->width - 12;
+		$maxGroupWidth = $this->maxGroupWidth - 2;
+		if(self::$editorType != 'tinyMCE'){
+			$width = $this->width;
+			$maxGroupWidth = $this->maxGroupWidth;
+		}
+
 		$tmpElements = $this->filteredElements;
 		$rows = array();
 		$rownr = 0;
 		$rows[$rownr] = array();
 		$rowwidth = 0;
 		while(!empty($tmpElements)){
-			if(!$this->hasSep($rows[$rownr]) || $rowwidth <= max($this->width, $this->maxGroupWidth)){
+			if(!$this->hasSep($rows[$rownr]) || $rowwidth <= max($width, $maxGroupWidth)){
+			//TinyMCE: There is a 5px border on the left, another 5px on the right looks nicer, and buttons/blocks of buttons have a 1 px border on the left and right = 12px
 				$rows[$rownr][] = array_shift($tmpElements);
 				$rowwidth += $rows[$rownr][count($rows[$rownr]) - 1]->width;
 			} else {
@@ -940,9 +959,9 @@ function weWysiwygSetHiddenText(arg) {
 						$rowwidth = 0;
 						$rows[$rownr] = array();
 					} else {
-						while($tmpElements[0]->classname != "we_wysiwyg_ToolbarSeparator"){
+						do {
 							array_unshift($tmpElements, array_pop($rows[$rownr]));
-						}
+						} while($tmpElements[0]->classname != "we_wysiwyg_ToolbarSeparator");
 						array_shift($tmpElements);
 						$rownr++;
 						$rowwidth = 0;
@@ -1063,6 +1082,7 @@ function weWysiwygSetHiddenText(arg) {
 			'search' => 'search',
 			'selectall' => 'selectall',
 			'styleprops' => 'styleprops',
+			'template' => 'template'
 			// table controlls are not mapped from wysiwyg to tinyMCE:
 			//'notmapped1' => 'attribs',
 			//'notmapped2' => 'insertimage', // replaced by weimage
@@ -1084,13 +1104,26 @@ function weWysiwygSetHiddenText(arg) {
 		return $doSet;
 	}
 
+	function getTemplates(){
+		$tmplArr = explode(',', str_replace(' ', '', $this->templates));
+		$templates = '';
+		for($i = 0; $i < count($tmplArr); $i++){
+			$tmplDoc = new we_document();
+			$tmplDoc->initByID(intval($tmplArr[$i]));
+			if(($tmplDoc->ContentType == 'application/*' && ($tmplDoc->Extension == '.html' || $tmplDoc->Extension == '.htm')) || $tmplDoc->ContentType == 'text/webedition'){
+				$templates .= '{title: "' . (isset($tmplDoc->elements['Title']['dat']) && $tmplDoc->elements['Title']['dat'] ? $tmplDoc->elements['Title']['dat'] : "no title " . ($i+1)) . '", src : "' . $tmplDoc->Path . '", description: "' . (isset($tmplDoc->elements['Description']['dat']) && $tmplDoc->elements['Description']['dat'] ? $tmplDoc->elements['Description']['dat'] : "no description " . ($i+1)) . '"},';
+			}
+		}
+
+		return $templates ? 'template_templates : [' . rtrim($templates, ',') . '],' : 'template_templates : [],';
+	}
+
 	function getInlineHTML(){
 		$rows = $this->getToolbarRows();
 		$editValue = $this->parseInternalImageSrc($this->value);
 
 		switch(self::$editorType){
 			case 'tinyMCE':
-				$this->width = $this->width + 20; //imi
 				list($lang) = explode('_', $GLOBALS["weDefaultFrontendLanguage"]);
 
 				//write theme_advanced_buttons_X
@@ -1123,9 +1156,10 @@ function weWysiwygSetHiddenText(arg) {
 				$plugins = ($this->createContextmenu ? 'wecontextmenu,' : '') .
 					($this->tinyPlugins ? $this->tinyPlugins . ',' : '') .
 					($this->wePlugins ? $this->wePlugins . ',' : '') .
-					'weutil,autolink';
+					'weutil,autolink,template';//TODO: load "templates" on demand as we do it with other plugins
+
 				//very fast fix for textarea-height. TODO, when wysiwyg is thrown out: use or rewrite existing methods like getToolbarWithAndHeight()
-				$toolBarHeight = $k * 24 - 10;
+				$toolBarHeight = ($k-1)*26 + 22 - $k*3;
 				$this->height += $toolBarHeight;
 
 				if(preg_match('/^#[a-f0-9]{6}$/i', $this->bgcol)){
@@ -1237,6 +1271,7 @@ function weWysiwygSetHiddenText(arg) {
 							"origName" : "' . urlencode($this->origName) . '",
 							"tinyParams" : "' . urlencode($this->tinyParams) . '",
 							"contextmenu" : "' . urlencode(trim($this->restrictContextmenu, ',')) . '",
+							"templates" : "' . $this->templates . '",
 						},
 						weClassNames_urlEncoded : "' . urlencode($this->cssClassesCSV) . '",
 						weIsFrontend : "' . ($this->isFrontendEdit ? 1 : 0) . '",
@@ -1275,8 +1310,8 @@ function weWysiwygSetHiddenText(arg) {
 						theme_advanced_toolbar_align : "left",
 						theme_advanced_statusbar_location : "' . $this->statuspos . '",
 						theme_advanced_resizing : false,
-						theme_advanced_source_editor_height : "500",
-						theme_advanced_source_editor_width : "700",
+						//theme_advanced_source_editor_height : "500",
+						//theme_advanced_source_editor_width : "700",
 						theme_advanced_default_foreground_color : "#FF0000",
 						theme_advanced_default_background_color : "#FFFF99",
 						plugin_preview_height : "300",
@@ -1286,6 +1321,7 @@ function weWysiwygSetHiddenText(arg) {
 						//fullscreen_new_window: true,
 						content_css : "' . WEBEDITION_DIR . 'editors/content/tinymce/we_tinymce/contentCssFirst.php?' . time() . '=,' . $contentCss . WEBEDITION_DIR . 'editors/content/tinymce/we_tinymce/contentCssLast.php?' . time() . '=&tinyMceBackgroundColor=' . $this->bgcol . '",
 						popup_css_add : "' . WEBEDITION_DIR . 'editors/content/tinymce/we_tinymce/tinyDialogCss.php",
+						' . (in_array('template', $allCommands) ? $this->getTemplates() : '') . '
 
 						// Skin options
 						skin : "o2k7",
@@ -1453,7 +1489,7 @@ function weWysiwygSetHiddenText(arg) {
 						}
 					});') .
 					'
-<textarea wrap="off" style="color:#eeeeee; background-color:#eeeeee;  width:' . $this->width . 'px; height:' . $this->height . 'px;" id="' . $this->name . '" name="' . $this->name . '">' . str_replace(array('\n', '&'), array('', '&amp;'), $editValue) . '</textarea>';
+<textarea wrap="off" style="color:#eeeeee; background-color:#eeeeee;  width:' . (max($this->width, $this->maxGroupWidth + 8)) . 'px; height:' . $this->height . 'px;" id="' . $this->name . '" name="' . $this->name . '">' . str_replace(array('\n', '&'), array('', '&amp;'), $editValue) . '</textarea>';
 
 			case 'default':
 

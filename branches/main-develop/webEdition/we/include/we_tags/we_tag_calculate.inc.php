@@ -55,7 +55,7 @@ function we_tag_calculate($attribs, $content){
 				}
 				$GLOBALS['summe'][$sum] += $result;
 			}
-			return ($print ? ($num_format ? we_util_Strings::formatNumber($result, $num_format) : $result) : '');
+			return ($print ? ($num_format ? we_util_Strings::formatNumber($result, $num_format,	intval(weTag_getAttribute('decimals', $attribs, 2))) : $result) : '');
 		default:
 			return attributFehltError($attribs, '_type', __FUNCTION__);
 	}

@@ -237,8 +237,8 @@ class weVersionsSearch{
 	function getLocation($whichFilterCategory = ""){
 
 		$locations = array(
-			'CONTAIN' => g_l('searchtool', '[CONTAIN]'),
 			'IS' => g_l('searchtool', '[IS]'),
+			'CONTAIN' => g_l('searchtool', '[CONTAIN]'),
 			'START' => g_l('searchtool', '[START]'),
 			'END' => g_l('searchtool', '[END]'),
 			'<' => g_l('searchtool', '[<]'),

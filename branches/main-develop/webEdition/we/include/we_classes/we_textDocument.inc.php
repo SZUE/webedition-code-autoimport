@@ -36,6 +36,7 @@ class we_textDocument extends we_document{
 	/* must be called from the editor-script. Returns a filename which has to be included from the global-Script */
 
 	function editor(){
+
 		switch($this->EditPageNr){
 			case WE_EDITPAGE_PROPERTIES:
 				return 'we_templates/we_editor_properties.inc.php';
@@ -89,7 +90,7 @@ class we_textDocument extends we_document{
 	}
 
 	function getPath(){
-		if($this->ContentType == 'text/css' && ($this->Extension == '.less' || $this->Extension == '.scss')){
+		if($this->parseFile && $this->ContentType == 'text/css' && ($this->Extension == '.less' || $this->Extension == '.scss')){
 			return rtrim($this->getParentPath(), '/') . '/' . ( isset($this->Filename) ? $this->Filename : '' ) . '.css';
 		}
 		return parent::getPath();
@@ -104,25 +105,29 @@ class we_textDocument extends we_document{
 					case '.css':
 						break;
 					case '.less':
-						$less = new we_helpers_lessc();
-						$less->setCurrentPath($this->getParentPath());
-						$less->setFormatter('classic');
-						try{
-							$doc = $less->compile($doc);
-						} catch (exception $e){
-							$this->errMsg = $e->getMessage();
-							return false;
+						if($this->parseFile){
+							$less = new we_helpers_lessc();
+							$less->setCurrentPath($this->getParentPath());
+							$less->setFormatter('classic');
+							try{
+								$doc = $less->compile($doc);
+							} catch (exception $e){
+								$this->errMsg = $e->getMessage();
+								return false;
+							}
 						}
 						break;
 					case '.scss':
-						include_once(WE_LIB_PATH . 'additional/scssphp/scss.inc.php');
-						$scss = new scssc();
-						$scss->setImportPaths(array('', $_SERVER['DOCUMENT_ROOT'] . $this->getParentPath(), $_SERVER['DOCUMENT_ROOT']));
-						try{
-							$doc = $scss->compile($doc);
-						} catch (exception $e){
-							$this->errMsg = $e->getMessage();
-							return false;
+						if($this->parseFile){
+							include_once(WE_LIB_PATH . 'additional/scssphp/scss.inc.php');
+							$scss = new scssc();
+							$scss->setImportPaths(array('', $_SERVER['DOCUMENT_ROOT'] . $this->getParentPath(), $_SERVER['DOCUMENT_ROOT']));
+							try{
+								$doc = $scss->compile($doc);
+							} catch (exception $e){
+								$this->errMsg = $e->getMessage();
+								return false;
+							}
 						}
 				}
 			//no break
@@ -132,6 +137,10 @@ class we_textDocument extends we_document{
 			default:
 		}
 		return $doc;
+	}
+
+	function formParseFile(){
+		return we_forms::checkboxWithHidden((bool) $this->parseFile, 'we_' . $this->Name . '_parseFile', g_l('weClass', '[parseFile]'), false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);');
 	}
 
 }

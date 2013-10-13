@@ -979,6 +979,7 @@ if(permissionhandler::hasPerm("CAN_SEE_QUICKSTART")){
 					if($aProps[0] == 'upb' && $aProps[3] == ''){
 						$aProps[3] = (defined('OBJECT_TABLE') ? '11' : '10');
 					}
+					$newSCurrId = 'm_' . $iCurrId;
 					include(WE_INCLUDES_PATH . 'we_widgets/mod/' . $aProps[0] . '.php');
 					if($aProps[0] == 'usr' || $aProps[0] == 'msg'){
 						$aDiscard[] = $aProps[0];

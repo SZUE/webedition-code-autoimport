@@ -97,22 +97,22 @@ $aPrefs['rss'] = array(
 	'isResizable' => 1
 );
 $aPrefs['mfd'] = array(
-	'width' => $small,
+	'width' => $large,
 	'height' => 210,
-	'res' => 0,
+	'res' => 1,
 	'cls' => 'lightCyan',
 	'csv' => $shortCutsDocs . $shortCutsTemplates . $shortCutsObjects . $shortCutsClasses . ';0;5;00;',
 	'dlgHeight' => 435,
-	'isResizable' => 1
+	'isResizable' => 0
 );
 $aPrefs['shp'] = array(
 	'width' => $large,
-	'height' => 210,
-	'res' => 0,
+	'height' => 212,
+	'res' => 1,
 	'cls' => 'lightCyan',
-	'csv' => '1111;5;1000;',
+	'csv' => '1111;3;10000;',
 	'dlgHeight' => 435,
-	'isResizable' => 1
+	'isResizable' => 0
 );
 $aPrefs['msg'] = array(
 	'width' => $small,

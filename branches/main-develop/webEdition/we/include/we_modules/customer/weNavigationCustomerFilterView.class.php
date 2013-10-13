@@ -50,7 +50,7 @@ class weNavigationCustomerFilterView extends weCustomerFilterView{
 	 */
 	function createUpdateViewScript(){
 		return parent::createUpdateViewScript() . <<<EOF
-	var wecf_useDocumentFilterCheckbox = f._wecf_useDocumentFilter;  // with underscore (_) its the checkbox, otherwise the hidden field
+	var wecf_useDocumentFilterCheckbox = f.check_wecf_useDocumentFilter;  // with underscore (_) its the checkbox, otherwise the hidden field
 	$('MainFilterDiv').style.display = wecf_useDocumentFilterCheckbox.checked ? 'none' : 'block';
 EOF;
 	}

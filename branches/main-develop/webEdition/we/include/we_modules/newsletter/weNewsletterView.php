@@ -2075,7 +2075,7 @@ self.close();');
 						break;
 					case weNewsletterBlock::TEXT:
 						if($hm){
-							if(!empty($block->Htm)){
+							if(!empty($block->Html)){
 								$content .= $block->Html;
 							} else {
 								$content .= strtr($block->Source, array(
@@ -2732,6 +2732,14 @@ self.close();');
 
 		$filename = WE_NEWSLETTER_CACHE_DIR . basename($filename);
 		return weFile::save($filename, $content);
+	}
+
+	public function getShowImportBox(){
+		return $this->show_import_box;
+	}
+
+	public function getShowExportBox(){
+		return $this->show_export_box;
 	}
 
 }
