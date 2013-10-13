@@ -41,6 +41,7 @@ $l_javaMenu_global=array(
 	'inactive_extras'=>'Inaktive Extras',
 	'info'=>'Info',
 	'javascript'=>'Javascript-Datei',
+	'kv_failedLogins'=>'Fehlgeschlagene Logins',
 	'last_modified'=>'zuletzt bearbeitet',
 	'make_backup'=>'Backup erstellen',
 	'metadata'=>'Metadatenfelder',

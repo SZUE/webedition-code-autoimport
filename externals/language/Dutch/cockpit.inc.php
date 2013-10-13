@@ -29,7 +29,7 @@ $l_cockpit=array(
 	'config_pad'=>'Configuratie notities',
 	'content_encoded'=>'Geëncodeerde gegevens',
 	'copyright'=>'Copyright &copy;',
-	'customer'=>'',
+	'customer'=>'Customers',
 	'date'=>'Datum',
 	'date_empty'=>'Please enter the validity date!',
 	'date_last_modification'=>'Datum van laatste wijziging',
@@ -63,9 +63,11 @@ $l_cockpit=array(
 	'invalid_url'=>'Voer a.u.b. een geldige URL in voor de RSS Feed.\nBijvoorbeeld: http://www.webedition.org/de/feeds/aktuelles.xml',
 	
 	'kv_failedLogins'=>array(
-		'headline'=>'',
-		'numberLogins'=>'',
-		'username'=>'',
+		'deleted'=>'Logins reseted',
+		'headline'=>'Customers: failed logins',
+		'logins'=>'within %s hour(s)',
+		'numberLogins'=>'Logins',
+		'username'=>'Username',
 	),
 	'label_rssfeed'=>'Label "RSS-Feed"',
 	'last_modified'=>'Laatst gewijzigd',

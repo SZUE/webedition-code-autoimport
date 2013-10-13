@@ -29,7 +29,7 @@ $l_cockpit=array(
 	'config_pad'=>'Muistiinpanojen asetukset',
 	'content_encoded'=>'Enkoodattu data',
 	'copyright'=>'Copyright &copy;',
-	'customer'=>'',
+	'customer'=>'Customers',
 	'date'=>'Päivämäärä',
 	'date_empty'=>'Please enter the validity date!',
 	'date_last_modification'=>'Edellisen muokkauksen päiväys',
@@ -63,9 +63,11 @@ $l_cockpit=array(
 	'invalid_url'=>'Syötä kelvollinen RSS-syötteen osoite kenttään URL.\nEsimerkki: http://www.ip-finland.com/fi/teknisettiedotteet/rss.xml',
 	
 	'kv_failedLogins'=>array(
-		'headline'=>'',
-		'numberLogins'=>'',
-		'username'=>'',
+		'deleted'=>'Logins reseted',
+		'headline'=>'Customers: failed logins',
+		'logins'=>'within %s hour(s)',
+		'numberLogins'=>'Logins',
+		'username'=>'Username',
 	),
 	'label_rssfeed'=>'Otsikkona "RSS-Syöte"',
 	'last_modified'=>'Viimeksi muokattu',

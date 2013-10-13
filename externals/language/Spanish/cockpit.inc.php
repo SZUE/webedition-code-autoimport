@@ -29,7 +29,7 @@ $l_cockpit=array(
 	'config_pad'=>'Configuration notes',
 	'content_encoded'=>'Encoded data',
 	'copyright'=>'Copyright &copy;',
-	'customer'=>'',
+	'customer'=>'Customers',
 	'date'=>'Date',
 	'date_empty'=>'Please enter the validity date!',
 	'date_last_modification'=>'Date of last modification',
@@ -63,9 +63,11 @@ $l_cockpit=array(
 	'invalid_url'=>'Please, enter a valid URL for the RSS Feed into the field URL.\nExample: http://www.webedition.org/de/feeds/aktuelles.xml',
 	
 	'kv_failedLogins'=>array(
-		'headline'=>'',
-		'numberLogins'=>'',
-		'username'=>'',
+		'deleted'=>'Logins reseted',
+		'headline'=>'Customers: failed logins',
+		'logins'=>'within %s hour(s)',
+		'numberLogins'=>'Logins',
+		'username'=>'Username',
 	),
 	'label_rssfeed'=>'Label "RSS-Feed"',
 	'last_modified'=>'Last modified',

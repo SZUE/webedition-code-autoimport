@@ -41,6 +41,7 @@ $l_javaMenu_global=array(
 	'inactive_extras'=>'Toimettomat extrat',
 	'info'=>'Tietoja',
 	'javascript'=>'Javascript -tiedosto',
+	'kv_failedLogins'=>'Failed logins',
 	'last_modified'=>'viimeksi muokattu',
 	'make_backup'=>'Luo varmuuskopio',
 	'metadata'=>'Metatietokentät',

@@ -63,7 +63,9 @@ $l_cockpit=array(
 	'invalid_url'=>'Bitte geben Sie in das Feld URL eine gültige URL für den RSS-Feed ein.\nBsp: http://www.webedition.org/de/feeds/aktuelles.xml',
 	
 	'kv_failedLogins'=>array(
+		'deleted'=>'Loginversuche zurückgesetzt',
 		'headline'=>'Kundenverwaltung: fehlgeschlagene Logins',
+		'logins'=>'innerhalb %s Stunde(n)',
 		'numberLogins'=>'Loginversuche',
 		'username'=>'Username',
 	),
