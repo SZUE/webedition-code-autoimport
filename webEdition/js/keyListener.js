@@ -336,7 +336,9 @@ function keyReloadListener( _successor ) {
 		if ( typeof( top.weEditorFrameController ) != "undefined" ) {
 			if ( evt["ctrlKey"] || evt["metaKey"] ) {
 
-				if ( evt["keyCode"] == 82 ) { // R Reload
+				if ((evt["keyCode"] == 82) || // R Reload
+								(evt["keyCode"] == 90))//Z Back
+				{
 					this.cancelEvent(evt);
 					return true;
 				}
@@ -366,9 +368,9 @@ function dealWithKeyboardShortCut(evt) {
 	// This function receives all events, when a key is pressed and forwards the event to
 	// the first keyboardlistener ("chain of responsibility")
 	if (
-		evt["keyCode"]	== "27"			// ESCAPE
-		|| evt["keyCode"]	== "13"			// ENTER
-		|| evt["keyCode"]	== "116"		// F5 - works only in FF
+					evt["keyCode"] == 27			// ESCAPE
+					|| evt["keyCode"] == 13			// ENTER
+					|| evt["keyCode"] == 116		// F5 - works only in FF
 
 		|| ( 	 // ctrl-key for windows, meta-key for mac
 			(evt["ctrlKey"] ||	evt["metaKey"] )
