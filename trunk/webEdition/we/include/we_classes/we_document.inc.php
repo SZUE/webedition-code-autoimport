@@ -48,7 +48,7 @@ class we_document extends we_root{
 
 	function __construct(){
 		parent::__construct();
-		array_push($this->persistent_slots, 'Extension', 'IsDynamic', 'Published', 'Category', 'IsSearchable', 'InGlossar', 'Language', 'schedArr','parseFile');
+		array_push($this->persistent_slots, 'Extension', 'IsDynamic', 'Published', 'Category', 'IsSearchable', 'InGlossar', 'Language', 'schedArr', 'parseFile');
 		$this->Table = FILE_TABLE;
 		if(defined('WE_SIDEBAR')){
 			$this->InWebEdition = 1;
@@ -1053,38 +1053,37 @@ class we_document extends we_root{
 					}
 				}
 				if(weTag_getAttribute('win2iso', $attribs, false, true)){
-					$chars = array(
-						chr(128) => '&#8364;',
-						chr(130) => '&#8218;',
-						chr(131) => '&#402;',
-						chr(132) => '&#8222;',
-						chr(133) => '&#8230;',
-						chr(134) => '&#8224;',
-						chr(135) => '&#8225;',
-						chr(136) => '&#710;',
-						chr(137) => '&#8240;',
-						chr(138) => '&#352;',
-						chr(139) => '&#8249;',
-						chr(140) => '&#338;',
-						chr(142) => '&#381;',
-						chr(145) => '&#8216;',
-						chr(146) => '&#8217;',
-						chr(147) => '&#8220;',
-						chr(148) => '&#8221;',
-						chr(149) => '&#8226;',
-						chr(150) => '&#8211;',
-						chr(151) => '&#8212;',
-						chr(152) => '&#732;',
-						chr(153) => '&#8482;',
-						chr(154) => '&#353;',
-						chr(155) => '&#8250;',
-						chr(156) => '&#339;',
-						chr(158) => '&#382;',
-						chr(159) => '&#376;');
 
 					$charset = ( isset($GLOBALS['WE_MAIN_DOC']) && isset($GLOBALS['WE_MAIN_DOC']->elements['Charset']['dat'])) ? $GLOBALS['WE_MAIN_DOC']->elements['Charset']['dat'] : '';
 					if(trim(strtolower(substr($charset, 0, 3))) == 'iso' || $charset == ''){
-						$retval = strtr($retval, $chars);
+						$retval = strtr($retval, array(
+							chr(128) => '&#8364;',
+							chr(130) => '&#8218;',
+							chr(131) => '&#402;',
+							chr(132) => '&#8222;',
+							chr(133) => '&#8230;',
+							chr(134) => '&#8224;',
+							chr(135) => '&#8225;',
+							chr(136) => '&#710;',
+							chr(137) => '&#8240;',
+							chr(138) => '&#352;',
+							chr(139) => '&#8249;',
+							chr(140) => '&#338;',
+							chr(142) => '&#381;',
+							chr(145) => '&#8216;',
+							chr(146) => '&#8217;',
+							chr(147) => '&#8220;',
+							chr(148) => '&#8221;',
+							chr(149) => '&#8226;',
+							chr(150) => '&#8211;',
+							chr(151) => '&#8212;',
+							chr(152) => '&#732;',
+							chr(153) => '&#8482;',
+							chr(154) => '&#353;',
+							chr(155) => '&#8250;',
+							chr(156) => '&#339;',
+							chr(158) => '&#382;',
+							chr(159) => '&#376;'));
 					}
 				}
 				return str_replace(array("##|n##", "##|r##"), array("\n", "\r"), $retval);
