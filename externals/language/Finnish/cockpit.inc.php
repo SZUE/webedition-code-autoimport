@@ -61,6 +61,12 @@ $l_cockpit=array(
 	'insert_note_before_saving'=>'Kirjoita muistiinpano ennen tallennusta.',
 	'insert_title_url'=>'Ole hyvä ja kirjoita otsikko ja url RSS-Syötteelle.',
 	'invalid_url'=>'Syötä kelvollinen RSS-syötteen osoite kenttään URL.\nEsimerkki: http://www.ip-finland.com/fi/teknisettiedotteet/rss.xml',
+	
+	'kv_failedLogins'=>array(
+		'headline'=>'',
+		'numberLogins'=>'',
+		'username'=>'',
+	),
 	'label_rssfeed'=>'Otsikkona "RSS-Syöte"',
 	'last_modified'=>'Viimeksi muokattu',
 	'last_month'=>'viime kuussa',

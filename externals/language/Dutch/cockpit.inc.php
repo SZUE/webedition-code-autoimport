@@ -61,6 +61,12 @@ $l_cockpit=array(
 	'insert_note_before_saving'=>'Voeg a.u.b. een notitie in voor het bewaren.',
 	'insert_title_url'=>'Voer a.u.b. een titel en een koppeling in voor de top RSS-Feed.',
 	'invalid_url'=>'Voer a.u.b. een geldige URL in voor de RSS Feed.\nBijvoorbeeld: http://www.webedition.org/de/feeds/aktuelles.xml',
+	
+	'kv_failedLogins'=>array(
+		'headline'=>'',
+		'numberLogins'=>'',
+		'username'=>'',
+	),
 	'label_rssfeed'=>'Label "RSS-Feed"',
 	'last_modified'=>'Laatst gewijzigd',
 	'last_month'=>'vorige maand',
