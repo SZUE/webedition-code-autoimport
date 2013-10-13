@@ -27,15 +27,13 @@ function we_tag_ifSelf($attribs){
 	$id = weTag_getAttribute('id', $attribs);
 
 	if(!$id){
-		if(isset($GLOBALS['we_obj'])){
-			$id = $GLOBALS['we_obj']->ID;
-		} else {
-			$id = $GLOBALS['WE_MAIN_DOC']->ID;
-		}
+		$id = (isset($GLOBALS['we_obj']) ?
+				$GLOBALS['we_obj']->ID :
+				$GLOBALS['WE_MAIN_DOC']->ID);
 	}
 	$type = weTag_getAttribute('doc', $attribs, weTag_getAttribute('type', $attribs));
 
-	$ids = explode(',',$id);
+	$ids = explode(',', $id);
 
 	switch($type){
 		case 'listview':
