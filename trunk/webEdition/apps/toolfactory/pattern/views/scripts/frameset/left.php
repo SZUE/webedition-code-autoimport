@@ -4,7 +4,7 @@ $appDir = Zend_Controller_Front::getInstance()->getParam('appDir');
 
 $frameset = new we_ui_layout_Frameset(array('rows' => '1,*'));
 $frameset->addFrame(array(
-	'src' => '/webEdition/html/white.html',
+	'src' => WEBEDITION_DIR.'html/white.html',
 	'name' => 'treeheader',
 	'noresize' => 'noresize',
 	'scrolling' => 'no'
