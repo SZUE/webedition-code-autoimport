@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_wizard {
+class we_wizard{
 
 	var $path = '';
 
@@ -286,12 +286,12 @@ top.wizcmd.we_import(1,-2' . ((isset($_REQUEST['type']) && $_REQUEST['type'] == 
 		if($mode == ''){
 			$mode = 0;
 		}
-		$numFiles = isset($_REQUEST['numFiles']) ? $_REQUEST['numFiles'] : -1;
+/*		$numFiles = isset($_REQUEST['numFiles']) ? $_REQUEST['numFiles'] : -1;
 		$uniquePath = isset($_REQUEST['uniquePath']) ? $_REQUEST['uniquePath'] : '';
 		$currFileId = isset($_REQUEST['currFileId']) ? $_REQUEST['currFileId'] : -1;
-
-		if(isset($_REQUEST["v"])){
-			$v = $_REQUEST["v"];
+*/
+		if(isset($_REQUEST['v'])){
+			$v = $_REQUEST['v'];
 			$v["import_ChangeEncoding"] = isset($v["import_ChangeEncoding"]) ? $v["import_ChangeEncoding"] : 0;
 			$v["import_XMLencoding"] = isset($v["import_XMLencoding"]) ? $v["import_XMLencoding"] : '';
 			$v["import_TARGETencoding"] = isset($v["import_TARGETencoding"]) ? $v["import_TARGETencoding"] : '';
@@ -303,9 +303,9 @@ top.wizcmd.we_import(1,-2' . ((isset($_REQUEST['type']) && $_REQUEST['type'] == 
 			$attrs = isset($_REQUEST['attrs']) ? $_REQUEST['attrs'] : array();
 			$attributes = isset($_REQUEST['attributes']) ? $_REQUEST['attributes'] : array();
 
-			switch($v["cid"]){
+			switch($v['cid']){
 				case -2:
-					$h = $this->getHdns("v", $v);
+					$h = $this->getHdns('v', $v);
 					if($v["type"] != "" && $v["type"] != "WXMLImport"){
 						$h.=$this->getHdns("records", $records) .
 							$this->getHdns("we_flds", $we_flds);
@@ -371,8 +371,8 @@ if (top.wizbody && top.wizbody.addLog){
 									break;
 							}
 							$cp = new we_import_CSV;
-							$cp->setFile($_SERVER['DOCUMENT_ROOT'] . $v["import_from"]);
-							$del = ($v["csv_seperator"] != "\\t") ? (($v["csv_seperator"] != "") ? $v["csv_seperator"] : " ") : "	";
+							$cp->setFile($_SERVER['DOCUMENT_ROOT'] . $v['import_from']);
+							$del = ($v['csv_seperator'] != "\\t") ? (($v['csv_seperator'] != '') ? $v['csv_seperator'] : ' ') : '	';
 							$cp->setDelim($del);
 							$cp->setEnclosure($encl);
 							$cp->parseCSV();
@@ -383,27 +383,28 @@ if (top.wizbody && top.wizbody.addLog){
 							we_util_File::createLocalFolder($path);
 
 							if($cp->isOK()){
-								$fieldnames = ($v["csv_fieldnames"]) ? 0 : 1;
+								$fieldnames = ($v['csv_fieldnames']) ? 0 : 1;
 								$num_rows = $cp->CSVNumRows();
 								$num_fields = $cp->CSVNumFields();
 
 								for($i = 0; $i < $num_rows + $fieldnames; $i++){
-									$data = '';
-									$d[0] = $d[1] = "";
+									$d[0] = $d[1] = '';
 									for($j = 0; $j < $num_fields; $j++){
-										$d[1] .= (!$fieldnames) ? (($cp->CSVFieldName($j) != "") ?
-												$encl . str_replace($encl, "\\" . $encl, $cp->CSVFieldName($j)) . $encl : "") : $encl . "f_" . $j . $encl;
+										$d[1] .= (!$fieldnames ?
+												(($cp->CSVFieldName($j) != "") ?
+													$encl . str_replace($encl, "\\" . $encl, $cp->CSVFieldName($j)) . $encl :
+													'') :
+												$encl . 'f_' . $j . $encl);
 										$d[0] .= ($fieldnames && $i == 0) ?
-											(($cp->CSVFieldName($j) != "") ? $encl . str_replace($encl, "\\" . $encl, $cp->CSVFieldName($j)) . $encl : "") :
+											(($cp->CSVFieldName($j) != '') ? $encl . str_replace($encl, "\\" . $encl, $cp->CSVFieldName($j)) . $encl : "") :
 											(($cp->Fields[(!$fieldnames) ? $i : ($i - 1)][$j] != "") ?
 												$encl . str_replace($encl, "\\" . $encl, $cp->Fields[(!$fieldnames) ? $i : ($i - 1)][$j]) . $encl : "");
 										if($j + 1 < $num_fields){
-											$d[1] .= "$del";
-											$d[0] .= "$del";
+											$d[1] .= $del;
+											$d[0] .= $del;
 										}
 									}
-									$data = implode("\n", $d);
-									weFile::save($path . '/temp_' . $i . '.csv', $data, 'wb');
+									weFile::save($path . '/temp_' . $i . '.csv', implode("\n", $d), 'wb');
 									$num_files++;
 								}
 							}
@@ -443,28 +444,28 @@ if (top.wizbody && top.wizbody.addLog){
 							$xmlExIm = new weImportUpdater();
 							$xmlExIm->loadPerserves();
 							$xmlExIm->setOptions(array(
-								"handle_documents" => $v["import_docs"],
-								"handle_templates" => $v["import_templ"],
-								"handle_objects" => isset($v["import_objs"]) ? $v["import_objs"] : 0,
-								"handle_classes" => isset($v["import_classes"]) ? $v["import_classes"] : 0,
-								"handle_doctypes" => $v["import_dt"],
-								"handle_categorys" => $v["import_ct"],
-								"handle_binarys" => $v["import_binarys"],
-								"document_path" => $v["doc_dir_id"],
-								"template_path" => $v["tpl_dir_id"],
-								"handle_collision" => $v["collision"],
-								"restore_doc_path" => $v["restore_doc_path"],
-								"restore_tpl_path" => $v["restore_tpl_path"],
-								"handle_owners" => $v["import_owners"],
-								"owners_overwrite" => $v["owners_overwrite"],
-								"owners_overwrite_id" => $v["owners_overwrite_id"],
-								"handle_navigation" => $v["import_navigation"],
-								"navigation_path" => $v["navigation_dir_id"],
-								"handle_thumbnails" => $v["import_thumbnails"],
-								"change_encoding" => $v["import_ChangeEncoding"],
-								"xml_encoding" => $v["import_XMLencoding"],
-								"target_encoding" => $v["import_TARGETencoding"],
-								"rebuild" => $v["rebuild"]
+								'handle_documents' => $v['import_docs'],
+								'handle_templates' => $v['import_templ'],
+								'handle_objects' => isset($v['import_objs']) ? $v['import_objs'] : 0,
+								'handle_classes' => isset($v['import_classes']) ? $v['import_classes'] : 0,
+								'handle_doctypes' => $v['import_dt'],
+								'handle_categorys' => $v['import_ct'],
+								'handle_binarys' => $v['import_binarys'],
+								'document_path' => $v['doc_dir_id'],
+								'template_path' => $v['tpl_dir_id'],
+								'handle_collision' => $v['collision'],
+								'restore_doc_path' => $v['restore_doc_path'],
+								'restore_tpl_path' => $v['restore_tpl_path'],
+								'handle_owners' => $v['import_owners'],
+								'owners_overwrite' => $v['owners_overwrite'],
+								'owners_overwrite_id' => $v['owners_overwrite_id'],
+								'handle_navigation' => $v['import_navigation'],
+								'navigation_path' => $v['navigation_dir_id'],
+								'handle_thumbnails' => $v['import_thumbnails'],
+								'change_encoding' => $v['import_ChangeEncoding'],
+								'xml_encoding' => $v['import_XMLencoding'],
+								'target_encoding' => $v['import_TARGETencoding'],
+								'rebuild' => $v['rebuild']
 							));
 
 							if($xmlExIm->RefTable->current == 0){
@@ -532,28 +533,28 @@ setTimeout('we_import(1," . $v['numFiles'] . ");',15);";
 							if(file_exists($chunk)){
 								$xmlExIm->loadPerserves();
 								$xmlExIm->setOptions(array(
-									"handle_documents" => $v["import_docs"],
-									"handle_templates" => $v["import_templ"],
-									"handle_objects" => isset($v["import_objs"]) ? $v["import_objs"] : 0,
-									"handle_classes" => isset($v["import_classes"]) ? $v["import_classes"] : 0,
-									"handle_doctypes" => $v["import_dt"],
-									"handle_categorys" => $v["import_ct"],
-									"handle_binarys" => $v["import_binarys"],
-									"document_path" => $v["doc_dir_id"],
-									"template_path" => $v["tpl_dir_id"],
-									"handle_collision" => $v["collision"],
-									"restore_doc_path" => $v["restore_doc_path"],
-									"restore_tpl_path" => $v["restore_tpl_path"],
-									"handle_owners" => $v["import_owners"],
-									"owners_overwrite" => $v["owners_overwrite"],
-									"owners_overwrite_id" => $v["owners_overwrite_id"],
-									"handle_navigation" => $v["import_navigation"],
-									"navigation_path" => $v["navigation_dir_id"],
-									"handle_thumbnails" => $v["import_thumbnails"],
-									"change_encoding" => $v["import_ChangeEncoding"],
-									"xml_encoding" => $v["import_XMLencoding"],
-									"target_encoding" => $v["import_TARGETencoding"],
-									"rebuild" => $v["rebuild"]
+									'handle_documents' => $v['import_docs'],
+									'handle_templates' => $v['import_templ'],
+									'handle_objects' => isset($v['import_objs']) ? $v['import_objs'] : 0,
+									'handle_classes' => isset($v['import_classes']) ? $v['import_classes'] : 0,
+									'handle_doctypes' => $v['import_dt'],
+									'handle_categorys' => $v['import_ct'],
+									'handle_binarys' => $v['import_binarys'],
+									'document_path' => $v['doc_dir_id'],
+									'template_path' => $v['tpl_dir_id'],
+									'handle_collision' => $v['collision'],
+									'restore_doc_path' => $v['restore_doc_path'],
+									'restore_tpl_path' => $v['restore_tpl_path'],
+									'handle_owners' => $v['import_owners'],
+									'owners_overwrite' => $v['owners_overwrite'],
+									'owners_overwrite_id' => $v['owners_overwrite_id'],
+									'handle_navigation' => $v['import_navigation'],
+									'navigation_path' => $v['navigation_dir_id'],
+									'handle_thumbnails' => $v['import_thumbnails'],
+									'change_encoding' => $v['import_ChangeEncoding'],
+									'xml_encoding' => $v['import_XMLencoding'],
+									'target_encoding' => $v['import_TARGETencoding'],
+									'rebuild' => $v['rebuild']
 								));
 								$imported = $xmlExIm->import($chunk);
 								$xmlExIm->savePerserves(false);
@@ -624,25 +625,27 @@ top.wizbusy.setProgress(Math.floor(((" . $v['cid'] . "+1)/" . (int) (2 * $v["num
 							}
 						}
 						break;
-					} else if($v["type"] == "GXMLImport"){
-						$hiddens = $this->getHdns("v", $v) . $this->getHdns("records", $records) . $this->getHdns("we_flds", $we_flds) . $this->getHdns("attributes", $attributes);
-						$xp = new we_xml_parser($v["uniquePath"] . "/temp_" . $v["cid"] . ".xml");
+					} else if($v['type'] == 'GXMLImport'){
+						$hiddens = $this->getHdns('v', $v) . $this->getHdns('records', $records) . $this->getHdns("we_flds", $we_flds) . $this->getHdns("attributes", $attributes);
+						$xp = new we_xml_parser($v['uniquePath'] . '/temp_' . $v['cid'] . '.xml');
 
-						for($c = 0; $c < count($records); $c++){
-							$nodeSet = $xp->evaluate($xp->root . "/" . $we_flds[$records[$c]]);
-							$xPath = "";
+						foreach($records as $record){
+							$nodeSet = $xp->evaluate($xp->root . '/' . $we_flds[$record]);
+							$xPath = '';
 							$loop = 0;
-							$firstNode = "";
+							$firstNode = '';
 							foreach($nodeSet as $node){
 								if($loop == 0){
-									$firstNode = $node; $loop++;
+									$firstNode = $node;
+									$loop++;
 								}
 								$list = $xp->getAttributes($node);
 								$flag = true;
-								$decAttrs = we_tag_tagParser::makeArrayFromAttribs(base64_decode($attributes[$records[$c]]));
+								$decAttrs = we_tag_tagParser::makeArrayFromAttribs(base64_decode($attributes[$record]));
 								foreach($decAttrs as $key => $value){
-									if(!isset($list[$key]) || $list[$key] != $value)
+									if(!isset($list[$key]) || $list[$key] != $value){
 										$flag = false;
+									}
 								}
 								if($flag){
 									$xPath = $node;
@@ -652,12 +655,12 @@ top.wizbusy.setProgress(Math.floor(((" . $v['cid'] . "+1)/" . (int) (2 * $v["num
 							if($xPath == ''){
 								$xPath = $firstNode;
 							}
-							$fields = $fields + array($records[$c] => $xp->getData($xPath));
+							$fields = $fields + array($record => $xp->getData($xPath));
 						}
-						if($v["pfx_fn"] == 1){
-							$v["rcd_pfx"] = $xp->getData($xp->root . '/' . $v["rcd_pfx"] . "[1]");
-							if($v["rcd_pfx"] == ""){
-								$v["rcd_pfx"] = ($v["import_type"] == "documents") ? g_l('import', "[pfx_doc]") : g_l('import', "[pfx_obj]");
+						if($v['pfx_fn'] == 1){
+							$v['rcd_pfx'] = $xp->getData($xp->root . '/' . $v["rcd_pfx"] . "[1]");
+							if($v['rcd_pfx'] == ''){
+								$v['rcd_pfx'] = g_l('import', ($v['import_type'] == 'documents' ? '[pfx_doc]' : '[pfx_obj]'));
 							}
 						}
 					} else if($v["type"] == "CSVImport"){
@@ -674,8 +677,8 @@ top.wizbusy.setProgress(Math.floor(((" . $v['cid'] . "+1)/" . (int) (2 * $v["num
 								break;
 						}
 						$cp = new we_import_CSV;
-						$cp->setFile($v["uniquePath"] . "/temp_" . $v["cid"] . ".csv");
-						$cp->setDelim($v["csv_seperator"]);
+						$cp->setFile($v['uniquePath'] . '/temp_' . $v["cid"] . ".csv");
+						$cp->setDelim($v['csv_seperator']);
 						$cp->setEnclosure($encl);
 						$cp->parseCSV();
 						$recs = array();
@@ -687,16 +690,16 @@ top.wizbusy.setProgress(Math.floor(((" . $v['cid'] . "+1)/" . (int) (2 * $v["num
 						foreach($we_flds as $name => $value){
 							$fields[$name] = (isset($recs[$value]) ? $recs[$value] : '');
 						}
-						if($v["pfx_fn"] == 1){
-							$v["rcd_pfx"] = $recs[$v["rcd_pfx"]];
+						if($v['pfx_fn'] == 1){
+							$v['rcd_pfx'] = $recs[$v['rcd_pfx']];
 
-							if($v["rcd_pfx"] == ""){
-								$v["rcd_pfx"] = ($v["import_type"] == "documents") ? g_l('import', "[pfx_doc]") : g_l('import', "[pfx_obj]");
+							if($v['rcd_pfx'] == ''){
+								$v['rcd_pfx'] = g_l('import', ($v['import_type'] == 'documents' ? '[pfx_doc]' : '[pfx_obj]'));
 							}
 						}
 					}
 
-					if($v["type"] != "WXMLImport"){
+					if($v['type'] != 'WXMLImport'){
 						if(isset($v["dateFields"])){
 							$dateFields = makeArrayFromCSV($v["dateFields"]);
 							if(($v["sTimeStamp"] == "Format" && $v["timestamp"] != "") || ($v["sTimeStamp"] == "GMT")){
@@ -716,7 +719,7 @@ top.wizbusy.setProgress(Math.floor(((" . $v['cid'] . "+1)/" . (int) (2 * $v["num
 					}
 
 
-					if($type == "first_steps_wizard"){
+					if($type == 'first_steps_wizard'){
 						$JScript = "
 top.leWizardProgress.set(Math.floor(((" . $v["cid"] . "+1)/" . $v["numFiles"] . ")*100));
 function we_import_handler(e) {
