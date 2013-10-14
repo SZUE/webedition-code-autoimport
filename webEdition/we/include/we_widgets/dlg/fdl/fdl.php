@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 // widget LAST MODIFIED
-
 //$aCols = $_REQUEST['we_cmd'];
 $newSCurrId = $_REQUEST['we_cmd'][5];
 require_once('../../mod/fdl.php');
@@ -39,7 +38,7 @@ function init(){
 
 print we_html_element::htmlDocType() . we_html_element::htmlHtml(
 		we_html_element::htmlHead(
-			we_html_tools::getHtmlInnerHead(g_l('cockpit', '[kv_failedLogins][headline]')) . STYLESHEET . we_html_element::jsElement(
+			we_html_tools::getHtmlInnerHead(g_l('cockpit', '[kv_failedLogins][headline]').  ' (' . $maxRows . ')') . STYLESHEET . we_html_element::jsElement(
 				$sJsCode)) . we_html_element::htmlBody(
 			array(
 			"marginwidth" => 15,

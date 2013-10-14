@@ -33,5 +33,5 @@ $oTblCont->setCol(
 		), we_html_element::htmlDiv(array('id' => 'fdl_data'), $failedLoginHTML)
 ));
 $aLang = array(
-	g_l('cockpit', '[kv_failedLogins][headline]'), ""
+	g_l('cockpit', '[kv_failedLogins][headline]').' ('.$maxRows.')', ""
 );
