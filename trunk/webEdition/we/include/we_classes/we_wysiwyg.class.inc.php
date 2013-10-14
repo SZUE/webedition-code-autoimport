@@ -42,6 +42,7 @@ class we_wysiwyg{
 	private $createContextmenu = true;
 	private $filteredElements = array();
 	private $bgcol = '';
+	private $buttonpos = '';
 	private $tinyParams = '';
 	private $templates = '';
 	private $fullscreen = '';
@@ -1158,8 +1159,8 @@ function weWysiwygSetHiddenText(arg) {
 					($this->wePlugins ? $this->wePlugins . ',' : '') .
 					'weutil,autolink,template';//TODO: load "templates" on demand as we do it with other plugins
 
-				//very fast fix for textarea-height. TODO, when wysiwyg is thrown out: use or rewrite existing methods like getToolbarWithAndHeight()
-				$toolBarHeight = ($k-1)*26 + 22 - $k*3;
+				//fast fix for textarea-height. TODO, when wysiwyg is thrown out: use or rewrite existing methods like getToolbarWithAndHeight()
+				$toolBarHeight = $this->buttonpos == 'external' ? 0 : ($k-1)*26 + 22 - $k*3;
 				$this->height += $toolBarHeight;
 
 				if(preg_match('/^#[a-f0-9]{6}$/i', $this->bgcol)){
