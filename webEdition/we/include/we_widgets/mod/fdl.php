@@ -32,13 +32,17 @@ if(defined("CUSTOMER_TABLE") && we_hasPerm("CAN_SEE_CUSTOMER")){
 	
 	$queryFailedLogins = ' FROM ' . FAILED_LOGINS_TABLE . '	WHERE UserTable="tblWebUser" AND isValid="true" AND LoginDate >DATE_SUB(NOW(), INTERVAL ' . intval(SECURITY_LIMIT_CUSTOMER_NAME_HOURS) . ' hour)';
 	
-	if(($maxRows = f('SELECT COUNT(1) AS a ' . $queryFailedLogins, 'a', $DB_WE))){		$failedLoginsTable->addRow();
+	if(($maxRows = f('SELECT COUNT(1) AS a ' . $queryFailedLogins, 'a', $DB_WE))){
+
+		$failedLoginsTable->addRow();
 		$failedLoginsTable->setCol(0, 0, array(), we_html_tools::getPixel(25, 1));
 		$failedLoginsTable->setCol(0, 1, array("class" => "middlefont","align"=>"left"), we_html_element::htmlB(g_l('cockpit', '[kv_failedLogins][username]')).we_html_tools::getPixel(15, 1));
 		$failedLoginsTable->setCol(0, 2, array("class" => "middlefont","align"=>"left"), we_html_element::htmlB(g_l('cockpit', '[kv_failedLogins][numberLogins]')).we_html_tools::getPixel(10, 1));
 		$failedLoginsTable->setCol(0, 3, array(), we_html_tools::getPixel(5, 1));
-				$cur = 0;
-		while($maxRows > $cur) {			$DB_WE->query('SELECT Username, count(isValid) AS numberFailedLogins' . $queryFailedLogins . ' GROUP BY Username LIMIT '. $cur . ',1000');
+		
+		$cur = 0;
+		while($maxRows > $cur) {
+			$DB_WE->query('SELECT Username, count(isValid) AS numberFailedLogins' . $queryFailedLogins . ' GROUP BY Username LIMIT '. $cur . ',1000');
 			$i = 1;
 			while($DB_WE->next_record()) {
 				intval($DB_WE->f('numberFailedLogins')) < SECURITY_LIMIT_CUSTOMER_NAME ? $prio = "prio_low.gif" : $prio = "prio_high.gif";
@@ -56,7 +60,8 @@ if(defined("CUSTOMER_TABLE") && we_hasPerm("CAN_SEE_CUSTOMER")){
 				$i++;
 			}
 			$cur+=1000;
-		}	}else{
+		}
+	}else{
 		$failedLoginsTable->addRow();
 		$failedLoginsTable->setCol(1, 0, array("class" => "middlefont","colspan" => "4","align"=>"left","style"=>"color:green;"), we_html_element::htmlB("Keine fehlgeschlagenen Loginversuche vorhanden"));
 	}
@@ -73,6 +78,7 @@ if(defined("CUSTOMER_TABLE") && we_hasPerm("CAN_SEE_CUSTOMER")){
 																eval( "var weResponse = "+o.responseText );
 																if ( weResponse ) {
 																	if (weResponse["DataArray"]["data"] == "true") {
+																		' . ( isset($newSCurrId) ? 'rpc("","","","","","' . $newSCurrId . '","fdl/fdl");' : '' ) . '
 																		alert("'.g_l('cockpit', '[kv_failedLogins][deleted]').'");
 																		self.setTheme(_sObjId,_oSctCls[_oSctCls.selectedIndex].value);
 																	}
