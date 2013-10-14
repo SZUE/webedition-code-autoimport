@@ -32,18 +32,27 @@ function init(){
 	initPrefs();
 }
 
+function refresh(){
+	opener.rpc('','','','','','" . $_REQUEST['we_cmd'][0] . "', 'fdl/fdl');
+}
+
 function save(){
 	savePrefs();
 	previewPrefs();
+	refresh();
 	" . we_message_reporting::getShowMessageCall(
 		g_l('cockpit', '[prefs_saved_successfully]'), we_message_reporting::WE_MESSAGE_NOTICE) . "
 	self.close();
 }
 
-function preview(){ previewPrefs(); }
+function preview(){ 
+	previewPrefs();
+	refresh();
+}
 
 function exit_close(){
-	previewPrefs();
+	//previewPrefs();
+	refresh();
 	exitPrefs();
 	self.close();
 }
