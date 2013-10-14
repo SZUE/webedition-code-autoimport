@@ -53,7 +53,7 @@ class we_wizard_import extends we_wizard{
 	 */
 	function getClassFields($classID){
 		$db = new DB_WE();
-		$foo = getHash('SELECT strOrder,DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . (int) $classID, $db);
+		$foo = getHash('SELECT strOrder,DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($classID), $db);
 		$order = makeArrayFromCSV($foo['strOrder']);
 		$dv = $foo['DefaultValues'] ? unserialize($foo['DefaultValues']) : array();
 		if(!is_array($dv)){
@@ -94,12 +94,7 @@ class we_wizard_import extends we_wizard{
 	 * @desc returns true if the field is a text field
 	 */
 	function isDateField($type){
-		switch($type){
-			case 'date':
-				return true;
-			default:
-				return false;
-		}
+		return ($type == 'date');
 	}
 
 	/**
@@ -589,9 +584,7 @@ handle_event("previous");');
 			$wecmdenc1 = we_cmd_enc("self.wizbody.document.forms['we_form'].elements['v[tpl_dir_id]'].value");
 			$wecmdenc2 = we_cmd_enc("self.wizbody.document.forms['we_form'].elements['v[tpl_dir]'].value");
 			$wecmdenc3 = '';
-			$btnDocDir = we_button::create_button(
-					"select", "javascript:we_cmd('openDirselector',document.we_form.elements['v[tpl_dir]'].value,'" . TEMPLATES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','$rootDirID')"
-			);
+			$btnDocDir = we_button::create_button('select', "javascript:we_cmd('openDirselector',document.we_form.elements['v[tpl_dir]'].value,'" . TEMPLATES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','$rootDirID')");
 
 			$yuiSuggest->setAcId('TemplPath');
 			$yuiSuggest->setContentType('folder');
@@ -645,9 +638,7 @@ handle_event("previous");');
 
 			// --
 
-			$btnDocDir = we_button::create_button(
-					"select", "javascript:we_cmd('openNavigationDirselector','document.we_form.elements[\"v[navigation_dir]\"].value','document.forms[\"we_form\"].elements[\"v[navigation_dir_id]\"].value','document.forms[\"we_form\"].elements[\"v[navigation_dir]\"].value');"
-			);
+			$btnDocDir = we_button::create_button("select", "javascript:we_cmd('openNavigationDirselector','document.we_form.elements[\"v[navigation_dir]\"].value','document.forms[\"we_form\"].elements[\"v[navigation_dir_id]\"].value','document.forms[\"we_form\"].elements[\"v[navigation_dir]\"].value');");
 
 			$attribs = array("cellpadding" => 2, "cellspacing" => 2, "border" => 0, "id" => "navigation_table");
 			$yuiSuggest->setAcId("NaviPath");
@@ -1216,7 +1207,7 @@ HTS;
 		$vars = array('rdofloc', 'fserver', 'flocal', 'importDataType', 'docCategories', 'objCategories', 'store_to_id', 'is_dynamic', 'import_from', 'docType',
 			'we_TemplateName', 'we_TemplateID', 'store_to_path', 'we_Extension', 'import_type', 'classID', 'sct_node', 'rcd', 'from_elem', 'to_elem', 'collision');
 		foreach($vars as $var)
-			$hdns.= we_html_element::htmlHidden(array('name' => 'v[$var]', 'value' => (isset($v[$var])) ? $v[$var] : '')) .
+			$hdns.= we_html_element::htmlHidden(array('name' => 'v[' . $var . ']', 'value' => (isset($v[$var])) ? $v[$var] : '')) .
 				we_html_element::htmlHidden(array('name' => 'v[mode]', 'value' => 0)) . we_html_element::htmlHidden(array('name' => 'v[cid]', 'value' => -2));
 
 		if((file_exists($_SERVER['DOCUMENT_ROOT'] . $v['import_from']) && is_readable($_SERVER['DOCUMENT_ROOT'] . $v['import_from']))){
