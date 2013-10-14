@@ -441,7 +441,7 @@ function populateDate_' . $field . '(){
 		$this->View->customer->getBranches($branches, $common, $other, $this->View->settings->getEditSort());
 
 		$common['failedLogins'] = f('SELECT count(1) AS a FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTable="tblWebUser" AND Username="' . $GLOBALS['DB_WE']->escape($this->View->customer->Username) . '" AND isValid="true" AND LoginDate >DATE_SUB(NOW(), INTERVAL ' . intval(SECURITY_LIMIT_CUSTOMER_NAME_HOURS) . ' hour)', 'a', $GLOBALS['DB_WE']);
-		if($common['failedLogins'] > intval(SECURITY_LIMIT_CUSTOMER_NAME)){
+		if($common['failedLogins'] >= intval(SECURITY_LIMIT_CUSTOMER_NAME)){
 			$common['resetFailed'] = '';
 		}
 
