@@ -22,7 +22,7 @@
  */
 
 var tinyEditors = {};
-var tinyEditorsInPopup = {"beat" : "beatolino"};
+var tinyEditorsInPopup = {};
 
 function TinyWrapper(fieldname) {
 	if(!(this instanceof TinyWrapper)){

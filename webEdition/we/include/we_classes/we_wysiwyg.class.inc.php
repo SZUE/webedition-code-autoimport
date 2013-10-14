@@ -1358,7 +1358,7 @@ function weWysiwygSetHiddenText(arg) {
 									if(opener.top.weEditorFrameController){
 										//we are in backend
 										var editor = opener.top.weEditorFrameController.ActiveEditorFrameId;
-										var wedoc = opener.top.rframe.bm_content_frame.frames[editor].frames["editor_" + editor];
+										var wedoc = opener.top.rframe.bm_content_frame.frames[editor].frames["contenteditor_" + editor];
 										try{
 											wedoc.tinyEditorsInPopup["' . $this->fieldName . '"] = ed;
 											wedoc.we_tinyMCE_' . $this->fieldName_clean . '_init(ed);
