@@ -64,6 +64,20 @@ function TinyWrapper(fieldname) {
 	this.getTextarea = function(){return typeof tinyEditors[_fn] === "undefined" ? "undefined" : (typeof tinyEditors[_fn] === "object" ? "undefined" : document.getElementById(tinyEditors[_fn]));};
 	this.getDiv = function(){return typeof tinyEditors[_fn] === "undefined" ? "undefined" : (typeof tinyEditors[_fn] === "object" ? "undefined" : document.getElementById("div_wysiwyg_" + tinyEditors[_fn]));};
 
+	this.getIFrame = function(){
+		var frame_id  = this.getId() + '_ifr';
+
+		if(typeof tinymce !== "undefined" && tinymce.DOM){
+			try{
+				return tinymce.DOM.get(frame_id) !== null ? tinymce.DOM.get(frame_id) : "undefined";
+			} catch(e){
+				return "undefined";
+			}
+		} else {
+			return "undefined";
+		}
+	}
+
 	this.getContent = function(forcePopup){
 		var _forcePopup = typeof forcePopup === "undefined" ? false : forcePopup;
 		if(!_isInlineedit){
