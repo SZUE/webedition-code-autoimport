@@ -66,6 +66,7 @@ $l_cockpit=array(
 		'deleted'=>'Logins reseted',
 		'headline'=>'Customers: failed logins',
 		'logins'=>'within %s hour(s)',
+		'noFailedLogins'=>'No failed logins',
 		'numberLogins'=>'Logins',
 		'username'=>'Username',
 	),

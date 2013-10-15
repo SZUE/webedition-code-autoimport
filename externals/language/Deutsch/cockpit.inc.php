@@ -66,6 +66,7 @@ $l_cockpit=array(
 		'deleted'=>'Loginversuche zurückgesetzt',
 		'headline'=>'Kundenverwaltung: fehlgeschlagene Logins',
 		'logins'=>'innerhalb %s Stunde(n)',
+		'noFailedLogins'=>'Keine fehlgeschlagenen Loginversuche vorhanden',
 		'numberLogins'=>'Loginversuche',
 		'username'=>'Username',
 	),
