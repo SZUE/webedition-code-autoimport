@@ -32,6 +32,7 @@ $failedLoginsTable = new we_html_table(array('border' => '0', 'cellpadding' => '
 
 $queryFailedLogins = ' FROM ' . FAILED_LOGINS_TABLE . ' f LEFT JOIN ' . CUSTOMER_TABLE . ' c ON f.Username=c.Username	WHERE f.UserTable="tblWebUser" AND f.isValid="true" AND f.LoginDate >DATE_SUB(NOW(), INTERVAL ' . intval(SECURITY_LIMIT_CUSTOMER_NAME_HOURS) . ' hour)  GROUP BY f.Username';
 
+
 if(($maxRows = f('SELECT COUNT(DISTINCT f.Username) AS a ' . $queryFailedLogins, 'a', $db))){
 
 	$failedLoginsTable->addRow();
@@ -60,8 +61,9 @@ if(($maxRows = f('SELECT COUNT(DISTINCT f.Username) AS a ' . $queryFailedLogins,
 		//$cur+=1000;
 	//}
 } else {
+	$maxRows = 0;
 	$failedLoginsTable->addRow();
-	$failedLoginsTable->setCol(1, 0, array("class" => "middlefont", "colspan" => "4", "align" => "left", "style" => "color:green;"), we_html_element::htmlB("Keine fehlgeschlagenen Loginversuche vorhanden"));
+	$failedLoginsTable->setCol(1, 0, array("class" => "middlefont", "colspan" => "4", "align" => "left", "style" => "color:green;"), we_html_element::htmlB(g_l("cockpit","[kv_failedLogins][noFailedLogins]")));
 }
 
 $failedLoginHTML = we_html_element::jsScript(JS_DIR . "libs/yui/yahoo-min.js").
@@ -87,7 +89,3 @@ $failedLoginHTML = we_html_element::jsScript(JS_DIR . "libs/yui/yahoo-min.js").
 
 													}}').
 	$failedLoginsTable->getHtml();
-//$msg_cmd = "javascript:top.we_cmd('messaging_start','message');";
-	//$todo_cmd = "javascript:top.we_cmd('messaging_start','todo');";
-	//$msg_button = we_html_element::htmlA(array("href" => $msg_cmd), we_html_element::htmlImg(array("src" => IMAGE_DIR . 'pd/msg/message.gif', "width" => 34, "height" => 34, "border" => 0)));
-	//$todo_button = we_html_element::htmlA(array("href" => $todo_cmd), we_html_element::htmlImg(array("src" => IMAGE_DIR . 'pd/msg/todo.gif', "width" => 34, "height" => 34, "border" => 0)));
