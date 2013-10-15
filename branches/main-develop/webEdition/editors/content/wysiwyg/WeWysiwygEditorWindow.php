@@ -34,28 +34,24 @@ if(isset($fieldName) && isset($_REQUEST["we_okpressed"]) && $_REQUEST["we_okpres
 
 	$newHTMLencA = base64_encode(oldHtmlspecialchars($newHTMLoldA));
 	$newHTMLencB = base64_encode($newHTMLoldB);
+
+	echo we_html_element::jsElement('
+if (opener.document.getElementById("' . $_REQUEST["we_cmd"][1] . '")) {
+	opener.we_ui_controls_WeWysiwygEditor.setData("' . $_REQUEST["we_cmd"][1] . '", "' . $newHTMLencA . '");
+}
+if (opener.document.getElementById("' . $_REQUEST["we_cmd"][1] . '_View")) {
+	opener.we_ui_controls_WeWysiwygEditor.setDataView("' . $_REQUEST["we_cmd"][1] . '", "' . $newHTMLencB . '");
+}
+
+window.close();');
 	?>
-	<script type="text/javascript">
-		if (opener.document.getElementById('<?php print $_REQUEST["we_cmd"][1]; ?>')) {
-			opener.we_ui_controls_WeWysiwygEditor.setData('<?php print $_REQUEST["we_cmd"][1]; ?>', '<?php print $newHTMLencA; ?>');
-		}
-		if (opener.document.getElementById('<?php print $_REQUEST["we_cmd"][1]; ?>_View')) {
-			opener.we_ui_controls_WeWysiwygEditor.setDataView('<?php print $_REQUEST["we_cmd"][1]; ?>', '<?php print $newHTMLencB; ?>');
-		}
-
-
-		window.close();
-	</script>
-
 	</head>
 	<body marginwidth="0" marginheight="0" leftmargin="0" topmargin="0">
 		<?php
 	} else {
-		$cancelBut = we_button::create_button("cancel", "javascript:top.close()");
-		$okBut = we_button::create_button("ok", "javascript:weWysiwygSetHiddenText();document.we_form.submit();");
 
-		print STYLESHEET .
-			we_html_element::jsScript(JS_DIR . 'windows.js') . we_html_element::jsElement('top.focus();');
+		echo STYLESHEET .
+		we_html_element::jsScript(JS_DIR . 'windows.js') . we_html_element::jsElement('top.focus();');
 		?>
 	</head>
 	<body marginwidth="0" marginheight="0" leftmargin="0" topmargin="0" style="background-image:url(<?php echo IMAGE_DIR; ?>backgrounds/aquaBackground.gif);">
@@ -63,7 +59,7 @@ if(isset($fieldName) && isset($_REQUEST["we_okpressed"]) && $_REQUEST["we_okpres
 			<input type="hidden" name="we_okpressed" value="1" />
 			<?php
 			foreach($_REQUEST['we_cmd'] as $i => $v){
-				print '<input type="hidden" name="we_cmd[' . $i . ']" value="' . $_REQUEST['we_cmd'][$i] . '" />' . "\n";
+				echo '<input type="hidden" name="we_cmd[' . $i . ']" value="' . $_REQUEST['we_cmd'][$i] . '" />';
 			}
 
 			/*  diese Liste ist wohl nicht ganz richtig
@@ -110,8 +106,11 @@ if(isset($fieldName) && isset($_REQUEST["we_okpressed"]) && $_REQUEST["we_okpres
 				false //frontendEdit
 			);
 
-			print we_wysiwyg::getHeaderHTML() . $e->getHTML() .
-				'<div style="height:8px"></div>' . we_button::position_yes_no_cancel($okBut, $cancelBut);
+			$cancelBut = we_button::create_button('cancel', 'javascript:top.close()');
+			$okBut = we_button::create_button('ok', 'javascript:weWysiwygSetHiddenText();document.we_form.submit();');
+
+			echo we_wysiwyg::getHeaderHTML() . $e->getHTML() .
+			'<div style="height:8px"></div>' . we_button::position_yes_no_cancel($okBut, $cancelBut);
 			?>
 		</form>
 	<?php } ?>
