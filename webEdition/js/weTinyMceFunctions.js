@@ -102,4 +102,13 @@ function TinyWrapper(fieldname) {
 			}
 		}
 	};
+
+	this.on = function(sEvtObj, func){
+			var editor = this.getEditor();
+			try{
+				editor["on" + sEvtObj].add(func);
+			} catch(e){
+				console.log("unable to add event");
+			}
+	};
 }
