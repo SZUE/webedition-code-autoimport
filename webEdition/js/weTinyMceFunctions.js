@@ -37,7 +37,14 @@ function TinyWrapper(fieldname) {
 	this.getId = function(){return _id;};
 	this.getIsInlineedit = function(){return _isInlineedit;};
 
-	this.getEditor = function(){return typeof tinyEditors[_fn] === "undefined" ? "undefined" : (typeof tinyEditors[_fn] === "object" ? tinyEditors[_fn] : "undefined");};
+	this.getEditor = function(tryPopup){
+		var _tryPopup = typeof tryPopup === "undefined" ? false : tryPopup;
+		if(tryPopup && this.getEditorInPopup() !== "undefined"){
+			return this.getEditorInPopup();
+		}
+
+		return typeof tinyEditors[_fn] === "undefined" ? "undefined" : (typeof tinyEditors[_fn] === "object" ? tinyEditors[_fn] : "undefined");
+	};
 
 	this.getEditorInPopup = function(){
 		if(typeof tinyEditorsInPopup[_fn] !== "undefined"){
@@ -104,7 +111,7 @@ function TinyWrapper(fieldname) {
 	};
 
 	this.on = function(sEvtObj, func){
-			var editor = this.getEditor();
+			var editor = this.getEditor(true);
 			try{
 				editor["on" + sEvtObj].add(func);
 			} catch(e){
