@@ -292,7 +292,7 @@ class we_user{
 	function saveToDB(){
 		$db_tmp = new DB_WE();
 		$isnew = $this->ID ? false : true;
-		if($this->Type == 1 && $this->ID != 0){
+		if($this->Type == self::TYPE_USER_GROUP && $this->ID != 0){
 			$ppath = ($this->ParentID == 0 ? '/' : $this->getPath($this->ParentID));
 			$dpath = $this->getPath($this->ID);
 			if(preg_match('|' . $dpath . '|', $ppath)){
@@ -326,13 +326,10 @@ class we_user{
 		$this->savePermissions();
 		if($isnew){
 			$this->CreatorID = $_SESSION['user']['ID'];
-			$this->ModifierID = $_SESSION['user']['ID'];
 			$this->CreateDate = time();
-			$this->ModifyDate = time();
-		} else {
-			$this->ModifierID = $_SESSION['user']['ID'];
-			$this->ModifyDate = time();
 		}
+		$this->ModifierID = $_SESSION['user']['ID'];
+		$this->ModifyDate = time();
 		$this->savePersistentSlotsInDB();
 		$this->createAccount();
 		if($oldpath != '' && $oldpath != '/'){

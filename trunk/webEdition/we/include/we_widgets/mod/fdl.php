@@ -30,11 +30,10 @@ $db = $GLOBALS['DB_WE'];
 
 $failedLoginsTable = new we_html_table(array('border' => '0', 'cellpadding' => '0', 'cellspacing' => '0'), 1, 4);
 
-$queryFailedLogins = ' FROM ' . FAILED_LOGINS_TABLE . ' f LEFT JOIN ' . CUSTOMER_TABLE . ' c ON f.Username=c.Username	WHERE f.UserTable="tblWebUser" AND f.isValid="true" AND f.LoginDate >DATE_SUB(NOW(), INTERVAL ' . intval(SECURITY_LIMIT_CUSTOMER_NAME_HOURS) . ' hour)  GROUP BY f.Username';
+$queryFailedLogins = ' FROM ' . FAILED_LOGINS_TABLE . ' f LEFT JOIN ' . CUSTOMER_TABLE . ' c ON f.Username=c.Username	WHERE f.UserTable="tblWebUser" AND f.isValid="true" AND f.LoginDate >DATE_SUB(NOW(), INTERVAL ' . intval(SECURITY_LIMIT_CUSTOMER_NAME_HOURS) . ' hour) ';
 
 
 if(($maxRows = f('SELECT COUNT(DISTINCT f.Username) AS a ' . $queryFailedLogins, 'a', $db))){
-
 	$failedLoginsTable->addRow();
 	$failedLoginsTable->setCol(0, 0, array(), we_html_tools::getPixel(25, 1));
 	$failedLoginsTable->setCol(0, 1, array("class" => "middlefont", "align" => "left"), we_html_element::htmlB(g_l('cockpit', '[kv_failedLogins][username]')) . we_html_tools::getPixel(15, 1));
@@ -43,7 +42,7 @@ if(($maxRows = f('SELECT COUNT(DISTINCT f.Username) AS a ' . $queryFailedLogins,
 
 	$cur = 0;
 //	while($maxRows > $cur){
-		$db->query('SELECT f.Username, count(f.isValid) AS numberFailedLogins,c.ID AS UID' . $queryFailedLogins . ' LIMIT ' . $cur . ',100');
+		$db->query('SELECT f.Username, count(f.isValid) AS numberFailedLogins,c.ID AS UID' . $queryFailedLogins . ' GROUP BY f.Username LIMIT ' . $cur . ',100');
 		$i = 1;
 		while($db->next_record()){
 			$prio = intval($db->f('numberFailedLogins')) < SECURITY_LIMIT_CUSTOMER_NAME ? 'prio_low.gif' : 'prio_high.gif';
