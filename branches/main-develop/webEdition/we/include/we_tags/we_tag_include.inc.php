@@ -140,7 +140,7 @@ function we_tag_include($attribs){
 			$content = ($isSeemode ? getHTTP(getServerUrl(true), $realPath) : 'echo getHTTP(getServerUrl(true), \'' . $realPath . '\');');
 		} else {
 			$realPath = $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '..' . $realPath; //(symlink) webEdition always points to the REAL DOC-Root!
-			if(!file_exists($realPath)){
+			if(!file_exists($realPath)||!is_file($realPath)){
 				//t_e('include of', 'id:' . $id . ',path:' . $path . ',name:' . $name, ' doesn\'t exist');
 				return '';
 			}

@@ -69,7 +69,7 @@ switch($browser->getBrowser()){
 			case we_base_browserDetect::SYS_MAC:
 				if($browser->isFF() && $browser->getBrowserVersion() < 3){
 					$tabDummy = '<div class="hidden" id="tabDummy" title="" name="" ondblclick=";" onclick="top.weMultiTabs.selectFrame(this)"><nobr><span class="spacer">&nbsp;<img src="' . IMAGE_DIR . 'pixel.gif" width="16" height="16" id="###loadId###" title="" class="status" style="background-position:0px -1px" />&nbsp;</span><span id="###tabTextId###" class="text"></span><span class="spacer"><img src="' . IMAGE_DIR . 'pixel.gif" width="5" height="16" id="###modId###" class="status" /><img src="' . IMAGE_DIR . 'multiTabs/close.gif" id="###closeId###" border="0" vspace="0" hspace="0" onclick="top.weMultiTabs.onCloseTab(this)" onmouseover="this.src=\'' . IMAGE_DIR . 'multiTabs/closeOver.gif\'" onmouseout="this.src=\'' . IMAGE_DIR . 'multiTabs/close.gif\'" class="close" />&nbsp;</span><img src="' . IMAGE_DIR . 'multiTabs/tabBorder.gif" height="21" style="vertical-align:bottom;" /></nobr></div>';
-				} else {
+				} else{
 					$tabContainerMargin = "0px";
 				}
 				$tabBorder = "border: 0px; border-bottom: 0px solid #888888; border-right: 1px solid #888888;";
@@ -77,7 +77,7 @@ switch($browser->getBrowser()){
 			case we_base_browserDetect::SYS_UNIX:
 				if($browser->isFF() && $browser->getBrowserVersion() < 3){
 					$tabDummy = '<div class="hidden" id="tabDummy" title="" name="" onclick="top.weMultiTabs.selectFrame(this)"><nobr><span class="spacer">&nbsp;<img src="' . IMAGE_DIR . 'pixel.gif" width="16" height="16" id="###loadId###" title="" class="status" />&nbsp;</span><span id="###tabTextId###" class="text" style="background-position:0px -1px"></span><span class="spacer"><img src="' . IMAGE_DIR . 'pixel.gif" width="5" height="16" id="###modId###" class="status" /><img src="' . IMAGE_DIR . 'multiTabs/close.gif" id="###closeId###" border="0" vspace="0" hspace="0" onclick="top.weMultiTabs.onCloseTab(this)" onmouseover="this.src=\'' . IMAGE_DIR . 'multiTabs/closeOver.gif\'" onmouseout="this.src=\'' . IMAGE_DIR . 'multiTabs/close.gif\'" class="close" />&nbsp;</span><img src="' . IMAGE_DIR . 'multiTabs/tabBorder.gif" height="21" style="vertical-align:bottom;" /></nobr></div>';
-				} else {
+				} else{
 					$tabContainerMargin = "0px";
 				}
 				$tabBorder = "border:0px;";
@@ -197,10 +197,11 @@ print we_html_element::jsElement($content = $_contentTypes);
 		/**
 		 * removes a tab from the tab view
 		 */
-		closeTab: function(frameId) {
-			this.tabContainer.removeChild(this.myDoc.getElementById('tab_' + frameId));
-			if (this.activeTab == frameId)
+		closeTab : function(frameId) {
+			this.tabContainer.removeChild(this.myDoc.getElementById('tab_'+frameId));
+			if (this.activeTab == frameId){
 				this.activeTab = null;
+			}
 			setFrameSize();
 			this.contentType[frameId] = "";
 		},

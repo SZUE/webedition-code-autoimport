@@ -22,7 +22,7 @@
  */
 
 var tinyEditors = {};
-var tinyEditorsInPopup = {"beat" : "beatolino"};
+var tinyEditorsInPopup = {};
 
 function TinyWrapper(fieldname) {
 	if(!(this instanceof TinyWrapper)){
@@ -37,7 +37,14 @@ function TinyWrapper(fieldname) {
 	this.getId = function(){return _id;};
 	this.getIsInlineedit = function(){return _isInlineedit;};
 
-	this.getEditor = function(){return typeof tinyEditors[_fn] === "undefined" ? "undefined" : (typeof tinyEditors[_fn] === "object" ? tinyEditors[_fn] : "undefined");};
+	this.getEditor = function(tryPopup){
+		var _tryPopup = typeof tryPopup === "undefined" ? false : tryPopup;
+		if(tryPopup && this.getEditorInPopup() !== "undefined"){
+			return this.getEditorInPopup();
+		}
+
+		return typeof tinyEditors[_fn] === "undefined" ? "undefined" : (typeof tinyEditors[_fn] === "object" ? tinyEditors[_fn] : "undefined");
+	};
 
 	this.getEditorInPopup = function(){
 		if(typeof tinyEditorsInPopup[_fn] !== "undefined"){
@@ -56,6 +63,20 @@ function TinyWrapper(fieldname) {
 
 	this.getTextarea = function(){return typeof tinyEditors[_fn] === "undefined" ? "undefined" : (typeof tinyEditors[_fn] === "object" ? "undefined" : document.getElementById(tinyEditors[_fn]));};
 	this.getDiv = function(){return typeof tinyEditors[_fn] === "undefined" ? "undefined" : (typeof tinyEditors[_fn] === "object" ? "undefined" : document.getElementById("div_wysiwyg_" + tinyEditors[_fn]));};
+
+	this.getIFrame = function(){
+		var frame_id  = this.getId() + '_ifr';
+
+		if(typeof tinymce !== "undefined" && tinymce.DOM){
+			try{
+				return tinymce.DOM.get(frame_id) !== null ? tinymce.DOM.get(frame_id) : "undefined";
+			} catch(e){
+				return "undefined";
+			}
+		} else {
+			return "undefined";
+		}
+	}
 
 	this.getContent = function(forcePopup){
 		var _forcePopup = typeof forcePopup === "undefined" ? false : forcePopup;
@@ -101,5 +122,14 @@ function TinyWrapper(fieldname) {
 				//console.log("No Editor \'" + _fn + "\' found!");
 			}
 		}
+	};
+
+	this.on = function(sEvtObj, func){
+			var editor = this.getEditor(true);
+			try{
+				editor["on" + sEvtObj].add(func);
+			} catch(e){
+				console.log("unable to add event");
+			}
 	};
 }

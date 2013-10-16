@@ -42,6 +42,7 @@ class we_wysiwyg{
 	private $createContextmenu = true;
 	private $filteredElements = array();
 	private $bgcol = '';
+	private $buttonpos = '';
 	private $tinyParams = '';
 	private $templates = '';
 	private $fullscreen = '';
@@ -73,7 +74,7 @@ class we_wysiwyg{
 	function __construct($name, $width, $height, $value = '', $propstring = '', $bgcol = '', $fullscreen = '', $className = '', $fontnames = '', $outsideWE = false, $xml = false, $removeFirstParagraph = true, $inlineedit = true, $baseHref = '', $charset = '', $cssClasses = '', $Language = '', $test = '', $spell = true, $isFrontendEdit = false, $buttonpos = 'top', $oldHtmlspecialchars = true, $contentCss = '', $origName = '', $tinyParams = '', $contextmenu = '', $isInPopup = false, $templates = ''){
 		$this->propstring = $propstring ? ',' . $propstring . ',' : '';
 		$this->restrictContextmenu = $contextmenu ? ',' . $contextmenu . ',' : '';
-		$this->createContextmenu = trim($contextmenu, " ,'") == 'false' ? false : true;
+		$this->createContextmenu = trim($contextmenu, " ,'") == 'none' || trim($contextmenu, " ,'") == 'false' ? false : true;
 		$this->name = $name;
 		if(preg_match('|^.+\[.+\]$|i', $this->name)){
 			$this->fieldName = preg_replace('/^.+\[(.+)\]$/', '\1', $this->name);
@@ -543,8 +544,12 @@ function weWysiwygSetHiddenText(arg) {
 		$this->elements = array(
 			new we_wysiwyg_ToolbarSelect(
 				$this, "formatblock", g_l('wysiwyg', "[format]"), $formatblockArr, self::$editorType == 'tinyMCE' ? 92 : 120
-			),
-			self::$editorType == 'tinyMCE' && $this->width < 194 ? new we_wysiwyg_ToolbarSeparator($this) : '',
+			)
+		);
+		if(self::$editorType == 'tinyMCE' && $this->width < 194){
+			$this->elements[] = new we_wysiwyg_ToolbarSeparator($this);
+		}
+		array_push($this->elements,
 			new we_wysiwyg_ToolbarSelect(
 				$this, "fontname", g_l('wysiwyg', "[fontname]"), $this->fontnames, self::$editorType == 'tinyMCE' ? 92 : 120
 			),
@@ -580,8 +585,12 @@ function weWysiwygSetHiddenText(arg) {
 					6 => 6,
 					7 => 7
 					), self::$editorType == 'tinyMCE' ? 92 : 120
-			),
-			self::$editorType == 'tinyMCE' && $this->width < 194 ? new we_wysiwyg_ToolbarSeparator($this) : '',
+			)
+		);
+		if(self::$editorType == 'tinyMCE' && $this->width < 194){
+			$this->elements[] = new we_wysiwyg_ToolbarSeparator($this);
+		}
+		array_push($this->elements,			
 			new we_wysiwyg_ToolbarSelect(
 				$this, "applystyle", g_l('wysiwyg', "[css_style]"), array(), self::$editorType == 'tinyMCE' ? 92 : 120
 			),
@@ -837,7 +846,7 @@ function weWysiwygSetHiddenText(arg) {
 			),
 			new we_wysiwyg_ToolbarSeparator($this), new we_wysiwyg_ToolbarButton(
 				$this, "visibleborders", $this->_imagePath . "visibleborders.gif", g_l('wysiwyg', "[visible_borders]")
-			),
+			)
 		);
 		if(defined('SPELLCHECKER') && $this->showSpell){
 			$this->elements[] = new we_wysiwyg_ToolbarButton(
@@ -1158,8 +1167,8 @@ function weWysiwygSetHiddenText(arg) {
 					($this->wePlugins ? $this->wePlugins . ',' : '') .
 					'weutil,autolink,template';//TODO: load "templates" on demand as we do it with other plugins
 
-				//very fast fix for textarea-height. TODO, when wysiwyg is thrown out: use or rewrite existing methods like getToolbarWithAndHeight()
-				$toolBarHeight = ($k-1)*26 + 22 - $k*3;
+				//fast fix for textarea-height. TODO, when wysiwyg is thrown out: use or rewrite existing methods like getToolbarWithAndHeight()
+				$toolBarHeight = $this->buttonpos == 'external' ? 0 : ($k-1)*26 + 22 - $k*3;
 				$this->height += $toolBarHeight;
 
 				if(preg_match('/^#[a-f0-9]{6}$/i', $this->bgcol)){
@@ -1358,13 +1367,20 @@ function weWysiwygSetHiddenText(arg) {
 									if(opener.top.weEditorFrameController){
 										//we are in backend
 										var editor = opener.top.weEditorFrameController.ActiveEditorFrameId;
-										var wedoc = opener.top.rframe.bm_content_frame.frames[editor].frames["editor_" + editor];
+										var wedoc = null;
 										try{
+											wedoc = opener.top.rframe.bm_content_frame.frames[editor].frames["contenteditor_" + editor];
 											wedoc.tinyEditorsInPopup["' . $this->fieldName . '"] = ed;
 											wedoc.we_tinyMCE_' . $this->fieldName_clean . '_init(ed);
-											//TODO: find a better way to get this reference...
 										}catch(e){
-											//opener.console.log("no external init function for ' . $this->fieldName . ' defined");
+											//opener.console.log("no external init function for ' . $this->fieldName . ' found");
+										}
+										try{
+											wedoc = opener.top.rframe.bm_content_frame.frames[editor].frames["editor_" + editor];
+											wedoc.tinyEditorsInPopup["' . $this->fieldName . '"] = ed;
+											wedoc.we_tinyMCE_' . $this->fieldName_clean . '_init(ed);
+										}catch(e){
+											//opener.console.log("no external init function for ' . $this->fieldName . ' found");
 										}
 									} else{
 										//we are in frontend

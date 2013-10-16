@@ -41,10 +41,10 @@
         case "new_user":
         case "save_user":
         case "new_group":
-	case "new_alias":
+				case "new_alias":
         case "exit_users":
         case "delete_user":
-	case "new_organization":
+				case "new_organization":
          <?php if(permissionhandler::hasPerm("EDIT_USER")){?>
              var fo=false;
 					if(jsWindow_count){

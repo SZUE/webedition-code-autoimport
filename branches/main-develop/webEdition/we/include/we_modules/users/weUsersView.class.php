@@ -616,18 +616,18 @@ function we_cmd(){
 					$weAcQuery = new weSelectorQuery();
 
 					// bugfix #1665 for php 4.1.2: "-" moved to the end of the regex-pattern
-					if(isset($_REQUEST[$_REQUEST['obj_name'] . '_username']) && !preg_match("|^[A-Za-z0-9._-]+$|", $_REQUEST[$_REQUEST['obj_name'] . '_username'])){
-						print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('global', "[username_wrong_chars]"), we_message_reporting::WE_MESSAGE_ERROR));
+					if(isset($_REQUEST[$_REQUEST['obj_name'] . '_username']) && !preg_match('|^[A-Za-z0-9._-]+$|', $_REQUEST[$_REQUEST['obj_name'] . '_username'])){
+						print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('global', '[username_wrong_chars]'), we_message_reporting::WE_MESSAGE_ERROR));
 						break;
 					}
-					if(!isset($_SESSION["user_session_data"])){
-						print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR));
+					if(!isset($_SESSION['user_session_data'])){
+						print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR));
 						break;
 					}
 					if(isset($_REQUEST[$_REQUEST['obj_name'] . '_ParentID']) && !empty($_REQUEST[$_REQUEST['obj_name'] . '_ParentID']) && $_REQUEST[$_REQUEST['obj_name'] . '_ParentID'] > 0){
-						$weAcResult = $weAcQuery->getItemById($_REQUEST[$_REQUEST['obj_name'] . '_ParentID'], USER_TABLE, array("IsFolder"), false);
+						$weAcResult = $weAcQuery->getItemById($_REQUEST[$_REQUEST['obj_name'] . '_ParentID'], USER_TABLE, array('IsFolder'), false);
 						if(!is_array($weAcResult) || $weAcResult[0]['IsFolder'] == 0){
-							print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR));
+							print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR));
 							break;
 						}
 					}
@@ -658,7 +658,7 @@ function we_cmd(){
 						}
 						$i++;
 					}
-					if(defined("OBJECT_FILES_TABLE")){
+					if(defined('OBJECT_FILES_TABLE')){
 						while(isset($_REQUEST[$_REQUEST['obj_name'] . '_Workspace_' . OBJECT_FILES_TABLE . '_' . $i]) && !empty($_REQUEST[$_REQUEST['obj_name'] . '_Workspace_' . OBJECT_FILES_TABLE . '_' . $i])){
 							$weAcResult = $weAcQuery->getItemById($_REQUEST[$_REQUEST['obj_name'] . '_Workspace_' . OBJECT_FILES_TABLE . '_' . $i], OBJECT_FILES_TABLE, array("IsFolder"));
 							if(!is_array($weAcResult) || $weAcResult[0]['IsFolder'] == 0){
@@ -669,7 +669,7 @@ function we_cmd(){
 						}
 					}
 
-					if(defined("NEWSLETTER_TABLE")){
+					if(defined('NEWSLETTER_TABLE')){
 						while(isset($_REQUEST[$_REQUEST['obj_name'] . '_Workspace_' . NEWSLETTER_TABLE . '_' . $i]) && !empty($_REQUEST[$_REQUEST['obj_name'] . '_Workspace_' . NEWSLETTER_TABLE . '_' . $i])){
 							$weAcResult = $weAcQuery->getItemById($_REQUEST[$_REQUEST['obj_name'] . '_Workspace_' . NEWSLETTER_TABLE . '_' . $i], NEWSLETTER_TABLE, array("IsFolder"));
 							if(!is_array($weAcResult) || $weAcResult[0]['IsFolder'] == 0){
@@ -696,7 +696,7 @@ function we_cmd(){
 					if($user_object){
 
 						if(!permissionhandler::hasPerm("SAVE_USER") && ($user_object->Type == we_user::TYPE_USER || $user_object->Type == we_user::TYPE_ALIAS) && $user_object->ID != 0){
-							print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', "[access_denied]"), we_message_reporting::WE_MESSAGE_ERROR));
+							print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', '[access_denied]'), we_message_reporting::WE_MESSAGE_ERROR));
 							break;
 						}
 						if(!permissionhandler::hasPerm("NEW_USER") && ($user_object->Type == we_user::TYPE_USER || $user_object->Type == we_user::TYPE_ALIAS) && $user_object->ID == 0){
@@ -711,8 +711,8 @@ function we_cmd(){
 							print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', "[access_denied]"), we_message_reporting::WE_MESSAGE_ERROR));
 							break;
 						}
-						if(isset($_REQUEST["oldtab"])){
-							$user_object->preserveState(intval($_REQUEST["oldtab"]), $_REQUEST["old_perm_branch"]);
+						if(isset($_REQUEST['oldtab'])){
+							$user_object->preserveState(intval($_REQUEST['oldtab']), $_REQUEST['old_perm_branch']);
 						}
 
 						$id = $user_object->ID;
@@ -737,17 +737,17 @@ function we_cmd(){
 
 						$foo = ($user_object->ID ?
 								getHash('SELECT ParentID FROM ' . USER_TABLE . ' WHERE ID=' . intval($user_object->ID), $user_object->DB_WE) :
-								array("ParentID" => 0));
+								array('ParentID' => 0));
 
 						$ret = $user_object->saveToDB();
-						$_SESSION["user_session_data"] = $user_object->getState();
+						$_SESSION['user_session_data'] = $user_object->getState();
 
 						//	Save seem_startfile to DB when needed.
-						if(isset($_REQUEST["seem_start_file"])){
-							if(($_REQUEST["seem_start_file"] && $_REQUEST["seem_start_file"] != 0) || (isset($_SESSION["save_user_seem_start_file"][$_REQUEST["uid"]]))){
+						if(isset($_REQUEST['seem_start_file'])){
+							if(($_REQUEST['seem_start_file'] && $_REQUEST['seem_start_file'] != 0) || (isset($_SESSION['save_user_seem_start_file'][$_REQUEST["uid"]]))){
 								$tmp = new DB_WE();
 
-								if(isset($_REQUEST["seem_start_file"])){
+								if(isset($_REQUEST['seem_start_file'])){
 									//	save seem_start_file from REQUEST
 									$seem_start_file = $_REQUEST["seem_start_file"];
 									if($user_object->ID == $_SESSION['user']['ID']){ // change preferences if user edits his own startfile
@@ -755,7 +755,7 @@ function we_cmd(){
 									}
 								} else {
 									//	Speichere seem_start_file aus SESSION
-									$seem_start_file = $_SESSION["save_user_seem_start_file"][$_REQUEST["uid"]];
+									$seem_start_file = $_SESSION['save_user_seem_start_file'][$_REQUEST["uid"]];
 								}
 
 								$tmp->query('REPLACE INTO ' . PREFS_TABLE . ' SET userID=' . intval($_REQUEST['uid']) . ',`key`="seem_start_file",`value`="' . $tmp->escape($seem_start_file) . '"');

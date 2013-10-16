@@ -219,10 +219,10 @@ class we_user{
 	function initFromDB($id){
 		$ret = false;
 		if($id){
-			$this->DB_WE->query('SELECT * FROM ' . USER_TABLE . ' WHERE ID=' . intval($id));
-			if($this->DB_WE->next_record()){
+			if(f('SELECT 1 AS a FROM ' . USER_TABLE . ' WHERE ID=' . intval($id), 'a', $this->DB_WE)){
 				$this->ID = $id;
 				$this->getPersistentSlotsFromDB();
+				$this->getPreferenceSlotsFromDB();
 				$ret = true;
 			}
 			$this->loadWorkspaces();
@@ -331,13 +331,10 @@ class we_user{
 		$this->savePermissions();
 		if($isnew){
 			$this->CreatorID = $_SESSION['user']['ID'];
-			$this->ModifierID = $_SESSION['user']['ID'];
 			$this->CreateDate = time();
-			$this->ModifyDate = time();
-		} else {
-			$this->ModifierID = $_SESSION['user']['ID'];
-			$this->ModifyDate = time();
 		}
+		$this->ModifierID = $_SESSION['user']['ID'];
+		$this->ModifyDate = time();
 		$this->savePersistentSlotsInDB();
 		$this->createAccount();
 		if($oldpath != '' && $oldpath != '/'){
@@ -1763,6 +1760,7 @@ function delElement(elvalues,elem) {
 
 		// Create checkboxes
 		$_table = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0), 3, 1);
+//FIXME: where is the difference between force_glossary_check + force_glossary_action?!
 
 		$_table->setCol(0, 0, null, we_forms::checkbox(1, $this->Preferences['force_glossary_check'], $this->Name . '_Preference_force_glossary_check', g_l('prefs', '[force_glossary_check]'), 'false', 'defaultfont', "top.content.setHot()"));
 		$_table->setCol(1, 0, null, we_html_tools::getPixel(1, 5));
@@ -2121,7 +2119,8 @@ function show_seem_chooser(val) {
 	}
 
 	function formPreferencesEditor(){
-
+		return array();
+		//FIXME: this is not correct!
 		//Editor Mode
 		$_template_editor_mode = new we_html_select(array("class" => "weSelect", "name" => $this->Name . "_Preference_editorMode", "size" => 1, "onchange" => "displayEditorOptions(this.options[this.options.selectedIndex].value);"));
 		$_template_editor_mode->addOption('textarea', g_l('prefs', '[editor_plaintext]'));
@@ -2179,7 +2178,7 @@ function show_seem_chooser(val) {
 			}
 		}
 
-		$_template_editor_font_sizes_select_box = new we_html_select(array("class" => "weSelect", "name" => $this->Name . "_Preference_editorFontsize", "size" => 1, "style" => "width: 90px;", ($_template_editor_font_size_specify ? "enabled" : "disabled") => ($_template_editor_font_size_specify ? "enabled" : "disabled"), "onChange" => "top.content.setHot();"));
+		$_template_editor_font_sizes_select_box = new we_html_select(array('class' => 'weSelect', 'name' => $this->Name . '_Preference_editorFontsize', "size" => 1, "style" => "width: 90px;", ($_template_editor_font_size_specify ? "enabled" : "disabled") => ($_template_editor_font_size_specify ? "enabled" : "disabled"), "onChange" => "top.content.setHot();"));
 
 		foreach($_template_font_sizes as $tf){
 			$_template_editor_font_sizes_select_box->addOption($tf, $tf);
@@ -2199,7 +2198,11 @@ function show_seem_chooser(val) {
 		$_template_editor_font_specify_table->setCol(3, 3, null, $_template_editor_font_sizes_select_box->getHtml());
 
 		// Build dialog
-		$_settings[] = array("headline" => g_l('prefs', '[editor_font]'), "html" => $_template_editor_font_specify_code . $_template_editor_font_specify_table->getHtml(), "space" => 200);
+		$_settings[] = array(
+			'headline' => g_l('prefs', '[editor_font]'),
+			'html' => $_template_editor_font_specify_code . $_template_editor_font_specify_table->getHtml(),
+			'space' => 200
+		);
 
 		return $_settings;
 	}
@@ -2209,16 +2212,16 @@ function show_seem_chooser(val) {
 		$parent_text = ($this->ParentID == 0 ? '/' : f('SELECT Path FROM ' . USER_TABLE . ' WHERE ID=' . intval($this->ParentID), 'Path', $this->DB_WE));
 
 		$yuiSuggest = & weSuggest::getInstance();
-		$yuiSuggest->setAcId("PathName");
-		$yuiSuggest->setContentType("0,1"); // in USER_TABLE is Type 0 folder, Type 1 user and Type 2 alias. Field ContentType is not setted so in weSelectorQuery is a workaroun for USER_TABLE
-		$yuiSuggest->setInput($this->Name . '_Alias_Text', $alias_text, array("onChange" => "top.content.setHot();"));
+		$yuiSuggest->setAcId('PathName');
+		$yuiSuggest->setContentType(self::TYPE_USER . ',' . self::TYPE_USER_GROUP); // in USER_TABLE is Type 0 folder, Type 1 user and Type 2 alias. Field ContentType is not setted so in weSelectorQuery is a workaroun for USER_TABLE
+		$yuiSuggest->setInput($this->Name . '_Alias_Text', $alias_text, array('onchange' => 'top.content.setHot();'));
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(false);
 		$yuiSuggest->setResult($this->Name . '_Alias', $this->Alias);
-		$yuiSuggest->setSelector("Docselector");
+		$yuiSuggest->setSelector('Docselector');
 		$yuiSuggest->setTable(USER_TABLE);
 		$yuiSuggest->setWidth(200);
-		$yuiSuggest->setSelectButton(we_button::create_button("select", "javascript:we_cmd('browse_users','document.we_form." . $this->Name . "_Alias.value','document.we_form." . $this->Name . "_Alias_Text.value','noalias',document.we_form." . $this->Name . "_Alias.value)"));
+		$yuiSuggest->setSelectButton(we_button::create_button('select', "javascript:we_cmd('browse_users','document.we_form." . $this->Name . "_Alias.value','document.we_form." . $this->Name . "_Alias_Text.value','noalias',document.we_form." . $this->Name . "_Alias.value)"));
 
 		$weAcSelectorName = $yuiSuggest->getHTML();
 
@@ -2349,9 +2352,9 @@ function resetTabs(){
 }
 
 top.content.hloaded=1;') .
-				$tab_header .
+			$tab_header .
 				'<div id="main" >' . we_html_tools::getPixel(100, 3) . '<div style="margin:0px;padding-left:10px;" id="headrow"><nobr><b>' . str_replace(" ", "&nbsp;", $headline1) . '&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">' . str_replace(" ", "&nbsp;", ($this->Path ?: $this->getPath($this->ParentID))) . '</b></span></nobr></div>' . we_html_tools::getPixel(100, 3) . $we_tabs->getHTML() . '</div>' .
-				$tab_body;
+			$tab_body;
 	}
 
 	public static function getUsername($id, $db = ''){

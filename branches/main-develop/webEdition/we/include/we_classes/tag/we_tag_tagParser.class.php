@@ -400,6 +400,7 @@ class we_tag_tagParser{
 		return (isset($endTagNo) ? ($endTagNo - $ipos) : 1);
 	}
 
+	//FIXME: GLOBALS as "\$xx" should be set here directly? using isset??
 	public static function printTag($name, $attribs = '', $content = '', $cslash = false){
 		$attr = (is_array($attribs) ? self::printArray($attribs) : $attribs);
 		return 'we_tag(\'' . $name . '\'' .

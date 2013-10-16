@@ -1249,6 +1249,7 @@ if(!empty($_jsincludes)){
 			case "new_widget_pad":
 			case "new_widget_plg":
 			case "new_widget_shp":
+			case "new_widget_fdl":
 				if (top.weEditorFrameController.getActiveDocumentReference() && top.weEditorFrameController.getActiveDocumentReference().quickstart) {
 					top.weEditorFrameController.getActiveDocumentReference().createWidget(arguments[0].substr(arguments[0].length - 3), 1, 1);
 				}
