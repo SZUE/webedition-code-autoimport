@@ -336,8 +336,8 @@ function keyReloadListener( _successor ) {
 		if ( typeof( top.weEditorFrameController ) != "undefined" ) {
 			if ( evt["ctrlKey"] || evt["metaKey"] ) {
 
-				if ((evt["keyCode"] == 82) || // R Reload
-								(evt["keyCode"] == 90))//Z Back
+				if ((evt["keyCode"] == 82) /*|| // R Reload
+								(evt["keyCode"] == 90)*/)//Z Back
 				{
 					this.cancelEvent(evt);
 					return true;
