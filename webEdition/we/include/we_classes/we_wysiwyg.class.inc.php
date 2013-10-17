@@ -1192,7 +1192,7 @@ function weWysiwygSetHiddenText(arg) {
 					/* -- tinyMCE -- */
 
 					/*
-					To adress an instance of tinyMCE (inlineeedit=true) using JavaScript from anywhere on your page use:
+					To adress an instance of tinyMCE by JavaScript from anywhere on this document use:
 					TinyWrapper("SOME_WE_FIELDNAME").getEditor();
 
 					To adress the div container of an editor inlineedit=false use:
@@ -1208,20 +1208,18 @@ function weWysiwygSetHiddenText(arg) {
 
 					function we_tinyMCE_' . $this->fieldName_clean . '_init(ed){
 						//you can adress this instance of tinyMCE using variable ed:
-						var this_editor = ed;
+						//var this_editor = ed;
 						//or:
-						//var this_editor = TinyWrapper("' . $this->fieldName . '").getEditor();
+						var this_editor = TinyWrapper("' . $this->fieldName . '").getEditor();
 
 						//to adress other instances of tinyMCE on this same page use:
 						TinyWrapper("OTHER_WE_FIELDNAME").getEditor();
 
 						//example of adding event listener
-						this_editor.onChange.add(function(ed){
-							try{
-								TinyWrapper("OTHER_WE_FIELDNAME").setContent(this_editor.getContent());
-							} catch(err){
-								console.log("too bad");
-							}
+						var this_editor = TinyWrapper("' . $this->fieldName . '");
+						this_editor.on("KeyPress", function(ed, event){
+								console.log(ed.editorId);
+								console.log(event.charCode);
 						});
 					}
 					*/
