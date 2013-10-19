@@ -3,7 +3,7 @@
 $l_weTagGroups=array(
 	'alltags'=>'All we:tags',
 	'apptags'=>'Applications we:tags',
-	'custom_tags'=>'custom we:tags',
+	'custom'=>'custom we:tags',
 	'if_tags'=>'If we:tags',
 	'input_tags'=>'Input we:tags',
 	'navigation'=>'Navigation',
