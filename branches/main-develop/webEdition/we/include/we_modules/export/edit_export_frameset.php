@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,13 +22,12 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-require_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 $what = isset($_REQUEST["pnt"]) ? $_REQUEST["pnt"] : "frameset";
 
-$weFrame=new weExportFrames();
-echo $weFrame->getHTMLDocumentHeader();
+$weFrame = new weExportFrames();
+$weFrame->getHTMLDocumentHeader($what);
 $weFrame->View->processVariables();
 $weFrame->View->processCommands();
 echo $weFrame->getHTML($what);

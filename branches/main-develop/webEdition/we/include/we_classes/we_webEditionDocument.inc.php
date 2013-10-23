@@ -388,35 +388,27 @@ class we_webEditionDocument extends we_textContentDocument{
 	function formMetaInfos(){
 		//	Collect data from meta-tags
 		$_code = $this->getTemplateCode();
-		$_tp = new we_tag_tagParser();
 
-		$_tags = we_tag_tagParser::getMetaTags($_code);
-
-		foreach($_tags as $tag){ //	now parse these tags for property-page.
-			if($tag[1]){
-				$_tp->parseSpecificTags($tag[0], $tag[1]);
-				eval('?>' . $tag[1]);
-			}
-		}
+		we_tag_tagParser::getMetaTags($_code);
 
 		//	if a meta-tag is set all information are in array $GLOBALS["meta"]
 		return '
 <table style="border-spacing: 0px;border-style:none" cellpadding="0">
 	<tr>
-		<td colspan="2">' . $this->formInputField("txt", "Title", g_l('weClass', "[Title]"), 40, 508, "", "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
+		<td colspan="2">' . $this->formInputField("txt", "Title", g_l('weClass', "[Title]"), 40, 508, "", "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
 	</tr>
 	<tr>
 		<td>' . we_html_tools::getPixel(2, 4) . '</td>
 	</tr>
 	<tr>
 		<td colspan="2">' .
-			$this->formInputField("txt", "Description", g_l('weClass', "[Description]"), 40, 508, "", "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
+			$this->formInputField("txt", "Description", g_l('weClass', "[Description]"), 40, 508, "", "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
 	</tr>
 	<tr>
 		<td>' . we_html_tools::getPixel(2, 4) . '</td>
 	</tr>
 	<tr>
-		<td colspan="2">' . $this->formInputField("txt", "Keywords", g_l('weClass', "[Keywords]"), 40, 508, "", "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
+		<td colspan="2">' . $this->formInputField("txt", "Keywords", g_l('weClass', "[Keywords]"), 40, 508, "", "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
 	</tr>' .
 			$this->getCharsetSelect() .
 			$this->formLanguage(true) .

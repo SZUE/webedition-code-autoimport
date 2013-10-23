@@ -22,7 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 function we_tag_description($attribs, $content){
 	$htmlspecialchars = weTag_getAttribute('htmlspecialchars', $attribs, false, true);
 	$max = weTag_getAttribute('max', $attribs, 0);
@@ -30,15 +29,15 @@ function we_tag_description($attribs, $content){
 		'htmlspecialchars', 'max'
 	));
 
-	if($GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_PROPERTIES && $GLOBALS['we_doc']->InWebEdition){ //	normally meta tags are edited on property page
-		return '<?php	$GLOBALS["meta"]["Description"]["default"] = "' . str_replace('"', '\"', $content) . '"; ?>';
-	} else {
-
-		$descr = isset($GLOBALS['DESCRIPTION']) && $GLOBALS['DESCRIPTION'] ? $GLOBALS['DESCRIPTION'] : $content;
-
-		$attribs["name"] = "description";
-		$descr = $htmlspecialchars ? oldHtmlspecialchars(strip_tags($descr)) : strip_tags($descr);
-		$attribs["content"] = $max ? cutText($descr, $max, true) : $descr;
-		return getHtmlTag("meta", $attribs) . "\n";
+	$descr = isset($GLOBALS['DESCRIPTION']) && $GLOBALS['DESCRIPTION'] ? $GLOBALS['DESCRIPTION'] : '';
+	if(!$descr && $content){
+		ob_start();
+		eval('?>' . $content);
+		$descr = ob_get_contents();
+		ob_end_clean();
 	}
+	$attribs["name"] = "description";
+	$descr = $htmlspecialchars ? oldHtmlspecialchars(strip_tags($descr)) : strip_tags($descr);
+	$attribs["content"] = $max ? cutText($descr, $max, true) : $descr;
+	return getHtmlTag("meta", $attribs) . "\n";
 }
