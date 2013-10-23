@@ -23,6 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+//FIXME: is this file ever called?
 we_html_tools::protect();
 
 $_binary = $_REQUEST['we_cmd'][0];
@@ -165,41 +166,13 @@ $_get_prio = 'high';
 
 $DB_WE = new DB_WE();
 
-$_table = NOTEPAD_TABLE;
-
-$_sql = "INSERT INTO
-	" . $DB_WE->escape($_table) . "
-(
-	WidgetName,
-	UserID,
-	CreationDate,
-	Title,
-	Text,
-	Priority,
-	Valid,
-	ValidFrom,
-	ValidUntil
-) VALUES (
-	'" . $DB_WE->escape($_title) . "',
-	" . intval($_SESSION['user']['ID']) . ",
-	CURDATE(),
-	'" . $DB_WE->escape($_get_title) . "',
-	'" . $DB_WE->escape($_get_text) . "',
-	'" . $DB_WE->escape($_get_prio) . "',
-	'" . $DB_WE->escape($_get_valid) . "',
-	'" . $DB_WE->escape($_get_valid_from) . "',
-	'" . $DB_WE->escape($_get_valid_until) . "'
-)
-";
-
-
 if($bDisplay){
-	$_sql = "SELECT * FROM " . $DB_WE->escape($_table) . " WHERE
+	$DB_WE->query('SELECT * FROM ' . NOTEPAD_TABLE . " WHERE
 	WidgetName = '" . $DB_WE->escape($_title) . "' AND
 	UserID = " . intval($_SESSION['user']['ID']) . "
-	ORDER BY " . $q_sort;
-} else{
-	$_sql = "SELECT * FROM " . $DB_WE->escape($_table) . " WHERE
+	ORDER BY " . $q_sort);
+} else {
+	$DB_WE->query('SELECT * FROM ' . NOTEPAD_TABLE . " WHERE
 	WidgetName = '" . $DB_WE->escape($_title) . "' AND
 	UserID = " . intval($_SESSION['user']['ID']) . " AND
 	(
@@ -214,28 +187,24 @@ if($bDisplay){
 			ValidUntil <= DATE_FORMAT(NOW(), \"%Y-%m-%d\")
 		)
 	)
-	ORDER BY " . $q_sort;
+	ORDER BY " . $q_sort);
 }
-$DB_WE->query($_sql);
+
 $pad .= '<table cellspacing="0" cellpadding="0" border="0">';
-while($DB_WE->next_record()) {
-	$pad .= '<tr>';
-	$pad .= '<td width="20" height="20" valign="middle" nowrap>' . we_html_element::htmlImg(
+while($DB_WE->next_record()){
+	$pad .= '<tr>
+		<td width="20" height="20" valign="middle" nowrap>' . we_html_element::htmlImg(
 			array(
 				"src" => IMAGE_DIR . "pd/prio_" . $DB_WE->f("Priority") . ".gif", "width" => 13, "height" => 14
-		)) . '</td>';
-	$pad .= '<td valign="middle" class="middlefont">' . we_html_element::htmlA(
+		)) . '</td>
+			<td valign="middle" class="middlefont">' . we_html_element::htmlA(
 			array(
 			"href" => "javascript:void(0)", "title" => "", "style" => "color:#000000;text-decoration:none;"
-			), $DB_WE->f("Title")) . '</td>';
-	$pad .= '</tr>';
-	// $DB_WE->f("Text")
+			), CheckAndConvertISObackend($DB_WE->f('Title'))) . '</td>
+				</tr>';
 }
-
 $pad .= '</table>';
 
-
-print "hello";
 print we_html_element::htmlDocType() . we_html_element::htmlHtml(
 		we_html_element::htmlHead(
 			we_html_tools::getHtmlInnerHead(g_l('cockpit', '[notepad]')) . STYLESHEET .
