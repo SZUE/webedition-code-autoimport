@@ -22,8 +22,13 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_parse_tag_include($attribs){
-	return '<?php eval(' . we_tag_tagParser::printTag('include', $attribs) . ');?>';
+function we_parse_tag_include($attribs, $c, array $attr){
+	$type = weTag_getParserAttribute('type', $attr, 'document');
+	$path = weTag_getParserAttribute('path', $attr);
+	return ($type == 'document' ? '<?php eval(' . we_tag_tagParser::printTag('include', $attribs) . ');?>' :
+			($path ? '<?php include(getTemplatePath(\'' . str_replace('\'', '', $path) . '\'));?>' :
+				'<?php include(getTemplatePath(' . intval(weTag_getParserAttribute('id', $attr)) . '));?>')
+		);
 }
 
 function we_setBackVar($we_unique){
@@ -64,6 +69,9 @@ function we_setBackVar($we_unique){
 }
 
 function we_resetBackVar($we_unique){
+	if(!is_object($GLOBALS['we']['backVars'][$we_unique]['we_doc'])){
+		t_e($we_unique, $GLOBALS['we']['backVars']);
+	}
 	$GLOBALS['we_doc'] = clone($GLOBALS['we']['backVars'][$we_unique]['we_doc']);
 	foreach($GLOBALS['we']['backVars'][$we_unique]['GLOBAL'] as $key => $val){
 		$GLOBALS[$key] = $val;
@@ -145,7 +153,7 @@ function we_tag_include($attribs){
 			$content = ($isSeemode ? getHTTP(getServerUrl(true), $realPath) : 'echo getHTTP(getServerUrl(true), \'' . $realPath . '\');');
 		} else {
 			$realPath = $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '..' . $realPath; //(symlink) webEdition always points to the REAL DOC-Root!
-			if(!file_exists($realPath)||!is_file($realPath)){
+			if(!file_exists($realPath) || !is_file($realPath)){
 				//t_e('include of', 'id:' . $id . ',path:' . $path . ',name:' . $name, ' doesn\'t exist');
 				return '';
 			}

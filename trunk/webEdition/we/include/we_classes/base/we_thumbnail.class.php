@@ -549,10 +549,10 @@ class we_thumbnail{
 			' AND ' . LINK_TABLE . '.DocumentTable="tblFile" AND ' . CONTENT_TABLE . '.ID=' . LINK_TABLE . '.CID  AND ' . CONTENT_TABLE . '.IsBinary=0');
 
 		while($this->db->next_record()){
-			if($this->db->f("Name") == "origwidth"){
-				$this->imageWidth = $this->db->f("Dat");
-			} else if($this->db->f("Name") == "origheight"){
-				$this->imageHeight = $this->db->f("Dat");
+			if($this->db->f('Name') == 'origwidth'){
+				$this->imageWidth = $this->db->f('Dat');
+			} else if($this->db->f('Name') == 'origheight'){
+				$this->imageHeight = $this->db->f('Dat');
 			}
 		}
 

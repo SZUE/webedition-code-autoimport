@@ -398,7 +398,7 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 					}
 
 					//no need to set width+height, since img has its scale
-					if(!$this->getElement('only')){//leave only if we want to knoe the size
+					if(!$this->getElement('only')){//leave only if we want to know the size
 						unset($this->elements['width']);
 						unset($this->elements['height']);
 					} else {

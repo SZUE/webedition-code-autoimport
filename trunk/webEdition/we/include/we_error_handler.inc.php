@@ -68,12 +68,11 @@ function we_error_setHandleAll(){
 }
 
 function we_error_handler($in_webEdition = true){
-	// Get error types to be handled
-	/* $GLOBALS['we']['errorhandler']['notice'] = defined('WE_ERROR_NOTICES') ? (WE_ERROR_NOTICES == 1 ? true : false) : false;
-	  $GLOBALS['we']['errorhandler']['deprecated'] = defined('WE_ERROR_DEPRECATED') ? (WE_ERROR_DEPRECATED == 1 ? true : false) : false;
-	  $GLOBALS['we']['errorhandler']['warning'] = defined('WE_ERROR_WARNINGS') ? (WE_ERROR_WARNINGS == 1 ? true : false) : false;
-	  $GLOBALS['we']['errorhandler']['error'] = defined('WE_ERROR_ERRORS') ? (WE_ERROR_ERRORS == 1 ? true : false) : true;
-	 */
+	static $called = false;
+	if($called){
+		return;
+	}
+	$called = true;
 	// Get way of how to show errors
 	if(defined('NO_SESS') || $in_webEdition){
 		$GLOBALS['we']['errorhandler']['display'] = false;
@@ -85,10 +84,6 @@ function we_error_handler($in_webEdition = true){
 	} else{
 		$GLOBALS['we']['errorhandler']['display'] = defined('WE_ERROR_SHOW') ? (WE_ERROR_SHOW == 1 ? true : false) : true;
 	}
-	/* $GLOBALS['we']['errorhandler']['log'] = defined('WE_ERROR_LOG') ? (WE_ERROR_LOG == 1 ? true : false) : true;
-
-	  $GLOBALS['we']['errorhandler']['send'] = (defined('WE_ERROR_MAIL') && defined('WE_ERROR_MAIL_ADDRESS')) ? (WE_ERROR_MAIL == 1 ? true : false) : false;
-	 */
 	// Check PHP version
 	if(version_compare(PHP_VERSION, '5.2.4') < 0){
 		display_error_message(E_ERROR, 'Unable to launch webEdition - PHP 5.2.4 or higher required!', __FILE__, __LINE__);
