@@ -193,6 +193,8 @@ function keyEditorListener( _successor ) {
 					}
 					return true;
 
+				case 90://Strg-z 
+					return true;
 				case 87:
 				case 115: // W, F4 (closing a tab)
 					self.focus();  // focus, to avoid a too late onchange of editor
@@ -336,8 +338,8 @@ function keyReloadListener( _successor ) {
 		if ( typeof( top.weEditorFrameController ) != "undefined" ) {
 			if ( evt["ctrlKey"] || evt["metaKey"] ) {
 
-				if ((evt["keyCode"] == 82) /*|| // R Reload
-								(evt["keyCode"] == 90)*/)//Z Back
+				if ((evt["keyCode"] == 82) || // R Reload
+								(evt["keyCode"] == 90))//Z Back
 				{
 					this.cancelEvent(evt);
 					return true;

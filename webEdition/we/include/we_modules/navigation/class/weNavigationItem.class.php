@@ -268,17 +268,12 @@ class weNavigationItem{
 		$_compl = weTag_getAttribute('complete', $attribs);
 		// name
 		if($fieldname){
-			if(isset($this->$fieldname) && $this->$fieldname != ''){
-				return ($fieldname == 'title' ?
-						oldHtmlspecialchars($this->$fieldname) :
-						$this->$fieldname);
-			} elseif(isset($this->attributes[$fieldname]) && $this->attributes[$fieldname] != ''){
-				return ($fieldname == 'title' ?
-						oldHtmlspecialchars($this->attributes[$fieldname]) :
-						$this->attributes[$fieldname]);
-			} else {
-				return '';
-			}
+			$val = (isset($this->$fieldname) && $this->$fieldname != '' ?
+					$this->$fieldname :
+					(isset($this->attributes[$fieldname]) && $this->attributes[$fieldname] != '' ?
+						$this->attributes[$fieldname] :
+						''));
+			return ($fieldname == 'title' ? oldHtmlspecialchars($val) : $val);
 		}
 
 		// complete

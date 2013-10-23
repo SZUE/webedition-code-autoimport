@@ -108,7 +108,7 @@ class we_shop_listviewOrderitem extends listviewBase {
 	}
 
 	function next_record(){
-		if(($ret = $this->DB_WE->next_record(MYSQLI_ASSOC))){
+		if(($ret = $this->DB_WE->next_record(MYSQL_ASSOC))){
 			$strSerial = @unserialize($this->DB_WE->Record['strSerial']);
 			unset($this->DB_WE->Record['strSerial']);
 			if(is_array($strSerial)){
@@ -125,7 +125,7 @@ class we_shop_listviewOrderitem extends listviewBase {
 								}
 						}
 						$this->DB_WE->Record[$key] = (substr($value, 0, 2) == 'a:' && $val = @unserialize($value)?$val:$value);
-						
+
 					}
 
 					unset($value);
@@ -166,7 +166,7 @@ class we_shop_listviewOrderitem extends listviewBase {
 			$this->DB_WE->Record['we_wedoc_lastPath'] = $this->LastDocPath . '?we_orderid=' . $this->DB_WE->Record['OrderID'] . '&we_orderitemid=' . $this->DB_WE->Record['ID'];
 			$this->count++;
 			return true;
-		} 
+		}
 
 		$this->stop_next_row = $this->shouldPrintEndTR();
 		if($this->cols && ($this->count <= $this->maxItemsPerPage) && !$this->stop_next_row){
