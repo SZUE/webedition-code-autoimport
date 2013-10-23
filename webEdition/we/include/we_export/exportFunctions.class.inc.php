@@ -53,7 +53,7 @@ abstract class exportFunctions{
 
 				// Check if can create the file now
 				if(!$_continue === false){
-					weFile::save($_file_name, '<?xml version="1.0" encoding="' . DEFAULT_CHARSET . "\"?>\n".weBackup::weXmlExImHead.">\n");
+					weFile::save($_file_name, '<?xml version="1.0" encoding="' . DEFAULT_CHARSET . "\"?>\n" . weBackup::weXmlExImHead . ">\n");
 				}
 
 				break;
@@ -336,7 +336,7 @@ abstract class exportFunctions{
 			$_encloser_corrected = true;
 
 			$_corrected_content = self::correctEnclose($_corrected_content, $csv_enclose);
-		} else{
+		} else {
 			$_corrected_content = $content;
 		}
 
@@ -350,7 +350,7 @@ abstract class exportFunctions{
 			$_lineend_corrected = true;
 
 			$_corrected_content = self::correctLineend($_corrected_content, $csv_lineend);
-		} else{
+		} else {
 			$_corrected_content = $_corrected_content;
 		}
 
@@ -524,7 +524,7 @@ abstract class exportFunctions{
 										if(isset($_records)){
 											$_records = self::remove_from_check_array($_records, $_tag_name);
 										}
-									} else{
+									} else {
 										$_tag_name = self::correctTagname($k, "link", $_tag_counter);
 										$_file .= self::formatOutput($_tag_name, $we_doc->elements[$regs[1]]["dat"], $format, 2, $cdata);
 
@@ -542,7 +542,7 @@ abstract class exportFunctions{
 								if(isset($_records)){
 									$_records = self::remove_from_check_array($_records, $_tag_name);
 								}
-							} else{ // is a normal text field
+							} else { // is a normal text field
 								$_tag_name = self::correctTagname($k, 'text', $_tag_counter);
 								$_file .= self::formatOutput($_tag_name, parseInternalLinks($we_doc->elements[$k]["dat"], $we_doc->ParentID, '', false), $format, 2, $cdata, $format == "gxml");
 
@@ -641,23 +641,23 @@ abstract class exportFunctions{
 		$_file_name = $_file_values["filename"];
 		$_tableid = $_file_values["tableid"];
 
-		foreach($fields as $field){
-			switch($field["type"]){
+		foreach($fields as $i => $field){
+			switch($field['type']){
 				case 'object':
 				case 'img':
 				case 'binary':
 					continue;
 				default:
-					$realName = $field["type"] . "_" . $field["name"];
+					$realName = $field['type'] . '_' . $field['name'];
 
 					switch($format){
-						case "gxml":
+						case 'gxml':
 							$_tag_name = self::correctTagname($field["name"], "value", $i);
 							$_content = $we_obj->getElementByType($field["name"], $field["type"], $dv[$realName]);
 							$_file .= self::formatOutput($_tag_name, parseInternalLinks($_content, 0, '', false), $format, 2, $cdata, (($format == "gxml") && ($field["type"] != "date") && ($field["type"] != "int") && ($field["type"] != "float")));
 
 							break;
-						case "csv":
+						case 'csv':
 							$_content = $we_obj->getElementByType($field["name"], $field["type"], $dv[$realName]);
 							$_file .= self::formatOutput("", parseInternalLinks($_content, 0, '', false), $format, 2, false, (($format == "gxml") && ($field["type"] != "date") && ($field["type"] != "int") && ($field["type"] != "float")), $csv_delimiter, $csv_enclose, $csv_lineend);
 
