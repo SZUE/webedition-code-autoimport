@@ -86,59 +86,24 @@ class we_tag_tagParser{
 	 * @desc Searches for all meta-tags in a given template (title, keyword, description, charset)
 	 */
 	public static function getMetaTags($code){
-		$_tmpTags = array();
 		$foo = array();
-		$_rettags = array();
-
-		preg_match_all('%</?we:([[:alnum:]_-]+)([ \t\n\r]*[[:alnum:]_-]+[ \t]*=[ \t]*"[^"]*")*[ \t\n\r]*/?>?%i', $code, $foo, PREG_SET_ORDER);
-
+		preg_match_all('%<we:(title|description|keywords|charset)([ \t\n\r]*[[:alnum:]_-]+[ \t]*=[ \t]*"[^"]*")*[ \t\n\r]*>(.*)</we:\1>%i', $code, $foo, PREG_SET_ORDER);
+		$tp = new self();
 		foreach($foo as $f){
-			/* 			if(substr($f[1], -1) == '<'){
-			  $f[1] = substr($f[1], 0, strlen($f[1]) - 1);
-			  } */
-			$_tmpTags[] = $f[0];
-		}
-
-		//	only Meta-tags, description, keywords, title and charset
-		$_tags = array();
-		foreach($_tmpTags as $t){
-			if(strpos($t, 'we:title') || strpos($t, 'we:description') || strpos(
-					$t, 'we:keywords') || strpos($t, 'we:charset')){
-				$_tags[] = $t;
+			$tp->setAllTags($f[3]);
+			$tp->parseTags($f[3]);
+			ob_start();
+			eval('?>' . $f[3]);
+			$f[3] = ob_get_contents();
+			ob_end_clean();
+			if($GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_PROPERTIES && $GLOBALS['we_doc']->InWebEdition){ //	normally meta tags are edited on property page
+				$f[1][0] = strtoupper($f[1][0]);
+				$GLOBALS['meta'][$f[1]]['default'] = str_replace('"', '\"', $f[3]);
+				if($f[1] == 'Charset'){
+					$GLOBALS['meta'][$f[1]]['defined'] = weTag_getAttribute('defined', self::parseAttribs($f[2], true));
+				}
 			}
 		}
-
-		//	now we need all between these tags - beware of selfclosing tags
-		for($i = 0; $i < count($_tags);){
-
-			if(preg_match("|<we:(.*)/>|i", $_tags[$i])){ //  selfclosing xhtml-we:tag
-				$_start = strpos($code, $_tags[$i]);
-				$_starttag = $_tags[$i];
-
-				$_endtag = '';
-				$i++;
-			} else { //  "normal" we:tag
-				$_start = strpos($code, $_tags[$i]);
-				$_starttag = $_tags[$i];
-				$i++;
-
-				$_end = strpos($code, $_tags[$i]) - $_start + strlen($_tags[$i]);
-				$_endtag = isset($_tags[$i]) ? $_tags[$i] : '';
-				$i++;
-			}
-			$_rettags[] = array(
-				array(
-					$_starttag, $_endtag
-				), $_endtag ? substr($code, $_start, $_end) : ''
-			);
-			if($_endtag){
-				// on behalf of constructions like:
-				// <we:ifTemplate><we:title prefix="pref1>title</we:title><we:else/><we:title prefix="pref2>title</we:title><we:ifTemplate>
-				// we need to cut after Endtag for the second pair of <title>-Tags to be correctly computeted
-				$code = substr($code, $_start + $_end);
-			}
-		}
-		return $_rettags;
 	}
 
 	public function parseSpecificTags($tags, &$code, $postName = '', $ignore = array()){

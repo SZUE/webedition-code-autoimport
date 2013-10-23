@@ -89,7 +89,7 @@ function we_tag($name, $attribs = array(), $content = ''){
 	if(isset($attribs['name'])){
 		$attribs['_name_orig'] = $attribs['name'];
 		$attribs['name'] = we_tag_getPostName($attribs['name']);
-		if($GLOBALS['we_editmode'] && get_class($GLOBALS['we_doc']) == 'we_webEditionDocument'){
+		if(isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'] && get_class($GLOBALS['we_doc']) == 'we_webEditionDocument'){
 			$GLOBALS['we_doc']->addUsedElement($name, $attribs['name']);
 		}
 	}
