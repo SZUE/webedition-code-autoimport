@@ -644,6 +644,10 @@ function id_to_path($IDs, $table = FILE_TABLE, $db = '', $prePostKomma = false, 
 	return $asArray ? $foo : makeCSVFromArray($foo, $prePostKomma);
 }
 
+function getTemplatePath($dest){
+	return TEMPLATES_PATH . preg_replace('/.tmpl$/i', '.php', (is_numeric($dest) ? id_to_path($dest, TEMPLATES_TABLE) : $dest));
+}
+
 function getHashArrayFromCSV($csv, $firstEntry, $db = ''){
 	if(!$csv){
 		return array();
@@ -1437,31 +1441,22 @@ function pos_number($val){
 	return abs($val) == $val && $val > 0;
 }
 
-function convertCharsetEncoding($fromC, $toC, $string){
-	if($fromC != '' && $toC != ''){
-		if(function_exists('iconv')){
-			return iconv($fromC, $toC . '//TRANSLATE', $string);
-		} elseif($fromC == 'UTF-8' && $toC == 'ISO-8859-1'){
-			return utf8_decode($string);
-		} elseif($fromC == 'ISO-8859-1' && $toC == 'UTF-8'){
-			return utf8_encode($string);
-		}
-	}
-	return $string;
-}
-
+//FIXME: move/remove
 function isSerialized($str){
 	return ($str == serialize(false) || @unserialize($str) !== false);
 }
 
+//FIXME: move/remove
 function AAcorrectSerDataISOtoUTF($serialized){
 	return preg_replace_callback('!(?<=^|;)s:(\d+)(?=:"(.*?)";(?:}|a:|s:|b:|i:|o:|N;))!s', 'serialize_fix_callback', $serialized);
 }
 
+//FIXME: move/remove
 function serialize_fix_callback($match){
 	return 's:' . strlen($match[2]);
 }
 
+//FIXME: move/remove
 function correctSerDataISOtoUTF($serial_str){
 	return preg_replace('!s:(\d+):"(.*?)";!se', '"s:".strlen("$2").":\"$2\";"', $serial_str);
 }
@@ -1565,8 +1560,12 @@ function we_templateInit(){
 	if(!isset($GLOBALS['DB_WE'])){
 		$GLOBALS['DB_WE'] = new DB_WE();
 	}
+	if(!isset($GLOBALS['WE_TEMPLATE_INIT'])){
+		$GLOBALS['WE_TEMPLATE_INIT'] = 0;
+	}
+	++$GLOBALS['WE_TEMPLATE_INIT'];
 
-	if($GLOBALS['we_doc']){
+	if($GLOBALS['we_doc'] && (!isset($GLOBALS['WE_DOC_ID']) || $GLOBALS['WE_DOC_ID'] != $GLOBALS['we_doc']->ID)){
 		$GLOBALS['WE_DOC_ID'] = $GLOBALS['we_doc']->ID;
 		if(!isset($GLOBALS['WE_MAIN_ID'])){
 			$GLOBALS['WE_MAIN_ID'] = $GLOBALS['we_doc']->ID;
@@ -1622,26 +1621,26 @@ function we_templatePostContent(){
 	if(isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'] && (--$GLOBALS['we_templatePreContent']) == 0){
 		$yuiSuggest = &weSuggest::getInstance();
 		//FIXME: check this new field to determine if all data has been transmitted
-		print $yuiSuggest->getYuiCode() . '<input type="hidden" name="we_complete_request" value="1"/></form>';
+		print $yuiSuggest->getYuiCode() . '<input type="hidden" name="we_complete_request" value="1"/></form>' .
+			we_html_element::jsElement('setTimeout("doScrollTo();",100);');
 	}
 }
 
 function we_templatePost(){
-	if(isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode']){
-		print we_html_element::jsElement('setTimeout("doScrollTo();",100);');
-	}
-	if(isset($_SESSION) && isset($_SESSION['webuser']) && isset($_SESSION['webuser']['loginfailed'])){
-		unset($_SESSION['webuser']['loginfailed']);
-	}
-	if(defined('DEBUG_MEM')){
-		weMemDebug();
-	}
+	if(--$GLOBALS['WE_TEMPLATE_INIT'] == 0){
+		if(isset($_SESSION) && isset($_SESSION['webuser']) && isset($_SESSION['webuser']['loginfailed'])){
+			unset($_SESSION['webuser']['loginfailed']);
+		}
+		if(defined('DEBUG_MEM')){
+			weMemDebug();
+		}
 //check for Trigger
-	if(defined('SCHEDULE_TABLE') && (!$GLOBALS['WE_MAIN_DOC']->InWebEdition) &&
-		(SCHEDULER_TRIGGER == SCHEDULER_TRIGGER_POSTDOC) &&
-		(!isset($GLOBALS['we']['backVars']) || (isset($GLOBALS['we']['backVars']) && count($GLOBALS['we']['backVars']) == 0))//not inside an included Doc
-	){ //is set to Post or not set (new default)
-		we_schedpro::trigger_schedule();
+		if(defined('SCHEDULE_TABLE') && (!$GLOBALS['WE_MAIN_DOC']->InWebEdition) &&
+			(SCHEDULER_TRIGGER == SCHEDULER_TRIGGER_POSTDOC) &&
+			(!isset($GLOBALS['we']['backVars']) || (isset($GLOBALS['we']['backVars']) && count($GLOBALS['we']['backVars']) == 0))//not inside an included Doc
+		){ //is set to Post or not set (new default)
+			we_schedpro::trigger_schedule();
+		}
 	}
 }
 

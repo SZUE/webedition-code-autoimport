@@ -696,7 +696,6 @@ class weNavigation extends weModelBase{
 			}
 		} else {
 			$_id = ($id ? $id : $this->LinkID);
-
 			$_path = '';
 			//FIXME: remove eval
 			eval('$_param = "' . addslashes(preg_replace('%\\$%', '$this->', $this->Parameter)) . '";');
@@ -717,7 +716,7 @@ class weNavigation extends weModelBase{
 						$objecturl = '';
 						if(NAVIGATION_OBJECTSEOURLS){
 							$_db = new DB_WE();
-							$objectdaten = getHash("SELECT  Url,TriggerID FROM " . OBJECT_FILES_TABLE . " WHERE ID=" . intval($_id) . " LIMIT 1", $_db);
+							$objectdaten = getHash('SELECT  Url,TriggerID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($_id) . ' LIMIT 1', $_db);
 							if(isset($objectdaten['Url'])){
 								$objecturl = $objectdaten['Url'];
 								$objecttriggerid = $objectdaten['TriggerID'];
@@ -750,17 +749,18 @@ class weNavigation extends weModelBase{
 		if(!is_array($this->Attributes)){
 			$this->Attributes = @unserialize($this->Attributes);
 		}
+		$_path = str_replace(' ', '%20', trim($_path)) .
+			($_param ? ((strpos($_path, '?') === false ? '?' : '&amp;') . $_param) : '');
 
-		$_path .= ($_param != '' ? ((strpos($_path, '?') === false ? '?' : '&amp;') . $_param) : '');
 		//leave this, because of strpos
 		$_path .= (($this->CurrentOnAnker && isset($this->Attributes['anchor']) && !empty($this->Attributes['anchor'])) ? ( (strpos($_path, '?') === false ? '?' : '&amp;') . 'we_anchor=' . $this->Attributes['anchor']) : '') .
 			((isset($this->Attributes['anchor']) && !empty($this->Attributes['anchor'])) ? ('#' . $this->Attributes['anchor']) : '');
 
 		$_path = str_replace(array('&amp;', '&'), array('&', '&amp;'), $_path);
 
-		if(NAVIGATION_DIRECTORYINDEX_HIDE && NAVIGATION_DIRECTORYINDEX_NAMES != ''){
+		if(NAVIGATION_DIRECTORYINDEX_HIDE && NAVIGATION_DIRECTORYINDEX_NAMES != '' && $this->LinkSelection != 'extern'){
 			$dirindexnames = array_map('trim', explode(',', '/' . str_replace(',', ',/', NAVIGATION_DIRECTORYINDEX_NAMES)));
-			$_path = str_replace($dirindexnames, '/', $_path);
+			return str_replace($dirindexnames, '/', $_path);
 		}
 
 		return $_path;

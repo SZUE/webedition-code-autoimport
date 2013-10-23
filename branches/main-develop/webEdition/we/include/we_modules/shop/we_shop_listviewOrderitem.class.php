@@ -108,7 +108,7 @@ class we_shop_listviewOrderitem extends listviewBase {
 	}
 
 	function next_record(){
-		if(($ret = $this->DB_WE->next_record(MYSQLI_ASSOC))){
+		if(($ret = $this->DB_WE->next_record(MYSQL_ASSOC))){
 			$strSerial = @unserialize($this->DB_WE->Record['strSerial']);
 			unset($this->DB_WE->Record['strSerial']);
 			if(is_array($strSerial)){

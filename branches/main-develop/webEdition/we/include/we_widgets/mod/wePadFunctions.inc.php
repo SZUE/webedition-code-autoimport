@@ -42,8 +42,7 @@ function convertDate($date){
  * @return unknown
  */
 function getDateSelector($_label, $_name, $_btn){
-	$btnDatePicker = we_button::create_button(
-			"image:date_picker", "javascript:", null, null, null, null, null, null, false, $_btn);
+	$btnDatePicker = we_button::create_button("image:date_picker", "javascript:", null, null, null, null, null, null, false, $_btn);
 	$oSelector = new we_html_table(array(
 		"cellpadding" => 0, "cellspacing" => 0, "border" => 0, "id" => $_name . "_cell"
 		), 1, 5);
@@ -51,9 +50,7 @@ function getDateSelector($_label, $_name, $_btn){
 		"class" => "middlefont"
 		), $_label);
 	$oSelector->setCol(0, 1, null, we_html_tools::getPixel(5, 1));
-	$oSelector->setCol(
-		0, 2, null, we_html_tools::htmlTextInput(
-			$name = $_name, $size = 55, $value = "", $maxlength = 10, $attribs = 'id="' . $_name . '" readonly="1"', $type = "text", $width = 70, $height = 0));
+	$oSelector->setCol(0, 2, null, we_html_tools::htmlTextInput($_name, 55, "", 10, 'id="' . $_name . '" readonly="1"', "text", 70, 0));
 	$oSelector->setCol(0, 3, null, we_html_tools::getPixel(5, 1));
 	$oSelector->setCol(0, 4, null, we_html_element::htmlA(array(
 			"href" => "#"
@@ -87,17 +84,16 @@ function getNoteList($_sql, $bDate, $bDisplay){
 	);
 	while($DB_WE->next_record()){
 		foreach($_fields as $_fld){
-			//$_notes .= we_html_element::htmlSpan(array('id'=>$_rcd.'_'.$_fld,'style'=>'display:none;'),$DB_WE->f($_fld));
-			$dbf= $DB_WE->f($_fld);
-			$_fldValue = ($_fld == 'ValidUntil' && ($dbf == "3000-01-01" || $dbf == "0000-00-00" || empty($dbf)) ?
+			$dbf = $DB_WE->f($_fld);
+			$_fldValue = ($_fld == 'ValidUntil' && ($dbf == '3000-01-01' || $dbf == '0000-00-00' || empty($dbf)) ?
 					'' : $dbf);
 
-			$_fldValue = str_replace(array('<', '>', '\'', '"'), array('&lt;', '&gt;', '&#039;', '&quot;'), $_fldValue);
+			$_fldValue = CheckAndConvertISObackend(str_replace(array('<', '>', '\'', '"'), array('&lt;', '&gt;', '&#039;', '&quot;'), $_fldValue));
 			$_notes .= we_html_element::htmlHidden(
 					array(
 						'id' => $_rcd . '_' . $_fld,
 						'style' => 'display:none;',
-						'value' => ($_fldValue)
+						'value' => $_fldValue
 			));
 		}
 
@@ -114,10 +110,10 @@ function getNoteList($_sql, $bDate, $bDisplay){
 		}
 
 		$today = date("Ymd");
-		$vFrom = str_replace("-", "", $DB_WE->f("ValidFrom"));
-		$vTill = str_replace("-", "", $DB_WE->f("ValidUntil"));
+		$vFrom = str_replace('-', '', $DB_WE->f("ValidFrom"));
+		$vTill = str_replace('-', '', $DB_WE->f("ValidUntil"));
 		if($bDisplay == 1 && $DB_WE->f("Valid") != 'always'){
-			if($DB_WE->f("Valid") == 'date'){
+			if($DB_WE->f('Valid') == 'date'){
 				if($today < $vFrom){
 					continue;
 				}
@@ -139,7 +135,7 @@ function getNoteList($_sql, $bDate, $bDisplay){
 		<td width="5">' . we_html_tools::getPixel(5, 1) . '</td>
 		<td width="60" valign="middle" class="middlefont" align="center">' . $showDate . '</td>
 		<td width="5">' . we_html_tools::getPixel(5, 1) . '</td>
-		<td valign="middle" class="middlefont">' . $showTitle . '</td>
+		<td valign="middle" class="middlefont">' . CheckAndConvertISObackend($showTitle) . '</td>
 		<td width="5">' . we_html_tools::getPixel(5, 1) . '</td>
 		</tr>';
 		$_rcd++;
@@ -149,7 +145,7 @@ function getNoteList($_sql, $bDate, $bDisplay){
 }
 
 function getCSS(){
-	return "
+	return '
 	body{
 		background-color:transparent;
 	}
@@ -179,37 +175,37 @@ function getCSS(){
 		border:#AAAAAA solid 1px;
 		height:18px;
 		vertical-align:middle;
-		" . (we_base_browserDetect::isIE() ? "" : "line-height:normal;") . ";
-		font-size:" . ((we_base_browserDetect::isMAC()) ? "10px" : ((we_base_browserDetect::isUNIX()) ? "12px" : "11px")) . ";
-		font-family:" . g_l('css', '[font_family]') . ";
+		' . (we_base_browserDetect::isIE() ? '' : 'line-height:normal;') . ';
+		font-size:' . ((we_base_browserDetect::isMAC()) ? "10px" : ((we_base_browserDetect::isUNIX()) ? "12px" : "11px")) . ';
+		font-family:' . g_l('css', '[font_family]') . ';
 	}
 	.wetextinputselected{
 		color:black;
 		border:#888888 solid 1px;
 		background-color:#DCE6F2;
 		height:18px;
-		" . (we_base_browserDetect::isIE() ? "" : "line-height:normal;") . ";
-		font-size:" . ((we_base_browserDetect::isMAC()) ? "10px" : ((we_base_browserDetect::isUNIX()) ? "12px" : "11px")) . ";
-		font-family:" . g_l('css', '[font_family]') . ";
+		' . (we_base_browserDetect::isIE() ? "" : "line-height:normal;") . ';
+		font-size:' . ((we_base_browserDetect::isMAC()) ? "10px" : ((we_base_browserDetect::isUNIX()) ? "12px" : "11px")) . ";
+		font-family:" . g_l('css', '[font_family]') . ';
 	}
 	.wetextarea{
 		color:black;
 		border:#AAAAAA solid 1px;
 		height:80px;
-		" . (we_base_browserDetect::isIE() ? "" : "line-height:normal;") . ";
+		' . (we_base_browserDetect::isIE() ? "" : "line-height:normal;") . ";
 		font-size:" . ((we_base_browserDetect::isMAC()) ? "10px" : ((we_base_browserDetect::isUNIX()) ? "12px" : "11px")) . ";
-		font-family:" . g_l('css', '[font_family]') . ";
+		font-family:" . g_l('css', '[font_family]') . ';
 	}
 	.wetextareaselected{
 		color:black;
 		border:#888888 solid 1px;
 		background-color:#DCE6F2;
 		height:80px;
-		" . (we_base_browserDetect::isIE() ? "" : "line-height:normal;") . ";
+		' . (we_base_browserDetect::isIE() ? "" : "line-height:normal;") . ";
 		font-size:" . ((we_base_browserDetect::isMAC()) ? "10px" : ((we_base_browserDetect::isUNIX()) ? "12px" : "11px")) . ";
-		font-family:" . g_l('css', '[font_family]') . ";
+		font-family:" . g_l('css', '[font_family]') . ';
 	}
 	select{
 		border:#AAAAAA solid 1px;
-	}";
+	}';
 }

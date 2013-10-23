@@ -527,7 +527,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 			return;
 		}
 
-		$result = getHash('SELECT * FROM ' . $this->table . ' WHERE ID=' . intval($this->id), $this->db, MYSQLI_ASSOC);
+		$result = getHash('SELECT * FROM ' . $this->table . ' WHERE ID=' . intval($this->id), $this->db, MYSQL_ASSOC);
 		$path = isset($result['Path']) ? $result['Path'] : "";
 		$out = we_html_tools::getHtmlTop() .
 			STYLESHEET . we_html_element::cssElement('
@@ -602,7 +602,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 						$metainfos = $this->db->getAllFirst(false);
 						break;
 					case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
-						$_fieldnames = getHash('SELECT DefaultDesc,DefaultTitle,DefaultKeywords FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($result["TableID"]), $this->db, MYSQLI_ASSOC);
+						$_fieldnames = getHash('SELECT DefaultDesc,DefaultTitle,DefaultKeywords FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($result["TableID"]), $this->db, MYSQL_ASSOC);
 						$_selFields = "";
 						foreach($_fieldnames as $_key => $_val){
 							if(empty($_val) || $_val == '_') // bug #4657

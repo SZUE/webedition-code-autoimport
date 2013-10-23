@@ -353,7 +353,7 @@ abstract class we_database_base{
 				$this->free();
 				$this->Query_ID = $this->_query('EXPLAIN ' . $Query_String);
 
-				while($this->next_record(MYSQLI_ASSOC)){
+				while($this->next_record(MYSQL_ASSOC)){
 					if(empty($tmp['explain'])){
 						$tmp['explain'][] = implode(' | ', array_keys($this->Record));
 					}

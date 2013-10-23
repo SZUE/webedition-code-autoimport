@@ -112,8 +112,7 @@ function keyDialogListener(_successor) {
 
 		return this.next(evt);
 	}
-}
-;
+};
 keyDialogListener.prototype = new keyBoardListener();
 
 /**
@@ -195,6 +194,8 @@ function keyEditorListener(_successor) {
 					}
 					return true;
 
+				case 90://Strg-z 
+					return true;
 				case 87:
 				case 115: // W, F4 (closing a tab)
 					self.focus();  // focus, to avoid a too late onchange of editor

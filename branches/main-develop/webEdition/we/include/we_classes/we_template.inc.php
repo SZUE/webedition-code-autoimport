@@ -336,7 +336,7 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 	function i_getDocument(){
 		$this->_updateCompleteCode();
 		/* remove unwanted/-needed start/stop parser tags (?><php) */
-		return preg_replace("/(;|{|})(\n| |\t)*\?>(\n)*<\?php ?/si", "\\1\\2\n", $this->parseTemplate());
+		return preg_replace("/(;|{|})(\n| |\t)*\?>(\n*\t*)*<\?php ?/si", "\\1\\2\n", $this->parseTemplate());
 	}
 
 	protected function i_writeSiteDir(){
@@ -588,7 +588,7 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 
 	static function getUsedTemplatesOfTemplate($id, &$arr){
 		$hash = getHash('SELECT IncludedTemplates, MasterTemplateID FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . intval($id), $GLOBALS['DB_WE']);
-		list($_tmplCSV, $_masterTemplateID) = ($hash ? : array('', 0));
+		list($_tmplCSV, $_masterTemplateID) = ($hash ? $hash : array('', 0));
 
 		$_tmpArr = makeArrayFromCSV($_tmplCSV);
 		foreach($_tmpArr as $_tid){
@@ -643,15 +643,14 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 
 
 		foreach($regs as $reg){
-			$attribs = we_tag_tagParser::makeArrayFromAttribs(isset($reg[2]) ? $reg[2] : '');
+			$attribs = we_tag_tagParser::parseAttribs(isset($reg[2]) ? $reg[2] : '', true);
 			$name = isset($attribs['name']) ? $attribs['name'] : '';
 			if($name){
-				if(!isset($masterTags[$name])){
-					$masterTags[$name] = array();
-				}
-				$masterTags[$name]['all'] = $reg[0];
-				$masterTags[$name]['startTag'] = $reg[1];
-				$masterTags[$name]['content'] = isset($reg[3]) ? $reg[3] : "";
+				$masterTags[$name] = array(
+					//'all' => $reg[0],
+					//'startTag' => $reg[1],
+					'content' => isset($reg[3]) ? $reg[3] : '',
+				);
 				$code = str_replace($reg[0], '', $code);
 			}
 		}
@@ -677,7 +676,7 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 
 				foreach($contentTags as $reg){
 					$all = $reg[0];
-					$attribs = we_tag_tagParser::makeArrayFromAttribs($reg[1]);
+					$attribs = we_tag_tagParser::parseAttribs($reg[1], true);
 					$name = isset($attribs['name']) ? $attribs['name'] : '';
 					$masterTemplateCode = str_replace($all, ($name ?
 							(isset($masterTags[$name]['content']) ?
@@ -697,9 +696,9 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 		$regs = array();
 		foreach($tags as $tag){
 			// search for include tag
-			if(preg_match('|^<we:include ([^>]+)>$|i', $tag, $regs)){ // include found
+			if(preg_match('|^<we:include ([^>]+)>$|mi', $tag, $regs)){ // include found
 				// get attributes of tag
-				$att = we_tag_tagParser::makeArrayFromAttribs($regs[1]);
+				$att = we_tag_tagParser::parseAttribs($regs[1], true);
 				// if type-attribute is equal to "template"
 				if(isset($att['type']) && $att['type'] == 'template'){
 
@@ -709,6 +708,8 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 						$templId = path_to_id($att['path'], TEMPLATES_TABLE);
 						if($templId){
 							$att['id'] = $templId;
+						} elseif(!isset($att['id'])){
+							continue;
 						}
 					}
 
@@ -724,11 +725,14 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 							$recursiveTemplates[] = $att['id'];
 							$templObj = new we_template();
 							$templObj->initByID($att['id'], TEMPLATES_TABLE);
-							$completeCode = (!(isset($att['included']) && ($att['included'] == 'false' || $att["included"] === '0' || $att['included'] == "off")));
-							$includedTemplateCode = $templObj->getTemplateCode($completeCode);
+							//$completeCode = (!(isset($att['included']) && ($att['included'] == 'false' || $att["included"] === '0' || $att['included'] == "off")));
+							$includedTemplateCode = $templObj->getTemplateCode(true);
 							array_pop($recursiveTemplates);
 							// replace include tag with template code
-							$code = str_replace($tag, $includedTemplateCode, $code);
+							if(strpos($includedTemplateCode, 'we:content') !== false || strpos($includedTemplateCode, 'we:master') !== false){
+								//only insert code if really needed!
+								$code = str_replace($tag, $includedTemplateCode, $code);
+							}
 							$this->IncludedTemplates .= ',' . intval($att['id']);
 						}
 					}
@@ -747,9 +751,10 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 		if($updateCode){
 			$this->_updateCompleteCode(true);
 			if(defined('SHOP_TABLE')){
-				$this->elements['allVariants'] = array();
-				$this->elements['allVariants']['type'] = 'variants';
-				$this->elements['allVariants']['dat'] = serialize($this->readAllVariantFields($this->elements['completeData']['dat']));
+				$this->elements['allVariants'] = array(
+					'type' => 'variants',
+					'dat' => serialize($this->readAllVariantFields($this->elements['completeData']['dat']))
+				);
 			}
 		} else {
 			$this->doUpdateCode = false;
