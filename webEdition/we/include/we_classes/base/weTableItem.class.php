@@ -140,6 +140,19 @@ class weTableItem extends weModelBase{
 		return (array_key_exists($this->table, $tables)&&in_array($was, $tables[$this->table]));
 	}
 
+	static function convertSCharsetEncoding($fromC, $toC, $string){
+		if($fromC != '' && $toC != ''){
+			if(function_exists('iconv')){
+				return iconv($fromC, $toC . '//TRANSLATE', $string);
+			} elseif($fromC == 'UTF-8' && $toC == 'ISO-8859-1'){
+				return utf8_decode($string);
+			} elseif($fromC == 'ISO-8859-1' && $toC == 'UTF-8'){
+				return utf8_encode($string);
+			}
+		}
+		return $string;
+	}
+
 	function convertCharsetEncoding($fromC, $toC){
 		foreach($this as $key => &$val){
 			if($this->doConvertCharset($key)){
@@ -152,18 +165,18 @@ class weTableItem extends weModelBase{
 								foreach($ad as &$add){
 									if(is_array($add)){
 										foreach($add as &$addd){
-											$addd = convertCharsetEncoding($fromC, $toC, $addd);
+											$addd = self::convertSCharsetEncoding($fromC, $toC, $addd);
 											$addd = self::convertExactCharsetString($fromC, $toC, $addd);
 											$addd = self::convertCharsetString($fromC, $toC, $addd);
 										}
 									} else{
-										$add = convertCharsetEncoding($fromC, $toC, $add);
+										$add = self::convertSCharsetEncoding($fromC, $toC, $add);
 										$add = self::convertExactCharsetString($fromC, $toC, $add);
 										$add = self::convertCharsetString($fromC, $toC, $add);
 									}
 								}
 							} else{
-								$ad = convertCharsetEncoding($fromC, $toC, $ad);
+								$ad = self::convertSCharsetEncoding($fromC, $toC, $ad);
 								$ad = self::convertExactCharsetString($fromC, $toC, $ad);
 								$ad = self::convertCharsetString($fromC, $toC, $ad);
 							}
@@ -171,7 +184,7 @@ class weTableItem extends weModelBase{
 						$val = serialize($mydataUS);
 					}
 				} else{
-					$val = convertCharsetEncoding($fromC, $toC, $mydata);
+					$val = self::convertSCharsetEncoding($fromC, $toC, $mydata);
 					$val = self::convertExactCharsetString($fromC, $toC, $val);
 					$val = self::convertCharsetString($fromC, $toC, $val);
 				}
@@ -181,7 +194,7 @@ class weTableItem extends weModelBase{
 			}
 			if($this->doCorrectSerializedLenghtValues($key)){
 				if($this->doPrepareCorrectSerializedLenghtValues($key)){
-					$val = convertCharsetEncoding($fromC, $toC, $val);
+					$val = self::convertSCharsetEncoding($fromC, $toC, $val);
 				}
 				$val = correctSerDataISOtoUTF($val);
 			}
