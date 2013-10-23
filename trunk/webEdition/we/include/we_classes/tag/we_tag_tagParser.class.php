@@ -260,7 +260,7 @@ class we_tag_tagParser{
 		return $arr;
 	}
 
-	private static function parseAttribs($attr, $asArray){
+	public static function parseAttribs($attr, $asArray){
 		//remove comment-attribute (should never be seen), and obsolete cachelifetime
 		$removeAttribs = array('cachelifetime', 'comment');
 		$attribs = array();
