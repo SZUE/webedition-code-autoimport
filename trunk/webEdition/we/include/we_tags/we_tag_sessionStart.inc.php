@@ -165,7 +165,7 @@ function wetagsessionStartdoLogin($persistentlogins, &$SessionAutologin){
 			$GLOBALS['WE_LOGIN_DENIED'] = true;
 			return false;
 		}
-		$u = getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE Password!="" AND LoginDenied=0 AND Username="' . $GLOBALS['DB_WE']->escape(strtolower($_REQUEST['s']['Username'])) . '"', $GLOBALS['DB_WE'], MYSQLI_ASSOC);
+		$u = getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE Password!="" AND LoginDenied=0 AND Username="' . $GLOBALS['DB_WE']->escape(strtolower($_REQUEST['s']['Username'])) . '"', $GLOBALS['DB_WE'], MYSQL_ASSOC);
 		if(!empty($u) && ($_REQUEST['s']['Password'] === $u['Password']) || (strpos($u['Password'], '$2y$') === 0 && we_user::comparePasswords(2, $_REQUEST['s']['Username'], $u['Password'], $_REQUEST['s']['Password']))){
 			$_SESSION['webuser'] = $u;
 			$_SESSION['webuser']['registered'] = true;
@@ -192,7 +192,7 @@ function wetagsessionStartdoAutoLogin(){
 		$hook = new weHook('customer_preLogin', '', array('customer' => &$_REQUEST['s'], 'type' => 'autoLogin', 'tagname' => 'sessionStart'));
 		$hook->executeHook();
 
-		$u = getHash('SELECT u.* FROM ' . CUSTOMER_TABLE . ' u JOIN ' . CUSTOMER_AUTOLOGIN_TABLE . ' c ON u.ID=c.WebUserID WHERE u.LoginDenied=0 AND u.AutoLoginDenied=0 AND u.Password!="" AND c.AutoLoginID="' . $GLOBALS['DB_WE']->escape(sha1($autologinSeek)) . '"', $GLOBALS['DB_WE'], MYSQLI_ASSOC);
+		$u = getHash('SELECT u.* FROM ' . CUSTOMER_TABLE . ' u JOIN ' . CUSTOMER_AUTOLOGIN_TABLE . ' c ON u.ID=c.WebUserID WHERE u.LoginDenied=0 AND u.AutoLoginDenied=0 AND u.Password!="" AND c.AutoLoginID="' . $GLOBALS['DB_WE']->escape(sha1($autologinSeek)) . '"', $GLOBALS['DB_WE'], MYSQL_ASSOC);
 		if(!empty($u)){
 			$_SESSION['webuser'] = $u;
 			$_SESSION['webuser']['registered'] = true;

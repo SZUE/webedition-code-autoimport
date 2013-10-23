@@ -156,7 +156,7 @@ class weGlossaryTreeLoader{
 			($Segment ? 'LIMIT ' . intval($Offset) . ',' . intval($Segment) : '');
 
 		$Db->query($Query);
-		while($Db->next_record(MYSQLI_ASSOC)){
+		while($Db->next_record(MYSQL_ASSOC)){
 
 			$Item = array(
 				'id' => $Db->f('ID'),
