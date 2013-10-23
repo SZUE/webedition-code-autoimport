@@ -44,7 +44,7 @@ $_sObjId = $_REQUEST['we_cmd'][5];
 
 switch($_REQUEST['we_cmd'][2]){
 	case 'delete' :
-		$_sql = 'DELETE FROM ' . $GLOBALS['DB_WE']->escape($_table) . ' WHERE ID = ' . intval($q_Csv);
+		$DB_WE->query('DELETE FROM ' . NOTEPAD_TABLE . ' WHERE ID=' . intval($q_Csv));
 		break;
 	case 'update' :
 		list($q_ID, $q_Title, $q_Text, $q_Priority, $q_Valid, $q_ValidFrom, $q_ValidUntil) = explode(';', $q_Csv);
@@ -53,13 +53,13 @@ switch($_REQUEST['we_cmd'][2]){
 		if($q_Valid == "always" || $q_Valid == "date"){
 			$q_ValidUntil = "3000-01-01";
 		}
-		$_sql = 'UPDATE ' . $GLOBALS['DB_WE']->escape($_table) . ' SET ' . we_database_base::arraySetter(array(
+		$DB_WE->query('UPDATE ' . NOTEPAD_TABLE . ' SET ' . we_database_base::arraySetter(array(
 				'Title' => $entTitle,
 				'Text' => $entText,
 				'Priority' => $q_Priority,
 				'Valid' => $q_Valid,
 				'ValidFrom' => $q_ValidFrom,
-				'ValidUntil' => $q_ValidUntil)) . ' WHERE ID = ' . intval($q_ID);
+				'ValidUntil' => $q_ValidUntil)) . ' WHERE ID = ' . intval($q_ID));
 		break;
 	case 'insert' :
 		list($q_Title, $q_Text, $q_Priority, $q_Valid, $q_ValidFrom, $q_ValidUntil) = explode(';', $q_Csv);
@@ -72,7 +72,7 @@ switch($_REQUEST['we_cmd'][2]){
 
 		$entTitle = str_replace(array("'", '"'), array('&#039;', '&quot;'), base64_decode($q_Title));
 		$entText = str_replace(array("'", '"'), array('&#039;', '&quot;'), base64_decode($q_Text));
-		$_sql = "INSERT INTO " . $GLOBALS['DB_WE']->escape($_table) . ' SET ' . we_database_base::arraySetter(array(
+		$DB_WE->query('INSERT INTO ' . NOTEPAD_TABLE . ' SET ' . we_database_base::arraySetter(array(
 				'WidgetName' => $_title,
 				'UserID' => intval($_SESSION['user']['ID']),
 				'CreationDate' => 'CURRENT_DATE()',
@@ -82,12 +82,8 @@ switch($_REQUEST['we_cmd'][2]){
 				'Valid' => $q_Valid,
 				'ValidFrom' => $q_ValidFrom,
 				'ValidUntil' => $q_ValidUntil
-			));
+		)));
 		break;
-}
-
-if(isset($_sql) && !empty($_sql)){
-	$DB_WE->query($_sql);
 }
 
 switch($bSort){
@@ -108,12 +104,12 @@ switch($bSort){
 }
 
 if(!$bDisplay){
-	$_sql = "SELECT * FROM " . $GLOBALS['DB_WE']->escape($_table) . " WHERE
+	$_sql = 'SELECT * FROM ' . NOTEPAD_TABLE . " WHERE
 		WidgetName = '" . $GLOBALS['DB_WE']->escape($_title) . "' AND
 		UserID = " . intval($_SESSION['user']['ID']) . "
 		ORDER BY " . $q_sort;
-} else{
-	$_sql = "SELECT * FROM " . $GLOBALS['DB_WE']->escape($_table) . " WHERE
+} else {
+	$_sql = 'SELECT * FROM ' . NOTEPAD_TABLE . " WHERE
 		WidgetName = '" . $GLOBALS['DB_WE']->escape($_title) . "' AND
 		UserID = " . intval($_SESSION['user']['ID']) . " AND (
 			Valid = 'always' OR (
@@ -130,14 +126,14 @@ $sctValid = we_html_tools::htmlSelect("sct_valid", array(
 		g_l('cockpit', '[always]'), g_l('cockpit', '[from_date]'), g_l('cockpit', '[period]')
 		), 1, g_l('cockpit', '[always]'), false, 'style="width:100px;" onChange="toggleTblValidity()"', 'value', 100, 'middlefont');
 $oTblValidity = new we_html_table(array(
-		"cellpadding" => 0, "cellspacing" => 0, "border" => 0, "id" => "oTblValidity"
-		), 1, 3);
+	"cellpadding" => 0, "cellspacing" => 0, "border" => 0, "id" => "oTblValidity"
+	), 1, 3);
 $oTblValidity->setCol(0, 0, null, getDateSelector(g_l('cockpit', '[from]'), "f_ValidFrom", "_from"));
 $oTblValidity->setCol(0, 1, null, we_html_tools::getPixel(10, 1));
 $oTblValidity->setCol(0, 2, null, getDateSelector(g_l('cockpit', '[until]'), "f_ValidUntil", "_until"));
 $oTblPeriod = new we_html_table(array(
-		"width" => "100%", "cellpadding" => 0, "cellspacing" => 0, "border" => 0
-		), 1, 2);
+	"width" => "100%", "cellpadding" => 0, "cellspacing" => 0, "border" => 0
+	), 1, 2);
 $oTblPeriod->setCol(0, 0, array(
 	"class" => "middlefont"
 	), $sctValid);
@@ -146,24 +142,18 @@ $oTblPeriod->setCol(0, 1, array(
 	), $oTblValidity->getHTML());
 
 // Edit note prio settings
-$rdoPrio[0] = we_forms::radiobutton(
-		$value = 0, $checked = 0, $name = "rdo_prio", $text = g_l('cockpit', '[high]'), $uniqid = true, $class = "middlefont", $onClick = "", $disabled = false, $description = "", $type = 0, $onMouseUp = "");
-$rdoPrio[1] = we_forms::radiobutton(
-		$value = 1, $checked = 0, $name = "rdo_prio", $text = g_l('cockpit', '[medium]'), $uniqid = true, $class = "middlefont", $onClick = "", $disabled = false, $description = "", $type = 0, $onMouseUp = "");
-$rdoPrio[2] = we_forms::radiobutton(
-		$value = 2, $checked = 1, $name = "rdo_prio", $text = g_l('cockpit', '[low]'), $uniqid = true, $class = "middlefont", $onClick = "", $disabled = false, $description = "", $type = 0, $onMouseUp = "");
-$oTblPrio = new we_html_table(array(
-		"cellpadding" => 0, "cellspacing" => 0, "border" => 0
-		), 1, 8);
+$rdoPrio[0] = we_forms::radiobutton($value = 0, $checked = 0, $name = "rdo_prio", $text = g_l('cockpit', '[high]'), $uniqid = true, $class = "middlefont", $onClick = "", $disabled = false, $description = "", $type = 0, $onMouseUp = "");
+$rdoPrio[1] = we_forms::radiobutton($value = 1, $checked = 0, $name = "rdo_prio", $text = g_l('cockpit', '[medium]'), $uniqid = true, $class = "middlefont", $onClick = "", $disabled = false, $description = "", $type = 0, $onMouseUp = "");
+$rdoPrio[2] = we_forms::radiobutton($value = 2, $checked = 1, $name = "rdo_prio", $text = g_l('cockpit', '[low]'), $uniqid = true, $class = "middlefont", $onClick = "", $disabled = false, $description = "", $type = 0, $onMouseUp = "");
+$oTblPrio = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 1, 8);
 $oTblPrio->setCol(0, 0, null, $rdoPrio[0]);
-$oTblPrio->setCol(
-	0, 1, null, we_html_element::htmlImg(
+$oTblPrio->setCol(0, 1, null, we_html_element::htmlImg(
 		array(
 			"src" => IMAGE_DIR . "pd/prio_high.gif",
 			"width" => 13,
 			"height" => 14,
 			"style" => "margin-left:5px"
-	)));
+)));
 $oTblPrio->setCol(0, 2, null, we_html_tools::getPixel(15, 1));
 $oTblPrio->setCol(0, 3, null, $rdoPrio[1]);
 $oTblPrio->setCol(
@@ -173,7 +163,7 @@ $oTblPrio->setCol(
 			"width" => 13,
 			"height" => 14,
 			"style" => "margin-left:5px"
-	)));
+)));
 $oTblPrio->setCol(0, 5, null, we_html_tools::getPixel(15, 1));
 $oTblPrio->setCol(0, 6, null, $rdoPrio[2]);
 $oTblPrio->setCol(
@@ -183,7 +173,7 @@ $oTblPrio->setCol(
 			"width" => 13,
 			"height" => 14,
 			"style" => "margin-left:5px"
-	)));
+)));
 
 // Edit note buttons
 $delete_button = we_button::create_button("delete", "javascript:deleteNote();", false, -1, -1, "", "", true, false);
@@ -193,8 +183,8 @@ $buttons = we_button::position_yes_no_cancel($delete_button, $cancel_button, $sa
 
 // Edit note dialog
 $oTblProps = new we_html_table(array(
-		"width" => "100%", "cellpadding" => 0, "cellspacing" => 0, "border" => 0
-		), 9, 2);
+	"width" => "100%", "cellpadding" => 0, "cellspacing" => 0, "border" => 0
+	), 9, 2);
 $oTblProps->setCol(0, 0, array(
 	"class" => "middlefont"
 	), g_l('cockpit', '[valid]') . '&nbsp;');
@@ -234,28 +224,26 @@ $oTblProps->setCol(8, 0, array(
 
 // Button: add note
 $oTblBtnProps = new we_html_table(array(
-		"width" => "100%", "cellpadding" => 0, "cellspacing" => 0, "border" => 0
-		), 1, 1);
+	"width" => "100%", "cellpadding" => 0, "cellspacing" => 0, "border" => 0
+	), 1, 1);
 $oTblBtnProps->setCol(0, 0, array(
 	"align" => "right"
 	), we_button::create_button("image:btn_add_note", "javascript:displayNote();", false, -1, -1));
 
 // Table with the note list
 $oPad = new we_html_table(
-		array(
-			"width" => "100%",
-			"cellpadding" => 0,
-			"cellspacing" => 0,
-			"border" => 0,
-			"style" => "table-layout:fixed;"
-		),
-		3,
-		3);
+	array(
+	"width" => "100%",
+	"cellpadding" => 0,
+	"cellspacing" => 0,
+	"border" => 0,
+	"style" => "table-layout:fixed;"
+	), 3, 3);
 $oPad->setCol(0, 0, array(
 	"width" => 6
 	), we_html_element::htmlImg(array(
 		"src" => IMAGE_DIR . "pd/pad_corner_lt.gif", "width" => 6, "height" => 4
-	)));
+)));
 $oPad->setCol(0, 1, array(
 	"class" => "cl_notes"
 	), "");
@@ -263,17 +251,17 @@ $oPad->setCol(0, 2, array(
 	"width" => 6
 	), we_html_element::htmlImg(array(
 		"src" => IMAGE_DIR . "pd/pad_corner_rt.gif", "width" => 6, "height" => 4
-	)));
+)));
 $oPad->setCol(1, 0, array(
 	"colspan" => 3, "class" => "cl_notes"
 	), we_html_element::htmlDiv(array(
 		"id" => "notices"
 		), getNoteList($_sql, $bDate, $bDisplay)));
 $oPad->setCol(2, 0, array(
-	"width" => 6
+	'width' => 6
 	), we_html_element::htmlImg(array(
-		"src" => IMAGE_DIR . "pd/pad_corner_lb.gif", "width" => 6, "height" => 6
-	)));
+		'src' => IMAGE_DIR . 'pd/pad_corner_lb.gif', "width" => 6, "height" => 6
+)));
 $oPad->setCol(2, 1, array(
 	"class" => "cl_notes"
 	), "");
@@ -281,7 +269,7 @@ $oPad->setCol(2, 2, array(
 	"width" => 6
 	), we_html_element::htmlImg(array(
 		"src" => IMAGE_DIR . "pd/pad_corner_rb.gif", "width" => 6, "height" => 6
-	)));
+)));
 
 $_notepad = $oPad->getHTML() . we_html_element::htmlDiv(array(
 		"id" => "props"
@@ -615,4 +603,4 @@ print we_html_element::htmlDocType() . we_html_element::htmlHtml(
 					array("id" => "pad"), $_notepad .
 					we_html_element::htmlHidden(array("name" => "mark", "value" => "")) .
 					we_html_element::jsElement("calendarSetup();")
-				))));
+))));
