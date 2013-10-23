@@ -29,11 +29,13 @@ function we_tag_title($attribs, $content){
 	$delimiter = weTag_getAttribute('delimiter', $attribs);
 
 	$attribs = removeAttribs($attribs, array('htmlspecialchars', 'prefix', 'suffix', 'delimiter'));
-	if($GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_PROPERTIES && $GLOBALS['we_doc']->InWebEdition){ //	normally meta tags are edited on property page
-		return '<?php	$GLOBALS["meta"]["Title"]["default"] = "' . str_replace('"', '\"', $content) . '"; ?>';
-	} else {
-		$title = isset($GLOBALS['TITLE']) && $GLOBALS['TITLE'] ? $GLOBALS['TITLE'] : $content;
-		$title = ($prefix != '' ? $prefix . ($title != '' ? $delimiter : '') : '') . $title . ($suffix != '' ? ($title != '' ? $delimiter : ($prefix != '' ? $delimiter : '')) . $suffix : '');
-		return getHtmlTag('title', $attribs, $htmlspecialchars ? oldHtmlspecialchars(strip_tags($title)) : strip_tags($title), true) . "\n";
+	$title = isset($GLOBALS['TITLE']) && $GLOBALS['TITLE'] ? $GLOBALS['TITLE'] : '';
+	if(!$title && $content){
+		ob_start();
+		eval('?>' . $content);
+		$title = ob_get_contents();
+		ob_end_clean();
 	}
+	$title = ($prefix != '' ? $prefix . ($title != '' ? $delimiter : '') : '') . $title . ($suffix != '' ? ($title != '' ? $delimiter : ($prefix != '' ? $delimiter : '')) . $suffix : '');
+	return getHtmlTag('title', $attribs, $htmlspecialchars ? oldHtmlspecialchars(strip_tags($title)) : strip_tags($title), true) . "\n";
 }
