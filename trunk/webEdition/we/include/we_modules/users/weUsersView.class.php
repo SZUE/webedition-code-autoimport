@@ -858,15 +858,15 @@ function we_cmd(){
 		}');
 					}
 					break;
-				case "do_delete":
-					if($_SESSION["user_session_data"]){
+				case 'do_delete':
+					if($_SESSION['user_session_data']){
 						$user_object = new we_user();
 						$user_object->setState($_SESSION["user_session_data"]);
-						if(!we_hasPerm("DELETE_USER") && $user_object->Type == we_user::TYPE_USER){
+						if(!we_hasPerm('DELETE_USER') && $user_object->Type == we_user::TYPE_USER){
 							print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', "[access_denied]"), we_message_reporting::WE_MESSAGE_ERROR));
 							break;
 						}
-						if(!we_hasPerm("DELETE_GROUP") && $user_object->Type == we_user::TYPE_USER_GROUP){
+						if(!we_hasPerm('DELETE_GROUP') && $user_object->Type == we_user::TYPE_USER_GROUP){
 							print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', "[access_denied]"), we_message_reporting::WE_MESSAGE_ERROR));
 							break;
 						}
@@ -881,10 +881,10 @@ function we_cmd(){
 					}
 					break;
 
-				case "check_user_display":
-					if($_REQUEST["uid"]){
-						$mpid = f("SELECT ParentID FROM " . USER_TABLE . " WHERE ID=" . intval($_SESSION["user"]["ID"]), 'ParentID', $DB_WE);
-						$pid = f("SELECT ParentID FROM " . USER_TABLE . " WHERE ID=" . intval($_REQUEST["uid"]), 'ParentID', $DB_WE);
+				case 'check_user_display':
+					if($_REQUEST['uid']){
+						$mpid = f("SELECT ParentID FROM " . USER_TABLE . " WHERE ID=" . intval($_SESSION["user"]["ID"]), 'ParentID', $this->db);
+						$pid = f("SELECT ParentID FROM " . USER_TABLE . " WHERE ID=" . intval($_REQUEST["uid"]), 'ParentID', $this->db);
 
 						$search = true;
 						$found = false;
@@ -901,11 +901,11 @@ function we_cmd(){
 							if($pid == 0){
 								$search = false;
 							}
-							$pid = intval(f("SELECT ParentID FROM " . USER_TABLE . " WHERE ID=" . intval($pid), 'ParentID', $DB_WE));
+							$pid = intval(f('SELECT ParentID FROM ' . USER_TABLE . ' WHERE ID=' . intval($pid), 'ParentID', $this->db));
 						}
 
 						print we_html_element::jsElement(
-								($found || we_hasPerm("ADMINISTRATOR") ?
+								($found || we_hasPerm('ADMINISTRATOR') ?
 									'top.content.we_cmd(\'display_user\',' . $_REQUEST["uid"] . ')' :
 									we_message_reporting::getShowMessageCall(g_l('alert', "[access_denied]"), we_message_reporting::WE_MESSAGE_ERROR)
 						));
