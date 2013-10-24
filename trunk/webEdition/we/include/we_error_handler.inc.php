@@ -368,6 +368,7 @@ function mail_error_message($type, $message, $file, $line, $skipBT = false){
 	$_detailedError = "An error occurred while executing a script in webEdition.\n\n\n" .
 		// Domain
 		'webEdition address: ' . $_SERVER['SERVER_NAME'] . ",\n\n" .
+		'URI: ' . $_SERVER['REQUEST_URI'] . ",\n" .
 		// Error type
 		'Error type: ' . $ttype . ",\n" .
 		// Error message
