@@ -265,7 +265,7 @@ function we_tag_formfield($attribs){
 					Zend_Locale::setCache(getWEZendCache());
 				}
 
-				$zendsupported = Zend_Locale::getTranslationList('territory', $langcode, 2);
+				//$zendsupported = Zend_Locale::getTranslationList('territory', $langcode, 2);
 				$topCountries = array_flip(explode(',', WE_COUNTRIES_TOP));
 				foreach($topCountries as $countrykey => &$countryvalue){
 					$countryvalue = Zend_Locale::getTranslation($countrykey, 'territory', $langcode);
@@ -295,18 +295,18 @@ function we_tag_formfield($attribs){
 					$tagContent.='<option value="' . $countrykey2 . '" ' . ($orgVal == $countrykey2 ? ' selected="selected">' : '>') . CheckAndConvertISOfrontend($countryvalue2) . '</option>';
 				}
 				unset($countryvalue);
-				$newAtts['size'] = (isset($atts['size']) ? $atts['size'] : 1);
-				$newAtts['name'] = $fieldname;
-				$tagName = "select";
+				$tagAtts['size'] = (isset($attrs['size']) ? $attrs['size'] : 1);
+				//  $newAtts['name'] = $name;
+				$tagName = 'select';
 				break;
 			case 'language':
 				$orgVal = $GLOBALS['we_doc']->getElement($name, 'ffdefault');
-				$docAttr = weTag_getAttribute("doc", $attribs, "self");
+				$docAttr = weTag_getAttribute('doc', $attribs, 'self');
 				$doc = we_getDocForTag($docAttr);
 				$lang = $doc->Language;
 				$langcode = (empty($lang) ? we_core_Local::weLangToLocale($GLOBALS["WE_LANGUAGE"]) : substr($lang, 0, 2));
-				$frontendL = $GLOBALS["weFrontendLanguages"];
-				foreach($frontendL as $lc => &$lcvalue){
+				$frontendL = $GLOBALS['weFrontendLanguages'];
+				foreach($frontendL as &$lcvalue){
 					$lccode = explode('_', $lcvalue);
 					$lcvalue = $lccode[0];
 				}
@@ -329,9 +329,9 @@ function we_tag_formfield($attribs){
 					$tagContent.='<option value="' . $langkey . '" ' . ($orgVal == $langkey ? ' selected="selected">' : '>') . CheckAndConvertISOfrontend($langvalue) . '</option>';
 				}
 				unset($langvalue);
-				$tagAtts['size'] = (isset($atts['size']) ? $atts['size'] : 1);
+				$tagAtts['size'] = (isset($attrs['size']) ? $attrs['size'] : 1);
 
-				$tagName = "select";
+				$tagName = 'select';
 				break;
 			case 'file':
 				$ret .= getHtmlTag(
