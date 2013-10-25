@@ -249,6 +249,7 @@ function weTag_getParserAttribute($name, $attribs, $default = '', $isFlag = fals
  * @return mixed returns the attributes value or default if not set
  */
 function weTag_getAttribute($name, $attribs, $default = '', $isFlag = false, $useGlobal = true){
+	//FIXME: add an array holding attributes accessed for removal!
 	$value = isset($attribs[$name]) ? $attribs[$name] : '';
 	$regs = array();
 	if($useGlobal && !is_array($value) && preg_match('|^\\\\?\$([^\[]+)(\[.*\])?|', $value, $regs)){
