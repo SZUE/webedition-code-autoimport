@@ -17,7 +17,6 @@ $l_prefs=array(
 	'backup_fast'=>'Nopea',
 	'backup_slow'=>'Hidas',
 	'backwardcompatibility'=>'Backward compatibility',
-	'backwardcompatibility_tagloading'=>'Load all `old` we_tag functions',
 	
 	'base'=>array(
 		'css'=>'Domain for CSS files',
@@ -102,7 +101,6 @@ $l_prefs=array(
 	'editor_java'=>'Java editor',
 	'editor_javascript2'=>'CodeMirror2',
 	'editor_javascript'=>'JavaScript editor (beta)',
-	'editor_javascript_information'=>'The JavaScript editor is still in beta stadium. Depending on which of the following options you`ll activate, there might occur errors. Code completion is currently not working in Internet Explorer. For a complete list of known issues please have a look at the <a href="http://qa.webedition.org/tracker/search.php?project_id=107&sticky_issues=on&sortby=last_updated&dir=DESC&hide_status_id=90" target="_blank">webEdition bugtracker</a>.',
 	'editor_linenumbers'=>'Line numbers',
 	'editor_mode'=>'Editori',
 	'editor_normal_font_color'=>'Oletus',

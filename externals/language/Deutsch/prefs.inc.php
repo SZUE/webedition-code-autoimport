@@ -17,7 +17,6 @@ $l_prefs=array(
 	'backup_fast'=>'Schnell',
 	'backup_slow'=>'Langsam',
 	'backwardcompatibility'=>'Abwärtskompatibilität',
-	'backwardcompatibility_tagloading'=>'Lade alle `alten` we_tag Funktionen',
 	
 	'base'=>array(
 		'css'=>'CSS Basis-URL',
@@ -102,7 +101,6 @@ $l_prefs=array(
 	'editor_java'=>'Java-Editor',
 	'editor_javascript2'=>'CodeMirror2',
 	'editor_javascript'=>'JavaScript-Editor (beta)',
-	'editor_javascript_information'=>'Der JavaScript-Editor befindet sich derzeit im Beta-Stadium. Je nach aktivierten Funktionen kann es noch zu Fehlern kommen. Die Codevervollständigung funktioniert derzeit nicht im Internet Explorer. Für eine komplette Liste von bekannten Problemen schauen Sie bitte in den <a href="http://qa.webedition.org/tracker/search.php?project_id=107&sticky_issues=on&sortby=last_updated&dir=DESC&hide_status_id=90" target="_blank">webEdition Bugtracker</a>.',
 	'editor_linenumbers'=>'Zeilennummern',
 	'editor_mode'=>'Editor',
 	'editor_normal_font_color'=>'Standard',
