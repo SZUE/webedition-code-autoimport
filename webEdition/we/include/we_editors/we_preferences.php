@@ -1168,9 +1168,9 @@ function build_dialog($selected_setting = 'ui'){
 				array('headline' => g_l('prefs', '[hidenameattribinweimg_default]'), 'html' => $HIDENAMEATTRIBINWEIMG_DEFAULT->getHtml(), 'space' => 200),
 				array('headline' => g_l('prefs', '[hidenameattribinweform_default]'), 'html' => $HIDENAMEATTRIBINWEFORM_DEFAULT->getHtml(), 'space' => 200),
 				array('headline' => g_l('prefs', '[cssapplyto_default]'), 'html' => $CSSAPPLYTO_DEFAULT->getHtml(), 'space' => 200),
-				array('headline' => g_l('prefs', '[base][img]'), 'html' => $BASE_IMG, 'space' => 200, 'noline' => 1),
-				array('headline' => g_l('prefs', '[base][css]'), 'html' => $BASE_CSS, 'space' => 200, 'noline' => 1),
-				array('headline' => g_l('prefs', '[base][js]'), 'html' => $BASE_JS, 'space' => 200),
+				array('headline' => g_l('prefs', '[base][img]') . ' (deprecated)', 'html' => $BASE_IMG, 'space' => 200, 'noline' => 1),
+				array('headline' => g_l('prefs', '[base][css]') . ' (deprecated)', 'html' => $BASE_CSS, 'space' => 200, 'noline' => 1),
+				array('headline' => g_l('prefs', '[base][js]') . ' (deprecated)', 'html' => $BASE_JS, 'space' => 200),
 			);
 
 

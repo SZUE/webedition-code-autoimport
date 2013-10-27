@@ -265,7 +265,6 @@ $_info = array(
 		g_l('sysinfo', '[phpext]') => (!empty($phpextensionsMissing) ? getWarning(g_l('sysinfo', "[phpext warning2]"), g_l('sysinfo', "[phpext warning]") . implode(', ', $phpextensionsMissing)) : ($phpExtensionsDetectable ? g_l('sysinfo', '[available]') : g_l('sysinfo', '[detectable warning]')) ),
 	),
 	'Deprecated' => array(
-		g_l('prefs', '[backwardcompatibility_tagloading]') => (defined('INCLUDE_ALL_WE_TAGS') && INCLUDE_ALL_WE_TAGS) ? getWarning('Deprecated', '1') : getOk('', '0'),
 		'we:saveRegisteredUser register=' => (defined('CUSTOMER_TABLE') && f('SELECT Value FROM ' . CUSTOMER_ADMIN_TABLE . ' WHERE Name="default_saveRegisteredUser_register"', 'Value', $GLOBALS['DB_WE']) == 'true' ? getWarning('Deprecated', 'true') : getOk('', defined('CUSTOMER_TABLE') ? 'false' : '?')),
 	),
 );
