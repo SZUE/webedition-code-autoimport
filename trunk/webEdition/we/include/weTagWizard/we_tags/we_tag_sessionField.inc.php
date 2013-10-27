@@ -21,7 +21,7 @@ if(defined('CUSTOMER_TABLE')){
 	$id = new weTagData_textAttribute('id', false, '');
 	$removefirstparagraph = new weTagData_selectAttribute('removefirstparagraph', weTagData_selectAttribute::getTrueFalse(), false, '');
 	$autofill = new weTagData_selectAttribute('autofill', array(new weTagDataOption('true'),
-		), false, '');
+			), false, '');
 	$parentid = new weTagData_selectorAttribute('parentid', FILE_TABLE, weTagData_selectorAttribute::FOLDER, false, 'customer');
 	$width = new weTagData_textAttribute('width', false, 'customer');
 	$height = new weTagData_textAttribute('height', false, 'customer');
@@ -36,7 +36,7 @@ if(defined('CUSTOMER_TABLE')){
 		new weTagDataOption('8'),
 		new weTagDataOption('9'),
 		new weTagDataOption('10'),
-		), false, 'customer');
+			), false, 'customer');
 	$keepratio = new weTagData_selectAttribute('keepratio', weTagData_selectAttribute::getTrueFalse(), false, 'customer');
 	$maximize = new weTagData_selectAttribute('maximize', weTagData_selectAttribute::getTrueFalse(), false, 'customer');
 	$bordercolor = new weTagData_textAttribute('bordercolor', false, 'customer');
@@ -53,7 +53,7 @@ if(defined('CUSTOMER_TABLE')){
 	$languageautofill = new weTagData_selectAttribute('languageautofill', weTagData_selectAttribute::getTrueFalse(), false, '');
 	$doc = new weTagData_selectAttribute('doc', array(new weTagDataOption('self'),
 		new weTagDataOption('top'),
-		), false, '');
+			), false, '');
 
 	$usevalue = new weTagData_selectAttribute('usevalue', weTagData_selectAttribute::getTrueFalse(), false, '');
 	$minyear = new weTagData_textAttribute('minyear', false, '');
@@ -66,71 +66,7 @@ if(defined('CUSTOMER_TABLE')){
 	$php = new weTagData_selectAttribute('php', weTagData_selectAttribute::getTrueFalse(), false, '');
 	$abbr = new weTagData_selectAttribute('abbr', weTagData_selectAttribute::getTrueFalse(), false, '');
 	$spellcheck = new weTagData_selectAttribute('spellcheck', weTagData_selectAttribute::getTrueFalse(), false, 'spellchecker');
-	$commands = new weTagData_choiceAttribute('commands', array(new weTagDataOption('acronym'),
-		new weTagDataOption('anchor'),
-		new weTagDataOption('applystyle'),
-		new weTagDataOption('backcolor'),
-		new weTagDataOption('bold'),
-		new weTagDataOption('caption'),
-		new weTagDataOption('color'),
-		new weTagDataOption('copy'),
-		new weTagDataOption('copypaste'),
-		new weTagDataOption('createlink'),
-		new weTagDataOption('cut'),
-		new weTagDataOption('decreasecolspan'),
-		new weTagDataOption('deletecol'),
-		new weTagDataOption('deleterow'),
-		new weTagDataOption('editcell'),
-		new weTagDataOption('editsource'),
-		new weTagDataOption('edittable'),
-		new weTagDataOption('fontname'),
-		new weTagDataOption('fontsize'),
-		new weTagDataOption('forecolor'),
-		new weTagDataOption('formatblock'),
-		new weTagDataOption('fullscreen'),
-		new weTagDataOption('importrtf'),
-		new weTagDataOption('increasecolspan'),
-		new weTagDataOption('indent'),
-		new weTagDataOption('insertbreak'),
-		new weTagDataOption('insertcolumnleft'),
-		new weTagDataOption('insertcolumnright'),
-		new weTagDataOption('inserthorizontalrule'),
-		new weTagDataOption('insertimage'),
-		new weTagDataOption('insertorderedlist'),
-		new weTagDataOption('insertrowabove'),
-		new weTagDataOption('insertrowbelow'),
-		new weTagDataOption('insertspecialchar'),
-		new weTagDataOption('inserttable'),
-		new weTagDataOption('insertunorderedlist'),
-		new weTagDataOption('italic'),
-		new weTagDataOption('justify'),
-		new weTagDataOption('justifycenter'),
-		new weTagDataOption('justifyfull'),
-		new weTagDataOption('justifyleft'),
-		new weTagDataOption('justifyright'),
-		new weTagDataOption('lang'),
-		new weTagDataOption('link'),
-		new weTagDataOption('list'),
-		new weTagDataOption('outdent'),
-		new weTagDataOption('paste'),
-		new weTagDataOption('prop'),
-		new weTagDataOption('redo'),
-		new weTagDataOption('removecaption'),
-		new weTagDataOption('removeformat'),
-		new weTagDataOption('removetags'),
-		new weTagDataOption('spellcheck'),
-		new weTagDataOption('strikethrough'),
-		new weTagDataOption('subscript'),
-		new weTagDataOption('superscript'),
-		new weTagDataOption('underline'),
-		new weTagDataOption('table'),
-		new weTagDataOption('undo'),
-		new weTagDataOption('unlink'),
-		new weTagDataOption('visibleborders'),
-		), false, true, '');
-	$xml = new weTagData_selectAttribute('xml', weTagData_selectAttribute::getTrueFalse(), false, '');
-
-
+	$commands = new weTagData_choiceAttribute('commands', we_wysiwyg::getEditorCommands(true), false, true, '');
 
 
 	$this->TypeAttribute = new weTagData_typeAttribute('type', array(

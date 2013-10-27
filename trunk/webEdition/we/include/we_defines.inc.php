@@ -26,7 +26,7 @@ function we_stripslashes(&$arr){
 	foreach($arr as $n => $v){
 		if(is_array($v)){
 			we_stripslashes($arr[$n]);
-		} else{
+		} else {
 			$arr[$n] = stripslashes($v);
 		}
 	}
@@ -38,7 +38,7 @@ if((get_magic_quotes_gpc() == 1)){
 			if(is_array($v)){
 				we_stripslashes($v);
 				$_REQUEST[$n] = $v;
-			} else{
+			} else {
 				$_REQUEST[$n] = stripslashes($v);
 			}
 		}
@@ -171,9 +171,6 @@ define('ERROR_LOG_MAX_ITEM_COUNT', 10000);
 define('ERROR_LOG_MAX_ITEM_THRESH', 9800);
 
 
-
-define('WE_WYSIWYG_COMMANDS', 'formatblock,fontname,fontsize,applystyle,bold,italic,underline,subscript,superscript,strikethrough,removeformat,removetags,forecolor,backcolor,justifyleft,justifycenter,justifyright,justifyfull,insertunorderedlist,insertorderedlist,indent,outdent,createlink,unlink,anchor,insertimage,inserthorizontalrule,insertspecialchar,inserttable,edittable,editcell,insertcolumnright,insertcolumnleft,insertrowabove,insertrowbelow,deletecol,deleterow,increasecolspan,decreasecolspan,caption,removecaption,importrtf,fullscreen,cut,copy,paste,undo,redo,visibleborders,editsource,prop,justify,list,link,color,copypaste,table,insertbreak,acronym,lang,spellcheck');
-
 /**
  * Fix the none existing $_SERVER['REQUEST_URI'] on IIS
  */
@@ -181,7 +178,7 @@ if(!isset($_SERVER['REQUEST_URI'])){
 	if(!isset($_SERVER['HTTP_REQUEST_URI'])){
 		if(isset($_SERVER['SCRIPT_NAME'])){
 			$_SERVER['HTTP_REQUEST_URI'] = $_SERVER['SCRIPT_NAME'];
-		} else{
+		} else {
 			$_SERVER['HTTP_REQUEST_URI'] = $_SERVER['PHP_SELF'];
 		}
 

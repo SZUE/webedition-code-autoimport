@@ -31,7 +31,7 @@ class we_wysiwyg_ToolbarButton extends we_wysiwyg_ToolbarElement{
 			$this->tooltiptext = $tooltiptext;
 			$this->imgSrc = $imgSrc;
 		}
-		$this->showMeInContextmenu = $this->hasProp('',true);
+		$this->showMeInContextmenu = $this->hasProp('', true);
 	}
 
 	function getHTML(){
@@ -41,7 +41,7 @@ class we_wysiwyg_ToolbarButton extends we_wysiwyg_ToolbarElement{
 onmouseover="' . $this->editor->ref . 'Obj.over(\'' . $this->cmd . '\');"
 onmouseout="' . $this->editor->ref . 'Obj.out(\'' . $this->cmd . '\');"
 onmousedown="' . $this->editor->ref . 'Obj.click(event,\'' . $this->cmd . '\');" /></div>';
-		} else{
+		} else {
 
 			return '<div id="' . $this->editor->ref . 'edit_' . $this->cmd . 'Div" class="tbButton">
 <img  width="' . ($this->width - 2) . '" height="' . $this->height . '" id="' . $this->editor->ref . 'edit_' . $this->cmd . '" src="' . $this->imgSrc . '" alt="' . $this->tooltiptext . '" title="' . $this->tooltiptext . '"
@@ -54,11 +54,29 @@ onclick="' . $this->editor->ref . 'Obj.click(\'' . $this->cmd . '\');" /></div>'
 	}
 
 	function hasProp($cmd = '', $contextMenu = false){
+		//FIXME use of a structred array may be used for help to.
+		/* $commands = array(
+		  'table' => array(
+		  'plugin' => 'table',
+		  'commands' => array(
+		  "inserttable",
+		  "editcell",
+		  "insertcolumnright",
+		  "insertcolumnleft",
+		  "insertrowabove",
+		  "insertrowbelow",
+		  "deleterow",
+		  "deletecol",
+		  "increasecolspan",
+		  "decreasecolspan"
+		  )
+		  )
+		  ); */
 		switch($this->cmd){
 			case "caption":
 			case "removecaption":
 			case "edittable":
-				return we_wysiwyg::$editorType == 'tinyMCE' ? false : parent::hasProp('', $contextMenu) || parent::hasProp('table',$contextMenu);
+				return we_wysiwyg::$editorType == 'tinyMCE' ? false : parent::hasProp('', $contextMenu) || parent::hasProp('table', $contextMenu);
 			case "inserttable":
 			case "editcell":
 			case "insertcolumnright":
@@ -69,37 +87,37 @@ onclick="' . $this->editor->ref . 'Obj.click(\'' . $this->cmd . '\');" /></div>'
 			case "deletecol":
 			case "increasecolspan":
 			case "decreasecolspan":
-				return $this->editor->setPlugin('table', parent::hasProp('', $contextMenu) || parent::hasProp('table',$contextMenu));
+				return $this->editor->setPlugin('table', parent::hasProp('', $contextMenu) || parent::hasProp('table', $contextMenu));
 			case "editrow":
 			case "deletetable":
-				return $this->editor->setPlugin('table', parent::hasProp('', $contextMenu) || parent::hasProp('table',$contextMenu));
+				return $this->editor->setPlugin('table', parent::hasProp('', $contextMenu) || parent::hasProp('table', $contextMenu));
 			case "cut":
 			case "copy":
 			case "paste":
-				return $this->editor->setPlugin('paste', parent::hasProp('', $contextMenu) || parent::hasProp('copypaste',$contextMenu));
+				return $this->editor->setPlugin('paste', parent::hasProp('', $contextMenu) || parent::hasProp('copypaste', $contextMenu));
 			case "pastetext":
 			case "pasteword":
 			case "selectall":
-				return $this->editor->setPlugin('paste', parent::hasProp('', $contextMenu) || parent::hasProp('copypaste',$contextMenu));
+				return $this->editor->setPlugin('paste', parent::hasProp('', $contextMenu) || parent::hasProp('copypaste', $contextMenu));
 			case "forecolor":
 			case "backcolor":
-				return parent::hasProp('', $contextMenu) || parent::hasProp('color',$contextMenu);
+				return parent::hasProp('', $contextMenu) || parent::hasProp('color', $contextMenu);
 			case "createlink":
 			case "unlink":
-				return parent::hasProp('', $contextMenu) || parent::hasProp('link',$contextMenu);
+				return parent::hasProp('', $contextMenu) || parent::hasProp('link', $contextMenu);
 			case "insertunorderedlist":
 			case "insertorderedlist":
 			case "indent":
 			case "outdent":
-				$this->editor->setPlugin('lists', parent::hasProp('', $contextMenu) || parent::hasProp('list',$contextMenu));
-				return $this->editor->setPlugin('advlist', parent::hasProp('', $contextMenu) || parent::hasProp('list',$contextMenu));
+				$this->editor->setPlugin('lists', parent::hasProp('', $contextMenu) || parent::hasProp('list', $contextMenu));
+				return $this->editor->setPlugin('advlist', parent::hasProp('', $contextMenu) || parent::hasProp('list', $contextMenu));
 			case "blockquote":
 				return we_wysiwyg::$editorType == 'tinyMCE' && parent::hasProp('', $contextMenu);
 			case "justifyleft":
 			case "justifycenter":
 			case "justifyright":
 			case "justifyfull":
-				return parent::hasProp('', $contextMenu) || parent::hasProp('justify',$contextMenu);
+				return parent::hasProp('', $contextMenu) || parent::hasProp('justify', $contextMenu);
 			case "bold":
 			case "italic":
 			case "underline":
@@ -108,24 +126,24 @@ onclick="' . $this->editor->ref . 'Obj.click(\'' . $this->cmd . '\');" /></div>'
 			case "strikethrough":
 			case "removetags":
 			case "removeformat":
-				return parent::hasProp('', $contextMenu) || parent::hasProp('prop',$contextMenu);
+				return parent::hasProp('', $contextMenu) || parent::hasProp('prop', $contextMenu);
 			case "importrtf":
 				return we_wysiwyg::$editorType == 'tinyMCE' ? false : parent::hasProp('', $contextMenu);
 			case "absolute":
 			case "insertlayer":
 			case "movebackward":
 			case "moveforward":
-				return $this->editor->setPlugin('layer', parent::hasProp('', $contextMenu) || parent::hasProp('layer',$contextMenu));
+				return $this->editor->setPlugin('layer', parent::hasProp('', $contextMenu) || parent::hasProp('layer', $contextMenu));
 			//TODO: we shouldcombine the following command to "insertelements": emotions,insertdate,inserttime,nonbreaking,hr,advhr,specialchar,nbsp?
 			//TODO: we should combine the following command to "direction": ltr,rtl?
 			case "abbr":
 			case "acronym":
 			case "lang":
-				return parent::hasProp('', $contextMenu) || parent::hasProp('xhtmlxtras',$contextMenu);
+				return parent::hasProp('', $contextMenu) || parent::hasProp('xhtmlxtras', $contextMenu);
 			case "del":
 			case "ins":
 			case "cite" :
-				return $this->editor->setPlugin('xhtmlxtras', parent::hasProp('', $contextMenu) || parent::hasProp('xhtmlxtras',$contextMenu));
+				return $this->editor->setPlugin('xhtmlxtras', parent::hasProp('', $contextMenu) || parent::hasProp('xhtmlxtras', $contextMenu));
 			case "insertdate":
 			case "inserttime":
 				return $this->editor->setPlugin('insertdatetime', parent::hasProp('', $contextMenu));
