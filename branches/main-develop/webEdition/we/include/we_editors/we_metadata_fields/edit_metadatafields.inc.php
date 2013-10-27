@@ -177,11 +177,8 @@ function build_dialog($selected_setting = 'ui'){
 				$_metadata_fields[$key] = $key;
 			}
 
-			$_onChange = '';
-
 			$_i = 0;
 			$_adv_row = '';
-			$_first = 0;
 
 			foreach($_defined_fields as $key => $value){
 				$_adv_row .= '
