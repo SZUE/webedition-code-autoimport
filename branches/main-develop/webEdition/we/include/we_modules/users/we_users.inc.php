@@ -2375,7 +2375,7 @@ top.content.hloaded=1;') .
 	 * @param type $password DB-field!!! //needs to be cause of salt!
 	 * @param type $clearPassword //posted password
 	 */
-	static function comparePasswords($useSalt, $username, $password, $clearPassword){
+	static function comparePasswords($useSalt, $username, $storedPassword, $clearPassword){
 		switch($useSalt){
 			default:
 			case self::SALT_NONE:
@@ -2386,7 +2386,7 @@ top.content.hloaded=1;') .
 				break;
 			case self::SALT_CRYPT:
 				if(version_compare(PHP_VERSION, '5.3.7') >= 0){
-					$passwd = crypt($passwd = substr($clearPassword, 0, 64), $password);
+					$passwd = crypt($passwd = substr($clearPassword, 0, 64), $storedPassword);
 				} else {
 					echo 'unable to check passwords php version to old (' . PHP_VERSION . ', needed at least 5.3.7)!';
 					t_e('unable to check passwords php version to old (' . PHP_VERSION . ', needed at least 5.3.7)!');
@@ -2394,7 +2394,7 @@ top.content.hloaded=1;') .
 				}
 				break;
 		}
-		return ($passwd == $password);
+		return ($passwd == $storedPassword);
 	}
 
 	static function makeSaltedPassword(&$useSalt, $username, $passwd, $strength = 15){
