@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_parse_tag_navigationEntry($attribs, $content){
-	return '<?php printElement(' . we_tag_tagParser::printTag('navigationEntry', $attribs, str_replace(array('global $lv;', '$', '\\\\$'), array('', '\\$', '\\$'), $content), true) . ');?>';
+	return we_tag_tagParser::printTag('navigationEntry', $attribs, str_replace(array('global $lv;', '$', '\\\\$'), array('', '\\$', '\\$'), $content), true) . ';?>';
 }
 
 function we_tag_navigationEntry($attribs, $content){
@@ -40,6 +40,11 @@ function we_tag_navigationEntry($attribs, $content){
 			weNavigationItem::DEFAULT_CURRENT);
 
 	$positions = makeArrayFromCSV(weTag_getAttribute('position', $attribs, 'defaultPosition'));
+
+	if(!isset($GLOBALS['we_navigation'][$navigationName])){
+		echo parseError('we:navigationentry "' . $navigationName . '" not set');
+		return;
+	}
 
 	foreach($positions as $position){
 		if($position == 'first'){
