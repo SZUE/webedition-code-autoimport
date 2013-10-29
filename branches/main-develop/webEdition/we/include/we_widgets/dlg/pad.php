@@ -227,9 +227,8 @@ $parts[] = array(
 
 list($pad_header_enc, ) = explode(',', $_REQUEST['we_cmd'][1]);
 $pad_header = base64_decode($pad_header_enc);
-$_sql = "SELECT	distinct(WidgetName) FROM " . NOTEPAD_TABLE . " WHERE UserID = " . intval($_SESSION['user']['ID']);
 $DB_WE = new DB_WE();
-$DB_WE->query($_sql);
+$DB_WE->query('SELECT	distinct(WidgetName) FROM ' . NOTEPAD_TABLE . ' WHERE UserID=' . intval($_SESSION['user']['ID']));
 $_options = array(
 	$pad_header => $pad_header, g_l('cockpit', '[change]') => g_l('cockpit', '[change]')
 );

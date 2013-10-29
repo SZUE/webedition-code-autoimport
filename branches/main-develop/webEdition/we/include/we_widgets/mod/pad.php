@@ -30,7 +30,6 @@ we_html_tools::protect();
  * Table with the notes
  * @var string
  */
-$_table = NOTEPAD_TABLE;
 $_sInitProps = substr($_REQUEST['we_cmd'][0], -5);
 $bSort = $_sInitProps{0};
 $bDisplay = $_sInitProps{1};
@@ -88,7 +87,7 @@ switch($_REQUEST['we_cmd'][2]){
 
 switch($bSort){
 	case 1 :
-		$q_sort = 'Priority, Title';
+		$q_sort = 'Priority DESC, Title';
 		break;
 	case 2 :
 		$q_sort = 'ValidFrom, Title';

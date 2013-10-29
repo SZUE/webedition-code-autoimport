@@ -330,7 +330,7 @@ abstract class we_class{
 # public ##################
 
 	public function initByID($ID, $Table = FILE_TABLE, $from = we_class::LOAD_MAID_DB){
-		$Table = ($Table ? : FILE_TABLE);
+		$Table = ($Table ? $Table : FILE_TABLE);
 
 		$this->ID = intval($ID);
 		$this->Table = $Table;
