@@ -179,8 +179,8 @@ function we_tag_include($attribs){
 			);
 		}
 
-		return we_setBackVar(' . $we_unique . ') .
-			($isSeemode ? //extra stuff in seemode
+		return '<?php we_setBackVar(' . $we_unique . ');' .
+				($isSeemode ? //extra stuff in seemode
 				'eval(\'?>' . addcslashes(preg_replace('|< */? *form[^>]*>|i', '', $content), '\'') .
 				($seeMode ? //	only show link to seeMode, when id is given
 					($id ?
@@ -191,7 +191,7 @@ function we_tag_include($attribs){
 				//no seemode
 				$content
 			) .
-			we_resetBackVar(' . $we_unique . ');
+			'we_resetBackVar(' . $we_unique . ');?>';
 	}
 	return '';
 }
