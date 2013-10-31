@@ -25,9 +25,9 @@
 function we_parse_tag_include($attribs, $c, array $attr){
 	$type = weTag_getParserAttribute('type', $attr, 'document');
 	$path = weTag_getParserAttribute('path', $attr);
-	return ($type == 'document' ? '<?php eval(' . we_tag_tagParser::printTag('include', $attribs) . ');?>' :
-			($path ? '<?php include(getTemplatePath(\'' . str_replace('\'', '', $path) . '\'));?>' :
-				'<?php include(getTemplatePath(' . intval(weTag_getParserAttribute('id', $attr)) . '));?>')
+	return ($type != 'template' ? '<?php eval(' . we_tag_tagParser::printTag('include', $attribs) . ');?>' :
+			($path ? '<?php $we_inc=getTemplatePath(\'' . str_replace('\'', '', $path) . '\');if($we_inc){include($we_inc);}?>' :
+				'<?php $we_inc=getTemplatePath(' . intval(weTag_getParserAttribute('id', $attr)) . ');if($we_inc){include($we_inc);}?>')
 		);
 }
 
@@ -69,6 +69,10 @@ function we_setBackVar($we_unique){
 }
 
 function we_resetBackVar($we_unique){
+	/* 	if(!is_object($GLOBALS['we']['backVars'][$we_unique]['we_doc'])){
+	  t_e($we_unique, $GLOBALS['we']['backVars']);
+	  return;
+	  } */
 	$GLOBALS['we_doc'] = clone($GLOBALS['we']['backVars'][$we_unique]['we_doc']);
 	foreach($GLOBALS['we']['backVars'][$we_unique]['GLOBAL'] as $key => $val){
 		$GLOBALS[$key] = $val;
