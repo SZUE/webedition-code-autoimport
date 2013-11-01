@@ -734,7 +734,7 @@ class we_folder extends we_root{
 		$db->query('SELECT Path,urlMap FROM ' . FILE_TABLE . ' WHERE urlMap!=""');
 		while($db->next_record(MYSQL_NUM)){
 			$host = trim(preg_replace('-(http://|https://)-', '', $db->f(1)), '/');
-			$ret['\1' . ($_SERVER['SERVER_NAME'] == $host ? '' : '//' . $host) . '\4'] = '-((href\s*=|src\s*=|action\s*=|url)\s*["\'\(])(' . preg_quote($db->f(0), '-') . ')(/[^"\'\)]*["\'\)])-';
+			$ret['\1' . ($_SERVER['SERVER_NAME'] == $host ? '' : '//' . $host) . '\4'] = '-((href\s*=|src\s*=|action\s*=|location\s*=|url)\s*["\'\(])(' . preg_quote($db->f(0), '-') . ')(/[^"\'\)]*["\'\)])-';
 		}
 		return $ret;
 	}
