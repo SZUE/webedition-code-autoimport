@@ -244,12 +244,12 @@ class we_quicktimeDocument extends we_binaryDocument{
 	}
 
 	function getThumbnail(){
-		$_width = $this->getElement("width");
-		$_height = $this->getElement("height");
-		$_scale = $this->getElement("scale");
-		$_hspace = $this->getElement("hspace");
-		$_vspace = $this->getElement("vspace");
-		$_name = $this->getElement("name");
+		$_width = $this->getElement('width');
+		$_height = $this->getElement('height');
+		$_scale = $this->getElement('scale');
+		$_hspace = $this->getElement('hspace');
+		$_vspace = $this->getElement('vspace');
+		$_name = $this->getElement('name');
 		$_autoplay = $this->getElement("autoplay");
 		$_controller = $this->getElement("controller");
 		$_bgcolor = $this->getElement("bgcolor");
@@ -257,8 +257,8 @@ class we_quicktimeDocument extends we_binaryDocument{
 		$_hidden = $this->getElement("hidden");
 		$_loop = $this->getElement("loop");
 
-		$this->setElement("width", 150, "attrib");
-		$this->setElement("height", 100, "attrib");
+		$this->setElement('width', 150, 'attrib');
+		$this->setElement("height", 100, 'attrib');
 		$this->setElement("scale", "aspect", "attrib");
 		$this->setElement("hspace", "", "attrib");
 		$this->setElement("vspace", "", "attrib");

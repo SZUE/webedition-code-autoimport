@@ -86,7 +86,7 @@ class we_document extends we_root{
 			foreach($this->elements as $n => $e){
 				$this->elements[$n]['cid'] = 0;
 			}
-			$this->EditPageNr = 0;
+			$this->EditPageNr = WE_EDITPAGE_PROPERTIES;
 			$this->InWebEdition = true;
 			if(isset($this->documentCustomerFilter)){
 				$this->documentCustomerFilter = $doc->documentCustomerFilter;

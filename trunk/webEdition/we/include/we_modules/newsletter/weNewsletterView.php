@@ -1344,14 +1344,14 @@ function set_state_edit_delete_recipient(control) {
 					$this->processCommands();
 					break;
 
-				case "switchPage":
+				case 'switchPage':
 					if(isset($_REQUEST["page"])){
 						$this->page = $_REQUEST["page"];
 					}
 					break;
 
-				case "save_newsletter":
-					if(isset($_REQUEST["nid"])){
+				case 'save_newsletter':
+					if(isset($_REQUEST['nid'])){
 						$weAcQuery = new weSelectorQuery();
 						$newone = false;
 
@@ -1370,7 +1370,7 @@ function set_state_edit_delete_recipient(control) {
 
 						if(isset($_REQUEST['blocks'])){
 							for($i = 0; $i < $_REQUEST['blocks']; $i++){
-								switch($_REQUEST['block' . $i . "_Type"]){
+								switch($_REQUEST['block' . $i . '_Type']){
 									case weNewsletterBlock::DOCUMENT:
 									case weNewsletterBlock::DOCUMENT_FIELD:
 										$acTable = FILE_TABLE;
@@ -1386,7 +1386,7 @@ function set_state_edit_delete_recipient(control) {
 										$acErrorField = '';
 								}
 								if(!empty($acTable)){
-									$weAcResult = $weAcQuery->getItemById($_REQUEST['block' . $i . "_LinkID"], $acTable, array("IsFolder"));
+									$weAcResult = $weAcQuery->getItemById($_REQUEST['block' . $i . '_LinkID'], $acTable, array('IsFolder'));
 
 									if(!is_array($weAcResult) || count($weAcResult) < 1 || $weAcResult[0]['IsFolder'] == 1){
 										print we_html_element::jsElement(
@@ -1394,7 +1394,7 @@ function set_state_edit_delete_recipient(control) {
 										);
 										return;
 									}
-									if(!empty($_REQUEST['block' . $i . "_Field"]) && $_REQUEST['block' . $i . "_Field"] > 0){
+									if(!empty($_REQUEST['block' . $i . '_Field']) && $_REQUEST['block' . $i . '_Field'] > 0){
 										$weAcResult = $weAcQuery->getItemById($_REQUEST['block' . $i . "_Field"], TEMPLATES_TABLE, array("IsFolder"));
 										if(!is_array($weAcResult) || $weAcResult[0]['IsFolder'] == 1){
 											print we_html_element::jsElement(
@@ -1411,11 +1411,11 @@ function set_state_edit_delete_recipient(control) {
 							$newone = true;
 						}
 
-						if(!$newone && $_REQUEST["ask"]){
+						if(!$newone && $_REQUEST['ask']){
 							$h = getHash('SELECT Step,Offset FROM ' . NEWSLETTER_TABLE . ' WHERE ID=' . intval($this->newsletter->ID), $this->db);
 
-							if($h["Step"] != 0 || $h["Offset"] != 0){
-								print we_html_element::jsScript(JS_DIR . "windows.js") .
+							if($h['Step'] != 0 || $h['Offset'] != 0){
+								print we_html_element::jsScript(JS_DIR . 'windows.js') .
 									we_html_element::jsElement('
 										self.focus();
 										top.content.get_focus=0;
@@ -1429,20 +1429,20 @@ function set_state_edit_delete_recipient(control) {
 							$this->newsletter->Sender = $this->settings["default_sender"];
 						}
 
-						if($this->newsletter->Reply == ""){
+						if($this->newsletter->Reply == ''){
 							$this->newsletter->Reply = $this->settings["default_reply"];
 						}
 
-						if($this->newsletter->Test == ""){
+						if($this->newsletter->Test == ''){
 							$this->newsletter->Test = $this->settings["test_account"];
 						}
-						if($this->newsletter->isEmbedImages == ""){
+						if($this->newsletter->isEmbedImages == ''){
 							$this->newsletter->isEmbedImages = $this->settings["isEmbedImages"];
 						}
 
 						$double = intval(f('SELECT COUNT(1) AS Count FROM ' . NEWSLETTER_TABLE . " WHERE Path='" . $this->db->escape($this->newsletter->Path) . "'" . ($newone ? '' : ' AND ID<>' . $this->newsletter->ID), 'Count', $this->db));
 
-						if(!we_hasPerm("EDIT_NEWSLETTER") && !we_hasPerm("NEW_NEWSLETTER")){
+						if(!we_hasPerm('EDIT_NEWSLETTER') && !we_hasPerm('NEW_NEWSLETTER')){
 							print we_html_element::jsElement(
 									we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
 							);
