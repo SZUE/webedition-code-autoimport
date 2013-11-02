@@ -28,7 +28,7 @@ function we_tag_author($attribs){
 	$creator = weTag_getAttribute('creator', $attribs, false, true);
 	$docAttr = weTag_getAttribute('doc', $attribs);
 
-	$author = $creator ? "CreatorID" : "ModifierID";
+	$author = $creator ? 'CreatorID' : 'ModifierID';
 
 	switch($docAttr){
 		case 'listview' :

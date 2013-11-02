@@ -75,7 +75,7 @@ abstract class we_root extends we_class{
 	var $elements = array();
 
 	/* Number of the EditPage when editor() is called */
-	public $EditPageNr = 1;
+	public $EditPageNr = WE_EDITPAGE_CONTENT;
 	var $CopyID;
 	var $EditPageNrs = array();
 	var $Owners = '';

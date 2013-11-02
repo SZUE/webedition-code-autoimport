@@ -27,7 +27,7 @@ if($we_doc->EditPageNr == WE_EDITPAGE_PROPERTIES){
 	//	send charset, if one is set:
 	$charset = $we_doc->getElement('Charset');
 	$charset = $charset ? $charset : DEFAULT_CHARSET;
-} else{
+} else {
 	$charset = $GLOBALS['WE_BACKENDCHARSET'];
 }
 we_html_tools::headerCtCharset('text/html', $charset);
@@ -43,50 +43,48 @@ print STYLESHEET;
 		echo we_class::hiddenTrans();
 		$implementYuiAC = false;
 		switch($we_doc->ContentType){
-			case "folder":
+			case 'folder':
 				include(WE_INCLUDES_PATH . 'we_templates/we_folder_properties.inc.php');
 				$implementYuiAC = true;
 				break;
-			case "text/webedition":
+			case 'text/webedition':
 				include(WE_INCLUDES_PATH . 'we_templates/we_webedition_properties.inc.php');
 				break;
-			case "text/xml":
-			case "text/css":
-			case "text/js":
-			case "text/htaccess":
-			case "text/plain":
+			case 'text/xml':
+			case 'text/css':
+			case 'text/js':
+			case 'text/htaccess':
+			case 'text/plain':
 				include(WE_INCLUDES_PATH . 'we_templates/we_textfile_properties.inc.php');
 				break;
-			case "text/html":
+			case 'text/html':
 				include(WE_INCLUDES_PATH . 'we_templates/we_htmlfile_properties.inc.php');
 				break;
-			case "text/weTmpl":
+			case 'text/weTmpl':
 				include(WE_INCLUDES_PATH . 'we_templates/we_template_properties.inc.php');
 				break;
-			case "image/*":
+			case 'image/*':
 				include(WE_INCLUDES_PATH . 'we_templates/we_image_properties.inc.php');
 				break;
-			case "application/x-shockwave-flash":
+			case 'video/quicktime':
+			case 'application/x-shockwave-flash':
 				include(WE_INCLUDES_PATH . 'we_templates/we_flash_properties.inc.php');
 				break;
-			case "video/quicktime":
-				include(WE_INCLUDES_PATH . 'we_templates/we_quicktime_properties.inc.php');
-				break;
-			case "application/*":
+			case 'application/*':
 				include(WE_INCLUDES_PATH . 'we_templates/we_other_properties.inc.php');
 				break;
 			default:
 
 				$moduleDir = we_getModuleNameByContentType($we_doc->ContentType);
 
-				if($moduleDir != ""){
-					$moduleDir .= "/";
+				if($moduleDir != ''){
+					$moduleDir .= '/';
 				}
 
-				if(file_exists(WE_MODULES_PATH . $moduleDir . "we_" . $we_doc->ContentType . "_properties.inc.php")){
-					include(WE_MODULES_PATH . $moduleDir . "we_" . $we_doc->ContentType . "_properties.inc.php");
-				} else{
-					exit("Can NOT include property File");
+				if(file_exists(WE_MODULES_PATH . $moduleDir . 'we_' . $we_doc->ContentType . '_properties.inc.php')){
+					include(WE_MODULES_PATH . $moduleDir . 'we_' . $we_doc->ContentType . '_properties.inc.php');
+				} else {
+					exit('Can NOT include property File');
 				}
 		}
 		?>

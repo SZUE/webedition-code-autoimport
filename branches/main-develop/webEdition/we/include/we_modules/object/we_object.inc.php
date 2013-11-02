@@ -1897,7 +1897,7 @@ class we_object extends we_document{
 					}
 				}
 			}
-			$this->EditPageNr = 0;
+			$this->EditPageNr = WE_EDITPAGE_PROPERTIES;
 			$this->Category = $doc->Category;
 		}
 	}

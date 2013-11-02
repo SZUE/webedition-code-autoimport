@@ -64,22 +64,22 @@ class we_binaryDocument extends we_document{
 	function editor(){
 		switch($this->EditPageNr){
 			case WE_EDITPAGE_PROPERTIES:
-				return "we_templates/we_editor_properties.inc.php";
+				return 'we_templates/we_editor_properties.inc.php';
 			case WE_EDITPAGE_IMAGEEDIT:
-				return "we_templates/we_image_imageedit.inc.php";
+				return 'we_templates/we_image_imageedit.inc.php';
 			case WE_EDITPAGE_INFO:
-				return "we_templates/we_editor_info.inc.php";
+				return 'we_templates/we_editor_info.inc.php';
 			case WE_EDITPAGE_CONTENT:
-				return "we_templates/we_editor_binaryContent.inc.php";
+				return 'we_templates/we_editor_binaryContent.inc.php';
 			case WE_EDITPAGE_WEBUSER:
-				return "we_modules/customer/editor_weDocumentCustomerFilter.inc.php";
+				return 'we_modules/customer/editor_weDocumentCustomerFilter.inc.php';
 			case WE_EDITPAGE_VERSIONS:
-				return "we_versions/we_editor_versions.inc.php";
+				return 'we_versions/we_editor_versions.inc.php';
 				break;
 			default:
 				$this->EditPageNr = WE_EDITPAGE_PROPERTIES;
 				$_SESSION['weS']['EditPageNr'] = WE_EDITPAGE_PROPERTIES;
-				return "we_templates/we_editor_properties.inc.php";
+				return 'we_templates/we_editor_properties.inc.php';
 		}
 	}
 

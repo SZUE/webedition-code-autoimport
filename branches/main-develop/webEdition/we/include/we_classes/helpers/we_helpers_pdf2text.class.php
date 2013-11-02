@@ -59,7 +59,7 @@ class we_helpers_pdf2text{
 	public function __construct($file){
 		if(!file_exists($file)){
 			t_e('file not found', $file);
-		} else{
+		} else {
 			$this->file = $file;
 		}
 	}
@@ -160,7 +160,7 @@ class we_helpers_pdf2text{
 				$id = rtrim($encoding, self::TRIM_REF);
 				$this->unset[] = rtrim($encoding, self::TRIM_REF);
 				$this->processFontDictionary($this->data[$id], $elem);
-			} else{
+			} else {
 				$this->setDefaultFontTable($encoding, $elem);
 			}
 
@@ -209,7 +209,7 @@ class we_helpers_pdf2text{
 				if(isset($this->encodings[$encoding])){
 					$elem['charMap'] = $this->encodings[$encoding];
 					return;
-				} else{
+				} else {
 					//print_r($this->encodings);
 					if(defined('DEBUG') && strstr(DEBUG, 'fontout')){
 						echo 'not found:' . $encoding;
@@ -283,7 +283,7 @@ class we_helpers_pdf2text{
 			if($eod){
 				// EOD shall behave as if a 0 (zero) followed the last digit
 				$data = substr($data, 0, -1) . '0' . substr($data, -1);
-			} else{
+			} else {
 				$this->Error('decodeASCIIHex: invalid code');
 			}
 		}
@@ -339,17 +339,17 @@ class we_helpers_pdf2text{
 			if($char == 122){ // 'z'
 				if($group_pos == 0){
 					$decoded .= $zseq;
-				} else{
+				} else {
 					$this->Error('decodeASCII85: invalid code');
 				}
-			} else{
+			} else {
 				// the value represented by a group of 5 characters should never be greater than 2^32 - 1
 				$tuple += (($char - 33) * $pow85[$group_pos]);
 				if($group_pos == 4){
 					$decoded .= chr($tuple >> 24) . chr($tuple >> 16) . chr($tuple >> 8) . chr($tuple);
 					$tuple = 0;
 					$group_pos = 0;
-				} else{
+				} else {
 					++$group_pos;
 				}
 			}
@@ -411,7 +411,7 @@ class we_helpers_pdf2text{
 		// previous val
 		$prev_index = 0;
 		// while we encounter EOD marker (257), read code_length bits
-		while(($data_length > 0) AND (($index = bindec(substr($bitstring, 0, $bitlen))) != 257)) {
+		while(($data_length > 0) AND (($index = bindec(substr($bitstring, 0, $bitlen))) != 257)){
 			// remove read bits from string
 			$bitstring = substr($bitstring, $bitlen);
 			// update number of bits
@@ -431,7 +431,7 @@ class we_helpers_pdf2text{
 				// first entry
 				$decoded .= $dictionary[$index];
 				$prev_index = $index;
-			} else{
+			} else {
 				// check if index exist in the dictionary
 				if($index < $dix){
 					// index exist on dictionary
@@ -439,7 +439,7 @@ class we_helpers_pdf2text{
 					$dic_val = $dictionary[$prev_index] . $dictionary[$index]{0};
 					// store current index
 					$prev_index = $index;
-				} else{
+				} else {
 					// index do not exist on dictionary
 					$dic_val = $dictionary[$prev_index] . $dictionary[$prev_index]{0};
 					$decoded .= $dic_val;
@@ -466,7 +466,7 @@ class we_helpers_pdf2text{
 		// data length
 		$data_length = strlen($data);
 		$i = 0;
-		while($i < $data_length) {
+		while($i < $data_length){
 			// get current byte value
 			$byte = ord($data{$i});
 			if($byte == 128){
@@ -478,7 +478,7 @@ class we_helpers_pdf2text{
 				$decoded .= substr($data, ($i + 1), ($byte + 1));
 				// move to next block
 				$i += ($byte + 2);
-			} else{
+			} else {
 				// if length is in the range 129 to 255,
 				// the following single byte shall be copied 257 - length (2 to 128) times during decompression
 				$decoded .= str_repeat($data{($i + 1)}, (257 - $byte));
@@ -518,7 +518,7 @@ class we_helpers_pdf2text{
 					for(; $start < $end; ++$start){
 						$table[self::unichr($start)] = self::unichr($value++);
 					}
-				} else{
+				} else {
 					$values = explode('>', strtr($values, array(' ' => '', '<' => '')));
 					foreach($values as $cur){
 						$table[self::unichr($start++)] = self::unichr($cur, true);
@@ -548,7 +548,7 @@ class we_helpers_pdf2text{
 				$ret.=mb_convert_encoding('&#x' . $cur . ';', 'UTF-8', 'HTML-ENTITIES');
 			}
 			return $ret;
-		} else{
+		} else {
 			return mb_convert_encoding('&#' . intval($u) . ';', 'UTF-8', 'HTML-ENTITIES');
 		}
 	}
@@ -574,7 +574,7 @@ class we_helpers_pdf2text{
 					if($char != $key){
 						$newEnc[$type][$key] = $char;
 					}
-				} else{
+				} else {
 					$newEnc[$type][chr($key)] = '';
 				}
 			}
@@ -598,7 +598,7 @@ class we_helpers_pdf2text{
 
 		$file = $file ? $file : fopen($fname, 'r');
 		$data = '';
-		while(($read = fread($file, self::READPORTION))) {
+		while(($read = fread($file, self::READPORTION))){
 			$data.=$read;
 			if(strrpos($read, self::ENDOBJ) !== FALSE){
 				break;
@@ -606,6 +606,7 @@ class we_helpers_pdf2text{
 		}
 		if(!$data || (strlen($data) < self::READPORTION && (strrpos($data, self::ENDOBJ) === FALSE))){
 			fclose($file);
+			$file = 0;
 			return '';
 		}
 
@@ -837,7 +838,7 @@ class we_helpers_pdf2text{
 				echo 'Font:' . $selectedFont . ' ' . $text . ' post: ' . $tmp . "\n";
 			}
 			$this->text.=$tmp;
-		} else{
+		} else {
 			if(defined('DEBUG') && strstr(DEBUG, 'fontout')){
 				echo 'Error-text: ' . $selectedFont;
 			}

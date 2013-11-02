@@ -23,9 +23,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 $parts = array(
-	array("icon" => "path.gif", "headline" => g_l('weClass', "[path]"), "html" => $GLOBALS['we_doc']->formPath(), "space" => 140),
-	array("icon" => "default.gif", "headline" => g_l('weClass', "[other]"), "html" => $GLOBALS['we_doc']->formOther(), "space" => 140));
-$wepos = weGetCookieVariable("but_weFlashProp");
+	array('icon' => 'path.gif', 'headline' => g_l('weClass', '[path]'), 'html' => $GLOBALS['we_doc']->formPath(), 'space' => 140),
+	array('icon' => 'default.gif', 'headline' => g_l('weClass', '[other]'), 'html' => $GLOBALS['we_doc']->formOther(), 'space' => 140));
 
 print we_multiIconBox::getJS() .
-	we_multiIconBox::getHTML("weFlashProp", "100%", $parts, 20);
+	we_multiIconBox::getHTML('weVideoProp', '100%', $parts, 20);

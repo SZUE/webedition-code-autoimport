@@ -39,7 +39,7 @@ function getFirstValidEditPageNr($doc, $EditPageNr){
 		return $EditPageNr;
 	} else{
 		//	bugfix for new tag: we:hidePages
-		foreach($doc->EditPageNrs AS $key => $_editpage){
+		foreach(array_keys($doc->EditPageNrs) as $key){
 			//  the command in this case is swith_edit_page, because in this funtion
 			//  the editor tries to select a certain edit_page
 			//  in some cases it must switch it
@@ -334,8 +334,8 @@ we_html_tools::htmlTop();
 
 		}
 	<?php
-	if(strpos($we_doc->ContentType, "image/") !== false || strpos($we_doc->ContentType, "application/") !== false){
-		$we_doc->EditPageNr = 1;
+	if(is_a($we_doc, 'we_binaryDocument')){
+		$we_doc->EditPageNr = WE_EDITPAGE_CONTENT;
 	}
 }
 ?>
@@ -440,7 +440,7 @@ if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
 	<?php
 } else{
 
-	$showContentEditor = ($we_doc->EditPageNr == WE_EDITPAGE_CONTENT && substr($we_doc->ContentType, 0, 5) == "text/" && $we_doc->ContentType != "text/webedition");
+	$showContentEditor = ($we_doc->EditPageNr == WE_EDITPAGE_CONTENT && substr($we_doc->ContentType, 0, 5) == 'text/' && $we_doc->ContentType != 'text/webedition');
 	?>
 	<frameset onload="_EditorFrame.initEditorFrameData({'EditorIsLoading': false});" rows="39,<?php echo $showContentEditor ? "0,*" : "*,0"; ?>,40" framespacing="0" border="0" frameborder="NO" onunload="doUnload();">
 		<frame src="<?php print we_class::url(WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=load_edit_header"); ?>" name="editHeader" noresize scrolling="no"/>

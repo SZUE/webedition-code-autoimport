@@ -645,7 +645,8 @@ function id_to_path($IDs, $table = FILE_TABLE, $db = '', $prePostKomma = false, 
 }
 
 function getTemplatePath($dest){
-	return TEMPLATES_PATH . preg_replace('/.tmpl$/i', '.php', (is_numeric($dest) ? id_to_path($dest, TEMPLATES_TABLE) : $dest));
+	$ret = preg_replace('/.tmpl$/i', '.php', (is_numeric($dest) ? id_to_path($dest, TEMPLATES_TABLE) : $dest));
+	return ($ret && $ret != '/' ? TEMPLATES_PATH . $ret : '');
 }
 
 function getHashArrayFromCSV($csv, $firstEntry, $db = ''){

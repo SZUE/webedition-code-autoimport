@@ -26,13 +26,14 @@
 /**
   @param $query: SQL query; an empty query resets the cache
  */
-function getHash($query, $DB_WE, $resultType = MYSQL_BOTH){
+function getHash($query, $DB_WE = '', $resultType = MYSQL_BOTH){
 	static $cache = array();
 	if($query == ''){
 		$cache = array();
 		return $cache;
 	}
 	if(!isset($cache[$query])){
+		$DB_WE = $DB_WE ? $DB_WE : $GLOBALS['DB_WE'];
 		if(!is_object($DB_WE)){
 			t_e('missing DB connection');
 			return array();
@@ -43,9 +44,9 @@ function getHash($query, $DB_WE, $resultType = MYSQL_BOTH){
 	return $cache[$query];
 }
 
-function f($query, $field, $DB_WE, $emptyValue = ''){
-	$h = getHash($query, $DB_WE, MYSQL_ASSOC);
-	return isset($h[$field]) ? $h[$field] : $emptyValue;
+function f($query, $field = -1, $DB_WE = '', $emptyValue = ''){
+	$h = getHash($query, ($DB_WE ? $DB_WE : $GLOBALS['DB_WE']), MYSQL_ASSOC);
+	return ($field == -1 ? current($h) : (isset($h[$field]) ? $h[$field] : $emptyValue));
 }
 
 function doUpdateQuery($DB_WE, $table, $hash, $where){
