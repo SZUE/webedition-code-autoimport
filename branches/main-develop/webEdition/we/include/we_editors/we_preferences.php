@@ -2794,7 +2794,7 @@ function formmailBlockOnOff() {
 			$settings = array(
 				array('headline' => g_l('perms_customer', '[perm_group_title]'), 'html' => $customer_table->getHtml(), 'space' => 120),
 				array('headline' => g_l('prefs','[security][encryption][title]'), 'html' => $encryptinfo . $encryption->getHtml(), 'space' => 120, 'noline' => 1),
-				array('headline' => g_l('prefs','[security][encryption][symmetricKey]'), 'html' => $encryptionKey, 'space' => 120, 'noline' => 1),
+				array('headline' => g_l('prefs','[security][encryption][symmetricKey]'), 'html' => $encryptionKey, 'space' => 120),
 				array('headline' => g_l('prefs','[security][storeSessionPassword][title]'), 'html' => $storeSessionPassword->getHtml(), 'space' => 120),
 			);
 			return create_dialog('settings_security', g_l('prefs', '[tab][security]'), $settings);
