@@ -133,7 +133,7 @@ class weNewsletter extends weNewsletterBase{
 		}
 
 		if($this->Step != 0 || $this->Offset != 0){
-			$this->addLog("log_campagne_reset");
+			$this->addLog('log_campagne_reset');
 		}
 		$this->Step = 0;
 		$this->Offset = 0;
