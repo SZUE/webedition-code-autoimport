@@ -255,7 +255,18 @@ $l_prefs=array(
 			'sameIP'=>'from same IP',
 			'sameUser'=>'with same customer name',
 			'slowDownLogin'=>'slow down login attemps',
-	),),
+		),
+		'encryption'=>array(
+			'hint'=>'With this setting the storage of passwords is affected. We strongly advise you to set this to `hash function`. Please note, that using an encrption mechanism makes logins a little slower.
+The difference between symmetric encryption and hash is, that it is possible to decrypt data which is stored by a symetric encryption. The shown key is also used to encrypt some fields in customer management (if selected).',
+			'symmetricKey'=>'Key for symmetric encrypted fields',
+			'title'=>'Encryption',
+			
+			'type'=>array(
+				'0'=>'no encryption',
+				'1'=>'symmetric encryption',
+				'2'=>'hash function',
+	),),),
 	'seem'=>'seeMode',
 	'seem_deactivate'=>'Desactivar seeMode',
 	'seem_start_type_cockpit'=>'Cockpit',

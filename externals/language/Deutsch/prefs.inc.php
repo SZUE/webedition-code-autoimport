@@ -256,7 +256,17 @@ Zur Umstellung auf den Standard "nein" ersetzen Sie in allen Vorlagen einfach in
 			'sameIP'=>'von gleicher IP',
 			'sameUser'=>'mit gleichem Benutzernamen',
 			'slowDownLogin'=>'fehlerhaftes Login verzögern',
-	),),
+		),
+		'encryption'=>array(
+			'hint'=>'Mit dieser Einstellung beeinflussen Sie, wie Passwörter in der Datenbank gespeichert werden. Wir empfehlen dringend die Einstellung Hash zu verwenden! Beachten Sie bitte das die Verwendung von Verschlüsselung Auswirkungen auf die Login-Zeit hat! Bei der Symmetrischen Verschlüsselung lassen sich die Ursprünglichen Daten mit Hilfe des unten stehenden Keys zurückrechnen. Dieser Key wird ebenfalls für die Verschlüsselung von Daten der KV verwendet.',
+			'symmetricKey'=>'Schlüssel für Symmetrische Verschlüsselung',
+			'title'=>'Verschlüsselung',
+			
+			'type'=>array(
+				'0'=>'keine Verschlüsselung',
+				'1'=>'Symmetrische Verschlüsselung',
+				'2'=>'Hash-Funktion',
+	),),),
 	'seem'=>'SEE-Mode',
 	'seem_deactivate'=>'deaktivieren',
 	'seem_start_type_cockpit'=>'Cockpit',
