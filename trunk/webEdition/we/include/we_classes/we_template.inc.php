@@ -78,7 +78,7 @@ class we_template extends we_document{
 		while((list($k, $v) = $temp->nextElement('txt'))){
 			$this->setElement($k, $temp->getElement($k), 'txt');
 		}
-		$this->EditPageNr = 0;
+		$this->EditPageNr = WE_EDITPAGE_PROPERTIES;
 		echo we_html_element::jsElement('
 var _currentEditorRootFrame = top.weEditorFrameController.getActiveDocumentReference();
 _currentEditorRootFrame.frames[2].reloadContent = true;');

@@ -334,8 +334,8 @@ we_html_tools::htmlTop();
 
 		}
 	<?php
-	if(strpos($we_doc->ContentType, "image/") !== false || strpos($we_doc->ContentType, "application/") !== false){
-		$we_doc->EditPageNr = 1;
+	if(is_a($we_doc, 'we_binaryDocument')){
+		$we_doc->EditPageNr = WE_EDITPAGE_CONTENT;
 	}
 }
 ?>
