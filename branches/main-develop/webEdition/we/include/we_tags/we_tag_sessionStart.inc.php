@@ -151,9 +151,14 @@ function wetagsessionStartdoLogin($persistentlogins, &$SessionAutologin){
 		}
 		$u = getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE Password!="" AND LoginDenied=0 AND Username="' . $GLOBALS['DB_WE']->escape(strtolower($_REQUEST['s']['Username'])) . '"', $GLOBALS['DB_WE'], MYSQL_ASSOC);
 		if(!empty($u) && we_customer_customer::comparePassword($u['Password'], $_REQUEST['s']['Password'])){
+			if(SECURITY_SESSION_PASSWORD & we_customer_customer::STORE_DBPASSWORD == 0){
+				unset($u['Password']);
+			}
 			$_SESSION['webuser'] = $u;
 			//keep Password if known
-			$_SESSION['webuser']['_Password'] = $_REQUEST['s']['Password'];
+			if(SECURITY_SESSION_PASSWORD & we_customer_customer::STORE_PASSWORD){
+				$_SESSION['webuser']['_Password'] = $_REQUEST['s']['Password'];
+			}
 			$_SESSION['webuser']['registered'] = true;
 			$GLOBALS['DB_WE']->query('UPDATE ' . CUSTOMER_TABLE . ' SET LastLogin=UNIX_TIMESTAMP() WHERE ID=' . intval($_SESSION['webuser']['ID']));
 
@@ -180,9 +185,15 @@ function wetagsessionStartdoAutoLogin(){
 
 		$u = getHash('SELECT u.* FROM ' . CUSTOMER_TABLE . ' u JOIN ' . CUSTOMER_AUTOLOGIN_TABLE . ' c ON u.ID=c.WebUserID WHERE u.LoginDenied=0 AND u.AutoLoginDenied=0 AND u.Password!="" AND c.AutoLoginID="' . $GLOBALS['DB_WE']->escape(sha1($autologinSeek)) . '"', $GLOBALS['DB_WE'], MYSQL_ASSOC);
 		if(!empty($u)){
+			if(SECURITY_SESSION_PASSWORD & we_customer_customer::STORE_DBPASSWORD == 0){
+				unset($u['Password']);
+			}
+
 			$_SESSION['webuser'] = $u;
 			//try to decrypt password if possible
-			$_SESSION['webuser']['_Password'] = we_customer_customer::decryptData($_SESSION['webuser']['Password']);
+			if(SECURITY_SESSION_PASSWORD & we_customer_customer::STORE_PASSWORD){
+				$_SESSION['webuser']['_Password'] = we_customer_customer::decryptData($_SESSION['webuser']['Password']);
+			}
 			$_SESSION['webuser']['registered'] = true;
 			$_SESSION['webuser']['AutoLoginID'] = uniqid(hexdec(substr(session_id(), 0, 8)), true);
 			$GLOBALS['DB_WE']->query('UPDATE ' . CUSTOMER_AUTOLOGIN_TABLE . ' SET ' . we_database_base::arraySetter(array(

@@ -2784,10 +2784,18 @@ function formmailBlockOnOff() {
 			$cryptkey = get_value('SECURITY_ENCRYPTION_KEY');
 			$encryptionKey = we_html_tools::htmlTextInput('newconf[SECURITY_ENCRYPTION_KEY]', 30, ($cryptkey ? $cryptkey : we_customer_customer::cryptGetIV(56)), 112) . ' (hex)'; //+Button vorhandene Passwörter convertieren
 
+			$storeSessionPassword=new we_html_select(array('name' => 'newconf[SECURITY_SESSION_PASSWORD]', 'class' => 'weSelect'));
+			$storeSessionPassword->addOption(we_customer_customer::REMOVE_PASSWORD, g_l('prefs','[security][storeSessionPassword][type][0]'));
+			$storeSessionPassword->addOption(we_customer_customer::STORE_PASSWORD, g_l('prefs','[security][storeSessionPassword][type][1]'));
+			$storeSessionPassword->addOption(we_customer_customer::STORE_DBPASSWORD, g_l('prefs','[security][storeSessionPassword][type][2]'));
+			$storeSessionPassword->addOption(we_customer_customer::STORE_PASSWORD+we_customer_customer::STORE_DBPASSWORD, g_l('prefs','[security][storeSessionPassword][type][3]'));
+			$storeSessionPassword->selectOption(get_value('SECURITY_SESSION_PASSWORD'));
+
 			$settings = array(
 				array('headline' => g_l('perms_customer', '[perm_group_title]'), 'html' => $customer_table->getHtml(), 'space' => 120),
 				array('headline' => g_l('prefs','[security][encryption][title]'), 'html' => $encryptinfo . $encryption->getHtml(), 'space' => 120, 'noline' => 1),
 				array('headline' => g_l('prefs','[security][encryption][symmetricKey]'), 'html' => $encryptionKey, 'space' => 120, 'noline' => 1),
+				array('headline' => g_l('prefs','[security][storeSessionPassword][title]'), 'html' => $storeSessionPassword->getHtml(), 'space' => 120),
 			);
 			return create_dialog('settings_security', g_l('prefs', '[tab][security]'), $settings);
 

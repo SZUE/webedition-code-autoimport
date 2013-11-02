@@ -33,6 +33,9 @@ class we_customer_customer extends weModelBase{
 	const ENCRYPT_NONE = 0;
 	const ENCRYPT_SYMMETRIC = 1;
 	const ENCRYPT_HASH = 2;
+	const REMOVE_PASSWORD = 0;
+	const STORE_PASSWORD = 1;
+	const STORE_DBPASSWORD = 2;
 
 	//properties
 	var $ID;
