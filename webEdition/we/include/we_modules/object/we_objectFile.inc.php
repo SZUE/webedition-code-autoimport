@@ -324,7 +324,7 @@ class we_objectFile extends we_document{
 		foreach(array_keys($this->elements) as $n){
 			$this->elements[$n]['cid'] = 0;
 		}
-		$this->EditPageNr = 0;
+		$this->EditPageNr = WE_EDITPAGE_PROPERTIES;
 		$this->Category = $doc->Category;
 		$this->documentCustomerFilter = $doc->documentCustomerFilter;
 	}
