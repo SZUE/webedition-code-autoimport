@@ -266,6 +266,15 @@ Zur Umstellung auf den Standard "nein" ersetzen Sie in allen Vorlagen einfach in
 				'0'=>'keine Verschlüsselung',
 				'1'=>'Symmetrische Verschlüsselung',
 				'2'=>'Hash-Funktion',
+		),),
+		'storeSessionPassword'=>array(
+			'title'=>'Passwort in der Kundensitzung speichern',
+			
+			'type'=>array(
+				'0'=>'kein Passwort speichern',
+				'1'=>'Passwort aus Anmeldedialog speichern (_Password)',
+				'2'=>'Passwort aus Datenbank speichern (Password)',
+				'3'=>'Passwort aus Datenbank und Anmeldedialog speichern (Password, _Password)',
 	),),),
 	'seem'=>'SEE-Mode',
 	'seem_deactivate'=>'deaktivieren',

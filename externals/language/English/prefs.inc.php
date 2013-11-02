@@ -266,6 +266,15 @@ The difference between symmetric encryption and hash is, that it is possible to 
 				'0'=>'no encryption',
 				'1'=>'symmetric encryption',
 				'2'=>'hash function',
+		),),
+		'storeSessionPassword'=>array(
+			'title'=>'Save password in session',
+			
+			'type'=>array(
+				'0'=>'do not save any passwords',
+				'1'=>'save password from login dialog (_Password)',
+				'2'=>'save password from database (Password)',
+				'3'=>'save password from both database and login (Password, _Password)',
 	),),),
 	'seem'=>'seeMode',
 	'seem_deactivate'=>'deactivate',
