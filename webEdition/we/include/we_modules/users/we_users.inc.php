@@ -30,6 +30,13 @@ class we_user{
 	const INVALID_CREDENTIALS = 1;
 	const MAX_LOGIN_COUNT_REACHED = 2;
 	const ERR_USER_PATH_NOK = -5;
+	const SALT_NONE = 0;
+	const SALT_MD5 = 1;
+	const SALT_CRYPT = 2;
+	const TAB_DATA = 0;
+	const TAB_PERMISSION = 1;
+	const TAB_WORKSPACES = 2;
+	const TAB_SETTINGS = 3;
 
 	// Name of the class => important for reconstructing the class from outside the class
 	var $ClassName = __CLASS__;
@@ -90,24 +97,22 @@ class we_user{
 	// Description
 	var $Description = '';
 	// User Prefrences
-	var $Preferences = array(
-		'use_jupload' => 0,
-	);
+	var $Preferences = array();
 	var $Text = '';
 	var $Path = '';
 	var $Alias = '';
 	var $Icon = 'user.gif';
-	var $CreatorID = '';
-	var $CreateDate = '';
-	var $ModifierID = '';
-	var $ModifyDate = '';
+	var $CreatorID = 0;
+	var $CreateDate = 0;
+	var $ModifierID = 0;
+	var $ModifyDate = 0;
 	// Ping flag
 	var $Ping = 0;
 	// Documents workspaces
 	var $workSpace = '';
 	// Default documents workspaces
 	var $workSpaceDef = '';
-	// Templpates workspaces
+	// Templates workspaces
 	var $workSpaceTmp = '';
 	// Navigation workspaces
 	var $workSpaceNav = '';
@@ -156,7 +161,7 @@ class we_user{
 	var $extensions_slots = array();
 	// Preferences array
 	var $preference_slots = array('sizeOpt', 'weWidth', 'weHeight', 'usePlugin', 'autostartPlugin', 'promptPlugin', 'Language', 'BackendCharset', 'seem_start_file', 'seem_start_type', 'seem_start_weapp', 'editorSizeOpt', 'editorWidth', 'editorHeight', 'editorFontname', 'editorFontsize', 'editorFont', 'default_tree_count', 'force_glossary_action', 'force_glossary_check', 'cockpit_amount_columns', 'cockpit_amount_last_documents', 'cockpit_rss_feed_url', 'use_jupload', 'editorMode');
-	var $UseSalt = 1;
+	private $UseSalt = self::SALT_CRYPT;
 
 	// Constructor
 	function __construct(){
@@ -168,15 +173,10 @@ class we_user{
 
 		if(defined('OBJECT_TABLE')){
 			$this->workspaces[OBJECT_FILES_TABLE] = array();
-		}
-		if(defined('NEWSLETTER_TABLE')){
-			$this->workspaces[NEWSLETTER_TABLE] = array();
-		}
-
-		if(defined('OBJECT_TABLE')){
 			$this->workspaces_defaults[OBJECT_FILES_TABLE] = array();
 		}
 		if(defined('NEWSLETTER_TABLE')){
+			$this->workspaces[NEWSLETTER_TABLE] = array();
 			$this->workspaces_defaults[NEWSLETTER_TABLE] = array();
 		}
 
@@ -229,7 +229,7 @@ class we_user{
 	function savePersistentSlotsInDB(){
 		$this->ModDate = time();
 		$tableInfo = $this->DB_WE->metadata($this->Table);
-		$useSalt = 0;
+		$useSalt = self::SALT_NONE;
 		if($this->clearpasswd !== ''){
 			$this->passwd = self::makeSaltedPassword($useSalt, $this->username, $this->clearpasswd);
 		}
@@ -237,11 +237,11 @@ class we_user{
 		$updt = array();
 		foreach($tableInfo as $t){
 			$fieldName = $t['name'];
-			if($fieldName == 'UseSalt' && $useSalt > 0){
-				$val = $useSalt;
-			} else {
-				$val = isset($this->$fieldName) ? $this->$fieldName : 0;
-			}
+			$val = ($fieldName == 'UseSalt' && $useSalt > 0 ?
+					$useSalt :
+					(isset($this->$fieldName) ? $this->$fieldName : 0)
+				);
+
 			if($fieldName != 'ID'){
 				if($fieldName == 'editorFontname' && $this->Preferences['editorFont'] == '0'){
 					$val = 'none';
@@ -268,13 +268,13 @@ class we_user{
 
 	function removeAccount(){
 		if(defined('MESSAGING_SYSTEM')){
-			$this->DB_WE->query('DELETE FROM ' . MSG_ADDRBOOK_TABLE . ' WHERE UserID = ' . $this->ID);
-			$this->DB_WE->query('DELETE FROM ' . MESSAGES_TABLE . ' WHERE UserID = ' . $this->ID);
-			$this->DB_WE->query('DELETE FROM ' . MSG_TODO_TABLE . ' WHERE UserID = ' . $this->ID);
-			$this->DB_WE->query('DELETE FROM ' . MSG_TODOHISTORY_TABLE . ' WHERE UserID = ' . $this->ID);
-			$this->DB_WE->query('DELETE FROM ' . MSG_FOLDERS_TABLE . ' WHERE UserID = ' . $this->ID);
-			$this->DB_WE->query('DELETE FROM ' . MSG_ACCOUNTS_TABLE . ' WHERE UserID = ' . $this->ID);
-			$this->DB_WE->query('DELETE FROM ' . MSG_SETTINGS_TABLE . ' WHERE UserID = ' . $this->ID);
+			$this->DB_WE->query('DELETE FROM ' . MSG_ADDRBOOK_TABLE . ' WHERE UserID=' . $this->ID);
+			$this->DB_WE->query('DELETE FROM ' . MESSAGES_TABLE . ' WHERE UserID=' . $this->ID);
+			$this->DB_WE->query('DELETE FROM ' . MSG_TODO_TABLE . ' WHERE UserID=' . $this->ID);
+			$this->DB_WE->query('DELETE FROM ' . MSG_TODOHISTORY_TABLE . ' WHERE UserID=' . $this->ID);
+			$this->DB_WE->query('DELETE FROM ' . MSG_FOLDERS_TABLE . ' WHERE UserID=' . $this->ID);
+			$this->DB_WE->query('DELETE FROM ' . MSG_ACCOUNTS_TABLE . ' WHERE UserID=' . $this->ID);
+			$this->DB_WE->query('DELETE FROM ' . MSG_SETTINGS_TABLE . ' WHERE UserID=' . $this->ID);
 		}
 	}
 
@@ -942,7 +942,7 @@ _multiEditorreload = true;";
 
 	function preserveState($tab, $sub_tab){
 		switch($tab){
-			case 0:
+			case self::TAB_DATA:
 				foreach($this->persistent_slots as $pkey => $pval){
 					$obj = $this->Name . '_' . $pval;
 					if(isset($_POST[$obj])){
@@ -959,7 +959,7 @@ _multiEditorreload = true;";
 					$this->ParentWsnl = (isset($_POST[$this->Name . '_ParentWsnl'])) ? 1 : 0;
 				}
 				break;
-			case 1:
+			case self::TAB_PERMISSION:
 				foreach($this->permissions_slots as $pkey => $pval){
 					foreach($pval as $k => $v){
 
@@ -970,7 +970,7 @@ _multiEditorreload = true;";
 				$obj = $this->Name . '_ParentPerms';
 				$this->ParentPerms = (isset($_POST[$obj])) ? 1 : 0;
 				break;
-			case 2:
+			case self::TAB_WORKSPACES:
 				foreach($this->workspaces as $k => $v){
 					$obj = $this->Name . '_Workspace_' . $k . '_Values';
 					if(isset($_POST[$obj])){
@@ -987,7 +987,7 @@ _multiEditorreload = true;";
 				$this->ParentWsn = (isset($_POST[$this->Name . '_ParentWsn'])) ? 1 : 0;
 				$this->ParentWsnl = (isset($_POST[$this->Name . '_ParentWsnl'])) ? 1 : 0;
 				break;
-			case 3:
+			case self::TAB_SETTINGS:
 				foreach($this->preference_slots as $val){
 					if($val == 'seem_start_file' || $val == 'seem_start_type' || $val == 'seem_start_weapp'){
 						$obj = '';
@@ -1038,22 +1038,22 @@ _multiEditorreload = true;";
 		$this->DB_WE->query('UPDATE ' . FILE_TABLE . " SET Owners='' WHERE Owners=','");
 		$this->DB_WE->query('UPDATE ' . TEMPLATES_TABLE . " SET Owners=REPLACE(Owners,'," . $this->ID . ",',',')");
 		$this->DB_WE->query('UPDATE ' . TEMPLATES_TABLE . " SET Owners='' WHERE Owners=','");
-		$this->DB_WE->query('UPDATE ' . FILE_TABLE . " SET CreatorID='$newID'  WHERE CreatorID=" . $this->ID);
-		$this->DB_WE->query('UPDATE ' . TEMPLATES_TABLE . " SET CreatorID='$newID'  WHERE CreatorID=" . $this->ID);
-		$this->DB_WE->query('UPDATE ' . FILE_TABLE . " SET ModifierID='$newID'  WHERE ModifierID=" . $this->ID);
-		$this->DB_WE->query('UPDATE ' . TEMPLATES_TABLE . " SET ModifierID='$newID'  WHERE ModifierID=" . $this->ID);
-		$this->DB_WE->query('UPDATE ' . USER_TABLE . " SET CreatorID='$newID'  WHERE CreatorID=" . $this->ID);
-		$this->DB_WE->query('UPDATE ' . USER_TABLE . " SET ModifierID='$newID'  WHERE ModifierID=" . $this->ID);
+		$this->DB_WE->query('UPDATE ' . FILE_TABLE . " SET CreatorID=$newID WHERE CreatorID=" . $this->ID);
+		$this->DB_WE->query('UPDATE ' . TEMPLATES_TABLE . " SET CreatorID=$newID WHERE CreatorID=" . $this->ID);
+		$this->DB_WE->query('UPDATE ' . FILE_TABLE . " SET ModifierID=$newID WHERE ModifierID=" . $this->ID);
+		$this->DB_WE->query('UPDATE ' . TEMPLATES_TABLE . " SET ModifierID=$newID WHERE ModifierID=" . $this->ID);
+		$this->DB_WE->query('UPDATE ' . USER_TABLE . " SET CreatorID=$newID WHERE CreatorID=" . $this->ID);
+		$this->DB_WE->query('UPDATE ' . USER_TABLE . ' SET ModifierID=' . $newID . ' WHERE ModifierID=' . $this->ID);
 
 		if(defined('OBJECT_TABLE')){
 			$this->DB_WE->query('UPDATE ' . OBJECT_TABLE . " SET Owners=REPLACE(Owners,'," . $this->ID . ",',',')");
 			$this->DB_WE->query('UPDATE ' . OBJECT_TABLE . " SET Owners='' WHERE Owners=','");
 			$this->DB_WE->query('UPDATE ' . OBJECT_FILES_TABLE . " SET Owners=REPLACE(Owners,'," . $this->ID . ",',',')");
 			$this->DB_WE->query('UPDATE ' . OBJECT_FILES_TABLE . " SET Owners='' WHERE Owners=','");
-			$this->DB_WE->query('UPDATE ' . OBJECT_TABLE . " SET CreatorID='$newID'  WHERE CreatorID=" . $this->ID);
-			$this->DB_WE->query('UPDATE ' . OBJECT_FILES_TABLE . " SET CreatorID='$newID'  WHERE CreatorID=" . $this->ID);
-			$this->DB_WE->query('UPDATE ' . OBJECT_TABLE . " SET ModifierID='$newID'  WHERE ModifierID=" . $this->ID);
-			$this->DB_WE->query('UPDATE ' . OBJECT_FILES_TABLE . " SET ModifierID='$newID'  WHERE ModifierID=" . $this->ID);
+			$this->DB_WE->query('UPDATE ' . OBJECT_TABLE . " SET CreatorID=$newID WHERE CreatorID=" . $this->ID);
+			$this->DB_WE->query('UPDATE ' . OBJECT_FILES_TABLE . " SET CreatorID=$newID WHERE CreatorID=" . $this->ID);
+			$this->DB_WE->query('UPDATE ' . OBJECT_TABLE . " SET ModifierID=$newID WHERE ModifierID=" . $this->ID);
+			$this->DB_WE->query('UPDATE ' . OBJECT_FILES_TABLE . " SET ModifierID=$newID WHERE ModifierID=" . $this->ID);
 		}
 	}
 
@@ -1195,19 +1195,19 @@ $this->Preferences=' . var_export($this->Preferences, true) . ';
 	function formDefinition($tab, $perm_branch){
 		$yuiSuggest = & weSuggest::getInstance();
 		switch($tab){
-			case 0:
+			case self::TAB_DATA:
 				return weSuggest::getYuiJsFiles() .
 					$this->formGeneralData() .
 					$yuiSuggest->getYuiCss();
 			//.$yuiSuggest->getYuiJs();
-			case 1:
+			case self::TAB_PERMISSION:
 				return $this->formPermissions($perm_branch);
-			case 2:
+			case self::TAB_WORKSPACES:
 				return weSuggest::getYuiJsFiles() .
 					$this->formWorkspace() .
 					$yuiSuggest->getYuiCss();
 			//.$yuiSuggest->getYuiJs();
-			case 3:
+			case self::TAB_SETTINGS:
 				return $this->formPreferences($perm_branch);
 		}
 		foreach($this->extensions_slots as $k => $v){
@@ -1521,17 +1521,19 @@ function setValues(section) {
 	switch(section){
 	case 2:
 		table="' . TEMPLATES_TABLE . '";
-		break;' . (defined("OBJECT_TABLE") ? '
+		break;' .
+				(defined("OBJECT_TABLE") ? '
 	case 3:
 		table="' . OBJECT_FILES_TABLE . '";
-		break;' : '') . (defined('NEWSLETTER_TABLE') ? '
+		break;' : '') .
+				(defined('NEWSLETTER_TABLE') ? '
 	case 5:
 		table="' . NEWSLETTER_TABLE . '";
 		break;' : '') . '
 	case 4:
 		table="' . NAVIGATION_TABLE . '";
 		break;
-	default:
+	case 1:
 		table="' . FILE_TABLE . '";
 	}
 	eval(\'fillValues(document.we_form.' . $this->Name . '_Workspace_\'+table+\'_Values,"' . $this->Name . '_Workspace_\'+table+\'")\');
@@ -1603,9 +1605,11 @@ function delElement(elvalues,elem) {
 					}
 					$title = g_l('modules_users', '[workspace_objects]');
 					break;
-				default:
+				case FILE_TABLE:
 					$title = g_l('modules_users', '[workspace_documents]');
 					break;
+				default:
+					continue;
 			}
 			$obj_values = $this->Name . '_Workspace_' . $k . '_Values';
 			$obj_names = $this->Name . '_Workspace_' . $k;
@@ -1625,7 +1629,7 @@ function delElement(elvalues,elem) {
 				case (defined('NEWSLETTER_TABLE') ? NEWSLETTER_TABLE : 'NEWSLETTER_TABLE'):
 					$content1 .= $this->formInherits('_ParentWsnl', $this->ParentWsnl, g_l('modules_users', '[inherit_wsnl]'));
 					break;
-				default:
+				case FILE_TABLE:
 					$content1 .= $this->formInherits('_ParentWs', $this->ParentWs, g_l('modules_users', '[inherit_ws]'));
 					break;
 			}
@@ -1668,7 +1672,7 @@ function delElement(elvalues,elem) {
 					case NAVIGATION_TABLE:
 						$setValue = 4;
 						break;
-					default:
+					case FILE_TABLE:
 						$setValue = 1;
 				}
 
@@ -1780,10 +1784,7 @@ function delElement(elvalues,elem) {
 		$_settings = array();
 
 
-		/*		 * ***************************************************************
-		 * LANGUAGE
-		 * *************************************************************** */
-
+		// LANGUAGE
 		//	Look which languages are installed ...
 		$_language_directory = dir(WE_INCLUDES_PATH . 'we_language');
 
@@ -1796,7 +1797,7 @@ function delElement(elvalues,elem) {
 		}
 		global $_languages;
 
-		if(count($_language)){ // Build language select box
+		if(!empty($_language)){ // Build language select box
 			$_languages = new we_html_select(array('name' => $this->Name . '_Preference_Language', 'class' => 'weSelect'));
 			$myCompLang = (isset($this->Preferences['Language']) && $this->Preferences['Language'] != '' ? $this->Preferences['Language'] : $GLOBALS['WE_LANGUAGE']);
 
@@ -1831,9 +1832,7 @@ function delElement(elvalues,elem) {
 		);
 
 
-		/*		 * ***************************************************************
-		 * AMOUNT Number of Columns
-		 * *************************************************************** */
+		//AMOUNT Number of Columns
 
 		$_amount = new we_html_select(array('name' => $this->Name . '_Preference_cockpit_amount_columns', 'class' => 'weSelect', 'onChange' => "top.content.setHot();"));
 		if($this->Preferences['cockpit_amount_columns'] == ''){
@@ -1853,11 +1852,7 @@ function delElement(elvalues,elem) {
 		);
 
 
-		/*		 * ***************************************************************
-		 * SEEM
-		 * *************************************************************** */
-
-		$_document_path = '';
+		//SEEM
 		// Generate needed JS
 		$js = we_html_element::jsElement("
 function select_seem_start() {
@@ -1884,38 +1879,41 @@ function select_seem_start() {
 }
 
 function show_seem_chooser(val) {
-	if(val == 'document') {
+	switch(val){
+	case 'document':
 		if(document.getElementById('seem_start_object')) {
 			document.getElementById('seem_start_object').style.display = 'none';
 		}
 		document.getElementById('seem_start_document').style.display = 'block';
 		document.getElementById('seem_start_weapp').style.display = 'none';
+		break;
 " . (defined('OBJECT_FILES_TABLE') ? "
-	} else if(val == 'object') {
+	case 'object':
 		document.getElementById('seem_start_document').style.display = 'none';
 		document.getElementById('seem_start_weapp').style.display = 'none';
 		document.getElementById('seem_start_object').style.display = 'block';
+		break;
 " : '') . "
-	} else if(val == 'weapp'){
+	case 'weapp':
 		document.getElementById('seem_start_document').style.display = 'none';
 		document.getElementById('seem_start_object').style.display = 'none';
 		document.getElementById('seem_start_weapp').style.display = 'block';
 
-	} else {
+		break;
+	default:
 		document.getElementById('seem_start_document').style.display = 'none';
 		document.getElementById('seem_start_weapp').style.display = 'none';
 		if(document.getElementById('seem_start_object')) {
 			document.getElementById('seem_start_object').style.display = 'none';
 		}
 
+		break;
 	}
 }");
 
 		// Cockpit
-		$_object_path = '';
-		$_object_id = 0;
-		$_document_path = '';
-		$_document_id = 0;
+		$_document_path = $_object_path = '';
+		$_document_id = $_object_id = 0;
 
 		switch($this->Preferences['seem_start_type']){
 			default:
@@ -2033,9 +2031,7 @@ function show_seem_chooser(val) {
 			);
 		}
 
-		/*		 * ***************************************************************
-		 * TREE
-		 * *************************************************************** */
+		// TREE
 
 		$_value_selected = false;
 		$_tree_count = $this->Preferences['default_tree_count'];
@@ -2076,13 +2072,9 @@ function show_seem_chooser(val) {
 
 		$_settings[] = array('headline' => g_l('prefs', '[tree_title]'), 'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[tree_count_description]'), we_html_tools::TYPE_INFO) . '<br>' . $_file_tree_count->getHtml(), 'space' => 200);
 
+		// WINDOW DIMENSIONS
 
-		/*		 * ***************************************************************
-		 * WINDOW DIMENSIONS
-		 * *************************************************************** */
-
-		$_window_max = false;
-		$_window_specify = false;
+		$_window_max = $_window_specify = false;
 
 		if($this->Preferences['sizeOpt'] == 0){
 			$_window_max = true;
@@ -2344,48 +2336,49 @@ function show_seem_chooser(val) {
 		$tab_body = $we_tabs->getJS();
 
 		switch($this->Type){
-			case 1:
+			case self::TYPE_USER_GROUP:
 				$headline1 = g_l('modules_users', "[group]") . ': ';
 				break;
-			case 2:
+			case self::TYPE_ALIAS:
 				$headline1 = g_l('javaMenu_users', '[menu_alias]') . ': ';
 				break;
+			case self::TYPE_USER:
 			default:
 				$headline1 = g_l('javaMenu_users', '[menu_user]') . ': ';
 		}
 
 		return we_html_element::jsElement('
-var activeTab = 0;
+var activeTab = ' . self::TAB_DATA . ';
 function setTab(tab) {
 	switch(tab) {
-		case 0:
+		case ' . self::TAB_DATA . ':
 			top.content.editor.edbody.switchPage(0);
-			activeTab = 0;
+			activeTab = ' . self::TAB_DATA . ';
 			break;
-		case 1:
+		case ' . self::TAB_PERMISSION . ':
 			if(top.content.editor.edbody.switchPage(1)==false){
 				setTimeout("resetTabs()",50);
 			}
-			activeTab = 1;
+			activeTab = ' . self::TAB_PERMISSION . ';
 			break;
-		case 2:
+		case ' . self::TAB_WORKSPACES . ':
 			if(top.content.editor.edbody.switchPage(2)==false) {
 				setTimeout("resetTabs()",50);
 			}
-			activeTab = 2;
+			activeTab = ' . self::TAB_WORKSPACES . ';
 			break;
-		case 3:
+		case ' . self::TAB_SETTINGS . ':
 			if(top.content.editor.edbody.switchPage(3)==false) {
 				setTimeout("resetTabs()",50);
 			}
-			activeTab = 3;
+			activeTab = ' . self::TAB_SETTINGS . ';
 			break;
 	}
 }
 
 function resetTabs(){
-		top.content.editor.edbody.document.we_form.tab.value = 0;
-		top.content.editor.edheader.tabCtrl.setActiveTab(0);
+		top.content.editor.edbody.document.we_form.tab.value = ' . self::TAB_DATA . ';
+		top.content.editor.edheader.tabCtrl.setActiveTab(' . self::TAB_DATA . ');
 }
 
 top.content.hloaded=1;') .
@@ -2404,13 +2397,13 @@ top.content.hloaded=1;') .
 	static function comparePasswords($useSalt, $username, $password, $clearPassword){
 		switch($useSalt){
 			default:
-			case 0:
+			case self::SALT_NONE:
 				$passwd = md5($clearPassword);
 				break;
-			case 1:
+			case self::SALT_MD5:
 				$passwd = md5($clearPassword . md5($username));
 				break;
-			case 2:
+			case self::SALT_CRYPT:
 				if(version_compare(PHP_VERSION, '5.3.7') >= 0){
 					$passwd = crypt($clearPassword, $password);
 				} else {
@@ -2426,16 +2419,17 @@ top.content.hloaded=1;') .
 	static function makeSaltedPassword(&$useSalt, $username, $passwd, $strength = 15){
 		$WE_SALTCHARS = './0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
+		$passwd = substr($passwd, 0, 64);
 		if(version_compare(PHP_VERSION, '5.3.7') >= 0){
 			$salt = '$2y$' . sprintf('%02d', $strength) . '$';
 			for($i = 0; $i <= 21; $i++){
 				$tmp_str = str_shuffle($WE_SALTCHARS);
 				$salt .= $tmp_str[0];
 			}
-			$useSalt = 2;
+			$useSalt = self::SALT_CRYPT;
 			return crypt($passwd, $salt);
 		} else {
-			$useSalt = 1;
+			$useSalt = self::SALT_MD5;
 			return md5($passwd . md5($username));
 		}
 	}

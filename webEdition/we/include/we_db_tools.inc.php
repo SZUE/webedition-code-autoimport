@@ -26,7 +26,7 @@
 /**
   @param $query: SQL query; an empty query resets the cache
  */
-function getHash($query, $DB_WE = '', $resultType = MYSQL_BOTH){
+function getHash($query, we_database_base $DB_WE = NULL, $resultType = MYSQL_BOTH){
 	static $cache = array();
 	if($query == ''){
 		$cache = array();
@@ -34,22 +34,18 @@ function getHash($query, $DB_WE = '', $resultType = MYSQL_BOTH){
 	}
 	if(!isset($cache[$query])){
 		$DB_WE = $DB_WE ? $DB_WE : $GLOBALS['DB_WE'];
-		if(!is_object($DB_WE)){
-			t_e('missing DB connection');
-			return array();
-		}
 		$DB_WE->query($query);
 		$cache[$query] = ($DB_WE->next_record($resultType) ? $DB_WE->Record : array());
 	}
 	return $cache[$query];
 }
 
-function f($query, $field = -1, $DB_WE = ''){
+function f($query, $field = -1, we_database_base $DB_WE = NULL){
 	$h = getHash($query, ($DB_WE ? $DB_WE : $GLOBALS['DB_WE']), MYSQL_ASSOC);
 	return ($field == -1 ? current($h) : (isset($h[$field]) ? $h[$field] : ''));
 }
 
-function doUpdateQuery($DB_WE, $table, $hash, $where){
+function doUpdateQuery(we_database_base $DB_WE, $table, $hash, $where){
 	if(empty($hash)){
 		return;
 	}
@@ -75,7 +71,7 @@ function escape_sql_query($inp){
 	return $inp;
 }
 
-function doInsertQuery($DB_WE, $table, $hash){
+function doInsertQuery(we_database_base $DB_WE, $table, $hash){
 	$tableInfo = $DB_WE->metadata($table);
 	$fn = array();
 	foreach($tableInfo as $t){
