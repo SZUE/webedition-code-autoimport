@@ -64,10 +64,10 @@ class we_customer_view extends weModuleView{
 
 	function getCommonHiddens($cmds = array()){
 		return $this->htmlHidden('cmd', (isset($cmds['cmd']) ? $cmds['cmd'] : '')) .
-			$this->htmlHidden('pnt', (isset($cmds['pnt']) ? $cmds['pnt'] : '')) .
-			$this->htmlHidden('cmdid', (isset($cmds['cmdid']) ? $cmds['cmdid'] : '')) .
-			$this->htmlHidden('activ_sort', (isset($cmds['activ_sort']) ? $cmds['activ_sort'] : '')) .
-			$this->htmlHidden('branch', (isset($_REQUEST['branch']) ? $_REQUEST['branch'] : g_l('modules_customer', '[common]')));
+				$this->htmlHidden('pnt', (isset($cmds['pnt']) ? $cmds['pnt'] : '')) .
+				$this->htmlHidden('cmdid', (isset($cmds['cmdid']) ? $cmds['cmdid'] : '')) .
+				$this->htmlHidden('activ_sort', (isset($cmds['activ_sort']) ? $cmds['activ_sort'] : '')) .
+				$this->htmlHidden('branch', (isset($_REQUEST['branch']) ? $_REQUEST['branch'] : g_l('modules_customer', '[common]')));
 	}
 
 	function getJSTop(){
@@ -128,10 +128,10 @@ function we_cmd() {
 		case "delete_customer":
 			if(top.content.editor.edbody.document.we_form.cmd.value=="home") return;
 			' . (!permissionhandler::hasPerm("DELETE_CUSTOMER") ?
-					('
+								('
 				' . we_message_reporting::getShowMessageCall(g_l('modules_customer', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 			') :
-					('
+								('
 					if (' . $this->topFrame . '.editor.edbody.loaded) {
 						if (confirm("' . g_l('modules_customer', '[delete_alert]') . '")) {
 							' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value=arguments[0];
@@ -147,10 +147,10 @@ function we_cmd() {
 		case "save_customer":
 			if(top.content.editor.edbody.document.we_form.cmd.value=="home") return;
 			' . ((!permissionhandler::hasPerm("EDIT_CUSTOMER") && !permissionhandler::hasPerm("NEW_CUSTOMER")) ?
-					('
+								('
 				' . we_message_reporting::getShowMessageCall(g_l('modules_customer', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 			') :
-					('
+								('
 
 					if (' . $this->topFrame . '.editor.edbody.loaded) {
 							' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value=arguments[0];
@@ -194,7 +194,7 @@ function we_cmd() {
 
 	function getJSProperty(){
 		return we_html_element::jsScript(JS_DIR . 'windows.js') .
-			we_html_element::jsElement('
+				we_html_element::jsElement('
 var loaded=0;
 
 function doUnload() {
@@ -432,7 +432,7 @@ function saveField(){
 	document.we_form.cmd.value="save_field";
 	submitForm();
 }' .
-			$this->getJSSubmitFunction("customer_admin");
+				$this->getJSSubmitFunction("customer_admin");
 	}
 
 	function getJSTreeHeader(){
@@ -482,7 +482,7 @@ function we_cmd(){
 	}
 }
 */' .
-			$this->getJSSubmitFunction('cmd', 'post', 'we_form_treeheader');
+				$this->getJSSubmitFunction('cmd', 'post', 'we_form_treeheader');
 	}
 
 	function getJSSearch(){
@@ -525,15 +525,15 @@ self.focus();' . $this->getJSSubmitFunction("customer_settings");
 					$this->customer = new we_customer_customer();
 					$this->settings->initCustomerWithDefaults($this->customer);
 					print we_html_element::jsElement(
-							$this->topFrame . '.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->customer->Text) . '";' .
-							$this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";'
+									$this->topFrame . '.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->customer->Text) . '";' .
+									$this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";'
 					);
 					break;
 				case 'edit_customer':
 					$this->customer = new we_customer_customer($_REQUEST["cmdid"]);
 					print we_html_element::jsElement(
-							$this->topFrame . '.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->customer->Text) . '";' .
-							$this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";'
+									$this->topFrame . '.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->customer->Text) . '";' .
+									$this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";'
 					);
 					break;
 				case 'save_customer':
@@ -541,7 +541,7 @@ self.focus();' . $this->getJSSubmitFunction("customer_settings");
 					$this->customer->Username = trim($this->customer->Username);
 					if($this->customer->Username == ''){
 						print we_html_element::jsElement(
-								we_message_reporting::getShowMessageCall(g_l('modules_customer', '[username_empty]'), we_message_reporting::WE_MESSAGE_ERROR)
+										we_message_reporting::getShowMessageCall(g_l('modules_customer', '[username_empty]'), we_message_reporting::WE_MESSAGE_ERROR)
 						);
 						break;
 					}
@@ -559,7 +559,7 @@ self.focus();' . $this->getJSSubmitFunction("customer_settings");
 					$exists = f('SELECT ID FROM ' . CUSTOMER_TABLE . ' WHERE Username="' . $this->db->escape($this->customer->Username) . '"' . ($newone ? '' : ' AND ID!=' . $this->customer->ID), 'ID', $this->db);
 					if($exists){
 						print we_html_element::jsElement(
-								we_message_reporting::getShowMessageCall(sprintf(g_l('modules_customer', '[username_exists]'), $this->customer->Username), we_message_reporting::WE_MESSAGE_ERROR)
+										we_message_reporting::getShowMessageCall(sprintf(g_l('modules_customer', '[username_exists]'), $this->customer->Username), we_message_reporting::WE_MESSAGE_ERROR)
 						);
 						break;
 					}
@@ -581,7 +581,7 @@ attribs["parentid"]="0";
 attribs["text"]="' . $tt . '";
 attribs["disable"]="0";
 attribs["tooltip"]="' . (($this->customer->Forename != "" || $this->customer->Surname != "") ? $this->customer->Forename . "&nbsp;" . $this->customer->Surname : "") . '";' .
-							$this->topFrame . '.treeData.addSort(new ' . $this->topFrame . '.node(attribs));';
+								$this->topFrame . '.treeData.addSort(new ' . $this->topFrame . '.node(attribs));';
 						$js .= $this->topFrame . '.applySort();';
 					} else {
 						$js = $this->topFrame . '.updateEntry(' . $this->customer->ID . ',"' . $tt . '");' . "\n";
@@ -589,8 +589,8 @@ attribs["tooltip"]="' . (($this->customer->Forename != "" || $this->customer->Su
 
 
 					print we_html_element::jsElement(
-							$js .
-							we_message_reporting::getShowMessageCall(sprintf(g_l('modules_customer', '[customer_saved_ok]'), addslashes($this->customer->Text)), we_message_reporting::WE_MESSAGE_NOTICE)
+									$js .
+									we_message_reporting::getShowMessageCall(sprintf(g_l('modules_customer', '[customer_saved_ok]'), addslashes($this->customer->Text)), we_message_reporting::WE_MESSAGE_NOTICE)
 					);
 					break;
 				case 'delete_customer':
@@ -599,11 +599,11 @@ attribs["tooltip"]="' . (($this->customer->Forename != "" || $this->customer->Su
 					$this->customer = new we_customer_customer();
 
 					print we_html_element::jsElement(
-							we_message_reporting::getShowMessageCall(g_l('modules_customer', '[customer_deleted]'), we_message_reporting::WE_MESSAGE_NOTICE) .
-							$this->topFrame . '.deleteEntry("' . $oldid . '"); ' .
-							$this->topFrame . '.editor.edheader.location="' . $this->frameset . '?home=1&pnt=edheader"; ' .
-							$this->topFrame . '.editor.edbody.location="' . $this->frameset . '?home=1&pnt=edbody"; ' .
-							$this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?home=1&pnt=edfooter";'
+									we_message_reporting::getShowMessageCall(g_l('modules_customer', '[customer_deleted]'), we_message_reporting::WE_MESSAGE_NOTICE) .
+									$this->topFrame . '.deleteEntry("' . $oldid . '"); ' .
+									$this->topFrame . '.editor.edheader.location="' . $this->frameset . '?home=1&pnt=edheader"; ' .
+									$this->topFrame . '.editor.edbody.location="' . $this->frameset . '?home=1&pnt=edbody"; ' .
+									$this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?home=1&pnt=edfooter";'
 					);
 
 					break;
@@ -617,7 +617,7 @@ attribs["tooltip"]="' . (($this->customer->Forename != "" || $this->customer->Su
 						new jsWindow(url,"customer_admin",-1,-1,600,420,true,true,true,false);
 					';
 					print we_html_element::jsScript(JS_DIR . "windows.js") .
-						we_html_element::jsElement($js);
+							we_html_element::jsElement($js);
 					break;
 				case 'save_field':
 					$branch = $_REQUEST['branch'];
@@ -708,9 +708,8 @@ attribs["tooltip"]="' . (($this->customer->Forename != "" || $this->customer->Su
 					$this->deleteField(($ber == '' && preg_match('%' . g_l('modules_customer', '[other]') . '%i', $field) ? $fname : $field));
 
 					$this->customer->loadPresistents();
-					$js =
-						we_message_reporting::getShowMessageCall(sprintf(g_l('modules_customer', '[field_deleted]'), $fname, $ber), we_message_reporting::WE_MESSAGE_NOTICE) .
-						'opener.refreshForm();';
+					$js = we_message_reporting::getShowMessageCall(sprintf(g_l('modules_customer', '[field_deleted]'), $fname, $ber), we_message_reporting::WE_MESSAGE_NOTICE) .
+							'opener.refreshForm();';
 					print we_html_element::jsElement($js);
 
 					break;
@@ -785,7 +784,7 @@ attribs["tooltip"]="' . (($this->customer->Forename != "" || $this->customer->Su
 
 					if($branch_new == g_l('modules_customer', '[common]') || $branch_new == g_l('modules_customer', '[other]') || $branch_new == g_l('modules_customer', '[all]')){
 						print we_html_element::jsElement(
-								we_message_reporting::getShowMessageCall(g_l('modules_customer', '[branch_no_edit]'), we_message_reporting::WE_MESSAGE_ERROR)
+										we_message_reporting::getShowMessageCall(g_l('modules_customer', '[branch_no_edit]'), we_message_reporting::WE_MESSAGE_ERROR)
 						);
 						return;
 					}
@@ -795,7 +794,7 @@ attribs["tooltip"]="' . (($this->customer->Forename != "" || $this->customer->Su
 
 						if(in_array($branch_new, $arr)){
 							print we_html_element::jsElement(
-									we_message_reporting::getShowMessageCall(g_l('modules_customer', '[name_exists]'), we_message_reporting::WE_MESSAGE_ERROR)
+											we_message_reporting::getShowMessageCall(g_l('modules_customer', '[name_exists]'), we_message_reporting::WE_MESSAGE_ERROR)
 							);
 							return;
 						}
@@ -871,7 +870,7 @@ if(selected<opener.' . $this->topFrame . '.document.we_form_treeheader.sort.opti
 opener.' . $this->topFrame . '.applySort();
 self.close();';
 					print we_html_element::jsScript(JS_DIR . "we_showMessage.js") .
-						we_html_element::jsElement($js);
+							we_html_element::jsElement($js);
 					break;
 				case 'applySort':
 					$js = $this->topFrame . '.clearTree();';
@@ -882,7 +881,7 @@ self.close();';
 						url ="' . WE_CUSTOMER_MODULE_DIR . 'edit_customer_frameset.php?pnt=search&search=1&keyword=' . $_REQUEST["keyword"] . '";
 						new jsWindow(url,"search",-1,-1,650,600,true,true,true,false);';
 					print we_html_element::jsScript(JS_DIR . "windows.js") .
-						we_html_element::jsElement($js);
+							we_html_element::jsElement($js);
 					break;
 				case 'show_customer_settings':
 					$js = '
@@ -890,21 +889,19 @@ self.close();';
 						new jsWindow(url,"customer_settings",-1,-1,550,250,true,true,true,false);
 					';
 					print we_html_element::jsScript(JS_DIR . "windows.js") .
-						we_html_element::jsElement($js);
+							we_html_element::jsElement($js);
 					break;
 				case 'import_customer':
-					$js =
-						'url ="' . WE_CUSTOMER_MODULE_DIR . 'edit_customer_frameset.php?pnt=import";
+					$js = 'url ="' . WE_CUSTOMER_MODULE_DIR . 'edit_customer_frameset.php?pnt=import";
 						new jsWindow(url,"import_customer",-1,-1,640,600,true,true,true,false);';
 					print we_html_element::jsScript(JS_DIR . "windows.js") .
-						we_html_element::jsElement($js);
+							we_html_element::jsElement($js);
 					break;
 				case 'export_customer':
-					$js =
-						'url ="' . WE_CUSTOMER_MODULE_DIR . 'edit_customer_frameset.php?pnt=export";
+					$js = 'url ="' . WE_CUSTOMER_MODULE_DIR . 'edit_customer_frameset.php?pnt=export";
 						new jsWindow(url,"export_customer",-1,-1,640,600,true,true,true,false);';
 					print we_html_element::jsScript(JS_DIR . "windows.js") .
-						we_html_element::jsElement($js);
+							we_html_element::jsElement($js);
 					break;
 				case 'save_settings':
 
@@ -919,7 +916,7 @@ self.close();';
 
 					if($this->settings->save()){
 						$js = we_message_reporting::getShowMessageCall(g_l('modules_customer', '[settings_saved]'), we_message_reporting::WE_MESSAGE_NOTICE) .
-							'self.close();';
+								'self.close();';
 					} else {
 						$js = we_message_reporting::getShowMessageCall(g_l('modules_customer', '[settings_not_saved]'), we_message_reporting::WE_MESSAGE_NOTICE);
 					}
@@ -951,8 +948,10 @@ self.close();';
 					} elseif(isset($_REQUEST['Username'])){
 						$this->customer->{$val} = '0';
 					}
-				} elseif($varname == 'Password' && isset($_REQUEST[$varname]) && $_REQUEST[$varname] == we_customer_customer::NOPWD_CHANGE){
-					//keep old pwd
+				} elseif($varname == 'Password' && isset($_REQUEST[$varname])){
+					if($_REQUEST[$varname] != we_customer_customer::NOPWD_CHANGE){//keep old pwd
+						$this->customer->{$val} = we_customer_customer::cryptPassword($_REQUEST[$varname]);
+					}
 				} elseif(isset($_REQUEST[$varname])){
 					$this->customer->{$val} = $_REQUEST[$varname];
 				}
@@ -974,8 +973,8 @@ self.close();';
 			for($i = 0; $i < $counter; $i++){
 
 				$sort_name = (isset($_REQUEST['sort_' . $i]) && $_REQUEST['sort_' . $i] != '' ?
-						$_REQUEST['sort_' . $i] :
-						g_l('modules_customer', '[sort_name]') . '_' . $i);
+								$_REQUEST['sort_' . $i] :
+								g_l('modules_customer', '[sort_name]') . '_' . $i);
 
 
 				$fcounter = (isset($_REQUEST['fcounter_' . $i]) ? $_REQUEST['fcounter_' . $i] : 1);
@@ -990,8 +989,8 @@ self.close();';
 					}
 					if(isset($_REQUEST['field_' . $i . '_' . $j])){
 						$new['field'] = ($new['branch'] == g_l('modules_customer', '[common]') ?
-								str_replace(g_l('modules_customer', '[common]') . '_', '', $_REQUEST['field_' . $i . '_' . $j]) :
-								$_REQUEST['field_' . $i . '_' . $j]);
+										str_replace(g_l('modules_customer', '[common]') . '_', '', $_REQUEST['field_' . $i . '_' . $j]) :
+										$_REQUEST['field_' . $i . '_' . $j]);
 					}
 					if(isset($_REQUEST['function_' . $i . '_' . $j])){
 						$new['function'] = $_REQUEST['function_' . $i . '_' . $j];
@@ -1153,8 +1152,8 @@ self.close();';
 						$conditionarr[] = "$field LIKE '%$value%'";
 				}
 				$condition.=(empty($condition) ?
-						' (' . implode(' OR ', $conditionarr) . ')' :
-						' ' . $ak . ' (' . implode(' OR ', $conditionarr) . ')');
+								' (' . implode(' OR ', $conditionarr) . ')' :
+								' ' . $ak . ' (' . implode(' OR ', $conditionarr) . ')');
 			}
 		}
 

@@ -30,6 +30,9 @@
 class we_customer_customer extends weModelBase{
 
 	const NOPWD_CHANGE = '__WE__PWD_NO_CHANGE';
+	const ENCRYPT_NONE = 0;
+	const ENCRYPT_SYMMETRIC = 1;
+	const ENCRYPT_HASH = 2;
 
 	//properties
 	var $ID;
@@ -151,7 +154,7 @@ class we_customer_customer extends weModelBase{
 
 			if(count($sortarray) == count($orderedarray) - 1){
 				$sortarray[] = max($sortarray) + 1;
-			} else{
+			} else {
 				$sortarray = range(0, count($orderedarray) - 1);
 			}
 		}
@@ -218,7 +221,7 @@ class we_customer_customer extends weModelBase{
 		foreach(array_keys($arr) as $b){
 			if($branch == g_l('modules_customer', '[other]')){
 				$ret[$b] = $b;
-			} else{
+			} else {
 				$ret[$branch . "_" . $b] = $b;
 			}
 		}
@@ -243,7 +246,7 @@ class we_customer_customer extends weModelBase{
 	function getFieldsDbProperties(){
 		$ret = array();
 		$this->db->query('SHOW COLUMNS FROM ' . $this->db->escape($this->table));
-		while($this->db->next_record()) {
+		while($this->db->next_record()){
 			$record = $this->db->Record;
 			switch($record['Type']){
 				case 'int(11)':
@@ -317,6 +320,75 @@ class we_customer_customer extends weModelBase{
 
 	function filenameNotValid(){
 		return preg_match('|[/]|i', $this->Username);
+	}
+
+	public static function cryptPassword($pass){
+		switch(SECURITY_ENCRYPTION_TYPE_PASSWORD){
+			case self::ENCRYPT_NONE:
+				return $pass;
+			case self::ENCRYPT_SYMMETRIC:
+				return self::cryptData($pass);
+			case self::ENCRYPT_HASH:
+				$useSalt = 0;
+				$pwd = we_user::makeSaltedPassword($useSalt, '', $pass, 8);
+				return ($useSalt != we_user::SALT_CRYPT ?
+								$pass : $pwd);
+		}
+	}
+
+	public static function comparePassword($storedPassword, $clearPassword){
+		if($storedPassword == '' || $clearPassword == ''){
+			return false;
+		}
+		if(!preg_match('|^\$([^$]*)\$([^$]*)\$(.*)$|', $storedPassword, $matches)){
+			return $storedPassword === $clearPassword;
+		}
+		switch($matches[1]){
+			case '-1':
+				return $clearPassword === self::decryptData($storedPassword);
+			case '2y':
+				return we_user::comparePasswords(we_user::SALT_CRYPT, '', $storedPassword, $clearPassword);
+		}
+		return false;
+	}
+
+	public static function cryptGetIV($len = 8){
+		if(!function_exists('mcrypt_create_iv')){
+			return '';
+		}
+		return bin2hex(mcrypt_create_iv($len, (runAtWin() ? MCRYPT_RAND : MCRYPT_DEV_URANDOM)));
+	}
+
+	public static function cryptData($data){//Note we need 4 Bytes prefix + 16 Byte IV + 1$ = 21 Bytes. The rest is avail for data, which is hex'ed, so "half" of length is available
+		if(($res = mcrypt_module_open(MCRYPT_BLOWFISH, '', MCRYPT_MODE_OFB, ''))){
+			$iv = self::cryptGetIV();
+			mcrypt_generic_init($res, SECURITY_ENCRYPTION_KEY, hex2bin($iv));
+			$data = mcrypt_generic($res, $data);
+			mcrypt_generic_deinit($res);
+			mcrypt_module_close($res);
+			return '$-1$' . $iv . '$' . bin2hex($data);
+		}
+		return $data;
+	}
+
+	public static function decryptData($data){
+		$matches = array();
+		if(!preg_match('|^\$([^$]*)\$([^$]*)\$(.*)$|', $data, $matches)){
+			return '';
+		}
+		switch($matches[1]){
+			case '-1':
+				if(($res = mcrypt_module_open(MCRYPT_BLOWFISH, '', MCRYPT_MODE_OFB, ''))){
+					mcrypt_generic_init($res, SECURITY_ENCRYPTION_KEY, hex2bin($matches[2]));
+					$data = mdecrypt_generic($res, hex2bin($matches[3]));
+					mcrypt_generic_deinit($res);
+					mcrypt_module_close($res);
+					return $data;
+				}
+			default:
+			case '2y'://can't be decoded
+				return '';
+		}
 	}
 
 }

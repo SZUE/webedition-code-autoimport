@@ -74,7 +74,7 @@ function we_tag_saveRegisteredUser($attribs){
 									ModifyDate=UNIX_TIMESTAMP(),ModifiedBy="frontend" WHERE ID=' . $_SESSION['webuser']['ID']);
 						}
 					}
-				} else{ // Username existiert schon!
+				} else { // Username existiert schon!
 					if(!$userexists){
 						$userexists = g_l('customer', '[username_exists]');
 					}
@@ -84,7 +84,7 @@ function we_tag_saveRegisteredUser($attribs){
 
 					print getHtmlTag('script', array('type' => 'text/javascript'), 'history.back(); ' . we_message_reporting::getShowMessageCall(sprintf($userexists, $_REQUEST['s']['Username']), we_message_reporting::WE_MESSAGE_FRONTEND));
 				}
-			} else{ // Password oder Username leer!
+			} else { // Password oder Username leer!
 				// Eingabe in Session schreiben, damit die eingegebenen Werte erhalten bleiben!
 				if(isset($_REQUEST['s'])){
 					we_tag_saveRegisteredUser_keepInput();
@@ -129,7 +129,7 @@ function we_tag_saveRegisteredUser($attribs){
 						$GLOBALS['we_customer_written'] = true;
 					}
 				}
-			} else{
+			} else {
 				$userexists = $userexists ? $userexists : g_l('customer', '[username_exists]');
 				print getHtmlTag('script', array('type' => 'text/javascript'), 'history.back(); ' . we_message_reporting::getShowMessageCall(sprintf($userexists, $_REQUEST['s']['Username']), we_message_reporting::WE_MESSAGE_FRONTEND));
 			}
@@ -193,7 +193,7 @@ function we_saveCustomerImages(){
 
 						//image needs to be scaled
 						if((isset($_SESSION['webuser']['imgtmp'][$imgName]['width']) && $_SESSION['webuser']['imgtmp'][$imgName]['width']) ||
-							(isset($_SESSION['webuser']['imgtmp'][$imgName]['height']) && $_SESSION['webuser']['imgtmp'][$imgName]['height'])){
+								(isset($_SESSION['webuser']['imgtmp'][$imgName]['height']) && $_SESSION['webuser']['imgtmp'][$imgName]['height'])){
 							$imageData = weFile::load($_serverPath);
 							$thumb = new we_thumbnail();
 							$thumb->init('dummy', $_SESSION['webuser']['imgtmp'][$imgName]['width'], $_SESSION['webuser']['imgtmp'][$imgName]['height'], $_SESSION['webuser']['imgtmp'][$imgName]['keepratio'], $_SESSION['webuser']['imgtmp'][$imgName]['maximize'], false, false, '', 'dummy', 0, '', '', $_extension, $we_size[0], $we_size[1], $imageData, '', $_SESSION['webuser']['imgtmp'][$imgName]['quality'], true);
@@ -286,11 +286,13 @@ function we_tag_saveRegisteredUser_processRequest($protected, $allowed){
 			case 'ID':
 				break;
 			default:
-				if((!empty($protected) && in_array($name, $protected))||
-					(!empty($allowed) && !in_array($name, $allowed))){
+				if((!empty($protected) && in_array($name, $protected)) ||
+						(!empty($allowed) && !in_array($name, $allowed))){
 					continue;
 				}
-				$set[$name] = $val;
+				$set[$name] = ($name == 'Password' ?
+								we_customer_customer::cryptPassword($val) :
+								$val);
 				break;
 		}
 	}

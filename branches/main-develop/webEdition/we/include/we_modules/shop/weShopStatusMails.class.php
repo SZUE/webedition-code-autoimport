@@ -324,7 +324,7 @@ class weShopStatusMails{
 				$CLFields = unserialize($strFelder);
 				$CLFields['languageField'] = $this->LanguageData['languageField'];
 				$CLFields['languageFieldIsISO'] = $this->LanguageData['languageFieldIsISO'];
-				$DB_WE->query('REPLACE ' . ANZEIGE_PREFS_TABLE . ' SET strFelder = "' . $DB_WE->escape(serialize($CLFields)) . '", strDateiname ="shop_CountryLanguage"');
+				$DB_WE->query('REPLACE ' . ANZEIGE_PREFS_TABLE . ' SET strFelder="' . $DB_WE->escape(serialize($CLFields)) . '", strDateiname ="shop_CountryLanguage"');
 			}
 			return true;
 		}

@@ -176,6 +176,8 @@ $GLOBALS['configs'] = array(
 		'SECURITY_LIMIT_CUSTOMER_NAME_HOURS' => array('Limit failed logins with same usernames per # hours', 1),
 		'SECURITY_LIMIT_CUSTOMER_REDIRECT' => array('If limit reached, redirect to page', ''),
 		'SECURITY_DELAY_FAILED_LOGIN' => array('Delay a failed login by # seconds', 3),
+		'SECURITY_ENCRYPTION_TYPE_PASSWORD' => array('Determines how passwords are handled', (defined('CUSTOMER_TABLE') && (f('SELECT COUNT(1) AS a FROM ' . CUSTOMER_TABLE, 'a', $GLOBALS['DB_WE']) > 5) ? we_customer_customer::ENCRYPT_NONE : we_customer_customer::ENCRYPT_HASH)),
+		'SECURITY_ENCRYPTION_KEY' => array('This is the encryption key used for password, if set to symmetric mode', ''),
 //internal
 		'CONF_SAVED_VERSION' => array('config file version', WE_SVNREV),
 	),

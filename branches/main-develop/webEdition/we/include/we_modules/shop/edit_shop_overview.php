@@ -30,7 +30,7 @@ we_html_tools::htmlTop();
 print STYLESHEET;
 
 /// config
-$DB_WE->query("SELECT strFelder from " . ANZEIGE_PREFS_TABLE . " WHERE strDateiname = 'shop_pref'");
+$DB_WE->query('SELECT strFelder FROM ' . ANZEIGE_PREFS_TABLE . " WHERE strDateiname='shop_pref'");
 $DB_WE->next_record();
 $feldnamen = explode("|", $DB_WE->f("strFelder"));
 
@@ -49,7 +49,7 @@ $r = 0;
 $f = 0;
 
 
-$DB_WE->query("SELECT IntOrderID, Price, IntQuantity, DateShipping,DatePayment FROM " . SHOP_TABLE . " WHERE DateOrder >= '$year" . (($month < 10) ? "0" . $month : $month) . "01000000' and DateOrder <= '$year" . (($month < 10) ? "0" . $month : $month) . date("t", mktime(0, 0, 0, $month, 1, $year)) . "000000' ORDER BY IntOrderID");
+$DB_WE->query('SELECT IntOrderID, Price, IntQuantity, DateShipping,DatePayment FROM ' . SHOP_TABLE . " WHERE DateOrder >= '$year" . (($month < 10) ? "0" . $month : $month) . "01000000' and DateOrder <= '$year" . (($month < 10) ? "0" . $month : $month) . date("t", mktime(0, 0, 0, $month, 1, $year)) . "000000' ORDER BY IntOrderID");
 while($DB_WE->next_record()){
 	if($DB_WE->f("DatePayment") != 0){
 		if(!isset($bezahlt)){

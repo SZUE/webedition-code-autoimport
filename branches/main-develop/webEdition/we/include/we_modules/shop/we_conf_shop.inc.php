@@ -23,7 +23,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 define('SHOP_TABLE', TBL_PREFIX . 'tblOrders');
-define('ANZEIGE_PREFS_TABLE', TBL_PREFIX . 'tblAnzeigePrefs');
+define('ANZEIGE_PREFS_TABLE', TBL_PREFIX . 'tblAnzeigePrefs'); //deprecated
+define('WE_SHOP_PREFS_TABLE', ANZEIGE_PREFS_TABLE);
 define('WE_SHOP_VAT_TABLE', TBL_PREFIX . 'tblshopvats');
 define('WE_SHOP_MODULE_DIR', WE_MODULES_DIR . 'shop/');
 define('WE_SHOP_MODULE_PATH', WE_MODULES_PATH . 'shop/');
