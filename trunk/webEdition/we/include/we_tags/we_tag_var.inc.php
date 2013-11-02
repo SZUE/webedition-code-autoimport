@@ -31,32 +31,34 @@ function we_tag_var($attribs){
 	$name_orig = weTag_getAttribute('_name_orig', $attribs);
 	$type = weTag_getAttribute('type', $attribs);
 	$htmlspecialchars = weTag_getAttribute('htmlspecialchars', $attribs, false, true); // #3771
+	$format = weTag_getAttribute('format', $attribs);
 	$doc = we_getDocForTag($docAttr, false);
 
 	switch($type){
 		case 'session' :
 			$return = getArrayValue($_SESSION, null, $name_orig);
-			return $htmlspecialchars ? oldHtmlspecialchars($return) : $return;
+			return $htmlspecialchars ? oldHtmlspecialchars($return) : ($format ? date($format, intval($return)) : $return);
 		case 'request' :
 			$return = filterXss(we_util::rmPhp(getArrayValue($_REQUEST, null, $name_orig)));
-			return $htmlspecialchars ? oldHtmlspecialchars($return) : $return;
+			return $htmlspecialchars ? oldHtmlspecialchars($return) : ($format ? date($format, intval($return)) : $return);
 		case 'post' :
 			$return = we_util::rmPhp(getArrayValue($_POST, null, $name_orig));
-			return $htmlspecialchars ? oldHtmlspecialchars($return) : $return;
+			return $htmlspecialchars ? oldHtmlspecialchars($return) : ($format ? date($format, intval($return)) : $return);
 		case 'get' :
 			$return = we_util::rmPhp(getArrayValue($_GET, null, $name_orig));
-			return $htmlspecialchars ? oldHtmlspecialchars($return) : $return;
+			return $htmlspecialchars ? oldHtmlspecialchars($return) : ($format ? date($format, intval($return)) : $return);
 		case 'global' :
 			$return = getArrayValue($GLOBALS, null, $name_orig);
-			return $htmlspecialchars ? oldHtmlspecialchars($return) : $return;
+			return $htmlspecialchars ? oldHtmlspecialchars($return) : ($format ? date($format, intval($return)) : $return);
 		case 'multiobject' :
 			$data = unserialize($doc->getField($attribs, $type, true));
 			return (isset($data['objects']) && !empty($data['objects']) ? implode(',', $data['objects']) : '');
 
 		case 'property' :
-			return (isset($GLOBALS['we_obj']) ?
+			$return = (isset($GLOBALS['we_obj']) ?
 					$GLOBALS['we_obj']->$name_orig :
 					$doc->$name_orig);
+			return ($format ? date($format, intval($return)) : $return);
 
 		case 'shopVat' :
 			if(defined('SHOP_TABLE')){
@@ -75,7 +77,8 @@ function we_tag_var($attribs){
 			$name = ($type == 'select' && $normVal == '' ? $name_orig : $name);
 			$selectKey = weTag_getAttribute('key', $attribs, false, true);
 			if($type == 'select' && $selectKey){
-				return $htmlspecialchars ? oldHtmlspecialchars($doc->getElement($name)) : $doc->getElement($name);
+				return $htmlspecialchars ? oldHtmlspecialchars($doc->getElement($name)) :
+					($format ? date($format, intval($doc->getElement($name))) : $doc->getElement($name));
 			}
 
 			if(isset($doc->DefArray) && is_array($doc->DefArray)){
@@ -86,13 +89,14 @@ function we_tag_var($attribs){
 					}
 
 					if($normVal != ''){
-						return $htmlspecialchars ? oldHtmlspecialchars($normVal) : $normVal;
+						return $htmlspecialchars ? oldHtmlspecialchars($normVal) :
+							($format ? date($format, intval($normVal)) : $normVal);
 					}
 				}
 			}
 			// EOF bugfix 7557
 
 
-			return $normVal;
+			return ($format ? date($format, intval($normVal)) : $normVal);
 	}
 }
