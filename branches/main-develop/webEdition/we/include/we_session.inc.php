@@ -52,32 +52,32 @@ if(!(isset($_POST['username']) && isset($_POST['password']))){
 	return;
 }
 
-$_userdata = getHash('SELECT UseSalt, passwd, username, LoginDenied, ID FROM ' . USER_TABLE . ' WHERE IsFolder=0 AND username="' . $DB_WE->escape($_POST['username']) . '"', $DB_WE);
+$userdata = getHash('SELECT UseSalt, passwd, username, LoginDenied, ID FROM ' . USER_TABLE . ' WHERE IsFolder=0 AND username="' . $DB_WE->escape($_POST['username']) . '"', $DB_WE);
 
 // only if username exists !!
-if(empty($_userdata) || (!we_user::comparePasswords($_userdata['UseSalt'], $_POST['username'], $_userdata['passwd'], $_POST['password']))){
+if(empty($userdata) || (!we_user::comparePasswords($userdata['UseSalt'], $_POST['username'], $userdata['passwd'], $_POST['password']))){
 	$_SESSION['user']['Username'] = '';
 	we_user::removeOldWESession();
 	return;
 }
 
-if($_userdata['LoginDenied']){ // userlogin is denied
-	$GLOBALS['userLoginDenied'] = true; #
+if($userdata['LoginDenied']){ // userlogin is denied
+	$GLOBALS['userLoginDenied'] = true;
 	return;
 }
 
-if(($_userdata['UseSalt'] < 2)){ //will cause update on old php-versions every time. since md5 doesn't cost much, ignore this.
-	$salted = we_user::makeSaltedPassword($_userdata['UseSalt'], $_POST['username'], $_POST['password']);
+if(($userdata['UseSalt'] != we_user::SALT_CRYPT)){ //will cause update on old php-versions every time. since md5 doesn't cost much, ignore this.
+	$salted = we_user::makeSaltedPassword($userdata['UseSalt'], $_POST['username'], $_POST['password']);
 	// UPDATE Password with SALT
-	$DB_WE->query('UPDATE ' . USER_TABLE . ' SET passwd="' . $DB_WE->escape($salted) . '",UseSalt=' . intval($_userdata['UseSalt']) . ' WHERE IsFolder=0 AND username="' . $DB_WE->escape($_POST["username"]) . '" AND ID=' . $_userdata['ID']);
+	$DB_WE->query('UPDATE ' . USER_TABLE . ' SET passwd="' . $DB_WE->escape($salted) . '",UseSalt=' . intval($userdata['UseSalt']) . ' WHERE IsFolder=0 AND username="' . $DB_WE->escape($_POST["username"]) . '" AND ID=' . $userdata['ID']);
 }
 
 if(!(isset($_SESSION['user']) && is_array($_SESSION['user']))){
 	$_SESSION['user'] = array();
 }
 
-$_SESSION['user']['Username'] = $_userdata['username'];
-$_SESSION['user']['ID'] = $_userdata['ID'];
+$_SESSION['user']['Username'] = $userdata['username'];
+$_SESSION['user']['ID'] = $userdata['ID'];
 
 $workspaces = array(
 	FILE_TABLE => array('key' => 'workSpace', 'value' => array(), 'parent' => 0, 'parentKey' => 'ParentWs'),
@@ -99,7 +99,7 @@ foreach($workspaces as $cur){
 }
 $fields = implode(',', $fields);
 
-$_userGroups = array(); //	Get Groups user belongs to.
+$userGroups = array(); //	Get Groups user belongs to.
 $db_tmp = new DB_WE();
 
 $DB_WE->query('SELECT ' . $fields . ' FROM ' . USER_TABLE . ' WHERE ID=' . intval($_SESSION['user']['ID']) . ' OR Alias=' . intval($_SESSION['user']['ID']));
@@ -116,7 +116,7 @@ while($DB_WE->next_record()){
 	}
 	unset($cur);
 	while($pid){ //	For each group
-		$_userGroups[] = $pid;
+		$userGroups[] = $pid;
 
 		$row = getHash('SELECT ' . $fields . ' FROM ' . USER_TABLE . ' WHERE ID=' . intval($pid), $db_tmp);
 		if(!empty($row)){
@@ -137,16 +137,18 @@ while($DB_WE->next_record()){
 		}
 	}
 }
-$_SESSION['user']['groups'] = $_userGroups; //	order: first is folder with user himself (deepest in tree)
+$_SESSION['user']['groups'] = $userGroups; //	order: first is folder with user himself (deepest in tree)
 $_SESSION['user']['workSpace'] = array();
 
 foreach($workspaces as $key => $cur){
 	$_SESSION['user']['workSpace'][$key] = array_unique(array_filter($cur['value']));
 }
 
-$_SESSION['prefs'] = we_user::readPrefs($_userdata['ID'], $DB_WE, true);
+$_SESSION['prefs'] = we_user::readPrefs($userdata['ID'], $DB_WE, true);
 
 if(isset($_SESSION['user']['Username']) && isset($_SESSION['user']['ID']) && $_SESSION['user']['Username'] && $_SESSION['user']['ID']){
 	$_SESSION['perms'] = we_user::getAllPermissions($_SESSION['user']['ID']);
 }
 $_SESSION['user']['isWeSession'] = true; // for pageLogger, to know that it is really a webEdition session
+//FIMXE make this a function to remove uneeded vars from global
+unset($userdata, $userGroups);

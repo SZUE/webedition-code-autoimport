@@ -112,7 +112,7 @@ class we_user{
 	var $workSpace = '';
 	// Default documents workspaces
 	var $workSpaceDef = '';
-	// Templpates workspaces
+	// Templates workspaces
 	var $workSpaceTmp = '';
 	// Navigation workspaces
 	var $workSpaceNav = '';
@@ -173,15 +173,10 @@ class we_user{
 
 		if(defined('OBJECT_TABLE')){
 			$this->workspaces[OBJECT_FILES_TABLE] = array();
-		}
-		if(defined('NEWSLETTER_TABLE')){
-			$this->workspaces[NEWSLETTER_TABLE] = array();
-		}
-
-		if(defined('OBJECT_TABLE')){
 			$this->workspaces_defaults[OBJECT_FILES_TABLE] = array();
 		}
 		if(defined('NEWSLETTER_TABLE')){
+			$this->workspaces[NEWSLETTER_TABLE] = array();
 			$this->workspaces_defaults[NEWSLETTER_TABLE] = array();
 		}
 
@@ -242,11 +237,11 @@ class we_user{
 		$updt = array();
 		foreach($tableInfo as $t){
 			$fieldName = $t['name'];
-			if($fieldName == 'UseSalt' && $useSalt > 0){
-				$val = $useSalt;
-			} else {
-				$val = isset($this->$fieldName) ? $this->$fieldName : 0;
-			}
+			$val = ($fieldName == 'UseSalt' && $useSalt > 0 ?
+					$useSalt :
+					(isset($this->$fieldName) ? $this->$fieldName : 0)
+				);
+
 			if($fieldName != 'ID'){
 				if($fieldName == 'editorFontname' && $this->Preferences['editorFont'] == '0'){
 					$val = 'none';
@@ -273,13 +268,13 @@ class we_user{
 
 	function removeAccount(){
 		if(defined('MESSAGING_SYSTEM')){
-			$this->DB_WE->query('DELETE FROM ' . MSG_ADDRBOOK_TABLE . ' WHERE UserID = ' . $this->ID);
-			$this->DB_WE->query('DELETE FROM ' . MESSAGES_TABLE . ' WHERE UserID = ' . $this->ID);
-			$this->DB_WE->query('DELETE FROM ' . MSG_TODO_TABLE . ' WHERE UserID = ' . $this->ID);
-			$this->DB_WE->query('DELETE FROM ' . MSG_TODOHISTORY_TABLE . ' WHERE UserID = ' . $this->ID);
-			$this->DB_WE->query('DELETE FROM ' . MSG_FOLDERS_TABLE . ' WHERE UserID = ' . $this->ID);
-			$this->DB_WE->query('DELETE FROM ' . MSG_ACCOUNTS_TABLE . ' WHERE UserID = ' . $this->ID);
-			$this->DB_WE->query('DELETE FROM ' . MSG_SETTINGS_TABLE . ' WHERE UserID = ' . $this->ID);
+			$this->DB_WE->query('DELETE FROM ' . MSG_ADDRBOOK_TABLE . ' WHERE UserID=' . $this->ID);
+			$this->DB_WE->query('DELETE FROM ' . MESSAGES_TABLE . ' WHERE UserID=' . $this->ID);
+			$this->DB_WE->query('DELETE FROM ' . MSG_TODO_TABLE . ' WHERE UserID=' . $this->ID);
+			$this->DB_WE->query('DELETE FROM ' . MSG_TODOHISTORY_TABLE . ' WHERE UserID=' . $this->ID);
+			$this->DB_WE->query('DELETE FROM ' . MSG_FOLDERS_TABLE . ' WHERE UserID=' . $this->ID);
+			$this->DB_WE->query('DELETE FROM ' . MSG_ACCOUNTS_TABLE . ' WHERE UserID=' . $this->ID);
+			$this->DB_WE->query('DELETE FROM ' . MSG_SETTINGS_TABLE . ' WHERE UserID=' . $this->ID);
 		}
 	}
 
@@ -1043,22 +1038,22 @@ _multiEditorreload = true;";
 		$this->DB_WE->query('UPDATE ' . FILE_TABLE . " SET Owners='' WHERE Owners=','");
 		$this->DB_WE->query('UPDATE ' . TEMPLATES_TABLE . " SET Owners=REPLACE(Owners,'," . $this->ID . ",',',')");
 		$this->DB_WE->query('UPDATE ' . TEMPLATES_TABLE . " SET Owners='' WHERE Owners=','");
-		$this->DB_WE->query('UPDATE ' . FILE_TABLE . " SET CreatorID='$newID'  WHERE CreatorID=" . $this->ID);
-		$this->DB_WE->query('UPDATE ' . TEMPLATES_TABLE . " SET CreatorID='$newID'  WHERE CreatorID=" . $this->ID);
-		$this->DB_WE->query('UPDATE ' . FILE_TABLE . " SET ModifierID='$newID'  WHERE ModifierID=" . $this->ID);
-		$this->DB_WE->query('UPDATE ' . TEMPLATES_TABLE . " SET ModifierID='$newID'  WHERE ModifierID=" . $this->ID);
-		$this->DB_WE->query('UPDATE ' . USER_TABLE . " SET CreatorID='$newID'  WHERE CreatorID=" . $this->ID);
-		$this->DB_WE->query('UPDATE ' . USER_TABLE . " SET ModifierID='$newID'  WHERE ModifierID=" . $this->ID);
+		$this->DB_WE->query('UPDATE ' . FILE_TABLE . " SET CreatorID=$newID WHERE CreatorID=" . $this->ID);
+		$this->DB_WE->query('UPDATE ' . TEMPLATES_TABLE . " SET CreatorID=$newID WHERE CreatorID=" . $this->ID);
+		$this->DB_WE->query('UPDATE ' . FILE_TABLE . " SET ModifierID=$newID WHERE ModifierID=" . $this->ID);
+		$this->DB_WE->query('UPDATE ' . TEMPLATES_TABLE . " SET ModifierID=$newID WHERE ModifierID=" . $this->ID);
+		$this->DB_WE->query('UPDATE ' . USER_TABLE . " SET CreatorID=$newID WHERE CreatorID=" . $this->ID);
+		$this->DB_WE->query('UPDATE ' . USER_TABLE . ' SET ModifierID=' . $newID . ' WHERE ModifierID=' . $this->ID);
 
 		if(defined('OBJECT_TABLE')){
 			$this->DB_WE->query('UPDATE ' . OBJECT_TABLE . " SET Owners=REPLACE(Owners,'," . $this->ID . ",',',')");
 			$this->DB_WE->query('UPDATE ' . OBJECT_TABLE . " SET Owners='' WHERE Owners=','");
 			$this->DB_WE->query('UPDATE ' . OBJECT_FILES_TABLE . " SET Owners=REPLACE(Owners,'," . $this->ID . ",',',')");
 			$this->DB_WE->query('UPDATE ' . OBJECT_FILES_TABLE . " SET Owners='' WHERE Owners=','");
-			$this->DB_WE->query('UPDATE ' . OBJECT_TABLE . " SET CreatorID='$newID'  WHERE CreatorID=" . $this->ID);
-			$this->DB_WE->query('UPDATE ' . OBJECT_FILES_TABLE . " SET CreatorID='$newID'  WHERE CreatorID=" . $this->ID);
-			$this->DB_WE->query('UPDATE ' . OBJECT_TABLE . " SET ModifierID='$newID'  WHERE ModifierID=" . $this->ID);
-			$this->DB_WE->query('UPDATE ' . OBJECT_FILES_TABLE . " SET ModifierID='$newID'  WHERE ModifierID=" . $this->ID);
+			$this->DB_WE->query('UPDATE ' . OBJECT_TABLE . " SET CreatorID=$newID WHERE CreatorID=" . $this->ID);
+			$this->DB_WE->query('UPDATE ' . OBJECT_FILES_TABLE . " SET CreatorID=$newID WHERE CreatorID=" . $this->ID);
+			$this->DB_WE->query('UPDATE ' . OBJECT_TABLE . " SET ModifierID=$newID WHERE ModifierID=" . $this->ID);
+			$this->DB_WE->query('UPDATE ' . OBJECT_FILES_TABLE . " SET ModifierID=$newID WHERE ModifierID=" . $this->ID);
 		}
 	}
 
@@ -1823,7 +1818,6 @@ function delElement(elvalues,elem) {
 		);
 
 		//AMOUNT Number of Columns
-
 		$_amount = new we_html_select(array('name' => $this->Name . '_Preference_cockpit_amount_columns', 'class' => 'weSelect', 'onChange' => "top.content.setHot();"));
 		if($this->Preferences['cockpit_amount_columns'] == ''){
 			$this->Preferences['cockpit_amount_columns'] = 3;
@@ -2399,6 +2393,7 @@ top.content.hloaded=1;') .
 
 	static function makeSaltedPassword(&$useSalt, $username, $passwd, $strength = 15){
 		$WE_SALTCHARS = './0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+		$passwd = substr($passwd, 0, 64);
 		$passwd = substr($passwd, 0, 64);
 		if(version_compare(PHP_VERSION, '5.3.7') >= 0){
 			$salt = '$2y$' . sprintf('%02d', $strength) . '$';

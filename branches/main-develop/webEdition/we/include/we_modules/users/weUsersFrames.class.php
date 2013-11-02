@@ -32,7 +32,7 @@ class weUsersFrames extends weModuleFrames{
 	protected $treeFooterHeight = 40;
 	protected $treeDefaultWidth = 224;
 
-	function __construct($frameset){
+	function __construct(){
 		parent::__construct(WE_USERS_MODULE_DIR . "edit_users_frameset.php");
 		$this->View = new weUsersView(WE_USERS_MODULE_DIR . "edit_users_frameset.php", "top.content");
 	}
@@ -282,27 +282,11 @@ function urlEntry(icon,name,vorfahr,text,contentType,table,published,denied) {
 }
 		';
 
-		/*
-		function readChilds($pid){//is this ever called?
-			$db_temp = new DB_WE();
-			$db_temp->query('SELECT ID,username,ParentID,Type,Permissions FROM ' . USER_TABLE . ' WHERE Type=1 AND ParentID=' . intval($pid) . " ORDER BY username ASC");
-			while($db_temp->next_record()){
-				$GLOBALS['entries'][$db_temp->f("ID")]["username"] = $db_temp->f("username");
-				$GLOBALS['entries'][$db_temp->f("ID")]["ParentID"] = $db_temp->f("ParentID");
-				$GLOBALS['entries'][$db_temp->f("ID")]["Type"] = $db_temp->f("Type");
-				$GLOBALS['entries'][$db_temp->f("ID")]["Permissions"] = substr($db_temp->f("Permissions"), 0, 1);
-				if($db_temp->f("Type") == 1){
-					readChilds($db_temp->f("ID"));
-				}
-			}
-		}*/
-
 		$jsCode .= '
-		function loadData() {
-			menuDaten.clear();
-		';
+function loadData() {
+	menuDaten.clear();
+';
 
-		$entries = array();
 		if(permissionhandler::hasPerm("NEW_USER") || permissionhandler::hasPerm("NEW_GROUP") || permissionhandler::hasPerm("SAVE_USER") || permissionhandler::hasPerm("SAVE_GROUP") || permissionhandler::hasPerm("DELETE_USER") || permissionhandler::hasPerm("DELETE_GROUP")){
 			if(permissionhandler::hasPerm("ADMINISTRATOR")){
 				$parent_path = '/';
@@ -318,27 +302,26 @@ function urlEntry(icon,name,vorfahr,text,contentType,table,published,denied) {
 			$this->db->query('SELECT ID,ParentID,Text,Type,Permissions,LoginDenied FROM ' . USER_TABLE . " WHERE Path LIKE '" . $this->db->escape($parent_path) . "%' ORDER BY Text ASC");
 
 			while($this->db->next_record()){
-				if($this->db->f("Type") == 1){
-					$jsCode .= "  menuDaten.add(new dirEntry('folder'," . $this->db->f("ID") . "," . $this->db->f("ParentID") . ",'" . addslashes($this->db->f("Text")) . "',false,'group','" . USER_TABLE . "',1));";
+				if($this->db->f('Type') == we_user::TYPE_USER_GROUP){
+					$jsCode .= "  menuDaten.add(new dirEntry('folder'," . $this->db->f('ID') . ',' . $this->db->f("ParentID") . ",'" . addslashes($this->db->f("Text")) . "',false,'group','" . USER_TABLE . "',1));";
 				} else {
 					$p = unserialize($this->db->f("Permissions"));
-					$jsCode .= "  menuDaten.add(new urlEntry('" . ($this->db->f("Type") == 2 ? 'user_alias.gif' : 'user.gif') . "'," . $this->db->f("ID") . "," . $this->db->f("ParentID") . ",'" . addslashes($this->db->f("Text")) . "','" . ($this->db->f("Type") == 2 ? 'alias' : 'user') . "','" . USER_TABLE . "','" . (isset($p["ADMINISTRATOR"]) && $p["ADMINISTRATOR"]) . "','" . $this->db->f("LoginDenied") . "'));";
+					$jsCode .= "  menuDaten.add(new urlEntry('" . ($this->db->f('Type') == we_user::TYPE_ALIAS ? 'user_alias.gif' : 'user.gif') . "'," . $this->db->f("ID") . "," . $this->db->f("ParentID") . ",'" . addslashes($this->db->f("Text")) . "','" . ($this->db->f("Type") == we_user::TYPE_ALIAS ? 'alias' : 'user') . "','" . USER_TABLE . "','" . (isset($p["ADMINISTRATOR"]) && $p["ADMINISTRATOR"]) . "','" . $this->db->f("LoginDenied") . "'));";
 				}
 			}
 		}
 
 		$jsCode .= '
-		}
+}
 
-		function start() {
-			loadData();
-			drawEintraege();
-		}
+function start() {
+	loadData();
+	drawEintraege();
+}
 
-		var startloc=0;
+var startloc=0;
 
-		self.focus();
-		';
+self.focus();';
 
 		return we_html_element::jsElement($jsCode);
 	}
@@ -390,7 +373,7 @@ function urlEntry(icon,name,vorfahr,text,contentType,table,published,denied) {
 		} else {
 			$user_object = new we_user();
 			$user_object->setState($_SESSION["user_session_data"]);
-			print we_html_element::htmlBody(array('style' => 'background:white url(' . IMAGE_DIR . 'backgrounds/header_with_black_line.gif); margin-top: 0; margin-left: 0;'), $user_object->formHeader(isset($_REQUEST["tab"]) ? $_REQUEST["tab"] : 0));
+			print we_html_element::htmlBody(array('onresize' => 'setFrameSize()', 'onload' => 'setFrameSize()', 'style' => 'background:white url(' . IMAGE_DIR . 'backgrounds/header_with_black_line.gif); margin-top: 0; margin-left: 0;'), $user_object->formHeader(isset($_REQUEST["tab"]) ? $_REQUEST["tab"] : 0));
 		}
 	}
 
@@ -414,8 +397,8 @@ function urlEntry(icon,name,vorfahr,text,contentType,table,published,denied) {
 			we_html_element::htmlHidden($attribs = array("name" => "sd", "value" => 0,));
 
 		if($user_object){
-			if(isset($_REQUEST["oldtab"]) && isset($_REQUEST["old_perm_branch"])){ // && isset($_REQUEST["old_perm_branch"]) added for 4705
-				$user_object->preserveState($_REQUEST["oldtab"], $_REQUEST["old_perm_branch"]);
+			if(isset($_REQUEST['oldtab']) && isset($_REQUEST['old_perm_branch'])){ // && isset($_REQUEST["old_perm_branch"]) added for 4705
+				$user_object->preserveState($_REQUEST['oldtab'], $_REQUEST['old_perm_branch']);
 				$_SESSION["user_session_data"] = $user_object->getState();
 			}
 			if(isset($_REQUEST["seem_start_file"])){

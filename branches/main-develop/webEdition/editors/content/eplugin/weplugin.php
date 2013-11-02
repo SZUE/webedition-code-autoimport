@@ -76,7 +76,7 @@ $js = we_html_element::jsElement('
 
 			_EditorFrame.setEditorIsHot(true);
 
-			var source =  (self.isLoaded) ? document.WePlugin.getSource(trans) : "";
+			var source =  (self.isLoaded) ? document.WePlugin.getSource(trans).replace(/\r?\n?$/,"") : "";
 
 			if(_EditorFrame && _EditorFrame.getContentEditor().setSource){
 				_EditorFrame.getContentEditor().setSource(source);

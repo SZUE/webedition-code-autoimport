@@ -512,10 +512,9 @@ function makeCSVFromArray($arr, $prePostKomma = false, $sep = ','){
 	if($prePostKomma){
 		$out = $sep . $out . $sep;
 	}
-	if($replaceKomma){
-		$out = str_replace('###komma###', '\\' . $sep, $out);
-	}
-	return $out;
+	return ($replaceKomma ?
+			str_replace('###komma###', '\\' . $sep, $out) :
+			$out);
 }
 
 function shortenPath($path, $len){
