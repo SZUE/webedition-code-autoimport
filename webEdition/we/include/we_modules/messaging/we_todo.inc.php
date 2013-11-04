@@ -27,8 +27,8 @@ require_once(WE_MESSAGING_MODULE_PATH . 'we_conf_messaging.inc.php');
 /* todo object class */
 
 class we_todo extends we_msg_proto{
-
 	/* Flag which is set when the file is not new */
+
 	var $selected_message = array();
 	var $selected_set = array();
 	var $search_fields = array('m.headerSubject', 'm.headerCreator', 'm.MessageText');
@@ -53,6 +53,7 @@ class we_todo extends we_msg_proto{
 	var $so2sqlso = array(
 		'desc' => 'asc',
 		'asc' => 'desc');
+	protected $obj_type = we_msg_proto::TODO_NR;
 
 	function __construct(){
 		parent::__construct();
@@ -75,7 +76,7 @@ class we_todo extends we_msg_proto{
 
 		if(!empty($init_folders)){
 			$this->DB_WE->query('SELECT ID, obj_type FROM ' . MSG_FOLDERS_TABLE . ' WHERE UserID=' . intval($this->userid) . ' AND msg_type=' . $this->sql_class_nr . ' AND (obj_type=' . $this->DB_WE->escape(implode(' OR obj_type=', $init_folders)) . ')');
-			while($this->DB_WE->next_record()) {
+			while($this->DB_WE->next_record()){
 				$this->default_folders[$this->DB_WE->f('obj_type')] = $this->DB_WE->f('ID');
 			}
 		}
@@ -121,14 +122,6 @@ class we_todo extends we_msg_proto{
 
 	/* Getters And Setters */
 
-	function get_newmsg_count(){
-		return intval(f('SELECT COUNT(1) AS c FROM ' . $this->table . ' WHERE (seenStatus & ' . we_msg_proto::STATUS_READ . '=0) AND obj_type=' . we_msg_proto::TODO_NR . ' AND msg_type=' . $this->sql_class_nr . ' AND ParentID=' . $this->default_folders[we_msg_proto::FOLDER_INBOX] . ' AND UserID=' . intval($this->userid), 'c', $this->DB_WE));
-	}
-
-	function get_count($folder_id){
-		$cnt = f('SELECT COUNT(1) AS c FROM ' . $this->DB_WE->escape($this->table) . ' WHERE ParentID=' . intval($folder_id) . ' AND obj_type=' . we_msg_proto::TODO_NR . ' AND msg_type=' . $this->sql_class_nr . ' AND UserID=' . intval($this->userid), 'c', $this->DB_WE);
-		return $cnt === '' ? -1 : $cnt;
-	}
 
 	/* 	function get_userids_by_nick($nick){
 	  $ret_ids = array();
@@ -146,17 +139,13 @@ class we_todo extends we_msg_proto{
 		return $tmp['First'] . ' ' . $tmp['Second'] . ' (' . $tmp['username'] . ')';
 	}
 
-	function create_folder($name, $parent, $aid = -1){
-		return parent::create_folder($name, $parent, $aid);
-	}
-
 	/* get subtree starting with node $id */
 
 	function &get_f_children($id){
 		$fids = array();
 
 		$this->DB_WE->query('SELECT ID FROM ' . $this->folder_tbl . ' WHERE ParentID=' . intval($id) . ' AND UserID=' . $this->userid);
-		while($this->DB_WE->next_record()) {
+		while($this->DB_WE->next_record()){
 			$fids[] = $this->DB_WE->f('ID');
 		}
 
@@ -165,23 +154,6 @@ class we_todo extends we_msg_proto{
 		}
 
 		return $fids;
-	}
-
-	function delete_items(&$i_headers){
-		if(empty($i_headers)){
-			return -1;
-		}
-
-		$cond = '';
-		foreach($i_headers as $ih){
-			$cond .= 'ID=' . intval($ih['_ID']) . ' OR ';
-		}
-
-		$cond = substr($cond, 0, -4);
-
-		$this->DB_WE->query('DELETE FROM ' . $this->DB_WE->escape($this->table) . ' WHERE (' . $this->DB_WE->escape($cond) . ') AND obj_type=' . we_msg_proto::TODO_NR . " AND UserID=" . $this->userid);
-
-		return 1;
 	}
 
 	function history_update($id, $userid, $fromuserid, $comment, $action, $status = 'NULL'){
@@ -216,7 +188,7 @@ class we_todo extends we_msg_proto{
 			if($this->history_update($msg['_ID'], $userid, $userid, $data['todo_comment'], we_msg_proto::ACTION_COMMENT)){
 				$ret['msg'] = g_l('modules_messaging', '[update_successful]');
 				$ret['changed'] = 1;
-			} else{
+			} else {
 				$ret['msg'] = g_l('modules_messaging', '[error_occured]');
 				$ret['err'] = 1;
 			}
@@ -234,10 +206,10 @@ class we_todo extends we_msg_proto{
 				if($this->default_folders[we_msg_proto::FOLDER_DONE] < 0){
 					$ret['msg'] = g_l('modules_messaging', '[todo_move_error]') . ': ' . g_l('modules_messaging', '[no_done_folder]');
 					return $ret;
-				} else{
+				} else {
 					$set_query['ParentID'] = $this->default_folders[we_msg_proto::FOLDER_DONE];
 				}
-			} else{
+			} else {
 				if(f('SELECT ParentID FROM ' . $this->table . ' WHERE ID=' . $msg['_ID'], 'ParentID', $this->DB_WE) == $this->default_folders[we_msg_proto::FOLDER_DONE]){
 					$set_query['ParentID'] = $this->default_folders[we_msg_proto::FOLDER_INBOX];
 				}
@@ -294,7 +266,7 @@ class we_todo extends we_msg_proto{
 		if($this->history_update($msg['int_hdrs']['_ID'], $userid, $this->userid, $data['body'], we_msg_proto::ACTION_FORWARD) == 1){
 			$this->DB_WE->query('UPDATE ' . $this->table . " SET ParentID=$in_folder, UserID=" . intval($userid) . ', seenStatus=0, headerAssigner=' . intval($this->userid) . " WHERE ID=" . intval($msg['int_hdrs']['_ID']) . ' AND UserID=' . intval($this->userid));
 			$results['ok'][] = $rcpt;
-		} else{
+		} else {
 			$results['err'][] = g_l('modules_messaging', '[todo_err_history_update]');
 			$results['failed'][] = $rcpt;
 		}
@@ -403,7 +375,7 @@ class we_todo extends we_msg_proto{
 						$results['failed'][] = $rcpt;
 						continue;
 					}
-				} else{
+				} else {
 					$results['err'][] = g_l('modules_messaging', '[no_inbox_folder]');
 					$results['failed'][] = $rcpt;
 					continue;
@@ -425,7 +397,7 @@ class we_todo extends we_msg_proto{
 					'seenStatus' => 0,
 					'Priority' => empty($data['priority']) ? 'NULL' : $data['priority'],
 					'Content_Type' => empty($data['Content_Type']) ? 'NULL' : $data['Content_Type']
-				)));
+			)));
 
 			$results['id'] = $this->DB_WE->getInsertId();
 			$results['ok'][] = $rcpt;
@@ -451,7 +423,7 @@ class we_todo extends we_msg_proto{
 			}
 
 			foreach($criteria['search_fields'] as $sf){
-				$sfield_cond .= array_key_by_val($sf, $this->sf2sqlfields) . ' LIKE "%' . $this->DB_WE->escape($criteria['searchterm']) . '%" OR ';
+				$sfield_cond .= array_search($sf, $this->sf2sqlfields) . ' LIKE "%' . $this->DB_WE->escape($criteria['searchterm']) . '%" OR ';
 			}
 
 			$sfield_cond = substr($sfield_cond, 0, -4);
@@ -482,7 +454,7 @@ class we_todo extends we_msg_proto{
 
 		$seen_ids = array();
 
-		while($this->DB_WE->next_record()) {
+		while($this->DB_WE->next_record()){
 			if(!($this->DB_WE->f('seenStatus') & we_msg_proto::STATUS_SEEN)){
 				$seen_ids[] = $this->DB_WE->f('ID');
 			}
@@ -531,7 +503,7 @@ class we_todo extends we_msg_proto{
 
 		$read_ids = array();
 
-		while($this->DB_WE->next_record()) {
+		while($this->DB_WE->next_record()){
 			if(!($this->DB_WE->f('seenStatus') && we_msg_proto::STATUS_READ)){
 				$read_ids[] = $this->DB_WE->f('ID');
 			}
@@ -539,7 +511,7 @@ class we_todo extends we_msg_proto{
 			$history = array();
 			/* FIXME: get the ids; use one query outside of the loop; */
 			$db2->query('SELECT u.username, t.Comment, t.Created, t.action, t.fromUserID FROM ' . MSG_TODOHISTORY_TABLE . ' as t, ' . USER_TABLE . ' as u WHERE t.ParentID=' . $this->DB_WE->f('ID') . ' AND t.UserID=u.ID ORDER BY Created');
-			while($db2->next_record()) {
+			while($db2->next_record()){
 				$history[] = array(
 					'username' => $db2->f('username'),
 					'from_userid' => $db2->f('fromUserID'),

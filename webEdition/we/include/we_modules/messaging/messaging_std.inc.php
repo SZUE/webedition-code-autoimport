@@ -40,7 +40,7 @@ function array_get_kvals($key, &$arr){
 	return $ret_arr;
 }
 
-function array_hash_construct($arr_hash, $keys, $map=""){
+function array_hash_construct($arr_hash, $keys, $map = ""){
 	$ret_arr = array();
 	$len_arr = count($arr_hash);
 
@@ -96,14 +96,6 @@ function array_cmp(&$arr1, &$arr2){
 	return 1;
 }
 
-/* Return key for given value */
-
-function array_key_by_val($value, &$arr){
-	foreach($arr as $key => $val){
-		if(array_cmp($val, $value))
-			return $key;
-	}
-}
 
 /* in_array in PHP versions prior to 4.2.0 can not take an */
 /* array as needle */
@@ -145,13 +137,15 @@ function array_ksearch($key, $val, &$arr, $pos = 0){
 function get_nameline($id, $addr = 'username'){
 	$db2 = new DB_WE();
 	if($addr == 'username'){
-		$db2->query("SELECT First, Second, Username FROM " . USER_TABLE . " WHERE ID=" . intval($id));
-		if($db2->next_record())
-			return $db2->f('Username') . ((($db2->f('First') == '') && ($db2->f('Second') == '')) ? '' : ' (' . $db2->f('First') . ' ' . $db2->f('Second') . ')');
-	} else{
-		$db2->query("SELECT First, Second, Username, Email FROM " . USER_TABLE . " WHERE ID=" . intval($id));
-		if($db2->next_record())
-			return $db2->f('Email') . ' (' . ((($db2->f('First') == '') && ($db2->f('Second') == '')) ? $db2->f('Username') : $db2->f('First') . ' ' . $db2->f('Second')) . ')';
+		$data = getHash('SELECT First, Second, Username FROM ' . USER_TABLE . ' WHERE ID=' . intval($id), $db2);
+		if($data){
+			return $data['Username'] . ((($data['First'] == '') && ($data['Second'] == '')) ? '' : ' (' . $data['First'] . ' ' . $data['Second'] . ')');
+		}
+	} else {
+		$data = getHash('SELECT First, Second, Username, Email FROM ' . USER_TABLE . ' WHERE ID=' . intval($id), $db2);
+		if($data){
+			return $data['Email'] . ' (' . ((($data['First'] == '') && ($data['Second'] == '')) ? $data['Username'] : $data['First'] . ' ' . $data['Second']) . ')';
+		}
 	}
 
 	return g_l('modules_messaging', '[userid_not_found]');
