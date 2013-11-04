@@ -27,12 +27,12 @@ $parts = array();
 $_space_size = 120;
 
 
-if($we_doc->ClassName != "we_imageDocument" && we_hasPerm("CAN_EDIT_CUSTOMERFILTER")){
+if($we_doc->ClassName != 'we_imageDocument' && we_hasPerm('CAN_EDIT_CUSTOMERFILTER')){
 	$_filter = $we_doc->documentCustomerFilter;
 	if(!$_filter){
 		$_filter = weDocumentCustomerFilter::getEmptyDocumentCustomerFilter();
 	}
-	$_view = new weDocumentCustomerFilterView($_filter, "_EditorFrame.setEditorIsHot(true);", 520);
+	$_view = new weDocumentCustomerFilterView($_filter, '_EditorFrame.setEditorIsHot(true);', 520);
 
 	$parts[] = array(
 		'headline' => g_l('modules_customerFilter', '[customerFilter]'),
@@ -53,7 +53,7 @@ $parts[] = array(
 print we_html_tools::htmlTop() .
 	STYLESHEET;
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
-print we_html_element::cssElement("
+print we_html_element::cssElement('
 .paddingLeft {
 	padding-left: 25px;
 }
@@ -62,18 +62,18 @@ print we_html_element::cssElement("
 	padding-bottom: 10px;
 }
 
-");
+');
 
-print we_html_element::jsScript(JS_DIR . "windows.js") .
-	we_html_element::jsScript(JS_DIR . "utils/multi_edit.js") .
+print we_html_element::jsScript(JS_DIR . 'windows.js') .
+	we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js') .
 	(isset($yuiSuggest) ? // webuser filter is not displayed at images, so $yuiSuggest is not defined!
 		weSuggest::getYuiFiles() : '') .
 	'</head><body class="weEditorBody"><form name="we_form" onsubmit="return false">' .
 	we_class::hiddenTrans() .
-	($we_doc->ClassName != "we_imageDocument" ?
-		we_html_tools::hidden("we_edit_weDocumentCustomerFilter", 1) .
-		we_html_tools::hidden("weDocumentCustomerFilter_id", $_filter->getId()) : '') .
-	we_multiIconBox::getHTML("weDocProp", "100%", $parts, 20, "", -1, g_l('weClass', "[moreProps]"), g_l('weClass', "[lessProps]")) .
+	($we_doc->ClassName != 'we_imageDocument' && we_hasPerm('CAN_EDIT_CUSTOMERFILTER') ?
+		we_html_tools::hidden('we_edit_weDocumentCustomerFilter', 1) .
+		we_html_tools::hidden('weDocumentCustomerFilter_id', $_filter->getId()) : '') .
+	we_multiIconBox::getHTML('weDocProp', '100%', $parts, 20, '', -1, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]')) .
 	'</form>
 </body>
 </html>';

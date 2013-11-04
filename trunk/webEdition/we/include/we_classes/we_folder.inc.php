@@ -99,7 +99,7 @@ class we_folder extends we_root{
 	 * adjust EditPageNrs for CUSTOMERFILTER AND DOCLIST
 	 */
 	function adjustEditPageNr(){
-		if(defined('CUSTOMER_FILTER_TABLE')){
+		if(defined('CUSTOMER_TABLE') && (we_hasPerm('CAN_EDIT_CUSTOMERFILTER') || we_hasPerm('CAN_CHANGE_DOCS_CUSTOMER'))){
 
 			if($this->Table == FILE_TABLE || $this->Table == OBJECT_FILES_TABLE){
 				array_push($this->EditPageNrs, WE_EDITPAGE_WEBUSER);
@@ -478,20 +478,20 @@ class we_folder extends we_root{
 			$userCanChange = false;
 		}
 		return (!$userCanChange ? '<table border="0" cellpadding="0" cellspacing="0"><tr><td><span class="defaultfont">' . $this->Path . '</span></td></tr>' :
-			'<table border="0" cellpadding="0" cellspacing="0">
+				'<table border="0" cellpadding="0" cellspacing="0">
 	<tr><td class="defaultfont">' . $this->formInputField('', ($this->Table == FILE_TABLE || $this->Table == TEMPLATES_TABLE) ? 'Filename' : 'Text', g_l('weClass', '[filename]'), 50, 388, 255, 'onChange=_EditorFrame.setEditorIsHot(true);pathOfDocumentChanged();') . '</td><td></td><td></td></tr>
 	<tr><td>' . we_html_tools::getPixel(20, 10) . '</td><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(100, 2) . '</td></tr>
 	<tr><td colspan="3" class="defaultfont">' . $this->formDirChooser(388) . '</td></tr>' .
-			(defined('OBJECT_FILES_TABLE') && $this->Table == OBJECT_FILES_TABLE ?
-				'	<tr><td>' . we_html_tools::getPixel(20, 4) . '</td><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(100, 2) . '</td></tr>
+				(defined('OBJECT_FILES_TABLE') && $this->Table == OBJECT_FILES_TABLE ?
+					'	<tr><td>' . we_html_tools::getPixel(20, 4) . '</td><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(100, 2) . '</td></tr>
 		<tr><td>' . we_html_tools::getPixel(20, 4) . '</td><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(100, 2) . '</td></tr>
 		<tr><td colspan="3" class="defaultfont">' . $this->formTriggerDocument() . '</td></tr>
 			<tr><td colspan="3">
 		<table border="0" cellpadding="0" cellspacing="0"><tr><td>' . we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[grant_tid_expl]') . ($this->ID ? '' : g_l('weClass', '[availableAfterSave]')), we_html_tools::TYPE_INFO, 388, false) . '</td><td>' .
-				we_button::create_button('ok', 'javascript:if(_EditorFrame.getEditorIsHot()) { ' . we_message_reporting::getShowMessageCall(g_l('weClass', "[saveFirstMessage]"), we_message_reporting::WE_MESSAGE_ERROR) . "; } else {;we_cmd('changeTriggerIDRecursive','" . $GLOBALS["we_transaction"] . "');}", true, 100, 22, '', '', ($this->ID ? false : true)) . '</td></tr>
+					we_button::create_button('ok', 'javascript:if(_EditorFrame.getEditorIsHot()) { ' . we_message_reporting::getShowMessageCall(g_l('weClass', "[saveFirstMessage]"), we_message_reporting::WE_MESSAGE_ERROR) . "; } else {;we_cmd('changeTriggerIDRecursive','" . $GLOBALS["we_transaction"] . "');}", true, 100, 22, '', '', ($this->ID ? false : true)) . '</td></tr>
 					<tr><td>' . we_html_tools::getPixel(409, 2) . '</td><td></td></tr></table></td></tr>' :
-				'') .
-			($this->Table == FILE_TABLE && $this->ID && we_hasPerm('ADMINISTRATOR') ? '
+					'') .
+				($this->Table == FILE_TABLE && $this->ID && we_hasPerm('ADMINISTRATOR') ? '
 	<tr><td>' . we_html_tools::getPixel(20, 10) . '</td><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(100, 2) . '</td></tr>
 	<tr><td class="defaultfont">' . $this->formInputField('', 'urlMap', g_l('weClass', '[urlMap]'), 50, 388, 255, 'onChange=_EditorFrame.setEditorIsHot(true); ') . '</td><td></td><td></td></tr>
 ' : '')) .

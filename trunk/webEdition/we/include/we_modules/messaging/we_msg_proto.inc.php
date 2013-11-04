@@ -48,8 +48,8 @@ class we_msg_proto extends we_class{
 	const TODO_PROP_NONE = 0;
 	const TODO_PROP_IMMOVABLE = 1;
 
-
 	/* Flag which is set when the file is not new */
+
 	var $Folder_ID = -1;
 	var $userid = -1;
 	var $username = '';
@@ -217,7 +217,7 @@ class we_msg_proto extends we_class{
 
 		$this->DB_WE->query('SELECT ID, ParentID, account_id, Name, obj_type FROM  ' . $this->DB_WE->escape($this->folder_tbl) . ' WHERE msg_type=' . intval($this->sql_class_nr) . ' AND UserID=' . intval($this->userid));
 		//$this->DB_WE->query('SELECT ID, ParentID, account_id, Name, obj_type FROM  ' . $this->folder_tbl . ' WHERE msg_type=' . $this->sql_class_nr  . ' AND UserID=' . $this->userid);
-		while($this->DB_WE->next_record()) {
+		while($this->DB_WE->next_record()){
 			$this->available_folders[] = array('ID' => $this->DB_WE->f('ID'),
 				'ParentID' => $this->DB_WE->f('ParentID'),
 				'ClassName' => $this->ClassName,
@@ -289,17 +289,17 @@ class we_msg_proto extends we_class{
 
 		$query = 'SELECT ID, Name, (Properties & ' . we_msg_proto::FOLDER_NR . ') as norm FROM ' . $this->DB_WE->escape($this->folder_tbl) . " WHERE ($cond) AND UserID=" . intval($this->userid);
 		$this->DB_WE->query($query);
-		while($this->DB_WE->next_record()) {
+		while($this->DB_WE->next_record()){
 			if($this->DB_WE->f('norm') == 1){
 				$norm_folders[] = $this->DB_WE->f('Name') . ' (ID=' . $this->DB_WE->f('ID') . ')';
-			} else{
+			} else {
 				$rm_folders[] = $this->DB_WE->f('ID');
 			}
 		}
 
 		if(empty($rm_folders)){
 			return $ret;
-		} else{
+		} else {
 			$query = 'DELETE FROM ' . $this->DB_WE->escape($this->folder_tbl) . ' WHERE (ID=' . join(' OR ID=', $rm_folders) . ') AND UserID=' . intval($this->userid);
 			$this->DB_WE->query($query);
 		}
@@ -331,7 +331,7 @@ class we_msg_proto extends we_class{
 			if(($this->last_sortfield != $this->sortfield) || $this->sortorder != 'asc'){
 				usort($this->selected_set, array($this, 'cmp_asc'));
 				$this->sortorder = 'asc';
-			} else{
+			} else {
 				usort($this->selected_set, array($this, 'cmp_desc'));
 				$this->sortorder = 'desc';
 			}
@@ -361,6 +361,29 @@ class we_msg_proto extends we_class{
 		$this->cached[] = 'sortfield';
 		$this->cached[] = 'sortorder';
 		//	$this->got_sortstuff_from_db = 1;
+	}
+
+	function delete_items(&$i_headers){
+		if(empty($i_headers)){
+			return -1;
+		}
+
+		$cond = array();
+		foreach($i_headers as $ih){
+			$cond[] = 'ID=' . intval($ih['_ID']);
+		}
+
+		$this->DB_WE->query('DELETE FROM ' . $this->table . ' WHERE (' . implode(' OR ', $cond) . ') AND obj_type=' . $this->obj_type . ' AND UserID=' . intval($this->userid));
+
+		return 1;
+	}
+
+	function get_newmsg_count(){
+		return intval(f('SELECT COUNT(1) AS c FROM ' . $this->table . ' WHERE (seenStatus&' . we_msg_proto::STATUS_READ . '=0) AND obj_type=' . $this->obj_type . ' AND msg_type = ' . intval($this->sql_class_nr) . ' AND ParentID = ' . $this->default_folders[we_msg_proto::FOLDER_INBOX] . ' AND UserID = ' . intval($this->userid), 'c', $this->DB_WE));
+	}
+
+	function get_count($folder_id){
+		return f('SELECT COUNT(1) AS c FROM ' . $this->table . ' WHERE ParentID=' . intval($folder_id) . ' AND obj_type=' . $this->obj_type . ' AND msg_type = ' . intval($this->sql_class_nr) . ' AND UserID = ' . intval($this->userid), 'c', $this->DB_WE);
 	}
 
 }
