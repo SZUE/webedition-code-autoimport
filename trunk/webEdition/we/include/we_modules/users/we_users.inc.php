@@ -2387,6 +2387,10 @@ top.content.hloaded=1;') .
 			$tab_body;
 	}
 
+	static function filenameNotValid($username){
+		return preg_match('|^[A-Za-z0-9._\-][A-Za-z0-9._\-@]+$|', $username);
+	}
+
 	/**
 	 *
 	 * @param type $useSalt DB-field
