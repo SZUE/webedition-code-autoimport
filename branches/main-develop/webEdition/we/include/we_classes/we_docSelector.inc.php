@@ -32,11 +32,11 @@ class we_docSelector extends we_dirSelector{
 	protected $ctp = array("image/*" => "NEW_GRAFIK", "video/quicktime" => "NEW_QUICKTIME", "application/x-shockwave-flash" => "NEW_FLASH");
 	protected $ctb = array("" => "btn_add_file", "image/*" => "btn_add_image", "video/quicktime" => "btn_add_quicktime", "application/x-shockwave-flash" => "btn_add_flash");
 
-	function __construct($id, $table = "", $JSIDName = "", $JSTextName = "", $JSCommand = "", $order = "", $sessionID = "", $we_editDirID = "", $FolderText = "", $filter = "", $rootDirID = 0, $open_doc = 0, $multiple = 0, $canSelectDir = 0){
+	function __construct($id, $table = '', $JSIDName = '', $JSTextName = '', $JSCommand = '', $order = '', $sessionID = '', $we_editDirID = '', $FolderText = '', $filter = '', $rootDirID = 0, $open_doc = 0, $multiple = 0, $canSelectDir = 0){
 		parent::__construct($id, ($table == '' ? FILE_TABLE : $table), $JSIDName, $JSTextName, $JSCommand, $order, $sessionID, $we_editDirID, $FolderText, $rootDirID, $multiple, $filter);
 		$this->fields.=',ModDate,RestrictOwners,Owners,OwnersReadOnly,CreatorID';
 		if($this->table == FILE_TABLE || (defined("OBJECT_FILES_TABLE") && $this->table == OBJECT_FILES_TABLE)){
-			$this->fields .= ",Published";
+			$this->fields .= ',Published';
 		}
 		$this->canSelectDir = $canSelectDir;
 
@@ -100,10 +100,10 @@ class we_docSelector extends we_dirSelector{
 				break;
 			case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
 				$_path = $this->path;
-				while($_path !== "" && dirname($_path) != "\\" && dirname($_path) != "/"){
+				while($_path !== '' && dirname($_path) != '\\' && dirname($_path) != '/'){
 					$_path = dirname($_path);
 				}
-				$_cid = f('SELECT ID FROM ' . OBJECT_TABLE . " WHERE Path='" . $_db->escape($_path) . "'", "ID", $_db);
+				$_cid = f('SELECT ID FROM ' . OBJECT_TABLE . " WHERE Path='" . $_db->escape($_path) . "'", 'ID', $_db);
 				$this->titleName = f('SELECT DefaultTitle FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($_cid), 'DefaultTitle', $_db);
 				if($this->titleName && strpos($this->titleName, '_')){
 					$_db->query('SELECT OF_ID, ' . $this->titleName . ' FROM ' . OBJECT_X_TABLE . $_cid . ' WHERE OF_ParentID=' . intval($this->dir));

@@ -53,6 +53,7 @@ class we_todo extends we_msg_proto{
 	var $so2sqlso = array(
 		'desc' => 'asc',
 		'asc' => 'desc');
+	protected $obj_type = we_msg_proto::TODO_NR;
 
 	function __construct(){
 		parent::__construct();
@@ -121,14 +122,6 @@ class we_todo extends we_msg_proto{
 
 	/* Getters And Setters */
 
-	function get_newmsg_count(){
-		return intval(f('SELECT COUNT(1) AS c FROM ' . $this->table . ' WHERE (seenStatus & ' . we_msg_proto::STATUS_READ . '=0) AND obj_type=' . we_msg_proto::TODO_NR . ' AND msg_type=' . $this->sql_class_nr . ' AND ParentID=' . $this->default_folders[we_msg_proto::FOLDER_INBOX] . ' AND UserID=' . intval($this->userid), 'c', $this->DB_WE));
-	}
-
-	function get_count($folder_id){
-		$cnt = f('SELECT COUNT(1) AS c FROM ' . $this->DB_WE->escape($this->table) . ' WHERE ParentID=' . intval($folder_id) . ' AND obj_type=' . we_msg_proto::TODO_NR . ' AND msg_type=' . $this->sql_class_nr . ' AND UserID=' . intval($this->userid), 'c', $this->DB_WE);
-		return $cnt === '' ? -1 : $cnt;
-	}
 
 	/* 	function get_userids_by_nick($nick){
 	  $ret_ids = array();
@@ -146,10 +139,6 @@ class we_todo extends we_msg_proto{
 		return $tmp['First'] . ' ' . $tmp['Second'] . ' (' . $tmp['username'] . ')';
 	}
 
-	function create_folder($name, $parent, $aid = -1){
-		return parent::create_folder($name, $parent, $aid);
-	}
-
 	/* get subtree starting with node $id */
 
 	function &get_f_children($id){
@@ -165,23 +154,6 @@ class we_todo extends we_msg_proto{
 		}
 
 		return $fids;
-	}
-
-	function delete_items(&$i_headers){
-		if(empty($i_headers)){
-			return -1;
-		}
-
-		$cond = '';
-		foreach($i_headers as $ih){
-			$cond .= 'ID=' . intval($ih['_ID']) . ' OR ';
-		}
-
-		$cond = substr($cond, 0, -4);
-
-		$this->DB_WE->query('DELETE FROM ' . $this->DB_WE->escape($this->table) . ' WHERE (' . $this->DB_WE->escape($cond) . ') AND obj_type=' . we_msg_proto::TODO_NR . " AND UserID=" . $this->userid);
-
-		return 1;
 	}
 
 	function history_update($id, $userid, $fromuserid, $comment, $action, $status = 'NULL'){
@@ -423,8 +395,8 @@ class we_todo extends we_msg_proto{
 					'Properties' => we_msg_proto::TODO_PROP_NONE,
 					'MessageText' => $data['body'],
 					'seenStatus' => 0,
-					'Priority' => $data['priority'] ? : 'NULL',
-					'Content_Type' => $data['Content_Type'] ? : 'NULL'
+					'Priority' => $data['priority'] ? $data['priority'] : 'NULL',
+					'Content_Type' => $data['Content_Type'] ? $data['Content_Type'] : 'NULL'
 			)));
 
 			$results['id'] = $this->DB_WE->getInsertId();
@@ -451,7 +423,7 @@ class we_todo extends we_msg_proto{
 			}
 
 			foreach($criteria['search_fields'] as $sf){
-				$sfield_cond .= array_key_by_val($sf, $this->sf2sqlfields) . ' LIKE "%' . $this->DB_WE->escape($criteria['searchterm']) . '%" OR ';
+				$sfield_cond .= array_search($sf, $this->sf2sqlfields) . ' LIKE "%' . $this->DB_WE->escape($criteria['searchterm']) . '%" OR ';
 			}
 
 			$sfield_cond = substr($sfield_cond, 0, -4);

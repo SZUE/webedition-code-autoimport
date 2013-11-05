@@ -48,6 +48,7 @@ class we_messaging_message extends we_msg_proto{
 		'm.MessageText' => array('body', 'MessageText'));
 	var $so2sqlso = array('desc' => 'asc',
 		'asc' => 'desc');
+	protected $obj_type = we_msg_proto::MESSAGE_NR;
 
 	/* Constructor */
 
@@ -79,40 +80,12 @@ class we_messaging_message extends we_msg_proto{
 	}
 
 	//FIXME: put following 2 methods out of the class (same goes for we_todo.inc.php)
-
 	function username_to_userid($username){
 		$id = f('SELECT ID FROM ' . USER_TABLE . ' WHERE username="' . $this->DB_WE->escape($username) . '"', 'ID', new DB_WE());
 		return ($id === '' ? -1 : $id);
 	}
 
 	/* Getters And Setters */
-
-	function get_newmsg_count(){
-		return intval(f('SELECT COUNT(1) AS c FROM ' . $this->table . ' WHERE (seenStatus & ' . we_msg_proto::STATUS_READ . '=0) AND obj_type = ' . we_msg_proto::MESSAGE_NR . ' AND msg_type = ' . intval($this->sql_class_nr) . ' AND ParentID = ' . $this->default_folders[we_msg_proto::FOLDER_INBOX] . ' AND UserID = ' . intval($this->userid), 'c', $this->DB_WE));
-	}
-
-	function get_count($folder_id){
-		return f('SELECT COUNT(1) AS c FROM ' . $this->table . ' WHERE ParentID = ' . intval($folder_id) . ' AND obj_type = ' . we_msg_proto::MESSAGE_NR . ' AND msg_type = ' . intval($this->sql_class_nr) . ' AND UserID = ' . intval($this->userid), 'c', $this->DB_WE);
-	}
-
-	function create_folder($name, $parent){
-		return parent::create_folder($name, $parent);
-	}
-
-	function delete_items(&$i_headers){
-		if(empty($i_headers)){
-			return -1;
-		}
-
-		$cond = array();
-		foreach($i_headers as $ih){
-			$cond[] = 'ID = ' . intval($ih['_ID']);
-		}
-
-		$this->DB_WE->query('DELETE FROM ' . $this->table . ' WHERE (' . implode(' OR ', $cond) . ') AND obj_type=' . we_msg_proto::MESSAGE_NR . ' AND UserID=' . intval($this->userid));
-
-		return 1;
-	}
 
 	function clipboard_cut($items, $target_fid){
 		if(empty($items)){
@@ -186,9 +159,7 @@ class we_messaging_message extends we_msg_proto{
 			}
 
 			/* FIXME: replace this by default_folders[inbox] or something */
-			$this->DB_WE->query('SELECT ID FROM ' . $this->DB_WE->escape($this->folder_tbl) . ' WHERE obj_type = ' . we_msg_proto::FOLDER_INBOX . ' AND msg_type = ' . intval($this->sql_class_nr) . ' AND UserID = ' . intval($userid));
-			$this->DB_WE->next_record();
-			$in_folder = $this->DB_WE->f('ID');
+			$in_folder = f('SELECT ID FROM ' . $this->DB_WE->escape($this->folder_tbl) . ' WHERE obj_type = ' . we_msg_proto::FOLDER_INBOX . ' AND msg_type = ' . intval($this->sql_class_nr) . ' AND UserID = ' . intval($userid), 'ID', $this->DB_WE);
 			if(!isset($in_folder) || $in_folder == ''){
 				/* Create default Folders for target user */
 				require_once(WE_MESSAGING_MODULE_PATH . "messaging_interfaces.inc.php");
@@ -208,17 +179,15 @@ class we_messaging_message extends we_msg_proto{
 				}
 			}
 
-			$this->DB_WE->query('INSERT INTO ' . $this->DB_WE->escape($this->table) . " (ParentID, UserID, msg_type, obj_type, headerDate, headerSubject, headerUserID, Priority, MessageText,seenStatus) VALUES (" . intval($in_folder) . ", " . intval($userid) . ', ' . $this->sql_class_nr . ', ' . we_msg_proto::MESSAGE_NR . ', UNIX_TIMESTAMP(NOW()), "' . $this->DB_WE->escape(($data['subject'])) . '", ' . intval($this->userid) . ', 0, "' . $this->DB_WE->escape($data['body']) . '", 0)');
+			$this->DB_WE->query('INSERT INTO ' . $this->table . " (ParentID, UserID, msg_type, obj_type, headerDate, headerSubject, headerUserID, Priority, MessageText,seenStatus) VALUES (" . intval($in_folder) . ", " . intval($userid) . ', ' . $this->sql_class_nr . ', ' . we_msg_proto::MESSAGE_NR . ', UNIX_TIMESTAMP(NOW()), "' . $this->DB_WE->escape(($data['subject'])) . '", ' . intval($this->userid) . ', 0, "' . $this->DB_WE->escape($data['body']) . '", 0)');
 			$results['ok'][] = $rcpt;
 		}
 		/* Copy sent message into 'Sent' Folder of the sender */
 		if(!isset($this->default_folders[we_msg_proto::FOLDER_SENT]) || $this->default_folders[we_msg_proto::FOLDER_SENT] < 0){
-			$this->DB_WE->query('SELECT ID FROM ' . $this->DB_WE->escape($this->folder_tbl) . ' WHERE obj_type = ' . we_msg_proto::FOLDER_SENT . ' AND msg_type = ' . $this->sql_class_nr . ' AND UserID = ' . intval($_SESSION["user"]["ID"]));
-			$this->DB_WE->next_record();
-			$this->default_folders[we_msg_proto::FOLDER_SENT] = $this->DB_WE->f('ID');
+			$this->default_folders[we_msg_proto::FOLDER_SENT] = f('SELECT ID FROM ' . $this->DB_WE->escape($this->folder_tbl) . ' WHERE obj_type = ' . we_msg_proto::FOLDER_SENT . ' AND msg_type = ' . $this->sql_class_nr . ' AND UserID = ' . intval($_SESSION["user"]["ID"]), 'ID', $this->DB_WE);
 		}
 		$to_str = join(', ', $rcpts);
-		$this->DB_WE->query('INSERT INTO ' . $this->DB_WE->escape($this->table) . ' (ParentID, UserID, msg_type, obj_type, headerDate, headerSubject, headerUserID, headerTo, Priority, MessageText, seenStatus) VALUES (' . $this->default_folders[we_msg_proto::FOLDER_SENT] . ', ' . intval($this->userid) . ', ' . $this->sql_class_nr . ', ' . we_msg_proto::MESSAGE_NR . ', UNIX_TIMESTAMP(NOW()), "' . $this->DB_WE->escape($data['subject']) . '", ' . intval($this->userid) . ', "' . $this->DB_WE->escape(strlen($to_str) > 60 ? substr($to_str, 0, 60) . '...' : $to_str) . '", 0, "' . $this->DB_WE->escape($data['body']) . '", 0)');
+		$this->DB_WE->query('INSERT INTO ' . $this->table . ' (ParentID, UserID, msg_type, obj_type, headerDate, headerSubject, headerUserID, headerTo, Priority, MessageText, seenStatus) VALUES (' . $this->default_folders[we_msg_proto::FOLDER_SENT] . ', ' . intval($this->userid) . ', ' . $this->sql_class_nr . ', ' . we_msg_proto::MESSAGE_NR . ', UNIX_TIMESTAMP(NOW()), "' . $this->DB_WE->escape($data['subject']) . '", ' . intval($this->userid) . ', "' . $this->DB_WE->escape(strlen($to_str) > 60 ? substr($to_str, 0, 60) . '...' : $to_str) . '", 0, "' . $this->DB_WE->escape($data['body']) . '", 0)');
 
 		return $results;
 	}
@@ -239,7 +208,7 @@ class we_messaging_message extends we_msg_proto{
 			}
 
 			foreach($criteria['search_fields'] as $sf){
-				$sfield_cond .= array_key_by_val($sf, $this->sf2sqlfields) . ' LIKE "%' . escape_sql_query($criteria['searchterm']) . '%" OR ';
+				$sfield_cond .= array_search($sf, $this->sf2sqlfields) . ' LIKE "%' . escape_sql_query($criteria['searchterm']) . '%" OR ';
 			}
 
 			$sfield_cond = substr($sfield_cond, 0, -3);

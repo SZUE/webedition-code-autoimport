@@ -80,7 +80,7 @@ class we_objectFile extends we_document{
 			$ac = we_users_util::getAllowedClasses($this->DB_WE);
 			$this->AllowedClasses = makeCSVFromArray($ac);
 		}
-		if(defined('CUSTOMER_TABLE')){
+		if(defined('CUSTOMER_TABLE') && we_hasPerm('CAN_EDIT_CUSTOMERFILTER')){
 			$this->EditPageNrs[] = WE_EDITPAGE_WEBUSER;
 		}
 		array_push($this->EditPageNrs, WE_EDITPAGE_PROPERTIES, WE_EDITPAGE_INFO, WE_EDITPAGE_CONTENT, WE_EDITPAGE_WORKSPACE, WE_EDITPAGE_PREVIEW, WE_EDITPAGE_VARIANTS, WE_EDITPAGE_VERSIONS, WE_EDITPAGE_SCHEDULER);

@@ -103,7 +103,7 @@ if($_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE){ //	No tabs in Su
 			$we_tabs->addTab(new we_tab("#", g_l('weClass', "[validation]"), (($we_doc->EditPageNr == WE_EDITPAGE_VALIDATION) ? we_tab::ACTIVE : we_tab::NORMAL), "we_cmd('switch_edit_page'," . WE_EDITPAGE_VALIDATION . ",'" . $we_transaction . "');", array("id" => "tab_" . WE_EDITPAGE_VALIDATION)));
 		}
 
-		if(in_array(WE_EDITPAGE_WEBUSER, $we_doc->EditPageNrs) && (permissionhandler::hasPerm("CAN_EDIT_CUSTOMERFILTER") || permissionhandler::hasPerm("CAN_CHANGE_DOCS_CUSTOMER"))){
+		if(in_array(WE_EDITPAGE_WEBUSER, $we_doc->EditPageNrs) && (permissionhandler::hasPerm('CAN_EDIT_CUSTOMERFILTER') || permissionhandler::hasPerm('CAN_CHANGE_DOCS_CUSTOMER'))){
 			$we_tabs->addTab(new we_tab("#", g_l('weClass', "[webUser]"), (($we_doc->EditPageNr == WE_EDITPAGE_WEBUSER) ? we_tab::ACTIVE : we_tab::NORMAL), "we_cmd('switch_edit_page'," . WE_EDITPAGE_WEBUSER . ",'" . $we_transaction . "');", array("id" => "tab_" . WE_EDITPAGE_WEBUSER)));
 		}
 

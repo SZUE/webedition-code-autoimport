@@ -616,7 +616,7 @@ function we_cmd(){
 					$weAcQuery = new weSelectorQuery();
 
 					// bugfix #1665 for php 4.1.2: "-" moved to the end of the regex-pattern
-					if(isset($_REQUEST[$_REQUEST['obj_name'] . '_username']) && !preg_match('|^[A-Za-z0-9._-]+$|', $_REQUEST[$_REQUEST['obj_name'] . '_username'])){
+					if(isset($_REQUEST[$_REQUEST['obj_name'] . '_username']) && !we_user::filenameNotValid($_REQUEST[$_REQUEST['obj_name'] . '_username'])){
 						print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('global', '[username_wrong_chars]'), we_message_reporting::WE_MESSAGE_ERROR));
 						break;
 					}

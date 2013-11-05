@@ -105,20 +105,8 @@ class we_messaging_messaging extends we_class{
 		if(!isset($inc_files[$objname])){
 			return -1;
 		}
-		switch($objname){
-			case 'we_message':
-				$c = new we_messaging_message();
-				break;
-			case 'we_todo':
-				$c = new we_messaging_todo();
-				break;
-			case 'we_msg_email':
-				$c = new we_msg_email();
-				break;
-			default:
-				t_e('error', 'unkown type', $objname);
-		}
 
+		$c = new $objname;
 		$c->set_login_data($this->userid, $this->username);
 
 		if($recover == 1){
@@ -153,11 +141,11 @@ class we_messaging_messaging extends we_class{
 	/* Getters And Setters */
 
 	function get_sortitem(){
-		return array_key_by_val($this->sortfield, $this->si2sf);
+		return array_search($this->sortfield, $this->si2sf);
 	}
 
 	function get_sortorder(){
-		return $this->sortorder == "desc" ? "asc" : "desc";
+		return $this->sortorder == 'desc' ? 'asc' : 'desc';
 	}
 
 	function get_ids_selected(){
@@ -339,7 +327,7 @@ class we_messaging_messaging extends we_class{
 					$this->update_last_id();
 				}
 			} else {
-				echo "Couldn't delete Message ID=" . $val['ID'] . '<br>';
+				echo 'Couldn\'t delete Message ID = ' . $val['ID'] . '<br/>';
 			}
 		}
 	}
@@ -357,7 +345,7 @@ class we_messaging_messaging extends we_class{
 			if($this->DB_WE->num_rows($this->DB_WE->query("SELECT * FROM " . MSG_SETTINGS_TABLE . " WHERE strKey=\"check_step\" AND UserID=\"" . $this->userid . "\"")) > 0){
 				$this->DB_WE->query('UPDATE ' . MSG_SETTINGS_TABLE . ' SET strVal="' . $this->DB_WE->escape($settings['check_step']) . '" WHERE strKey="check_step" AND UserID=' . intval($this->userid) . ' LIMIT 1');
 			} else {
-				$this->DB_WE->query("INSERT INTO " . MSG_SETTINGS_TABLE . " (UserID, strKey, strVal) VALUES(" . intval($this->userid) . ", 'check_step', '" . $settings['check_step'] . "')");
+				$this->DB_WE->query('INSERT INTO ' . MSG_SETTINGS_TABLE . ' (UserID, strKey, strVal) VALUES(' . intval($this->userid) . ", 'check_step', '" . $settings['check_step'] . "')");
 			}
 		}
 
@@ -375,8 +363,7 @@ class we_messaging_messaging extends we_class{
 	}
 
 	function set_search_settings($search_fields, $search_folder_ids){
-		$this->search_fields = array();
-		$this->search_folder_ids = array();
+		$this->search_fields = $this->search_folder_ids = array();
 
 		if(isset($search_fields)){
 			foreach($search_fields as $elem){
@@ -398,7 +385,6 @@ class we_messaging_messaging extends we_class{
 		return 1;
 	}
 
-	/* Intialize the class */
 
 	function init(){
 		if($this->we_transact && isset($this->we_transact['we_messaging'])){
@@ -510,11 +496,9 @@ class we_messaging_messaging extends we_class{
 
 	function get_message_count($folderid, $classname = ''){
 		$classname = $this->available_folders[array_ksearch('ID', $folderid, $this->available_folders)]['ClassName'];
-		if(isset($classname)){
-			return $this->used_msgobjs[$classname]->get_count($folderid);
-		} else {
-			return -1;
-		}
+		return (isset($classname) ?
+				$this->used_msgobjs[$classname]->get_count($folderid) :
+				-1);
 	}
 
 	function delete_folders($ids){
@@ -661,7 +645,7 @@ class we_messaging_messaging extends we_class{
 			if(!empty($sortfield)){
 				$this->sortfield = $sortfield;
 				$this->sort_set();
-				$this->save_sortstuff($this->Folder_ID, array_key_by_val($sortfield, $this->sf2sh), $this->sortorder);
+				$this->save_sortstuff($this->Folder_ID, array_search($sortfield, $this->sf2sh), $this->sortorder);
 			}
 		} else {
 			$this->selected_set = array();
@@ -710,7 +694,7 @@ class we_messaging_messaging extends we_class{
 				/* 		if (empty($sortfield))
 				  $this->init_sortstuff($id, '');
 				  else
-				  $this->save_sortstuff($id, array_key_by_val($sortfield, $this->sf2sh), $this->sortorder); */
+				  $this->save_sortstuff($id, array_search($sortfield, $this->sf2sh), $this->sortorder); */
 
 				//		$this->ids_selected = array();
 				//		echo "ID=$id<br>\n";
@@ -730,8 +714,8 @@ class we_messaging_messaging extends we_class{
 		}
 	}
 
-	/* Message-Data for the messaging_message_view Frame */
-	/* params: ID - id of the shown message */
+	/* Message-Data for the messaging_message_view Frame
+	  params: ID - id of the shown message */
 
 	function get_mv_data($id, $classname = ''){ // imi: find selected_message here
 		$this->selected_message = array();
