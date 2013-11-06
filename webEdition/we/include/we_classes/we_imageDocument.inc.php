@@ -43,8 +43,8 @@ class we_imageDocument extends we_binaryDocument{
 	 *
 	 * @return we_imageDocument
 	 */
-	function __construct(){
-		parent::__construct();
+	function __construct($LoadBinaryContent = true){
+		parent::__construct($LoadBinaryContent);
 		$this->persistent_slots[] = 'Thumbs';
 		$this->Icon = we_base_ContentTypes::IMAGE_ICON;
 		$this->ContentType = 'image/*';
@@ -397,12 +397,10 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 						$thumbObj->createThumb();
 					}
 
-					//no need to set width+height, since img has its scale
-					if(!$this->getElement('only')){//leave only if we want to know the size
-						unset($this->elements['width']);
-						unset($this->elements['height']);
-					} else {
+					if($this->getElement('width') != ''){//if width set to empty skip width attribute
 						$this->setElement('width', $thumbObj->getOutputWidth(), 'attrib');
+					}
+					if($this->getElement('height') != ''){//if height set to empty skip height attribute
 						$this->setElement('height', $thumbObj->getOutputHeight(), 'attrib');
 					}
 				}
