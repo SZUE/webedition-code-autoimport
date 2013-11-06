@@ -23,31 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 $perm_group_name = 'importExportpermissions';
-
 $perm_group_title[$perm_group_name] = g_l('perms_' . $perm_group_name, '[perm_group_title]');
-
-$perm_values[$perm_group_name] = array(
-	'FILE_IMPORT',
-	'SITE_IMPORT',
-	'WXML_IMPORT',
-	'GENERICXML_IMPORT',
-	'CSV_IMPORT',
-	'NEW_EXPORT',
-	'DELETE_EXPORT',
-	'EDIT_EXPORT',
-	'MAKE_EXPORT',
-	'GENERICXML_EXPORT',
-	'CSV_EXPORT'
-);
-
-
-//	Here the array of the permission-titles is set.
-$perm_titles[$perm_group_name] = array();
-
-foreach($perm_values[$perm_group_name] as $cur){
-	$perm_titles[$perm_group_name][$cur] = g_l('perms_' . $perm_group_name, '[' . $cur . ']');
-}
-
 $perm_defaults[$perm_group_name] = array(
 	'FILE_IMPORT' => 1,
 	'SITE_IMPORT' => 1,
@@ -61,3 +37,11 @@ $perm_defaults[$perm_group_name] = array(
 	'GENERICXML_EXPORT' => 1,
 	'CSV_EXPORT' => 1
 );
+$perm_values[$perm_group_name] = array_keys($perm_defaults[$perm_group_name]);
+
+//	Here the array of the permission-titles is set.
+$perm_titles[$perm_group_name] = array();
+
+foreach($perm_values[$perm_group_name] as $cur){
+	$perm_titles[$perm_group_name][$cur] = g_l('perms_' . $perm_group_name, '[' . $cur . ']');
+}

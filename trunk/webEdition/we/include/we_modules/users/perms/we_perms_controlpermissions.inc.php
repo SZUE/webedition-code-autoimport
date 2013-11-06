@@ -26,26 +26,6 @@ $perm_group_name = 'controlpermissions';
 
 $perm_group_title[$perm_group_name] = g_l('perms_controlpermissions', '[perm_group_title]');
 
-
-$perm_values[$perm_group_name] = array(
-	'NEW_GROUP',
-	'NEW_USER',
-	'SAVE_GROUP',
-	'SAVE_USER',
-	'DELETE_GROUP',
-	'DELETE_USER',
-	'PUBLISH',
-	'EDIT_SETTINGS_DEF_EXT',
-	'EDIT_SETTINGS',
-	'EDIT_PASSWD');
-
-//	Here the array of the permission-titles is set.
-$perm_titles[$perm_group_name] = array();
-
-foreach($perm_values[$perm_group_name] as $cur){
-	$perm_titles[$perm_group_name][$cur] = g_l('perms_' . $perm_group_name, '[' . $cur . ']');
-}
-
 $perm_defaults[$perm_group_name] = array(
 	'NEW_GROUP' => 0,
 	'NEW_USER' => 0,
@@ -55,6 +35,17 @@ $perm_defaults[$perm_group_name] = array(
 	'DELETE_USER' => 0,
 	'PUBLISH' => 0,
 	'EDIT_SETTINGS_DEF_EXT' => 0,
+	'CHANGE_DOCUMENT_OWNER' => 0,
+	'CHANGE_DOCUMENT_PERMISSION' => 0,
 	'EDIT_SETTINGS' => 1,
 	'EDIT_PASSWD' => 1
 );
+
+$perm_values[$perm_group_name] = array_keys($perm_defaults[$perm_group_name]);
+
+//	Here the array of the permission-titles is set.
+$perm_titles[$perm_group_name] = array();
+
+foreach($perm_values[$perm_group_name] as $cur){
+	$perm_titles[$perm_group_name][$cur] = g_l('perms_' . $perm_group_name, '[' . $cur . ']');
+}
