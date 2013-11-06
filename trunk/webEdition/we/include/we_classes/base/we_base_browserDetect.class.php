@@ -219,7 +219,7 @@ class we_base_browserDetect{
 		return self::inst()->getBrowser() == self::FF;
 	}
 
-	static function isCHROME(){
+	static function isChrome(){
 		return self::inst()->getBrowser() == self::CHROME;
 	}
 

@@ -83,8 +83,8 @@ function pWebEdition_JSFunctions(){
 	if(whichWindow != "include"){ 	// only when no SEEM-edit-include window is closed
 	// FIXME: closing-actions for SEEM
 	if(top.opener) {
-	<?php if(!(we_base_browserDetect::isCHROME() || we_base_browserDetect::isSAFARI())){ ?>
-		top.opener.location.replace('<?php print WEBEDITION_DIR; ?>we_loggingOut.php?isopener=1');
+		<?php if(!(we_base_browserDetect::isChrome() || we_base_browserDetect::isSafari())){ ?>
+			top.opener.location.replace('<?php print WEBEDITION_DIR; ?>we_loggingOut.php?isopener=1');
 		top.opener.focus();
 	<?php } else{ ?>
 		top.opener.location.reload();
