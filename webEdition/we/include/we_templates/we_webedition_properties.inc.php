@@ -23,17 +23,18 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 $znr = -1;
-$wepos = weGetCookieVariable("but_weDocProp");
+$wepos = weGetCookieVariable('but_weDocProp');
 $parts = array(
-	array("icon" => "path.gif", "headline" => g_l('weClass', "[path]"), "html" => $GLOBALS['we_doc']->formPath(), "space" => 140),
-	array("icon" => "doc.gif", "headline" => g_l('weClass', "[document]"), "html" => $GLOBALS['we_doc']->formDocTypeTempl(), "space" => 140),
-	array("icon" => "meta.gif", "headline" => g_l('weClass', "[metainfo]"), "html" => $GLOBALS['we_doc']->formMetaInfos(), "space" => 140),
-	array("icon" => "cat.gif", "headline" => g_l('global', "[categorys]"), "html" => $GLOBALS['we_doc']->formCategory(), "space" => 140),
-	array("icon" => "navi.gif", "headline" => g_l('global', "[navigation]"), "html" => $GLOBALS['we_doc']->formNavigation(), "space" => 140),
-	array("icon" => "copy.gif", "headline" => g_l('weClass', "[copyWeDoc]"), "html" => $GLOBALS['we_doc']->formCopyDocument(), "space" => 140),
-	array("icon" => "user.gif", "headline" => g_l('weClass', "[owners]"), "html" => $GLOBALS['we_doc']->formCreatorOwners(), "space" => 140));
+	array('icon' => 'path.gif', 'headline' => g_l('weClass', '[path]'), 'html' => $GLOBALS['we_doc']->formPath(), 'space' => 140),
+	array('icon' => 'doc.gif', 'headline' => g_l('weClass', '[document]'), 'html' => $GLOBALS['we_doc']->formDocTypeTempl(), 'space' => 140),
+	array('icon' => 'meta.gif', 'headline' => g_l('weClass', '[metainfo]'), 'html' => $GLOBALS['we_doc']->formMetaInfos(), 'space' => 140),
+	array('icon' => 'cat.gif', 'headline' => g_l('global', '[categorys]'), 'html' => $GLOBALS['we_doc']->formCategory(), 'space' => 140),
+	array('icon' => 'navi.gif', 'headline' => g_l('global', '[navigation]'), 'html' => $GLOBALS['we_doc']->formNavigation(), 'space' => 140),
+	array('icon' => 'copy.gif', 'headline' => g_l('weClass', '[copyWeDoc]'), 'html' => $GLOBALS['we_doc']->formCopyDocument(), 'space' => 140),
+	array('icon' => 'user.gif', 'headline' => g_l('weClass', '[owners]'), 'html' => $GLOBALS['we_doc']->formCreatorOwners(), 'space' => 140)
+);
 $znr = 5;
 
 
 print we_multiIconBox::getJS() .
-	we_multiIconBox::getHTML("weDocProp", "100%", $parts, 20, "", -1, g_l('weClass', "[moreProps]"), g_l('weClass', "[lessProps]"), ($wepos == "down"));
+	we_multiIconBox::getHTML('weDocProp', '100%', $parts, 20, '', -1, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]'), ($wepos == 'down'));

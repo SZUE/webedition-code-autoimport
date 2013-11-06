@@ -25,61 +25,6 @@
 $perm_group_name = 'workpermissions';
 
 $perm_group_title[$perm_group_name] = g_l('perms_' . $perm_group_name, '[perm_group_title]');
-
-$perm_values[$perm_group_name] = array(
-	'NEW_WEBEDITIONSITE',
-	'NEW_GRAFIK',
-	'NEW_HTML',
-	'NEW_FLASH',
-	'NEW_QUICKTIME',
-	'NEW_JS',
-	'NEW_CSS',
-	'NEW_TEXT',
-	'NEW_HTACCESS',
-	'NEW_SONSTIGE',
-	'NEW_TEMPLATE',
-	'NEW_DOC_FOLDER',
-	'CHANGE_DOC_FOLDER_PATH',
-	'NEW_TEMP_FOLDER',
-	'CAN_SEE_DOCUMENTS',
-	'CAN_SEE_TEMPLATES',
-	'SAVE_DOCUMENT_TEMPLATE',
-	'DELETE_DOC_FOLDER',
-	'DELETE_TEMP_FOLDER',
-	'DELETE_DOCUMENT',
-	'DELETE_TEMPLATE',
-	'MOVE_DOCUMENT',
-	'MOVE_TEMPLATE',
-	'BROWSE_SERVER',
-	'EDIT_DOCTYPE',
-	'EDIT_DOCEXTENSION',
-	'EDIT_KATEGORIE',
-	'EXPORT',
-	'EXPORTNODOWNLOAD',
-	'IMPORT',
-	'BACKUPLOG',
-	'FORMMAIL',
-	'CAN_SEE_PROPERTIES',
-	'CAN_SEE_INFO',
-	'CAN_SEE_QUICKSTART',
-	'CAN_SELECT_OTHER_USERS_FILES',
-	'CAN_SELECT_EXTERNAL_FILES',
-	'NO_DOCTYPE',
-	'CAN_COPY_FOLDERS',
-	'CAN_SEE_VALIDATION',
-	'CAN_EDIT_VALIDATION',
-	'CAN_SEE_ACCESSIBLE_PARAMETERS',
-	'EDIT_NAVIGATION'
-);
-
-
-//	Here the array of the permission-titles is set.
-$perm_titles[$perm_group_name] = array();
-
-foreach($perm_values[$perm_group_name] as $cur){
-	$perm_titles[$perm_group_name][$cur] = g_l('perms_' . $perm_group_name, '[' . $cur . ']');
-}
-
 $perm_defaults[$perm_group_name] = array(
 	'NEW_WEBEDITIONSITE' => 1,
 	'NEW_GRAFIK' => 1,
@@ -125,3 +70,13 @@ $perm_defaults[$perm_group_name] = array(
 	'CAN_SEE_ACCESSIBLE_PARAMETERS' => 1,
 	'EDIT_NAVIGATION' => 1
 );
+
+$perm_values[$perm_group_name] = array_keys($perm_defaults[$perm_group_name]);
+
+
+//	Here the array of the permission-titles is set.
+$perm_titles[$perm_group_name] = array();
+
+foreach($perm_values[$perm_group_name] as $cur){
+	$perm_titles[$perm_group_name][$cur] = g_l('perms_' . $perm_group_name, '[' . $cur . ']');
+}

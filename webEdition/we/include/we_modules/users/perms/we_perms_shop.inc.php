@@ -24,25 +24,6 @@
  */
 $perm_group_name = 'shop';
 $perm_group_title[$perm_group_name] = g_l('perms_shop', '[perm_group_title]');
-
-
-$perm_values[$perm_group_name] = array(
-	'NEW_SHOP_ARTICLE',
-	'DELETE_SHOP_ARTICLE',
-	'EDIT_SHOP_ORDER',
-	'DELETE_SHOP_ORDER',
-	'EDIT_SHOP_PREFS',
-	'CAN_EDIT_VARIANTS'
-);
-
-//	Here the array of the permission-titles is set.
-$perm_titles[$perm_group_name] = array();
-
-foreach($perm_values[$perm_group_name] as $cur){
-	$perm_titles[$perm_group_name][$cur] = g_l('perms_' . $perm_group_name, '[' . $cur . ']');
-}
-
-
 $perm_defaults[$perm_group_name] = array(
 	'NEW_SHOP_ARTICLE' => 0,
 	'DELETE_SHOP_ARTICLE' => 0,
@@ -51,3 +32,11 @@ $perm_defaults[$perm_group_name] = array(
 	'EDIT_SHOP_PREFS' => 0,
 	'CAN_EDIT_VARIANTS' => 1
 );
+$perm_values[$perm_group_name] = array_keys($perm_defaults[$perm_group_name]);
+
+//	Here the array of the permission-titles is set.
+$perm_titles[$perm_group_name] = array();
+
+foreach($perm_values[$perm_group_name] as $cur){
+	$perm_titles[$perm_group_name][$cur] = g_l('perms_' . $perm_group_name, '[' . $cur . ']');
+}

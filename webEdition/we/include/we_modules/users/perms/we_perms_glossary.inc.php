@@ -24,13 +24,13 @@
  */
 $perm_group_name = 'glossary';
 $perm_group_title[$perm_group_name] = g_l('perms_glossary', '[perm_group_title]');
-
-$perm_values[$perm_group_name] = array(
-	'NEW_GLOSSARY',
-	'EDIT_GLOSSARY',
-	'DELETE_GLOSSARY',
-	'EDIT_GLOSSARY_DICTIONARY',
+$perm_defaults[$perm_group_name] = array(
+	'NEW_GLOSSARY' => 1,
+	'EDIT_GLOSSARY' => 1,
+	'DELETE_GLOSSARY' => 1,
+	'EDIT_GLOSSARY_DICTIONARY' => 1,
 );
+$perm_values[$perm_group_name] = array_keys($perm_defaults[$perm_group_name]);
 
 //	Here the array of the permission-titles is set.
 $perm_titles[$perm_group_name] = array();
@@ -38,10 +38,3 @@ $perm_titles[$perm_group_name] = array();
 foreach($perm_values[$perm_group_name] as $cur){
 	$perm_titles[$perm_group_name][$cur] = g_l('perms_' . $perm_group_name, '[' . $cur . ']');
 }
-
-$perm_defaults[$perm_group_name] = array(
-	'NEW_GLOSSARY' => 1,
-	'EDIT_GLOSSARY' => 1,
-	'DELETE_GLOSSARY' => 1,
-	'EDIT_GLOSSARY_DICTIONARY' => 1,
-);

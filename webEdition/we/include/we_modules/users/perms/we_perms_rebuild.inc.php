@@ -23,29 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 $perm_group_name = 'rebuildpermissions';
-
 $perm_group_title[$perm_group_name] = g_l('perms_' . $perm_group_name, '[perm_group_title]');
-
-$perm_values[$perm_group_name] = array(
-	'REBUILD',
-	'REBUILD_ALL',
-	'REBUILD_TEMPLATES',
-	'REBUILD_FILTERD',
-	'REBUILD_OBJECTS',
-	'REBUILD_INDEX',
-	'REBUILD_THUMBS',
-	'REBUILD_NAVIGATION',
-	'REBUILD_META'
-);
-
-
-//	Here the array of the permission-titles is set.
-$perm_titles[$perm_group_name] = array();
-
-foreach($perm_values[$perm_group_name] as $cur){
-	$perm_titles[$perm_group_name][$cur] = g_l('perms_' . $perm_group_name, '[' . $cur . ']');
-}
-
 $perm_defaults[$perm_group_name] = array(
 	'REBUILD' => 1,
 	'REBUILD_ALL' => 1,
@@ -57,3 +35,11 @@ $perm_defaults[$perm_group_name] = array(
 	'REBUILD_NAVIGATION' => 1,
 	'REBUILD_META' => 1
 );
+$perm_values[$perm_group_name] = array_keys($perm_defaults[$perm_group_name]);
+
+//	Here the array of the permission-titles is set.
+$perm_titles[$perm_group_name] = array();
+
+foreach($perm_values[$perm_group_name] as $cur){
+	$perm_titles[$perm_group_name][$cur] = g_l('perms_' . $perm_group_name, '[' . $cur . ']');
+}
