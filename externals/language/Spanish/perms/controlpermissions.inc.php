@@ -1,6 +1,8 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_perms_controlpermissions=array(
+	'CHANGE_DOCUMENT_OWNER'=>'The user is allowed to change the document owner.',
+	'CHANGE_DOCUMENT_PERMISSION'=>'The user is allowed to change the document permissions.',
 	'DELETE_GROUP'=>'El usuario puede borrar grupos',
 	'DELETE_USER'=>'El usuario puede borrar otros usuarios',
 	'EDIT_PASSWD'=>'El usuario puede cambiar las contraseñas',
