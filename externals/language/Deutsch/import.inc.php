@@ -3,7 +3,6 @@
 $l_import=array(
 	'add_expat_support'=>'Die XML Import-Schnittstelle erfordert die XML expat Erweiterung von James Clark. Kompilieren Sie PHP mit der expat Erweiterung neu, damit die XML Import Funktionalität unterstützt werden kann.',
 	'any'=>'-- ohne --',
-	'asgn_rcd_flds'=>'Datenfelder zuordnen',
 	'asgnd'=>'zugeordnet',
 	'assign_record_fields'=>'Datenfelder zuordnen',
 	'attribute'=>'Attribut',

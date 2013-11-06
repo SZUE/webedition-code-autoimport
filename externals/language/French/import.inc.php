@@ -3,7 +3,6 @@
 $l_import=array(
 	'add_expat_support'=>'L`interface d`import XML nécessite l`extension XML expat de James Clark. Compilez PHP de nouveau avec l`extension expat, pour que la functionalité de l`import XML est garanti.',
 	'any'=>'-- Sans --',
-	'asgn_rcd_flds'=>'Assigner les champs de données',
 	'asgnd'=>'assigné',
 	'assign_record_fields'=>'Assigner les champs donnée',
 	'attribute'=>'Attribut',

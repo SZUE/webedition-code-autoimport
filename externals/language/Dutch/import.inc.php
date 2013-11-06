@@ -3,7 +3,6 @@
 $l_import=array(
 	'add_expat_support'=>'Om support voor de XML expat parser te implementeren, moet u de PHP opnieuw samenstellen om support toe te voegen (voor deze bibliotheek) aan uw PHP opbouw. De expat extensie, gecreeërd door James Clark, kunt u vinden bij http://www.jclark.com/xml/.',
 	'any'=>'-- geen --',
-	'asgn_rcd_flds'=>'Ken data velden toe',
 	'asgnd'=>'Toegekend',
 	'assign_record_fields'=>'Ken data velden toe',
 	'attribute'=>'Attribuut',

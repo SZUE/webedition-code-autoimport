@@ -3,7 +3,6 @@
 $l_import=array(
 	'add_expat_support'=>'In order to implement support for the XML expat parser, you will need to recompile PHP to add support for this library to your PHP build. The expat extension, created by James Clark, can be found at http://www.jclark.com/xml/.',
 	'any'=>'-- none --',
-	'asgn_rcd_flds'=>'Assign data fields',
 	'asgnd'=>'Assigned',
 	'assign_record_fields'=>'Assign data fields',
 	'attribute'=>'Attribute',

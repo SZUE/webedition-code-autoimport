@@ -3,7 +3,6 @@
 $l_import=array(
 	'add_expat_support'=>'Sisällyttääksesi tuen XML expat parseroijalle, sinun täytyy kääntää PHP -komentotulkki uudelleen ja lisätä tuki tälle kirjastolle. Expat laajennus (Tekijä: James Clark) löytyy osoitteesta http://www.jclark.com/xml/.',
 	'any'=>'-- ei mitään --',
-	'asgn_rcd_flds'=>'Määrittele tietokentät',
 	'asgnd'=>'Määritelty',
 	'assign_record_fields'=>'Määrittele tietokentät',
 	'attribute'=>'Attribuutti',

@@ -3,7 +3,6 @@
 $l_import=array(
 	'add_expat_support'=>'Para implementar el apoyo del programa analizador sintáctico del expat XML, Ud necesitará recopilar PHP para adicionar apoyo a esta librería para su forma PHP. La extensión expat , creada por James Clark, puede ser encontrada en http://www.jclark.com/xml/.',
 	'any'=>'-- none --',
-	'asgn_rcd_flds'=>'Asignar campos de data',
 	'asgnd'=>'Asignado',
 	'assign_record_fields'=>'Asignar campos de data',
 	'attribute'=>'Atributo',
