@@ -286,10 +286,10 @@ top.wizcmd.we_import(1,-2' . ((isset($_REQUEST['type']) && $_REQUEST['type'] == 
 		if($mode == ''){
 			$mode = 0;
 		}
-/*		$numFiles = isset($_REQUEST['numFiles']) ? $_REQUEST['numFiles'] : -1;
-		$uniquePath = isset($_REQUEST['uniquePath']) ? $_REQUEST['uniquePath'] : '';
-		$currFileId = isset($_REQUEST['currFileId']) ? $_REQUEST['currFileId'] : -1;
-*/
+		/* 		$numFiles = isset($_REQUEST['numFiles']) ? $_REQUEST['numFiles'] : -1;
+		  $uniquePath = isset($_REQUEST['uniquePath']) ? $_REQUEST['uniquePath'] : '';
+		  $currFileId = isset($_REQUEST['currFileId']) ? $_REQUEST['currFileId'] : -1;
+		 */
 		if(isset($_REQUEST['v'])){
 			$v = $_REQUEST['v'];
 			$v["import_ChangeEncoding"] = isset($v["import_ChangeEncoding"]) ? $v["import_ChangeEncoding"] : 0;
@@ -495,15 +495,16 @@ if (top.wizbody && top.wizbody.addLog){
 							if(!empty($ref)){
 								$xmlExIm->savePerserves(false);
 
-								if($type == "first_steps_wizard"){
-									$JScript = "
-top.leWizardProgress.set(Math.floor(((" . (int) ($v['cid'] + $xmlExIm->RefTable->current) . "+1)/" . (int) ($xmlExIm->RefTable->getLastCount() + $v["numFiles"]) . ")*100));
-function we_import_handler(e) { we_import(1," . ($v['cid'] - 1) . "); }
-top.document.getElementById('function_reload').onmouseup = we_import_handler;";
-								} else {
-									$JScript = "top.wizbusy.setProgressText('pb1','" . g_l('import', '[update_links]') . $xmlExIm->RefTable->current . '/' . count($xmlExIm->RefTable->Storage) . "');
-										top.wizbusy.setProgress(Math.floor(((" . (int) ($v['cid'] + $xmlExIm->RefTable->current) . "+1)/" . (int) ($xmlExIm->RefTable->getLastCount() + $v["numFiles"]) . ")*100));";
-								}
+								$JScript = ($type == "first_steps_wizard" ?
+										"top.leWizardProgress.set(Math.floor(((" . (int) ($v['cid'] + $xmlExIm->RefTable->current) . "+1)/" . (int) ($xmlExIm->RefTable->getLastCount() + $v["numFiles"]) . ")*100));
+function we_import_handler(e) {
+	we_import(1," . ($v['cid'] - 1) . ");
+}
+top.document.getElementById('function_reload').onmouseup = we_import_handler;" :
+										"top.wizbusy.setProgressText('pb1','" . g_l('import', '[update_links]') . $xmlExIm->RefTable->current . '/' . count($xmlExIm->RefTable->Storage) . "');
+										top.wizbusy.setProgress(Math.floor(((" . (int) ($v['cid'] + $xmlExIm->RefTable->current) . "+1)/" . (int) ($xmlExIm->RefTable->getLastCount() + $v["numFiles"]) . ")*100));"
+									);
+
 
 								$out .= we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
 										we_html_element::jsElement($JScript . "setTimeout('we_import(1," . $v['cid'] . ");',15);"));
