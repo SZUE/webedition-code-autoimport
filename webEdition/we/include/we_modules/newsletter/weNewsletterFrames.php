@@ -373,7 +373,7 @@ class weNewsletterFrames extends weModuleFrames{
 
 	function getHTMLLog(){
 		$content = "";
-		$this->View->db->query('SELECT * FROM ' . NEWSLETTER_LOG_TABLE . ' WHERE NewsletterID=' . $this->View->newsletter->ID . ((isset($_REQUEST['newsletterStatus']) && $_REQUEST['newsletterStatus'] !="") ? ' AND Log =' . $_REQUEST['newsletterStatus'] : '') . ((isset($_REQUEST['newsletterStartTime']) && isset($_REQUEST['newsletterEndTime']) && $_REQUEST['newsletterStartTime'] > 0 && $_REQUEST['newsletterEndTime'] > 0) ? ' AND LogTime BETWEEN ' . $_REQUEST['newsletterStartTime'] . ' AND ' . $_REQUEST['newsletterEndTime'] : '') . ' ORDER BY LogTime DESC');
+		$this->View->db->query('SELECT * FROM ' . NEWSLETTER_LOG_TABLE . ' WHERE NewsletterID=' . $this->View->newsletter->ID . ((isset($_REQUEST['newsletterStatus']) && $_REQUEST['newsletterStatus'] != "") ? ' AND Log =' . $_REQUEST['newsletterStatus'] : '') . ((isset($_REQUEST['newsletterStartTime']) && isset($_REQUEST['newsletterEndTime']) && $_REQUEST['newsletterStartTime'] > 0 && $_REQUEST['newsletterEndTime'] > 0) ? ' AND LogTime BETWEEN ' . $_REQUEST['newsletterStartTime'] . ' AND ' . $_REQUEST['newsletterEndTime'] : '') . ' ORDER BY LogTime DESC');
 
 		while($this->View->db->next_record()){
 			$log = g_l('modules_newsletter', '[' . $this->View->db->f("Log") . ']');
@@ -400,6 +400,7 @@ class weNewsletterFrames extends weModuleFrames{
 	/*
 	 * Grafische Aufbereitung des Versandlogs im Tab "Auswertung"
 	 */
+
 	function getHTMLReporting(){
 
 		function getPercent($total, $value, $precision = 0){
@@ -455,7 +456,7 @@ class weNewsletterFrames extends weModuleFrames{
 			$table->setCol(1, 4, array('style' => 'width: 35px'), (($allBlockedByBlacklist == 0) ? '' : we_button::position_yes_no_cancel(we_button::create_button("image:btn_function_view", "javascript:top.opener.top.load.location.replace('" . WEBEDITION_DIR . "we_lcmd.php?we_cmd[0]=black_list')"))));
 
 			/* process bar blocked by domain check */
-			$allBlockedByDomainCheck = (array_key_exists("domain_nok",$results) ? $results['domain_nok'] : 0);
+			$allBlockedByDomainCheck = (array_key_exists("domain_nok", $results) ? $results['domain_nok'] : 0);
 			$percentBlockedByDomain = getPercent($allRecipients, $allBlockedByDomainCheck, 2);
 
 			$pbBbD = new we_progressBar($percentBlockedByDomain);
@@ -487,12 +488,12 @@ class weNewsletterFrames extends weModuleFrames{
 			$table->setCol(3, 3, array("style" => "padding: 0 5px 0 5px;"), we_html_element::htmlImg(array("src" => IMAGE_DIR . (($allClearRecipients == $allRecipients) ? "icons/valid.gif" : "alert_tiny.gif"), "title" => (($allClearRecipients < $allRecipients) ? g_l('modules_newsletter', '[reporting][mailing_advice_not_success]') : ''))));
 			//todo: statt show_log, sollte show_log begrenzt auf Log=email_sent + $start_send + start_end
 			$table->setCol(3, 4, array('style' => 'width: 35px'), we_button::position_yes_no_cancel(we_button::create_button("image:btn_function_view", "javascript:top.opener.top.load.location.replace('" . WEBEDITION_DIR . "we_lcmd.php?we_cmd[0]=show_log')")));
-			
-			/*total recipients*/
+
+			/* total recipients */
 			$table->addRow();
 			$table->setColContent(4, 0, we_html_element::htmlB(g_l('modules_newsletter', '[reporting][mailing_all_emails]')));
-			$table->setCol(4, 2, array('colspan' => 2,"style"=>"padding: 0 5px 0 5px;"), we_html_element::htmlB($allRecipients));
-			
+			$table->setCol(4, 2, array('colspan' => 2, "style" => "padding: 0 5px 0 5px;"), we_html_element::htmlB($allRecipients));
+
 			$parts[] = array(
 				"headline" => g_l('modules_newsletter', '[reporting][mailing_send_at]') . '&nbsp;' . date(g_l('weEditorInfo', "[date_format_sec]"), $key),
 				"html" => $table->getHTML() . we_html_element::htmlBr()
@@ -849,7 +850,7 @@ class weNewsletterFrames extends weModuleFrames{
 
 		return $this->View->htmlHidden($IDName, 0) .
 			$this->View->htmlHidden($Pathname, "") .
-			we_button::create_button("select", "javascript:we_cmd('openSelector',document.we_form.elements['$IDName'].value,'" . NEWSLETTER_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','" . get_ws(NEWSLETTER_TABLE) . "')");
+			we_button::create_button('select', "javascript:we_cmd('openSelector',document.we_form.elements['$IDName'].value,'" . NEWSLETTER_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','" . get_ws(NEWSLETTER_TABLE) . "')");
 	}
 
 	function getHTMLCustomer($group){
@@ -888,7 +889,6 @@ class weNewsletterFrames extends weModuleFrames{
 
 	function getHTMLCustomerFilter($group){
 		$custfields = array();
-
 		foreach($this->View->customers_fields as $fv){
 			switch($fv){
 				case 'ParentID':
@@ -924,15 +924,16 @@ class weNewsletterFrames extends weModuleFrames{
 			$minutes[] = ($i <= 9 ? '0' : '') . $i;
 		}
 
-		$table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 1, 7);
+		$filter = $this->View->newsletter->groups[$group]->getFilter();
+
+		$table = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0), 1, 7);
 		$colspan = "7";
-		$table->setCol(0, 0, ((count($this->View->newsletter->groups[$group]->aFilter) && is_array($this->View->newsletter->groups[$group]->aFilter)) ? array("colspan" => $colspan) : array()), we_forms::checkbox(((count($this->View->newsletter->groups[$group]->aFilter) && is_array($this->View->newsletter->groups[$group]->aFilter)) ? "1" : "0"), ((count($this->View->newsletter->groups[$group]->aFilter) && is_array($this->View->newsletter->groups[$group]->aFilter)) ? true : false), "filtercheck_$group", g_l('modules_newsletter', '[filter]'), false, "defaultfont", "if(document.we_form.filtercheck_$group.checked) we_cmd('add_filter',$group); else we_cmd('del_all_filters',$group);")
-		);
+		$table->setCol(0, 0, (($filter) ? array("colspan" => $colspan) : array()), we_forms::checkbox(($filter ? 1 : 0), ($filter ? true : false), "filtercheck_$group", g_l('modules_newsletter', '[filter]'), false, "defaultfont", "if(document.we_form.filtercheck_$group.checked) we_cmd('add_filter',$group); else we_cmd('del_all_filters',$group);")		);
 
 		$k = 0;
 		$c = 1;
-		if(is_array($this->View->newsletter->groups[$group]->aFilter)){
-			foreach($this->View->newsletter->groups[$group]->aFilter as $k => $v){
+		if($filter){
+			foreach($filter as $k => $v){
 				if($k != 0){
 					$table->addRow();
 					$table->setCol($c, 0, array("colspan" => $colspan), we_html_tools::htmlSelect("filter_logic_" . $group . "_" . $k, $logic, 1, $v["logic"], false, '', "value", "70"));
@@ -956,7 +957,7 @@ class weNewsletterFrames extends weModuleFrames{
 			}
 		}
 
-		if(is_array($this->View->newsletter->groups[$group]->aFilter) && count($this->View->newsletter->groups[$group]->aFilter)){
+		if($filter){
 			$table->addRow();
 			$table->setCol($c, 0, array("colspan" => $colspan), we_html_tools::getPixel(5, 5));
 
@@ -970,7 +971,7 @@ class weNewsletterFrames extends weModuleFrames{
 
 		$js = we_html_element::jsElement("calendarSetup(" . $group . "," . $k . ");");
 
-		return $this->View->htmlHidden("filter_" . $group, count($this->View->newsletter->groups[$group]->aFilter)) .
+		return $this->View->htmlHidden("filter_" . $group, count($filter)) .
 			$table->getHtml() . $js;
 	}
 
