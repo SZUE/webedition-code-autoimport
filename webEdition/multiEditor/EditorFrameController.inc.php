@@ -635,10 +635,10 @@ print we_message_reporting::getShowMessageCall(g_l('multiEditor', "[no_editor_le
 						this.getEditorFrame(frameId).setEmptyEditor();
 	<?php
 	echo (we_base_browserDetect::isChrome() ?
-		'this.getEditorFrame(frameId).EditorFrameReference.style.display="inline";' :
+		'this.getEditorFrame(frameId).EditorFrameReference.style.display="block";' :
 		'this.getEditorFrame(frameId).EditorFrameReference.style.width = "100%";
 		this.getEditorFrame(frameId).EditorFrameReference.style.height = "100%";');
-?>
+	?>
 						first = false;
 					} else {
 	<?php
@@ -655,7 +655,7 @@ print we_message_reporting::getShowMessageCall(g_l('multiEditor', "[no_editor_le
 					if (this.ActiveEditorFrameId === frameId) {
 	<?php
 	echo (we_base_browserDetect::isChrome() ?
-		'this.getEditorFrame(frameId).EditorFrameReference.style.display="inline";' :
+		'this.getEditorFrame(frameId).EditorFrameReference.style.display="block";' :
 		'this.getEditorFrame(frameId).EditorFrameReference.style.width = "100%";
 		this.getEditorFrame(frameId).EditorFrameReference.style.height = "100%";');
 	?>
