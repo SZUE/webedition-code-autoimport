@@ -23,26 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 $perm_group_name = 'customer';
-
 $perm_group_title[$perm_group_name] = g_l('perms_customer', '[perm_group_title]');
-
-$perm_values[$perm_group_name] = array(
-	'NEW_CUSTOMER',
-	'DELETE_CUSTOMER',
-	'EDIT_CUSTOMER',
-	'SHOW_CUSTOMER_ADMIN',
-	//'CUSTOMER_PASSWORD_VISIBLE',
-	'CUSTOMER_AUTOLOGINID_VISIBLE',
-	'CAN_EDIT_CUSTOMERFILTER',
-	'CAN_CHANGE_DOCS_CUSTOMER');
-
-//	Here the array of the permission-titles is set.
-$perm_titles[$perm_group_name] = array();
-
-foreach($perm_values[$perm_group_name] as $cur){
-	$perm_titles[$perm_group_name][$cur] = g_l('perms_' . $perm_group_name, '[' . $cur . ']');
-}
-
 $perm_defaults[$perm_group_name] = array(
 	'NEW_CUSTOMER' => 0,
 	'DELETE_CUSTOMER' => 0,
@@ -52,3 +33,12 @@ $perm_defaults[$perm_group_name] = array(
 	'CUSTOMER_AUTOLOGINID_VISIBLE' => 0,
 	'CAN_EDIT_CUSTOMERFILTER' => 1,
 	'CAN_CHANGE_DOCS_CUSTOMER' => 1);
+
+$perm_values[$perm_group_name] = array_keys($perm_defaults[$perm_group_name]);
+
+//	Here the array of the permission-titles is set.
+$perm_titles[$perm_group_name] = array();
+
+foreach($perm_values[$perm_group_name] as $cur){
+	$perm_titles[$perm_group_name][$cur] = g_l('perms_' . $perm_group_name, '[' . $cur . ']');
+}

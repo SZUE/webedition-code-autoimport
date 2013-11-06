@@ -30,17 +30,17 @@
 class weNewsletterGroup extends weNewsletterBase{
 
 	// properties start
-	var $ID;
-	var $NewsletterID;
-	var $Emails;
+	var $ID = 0;
+	var $NewsletterID = 0;
+	var $Emails = '';
 	var $Extern;
-	var $Customers;
-	var $SendAll;
-	var $Filter;
+	var $Customers = '';
+	var $SendAll = 1;
+	public $Filter = ''; //due to processVariables
 	var $settings;
 	// properties end
 
-	var $aFilter;
+	private $aFilter = array();
 
 	/*	 * *****************************************************
 	 * Default Constructor
@@ -52,20 +52,10 @@ class weNewsletterGroup extends weNewsletterBase{
 		parent::__construct();
 		$this->table = NEWSLETTER_GROUP_TABLE;
 
-		array_push($this->persistents, "NewsletterID", "Emails", "Extern", "Customers", "SendAll", "Filter");
-
-		$this->ID = 0;
-		$this->NewsletterID = 0;
-		$this->Emails = "";
-		$this->Customers = "";
-		$this->SendAll = 1;
-		$this->Filter = "";
-
-		$this->aFilter = array();
+		array_push($this->persistents, 'NewsletterID', 'Emails', 'Extern', 'Customers', 'SendAll', 'Filter');
 
 		$this->settings = self::getSettings();
-
-		$this->Extern = isset($this->settings["global_mailing_list"]) ? $this->settings["global_mailing_list"] : "";
+		$this->Extern = isset($this->settings['global_mailing_list']) ? $this->settings['global_mailing_list'] : '';
 
 		if($groupID){
 			$this->ID = $groupID;
@@ -89,10 +79,23 @@ class weNewsletterGroup extends weNewsletterBase{
 	 *
 	 * *************************************** */
 
-	function save(){
+	public function preserveFilter(){
 		$this->Filter = serialize($this->aFilter);
+	}
+
+	function save(){
+		$this->preserveFilter();
 		parent::save();
 		return true;
+	}
+
+	public function getFilter(){
+		if($this->aFilter){
+			return $this->aFilter;
+		} else {
+			$this->aFilter = unserialize($this->Filter);
+			return $this->aFilter;
+		}
 	}
 
 	/*	 * **************************************
@@ -115,7 +118,7 @@ class weNewsletterGroup extends weNewsletterBase{
 		if(defined("CUSTOMER_TABLE")){
 			if(empty($this->settings["customer_email_field"])){
 				t_e('empty setting for customer email field');
-			} else{
+			} else {
 				$customers = makeArrayFromCSV($this->Customers);
 				foreach($customers as $customer){
 					$customer_mail = f('SELECT ' . $this->settings["customer_email_field"] . ' FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . intval($customer), $this->settings["customer_email_field"], $this->db);
@@ -141,8 +144,12 @@ class weNewsletterGroup extends weNewsletterBase{
 		return 0;
 	}
 
-	function addFilter($name = "", $operator = 0, $value = "", $hour = "", $minute = ""){
-		$this->aFilter[] = array("fieldname" => "", "operator" => "", "fieldvalue" => "", "logic" => "", "hours" => "", "minutes" => "");
+	function addFilter($name = ''){
+		$this->aFilter[] = array("fieldname" => $name, "operator" => 0, "fieldvalue" => '', "logic" => '', "hours" => '', "minutes" => '');
+	}
+
+	function appendFilter(array $filter){
+		$this->aFilter[] = $filter;
 	}
 
 	function delFilter(){
@@ -166,7 +173,7 @@ class weNewsletterGroup extends weNewsletterBase{
 
 		$db->query('SELECT ID FROM ' . NEWSLETTER_GROUP_TABLE . ' WHERE NewsletterID=' . intval($newsletterID) . ' ORDER BY ID');
 		$ret = array();
-		while($db->next_record()) {
+		while($db->next_record()){
 			$ret[] = new self($db->f("ID"));
 		}
 		return $ret;

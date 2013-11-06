@@ -310,7 +310,6 @@ abstract class we_root extends we_class{
 		if(!$this->CreatorID){
 			$this->CreatorID = 0;
 		}
-
 		$creator = $this->CreatorID ? id_to_path($this->CreatorID, USER_TABLE, $this->DB_WE) : g_l('weClass', '[nobody]');
 
 
@@ -362,7 +361,7 @@ abstract class we_root extends we_class{
 					'</td><td>' . ($canChange ? we_button::create_button('image:btn_function_trash', "javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('del_owner','" . $owner . "');") : '') . '</td></tr>';
 			}
 		} else {
-			$content .= '<tr><td><img src="' . ICON_DIR . "user.gif" . '" width="16" height="18" /></td><td class="defaultfont">' . g_l('weClass', "[onlyOwner]") . '</td><td></td><td></td></tr>';
+			$content .= '<tr><td><img src="' . ICON_DIR . "user.gif" . '" width="16" height="18" /></td><td class="defaultfont">' . g_l('weClass', '[onlyOwner]') . '</td><td></td><td></td></tr>';
 		}
 		$content .= '<tr><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(351, 2) . '</td><td>' . we_html_tools::getPixel(100, 2) . '</td><td>' . we_html_tools::getPixel(26, 2) . '</td></tr></table>';
 
@@ -384,16 +383,15 @@ abstract class we_root extends we_class{
 	}
 
 	function formCreatorOwners(){
-		$width = 388;
-		$canChange = (!$this->ID) || we_users_util::isUserInUsers($_SESSION['user']['ID'], $GLOBALS['we_doc']->CreatorID);
+		$canChange = ((!$this->ID) || we_users_util::isUserInUsers($_SESSION['user']['ID'], $GLOBALS['we_doc']->CreatorID));
 
 		return '<table style="border-spacing: 0px;border-style:none;" cellpadding="0">
-<tr><td class="defaultfont">' . $this->formCreator($canChange, $width) . '</td></tr>
+<tr><td class="defaultfont">' . $this->formCreator($canChange && we_hasPerm('CHANGE_DOCUMENT_OWNER'), 388) . '</td></tr>
 <tr><td>' . we_html_tools::getPixel(2, 20) . '</td></tr>
-<tr><td>' . $this->formRestrictOwners($canChange) . '</td></tr>' .
+<tr><td>' . $this->formRestrictOwners($canChange && we_hasPerm('CHANGE_DOCUMENT_PERMISSION')) . '</td></tr>' .
 			($this->RestrictOwners ?
 				'<tr><td>' . we_html_tools::getPixel(2, 10) . '</td></tr>
-<tr><td>' . $this->formOwners($canChange) . '</td></tr>' : '') .
+<tr><td>' . $this->formOwners($canChange && we_hasPerm('CHANGE_DOCUMENT_PERMISSION')) . '</td></tr>' : '') .
 			'</table>';
 	}
 

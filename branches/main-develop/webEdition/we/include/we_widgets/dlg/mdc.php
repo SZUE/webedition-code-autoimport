@@ -190,7 +190,7 @@ function getHTMLCategory(){
 		'colspan' => 2, 'align' => 'right'
 		), we_button::create_button_table(
 			array(
-				we_button::create_button("delete_all", "javascript:removeAllCats()"), $addbut
+				we_button::create_button('delete_all', 'javascript:removeAllCats()'), $addbut
 	)));
 
 	return $table->getHtml() . $js . we_html_element::jsElement(
@@ -404,7 +404,7 @@ if(defined("OBJECT_FILES_TABLE") && permissionhandler::hasPerm("CAN_SEE_OBJECTFI
 
 $divDynamic = we_html_element::htmlDiv(
 		array(
-		"id" => "dynamic", "style" => (!$_selection ? "display:block;" : "display:none;")
+		"id" => "dynamic", "style" => (!$_selection ? 'display:block;' : 'display:none;')
 		), getHTMLDirSelector($_selType) . we_html_tools::getPixel(1, 5) . we_html_element::htmlBr() . ((!$_selType) ? $doctypeElement : we_html_tools::htmlFormElementTable(
 				$cls->getHTML(), g_l('cockpit', "[class]"))) . we_html_tools::getPixel(1, 5) . we_html_element::htmlBr() . getHTMLCategory());
 
@@ -457,4 +457,3 @@ if($showAC){
 	print $yuiSuggest->getYuiCss();
 	print $yuiSuggest->getYuiJs();
 }
-

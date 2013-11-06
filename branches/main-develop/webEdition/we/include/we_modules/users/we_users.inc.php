@@ -420,9 +420,7 @@ class we_user{
 		foreach($entries as $entry){
 
 			$perm_group_name = '';
-			$perm_values = array();
-			$perm_titles = array();
-			$perm_group_title = array();
+			$perm_values = $perm_titles = $perm_group_title = array();
 			include($entry);
 			if(!($perm_group_name == 'administrator' && $this->Type != self::TYPE_USER)){
 				if($perm_group_name){
@@ -2476,3 +2474,4 @@ top.content.hloaded=1;') .
 	}
 
 }
+

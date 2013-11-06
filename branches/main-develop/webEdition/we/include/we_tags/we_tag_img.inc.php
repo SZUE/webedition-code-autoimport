@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_img($attribs){
-	if(($foo = attributFehltError($attribs, 'name', __FUNCTION__))){
+	if(!($tagId = weTag_getAttribute('id', $attribs)) && ($foo = attributFehltError($attribs, 'name', __FUNCTION__))){
 		return $foo;
 	}
 
@@ -32,13 +32,18 @@ function we_tag_img($attribs){
 	$parentid = weTag_getAttribute('parentid', $attribs, 0);
 	$showcontrol = weTag_getAttribute('showcontrol', $attribs, true, true);
 	$showThumb = weTag_getAttribute('showthumbcontrol', $attribs, false, true);
+	$showimage = weTag_getAttribute('showimage', $attribs, true, true);
+	$showinputs = weTag_getAttribute('showinputs', $attribs, SHOWINPUTS_DEFAULT, true);
 
-	$id = $GLOBALS['we_doc']->getElement($name, 'bdid')? : ($GLOBALS['we_doc']->getElement($name)? : weTag_getAttribute('id', $attribs));
+	$tagAttribs = removeAttribs($attribs, array('name', 'id', 'only', 'showcontrol', 'showthumbcontrol', 'showimage', 'showinputs', 'startid', 'parentid'));
 
-	if(isset($attribs['showcontrol']) && !$showcontrol && weTag_getAttribute('id', $attribs)){//bug 6433: später wird so ohne weiteres gar nicht mehr auf die id zurückgegriffen
-		$id = weTag_getAttribute('id', $attribs);
-		$attribs['id'] = $id; //siehe korrespondierende Änderung in we:document::getField
-		$attribs['showcontrol'] = $showcontrol; //sicherstellen das es boolean iost
+	if($name){
+		$id = $GLOBALS['we_doc']->getElement($name, 'bdid');
+		$id = $id ? $id : $GLOBALS['we_doc']->getElement($name);
+		$id = $id ? $id : $tagId;
+	} else {
+		$showThumb = $showcontrol = false;
+		$id = $tagId;
 	}
 
 	//look if image exists in tblfile, and is an image
@@ -81,43 +86,45 @@ function we_tag_img($attribs){
 		if($showThumb){
 			$thumb = $GLOBALS['we_doc']->getElement($thumbField);
 			$thumbattr = $thumb;
-			$attribs['thumbnail'] = $thumbattr;
+			$tagAttribs['thumbnail'] = $thumbattr;
 		}
 	} elseif(isset($GLOBALS['we_doc'])){
 		$altattr = $GLOBALS['we_doc']->getElement($altField);
 		$titleattr = $GLOBALS['we_doc']->getElement($titleField);
-		$altattr == '' ? '' : $attribs['alt'] = $altattr;
-		$titleattr == '' ? '' : $attribs['title'] = $titleattr;
+		$tagAttribs['alt'] = ($altattr ? $altattr : '');
+		$tagAttribs['title'] = ($titleattr ? $titleattr : '');
 		if($showThumb){
 			$thumbattr = $GLOBALS['we_doc']->getElement($thumbField);
-			$attribs['thumbnail'] = $thumbattr;
+			$tagAttribs['thumbnail'] = $thumbattr;
 		}
 	}
 
-	if($GLOBALS['we_editmode'] && !weTag_getAttribute('showimage', $attribs, true, true)){
+	if($GLOBALS['we_editmode'] && !$showimage){
 		$out = '';
-	} elseif(!$id){
-		if($GLOBALS['we_editmode'] && $GLOBALS['we_doc']->InWebEdition){
-			$attribs['src'] = IMAGE_DIR . 'icons/no_image.gif';
-			$attribs['style'] = 'width:64px;height:64px;border-style:none;';
-			$attribs['alt'] = 'no-img';
-			$attribs = removeAttribs($attribs, array('thumbnail', 'only'));
-			$out = getHtmlTag('img', $attribs);
-		} else {
-			$out = ''; //no_image war noch in der Vorscha sichtbar
+	} elseif($id){
+		if(!$showcontrol && $tagId){//bug 6433: später wird so ohne weiteres gar nicht mehr auf die id zurückgegriffen
+			$tagAttribs['id'] = $tagId; //siehe korrespondierende Änderung in we:document::getField
+			$tagAttribs['showcontrol'] = $showcontrol; //sicherstellen das es boolean iost
 		}
+		$out = $GLOBALS['we_doc']->getField($tagAttribs, 'img');
+	} elseif($GLOBALS['we_editmode'] && $GLOBALS['we_doc']->InWebEdition){
+		$tagAttribs = removeAttribs($tagAttribs, array('thumbnail', 'only'));
+		$tagAttribs['src'] = IMAGE_DIR . 'icons/no_image.gif';
+		$tagAttribs['style'] = 'width:64px;height:64px;border-style:none;';
+		$tagAttribs['alt'] = 'no-img';
+		$out = getHtmlTag('img', $tagAttribs);
 	} else {
-		$out = $GLOBALS['we_doc']->getField($attribs, 'img');
+		$out = ''; //no_image war noch in der Vorscha sichtbar
 	}
 
 	if(!$id && (!$GLOBALS['we_editmode'])){
 		return '';
 	}
-	if(!$id){
-		$id = '';
-	}
 
 	if($showcontrol && $GLOBALS['we_editmode']){
+		if(!$id){
+			$id = '';
+		}
 		$out = '
 <table class="weEditTable padding2 spacing2">
 	<tr>
@@ -125,7 +132,7 @@ function we_tag_img($attribs){
 			<input onchange="_EditorFrame.setEditorIsHot(true);" type="hidden" name="' . $fname . '" value="' . $id . '" />
 		</td>
 	</tr>' .
-			(weTag_getAttribute('showinputs', $attribs, SHOWINPUTS_DEFAULT, true) ? //  only when wanted
+			($showinputs ? //  only when wanted
 				'
 	<tr>
 		<td class="weEditmodeStyle" align="center" colspan="2" style="width: 180px;">

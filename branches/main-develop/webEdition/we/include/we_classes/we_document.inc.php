@@ -837,7 +837,7 @@ class we_document extends we_root{
 		}
 		switch($type){
 			case 'img':
-				$img = new we_imageDocument();
+				$img = new we_imageDocument(false);
 
 				if(isset($attribs['name'])){
 					$img->Name = $attribs['name'];
@@ -847,7 +847,6 @@ class we_document extends we_root{
 					$val = $attribs['id'];
 				}
 
-				$img->LoadBinaryContent = false;
 				$img->initByID($val, FILE_TABLE);
 
 				$altField = $img->Name . we_imageDocument::ALT_FIELD;
@@ -872,13 +871,14 @@ class we_document extends we_root{
 				}
 
 				//	when width or height are given, then let the browser adjust the image
-				if(isset($attribs['width']) || isset($attribs['width'])){
-					unset($img->elements['height']);
-					unset($img->elements['width']);
-				}
-				if(!empty($attribs)){
-					$attribs = removeAttribs($attribs, array('hyperlink', 'target'));
-					$img->initByAttribs($attribs);
+					if(isset($attribs['width'])){
+						unset($img->elements['width']);
+					}
+					if(isset($attribs['height'])){
+						unset($img->elements['height']);
+					}
+				if($attribs){
+					$img->initByAttribs(removeAttribs($attribs, array('hyperlink', 'target')));
 				}
 				if(isset($GLOBALS['lv'])){
 					if(isset($GLOBALS['lv']->count)){
@@ -1103,21 +1103,25 @@ class we_document extends we_root{
 				if(isset($attribs['showcontrol']) && !$attribs['showcontrol'] && isset($attribs['id']) && $attribs['id']){//bug 6433: siehe korrespondierende Änderung in we_tag_img
 					unset($attribs['showcontrol']);
 					$val = $attribs['id'];
-				} else {
-					$val = $this->getElement($attribs['name'], 'bdid');
-				}
-				if($val){
 					break;
 				}
+				$val = $this->getElement($attribs['name'], 'bdid');
+				if(!$val){
+					$val = $this->getElement(isset($attribs['name']) ? $attribs['name'] : '');
+				}
+				break;
+			case 'href':
+				$val = $this->getElement(isset($attribs['name']) ? $attribs['name'] : '');
+				if((isset($this->TableID) && $this->TableID) || (get_class($this) == 'we_objectFile')){
+					$hrefArr = $val ? unserialize($val) : array();
+					if(!is_array($hrefArr)){
+						return '';
+					}
+					return self::getHrefByArray($hrefArr);
+				}
+				break;
 			default:
 				$val = $this->getElement(isset($attribs['name']) ? $attribs['name'] : '');
-		}
-		if($type == 'href' && ((isset($this->TableID) && $this->TableID) || (get_class($this) == 'we_objectFile'))){
-			$hrefArr = $val ? unserialize($val) : array();
-			if(!is_array($hrefArr)){
-				return '';
-			}
-			return self::getHrefByArray($hrefArr);
 		}
 
 		return $this->getFieldByVal($val, $type, $attribs, $pathOnly, isset($GLOBALS['WE_MAIN_DOC']) ? $GLOBALS['WE_MAIN_DOC']->ParentID : $this->ParentID, isset($GLOBALS['WE_MAIN_DOC']) ? $GLOBALS['WE_MAIN_DOC']->Path : $this->Path, $this->DB_WE, (isset($attribs['classid']) && isset($attribs['type']) && $attribs['type'] == 'select') ? $attribs['classid'] : (isset($this->TableID) ? $this->TableID : ''));

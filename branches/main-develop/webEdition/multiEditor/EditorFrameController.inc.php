@@ -150,7 +150,7 @@
 		 * RETURNS:
 		 *   nothing
 		 */
-		this.openDocument = function(table, id, ct, editcmd, dt, url, code, mode, parameters) {
+				this.openDocument = function(table, id, ct, editcmd, dt, url, code, mode, parameters) {
 
 			if (this.EditorFrames === null) {
 				this.init();
@@ -633,23 +633,32 @@ print we_message_reporting::getShowMessageCall(g_l('multiEditor', "[no_editor_le
 
 					if (first) {
 						this.getEditorFrame(frameId).setEmptyEditor();
-						//this.getEditorFrame(frameId).EditorFrameReference.style.display="inline";
-						this.getEditorFrame(frameId).EditorFrameReference.style.width = "100%";
-						this.getEditorFrame(frameId).EditorFrameReference.style.height = "100%";
+	<?php
+	echo (we_base_browserDetect::isChrome() ?
+		'this.getEditorFrame(frameId).EditorFrameReference.style.display="block";' :
+		'this.getEditorFrame(frameId).EditorFrameReference.style.width = "100%";
+		this.getEditorFrame(frameId).EditorFrameReference.style.height = "100%";');
+	?>
 						first = false;
 					} else {
-						//this.getEditorFrame(frameId).EditorFrameReference.style.display="none";
-						this.getEditorFrame(frameId).EditorFrameReference.style.height = "0px";
-						this.getEditorFrame(frameId).EditorFrameReference.style.witdh = "0px";
+	<?php
+	echo (we_base_browserDetect::isChrome() ?
+		'this.getEditorFrame(frameId).EditorFrameReference.style.display="none";' :
+		'this.getEditorFrame(frameId).EditorFrameReference.style.height = "0px";
+	this.getEditorFrame(frameId).EditorFrameReference.style.witdh = "0px";');
+	?>
 					}
 				}
 
 			} else {
 				for (frameId in this.EditorFrames) {
 					if (this.ActiveEditorFrameId === frameId) {
-//						this.getEditorFrame(frameId).EditorFrameReference.style.display="inline";
-						this.getEditorFrame(frameId).EditorFrameReference.style.width = "100%";
-						this.getEditorFrame(frameId).EditorFrameReference.style.height = "100%";
+	<?php
+	echo (we_base_browserDetect::isChrome() ?
+		'this.getEditorFrame(frameId).EditorFrameReference.style.display="block";' :
+		'this.getEditorFrame(frameId).EditorFrameReference.style.width = "100%";
+		this.getEditorFrame(frameId).EditorFrameReference.style.height = "100%";');
+	?>
 					} else {
 						if (this.getEditorFrame(frameId).getEditorIsInUse() && this.getEditorFrame(frameId).EditorType !== "none_webedition" && this.EditorFrames[frameId].getDocumentReference().closeAllModalWindows) {
 							this.EditorFrames[frameId].getDocumentReference().closeAllModalWindows();
@@ -658,13 +667,15 @@ print we_message_reporting::getShowMessageCall(g_l('multiEditor', "[no_editor_le
 							this.getEditorFrame(frameId).EditorExitDocQuestionDialog.close();
 							this.getEditorFrame(frameId).EditorExitDocQuestionDialog = false;
 						}
-						this.getEditorFrame(frameId).EditorFrameReference.style.height = "0px";
-						this.getEditorFrame(frameId).EditorFrameReference.style.witdh = "0px";
-						//					this.getEditorFrame(frameId).EditorFrameReference.style.display="none";
+	<?php
+	echo (we_base_browserDetect::isChrome() ?
+		'this.getEditorFrame(frameId).EditorFrameReference.style.display="none";' :
+		'this.getEditorFrame(frameId).EditorFrameReference.style.height = "0px";
+	this.getEditorFrame(frameId).EditorFrameReference.style.witdh = "0px";');
+	?>
 					}
 				}
 			}
-			//this.MultiEditorFrameset.setAttribute("cols", _colStr);
 		};
 
 		//--------------------------------------------------------------------
@@ -1156,7 +1167,7 @@ print we_message_reporting::getShowMessageCall(g_l('multiEditor', "[no_editor_le
 					if (this.getEditorType() === "cockpit") {
 						_theEditorFrame.saveSettings();
 						var _href = _theEditorFrame.location.href;
-						if (_href.charAt(_href.length - 1) === "#"){
+						if (_href.charAt(_href.length - 1) === "#") {
 							_href = _href.substr(0, _href.length - 1);
 						}
 						_theEditorFrame.location.href = _href;

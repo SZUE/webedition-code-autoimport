@@ -49,14 +49,14 @@ class we_binaryDocument extends we_document{
 	 * @return we_binaryDocument
 	 * @desc Constructor for we_binaryDocument
 	 */
-	function __construct(){
+	function __construct($LoadBinaryContent = true){
 		parent::__construct();
 		array_push($this->persistent_slots, 'html', 'DocChanged');
 		array_push($this->EditPageNrs, WE_EDITPAGE_PROPERTIES, WE_EDITPAGE_INFO, WE_EDITPAGE_CONTENT, WE_EDITPAGE_VERSIONS);
 		if(defined('CUSTOMER_TABLE') && (we_hasPerm('CAN_EDIT_CUSTOMERFILTER') || we_hasPerm('CAN_CHANGE_DOCS_CUSTOMER'))){
 			$this->EditPageNrs[] = WE_EDITPAGE_WEBUSER;
 		}
-		$this->LoadBinaryContent = true;
+		$this->LoadBinaryContent = $LoadBinaryContent;
 	}
 
 	/* must be called from the editor-script. Returns a filename which has to be included from the global-Script */
