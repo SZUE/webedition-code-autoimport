@@ -104,8 +104,6 @@ class we_base_browserDetect{
 							self::$br = self::NETSCAPE;
 							self::$v = (preg_match('/netscape\/(7.+)/i', $post, $regs) ? trim($regs[1]) : 7);
 						} elseif(preg_match('/AppleWebKit\/([0-9.]+)/i', $post, $regs)){
-							self::$v = $regs[1];
-							self::$br = self::APPLE;
 
 							if(stristr($post, 'chrome')){
 								self::$v = (preg_match('/chrome\/([0-9]+\.[0-9]+)/i', $post, $regs) ? $regs[1] : '1');
@@ -113,6 +111,9 @@ class we_base_browserDetect{
 							} elseif(stristr($post, 'safari')){
 								self::$v = (preg_match('/version\/([0-9]+\.[0-9]+)/i', $post, $regs) ? $regs[1] : '1');
 								self::$br = self::SAFARI;
+							} else {
+								self::$v = $regs[1];
+								self::$br = self::APPLE;
 							}
 						} elseif(preg_match('/firefox\/([0-9]+.[0-9]+)/i', $post, $regs)){
 							self::$v = $regs[1];
@@ -123,12 +124,14 @@ class we_base_browserDetect{
 								self::$v = $regs[1];
 							}
 						} elseif(preg_match('/opera ([^ ]+)/i', $post, $regs)){
-							self::$br = self::OPERA;
 							$reg = array();
-							if(preg_match('/version\/([^ ]+)/i', $post, $reg)){
-								self::$v = $reg[1];
+							if(stristr($post, 'chrome')){
+								self::$v = (preg_match('/chrome\/([0-9]+\.[0-9]+)/i', $post, $regs) ? $regs[1] : '1');
+								self::$br = self::CHROME;
 							} else {
-								self::$v = $regs[1];
+								self::$br = self::OPERA;
+								self::$v = (preg_match('/version\/([^ ]+)/i', $post, $reg) ?
+										$reg[1] : $regs[1]);
 							}
 						} elseif($brArr[0] == 'compatible'){
 							self::$br = self::UNKNOWN;
@@ -142,11 +145,12 @@ class we_base_browserDetect{
 					$this->_getSys($bracket);
 					break;
 				case 'opera':
-					self::$br = self::OPERA;
-					if(preg_match('/version\/([^ ]+)/i', $post, $reg)){
-						self::$v = $reg[1];
+					if(stristr($post, 'chrome')){
+						self::$v = (preg_match('/chrome\/([0-9]+\.[0-9]+)/i', $post, $regs) ? $regs[1] : '1');
+						self::$br = self::CHROME;
 					} else {
-						self::$v = $prever;
+						self::$br = self::OPERA;
+						self::$v = (preg_match('/version\/([^ ]+)/i', $post, $reg) ? $reg[1] : $prever);
 					}
 					$this->_getSys($bracket);
 					break;
