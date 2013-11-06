@@ -1345,9 +1345,9 @@ function handle_event(evt) {
 		}
 
 		$hdns = $this->getHdns('v', $v) .
-			(isset($_REQUEST['records']) ? $this->getHdns('records', $records) : '') .
-			(isset($_REQUEST['we_flds']) ? $this->getHdns('we_flds', $we_flds) : '') .
-			(isset($_REQUEST['attrs']) ? $this->getHdns('attributes', $attrs) : '') .
+			($records ? $this->getHdns('records', $records) : '') .
+			($we_flds ? $this->getHdns('we_flds', $we_flds) : '') .
+			($attrs ? $this->getHdns('attributes', $attrs) : '') .
 			//$hdns .= we_html_element::htmlHidden(array('name' => 'v[cid]', 'value' => -2));
 			we_html_element::htmlHidden(array('name' => 'v[pfx_fn]', 'value' => ((!isset($v['pfx_fn'])) ? 0 : $v['pfx_fn']))) .
 			(isset($v['rdo_timestamp']) ? we_html_element::htmlHidden(array('name' => 'v[sTimeStamp]', 'value' => $v['rdo_timestamp'])) : '');
@@ -1394,6 +1394,7 @@ function handle_event(evt) {
 				LINK_TABLE . '.DocumentTable="' . stripTblPrefix(TEMPLATES_TABLE) . '" AND ' . LINK_TABLE . '.DID=' . intval($v['we_TemplateID']) . ' AND ' . LINK_TABLE . '.Name="completeData"', "Dat", $db);
 			$tp = new we_tag_tagParser($templateCode);
 			$tags = $tp->getAllTags();
+			$regs = array();
 
 			foreach($tags as $tag){
 				if(preg_match('|<we:([^> /]+)|i', $tag, $regs)){
@@ -1417,8 +1418,7 @@ function handle_event(evt) {
 			$records[] = 'Title';
 			$records[] = 'Description';
 			$records[] = 'Keywords';
-		}
-		else {
+		}else {
 			$classFields = $this->getClassFields($v['classID']);
 			foreach($classFields as $classField){
 				if($this->isTextField($classField['type']) || $this->isNumericField($classField['type']) || $this->isDateField($classField['type'])){
@@ -1431,8 +1431,7 @@ function handle_event(evt) {
 		}
 		$xp = new we_xml_parser($_SERVER['DOCUMENT_ROOT'] . $v['import_from']);
 		$nodeSet = $xp->evaluate($xp->root . '/' . $v['rcd'] . '[1]/child::*');
-		$val_nodes = array();
-		$val_attrs = array();
+		$val_nodes = $val_attrs = array();
 
 		foreach($nodeSet as $node){
 			$nodeName = $xp->nodeName($node);
@@ -1458,9 +1457,9 @@ function handle_event(evt) {
 		reset($records);
 		$i = 0;
 		while(list(, $record) = each($records)){
-			$hdns .= we_html_element::htmlHidden(array('name' => 'records[$i]', 'value' => $record));
+			$hdns .= we_html_element::htmlHidden(array('name' => 'records[' . $i . ']', 'value' => $record));
 			$sct_we_fields = new we_html_select(array(
-				'name' => "we_flds[$record]",
+				'name' => 'we_flds[' . $record . ']',
 				'size' => 1,
 				'class' => 'weSelect',
 				'onClick' => '',
@@ -1472,13 +1471,11 @@ function handle_event(evt) {
 			foreach($val_nodes as $value => $text){
 				$sct_we_fields->addOption(oldHtmlspecialchars($value), $text);
 				if(isset($we_flds[$record])){
-					if($value == $we_flds[$record])
+					if($value == $we_flds[$record]){
 						$sct_we_fields->selectOption($value);
-				}
-				else {
-					if($value == $record)
-						$sct_we_fields->selectOption($value);
-				}
+					}
+				} elseif($value == $record)
+					$sct_we_fields->selectOption($value);
 			}
 			switch($record){
 				case 'Title':
@@ -1495,7 +1492,7 @@ function handle_event(evt) {
 			}
 			$rows[] = array(
 				array('dat' => ($new_record != '') ? $new_record : $record), array('dat' => $sct_we_fields->getHTML()),
-				array('dat' => we_html_tools::htmlTextInput("attrs[$record]", 30, (isset($attrs[$record]) ? base64_decode($attrs[$record]) : ''), 255, '', 'text', 100))
+				array('dat' => we_html_tools::htmlTextInput('attrs[' . $record . ']', 30, (isset($attrs[$record]) ? base64_decode($attrs[$record]) : ''), 255, '', 'text', 100))
 			);
 			$i++;
 		}
@@ -1594,7 +1591,7 @@ function handle_event(evt) {
 
 		$content = $hdns .
 			we_multiIconBox::getJS() .
-			we_multiIconBox::getHTML('xml', '100%', $parts, 30, '', $znr, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]'), ($wepos == 'down'), g_l('import', '[asgn_rcd_flds]'));
+			we_multiIconBox::getHTML('xml', '100%', $parts, 30, '', $znr, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]'), ($wepos == 'down'), g_l('import', '[assign_record_fields]'));
 
 		return array($functions, $content);
 	}
@@ -2219,8 +2216,7 @@ function handle_event(evt) {
 
 		$db = new DB_WE();
 
-		$records = array();
-		$dateFields = array();
+		$records = $dateFields = array();
 
 		if($v["import_type"] == "documents"){
 			$templateCode = f("SELECT " . CONTENT_TABLE . ".Dat as Dat FROM " . CONTENT_TABLE . "," . LINK_TABLE . " WHERE " . LINK_TABLE . ".CID=" . CONTENT_TABLE . ".ID AND " .
@@ -2440,7 +2436,7 @@ function handle_event(evt) {
 
 		$content = $hdns .
 			we_multiIconBox::getJS() .
-			we_multiIconBox::getHTML('csv', '100%', $parts, 30, '', $znr, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]'), ($wepos == 'down'), g_l('import', '[asgn_rcd_flds]'));
+			we_multiIconBox::getHTML('csv', '100%', $parts, 30, '', $znr, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]'), ($wepos == 'down'), g_l('import', '[assign_record_fields]'));
 
 		return array($functions, $content);
 	}
@@ -2452,3 +2448,4 @@ function handle_event(evt) {
 	}
 
 }
+
