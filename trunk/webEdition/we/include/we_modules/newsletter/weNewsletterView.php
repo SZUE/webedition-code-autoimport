@@ -135,10 +135,11 @@ class weNewsletterView{
 
 		$fields_names = array('fieldname', 'operator', 'fieldvalue', 'logic', 'hours', 'minutes');
 		foreach($this->newsletter->groups as $g => $group){
-			if(is_array($group->aFilter)){
-				$out.=$this->htmlHidden('filter_' . $g, count($group->aFilter));
+			$filter = $group->getFilter();
+			if($filter){
+				$out.=$this->htmlHidden('filter_' . $g, count($filter));
 
-				foreach($group->aFilter as $k => $v){
+				foreach($filter as $k => $v){
 					foreach($fields_names as $field){
 						if(isset($v['$field']))
 							$out.=$this->htmlHidden('filter_' . $field . '_' . $g . '_' . $k, $v['$field']);
@@ -1885,16 +1886,16 @@ self.close();');
 		}
 
 		if($this->newsletter->ParentID){
-			$this->newsletter->Path = f('SELECT Path FROM ' . NEWSLETTER_TABLE . ' WHERE ID=' . $this->newsletter->ParentID, "Path", $this->db) . "/" . $this->newsletter->Text;
+			$this->newsletter->Path = f('SELECT Path FROM ' . NEWSLETTER_TABLE . ' WHERE ID=' . $this->newsletter->ParentID, 'Path', $this->db) . '/' . $this->newsletter->Text;
 		} elseif(!$this->newsletter->filenameNotValid($this->newsletter->Text)){
-			$this->newsletter->Path = "/" . $this->newsletter->Text;
+			$this->newsletter->Path = '/' . $this->newsletter->Text;
 		}
 
-		if(isset($_REQUEST["page"])){
-			$this->page = $_REQUEST["page"];
+		if(isset($_REQUEST['page'])){
+			$this->page = $_REQUEST['page'];
 		}
 
-		$groups = (isset($_REQUEST["groups"]) ? $_REQUEST["groups"] : 0);
+		$groups = (isset($_REQUEST['groups']) ? $_REQUEST['groups'] : 0);
 
 		$this->newsletter->groups = array();
 
@@ -1906,14 +1907,14 @@ self.close();');
 			$this->newsletter->addGroup();
 		}
 
-		$fields_names = array("fieldname", "operator", "fieldvalue", "logic", "hours", "minutes");
+		$fields_names = array('fieldname', 'operator', 'fieldvalue', 'logic', 'hours', 'minutes');
 
 		foreach($this->newsletter->groups as $gkey => &$gval){
 			// persistens
 			$gval->NewsletterID = $this->newsletter->ID;
 
 			foreach($gval->persistents as $per){
-				$varname = "group" . $gkey . "_" . $per;
+				$varname = 'group' . $gkey . '_' . $per;
 
 				if(isset($_REQUEST[$varname])){
 					$gval->$per = $_REQUEST[$varname];
@@ -1921,29 +1922,28 @@ self.close();');
 			}
 
 			// Filter
-			$count = (isset($_REQUEST["filter_" . $gkey]) ? $_REQUEST["filter_" . $gkey] : 0);
+			$count = (isset($_REQUEST['filter_' . $gkey]) ? $_REQUEST['filter_' . $gkey]++ : 0);
 			if($count){
-				$count++;
-			}
-
 			for($i = 0; $i < $count; $i++){
 				$new = array();
 
 				foreach($fields_names as $field){
-					$varname = "filter_" . $field . "_" . $gkey . "_" . $i;
+					$varname = 'filter_' . $field . '_' . $gkey . '_' . $i;
 
 					if(isset($_REQUEST[$varname])){
 						$new[$field] = $_REQUEST[$varname];
 					}
 				}
 
-				if(!empty($new)){
-					$gval->aFilter[] = $new;
-				}
+				if($new){
+					$gval->appendFilter($new);
+				$gval->preserveFilter();
+					}
+			}
 			}
 		}
 		unset($gval);
-		$blocks = (isset($_REQUEST["blocks"]) ? $_REQUEST["blocks"] : 0);
+		$blocks = (isset($_REQUEST['blocks']) ? $_REQUEST['blocks'] : 0);
 
 		$this->newsletter->blocks = array();
 
@@ -2414,10 +2414,10 @@ self.close();');
 
 		if(defined("CUSTOMER_TABLE")){
 			$filterarr = array();
-
-			if(is_array($this->newsletter->groups[$group - 1]->aFilter)){
-				foreach($this->newsletter->groups[$group - 1]->aFilter as $k => $filter){
-					$filterarr[] = ($k != 0 ? (" " . $filter["logic"] . " ") : " ") . $this->getFilterSQL($filter);
+			$filtera = $this->newsletter->groups[$group - 1]->getFilter();
+			if($filtera){
+				foreach($filtera as $k => $filter){
+					$filterarr[] = ($k != 0 ? (' ' . $filter['logic'] . ' ') : ' ') . $this->getFilterSQL($filter);
 				}
 			}
 
