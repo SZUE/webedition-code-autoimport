@@ -35,7 +35,7 @@ function we_tag_img($attribs){
 	$showimage = weTag_getAttribute('showimage', $attribs, true, true);
 	$showinputs = weTag_getAttribute('showinputs', $attribs, SHOWINPUTS_DEFAULT, true);
 
-	$tagAttribs = removeAttribs($attribs, array('name', 'id', 'only', 'showcontrol', 'showthumbcontrol', 'showimage', 'showinputs', 'startid', 'parentid'));
+	$tagAttribs = removeAttribs($attribs, array('id', 'only', 'showcontrol', 'showthumbcontrol', 'showimage', 'showinputs', 'startid', 'parentid'));
 
 	if($name){
 		$id = $GLOBALS['we_doc']->getElement($name, 'bdid');
@@ -108,7 +108,7 @@ function we_tag_img($attribs){
 		}
 		$out = $GLOBALS['we_doc']->getField($tagAttribs, 'img');
 	} elseif($GLOBALS['we_editmode'] && $GLOBALS['we_doc']->InWebEdition){
-		$tagAttribs = removeAttribs($tagAttribs, array('thumbnail', 'only'));
+		$tagAttribs = removeAttribs($tagAttribs, array('thumbnail', 'only', 'name'));
 		$tagAttribs['src'] = IMAGE_DIR . 'icons/no_image.gif';
 		$tagAttribs['style'] = 'width:64px;height:64px;border-style:none;';
 		$tagAttribs['alt'] = 'no-img';
@@ -199,3 +199,4 @@ function we_tag_img($attribs){
 	}
 	return $out;
 }
+

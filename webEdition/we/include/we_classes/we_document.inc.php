@@ -871,12 +871,12 @@ class we_document extends we_root{
 				}
 
 				//	when width or height are given, then let the browser adjust the image
-					if(isset($attribs['width'])){
-						unset($img->elements['width']);
-					}
-					if(isset($attribs['height'])){
-						unset($img->elements['height']);
-					}
+				if(isset($attribs['width'])){
+					unset($img->elements['width']);
+				}
+				if(isset($attribs['height'])){
+					unset($img->elements['height']);
+				}
 				if($attribs){
 					$img->initByAttribs(removeAttribs($attribs, array('hyperlink', 'target')));
 				}
@@ -1590,3 +1590,4 @@ class we_document extends we_root{
 	}
 
 }
+
