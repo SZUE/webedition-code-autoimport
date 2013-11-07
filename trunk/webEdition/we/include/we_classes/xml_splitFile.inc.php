@@ -91,8 +91,7 @@ class XML_SplitFile extends we_xml_parser{
 		}
 
 		// Save the path consisting of the temporary directory and a unique id.
-		$this->path = TEMP_PATH;
-		$this->path .= "/" . $this->getUniqueId();
+		$this->path = TEMP_PATH . '/' . $this->getUniqueId();
 
 		// Make the current directory.
 		we_util_File::createLocalFolder($this->path);
@@ -203,7 +202,7 @@ class XML_SplitFile extends we_xml_parser{
 		// Check if the file was opened correctly.
 		if(!$hFile){
 			return FALSE;
-		}else {
+		} else {
 			// Acquire an exclusive lock.
 			flock($hFile, LOCK_EX);
 

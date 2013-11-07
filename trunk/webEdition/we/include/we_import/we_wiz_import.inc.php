@@ -140,17 +140,17 @@ class we_wizard_import extends we_wizard{
 	}
 
 	function getStep0(){
-		$defaultVal = 'import_files';
+		$defaultVal = importFunctions::TYPE_LOCAL_FILES;
 
 
 		if(!we_hasPerm('FILE_IMPORT')){
-			$defaultVal = 'siteImport';
+			$defaultVal = importFunctions::TYPE_SITE;
 			if(!we_hasPerm('SITE_IMPORT')){
-				$defaultVal = 'WXMLImport';
+				$defaultVal = importFunctions::TYPE_WE_XML;
 				if(!we_hasPerm('WXML_IMPORT')){
-					$defaultVal = 'GXMLImport';
+					$defaultVal = importFunctions::TYPE_GENERIC_XML;
 					if(!we_hasPerm('GENERICXML_IMPORT')){
-						$defaultVal = 'CSVImport';
+						$defaultVal = importFunctions::TYPE_CSV;
 						if(!we_hasPerm('CSV_IMPORT')){
 							$defaultVal = '';
 						}
@@ -163,15 +163,15 @@ class we_wizard_import extends we_wizard{
 		$expat = (function_exists('xml_parser_create')) ? true : false;
 
 		$tblFiles = new we_html_table(array('cellpadding' => 0, 'cellspacing' => 0, 'border' => 0), 3, 1);
-		$tblFiles->setCol(0, 0, array(), we_forms::radiobutton('file_import', ($cmd[1] == 'import_files'), 'type', g_l('import', '[file_import]'), true, 'defaultfont', '', !we_hasPerm('FILE_IMPORT'), g_l('import', '[txt_file_import]'), 0, 384));
+		$tblFiles->setCol(0, 0, array(), we_forms::radiobutton('file_import', ($cmd[1] == importFunctions::TYPE_LOCAL_FILES), 'type', g_l('import', '[file_import]'), true, 'defaultfont', '', !we_hasPerm('FILE_IMPORT'), g_l('import', '[txt_file_import]'), 0, 384));
 		$tblFiles->setCol(1, 0, array(), we_html_tools::getPixel(0, 4));
-		$tblFiles->setCol(2, 0, array(), we_forms::radiobutton('site_import', ($cmd[1] == 'siteImport'), 'type', g_l('import', '[site_import]'), true, 'defaultfont', '', !we_hasPerm('SITE_IMPORT'), g_l('import', '[txt_site_import]'), 0, 384));
+		$tblFiles->setCol(2, 0, array(), we_forms::radiobutton('site_import', ($cmd[1] == importFunctions::TYPE_SITE), 'type', g_l('import', '[site_import]'), true, 'defaultfont', '', !we_hasPerm('SITE_IMPORT'), g_l('import', '[txt_site_import]'), 0, 384));
 		$tblData = new we_html_table(array('cellpadding' => 0, 'cellspacing' => 0, 'border' => 0), 5, 1);
-		$tblData->setCol(0, 0, array(), we_forms::radiobutton('WXMLImport', ($cmd[1] == 'WXMLImport'), 'type', g_l('import', '[wxml_import]'), true, 'defaultfont', '', (!we_hasPerm('WXML_IMPORT') || !$expat), ($expat ? g_l('import', '[txt_wxml_import]') : g_l('import', '[add_expat_support]')), 0, 384));
+		$tblData->setCol(0, 0, array(), we_forms::radiobutton(importFunctions::TYPE_WE_XML, ($cmd[1] == importFunctions::TYPE_WE_XML), 'type', g_l('import', '[wxml_import]'), true, 'defaultfont', '', (!we_hasPerm('WXML_IMPORT') || !$expat), ($expat ? g_l('import', '[txt_wxml_import]') : g_l('import', '[add_expat_support]')), 0, 384));
 		$tblData->setCol(1, 0, array(), we_html_tools::getPixel(0, 4));
-		$tblData->setCol(2, 0, array(), we_forms::radiobutton('GXMLImport', ($cmd[1] == 'GXMLImport'), 'type', g_l('import', '[gxml_import]'), true, 'defaultfont', '', (!we_hasPerm('GENERICXML_IMPORT') || !$expat), ($expat) ? g_l('import', '[txt_gxml_import]') : g_l('import', '[add_expat_support]'), 0, 384));
+		$tblData->setCol(2, 0, array(), we_forms::radiobutton(importFunctions::TYPE_GENERIC_XML, ($cmd[1] == importFunctions::TYPE_GENERIC_XML), 'type', g_l('import', '[gxml_import]'), true, 'defaultfont', '', (!we_hasPerm('GENERICXML_IMPORT') || !$expat), ($expat) ? g_l('import', '[txt_gxml_import]') : g_l('import', '[add_expat_support]'), 0, 384));
 		$tblData->setCol(3, 0, array(), we_html_tools::getPixel(0, 4));
-		$tblData->setCol(4, 0, array(), we_forms::radiobutton('CSVImport', ($cmd[1] == 'CSVImport'), 'type', g_l('import', '[csv_import]'), true, 'defaultfont', '', !we_hasPerm('CSV_IMPORT'), g_l('import', '[txt_csv_import]'), 0, 384));
+		$tblData->setCol(4, 0, array(), we_forms::radiobutton(importFunctions::TYPE_CSV, ($cmd[1] == importFunctions::TYPE_CSV), 'type', g_l('import', '[csv_import]'), true, 'defaultfont', '', !we_hasPerm('CSV_IMPORT'), g_l('import', '[txt_csv_import]'), 0, 384));
 
 		$tblTemplates = new we_html_table(array('cellpadding' => 0, 'cellspacing' => 0, 'border' => 0), 1, 1);
 		$tblTemplates->setCol(0, 0, array(), we_forms::radiobutton('template_import', ($cmd[1] == 'import_templates'), 'type', g_l('import', '[template_import]'), true, 'defaultfont', '', !we_hasPerm('ADMINISTRATOR'), g_l('import', '[txt_template_import]'), 0, 384));
@@ -323,7 +323,7 @@ class we_wizard_import extends we_wizard{
 				switch(evt) {
 					case 'previous':
 						f.step.value = 0;
-						top.location.href='" . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=import&we_cmd[1]=WXMLImport';
+						top.location.href='" . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=import&we_cmd[1]=" . importFunctions::TYPE_WE_XML . "';
 						break;
 					case 'next':
 						var fs = f.elements['v[fserver]'].value;
@@ -872,7 +872,7 @@ function handle_event(evt) {
 	switch(evt) {
 		case 'previous':
 			f.step.value = 0;
-			top.location.href='" . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=import&we_cmd[1]=GXMLImport';
+			top.location.href='" . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=import&we_cmd[1]=" . importFunctions::TYPE_GENERIC_XML . "';
 			break;
 		case 'next':
 		var fs = f.elements['v[fserver]'].value;
@@ -1418,6 +1418,7 @@ function handle_event(evt) {
 			$records[] = 'Title';
 			$records[] = 'Description';
 			$records[] = 'Keywords';
+			$records[] = 'Charset';
 		}else {
 			$classFields = $this->getClassFields($v['classID']);
 			foreach($classFields as $classField){
@@ -1633,7 +1634,7 @@ function handle_event(evt) {
 	switch(evt) {
 		case 'previous':
 			f.step.value = 0;
-			top.location.href='" . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=import&we_cmd[1]=CSVImport';
+			top.location.href='" . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=import&we_cmd[1]=" . importFunctions::TYPE_CSV . "';
 			break;
 		case 'next':
 			var fvalid = true;
