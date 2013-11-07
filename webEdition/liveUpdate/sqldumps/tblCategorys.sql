@@ -3,7 +3,7 @@ CREATE TABLE ###TBLPREFIX###tblCategorys (
   Category varchar(64) NOT NULL default '',
   `Text` varchar(64) default NULL,
   Path varchar(255) default NULL,
-  ParentID bigint(20) unsigned default NULL,
+  ParentID int(11) unsigned default NULL,
   IsFolder tinyint(1) unsigned  default NULL,
   Icon varchar(64) default NULL,
   Catfields longtext NOT NULL,

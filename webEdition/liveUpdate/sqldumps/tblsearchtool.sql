@@ -12,8 +12,8 @@
 /* query separator */
 
 CREATE TABLE ###TBLPREFIX###tblsearchtool (
-  `ID` bigint(20) unsigned NOT NULL auto_increment,
-  `ParentID` bigint(20) unsigned NOT NULL default '0',
+  `ID` smallint(4) unsigned NOT NULL auto_increment,
+  `ParentID` smallint(4) unsigned NOT NULL default '0',
   `IsFolder` tinyint(1) unsigned NOT NULL default '0',
   `Icon` varchar(255) NOT NULL,
   `Path` varchar(255) NOT NULL,
