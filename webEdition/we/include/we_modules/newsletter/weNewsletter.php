@@ -99,11 +99,10 @@ class weNewsletter extends weNewsletterBase{
 	function load($newsletterID){
 		parent::load($newsletterID);
 		$this->Text = stripslashes($this->Text);
-		if($this->Path == "")
-			$this->Path = "/";
+		$this->Path = ($this->Path ? $this->Path : '/');
 		$this->Subject = stripslashes($this->Subject);
-		$this->groups = weNewsletterGroup::__getAllGroups($newsletterID);
-		$this->blocks = weNewsletterBlock::__getAllBlocks($newsletterID);
+		$this->groups = weNewsletterGroup::__getAllGroups($newsletterID, $this->db);
+		$this->blocks = weNewsletterBlock::__getAllBlocks($newsletterID, $this->db);
 		if(empty($this->Charset)){
 			$this->Charset = $GLOBALS['WE_BACKENDCHARSET'];
 		}
@@ -177,8 +176,9 @@ class weNewsletter extends weNewsletterBase{
 	 */
 	function delete(){
 
-		if($this->IsFolder)
+		if($this->IsFolder){
 			$this->deleteChilds();
+		}
 		foreach($this->blocks as $block){
 			$block->delete();
 			$block = new weNewsletterBlock();
@@ -198,8 +198,9 @@ class weNewsletter extends weNewsletterBase{
 	 */
 	function deleteChilds(){
 		$this->db->query('SELECT ID FROM ' . NEWSLETTER_TABLE . ' WHERE ParentID=' . intval($this->ID));
-		while($this->db->next_record()){
-			$child = new self($this->db->f('ID'));
+		$ids = $this->db->getAll(true);
+		foreach($ids as $id){
+			$child = new self($id);
 			$child->delete();
 			$child = new self();
 		}
@@ -329,7 +330,10 @@ class weNewsletter extends weNewsletterBase{
 	 */
 	function addLog($log, $param = ''){
 		$this->db->query('INSERT INTO ' . NEWSLETTER_LOG_TABLE . ' SET ' . we_database_base::arraySetter(array(
-				'NewsletterID' => $this->ID, 'LogTime' => 'UNIX_TIMESTAMP()', 'Log' => $log, 'Param' => $param
+				'NewsletterID' => $this->ID,
+				'LogTime' => 'UNIX_TIMESTAMP()',
+				'Log' => $log,
+				'Param' => $param
 		)));
 	}
 
@@ -356,11 +360,11 @@ class weNewsletter extends weNewsletterBase{
 			if($id == $this->ID){
 				return false;
 			}
-			$h = getHash("SELECT IsFolder,ParentID FROM " . NEWSLETTER_TABLE . " WHERE ID=" . $id, $this->db);
+			$h = getHash('SELECT IsFolder,ParentID FROM ' . NEWSLETTER_TABLE . " WHERE ID=" . $id, $this->db);
 			if($h["IsFolder"] != 1){
 				return false;
 			}
-			$id = $h["ParentID"];
+			$id = $h['ParentID'];
 			$count++;
 		}
 		return true;
@@ -373,7 +377,7 @@ class weNewsletter extends weNewsletterBase{
 	function fixChildsPaths(){
 
 		$dbtmp = new DB_WE();
-		$oldpath = f('SELECT Path FROM ' . NEWSLETTER_TABLE . ' WHERE ID=' . intval($this->ID), "Path", $this->db);
+		$oldpath = f('SELECT Path FROM ' . NEWSLETTER_TABLE . ' WHERE ID=' . intval($this->ID), 'Path', $this->db);
 
 		if(trim($oldpath) != '' && trim($oldpath) != '/'){
 			$this->db->query('SELECT ID,Path FROM ' . NEWSLETTER_TABLE . " WHERE Path LIKE '" . $oldpath . "%'");

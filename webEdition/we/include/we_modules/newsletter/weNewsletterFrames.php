@@ -510,12 +510,11 @@ class weNewsletterFrames extends weModuleFrames{
 			exit;
 		}
 
-		$rootjs = "";
-		if(!$pid){
-			$rootjs.=
+		$rootjs = (!$pid ?
 				$this->Tree->topFrame . '.treeData.clear();' .
-				$this->Tree->topFrame . '.treeData.add(new ' . $this->Tree->topFrame . '.rootEntry(\'' . $pid . '\',\'root\',\'root\'));';
-		}
+				$this->Tree->topFrame . '.treeData.add(new ' . $this->Tree->topFrame . '.rootEntry(\'' . $pid . '\',\'root\',\'root\'));' :
+				'');
+
 
 		$hiddens =
 			we_html_element::htmlHidden(array("name" => "pnt", "value" => "cmd")) .
@@ -652,9 +651,8 @@ class weNewsletterFrames extends weModuleFrames{
 		}
 
 
-		$js = we_html_element::jsElement('
-			self.focus();
-		') . $this->View->getJSProperty();
+		$js = we_html_element::jsElement('self.focus();') .
+			$this->View->getJSProperty();
 
 		$texts = array('send_step', 'send_wait', 'test_account', 'default_sender', 'default_reply', weNewsletter::FEMALE_SALUTATION_FIELD, weNewsletter::MALE_SALUTATION_FIELD);
 		$radios = array('reject_malformed', 'reject_not_verified', 'reject_save_malformed', 'log_sending', 'default_htmlmail', 'isEmbedImages', 'title_or_salutation', 'use_base_href', 'use_https_refer', 'use_port');
@@ -928,7 +926,7 @@ class weNewsletterFrames extends weModuleFrames{
 
 		$table = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0), 1, 7);
 		$colspan = "7";
-		$table->setCol(0, 0, (($filter) ? array("colspan" => $colspan) : array()), we_forms::checkbox(($filter ? 1 : 0), ($filter ? true : false), "filtercheck_$group", g_l('modules_newsletter', '[filter]'), false, "defaultfont", "if(document.we_form.filtercheck_$group.checked) we_cmd('add_filter',$group); else we_cmd('del_all_filters',$group);")		);
+		$table->setCol(0, 0, (($filter) ? array("colspan" => $colspan) : array()), we_forms::checkbox(($filter ? 1 : 0), ($filter ? true : false), "filtercheck_$group", g_l('modules_newsletter', '[filter]'), false, "defaultfont", "if(document.we_form.filtercheck_$group.checked) we_cmd('add_filter',$group); else we_cmd('del_all_filters',$group);"));
 
 		$k = 0;
 		$c = 1;
@@ -1445,14 +1443,11 @@ class weNewsletterFrames extends weModuleFrames{
 		if($this->View->page == 0){
 			$out.=weSuggest::getYuiJsFiles() .
 				$this->View->htmlHidden("home", "0") .
-				$this->View->htmlHidden("fromPage", "0");
-
-			if($this->View->newsletter->IsFolder == 0){
-				$out.=$this->View->getHiddensMailingPage() .
-					$this->View->getHiddensContentPage();
-			}
-
-			$out.=$this->getHTMLNewsletterHeader() .
+				$this->View->htmlHidden("fromPage", "0") .
+				($this->View->newsletter->IsFolder == 0 ?
+					$this->View->getHiddensMailingPage() .
+					$this->View->getHiddensContentPage() : '') .
+				$this->getHTMLNewsletterHeader() .
 				$this->weAutoColpleter->getYuiCss() .
 				$this->weAutoColpleter->getYuiJs();
 		} else if($this->View->page == 1){
@@ -1475,6 +1470,8 @@ class weNewsletterFrames extends weModuleFrames{
 		} else {
 			$out.=weSuggest::getYuiJsFiles() .
 				$this->View->getHiddensPropertyPage() .
+				$this->View->getHiddensMailingPage() .
+				$this->View->getHiddensContentPage() .
 				$this->View->htmlHidden("fromPage", "3") .
 				$this->View->htmlHidden("blockid", 0) .
 				we_multiIconBox::getHTML('', "100%", $this->getHTMLReporting(), 30, '', -1, '', '', false) .
