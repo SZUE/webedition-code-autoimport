@@ -196,7 +196,7 @@ function we_cmd() {
 		$a = array(
 			'name' => 'we_form'
 		);
-		if($type == 'GXMLImport' && $step == 1){
+		if($type == importFunctions::TYPE_GENERIC_XML && $step == 1){
 			$a["onsubmit"] = 'return false;';
 		}
 		if($step == 1){
@@ -226,7 +226,7 @@ function we_cmd() {
 	}
 
 	function getWizBusy(){
-		$pb = $js = "";
+		$pb = $js = '';
 		if(isset($_REQUEST["mode"]) && $_REQUEST["mode"] == 1){
 			$WE_PB = new we_progressBar(0, 0, true);
 			$WE_PB->setStudLen(200);
@@ -249,7 +249,7 @@ function finish(rebuild) {
 }
 
 top.wizcmd.cycle();
-top.wizcmd.we_import(1,-2' . ((isset($_REQUEST['type']) && $_REQUEST['type'] == 'WXMLImport') ? ',1' : '') . ');'
+top.wizcmd.we_import(1,-2' . ((isset($_REQUEST['type']) && $_REQUEST['type'] == importFunctions::TYPE_WE_XML) ? ',1' : '') . ');'
 			);
 		}
 
@@ -306,11 +306,11 @@ top.wizcmd.we_import(1,-2' . ((isset($_REQUEST['type']) && $_REQUEST['type'] == 
 			switch($v['cid']){
 				case -2:
 					$h = $this->getHdns('v', $v);
-					if($v["type"] != "" && $v["type"] != "WXMLImport"){
+					if($v["type"] != "" && $v["type"] != importFunctions::TYPE_WE_XML){
 						$h.=$this->getHdns("records", $records) .
 							$this->getHdns("we_flds", $we_flds);
 					}
-					if($v["type"] == "GXMLImport"){
+					if($v["type"] == importFunctions::TYPE_GENERIC_XML){
 						$h.=$this->getHdns("attributes", $attributes) .
 							$this->getHdns("attrs", $attrs);
 					}
@@ -333,7 +333,7 @@ top.document.getElementById('function_reload').onmouseup = we_import_handler;" :
 
 				case -1:
 					switch($v["type"]){
-						case 'WXMLImport':
+						case importFunctions::TYPE_WE_XML:
 
 							if($type != "first_steps_wizard"){
 								print we_html_element::jsElement('
@@ -354,11 +354,11 @@ if (top.wizbody && top.wizbody.addLog){
 								++$num_files;
 							}
 							break;
-						case 'GXMLImport':
+						case importFunctions::TYPE_GENERIC_XML:
 							$parse = new XML_SplitFile($_SERVER['DOCUMENT_ROOT'] . $v["import_from"]);
-							$parse->splitFile(($v["type"] == "GXMLImport") ? "*/" . $v["rcd"] : "*/child::*", (isset($v["from_elem"])) ? $v["from_elem"] : FALSE, (isset($v["to_elem"])) ? $v["to_elem"] : FALSE, 1);
+							$parse->splitFile("*/" . $v["rcd"], (isset($v["from_elem"])) ? $v["from_elem"] : FALSE, (isset($v["to_elem"])) ? $v["to_elem"] : FALSE, 1);
 							break;
-						case 'CSVImport':
+						case importFunctions::TYPE_CSV:
 							switch($v['csv_enclosed']){
 								case 'double_quote':
 									$encl = '"';
@@ -412,14 +412,14 @@ if (top.wizbody && top.wizbody.addLog){
 					}
 
 					$h = $this->getHdns("v", $v);
-					if($v["type"] != "WXMLImport"){
+					if($v["type"] != importFunctions::TYPE_WE_XML){
 						$h.=$this->getHdns("records", $records) . $this->getHdns("we_flds", $we_flds);
 					}
-					if($v["type"] == "GXMLImport"){
+					if($v["type"] == importFunctions::TYPE_GENERIC_XML){
 						$h.=$this->getHdns("attributes", $attributes) . $this->getHdns("attrs", $attrs);
 					}
-					$h .= we_html_element::htmlHidden(array("name" => "v[numFiles]", "value" => ($v["type"] != "GXMLImport") ? $num_files : $parse->fileId)) .
-						we_html_element::htmlHidden(array("name" => "v[uniquePath]", "value" => ($v["type"] != "GXMLImport") ? $path : $parse->path));
+					$h .= we_html_element::htmlHidden(array("name" => "v[numFiles]", "value" => ($v["type"] != importFunctions::TYPE_GENERIC_XML) ? $num_files : $parse->fileId)) .
+						we_html_element::htmlHidden(array("name" => "v[uniquePath]", "value" => ($v["type"] != importFunctions::TYPE_GENERIC_XML) ? $path : $parse->path));
 
 					$out .= we_html_element::htmlForm(array("name" => "we_form"), $h) . we_html_element::jsElement(
 							"setTimeout(\"we_import(1,0);\",15);");
@@ -430,7 +430,7 @@ if (top.wizbody && top.wizbody.addLog){
 					break;
 				default:
 					$fields = array();
-					if($v["type"] == "WXMLImport"){
+					if($v["type"] == importFunctions::TYPE_WE_XML){
 
 						$hiddens = $this->getHdns("v", $v);
 
@@ -626,7 +626,7 @@ top.wizbusy.setProgress(Math.floor(((" . $v['cid'] . "+1)/" . (int) (2 * $v["num
 							}
 						}
 						break;
-					} else if($v['type'] == 'GXMLImport'){
+					} else if($v['type'] == importFunctions::TYPE_GENERIC_XML){
 						$hiddens = $this->getHdns('v', $v) . $this->getHdns('records', $records) . $this->getHdns("we_flds", $we_flds) . $this->getHdns("attributes", $attributes);
 						$xp = new we_xml_parser($v['uniquePath'] . '/temp_' . $v['cid'] . '.xml');
 
@@ -664,7 +664,7 @@ top.wizbusy.setProgress(Math.floor(((" . $v['cid'] . "+1)/" . (int) (2 * $v["num
 								$v['rcd_pfx'] = g_l('import', ($v['import_type'] == 'documents' ? '[pfx_doc]' : '[pfx_obj]'));
 							}
 						}
-					} else if($v["type"] == "CSVImport"){
+					} else if($v["type"] == importFunctions::TYPE_CSV){
 						$hiddens = $this->getHdns("v", $v) . $this->getHdns("records", $records) . $this->getHdns("we_flds", $we_flds);
 						switch($v["csv_enclosed"]){
 							case 'double_quote':
@@ -700,7 +700,7 @@ top.wizbusy.setProgress(Math.floor(((" . $v['cid'] . "+1)/" . (int) (2 * $v["num
 						}
 					}
 
-					if($v['type'] != 'WXMLImport'){
+					if($v['type'] != importFunctions::TYPE_WE_XML){
 						if(isset($v["dateFields"])){
 							$dateFields = makeArrayFromCSV($v["dateFields"]);
 							if(($v["sTimeStamp"] == "Format" && $v["timestamp"] != "") || ($v["sTimeStamp"] == "GMT")){
@@ -710,12 +710,15 @@ top.wizbusy.setProgress(Math.floor(((" . $v['cid'] . "+1)/" . (int) (2 * $v["num
 							}
 						}
 
-						$rcd_name = ($v["pfx_fn"] == 1) ? $v["rcd_pfx"] : $v["asoc_prefix"];
-						if($v["import_type"] == "documents"){
-							$_isSelectable = f('SELECT IsSearchable FROM ' . DOC_TYPES_TABLE . ' WHERE ID = ' . intval($v["docType"]), 'IsSearchable', new DB_WE());
-							importFunctions::importDocument($v["store_to_id"], $v["we_TemplateID"], $fields, $v["docType"], $v["docCategories"], $rcd_name, $v["is_dynamic"], $v["we_Extension"], true, $_isSelectable, $v['collision']);
-						} else if($v["import_type"] == "objects"){
-							importFunctions::importObject($v["classID"], $fields, $v["objCategories"], $rcd_name, true, $v['collision']);
+						$rcd_name = ($v['pfx_fn'] == 1) ? $v['rcd_pfx'] : $v['asoc_prefix'];
+						switch($v['import_type']){
+							case 'documents':
+								$_isSelectable = f('SELECT IsSearchable FROM ' . DOC_TYPES_TABLE . ' WHERE ID = ' . intval($v["docType"]), 'IsSearchable', new DB_WE());
+								importFunctions::importDocument($v["store_to_id"], $v["we_TemplateID"], $fields, $v["docType"], $v["docCategories"], $rcd_name, $v["is_dynamic"], $v["we_Extension"], true, $_isSelectable, $v['collision']);
+								break;
+							case 'objects':
+								importFunctions::importObject($v["classID"], $fields, $v["objCategories"], $rcd_name, true, $v['collision']);
+								break;
 						}
 					}
 
@@ -803,7 +806,7 @@ top.wizbusy.setProgress(Math.floor(((" . $v["cid"] . "+1)/" . $v["numFiles"] . "
 						}
 						function we_import(mode, cid) {
 							if(arguments[2]==1){
-								top.wizbody.location = '" . $this->path . "?pnt=wizbody&step=3&type=WXMLImport&noload=1';
+								top.wizbody.location = '" . $this->path . "?pnt=wizbody&step=3&type=".importFunctions::TYPE_WE_XML."&noload=1';
 							};
 							var we_form = self.document.forms['we_form'];
 							we_form.elements['v[mode]'].value = mode;
@@ -840,7 +843,7 @@ top.wizbusy.setProgress(Math.floor(((" . $v["cid"] . "+1)/" . $v["numFiles"] . "
 									progress.style.display = 'none';
 								}
 							}" .
-					($v['type'] == 'WXMLImport' ?
+					($v['type'] == importFunctions::TYPE_WE_XML ?
 						"if (top.wizbody && top.wizbody.addLog) {
 								top.wizbody.addLog(\"<br>" . addslashes(we_html_tools::getPixel(10, 10)) . we_html_element::htmlB(g_l('import', '[end_import]') . " - " . date("d.m.Y H:i:s")) . "<br><br>\");
 								}" :
