@@ -105,8 +105,20 @@ class we_messaging_messaging extends we_class{
 		if(!isset($inc_files[$objname])){
 			return -1;
 		}
+		switch($objname){
+			case 'we_message':
+				$c = new we_messaging_message();
+				break;
+			case 'we_todo':
+				$c = new we_messaging_todo();
+				break;
+			case 'we_msg_email':
+				$c = new we_msg_email();
+				break;
+			default:
+				t_e('error', 'unkown type', $objname);
+		}
 
-		$c = new $objname;
 		$c->set_login_data($this->userid, $this->username);
 
 		if($recover == 1){
