@@ -11,7 +11,7 @@ CREATE TABLE ###TBLPREFIX###tblbanner (
   ModifyDate int(10) unsigned NOT NULL default '0',
   bannerID bigint(20) unsigned NOT NULL default '0',
   bannerUrl varchar(255) NOT NULL default '',
-  bannerIntID bigint(20) unsigned NOT NULL default '0',
+  bannerIntID int(11) unsigned NOT NULL default '0',
   IntHref tinyint(1) unsigned NOT NULL default '0',
   maxShow int(10) unsigned NOT NULL default '0',
   maxClicks int(10) unsigned NOT NULL default '0',
