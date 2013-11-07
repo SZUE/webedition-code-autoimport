@@ -170,7 +170,8 @@ class weNewsletterView{
 	}
 
 	function htmlHidden($name, $value = ''){
-		return '<input type="hidden" name="' . trim($name) . '" value="' . oldHtmlspecialchars($value) . '" />';
+		//FIXME: remove
+		return we_html_element::htmlHidden(array('name'=>trim($name),'value'=>oldHtmlspecialchars($value)));
 	}
 
 	/* creates the DocumentChoooser field with the "browse"-Button. Clicking on the Button opens the fileselector */
@@ -1472,19 +1473,19 @@ function set_state_edit_delete_recipient(control) {
 							$ret = $this->newsletter->save($message, (isset($this->settings["reject_save_malformed"]) ? $this->settings["reject_save_malformed"] : true));
 							switch($ret){
 								default:
-									$jsmess .= we_message_reporting::getShowMessageCall(sprintf(g_l('modules_newsletter', '[malformed_mail_group]'), $ret, $message), we_message_reporting::WE_MESSAGE_ERROR);
+									$jsmess = we_message_reporting::getShowMessageCall(sprintf(g_l('modules_newsletter', '[malformed_mail_group]'), $ret, $message), we_message_reporting::WE_MESSAGE_ERROR);
 									break;
 								case weNewsletter::MALFORMED_SENDER:
-									$jsmess .= we_message_reporting::getShowMessageCall(sprintf(g_l('modules_newsletter', '[malformed_mail_sender]'), $message), we_message_reporting::WE_MESSAGE_ERROR);
+									$jsmess = we_message_reporting::getShowMessageCall(sprintf(g_l('modules_newsletter', '[malformed_mail_sender]'), $message), we_message_reporting::WE_MESSAGE_ERROR);
 									break;
 								case weNewsletter::MALFORMED_REPLY:
-									$jsmess .= we_message_reporting::getShowMessageCall(sprintf(g_l('modules_newsletter', '[malformed_mail_reply]'), $message), we_message_reporting::WE_MESSAGE_ERROR);
+									$jsmess = we_message_reporting::getShowMessageCall(sprintf(g_l('modules_newsletter', '[malformed_mail_reply]'), $message), we_message_reporting::WE_MESSAGE_ERROR);
 									break;
 								case weNewsletter::MALFORMED_TEST:
-									$jsmess .= we_message_reporting::getShowMessageCall(sprintf(g_l('modules_newsletter', '[malformed_mail_test]'), $message), we_message_reporting::WE_MESSAGE_ERROR);
+									$jsmess = we_message_reporting::getShowMessageCall(sprintf(g_l('modules_newsletter', '[malformed_mail_test]'), $message), we_message_reporting::WE_MESSAGE_ERROR);
 									break;
 								case weNewsletter::SAVE_PATH_NOK:
-									$jsmess .= we_message_reporting::getShowMessageCall($message, we_message_reporting::WE_MESSAGE_ERROR);
+									$jsmess = we_message_reporting::getShowMessageCall($message, we_message_reporting::WE_MESSAGE_ERROR);
 									break;
 								case 0:
 									$jsmess = ($newone ?
@@ -1873,8 +1874,8 @@ self.close();');
 	}
 
 	function processVariables(){
-		if(isset($_REQUEST["wname"])){
-			$this->uid = $_REQUEST["wname"];
+		if(isset($_REQUEST['wname'])){
+			$this->uid = $_REQUEST['wname'];
 		}
 
 		if(is_array($this->newsletter->persistents)){
@@ -1894,79 +1895,82 @@ self.close();');
 		if(isset($_REQUEST['page'])){
 			$this->page = $_REQUEST['page'];
 		}
+		if(isset($_REQUEST['groups'])){
+			$groups = (isset($_REQUEST['groups']) ? $_REQUEST['groups'] : 0);
 
-		$groups = (isset($_REQUEST['groups']) ? $_REQUEST['groups'] : 0);
+			$this->newsletter->groups = array();
 
-		$this->newsletter->groups = array();
-
-		if($groups == 0){
-			$this->newsletter->addGroup();
-		}
-
-		for($i = 0; $i < $groups; $i++){
-			$this->newsletter->addGroup();
-		}
-
-		$fields_names = array('fieldname', 'operator', 'fieldvalue', 'logic', 'hours', 'minutes');
-
-		foreach($this->newsletter->groups as $gkey => &$gval){
-			// persistens
-			$gval->NewsletterID = $this->newsletter->ID;
-
-			foreach($gval->persistents as $per){
-				$varname = 'group' . $gkey . '_' . $per;
-
-				if(isset($_REQUEST[$varname])){
-					$gval->$per = $_REQUEST[$varname];
-				}
+			if($groups == 0){
+				$this->newsletter->addGroup();
 			}
 
-			// Filter
-			$count = (isset($_REQUEST['filter_' . $gkey]) ? $_REQUEST['filter_' . $gkey]++ : 0);
-			if($count){
-			for($i = 0; $i < $count; $i++){
-				$new = array();
+			for($i = 0; $i < $groups; $i++){
+				$this->newsletter->addGroup();
+			}
 
-				foreach($fields_names as $field){
-					$varname = 'filter_' . $field . '_' . $gkey . '_' . $i;
+			$fields_names = array('fieldname', 'operator', 'fieldvalue', 'logic', 'hours', 'minutes');
+
+			foreach($this->newsletter->groups as $gkey => &$gval){
+				// persistens
+				$gval->NewsletterID = $this->newsletter->ID;
+
+				foreach($gval->persistents as $per){
+					$varname = 'group' . $gkey . '_' . $per;
 
 					if(isset($_REQUEST[$varname])){
-						$new[$field] = $_REQUEST[$varname];
+						$gval->$per = $_REQUEST[$varname];
 					}
 				}
 
-				if($new){
-					$gval->appendFilter($new);
-				$gval->preserveFilter();
+				// Filter
+				$count = (isset($_REQUEST['filter_' . $gkey]) ? $_REQUEST['filter_' . $gkey]++ : 0);
+				if($count){
+					for($i = 0; $i < $count; $i++){
+						$new = array();
+
+						foreach($fields_names as $field){
+							$varname = 'filter_' . $field . '_' . $gkey . '_' . $i;
+
+							if(isset($_REQUEST[$varname])){
+								$new[$field] = $_REQUEST[$varname];
+							}
+						}
+
+						if($new){
+							$gval->appendFilter($new);
+							$gval->preserveFilter();
+						}
 					}
-			}
-			}
-		}
-		unset($gval);
-		$blocks = (isset($_REQUEST['blocks']) ? $_REQUEST['blocks'] : 0);
-
-		$this->newsletter->blocks = array();
-
-		if($blocks == 0){
-			$this->newsletter->addBlock();
-		}
-
-		for($i = 0; $i < $blocks; $i++){
-			$this->newsletter->addBlock();
-		}
-
-		foreach($this->newsletter->blocks as $skey => &$sval){
-			$sval->NewsletterID = $this->newsletter->ID;
-
-			foreach($sval->persistents as $per){
-				$varname = 'block' . $skey . '_' . $per;
-
-				if(isset($_REQUEST[$varname])){
-					$sval->$per = $_REQUEST[$varname];
 				}
 			}
+			unset($gval);
 		}
-		unset($gval);
+		if(isset($_REQUEST['blocks'])){
+			$blocks = (isset($_REQUEST['blocks']) ? $_REQUEST['blocks'] : 0);
+
+			$this->newsletter->blocks = array();
+
+			if($blocks == 0){
+				$this->newsletter->addBlock();
+			}
+
+			for($i = 0; $i < $blocks; $i++){
+				$this->newsletter->addBlock();
+			}
+
+			foreach($this->newsletter->blocks as $skey => &$sval){
+				$sval->NewsletterID = $this->newsletter->ID;
+
+				foreach($sval->persistents as $per){
+					$varname = 'block' . $skey . '_' . $per;
+
+					if(isset($_REQUEST[$varname])){
+						$sval->$per = $_REQUEST[$varname];
+					}
+				}
+			}
+			unset($gval);
+		}
 	}
 
 	function getTime($seconds){
@@ -2314,7 +2318,7 @@ self.close();');
 		if(!$this->settings["use_base_href"]){
 			$phpmail->setIsUseBaseHref($this->settings["use_base_href"]);
 		}
-		$phpmail->setCharSet($this->newsletter->Charset != "" ? $this->newsletter->Charset : $GLOBALS['WE_BACKENDCHARSET']);
+		$phpmail->setCharSet($this->newsletter->Charset != '' ? $this->newsletter->Charset : $GLOBALS['WE_BACKENDCHARSET']);
 		if($hm){
 			$phpmail->addHTMLPart($content);
 		}
@@ -2412,7 +2416,7 @@ self.close();');
 
 		$customer_mail = $customers = array();
 
-		if(defined("CUSTOMER_TABLE")){
+		if(defined('CUSTOMER_TABLE')){
 			$filterarr = array();
 			$filtera = $this->newsletter->groups[$group - 1]->getFilter();
 			if($filtera){
@@ -2421,7 +2425,7 @@ self.close();');
 				}
 			}
 
-			$filtersql = implode(" ", $filterarr);
+			$filtersql = implode(' ', $filterarr);
 
 			$customers = ($this->newsletter->groups[$group - 1]->SendAll ?
 					'SELECT ID FROM ' . CUSTOMER_TABLE . ' WHERE ' . ($filtersql !== '' ? $filtersql : 1) :
@@ -2686,12 +2690,14 @@ self.close();');
 	function cacheInlines(&$buffer){
 
 		$trenner = "[\040|\n|\t|\r]*";
-		$patterns[] = "/<(img" . $trenner . "[^>]+src" . $trenner . "[\=\"|\=\'|\=\\\\|\=]*" . $trenner . ")([^\'\">\040? \\\]*)([^\"\'\040\\\\>]*)(" . $trenner . "[^>]*)>/sie";
-		$patterns[] = "/<(body" . $trenner . "[^>]+background" . $trenner . "[\=\"|\=\'|\=\\\\|\=]*" . $trenner . ")([^\'\">\040? \\\]*)([^\"\'\040\\\\>]*)(" . $trenner . "[^>]*)>/sie";
-		$patterns[] = "/<(table" . $trenner . "[^>]+background" . $trenner . "[\=\"|\=\'|\=\\\\|\=]*" . $trenner . ")([^\'\">\040? \\\]*)([^\"\'\040\\\\>]*)(" . $trenner . "[^>]*)>/sie";
-		$patterns[] = "/<(td" . $trenner . "[^>]+background" . $trenner . "[\=\"|\=\'|\=\\\\|\=]*" . $trenner . ")([^\'\">\040? \\\]*)([^\"\'\040\\\\>]*)(" . $trenner . "[^>]*)>/sie";
-		$patterns[] = "/background" . $trenner . ":" . $trenner . "([^url]*url" . $trenner . "\([\"|\'|\\\\])?(.[^\)|^\"|^\'|^\\\\]+)([\"|\'|\\\\])?/sie";
-		$patterns[] = "/background-image" . $trenner . ":" . $trenner . "([^url]*url" . $trenner . "\([\"|\'|\\\\])?(.[^\)|^\"|^\'|^\\\\]+)([\"|\'|\\\\])?/sie";
+		$patterns = array(
+			"/<(img" . $trenner . "[^>]+src" . $trenner . "[\=\"|\=\'|\=\\\\|\=]*" . $trenner . ")([^\'\">\040? \\\]*)([^\"\'\040\\\\>]*)(" . $trenner . "[^>]*)>/sie",
+			"/<(body" . $trenner . "[^>]+background" . $trenner . "[\=\"|\=\'|\=\\\\|\=]*" . $trenner . ")([^\'\">\040? \\\]*)([^\"\'\040\\\\>]*)(" . $trenner . "[^>]*)>/sie",
+			"/<(table" . $trenner . "[^>]+background" . $trenner . "[\=\"|\=\'|\=\\\\|\=]*" . $trenner . ")([^\'\">\040? \\\]*)([^\"\'\040\\\\>]*)(" . $trenner . "[^>]*)>/sie",
+			"/<(td" . $trenner . "[^>]+background" . $trenner . "[\=\"|\=\'|\=\\\\|\=]*" . $trenner . ")([^\'\">\040? \\\]*)([^\"\'\040\\\\>]*)(" . $trenner . "[^>]*)>/sie",
+			"/background" . $trenner . ":" . $trenner . "([^url]*url" . $trenner . "\([\"|\'|\\\\])?(.[^\)|^\"|^\'|^\\\\]+)([\"|\'|\\\\])?/sie",
+			"/background-image" . $trenner . ":" . $trenner . "([^url]*url" . $trenner . "\([\"|\'|\\\\])?(.[^\)|^\"|^\'|^\\\\]+)([\"|\'|\\\\])?/sie",
+		);
 
 		$match = array();
 		$inlines = array();
@@ -2748,4 +2754,3 @@ self.close();');
 	}
 
 }
-
