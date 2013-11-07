@@ -13,8 +13,8 @@ CREATE TABLE ###TBLPREFIX###tblglossary (
   `CreationDate` int(11) unsigned NOT NULL default '0',
   `ModDate` int(11) unsigned NOT NULL default '0',
   `Published` int(11) unsigned NOT NULL default '0',
-  `CreatorID` bigint(20) unsigned NOT NULL default '0',
-  `ModifierID` bigint(20) unsigned NOT NULL default '0',
+  `CreatorID` int(11) unsigned NOT NULL default '0',
+  `ModifierID` int(11) unsigned NOT NULL default '0',
   PRIMARY KEY  (`ID`),
   KEY valid (Language(5),Published)
 ) ENGINE=MyISAM;

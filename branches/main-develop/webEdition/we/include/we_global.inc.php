@@ -1654,6 +1654,7 @@ function show_SeoLinks(){
 function we_TemplateExit($param = 0){
 	if(isset($_SESSION) && isset($_SESSION['user']) && isset($_SESSION['user']['isWeSession']) && $_SESSION['user']['isWeSession']){
 //we are inside we, we don't terminate here
+		//FIXME: distinguish between page was load by we & page is called while user is active in we & called on the same domain
 		if($param){
 			echo $param;
 		}
@@ -1726,3 +1727,4 @@ function update_mem_limit($newLimit){
 		@ini_set('memory_limit', $newLimit . 'M');
 	}
 }
+

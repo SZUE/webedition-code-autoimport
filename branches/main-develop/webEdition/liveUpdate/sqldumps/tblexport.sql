@@ -1,6 +1,6 @@
 CREATE TABLE ###TBLPREFIX###tblexport (
-  ID bigint(20) unsigned NOT NULL auto_increment,
-  ParentID bigint(20) unsigned NOT NULL default '0',
+  ID smallint(6) unsigned NOT NULL auto_increment,
+  ParentID smallint(6) unsigned NOT NULL default '0',
   `Text` varchar(255) NOT NULL default '',
   Icon varchar(255) NOT NULL default '',
   IsFolder tinyint(1) unsigned NOT NULL default '0',
@@ -11,7 +11,7 @@ CREATE TABLE ###TBLPREFIX###tblexport (
   Selection varchar(255) NOT NULL default '',
   SelectionType varchar(255) NOT NULL default '',
   DocType varchar(255) NOT NULL default '',
-  Folder bigint(20) unsigned NOT NULL default '0',
+  Folder smallint(6) unsigned NOT NULL default '0',
   ClassName varchar(255) NOT NULL default '',
   Categorys text NOT NULL,
   selDocs text NOT NULL,

@@ -27,7 +27,7 @@
  * Definition of WebEdition Newsletter Block
  *
  */
-class weNewsletterBlock extends weNewsletterBase {
+class weNewsletterBlock extends weNewsletterBase{
 // Document based Newsletter Block
 
 	const DOCUMENT = 0;
@@ -66,25 +66,24 @@ class weNewsletterBlock extends weNewsletterBase {
 		parent::__construct();
 		$this->table = NEWSLETTER_BLOCK_TABLE;
 
-		//$this->persistents[]="ID";
-		$this->persistents[] = "NewsletterID";
-		$this->persistents[] = "Groups";
-		$this->persistents[] = "Type";
-		$this->persistents[] = "LinkID";
-		$this->persistents[] = "Field";
-		$this->persistents[] = "Source";
-		$this->persistents[] = "Html";
-		$this->persistents[] = "Pack";
+		$this->persistents[] = 'NewsletterID';
+		$this->persistents[] = 'Groups';
+		$this->persistents[] = 'Type';
+		$this->persistents[] = 'LinkID';
+		$this->persistents[] = 'Field';
+		$this->persistents[] = 'Source';
+		$this->persistents[] = 'Html';
+		$this->persistents[] = 'Pack';
 
 		$this->ID = 0;
 		$this->NewsletterID = 0;
-		$this->Groups = "";
+		$this->Groups = '';
 		$this->Type = self::DOCUMENT;
 		$this->LinkID = 0;
-		$this->Field = "";
-		$this->Source = "";
-		$this->Html = "";
-		$this->Pack = "";
+		$this->Field = '';
+		$this->Source = '';
+		$this->Html = '';
+		$this->Pack = '';
 
 
 		if($newsletterID){
@@ -122,10 +121,7 @@ class weNewsletterBlock extends weNewsletterBase {
 	 * return all newsletter blocks for given newsletter id
 	 *
 	 * ***************************************************** */
-	function __getAllBlocks($newsletterID){
-
-		$db = new DB_WE();
-
+	static function __getAllBlocks($newsletterID, $db){
 		$db->query('SELECT ID FROM ' . NEWSLETTER_BLOCK_TABLE . ' WHERE NewsletterID=' . intval($newsletterID) . ' ORDER BY ID');
 		$ret = array();
 		while($db->next_record()){

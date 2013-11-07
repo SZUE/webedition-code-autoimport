@@ -37,7 +37,7 @@ abstract class we_history{
 		return (permissionhandler::hasPerm('ADMINISTRATOR') || !$restricted || we_users_util::isOwner($owners) || we_users_util::isOwner($creatorid));
 	}
 
-	static function insertIntoHistory(&$object, $action = 'save', $user = ''){
+	static function insertIntoHistory(&$object, $action = 'save'){
 		$db = new DB_WE();
 		$table = $db->escape(stripTblPrefix($object->Table));
 		$cnt = f('SELECT COUNT(1) AS cnt FROM ' . HISTORY_TABLE . ' WHERE DID=' . intval($object->ID) . ' AND DocumentTable="' . $table . '"', 'cnt', $db);
@@ -46,11 +46,12 @@ abstract class we_history{
 		}
 		$user = (isset($GLOBALS['we']['Scheduler_active']) ? 'Scheduler' : '');
 		$db->query('REPLACE INTO ' . HISTORY_TABLE . ' SET ' . we_database_base::arraySetter(array(
-					'DID' => intval($object->ID),
-					'DocumentTable' => $table,
-					'ContentType' => $object->ContentType,
-					'Act' => $action,
-					'UserName' => ($user ? $user : (isset($_SESSION['user']['Username']) ? $_SESSION['user']['Username'] : (isset($_SESSION['webuser']['Username']) ? $_SESSION['webuser']['Username'] : 'Unknown'))),
+				'DID' => intval($object->ID),
+				'DocumentTable' => $table,
+				'ContentType' => $object->ContentType,
+				'Act' => $action,
+				'UserName' => (isset($GLOBALS['we']['Scheduler_active']) ? 'Scheduler' : (isset($_SESSION['user']['Username']) ? $_SESSION['user']['Username'] : (isset($_SESSION['webuser']['Username']) ? $_SESSION['webuser']['Username'] : 'Unknown'))),
+				'UID' => (isset($GLOBALS['we']['Scheduler_active']) ? 0 : (isset($_SESSION['user']['ID']) ? $_SESSION['user']['ID'] : 0)),
 		)));
 	}
 
@@ -66,3 +67,4 @@ abstract class we_history{
 	}
 
 }
+

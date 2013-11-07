@@ -97,11 +97,10 @@ class weNewsletter extends weNewsletterBase{
 	function load($newsletterID){
 		parent::load($newsletterID);
 		$this->Text = stripslashes($this->Text);
-		if($this->Path == '')
-			$this->Path = '/';
+		$this->Path = ($this->Path ? $this->Path : '/');
 		$this->Subject = stripslashes($this->Subject);
-		$this->groups = weNewsletterGroup::__getAllGroups($newsletterID);
-		$this->blocks = weNewsletterBlock::__getAllBlocks($newsletterID);
+		$this->groups = weNewsletterGroup::__getAllGroups($newsletterID, $this->db);
+		$this->blocks = weNewsletterBlock::__getAllBlocks($newsletterID, $this->db);
 		if(empty($this->Charset)){
 			$this->Charset = $GLOBALS['WE_BACKENDCHARSET'];
 		}
@@ -175,8 +174,9 @@ class weNewsletter extends weNewsletterBase{
 	 */
 	function delete(){
 
-		if($this->IsFolder)
+		if($this->IsFolder){
 			$this->deleteChilds();
+		}
 		foreach($this->blocks as $block){
 			$block->delete();
 			$block = new weNewsletterBlock();
@@ -196,8 +196,9 @@ class weNewsletter extends weNewsletterBase{
 	 */
 	function deleteChilds(){
 		$this->db->query('SELECT ID FROM ' . NEWSLETTER_TABLE . ' WHERE ParentID=' . intval($this->ID));
-		while($this->db->next_record()){
-			$child = new self($this->db->f('ID'));
+		$ids = $this->db->getAll(true);
+		foreach($ids as $id){
+			$child = new self($id);
 			$child->delete();
 			$child = new self();
 		}
@@ -330,7 +331,7 @@ class weNewsletter extends weNewsletterBase{
 				'NewsletterID' => $this->ID,
 				'LogTime' => 'UNIX_TIMESTAMP()',
 				'Log' => $log,
-				'Param' => $param,
+				'Param' => $param
 		)));
 	}
 

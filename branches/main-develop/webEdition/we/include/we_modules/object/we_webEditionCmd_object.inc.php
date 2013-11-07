@@ -37,7 +37,7 @@
 	case "remove_image_at_class":
 	case "delete_link_at_class":
 	case "change_multiobject_at_class":
-		url += "#f"+(parseInt(arguments[1])-1);
+		//url += "#f"+(parseInt(arguments[1])-1);
 		we_sbmtFrm(top.load,url);
 		break;
 

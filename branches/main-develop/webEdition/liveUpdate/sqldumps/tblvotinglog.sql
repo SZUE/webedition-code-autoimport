@@ -11,7 +11,7 @@ CREATE TABLE ###TBLPREFIX###tblvotinglog (
   `status` tinyint(2) unsigned NOT NULL,
   `answer` varchar(255) NOT NULL,
   `answertext` text NOT NULL,
-  `successor` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `successor` int(11) unsigned NOT NULL DEFAULT '0',
   `additionalfields` text NOT NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM ;

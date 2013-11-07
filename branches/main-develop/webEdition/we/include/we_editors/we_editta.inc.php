@@ -222,7 +222,7 @@ $parts[] = array(
 
 // COMMANDS && CONTEXTMENU
 $select = we_html_tools::htmlSelect('tmp_commands', we_wysiwyg::getEditorCommands(false), 1, "", false, 'onchange="var elem=document.getElementById(\'commands\'); var txt = this.options[this.selectedIndex].text; if(elem.value.split(\',\').indexOf(txt)==-1){elem.value=(elem.value) ? (elem.value + \',\' + txt) : txt;}this.selectedIndex=-1"');
-$select_cm = we_html_tools::htmlSelect('tmp_contextmenu', $vals, 1, "", false, 'onchange="var elem=document.getElementById(\'contextmenu\'); var txt = this.options[this.selectedIndex].text; if(elem.value.split(\',\').indexOf(txt)==-1){elem.value=(elem.value) ? (elem.value + \',\' + txt) : txt;}this.selectedIndex=-1"');
+$select_cm = we_html_tools::htmlSelect('tmp_contextmenu', we_wysiwyg::getEditorCommands(false), 1, "", false, 'onchange="var elem=document.getElementById(\'contextmenu\'); var txt = this.options[this.selectedIndex].text; if(elem.value.split(\',\').indexOf(txt)==-1){elem.value=(elem.value) ? (elem.value + \',\' + txt) : txt;}this.selectedIndex=-1"');
 
 $table = '<table border="0" cellpadding="0" cellspacing="0">
 	<tr>
