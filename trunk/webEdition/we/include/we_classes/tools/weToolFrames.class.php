@@ -181,7 +181,6 @@ class weToolFrames extends weModuleFrames{
 		require_once(WE_INCLUDES_PATH . "jsMessageConsole/messageConsole.inc.php" );
 
 		$lang_arr = 'we_menu_' . $this->toolName;
-		t_e("larr", $lang_arr);
 		$jmenu = new weJavaMenu($$lang_arr, $this->topFrame . '.cmd');
 
 		$menu = '';

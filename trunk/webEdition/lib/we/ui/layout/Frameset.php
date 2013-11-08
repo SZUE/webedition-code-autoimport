@@ -95,22 +95,53 @@ class we_ui_layout_Frameset extends we_ui_abstract_AbstractElement
 	}
 
 	/**
+	 * Retrieve HTML of ui element
+	 *
+	 * @return string
+	 */
+	public function getHTML($isTopFrame = false, $appName = ''){
+		$this->_willRenderHTML();
+		$html = $this->_renderHTML($isTopFrame, $appName);
+		$this->_didRenderHTML();
+		return $html;
+	}
+
+	/**
 	 * Renders and returns HTML of frameset
 	 *
 	 * @return string
 	 */
-	protected function _renderHTML()
-	{
-		
-		$html = '<frameset' . $this->_getNonBooleanAttribs('id,framespacing,border,frameborder,rows,cols,onLoad') . ">\n";
-		foreach ($this->_frames as $frame) {
-			if ($frame instanceof we_ui_layout_Frameset) {
-				$html .= $frame->getHTML() . "\n";
-			} else {
-				$html .= we_xml_Tags::createStartTag('frame', $frame, NULL, true) . "\n";
+	protected function _renderHTML($isTopFrame = false, $appName = ''){
+		if(!$isTopFrame || !$appName || we_app_Common::isJMenu($appName)){
+			$html = '<frameset' . $this->_getNonBooleanAttribs('id,framespacing,border,frameborder,rows,cols,onLoad') . ">\n";
+			foreach ($this->_frames as $frame) {
+				if ($frame instanceof we_ui_layout_Frameset) {
+					$html .= $frame->getHTML() . "\n";
+				} else {
+					$html .= we_xml_Tags::createStartTag('frame', $frame, NULL, true) . "\n";
+				}
 			}
+			$html .= '</frameset>' . "\n";
+		} else {
+			
+			$isToolbar = false;
+			$positioning = array('top: 0px; height: 32px;', '', 'top: 32px; bottom: 0px;');
+			$sources = array($this->_frames[0]['src'], '', $this->_frames[1]['src']);
+			$names = array('', '', $this->_frames[1]['name']);
+
+			if(count($this->_frames) == 4){
+				$isToolbar = true;
+				$rows = explode(',', $this->_getNonBooleanAttribs('rows'));
+				$toolBarHeight = intval(trim($rows[1]));
+				$positioning = array('top: 0px; height: 32px;', 'top: 32px; height: ' . $toolBarHeight . 'px', 'top: ' . (32 + $toolBarHeight) . 'px; bottom: 0px;');
+				$sources = array($this->_frames[0]['src'], $this->_frames[1]['src'], $this->_frames[2]['src']);
+				$names = array('', $this->_frames[1]['name'], $this->_frames[2]['name']);
+			}
+			$html = we_html_element::htmlDiv(array('style' => 'position: absolute; ' . $positioning[0] . ' left: 0px; right: 0px;'), $this->getHTMLCssMenu($appName)) .
+				($isToolbar ? we_html_element::htmlIFrame($names[1], $sources[1], 'position: absolute; ' . $positioning[1] . ' left: 0px; right: 0px; overflow: hidden;') : '') . 
+				we_html_element::htmlIFrame($names[2], $sources[2], 'position: absolute; ' . $positioning[2] . ' left: 0px; right: 0px; overflow: hidden;') .
+				we_html_element::htmlIFrame('cmd_' . $appName, '/webEdition/html/white.html', 'position: absolute; bottom: 0px; height: 1px; left: 0px; right: 0px; overflow: hidden;');
 		}
-		$html .= '</frameset>' . "\n";
 		return $html;
 	}
 
@@ -233,7 +264,20 @@ class we_ui_layout_Frameset extends we_ui_abstract_AbstractElement
 	{
 		$this->_rows = $rows;
 	}
+	
+	protected function getHTMLCssMenu($appName = ''){
+		include ($appName . '/conf/we_menu_' . $appName . '.conf.php');
+		$lang_arr = 'we_menu_' . $appName;
+		$jmenu = new we_ui_controls_CssMenu($$lang_arr, 'cmd_' . $appName, '');
 
+		$messageConsole = new we_ui_controls_MessageConsole(array('consoleName' => 'toolFrame'));
+
+		$table = new we_html_table(array("width" => "100%", "cellpadding" => 0, "cellspacing" => 0, "border" => 0), 1, 2);
+		$table->setCol(0, 0, array("align" => "left", "valign" => "top"), $jmenu->getHTML(false));
+		$table->setCol(0, 1, array("align" => "right", "valign" => "top", 'style' => 'padding-right: 10px; padding-top: 4px'), $messageConsole->getHTML());
+
+		return we_html_element::htmlDiv(array('class' => 'menuDiv'), $table->getHTML());
+	}
 }
 
 ?>
