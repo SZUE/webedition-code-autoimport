@@ -35,7 +35,7 @@ function we_tag_img($attribs){
 	$showimage = weTag_getAttribute('showimage', $attribs, true, true);
 	$showinputs = weTag_getAttribute('showinputs', $attribs, SHOWINPUTS_DEFAULT, true);
 
-	$tagAttribs = removeAttribs($attribs, array('id', 'only', 'showcontrol', 'showthumbcontrol', 'showimage', 'showinputs', 'startid', 'parentid'));
+	$tagAttribs = removeAttribs($attribs, array('id', 'showcontrol', 'showthumbcontrol', 'showimage', 'showinputs', 'startid', 'parentid'));
 
 	if($name){
 		$id = $GLOBALS['we_doc']->getElement($name, 'bdid');
