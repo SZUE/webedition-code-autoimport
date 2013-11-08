@@ -49,5 +49,7 @@ if(!in_array(strtolower($_REQUEST['extension']), $whiteList)){
 $imageExt = substr($_REQUEST['extension'], 1, strlen($_REQUEST['extension']));
 
 $thumbpath = we_image_edit::createPreviewThumb($imagePath, $imageId, $imageSizeW, $imageSizeH, substr($_REQUEST['extension'], 1));
-header('Content-type: image/' . $imageExt);
-readfile($_SERVER['DOCUMENT_ROOT'] . $thumbpath);
+if(file_exists($_SERVER['DOCUMENT_ROOT'] . $thumbpath)){
+	header('Content-type: image/' . $imageExt);
+	readfile($_SERVER['DOCUMENT_ROOT'] . $thumbpath);
+}
