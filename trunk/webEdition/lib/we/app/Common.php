@@ -564,7 +564,7 @@ class we_app_Common {
 	 * adds an entry for a specified application into toc.
 	 *
 	 */
-	public static function addAppToTOC($appname){t_e("addapp", $appname);
+	public static function addAppToTOC($appname){
 		if(empty($appname) || self::isInstalled($appname)){
 			return false;
 		}
