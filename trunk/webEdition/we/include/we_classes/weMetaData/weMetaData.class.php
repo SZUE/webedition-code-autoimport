@@ -37,7 +37,32 @@ class weMetaData{
 	/**
 	 * @var array mapping of datatypes and their metadata models
 	 */
-	var $dataTypeMapping = array();
+	private $dataTypeMapping = array(
+		'jpe' => array('Exif', 'IPTC'), // iptc support is currently broken, will be fixed later
+		'jpg' => array('Exif', 'IPTC'),
+		'jpeg' => array('Exif', 'IPTC'),
+		'wbmp' => array('Exif'),
+		'pdf' => array('PDF'),
+	);
+	private $imageTypeMap = array(
+		'', // image type 0 not defined
+		'gif', // IMAGETYPE_GIF
+		'jpg', // IMAGETYPE_JPEG
+		'png', // IMAGETYPE_PNG
+		'swf', // IMAGETYPE_SWF
+		'psd', // IMAGETYPE_PSD
+		'bmp', // IMAGETYPE_BMP
+		'tif', // IMAGETYPE_TIFF_II intel-Bytefolge
+		'tif', // IMAGETYPE_TIFF_MM motorola-Bytefolge
+		'jpc', // IMAGETYPE_JPC
+		'jp2', // IMAGETYPE_JP2
+		'jpx', // IMAGETYPE_JPX
+		'jb2', // IMAGETYPE_JB2
+		'swc', // IMAGETYPE_SWC
+		'iff', // IMAGETYPE_IFF
+		'wbmp', // IMAGETYPE_WBMP
+		'xbm', // IMAGETYPE_XBM
+	);
 
 	/**
 	 * @var string name and path of the file for read/write operations
@@ -86,9 +111,6 @@ class weMetaData{
 			$this->_valid = false;
 			return false;
 		}
-		include(WE_INCLUDES_PATH . 'we_classes/weMetaData/conf/mapping.inc.php');
-		$this->dataTypeMapping = $dataTypeMapping; // from mapping.inc.php
-		$this->imageTypeMap = $imageTypeMap; // from mapping.inc.php
 
 		if($this->_setDatasource($source)){
 			if($this->_setDatatype()){
@@ -130,7 +152,7 @@ class weMetaData{
 		foreach($this->datatype as $_type){
 			if(!in_array('read', $this->_instance[$_type]->accesstypes)){
 				return false;
-			} else{
+			} else {
 				$this->metadata[strToLower($_type)] = $this->_instance[$_type]->_getMetaData();
 			}
 		}
@@ -144,7 +166,7 @@ class weMetaData{
 			}
 			if(!in_array('write', $this->_instance[$_type]->accesstypes)){
 				return false;
-			} else{
+			} else {
 				$this->_instance[$_type]->_setMetaData($data = '');
 			}
 		}
@@ -191,13 +213,13 @@ class weMetaData{
 			$this->_valid = true;
 			if(is_readable($datasource)){
 				$this->datasourcePerms[] = 'read';
-			} else{
+			} else {
 				$this->_valid = false;
 			}
 			if(is_writable($datasource)){
 				$this->datasourcePerms[] = 'write';
 			}
-		} else{
+		} else {
 			// check if it is a temporary file (i.e. an uploaded image that has not been saved yet):
 			if(!is_readable(TEMP_PATH, $datasource)){
 				$this->_valid = false;
@@ -234,7 +256,7 @@ class weMetaData{
 		if(!empty($_filetype) && is_numeric($_filetype)){
 			if(isset($this->imageTypeMap[$_filetype]) && !empty($this->imageTypeMap[$_filetype])){
 				$this->filetype = $this->imageTypeMap[$_filetype];
-			} else{
+			} else {
 				$this->_valid = false;
 				$_filetype = '';
 			}
@@ -245,7 +267,7 @@ class weMetaData{
 			$_extension = strrchr($this->datasource, '.');
 			if(!empty($_extension) && $_extension != '.'){
 				$this->filetype = substr($_extension, 1);
-			} else{
+			} else {
 				$this->_valid = false;
 				return false;
 			}
@@ -254,7 +276,7 @@ class weMetaData{
 		if(array_key_exists(strtolower($this->filetype), $this->dataTypeMapping)){
 			$this->datatype = $this->dataTypeMapping[strtolower($this->filetype)];
 			$this->_valid = true;
-		} else{
+		} else {
 			$this->_valid = false;
 			return false;
 		}
@@ -274,12 +296,12 @@ class weMetaData{
 			$this->_instance[$value] = new $className($this->filetype);
 			if(!$this->_instance[$value]->_checkDependencies()){
 				$this->_instance[$value]->_valid = false;
-			} else{
+			} else {
 				$this->_instance[$value]->_valid = true;
 				$this->_instance[$value]->datasource = $this->datasource;
 			}
 			return true;
-		} else{
+		} else {
 			$this->_instance[$value]->_valid = false;
 			return false;
 		}

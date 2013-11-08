@@ -102,6 +102,9 @@ class we_image_edit{
 			case "\x89" . 'PN':
 				return 'png';
 			default:
+				if(substr($imagedata,0,2)=='BM'){
+					return 'bmp';
+				}
 				return '';
 		}
 	}
@@ -153,8 +156,8 @@ class we_image_edit{
 					}
 
 					// Detect capabilities of GIF support
-					if(function_exists("ImageCreateFromGIF")){
-						if(($_tempfilename = weFile::saveTemp(base64_decode("R0lGODlhAQABAIAAAH//AP///ywAAAAAAQABAAACAUQAOw==")))){
+					if(function_exists('ImageCreateFromGIF')){
+						if(($_tempfilename = weFile::saveTemp(base64_decode('R0lGODlhAQABAIAAAH//AP///ywAAAAAAQABAAACAUQAOw==')))){
 
 							// GIF create support must be enabled if we're able to create a image
 							$_gif_test = @imagecreatefromgif($_tempfilename);
@@ -176,7 +179,7 @@ class we_image_edit{
 			}
 
 			return $_gdinfo;
-		} else{
+		} else {
 			return gd_info();
 		}
 	}
@@ -261,7 +264,7 @@ class we_image_edit{
 		if($newwidth){
 			$_outsize["width"] = $newwidth;
 			$_outsize["height"] = round($origheight * $newwidth / $origwidth);
-		} else{
+		} else {
 			// bugfix #2482: preserve aspect ratio for thumbnails with width=0 and height != 0
 			$_outsize["width"] = round(($origwidth / $origheight) * $newheight);
 			$_outsize["height"] = ($newheight ? $newheight : round($origheight * $newwidth / $origwidth));
@@ -354,20 +357,20 @@ class we_image_edit{
 		$sit = we_image_edit::supported_image_types();
 		$fn = "";
 
-		for($i = 0; $i < count($t); $i++){
-			if(!in_array($t[$i], $sit)){
+		foreach($t as $cur){
+			if(!in_array($cur, $sit)){
 				switch($t[$i]){
 					case "gif":
 					case "png":
-						$fn = "ImageCreateFrom" . strtoupper($t[$i]);
+						$fn = "ImageCreateFrom" . strtoupper($cur);
 						break;
 					case "jpg":
 						$fn = "ImageCreateFromJPEG";
 						break;
 				}
 				if(function_exists($fn)){
-					if(@$fn($_SERVER['DOCUMENT_ROOT'] . IMAGE_DIR . "foo." . $t[$i])){
-						$sit[] = $t[$i];
+					if(@$fn($_SERVER['DOCUMENT_ROOT'] . IMAGE_DIR . "foo." . $cur)){
+						$sit[] = $cur;
 					}
 				}
 			}
@@ -402,7 +405,7 @@ class we_image_edit{
 				if(($rotate_angle != 0) && function_exists("ImageRotate")){
 					$rotate_angle = floatval($rotate_angle);
 
-					while($rotate_angle < 0) {
+					while($rotate_angle < 0){
 						$rotate_angle += 360;
 					}
 
@@ -438,7 +441,7 @@ class we_image_edit{
 					if($output_format == 'gif' || $output_format == 'png'){ // transparency with gifs
 						imagecolortransparent($_output_gdimg, imagecolorallocate($_output_gdimg, 0, 0, 0)); // set this color to transparent - done
 					}
-				} else{
+				} else {
 
 					// preserve transparency of png and gif images:
 					switch($output_format){
@@ -471,12 +474,12 @@ class we_image_edit{
 					if($wratio < $hratio){
 						$x = ($_width - $width / $ratio) / 2;
 						$y = 0;
-					} else{
+					} else {
 						$x = 0;
 						$y = ($_height - $height / $ratio) / 2;
 					}
 					$_image_resize_function($_output_gdimg, $_gdimg, 0, 0, $x, $y, $width, $height, $w, $h);
-				} else{
+				} else {
 					$_image_resize_function($_output_gdimg, $_gdimg, 0, 0, 0, 0, $_outsize["width"], $_outsize["height"], $_width, $_height);
 				}
 
@@ -496,7 +499,7 @@ class we_image_edit{
 							if($_gdimg){
 								$_gdimg = basename($output_filename);
 							}
-						} else{
+						} else {
 							if(($_tempfilename = tempnam(TEMP_PATH, ""))){
 								@imagejpeg($_output_gdimg, $_tempfilename, $output_quality);
 								$_gdimg = weFile::load($_tempfilename);
@@ -518,7 +521,7 @@ class we_image_edit{
 							if($_gdimg){
 								$_gdimg = basename($output_filename);
 							}
-						} else{
+						} else {
 							if(($_tempfilename = tempnam(TEMP_PATH, ""))){
 								@$_image_out_function($_output_gdimg, $_tempfilename);
 								$_gdimg = weFile::load($_tempfilename);
@@ -535,7 +538,7 @@ class we_image_edit{
 			}
 
 			return isset($_gdimg) ? array($_gdimg, $_outsize["width"], $_outsize["height"]) : array(false, -1, -1);
-		} else{
+		} else {
 			return array(false, -1, -1);
 		}
 	}
@@ -563,7 +566,7 @@ class we_image_edit{
 		$imgSrc = '/' . ltrim($imgSrc, '/');
 
 		$_imgPath = $_SERVER['DOCUMENT_ROOT'] . $imgSrc;
-		if(!file_exists($_imgPath)||!($imagesize = getimagesize($_imgPath))){
+		if(!file_exists($_imgPath) || !($imagesize = getimagesize($_imgPath))){
 			$imagesize = array(0, 0);
 		}
 		if($imagesize[0] > $width || $imagesize[1] > $height){

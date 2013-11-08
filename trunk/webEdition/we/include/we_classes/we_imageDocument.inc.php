@@ -212,7 +212,7 @@ class we_imageDocument extends we_binaryDocument{
 		$this->checkDisableEditpages();
 	}
 
-	private function isSvg(){
+	public function isSvg(){
 		return ($this->Extension == '.svg' || $this->Extension == '.svgz');
 	}
 
