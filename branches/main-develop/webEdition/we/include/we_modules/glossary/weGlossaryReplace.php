@@ -22,19 +22,18 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-abstract class we_glossary_replace{
+abstract class weGlossaryReplace{
 
 	const configFile = 'we_conf_glossary_settings.inc.php';
 
 	public static function useAutomatic(){
 		$configFile = WE_GLOSSARY_MODULE_PATH . self::configFile;
 		if(!file_exists($configFile) || !is_file($configFile)){
-			we_glossary_settingControl::saveSettings(true);
+			weGlossarySettingControl::saveSettings(true);
 		}
 		include_once($configFile);
 
 		return (isset($GLOBALS['weGlossaryAutomaticReplacement']) && $GLOBALS['weGlossaryAutomaticReplacement']);
-
 	}
 
 	/**
@@ -46,7 +45,7 @@ abstract class we_glossary_replace{
 	public static function replace($content, $language){
 		$configFile = WE_GLOSSARY_MODULE_PATH . self::configFile;
 		if(!file_exists($configFile) || !is_file($configFile)){
-			we_glossary_settingControl::saveSettings(true);
+			weGlossarySettingControl::saveSettings(true);
 		}
 		include_once($configFile);
 
@@ -71,16 +70,15 @@ abstract class we_glossary_replace{
 		}
 		$matches = array();
 		// get the words to replace
-		$cache = new we_glossary_cache($language);
+		$cache = new weGlossaryCache($language);
 		$replace = array(
-			'<span ' => $cache->get(we_glossary_glossary::TYPE_FOREIGNWORD),
-			'<abbr ' => $cache->get(we_glossary_glossary::TYPE_ABBREVATION),
-			'<acronym ' => $cache->get(we_glossary_glossary::TYPE_ACRONYM),
-			'<a ' => $cache->get(we_glossary_glossary::TYPE_LINK),
-			'' => $cache->get(we_glossary_glossary::TYPE_TEXTREPLACE)
+			'<span ' => $cache->get(weGlossary::TYPE_FOREIGNWORD),
+			'<abbr ' => $cache->get(weGlossary::TYPE_ABBREVATION),
+			'<acronym ' => $cache->get(weGlossary::TYPE_ACRONYM),
+			'<a ' => $cache->get(weGlossary::TYPE_LINK),
+			'' => $cache->get(weGlossary::TYPE_TEXTREPLACE)
 		);
 		unset($cache);
-
 		//forbid self-reference links
 		foreach($replace['<a '] as $k => $rep){
 			if(stripos($rep, $GLOBALS['we_doc']->Path) !== FALSE){
@@ -96,8 +94,8 @@ abstract class we_glossary_replace{
 
 		// first check if there is a body tag inside the sourcecode
 		preg_match('|<body[^>]*>(.*)</body>|si', $src, $matches);
-
 		$srcBody = $replBody = (isset($matches[1]) ? $matches[1] : $src);
+		unset($matches[0]);
 
 		/*
 		  This is the fastest variant

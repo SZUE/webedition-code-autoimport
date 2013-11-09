@@ -27,7 +27,7 @@
  * this class implements the cache functionality for the glossary
  *
  */
-class we_glossary_cache{
+class weGlossaryCache{
 
 	/**
 	 * language of the cache
@@ -151,7 +151,7 @@ class we_glossary_cache{
 			$attributes = '';
 
 			// Language
-			if($Type == we_glossary_glossary::TYPE_LINK){
+			if($Type == weGlossary::TYPE_LINK){
 				$urladd = '';
 
 				if(isset($Attributes['mode'])){
@@ -348,11 +348,11 @@ if (window.screen) {
 		}
 
 		$content = array(
-			we_glossary_glossary::TYPE_LINK => array(),
-			we_glossary_glossary::TYPE_ACRONYM => array(),
-			we_glossary_glossary::TYPE_ABBREVATION => array(),
-			we_glossary_glossary::TYPE_FOREIGNWORD => array(),
-			we_glossary_glossary::TYPE_TEXTREPLACE => array(),
+			weGlossary::TYPE_LINK => array(),
+			weGlossary::TYPE_ACRONYM => array(),
+			weGlossary::TYPE_ABBREVATION => array(),
+			weGlossary::TYPE_FOREIGNWORD => array(),
+			weGlossary::TYPE_TEXTREPLACE => array(),
 		);
 
 		foreach($Items as $Text => $Value){
@@ -362,19 +362,19 @@ if (window.screen) {
 			foreach($Value as $Type => $AttributeList){
 
 				switch($Type){
-					case we_glossary_glossary::TYPE_LINK:
+					case weGlossary::TYPE_LINK:
 						$Tag = 'a';
 						break;
-					case we_glossary_glossary::TYPE_ACRONYM:
+					case weGlossary::TYPE_ACRONYM:
 						$Tag = 'acronym';
 						break;
-					case we_glossary_glossary::TYPE_ABBREVATION:
+					case weGlossary::TYPE_ABBREVATION:
 						$Tag = 'abbr';
 						break;
-					case we_glossary_glossary::TYPE_FOREIGNWORD:
+					case weGlossary::TYPE_FOREIGNWORD:
 						$Tag = 'span';
 						break;
-					case we_glossary_glossary::TYPE_TEXTREPLACE:
+					case weGlossary::TYPE_TEXTREPLACE:
 						$Tag = '';
 						break;
 				}
@@ -382,7 +382,7 @@ if (window.screen) {
 				if($Tag != ''){
 					$prefix .= '<' . $Tag;
 				}
-				if($Type != we_glossary_glossary::TYPE_TEXTREPLACE){
+				if($Type != weGlossary::TYPE_TEXTREPLACE){
 					foreach($AttributeList as $Attribute => $Val){
 						$prefix .= ($Attribute == 'attribute' ? $Val : ' ' . $Attribute . '="' . $Val . '"');
 					}
