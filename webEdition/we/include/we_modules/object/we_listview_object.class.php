@@ -273,10 +273,7 @@ class we_listview_object extends listviewBase{
 
 	function makeSQLParts($matrix, $classID, $order, $cond){
 		//FIXME: order ist totaler nonsense - das geht deutlich einfacher
-		$from = array();
-		$orderArr = array();
-		$descArr = array();
-		$ordertmp = array();
+		$from = $orderArr = $descArr = $ordertmp = array();
 
 		$cond = str_replace(array('&gt;', '&lt;'), array('>', '<',), $cond);
 
@@ -297,8 +294,9 @@ class we_listview_object extends listviewBase{
 		$_fieldnames = getHash('SELECT DefaultDesc,DefaultTitle,DefaultKeywords,CreationDate,ModDate FROM ' . OBJECT_TABLE . ' WHERE ID=' . $classID, $this->DB_WE);
 		$_selFields = '';
 		foreach($_fieldnames as $_key => $_val){
-			if(empty($_val) || $_val == '_') // bug #4657
+			if(empty($_val) || $_val == '_'){ // bug #4657
 				continue;
+			}
 			if(!is_numeric($_key) && $_val){
 				switch($_key){
 					case 'DefaultDesc':
@@ -362,15 +360,15 @@ class we_listview_object extends listviewBase{
 
 		$publ_cond = array();
 		foreach($tb as $t){
-			$publ_cond [] = '(' . $t . '.OF_Published > 0 OR ' . $t . '.OF_ID = 0)';
+			$publ_cond [] = '(' . $t . '.OF_Published>0 OR ' . $t . '.OF_ID=0)';
 		}
 
-		return array(
+		return array(//FIXME: maybe random can be changed by time%ID or sth. which is faster and quite rand enough
 			'fields' => rtrim($f, ',') . ($order == ' ORDER BY RANDOM ' ? ', RAND() AS RANDOM ' : ''),
 			'order' => $order,
 			'tables' => makeCSVFromArray($tb),
 			'groupBy' => (count($tb) > 1) ? ' GROUP BY ' . OBJECT_X_TABLE . $classID . '.ID ' : '',
-			'publ_cond' => empty($publ_cond) ? '' : ' ( ' . implode(' AND ', $publ_cond) . ' ) ',
+			'publ_cond' => $publ_cond ? ' ( ' . implode(' AND ', $publ_cond) . ' ) ' : '',
 			'cond' => trim($cond)
 		);
 	}
