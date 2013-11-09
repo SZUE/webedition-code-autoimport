@@ -42,7 +42,7 @@ class ImportOptions extends leWizardStepBase{
 			$_REQUEST['v'] = array(
 				'mode' => 1, // dont change this
 				'cid' => -2, // dont change this
-				'type' => 'WXMLImport', // dont change this
+				'type' => importFunctions::TYPE_WE_XML, // dont change this
 				'fserver' => '/', // dont change this
 				'rdofloc' => 'lLocal', // dont change this
 				'import_from' => WEBEDITION_DIR . 'liveUpdate/tmp/files/Import.xml',

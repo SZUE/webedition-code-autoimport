@@ -100,44 +100,46 @@ if((!$we_alerttext) && isset($_FILES['we_uploadedFile']) && $_FILES['we_uploaded
 	$foo = explode('/', $_FILES['we_uploadedFile']['type']);
 	$we_doc->setElement('data', $tempName, $foo[0]);
 
-	if($we_ContentType == 'image/*' || $we_ContentType == 'application/x-shockwave-flash'){
-		$we_size = $we_doc->getimagesize($tempName);
-		$we_doc->setElement('width', $we_size[0], 'attrib');
-		$we_doc->setElement('height', $we_size[1], 'attrib');
-		$we_doc->setElement('origwidth', $we_size[0]);
-		$we_doc->setElement('origheight', $we_size[1]);
-		if(isset($_REQUEST['import_metadata']) && !empty($_REQUEST['import_metadata'])){
-			$we_doc->importMetaData();
+	if($we_ContentType == 'image/*' && !$we_doc->isSvg() && !in_array(we_image_edit::detect_image_type($tempName), we_image_edit::$GDIMAGE_TYPE)){
+		$we_alerttext = g_l('alert', '[wrong_file][' . $we_ContentType . ']');
+	} else {
+		if($we_ContentType == 'image/*' || $we_ContentType == 'application/x-shockwave-flash'){
+			$we_size = $we_doc->getimagesize($tempName);
+			$we_doc->setElement('width', $we_size[0], 'attrib');
+			$we_doc->setElement('height', $we_size[1], 'attrib');
+			$we_doc->setElement('origwidth', $we_size[0]);
+			$we_doc->setElement('origheight', $we_size[1]);
+			if(isset($_REQUEST['import_metadata']) && !empty($_REQUEST['import_metadata'])){
+				$we_doc->importMetaData();
+			}
 		}
-	}
-	if($we_doc->Extension == '.pdf'){
-		$we_doc->setMetaDataFromFile($tempName);
-	}
-
-
-
-	$we_doc->setElement('filesize', $_FILES['we_uploadedFile']['size'], 'attrib');
-	if(isset($_REQUEST['img_title'])){
-		$we_doc->setElement('title', $_REQUEST['img_title'], 'attrib');
-	}
-	if(isset($_REQUEST['img_alt'])){
-		$we_doc->setElement('alt', $_REQUEST['img_alt'], 'attrib');
-	}
-	if(isset($_REQUEST['Thumbnails'])){
-		if(is_array($_REQUEST['Thumbnails'])){
-			$we_doc->Thumbs = makeCSVFromArray($_REQUEST['Thumbnails'], true);
-		} else {
-			$we_doc->Thumbs = $_REQUEST['Thumbnails'];
+		if($we_doc->Extension == '.pdf'){
+			$we_doc->setMetaDataFromFile($tempName);
 		}
+
+
+
+		$we_doc->setElement('filesize', $_FILES['we_uploadedFile']['size'], 'attrib');
+		if(isset($_REQUEST['img_title'])){
+			$we_doc->setElement('title', $_REQUEST['img_title'], 'attrib');
+		}
+		if(isset($_REQUEST['img_alt'])){
+			$we_doc->setElement('alt', $_REQUEST['img_alt'], 'attrib');
+		}
+		if(isset($_REQUEST['Thumbnails'])){
+			$we_doc->Thumbs = (is_array($_REQUEST['Thumbnails']) ?
+					makeCSVFromArray($_REQUEST['Thumbnails'], true) :
+					$_REQUEST['Thumbnails']);
+		}
+		$we_doc->Table = $_REQUEST['tab'];
+		$we_doc->Published = time();
+		$we_doc->we_save();
+		$id = $we_doc->ID;
 	}
-	$we_doc->Table = $_REQUEST['tab'];
-	$we_doc->Published = time();
-	$we_doc->we_save();
-	$id = $we_doc->ID;
 } else if(isset($_FILES['we_uploadedFile'])){
 	$we_alerttext = (we_filenameNotValid($_FILES['we_uploadedFile']['name']) ?
 			g_l('alert', '[we_filename_notValid]') :
-			g_l('alert', '[wrong_file][' . ($we_ContentType ? : 'other' ) . ']'));
+			g_l('alert', '[wrong_file][' . ($we_ContentType ? $we_ContentType : 'other') . ']'));
 }
 
 // find out the smallest possible upload size

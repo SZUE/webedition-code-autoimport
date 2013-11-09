@@ -537,7 +537,7 @@ var weFormCount = ' . $formcount . ';
 
 function back() {
 	if(top.imgimportcontent.document.we_startform.step.value=="2") {
-		top.location.href="' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=import&we_cmd[1]=import_files";
+		top.location.href="' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=import&we_cmd[1]=' . importFunctions::TYPE_LOCAL_FILES . '";
 	} else {
 		top.location.href="' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=import_files";
 	}

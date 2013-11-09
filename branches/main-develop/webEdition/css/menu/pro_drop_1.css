@@ -9,17 +9,6 @@ This stylesheet and the associated (x)html may be modified in any
 way to fit your requirements.
 =================================================================== */
 
-/* ================================================================
-This copyright notice must be kept untouched in the stylesheet at
-all times.
-
-The original version of this stylesheet and the associated (x)html
-is available at http://www.stunicholls.com/menu/pro_drop_1.html
-Copyright (c) 2005-2007 Stu Nicholls. All rights reserved.
-This stylesheet and the associated (x)html may be modified in any
-way to fit your requirements.
-=================================================================== */
-
 .preload1 {
 	background: url(/webEdition/images/menu/arr.gif);
 }
@@ -72,6 +61,7 @@ way to fit your requirements.
 	height: 22px;
 	top: 4px;
 	background: #3399ff;
+	color: #ffffff;
 }
 
 #nav li.top div.click:hover {
@@ -108,6 +98,7 @@ way to fit your requirements.
 	display: block;
 	padding: 0px 17px 0px 17px;
 	height: 16px;
+	color: #ffffff;
 }
 
 /* Default list styling */

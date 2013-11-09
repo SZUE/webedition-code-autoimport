@@ -117,8 +117,9 @@ function we_tag_include($attribs){
 	} else {//notEditmode
 		if($name && !($id || $path)){
 			$db = $GLOBALS['DB_WE'];
+			$type = weTag_getAttribute('kind', $attribs);
 			$_name = weTag_getAttribute('_name_orig', $attribs);
-			$path = we_tag('href', array('name' => $_name, 'hidedirindex' => 'false'));
+			$path = we_tag('href', array('name' => $_name, 'hidedirindex' => 'false', 'type' => $type, 'isInternal'=>1));
 			$nint = $name . we_base_link::MAGIC_INT_LINK;
 			$int = ($GLOBALS['we_doc']->getElement($nint) == '') ? 0 : $GLOBALS['we_doc']->getElement($nint);
 			$intID = $GLOBALS['we_doc']->getElement($nint . 'ID');

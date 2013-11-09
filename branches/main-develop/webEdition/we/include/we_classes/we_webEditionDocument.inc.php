@@ -802,13 +802,14 @@ if(!defined(\'NO_SESS\')){define(\'NO_SESS\',1);}
 $GLOBALS[\'WE_IS_DYN\'] = 1;
 $GLOBALS[\'we_transaction\'] = 0;
 $GLOBALS[\'we_ContentType\'] = \'text/webedition\';
-$_REQUEST[\'we_cmd\'] = array();
 
 if (isset($_REQUEST[\'pv_id\']) && isset($_REQUEST[\'pv_tid\'])) {
-	$_REQUEST[\'we_cmd\'][1] = $_REQUEST[\'pv_id\'];
-	$_REQUEST[\'we_cmd\'][4] = $_REQUEST[\'pv_tid\'];
+	$_REQUEST[\'we_cmd\']=array(
+		1 => $_REQUEST[\'pv_id\'],
+		4 => $_REQUEST[\'pv_tid\'],
+	);
 } else {
-	$_REQUEST[\'we_cmd\'][1] = ' . $this->ID . ';
+	$_REQUEST[\'we_cmd\']=array(1 => ' . $this->ID . ');
 }
 
 $FROM_WE_SHOW_DOC = true;

@@ -728,15 +728,19 @@ class we_folder extends we_root{
 		$db->query('DELETE FROM ' . LANGLINK_TABLE . ' WHERE DID=' . $id . ' AND DocumentTable="' . $type . '" AND DLocale!="' . $lang . '"');
 	}
 
-	public static function getUrlReplacements($db){
-		//FIXME: cache result???
-		$ret = array();
-		$db->query('SELECT Path,urlMap FROM ' . FILE_TABLE . ' WHERE urlMap!=""');
-		while($db->next_record(MYSQL_NUM)){
-			$host = trim(preg_replace('-(http://|https://)-', '', $db->f(1)), '/');
-			$ret['\1' . ($_SERVER['SERVER_NAME'] == $host ? '' : '//' . $host) . '\4'] = '-((href\s*=|src\s*=|action\s*=|location\s*=|url)\s*["\'\(])(' . preg_quote($db->f(0), '-') . ')(/[^"\'\)]*["\'\)])-';
+	public static function getUrlReplacements(we_database_base $db, $onlyUrl = false){
+		//TODO: cache this!
+		static $ret = -1;
+		if($ret == -1){
+			$ret = array('full' => array(), 'url' => array());
+			$db->query('SELECT Path,urlMap FROM ' . FILE_TABLE . ' WHERE urlMap!=""');
+			while($db->next_record(MYSQL_NUM)){
+				$host = trim(preg_replace('-(http://|https://)-', '', $db->f(1)), '/');
+				$ret['full']['\1' . ($_SERVER['SERVER_NAME'] == $host ? '' : '//' . $host) . '\4'] = '-((href\s*=|src\s*=|action\s*=|location\s*=|url)\s*["\'\(])(' . preg_quote($db->f(0), '-') . ')(/[^"\'\)]*["\'\)])-';
+				$ret['url'][($_SERVER['SERVER_NAME'] == $host ? '' : '//' . $host) . '\1'] = '-^' . preg_quote($db->f(0), '-') . '(/.*)-';
+			}
 		}
-		return $ret;
+		return $ret[$onlyUrl ? 'url' : 'full'];
 	}
 
 }

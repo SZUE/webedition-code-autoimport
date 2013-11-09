@@ -66,30 +66,35 @@ if(!isset($_SESSION['weS']['we_data'][$we_transaction])){
 
 		$foo = explode('/', $_FILES["we_File"]["type"]);
 		$we_doc->setElement('data', $we_File, $foo[0]);
-		if($we_doc->ContentType == 'image/*' || $we_doc->ContentType == 'application/x-shockwave-flash'){
-			$we_size = $we_doc->getimagesize($we_File);
-			$we_doc->setElement('width', $we_size[0], 'attrib');
-			$we_doc->setElement('height', $we_size[1], 'attrib');
-			$we_doc->setElement('origwidth', $we_size[0]);
-			$we_doc->setElement('origheight', $we_size[1]);
-		}
-		$we_doc->Text = $we_doc->Filename . $we_doc->Extension;
-		$we_doc->Path = $we_doc->getPath();
-		$we_doc->DocChanged = true;
+		if($we_doc->ContentType == 'image/*' && !$we_doc->isSvg() && !in_array(we_image_edit::detect_image_type($we_File), we_image_edit::$GDIMAGE_TYPE)){
+			$we_alerttext = g_l('alert', '[wrong_file][' . $we_doc->ContentType . ']');
+		} else {
 
-		if($we_doc->Extension == '.pdf'){
-			$we_doc->setMetaDataFromFile($we_File);
-		}
+			if($we_doc->ContentType == 'image/*' || $we_doc->ContentType == 'application/x-shockwave-flash'){
+				$we_size = $we_doc->getimagesize($we_File);
+				$we_doc->setElement('width', $we_size[0], 'attrib');
+				$we_doc->setElement('height', $we_size[1], 'attrib');
+				$we_doc->setElement('origwidth', $we_size[0]);
+				$we_doc->setElement('origheight', $we_size[1]);
+			}
+			$we_doc->Text = $we_doc->Filename . $we_doc->Extension;
+			$we_doc->Path = $we_doc->getPath();
+			$we_doc->DocChanged = true;
 
-		$_SESSION['weS']['we_data']["tmpName"] = $we_File;
-		if(isset($_REQUEST["import_metadata"]) && !empty($_REQUEST['import_metadata'])){
-			$we_doc->importMetaData();
+			if($we_doc->Extension == '.pdf'){
+				$we_doc->setMetaDataFromFile($we_File);
+			}
+
+			$_SESSION['weS']['we_data']["tmpName"] = $we_File;
+			if(isset($_REQUEST["import_metadata"]) && !empty($_REQUEST['import_metadata'])){
+				$we_doc->importMetaData();
+			}
+			$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]); // save the changed object in session
 		}
-		$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]); // save the changed object in session
 	} else if(isset($_FILES['we_File']['name']) && !empty($_FILES['we_File']['name'])){
 		$we_alerttext = g_l('alert', '[wrong_file][' . $we_doc->ContentType . ']');
 	} else if(isset($_FILES['we_File']['name']) && empty($_FILES['we_File']['name'])){
-		$we_alerttext = g_l('alert', "[no_file_selected]");
+		$we_alerttext = g_l('alert', '[no_file_selected]');
 	}
 }
 

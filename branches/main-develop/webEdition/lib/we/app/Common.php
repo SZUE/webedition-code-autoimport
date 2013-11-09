@@ -270,6 +270,7 @@ class we_app_Common {
 		$entry->addChild("deactivatable", $appmanifest->info->deactivatable);
 		$entry->addChild("deinstallable", $appmanifest->info->deinstallable);
 		$entry->addChild("updatable", $appmanifest->info->updatable);
+		$entry->addChild("usejmenu", isset($appmanifest->info->usejmenu) ? $appmanifest->info->usejmenu : 'false');
 
 		$dependencies = $entry->addChild("dependencies");
 		foreach($appmanifest->xpath('dependencies') as $item){
@@ -390,7 +391,7 @@ class we_app_Common {
 	 */
 	public static function isActive($appname = ""){
 		$tocentry = self::getAppTOCEntry($appname);
-		
+
 		switch(($tocentry && $tocentry->name == $appname ? @$tocentry["active"] : '')){
 			case "true":
 				return true;
@@ -399,6 +400,19 @@ class we_app_Common {
 			default:
 				return -1;
 		}
+	}
+
+	/**
+	 * checks if menu type in TOC is javamenu
+	 * fetches the value of a application's toc entry 'usejmenu'
+	 * @param string $appname name of the application
+	 * @return boolean value of the requested element (false if element does not exist)
+	 */
+	public static function isJMenu($appname = ""){
+		$tocentry = self::getAppTOCEntry($appname);
+		$element = $tocentry && $tocentry->name == $appname && isset($tocentry->usejmenu) ? (string)$tocentry->usejmenu : 'false';
+
+		return $element == 'true' ? true : false;
 	}
 
 	/**
@@ -566,6 +580,7 @@ class we_app_Common {
 		$entry->addChild("date", time());
 		$entry->addChild("deactivatable", (string) (self::getManifestElement($appname, "/info/deactivatable")));
 		$entry->addChild("deinstallable", (string) (self::getManifestElement($appname, "/info/deinstallable")));
+		$entry->addChild("usejmenu", (string) (self::getManifestElement($appname, "/info/usejmenu")));
 		$entry->addChild("updatable", (string) (self::getManifestElement($appname, "/info/updatable")));
 		if(!empty($title)){
 			foreach($title as $entry){

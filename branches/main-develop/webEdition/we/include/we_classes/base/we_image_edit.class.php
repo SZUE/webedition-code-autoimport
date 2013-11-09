@@ -102,6 +102,9 @@ class we_image_edit{
 			case "\x89" . 'PN':
 				return 'png';
 			default:
+				if(substr($imagedata,0,2)=='BM'){
+					return 'bmp';
+				}
 				return '';
 		}
 	}
@@ -153,8 +156,8 @@ class we_image_edit{
 					}
 
 					// Detect capabilities of GIF support
-					if(function_exists("ImageCreateFromGIF")){
-						if(($_tempfilename = weFile::saveTemp(base64_decode("R0lGODlhAQABAIAAAH//AP///ywAAAAAAQABAAACAUQAOw==")))){
+					if(function_exists('ImageCreateFromGIF')){
+						if(($_tempfilename = weFile::saveTemp(base64_decode('R0lGODlhAQABAIAAAH//AP///ywAAAAAAQABAAACAUQAOw==')))){
 
 							// GIF create support must be enabled if we're able to create a image
 							$_gif_test = @imagecreatefromgif($_tempfilename);
@@ -354,20 +357,20 @@ class we_image_edit{
 		$sit = we_image_edit::supported_image_types();
 		$fn = "";
 
-		for($i = 0; $i < count($t); $i++){
-			if(!in_array($t[$i], $sit)){
+		foreach($t as $cur){
+			if(!in_array($cur, $sit)){
 				switch($t[$i]){
 					case "gif":
 					case "png":
-						$fn = "ImageCreateFrom" . strtoupper($t[$i]);
+						$fn = "ImageCreateFrom" . strtoupper($cur);
 						break;
 					case "jpg":
 						$fn = "ImageCreateFromJPEG";
 						break;
 				}
 				if(function_exists($fn)){
-					if(@$fn($_SERVER['DOCUMENT_ROOT'] . IMAGE_DIR . "foo." . $t[$i])){
-						$sit[] = $t[$i];
+					if(@$fn($_SERVER['DOCUMENT_ROOT'] . IMAGE_DIR . "foo." . $cur)){
+						$sit[] = $cur;
 					}
 				}
 			}

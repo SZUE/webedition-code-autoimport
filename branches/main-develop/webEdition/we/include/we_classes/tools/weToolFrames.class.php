@@ -167,7 +167,6 @@ class weToolFrames extends weModuleFrames{
 		include($this->toolDir . 'conf/we_menu_' . $this->toolName . '.conf.php');
 
 		$lang_arr = 'we_menu_' . $this->toolName;
-		t_e('larr', $lang_arr);
 		$jmenu = new weJavaMenu($$lang_arr, $this->topFrame . '.cmd');
 
 		$menu = '';

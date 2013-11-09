@@ -67,22 +67,36 @@ onunload=function() {
 	}
 
 	static function css(){
-		$ret = we_html_element::cssLink(WEBEDITION_DIR . 'css/menu/pro_drop_1.css');
+		$ret = '';
+		foreach(self::getCssForCssMenu() as $link){
+			$ret .= we_html_element::cssLink($link);
+		}
+		$ret .= we_html_element::jsScript(self::getJsForCssMenu());
+
+		return $ret;
+	}
+
+	static function getCssForCssMenu(){
+		$arr = array(WEBEDITION_DIR . 'css/menu/pro_drop_1.css');
 		switch(we_base_browserDetect::inst()->getBrowser()){
 			case we_base_browserDetect::CHROME:
 			case we_base_browserDetect::SAFARI:
-				$ret.=we_html_element::cssLink(WEBEDITION_DIR . 'css/menu/pro_drop_safari.css');
+				$arr[] = WEBEDITION_DIR . 'css/menu/pro_drop_safari.css';
 				break;
 		}
 		if(we_base_browserDetect::inst()->isMAC()){
-			$ret.=we_html_element::cssLink(WEBEDITION_DIR . 'css/menu/pro_drop_mac.css');
+			$arr[] = WEBEDITION_DIR . 'css/menu/pro_drop_mac.css';
 		}
+		
+		return $arr;
+	}
+
+	static function getJsForCssMenu(){
 		if(we_base_browserDetect::isIE() && intval(we_base_browserDetect::inst()->getBrowserVersion()) < 9){
-			$ret.=we_html_element::jsScript(WEBEDITION_DIR . 'css/menu/clickMenu_IE8.js');
+			return WEBEDITION_DIR . 'css/menu/clickMenu_IE8.js';
 		} else {
-			$ret.=we_html_element::jsScript(WEBEDITION_DIR . 'css/menu/clickMenu.js');
+			return WEBEDITION_DIR . 'css/menu/clickMenu.js';
 		}
-		return $ret;
 	}
 
 	static function pJS(){

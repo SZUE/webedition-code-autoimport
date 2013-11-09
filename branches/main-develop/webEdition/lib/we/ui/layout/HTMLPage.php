@@ -43,6 +43,13 @@ class we_ui_layout_HTMLPage extends we_ui_abstract_AbstractElement{
 	protected $_title = 'webEdition (http://www.webedition.org)';
 
 	/**
+	 * app name
+	 *
+	 * @var string
+	 */
+	protected $_appName = '';
+
+	/**
 	 * array that holds internal css code to include into page
 	 *
 	 * @var array
@@ -90,6 +97,7 @@ class we_ui_layout_HTMLPage extends we_ui_abstract_AbstractElement{
 	 * @var string
 	 */
 	protected $_bodyAttributes = array();
+
 	protected $_isTopFrame = false;
 
 	/**
@@ -113,6 +121,7 @@ class we_ui_layout_HTMLPage extends we_ui_abstract_AbstractElement{
 		$this->setCharset($charset);
 
 		$controller = Zend_Controller_Front::getInstance();
+		$this->_appName = $controller->getParam('appName') ? $controller->getParam('appName') : '';
 		if($controller->getResponse()){
 			$controller->getResponse()->setHeader('Content-Type', 'text/html; charset=' . $charset, true);
 		} else{
@@ -251,9 +260,24 @@ var weEventController = weEC();
 
 EOS;
 		} else{
+			
 			$this->addJSFile(LIB_DIR . 'we/core/CmdController.js');
 			$this->addJSFile(LIB_DIR . 'we/core/EventController.js');
 
+			if(!$this->_appName || ($this->_appName && !we_app_Common::isJMenu($this->_appName))){
+				for($i = 0; $i < count($this->_CSSFiles); $i++){
+					if($this->_CSSFiles[$i]['path'] == we_ui_layout_Themes::computeCSSUrl(__CLASS__)){
+						unset($this->_CSSFiles[$i]);
+					}
+				}
+				foreach(we_main_headermenu::getCssForCssMenu() as $link){
+					$this->addCSSFile($link);
+				}
+				$this->addJSFile(we_main_headermenu::getJsForCssMenu());
+				$this->addCSSFile(LIB_DIR . 'we/ui/themes/default/we_ui_controls_MessageConsole/style.css');
+				$this->addJSFile(WEBEDITION_DIR . 'js/messageConsoleImages.js');
+				$this->addJSFile(WEBEDITION_DIR . 'js/messageConsoleView.js');
+			}
 			$js = <<<EOS
 
 var weCmdController = we_core_CmdController.getInstance();
@@ -416,7 +440,7 @@ EOS;
 	 * @return void
 	 */
 	public function setFrameset($frameset){
-		$this->_framesetHTML = $frameset->getHTML();
+		$this->_framesetHTML = $frameset->getHTML($this->_isTopFrame, $this->_appName);
 	}
 
 	/**

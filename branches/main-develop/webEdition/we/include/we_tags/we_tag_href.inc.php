@@ -1,4 +1,4 @@
-	<?php
+<?php
 
 /**
  * webEdition CMS
@@ -95,6 +95,12 @@ function we_tag_href($attribs){
 				if($filter->accessForVisitor($obj, array(), true) != weDocumentCustomerFilter::ACCESS){
 					return '';
 				}
+			}
+		}
+		if($int && $intID && !$include && !isset($attribs['isInternal'])){
+			$urlReplace = we_folder::getUrlReplacements($GLOBALS['DB_WE'], true);
+			if($urlReplace){
+				return preg_replace($urlReplace, array_keys($urlReplace), $href);
 			}
 		}
 
