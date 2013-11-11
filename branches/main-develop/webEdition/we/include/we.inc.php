@@ -86,7 +86,7 @@ if(!isset($GLOBALS['DB_WE'])){
 	$GLOBALS['DB_WE'] = new DB_WE();
 }
 
-if(!defined('NO_SESS')){
+if(!defined('NO_SESS')&& !isset($GLOBALS['FROM_WE_SHOW_DOC'])){
 	$GLOBALS['WE_BACKENDCHARSET'] = 'UTF-8'; //Bug 5771 schon in der Session wird ein vorläufiges Backendcharset benötigt
 	require_once (WE_INCLUDES_PATH . 'we_session.inc.php');
 	$_tooldefines = weToolLookup::getDefineInclude();
@@ -103,17 +103,8 @@ if(defined('WE_WEBUSER_LANGUAGE')){
 } else {
 	$sid = '';
 }
-//set new sessionID from dw-extension
-if((isset($_SESSION['user']['ID']) && isset($_REQUEST['weSessionId']) && $_REQUEST['weSessionId'] != '' && isset($_REQUEST['cns']) && $_REQUEST['cns'] == 'dw')){
-	$sid = htmlspecialchars(strip_tags($_REQUEST['weSessionId']));
-	session_id($sid);
-//	session_name(SESSION_NAME);
-	@session_start();
-}
-if(!session_id() && !isset($GLOBALS['FROM_WE_SHOW_DOC']) && !defined('NO_SESS')){
-//	session_name(SESSION_NAME);
-	@session_start();
-}
+
+
 if(isset($_SESSION['prefs']['Language']) && !empty($_SESSION['prefs']['Language'])){
 	$GLOBALS['WE_LANGUAGE'] = (is_dir(WE_INCLUDES_PATH . 'we_language/' . $_SESSION['prefs']['Language']) ?
 			$_SESSION['prefs']['Language'] :

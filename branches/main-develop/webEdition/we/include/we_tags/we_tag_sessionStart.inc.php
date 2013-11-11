@@ -28,7 +28,7 @@ function we_tag_sessionStart($attribs){
 	$onlinemonitor = weTag_getAttribute('onlinemonitor', $attribs, false, true);
 
 	if(!isset($_SESSION)){
-		@session_start();
+		session_start();
 	}
 
 	if(!defined('CUSTOMER_TABLE')){

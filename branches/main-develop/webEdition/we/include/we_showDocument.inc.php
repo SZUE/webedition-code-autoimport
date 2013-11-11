@@ -70,7 +70,7 @@ if(isset($_REQUEST['vers_we_obj'])){
 
 	// call session_start to init session, otherwise NO customer can exist
 	if(!isset($_SESSION)){
-		@session_start();
+		session_start();
 	}
 
 	if(($_visitorHasAccess = $we_doc->documentCustomerFilter->accessForVisitor($we_doc))){

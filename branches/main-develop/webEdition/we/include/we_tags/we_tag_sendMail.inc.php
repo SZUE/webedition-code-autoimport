@@ -160,7 +160,7 @@ function we_tag_sendMail($attribs, $content){
 				exit;
 			} else{
 				if(!isset($_SESSION)){
-					@session_start();
+					session_start();
 				}
 				$_SESSION['WE_SendMail'] = true;
 				$codes = ($id > 0) && weFileExists($id, FILE_TABLE, $GLOBALS['DB_WE']) ? we_getDocumentByID($id) : '';

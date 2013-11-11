@@ -37,7 +37,7 @@ function we_tag_createShop($attribs){
 	require_once(WE_MODULES_PATH . 'shop/we_conf_shop.inc.php');
 
 	if(!isset($_SESSION)){
-		@session_start();
+		session_start();
 	}
 
 	if(isset($_SESSION[$shopname . '_save']) && ((isset($_REQUEST['deleteshop']) && $_REQUEST['deleteshop'] == 1) && ((isset($_REQUEST['shopname']) && $_REQUEST['shopname'] === $shopname) || !isset($_REQUEST['shopname'])) || $deleteshop)){ // delete shop

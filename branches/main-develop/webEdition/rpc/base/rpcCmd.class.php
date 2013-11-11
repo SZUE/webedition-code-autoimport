@@ -107,11 +107,6 @@ class rpcCmd{
 
 	//FIXME: remove this - session is already started by we.inc
 	function startSession(){
-
-		if(isset($_REQUEST["weSessionId"])){
-			session_id($_REQUEST["weSessionId"]);
-		}
-		@session_start();
 	}
 
 	function checkParameters(){

@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_user{
+class we_user {
 
 	const TYPE_USER = 0;
 	const TYPE_USER_GROUP = 1;
@@ -350,8 +350,7 @@ class we_user{
 			return '';
 		}
 
-		$save_javascript =
-			'var _multiEditorreload = false;' .
+		$save_javascript = 'var _multiEditorreload = false;' .
 			$this->rememberPreference(isset($this->Preferences['Language']) ? $this->Preferences['Language'] : null, 'Language') .
 			$this->rememberPreference(isset($this->Preferences['BackendCharset']) ? $this->Preferences['BackendCharset'] : null, 'BackendCharset') .
 			$this->rememberPreference(isset($this->Preferences['default_tree_count']) ? $this->Preferences['default_tree_count'] : null, 'default_tree_count');
@@ -1298,24 +1297,24 @@ $this->Preferences=' . var_export($this->Preferences, true) . ';
 		$_tableObj = new we_html_table($_attr, 12, 2);
 		$line = 0;
 		$_tableObj->setCol($line, 0, null, $this->getUserfield('Salutation', 'salutation'));
-		$_tableObj->setCol(++$line, 0, null, $this->getUserfield('First', 'first_name'));
+		$_tableObj->setCol( ++$line, 0, null, $this->getUserfield('First', 'first_name'));
 		$_tableObj->setCol($line, 1, null, $this->getUserfield('Second', 'second_name'));
-		$_tableObj->setCol(++$line, 0, array('colspan' => 2), we_html_tools::getPixel(560, 20));
-		$_tableObj->setCol(++$line, 0, null, $this->getUserfield('Address', 'address'));
+		$_tableObj->setCol( ++$line, 0, array('colspan' => 2), we_html_tools::getPixel(560, 20));
+		$_tableObj->setCol( ++$line, 0, null, $this->getUserfield('Address', 'address'));
 		$_tableObj->setCol($line, 1, null, $this->getUserfield('HouseNo', 'houseno'));
-		$_tableObj->setCol(++$line, 0, null, $this->getUserfield('PLZ', 'PLZ', 'text', 16, true));
+		$_tableObj->setCol( ++$line, 0, null, $this->getUserfield('PLZ', 'PLZ', 'text', 16, true));
 		$_tableObj->setCol($line, 1, null, $this->getUserfield('City', 'city'));
-		$_tableObj->setCol(++$line, 0, null, $this->getUserfield('State', 'state'));
+		$_tableObj->setCol( ++$line, 0, null, $this->getUserfield('State', 'state'));
 		$_tableObj->setCol($line, 1, null, $this->getUserfield('Country', 'country'));
-		$_tableObj->setCol(++$line, 0, array('colspan' => 2), we_html_tools::getPixel(560, 20));
-		$_tableObj->setCol(++$line, 0, null, $this->getUserfield('Tel_preselection', 'tel_pre'));
+		$_tableObj->setCol( ++$line, 0, array('colspan' => 2), we_html_tools::getPixel(560, 20));
+		$_tableObj->setCol( ++$line, 0, null, $this->getUserfield('Tel_preselection', 'tel_pre'));
 		$_tableObj->setCol($line, 1, null, $this->getUserfield('Telephone', 'telephone'));
-		$_tableObj->setCol(++$line, 0, null, $this->getUserfield('Fax_preselection', 'fax_pre'));
+		$_tableObj->setCol( ++$line, 0, null, $this->getUserfield('Fax_preselection', 'fax_pre'));
 		$_tableObj->setCol($line, 1, null, $this->getUserfield('Fax', 'fax'));
-		$_tableObj->setCol(++$line, 0, null, $this->getUserfield('Handy', 'mobile'));
+		$_tableObj->setCol( ++$line, 0, null, $this->getUserfield('Handy', 'mobile'));
 		$_tableObj->setCol($line, 1, null, $this->getUserfield('Email', 'email'));
-		$_tableObj->setCol(++$line, 0, array('colspan' => 2), we_html_tools::getPixel(520, 4));
-		$_tableObj->setCol(++$line, 0, array('colspan' => 2), we_html_tools::htmlFormElementTable($_description, g_l('modules_users', '[description]')));
+		$_tableObj->setCol( ++$line, 0, array('colspan' => 2), we_html_tools::getPixel(520, 4));
+		$_tableObj->setCol( ++$line, 0, array('colspan' => 2), we_html_tools::htmlFormElementTable($_description, g_l('modules_users', '[description]')));
 
 
 		$parts = array(
@@ -1916,7 +1915,7 @@ function show_seem_chooser(val) {
 			case 'weapp':
 				$_seem_start_type = 'weapp';
 				if($this->Preferences['seem_start_file'] != 0){
-
+					
 				}
 				break;
 			// Document
@@ -2462,6 +2461,10 @@ top.content.hloaded=1;') .
 	}
 
 	static function removeOldWESession(){
+		if(session_name() == SESSION_NAME){
+			session_unset();
+			return;
+		}
 		unset($_SESSION['user']);
 		unset($_SESSION['perms']);
 		unset($_SESSION['prefs']);
@@ -2474,4 +2477,3 @@ top.content.hloaded=1;') .
 	}
 
 }
-

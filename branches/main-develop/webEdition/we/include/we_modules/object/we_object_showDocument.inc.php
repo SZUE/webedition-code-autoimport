@@ -178,7 +178,7 @@ if(isset($GLOBALS['we_obj']) && $GLOBALS['we_obj']->documentCustomerFilter && !i
 
 	// call session_start to init session, otherwise NO customer can exist
 	if(!isset($_SESSION)){
-		@session_start();
+		session_start();
 	}
 
 	if(($_visitorHasAccess = $GLOBALS['we_obj']->documentCustomerFilter->accessForVisitor($GLOBALS['we_obj']))){
