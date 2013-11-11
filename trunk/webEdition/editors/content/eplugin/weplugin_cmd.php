@@ -172,7 +172,7 @@ if (
 			we_html_tools::headerCtCharset('text/html', $charset);
 		}
 	}
-//FIXME: charset
+
 	print we_html_element::htmlDocType() . we_html_element::htmlHtml(
 			we_html_element::htmlHead(
 				we_html_tools::htmlMetaCtCharset('text/html', $GLOBALS['WE_BACKENDCHARSET'])
