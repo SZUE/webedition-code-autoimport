@@ -107,7 +107,7 @@ function we_tag_writeShopData($attribs){
 						'Price' => $preis,
 						'IntOrderID' => $orderID,
 						'IntCustomerID' => intval($_SESSION['webuser']['ID']),
-						'DateOrder' => 'now()',
+						'DateOrder' => sql_function('NOW()'),
 						'DateShipping' => 0,
 						'Datepayment' => 0,
 						'strSerial' => serialize($shoppingItem['serial']),

@@ -331,7 +331,7 @@ class weNewsletter extends weNewsletterBase{
 	function addLog($log, $param = ''){
 		$this->db->query('INSERT INTO ' . NEWSLETTER_LOG_TABLE . ' SET ' . we_database_base::arraySetter(array(
 				'NewsletterID' => $this->ID,
-				'LogTime' => 'UNIX_TIMESTAMP()',
+				'LogTime' => sql_function('UNIX_TIMESTAMP()'),
 				'Log' => $log,
 				'Param' => $param
 		)));

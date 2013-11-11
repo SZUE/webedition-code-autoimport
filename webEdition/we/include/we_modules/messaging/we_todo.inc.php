@@ -156,8 +156,17 @@ class we_todo extends we_msg_proto{
 		return $fids;
 	}
 
-	function history_update($id, $userid, $fromuserid, $comment, $action, $status = 'NULL'){
-		return $this->DB_WE->query('INSERT INTO ' . MSG_TODOHISTORY_TABLE . ' (ParentID, UserID, fromUserID, Comment, Created, action, status) VALUES (' . intval($id) . ', ' . intval($userid) . ', ' . $this->DB_WE->escape($fromuserid) . ', "' . $this->DB_WE->escape($comment) . '", UNIX_TIMESTAMP(), ' . $this->DB_WE->escape($action) . ', ' . $this->DB_WE->escape($status) . ')');
+	function history_update($id, $userid, $fromuserid, $comment, $action, $status = -1){
+		return $this->DB_WE->query('INSERT INTO ' . MSG_TODOHISTORY_TABLE . ' ' .
+				we_database_base::arraySetter(array(
+					'ParentID' => $id,
+					'UserID' => $userid,
+					'fromUserID' => $fromuserid,
+					'Comment' => $comment,
+					'Created' => sql_function('UNIX_TIMESTAMP()'),
+					'action' => $action,
+					'status' => ($status < 0 ? sql_function('NULL') : $status)
+		)));
 	}
 
 	function add_comment(){
@@ -339,7 +348,7 @@ class we_todo extends we_msg_proto{
 			$tmp['MessageText'] = $row['MessageText'];
 			$tmp['Content_Type'] = $row['Content_Type'];
 			$tmp['seenStatus'] = intval($row['seenStatus']);
-			$tmp['tag'] = $row['tag'] != '' ? $row['tag'] : '';
+			$tmp['tag'] = $row['tag'] ? $row['tag'] : '';
 
 			$this->DB_WE->query('INSERT INTO ' . $this->DB_WE->escape($this->table) . ' ' . we_database_base::arraySetter($tmp));
 		}
@@ -387,7 +396,7 @@ class we_todo extends we_msg_proto{
 					'UserID' => intval($userid),
 					'msg_type' => $this->sql_class_nr,
 					'obj_type' => we_msg_proto::TODO_NR,
-					'headerDate' => 'UNIX_TIMESTAMP()',
+					'headerDate' => sql_function('UNIX_TIMESTAMP()'),
 					'headerSubject' => $data['subject'],
 					'headerCreator' => intval(intval($this->userid) ? $this->userid : $userid),
 					'headerStatus' => 0,
@@ -395,8 +404,8 @@ class we_todo extends we_msg_proto{
 					'Properties' => we_msg_proto::TODO_PROP_NONE,
 					'MessageText' => $data['body'],
 					'seenStatus' => 0,
-					'Priority' => empty($data['priority']) ? 'NULL' : $data['priority'],
-					'Content_Type' => empty($data['Content_Type']) ? 'NULL' : $data['Content_Type']
+					'Priority' => $data['priority'] ? $data['priority'] : sql_function('NULL'),
+					'Content_Type' => $data['Content_Type'] ? $data['Content_Type'] : sql_function('NULL')
 			)));
 
 			$results['id'] = $this->DB_WE->getInsertId();
@@ -459,18 +468,17 @@ class we_todo extends we_msg_proto{
 				$seen_ids[] = $this->DB_WE->f('ID');
 			}
 
-			$this->selected_set[] =
-				array('ID' => $i++,
-					'hdrs' => array('Deadline' => $this->DB_WE->f('headerDeadline'),
-						'Subject' => $this->DB_WE->f('headerSubject'),
-						'Creator' => $this->DB_WE->f('username'),
-						'Priority' => $this->DB_WE->f('Priority'),
-						'seenStatus' => $this->DB_WE->f('seenStatus'),
-						'status' => $this->DB_WE->f('headerStatus'),
-						'ClassName' => $this->ClassName),
-					'int_hdrs' => array('_from_userid' => $this->DB_WE->f('headerCreator'),
-						'_ParentID' => $this->DB_WE->f('ParentID'),
-						'_ID' => $this->DB_WE->f('ID')));
+			$this->selected_set[] = array('ID' => $i++,
+				'hdrs' => array('Deadline' => $this->DB_WE->f('headerDeadline'),
+					'Subject' => $this->DB_WE->f('headerSubject'),
+					'Creator' => $this->DB_WE->f('username'),
+					'Priority' => $this->DB_WE->f('Priority'),
+					'seenStatus' => $this->DB_WE->f('seenStatus'),
+					'status' => $this->DB_WE->f('headerStatus'),
+					'ClassName' => $this->ClassName),
+				'int_hdrs' => array('_from_userid' => $this->DB_WE->f('headerCreator'),
+					'_ParentID' => $this->DB_WE->f('ParentID'),
+					'_ID' => $this->DB_WE->f('ID')));
 		}
 
 		/* mark selected_set messages as seen */
