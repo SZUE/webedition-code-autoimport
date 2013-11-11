@@ -548,22 +548,18 @@ abstract class we_database_base{
 			if(is_object($val) || is_array($val)){
 				t_e('warning', 'data error: db-field cannot contain objects / arrays', 'Key: ' . $key, $arr);
 			}
-			//current hack: don't escape some used mysql functions
-			//FIXME: make this more robust to use internal mysql functions - e.g. functions object?
 			$escape = !(is_int($val) || is_float($val));
 
+			//FIXME: make this more robust to use internal mysql functions - e.g. functions object?
 			if($escape){
-				$tmp = explode('(', $val);
-				switch(strtoupper($tmp[0])){
-					case 'NOW':
-					case 'UNIX_TIMESTAMP':
-					case 'CURDATE':
-					case 'CURRENT_DATE':
-					case 'CURRENT_TIME':
-					case 'CURRENT_TIMESTAMP':
-					case 'CURTIME':
-						$escape = isset($tmp[1]);//only escape if we found (
-						break;
+				switch($val){
+					case 'NOW()':
+					case 'UNIX_TIMESTAMP()':
+					case 'CURDATE()':
+					case 'CURRENT_DATE()':
+					case 'CURRENT_TIME()':
+					case 'CURRENT_TIMESTAMP()':
+					case 'CURTIME()':
 					case 'NULL':
 						$escape = false;
 				}
