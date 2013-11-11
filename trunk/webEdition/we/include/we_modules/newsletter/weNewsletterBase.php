@@ -82,8 +82,9 @@ class weNewsletterBase{
 		$sets = array();
 		$wheres = array();
 		foreach($this->persistents as $val){
-			if($val == "ID")
+			if($val == "ID"){
 				$wheres[] = $val . "='" . $this->db->escape($this->$val) . "'";
+			}
 			if($val == "Filter"){
 				$value = unserialize($this->$val);
 				if(is_array($value)){

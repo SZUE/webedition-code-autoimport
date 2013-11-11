@@ -545,10 +545,13 @@ abstract class we_database_base{
 	static function arraySetter(array $arr, $imp = ','){
 		$ret = array();
 		foreach($arr as $key => $val){
-			if(is_object($val) || is_array($val)){
+			$escape = !(is_int($val) || is_float($val));
+			if(is_array($val) && $val['sqlFunction'] == 1){
+				$val = $val['val'];
+				$escape = false;
+			} elseif(is_object($val) || is_array($val)){
 				t_e('warning', 'data error: db-field cannot contain objects / arrays', 'Key: ' . $key, $arr);
 			}
-			$escape = !(is_int($val) || is_float($val));
 
 			//FIXME: make this more robust to use internal mysql functions - e.g. functions object?
 			if($escape){
@@ -562,6 +565,7 @@ abstract class we_database_base{
 					case 'CURTIME()':
 					case 'NULL':
 						$escape = false;
+						t_e('deprecated','deprecated db call detected');
 				}
 			}
 			$ret[] = '`' . $key . '`=' . ($escape ? '"' . escape_sql_query($val) . '"' : $val);

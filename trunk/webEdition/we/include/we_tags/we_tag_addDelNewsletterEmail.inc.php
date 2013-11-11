@@ -194,7 +194,7 @@ function we_tag_addDelNewsletterEmail($attribs){
 						'subscribe_firstname' => $f['subscribe_firstname'],
 						'subscribe_lastname' => $f['subscribe_lastname'],
 						'lists' => $lists,
-						'expires' => 'UNIX_TIMESTAMP() + ' . weTag_getAttribute('expiredoubleoptin', $attribs, 1440) * 60 // in secs
+						'expires' => sql_function('UNIX_TIMESTAMP() + ' . weTag_getAttribute('expiredoubleoptin', $attribs, 1440) * 60) // in secs
 				)));
 
 				$id = weTag_getAttribute('id', $attribs);
@@ -537,7 +537,7 @@ function we_unsubscribeNL($db, $customer, $_customerFieldPrefs, $abos, $paths){
 			}
 			if($emailExists){
 				$fields = array(
-					'ModifyDate' => time(),
+					'ModifyDate' => sql_function('UNIX_TIMESTAMP()'),
 					'ModifiedBy' => 'frontend',
 				);
 				$hook = new weHook('customer_preSave', '', array('customer' => &$fields, 'from' => 'tag', 'type' => 'modify', 'tagname' => 'addDelNewsletterEmail', 'isSubscribe' => 0, 'isUnsubscribe' => 1));
