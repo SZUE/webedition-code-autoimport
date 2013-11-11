@@ -553,7 +553,7 @@ abstract class we_database_base{
 				t_e('warning', 'data error: db-field cannot contain objects / arrays', 'Key: ' . $key, $arr);
 			}
 
-			//FIXME: make this more robust to use internal mysql functions - e.g. functions object?
+			//FIXME: remove this code after 6.3.9!!
 			if($escape){
 				switch($val){
 					case 'NOW()':
