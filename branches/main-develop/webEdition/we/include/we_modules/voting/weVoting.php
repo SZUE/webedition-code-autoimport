@@ -720,7 +720,7 @@ class weVoting extends weModelBase{
 		$this->db->query('INSERT INTO `' . VOTING_LOG_TABLE . '` SET ' . we_database_base::arraySetter(array(
 				'votingsession' => $votingsession,
 				'voting' => $this->ID,
-				'time' => time(),
+				'time' => sql_function('UNIX_TIMESTAMP()'),
 				'ip' => $_SERVER['REMOTE_ADDR'],
 				'agent' => $_SERVER['HTTP_USER_AGENT'],
 				'userid' => $userid,

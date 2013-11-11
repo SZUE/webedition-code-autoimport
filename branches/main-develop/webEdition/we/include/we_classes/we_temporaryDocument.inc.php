@@ -48,7 +48,7 @@ abstract class we_temporaryDocument{
 				'DocumentID' => $documentID,
 				'DocumentObject' => serialize($document),
 				'Active' => 1,
-				'UnixTimestamp' => 'UNIX_TIMESTAMP()',
+				'UnixTimestamp' => sql_function('UNIX_TIMESTAMP()'),
 				'DocTable' => stripTblPrefix($table))));
 		if($ret){
 			$db->query('DELETE FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentID=' . $documentID . ' AND Active=0 AND  DocTable="' . $db->escape(stripTblPrefix($table)) . '"');

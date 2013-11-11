@@ -99,7 +99,7 @@ function we_tag_sessionStart($attribs){
 						'WebUserDescription' => '',
 						'Browser' => (!empty($_SERVER['HTTP_USER_AGENT']) ? oldHtmlspecialchars((string) $_SERVER['HTTP_USER_AGENT']) : ''),
 						'Referrer' => (!empty($_SERVER['HTTP_REFERER']) ? oldHtmlspecialchars((string) $_SERVER['HTTP_REFERER']) : ''),
-						'LastLogin' => 'NOW()',
+						'LastLogin' => sql_function('NOW()'),
 						'PageID' => $doc->ID,
 						'ObjectID' => 0,
 						'SessionAutologin' => $SessionAutologin

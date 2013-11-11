@@ -123,7 +123,7 @@ function save_all_values(){
 	global $DB_WE;
 
 	if(permissionhandler::hasPerm('ADMINISTRATOR')){
-		$setArray = array('Date' => 'UNIX_TIMESTAMP()');
+		$setArray = array('Date' => sql_function('UNIX_TIMESTAMP()'));
 		// Update settings
 		remember_value($setArray, isset($_REQUEST['thumbnail_name']) ? $_REQUEST['thumbnail_name'] : null, 'Name');
 		remember_value($setArray, isset($_REQUEST['thumbnail_width']) ? $_REQUEST['thumbnail_width'] : null, 'Width');

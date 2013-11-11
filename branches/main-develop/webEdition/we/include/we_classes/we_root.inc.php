@@ -987,7 +987,7 @@ abstract class we_root extends we_class{
 							$data[$fieldName] = is_array($val) ? serialize($val) : $val;
 						}
 					}
-					if(count($data)){
+					if($data){
 						$data = we_database_base::arraySetter($data);
 						$key = $v['type'] . '_' . $k;
 						$cid = 0;

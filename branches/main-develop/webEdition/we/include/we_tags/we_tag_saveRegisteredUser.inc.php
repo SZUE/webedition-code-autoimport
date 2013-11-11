@@ -57,7 +57,7 @@ function we_tag_saveRegisteredUser($attribs){
 
 					if(!empty($set)){
 						// User in DB speichern
-						$set['ModifyDate'] = 'UNIX_TIMESTAMP()';
+						$set['ModifyDate'] = sql_function('UNIX_TIMESTAMP()');
 						$set['ModifiedBy'] = 'frontend';
 						$GLOBALS['DB_WE']->query('INSERT INTO ' . CUSTOMER_TABLE . ' SET ' . we_database_base::arraySetter($set));
 
@@ -122,7 +122,7 @@ function we_tag_saveRegisteredUser($attribs){
 						$GLOBALS['DB_WE']->query('DELETE FROM ' . CUSTOMER_AUTOLOGIN_TABLE . ' WHERE WebUserID=' . intval($_REQUEST['s']['ID']));
 					}
 					if(!empty($set_a)){
-						$set_a['ModifyDate'] = 'UNIX_TIMESTAMP()';
+						$set_a['ModifyDate'] = sql_function('UNIX_TIMESTAMP()');
 						$set_a['ModifiedBy'] = 'frontend';
 						$GLOBALS['DB_WE']->query('UPDATE ' . CUSTOMER_TABLE . ' SET ' . we_database_base::arraySetter($set_a) . ' WHERE ID=' . intval($_REQUEST['s']['ID']));
 						$GLOBALS["we_customer_writen"] = true;

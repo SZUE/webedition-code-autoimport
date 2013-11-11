@@ -71,6 +71,10 @@ function escape_sql_query($inp){
 	return $inp;
 }
 
+function sql_function($name){
+	return array('sqlFunction' => true, 'val' => $name);
+}
+
 function doInsertQuery(we_database_base $DB_WE, $table, $hash){
 	$tableInfo = $DB_WE->metadata($table);
 	$fn = array();
