@@ -850,7 +850,7 @@ class we_object extends we_document{
 
 		$content .= '</td></tr>' .
 			'<tr><td class="weMultiIconBoxHeadlineThin" valign="top">' . g_l('global', "[description]") . '</td><td>' .
-			$this->htmlTextArea("we_" . $this->Name . "_input[" . $name . "editdescription]", 3, 40, $this->getElement($name . "editdescription"), 'onchange="_EditorFrame.setEditorIsHot(true)"; style="width: 388px;"') .
+			$this->htmlTextArea("we_" . $this->Name . "_input[" . $name . "editdescription]", 3, 40, $this->getElement($name . "editdescription"), array('onchange'=>'_EditorFrame.setEditorIsHot(true)','style'=>'width: 388px;')) .
 			'</td></tr>' .
 			//type
 			'<tr><td  width="100" class="weMultiIconBoxHeadlineThin"  valign="top">' . g_l('modules_object', '[type]') . '</td>

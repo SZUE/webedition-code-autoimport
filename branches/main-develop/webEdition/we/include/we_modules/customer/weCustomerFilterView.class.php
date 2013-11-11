@@ -295,7 +295,6 @@ EO_SCRIPT;
 			$_filter_args[$GLOBALS['DB_WE']->f("Field")] = $GLOBALS['DB_WE']->f("Field");
 		}
 		$_filter_args = we_html_tools::groupArray($_filter_args);
-
 		$_filter_op = array(
 			weAbstractCustomerFilter::OP_EQ => g_l('modules_customerFilter', '[equal]'),
 			weAbstractCustomerFilter::OP_NEQ => g_l('modules_customerFilter', '[not_equal]'),
@@ -340,7 +339,6 @@ EO_SCRIPT;
 
 		$_filter = $this->_filter->getFilter();
 		foreach($_filter as $_key => $_value){
-
 			$_adv_row .= '
 				<tr id="filterRow_' . $_i . '">
 					<td style="padding-top: ' . ($_value['logic'] == "OR" ? "10px;border-top:1px solid grey" : "4px;border-top:0") . ';padding-bottom:' .
@@ -351,15 +349,15 @@ EO_SCRIPT;
 				((isset($_filter[$_key + 1]) && $_filter[$_key + 1]['logic'] == 'OR') ? '10px' : '0px') . ';">' .
 				we_html_tools::htmlSelect('filterSelect_' . $_i, $_filter_args, 1, $_value['field'], false, 'onchange="wecf_hot();" class="defaultfont" style="' . $_styleLeft . '"') .
 				'</td>
-					<td style="padding-top: ' . ($_value['logic'] == "OR" ? "10px;border-top:1px solid grey" : "4px;border-top:0") . ';padding-bottom:' .
+					<td style="padding-top: ' . ($_value['logic'] == 'OR' ? "10px;border-top:1px solid grey" : "4px;border-top:0") . ';padding-bottom:' .
 				((isset($_filter[$_key + 1]) && $_filter[$_key + 1]['logic'] == 'OR') ? '10px' : '0px') . ';">' .
 				we_html_tools::htmlSelect('filterOperation_' . $_i, $_filter_op, 1, $_value['operation'], false, 'onchange="wecf_hot();" class="defaultfont" style="' . $_styleMiddle . '"') .
 				'</td>
-					<td style="padding-top: ' . ($_value['logic'] == "OR" ? "10px;border-top:1px solid grey" : "4px;border-top:0") . ';padding-bottom:' .
+					<td style="padding-top: ' . ($_value['logic'] == 'OR' ? "10px;border-top:1px solid grey" : "4px;border-top:0") . ';padding-bottom:' .
 				((isset($_filter[$_key + 1]) && $_filter[$_key + 1]['logic'] == 'OR') ? '10px' : '0px') . ';">' .
 				'<input name="filterValue_' . $_i . '" value="' . $_value['value'] . '" type="text" onchange="wecf_hot();" class="defaultfont" style="' . $_styleRight . '"/>' .
 				'</td>
-					<td style="padding-top: ' . ($_value['logic'] == "OR" ? "10px;border-top:1px solid grey" : "4px;border-top:0") . ';padding-bottom:' .
+					<td style="padding-top: ' . ($_value['logic'] == 'OR' ? "10px;border-top:1px solid grey" : "4px;border-top:0") . ';padding-bottom:' .
 				((isset($_filter[$_key + 1]) && $_filter[$_key + 1]['logic'] == 'OR') ? '10px' : '0px') . ';">' .
 				we_button::create_button("image:btn_function_plus", "javascript:addRow($_i)", true, 25) .
 				'</td>
@@ -372,23 +370,9 @@ EO_SCRIPT;
 			$_first = 1;
 		}
 
-		$_filter_logic_str = '';
-
-		foreach($_filter_logic as $_key => $_str){
-			$_filter_logic_str .= '<option value="' . $_key . '">' . $_str . '</option>';
-		}
-
-		$_filter_args_str = '';
-
-		foreach($_filter_args as $_str){
-			$_filter_args_str .= '<option value="' . $_str . '">' . $_str . '</option>';
-		}
-
-		$_filter_op_str = '';
-
-		foreach($_filter_op as $_key => $_str){
-			$_filter_op_str .= '<option value="' . $_key . '">' . $_str . '</option>';
-		}
+		$_filter_logic_str = we_html_tools::htmlSelect('', $_filter_logic);
+		$_filter_args_str = we_html_tools::htmlSelect('', $_filter_args);
+		$_filter_op_str = we_html_tools::htmlSelect('',$_filter_op);
 
 		$_filterTable = '
 		<table border="0" cellpadding="0" cellspacing="0" width="' . $this->_width . ' height="50">

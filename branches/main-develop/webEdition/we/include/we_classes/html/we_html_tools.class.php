@@ -316,8 +316,7 @@ abstract class we_html_tools{
 	}
 
 	static function gifButton($name, $href, $language = "Deutsch", $alt = "", $width = "", $height = "", $onClick = "", $bname = "", $target = "", $disabled = false){
-		$img =
-			we_html_element::htmlImg(array(
+		$img = we_html_element::htmlImg(array(
 				'src' => IMAGE_DIR . 'buttons/' . $name . ($disabled ? '_d' : "") . ($language ? '_' : '') . $language . '.gif',
 				'style' => ($width ? ' width:' . $width . 'px;' : '') . ($height ? ' height:' . $height . 'px' : ''),
 				'alt' => $alt,
@@ -421,8 +420,7 @@ abstract class we_html_tools{
 	}
 
 	static function getDateInput2($name, $time = '', $setHot = false, $format = '', $onchange = '', $class = 'weSelect', $xml = '', $minyear = '', $maxyear = '', $style = ''){
-		$_attsSelect = $_attsOption = $_attsHidden =
-			(empty($xml) ? array() : array('xml' => $xml));
+		$_attsSelect = $_attsOption = $_attsHidden = (empty($xml) ? array() : array('xml' => $xml));
 
 		if(!empty($class)){
 			$_attsSelect['class'] = $class;
@@ -765,7 +763,7 @@ abstract class we_html_tools{
 		$selIndex = makeArrayFromCSV($selectedIndex);
 		$optgroup = false;
 		foreach($values as $value => $text){
-			if($text == self::OPTGROUP || $value == self::OPTGROUP){
+			if($text === self::OPTGROUP || $value === self::OPTGROUP){
 				if($optgroup){
 					$ret .= '</optgroup>';
 				}
@@ -782,14 +780,14 @@ abstract class we_html_tools{
 			$attribs = self::parseAttribs($attribs);
 		}
 
-		return we_html_element::htmlSelect(array_merge(array(
-				'class' => 'weSelect ' . $cls,
-				'name' => trim($name),
-				'size' => abs($size),
-				($multiple ? 'multiple' : '') => 'multiple',
-				($width ? 'width' : '') => ($width ? $width : '')
-					), $attribs
-				), $ret);
+		return ($name ? we_html_element::htmlSelect(array_merge(array(
+					'class' => 'weSelect ' . $cls,
+					'name' => trim($name),
+					'size' => abs($size),
+					($multiple ? 'multiple' : '') => 'multiple',
+					($width ? 'width' : '') => ($width ? $width : '')
+						), $attribs
+					), $ret) : $ret);
 	}
 
 	/* displays a grey box with text and an icon
