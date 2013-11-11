@@ -5,7 +5,7 @@ CREATE TABLE ###TBLPREFIX###tblCategorys (
   Path varchar(255) default NULL,
   ParentID int(11) unsigned default NULL,
   IsFolder tinyint(1) unsigned  default NULL,
-  Icon varchar(64) default NULL,
+  Icon ENUM('cat.gif','folder.gif') NOT NULL default 'cat.gif',
   Catfields longtext NOT NULL,
   PRIMARY KEY  (ID),
   KEY Path (Path)
