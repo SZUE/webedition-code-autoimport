@@ -5,15 +5,6 @@ if(substr(phpversion(),0,1) <=4) {
 
 class le_OnlineInstaller_Make {
 	/**
-	 * PHP4 Constructor
-	 *
-	 * @return le_OnlineInstaller_Make
-	 */
-	function le_OnlineInstaller_Make() {
-		$this->__construct();
-	}
-
-	/**
 	 * PHP5 Constructor
 	 *
 	 */

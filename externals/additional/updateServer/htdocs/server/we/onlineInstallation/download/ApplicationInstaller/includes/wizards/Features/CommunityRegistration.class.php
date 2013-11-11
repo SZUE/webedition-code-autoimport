@@ -38,12 +38,12 @@
 			switch($_SESSION["le_communityChoice"]) {
 				case "notYet":
 					return true;
-					$accountAvailable = $this->_validateExistingUser(&$Template);
+					$accountAvailable = $this->_validateExistingUser($Template);
 					if($accountAvailable === false) {
 						// user already exists
 						return false;
 					} else {
-						$isComplete = $this->_validateUserData(&$Template);
+						$isComplete = $this->_validateUserData($Template);
 						if($isComplete === true) {
 							return $this->executeOnline($Template, "community", "saveCommunityRegistration");
 						}
@@ -53,7 +53,7 @@
 					break;
 				case "Already":
 					// check existing user data (email, password, connect test):
-					return $this->_validateExistingUser(&$Template);
+					return $this->_validateExistingUser($Template);
 					break;
 				default:
 					// skip registration:

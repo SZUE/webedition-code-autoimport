@@ -151,7 +151,7 @@
 					break;
 				case "Already":
 					// check existing user data (email, password, connect test):
-					return $this->_validateExistingUser(&$Template);
+					return $this->_validateExistingUser($Template);
 					break;
 				default:
 					// skip registration:
