@@ -169,7 +169,7 @@ function setTab(tab) {
 			top.content.editor.edbody.we_cmd("switchPage",3);
 			break;
 					}
-
+	}');
 		$we_tabs = new we_tabs();
 
 		$we_tabs->addTab(new we_tab("#", g_l('modules_newsletter', '[property]'), (($page == 0) ? "TAB_ACTIVE" : "TAB_NORMAL"), "self.setTab(0);"));
