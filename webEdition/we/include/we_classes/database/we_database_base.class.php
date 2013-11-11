@@ -562,6 +562,8 @@ abstract class we_database_base{
 					case 'CURRENT_TIME':
 					case 'CURRENT_TIMESTAMP':
 					case 'CURTIME':
+						$escape = isset($tmp[1]);//only escape if we found (
+						break;
 					case 'NULL':
 						$escape = false;
 				}
