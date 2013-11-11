@@ -3,7 +3,7 @@ CREATE TABLE ###TBLPREFIX###tblUser (
   ParentID int(11) unsigned NOT NULL default '0',
   `Text` varchar(255) NOT NULL default '',
   Path varchar(255) NOT NULL default '',
-  Icon varchar(64) NOT NULL default '',
+  Icon ENUM('user.gif','usergroup.gif','user_alias.gif') NOT NULL default 'user.gif',
   IsFolder tinyint(1) unsigned NOT NULL default '0',
   `Type` tinyint(1) unsigned NOT NULL default '0',
   `First` varchar(255) NOT NULL default '',

@@ -63,7 +63,7 @@ class weExport extends weModelBase{
 	var $ExportDepth;
 	var $Log = array();
 	var $ExportFilename;
-	var $protected = array("ID", "ParentID", "Icon", "IsFolder", "Path", "Text");
+	var $protected = array('ID', 'ParentID', 'Icon', 'IsFolder', 'Path', 'Text');
 
 	/**
 	 * Default Constructor
