@@ -107,7 +107,7 @@ if($doctable){
 }
 
 if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
-	$where[] = " AND ContentType!='folder' ";
+	$where[] = " ContentType!='folder' ";
 }
 $where = ($where ? ' WHERE ' . implode(' AND ', $where) : '');
 
