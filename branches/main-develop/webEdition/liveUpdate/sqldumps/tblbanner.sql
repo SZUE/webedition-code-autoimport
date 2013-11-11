@@ -3,7 +3,7 @@ CREATE TABLE ###TBLPREFIX###tblbanner (
   ParentID bigint(20) unsigned NOT NULL default '0',
   `Text` varchar(255) NOT NULL default '',
   Path varchar(255) NOT NULL default '',
-  Icon varchar(64) NOT NULL default '',
+  Icon ENUM('banner.gif','banner_folder.gif') NOT NULL default 'banner.gif',
   IsFolder tinyint(1) unsigned NOT NULL default '0',
   CreatorID int(11) unsigned NOT NULL default '0',
   CreateDate int(10) unsigned NOT NULL default '0',

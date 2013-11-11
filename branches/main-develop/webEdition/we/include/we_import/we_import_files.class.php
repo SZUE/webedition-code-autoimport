@@ -703,7 +703,7 @@ function next() {
 			}
 			$we_doc->Text = $we_doc->Filename . $we_doc->Extension;
 			$we_doc->setParentID($this->importToID);
-			$we_doc->Path = $we_doc->getParentPath() . (($we_doc->getParentPath() != "/") ? "/" : "") . $we_doc->Text;
+			$we_doc->Path = $we_doc->getParentPath() . (($we_doc->getParentPath() != '/') ? '/' : '') . $we_doc->Text;
 
 			// if file exists we have to see if we should create a new one or overwrite it!
 			if(($file_id = f('SELECT ID FROM ' . FILE_TABLE . ' WHERE Path="' . $GLOBALS['DB_WE']->escape($we_doc->Path) . '"', 'ID', $GLOBALS['DB_WE']))){
@@ -713,21 +713,21 @@ function next() {
 					$we_doc->initByID($file_id, FILE_TABLE);
 				} elseif($this->sameName == "rename"){
 					$z = 0;
-					$footext = $we_doc->Filename . "_" . $z . $we_doc->Extension;
-					while(f("SELECT ID FROM " . FILE_TABLE . " WHERE Text='" . $GLOBALS['DB_WE']->escape($footext) . "' AND ParentID=" . intval($this->importToID), "ID", $GLOBALS['DB_WE'])){
+					$footext = $we_doc->Filename . '_' . $z . $we_doc->Extension;
+					while(f('SELECT ID FROM ' . FILE_TABLE . " WHERE Text='" . $GLOBALS['DB_WE']->escape($footext) . "' AND ParentID=" . intval($this->importToID), "ID", $GLOBALS['DB_WE'])){
 						$z++;
-						$footext = $we_doc->Filename . "_" . $z . $we_doc->Extension;
+						$footext = $we_doc->Filename . '_' . $z . $we_doc->Extension;
 					}
 					$we_doc->Text = $footext;
 					$we_doc->Filename = $we_doc->Filename . "_" . $z;
-					$we_doc->Path = $we_doc->getParentPath() . (($we_doc->getParentPath() != "/") ? "/" : "") . $we_doc->Text;
+					$we_doc->Path = $we_doc->getParentPath() . (($we_doc->getParentPath() != '/') ? '/' : '') . $we_doc->Text;
 				} else {
 					return array("filename" => $_FILES['we_File']["name"], 'error' => g_l('importFiles', '[same_name]'));
 				}
 			}
 			// now change the category
 			$we_doc->Category = $this->categories;
-			if($we_ContentType == "image/*" || $we_ContentType == "application/x-shockwave-flash"){
+			if($we_ContentType == 'image/*' || $we_ContentType == 'application/x-shockwave-flash'){
 				$we_size = $we_doc->getimagesize($tempName);
 				if(is_array($we_size) && count($we_size) >= 2){
 					$we_doc->setElement("width", $we_size[0], "attrib");
@@ -766,12 +766,12 @@ function next() {
 				$newWidth = 0;
 				$newHeight = 0;
 				if($this->width){
-					$newWidth = ($this->widthSelect == "percent" ?
+					$newWidth = ($this->widthSelect == 'percent' ?
 							round(($we_doc->getElement("origwidth") / 100) * $this->width) :
 							$this->width);
 				}
 				if($this->height){
-					$newHeight = ($this->widthSelect == "percent" ?
+					$newHeight = ($this->widthSelect == 'percent' ?
 							round(($we_doc->getElement("origheight") / 100) * $this->height) :
 							$this->height);
 				}
@@ -785,16 +785,16 @@ function next() {
 
 				if($this->degrees){
 					$we_doc->rotateImage(
-						($this->degrees % 180 == 0) ? $we_doc->getElement("origwidth") : $we_doc->getElement(
+						($this->degrees % 180 == 0) ? $we_doc->getElement('origwidth') : $we_doc->getElement(
 								"origheight"), ($this->degrees % 180 == 0) ? $we_doc->getElement("origheight") : $we_doc->getElement(
 								"origwidth"), $this->degrees, $this->quality);
 				}
 				$we_doc->DocChanged = true;
 			}
 			if(!$we_doc->we_save()){
-				return array("filename" => $_FILES['we_File']["name"], "error" => g_l('importFiles', '[save_error]'));
+				return array('filename' => $_FILES['we_File']["name"], "error" => g_l('importFiles', '[save_error]'));
 			}
-			if($we_ContentType == "image/*" && $this->importMetadata){
+			if($we_ContentType == 'image/*' && $this->importMetadata){
 				$we_doc->importMetaData();
 				$we_doc->we_save();
 			}
@@ -802,7 +802,7 @@ function next() {
 				return array("filename" => $_FILES['we_File']["name"], "error" => "publish_error"
 				);
 			}
-			if($we_ContentType == "image/*" && $this->importMetadata){
+			if($we_ContentType == 'image/*' && $this->importMetadata){
 				$we_doc->importMetaData();
 			}
 			return array();

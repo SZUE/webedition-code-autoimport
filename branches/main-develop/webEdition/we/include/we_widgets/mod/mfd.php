@@ -35,20 +35,23 @@ $bTypeTpl = (bool) $sTypeBinary{1};
 $bTypeObj = (bool) $sTypeBinary{2};
 $bTypeCls = (bool) $sTypeBinary{3};
 $iDate = intval($aCols[1]);
+
+$doctable = $where = $_users_where = $_ws = array();
+
 switch($iDate){
 	default:
 		break;
 	case 1 :
-		$timestamp = 'CURDATE()';
+			$where[] = 'ModDate >=CURDATE()';
 		break;
 	case 2 :
-		$timestamp = '(CURDATE()-INTERVAL 1 WEEK)';
+			$where[] = 'ModDate >=(CURDATE()-INTERVAL 1 WEEK)';
 		break;
 	case 3 :
-		$timestamp = '(CURDATE()-INTERVAL 1 MONTH)';
+		$where[] = 'ModDate >=(CURDATE()-INTERVAL 1 MONTH)';
 		break;
 	case 4 :
-		$timestamp = '(CURDATE()-INTERVAL 1 YEAR)';
+		$where[] = 'ModDate >=(CURDATE()-INTERVAL 1 YEAR)';
 		break;
 }
 $iNumItems = $aCols[2];
@@ -76,36 +79,44 @@ $bMfdBy = $sDisplayOpt{0};
 $bDateLastMfd = $sDisplayOpt{1};
 $aUsers = makeArrayFromCSV($aCols[4]);
 
-$_where = array();
-$_ws = array();
-$_users_where = array();
 foreach($aUsers as $uid){
 	$_users_where[] = '"' . basename(id_to_path($uid, USER_TABLE)) . '"';
 }
+if($aUsers){
+	$where[] = 'UserName IN (' . implode(',', $_users_where) . ')';
+}
 
 if(defined("FILE_TABLE") && $bTypeDoc && permissionhandler::hasPerm('CAN_SEE_DOCUMENTS')){
-	$_where[] = '"' . stripTblPrefix(FILE_TABLE) . '"';
+	$doctable[] = '"' . stripTblPrefix(FILE_TABLE) . '"';
 	$_ws[FILE_TABLE] = get_ws(FILE_TABLE);
 }
 if(defined("OBJECT_FILES_TABLE") && $bTypeObj && permissionhandler::hasPerm('CAN_SEE_OBJECTFILES')){
-	$_where[] = '"' . stripTblPrefix(OBJECT_FILES_TABLE) . '"';
+	$doctable[] = '"' . stripTblPrefix(OBJECT_FILES_TABLE) . '"';
 	$_ws[OBJECT_FILES_TABLE] = get_ws(OBJECT_FILES_TABLE);
 }
 if(defined("TEMPLATES_TABLE") && $bTypeTpl && permissionhandler::hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE){
-	$_where[] = '"' . stripTblPrefix(TEMPLATES_TABLE) . '"';
+if(defined("TEMPLATES_TABLE") && $bTypeTpl && we_hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE){
+	$doctable[] = '"' . stripTblPrefix(TEMPLATES_TABLE) . '"';
 }
 if(defined("OBJECT_TABLE") && $bTypeCls && permissionhandler::hasPerm('CAN_SEE_OBJECTS') && $_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE){
-	$_where[] = '"' . stripTblPrefix(OBJECT_TABLE) . '"';
+	$doctable[] = '"' . stripTblPrefix(OBJECT_TABLE) . '"';
 }
 
-$_whereSeem = ($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE) ? " AND ContentType!='folder' " : '';
+if($doctable){
+	$where[] = 'DocumentTable IN(' . implode(',', $doctable) . ')';
+}
+
+if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
+	$where[] = " ContentType!='folder' ";
+}
+$where = ($where ? ' WHERE ' . implode(' AND ', $where) : '');
 
 $lastModified = '<table cellspacing="0" cellpadding="0" border="0">';
 $_count = 10;
 $i = $j = $k = 0;
 $_db = new DB_WE();
 while($j < $iMaxItems){
-	$GLOBALS['DB_WE']->query('SELECT DID,UserName,DocumentTable,MAX(ModDate) AS m FROM ' . HISTORY_TABLE . (!empty($_where) ? (' WHERE ' . ((count($_users_where) > 0) ? 'UserName IN (' . implode(',', $_users_where) . ') AND ' : '') . 'DocumentTable IN(' . implode(',', $_where) . ')') : '') . (isset($timestamp) ? ' AND ModDate >=' . $timestamp : '') . $_whereSeem . ' GROUP BY DID,DocumentTable  ORDER BY m DESC LIMIT ' . ($k++ * $_count) . ' , ' . ($_count));
+	$GLOBALS['DB_WE']->query('SELECT DID,UserName,DocumentTable,MAX(ModDate) AS m FROM ' . HISTORY_TABLE . $where . ' GROUP BY DID,DocumentTable  ORDER BY m DESC LIMIT ' . ($k++ * $_count) . ' , ' . ($_count));
 	$num_rows = $GLOBALS['DB_WE']->num_rows();
 	if($num_rows == 0){
 		break;

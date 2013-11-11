@@ -3,7 +3,7 @@ CREATE TABLE ###TBLPREFIX###tblvoting (
   ParentID bigint(20) unsigned NOT NULL default '0',
   Path varchar(255) default NULL,
   IsFolder tinyint(1) unsigned default NULL,
-  Icon varchar(255) default NULL,
+  Icon ENUM('folder.gif','link.gif') NOT NULL default 'link.gif',
   `Text` varchar(255) NOT NULL default '',
   PublishDate int(10) unsigned NOT NULL default '0',
   QASet text NOT NULL,

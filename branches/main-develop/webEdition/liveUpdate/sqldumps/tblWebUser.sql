@@ -20,7 +20,7 @@ CREATE TABLE ###TBLPREFIX###tblWebUser (
   ParentID tinyint(0) unsigned NOT NULL default '0',
   Path varchar(255) default NULL,
   IsFolder tinyint(1) unsigned default NULL,
-  Icon varchar(255) default NULL,
+  Icon ENUM('customer.gif') NOT NULL default 'customer.gif',
   `Text` varchar(255) default NULL,
   `Newsletter_Ok` enum('','ja','0','1','2') NOT NULL,
   `Newsletter_HTMLNewsletter` enum('','ja','0','1','2') NOT NULL,
