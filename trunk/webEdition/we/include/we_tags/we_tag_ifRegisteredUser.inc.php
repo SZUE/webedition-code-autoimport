@@ -31,7 +31,7 @@ function we_tag_ifRegisteredUser($attribs){
 	$userid = makeArrayFromCSV(weTag_getAttribute('userid', $attribs));
 	$matchType = weTag_getAttribute('matchType', $attribs, 'one');
 
-	if($GLOBALS['we_doc']->InWebEdition || $GLOBALS['WE_MAIN_DOC']->InWebEdition){
+	if(isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->InWebEdition || isset($GLOBALS['WE_MAIN_DOC']) && $GLOBALS['WE_MAIN_DOC']->InWebEdition){
 		return isset($_SESSION['weS']['we_set_registered']) && $_SESSION['weS']['we_set_registered'];
 	}
 
@@ -42,7 +42,7 @@ function we_tag_ifRegisteredUser($attribs){
 		if($ret && !empty($userid)){
 			if(!isset($_SESSION['webuser']['ID'])){
 				return false;
-			} else{
+			} else {
 				$ret &= ( in_array($_SESSION['webuser']['ID'], $userid));
 			}
 		}
@@ -72,7 +72,7 @@ function we_tag_ifRegisteredUser($attribs){
 						}
 						break;
 				}
-			} else{
+			} else {
 				$ret &= (bool) $_SESSION['webuser'][$permission];
 			}
 		}
@@ -80,20 +80,20 @@ function we_tag_ifRegisteredUser($attribs){
 		if($ret && $cfilter && defined('CUSTOMER_TABLE')){
 			if(isset($GLOBALS['we_doc']->documentCustomerFilter) && $GLOBALS['we_doc']->documentCustomerFilter){
 				$ret &= ( $GLOBALS['we_doc']->documentCustomerFilter->accessForVisitor($GLOBALS['we_doc'], array(), true) == weDocumentCustomerFilter::ACCESS);
-			} else{
+			} else {
 				//access depends on $allowNoFilter
 				return $allowNoFilter;
 			}
 		}
 
 		return $ret;
-	} else{
+	} else {
 		//we are not logged in!
 		if($cfilter && defined('CUSTOMER_TABLE')){
 			if(isset($GLOBALS['we_doc']->documentCustomerFilter) && $GLOBALS['we_doc']->documentCustomerFilter){
 				//not logged in - no filter can match
 				return false;
-			} else{
+			} else {
 				//not logged in - but "allow all users" is set - return depends on allowNoFilter
 				return $allowNoFilter;
 			}
