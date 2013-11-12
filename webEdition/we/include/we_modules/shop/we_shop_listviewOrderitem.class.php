@@ -28,7 +28,7 @@
  * @desc    class for tag <we:listview type="banner">
  *
  */
-class we_shop_listviewOrderitem extends listviewBase {
+class we_shop_listviewOrderitem extends listviewBase{
 
 	var $ClassName = __CLASS__;
 	var $condition = '';
@@ -124,8 +124,13 @@ class we_shop_listviewOrderitem extends listviewBase {
 									$this->DB_WE->Record[substr($key, 3)] = $value; //key without "we_" because of internal problems in shop modul backend view
 								}
 						}
-						$this->DB_WE->Record[$key] = (substr($value, 0, 2) == 'a:' && $val = @unserialize($value)?$val:$value);
-
+						if(is_array($value)){
+							$val=$value;
+						}elseif(substr($value, 0, 2) == 'a:'){
+							$val = @unserialize($value);
+						}
+						$this->DB_WE->Record[$key] = (isset($val) && is_array($val) ? $val : $value);
+						unset($val);
 					}
 
 					unset($value);
@@ -160,7 +165,7 @@ class we_shop_listviewOrderitem extends listviewBase {
 				$this->DB_WE->Record["shopvat"] = $strSerial["shopvat"];
 			}
 
-			$this->DB_WE->Record['wedoc_Path'] =  $this->DB_WE->Record['WE_PATH'] = $this->Path . '?we_orderid=' . $this->DB_WE->Record['OrderID'] . '&we_orderitemid=' . $this->DB_WE->Record['ID'];
+			$this->DB_WE->Record['wedoc_Path'] = $this->DB_WE->Record['WE_PATH'] = $this->Path . '?we_orderid=' . $this->DB_WE->Record['OrderID'] . '&we_orderitemid=' . $this->DB_WE->Record['ID'];
 			$this->DB_WE->Record['WE_TEXT'] = $this->DB_WE->Record['ID'];
 			$this->DB_WE->Record['WE_ID'] = $this->DB_WE->Record['ID'];
 			$this->DB_WE->Record['we_wedoc_lastPath'] = $this->LastDocPath . '?we_orderid=' . $this->DB_WE->Record['OrderID'] . '&we_orderitemid=' . $this->DB_WE->Record['ID'];
