@@ -845,17 +845,17 @@ class we_objectFile extends we_document{
 
 			$realName = $field['type'] . '_' . $field['name'];
 			$edMerk = $editable;
-			if(!((!$dv[$realName]['users']) || permissionhandler::hasPerm('ADMINISTRATOR') || we_users_util::isUserInUsers($_SESSION['user']['ID'], $dv[$realName]['users']))){
+			if(!((!isset($dv[$realName]) || (isset($dv[$realName]) && !$dv[$realName]['users'])) || permissionhandler::hasPerm('ADMINISTRATOR') || we_users_util::isUserInUsers($_SESSION['user']['ID'], $dv[$realName]['users']))){
 				$editable = false;
 			}
 
 			if($asString){
-				$c2 = $this->getFieldHTML($field['name'], $field['type'], $dv[$realName], $editable);
+				$c2 = $this->getFieldHTML($field['name'], $field['type'], (isset($dv[$realName]) ? $dv[$realName] : ''), $editable);
 				if($c2){
 					$c .= $c2 . we_html_element::htmlBr() . we_html_tools::getPixel(2, 5) . we_html_element::htmlBr();
 				}
 			} else {
-				$c2 = $this->getFieldHTML($field['name'], $field['type'], $dv[$realName], $editable);
+				$c2 = $this->getFieldHTML($field['name'], $field['type'], (isset($dv[$realName]) ? $dv[$realName] : ''), $editable);
 				$parts[] = array(
 					'headline' => '',
 					'html' => $c2,
@@ -1145,7 +1145,7 @@ class we_objectFile extends we_document{
 		$type = isset($attribs['hreftype']) ? $attribs['hreftype'] : '';
 		$directory = (isset($attribs['hrefdirectory']) && $attribs['hrefdirectory'] == 'true') ? false : true;
 		$file = (isset($attribs['hreffile']) && $attribs['hreffile'] == 'false') ? false : true;
-		$hrefArr = $this->getElement($n) ? unserialize($this->getElement($n)) : array();
+		$hrefArr = $this->getElement($n) ? @unserialize($this->getElement($n)) : array();
 		if(!is_array($hrefArr)){
 			$hrefArr = array();
 		}
