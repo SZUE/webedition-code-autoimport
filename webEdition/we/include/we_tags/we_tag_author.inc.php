@@ -68,6 +68,9 @@ function we_tag_author($attribs){
 	}
 
 	$foo = getHash('SELECT Username,First,Second,Address,HouseNo,City,PLZ,State,Country,Tel_preselection,Telephone,Fax_preselection,Fax,Handy,Email,Description,Salutation FROM ' . USER_TABLE . ' WHERE ID=' . intval($authorID), $GLOBALS['DB_WE']);
+	if(!$foo){
+		return '';
+	}
 
 	switch($type){
 		case 'forename' :
