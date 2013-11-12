@@ -808,7 +808,7 @@ class we_objectFile extends we_document{
 	}
 
 	function getFieldsHTML($editable, $asString = false){
-		$foo = getHash('SELECT strOrder,DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . (int) $this->TableID, $this->DB_WE);
+		$foo = getHash('SELECT strOrder,DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), $this->DB_WE);
 
 		$dv = $foo['DefaultValues'] ? unserialize($foo['DefaultValues']) : array();
 		if(!is_array($dv)){
@@ -829,17 +829,17 @@ class we_objectFile extends we_document{
 
 			$realName = $field['type'] . '_' . $field['name'];
 			$edMerk = $editable;
-			if(!((!$dv[$realName]['users']) || we_hasPerm('ADMINISTRATOR') || we_users_util::isUserInUsers($_SESSION['user']['ID'], $dv[$realName]['users']))){
+			if(!((!isset($dv[$realName]) || (isset($dv[$realName]) && !$dv[$realName]['users'])) || we_hasPerm('ADMINISTRATOR') || we_users_util::isUserInUsers($_SESSION['user']['ID'], $dv[$realName]['users']))){
 				$editable = false;
 			}
 
 			if($asString){
-				$c2 = $this->getFieldHTML($field['name'], $field['type'], $dv[$realName], $editable);
+				$c2 = $this->getFieldHTML($field['name'], $field['type'], (isset($dv[$realName]) ? $dv[$realName] : ''), $editable);
 				if($c2){
 					$c .= $c2 . we_html_element::htmlBr() . we_html_tools::getPixel(2, 5) . we_html_element::htmlBr();
 				}
 			} else {
-				$c2 = $this->getFieldHTML($field['name'], $field['type'], $dv[$realName], $editable);
+				$c2 = $this->getFieldHTML($field['name'], $field['type'], (isset($dv[$realName]) ? $dv[$realName] : ''), $editable);
 				$parts[] = array(
 					'headline' => '',
 					'html' => $c2,
@@ -1129,7 +1129,7 @@ class we_objectFile extends we_document{
 		$type = isset($attribs['hreftype']) ? $attribs['hreftype'] : '';
 		$directory = (isset($attribs['hrefdirectory']) && $attribs['hrefdirectory'] == 'true') ? false : true;
 		$file = (isset($attribs['hreffile']) && $attribs['hreffile'] == 'false') ? false : true;
-		$hrefArr = $this->getElement($n) ? unserialize($this->getElement($n)) : array();
+		$hrefArr = $this->getElement($n) ? @unserialize($this->getElement($n)) : array();
 		if(!is_array($hrefArr)){
 			$hrefArr = array();
 		}
@@ -2846,7 +2846,7 @@ class we_objectFile extends we_document{
 			$multiobjectFields = false;
 
 			foreach(array_keys($_REQUEST) as $n){
-				if(preg_match('/^we_' . $this->Name . '_('.self::TYPE_HREF.'|' . self::TYPE_MULTIOBJECT . ')$/', $n, $regs)){
+				if(preg_match('/^we_' . $this->Name . '_(' . self::TYPE_HREF . '|' . self::TYPE_MULTIOBJECT . ')$/', $n, $regs)){
 					${$regs[1] . 'Fields'}|=true;
 				}
 			}
