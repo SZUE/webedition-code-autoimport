@@ -157,13 +157,13 @@ class we_tag_tagParser{
 					}
 
 					if($_matches[1][0] == '/'){
-						$Counter[$_matches[2][0]]--;
+						$Counter[$_matches[2][0]] --;
 					} else {
 						//selfclosing-Tag
 						if($_matches[4][0] == '/'){
 							continue;
 						}
-						$Counter[$_matches[2][0]]++;
+						$Counter[$_matches[2][0]] ++;
 					}
 				}
 			}
@@ -367,19 +367,19 @@ class we_tag_tagParser{
 
 	//FIXME: GLOBALS as "\$xx" should be set here directly? using isset??
 	public static function printTag($name, $attribs = '', $content = '', $cslash = false){
-		$attr = (is_array($attribs) ? self::printArray($attribs) : $attribs);
+		$attr = (is_array($attribs) ? self::printArray($attribs, false) : ($attribs == 'array()' ? '' : $attribs));
 		return 'we_tag(\'' . $name . '\'' .
-			($attr != '' ? ',' . $attr : ($content != '' ? ',array()' : '')) .
-			($content != '' ? ',"' . ($cslash ? addcslashes($content, '"') : $content) . '"' : '') . ')';
+			($attr ? ',' . $attr : ($content ? ',array()' : '')) .
+			($content ? ',"' . ($cslash ? addcslashes($content, '"') : $content) . '"' : '') . ')';
 	}
 
-	public static function printArray($array){
+	public static function printArray($array, $printEmpty = true){
 		$ret = array();
 		foreach($array as $key => $val){
 			$quotes = ((strpos($val, '$') !== FALSE) || (strpos($val, '\'') !== FALSE) ? '"' : '\'');
 			$ret[] = '\'' . $key . '\'=>' . (is_numeric($val) || $val == 'true' || $val == 'false' ? $val : $quotes . $val . $quotes);
 		}
-		return 'array(' . implode(',', $ret) . ')';
+		return ($ret || (!$ret && $printEmpty) ? 'array(' . implode(',', $ret) . ')' : '');
 	}
 
 }

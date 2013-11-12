@@ -29,9 +29,10 @@ function we_tag_ifField($attribs){
 	}
 
 	$match = weTag_getAttribute('match', $attribs);
+	$type = weTag_getAttribute('type', $attribs);
 
 	//Bug #4815
-	if($attribs['type'] == 'float' || $attribs['type'] == 'int'){
+	if($type == 'float' || $type == 'int'){
 		$attribs['type'] = 'text';
 	}
 
