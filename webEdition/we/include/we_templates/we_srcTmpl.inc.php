@@ -750,7 +750,9 @@ window.orignalTemplateContent=document.getElementById("editarea").value.replace(
 		<optgroup label="we:tags">';
 
 			foreach($tagGroups as $tagGroupName => $tags){
-
+				if($tagGroupName=='custom_tags'){
+					$tagGroupName = 'custom';
+				}
 				if($tagGroupName == 'custom'){
 					$groupselect .= '<option value="-1" disabled="disabled">----------</option>';
 				}

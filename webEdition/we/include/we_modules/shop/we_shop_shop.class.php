@@ -104,11 +104,11 @@ class we_shop_shop{
 	}
 
 	public function getDBRecord(){
-		return $this->DB_WE->getRecord();
+		return (is_object($this->DB_WE) ? $this->DB_WE->getRecord() : array());
 	}
 
 	public function getDBf($field){
-		return $this->DB_WE->f($field);
+		return (is_object($this->DB_WE) ? $this->DB_WE->f($field) : '');
 	}
 
 	static function getAllOrderYears(){
