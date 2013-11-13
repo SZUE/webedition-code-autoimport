@@ -14,6 +14,7 @@
 
 #nav li.top:hover div {
 	background-color: transparent;
+	color: #000000; /* #8191 */
 }
 
 #nav li.top div.click:hover {
@@ -25,6 +26,11 @@
 }
 
 #nav li.top:hover div a.top_link {
+	color: #000000;
+}
+
+/* #8191 */
+#nav li.top:hover div a.top_link span {
 	color: #000000;
 }
 
