@@ -32,6 +32,7 @@ if(!defined('WE_ERROR_HANDLER_SET')){
 	we_error_handler();
 }
 
+//FIXME: remove in 6.4
 if(isset($_REQUEST['PHPSESSID'])){
 	session_id($_REQUEST['PHPSESSID']);
 	unset($_REQUEST['PHPSESSID'],$_GET['PHPSESSID'],$_POST['PHPSESSID']);
