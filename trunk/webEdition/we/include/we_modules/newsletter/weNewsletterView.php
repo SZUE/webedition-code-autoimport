@@ -2107,6 +2107,7 @@ self.close();');
 								$content .= str_ireplace(array('&nbsp;', '&lt;', "&gt;", "&quot;", "&amp;",), array(' ', "<", ">", '"', "&",), $newplain);
 							}
 						}
+						$content = stripslashes($content);
 						break;
 					case weNewsletterBlock::FILE:
 						$content = weFile::load($_SERVER['DOCUMENT_ROOT'] . $block->Field);
