@@ -24,7 +24,7 @@
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
-$wizard = new we_wizard_import();
+$wizard = new we_import_wizard();
 
 we_html_tools::protect();
 

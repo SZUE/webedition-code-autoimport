@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-abstract class importFunctions{
+abstract class we_import_functions{
 
 	const TYPE_CSV = 'CSVImport';
 	const TYPE_GENERIC_XML = 'GXMLImport';
@@ -128,7 +128,7 @@ abstract class importFunctions{
 		// IF WE HAVE TO GIVE THE OBJECT A NAME
 		if($filename || $filename == 0){
 			$name_exists = false;
-			$filename = importFunctions::correctFilename($filename);
+			$filename = we_import_functions::correctFilename($filename);
 			$object->Text = $filename;
 			$object->Path = $object->getParentPath() . (($object->getParentPath() != "/") ? "/" : "") . $object->Text;
 			// IF NAME OF OBJECT EXISTS, WE HAVE TO CREATE A NEW NAME

@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weJUpload{
+class we_import_jUpload{
 
 	var $Params = array();
 

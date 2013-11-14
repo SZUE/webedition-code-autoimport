@@ -32,7 +32,7 @@ class ImportFiles extends leWizardStepBase{
 	function execute(&$Template){
 
 
-		$wizard = new we_wizard_import();
+		$wizard = new we_import_wizard();
 
 		$Template->UseOnlineInstallerTemplate = false;
 		$Output = $wizard->getWizCmd('first_steps_wizard');

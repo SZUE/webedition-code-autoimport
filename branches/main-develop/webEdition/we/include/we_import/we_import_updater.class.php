@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weImportUpdater extends weXMLExIm{
+class we_import_updater extends weXMLExIm{
 
 	var $RefTable;
 	var $UpdateItemsCount = 1;

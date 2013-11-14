@@ -913,7 +913,7 @@ class weVersions{
 				$_SESSION['weS']['versions']['fromImport'] = 1;
 				$this->saveVersion($docObj);
 			} elseif(isset($_REQUEST["pnt"]) && $_REQUEST["pnt"] == "wizcmd"){
-				if($_REQUEST["v"]["type"] == importFunctions::TYPE_CSV || $_REQUEST["v"]["type"] == importFunctions::TYPE_GENERIC_XML){
+				if($_REQUEST["v"]["type"] == we_import_functions::TYPE_CSV || $_REQUEST["v"]["type"] == we_import_functions::TYPE_GENERIC_XML){
 					$_SESSION['weS']['versions']['fromImport'] = 1;
 					$this->saveVersion($docObj);
 				} elseif(isset($_SESSION['weS']['ExImRefTable'])){

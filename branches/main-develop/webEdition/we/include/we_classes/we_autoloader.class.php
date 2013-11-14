@@ -47,7 +47,7 @@ abstract class we_autoloader{
 		'glossary' => 'we_modules/glossary',
 		'helpers' => 'we_classes/helpers',
 		'html' => 'we_classes/html',
-		'import' => 'we_classes/import',
+		'import' => 'we_import',
 		'main' => 'we_classes/main',
 		'messaging' => 'we_modules/messaging',
 		'navigation' => 'navigation/class',
@@ -251,8 +251,6 @@ abstract class we_autoloader{
 		),
 		'we_exim' => array(
 			'weContentProvider' => 'weContentProvider.class.php',
-			'weExportPreparer' => 'weExportPreparer.class.php',
-			'weImportUpdater' => 'weImportUpdater.class.php',
 			'RefData' => 'weRefTable.class.php',
 			'RefTable' => 'weRefTable.class.php',
 			'weSearchPatterns' => 'weSearchPatterns.class.php',
@@ -263,15 +261,6 @@ abstract class we_autoloader{
 			'weXMLImport' => 'weXMLImport.class.php',
 			'weXMLParser' => 'weXMLParser.class.php',
 			'we_thumbnailEx' => 'we_thumbnailEx.class.php',
-		),
-		'we_import' => array(
-			'importFunctions' => 'importFunctions.class.inc.php',
-			'we_wizard_import' => 'we_wiz_import.inc.php',
-			'we_wizard' => 'we_wizard.inc.php',
-			'weSiteImport' => 'weSiteImport.class.php',
-			'siteimportFrag' => 'siteimportFrag.class.php',
-			'we_import_files' => 'we_import_files.class.php',
-			'weJUpload' => 'weJUpload.class.php',
 		),
 		'we_logging' => array(
 			'logging' => 'logging.class.php',

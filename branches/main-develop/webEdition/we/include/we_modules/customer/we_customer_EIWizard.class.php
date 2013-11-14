@@ -1104,7 +1104,7 @@ class we_customer_EIWizard{
 				//------------------------ Export commands --------------------------------------------------------------
 				case "load":
 					if(isset($_REQUEST["pid"])){
-						$out = we_html_element::jsElement("self.location='" . EXPORT_PATH . "exportLoadTree.php?we_cmd[1]=" . $_REQUEST["tab"] . "&we_cmd[2]=" . $_REQUEST["pid"] . "&we_cmd[3]=" . $_REQUEST["openFolders"] . "'");
+						$out = we_html_element::jsElement("self.location='" . WE_EXPORT_MODULE_DIR . "exportLoadTree.php?we_cmd[1]=" . $_REQUEST["tab"] . "&we_cmd[2]=" . $_REQUEST["pid"] . "&we_cmd[3]=" . $_REQUEST["openFolders"] . "'");
 					}
 					break;
 				case "export_next":

@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weSiteImport {
+class we_import_site {
 
 	var $step = 0;
 	var $cmd = '';
@@ -59,7 +59,7 @@ class weSiteImport {
 	 * Constructor of Class
 	 *
 	 *
-	 * @return weSiteImport
+	 * @return we_import_site
 	 */
 	public function __construct(){
 		$wsa = makeArrayFromCSV(get_def_ws());
@@ -893,7 +893,7 @@ class weSiteImport {
 								g_l('importFiles', "[noFiles]")) . '\');top.close();');
 				}
 			}
-			$fr = new siteimportFrag($this);
+			$fr = new we_import_siteFrag($this);
 			return '';
 		}
 
@@ -1413,11 +1413,11 @@ class weSiteImport {
 								break;
 
 							case "gmt" :
-								$fieldval = importFunctions::date2Timestamp(trim($fieldval), "");
+								$fieldval = we_import_functions::date2Timestamp(trim($fieldval), "");
 								break;
 
 							case "own" :
-								$fieldval = importFunctions::date2Timestamp(trim($fieldval), $dateFormatValue);
+								$fieldval = we_import_functions::date2Timestamp(trim($fieldval), $dateFormatValue);
 								break;
 						}
 						$we_doc->setElement($field["name"], abs($fieldval), "date");
@@ -1654,7 +1654,7 @@ class weSiteImport {
 		if($destinationDir == '/'){
 			$destinationDir = '';
 		}
-		$destinationPath = $destinationDir . '/' . importFunctions::correctFilename(substr($path, $sizeofdocroot + $sizeofsourcePath), true);
+		$destinationPath = $destinationDir . '/' . we_import_functions::correctFilename(substr($path, $sizeofdocroot + $sizeofsourcePath), true);
 		$parentDirPath = dirname($destinationPath);
 
 		$parentID = path_to_id($parentDirPath);
@@ -1668,7 +1668,7 @@ class weSiteImport {
 		// initialize Path Information
 		$GLOBALS["we_doc"]->we_new();
 		$GLOBALS["we_doc"]->ContentType = $contentType;
-		$GLOBALS["we_doc"]->Text = importFunctions::correctFilename(basename($path));
+		$GLOBALS["we_doc"]->Text = we_import_functions::correctFilename(basename($path));
 		$GLOBALS["we_doc"]->Path = $destinationPath;
 		// get Data of File
 		if(!is_dir($path) && filesize($path) > 0 && $contentType != 'image/*' && $contentType != 'application/*' && $contentType != 'application/x-shockwave-fla

@@ -283,7 +283,7 @@ if(!$INCLUDE){
 			$INCLUDE = 'we_import/we_wiz_frameset.php';
 			break;
 		case 'export' :
-			$INCLUDE = 'we_export/export_frameset.php';
+			$INCLUDE = WE_EXPORT_MODULE_DIR . 'export_frameset.php';
 			break;
 		case 'copyFolder':
 			$INCLUDE = 'copyFolder.inc.php';

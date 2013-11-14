@@ -22,7 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-define('EXPORT_PATH', WE_INCLUDES_DIR . 'we_export/');
 
 $yuiSuggest = & weSuggest::getInstance();
 
@@ -126,7 +125,7 @@ class we_export_wizard{
 		if(isset($_REQUEST['we_cmd'][1])){
 			$args .= "&we_cmd[1]=" . $_REQUEST['we_cmd'][1];
 		}
-		$this->Tree = new we_export_tree(WE_INCLUDES_DIR . "we_export/export_frameset.php", $this->topFrame, $this->bodyFrame, $this->loadFrame);
+		$this->Tree = new we_export_tree(WE_EXPORT_MODULE_DIR . "export_frameset.php", $this->topFrame, $this->bodyFrame, $this->loadFrame);
 
 		$js = $this->getJSTop() .
 			$this->Tree->getJSTreeCode() .
@@ -1061,7 +1060,7 @@ function setState(a) {
 			switch($_REQUEST["cmd"]){
 				case "load":
 					if(isset($_REQUEST["pid"])){
-						return we_html_element::jsElement("self.location='" . EXPORT_PATH . "exportLoadTree.php?we_cmd[1]=" . $_REQUEST["tab"] . "&we_cmd[2]=" . $_REQUEST["pid"] . "&we_cmd[3]=" . (isset($_REQUEST["openFolders"]) ? $_REQUEST["openFolders"] : "") . "'");
+						return we_html_element::jsElement("self.location='" . WE_EXPORT_MODULE_DIR . "exportLoadTree.php?we_cmd[1]=" . $_REQUEST["tab"] . "&we_cmd[2]=" . $_REQUEST["pid"] . "&we_cmd[3]=" . (isset($_REQUEST["openFolders"]) ? $_REQUEST["openFolders"] : "") . "'");
 					}
 					break;
 				case "export":

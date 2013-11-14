@@ -440,7 +440,7 @@ function uploadFinished() {
 
 
 		if(getPref('use_jupload') && file_exists(WEBEDITION_PATH . 'jupload/jupload.jar')){
-			$_weju = new weJUpload();
+			$_weju = new we_import_jUpload();
 			$formhtml = $_weju->getAppletTag($formhtml, 530, 300);
 		}
 
@@ -537,7 +537,7 @@ var weFormCount = ' . $formcount . ';
 
 function back() {
 	if(top.imgimportcontent.document.we_startform.step.value=="2") {
-		top.location.href="' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=import&we_cmd[1]=' . importFunctions::TYPE_LOCAL_FILES . '";
+		top.location.href="' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=import&we_cmd[1]=' . we_import_functions::TYPE_LOCAL_FILES . '";
 	} else {
 		top.location.href="' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=import_files";
 	}
@@ -690,7 +690,7 @@ function next() {
 			}
 
 			// setting Filename, Path ...
-			$_fn = importFunctions::correctFilename($_FILES['we_File']["name"]);
+			$_fn = we_import_functions::correctFilename($_FILES['we_File']["name"]);
 			$matches = array();
 			preg_match('#^(.*)(\..+)$#', $_fn, $matches);
 
