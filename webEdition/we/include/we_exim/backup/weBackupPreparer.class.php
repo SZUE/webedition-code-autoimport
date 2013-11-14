@@ -131,8 +131,7 @@ abstract class weBackupPreparer{
 		}
 
 		$_offset = strlen(weBackup::weXmlExImProtectCode);
-		$_SESSION['weS']['weBackupVars']['offset'] = (weFile::loadLine($_SESSION['weS']['weBackupVars']['backup_file'], 0, ($_offset + 1)) == weBackup::weXmlExImProtectCode) ? $_offset : 0;
-
+		$_SESSION['weS']['weBackupVars']['offset'] = (weFile::loadLine($_SESSION['weS']['weBackupVars']['backup_file'], 0, ($_offset)) == weBackup::weXmlExImProtectCode) ? $_offset : 0;
 		$_SESSION['weS']['weBackupVars']['options']['compress'] = weFile::isCompressed($_SESSION['weS']['weBackupVars']['backup_file'], $_SESSION['weS']['weBackupVars']['offset']) ? 1 : 0;
 		if($_SESSION['weS']['weBackupVars']['options']['compress']){
 			$_SESSION['weS']['weBackupVars']['backup_file'] = self::makeCleanGzip($_SESSION['weS']['weBackupVars']['backup_file'], $_SESSION['weS']['weBackupVars']['offset']);
