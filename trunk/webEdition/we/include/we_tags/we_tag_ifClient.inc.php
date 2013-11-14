@@ -46,26 +46,26 @@ function we_tag_ifClient($attribs){
 		$brv = $br->getBrowserVersion();
 		switch($operator){
 			case 'equal':
-				$versionMatched = (floor($brv) == floor($version));
+				$versionMatched = (floor(floatval($brv)) == floor($version));
 				break;
 			case 'less':
-				$versionMatched = ($brv < $version);
+				$versionMatched = (floatval($brv) < $version);
 				break;
 			case 'less|equal':
-				$versionMatched = ($brv <= $version);
+				$versionMatched = (floatval($brv) <= $version);
 				break;
 			case 'greater':
-				$versionMatched = ($brv > $version);
+				$versionMatched = (floatval($brv) > $version);
 				break;
 			case 'greater|equal':
-				$versionMatched = ($brv >= $version);
+				$versionMatched = (floatval($brv) >= $version);
 				break;
 			default://old behaviour
 				$versionMatched = true;
 				$ver = str_replace(array('up', 'down', 'eq'), array('>=', '<', '=='), $version);
 
 				if(strpos($ver, '==') !== false){
-					eval('$versionMatched=(' . floor($brv) . $ver . ');');
+					eval('$versionMatched=(' . floor(floatval($brv)) . $ver . ');');
 				} else {
 					eval('$versionMatched=(' . $brv . $ver . ');');
 				}
