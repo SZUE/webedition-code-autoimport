@@ -31,7 +31,7 @@ class rpcSelectorSuggestCmd extends rpcCmd{
 			exit();
 		}
 
-		$selectorSuggest = new weSelectorQuery();
+		$selectorSuggest = new we_selector_query();
 		$contentTypes = isset($_REQUEST['we_cmd'][3]) ? explode(",", $_REQUEST['we_cmd'][3]) : null;
 		if(isset($_REQUEST['we_cmd'][4]) && !empty($_REQUEST['we_cmd'][4]) && isset($_REQUEST['we_cmd'][5]) && !empty($_REQUEST['we_cmd'][5])){
 			if($_REQUEST['we_cmd'][2] == "tblTemplates" && $_REQUEST['we_cmd'][4] == "text/weTmpl"){

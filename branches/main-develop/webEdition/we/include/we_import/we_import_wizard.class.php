@@ -467,7 +467,7 @@ function we_cmd() {
 				new jsWindow(url,"we_navigation_dirselector",-1,-1,600,400,true,true,true);
 			break;' . "
 		case 'openSelector':
-			new jsWindow(url,'we_selector',-1,-1," . we_fileselector::WINDOW_SELECTOR_WIDTH . "," . we_fileselector::WINDOW_SELECTOR_HEIGHT . ",true,true,true,true);
+			new jsWindow(url,'we_selector',-1,-1," . we_selector_file::WINDOW_SELECTOR_WIDTH . "," . we_selector_file::WINDOW_SELECTOR_HEIGHT . ",true,true,true,true);
 			break;
 		default:
 			for (var i=0; i < arguments.length; i++) {

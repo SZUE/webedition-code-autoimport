@@ -27,7 +27,7 @@ we_html_tools::protect();
 
 $_SERVER['SCRIPT_NAME'] = WEBEDITION_DIR . 'we_dirSelect.php';
 
-$fs = new we_dirSelector(
+$fs = new we_selector_directory(
 		isset($id) ? $id : ( isset($_REQUEST["id"]) ? $_REQUEST["id"] : '' ),
 		isset($table) ? $table : ( isset($_REQUEST["table"]) ? $_REQUEST["table"] : FILE_TABLE ),
 		isset($JSIDName) ? $JSIDName : ( isset($_REQUEST["JSIDName"]) ? $_REQUEST["JSIDName"] : '' ),
@@ -40,5 +40,5 @@ $fs = new we_dirSelector(
 		isset($rootDirID) ? $rootDirID : ( isset($_REQUEST["rootDirID"]) ? $_REQUEST["rootDirID"] : '' ),
 		isset($multiple) ? $multiple : ( isset($_REQUEST["multiple"]) ? $_REQUEST["multiple"] : '' ));
 
-$fs->printHTML(isset($_REQUEST["what"]) ? $_REQUEST["what"] : we_fileselector::FRAMESET);
+$fs->printHTML(isset($_REQUEST["what"]) ? $_REQUEST["what"] : we_selector_file::FRAMESET);
 

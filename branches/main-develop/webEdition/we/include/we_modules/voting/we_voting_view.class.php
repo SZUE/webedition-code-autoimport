@@ -492,7 +492,7 @@ class we_voting_view extends weModuleView{
 					}
 
 					if($this->voting->ParentID > 0){
-						$weAcQuery = new weSelectorQuery();
+						$weAcQuery = new we_selector_query();
 						$weAcResult = $weAcQuery->getItemById($this->voting->ParentID, VOTING_TABLE, array("IsFolder"));
 						if(!is_array($weAcResult) || $weAcResult[0]['IsFolder'] == 0){
 							print we_html_element::jsElement(

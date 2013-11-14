@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_fileselector{
+class we_selector_file{
 
 	const FRAMESET = 0;
 	const HEADER = 1;
@@ -155,7 +155,7 @@ class we_fileselector{
 		return $this->db->f($key);
 	}
 
-	function printHTML($what = we_fileselector::FRAMESET){
+	function printHTML($what = we_selector_file::FRAMESET){
 		switch($what){
 			case self::HEADER:
 				$this->printHeaderHTML();
@@ -243,7 +243,7 @@ function orderIt(o){
 	}else{
 		order=o;
 	}
-	top.fscmd.location.replace(top.queryString(' . we_fileselector::CMD . ',top.currentDir,order));
+	top.fscmd.location.replace(top.queryString(' . we_selector_file::CMD . ',top.currentDir,order));
 }
 
 function goBackDir(){
@@ -349,9 +349,9 @@ var mk=null;');
 
 	function getFrameset(){
 		return '<frameset rows="67,*,65,0" border="0">
-	<frame src="' . $this->getFsQueryString(we_fileselector::HEADER) . '" name="fsheader" noresize scrolling="no">
-    <frame src="' . $this->getFsQueryString(we_fileselector::BODY) . '" name="fsbody" noresize scrolling="auto">
-    <frame src="' . $this->getFsQueryString(we_fileselector::FOOTER) . '"  name="fsfooter" noresize scrolling="no">
+	<frame src="' . $this->getFsQueryString(we_selector_file::HEADER) . '" name="fsheader" noresize scrolling="no">
+    <frame src="' . $this->getFsQueryString(we_selector_file::BODY) . '" name="fsbody" noresize scrolling="auto">
+    <frame src="' . $this->getFsQueryString(we_selector_file::FOOTER) . '"  name="fsfooter" noresize scrolling="no">
     <frame src="' . HTML_DIR . 'white.html"  name="fscmd" noresize scrolling="no">
 </frameset>
 <body>
@@ -414,7 +414,7 @@ function setDir(id){
 	currentPath = e.path;
 	currentText = e.text;
 	top.fsfooter.document.we_form.fname.value = e.text;
-	top.fscmd.location.replace(top.queryString(' . we_fileselector::CMD . ',id));
+	top.fscmd.location.replace(top.queryString(' . we_selector_file::CMD . ',id));
 }');
 	}
 

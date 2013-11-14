@@ -26,7 +26,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 $_SERVER['SCRIPT_NAME'] = WEBEDITION_DIR . 'we_fs.php';
 
-$fs = new we_multiSelector(
+$fs = new we_selector_multiple(
 		isset($id) ? $id : (isset($_REQUEST['id']) ? $_REQUEST['id'] : 0),
 		isset($table) ? $table : (isset($_REQUEST['table']) ? $_REQUEST['table'] : FILE_TABLE),
 		isset($JSIDName) ? $JSIDName : (isset($_REQUEST['JSIDName']) ? $_REQUEST['JSIDName'] : ''),
@@ -38,5 +38,5 @@ $fs = new we_multiSelector(
 		isset($multiple) ? $multiple : (isset($_REQUEST['multiple']) ? $_REQUEST['multiple'] : ''),
 		isset($filter) ? $filter : (isset($_REQUEST['filter']) ? $_REQUEST['filter'] : ''));
 
-$fs->printHTML(isset($_REQUEST['what']) ? $_REQUEST['what'] : we_fileselector::FRAMESET);
+$fs->printHTML(isset($_REQUEST['what']) ? $_REQUEST['what'] : we_selector_file::FRAMESET);
 

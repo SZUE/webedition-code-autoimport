@@ -167,7 +167,7 @@ function setDir(id){
 	}else{
 		path=id;
 	}
-	top.fscmd.location.replace(top.queryString(' . we_multiSelector::SETDIR . ',path));
+	top.fscmd.location.replace(top.queryString(' . we_selector_multiple::SETDIR . ',path));
 }'
 		);
 	}

@@ -33,4 +33,4 @@ $fs = new we_banner_selector(isset($id) ? $id : (isset($_REQUEST["id"]) ? $_REQU
 		isset($JSCommand) ? $JSCommand : (isset($_REQUEST["JSCommand"]) ? $_REQUEST["JSCommand"] : ''),
 		isset($order) ? $order : (isset($_REQUEST["order"]) ? $_REQUEST["order"] : ''));
 
-$fs->printHTML(isset($_REQUEST["what"]) ? $_REQUEST["what"] : we_fileselector::FRAMESET);
+$fs->printHTML(isset($_REQUEST["what"]) ? $_REQUEST["what"] : we_selector_file::FRAMESET);

@@ -34,7 +34,7 @@ if(!isset($_REQUEST['we_cmd'][1]) || !isset($_REQUEST['we_cmd'][2])){
 // protection against sql injection
 $table = preg_replace('/\s/', '', $_REQUEST['we_cmd'][2]);
 
-$selectorSuggest = new weSelectorQuery();
+$selectorSuggest = new we_selector_query();
 $contentTypes = isset($_REQUEST['we_cmd'][3]) ? explode(",", $_REQUEST['we_cmd'][3]) : null;
 $selectorSuggest->search($_REQUEST['we_cmd'][1], $table, $contentTypes);
 $suggests = $selectorSuggest->getResult();

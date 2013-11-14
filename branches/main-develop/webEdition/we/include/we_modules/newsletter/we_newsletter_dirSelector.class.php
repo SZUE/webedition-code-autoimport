@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_newsletter_dirSelector extends we_dirSelector{
+class we_newsletter_dirSelector extends we_selector_directory{
 
 	var $fields = "ID,ParentID,Text,Path,IsFolder,Icon";
 

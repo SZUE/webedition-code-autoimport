@@ -26,7 +26,7 @@
 /**
  * @name we_selectorQuery
  */
-class weSelectorQuery{
+class we_selector_query{
 	/*	 * ***********************************************************************
 	 * VARIABLES
 	 * *********************************************************************** */
@@ -43,7 +43,7 @@ class weSelectorQuery{
 	/**
 	 * Constructor of class
 	 *
-	 * @return weSelectorQuery
+	 * @return we_selector_query
 	 */
 	function __construct(){
 		$this->db = new DB_WE();

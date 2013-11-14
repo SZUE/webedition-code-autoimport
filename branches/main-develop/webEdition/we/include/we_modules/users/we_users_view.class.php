@@ -426,7 +426,7 @@ function we_cmd() {
 			break;
 
 		case "openDirselector":
-			new jsWindow(url, "we_fileselector", -1, -1,' . we_fileselector::WINDOW_DIRSELECTOR_WIDTH . ',' . we_fileselector::WINDOW_DIRSELECTOR_HEIGHT . ', true, true, true, true);
+			new jsWindow(url, "we_fileselector", -1, -1,' . we_selector_file::WINDOW_DIRSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_DIRSELECTOR_HEIGHT . ', true, true, true, true);
 			break;
 
 		case "select_seem_start":
@@ -613,7 +613,7 @@ function we_cmd(){
 					break;
 				case "save_user":
 					$isAcError = false;
-					$weAcQuery = new weSelectorQuery();
+					$weAcQuery = new we_selector_query();
 
 					// bugfix #1665 for php 4.1.2: "-" moved to the end of the regex-pattern
 					if(isset($_REQUEST[$_REQUEST['obj_name'] . '_username']) && !we_users_user::filenameNotValid($_REQUEST[$_REQUEST['obj_name'] . '_username'])){

@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_catSelector extends we_multiSelector{
+class we_selector_category extends we_selector_multiple{
 
 	const CREATECAT = 7;
 	const DORENAMECAT = 9;
@@ -43,7 +43,7 @@ class we_catSelector extends we_multiSelector{
 		$this->noChoose = $noChoose;
 	}
 
-	function printHTML($what = we_fileselector::FRAMESET){
+	function printHTML($what = we_selector_file::FRAMESET){
 		switch($what){
 			case self::HEADER:
 				$this->printHeaderHTML();
@@ -624,7 +624,7 @@ function setDir(id){
 	currentPath = e.path;
 	top.fsfooter.document.we_form.fname.value = e.text;
 	if(id) top.fsheader.enableDelBut();
-	top.fscmd.location.replace(top.queryString(' . we_fileselector::CMD . ',id));
+	top.fscmd.location.replace(top.queryString(' . we_selector_file::CMD . ',id));
 }');
 	}
 
@@ -834,11 +834,11 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != ""){
 	function getFrameset(){
 		$isMainChooser = isset($_REQUEST['we_cmd']) && $_REQUEST['we_cmd'][0] == 'openCatselector' && !($_REQUEST['we_cmd'][3] || $_REQUEST['we_cmd'][5]);
 		return '<frameset rows="67,*,65,0" border="0">
-	<frame src="' . $this->getFsQueryString(we_fileselector::HEADER) . '" name="fsheader" noresize scrolling="no">
+	<frame src="' . $this->getFsQueryString(we_selector_file::HEADER) . '" name="fsheader" noresize scrolling="no">
 ' . ($isMainChooser ? '<frameset cols="35%,65%" border="0">' : '') . '
-    	<frame src="' . $this->getFsQueryString(we_fileselector::BODY) . '" name="fsbody" scrolling="auto">
+    	<frame src="' . $this->getFsQueryString(we_selector_file::BODY) . '" name="fsbody" scrolling="auto">
 ' . ($isMainChooser ? '<frame src="' . $this->getFsQueryString(self::PROPERTIES) . '" name="fsvalues"  scrolling="auto"></frameset>' : '') . '
-    <frame src="' . $this->getFsQueryString(we_fileselector::FOOTER) . '"  name="fsfooter" noresize scrolling="no">
+    <frame src="' . $this->getFsQueryString(we_selector_file::FOOTER) . '"  name="fsfooter" noresize scrolling="no">
     <frame src="' . HTML_DIR . 'white.html"  name="fscmd" noresize scrolling="no">
 </frameset>
 <body>

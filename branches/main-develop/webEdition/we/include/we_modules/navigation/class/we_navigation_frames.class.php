@@ -1108,7 +1108,7 @@ function onSelectionClassChangeJS(value) {
 		} elseif(isset($this->Model->$IDName) && !empty($this->Model->$IDName)){
 			$_path = id_to_path($this->Model->$IDName, $table);
 		} else {
-			$acQuery = new weSelectorQuery();
+			$acQuery = new we_selector_query();
 			if(isset($IDValue) && $IDValue !== ""){
 				$acResponse = $acQuery->getItemById($IDValue, $table, array(
 					"IsFolder", "Path"

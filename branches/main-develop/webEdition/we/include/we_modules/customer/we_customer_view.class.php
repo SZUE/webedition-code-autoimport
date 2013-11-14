@@ -214,7 +214,7 @@ function we_cmd() {
 			new jsWindow(url,"browse_users",-1,-1,500,300,true,false,true);
 		break;
 		case "openDocselector":
-			new jsWindow(url,"we_fileselector",-1,-1,' . we_fileselector::WINDOW_DOCSELECTOR_WIDTH . ',' . we_fileselector::WINDOW_DOCSELECTOR_HEIGHT . ',true,true,true,true);
+			new jsWindow(url,"we_fileselector",-1,-1,' . we_selector_file::WINDOW_DOCSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_DOCSELECTOR_HEIGHT . ',true,true,true,true);
 		break;
 		case "switchPage":
 			document.we_form.cmd.value=arguments[0];

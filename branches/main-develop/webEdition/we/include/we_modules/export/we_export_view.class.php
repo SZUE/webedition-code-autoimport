@@ -280,10 +280,10 @@ class we_export_view{
 						new jsWindow(url,"we_exportselector",-1,-1,600,350,true,true,true);
 						break;
 					case "openCatselector":
-						new jsWindow(url,"we_catselector",-1,-1,' . we_fileselector::WINDOW_CATSELECTOR_WIDTH . ',' . we_fileselector::WINDOW_CATSELECTOR_HEIGHT . ',true,true,true,true);
+						new jsWindow(url,"we_catselector",-1,-1,' . we_selector_file::WINDOW_CATSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_CATSELECTOR_HEIGHT . ',true,true,true,true);
 					break;
 					case "openDirselector":
-						new jsWindow(url,"we_selector",-1,-1,' . we_fileselector::WINDOW_SELECTOR_WIDTH . ',' . we_fileselector::WINDOW_SELECTOR_HEIGHT . ',true,true,true,true);
+						new jsWindow(url,"we_selector",-1,-1,' . we_selector_file::WINDOW_SELECTOR_WIDTH . ',' . we_selector_file::WINDOW_SELECTOR_HEIGHT . ',true,true,true,true);
 					break;
 					case "add_cat":
 					case "del_cat":
@@ -483,7 +483,7 @@ class we_export_view{
 						}
 
 						if($this->export->ParentID > 0){
-							$weAcQuery = new weSelectorQuery();
+							$weAcQuery = new we_selector_query();
 							$weAcResult = $weAcQuery->getItemById($this->export->ParentID, EXPORT_TABLE, array("IsFolder"));
 							if(!is_array($weAcResult) || $weAcResult[0]['IsFolder'] == 0){
 								print we_html_element::jsElement(
@@ -493,7 +493,7 @@ class we_export_view{
 							}
 						}
 						if(isset($this->export->Folder) && !empty($this->export->Folder) && $this->export->ParentID > 0){
-							$weAcQuery = new weSelectorQuery();
+							$weAcQuery = new we_selector_query();
 							$weAcResult = $weAcQuery->getItemById($this->export->Folder, FILE_TABLE, array("IsFolder"));
 							if(!is_array($weAcResult) || $weAcResult[0]['IsFolder'] == 0){
 								print we_html_element::jsElement(

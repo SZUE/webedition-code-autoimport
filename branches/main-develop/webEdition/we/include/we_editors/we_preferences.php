@@ -3119,7 +3119,7 @@ $acError = false;
 $acErrorMsg = '';
 // Check if we need to save settings
 if(isset($_REQUEST['save_settings']) && $_REQUEST['save_settings'] == 'true'){
-	$acQuery = new weSelectorQuery();
+	$acQuery = new we_selector_query();
 
 	// check seemode start document | object
 	switch($_REQUEST['newconf']['seem_start_type']){
@@ -3218,7 +3218,7 @@ setTimeout(function(){
             new jsWindow(url,"browse_server",-1,-1,840,400,true,false,true);
 			break;
 		case "openDocselector":
-			new jsWindow(url,"openDocselector",-1,-1,' . we_fileselector::WINDOW_DOCSELECTOR_WIDTH . ',' . we_fileselector::WINDOW_DOCSELECTOR_HEIGHT . ',true,false,true,true);
+			new jsWindow(url,"openDocselector",-1,-1,' . we_selector_file::WINDOW_DOCSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_DOCSELECTOR_HEIGHT . ',true,false,true,true);
 			break;
 		case "show_formmail_log":
 			url = "' . WE_INCLUDES_DIR . 'we_editors/weFormmailLog.php"

@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_docSelector extends we_dirSelector{
+class we_selector_document extends we_selector_directory{
 
 	protected $userCanMakeNewFile = true;
 	protected $open_doc = 0;
@@ -115,7 +115,7 @@ class we_docSelector extends we_dirSelector{
 		}
 	}
 
-	function printHTML($what = we_fileselector::FRAMESET){
+	function printHTML($what = we_selector_file::FRAMESET){
 		switch($what){
 			case self::PREVIEW:
 				$this->printPreviewHTML();
@@ -179,7 +179,7 @@ var contentTypes = new Array();';
 		}
 		return parent::printFramesetJSFunctions() . we_html_element::jsElement($out . '
 function setFilter(ct) {
-	top.fscmd.location.replace(top.queryString(' . we_fileselector::CMD . ',top.currentDir,"","",ct));
+	top.fscmd.location.replace(top.queryString(' . we_selector_file::CMD . ',top.currentDir,"","",ct));
 }
 
 function showPreview(id) {
@@ -194,7 +194,7 @@ function newFile() {
 }
 
 function reloadDir() {
-	top.fscmd.location.replace(top.queryString(' . we_fileselector::CMD . ',top.currentDir));
+	top.fscmd.location.replace(top.queryString(' . we_selector_file::CMD . ',top.currentDir));
 }');
 	}
 
@@ -508,12 +508,12 @@ top.parentID = "' . $this->values["ParentID"] . '";
 	function getFrameset(){
 		return '
 <frameset rows="' . (((!defined("OBJECT_TABLE")) || $this->table != OBJECT_TABLE) ? '67' : '16') . ',*,' . (!$this->filter ? 90 : 65) . ',20,0" border="0"  onunload="if(top.opener && top.opener.top && top.opener.top.toggleBusy){top.opener.top.toggleBusy();}">
-	<frame src="' . $this->getFsQueryString(we_fileselector::HEADER) . '" name="fsheader" noresize scrolling="no">
+	<frame src="' . $this->getFsQueryString(we_selector_file::HEADER) . '" name="fsheader" noresize scrolling="no">
 	<frameset cols="605,*" border="1">
-		<frame src="' . $this->getFsQueryString(we_fileselector::BODY) . '" name="fsbody" noresize scrolling="auto">
+		<frame src="' . $this->getFsQueryString(we_selector_file::BODY) . '" name="fsbody" noresize scrolling="auto">
 		<frame src="' . $this->getFsQueryString(self::PREVIEW) . '" name="fspreview" noresize scrolling="no"' . ((!we_base_browserDetect::isGecko()) ? ' style="border-left:1px solid black"' : '') . '>
 	</frameset>
-	<frame src="' . $this->getFsQueryString(we_fileselector::FOOTER) . '"  name="fsfooter" noresize scrolling="no">
+	<frame src="' . $this->getFsQueryString(we_selector_file::FOOTER) . '"  name="fsfooter" noresize scrolling="no">
 	<frame src="' . HTML_DIR . 'gray2.html"  name="fspath" noresize scrolling="no">
 	<frame src="' . HTML_DIR . 'white.html"  name="fscmd" noresize scrolling="no">
 </frameset>
@@ -845,7 +845,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 function setDir(id) {
 	showPreview(id);
 	top.fspreview.document.body.innerHTML = "";
-	top.fscmd.location.replace(top.queryString(' . we_multiSelector::SETDIR . ',id));
+	top.fscmd.location.replace(top.queryString(' . we_selector_multiple::SETDIR . ',id));
 	e = getEntry(id);
 	fspath.document.body.innerHTML = e.path;
 }');

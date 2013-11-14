@@ -37,4 +37,4 @@ $fs = new we_customer_selector(isset($id) ? $id : (isset($_REQUEST['id']) ? $_RE
 		isset($filter) ? $filter : (isset($_REQUEST['filter']) ? $_REQUEST['filter'] : '' ),
 		isset($multiple) ? $multiple : (isset($_REQUEST['multiple']) ? $_REQUEST['multiple'] : '' ));
 
-$fs->printHTML(isset($_REQUEST['what']) ? $_REQUEST['what'] : we_fileselector::FRAMESET);
+$fs->printHTML(isset($_REQUEST['what']) ? $_REQUEST['what'] : we_selector_file::FRAMESET);

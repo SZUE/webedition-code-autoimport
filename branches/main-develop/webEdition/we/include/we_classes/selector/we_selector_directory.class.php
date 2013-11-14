@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_dirSelector extends we_multiSelector{
+class we_selector_directory extends we_selector_multiple{
 
 	const NEWFOLDER = 7;
 	const RENAMEFOLDER = 9;
@@ -52,18 +52,18 @@ class we_dirSelector extends we_multiSelector{
 		}
 	}
 
-	function printHTML($what = we_fileselector::FRAMESET){
+	function printHTML($what = we_selector_file::FRAMESET){
 		switch($what){
-			case we_fileselector::HEADER:
+			case we_selector_file::HEADER:
 				$this->printHeaderHTML();
 				break;
-			case we_fileselector::FOOTER:
+			case we_selector_file::FOOTER:
 				$this->printFooterHTML();
 				break;
-			case we_fileselector::BODY:
+			case we_selector_file::BODY:
 				$this->printBodyHTML();
 				break;
-			case we_fileselector::CMD:
+			case we_selector_file::CMD:
 				$this->printCmdHTML();
 				break;
 			case self::SETDIR:
@@ -545,7 +545,7 @@ function doClick(id,ct){
 function setDir(id){
 	showPreview(id);
 	top.fspreview.document.body.innerHTML = "";
-	top.fscmd.location.replace(top.queryString(' . we_multiSelector::SETDIR . ',id));
+	top.fscmd.location.replace(top.queryString(' . we_selector_multiple::SETDIR . ',id));
 	e = getEntry(id);
 	fspath.document.body.innerHTML = e.path;
 }');
@@ -686,12 +686,12 @@ top.selectFile(top.currentID);
 
 	function getFrameset(){
 		return '<frameset rows="67,*,65,20,0" border="0">
-	<frame src="' . $this->getFsQueryString(we_fileselector::HEADER) . '" name="fsheader" noresize scrolling="no">
+	<frame src="' . $this->getFsQueryString(we_selector_file::HEADER) . '" name="fsheader" noresize scrolling="no">
 	<frameset cols="605,*" border="1">
-		<frame src="' . $this->getFsQueryString(we_fileselector::BODY) . '" name="fsbody" noresize scrolling="auto">
+		<frame src="' . $this->getFsQueryString(we_selector_file::BODY) . '" name="fsbody" noresize scrolling="auto">
 		<frame src="' . $this->getFsQueryString(self::PREVIEW) . '" name="fspreview" noresize scrolling="no"' . ((!we_base_browserDetect::isGecko()) ? ' style="border-left:1px solid black"' : '') . '>
 	</frameset>
-	<frame src="' . $this->getFsQueryString(we_fileselector::FOOTER) . '"  name="fsfooter" noresize scrolling="no">
+	<frame src="' . $this->getFsQueryString(we_selector_file::FOOTER) . '"  name="fsfooter" noresize scrolling="no">
 	<frame src="' . HTML_DIR . 'gray2.html"  name="fspath" noresize scrolling="no">
     <frame src="' . HTML_DIR . 'white.html"  name="fscmd" noresize scrolling="no">
 </frameset>

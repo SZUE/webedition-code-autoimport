@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_users_selector extends we_multiSelector{
+class we_users_selector extends we_selector_multiple{
 
 	function __construct($id, $table = USER_TABLE, $JSIDName = '', $JSTextName = '', $JSCommand = '', $order = '', $sessionID = '', $rootDirID = 0, $filter = '', $multiple = true){
 
@@ -56,24 +56,24 @@ class we_users_selector extends we_multiSelector{
 		}
 	}
 
-	function printHTML($what = we_fileselector::FRAMESET){
+	function printHTML($what = we_selector_file::FRAMESET){
 		switch($what){
-			case we_fileselector::HEADER:
+			case we_selector_file::HEADER:
 				$this->printHeaderHTML();
 				break;
-			case we_fileselector::FOOTER:
+			case we_selector_file::FOOTER:
 				$this->printFooterHTML();
 				break;
-			case we_fileselector::BODY:
+			case we_selector_file::BODY:
 				$this->printBodyHTML();
 				break;
-			case we_multiSelector::SETDIR:
+			case we_selector_multiple::SETDIR:
 				$this->printSetDirHTML();
 				break;
-			case we_fileselector::CMD:
+			case we_selector_file::CMD:
 				$this->printCmdHTML();
 				break;
-			case we_fileselector::FRAMESET:
+			case we_selector_file::FRAMESET:
 			default:
 				$this->printFramesetHTML();
 		}
@@ -121,8 +121,8 @@ function queryString(what,id,o){
 function setDir(id){' .
 				($this->filter == "user" ? '
 	currentDir = id;
-	top.fscmd.location.replace(top.queryString(' . we_fileselector::CMD . ',id));' : '
-	top.fscmd.location.replace(top.queryString(' . we_multiSelector::SETDIR . ',id));'
+	top.fscmd.location.replace(top.queryString(' . we_selector_file::CMD . ',id));' : '
+	top.fscmd.location.replace(top.queryString(' . we_selector_multiple::SETDIR . ',id));'
 				) . '
 }');
 	}

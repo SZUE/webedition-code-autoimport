@@ -27,7 +27,7 @@ we_html_tools::protect();
 
 $_SERVER['SCRIPT_NAME'] = WEBEDITION_DIR. 'we_catSelect.php';
 
-$fs = new we_catSelector(
+$fs = new we_selector_category(
 		isset($id) ? $id : ( isset($_REQUEST["id"]) ? $_REQUEST["id"] : ''),
 		isset($table) ? $table : ( isset($_REQUEST["table"]) ? $_REQUEST["table"] : FILE_TABLE ),
 		isset($JSIDName) ? $JSIDName : ( isset($_REQUEST["JSIDName"]) ? $_REQUEST["JSIDName"] : "" ),
@@ -40,4 +40,4 @@ $fs = new we_catSelector(
 		isset($rootDirID) ? $rootDirID : ( isset($_REQUEST["rootDirID"]) ? $_REQUEST["rootDirID"] : "" ),
 		isset($noChoose) ? $noChoose : ( isset($_REQUEST["noChoose"]) ? $_REQUEST["noChoose"] : "" ));
 
-$fs->printHTML(isset($_REQUEST["what"]) ? $_REQUEST["what"] : we_fileselector::FRAMESET);
+$fs->printHTML(isset($_REQUEST["what"]) ? $_REQUEST["what"] : we_selector_file::FRAMESET);

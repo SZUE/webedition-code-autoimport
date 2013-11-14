@@ -22,31 +22,31 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_delSelector extends we_multiSelector{
+class we_selector_delete extends we_selector_multiple{
 
 	function __construct($id, $table = FILE_TABLE){
 		parent::__construct($id, $table);
 		$this->title = g_l('fileselector', '[delSelector][title]');
 	}
 
-	function printHTML($what = we_fileselector::FRAMESET){
+	function printHTML($what = we_selector_file::FRAMESET){
 		switch($what){
-			case we_fileselector::HEADER:
+			case we_selector_file::HEADER:
 				$this->printHeaderHTML();
 				break;
-			case we_fileselector::FOOTER:
+			case we_selector_file::FOOTER:
 				$this->printFooterHTML();
 				break;
-			case we_fileselector::BODY:
+			case we_selector_file::BODY:
 				$this->printBodyHTML();
 				break;
-			case we_fileselector::CMD:
+			case we_selector_file::CMD:
 				$this->printCmdHTML();
 				break;
 			case self::DEL:
 				$this->printDoDelEntryHTML();
 				break;
-			case we_fileselector::FRAMESET:
+			case we_selector_file::FRAMESET:
 			default:
 				$this->printFramesetHTML();
 		}
@@ -203,7 +203,7 @@ function setDir(id){
 	currentPath = e.path;
 	top.fsfooter.document.we_form.fname.value = e.text;
 	if(id) top.fsfooter.enableDelBut();
-	top.fscmd.location.replace(top.queryString(' . we_fileselector::CMD . ',id));
+	top.fscmd.location.replace(top.queryString(' . we_selector_file::CMD . ',id));
 }');
 	}
 

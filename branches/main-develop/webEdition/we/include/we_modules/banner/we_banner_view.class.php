@@ -400,16 +400,16 @@ class we_banner_view extends we_banner_base{
 				}
 				switch (arguments[0]) {
 					case "openSelector":
-						new jsWindow(url, "we_selector", -1, -1,<?php echo we_fileselector::WINDOW_SELECTOR_WIDTH . "," . we_fileselector::WINDOW_SELECTOR_HEIGHT; ?>, true, true, true, true);
+						new jsWindow(url, "we_selector", -1, -1,<?php echo we_selector_file::WINDOW_SELECTOR_WIDTH . "," . we_selector_file::WINDOW_SELECTOR_HEIGHT; ?>, true, true, true, true);
 						break;
 					case "openCatselector":
-						new jsWindow(url, "we_catselector", -1, -1,<?php echo we_fileselector::WINDOW_CATSELECTOR_WIDTH . "," . we_fileselector::WINDOW_CATSELECTOR_HEIGHT; ?>, true, true, true, true);
+						new jsWindow(url, "we_catselector", -1, -1,<?php echo we_selector_file::WINDOW_CATSELECTOR_WIDTH . "," . we_selector_file::WINDOW_CATSELECTOR_HEIGHT; ?>, true, true, true, true);
 						break;
 					case "openDocselector":
-						new jsWindow(url, "we_docselector", -1, -1,<?php echo we_fileselector::WINDOW_DOCSELECTOR_WIDTH . "," . we_fileselector::WINDOW_DOCSELECTOR_HEIGHT; ?>, true, true, true, true);
+						new jsWindow(url, "we_docselector", -1, -1,<?php echo we_selector_file::WINDOW_DOCSELECTOR_WIDTH . "," . we_selector_file::WINDOW_DOCSELECTOR_HEIGHT; ?>, true, true, true, true);
 						break;
 					case "openDirselector":
-						new jsWindow(url, "we_dirselector", -1, -1,<?php echo we_fileselector::WINDOW_DIRSELECTOR_WIDTH . "," . we_fileselector::WINDOW_DIRSELECTOR_HEIGHT; ?>, true, true, true, true);
+						new jsWindow(url, "we_dirselector", -1, -1,<?php echo we_selector_file::WINDOW_DIRSELECTOR_WIDTH . "," . we_selector_file::WINDOW_DIRSELECTOR_HEIGHT; ?>, true, true, true, true);
 						break;
 					case "openBannerDirselector":
 						new jsWindow(url, "we_bannerselector", -1, -1, 600, 350, true, true, true);
@@ -622,7 +622,7 @@ class we_banner_view extends we_banner_base{
 						$newone = ($this->banner->ID == 0);
 						$exist = false;
 						$double = f('SELECT COUNT(1) AS Count FROM ' . BANNER_TABLE . " WHERE Text='" . $this->db->escape($this->banner->Text) . "' AND ParentID=" . intval($this->banner->ParentID) . ($newone ? '' : ' AND ID!=' . intval($this->banner->ID)), 'Count', $this->db);
-						$acQuery = new weSelectorQuery();
+						$acQuery = new we_selector_query();
 						if(!permissionhandler::hasPerm("EDIT_BANNER") && !permissionhandler::hasPerm("NEW_BANNER")){
 							print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_banner', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR));
 							return;
