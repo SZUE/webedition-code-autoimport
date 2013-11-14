@@ -161,6 +161,18 @@ class weNewsletter extends weNewsletterBase{
 			$block->save();
 			$block->Source = stripslashes($block->Source);
 			$block->Html = stripslashes($block->Html);
+			/* TODO: 
+			 * Why addslashes() before saving to the database?
+			 * Was it once intended to prevent strip_tags() in weNewslettrView::getContent() from compeletely deleting links 
+			 * when converting html-content to plain-text?
+			 * => see weNewslettrView::getContent(): links are deleted when converting html-content to plain-text on line 2103ff,
+			 * but href's (and img-sources) should be preserved (and converted from internal to external links).
+			 * 
+			 * As a fast fix for wrong escaped href's (bug #8199) I added stripslashes($content); to weNewslettrView::getContent()
+			 * in case weNewsletterBlock::TEXT.
+			 * 
+			 * Check this and throw out addsllashes() later.
+			 */
 		}
 
 		$this->addLog('log_save_newsletter');

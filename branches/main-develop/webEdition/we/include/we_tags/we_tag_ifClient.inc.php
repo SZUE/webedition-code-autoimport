@@ -28,59 +28,55 @@ function we_tag_ifClient($attribs){
 	$operator = weTag_getAttribute('operator', $attribs);
 	$system = weTag_getAttribute('system', $attribs);
 
-	if($version){
-		if(!(preg_match('|up[0-9\.]+|', $version) || preg_match('|down[0-9\.]+|', $version) || preg_match('|eq[0-9\.]+|', $version))){
-			exit(parseError(g_l('parser', '[client_version]')));
-		}
-	}
-
 	$br = we_base_browserDetect::inst();
 	if($browser){
 		$bro = explode(',', $browser);
 		$_browserOfClient = $br->getBrowser();
-		$foo_br = in_array($_browserOfClient, $bro);
+		$browserMatched = in_array($_browserOfClient, $bro);
 		// for backwards compatibility
-		if(!$foo_br && $_browserOfClient == 'firefox' && in_array('mozilla', $bro)){
-			$foo_br = true;
-		} elseif(!$foo_br && $_browserOfClient == 'appleWebKit' && in_array('safari', $bro)){
-			$foo_br = true;
-		} else {
-			$foo_br = false;
+		if(!$browserMatched){
+			$browserMatched = ((we_base_browserDetect::isNN() && in_array('mozilla', $bro)) ||
+				($_browserOfClient == we_base_browserDetect::APPLE && in_array('safari', $bro)));
 		}
 	} else {
-		$foo_br = true;
+		$browserMatched = true;
 	}
 
-	$brv = $br->getBrowserVersion();
-	switch($operator){
-		case 'equal':
-			$foo_v = (floor($brv) == floor($version));
-			break;
-		case 'less':
-			$foo_v = ($brv < $version);
-			break;
-		case 'less|equal':
-			$foo_v = ($brv <= $version);
-			break;
-		case 'greater':
-			$foo_v = ($brv > $version);
-			break;
-		case 'greater|equal':
-			$foo_v = ($brv >= $version);
-			break;
-		default://old behaviour
-			$foo_v = true;
+	if($browserMatched && $version){
+		$brv = $br->getBrowserVersion();
+		switch($operator){
+			case 'equal':
+				$versionMatched = (floor(floatval($brv)) == floor($version));
+				break;
+			case 'less':
+				$versionMatched = (floatval($brv) < $version);
+				break;
+			case 'less|equal':
+				$versionMatched = (floatval($brv) <= $version);
+				break;
+			case 'greater':
+				$versionMatched = (floatval($brv) > $version);
+				break;
+			case 'greater|equal':
+				$versionMatched = (floatval($brv) >= $version);
+				break;
+			default://old behaviour
+				$versionMatched = true;
+				$ver = str_replace(array('up', 'down', 'eq'), array('>=', '<', '=='), $version);
 
-			$ver = str_replace(array('up', 'down', 'eq'), array('>=', '<', '=='), $version);
-
-			if(strpos($ver, '==') !== false){
-				eval('$foo_v = (' . floor($brv) . $ver . ');');
-			} else {
-				eval('$foo_v = (' . $brv . $ver . ');');
-			}
-			break;
+				if(strpos($ver, '==') !== false){
+					eval('$versionMatched=(' . floor(floatval($brv)) . $ver . ');');
+				} else {
+					eval('$versionMatched=(' . floatval($brv) . $ver . ');');
+				}
+				break;
+		}
+	} else {
+		$versionMatched = true;
 	}
-	$foo_sys = ($system ? in_array($br->getSystem(), explode(',', $system)) : true);
 
-	return $foo_br && $foo_v && $foo_sys;
+
+	$systemMatched = ($system && $browserMatched && $versionMatched ? in_array($br->getSystem(), explode(',', $system)) : true);
+
+	return $browserMatched && $versionMatched && $systemMatched;
 }

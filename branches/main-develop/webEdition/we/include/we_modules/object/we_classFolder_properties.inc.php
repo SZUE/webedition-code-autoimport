@@ -24,33 +24,31 @@
  */
 require_once(WE_INCLUDES_PATH . 'we_delete_fn.inc.php');
 
-$javascript = '';
-
 if(isset($_REQUEST['do'])){
 	switch($_REQUEST['do']){
 		case 'delete':
-			$javascript .= $we_doc->deleteObjects();
+			$javascript = $we_doc->deleteObjects();
 			break;
 		case 'unpublish':
-			$javascript .= $we_doc->publishObjects(false);
+			$javascript = $we_doc->publishObjects(false);
 			break;
 		case 'publish':
-			$javascript .= $we_doc->publishObjects();
+			$javascript = $we_doc->publishObjects();
 			break;
 		case 'unsearchable':
-			$javascript .= $we_doc->searchableObjects(false);
+			$javascript = $we_doc->searchableObjects(false);
 			break;
 		case 'searchable':
-			$javascript .= $we_doc->searchableObjects();
+			$javascript = $we_doc->searchableObjects();
 			break;
 		case 'copychar':
-			$javascript .= $we_doc->copyCharsetfromClass();
+			$javascript = $we_doc->copyCharsetfromClass();
 			break;
 		case 'copyws':
-			$javascript .= $we_doc->copyWSfromClass();
+			$javascript = $we_doc->copyWSfromClass();
 			break;
 		case 'copytid':
-			$javascript .= $we_doc->copyTIDfromClass();
+			$javascript = $we_doc->copyTIDfromClass();
 			break;
 	}
 }
@@ -61,17 +59,13 @@ we_html_tools::protect();
 we_html_tools::htmlTop();
 
 echo we_html_element::jsScript(JS_DIR . 'windows.js') .
- $we_doc->getSearchJS();
-
-if($javascript != ''){
-	echo we_html_element::jsElement($javascript);
-}
+ $we_doc->getSearchJS() .
+ (isset($javascript) ? we_html_element::jsElement($javascript) : '');
 
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 
-print STYLESHEET .
-	'</head>
-
+echo STYLESHEET .
+ '</head>
 <body class="weEditorBody" onunload="doUnload()">';
 
 
@@ -80,8 +74,6 @@ $_parts = array(
 	array('html' => $we_doc->searchProperties())
 );
 
-echo we_multiIconBox::getHTML('', '100%', $_parts, 30, '', -1, '', '', false) .
- '
-
+echo we_multiIconBox::getHTML('', '100%', $_parts, 30, '', -1, '', '', false) . '
 </body>
 </html>';

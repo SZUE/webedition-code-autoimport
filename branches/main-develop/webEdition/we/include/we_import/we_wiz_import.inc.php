@@ -264,8 +264,7 @@ class we_wizard_import extends we_wizard{
 		$tmpl_root = get_def_ws(TEMPLATES_TABLE);
 		$nav_root = get_def_ws(NAVIGATION_TABLE);
 
-		$hdns =
-			we_html_element::htmlHidden(array('name' => 'v[doc_dir_id]', 'value' => (isset($v['doc_dir_id']) ? $v['doc_dir_id'] : $doc_root))) .
+		$hdns = we_html_element::htmlHidden(array('name' => 'v[doc_dir_id]', 'value' => (isset($v['doc_dir_id']) ? $v['doc_dir_id'] : $doc_root))) .
 			we_html_element::htmlHidden(array('name' => 'v[tpl_dir_id]', 'value' => (isset($v['tpl_dir_id']) ? $v['tpl_dir_id'] : $tmpl_root))) .
 			we_html_element::htmlHidden(array('name' => 'v[doc_dir]', 'value' => (isset($v['doc_dir']) ? $v['doc_dir'] : id_to_path($doc_root)))) .
 			we_html_element::htmlHidden(array('name' => 'v[tpl_dir]', 'value' => (isset($v['tpl_dir']) ? $v['tpl_dir'] : id_to_path($tmpl_root, TEMPLATES_TABLE)))) .
@@ -505,34 +504,35 @@ function toggle(name){
 			return $_return;
 		} else {
 			$_xml_type = weBackupUtil::getXMLImportType($_import_file);
-			if($_xml_type == 'backup'){
-				$_return[0] = '';
+			switch($_xml_type){
+				case 'backup':
+					$_return[0] = '';
 
 				if(permissionhandler::hasPerm('IMPORT')){
-					$_return[1] = we_html_element::jsElement('
+						$_return[1] = we_html_element::jsElement('
 							' . $functions . '
 if(confirm("' . str_replace('"', '\'', g_l('import', '[backup_file_found]') . ' \n\n' . g_l('import', '[backup_file_found_question]')) . '")){
 	top.opener.top.we_cmd("recover_backup");
 	top.close();
 }
 handle_event("previous");');
-				} else {
-					$_return[1] = we_html_element::jsElement(
-							$functions .
-							we_message_reporting::getShowMessageCall(g_l('import', '[backup_file_found]'), we_message_reporting::WE_MESSAGE_ERROR) .
-							'handle_event("previous");');
-				}
-				return $_return;
-			} else if($_xml_type == 'customer'){
-				$_return[1] = we_html_element::jsElement($functions . '
+					} else {
+						$_return[1] = we_html_element::jsElement(
+								$functions .
+								we_message_reporting::getShowMessageCall(g_l('import', '[backup_file_found]'), we_message_reporting::WE_MESSAGE_ERROR) .
+								'handle_event("previous");');
+					}
+					return $_return;
+				case 'customer':
+					$_return[1] = we_html_element::jsElement($functions . '
 							' . we_message_reporting::getShowMessageCall(g_l('import', '[customer_import_file_found]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 							handle_event("previous");');
-				return $_return;
-			} else if($_xml_type == 'unknown'){
-				$_return[1] = we_html_element::jsElement($functions . '
+					return $_return;
+				case 'unknown':
+					$_return[1] = we_html_element::jsElement($functions . '
 							' . we_message_reporting::getShowMessageCall(g_l('import', '[format_unknown]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 							handle_event("previous");');
-				return $_return;
+					return $_return;
 			}
 		}
 
@@ -810,8 +810,7 @@ function handle_event(evt) {
 			$v['docCategories'] = $values['Category'];
 		}
 
-		$hdns =
-			we_html_element::htmlHidden(array('name' => 'v[importDataType]', 'value' => '')) .
+		$hdns = we_html_element::htmlHidden(array('name' => 'v[importDataType]', 'value' => '')) .
 			we_html_element::htmlHidden(array('name' => 'v[import_from]', 'value' => (isset($v['import_from']) ? $v['import_from'] : ''))) .
 			we_html_element::htmlHidden(array('name' => 'v[docCategories]', 'value' => (isset($v['docCategories']) ? $v['docCategories'] : ''))) .
 			we_html_element::htmlHidden(array('name' => 'v[objCategories]', 'value' => (isset($v['objCategories']) ? $v['objCategories'] : ''))) .
@@ -1353,8 +1352,7 @@ function handle_event(evt) {
 			(isset($v['rdo_timestamp']) ? we_html_element::htmlHidden(array('name' => 'v[sTimeStamp]', 'value' => $v['rdo_timestamp'])) : '');
 
 
-		$functions =
-			"function set_button_state() {
+		$functions = "function set_button_state() {
 				top.wizbusy.back_enabled = top.wizbusy.switch_button_state('back', 'back_enabled', 'enabled');
 				top.wizbusy.next_enabled = top.wizbusy.switch_button_state('next', 'next_enabled', " . (($_REQUEST['mode'] != 1) ? "'enabled'" : "'disabled'") . ");
 			}
@@ -1791,8 +1789,7 @@ function handle_event(evt) {
 			$v['is_dynamic'] = $values['IsDynamic'];
 			$v['docCategories'] = $values['Category'];
 		}
-		$hdns =
-			we_html_element::htmlHidden(array('name' => 'v[mode]', 'value' => (isset($v['mode']) ? $v['mode'] : ''))) .
+		$hdns = we_html_element::htmlHidden(array('name' => 'v[mode]', 'value' => (isset($v['mode']) ? $v['mode'] : ''))) .
 			we_html_element::htmlHidden(array('name' => 'v[import_from]', 'value' => $v['import_from'])) .
 			we_html_element::htmlHidden(array('name' => 'v[collision]', 'value' => $v['collision'])) .
 			we_html_element::htmlHidden(array('name' => 'v[rdofloc]', 'value' => $v['rdofloc'])) .
@@ -2172,8 +2169,7 @@ HTS;
 		$attrs = (isset($_REQUEST["attrs"])) ? $_REQUEST["attrs"] : array();
 
 
-		$hdns =
-			$this->getHdns("v", $v) .
+		$hdns = $this->getHdns("v", $v) .
 			(isset($_REQUEST["records"]) ? $this->getHdns("records", $_REQUEST["records"]) : "") .
 			(isset($_REQUEST["we_flds"]) ? $this->getHdns("we_flds", $_REQUEST["we_flds"]) : "") .
 			(isset($_REQUEST["attrs"]) ? $this->getHdns("attrs", $_REQUEST["attrs"]) : "") .
@@ -2449,4 +2445,3 @@ function handle_event(evt) {
 	}
 
 }
-
