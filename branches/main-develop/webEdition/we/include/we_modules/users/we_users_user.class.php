@@ -1805,7 +1805,7 @@ function delElement(elvalues,elem) {
 
 
 		$_charset = new we_html_select(array('name' => $this->Name . '_Preference_BackendCharset', 'class' => 'weSelect', 'onChange' => 'top.content.setHot();'));
-		$c = charsetHandler::getAvailCharsets();
+		$c = we_base_charsetHandler::getAvailCharsets();
 		foreach($c as $char){
 			$_charset->addOption($char, $char);
 		}

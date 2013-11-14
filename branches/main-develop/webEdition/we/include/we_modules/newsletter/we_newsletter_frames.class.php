@@ -2849,7 +2849,7 @@ self.focus();');
 	function getHTMLCharsetTable(){
 		$value = (isset($this->View->newsletter->Charset) ? $this->View->newsletter->Charset : "");
 
-		$charsetHandler = new charsetHandler();
+		$charsetHandler = new we_base_charsetHandler();
 
 		$charsets = $charsetHandler->getCharsetsForTagWizzard();
 		asort($charsets);

@@ -647,7 +647,7 @@ class we_objectFile extends we_document{
 	 * @param	boolean
 	 */
 	function formCharset($withHeadline = false){
-		$_charsetHandler = new charsetHandler();
+		$_charsetHandler = new we_base_charsetHandler();
 
 		$_charsets = $_charsetHandler->getCharsetsForTagWizzard();
 		$_charsets[''] = '';

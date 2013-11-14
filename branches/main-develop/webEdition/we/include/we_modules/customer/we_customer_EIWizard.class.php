@@ -717,7 +717,7 @@ class we_customer_EIWizard{
 				$_file_encoding->addOption('mac', g_l('modules_customer', '[mac]'));
 				$_file_encoding->selectOption($csv_lineend);
 
-				$_charsetHandler = new charsetHandler();
+				$_charsetHandler = new we_base_charsetHandler();
 				$_charsets = $_charsetHandler->getCharsetsForTagWizzard();
 				//$charset = $GLOBALS['WE_BACKENDCHARSET'];
 				//$GLOBALS['weDefaultCharset'] = get_value("default_charset");

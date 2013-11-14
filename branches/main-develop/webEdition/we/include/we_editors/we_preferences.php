@@ -668,7 +668,7 @@ function build_dialog($selected_setting = 'ui'){
 			}
 
 			$BackendCharset = new we_html_select(array('name' => 'newconf[BackendCharset]', 'class' => 'weSelect', 'onChange' => "document.getElementById('langnote').style.display='block'"));
-			$c = charsetHandler::getAvailCharsets();
+			$c = we_base_charsetHandler::getAvailCharsets();
 			foreach($c as $char){
 				$BackendCharset->addOption($char, $char);
 			}
@@ -678,7 +678,7 @@ function build_dialog($selected_setting = 'ui'){
 
 			// DEFAULT CHARSET
 			if(we_base_preferences::userIsAllowed('DEFAULT_CHARSET')){
-				$_charsetHandler = new charsetHandler();
+				$_charsetHandler = new we_base_charsetHandler();
 				$_charsets = $_charsetHandler->getCharsetsForTagWizzard();
 				$charset = $GLOBALS['WE_BACKENDCHARSET'];
 				$GLOBALS['weDefaultCharset'] = get_value('DEFAULT_CHARSET');

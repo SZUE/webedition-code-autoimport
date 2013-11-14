@@ -67,7 +67,6 @@ abstract class we_autoloader{
 	);
 	private static $classes = array(
 		'we_classes' => array(
-			'charsetHandler' => 'charsetHandler.class.php',
 			'Console_Getopt' => 'Getopt.php',
 			'copyFolderFinishFrag' => 'we_copyFolderFinishFrag.class.php',
 			'copyFolderFrag' => 'we_copyFolderFrag.class.php',

@@ -420,7 +420,7 @@ class we_webEditionDocument extends we_textContentDocument{
 	 * @return string
 	 */
 	function getCharsetSelect(){
-		$_charsetHandler = new charsetHandler();
+		$_charsetHandler = new we_base_charsetHandler();
 
 		if(isset($GLOBALS["meta"]["Charset"])){ //	charset-tag available
 			$name = 'Charset';

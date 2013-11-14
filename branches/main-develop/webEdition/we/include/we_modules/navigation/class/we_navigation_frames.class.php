@@ -1551,7 +1551,7 @@ function ' . $prefix . 'setLinkSelection(value){
 	function getHTMLCharsetTable(){
 		$value = ((isset($this->Model->Charset) && $this->Model->Charset) ? $this->Model->Charset : $GLOBALS['WE_BACKENDCHARSET']);
 
-		$charsetHandler = new charsetHandler();
+		$charsetHandler = new we_base_charsetHandler();
 
 		$charsets = $charsetHandler->getCharsetsForTagWizzard();
 		asort($charsets);

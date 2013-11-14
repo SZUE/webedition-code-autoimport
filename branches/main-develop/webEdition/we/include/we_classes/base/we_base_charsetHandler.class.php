@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class charsetHandler{
+class we_base_charsetHandler{
 
 	var $charsets = array();
 

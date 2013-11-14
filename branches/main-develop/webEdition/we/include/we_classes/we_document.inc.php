@@ -1506,7 +1506,7 @@ class we_document extends we_root{
 	function formCharset($withHeadline = false){
 		$value = (isset($this->elements['Charset']['dat']) ? $this->elements['Charset']['dat'] : '');
 
-		$_charsetHandler = new charsetHandler();
+		$_charsetHandler = new we_base_charsetHandler();
 
 		$_charsets = $_charsetHandler->getCharsetsForTagWizzard();
 		$_charsets[''] = '';

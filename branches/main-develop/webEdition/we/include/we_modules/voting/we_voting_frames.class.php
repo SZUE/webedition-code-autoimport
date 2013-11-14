@@ -357,7 +357,7 @@ class we_voting_frames extends weModuleFrames{
 			$lineend->addOption('unix', g_l('export', "[unix]"));
 			$lineend->addOption('mac', g_l('export', "[mac]"));
 
-			$_charsetHandler = new charsetHandler();
+			$_charsetHandler = new we_base_charsetHandler();
 			$_charsets = $_charsetHandler->getCharsetsForTagWizzard();
 			$charset = $GLOBALS['WE_BACKENDCHARSET'];
 			//$GLOBALS['weDefaultCharset'] = get_value("default_charset");
