@@ -42,12 +42,7 @@ class weBinary{
 	var $linkData = true;
 
 	function __construct($id = 0){
-		$this->Pseudo = "weBinary";
-		$this->persistent_slots = array("ID", "ClassName", "Path", "Data", "SeqN");
-		foreach($this->persistent_slots as $slot)
-			$this->$slot = "";
-		$this->SeqN = 0;
-		$this->ClassName = "weBinary";
+		$this->persistent_slots = array('ID', 'ClassName', 'Path', 'Data', 'SeqN');
 		$this->db = new DB_WE();
 		if($id){
 			$this->load($id);
@@ -56,7 +51,7 @@ class weBinary{
 
 	function load($id, $loadData = true){
 		$this->ID = $id;
-		$path = f("SELECT Path FROM " . FILE_TABLE . " WHERE ID=" . intval($id), 'Path', $this->db);
+		$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), 'Path', $this->db);
 		if($path){
 			$this->Path = $path;
 			if($this->Path && $loadData){
