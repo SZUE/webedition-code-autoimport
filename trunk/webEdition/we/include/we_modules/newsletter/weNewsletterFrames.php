@@ -173,28 +173,28 @@ class weNewsletterFrames extends weModuleFrames{
 			);
 
 		$js = we_html_element::jsElement('
-				function setTab(tab) {
-					switch (tab) {
-						case 0:
-							top.content.editor.edbody.we_cmd("switchPage",0);
-							break;
+function setTab(tab) {
+	switch (tab) {
+		case 0:
+			top.content.editor.edbody.we_cmd("switchPage",0);
+			break;
 
-						case 1:
-							top.content.editor.edbody.we_cmd("switchPage",1);
-							break;
+		case 1:
+			top.content.editor.edbody.we_cmd("switchPage",1);
+			break;
 
-						case 2:
-							top.content.editor.edbody.we_cmd("switchPage",2);
-							break;
+		case 2:
+			top.content.editor.edbody.we_cmd("switchPage",2);
+			break;
 
-						case 3: //Tab Auswertung
-							top.content.editor.edbody.we_cmd("switchPage",3);
-							break;
-					}
+		case 3: //Tab Auswertung
+			top.content.editor.edbody.we_cmd("switchPage",3);
+			break;
+	}
 
-				}
-				top.content.hloaded = 1;
-		');
+}
+top.content.hloaded = 1;
+');
 
 		$we_tabs = new we_tabs();
 
@@ -251,75 +251,75 @@ class weNewsletterFrames extends weModuleFrames{
 
 		$js = $this->View->getJSFooterCode() .
 			we_html_element::jsElement('
-			function sprintf() {
-				if (!arguments || arguments.length < 1) {
-					return;
-				}
+function sprintf() {
+	if (!arguments || arguments.length < 1) {
+		return;
+	}
 
-				var argum = arguments[0];
-				var regex = /([^%]*)%(%|d|s)(.*)/;
-				var arr = new Array();
-				var iterator = 0;
-				var matches = 0;
+	var argum = arguments[0];
+	var regex = /([^%]*)%(%|d|s)(.*)/;
+	var arr = new Array();
+	var iterator = 0;
+	var matches = 0;
 
-				while (arr = regex.exec(argum)) {
-					var left = arr[1];
-					var type = arr[2];
-					var right = arr[3];
+	while (arr = regex.exec(argum)) {
+		var left = arr[1];
+		var type = arr[2];
+		var right = arr[3];
 
-					matches++;
-					iterator++;
+		matches++;
+		iterator++;
 
-					var replace = arguments[iterator];
+		var replace = arguments[iterator];
 
-					if (type == "d") {
-						replace = parseInt(param) ? parseInt(param) : 0;
-					} else if (type == "s") {
-						replace = arguments[iterator];
-					}
+		if (type == "d") {
+			replace = parseInt(param) ? parseInt(param) : 0;
+		} else if (type == "s") {
+			replace = arguments[iterator];
+		}
 
-					argum = left + replace + right;
-				}
-				return argum;
-			}
+		argum = left + replace + right;
+	}
+	return argum;
+}
 
-			function addGroup(text, val) {
-			   ' . ($group ? '' : 'document.we_form.gview[document.we_form.gview.length] = new Option(text,val);' ) . '
-			}
+function addGroup(text, val) {
+	 ' . ($group ? '' : 'document.we_form.gview[document.we_form.gview.length] = new Option(text,val);' ) . '
+}
 
-			function delGroup(val) {
-			   document.we_form.gview[val] = null;
-			}
+function delGroup(val) {
+	 document.we_form.gview[val] = null;
+}
 
-			function populateGroups() {
-				if (top.content.editor.edbody.getGroupsNum) {
+function populateGroups() {
+	if (top.content.editor.edbody.getGroupsNum) {
 
-					if (top.content.editor.edbody.loaded) {
-						var num=top.content.editor.edbody.getGroupsNum();
+		if (top.content.editor.edbody.loaded) {
+			var num=top.content.editor.edbody.getGroupsNum();
 
-							if (!num) {
-								num = 1;
-							} else {
-								num++;
-							}
-
-							addGroup(sprintf("' . g_l('modules_newsletter', '[all_list]') . '",0),0);
-
-							for (i = 1; i < num; i++) {
-								addGroup(sprintf("' . g_l('modules_newsletter', '[mailing_list]') . '",i),i);
-							}
-					} else {
-						setTimeout("populateGroups()",100);
-					}
+				if (!num) {
+					num = 1;
 				} else {
-					setTimeout("populateGroups()",100);
+					num++;
 				}
-			}
 
-			function we_save() {
-			    setTimeout(\'top.content.we_cmd("save_newsletter")\',100);
+				addGroup(sprintf("' . g_l('modules_newsletter', '[all_list]') . '",0),0);
 
-			}');
+				for (i = 1; i < num; i++) {
+					addGroup(sprintf("' . g_l('modules_newsletter', '[mailing_list]') . '",i),i);
+				}
+		} else {
+			setTimeout("populateGroups()",100);
+		}
+	} else {
+		setTimeout("populateGroups()",100);
+	}
+}
+
+function we_save() {
+		setTimeout(\'top.content.we_cmd("save_newsletter")\',100);
+
+}');
 
 		$select = new we_html_select(array("name" => "gview"));
 
@@ -352,15 +352,15 @@ class weNewsletterFrames extends weModuleFrames{
 		}
 
 		$post_js = we_html_element::jsElement('
-		if(typeof(self.document.we_form.htmlmail_check)!="undefined") {
-			if(top.opener.top.nlHTMLMail) {
-				self.document.we_form.htmlmail_check.checked = true;
-				document.we_form.hm.value=1;
-			} else {
-				self.document.we_form.htmlmail_check.checked = false;
-				document.we_form.hm.value=0;
-			}
-		}');
+if(typeof(self.document.we_form.htmlmail_check)!="undefined") {
+	if(top.opener.top.nlHTMLMail) {
+		self.document.we_form.htmlmail_check.checked = true;
+		document.we_form.hm.value=1;
+	} else {
+		self.document.we_form.htmlmail_check.checked = false;
+		document.we_form.hm.value=0;
+	}
+}');
 
 		$body = we_html_element::htmlBody(array("bgcolor" => "white", "background" => IMAGE_DIR . "edit/editfooterback.gif", "marginwidth" => 0, "marginheight" => 0, "leftmargin" => 0, "topmargin" => 0, "onload" => "setTimeout('populateGroups()',100)"), we_html_element::htmlForm(array(), we_html_element::htmlHidden(array("name" => "hm", "value" => 0)) .
 					$table2->getHtml() .
@@ -516,8 +516,7 @@ class weNewsletterFrames extends weModuleFrames{
 				'');
 
 
-		$hiddens =
-			we_html_element::htmlHidden(array("name" => "pnt", "value" => "cmd")) .
+		$hiddens = we_html_element::htmlHidden(array("name" => "pnt", "value" => "cmd")) .
 			we_html_element::htmlHidden(array("name" => "ncmd", "value" => "")) .
 			we_html_element::htmlHidden(array("name" => "nopt", "value" => ""));
 
@@ -1181,13 +1180,13 @@ class weNewsletterFrames extends weModuleFrames{
 						we_html_element::jsScript(JS_DIR . "we_textarea.js") .
 						we_html_tools::htmlFormElementTable(we_forms::weTextarea("block" . $counter . "_Html", $block->Html, $attribs, "", "", true, "", true, true, false, true, $this->View->newsletter->Charset), g_l('modules_newsletter', '[block_html]')) .
 						we_html_element::jsElement('
-					function extraInit(){
-							if(typeof weWysiwygInitializeIt == "function"){
-								weWysiwygInitializeIt();
-							}
-							loaded = 1;
-						}
-						window.onload=extraInit;');
+function extraInit(){
+	if(typeof weWysiwygInitializeIt == "function"){
+		weWysiwygInitializeIt();
+	}
+	loaded = 1;
+}
+window.onload=extraInit;');
 					break;
 
 				case weNewsletterBlock::ATTACHMENT:
@@ -1321,107 +1320,98 @@ class weNewsletterFrames extends weModuleFrames{
 			we_html_element::jsScript(WE_INCLUDES_DIR . 'we_language/' . $GLOBALS["WE_LANGUAGE"] . "/calendar.js") .
 			we_html_element::jsScript(JS_DIR . "jscalendar/calendar-setup.js") .
 			we_html_element::jsElement('
-					if (top.content.get_focus) {
-						self.focus();
-					} else {
-						top.content.get_focus=1;
-					}
+if (top.content.get_focus) {
+	self.focus();
+} else {
+	top.content.get_focus=1;
+}
 
-					var countSetTitle = 0;
-					function setHeaderTitle() {
-						if(parent.edheader && parent.edheader.setTitlePath) {
-							if(preObj  = document.getElementById("yuiAcInputPathGroup")) {
-								parent.edheader.hasPathGroup = true;
-								parent.edheader.setPathGroup(preObj.value);
-							} else {
-								parent.edheader.hasPathGroup = false;
-							}
+var countSetTitle = 0;
+function setHeaderTitle() {
+	if(parent.edheader && parent.edheader.setTitlePath) {
+		if(preObj  = document.getElementById("yuiAcInputPathGroup")) {
+			parent.edheader.hasPathGroup = true;
+			parent.edheader.setPathGroup(preObj.value);
+		} else {
+			parent.edheader.hasPathGroup = false;
+		}
 
-							if(postObj = document.getElementById("yuiAcInputPathName")) {
-								parent.edheader.hasPathName = true;
-								parent.edheader.setPathName(postObj.value);
-							} else {
-								parent.edheader.hasPathName = false;
-							}
-							parent.edheader.setTitlePath();
-							countSetTitle = 0;
-						} else {
-							if(countSetTitle < 30) {
-								setTimeout("setHeaderTitle()",100);
-								countSetTitle++;
-							/* @dd: code from version 5.0.0.7, generated on bugfix merge: */
-							/* please remove if not needed any more */
-							/*
-							var elem1 = document.getElementById("fieldPathGroup");
-							var elem2 = document.getElementById("fieldPathName");
-							if (elem1 && elem2) {
-								pre = document.getElementById("fieldPathGroup").value;
-								post = document.getElementById("fieldPathName").value;
-								if(parent.edheader && parent.edheader.setTitlePath) {
-									parent.edheader.hasPathGroup = true;
-									parent.edheader.setPathGroup(pre);
-									parent.edheader.hasPathName = true;
-									parent.edheader.setPathName(post);
-									parent.edheader.setTitlePath();
-									countSetTitle = 0;
-								} else {
-									if(countSetTitle < 30) {
-										setTimeout("setHeaderTitle()",100);
-										countSetTitle++;
-									}
-								}
-							*/
-							}
-						}
-					}
-
-					function weShowMailsByStatus(status, group) {
-						var maillist = document.getElementById("we_recipient"+group).options;
-						switch(status) {
-							case "0":
-								for(var i=0; i<maillist.length; i++) {
-									maillist[i].style.display="";
-								}
-								break;
-							case "1":
-								for(var i=0; i<maillist.length; i++) {
-									if (maillist[i].className == "markValid") {
-										maillist[i].style.display="none";
-									}
-								}
-								break;
-							default :
-								//alert(status);
-						}
-					}
-
-			function calendarSetup(group, x){
-		    for(i=0;i<=x;i++) {
-		     if(document.getElementById("date_picker_from_"+group+"_"+i+"") != null) {
-		      Calendar.setup({inputField:"filter_fieldvalue_"+group+"_"+i+"",ifFormat:"%d.%m.%Y",button:"date_picker_from_"+group+"_"+i+"",align:"Tl",singleClick:true});
-		     }
-		    }
-		   }
-
-		  function changeFieldValue(val,valueField) {
-
-
-		  	top.content.hot=1;
-			document.we_form.ncmd.value=arguments[0];
-			document.we_form.ngroup.value=arguments[1];
-
-			if(val=="MemberSince" || val=="LastLogin" || val=="LastAccess") {
-				document.getElementById(valueField).value = "";
+		if(postObj = document.getElementById("yuiAcInputPathName")) {
+			parent.edheader.hasPathName = true;
+			parent.edheader.setPathName(postObj.value);
+		} else {
+			parent.edheader.hasPathName = false;
+		}
+		parent.edheader.setTitlePath();
+		countSetTitle = 0;
+	} else {
+		if(countSetTitle < 30) {
+			setTimeout("setHeaderTitle()",100);
+			countSetTitle++;
+		/* @dd: code from version 5.0.0.7, generated on bugfix merge: */
+		/* please remove if not needed any more */
+		/*
+		var elem1 = document.getElementById("fieldPathGroup");
+		var elem2 = document.getElementById("fieldPathName");
+		if (elem1 && elem2) {
+			pre = document.getElementById("fieldPathGroup").value;
+			post = document.getElementById("fieldPathName").value;
+			if(parent.edheader && parent.edheader.setTitlePath) {
+				parent.edheader.hasPathGroup = true;
+				parent.edheader.setPathGroup(pre);
+				parent.edheader.hasPathName = true;
+				parent.edheader.setPathName(post);
+				parent.edheader.setTitlePath();
+				countSetTitle = 0;
+			} else {
+				if(countSetTitle < 30) {
+					setTimeout("setHeaderTitle()",100);
+					countSetTitle++;
+				}
 			}
-			submitForm();
+		*/
+		}
+	}
+}
 
+function weShowMailsByStatus(status, group) {
+	var maillist = document.getElementById("we_recipient"+group).options;
+	switch(status) {
+		case "0":
+			for(var i=0; i<maillist.length; i++) {
+				maillist[i].style.display="";
+			}
+			break;
+		case "1":
+			for(var i=0; i<maillist.length; i++) {
+				if (maillist[i].className == "markValid") {
+					maillist[i].style.display="none";
+				}
+			}
+			break;
+		default :
+			//alert(status);
+	}
+}
 
-		   }
+function calendarSetup(group, x){
+	for(i=0;i<=x;i++) {
+	 if(document.getElementById("date_picker_from_"+group+"_"+i+"") != null) {
+		Calendar.setup({inputField:"filter_fieldvalue_"+group+"_"+i+"",ifFormat:"%d.%m.%Y",button:"date_picker_from_"+group+"_"+i+"",align:"Tl",singleClick:true});
+	 }
+	}
+ }
 
-		');
+function changeFieldValue(val,valueField) {
+	top.content.hot=1;
+	document.we_form.ncmd.value=arguments[0];
+	document.we_form.ngroup.value=arguments[1];
 
-
-
+	if(val=="MemberSince" || val=="LastLogin" || val=="LastAccess") {
+		document.getElementById(valueField).value = "";
+	}
+	submitForm();
+}');
 
 		$css = we_html_element::cssElement("
 	.markNotValid { background: #FFCCCC }
@@ -1493,16 +1483,16 @@ class weNewsletterFrames extends weModuleFrames{
 			if(isset($_REQUEST[$k])){
 				$$v = $_REQUEST[$k];
 			} else if($v == "htmlmail"){
-				$$v = f("SELECT  pref_value FROM " . NEWSLETTER_PREFS_TABLE . " WHERE pref_name='default_htmlmail'", "pref_value", $this->db);
+				$$v = f('SELECT  pref_value FROM ' . NEWSLETTER_PREFS_TABLE . " WHERE pref_name='default_htmlmail'", "pref_value", $this->db);
 			} else {
-				$$v = "";
+				$$v = '';
 			}
 		}
 
-		$salutation = rawurldecode(str_replace("[:plus:]", "+", $salutation));
-		$title = rawurldecode(str_replace("[:plus:]", "+", $title));
-		$firstname = rawurldecode(str_replace("[:plus:]", "+", $firstname));
-		$lastname = rawurldecode(str_replace("[:plus:]", "+", $lastname));
+		$salutation = rawurldecode(str_replace('[:plus:]', '+', $salutation));
+		$title = rawurldecode(str_replace('[:plus:]', '+', $title));
+		$firstname = rawurldecode(str_replace('[:plus:]', '+', $firstname));
+		$lastname = rawurldecode(str_replace('[:plus:]', '+', $lastname));
 
 		$js = 'function save(){';
 
@@ -1634,91 +1624,91 @@ class weNewsletterFrames extends weModuleFrames{
 
 		$js = $this->View->getJSProperty() .
 			we_html_element::jsElement('
-			function addBlack() {
-				var p=document.forms[0].elements["blacklist_sel"];
-				var newRecipient=prompt("' . g_l('modules_newsletter', '[add_email]') . '","");
+function addBlack() {
+	var p=document.forms[0].elements["blacklist_sel"];
+	var newRecipient=prompt("' . g_l('modules_newsletter', '[add_email]') . '","");
 
-				if (newRecipient != null) {
-					if (newRecipient.length > 0) {
-						if (newRecipient.length > 255 ) {
-							' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[email_max_len]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-							return;
-						}
-
-						if (!inSelectBox(p,newRecipient)) {
-							addElement(p,"#",newRecipient,true);
-						} else {
-							' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[email_exists]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-						}
-					} else {
-						' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[no_email]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-					}
-				}
+	if (newRecipient != null) {
+		if (newRecipient.length > 0) {
+			if (newRecipient.length > 255 ) {
+				' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[email_max_len]'), we_message_reporting::WE_MESSAGE_ERROR) . '
+				return;
 			}
 
-			function deleteBlack() {
-				var p=document.forms[0].elements["blacklist_sel"];
-
-				if (p.selectedIndex >= 0) {
-					if (confirm("' . g_l('modules_newsletter', '[email_delete]') . '")) {
-						p.options[p.selectedIndex] = null;
-					}
-				}
+			if (!inSelectBox(p,newRecipient)) {
+				addElement(p,"#",newRecipient,true);
+			} else {
+				' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[email_exists]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 			}
+		} else {
+			' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[no_email]'), we_message_reporting::WE_MESSAGE_ERROR) . '
+		}
+	}
+}
 
-			function deleteallBlack() {
-				var p=document.forms[0].elements["blacklist_sel"];
+function deleteBlack() {
+	var p=document.forms[0].elements["blacklist_sel"];
 
-				if (confirm("' . g_l('modules_newsletter', '[email_delete_all]') . '")) {
-					p.options.length = 0;
+	if (p.selectedIndex >= 0) {
+		if (confirm("' . g_l('modules_newsletter', '[email_delete]') . '")) {
+			p.options[p.selectedIndex] = null;
+		}
+	}
+}
+
+function deleteallBlack() {
+	var p=document.forms[0].elements["blacklist_sel"];
+
+	if (confirm("' . g_l('modules_newsletter', '[email_delete_all]') . '")) {
+		p.options.length = 0;
+	}
+}
+
+function editBlack() {
+	var p=document.forms[0].elements["blacklist_sel"];
+	var index=p.selectedIndex;
+
+	if (index >= 0) {
+		var editRecipient=prompt("' . g_l('modules_newsletter', '[edit_email]') . '",p.options[index].text);
+
+		if (editRecipient != null) {
+			if (editRecipient != "") {
+				if (editRecipient.length > 255 ) {
+					' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[email_max_len]'), we_message_reporting::WE_MESSAGE_ERROR) . '
+					return;
 				}
+				p.options[index].text = editRecipient;
+			} else {
+				' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[no_email]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 			}
+		}
+	}
+}
 
-			function editBlack() {
-				var p=document.forms[0].elements["blacklist_sel"];
-				var index=p.selectedIndex;
+function set_import(val) {
+	document.we_form.sib.value=val;
 
-				if (index >= 0) {
-					var editRecipient=prompt("' . g_l('modules_newsletter', '[edit_email]') . '",p.options[index].text);
+	if (val == 1) {
+		document.we_form.seb.value=0;
+	}
 
-					if (editRecipient != null) {
-						if (editRecipient != "") {
-							if (editRecipient.length > 255 ) {
-								' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[email_max_len]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-								return;
-							}
-							p.options[index].text = editRecipient;
-						} else {
-							' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[no_email]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-						}
-					}
-				}
-			}
+	PopulateVar(document.we_form.blacklist_sel,document.we_form.black_list);
+	submitForm("black_list");
+}
 
-			function set_import(val) {
-				document.we_form.sib.value=val;
+function set_export(val) {
+	document.we_form.seb.value=val;
 
-				if (val == 1) {
-					document.we_form.seb.value=0;
-				}
+	if (val == 1) {
+		document.we_form.sib.value=0;
+	}
 
-				PopulateVar(document.we_form.blacklist_sel,document.we_form.black_list);
-				submitForm("black_list");
-			}
+	PopulateVar(document.we_form.blacklist_sel,document.we_form.black_list);
+	submitForm("black_list");
+}
 
-			function set_export(val) {
-				document.we_form.seb.value=val;
-
-				if (val == 1) {
-					document.we_form.sib.value=0;
-				}
-
-				PopulateVar(document.we_form.blacklist_sel,document.we_form.black_list);
-				submitForm("black_list");
-			}
-
-			self.focus();
-		');
+self.focus();
+');
 
 		if(isset($_REQUEST["ncmd"])){
 			if($_REQUEST["ncmd"] == "import_black"){
@@ -1905,20 +1895,14 @@ class weNewsletterFrames extends weModuleFrames{
 			$table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 7, 1);
 
 			$table->setCol(0, 0, array(), we_html_tools::getPixel(5, 5));
-
 			$table->setCol(1, 0, array("class" => "defaultfont"), sprintf(g_l('modules_newsletter', '[csv_export]'), $link));
-
 			$table->setCol(2, 0, array(), we_html_tools::getPixel(5, 10));
-
 			$table->setCol(3, 0, array("class" => "defaultfont"), weBackupWizard::getDownloadLinkText());
 			$table->setCol(4, 0, array(), we_html_tools::getPixel(5, 10));
-			$table->setCol(5, 0, array("class" => "defaultfont"), we_html_element::htmlA(array("href" => $down), g_l('modules_newsletter', '[csv_download]')
-				)
-			);
+			$table->setCol(5, 0, array("class" => "defaultfont"), we_html_element::htmlA(array("href" => $down), g_l('modules_newsletter', '[csv_download]')));
 			$table->setCol(6, 0, array(), we_html_tools::getPixel(100, 5));
 
 			if($mode == 1){
-
 				$table->addRow(3);
 				$table->setCol(7, 0, array(), we_html_tools::getPixel(100, 10));
 				$table->setCol(8, 0, array("class" => "defaultfont"), we_html_element::htmlB(g_l('modules_newsletter', '[clearlog_note]')));
@@ -2128,59 +2112,59 @@ class weNewsletterFrames extends weModuleFrames{
 
 		$js = $this->View->getJSProperty() .
 			we_html_element::jsElement('
-			self.focus();
-			function editEmailFile(eid,email,htmlmail,salutation,title,firstname,lastname){
-				new jsWindow("' . $this->frameset . '?pnt=eemail&eid="+eid+"&etyp=2&email="+email+"&htmlmail="+htmlmail+"&salutation="+salutation+"&title="+title+"&firstname="+firstname+"&lastname="+lastname,"edit_email",-1,-1,430,270,true,true,true,true);
-			}
+self.focus();
+function editEmailFile(eid,email,htmlmail,salutation,title,firstname,lastname){
+	new jsWindow("' . $this->frameset . '?pnt=eemail&eid="+eid+"&etyp=2&email="+email+"&htmlmail="+htmlmail+"&salutation="+salutation+"&title="+title+"&firstname="+firstname+"&lastname="+lastname,"edit_email",-1,-1,430,270,true,true,true,true);
+}
 
-			function setAndSave(eid,email,htmlmail,salutation,title,firstname,lastname){
+function setAndSave(eid,email,htmlmail,salutation,title,firstname,lastname){
 
-				var fr=document.we_form;
-				fr.nrid.value=eid;
-				fr.email.value=email;
-				fr.htmlmail.value=htmlmail;
-				fr.salutation.value=salutation;
-				fr.title.value=title;
-				fr.firstname.value=firstname;
-				fr.lastname.value=lastname;
+	var fr=document.we_form;
+	fr.nrid.value=eid;
+	fr.email.value=email;
+	fr.htmlmail.value=htmlmail;
+	fr.salutation.value=salutation;
+	fr.title.value=title;
+	fr.firstname.value=firstname;
+	fr.lastname.value=lastname;
 
-				fr.ncmd.value="save_email_file";
+	fr.ncmd.value="save_email_file";
 
-				submitForm("edit_file");
+	submitForm("edit_file");
 
-			}
+}
 
-			function listFile(){
-				var fr=document.we_form;
-				fr.nrid.value="";
-				fr.email.value="";
-				fr.htmlmail.value="";
-				fr.salutation.value="";
-				fr.title.value="";
-				fr.firstname.value="";
-				fr.lastname.value="";
-				fr.offset.value=0;
+function listFile(){
+	var fr=document.we_form;
+	fr.nrid.value="";
+	fr.email.value="";
+	fr.htmlmail.value="";
+	fr.salutation.value="";
+	fr.title.value="";
+	fr.firstname.value="";
+	fr.lastname.value="";
+	fr.offset.value=0;
 
-				submitForm("edit_file");
-			}
+	submitForm("edit_file");
+}
 
-			function delEmailFile(eid,email){
-				var fr=document.we_form;
-				if(confirm(sprintf("' . g_l('modules_newsletter', '[del_email_file]') . '",email))){
-					fr.nrid.value=eid;
-					fr.ncmd.value="delete_email_file";
-					submitForm("edit_file");
-				}
-			}
+function delEmailFile(eid,email){
+	var fr=document.we_form;
+	if(confirm(sprintf("' . g_l('modules_newsletter', '[del_email_file]') . '",email))){
+		fr.nrid.value=eid;
+		fr.ncmd.value="delete_email_file";
+		submitForm("edit_file");
+	}
+}
 
-			function postSelectorSelect(wePssCmd) {
-				switch(wePssCmd) {
-					case "selectFile":
-						listFile();
-						break;
-				}
-			}
-		');
+function postSelectorSelect(wePssCmd) {
+	switch(wePssCmd) {
+		case "selectFile":
+			listFile();
+			break;
+	}
+}
+');
 
 
 		$close = we_button::create_button("close", "javascript:self.close()");
@@ -2197,12 +2181,9 @@ class weNewsletterFrames extends weModuleFrames{
 
 		$nextprev = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 1, 5);
 
-		if($offset){
-			$colcontent = we_button::create_button("back", "javascript:document.we_form.offset.value=" . ($offset - $numRows) . ";submitForm('edit_file');");
-		} else {
-			$colcontent = we_button::create_button("back", "#", false, 100, 22, "", "", true);
-		}
-
+		$colcontent = ($offset ?
+				we_button::create_button("back", "javascript:document.we_form.offset.value=" . ($offset - $numRows) . ";submitForm('edit_file');") :
+				we_button::create_button("back", "#", false, 100, 22, "", "", true));
 
 		$nextprev->setCol(0, 0, array(), $colcontent);
 
@@ -2223,8 +2204,7 @@ class weNewsletterFrames extends weModuleFrames{
 				$anz;
 		}
 
-		$nextprev->setCol(0, 2, array("class" => "defaultfont"), we_html_element::htmlB($colcontent)
-		);
+		$nextprev->setCol(0, 2, array("class" => "defaultfont"), we_html_element::htmlB($colcontent));
 
 		$nextprev->setCol(0, 3, array(), we_html_tools::getPixel(10, 5));
 
@@ -2270,9 +2250,9 @@ class weNewsletterFrames extends weModuleFrames{
 				}
 			}
 
-			$out = we_html_element::htmlDiv(array("class" => "middlefontgray", "align" => "center"), "--&nbsp;" . $_nlMessage . "&nbsp;--" . $selectStatus2);
-			$add = we_button::create_button("image:function_plus", "javascript:editEmailFile(" . count($emails) . ",'','','','','','')");
-			$out .= "<br/><br/>" . $add;
+			$out = we_html_element::htmlDiv(array("class" => "middlefontgray", "align" => "center"), "--&nbsp;" . $_nlMessage . "&nbsp;--" . $selectStatus2)
+				. '<br/><br/>' .
+				we_button::create_button("image:function_plus", "javascript:editEmailFile(" . count($emails) . ",'','','','','','')");
 		}
 
 
@@ -2315,13 +2295,13 @@ class weNewsletterFrames extends weModuleFrames{
 		}
 
 		$js = we_html_element::jsElement('
-			function clearLog(){
-					var f = self.document.we_form;
-					f.action = "' . $this->frameset . '";
-					f.method = "post";
-					f.submit();
-			}
-		');
+function clearLog(){
+		var f = self.document.we_form;
+		f.action = "' . $this->frameset . '";
+		f.method = "post";
+		f.submit();
+}
+');
 
 		$csv = "";
 		$this->View->db->query("SELECT " . NEWSLETTER_TABLE . ".Text as NewsletterName, " . NEWSLETTER_LOG_TABLE . ".* FROM " . NEWSLETTER_TABLE . "," . NEWSLETTER_LOG_TABLE . " WHERE " . NEWSLETTER_TABLE . ".ID=" . NEWSLETTER_LOG_TABLE . ".NewsletterID;");
@@ -2379,27 +2359,27 @@ class weNewsletterFrames extends weModuleFrames{
 
 		$head = we_html_element::jsScript(JS_DIR . "windows.js") .
 			we_html_element::jsElement('
-			function yes(){
-				doSend(' . $_offset . ',' . $_step . ');
-			}
+function yes(){
+	doSend(' . $_offset . ',' . $_step . ');
+}
 
-			function no(){
-				doSend(0,0);
-			}
-			function cancel(){
-				self.close();
-			}
+function no(){
+	doSend(0,0);
+}
+function cancel(){
+	self.close();
+}
 
-			function ask(start,group){
-				new jsWindow("' . $this->View->frameset . '?pnt=qsend&start="+start+"&grp="+group,"send_question",-1,-1,400,200,true,true,true,false);
-			}
+function ask(start,group){
+	new jsWindow("' . $this->View->frameset . '?pnt=qsend&start="+start+"&grp="+group,"send_question",-1,-1,400,200,true,true,true,false);
+}
 
-			function doSend(start,group){
-				self.focus();
-				top.send_cmd.location="' . $this->frameset . '?pnt=send_cmd&nid=' . $nid . '&test=' . $test . '&blockcache=' . $ret["blockcache"] . '&emailcache=' . $ret["emailcache"] . '&ecount=' . $ret["ecount"] . '&gcount=' . $ret["gcount"] . '&start="+start+"&egc="+group;
-			}
-			self.focus();
-		');
+function doSend(start,group){
+	self.focus();
+	top.send_cmd.location="' . $this->frameset . '?pnt=send_cmd&nid=' . $nid . '&test=' . $test . '&blockcache=' . $ret["blockcache"] . '&emailcache=' . $ret["emailcache"] . '&ecount=' . $ret["ecount"] . '&gcount=' . $ret["gcount"] . '&start="+start+"&egc="+group;
+}
+self.focus();
+');
 
 		$frameset = new we_html_frameset(array("framespacing" => 0, "border" => 0, "frameborder" => "no"));
 		$noframeset = new we_baseElement("noframes");
@@ -2494,21 +2474,19 @@ class weNewsletterFrames extends weModuleFrames{
 
 
 		$js = we_html_element::jsElement('
-			function updateText(text){
-				top.send_body.document.we_form.details.value=top.send_body.document.we_form.details.value+"\n"+text;
-			}
+function updateText(text){
+	top.send_body.document.we_form.details.value=top.send_body.document.we_form.details.value+"\n"+text;
+}
 
-			function checkTimeout(){
-				return document.we_form.ecs.value;
-			}
+function checkTimeout(){
+	return document.we_form.ecs.value;
+}
 
-			function initControl(){
-				if(top.send_control.init) top.send_control.init();
-			}
+function initControl(){
+	if(top.send_control.init) top.send_control.init();
+}
 
-			self.focus();
-
-		');
+self.focus();');
 
 		$body = we_html_element::htmlBody(array("marginwidth" => 10, "marginheight" => 10, "leftmargin" => 10, "topmargin" => 10, "onLoad" => "initControl()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), we_html_element::htmlHidden(array("name" => "nid", "value" => $nid)) .
 					we_html_element::htmlHidden(array("name" => "pnt", "value" => "send_cmd")) .
@@ -2586,36 +2564,15 @@ class weNewsletterFrames extends weModuleFrames{
 			$firstname = isset($emails[$j][4]) ? str_replace("\r", "", str_replace("\n", "", $emails[$j][4])) : "";
 			$lastname = isset($emails[$j][5]) ? str_replace("\r", "", str_replace("\n", "", $emails[$j][5])) : "";
 			$customerid = isset($emails[$j][8]) ? str_replace("\r", "", str_replace("\n", "", $emails[$j][8])) : "";
-			if(isset($emails[$j][9]) && $emails[$j][9] == 'customer'){
-				$iscustomer = 'C';
-			} else {
-				$iscustomer = '';
-			}
+			$iscustomer = (isset($emails[$j][9]) && $emails[$j][9] == 'customer' ? 'C' : '');
 
-			$contentDefault = "";
-			$content_plainDefault = "";
-			$contentF = "";
-			$contentF_plain = "";
-			$contentM = "";
-			$contentM_plain = "";
-			$contentTFL = "";
-			$contentTFL_plain = "";
-			$contentTL = "";
-			$contentTL_plain = "";
-			$contentFL = "";
-			$contentFL_plain = "";
-			$contentLN = "";
-			$contentLN_plain = "";
-			$contentFN = "";
-			$contentFN_plain = "";
+			$contentDefault = $content_plainDefault = $contentF = $contentF_plain = $contentM = $contentM_plain = $contentTFL = $contentTFL_plain = $contentTL = $contentTL_plain = $contentFL = $contentFL_plain = $contentLN = $contentLN_plain = $contentFN = $contentFN_plain = '';
 
-			$atts = array();
+			$inlines = $atts = array();
 
 			foreach($user_groups as $user_group){
 				$atts = array_merge($atts, $this->View->getAttachments($user_group));
 			}
-
-			$inlines = array();
 
 			foreach($user_blocks as $user_block){
 
@@ -2646,9 +2603,11 @@ class weNewsletterFrames extends weModuleFrames{
 				$contentFN.=$html_block["firstname" . $iscustomer];
 				$contentFN_plain.=$plain_block["firstname" . $iscustomer];
 
-				foreach($html_block["inlines"] as $k => $v)
-					if(!in_array($k, array_keys($inlines)))
+				foreach($html_block["inlines"] as $k => $v){
+					if(!in_array($k, array_keys($inlines))){
 						$inlines[$k] = $v;
+					}
+				}
 			}
 
 			if($salutation && $lastname && ($salutation == $this->View->settings[weNewsletter::FEMALE_SALUTATION_FIELD]) && ((!$this->View->settings["title_or_salutation"]) || (!$title))){
