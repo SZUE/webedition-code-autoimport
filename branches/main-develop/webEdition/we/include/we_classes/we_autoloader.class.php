@@ -51,7 +51,7 @@ abstract class we_autoloader{
 		'main' => 'we_classes/main',
 		'messaging' => 'we_modules/messaging',
 		'metadata' => 'we_classes/weMetaData',
-		'navigation' => 'navigation/class',
+		'navigation' => 'we_modules/navigation/class',
 		'newsletter' => 'we_modules/newsletter',
 		'search' => 'we_tools/weSearch/class',
 		'users' => 'we_modules/users',
