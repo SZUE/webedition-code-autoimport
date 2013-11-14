@@ -187,9 +187,9 @@ abstract class weTagWizard{
 
 			$GLOBALS['weTagWizard_applicationTags'] = array();
 			$apptags = array();
-			$alltools = weToolLookup::getAllTools(true);
+			$alltools = we_tool_lookup::getAllTools(true);
 			foreach($alltools as $tool){
-				$apptags = weToolLookup::getAllToolTagWizards($tool['name']);
+				$apptags = we_tool_lookup::getAllToolTagWizards($tool['name']);
 				$apptagnames = array_keys($apptags);
 				$GLOBALS['weTagWizard_applicationTags'] = array_merge($GLOBALS['weTagWizard_applicationTags'], $apptagnames);
 			}

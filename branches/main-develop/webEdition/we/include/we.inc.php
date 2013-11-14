@@ -95,7 +95,6 @@ if(!defined('NO_SESS')&& !isset($GLOBALS['FROM_WE_SHOW_DOC'])){
 			@include_once ($_tooldefine);
 		}
 	}
-	//$_tooltagdirs = weToolLookup::getTagDirs();
 }
 
 if(defined('WE_WEBUSER_LANGUAGE')){
