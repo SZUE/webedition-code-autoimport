@@ -71,6 +71,8 @@ function we_tag_ifClient($attribs){
 				}
 				break;
 		}
+	} else {
+		$versionMatched = true;
 	}
 
 	$systemMatched = ($system && $browserMatched && $versionMatched ? in_array($br->getSystem(), explode(',', $system)) : true);
