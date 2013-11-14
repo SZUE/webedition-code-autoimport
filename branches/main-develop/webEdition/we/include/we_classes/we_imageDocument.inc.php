@@ -904,7 +904,7 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 	}
 
 	function hasMetaField($name){
-		$_defined_fields = weMetaData::getDefinedMetaDataFields();
+		$_defined_fields = we_metadata_metaData::getDefinedMetaDataFields();
 		foreach($_defined_fields as $field){
 			if($field['tag'] === $name){
 				return true;

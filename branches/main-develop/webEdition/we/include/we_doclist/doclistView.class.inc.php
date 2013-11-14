@@ -1220,7 +1220,7 @@ class doclistView{
 					$templateText = "";
 				}
 
-				$_defined_fields = weMetaData::getDefinedMetaDataFields();
+				$_defined_fields = we_metadata_metaData::getDefinedMetaDataFields();
 				$metafields = array();
 				$_fieldcount = count($_defined_fields);
 				if($_fieldcount > 6){

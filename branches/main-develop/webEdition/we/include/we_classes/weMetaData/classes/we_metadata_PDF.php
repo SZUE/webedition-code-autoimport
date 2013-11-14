@@ -26,7 +26,7 @@
 /**
  * @abstract implementation class of metadata reader for PDF metadata
  */
-class weMetaData_PDF extends weMetaData{
+class we_metadata_PDF extends we_metadata_metaData{
 
 	public function __construct($filetype){
 		$this->filetype = $filetype;

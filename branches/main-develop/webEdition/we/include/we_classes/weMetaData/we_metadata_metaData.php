@@ -27,7 +27,7 @@
  * @abstract class for reading and writing metadata from/to media files (i.e. audio, video or image files)
  * 			The implementations are to be found in its subclasses (i.e. 'weMetaData_IPTC')
  */
-class weMetaData{
+class we_metadata_metaData{
 
 	/**
 	 * @var array specifies possible access methods to metadata handled by this implementation class (i.e. exif: readonly)

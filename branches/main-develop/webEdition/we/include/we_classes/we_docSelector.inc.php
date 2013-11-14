@@ -773,7 +773,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 				case "video/quicktime":
 				case "application/*":
 					// only binary data have additional metadata
-					$metaDataFields = weMetaData::getDefinedMetaDataFields();
+					$metaDataFields = we_metadata_metaData::getDefinedMetaDataFields();
 					foreach($metaDataFields as $md){
 						if($md['tag'] != "Title" && $md['tag'] != "Description" && $md['tag'] != "Keywords"){
 							if(isset($metainfos[$md['tag']])){

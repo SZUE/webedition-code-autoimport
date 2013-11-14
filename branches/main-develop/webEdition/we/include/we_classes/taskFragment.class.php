@@ -326,4 +326,3 @@ $fr = new myFrag("holeg",1,800,array("bgcolor"=>"silver"));
 
 
 */
-

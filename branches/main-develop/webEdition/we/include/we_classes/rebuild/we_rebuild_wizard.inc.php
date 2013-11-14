@@ -196,7 +196,7 @@ abstract class we_rebuild_wizard{
 			"space" => 0
 		);
 
-		$metaDataFields = weMetaData::getDefinedMetaDataFields();
+		$metaDataFields = we_metadata_metaData::getDefinedMetaDataFields();
 
 		$_rebuildMetaDisabled = true;
 		foreach($metaDataFields as $md){
@@ -474,7 +474,7 @@ abstract class we_rebuild_wizard{
 	}
 
 	static function formMetadata($metaFields, $onlyEmpty){
-		$metaDataFields = weMetaData::getDefinedMetaDataFields();
+		$metaDataFields = we_metadata_metaData::getDefinedMetaDataFields();
 
 		$_html = we_html_element::jsElement('document._errorMessage=' . (!empty($metaFields) ? '""' : '"' . addslashes(g_l('rebuild', "[noFieldsChecked]")) . '"')) .
 			we_html_tools::htmlAlertAttentionBox(g_l('rebuild', "[expl_rebuild_metadata]"), we_html_tools::TYPE_INFO, 520) .

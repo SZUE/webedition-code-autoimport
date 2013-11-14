@@ -204,7 +204,7 @@ class we_binaryDocument extends we_document{
 			if(!$this->metaDataReader){
 				$source = $this->getElement('data');
 				if(file_exists($source)){
-					$this->metaDataReader = new weMetaData($source);
+					$this->metaDataReader = new we_metadata_metaData($source);
 				}
 			}
 			return $this->metaDataReader;
@@ -248,7 +248,7 @@ class we_binaryDocument extends we_document{
 		 * 4. show button to copy metadata from image into the form fields
 		 */
 		// first we fetch all defined metadata fields from tblMetadata:
-		$_defined_fields = weMetaData::getDefinedMetaDataFields();
+		$_defined_fields = we_metadata_metaData::getDefinedMetaDataFields();
 
 
 		// show an alert if there are none

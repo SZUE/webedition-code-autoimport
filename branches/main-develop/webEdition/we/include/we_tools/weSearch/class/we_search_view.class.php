@@ -2433,7 +2433,7 @@ class we_search_view extends we_tool_view{
 					$templateText = "";
 				}
 
-				$_defined_fields = weMetaData::getDefinedMetaDataFields();
+				$_defined_fields = we_metadata_metaData::getDefinedMetaDataFields();
 				$metafields = array();
 				$_fieldcount = count($_defined_fields);
 				if($_fieldcount > 6){

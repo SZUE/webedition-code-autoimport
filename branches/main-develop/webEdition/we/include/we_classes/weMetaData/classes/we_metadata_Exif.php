@@ -31,7 +31,7 @@
  * @uses exif php exif functions, see link below for more information
  * @link http://de.php.net/manual/de/ref.exif.php reference manual for php exif functions
  */
-class weMetaData_Exif extends weMetaData{
+class we_metadata_Exif extends we_metadata_metaData{
 
 	const usedFields = 'Artist,ColorSpace,Copyright,DateTime,DateTimeOriginal,ExifImageLength,ExifImageWidth,ExifVersion,ExposureBiasValue,ExposureTime,FileDateTime,FileSize,FileType,Flash,FNumber,FocalLength,HostComputer,ImageDescription,Make,MeteringMode,MimeType,Model,Orientation,ResolutionUnit,Software,UserComment,XResolution,YResolution,YCbCrPositioning';
 
