@@ -111,7 +111,7 @@ abstract class we_autoloader{
 			'we_catListview' => 'listview/we_catListview.class.php',
 			'we_catSelector' => 'we_catSelector.inc.php',
 			'weCellDialog' => 'weCellDialog.class.php',
-			'we_class' => 'we_class.php',
+			'we_class' => 'we_class.class.php',
 			'we_codeConvertor' => 'we_codeConvertor.inc.php',
 			'weColorDialog' => 'weColorDialog.class.php',
 			'we_delSelector' => 'we_delSelector.inc.php',

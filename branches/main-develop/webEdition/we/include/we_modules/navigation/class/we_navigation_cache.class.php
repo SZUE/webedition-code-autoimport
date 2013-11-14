@@ -67,27 +67,6 @@ class we_navigation_cache{
 		}
 	}
 
-	/* no need for this.
-	 * static function cacheRootNavigation(){
-	  if(!self::$rebuildRootCnt++){
-	  return;
-	  }
-	  $_naviItemes = new weNavigationItems();
-
-	  $_naviItemes->initById(0);
-
-	  self::saveCacheNavigation(0, $_naviItemes);
-
-	  $currentRulesStorage = $_naviItemes->currentRules; // Bug #4142
-	  foreach($currentRulesStorage as &$rule){
-	  $rule->deleteDB();
-	  }
-	  $_content = serialize($currentRulesStorage);
-	  unset($currentRulesStorage);
-
-	  weFile::save($_SERVER['DOCUMENT_ROOT'] . self::CACHEDIR . 'rules.php', $_content);
-	  } */
-
 	static function cacheNavigation($id){
 		$_naviItemes = new we_navigation_items();
 		$_naviItemes->initById($id);
