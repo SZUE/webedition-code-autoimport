@@ -22,7 +22,7 @@
  * @package    webEdition_wysiwyg
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weCellDialog extends weDialog{
+class we_dialog_cell extends we_dialog_base{
 
 	var $JsOnly = true;
 	var $changeableArgs = array("width",

@@ -22,7 +22,7 @@
  * @package    webEdition_wysiwyg
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weImageDialog extends weDialog{
+class we_dialog_image extends we_dialog_base{
 
 	var $ClassName = __CLASS__;
 	var $changeableArgs = array("type",
@@ -148,7 +148,7 @@ class weImageDialog extends weDialog{
 	}
 
 	function initByHttp(){
-		weDialog::initByHttp();
+		we_dialog_base::initByHttp();
 		$src = $this->getHttpVar('src');
 		$width = $this->getHttpVar('width');
 		$height = $this->getHttpVar('height');

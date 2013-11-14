@@ -22,7 +22,7 @@
  * @package    webEdition_wysiwyg
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weSpecialCharDialog extends weDialog{
+class we_dialog_specialChar extends we_dialog_base{
 
 	var $dialogWidth = 270;
 	var $JsOnly = true;

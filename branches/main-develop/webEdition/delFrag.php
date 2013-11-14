@@ -29,11 +29,11 @@ $frame = isset($_REQUEST["frame"]) ? $_REQUEST["frame"] : "";
 switch($frame){
 
 	case "main":
-		print deleteProgressDialog::main();
+		print we_dialog_deleteProgress::main();
 		break;
 	case "cmd":
-		print deleteProgressDialog::cmd();
+		print we_dialog_deleteProgress::cmd();
 		break;
 	default:
-		print deleteProgressDialog::frameset();
+		print we_dialog_deleteProgress::frameset();
 }

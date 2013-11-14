@@ -34,7 +34,7 @@ if(!(isset($_REQUEST['we_dialog_args']) &&
 }
 $noInternals = $noInternals || !isset($_SESSION['user']) || !isset($_SESSION['user']['Username']) || $_SESSION['user']['Username'] == '';
 
-$dialog = new weImageDialog($noInternals);
+$dialog = new we_dialog_image($noInternals);
 $dialog->initByHttp();
 $dialog->registerCmdFn(isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] ? "" : "weDoImgCmd");
 
@@ -55,7 +55,7 @@ function weDoImgCmd($args){
 top.close();
 ');
 	} else{
-		return weDialog::getTinyMceJS() .
+		return we_dialog_base::getTinyMceJS() .
 			we_html_element::jsScript(TINYMCE_JS_DIR . 'plugins/weimage/js/image_insert.js') .
 			'<form name="tiny_form">
 					<input type="hidden" name="src" value="' . $args["src"] . '">

@@ -54,7 +54,7 @@ if(defined("GLOSSARY_TABLE") && isset($_REQUEST['weSaveToGlossary']) && $_REQUES
 	}
 }
 
-$dialog = new weLangDialog($noInternals);
+$dialog = new we_dialog_lang($noInternals);
 $dialog->initByHttp();
 $dialog->registerOkJsFN("weDoLangJS");
 print $dialog->getHTML();

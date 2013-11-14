@@ -65,7 +65,7 @@ if(defined("GLOSSARY_TABLE") && isset($_REQUEST['weSaveToGlossary']) && $_REQUES
 	}
 }
 
-$dialog = new weAbbrDialog($noInternals);
+$dialog = new we_dialog_abbr($noInternals);
 $dialog->initByHttp();
 $dialog->registerOkJsFN("weDoAbbrJS");
 print $dialog->getHTML() .

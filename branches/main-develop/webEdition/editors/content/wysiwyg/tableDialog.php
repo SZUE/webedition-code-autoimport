@@ -26,7 +26,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 if(!(isset($_REQUEST['we_dialog_args']) && isset($_REQUEST['we_dialog_args']['outsideWE']) && $_REQUEST['we_dialog_args']['outsideWE']==1) ){
 	we_html_tools::protect();
 }
-$dialog = new weTableDialog();
+$dialog = new we_dialog_table();
 // MS-Fix
 if(isset($_REQUEST["we_dialog_args"]["cellPadding"])){
 	$_REQUEST["we_dialog_args"]["cellpadding"] = $_REQUEST["we_dialog_args"]["cellPadding"];

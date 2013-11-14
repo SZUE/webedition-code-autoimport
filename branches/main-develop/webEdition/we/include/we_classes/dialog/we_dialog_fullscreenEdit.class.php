@@ -22,7 +22,7 @@
  * @package    webEdition_wysiwyg
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weFullscreenEditDialog extends weDialog{
+class we_dialog_fullscreenEdit extends we_dialog_base{
 
 	var $JsOnly = true;
 	var $ClassName = __CLASS__;

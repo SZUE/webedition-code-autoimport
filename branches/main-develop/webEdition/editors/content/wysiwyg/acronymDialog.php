@@ -65,7 +65,7 @@ if(defined("GLOSSARY_TABLE") && isset($_REQUEST['weSaveToGlossary']) && $_REQUES
 	}
 }
 
-$dialog = new weAcronymDialog($noInternals);
+$dialog = new we_dialog_acronym($noInternals);
 $dialog->initByHttp();
 $dialog->registerOkJsFN("weDoAcronymJS");
 print $dialog->getHTML();

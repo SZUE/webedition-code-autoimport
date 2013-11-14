@@ -40,7 +40,7 @@ if(isset($_REQUEST["we_dialog_args"]["colSpan"])){
 	unset($_REQUEST["we_dialog_args"]["colSpan"]);
 }
 
-$dialog = new weCellDialog();
+$dialog = new we_dialog_cell();
 $dialog->initByHttp();
 $dialog->registerOkJsFN("weDoCellJS");
 print $dialog->getHTML();

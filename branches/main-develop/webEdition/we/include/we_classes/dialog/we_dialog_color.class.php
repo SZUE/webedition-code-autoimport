@@ -22,7 +22,7 @@
  * @package    webEdition_wysiwyg
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weColorDialog extends weDialog{
+class we_dialog_color extends we_dialog_base{
 
 	var $changeableArgs = array("color");
 	var $JsOnly = true;
@@ -83,7 +83,7 @@ if(z != 0){
 	}
 
 	function getJs(){
-		return weDialog::getJs() . we_html_element::jsScript(JS_DIR . 'we_colors2.js') .we_html_element::jsElement( '
+		return we_dialog_base::getJs() . we_html_element::jsScript(JS_DIR . 'we_colors2.js') .we_html_element::jsElement( '
 function selectColor(c){
 	document.we_form.elements["we_dialog_args[color]"].value = c;
 	if(document.we_form.elements["we_dialog_args[color]"].style){

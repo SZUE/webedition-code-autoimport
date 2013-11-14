@@ -22,7 +22,7 @@
  * @package    webEdition_wysiwyg
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weDialog{
+class we_dialog_base{
 	/*	 * ***********************************************************************
 	 * VARIABLES
 	 * *********************************************************************** */
@@ -52,7 +52,7 @@ class weDialog{
 	/**
 	 * Constructor of class.
 	 *
-	 * @return     weDialog
+	 * @return     we_dialog_base
 	 */
 	function __construct(){
 		$this->db = new DB_WE();

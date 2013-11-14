@@ -22,7 +22,7 @@
  * @package    webEdition_wysiwyg
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weTableDialog extends weDialog{
+class we_dialog_table extends we_dialog_base{
 
 	var $ClassName = __CLASS__;
 	var $JsOnly = true;

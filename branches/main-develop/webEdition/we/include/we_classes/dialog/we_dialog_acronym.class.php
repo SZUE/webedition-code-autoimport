@@ -22,7 +22,7 @@
  * @package    webEdition_wysiwyg
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weAcronymDialog extends weDialog{
+class we_dialog_acronym extends we_dialog_base{
 
 	var $dialogWidth = 370;
 	var $JsOnly = true;
@@ -54,7 +54,7 @@ class weAcronymDialog extends weDialog{
 
 	function getJs(){
 
-		$js = weDialog::getJs();
+		$js = we_dialog_base::getJs();
 
 		if(defined("GLOSSARY_TABLE") && !$this->noInternals){
 			$js .= we_html_element::jsElement('

@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class deleteProgressDialog{
+class we_dialog_deleteProgress{
 
 	function main(){
 

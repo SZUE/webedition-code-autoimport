@@ -22,7 +22,7 @@
  * @package    webEdition_wysiwyg
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weImportRtfDialog extends weDialog{
+class we_dialog_importRtf extends we_dialog_base{
 
 	var $ClassName = __CLASS__;
 	var $pageNr = 1;
@@ -45,7 +45,7 @@ class weImportRtfDialog extends weDialog{
 	}
 
 	function getJs(){
-		return weDialog::getJs() . we_html_element::jsElement('
+		return we_dialog_base::getJs() . we_html_element::jsElement('
 function checkTheBox(box){
 	b = document.we_form.elements[box];
 	b.checked = (b.checked) ? false : true;

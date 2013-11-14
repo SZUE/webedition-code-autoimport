@@ -22,7 +22,7 @@
  * @package    webEdition_wysiwyg
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weHyperlinkDialog extends weDialog{
+class we_dialog_Hyperlink extends we_dialog_base{
 
 	var $ClassName = __CLASS__;
 	var $changeableArgs = array(
@@ -532,7 +532,7 @@ function weonsubmit() {
 	}
 
 	function getJs(){
-		return weDialog::getJs() . we_html_element::jsElement('
+		return we_dialog_base::getJs() . we_html_element::jsElement('
 var weAcCheckLoop = 0;
 var weFocusedField;
 function setFocusedField(elem){
