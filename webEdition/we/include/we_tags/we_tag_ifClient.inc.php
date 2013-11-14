@@ -67,7 +67,7 @@ function we_tag_ifClient($attribs){
 				if(strpos($ver, '==') !== false){
 					eval('$versionMatched=(' . floor(floatval($brv)) . $ver . ');');
 				} else {
-					eval('$versionMatched=(' . $brv . $ver . ');');
+					eval('$versionMatched=(' . floatval($brv) . $ver . ');');
 				}
 				break;
 		}
