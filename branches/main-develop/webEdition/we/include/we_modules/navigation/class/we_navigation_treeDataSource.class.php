@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_navigation_treeDataSource extends weToolTreeDataSource{
+class we_navigation_treeDataSource extends we_tool_treeDataSource{
 
 	function __construct($ds){
 		parent::__construct($ds);

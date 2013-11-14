@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weToolFrames extends weModuleFrames{
+class we_tool_frames extends weModuleFrames{
 
 	var $View;
 	var $Table;
@@ -78,7 +78,7 @@ class weToolFrames extends weModuleFrames{
 		$this->Model->clearSessionVars();
 
 		if(isset($_REQUEST['modelid'])){
-			$_class = weToolLookup::getModelClassName($this->toolName);
+			$_class = we_tool_lookup::getModelClassName($this->toolName);
 			$this->Model = new $_class();
 			$this->Model->load($_REQUEST['modelid']);
 			$this->Model->saveInSession();

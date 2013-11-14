@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weToolTreeDataSource{
+class we_tool_treeDataSource{
 
 	var $SourceType;
 	var $SourceName;
@@ -70,7 +70,7 @@ class weToolTreeDataSource{
 		if(($ws = get_ws($table))){
 			$wsPathArray = id_to_path($ws, $table, $db, false, true);
 			foreach($wsPathArray as $path){
-				$_aWsQuery[] = " Path LIKE '" . $db->escape($path) . "/%' OR " . weToolTreeDataSource::getQueryParents($path);
+				$_aWsQuery[] = " Path LIKE '" . $db->escape($path) . "/%' OR " . we_tool_treeDataSource::getQueryParents($path);
 				while($path != '/' && $path != "\\" && $path){
 					$parentpaths[] = $path;
 					$path = dirname($path);

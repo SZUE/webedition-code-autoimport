@@ -74,7 +74,7 @@ class weContentProvider{
 				$we_doc->load($ID, false);
 				break;
 			case 'weVersion':
-				$we_doc = new weVersion();
+				$we_doc = new we_base_version();
 				$we_doc->load($ID, false);
 				break;
 			// fix for classes

@@ -474,7 +474,7 @@ foreach($GLOBALS['_we_active_integrated_modules'] as $mod){
 		break;';
 }
 
-$_jsincludes = weToolLookup::getJsCmdInclude();
+$_jsincludes = we_tool_lookup::getJsCmdInclude();
 if(!empty($_jsincludes)){
 	foreach($_jsincludes as $_jsinclude){
 		include_once($_jsinclude);

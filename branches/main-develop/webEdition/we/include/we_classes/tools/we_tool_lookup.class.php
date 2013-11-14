@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-abstract class weToolLookup{
+abstract class we_tool_lookup{
 
 	const REGISTRY_NAME = 'weToolsRegistry';
 

@@ -924,7 +924,7 @@ function build_dialog($selected_setting = 'ui'){
 					$permitedStartTypes[] = 'object';
 				}
 				$_start_weapp = new we_html_select(array('name' => 'newconf[seem_start_weapp]', 'class' => 'weSelect', 'id' => 'seem_start_weapp', 'onchange' => 'top.content.setHot();'));
-				$_tools = weToolLookup::getAllTools(true, false);
+				$_tools = we_tool_lookup::getAllTools(true, false);
 				foreach($_tools as $_tool){
 					if(!$_tool['appdisabled'] && permissionhandler::hasPerm($_tool['startpermission'])){
 						$_start_weapp->addOption($_tool['name'], $_tool['text']);

@@ -192,10 +192,10 @@ class toolfactory_models_Default extends we_app_Model{
 
 		$myid = $this->realNameToIntern($id);
 
-		$_props = weToolLookup::getToolProperties($myid);
+		$_props = we_tool_lookup::getToolProperties($myid);
 
 		if(empty($_props)){
-			$_props = weToolLookup::getToolProperties($id);
+			$_props = we_tool_lookup::getToolProperties($id);
 			$myid = $id;
 		}
 
@@ -211,16 +211,16 @@ class toolfactory_models_Default extends we_app_Model{
 
 		$this->ID = $this->Text;
 
-		$this->tags = weToolLookup::getAllToolTags($myid, true);
+		$this->tags = we_tool_lookup::getAllToolTags($myid, true);
 
-		$this->services = weToolLookup::getAllToolServices($myid, true);
+		$this->services = we_tool_lookup::getAllToolServices($myid, true);
 
-		$this->languages = weToolLookup::getAllToolLanguages($myid, '/lang', true);
+		$this->languages = we_tool_lookup::getAllToolLanguages($myid, '/lang', true);
 		if(empty($this->languages)){
 			$this->languages = array('a', 'b');
 		}
 
-		$this->backupTables = weToolLookup::getBackupTables($myid, true);
+		$this->backupTables = we_tool_lookup::getBackupTables($myid, true);
 
 		$appDir = Zend_Controller_Front::getInstance()->getParam('appDir');
 
@@ -287,7 +287,7 @@ class toolfactory_models_Default extends we_app_Model{
 
 		$_files = array();
 
-		weToolLookup::getFilesOfDir($_files, $_templateDir);
+		we_tool_lookup::getFilesOfDir($_files, $_templateDir);
 
 		foreach($_files as $_file){
 
@@ -476,7 +476,7 @@ class toolfactory_models_Default extends we_app_Model{
 	 */
 	function modelclassExists($classname){
 
-		$_menuItems = weToolLookup::getAllTools(true, false, true);
+		$_menuItems = we_tool_lookup::getAllTools(true, false, true);
 
 		$_prohibit_classnames = array($_menuItems);
 

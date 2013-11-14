@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weToolModel extends weModelBase{
+class we_tool_model extends weModelBase{
 
 	var $ID = 0;
 	var $Text;

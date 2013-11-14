@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_search_frames extends weToolFrames{
+class we_search_frames extends we_tool_frames{
 
 	function __construct(){
 		$this->toolName = 'weSearch';

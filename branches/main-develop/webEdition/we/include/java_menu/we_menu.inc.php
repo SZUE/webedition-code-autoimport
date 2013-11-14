@@ -859,7 +859,7 @@ foreach($buyableModules as $m){
 	}
 }
 // Extras > Tools > Custom tools
-$_tools = weToolLookup::getAllTools(true, false);
+$_tools = we_tool_lookup::getAllTools(true, false);
 
 foreach($_tools as $_k => $_tool){
 	$we_menu[4040000 + $_k] = array(

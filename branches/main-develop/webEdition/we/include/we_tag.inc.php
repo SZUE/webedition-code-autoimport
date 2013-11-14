@@ -40,7 +40,7 @@ function we_include_tag_file($name){
 	}
 
 	$toolinc = '';
-	if(weToolLookup::getToolTag($name, $toolinc, true)){
+	if(we_tool_lookup::getToolTag($name, $toolinc, true)){
 		require_once ($toolinc);
 		return true;
 	}

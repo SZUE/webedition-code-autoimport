@@ -1226,11 +1226,11 @@ function setState(a) {
 						$file_create = ($exports == $all);
 						$file_complete = ($exports == "1");
 
-						exportFunctions::exportDocument($remaining_docs[0], $file_format, $filename, ($export_local ? "###temp###" : $path), $file_create, $file_complete, $cdata);
+						we_export_functions::exportDocument($remaining_docs[0], $file_format, $filename, ($export_local ? "###temp###" : $path), $file_create, $file_complete, $cdata);
 					} else if(isset($remaining_objs) && !empty($remaining_objs)){
 						if(defined("OBJECT_FILES_TABLE")){
 							$exports = count($remaining_objs);
-							exportFunctions::exportObject($remaining_objs[0], $file_format, $filename, ($export_local ? "###temp###" : $path), ($exports == $all), $exports == 1, $cdata, $csv_delimiter, $csv_enclose, $csv_lineend, ($csv_fieldnames == 1) && ($all == $exports));
+							we_export_functions::exportObject($remaining_objs[0], $file_format, $filename, ($export_local ? "###temp###" : $path), ($exports == $all), $exports == 1, $cdata, $csv_delimiter, $csv_enclose, $csv_lineend, ($csv_fieldnames == 1) && ($all == $exports));
 						}
 					}
 

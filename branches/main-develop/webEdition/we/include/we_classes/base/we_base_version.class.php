@@ -28,7 +28,7 @@
  *
  * Provides functions for exporting and importing backups.
  */
-class weVersion{
+class we_base_version{
 
 	var $db;
 	var $ClassName = __CLASS__;

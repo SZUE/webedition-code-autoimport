@@ -25,7 +25,7 @@
 /* the parent class of storagable webEdition classes */
 
 
-class weToolView{
+class we_tool_view{
 
 	var $Model;
 	var $toolName;

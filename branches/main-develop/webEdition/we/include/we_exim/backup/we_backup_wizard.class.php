@@ -578,7 +578,7 @@ extra_files_desc=new Array();';
 		$form_properties[13] = "handle_versions_binarys";
 
 		$i = 0;
-		$_tools = weToolLookup::getToolsForBackup();
+		$_tools = we_tool_lookup::getToolsForBackup();
 		foreach($_tools as $_tool){
 			$form_properties[700 + $i] = "handle_tool_" . $_tool;
 			$i++;
@@ -855,7 +855,7 @@ self.focus();');
 
 
 		$i = 0;
-		$_tools = weToolLookup::getToolsForBackup();
+		$_tools = we_tool_lookup::getToolsForBackup();
 		foreach($_tools as $_tool){
 			$form_properties[700 + $i] = "handle_tool_" . $_tool;
 			$i++;

@@ -26,7 +26,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
 
-$tools = weToolLookup::getAllTools(true, true);
+$tools = we_tool_lookup::getAllTools(true, true);
 
 $whiteList = array();
 foreach($tools as $k => $v){

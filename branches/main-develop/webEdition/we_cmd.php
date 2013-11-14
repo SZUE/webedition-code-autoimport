@@ -320,7 +320,7 @@ if(!$INCLUDE){
 
 		default:
 			// search tools for command
-			$INCLUDE = weToolLookup::getPhpCmdInclude();
+			$INCLUDE = we_tool_lookup::getPhpCmdInclude();
 			if(isset($INCLUDE)){
 				break;
 			}

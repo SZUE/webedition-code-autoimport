@@ -29,7 +29,7 @@ $we_tabs = new we_tabs();
 
 $name = array();
 
-$_menuItems = weToolLookup::getAllTools(true, true);
+$_menuItems = we_tool_lookup::getAllTools(true, true);
 
 
 foreach($_menuItems as $_menuItem){

@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_search_view extends weToolView{
+class we_search_view extends we_tool_view{
 
 	var $searchclass;
 	var $searchclassExp;

@@ -214,7 +214,7 @@ abstract class we_backup_preparer{
 		foreach($_REQUEST as $_k => $_val){
 			if(stripos($_k, "handle_tool_") === 0){
 				$_tool = str_replace("handle_tool_", '', $_k);
-				if(weToolLookup::isTool($_tool)){
+				if(we_tool_lookup::isTool($_tool)){
 					$handle_options['tools'][] = $_tool;
 				}
 			}
@@ -243,7 +243,7 @@ abstract class we_backup_preparer{
 
 		if(!empty($options['tools'])){
 			foreach($options['tools'] as $_tool){
-				$tables = array_merge($tables, weToolLookup::getBackupTables($_tool));
+				$tables = array_merge($tables, we_tool_lookup::getBackupTables($_tool));
 			}
 		}
 

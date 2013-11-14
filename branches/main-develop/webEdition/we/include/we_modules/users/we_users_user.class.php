@@ -406,7 +406,7 @@ class we_users_user {
 		$this->permissions_titles = array();
 		$permissions = unserialize($this->Permissions);
 
-		$entries = weToolLookup::getPermissionIncludes();
+		$entries = we_tool_lookup::getPermissionIncludes();
 
 		$d = dir(WE_USERS_MODULE_PATH . 'perms');
 		while(($file = $d->read())){
@@ -1944,7 +1944,7 @@ function show_seem_chooser(val) {
 
 		//weapp
 		$_start_weapp = new we_html_select(array('name' => 'seem_start_weapp', 'class' => 'weSelect', 'id' => 'seem_start_weapp', 'onchange' => 'top.content.setHot();'));
-		$_tools = weToolLookup::getAllTools(true, false);
+		$_tools = we_tool_lookup::getAllTools(true, false);
 		foreach($_tools as $_tool){
 			if(!$_tool['appdisabled'] && isset($this->permissions_slots[$_tool['name']][$_tool['startpermission']]) && $this->permissions_slots[$_tool['name']][$_tool['startpermission']]){
 				$_start_weapp->addOption($_tool['name'], $_tool['text']);

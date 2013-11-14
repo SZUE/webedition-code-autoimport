@@ -60,8 +60,8 @@ class rpcCmdShell{
 
 		$_namespace = '/' . (isset($cmd['cns']) ? $cmd['cns'] . '/' : '');
 
-		$_cmdfile = (isset($cmd['tool']) && weToolLookup::isTool($cmd['tool']) ?
-				weToolLookup::getCmdInclude($_namespace, $cmd['tool'], $this->CmdName) :
+		$_cmdfile = (isset($cmd['tool']) && we_tool_lookup::isTool($cmd['tool']) ?
+				we_tool_lookup::getCmdInclude($_namespace, $cmd['tool'], $this->CmdName) :
 				'cmds' . $_namespace . $_classname . '.class.php');
 
 		if(include_once($_cmdfile)){
@@ -83,8 +83,8 @@ class rpcCmdShell{
 		$_classname = 'rpc' . $cmd["view"] . 'View';
 		$namespace = '/' . (isset($cmd['vns']) ? $cmd['vns'] . '/' : (isset($cmd['cns']) ? $cmd['cns'] . '/' : ''));
 
-		$_viewfile = (isset($cmd['tool']) && weToolLookup::isTool($cmd['tool']) ?
-				weToolLookup::getViewInclude($this->Protocol, $namespace, $cmd['tool'], $cmd["view"]) :
+		$_viewfile = (isset($cmd['tool']) && we_tool_lookup::isTool($cmd['tool']) ?
+				we_tool_lookup::getViewInclude($this->Protocol, $namespace, $cmd['tool'], $cmd["view"]) :
 				'views/' . $this->Protocol . $namespace . $_classname . '.class.php');
 		if(@include_once($_viewfile)){
 

@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-abstract class exportFunctions{
+abstract class we_export_functions{
 	/*	 * ***********************************************************************
 	 * HELPER FUNCTIONS
 	 * *********************************************************************** */

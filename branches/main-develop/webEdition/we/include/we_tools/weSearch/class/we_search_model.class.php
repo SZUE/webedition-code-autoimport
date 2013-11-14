@@ -31,7 +31,7 @@ if(isset($_SERVER["DOCUMENT" . "_ROOT"]) && substr($_SERVER['DOCUMENT_ROOT'], -1
 }
 require_once (WE_INCLUDES_PATH . 'we_tools/weSearch/conf/define.conf.php');
 
-class we_search_model extends weToolModel{
+class we_search_model extends we_tool_model{
 
 	/**
 	 * @var integer: default ParentId in which own searches are saved
