@@ -24,7 +24,7 @@
  */
 //TEST: was it ok to abandon treefooter?
 
-class weGlossaryFrames extends weModuleFrames{
+class we_glossary_frames extends weModuleFrames{
 
 	var $View;
 	var $Tree;
