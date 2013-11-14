@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class delBackup extends taskFragment{
+class we_backup_delete extends taskFragment{
 
 	var $db;
 

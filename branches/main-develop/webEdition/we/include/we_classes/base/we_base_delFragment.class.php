@@ -24,7 +24,7 @@
  */
 require_once(WE_INCLUDES_PATH . 'we_delete_fn.inc.php');
 
-class delFragment extends taskFragment{
+class we_base_delFragment extends taskFragment{
 
 	var $db;
 	var $table;

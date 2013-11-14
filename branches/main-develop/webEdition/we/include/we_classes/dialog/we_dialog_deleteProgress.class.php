@@ -64,11 +64,11 @@ class we_dialog_deleteProgress{
 	function cmd(){
 		if(isset($_SESSION['weS']['backup_delete']) && $_SESSION['weS']['backup_delete']){
 			$taskname = md5(session_id() . "_backupdel");
-			$fr = new delBackup($taskname, 1, 0);
+			$fr = new we_backup_delete($taskname, 1, 0);
 		} else{
 			$taskname = md5(session_id() . "_del");
 			$table = (isset($_REQUEST["table"]) && $_REQUEST["table"]) ? $_REQUEST["table"] : FILE_TABLE;
-			$fr = new delFragment($taskname, 1, 0, $table);
+			$fr = new we_base_delFragment($taskname, 1, 0, $table);
 		}
 	}
 

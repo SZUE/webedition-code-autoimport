@@ -72,8 +72,6 @@ abstract class we_autoloader{
 			'copyFolderFrag' => 'we_copyFolderFrag.class.php',
 			'CSV' => 'csv.inc.php',
 			'DB_WE' => 'database/DB_WE.inc.php', //pseudo-element which loads a wrapper, doesn't contain a real class!
-			'delBackup' => 'delete/delBackup.inc.php',
-			'delFragment' => 'delete/delFragment.inc.php',
 			'HttpRequest' => 'http/HttpRequest.class.php',
 			'HttpResponse' => 'http/HttpResponse.class.php',
 			'Image_IPTC' => 'weMetaData/lib/PEAR_IPTC.php',
