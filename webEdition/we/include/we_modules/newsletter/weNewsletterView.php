@@ -171,7 +171,7 @@ class weNewsletterView{
 
 	function htmlHidden($name, $value = ''){
 		//FIXME: remove
-		return we_html_element::htmlHidden(array('name'=>trim($name),'value'=>oldHtmlspecialchars($value)));
+		return we_html_element::htmlHidden(array('name' => trim($name), 'value' => oldHtmlspecialchars($value)));
 	}
 
 	/* creates the DocumentChoooser field with the "browse"-Button. Clicking on the Button opens the fileselector */
@@ -1923,7 +1923,7 @@ self.close();');
 				}
 
 				// Filter
-				$count = (isset($_REQUEST['filter_' . $gkey]) ? $_REQUEST['filter_' . $gkey]++ : 0);
+				$count = (isset($_REQUEST['filter_' . $gkey]) ? $_REQUEST['filter_' . $gkey] ++ : 0);
 				if($count){
 					for($i = 0; $i < $count; $i++){
 						$new = array();
@@ -2031,9 +2031,7 @@ self.close();');
 	}
 
 	function getContent($pblk = 0, $gview = 0, $hm = 0, $salutation = '', $title = '', $firstname = '', $lastname = '', $customerid = 0){
-
-		$content = "";
-		$GLOBALS['we_doc'] = "";
+		$content = $GLOBALS['we_doc'] = '';
 
 		$GLOBALS['WE_MAIL'] = "###EMAIL###";
 		$GLOBALS['WE_HTMLMAIL'] = $hm;
