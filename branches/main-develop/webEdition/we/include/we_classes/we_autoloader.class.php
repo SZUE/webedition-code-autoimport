@@ -107,8 +107,6 @@ abstract class we_autoloader{
 			'taskFragment' => 'taskFragment.class.php',
 			'weAbbrDialog' => 'weAbbrDialog.class.inc.php',
 			'weAcronymDialog' => 'weAcronymDialog.class.inc.php',
-			'weBackup' => 'base/weBackup.class.php',
-			'weBackupWizard' => 'weBackupWizard.inc.php',
 			'we_baseCollection' => 'html/we_baseCollection.inc.php',
 			'we_baseElement' => 'html/we_baseElement.inc.php',
 			'weBinary' => 'base/weBinary.class.php',
