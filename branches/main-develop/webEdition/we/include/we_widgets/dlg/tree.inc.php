@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weExportTree extends weMainTree{
+class we_export_tree extends weMainTree{
 
 	function getJSInfo(){
 		return '

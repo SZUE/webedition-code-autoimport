@@ -384,7 +384,7 @@ if(defined('OBJECT_TABLE')){
 	$_seltype['classname'] = g_l('cockpit', '[objects]');
 }
 
-$tree = new weExportTree();
+$tree = new we_export_tree();
 $tree->init('treeCmd.php', 'top', 'top', 'cmd');
 
 $divStatic = we_html_element::htmlDiv(

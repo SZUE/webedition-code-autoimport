@@ -349,7 +349,7 @@ abstract class we_class{
 	 * @see we_textContentDocument::we_load
 	 */
 	function initWeDocumentCustomerFilterFromDB(){
-		$this->documentCustomerFilter = weDocumentCustomerFilter::getFilterOfDocument($this);
+		$this->documentCustomerFilter = we_customer_documentFilter::getFilterOfDocument($this);
 	}
 
 	public function we_load(/* $from = we_class::LOAD_MAID_DB */){

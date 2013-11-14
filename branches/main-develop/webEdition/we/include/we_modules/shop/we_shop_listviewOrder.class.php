@@ -104,10 +104,10 @@ class we_shop_listviewOrder extends listviewBase{
 
 		$this->anz_all = f('SELECT COUNT(1) AS a FROM ' . SHOP_TABLE . $where, 'a', $this->DB_WE);
 		$format = array();
-		foreach(weShopStatusMails::$StatusFields as $field){
+		foreach(we_shop_statusMails::$StatusFields as $field){
 			$format[] = 'UNIX_TIMESTAMP(' . $field . ') AS ' . $field;
 		}
-		foreach(weShopStatusMails::$MailFields as $field){
+		foreach(we_shop_statusMails::$MailFields as $field){
 			$format[] = 'UNIX_TIMESTAMP(' . $field . ') AS ' . $field;
 		}
 

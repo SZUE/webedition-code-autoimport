@@ -35,9 +35,9 @@ function we_tag_navigationEntry($attribs, $content){
 	$navigationName = weTag_getAttribute('navigationname', $attribs, 'default');
 	$type = weTag_getAttribute('type', $attribs);
 	$level = weTag_getAttribute('level', $attribs, 'defaultLevel');
-	$current = (weTag_getAttribute('current', $attribs, weNavigationItem::DEFAULT_CURRENT) != weNavigationItem::DEFAULT_CURRENT ?
+	$current = (weTag_getAttribute('current', $attribs, we_navigation_item::DEFAULT_CURRENT) != we_navigation_item::DEFAULT_CURRENT ?
 			weTag_getAttribute('current', $attribs, false, true) :
-			weNavigationItem::DEFAULT_CURRENT);
+			we_navigation_item::DEFAULT_CURRENT);
 
 	$positions = makeArrayFromCSV(weTag_getAttribute('position', $attribs, 'defaultPosition'));
 

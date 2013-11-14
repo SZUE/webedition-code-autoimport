@@ -25,7 +25,7 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 $_SERVER['SCRIPT_NAME'] = WE_INCLUDES_DIR . 'we_modules/navigation/we_navigationDirSelect.php';
-$fs = new we_navigationDirSelector(
+$fs = new we_navigation_dirSelector(
 		isset($id) ? $id : (isset($_REQUEST['id']) ? $_REQUEST['id'] : (isset($_REQUEST['we_cmd'][1]) ? $_REQUEST['we_cmd'][1] : '')),
 		isset($JSIDName) ? $JSIDName : (isset($_REQUEST['JSIDName']) ? $_REQUEST['JSIDName'] : (isset(
 					$_REQUEST['we_cmd'][2]) ? $_REQUEST['we_cmd'][2] : '')),

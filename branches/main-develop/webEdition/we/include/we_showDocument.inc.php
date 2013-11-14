@@ -75,7 +75,7 @@ if(isset($_REQUEST['vers_we_obj'])){
 
 	if(($_visitorHasAccess = $we_doc->documentCustomerFilter->accessForVisitor($we_doc))){
 
-		if(!($_visitorHasAccess == weDocumentCustomerFilter::ACCESS || $_visitorHasAccess == weDocumentCustomerFilter::CONTROLONTEMPLATE)){
+		if(!($_visitorHasAccess == we_customer_documentFilter::ACCESS || $_visitorHasAccess == we_customer_documentFilter::CONTROLONTEMPLATE)){
 			// user has NO ACCESS => show errordocument
 			$_errorDocId = $we_doc->documentCustomerFilter->getErrorDoc($_visitorHasAccess);
 			if(($_errorDocPath = id_to_path($_errorDocId, FILE_TABLE))){ // use given document instead !

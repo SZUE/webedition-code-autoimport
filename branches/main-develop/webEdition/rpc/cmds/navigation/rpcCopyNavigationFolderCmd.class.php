@@ -79,7 +79,7 @@ class rpcCopyNavigationFolderCmd extends rpcCmd{
 				$db->query("INSERT INTO " . NAVIGATION_TABLE . " VALUES " . $query);
 			}
 			foreach($folders as $folder){
-				$newNavi = new weNavigation($folder);
+				$newNavi = new we_navigation_navigation($folder);
 				$newNavi->save();
 			}
 			$resp->setData("status", "ok");

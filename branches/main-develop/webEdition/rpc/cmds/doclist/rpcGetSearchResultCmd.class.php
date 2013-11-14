@@ -43,7 +43,7 @@ class rpcGetSearchResultCmd extends rpcCmd{
 
 		$content = doclistView::searchProperties();
 
-		$code = searchtoolView::tabListContent($setView, $content, $class = 'middlefont', 'doclist');
+		$code = we_search_view::tabListContent($setView, $content, $class = 'middlefont', 'doclist');
 
 		$resp->setData('data', $code);
 

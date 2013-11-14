@@ -31,14 +31,14 @@ we_html_tools::htmlTop();
 
 print STYLESHEET;
 
-$weShippingControl = weShippingControl::getShippingControl();
+$weShippingControl = we_shop_shippingControl::getShippingControl();
 
 if(isset($_REQUEST['we_cmd'])){
 
 	switch($_REQUEST['we_cmd'][0]){
 
 		case 'newShipping':
-			$weShipping = weShippingControl::getNewEmptyShipping();
+			$weShipping = we_shop_shippingControl::getNewEmptyShipping();
 			break;
 
 		case 'editShipping':
@@ -223,7 +223,7 @@ $parts[] = array(
 );
 unset($selectFields);
 
-$shopVats = weShopVats::getAllShopVATs();
+$shopVats = we_shop_vats::getAllShopVATs();
 $selectFields = array();
 foreach($shopVats as $id => $shopVat){
 	$selectFields[$id] = $shopVat->text . ' (' . $shopVat->vat . '%)';

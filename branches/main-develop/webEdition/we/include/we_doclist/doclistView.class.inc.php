@@ -125,7 +125,7 @@ class doclistView{
 
       function search(newSearch) {
 
-      	if(' . searchtoolsearch::checkRightTempTable() . ' && ' . searchtoolsearch::checkRightDropTable() . ') {
+      	if(' . we_search_search::checkRightTempTable() . ' && ' . we_search_search::checkRightDropTable() . ') {
    			' . we_message_reporting::getShowMessageCall(g_l('searchtool', "[noTempTableRightsDoclist]"), we_message_reporting::WE_MESSAGE_NOTICE) . '
       	}
       	else {
@@ -980,7 +980,7 @@ class doclistView{
 		$obj->searchclassFolder->settable($_table);
 
 
-		if(searchtoolsearch::checkRightTempTable() == "1" && searchtoolsearch::checkRightDropTable() == "1"){
+		if(we_search_search::checkRightTempTable() == "1" && we_search_search::checkRightDropTable() == "1"){
 			print we_html_element::jsElement(
 					we_message_reporting::getShowMessageCall(g_l('searchtool', "[noTempTableRightsDoclist]"), we_message_reporting::WE_MESSAGE_NOTICE)
 			);

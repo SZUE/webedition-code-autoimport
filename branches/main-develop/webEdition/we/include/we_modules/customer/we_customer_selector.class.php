@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_customer_selector extends we_usersSelector{
+class we_customer_selector extends we_users_selector{
 
 	function __construct($id, $JSIDName = '', $JSTextName = '', $JSCommand = '', $order = '', $sessionID = '', $rootDirID = 0, $filter = '', $multiple = true){
 		$mid = (is_numeric($id) ? $id : 0);

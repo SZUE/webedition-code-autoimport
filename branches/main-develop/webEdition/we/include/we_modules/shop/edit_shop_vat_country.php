@@ -70,11 +70,11 @@ $jsFunction = '
 if(isset($_REQUEST['we_cmd']) && $_REQUEST['we_cmd'][0] == 'saveVatRule'){
 
 	// initialise the vatRule by request
-	$weShopVatRule = weShopVatRule::initByRequest($_REQUEST);
+	$weShopVatRule = we_shop_vatRule::initByRequest($_REQUEST);
 	$weShopVatRule->save();
 } else{
 
-	$weShopVatRule = weShopVatRule::getShopVatRule();
+	$weShopVatRule = we_shop_vatRule::getShopVatRule();
 }
 
 // array with all rules

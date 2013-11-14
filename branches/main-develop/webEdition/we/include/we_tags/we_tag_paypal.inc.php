@@ -63,7 +63,7 @@ function we_tag_paypal($attribs){
 	if($useVat){
 		$_customer = (isset($_SESSION['webuser']) ? $_SESSION['webuser'] : false);
 
-		$weShopVatRule = weShopVatRule::getShopVatRule();
+		$weShopVatRule = we_shop_vatRule::getShopVatRule();
 
 		//FIX: it was meant to write since now we know if a costumer needs to pay tax or the default is true
 		$useVat = $weShopVatRule->executeVatRule($_customer);
@@ -231,7 +231,7 @@ function we_tag_paypal($attribs){
 					//bug #5701
 					if(!$useVat && !$netprices){
 						$vatId = isset($item['serial'][WE_SHOP_VAT_FIELD_NAME]) ? $item['serial'][WE_SHOP_VAT_FIELD_NAME] : 0;
-						$shopVat = (1 + (weShopVats::getVatRateForSite($vatId, true, false) / 100));
+						$shopVat = (1 + (we_shop_vats::getVatRateForSite($vatId, true, false) / 100));
 						//paypal allows only two decimal places
 						$itemPrice = round(($itemPrice / $shopVat), 2);
 					} else {
@@ -243,7 +243,7 @@ function we_tag_paypal($attribs){
 
 					// foreach article we must determine the correct tax-rate
 					$vatId = isset($item['serial'][WE_SHOP_VAT_FIELD_NAME]) ? $item['serial'][WE_SHOP_VAT_FIELD_NAME] : 0;
-					$shopVat = weShopVats::getVatRateForSite($vatId, true, false);
+					$shopVat = we_shop_vats::getVatRateForSite($vatId, true, false);
 					if($shopVat){ // has selected or standard shop rate
 						$item['serial'][WE_SHOP_VAT_FIELD_NAME] = $shopVat;
 					} else { // could not find any shoprates, remove field if necessary
@@ -265,7 +265,7 @@ function we_tag_paypal($attribs){
 				}
 
 				//get the shipping costs
-				$weShippingControl = weShippingControl::getShippingControl();
+				$weShippingControl = we_shop_shippingControl::getShippingControl();
 
 				// check if user is registered
 				$customer = (we_tag('ifRegisteredUser') ? $_SESSION['webuser'] : false);

@@ -24,9 +24,9 @@
  */
 function we_tag_ifEmailInvalid(){
 	if(isset($GLOBALS['WE_REMOVENEWSLETTER_STATUS'])){
-		return ($GLOBALS['WE_REMOVENEWSLETTER_STATUS'] == weNewsletterBase::STATUS_EMAIL_INVALID);
+		return ($GLOBALS['WE_REMOVENEWSLETTER_STATUS'] == we_newsletter_base::STATUS_EMAIL_INVALID);
 	} else if(isset($GLOBALS['WE_WRITENEWSLETTER_STATUS'])){
-		return ($GLOBALS['WE_WRITENEWSLETTER_STATUS'] == weNewsletterBase::STATUS_EMAIL_INVALID);
+		return ($GLOBALS['WE_WRITENEWSLETTER_STATUS'] == we_newsletter_base::STATUS_EMAIL_INVALID);
 	} else{
 		return false;
 	}

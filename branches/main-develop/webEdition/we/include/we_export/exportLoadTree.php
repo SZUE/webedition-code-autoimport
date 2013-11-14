@@ -177,7 +177,7 @@ function getItems($ParentID){
 
 we_html_tools::protect();
 
-$Tree = new weExportTree("export_frameset.php",
+$Tree = new we_export_tree("export_frameset.php",
 		$topFrame,
 		$topFrame . ".body",
 		$topFrame . ".cmd");

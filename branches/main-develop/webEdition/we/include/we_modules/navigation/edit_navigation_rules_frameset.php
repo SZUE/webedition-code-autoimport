@@ -27,7 +27,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 
 $what = isset($_REQUEST["pnt"]) ? $_REQUEST["pnt"] : "frameset";
-$weFrame = new weNavigationRuleFrames();
+$weFrame = new we_navigation_ruleFrames();
 $weFrame->Controller->processVariables();
 $weFrame->Controller->processCommands();
 echo $weFrame->getHTML($what);

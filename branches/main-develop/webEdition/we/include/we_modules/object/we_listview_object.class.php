@@ -132,7 +132,7 @@ class we_listview_object extends listviewBase{
 
 		$weDocumentCustomerFilter_tail = '';
 		if($this->customerFilterType != 'false' && defined("CUSTOMER_FILTER_TABLE")){
-			$weDocumentCustomerFilter_tail = weDocumentCustomerFilter::getConditionForListviewQuery($this);
+			$weDocumentCustomerFilter_tail = we_customer_documentFilter::getConditionForListviewQuery($this);
 		}
 
 		$webUserID_tail = '';

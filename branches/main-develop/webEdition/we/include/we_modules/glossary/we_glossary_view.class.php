@@ -490,7 +490,7 @@ class we_glossary_view{
 
 				case 'populateWorkspaces':
 					$objectLinkID = (isset($_REQUEST['link']['Attributes']['ObjectLinkID']) && $_REQUEST['link']['Attributes']['ObjectLinkID'] != "" ? $_REQUEST['link']['Attributes']['ObjectLinkID'] : 0);
-					$_values = weDynList::getWorkspacesForObject($objectLinkID);
+					$_values = we_navigation_dynList::getWorkspacesForObject($objectLinkID);
 					$_js = '';
 
 					if(!empty($_values)){
@@ -505,7 +505,7 @@ class we_glossary_view{
 							' . $this->EditorBodyFrame . '.setDisplay("ObjectWorkspaceID","block");
 						');
 					} else{
-						if(weDynList::getWorkspaceFlag($objectLinkID)){
+						if(we_navigation_dynList::getWorkspaceFlag($objectLinkID)){
 							print we_html_element::jsElement(
 									$this->EditorBodyFrame . '.setDisplay("ObjectWorkspaceID","block");
 								' . $this->EditorBodyForm . '.elements[\'link[Attributes][ObjectWorkspaceID]\'].options.length = 0;

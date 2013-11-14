@@ -28,7 +28,7 @@ we_html_tools::protect();
 $what = (isset($_REQUEST["pnt"])) ? $_REQUEST["pnt"] : "frameset";
 $mode = (isset($_REQUEST["art"])) ? $_REQUEST["art"] : 0;
 
-$weFrame = new weBannerFrames(WEBEDITION_DIR . 'we/include/we_modules/banner/edit_banner_frameset.php');
+$weFrame = new we_banner_frames(WEBEDITION_DIR . 'we/include/we_modules/banner/edit_banner_frameset.php');
 echo $weFrame->getHTMLDocumentHeader();
 $weFrame->View->processVariables();
 $weFrame->View->processCommands();

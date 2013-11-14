@@ -54,7 +54,7 @@ $headline = $_view->makeHeadLines();
 $foundItems = (isset($_SESSION['weS']['weSearch']['foundItems'])) ? $_SESSION['weS']['weSearch']['foundItems'] : 0;
 $_parts = array(
 	array("html" => $_view->getSearchDialog()),
-	array("html" => "<div id='parametersTop'>" . $_view->getSearchParameterTop($foundItems) . "</div>" . searchtoolView::tblList($content, $headline, "doclist") . "<div id='parametersBottom'>" . $_view->getSearchParameterBottom($foundItems) . "</div>"),
+	array("html" => "<div id='parametersTop'>" . $_view->getSearchParameterTop($foundItems) . "</div>" . we_search_view::tblList($content, $headline, "doclist") . "<div id='parametersBottom'>" . $_view->getSearchParameterBottom($foundItems) . "</div>"),
 );
 
 echo $_view->getHTMLforDoclist($_parts) . '

@@ -115,7 +115,7 @@ function we_tag_sessionStart($attribs){
 
 function wetagsessionHandleFailedLogin(){
 	$_SESSION['webuser'] = array(
-		'registered' => false, 'loginfailed' => we_user::INVALID_CREDENTIALS
+		'registered' => false, 'loginfailed' => we_users_user::INVALID_CREDENTIALS
 	);
 	if(!isset($GLOBALS['WE_LOGIN_DENIED'])){
 		we_log_loginFailed('tblWebUser', $_REQUEST['s']['Username']);
@@ -128,7 +128,7 @@ function wetagsessionHandleFailedLogin(){
 	){
 		//don't serve user
 		if(SECURITY_LIMIT_CUSTOMER_REDIRECT){
-			$_SESSION['webuser']['loginfailed'] = we_user::MAX_LOGIN_COUNT_REACHED;
+			$_SESSION['webuser']['loginfailed'] = we_users_user::MAX_LOGIN_COUNT_REACHED;
 			unset($_REQUEST['s']);
 			@include($_SERVER['DOCUMENT_ROOT'] . id_to_path(SECURITY_LIMIT_CUSTOMER_REDIRECT, FILE_TABLE));
 		} else {

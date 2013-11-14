@@ -239,7 +239,7 @@ class weXMLExport extends weXMLExIm{
 
 	function prepareExport(){
 		//$this->RefTable = new RefTable();
-		$_preparer = new weExportPreparer($this->options, $this->RefTable);
+		$_preparer = new we_export_preparer($this->options, $this->RefTable);
 		$_preparer->prepareExport();
 	}
 

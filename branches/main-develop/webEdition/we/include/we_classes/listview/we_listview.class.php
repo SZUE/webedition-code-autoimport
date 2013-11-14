@@ -180,7 +180,7 @@ class we_listview extends listviewBase{
 			}
 		}
 		if($this->customerFilterType != 'false' && defined('CUSTOMER_FILTER_TABLE')){
-			$sql_tail .= weDocumentCustomerFilter::getConditionForListviewQuery($this);
+			$sql_tail .= we_customer_documentFilter::getConditionForListviewQuery($this);
 		}
 
 		if($this->customers && $this->customers !== '*'){

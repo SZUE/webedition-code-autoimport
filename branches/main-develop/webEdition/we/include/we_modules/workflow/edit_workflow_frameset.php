@@ -30,7 +30,7 @@ $what = (isset($_GET['pnt']) ? $_GET['pnt'] : 'frameset');
 $mode = (isset($_GET['art']) ? $_GET['art'] : 0);
 $type = (isset($_GET['type']) ? $_GET['type'] : 0);
 
-$weFrame = new weWorkflowFrames();
+$weFrame = new we_workflow_frames();
 echo $weFrame->getHTMLDocumentHeader();
 $weFrame->View->processVariables();
 $weFrame->View->processCommands();

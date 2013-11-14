@@ -33,9 +33,9 @@ class rpcGetSearchResultCmd extends rpcCmd{
 
 		$_REQUEST['we_cmd']['obj'] = unserialize($_SESSION['weSearch_session']);
 
-		$content = searchtoolView::searchProperties($whichsearch);
+		$content = we_search_view::searchProperties($whichsearch);
 
-		$code = searchtoolView::tabListContent($setView, $content, $class = 'middlefont', $whichsearch);
+		$code = we_search_view::tabListContent($setView, $content, $class = 'middlefont', $whichsearch);
 
 		$resp->setData('data', $code);
 

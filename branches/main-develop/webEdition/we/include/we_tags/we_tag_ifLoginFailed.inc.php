@@ -28,8 +28,8 @@ function we_tag_ifLoginFailed($attribs){
 		case 'all':
 			return isset($_SESSION['webuser']) && isset($_SESSION['webuser']['loginfailed']) ? ($_SESSION['webuser']['loginfailed'] !== false) : false;
 		case 'credentials':
-			return isset($_SESSION['webuser']) && isset($_SESSION['webuser']['loginfailed']) ? ($_SESSION['webuser']['loginfailed'] === we_user::INVALID_CREDENTIALS) : false;
+			return isset($_SESSION['webuser']) && isset($_SESSION['webuser']['loginfailed']) ? ($_SESSION['webuser']['loginfailed'] === we_users_user::INVALID_CREDENTIALS) : false;
 		case 'retrylimit':
-			return isset($_SESSION['webuser']) && isset($_SESSION['webuser']['loginfailed']) ? ($_SESSION['webuser']['loginfailed'] === we_user::MAX_LOGIN_COUNT_REACHED) : false;
+			return isset($_SESSION['webuser']) && isset($_SESSION['webuser']['loginfailed']) ? ($_SESSION['webuser']['loginfailed'] === we_users_user::MAX_LOGIN_COUNT_REACHED) : false;
 	}
 }

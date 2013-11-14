@@ -321,7 +321,7 @@ class we_messaging_format extends we_class{
 				default:
 					break;
 			}
-			$ret .= '<span class="todo_hist_hdr">--- ' . we_user::getUsername($c['from_userid'], $this->DB_WE) . ' -- ' . date(g_l('date', '[format][default]'), $c['date']) . ' -- ' . $hist_str . '</span><br>';
+			$ret .= '<span class="todo_hist_hdr">--- ' . we_users_user::getUsername($c['from_userid'], $this->DB_WE) . ' -- ' . date(g_l('date', '[format][default]'), $c['date']) . ' -- ' . $hist_str . '</span><br>';
 			if(!empty($c['comment'])){
 				$ret .= nl2br(oldHtmlspecialchars($c['comment'])) . '<br><br>';
 			}

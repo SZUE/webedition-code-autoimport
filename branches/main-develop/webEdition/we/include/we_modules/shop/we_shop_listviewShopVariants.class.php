@@ -87,7 +87,7 @@ class we_shop_listviewShopVariants extends listviewBase{
 
 		$this->DefaultName = $defaultname;
 
-		$variantData = weShopVariants::getVariantData($this->Model, $this->DefaultName);
+		$variantData = we_shop_variants::getVariantData($this->Model, $this->DefaultName);
 
 		$this->VariantData['Record'] = $variantData;
 

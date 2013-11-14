@@ -88,11 +88,11 @@ function we_tag_href($attribs){
 
 	if(!$GLOBALS['we_editmode']){
 		if($int && defined('CUSTOMER_TABLE') && $intID && weTag_getAttribute('cfilter', $attribs, true, true)){
-			$filter = weDocumentCustomerFilter::getFilterByIdAndTable($intID, FILE_TABLE);
+			$filter = we_customer_documentFilter::getFilterByIdAndTable($intID, FILE_TABLE);
 
 			if(is_object($filter)){
 				$obj = (object) array('ID' => $intID, 'ContentType' => $ct);
-				if($filter->accessForVisitor($obj, array(), true) != weDocumentCustomerFilter::ACCESS){
+				if($filter->accessForVisitor($obj, array(), true) != we_customer_documentFilter::ACCESS){
 					return '';
 				}
 			}

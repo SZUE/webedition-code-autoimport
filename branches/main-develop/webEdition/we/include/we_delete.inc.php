@@ -295,11 +295,11 @@ if(!$wfchk){
 						}
 
 						if(defined("CUSTOMER_TABLE")){ // delete the customerfilters
-							weDocumentCustomerFilter::deleteModel(
+							we_customer_documentFilter::deleteModel(
 								$deletedItems, $table);
 							if(defined("OBJECT_FILES_TABLE") && $table == OBJECT_TABLE){
 								if(!empty($deleted_objects)){
-									weDocumentCustomerFilter::deleteModel(
+									we_customer_documentFilter::deleteModel(
 										$deleted_objects, OBJECT_FILES_TABLE);
 								}
 							}

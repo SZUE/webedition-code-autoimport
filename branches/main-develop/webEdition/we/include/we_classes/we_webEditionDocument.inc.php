@@ -40,7 +40,7 @@ class we_webEditionDocument extends we_textContentDocument{
 	protected $usedElementNames = array();
 
 	/**
-	 * @var weDocumentCustomerFilter
+	 * @var we_customer_documentFilter
 	 */
 	var $documentCustomerFilter = ''; // DON'T SET TO NULL !!!!
 
@@ -747,7 +747,7 @@ class we_webEditionDocument extends we_textContentDocument{
 
 	function i_areVariantNamesValid(){
 		if(defined('SHOP_TABLE')){
-			$variationFields = weShopVariants::getAllVariationFields($this);
+			$variationFields = we_shop_variants::getAllVariationFields($this);
 
 			if(!empty($variationFields)){
 				$i = 0;
@@ -787,12 +787,12 @@ class we_webEditionDocument extends we_textContentDocument{
 			$data = array();
 
 			if(defined('SHOP_TABLE')){
-				weShopVariants::setVariantDataForModel($this, true);
+				we_shop_variants::setVariantDataForModel($this, true);
 			}
 			$this->saveInSession($data);
 
 			if(defined('SHOP_TABLE')){
-				weShopVariants::correctModelFields($this);
+				we_shop_variants::correctModelFields($this);
 			}
 
 			$data[0]["InWebEdition"] = false;
@@ -1057,7 +1057,7 @@ if (!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 
 	function correctVariantFields(){
 		if($this->canHaveVariants()){
-			weShopVariants::correctModelFields($this);
+			we_shop_variants::correctModelFields($this);
 		}
 	}
 
@@ -1069,7 +1069,7 @@ if (!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 			$this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'] = unserialize($this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat']);
 			//}
 			// now register variant fields in document
-			weShopVariants::setVariantDataForModel($this);
+			we_shop_variants::setVariantDataForModel($this);
 		}
 	}
 

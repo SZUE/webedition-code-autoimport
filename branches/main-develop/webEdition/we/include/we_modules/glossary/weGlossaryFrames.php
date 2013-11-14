@@ -55,7 +55,7 @@ class weGlossaryFrames extends weModuleFrames{
 	function getHTMLEditorHeader(){
 
 		if(isset($_REQUEST['home']) && $_REQUEST["home"]){
-			return weGlossaryFrameEditorHome::Header($this);
+			return we_glossary_frameEditorHome::Header($this);
 		}
 
 		if(isset($_REQUEST['cmd'])){
@@ -63,23 +63,23 @@ class weGlossaryFrames extends weModuleFrames{
 
 				// Folder View
 				case 'view_folder':
-					return weGlossaryFrameEditorFolder::Header($this);
+					return we_glossary_frameEditorFolder::Header($this);
 					break;
 
 				// Type View
 				case 'view_type':
-					return weGlossaryFrameEditorType::Header($this);
+					return we_glossary_frameEditorType::Header($this);
 					break;
 
 				// Exception View
 				case 'view_exception':
 				case 'save_exception':
-					return weGlossaryFrameEditorException::Header($this);
+					return we_glossary_frameEditorException::Header($this);
 					break;
 
 				// Item View
 				default:
-					return weGlossaryFrameEditorItem::Header($this);
+					return we_glossary_frameEditorItem::Header($this);
 					break;
 			}
 
@@ -87,14 +87,14 @@ class weGlossaryFrames extends weModuleFrames{
 				$this->View->Glossary->Language = substr($_REQUEST['cmdid'], 0, 5);
 			}
 		} else {
-			return weGlossaryFrameEditorItem::Header($this);
+			return we_glossary_frameEditorItem::Header($this);
 		}
 	}
 
 	function getHTMLEditorBody(){
 
 		if(isset($_REQUEST['home']) && $_REQUEST["home"]){
-			return weGlossaryFrameEditorHome::Body($this);
+			return we_glossary_frameEditorHome::Body($this);
 		}
 
 		if(isset($_REQUEST['cmd'])){
@@ -102,23 +102,23 @@ class weGlossaryFrames extends weModuleFrames{
 
 				// Folder View
 				case 'view_folder':
-					return weGlossaryFrameEditorFolder::Body($this);
+					return we_glossary_frameEditorFolder::Body($this);
 					break;
 
 				// Type View
 				case 'view_type':
-					return weGlossaryFrameEditorType::Body($this);
+					return we_glossary_frameEditorType::Body($this);
 					break;
 
 				// Exception View
 				case 'view_exception':
 				case 'save_exception':
-					return weGlossaryFrameEditorException::Body($this);
+					return we_glossary_frameEditorException::Body($this);
 					break;
 
 				// Item View
 				default:
-					return weGlossaryFrameEditorItem::Body($this);
+					return we_glossary_frameEditorItem::Body($this);
 					break;
 			}
 
@@ -126,14 +126,14 @@ class weGlossaryFrames extends weModuleFrames{
 				$this->View->Glossary->Language = substr($_REQUEST['cmdid'], 0, 5);
 			}
 		} else {
-			return weGlossaryFrameEditorItem::Body($this);
+			return we_glossary_frameEditorItem::Body($this);
 		}
 	}
 
 	function getHTMLEditorFooter(){
 
 		if(isset($_REQUEST["home"])){
-			return weGlossaryFrameEditorHome::Footer($this);
+			return we_glossary_frameEditorHome::Footer($this);
 		}
 
 		if(isset($_REQUEST['cmd'])){
@@ -141,23 +141,23 @@ class weGlossaryFrames extends weModuleFrames{
 
 				// Folder View
 				case 'view_folder':
-					return weGlossaryFrameEditorFolder::Footer($this);
+					return we_glossary_frameEditorFolder::Footer($this);
 					break;
 
 				// Type View
 				case 'view_type':
-					return weGlossaryFrameEditorType::Footer($this);
+					return we_glossary_frameEditorType::Footer($this);
 					break;
 
 				// Exception View
 				case 'view_exception':
 				case 'save_exception':
-					return weGlossaryFrameEditorException::Footer($this);
+					return we_glossary_frameEditorException::Footer($this);
 					break;
 
 				// Item View
 				default:
-					return weGlossaryFrameEditorItem::Footer($this);
+					return we_glossary_frameEditorItem::Footer($this);
 					break;
 			}
 
@@ -165,7 +165,7 @@ class weGlossaryFrames extends weModuleFrames{
 				$this->View->Glossary->Language = substr($_REQUEST['cmdid'], 0, 5);
 			}
 		} else {
-			return weGlossaryFrameEditorItem::Footer($this);
+			return we_glossary_frameEditorItem::Footer($this);
 		}
 	}
 

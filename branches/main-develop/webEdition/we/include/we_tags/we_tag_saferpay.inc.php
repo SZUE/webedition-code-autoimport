@@ -67,7 +67,7 @@ function we_tag_saferpay($attribs){
 			$_customer = false;
 		}
 
-		$weShopVatRule = weShopVatRule::getShopVatRule();
+		$weShopVatRule = we_shop_vatRule::getShopVatRule();
 		$calcVat = $weShopVatRule->executeVatRule($_customer);
 	}
 
@@ -163,7 +163,7 @@ function we_tag_saferpay($attribs){
 
 			// foreach article we must determine the correct tax-rate
 			$vatId = isset($item['serial'][WE_SHOP_VAT_FIELD_NAME]) ? $item['serial'][WE_SHOP_VAT_FIELD_NAME] : 0;
-			$shopVat = weShopVats::getVatRateForSite($vatId, true, false);
+			$shopVat = we_shop_vats::getVatRateForSite($vatId, true, false);
 			if($shopVat){ // has selected or standard shop rate
 				$$item['serial'][WE_SHOP_VAT_FIELD_NAME] = $shopVat;
 			} else{ // could not find any shoprates, remove field if necessary
@@ -187,7 +187,7 @@ function we_tag_saferpay($attribs){
 
 		//get the shipping costs
 
-		$weShippingControl = weShippingControl::getShippingControl();
+		$weShippingControl = we_shop_shippingControl::getShippingControl();
 
 		$customer = (we_tag('ifRegisteredUser') ? // check if user is registered
 				$_SESSION['webuser'] : false);

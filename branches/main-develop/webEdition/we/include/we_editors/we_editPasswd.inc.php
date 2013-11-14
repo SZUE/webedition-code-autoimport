@@ -55,7 +55,7 @@ function getLoad(){
 	if(isset($_REQUEST['cmd']) && ($_REQUEST['cmd'] == 'ok')){
 		$userData = getHash('SELECT UseSalt,passwd FROM ' . USER_TABLE . ' WHERE username="' . $DB_WE->escape($_SESSION['user']['Username']) . '"', $DB_WE);
 
-		if(!we_user::comparePasswords($userData['UseSalt'], $_SESSION['user']['Username'], $userData['passwd'], $oldpasswd)){
+		if(!we_users_user::comparePasswords($userData['UseSalt'], $_SESSION['user']['Username'], $userData['passwd'], $oldpasswd)){
 			$js = we_message_reporting::getShowMessageCall(g_l('global', '[pass_not_match]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 top.document.forms[0].elements["oldpasswd"].focus();
 top.document.forms[0].elements["oldpasswd"].select();';
@@ -70,7 +70,7 @@ top.document.forms[0].elements["newpasswd2"].select();';
 		} else{
 			$useSalt = 0;
 			//essential leave this line
-			$pwd = $DB_WE->escape(we_user::makeSaltedPassword($useSalt, $_SESSION['user']['Username'], $newpasswd));
+			$pwd = $DB_WE->escape(we_users_user::makeSaltedPassword($useSalt, $_SESSION['user']['Username'], $newpasswd));
 			$DB_WE->query('UPDATE ' . USER_TABLE . ' SET passwd="' . $pwd . '", UseSalt=' . $useSalt . ' WHERE ID=' . $_SESSION["user"]['ID'] . ' AND username="' . $DB_WE->escape($_SESSION["user"]["Username"]) . '"');
 			$js = we_message_reporting::getShowMessageCall(g_l('global', '[pass_changed]'), we_message_reporting::WE_MESSAGE_NOTICE) .
 				'top.close();';

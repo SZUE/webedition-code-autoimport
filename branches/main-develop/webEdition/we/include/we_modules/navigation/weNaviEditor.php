@@ -35,7 +35,7 @@ $_id = (!empty($_path)) ? path_to_id($_path, NAVIGATION_TABLE) : 0;
 
 $_cmd = 'opener.we_cmd("add_navi",' . $_id . ',encodeURIComponent(document.we_form.Text.value),dir.options[dir.selectedIndex].value,document.we_form.Ordn.value);';
 
-$_navi = new weNavigation($_id);
+$_navi = new we_navigation_navigation($_id);
 
 $_wrkNavi = array();
 $_db = new DB_WE();

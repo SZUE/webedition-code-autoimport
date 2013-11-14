@@ -29,7 +29,7 @@ we_html_tools::protect();
 
 $what = isset($_REQUEST["pnt"]) ? $_REQUEST["pnt"] : "frameset";
 
-$weFrame = new searchtoolFrames();
+$weFrame = new we_search_frames();
 
 $weFrame->View->processVariables();
 $weFrame->View->processCommands();

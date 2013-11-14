@@ -55,7 +55,7 @@ function we_tag_writeShopData($attribs){
 	$_customer = (isset($_SESSION['webuser']) ? $_SESSION['webuser'] : false);
 
 	if($useVat){
-		$weShopVatRule = weShopVatRule::getShopVatRule();
+		$weShopVatRule = we_shop_vatRule::getShopVatRule();
 		$calcVat = $weShopVatRule->executeVatRule($_customer);
 	}
 
@@ -91,7 +91,7 @@ function we_tag_writeShopData($attribs){
 
 			// foreach article we must determine the correct tax-rate
 			$vatId = isset($shoppingItem['serial'][WE_SHOP_VAT_FIELD_NAME]) ? $shoppingItem['serial'][WE_SHOP_VAT_FIELD_NAME] : 0;
-			$shopVat = weShopVats::getVatRateForSite($vatId, true, false);
+			$shopVat = we_shop_vats::getVatRateForSite($vatId, true, false);
 			if($shopVat){ // has selected or standard shop rate
 				$shoppingItem['serial'][WE_SHOP_VAT_FIELD_NAME] = $shopVat;
 			} else{ // could not find any shoprates, remove field if necessary
@@ -139,7 +139,7 @@ function we_tag_writeShopData($attribs){
 		// second part: add cart fields to table order.
 		//{
 		// add shopcartfields to table
-		$weShippingControl = weShippingControl::getShippingControl();
+		$weShippingControl = we_shop_shippingControl::getShippingControl();
 
 		$cartField = array(
 			WE_SHOP_CART_CUSTOM_FIELD => $cartFields, // add custom cart fields to article
@@ -193,7 +193,7 @@ function we_tag_writeShopData($attribs){
 		}
 		$doc = we_getDocForTag('top');
 		$lang = substr($doc->Language, 0, 2);
-		$weShopStatusMails = weShopStatusMails::getShopStatusMails();
+		$weShopStatusMails = we_shop_statusMails::getShopStatusMails();
 		$weShopStatusMails->checkAutoMailAndSend('Order', $orderID, $_customer, $lang);
 	}
 

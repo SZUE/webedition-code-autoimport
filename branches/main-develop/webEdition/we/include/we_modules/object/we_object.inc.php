@@ -1130,7 +1130,7 @@ class we_object extends we_document{
 			case we_objectFile::TYPE_SHOPVAT:
 				$values = array();
 				if(defined('SHOP_TABLE')){
-					$allVats = weShopVats::getAllShopVATs();
+					$allVats = we_shop_vats::getAllShopVATs();
 					foreach($allVats as $id => $shopVat){
 						$values[$id] = $shopVat->vat . ' - ' . $shopVat->text;
 						if($shopVat->standard){

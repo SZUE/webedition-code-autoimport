@@ -86,7 +86,7 @@ $rcpts_str = '';
 $rcpts = explode(',', isset($_REQUEST["rs"]) ? $_REQUEST["rs"] : '');
 $db=new DB_WE();
 foreach($rcpts as $rcpt){
-	if(($uid = we_user::getUserID($rcpt,$db)) != -1){
+	if(($uid = we_users_user::getUserID($rcpt,$db)) != -1){
 		$rcpts_str .= 'new Array("we_messaging","' . $uid . '","' . $rcpt . '"),';
 	}
 }

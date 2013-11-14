@@ -126,7 +126,7 @@ class we_customer_customer extends weModelBase{
 	 */
 	function delete($recursive = true){
 		if(weModelBase::delete() && $recursive){
-			weDocumentCustomerFilter::deleteWebUser($this);
+			we_customer_documentFilter::deleteWebUser($this);
 			return true;
 		}
 		return false;
@@ -333,8 +333,8 @@ class we_customer_customer extends weModelBase{
 				return self::cryptData($pass);
 			case self::ENCRYPT_HASH:
 				$useSalt = 0;
-				$pwd = we_user::makeSaltedPassword($useSalt, '', $pass, 8);
-				return ($useSalt != we_user::SALT_CRYPT ?
+				$pwd = we_users_user::makeSaltedPassword($useSalt, '', $pass, 8);
+				return ($useSalt != we_users_user::SALT_CRYPT ?
 								$pass : $pwd);
 		}
 	}
@@ -350,7 +350,7 @@ class we_customer_customer extends weModelBase{
 			case '-1':
 				return $clearPassword === self::decryptData($storedPassword);
 			case '2y':
-				return we_user::comparePasswords(we_user::SALT_CRYPT, '', $storedPassword, $clearPassword);
+				return we_users_user::comparePasswords(we_users_user::SALT_CRYPT, '', $storedPassword, $clearPassword);
 		}
 		return false;
 	}

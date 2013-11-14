@@ -38,7 +38,7 @@ class we_folder extends we_root{
 	protected $urlMap;
 
 	/**
-	 * @var weDocumentCustomerFilter
+	 * @var we_customer_documentFilter
 	 */
 	var $documentCustomerFilter = ''; // DON'T SET TO NULL !!!!
 
@@ -76,7 +76,7 @@ class we_folder extends we_root{
 				$this->initLanguageFromParent();
 			}
 			if(isset($_REQUEST['we_edit_weDocumentCustomerFilter'])){
-				$this->documentCustomerFilter = weDocumentCustomerFilter::getCustomerFilterFromRequest($this);
+				$this->documentCustomerFilter = we_customer_documentFilter::getCustomerFilterFromRequest($this);
 			} else if(isset($sessDat[3])){ // init webUser from session
 				$this->documentCustomerFilter = unserialize($sessDat[3]);
 			}
@@ -89,7 +89,7 @@ class we_folder extends we_root{
 		if(is_object($this->searchclassFolder_class)){
 			$this->searchclassFolder = $this->searchclassFolder_class;
 		} else {
-			$this->searchclassFolder = new searchtoolsearch();
+			$this->searchclassFolder = new we_search_search();
 			$this->searchclassFolder_class = serialize($this->searchclassFolder);
 		}
 		$this->searchclassFolder->initSearchData();
@@ -268,7 +268,7 @@ class we_folder extends we_root{
 		$this->resaveWeDocumentCustomerFilter();
 
 		if($resave == 0 && $update){
-			weNavigationCache::clean(true);
+			we_navigation_cache::clean(true);
 		}
 		if(LANGLINK_SUPPORT && isset($_REQUEST['we_' . $this->Name . '_LanguageDocID']) && $_REQUEST['we_' . $this->Name . '_LanguageDocID'] != 0){
 			$this->setLanguageLink($_REQUEST['we_' . $this->Name . '_LanguageDocID'], 'tblFile', true, (get_class($this) == 'we_class_folder'));

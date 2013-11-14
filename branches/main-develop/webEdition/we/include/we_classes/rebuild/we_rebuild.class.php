@@ -36,9 +36,9 @@ abstract class we_rebuild{
 					flush();
 				}
 
-				weNavigationCache::delCacheNavigationEntry($data['id']);
+				we_navigation_cache::delCacheNavigationEntry($data['id']);
 				if($data['id']){ //don't save id=0
-					$nav = new weNavigation($data['id']);
+					$nav = new we_navigation_navigation($data['id']);
 					$nav->save(false, true);
 				}
 				if($printIt){

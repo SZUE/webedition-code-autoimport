@@ -33,7 +33,7 @@ function we_tag_votingSelect($attribs, $content){
 			$reload = true;
 		}
 
-		$where = ' WHERE  IsFolder=0 ' . weVoting::getOwnersSql(); //nicht auf Active pr�fen, sonst fliegen deaktivierte Votings aus den Dokumenten und man kann nicht einfach wieder aktivieren, bzw. man kann Ergebnisse anzeigen
+		$where = ' WHERE  IsFolder=0 ' . we_voting_voting::getOwnersSql(); //nicht auf Active pr�fen, sonst fliegen deaktivierte Votings aus den Dokumenten und man kann nicht einfach wieder aktivieren, bzw. man kann Ergebnisse anzeigen
 
 		$select_name = $GLOBALS['_we_voting_namespace'];
 

@@ -161,11 +161,11 @@ function we_tag_include($attribs){
 			//check Customer-Filter on static documents
 			$id = intval($id ? $id : (isset($intID) ? $intID : 0));
 			if(defined('CUSTOMER_TABLE') && $id){
-				$filter = weDocumentCustomerFilter::getFilterByIdAndTable($id, FILE_TABLE);
+				$filter = we_customer_documentFilter::getFilterByIdAndTable($id, FILE_TABLE);
 
 				if(is_object($filter)){
 					$obj = (object) array('ID' => $id, 'ContentType' => $ct);
-					if($filter->accessForVisitor($obj, array(), true) != weDocumentCustomerFilter::ACCESS){
+					if($filter->accessForVisitor($obj, array(), true) != we_customer_documentFilter::ACCESS){
 						return '';
 					}
 				}

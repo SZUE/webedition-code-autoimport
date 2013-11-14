@@ -27,7 +27,7 @@ we_html_tools::protect();
 
 $what = isset($_REQUEST["pnt"]) ? $_REQUEST["pnt"] : "frameset";
 
-$weFrame = new weNavigationFrames();
+$weFrame = new we_navigation_frames();
 echo $weFrame->getHTMLDocumentHeader();
 $weFrame->View->processVariables();
 $weFrame->View->processCommands();

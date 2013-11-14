@@ -232,4 +232,4 @@ loadTreeData();');
 			) . we_html_element::htmlBody(array("bgcolor" => "white"))
 	);
 }
-we_user::writePrefs($_SESSION["prefs"]["userID"], $GLOBALS['DB_WE']);
+we_users_user::writePrefs($_SESSION["prefs"]["userID"], $GLOBALS['DB_WE']);

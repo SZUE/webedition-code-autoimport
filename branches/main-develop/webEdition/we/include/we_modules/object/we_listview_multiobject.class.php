@@ -172,7 +172,7 @@ class we_listview_multiobject extends listviewBase{
 		$cat_tail = ($this->cats || $this->categoryids ? we_category::getCatSQLTail($this->cats, $_obxTable, $this->catOr, $this->DB_WE, "OF_Category", true, $this->categoryids) : '');
 
 		$weDocumentCustomerFilter_tail = ($this->customerFilterType != 'false' && defined("CUSTOMER_FILTER_TABLE") ?
-				weDocumentCustomerFilter::getConditionForListviewQuery($this) :
+				we_customer_documentFilter::getConditionForListviewQuery($this) :
 				'');
 
 		if($sqlParts["tables"]){

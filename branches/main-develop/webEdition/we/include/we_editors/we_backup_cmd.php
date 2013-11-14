@@ -336,7 +336,7 @@ switch($_REQUEST['cmd']){
 			}
 
 // reload user prefs
-			$_SESSION['prefs'] = we_user::readPrefs($_SESSION['user']['ID'], $DB_WE);
+			$_SESSION['prefs'] = we_users_user::readPrefs($_SESSION['user']['ID'], $DB_WE);
 
 			print we_html_element::jsElement('
 						top.checker.location = "' . HTML_DIR . 'white.html";

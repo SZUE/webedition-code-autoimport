@@ -763,7 +763,7 @@ abstract class we_root extends we_class{
 	 */
 	function resaveWeDocumentCustomerFilter(){
 		if(isset($this->documentCustomerFilter) && $this->documentCustomerFilter){
-			weDocumentCustomerFilter::saveForModel($this);
+			we_customer_documentFilter::saveForModel($this);
 		}
 	}
 
@@ -1258,15 +1258,15 @@ abstract class we_root extends we_class{
 	protected function getNavigationFoldersForDoc(){
 		if($this->Table == FILE_TABLE){
 			$category = array_map('escape_sql_query', array_unique(array_filter(array_merge(explode(',', $this->Category), explode(',', $this->oldCategory)))));
-			$queries = array('(((Selection="' . weNavigation::SELECTION_STATIC . '" AND SelectionType="' . weNavigation::STPYE_DOCLINK . '") OR (IsFolder=1 AND FolderSelection="' . weNavigation::STPYE_DOCLINK . '")) AND LinkID=' . intval($this->ID) . ')',
+			$queries = array('(((Selection="' . we_navigation_navigation::SELECTION_STATIC . '" AND SelectionType="' . we_navigation_navigation::STPYE_DOCLINK . '") OR (IsFolder=1 AND FolderSelection="' . we_navigation_navigation::STPYE_DOCLINK . '")) AND LinkID=' . intval($this->ID) . ')',
 			);
 			if(isset($this->DocType)){
 				//FIXME: query should use ID, not parentID
-				$queries[] = '((Selection="' . weNavigation::SELECTION_DYNAMIC . '") AND (DocTypeID="' . $this->DB_WE->escape($this->DocType) . '" OR FolderID=' . intval($this->ParentID) . '))';
+				$queries[] = '((Selection="' . we_navigation_navigation::SELECTION_DYNAMIC . '") AND (DocTypeID="' . $this->DB_WE->escape($this->DocType) . '" OR FolderID=' . intval($this->ParentID) . '))';
 			}
 			if(!empty($category)){
 				//FIXME: query should use ID, not parentID
-				$queries[] = '((Selection="' . weNavigation::SELECTION_DYNAMIC . '" AND SelectionType="' . weNavigation::STPYE_DOCTYPE . '") AND (FIND_IN_SET("' . implode('",Categories) OR FIND_IN_SET("', $category) . '",Categories)))';
+				$queries[] = '((Selection="' . we_navigation_navigation::SELECTION_DYNAMIC . '" AND SelectionType="' . we_navigation_navigation::STPYE_DOCTYPE . '") AND (FIND_IN_SET("' . implode('",Categories) OR FIND_IN_SET("', $category) . '",Categories)))';
 			}
 			$this->DB_WE->query('SELECT DISTINCT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ' . implode(' OR ', $queries));
 			return $this->DB_WE->getAll(true);
@@ -1286,12 +1286,12 @@ abstract class we_root extends we_class{
 	function rewriteNavigation(){
 		// rewrite filter
 		if(defined('CUSTOMER_TABLE') && isset($this->documentCustomerFilter) && $this->documentCustomerFilter != false){
-			weNavigationCustomerFilter::updateByFilter($this->documentCustomerFilter, $this->ID, $this->Table);
+			we_navigation_customerFilter::updateByFilter($this->documentCustomerFilter, $this->ID, $this->Table);
 		}
 
 		$folders = $this->getNavigationFoldersForDoc();
 		foreach($folders as $f){
-			weNavigationCache::delNavigationTree($f);
+			we_navigation_cache::delNavigationTree($f);
 		}
 	}
 

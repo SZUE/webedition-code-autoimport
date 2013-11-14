@@ -183,7 +183,7 @@ if(isset($GLOBALS['we_obj']) && $GLOBALS['we_obj']->documentCustomerFilter && !i
 
 	if(($_visitorHasAccess = $GLOBALS['we_obj']->documentCustomerFilter->accessForVisitor($GLOBALS['we_obj']))){
 
-		if(!($_visitorHasAccess == weDocumentCustomerFilter::ACCESS || $_visitorHasAccess == weDocumentCustomerFilter::CONTROLONTEMPLATE)){
+		if(!($_visitorHasAccess == we_customer_documentFilter::ACCESS || $_visitorHasAccess == we_customer_documentFilter::CONTROLONTEMPLATE)){
 
 			// user has NO ACCESS => show errordocument
 			$_errorDocId = $GLOBALS['we_obj']->documentCustomerFilter->getErrorDoc($_visitorHasAccess);

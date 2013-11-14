@@ -591,7 +591,7 @@ _EditorFrame.getDocumentReference().frames[3].location.reload();'; // reload the
 							}
 
 							if(($we_doc->ContentType == 'text/webedition' || $we_doc->ContentType == 'objectFile') && $we_doc->canHaveVariants(true)){
-								weShopVariants::setVariantDataForModel($we_doc, true);
+								we_shop_variants::setVariantDataForModel($we_doc, true);
 							}
 						} else {
 							$we_JavaScript = '';

@@ -24,17 +24,17 @@
  */
 function we_tag_ifShopPayVat($attribs){
 	$namefrom = weTag_getAttribute("customerfrom", $attribs);
-	$weShopVatRule = weShopVatRule::getShopVatRule();
+	$weShopVatRule = we_shop_vatRule::getShopVatRule();
 	if(we_tag('ifRegisteredUser', array(), '')){
 		$customer = $_SESSION['webuser'];
 	} elseif(isset($GLOBALS[$namefrom]) && $GLOBALS[$namefrom]){
-		$cus = new we_customertag($GLOBALS[$namefrom]);
+		$cus = new we_customer_customertag($GLOBALS[$namefrom]);
 		$customerarray = $cus->object->DB_WE->Record;
 		unset($cus);
 		$customer = ($customerarray ? $customerarray : false);
 	} else{
 		if(isset($GLOBALS[$namefrom]) && $GLOBALS[$namefrom]){
-			$cus = new we_customertag($GLOBALS[$namefrom]);
+			$cus = new we_customer_customertag($GLOBALS[$namefrom]);
 			$customerarray = $cus->object->getDBRecord();
 			unset($cus);
 			$customer = ($customerarray ? $customerarray : false);

@@ -30,7 +30,7 @@ print STYLESHEET;
 
 $what = (isset($_REQUEST["pnt"])) ? $_REQUEST["pnt"] : "frameset";
 
-$weFrame = new weUsersFrames(WE_USERS_MODULE_DIR . 'edit_user_frameset.php');
+$weFrame = new we_users_frames(WE_USERS_MODULE_DIR . 'edit_user_frameset.php');
 echo $weFrame->getHTMLDocumentHeader();
 $weFrame->View->processVariables();
 $weFrame->View->processCommands();

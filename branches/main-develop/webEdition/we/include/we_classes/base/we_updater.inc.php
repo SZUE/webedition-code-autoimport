@@ -89,7 +89,7 @@ class we_updater{
 
 			$GLOBALS['DB_WE']->query('DELETE FROM ' . PREFS_TABLE . ' WHERE `key`=""');
 			foreach($queries as $q){
-				we_user::writePrefs($q['userID'], $GLOBALS['DB_WE'], $q);
+				we_users_user::writePrefs($q['userID'], $GLOBALS['DB_WE'], $q);
 			}
 		}
 	}
@@ -135,9 +135,9 @@ class we_updater{
 
 	static function fix_icon(){
 		$db = new DB_WE();
-		$db->query('UPDATE ' . USER_TABLE . " SET Icon='user_alias.gif' WHERE Type=" . we_user::TYPE_ALIAS);
-		$db->query('UPDATE ' . USER_TABLE . " SET Icon='usergroup.gif' WHERE Type=" . we_user::TYPE_USER_GROUP);
-		$db->query('UPDATE ' . USER_TABLE . " SET Icon='user.gif' WHERE Type=" . we_user::TYPE_USER);
+		$db->query('UPDATE ' . USER_TABLE . " SET Icon='user_alias.gif' WHERE Type=" . we_users_user::TYPE_ALIAS);
+		$db->query('UPDATE ' . USER_TABLE . " SET Icon='usergroup.gif' WHERE Type=" . we_users_user::TYPE_USER_GROUP);
+		$db->query('UPDATE ' . USER_TABLE . " SET Icon='user.gif' WHERE Type=" . we_users_user::TYPE_USER);
 	}
 
 	static function fix_text(){
@@ -167,7 +167,7 @@ class we_updater{
 		self::fix_text();
 		self::fix_icon();
 
-		$DB_WE->query('UPDATE ' . USER_TABLE . " SET IsFolder=1 WHERE Type=" . we_user::TYPE_USER_GROUP);
+		$DB_WE->query('UPDATE ' . USER_TABLE . " SET IsFolder=1 WHERE Type=" . we_users_user::TYPE_USER_GROUP);
 
 		self::fix_icon();
 		$GLOBALS['DB_WE']->query('SELECT userID FROM ' . PREFS_TABLE . ' WHERE `key`="Language" AND (value NOT LIKE "%_UTF-8%" OR value!="") AND userID IN (SELECT userID FROM ' . PREFS_TABLE . ' WHERE `key`="BackendCharset" AND value="")');
@@ -193,7 +193,7 @@ class we_updater{
 		if(!empty($users)){
 			$GLOBALS['DB_WE']->query('UPDATE ' . PREFS_TABLE . ' SET value="Deutsch" WHERE `key`="Language" AND userID IN (' . implode(',', $users) . ')');
 		}
-		$_SESSION['prefs'] = we_user::readPrefs($_SESSION['user']['ID'], $GLOBALS['DB_WE']);
+		$_SESSION['prefs'] = we_users_user::readPrefs($_SESSION['user']['ID'], $GLOBALS['DB_WE']);
 
 
 		return true;

@@ -31,19 +31,19 @@ $variationFields = $we_doc->getVariantFields();
 // :TODO: decide where to put this
 switch($_REQUEST['we_cmd'][0]){
 	case 'shop_insert_variant':
-		weShopVariants::insertVariant($we_doc, $_REQUEST['we_cmd'][1]);
+		we_shop_variants::insertVariant($we_doc, $_REQUEST['we_cmd'][1]);
 		break;
 	case 'shop_move_variant_up':
-		weShopVariants::moveVariant($we_doc, $_REQUEST['we_cmd'][1], 'up');
+		we_shop_variants::moveVariant($we_doc, $_REQUEST['we_cmd'][1], 'up');
 		break;
 	case 'shop_move_variant_down':
-		weShopVariants::moveVariant($we_doc, $_REQUEST['we_cmd'][1], 'down');
+		we_shop_variants::moveVariant($we_doc, $_REQUEST['we_cmd'][1], 'down');
 		break;
 	case 'shop_remove_variant':
-		weShopVariants::removeVariant($we_doc, $_REQUEST['we_cmd'][1]);
+		we_shop_variants::removeVariant($we_doc, $_REQUEST['we_cmd'][1]);
 		break;
 	case 'shop_preview_variant':
-		weShopVariants::correctModelFields($we_doc, false);
+		we_shop_variants::correctModelFields($we_doc, false);
 		require(WE_MODULES_PATH . 'shop/show_variant.inc.php');
 		exit;
 		break;
@@ -52,4 +52,4 @@ switch($_REQUEST['we_cmd'][0]){
 
 $GLOBALS['we_editmode'] = true;
 
-print we_multiIconBox::getHTML('', '100%', weShopVariants::getVariantsEditorMultiBoxArray($we_doc), 30, '', -1, '', '', false);
+print we_multiIconBox::getHTML('', '100%', we_shop_variants::getVariantsEditorMultiBoxArray($we_doc), 30, '', -1, '', '', false);

@@ -296,14 +296,14 @@ class we_messaging_todo extends we_msg_proto{
 		$rej_folder = f('SELECT ID FROM ' . MSG_FOLDERS_TABLE . ' WHERE obj_type=' . we_msg_proto::FOLDER_REJECT . ' AND UserID=' . intval($msg['int_hdrs']['_from_userid']), 'ID', $this->DB_WE);
 		if(empty($rej_folder)){
 			$results['err'][] = g_l('modules_messaging', '[no_reject_folder]');
-			$results['failed'][] = we_user::getUsername($msg['int_hdrs']['_from_userid'], $this->DB_WE);
+			$results['failed'][] = we_users_user::getUsername($msg['int_hdrs']['_from_userid'], $this->DB_WE);
 			return $results;
 		}
 
 		$tmpId = f('SELECT ID FROM ' . $this->DB_WE->escape($this->table) . ' WHERE Properties=' . we_msg_proto::TODO_PROP_IMMOVABLE . ' AND ID=' . intval($msg['int_hdrs']['_ID']), 'ID', $this->DB_WE);
 		if($tmpId == $msg['int_hdrs']['_ID']){
 			$results['err'][] = g_l('modules_messaging', '[todo_no_reject]');
-			$results['failed'][] = we_user::getUsername($msg['int_hdrs']['_from_userid'], $this->DB_WE);
+			$results['failed'][] = we_users_user::getUsername($msg['int_hdrs']['_from_userid'], $this->DB_WE);
 			return $results;
 		}
 
@@ -311,7 +311,7 @@ class we_messaging_todo extends we_msg_proto{
 		$this->history_update($msg['int_hdrs']['_ID'], $msg['int_hdrs']['_from_userid'], $this->userid, $data['body'], we_msg_proto::ACTION_REJECT);
 
 		$results['err'][] = '';
-		$results['ok'][] = we_user::getUsername($msg['int_hdrs']['_from_userid'], $this->DB_WE);
+		$results['ok'][] = we_users_user::getUsername($msg['int_hdrs']['_from_userid'], $this->DB_WE);
 
 		return $results;
 	}

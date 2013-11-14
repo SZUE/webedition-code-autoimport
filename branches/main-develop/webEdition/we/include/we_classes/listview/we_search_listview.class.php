@@ -207,7 +207,7 @@ class we_search_listview extends listviewBase{
 
 		$weDocumentCustomerFilter_tail = '';
 		if($this->customerFilterType != 'false' && defined("CUSTOMER_FILTER_TABLE")){
-			$weDocumentCustomerFilter_tail = weDocumentCustomerFilter::getConditionForListviewQuery($this);
+			$weDocumentCustomerFilter_tail = we_customer_documentFilter::getConditionForListviewQuery($this);
 		}
 
 		$this->DB_WE->query('SELECT ID FROM ' . INDEX_TABLE . " WHERE $bedingung_sql $dtcl_query $cat_tail $ws_where $where_lang $weDocumentCustomerFilter_tail");

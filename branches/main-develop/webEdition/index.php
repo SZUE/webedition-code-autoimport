@@ -163,7 +163,7 @@ if(is_dir(WEBEDITION_PATH . 'we/cache')){
 
 cleanTempFiles(true);
 cleanWEZendCache();
-weNavigationCache::clean();
+we_navigation_cache::clean();
 we_updater::fixInconsistentTables();
 
 //clean Error-Log-Table

@@ -86,7 +86,7 @@ function we_tag_customer($attribs){
 		$we_cid = $we_cid ? $we_cid : (isset($_REQUEST['we_cid']) ? $_REQUEST['we_cid'] : 0);
 	}
 
-	$GLOBALS['lv'] = new we_customertag($we_cid, $condition, $hidedirindex);
+	$GLOBALS['lv'] = new we_customer_customertag($we_cid, $condition, $hidedirindex);
 	$lv = clone($GLOBALS['lv']); // for backwards compatibility
 	if(is_array($GLOBALS['we_lv_array']))
 		$GLOBALS['we_lv_array'][] = clone($GLOBALS['lv']);

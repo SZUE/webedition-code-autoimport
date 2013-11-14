@@ -29,11 +29,11 @@ we_html_tools::protect();
 $what = (isset($_REQUEST['pnt']) ? $_REQUEST['pnt'] : 'frameset');
 $mode = (isset($_REQUEST['art']) ? $_REQUEST['art'] : 0);
 
-$newsletterFrame = new weNewsletterFrames();
+$newsletterFrame = new we_newsletter_frames();
 echo $newsletterFrame->getHTMLDocumentHeader($what, $mode);
 
 if(isset($_REQUEST['inid'])){
-	$newsletterFrame->View->newsletter = new weNewsletter($_REQUEST['inid']);
+	$newsletterFrame->View->newsletter = new we_newsletter_newsletter($_REQUEST['inid']);
 } else{
 	switch($what){
 		case 'export_csv_mes':

@@ -279,7 +279,7 @@ function we_tag_field($attribs){
 			if(defined('SHOP_TABLE')){
 				$normVal = $GLOBALS['we_doc']->getFieldByVal($GLOBALS['lv']->f(WE_SHOP_VAT_FIELD_NAME, 'txt'), $type, $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], $classid, 'listview'); // war '$GLOBALS['lv']->getElement', getElemet gibt es aber nicht in LVs, gefunden bei #4648
 
-				$out = weShopVats::getVatRateForSite($normVal);
+				$out = we_shop_vats::getVatRateForSite($normVal);
 			}
 			break;
 		case 'href' ://#6329: fixed for lv type=document. check later for other types! #6421: field type=href in we:block

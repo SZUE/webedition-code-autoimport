@@ -170,7 +170,7 @@ function check_recipient($email){
 function check_captcha(){
 	$name = $_REQUEST['captchaname'];
 	return (isset($_REQUEST[$name]) && !empty($_REQUEST[$name]) ?
-			Captcha::check($_REQUEST[$name]) :
+			we_captcha_captcha::check($_REQUEST[$name]) :
 			false);
 }
 

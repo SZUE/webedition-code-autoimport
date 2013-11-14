@@ -1790,7 +1790,7 @@ class weVersions{
 											html_entity_decode(urldecode($v), ENT_QUOTES) :
 											gzuncompress($v))
 									);
-									$resetDoc->documentCustomerFilter = new weDocumentCustomerFilter();
+									$resetDoc->documentCustomerFilter = new we_customer_documentFilter();
 									foreach($docElements as $k => $v){
 										if(isset($resetDoc->documentCustomerFilter->$k)){
 											if($v != "" || !empty($v)){

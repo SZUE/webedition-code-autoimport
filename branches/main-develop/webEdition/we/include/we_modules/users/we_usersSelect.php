@@ -27,7 +27,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 $_SERVER['SCRIPT_NAME'] = WE_USERS_MODULE_DIR . 'we_usersSelect.php';
 
-$fs = new we_usersSelector(isset($id) ? $id : (isset($_REQUEST["id"]) ? $_REQUEST["id"] : "" ),
+$fs = new we_users_selector(isset($id) ? $id : (isset($_REQUEST["id"]) ? $_REQUEST["id"] : "" ),
 		isset($table) ? $table : (isset($_REQUEST["table"]) ? $_REQUEST["table"] : USER_TABLE),
 		isset($JSIDName) ? $JSIDName : (isset($_REQUEST["JSIDName"]) ? $_REQUEST["JSIDName"] : "" ),
 		isset($JSTextName) ? $JSTextName : (isset($_REQUEST["JSTextName"]) ? $_REQUEST["JSTextName"] : "" ),

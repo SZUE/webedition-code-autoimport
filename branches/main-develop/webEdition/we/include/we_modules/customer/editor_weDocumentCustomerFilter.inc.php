@@ -30,9 +30,9 @@ $_space_size = 120;
 if($we_doc->ClassName != 'we_imageDocument' && permissionhandler::hasPerm('CAN_EDIT_CUSTOMERFILTER')){
 	$_filter = $we_doc->documentCustomerFilter;
 	if(!$_filter){
-		$_filter = weDocumentCustomerFilter::getEmptyDocumentCustomerFilter();
+		$_filter = we_customer_documentFilter::getEmptyDocumentCustomerFilter();
 	}
-	$_view = new weDocumentCustomerFilterView($_filter, '_EditorFrame.setEditorIsHot(true);', 520);
+	$_view = new we_customer_documentFilterView($_filter, '_EditorFrame.setEditorIsHot(true);', 520);
 
 	$parts[] = array(
 		'headline' => g_l('modules_customerFilter', '[customerFilter]'),

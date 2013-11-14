@@ -25,16 +25,16 @@
 class we_shop_functions{
 
 	static function getCustomersOrderList($customerId, $sameModul = true){
-		$weShopStatusMails = weShopStatusMails::getShopStatusMails();
+		$weShopStatusMails = we_shop_statusMails::getShopStatusMails();
 
 		// get orderdata of user here
 		$da = ( $GLOBALS['WE_LANGUAGE'] == 'Deutsch') ? '%d.%m.%Y' : '%m/%d/%Y';
 
 		$format = array();
-		foreach(weShopStatusMails::$StatusFields as $field){
+		foreach(we_shop_statusMails::$StatusFields as $field){
 			$format[] = 'DATE_FORMAT(' . $field . ',"' . $da . '") AS format' . $field;
 		}
-		$query = 'SELECT IntOrderID, ' . implode(',', weShopStatusMails::$StatusFields) . ', ' . implode(',', $format) . ' FROM ' . SHOP_TABLE . ' WHERE IntCustomerID=' . intval($customerId) . ' GROUP BY IntOrderId ORDER BY IntID DESC';
+		$query = 'SELECT IntOrderID, ' . implode(',', we_shop_statusMails::$StatusFields) . ', ' . implode(',', $format) . ' FROM ' . SHOP_TABLE . ' WHERE IntCustomerID=' . intval($customerId) . ' GROUP BY IntOrderId ORDER BY IntID DESC';
 
 		$GLOBALS['DB_WE']->query($query);
 
@@ -43,7 +43,7 @@ class we_shop_functions{
 			$orderStr .='<tr>
 			<td></td><td><b>' . g_l('modules_shop', '[orderList][order]') . '</b></td>';
 
-			foreach(weShopStatusMails::$StatusFields as $field){
+			foreach(we_shop_statusMails::$StatusFields as $field){
 				if(!$weShopStatusMails->FieldsHidden[$field]){
 					$orderStr .='<td><b>' . $weShopStatusMails->FieldsText[$field] . '</b></td>';
 				}
@@ -63,7 +63,7 @@ class we_shop_functions{
 					$orderStr .='<td></td>';
 				}
 				$orderStr .= '<td>' . $GLOBALS['DB_WE']->f('IntOrderID') . '. ' . g_l('modules_shop', '[orderList][order]') . '</td>';
-				foreach(weShopStatusMails::$StatusFields as $field){
+				foreach(we_shop_statusMails::$StatusFields as $field){
 					if(!$weShopStatusMails->FieldsHidden[$field]){
 						$orderStr .='<td>' . ( $GLOBALS['DB_WE']->f($field) > 0 ? $GLOBALS['DB_WE']->f('format' . $field) : '-' ) . '</td>';
 					}

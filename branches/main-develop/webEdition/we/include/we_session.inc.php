@@ -68,9 +68,9 @@ if(!(isset($_POST['username']) && isset($_POST['password']))){
 $userdata = getHash('SELECT UseSalt, passwd, username, LoginDenied, ID FROM ' . USER_TABLE . ' WHERE IsFolder=0 AND username="' . $DB_WE->escape($_POST['username']) . '"', $DB_WE);
 
 // only if username exists !!
-if(empty($userdata) || (!we_user::comparePasswords($userdata['UseSalt'], $_POST['username'], $userdata['passwd'], $_POST['password']))){
+if(empty($userdata) || (!we_users_user::comparePasswords($userdata['UseSalt'], $_POST['username'], $userdata['passwd'], $_POST['password']))){
 	$_SESSION['user']['Username'] = '';
-	we_user::removeOldWESession();
+	we_users_user::removeOldWESession();
 	return;
 }
 
@@ -79,8 +79,8 @@ if($userdata['LoginDenied']){ // userlogin is denied
 	return;
 }
 
-if(($userdata['UseSalt'] != we_user::SALT_CRYPT)){ //will cause update on old php-versions every time. since md5 doesn't cost much, ignore this.
-	$salted = we_user::makeSaltedPassword($userdata['UseSalt'], $_POST['username'], $_POST['password']);
+if(($userdata['UseSalt'] != we_users_user::SALT_CRYPT)){ //will cause update on old php-versions every time. since md5 doesn't cost much, ignore this.
+	$salted = we_users_user::makeSaltedPassword($userdata['UseSalt'], $_POST['username'], $_POST['password']);
 	// UPDATE Password with SALT
 	$DB_WE->query('UPDATE ' . USER_TABLE . ' SET passwd="' . $DB_WE->escape($salted) . '",UseSalt=' . intval($userdata['UseSalt']) . ' WHERE IsFolder=0 AND username="' . $DB_WE->escape($_POST["username"]) . '" AND ID=' . $userdata['ID']);
 }
@@ -157,10 +157,10 @@ foreach($workspaces as $key => $cur){
 	$_SESSION['user']['workSpace'][$key] = array_unique(array_filter($cur['value']));
 }
 
-$_SESSION['prefs'] = we_user::readPrefs($userdata['ID'], $DB_WE, true);
+$_SESSION['prefs'] = we_users_user::readPrefs($userdata['ID'], $DB_WE, true);
 
 if(isset($_SESSION['user']['Username']) && isset($_SESSION['user']['ID']) && $_SESSION['user']['Username'] && $_SESSION['user']['ID']){
-	$_SESSION['perms'] = we_user::getAllPermissions($_SESSION['user']['ID']);
+	$_SESSION['perms'] = we_users_user::getAllPermissions($_SESSION['user']['ID']);
 }
 $_SESSION['user']['isWeSession'] = true; // for pageLogger, to know that it is really a webEdition session
 //FIMXE make this a function to remove uneeded vars from global

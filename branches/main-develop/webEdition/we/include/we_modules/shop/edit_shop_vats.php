@@ -39,7 +39,7 @@ if(isset($_REQUEST['we_cmd'])){
 				$_REQUEST['weShopVatId'], $_REQUEST['weShopVatText'], $_REQUEST['weShopVatVat'], $_REQUEST['weShopVatStandard']
 			);
 
-			if($newId = weShopVats::saveWeShopVAT($weShopVat)){
+			if($newId = we_shop_vats::saveWeShopVAT($weShopVat)){
 				$weShopVat->id = $newId;
 				unset($newId);
 				$jsMessage = g_l('modules_shop', '[vat][save_success]');
@@ -53,7 +53,7 @@ if(isset($_REQUEST['we_cmd'])){
 
 		case 'deleteVat':
 
-			if(weShopVats::deleteVatById($_REQUEST['weShopVatId'])){
+			if(we_shop_vats::deleteVatById($_REQUEST['weShopVatId'])){
 				$jsMessage = g_l('modules_shop', '[vat][delete_success]');
 				$jsMessageType = we_message_reporting::WE_MESSAGE_NOTICE;
 			} else{
@@ -194,7 +194,7 @@ $jsFunction = '
 
 
 // at top of page show a table with all actual vats
-$allVats = weShopVats::getAllShopVATs();
+$allVats = we_shop_vats::getAllShopVATs();
 
 
 $parts = array();

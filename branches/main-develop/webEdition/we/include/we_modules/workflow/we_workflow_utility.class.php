@@ -284,7 +284,7 @@ abstract class we_workflow_utility{
 	static function getDocumentStatusInfo($docID, $table){
 		$doc = self::getWorkflowDocumentID($docID, $table);
 		if($doc){
-			return weWorkflowView::getDocumentStatus($doc, 700);
+			return we_workflow_view::getDocumentStatus($doc, 700);
 		}
 	}
 

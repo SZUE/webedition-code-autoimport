@@ -276,7 +276,7 @@ class we_document extends we_root{
 		$NoDelNavis = makeArrayFromCSV($this->NavigationItems);
 		foreach($NoDelNavis as $_path){
 			$_id = path_to_id($_path, NAVIGATION_TABLE);
-			$_naviItem = new weNavigation($_id);
+			$_naviItem = new we_navigation_navigation($_id);
 			if(!$_naviItem->hasAnyChilds()){
 
 				if(in_array($_path, $NoDelNavis)){
@@ -338,7 +338,7 @@ class we_document extends we_root{
 				}
 			}
 
-			$_naviItem = new weNavigation($id);
+			$_naviItem = new we_navigation_navigation($id);
 			$_old_path = ($id ? $_naviItem->Path : '');
 
 			$_naviItem->Ordn = $_ord;
@@ -347,14 +347,14 @@ class we_document extends we_root{
 			$_naviItem->Text = $text;
 			$_naviItem->Path = $_new_path;
 			if(NAVIGATION_ENTRIES_FROM_DOCUMENT == 0){
-				$_naviItem->Selection = weNavigation::SELECTION_NODYNAMIC;
-				$_naviItem->SelectionType = weNavigation::STPYE_DOCTYPE;
+				$_naviItem->Selection = we_navigation_navigation::SELECTION_NODYNAMIC;
+				$_naviItem->SelectionType = we_navigation_navigation::STPYE_DOCTYPE;
 				$_naviItem->IsFolder = 1;
 				$charset = $_naviItem->findCharset($_naviItem->ParentID);
 				$_naviItem->Charset = ($charset != '' ? $charset : (DEFAULT_CHARSET ? DEFAULT_CHARSET : $GLOBALS['WE_BACKENDCHARSET']));
 			} else {
-				$_naviItem->Selection = weNavigation::SELECTION_STATIC;
-				$_naviItem->SelectionType = weNavigation::STPYE_DOCLINK;
+				$_naviItem->Selection = we_navigation_navigation::SELECTION_STATIC;
+				$_naviItem->SelectionType = we_navigation_navigation::STPYE_DOCLINK;
 			}
 
 			$_naviItem->save();
@@ -381,7 +381,7 @@ class we_document extends we_root{
 			$pos = getArrayKey($path, $navis);
 			if($pos != '' || $pos == '0'){
 				$_id = path_to_id($path, NAVIGATION_TABLE);
-				$_naviItem = new weNavigation($_id);
+				$_naviItem = new we_navigation_navigation($_id);
 				if(!$_naviItem->hasAnyChilds()){
 					$_naviItem->delete();
 					array_splice($navis, $pos, 1);
@@ -395,7 +395,7 @@ class we_document extends we_root{
 		$navis = makeArrayFromCSV($this->NavigationItems);
 		foreach($navis as $_path){
 			$_id = path_to_id($_path, NAVIGATION_TABLE);
-			$_naviItem = new weNavigation($_id);
+			$_naviItem = new we_navigation_navigation($_id);
 			if(!$_naviItem->hasAnyChilds()){
 				$_naviItem->delete();
 				if(in_array($_path, $navis)){
@@ -690,7 +690,7 @@ class we_document extends we_root{
 
 	function resaveWeDocumentCustomerFilter(){
 		if(isset($this->documentCustomerFilter) && $this->documentCustomerFilter){
-			weDocumentCustomerFilter::saveForModel($this);
+			we_customer_documentFilter::saveForModel($this);
 		}
 	}
 
@@ -706,7 +706,7 @@ class we_document extends we_root{
 	 * @see we_textContentDocument::we_load
 	 */
 	function initWeDocumentCustomerFilterFromDB(){
-		$this->documentCustomerFilter = weDocumentCustomerFilter::getFilterOfDocument($this);
+		$this->documentCustomerFilter = we_customer_documentFilter::getFilterOfDocument($this);
 	}
 
 	// reverse function to we_init_sessDat
@@ -736,7 +736,7 @@ class we_document extends we_root{
 
 
 		if(isset($_REQUEST['wecf_mode'])){
-			$this->documentCustomerFilter = weDocumentCustomerFilter::getCustomerFilterFromRequest($this);
+			$this->documentCustomerFilter = we_customer_documentFilter::getCustomerFilterFromRequest($this);
 		} else if(isset($sessDat[3])){ // init webUser from session
 			$this->documentCustomerFilter = unserialize($sessDat[3]);
 		}
@@ -1561,7 +1561,7 @@ class we_document extends we_root{
 	}
 
 	private function i_deleteNavigation(){
-		$this->DB_WE->query('DELETE FROM ' . NAVIGATION_TABLE . ' WHERE ' . weNavigation::getNavCondition($this->ID, $this->Table));
+		$this->DB_WE->query('DELETE FROM ' . NAVIGATION_TABLE . ' WHERE ' . we_navigation_navigation::getNavCondition($this->ID, $this->Table));
 		return true;
 	}
 

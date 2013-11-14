@@ -48,11 +48,11 @@ class weContentProvider{
 				$we_doc->load($ID);
 				break;
 			case 'weNavigation':
-				$we_doc = new weNavigation();
+				$we_doc = new we_navigation_navigation();
 				$we_doc->we_load($ID);
 				break;
 			case 'weNavigationRule':
-				$we_doc = new weNavigationRule();
+				$we_doc = new we_navigation_rule();
 				$we_doc->we_load($ID);
 				break;
 			case 'weThumbnail':

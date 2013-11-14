@@ -43,12 +43,12 @@ class we_category extends weModelBase{
 		}
 
 		parent::save();
-		weNavigationCache::clean(true);
+		we_navigation_cache::clean(true);
 	}
 
 	function delete(){
 		$ret = parent::delete();
-		weNavigationCache::clean(true);
+		we_navigation_cache::clean(true);
 		return $ret;
 	}
 
