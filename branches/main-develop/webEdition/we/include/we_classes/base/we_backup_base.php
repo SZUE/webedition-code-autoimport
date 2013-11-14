@@ -30,7 +30,7 @@
 define('BACKUP_TABLE', TBL_PREFIX . 'tblbackup');
 
 //FIXME: try to remove this class
-abstract class we_backup{
+abstract class we_backup_base{
 
 	const COMPRESSION = 'gzip';
 
@@ -104,7 +104,6 @@ abstract class we_backup{
 	 *
 	 * @return     we_backup
 	 */
-	//function we_backup($handle_users=false,$handle_customers=false,$handle_shop=false,$handle_workflow=false,$handle_todo=false,$handle_newsletter=false) {
 	function __construct($handle_options = array()){
 		$this->backup_db = new DB_WE();
 		$this->backup_steps = $this->default_backup_steps;

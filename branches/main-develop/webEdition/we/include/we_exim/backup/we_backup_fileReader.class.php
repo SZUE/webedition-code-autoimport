@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-abstract class weBackupFileReader extends weXMLFileReader{
+abstract class we_backup_fileReader extends weXMLFileReader{
 
 	static function preParse(&$content){
 		$match = array();
@@ -36,14 +36,14 @@ abstract class weBackupFileReader extends weXMLFileReader{
 				$attributes[1] = trim(str_replace(array('"', '\''), '', $attributes[1]));
 
 				// if the table should't be imported
-				if(weBackupUtil::getRealTableName($attributes[1]) === false){
+				if(we_backup_util::getRealTableName($attributes[1]) === false){
 					return true;
 				}
 			}
 		}
 
-		if((preg_match('|<we:binary><ID>([^<]*)</ID>(.*)<Path>([^<]*)</Path>|i', $content, $match) && !weBackupUtil::canImportBinary($match[1], $match[3])) ||
-			(preg_match('|<we:version><ID>([^<]*)</ID>(.*)<Path>([^<]*)</Path>|i', $content, $match) && !weBackupUtil::canImportVersion($match[1], $match[3]))){
+		if((preg_match('|<we:binary><ID>([^<]*)</ID>(.*)<Path>([^<]*)</Path>|i', $content, $match) && !we_backup_util::canImportBinary($match[1], $match[3])) ||
+			(preg_match('|<we:version><ID>([^<]*)</ID>(.*)<Path>([^<]*)</Path>|i', $content, $match) && !we_backup_util::canImportVersion($match[1], $match[3]))){
 			return true;
 		}
 

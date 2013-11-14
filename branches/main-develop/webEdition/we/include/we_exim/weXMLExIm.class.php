@@ -248,11 +248,11 @@ class weXMLExIm{
 			$encoding = $GLOBALS['WE_BACKENDCHARSET'];
 		}
 		return '<?xml version="1.0" encoding="' . $encoding . '" standalone="yes"?>' . "\n" .
-			weBackup::weXmlExImHead . ' version="' . WE_VERSION . '" type="' . $type . '" xmlns:we="we-namespace">' . "\n";
+			we_backup_backup::weXmlExImHead . ' version="' . WE_VERSION . '" type="' . $type . '" xmlns:we="we-namespace">' . "\n";
 	}
 
 	static function getFooter(){
-		return weBackup::weXmlExImFooter;
+		return we_backup_backup::weXmlExImFooter;
 	}
 
 	function isCompressed($file){

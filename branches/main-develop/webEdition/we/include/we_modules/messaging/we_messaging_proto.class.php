@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 /* message protocol root class */
-class we_msg_proto extends we_class{
+class we_messaging_proto extends we_class{
 
 	const FOLDER_DONE = 13;
 	const FOLDER_REJECT = 11;
@@ -231,7 +231,7 @@ class we_msg_proto extends we_class{
 	}
 
 	function create_folder($name, $parent){
-		$this->DB_WE->query('INSERT INTO ' . $this->DB_WE->escape($this->folder_tbl) . ' (ID, ParentID, UserID, account_id, msg_type, obj_type, Name) VALUES (NULL, ' . intval($parent) . ', ' . intval($this->userid) . ', -1, ' . $this->sql_class_nr . ', ' . we_msg_proto::FOLDER_NR . ', "' . $this->DB_WE->escape($name) . '")');
+		$this->DB_WE->query('INSERT INTO ' . $this->DB_WE->escape($this->folder_tbl) . ' (ID, ParentID, UserID, account_id, msg_type, obj_type, Name) VALUES (NULL, ' . intval($parent) . ', ' . intval($this->userid) . ', -1, ' . $this->sql_class_nr . ', ' . we_messaging_proto::FOLDER_NR . ', "' . $this->DB_WE->escape($name) . '")');
 		$this->DB_WE->query('SELECT LAST_INSERT_ID() as l');
 		$this->DB_WE->next_record();
 
@@ -287,7 +287,7 @@ class we_msg_proto extends we_class{
 		}
 		$cond = substr($cond, 0, -4);
 
-		$query = 'SELECT ID, Name, (Properties & ' . we_msg_proto::FOLDER_NR . ') as norm FROM ' . $this->DB_WE->escape($this->folder_tbl) . " WHERE ($cond) AND UserID=" . intval($this->userid);
+		$query = 'SELECT ID, Name, (Properties & ' . we_messaging_proto::FOLDER_NR . ') as norm FROM ' . $this->DB_WE->escape($this->folder_tbl) . " WHERE ($cond) AND UserID=" . intval($this->userid);
 		$this->DB_WE->query($query);
 		while($this->DB_WE->next_record()){
 			if($this->DB_WE->f('norm') == 1){
@@ -379,7 +379,7 @@ class we_msg_proto extends we_class{
 	}
 
 	function get_newmsg_count(){
-		return intval(f('SELECT COUNT(1) AS c FROM ' . $this->table . ' WHERE (seenStatus&' . we_msg_proto::STATUS_READ . '=0) AND obj_type=' . $this->obj_type . ' AND msg_type = ' . intval($this->sql_class_nr) . ' AND ParentID = ' . $this->default_folders[we_msg_proto::FOLDER_INBOX] . ' AND UserID = ' . intval($this->userid), 'c', $this->DB_WE));
+		return intval(f('SELECT COUNT(1) AS c FROM ' . $this->table . ' WHERE (seenStatus&' . we_messaging_proto::STATUS_READ . '=0) AND obj_type=' . $this->obj_type . ' AND msg_type = ' . intval($this->sql_class_nr) . ' AND ParentID = ' . $this->default_folders[we_messaging_proto::FOLDER_INBOX] . ' AND UserID = ' . intval($this->userid), 'c', $this->DB_WE));
 	}
 
 	function get_count($folder_id){

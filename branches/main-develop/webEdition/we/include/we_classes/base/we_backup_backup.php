@@ -28,7 +28,7 @@
  *
  * Provides functions for exporting and importing backups. Extends we_backup.
  */
-class weBackup extends we_backup{
+class we_backup_backup extends we_backup_base{
 
 	const backupSteps = "1,5,7,10,15,20,30,40,50,80,100,500,1000";
 	const backupMarker = '<!-- webackup -->';
@@ -199,7 +199,7 @@ class weBackup extends we_backup{
 		if($object->ID && $this->backup_binary){
 			$object->save(true);
 		} else if($this->handle_options["settings"] && $object->Path == WE_INCLUDES_DIR . "conf/we_conf_global.inc.php"){
-			weBackup::recoverPrefs($object);
+			we_backup_backup::recoverPrefs($object);
 		} else if(!$object->ID && $this->backup_extern){
 			$object->save(true);
 		}
@@ -248,13 +248,13 @@ class weBackup extends we_backup{
 			$name = $xmlBrowser->nodeName($key);
 			switch($name){
 				case "we:table":
-					weBackup::recoverTable($key, $xmlBrowser);
+					we_backup_backup::recoverTable($key, $xmlBrowser);
 					break;
 				case "we:tableitem":
-					weBackup::recoverTableItem($key, $xmlBrowser);
+					we_backup_backup::recoverTableItem($key, $xmlBrowser);
 					break;
 				case "we:binary":
-					weBackup::recoverBinary($key, $xmlBrowser);
+					we_backup_backup::recoverBinary($key, $xmlBrowser);
 					break;
 			}
 		}
@@ -393,7 +393,7 @@ class weBackup extends we_backup{
 			}
 			$out.='>';
 		}
-		$out.='</we:info>' . weBackup::backupMarker . "\n";
+		$out.='</we:info>' . we_backup_backup::backupMarker . "\n";
 		weFile::save($filename, $out, "ab");
 	}
 

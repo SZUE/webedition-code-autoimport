@@ -497,13 +497,13 @@ function toggle(name){
 		}
 
 		$_import_file = $_SERVER['DOCUMENT_ROOT'] . $v['import_from'];
-		if(weBackupUtil::getFormat($_import_file) != 'xml'){
+		if(we_backup_util::getFormat($_import_file) != 'xml'){
 			$_return[1] = we_html_element::jsElement($functions . ' ' .
 					we_message_reporting::getShowMessageCall(g_l('import', '[format_unknown]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 							handle_event("previous");');
 			return $_return;
 		} else {
-			$_xml_type = weBackupUtil::getXMLImportType($_import_file);
+			$_xml_type = we_backup_util::getXMLImportType($_import_file);
 			switch($_xml_type){
 				case 'backup':
 					$_return[0] = '';

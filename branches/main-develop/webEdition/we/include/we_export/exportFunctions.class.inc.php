@@ -53,7 +53,7 @@ abstract class exportFunctions{
 
 				// Check if can create the file now
 				if(!$_continue === false){
-					weFile::save($_file_name, '<?xml version="1.0" encoding="' . DEFAULT_CHARSET . "\"?>\n" . weBackup::weXmlExImHead . ">\n");
+					weFile::save($_file_name, '<?xml version="1.0" encoding="' . DEFAULT_CHARSET . "\"?>\n" . we_backup_backup::weXmlExImHead . ">\n");
 				}
 
 				break;
@@ -93,7 +93,7 @@ abstract class exportFunctions{
 	static function fileComplete($format = "gxml", $filename){
 		switch($format){
 			case 'gxml':
-				weFile::save($filename, weBackup::weXmlExImFooter, "ab");
+				weFile::save($filename, we_backup_backup::weXmlExImFooter, "ab");
 
 				break;
 		}

@@ -25,7 +25,7 @@
 
 //TODO: make weModuleIconbar.class for all Iconbars and let weMessagingIconbar inherit from it
 
-class weMessagingIconbar {
+class we_messaging_iconbar {
 
 	private $parentFrameset;
 	private $weTransaction;

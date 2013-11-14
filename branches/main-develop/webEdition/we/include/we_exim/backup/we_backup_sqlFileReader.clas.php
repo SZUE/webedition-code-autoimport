@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weBackupSqlFileReader{
+class we_backup_sqlFileReader{
 
 	function readLine($filename, &$data, &$offset, $lines = 1, $size = 0, $iscompressed = 0, &$create, &$insert){
 
@@ -150,7 +150,7 @@ class weBackupSqlFileReader{
 		$_table = $create . $insert;
 
 		// if the table should't be imported
-		if(weBackupUtil::getRealTableName($_table) === false){
+		if(we_backup_util::getRealTableName($_table) === false){
 			$create = '';
 			$insert = '';
 			return true;

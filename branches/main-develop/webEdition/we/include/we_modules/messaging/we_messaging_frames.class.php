@@ -24,7 +24,7 @@
  */
 //TODO: make weMessagingIconbar.class with weMsgIcobnbar.class and weTodoIconbar.class
 
-class weMessagingFrames extends weModuleFrames{
+class we_messaging_frames extends weModuleFrames{
 
 	var $db;
 	var $View;
@@ -737,19 +737,19 @@ function loadData() {
 
 		foreach($this->messaging->available_folders as $folder){
 			switch($folder['obj_type']){
-				case we_msg_proto::FOLDER_INBOX:
+				case we_messaging_proto::FOLDER_INBOX:
 					$iconbasename = $folder['ClassName'] == 'we_todo' ? 'todo_in_folder' : 'msg_in_folder';
 					$folder['Name'] = $folder['ClassName'] == 'we_todo' ? g_l('modules_messaging', '[ToDo]') : g_l('modules_messaging', '[Mitteilungen]');
 					break;
-				case we_msg_proto::FOLDER_SENT:
+				case we_messaging_proto::FOLDER_SENT:
 					$iconbasename = 'msg_sent_folder';
 					$folder['Name'] = g_l('modules_messaging', '[Gesendet]');
 					break;
-				case we_msg_proto::FOLDER_DONE:
+				case we_messaging_proto::FOLDER_DONE:
 					$iconbasename = 'todo_done_folder';
 					$folder['Name'] = g_l('modules_messaging', '[Erledigt]');
 					break;
-				case we_msg_proto::FOLDER_REJECT:
+				case we_messaging_proto::FOLDER_REJECT:
 					$iconbasename = 'todo_reject_folder';
 					$folder['Name'] = g_l('modules_messaging', '[Zurueckgewiesen]');
 					break;
@@ -814,7 +814,7 @@ function msg_start() {
 	}
 
 	function getHTMLIconbar(){
-		$iconbar = new weMessagingIconbar($this);
+		$iconbar = new we_messaging_iconbar($this);
 		return $iconbar->getHTML();
 	}
 

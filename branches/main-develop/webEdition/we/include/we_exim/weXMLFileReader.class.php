@@ -68,8 +68,8 @@ abstract class weXMLFileReader{
 				$end = substr($buffer, -20, 20);
 
 				// chek if line is complete
-				$iswestart = stripos($first, weBackup::weXmlExImHead) !== false;
-				$isweend = stripos($end, weBackup::weXmlExImFooter) !== false;
+				$iswestart = stripos($first, we_backup_backup::weXmlExImHead) !== false;
+				$isweend = stripos($end, we_backup_backup::weXmlExImFooter) !== false;
 				$isxml = preg_match('|<\?xml|i', $first);
 
 				$isend = preg_match("|<!-- *webackup *-->|", $buffer) || empty($buffer);
@@ -101,7 +101,7 @@ abstract class weXMLFileReader{
 			} else if($lines > 0){
 				$condition = (--$lines > 0 ? !$eof(self::$file['fp']) : false );
 			}
-			$condition&=!weBackup::limitsReached('', 0.1, 10);
+			$condition&=!we_backup_backup::limitsReached('', 0.1, 10);
 
 			$data .= $buffer;
 		} while($condition);

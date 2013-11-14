@@ -24,11 +24,11 @@
  */
 define('BACKUP_TABLE', TBL_PREFIX . 'tblbackup');
 
-class weBackupImportSql{
+class we_backup_importSql{
 
 	function import($filename, &$offset, $lines = 1, $iscompressed = 0, $encoding = 'ISO-8859-1'){
 
-		weBackupUtil::addLog(sprintf('Reading offset %s', $offset));
+		we_backup_util::addLog(sprintf('Reading offset %s', $offset));
 
 		for($i = 0; $i < $lines; $i++){
 
@@ -36,13 +36,13 @@ class weBackupImportSql{
 			$_create = '';
 			$_insert = '';
 
-			$_fileReader = new weBackupSqlFileReader();
+			$_fileReader = new we_backup_sqlFileReader();
 			if($_fileReader->readLine($filename, $_data, $offset, 1, 0, $iscompressed, $_create, $_insert)){
 
 				self::transfer($_data, $encoding, $_create, $_insert);
 
 				if($_insert == BACKUP_TABLE){
-					weBackupImportSql::flushBackupTable();
+					we_backup_importSql::flushBackupTable();
 				}
 			} else{
 
@@ -55,11 +55,11 @@ class weBackupImportSql{
 	private static function transfer(&$data, $charset = 'ISO-8859-1', &$create, &$insert){
 		if($create != ''){
 
-			$_table = weBackupUtil::getRealTableName($create);
+			$_table = we_backup_util::getRealTableName($create);
 			if($_table !== false){
-				weBackupUtil::setBackupVar('current_table', $_table);
+				we_backup_util::setBackupVar('current_table', $_table);
 
-				weBackupUtil::addLog('Creating table ' . $_table);
+				we_backup_util::addLog('Creating table ' . $_table);
 
 				if($_table == BACKUP_TABLE){ // make exception for backup table
 					$_start = substr($data, 0, 64); // take the chunk
@@ -71,7 +71,7 @@ class weBackupImportSql{
 					$GLOBALS['DB_WE']->query('DROP TABLE IF EXISTS ' . $GLOBALS['DB_WE']->escape($_table));
 					if(!$GLOBALS['DB_WE']->query("$data")){
 
-						weBackupUtil::addLog('DB Error: ' . $GLOBALS['DB_WE']->Error);
+						we_backup_util::addLog('DB Error: ' . $GLOBALS['DB_WE']->Error);
 					}
 				} else{
 
@@ -82,7 +82,7 @@ class weBackupImportSql{
 			}
 		} else if($insert != ''){
 
-			$_table = weBackupUtil::getRealTableName($insert);
+			$_table = we_backup_util::getRealTableName($insert);
 
 			if($_table !== false){
 
@@ -92,10 +92,10 @@ class weBackupImportSql{
 
 				$data = $_start . substr($data, 64);
 
-				weBackupUtil::addLog('Inserting into table ' . $_table);
+				we_backup_util::addLog('Inserting into table ' . $_table);
 
 				if(!$GLOBALS['DB_WE']->query("$data")){
-					weBackupUtil::addLog('DB Error: ' . $GLOBALS['DB_WE']->Error);
+					we_backup_util::addLog('DB Error: ' . $GLOBALS['DB_WE']->Error);
 				}
 
 				$insert = $_table;

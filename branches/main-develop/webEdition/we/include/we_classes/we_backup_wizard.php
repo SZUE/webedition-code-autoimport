@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weBackupWizard{
+class we_backup_wizard{
 
 	const BACKUP = 1;
 	const RECOVER = 2;
@@ -646,7 +646,7 @@ extra_files_desc=new Array();';
 
 		$js = we_html_element::jsElement($js) .
 			we_html_element::jsScript(JS_DIR . "windows.js") .
-			weBackupWizard::getJSDep("import", $docheck, $doclick, $douncheck) .
+			we_backup_wizard::getJSDep("import", $docheck, $doclick, $douncheck) .
 			we_html_element::jsElement(we_button::create_state_changer(false) . '
 function startBusy() {
 	top.busy.location="' . $this->frameset . '?pnt=busy&operation_mode=busy&step=4";
@@ -947,7 +947,7 @@ self.focus();');
 
 		$mode = "export";
 		$js = we_html_element::jsScript(JS_DIR . "windows.js") .
-			weBackupWizard::getJSDep("export", $docheck, $doclick) .
+			we_backup_wizard::getJSDep("export", $docheck, $doclick) .
 			we_html_element::jsElement('
 function setLocation(loc){
 	location.href=loc;
@@ -992,7 +992,7 @@ function setLocation(loc){
 			$_down = $_SESSION['weS']['weBackupVars']['backup_file'];
 			if(is_file($_SESSION['weS']['weBackupVars']['backup_file'])){
 
-				$_link = weBackupUtil::getHttpLink($_SERVER['SERVER_NAME'], str_replace($_SERVER['DOCUMENT_ROOT'], '', $_down), (defined('HTTP_PORT') ? HTTP_PORT : ''), (defined('HTTP_USERNAME') ? HTTP_USERNAME : ''), (defined('HTTP_PASSWORD') ? HTTP_PASSWORD : ''));
+				$_link = we_backup_util::getHttpLink($_SERVER['SERVER_NAME'], str_replace($_SERVER['DOCUMENT_ROOT'], '', $_down), (defined('HTTP_PORT') ? HTTP_PORT : ''), (defined('HTTP_USERNAME') ? HTTP_USERNAME : ''), (defined('HTTP_PASSWORD') ? HTTP_PASSWORD : ''));
 
 				$table->setCol(2, 0, array('class' => 'defaultfont'), self::getDownloadLinkText() . '<br/><br/>' .
 					we_html_element::htmlA(array('href' => $_link), g_l('backup', '[download_file]'))
@@ -1297,7 +1297,7 @@ top.busy.location="' . $this->frameset . '?pnt=busy";' .
 						"export" => (isset($_REQUEST["handle_export"]) && $_REQUEST["handle_export"]) ? 1 : 0,
 						"voting" => (isset($_REQUEST["handle_voting"]) && $_REQUEST["handle_voting"]) ? 1 : 0,
 					);
-					$we_backup_obj = new weBackup($handle_options);
+					$we_backup_obj = new we_backup_backup($handle_options);
 					$temp_filename = (isset($_REQUEST["temp_filename"]) && $_REQUEST["temp_filename"]) ? $_REQUEST["temp_filename"] : '';
 
 					if(!$temp_filename){
@@ -1394,7 +1394,7 @@ top.busy.location="' . $this->frameset . '?pnt=busy";' .
 						"export" => (isset($_REQUEST["handle_export"]) && $_REQUEST["handle_export"]) ? 1 : 0,
 						"voting" => (isset($_REQUEST["handle_voting"]) && $_REQUEST["handle_voting"]) ? 1 : 0,
 					);
-					$we_backup_obj = new weBackup($handle_options);
+					$we_backup_obj = new we_backup_backup($handle_options);
 					$temp_filename = (isset($_REQUEST["temp_filename"]) && $_REQUEST["temp_filename"]) ? $_REQUEST["temp_filename"] : "";
 
 					if(!$temp_filename){

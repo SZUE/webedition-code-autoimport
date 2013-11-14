@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-abstract class weBackupExport{
+abstract class we_backup_export{
 
 	public static function export($_fh, &$offset, &$row_count, $lines = 1, $export_binarys = 0, $log = 0, $export_version_binarys = 0){
 
@@ -34,27 +34,27 @@ abstract class weBackupExport{
 
 		if($offset == 0){
 
-			$_table = weBackupUtil::getNextTable();
+			$_table = we_backup_util::getNextTable();
 
 			// export table
 			if($log){
-				weBackupUtil::addLog(sprintf('Exporting table %s', $_table));
+				we_backup_util::addLog(sprintf('Exporting table %s', $_table));
 			}
 
 			$_object = new weTableAdv($_table, true);
 
 			$_attributes = array(
-				'name' => weBackupUtil::getDefaultTableName($_table),
+				'name' => we_backup_util::getDefaultTableName($_table),
 				'type' => 'create'
 			);
 
 			weContentProvider::object2xml($_object, $_fh, $_attributes, $_SESSION['weS']['weBackupVars']['write']);
 
-			$_SESSION['weS']['weBackupVars']['write']($_fh, weBackup::backupMarker . "\n");
+			$_SESSION['weS']['weBackupVars']['write']($_fh, we_backup_backup::backupMarker . "\n");
 		}
 
 
-		$_table = weBackupUtil::getCurrentTable();
+		$_table = we_backup_util::getCurrentTable();
 
 		//sppedup for some tables
 		if(isset($_table)){
@@ -80,7 +80,7 @@ abstract class weBackupExport{
 		$_keys_str = '`' . implode('`,`', $_keys) . '`';
 
 		$_db->query('SELECT ' . $_db->escape($_keys_str) . ' FROM  ' . $_db->escape($_table) . ' ORDER BY ' . $_keys_str . ' LIMIT ' . intval($offset) . ' ,' . intval($lines), true);
-		$_def_table = weBackupUtil::getDefaultTableName($_table);
+		$_def_table = we_backup_util::getDefaultTableName($_table);
 		$_attributes = array(
 			'table' => $_def_table
 		);
@@ -93,7 +93,7 @@ abstract class weBackupExport{
 			$_ids = implode(',', $_keyvalue);
 
 			if($log){
-				weBackupUtil::addLog(sprintf('Exporting item %s:%s', $_table, $_ids));
+				we_backup_util::addLog(sprintf('Exporting item %s:%s', $_table, $_ids));
 			}
 
 			$_object = new weTableItem($_table);
@@ -101,7 +101,7 @@ abstract class weBackupExport{
 
 
 			weContentProvider::object2xml($_object, $_fh, $_attributes);
-			fwrite($_fh, weBackup::backupMarker . "\n");
+			fwrite($_fh, we_backup_backup::backupMarker . "\n");
 
 
 			if($export_binarys || $export_version_binarys){
@@ -109,7 +109,7 @@ abstract class weBackupExport{
 					case 'tblfile':
 						if(($_object->ContentType == "image/*" || stripos($_object->ContentType, "application/") !== false)){
 							if($log){
-								weBackupUtil::addLog(sprintf('Exporting binary data for item %s:%s', $_table, $_object->ID));
+								we_backup_util::addLog(sprintf('Exporting binary data for item %s:%s', $_table, $_object->ID));
 							}
 
 							$bin = weContentProvider::getInstance('weBinary', $_object->ID);
@@ -120,7 +120,7 @@ abstract class weBackupExport{
 
 					case 'tblversions':
 						if($log){
-							weBackupUtil::addLog(sprintf('Exporting version data for item %s:%s', $_table, $_object->ID));
+							we_backup_util::addLog(sprintf('Exporting version data for item %s:%s', $_table, $_object->ID));
 						}
 
 						$bin = weContentProvider::getInstance('weVersion', $_object->ID);

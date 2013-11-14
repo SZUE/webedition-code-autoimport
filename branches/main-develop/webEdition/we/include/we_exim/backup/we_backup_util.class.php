@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-abstract class weBackupUtil{
+abstract class we_backup_util{
 
 	static function getRealTableName($table){
 		$table = strtolower($table);
@@ -270,12 +270,12 @@ abstract class weBackupUtil{
 
 		$_part = weFile::loadPart($file, 0, $_part_len, $iscompr);
 
-		if(stripos($_part, weBackup::weXmlExImHead) === false){
+		if(stripos($_part, we_backup_backup::weXmlExImHead) === false){
 			return 'unknown';
 		}
 		$_hasbinary = false;
 		while($_found == 'unknown' && $_try < $_count) {
-			if(preg_match('/.*' . weBackup::weXmlExImHead . '.*type="backup".*>/', $_part)){
+			if(preg_match('/.*' . we_backup_backup::weXmlExImHead . '.*type="backup".*>/', $_part)){
 				return 'backup';
 			} elseif(preg_match('/<we:(document|template|class|object|info|navigation)/i', $_part)){
 				return 'weimport';

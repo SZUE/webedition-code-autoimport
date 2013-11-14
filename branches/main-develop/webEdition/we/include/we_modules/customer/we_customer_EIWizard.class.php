@@ -1342,7 +1342,7 @@ class we_customer_EIWizard{
 					if($file_format == "gxml"){
 
 						$file_name = $_SERVER['DOCUMENT_ROOT'] . $path . '/' . $filename;
-						we_customer_EI::save2File($file_name, weBackup::weXmlExImFooter);
+						we_customer_EI::save2File($file_name, we_backup_backup::weXmlExImFooter);
 					}
 
 					$head = we_html_tools::getHtmlInnerHead(g_l('modules_customer', '[export_title]')) . STYLESHEET;

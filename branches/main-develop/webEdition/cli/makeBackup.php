@@ -326,7 +326,7 @@ if(!isset($_SESSION['weS']['weBackupVars']) || empty($_SESSION['weS']['weBackupV
 
 	$_SESSION['weS']['weBackupVars'] = array();
 
-	if(weBackupPreparer::prepareExport() === true){
+	if(we_backup_preparer::prepareExport() === true){
 
 		if($_REQUEST['verbose']){
 			print "\nExporting to " . $_backup_filename . "\n";
@@ -345,7 +345,7 @@ if(!isset($_SESSION['weS']['weBackupVars']) || empty($_SESSION['weS']['weBackupV
 						print "-";
 					}
 					if(!empty($file_to_export)){
-						weBackupUtil::exportFile($file_to_export, $fh);
+						we_backup_util::exportFile($file_to_export, $fh);
 					}
 				}
 				$_SESSION['weS']['weBackupVars']['close']($fh);
@@ -357,11 +357,11 @@ if(!isset($_SESSION['weS']['weBackupVars']) || empty($_SESSION['weS']['weBackupV
 		}
 		$_fh = $_SESSION['weS']['weBackupVars']['open']($_SESSION['weS']['weBackupVars']['backup_file'], 'ab');
 
-		while(($_SESSION['weS']['weBackupVars']['row_counter'] < $_SESSION['weS']['weBackupVars']['row_count']) || weBackupUtil::hasNextTable()){
+		while(($_SESSION['weS']['weBackupVars']['row_counter'] < $_SESSION['weS']['weBackupVars']['row_count']) || we_backup_util::hasNextTable()){
 			if($_REQUEST['verbose']){
 				print "-";
 			}
-			if(weBackupExport::export($_fh, $_SESSION['weS']['weBackupVars']['offset'], $_SESSION['weS']['weBackupVars']['row_counter'], $_SESSION['weS']['weBackupVars']['backup_steps'], $_SESSION['weS']['weBackupVars']['options']['backup_binary'], $_SESSION['weS']['weBackupVars']['backup_log']) === false){
+			if(we_backup_export::export($_fh, $_SESSION['weS']['weBackupVars']['offset'], $_SESSION['weS']['weBackupVars']['row_counter'], $_SESSION['weS']['weBackupVars']['backup_steps'], $_SESSION['weS']['weBackupVars']['options']['backup_binary'], $_SESSION['weS']['weBackupVars']['backup_log']) === false){
 				// force end
 				$_SESSION['weS']['weBackupVars']['row_counter'] = $_SESSION['weS']['weBackupVars']['row_count'];
 			}
@@ -372,11 +372,11 @@ if(!isset($_SESSION['weS']['weBackupVars']) || empty($_SESSION['weS']['weBackupV
 			$fh = $_SESSION['weS']['weBackupVars']['open']($_SESSION['weS']['weBackupVars']['backup_file'], 'ab');
 			if($fh){
 				$file_to_export = WE_INCLUDES_DIR . 'conf/we_conf_global.inc.php';
-				weBackupUtil::exportFile($file_to_export, $fh);
+				we_backup_util::exportFile($file_to_export, $fh);
 				$_SESSION['weS']['weBackupVars']['close']($fh);
 			}
 		}
-		weFile::save($_SESSION['weS']['weBackupVars']['backup_file'], weBackup::weXmlExImFooter, 'ab', $_SESSION['weS']['weBackupVars']['options']['compress']);
+		weFile::save($_SESSION['weS']['weBackupVars']['backup_file'], we_backup_backup::weXmlExImFooter, 'ab', $_SESSION['weS']['weBackupVars']['options']['compress']);
 
 		if(!empty($_SESSION['weS']['weBackupVars']['options']['compress'])){
 			if($_REQUEST['verbose']){

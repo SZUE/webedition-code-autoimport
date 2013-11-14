@@ -22,12 +22,12 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weBackupImport{
+class we_backup_import{
 
 	static function import($filename, &$offset, $lines = 1, $iscompressed = 0, $encoding = 'ISO-8859-1'){
-		weBackupUtil::addLog(sprintf('Reading offset %s, %s lines, Mem: %s', $offset, $lines, memory_get_usage(true)));
-		weBackupUtil::writeLog();
-		$data = weBackupFileReader::readLine($filename, $offset, $lines, 0, $iscompressed);
+		we_backup_util::addLog(sprintf('Reading offset %s, %s lines, Mem: %s', $offset, $lines, memory_get_usage(true)));
+		we_backup_util::writeLog();
+		$data = we_backup_fileReader::readLine($filename, $offset, $lines, 0, $iscompressed);
 		if(empty($data)){
 			return false;
 		}
@@ -37,14 +37,14 @@ class weBackupImport{
 				weXMLExIm::getHeader($_SESSION['weS']['weBackupVars']['encoding'], 'backup') :
 				weXMLExIm::getHeader('', 'backup')) .
 			$data .
-			weBackup::weXmlExImFooter;
+			we_backup_backup::weXmlExImFooter;
 
 		self::transfer($data, $encoding);
 		return true;
 	}
 
 	private static function transfer(&$data, $charset = 'ISO-8859-1'){
-		weBackupUtil::addLog('Parsing data');
+		we_backup_util::addLog('Parsing data');
 
 		$parser = new weXMLParser();
 
@@ -54,7 +54,7 @@ class weBackupImport{
 
 		if($parser === false){
 			p_r($parser->parseError);
-			weBackupUtil::addLog(print_r($parser->parseError, true));
+			we_backup_util::addLog(print_r($parser->parseError, true));
 		}
 
 		$parser->normalize();
@@ -131,17 +131,17 @@ class weBackupImport{
 				switch($classname){
 					case 'weTable':
 					case 'weTableAdv':
-						weBackupUtil::addLog($_prefix . $classname . ':' . $object->table . $addtext);
+						we_backup_util::addLog($_prefix . $classname . ':' . $object->table . $addtext);
 						break;
 					case 'weTableItem':
 						$_id_val = '';
 						foreach($object->keys as $_key){
 							$_id_val .= ':' . $object->$_key;
 						}
-						weBackupUtil::addLog($_prefix . $classname . ':' . $object->table . $_id_val . $addtext);
+						we_backup_util::addLog($_prefix . $classname . ':' . $object->table . $_id_val . $addtext);
 						break;
 					case 'weBinary':
-						weBackupUtil::addLog($_prefix . $classname . ':' . $object->ID . ':' . $object->Path . $addtext);
+						we_backup_util::addLog($_prefix . $classname . ':' . $object->ID . ':' . $object->Path . $addtext);
 						break;
 				}
 				if(isset($_SESSION['weS']['weBackupVars']['options']['convert_charset']) && $_SESSION['weS']['weBackupVars']['options']['convert_charset'] && method_exists($object, 'convertCharsetEncoding')){
@@ -167,9 +167,9 @@ class weBackupImport{
 	private static function getObject($tagname, $attribs, &$object, &$classname){
 		switch($tagname){
 			case 'we:table':
-				$table = weBackupUtil::getRealTableName($attribs['name']);
+				$table = we_backup_util::getRealTableName($attribs['name']);
 				if($table !== false){
-					weBackupUtil::setBackupVar('current_table', $table);
+					we_backup_util::setBackupVar('current_table', $table);
 					$object = new weTable($table);
 					$classname = 'weTable';
 					return true;
@@ -177,9 +177,9 @@ class weBackupImport{
 				return false;
 
 			case 'we:tableadv':
-				$table = weBackupUtil::getRealTableName($attribs['name']);
+				$table = we_backup_util::getRealTableName($attribs['name']);
 				if($table !== false){
-					weBackupUtil::setBackupVar('current_table', $table);
+					we_backup_util::setBackupVar('current_table', $table);
 					$object = new weTableAdv($table);
 					$classname = 'weTableAdv';
 					return true;
@@ -187,9 +187,9 @@ class weBackupImport{
 				return false;
 
 			case 'we:tableitem':
-				$table = weBackupUtil::getRealTableName($attribs['table']);
+				$table = we_backup_util::getRealTableName($attribs['table']);
 				if($table !== false){
-					weBackupUtil::setBackupVar('current_table', $table);
+					we_backup_util::setBackupVar('current_table', $table);
 					$object = new weTableItem($table);
 					$classname = 'weTableItem';
 					return true;

@@ -37,8 +37,9 @@ require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_defines.inc
 abstract class we_autoloader{
 
 	private static $domains = array(
-		'base' => 'we_classes/base',
+		'backup'=>'we_exim/backup',
 		'banner' => 'we_modules/banner',
+		'base' => 'we_classes/base',
 		'database' => 'we_classes/database',
 		'captcha' => 'we_classes/captcha',
 		'customer' => 'we_modules/customer',
@@ -107,7 +108,6 @@ abstract class we_autoloader{
 			'weAbbrDialog' => 'weAbbrDialog.class.inc.php',
 			'weAcronymDialog' => 'weAcronymDialog.class.inc.php',
 			'weBackup' => 'base/weBackup.class.php',
-			'we_backup' => 'base/we_backup.inc.php',
 			'weBackupWizard' => 'weBackupWizard.inc.php',
 			'we_baseCollection' => 'html/we_baseCollection.inc.php',
 			'we_baseElement' => 'html/we_baseElement.inc.php',
@@ -211,11 +211,6 @@ abstract class we_autoloader{
 			'XML_Validate' => 'xml_validate.inc.php',
 		),
 		'we_modules' => array(
-			'weMessagingFrames' => 'messaging/weMessagingFrames.php',
-			'weMessagingIconbar' => 'messaging/weMessagingIconbar.class.php',
-			'we_msg_email' => 'messaging/we_msg_email.inc.php',
-			'we_msg_proto' => 'messaging/we_msg_proto.inc.php',
-			'we_msg_update' => 'messaging/we_msg_update.inc.php',
 			'we_class_folder' => 'object/we_class_folder.inc.php',
 			'we_listview_multiobject' => 'object/we_listview_multiobject.class.php',
 			'we_listview_object' => 'object/we_listview_object.class.php',
@@ -263,13 +258,6 @@ abstract class we_autoloader{
 			'doclistView' => 'doclistView.class.inc.php',
 		),
 		'we_exim' => array(
-			'weBackupExport' => 'backup/weBackupExport.class.php',
-			'weBackupFileReader' => 'backup/weBackupFileReader.class.php',
-			'weBackupImport' => 'backup/weBackupImport.class.php',
-			'weBackupImportSql' => 'backup/weBackupImportSql.class.php',
-			'weBackupPreparer' => 'backup/weBackupPreparer.class.php',
-			'weBackupSqlFileReader' => 'backup/weBackupSqlFileReader.class.php',
-			'weBackupUtil' => 'backup/weBackupUtil.class.php',
 			'weContentProvider' => 'weContentProvider.class.php',
 			'weExportPreparer' => 'weExportPreparer.class.php',
 			'weImportUpdater' => 'weImportUpdater.class.php',

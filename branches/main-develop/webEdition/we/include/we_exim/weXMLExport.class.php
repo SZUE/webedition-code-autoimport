@@ -88,7 +88,7 @@ class weXMLExport extends weXMLExIm{
 			weContentProvider::object2xml($doc, $fh, $attribute);
 		}
 
-		fwrite($fh, weBackup::backupMarker . "\n");
+		fwrite($fh, we_backup_backup::backupMarker . "\n");
 
 		if($classname == "weTableItem" && $export_binary &&
 			strtolower($doc->table) == strtolower(FILE_TABLE) &&
@@ -253,7 +253,7 @@ class weXMLExport extends weXMLExIm{
 			$out.='></we:map>';
 		}
 		$out.='</we:info>' .
-			weBackup::backupMarker . "\n";
+			we_backup_backup::backupMarker . "\n";
 		return $out;
 	}
 

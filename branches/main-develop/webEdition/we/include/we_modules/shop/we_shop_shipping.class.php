@@ -3,9 +3,9 @@
 /**
  * webEdition CMS
  *
- * $Rev$
- * $Author$
- * $Date$
+ * $Rev: 6489 $
+ * $Author: mokraemer $
+ * $Date: 2013-08-19 15:19:40 +0200 (Mo, 19 Aug 2013) $
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -22,18 +22,24 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-/* clipboard object class */
-class we_msg_update extends we_class{
-	/* Flag which is set when the file is not new */
 
-	var $userid = -1;
-	var $username = '';
+class we_shop_shipping{
 
-	function __construct(){
-		parent::__construct();
-		$this->Name = 'msg_clipboard_' . md5(uniqid(__FUNCTION__, true));
-		$this->persistent_slots = array('ClassName', 'Name', 'ID', 'Folder_ID', 'selected_message', 'selected_set', 'sort_order', 'last_sortfield', 'search_ids', 'available_folders', 'search_folders', 'search_fields');
+	var $id = '';
+	var $text = '';
+	var $countries = array();
+	var $cartValue = array();
+	var $shipping = array();
+	var $default = false;
+
+	function __construct($id = '', $text = '', $countries, $cartValue, $shipping, $default){
+
+		$this->id = $id;
+		$this->text = $text;
+		$this->countries = $countries;
+		$this->cartValue = $cartValue;
+		$this->shipping = $shipping;
+		$this->default = $default;
 	}
 
 }
-

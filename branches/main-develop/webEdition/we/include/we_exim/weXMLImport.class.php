@@ -563,7 +563,7 @@ class weXMLImport extends weXMLExIm{
 		}
 
 		$path = $tmppath;
-		$marker = weBackup::backupMarker;
+		$marker = we_backup_backup::backupMarker;
 		$marker2 = "<!--webackup -->"; //Bug 5089
 		$pattern = basename($filename) . "_%s";
 
@@ -600,7 +600,7 @@ class weXMLImport extends weXMLExIm{
 					}
 				}
 
-				if($open_new && !empty($line) && trim($line) != weBackup::weXmlExImFooter){
+				if($open_new && !empty($line) && trim($line) != we_backup_backup::weXmlExImFooter){
 					$num++;
 					$filename_tmp = sprintf($path . $pattern, $num);
 					$fh_temp = fopen($filename_tmp, "wb");
@@ -612,7 +612,7 @@ class weXMLImport extends weXMLExIm{
 				}
 
 				if(isset($fh_temp) && $fh_temp){
-					if((substr($line, 0, 2) != "<?") && (substr($line, 0, 11) != weBackup::weXmlExImHead) && (substr($line, 0, 12) != weBackup::weXmlExImFooter)){
+					if((substr($line, 0, 2) != "<?") && (substr($line, 0, 11) != we_backup_backup::weXmlExImHead) && (substr($line, 0, 12) != we_backup_backup::weXmlExImFooter)){
 
 						$buff.=$line;
 						$write = false;
@@ -638,7 +638,7 @@ class weXMLImport extends weXMLExIm{
 							$buff = "";
 						}
 					} else {
-						if(((substr($line, 0, 2) == "<?") || (substr($line, 0, 11) == weBackup::weXmlExImHead)) && $num == 0){
+						if(((substr($line, 0, 2) == "<?") || (substr($line, 0, 11) == we_backup_backup::weXmlExImHead)) && $num == 0){
 							$header.=$line;
 						}
 					}
@@ -649,7 +649,7 @@ class weXMLImport extends weXMLExIm{
 		} else {
 			return -1;
 		}
-		if($fh_temp && trim($line) != weBackup::weXmlExImFooter){
+		if($fh_temp && trim($line) != we_backup_backup::weXmlExImFooter){
 			if($buff){
 				@fwrite($fh_temp, $buff);
 			}

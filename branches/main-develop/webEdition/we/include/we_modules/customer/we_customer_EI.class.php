@@ -63,7 +63,7 @@ abstract class we_customer_EI{
 			$fields = $customer->getFieldsDbProperties();
 
 			$xml_out = (isset($options['firstexec']) && $options['firstexec'] == -999 ?
-					'<?xml version="1.0" encoding="' . $GLOBALS['WE_BACKENDCHARSET'] . '" standalone="yes" ?>' . "\n" . weBackup::weXmlExImHead . ">\n" :
+					'<?xml version="1.0" encoding="' . $GLOBALS['WE_BACKENDCHARSET'] . '" standalone="yes" ?>' . "\n" . we_backup_backup::weXmlExImHead . ">\n" :
 					'');
 
 			foreach($options['customers'] as $cid){
@@ -80,7 +80,7 @@ abstract class we_customer_EI{
 							}
 						}
 					}
-					$xml_out.=$customer_xml->getHtml() . weBackup::backupMarker . "\n";
+					$xml_out.=$customer_xml->getHtml() . we_backup_backup::backupMarker . "\n";
 				}
 			}
 			return $xml_out;

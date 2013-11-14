@@ -27,7 +27,7 @@ require_once(WE_MESSAGING_MODULE_PATH . "messaging_std.inc.php");
 
 /* messaging email send class */
 
-class we_msg_email extends we_msg_proto{
+class we_messaging_email extends we_messaging_proto{
 	const TYPE_SEND_RECEIVE=0;
 	const TYPE_SEND_ONLY=1;
 

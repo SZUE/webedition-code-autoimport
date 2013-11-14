@@ -113,7 +113,7 @@ class we_messaging_messaging extends we_class{
 				$c = new we_messaging_todo();
 				break;
 			case 'we_msg_email':
-				$c = new we_msg_email();
+				$c = new we_messaging_email();
 				break;
 			default:
 				t_e('error', 'unkown type', $objname);
@@ -126,14 +126,14 @@ class we_messaging_messaging extends we_class{
 		} else {
 			$this->used_msgobjs_names[] = $objname;
 
-			if(!isset($c->msgclass_type) || $c->msgclass_type == we_msg_email::TYPE_SEND_RECEIVE){
+			if(!isset($c->msgclass_type) || $c->msgclass_type == we_messaging_email::TYPE_SEND_RECEIVE){
 				$this->available_folders = array_merge($this->available_folders, $c->get_available_folders());
 			}
 		}
 
 		$this->send_msgobjs[$objname] = &$c;
 
-		if(!isset($c->msgclass_type) || $c->msgclass_type == we_msg_email::TYPE_SEND_RECEIVE){
+		if(!isset($c->msgclass_type) || $c->msgclass_type == we_messaging_email::TYPE_SEND_RECEIVE){
 			$this->used_msgobjs[$objname] = &$c;
 			$this->active_msgobj = &$c;
 		}
@@ -481,7 +481,7 @@ class we_messaging_messaging extends we_class{
 			return NULL;
 		}
 
-		while(($c = array_ksearch('obj_type', we_msg_proto::FOLDER_INBOX, $this->available_folders, $c)) != -1 && $this->available_folders[$c]['ClassName'] != $classname)
+		while(($c = array_ksearch('obj_type', we_messaging_proto::FOLDER_INBOX, $this->available_folders, $c)) != -1 && $this->available_folders[$c]['ClassName'] != $classname)
 			$c++;
 		$r = isset($this->available_folders[$c]) ? $this->available_folders[$c] : NULL;
 		return $r;

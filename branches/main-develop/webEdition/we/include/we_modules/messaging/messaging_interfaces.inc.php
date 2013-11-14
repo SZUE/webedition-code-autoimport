@@ -29,7 +29,7 @@ if(str_replace(dirname($_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME']) ==
 /* send new email message */
 
 function msg_new_email(&$rcpts, $subject, $body, &$errs){
-	$m = new we_msg_email();
+	$m = new we_messaging_email();
 	$m->set_login_data($_SESSION["user"]["ID"], isset($_SESSION["user"]["Name"]) ? $_SESSION["user"]["Name"] : "");
 	$data = array('subject' => $subject, 'body' => $body);
 

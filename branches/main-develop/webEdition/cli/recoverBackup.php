@@ -312,7 +312,7 @@ if($_backup_filename != $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . $_REQUEST['back
 	copy($_backup_filename, $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . $_REQUEST['backup_select']);
 }
 
-if(weBackupPreparer::prepareImport() === true){
+if(we_backup_preparer::prepareImport() === true){
 	if($_REQUEST['verbose']){
 		print "\nImporting from " . $_backup_filename . "...\n";
 	}
@@ -320,7 +320,7 @@ if(weBackupPreparer::prepareImport() === true){
 		if($_REQUEST['verbose']){
 			print '-';
 		}
-		weBackupImport::import($_SESSION['weS']['weBackupVars']['backup_file'], $_SESSION['weS']['weBackupVars']['offset'], $_SESSION['weS']['weBackupVars']['backup_steps'], $_SESSION['weS']['weBackupVars']['options']['compress'], $_SESSION['weS']['weBackupVars']['encoding']);
+		we_backup_import::import($_SESSION['weS']['weBackupVars']['backup_file'], $_SESSION['weS']['weBackupVars']['offset'], $_SESSION['weS']['weBackupVars']['backup_steps'], $_SESSION['weS']['weBackupVars']['options']['compress'], $_SESSION['weS']['weBackupVars']['encoding']);
 	}
 
 	if($_REQUEST['verbose']){
@@ -330,7 +330,7 @@ if(weBackupPreparer::prepareImport() === true){
 	$updater = new we_updater();
 	$updater->doUpdate();
 } else {
-	print weBackupPreparer::getErrorMessage();
+	print we_backup_preparer::getErrorMessage();
 }
 
 unset($_SESSION['weS']['weBackupVars']);

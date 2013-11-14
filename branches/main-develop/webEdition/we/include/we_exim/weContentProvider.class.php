@@ -286,7 +286,7 @@ class weContentProvider{
 					$fwrite($file, '<we:binary>' . $attribs .
 						weXMLComposer::we_xmlElement('SeqN', $object->SeqN) .
 						weXMLComposer::we_xmlElement('Data', self::encode($data), array(self::CODING_ATTRIBUTE => self::CODING_ENCODE)) .
-						'</we:binary>' . weBackup::backupMarker . "\n");
+						'</we:binary>' . we_backup_backup::backupMarker . "\n");
 					$offset+=$rsize;
 					$object->SeqN++;
 				}
@@ -331,7 +331,7 @@ class weContentProvider{
 					$fwrite($file, '<we:version>' . $attribs .
 						weXMLComposer::we_xmlElement('SeqN', $object->SeqN) .
 						weXMLComposer::we_xmlElement('Data', self::encode($data), array(self::CODING_ATTRIBUTE => self::CODING_ENCODE)) .
-						'</we:version>' . weBackup::backupMarker . "\n");
+						'</we:version>' . we_backup_backup::backupMarker . "\n");
 					$offset+=$rsize;
 					$object->SeqN++;
 				}

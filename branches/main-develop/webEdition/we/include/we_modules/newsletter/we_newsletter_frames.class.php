@@ -1875,7 +1875,7 @@ self.focus();
 			$table->setCol(0, 0, array(), we_html_tools::getPixel(5, 5));
 			$table->setCol(1, 0, array("class" => "defaultfont"), sprintf(g_l('modules_newsletter', '[csv_export]'), $link));
 			$table->setCol(2, 0, array(), we_html_tools::getPixel(5, 10));
-			$table->setCol(3, 0, array("class" => "defaultfont"), weBackupWizard::getDownloadLinkText());
+			$table->setCol(3, 0, array("class" => "defaultfont"), we_backup_wizard::getDownloadLinkText());
 			$table->setCol(4, 0, array(), we_html_tools::getPixel(5, 10));
 			$table->setCol(5, 0, array("class" => "defaultfont"), we_html_element::htmlA(array("href" => $down), g_l('modules_newsletter', '[csv_download]')));
 			$table->setCol(6, 0, array(), we_html_tools::getPixel(100, 5));
