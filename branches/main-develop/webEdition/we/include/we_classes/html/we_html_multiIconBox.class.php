@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-abstract class we_multiIconBox{
+abstract class we_html_multiIconBox{
 
 	/**
 	 * @desc 	Get HTML-Code of the multibox
@@ -41,8 +41,8 @@ abstract class we_multiIconBox{
 		$uniqname = $name ? $name : md5(uniqid(__FILE__, true));
 
 		$out = (isset($headline) && $headline != '') ?
-			we_multiIconBox::_getBoxStartHeadline($width, $headline, $uniqname, $marginLeft, $overflow) :
-			we_multiIconBox::_getBoxStart($width, $uniqname);
+			we_html_multiIconBox::_getBoxStartHeadline($width, $headline, $uniqname, $marginLeft, $overflow) :
+			we_html_multiIconBox::_getBoxStart($width, $uniqname);
 
 		foreach($content as $i => $c){
 			if($c === null){
@@ -52,7 +52,7 @@ abstract class we_multiIconBox{
 
 			if($i == $foldAtNr && $foldAtNr < count($content)){ // only if the folded items contain stuff.
 				$out .= we_button::create_button_table(array(
-						we_multiIconBox::_getButton($uniqname, ($delegate ? $delegate : "" ) . ";weToggleBox('$uniqname','" . addslashes($foldDown) . "','" . addslashes($foldRight) . "')", ($displayAtStartup ? "down" : "right"), g_l('global', "[openCloseBox]")),
+						we_html_multiIconBox::_getButton($uniqname, ($delegate ? $delegate : "" ) . ";weToggleBox('$uniqname','" . addslashes($foldDown) . "','" . addslashes($foldRight) . "')", ($displayAtStartup ? "down" : "right"), g_l('global', "[openCloseBox]")),
 						'<span style="cursor: pointer;" class="defaultfont" id="text_' . $uniqname . '" onClick="' . ($delegate ? $delegate : "" ) . ';weToggleBox(\'' . $uniqname . '\',\'' . addslashes($foldDown) . '\',\'' . addslashes($foldRight) . '\');">' . ($displayAtStartup ? $foldDown : $foldRight) . '</span>'
 						), 10, array('style' => 'margin-left:' . $marginLeft . 'px;')
 					) .
@@ -98,7 +98,7 @@ abstract class we_multiIconBox{
 			$out .= '</td></tr></table>';
 		}
 
-		$boxHTML = $out . we_multiIconBox::_getBoxEnd($width);
+		$boxHTML = $out . we_html_multiIconBox::_getBoxEnd($width);
 
 		if($buttons){
 			//ignore height, replace by bottom:

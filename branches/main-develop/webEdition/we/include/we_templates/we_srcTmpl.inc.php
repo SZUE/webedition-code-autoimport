@@ -721,12 +721,12 @@ window.orignalTemplateContent=document.getElementById("editarea").value.replace(
 				(substr($_SESSION['prefs']['editorMode'], 0, 10) == 'codemirror' ? '
 <input type="text" style="width: 10em;float:left;" id="query"/><div style="float:left;">' . we_button::create_button("search", 'javascript:search(document.getElementById("query").value,!document.getElementById("caseSens").checked);') . '</div>
 <input type="text" style="margin-left:2em;width: 10em;float:left;" id="replace"/><div style="float:left;">' . we_button::create_button("replace", 'javascript:myReplace(document.getElementById("query").value,document.getElementById("replace").value,!document.getElementById("caseSens").checked);') . '</div>' .
-						we_forms::checkbox(1, 0, 'caseSens', g_l('weClass', '[caseSensitive]'), false, "defaultfont", '', false, '', 0, 0, '', 'display:inline-block;margin-left:2em;') .
+						we_html_forms::checkbox(1, 0, 'caseSens', g_l('weClass', '[caseSensitive]'), false, "defaultfont", '', false, '', 0, 0, '', 'display:inline-block;margin-left:2em;') .
 						'</div>' : ''
 				) . '
 					</td>
 					<td align="right" class="defaultfont">' .
-				($_useJavaEditor ? '' : we_forms::checkbox(1, ($_SESSION['weS']['we_wrapcheck'] == 1) || $_SESSION['prefs']['editorWrap'], 'we_wrapcheck_tmp', g_l('global', '[wrapcheck]'), false, "defaultfont", "we_cmd('wrap_on_off',this.checked)", false, '', 0, 0, '', 'display:inline-block;')) .
+				($_useJavaEditor ? '' : we_html_forms::checkbox(1, ($_SESSION['weS']['we_wrapcheck'] == 1) || $_SESSION['prefs']['editorWrap'], 'we_wrapcheck_tmp', g_l('global', '[wrapcheck]'), false, "defaultfont", "we_cmd('wrap_on_off',this.checked)", false, '', 0, 0, '', 'display:inline-block;')) .
 				(substr($_SESSION['prefs']['editorMode'], 0, 10) == 'codemirror' ? '<div id="reindentButton" style="display:inline-block;margin-left:10px;margin-top:-3px;">' . we_button::create_button("reindent", 'javascript:reindent();') . '</div>' : '') .
 				'</td>	</tr>
         </table></td></tr></table>';
@@ -964,8 +964,8 @@ window.orignalTemplateContent=document.getElementById("editarea").value.replace(
 			$wepos = weGetCookieVariable("but_weTMPLDocEdit");
 			$znr = 1;
 		}
-		print we_multiIconBox::getJS() .
-				'<div id="bodydiv"' . ($_SESSION['prefs']['editorMode'] == 'java' ? '' : 'style="display:none;"') . '>' . we_multiIconBox::getHTML("weTMPLDocEdit", "100%", $parts, 20, "", $znr, g_l('weClass', "[showTagwizard]"), g_l('weClass', "[hideTagwizard]"), ($wepos == "down"), "", 'toggleTagWizard();') . '</div>';
+		print we_html_multiIconBox::getJS() .
+				'<div id="bodydiv"' . ($_SESSION['prefs']['editorMode'] == 'java' ? '' : 'style="display:none;"') . '>' . we_html_multiIconBox::getHTML("weTMPLDocEdit", "100%", $parts, 20, "", $znr, g_l('weClass', "[showTagwizard]"), g_l('weClass', "[hideTagwizard]"), ($wepos == "down"), "", 'toggleTagWizard();') . '</div>';
 		?></body>
 
 <?php

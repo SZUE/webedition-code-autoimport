@@ -940,12 +940,12 @@ function delRow(id) {
 					($fromScheduler != '' ? $fromScheduler : '') .
 					($fromImport != '' ? $fromImport : '') .
 					($resetFromVersion != '' ? $resetFromVersion : '')),
-				array("dat" => (permissionhandler::hasPerm("ADMINISTRATOR")) ? we_forms::checkbox($_versions[$f]["ID"], 0, "deleteVersion", "", false, "defaultfont", "") : ""),
+				array("dat" => (permissionhandler::hasPerm("ADMINISTRATOR")) ? we_html_forms::checkbox($_versions[$f]["ID"], 0, "deleteVersion", "", false, "defaultfont", "") : ""),
 				array("dat" => "<span class='printShow'>" . we_button::create_button("reset", "javascript:resetVersion('" . $_versions[$f]["ID"] . "','" . $_versions[$f]["documentID"] . "','" . $_versions[$f]["version"] . "','" . $_versions[$f]["documentTable"] . "');", true, 100, 22, "", "", $disabledReset) . "</span>"),
 				array("dat" => "<span class='printShow'>" . we_button::create_button("preview", "javascript:previewVersion('" . $_versions[$f]["ID"] . "');") . "</span>" . we_html_tools::getPixel(1, 1)),
 				array("dat" => "<span class='printShow'>" .
 					(($_versions[$f]["ContentType"] == "text/webedition" || $_versions[$f]["ContentType"] == "text/html" || $_versions[$f]["ContentType"] == "objectFile") ?
-						we_forms::checkbox($_versions[$f]["ID"], 0, "publishVersion_" . $_versions[$f]["ID"], g_l('versions', '[publishIfReset]'), false, "middlefont", "") :
+						we_html_forms::checkbox($_versions[$f]["ID"], 0, "publishVersion_" . $_versions[$f]["ID"], g_l('versions', '[publishIfReset]'), false, "middlefont", "") :
 						'') .
 					'</span>' . we_html_tools::getPixel(1, 1)),
 			);
@@ -966,7 +966,7 @@ function delRow(id) {
 			array("dat" => g_l('versions', '[modifications]')),
 			array("dat" => (permissionhandler::hasPerm("ADMINISTRATOR") ? '<div style="margin:0px 0px 5px 0px;" id="deleteButton">' . we_button::create_button(
 						"image:btn_function_trash", "javascript:deleteVers();") . '</div>' : '') .
-				we_forms::checkbox(1, 0, "deleteAllVersions", g_l('versions', '[mark]'), false, "middlefont", "checkAll();")),
+				we_html_forms::checkbox(1, 0, "deleteAllVersions", g_l('versions', '[mark]'), false, "middlefont", "checkAll();")),
 			array("dat" => we_html_tools::getPixel(1, 1)),
 			array("dat" => we_html_tools::getPixel(1, 1)),
 			array("dat" => we_html_tools::getPixel(1, 1)),

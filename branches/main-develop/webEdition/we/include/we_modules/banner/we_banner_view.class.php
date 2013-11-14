@@ -69,7 +69,7 @@ class we_banner_view extends we_banner_base{
 	}
 
 	function htmlHidden($name, $value = "", $id = ""){
-		return '<input type="hidden" name="' . trim($name) . '" value="' . oldHtmlspecialchars($value) . '"' . (empty($id) ? "" : ' id="' . $id . '"') . ' />';
+		return '<input type="hidden" name="' . trim($name) . '" value="' . oldHtmlspecialchars($value) . '"' . (empty($id) ? '' : ' id="' . $id . '"') . ' />';
 	}
 
 	function getProperties(){
@@ -183,8 +183,8 @@ class we_banner_view extends we_banner_base{
 					break;
 			}
 
-			$out.= we_multiIconBox::getJS() .
-				we_multiIconBox::getHTML($itsname, "100%", $parts, 30, "", $znr, $openText, $closeText, ($wepos == "down")) .
+			$out.= we_html_multiIconBox::getJS() .
+				we_html_multiIconBox::getHTML($itsname, "100%", $parts, 30, "", $znr, $openText, $closeText, ($wepos == "down")) .
 				'</form>' .
 				$yuiSuggest->getYuiCss() .
 				$yuiSuggest->getYuiJs() .
@@ -264,17 +264,17 @@ class we_banner_view extends we_banner_base{
 						if (top.content.editor.edbody.loaded) {
 							top.content.editor.edbody.document.we_form.ncmd.value = arguments[0];
 							top.content.editor.edbody.submitForm();
-						}
-						else
+						}else{
 							setTimeout('we_cmd("new_banner");', 10);
+						}
 						break;
 					case "new_bannergroup":
 						if (top.content.editor.edbody.loaded) {
 							top.content.editor.edbody.document.we_form.ncmd.value = arguments[0];
 							top.content.editor.edbody.submitForm();
-						}
-						else
+						}else{
 							setTimeout('we_cmd("new_bannergroup");', 10);
+						}
 						break;
 					case "delete_banner":
 		<?php
@@ -283,8 +283,9 @@ class we_banner_view extends we_banner_base{
 		} else {
 			?>
 							if (top.content.editor.edbody.loaded && top.content.editor.edbody.we_is_home == undefined) {
-								if (!confirm("<?php print g_l('modules_banner', '[delete_question]') ?>"))
+								if (!confirm("<?php print g_l('modules_banner', '[delete_question]') ?>")){
 									return;
+								}
 							}
 							else {
 			<?php print we_message_reporting::getShowMessageCall(g_l('modules_banner', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_WARNING); ?>
@@ -851,7 +852,7 @@ class we_banner_view extends we_banner_base{
 	}
 
 	function formStat($class = "middlefont"){
-		$datefilterCheck = we_forms::checkboxWithHidden($this->UseFilter, "UseFilter", g_l('modules_banner', '[datefilter]'), false, "defaultfont", "top.content.setHot(); we_cmd('switchPage','" . $this->page . "')");
+		$datefilterCheck = we_html_forms::checkboxWithHidden($this->UseFilter, "UseFilter", g_l('modules_banner', '[datefilter]'), false, "defaultfont", "top.content.setHot(); we_cmd('switchPage','" . $this->page . "')");
 		$datefilter = we_html_tools::getDateInput2("dateFilter%s", ($this->FilterDate == -1 ? time() : $this->FilterDate), false, "dmy", "top.content.setHot(); we_cmd('switchPage','" . $this->page . "');", $class);
 		$datefilter2 = we_html_tools::getDateInput2("dateFilter2%s", ($this->FilterDateEnd == -1 ? time() : $this->FilterDateEnd), false, "dmy", "top.content.setHot(); we_cmd('switchPage','" . $this->page . "');", $class);
 
@@ -944,8 +945,8 @@ class we_banner_view extends we_banner_base{
 		$from = $this->banner->StartOk ? $this->banner->StartDate : $now;
 		$to = $this->banner->EndOk ? $this->banner->EndDate : $now + 3600;
 
-		$checkStart = we_forms::checkboxWithHidden($this->banner->StartOk, $this->uid . '_StartOk', g_l('modules_banner', '[from]'), false, "defaultfont", "top.content.setHot();");
-		$checkEnd = we_forms::checkboxWithHidden($this->banner->EndOk, $this->uid . '_EndOk', g_l('modules_banner', '[to]'), false, "defaultfont", "top.content.setHot();");
+		$checkStart = we_html_forms::checkboxWithHidden($this->banner->StartOk, $this->uid . '_StartOk', g_l('modules_banner', '[from]'), false, "defaultfont", "top.content.setHot();");
+		$checkEnd = we_html_forms::checkboxWithHidden($this->banner->EndOk, $this->uid . '_EndOk', g_l('modules_banner', '[to]'), false, "defaultfont", "top.content.setHot();");
 
 
 		return '<table border="0" cellpadding="0" cellspacing="0">
@@ -1048,7 +1049,7 @@ class we_banner_view extends we_banner_base{
 
 	function formBannerNumbers(){
 		$cn = md5(uniqid(__FUNCTION__, true));
-		$activeCheckbox = we_forms::checkboxWithHidden($this->banner->IsActive, $this->uid . '_IsActive', g_l('modules_banner', '[active]'), false, "defaultfont", "top.content.setHot();");
+		$activeCheckbox = we_html_forms::checkboxWithHidden($this->banner->IsActive, $this->uid . '_IsActive', g_l('modules_banner', '[active]'), false, "defaultfont", "top.content.setHot();");
 		$maxShow = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($this->uid . "_maxShow", 10, $this->banner->maxShow, "", "onchange=\"top.content.setHot();\"", "text", 100, 0), g_l('modules_banner', '[max_show]'), "left", "defaultfont");
 		$maxClicks = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($this->uid . "_maxClicks", 10, $this->banner->maxClicks, "", "onchange=\"top.content.setHot();\"", "text", 100, 0), g_l('modules_banner', '[max_clicks]'), "left", "defaultfont");
 		$weight = we_html_tools::htmlFormElementTable(we_html_tools::htmlSelect($this->uid . "_weight", array("8" => "1 (" . g_l('modules_banner', '[infrequent]') . ")", "7" => 2, "6" => 3, "5" => 4, "4" => "5 (" . g_l('modules_banner', '[normal]') . ")", "3" => 6, "2" => 7, "1" => 8, "0" => "9 (" . g_l('modules_banner', '[frequent]') . ")"), 1, $this->banner->weight), g_l('modules_banner', '[weight]'), "left", "defaultfont");

@@ -141,13 +141,13 @@ class we_workflow_view extends we_workflow_base{
 							'headline' => g_l('modules_workflow', '[specials]'),
 							'space' => $_space - 25,
 							'html' => '<br/>' .
-							we_forms::checkboxWithHidden($this->workflowDef->EmailPath, $this->uid . '_EmailPath', g_l('modules_workflow', '[EmailPath]'), false, 'defaultfont', '', false) .
-							we_forms::checkboxWithHidden($this->workflowDef->LastStepAutoPublish, $this->uid . '_LastStepAutoPublish', g_l('modules_workflow', '[LastStepAutoPublish]'), false, 'defaultfont', '', false)
+							we_html_forms::checkboxWithHidden($this->workflowDef->EmailPath, $this->uid . '_EmailPath', g_l('modules_workflow', '[EmailPath]'), false, 'defaultfont', '', false) .
+							we_html_forms::checkboxWithHidden($this->workflowDef->LastStepAutoPublish, $this->uid . '_LastStepAutoPublish', g_l('modules_workflow', '[LastStepAutoPublish]'), false, 'defaultfont', '', false)
 						),
 					);
 					//	Workflow-Type
 					$content .= $this->getHiddensFormOverviewPage() .
-						we_multiIconBox::getHTML('workflowProperties', '100%', $parts, 30);
+						we_html_multiIconBox::getHTML('workflowProperties', '100%', $parts, 30);
 				} else {
 					$content .= $this->getHiddensFormPropertyPage() .
 						we_html_tools::htmlDialogLayout($this->getStepsHTML(), '');
@@ -182,14 +182,14 @@ class we_workflow_view extends we_workflow_base{
 			we_html_tools::getPixel(2, 10),
 			$this->getFoldersHTML(),
 		);
-		$out = $this->getTypeTableHTML(we_forms::radiobutton(we_workflow_workflow::FOLDER, ($this->workflowDef->Type == we_workflow_workflow::FOLDER ? 1 : 0), $this->uid . '_Type', g_l('modules_workflow', '[type_dir]'), true, 'defaultfont', 'onclick=top.content.setHot();'), $vals, 25);
+		$out = $this->getTypeTableHTML(we_html_forms::radiobutton(we_workflow_workflow::FOLDER, ($this->workflowDef->Type == we_workflow_workflow::FOLDER ? 1 : 0), $this->uid . '_Type', g_l('modules_workflow', '[type_dir]'), true, 'defaultfont', 'onclick=top.content.setHot();'), $vals, 25);
 		$vals = array(
 			we_html_tools::getPixel(2, 10),
 			$this->getDocTypeHTML(),
 			we_html_tools::getPixel(2, 10),
 			$this->getCategoryHTML(),
 		);
-		$out .= $this->getTypeTableHTML(we_forms::radiobutton(we_workflow_workflow::DOCTYPE_CATEGORY, ($this->workflowDef->Type == we_workflow_workflow::DOCTYPE_CATEGORY ? 1 : 0), $this->uid . '_Type', g_l('modules_workflow', '[type_doctype]'), true, 'defaultfont', 'onclick=top.content.setHot();'), $vals, 25);
+		$out .= $this->getTypeTableHTML(we_html_forms::radiobutton(we_workflow_workflow::DOCTYPE_CATEGORY, ($this->workflowDef->Type == we_workflow_workflow::DOCTYPE_CATEGORY ? 1 : 0), $this->uid . '_Type', g_l('modules_workflow', '[type_doctype]'), true, 'defaultfont', 'onclick=top.content.setHot();'), $vals, 25);
 
 		if(defined('OBJECT_TABLE')){
 			$vals = array(
@@ -200,7 +200,7 @@ class we_workflow_view extends we_workflow_base{
 				we_html_tools::getPixel(2, 10),
 				$this->getObjectFileFoldersHTML(),
 			);
-			$out .= $this->getTypeTableHTML(we_forms::radiobutton(we_workflow_workflow::OBJECT, ($this->workflowDef->Type == we_workflow_workflow::OBJECT ? 1 : 0), $this->uid . '_Type', g_l('modules_workflow', '[type_object]'), true, 'defaultfont', 'onclick=top.content.setHot();'), $vals, 25);
+			$out .= $this->getTypeTableHTML(we_html_forms::radiobutton(we_workflow_workflow::OBJECT, ($this->workflowDef->Type == we_workflow_workflow::OBJECT ? 1 : 0), $this->uid . '_Type', g_l('modules_workflow', '[type_object]'), true, 'defaultfont', 'onclick=top.content.setHot();'), $vals, 25);
 		}
 
 		return $out;
@@ -259,7 +259,7 @@ class we_workflow_view extends we_workflow_base{
 	}
 
 	function getStatusHTML(){
-		return we_forms::checkboxWithHidden(1, 'status_workflow', g_l('modules_workflow', '[active]'), false, 'defaultfont', 'top.content.setHot();');
+		return we_html_forms::checkboxWithHidden(1, 'status_workflow', g_l('modules_workflow', '[active]'), false, 'defaultfont', 'top.content.setHot();');
 	}
 
 	function getStepsHTML(){
@@ -299,7 +299,7 @@ class we_workflow_view extends we_workflow_base{
 					'align' => 'center',
 				),
 				array(
-					'dat' => '<table><tr valign="top"><td>' . we_forms::radiobutton(1, $sv->stepCondition ? 1 : 0, $this->uid . "_step" . $counter . "_and", "", false, "defaultfont", "top.content.setHot();") . '</td><td>' . we_html_tools::getPixel(5, 5) . '</td><td>' . we_forms::radiobutton(0, $sv->stepCondition ? 0 : 1, $this->uid . "_step" . $counter . "_and", "", false, "defaultfont", "top.content.setHot();") . '</td></tr></table>',
+					'dat' => '<table><tr valign="top"><td>' . we_html_forms::radiobutton(1, $sv->stepCondition ? 1 : 0, $this->uid . "_step" . $counter . "_and", "", false, "defaultfont", "top.content.setHot();") . '</td><td>' . we_html_tools::getPixel(5, 5) . '</td><td>' . we_html_forms::radiobutton(0, $sv->stepCondition ? 0 : 1, $this->uid . "_step" . $counter . "_and", "", false, "defaultfont", "top.content.setHot();") . '</td></tr></table>',
 					'height' => '',
 					'align' => '',
 				),
@@ -307,7 +307,7 @@ class we_workflow_view extends we_workflow_base{
 					'dat' => '<table cellpadding="0" cellspacing="0"><tr><td>' . we_html_tools::getPixel(5, 7) . '</td></tr><tr valign="middle"><td class="middlefont">' . we_html_tools::htmlTextInput($this->uid . "_step" . $counter . "_Worktime", 15, $sv->Worktime, "", 'onChange="top.content.setHot();"') . '</td></tr>' .
 					'<tr valign="middle"><td>' . we_html_tools::getPixel(5, $_spacer_1_height) . '</td><tr>' .
 					'<tr valign="top">' .
-					'<td class="middlefont">' . we_forms::checkboxWithHidden($sv->timeAction == 1, $this->uid . "_step" . $counter . "_timeAction", g_l('modules_workflow', '[go_next]'), false, "middlefont", "top.content.setHot();") . '</td>' .
+					'<td class="middlefont">' . we_html_forms::checkboxWithHidden($sv->timeAction == 1, $this->uid . "_step" . $counter . "_timeAction", g_l('modules_workflow', '[go_next]'), false, "middlefont", "top.content.setHot();") . '</td>' .
 					'</tr></table>',
 					'height' => '',
 					'align' => '',
@@ -347,9 +347,9 @@ class we_workflow_view extends we_workflow_base{
 						<table cellpadding="0" cellspacing="0">
 						<tr valign="middle"><td colspan="3">' . we_html_tools::getPixel(5, 0) . '</td><tr>
 						<tr valign="top">
-						<td class="middlefont" align="right">' . we_forms::checkboxWithHidden($tv->Mail, $this->uid . "_task_" . $counter . "_" . $counter1 . "_Mail", g_l('modules_workflow', '[send_mail]'), false, "middlefont", "top.content.setHot();") . '</td>
+						<td class="middlefont" align="right">' . we_html_forms::checkboxWithHidden($tv->Mail, $this->uid . "_task_" . $counter . "_" . $counter1 . "_Mail", g_l('modules_workflow', '[send_mail]'), false, "middlefont", "top.content.setHot();") . '</td>
 						<td>' . we_html_tools::getPixel(20, 1) . '</td>
-						<td class="middlefont">' . we_forms::checkboxWithHidden($tv->Edit, $this->uid . "_task_" . $counter . "_" . $counter1 . "_Edit", g_l('modules_workflow', '[edit]'), false, "middlefont", "top.content.setHot();") . '</td>
+						<td class="middlefont">' . we_html_forms::checkboxWithHidden($tv->Edit, $this->uid . "_task_" . $counter . "_" . $counter1 . "_Edit", g_l('modules_workflow', '[edit]'), false, "middlefont", "top.content.setHot();") . '</td>
 						</tr></table>',
 					'height' => '',
 					'align' => ''
@@ -1266,7 +1266,7 @@ function checkData(){
 			'html' => self::getDocumentStatus($this->documentDef->ID),
 			'space' => 0
 		);
-		$out .= we_multiIconBox::getHTML('', '100%', $_parts, 30);
+		$out .= we_html_multiIconBox::getHTML('', '100%', $_parts, 30);
 		return $out;
 	}
 
@@ -1354,7 +1354,7 @@ function checkData(){
 			'</head>
 		<body class="weEditorBody" onunload="doUnload()">
 				<form name="we_form">' . we_class::hiddenTrans() . '<table cellpadding="6" cellspacing="0" border="0">' .
-			we_multiIconBox::getHTML('', '100%', $_parts, 30) .
+			we_html_multiIconBox::getHTML('', '100%', $_parts, 30) .
 			'</form></body></html>';
 	}
 
@@ -1598,10 +1598,10 @@ function checkData(){
 				'<td>' . we_html_tools::getPixel(10, 10) . '</td>' .
 				'</tr>' .
 				'<tr>' .
-				'<td>' . $this->getTypeTableHTML(we_forms::radiobutton(1, true, 'clear_time', g_l('modules_workflow', '[log_question_time]'), true, 'defaultfont', "javascript:document.we_form.clear_opt.value=1;"), $vals) . '</td>' .
+				'<td>' . $this->getTypeTableHTML(we_html_forms::radiobutton(1, true, 'clear_time', g_l('modules_workflow', '[log_question_time]'), true, 'defaultfont', "javascript:document.we_form.clear_opt.value=1;"), $vals) . '</td>' .
 				'</tr>' .
 				'<tr>' .
-				'<td>' . we_html_tools::getPixel(22, 10) . '<br/>' . we_forms::radiobutton(0, false, 'clear_time', g_l('modules_workflow', '[log_question_all]'), true, 'defaultfont', "javascript:document.we_form.clear_opt.value=0;") . '</td>' .
+				'<td>' . we_html_tools::getPixel(22, 10) . '<br/>' . we_html_forms::radiobutton(0, false, 'clear_time', g_l('modules_workflow', '[log_question_all]'), true, 'defaultfont', "javascript:document.we_form.clear_opt.value=0;") . '</td>' .
 				'</tr>' .
 				'</tr>' .
 				'</table>'

@@ -637,7 +637,7 @@ class we_objectFile extends we_document{
 	}
 
 	function formIsSearchable(){
-		return we_forms::checkboxWithHidden($this->IsSearchable, 'we_' . $this->Name . '_IsSearchable', g_l('weClass', '[IsSearchable]'), false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);');
+		return we_html_forms::checkboxWithHidden($this->IsSearchable, 'we_' . $this->Name . '_IsSearchable', g_l('weClass', '[IsSearchable]'), false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);');
 	}
 
 	/**
@@ -912,7 +912,7 @@ class we_objectFile extends we_document{
 			$inputWidth = 443;
 
 			$uniq = md5(uniqid(__FUNCTION__, true));
-			$openCloseButton = we_multiIconBox::_getButton($uniq, "weToggleBox('$uniq','','')", "down", g_l('global', "[openCloseBox]"));
+			$openCloseButton = we_html_multiIconBox::_getButton($uniq, "weToggleBox('$uniq','','')", "down", g_l('global', "[openCloseBox]"));
 			$openCloseButtonDis = we_html_tools::getPixel(21, 1);
 
 			$objectpreview = "<div id=\"text_" . $uniq . "\"></div><div id=\"table_" . $uniq . "\" style=\"display:block; padding: 10px 0px 20px 30px;\">";
@@ -930,7 +930,7 @@ class we_objectFile extends we_document{
 		if(!$editable){
 			$uniq = md5(uniqid(__FUNCTION__, true));
 			$txt = $ob->Text ? $ob->Text : $name;
-			$but = we_multiIconBox::_getButton($uniq, "weToggleBox('$uniq','" . $txt . "','" . $txt . "')", "down", g_l('global', "[openCloseBox]"));
+			$but = we_html_multiIconBox::_getButton($uniq, "weToggleBox('$uniq','" . $txt . "','" . $txt . "')", "down", g_l('global', "[openCloseBox]"));
 
 			return we_button::create_button_table(
 					array(
@@ -1006,7 +1006,7 @@ class we_objectFile extends we_document{
 
 					$inputWidth = 346;
 
-					$openCloseButton = we_multiIconBox::_getButton($uniq, "weToggleBox('$uniq','','')", "right", g_l('global', "[openCloseBox]"));
+					$openCloseButton = we_html_multiIconBox::_getButton($uniq, "weToggleBox('$uniq','','')", "right", g_l('global', "[openCloseBox]"));
 					$openCloseButtonDis = we_html_tools::getPixel(21, 1);
 
 					$reloadEntry = "opener.top.we_cmd('change_objectlink','" . $GLOBALS['we_transaction'] . "','" . self::TYPE_MULTIOBJECT . '_' . $name . "');";
@@ -1088,7 +1088,7 @@ class we_objectFile extends we_document{
 					$ob->DefArray = $ob->getDefaultValueArray();
 					$txt = $ob->Text;
 
-					$but = we_multiIconBox::_getButton($uniq, "weToggleBox('$uniq','" . $txt . "','" . $txt . "')", "right", g_l('global', "[openCloseBox]"));
+					$but = we_html_multiIconBox::_getButton($uniq, "weToggleBox('$uniq','" . $txt . "','" . $txt . "')", "right", g_l('global', "[openCloseBox]"));
 					$content .= we_button::create_button_table(
 							array(
 								$but,
@@ -1186,7 +1186,7 @@ class we_objectFile extends we_document{
 		$checked = ($intID_elem_Name && $int) || ((!$intID_elem_Name) && (!$int));
 		$out = '<tr>' .
 			($showRadio ?
-				'<td>' . we_forms::radiobutton(($intID_elem_Name ? 1 : 0), $checked, $int_elem_Name, ((!$intID_elem_Name) ? g_l('tags', '[ext_href]') : g_l('tags', '[int_href]')) . ':&nbsp;', true, 'defaultfont', '') . '</td>' :
+				'<td>' . we_html_forms::radiobutton(($intID_elem_Name ? 1 : 0), $checked, $int_elem_Name, ((!$intID_elem_Name) ? g_l('tags', '[ext_href]') : g_l('tags', '[int_href]')) . ':&nbsp;', true, 'defaultfont', '') . '</td>' :
 				'<input type="hidden" name="' . $int_elem_Name . '" value="' . ($intID_elem_Name ? 1 : 0) . '" />'
 			) . '<td>' .
 			($intID_elem_Name ?
@@ -1355,7 +1355,7 @@ class we_objectFile extends we_document{
 			return $this->getPreviewView($name, ($this->getElement($name) ? g_l('global', "[yes]") : g_l('global', "[no]")));
 		}
 		return '<span class="weObjectPreviewHeadline"><b>' . $name . ($this->DefArray["checkbox_" . $name]["required"] ? "*" : "") . "</b></span>" . ( isset($this->DefArray["checkbox_" . $name]['editdescription']) && $this->DefArray["checkbox_" . $name]['editdescription'] ? '<div class="objectDescription">' . $this->DefArray["checkbox_" . $name]['editdescription'] . '</div>' : we_html_element::htmlBr()) .
-			we_forms::checkboxWithHidden(($this->getElement($name) ? true : false), "we_" . $this->Name . "_checkbox[$name]", "", false, "defaultfont", "_EditorFrame.setEditorIsHot(true);");
+			we_html_forms::checkboxWithHidden(($this->getElement($name) ? true : false), "we_" . $this->Name . "_checkbox[$name]", "", false, "defaultfont", "_EditorFrame.setEditorIsHot(true);");
 	}
 
 	function getIntFieldHTML($name, $attribs, $editable = true, $variant = false){
@@ -1414,7 +1414,7 @@ class we_objectFile extends we_document{
 
 			$autobr = $this->getElement($name, "autobr") ? $this->getElement($name, "autobr") : (isset($attribs["autobr"]) ? $attribs["autobr"] : "");
 			$autobrName = 'we_' . $this->Name . '_text[' . $name . '#autobr]';
-			$textarea = we_forms::weTextarea('we_' . $this->Name . '_text[' . $name . ']', $value, $attribs, $autobr, $autobrName, true, "", (isset($attribs["classes"]) && $attribs["classes"]) ? false : true, false, $xml, $removefirstparagraph, $charset, true, false, $name);
+			$textarea = we_html_forms::weTextarea('we_' . $this->Name . '_text[' . $name . ']', $value, $attribs, $autobr, $autobrName, true, "", (isset($attribs["classes"]) && $attribs["classes"]) ? false : true, false, $xml, $removefirstparagraph, $charset, true, false, $name);
 
 			return ($variant ? '' :
 					'<span class="weObjectPreviewHeadline">' . $name . ($this->DefArray["text_" . $name]["required"] ? "*" : "") . "</span>" . ( isset($this->DefArray["text_" . $name]['editdescription']) && $this->DefArray["text_" . $name]['editdescription'] ? '<div class="objectDescription">' . $this->DefArray["text_" . $name]['editdescription'] . '</div>' : we_html_element::htmlBr())

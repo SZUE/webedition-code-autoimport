@@ -48,4 +48,4 @@ switch($_REQUEST['we_cmd'][0]){
 }
 
 $parts = we_shop_variants::getVariantsEditorMultiBoxArrayObjectFile($we_doc);
-print we_multiIconBox::getHTML('', '100%', $parts, 30, '', -1, '', '', false);
+print we_html_multiIconBox::getHTML('', '100%', $parts, 30, '', -1, '', '', false);

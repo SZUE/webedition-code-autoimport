@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 // Class Declaration Starts:
-class rndConditionPass{
+class we_customer_generatePassword{
 
 	var $PasswordLength; // Variable To Assign Password Length
 	var $caps = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';

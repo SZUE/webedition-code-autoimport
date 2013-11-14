@@ -157,8 +157,8 @@ if($maxsize){
 }
 
 $parts[] = array('headline' => '', 'html' => '<input name="we_uploadedFile" TYPE="file"' . ($allowedContentTypes ? ' ACCEPT="' . $allowedContentTypes . '"' : '') . ' size="35" />', "space" => 0);
-$parts[] = array('headline' => '', 'html' => g_l('newFile', '[caseFileExists]') . '<br>' . we_forms::radiobutton('yes', true, 'overwrite', g_l('newFile', '[overwriteFile]')) .
-	we_forms::radiobutton('no', false, 'overwrite', g_l('newFile', '[renameFile]')), 'space' => 0);
+$parts[] = array('headline' => '', 'html' => g_l('newFile', '[caseFileExists]') . '<br>' . we_html_forms::radiobutton('yes', true, 'overwrite', g_l('newFile', '[overwriteFile]')) .
+	we_html_forms::radiobutton('no', false, 'overwrite', g_l('newFile', '[renameFile]')), 'space' => 0);
 
 if($we_ContentType == 'image/*'){
 	$_thumbnails = new we_html_select(array('multiple' => 'multiple', 'name' => 'Thumbnails[]', 'id' => 'Thumbnails', 'class' => 'defaultfont', 'size' => 6, 'style' => 'width: 330px;'));
@@ -175,7 +175,7 @@ if($we_ContentType == 'image/*'){
 		$_thumbnails->addOption($DB_WE->f('ID'), $DB_WE->f('Name'));
 	}
 
-	$parts[] = array('headline' => '', 'html' => we_forms::checkbox(1, true, 'import_metadata', g_l('metadata', '[import_metadata_at_upload]')), 'space' => 0);
+	$parts[] = array('headline' => '', 'html' => we_html_forms::checkbox(1, true, 'import_metadata', g_l('metadata', '[import_metadata_at_upload]')), 'space' => 0);
 	$parts[] = array('headline' => '', 'html' => g_l('thumbnails', '[create_thumbnails]') . '<br>' . $_thumbnails->getHtml(), 'space' => 0);
 	$parts[] = array('headline' => '', 'html' => g_l('global', '[title]') . '<br>' . we_html_tools::htmlTextInput('img_title', 24, '', '', '', 'text', 330), 'space' => 0);
 	$parts[] = array('headline' => '', 'html' => g_l('weClass', '[alt]') . '<br>' . we_html_tools::htmlTextInput('img_alt', 24, '', '', '', 'text', 330), 'space' => 0);
@@ -217,7 +217,7 @@ if(isset($_FILES['we_uploadedFile']) && (!$we_alerttext)){
 			<input type="hidden" name="table" value="<?php print $_REQUEST["tab"]; ?>" />
 			<input type="hidden" name="pid" value="<?php print $_REQUEST["dir"]; ?>" />
 			<input type="hidden" name="ct" value="<?php print $we_ContentType; ?>" />
-			<?php print we_multiIconBox::getHTML("", "100%", $parts, 30, $buttons, -1, "", "", false, g_l('newFile', "[import_File_from_hd_title]"), "", 560); ?>
+			<?php print we_html_multiIconBox::getHTML("", "100%", $parts, 30, $buttons, -1, "", "", false, g_l('newFile', "[import_File_from_hd_title]"), "", 560); ?>
 		</form></center>
 </body>
 </html>

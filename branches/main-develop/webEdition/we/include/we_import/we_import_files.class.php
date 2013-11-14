@@ -259,9 +259,9 @@ function uploadFinished() {
 				'html' =>
 				we_html_tools::htmlAlertAttentionBox(g_l('importFiles', "[sameName_expl]"), we_html_tools::TYPE_INFO, 380) .
 				we_html_tools::getPixel(200, 10) .
-				we_forms::radiobutton('overwrite', ($this->sameName == "overwrite"), "sameName", g_l('importFiles', "[sameName_overwrite]")) .
-				we_forms::radiobutton('rename', ($this->sameName == "rename"), "sameName", g_l('importFiles', "[sameName_rename]")) .
-				we_forms::radiobutton('nothing', ($this->sameName == "nothing"), "sameName", g_l('importFiles', "[sameName_nothing]")),
+				we_html_forms::radiobutton('overwrite', ($this->sameName == "overwrite"), "sameName", g_l('importFiles', "[sameName_overwrite]")) .
+				we_html_forms::radiobutton('rename', ($this->sameName == "rename"), "sameName", g_l('importFiles', "[sameName_rename]")) .
+				we_html_forms::radiobutton('nothing', ($this->sameName == "nothing"), "sameName", g_l('importFiles', "[sameName_nothing]")),
 				'space' => 150
 			),
 		);
@@ -281,7 +281,7 @@ function uploadFinished() {
 		if(permissionhandler::hasPerm("NEW_GRAFIK")){
 			$parts[] = array(
 				'headline' => g_l('importFiles', "[metadata]") . '',
-				'html' => we_forms::checkboxWithHidden(
+				'html' => we_html_forms::checkboxWithHidden(
 					$this->importMetadata == true, 'importMetadata', g_l('importFiles', "[import_metadata]")),
 				'space' => 150
 			);
@@ -309,7 +309,7 @@ function uploadFinished() {
 				$widthSelect = '<select size="1" class="weSelect" name="widthSelect"><option value="pixel"' . (($this->widthSelect == "pixel") ? ' selected="selected"' : '') . '>' . g_l('weClass', "[pixel]") . '</option><option value="percent"' . (($this->widthSelect == "percent") ? ' selected="selected"' : '') . '>' . g_l('weClass', "[percent]") . '</option></select>';
 				$heightSelect = '<select size="1" class="weSelect" name="heightSelect"><option value="pixel"' . (($this->heightSelect == "pixel") ? ' selected="selected"' : '') . '>' . g_l('weClass', "[pixel]") . '</option><option value="percent"' . (($this->heightSelect == "percent") ? ' selected="selected"' : '') . '>' . g_l('weClass', "[percent]") . '</option></select>';
 
-				$ratio_checkbox = we_forms::checkbox(1, $this->keepRatio, "keepRatio", g_l('thumbnails', "[ratio]"));
+				$ratio_checkbox = we_html_forms::checkbox(1, $this->keepRatio, "keepRatio", g_l('thumbnails', "[ratio]"));
 
 				$_resize = '<table border="0" cellpadding="2" cellspacing="0">
 <tr>
@@ -331,10 +331,10 @@ function uploadFinished() {
 					"headline" => g_l('weClass', "[resize]"), "html" => $_resize, "space" => 150
 				);
 
-				$_radio0 = we_forms::radiobutton(0, $this->degrees == 0, "degrees", g_l('weClass', "[rotate0]"));
-				$_radio180 = we_forms::radiobutton(180, $this->degrees == 180, "degrees", g_l('weClass', "[rotate180]"));
-				$_radio90l = we_forms::radiobutton(90, $this->degrees == 90, "degrees", g_l('weClass', "[rotate90l]"));
-				$_radio90r = we_forms::radiobutton(270, $this->degrees == 270, "degrees", g_l('weClass', "[rotate90r]"));
+				$_radio0 = we_html_forms::radiobutton(0, $this->degrees == 0, "degrees", g_l('weClass', "[rotate0]"));
+				$_radio180 = we_html_forms::radiobutton(180, $this->degrees == 180, "degrees", g_l('weClass', "[rotate180]"));
+				$_radio90l = we_html_forms::radiobutton(90, $this->degrees == 90, "degrees", g_l('weClass', "[rotate90l]"));
+				$_radio90r = we_html_forms::radiobutton(270, $this->degrees == 270, "degrees", g_l('weClass', "[rotate90r]"));
 
 				$parts[] = array(
 					"headline" => g_l('weClass', "[rotate]"),
@@ -360,8 +360,8 @@ function uploadFinished() {
 			$foldAt = -1;
 		}
 		$wepos = weGetCookieVariable("but_weimportfiles");
-		$content = we_multiIconBox::getJS() .
-			we_multiIconBox::getHTML(
+		$content = we_html_multiIconBox::getJS() .
+			we_html_multiIconBox::getHTML(
 				"weimportfiles", "99%", $parts, 30, "", $foldAt, g_l('importFiles', "[image_options_open]"), g_l('importFiles', "[image_options_close]"), ($wepos == "down"), g_l('importFiles', "[step1]"));
 		$startsrceen = we_html_element::htmlDiv(
 				array(
@@ -457,7 +457,7 @@ function uploadFinished() {
 					"name" => "we_startform",
 					"method" => "post"
 					), $this->_getHiddens()) .
-				we_multiIconBox::getHTML("uploadFiles", "100%", $parts, 30, "", -1, "", "", "", g_l('importFiles', "[step2]"))
+				we_html_multiIconBox::getHTML("uploadFiles", "100%", $parts, 30, "", -1, "", "", "", g_l('importFiles', "[step2]"))
 		);
 
 		$body = we_html_element::htmlBody(
@@ -467,7 +467,7 @@ function uploadFinished() {
 				"onload" => "checkButtons();"
 				), $content);
 
-		$js = $this->_getJS($fileinput) . we_multiIconBox::getDynJS("uploadFiles", "30");
+		$js = $this->_getJS($fileinput) . we_html_multiIconBox::getDynJS("uploadFiles", "30");
 
 		return $this->_getHtmlPage($body, $js);
 	}
@@ -500,7 +500,7 @@ function uploadFinished() {
 				"action" => WEBEDITION_DIR . "we_cmd.php", "name" => "we_startform", "method" => "post"
 				), we_html_element::htmlHidden(array(
 					'name' => 'step', 'value' => 3
-				)) . we_multiIconBox::getHTML(
+				)) . we_html_multiIconBox::getHTML(
 					"uploadFiles", "100%", $parts, 30, "", -1, "", "", "", g_l('importFiles', "[step3]")))// bugfix 1001
 		;
 

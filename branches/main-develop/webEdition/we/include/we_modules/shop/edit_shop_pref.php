@@ -187,13 +187,13 @@ $_htmlTable->setCol($_row, 0, array('class' => 'defaultfont', 'valign' => 'top')
 $_htmlTable->setColContent($_row, 1, we_html_tools::getPixel(10, 5));
 
 $countrySelect = we_class::htmlSelect('stateField', $selectFields, 1, $CLFields['stateField']);
-$countrySelectISO = we_forms::checkboxWithHidden($CLFields['stateFieldIsISO'], 'stateFieldIsISO', g_l('modules_shop', '[preferences][ISO-Kodiert]'), false, "defaultfont");
+$countrySelectISO = we_html_forms::checkboxWithHidden($CLFields['stateFieldIsISO'], 'stateFieldIsISO', g_l('modules_shop', '[preferences][ISO-Kodiert]'), false, "defaultfont");
 $_htmlTable->setColContent($_row++, 2, $countrySelect . '<br/>' . $countrySelectISO);
 
 $_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(20, 15));
 $_htmlTable->setCol($_row, 0, array('class' => 'defaultfont', 'valign' => 'top'), g_l('modules_shop', '[preferences][LanguageField]'));
 $languageSelect = we_class::htmlSelect('languageField', $selectFields, 1, $CLFields['languageField']);
-$languageSelectISO = we_forms::checkboxWithHidden($CLFields['languageFieldIsISO'], 'languageFieldIsISO', g_l('modules_shop', '[preferences][ISO-Kodiert]'), false, "defaultfont");
+$languageSelectISO = we_html_forms::checkboxWithHidden($CLFields['languageFieldIsISO'], 'languageFieldIsISO', g_l('modules_shop', '[preferences][ISO-Kodiert]'), false, "defaultfont");
 $_htmlTable->setColContent($_row++, 2, $languageSelect . '<br/>' . $languageSelectISO);
 $_htmlTable->setColContent($_row, 1, we_html_tools::getPixel(10, 5));
 

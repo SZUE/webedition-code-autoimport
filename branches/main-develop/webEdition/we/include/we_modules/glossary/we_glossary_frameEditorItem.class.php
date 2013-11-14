@@ -203,10 +203,10 @@ class we_glossary_frameEditorItem extends we_glossary_frameEditor{
 
 				' . $weGlossaryFrames->topFrame . '.editor.edheader.location="' . $weGlossaryFrames->frameset . '?pnt=edheader";'
 				. $weGlossaryFrames->topFrame . '.editor.edfooter.location="' . $weGlossaryFrames->frameset . '?pnt=edfooter"')
-			. we_multiIconBox::getJs();
+			. we_html_multiIconBox::getJs();
 
 
-		$out .= we_html_element::htmlDiv(array('id' => 'tab1', 'style' => ($tabNr == 1 ? '' : 'display: none')), we_multiIconBox::getHTML('weMultibox', "100%", we_glossary_frameEditorItem::getHTMLTabProperties($weGlossaryFrames), 30, '', 2, g_l('modules_glossary', '[show_extended_linkoptions]'), g_l('modules_glossary', '[hide_extended_linkoptions]'), false));
+		$out .= we_html_element::htmlDiv(array('id' => 'tab1', 'style' => ($tabNr == 1 ? '' : 'display: none')), we_html_multiIconBox::getHTML('weMultibox', "100%", we_glossary_frameEditorItem::getHTMLTabProperties($weGlossaryFrames), 30, '', 2, g_l('modules_glossary', '[show_extended_linkoptions]'), g_l('modules_glossary', '[hide_extended_linkoptions]'), false));
 
 		$js = '
 				showType("' . $weGlossaryFrames->View->Glossary->Type . '");
@@ -231,8 +231,8 @@ class we_glossary_frameEditorItem extends we_glossary_frameEditor{
 		$SaveButton = we_button::create_button("save", "javascript:if(top.publishWhenSave==1){" . $weGlossaryFrames->View->EditorBodyFrame . ".document.getElementById('Published').value=1;};we_save();", true, 100, 22, '', '', (!permissionhandler::hasPerm('NEW_GLOSSARY') && !permissionhandler::hasPerm('EDIT_GLOSSARY')));
 		$UnpublishButton = we_button::create_button("deactivate", "javascript:" . $weGlossaryFrames->View->EditorBodyFrame . ".document.getElementById('Published').value=0;top.opener.top.we_cmd('save_glossary')", true, 100, 22, '', '', (!permissionhandler::hasPerm('NEW_GLOSSARY') && !permissionhandler::hasPerm('EDIT_GLOSSARY')));
 
-		$NewEntry = we_forms::checkbox(1, false, "makeNewEntry", g_l('modules_glossary', '[new_item_after_saving]'), false, "defaultfont", "top.makeNewEntry = (this.checked) ? 1 : 0", false);
-		$PublishWhenSaved = we_forms::checkbox(1, false, "publishWhenSave", g_l('modules_glossary', '[publish_when_saved]'), false, "defaultfont", "top.publishWhenSave = (this.checked) ? 1 : 0", false);
+		$NewEntry = we_html_forms::checkbox(1, false, "makeNewEntry", g_l('modules_glossary', '[new_item_after_saving]'), false, "defaultfont", "top.makeNewEntry = (this.checked) ? 1 : 0", false);
+		$PublishWhenSaved = we_html_forms::checkbox(1, false, "publishWhenSave", g_l('modules_glossary', '[publish_when_saved]'), false, "defaultfont", "top.publishWhenSave = (this.checked) ? 1 : 0", false);
 
 		$ShowUnpublish = $weGlossaryFrames->View->Glossary->ID == 0 ? true : ($weGlossaryFrames->View->Glossary->Published > 0 ? true : false);
 
@@ -927,9 +927,9 @@ class we_glossary_frameEditorItem extends we_glossary_frameEditor{
 
 		$_popup = new we_html_table(array('cellpadding' => 5, 'cellspacing' => 0), 4, 4);
 
-		$_popup->setCol(0, 0, array('colspan' => 2), we_forms::checkboxWithHidden($weGlossaryFrames->View->Glossary->getAttribute('popup_open'), 'link[Attributes][popup_open]', g_l('modules_glossary', '[popup_open]'))
+		$_popup->setCol(0, 0, array('colspan' => 2), we_html_forms::checkboxWithHidden($weGlossaryFrames->View->Glossary->getAttribute('popup_open'), 'link[Attributes][popup_open]', g_l('modules_glossary', '[popup_open]'))
 		);
-		$_popup->setCol(0, 2, array('colspan' => 2), we_forms::checkboxWithHidden($weGlossaryFrames->View->Glossary->getAttribute('popup_center'), 'link[Attributes][popup_center]', g_l('modules_glossary', '[popup_center]'))
+		$_popup->setCol(0, 2, array('colspan' => 2), we_html_forms::checkboxWithHidden($weGlossaryFrames->View->Glossary->getAttribute('popup_center'), 'link[Attributes][popup_center]', g_l('modules_glossary', '[popup_center]'))
 		);
 
 		$_popup->setCol(1, 0, array(), we_html_tools::htmlFormElementTable(
@@ -951,18 +951,18 @@ class we_glossary_frameEditorItem extends we_glossary_frameEditor{
 		);
 
 
-		$_popup->setCol(2, 0, array(), we_forms::checkboxWithHidden($weGlossaryFrames->View->Glossary->getAttribute('popup_status'), 'link[Attributes][popup_status]', g_l('modules_glossary', '[popup_status]'))
+		$_popup->setCol(2, 0, array(), we_html_forms::checkboxWithHidden($weGlossaryFrames->View->Glossary->getAttribute('popup_status'), 'link[Attributes][popup_status]', g_l('modules_glossary', '[popup_status]'))
 		);
-		$_popup->setCol(2, 1, array(), we_forms::checkboxWithHidden($weGlossaryFrames->View->Glossary->getAttribute('popup_scrollbars'), 'link[Attributes][popup_scrollbars]', g_l('modules_glossary', '[popup_scrollbars]'))
+		$_popup->setCol(2, 1, array(), we_html_forms::checkboxWithHidden($weGlossaryFrames->View->Glossary->getAttribute('popup_scrollbars'), 'link[Attributes][popup_scrollbars]', g_l('modules_glossary', '[popup_scrollbars]'))
 		);
-		$_popup->setCol(2, 2, array(), we_forms::checkboxWithHidden($weGlossaryFrames->View->Glossary->getAttribute('popup_menubar'), 'link[Attributes][popup_menubar]', g_l('modules_glossary', '[popup_menubar]'))
+		$_popup->setCol(2, 2, array(), we_html_forms::checkboxWithHidden($weGlossaryFrames->View->Glossary->getAttribute('popup_menubar'), 'link[Attributes][popup_menubar]', g_l('modules_glossary', '[popup_menubar]'))
 		);
 
-		$_popup->setCol(3, 0, array(), we_forms::checkboxWithHidden($weGlossaryFrames->View->Glossary->getAttribute('popup_resizable'), 'link[Attributes][popup_resizable]', g_l('modules_glossary', '[popup_resizable]'))
+		$_popup->setCol(3, 0, array(), we_html_forms::checkboxWithHidden($weGlossaryFrames->View->Glossary->getAttribute('popup_resizable'), 'link[Attributes][popup_resizable]', g_l('modules_glossary', '[popup_resizable]'))
 		);
-		$_popup->setCol(3, 1, array(), we_forms::checkboxWithHidden($weGlossaryFrames->View->Glossary->getAttribute('popup_location'), 'link[Attributes][popup_location]', g_l('modules_glossary', '[popup_location]'))
+		$_popup->setCol(3, 1, array(), we_html_forms::checkboxWithHidden($weGlossaryFrames->View->Glossary->getAttribute('popup_location'), 'link[Attributes][popup_location]', g_l('modules_glossary', '[popup_location]'))
 		);
-		$_popup->setCol(3, 2, array(), we_forms::checkboxWithHidden($weGlossaryFrames->View->Glossary->getAttribute('popup_toolbar'), 'link[Attributes][popup_toolbar]', g_l('modules_glossary', '[popup_toolbar]'))
+		$_popup->setCol(3, 2, array(), we_html_forms::checkboxWithHidden($weGlossaryFrames->View->Glossary->getAttribute('popup_toolbar'), 'link[Attributes][popup_toolbar]', g_l('modules_glossary', '[popup_toolbar]'))
 		);
 
 

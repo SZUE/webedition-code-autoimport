@@ -781,7 +781,7 @@ function fsubmit(e) {
 		$table->setCol(
 			1, 1, array(
 			'class' => 'defaultfont'
-			), we_forms::checkbox(
+			), we_html_forms::checkbox(
 				1, 0, 'OverwriteCategories', g_l('copyFolder', "[overwrite_categories]"), false, "defaultfont", "toggleButton();"));
 		$table->setCol(
 			2, 0, array(

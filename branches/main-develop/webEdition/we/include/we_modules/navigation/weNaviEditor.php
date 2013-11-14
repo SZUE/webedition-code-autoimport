@@ -164,7 +164,7 @@ $_body = we_html_element::htmlBody(
 		), we_html_element::htmlForm(
 			array(
 			"name" => "we_form", "onsubmit" => "return false"
-			), we_multiIconBox::getHTML(
+			), we_html_multiIconBox::getHTML(
 				'', '100%', $_parts, 30, $buttonsBottom, -1, '', '', false, g_l('navigation', '[add_navigation]'), "", 311)));
 
 $_head = //FIXME: missing title

@@ -29,7 +29,7 @@
  */
 require_once (WE_INCLUDES_PATH . 'we_tag.inc.php');
 
-abstract class we_forms{
+abstract class we_html_forms{
 
 	/**
 	 * @param      $value                                  string

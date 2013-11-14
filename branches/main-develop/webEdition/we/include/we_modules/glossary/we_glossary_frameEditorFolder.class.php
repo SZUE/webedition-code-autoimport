@@ -44,7 +44,7 @@ class we_glossary_frameEditorFolder extends we_glossary_frameEditor{
 
 		$js = we_html_element::jsElement($_js);
 
-		$out = we_html_element::htmlDiv(array('id' => 'tab1', 'style' => ''), we_multiIconBox::getHTML('', "100%", self::getHTMLOverview($weGlossaryFrames), 30, '', -1, '', '', false));
+		$out = we_html_element::htmlDiv(array('id' => 'tab1', 'style' => ''), we_html_multiIconBox::getHTML('', "100%", self::getHTMLOverview($weGlossaryFrames), 30, '', -1, '', '', false));
 
 		$content = $js . $out;
 

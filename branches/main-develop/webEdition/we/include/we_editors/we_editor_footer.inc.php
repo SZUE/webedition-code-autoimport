@@ -437,7 +437,7 @@ function showEditFooterForNormalMode(){
 		}
 
 		$_normalTable->addCol(2);
-		$_normalTable->setColContent(0, $_pos++, we_forms::checkbox("autoRebuild", false, "autoRebuild", g_l('global', '[we_rebuild_at_save]'), false, "defaultfont", " _EditorFrame.setEditorAutoRebuild( (this.checked) ? true : false );"));
+		$_normalTable->setColContent(0, $_pos++, we_html_forms::checkbox("autoRebuild", false, "autoRebuild", g_l('global', '[we_rebuild_at_save]'), false, "defaultfont", " _EditorFrame.setEditorAutoRebuild( (this.checked) ? true : false );"));
 		$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
 	} else if($showPubl){
 
@@ -461,7 +461,7 @@ function showEditFooterForNormalMode(){
 		if(!$_ctrlElem || !$_ctrlElem['hide']){
 
 			$_normalTable->addCol(2);
-			$_normalTable->setCol(0, $_pos++, ( ($_ctrlElem && $_ctrlElem['hide'] ) ? ( array('style' => 'display:none') ) : array('style' => 'display:block')), we_forms::checkbox("makeSameDoc", ( $_ctrlElem ? $_ctrlElem['checked'] : false), "makeSameDoc", g_l('global', '[we_make_same][' . $we_doc->ContentType . ']'), false, "defaultfont", " _EditorFrame.setEditorMakeSameDoc( (this.checked) ? true : false );", ( $_ctrlElem ? $_ctrlElem['readonly'] : false)));
+			$_normalTable->setCol(0, $_pos++, ( ($_ctrlElem && $_ctrlElem['hide'] ) ? ( array('style' => 'display:none') ) : array('style' => 'display:block')), we_html_forms::checkbox("makeSameDoc", ( $_ctrlElem ? $_ctrlElem['checked'] : false), "makeSameDoc", g_l('global', '[we_make_same][' . $we_doc->ContentType . ']'), false, "defaultfont", " _EditorFrame.setEditorMakeSameDoc( (this.checked) ? true : false );", ( $_ctrlElem ? $_ctrlElem['readonly'] : false)));
 			$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
 		}
 	}
@@ -470,14 +470,14 @@ function showEditFooterForNormalMode(){
 		case "text/weTmpl":
 			if(permissionhandler::hasPerm("NEW_WEBEDITIONSITE") || permissionhandler::hasPerm("ADMINISTRATOR")){
 				$_normalTable->addCol(2);
-				$_normalTable->setColContent(0, $_pos++, we_forms::checkbox("makeNewDoc", false, "makeNewDoc", g_l('global', "[we_new_doc_after_save]"), false, "defaultfont", "_EditorFrame.setEditorMakeNewDoc( (this.checked) ? true : false );"));
+				$_normalTable->setColContent(0, $_pos++, we_html_forms::checkbox("makeNewDoc", false, "makeNewDoc", g_l('global', "[we_new_doc_after_save]"), false, "defaultfont", "_EditorFrame.setEditorMakeNewDoc( (this.checked) ? true : false );"));
 				$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
 			}
 			break;
 		case "object":
 			if(permissionhandler::hasPerm("NEW_OBJECTFILE") || permissionhandler::hasPerm("ADMINISTRATOR")){
 				$_normalTable->addCol(2);
-				$_normalTable->setColContent(0, $_pos++, we_forms::checkbox("makeNewDoc", false, "makeNewDoc", g_l('modules_object', '[we_new_doc_after_save]'), false, "defaultfont", "_EditorFrame.setEditorMakeNewDoc( (this.checked) ? true : false );"));
+				$_normalTable->setColContent(0, $_pos++, we_html_forms::checkbox("makeNewDoc", false, "makeNewDoc", g_l('modules_object', '[we_new_doc_after_save]'), false, "defaultfont", "_EditorFrame.setEditorMakeNewDoc( (this.checked) ? true : false );"));
 				$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
 			}
 			break;
@@ -630,7 +630,7 @@ function showEditFooterForSEEMMode(){
 								if(!top.opener || !top.opener.win){
 									document.writeln("<!--");
 								}') .
-				we_forms::checkbox("makeSameDoc", ( $_ctrlElem ? $_ctrlElem['checked'] : false), "makeSameDoc", g_l('global', '[we_make_same][' . $we_doc->ContentType . ']'), false, "defaultfont", " _EditorFrame.setEditorMakeSameDoc( (this.checked) ? true : false );", ( $_ctrlElem ? $_ctrlElem['readonly'] : false)) .
+				we_html_forms::checkbox("makeSameDoc", ( $_ctrlElem ? $_ctrlElem['checked'] : false), "makeSameDoc", g_l('global', '[we_make_same][' . $we_doc->ContentType . ']'), false, "defaultfont", " _EditorFrame.setEditorMakeSameDoc( (this.checked) ? true : false );", ( $_ctrlElem ? $_ctrlElem['readonly'] : false)) .
 				we_html_element::jsElement('
 								if(!top.opener || !top.opener.win){
 									document.writeln(\'-\' + \'-\' + \'>\');

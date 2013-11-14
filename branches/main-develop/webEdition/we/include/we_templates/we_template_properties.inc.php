@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-echo  we_multiIconBox::getHTML('', '100%', array(
+echo  we_html_multiIconBox::getHTML('', '100%', array(
 		array('icon' => 'path.gif', 'headline' => g_l('weClass', '[path]'), 'html' => $GLOBALS['we_doc']->formPath(), 'space' => 140),
 		array('icon' => 'mastertemplate.gif', 'headline' => g_l('weClass', '[master_template]'), 'html' => $GLOBALS['we_doc']->formMasterTemplate(), 'space' => 140),
 		array('icon' => 'doc.gif', 'headline' => g_l('weClass', '[documents]'), 'html' => $GLOBALS['we_doc']->formTemplateDocuments(), 'space' => 140),

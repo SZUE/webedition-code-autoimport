@@ -65,9 +65,9 @@ if($this->Data['allEntries']){ // entries exist
 </tr>
 </table>
 <div class="defaultfont">
-	' . we_forms::checkbox(1, isset($_REQUEST['messages']), 'messages', "<span class=\"logMessage\">" . g_l('liveUpdate', '[updatelog][legendMessages]') . " (" . $this->Data['amountMessages'] . ")</span>", false, "small", "document.we_form.submit();") . '
-	' . we_forms::checkbox(1, isset($_REQUEST['notices']), 'notices', "<span class=\"logNotice\">" . g_l('liveUpdate', '[updatelog][legendNotices]') . " (" . $this->Data['amountNotices'] . ")</span>", false, "small", "document.we_form.submit();") . '
-	' . we_forms::checkbox(1, isset($_REQUEST['errors']), 'errors', "<span class=\"logError\">" . g_l('liveUpdate', '[updatelog][legendErrors]') . " (" . $this->Data['amountErrors'] . ")</span>", false, "small", "document.we_form.submit();") . '
+	' . we_html_forms::checkbox(1, isset($_REQUEST['messages']), 'messages', "<span class=\"logMessage\">" . g_l('liveUpdate', '[updatelog][legendMessages]') . " (" . $this->Data['amountMessages'] . ")</span>", false, "small", "document.we_form.submit();") . '
+	' . we_html_forms::checkbox(1, isset($_REQUEST['notices']), 'notices', "<span class=\"logNotice\">" . g_l('liveUpdate', '[updatelog][legendNotices]') . " (" . $this->Data['amountNotices'] . ")</span>", false, "small", "document.we_form.submit();") . '
+	' . we_html_forms::checkbox(1, isset($_REQUEST['errors']), 'errors', "<span class=\"logError\">" . g_l('liveUpdate', '[updatelog][legendErrors]') . " (" . $this->Data['amountErrors'] . ")</span>", false, "small", "document.we_form.submit();") . '
 </div>
 <br />
 ';

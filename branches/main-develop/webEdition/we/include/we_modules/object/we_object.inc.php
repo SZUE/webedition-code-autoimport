@@ -991,7 +991,7 @@ class we_object extends we_document{
 			case we_objectFile::TYPE_CHECKBOX:
 				$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[default]') . '</td>' .
 					'<td width="170" class="defaultfont">' .
-					we_forms::checkbox(1, $this->getElement($name . "default", "dat"), "we_" . $this->Name . "_input[" . $name . "default1]", g_l('modules_object', '[checked]'), true, "defaultfont", "if(this.checked){document.we_form.elements['" . "we_" . $this->Name . "_input[" . $name . "default]" . "'].value=1;}else{ document.we_form.elements['" . "we_" . $this->Name . "_input[" . $name . "default]" . "'].value=0;}") .
+					we_html_forms::checkbox(1, $this->getElement($name . "default", "dat"), "we_" . $this->Name . "_input[" . $name . "default1]", g_l('modules_object', '[checked]'), true, "defaultfont", "if(this.checked){document.we_form.elements['" . "we_" . $this->Name . "_input[" . $name . "default]" . "'].value=1;}else{ document.we_form.elements['" . "we_" . $this->Name . "_input[" . $name . "default]" . "'].value=0;}") .
 					'<input type=hidden name="' . "we_" . $this->Name . "_input[" . $name . "default]" . '" value="' . $this->getElement($name . "default", "dat") . '" />' .
 					'</td></tr>';
 				break;
@@ -1057,7 +1057,7 @@ class we_object extends we_document{
 				$dd = abs($this->getElement($name . "defaultThumb", "dat"));
 				$content .= '<tr valign="top"><td  width="100" class="defaultfont">Default</td>' .
 					'<td width="170" class="defaultfont">' .
-					we_forms::checkboxWithHidden(($dd == '1' ? true : false), "we_" . $this->Name . "_xdate[" . $name . "defaultThumb]", 'Creation Date', false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);') .
+					we_html_forms::checkboxWithHidden(($dd == '1' ? true : false), "we_" . $this->Name . "_xdate[" . $name . "defaultThumb]", 'Creation Date', false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);') .
 					we_html_tools::getDateInput2('we_' . $this->Name . '_date[' . $name . 'default]', ($d ? $d : time()), true) .
 					'</td></tr>';
 
@@ -1158,11 +1158,11 @@ class we_object extends we_document{
 			$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin"></td>' .
 				'<td width="170" class="defaultfont">' .
 				// TITEL
-				we_forms::radiobutton($name, (($this->getElement("title", "dat") == $name) ? 1 : 0), "we_" . $this->Name . "_input[title]", g_l('global', "[title]"), true, "defaultfont", "if(this.waschecked){this.checked=false;this.waschecked=false;}_EditorFrame.setEditorIsHot(true);", false, "", 0, 0, "if(this.checked){this.waschecked=true}") .
+				we_html_forms::radiobutton($name, (($this->getElement("title", "dat") == $name) ? 1 : 0), "we_" . $this->Name . "_input[title]", g_l('global', "[title]"), true, "defaultfont", "if(this.waschecked){this.checked=false;this.waschecked=false;}_EditorFrame.setEditorIsHot(true);", false, "", 0, 0, "if(this.checked){this.waschecked=true}") .
 				// Beschreibung
-				we_forms::radiobutton($name, (($this->getElement("desc", "dat") == $name) ? 1 : 0), "we_" . $this->Name . "_input[desc]", g_l('global', "[description]"), true, "defaultfont", "if(this.waschecked){this.checked=false;this.waschecked=false;}_EditorFrame.setEditorIsHot(true);", false, "", 0, 0, "if(this.checked){this.waschecked=true}") .
+				we_html_forms::radiobutton($name, (($this->getElement("desc", "dat") == $name) ? 1 : 0), "we_" . $this->Name . "_input[desc]", g_l('global', "[description]"), true, "defaultfont", "if(this.waschecked){this.checked=false;this.waschecked=false;}_EditorFrame.setEditorIsHot(true);", false, "", 0, 0, "if(this.checked){this.waschecked=true}") .
 				// Keywords
-				we_forms::radiobutton($name, (($this->getElement("keywords", "dat") == $name) ? 1 : 0), "we_" . $this->Name . "_input[keywords]", g_l('weClass', "[Keywords]"), true, "defaultfont", "if(this.waschecked){this.checked=false;this.waschecked=false;}_EditorFrame.setEditorIsHot(true);", false, "", 0, 0, "if(this.checked){this.waschecked=true}") .
+				we_html_forms::radiobutton($name, (($this->getElement("keywords", "dat") == $name) ? 1 : 0), "we_" . $this->Name . "_input[keywords]", g_l('weClass', "[Keywords]"), true, "defaultfont", "if(this.waschecked){this.checked=false;this.waschecked=false;}_EditorFrame.setEditorIsHot(true);", false, "", 0, 0, "if(this.checked){this.waschecked=true}") .
 				'</td></tr>';
 		}
 
@@ -1170,11 +1170,11 @@ class we_object extends we_document{
 			$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin"></td>' .
 				'<td width="170" class="defaultfont">';
 			if($type == we_objectFile::TYPE_DATE){
-				$content .= we_forms::radiobutton($name, (($this->getElement("urlfield0", "dat") == $name) ? 1 : 0), "we_" . $this->Name . "_input[urlfield0]", g_l('weClass', "[urlfield0]"), true, "defaultfont", "if(this.waschecked){this.checked=false;this.waschecked=false;}_EditorFrame.setEditorIsHot(true);", false, "", 0, 0, "if(this.checked){this.waschecked=true}");
+				$content .= we_html_forms::radiobutton($name, (($this->getElement("urlfield0", "dat") == $name) ? 1 : 0), "we_" . $this->Name . "_input[urlfield0]", g_l('weClass', "[urlfield0]"), true, "defaultfont", "if(this.waschecked){this.checked=false;this.waschecked=false;}_EditorFrame.setEditorIsHot(true);", false, "", 0, 0, "if(this.checked){this.waschecked=true}");
 			} else {
-				$content .= we_forms::radiobutton($name, (($this->getElement("urlfield1", "dat") == $name) ? 1 : 0), "we_" . $this->Name . "_input[urlfield1]", g_l('weClass', "[urlfield1]"), true, "defaultfont", "if(this.waschecked){this.checked=false;this.waschecked=false;}_EditorFrame.setEditorIsHot(true);", false, "", 0, 0, "if(this.checked){this.waschecked=true}") .
-					we_forms::radiobutton($name, (($this->getElement("urlfield2", "dat") == $name) ? 1 : 0), "we_" . $this->Name . "_input[urlfield2]", g_l('weClass', "[urlfield2]"), true, "defaultfont", "if(this.waschecked){this.checked=false;this.waschecked=false;}_EditorFrame.setEditorIsHot(true);", false, "", 0, 0, "if(this.checked){this.waschecked=true}") .
-					we_forms::radiobutton($name, (($this->getElement("urlfield3", "dat") == $name) ? 1 : 0), "we_" . $this->Name . "_input[urlfield3]", g_l('weClass', "[urlfield3]"), true, "defaultfont", "if(this.waschecked){this.checked=false;this.waschecked=false;}_EditorFrame.setEditorIsHot(true);", false, "", 0, 0, "if(this.checked){this.waschecked=true}");
+				$content .= we_html_forms::radiobutton($name, (($this->getElement("urlfield1", "dat") == $name) ? 1 : 0), "we_" . $this->Name . "_input[urlfield1]", g_l('weClass', "[urlfield1]"), true, "defaultfont", "if(this.waschecked){this.checked=false;this.waschecked=false;}_EditorFrame.setEditorIsHot(true);", false, "", 0, 0, "if(this.checked){this.waschecked=true}") .
+					we_html_forms::radiobutton($name, (($this->getElement("urlfield2", "dat") == $name) ? 1 : 0), "we_" . $this->Name . "_input[urlfield2]", g_l('weClass', "[urlfield2]"), true, "defaultfont", "if(this.waschecked){this.checked=false;this.waschecked=false;}_EditorFrame.setEditorIsHot(true);", false, "", 0, 0, "if(this.checked){this.waschecked=true}") .
+					we_html_forms::radiobutton($name, (($this->getElement("urlfield3", "dat") == $name) ? 1 : 0), "we_" . $this->Name . "_input[urlfield3]", g_l('weClass', "[urlfield3]"), true, "defaultfont", "if(this.waschecked){this.checked=false;this.waschecked=false;}_EditorFrame.setEditorIsHot(true);", false, "", 0, 0, "if(this.checked){this.waschecked=true}");
 			}
 			$content .= '</td></tr>';
 		}
@@ -1184,11 +1184,11 @@ class we_object extends we_document{
 			//Pflichtfeld
 			$content .= '<tr valign="top"><td  width="100" class="defaultfont"></td>' .
 				'<td width="170" class="defaultfont">' .
-				we_forms::checkbox(1, $this->getElement($name . "required", "dat"), "we_" . $this->Name . "_input[" . $name . "required1]", g_l('global', "[required_field]"), true, "defaultfont", "if(this.checked){document.we_form.elements['" . "we_" . $this->Name . "_input[" . $name . "required]" . "'].value=1;}else{ document.we_form.elements['" . "we_" . $this->Name . "_input[" . $name . "required]" . "'].value=0;}");
+				we_html_forms::checkbox(1, $this->getElement($name . "required", "dat"), "we_" . $this->Name . "_input[" . $name . "required1]", g_l('global', "[required_field]"), true, "defaultfont", "if(this.checked){document.we_form.elements['" . "we_" . $this->Name . "_input[" . $name . "required]" . "'].value=1;}else{ document.we_form.elements['" . "we_" . $this->Name . "_input[" . $name . "required]" . "'].value=0;}");
 			if(defined('SHOP_TABLE')){
 				if($this->canHaveVariants() && $this->isVariantField($name)){
 					$variant = $this->getElement($name . "variant", "dat");
-					$content .= we_forms::checkboxWithHidden(($variant == 1 ? true : false), "we_" . $this->Name . "_variant[" . $name . "variant]", g_l('global', "[variant_field]"), false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);');
+					$content .= we_html_forms::checkboxWithHidden(($variant == 1 ? true : false), "we_" . $this->Name . "_variant[" . $name . "variant]", g_l('global', "[variant_field]"), false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);');
 				}
 			}
 			$content .= '<input type=hidden name="' . "we_" . $this->Name . "_input[" . $name . "required]" . '" value="' . $this->getElement($name . "required", "dat") . '" />' .
@@ -1200,7 +1200,7 @@ class we_object extends we_document{
 				'<td width="170" class="defaultfont">';
 			if($this->canHaveVariants() && $this->isVariantField($name)){
 				$variant = $this->getElement($name . "variant", "dat");
-				$content .= we_forms::checkboxWithHidden(($variant == 1 ? true : false), "we_" . $this->Name . "_variant[" . $name . "variant]", g_l('global', "[variant_field]"), false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);');
+				$content .= we_html_forms::checkboxWithHidden(($variant == 1 ? true : false), "we_" . $this->Name . "_variant[" . $name . "variant]", g_l('global', "[variant_field]"), false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);');
 			}
 			$content .= '<input type=hidden name="' . "we_" . $this->Name . "_input[" . $name . "required]" . '" value="0" />' .
 				'</td></tr>';
@@ -1410,7 +1410,7 @@ class we_object extends we_document{
 		$autobrName = 'we_' . $this->Name . '_input[' . $name . 'autobr]';
 
 		$value = $this->getElement($name . "default", "dat");
-		return we_forms::weTextarea("we_" . $this->Name . "_input[" . $name . "default]", $value, $attribs, $autobr, $autobrName, true, "", (($this->CSS || $attribs["classes"]) ? false : true), false, false, true, "");
+		return we_html_forms::weTextarea("we_" . $this->Name . "_input[" . $name . "default]", $value, $attribs, $autobr, $autobrName, true, "", (($this->CSS || $attribs["classes"]) ? false : true), false, false, true, "");
 	}
 
 	function add_user_to_field($id, $name){
@@ -1787,7 +1787,7 @@ class we_object extends we_document{
 			$hiddenname = 'we_' . $this->Name . '_RestrictUsers';
 			$tmpname = 'tmpwe_' . $this->Name . '_RestrictUsers';
 			$hidden = $this->htmlHidden($hiddenname, abs($this->RestrictUsers));
-			$check = we_forms::checkbox(1, $this->RestrictUsers ? true : false, $tmpname, g_l('weClass', "[limitedAccess]"), true, "defaultfont", "_EditorFrame.setEditorIsHot(true);this.form.elements['" . $hiddenname . "'].value=(this.checked ? '1' : '0');we_cmd('reload_editpage');");
+			$check = we_html_forms::checkbox(1, $this->RestrictUsers ? true : false, $tmpname, g_l('weClass', "[limitedAccess]"), true, "defaultfont", "_EditorFrame.setEditorIsHot(true);this.form.elements['" . $hiddenname . "'].value=(this.checked ? '1' : '0');we_cmd('reload_editpage');");
 			return $hidden . $check;
 		} else {
 			return '<table cellpadding="0" cellspacing="0" border="0"><tr><td><img src="' . TREE_IMAGE_DIR . ($this->RestrictUsers ? 'check1_disabled.gif' : 'check0_disabled.gif') . '" /></td><td class="defaultfont">&nbsp;' . g_l('weClass', "[limitedAccess]") . '</td></tr></table>';
@@ -1844,8 +1844,8 @@ class we_object extends we_document{
 	}
 
 	function formWorkspacesFlag(){
-		return '<div style="margin-bottom:8px;">' . we_forms::radiobutton(1, $this->WorkspaceFlag == 1, "we_" . $this->Name . "_WorkspaceFlag", g_l('modules_object', '[behaviour_all]')) . '</div><div>' .
-			we_forms::radiobutton(0, $this->WorkspaceFlag != 1, "we_" . $this->Name . "_WorkspaceFlag", g_l('modules_object', '[behaviour_no]')) . '</div>';
+		return '<div style="margin-bottom:8px;">' . we_html_forms::radiobutton(1, $this->WorkspaceFlag == 1, "we_" . $this->Name . "_WorkspaceFlag", g_l('modules_object', '[behaviour_all]')) . '</div><div>' .
+			we_html_forms::radiobutton(0, $this->WorkspaceFlag != 1, "we_" . $this->Name . "_WorkspaceFlag", g_l('modules_object', '[behaviour_no]')) . '</div>';
 	}
 
 	function formCSS(){

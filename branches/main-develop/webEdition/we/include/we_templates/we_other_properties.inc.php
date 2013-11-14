@@ -30,5 +30,5 @@ $parts = array(
 	array('icon' => 'user.gif', 'headline' => g_l('weClass', '[owners]'), 'html' => $GLOBALS['we_doc']->formCreatorOwners(), 'space' => 140));
 
 
-print we_multiIconBox::getJS() .
-	we_multiIconBox::getHTML('weOtherDocProp', '100%', $parts, 20);
+print we_html_multiIconBox::getJS() .
+	we_html_multiIconBox::getHTML('weOtherDocProp', '100%', $parts, 20);

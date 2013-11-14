@@ -101,7 +101,7 @@ echo STYLESHEET .
 					"space" => 0
 				);
 			}
-			print we_multiIconBox::getJS() . we_multiIconBox::getHTML('', '100%', $parts, 20);
+			print we_html_multiIconBox::getJS() . we_html_multiIconBox::getHTML('', '100%', $parts, 20);
 			?>
 
 	</form>

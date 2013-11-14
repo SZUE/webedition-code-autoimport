@@ -104,7 +104,7 @@ $content = '<table border="0" cellpadding="0" cellspacing="0">' .
 				<tr><td><input name="we_File" TYPE="file"' . ($allowedContentTypes ? ' ACCEPT="' . $allowedContentTypes . '"' : '') . ' size="35" /></td></tr>
 				<tr><td>' . we_html_tools::getPixel(2, 10) . '</td></tr>';
 if($we_doc->ContentType == "image/*"){
-	$content .= '<tr><td>' . we_forms::checkbox(1, true, "import_metadata", g_l('metadata', "[import_metadata_at_upload]")) . '</td></tr>';
+	$content .= '<tr><td>' . we_html_forms::checkbox(1, true, "import_metadata", g_l('metadata', "[import_metadata_at_upload]")) . '</td></tr>';
 }
 $content .= '</table>';
 

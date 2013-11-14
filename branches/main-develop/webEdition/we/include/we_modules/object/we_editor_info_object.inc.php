@@ -76,8 +76,8 @@ print STYLESHEET;
 </head>
 <body class="weEditorBody">
 	<?php
-	print we_multiIconBox::getJS() .
-		we_multiIconBox::getHTML("", "100%", $parts, 30, "", -1, "", "", false);
+	print we_html_multiIconBox::getJS() .
+		we_html_multiIconBox::getHTML("", "100%", $parts, 30, "", -1, "", "", false);
 	?>
 </body>
 </html>

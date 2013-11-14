@@ -68,7 +68,7 @@ abstract class we_customer_EI{
 
 			foreach($options['customers'] as $cid){
 				if($cid){
-					$customer_xml = new we_baseCollection('customer');
+					$customer_xml = new we_html_baseCollection('customer');
 					$customer = new we_customer_customer($cid);
 					if($customer->ID){
 						foreach($fields as $k => $v){
@@ -76,7 +76,7 @@ abstract class we_customer_EI{
 								$value = $customer->{$k};
 								if($value != '')
 									$value = ($options['cdata'] ? '<![CDATA[' . $value . ']]>' : htmlentities($value));
-								$customer_xml->addChild(new we_baseElement($k, true, null, $value));
+								$customer_xml->addChild(new we_html_baseElement($k, true, null, $value));
 							}
 						}
 					}
@@ -101,7 +101,7 @@ abstract class we_customer_EI{
 		$content = '';
 		foreach($elements as $element){
 			$content = (is_array($element['content']) ? self::buildXMLElement($element['content']) : $element['content']);
-			$element = new we_baseElement($element['name'], true, $element['attributes'], $content);
+			$element = new we_html_baseElement($element['name'], true, $element['attributes'], $content);
 			$out.=$element->getHTML();
 		}
 		return $out;

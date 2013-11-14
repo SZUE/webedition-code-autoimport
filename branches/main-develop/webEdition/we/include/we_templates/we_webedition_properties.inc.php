@@ -36,5 +36,5 @@ $parts = array(
 $znr = 5;
 
 
-print we_multiIconBox::getJS() .
-	we_multiIconBox::getHTML('weDocProp', '100%', $parts, 20, '', -1, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]'), ($wepos == 'down'));
+print we_html_multiIconBox::getJS() .
+	we_html_multiIconBox::getHTML('weDocProp', '100%', $parts, 20, '', -1, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]'), ($wepos == 'down'));

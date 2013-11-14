@@ -37,11 +37,11 @@ $languagesStr = '';
 foreach($languages as $lng){
 
 	if(WE_LANGUAGE == $lng){
-		$lngBox = we_forms::checkbox($lng, false, 'deleteLanguages[]', "<i>$lng (" . g_l('liveUpdate', '[languages][systemLanguage]') . ")</i>", false, 'defaultfont', '', true);
+		$lngBox = we_html_forms::checkbox($lng, false, 'deleteLanguages[]', "<i>$lng (" . g_l('liveUpdate', '[languages][systemLanguage]') . ")</i>", false, 'defaultfont', '', true);
 	} else if($GLOBALS['WE_LANGUAGE'] == $lng){
-		$lngBox = we_forms::checkbox($lng, false, 'deleteLanguages[]', "<i>$lng (" . g_l('liveUpdate', '[languages][usedLanguage]') . ")</i>", false, 'defaultfont', '', true);
+		$lngBox = we_html_forms::checkbox($lng, false, 'deleteLanguages[]', "<i>$lng (" . g_l('liveUpdate', '[languages][usedLanguage]') . ")</i>", false, 'defaultfont', '', true);
 	} else {
-		$lngBox = we_forms::checkbox($lng, false, 'deleteLanguages[]', $lng, true);
+		$lngBox = we_html_forms::checkbox($lng, false, 'deleteLanguages[]', $lng, true);
 	}
 	$languagesStr .= "
 	$lngBox";

@@ -127,5 +127,5 @@ if($GLOBALS['we_doc']->EditPageNr != WE_EDITPAGE_WORKSPACE){
 		);
 	}
 }
-print we_multiIconBox::getJS();
-print we_multiIconBox::getHTML("weOjFileProp", "100%", $parts, 30);
+print we_html_multiIconBox::getJS();
+print we_html_multiIconBox::getHTML("weOjFileProp", "100%", $parts, 30);

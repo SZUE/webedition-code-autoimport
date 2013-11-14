@@ -52,4 +52,4 @@ switch($_REQUEST['we_cmd'][0]){
 
 $GLOBALS['we_editmode'] = true;
 
-print we_multiIconBox::getHTML('', '100%', we_shop_variants::getVariantsEditorMultiBoxArray($we_doc), 30, '', -1, '', '', false);
+print we_html_multiIconBox::getHTML('', '100%', we_shop_variants::getVariantsEditorMultiBoxArray($we_doc), 30, '', -1, '', '', false);

@@ -829,7 +829,7 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 				);
 				$Parts[] = $Part;
 
-				echo we_multiIconBox::getHTML('weMultibox', "100%", $Parts, 30, $Buttons, -1, '', '', false, g_l('modules_glossary', '[glossary_check]'));
+				echo we_html_multiIconBox::getHTML('weMultibox', "100%", $Parts, 30, $Buttons, -1, '', '', false, g_l('modules_glossary', '[glossary_check]'));
 
 //
 // --> Finish Step

@@ -553,7 +553,7 @@ function we_tag_userInput($attribs, $content){
 					//FIXME: currently we use a separate preference-option for frontend editor (where tinyMCE is labelled beta)
 					$tmp = we_wysiwyg::$editorType;
 					we_wysiwyg::$editorType = WYSIWYG_TYPE_FRONTEND == 'tinyMCE' ? 'tinyMCE' : 'default';
-					$ret = we_forms::weTextarea($fieldname, $content, $attribs, $autobr, "autobr", $showAutobr, $GLOBALS['we_doc']->getHttpPath(), false, false, $xml, $removeFirstParagraph, $charset, false, true, $name);
+					$ret = we_html_forms::weTextarea($fieldname, $content, $attribs, $autobr, "autobr", $showAutobr, $GLOBALS['we_doc']->getHttpPath(), false, false, $xml, $removeFirstParagraph, $charset, false, true, $name);
 					we_wysiwyg::$editorType = $tmp;
 					return $ret;
 				}

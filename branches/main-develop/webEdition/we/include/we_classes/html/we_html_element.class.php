@@ -45,7 +45,7 @@ abstract class we_html_element{
 		if(!isset($attribs['name'])){
 			$attribs['name'] = 'we_form';
 		}
-		return we_baseElement::getHtmlCode(new we_baseElement('form', true, $attribs, $content));
+		return we_html_baseElement::getHtmlCode(new we_html_baseElement('form', true, $attribs, $content));
 	}
 
 	/**
@@ -60,7 +60,7 @@ abstract class we_html_element{
 		if(!isset($attribs['class'])){
 			$attribs['class'] = 'defaultfont';
 		}
-		return we_baseElement::getHtmlCode(new we_baseElement('input', 'selfclose', $attribs));
+		return we_html_baseElement::getHtmlCode(new we_html_baseElement('input', 'selfclose', $attribs));
 	}
 
 	/**
@@ -92,7 +92,7 @@ abstract class we_html_element{
 	public static function cssElement($content = '', array $attribs = array()){
 		$attribs['type'] = 'text/css';
 
-		return we_baseElement::getHtmlCode(new we_baseElement('style', true, $attribs, $content));
+		return we_html_baseElement::getHtmlCode(new we_html_baseElement('style', true, $attribs, $content));
 	}
 
 	public static function jsScript($name){
@@ -100,7 +100,7 @@ abstract class we_html_element{
 			'src' => self::getUnCache($name),
 			'type' => 'text/javascript',
 		);
-		return we_baseElement::getHtmlCode(new we_baseElement('script', true, $attribs));
+		return we_html_baseElement::getHtmlCode(new we_html_baseElement('script', true, $attribs));
 	}
 
 	/**
@@ -116,11 +116,11 @@ abstract class we_html_element{
 		if(strpos($content, '<!--') === FALSE){
 			$content = "<!--\n" . trim($content, " \n") . "\n//-->\n";
 		}
-		return we_baseElement::getHtmlCode(new we_baseElement('script', true, $attribs, $content));
+		return we_html_baseElement::getHtmlCode(new we_html_baseElement('script', true, $attribs, $content));
 	}
 
 	public static function cssLink($url){
-		return we_baseElement::getHtmlCode(new we_baseElement('link', false, array('href' => self::getUnCache($url), 'rel' => 'styleSheet', 'type' => 'text/css')
+		return we_html_baseElement::getHtmlCode(new we_html_baseElement('link', false, array('href' => self::getUnCache($url), 'rel' => 'styleSheet', 'type' => 'text/css')
 		));
 	}
 
@@ -132,7 +132,7 @@ abstract class we_html_element{
 	 * @return		string
 	 */
 	public static function linkElement(array $attribs = array()){
-		return we_baseElement::getHtmlCode(new we_baseElement('link', 'selfclose', $attribs));
+		return we_html_baseElement::getHtmlCode(new we_html_baseElement('link', 'selfclose', $attribs));
 	}
 
 	/**
@@ -144,12 +144,12 @@ abstract class we_html_element{
 	 * @return		string
 	 */
 	public static function htmlSpan(array $attribs = array(), $content = ''){
-		return we_baseElement::getHtmlCode(new we_baseElement('span', true, $attribs, $content));
+		return we_html_baseElement::getHtmlCode(new we_html_baseElement('span', true, $attribs, $content));
 	}
 
 	//FIMXE: remove for htmltools
 	public static function htmlSelect(array $attribs = array(), $content = ''){
-		return we_baseElement::getHtmlCode(new we_baseElement('select', true, $attribs, $content));
+		return we_html_baseElement::getHtmlCode(new we_html_baseElement('select', true, $attribs, $content));
 	}
 
 	/**
@@ -161,7 +161,7 @@ abstract class we_html_element{
 	 * @return		string
 	 */
 	public static function htmlDiv(array $attribs = array(), $content = ''){
-		return we_baseElement::getHtmlCode(new we_baseElement('div', true, $attribs, $content));
+		return we_html_baseElement::getHtmlCode(new we_html_baseElement('div', true, $attribs, $content));
 	}
 
 	/**
@@ -172,7 +172,7 @@ abstract class we_html_element{
 	 * @return		string
 	 */
 	public static function htmlB($content){
-		return we_baseElement::getHtmlCode(new we_baseElement('span', true, array('style' => 'font-weight:bold'), $content));
+		return we_html_baseElement::getHtmlCode(new we_html_baseElement('span', true, array('style' => 'font-weight:bold'), $content));
 	}
 
 	/**
@@ -209,7 +209,7 @@ abstract class we_html_element{
 		if(!isset($attribs['alt'])){
 			$attribs['alt'] = '-';
 		}
-		return we_baseElement::getHtmlCode(new we_baseElement('img', 'selfclose', $attribs));
+		return we_html_baseElement::getHtmlCode(new we_html_baseElement('img', 'selfclose', $attribs));
 	}
 
 	/**
@@ -221,7 +221,7 @@ abstract class we_html_element{
 	 * @return		string
 	 */
 	public static function htmlBody(array $attribs = array(), $content = ''){
-		$body = new we_baseElement('body', true, $attribs, $content);
+		$body = new we_html_baseElement('body', true, $attribs, $content);
 		if(!$body->hasStyle('margin')){
 			$body->setStyle('margin', '0px 0px 0px 0px');
 		}
@@ -237,7 +237,7 @@ abstract class we_html_element{
 	 * @return		string
 	 */
 	public static function htmlLabel(array $attribs = array(), $content = ''){
-		return we_baseElement::getHtmlCode(new we_baseElement('label', true, $attribs, $content));
+		return we_html_baseElement::getHtmlCode(new we_html_baseElement('label', true, $attribs, $content));
 	}
 
 	/**
@@ -249,7 +249,7 @@ abstract class we_html_element{
 	 */
 	public static function htmlHidden(array $attribs = array()){
 		$attribs['type'] = 'hidden';
-		return we_baseElement::getHtmlCode(new we_baseElement('input', 'selfclose', $attribs));
+		return we_html_baseElement::getHtmlCode(new we_html_baseElement('input', 'selfclose', $attribs));
 	}
 
 	/**
@@ -261,7 +261,7 @@ abstract class we_html_element{
 	 * @return		string
 	 */
 	public static function htmlA(array $attribs = array(), $content = ''){
-		return we_baseElement::getHtmlCode(new we_baseElement('a', true, $attribs, $content));
+		return we_html_baseElement::getHtmlCode(new we_html_baseElement('a', true, $attribs, $content));
 	}
 
 	/**
@@ -271,7 +271,7 @@ abstract class we_html_element{
 	 */
 	public static function htmlBr(){
 		static $br = 0;
-		$br = ($br ? $br : we_baseElement::getHtmlCode(new we_baseElement('br', 'selfclose')));
+		$br = ($br ? $br : we_html_baseElement::getHtmlCode(new we_html_baseElement('br', 'selfclose')));
 		return $br;
 	}
 
@@ -281,7 +281,7 @@ abstract class we_html_element{
 	 * @return		string
 	 */
 	public static function htmlNobr($content = ''){
-		return we_baseElement::getHtmlCode(new we_baseElement('nobr', true, array(), $content));
+		return we_html_baseElement::getHtmlCode(new we_html_baseElement('nobr', true, array(), $content));
 	}
 
 	/**
@@ -292,7 +292,7 @@ abstract class we_html_element{
 	 * @return		string
 	 */
 	public static function htmlComment($content){
-		return we_baseElement::getHtmlCode(new we_baseElement('!-- ' . $content . ' --', false));
+		return we_html_baseElement::getHtmlCode(new we_html_baseElement('!-- ' . $content . ' --', false));
 	}
 
 	/**
@@ -315,7 +315,7 @@ abstract class we_html_element{
 	 * @return		string
 	 */
 	public static function htmlHtml($content, $close = true){
-		return we_baseElement::getHtmlCode(new we_baseElement('html', $close, array(), $content));
+		return we_html_baseElement::getHtmlCode(new we_html_baseElement('html', $close, array(), $content));
 	}
 
 	/**
@@ -324,15 +324,15 @@ abstract class we_html_element{
 	 * @return		string
 	 */
 	public static function htmlHead($content, $close = true){
-		return we_baseElement::getHtmlCode(new we_baseElement('head', $close, array(), $content));
+		return we_html_baseElement::getHtmlCode(new we_html_baseElement('head', $close, array(), $content));
 	}
 
 	public static function htmlMeta(array $attribs = array()){
-		return we_baseElement::getHtmlCode(new we_baseElement('meta', 'selfclose', $attribs));
+		return we_html_baseElement::getHtmlCode(new we_html_baseElement('meta', 'selfclose', $attribs));
 	}
 
 	public static function htmlTitle($content){
-		return we_baseElement::getHtmlCode(new we_baseElement('title', true, array(), $content));
+		return we_html_baseElement::getHtmlCode(new we_html_baseElement('title', true, array(), $content));
 	}
 
 	/**
@@ -341,7 +341,7 @@ abstract class we_html_element{
 	 * @return		string
 	 */
 	public static function htmlTextArea(array $attribs = array(), $content = ''){
-		return we_baseElement::getHtmlCode(new we_baseElement('textarea', true, $attribs, $content));
+		return we_html_baseElement::getHtmlCode(new we_html_baseElement('textarea', true, $attribs, $content));
 	}
 
 	/**
@@ -350,7 +350,7 @@ abstract class we_html_element{
 	 * @return		string
 	 */
 	public static function htmlP(array $attribs = array(), $content = ''){
-		return we_baseElement::getHtmlCode(new we_baseElement('p', true, $attribs, $content));
+		return we_html_baseElement::getHtmlCode(new we_html_baseElement('p', true, $attribs, $content));
 	}
 
 	/**
@@ -359,7 +359,7 @@ abstract class we_html_element{
 	 * @return		string
 	 */
 	public static function htmlCenter($content){
-		return we_baseElement::getHtmlCode(new we_baseElement('center', true, array(), $content));
+		return we_html_baseElement::getHtmlCode(new we_html_baseElement('center', true, array(), $content));
 	}
 
 	/**
@@ -382,7 +382,7 @@ abstract class we_html_element{
 		$attribs['SCRIPTABLE'] = '';
 
 
-		return we_baseElement::getHtmlCode(new we_baseElement('applet', true, $attribs, $content));
+		return we_html_baseElement::getHtmlCode(new we_html_baseElement('applet', true, $attribs, $content));
 	}
 
 	/**
@@ -391,7 +391,7 @@ abstract class we_html_element{
 	 * @return		string
 	 */
 	public static function htmlParam(array $attribs = array()){
-		return we_baseElement::getHtmlCode(new we_baseElement('param', 'selfclose', $attribs));
+		return we_html_baseElement::getHtmlCode(new we_html_baseElement('param', 'selfclose', $attribs));
 	}
 
 	/**
@@ -412,8 +412,8 @@ abstract class we_html_element{
 	public static function htmlIFrame($name, $src, $style, $iframestyle = ''){
 		$iframestyle = empty($iframestyle) ? 'border:0px;width:100%;height:100%;overflow: ' . (we_base_browserDetect::isFF() ? 'auto' : 'hidden') . ';' : $iframestyle;
 		return self::htmlDiv(array('style' => $style, 'name' => $name . 'Div', 'id' => $name . 'Div')
-				, we_baseElement::getHtmlCode(
-					new we_baseElement('iframe', true, array('name' => $name, 'id' => $name, 'frameBorder' => 0, 'src' => $src, 'style' => $iframestyle))
+				, we_html_baseElement::getHtmlCode(
+					new we_html_baseElement('iframe', true, array('name' => $name, 'id' => $name, 'frameBorder' => 0, 'src' => $src, 'style' => $iframestyle))
 		));
 	}
 

@@ -115,7 +115,7 @@ class we_tool_frames extends weModuleFrames{
 		}
 		$frameset->addFrame(array("src" => $this->frameset . "?pnt=right" . (isset($_REQUEST['tab']) ? '&tab=' . $_REQUEST['tab'] : '') . (isset($_REQUEST['sid']) ? '&sid=' . $_REQUEST['sid'] : ''), "name" => "right"));
 
-		$noframeset = new we_baseElement("noframes");
+		$noframeset = new we_html_baseElement("noframes");
 
 		// set and return html code
 		$body = $frameset->getHtml() . $noframeset->getHTML();
@@ -128,7 +128,7 @@ class we_tool_frames extends weModuleFrames{
 		$frameset = new we_html_frameset(array("framespacing" => 0, "border" => 0, "frameborder" => "no"));
 		$frameset->setAttributes(array("cols" => "*"));
 		$frameset->addFrame(array("src" => $this->frameset . "?pnt=editor" . (isset($_REQUEST['tab']) ? '&tab=' . $_REQUEST['tab'] : '') . (isset($_REQUEST['sid']) ? '&sid=' . $_REQUEST['sid'] : ''), "name" => "editor", "noresize" => null, "scrolling" => "no"));
-		$noframeset = new we_baseElement("noframes");
+		$noframeset = new we_html_baseElement("noframes");
 		// set and return html code
 		$body = $frameset->getHtml() . $noframeset->getHTML();
 
@@ -138,7 +138,7 @@ class we_tool_frames extends weModuleFrames{
 	function getHTMLEditor(){
 
 		$frameset = new we_html_frameset(array("framespacing" => 0, "border" => 0, "frameborder" => "no"));
-		$noframeset = new we_baseElement("noframes");
+		$noframeset = new we_html_baseElement("noframes");
 
 		$frameset->setAttributes(array("rows" => "40,*,40"));
 		$frameset->addFrame(array('src' => $this->frameset . (isset($_REQUEST['sid']) ? '?sid=' . $_REQUEST['sid'] : '?home=1') . (isset($_REQUEST['tab']) ? '&tab=' . $_REQUEST['tab'] : '') . '&pnt=edheader', 'name' => 'edheader', 'noresize' => null, 'scrolling' => 'no'));
@@ -335,7 +335,7 @@ function we_save() {
 		);
 
 		return $this->View->getCommonHiddens($hiddens) .
-			we_multiIconBox::getHTML('', '100%', $this->getHTMLGeneral(), 30);
+			we_html_multiIconBox::getHTML('', '100%', $this->getHTMLGeneral(), 30);
 	}
 
 	function getHTMLLeft(){

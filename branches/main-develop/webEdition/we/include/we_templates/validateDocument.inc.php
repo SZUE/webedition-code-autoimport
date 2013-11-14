@@ -212,7 +212,7 @@ $parts = array(
 
 $body = '<form name="we_form">'
 	. we_html_tools::hidden('we_transaction', (isset($_REQUEST['we_transaction']) && preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction']) ? $_REQUEST['we_transaction'] : 0))
-	. we_multiIconBox::getHTML('weDocValidation', "100%", $parts, 20, '', -1, '', '', false) .
+	. we_html_multiIconBox::getHTML('weDocValidation', "100%", $parts, 20, '', -1, '', '', false) .
 	'</form>';
 
 print we_html_element::htmlBody(array('class' => 'weEditorBody', 'onload' => 'setIFrameSize()', 'onresize' => 'setIFrameSize()'), $body) .

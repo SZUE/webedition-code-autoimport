@@ -52,9 +52,9 @@ $parts[] = array(
 	'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_schedule', '[descriptiontext]'), we_html_tools::TYPE_INFO, 700) . '<br><br>' . we_button::create_button('image:btn_add_schedule', "javascript:we_cmd('add_schedule')"),
 	'space' => 0
 );
-print we_multiIconBox::getJS() .
+print we_html_multiIconBox::getJS() .
 	we_schedpro::getMainJS($we_doc) .
-	we_multiIconBox::getHTML('', '100%', $parts, 20, '', -1, '', '', false);
+	we_html_multiIconBox::getHTML('', '100%', $parts, 20, '', -1, '', '', false);
 ?>
 	</form>
 </body>

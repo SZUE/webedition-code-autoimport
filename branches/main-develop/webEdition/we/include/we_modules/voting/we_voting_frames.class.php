@@ -300,7 +300,7 @@ class we_voting_frames extends weModuleFrames{
 				'noline' => 1),
 			array(
 				'headline' => '',
-				'html' => we_forms::checkboxWithHidden($this->View->voting->RestrictOwners ? true : false, 'RestrictOwners', g_l('modules_voting', '[limit_access]'), false, 'defaultfont', 'top.content.setHot(); toggle(\'ownersTable\')'),
+				'html' => we_html_forms::checkboxWithHidden($this->View->voting->RestrictOwners ? true : false, 'RestrictOwners', g_l('modules_voting', '[limit_access]'), false, 'defaultfont', 'top.content.setHot(); toggle(\'ownersTable\')'),
 				'space' => $this->_space_size,
 				'noline' => 1
 			)
@@ -409,7 +409,7 @@ class we_voting_frames extends weModuleFrames{
 
 		$table = new we_html_table(array('cellpadding' => 2, 'cellspacing' => 2, "border" => 0), 4, 2);
 		$table->setCol(0, 0, array('colspan' => 2), we_html_tools::htmlAlertAttentionBox(g_l('modules_voting', '[valid_txt]'), we_html_tools::TYPE_INFO, $this->_width_size, false, 133));
-		$table->setCol(1, 0, array('colspan' => 2), we_forms::checkboxWithHidden($this->View->voting->Active ? true : false, 'Active', g_l('modules_voting', '[active_till]'), false, 'defaultfont', 'toggle(\'activetime\');if(!this.checked) setVisible(\'valid\',false); else if(document.we_form.ActiveTime.value==1) setVisible(\'valid\',true); else setVisible(\'valid\',false);'));
+		$table->setCol(1, 0, array('colspan' => 2), we_html_forms::checkboxWithHidden($this->View->voting->Active ? true : false, 'Active', g_l('modules_voting', '[active_till]'), false, 'defaultfont', 'toggle(\'activetime\');if(!this.checked) setVisible(\'valid\',false); else if(document.we_form.ActiveTime.value==1) setVisible(\'valid\',true); else setVisible(\'valid\',false);'));
 
 		$table->setColContent(2, 1, we_html_element::htmlDiv(array('id' => 'activetime', 'style' => 'display: ' . ($this->View->voting->Active ? 'block' : 'none') . ';'), $activeTime->getHtml()
 			)
@@ -443,13 +443,13 @@ class we_voting_frames extends weModuleFrames{
 			array(
 				'headline' => g_l('modules_voting', '[headline_datatype]'),
 				'html' =>
-				we_forms::checkboxWithHidden($this->View->voting->IsRequired ? true : false, 'IsRequired', g_l('modules_voting', '[IsRequired]'), false, 'defaultfont', 'top.content.setHot();') .
-				we_forms::checkboxWithHidden($this->View->voting->AllowFreeText ? true : false, 'AllowFreeText', g_l('modules_voting', '[AllowFreeText]'), false, 'defaultfont', 'top.content.setHot();answers_edit.toggleMinCount();') .
-				we_forms::checkboxWithHidden($this->View->voting->AllowImages ? true : false, 'AllowImages', g_l('modules_voting', '[AllowImages]'), false, 'defaultfont', 'top.content.setHot();answers_edit.toggleImages();') .
-				we_forms::checkboxWithHidden($this->View->voting->AllowMedia ? true : false, 'AllowMedia', g_l('modules_voting', '[AllowMedia]'), false, 'defaultfont', 'top.content.setHot();answers_edit.toggleMedia();') .
-				we_forms::checkboxWithHidden($this->View->voting->AllowSuccessor ? true : false, 'AllowSuccessor', g_l('modules_voting', '[AllowSuccessor]'), false, 'defaultfont', 'top.content.setHot(); toggle(\'Successor\')') .
+				we_html_forms::checkboxWithHidden($this->View->voting->IsRequired ? true : false, 'IsRequired', g_l('modules_voting', '[IsRequired]'), false, 'defaultfont', 'top.content.setHot();') .
+				we_html_forms::checkboxWithHidden($this->View->voting->AllowFreeText ? true : false, 'AllowFreeText', g_l('modules_voting', '[AllowFreeText]'), false, 'defaultfont', 'top.content.setHot();answers_edit.toggleMinCount();') .
+				we_html_forms::checkboxWithHidden($this->View->voting->AllowImages ? true : false, 'AllowImages', g_l('modules_voting', '[AllowImages]'), false, 'defaultfont', 'top.content.setHot();answers_edit.toggleImages();') .
+				we_html_forms::checkboxWithHidden($this->View->voting->AllowMedia ? true : false, 'AllowMedia', g_l('modules_voting', '[AllowMedia]'), false, 'defaultfont', 'top.content.setHot();answers_edit.toggleMedia();') .
+				we_html_forms::checkboxWithHidden($this->View->voting->AllowSuccessor ? true : false, 'AllowSuccessor', g_l('modules_voting', '[AllowSuccessor]'), false, 'defaultfont', 'top.content.setHot(); toggle(\'Successor\')') .
 				we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('Successor', '', $this->View->voting->Successor, '', 'style="width: ' . $this->_width_size . ';display:' . $displaySuccessor . '" id="Successor" onchange="top.content.setHot();" '), '') .
-				we_forms::checkboxWithHidden($this->View->voting->AllowSuccessors ? true : false, 'AllowSuccessors', g_l('modules_voting', '[AllowSuccessors]'), false, 'defaultfont', 'top.content.setHot();answers_edit.toggleSuccessors();')
+				we_html_forms::checkboxWithHidden($this->View->voting->AllowSuccessors ? true : false, 'AllowSuccessors', g_l('modules_voting', '[AllowSuccessors]'), false, 'defaultfont', 'top.content.setHot();answers_edit.toggleSuccessors();')
 				,
 				'space' => $this->_space_size
 			)
@@ -517,24 +517,24 @@ class we_voting_frames extends weModuleFrames{
 		);
 
 
-		$table->setCol(2, 0, array('colspan' => 2), we_forms::radiobutton(1, ($this->View->voting->RevoteControl == 1 ? true : false), 'RevoteControl', g_l('modules_voting', '[cookie_method]'), true, "defaultfont", "top.content.setHot();"));
+		$table->setCol(2, 0, array('colspan' => 2), we_html_forms::radiobutton(1, ($this->View->voting->RevoteControl == 1 ? true : false), 'RevoteControl', g_l('modules_voting', '[cookie_method]'), true, "defaultfont", "top.content.setHot();"));
 
 		$table->setColContent(3, 0, we_html_tools::getPixel(10, 5));
-		$table->setColContent(3, 1, we_forms::checkboxWithHidden($this->View->voting->FallbackIp ? true : false, 'FallbackIp', g_l('modules_voting', '[fallback]'), false, "defaultfont", "top.content.setHot();"));
+		$table->setColContent(3, 1, we_html_forms::checkboxWithHidden($this->View->voting->FallbackIp ? true : false, 'FallbackIp', g_l('modules_voting', '[fallback]'), false, "defaultfont", "top.content.setHot();"));
 
 		$table->setColContent(4, 0, we_html_tools::getPixel(10, 10));
 
-		$table->setCol(5, 0, array('colspan' => 2), we_forms::radiobutton(0, ($this->View->voting->RevoteControl == 0 ? true : false), 'RevoteControl', g_l('modules_voting', '[ip_method]'), true, "defaultfont", "top.content.setHot();"));
+		$table->setCol(5, 0, array('colspan' => 2), we_html_forms::radiobutton(0, ($this->View->voting->RevoteControl == 0 ? true : false), 'RevoteControl', g_l('modules_voting', '[ip_method]'), true, "defaultfont", "top.content.setHot();"));
 
 		$datasize = f('SELECT (LENGTH(Revote)+LENGTH(RevoteUserAgent)) AS Size FROM ' . VOTING_TABLE, 'Size', $this->db);
 
-		$table->setColContent(6, 1, we_forms::checkboxWithHidden($this->View->voting->UserAgent ? true : false, 'UserAgent', g_l('modules_voting', '[save_user_agent]'), false, "defaultfont", "top.content.setHot();"));
+		$table->setColContent(6, 1, we_html_forms::checkboxWithHidden($this->View->voting->UserAgent ? true : false, 'UserAgent', g_l('modules_voting', '[save_user_agent]'), false, "defaultfont", "top.content.setHot();"));
 
 		$table->setCol(7, 1, array('id' => 'delete_ip_data', 'style' => 'display: ' . ($datasize > 0 ? 'block' : 'none')), we_html_tools::htmlAlertAttentionBox(sprintf(g_l('modules_voting', '[delete_ipdata_text]'), we_html_element::htmlSpan(array('id' => 'ip_mem_size'), $datasize)), we_html_tools::TYPE_INFO, ($this->_width_size - 20), false, 100) .
 			we_button::create_button('delete', 'javascript:we_cmd(\'reset_ipdata\')')
 		);
 		$table->setColContent(8, 0, we_html_tools::getPixel(10, 5));
-		$table->setCol(9, 0, array('colspan' => 2), we_forms::radiobutton(2, ($this->View->voting->RevoteControl == 2 ? true : false), 'RevoteControl', g_l('modules_voting', '[userid_method]'), true, "defaultfont", "top.content.setHot();"));
+		$table->setCol(9, 0, array('colspan' => 2), we_html_forms::radiobutton(2, ($this->View->voting->RevoteControl == 2 ? true : false), 'RevoteControl', g_l('modules_voting', '[userid_method]'), true, "defaultfont", "top.content.setHot();"));
 
 
 		$parts[] = array(
@@ -556,7 +556,7 @@ class we_voting_frames extends weModuleFrames{
 
 		$parts[] = array(
 			'headline' => g_l('modules_voting', '[control]'),
-			'html' => we_forms::checkboxWithHidden($this->View->voting->Log ? true : false, 'Log', g_l('modules_voting', '[voting_log]'), false, 'defaultfont', 'top.content.setHot(); toggle(\'LogData\')') .
+			'html' => we_html_forms::checkboxWithHidden($this->View->voting->Log ? true : false, 'Log', g_l('modules_voting', '[voting_log]'), false, 'defaultfont', 'top.content.setHot(); toggle(\'LogData\')') .
 			$table->getHtml(),
 			'space' => $this->_space_size,
 			'noline' => 1
@@ -564,7 +564,7 @@ class we_voting_frames extends weModuleFrames{
 
 		$parts[] = array(
 			'headline' => '',
-			'html' => we_forms::checkboxWithHidden($this->View->voting->RestrictIP ? true : false, 'RestrictIP', g_l('modules_voting', '[forbid_ip]'), false, 'defaultfont', 'top.content.setHot(); toggle(\'RestrictIPDiv\')'),
+			'html' => we_html_forms::checkboxWithHidden($this->View->voting->RestrictIP ? true : false, 'RestrictIP', g_l('modules_voting', '[forbid_ip]'), false, 'defaultfont', 'top.content.setHot(); toggle(\'RestrictIPDiv\')'),
 			'space' => $this->_space_size,
 			'noline' => 1
 		);
@@ -789,12 +789,12 @@ class we_voting_frames extends weModuleFrames{
 
 		');
 
-		$out .= we_html_element::htmlDiv(array('id' => 'tab1', 'style' => ($tabNr == 1 ? '' : 'display: none')), we_multiIconBox::getHTML('', "100%", $this->getHTMLTab1(), 30, '', -1, '', '', false, $preselect)) .
+		$out .= we_html_element::htmlDiv(array('id' => 'tab1', 'style' => ($tabNr == 1 ? '' : 'display: none')), we_html_multiIconBox::getHTML('', "100%", $this->getHTMLTab1(), 30, '', -1, '', '', false, $preselect)) .
 			(!$this->View->voting->IsFolder ?
 				(
-				we_html_element::htmlDiv(array('id' => 'tab2', 'style' => ($tabNr == 2 ? '' : 'display: none')), we_multiIconBox::getHTML('', "100%", $this->getHTMLTab2(), 30, '', -1, '', '', false, $preselect)) .
-				we_html_element::htmlDiv(array('id' => 'tab3', 'style' => ($tabNr == 3 ? '' : 'display: none')), we_multiIconBox::getHTML('', "100%", $this->getHTMLTab3(), 30, '', -1, '', '', false, $preselect)) .
-				we_html_element::htmlDiv(array('id' => 'tab4', 'style' => ($tabNr == 4 ? '' : 'display: none')), we_multiIconBox::getHTML('', "100%", $this->getHTMLTab4(), 30, '', -1, '', '', false, $preselect))
+				we_html_element::htmlDiv(array('id' => 'tab2', 'style' => ($tabNr == 2 ? '' : 'display: none')), we_html_multiIconBox::getHTML('', "100%", $this->getHTMLTab2(), 30, '', -1, '', '', false, $preselect)) .
+				we_html_element::htmlDiv(array('id' => 'tab3', 'style' => ($tabNr == 3 ? '' : 'display: none')), we_html_multiIconBox::getHTML('', "100%", $this->getHTMLTab3(), 30, '', -1, '', '', false, $preselect)) .
+				we_html_element::htmlDiv(array('id' => 'tab4', 'style' => ($tabNr == 4 ? '' : 'display: none')), we_html_multiIconBox::getHTML('', "100%", $this->getHTMLTab4(), 30, '', -1, '', '', false, $preselect))
 				) : '') .
 			$this->getHTMLVariant();
 
@@ -1096,7 +1096,7 @@ class we_voting_frames extends weModuleFrames{
 			);
 		}
 
-		$body = we_html_element::htmlBody(array("class" => "weDialogBody"), we_multiIconBox::getHTML("show_log_data", "100%", $parts, 30, we_button::position_yes_no_cancel($refresh, $close, null), -1, '', '', false, g_l('modules_voting', '[voting]'), "", 558) .
+		$body = we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_multiIconBox::getHTML("show_log_data", "100%", $parts, 30, we_button::position_yes_no_cancel($refresh, $close, null), -1, '', '', false, g_l('modules_voting', '[voting]'), "", 558) .
 				we_html_element::jsElement("self.focus();")
 		);
 		return $this->getHTMLDocument($body);
@@ -1237,7 +1237,7 @@ class we_voting_frames extends weModuleFrames{
 			);
 		}
 
-		$body = we_html_element::htmlBody(array("class" => "weDialogBody"), we_multiIconBox::getHTML("show_log_data", "100%", $parts, 30, we_button::position_yes_no_cancel($refresh, $close, null), -1, '', '', false, g_l('modules_voting', '[voting]'), "", 558) .
+		$body = we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_multiIconBox::getHTML("show_log_data", "100%", $parts, 30, we_button::position_yes_no_cancel($refresh, $close, null), -1, '', '', false, g_l('modules_voting', '[voting]'), "", 558) .
 				we_html_element::jsElement("self.focus();")
 		);
 		return $this->getHTMLDocument($body);
@@ -1363,7 +1363,7 @@ class we_voting_frames extends weModuleFrames{
 			);
 		}
 
-		$body = we_html_element::htmlBody(array("class" => "weDialogBody"), we_multiIconBox::getHTML("show_log_data", "100%", $parts, 30, we_button::position_yes_no_cancel($refresh, $close, null), -1, '', '', false, g_l('modules_voting', '[voting]'), "", 558) .
+		$body = we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_multiIconBox::getHTML("show_log_data", "100%", $parts, 30, we_button::position_yes_no_cancel($refresh, $close, null), -1, '', '', false, g_l('modules_voting', '[voting]'), "", 558) .
 				we_html_element::jsElement("self.focus();")
 		);
 		return $this->getHTMLDocument($body);

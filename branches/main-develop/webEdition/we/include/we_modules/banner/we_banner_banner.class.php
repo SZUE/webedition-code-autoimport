@@ -308,7 +308,7 @@ class we_banner_banner extends we_banner_base{
 		if(!$nocount){
 			$db->query('INSERT INTO ' . BANNER_VIEWS_TABLE . ' SET ' . we_database_base::arraySetter(array(
 					'ID' => intval($id),
-					'Timestamp' => 'UNIX_TIMESTAMP()',
+					'Timestamp' => sql_function('UNIX_TIMESTAMP()'),
 					'IP' => $_SERVER['REMOTE_ADDR'],
 					'Referer' => $referer ? $referer : (isset($_SERVER["HTTP_REFERER"]) ? $_SERVER["HTTP_REFERER"] : ""),
 					'DID' => intval($did),

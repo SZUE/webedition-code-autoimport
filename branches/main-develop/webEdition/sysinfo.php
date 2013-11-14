@@ -325,8 +325,8 @@ print STYLESHEET;
 <body class="weDialogBody" style="overflow:hidden;" onLoad="self.focus();">
 	<div id="info" style="display: block;">
 		<?php
-		print we_multiIconBox::getJS();
-		print we_multiIconBox::getHTML('', 700, $_parts, 30, $buttons, -1, '', '', false, "", "", 620, "auto");
+		print we_html_multiIconBox::getJS();
+		print we_html_multiIconBox::getHTML('', 700, $_parts, 30, $buttons, -1, '', '', false, "", "", 620, "auto");
 		?>
 	</div>
 	<div id="more" style="display:none;">
@@ -344,7 +344,7 @@ print STYLESHEET;
 			),
 		);
 
-		print we_multiIconBox::getHTML('', '100%', $_parts, 30, $buttons, -1, '', '', false);
+		print we_html_multiIconBox::getHTML('', '100%', $_parts, 30, $buttons, -1, '', '', false);
 		?>
 	</div>
 </body>

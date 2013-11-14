@@ -323,7 +323,7 @@ if(isset($daten)){
 				);
 
 
-				print we_multiIconBox::getHTML("revenues", "100%", $parts, 30, "", -1, "", "", false, sprintf(g_l('tabs', '[module][artList]'), $topInfo));
+				print we_html_multiIconBox::getHTML("revenues", "100%", $parts, 30, "", -1, "", "", false, sprintf(g_l('tabs', '[module][artList]'), $topInfo));
 			} else{ // if there is an empty result form the object table
 				$parts = array(
 					array(
@@ -336,7 +336,7 @@ if(isset($daten)){
 				);
 
 
-				print we_multiIconBox::getHTML("revenues", "100%", $parts, 30, "", -1, "", "", false, sprintf(g_l('tabs', '[module][artList]'), g_l('modules_shop', '[noRecord]')));
+				print we_html_multiIconBox::getHTML("revenues", "100%", $parts, 30, "", -1, "", "", false, sprintf(g_l('tabs', '[module][artList]'), g_l('modules_shop', '[noRecord]')));
 			}
 
 			/*			 * ******** END PROCESS THE OUTPUT IF OPTED FOR AN OBJECT *********** */
@@ -422,7 +422,7 @@ if(isset($daten)){
 					'space' => 0
 				);
 
-				print we_multiIconBox::getHTML("revenues", "100%", $parts, 30, "", -1, "", "", false, sprintf(g_l('tabs', '[module][artList]'), $topInfo));
+				print we_html_multiIconBox::getHTML("revenues", "100%", $parts, 30, "", -1, "", "", false, sprintf(g_l('tabs', '[module][artList]'), $topInfo));
 			}
 
 			/*			 * ******** END PROCESS THE OUTPUT IF OPTED FOR A DOCUMENT *********** */

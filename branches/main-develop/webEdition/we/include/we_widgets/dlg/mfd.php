@@ -209,25 +209,25 @@ if($sType{0} == "0" && $sType{1} == "0" && $sType{2} == "0" && $sType{3} == "0")
 	$sType = "1111";
 }
 if(permissionhandler::hasPerm('CAN_SEE_DOCUMENTS')){
-	$oChbxDocs = we_forms::checkbox(
+	$oChbxDocs = we_html_forms::checkbox(
 			$value = 0, $checked = $sType{0}, $name = "chbx_type", $text = g_l('cockpit', '[documents]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = !(defined('FILE_TABLE') && permissionhandler::hasPerm("CAN_SEE_DOCUMENTS")), $description = "", $type = 0, $width = 0);
 } else{
 	$oChbxDocs = "";
 }
 if(permissionhandler::hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE){
-	$oChbxTmpl = we_forms::checkbox(
+	$oChbxTmpl = we_html_forms::checkbox(
 			$value = 0, $checked = $sType{1}, $name = "chbx_type", $text = g_l('cockpit', '[templates]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = !(defined("TEMPLATES_TABLE") && permissionhandler::hasPerm('CAN_SEE_TEMPLATES')), $description = "", $type = 0, $width = 0);
 } else{
 	$oChbxTmpl = "";
 }
 if(permissionhandler::hasPerm('CAN_SEE_OBJECTS')){
-	$oChbxObjs = we_forms::checkbox(
+	$oChbxObjs = we_html_forms::checkbox(
 			$value = 0, $checked = $sType{2}, $name = "chbx_type", $text = g_l('cockpit', '[objects]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = !(defined("OBJECT_FILES_TABLE") && permissionhandler::hasPerm('CAN_SEE_OBJECTFILES')), $description = "", $type = 0, $width = 0);
 } else{
 	$oChbxObjs = "";
 }
 if(permissionhandler::hasPerm('CAN_SEE_CLASSES') && $_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE){
-	$oChbxCls = we_forms::checkbox(
+	$oChbxCls = we_html_forms::checkbox(
 			$value = 0, $checked = $sType{3}, $name = "chbx_type", $text = g_l('cockpit', '[classes]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = !(defined("OBJECT_TABLE") && permissionhandler::hasPerm('CAN_SEE_OBJECTS')), $description = "", $type = 0, $width = 0);
 } else{
 	$oChbxCls = "";
@@ -255,8 +255,8 @@ foreach($aLangDate as $k => $v){
 }
 $oSctDate->selectOption($iDate);
 
-$oChbxShowMfdBy = we_forms::checkbox($value = 0, $checked = $sDisplayOpt{0}, $name = "chbx_display_opt", $text = g_l('cockpit', '[modified_by]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0);
-$oChbxShowDate = we_forms::checkbox($value = 0, $checked = $sDisplayOpt{1}, $name = "chbx_display_opt", $text = g_l('cockpit', '[date_last_modification]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0);
+$oChbxShowMfdBy = we_html_forms::checkbox($value = 0, $checked = $sDisplayOpt{0}, $name = "chbx_display_opt", $text = g_l('cockpit', '[modified_by]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0);
+$oChbxShowDate = we_html_forms::checkbox($value = 0, $checked = $sDisplayOpt{1}, $name = "chbx_display_opt", $text = g_l('cockpit', '[date_last_modification]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0);
 $oSctNumEntries = new we_html_select(array("name" => "sct_amount_entries", "size" => 1, "class" => "defaultfont"));
 $oSctNumEntries->insertOption(0, 0, g_l('cockpit', '[all]'));
 for($iCurrEntry = 1; $iCurrEntry <= 50; $iCurrEntry++){
@@ -300,7 +300,7 @@ $preview_button = we_button::create_button("preview", "javascript:preview();", f
 $cancel_button = we_button::create_button("close", "javascript:exit_close();");
 $buttons = we_button::position_yes_no_cancel($save_button, $preview_button, $cancel_button);
 
-$sTblWidget = we_multiIconBox::getHTML(
+$sTblWidget = we_html_multiIconBox::getHTML(
 		"mfdProps", "100%", $parts, 30, $buttons, -1, "", "", "", g_l('cockpit', '[last_modified]'), "", 390);
 
 print we_html_element::htmlDocType() . we_html_element::htmlHtml(

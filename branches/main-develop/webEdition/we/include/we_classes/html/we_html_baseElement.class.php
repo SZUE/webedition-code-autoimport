@@ -30,7 +30,7 @@
  *
  * Description: Provides functions for creating html tags
  */
-class we_baseElement{
+class we_html_baseElement{
 
 	var $uid;
 	var $tag_name = '';
@@ -44,7 +44,7 @@ class we_baseElement{
 	 * @param		$attribs								array
 	 * @param		$content								string
 	 *
-	 * @return		we_baseElement
+	 * @return		we_html_baseElement
 	 */
 	function __construct($tagname = "", $need_end_tag = true, $attribs = '', $content = '', $rfc = 'html4'){
 		$this->setTagName($tagname);
@@ -66,7 +66,7 @@ class we_baseElement{
 	/**
 	 * Function returns copy of object
 	 *
-	 * @return     we_baseElement
+	 * @return     we_html_baseElement
 	 */
 	function copy(){
 		return unserialize(serialize($this));

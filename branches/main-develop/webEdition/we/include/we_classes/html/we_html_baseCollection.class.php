@@ -30,7 +30,7 @@
  *
  * Description: Provides functions for creating html tags
  */
-class we_baseCollection extends we_baseElement{
+class we_html_baseCollection extends we_html_baseElement{
 
 	var $childs = array();
 
@@ -42,13 +42,13 @@ class we_baseCollection extends we_baseElement{
 	 * @param		$attribs								array
 	 * @param		$childs_num								int					(optional)
 	 *
-	 * @return		we_baseCollection
+	 * @return		we_html_baseCollection
 	 */
 	function __construct($tagname = '', $need_end_tag = true, array $attribs = array(), $childs_num = 0){
 		parent::__construct($tagname, $need_end_tag, $attribs);
 
 		for($i = 0; $i < $childs_num; $i++){
-			$this->addChild(new we_baseElement());
+			$this->addChild(new we_html_baseElement());
 		}
 	}
 
@@ -92,7 +92,7 @@ class we_baseCollection extends we_baseElement{
 	 *
 	 * @param		$childid									int
 	 *
-	 * @return		we_baseElement
+	 * @return		we_html_baseElement
 	 */
 	function &getChild($childId){
 		return $this->childs[$childId];

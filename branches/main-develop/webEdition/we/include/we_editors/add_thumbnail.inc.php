@@ -139,7 +139,7 @@ function we_cmd(){
 
 	$buttons = we_button::position_yes_no_cancel($addbut, null, $cancelbut);
 
-	$dialog = we_multiIconBox::getHTML("", "100%", $_thumbs, 30, $buttons, -1, "", "", false, g_l('weClass', "[thumbnails]"));
+	$dialog = we_html_multiIconBox::getHTML("", "100%", $_thumbs, 30, $buttons, -1, "", "", false, g_l('weClass', "[thumbnails]"));
 	print we_html_element::htmlBody(array("class" => "weDialogBody", "style" => "overflow: hidden;", "onload" => "top.focus();"), $dialog) . "</html>";
 } else{
 	exit("ERROR: Couldn't initialize we_imageDocument object");

@@ -625,7 +625,7 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 		$_metaTitleField = 'we_' . $this->Name . '_txt[Title]';
 		$useMetaTitle = 'we_' . $this->Name . '_txt[useMetaTitle]';
 		//	disable field 'title' when checked or not.   on checked true: document.forms[0]['$_titleField'].value='$this->getElement('Title')' and  onchecked false: document.forms[0]['$_titleField'].value='' added to fix bug #5814
-		$_content->setCol(6, 4, array('valign' => 'bottom'), we_forms::checkboxWithHidden($this->getElement('useMetaTitle'), $useMetaTitle, g_l('weClass', '[use_meta_title]'), false, 'defaultfont', "if(this.checked){ document.forms[0]['$_titleField'].setAttribute('readonly', 'readonly', 'false'); document.forms[0]['$_titleField'].value = '" . $this->getElement('Title') . "'; }else{ document.forms[0]['$_titleField'].removeAttribute('readonly', 'false'); document.forms[0]['$_titleField'].value='';}_EditorFrame.setEditorIsHot(true);"));
+		$_content->setCol(6, 4, array('valign' => 'bottom'), we_html_forms::checkboxWithHidden($this->getElement('useMetaTitle'), $useMetaTitle, g_l('weClass', '[use_meta_title]'), false, 'defaultfont', "if(this.checked){ document.forms[0]['$_titleField'].setAttribute('readonly', 'readonly', 'false'); document.forms[0]['$_titleField'].value = '" . $this->getElement('Title') . "'; }else{ document.forms[0]['$_titleField'].removeAttribute('readonly', 'false'); document.forms[0]['$_titleField'].value='';}_EditorFrame.setEditorIsHot(true);"));
 
 		//  longdesc should be available in images.
 		//    check if longdesc is set and get path
@@ -809,7 +809,7 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 		$_content = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0), (defined('OBJECT_TABLE') ? 11 : 9), 2);
 
 		// No link
-		$_content->setCol(0, 0, array('valign' => 'top'), we_forms::radiobutton('no', ($linkType == 'no'), 'we_' . $this->Name . '_txt[LinkType]', g_l('weClass', '[nolink]'), true, 'defaultfont', '_EditorFrame.setEditorIsHot(true);'));
+		$_content->setCol(0, 0, array('valign' => 'top'), we_html_forms::radiobutton('no', ($linkType == 'no'), 'we_' . $this->Name . '_txt[LinkType]', g_l('weClass', '[nolink]'), true, 'defaultfont', '_EditorFrame.setEditorIsHot(true);'));
 		$_content->setCol(0, 1, null, '');
 
 		// Space
@@ -825,7 +825,7 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 
 		$_ext_link = "href" . we_html_element::htmlBr() . $_ext_link_table->getHtml();
 
-		$_content->setCol(2, 0, array('valign' => 'top'), we_forms::radiobutton(we_base_link::TYPE_EXT, ($linkType == we_base_link::TYPE_EXT), 'we_' . $this->Name . '_txt[LinkType]', g_l('weClass', '[extern]'), true, 'defaultfont', '_EditorFrame.setEditorIsHot(true)'));
+		$_content->setCol(2, 0, array('valign' => 'top'), we_html_forms::radiobutton(we_base_link::TYPE_EXT, ($linkType == we_base_link::TYPE_EXT), 'we_' . $this->Name . '_txt[LinkType]', g_l('weClass', '[extern]'), true, 'defaultfont', '_EditorFrame.setEditorIsHot(true)'));
 		$_content->setCol(2, 1, array('class' => 'defaultfont', 'valign' => 'top'), $_ext_link);
 
 		// Space
@@ -846,7 +846,7 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 		$yuiSuggest->setLabel('href');
 		$_int_link = $yuiSuggest->getHTML();
 
-		$_content->setCol(4, 0, array('valign' => 'top'), we_forms::radiobutton(we_base_link::TYPE_INT, ($linkType == we_base_link::TYPE_INT), 'we_' . $this->Name . '_txt[LinkType]', g_l('weClass', '[intern]'), true, 'defaultfont', '_EditorFrame.setEditorIsHot(true);'));
+		$_content->setCol(4, 0, array('valign' => 'top'), we_html_forms::radiobutton(we_base_link::TYPE_INT, ($linkType == we_base_link::TYPE_INT), 'we_' . $this->Name . '_txt[LinkType]', g_l('weClass', '[intern]'), true, 'defaultfont', '_EditorFrame.setEditorIsHot(true);'));
 		$_content->setCol(4, 1, array('class' => 'defaultfont', 'valign' => 'top'), $_int_link);
 
 		// Object link
@@ -868,7 +868,7 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 			$_obj_link = $yuiSuggest->getHTML();
 
 
-			$_content->setCol(6, 0, array('valign' => 'top'), we_forms::radiobutton(we_base_link::TYPE_OBJ, ($linkType == we_base_link::TYPE_OBJ), 'we_' . $this->Name . '_txt[LinkType]', g_l('linklistEdit', '[objectFile]'), true, 'defaultfont', '_EditorFrame.setEditorIsHot(true);'));
+			$_content->setCol(6, 0, array('valign' => 'top'), we_html_forms::radiobutton(we_base_link::TYPE_OBJ, ($linkType == we_base_link::TYPE_OBJ), 'we_' . $this->Name . '_txt[LinkType]', g_l('linklistEdit', '[objectFile]'), true, 'defaultfont', '_EditorFrame.setEditorIsHot(true);'));
 			$_content->setCol(6, 1, array('class' => 'defaultfont', 'valign' => 'top'), $_obj_link);
 		}
 
@@ -897,7 +897,7 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 		$yuiSuggest->setLabel('href');
 		$_rollover = $yuiSuggest->getHTML();
 
-		$_content->setCol((defined('OBJECT_TABLE') ? 10 : 8), 0, array('valign' => 'top'), we_forms::checkbox(1, $RollOverFlag, $checkFlagName, 'Roll Over', false, 'defaultfont', "_EditorFrame.setEditorIsHot(true); this.form.elements['$RollOverFlagName'].value = (this.checked ? 1 : 0); ") . $this->htmlHidden($RollOverFlagName, $RollOverFlag));
+		$_content->setCol((defined('OBJECT_TABLE') ? 10 : 8), 0, array('valign' => 'top'), we_html_forms::checkbox(1, $RollOverFlag, $checkFlagName, 'Roll Over', false, 'defaultfont', "_EditorFrame.setEditorIsHot(true); this.form.elements['$RollOverFlagName'].value = (this.checked ? 1 : 0); ") . $this->htmlHidden($RollOverFlagName, $RollOverFlag));
 		$_content->setCol((defined('OBJECT_TABLE') ? 10 : 8), 1, array('class' => 'defaultfont', 'valign' => 'top'), $_rollover);
 
 		return $_content->getHtml();

@@ -339,7 +339,7 @@ abstract class we_root extends we_class{
 		if($canChange){
 			$n = 'we_' . $this->Name . '_RestrictOwners';
 			$v = $this->RestrictOwners ? true : false;
-			return we_forms::checkboxWithHidden($v ? true : false, $n, g_l('weClass', '[limitedAccess]'), false, 'defaultfont', "setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('reload_editpage');");
+			return we_html_forms::checkboxWithHidden($v ? true : false, $n, g_l('weClass', '[limitedAccess]'), false, 'defaultfont', "setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('reload_editpage');");
 		} else {
 			return '<table style="border-spacing: 0px;border-style:none;" cellpadding="0"><tr><td><img src="' . TREE_IMAGE_DIR . ($this->RestrictOwners ? 'check1_disabled.gif' : 'check0_disabled.gif') . '" /></td><td class="defaultfont">&nbsp;' . g_l('weClass', "[limitedAccess]") . '</td></tr></table>';
 		}
@@ -357,7 +357,7 @@ abstract class we_root extends we_class{
 				$icon = isset($foo['Icon']) ? ICON_DIR . $foo['Icon'] : ICON_DIR . 'user.gif';
 				$_path = isset($foo['Path']) ? $foo['Path'] : '';
 				$content .= '<tr><td><img src="' . $icon . '" width="16" height="18" /></td><td class="defaultfont">' . $_path . '</td><td>' .
-					we_forms::checkboxWithHidden(isset($ownersReadOnly[$owner]) ? $ownersReadOnly[$owner] : '', 'we_owners_read_only[' . $owner . ']', g_l('weClass', '[readOnly]'), false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);', !$canChange) .
+					we_html_forms::checkboxWithHidden(isset($ownersReadOnly[$owner]) ? $ownersReadOnly[$owner] : '', 'we_owners_read_only[' . $owner . ']', g_l('weClass', '[readOnly]'), false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);', !$canChange) .
 					'</td><td>' . ($canChange ? we_button::create_button('image:btn_function_trash', "javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('del_owner','" . $owner . "');") : '') . '</td></tr>';
 			}
 		} else {

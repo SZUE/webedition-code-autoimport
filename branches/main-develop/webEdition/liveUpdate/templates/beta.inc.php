@@ -67,7 +67,7 @@ $content = '
 	</td>
 </tr>
 <tr>
-	<td></td><td><form name="betaform" action="' . $_SERVER['SCRIPT_NAME'] . '?section=beta" method="post">' . we_forms::checkboxWithHidden($ischecked, 'setTestUpdate', $GLOBALS['l_liveUpdate']['beta']['lookForUpdate'], '', 'defaultfont', 'betaform.submit()') . '</form>
+	<td></td><td><form name="betaform" action="' . $_SERVER['SCRIPT_NAME'] . '?section=beta" method="post">' . we_html_forms::checkboxWithHidden($ischecked, 'setTestUpdate', $GLOBALS['l_liveUpdate']['beta']['lookForUpdate'], '', 'defaultfont', 'betaform.submit()') . '</form>
 		<br />
 		<br />
 	</td>

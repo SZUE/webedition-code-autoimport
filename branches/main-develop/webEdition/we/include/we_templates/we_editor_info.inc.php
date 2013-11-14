@@ -207,8 +207,8 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js');
 		}
 	}
 
-	print we_multiIconBox::getJS() .
-		we_multiIconBox::getHTML('', '100%', $parts, 20, '', -1, '', '', false);
+	print we_html_multiIconBox::getJS() .
+		we_html_multiIconBox::getHTML('', '100%', $parts, 20, '', -1, '', '', false);
 	?>
 </body>
 </html>

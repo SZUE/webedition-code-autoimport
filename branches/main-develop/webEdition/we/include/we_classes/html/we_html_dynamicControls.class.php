@@ -28,7 +28,7 @@
  *
  * Provides functions for creating layers that can hide and unhide.
  */
-class we_dynamicControls{
+class we_html_dynamicControls{
 	/*	 * ***********************************************************************
 	 * VARIABLES
 	 * *********************************************************************** */
@@ -45,7 +45,7 @@ class we_dynamicControls{
 	/**
 	 * Constructor of class.
 	 *
-	 * @return     we_dynamicControls
+	 * @return     we_html_dynamicControls
 	 */
 	function __construct(){
 		// Set path to images for the groups arrows
@@ -376,7 +376,7 @@ class we_dynamicControls{
 								<tr>
 									<td></td>
 									<td style="padding:5px 0;">
-										' . we_forms::checkbox(($_group_item_value ? $_group_item_value : "0"), ($_group_item_value ? true : false), $item_names . "_Permission_" . $_group_item_key, $titles[$_groups_key][$_group_item_key], false, "defaultfont", "top.content.setHot();") . '</td>
+										' . we_html_forms::checkbox(($_group_item_value ? $_group_item_value : "0"), ($_group_item_value ? true : false), $item_names . "_Permission_" . $_group_item_key, $titles[$_groups_key][$_group_item_key], false, "defaultfont", "top.content.setHot();") . '</td>
 								<tr>
 									<td>
 										' . we_html_tools::getPixel(15, 3) . '</td>

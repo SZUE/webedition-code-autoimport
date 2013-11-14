@@ -160,7 +160,7 @@ function we_tag_href($attribs){
 		'<table class="weEditTable padding0 spacing2">' .
 		($type == we_base_link::TYPE_ALL || $type == we_base_link::TYPE_INT ? '
 <tr>
-	<td class="weEditmodeStyle">' . ($type == we_base_link::TYPE_ALL ? we_forms::radiobutton(1, $int, $int_elem_Name, $span . g_l('tags', '[int_href]') . ':</span>') : $span . g_l('tags', '[int_href]') . ':</span><input type="hidden" name="' . $int_elem_Name . '" value="1" />' ) . '</td>
+	<td class="weEditmodeStyle">' . ($type == we_base_link::TYPE_ALL ? we_html_forms::radiobutton(1, $int, $int_elem_Name, $span . g_l('tags', '[int_href]') . ':</span>') : $span . g_l('tags', '[int_href]') . ':</span><input type="hidden" name="' . $int_elem_Name . '" value="1" />' ) . '</td>
 	<td class="weEditmodeStyle" style="width:' . ($size + 20) . 'px">' . $yuiSuggest->getHTML() . '</td>
 	<td class="weEditmodeStyle">' . $but . '</td>
 	<td class="weEditmodeStyle">' . $open . '</td>
@@ -168,7 +168,7 @@ function we_tag_href($attribs){
 	</tr>' : '') .
 		($type == we_base_link::TYPE_ALL || $type == we_base_link::TYPE_EXT ? '
 <tr>
-	<td class="weEditmodeStyle">' . ($type == we_base_link::TYPE_ALL ? we_forms::radiobutton(0, !$int, $int_elem_Name, $span . g_l('tags', '[ext_href]') . ':</span>') : $span . g_l('tags', '[ext_href]') . ':</span><input type="hidden" name="' . $int_elem_Name . '" value="0" />') . '</td>
+	<td class="weEditmodeStyle">' . ($type == we_base_link::TYPE_ALL ? we_html_forms::radiobutton(0, !$int, $int_elem_Name, $span . g_l('tags', '[ext_href]') . ':</span>') : $span . g_l('tags', '[ext_href]') . ':</span><input type="hidden" name="' . $int_elem_Name . '" value="0" />') . '</td>
 	<td class="weEditmodeStyle" style="width:' . ($size + 20) . 'px"><input style="width:' . ($size) . 'px;"' . ($type == we_base_link::TYPE_ALL ? 'onchange="this.form.elements[\'' . $int_elem_Name . '\'][1].checked = true;"' : '') . ' type="text" name="we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']" placeholder="http://example.org" value="' . $extPath . '" ' . $attr . ' /></td>
 	<td class="weEditmodeStyle">' . $but2 . '</td>
 	<td class="weEditmodeStyle">' . $trashbut2 . '</td>

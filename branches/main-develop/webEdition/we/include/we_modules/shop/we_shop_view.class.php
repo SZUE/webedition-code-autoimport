@@ -986,7 +986,7 @@ function we_cmd() {
 					);
 				}
 
-				print we_multiIconBox::getHTML('', '100%', $parts, 30);
+				print we_html_multiIconBox::getHTML('', '100%', $parts, 30);
 
 				//
 				// "Html output for order with articles"
@@ -1334,7 +1334,7 @@ function submitForm() {
 					}
 
 
-					print we_multiIconBox::getHTML('', '100%', $parts, 30, we_button::position_yes_no_cancel($saveBut, '', $cancelBut), -1, '', '', false, g_l('modules_shop', '[add_article][title]')) .
+					print we_html_multiIconBox::getHTML('', '100%', $parts, 30, we_button::position_yes_no_cancel($saveBut, '', $cancelBut), -1, '', '', false, g_l('modules_shop', '[add_article][title]')) .
 						'</form>
 		</body>
 		</html>';
@@ -1432,7 +1432,7 @@ function submitForm() {
 						)
 					);
 
-					print we_multiIconBox::getHTML('', '100%', $parts, 30, we_button::position_yes_no_cancel($saveBut, '', $cancelBut), -1, '', '', false, g_l('modules_shop', '[add_shop_field]'));
+					print we_html_multiIconBox::getHTML('', '100%', $parts, 30, we_button::position_yes_no_cancel($saveBut, '', $cancelBut), -1, '', '', false, g_l('modules_shop', '[add_shop_field]'));
 					unset($saveBut);
 					unset($cancelBut);
 					unset($parts);
@@ -1526,7 +1526,7 @@ function submitForm() {
 						<form name="we_form" target="edbody">' .
 						we_html_tools::hidden('bid', $_REQUEST['bid']) .
 						we_html_tools::hidden("we_cmd[]", 'save_shipping_cost') .
-						we_multiIconBox::getHTML('', '100%', $parts, 30, we_button::position_yes_no_cancel($saveBut, '', $cancelBut), -1, '', '', false, g_l('modules_shop', '[edit_shipping_cost][title]')) .
+						we_html_multiIconBox::getHTML('', '100%', $parts, 30, we_button::position_yes_no_cancel($saveBut, '', $cancelBut), -1, '', '', false, g_l('modules_shop', '[edit_shipping_cost][title]')) .
 						'</form></body></html>';
 					exit;
 					break;
@@ -1674,7 +1674,7 @@ function submitForm() {
 						<form name="we_form" target="edbody">' .
 						we_html_tools::hidden('bid', $_REQUEST['bid']) .
 						we_html_tools::hidden('we_cmd[]', 'save_order_customer') .
-						we_multiIconBox::getHTML('', '100%', $parts, 30, we_button::position_yes_no_cancel($saveBut, '', $cancelBut), -1, '', '', false, g_l('modules_shop', '[preferences][customerdata]'), '', 560) .
+						we_html_multiIconBox::getHTML('', '100%', $parts, 30, we_button::position_yes_no_cancel($saveBut, '', $cancelBut), -1, '', '', false, g_l('modules_shop', '[preferences][customerdata]'), '', 560) .
 						'</form>
 						</body>
 						</html>';

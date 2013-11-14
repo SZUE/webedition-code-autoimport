@@ -1514,25 +1514,25 @@ class we_search_view extends we_tool_view{
 		switch($whichSearch){
 			case "DocSearch" :
 				$_table->setCol(
-					0, 0, array(), we_forms::checkboxWithHidden(
+					0, 0, array(), we_html_forms::checkboxWithHidden(
 						$this->Model->searchForTextDocSearch ? true : false, "searchForTextDocSearch", g_l('searchtool', '[onlyFilename]'), false, 'defaultfont', ''));
 
 				$_table->setCol(
-					1, 0, array(), we_forms::checkboxWithHidden(
+					1, 0, array(), we_html_forms::checkboxWithHidden(
 						$this->Model->searchForTitleDocSearch ? true : false, "searchForTitleDocSearch", g_l('searchtool', '[onlyTitle]'), false, 'defaultfont', ''));
 
 				$_table->setCol(
-					2, 0, array(), we_forms::checkboxWithHidden(
+					2, 0, array(), we_html_forms::checkboxWithHidden(
 						$this->Model->searchForContentDocSearch ? true : false, "searchForContentDocSearch", g_l('searchtool', '[Content]'), false, 'defaultfont', ''));
 
 				break;
 			case "TmplSearch" :
 				$_table->setCol(
-					0, 0, array(), we_forms::checkboxWithHidden(
+					0, 0, array(), we_html_forms::checkboxWithHidden(
 						$this->Model->searchForTextTmplSearch ? true : false, "searchForTextTmplSearch", g_l('searchtool', '[onlyFilename]'), false, 'defaultfont', ''));
 
 				$_table->setCol(
-					1, 0, array(), we_forms::checkboxWithHidden(
+					1, 0, array(), we_html_forms::checkboxWithHidden(
 						$this->Model->searchForContentTmplSearch ? true : false, "searchForContentTmplSearch", g_l('searchtool', '[Content]'), false, 'defaultfont', ''));
 
 				break;
@@ -1657,32 +1657,32 @@ class we_search_view extends we_tool_view{
 
 		if(permissionhandler::hasPerm('CAN_SEE_DOCUMENTS')){
 			$_table->setCol(
-				0, 0, array(), we_forms::checkboxWithHidden(
+				0, 0, array(), we_html_forms::checkboxWithHidden(
 					$this->Model->search_tables_advSearch[FILE_TABLE] ? true : false, 'search_tables_advSearch[' . FILE_TABLE . ']', g_l('searchtool', '[documents]'), false, 'defaultfont', ''));
 		}
 
 		if(permissionhandler::hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE){
 			$_table->setCol(
-				1, 0, array(), we_forms::checkboxWithHidden(
+				1, 0, array(), we_html_forms::checkboxWithHidden(
 					$this->Model->search_tables_advSearch[TEMPLATES_TABLE] ? true : false, 'search_tables_advSearch[' . TEMPLATES_TABLE . ']', g_l('searchtool', '[templates]'), false, 'defaultfont', ''));
 		}
 
 		if(defined('OBJECT_TABLE')){
 			if(permissionhandler::hasPerm('CAN_SEE_OBJECTFILES')){
 				$_table->setCol(
-					0, 1, array(), we_forms::checkboxWithHidden(
+					0, 1, array(), we_html_forms::checkboxWithHidden(
 						$this->Model->search_tables_advSearch[OBJECT_FILES_TABLE] ? true : false, 'search_tables_advSearch[' . OBJECT_FILES_TABLE . ']', g_l('searchtool', '[objects]'), false, 'defaultfont', ''));
 			}
 			if(permissionhandler::hasPerm('CAN_SEE_OBJECTS') && $_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE){
 				$_table->setCol(
-					1, 1, array(), we_forms::checkboxWithHidden(
+					1, 1, array(), we_html_forms::checkboxWithHidden(
 						$this->Model->search_tables_advSearch[OBJECT_TABLE] ? true : false, 'search_tables_advSearch[' . OBJECT_TABLE . ']', g_l('searchtool', '[classes]'), false, 'defaultfont', ''));
 			}
 		}
 
 		if(permissionhandler::hasPerm('SEE_VERSIONS')){
 			$_table->setCol(
-				0, 2, array(), we_forms::checkboxWithHidden(
+				0, 2, array(), we_html_forms::checkboxWithHidden(
 					$this->Model->search_tables_advSearch[VERSIONS_TABLE] ? true : false, 'search_tables_advSearch[' . VERSIONS_TABLE . ']', g_l('versions', '[versions]'), false, 'defaultfont', ''));
 		}
 
@@ -2344,12 +2344,12 @@ class we_search_view extends we_tool_view{
 
 						$content[$f][0]["version"][$k] = "";
 						$content[$f][1]["version"][$k] = "<span style='margin-left:5px;'>" . g_l('versions', '[version]') . " " . $version . "</span> <br/><span style='font-weight:100;color:red;margin-left:10px;'>" . $classNotExistsText . "</span>";
-						$content[$f][2]["version"][$k] = "<div style='margin-bottom:5px;margin-left:5px;float:left;'>" . we_forms::radiobutton(
+						$content[$f][2]["version"][$k] = "<div style='margin-bottom:5px;margin-left:5px;float:left;'>" . we_html_forms::radiobutton(
 								$ID, 0, "resetVersion[" . $_result[$f]["ID"] . "_" . $_result[$f]["Table"] . "]", "", false, "defaultfont", "", $resetDisabled) . "</div><div style='float:left;margin-left:30px;'>" . $previewButton . "</div>";
 						$content[$f][3]["version"][$k] = "<span style='margin-left:5px;'>" . date("d.m.Y", $timestamp) . "</span>";
 						$content[$f][4]["version"][$k] = "";
 						$content[$f][5]["version"][$k] = "<div style='margin-left:5px;'>";
-						$content[$f][5]["version"][$k] .= ($_result[$f]["ContentType"] == "text/webedition" || $_result[$f]["ContentType"] == "text/html" || $_result[$f]["ContentType"] == "objectFile") ? we_forms::checkbox(
+						$content[$f][5]["version"][$k] .= ($_result[$f]["ContentType"] == "text/webedition" || $_result[$f]["ContentType"] == "text/html" || $_result[$f]["ContentType"] == "objectFile") ? we_html_forms::checkbox(
 								$ID, 0, "publishVersion_" . $ID, g_l('versions', '[publishIfReset]'), false, "middlefont", "") : "";
 						$content[$f][5]["version"][$k] .= "</div>";
 					}
@@ -2357,7 +2357,7 @@ class we_search_view extends we_tool_view{
 				$docExists = f("SELECT ID FROM " . escape_sql_query($_result[$f]["docTable"]) . " WHERE ID=" . intval($_result[$f]["docID"]), "ID", $DB_WE);
 
 				$publishCheckbox = (!$showPubCheckbox) ? (($_result[$f]["ContentType"] == "text/webedition" || $_result[$f]["ContentType"] == "text/html" || $_result[$f]["ContentType"] == "objectFile") && permissionhandler::hasPerm(
-						'PUBLISH') && $docExists != "") ? we_forms::checkbox(
+						'PUBLISH') && $docExists != "") ? we_html_forms::checkbox(
 							$_result[$f]["docID"] . "_" . $_result[$f]["docTable"], 0, "publish_docs_" . $whichSearch, "", false, "middlefont", "") : we_html_tools::getPixel(20, 10)  : '';
 
 				//if (stripos($GLOBALS['WE_LANGUAGE'],'_UTF-8') !==false) { //was #4422
@@ -2568,7 +2568,7 @@ class we_search_view extends we_tool_view{
 			;
 		}
 		if(permissionhandler::hasPerm('PUBLISH') && ($whichSearch == "AdvSearch" || $whichSearch == "DocSearch")){
-			$publishButtonCheckboxAll = we_forms::checkbox(1, 0, "publish_all_" . $whichSearch, "", false, "middlefont", "checkAllPubChecks('" . $whichSearch . "')");
+			$publishButtonCheckboxAll = we_html_forms::checkbox(1, 0, "publish_all_" . $whichSearch, "", false, "middlefont", "checkAllPubChecks('" . $whichSearch . "')");
 			$publishButton = we_button::create_button("publish", "javascript:publishDocs('" . $whichSearch . "');", true, 100, 22, "", "");
 		}
 

@@ -142,8 +142,8 @@ print STYLESHEET;
 		);
 	}
 
-	print we_multiIconBox::getJS() .
-		we_multiIconBox::getHTML("weMessageView", "100%", $parts, 30, "", -1, "", "", false, (isset($messaging->selected_message['hdrs']['ClassName']) && $messaging->selected_message['hdrs']['ClassName'] == 'we_todo' ? g_l('modules_messaging', "[type_todo]") : g_l('modules_messaging', "[type_message]")));
+	print we_html_multiIconBox::getJS() .
+		we_html_multiIconBox::getHTML("weMessageView", "100%", $parts, 30, "", -1, "", "", false, (isset($messaging->selected_message['hdrs']['ClassName']) && $messaging->selected_message['hdrs']['ClassName'] == 'we_todo' ? g_l('modules_messaging', "[type_todo]") : g_l('modules_messaging', "[type_message]")));
 	?>
 </body>
 </html>

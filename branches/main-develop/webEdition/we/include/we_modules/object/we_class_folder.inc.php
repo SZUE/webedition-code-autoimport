@@ -717,7 +717,7 @@ class we_class_folder extends we_folder{
 			we_html_tools::hidden("do", "") .
 			'</td>
 			<td>&nbsp;</td>
-			<td>' . we_forms::checkboxWithHidden($this->GreenOnly == 1 ? true : false, "we_" . $this->Name . "_GreenOnly", g_l('modules_objectClassfoldersearch', '[sicht]'), false, "defaultfont", "toggleShowVisible(document.getElementById('_we_" . $this->Name . "_GreenOnly'));") . '</td>
+			<td>' . we_html_forms::checkboxWithHidden($this->GreenOnly == 1 ? true : false, "we_" . $this->Name . "_GreenOnly", g_l('modules_objectClassfoldersearch', '[sicht]'), false, "defaultfont", "toggleShowVisible(document.getElementById('_we_" . $this->Name . "_GreenOnly'));") . '</td>
 		</tr>
 		<tr>
 			<td>' . we_html_tools::getPixel(128, 20) . '</td>

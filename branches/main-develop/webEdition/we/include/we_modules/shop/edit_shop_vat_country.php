@@ -89,7 +89,7 @@ foreach($customerTableFields as $tblField){
 $defaultInput = we_class::htmlSelect('defaultValue', array('true' => 'true', 'false' => 'false'), 1, $weShopVatRule->defaultValue);
 // select field containing land
 $countrySelect = we_class::htmlSelect('stateField', $selectFields, 1, $weShopVatRule->stateField);
-$countrySelectISO = we_forms::checkboxWithHidden($weShopVatRule->stateFieldIsISO, 'stateFieldIsISO', g_l('modules_shop', '[preferences][ISO-Kodiert]'), false, "defaultfont");
+$countrySelectISO = we_html_forms::checkboxWithHidden($weShopVatRule->stateFieldIsISO, 'stateFieldIsISO', g_l('modules_shop', '[preferences][ISO-Kodiert]'), false, "defaultfont");
 // states which must always pay vat
 
 $textAreaLiableStates = we_class::htmlTextArea('liableToVat', 3, 30, implode("\n", $weShopVatRule->liableToVat));
@@ -179,7 +179,7 @@ print '</head>
 	<input type="hidden" name="we_cmd[0]" value="saveVatRule" />
 ';
 
-print we_multiIconBox::getHTML(
+print we_html_multiIconBox::getHTML(
 		'weShopCountryVat', "100%", $parts, 30, we_button::position_yes_no_cancel(
 			we_button::create_button('save', 'javascript:we_cmd(\'save\');'), '', we_button::create_button('cancel', 'javascript:we_cmd(\'close\');')
 		), -1, '', '', false, g_l('modules_shop', '[vat_country][box_headline]'), '', 741

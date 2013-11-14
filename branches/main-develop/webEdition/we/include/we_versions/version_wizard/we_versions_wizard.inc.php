@@ -169,12 +169,12 @@ abstract class we_versions_wizard{
 		$parts = array(
 			array(
 				"headline" => "",
-				"html" => we_forms::radiobutton("delete_versions", ($type == self::DELETE_VERSIONS), "type", g_l('versions', '[delete_versions]'), true, "defaultfont", "", false, g_l('versions', '[txt_delete_versions]'), 0, 495),
+				"html" => we_html_forms::radiobutton("delete_versions", ($type == self::DELETE_VERSIONS), "type", g_l('versions', '[delete_versions]'), true, "defaultfont", "", false, g_l('versions', '[txt_delete_versions]'), 0, 495),
 				"space" => 0
 			),
 			array(
 				"headline" => "",
-				"html" => we_forms::radiobutton("reset_versions", ($type == self::RESET_VERSIONS), "type", g_l('versions', '[reset_versions]'), true, "defaultfont", "", false, g_l('versions', '[txt_reset_versions]'), 0, 495),
+				"html" => we_html_forms::radiobutton("reset_versions", ($type == self::RESET_VERSIONS), "type", g_l('versions', '[reset_versions]'), true, "defaultfont", "", false, g_l('versions', '[txt_reset_versions]'), 0, 495),
 				"space" => 0
 		));
 
@@ -242,7 +242,7 @@ set_button_state(false);';
 
 		return array(
 			$js,
-			we_multiIconBox::getHTML("", "100%", $parts, 40, "", -1, "", "", false, g_l('versions', '[versioning]')) .
+			we_html_multiIconBox::getHTML("", "100%", $parts, 40, "", -1, "", "", false, g_l('versions', '[versioning]')) .
 			$hiddenFields .
 			we_html_element::htmlHidden(array("name" => "fr", "value" => "body")) .
 			we_html_element::htmlHidden(array("name" => "we_cmd[0]", "value" => "versions_wizard")) .
@@ -284,10 +284,10 @@ set_button_state(false);';
 			$checked = isset($_REQUEST[$k]) ? $_REQUEST[$k] : 0;
 			if($k == "all"){
 				$jvs = "checkAll(this);";
-				$content .= we_forms::checkbox($val, $checked, $name, g_l('versions', '[versions_all]'), false, "defaultfont", $jvs) . "<br/>";
+				$content .= we_html_forms::checkbox($val, $checked, $name, g_l('versions', '[versions_all]'), false, "defaultfont", $jvs) . "<br/>";
 			} else {
 				$jvs = "checkAllRevert(this);";
-				$content .= we_forms::checkbox($val, $checked, $name, g_l('contentTypes', '[' . $txt . ']'), false, "defaultfont", $jvs) . "<br/>";
+				$content .= we_html_forms::checkbox($val, $checked, $name, g_l('contentTypes', '[' . $txt . ']'), false, "defaultfont", $jvs) . "<br/>";
 			}
 		}
 		$parts = array(
@@ -484,7 +484,7 @@ set_button_state(false);';
 
 		return array(
 			$js,
-			we_multiIconBox::getHTML("", "100%", $parts, 40, "", -1, "", "", false, g_l('versions', '[delete_versions]') . " - " . g_l('versions', '[step]') . " 1 " . g_l('versions', '[of]') . " 2") .
+			we_html_multiIconBox::getHTML("", "100%", $parts, 40, "", -1, "", "", false, g_l('versions', '[delete_versions]') . " - " . g_l('versions', '[step]') . " 1 " . g_l('versions', '[of]') . " 2") .
 			we_html_element::htmlHidden(array("name" => "fr", "value" => "body")) .
 			we_html_element::htmlHidden(array("name" => "type", "value" => $type)) .
 			we_html_element::htmlHidden(array("name" => "we_cmd[0]", "value" => "versions_wizard")) .
@@ -512,15 +512,15 @@ set_button_state(false);';
 			$checked = isset($_REQUEST[$k]) ? $_REQUEST[$k] : 0;
 			if($k == "all"){
 				$jvs = "checkAll(this);";
-				$content .= we_forms::checkbox($val, $checked, $name, g_l('versions', '[versions_all]'), false, "defaultfont", $jvs) . "<br/>";
+				$content .= we_html_forms::checkbox($val, $checked, $name, g_l('versions', '[versions_all]'), false, "defaultfont", $jvs) . "<br/>";
 			} else {
 				$jvs = "checkAllRevert(this);";
-				$content .= we_forms::checkbox($val, $checked, $name, g_l('contentTypes', '[' . $txt . ']'), false, "defaultfont", $jvs) . "<br/>";
+				$content .= we_html_forms::checkbox($val, $checked, $name, g_l('contentTypes', '[' . $txt . ']'), false, "defaultfont", $jvs) . "<br/>";
 			}
 		}
 
 		$versions_reset_date = weVersionsSearch::getDateSelector("", "reset_date", "_1", $version_reset_date);
-		$doPublish = we_forms::checkbox($version_reset_doPublish, $version_reset_doPublish, "reset_doPublish", g_l('versions', '[publishIfReset]'), false, "defaultfont", "");
+		$doPublish = we_html_forms::checkbox($version_reset_doPublish, $version_reset_doPublish, "reset_doPublish", g_l('versions', '[publishIfReset]'), false, "defaultfont", "");
 
 
 		$parts = array(
@@ -735,7 +735,7 @@ set_button_state(false);';
 
 		return array(
 			$js,
-			we_multiIconBox::getHTML(
+			we_html_multiIconBox::getHTML(
 				"", "100%", $parts, 40, "", -1, "", "", false, g_l('versions', '[reset_versions]') . " - " . g_l('versions', '[step]') . " 1 " . g_l('versions', '[of]') . " 2") .
 			we_html_element::htmlHidden(array("name" => "fr", "value" => "body")) .
 			we_html_element::htmlHidden(array("name" => "type", "value" => $type)) .
@@ -947,7 +947,7 @@ set_button_state(false);';
 
 		return array(
 			self::getPage2Js(!empty($cont), 'delete'),
-			we_multiIconBox::getHTML("", "100%", $parts, 40, "", -1, "", "", false, g_l('versions', '[delete_versions]') . " - " . g_l('versions', '[step]') . " 2 " . g_l('versions', '[of]') . " 2") .
+			we_html_multiIconBox::getHTML("", "100%", $parts, 40, "", -1, "", "", false, g_l('versions', '[delete_versions]') . " - " . g_l('versions', '[step]') . " 2 " . g_l('versions', '[of]') . " 2") .
 			$hiddenFields .
 			we_html_element::htmlHidden(array("name" => "fr", "value" => "body")) .
 			we_html_element::htmlHidden(array("name" => "type", "value" => $type)) .
@@ -1072,7 +1072,7 @@ set_button_state(false);';
 
 		return array(
 			self::getPage2Js(!empty($cont), "reset"),
-			we_multiIconBox::getHTML("", "100%", $parts, 40, "", -1, "", "", false, g_l('versions', '[reset_versions]') . " - " . g_l('versions', '[step]') . " 2 " . g_l('versions', '[of]') . " 2") .
+			we_html_multiIconBox::getHTML("", "100%", $parts, 40, "", -1, "", "", false, g_l('versions', '[reset_versions]') . " - " . g_l('versions', '[step]') . " 2 " . g_l('versions', '[of]') . " 2") .
 			$hiddenFields .
 			we_html_element::htmlHidden(array("name" => "fr", "value" => "body")) .
 			we_html_element::htmlHidden(array("name" => "type", "value" => $type)) .

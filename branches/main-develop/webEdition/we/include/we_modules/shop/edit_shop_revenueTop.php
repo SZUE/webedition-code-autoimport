@@ -373,7 +373,7 @@ if(($maxRows = f('SELECT COUNT(1) AS a ' . $query, 'a', $DB_WE))){
 	);
 }
 
-print we_multiIconBox::getHTML('revenues', '100%', $parts, 30, '', -1, '', '', false, sprintf(g_l('tabs', '[module][revenueTotal]'), $selectedYear));
+print we_html_multiIconBox::getHTML('revenues', '100%', $parts, 30, '', -1, '', '', false, sprintf(g_l('tabs', '[module][revenueTotal]'), $selectedYear));
 ?>
 </form>
 </body>

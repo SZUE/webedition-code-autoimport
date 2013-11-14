@@ -46,7 +46,7 @@ function we_tag_sessionField($attribs, $content){
 				array('caps' => 4, 'small' => 4, 'nums' => 4, 'specs' => 0) :
 				array('caps' => 3, 'small' => 4, 'nums' => 3, 'specs' => 2));
 
-		$pass = new rndConditionPass(7, $condition);
+		$pass = new we_customer_generatePassword(7, $condition);
 		$orgVal = $pass->PassGen();
 		//echo $tmppass;
 	}
@@ -196,7 +196,7 @@ function we_tag_sessionField($attribs, $content){
 				require_once(JS_PATH . 'we_textarea_include.inc.php');
 				$autobr = $autobrAttr ? 'on' : 'off';
 				$showAutobr = isset($attribs['autobr']);
-				return we_forms::weTextarea('s[' . $name . ']', $orgVal, $attribs, $autobr, 'autobr', $showAutobr, $GLOBALS['we_doc']->getHttpPath(), false, false, $xml, $removeFirstParagraph, '');
+				return we_html_forms::weTextarea('s[' . $name . ']', $orgVal, $attribs, $autobr, 'autobr', $showAutobr, $GLOBALS['we_doc']->getHttpPath(), false, false, $xml, $removeFirstParagraph, '');
 			}
 		case 'radio':
 			if((!isset($_SESSION['webuser'][$name])) && $checked){

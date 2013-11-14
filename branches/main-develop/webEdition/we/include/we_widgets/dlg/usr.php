@@ -59,7 +59,7 @@ $preview_button = we_button::create_button("preview", "javascript:preview();", f
 $cancel_button = we_button::create_button("close", "javascript:exit_close();");
 $buttons = we_button::position_yes_no_cancel($save_button, $preview_button, $cancel_button);
 
-$sTblWidget = we_multiIconBox::getHTML(
+$sTblWidget = we_html_multiIconBox::getHTML(
 		"usrProps", "100%", $parts, 30, $buttons, -1, "", "", "", g_l('cockpit', '[users_online]'));
 
 print we_html_element::htmlDocType() . we_html_element::htmlHtml(

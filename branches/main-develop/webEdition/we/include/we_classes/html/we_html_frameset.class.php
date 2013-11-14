@@ -31,7 +31,7 @@
  * Description: Provides functions for creating html tags used in forms.
  */
 //FIXME:remove
-class we_html_frameset extends we_baseCollection{
+class we_html_frameset extends we_html_baseCollection{
 
 	/**
 	 * Constructor
@@ -58,7 +58,7 @@ class we_html_frameset extends we_baseCollection{
 	 * @return		void
 	 */
 	function addFrame($attribs=array()){
-		$this->childs[] = new we_baseElement("frame", false, $attribs);
+		$this->childs[] = new we_html_baseElement("frame", false, $attribs);
 	}
 
 	/**

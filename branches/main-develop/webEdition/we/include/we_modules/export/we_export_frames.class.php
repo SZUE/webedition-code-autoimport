@@ -248,9 +248,9 @@ class we_export_frames extends weModuleFrames{
 
 		');
 
-		$out .= we_html_element::htmlDiv(array('id' => 'tab1', 'style' => ($tabNr == 1 ? '' : 'display: none')), we_multiIconBox::getHTML('', "100%", $this->getHTMLTab1(), 30, '', -1, '', '', false, $preselect)) .
-			we_html_element::htmlDiv(array('id' => 'tab2', 'style' => ($tabNr == 2 ? '' : 'display: none')), we_multiIconBox::getHTML('', "100%", $this->getHTMLTab2(), 30, '', -1, '', '', false, $preselect)) .
-			we_html_element::htmlDiv(array('id' => 'tab3', 'style' => ($tabNr == 3 ? '' : 'display: none')), we_multiIconBox::getHTML('', "100%", $this->getHTMLTab3(), 30, '', -1, '', '', false, $preselect));
+		$out .= we_html_element::htmlDiv(array('id' => 'tab1', 'style' => ($tabNr == 1 ? '' : 'display: none')), we_html_multiIconBox::getHTML('', "100%", $this->getHTMLTab1(), 30, '', -1, '', '', false, $preselect)) .
+			we_html_element::htmlDiv(array('id' => 'tab2', 'style' => ($tabNr == 2 ? '' : 'display: none')), we_html_multiIconBox::getHTML('', "100%", $this->getHTMLTab2(), 30, '', -1, '', '', false, $preselect)) .
+			we_html_element::htmlDiv(array('id' => 'tab3', 'style' => ($tabNr == 3 ? '' : 'display: none')), we_html_multiIconBox::getHTML('', "100%", $this->getHTMLTab3(), 30, '', -1, '', '', false, $preselect));
 
 		return $out;
 	}
@@ -355,13 +355,13 @@ function closeAllType(){
 
 	function getHTMLTab2(){
 		$formattable = new we_html_table(array("cellpadding" => 2, "cellspacing" => 2, "border" => 0), 5, 1);
-		$formattable->setCol(0, 0, null, we_forms::checkboxWithHidden($this->View->export->HandleDefTemplates, "HandleDefTemplates", g_l('export', "[handle_def_templates]"), false, 'defaultfont', $this->topFrame . '.hot=1;'));
-		$formattable->setCol(1, 0, null, we_forms::checkboxWithHidden(($this->View->export->HandleDocIncludes ? true : false), "HandleDocIncludes", g_l('export', "[handle_document_includes]"), false, 'defaultfont', $this->topFrame . '.hot=1;'));
+		$formattable->setCol(0, 0, null, we_html_forms::checkboxWithHidden($this->View->export->HandleDefTemplates, "HandleDefTemplates", g_l('export', "[handle_def_templates]"), false, 'defaultfont', $this->topFrame . '.hot=1;'));
+		$formattable->setCol(1, 0, null, we_html_forms::checkboxWithHidden(($this->View->export->HandleDocIncludes ? true : false), "HandleDocIncludes", g_l('export', "[handle_document_includes]"), false, 'defaultfont', $this->topFrame . '.hot=1;'));
 		if(defined("OBJECT_TABLE")){
-			$formattable->setCol(2, 0, null, we_forms::checkboxWithHidden(($this->View->export->HandleObjIncludes ? true : false), "HandleObjIncludes", g_l('export', "[handle_object_includes]"), false, 'defaultfont', $this->topFrame . '.hot=1;'));
+			$formattable->setCol(2, 0, null, we_html_forms::checkboxWithHidden(($this->View->export->HandleObjIncludes ? true : false), "HandleObjIncludes", g_l('export', "[handle_object_includes]"), false, 'defaultfont', $this->topFrame . '.hot=1;'));
 		}
-		$formattable->setCol(3, 0, null, we_forms::checkboxWithHidden(($this->View->export->HandleDocLinked ? true : false), "HandleDocLinked", g_l('export', "[handle_document_linked]"), false, 'defaultfont', $this->topFrame . '.hot=1;'));
-		$formattable->setCol(4, 0, null, we_forms::checkboxWithHidden(($this->View->export->HandleThumbnails ? true : false), "HandleThumbnails", g_l('export', "[handle_thumbnails]"), false, 'defaultfont', $this->topFrame . '.hot=1;'));
+		$formattable->setCol(3, 0, null, we_html_forms::checkboxWithHidden(($this->View->export->HandleDocLinked ? true : false), "HandleDocLinked", g_l('export', "[handle_document_linked]"), false, 'defaultfont', $this->topFrame . '.hot=1;'));
+		$formattable->setCol(4, 0, null, we_html_forms::checkboxWithHidden(($this->View->export->HandleThumbnails ? true : false), "HandleThumbnails", g_l('export', "[handle_thumbnails]"), false, 'defaultfont', $this->topFrame . '.hot=1;'));
 
 		$parts = array(
 			array(
@@ -372,8 +372,8 @@ function closeAllType(){
 
 		if(defined("OBJECT_TABLE")){
 			$formattable = new we_html_table(array("cellpadding" => 2, "cellspacing" => 2, "border" => 0), 3, 1);
-			$formattable->setCol(0, 0, array("colspan" => 2), we_forms::checkboxWithHidden(($this->View->export->HandleDefClasses ? true : false), "HandleDefClasses", g_l('export', "[handle_def_classes]"), false, 'defaultfont', $this->topFrame . '.hot=1;'));
-			$formattable->setCol(1, 0, null, we_forms::checkboxWithHidden(($this->View->export->HandleObjEmbeds ? true : false), "HandleObjEmbeds", g_l('export', "[handle_object_embeds]"), false, 'defaultfont', $this->topFrame . '.hot=1;'));
+			$formattable->setCol(0, 0, array("colspan" => 2), we_html_forms::checkboxWithHidden(($this->View->export->HandleDefClasses ? true : false), "HandleDefClasses", g_l('export', "[handle_def_classes]"), false, 'defaultfont', $this->topFrame . '.hot=1;'));
+			$formattable->setCol(1, 0, null, we_html_forms::checkboxWithHidden(($this->View->export->HandleObjEmbeds ? true : false), "HandleObjEmbeds", g_l('export', "[handle_object_embeds]"), false, 'defaultfont', $this->topFrame . '.hot=1;'));
 			$parts[] = array(
 				"headline" => g_l('export', "[handle_object_options]") . we_html_element::htmlBr() . g_l('export', "[handle_classes_options]"),
 				"html" => we_html_tools::htmlAlertAttentionBox(g_l('export', '[txt_object_options]'), we_html_tools::TYPE_INFO, $this->_width_size, true, 70) . $formattable->getHtml(),
@@ -382,9 +382,9 @@ function closeAllType(){
 		}
 
 		$formattable = new we_html_table(array("cellpadding" => 2, "cellspacing" => 2, "border" => 0), 3, 1);
-		$formattable->setCol(0, 0, null, we_forms::checkboxWithHidden(($this->View->export->HandleDoctypes ? true : false), "HandleDoctypes", g_l('export', "[handle_doctypes]"), false, 'defaultfont', $this->topFrame . '.hot=1;'));
-		$formattable->setCol(1, 0, null, we_forms::checkboxWithHidden(($this->View->export->HandleCategorys ? true : false), "HandleCategorys", g_l('export', "[handle_categorys]"), false, 'defaultfont', $this->topFrame . '.hot=1;'));
-		$formattable->setCol(2, 0, null, we_forms::checkboxWithHidden(($this->View->export->HandleNavigation ? true : false), "HandleNavigation", g_l('export', "[handle_navigation]"), false, 'defaultfont', $this->topFrame . '.hot=1;', false, g_l('export', "[navigation_hint]"), 1, 509));
+		$formattable->setCol(0, 0, null, we_html_forms::checkboxWithHidden(($this->View->export->HandleDoctypes ? true : false), "HandleDoctypes", g_l('export', "[handle_doctypes]"), false, 'defaultfont', $this->topFrame . '.hot=1;'));
+		$formattable->setCol(1, 0, null, we_html_forms::checkboxWithHidden(($this->View->export->HandleCategorys ? true : false), "HandleCategorys", g_l('export', "[handle_categorys]"), false, 'defaultfont', $this->topFrame . '.hot=1;'));
+		$formattable->setCol(2, 0, null, we_html_forms::checkboxWithHidden(($this->View->export->HandleNavigation ? true : false), "HandleNavigation", g_l('export', "[handle_navigation]"), false, 'defaultfont', $this->topFrame . '.hot=1;', false, g_l('export', "[navigation_hint]"), 1, 509));
 
 		$parts[] = array(
 			"headline" => g_l('export', "[handle_doctype_options]"),
@@ -399,7 +399,7 @@ function closeAllType(){
 		);
 
 		$formattable = new we_html_table(array("cellpadding" => 2, "cellspacing" => 2, "border" => 0), 1, 1);
-		$formattable->setCol(0, 0, null, we_forms::checkboxWithHidden(($this->View->export->HandleOwners ? true : false), "HandleOwners", g_l('export', "[handle_owners]"), false, 'defaultfont', $this->topFrame . '.hot=1;'));
+		$formattable->setCol(0, 0, null, we_html_forms::checkboxWithHidden(($this->View->export->HandleOwners ? true : false), "HandleOwners", g_l('export', "[handle_owners]"), false, 'defaultfont', $this->topFrame . '.hot=1;'));
 
 		$parts[] = array(
 			"headline" => g_l('export', "[handle_owners_option]"),

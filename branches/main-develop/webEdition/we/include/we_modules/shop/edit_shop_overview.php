@@ -94,5 +94,5 @@ echo we_html_element::jsScript(JS_DIR . 'images.js') . we_html_element::jsScript
 		)
 	);
 
-	print we_multiIconBox::getHTML("", "100%", $parts, 30, "", -1, "", "", false, g_l('tabs', "[module][overview]"));
+	print we_html_multiIconBox::getHTML("", "100%", $parts, 30, "", -1, "", "", false, g_l('tabs', "[module][overview]"));
 	?></body></html>

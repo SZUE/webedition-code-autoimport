@@ -324,7 +324,7 @@ function setTab(tab) {
 			array(
 				'headline' => '',
 				'html' => $this->getHTMLChooser(
-					g_l('navigation', '[icon]'), FILE_TABLE, 0, 'IconID', $this->Model->IconID, 'IconPath', 'opener.' . $this->topFrame . '.mark()', 'image/*', false, true, 'folder,image/*') . we_html_tools::getPixel($this->_width_size, 10) . '<table><tr><td>' . we_multiIconBox::getJS() . we_multiIconBox::_getButton(
+					g_l('navigation', '[icon]'), FILE_TABLE, 0, 'IconID', $this->Model->IconID, 'IconPath', 'opener.' . $this->topFrame . '.mark()', 'image/*', false, true, 'folder,image/*') . we_html_tools::getPixel($this->_width_size, 10) . '<table><tr><td>' . we_html_multiIconBox::getJS() . we_html_multiIconBox::_getButton(
 					$uniqname, "weToggleBox('$uniqname','" . addslashes(g_l('navigation', '[icon_properties_out]')) . "','" . addslashes(
 						g_l('navigation', '[icon_properties]')) . "')", $wepos, g_l('global', "[openCloseBox]")) . '</td><td><span style="cursor: pointer;" class="defaultfont" id="text_' . $uniqname . '" onClick="weToggleBox(\'' . $uniqname . '\',\'' . addslashes(
 					g_l('navigation', '[icon_properties_out]')) . '\',\'' . addslashes(
@@ -473,7 +473,7 @@ function setTab(tab) {
 		</div>' .
 			$this->getHTMLWorkspace('object', 0, 'FolderWsID') . we_html_tools::htmlFormElementTable(
 				we_html_tools::htmlTextInput(
-					'FolderParameter', 58, $this->Model->FolderParameter, '', 'onchange="' . $this->topFrame . '.mark();"', 'text', $this->_width_size, 0) . '<br/>' . we_forms::checkboxWithHidden(
+					'FolderParameter', 58, $this->Model->FolderParameter, '', 'onchange="' . $this->topFrame . '.mark();"', 'text', $this->_width_size, 0) . '<br/>' . we_html_forms::checkboxWithHidden(
 					$this->Model->CurrentOnUrlPar, 'CurrentOnUrlPar', g_l('navigation', '[current_on_urlpar]'), false, "defaultfont", $this->topFrame . '.mark();"'), g_l('navigation', '[parameter]'));
 
 		$parts = array(
@@ -1055,19 +1055,19 @@ function onSelectionClassChangeJS(value) {
 					$this->View->htmlHidden(
 						'IsFolder', (isset($this->Model->IsFolder) ? $this->Model->IsFolder : '0')) . $this->View->htmlHidden(
 						'presetFolder', (isset($_REQUEST['presetFolder']) ? $_REQUEST['presetFolder'] : '0')) .
-					we_multiIconBox::getHTML(
+					we_html_multiIconBox::getHTML(
 						'', '100%', $this->getHTMLGeneral(), 30, '', -1, '', '', false, $preselect) .
-					($this->Model->IsFolder ? we_multiIconBox::getHTML(
-							'', '100%', $this->getHTMLPropertiesGroup(), 30, '', -1, '', '', false, $preselect) : we_multiIconBox::getHTML(
+					($this->Model->IsFolder ? we_html_multiIconBox::getHTML(
+							'', '100%', $this->getHTMLPropertiesGroup(), 30, '', -1, '', '', false, $preselect) : we_html_multiIconBox::getHTML(
 							'', '100%', $this->getHTMLPropertiesItem(), 30, '', -1, '', '', false, $preselect)) . (($this->Model->Selection == we_navigation_navigation::SELECTION_STATIC || $this->Model->IsFolder) ? $this->getHTMLAttributes() : '')) . ($this->Model->IsFolder ? (we_html_element::htmlDiv(
 						array(
 						'id' => 'tab2', 'style' => ($tabNr == 2 ? 'display: block;' : 'display: none')
-						), we_multiIconBox::getHTML(
+						), we_html_multiIconBox::getHTML(
 							'', '100%', $this->getHTMLTab2(), 30, '', -1, '', '', false, $preselect))) :
 					'') . ((defined('CUSTOMER_TABLE')) ? we_html_element::htmlDiv(
 						array(
 						'id' => 'tab3', 'style' => ($tabNr == 3 ? 'display: block;' : 'display: none')
-						), we_multiIconBox::getHTML(
+						), we_html_multiIconBox::getHTML(
 							'', '100%', $this->getHTMLTab3(), 30, '', -1, '', '', false, $preselect)) : '');
 		}
 		$out .= $yuiSuggest->getYuiCss() .
@@ -1239,7 +1239,7 @@ categories_edit.setItem(0,(categories_edit.itemCount-1),"' . $cat . '");';
 		);
 		$table->setCol(3, 0, array('colspan' => 2), we_html_tools::getPixel(5, 5));
 		$table->setCol(
-			4, 0, array('align' => 'left'), we_forms::checkboxWithHidden($this->Model->CatAnd, "CatAnd", g_l('navigation', "[catAnd]"))
+			4, 0, array('align' => 'left'), we_html_forms::checkboxWithHidden($this->Model->CatAnd, "CatAnd", g_l('navigation', "[catAnd]"))
 		);
 		$table->setCol(
 			4, 1, array('align' => 'right'), we_button::create_button_table(
@@ -1356,7 +1356,7 @@ function selectItem() {
 				), we_html_element::htmlForm(
 					array(
 					"name" => "we_form", "onsubmit" => "return false"
-					), we_multiIconBox::getHTML(
+					), we_html_multiIconBox::getHTML(
 						'', '100%', $_parts, 30, $button, -1, '', '', false, g_l('navigation', '[select_field_txt]'))));
 
 		return $this->getHTMLDocument($_body, we_html_element::jsElement($_js));
@@ -1460,7 +1460,7 @@ function selectItem() {
 				), we_html_element::htmlForm(
 					array(
 					'name' => 'we_form', 'onsubmit' => 'return false'
-					), we_multiIconBox::getHTML(
+					), we_html_multiIconBox::getHTML(
 						'', '100%', $_parts, 30, '<div style="float:right;">' . we_button::create_button(
 							'close', 'javascript:self.close();') . '</div>', -1, '', '', false, g_l('navigation', '[dyn_selection]'))));
 
@@ -1617,7 +1617,7 @@ function ' . $prefix . 'setLinkSelection(value){
 
 		$_anchor = we_html_tools::htmlFormElementTable(
 				we_html_tools::htmlTextInput('Attributes[anchor]', 30, $this->Model->getAttribute('anchor'), '', 'onchange="' . $this->topFrame . '.mark();"', 'text', $this->_width_size) . '<br/>' .
-				we_forms::checkboxWithHidden($this->Model->CurrentOnAnker, 'CurrentOnAnker', g_l('navigation', '[current_on_anker]'), false, "defaultfont", $this->topFrame . '.mark();"'), g_l('navigation', '[anchor]'));
+				we_html_forms::checkboxWithHidden($this->Model->CurrentOnAnker, 'CurrentOnAnker', g_l('navigation', '[current_on_anker]'), false, "defaultfont", $this->topFrame . '.mark();"'), g_l('navigation', '[anchor]'));
 
 		$_target = we_html_tools::htmlFormElementTable(
 				we_html_tools::targetBox('Attributes[target]', 30, ($this->_width_size - 100), '', $this->Model->getAttribute('target'), '' . $this->topFrame . '.mark();', 8, 100), g_l('navigation', '[target]'));
@@ -1676,8 +1676,8 @@ function ' . $prefix . 'setLinkSelection(value){
 
 		$_popup = new we_html_table(array('cellpadding' => 5, 'cellspacing' => 0), 4, 4);
 
-		$_popup->setCol(0, 0, array('colspan' => 2), we_forms::checkboxWithHidden($this->Model->getAttribute('popup_open'), 'Attributes[popup_open]', g_l('navigation', '[popup_open]'), false, "defaultfont", $this->topFrame . '.mark();"'));
-		$_popup->setCol(0, 2, array('colspan' => 2), we_forms::checkboxWithHidden($this->Model->getAttribute('popup_center'), 'Attributes[popup_center]', g_l('navigation', '[popup_center]'), false, "defaultfont", $this->topFrame . '.mark();"'));
+		$_popup->setCol(0, 0, array('colspan' => 2), we_html_forms::checkboxWithHidden($this->Model->getAttribute('popup_open'), 'Attributes[popup_open]', g_l('navigation', '[popup_open]'), false, "defaultfont", $this->topFrame . '.mark();"'));
+		$_popup->setCol(0, 2, array('colspan' => 2), we_html_forms::checkboxWithHidden($this->Model->getAttribute('popup_center'), 'Attributes[popup_center]', g_l('navigation', '[popup_center]'), false, "defaultfont", $this->topFrame . '.mark();"'));
 
 		$_popup->setCol(1, 0, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('Attributes[popup_xposition]', 5, $this->Model->getAttribute('popup_xposition'), '', 'onchange="' . $this->topFrame . '.mark();"', 'text', $_input_width), g_l('navigation', '[popup_x]')));
 		$_popup->setCol(1, 1, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('Attributes[popup_yposition]', 5, $this->Model->getAttribute('popup_yposition'), '', 'onchange="' . $this->topFrame . '.mark();"', 'text', $_input_width), g_l('navigation', '[popup_y]')));
@@ -1685,13 +1685,13 @@ function ' . $prefix . 'setLinkSelection(value){
 
 		$_popup->setCol(1, 3, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('Attributes[popup_height]', 5, $this->Model->getAttribute('popup_height'), '', 'onchange="' . $this->topFrame . '.mark();"', 'text', $_input_width), g_l('navigation', '[popup_height]')));
 
-		$_popup->setCol(2, 0, array(), we_forms::checkboxWithHidden($this->Model->getAttribute('popup_status'), 'Attributes[popup_status]', g_l('navigation', '[popup_status]'), false, "defaultfont", $this->topFrame . '.mark();"'));
-		$_popup->setCol(2, 1, array(), we_forms::checkboxWithHidden($this->Model->getAttribute('popup_scrollbars'), 'Attributes[popup_scrollbars]', g_l('navigation', '[popup_scrollbars]'), false, "defaultfont", $this->topFrame . '.mark();"'));
-		$_popup->setCol(2, 2, array(), we_forms::checkboxWithHidden($this->Model->getAttribute('popup_menubar'), 'Attributes[popup_menubar]', g_l('navigation', '[popup_menubar]'), false, "defaultfont", $this->topFrame . '.mark();"'));
+		$_popup->setCol(2, 0, array(), we_html_forms::checkboxWithHidden($this->Model->getAttribute('popup_status'), 'Attributes[popup_status]', g_l('navigation', '[popup_status]'), false, "defaultfont", $this->topFrame . '.mark();"'));
+		$_popup->setCol(2, 1, array(), we_html_forms::checkboxWithHidden($this->Model->getAttribute('popup_scrollbars'), 'Attributes[popup_scrollbars]', g_l('navigation', '[popup_scrollbars]'), false, "defaultfont", $this->topFrame . '.mark();"'));
+		$_popup->setCol(2, 2, array(), we_html_forms::checkboxWithHidden($this->Model->getAttribute('popup_menubar'), 'Attributes[popup_menubar]', g_l('navigation', '[popup_menubar]'), false, "defaultfont", $this->topFrame . '.mark();"'));
 
-		$_popup->setCol(3, 0, array(), we_forms::checkboxWithHidden($this->Model->getAttribute('popup_resizable'), 'Attributes[popup_resizable]', g_l('navigation', '[popup_resizable]'), false, "defaultfont", $this->topFrame . '.mark();"'));
-		$_popup->setCol(3, 1, array(), we_forms::checkboxWithHidden($this->Model->getAttribute('popup_location'), 'Attributes[popup_location]', g_l('navigation', '[popup_location]'), false, "defaultfont", $this->topFrame . '.mark();"'));
-		$_popup->setCol(3, 2, array(), we_forms::checkboxWithHidden($this->Model->getAttribute('popup_toolbar'), 'Attributes[popup_toolbar]', g_l('navigation', '[popup_toolbar]'), false, "defaultfont", $this->topFrame . '.mark();"'));
+		$_popup->setCol(3, 0, array(), we_html_forms::checkboxWithHidden($this->Model->getAttribute('popup_resizable'), 'Attributes[popup_resizable]', g_l('navigation', '[popup_resizable]'), false, "defaultfont", $this->topFrame . '.mark();"'));
+		$_popup->setCol(3, 1, array(), we_html_forms::checkboxWithHidden($this->Model->getAttribute('popup_location'), 'Attributes[popup_location]', g_l('navigation', '[popup_location]'), false, "defaultfont", $this->topFrame . '.mark();"'));
+		$_popup->setCol(3, 2, array(), we_html_forms::checkboxWithHidden($this->Model->getAttribute('popup_toolbar'), 'Attributes[popup_toolbar]', g_l('navigation', '[popup_toolbar]'), false, "defaultfont", $this->topFrame . '.mark();"'));
 
 		$_parts[] = array(
 			'headline' => g_l('navigation', '[popup]'),
@@ -1701,7 +1701,7 @@ function ' . $prefix . 'setLinkSelection(value){
 		);
 
 		$wepos = weGetCookieVariable("but_weNaviAttrib");
-		return we_multiIconBox::getHTML('weNaviAttrib', '100%', $_parts, 30, '', 0, g_l('navigation', '[more_attributes]'), g_l('navigation', '[less_attributes]'), ($wepos == 'down'));
+		return we_html_multiIconBox::getHTML('weNaviAttrib', '100%', $_parts, 30, '', 0, g_l('navigation', '[more_attributes]'), g_l('navigation', '[less_attributes]'), ($wepos == 'down'));
 	}
 
 	function getHTMLImageAttributes(){
@@ -1779,7 +1779,7 @@ function ' . $prefix . 'setLinkSelection(value){
 				'style' => 'margin-left: 15px'
 		)));
 
-		$table2->setColContent(0, 1, we_forms::checkbox("makeNewDoc", false, "makeNewDoc", ($this->View->Model->IsFolder ? g_l('global', "[we_new_folder_after_save]") : g_l('global', "[we_new_entry_after_save]")), false, "defaultfont", ""));
+		$table2->setColContent(0, 1, we_html_forms::checkbox("makeNewDoc", false, "makeNewDoc", ($this->View->Model->IsFolder ? g_l('global', "[we_new_folder_after_save]") : g_l('global', "[we_new_entry_after_save]")), false, "defaultfont", ""));
 
 		return $this->getHTMLDocument(
 				we_html_element::jsScript(JS_DIR . "attachKeyListener.js") .

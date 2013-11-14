@@ -139,10 +139,10 @@ if(isset($GLOBALS["loginpage"]) && $GLOBALS["loginpage"]){
 		), 7, 2
 	);
 
-	$_loginTable->setCol($loginRow++, 0, array("width" => $_leftPart, "class" => "small"), we_baseElement::getHtmlCode(new we_baseElement("label", true, array("for" => "username"), g_l('global', '[username]'))));
+	$_loginTable->setCol($loginRow++, 0, array("width" => $_leftPart, "class" => "small"), we_html_baseElement::getHtmlCode(new we_html_baseElement("label", true, array("for" => "username"), g_l('global', '[username]'))));
 	$_loginTable->setCol($loginRow++, 0, array("width" => $_leftPart), we_html_tools::htmlTextInput('username', 25, '', 255, "id=\"username\" style=\"width: 250px;\" ", "text", 0, 0));
 	$_loginTable->setCol($loginRow++, 0, array("width" => $_leftPart), we_html_tools::getPixel(5, 5));
-	$_loginTable->setCol($loginRow++, 0, array("width" => $_leftPart, "class" => "small"), we_baseElement::getHtmlCode(new we_baseElement("label", true, array("for" => "password"), g_l('global', '[password]'))));
+	$_loginTable->setCol($loginRow++, 0, array("width" => $_leftPart, "class" => "small"), we_html_baseElement::getHtmlCode(new we_html_baseElement("label", true, array("for" => "password"), g_l('global', '[password]'))));
 	$_loginTable->setCol($loginRow++, 0, array("width" => $_leftPart), we_html_tools::htmlTextInput('password', 25, '', 255, "id=\"password\" style=\"width: 250px;\" ", "password", 0, 0));
 	$_loginTable->setCol($loginRow++, 0, array("width" => $_leftPart + $_logoPart, 'colspan' => 2), we_html_tools::getPixel(5, 5));
 
@@ -173,7 +173,7 @@ if(isset($GLOBALS["loginpage"]) && $GLOBALS["loginpage"]){
 					"rowspan" => 2), $loginButton);
 			}
 		} else{
-			$_modetable->setCol(0, 0, array(), we_forms::checkbox('popup', getValueLoginMode('popup'), 'popup', g_l('SEEM', '[popup]')));
+			$_modetable->setCol(0, 0, array(), we_html_forms::checkbox('popup', getValueLoginMode('popup'), 'popup', g_l('SEEM', '[popup]')));
 			$_modetable->setCol(0, 1, array("align" => "right",
 				"valign" => "bottom",
 				"rowspan" => 2), we_html_element::htmlHidden(array("name" => "mode", "value" => "normal")) . $loginButton);
@@ -186,7 +186,7 @@ if(isset($GLOBALS["loginpage"]) && $GLOBALS["loginpage"]){
 
 		switch(WE_LOGIN_WEWINDOW){
 			case 0:
-				$we_login_type = we_forms::checkbox('popup', getValueLoginMode('popup'), 'popup', g_l('SEEM', '[popup]'));
+				$we_login_type = we_html_forms::checkbox('popup', getValueLoginMode('popup'), 'popup', g_l('SEEM', '[popup]'));
 				break;
 			case 1:
 				$we_login_type = '<input type="hidden" name="popup" value="popup"/>';
@@ -200,10 +200,10 @@ if(isset($GLOBALS["loginpage"]) && $GLOBALS["loginpage"]){
 		<tr>
 			<td>' . $we_login_type .
 			'</td></tr><td>' .
-			we_forms::radiobutton(we_base_constants::MODE_NORMAL, getValueLoginMode(we_base_constants::MODE_NORMAL), 'mode', g_l('SEEM', '[start_mode_normal]'), true, 'small') . '</td>
+			we_html_forms::radiobutton(we_base_constants::MODE_NORMAL, getValueLoginMode(we_base_constants::MODE_NORMAL), 'mode', g_l('SEEM', '[start_mode_normal]'), true, 'small') . '</td>
 		</tr>
 		<tr>
-			<td>' . we_forms::radiobutton(we_base_constants::MODE_SEE, getValueLoginMode(we_base_constants::MODE_SEE), 'mode', '<acronym title="' . g_l('SEEM', "[start_mode_seem_acronym]") . '">' . g_l('SEEM', '[start_mode_seem]') . '</acronym>', true, "small") . '</td>
+			<td>' . we_html_forms::radiobutton(we_base_constants::MODE_SEE, getValueLoginMode(we_base_constants::MODE_SEE), 'mode', '<acronym title="' . g_l('SEEM', "[start_mode_seem_acronym]") . '">' . g_l('SEEM', '[start_mode_seem]') . '</acronym>', true, "small") . '</td>
 		</tr>
 		</table>');
 		$_modetable->setCol(0, 1, array(

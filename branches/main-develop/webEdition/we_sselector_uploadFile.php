@@ -82,8 +82,8 @@ $content = '<table border="0" cellpadding="0" cellspacing="0">' .
 			sprintf(g_l('newFile', "[max_possible_size]"), weFile::getHumanFileSize($maxsize, weFile::SZ_MB)), we_html_tools::TYPE_ALERT, 390) . '</td></tr><tr><td>' . we_html_tools::getPixel(2, 10) . '</td></tr>') : '') . '
 			<tr><td><input name="we_uploadFile" TYPE="file" size="35" /></td></tr><tr><td>' . we_html_tools::getPixel(2, 10) . '</td></tr>
 			<tr><td class="defaultfont">' . g_l('newFile', '[caseFileExists]') . '</td></tr><tr><td>' .
-	we_forms::radiobutton("yes", true, "overwrite", g_l('newFile', '[overwriteFile]')) .
-	we_forms::radiobutton("no", false, "overwrite", g_l('newFile', '[renameFile]')) . '</td></tr></table>';
+	we_html_forms::radiobutton("yes", true, "overwrite", g_l('newFile', '[overwriteFile]')) .
+	we_html_forms::radiobutton("no", false, "overwrite", g_l('newFile', '[renameFile]')) . '</td></tr></table>';
 
 $content = we_html_tools::htmlDialogLayout($content, g_l('newFile', '[import_File_from_hd_title]'), $buttons);
 ?>

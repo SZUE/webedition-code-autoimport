@@ -52,7 +52,7 @@ print we_html_element::htmlDocType() . we_html_element::htmlHtml(
 		) .
 		STYLESHEET .
 		we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlCenter(
-				we_multiIconBox::getHTML("", "100%", $parts, 30, $buttons->getHtml())
+				we_html_multiIconBox::getHTML("", "100%", $parts, 30, $buttons->getHtml())
 			)
 		)
 	);

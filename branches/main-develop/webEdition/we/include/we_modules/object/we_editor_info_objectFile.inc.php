@@ -97,8 +97,8 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 </head>
 <body class="weEditorBody" onunload="doUnload()">
 	<?php
-	print we_multiIconBox::getJS() .
-		we_multiIconBox::getHTML("", "100%", $parts, 30, "", -1, "", "", false);
+	print we_html_multiIconBox::getJS() .
+		we_html_multiIconBox::getHTML("", "100%", $parts, 30, "", -1, "", "", false);
 	?>
 </body>
 </html>

@@ -1282,7 +1282,7 @@ $this->Preferences=' . var_export($this->Preferences, true) . ';
 			)
 		);
 
-		return $js . we_multiIconBox::getHTML('', '100%', $parts, 30);
+		return $js . we_html_multiIconBox::getHTML('', '100%', $parts, 30);
 	}
 
 	function getUserfield($name, $lngkey, $type = 'text', $maxlen = 255, $noNull = false, $attribs = ''){
@@ -1357,7 +1357,7 @@ $this->Preferences=' . var_export($this->Preferences, true) . ';
 		$_tableObj->setCol(0, 1, null, we_html_tools::htmlFormElementTable($_password, g_l('modules_users', '[password]')));
 		$_tableObj->setCol(1, 0, null, we_html_tools::getPixel(280, 10));
 		$_tableObj->setCol(1, 1, null, we_html_tools::getPixel(280, 5));
-		$_tableObj->setCol(2, 0, null, we_forms::checkboxWithHidden($this->LoginDenied, $this->Name . '_LoginDenied', g_l('modules_users', '[login_denied]'), false, "defaultfont", "top.content.setHot();", ($_SESSION["user"]["ID"] == $this->ID || !permissionhandler::hasPerm("ADMINISTRATOR"))));
+		$_tableObj->setCol(2, 0, null, we_html_forms::checkboxWithHidden($this->LoginDenied, $this->Name . '_LoginDenied', g_l('modules_users', '[login_denied]'), false, "defaultfont", "top.content.setHot();", ($_SESSION["user"]["ID"] == $this->ID || !permissionhandler::hasPerm("ADMINISTRATOR"))));
 		$_tableObj->setCol(2, 1, array("class" => "defaultfont"), g_l('modules_users', "[lastPing]") . ' ' . (($this->Ping) ? date('d.m.Y H:i:s', $this->Ping) : '-'));
 		$_tableObj->setCol(3, 0, null, we_html_tools::getPixel(280, 10));
 		$_tableObj->setCol(3, 1, null, we_html_tools::getPixel(280, 5));
@@ -1394,7 +1394,7 @@ $this->Preferences=' . var_export($this->Preferences, true) . ';
 			'space' => 120
 		);
 
-		return we_multiIconBox::getHTML('', '100%', $parts, 30);
+		return we_html_multiIconBox::getHTML('', '100%', $parts, 30);
 	}
 
 	/**
@@ -1407,7 +1407,7 @@ $this->Preferences=' . var_export($this->Preferences, true) . ';
 	function formPermissions($branch){
 		// Set output text
 		// Create a object of the class dynamicControls
-		$dynamic_controls = new we_dynamicControls();
+		$dynamic_controls = new we_html_dynamicControls();
 		// Now we create the overview of the user rights
 		$content = $dynamic_controls->fold_checkbox_groups($this->permissions_slots, $this->permissions_main_titles, $this->permissions_titles, $this->Name, $branch, array('administrator'), true, true, 'we_form', 'perm_branch', true, true);
 
@@ -1486,7 +1486,7 @@ function toggleRebuildPerm(disabledOnly) {';
 				$content = '
 <table cellpadding="0" cellspacing="0" border="0" width="500">
 	<tr><td>' . we_html_tools::getPixel(1, 5) . '</td></tr>
-	<tr><td>' . we_forms::checkbox(($v ? $v : '0'), ($v ? true : false), $this->Name . "_Permission_" . $k, $this->permissions_titles['administrator'][$k], false, 'defaultfont', ($k == 'REBUILD' ? 'setRebuidPerms();top.content.setHot();' : 'top.content.setHot();')) . '</td></tr>
+	<tr><td>' . we_html_forms::checkbox(($v ? $v : '0'), ($v ? true : false), $this->Name . "_Permission_" . $k, $this->permissions_titles['administrator'][$k], false, 'defaultfont', ($k == 'REBUILD' ? 'setRebuidPerms();top.content.setHot();' : 'top.content.setHot();')) . '</td></tr>
 </table>';
 			}
 			$parts[] = array(
@@ -1501,7 +1501,7 @@ function toggleRebuildPerm(disabledOnly) {';
 			'space' => 0
 		);
 
-		return we_multiIconBox::getHTML('', '100%', $parts, 30) . we_html_element::jsElement($javascript);
+		return we_html_multiIconBox::getHTML('', '100%', $parts, 30) . we_html_element::jsElement($javascript);
 	}
 
 	function formWorkspace(){
@@ -1700,7 +1700,7 @@ function delElement(elvalues,elem) {
 <tr><td colspan="2">' . $weAcSelector . '</td>
 	<td><div style="position:relative; top:-1px">' . we_button::create_button("image:btn_function_trash", "javascript:fillValues(document.we_form." . $obj_values . ",'" . $obj_names . "');fillDef(document.we_form." . $obj_def_values . ",document.we_form." . $obj_values . ",'" . $obj_def_names . "','" . $obj_names . "');delElement(document.we_form." . $obj_values . "," . $key . ");delElement(document.we_form." . $obj_def_values . "," . $key . ");switchPage(2);", true) . '</td></div>' .
 					($k == FILE_TABLE ?
-						'<td class="defaultfont">' . we_forms::checkbox(1, $default, $obj_def_names . "_$key", g_l('modules_users', "[make_def_ws]"), true, "defaultfont", 'top.content.setHot();fillDef(document.we_form.' . $obj_def_values . ',document.we_form.' . $obj_values . ',\'' . $obj_def_names . '\',\'' . $obj_names . '\');') . '</td>' :
+						'<td class="defaultfont">' . we_html_forms::checkbox(1, $default, $obj_def_names . "_$key", g_l('modules_users', "[make_def_ws]"), true, "defaultfont", 'top.content.setHot();fillDef(document.we_form.' . $obj_def_values . ',document.we_form.' . $obj_values . ',\'' . $obj_def_names . '\',\'' . $obj_names . '\');') . '</td>' :
 						'<td>' . we_html_tools::getPixel(5, 5) . '</td>') . '
 </tr>';
 			}
@@ -1722,11 +1722,11 @@ function delElement(elvalues,elem) {
 			$content1 = '';
 		}
 
-		return $content . we_multiIconBox::getHTML('', '100%', $parts, 30);
+		return $content . we_html_multiIconBox::getHTML('', '100%', $parts, 30);
 	}
 
 	function formPreferences($branch = ''){
-		$dynamic_controls = new we_dynamicControls();
+		$dynamic_controls = new we_html_dynamicControls();
 		$groups = array(
 			'glossary' => g_l('prefs', '[tab_glossary]'),
 			'ui' => g_l('prefs', '[tab][ui]'),
@@ -1741,7 +1741,7 @@ function delElement(elvalues,elem) {
 			'editor' => $this->formPreferencesEditor(),
 		);
 
-		return we_multiIconBox::getHTML('', '100%', array(
+		return we_html_multiIconBox::getHTML('', '100%', array(
 				array(
 					'headline' => '',
 					'html' => $dynamic_controls->fold_multibox_groups($groups, $titles, $multiboxes, $branch),
@@ -1757,9 +1757,9 @@ function delElement(elvalues,elem) {
 		$_table = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0), 3, 1);
 //FIXME: where is the difference between force_glossary_check + force_glossary_action?!
 
-		$_table->setCol(0, 0, null, we_forms::checkbox(1, $this->Preferences['force_glossary_check'], $this->Name . '_Preference_force_glossary_check', g_l('prefs', '[force_glossary_check]'), 'false', 'defaultfont', "top.content.setHot()"));
+		$_table->setCol(0, 0, null, we_html_forms::checkbox(1, $this->Preferences['force_glossary_check'], $this->Name . '_Preference_force_glossary_check', g_l('prefs', '[force_glossary_check]'), 'false', 'defaultfont', "top.content.setHot()"));
 		$_table->setCol(1, 0, null, we_html_tools::getPixel(1, 5));
-		$_table->setCol(2, 0, null, we_forms::checkbox(1, $this->Preferences['force_glossary_action'], $this->Name . "_Preference_force_glossary_action", g_l('prefs', '[force_glossary_action]'), "false", "defaultfont", "top.content.setHot()"));
+		$_table->setCol(2, 0, null, we_html_forms::checkbox(1, $this->Preferences['force_glossary_action'], $this->Name . "_Preference_force_glossary_action", g_l('prefs', '[force_glossary_action]'), "false", "defaultfont", "top.content.setHot()"));
 
 		// Build dialog if user has permission
 		if(permissionhandler::hasPerm('ADMINISTRATOR')){
@@ -2059,10 +2059,10 @@ function show_seem_chooser(val) {
 		}
 
 		// Build maximize window
-		$_window_max_code = we_forms::radiobutton(0, $this->Preferences['sizeOpt'] == 0, $this->Name . '_Preference_sizeOpt', g_l('prefs', '[maximize]'), true, 'defaultfont', "document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].disabled = true;document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].disabled = true;top.content.setHot();");
+		$_window_max_code = we_html_forms::radiobutton(0, $this->Preferences['sizeOpt'] == 0, $this->Name . '_Preference_sizeOpt', g_l('prefs', '[maximize]'), true, 'defaultfont', "document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].disabled = true;document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].disabled = true;top.content.setHot();");
 
 		// Build specify window dimension
-		$_window_specify_code = we_forms::radiobutton(1, !($this->Preferences['sizeOpt'] == 0), $this->Name . '_Preference_sizeOpt', g_l('prefs', '[specify]'), true, 'defaultfont', "document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].disabled = false;top.content.setHot();");
+		$_window_specify_code = we_html_forms::radiobutton(1, !($this->Preferences['sizeOpt'] == 0), $this->Name . '_Preference_sizeOpt', g_l('prefs', '[specify]'), true, 'defaultfont', "document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].disabled = false;top.content.setHot();");
 
 		// Create specify window dimension input
 		$_window_specify_table = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0), 4, 4);
@@ -2140,7 +2140,7 @@ function show_seem_chooser(val) {
 		}
 
 		// Build specify font
-		$_template_editor_font_specify_code = we_forms::checkbox(1, $_template_editor_font_specify, $this->Name . "_Preference_editorFont", g_l('prefs', '[specify]'), true, "defaultfont", "top.content.setHot(); if (document.getElementsByName('" . $this->Name . "_Preference_editorFont')[0].checked) { document.getElementsByName('" . $this->Name . "_Preference_editorFontname')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_editorFontsize')[0].disabled = false; } else { document.getElementsByName('" . $this->Name . "_Preference_editorFontname')[0].disabled = true;document.getElementsByName('" . $this->Name . "_Preference_editorFontsize')[0].disabled = true; }");
+		$_template_editor_font_specify_code = we_html_forms::checkbox(1, $_template_editor_font_specify, $this->Name . "_Preference_editorFont", g_l('prefs', '[specify]'), true, "defaultfont", "top.content.setHot(); if (document.getElementsByName('" . $this->Name . "_Preference_editorFont')[0].checked) { document.getElementsByName('" . $this->Name . "_Preference_editorFontname')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_editorFontsize')[0].disabled = false; } else { document.getElementsByName('" . $this->Name . "_Preference_editorFontname')[0].disabled = true;document.getElementsByName('" . $this->Name . "_Preference_editorFontsize')[0].disabled = true; }");
 
 		// Create specify window dimension input
 		$_template_editor_font_specify_table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 4, 4);
@@ -2266,7 +2266,7 @@ function show_seem_chooser(val) {
 			)
 		);
 
-		return we_multiIconBox::getHTML('', '100%', $parts, 30);
+		return we_html_multiIconBox::getHTML('', '100%', $parts, 30);
 	}
 
 	function formInherits($name, $value, $title){
@@ -2274,7 +2274,7 @@ function show_seem_chooser(val) {
 <table cellpadding="0" cellspacing="0" border="0" width="500">
 	<tr>
 		<td class="defaultfont">' .
-			we_forms::checkbox(1, ($value ? true : false), $this->Name . $name, $title, "", "defaultfont", "top.content.setHot();") . '
+			we_html_forms::checkbox(1, ($value ? true : false), $this->Name . $name, $title, "", "defaultfont", "top.content.setHot();") . '
 	</tr>
 </table>';
 	}

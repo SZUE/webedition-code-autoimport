@@ -194,7 +194,7 @@ class weDialog{
 		$dc = $this->getDialogContentHTML();
 
 		$dialogContent = (is_array($dc) ?
-				we_multiIconBox::getHTML('', '100%', $dc, 30, $this->getDialogButtons(), -1, '', '', false, $this->dialogTitle, '', $this->getDialogHeight()) :
+				we_html_multiIconBox::getHTML('', '100%', $dc, 30, $this->getDialogButtons(), -1, '', '', false, $this->dialogTitle, '', $this->getDialogHeight()) :
 				we_html_tools::htmlDialogLayout($dc, $this->dialogTitle, $this->getDialogButtons()));
 
 		return $this->getFormHTML() . $dialogContent .

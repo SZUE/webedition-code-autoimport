@@ -94,7 +94,7 @@ class weCellDialog extends weDialog{
 		$foo = we_html_element::jsElement( 'showclasss("we_dialog_args[class]","' . (isset($this->args["class"]) ? $this->args["class"] : "") . '","");');
 		$classSelect = we_html_tools::htmlFormElementTable($foo, g_l('wysiwyg', "[css_style]"));
 
-		$_isheader = we_forms::checkboxWithHidden($this->args["isheader"] == 1, "we_dialog_args[isheader]", g_l('wysiwyg', "[isheader]"));
+		$_isheader = we_html_forms::checkboxWithHidden($this->args["isheader"] == 1, "we_dialog_args[isheader]", g_l('wysiwyg', "[isheader]"));
 
 		$foo = we_html_tools::htmlTextInput("we_dialog_args[id]", 5, (isset($this->args["id"]) ? $this->args["id"] : ""), "", '', "text", 50);
 		$_id = we_html_tools::htmlFormElementTable($foo, "id");

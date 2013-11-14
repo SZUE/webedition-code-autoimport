@@ -192,7 +192,7 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 			),
 		);
 
-		$out = we_html_element::htmlDiv(array('id' => 'tab1', 'style' => ''), we_multiIconBox::getHTML('', "100%", $parts, 30, '', -1, '', '', false));
+		$out = we_html_element::htmlDiv(array('id' => 'tab1', 'style' => ''), we_html_multiIconBox::getHTML('', "100%", $parts, 30, '', -1, '', '', false));
 
 		$content = $js . $out;
 
@@ -389,7 +389,7 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 		<tr>
 			<td class="defaultgray">' . g_l('modules_glossary', '[view]') . '</td>
 			<td>' . we_html_tools::htmlSelect("Rows", $_rows, 1, $Search->Rows, "", 'onchange="SubmitForm();"') . '</td>
-			<td>' . we_forms::checkboxWithHidden(isset($_REQUEST['GreenOnly']) && $_REQUEST['GreenOnly'] == 1 ? true : false, "GreenOnly", g_l('modules_glossary', '[show_only_visible_items]'), false, "defaultfont", "jump(0);") . '</td>
+			<td>' . we_html_forms::checkboxWithHidden(isset($_REQUEST['GreenOnly']) && $_REQUEST['GreenOnly'] == 1 ? true : false, "GreenOnly", g_l('modules_glossary', '[show_only_visible_items]'), false, "defaultfont", "jump(0);") . '</td>
 			<td>' . we_html_tools::getPixel(18, 2) . '</td>
 			<td>' . $newButton . '</td>
 		</tr>

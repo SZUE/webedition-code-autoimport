@@ -163,18 +163,18 @@ class we_import_wizard extends we_import_wizardBase{
 		$expat = (function_exists('xml_parser_create')) ? true : false;
 
 		$tblFiles = new we_html_table(array('cellpadding' => 0, 'cellspacing' => 0, 'border' => 0), 3, 1);
-		$tblFiles->setCol(0, 0, array(), we_forms::radiobutton('file_import', ($cmd[1] == we_import_functions::TYPE_LOCAL_FILES), 'type', g_l('import', '[file_import]'), true, 'defaultfont', '', !permissionhandler::hasPerm('FILE_IMPORT'), g_l('import', '[txt_file_import]'), 0, 384));
+		$tblFiles->setCol(0, 0, array(), we_html_forms::radiobutton('file_import', ($cmd[1] == we_import_functions::TYPE_LOCAL_FILES), 'type', g_l('import', '[file_import]'), true, 'defaultfont', '', !permissionhandler::hasPerm('FILE_IMPORT'), g_l('import', '[txt_file_import]'), 0, 384));
 		$tblFiles->setCol(1, 0, array(), we_html_tools::getPixel(0, 4));
-		$tblFiles->setCol(2, 0, array(), we_forms::radiobutton('site_import', ($cmd[1] == we_import_functions::TYPE_SITE), 'type', g_l('import', '[site_import]'), true, 'defaultfont', '', !permissionhandler::hasPerm('SITE_IMPORT'), g_l('import', '[txt_site_import]'), 0, 384));
+		$tblFiles->setCol(2, 0, array(), we_html_forms::radiobutton('site_import', ($cmd[1] == we_import_functions::TYPE_SITE), 'type', g_l('import', '[site_import]'), true, 'defaultfont', '', !permissionhandler::hasPerm('SITE_IMPORT'), g_l('import', '[txt_site_import]'), 0, 384));
 		$tblData = new we_html_table(array('cellpadding' => 0, 'cellspacing' => 0, 'border' => 0), 5, 1);
-		$tblData->setCol(0, 0, array(), we_forms::radiobutton(we_import_functions::TYPE_WE_XML, ($cmd[1] == we_import_functions::TYPE_WE_XML), 'type', g_l('import', '[wxml_import]'), true, 'defaultfont', '', (!permissionhandler::hasPerm('WXML_IMPORT') || !$expat), ($expat ? g_l('import', '[txt_wxml_import]') : g_l('import', '[add_expat_support]')), 0, 384));
+		$tblData->setCol(0, 0, array(), we_html_forms::radiobutton(we_import_functions::TYPE_WE_XML, ($cmd[1] == we_import_functions::TYPE_WE_XML), 'type', g_l('import', '[wxml_import]'), true, 'defaultfont', '', (!permissionhandler::hasPerm('WXML_IMPORT') || !$expat), ($expat ? g_l('import', '[txt_wxml_import]') : g_l('import', '[add_expat_support]')), 0, 384));
 		$tblData->setCol(1, 0, array(), we_html_tools::getPixel(0, 4));
-		$tblData->setCol(2, 0, array(), we_forms::radiobutton(we_import_functions::TYPE_GENERIC_XML, ($cmd[1] == we_import_functions::TYPE_GENERIC_XML), 'type', g_l('import', '[gxml_import]'), true, 'defaultfont', '', (!permissionhandler::hasPerm('GENERICXML_IMPORT') || !$expat), ($expat) ? g_l('import', '[txt_gxml_import]') : g_l('import', '[add_expat_support]'), 0, 384));
+		$tblData->setCol(2, 0, array(), we_html_forms::radiobutton(we_import_functions::TYPE_GENERIC_XML, ($cmd[1] == we_import_functions::TYPE_GENERIC_XML), 'type', g_l('import', '[gxml_import]'), true, 'defaultfont', '', (!permissionhandler::hasPerm('GENERICXML_IMPORT') || !$expat), ($expat) ? g_l('import', '[txt_gxml_import]') : g_l('import', '[add_expat_support]'), 0, 384));
 		$tblData->setCol(3, 0, array(), we_html_tools::getPixel(0, 4));
-		$tblData->setCol(4, 0, array(), we_forms::radiobutton(we_import_functions::TYPE_CSV, ($cmd[1] == we_import_functions::TYPE_CSV), 'type', g_l('import', '[csv_import]'), true, 'defaultfont', '', !permissionhandler::hasPerm('CSV_IMPORT'), g_l('import', '[txt_csv_import]'), 0, 384));
+		$tblData->setCol(4, 0, array(), we_html_forms::radiobutton(we_import_functions::TYPE_CSV, ($cmd[1] == we_import_functions::TYPE_CSV), 'type', g_l('import', '[csv_import]'), true, 'defaultfont', '', !permissionhandler::hasPerm('CSV_IMPORT'), g_l('import', '[txt_csv_import]'), 0, 384));
 
 		$tblTemplates = new we_html_table(array('cellpadding' => 0, 'cellspacing' => 0, 'border' => 0), 1, 1);
-		$tblTemplates->setCol(0, 0, array(), we_forms::radiobutton('template_import', ($cmd[1] == 'import_templates'), 'type', g_l('import', '[template_import]'), true, 'defaultfont', '', !permissionhandler::hasPerm('ADMINISTRATOR'), g_l('import', '[txt_template_import]'), 0, 384));
+		$tblTemplates->setCol(0, 0, array(), we_html_forms::radiobutton('template_import', ($cmd[1] == 'import_templates'), 'type', g_l('import', '[template_import]'), true, 'defaultfont', '', !permissionhandler::hasPerm('ADMINISTRATOR'), g_l('import', '[txt_template_import]'), 0, 384));
 
 
 		$parts = array(
@@ -254,7 +254,7 @@ class we_import_wizard extends we_import_wizardBase{
 						break;
 				}
 			}",
-			we_multiIconBox::getHTML("", "100%", $parts, 30, "", -1, "", "", false, g_l('import', "[title]"))
+			we_html_multiIconBox::getHTML("", "100%", $parts, 30, "", -1, "", "", false, g_l('import', "[title]"))
 		);
 	}
 
@@ -358,8 +358,8 @@ class we_import_wizard extends we_import_wizardBase{
 		$inputLLocal = we_html_tools::htmlTextInput("uploaded_xml_file", 30, "", 255, "accept=\"text/xml\" onClick=\"self.document.forms['we_form'].elements['v[rdofloc]'][1].checked=true;\"", "file");
 		$importFromLocal = we_html_tools::htmlFormElementTable($inputLLocal, "", "left", "defaultfont", we_html_tools::getPixel(10, 1), "", "", "", "", 0);
 
-		$rdoLServer = we_forms::radiobutton("lServer", (isset($v["rdofloc"])) ? ($v["rdofloc"] == "lServer") : 1, "v[rdofloc]", g_l('import', "[fileselect_server]"));
-		$rdoLLocal = we_forms::radiobutton("lLocal", (isset($v["rdofloc"])) ? ($v["rdofloc"] == "lLocal") : 0, "v[rdofloc]", g_l('import', "[fileselect_local]"));
+		$rdoLServer = we_html_forms::radiobutton("lServer", (isset($v["rdofloc"])) ? ($v["rdofloc"] == "lServer") : 1, "v[rdofloc]", g_l('import', "[fileselect_server]"));
+		$rdoLLocal = we_html_forms::radiobutton("lLocal", (isset($v["rdofloc"])) ? ($v["rdofloc"] == "lLocal") : 0, "v[rdofloc]", g_l('import', "[fileselect_local]"));
 
 		$importLocs = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 7, 1);
 		$importLocs->setCol(0, 0, array(), $rdoLServer);
@@ -374,11 +374,11 @@ class we_import_wizard extends we_import_wizardBase{
 		$fn_colsn = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 7, 1);
 		$fn_colsn->setCol(0, 0, array(), we_html_tools::htmlAlertAttentionBox(g_l('import', "[collision_txt]"), we_html_tools::TYPE_ALERT, 410));
 		$fn_colsn->setCol(1, 0, array(), we_html_tools::getPixel(0, 4));
-		$fn_colsn->setCol(2, 0, array(), we_forms::radiobutton("replace", (isset($v["collision"])) ? ($v["collision"] == "replace") : true, "v[collision]", g_l('import', "[replace]"), true, "defaultfont", "", false, g_l('import', "[replace_txt]"), 0, 384));
+		$fn_colsn->setCol(2, 0, array(), we_html_forms::radiobutton("replace", (isset($v["collision"])) ? ($v["collision"] == "replace") : true, "v[collision]", g_l('import', "[replace]"), true, "defaultfont", "", false, g_l('import', "[replace_txt]"), 0, 384));
 		$fn_colsn->setCol(3, 0, array(), we_html_tools::getPixel(0, 4));
-		$fn_colsn->setCol(4, 0, array(), we_forms::radiobutton("rename", (isset($v["collision"])) ? ($v["collision"] == "rename") : false, "v[collision]", g_l('import', "[rename]"), true, "defaultfont", "", false, g_l('import', "[rename_txt]"), 0, 384));
+		$fn_colsn->setCol(4, 0, array(), we_html_forms::radiobutton("rename", (isset($v["collision"])) ? ($v["collision"] == "rename") : false, "v[collision]", g_l('import', "[rename]"), true, "defaultfont", "", false, g_l('import', "[rename_txt]"), 0, 384));
 		$fn_colsn->setCol(5, 0, array(), we_html_tools::getPixel(0, 4));
-		$fn_colsn->setCol(6, 0, array(), we_forms::radiobutton("skip", (isset($v["collision"])) ? ($v["collision"] == "skip") : false, "v[collision]", g_l('import', "[skip]"), true, "defaultfont", "", false, g_l('import', "[skip_txt]"), 0, 384));
+		$fn_colsn->setCol(6, 0, array(), we_html_forms::radiobutton("skip", (isset($v["collision"])) ? ($v["collision"] == "skip") : false, "v[collision]", g_l('import', "[skip]"), true, "defaultfont", "", false, g_l('import', "[skip_txt]"), 0, 384));
 
 		$parts = array(
 			array(
@@ -393,7 +393,7 @@ class we_import_wizard extends we_import_wizardBase{
 
 		$wepos = weGetCookieVariable('but_wxml');
 		$znr = -1;
-		$content = $hdns . we_multiIconBox::getHTML('wxml', '100%', $parts, 30, '', $znr, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]'), ($wepos == 'down'), g_l('import', '[wxml_import]'));
+		$content = $hdns . we_html_multiIconBox::getHTML('wxml', '100%', $parts, 30, '', $znr, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]'), ($wepos == 'down'), g_l('import', '[wxml_import]'));
 		return array($functions, $content);
 	}
 
@@ -541,7 +541,7 @@ handle_event("previous");');
 			$tbl_extra = new we_html_table(array('cellpadding' => 2, 'cellspacing' => 0, 'border' => 0), 5, 1);
 
 			// import documents
-			$tbl_extra->setCol(0, 0, null, we_forms::checkboxWithHidden((isset($v['import_docs']) && $v['import_docs']) ? true : false, 'v[import_docs]', g_l('import', '[import_docs]'), false, 'defaultfont', "toggle('doc_table')"));
+			$tbl_extra->setCol(0, 0, null, we_html_forms::checkboxWithHidden((isset($v['import_docs']) && $v['import_docs']) ? true : false, 'v[import_docs]', g_l('import', '[import_docs]'), false, 'defaultfont', "toggle('doc_table')"));
 
 			$rootDirID = get_def_ws();
 			$wecmdenc1 = we_cmd_enc("self.wizbody.document.forms['we_form'].elements['v[doc_dir_id]'].value");
@@ -573,14 +573,14 @@ handle_event("previous");');
 			$dir_table->setCol(0, 0, null, we_html_tools::getPixel(20, 1));
 			$dir_table->setCol(0, 1, null, we_html_tools::htmlAlertAttentionBox(g_l('import', '[documents_desc]'), we_html_tools::TYPE_ALERT, 390, true, 50));
 			$dir_table->setCol(1, 1, null, $docPath);
-			$dir_table->setCol(2, 1, null, we_forms::checkboxWithHidden((isset($v['restore_doc_path']) && $v['restore_doc_path']) ? true : false, 'v[restore_doc_path]', g_l('import', "[maintain_paths]"), false, "defaultfont", "self.document.forms['we_form'].elements['v[doc_dir]'].value='/';"));
+			$dir_table->setCol(2, 1, null, we_html_forms::checkboxWithHidden((isset($v['restore_doc_path']) && $v['restore_doc_path']) ? true : false, 'v[restore_doc_path]', g_l('import', "[maintain_paths]"), false, "defaultfont", "self.document.forms['we_form'].elements['v[doc_dir]'].value='/';"));
 
 			$tbl_extra->setCol(1, 0, null, $dir_table->getHtml());
 
 			// --------------
 			// import templates
 			$rootDirID = get_def_ws(TEMPLATES_TABLE);
-			$tbl_extra->setCol(2, 0, array('colspan' => 2), we_forms::checkboxWithHidden((isset($v['import_templ']) && $v['import_templ']) ? true : false, 'v[import_templ]', g_l('import', '[import_templ]'), false, 'defaultfont', "toggle('tpl_table')"));
+			$tbl_extra->setCol(2, 0, array('colspan' => 2), we_html_forms::checkboxWithHidden((isset($v['import_templ']) && $v['import_templ']) ? true : false, 'v[import_templ]', g_l('import', '[import_templ]'), false, 'defaultfont', "toggle('tpl_table')"));
 			$wecmdenc1 = we_cmd_enc("self.wizbody.document.forms['we_form'].elements['v[tpl_dir_id]'].value");
 			$wecmdenc2 = we_cmd_enc("self.wizbody.document.forms['we_form'].elements['v[tpl_dir]'].value");
 			$wecmdenc3 = '';
@@ -604,12 +604,12 @@ handle_event("previous");');
 			$dir_table->setAttribute('id', 'tpl_table');
 			$dir_table->setCol(0, 1, null, we_html_tools::htmlAlertAttentionBox(g_l('import', '[templates_desc]'), we_html_tools::TYPE_ALERT, 390, true, 50));
 			$dir_table->setCol(1, 1, null, $docPath);
-			$dir_table->setCol(2, 1, null, we_forms::checkboxWithHidden((isset($v['restore_tpl_path']) && $v['restore_tpl_path']) ? true : false, 'v[restore_tpl_path]', g_l('import', '[maintain_paths]'), false, 'defaultfont', "self.document.forms['we_form'].elements['v[tpl_dir]'].value='/';"));
+			$dir_table->setCol(2, 1, null, we_html_forms::checkboxWithHidden((isset($v['restore_tpl_path']) && $v['restore_tpl_path']) ? true : false, 'v[restore_tpl_path]', g_l('import', '[maintain_paths]'), false, 'defaultfont', "self.document.forms['we_form'].elements['v[tpl_dir]'].value='/';"));
 
 
 			$tbl_extra->setCol(3, 0, null, $dir_table->getHtml());
 
-			$tbl_extra->setCol(4, 0, array("colspan" => 2), we_forms::checkboxWithHidden((isset($v["import_thumbnails"]) && $v["import_thumbnails"]) ? true : false, "v[import_thumbnails]", g_l('import', "[import_thumbnails]"), false, "defaultfont"));
+			$tbl_extra->setCol(4, 0, array("colspan" => 2), we_html_forms::checkboxWithHidden((isset($v["import_thumbnails"]) && $v["import_thumbnails"]) ? true : false, "v[import_thumbnails]", g_l('import', "[import_thumbnails]"), false, "defaultfont"));
 
 
 			$parts[] = array(
@@ -621,8 +621,8 @@ handle_event("previous");');
 
 			if(defined('OBJECT_TABLE')){
 				$tbl_extra = new we_html_table(array("cellpadding" => 2, "cellspacing" => 0, "border" => 0), 2, 1);
-				$tbl_extra->setCol(0, 0, null, we_forms::checkboxWithHidden((isset($v["import_objs"]) && $v["import_objs"]) ? true : false, "v[import_objs]", g_l('import', "[import_objs]")));
-				$tbl_extra->setCol(1, 0, null, we_forms::checkboxWithHidden((isset($v["import_classes"]) && $v["import_classes"]) ? true : false, "v[import_classes]", g_l('import', "[import_classes]")));
+				$tbl_extra->setCol(0, 0, null, we_html_forms::checkboxWithHidden((isset($v["import_objs"]) && $v["import_objs"]) ? true : false, "v[import_objs]", g_l('import', "[import_objs]")));
+				$tbl_extra->setCol(1, 0, null, we_html_forms::checkboxWithHidden((isset($v["import_classes"]) && $v["import_classes"]) ? true : false, "v[import_classes]", g_l('import', "[import_classes]")));
 
 				$parts[] = array(
 					"headline" => g_l('import', '[handle_object_options]') . '<br>' . g_l('import', '[handle_class_options]'),
@@ -632,9 +632,9 @@ handle_event("previous");');
 			}
 
 			$tbl_extra = new we_html_table(array("cellpadding" => 2, "cellspacing" => 0, "border" => 0), 4, 1);
-			$tbl_extra->setCol(0, 0, null, we_forms::checkboxWithHidden((isset($v["import_dt"]) && $v["import_dt"]) ? true : false, "v[import_dt]", g_l('import', "[import_doctypes]")));
-			$tbl_extra->setCol(1, 0, null, we_forms::checkboxWithHidden((isset($v["import_ct"]) && $v["import_ct"]) ? true : false, "v[import_ct]", g_l('import', "[import_cats]")));
-			$tbl_extra->setCol(2, 0, null, we_forms::checkboxWithHidden((isset($v["import_navigation"]) && $v["import_navigation"]) ? true : false, "v[import_navigation]", g_l('import', "[import_navigation]"), false, 'defaultfont', "toggle('navigation_table')"));
+			$tbl_extra->setCol(0, 0, null, we_html_forms::checkboxWithHidden((isset($v["import_dt"]) && $v["import_dt"]) ? true : false, "v[import_dt]", g_l('import', "[import_doctypes]")));
+			$tbl_extra->setCol(1, 0, null, we_html_forms::checkboxWithHidden((isset($v["import_ct"]) && $v["import_ct"]) ? true : false, "v[import_ct]", g_l('import', "[import_cats]")));
+			$tbl_extra->setCol(2, 0, null, we_html_forms::checkboxWithHidden((isset($v["import_navigation"]) && $v["import_navigation"]) ? true : false, "v[import_navigation]", g_l('import', "[import_navigation]"), false, 'defaultfont', "toggle('navigation_table')"));
 
 			// --
 
@@ -677,14 +677,14 @@ handle_event("previous");');
 				if(($xml_encoding != DEFAULT_CHARSET)){
 					$parts[] = array(
 						'headline' => g_l('import', '[encoding_headline]'),
-						'html' => we_forms::checkboxWithHidden((isset($v['import_ChangeEncoding']) && $v['import_ChangeEncoding']) ? true : false, 'v[import_ChangeEncoding]', g_l('import', '[encoding_change]') . $xml_encoding . g_l('import', '[encoding_to]') . DEFAULT_CHARSET . g_l('import', '[encoding_default]')) . '<input type="hidden" name="v[import_XMLencoding]" value="' . $xml_encoding . '" /><input type="hidden" name="v[import_TARGETencoding]" value="' . DEFAULT_CHARSET . '" />',
+						'html' => we_html_forms::checkboxWithHidden((isset($v['import_ChangeEncoding']) && $v['import_ChangeEncoding']) ? true : false, 'v[import_ChangeEncoding]', g_l('import', '[encoding_change]') . $xml_encoding . g_l('import', '[encoding_to]') . DEFAULT_CHARSET . g_l('import', '[encoding_default]')) . '<input type="hidden" name="v[import_XMLencoding]" value="' . $xml_encoding . '" /><input type="hidden" name="v[import_TARGETencoding]" value="' . DEFAULT_CHARSET . '" />',
 						'space' => 120
 					);
 				}
 			} else {
 				$parts[] = array(
 					'headline' => g_l('import', '[encoding_headline]'),
-					'html' => we_forms::checkboxWithHidden((isset($v['import_ChangeEncoding']) && $v['import_ChangeEncoding']) ? true : false, 'v[import_ChangeEncoding]', g_l('import', '[encoding_noway]') . '<input type="hidden" name="v[import_XMLencoding]" value="' . $xml_encoding . '" />', false, "defaultfont", '', true),
+					'html' => we_html_forms::checkboxWithHidden((isset($v['import_ChangeEncoding']) && $v['import_ChangeEncoding']) ? true : false, 'v[import_ChangeEncoding]', g_l('import', '[encoding_noway]') . '<input type="hidden" name="v[import_XMLencoding]" value="' . $xml_encoding . '" />', false, "defaultfont", '', true),
 					'space' => 120
 				);
 			}
@@ -693,13 +693,13 @@ handle_event("previous");');
 
 			$parts[] = array(
 				'headline' => g_l('import', '[handle_file_options]'),
-				'html' => we_forms::checkboxWithHidden((isset($v['import_binarys']) && $v['import_binarys']) ? true : false, 'v[import_binarys]', g_l('import', '[import_files]')),
+				'html' => we_html_forms::checkboxWithHidden((isset($v['import_binarys']) && $v['import_binarys']) ? true : false, 'v[import_binarys]', g_l('import', '[import_files]')),
 				'space' => 120
 			);
 
 			$parts[] = array(
 				'headline' => g_l('import', '[rebuild]'),
-				'html' => we_forms::checkboxWithHidden((isset($v['rebuild']) && $v['rebuild']) ? true : false, 'v[rebuild]', g_l('import', '[rebuild_txt]')),
+				'html' => we_html_forms::checkboxWithHidden((isset($v['rebuild']) && $v['rebuild']) ? true : false, 'v[rebuild]', g_l('import', '[rebuild_txt]')),
 				'space' => 120
 			);
 
@@ -718,7 +718,7 @@ handle_event("previous");');
 						'html' => we_html_tools::htmlAlertAttentionBox(g_l('import', '[invalid_path]'), we_html_tools::TYPE_ALERT, 530),
 						'space' => 0)
 				);
-				$content = $hdns . we_multiIconBox::getHTML('wxml', '100%', $parts, 30, '', -1, '', '', false, g_l('import', '[warning]'));
+				$content = $hdns . we_html_multiIconBox::getHTML('wxml', '100%', $parts, 30, '', -1, '', '', false, g_l('import', '[warning]'));
 				return array($functions, $content);
 			}
 
@@ -726,8 +726,8 @@ handle_event("previous");');
 
 			if($show_owner_opt){
 				$tbl_extra = new we_html_table(array('cellpadding' => 2, 'cellspacing' => 0, 'border' => 0), 2, 1);
-				$tbl_extra->setCol(0, 0, null, we_forms::checkboxWithHidden((isset($v['import_owners']) && $v['import_owners']) ? true : false, 'v[import_owners]', g_l('import', '[handle_owners]')));
-				$tbl_extra->setCol(1, 0, null, we_forms::checkboxWithHidden((isset($v['owners_overwrite']) && $v['owners_overwrite']) ? true : false, 'v[owners_overwrite]', g_l('import', '[owner_overwrite]')));
+				$tbl_extra->setCol(0, 0, null, we_html_forms::checkboxWithHidden((isset($v['import_owners']) && $v['import_owners']) ? true : false, 'v[import_owners]', g_l('import', '[handle_owners]')));
+				$tbl_extra->setCol(1, 0, null, we_html_forms::checkboxWithHidden((isset($v['owners_overwrite']) && $v['owners_overwrite']) ? true : false, 'v[owners_overwrite]', g_l('import', '[owner_overwrite]')));
 
 				$tbl_extra2 = new we_html_table(array('cellpadding' => 2, 'cellspacing' => 0, 'border' => 0), 1, 2);
 				$tbl_extra2->setCol(0, 0, null, we_html_tools::getPixel(20, 20));
@@ -752,7 +752,7 @@ handle_event("previous");');
 		}
 		$wepos = weGetCookieVariable('but_wxml');
 		$znr = -1;
-		$content = $hdns . we_multiIconBox::getHTML('wxml', '100%', $parts, 30, '', $znr, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]'), ($wepos == 'down'), ($we_valid) ? g_l('import', '[import_options]') : g_l('import', '[wxml_import]'));
+		$content = $hdns . we_html_multiIconBox::getHTML('wxml', '100%', $parts, 30, '', $znr, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]'), ($wepos == 'down'), ($we_valid) ? g_l('import', '[import_options]') : g_l('import', '[wxml_import]'));
 		return array($functions, $content);
 	}
 
@@ -786,7 +786,7 @@ function handle_event(evt) {
 				'html' => we_html_element::htmlDiv(array('class' => 'blockwrapper', 'style' => 'width: 520px; height: 400px; border:1px #dce6f2 solid;', 'id' => 'log'), ''),
 				'space' => 0)
 		);
-		$content = $hdns . we_multiIconBox::getHTML('wxml', '100%', $parts, 30, '', -1, '', '', false, g_l('import', '[log]'));
+		$content = $hdns . we_html_multiIconBox::getHTML('wxml', '100%', $parts, 30, '', -1, '', '', false, g_l('import', '[log]'));
 
 		return array($functions, $content);
 	}
@@ -974,8 +974,8 @@ HTS;
 		$inputLLocal = we_html_tools::htmlTextInput('uploaded_xml_file', 30, '', 255, "accept=\"text/xml\" onClick=\"self.document.forms['we_form'].elements['v[rdofloc]'][1].checked=true;\"", "file");
 		$importFromLocal = we_html_tools::htmlFormElementTable($inputLLocal, '', 'left', 'defaultfont', we_html_tools::getPixel(10, 1), '', '', '', '', 0);
 
-		$rdoLServer = we_forms::radiobutton('lServer', (isset($v['rdofloc'])) ? ($v['rdofloc'] == 'lServer') : 1, 'v[rdofloc]', g_l('import', '[fileselect_server]'));
-		$rdoLLocal = we_forms::radiobutton('lLocal', (isset($v['rdofloc'])) ? ($v['rdofloc'] == 'lLocal') : 0, 'v[rdofloc]', g_l('import', '[fileselect_local]'));
+		$rdoLServer = we_html_forms::radiobutton('lServer', (isset($v['rdofloc'])) ? ($v['rdofloc'] == 'lServer') : 1, 'v[rdofloc]', g_l('import', '[fileselect_server]'));
+		$rdoLLocal = we_html_forms::radiobutton('lLocal', (isset($v['rdofloc'])) ? ($v['rdofloc'] == 'lLocal') : 0, 'v[rdofloc]', g_l('import', '[fileselect_local]'));
 
 		$importLocs = new we_html_table(array('cellpadding' => 0, 'cellspacing' => 0, 'border' => 0), 7, 1);
 
@@ -1100,8 +1100,8 @@ HTS;
 
 		$storeTo = $yuiSuggest->getHTML();
 
-		$radioDocs = we_forms::radiobutton('documents', ($v['import_type'] == 'documents'), 'v[import_type]', g_l('import', '[documents]'));
-		$radioObjs = we_forms::radiobutton('objects', ($v['import_type'] == 'objects'), 'v[import_type]', g_l('import', '[objects]'), true, 'defaultfont', "self.document.forms['we_form'].elements['v[store_to_path]'].value='/'; YAHOO.autocoml.setValidById(self.document.forms['we_form'].elements['v[store_to_path]'].id); if(!!self.document.forms['we_form'].elements['v[we_TemplateName]']) { self.document.forms['we_form'].elements['v[we_TemplateName]'].value=''; YAHOO.autocoml.setValidById(self.document.forms['we_form'].elements['v[we_TemplateName]'].id); }", (defined("OBJECT_TABLE") ? false : true));
+		$radioDocs = we_html_forms::radiobutton('documents', ($v['import_type'] == 'documents'), 'v[import_type]', g_l('import', '[documents]'));
+		$radioObjs = we_html_forms::radiobutton('objects', ($v['import_type'] == 'objects'), 'v[import_type]', g_l('import', '[objects]'), true, 'defaultfont', "self.document.forms['we_form'].elements['v[store_to_path]'].value='/'; YAHOO.autocoml.setValidById(self.document.forms['we_form'].elements['v[store_to_path]'].id); if(!!self.document.forms['we_form'].elements['v[we_TemplateName]']) { self.document.forms['we_form'].elements['v[we_TemplateName]'].value=''; YAHOO.autocoml.setValidById(self.document.forms['we_form'].elements['v[we_TemplateName]'].id); }", (defined("OBJECT_TABLE") ? false : true));
 
 		$v['classID'] = isset($v['classID']) ? $v['classID'] : -1;
 		$CLselect = new we_html_select(array(
@@ -1147,7 +1147,7 @@ HTS;
 		$objects->setCol(3, 1, array(), $objCats->getHTML());
 
 		$specifyDoc = new we_html_table(array('cellpadding' => 0, 'cellspacing' => 0, 'border' => 0), 1, 3);
-		$specifyDoc->setCol(0, 2, array('valign' => 'bottom'), we_forms::checkbox(3, (isset($v['is_dynamic']) ? $v['is_dynamic'] : 0), 'chbxIsDynamic', g_l('import', '[isDynamic]'), true, 'defaultfont', "this.form.elements['v[is_dynamic]'].value=this.checked? 1 : 0; switchExt();"));
+		$specifyDoc->setCol(0, 2, array('valign' => 'bottom'), we_html_forms::checkbox(3, (isset($v['is_dynamic']) ? $v['is_dynamic'] : 0), 'chbxIsDynamic', g_l('import', '[isDynamic]'), true, 'defaultfont', "this.form.elements['v[is_dynamic]'].value=this.checked? 1 : 0; switchExt();"));
 		$specifyDoc->setCol(0, 1, array('width' => 20), we_html_tools::getPixel(20, 1));
 		$specifyDoc->setCol(0, 0, array(), we_html_tools::htmlFormElementTable(we_html_tools::getExtensionPopup('v[we_Extension]', (isset($v['we_Extension']) ? $v['we_Extension'] : '.html'), we_base_ContentTypes::inst()->getExtension('text/webedition'), 100), g_l('import', '[extension]')));
 
@@ -1182,8 +1182,8 @@ HTS;
 			we_html_element::jsScript(JS_DIR . 'libs/yui/event-min.js') .
 			we_html_element::jsScript(JS_DIR . 'libs/yui/connection-min.js') .
 			$hdns .
-			we_multiIconBox::getJS() .
-			we_multiIconBox::getHTML('xml', '100%', $parts, 30, '', $znr, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]'), ($wepos == 'down'), g_l('import', '[gxml_import]'));
+			we_html_multiIconBox::getJS() .
+			we_html_multiIconBox::getHTML('xml', '100%', $parts, 30, '', $znr, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]'), ($wepos == 'down'), g_l('import', '[gxml_import]'));
 
 		return array($functions, $content);
 	}
@@ -1325,8 +1325,8 @@ function handle_event(evt) {
 		$znr = -1;
 
 		$content = $hdns .
-			we_multiIconBox::getJS() .
-			we_multiIconBox::getHTML('xml', '100%', $parts, 30, '', $znr, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]'), ($wepos == 'down'), g_l('import', '[select_data_set]'));
+			we_html_multiIconBox::getJS() .
+			we_html_multiIconBox::getHTML('xml', '100%', $parts, 30, '', $znr, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]'), ($wepos == 'down'), g_l('import', '[select_data_set]'));
 
 		return array($functions, $content);
 	}
@@ -1528,11 +1528,11 @@ function handle_event(evt) {
 
 		// Filename selector.
 		$fn = new we_html_table(array('cellpadding' => 0, 'cellspacing' => 0, 'border' => 0), 5, 2);
-		$fn->setCol(0, 0, array('colspan' => 2), we_forms::radiobutton(0, (!isset($v['rdo_filename']) ? true : ($v['rdo_filename'] == 0) ? true : false), 'v[rdo_filename]', g_l('import', '[auto]'), true, 'defaultfont', "self.document.forms['we_form'].elements['v[pfx_fn]'].value=0;"));
+		$fn->setCol(0, 0, array('colspan' => 2), we_html_forms::radiobutton(0, (!isset($v['rdo_filename']) ? true : ($v['rdo_filename'] == 0) ? true : false), 'v[rdo_filename]', g_l('import', '[auto]'), true, 'defaultfont', "self.document.forms['we_form'].elements['v[pfx_fn]'].value=0;"));
 		$fn->setCol(1, 0, array("width" => 25), we_html_tools::getPixel(25, 0));
 		$fn->setCol(1, 1, array(), $asocPfx->getHTML());
 		$fn->setCol(2, 0, array('height' => 5), '');
-		$fn->setCol(3, 0, array('colspan' => 2), we_forms::radiobutton(1, (!isset($v['rdo_filename']) ? false : ($v['rdo_filename'] == 1) ? true : false), "v[rdo_filename]", g_l('import', "[asgnd]"), true, "defaultfont", "self.document.forms['we_form'].elements['v[pfx_fn]'].value=1;"));
+		$fn->setCol(3, 0, array('colspan' => 2), we_html_forms::radiobutton(1, (!isset($v['rdo_filename']) ? false : ($v['rdo_filename'] == 1) ? true : false), "v[rdo_filename]", g_l('import', "[asgnd]"), true, "defaultfont", "self.document.forms['we_form'].elements['v[pfx_fn]'].value=1;"));
 		$fn->setCol(4, 0, array('width' => 25), we_html_tools::getPixel(25, 0));
 		$fn->setCol(4, 1, array(), $asgndFld->getHTML());
 
@@ -1544,11 +1544,11 @@ function handle_event(evt) {
 		if(!empty($dateFields)){
 			// Timestamp
 			$tStamp = new we_html_table(array('cellpadding' => 0, 'cellspacing' => 0, 'border' => 0), 7, 2);
-			$tStamp->setCol(0, 0, array('colspan' => 2), we_forms::radiobutton('Unix', (!isset($v['rdo_timestamp']) ? 1 : ($v['rdo_timestamp'] == 'Unix') ? 1 : 0), 'v[rdo_timestamp]', g_l('import', '[uts]'), true, 'defaultfont', '', 0, g_l('import', '[unix_timestamp]'), 0, 384));
+			$tStamp->setCol(0, 0, array('colspan' => 2), we_html_forms::radiobutton('Unix', (!isset($v['rdo_timestamp']) ? 1 : ($v['rdo_timestamp'] == 'Unix') ? 1 : 0), 'v[rdo_timestamp]', g_l('import', '[uts]'), true, 'defaultfont', '', 0, g_l('import', '[unix_timestamp]'), 0, 384));
 			$tStamp->setCol(1, 0, array('colspan' => 2), we_html_tools::getPixel(0, 4));
-			$tStamp->setCol(2, 0, array('colspan' => 2), we_forms::radiobutton('GMT', (!isset($v['rdo_timestamp']) ? 0 : ($v['rdo_timestamp'] == 'GMT') ? 1 : 0), 'v[rdo_timestamp]', g_l('import', '[gts]'), true, 'defaultfont', '', 0, g_l('import', '[gmt_timestamp]'), 0, 384));
+			$tStamp->setCol(2, 0, array('colspan' => 2), we_html_forms::radiobutton('GMT', (!isset($v['rdo_timestamp']) ? 0 : ($v['rdo_timestamp'] == 'GMT') ? 1 : 0), 'v[rdo_timestamp]', g_l('import', '[gts]'), true, 'defaultfont', '', 0, g_l('import', '[gmt_timestamp]'), 0, 384));
 			$tStamp->setCol(3, 0, array('colspan' => 2), we_html_tools::getPixel(0, 4));
-			$tStamp->setCol(4, 0, array('colspan' => 2), we_forms::radiobutton('Format', (!isset($v['rdo_timestamp']) ? 0 : ($v['rdo_timestamp'] == 'Format') ? 1 : 0), 'v[rdo_timestamp]', g_l('import', '[fts]'), true, 'defaultfont', '', 0, g_l('import', '[format_timestamp]'), 0, 384));
+			$tStamp->setCol(4, 0, array('colspan' => 2), we_html_forms::radiobutton('Format', (!isset($v['rdo_timestamp']) ? 0 : ($v['rdo_timestamp'] == 'Format') ? 1 : 0), 'v[rdo_timestamp]', g_l('import', '[fts]'), true, 'defaultfont', '', 0, g_l('import', '[format_timestamp]'), 0, 384));
 			$tStamp->setCol(5, 0, array('colspan' => 2), we_html_tools::getPixel(0, 4));
 			$tStamp->setCol(6, 0, array('width' => 25), we_html_tools::getPixel(25, 0));
 			$tStamp->setCol(6, 1, array(), we_html_tools::htmlTextInput('v[timestamp]', 30, (isset($v['timestamp']) ? $v['timestamp'] : ''), '', "onClick=\"self.document.forms['we_form'].elements['v[rdo_timestamp]'][2].checked=true;\"", "text", 150));
@@ -1573,11 +1573,11 @@ function handle_event(evt) {
 		$conflict = isset($v['collision']) ? $v['collision'] : 'rename';
 		$fn_colsn = new we_html_table(array('cellpadding' => 0, 'cellspacing' => 0, 'border' => 0), 6, 1);
 		$fn_colsn->setCol(0, 0, array(), we_html_tools::getPixel(0, 4));
-		$fn_colsn->setCol(1, 0, array(), we_forms::radiobutton('rename', $conflict == 'rename', 'nameconflict', g_l('import', '[rename]'), true, 'defaultfont', "self.document.forms['we_form'].elements['v[collision]'].value='rename';"));
+		$fn_colsn->setCol(1, 0, array(), we_html_forms::radiobutton('rename', $conflict == 'rename', 'nameconflict', g_l('import', '[rename]'), true, 'defaultfont', "self.document.forms['we_form'].elements['v[collision]'].value='rename';"));
 		$fn_colsn->setCol(2, 0, array(), we_html_tools::getPixel(0, 4));
-		$fn_colsn->setCol(3, 0, array(), we_forms::radiobutton('replace', $conflict == 'replace', 'nameconflict', g_l('import', '[replace]'), true, 'defaultfont', "self.document.forms['we_form'].elements['v[collision]'].value='replace';"));
+		$fn_colsn->setCol(3, 0, array(), we_html_forms::radiobutton('replace', $conflict == 'replace', 'nameconflict', g_l('import', '[replace]'), true, 'defaultfont', "self.document.forms['we_form'].elements['v[collision]'].value='replace';"));
 		$fn_colsn->setCol(4, 0, array(), we_html_tools::getPixel(0, 4));
-		$fn_colsn->setCol(5, 0, array(), we_forms::radiobutton('skip', $conflict == 'skip', 'nameconflict', g_l('import', '[skip]'), true, 'defaultfont', "self.document.forms['we_form'].elements['v[collision]'].value='skip';"));
+		$fn_colsn->setCol(5, 0, array(), we_html_forms::radiobutton('skip', $conflict == 'skip', 'nameconflict', g_l('import', '[skip]'), true, 'defaultfont', "self.document.forms['we_form'].elements['v[collision]'].value='skip';"));
 
 		$parts[] = array(
 			'headline' => g_l('import', '[name_collision]'),
@@ -1589,8 +1589,8 @@ function handle_event(evt) {
 		$znr = -1;
 
 		$content = $hdns .
-			we_multiIconBox::getJS() .
-			we_multiIconBox::getHTML('xml', '100%', $parts, 30, '', $znr, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]'), ($wepos == 'down'), g_l('import', '[assign_record_fields]'));
+			we_html_multiIconBox::getJS() .
+			we_html_multiIconBox::getHTML('xml', '100%', $parts, 30, '', $znr, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]'), ($wepos == 'down'), g_l('import', '[assign_record_fields]'));
 
 		return array($functions, $content);
 	}
@@ -1671,8 +1671,8 @@ function handle_event(evt) {
 		$inputLLocal = we_html_tools::htmlTextInput('uploaded_csv_file', 30, '', 255, "accept=\"text/csv\" onclick=\"" . "self.document.forms['we_form'].elements['v[rdofloc]'][1].checked=true;\"" . "\"", "file");
 		$importFromLocal = we_html_tools::htmlFormElementTable($inputLLocal, '', 'left', 'defaultfont', we_html_tools::getPixel(10, 1), "", "", "", "", 0);
 
-		$rdoLServer = we_forms::radiobutton('lServer', (isset($v['rdofloc'])) ? ($v['rdofloc'] == 'lServer') : 1, 'v[rdofloc]', g_l('import', '[fileselect_server]'));
-		$rdoLLocal = we_forms::radiobutton('lLocal', (isset($v['rdofloc'])) ? ($v['rdofloc'] == 'lLocal') : 0, 'v[rdofloc]', g_l('import', '[fileselect_local]'));
+		$rdoLServer = we_html_forms::radiobutton('lServer', (isset($v['rdofloc'])) ? ($v['rdofloc'] == 'lServer') : 1, 'v[rdofloc]', g_l('import', '[fileselect_server]'));
+		$rdoLLocal = we_html_forms::radiobutton('lLocal', (isset($v['rdofloc'])) ? ($v['rdofloc'] == 'lLocal') : 0, 'v[rdofloc]', g_l('import', '[fileselect_local]'));
 
 		$importLocs = new we_html_table(array('cellpadding' => 0, 'cellspacing' => 0, 'border' => 0), 7, 1);
 
@@ -1716,7 +1716,7 @@ function handle_event(evt) {
 			$txtDel->selectOption($v['csv_enclosed']);
 		}
 
-		$rowDef = we_forms::checkbox('', (isset($v['csv_fieldnames']) ? $v['csv_fieldnames'] : true), 'checkbox_fieldnames', g_l('import', '[contains]'), true, 'defaultfont', "this.form.elements['v[csv_fieldnames]'].value=this.checked ? 1 : 0;");
+		$rowDef = we_html_forms::checkbox('', (isset($v['csv_fieldnames']) ? $v['csv_fieldnames'] : true), 'checkbox_fieldnames', g_l('import', '[contains]'), true, 'defaultfont', "this.form.elements['v[csv_fieldnames]'].value=this.checked ? 1 : 0;");
 
 		$csvSettings = new we_html_table(array('cellpadding' => 0, 'cellspacing' => 0, 'border' => 0), 7, 1);
 		$csvSettings->setCol(0, 0, array('class' => 'defaultfont'), g_l('import', '[file_format]') . '<br>' . we_html_tools::getPixel(1, 1) . '<br>' . $charSet->getHtml());
@@ -1745,7 +1745,7 @@ function handle_event(evt) {
 			we_html_element::htmlHidden(array('name' => 'v[csv_escaped]', 'value' => (isset($v['csv_escaped'])) ? $v['csv_escaped'] : '')) .
 			we_html_element::htmlHidden(array('name' => 'v[collision]', 'value' => (isset($v['collision'])) ? $v['collision'] : 'rename')) .
 			we_html_element::htmlHidden(array('name' => 'v[csv_terminated]', 'value' => (isset($v['csv_terminated'])) ? $v['csv_terminated'] : ''));
-		$content.= we_multiIconBox::getHTML('csv', '100%', $parts, 30, '', -1, '', '', false, g_l('import', '[csv_import]'));
+		$content.= we_html_multiIconBox::getHTML('csv', '100%', $parts, 30, '', -1, '', '', false, g_l('import', '[csv_import]'));
 
 		return array($functions, $content);
 	}
@@ -2066,9 +2066,9 @@ HTS;
 		$docCats->setCol(1, 0, array(), we_html_tools::getPixel(130, 1));
 		$docCats->setCol(1, 1, array(), we_html_tools::getPixel(150, 1));
 
-		$radioDocs = we_forms::radiobutton("documents", ($v["import_type"] == "documents"), "v[import_type]", g_l('import', "[documents]"));
+		$radioDocs = we_html_forms::radiobutton("documents", ($v["import_type"] == "documents"), "v[import_type]", g_l('import', "[documents]"));
 //		$radioObjs = we_forms::radiobutton("objects", ($v["import_type"] == "objects"), "v[import_type]", g_l('import',"[objects]"), true, "defaultfont", "", (defined("OBJECT_TABLE"))? false : true);
-		$radioObjs = we_forms::radiobutton("objects", ($v["import_type"] == "objects"), "v[import_type]", g_l('import', "[objects]"), true, "defaultfont", "self.document.forms['we_form'].elements['v[store_to_path]'].value='/'; YAHOO.autocoml.setValidById(self.document.forms['we_form'].elements['v[store_to_path]'].id); if(!!self.document.forms['we_form'].elements['v[we_TemplateName]']) { self.document.forms['we_form'].elements['v[we_TemplateName]'].value=''; YAHOO.autocoml.setValidById(self.document.forms['we_form'].elements['v[we_TemplateName]'].id); }", (defined("OBJECT_TABLE") ? false : true));
+		$radioObjs = we_html_forms::radiobutton("objects", ($v["import_type"] == "objects"), "v[import_type]", g_l('import', "[objects]"), true, "defaultfont", "self.document.forms['we_form'].elements['v[store_to_path]'].value='/'; YAHOO.autocoml.setValidById(self.document.forms['we_form'].elements['v[store_to_path]'].id); if(!!self.document.forms['we_form'].elements['v[we_TemplateName]']) { self.document.forms['we_form'].elements['v[we_TemplateName]'].value=''; YAHOO.autocoml.setValidById(self.document.forms['we_form'].elements['v[we_TemplateName]'].id); }", (defined("OBJECT_TABLE") ? false : true));
 
 		$v["classID"] = isset($v["classID"]) ? $v["classID"] : -1;
 		$CLselect = new we_html_select(array(
@@ -2113,7 +2113,7 @@ HTS;
 		$objects->setCol(3, 1, array(), $objCats->getHTML());
 
 		$specifyDoc = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 1, 3);
-		$specifyDoc->setCol(0, 2, array("valign" => "bottom"), we_forms::checkbox(3, (isset($v["is_dynamic"]) ? $v["is_dynamic"] : 0), "chbxIsDynamic", g_l('import', "[isDynamic]"), true, "defaultfont", "this.form.elements['v[is_dynamic]'].value=this.checked? 1 : 0; switchExt();"));
+		$specifyDoc->setCol(0, 2, array("valign" => "bottom"), we_html_forms::checkbox(3, (isset($v["is_dynamic"]) ? $v["is_dynamic"] : 0), "chbxIsDynamic", g_l('import', "[isDynamic]"), true, "defaultfont", "this.form.elements['v[is_dynamic]'].value=this.checked? 1 : 0; switchExt();"));
 		$specifyDoc->setCol(0, 1, array("width" => 20), we_html_tools::getPixel(20, 1));
 		$specifyDoc->setCol(0, 0, array(), we_html_tools::htmlFormElementTable(we_html_tools::getExtensionPopup("v[we_Extension]", (isset($v["we_Extension"]) ? $v["we_Extension"] : ".html"), we_base_ContentTypes::inst()->getExtension("text/webedition"), "100"), g_l('import', "[extension]")));
 
@@ -2151,7 +2151,7 @@ HTS;
 			we_html_element::jsScript(JS_DIR . "libs/yui/event-min.js") .
 			we_html_element::jsScript(JS_DIR . "libs/yui/connection-min.js") .
 			$hdns .
-			we_multiIconBox::getHTML('csv', "100%", $parts, 30, "", -1, "", "", false, g_l('import', "[csv_import]"));
+			we_html_multiIconBox::getHTML('csv', "100%", $parts, 30, "", -1, "", "", false, g_l('import', "[csv_import]"));
 
 		return array($functions, $content);
 	}
@@ -2370,11 +2370,11 @@ function handle_event(evt) {
 
 		// Filename selector.
 		$fn = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 5, 2);
-		$fn->setCol(0, 0, array("colspan" => 2), we_forms::radiobutton(0, (!isset($v["rdo_filename"]) ? true : ($v["rdo_filename"] == 0) ? true : false), "v[rdo_filename]", g_l('import', "[auto]"), true, "defaultfont", "self.document.forms['we_form'].elements['v[pfx_fn]'].value=0;"));
+		$fn->setCol(0, 0, array("colspan" => 2), we_html_forms::radiobutton(0, (!isset($v["rdo_filename"]) ? true : ($v["rdo_filename"] == 0) ? true : false), "v[rdo_filename]", g_l('import', "[auto]"), true, "defaultfont", "self.document.forms['we_form'].elements['v[pfx_fn]'].value=0;"));
 		$fn->setCol(1, 0, array("width" => 25), we_html_tools::getPixel(25, 0));
 		$fn->setCol(1, 1, array(), $asocPfx->getHTML());
 		$fn->setCol(2, 0, array("height" => 5), "");
-		$fn->setCol(3, 0, array("colspan" => 2), we_forms::radiobutton(1, (!isset($v["rdo_filename"]) ? false : ($v["rdo_filename"] == 1) ? true : false), "v[rdo_filename]", g_l('import', "[asgnd]"), true, "defaultfont", "self.document.forms['we_form'].elements['v[pfx_fn]'].value=1;"));
+		$fn->setCol(3, 0, array("colspan" => 2), we_html_forms::radiobutton(1, (!isset($v["rdo_filename"]) ? false : ($v["rdo_filename"] == 1) ? true : false), "v[rdo_filename]", g_l('import', "[asgnd]"), true, "defaultfont", "self.document.forms['we_form'].elements['v[pfx_fn]'].value=1;"));
 		$fn->setCol(4, 0, array("width" => 25), we_html_tools::getPixel(25, 0));
 		$fn->setCol(4, 1, array(), $asgndFld->getHTML());
 
@@ -2388,11 +2388,11 @@ function handle_event(evt) {
 		if(!empty($dateFields)){
 			// Timestamp
 			$tStamp = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 7, 2);
-			$tStamp->setCol(0, 0, array("colspan" => 2), we_forms::radiobutton("Unix", (!isset($v["rdo_timestamp"]) ? 1 : ($v["rdo_timestamp"] == "Unix") ? 1 : 0), "v[rdo_timestamp]", g_l('import', "[uts]"), true, "defaultfont", "", 0, g_l('import', "[unix_timestamp]"), 0, 384));
+			$tStamp->setCol(0, 0, array("colspan" => 2), we_html_forms::radiobutton("Unix", (!isset($v["rdo_timestamp"]) ? 1 : ($v["rdo_timestamp"] == "Unix") ? 1 : 0), "v[rdo_timestamp]", g_l('import', "[uts]"), true, "defaultfont", "", 0, g_l('import', "[unix_timestamp]"), 0, 384));
 			$tStamp->setCol(1, 0, array("colspan" => 2), we_html_tools::getPixel(0, 4));
-			$tStamp->setCol(2, 0, array("colspan" => 2), we_forms::radiobutton("GMT", (!isset($v["rdo_timestamp"]) ? 0 : ($v["rdo_timestamp"] == "GMT") ? 1 : 0), "v[rdo_timestamp]", g_l('import', "[gts]"), true, "defaultfont", "", 0, g_l('import', "[gmt_timestamp]"), 0, 384));
+			$tStamp->setCol(2, 0, array("colspan" => 2), we_html_forms::radiobutton("GMT", (!isset($v["rdo_timestamp"]) ? 0 : ($v["rdo_timestamp"] == "GMT") ? 1 : 0), "v[rdo_timestamp]", g_l('import', "[gts]"), true, "defaultfont", "", 0, g_l('import', "[gmt_timestamp]"), 0, 384));
 			$tStamp->setCol(3, 0, array("colspan" => 2), we_html_tools::getPixel(0, 4));
-			$tStamp->setCol(4, 0, array("colspan" => 2), we_forms::radiobutton("Format", (!isset($v["rdo_timestamp"]) ? 0 : ($v["rdo_timestamp"] == "Format") ? 1 : 0), "v[rdo_timestamp]", g_l('import', "[fts]"), true, "defaultfont", "", 0, g_l('import', "[format_timestamp]"), 0, 384));
+			$tStamp->setCol(4, 0, array("colspan" => 2), we_html_forms::radiobutton("Format", (!isset($v["rdo_timestamp"]) ? 0 : ($v["rdo_timestamp"] == "Format") ? 1 : 0), "v[rdo_timestamp]", g_l('import', "[fts]"), true, "defaultfont", "", 0, g_l('import', "[format_timestamp]"), 0, 384));
 			$tStamp->setCol(5, 0, array("colspan" => 2), we_html_tools::getPixel(0, 4));
 			$tStamp->setCol(6, 0, array("width" => 25), we_html_tools::getPixel(25, 0));
 			$tStamp->setCol(6, 1, array(), we_html_tools::htmlTextInput("v[timestamp]", 30, (isset($v["timestamp"]) ? $v["timestamp"] : ""), "", "onClick=\"self.document.forms['we_form'].elements['v[rdo_timestamp]'][2].checked=true;\"", "text", 150));
@@ -2410,11 +2410,11 @@ function handle_event(evt) {
 		$conflict = isset($v["collision"]) ? $v["collision"] : 'rename';
 		$fn_colsn = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 6, 1);
 		$fn_colsn->setCol(0, 0, array(), we_html_tools::getPixel(0, 4));
-		$fn_colsn->setCol(1, 0, array(), we_forms::radiobutton("rename", $conflict == "rename", "nameconflict", g_l('import', "[rename]"), true, 'defaultfont', "self.document.forms['we_form'].elements['v[collision]'].value='rename';"));
+		$fn_colsn->setCol(1, 0, array(), we_html_forms::radiobutton("rename", $conflict == "rename", "nameconflict", g_l('import', "[rename]"), true, 'defaultfont', "self.document.forms['we_form'].elements['v[collision]'].value='rename';"));
 		$fn_colsn->setCol(2, 0, array(), we_html_tools::getPixel(0, 4));
-		$fn_colsn->setCol(3, 0, array(), we_forms::radiobutton("replace", $conflict == "replace", "nameconflict", g_l('import', "[replace]"), true, 'defaultfont', "self.document.forms['we_form'].elements['v[collision]'].value='replace';"));
+		$fn_colsn->setCol(3, 0, array(), we_html_forms::radiobutton("replace", $conflict == "replace", "nameconflict", g_l('import', "[replace]"), true, 'defaultfont', "self.document.forms['we_form'].elements['v[collision]'].value='replace';"));
 		$fn_colsn->setCol(4, 0, array(), we_html_tools::getPixel(0, 4));
-		$fn_colsn->setCol(5, 0, array(), we_forms::radiobutton("skip", $conflict == "skip", "nameconflict", g_l('import', "[skip]"), true, 'defaultfont', "self.document.forms['we_form'].elements['v[collision]'].value='skip';"));
+		$fn_colsn->setCol(5, 0, array(), we_html_forms::radiobutton("skip", $conflict == "skip", "nameconflict", g_l('import', "[skip]"), true, 'defaultfont', "self.document.forms['we_form'].elements['v[collision]'].value='skip';"));
 
 		$parts[] = array(
 			'headline' => g_l('import', '[name_collision]'),
@@ -2432,8 +2432,8 @@ function handle_event(evt) {
 		$znr = -1;
 
 		$content = $hdns .
-			we_multiIconBox::getJS() .
-			we_multiIconBox::getHTML('csv', '100%', $parts, 30, '', $znr, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]'), ($wepos == 'down'), g_l('import', '[assign_record_fields]'));
+			we_html_multiIconBox::getJS() .
+			we_html_multiIconBox::getHTML('csv', '100%', $parts, 30, '', $znr, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]'), ($wepos == 'down'), g_l('import', '[assign_record_fields]'));
 
 		return array($functions, $content);
 	}

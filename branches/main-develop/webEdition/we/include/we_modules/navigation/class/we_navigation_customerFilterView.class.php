@@ -36,7 +36,7 @@ class we_navigation_customerFilterView extends we_customer_filterView{
 	 */
 	function getFilterHTML($isDynamic = false){
 		$_filter = $this->getFilter();
-		return we_forms::checkboxWithHidden(
+		return we_html_forms::checkboxWithHidden(
 				$_filter->getUseDocumentFilter(), 'wecf_useDocumentFilter', g_l('navigation', '[useDocumentFilter]'), false, 'defaultfont', 'updateView();', $isDynamic
 			) . $this->getDiv(
 				'<div style="border-top: 1px solid #AFB0AF;margin-bottom: 5px;"></div>' . parent::getFilterHTML(true), 'MainFilterDiv', !$_filter->getUseDocumentFilter()

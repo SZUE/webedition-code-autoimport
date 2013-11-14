@@ -194,12 +194,12 @@ class we_document extends we_root{
 
 	function formInGlossar(){
 		return (we_getModuleNameByContentType('glossary') == 'glossary' ?
-				we_forms::checkboxWithHidden((bool) $this->InGlossar, 'we_' . $this->Name . '_InGlossar', g_l('weClass', '[InGlossar]'), false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);') :
+				we_html_forms::checkboxWithHidden((bool) $this->InGlossar, 'we_' . $this->Name . '_InGlossar', g_l('weClass', '[InGlossar]'), false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);') :
 				'');
 	}
 
 	function formIsSearchable(){
-		return we_forms::checkboxWithHidden((bool) $this->IsSearchable, 'we_' . $this->Name . '_IsSearchable', g_l('weClass', '[IsSearchable]'), false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);');
+		return we_html_forms::checkboxWithHidden((bool) $this->IsSearchable, 'we_' . $this->Name . '_IsSearchable', g_l('weClass', '[IsSearchable]'), false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);');
 	}
 
 	function formExtension2(){

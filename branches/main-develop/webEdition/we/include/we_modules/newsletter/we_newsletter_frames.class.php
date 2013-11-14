@@ -314,7 +314,7 @@ function we_save() {
 				$table2->setCol(0, 2, array("nowrap" => null), we_html_tools::getPixel(70, 5));
 				$table2->setCol(0, 3, array("nowrap" => null), $select->getHtml());
 				$table2->setCol(0, 4, array("nowrap" => null), we_html_tools::getPixel(5, 5));
-				$table2->setCol(0, 5, array("nowrap" => null), we_forms::checkbox(0, false, "htmlmail_check", g_l('modules_newsletter', '[html_preview]'), false, "defaultfont", "if(document.we_form.htmlmail_check.checked) { document.we_form.hm.value=1;top.opener.top.nlHTMLMail=1; } else { document.we_form.hm.value=0;top.opener.top.nlHTMLMail=0; }"));
+				$table2->setCol(0, 5, array("nowrap" => null), we_html_forms::checkbox(0, false, "htmlmail_check", g_l('modules_newsletter', '[html_preview]'), false, "defaultfont", "if(document.we_form.htmlmail_check.checked) { document.we_form.hm.value=1;top.opener.top.nlHTMLMail=1; } else { document.we_form.hm.value=0;top.opener.top.nlHTMLMail=0; }"));
 				$table2->setCol(0, 6, array("nowrap" => null), we_html_tools::getPixel(5, 5));
 				$table2->setCol(0, 7, array("nowrap" => null), we_button::create_button("preview", "javascript:we_cmd('popPreview')"));
 				$table2->setCol(0, 8, array("nowrap" => null), we_html_tools::getPixel(5, 5));
@@ -716,7 +716,7 @@ if(typeof(self.document.we_form.htmlmail_check)!="undefined") {
 				$settings = we_newsletter_view::getSettings();
 			}
 			if(in_array($radio, $extra_radio_text)){
-				$radios_code.= we_forms::checkbox($settings[$radio], (($settings[$radio] > 0) ? true : false), $radio . "_check", g_l('modules_newsletter', '[' . $radio . "_check]"), false, "defaultfont", "if(document.we_form." . $radio . "_check.checked) document.we_form." . $radio . ".value=" . (isset($defaults[$radio . "_check"]) ? $defaults[$radio . "_check"] : "0") . "; else document.we_form." . $radio . ".value=0;");
+				$radios_code.= we_html_forms::checkbox($settings[$radio], (($settings[$radio] > 0) ? true : false), $radio . "_check", g_l('modules_newsletter', '[' . $radio . "_check]"), false, "defaultfont", "if(document.we_form." . $radio . "_check.checked) document.we_form." . $radio . ".value=" . (isset($defaults[$radio . "_check"]) ? $defaults[$radio . "_check"] : "0") . "; else document.we_form." . $radio . ".value=0;");
 
 				$radio_table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 1, 4);
 				$radio_table->setCol(0, 0, array("class" => "defaultfont"), we_html_tools::getPixel(25, 5));
@@ -725,7 +725,7 @@ if(typeof(self.document.we_form.htmlmail_check)!="undefined") {
 				$radio_table->setCol(0, 3, array("class" => "defaultfont"), we_html_tools::htmlTextInput($radio, 5, $settings[$radio], "", "OnChange='if(document.we_form." . $radio . ".value!=0) document.we_form." . $radio . "_check.checked=true; else document.we_form." . $radio . "_check.checked=false;'"));
 				$radios_code.=$radio_table->getHtml();
 			} else {
-				$radios_code.=we_forms::checkbox($settings[$radio], (($settings[$radio] == 1) ? true : false), $radio, oldHtmlspecialchars(g_l('modules_newsletter', '[' . $radio . ']')), false, "defaultfont", "if(document.we_form." . $radio . ".checked) document.we_form." . $radio . ".value=1; else document.we_form." . $radio . ".value=0;");
+				$radios_code.=we_html_forms::checkbox($settings[$radio], (($settings[$radio] == 1) ? true : false), $radio, oldHtmlspecialchars(g_l('modules_newsletter', '[' . $radio . ']')), false, "defaultfont", "if(document.we_form." . $radio . ".checked) document.we_form." . $radio . ".value=1; else document.we_form." . $radio . ".value=0;");
 			}
 		}
 
@@ -827,7 +827,7 @@ if(typeof(self.document.we_form.htmlmail_check)!="undefined") {
 	}
 
 	function getHTMLCustomer($group){
-		$out = we_forms::checkbox($this->View->newsletter->groups[$group]->SendAll, (($this->View->newsletter->groups[$group]->SendAll == 0) ? false : true), "sendallcheck_$group", g_l('modules_newsletter', '[send_all]'), false, "defaultfont", "we_cmd('switch_sendall',$group);");
+		$out = we_html_forms::checkbox($this->View->newsletter->groups[$group]->SendAll, (($this->View->newsletter->groups[$group]->SendAll == 0) ? false : true), "sendallcheck_$group", g_l('modules_newsletter', '[send_all]'), false, "defaultfont", "we_cmd('switch_sendall',$group);");
 
 		if($this->View->newsletter->groups[$group]->SendAll == 0){
 
@@ -901,7 +901,7 @@ if(typeof(self.document.we_form.htmlmail_check)!="undefined") {
 
 		$table = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0), 1, 7);
 		$colspan = "7";
-		$table->setCol(0, 0, (($filter) ? array("colspan" => $colspan) : array()), we_forms::checkbox(($filter ? 1 : 0), ($filter ? true : false), "filtercheck_$group", g_l('modules_newsletter', '[filter]'), false, "defaultfont", "if(document.we_form.filtercheck_$group.checked) we_cmd('add_filter',$group); else we_cmd('del_all_filters',$group);"));
+		$table->setCol(0, 0, (($filter) ? array("colspan" => $colspan) : array()), we_html_forms::checkbox(($filter ? 1 : 0), ($filter ? true : false), "filtercheck_$group", g_l('modules_newsletter', '[filter]'), false, "defaultfont", "if(document.we_form.filtercheck_$group.checked) we_cmd('add_filter',$group); else we_cmd('del_all_filters',$group);"));
 
 		$k = 0;
 		$c = 1;
@@ -1101,7 +1101,7 @@ if(typeof(self.document.we_form.htmlmail_check)!="undefined") {
 			switch($block->Type){
 				case we_newsletter_block::DOCUMENT:
 					$content.=we_html_tools::htmlFormElementTable($this->View->formWeDocChooser(FILE_TABLE, 320, 0, "block" . $counter . "_LinkID", $block->LinkID, "block" . $counter . "_LinkPath", "", "opener.top.content.hot=1;", "text/webedition", $this->weAutoCompleter), g_l('modules_newsletter', '[block_document]')) .
-						we_html_tools::htmlFormElementTable(we_forms::checkbox((($block->Field) ? "0" : "1"), (($block->Field) ? false : true), "block" . $counter . "_use_def_template", g_l('modules_newsletter', '[use_default]'), false, "defaultfont", "top.content.hot=1;if(document.we_form.block" . $counter . "_use_def_template.checked){ document.we_form.block" . $counter . "_Field.value=0; document.we_form.block" . $counter . "_FieldPath.value='';}"), "&nbsp;&nbsp;&nbsp;") .
+						we_html_tools::htmlFormElementTable(we_html_forms::checkbox((($block->Field) ? "0" : "1"), (($block->Field) ? false : true), "block" . $counter . "_use_def_template", g_l('modules_newsletter', '[use_default]'), false, "defaultfont", "top.content.hot=1;if(document.we_form.block" . $counter . "_use_def_template.checked){ document.we_form.block" . $counter . "_Field.value=0; document.we_form.block" . $counter . "_FieldPath.value='';}"), "&nbsp;&nbsp;&nbsp;") .
 						we_html_tools::htmlFormElementTable($this->View->formWeChooser(TEMPLATES_TABLE, 320, 0, "block" . $counter . "_Field", (!is_numeric($block->Field) ? 0 : $block->Field), "block" . $counter . "_FieldPath", "", "if(opener.document.we_form.block" . $counter . "_use_def_template.checked) opener.document.we_form.block" . $counter . "_use_def_template.checked=false;opener.top.content.hot=1;", "", $this->weAutoCompleter, "folder,text/weTmpl"), g_l('modules_newsletter', '[block_template]'));
 					break;
 
@@ -1154,7 +1154,7 @@ if(typeof(self.document.we_form.htmlmail_check)!="undefined") {
 					);
 					$content.=we_html_tools::htmlFormElementTable(we_html_element::htmlTextArea(array("cols" => 40, "rows" => 10, "name" => "block" . $counter . "_Source", "onChange" => "top.content.hot=1;", "style" => "width:440"), oldHtmlspecialchars($block->Source)), g_l('modules_newsletter', '[block_plain]')) .
 						we_html_element::jsScript(JS_DIR . "we_textarea.js") .
-						we_html_tools::htmlFormElementTable(we_forms::weTextarea("block" . $counter . "_Html", $block->Html, $attribs, "", "", true, "", true, true, false, true, $this->View->newsletter->Charset), g_l('modules_newsletter', '[block_html]')) .
+						we_html_tools::htmlFormElementTable(we_html_forms::weTextarea("block" . $counter . "_Html", $block->Html, $attribs, "", "", true, "", true, true, false, true, $this->View->newsletter->Charset), g_l('modules_newsletter', '[block_html]')) .
 						we_html_element::jsElement('
 function extraInit(){
 	if(typeof weWysiwygInitializeIt == "function"){
@@ -1190,13 +1190,13 @@ window.onload=extraInit;');
 			$counter++;
 		}
 
-		return we_multiIconBox::getHTML("newsletter_header", "100%", $parts, 30, "", -1, "", "", false);
+		return we_html_multiIconBox::getHTML("newsletter_header", "100%", $parts, 30, "", -1, "", "", false);
 	}
 
 	function getHTMLNewsletterGroups(){
 		$count = count($this->View->newsletter->groups);
 
-		$out = we_multiIconBox::getJS();
+		$out = we_html_multiIconBox::getJS();
 
 		for($i = 0; $i < $count; $i++){
 			$parts = array();
@@ -1216,7 +1216,7 @@ window.onload=extraInit;');
 
 			$wepos = weGetCookieVariable("but_newsletter_group_box_$i");
 
-			$out.= we_multiIconBox::getHTML("newsletter_group_box_$i", "100%", $parts, 30, "", 0, "", "", (($wepos == "down") || ($count < 2 ? true : false)), sprintf(g_l('modules_newsletter', '[mailing_list]'), ($i + 1))) .
+			$out.= we_html_multiIconBox::getHTML("newsletter_group_box_$i", "100%", $parts, 30, "", 0, "", "", (($wepos == "down") || ($count < 2 ? true : false)), sprintf(g_l('modules_newsletter', '[mailing_list]'), ($i + 1))) .
 				we_html_element::htmlBr() . '<div style="margin-right:30px;">' . $buttons . '</div>';
 		}
 
@@ -1266,7 +1266,7 @@ window.onload=extraInit;');
 			$parts[] = array("headline" => g_l('modules_newsletter', '[copy_newsletter]'), "html" => $this->getHTMLCopy(), "space" => 140, "noline" => 1);
 		}
 
-		return we_multiIconBox::getHTML("newsletter_header", "100%", $parts, 30, "", -1, "", "", false) .
+		return we_html_multiIconBox::getHTML("newsletter_header", "100%", $parts, 30, "", -1, "", "", false) .
 			we_html_element::htmlBr();
 	}
 
@@ -1446,7 +1446,7 @@ function changeFieldValue(val,valueField) {
 				$this->View->getHiddensContentPage() .
 					$this->View->htmlHidden("fromPage", "3") .
 					$this->View->htmlHidden("blockid", 0) .
-					we_multiIconBox::getHTML('', "100%", $this->getHTMLReporting(), 30, '', -1, '', '', false) .
+					we_html_multiIconBox::getHTML('', "100%", $this->getHTMLReporting(), 30, '', -1, '', '', false) .
 					$this->weAutoCompleter->getYuiCss() .
 					$this->weAutoCompleter->getYuiJs();
 	}
@@ -1499,7 +1499,7 @@ function changeFieldValue(val,valueField) {
 
 		$table->setCol(1, 2, array(), we_html_tools::getPixel(2, 3));
 
-		$table->setCol(2, 2, array(), we_forms::checkbox($htmlmail, (($htmlmail) ? true : false), "htmlmail", g_l('modules_newsletter', '[edit_htmlmail]'), false, "defaultfont", "if(document.we_form.htmlmail.checked) document.we_form.htmlmail.value=1; else document.we_form.htmlmail.value=0;"));
+		$table->setCol(2, 2, array(), we_html_forms::checkbox($htmlmail, (($htmlmail) ? true : false), "htmlmail", g_l('modules_newsletter', '[edit_htmlmail]'), false, "defaultfont", "if(document.we_form.htmlmail.checked) document.we_form.htmlmail.value=1; else document.we_form.htmlmail.value=0;"));
 
 		$table->setCol(3, 2, array(), we_html_tools::getPixel(2, 3));
 
@@ -2360,7 +2360,7 @@ self.focus();
 ');
 
 		$frameset = new we_html_frameset(array("framespacing" => 0, "border" => 0, "frameborder" => "no"));
-		$noframeset = new we_baseElement("noframes");
+		$noframeset = new we_html_baseElement("noframes");
 
 		$frameset->setAttributes(array("rows" => "*,0,0", "onLoad" => (($this->View->newsletter->Step != 0 || $this->View->newsletter->Offset != 0) ? "ask(" . $this->View->newsletter->Step . "," . $this->View->newsletter->Offset . ");" : "no();")));
 		$frameset->addFrame(array("src" => $this->frameset . "?pnt=send_body&test=$test", "name" => "send_body", "scrolling" => "no", "noresize" => null));

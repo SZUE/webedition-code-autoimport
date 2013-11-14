@@ -134,21 +134,21 @@ if(isset($_REQUEST['we_cmd'][3]) && $_REQUEST['we_cmd'][3]){
 
 	if(isset($_REQUEST['we_cmd'][4]) && defined('OBJECT_FILES_TABLE') && $_REQUEST['we_cmd'][4] == OBJECT_FILES_TABLE){
 		$content = g_l('copyFolder', "[object_copy]") . '<br/>' .
-			we_forms::checkbox(1, 0, "DoNotCopyFolders", g_l('copyFolder', "[object_copy_no_folders]")) .
+			we_html_forms::checkbox(1, 0, "DoNotCopyFolders", g_l('copyFolder', "[object_copy_no_folders]")) .
 			'&nbsp;<br/>' . g_l('copyFolder', "[sameName_headline]") . '<br/>' .
 			we_html_tools::htmlAlertAttentionBox(g_l('copyFolder', "[sameName_expl]"), we_html_tools::TYPE_INFO, 380) .
 			we_html_tools::getPixel(200, 10) .
-			we_forms::radiobutton("overwrite", 0, "OverwriteObjects", g_l('copyFolder', "[sameName_overwrite]")) .
-			we_forms::radiobutton("rename", 0, "OverwriteObjects", g_l('copyFolder', "[sameName_rename]")) .
-			we_forms::radiobutton("nothing", 1, "OverwriteObjects", g_l('copyFolder', "[sameName_nothing]")) .
+			we_html_forms::radiobutton("overwrite", 0, "OverwriteObjects", g_l('copyFolder', "[sameName_overwrite]")) .
+			we_html_forms::radiobutton("rename", 0, "OverwriteObjects", g_l('copyFolder', "[sameName_rename]")) .
+			we_html_forms::radiobutton("nothing", 1, "OverwriteObjects", g_l('copyFolder', "[sameName_nothing]")) .
 			$hidden;
 	} else{
-		$content = '<table border="0" cellpadding="0" cellspacing="0" width="500"><tr><td>' . we_forms::checkbox(
+		$content = '<table border="0" cellpadding="0" cellspacing="0" width="500"><tr><td>' . we_html_forms::checkbox(
 				1, 0, 'CreateTemplate', g_l('copyFolder', "[create_new_templates]"), false, "defaultfont", "toggleButton(); incTemp(this.checked)") . '
-					<div id="imTemp" style="display:block">' . we_forms::checkbox(
-				1, 0, 'CreateMasterTemplate', g_l('copyFolder', "[create_new_masterTemplates]"), false, "defaultfont", "", 1) . we_forms::checkbox(
+					<div id="imTemp" style="display:block">' . we_html_forms::checkbox(
+				1, 0, 'CreateMasterTemplate', g_l('copyFolder', "[create_new_masterTemplates]"), false, "defaultfont", "", 1) . we_html_forms::checkbox(
 				1, 0, 'CreateIncludedTemplate', g_l('copyFolder', "[create_new_includedTemplates]"), false, "defaultfont", "", 1) . '
-					</div></td><td valign="top">' . we_forms::checkbox(
+					</div></td><td valign="top">' . we_html_forms::checkbox(
 				1, 0, 'CreateDoctypes', g_l('copyFolder', "[create_new_doctypes]")) . '
 					</td></tr>
 					<tr><td colspan="2">' . we_html_tools::getPixel(2, 5) . '</td></tr>

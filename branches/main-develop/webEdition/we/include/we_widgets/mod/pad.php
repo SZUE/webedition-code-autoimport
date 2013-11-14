@@ -141,9 +141,9 @@ $oTblPeriod->setCol(0, 1, array(
 	), $oTblValidity->getHTML());
 
 // Edit note prio settings
-$rdoPrio[0] = we_forms::radiobutton($value = 0, $checked = 0, $name = "rdo_prio", $text = g_l('cockpit', '[high]'), $uniqid = true, $class = "middlefont", $onClick = "", $disabled = false, $description = "", $type = 0, $onMouseUp = "");
-$rdoPrio[1] = we_forms::radiobutton($value = 1, $checked = 0, $name = "rdo_prio", $text = g_l('cockpit', '[medium]'), $uniqid = true, $class = "middlefont", $onClick = "", $disabled = false, $description = "", $type = 0, $onMouseUp = "");
-$rdoPrio[2] = we_forms::radiobutton($value = 2, $checked = 1, $name = "rdo_prio", $text = g_l('cockpit', '[low]'), $uniqid = true, $class = "middlefont", $onClick = "", $disabled = false, $description = "", $type = 0, $onMouseUp = "");
+$rdoPrio[0] = we_html_forms::radiobutton($value = 0, $checked = 0, $name = "rdo_prio", $text = g_l('cockpit', '[high]'), $uniqid = true, $class = "middlefont", $onClick = "", $disabled = false, $description = "", $type = 0, $onMouseUp = "");
+$rdoPrio[1] = we_html_forms::radiobutton($value = 1, $checked = 0, $name = "rdo_prio", $text = g_l('cockpit', '[medium]'), $uniqid = true, $class = "middlefont", $onClick = "", $disabled = false, $description = "", $type = 0, $onMouseUp = "");
+$rdoPrio[2] = we_html_forms::radiobutton($value = 2, $checked = 1, $name = "rdo_prio", $text = g_l('cockpit', '[low]'), $uniqid = true, $class = "middlefont", $onClick = "", $disabled = false, $description = "", $type = 0, $onMouseUp = "");
 $oTblPrio = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 1, 8);
 $oTblPrio->setCol(0, 0, null, $rdoPrio[0]);
 $oTblPrio->setCol(0, 1, null, we_html_element::htmlImg(

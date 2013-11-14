@@ -30,7 +30,7 @@
  *
  * Description: Provides functions for creating html tags
  */
-class we_html_select extends we_baseCollection{
+class we_html_select extends we_html_baseCollection{
 
 	/**
 	 * Constructor
@@ -66,10 +66,10 @@ class we_html_select extends we_baseCollection{
 	 */
 	function addOption($value, $text, $attribs = array()){
 		if(empty($attribs)){
-			$this->childs[] = new we_baseElement("option", true, array("value" => $value), $text);
+			$this->childs[] = new we_html_baseElement("option", true, array("value" => $value), $text);
 		} else {
 			$attribs["value"] = $value;
-			$this->childs[] = new we_baseElement("option", true, $attribs, $text);
+			$this->childs[] = new we_html_baseElement("option", true, $attribs, $text);
 		}
 	}
 
@@ -84,7 +84,7 @@ class we_html_select extends we_baseCollection{
 	 */
 	function addOptions($opt_num = 1, $values = array(), $texts = array()){
 		for($i = 0; $i < $opt_num; $i++)
-			$this->childs[] = new we_baseElement("option", true, array("value" => $values[$i]), $texts[$i]);
+			$this->childs[] = new we_html_baseElement("option", true, array("value" => $values[$i]), $texts[$i]);
 	}
 
 	/**
@@ -130,7 +130,7 @@ class we_html_select extends we_baseCollection{
 	 * @return		void
 	 */
 	function insertOption($optid, $value, $text, $over = false){
-		$new_opt = new we_baseElement("option", false, array("value" => $value), $text);
+		$new_opt = new we_html_baseElement("option", false, array("value" => $value), $text);
 
 
 		if($over){
@@ -230,7 +230,7 @@ class we_html_select extends we_baseCollection{
 	 * @return  void
 	 */
 	function addOptionGroup($attribs = array()){
-		$this->childs[] = new we_baseCollection("optgroup", true, $attribs);
+		$this->childs[] = new we_html_baseCollection("optgroup", true, $attribs);
 	}
 
 	/**
@@ -239,10 +239,10 @@ class we_html_select extends we_baseCollection{
 	 * @param  $value         string
 	 * @param  $text         string
 	 *
-	 * @return  we_baseElement
+	 * @return  we_html_baseElement
 	 */
 	function getNewOption($value, $text){
-		return new we_baseElement("option", true, array("value" => $value), $text);
+		return new we_html_baseElement("option", true, array("value" => $value), $text);
 	}
 
 	/**
@@ -250,10 +250,10 @@ class we_html_select extends we_baseCollection{
 	 *
 	 * @param  $attribs        array
 	 *
-	 * @return  we_baseElement
+	 * @return  we_html_baseElement
 	 */
 	function getNewOptionGroup($attribs = array()){
-		return new we_baseCollection("optgroup", true, $attribs);
+		return new we_html_baseCollection("optgroup", true, $attribs);
 	}
 
 }

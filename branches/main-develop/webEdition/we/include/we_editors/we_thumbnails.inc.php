@@ -71,9 +71,9 @@ function create_dialog($name, $title, $content, $expand = -1, $show_text = '', $
 	return
 		// Check, if we need to write some JavaScripts
 		($JS != '' ? $JS : '') .
-		($expand != -1 ? we_multiIconBox::getJS() : '') .
+		($expand != -1 ? we_html_multiIconBox::getJS() : '') .
 		// Return HTML code of dialog
-		we_multiIconBox::getHTML($name, '100%', $content, 30, '', $expand, $show_text, $hide_text, $cookie != false ? ($cookie == 'down') : $cookie, $title);
+		we_html_multiIconBox::getHTML($name, '100%', $content, 30, '', $expand, $show_text, $hide_text, $cookie != false ? ($cookie == 'down') : $cookie, $title);
 }
 
 /**
@@ -326,13 +326,13 @@ function build_dialog($selected_setting = 'ui'){
 
 			$_thumbnail_option_table = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0), 7, 1);
 
-			$_thumbnail_option_table->setCol(0, 0, null, we_forms::checkbox(1, (($_thumbnail_ratio == -1 || $_thumbnail_ratio == 0) ? false : true), 'Ratio', g_l('thumbnails', '[ratio]'), false, 'defaultfont', '', ($_thumbnail_ratio == -1)));
+			$_thumbnail_option_table->setCol(0, 0, null, we_html_forms::checkbox(1, (($_thumbnail_ratio == -1 || $_thumbnail_ratio == 0) ? false : true), 'Ratio', g_l('thumbnails', '[ratio]'), false, 'defaultfont', '', ($_thumbnail_ratio == -1)));
 			$_thumbnail_option_table->setCol(1, 0, null, we_html_tools::getPixel(1, 5));
-			$_thumbnail_option_table->setCol(2, 0, null, we_forms::checkbox(1, (($_thumbnail_maximize == -1 || $_thumbnail_maximize == 0) ? false : true), 'Maxsize', g_l('thumbnails', '[maximize]'), false, 'defaultfont', '', ($_thumbnail_maximize == -1)));
+			$_thumbnail_option_table->setCol(2, 0, null, we_html_forms::checkbox(1, (($_thumbnail_maximize == -1 || $_thumbnail_maximize == 0) ? false : true), 'Maxsize', g_l('thumbnails', '[maximize]'), false, 'defaultfont', '', ($_thumbnail_maximize == -1)));
 			$_thumbnail_option_table->setCol(3, 0, null, we_html_tools::getPixel(1, 5));
-			$_thumbnail_option_table->setCol(4, 0, null, we_forms::checkbox(1, (($_thumbnail_interlace == -1 || $_thumbnail_interlace == 0) ? false : true), 'Interlace', g_l('thumbnails', '[interlace]'), false, 'defaultfont', '', ($_thumbnail_interlace == -1)));
+			$_thumbnail_option_table->setCol(4, 0, null, we_html_forms::checkbox(1, (($_thumbnail_interlace == -1 || $_thumbnail_interlace == 0) ? false : true), 'Interlace', g_l('thumbnails', '[interlace]'), false, 'defaultfont', '', ($_thumbnail_interlace == -1)));
 			$_thumbnail_option_table->setCol(5, 0, null, we_html_tools::getPixel(1, 5));
-			$_thumbnail_option_table->setCol(6, 0, null, we_forms::checkbox(1, (($_thumbnail_fitinside == -1 || $_thumbnail_fitinside == 0) ? false : true), 'Fitinside', 'Fit inside', false, 'defaultfont', '', ($_thumbnail_fitinside == -1)));
+			$_thumbnail_option_table->setCol(6, 0, null, we_html_forms::checkbox(1, (($_thumbnail_fitinside == -1 || $_thumbnail_fitinside == 0) ? false : true), 'Fitinside', 'Fit inside', false, 'defaultfont', '', ($_thumbnail_fitinside == -1)));
 
 			// Build final HTML code
 			$_window_html = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0), 3, 1);
@@ -455,5 +455,5 @@ function saveOnKeyBoard() {
 			'space' => 0
 		)
 	);
-	print we_multiIconBox::getHTML('thumbnails', '100%', $parts, 30, '', -1, '', '', false, g_l('thumbnails', '[thumbnails]'));
+	print we_html_multiIconBox::getHTML('thumbnails', '100%', $parts, 30, '', -1, '', '', false, g_l('thumbnails', '[thumbnails]'));
 }

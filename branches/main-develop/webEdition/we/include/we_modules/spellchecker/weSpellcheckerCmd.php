@@ -202,7 +202,7 @@ if(isset($_REQUEST['cmd'][0])){
 					$_name = str_replace('.zip', '', $entry);
 					$_display = (strlen($_name) > 10) ? (substr($_name, 0, 10) . '...') : $_name;
 
-					$table->setCol($_i, 0, array('valign' => 'top'), we_forms::radiobutton($_name, (($spellcheckerConf['default'] == $_name) ? true : false), 'default', '', true, 'defaultfont', 'document.we_form.enable_' . $_name . '.value=1;document.we_form._enable_' . $_name . '.checked=true;'));
+					$table->setCol($_i, 0, array('valign' => 'top'), we_html_forms::radiobutton($_name, (($spellcheckerConf['default'] == $_name) ? true : false), 'default', '', true, 'defaultfont', 'document.we_form.enable_' . $_name . '.value=1;document.we_form._enable_' . $_name . '.checked=true;'));
 					$table->setCol($_i, 1, array('valign' => 'top', 'class' => 'defaultfont'), $_display);
 
 					$_lanSelect->setAttribute('name', 'lang[' . $_name . ']');
@@ -215,7 +215,7 @@ if(isset($_REQUEST['cmd'][0])){
 
 					$table->setCol($_i, 2, array('valign' => 'top', 'class' => 'defaultfont'), $_lanSelect->getHtml());
 
-					$table->setCol($_i, 3, array('valign' => 'top', 'align' => 'center'), we_forms::checkboxWithHidden(in_array($_name, $spellcheckerConf['active']), 'enable_' . $_name, '', false, 'defaultfont', ''));
+					$table->setCol($_i, 3, array('valign' => 'top', 'align' => 'center'), we_html_forms::checkboxWithHidden(in_array($_name, $spellcheckerConf['active']), 'enable_' . $_name, '', false, 'defaultfont', ''));
 					$table->setCol($_i, 4, array('valign' => 'top', 'align' => 'center'), '<div style="display: none;" id="updateIcon_' . $_name . '"><img src="' . IMAGE_DIR . 'spinner.gif"/></div><div style="display: block;" id="updateBut_' . $_name . '">' . we_button::create_button('image:btn_function_reload', 'javascript: updateDict("' . $_name . '");') . '</div>');
 					$table->setCol($_i, 5, array('valign' => 'top', 'align' => 'center'), we_button::create_button('image:btn_function_trash', 'javascript: deleteDict("' . $_name . '");'));
 				}

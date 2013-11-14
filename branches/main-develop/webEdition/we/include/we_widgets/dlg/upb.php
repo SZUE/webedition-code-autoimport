@@ -101,9 +101,9 @@ function exit_close(){
 }
 ";
 
-$oChbxDocs = we_forms::checkbox(
+$oChbxDocs = we_html_forms::checkbox(
 		$value = 0, $checked = true, $name = "chbx_type", $text = g_l('cockpit', '[documents]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0);
-$oChbxObjs = we_forms::checkbox(
+$oChbxObjs = we_html_forms::checkbox(
 		$value = 0, $checked = true, $name = "chbx_type", $text = g_l('cockpit', '[objects]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0);
 $dbTableType = "<table><tr>";
 if(defined("FILE_TABLE"))
@@ -124,7 +124,7 @@ $preview_button = we_button::create_button("preview", "javascript:preview();", f
 $cancel_button = we_button::create_button("close", "javascript:exit_close();");
 $buttons = we_button::position_yes_no_cancel($save_button, $preview_button, $cancel_button);
 
-$sTblWidget = we_multiIconBox::getHTML(
+$sTblWidget = we_html_multiIconBox::getHTML(
 		"mfdProps", "100%", $parts, 30, $buttons, -1, "", "", "", g_l('cockpit', '[unpublished]'));
 
 print we_html_element::htmlDocType() . we_html_element::htmlHtml(

@@ -164,14 +164,14 @@ function addToMultiEdit(_multEdit, paths){
 EO_SCRIPT;
 
 		/* ################# Radio buttons ############### */
-		$_modeRadioOff = we_forms::radiobutton(we_customer_abstractFilter::OFF, $this->_filter->getMode() === we_customer_abstractFilter::OFF, 'wecf_mode', g_l('modules_customerFilter', '[mode_off]'), true, "defaultfont", "wecf_hot();updateView();");
+		$_modeRadioOff = we_html_forms::radiobutton(we_customer_abstractFilter::OFF, $this->_filter->getMode() === we_customer_abstractFilter::OFF, 'wecf_mode', g_l('modules_customerFilter', '[mode_off]'), true, "defaultfont", "wecf_hot();updateView();");
 		$_modeRadioNone = ($this->_ShowModeNone ?
-				we_forms::radiobutton(we_customer_abstractFilter::NONE, $this->_filter->getMode() === we_customer_abstractFilter::NONE, 'wecf_mode', g_l('modules_customerFilter', '[mode_none]'), true, "defaultfont", "wecf_hot();updateView();") :
+				we_html_forms::radiobutton(we_customer_abstractFilter::NONE, $this->_filter->getMode() === we_customer_abstractFilter::NONE, 'wecf_mode', g_l('modules_customerFilter', '[mode_none]'), true, "defaultfont", "wecf_hot();updateView();") :
 				'');
 
-		$_modeRadioAll = we_forms::radiobutton(we_customer_abstractFilter::ALL, $this->_filter->getMode() === we_customer_abstractFilter::ALL, 'wecf_mode', g_l('modules_customerFilter', '[mode_all]'), true, "defaultfont", "wecf_hot();updateView();");
-		$_modeRadioSpecific = we_forms::radiobutton(we_customer_abstractFilter::SPECIFIC, $this->_filter->getMode() === we_customer_abstractFilter::SPECIFIC, 'wecf_mode', g_l('modules_customerFilter', '[mode_specific]'), true, "defaultfont", "wecf_hot();updateView();");
-		$_modeRadioFilter = we_forms::radiobutton(we_customer_abstractFilter::FILTER, $this->_filter->getMode() === we_customer_abstractFilter::FILTER, 'wecf_mode', g_l('modules_customerFilter', '[mode_filter]'), true, "defaultfont", "wecf_hot();updateView();");
+		$_modeRadioAll = we_html_forms::radiobutton(we_customer_abstractFilter::ALL, $this->_filter->getMode() === we_customer_abstractFilter::ALL, 'wecf_mode', g_l('modules_customerFilter', '[mode_all]'), true, "defaultfont", "wecf_hot();updateView();");
+		$_modeRadioSpecific = we_html_forms::radiobutton(we_customer_abstractFilter::SPECIFIC, $this->_filter->getMode() === we_customer_abstractFilter::SPECIFIC, 'wecf_mode', g_l('modules_customerFilter', '[mode_specific]'), true, "defaultfont", "wecf_hot();updateView();");
+		$_modeRadioFilter = we_html_forms::radiobutton(we_customer_abstractFilter::FILTER, $this->_filter->getMode() === we_customer_abstractFilter::FILTER, 'wecf_mode', g_l('modules_customerFilter', '[mode_filter]'), true, "defaultfont", "wecf_hot();updateView();");
 
 
 		/* ################# Selector for specific customers ############### */

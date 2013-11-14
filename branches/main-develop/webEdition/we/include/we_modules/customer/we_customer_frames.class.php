@@ -452,13 +452,13 @@ top.content.hloaded = 1;');
 								$table->setCol($c / 2, $c % 2, array('class' => 'defaultfont'), '');
 								break;
 							case 'LoginDenied':
-								$table->setCol($c / 2, $c % 2, array('class' => 'defaultfont'), we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(array('class' => 'defaultgray'), we_forms::checkbox(1, $pv, 'LoginDenied', g_l('modules_customer', '[login_denied]'), false, 'defaultfont', 'top.content.setHot();')), $this->View->settings->getPropertyTitle($pk)));
+								$table->setCol($c / 2, $c % 2, array('class' => 'defaultfont'), we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(array('class' => 'defaultgray'), we_html_forms::checkbox(1, $pv, 'LoginDenied', g_l('modules_customer', '[login_denied]'), false, 'defaultfont', 'top.content.setHot();')), $this->View->settings->getPropertyTitle($pk)));
 								break;
 							case 'AutoLoginDenied':
-								$table->setCol($c / 2, $c % 2, array('class' => 'defaultfont'), we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(array('class' => 'defaultgray'), we_forms::checkbox(1, $pv, 'AutoLoginDenied', g_l('modules_customer', '[login_denied]'), false, 'defaultfont', 'top.content.setHot();')), $this->View->settings->getPropertyTitle($pk)));
+								$table->setCol($c / 2, $c % 2, array('class' => 'defaultfont'), we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(array('class' => 'defaultgray'), we_html_forms::checkbox(1, $pv, 'AutoLoginDenied', g_l('modules_customer', '[login_denied]'), false, 'defaultfont', 'top.content.setHot();')), $this->View->settings->getPropertyTitle($pk)));
 								break;
 							case 'AutoLogin':
-								$table->setCol($c / 2, $c % 2, array('class' => 'defaultfont'), we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(array('class' => 'defaultgray'), we_forms::checkbox(1, $pv, 'AutoLogin', g_l('modules_customer', '[autologin_request]'), false, 'defaultfont', 'top.content.setHot();')), $this->View->settings->getPropertyTitle($pk)));
+								$table->setCol($c / 2, $c % 2, array('class' => 'defaultfont'), we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(array('class' => 'defaultgray'), we_html_forms::checkbox(1, $pv, 'AutoLogin', g_l('modules_customer', '[autologin_request]'), false, 'defaultfont', 'top.content.setHot();')), $this->View->settings->getPropertyTitle($pk)));
 								break;
 							case 'Password':
 								$table->setCol($c / 2, $c % 2, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($pk, 32, we_customer_customer::NOPWD_CHANGE, '', "onchange=\"top.content.setHot();\" ", 'password', "240px"), $this->View->settings->getPropertyTitle($pk)));
@@ -645,7 +645,7 @@ failure: function(o) {
 				"space" => 120
 			);
 		}
-		return we_multiIconBox::getHTML('', 680, $parts, 30);
+		return we_html_multiIconBox::getHTML('', 680, $parts, 30);
 	}
 
 	function getHTMLTreeHeader(){

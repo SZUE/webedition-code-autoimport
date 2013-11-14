@@ -73,8 +73,8 @@ echo we_html_tools::htmlTop(g_l('backup', "[view_log]")) .
 				we_button::create_button("close", "javascript:self.close()"), '', ''
 		);
 
-		print we_multiIconBox::getJS();
-		print we_multiIconBox::getHTML('', 500, $_parts, 30, $buttons, -1, '', '', false, "", "", 620, "auto");
+		print we_html_multiIconBox::getJS();
+		print we_html_multiIconBox::getHTML('', 500, $_parts, 30, $buttons, -1, '', '', false, "", "", 620, "auto");
 		?>
 	</div>
 

@@ -102,7 +102,7 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 
 		$we_transaction = (preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction']) ? $_REQUEST['we_transaction'] : 0);
 
-		echo we_multiIconBox::_getBoxStart("100%", $uniquename) .
+		echo we_html_multiIconBox::_getBoxStart("100%", $uniquename) .
 		$jsGUI->getContainer(array()) .
 		'<div id="' . $uniquename . '_div">
  <table style="margin-left:30px;" cellpadding="0" cellspacing="0" border="0">
@@ -118,7 +118,7 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
  </tr>
  </table>
  </div>'.
-			we_multiIconBox::_getBoxEnd('100%');
+			we_html_multiIconBox::_getBoxEnd('100%');
 
 		for($i = 0; $i <= $count && !empty($sort); $i++){
 			$identifier = $we_doc->getSortIndex($i);

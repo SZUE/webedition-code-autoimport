@@ -70,7 +70,7 @@ class ImportOptions extends leWizardStepBase{
 		$Checked = true;
 		$StyleDisplayDocuments = $Checked ? "block" : "none";
 
-		$UseDocuments = we_forms::checkbox($Value, $Checked, $Name, $Text, false, "defaultfont", $OnClick);
+		$UseDocuments = we_html_forms::checkbox($Value, $Checked, $Name, $Text, false, "defaultfont", $OnClick);
 
 		// DocumentPath
 		$table = FILE_TABLE;
@@ -103,7 +103,7 @@ class ImportOptions extends leWizardStepBase{
 		$Checked = true;
 		$StyleDisplayNavigation = $Checked ? "block" : "none";
 
-		$UseNavigation = we_forms::checkbox($Value, $Checked, $Name, $Text, false, "defaultfont", $OnClick);
+		$UseNavigation = we_html_forms::checkbox($Value, $Checked, $Name, $Text, false, "defaultfont", $OnClick);
 
 		// Navigation Path
 		$_dirs = array(

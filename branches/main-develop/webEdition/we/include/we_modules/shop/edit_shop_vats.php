@@ -292,7 +292,7 @@ $parts[] = array(
 	'space' => 0
 );
 
-print we_multiIconBox::getHTML(
+print we_html_multiIconBox::getHTML(
 		'weShopVates', "100%", $parts, 30, we_button::position_yes_no_cancel(
 			'', '', we_button::create_button('close', 'javascript:we_cmd(\'close\');')
 		), -1, '', '', false, g_l('modules_shop', '[vat][vat_edit_form_headline_box]'), "", 409

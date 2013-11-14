@@ -110,10 +110,10 @@ class we_customer_documentFilterView extends we_customer_filterView{
 
 		$_accesControl = '<div class="weMultiIconBoxHeadline">' .
 			g_l('modules_customerFilter', '[accessControl]') . '</div>' .
-			we_forms::radiobutton(
+			we_html_forms::radiobutton(
 				"onTemplate", $_filter->getAccessControlOnTemplate(), "wecf_accessControlOnTemplate", g_l('modules_customerFilter', "[accessControlOnTemplate]"), true, "defaultfont", "updateView();" . $this->getHotScript()
 			) .
-			we_forms::radiobutton(
+			we_html_forms::radiobutton(
 				"errorDoc", !$_filter->getAccessControlOnTemplate(), "wecf_accessControlOnTemplate", g_l('modules_customerFilter', "[accessControlOnErrorDoc]"), true, "defaultfont", "updateView();" . $this->getHotScript()
 			) .
 			we_customer_documentFilterView::getDiv(

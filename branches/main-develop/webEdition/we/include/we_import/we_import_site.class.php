@@ -436,7 +436,7 @@ class we_import_site {
 
 		$table = '<div style="overflow:auto;height:330px; margin-top:5px;"><div style="width:450px;" id="tablediv">' . $this->_getSiteImportTableHTML($_templateFields, $_valueFieldValues) . '</div></div>';
 
-		$_regExCheckbox = we_forms::checkboxWithHidden($_valueUseRegex, "useRegEx", oldHtmlspecialchars(g_l('siteimport', "[useRegEx]"), ENT_QUOTES));
+		$_regExCheckbox = we_html_forms::checkboxWithHidden($_valueUseRegex, "useRegEx", oldHtmlspecialchars(g_l('siteimport', "[useRegEx]"), ENT_QUOTES));
 		$specifyHTML = $this->_getTemplateSelectHTML($_valueTemplateId) . '<div id="specifyParam" style="padding-top:10px;display:' . ($_valueTemplateId ? 'block' : 'none') . '">' . $_dateFormatHTML . $_regExCheckbox . $table . '</div>';
 
 		$vals = array(
@@ -460,12 +460,12 @@ class we_import_site {
 					<iframe style="position:absolute;top:-2000px;" src="about:blank" id="iloadframe" name="iloadframe" width="400" height="200"></iframe>
 					<form onsubmit="return false;" name="we_form" method="post" action="' . $_SERVER['SCRIPT_NAME'] . '" target="iloadframe">
 					<input type="hidden" name="we_cmd[0]" value="siteImportSaveWePageSettings" />
-					<input type="hidden" name="ok" value="1" />' . we_multiIconBox::getJS();
+					<input type="hidden" name="ok" value="1" />' . we_html_multiIconBox::getJS();
 
 		$okbutton = we_button::create_button("ok", "javascript:if(checkForm()){document.we_form.submit();}");
 		$cancelbutton = we_button::create_button("cancel", "javascript:self.close()");
 		$buttons = we_button::position_yes_no_cancel($okbutton, null, $cancelbutton);
-		$bodyhtml .= we_multiIconBox::getHTML(
+		$bodyhtml .= we_html_multiIconBox::getHTML(
 				"", "100%", $parts, 30, $buttons, -1, "", "", false, g_l('siteimport', "[importSettingsWePages]"));
 		$bodyhtml .= '</form></body>';
 
@@ -638,18 +638,18 @@ class we_import_site {
 		$weoncklick = "if(this.checked && (!this.form.elements['htmlPages'].checked)){this.form.elements['htmlPages'].checked = true;}";
 		$weoncklick .= ((!permissionhandler::hasPerm("NEW_HTML")) && permissionhandler::hasPerm("NEW_WEBEDITIONSITE")) ? "if((!this.checked) && this.form.elements['htmlPages'].checked){this.form.elements['htmlPages'].checked = false;}" : "";
 
-		$_images = we_forms::checkboxWithHidden(
+		$_images = we_html_forms::checkboxWithHidden(
 				permissionhandler::hasPerm("NEW_GRAFIK") ? $this->images : false, "images", g_l('siteimport', "[importImages]"), false, "defaultfont", "", !permissionhandler::hasPerm("NEW_GRAFIK"));
 
-		$_htmlPages = we_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_HTML") ? $this->htmlPages : ((permissionhandler::hasPerm("NEW_WEBEDITIONSITE") && $this->createWePages) ? true : false), "htmlPages", g_l('siteimport', "[importHtmlPages]"), false, "defaultfont", "if(this.checked){this.form.elements['_createWePages'].disabled=false;document.getElementById('label__createWePages').style.color='black';}else{this.form.elements['_createWePages'].disabled=true;document.getElementById('label__createWePages').style.color='grey';}", !permissionhandler::hasPerm("NEW_HTML"));
-		$_createWePages = we_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_WEBEDITIONSITE") ? $this->createWePages : false, "createWePages", g_l('siteimport', "[createWePages]") . "&nbsp;&nbsp;", false, "defaultfont", $weoncklick, !permissionhandler::hasPerm("NEW_WEBEDITIONSITE"));
-		$_flashmovies = we_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_FLASH") ? $this->flashmovies : false, "flashmovies", g_l('siteimport', "[importFlashmovies]"), false, "defaultfont", "", !permissionhandler::hasPerm("NEW_FLASH"));
-		$_quicktime = we_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_QUICKTIME") ? $this->quicktime : false, "quicktime", g_l('siteimport', "[importQuicktime]"), false, "defaultfont", "", !permissionhandler::hasPerm("NEW_QUICKTIME"));
-		$_jss = we_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_JS") ? $this->js : false, "j", g_l('siteimport', "[importJS]"), false, "defaultfont", "", !permissionhandler::hasPerm("NEW_JS"));
-		$_css = we_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_CSS") ? $this->css : false, "css", g_l('siteimport', "[importCSS]"), false, "defaultfont", "", !permissionhandler::hasPerm("NEW_CSS"));
-		$_text = we_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_TEXT") ? $this->text : false, "text", g_l('siteimport', "[importText]"), false, "defaultfont", "", !permissionhandler::hasPerm("NEW_TEXT"));
-		$_htaccess = we_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_HTACCESS") ? $this->text : false, "htacsess", g_l('siteimport', "[importHTACCESS]"), false, "defaultfont", "", !permissionhandler::hasPerm("NEW_HTACCESS"));
-		$_others = we_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_SONSTIGE") ? $this->other : false, "other", g_l('siteimport', "[importOther]"), false, "defaultfont", "", !permissionhandler::hasPerm("NEW_SONSTIGE"));
+		$_htmlPages = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_HTML") ? $this->htmlPages : ((permissionhandler::hasPerm("NEW_WEBEDITIONSITE") && $this->createWePages) ? true : false), "htmlPages", g_l('siteimport', "[importHtmlPages]"), false, "defaultfont", "if(this.checked){this.form.elements['_createWePages'].disabled=false;document.getElementById('label__createWePages').style.color='black';}else{this.form.elements['_createWePages'].disabled=true;document.getElementById('label__createWePages').style.color='grey';}", !permissionhandler::hasPerm("NEW_HTML"));
+		$_createWePages = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_WEBEDITIONSITE") ? $this->createWePages : false, "createWePages", g_l('siteimport', "[createWePages]") . "&nbsp;&nbsp;", false, "defaultfont", $weoncklick, !permissionhandler::hasPerm("NEW_WEBEDITIONSITE"));
+		$_flashmovies = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_FLASH") ? $this->flashmovies : false, "flashmovies", g_l('siteimport', "[importFlashmovies]"), false, "defaultfont", "", !permissionhandler::hasPerm("NEW_FLASH"));
+		$_quicktime = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_QUICKTIME") ? $this->quicktime : false, "quicktime", g_l('siteimport', "[importQuicktime]"), false, "defaultfont", "", !permissionhandler::hasPerm("NEW_QUICKTIME"));
+		$_jss = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_JS") ? $this->js : false, "j", g_l('siteimport', "[importJS]"), false, "defaultfont", "", !permissionhandler::hasPerm("NEW_JS"));
+		$_css = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_CSS") ? $this->css : false, "css", g_l('siteimport', "[importCSS]"), false, "defaultfont", "", !permissionhandler::hasPerm("NEW_CSS"));
+		$_text = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_TEXT") ? $this->text : false, "text", g_l('siteimport', "[importText]"), false, "defaultfont", "", !permissionhandler::hasPerm("NEW_TEXT"));
+		$_htaccess = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_HTACCESS") ? $this->text : false, "htacsess", g_l('siteimport', "[importHTACCESS]"), false, "defaultfont", "", !permissionhandler::hasPerm("NEW_HTACCESS"));
+		$_others = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_SONSTIGE") ? $this->other : false, "other", g_l('siteimport', "[importOther]"), false, "defaultfont", "", !permissionhandler::hasPerm("NEW_SONSTIGE"));
 
 		$_wePagesOptionButton = we_button::create_button("preferences", "javascript:we_cmd('siteImportCreateWePageSettings')", true, 150, 22, "", "", false, true, "", true);
 		// Depth
@@ -765,9 +765,9 @@ class we_import_site {
 
 		$content = we_html_tools::htmlAlertAttentionBox(g_l('importFiles', "[sameName_expl]"), we_html_tools::TYPE_INFO, "410") .
 			we_html_tools::getPixel(200, 10) .
-			we_forms::radiobutton("overwrite", ($this->sameName == "overwrite"), "sameName", g_l('importFiles', "[sameName_overwrite]")) .
-			we_forms::radiobutton("rename", ($this->sameName == "rename"), "sameName", g_l('importFiles', "[sameName_rename]")) .
-			we_forms::radiobutton("nothing", ($this->sameName == "nothing"), "sameName", g_l('importFiles', "[sameName_nothing]"));
+			we_html_forms::radiobutton("overwrite", ($this->sameName == "overwrite"), "sameName", g_l('importFiles', "[sameName_overwrite]")) .
+			we_html_forms::radiobutton("rename", ($this->sameName == "rename"), "sameName", g_l('importFiles', "[sameName_rename]")) .
+			we_html_forms::radiobutton("nothing", ($this->sameName == "nothing"), "sameName", g_l('importFiles', "[sameName_nothing]"));
 
 		$parts[] = array(
 			"headline" => g_l('importFiles', "[sameName_headline]"),
@@ -778,7 +778,7 @@ class we_import_site {
 		if(permissionhandler::hasPerm("NEW_GRAFIK")){
 			$parts[] = array(
 				'headline' => g_l('importFiles', "[metadata]") . '',
-				'html' => we_forms::checkboxWithHidden(
+				'html' => we_html_forms::checkboxWithHidden(
 					$this->importMetadata == true, 'importMetadata', g_l('importFiles', "[import_metadata]")),
 				'space' => 120
 			);
@@ -796,7 +796,7 @@ class we_import_site {
 				$widthSelect = '<select size="1" class="weSelect" name="widthSelect"><option value="pixel"' . (($this->widthSelect == "pixel") ? ' selected="selected"' : '') . '>' . g_l('weClass', "[pixel]") . '</option><option value="percent"' . (($this->widthSelect == "percent") ? ' selected="selected"' : '') . '>' . g_l('weClass', "[percent]") . '</option></select>';
 				$heightSelect = '<select size="1" class="weSelect" name="heightSelect"><option value="pixel"' . (($this->heightSelect == "pixel") ? ' selected="selected"' : '') . '>' . g_l('weClass', "[pixel]") . '</option><option value="percent"' . (($this->heightSelect == "percent") ? ' selected="selected"' : '') . '>' . g_l('weClass', "[percent]") . '</option></select>';
 
-				$ratio_checkbox = we_forms::checkbox(
+				$ratio_checkbox = we_html_forms::checkbox(
 						1, $this->keepRatio, "keepRatio", g_l('thumbnails', "[ratio]"));
 
 				$_resize = '<table border="0" cellpadding="2" cellspacing="0">
@@ -819,13 +819,13 @@ class we_import_site {
 					"headline" => g_l('weClass', "[resize]"), "html" => $_resize, "space" => 120
 				);
 
-				$_radio0 = we_forms::radiobutton(
+				$_radio0 = we_html_forms::radiobutton(
 						0, $this->degrees == 0, "degrees", g_l('weClass', "[rotate0]"));
-				$_radio180 = we_forms::radiobutton(
+				$_radio180 = we_html_forms::radiobutton(
 						180, $this->degrees == 180, "degrees", g_l('weClass', "[rotate180]"));
-				$_radio90l = we_forms::radiobutton(
+				$_radio90l = we_html_forms::radiobutton(
 						90, $this->degrees == 90, "degrees", g_l('weClass', "[rotate90l]"));
-				$_radio90r = we_forms::radiobutton(
+				$_radio90r = we_html_forms::radiobutton(
 						270, $this->degrees == 270, "degrees", g_l('weClass', "[rotate90r]"));
 
 				$parts[] = array(
@@ -853,8 +853,8 @@ class we_import_site {
 		}
 
 		$wepos = weGetCookieVariable("but_wesiteimport");
-		$content = we_multiIconBox::getJS() .
-			we_multiIconBox::getHTML(
+		$content = we_html_multiIconBox::getJS() .
+			we_html_multiIconBox::getHTML(
 				"wesiteimport", "100%", $parts, 30, "", $foldAT, g_l('importFiles', "[image_options_open]"), g_l('importFiles', "[image_options_close]"), ($wepos == "down"), g_l('siteimport', "[siteimport]")) . $this->_getHiddensHTML();
 
 		$content = we_html_element::htmlForm(

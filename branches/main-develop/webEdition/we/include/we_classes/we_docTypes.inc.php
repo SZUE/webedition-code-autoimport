@@ -351,7 +351,7 @@ function switchExt(){
 				($this->ID ? '}' : '') . '
 }');
 
-		return we_forms::checkbox(1, $v ? true : false, "check_" . $n, g_l('weClass', "[IsDynamic]"), true, "defaultfont", "this.form.elements['" . $n . "'].value = (this.checked ? '1' : '0'); switchExt();") . $this->htmlHidden($n, $v) . $out;
+		return we_html_forms::checkbox(1, $v ? true : false, "check_" . $n, g_l('weClass', "[IsDynamic]"), true, "defaultfont", "this.form.elements['" . $n . "'].value = (this.checked ? '1' : '0'); switchExt();") . $this->htmlHidden($n, $v) . $out;
 	}
 
 	function formIsSearchable(){
@@ -359,7 +359,7 @@ function switchExt(){
 		$n = "we_" . $this->Name . "_IsSearchable";
 		$v = $isSearchable;
 
-		return we_forms::checkbox(1, $v ? true : false, "check_" . $n, g_l('weClass', "[IsSearchable]"), false, "defaultfont", "this.form.elements['" . $n . "'].value = (this.checked ? '1' : '0');") . $this->htmlHidden($n, $v);
+		return we_html_forms::checkbox(1, $v ? true : false, "check_" . $n, g_l('weClass', "[IsSearchable]"), false, "defaultfont", "this.form.elements['" . $n . "'].value = (this.checked ? '1' : '0');") . $this->htmlHidden($n, $v);
 	}
 
 	function formSubDir($width = 100){

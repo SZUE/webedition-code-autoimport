@@ -203,7 +203,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		$v = $this->IsDynamic;
 		if(!$disabled){
 			$n = "we_" . $this->Name . "_IsDynamic";
-			return we_forms::checkboxWithHidden($v ? true : false, $n, g_l('weClass', "[IsDynamic]"), false, "defaultfont", "_EditorFrame.setEditorIsHot(true);switchExt();") . we_html_element::jsElement(
+			return we_html_forms::checkboxWithHidden($v ? true : false, $n, g_l('weClass', "[IsDynamic]"), false, "defaultfont", "_EditorFrame.setEditorIsHot(true);switchExt();") . we_html_element::jsElement(
 					'function switchExt() {' .
 					(!$this->Published ?
 						'var a=document.we_form.elements;' .
@@ -214,7 +214,7 @@ class we_webEditionDocument extends we_textContentDocument{
 					'}'
 			);
 		} else {
-			return we_forms::checkboxWithHidden($v ? true : false, '', g_l('weClass', "[IsDynamic]"), false, "defaultfont", "", true);
+			return we_html_forms::checkboxWithHidden($v ? true : false, '', g_l('weClass', "[IsDynamic]"), false, "defaultfont", "", true);
 		}
 	}
 

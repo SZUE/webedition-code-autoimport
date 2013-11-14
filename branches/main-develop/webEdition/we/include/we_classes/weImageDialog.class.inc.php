@@ -249,7 +249,7 @@ class weImageDialog extends weDialog{
 				we_button::create_button("select", "javascript:we_cmd('browse_server','" . $wecmdenc1 . "','',document.we_form.elements['we_dialog_args[extSrc]'].value,'" . $wecmdenc4 . "')"
 				) : "";
 
-			$radioBut = we_forms::radiobutton(we_base_link::TYPE_EXT, (isset($this->args["type"]) && $this->args["type"] == we_base_link::TYPE_EXT), "we_dialog_args[type]", g_l('wysiwyg', "[external_image]"), true, "defaultfont", "imageChanged();"
+			$radioBut = we_html_forms::radiobutton(we_base_link::TYPE_EXT, (isset($this->args["type"]) && $this->args["type"] == we_base_link::TYPE_EXT), "we_dialog_args[type]", g_l('wysiwyg', "[external_image]"), true, "defaultfont", "imageChanged();"
 			);
 
 			$extSrc = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[extSrc]", 30, (isset($this->args["extSrc"]) ? $this->args["extSrc"] : ""), "", ' onfocus="if(this.form.elements[\'we_dialog_args[type]\'][1].checked) { this.form.elements[\'we_dialog_args[type]\'][0].checked=true;imageChanged();}" onChange="this.form.elements[\'we_dialog_args[type]\'][0].checked=true;imageChanged();"', "text", 300), $radioBut, "left", "defaultfont", we_html_tools::getPixel(20, 2), $but, "", "", "", 0
@@ -262,7 +262,7 @@ class weImageDialog extends weDialog{
 			$but = we_button::create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['we_dialog_args[fileID]'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','','image/*'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");"
 			);
 
-			$radioBut = we_forms::radiobutton(we_base_link::TYPE_INT, (isset($this->args["type"]) && $this->args["type"] == we_base_link::TYPE_INT), "we_dialog_args[type]", g_l('wysiwyg', "[internal_image]"), true, "defaultfont", "imageChanged();");
+			$radioBut = we_html_forms::radiobutton(we_base_link::TYPE_INT, (isset($this->args["type"]) && $this->args["type"] == we_base_link::TYPE_INT), "we_dialog_args[type]", g_l('wysiwyg', "[internal_image]"), true, "defaultfont", "imageChanged();");
 
 			$yuiSuggest->setAcId("Image");
 			$yuiSuggest->setContentType("folder,image/*");
@@ -376,7 +376,7 @@ class weImageDialog extends weDialog{
 
 		$onclick = "checkWidthHeight(document.we_form.elements['we_dialog_args[width]']);";
 
-		$ratio = we_forms::checkboxWithHidden((isset($this->args["ratio"]) ? $this->args["ratio"] : false), "we_dialog_args[ratio]", g_l('thumbnails', "[ratio]"), false, "defaultfont", $onclick);
+		$ratio = we_html_forms::checkboxWithHidden((isset($this->args["ratio"]) ? $this->args["ratio"] : false), "we_dialog_args[ratio]", g_l('thumbnails', "[ratio]"), false, "defaultfont", $onclick);
 
 		return array(
 			array("html" => $srctable),

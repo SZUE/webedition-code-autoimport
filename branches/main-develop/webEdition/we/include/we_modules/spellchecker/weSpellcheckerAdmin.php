@@ -104,9 +104,9 @@ while(false !== ($entry = $_dir->read())){
 
 		$_name = str_replace('.zip', '', $entry);
 
-		$table->setCol($_i, 0, array('valign' => 'top'), we_forms::radiobutton($_name, (($spellcheckerConf['default'] == $_name) ? true : false), 'default', '', true, 'defaultfont', 'document.we_form.enable_' . $_name . '.value=1;document.we_form._enable_' . $_name . '.checked=true;'));
+		$table->setCol($_i, 0, array('valign' => 'top'), we_html_forms::radiobutton($_name, (($spellcheckerConf['default'] == $_name) ? true : false), 'default', '', true, 'defaultfont', 'document.we_form.enable_' . $_name . '.value=1;document.we_form._enable_' . $_name . '.checked=true;'));
 		$table->setCol($_i, 1, array('valign' => 'top', 'class' => 'defaultfont'), $_name);
-		$table->setCol($_i, 2, array('valign' => 'top', 'align' => 'right'), we_forms::checkboxWithHidden(in_array($_name, $spellcheckerConf['active']), 'enable_' . $_name, '', false, 'defaultfont', ''));
+		$table->setCol($_i, 2, array('valign' => 'top', 'align' => 'right'), we_html_forms::checkboxWithHidden(in_array($_name, $spellcheckerConf['active']), 'enable_' . $_name, '', false, 'defaultfont', ''));
 		$table->setCol($_i, 3, array('valign' => 'top', 'align' => 'right'), we_button::create_button('image:btn_function_reload', 'javascript: updateDict("' . $_name . '");'));
 		$table->setCol($_i, 4, array('valign' => 'top', 'align' => 'right'), we_button::create_button('image:btn_function_trash', 'javascript: deleteDict("' . $_name . '");'));
 	}

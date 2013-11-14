@@ -338,7 +338,7 @@ function we_cmd(){
 	<form name="we_form" target="cmdFrame" action="' . $this->Frameset . '">' .
 			we_html_tools::hidden('cmd', '') .
 			we_html_tools::hidden('ID', '0') .
-			we_multiIconBox::getHTML(
+			we_html_multiIconBox::getHTML(
 				'navigationRules', "100%", $parts, 30, we_button::position_yes_no_cancel($saveButton, null, $closeButton), -1, '', '', false, g_l('navigation', '[rules][navigation_rules]')) . '
 	</form>' .
 			$yuiSuggest->getYuiCss() . $yuiSuggest->getYuiJs() .

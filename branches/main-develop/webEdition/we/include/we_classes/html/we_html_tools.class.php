@@ -167,7 +167,7 @@ abstract class we_html_tools{
 	}
 
 	static function htmlDialogLayout($content, $headline, $buttons = '', $width = "100%", $marginLeft = 30, $height = "", $overflow = "auto"){
-		return we_multiIconBox::getHTML('', $width, array(
+		return we_html_multiIconBox::getHTML('', $width, array(
 				array(
 					"html" => $content, "headline" => "", "space" => 0
 				)

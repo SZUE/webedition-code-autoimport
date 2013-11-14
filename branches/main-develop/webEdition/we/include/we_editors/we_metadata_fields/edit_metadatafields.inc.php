@@ -106,9 +106,9 @@ function create_dialog($name, $title, $content, $expand = -1, $show_text = '', $
 	// Check, if we need to write some JavaScripts
 	return
 		($JS == '' ? '' : $JS ) .
-		($expand != -1 ? we_multiIconBox::getJS() : '') .
+		($expand != -1 ? we_html_multiIconBox::getJS() : '') .
 		// Return HTML code of dialog
-		we_multiIconBox::getHTML($name, '100%', $content, 30, '', $expand, $show_text, $hide_text, $cookie != false ? ($cookie == 'down') : $cookie, $title);
+		we_html_multiIconBox::getHTML($name, '100%', $content, 30, '', $expand, $show_text, $hide_text, $cookie != false ? ($cookie == 'down') : $cookie, $title);
 }
 
 /**
