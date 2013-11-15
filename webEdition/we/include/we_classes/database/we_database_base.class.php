@@ -277,10 +277,7 @@ abstract class we_database_base{
 		if(!$this->isConnected() && !$this->_connect()){
 			return false;
 		}
-		/* we already complained in connect() about that. */
-		/* 		if(stristr($Query_String, PREFS_TABLE)){
-		  t_e('error #7745', $Query_String);
-		  } */
+
 // check for union This is the fastest check
 // if union is found in query, then take a closer look
 		if($allowUnion == false && stristr($Query_String, 'union')){
