@@ -45,13 +45,11 @@ function we_tag_sessionStart($attribs){
 		if(isset($_SESSION['webuser']['registered']) && $_SESSION['webuser']['registered'] && isset($_SESSION['webuser']['ID']) && $_SESSION['webuser']['ID'] && ( (isset($_REQUEST['s']['AutoLogin']) && !$_REQUEST['s']['AutoLogin']) || (isset($_SESSION['webuser']['AutoLogin']) && !$_SESSION['webuser']['AutoLogin'])) && isset($_SESSION['webuser']['AutoLoginID'])){
 			$GLOBALS['DB_WE']->query('DELETE FROM ' . CUSTOMER_AUTOLOGIN_TABLE . ' WHERE AutoLoginID="' . $GLOBALS['DB_WE']->escape(sha1($_SESSION['webuser']['AutoLoginID'])) . '"');
 			setcookie('_we_autologin', '', (time() - 3600), '/');
+			$GLOBALS['WE_LOGOUT'] = true;
 		}
-		unset($_SESSION['webuser']);
 		unset($_SESSION['s']);
 		unset($_REQUEST['s']);
 		$_SESSION['webuser'] = array('registered' => false);
-
-		$GLOBALS['WE_LOGOUT'] = true;
 	} else {
 		if(isset($_REQUEST['we_set_registeredUser']) && $GLOBALS['we_doc']->InWebEdition){
 			$_SESSION['weS']['we_set_registered'] = $_REQUEST['we_set_registeredUser'];
@@ -166,7 +164,7 @@ function wetagsessionStartdoLogin($persistentlogins, &$SessionAutologin){
 			return false;
 		}
 		$u = getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE Password!="" AND LoginDenied=0 AND Username="' . $GLOBALS['DB_WE']->escape($_REQUEST['s']['Username']) . '"', $GLOBALS['DB_WE'], MYSQL_ASSOC);
-		if($u &&( ($_REQUEST['s']['Password'] === $u['Password']) || (strpos($u['Password'], '$2y$') === 0 && we_user::comparePasswords(2, $_REQUEST['s']['Username'], $u['Password'], $_REQUEST['s']['Password'])))){
+		if($u && ( ($_REQUEST['s']['Password'] === $u['Password']) || (strpos($u['Password'], '$2y$') === 0 && we_user::comparePasswords(2, $_REQUEST['s']['Username'], $u['Password'], $_REQUEST['s']['Password'])))){
 			$_SESSION['webuser'] = $u;
 			$_SESSION['webuser']['registered'] = true;
 			$GLOBALS['DB_WE']->query('UPDATE ' . CUSTOMER_TABLE . ' SET LastLogin=UNIX_TIMESTAMP() WHERE ID=' . intval($_SESSION['webuser']['ID']));
