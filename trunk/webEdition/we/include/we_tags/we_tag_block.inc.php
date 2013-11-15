@@ -39,9 +39,12 @@ function we_parse_tag_block($attribs, $content, array $arr){
 	}
 
 	//cleanup content
-	while(strpos($content, '\$') !== false){
-		$content = str_replace('\$', '$', $content);
+	while(strpos($content, '\\\\$') !== false){
+		$content = str_replace('\\\\$', '$', $content);
 	}
+	//replace all \$ which are not inside we-tags
+	$content = preg_replace('|([^\'"])\\\\\$|', '${1}\$', $content);
+
 	$blockName = weTag_getParserAttribute('name', $arr);
 	$name = str_replace(array('$', '.', '/', 0, 1, 2, 3, 4, 5, 6, 7, 8, 9), '', md5($blockName)) . $GLOBALS['blkCnt'];
 	$ctlPre = '<?php if($GLOBALS[\'we_editmode\']){echo we_tag_blockControls(';

@@ -2403,7 +2403,7 @@ function formmailBlockOnOff() {
 				array("headline" => g_l('prefs', '[navigation_entries_from_document]'), "html" => $NAVIGATION_ENTRIES_FROM_DOCUMENT->getHtml(), "space" => 200),
 				array("headline" => g_l('prefs', '[navigation_rules_continue]'), "html" => $NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH->getHtml(), "space" => 200),
 				array("headline" => g_l('prefs', '[hooks]'), "html" => $hooksHtml, "space" => 200),
-				array("headline" => g_l('prefs', '[phpLocalScope]'), "html" => $phpLocalScopeHtml, "space" => 200),
+				//array("headline" => g_l('prefs', '[phpLocalScope]'), "html" => $phpLocalScopeHtml, "space" => 200),
 			);
 			// Build dialog element if user has permission
 			return create_dialog("", g_l('prefs', '[tab][system]'), $_settings, -1, "", "", null, $_needed_JavaScript);
