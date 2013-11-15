@@ -41,7 +41,7 @@ class weHyperlinkDialog extends weDialog{
 			$okBut = ($this->getBackBut() != "") ? we_button::create_button_table(array($this->getBackBut(), we_button::create_button("ok", "javascript:weCheckAcFields()"))) : we_button::create_button("ok", "javascript:weCheckAcFields()");
 		} else if($this->pageNr < $this->numPages){
 			$okBut = (($this->getBackBut() != "") && ($this->getNextBut()) != "") ? we_button::create_button_table(array($this->getBackBut(), $this->getNextBut())) : (($this->getBackBut() == "") ? $this->getNextBut() : $this->getBackBut());
-		} else{
+		} else {
 			$okBut = (($this->getBackBut() != "") && ($this->getOkBut()) != "") ? we_button::create_button_table(array($this->getBackBut(), $this->getOkBut())) : (($this->getBackBut() == "") ? $this->getOkBut() : $this->getBackBut());
 		}
 
@@ -260,7 +260,7 @@ class weHyperlinkDialog extends weDialog{
 					$this->initByMailHref($mailhref, $target, $class, $param, $anchor, $lang, $hreflang, $title, $accesskey, $tabindex, $rel, $rev);
 					break;
 			}
-		} else{
+		} else {
 			$this->defaultInit();
 		}
 	}
@@ -286,6 +286,9 @@ class weHyperlinkDialog extends weDialog{
 			'tabindex' => '',
 			'rel' => '',
 			'rev' => '',
+			'mailsubject' => '',
+			'mailcc' => '',
+			'mailbcc' => '',
 		));
 	}
 
@@ -301,7 +304,7 @@ class weHyperlinkDialog extends weDialog{
 			$_external_link = we_html_tools::htmlTextInput("we_dialog_args[extHref]", 30, $extHref ? $extHref : we_base_link::EMPTY_EXT, '', '', 'url', 300);
 			// E-MAIL LINK
 			$_email_link = we_html_tools::htmlTextInput("we_dialog_args[mailHref]", 30, $this->args["mailHref"], "", '', "email", 300);
-		} else{
+		} else {
 			$_select_type = '<option value="' . we_base_link::TYPE_EXT . '"' . (($this->args["type"] == we_base_link::TYPE_EXT) ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', "[external_link]") . '</option>
 <option value="' . we_base_link::TYPE_INT . '"' . (($this->args["type"] == we_base_link::TYPE_INT) ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', "[internal_link]") . '</option>
 <option value="' . we_base_link::TYPE_MAIL . '"' . (($this->args["type"] == we_base_link::TYPE_MAIL) ? ' selected="selected"' : '') . '>' . g_l('wysiwyg', "[emaillink]") . '</option>' .
