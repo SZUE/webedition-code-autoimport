@@ -403,7 +403,7 @@ function uploadFinished() {
 		$but = str_replace("\n", " ", str_replace("\r", " ", $but));
 
 		$maxsize = getUploadMaxFilesize(false, $GLOBALS['DB_WE']);
-		$maxsize = weFile::getHumanFileSize($fs, weFile::SZ_MB);
+		$maxsize = weFile::getHumanFileSize($maxsize, weFile::SZ_MB);
 
 		$content = we_html_tools::hidden('we_cmd[0]', 'import_files') .
 			we_html_tools::hidden('cmd', 'content') . we_html_tools::hidden('step', 2) .
