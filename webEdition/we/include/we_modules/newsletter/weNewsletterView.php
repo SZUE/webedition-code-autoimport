@@ -2082,6 +2082,8 @@ self.close();');
 						break;
 					case weNewsletterBlock::TEXT:
 						$blockHtml = empty($block->Html) ? '' : preg_replace('/(href=")(\\\\*&quot;)*(.+?)(\\\\*&quot;)*(")/', '$1$3$5', stripslashes($block->Html));
+						$blockHtml = empty($blockHtml) ? '' : preg_replace('/(src=")(\\\\*&quot;)*(.+?)(\\\\*&quot;)*(")/', '$1$3$5', stripslashes($blockHtml));
+
 						if($hm){
 							if(!empty($blockHtml)){
 								$content .= $blockHtml;

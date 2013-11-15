@@ -1178,6 +1178,8 @@ if(typeof(self.document.we_form.htmlmail_check)!="undefined") {
 					);
 
 					$blockHtml = preg_replace('/(href=")(\\\\*&quot;)*(.+?)(\\\\*&quot;)*(")/', '$1$3$5', stripslashes($block->Html));
+					$blockHtml = preg_replace('/(src=")(\\\\*&quot;)*(.+?)(\\\\*&quot;)*(")/', '$1$3$5', stripslashes($blockHtml));
+
 					$content.=we_html_tools::htmlFormElementTable(we_html_element::htmlTextArea(array("cols" => 40, "rows" => 10, "name" => "block" . $counter . "_Source", "onChange" => "top.content.hot=1;", "style" => "width:440"), oldHtmlspecialchars($block->Source)), g_l('modules_newsletter', '[block_plain]')) .
 						we_html_element::jsScript(JS_DIR . "we_textarea.js") .
 						we_html_tools::htmlFormElementTable(we_forms::weTextarea("block" . $counter . "_Html", $blockHtml, $attribs, "", "", true, "", true, true, false, true, $this->View->newsletter->Charset), g_l('modules_newsletter', '[block_html]')) .
