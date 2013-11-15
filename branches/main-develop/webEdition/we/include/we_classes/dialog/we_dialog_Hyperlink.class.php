@@ -286,6 +286,9 @@ class we_dialog_Hyperlink extends we_dialog_base{
 			'tabindex' => '',
 			'rel' => '',
 			'rev' => '',
+			'mailsubject' => '',
+			'mailcc' => '',
+			'mailbcc' => '',
 		));
 	}
 

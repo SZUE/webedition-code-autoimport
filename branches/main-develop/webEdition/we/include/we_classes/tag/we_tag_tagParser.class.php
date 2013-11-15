@@ -273,9 +273,9 @@ class we_tag_tagParser{
 		preg_match('%</?we:[[:alnum:]_-]+[ \t\n\r]*(.*)' . $regs[4] . $regs[5] . '%msi', $regs[0], $regs);
 		$attr = trim($regs[1]);
 
-		$attribs = self::parseAttribs((PHPLOCALSCOPE ?
-					str_replace('\$', '$', $attr) : //#6330
-					$attr)
+		$attribs = self::parseAttribs(/* (PHPLOCALSCOPE ?
+				  $attr://str_replace('\$', '$', $attr) : //#6330
+				  $attr) */ $attr
 				, true);
 		$attr = self::printArray($attribs);
 
