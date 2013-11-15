@@ -15,12 +15,13 @@ $gethttp = new weTagData_selectAttribute('gethttp', weTagData_selectAttribute::g
 $seeMode = new weTagData_selectAttribute('seeMode', weTagData_selectAttribute::getTrueFalse(), false, '');
 $kind = new weTagData_selectAttribute('kind', array(new weTagDataOption('all', false, ''), new weTagDataOption('int', false, ''), new weTagDataOption('ext', false, '')), false, '');
 $name = new weTagData_textAttribute('name', false, '');
+$description = new weTagData_textAttribute('description', false, '');
 $id_temp = (defined("TEMPLATES_TABLE") ? new weTagData_selectorAttribute('id', TEMPLATES_TABLE, 'text/weTmpl', false, '') : null);
 $path_temp = (defined("TEMPLATES_TABLE") ? new weTagData_selectorAttribute('path', TEMPLATES_TABLE, 'text/weTmpl', false, '', true) : null);
 $rootdir = new weTagData_textAttribute('rootdir', false, '');
 
 $this->TypeAttribute = new weTagData_typeAttribute('type', array(
-	new weTagDataOption('document', false, '', array($id, $path, $gethttp, $seeMode, $kind, $name, $rootdir), array()),
+	new weTagDataOption('document', false, '', array($id, $path, $gethttp, $seeMode, $kind, $name, $description, $rootdir), array()),
 	new weTagDataOption('template', false, '', array($path_temp, $id_temp), array())), false, '');
 
-$this->Attributes = array($included, $id, $path,$path_temp, $gethttp, $seeMode, $kind, $name, $id_temp, $rootdir);
+$this->Attributes = array($included, $id, $path, $path_temp, $gethttp, $seeMode, $kind, $name, $description, $id_temp, $rootdir);
