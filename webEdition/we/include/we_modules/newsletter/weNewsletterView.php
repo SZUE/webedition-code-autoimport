@@ -2081,9 +2081,10 @@ self.close();');
 						}
 						break;
 					case weNewsletterBlock::TEXT:
+						$blockHtml = empty($block->Html) ? '' : preg_replace('/(href=")(\\\\*&quot;)*(.+?)(\\\\*&quot;)*(")/', '$1$3$5', stripslashes($block->Html));
 						if($hm){
-							if(!empty($block->Html)){
-								$content .= $block->Html;
+							if(!empty($blockHtml)){
+								$content .= $blockHtml;
 							} else {
 								$content .= strtr($block->Source, array(
 									"\r\n" => "\n",
@@ -2099,13 +2100,13 @@ self.close();');
 							if(!empty($block->Source)){
 								$content .= $block->Source;
 							} else {
-								$newplain = preg_replace("|<br\s*/?\s*>|i", "\n", $block->Html);
+								$newplain = preg_replace("|<br\s*/?\s*>|i", "\n", $blockHtml);
 								$newplain = trim(strip_tags($newplain));
 								$newplain = preg_replace("|&nbsp;(&nbsp;)+|i", "\t", $newplain);
 								$content .= str_ireplace(array('&nbsp;', '&lt;', "&gt;", "&quot;", "&amp;",), array(' ', "<", ">", '"', "&",), $newplain);
+								//TODO: we should preserve img- and link-pathes: "text text linktext (path) text"
 							}
 						}
-						$content = stripslashes($content);
 						break;
 					case weNewsletterBlock::FILE:
 						$content = weFile::load($_SERVER['DOCUMENT_ROOT'] . $block->Field);
