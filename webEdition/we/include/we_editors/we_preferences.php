@@ -2380,7 +2380,7 @@ function formmailBlockOnOff() {
 				$EXECUTE_HOOKS->getHtml();
 
 			//  select how php is parsed
-			$PHPLOCALSCOPE = new we_html_select(array("name" => "newconf[PHPLOCALSCOPE]", "class" => "weSelect"));
+			/*$PHPLOCALSCOPE = new we_html_select(array("name" => "newconf[PHPLOCALSCOPE]", "class" => "weSelect"));
 			$PHPLOCALSCOPE->addOption(0, g_l('prefs', '[no]'));
 			$PHPLOCALSCOPE->addOption(1, g_l('prefs', '[yes]'));
 
@@ -2388,7 +2388,7 @@ function formmailBlockOnOff() {
 
 			$phpLocalScopeHtml = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[phpLocalScope_information]'), we_html_tools::TYPE_INFO, 240, false) . "<br/>" .
 				$PHPLOCALSCOPE->getHtml();
-
+*/
 
 			$_settings = array(
 				array("headline" => g_l('prefs', '[we_max_upload_size]'), "html" => $_we_max_upload_size, "space" => 200),
