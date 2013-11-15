@@ -42,8 +42,8 @@ function we_tag_userInput($attribs, $content){
 	$xml = weTag_getAttribute("xml", $attribs, XHTML_DEFAULT, true);
 	$removeFirstParagraph = weTag_getAttribute("removefirstparagraph", $attribs, defined("REMOVEFIRSTPARAGRAPH_DEFAULT") ? REMOVEFIRSTPARAGRAPH_DEFAULT : true, true);
 
-	if($hidden && ($type != "date")){
-		$type = "hidden";
+	if($hidden && ($type != 'date')){
+		$type = 'hidden';
 	}
 
 	$fieldname = $property ?
@@ -84,7 +84,6 @@ function we_tag_userInput($attribs, $content){
 		$object_path = "";
 		$object_tableID = "";
 		$isset = false;
-		$content = '';
 	}
 
 
@@ -141,30 +140,30 @@ function we_tag_userInput($attribs, $content){
 					$checked = (isset($_SESSION[$_imgDataId]["doDelete"]) && $_SESSION[$_imgDataId]["doDelete"]) ? ' checked' : '';
 
 					return '<table class="weEditTable padding2 spacing2" style="border: solid ' . $bordercolor . ' 1px;">
-						<tr>
-							<td class="weEditmodeStyle" colspan="2" align="center">' . $imgTag . '
-								<input type="hidden" name="WE_UI_IMG_DATA_ID_' . $name . '" value="' . $_imgDataId . '" /></td>
-						</tr>
-						<tr>
-							<td class="weEditmodeStyle" colspan="2" align="left">
-								<input' . ($size ? ' size="' . $size . '"' : '') . ' name="' . $fieldname . '" type="file" accept="' . we_image_edit::IMAGE_CONTENT_TYPES . '"' . ($inputstyle ? (' style="' . $inputstyle . '"') : '') . ($inputclass ? (' class="' . $inputclass . '"') : '') . '/>
-							</td>
-						</tr>
-						<tr>
-							<td class="weEditmodeStyle" colspan="2" align="left">
-								<table class="weEditTable padding0 spacing0 border0">
-									<tr>
-										<td style="padding-right: 5px;">
-											<input style="border:0px solid black;" type="checkbox" id="WE_UI_DEL_CHECKBOX_' . $name . '" name="WE_UI_DEL_CHECKBOX_' . $name . '" value="1" ' . $checked . '/>
-										</td>
-										<td>
-											<label for="WE_UI_DEL_CHECKBOX_' . $name . '"' . ($checkboxstyle ? (' style="' . $checkboxstyle . '"') : '') . ($checkboxclass ? (' class="' . $checkboxclass . '"') : '') . '>' . $checkboxtext . '</label>
-										</td>
-									</tr>
-								</table>
-							</td>
-						</tr>
-					</table>';
+	<tr>
+		<td class="weEditmodeStyle" colspan="2" align="center">' . $imgTag . '
+			<input type="hidden" name="WE_UI_IMG_DATA_ID_' . $name . '" value="' . $_imgDataId . '" /></td>
+	</tr>
+	<tr>
+		<td class="weEditmodeStyle" colspan="2" align="left">
+			<input' . ($size ? ' size="' . $size . '"' : '') . ' name="' . $fieldname . '" type="file" accept="' . we_image_edit::IMAGE_CONTENT_TYPES . '"' . ($inputstyle ? (' style="' . $inputstyle . '"') : '') . ($inputclass ? (' class="' . $inputclass . '"') : '') . '/>
+		</td>
+	</tr>
+	<tr>
+		<td class="weEditmodeStyle" colspan="2" align="left">
+			<table class="weEditTable padding0 spacing0 border0">
+				<tr>
+					<td style="padding-right: 5px;">
+						<input style="border:0px solid black;" type="checkbox" id="WE_UI_DEL_CHECKBOX_' . $name . '" name="WE_UI_DEL_CHECKBOX_' . $name . '" value="1" ' . $checked . '/>
+					</td>
+					<td>
+						<label for="WE_UI_DEL_CHECKBOX_' . $name . '"' . ($checkboxstyle ? (' style="' . $checkboxstyle . '"') : '') . ($checkboxclass ? (' class="' . $checkboxclass . '"') : '') . '>' . $checkboxtext . '</label>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>';
 				} else {
 					$hidden = '<input type="hidden" name="WE_UI_IMG_DATA_ID_' . $name . '" value="' . $_imgDataId . '" />';
 
@@ -190,7 +189,7 @@ function we_tag_userInput($attribs, $content){
 				$_flashmovieDataId = isset($_REQUEST['WE_UI_FLASHMOVIE_DATA_ID_' . $name]) ? $_REQUEST['WE_UI_FLASHMOVIE_DATA_ID_' . $name] : md5(uniqid(__FUNCTION__, true));
 
 				if($editable){
-					if(($foo = attributFehltError($attribs, "parentid", __FUNCTION__))){
+					if(($foo = attributFehltError($attribs, 'parentid', __FUNCTION__))){
 						return $foo;
 					}
 
@@ -770,14 +769,13 @@ function we_tag_userInput($attribs, $content){
 						we_getInputRadioField($fieldname, ($checked ? $value : $value . "dummy"), $value, $atts) :
 						we_getInputRadioField($fieldname, $content, $orgVal, $atts));
 
-			case "hidden" :
-				$attsHidden = array(
+			case 'hidden':
+				return getHtmlTag('input', array(
 					'type' => 'hidden',
 					'name' => $fieldname,
 					'value' => oldHtmlspecialchars($content),
 					'xml' => $xml,
-				);
-				return getHtmlTag('input', $attsHidden);
+				));
 			case "print" :
 				return $orgVal;
 			case "choice" :
@@ -805,7 +803,7 @@ function we_tag_userInput($attribs, $content){
 				));
 				$mode = weTag_getAttribute("mode", $attribs);
 				return we_html_tools::htmlInputChoiceField($fieldname, $orgVal, $values, $atts, $mode);
-			case "password" :
+			case 'password':
 				$atts = removeAttribs($attribs, array(
 					'wysiwyg',
 					'commands',
