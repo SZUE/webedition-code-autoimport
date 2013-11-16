@@ -372,7 +372,6 @@ if(typeof(self.document.we_form.htmlmail_check)!="undefined") {
 		return $this->getHTMLDocument($body, $js);
 	}
 
-
 	/*
 	 * Grafische Aufbereitung des Versandlogs im Tab "Auswertung"
 	 */
@@ -1152,9 +1151,13 @@ if(typeof(self.document.we_form.htmlmail_check)!="undefined") {
 						"inlineedit" => "true",
 						"bgcolor" => "white",
 					);
+					$blockHtml = preg_replace('/(href=")(\\\\*&quot;)*(.+?)(\\\\*&quot;)*(")/', '${1}${3}${5}', stripslashes($block->Html));
+					$blockHtml = preg_replace('/(src=")(\\\\*&quot;)*(.+?)(\\\\*&quot;)*(")/', '${1}${3}${5}', stripslashes($blockHtml));
+
+
 					$content.=we_html_tools::htmlFormElementTable(we_html_element::htmlTextArea(array("cols" => 40, "rows" => 10, "name" => "block" . $counter . "_Source", "onChange" => "top.content.hot=1;", "style" => "width:440"), oldHtmlspecialchars($block->Source)), g_l('modules_newsletter', '[block_plain]')) .
 						we_html_element::jsScript(JS_DIR . "we_textarea.js") .
-						we_html_tools::htmlFormElementTable(we_html_forms::weTextarea("block" . $counter . "_Html", $block->Html, $attribs, "", "", true, "", true, true, false, true, $this->View->newsletter->Charset), g_l('modules_newsletter', '[block_html]')) .
+						we_html_tools::htmlFormElementTable(we_html_forms::weTextarea("block" . $counter . "_Html", $blockHtml, $attribs, "", "", true, "", true, true, false, true, $this->View->newsletter->Charset), g_l('modules_newsletter', '[block_html]')) .
 						we_html_element::jsElement('
 function extraInit(){
 	if(typeof weWysiwygInitializeIt == "function"){
@@ -1441,15 +1444,15 @@ function changeFieldValue(val,valueField) {
 				break;
 			default:
 				$out.=weSuggest::getYuiJsFiles() .
-				$this->View->getHiddensPropertyPage() .
-				$this->View->getHiddensMailingPage() .
-				$this->View->getHiddensContentPage() .
+					$this->View->getHiddensPropertyPage() .
+					$this->View->getHiddensMailingPage() .
+					$this->View->getHiddensContentPage() .
 					$this->View->htmlHidden("fromPage", "3") .
 					$this->View->htmlHidden("blockid", 0) .
 					we_html_multiIconBox::getHTML('', "100%", $this->getHTMLReporting(), 30, '', -1, '', '', false) .
 					$this->weAutoCompleter->getYuiCss() .
 					$this->weAutoCompleter->getYuiJs();
-	}
+		}
 
 		$body = we_html_element::htmlBody(array("onload" => "self.loaded=1;if(self.doScrollTo){self.doScrollTo();}; setHeaderTitle();", "class" => "weEditorBody", "onunload" => "doUnload()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "onsubmit" => "return false;"), $out
 				)

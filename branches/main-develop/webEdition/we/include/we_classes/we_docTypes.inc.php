@@ -27,25 +27,25 @@ class we_docTypes extends we_class{
 
 	var $DocType = 'New DocType';
 	var $Extension = DEFAULT_STATIC_EXT;
-	var $ParentID = "0";
-	var $ParentPath = "";
+	var $ParentID = 0;
+	var $ParentPath = '';
 	var $TemplateID = 0;
-	var $ContentTable = "";
+	var $ContentTable = '';
 	var $IsDynamic = false;
 	var $IsSearchable = false;
-	var $JavaScript = "";
-	var $Notify = "";
-	var $NotifyTemplateID = "";
-	var $NotifySubject = "";
-	var $NotifyOnChange = "";
-	var $Templates = "";
+	var $JavaScript = '';
+	var $Notify = '';
+	var $NotifyTemplateID = '';
+	var $NotifySubject = '';
+	var $NotifyOnChange = '';
+	var $Templates = '';
 	var $SubDir = self::SUB_DIR_NO;
-	var $Category = "";
-	var $Language = "";
+	var $Category = '';
+	var $Language = '';
 
 	function __construct(){
 		parent::__construct();
-		array_push($this->persistent_slots, "Category", "DocType", "Extension", "ParentID", "ParentPath", "TemplateID", "ContentTable", "IsDynamic", "IsSearchable", "Notify", "NotifyTemplateID", "NotifySubject", "NotifyOnChange", "SubDir", "Templates", "Language");
+		array_push($this->persistent_slots, 'Category', 'DocType', 'Extension', 'ParentID', 'ParentPath', 'TemplateID', 'ContentTable', 'IsDynamic', 'IsSearchable', 'Notify', 'NotifyTemplateID', 'NotifySubject', 'NotifyOnChange', 'SubDir', 'Templates', 'Language');
 		$this->Table = DOC_TYPES_TABLE;
 	}
 
@@ -94,29 +94,21 @@ class we_docTypes extends we_class{
 		}
 		$this->i_setElementsFromHTTP();
 
-		if($this->Language == ""){
+		if($this->Language == ''){
 			$this->initLanguageFromParent();
 		}
 	}
 
 	function initLanguageFromParent(){
-
 		$ParentID = $this->ParentID;
 		$i = 0;
-		while($this->Language == ""){
+		while($this->Language == ''){
 			if($ParentID == 0 || $i > 20){
 				we_loadLanguageConfig();
-				$this->Language = $GLOBALS['weDefaultFrontendLanguage'];
-				if($this->Language == ""){
-					$this->Language = "de_DE";
-				}
+				$this->Language = ($GLOBALS['weDefaultFrontendLanguage'] ? $GLOBALS['weDefaultFrontendLanguage'] : 'de_DE');
 			} else {
-				$Query = "SELECT Language, ParentID FROM " . $this->DB_WE->escape($this->Table) . " WHERE ID = " . intval($ParentID);
-				$this->DB_WE->query($Query);
-
-				while($this->DB_WE->next_record()){
-					$ParentID = $this->DB_WE->f("ParentID");
-					$this->Language = $this->DB_WE->f("Language");
+				if(($h = getHash('SELECT Language, ParentID FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ID=' . intval($ParentID), $this->DB_WE, MYSQL_ASSOC))){
+					list($this->Language, $ParentID) = $h;
 				}
 			}
 			$i++;
@@ -124,28 +116,21 @@ class we_docTypes extends we_class{
 	}
 
 	function formLanguage(){
-
 		we_loadLanguageConfig();
 
-		$value = ($this->Language != "" ? $this->Language : $GLOBALS['weDefaultFrontendLanguage']);
-
-		$inputName = "we_" . $this->Name . "_Language";
-
+		$value = ($this->Language ? $this->Language : $GLOBALS['weDefaultFrontendLanguage']);
+		$inputName = 'we_' . $this->Name . '_Language';
 		$_languages = getWeFrontendLanguagesForBackend();
 
 		if(LANGLINK_SUPPORT){
-
 			$htmlzw = '';
 			foreach($_languages as $langkey => $lang){
 				$LDID = f('SELECT LDID FROM ' . LANGLINK_TABLE . " WHERE DocumentTable='tblDocTypes' AND DID=" . $this->ID . " AND Locale='" . $langkey . "'", 'LDID', $this->DB_WE);
-				if(!$LDID){
-					$LDID = 0;
-				}
-				$htmlzw.= $this->formDocTypes3($lang, $langkey, $LDID);
+				$htmlzw.= $this->formDocTypes3($lang, $langkey, ($LDID ? $LDID : 0));
 				$langkeys[] = $langkey;
 			}
-			return we_html_tools::htmlFormElementTable($this->htmlSelect($inputName, $_languages, 1, $value, false, array('onchange'=>'dieWerte=\'' . implode(',', $langkeys) . '\'; disableLangDefault(\'we_' . $this->Name . '_LangDocType\',dieWerte,this.options[this.selectedIndex].value);'), "value", 521), g_l('weClass', '[language]'), "left", "defaultfont").
-			"<br/>" . we_html_tools::htmlFormElementTable($htmlzw, g_l('weClass', '[languageLinksDefaults]'), 'left', 'defaultfont');
+			return we_html_tools::htmlFormElementTable($this->htmlSelect($inputName, $_languages, 1, $value, false, array('onchange'=>'dieWerte=\'' . implode(',', $langkeys) . '\'; disableLangDefault(\'we_' . $this->Name . '_LangDocType\',dieWerte,this.options[this.selectedIndex].value);'), "value", 521), g_l('weClass', '[language]'), "left", "defaultfont") .
+				we_html_element::htmlBr() . we_html_tools::htmlFormElementTable($htmlzw, g_l('weClass', '[languageLinksDefaults]'), 'left', 'defaultfont');
 		} else {
 			return we_html_tools::htmlFormElementTable($this->htmlSelect($inputName, $_languages, 1, $value, false, "", "value", 521), g_l('weClass', '[language]'), "left", "defaultfont");
 		}
@@ -201,9 +186,7 @@ class we_docTypes extends we_class{
 
 	function formDocTypeTemplates(){
 		$wecmdenc3 = we_cmd_enc("fillIDs();opener.we_cmd('add_dt_template', top.allIDs);");
-
 		$addbut = we_button::create_button("add", "javascript:we_cmd('openDocselector', '', '" . TEMPLATES_TABLE . "','','','" . $wecmdenc3 . "', '', '', 'text/weTmpl', 1,1)");
-
 		$templ = new MultiDirChooser(521, $this->Templates, "delete_dt_template", $addbut, "", "Icon,Path", TEMPLATES_TABLE);
 		return $templ->get();
 	}
@@ -247,8 +230,8 @@ class we_docTypes extends we_class{
 		$this->DB_WE->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' ' . we_docTypes::getDoctypeQuery($this->DB_WE));
 
 		while($this->DB_WE->next_record()){
-			$v = $this->DB_WE->f("ID");
-			$t = $this->DB_WE->f("DocType");
+			$v = $this->DB_WE->f('ID');
+			$t = $this->DB_WE->f('DocType');
 			if(in_array($t, $arrHide)){
 				continue;
 			}
@@ -300,13 +283,16 @@ class we_docTypes extends we_class{
 	/* creates the Template PopupMenue */
 
 	function formTemplatePopup($width = 100){
-		$tlist = ($this->TemplateID ? : '' );
-		if(!empty($this->Templates)){
-			$tlist.=',' . $this->Templates;
+		$tlist = array();
+		if($this->TemplateID){
+			$tlist[] = $this->TemplateID;
 		}
-		$tlist = implode(',', array_filter(array_unique(explode(',', $tlist))));
-		$sqlTeil = 'WHERE IsFolder=0 ' . (empty($tlist) ? '' : 'AND ID IN(' . $tlist . ')' );
-		return $this->formSelect2('', $width, 'TemplateID', TEMPLATES_TABLE, 'ID', 'Path', g_l('weClass', '[standard_template]'), $sqlTeil, 1, $this->TemplateID, false, "", "", "left", "defaultfont", "", "", array(0, g_l('weClass', "[none]")));
+		if($this->Templates){
+			$tlist = array_merge($tlist, explode(',', $this->Templates));
+		}
+		$tlist = array_filter(array_unique($tlist));
+		$sqlTeil = 'WHERE IsFolder=0 ' . ($tlist ? 'AND ID IN(' . implode(',', $tlist) . ')' : ' AND false' );
+		return $this->formSelect2('', $width, 'TemplateID', TEMPLATES_TABLE, 'ID', 'Path', g_l('weClass', '[standard_template]'), $sqlTeil, 1, $this->TemplateID, false, '', '', 'left', 'defaultfont', '', '', array(0, g_l('weClass', '[none]')));
 	}
 
 	// return DocumentType HTML
@@ -335,47 +321,35 @@ class we_docTypes extends we_class{
 	}
 
 	function formIsDynamic(){
-		$isDyn = $this->IsDynamic ? 1 : 0;
 		$n = "we_" . $this->Name . "_IsDynamic";
-		$v = $this->IsDynamic;
-		$DefaultDynamicExt = DEFAULT_DYNAMIC_EXT;
-		$DefaultStaticExt = DEFAULT_STATIC_EXT;
 
-		$out = we_html_element::jsElement('
+		return we_html_forms::checkbox(1, $this->IsDynamic, "check_" . $n, g_l('weClass', "[IsDynamic]"), true, "defaultfont", "this.form.elements['" . $n . "'].value = (this.checked ? '1' : '0'); switchExt();") . $this->htmlHidden($n, ($this->IsDynamic ? 1 : 0)) .
+			we_html_element::jsElement('
 function switchExt(){
 	var a=document.we_form.elements;' .
 				($this->ID ?
-					'if(confirm("' . g_l('weClass', "[confirm_ext_change]") . '")){' : '') .
-				'if(a["we_' . $this->Name . '_IsDynamic"].value==1) {var changeto="' . $DefaultDynamicExt . '";} else {var changeto="' . $DefaultStaticExt . '";}
+					'if(confirm("' . g_l('weClass', '[confirm_ext_change]') . '")){' : '') .
+				'if(a["we_' . $this->Name . '_IsDynamic"].value==1) {var changeto="' . DEFAULT_DYNAMIC_EXT . '";} else {var changeto="' . DEFAULT_STATIC_EXT . '";}
 	a["we_' . $this->Name . '_Extension"].value=changeto;' .
 				($this->ID ? '}' : '') . '
 }');
-
-		return we_html_forms::checkbox(1, $v ? true : false, "check_" . $n, g_l('weClass', "[IsDynamic]"), true, "defaultfont", "this.form.elements['" . $n . "'].value = (this.checked ? '1' : '0'); switchExt();") . $this->htmlHidden($n, $v) . $out;
 	}
 
 	function formIsSearchable(){
-		$isSearchable = $this->IsSearchable ? 1 : 0;
-		$n = "we_" . $this->Name . "_IsSearchable";
-		$v = $isSearchable;
-
-		return we_html_forms::checkbox(1, $v ? true : false, "check_" . $n, g_l('weClass', "[IsSearchable]"), false, "defaultfont", "this.form.elements['" . $n . "'].value = (this.checked ? '1' : '0');") . $this->htmlHidden($n, $v);
+		$n = 'we_' . $this->Name . '_IsSearchable';
+		return we_html_forms::checkbox(1, $this->IsSearchable, 'check_' . $n, g_l('weClass', '[IsSearchable]'), false, 'defaultfont', "this.form.elements['" . $n . "'].value = (this.checked ? '1' : '0');") . $this->htmlHidden($n, ($this->IsSearchable ? 1 : 0));
 	}
 
 	function formSubDir($width = 100){
-		$vals = array();
-		for($i = 0; $i < count(g_l('weClass', "[subdir]")); $i++){
-			$vals[] = g_l('weClass', "[subdir][" . $i . ']');
-		}
-		return we_html_tools::htmlFormElementTable($this->htmlSelect('we_' . $this->Name . '_SubDir', $vals, $size = 1, $this->SubDir, false, "", "value", $width), g_l('weClass', "[subdirectory]"));
+		return we_html_tools::htmlFormElementTable($this->htmlSelect('we_' . $this->Name . '_SubDir', g_l('weClass', '[subdir]'), $size = 1, $this->SubDir, false, '', 'value', $width), g_l('weClass', '[subdirectory]'));
 	}
 
 	function formNewDocType(){
-		return we_button::create_button("new_doctype", "javascript:we_cmd('newDocType')");
+		return we_button::create_button('new_doctype', "javascript:we_cmd('newDocType')");
 	}
 
 	function formDeleteDocType(){
-		return we_button::create_button("delete_doctype", "javascript:we_cmd('deleteDocType', '" . $this->ID . "')");
+		return we_button::create_button('delete_doctype', "javascript:we_cmd('deleteDocType', '" . $this->ID . "')");
 	}
 
 	/**

@@ -41,13 +41,11 @@ function we_tag_sessionStart($attribs){
 		if(isset($_SESSION['webuser']['registered']) && $_SESSION['webuser']['registered'] && isset($_SESSION['webuser']['ID']) && $_SESSION['webuser']['ID'] && ( (isset($_REQUEST['s']['AutoLogin']) && !$_REQUEST['s']['AutoLogin']) || (isset($_SESSION['webuser']['AutoLogin']) && !$_SESSION['webuser']['AutoLogin'])) && isset($_SESSION['webuser']['AutoLoginID'])){
 			$GLOBALS['DB_WE']->query('DELETE FROM ' . CUSTOMER_AUTOLOGIN_TABLE . ' WHERE AutoLoginID="' . $GLOBALS['DB_WE']->escape(sha1($_SESSION['webuser']['AutoLoginID'])) . '"');
 			setcookie('_we_autologin', '', (time() - 3600), '/');
+			$GLOBALS['WE_LOGOUT'] = true;
 		}
-		unset($_SESSION['webuser']);
 		unset($_SESSION['s']);
 		unset($_REQUEST['s']);
 		$_SESSION['webuser'] = array('registered' => false);
-
-		$GLOBALS['WE_LOGOUT'] = true;
 	} else {
 		if(isset($_REQUEST['we_set_registeredUser']) && $GLOBALS['we_doc']->InWebEdition){
 			$_SESSION['weS']['we_set_registered'] = $_REQUEST['we_set_registeredUser'];
@@ -148,6 +146,7 @@ function wetagsessionStartdoLogin($persistentlogins, &$SessionAutologin){
 			$GLOBALS['WE_LOGIN_DENIED'] = true;
 			return false;
 		}
+		$wasRegistered = $_SESSION['webuser']['registered'];
 		$u = getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE Password!="" AND LoginDenied=0 AND Username="' . $GLOBALS['DB_WE']->escape($_REQUEST['s']['Username']) . '"', $GLOBALS['DB_WE'], MYSQL_ASSOC);
 		if($u  && we_customer_customer::comparePassword($u['Password'], $_REQUEST['s']['Password'])){
 			if(SECURITY_SESSION_PASSWORD & we_customer_customer::STORE_DBPASSWORD == 0){
@@ -169,7 +168,7 @@ function wetagsessionStartdoLogin($persistentlogins, &$SessionAutologin){
 				$_SESSION['webuser']['AutoLogin'] = 1;
 				$SessionAutologin = 1;
 			}
-			$GLOBALS['WE_LOGIN'] = true;
+			$GLOBALS['WE_LOGIN'] = !$wasRegistered;
 			return true;
 		}
 	}
@@ -182,6 +181,7 @@ function wetagsessionStartdoAutoLogin(){
 		$hook = new weHook('customer_preLogin', '', array('customer' => &$_REQUEST['s'], 'type' => 'autoLogin', 'tagname' => 'sessionStart'));
 		$hook->executeHook();
 
+		$wasRegistered = $_SESSION['webuser']['registered'];
 		$u = getHash('SELECT u.* FROM ' . CUSTOMER_TABLE . ' u JOIN ' . CUSTOMER_AUTOLOGIN_TABLE . ' c ON u.ID=c.WebUserID WHERE u.LoginDenied=0 AND u.AutoLoginDenied=0 AND u.Password!="" AND c.AutoLoginID="' . $GLOBALS['DB_WE']->escape(sha1($autologinSeek)) . '"', $GLOBALS['DB_WE'], MYSQL_ASSOC);
 		if(!empty($u)){
 			if(SECURITY_SESSION_PASSWORD & we_customer_customer::STORE_DBPASSWORD == 0){
@@ -202,7 +202,7 @@ function wetagsessionStartdoAutoLogin(){
 			);
 
 			setcookie('_we_autologin', $_SESSION['webuser']['AutoLoginID'], (time() + CUSTOMER_AUTOLOGIN_LIFETIME), '/');
-			$GLOBALS['WE_LOGIN'] = true;
+			$GLOBALS['WE_LOGIN'] = $wasRegistered;
 			$hook = new weHook('customer_Login', '', array('customer' => &$_SESSION['webuser'], 'type' => 'autoLogin', 'tagname' => 'sessionStart'));
 			$hook->executeHook();
 			return true;

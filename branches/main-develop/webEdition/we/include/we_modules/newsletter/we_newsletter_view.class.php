@@ -325,7 +325,7 @@ class we_newsletter_view{
 	function getJSTopCode(){
 		$mod = isset($_REQUEST['mod']) ? $_REQUEST['mod'] : '';
 		$modData = weModuleInfo::getModuleData($mod);
-		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' .$modData['text'] : '';
+		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' . $modData['text'] : '';
 
 		return we_html_element::jsElement('
 var get_focus = 1;
@@ -2076,9 +2076,12 @@ self.close();');
 						}
 						break;
 					case we_newsletter_block::TEXT:
+						$blockHtml = $block->Html ? preg_replace('/(href=")(\\\\*&quot;)*(.+?)(\\\\*&quot;)*(")/', '$1$3$5', stripslashes($block->Html)) : '';
+						$blockHtml = $blockHtml ? preg_replace('/(src=")(\\\\*&quot;)*(.+?)(\\\\*&quot;)*(")/', '$1$3$5', stripslashes($blockHtml)) : '';
+
 						if($hm){
-							if(!empty($block->Html)){
-								$content .= $block->Html;
+							if(!empty($blockHtml)){
+								$content .= $blockHtml;
 							} else {
 								$content .= strtr($block->Source, array(
 									"\r\n" => "\n",
@@ -2094,13 +2097,12 @@ self.close();');
 							if(!empty($block->Source)){
 								$content .= $block->Source;
 							} else {
-								$newplain = preg_replace("|<br\s*/?\s*>|i", "\n", $block->Html);
-								$newplain = trim(strip_tags($newplain));
+								$newplain = trim(strip_tags(preg_replace("|<br\s*/?\s*>|i", "\n", $blockHtml)));
 								$newplain = preg_replace("|&nbsp;(&nbsp;)+|i", "\t", $newplain);
 								$content .= str_ireplace(array('&nbsp;', '&lt;', "&gt;", "&quot;", "&amp;",), array(' ', "<", ">", '"', "&",), $newplain);
+								//TODO: we should preserve img- and link-pathes: "text text linktext (path) text"
 							}
 						}
-						$content = stripslashes($content);
 						break;
 					case we_newsletter_block::FILE:
 						$content = weFile::load($_SERVER['DOCUMENT_ROOT'] . $block->Field);
