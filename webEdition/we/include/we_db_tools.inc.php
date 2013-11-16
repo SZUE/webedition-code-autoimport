@@ -32,12 +32,13 @@ function getHash($query, we_database_base $DB_WE = NULL, $resultType = MYSQL_BOT
 		$cache = array();
 		return $cache;
 	}
-	if(!isset($cache[$query])){
+	$hash = md5($query, true);
+	if(!isset($cache[$hash])){
 		$DB_WE = $DB_WE ? $DB_WE : $GLOBALS['DB_WE'];
 		$DB_WE->query($query);
-		$cache[$query] = ($DB_WE->next_record($resultType) ? $DB_WE->Record : array());
+		$cache[$hash] = ($DB_WE->next_record($resultType) ? $DB_WE->Record : array());
 	}
-	return $cache[$query];
+	return $cache[$hash];
 }
 
 function f($query, $field = -1, we_database_base $DB_WE = NULL){
