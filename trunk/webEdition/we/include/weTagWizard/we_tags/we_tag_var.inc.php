@@ -14,7 +14,7 @@ $doc = new weTagData_selectAttribute('doc', array(new weTagDataOption('self'),
 $win2iso = new weTagData_selectAttribute('win2iso', weTagData_selectAttribute::getTrueFalse(), false, '');
 $htmlspecialchars = new weTagData_selectAttribute('htmlspecialchars', weTagData_selectAttribute::getTrueFalse(), false, '');
 $key = new weTagData_selectAttribute('key', weTagData_selectAttribute::getTrueFalse(), false, '');
-$format = new weTagData_textAttribute('format', true, '');
+$format = new weTagData_textAttribute('format', false, '');
 
 
 $this->TypeAttribute = new weTagData_typeAttribute('type', array(
