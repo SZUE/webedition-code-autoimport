@@ -23,13 +23,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_ifNotVote($attribs){
-	if(($foo = attributFehltError($attribs, 'type', __FUNCTION__))){
-		return $foo;
-	}
-	$type = weTag_getAttribute('type', $attribs, 'error');
-
 	if(isset($GLOBALS['_we_voting_status'])){
-		switch($type){
+		switch(weTag_getAttribute('type', $attribs)){
 			case 'error':
 				return ($GLOBALS['_we_voting_status'] == weVoting::ERROR);
 			case 'revote':
