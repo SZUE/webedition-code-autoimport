@@ -102,7 +102,7 @@ function we_tag_img($attribs){
 	if($GLOBALS['we_editmode'] && !$showimage){
 		$out = '';
 	} elseif($id){
-		if(!$showcontrol && $tagId){//bug 6433: später wird so ohne weiteres gar nicht mehr auf die id zurückgegriffen
+		if($tagId){//bug 6433: später wird so ohne weiteres gar nicht mehr auf die id zurückgegriffen
 			$tagAttribs['id'] = $tagId; //siehe korrespondierende Änderung in we:document::getField
 			$tagAttribs['showcontrol'] = $showcontrol; //sicherstellen das es boolean iost
 		}
