@@ -394,7 +394,8 @@ if (window.screen) {
 					$postfix = '</' . $Tag . '>' . $postfix;
 				}
 			}
-			$content[$Type]['-(^|\s|&nbsp;|[!"#$%&\'()*+,\-./:;=?@[\\]^_`{\|}~])(' . preg_quote($Text, '-') . ')(\s|&nbsp;|[!"#$%&\'()*+,\-./:;=?@[\\]^_`{\|}~]|$)-'] = '${1}' . $prefix . '${2}' . $postfix . '${3}';
+			//make sure we found a whole word!
+			$content[$Type]['-(^|\s|[!"#$%&\'()*+,\-./:;=?@[\\]^_`{\|}~])(' . preg_quote($Text, '-') . ')(\s|[!"#$%&\'()*+,\-./:;=?@[\\]^_`{\|}~]|$)-'] = '${1}' . $prefix . '${2}' . $postfix . '${3}';
 		}
 
 		$cacheFilename = self::cacheIdToFilename($this->_cacheId);

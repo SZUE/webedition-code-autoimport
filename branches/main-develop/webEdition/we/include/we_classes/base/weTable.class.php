@@ -143,10 +143,6 @@ class weTableAdv extends weTable{
 
 	var $ClassName = __CLASS__;
 
-	function __construct($table, $force_columns = false){
-		parent::__construct($table, $force_columns);
-	}
-
 	function getColumns(){
 		if($this->db->isTabExist($this->table)){
 			$this->db->query("SHOW CREATE TABLE $this->table;");

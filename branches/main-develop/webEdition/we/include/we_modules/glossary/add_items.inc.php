@@ -184,7 +184,7 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 	<?php
 	foreach($List as $Key => $Value){
 		$Value['Text'] = str_replace(array("\r", "\n"), '', $Value['Text']);
-		$TextReplaced = preg_replace("/((<[^>]*)|([^[:alnum:]]){$Value['Text']}([^[:alnum:]]))/e", '"\2"=="\1"?"\1":"\3\4"', " " . $Text . " ");
+		$TextReplaced= preg_replace('-(^|\s|[!"#$%&\'()*+,\-./:;=?@[\\]^_`{\|}~])(' . preg_quote($Value['Text'], '-') . ')(\s|[!"#$%&\'()*+,\-./:;=?@[\\]^_`{\|}~]|$)-', '${1}${3}', $Text);
 		$Replaced = (trim($TextReplaced) != trim($Text));
 		$Text = trim($TextReplaced);
 		if($Replaced){
@@ -194,8 +194,7 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 
 	foreach($ExceptionList as $Key => $Value){
 		$Value = str_replace(array("\r", "\n"), '', $Value);
-		$Text = preg_replace("/((<[^>]*)|([^[:alnum:]]){$Value}([^[:alnum:]]))/e", '"\2"=="\1"?"\1":"\3\4"', " " . $Text . " ");
-		$Text = trim($Text);
+		$Text = preg_replace('-(^|\s|[!"#$%&\'()*+,\-./:;=?@[\\]^_`{\|}~])(' . preg_quote($Value, '-') . ')(\s|[!"#$%&\'()*+,\-./:;=?@[\\]^_`{\|}~]|$)-', '${1}${3}', $Text);
 	}
 	?>
 			orginal = "<?php echo $Text; ?>";
@@ -850,22 +849,19 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 
 					foreach($_REQUEST['item'] as $Key => $Entry){
 						switch($Entry['type']){
-							case "exception":
+							case 'exception':
 								we_glossary_glossary::addToException($Language, $Key);
 								break;
 							case '':
-							case "ignore":
+							case 'ignore':
 								break;
-							case "correct":
+							case 'correct':
 								foreach($we_doc->elements as &$val){
 									if(isset($val['type']) && (
-										$val['type'] == "txt" || $val['type'] == "input"
+										$val['type'] == 'txt' || $val['type'] == 'input'
 										)
 									){
-										//FIXME: this looks like the old glossary replace code!
-										$temp = ' ' . $val['dat'] . ' ';
-										$temp = trim(preg_replace("/((<[^>]*)|([^[:alnum:]]){$Key}([^[:alnum:]]))/e", '"\2"=="\1"?"\1":"\3' . $Entry['title'] . '\4"', $temp));
-										$val['dat'] = $temp;
+										$val['dat'] = preg_replace('-(^|\s|[!"#$%&\'()*+,\-./:;=?@[\\]^_`{\|}~])(' . preg_quote($Key, '-') . ')(\s|[!"#$%&\'()*+,\-./:;=?@[\\]^_`{\|}~]|$)-', '${1}' . $Entry['title'] . '${3}', $temp);
 									}
 								}
 								unset($val);
