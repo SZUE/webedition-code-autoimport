@@ -346,7 +346,7 @@ if (top.wizbody && top.wizbody.addLog){
 								flush();
 							}
 
-							$path = TEMP_PATH . weFile::getUniqueId() . '/';
+							$path = TEMP_PATH . we_base_file::getUniqueId() . '/';
 							we_util_File::createLocalFolder($path);
 
 							if(is_dir($path)){
@@ -377,7 +377,7 @@ if (top.wizbody && top.wizbody.addLog){
 							$cp->setEnclosure($encl);
 							$cp->parseCSV();
 							$num_files = 0;
-							$unique_id = weFile::getUniqueId(); // #6590, changed from: uniqid(microtime())
+							$unique_id = we_base_file::getUniqueId(); // #6590, changed from: uniqid(microtime())
 
 							$path = TEMP_PATH . $unique_id;
 							we_util_File::createLocalFolder($path);
@@ -404,7 +404,7 @@ if (top.wizbody && top.wizbody.addLog){
 											$d[0] .= $del;
 										}
 									}
-									weFile::save($path . '/temp_' . $i . '.csv', implode("\n", $d), 'wb');
+									we_base_file::save($path . '/temp_' . $i . '.csv', implode("\n", $d), 'wb');
 									$num_files++;
 								}
 							}

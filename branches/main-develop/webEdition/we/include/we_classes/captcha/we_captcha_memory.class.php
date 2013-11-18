@@ -121,10 +121,10 @@ class we_captcha_memory{
 	static function writeData($file, $data){
 		if(count($data) < 1){
 			if(file_exists($file . '.php')){
-				weFile::delete($file . '.php');
+				we_base_file::delete($file . '.php');
 			}
 		} else{
-			weFile::save($file . '.php', '<?php $data=\'' . serialize($data) . '\';', 'w+');
+			we_base_file::save($file . '.php', '<?php $data=\'' . serialize($data) . '\';', 'w+');
 		}
 	}
 

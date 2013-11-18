@@ -216,7 +216,7 @@ class we_backup_import{
 		$object->Path = $file;
 		$object->save(true);
 		we_base_preferences::check_global_config(true, $_SERVER['DOCUMENT_ROOT'] . $file, array('DB_SET_CHARSET'));
-		weFile::delete($_SERVER['DOCUMENT_ROOT'] . $file);
+		we_base_file::delete($_SERVER['DOCUMENT_ROOT'] . $file);
 	}
 
 }

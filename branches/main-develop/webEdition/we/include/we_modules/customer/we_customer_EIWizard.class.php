@@ -616,7 +616,7 @@ class we_customer_EIWizard{
 		//upload table
 		$maxsize = getUploadMaxFilesize(true);
 		if($maxsize){
-			$tmptable->setCol(0, 0, array(), we_html_tools::htmlAlertAttentionBox(sprintf(g_l('newFile', "[max_possible_size]"), weFile::getHumanFileSize($maxsize, weFile::SZ_MB)), we_html_tools::TYPE_ALERT, 430));
+			$tmptable->setCol(0, 0, array(), we_html_tools::htmlAlertAttentionBox(sprintf(g_l('newFile', "[max_possible_size]"), we_base_file::getHumanFileSize($maxsize, we_base_file::SZ_MB)), we_html_tools::TYPE_ALERT, 430));
 			$tmptable->setCol(1, 0, array(), we_html_tools::getPixel(2, 5));
 		} else {
 			$tmptable->setCol(0, 0, array(), we_html_tools::getPixel(2, 5));
@@ -665,7 +665,7 @@ class we_customer_EIWizard{
 		if($import_from == "local"){
 			if(isset($_FILES['upload']) && $_FILES["upload"]["size"]){
 				// creating a temp name and copy the file to the we tmp directory with the new temp name
-				$filename = TEMP_DIR . weFile::getUniqueId() . $ext;
+				$filename = TEMP_DIR . we_base_file::getUniqueId() . $ext;
 				$filesource = $_SERVER['DOCUMENT_ROOT'] . $filename;
 				move_uploaded_file($_FILES['upload']["tmp_name"], $filesource);
 			}
@@ -677,7 +677,7 @@ class we_customer_EIWizard{
 		$parts = array();
 		if(is_file($filesource) && is_readable($filesource)){
 			if($type == "csv"){
-				$line = weFile::loadLine($filesource, 0, 80960);
+				$line = we_base_file::loadLine($filesource, 0, 80960);
 				$charsets = array('UTF-8', 'ISO-8859-15', 'ISO-8859-1'); //charsetHandler::getAvailCharsets();
 				$charset = mb_detect_encoding($line, $charsets, true);
 				$charCount = count_chars($line, 0);
@@ -938,7 +938,7 @@ class we_customer_EIWizard{
 		$table->setCol(0, 0, array("class" => "defaultfont"), sprintf(g_l('modules_customer', '[import_finished_desc]'), $impno));
 
 		if($tmpdir != "" && is_file(TEMP_PATH . "/$tmpdir/$tmpdir.log") && is_readable(TEMP_PATH . "/$tmpdir/$tmpdir.log")){
-			$log = weFile::load(TEMP_PATH . "/$tmpdir/$tmpdir.log", 'rb');
+			$log = we_base_file::load(TEMP_PATH . "/$tmpdir/$tmpdir.log", 'rb');
 			if($log){
 
 				$table->setColContent(1, 0, we_html_tools::htmlAlertAttentionBox(g_l('modules_customer', '[show_log]'), we_html_tools::TYPE_ALERT, 550));

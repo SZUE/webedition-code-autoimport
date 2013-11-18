@@ -281,7 +281,7 @@ class weContentProvider{
 				if(!file_exists($path)){
 					$path = $_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $object->Path;
 				}
-				$data = weFile::loadPart($path, $offset, $rsize);
+				$data = we_base_file::loadPart($path, $offset, $rsize);
 				if(!empty($data)){
 					$fwrite($file, '<we:binary>' . $attribs .
 						weXMLComposer::we_xmlElement('SeqN', $object->SeqN) .
@@ -325,7 +325,7 @@ class weContentProvider{
 				if($object->Path == ''){
 					break;
 				}
-				$data = weFile::loadPart($path, $offset, $rsize);
+				$data = we_base_file::loadPart($path, $offset, $rsize);
 
 				if(!empty($data)){
 					$fwrite($file, '<we:version>' . $attribs .

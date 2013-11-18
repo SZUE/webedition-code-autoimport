@@ -67,7 +67,7 @@ abstract class we_backup_preparer{
 		$_SESSION['weS']['weBackupVars']['tables'] = self::getTables($_SESSION['weS']['weBackupVars']['handle_options']);
 
 		if($_SESSION['weS']['weBackupVars']['backup_log']){
-			weFile::save($_SESSION['weS']['weBackupVars']['backup_log_file'], "<?php exit();?>\r\n");
+			we_base_file::save($_SESSION['weS']['weBackupVars']['backup_log_file'], "<?php exit();?>\r\n");
 		}
 
 		return true;
@@ -82,10 +82,10 @@ abstract class we_backup_preparer{
 
 		$_SESSION['weS']['weBackupVars']['protect'] = (isset($_REQUEST['protect']) && $_REQUEST['protect']) ? $_REQUEST['protect'] : 0;
 
-		$_SESSION['weS']['weBackupVars']['options']['compress'] = (isset($_REQUEST['compress']) && $_REQUEST['compress'] && weFile::hasCompression($_REQUEST['compress'])) ? we_backup_base::COMPRESSION : 0;
-		$_SESSION['weS']['weBackupVars']['filename'] = ((isset($_REQUEST['filename']) && $_REQUEST['filename']) ? ($_REQUEST['filename']) : '') . ($_SESSION['weS']['weBackupVars']['options']['compress'] ? '.' . weFile::getZExtension(we_backup_base::COMPRESSION) : '');
-		$_SESSION['weS']['weBackupVars']['backup_file'] = $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/' . $_SESSION['weS']['weBackupVars']['filename'] . ($_SESSION['weS']['weBackupVars']['options']['compress'] ? '.' . weFile::getZExtension(we_backup_base::COMPRESSION) : '');
-		$prefix = weFile::getComPrefix($_SESSION['weS']['weBackupVars']['options']['compress']);
+		$_SESSION['weS']['weBackupVars']['options']['compress'] = (isset($_REQUEST['compress']) && $_REQUEST['compress'] && we_base_file::hasCompression($_REQUEST['compress'])) ? we_backup_base::COMPRESSION : 0;
+		$_SESSION['weS']['weBackupVars']['filename'] = ((isset($_REQUEST['filename']) && $_REQUEST['filename']) ? ($_REQUEST['filename']) : '') . ($_SESSION['weS']['weBackupVars']['options']['compress'] ? '.' . we_base_file::getZExtension(we_backup_base::COMPRESSION) : '');
+		$_SESSION['weS']['weBackupVars']['backup_file'] = $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/' . $_SESSION['weS']['weBackupVars']['filename'] . ($_SESSION['weS']['weBackupVars']['options']['compress'] ? '.' . we_base_file::getZExtension(we_backup_base::COMPRESSION) : '');
+		$prefix = we_base_file::getComPrefix($_SESSION['weS']['weBackupVars']['options']['compress']);
 		$_SESSION['weS']['weBackupVars']['open'] = $prefix . 'open';
 		$_SESSION['weS']['weBackupVars']['close'] = $prefix . 'close';
 		$_SESSION['weS']['weBackupVars']['write'] = $prefix . 'write';
@@ -113,8 +113,8 @@ abstract class we_backup_preparer{
 		}
 
 		//always write protect code uncompressed
-		weFile::save($_SESSION['weS']['weBackupVars']['backup_file'], ($_SESSION['weS']['weBackupVars']['protect'] ? we_backup_backup::weXmlExImProtectCode : ''), 'wb');
-		weFile::save($_SESSION['weS']['weBackupVars']['backup_file'], weXMLExIm::getHeader('', 'backup'), 'ab', $_SESSION['weS']['weBackupVars']['options']['compress']);
+		we_base_file::save($_SESSION['weS']['weBackupVars']['backup_file'], ($_SESSION['weS']['weBackupVars']['protect'] ? we_backup_backup::weXmlExImProtectCode : ''), 'wb');
+		we_base_file::save($_SESSION['weS']['weBackupVars']['backup_file'], weXMLExIm::getHeader('', 'backup'), 'ab', $_SESSION['weS']['weBackupVars']['options']['compress']);
 
 		return true;
 	}
@@ -131,8 +131,8 @@ abstract class we_backup_preparer{
 		}
 
 		$_offset = strlen(we_backup_backup::weXmlExImProtectCode);
-		$_SESSION['weS']['weBackupVars']['offset'] = (weFile::loadLine($_SESSION['weS']['weBackupVars']['backup_file'], 0, ($_offset)) == we_backup_backup::weXmlExImProtectCode) ? $_offset : 0;
-		$_SESSION['weS']['weBackupVars']['options']['compress'] = weFile::isCompressed($_SESSION['weS']['weBackupVars']['backup_file'], $_SESSION['weS']['weBackupVars']['offset']) ? 1 : 0;
+		$_SESSION['weS']['weBackupVars']['offset'] = (we_base_file::loadLine($_SESSION['weS']['weBackupVars']['backup_file'], 0, ($_offset)) == we_backup_backup::weXmlExImProtectCode) ? $_offset : 0;
+		$_SESSION['weS']['weBackupVars']['options']['compress'] = we_base_file::isCompressed($_SESSION['weS']['weBackupVars']['backup_file'], $_SESSION['weS']['weBackupVars']['offset']) ? 1 : 0;
 		if($_SESSION['weS']['weBackupVars']['options']['compress']){
 			$_SESSION['weS']['weBackupVars']['backup_file'] = self::makeCleanGzip($_SESSION['weS']['weBackupVars']['backup_file'], $_SESSION['weS']['weBackupVars']['offset']);
 			we_util_File::insertIntoCleanUp($_SESSION['weS']['weBackupVars']['backup_file'], time() + (8 * 3600)); //valid for 8 hours
@@ -383,7 +383,7 @@ abstract class we_backup_preparer{
 
 	static function getEncoding($file, $iscompressed){
 		if(!empty($file)){
-			$data = weFile::loadPart($file, 0, 256, $iscompressed);
+			$data = we_base_file::loadPart($file, 0, 256, $iscompressed);
 			$match = array();
 			$trenner = "[\040|\n|\t|\r]*";
 			$pattern = "%(encoding" . $trenner . "=" . $trenner . "[\"|\'|\\\\]" . $trenner . ")([^\'\">\040? \\\]*)%";
@@ -400,7 +400,7 @@ abstract class we_backup_preparer{
 
 	static function getWeVersion($file, $iscompressed){
 		if(!empty($file)){
-			$data = weFile::loadPart($file, 0, 256, $iscompressed);
+			$data = we_base_file::loadPart($file, 0, 256, $iscompressed);
 			$match = array();
 			$trenner = "[\040|\n|\t|\r]*";
 			$pattern = "%webEdition" . $trenner . "version" . $trenner . "=" . $trenner . "[\"|\'|\\\\]" . $trenner . "([^\'\">\040? \\\]*)%";
@@ -444,7 +444,7 @@ abstract class we_backup_preparer{
 		if(empty($_SESSION['weS']['weBackupVars']['backup_file'])){
 			if(isset($_SESSION['weS']['weBackupVars']['options']['upload'])){
 				$maxsize = getUploadMaxFilesize();
-				$_mess = sprintf(g_l('backup', '[upload_failed]'), weFile::getHumanFileSize($fs, weFile::SZ_MB));
+				$_mess = sprintf(g_l('backup', '[upload_failed]'), we_base_file::getHumanFileSize($fs, we_base_file::SZ_MB));
 			} else {
 				$_mess = g_l('backup', '[file_missing]');
 			}
@@ -457,7 +457,7 @@ abstract class we_backup_preparer{
 		} else if($_SESSION['weS']['weBackupVars']['options']['xmltype'] != 'backup'){
 
 			return self::isOtherXMLImport($_SESSION['weS']['weBackupVars']['options']['xmltype']);
-		} else if($_SESSION['weS']['weBackupVars']['options']['compress'] && !weFile::hasGzip()){
+		} else if($_SESSION['weS']['weBackupVars']['options']['compress'] && !we_base_file::hasGzip()){
 
 			$_mess = g_l('backup', '[cannot_split_file_ziped]');
 		} else {
@@ -474,7 +474,7 @@ abstract class we_backup_preparer{
 
 	static function makeCleanGzip($gzfile, $offset){
 
-		$file = $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/' . weFile::getUniqueId();
+		$file = $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/' . we_base_file::getUniqueId();
 		$fs = @fopen($gzfile, "rb");
 
 		if($fs){

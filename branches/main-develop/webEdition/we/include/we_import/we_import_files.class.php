@@ -403,7 +403,7 @@ function uploadFinished() {
 		$but = str_replace("\n", " ", str_replace("\r", " ", $but));
 
 		$maxsize = getUploadMaxFilesize(false, $GLOBALS['DB_WE']);
-		$maxsize = weFile::getHumanFileSize($maxsize, weFile::SZ_MB);
+		$maxsize = we_base_file::getHumanFileSize($maxsize, we_base_file::SZ_MB);
 
 		$content = we_html_tools::hidden('we_cmd[0]', 'import_files') .
 			we_html_tools::hidden('cmd', 'content') . we_html_tools::hidden('step', 2) .
@@ -682,7 +682,7 @@ function next() {
 			}
 			// initializing $we_doc
 			include (WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
-			$tempName = TEMP_PATH . '/' . weFile::getUniqueId();
+			$tempName = TEMP_PATH . '/' . we_base_file::getUniqueId();
 			if(!@move_uploaded_file($_FILES['we_File']["tmp_name"], $tempName)){
 				return array(
 					'filename' => $_FILES['we_File']['name'], 'error' => 'move_file_error'

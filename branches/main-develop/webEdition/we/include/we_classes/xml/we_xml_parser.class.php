@@ -2507,7 +2507,7 @@ class we_xml_parser{
 	function getEncoding($file = '', $data = ''){
 
 		if(!empty($file)){
-			$data = weFile::loadPart($file, 0, 256);
+			$data = we_base_file::loadPart($file, 0, 256);
 		}
 
 		if(empty($data)){

@@ -74,18 +74,18 @@ class we_navigation_cache{
 	}
 
 	static function delCacheNavigationEntry($id){
-		weFile::delete($_SERVER['DOCUMENT_ROOT'] . self::CACHEDIR . 'navigation_' . $id . '.php');
+		we_base_file::delete($_SERVER['DOCUMENT_ROOT'] . self::CACHEDIR . 'navigation_' . $id . '.php');
 	}
 
 	static function saveCacheNavigation($id, $_naviItemes){
-		weFile::save($_SERVER['DOCUMENT_ROOT'] . self::CACHEDIR . 'navigation_' . $id . '.php', gzdeflate(serialize($_naviItemes->items), 9));
+		we_base_file::save($_SERVER['DOCUMENT_ROOT'] . self::CACHEDIR . 'navigation_' . $id . '.php', gzdeflate(serialize($_naviItemes->items), 9));
 	}
 
 	static function getCacheFromFile($parentid){
 		$_cache = $_SERVER['DOCUMENT_ROOT'] . self::CACHEDIR . 'navigation_' . $parentid . '.php';
 
 		if(file_exists($_cache)){
-			return @unserialize(@gzinflate(weFile::load($_cache)));
+			return @unserialize(@gzinflate(we_base_file::load($_cache)));
 		}
 		return false;
 	}
@@ -93,7 +93,7 @@ class we_navigation_cache{
 	static function getCachedRule(){
 		$_cache = $_SERVER['DOCUMENT_ROOT'] . self::CACHEDIR . 'rules.php';
 		if(file_exists($_cache)){
-			return $navigationRulesStorage = weFile::load($_cache);
+			return $navigationRulesStorage = we_base_file::load($_cache);
 		}
 		return false;
 	}

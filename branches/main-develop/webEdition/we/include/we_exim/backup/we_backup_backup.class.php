@@ -210,7 +210,7 @@ class we_backup_backup extends we_backup_base{
 		$object->Path = $file;
 		$object->save(true);
 		we_base_preferences::check_global_config(true, $_SERVER['DOCUMENT_ROOT'] . $file, array('DB_SET_CHARSET'));
-		weFile::delete($_SERVER['DOCUMENT_ROOT'] . $file);
+		we_base_file::delete($_SERVER['DOCUMENT_ROOT'] . $file);
 	}
 
 	/*function recoverInfo($nodeset, &$xmlBrowser){
@@ -276,7 +276,7 @@ class we_backup_backup extends we_backup_base{
 			$this->dumpfilename = $this->backup_dir_tmp . $this->tempfilename;
 			$this->backup_step = 0;
 
-			if(!weFile::save($this->dumpfilename, $this->header)){
+			if(!we_base_file::save($this->dumpfilename, $this->header)){
 				$this->setError(sprintf(g_l('backup', "[can_not_open_file]"), $this->dumpfilename));
 				return -1;
 			}
@@ -394,7 +394,7 @@ class we_backup_backup extends we_backup_base{
 			$out.='>';
 		}
 		$out.='</we:info>' . we_backup_backup::backupMarker . "\n";
-		weFile::save($filename, $out, "ab");
+		we_base_file::save($filename, $out, "ab");
 	}
 
 	/**
@@ -405,8 +405,8 @@ class we_backup_backup extends we_backup_base{
 	function printDump2BackupDir(){
 		$backupfilename = $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . $this->filename;
 		if($this->compress != "none" && $this->compress != ""){
-			$this->dumpfilename = weFile::compress($this->dumpfilename, $this->compress);
-			$this->filename = $this->filename . '.' . weFile::getZExtension($this->compress);
+			$this->dumpfilename = we_base_file::compress($this->dumpfilename, $this->compress);
+			$this->filename = $this->filename . '.' . we_base_file::getZExtension($this->compress);
 		}
 
 		if($this->export2server == 1){
@@ -453,12 +453,12 @@ class we_backup_backup extends we_backup_base{
 	}
 
 	function isOldVersion($file){
-		$part = weFile::loadPart($file, 0, 512);
+		$part = we_base_file::loadPart($file, 0, 512);
 		return (stripos($part, "# webEdition version:") !== false && stripos($part, "DROP TABLE") !== false && stripos($part, "CREATE TABLE") !== false);
 	}
 
 	function isCompressed($file){
-		$part = weFile::loadPart($file, 0, 512);
+		$part = we_base_file::loadPart($file, 0, 512);
 		return stripos($part, "<?xml version=") === false;
 	}
 
@@ -592,8 +592,8 @@ class we_backup_backup extends we_backup_base{
 		$save = $this->_saveState() . '
 $this->file_list=' . var_export($this->file_list, true) . ';';
 
-		$of = ($of ? $of : weFile::getUniqueId());
-		weFile::save($this->backup_dir_tmp . $of, $save);
+		$of = ($of ? $of : we_base_file::getUniqueId());
+		we_base_file::save($this->backup_dir_tmp . $of, $save);
 		return $of;
 	}
 
@@ -676,7 +676,7 @@ $this->file_list=' . var_export($this->file_list, true) . ';';
 		if($this->handle_options["settings"]){
 			$this->exportGlobalPrefs();
 		}
-		weFile::save($this->dumpfilename, $this->footer, 'ab');
+		we_base_file::save($this->dumpfilename, $this->footer, 'ab');
 	}
 
 	function getBackupQuery($table, $keys){

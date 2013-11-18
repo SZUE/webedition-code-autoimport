@@ -29,7 +29,7 @@ $allowedContentTypes = '';
 $error = false;
 
 $maxsize = getUploadMaxFilesize(false);
-$we_maxfilesize_text = sprintf(g_l('newFile', '[max_possible_size]'), weFile::getHumanFileSize($maxsize, weFile::SZ_MB));
+$we_maxfilesize_text = sprintf(g_l('newFile', '[max_possible_size]'), we_base_file::getHumanFileSize($maxsize, we_base_file::SZ_MB));
 
 
 we_html_tools::htmlTop(g_l('newFile', "[import_File_from_hd_title]"));
@@ -56,7 +56,7 @@ if(!isset($_SESSION['weS']['we_data'][$we_transaction])){
 
 	if(isset($_FILES['we_File']) && !empty($_FILES['we_File']['name']) && $_FILES['we_File']['type'] && ((empty($allowedContentTypes)) || (!(strpos($allowedContentTypes, $_FILES['we_File']['type']) === false)))){
 		$we_doc->Extension = strtolower((strpos($_FILES['we_File']['name'], '.') > 0) ? preg_replace('/^.+(\..+)$/', "\\1", $_FILES['we_File']['name']) : ''); //strtolower for feature 3764
-		$we_File = TEMP_PATH . '/' . weFile::getUniqueId() . $we_doc->Extension;
+		$we_File = TEMP_PATH . '/' . we_base_file::getUniqueId() . $we_doc->Extension;
 		move_uploaded_file($_FILES['we_File']['tmp_name'], $we_File);
 		if((!$we_doc->Filename) || (!$we_doc->ID)){
 			// Bug Fix #6284

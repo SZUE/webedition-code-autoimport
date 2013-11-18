@@ -55,7 +55,7 @@ class we_backup_delete extends taskFragment{
 
 	function doTask(){
 		$item = makeArrayFromCSV($this->data);
-		if(!weFile::delete($item[0])){
+		if(!we_base_file::delete($item[0])){
 			if(file_exists($item[0])){
 				$_SESSION['weS']['delete_files_nok'][] = array("icon" => (isset($item[1]) ? $item[1] : ""), "path" => $item[0]);
 			}

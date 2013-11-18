@@ -48,7 +48,7 @@ abstract class we_customer_EI{
 	}
 
 	public static function save2File($filename, $code = '', $flags = 'ab'){
-		return weFile::save($filename, $code, $flags);
+		return we_base_file::save($filename, $code, $flags);
 	}
 
 	public static function getCustomersFieldset(){
@@ -213,9 +213,9 @@ abstract class we_customer_EI{
 	}
 
 	function massReplace($string1, $string2, $file){
-		$contents = weFile::load($file, 'r');
+		$contents = we_base_file::load($file, 'r');
 		$replacement = preg_replace('/' . preg_quote($string1, '/') . '/i', $string2, $contents);
-		weFile::save($file, $contents, 'w');
+		we_base_file::save($file, $contents, 'w');
 	}
 
 	function getUniqueId(){

@@ -1347,7 +1347,7 @@ function setState(a) {
 						$exports = 0;
 						$_SESSION['weS']['exportVars']["filename"] = ($export_local ? TEMP_PATH . '/' . $filename : $_SERVER['DOCUMENT_ROOT'] . $path . $filename);
 						//FIXME set export type in getHeader
-						$ret = weFile::save($_SESSION['weS']['exportVars']["filename"], weXMLExIm::getHeader(), "wb");
+						$ret = we_base_file::save($_SESSION['weS']['exportVars']["filename"], weXMLExIm::getHeader(), "wb");
 					} else {
 						$xmlExIm->RefTable->Array2RefTable($this->exportVars["RefTable"]);
 						$xmlExIm->RefTable->current = $this->exportVars["CurrentRef"];
@@ -1389,7 +1389,7 @@ function setState(a) {
 						);
 					}
 					if(is_writable($filename)){
-						weFile::save($filename, weXMLExIm::getFooter(), "ab");
+						we_base_file::save($filename, weXMLExIm::getFooter(), "ab");
 					}
 					$_progress_update =
 						we_html_element::jsElement('if (top.footer.setProgress) top.footer.setProgress(100);');

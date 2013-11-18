@@ -53,7 +53,7 @@ abstract class we_export_functions{
 
 				// Check if can create the file now
 				if(!$_continue === false){
-					weFile::save($_file_name, '<?xml version="1.0" encoding="' . DEFAULT_CHARSET . "\"?>\n" . we_backup_backup::weXmlExImHead . ">\n");
+					we_base_file::save($_file_name, '<?xml version="1.0" encoding="' . DEFAULT_CHARSET . "\"?>\n" . we_backup_backup::weXmlExImHead . ">\n");
 				}
 
 				break;
@@ -69,7 +69,7 @@ abstract class we_export_functions{
 
 				// Check if can create the file now
 				if($_continue){
-					weFile::save($_file_name, "");
+					we_base_file::save($_file_name, "");
 				}
 
 				break;
@@ -93,7 +93,7 @@ abstract class we_export_functions{
 	static function fileComplete($format = "gxml", $filename){
 		switch($format){
 			case 'gxml':
-				weFile::save($filename, we_backup_backup::weXmlExImFooter, "ab");
+				we_base_file::save($filename, we_backup_backup::weXmlExImFooter, "ab");
 
 				break;
 		}
@@ -172,7 +172,7 @@ abstract class we_export_functions{
 			case "gxml":
 				// Close document tag
 				$text .= "\t</" . $doctype . ">\n";
-				weFile::save($filename, $text, "ab");
+				we_base_file::save($filename, $text, "ab");
 
 				break;
 			case "csv":
@@ -189,7 +189,7 @@ abstract class we_export_functions{
 						break;
 				}
 
-				weFile::save($filename, $text, 'ab');
+				we_base_file::save($filename, $text, 'ab');
 				break;
 		}
 	}

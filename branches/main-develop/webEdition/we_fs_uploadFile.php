@@ -62,7 +62,7 @@ if((!$we_alerttext) && isset($_FILES['we_uploadedFile']) && $_FILES['we_uploaded
 	$overwrite = $_REQUEST['overwrite'];
 
 	// creating a temp name and copy the file to the we tmp directory with the new temp name
-	$tempName = TEMP_PATH . '/' . weFile::getUniqueId();
+	$tempName = TEMP_PATH . '/' . we_base_file::getUniqueId();
 	move_uploaded_file($_FILES['we_uploadedFile']['tmp_name'], $tempName);
 
 	$tmp_Filename = preg_replace('/[^A-Za-z0-9._-]/', '', $_FILES['we_uploadedFile']['name']);
@@ -153,7 +153,7 @@ $buttons = we_button::position_yes_no_cancel($yes_button, null, $cancel_button);
 
 if($maxsize){
 	$parts[] = array('headline' => '', 'html' => we_html_tools::htmlAlertAttentionBox(
-			sprintf(g_l('newFile', '[max_possible_size]'), weFile::getHumanFileSize($maxsize, weFile::SZ_MB)), we_html_tools::TYPE_ALERT, 390), 'space' => 0, 'noline' => 1);
+			sprintf(g_l('newFile', '[max_possible_size]'), we_base_file::getHumanFileSize($maxsize, we_base_file::SZ_MB)), we_html_tools::TYPE_ALERT, 390), 'space' => 0, 'noline' => 1);
 }
 
 $parts[] = array('headline' => '', 'html' => '<input name="we_uploadedFile" TYPE="file"' . ($allowedContentTypes ? ' ACCEPT="' . $allowedContentTypes . '"' : '') . ' size="35" />', "space" => 0);

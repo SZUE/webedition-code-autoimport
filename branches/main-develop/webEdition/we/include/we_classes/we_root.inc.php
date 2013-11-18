@@ -203,7 +203,7 @@ abstract class we_root extends we_class{
 
 	/** load  data in the object from $filename */
 	function loadFromFile($filename){
-		$str = weFile::load($filename);
+		$str = we_base_file::load($filename);
 		if($str){
 			$arr = unserialize($str);
 			foreach($this->persistent_slots as $cur){

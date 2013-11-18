@@ -175,7 +175,7 @@ class CSV{
 		foreach($array as $key => $val){
 			$val.="$key = $val;\n";
 		}
-		weFile::save($filename, $val, 'w');
+		we_base_file::save($filename, $val, 'w');
 	}
 
 }

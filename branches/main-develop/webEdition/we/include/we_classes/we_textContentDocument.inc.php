@@ -151,7 +151,7 @@ abstract class we_textContentDocument extends we_textDocument{
 		} else {
 			$title = '';
 		}
-		$tempname = weFile::saveTemp($code);
+		$tempname = we_base_file::saveTemp($code);
 		$metas = get_meta_tags($tempname);
 		unlink($tempname);
 		$metas['title'] = $title;

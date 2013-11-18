@@ -186,7 +186,7 @@ switch($_REQUEST['cmd']){
 			we_backup_util::writeLog();
 
 
-			weFile::save($_SESSION['weS']['weBackupVars']['backup_file'], we_backup_backup::weXmlExImFooter, 'ab', $_SESSION['weS']['weBackupVars']['options']['compress']);
+			we_base_file::save($_SESSION['weS']['weBackupVars']['backup_file'], we_backup_backup::weXmlExImFooter, 'ab', $_SESSION['weS']['weBackupVars']['options']['compress']);
 
 			if($_SESSION['weS']['weBackupVars']['protect'] && substr($_SESSION['weS']['weBackupVars']['filename'], -4) != ".php"){
 				$_SESSION['weS']['weBackupVars']['filename'] .= '.php';
@@ -233,7 +233,7 @@ switch($_REQUEST['cmd']){
 
 			if(we_backup_preparer::prepareImport() === true){
 
-				if($_SESSION['weS']['weBackupVars']['options']['compress'] && !weFile::hasGzip()){
+				if($_SESSION['weS']['weBackupVars']['options']['compress'] && !we_base_file::hasGzip()){
 					$_err = we_backup_preparer::getErrorMessage();
 					unset($_SESSION['weS']['weBackupVars']);
 					print $_err;
@@ -267,7 +267,7 @@ switch($_REQUEST['cmd']){
 					if(empty($_SESSION['weS']['weBackupVars']['files_to_delete'])){
 						break;
 					}
-					weFile::delete(array_pop($_SESSION['weS']['weBackupVars']['files_to_delete']));
+					we_base_file::delete(array_pop($_SESSION['weS']['weBackupVars']['files_to_delete']));
 				}
 				$percent = we_backup_util::getImportPercent();
 				if($oldPercent != $percent){

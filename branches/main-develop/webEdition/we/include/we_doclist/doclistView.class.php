@@ -1166,7 +1166,7 @@ class doclistView{
 				$content [$f] [5] ["dat"] = '<nobr>' . ($_result [$f] ["ModDate"] ? date(g_l('searchtool', "[date_format]"), $_result [$f] ["ModDate"]) : "-") . '</nobr>';
 			} else {
 				$fs = file_exists($_SERVER['DOCUMENT_ROOT'] . $_result [$f] ["Path"]) ? filesize($_SERVER['DOCUMENT_ROOT'] . $_result [$f] ["Path"]) : 0;
-				$filesize = weFile::getHumanFileSize($fs);
+				$filesize = we_base_file::getHumanFileSize($fs);
 
 				if($_result [$f] ["ContentType"] == "image/*"){
 					$smallSize = 64;

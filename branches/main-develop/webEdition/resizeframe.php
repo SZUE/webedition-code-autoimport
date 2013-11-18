@@ -59,7 +59,7 @@ function startNormalMode(){
 		<?php if(!(SIDEBAR_DISABLED == 1)){ ?>
 			<div style="position:absolute;top:0px;bottom:0px;right:0px;width:<?php echo $_sidebarwidth; ?>px;border-left:1px solid black;" id="sidebarDiv">
 				<?php
-				$weFrame = new weSideBarFrames();
+				$weFrame = new we_sidebar_frames();
 				$weFrame->getHTML('');
 				?>
 			</div>
@@ -99,7 +99,7 @@ function startSEEMMode(){
 			<?php if($_sidebarwidth > 0){ ?>
 			<div style="position:absolute;top:0px;bottom:0px;right:0px;width:<?php echo $_sidebarwidth; ?>px;border-left:1px solid black;" id="sidebarDiv">
 				<?php
-				$weFrame = new weSideBarFrames();
+				$weFrame = new we_sidebar_frames();
 				$weFrame->getHTML('');
 				?>
 

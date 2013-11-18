@@ -211,7 +211,7 @@ switch($_REQUEST['we_cmd'][0]){
 		$we_doc->convert('jpg', $_REQUEST['we_cmd'][1]);
 		break;
 	case 'doImage_crop':
-		$filename = TEMP_PATH . '/' . weFile::getUniqueId();
+		$filename = TEMP_PATH . '/' . we_base_file::getUniqueId();
 		copy($we_doc->getElement('data'), $filename);
 
 

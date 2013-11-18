@@ -24,7 +24,7 @@
  */
 
 //FIXME: remove this class
-abstract class weSidebarDocumentParser{
+abstract class we_sidebar_documentParser{
 
 	static function parseCode($srcCode, $linkPrefix = ""){
 		$matches = array();

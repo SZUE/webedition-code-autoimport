@@ -43,5 +43,5 @@ define("FSW_DEFAULT_MASTER_TEMPLATE", {$default});
 EOF;
 
 	$file = $_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_tools/first_steps_wizard/conf/defaultMasterTemplate.inc.php";
-	return weFile::save($file,$code,'w+');
+	return we_base_file::save($file,$code,'w+');
 }

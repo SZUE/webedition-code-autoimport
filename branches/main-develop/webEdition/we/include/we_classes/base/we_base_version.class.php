@@ -62,7 +62,7 @@ class we_base_version{
 	function loadFile($file){
 		$this->Path = stri_replace(array($_SERVER['DOCUMENT_ROOT'], SITE_DIR), '', $file);
 		return ($this->linkData ?
-				$this->Data = weFile::load($file, 'rb', 8192, weFile::isCompressed($file)) :
+				$this->Data = we_base_file::load($file, 'rb', 8192, we_base_file::isCompressed($file)) :
 				true);
 	}
 
@@ -75,7 +75,7 @@ class we_base_version{
 			if(!is_dir(dirname($path))){
 				we_util_File::createLocalFolderByPath(dirname($path));
 			}
-			weFile::save($_SERVER['DOCUMENT_ROOT'] . $this->Path, $this->Data, ($this->SeqN == 0 ? 'wb' : 'ab'));
+			we_base_file::save($_SERVER['DOCUMENT_ROOT'] . $this->Path, $this->Data, ($this->SeqN == 0 ? 'wb' : 'ab'));
 		} else {
 			$path = $_SERVER['DOCUMENT_ROOT'] . $this->Path;
 			if(file_exists($path) && !$force){
@@ -84,7 +84,7 @@ class we_base_version{
 			if(!is_dir(dirname($path))){
 				we_util_File::createLocalFolderByPath(dirname($path));
 			}
-			weFile::save($_SERVER['DOCUMENT_ROOT'] . $this->Path, $this->Data, ($this->SeqN == 0 ? 'wb' : 'ab'));
+			we_base_file::save($_SERVER['DOCUMENT_ROOT'] . $this->Path, $this->Data, ($this->SeqN == 0 ? 'wb' : 'ab'));
 		}
 		return true;
 	}

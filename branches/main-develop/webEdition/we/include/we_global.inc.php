@@ -1418,7 +1418,7 @@ function we_writeLanguageConfig($default, $available = array()){
 		$locales .= "	'" . $Locale . "',\n";
 	}
 
-	return weFile::save(WE_INCLUDES_PATH . 'conf/we_conf_language.inc.php', '<?php
+	return we_base_file::save(WE_INCLUDES_PATH . 'conf/we_conf_language.inc.php', '<?php
 $GLOBALS[\'weFrontendLanguages\'] = array(
 ' . $locales . '
 );
@@ -1444,21 +1444,6 @@ function pos_number($val){
 //FIXME: move/remove
 function isSerialized($str){
 	return ($str == serialize(false) || @unserialize($str) !== false);
-}
-
-//FIXME: move/remove
-function AAcorrectSerDataISOtoUTF($serialized){
-	return preg_replace_callback('!(?<=^|;)s:(\d+)(?=:"(.*?)";(?:}|a:|s:|b:|i:|o:|N;))!s', 'serialize_fix_callback', $serialized);
-}
-
-//FIXME: move/remove
-function serialize_fix_callback($match){
-	return 's:' . strlen($match[2]);
-}
-
-//FIXME: move/remove
-function correctSerDataISOtoUTF($serial_str){
-	return preg_replace('!s:(\d+):"(.*?)";!se', '"s:".strlen("$2").":\"$2\";"', $serial_str);
 }
 
 function getVarArray($arr, $string){

@@ -43,7 +43,7 @@ class weXMLExport extends weXMLExIm{
 			strpos($doc->ContentType, "image/") === 0 ||
 			strpos($doc->ContentType, "application/") === 0 ||
 			strpos($doc->ContentType, "video/") === 0)){
-			$doc->setElement("data", weFile::load($_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $doc->Path));
+			$doc->setElement("data", we_base_file::load($_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $doc->Path));
 		}
 
 		$fh = fopen($fname, 'ab');

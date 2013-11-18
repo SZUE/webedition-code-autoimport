@@ -321,7 +321,7 @@ abstract class we_backup_base{
 				$ok = false;
 				$this->setWarning(sprintf(g_l('backup', '[too_big_file]'), $file));
 			} else {
-				if(($contents = weFile::load($file)) === false){
+				if(($contents = we_base_file::load($file)) === false){
 					$this->setError(sprintf(g_l('backup', '[can_not_open_file]'), $file));
 					return false;
 				}
@@ -333,7 +333,7 @@ abstract class we_backup_base{
 						'Path' => $path,
 						'Data' => $contents,
 						'IsFolder' => 0,));
-				weFile::save($this->dumpfilename, $q . ';' . $nl, 'ab');
+				we_base_file::save($this->dumpfilename, $q . ';' . $nl, 'ab');
 				$this->backup_db->query($q);
 			}
 		}
@@ -359,7 +359,7 @@ abstract class we_backup_base{
 					'Path' => $path,
 					'Data' => '',
 					'IsFolder' => 1));
-			weFile::save($this->dumpfilename, $q . ';' . $nl, 'ab');
+			we_base_file::save($this->dumpfilename, $q . ';' . $nl, 'ab');
 			$this->backup_db->query($q);
 		}
 		$dir = str_replace("\\", "/", $dir);
@@ -795,7 +795,7 @@ abstract class we_backup_base{
 					}
 				} else {
 					$sdir = str_replace("\\", "/", dirname($_SERVER['DOCUMENT_ROOT'] . $line["Path"]));
-					if(!weFile::save($_SERVER['DOCUMENT_ROOT'] . $line["Path"], $line["Data"], 'wb')){
+					if(!we_base_file::save($_SERVER['DOCUMENT_ROOT'] . $line["Path"], $line["Data"], 'wb')){
 						$this->setError(g_l('backup', "[can_not_open_file]"), $line["Path"]);
 						return false;
 					}
@@ -817,7 +817,7 @@ abstract class we_backup_base{
 		$this->current_description = g_l('backup', "[preparing_file]");
 
 		$filename = $backup_select;
-		$backup_select = weFile::getUniqueId();
+		$backup_select = we_base_file::getUniqueId();
 
 		$filename_tmp = "";
 		$fh = fopen($filename, "rb");
@@ -1253,8 +1253,8 @@ $this->dummy=' . var_export($this->dummy, true) . ';
 	 * Description:
 	 */
 	function saveState($of = ""){
-		$of = ($of ? $of : weFile::getUniqueId()); // #6590, changed from: uniqid(time())
-		weFile::save($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/' . $of, $this->_saveState(), 'wb');
+		$of = ($of ? $of : we_base_file::getUniqueId()); // #6590, changed from: uniqid(time())
+		we_base_file::save($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/' . $of, $this->_saveState(), 'wb');
 		return $of;
 	}
 
@@ -1265,7 +1265,7 @@ $this->dummy=' . var_export($this->dummy, true) . ';
 	 */
 	function restoreState($temp_filename){
 		//FIXME: use __sleep/__wakeup + serialize/unserialize
-		if(($save = weFile::load($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . "tmp/" . $temp_filename, "rb")) !== false){
+		if(($save = we_base_file::load($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . "tmp/" . $temp_filename, "rb")) !== false){
 			eval($save);
 			return $temp_filename;
 		} else {

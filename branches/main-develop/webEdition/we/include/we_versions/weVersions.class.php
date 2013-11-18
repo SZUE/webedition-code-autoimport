@@ -1547,7 +1547,7 @@ class weVersions{
 	 * @abstract create file to preview dynamic documents
 	 */
 	function writePreviewDynFile($id, $siteFile, $tmpFile, $document){
-		weFile::save($tmpFile, gzencode($this->getDocContent($document, $siteFile), 9));
+		we_base_file::save($tmpFile, gzencode($this->getDocContent($document, $siteFile), 9));
 	}
 
 	function getDocContent($we_doc, $includepath = ""){
@@ -1575,7 +1575,7 @@ class weVersions{
 			$_opt = getHttpOption();
 			if($_opt != "none"){
 				$f = $_SERVER['DOCUMENT_ROOT'] . VERSION_DIR . 'tmpSavedObj.txt';
-				weFile::save($f, serialize($we_doc));
+				we_base_file::save($f, serialize($we_doc));
 
 				$path = substr($we_doc->Path, 1);
 				$location = SITE_DIR . $path;
@@ -1585,7 +1585,7 @@ class weVersions{
 					$contents = str_replace("<?xml", '<?php print "<?xml"; ?>', $contents);
 				}
 
-				weFile::delete($f);
+				we_base_file::delete($f);
 			} else {
 				ob_start();
 				@include($includepath);

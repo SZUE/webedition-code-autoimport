@@ -28,7 +28,7 @@ abstract class weXMLFileReader{
 
 	static function readLine($filename, &$offset, $lines = 1, $size = 0, $iscompressed = 0){
 		$data = '';
-		$prefix = $iscompressed == 0 ? 'f' : weFile::getComPrefix('gzip');
+		$prefix = $iscompressed == 0 ? 'f' : we_base_file::getComPrefix('gzip');
 		$open = $prefix . 'open';
 		$seek = $prefix . 'seek';
 		$tell = $prefix . 'tell';

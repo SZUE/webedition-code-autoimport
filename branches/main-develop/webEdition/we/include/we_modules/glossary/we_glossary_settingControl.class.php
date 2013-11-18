@@ -63,7 +63,7 @@ class we_glossary_settingControl{
 
 EOF;
 
-		return weFile::save(WE_GLOSSARY_MODULE_PATH . we_glossary_replace::configFile, $code, 'w+');
+		return we_base_file::save(WE_GLOSSARY_MODULE_PATH . we_glossary_replace::configFile, $code, 'w+');
 	}
 
 }

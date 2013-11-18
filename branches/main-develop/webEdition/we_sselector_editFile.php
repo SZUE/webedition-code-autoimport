@@ -36,13 +36,13 @@ $we_fileData = "";
 
 if(isset($_REQUEST["cmd"]) && $_REQUEST["cmd"] == "save"){
 	if(isset($_REQUEST["editFile"])){
-		weFile::save($_REQUEST["id"], $_REQUEST["editFile"]);
+		we_base_file::save($_REQUEST["id"], $_REQUEST["editFile"]);
 	}
 	$we_fileData = stripslashes($_REQUEST["editFile"]);
 } else if(isset($_REQUEST["id"])){
 
 	$_REQUEST["id"] = str_replace("//", "/", $_REQUEST["id"]);
-	$we_fileData= weFile::load($_REQUEST["id"]);
+	$we_fileData= we_base_file::load($_REQUEST["id"]);
 	if($we_fileData===false){
 		$we_alerttext = sprintf(g_l('alert', "[can_not_open_file]"), str_replace(str_replace("\\", "/", dirname($_REQUEST["id"])) . "/", "", $_REQUEST["id"]), 1);
 	}

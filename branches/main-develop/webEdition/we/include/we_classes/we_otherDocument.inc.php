@@ -203,13 +203,13 @@ class we_otherDocument extends we_binaryDocument{
 								$binaryId = intval($GLOBALS[$key][$formname]->getElement($binaryName));
 
 								// move document from upload location to tmp dir
-								$_SESSION[$_binaryDataId]['serverPath'] = TEMP_PATH . '/' . weFile::getUniqueId();
+								$_SESSION[$_binaryDataId]['serverPath'] = TEMP_PATH . '/' . we_base_file::getUniqueId();
 								move_uploaded_file(
 									$_FILES["we_ui_$formname"]['tmp_name'][$binaryName], $_SESSION[$_binaryDataId]['serverPath']);
 
 
 
-								$tmp_Filename = $binaryName . '_' . weFile::getUniqueId() . '_' . preg_replace(
+								$tmp_Filename = $binaryName . '_' . we_base_file::getUniqueId() . '_' . preg_replace(
 										'/[^A-Za-z0-9._-]/', '', $_FILES["we_ui_$formname"]['name'][$binaryName]);
 
 								if($binaryId){

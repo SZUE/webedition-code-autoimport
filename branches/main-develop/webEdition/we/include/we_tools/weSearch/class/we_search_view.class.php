@@ -2375,7 +2375,7 @@ class we_search_view extends we_tool_view{
 				);
 			} else {
 				$fs = file_exists($_SERVER['DOCUMENT_ROOT'] . $_result[$f]["Path"]) ? filesize($_SERVER['DOCUMENT_ROOT'] . $_result[$f]["Path"]) : 0;
-				$filesize = weFile::getHumanFileSize($fs);
+				$filesize = we_base_file::getHumanFileSize($fs);
 
 				if($_result[$f]["ContentType"] == "image/*"){
 					$smallSize = 64;

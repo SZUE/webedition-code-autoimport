@@ -34,7 +34,7 @@ function saveSettings($default, $active, $langs=array()){
 				);
 				' . $_lang ;
 
-	weFile::save(WE_SPELLCHECKER_MODULE_PATH . 'spellchecker.conf.inc.php', $_construct);
+	we_base_file::save(WE_SPELLCHECKER_MODULE_PATH . 'spellchecker.conf.inc.php', $_construct);
 
 	$_SESSION['weS']['dictLang'] = $default;
 }
@@ -52,7 +52,7 @@ if(isset($_REQUEST['cmd'][0])){
 				}
 
 				$_userDict = WE_SPELLCHECKER_MODULE_PATH . '/dict/' . $_username . '@' . $_SERVER['SERVER_NAME'] . '.dict';
-				weFile::save($_userDict, $_REQUEST['cmd'][1] . "\n", 'ab');
+				we_base_file::save($_userDict, $_REQUEST['cmd'][1] . "\n", 'ab');
 			}
 			break;
 		case 'addWords' :
@@ -73,7 +73,7 @@ if(isset($_REQUEST['cmd'][0])){
 				}
 
 				$_userDict = WE_SPELLCHECKER_MODULE_PATH . '/dict/' . $_username . '@' . $_SERVER['SERVER_NAME'] . '.dict';
-				weFile::save($_userDict, implode("\n", $_words) . "\n", 'ab');
+				we_base_file::save($_userDict, implode("\n", $_words) . "\n", 'ab');
 			}
 			break;
 		case 'setLangDict' :
@@ -97,13 +97,13 @@ if(isset($_REQUEST['cmd'][0])){
 
 				move_uploaded_file($_FILES['chunk']['tmp_name'], WE_SPELLCHECKER_MODULE_PATH . 'chunk');
 
-				$_content = weFile::load(WE_SPELLCHECKER_MODULE_PATH . 'chunk');
+				$_content = we_base_file::load(WE_SPELLCHECKER_MODULE_PATH . 'chunk');
 				$_checksum = crc32($_content);
 
 				if(sprintf("%u", $_checksum) != $_REQUEST['cmd'][2])
 					t_e('Corrupt!!!');
 
-				weFile::save(WE_SPELLCHECKER_MODULE_PATH . 'dict/' . $_REQUEST['cmd'][1], $_content, 'ab');
+				we_base_file::save(WE_SPELLCHECKER_MODULE_PATH . 'dict/' . $_REQUEST['cmd'][1], $_content, 'ab');
 
 				unlink(WE_SPELLCHECKER_MODULE_PATH . 'chunk');
 			} else{
@@ -134,7 +134,7 @@ if(isset($_REQUEST['cmd'][0])){
 			saveSettings($_default, $_active, $_langs);
 
 			$_content = $_REQUEST['defaultDict'];
-			weFile::save(WE_SPELLCHECKER_MODULE_PATH . 'dict/default.inc.php', $_content);
+			we_base_file::save(WE_SPELLCHECKER_MODULE_PATH . 'dict/default.inc.php', $_content);
 
 			print we_html_element::jsElement(
 					we_message_reporting::getShowMessageCall(g_l('modules_spellchecker', '[save_settings]'), we_message_reporting::WE_MESSAGE_NOTICE)

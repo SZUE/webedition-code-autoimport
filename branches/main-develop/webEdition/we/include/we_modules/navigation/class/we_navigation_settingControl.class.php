@@ -62,7 +62,7 @@ class we_navigation_settingControl{
 EOF;
 
 			$languageFile = WE_INCLUDES_PATH . 'we_modules/navigation/conf/we_conf_navigation.inc.php';
-			return weFile::save($languageFile, $code, "w+");
+			return we_base_file::save($languageFile, $code, "w+");
 		}
 	}
 

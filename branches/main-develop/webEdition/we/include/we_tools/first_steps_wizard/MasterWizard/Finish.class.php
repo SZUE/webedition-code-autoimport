@@ -53,10 +53,10 @@ class Finish extends leWizardStepBase{
 
 		// now change paths in sidebar document(!)
 		$content = implode("", file($NewSidebarFile));
-		$content = weSidebarDocumentParser::parseCode($content);
+		$content = we_sidebar_documentParser::parseCode($content);
 
 		// write new content
-		if(!weFile::save($NewSidebarFile, $content,'w+')){
+		if(!we_base_file::save($NewSidebarFile, $content,'w+')){
 			return LE_WIZARDSTEP_ERROR;
 		}
 

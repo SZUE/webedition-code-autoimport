@@ -667,8 +667,8 @@ abstract class we_html_tools{
 			)) .
 			we_html_element::linkElement(array('rel' => 'SHORTCUT ICON', 'href' => IMAGE_DIR . 'webedition.ico')) .
 			($expand ?
-				we_html_element::jsElement(weFile::load(JS_PATH . 'we_showMessage.js')) .
-				we_html_element::jsElement(weFile::load(JS_PATH . 'attachKeyListener.js')) :
+				we_html_element::jsElement(we_base_file::load(JS_PATH . 'we_showMessage.js')) .
+				we_html_element::jsElement(we_base_file::load(JS_PATH . 'attachKeyListener.js')) :
 				we_html_element::jsScript(JS_DIR . 'we_showMessage.js') .
 				we_html_element::jsScript(JS_DIR . 'attachKeyListener.js')
 			);

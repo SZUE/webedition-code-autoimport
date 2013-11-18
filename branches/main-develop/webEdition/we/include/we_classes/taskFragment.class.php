@@ -99,7 +99,7 @@ class taskFragment{
 		$filename = WE_FRAGMENT_PATH . $this->name;
 		$this->currentTask = isset($_GET["fr_" . $this->name . "_ct"]) ? $_GET["fr_" . $this->name . "_ct"] : 0;
 		if(file_exists($filename) && $this->currentTask){
-			$ser = weFile::load($filename);
+			$ser = we_base_file::load($filename);
 			if(!$ser){
 				exit("Could not read: " . $filename);
 			}
@@ -108,7 +108,7 @@ class taskFragment{
 			$this->taskPerFragment = $taskPerFragment;
 			$this->init();
 			$ser = serialize($this->alldata);
-			if(!weFile::save($filename,$ser)){
+			if(!we_base_file::save($filename,$ser)){
 				exit("Could not write: " . $filename);
 			}
 		}

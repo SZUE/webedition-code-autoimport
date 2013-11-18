@@ -64,7 +64,7 @@ class weBinary{
 	function loadFile($file){
 		$path = str_replace(array($_SERVER['DOCUMENT_ROOT'], SITE_DIR), '', $file);
 		$this->Path = $path;
-		return ($this->linkData ? $this->Data = weFile::load($file) : true);
+		return ($this->linkData ? $this->Data = we_base_file::load($file) : true);
 	}
 
 	function save($force = true){
@@ -75,7 +75,7 @@ class weBinary{
 		if(!is_dir(dirname($path))){
 			we_util_File::createLocalFolderByPath(dirname($path));
 		}
-		weFile::save($path, $this->Data, ($this->SeqN == 0 ? 'wb' : 'ab'));
+		we_base_file::save($path, $this->Data, ($this->SeqN == 0 ? 'wb' : 'ab'));
 		return true;
 	}
 

@@ -308,11 +308,11 @@ class we_quicktimeDocument extends we_binaryDocument{
 						$quicktimeId = intval($GLOBALS[$key][$formname]->getElement($quicktimeName));
 
 						// move document from upload location to tmp dir
-						$_SESSION[$_quicktimeDataId]["serverPath"] = TEMP_PATH . "/" . weFile::getUniqueId();
+						$_SESSION[$_quicktimeDataId]["serverPath"] = TEMP_PATH . "/" . we_base_file::getUniqueId();
 						move_uploaded_file($_FILES["we_ui_$formname"]["tmp_name"][$quicktimeName], $_SESSION[$_quicktimeDataId]["serverPath"]);
 
 
-						$tmp_Filename = $quicktimeName . "_" . weFile::getUniqueId() . "_" . preg_replace(
+						$tmp_Filename = $quicktimeName . "_" . we_base_file::getUniqueId() . "_" . preg_replace(
 								"/[^A-Za-z0-9._-]/", "", $_FILES["we_ui_$formname"]["name"][$quicktimeName]);
 
 						if($quicktimeId){

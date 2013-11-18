@@ -421,7 +421,7 @@ self.focus();
 				if(!(DEFAULT_CHARSET != '')){
 					$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', "[defaultcharset_warning]"), we_html_tools::TYPE_ALERT, 600, false), "space" => 0, "noline" => 1);
 				}
-				$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(sprintf(g_l('newFile', "[max_possible_size]"), weFile::getHumanFileSize($maxsize, weFile::SZ_MB)), we_html_tools::TYPE_ALERT, 600), "space" => 0, "noline" => 1);
+				$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(sprintf(g_l('newFile', "[max_possible_size]"), we_base_file::getHumanFileSize($maxsize, we_base_file::SZ_MB)), we_html_tools::TYPE_ALERT, 600), "space" => 0, "noline" => 1);
 				$parts[] = array("headline" => "", "html" => we_html_element::htmlInput(array("name" => "we_upload_file", "type" => "file", "size" => "35")), "space" => 0, "noline" => 1);
 				$parts[] = array("headline" => "", "html" => we_html_tools::getPixel(1, 1), "space" => 0, "noline" => 1);
 			}
@@ -452,10 +452,10 @@ extra_files_desc=new Array();';
 
 							if(is_numeric($ts) || (substr_count($ts, '_') == 6)){
 								if(!($ts < 1004569200)){
-									$comp = weFile::getCompression($entry);
+									$comp = we_base_file::getCompression($entry);
 									$files[$adddatadir . $entry] = g_l('backup', "[backup_form]") . ' ' . date("d.m.Y H:i", $ts) . ($comp && $comp != "none" ? " ($comp)" : "") . " " . $filesize . " KB";
 								} else if((substr_count($ts, '_') == 6)){
-									$comp = weFile::getCompression($entry);
+									$comp = we_base_file::getCompression($entry);
 									$_dateParts = explode('__', $ts);
 									$_date = array_reverse(explode('_', $_dateParts[0]));
 									$url = '';
@@ -863,7 +863,7 @@ self.focus();');
 
 		ksort($form_properties);
 
-		$compression = weFile::hasCompression("gzip");
+		$compression = we_base_file::hasCompression("gzip");
 
 		$parts = array(
 			array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(($compression ? g_l('backup', "[filename_compression]") : g_l('backup', "[filename_info]")), we_html_tools::TYPE_INFO, 600, false), "space" => 0, "noline" => 1),
@@ -1454,7 +1454,7 @@ top.busy.location="' . $this->frameset . '?pnt=busy";' .
 							if(empty($we_backup_obj->file_list)){
 								break;
 							}
-							weFile::delete(array_pop($we_backup_obj->file_list));
+							we_base_file::delete(array_pop($we_backup_obj->file_list));
 						}
 						$temp_filename = $we_backup_obj->saveState($temp_filename);
 						$percent = $we_backup_obj->getImportPercent();
@@ -1468,7 +1468,7 @@ top.cmd.location = "' . $this->frameset . '?pnt=cmd&operation_mode=import&temp_f
 						$we_backup_obj->file_counter++;
 						$ok = $we_backup_obj->restoreChunk($filename_tmp);
 						$temp_filename = $we_backup_obj->saveState($temp_filename);
-						weFile::delete($filename_tmp);
+						we_base_file::delete($filename_tmp);
 
 						if($ok){
 							$percent = $we_backup_obj->getImportPercent();

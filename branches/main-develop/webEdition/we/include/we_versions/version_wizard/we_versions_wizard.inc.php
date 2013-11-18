@@ -1107,7 +1107,7 @@ set_button_state(false);';
 		$taskname = md5(session_id() . "_version_wizard");
 		$taskFilename = WE_FRAGMENT_PATH . $taskname;
 		if(file_exists($taskFilename)){
-			weFile::delete($taskFilename);
+			we_base_file::delete($taskFilename);
 		}
 
 		if(!empty($query)){

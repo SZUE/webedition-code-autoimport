@@ -163,7 +163,7 @@ class we_import_CSV extends CSV{
 					$d[0] .= $this->FieldDelim;
 				}
 			}
-			weFile::save($path . '/temp_' . $i . '.csv', implode("\n", $d), 'wb');
+			we_base_file::save($path . '/temp_' . $i . '.csv', implode("\n", $d), 'wb');
 			$num_files++;
 		}
 		return $num_files;

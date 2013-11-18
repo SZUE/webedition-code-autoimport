@@ -53,7 +53,7 @@ class HttpResponse{
 			$lbr = "\r\n";
 		} else if($pos = strpos($response, "\n\n")){
 			$lbr = "\n";
-		} else{	//  line ends not supported
+		} else { //  line ends not supported
 			$this->error = true;
 		}
 
@@ -61,19 +61,18 @@ class HttpResponse{
 			/*
 			  First seperate the header and fill it in array $this->headers of object.
 			 */
-			$headerstr = substr($response, 0, $pos);	//  string containing the whole header
-			$headerList = explode($lbr, $headerstr);	//  each headerline is entry in array
+			$headerstr = substr($response, 0, $pos); //  string containing the whole header
+			$headerList = explode($lbr, $headerstr); //  each headerline is entry in array
 
-			$headers = array();
-			$matches = array();
+			$headers = $matches = array();
 			foreach($headerList as $cur){
 
-				$_line = explode(":", $cur, 2);
+				$_line = explode(':', $cur, 2);
 
-				if(isset($_line[1])){	//  normal header
+				if(isset($_line[1])){ //  normal header
 					$headers[trim($_line[0])] = trim($_line[1]);
-				} else{				//  this is first line with http answer
-					if(preg_match('/(.+) (.+) (.+)/sie', $cur, $matches)){
+				} else {		//  this is first line with http answer
+					if(preg_match('/(.+) (.+) (.+)/si', $cur, $matches)){
 
 						$this->http_answer['prot'] = $matches[1];
 						$this->http_answer['code'] = $matches[2];
@@ -101,7 +100,7 @@ class HttpResponse{
 				//  chunkseperator is $lbr<LENGTH>$lbr
 				do{
 
-					$chunkhex = substr($bodyStr, 0, strpos($bodyStr, $lbr));	//  hex value of chunksize
+					$chunkhex = substr($bodyStr, 0, strpos($bodyStr, $lbr)); //  hex value of chunksize
 					$chunkdec = hexdec($chunkhex); //  dec size fo chunk
 
 					$body .= substr($bodyStr, (strlen($chunkhex) + strlen($lbr)), ($chunkdec));
@@ -109,7 +108,7 @@ class HttpResponse{
 				} while($chunkhex !== "0");
 
 				$this->http_body = $body;
-			} else{
+			} else {
 				$this->http_body = $bodyStr;
 			}
 		}

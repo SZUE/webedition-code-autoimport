@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-abstract class weFile{
+abstract class we_base_file{
 
 	const SZ_HUMAN = 0;
 	const SZ_BYTE = 1;

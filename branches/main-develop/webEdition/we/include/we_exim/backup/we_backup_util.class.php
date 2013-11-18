@@ -234,7 +234,7 @@ abstract class we_backup_util{
 			return;
 		}
 		if($_SESSION['weS']['weBackupVars']['backup_log']){
-			weFile::save($_SESSION['weS']['weBackupVars']['backup_log_file'], $_SESSION['weS']['weBackupVars']['backup_log_data'], 'ab');
+			we_base_file::save($_SESSION['weS']['weBackupVars']['backup_log_file'], $_SESSION['weS']['weBackupVars']['backup_log_data'], 'ab');
 		}
 		$_SESSION['weS']['weBackupVars']['backup_log_data'] = '';
 	}
@@ -244,7 +244,7 @@ abstract class we_backup_util{
 	}
 
 	static function getFormat($file, $iscompr = 0){
-		$_part = weFile::loadPart($file, 0, 512, $iscompr);
+		$_part = we_base_file::loadPart($file, 0, 512, $iscompr);
 
 		if(preg_match('|<\?xml |i', $_part)){
 			return 'xml';
@@ -268,7 +268,7 @@ abstract class we_backup_util{
 
 		$_start = $end_off - $_part_len;
 
-		$_part = weFile::loadPart($file, 0, $_part_len, $iscompr);
+		$_part = we_base_file::loadPart($file, 0, $_part_len, $iscompr);
 
 		if(stripos($_part, we_backup_backup::weXmlExImHead) === false){
 			return 'unknown';
@@ -287,7 +287,7 @@ abstract class we_backup_util{
 				return 'customer';
 			}
 
-			$_part = weFile::loadPart($file, $_start, $_part_len, $iscompr);
+			$_part = we_base_file::loadPart($file, $_start, $_part_len, $iscompr);
 
 			$_start = $_start - $_part_skip_len;
 

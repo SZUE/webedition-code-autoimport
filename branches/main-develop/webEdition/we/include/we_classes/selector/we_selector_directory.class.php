@@ -872,7 +872,7 @@ top.selectFile(top.currentID);
 
 				$fs = file_exists($_SERVER['DOCUMENT_ROOT'] . $result['Path']) ? filesize($_SERVER['DOCUMENT_ROOT'] . $result['Path']) : 0;
 
-				$filesize = weFile::getHumanFileSize($fs);
+				$filesize = we_base_file::getHumanFileSize($fs);
 				$next = 0;
 				$previewDefauts = "
 <tr><td class='info' width='100%'>

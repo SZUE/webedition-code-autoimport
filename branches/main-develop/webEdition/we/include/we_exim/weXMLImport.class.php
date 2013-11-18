@@ -45,7 +45,7 @@ class weXMLImport extends weXMLExIm{
 
 		$objects = array();
 
-		$data = weFile::load($chunk_file);
+		$data = we_base_file::load($chunk_file);
 		$this->xmlBrowser = new weXMLParser();
 		$this->xmlBrowser->parse($data, $this->options['xml_encoding']);
 		unset($data);
@@ -567,8 +567,8 @@ class weXMLImport extends weXMLExIm{
 		$marker2 = "<!--webackup -->"; //Bug 5089
 		$pattern = basename($filename) . "_%s";
 
-		$compress = (weFile::isCompressed($filename) ? "gzip" : "none");
-		$head = weFile::loadPart($filename, 0, 256, $compress == 'gzip');
+		$compress = (we_base_file::isCompressed($filename) ? "gzip" : "none");
+		$head = we_base_file::loadPart($filename, 0, 256, $compress == 'gzip');
 
 		$encoding = we_xml_parser::getEncoding('', $head);
 		$_SESSION['weS']['weXMLimportCharset'] = $encoding;

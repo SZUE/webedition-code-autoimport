@@ -150,7 +150,7 @@ function we_tag_addDelNewsletterEmail($attribs){
 					foreach($paths as $p){
 						$realPath = realpath((substr($p, 0, 1) == '/') ? ($_SERVER['DOCUMENT_ROOT'] . $p) : ($_SERVER['DOCUMENT_ROOT'] . '/' . $p));
 						if(@file_exists($realPath)){
-							$file = weFile::load($realPath);
+							$file = we_base_file::load($realPath);
 							if($file !== false){// #5135
 								if(!preg_match("%[\r\n]" . $f['subscribe_mail'] . ",[^\r\n]+[\r\n]%i", $file) && !preg_match('%^' . $f['subscribe_mail'] . ",[^\r\n]+[\r\n]%i", $file)){
 									$lists[] = $p;
@@ -445,10 +445,10 @@ function we_tag_addDelNewsletterEmail($attribs){
 
 						$ok = true;
 
-						while(($lock = weFile::lock(basename(__FILE__))) == false){
+						while(($lock = we_base_file::lock(basename(__FILE__))) == false){
 							usleep(500000);
 						}
-						$file = weFile::load($realPath);
+						$file = we_base_file::load($realPath);
 						if($file !== false){
 							if((preg_match("%[\r\n]" . $f['subscribe_mail'] . ",[^\r\n]+[\r\n]%i", $file) || preg_match('%^' . $f['subscribe_mail'] . ",[^\r\n]+[\r\n]%i", $file))){
 								$ok = false; // E-Mail schon vorhanden => Nix tun
@@ -456,11 +456,11 @@ function we_tag_addDelNewsletterEmail($attribs){
 						}
 						if($ok){
 							$row = $f['subscribe_mail'] . ',' . $f['subscribe_html'] . ',' . $f['subscribe_salutation'] . ',' . $f['subscribe_title'] . ',' . $f['subscribe_firstname'] . ',' . $f['subscribe_lastname'] . "\n";
-							if(weFile::save($realPath, $row, 'ab+')){
+							if(we_base_file::save($realPath, $row, 'ab+')){
 								$emailwritten++;
-								weFile::unlock($lock);
+								we_base_file::unlock($lock);
 							} else {
-								weFile::unlock($lock);
+								we_base_file::unlock($lock);
 								t_e('save of file ' . $p . ' failed');
 								$GLOBALS['WE_WRITENEWSLETTER_STATUS'] = we_newsletter_base::STATUS_ERROR; // FATAL ERROR
 								return;
@@ -558,13 +558,13 @@ function we_unsubscribeNL($db, $customer, $_customerFieldPrefs, $abos, $paths){
 			}
 
 			// #4158
-			while(($lock = weFile::lock(basename(__FILE__))) == false){
+			while(($lock = we_base_file::lock(basename(__FILE__))) == false){
 				usleep(500000);
 			}
 
 			$file = @file($path);
 			if(!$file){
-				weFile::unlock($lock);
+				we_base_file::unlock($lock);
 				continue;
 			}
 
@@ -584,7 +584,7 @@ function we_unsubscribeNL($db, $customer, $_customerFieldPrefs, $abos, $paths){
 					$GLOBALS['WE_REMOVENEWSLETTER_STATUS'] = we_newsletter_base::STATUS_ERROR; // FATAL ERROR
 				}
 			}
-			weFile::unlock($lock);
+			we_base_file::unlock($lock);
 			//
 		}
 	}

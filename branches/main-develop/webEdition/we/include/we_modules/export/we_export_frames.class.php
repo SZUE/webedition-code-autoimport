@@ -575,9 +575,9 @@ function closeAllType(){
 									}
 								');
 							//FIXME: set export type in getHeader
-							weFile::save($this->View->export->ExportFilename, weXMLExIm::getHeader(), "wb");
+							we_base_file::save($this->View->export->ExportFilename, weXMLExIm::getHeader(), "wb");
 							if($this->View->export->HandleOwners){
-								weFile::save($this->View->export->ExportFilename, weXMLExport::exportInfoMap($xmlExIm->RefTable->Users), "ab");
+								we_base_file::save($this->View->export->ExportFilename, weXMLExport::exportInfoMap($xmlExIm->RefTable->Users), "ab");
 							}
 
 							$xmlExIm->RefTable->reset();
@@ -686,7 +686,7 @@ function closeAllType(){
 							);
 						} else {
 							if(is_writable($this->View->export->ExportFilename)){
-								weFile::save($this->View->export->ExportFilename, weXMLExIm::getFooter(), "ab");
+								we_base_file::save($this->View->export->ExportFilename, weXMLExIm::getFooter(), "ab");
 							}
 							$_progress_update .= "\n" .
 								we_html_element::jsElement('

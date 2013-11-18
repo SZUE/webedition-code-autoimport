@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weSideBarFrames{
+class we_sidebar_frames{
 
 	var $_frameset = '';
 

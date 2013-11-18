@@ -30,11 +30,11 @@
  */
 class we_listview_object extends listviewBase{
 
-	var $classID = ""; /* ID of a class */
-	var $triggerID = 0; /* ID of a document which to use for displaying thr detail page */
+	var $classID; /* ID of a class */
+	var $triggerID; /* ID of a document which to use for displaying thr detail page */
 	var $condition = ""; /* condition string (like SQL) */
 	var $ClassName = __CLASS__;
-	var $Path = ""; /* internal: Path of document which to use for displaying thr detail page */
+	var $Path; /* internal: Path of document which to use for displaying thr detail page */
 	var $IDs = array();
 	var $searchable = true;
 	var $customerFilterType = 'false';
@@ -259,7 +259,8 @@ class we_listview_object extends listviewBase{
 		return implode(' AND ', $joinWhere);
 	}
 
-	static function encodeEregString($in){
+	static function encodeEregString(array $match){
+		$in=$match[1];
 		$out = '';
 		for($i = 0; $i < strlen($in); $i++){
 			$out .= '&' . ord(substr($in, $i, 1)) . ';';
@@ -267,8 +268,12 @@ class we_listview_object extends listviewBase{
 		return "'" . $out . "'";
 	}
 
-	static function decodeEregString($in){
-		return "'" . preg_replace("/&([^;]+);/e", "chr('\\1')", $in) . "'";
+	private static function char(array $match){
+		return chr($match[1]);
+	}
+
+	static function decodeEregString(array $match){
+		return "'" . preg_replace_callback("/&([^;]+);/", 'we_listview_object::char', $match[1]) . "'";
 	}
 
 	function makeSQLParts($matrix, $classID, $order, $cond){
@@ -277,7 +282,7 @@ class we_listview_object extends listviewBase{
 
 		$cond = str_replace(array('&gt;', '&lt;'), array('>', '<',), $cond);
 
-		$cond = ' ' . preg_replace("/'([^']*)'/e", "we_listview_object::encodeEregString('\\1')", $cond) . ' ';
+		$cond = ' ' . preg_replace_callback("/'([^']*)'/", 'we_listview_object::encodeEregString', $cond) . ' ';
 
 
 		if($order && ($order != 'random()')){
@@ -328,7 +333,7 @@ class we_listview_object extends listviewBase{
 			$cond = preg_replace("/([\!\=%&\(\*\+\.\/<>|~ ])$n([\!\=%&\)\*\+\.\/<>|~ ])/", "$1" . $p['table'] . ".`" . $p['type'] . '_' . $n . "`$2", $cond);
 		}
 
-		$cond = preg_replace("/'([^']*)'/e", "we_listview_object::decodeEregString('\\1')", $cond);
+		$cond = preg_replace_callback("/'([^']*)'/", 'we_listview_object::decodeEregString', $cond);
 
 		ksort($ordertmp);
 		$_tmporder = trim(str_ireplace('desc', '', $order));

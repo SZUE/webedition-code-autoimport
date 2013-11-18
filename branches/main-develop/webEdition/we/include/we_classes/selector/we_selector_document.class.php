@@ -645,7 +645,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 
 			$fs = file_exists($_SERVER['DOCUMENT_ROOT'] . $result['Path']) ? filesize($_SERVER['DOCUMENT_ROOT'] . $result['Path']) : 0;
 
-			$_filesize = weFile::getHumanFileSize($fs);
+			$_filesize = we_base_file::getHumanFileSize($fs);
 
 
 			if($result['ContentType'] == "image/*" && file_exists($_SERVER['DOCUMENT_ROOT'] . $result['Path'])){

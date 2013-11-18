@@ -256,7 +256,7 @@ class weXMLExIm{
 	}
 
 	function isCompressed($file){
-		$part = weFile::loadPart($file, 0, 512);
+		$part = we_base_file::loadPart($file, 0, 512);
 		return (stripos($part, "<?xml version=") === false);
 	}
 

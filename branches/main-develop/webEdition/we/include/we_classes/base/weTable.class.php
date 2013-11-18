@@ -46,13 +46,13 @@ class weTable{
 
 		$update_table = true;
 
-		if(defined("OBJECT_X_TABLE") && !$force_columns){
+		if(defined('OBJECT_X_TABLE') && !$force_columns){
 			if(strtolower(substr($table, 0, 10)) == strtolower(stripTblPrefix(OBJECT_X_TABLE))){
 				$update_table = false;
 			}
 		}
 
-		if(defined("CUSTOMER_TABLE") && !$force_columns && strtolower($table) == strtolower(CUSTOMER_TABLE)){
+		if(defined('CUSTOMER_TABLE') && !$force_columns && strtolower($table) == strtolower(CUSTOMER_TABLE)){
 			$update_table = false;
 		}
 
@@ -85,8 +85,7 @@ class weTable{
 		}
 		$_SESSION['weS']['weBackupVars']['tablekeys'][$this->table] = $this->db->getTableKeyArray($this->table);
 		$this->db->delTable($this->table);
-		$cols = array();
-		$keys = array();
+		$cols = $keys = array();
 
 		foreach($this->elements as $element){
 

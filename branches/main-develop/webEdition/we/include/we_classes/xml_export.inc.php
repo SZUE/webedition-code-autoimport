@@ -316,7 +316,7 @@ class XML_Export{
 		$xml_out.= str_replace("<", "</", $root);
 
 		// write xml string to file
-		weFile::save($file, $xml_out, 'w');
+		we_base_file::save($file, $xml_out, 'w');
 	}
 
 }

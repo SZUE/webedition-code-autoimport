@@ -593,7 +593,7 @@ class we_thumbnail{
 	 * @private
 	 */
 	private function getBinaryData(){
-		$this->imageData = weFile::load($_SERVER['DOCUMENT_ROOT'] . $this->imagePath);
+		$this->imageData = we_base_file::load($_SERVER['DOCUMENT_ROOT'] . $this->imagePath);
 	}
 
 	public static function deleteByThumbID($id){

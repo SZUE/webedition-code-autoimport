@@ -198,7 +198,7 @@ class we_newsletter_base{
 		if(!empty($arr)){
 			foreach($arr as $file){
 				if(strpos($file, '..') === false){
-					$data = str_replace("\r\n", "\n", weFile::load($_SERVER['DOCUMENT_ROOT'] . $file));
+					$data = str_replace("\r\n", "\n", we_base_file::load($_SERVER['DOCUMENT_ROOT'] . $file));
 					$dataArr = explode("\n", $data);
 					if(!empty($dataArr)){
 						foreach($dataArr as $value){
@@ -240,7 +240,7 @@ class we_newsletter_base{
 		if(!empty($arr)){
 			foreach($arr as $file){
 				if(strpos($file, '..') === false){
-					$data = str_replace("\r\n", "\n", weFile::load($_SERVER['DOCUMENT_ROOT'] . $file));
+					$data = str_replace("\r\n", "\n", we_base_file::load($_SERVER['DOCUMENT_ROOT'] . $file));
 					$dataArr = explode("\n", $data);
 					if(!empty($dataArr)){
 						foreach($dataArr as $value){

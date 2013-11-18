@@ -751,7 +751,7 @@ abstract class we_rebuild_wizard{
 		$taskname = md5(session_id() . '_rebuild');
 		$taskFilename = WE_FRAGMENT_PATH . $taskname;
 		if(file_exists($taskFilename)){
-			weFile::delete($taskFilename);
+			we_base_file::delete($taskFilename);
 		}
 
 		if($tail){

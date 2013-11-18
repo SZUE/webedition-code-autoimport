@@ -678,10 +678,10 @@ class we_folder extends we_root{
 					return false;
 				}
 				if(!$isTemplFolder && !empty($this->urlMap)){
-					weFile::makeSymbolicLink(WEBEDITION_PATH, $_SERVER['DOCUMENT_ROOT'] . $path . rtrim(WEBEDITION_DIR, '/'));
+					we_base_file::makeSymbolicLink(WEBEDITION_PATH, $_SERVER['DOCUMENT_ROOT'] . $path . rtrim(WEBEDITION_DIR, '/'));
 
 					if(WE_THUMBNAIL_DIRECTORY != ''){
-						weFile::makeSymbolicLink($_SERVER['DOCUMENT_ROOT'] . WE_THUMBNAIL_DIRECTORY, $_SERVER['DOCUMENT_ROOT'] . $path . WE_THUMBNAIL_DIRECTORY);
+						we_base_file::makeSymbolicLink($_SERVER['DOCUMENT_ROOT'] . WE_THUMBNAIL_DIRECTORY, $_SERVER['DOCUMENT_ROOT'] . $path . WE_THUMBNAIL_DIRECTORY);
 					}
 				}
 

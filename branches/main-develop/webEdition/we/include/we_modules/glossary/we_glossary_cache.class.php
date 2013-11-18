@@ -203,8 +203,8 @@ class we_glossary_cache{
 								$urladd = ($urladd ? $urladd . '&' : '?') . trim($Attributes['ObjectParameter']);
 							}
 							break;
-						// Category Link
-						case 'category':
+
+						case 'category':// Category Link
 
 							$temp['href'] = '';
 							if(isset($Attributes['modeCategory']) && trim($Attributes['modeCategory']) == "intern"){
@@ -401,12 +401,12 @@ if (window.screen) {
 
 		// Create Cache Directory if it not exists
 		if(!is_dir(dirname($cacheFilename))){
-			if(!we_util_File::createLocalFolder(dirname($cacheFilename))){
+			if(!we_base_file::createLocalFolder(dirname($cacheFilename))){
 				return false;
 			}
 		}
 
-		return weFile::save($cacheFilename, gzdeflate(serialize($content), 9));
+		return we_base_file::save($cacheFilename, gzdeflate(serialize($content), 9));
 	}
 
 	/**
@@ -423,11 +423,11 @@ if (window.screen) {
 					return array();
 				}
 			}
-			if(weFile::load($cacheFilename, 'rb', 5) == '<?php'){
+			if(we_base_file::load($cacheFilename, 'rb', 5) == '<?php'){
 				include($cacheFilename);
 				$this->content = $content;
 			} else {
-				$this->content = @unserialize(@gzinflate(weFile::load($cacheFilename)));
+				$this->content = @unserialize(@gzinflate(we_base_file::load($cacheFilename)));
 			}
 		}
 		if(!empty($this->content)){

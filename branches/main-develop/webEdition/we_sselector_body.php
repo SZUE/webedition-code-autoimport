@@ -304,7 +304,7 @@ var i = 0;
 				$filesize = file_exists($dir . '/' . $entry) ? filesize($dir . '/' . $entry) : 0;
 				$_size = "";
 				if(!$isfolder){
-					$_size = '<span' . ($indb ? ' style="color:#006699"' : '') . ' title="' . oldHtmlspecialchars($_size) . '">' . weFile::getHumanFileSize($filesize) . '</span>';
+					$_size = '<span' . ($indb ? ' style="color:#006699"' : '') . ' title="' . oldHtmlspecialchars($_size) . '">' . we_base_file::getHumanFileSize($filesize) . '</span>';
 				}
 				if(( isset($_REQUEST["nf"]) && $_REQUEST["nf"] == "rename_folder") && ($entry == $_REQUEST["sid"]) && ($isfolder) && (!$indb)){
 					$_text_to_show = we_html_tools::htmlTextInput("txt", 20, $entry, "", 'onblur="setScrollTo();we_form.submit();" onkeypress="keypressed(event)"', "text", "100%");

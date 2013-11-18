@@ -177,14 +177,14 @@ function we_saveCustomerImages(){
 				$ct = getContentTypeFromFile($filename);
 				if($ct == 'image/*'){
 
-					$_serverPath = TEMP_PATH . '/' . weFile::getUniqueId();
+					$_serverPath = TEMP_PATH . '/' . we_base_file::getUniqueId();
 					move_uploaded_file($_FILES['WE_SF_IMG_DATA']['tmp_name'][$imgName], $_serverPath);
 
 					$we_size = we_thumbnail::getimagesize($_serverPath);
 
 					if(!empty($we_size)){
 
-						$tmp_Filename = $imgName . '_' . weFile::getUniqueId() . '_' . preg_replace('/[^A-Za-z0-9._-]/', '', $_FILES['WE_SF_IMG_DATA']['name'][$imgName]);
+						$tmp_Filename = $imgName . '_' . we_base_file::getUniqueId() . '_' . preg_replace('/[^A-Za-z0-9._-]/', '', $_FILES['WE_SF_IMG_DATA']['name'][$imgName]);
 						$tmp = explode('.', $tmp_Filename);
 						$_extension = '.' . $tmp[count($tmp) - 1];
 						unset($tmp[count($tmp) - 1]);
@@ -194,14 +194,14 @@ function we_saveCustomerImages(){
 						//image needs to be scaled
 						if((isset($_SESSION['webuser']['imgtmp'][$imgName]['width']) && $_SESSION['webuser']['imgtmp'][$imgName]['width']) ||
 								(isset($_SESSION['webuser']['imgtmp'][$imgName]['height']) && $_SESSION['webuser']['imgtmp'][$imgName]['height'])){
-							$imageData = weFile::load($_serverPath);
+							$imageData = we_base_file::load($_serverPath);
 							$thumb = new we_thumbnail();
 							$thumb->init('dummy', $_SESSION['webuser']['imgtmp'][$imgName]['width'], $_SESSION['webuser']['imgtmp'][$imgName]['height'], $_SESSION['webuser']['imgtmp'][$imgName]['keepratio'], $_SESSION['webuser']['imgtmp'][$imgName]['maximize'], false, false, '', 'dummy', 0, '', '', $_extension, $we_size[0], $we_size[1], $imageData, '', $_SESSION['webuser']['imgtmp'][$imgName]['quality'], true);
 
 							$imgData = '';
 							$thumb->getThumb($imgData);
 
-							weFile::save($_serverPath, $imgData);
+							we_base_file::save($_serverPath, $imgData);
 							$we_size = we_thumbnail::getimagesize($_serverPath);
 						}
 

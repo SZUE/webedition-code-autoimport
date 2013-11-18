@@ -1737,7 +1737,7 @@ self.focus();
 		if(isset($_REQUEST["ncmd"])){
 			if($_REQUEST["ncmd"] == "export_black"){
 				$fname = ($_REQUEST["csv_dir"] == "/" ? '' : $_REQUEST["csv_dir"]) . "/blacklist_export_" . time() . ".csv";
-				weFile::save($_SERVER['DOCUMENT_ROOT'] . $fname, str_replace(",", "\n", $this->View->settings["black_list"]));
+				we_base_file::save($_SERVER['DOCUMENT_ROOT'] . $fname, str_replace(",", "\n", $this->View->settings["black_list"]));
 
 				$js.=we_html_element::jsScript(JS_DIR . "windows.js") .
 					we_html_element::jsElement('new jsWindow("' . $this->frameset . '?pnt=export_csv_mes&lnk=' . $fname . '","edit_email",-1,-1,440,250,true,true,true,true);');
@@ -1846,7 +1846,7 @@ self.focus();
 
 		$table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 4, 1);
 		if($maxsize){
-			$table->setCol(0, 0, array("style" => "padding-right:30px"), we_html_tools::htmlAlertAttentionBox(sprintf(g_l('newFile', "[max_possible_size]"), weFile::getHumanFileSize($maxsize, weFile::SZ_MB)), we_html_tools::TYPE_ALERT));
+			$table->setCol(0, 0, array("style" => "padding-right:30px"), we_html_tools::htmlAlertAttentionBox(sprintf(g_l('newFile', "[max_possible_size]"), we_base_file::getHumanFileSize($maxsize, we_base_file::SZ_MB)), we_html_tools::TYPE_ALERT));
 		} else {
 			$table->setCol(0, 0, array(), we_html_tools::getPixel(2, 10));
 		}
@@ -2291,7 +2291,7 @@ function clearLog(){
 		}
 
 		$link = BACKUP_DIR . "download/log_" . time() . ".csv";
-		if(!weFile::save($_SERVER['DOCUMENT_ROOT'] . $link, $csv))
+		if(!we_base_file::save($_SERVER['DOCUMENT_ROOT'] . $link, $csv))
 			$link = "";
 
 		$_REQUEST["lnk"] = $link;
@@ -2488,20 +2488,20 @@ self.focus();');
 			$cc = 0;
 			while(true){
 				if(file_exists(WE_NEWSLETTER_CACHE_DIR . $blockcache . "_p_" . $cc)){
-					weFile::delete(WE_NEWSLETTER_CACHE_DIR . $blockcache . "_p_" . $cc);
+					we_base_file::delete(WE_NEWSLETTER_CACHE_DIR . $blockcache . "_p_" . $cc);
 				} else {
 					break;
 				}
 				if(file_exists(WE_NEWSLETTER_CACHE_DIR . $blockcache . "_h_" . $cc)){
-					$_buffer = @unserialize(weFile::load(WE_NEWSLETTER_CACHE_DIR . $blockcache . "_h_" . $cc));
+					$_buffer = @unserialize(we_base_file::load(WE_NEWSLETTER_CACHE_DIR . $blockcache . "_h_" . $cc));
 					if(is_array($_buffer) && isset($_buffer['inlines'])){
 						foreach($_buffer['inlines'] as $_fn){
 							if(file_exists($_fn)){
-								weFile::delete($_fn);
+								we_base_file::delete($_fn);
 							}
 						}
 					}
-					weFile::delete(WE_NEWSLETTER_CACHE_DIR . $blockcache . "_h_" . $cc);
+					we_base_file::delete(WE_NEWSLETTER_CACHE_DIR . $blockcache . "_h_" . $cc);
 				} else {
 					break;
 				}
@@ -2760,7 +2760,7 @@ self.focus();');
 			flush();
 		}
 
-		weFile::delete(WE_NEWSLETTER_CACHE_DIR . $emailcache . "_" . $egc);
+		we_base_file::delete(WE_NEWSLETTER_CACHE_DIR . $emailcache . "_" . $egc);
 		$laststep = ceil($_REQUEST["ecount"] / $this->View->settings["send_step"]);
 		if(isset($this->View->settings["send_wait"]) && is_numeric($this->View->settings["send_wait"]) && $this->View->settings["send_wait"] && $_REQUEST['egc'] > 0 && isset($this->View->settings["send_step"]) && is_numeric($this->View->settings["send_step"]) && $_REQUEST['egc'] < ceil($_REQUEST["ecount"] / $this->View->settings["send_step"])){
 			print we_html_element::jsElement('

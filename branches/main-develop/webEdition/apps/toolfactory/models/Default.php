@@ -317,10 +317,10 @@ class toolfactory_models_Default extends we_app_Model{
 						$_content = str_replace('{$TOOLNAME}', $TOOLNAME, $_content);
 						$_content = str_replace('{$TOOLNAMELANG}', $TOOLNAMELANG, $_content);
 					} else {
-						$_content = weFile::load($_file);
+						$_content = we_base_file::load($_file);
 					}
 					if($_ext == '.xml'){
-						$_content = weFile::load($_file);
+						$_content = we_base_file::load($_file);
 						$start = strpos($_content, '<?xml ');
 						$end = strpos($_content, '</tmx>') + $start;
 
@@ -362,7 +362,7 @@ class toolfactory_models_Default extends we_app_Model{
 					if(stripos($_newname, '_UTF-8.inc.php') === false){
 						//$_content = utf8_encode($_content);
 					}
-					weFile::save($_newname, $_content);
+					we_base_file::save($_newname, $_content);
 				}
 			}
 		}

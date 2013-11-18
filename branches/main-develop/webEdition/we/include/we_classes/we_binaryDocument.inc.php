@@ -114,7 +114,7 @@ class we_binaryDocument extends we_document{
 	}
 
 	function i_getDocument($size = -1){
-		return (isset($this->elements['data']['dat']) && file_exists($this->elements["data"]["dat"])) ? ($size == -1 ? weFile::load($this->elements["data"]["dat"]) : weFile::loadPart($this->elements["data"]["dat"], 0, $size)) : '';
+		return (isset($this->elements['data']['dat']) && file_exists($this->elements["data"]["dat"])) ? ($size == -1 ? we_base_file::load($this->elements["data"]["dat"]) : we_base_file::loadPart($this->elements["data"]["dat"], 0, $size)) : '';
 	}
 
 	protected function i_writeDocument(){
@@ -354,7 +354,7 @@ class we_binaryDocument extends we_document{
 	function savebinarydata(){
 		$_data = $this->getElement('data');
 		if($_data && (strlen($_data) > 512 || !@file_exists($_data))){ //assume data>512 = binary data
-			$_path = weFile::saveTemp($_data);
+			$_path = we_base_file::saveTemp($_data);
 			$this->setElement('data', $_path);
 		}
 	}

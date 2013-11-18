@@ -54,7 +54,7 @@ if(we_base_browserDetect::isMAC() && we_base_browserDetect::isGecko()){
 	}
 	$_scid_file = $_tmp_dir . '/' . md5($l_param['scid']);
 	if(!file_exists($_scid_file)){
-		weFile::save($_scid_file, '');
+		we_base_file::save($_scid_file, '');
 		we_util_File::insertIntoCleanUp($_scid_file, time() + (24 * 3600));
 	}
 } else {
@@ -134,7 +134,7 @@ $_tab_1 =
 
 $_tab_2 =
 	we_html_tools::htmlDialogLayout('
-					<textarea class="defaultfont" name="defaultDict" style="width: 400px; padding:5px;height: 320px; border: 1px solid #AFB0AF;margin-bottom: 5px;background-color:white ! important;">' . (file_exists(WE_SPELLCHECKER_MODULE_PATH . 'dict/default.inc.php') ? ((filesize(WE_SPELLCHECKER_MODULE_PATH . 'dict/default.inc.php') > 0) ? weFile::load(WE_SPELLCHECKER_MODULE_PATH . 'dict/default.inc.php') : '') : '') . '</textarea>
+					<textarea class="defaultfont" name="defaultDict" style="width: 400px; padding:5px;height: 320px; border: 1px solid #AFB0AF;margin-bottom: 5px;background-color:white ! important;">' . (file_exists(WE_SPELLCHECKER_MODULE_PATH . 'dict/default.inc.php') ? ((filesize(WE_SPELLCHECKER_MODULE_PATH . 'dict/default.inc.php') > 0) ? we_base_file::load(WE_SPELLCHECKER_MODULE_PATH . 'dict/default.inc.php') : '') : '') . '</textarea>
 					<div>' . we_button::create_button("save", "javascript:document.we_form.submit()") . '</div>
 	</form>
 	 ', '', '');

@@ -576,7 +576,7 @@ class we_voting_view extends weModuleView{
 								$content[] = $enclose . addslashes($_REQUEST[$_REQUEST['answers_name'] . '_item' . $i]) . $enclose . $delimiter . $this->voting->Scores[$i];
 						}
 					}
-					weFile::save($_SERVER['DOCUMENT_ROOT'] . $fname, implode($lineend, $content));
+					we_base_file::save($_SERVER['DOCUMENT_ROOT'] . $fname, implode($lineend, $content));
 					$_REQUEST["lnk"] = $fname;
 					break;
 				case "exportGroup_csv":
@@ -669,7 +669,7 @@ class we_voting_view extends weModuleView{
 						$content[] = $myline;
 					}
 
-					weFile::save($_SERVER['DOCUMENT_ROOT'] . $fname, implode($lineend, $content));
+					we_base_file::save($_SERVER['DOCUMENT_ROOT'] . $fname, implode($lineend, $content));
 					$_REQUEST['lnk'] = $fname;
 					break;
 

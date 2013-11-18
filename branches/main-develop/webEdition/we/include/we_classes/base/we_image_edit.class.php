@@ -92,7 +92,7 @@ class we_image_edit{
 
 	static function detect_image_type($filename, $imagedata = ''){
 		// Check if we need to read the beginning of the image
-		$imagedata = (file_exists($filename) ? weFile::loadPart($filename, 0, 3) : substr($imagedata, 0, 3));
+		$imagedata = (file_exists($filename) ? we_base_file::loadPart($filename, 0, 3) : substr($imagedata, 0, 3));
 
 		switch($imagedata){
 			case 'GIF':
@@ -157,7 +157,7 @@ class we_image_edit{
 
 					// Detect capabilities of GIF support
 					if(function_exists('ImageCreateFromGIF')){
-						if(($_tempfilename = weFile::saveTemp(base64_decode('R0lGODlhAQABAIAAAH//AP///ywAAAAAAQABAAACAUQAOw==')))){
+						if(($_tempfilename = we_base_file::saveTemp(base64_decode('R0lGODlhAQABAIAAAH//AP///ywAAAAAAQABAAACAUQAOw==')))){
 
 							// GIF create support must be enabled if we're able to create a image
 							$_gif_test = @imagecreatefromgif($_tempfilename);
@@ -223,7 +223,7 @@ class we_image_edit{
 				return '';
 		}
 
-		if(($_tempfilename = weFile::saveTemp($imagedata))){
+		if(($_tempfilename = we_base_file::saveTemp($imagedata))){
 			$imagedata = "";
 			unset($imagedata);
 			if(function_exists($_image_create_from_string_replacement_function)){
@@ -502,7 +502,7 @@ class we_image_edit{
 						} else {
 							if(($_tempfilename = tempnam(TEMP_PATH, ""))){
 								@imagejpeg($_output_gdimg, $_tempfilename, $output_quality);
-								$_gdimg = weFile::load($_tempfilename);
+								$_gdimg = we_base_file::load($_tempfilename);
 
 								// As we read the temporary file we no longer need it
 								//unlink($_tempfilename);
@@ -524,7 +524,7 @@ class we_image_edit{
 						} else {
 							if(($_tempfilename = tempnam(TEMP_PATH, ""))){
 								@$_image_out_function($_output_gdimg, $_tempfilename);
-								$_gdimg = weFile::load($_tempfilename);
+								$_gdimg = we_base_file::load($_tempfilename);
 
 								// As we read the temporary file we no longer need it
 								unlink($_tempfilename);
@@ -576,7 +576,7 @@ class we_image_edit{
 			}
 			$_thumbSrc = ($imgID ?
 					WE_THUMB_PREVIEW_DIR . $imgID . '_' . $width . '_' . $height . strtolower($outputFormat) :
-					TEMP_DIR . ($tmpName ? $tmpName : weFile::getUniqueId()) . '.' . strtolower($outputFormat));
+					TEMP_DIR . ($tmpName ? $tmpName : we_base_file::getUniqueId()) . '.' . strtolower($outputFormat));
 			$_thumbPath = $_SERVER['DOCUMENT_ROOT'] . $_thumbSrc;
 
 			$_thumbExists = file_exists($_thumbPath);

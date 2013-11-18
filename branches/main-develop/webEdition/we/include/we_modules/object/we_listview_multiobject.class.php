@@ -282,7 +282,7 @@ class we_listview_multiobject extends listviewBase{
 		$descArr = array();
 		$ordertmp = array();
 
-		$cond = ' ' . preg_replace("/'([^']*)'/e", "we_listview_object::encodeEregString('\\1')", strtr($cond, array('&gt;' => '>', '&lt;' => '<'))) . ' ';
+		$cond = ' ' . preg_replace_callback("/'([^']*)'/", 'we_listview_object::encodeEregString', strtr($cond, array('&gt;' => '>', '&lt;' => '<'))) . ' ';
 
 		if($order && ($order != 'random()')){
 			$foo = makeArrayFromCSV($order);
@@ -331,7 +331,7 @@ class we_listview_multiobject extends listviewBase{
 			$cond = preg_replace("/([\!\=%&\(\*\+\.\/<>|~ ])$n([\!\=%&\)\*\+\.\/<>|~ ])/", '$1' . $p["table"] . '.`' . $p['type'] . '_' . $n . '`$2', $cond);
 		}
 
-		$cond = preg_replace("/'([^']*)'/e", "we_listview_object::decodeEregString('\\1')", $cond);
+		$cond = preg_replace_callback("/'([^']*)'/", 'we_listview_object::decodeEregString', $cond);
 
 		ksort($ordertmp);
 		$_tmporder = trim(str_ireplace('desc', '', $order));

@@ -1751,7 +1751,7 @@ edf.populateGroups();');
 						} else {
 							$fname = $_REQUEST["csv_dir" . $exportno] . "/emails_export_" . time() . ".csv";
 						}
-						weFile::save($_SERVER['DOCUMENT_ROOT'] . $fname, $this->newsletter->groups[$exportno]->Emails);
+						we_base_file::save($_SERVER['DOCUMENT_ROOT'] . $fname, $this->newsletter->groups[$exportno]->Emails);
 						print we_html_element::jsScript(JS_DIR . "windows.js");
 						print we_html_element::jsElement('
 							new jsWindow("' . $this->frameset . '?pnt=export_csv_mes&lnk=' . $fname . '","edit_email",-1,-1,440,250,true,true,true,true);
@@ -1773,7 +1773,7 @@ edf.populateGroups();');
 					}
 
 					if(isset($we_File)){
-						$unique = weFile::getUniqueId();
+						$unique = we_base_file::getUniqueId();
 						$tempName = TEMP_PATH . "/" . $unique;
 
 						if(move_uploaded_file($we_File["tmp_name"], $tempName)){
@@ -1794,7 +1794,7 @@ self.close();');
 					if(isset($_FILES["we_File"]))
 						$we_File = $_FILES["we_File"];
 					if(isset($we_File)){
-						$unique = weFile::getUniqueId();
+						$unique = we_base_file::getUniqueId();
 						$tempName = TEMP_PATH . "/" . $unique;
 
 						if(move_uploaded_file($we_File["tmp_name"], $tempName)){
@@ -1831,7 +1831,7 @@ self.close();');
 					}
 
 					if($csv_file){
-						weFile::save($_SERVER['DOCUMENT_ROOT'] . $csv_file, $emails_out);
+						we_base_file::save($_SERVER['DOCUMENT_ROOT'] . $csv_file, $emails_out);
 					}
 
 					break;
@@ -1849,7 +1849,7 @@ self.close();');
 						}
 
 						if($csv_file){
-							weFile::save($_SERVER['DOCUMENT_ROOT'] . $csv_file, $emails_out);
+							we_base_file::save($_SERVER['DOCUMENT_ROOT'] . $csv_file, $emails_out);
 						}
 					}
 					break;
@@ -2105,7 +2105,7 @@ self.close();');
 						}
 						break;
 					case we_newsletter_block::FILE:
-						$content = weFile::load($_SERVER['DOCUMENT_ROOT'] . $block->Field);
+						$content = we_base_file::load($_SERVER['DOCUMENT_ROOT'] . $block->Field);
 						if(!$content){
 							print g_l('modules_newsletter', '[cannot_open]') . ": " . $_SERVER['DOCUMENT_ROOT'] . $block->Field;
 						}
@@ -2328,29 +2328,29 @@ self.close();');
 		$cc = 0;
 		while(true){
 			if(file_exists(WE_NEWSLETTER_CACHE_DIR . $ret["blockcache"] . "_p_" . $cc)){
-				weFile::delete(WE_NEWSLETTER_CACHE_DIR . $ret["blockcache"] . "_p_" . $cc);
+				we_base_file::delete(WE_NEWSLETTER_CACHE_DIR . $ret["blockcache"] . "_p_" . $cc);
 			} else {
 				break;
 			}
 
 			//if(file_exists(WE_NEWSLETTER_CACHE_DIR . $ret["blockcache"]."_h_".$cc)) weFile::delete(WE_NEWSLETTER_CACHE_DIR . $ret["blockcache"]."_h_".$cc);
 			if(file_exists(WE_NEWSLETTER_CACHE_DIR . $ret["blockcache"] . "_h_" . $cc)){
-				$_buffer = @unserialize(weFile::load(WE_NEWSLETTER_CACHE_DIR . $ret["blockcache"] . "_h_" . $cc));
+				$_buffer = @unserialize(we_base_file::load(WE_NEWSLETTER_CACHE_DIR . $ret["blockcache"] . "_h_" . $cc));
 				if(is_array($_buffer) && isset($_buffer['inlines'])){
 					foreach($_buffer['inlines'] as $_fn){
 						if(file_exists($_fn)){
-							weFile::delete($_fn);
+							we_base_file::delete($_fn);
 						}
 					}
 				}
-				weFile::delete(WE_NEWSLETTER_CACHE_DIR . $ret["blockcache"] . "_h_" . $cc);
+				we_base_file::delete(WE_NEWSLETTER_CACHE_DIR . $ret["blockcache"] . "_h_" . $cc);
 			} else {
 				break;
 			}
 			$cc++;
 		}
 		foreach($inlines as $ins){
-			weFile::delete($ins);
+			we_base_file::delete($ins);
 		}
 	}
 
@@ -2576,7 +2576,7 @@ self.close();');
 
 		if($cachemails){
 			// BEGIN cache emails groups
-			$emailcache = weFile::getUniqueId();
+			$emailcache = we_base_file::getUniqueId();
 			$groupcount = count($this->newsletter->groups) + 1;
 
 			$ret["emailcache"] = $emailcache;
@@ -2632,7 +2632,7 @@ self.close();');
 
 		// END cache emails groups
 		// BEGIN cache newlsetter blocks
-		$blockcache = weFile::getUniqueId();
+		$blockcache = we_base_file::getUniqueId();
 		$blockcount = count($this->newsletter->blocks);
 
 		$ret["blockcache"] = $blockcache;
@@ -2703,12 +2703,12 @@ self.close();');
 				if(preg_match_all($pattern, $v, $match)){
 					foreach($match[2] as $name){
 						if(!in_array($name, array_keys($inlines))){
-							$newname = WE_NEWSLETTER_CACHE_DIR . weFile::getUniqueID();
+							$newname = WE_NEWSLETTER_CACHE_DIR . we_base_file::getUniqueID();
 							$inlines[$name] = $newname;
 
-							$fcontent = weFile::load($name);
+							$fcontent = we_base_file::load($name);
 							$fcontent = chunk_split(base64_encode($fcontent), 76, "\n");
-							weFile::save($newname, $fcontent);
+							we_base_file::save($newname, $fcontent);
 						}
 					}
 				}
@@ -2719,7 +2719,7 @@ self.close();');
 
 	function getFromCache($cache){
 		$cache = WE_NEWSLETTER_CACHE_DIR . basename($cache);
-		$buffer = weFile::load($cache);
+		$buffer = we_base_file::load($cache);
 		return ($buffer ? unserialize($buffer) : array());
 	}
 
@@ -2738,7 +2738,7 @@ self.close();');
 		}
 
 		$filename = WE_NEWSLETTER_CACHE_DIR . basename($filename);
-		return weFile::save($filename, $content);
+		return we_base_file::save($filename, $content);
 	}
 
 	public function getShowImportBox(){

@@ -289,7 +289,7 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 			return false;
 		}
 		$quality = ($quality > 10 ? 10 : ($quality < 0 ? 0 : $quality)) * 10;
-		$dataPath = TEMP_PATH . '/' . weFile::getUniqueId();
+		$dataPath = TEMP_PATH . '/' . we_base_file::getUniqueId();
 		$_resized_image = we_image_edit::edit_image($this->getElement('data'), $this->getGDType(), $dataPath, $quality, $width, $height, $ratio);
 		if(!$_resized_image[0]){
 			return false;
@@ -321,7 +321,7 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 		}
 		$quality = max(min($quality, 10), 0) * 10;
 
-		$dataPath = TEMP_PATH . '/' . weFile::getUniqueId();
+		$dataPath = TEMP_PATH . '/' . we_base_file::getUniqueId();
 		$_resized_image = we_image_edit::edit_image($this->getElement('data'), $this->getGDType(), $dataPath, $quality, $width, $height, false, true, 0, 0, -1, -1, $rotation);
 
 		if(!$_resized_image[0]){
@@ -559,7 +559,7 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 	}
 
 	private function getSvgSize($filename){
-		$line = weFile::load($filename, 'rb', 1000, 1);
+		$line = we_base_file::load($filename, 'rb', 1000, 1);
 		$match = array();
 		return array(
 			(preg_match('|<svg[^>]*width="([^"]*)"[^>]*>|i', $line, $match) ? intval($match[1]) : ''),
@@ -683,7 +683,7 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 		list($width, $height) = $this->getOrigSize();
 		$quality = max(min($quality, 10), 0) * 10;
 
-		$dataPath = TEMP_PATH . '/' . weFile::getUniqueId();
+		$dataPath = TEMP_PATH . '/' . we_base_file::getUniqueId();
 		we_image_edit::edit_image($this->getElement('data'), $type, $dataPath, $quality, $width, $height, false);
 
 		$this->setElement('data', $dataPath);
@@ -696,7 +696,7 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 
 	function getThumbnail(){
 		return ($this->getElement('data') && is_readable($this->getElement('data')) ? ($this->isSvg() ?
-					'<svg id="' . weFile::getUniqueId() . '" height="150" width="150" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" ><image x="0" y="0" height="150" width="150"  xlink:href="' . str_replace($_SERVER['DOCUMENT_ROOT'], '', $this->getElement('data')) . '" /></svg>' :
+					'<svg id="' . we_base_file::getUniqueId() . '" height="150" width="150" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" ><image x="0" y="0" height="150" width="150"  xlink:href="' . str_replace($_SERVER['DOCUMENT_ROOT'], '', $this->getElement('data')) . '" /></svg>' :
 					'<img src="' . WEBEDITION_DIR . 'thumbnail.php?id=' . $this->ID . '&size=150&path=' . str_replace($_SERVER['DOCUMENT_ROOT'], '', $this->getElement('data')) . '&extension=' . $this->Extension . '&size2=200" border="0" /></a>' ) :
 				$this->getHtml());
 	}
@@ -945,7 +945,7 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 								$imgId = intval($GLOBALS[$key][$formname]->getElement($imgName));
 
 								// move document from upload location to tmp dir
-								$_SESSION[$_imgDataId]['serverPath'] = TEMP_PATH . '/' . weFile::getUniqueId();
+								$_SESSION[$_imgDataId]['serverPath'] = TEMP_PATH . '/' . we_base_file::getUniqueId();
 								move_uploaded_file($_FILES['we_ui_' . $formname]['tmp_name'][$imgName], $_SESSION[$_imgDataId]['serverPath']);
 
 								$we_size = we_thumbnail::getimagesize($_SESSION[$_imgDataId]['serverPath']);
@@ -955,7 +955,7 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 									return;
 								}
 
-								$tmp_Filename = $imgName . '_' . weFile::getUniqueId() . '_' .
+								$tmp_Filename = $imgName . '_' . we_base_file::getUniqueId() . '_' .
 									preg_replace('/[^A-Za-z0-9._-]/', '', $_FILES['we_ui_' . $formname]['name'][$imgName]);
 
 								if($imgId){
@@ -971,14 +971,14 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 								if((isset(
 										$_SESSION[$_imgDataId]['width']) && $_SESSION[$_imgDataId]['width']) || (isset(
 										$_SESSION[$_imgDataId]['height']) && $_SESSION[$_imgDataId]['height'])){
-									$imageData = weFile::load($_SESSION[$_imgDataId]['serverPath']);
+									$imageData = we_base_file::load($_SESSION[$_imgDataId]['serverPath']);
 									$thumb = new we_thumbnail();
 									$thumb->init('dummy', $_SESSION[$_imgDataId]['width'], $_SESSION[$_imgDataId]['height'], $_SESSION[$_imgDataId]['keepratio'], $_SESSION[$_imgDataId]['maximize'], false, false, '', 'dummy', 0, '', '', $_SESSION[$_imgDataId]['extension'], $we_size[0], $we_size[1], $imageData, '', $_SESSION[$_imgDataId]['quality']);
 
 									$imgData = '';
 									$thumb->getThumb($imgData);
 
-									weFile::save($_SESSION[$_imgDataId]['serverPath'], $imageData);
+									we_base_file::save($_SESSION[$_imgDataId]['serverPath'], $imageData);
 
 									$we_size = we_thumbnail::getimagesize($_SESSION[$_imgDataId]['serverPath']);
 								}

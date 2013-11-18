@@ -59,7 +59,7 @@ if(isset($_REQUEST['vers_we_obj'])){
 	if($_REQUEST['vers_we_obj']){
 		$f = $_SERVER['DOCUMENT_ROOT'] . VERSION_DIR . 'tmpSavedObj.txt';
 		$_REQUEST['vers_we_obj'] = false;
-		$tempFile = weFile::load($f);
+		$tempFile = we_base_file::load($f);
 		$obj = unserialize($tempFile);
 		$we_doc = $obj;
 	}

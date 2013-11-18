@@ -134,9 +134,9 @@ class we_import_wizard extends we_import_wizardBase{
 	 * @desc replaces string1 by string2 in file
 	 */
 	function massReplace($string1, $string2, $file){
-		$contents = weFile::load($file, 'r');
+		$contents = we_base_file::load($file, 'r');
 		$replacement = preg_replace("/$string1/i", $string2, $contents);
-		weFile::save($file, $replacement, 'w');
+		we_base_file::save($file, $replacement, 'w');
 	}
 
 	function getStep0(){
@@ -367,7 +367,7 @@ class we_import_wizard extends we_import_wizardBase{
 		$importLocs->setCol(2, 0, array(), we_html_tools::getPixel(1, 4));
 		$importLocs->setCol(3, 0, array(), $rdoLLocal);
 		$maxsize = getUploadMaxFilesize(false);
-		$importLocs->setCol(4, 0, array(), we_html_tools::htmlAlertAttentionBox(sprintf(g_l('import', "[filesize_local]"), weFile::getHumanFileSize($maxsize, weFile::SZ_MB)), we_html_tools::TYPE_ALERT, 410));
+		$importLocs->setCol(4, 0, array(), we_html_tools::htmlAlertAttentionBox(sprintf(g_l('import', "[filesize_local]"), we_base_file::getHumanFileSize($maxsize, we_base_file::SZ_MB)), we_html_tools::TYPE_ALERT, 410));
 		$importLocs->setCol(5, 0, array(), we_html_tools::getPixel(1, 2));
 		$importLocs->setCol(6, 0, array(), $importFromLocal);
 
@@ -407,7 +407,7 @@ class we_import_wizard extends we_import_wizardBase{
 				$_upload_error = true;
 			} else {
 
-				$v['import_from'] = TEMP_DIR . weFile::getUniqueId() . '_w.xml';
+				$v['import_from'] = TEMP_DIR . we_base_file::getUniqueId() . '_w.xml';
 				move_uploaded_file($_FILES['uploaded_xml_file']['tmp_name'], $_SERVER['DOCUMENT_ROOT'] . $v['import_from']);
 			}
 		}
@@ -491,7 +491,7 @@ function toggle(name){
 
 			$maxsize = getUploadMaxFilesize();
 			$_return[1] = we_html_element::jsElement($functions . ' ' .
-					we_message_reporting::getShowMessageCall(sprintf(g_l('import', '[upload_failed]'), weFile::getHumanFileSize($maxsize, weFile::SZ_MB)), we_message_reporting::WE_MESSAGE_ERROR) . '
+					we_message_reporting::getShowMessageCall(sprintf(g_l('import', '[upload_failed]'), we_base_file::getHumanFileSize($maxsize, we_base_file::SZ_MB)), we_message_reporting::WE_MESSAGE_ERROR) . '
 							handle_event("previous");');
 			return $_return;
 		}
@@ -703,7 +703,7 @@ handle_event("previous");');
 				'space' => 120
 			);
 
-			$header = weFile::loadPart($_SERVER['DOCUMENT_ROOT'] . $v['import_from'], 0, 512);
+			$header = we_base_file::loadPart($_SERVER['DOCUMENT_ROOT'] . $v['import_from'], 0, 512);
 
 			if(empty($header)){
 				$functions = '
@@ -987,7 +987,7 @@ HTS;
 		$importLocs->setCol($_tblRow++, 0, array(), we_html_tools::getPixel(1, 4));
 		$importLocs->setCol($_tblRow++, 0, array(), $rdoLLocal);
 		$maxsize = getUploadMaxFilesize(false);
-		$importLocs->setCol($_tblRow++, 0, array(), we_html_tools::htmlAlertAttentionBox(sprintf(g_l('import', '[filesize_local]'), weFile::getHumanFileSize($maxsize, weFile::SZ_MB)), we_html_tools::TYPE_ALERT, 410));
+		$importLocs->setCol($_tblRow++, 0, array(), we_html_tools::htmlAlertAttentionBox(sprintf(g_l('import', '[filesize_local]'), we_base_file::getHumanFileSize($maxsize, we_base_file::SZ_MB)), we_html_tools::TYPE_ALERT, 410));
 		$importLocs->setCol($_tblRow++, 0, array(), we_html_tools::getPixel(1, 2));
 		$importLocs->setCol($_tblRow++, 0, array(), $importFromLocal);
 
@@ -1198,7 +1198,7 @@ HTS;
 		$v = $_REQUEST['v'];
 
 		if($v['rdofloc'] == 'lLocal' && (isset($_FILES['uploaded_xml_file']) and $_FILES['uploaded_xml_file']['size'])){
-			$uniqueId = weFile::getUniqueId(); // #6590, changed from: uniqid(microtime())
+			$uniqueId = we_base_file::getUniqueId(); // #6590, changed from: uniqid(microtime())
 			$v['import_from'] = TEMP_DIR . 'we_xml_' . $uniqueId . '.xml';
 			move_uploaded_file($_FILES['uploaded_xml_file']['tmp_name'], $_SERVER['DOCUMENT_ROOT'] . $v['import_from']);
 		}
@@ -1684,7 +1684,7 @@ function handle_event(evt) {
 		$importLocs->setCol($_tblRow++, 0, array(), we_html_tools::getPixel(1, 4));
 		$importLocs->setCol($_tblRow++, 0, array(), $rdoLLocal);
 		$maxsize = getUploadMaxFilesize(false);
-		$importLocs->setCol($_tblRow++, 0, array(), we_html_tools::htmlAlertAttentionBox(sprintf(g_l('import', '[filesize_local]'), weFile::getHumanFileSize($maxsize, weFile::SZ_MB)), we_html_tools::TYPE_ALERT, 410));
+		$importLocs->setCol($_tblRow++, 0, array(), we_html_tools::htmlAlertAttentionBox(sprintf(g_l('import', '[filesize_local]'), we_base_file::getHumanFileSize($maxsize, we_base_file::SZ_MB)), we_html_tools::TYPE_ALERT, 410));
 		$importLocs->setCol($_tblRow++, 0, array(), we_html_tools::getPixel(1, 2));
 		$importLocs->setCol($_tblRow++, 0, array(), $importFromLocal);
 		/*		 * *************************************************************************************************************** */
@@ -1754,7 +1754,7 @@ function handle_event(evt) {
 		global $DB_WE;
 		$v = $_REQUEST['v'];
 		if(((isset($_FILES['uploaded_csv_file']) and $_FILES['uploaded_csv_file']['size'])) || $v['file_format'] == 'mac'){
-			$uniqueId = weFile::getUniqueId(); // #6590, changed from: uniqid(microtime())
+			$uniqueId = we_base_file::getUniqueId(); // #6590, changed from: uniqid(microtime())
 
 			switch($v['rdofloc']){
 				case 'lLocal':
@@ -1772,10 +1772,10 @@ function handle_event(evt) {
 						break;
 					}
 
-					$contents = weFile::load($fp, 'r');
+					$contents = we_base_file::load($fp, 'r');
 					$v['import_from'] = TEMP_DIR . 'we_csv_' . $uniqueId . '.csv';
 					$replacement = str_replace("\r", "\n", $contents);
-					weFile::save($fp, $replacement, 'w+');
+					we_base_file::save($fp, $replacement, 'w+');
 					break;
 			}
 		}
@@ -2275,7 +2275,7 @@ function handle_event(evt) {
 
 			$cp = new we_import_CSV;
 
-			$_data = weFile::loadPart($csvFile);
+			$_data = we_base_file::loadPart($csvFile);
 
 			$cp->setData($_data);
 			$cp->setDelim($v["csv_seperator"]);

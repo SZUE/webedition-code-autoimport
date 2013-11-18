@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_import_site {
+class we_import_site{
 
 	var $step = 0;
 	var $cmd = '';
@@ -1238,10 +1238,8 @@ class we_import_site {
 		$descriptionCode = "<we:description />";
 		$keywordsCode = "<we:keywords />";
 
-		$title = "";
-		$description = "";
-		$keywords = "";
-		$charset = "";
+		$title = $description = $keywords = $charset = '';
+		$attr = array();
 
 		// check if we have a body start and end tag
 		if(preg_match('/<body[^>]*>(.*)<\/body>/is', $content, $regs)){
@@ -1255,7 +1253,7 @@ class we_import_site {
 		// try to get title, description, keywords and charset
 		if(preg_match('/<title[^>]*>(.*)<\/title>/is', $content, $regs)){
 			$title = $regs[1];
-			$templateCode = preg_replace('/<title[^>]*>.*<\/title>/is', "$titleCode", $templateCode);
+			$templateCode = preg_replace('/<title[^>]*>.*<\/title>/is', $titleCode, $templateCode);
 		}
 		if(preg_match('/<meta ([^>]*)name="description"([^>]*)>/is', $content, $regs)){
 			if(preg_match('/content="([^"]+)"/is', $regs[1], $attr)){
@@ -1263,7 +1261,7 @@ class we_import_site {
 			} elseif(preg_match('/content="([^"]+)"/is', $regs[2], $attr)){
 				$description = $attr[1];
 			}
-			$templateCode = preg_replace('/<meta [^>]*name="description"[^>]*>/is', "$descriptionCode", $templateCode);
+			$templateCode = preg_replace('/<meta [^>]*name="description"[^>]*>/is', $descriptionCode, $templateCode);
 		}
 		if(preg_match('/<meta ([^>]*)name="keywords"([^>]*)>/is', $content, $regs)){
 			if(preg_match('/content="([^"]+)"/is', $regs[1], $attr)){
@@ -1271,7 +1269,7 @@ class we_import_site {
 			} elseif(preg_match('/content="([^"]+)"/is', $regs[2], $attr)){
 				$keywords = $attr[1];
 			}
-			$templateCode = preg_replace('/<meta [^>]*name="keywords"[^>]*>/is', "$keywordsCode", $templateCode);
+			$templateCode = preg_replace('/<meta [^>]*name="keywords"[^>]*>/is', $keywordsCode, $templateCode);
 		}
 		if(preg_match('/<meta ([^>]*)http-equiv="content-type"([^>]*)>/is', $content, $regs)){
 			if(preg_match('/content="([^"]+)"/is', $regs[1], $attr)){
@@ -1289,6 +1287,7 @@ class we_import_site {
 		// replace external css (link rel=stylesheet)
 		preg_match_all('/<link ([^>]+)>/i', $templateCode, $regs, PREG_PATTERN_ORDER);
 		if($regs != null){
+			$regs2=array();
 			for($i = 0; $i < count($regs[1]); $i++){
 				preg_match_all('/([^= ]+)=[\'"]?([^\'" ]+)[\'"]?/is', $regs[1][$i], $regs2, PREG_PATTERN_ORDER);
 				if($regs2 != null){
@@ -1674,7 +1673,7 @@ class we_import_site {
 		if(!is_dir($path) && filesize($path) > 0 && $contentType != 'image/*' && $contentType != 'application/*' && $contentType != 'application/x-shockwave-fla
 sh' && $contentType != 'movie/quicktime'){
 			//if(!is_dir($path) && filesize($path) > 0 && !$GLOBALS["we_doc"]->isBinary()){
-			$data = weFile::load($path);
+			$data = we_base_file::load($path);
 		}
 
 		if($contentType == "folder"){

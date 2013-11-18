@@ -183,12 +183,9 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 
 	<?php
 	foreach($List as $Key => $Value){
-		$Replaced = false;
-		$Value['Text'] = str_replace("\n", "", str_replace("\r\n", "\n", $Value['Text']));
+		$Value['Text'] = str_replace(array("\r", "\n"), '', $Value['Text']);
 		$TextReplaced = preg_replace("/((<[^>]*)|([^[:alnum:]]){$Value['Text']}([^[:alnum:]]))/e", '"\2"=="\1"?"\1":"\3\4"', " " . $Text . " ");
-		if(trim($TextReplaced) != trim($Text)){
-			$Replaced = true;
-		}
+		$Replaced = (trim($TextReplaced) != trim($Text));
 		$Text = trim($TextReplaced);
 		if($Replaced){
 			echo "top.frames.glossarycheck.addPredefinedRow('" . $Value['Text'] . "',new Array(),'" . $Value['Type'] . "','" . $Value['Title'] . "','" . $Value['Lang'] . "');\n";
@@ -196,7 +193,7 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 	}
 
 	foreach($ExceptionList as $Key => $Value){
-		$Value = str_replace("\n", "", str_replace("\r\n", "\n", $Value));
+		$Value = str_replace(array("\r", "\n"), '', $Value);
 		$Text = preg_replace("/((<[^>]*)|([^[:alnum:]]){$Value}([^[:alnum:]]))/e", '"\2"=="\1"?"\1":"\3\4"', " " . $Text . " ");
 		$Text = trim($Text);
 	}
@@ -294,7 +291,7 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 				window.setTimeout("fadeout(\"" + id + "\"," + (from - step) + "," + step + "," + speed + ")", speed);
 			}
 		}
-		//-->
+	//-->
 	</script>
 	<style type="text/css">
 		#applet {
@@ -319,7 +316,7 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 			?>
 
 			<script type="text/javascript"><!--
-				function we_save_document() {
+		function we_save_document() {
 					top.opener._showGlossaryCheck = 0;
 					top.opener.we_save_document();
 					top.close();
@@ -327,7 +324,7 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 				function we_reloadEditPage() {
 					top.opener.top.we_cmd('switch_edit_page', <?php echo $we_doc->EditPageNr; ?>, '<?php echo $Transaction; ?>', 'save_document');
 				}
-				//-->
+	//-->
 			</script>
 			<?php
 			echo '<iframe id="glossarycheck" name="glossarycheck" frameborder="0" src="' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=' . $_REQUEST['we_cmd'][0] . '&we_cmd[1]=prepare&we_cmd[2]=' . $_REQUEST['we_cmd'][2] . (isset($_REQUEST['we_cmd'][3]) ? '&we_cmd[3]=' . $_REQUEST['we_cmd'][3] : '' ) . '" width="730px" height="400px" style="overflow: hidden;"></iframe>' .
@@ -649,7 +646,7 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 
 				function disableItem(id, value) {
 					switch (value) {
-						case <?php echo we_glossary_glossary::TYPE_FOREIGNWORD;?>:
+						case <?php echo we_glossary_glossary::TYPE_FOREIGNWORD; ?>:
 							document.getElementById('title_' + id).disabled = true;
 							document.getElementById('lang_' + id).disabled = false;
 							document.getElementById('title_' + id).style.display = 'inline';
@@ -690,8 +687,8 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 						title = document.getElementById('title_' + i).value;
 						lang = document.getElementById('lang_' + i).value;
 						switch (type) {
-							case <?php echo we_glossary_glossary::TYPE_ABBREVATION;?>:
-							case <?php echo we_glossary_glossary::TYPE_ACRONYM;?>:
+							case <?php echo we_glossary_glossary::TYPE_ABBREVATION; ?>:
+							case <?php echo we_glossary_glossary::TYPE_ACRONYM; ?>:
 								if (title === '') {
 									document.getElementById('title_' + i).focus();
 	<?php print we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[please_insert_title]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
@@ -703,7 +700,7 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 									return false;
 								}
 								break;
-							case <?php echo we_glossary_glossary::TYPE_FOREIGNWORD;?>:
+							case <?php echo we_glossary_glossary::TYPE_FOREIGNWORD; ?>:
 								if (lang === '') {
 									document.getElementById('lang_' + i).focus();
 	<?php print we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[please_insert_language]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
@@ -732,7 +729,7 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 					}
 					document.forms[0].submit();
 				}
-				//-->
+	//-->
 			</script>
 
 		</head>

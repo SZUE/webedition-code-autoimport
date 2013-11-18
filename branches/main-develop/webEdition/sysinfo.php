@@ -116,7 +116,7 @@ function parseValue($name, $value){
 }
 
 function convertToMb($value){
-	return weFile::getHumanFileSize($value, weFile::SZ_MB);
+	return we_base_file::getHumanFileSize($value, we_base_file::SZ_MB);
 }
 
 function getConnectionTypes(){

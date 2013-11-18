@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
+//FIXME: remove?
 /**
  * Filename:    we_xhtmlConverter.inc.php
  * Directory:   /webEdition/we/include/we_classes/helpers

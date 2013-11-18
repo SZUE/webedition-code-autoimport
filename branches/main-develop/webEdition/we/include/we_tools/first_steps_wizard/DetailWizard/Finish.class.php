@@ -48,7 +48,7 @@ class Finish extends leWizardStepBase{
 
 		// now change paths in sidebar document(!)
 		$content = implode('', file($NewSidebarFile));
-		$content = weSidebarDocumentParser::parseCode($content, $_SESSION['weS']['we_fsw_document_path']);
+		$content = we_sidebar_documentParser::parseCode($content, $_SESSION['weS']['we_fsw_document_path']);
 
 		// change mastertemplate in installed templates
 		$TemplateIds = array();
@@ -63,7 +63,7 @@ class Finish extends leWizardStepBase{
 		$DB_WE->query($query);
 
 		// write new content
-		if(!weFile::save($NewSidebarFile, $content, "w+")){
+		if(!we_base_file::save($NewSidebarFile, $content, "w+")){
 			return LE_WIZARDSTEP_ERROR;
 		}
 

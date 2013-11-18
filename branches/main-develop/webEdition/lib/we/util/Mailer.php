@@ -343,7 +343,7 @@ class we_util_Mailer extends Zend_Mail{
 
 	public function doaddAttachmentInline($attachmentpath){
 		if($attachmentpath != ''){
-			$binarydata = weFile::load($attachmentpath);
+			$binarydata = we_base_file::load($attachmentpath);
 			$at = new Zend_Mime_Part($binarydata);
 			$at->disposition = Zend_Mime::DISPOSITION_INLINE;
 			$at->encoding = Zend_Mime::ENCODING_BASE64;
@@ -368,7 +368,7 @@ class we_util_Mailer extends Zend_Mail{
 	 */
 	public function doaddAttachment($attachmentpath){
 		if($attachmentpath != ''){
-			$binarydata = weFile::load($attachmentpath);
+			$binarydata = we_base_file::load($attachmentpath);
 			$at = new Zend_Mime_Part($binarydata);
 			$at->disposition = Zend_Mime::DISPOSITION_ATTACHMENT;
 			$at->encoding = Zend_Mime::ENCODING_BASE64;
