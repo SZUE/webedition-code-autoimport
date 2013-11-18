@@ -12,7 +12,7 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or
  * any later version.
- *
+ * HIER EINE TESTEINGABE
  * The GNU General Public License can be found at
  * http://www.gnu.org/copyleft/gpl.html.
  * A copy is found in the textfile
