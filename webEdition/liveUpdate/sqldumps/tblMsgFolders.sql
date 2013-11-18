@@ -13,12 +13,12 @@ CREATE TABLE ###TBLPREFIX###tblMsgFolders (
   PRIMARY KEY  (ID)
 ) ENGINE=MyISAM;
 /* query separator */
-INSERT IGNORE INTO ###TBLPREFIX###tblMsgFolders VALUES (1,0,1,NULL,1,3,'Messages',NULL,NULL,1,NULL);
+INSERT IGNORE INTO ###TBLPREFIX###tblMsgFolders SET ID=1,ParentID=0,UserID=1,msg_type=1,obj_type=3,Name='Messages',Properties=1;
 /* query separator */
-INSERT IGNORE INTO ###TBLPREFIX###tblMsgFolders VALUES (2,1,1,NULL,1,5,'Sent',NULL,NULL,1,NULL);
+INSERT IGNORE INTO ###TBLPREFIX###tblMsgFolders SET ID=2,ParentID=1,UserID=1,msg_type=1,obj_type=5,Name='Sent',Properties=1;
 /* query separator */
-INSERT IGNORE INTO ###TBLPREFIX###tblMsgFolders VALUES (3,0,1,NULL,2,3,'Task',NULL,NULL,1,NULL);
+INSERT IGNORE INTO ###TBLPREFIX###tblMsgFolders SET ID=3,ParentID=0,UserID=1,msg_type=2,obj_type=3,Name='Task',Properties=1;
 /* query separator */
-INSERT IGNORE INTO ###TBLPREFIX###tblMsgFolders VALUES (4,3,1,NULL,2,13,'Done',NULL,NULL,1,NULL);
+INSERT IGNORE INTO ###TBLPREFIX###tblMsgFolders SET ID=4,ParentID=3,UserID=1,msg_type=2,obj_type=13,Name='Done',Properties=1;
 /* query separator */
-INSERT IGNORE INTO ###TBLPREFIX###tblMsgFolders VALUES (5,3,1,NULL,2,11,'rejected',NULL,NULL,1,NULL);
+INSERT IGNORE INTO ###TBLPREFIX###tblMsgFolders SET ID=5,ParentID=3,UserID=1,msg_type=2,obj_type=11,Name='rejected',Properties=1;
