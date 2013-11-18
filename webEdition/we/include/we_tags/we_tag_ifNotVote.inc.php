@@ -34,7 +34,7 @@ function we_tag_ifNotVote($attribs){
 			case 'forbidden':
 				return ($GLOBALS['_we_voting_status'] == weVoting::ERROR_BLACKIP);
 			default:
-				return ($GLOBALS['_we_voting_status'] > 0);
+				return ($GLOBALS['_we_voting_status'] != weVoting::SUCCESS);
 		}
 	}
 	return false;
