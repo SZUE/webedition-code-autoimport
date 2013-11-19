@@ -29,10 +29,7 @@ function we_parse_tag_object($attribs, $content, array $arr){
 	}
 
 	$we_oid = weTag_getAttribute('id', $arr, 0);
-	if(empty($we_oid) && empty($name)){
-		return attributFehltError($arr, 'name', __FUNCTION__);
-	}
-
+	
 	return '<?php global $lv;
 		if(' . we_tag_tagParser::printTag('object', $attribs) . '){?>' . $content . '<?php }
 		we_post_tag_listview(); ?>';
