@@ -542,15 +542,13 @@ abstract class we_database_base{
 	static function arraySetter(array $arr, $imp = ','){
 		$ret = array();
 		foreach($arr as $key => $val){
-			$escape = !(is_int($val) || is_float($val));
+			$escape = !(is_int($val) || is_float($val)||is_bool($val));
 			if(is_array($val) && $val['sqlFunction'] == 1){
 				$val = $val['val'];
 				$escape = false;
 			} elseif(is_object($val) || is_array($val)){
 				t_e('warning', 'data error: db-field cannot contain objects / arrays', 'Key: ' . $key, $arr);
 			}
-
-			$val=(is_bool($val)?intval($val):$val); //e.g. in we/include/we_modules/navigation/class/weNavigation.class.php:257
 
 			//FIXME: remove this code after 6.3.9!!
 			if($escape){
