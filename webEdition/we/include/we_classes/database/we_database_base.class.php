@@ -550,6 +550,8 @@ abstract class we_database_base{
 				t_e('warning', 'data error: db-field cannot contain objects / arrays', 'Key: ' . $key, $arr);
 			}
 
+			$val=(is_bool($val)?intval($val):$val);
+
 			//FIXME: remove this code after 6.3.9!!
 			if($escape){
 				switch($val){
