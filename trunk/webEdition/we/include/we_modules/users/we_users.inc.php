@@ -1152,7 +1152,7 @@ _multiEditorreload = true;";
 			}
 		}
 		if(!array_filter($user_permissions)){
-			t_e('error reading user permissions! Check parent permissions & resave parent folders! UID: '.$uid);
+			t_e('error reading user permissions! Check parent permissions & resave parent folders! UID: '.$uid,$user_permissions);
 		}
 		//FIXME:
 		//return (isset($user_permissions['ADMINISTRATOR']) && $user_permissions['ADMINISTRATOR'] ? array('ADMINISTRATOR' => 1) : array_filter($user_permissions));
