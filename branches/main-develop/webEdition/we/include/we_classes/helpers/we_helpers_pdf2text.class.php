@@ -696,7 +696,7 @@ class we_helpers_pdf2text{
 	private function getAllPageObjects($id){
 		$id = array_map('trim', array_filter(explode(self::TRIM_REF, $id)));
 		foreach($id as $cur){
-			if(empty($cur)||!isset($this->data[$cur])){
+			if(empty($cur) || !isset($this->data[$cur])){
 				continue;
 			}
 			$elem = $this->data[$cur];

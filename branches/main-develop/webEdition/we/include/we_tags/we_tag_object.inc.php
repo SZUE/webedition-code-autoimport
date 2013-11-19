@@ -28,10 +28,7 @@ function we_parse_tag_object($attribs, $content, array $arr){
 		return parseError(sprintf(g_l('parser', '[name_with_space]'), 'object'));
 	}
 
-	$we_oid = weTag_getAttribute('id', $arr, 0);
-	if(empty($we_oid) && empty($name)){
-		return attributFehltError($arr, 'name', __FUNCTION__);
-	}
+	//dont't check if id or name is set, since it is possible to set object ID by request
 
 	return '<?php global $lv;
 		if(' . we_tag_tagParser::printTag('object', $attribs) . '){?>' . $content . '<?php }

@@ -525,19 +525,19 @@ switch($_SESSION['prefs']['editorMode']){
 							$ok = true;
 							break;
 						case 'default':
-							$ok = ($setting['htmlDefAttr']);
+							$ok = (isset($setting['htmlDefAttr']) && $setting['htmlDefAttr']);
 							break;
 						case 'js':
-							$ok = ($setting['htmlJSAttr']);
+							$ok = (isset($setting['htmlJSAttr']) && $setting['htmlJSAttr']);
 							break;
 						case 'norm':
-							$ok = ($setting['htmlAttr']);
+							$ok = (isset($setting['htmlAttr']) && $setting['htmlAttr']);
 							break;
 						case 'default_html5':
-							$ok = ($setting['html5Tag'] && $setting['htmlDefAttr']);
+							$ok = (isset($setting['html5Tag']) && isset($setting['htmlDefAttr']) && $setting['html5Tag'] && $setting['htmlDefAttr']);
 							break;
 						case 'html5':
-							$ok = ($setting['html5Tag'] && $setting['html5Attr']);
+							$ok = (isset($setting['html5Tag']) && isset($setting['html5Attr']) && $setting['html5Tag'] && $setting['html5Attr']);
 							break;
 						default:
 							$ok = false;

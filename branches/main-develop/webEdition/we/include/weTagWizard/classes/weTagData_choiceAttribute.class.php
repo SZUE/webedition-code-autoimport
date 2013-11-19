@@ -71,7 +71,7 @@ class weTagData_choiceAttribute extends weTagDataAttribute{
 				$texts = $values = array();
 			} else {
 				$texts[] = $option->getName();
-				$values[] = htmlentities($option->Value);
+				$values[] = htmlspecialchars($option->Value);
 			}
 		}
 

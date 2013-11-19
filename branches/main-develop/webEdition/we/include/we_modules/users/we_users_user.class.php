@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_users_user {
+class we_users_user{
 
 	const TYPE_USER = 0;
 	const TYPE_USER_GROUP = 1;
@@ -1123,7 +1123,7 @@ _multiEditorreload = true;";
 		$db = $GLOBALS['DB_WE'];
 		$db_tmp = new DB_WE();
 		$db->query('SELECT ParentID,ParentPerms,Permissions,Alias FROM ' . USER_TABLE . ' WHERE ID=' . intval($uid) . ' OR Alias=' . intval($uid));
-		while($db->next_record(MYSQLI_ASSOC)){
+		while($db->next_record(MYSQL_ASSOC)){
 			if($db->f('Alias') != $uid){
 				$group_permissions = unserialize($db->f('Permissions'));
 				if(is_array($group_permissions)){
@@ -1136,7 +1136,7 @@ _multiEditorreload = true;";
 			if($db->f('ParentPerms')){
 				while($lpid){
 					$db_tmp->query('SELECT ParentID,ParentPerms,Permissions FROM ' . USER_TABLE . ' WHERE ID=' . intval($lpid));
-					if($db_tmp->next_record(MYSQLI_ASSOC)){
+					if($db_tmp->next_record(MYSQL_ASSOC)){
 						$group_permissions = unserialize($db_tmp->f('Permissions'));
 						if(is_array($group_permissions)){
 							foreach($group_permissions as $key => $val){
@@ -1151,7 +1151,7 @@ _multiEditorreload = true;";
 			}
 		}
 		if(!array_filter($user_permissions)){
-			t_e('error reading user permissions! Check parent permissions & resave parent folders! UID: '.$uid);
+			t_e('error reading user permissions! Check parent permissions & resave parent folders! UID: ' . $uid, $user_permissions);
 		}
 		return (isset($user_permissions['ADMINISTRATOR']) && $user_permissions['ADMINISTRATOR'] ? array('ADMINISTRATOR' => 1) : array_filter($user_permissions));
 	}
@@ -1300,24 +1300,24 @@ $this->Preferences=' . var_export($this->Preferences, true) . ';
 		$_tableObj = new we_html_table($_attr, 12, 2);
 		$line = 0;
 		$_tableObj->setCol($line, 0, null, $this->getUserfield('Salutation', 'salutation'));
-		$_tableObj->setCol( ++$line, 0, null, $this->getUserfield('First', 'first_name'));
+		$_tableObj->setCol(++$line, 0, null, $this->getUserfield('First', 'first_name'));
 		$_tableObj->setCol($line, 1, null, $this->getUserfield('Second', 'second_name'));
-		$_tableObj->setCol( ++$line, 0, array('colspan' => 2), we_html_tools::getPixel(560, 20));
-		$_tableObj->setCol( ++$line, 0, null, $this->getUserfield('Address', 'address'));
+		$_tableObj->setCol(++$line, 0, array('colspan' => 2), we_html_tools::getPixel(560, 20));
+		$_tableObj->setCol(++$line, 0, null, $this->getUserfield('Address', 'address'));
 		$_tableObj->setCol($line, 1, null, $this->getUserfield('HouseNo', 'houseno'));
-		$_tableObj->setCol( ++$line, 0, null, $this->getUserfield('PLZ', 'PLZ', 'text', 16, true));
+		$_tableObj->setCol(++$line, 0, null, $this->getUserfield('PLZ', 'PLZ', 'text', 16, true));
 		$_tableObj->setCol($line, 1, null, $this->getUserfield('City', 'city'));
-		$_tableObj->setCol( ++$line, 0, null, $this->getUserfield('State', 'state'));
+		$_tableObj->setCol(++$line, 0, null, $this->getUserfield('State', 'state'));
 		$_tableObj->setCol($line, 1, null, $this->getUserfield('Country', 'country'));
-		$_tableObj->setCol( ++$line, 0, array('colspan' => 2), we_html_tools::getPixel(560, 20));
-		$_tableObj->setCol( ++$line, 0, null, $this->getUserfield('Tel_preselection', 'tel_pre'));
+		$_tableObj->setCol(++$line, 0, array('colspan' => 2), we_html_tools::getPixel(560, 20));
+		$_tableObj->setCol(++$line, 0, null, $this->getUserfield('Tel_preselection', 'tel_pre'));
 		$_tableObj->setCol($line, 1, null, $this->getUserfield('Telephone', 'telephone'));
-		$_tableObj->setCol( ++$line, 0, null, $this->getUserfield('Fax_preselection', 'fax_pre'));
+		$_tableObj->setCol(++$line, 0, null, $this->getUserfield('Fax_preselection', 'fax_pre'));
 		$_tableObj->setCol($line, 1, null, $this->getUserfield('Fax', 'fax'));
-		$_tableObj->setCol( ++$line, 0, null, $this->getUserfield('Handy', 'mobile'));
+		$_tableObj->setCol(++$line, 0, null, $this->getUserfield('Handy', 'mobile'));
 		$_tableObj->setCol($line, 1, null, $this->getUserfield('Email', 'email'));
-		$_tableObj->setCol( ++$line, 0, array('colspan' => 2), we_html_tools::getPixel(520, 4));
-		$_tableObj->setCol( ++$line, 0, array('colspan' => 2), we_html_tools::htmlFormElementTable($_description, g_l('modules_users', '[description]')));
+		$_tableObj->setCol(++$line, 0, array('colspan' => 2), we_html_tools::getPixel(520, 4));
+		$_tableObj->setCol(++$line, 0, array('colspan' => 2), we_html_tools::htmlFormElementTable($_description, g_l('modules_users', '[description]')));
 
 
 		$parts = array(
@@ -1918,7 +1918,7 @@ function show_seem_chooser(val) {
 			case 'weapp':
 				$_seem_start_type = 'weapp';
 				if($this->Preferences['seem_start_file'] != 0){
-					
+
 				}
 				break;
 			// Document
@@ -2347,7 +2347,7 @@ function resetTabs(){
 
 top.content.hloaded=1;') .
 			$tab_header .
-				'<div id="main" >' . we_html_tools::getPixel(100, 3) . '<div style="margin:0px;padding-left:10px;" id="headrow"><nobr><b>' . str_replace(" ", "&nbsp;", $headline1) . '&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">' . str_replace(" ", "&nbsp;", ($this->Path ?: $this->getPath($this->ParentID))) . '</b></span></nobr></div>' . we_html_tools::getPixel(100, 3) . $we_tabs->getHTML() . '</div>' .
+			'<div id="main" >' . we_html_tools::getPixel(100, 3) . '<div style="margin:0px;padding-left:10px;" id="headrow"><nobr><b>' . str_replace(" ", "&nbsp;", $headline1) . '&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">' . str_replace(" ", "&nbsp;", ($this->Path ? : $this->getPath($this->ParentID))) . '</b></span></nobr></div>' . we_html_tools::getPixel(100, 3) . $we_tabs->getHTML() . '</div>' .
 			$tab_body;
 	}
 

@@ -44,6 +44,7 @@ class weXMLImport extends weXMLExIm{
 		update_time_limit(0);
 
 		$objects = array();
+		$GLOBALS['isNewImport'] = version_compare(weBackupPreparer::getWeVersion($chunk_file, false), '6.3.3.1', '>');
 
 		$data = we_base_file::load($chunk_file);
 		$this->xmlBrowser = new weXMLParser();
@@ -415,7 +416,8 @@ class weXMLImport extends weXMLExIm{
 							}
 						}
 						$node_data[$nodname] = $noddata;
-						$node_coding[$nodname] = (isset($attributes[weContentProvider::CODING_ATTRIBUTE]) ? $attributes[weContentProvider::CODING_ATTRIBUTE] : weContentProvider::CODING_NONE);
+						$node_coding[$nodname] = $GLOBALS['isNewImport'] ? (isset($attributes[weContentProvider::CODING_ATTRIBUTE]) ? $attributes[weContentProvider::CODING_ATTRIBUTE] : weContentProvider::CODING_NONE) :
+							(weContentProvider::needCoding($node_data['ClassName'], $nodname, weContentProvider::CODING_OLD) ? weContentProvider::CODING_ENCODE : weContentProvider::CODING_NONE);
 				}
 			}
 		}
@@ -572,7 +574,7 @@ class weXMLImport extends weXMLExIm{
 
 		$encoding = we_xml_parser::getEncoding('', $head);
 		$_SESSION['weS']['weXMLimportCharset'] = $encoding;
-		$header = weXMLExIm::getHeader($encoding);
+		$header = ''; //weXMLExIm::getHeader($encoding);
 		$footer = weXMLExIm::getFooter();
 
 		$buff = "";
@@ -600,14 +602,16 @@ class weXMLImport extends weXMLExIm{
 					}
 				}
 
-				if($open_new && !empty($line) && trim($line) != we_backup_backup::weXmlExImFooter){
+				if($open_new && $line && trim($line) != we_backup_backup::weXmlExImFooter){
 					$num++;
 					$filename_tmp = sprintf($path . $pattern, $num);
 					$fh_temp = fopen($filename_tmp, "wb");
-					fwrite($fh_temp, $header);
-					if($num == 0){
-						$header = "";
+					if($header){
+						fwrite($fh_temp, $header);
 					}
+					/* if($num == 0){
+					  $header = "";
+					  } */
 					$open_new = false;
 				}
 
@@ -640,6 +644,7 @@ class weXMLImport extends weXMLExIm{
 					} else {
 						if(((substr($line, 0, 2) == "<?") || (substr($line, 0, 11) == we_backup_backup::weXmlExImHead)) && $num == 0){
 							$header.=$line;
+							fwrite($fh_temp, $line);
 						}
 					}
 				} else {
