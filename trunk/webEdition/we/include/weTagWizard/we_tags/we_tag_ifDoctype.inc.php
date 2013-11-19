@@ -7,7 +7,13 @@ $this->Groups[] = 'if_tags';
 //$this->Module = '';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
-$this->Attributes[] = new weTagData_sqlRowAttribute('doctypes',DOC_TYPES_TABLE, false, 'DocType', 'DocType', 'DocType', '');
+$_db = new DB_WE();
+$_db->query('SELECT DocType FROM ' . DOC_TYPES_TABLE);
+while($_db->next_record()){
+	$docTypes[] = new weTagDataOption($_db->f('DocType'));
+}
+$this->Attributes[] = new weTagData_choiceAttribute('doctypes', $docTypes, false, true, '');
+
 $this->Attributes[] = new weTagData_selectAttribute('doc', array(new weTagDataOption('top'),
  new weTagDataOption('self'),
  new weTagDataOption('listview'),
