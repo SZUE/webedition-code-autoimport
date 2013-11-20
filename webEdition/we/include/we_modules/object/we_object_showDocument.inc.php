@@ -66,10 +66,6 @@ if(($_userID != 0 && $_userID != $_SESSION['user']['ID']) || (isset($_REQUEST['w
 
 	$we_dt = $_SESSION['weS']['we_data'][$we_transaction];
 
-	//	determine Path from last opened wE-Document
-	$_lastDoc = isset($_SESSION['weS']['last_webEdition_document']) ? $_SESSION['weS']['last_webEdition_document'] : array();
-
-
 	if(isset($_SESSION['weS']['we_data'][$we_transaction]['0']['Templates'])){
 
 		$tids = makeArrayFromCSV($_SESSION['weS']['we_data'][$we_transaction]['0']['Templates']); //	get all templateIds.
@@ -80,6 +76,8 @@ if(($_userID != 0 && $_userID != $_SESSION['user']['ID']) || (isset($_REQUEST['w
 
 		$tmpDB = new DB_WE();
 
+		//	determine Path from last opened wE-Document
+		$_lastDoc = isset($_SESSION['weS']['last_webEdition_document']) ? $_SESSION['weS']['last_webEdition_document'] : array();
 		if(isset($_lastDoc['Path'])){
 
 			if(!empty($workspaces)){ // get the correct template
@@ -88,10 +86,10 @@ if(($_userID != 0 && $_userID != $_SESSION['user']['ID']) || (isset($_REQUEST['w
 
 					$workspace = id_to_path($workspace, FILE_TABLE, $tmpDB);
 
-					if($workspace != '' && strpos($_lastDoc['Path'], $workspace) === 0 && $tids[$i] != ''){
+					if($workspace != '' && strpos($_lastDoc['Path'], $workspace) === 0 && $tids){
 
 						//	init document
-						$tid = $tids[$i];
+						$tid = $tids[0];
 						$GLOBALS['we_doc']->we_initSessDat($we_dt);
 						$_REQUEST['we_objectID'] = $_SESSION['weS']['we_data'][$we_transaction][0]['ID'];
 						break;

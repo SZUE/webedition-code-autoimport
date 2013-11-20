@@ -1008,7 +1008,6 @@ class we_document extends we_root{
 					$dt->setTimeZone(new DateTimeZone(@date_default_timezone_get())); //Bug #6335
 					return $dt->format(correctDateFormat($format, $dt));
 				}
-				return $zwdate;
 			case 'select':
 				if(defined('OBJECT_TABLE')){
 					if(strlen($val) == 0){

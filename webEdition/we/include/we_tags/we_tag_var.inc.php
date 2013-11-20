@@ -71,6 +71,9 @@ function we_tag_var($attribs){
 		// bugfix #3634
 		default :
 			$normVal = $doc->getField($attribs, $type, true);
+			if($type == 'date'){//already formated
+				$format = '';
+			}
 			// bugfix 7557
 			// wenn die Abfrage im Aktuellen Objekt kein Erg?bnis liefert
 			// wird in den eingebundenen Objekten ?berpr?ft ob das Feld existiert
