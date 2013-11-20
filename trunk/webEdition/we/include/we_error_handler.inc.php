@@ -81,7 +81,7 @@ function we_error_handler($in_webEdition = true){
 			define('WE_ERROR_HANDLER_SET', 1);
 		}
 		$GLOBALS['we']['errorhandler']['warning'] = true;
-	} else{
+	} else {
 		$GLOBALS['we']['errorhandler']['display'] = defined('WE_ERROR_SHOW') ? (WE_ERROR_SHOW == 1 ? true : false) : true;
 	}
 	// Check PHP version
@@ -101,7 +101,7 @@ function we_error_handler($in_webEdition = true){
 		set_error_handler('error_handler', $_error_level);
 		register_shutdown_function('shutdown_handler');
 		set_exception_handler('we_exception_handler');
-	} else{
+	} else {
 		//disable strict & deprecated errors
 		if(version_compare(PHP_VERSION, '5.3.0') >= 0){
 			$cur_error = error_reporting();
@@ -326,21 +326,20 @@ function log_error_message($type, $message, $file, $_line, $skipBT = false){
 		if(isset($GLOBALS['DB_WE'])){
 			$db = new DB_WE();
 			if(!$db->query($_query)){
-				mail_error_message($type, 'Cannot log error! Query failed: '. $message, $file, $_line, $skipBT);
-			} else{
+				mail_error_message($type, 'Cannot log error! Query failed: ' . $message, $file, $_line, $skipBT);
+			} else {
 				$id = $db->getInsertId();
 				foreach($logVars as $var){
 					$db->query('UPDATE ' . $tbl . ' SET ' . getVariableMax($var, $db) . ' WHERE ID=' . $id);
 				}
 			}
-		} else{
-			$_link = mysql_connect(DB_HOST, DB_USER, DB_PASSWORD)
-				or die('Cannot log error! Could not connect: ' . mysql_error());
+		} else {
+			$_link = mysql_connect(DB_HOST, DB_USER, DB_PASSWORD) or die('Cannot log error! Could not connect: ' . mysql_error());
 			mysql_select_db(DB_DATABASE, $_link) or die('Cannot log error! Could not select database.');
 			if(mysql_query($_query) === FALSE){
-				mail_error_message($type, 'Cannot log error! Query failed: '.$message, $file, $_line, $skipBT);
+				mail_error_message($type, 'Cannot log error! Query failed: ' . $message, $file, $_line, $skipBT);
 				//die('Cannot log error! Query failed: ' . mysql_error());
-			} else{
+			} else {
 				$id = mysql_insert_id();
 				foreach($logVars as $var){
 					mysql_query('UPDATE ' . $tbl . ' SET ' . getVariableMax($var) . ' WHERE ID=' . $id);
@@ -348,8 +347,8 @@ function log_error_message($type, $message, $file, $_line, $skipBT = false){
 			}
 			mysql_close();
 		}
-	} else{
-		mail_error_message($type, 'Cannot log error! Database connection not known: '.$message, $file, $line, $skipBT);
+	} else {
+		mail_error_message($type, 'Cannot log error! Database connection not known: ' . $message, $file, $line, $skipBT);
 		//die('Cannot log error! Database connection not known.');
 	}
 }
@@ -368,28 +367,28 @@ function mail_error_message($type, $message, $file, $line, $skipBT = false){
 	$_detailedError = "An error occurred while executing a script in webEdition.\n\n\n" .
 		// Domain
 		'webEdition address: ' . $_SERVER['SERVER_NAME'] . ",\n\n" .
-		'URI: ' . $_SERVER['REQUEST_URI'] . ",\n" .
+		'URI: ' . $_SERVER['REQUEST_URI'] . "\n" .
 		// Error type
-		'Error type: ' . $ttype . ",\n" .
+		'Error type: ' . $ttype . "\n" .
 		// Error message
-		'Error message: ' . str_replace($_SERVER['DOCUMENT_ROOT'], 'SECURITY_REPL_DOC_ROOT', $message) . ",\n" .
+		'Error message: ' . str_replace($_SERVER['DOCUMENT_ROOT'], 'SECURITY_REPL_DOC_ROOT', $message) . "\n" .
 		// Script name
-		'Script name: ' . str_replace($_SERVER['DOCUMENT_ROOT'], 'SECURITY_REPL_DOC_ROOT', $file) . ",\n" .
+		'Script name: ' . str_replace($_SERVER['DOCUMENT_ROOT'], 'SECURITY_REPL_DOC_ROOT', $file) . "\n" .
 		// Line
-		'Line number: ' . $line . ",\n" .
-		'Caller: ' . $_caller . ",\n" .
+		'Line number: ' . $line . "\n" .
+		'Caller: ' . $_caller . "\n" .
 		'Backtrace: ' . $detailedError;
 
 	// Log the error
 	if(defined('WE_ERROR_MAIL_ADDRESS')){
 		if(!mail(WE_ERROR_MAIL_ADDRESS, 'webEdition: ' . $ttype . ' (' . $_caller . ') [' . $_SERVER['SERVER_NAME'] . ']', $_detailedError)){
-			if(in_array($type,array('E_ERROR','E_CORE_ERROR','E_COMPILE_ERROR','E_USER_ERROR'))){
-				echo 'Cannot log error! Could not send e-mail: <pre>'.$_detailedError.'</pre>';
+			if(in_array($type, array('E_ERROR', 'E_CORE_ERROR', 'E_COMPILE_ERROR', 'E_USER_ERROR'))){
+				echo 'Cannot log error! Could not send e-mail: <pre>' . $_detailedError . '</pre>';
 			}
 		}
-	} else{
-		if(in_array($type,array('E_ERROR','E_CORE_ERROR','E_COMPILE_ERROR','E_USER_ERROR'))){
-			echo 'Cannot log error! Could not send e-mail due to no known recipient: <pre>'.$_detailedError.'</pre>';
+	} else {
+		if(in_array($type, array('E_ERROR', 'E_CORE_ERROR', 'E_COMPILE_ERROR', 'E_USER_ERROR'))){
+			echo 'Cannot log error! Could not send e-mail due to no known recipient: <pre>' . $_detailedError . '</pre>';
 		}
 	}
 }
