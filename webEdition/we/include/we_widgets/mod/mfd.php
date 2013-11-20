@@ -30,10 +30,12 @@ if(!isset($aCols) || count($aCols) < 5){
 	$aCols = explode(';', $aProps[3]);
 }
 $sTypeBinary = $aCols[0];
-$bTypeDoc = (bool) $sTypeBinary{0};
-$bTypeTpl = (bool) $sTypeBinary{1};
-$bTypeObj = (bool) $sTypeBinary{2};
-$bTypeCls = (bool) $sTypeBinary{3};
+$pos = 0;
+$bTypeDoc = we_hasPerm('CAN_SEE_DOCUMENTS') && ((bool) $sTypeBinary{$pos++});
+$bTypeTpl = we_hasPerm('CAN_SEE_TEMPLATES') && ((bool) $sTypeBinary{$pos++});
+$bTypeObj = we_hasPerm('CAN_SEE_OBJECTS') && ((bool) $sTypeBinary{$pos++});
+$bTypeCls = we_hasPerm('CAN_SEE_CLASSES') && ((bool) $sTypeBinary{$pos++});
+
 $iDate = intval($aCols[1]);
 
 $doctable = $where = $_users_where = $_ws = array();
@@ -43,10 +45,10 @@ switch($iDate){
 	default:
 		break;
 	case 1 :
-			$where[] = 'ModDate >=CURDATE()';
+		$where[] = 'ModDate >=CURDATE()';
 		break;
 	case 2 :
-			$where[] = 'ModDate >=(CURDATE()-INTERVAL 1 WEEK)';
+		$where[] = 'ModDate >=(CURDATE()-INTERVAL 1 WEEK)';
 		break;
 	case 3 :
 		$where[] = 'ModDate >=(CURDATE()-INTERVAL 1 MONTH)';
