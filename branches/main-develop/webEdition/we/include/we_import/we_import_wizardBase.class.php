@@ -315,16 +315,7 @@ top.wizcmd.we_import(1,-2' . ((isset($_REQUEST['type']) && $_REQUEST['type'] == 
 							$this->getHdns("attrs", $attrs);
 					}
 
-					$JScript = ($type == "first_steps_wizard" ? "
-top.leWizardProgress.set(0);
-top.leWizardProgress.show()
-top.weButton.disable('next')
-top.weButton.disable('back')
-top.weButton.enable('reload')
-function we_import_handler(e) { we_import(1,-2); }
-top.document.getElementById('function_reload').onmouseup = we_import_handler;" :
-							'top.wizbusy.setProgressText("pb1","' . g_l('import', "[prepare_progress]") . '");'
-						);
+					$JScript = 'top.wizbusy.setProgressText("pb1","' . g_l('import', "[prepare_progress]") . '");';
 
 
 					$out .= we_html_element::htmlForm(array("name" => "we_form"), $h) .
@@ -335,16 +326,14 @@ top.document.getElementById('function_reload').onmouseup = we_import_handler;" :
 					switch($v["type"]){
 						case we_import_functions::TYPE_WE_XML:
 
-							if($type != "first_steps_wizard"){
-								print we_html_element::jsElement('
+							print we_html_element::jsElement('
 if (top.wizbody && top.wizbody.addLog){
 	top.wizbody.addLog("' . addslashes(we_html_tools::getPixel(10, 10)) . '<br>");
 	top.wizbody.addLog("' . addslashes(we_html_tools::getPixel(10, 10)) . we_html_element::htmlB(g_l('import', '[start_import]') . ' - ' . date("d.m.Y H:i:s")) . '<br><br>");
 	top.wizbody.addLog("' . addslashes(we_html_tools::getPixel(20, 5)) . we_html_element::htmlB(g_l('import', '[prepare]')) . '<br>");
 	top.wizbody.addLog("' . addslashes(we_html_tools::getPixel(20, 5)) . we_html_element::htmlB(g_l('import', '[import]')) . '<br>");
 }');
-								flush();
-							}
+							flush();
 
 							$path = TEMP_PATH . we_base_file::getUniqueId() . '/';
 							we_util_File::createLocalFolder($path);
@@ -469,13 +458,11 @@ if (top.wizbody && top.wizbody.addLog){
 							));
 
 							if($xmlExIm->RefTable->current == 0){
-								if($type != "first_steps_wizard"){
-									print we_html_element::jsElement('
+								print we_html_element::jsElement('
 										if (top.wizbody.addLog){
 											top.wizbody.addLog("' . addslashes(we_html_tools::getPixel(20, 5)) . we_html_element::htmlB(g_l('import', '[update_links]')) . '");
 										}');
-									flush();
-								}
+								flush();
 							}
 
 							$ref = null;
@@ -495,39 +482,21 @@ if (top.wizbody && top.wizbody.addLog){
 							if(!empty($ref)){
 								$xmlExIm->savePerserves(false);
 
-								$JScript = ($type == "first_steps_wizard" ?
-										"top.leWizardProgress.set(Math.floor(((" . (int) ($v['cid'] + $xmlExIm->RefTable->current) . "+1)/" . (int) ($xmlExIm->RefTable->getLastCount() + $v["numFiles"]) . ")*100));
-function we_import_handler(e) {
-	we_import(1," . ($v['cid'] - 1) . ");
-}
-top.document.getElementById('function_reload').onmouseup = we_import_handler;" :
-										"top.wizbusy.setProgressText('pb1','" . g_l('import', '[update_links]') . $xmlExIm->RefTable->current . '/' . count($xmlExIm->RefTable->Storage) . "');
-										top.wizbusy.setProgress(Math.floor(((" . (int) ($v['cid'] + $xmlExIm->RefTable->current) . "+1)/" . (int) ($xmlExIm->RefTable->getLastCount() + $v["numFiles"]) . ")*100));"
-									);
+								$JScript = "top.wizbusy.setProgressText('pb1','" . g_l('import', '[update_links]') . $xmlExIm->RefTable->current . '/' . count($xmlExIm->RefTable->Storage) . "');
+										top.wizbusy.setProgress(Math.floor(((" . (int) ($v['cid'] + $xmlExIm->RefTable->current) . "+1)/" . (int) ($xmlExIm->RefTable->getLastCount() + $v["numFiles"]) . ")*100));";
 
 
 								$out .= we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
 										we_html_element::jsElement($JScript . "setTimeout('we_import(1," . $v['cid'] . ");',15);"));
 							} else {
-								if($type == "first_steps_wizard"){
-									$_SESSION['weS']['fsw_importRefTable'] = isset($_SESSION['weS']['ExImRefTable']) ? $_SESSION['weS']['ExImRefTable'] : array();
 
-									$JScript = "
-function we_import_handler(e) {
-	we_import(1," . ($v['numFiles'] - 1) . ");
-}
-top.document.getElementById('function_reload').onmouseup = we_import_handler;
-setTimeout('we_import(1," . $v['numFiles'] . ");',15);";
-								} else {
-
-									$JScript = "
+								$JScript = "
 top.wizbusy.finish(" . $xmlExIm->options['rebuild'] . ");
 setTimeout('we_import(1," . $v['numFiles'] . ");',15);";
-								}
-								$out .= we_html_element::htmlForm(array("name" => "we_form"), $hiddens . we_html_element::jsElement($JScript));
-
-								$xmlExIm->unsetPerserves();
 							}
+							$out .= we_html_element::htmlForm(array("name" => "we_form"), $hiddens . we_html_element::jsElement($JScript));
+
+							$xmlExIm->unsetPerserves();
 						} else { // do import
 							$xmlExIm = new weXMLImport();
 							$chunk = $v["uniquePath"] . basename($v["import_from"]) . "_" . $v["cid"];
@@ -595,31 +564,21 @@ setTimeout('we_import(1," . $v['numFiles'] . ");',15);";
 										$_progress_text = addslashes(substr($_progress_text, 0, 65) . '<acronym title="' . $_path_info . '">...</acronym>' . substr($_progress_text, -10));
 									}
 
-									if($type != "first_steps_wizard"){
 										print we_html_element::jsElement(
 												'if (top.wizbody.addLog){
 												top.wizbody.addLog("' . addslashes(we_html_tools::getPixel(50, 5)) . $_progress_text . '<br>");
 											}');
 										flush();
-									}
 								} else {
 									$_status = g_l('import', '[skip]');
 								}
 
 								$_counter_text = g_l('import', '[item]') . ' ' . $v['cid'] . '/' . ($v['numFiles'] - 2) . '';
 
-								if($type == 'first_steps_wizard'){
-									$JScript = "
-top.leWizardProgress.set(Math.floor(((" . $v['cid'] . "+1)/" . (int) (2 * $v["numFiles"]) . ")*100));
-function we_import_handler(e) {
-	we_import(1," . $v["cid"] . ");
-}
-top.document.getElementById('function_reload').onmouseup = we_import_handler;";
-								} else {
-									$JScript = "
+								$JScript = "
 top.wizbusy.setProgressText('pb1','" . $_status . " - " . $_counter_text . "');
 top.wizbusy.setProgress(Math.floor(((" . $v['cid'] . "+1)/" . (int) (2 * $v["numFiles"]) . ")*100));";
-								}
+
 
 								$out .= we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
 										we_html_element::jsElement($JScript . "setTimeout('we_import(1," . ($v["cid"] + 1) . ");',15);"));
@@ -723,18 +682,10 @@ top.wizbusy.setProgress(Math.floor(((" . $v['cid'] . "+1)/" . (int) (2 * $v["num
 					}
 
 
-					if($type == 'first_steps_wizard'){
-						$JScript = "
-top.leWizardProgress.set(Math.floor(((" . $v["cid"] . "+1)/" . $v["numFiles"] . ")*100));
-function we_import_handler(e) {
-	we_import(1," . $v["cid"] . ");
-}
-top.document.getElementById('function_reload').onmouseup = we_import_handler;";
-					} else {
-						$JScript = "
+					$JScript = "
 top.wizbusy.setProgressText('pb1','" . g_l('import', "[import]") . "');
 top.wizbusy.setProgress(Math.floor(((" . $v["cid"] . "+1)/" . $v["numFiles"] . ")*100));";
-					}
+
 
 					$out .= we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
 							we_html_element::jsElement($JScript . "setTimeout('we_import(1," . ($v["cid"] + 1) . ");',15);"));
@@ -806,13 +757,13 @@ top.wizbusy.setProgress(Math.floor(((" . $v["cid"] . "+1)/" . $v["numFiles"] . "
 						}
 						function we_import(mode, cid) {
 							if(arguments[2]==1){
-								top.wizbody.location = '" . $this->path . "?pnt=wizbody&step=3&type=".we_import_functions::TYPE_WE_XML."&noload=1';
+								top.wizbody.location = '" . $this->path . "?pnt=wizbody&step=3&type=" . we_import_functions::TYPE_WE_XML . "&noload=1';
 							};
 							var we_form = self.document.forms['we_form'];
 							we_form.elements['v[mode]'].value = mode;
 							we_form.elements['v[cid]'].value = cid;
-							we_form.target = '" . ($type == "first_steps_wizard" ? "_self" : "wizcmd" ) . "';
-							we_form.action = '" . ($type == "first_steps_wizard" ? $_SERVER['SCRIPT_NAME'] . "?leWizard=" . $_REQUEST['leWizard'] . "&leStep=" . $_REQUEST['leStep'] . "&we_cmd[0]=" . $_REQUEST['we_cmd'][0] : $this->path . "?pnt=wizcmd" ) . "';
+							we_form.target = 'wizcmd';
+							we_form.action = '" . $this->path . "?pnt=wizcmd';
 							we_form.method = 'post';
 							we_form.submit();
 						}"
@@ -822,15 +773,7 @@ top.wizbusy.setProgress(Math.floor(((" . $v["cid"] . "+1)/" . $v["numFiles"] . "
 
 	private function importFinished($v, $type){
 		switch($type){
-			case 'first_steps_wizard':
-				$JScript = "top.leWizardProgress.set(100);
-							top.leWizardProgress.hide();
-							top.weButton.enable('next');
-							top.opener.top.we_cmd('load', top.opener.top.treeData.table ,0);" .
-					//. "top.opener.top.header.location.reload();\n"
-					"function we_import_handler(e) { we_import(1," . $v["numFiles"] . "); }
-							top.document.getElementById('function_reload').onmouseup = we_import_handler;";
-				break;
+
 			default:
 				$JScript = "top.wizbusy.setProgressText('pb1','" . g_l('import', '[finish_progress]') . "');
 							top.wizbusy.setProgress(100);

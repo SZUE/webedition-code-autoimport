@@ -61,14 +61,6 @@ if(!$INCLUDE){
 		case 'mod_home':
 			$INCLUDE = 'we_modules/home.inc.php';
 			break;
-		case 'openFirstStepsWizardMasterTemplate':
-		case 'first_steps_wizard_master_template':
-			$INCLUDE = 'we_tools/first_steps_wizard/master.inc.php';
-			break;
-		case 'openFirstStepsWizardDetailTemplates':
-		case 'first_steps_wizard_detail_templates':
-			$INCLUDE = 'we_tools/first_steps_wizard/detail.inc.php';
-			break;
 		case 'loadSidebarDocument':
 			$INCLUDE = 'sidebar.inc.php';
 			break;
