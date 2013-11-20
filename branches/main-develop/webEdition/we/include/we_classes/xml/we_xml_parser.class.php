@@ -124,7 +124,7 @@ class we_xml_parser{
 	 * @see        getFile()
 	 */
 	function __construct($file = ''){
-		if(!empty($file)){
+		if($file){
 			// Read and try to parse the given file.
 			$this->getFile($file);
 		}

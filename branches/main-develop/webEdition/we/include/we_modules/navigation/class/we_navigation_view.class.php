@@ -176,7 +176,6 @@ function we_cmd() {
 				return;
 			} }
 			' . (!permissionhandler::hasPerm("DELETE_NAVIGATION") ?
-
 				(
 				we_message_reporting::getShowMessageCall(g_l('navigation', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR)
 				) :
@@ -738,12 +737,12 @@ function submitForm() {
 
 					$js = '';
 					if($this->Model->filenameNotValid($this->Model->Text)){
-						print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('navigation', "[wrongtext]"), we_message_reporting::WE_MESSAGE_ERROR));
+						print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('navigation', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR));
 						break;
 					}
 
 					if(trim($this->Model->Text) == ''){
-						print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('navigation', "[name_empty]"), we_message_reporting::WE_MESSAGE_ERROR));
+						print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('navigation', '[name_empty]'), we_message_reporting::WE_MESSAGE_ERROR));
 						break;
 					}
 
@@ -751,12 +750,12 @@ function submitForm() {
 					// set the path and check it
 					$this->Model->setPath();
 					if($this->Model->pathExists($this->Model->Path)){
-						print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('navigation', "[name_exists]"), we_message_reporting::WE_MESSAGE_ERROR));
+						print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('navigation', '[name_exists]'), we_message_reporting::WE_MESSAGE_ERROR));
 						break;
 					}
 
-					if($this->Model->isSelf()){
-						print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('navigation', "[path_nok]"), we_message_reporting::WE_MESSAGE_ERROR));
+					if($this->Model->isSelf() || !$this->Model->isAllowedForUser()){
+						print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('navigation', '[path_nok]'), we_message_reporting::WE_MESSAGE_ERROR));
 						break;
 					}
 

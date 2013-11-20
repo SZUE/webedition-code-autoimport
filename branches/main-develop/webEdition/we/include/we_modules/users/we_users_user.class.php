@@ -1481,7 +1481,7 @@ function toggleRebuildPerm(disabledOnly) {';
 		);
 
 		// Check if user has right to decide to give administrative rights
-		if(is_array($this->permissions_slots['administrator']) && permissionhandler::hasPerm('ADMINISTRATOR') && $this->Type == self::TYPE_USER){
+		if(permissionhandler::hasPerm('ADMINISTRATOR') && $this->Type == self::TYPE_USER && is_array($this->permissions_slots['administrator'])){
 			foreach($this->permissions_slots['administrator'] as $k => $v){
 				$content = '
 <table cellpadding="0" cellspacing="0" border="0" width="500">

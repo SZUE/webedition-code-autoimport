@@ -269,21 +269,19 @@ function setTab(tab) {
 			'style' => 'margin-top: 5px;'
 			), 1, 3);
 
-		$_table->setCol(0, 0, array(
-			'class' => 'defaultfont'
-			), g_l('navigation', '[order]') . ':');
+		$_table->setCol(0, 0, array('class' => 'defaultfont'), g_l('navigation', '[order]') . ':');
 
-		$_table->setColContent(
-			0, 1, we_html_tools::htmlTextInput(
-				'Ordn', '', ($this->Model->Ordn + 1), '', 'disabled="true" readonly style="width: 35px" onBlur="var r=parseInt(this.value);if(isNaN(r)) this.value=' . $this->Model->Ordn . '; else{ this.value=r; ' . $this->topFrame . '.mark();}"'));
+		$_table->setColContent(0, 1, we_html_tools::htmlTextInput('Ordn', '', ($this->Model->Ordn + 1), '', 'disabled="true" readonly style="width: 35px" onBlur="var r=parseInt(this.value);if(isNaN(r)) this.value=' . $this->Model->Ordn . '; else{ this.value=r; ' . $this->topFrame . '.mark();}"'));
 
-		unset($inp);
 
-		$_parentid = (isset($this->Model->Text) && $this->Model->Text != '' && isset($this->Model->ID) && $this->Model->ID != '' ?
+		$_parentid = (isset($this->Model->Text) && $this->Model->Text && isset($this->Model->ID) && $this->Model->ID ?
 				f('SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($this->Model->ID), 'ParentID', $this->db) :
 				(isset($_REQUEST['presetFolder']) && $_REQUEST['presetFolder'] ?
 					$this->Model->ParentID :
-					'0'));
+					(($wq = weNavigation::getWSQuery()) ?
+						f('SELECT ID FROM ' . NAVIGATION_TABLE . ' WHERE IsFolder=1 ' . $wq . ' ORDER BY Path LIMIT 1', 'ID', $this->db) :
+						0)
+				));
 
 
 		$_num = $_parentid ? f('SELECT COUNT(ID) as OrdCount FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($_parentid), 'OrdCount', new DB_WE()) : 0;
@@ -305,13 +303,9 @@ function setTab(tab) {
 			array(
 				'headline' => g_l('navigation', '[general]'),
 				'html' => we_html_element::htmlHidden(array('name' => 'newone', 'value' => ($this->Model->ID == 0 ? 1 : 0))) .
-				we_html_tools::htmlFormElementTable(
-					we_html_tools::htmlTextInput(
-						'Text', '', strtr(
-							$this->Model->Text, array_flip(get_html_translation_table(HTML_SPECIALCHARS))), '', 'style="width: ' . $this->_width_size . 'px;" onchange="' . $this->topFrame . '.mark();"'), g_l('navigation', '[name]')) . we_html_tools::htmlFormElementTable(
-					we_html_tools::htmlTextInput(
-						'Display', '', $this->Model->Display, '', 'style="width: ' . $this->_width_size . 'px;" onchange="' . $this->topFrame . '.mark();"'), g_l('navigation', '[display]')) . $this->getHTMLChooser(
-					g_l('navigation', '[group]'), NAVIGATION_TABLE, 0, 'ParentID', $_parentid, 'ParentPath', 'opener.' . $this->topFrame . '.mark()', 'folder', ($this->Model->IsFolder == 0 && $this->Model->Depended == 1)),
+				we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('Text', '', strtr($this->Model->Text, array_flip(get_html_translation_table(HTML_SPECIALCHARS))), '', 'style="width: ' . $this->_width_size . 'px;" onchange="' . $this->topFrame . '.mark();"'), g_l('navigation', '[name]')) .
+				we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('Display', '', $this->Model->Display, '', 'style="width: ' . $this->_width_size . 'px;" onchange="' . $this->topFrame . '.mark();"'), g_l('navigation', '[display]')) .
+				$this->getHTMLChooser(g_l('navigation', '[group]'), NAVIGATION_TABLE, 0, 'ParentID', $_parentid, 'ParentPath', 'opener.' . $this->topFrame . '.mark()', 'folder', ($this->Model->IsFolder == 0 && $this->Model->Depended == 1)),
 				'space' => $this->_space_size,
 				'noline' => 1
 			),
@@ -1103,18 +1097,18 @@ function onSelectionClassChangeJS(value) {
 	}
 
 	function getHTMLChooser($title, $table = FILE_TABLE, $rootDirID = 0, $IDName = 'ID', $IDValue = '', $PathName = 'Path', $cmd = '', $filter = 'text/webedition', $disabled = false, $showtrash = false, $acCTypes = ""){
-		if($IDValue == '0'){
+		if($IDValue == 0){
 			$_path = '/';
 		} elseif(isset($this->Model->$IDName) && !empty($this->Model->$IDName)){
 			$_path = id_to_path($this->Model->$IDName, $table);
 		} else {
 			$acQuery = new we_selector_query();
-			if(isset($IDValue) && $IDValue !== ""){
+			if($IDValue !== ""){
 				$acResponse = $acQuery->getItemById($IDValue, $table, array(
 					"IsFolder", "Path"
 				));
-				if($acResponse && $acResponse[0]['IsFolder']){
-					$_path = $acResponse[0]['IsFolder'];
+				if($acResponse && $acResponse[0]['Path']){
+					$_path = $acResponse[0]['Path'];
 				} else {
 					// return with errormessage
 				}
