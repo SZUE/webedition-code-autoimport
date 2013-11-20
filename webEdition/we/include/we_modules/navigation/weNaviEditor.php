@@ -40,29 +40,22 @@ $_navi = new weNavigation($_id);
 $_wrkNavi = array();
 $_db = new DB_WE();
 
-if(!we_hasPerm('ADMINISTRATOR')){
-	if(($_ws = get_ws(NAVIGATION_TABLE))){ // #5836: Use function get_ws()
-		$_wrkNavi = makeArrayFromCSV($_ws);
-	}
-	$_condition = array();
-	foreach($_wrkNavi as $_value){
-		$_condition[] = 'Path LIKE "' . $_db->escape(id_to_path($_value, NAVIGATION_TABLE)) . '/%"';
-	}
-	$_dirs = array();
-	$_def = null;
-} else{
+if(we_hasPerm('ADMINISTRATOR')){
 	$_dirs = array(
 		'0' => '/'
 	);
 	$_def = 0;
+} else {
+	$_dirs = array();
+	$_def = null;
 }
 
 if($_id){
 	$_def = $_navi->ParentID;
 }
 
-$_db->query('SELECT * FROM ' . NAVIGATION_TABLE . ' WHERE IsFolder=1 ' . (!empty($_wrkNavi) ? ' AND (ID IN (' . implode(',', $_wrkNavi) . ') OR (' . implode(' OR ', $_condition) . '))' : '') . ' ORDER BY Path;');
-while($_db->next_record()) {
+$_db->query('SELECT * FROM ' . NAVIGATION_TABLE . ' WHERE IsFolder=1 ' . weNavigation::getWSQuery() . ' ORDER BY Path');
+while($_db->next_record()){
 	if($_def === null){
 		$_def = $_db->f('ID');
 	}
@@ -72,15 +65,13 @@ while($_db->next_record()) {
 $_parts = array(
 	array(
 		'headline' => g_l('navigation', '[name]'),
-		'html' => we_html_tools::htmlTextInput(
-			'Text', 24, $_navi->Text, '', 'style="width: ' . $_input_size . 'px;" onblur="if(document.we_form.Text.value!=\'\') switch_button_state(\'save\', \'save_enabled\', \'enabled\'); else switch_button_state(\'save\', \'save_disabled\', \'disabled\');" onkeyup="if(document.we_form.Text.value!=\'\') switch_button_state(\'save\', \'save_enabled\', \'enabled\'); else switch_button_state(\'save\', \'save_disabled\', \'disabled\');"'),
+		'html' => we_html_tools::htmlTextInput('Text', 24, $_navi->Text, '', 'style="width: ' . $_input_size . 'px;" onblur="if(document.we_form.Text.value!=\'\') switch_button_state(\'save\', \'save_enabled\', \'enabled\'); else switch_button_state(\'save\', \'save_disabled\', \'disabled\');" onkeyup="if(document.we_form.Text.value!=\'\') switch_button_state(\'save\', \'save_enabled\', \'enabled\'); else switch_button_state(\'save\', \'save_disabled\', \'disabled\');"'),
 		'space' => $_space_size,
 		'noline' => 1
 	),
 	array(
 		'headline' => g_l('navigation', '[group]'),
-		'html' => we_html_tools::htmlSelect(
-			'ParentID', $_dirs, 1, $_navi->ParentID, false, (we_base_browserDetect::isIE() ? '' : 'style="width: ' . $_input_size . 'px;" ') . 'onChange="queryEntries(this.value)"'),
+		'html' => we_html_tools::htmlSelect('ParentID', $_dirs, 1, $_navi->ParentID, false, (we_base_browserDetect::isIE() ? '' : 'style="width: ' . $_input_size . 'px;" ') . 'onchange="queryEntries(this.value)"'),
 		'space' => $_space_size,
 		'noline' => 1
 	),
@@ -160,7 +151,7 @@ $buttonsBottom = '<div style="float:right">' . we_button::position_yes_no_cancel
 
 $_body = we_html_element::htmlBody(
 		array(
-		"class" => "weDialogBody", "onLoad" => "loaded=1;queryEntries(" . $_def . ")"
+		"class" => "weDialogBody", "onload" => 'loaded=1;queryEntries(' . $_def . ')'
 		), we_html_element::htmlForm(
 			array(
 			"name" => "we_form", "onsubmit" => "return false"

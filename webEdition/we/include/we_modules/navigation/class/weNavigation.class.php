@@ -118,7 +118,7 @@ class weNavigation extends weModelBase{
 		$this->Charset = DEFAULT_CHARSET;
 	}
 
-	function load($id = '0'){
+	function load($id = 0){
 		if(parent::load($id)){
 			$this->CategoryIDs = $this->Categories;
 
@@ -352,11 +352,7 @@ class weNavigation extends weModelBase{
 	}
 
 	function filenameNotValid($text){
-//		$_tmp = str_replace("]", "", str_replace("[", "", $text));
-		if(strpos($text, "/") !== false){
-			return true;
-		}
-		return false;
+		return (strpos($text, '/') !== false);
 	}
 
 	function alnumNotValid($text){
@@ -373,29 +369,30 @@ class weNavigation extends weModelBase{
 	}
 
 	function isSelf(){
-		if($this->ID){
-			$_count = 0;
-			$_parentid = $this->ParentID;
-			while($_parentid != 0){
-				if($_parentid == $this->ID){
-					return true;
-				}
-				$_parentid = f('SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($_parentid), 'ParentID', $this->db);
-				$_count++;
-				if($_count == 9999){
-					return false;
-				}
-			}
-			return false;
-		} else {
+		if(!$this->ID){
 			return false;
 		}
+		$_count = 0;
+		$_parentid = $this->ParentID;
+		while($_parentid != 0){
+			if($_parentid == $this->ID){
+				return true;
+			}
+			$_parentid = f('SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($_parentid), 'ParentID', $this->db);
+			$_count++;
+			if($_count == 9999){
+				return false;
+			}
+		}
+		return false;
 	}
 
 	function isAllowedForUser(){
-		return true;
-		/* 		if (we_hasPerm('ADMINISTRATOR'))
-		  return true; */
+		if(we_hasPerm('ADMINISTRATOR')){
+			return true;
+		}
+		//checkWS
+		return f('SELECT 1 AS a FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . $this->ParentID . ' ' . self::getWSQuery(), 'a', $this->db) == '1';
 	}
 
 	function evalPath($id = 0){
@@ -813,7 +810,7 @@ class weNavigation extends weModelBase{
 	}
 
 	function we_save(){
-		$this->save();
+		return $this->save();
 	}
 
 	function setAttribute($name, $value){
@@ -860,9 +857,24 @@ class weNavigation extends weModelBase{
 			), oldHtmlspecialchars($string));
 	}
 
-	static public function getNavCondition($id, $table){
+	public static function getNavCondition($id, $table){
 		$_linkType = ($table == OBJECT_FILES_TABLE ? self::STPYE_OBJLINK : self::STPYE_DOCLINK);
 		return ' ((IsFolder=1 AND FolderSelection="' . escape_sql_query($_linkType) . '") OR (IsFolder=0 AND SelectionType="' . escape_sql_query($_linkType) . '")) AND LinkID=' . intval($id) . ' ';
+	}
+
+	public static function getWSQuery(){
+		if(we_hasPerm('ADMINISTRATOR')){
+			return '';
+		}
+		if(($_ws = get_ws(NAVIGATION_TABLE))){ // #5836: Use function get_ws()
+			$_wrkNavi = makeArrayFromCSV($_ws);
+		}
+		$_condition = array();
+		foreach($_wrkNavi as $_value){
+			$_condition[] = 'Path LIKE "' . $GLOBALS['DB_WE']->escape(id_to_path($_value, NAVIGATION_TABLE)) . '/%"';
+		}
+
+		return ($_wrkNavi ? ' AND (ID IN (' . implode(',', $_wrkNavi) . ') OR (' . implode(' OR ', $_condition) . '))' : '');
 	}
 
 }
