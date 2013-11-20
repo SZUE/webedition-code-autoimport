@@ -28,8 +28,7 @@
  *
  * Provides functions for creating webEdition buttons.
  */
-//fIXME: this should be abstract - but liveupdate currently fails with this
-class we_button{
+abstract class we_button{
 
 	const HEIGHT = 22;
 	const WIDTH = 100;

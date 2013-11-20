@@ -83,7 +83,9 @@ class liveUpdateResponse{
 			case 'executePatches':
 				return liveUpdateFunctionsServer::executeAllPatches();
 			case 'eval':
-				return eval('?>' . $this->Code);
+				$c = strtr($this->Code, array('we_forms' => 'we_html_forms', '$we_button->' => 'we_button::', 'new we_button()' => '""'));
+
+				return eval('?>' . $c);
 				break;
 
 			case 'state':
